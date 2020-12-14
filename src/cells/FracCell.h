@@ -50,7 +50,7 @@ public:
   const CellTypeInfo &GetInfo() override;
 
   int GetInnerCellCount() const override { return 3; }
-  Cell *GetInnerCell(int index) const override { return (&m_divide)[index]; }
+  Cell *GetInnerCell(int index) const override { return (&m_displayedNum)[index]; }
 
   //! All types of fractions we support
   enum FracType : int8_t
@@ -103,12 +103,12 @@ private:
   std::unique_ptr<TextCell> m_divideOwner;
 
   // The pointers below point to inner cells and must be kept contiguous.
-  // ** All pointers must be the same: either Cell * [const] or std::unique_ptr<Cell>.
-  // ** NO OTHER TYPES are allowed.
-  //! The "/" sign
-  Cell* m_divide = {};
+  // ** This is the draw list order. All pointers must be the same:
+  // ** either Cell * or std::unique_ptr<Cell>. NO OTHER TYPES are allowed.
   //! The displayed version of the numerator, if needed with parenthesis
   Cell* m_displayedNum = {};
+  //! The "/" sign
+  Cell* m_divide = {};
   //! The displayed version of the denominator, if needed with parenthesis
   Cell* m_displayedDenom = {};
   // The pointers above point to inner cells and must be kept contiguous.

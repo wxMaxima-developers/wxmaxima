@@ -36,11 +36,11 @@ SumCell::SumCell(GroupCell *group, Configuration **config, sumStyle style,
                  std::unique_ptr<Cell> &&under, std::unique_ptr<Cell> &&over,
                  std::unique_ptr<Cell> &&base)
     : Cell(group, config),
-      m_under(std::move(under)),
-      m_start(MakeStart(m_under.get())),
-      m_var(m_under->Copy()),
-      m_over(std::move(over)),
       m_paren(std::make_unique<ParenCell>(group, config, std::move(base))),
+      m_var(under->Copy()),
+      m_start(MakeStart(under.get())),
+      m_over(std::move(over)),
+      m_under(std::move(under)),
       m_sumStyle(style)
 {
   InitBitFields();

@@ -36,8 +36,8 @@ LimitCell::LimitCell(GroupCell *parent, Configuration **config,
                      std::unique_ptr<Cell> &&base,
                      std::unique_ptr<Cell> &&under,
                      std::unique_ptr<Cell> &&name)
-    : Cell(parent, config), m_base(std::move(base)), m_under(std::move(under)),
-      m_name(std::move(name))
+    : Cell(parent, config), m_name(std::move(name)), m_base(std::move(base)),
+      m_under(std::move(under))
 {
   InitBitFields();
   SetStyle(TS_VARIABLE);
@@ -213,7 +213,6 @@ wxString LimitCell::ToOMML() const
          under + _T("</m:lim></m:limLow></m:fName><m:e>") +
          m_base->ListToOMML() + _T("</m:e></m:func>");
 }
-
 
 bool LimitCell::BreakUp()
 {

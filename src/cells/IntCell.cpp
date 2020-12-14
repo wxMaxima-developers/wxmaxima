@@ -42,9 +42,9 @@ IntCell::IntCell(GroupCell *parent, Configuration **config,
                  std::unique_ptr<Cell> &&over, std::unique_ptr<Cell> &&var)
     : Cell(parent, config),
     m_base(std::move(base)),
+    m_var(std::move(var)),
     m_under(std::move(under)),
-    m_over(std::move(over)),
-    m_var(std::move(var))
+    m_over(std::move(over))
 {
   InitBitFields();
   SetStyle(TS_VARIABLE);
