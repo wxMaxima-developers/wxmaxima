@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: wxMaxima HEAD\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-11-26 08:02+0100\n"
-"PO-Revision-Date: 2020-12-13 16:13+0800\n"
+"PO-Revision-Date: 2020-12-14 22:31+0800\n"
 "Last-Translator: Liu Rong <rong.liu@mail.bnu.edu.cn>\n"
 "Language-Team: amateur\n"
 "Language: zh\n"
@@ -3376,18 +3376,20 @@ msgid ""
 "worksheet's right side and that contain the \"hide\" button of the cell if "
 "the cells aren't active."
 msgstr ""
+"如果单元格未处于活动状态，隐藏在工作簿左侧标记单元格范围的方括号及其包含的“隐"
+"藏”按钮。"
 
 #: ../../src/Worksheet.cpp:1798 ../../src/Worksheet.cpp:1821
 msgid "Hide yellow tooltip marker for this cell"
-msgstr ""
+msgstr "对此单元格隐藏黄色的提示标记"
 
 #: ../../src/Worksheet.cpp:1802 ../../src/Worksheet.cpp:1825
 msgid "Hide yellow tooltip marker for this message type"
-msgstr ""
+msgstr "对此消息类型隐藏黄色的提示标记"
 
 #: ../../src/Configuration.cpp:1392
 msgid "Highlight (dpart)"
-msgstr "高亮显示标记（在dpart函数中）"
+msgstr "高亮显示（对 dpart 函数）"
 
 #: ../../examples/examples_gettext.list:893
 msgid ""
@@ -3402,12 +3404,12 @@ msgid ""
 "that tells us how big the error in this point is.\n"
 msgstr ""
 "帮助理解此构造的一些提示：\n"
-"* args() 命令将矩阵转换为列表的列表;\n"
+"* args() 命令将矩阵转换为列表的列表；\n"
 "* makelist() 命令遍历此列表, 并将每个数据点的 x 值和 y 值构成的\n"
-"    列表赋值给 i;\n"
-"* rhs() 和 lhs() 命令提取“=”左边和右边的式子;\n"
+"    列表赋值给 i；\n"
+"* rhs() 和 lhs() 命令提取“=”左边和右边的式子；\n"
 "* 既然已经知道 i 中的各个元素的含义, 我们可以使用 subst() 命令\n"
-"    将 i 中的元素代入 errval, 以得到在对应点处误差的大小.\n"
+"    将 i 中的元素代入 errval，以得到在对应点处误差的大小。\n"
 
 #: ../../examples/examples_gettext.list:943
 msgid ""
@@ -3421,14 +3423,15 @@ msgid ""
 " * we need to convert our input data into a list in order to transpose it "
 "(which means: exchange the columns by rows and vice versa)\n"
 msgstr ""
-"帮助理解这一行命令的提示:\n"
-"* map() 命令对列表的每个元素运行同一个命令;\n"
+"帮助理解这一行命令的提示：\n"
+"* map() 命令对列表的每个元素运行同一个命令；\n"
 "* 我们希望为 map() 提供一个命令, 将形如“[a,3]”的内容转换为 \n"
-"    “a=3”; 但是我们不会重复使用这个命令, 所以没有必要为其指定\n"
-"    名字,  因此使用 lambda() 命令来创建一个带参数 x 的无名称命令;\n"
-"* args() 将矩阵转换为列表的列表;\n"
-"* 我们需要将参数列表和解列表转换成矩阵, 以便将其转置 (这意味着:\r行与列对"
-"调).\n"
+"    “a=3”；但是我们不会重复使用这个命令，所以没有必要为其\n"
+"    指定名字，因此使用 lambda() 命令来创建一个带参数 x 的\n"
+"    无名称命令；\n"
+"* args() 将矩阵转换为列表的列表；\n"
+"* 我们需要将参数列表和解列表转换成矩阵，以便将其转置（这意味着：\r行与列对"
+"调）。\n"
 
 #: ../../src/wxMaxima.cpp:8679
 msgid "Histogram"
@@ -3440,11 +3443,11 @@ msgstr "柱状图..."
 
 #: ../../src/wxMaximaFrame.cpp:469
 msgid "History"
-msgstr "历史"
+msgstr "历史记录"
 
 #: ../../src/wxMaximaFrame.cpp:756
 msgid "History\tAlt+Shift+I"
-msgstr "历史\tAlt+Shift+I"
+msgstr "历史记录\tAlt+Shift+I"
 
 #: ../../src/TipOfTheDay.cpp:87
 msgid ""
@@ -3459,15 +3462,15 @@ msgstr ""
 
 #: ../../src/ConfigDialogue.cpp:675
 msgid "Hotkeys for sending commands to maxima"
-msgstr ""
+msgstr "将命令发送至 Maxima 的快捷键"
 
 #: ../../src/wxMaxima.cpp:8401
 msgid "How many digits to show:"
-msgstr ""
+msgstr "要显示的数字位数："
 
 #: ../../src/wxMaximaFrame.cpp:777
 msgid "How to display new equations"
-msgstr ""
+msgstr "如何显示新式子"
 
 #: ../../src/ConfigDialogue.cpp:184
 msgid "Hungarian"
@@ -3475,15 +3478,15 @@ msgstr "匈牙利语"
 
 #: ../../src/wxMaxima.cpp:6657
 msgid "IC1"
-msgstr "初始条件（一阶）"
+msgstr "初值条件（一阶）"
 
 #: ../../src/wxMaxima.cpp:6674
 msgid "IC2"
-msgstr "初始条件（二阶）"
+msgstr "初值条件（二阶）"
 
 #: ../../src/wxMaximaFrame.cpp:2042
 msgid "Identical to"
-msgstr ""
+msgstr "等价于"
 
 #: ../../examples/examples_gettext.list:1575
 msgid ""
@@ -3491,8 +3494,8 @@ msgid ""
 "same isn't true with IEEE floating-point numbers like the ones the computer "
 "uses:\n"
 msgstr ""
-"在数学中, 如果两项互为相反数, 那么它们相加时可以相互抵消. 但是\n"
-"计算机中使用的 IEEE 浮点数却并非如此:\n"
+"在数学中，如果两项互为相反数，那么它们相加时可以相互抵消。但是\n"
+"计算机中使用的 IEEE 浮点数时却并非如此：\n"
 
 #: ../../examples/examples_gettext.list:1908
 msgid ""
@@ -3501,13 +3504,15 @@ msgid ""
 "in the two lists the following function can be used:\n"
 msgstr ""
 "如果想要将两个误差列表合并，但是不想因为这两个列表中正好有\n"
-"相同的 n 而使得对应的 tol[n] 相互影响，则可以使用如下方法:\n"
+"相同的 n 而使得对应的 tol[n] 相互影响，则可以使用如下方法：\n"
 
 #: ../../src/ConfigDialogue.cpp:156
 msgid ""
 "If maxima versions compiled with different lisps are installed: The name of "
 "the lisp to use by default"
 msgstr ""
+"如果安装了由不同 Lisp 编译器得到的 Maxima 版本：默认情况下要使用的 Lisp 的名"
+"称"
 
 #: ../../src/ConfigDialogue.cpp:168
 msgid ""
@@ -3545,26 +3550,27 @@ msgid ""
 "If multiple cells are evaluated in one go: Abort evaluation if wxMaxima "
 "detects that maxima has encountered any error."
 msgstr ""
+"如果一次计算多个单元格：当 wxMaxima 检测到 Maxima 遇到任何错误时，中止计算。"
 
 #: ../../src/ConfigDialogue.cpp:574
 msgid "If not extremely long"
-msgstr ""
+msgstr "如果不是特别长"
 
 #: ../../examples/examples_gettext.list:267
 msgid ""
 "If not the shape, but the absolute heights are important maxima offers "
 "contour lines.\n"
-msgstr "如果重要的不是形状, 而是绝对高度, Maxima 也可以绘制等高线:\n"
+msgstr "如果重要的不是形状，而是绝对高度，Maxima 也可以绘制等高线：\n"
 
 #: ../../src/ConfigDialogue.cpp:573
 msgid "If not very long"
-msgstr ""
+msgstr "如果不是很长"
 
 #: ../../src/ConfigDialogue.cpp:356
 msgid ""
 "If numbers are getting longer than this number of digits they will be "
 "displayed abbreviated by an ellipsis."
-msgstr ""
+msgstr "如果数值的长度超过这个数，超出的部分将显示为省略号。"
 
 #: ../../examples/examples_gettext.list:387
 msgid ""
@@ -3576,11 +3582,11 @@ msgid ""
 "is needed and each element knows where in the computer's memory the next "
 "list element is stored.\n"
 msgstr ""
-"如果要存储一些项目 (数, 函数等), 大致有两种方法:\n"
-"* 数组: 如果事先知道要存储 n 项, 并且所有项都具有相同的大小 \n"
-"    (如 m 字节), 那么可以分配 m*n 字节的内存. 在这种情况下, 确定\n"
-"    第 k 项的地址很容易.\n"
-"* 列表: 每个列表元素 (项) 的内存是在添加该元素到列表时分配的, \n"
+"如果要存储一些项目（数，函数等），大致有两种方法：\n"
+"* 数组：如果事先知道要存储 n 项, 并且所有项都具有相同的大小 \n"
+"    （如 m 字节），那么可以分配 m*n 字节的内存。在这种情况下，\n"
+"    确定第 k 项的地址很容易。\n"
+"* 列表：每个列表元素（项）的内存是在添加该元素到列表时分配的，\n"
 "    并且每个元素都知道下一个元素在计算机内存中存储的位置。\n"
 
 #: ../../src/TipOfTheDay.cpp:147
@@ -3600,16 +3606,16 @@ msgid ""
 "differential equation that describes the general shapes the curve can have "
 "without describing its actual height.\n"
 msgstr ""
-"若定义曲线形状的方程用到了曲线的斜率 (diff('f(x),x), 即对应函数\n"
-"的一阶导数)、曲线的斜率函数的斜率 (diff('f(x),x,2), 即对应函数的\n"
-"二阶导数) 或曲线对应函数的任何其他阶导数, 则该方程是一个微分\n"
-"方程, 它描述了曲线的形状特征而非实际解析式.\n"
+"若定义曲线形状的方程用到了曲线的斜率（diff('f(x),x)，即对应函数\n"
+"的一阶导数）、曲线的斜率函数的斜率（diff('f(x),x,2)，即对应函数\n"
+"的二阶导数）或曲线对应函数的任何其他阶导数，则该方程是一个\n"
+"微分方程，它描述了曲线的形状特征而非实际解析式。\n"
 
 #: ../../src/ConfigDialogue.cpp:346
 msgid ""
 "If the font provides big parenthesis symbols: Use them when big parenthesis "
 "are needed for maths display."
-msgstr ""
+msgstr "如果字体提供大型括号符号：当显示式子需要大型括号时使用它们。"
 
 #: ../../examples/examples_gettext.list:487
 msgid ""
@@ -3619,10 +3625,10 @@ msgid ""
 "pass lambda() first the list of the arguments the new command shall have and "
 "the contents of that command:\n"
 msgstr ""
-"如果要在列表的每个元素上作用的函数只使用一次, 并且不想给这个\n"
-"一次性函数命名, 则可以用 lambda() 命令生成带一个参数的无名\n"
-"函数——只需首先向 lambda() 传递该函数应具有的参数列表和\n"
-"作用法则:\n"
+"如果要在列表的每个元素上作用的函数只使用一次，并且不想给这\n"
+"个一次性函数命名，则可以用 lambda() 命令生成带一个参数的\n"
+"无名函数——只需首先向 lambda() 传递该函数应具有的参数\n"
+"列表和作用法则：\n"
 
 #: ../../examples/examples_gettext.list:1713
 msgid ""
@@ -3643,21 +3649,21 @@ msgid ""
 "dimensional tolerance space. \n"
 "The last two of these methods are described here.\n"
 msgstr ""
-"如果一个式子由许多变量表示, 手动确定哪些变量对该式影响最大是\n"
-"一个耗费精力且容易出错的过程. 替代的方法有：\n"
-"* 实现一个成熟的算法, 根据输入参数的范围自动确定输出范围. 可以\n"
-"    预见, 这个算法会非常复杂, 以至于这类算法都只对简单情形有效.\n"
-"* 对每个变量的误差, 通过式子的导数确定最大的全局误差.\n"
-"* 利用蒙特卡罗 (Montecarlo) 方法: 将所有变量都替换为其误差范围\n"
-"    内的随机值, 然后反复计算, 直至可以看出式子的误差.\n"
-"* 或者系统地尝试 n 维误差空间的所有边界值.\n"
-"这里描述最后两种方法.\n"
+"如果一个式子由许多变量表示，手动确定哪些变量对该式影响最大是\n"
+"一个耗费精力且容易出错的过程。替代的方法有：\n"
+"* 实现一个成熟的算法，根据输入参数的范围自动确定输出范围，可以\n"
+"    预见，这个算法会非常复杂，以至于这类算法都只对简单情形有效。\n"
+"* 对每个变量的误差，通过式子的导数确定最大的全局误差。\n"
+"* 利用 Montecarlo（蒙特卡罗）方法：将所有变量都替换为其误差范围\n"
+"    内的随机值，然后反复计算，直至可以看出式子的误差。\n"
+"* 或者系统地尝试 n 维误差空间的所有边界值。\n"
+"这里描述最后两种方法。\n"
 
 #: ../../examples/examples_gettext.list:1960
 msgid ""
 "If this calculation is repeated it will naturally result in slightly "
 "different numeric values:\n"
-msgstr "如果重复此计算, 自然会产生不同的数值:\n"
+msgstr "如果重复此计算，自然会产生不同的数值：\n"
 
 #: ../../src/ConfigDialogue.cpp:348
 msgid ""
@@ -3666,6 +3672,9 @@ msgid ""
 "file is virtually always saved. If this checkbox is unchecked from time to "
 "time a backup is made in the temp folder instead."
 msgstr ""
+"如果选中此复选框，wxMaxima 会每隔几分钟自动保存文件，表现得类似于手机应用程"
+"序，即文件实际上总是被保存。如果取消选中此复选框，则会不定期在临时文件夹中进"
+"行备份。"
 
 #: ../../src/ConfigDialogue.cpp:338
 msgid ""
@@ -3673,12 +3682,14 @@ msgid ""
 "data. If it isn't set a new code cell is opened in this case as soon as the "
 "user starts typing in code."
 msgstr ""
+"如果设置了此复选框，则在 Maxima 请求数据时将打开一个新的代码单元格。如果没有"
+"设置，只有用户开始输入代码，才会打开一个新的代码单元格。"
 
 #: ../../src/ConfigDialogue.cpp:335
 msgid ""
 "If this checkbox isn't checked the current command is sent to maxima only on "
 "pressing Ctrl+Enter"
-msgstr ""
+msgstr "如果未选中此复选框，则仅当按下 Ctrl+Enter 时当前命令才发送到 Maxima。"
 
 #: ../../examples/examples_gettext.list:2104
 msgid ""
@@ -3691,6 +3702,8 @@ msgid ""
 "If this option is set the .wxmx source of the current file is copied to a "
 "place a link to is put into the result of an export."
 msgstr ""
+"如果设置了此选项，则当前的 .wxmx 文件将复制到一个位置，且对应的链接将放入导出"
+"的文件 。"
 
 #: ../../examples/examples_gettext.list:1359
 msgid ""
@@ -3698,29 +3711,29 @@ msgid ""
 "clicking on such a number opens up a menu that allows to customize this "
 "behavior.\n"
 msgstr ""
-"如果显示大浮点数时使用的数字太多或太少, 可以右键单击这个数字, \n"
-"在弹出的菜单中选择合适的数字数量.\n"
+"如果显示大浮点数时使用的数字太多或太少，可以右键单击这个数字，\n"
+"在弹出的菜单中选择合适的数字数量。\n"
 
 #: ../../examples/examples_gettext.list:83
 msgid ""
 "If we did everything right maxima now can determine the equation that "
 "defines the general shape of all possible loading curves:\n"
 msgstr ""
-"通过上面的方程, Maxima 现在可以确定荷载曲线对应的函数 (运行\n"
-"下列命令时, Maxima 会询问 4*C_In*R_Load^2-L_Cable 的正负号, \n"
-"可回答 positive, negative 或 zero 之一):\n"
+"通过上面的方程，Maxima 现在可以确定荷载曲线对应的函数（运行\n"
+"下列命令时，Maxima 会询问 4*C_In*R_Load^2-L_Cable 的正负号，\n"
+"可回答 positive, negative 或 zero 之一）：\n"
 
 #: ../../examples/examples_gettext.list:1817
 msgid "If we just want to know the typical value we can do the following:\n"
-msgstr "如果只想知道典型值, 可以执行以下操作:\n"
+msgstr "如果只想知道典型值，可以执行以下操作：\n"
 
 #: ../../examples/examples_gettext.list:1149
 msgid ""
 "If we now calculate the 1000th prime maxima will store the info about the "
 "first 1000 primes in a hash map:\n"
 msgstr ""
-"如果要得到第 100 个素数, Maxima 将利用哈希映射存储前 100 个\n"
-"素数:\n"
+"如果要得到第 100 个素数，Maxima 将利用哈希映射存储前 100 个\n"
+"素数：\n"
 
 #: ../../examples/examples_gettext.list:1425
 msgid ""
@@ -3728,9 +3741,9 @@ msgid ""
 "an art, a computer can help with in many special cases, but that often "
 "relies on human creativity for finding algorithms and ways.\n"
 msgstr ""
-"对于正在学习数学的人而言, 解方程是一门艺术. 虽然在一些特殊情\n"
-"况下, 可获得计算机的帮助, 但这也往往依赖于人类的创造力来寻找\n"
-"算法.\n"
+"对于正在学习数学的人而言，解方程是一门艺术。虽然在一些特殊情\n"
+"况下，可获得计算机的帮助。但这也往往依赖于人类的创造力来寻找\n"
+"算法。\n"
 
 #: ../../src/TipOfTheDay.cpp:63
 msgid ""
@@ -3759,14 +3772,16 @@ msgid ""
 "Image files (*.png, *.jpg, *.bmp, *.xpm, *.gif, *.svg, *.svgz)|*.png;*.jpg;*."
 "bmp;*.xpm;*.gif;*.svg;*.svgz"
 msgstr ""
+"图片文件 (*.png, *.jpg, *.bmp, *.xpm, *.gif, *.svg, *.svgz)|*.png;*.jpg;*."
+"bmp;*.xpm;*.gif;*.svg;*.svgz"
 
 #: ../../src/wxMaximaFrame.cpp:2240
 msgid "Implicit Plot"
-msgstr ""
+msgstr "隐式图形"
 
 #: ../../src/ConfigDialogue.cpp:756
 msgid "Import settings"
-msgstr ""
+msgstr "导入设置"
 
 #: ../../src/ConfigDialogue.cpp:736
 msgid "Import+Export"
@@ -3778,8 +3793,8 @@ msgid ""
 "values are. In this case it is possible to generate a top view without "
 "drawing the actual surface:\n"
 msgstr ""
-"有时, 我们不关心曲面的实际形状, 而只关心其上各点的高度. 这时, \n"
-"可以不绘制实际曲面, 而只生成等高线俯视图:\n"
+"有时，我们不关心曲面的实际形状，而只关心其上各点的高度。这时\n"
+"可以不绘制实际曲面，而只生成等高线俯视图：\n"
 
 #: ../../examples/examples_gettext.list:340
 msgid "In order to allow to read values more easily\n"
@@ -3795,9 +3810,9 @@ msgid ""
 "fact that y needs to substituted into the equation to plot manually is a "
 "long-standing bug in maxima's makelist() command.\n"
 msgstr ""
-"只需在单击此图片后使用鼠标滚轮, 就可以看出曲面上的曲线随\n"
-"纵坐标 y 的变化. 代码里, 纵坐标 y 的值需要手动代入解析式, 这是 \n"
-"Maxima 的 makelist() 命令的一个长期存在的错误 (bug).\n"
+"只需在单击此图片后使用鼠标滚轮，就可以看出曲面上的曲线随\n"
+"纵坐标 y 的变化。代码里，纵坐标 y 的值需要手动代入解析式，这是 \n"
+"Maxima 的 makelist() 命令的一个长期存在的错误（bug）。\n"
 
 #: ../../src/TipOfTheDay.cpp:144
 msgid ""
