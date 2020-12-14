@@ -55,6 +55,7 @@ void Buttonwrapsizer::RecalcSizes()
     wxWindow *item = current->GetWindow();
     wxSize bestSize(width, item->GetBestSize().y);
     item->SetInitialSize(bestSize);
+    item->SetMinSize(bestSize);
   }
   wxWrapSizer::RecalcSizes();
 }
