@@ -48,16 +48,13 @@ public:
   wxString ToTeX() const override;
   wxString ToXML() const override;
 
-  void SetNextToDraw(Cell *next) override;
-
   bool BreakUp() override;
 
 private:
   void MakeBreakupCells();
 
   // The pointers below point to inner cells and must be kept contiguous.
-  // ** This is the draw list order. All pointers must be the same:
-  // ** either Cell * or std::unique_ptr<Cell>. NO OTHER TYPES are allowed.
+  // ** This is the draw list order. All pointers must be the same type.
   std::unique_ptr<Cell> m_open;
   std::unique_ptr<Cell> m_baseCell;
   std::unique_ptr<Cell> m_comma;

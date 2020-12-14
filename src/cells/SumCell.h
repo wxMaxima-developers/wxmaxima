@@ -55,6 +55,8 @@ public:
 
   int GetInnerCellCount() const override { return 10; }
   Cell *GetInnerCell(int index) const override { return (&m_open)[index].get(); }
+  int GetDrawCellCount() const override;
+  Cell *GetDrawCell(int index) const override;
   
   void Recalculate(AFontSize fontsize) override;
 
@@ -71,7 +73,6 @@ public:
   const wxString &GetAltCopyText() const override { return m_altCopyText; }
 
   bool BreakUp() override;
-  void SetNextToDraw(Cell *next) override;
   void Unbreak() override final;
 
 private:
@@ -88,8 +89,7 @@ private:
   wxString m_altCopyText;
 
   // The pointers below point to inner cells and must be kept contiguous.
-  // ** This is the partial draw list order. All pointers must be the same:
-  // ** either Cell * or std::unique_ptr<Cell>. NO OTHER TYPES are allowed.
+  // ** This is the partial draw list order. All pointers must be the same type.
   std::unique_ptr<Cell> m_open;
   std::unique_ptr<Cell> m_paren;
   std::unique_ptr<Cell> m_comma1;
@@ -113,10 +113,13 @@ private:
   { // Keep the initailization order below same as the order
     // of bit fields in this class!
     m_displayParen = true;
+    m_overInDrawList = false;
   }
 
   //! Display m_paren if true, or Base() if false
   bool m_displayParen : 1 /* InitBitFields */;
+  //! Include comma3 and over in the draw list
+  bool m_overInDrawList : 1 /* InitBitFields */;
 };
 
 #endif // SUMCELL_H

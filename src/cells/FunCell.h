@@ -37,17 +37,14 @@
    - AbsCell
    - ConjugateCell
 
-  In the case that this cell is broken into two lines in the order of
-  m_nextToDraw this cell is represented by the following individual 
-  cells:
-  
+  In the case that this cell is broken into two lines, the following cells are on
+  the draw list:
+
    - The FunCell itself
    - The function name"
    - The ParenCell containing its contents
    - The closing ")".
    
-  If it isn't broken into multiple cells m_nextToDraw points to the 
-  cell that follows this Cell. 
 */
 class FunCell final : public Cell
 {
@@ -77,15 +74,12 @@ public:
 
   bool BreakUp() override;
 
-  void SetNextToDraw(Cell *next) override;
-
 private:
   //! Text that should end up on the clipboard if this cell is copied as text.
   wxString m_altCopyText;
 
   // The pointers below point to inner cells and must be kept contiguous.
-  // ** This is the draw list order. All pointers must be the same:
-  // ** either Cell * or std::unique_ptr<Cell>. NO OTHER TYPES are allowed.
+  // ** This is the draw list order. All pointers must be the same type.
   std::unique_ptr<Cell> m_nameCell;
   std::unique_ptr<Cell> m_argCell;
   // The pointers above point to inner cells and must be kept contiguous.

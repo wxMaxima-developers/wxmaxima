@@ -50,6 +50,8 @@ public:
 
   int GetInnerCellCount() const override { return 9; }
   Cell *GetInnerCell(int index) const override { return (&m_open)[index].get(); }
+  int GetDrawCellCount() const override;
+  Cell *GetDrawCell(int) const override;
 
   void Recalculate(AFontSize fontsize) override;
 
@@ -72,14 +74,13 @@ public:
   wxString ToXML() const override;
 
   bool BreakUp() override;
-  void SetNextToDraw(Cell *next) override;
 
 private:
   void MakeBreakUpCells();
+  bool HasShortDrawList() const;
 
   // The pointers below point to inner cells and must be kept contiguous.
-  // ** This is the draw list order. All pointers must be the same:
-  // ** either Cell * or std::unique_ptr<Cell>. NO OTHER TYPES are allowed.
+  // ** This is the draw list order. All pointers must be the same type.
   //! A text cell reading "integrate("
   std::unique_ptr<Cell> m_open;
   //! The part of the formula that is to be integrated.

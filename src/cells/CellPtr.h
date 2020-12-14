@@ -373,9 +373,7 @@ protected:
     // Warning: This function is CRITICAL to the performance of wxMaxima
     // as a whole!
     //
-    // The common hot path that iterates cells via the m_nextToDraw uses
-    // this function and is intimately tied to its performance. Small
-    // changes here can cause performance regressions - or small performance
+    // Small changes here can cause performance regressions - or small performance
     // improvements.
     //
     // If you change anything, do before- and after- measurements to verify
@@ -446,8 +444,7 @@ static_assert(alignof(CellPtrBase) >= 4, "CellPtrBase doesn't have minimum viabl
  * abstraction!**
  *
  * **Warning:** To maintain performance, most cells should have at most one CellPtr
- * pointing at them. Currently, this is the m_nextToDraw - it uses up our "CellPtr
- * budget". The remaining CellPtrs are in CellPointers, and there is very few cells
+ * pointing at them. Most CellPtrs are in CellPointers, and there is very few cells
  * at any given time that are pointed-to by those pointers, and thus the performance
  * impact is minimal.
  *

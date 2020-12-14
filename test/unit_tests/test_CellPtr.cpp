@@ -618,12 +618,8 @@ SCENARIO("DrawListIterator works") {
   GIVEN("A broken-up cell with two inner cells") {
     IterArrayCell<2> cell;
     cell.MockBreakUp();
-    Cell *prevCell = &cell;
-    for (auto &inner : cell.inner) {
+    for (auto &inner : cell.inner)
       inner = std::make_unique<FullTestCell>();
-      prevCell->SetNextToDraw(inner.get());
-      prevCell = inner.get();
-    }
     THEN("A range-for loop over the draw list iterates over the cell and its inner cells")
     {
       std::vector<Cell *> trace;

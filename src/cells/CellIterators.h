@@ -30,6 +30,7 @@
 #include <wx/debug.h>
 #include <memory>
 #include <type_traits>
+#include <vector>
 
 template <typename Cell> class CellListIterator final {
   static_assert(std::is_class<Cell>::value, "The type argument must be a class");
@@ -81,57 +82,81 @@ public:
   constexpr const_iterator cend() const { return {}; }
 };
 
-template <typename Cell>
+class Cell;
+
+inline int GetDrawCellCount(const Cell *cell);
+inline Cell *GetDrawCellOrNull(const Cell *cell, int index);
+
+//! Iterates over the draw list, starting with a given cell. This is a depth-first
+//! traversal.
+template <typename CellT>
 class CellDrawListIterator final {
-  static_assert(std::is_class<Cell>::value, "The type argument must be a class");
-  Cell *m_ptr = {};
+  static_assert(std::is_class<CellT>::value, "The type argument must be a class");
+  struct BreadCrumb {
+    CellT *cell = nullptr;
+    int16_t index = -1;
+    explicit BreadCrumb(CellT *cell) : cell(cell) {}
+  };
+  std::vector<BreadCrumb> m_stack;
+
+  const BreadCrumb &Top() const { return m_stack.back(); }
+  BreadCrumb &Top() { return m_stack.back(); }
+  void Push(CellT *cell) { m_stack.emplace_back(cell); }
+  void Pop() { m_stack.pop_back(); }
+  bool IsEmpty() const { return m_stack.empty(); }
 
 public:
-  constexpr CellDrawListIterator() = default;
-  constexpr explicit CellDrawListIterator(const std::unique_ptr<Cell> &p) : m_ptr(p.get()) {}
-  constexpr explicit CellDrawListIterator(Cell *p) : m_ptr(p) {}
-  constexpr CellDrawListIterator(const CellDrawListIterator &o) = default;
-  constexpr CellDrawListIterator &operator=(const CellDrawListIterator &o) = default;
-  constexpr CellDrawListIterator operator++(int) {
-    auto ret = *this;
-    return operator++(), ret;
-  }
-  // constexpr fails if wxASSERT contains assembler code, which is true on MinGW
+  CellDrawListIterator() = default;
+  explicit CellDrawListIterator(const std::unique_ptr<CellT> &p) { if (p) Push(p.get()); }
+  explicit CellDrawListIterator(CellT *p) { if (p) Push(p); }
+  CellDrawListIterator(const CellDrawListIterator &o) = default;
+  CellDrawListIterator &operator=(const CellDrawListIterator &o) = default;
+  CellDrawListIterator operator++(int) = delete; // post-increment is too expensive
   CellDrawListIterator &operator++()
   {
-    if (m_ptr)
-    {
-      auto *const prev = m_ptr;
-      m_ptr = m_ptr->GetNextToDraw();
-      wxASSERT(prev != m_ptr);
-    }
+    do {
+      auto &crumb = Top();
+      crumb.index ++;
+      // go down
+      CellT *cell = GetDrawCellOrNull(crumb.cell, crumb.index);
+      if (cell) {
+        Push(cell);
+        break;
+      }
+      // go right - to next cell in cell list
+      cell = crumb.cell->GetNext();
+      if (cell) {
+        crumb = BreadCrumb(cell);
+        break;
+      }
+      Pop(); // go up - we finished the cell list at this level
+    } while (!IsEmpty());
     return *this;
   }
-  constexpr bool operator==(const CellDrawListIterator &o) const
-  { return m_ptr == o.m_ptr; }
-  constexpr bool operator!=(const CellDrawListIterator &o) const
-  { return m_ptr != o.m_ptr; }
-  constexpr operator bool() const { return m_ptr; }
-  constexpr operator Cell*() const { return m_ptr; }
-  constexpr Cell *operator->() const { return m_ptr; }
+  bool operator==(const CellDrawListIterator &o) const
+  { return (IsEmpty() && o.IsEmpty()) || Top().cell == o.Top().cell; }
+  bool operator!=(const CellDrawListIterator &o) const
+  { return (IsEmpty() != o.IsEmpty()) || (!IsEmpty() && Top().cell != o.Top().cell); }
+  operator bool() const { return !IsEmpty(); }
+  operator CellT*() const { return !IsEmpty() ? Top().cell : nullptr; }
+  CellT *operator->() const { return Top().cell; }
+  CellT &operator*() const { return *(Top().cell); }
 };
 
-template <typename Cell> class CellDrawListAdapter final
+template <typename CellT> class CellDrawListAdapter final
 {
-  static_assert(std::is_class<Cell>::value, "The type argument must be a class");
-  Cell *m_cell = {};
-  using iterator = CellDrawListIterator<Cell>;
-  using const_iterator = CellDrawListIterator<typename std::add_const<Cell>::type>;
+  static_assert(std::is_class<CellT>::value, "The type argument must be a class");
+  CellT *m_cell = {};
+  using iterator = CellDrawListIterator<CellT>;
+  using const_iterator = CellDrawListIterator<typename std::add_const<CellT>::type>;
 
 public:
-  explicit CellDrawListAdapter(Cell *cell) : m_cell(cell) {}
+  explicit CellDrawListAdapter(CellT *cell) : m_cell(cell) {}
   constexpr iterator begin() const { return iterator(m_cell); }
   constexpr iterator end() const { return {}; }
   constexpr const_iterator cbegin() const { return const_iterator(m_cell); }
   constexpr const_iterator cend() const { return {}; }
 };
-
-class Cell;
 
 //! Iterates the inner cells of a cell
 class InnerCellIterator

@@ -157,20 +157,10 @@ bool ConjugateCell::BreakUp()
 
   MakeBreakupCells();
   Cell::BreakUpAndMark();
-  m_open->SetNextToDraw(m_innerCell);
-  m_innerCell->last()->SetNextToDraw(m_close);
-  m_close->SetNextToDraw(m_nextToDraw);
-  m_nextToDraw = m_open;
+  wxASSERT(!m_open->GetNext());
+  wxASSERT(!m_close->GetNext());
   ResetCellListSizes();
   m_height = 0;
   m_center = 0;
   return true;
-}
-
-void ConjugateCell::SetNextToDraw(Cell *next)
-{
-  if(IsBrokenIntoLines())
-    m_close->SetNextToDraw(next);
-  else
-    m_nextToDraw = next;
 }

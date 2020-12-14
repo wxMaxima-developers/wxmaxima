@@ -515,6 +515,10 @@ wxString IntCell::ToXML() const
     return wxT("<in") + flags + wxT(">") + from + to + base + var + wxT("</in>");
 }
 
+bool IntCell::HasShortDrawList() const {
+  return (m_intStyle != INT_DEF);
+}
+
 bool IntCell::BreakUp()
 {
   if (IsBrokenIntoLines())
@@ -522,34 +526,27 @@ bool IntCell::BreakUp()
 
   MakeBreakUpCells();
   Cell::BreakUpAndMark();
-  m_close->SetNextToDraw(m_nextToDraw);
-  m_nextToDraw = m_open;
-  m_open->last()->SetNextToDraw(m_base);
-  m_base->last()->SetNextToDraw(m_comma1);
-  // The first cell of m_var should normally be a "d"
-  if(m_var->GetNext() != NULL)
-    m_comma1->last()->SetNextToDraw(m_var->GetNext());
-  else
-    m_comma1->last()->SetNextToDraw(m_var);
-  if (m_intStyle != INT_DEF)
-    m_var->last()->SetNextToDraw(m_close);
-  else{
-    m_var->last()->SetNextToDraw(m_comma2);
-    m_comma2->last()->SetNextToDraw(m_under);
-    m_under->last()->SetNextToDraw(m_comma3);
-    m_comma3->last()->SetNextToDraw(m_over);
-    m_over->last()->SetNextToDraw(m_close);
-  }
+  wxASSERT(!m_close->GetNext());
   ResetCellListSizes();
   m_height = 0;
   m_center = 0;
   return true;
 }
 
-void IntCell::SetNextToDraw(Cell *next)
+int IntCell::GetDrawCellCount() const {
+  if (!IsBrokenIntoLines()) return 0;
+  if (HasShortDrawList()) return  5; // open, base, comma1, var, close
+  return 9;
+}
+
+Cell *IntCell::GetDrawCell(int index) const
 {
-  if (IsBrokenIntoLines())
-    m_close->SetNextToDraw(next);
-  else
-    m_nextToDraw = next;
+  wxASSERT(IsBrokenIntoLines());
+  if (index <= 2) return GetInnerCell(index);
+  if (index == 3) {
+    // The first cell of m_var would normally be a "d"
+    return m_var->GetNext() ? m_var->GetNext() : m_var.get();
+  }
+  if (HasShortDrawList()) return m_close.get();
+  return GetInnerCell(index);
 }

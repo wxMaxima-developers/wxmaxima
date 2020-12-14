@@ -328,7 +328,6 @@ void GroupCell::AppendInput(std::unique_ptr<Cell> &&cell)
       // m_group->ResetData. Perhaps we can decide that SetNext alone could do
       // something like that, as long as it wouldn't cause quadratic behavior.
       CellList::SetNext(m_inputLabel.get(), nullptr);
-      wxASSERT(!m_inputLabel->GetNextToDraw());
       CellList::AppendCell(m_inputLabel, std::move(cell));
     }
     else

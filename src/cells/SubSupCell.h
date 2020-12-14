@@ -37,6 +37,7 @@ public:
 
   int GetInnerCellCount() const override { return 5; }
   Cell *GetInnerCell(int index) const override { return (&m_baseCell)[index].get(); }
+  int GetDrawCellCount() const override { return 0; }
 
   void SetIndex(std::unique_ptr<Cell> &&index);
   void SetExponent(std::unique_ptr<Cell> &&expt);

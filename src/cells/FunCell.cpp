@@ -158,19 +158,8 @@ bool FunCell::BreakUp()
     return false;
 
   Cell::BreakUpAndMark();
-  m_nameCell->last()->SetNextToDraw(m_argCell);
-  m_argCell->last()->SetNextToDraw(m_nextToDraw);
-  m_nextToDraw = m_nameCell;
   ResetCellListSizes();
   m_height = 0;
   m_center = 0;
   return true;
-}
-
-void FunCell::SetNextToDraw(Cell *next)
-{
-  if(IsBrokenIntoLines())
-    m_argCell->last()->SetNextToDraw(next);
-  else
-    m_nextToDraw = next;
 }

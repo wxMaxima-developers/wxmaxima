@@ -47,9 +47,7 @@
    - The opening "abs("
    - The contents
    - The closing ")".
-   
-  If it isn't broken into multiple cells, then m_nextToDraw points to the
-  cell that follows this AbsCell.  
+
  */
 class AbsCell final : public Cell
 {
@@ -75,14 +73,11 @@ public:
   wxString ToTeX() const override;
   wxString ToXML() const override;
 
-  void SetNextToDraw(Cell *next) override;
-
 private:
   void MakeBreakupCells();
 
   // The pointers below point to inner cells and must be kept contiguous.
-  // ** This is the draw list order. All pointers must be the same:
-  // ** either Cell * or std::unique_ptr<Cell>. NO OTHER TYPES are allowed.
+  // ** This is the draw list order. All pointers must be the same type.
   //! The cell containing the eventual "abs" and the opening parenthesis
   std::unique_ptr<Cell> m_open;
   //! The contents of the abs() command

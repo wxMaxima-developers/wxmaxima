@@ -105,7 +105,7 @@ public:
    - A Cell does have a member m_previous that points to the previous item
      (or contains a NULL for the head node of the list) and a member named m_next 
      that points to the next cell (or contains a NULL if this is the end node of a list).
-   - And there is m_nextToDraw that contain fractions and similar 
+   - And there is draw list that contains fractions and similar
      items as one element if they are drawn as a single 2D object that isn't divided by
      a line break, but will contain every single element of a fraction as a separate 
      object if the fraction is broken into several lines and therefore displayed in its
@@ -135,7 +135,7 @@ public:
 
  */
 
-// 120 bytes
+// 112 bytes
 class Cell: public Observed
 {
 #if wxUSE_ACCESSIBILITY
@@ -625,25 +625,6 @@ public:
 
   //! Get the next cell in the list.
   Cell *GetNext() const { return m_next.get(); }
-  /*! Get the next cell that needs to be drawn
-
-    In case of potential 2d objects like fractions either the fraction needs to be
-    drawn as a single 2D object or the nominator, the cell containing the "/" and 
-    the denominator are pointed to by GetNextToDraw() as single separate objects.
-   */
-  Cell *GetNextToDraw() const { return m_nextToDraw; }
-
-  /*! Tells this cell which one should be the next cell to be drawn
-
-    If the cell is displayed as 2d object this sets the pointer to the next cell.
-
-    If the cell is broken into lines this sets the pointer of the last of the 
-    list of cells this cell is displayed as.
-   */
-  virtual void SetNextToDraw(Cell *next) { m_nextToDraw = next; }
-  template <typename T, typename Del,
-            typename std::enable_if<std::is_base_of<Cell, T>::value, bool>::type = true>
-  void SetNextToDraw(const std::unique_ptr<T, Del> &ptr) { SetNextToDraw(ptr.get()); }
 
   /*! Determine if this cell contains text that isn't code
 
@@ -857,9 +838,6 @@ public:
 protected:
   /*! The GroupCell this list of cells belongs to. */
   CellPtr<GroupCell> const m_group;
-  //! The next cell in the draw list. This has been factored into Cell temporarily to
-  //! reduce the change "noise" when it will be subsequently removed.
-  CellPtr<Cell> m_nextToDraw;
 
   Configuration **m_configuration;
 
@@ -941,6 +919,17 @@ protected:
   //! less than GetInnerCellCount.
   virtual Cell *GetInnerCell(int index) const;
 
+  friend inline int GetDrawCellCount(const Cell *);
+  friend inline Cell *GetDrawCellOrNull(const Cell *, int);
+  //! The number of inner cells on draw list - for use by iterators
+  virtual int GetDrawCellCount() const;
+  //! Retrieve an inner draw cell with given index, which must be less than
+  //! GetDrawCellCount.
+  virtual Cell *GetDrawCell(int index) const;
+  //! Retrieve an inner draw cell with given index, or nullptr if the index
+  //! is too large.
+  Cell *GetDrawCellOrNull(int index) const;
+
   inline Worksheet *GetWorksheet() const;
 
   //! To be called if the font has changed.
@@ -1014,5 +1003,8 @@ inline auto OnInner(C *cell) { return InnerCellAdapter(cell); }
 
 inline int InnerCellIterator::GetInnerCellCount(const Cell *cell) { return cell->GetInnerCellCount(); }
 inline Cell *InnerCellIterator::GetInnerCell(const Cell *cell, int index) { return cell->GetInnerCell(index); }
+
+inline int GetDrawCellCount(const Cell *cell) { return cell->GetDrawCellCount(); }
+inline Cell *GetDrawCellOrNull(const Cell *cell, int index) { return cell->GetDrawCellOrNull(index); }
 
 #endif // MATHCELL_H

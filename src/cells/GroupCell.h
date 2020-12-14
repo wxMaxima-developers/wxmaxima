@@ -63,7 +63,7 @@ Items where a list of groupcells can be folded include
  This GroupCell stores the currently hidden cells in the GroupCell m_hiddenTree. This tree
  has the parent m_hiddenTreeParent.
 
- 232 bytes
+ 224 bytes
  */
 class GroupCell final : public Cell
 {
@@ -90,6 +90,7 @@ public:
 
   int GetInnerCellCount() const override { return (m_groupType == GC_TYPE_PAGEBREAK) ? 0 : 2; }
   Cell *GetInnerCell(int index) const override { return (&m_inputLabel)[index].get(); }
+  int GetDrawCellCount() const override { return 0; }
 
   /*! Which GroupCell was the last maxima was working on?
 
@@ -370,7 +371,7 @@ protected:
 //**
   wxRect m_outputRect{-1, -1, 0, 0};
 
-//** 8/4 byte objects (40 bytes)
+//** 8/4 byte objects (32 bytes)
 //**
   CellPointers *const m_cellPointers = GetCellPointers();
 

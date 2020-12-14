@@ -179,23 +179,12 @@ bool DiffCell::BreakUp()
 
   MakeBreakupCells();
   Cell::BreakUpAndMark();
-  m_open->SetNextToDraw(m_baseCell);
-  m_baseCell->last()->SetNextToDraw(m_comma);
-  m_comma->SetNextToDraw(m_diffCell);
-  m_diffCell->last()->SetNextToDraw(m_close);
-  m_close->SetNextToDraw(m_nextToDraw);
-  m_nextToDraw = m_open;
+  wxASSERT(!m_open->GetNext());
+  wxASSERT(!m_comma->GetNext());
+  wxASSERT(!m_close->GetNext());
   ResetCellListSizes();
   m_height = 0;
   m_center = 0;
   m_width = 0;
   return true;
-}
-
-void DiffCell::SetNextToDraw(Cell *next)
-{
-  if (IsBrokenIntoLines())
-    m_close->SetNextToDraw(next);
-  else
-    m_nextToDraw = next;
 }

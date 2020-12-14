@@ -36,6 +36,7 @@ public:
 
   int GetInnerCellCount() const override { return 2; }
   Cell *GetInnerCell(int index) const override { return (&m_baseCell)[index].get(); }
+  int GetDrawCellCount() const override { return 0; }
 
   void Recalculate(AFontSize fontsize) override;
 
@@ -50,8 +51,7 @@ public:
 
 private:
   // The pointers below point to inner cells and must be kept contiguous.
-  // ** All pointers must be the same: either Cell * or std::unique_ptr<Cell>.
-  // ** NO OTHER TYPES are allowed.
+  // ** All pointers must be the same type.
   std::unique_ptr<Cell> m_baseCell;
   std::unique_ptr<Cell> m_indexCell;
   // The pointers above point to inner cells and must be kept contiguous.

@@ -408,33 +408,22 @@ bool SumCell::BreakUp()
   MakeBreakUpCells();
   Cell::BreakUpAndMark();
   m_displayParen = false;
-
-  m_close->SetNextToDraw(m_nextToDraw);
-  m_nextToDraw = m_open;
-  m_open->last()->SetNextToDraw(DisplayedBase());
-  DisplayedBase()->last()->SetNextToDraw(m_comma1);
-  m_comma1->last()->SetNextToDraw(m_var);
-  m_var->last()->SetNextToDraw(m_comma2);
-  m_comma2->last()->SetNextToDraw(m_start);
-  // The first cell of m_var should normally be a "d"
-  if(m_over->ToString().IsEmpty())
-    m_start->last()->SetNextToDraw(m_close);
-  else
-  {
-    m_start->last()->SetNextToDraw(m_comma3);
-    m_comma3->last()->SetNextToDraw(m_over);
-    m_over->last()->SetNextToDraw(m_close);
-  }
+  m_overInDrawList = !m_over->ToString().IsEmpty();
+  wxASSERT(!m_close->GetNext());
   ResetCellListSizes();
   m_height = 0;
   m_center = 0;
   return true;
 }
 
-void SumCell::SetNextToDraw(Cell *next)
+int SumCell::GetDrawCellCount() const
 {
-  if (IsBrokenIntoLines())
-    m_close->SetNextToDraw(next);
-  else
-    m_nextToDraw = next;
+  return m_overInDrawList ? 9 : 7;
+}
+
+Cell *SumCell::GetDrawCell(int index) const
+{
+  if (index == 1) return DisplayedBase();
+  if (index == 6 && !m_overInDrawList) return m_close.get();
+  return GetInnerCell(index);
 }

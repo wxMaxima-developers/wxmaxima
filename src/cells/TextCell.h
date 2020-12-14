@@ -32,7 +32,7 @@
   Everything on the worksheet that is composed of characters with the eception
   of input cells: Input cells are handled by EditorCell instead.
  */
-// 304 bytes <- 744 bytes
+// 288 bytes <- 744 bytes
 class TextCell : public Cell
 {
 public:

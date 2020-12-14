@@ -63,14 +63,11 @@ public:
 
   bool BreakUp() override;
 
-  void SetNextToDraw(Cell *next) override;
-
 private:
   void MakeBreakUpCells();
 
   // The pointers below point to inner cells and must be kept contiguous.
-  // ** This is the draw list order. All pointers must be the same:
-  // ** either Cell * or std::unique_ptr<Cell>. NO OTHER TYPES are allowed.
+  // ** This is the draw list order. All pointers must be the same type.
   std::unique_ptr<Cell> m_name;
   std::unique_ptr<Cell> m_open;
   std::unique_ptr<Cell> m_base;

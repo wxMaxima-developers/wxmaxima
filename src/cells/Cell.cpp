@@ -1088,7 +1088,6 @@ void Cell::Unbreak()
     ResetData();
 
   m_isBrokenIntoLines = false;
-  SetNextToDraw(m_next);
 
   // Unbreak the inner cells, too
   for (Cell &cell : OnInner(this))
@@ -1443,4 +1442,23 @@ Cell *Cell::GetInnerCell(int) const
   // in this class.
   wxASSERT_MSG(false, "Invalid use of GetInnerCell with no inner cells");
   return nullptr;
+}
+
+// By default, the draw list is same as inner cell list, gated by the cell being broken
+// into lines. Cells with other requirements will override this behavior.
+
+int Cell::GetDrawCellCount() const
+{
+  return IsBrokenIntoLines() ? GetInnerCellCount() : 0;
+}
+
+Cell *Cell::GetDrawCell(int index) const
+{
+  wxASSERT(IsBrokenIntoLines());
+  return GetInnerCell(index);
+}
+
+Cell *Cell::GetDrawCellOrNull(int index) const
+{
+  return (index < GetDrawCellCount()) ? GetDrawCell(index) : nullptr;
 }

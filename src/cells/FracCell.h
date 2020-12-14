@@ -83,8 +83,6 @@ public:
 
   void SetupBreakUps();
 
-  void SetNextToDraw(Cell *next) override;
-
 private:
   //! Makes the division sign cell, used in linear form - whether when broken
   //! into lines, or when the exponent flag is set.
@@ -103,8 +101,7 @@ private:
   std::unique_ptr<TextCell> m_divideOwner;
 
   // The pointers below point to inner cells and must be kept contiguous.
-  // ** This is the draw list order. All pointers must be the same:
-  // ** either Cell * or std::unique_ptr<Cell>. NO OTHER TYPES are allowed.
+  // ** This is the draw list order. All pointers must be the same type.
   //! The displayed version of the numerator, if needed with parenthesis
   Cell* m_displayedNum = {};
   //! The "/" sign

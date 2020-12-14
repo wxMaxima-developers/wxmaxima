@@ -209,12 +209,9 @@ bool ExptCell::BreakUp()
 
   MakeBreakupCells();
   Cell::BreakUpAndMark();
-  m_baseCell->last()->SetNextToDraw(m_exp);
-  m_exp->SetNextToDraw(m_open);
-  m_open->SetNextToDraw(m_exptCell);
-  m_exptCell->last()->SetNextToDraw(m_close);
-  m_close->SetNextToDraw(m_nextToDraw);
-  m_nextToDraw = m_baseCell;
+  wxASSERT(!m_exp->GetNext());
+  wxASSERT(!m_open->GetNext());
+  wxASSERT(!m_close->GetNext());
   ResetCellListSizes();
   m_height = 0;
   m_center = 0;

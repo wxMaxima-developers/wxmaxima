@@ -34,17 +34,14 @@
 
 /*! The class that represents parenthesis that are wrapped around text
 
-  In the case that this cell is broken into two lines in the order of
-  m_nextToDraw this cell is represented by the following individual 
-  cells:
-  
+  In the case that this cell is broken into two lines, the following cells are on
+  the draw list:
+
    - The ListCell itself
    - The opening "["
    - The contents
    - The closing "]".
-   
-  If it isn't broken into multiple cells m_nextToDraw points to the 
-  cell that follows this Cell.
+
  */
 class ListCell final : public Cell
 {
@@ -70,12 +67,9 @@ public:
   wxString ToTeX() const override;
   wxString ToXML() const override;
 
-  void SetNextToDraw(Cell *next) override;
-
 private:
   // The pointers below point to inner cells and must be kept contiguous.
-  // ** This is the draw list order. All pointers must be the same:
-  // ** either Cell * or std::unique_ptr<Cell>. NO OTHER TYPES are allowed.
+  // ** This is the draw list order. All pointers must be the same type.
   std::unique_ptr<Cell> m_open;
   std::unique_ptr<Cell> m_innerCell;
   std::unique_ptr<Cell> m_close;

@@ -36,6 +36,7 @@ public:
 
   int GetInnerCellCount() const override { return 2; }
   Cell *GetInnerCell(int index) const override { return (&m_baseCell)[index].get(); }
+  int GetDrawCellCount() const override { return 0; }
 
   void Recalculate(AFontSize fontsize) override;
 
