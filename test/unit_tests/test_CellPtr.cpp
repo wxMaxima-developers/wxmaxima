@@ -21,6 +21,7 @@
 
 #define CATCH_CONFIG_RUNNER
 #define CELLPTR_COUNT_INSTANCES 1
+#define CELL_TEST 1
 #include "Cell.cpp"
 #include "CellImpl.h"
 #include "CellIterators.h"
@@ -497,8 +498,6 @@ public:
   FullTestCell(const FullTestCell &) : Cell({}, &config) {}
   std::unique_ptr<Cell> Copy() const override;
   const CellTypeInfo &GetInfo() override;
-  Cell *GetNextToDraw() const override { return {}; }
-  void SetNextToDraw(Cell *) override {}
 };
 DEFINE_CELL(FullTestCell)
 
@@ -608,6 +607,38 @@ SCENARIO("An InnerCellIterator skips null cells")
         REQUIRE(trace.size() == 1);
         REQUIRE(trace.front() == cell.inner[1].get());
       }
+    }
+  }
+}
+
+SCENARIO("DrawListIterator works") {
+  GIVEN("A draw list range on a null cell") {
+    auto range = OnDrawList(static_cast<Cell*>(nullptr));
+    THEN("The range is empty")
+      REQUIRE_COMM_OP_EQ(range.begin(), range.end());
+    AND_THEN("The range endpoints compare equal to a default-constructed iterator") {
+      CellDrawListIterator<Cell> it;
+      REQUIRE_COMM_OP_EQ(range.begin(), it);
+      REQUIRE_COMM_OP_EQ(range.end(), it);
+    }
+  }
+  GIVEN("A broken-up cell with two inner cells") {
+    IterArrayCell<2> cell;
+    cell.MockBreakUp();
+    Cell *prevCell = &cell;
+    for (auto &inner : cell.inner) {
+      inner = std::make_unique<FullTestCell>();
+      prevCell->SetNextToDraw(inner.get());
+      prevCell = inner.get();
+    }
+    THEN("A range-for loop over the draw list iterates over the cell and its inner cells")
+    {
+      std::vector<Cell *> trace;
+      for (auto &tmp : OnDrawList(static_cast<Cell*>(&cell))) trace.push_back(&tmp);
+      REQUIRE(trace.size() == 3);
+      REQUIRE(trace[0] == &cell);
+      REQUIRE(trace[1] == cell.inner[0].get());
+      REQUIRE(trace[2] == cell.inner[1].get());
     }
   }
 }

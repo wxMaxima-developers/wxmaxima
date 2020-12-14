@@ -349,10 +349,6 @@ public:
   //! A list of answers provided by the user
   StringHash m_knownAnswers;
 
-  void SetNextToDraw(Cell *next) override;
-
-  Cell *GetNextToDraw() const override { return m_nextToDraw; }
-
 #if wxUSE_ACCESSIBILITY
   wxAccStatus GetDescription(int childId, wxString *description) const override;
   wxAccStatus GetLocation (wxRect &rect, int elementId) override;
@@ -378,7 +374,6 @@ protected:
 
 //** 8/4 byte objects (40 bytes)
 //**
-  CellPtr<Cell> m_nextToDraw;
   CellPointers *const m_cellPointers = GetCellPointers();
 
   std::unique_ptr<GroupCell> m_hiddenTree; //!< here hidden (folded) tree of GCs is stored

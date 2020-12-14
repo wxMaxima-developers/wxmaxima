@@ -69,9 +69,6 @@ public:
   void StraightParens() { m_parenType = paren_straight;}
   void AngledParens()   { m_parenType = paren_angled;}
 
-  void SetNextToDraw(Cell *next) override { m_nextToDraw = next; }
-  Cell *GetNextToDraw() const override { return m_nextToDraw; }
-
 private:
   struct DropCenter
   {
@@ -86,7 +83,6 @@ private:
 
   std::vector<int> m_widths;
   std::vector<DropCenter> m_dropCenters;
-  CellPtr<Cell> m_nextToDraw;
 
   unsigned int m_matWidth = 0;
   unsigned int m_matHeight = 0;

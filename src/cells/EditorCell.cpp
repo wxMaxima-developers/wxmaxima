@@ -4262,8 +4262,3 @@ wxAccStatus EditorCell::GetRole (int childId, wxAccRole *role) const
 }
 
 #endif
-
-void EditorCell::SetNextToDraw(Cell *next)
-{
-  m_nextToDraw = next;
-}

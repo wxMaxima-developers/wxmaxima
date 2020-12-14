@@ -84,7 +84,6 @@ public:
   void SetupBreakUps();
 
   void SetNextToDraw(Cell *next) override;
-  Cell *GetNextToDraw() const override { return m_nextToDraw; }
 
 private:
   //! Makes the division sign cell, used in linear form - whether when broken
@@ -95,8 +94,6 @@ private:
   Cell *Num() const { return m_numParenthesis->GetInner(); }
   //! The denominator
   Cell *Denom() const { return m_denomParenthesis->GetInner(); }
-
-  CellPtr<Cell> m_nextToDraw;
 
   //! A parenthesis around the numerator, owns the numerator
   std::unique_ptr<ParenCell> const m_numParenthesis;
