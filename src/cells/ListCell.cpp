@@ -31,8 +31,8 @@
 
 ListCell::ListCell(GroupCell *parent, Configuration **config, std::unique_ptr<Cell> &&inner) :
     Cell(parent, config),
-    m_innerCell(std::move(inner)),
     m_open(std::make_unique<TextCell>(parent, config, wxT("["))),
+    m_innerCell(std::move(inner)),
     m_close(std::make_unique<TextCell>(parent, config, wxT("]")))
 {
   InitBitFields();

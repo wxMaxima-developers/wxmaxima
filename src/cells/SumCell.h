@@ -54,7 +54,7 @@ public:
   const CellTypeInfo &GetInfo() override;
 
   int GetInnerCellCount() const override { return 10; }
-  Cell *GetInnerCell(int index) const override { return (&m_under)[index].get(); }
+  Cell *GetInnerCell(int index) const override { return (&m_open)[index].get(); }
   
   void Recalculate(AFontSize fontsize) override;
 
@@ -88,18 +88,18 @@ private:
   wxString m_altCopyText;
 
   // The pointers below point to inner cells and must be kept contiguous.
-  // ** All pointers must be the same: either Cell * or std::unique_ptr<Cell>.
-  // ** NO OTHER TYPES are allowed.
-  std::unique_ptr<Cell> m_under;
-  std::unique_ptr<Cell> m_start;
-  std::unique_ptr<Cell> m_var;
-  std::unique_ptr<Cell> m_over;
-  std::unique_ptr<Cell> m_comma1;
-  std::unique_ptr<Cell> m_comma2;
-  std::unique_ptr<Cell> m_comma3;
+  // ** This is the partial draw list order. All pointers must be the same:
+  // ** either Cell * or std::unique_ptr<Cell>. NO OTHER TYPES are allowed.
   std::unique_ptr<Cell> m_open;
-  std::unique_ptr<Cell> m_close;
   std::unique_ptr<Cell> m_paren;
+  std::unique_ptr<Cell> m_comma1;
+  std::unique_ptr<Cell> m_var;
+  std::unique_ptr<Cell> m_comma2;
+  std::unique_ptr<Cell> m_start;
+  std::unique_ptr<Cell> m_comma3;
+  std::unique_ptr<Cell> m_over;
+  std::unique_ptr<Cell> m_close;
+  std::unique_ptr<Cell> m_under;
   // The pointers above point to inner cells and must be kept contiguous.
 
   float m_signWidth = 30.0f;

@@ -35,7 +35,7 @@ public:
   const CellTypeInfo &GetInfo() override;
 
   int GetInnerCellCount() const override { return 5; }
-  Cell *GetInnerCell(int index) const override { return (&m_baseCell)[index].get(); }
+  Cell *GetInnerCell(int index) const override { return (&m_open)[index].get(); }
 
   void Recalculate(AFontSize fontsize) override;
 
@@ -56,13 +56,13 @@ private:
   void MakeBreakupCells();
 
   // The pointers below point to inner cells and must be kept contiguous.
-  // ** All pointers must be the same: either Cell * or std::unique_ptr<Cell>.
-  // ** NO OTHER TYPES are allowed.
-  std::unique_ptr<Cell> m_baseCell;
+  // ** This is the draw list order. All pointers must be the same:
+  // ** either Cell * or std::unique_ptr<Cell>. NO OTHER TYPES are allowed.
   std::unique_ptr<Cell> m_open;
+  std::unique_ptr<Cell> m_baseCell;
   std::unique_ptr<Cell> m_comma;
-  std::unique_ptr<Cell> m_close;
   std::unique_ptr<Cell> m_diffCell;
+  std::unique_ptr<Cell> m_close;
   // The pointers above point to inner cells and must be kept contiguous.
 
 //** Bitfield objects (0 bytes)
