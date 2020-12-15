@@ -585,6 +585,7 @@ private:
   std::unique_ptr<GroupCell> m_tree;
   GroupCell *m_last;
   int m_clickType;
+  int m_clickType_selectionStart;
   GroupCell *m_clickInGC;
   //! true = blink the cursor
   bool m_blinkDisplayCaret;

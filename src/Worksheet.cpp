@@ -2083,7 +2083,7 @@ void Worksheet::OnMouseLeftDown(wxMouseEvent &event)
     m_clickType = CLICK_TYPE_GROUP_SELECTION;
     ScrolledAwayFromEvaluation(true);
   }
-
+  m_clickType_selectionStart = m_clickType;
   RequestRedraw();
   // Re-calculate the table of contents
   UpdateTableOfContents();
@@ -2274,8 +2274,21 @@ void Worksheet::ClickNDrag(wxPoint down, wxPoint up)
   int ytop = wxMin(down.y, up.y);
   int ybottom = wxMax(down.y, up.y);
 
-  switch (m_clickType)
+  if((m_cellPointers.m_cellMouseSelectionStartedIn)
+     && (!m_cellPointers.m_cellMouseSelectionStartedIn->GetRect().Inflate(
+           m_configuration->GetGroupSkip(),
+           m_configuration->GetGroupSkip()).Contains(up)))
   {
+    SelectGroupCells(up,down);
+    if (GetActiveCell())
+    {
+      GetActiveCell()->SelectNone();
+      SetActiveCell(NULL);
+    }
+  }
+  else
+    switch (m_clickType)
+    {
     case CLICK_TYPE_NONE:
       return;
 
@@ -2343,7 +2356,7 @@ void Worksheet::ClickNDrag(wxPoint down, wxPoint up)
 
     default:
       break;
-  } // end switch
+    } // end switch
 
   // Refresh only if the selection has changed
   if ((selectionStartOld != m_cellPointers.m_selectionStart)
