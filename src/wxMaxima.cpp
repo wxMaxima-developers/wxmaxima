@@ -5489,7 +5489,7 @@ long long wxMaxima::GetMaximaCpuTime()
     {
       long long retval =
         (long long)kernelTime.dwLowDateTime + userTime.dwLowDateTime +
-        (2^32)*((long long)kernelTime.dwHighDateTime + userTime.dwHighDateTime);
+        (1LL << 32)*((long long)kernelTime.dwHighDateTime + userTime.dwHighDateTime);
       CloseHandle(maximaHandle);
 
       return retval;
