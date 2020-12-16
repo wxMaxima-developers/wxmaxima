@@ -844,8 +844,6 @@ void Worksheet::InsertLine(std::unique_ptr<Cell> &&newCell, bool forceNewLine)
     return;
 
   newCell->ForceBreakLine(forceNewLine);
-  newCell->SetGroupList(tmp);
-  
   tmp->AppendOutput(std::move(newCell));
   
   UpdateConfigurationClientSize();

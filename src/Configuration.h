@@ -728,7 +728,7 @@ public:
   wxString LispType() const {return m_lispType;}
   
   //! Which way do we want to draw parenthesis?
-  void SetGrouphesisDrawMode(drawMode mode){m_parenthesisDrawMode = mode;}
+  void SetParenthesisDrawMode(drawMode mode) { m_parenthesisDrawMode = mode; }
   
   void TocShowsSectionNumbers(bool showSectionNumbers) { m_TOCshowsSectionNumbers = showSectionNumbers; }
 
