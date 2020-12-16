@@ -479,12 +479,16 @@ SCENARIO("A CellPtr drops the reference to Observed's control block as soon as i
   }
 }
 
-class FullTestCell : public Cell {
+struct WithGroup {
   Configuration configuration;
   Configuration *config = &configuration;
+  GroupCell group{&config, GC_TYPE_IMAGE};
+};
+
+class FullTestCell : WithGroup, public Cell {
 public:
-  FullTestCell() : Cell({}, &config) {}
-  FullTestCell(const FullTestCell &) : Cell({}, &config) {}
+  FullTestCell() : Cell(&group, &config) {}
+  FullTestCell(const FullTestCell &) : Cell(&group, &config) {}
   std::unique_ptr<Cell> Copy() const override;
   const CellTypeInfo &GetInfo() override;
 };

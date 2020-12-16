@@ -196,9 +196,6 @@ GroupCell::GroupCell(Configuration **config, GroupType groupType, const wxString
       ic = std::make_unique<SlideShow>(this, m_configuration, initString, false);
     AppendOutput(std::move(ic));
   }
-
-  // The GroupCell this cell belongs to is this GroupCell.
-  SetGroup(this);
 }
 
 GroupCell::GroupCell(const GroupCell &cell):
@@ -219,20 +216,6 @@ std::unique_ptr<GroupCell> GroupCell::CopyList() const
 {
   auto copy = Cell::CopyList();
   return stx::static_unique_ptr_cast<GroupCell>(std::move(copy));
-}
-
-/*! Set the parent of this group cell
-
-*/
-void GroupCell::SetGroup(GroupCell *parent)
-{  
-  //m_group = parent;
-  if (m_inputLabel != NULL)
-    m_inputLabel->SetGroupList(parent);
-
-  Cell *tmp = m_output.get();
-  if(m_output != NULL)
-    tmp->SetGroupList(parent);
 }
 
 bool GroupCell::Empty() const
@@ -325,7 +308,6 @@ void GroupCell::SetInput(std::unique_ptr<Cell> &&input)
   if (!input)
     return;
   m_inputLabel = std::move(input);
-  m_inputLabel->SetGroup(this);
   m_updateConfusableCharWarnings = true;
   InputHeightChanged();
 }
@@ -405,7 +387,6 @@ void GroupCell::AppendOutput(std::unique_ptr<Cell> &&cell)
 {
   wxASSERT_MSG(cell, _("Bug: Trying to append NULL to a group cell."));
   if (!cell) return;
-  cell->SetGroupList(this);
   if (!m_output)
   {
     m_output = std::move(cell);

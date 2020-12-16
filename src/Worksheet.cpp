@@ -829,17 +829,22 @@ GroupCell *Worksheet::GetWorkingGroup(bool resortToLast) const
   return tmp;
 }
 
-void Worksheet::InsertLine(std::unique_ptr<Cell> &&newCell, bool forceNewLine)
+GroupCell *Worksheet::GetInsertGroup() const
 {
-  if (!newCell)
-    return;
-
   GroupCell *tmp = GetWorkingGroup(true);
 
   if (!tmp && GetActiveCell())
     tmp = GetActiveCell()->GetGroup();
 
-  // If we still don't have a place to put the line we give up.
+  return tmp;
+}
+
+void Worksheet::InsertLine(std::unique_ptr<Cell> &&newCell, bool forceNewLine)
+{
+  if (!newCell)
+    return;
+
+  GroupCell *tmp = GetInsertGroup();
   if (!tmp)
     return;
 

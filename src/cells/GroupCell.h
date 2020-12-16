@@ -116,8 +116,6 @@ public:
 
   void SetGroupType(GroupType type) { m_groupType = type; }
 
-  void SetGroup(GroupCell *parent) override; // setting parent for all mathcells in GC
-
   // selection methods
   Range GetInnerCellsInRect(const wxRect &rect) const override;
 

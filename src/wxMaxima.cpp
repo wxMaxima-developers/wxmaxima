@@ -1380,7 +1380,9 @@ void wxMaxima::DoConsoleAppend(wxString s, CellType type, AppendOpt opts, const 
   s.Replace(wxT("\n"), wxT(" "), true);
 
   m_parser.SetUserLabel(userLabel);
+  m_parser.SetGroup(m_worksheet->GetInsertGroup());
   std::unique_ptr<Cell> cell(m_parser.ParseLine(s, type));
+  m_parser.SetGroup(nullptr);
 
   wxASSERT_MSG(cell, _("There was an error in generated XML!\n\n"
                        "Please report this as a bug."));
