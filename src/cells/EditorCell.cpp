@@ -3957,25 +3957,33 @@ bool EditorCell::FindNext(wxString str, bool down, bool ignoreCase)
     text.MakeLower();
   }
 
-  if (m_selectionStart >= 0)
+  // If this cell is already active we might already be at a suitable
+  // start position for the search or within a search.
+  if(IsActive())
   {
-    if (down)
-      start = m_selectionStart + 1;
+    // If the last search already has marked the current
+    if ((m_selectionStart >= 0) &&
+        (str == text.SubString(
+          wxMin(m_selectionStart, m_selectionEnd),
+          wxMax(m_selectionStart, m_selectionEnd))))
+    {
+      if (down)
+        start = wxMin(m_selectionStart, m_selectionEnd) + 1;
+      else
+        start = wxMax(m_selectionStart, m_selectionEnd);
+    }
     else
-      start = m_selectionStart ;
+      start = m_positionOfCaret;
+    
+    if (!down && m_selectionStart == 0)
+      return false;
   }
-  else if (IsActive())
-    start = m_positionOfCaret;
-
-  if (!down && m_selectionStart == 0)
-    return false;
-
   int strStart = wxNOT_FOUND;
   if (down)
     strStart = text.find(str, start);
   else
     strStart = text.rfind(str, start);
-
+  
   if (strStart != wxNOT_FOUND)
   {
     SetSelection(strStart, strStart + str.Length());
