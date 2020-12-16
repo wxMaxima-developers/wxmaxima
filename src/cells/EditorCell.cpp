@@ -3944,13 +3944,15 @@ int EditorCell::ReplaceAll(wxString oldString, const wxString &newString, bool i
   return count;
 }
 
-bool EditorCell::FindNext(wxString str, bool down, bool ignoreCase)
+bool EditorCell::FindNext(wxString str, const bool &down, const bool &ignoreCase)
 {
-  int start = down ? 0 : m_text.Length();
+  // Default to start the search at the right end of the cell
+  int start = 0;
+  if(!down) start = m_text.Length();
+
+  // Handle soft line breaks and the ignore-case case
   wxString text(m_text);
-
   text.Replace(wxT('\r'), wxT(' '));
-
   if (ignoreCase)
   {
     str.MakeLower();
@@ -3961,22 +3963,33 @@ bool EditorCell::FindNext(wxString str, bool down, bool ignoreCase)
   // start position for the search or within a search.
   if(IsActive())
   {
-    // If the last search already has marked the current
-    if ((m_selectionStart >= 0) &&
-        (str == text.SubString(
-          wxMin(m_selectionStart, m_selectionEnd),
-          wxMax(m_selectionStart, m_selectionEnd))))
+    if(str.IsEmpty())
     {
-      if (down)
-        start = wxMin(m_selectionStart, m_selectionEnd) + 1;
-      else
-        start = wxMax(m_selectionStart, m_selectionEnd);
+      m_selectionStart = m_selectionEnd = -1;
+      if(m_positionOfCaret > 0)
+        start = m_positionOfCaret;
+
     }
     else
-      start = m_positionOfCaret;
-    
-    if (!down && m_selectionStart == 0)
-      return false;
+    {
+      // If the last search already has marked a match for our word we want
+      // to search for the next match.
+      if ((m_selectionStart >= 0) &&
+          (str == text.SubString(
+            wxMin(m_selectionStart, m_selectionEnd),
+            wxMax(m_selectionStart, m_selectionEnd))))
+      {
+        if (down)
+          start = wxMin(m_selectionStart, m_selectionEnd) + 1;
+        else
+          start = wxMax(m_selectionStart, m_selectionEnd);
+      }
+      else
+      {
+        if(m_positionOfCaret > 0)
+          start = m_positionOfCaret;
+      }
+    }
   }
   int strStart = wxNOT_FOUND;
   if (down)
