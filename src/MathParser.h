@@ -182,7 +182,7 @@ private:
   //! Parse a function name tag to a Cell. 
   std::unique_ptr<Cell> ParseFunctionNameTag(wxXmlNode *node){return ParseText(node->GetChildren(), TS_FUNCTION);}
   //! Parse a space tag to a Cell.
-  std::unique_ptr<Cell> ParseSpaceTag(wxXmlNode *WXUNUSED(node)){return std::make_unique<TextCell>(nullptr, m_configuration, wxT(" "));}
+  std::unique_ptr<Cell> ParseSpaceTag(wxXmlNode *WXUNUSED(node)){return std::make_unique<TextCell>(m_group, m_configuration, wxT(" "));}
   /*! Parse a math-in-maths tag to a Cell. 
 
     \todo Does such a thing actually exist?
@@ -246,6 +246,7 @@ private:
 
   CellType m_ParserStyle;
   FracCell::FracType m_FracStyle;
+  CellPtr<GroupCell> m_group;
   Configuration **m_configuration;
   bool m_highlight;
   std::shared_ptr<wxFileSystem> m_fileSystem; // used for loading pictures in <img> and <slide>

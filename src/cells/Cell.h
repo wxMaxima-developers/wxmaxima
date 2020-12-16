@@ -822,7 +822,7 @@ public:
 protected:
   std::unique_ptr<Cell> MakeVisiblyInvalidCell() const;
 public:
-  static std::unique_ptr<Cell> MakeVisiblyInvalidCell(Configuration **config);
+  static std::unique_ptr<Cell> MakeVisiblyInvalidCell(GroupCell *group, Configuration **config);
 
 protected:
 //** Bases and internal members (16 bytes)
