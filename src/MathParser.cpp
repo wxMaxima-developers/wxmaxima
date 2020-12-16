@@ -371,11 +371,9 @@ std::unique_ptr<Cell> MathParser::ParseOutputLabelTag(wxXmlNode *node)
   }
   if((tmp == NULL) || (dynamic_cast<LabelCell *>(tmp.get()) == NULL))
     tmp.reset(new LabelCell(m_group, m_configuration, wxEmptyString));
-  if(tmp != NULL)
-  {
-    dynamic_cast<LabelCell *>(tmp.get())->SetUserDefinedLabel(user_lbl);
-    tmp->ForceBreakLine(true);
-  }
+
+  dynamic_cast<LabelCell *>(tmp.get())->SetUserDefinedLabel(user_lbl);
+  tmp->ForceBreakLine(true);
   return tmp;
 }
 
