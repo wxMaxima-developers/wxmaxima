@@ -84,7 +84,7 @@ public:
     } else
       m_head.reset();
 
-    wxASSERT(!m_head && !m_tail && !m_lastAppended);
+    wxASSERT(!m_head && !m_tail && !m_lastAppended); //-V614
     return ptr;
   }
 

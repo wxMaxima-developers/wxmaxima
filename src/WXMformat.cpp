@@ -39,7 +39,7 @@ namespace Format
 
 const wxString WXMFirstLine = wxT("/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/");
 
-struct WXMHeader
+struct WXMHeader //-V730
 {
   WXMHeaderId id;
   wxString start = {};

@@ -235,7 +235,7 @@ public:
   //! Sets font-face and size only properties based on another style (not attributes like bold, etc.)
   did_change SetFontFaceAndSizeFrom(const Style&);
 
-  constexpr static bool IsFractionalFontSizeSupported() { return wxCHECK_VERSION(3,1,2); }
+  constexpr static bool IsFractionalFontSizeSupported() { return wxCHECK_VERSION(3,1,2); } //-V686 //-V501
   static AFontSize GetFontSize(const wxFont &);
   static void SetFontSize(wxFont &, AFontSize fontSize);
 
