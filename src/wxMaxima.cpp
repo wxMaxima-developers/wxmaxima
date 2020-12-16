@@ -10280,11 +10280,13 @@ void wxMaxima::ShowPane(wxCommandEvent &event)
   if (id == menu_pane_hideall)
     wxMaximaFrame::ShowPane(static_cast<Event>(id), true);
   else
+  {
     wxMaximaFrame::ShowPane(static_cast<Event>(id),
                             !IsPaneDisplayed(static_cast<Event>(id)));
-
-  if((id == menu_pane_structure) && (IsPaneDisplayed(static_cast<Event>(id))))
-    m_worksheet->UpdateTableOfContents();
+    
+    if((id == menu_pane_structure) && (IsPaneDisplayed(static_cast<Event>(id))))
+      m_worksheet->UpdateTableOfContents();
+  }
 }
 
 void wxMaxima::OnChar(wxKeyEvent &event)

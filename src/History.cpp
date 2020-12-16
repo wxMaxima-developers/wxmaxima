@@ -51,16 +51,13 @@ History::History(wxWindow *parent, int id) : wxPanel(parent, id)
   m_history = new wxListBox(this, history_ctrl_id, wxDefaultPosition, wxDefaultSize, 0, NULL,
                             wxLB_EXTENDED | wxLB_HSCROLL | wxLB_NEEDED_SB);
   m_regex = new RegexCtrl(this, wxID_ANY);
-  wxFlexGridSizer *box = new wxFlexGridSizer(1);
-  box->AddGrowableCol(0);
-  box->AddGrowableRow(0);
+  wxBoxSizer *box = new wxBoxSizer(wxVERTICAL);
 
-  box->Add(m_history, wxSizerFlags().Expand());
+  box->Add(m_history, wxSizerFlags(1).Expand());
   box->Add(m_regex, wxSizerFlags().Expand());
 
   SetSizer(box);
-  box->Fit(this);
-  box->SetSizeHints(this);
+  FitInside();
   Connect(wxEVT_RIGHT_DOWN, wxMouseEventHandler(History::OnMouseRightDown), NULL, this);
   m_history->Connect(wxEVT_RIGHT_DOWN, wxMouseEventHandler(History::OnMouseRightDown), NULL, this);
   Connect(wxEVT_MENU,

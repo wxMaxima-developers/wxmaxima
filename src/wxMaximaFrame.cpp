@@ -85,7 +85,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
     
   // We need to create one pane which doesn't do a lot before the log pane
   // Otherwise the log pane will be displayed in a very strange way
-  // The gistorx pane was chosen randomly
+  // The history pane was chosen randomly
   m_history = new History(this, -1);
 
   // Redirect all debug messages to a dockable panel and output some info
@@ -1646,6 +1646,21 @@ void wxMaximaFrame::ShowPane(Event id, bool show)
 {
   switch (id)
   {
+    case menu_pane_hideall:
+      m_manager.GetPane(wxT("math")).Show(false);
+      m_manager.GetPane(wxT("history")).Show(false);
+      m_manager.GetPane(wxT("structure")).Show(false);
+      m_manager.GetPane(wxT("XmlInspector")).Show(false);
+      m_manager.GetPane(wxT("format")).Show(false);
+      m_manager.GetPane(wxT("greek")).Show(false);
+      m_manager.GetPane(wxT("unicode")).Show(false);
+      m_manager.GetPane(wxT("log")).Show(false);
+      m_manager.GetPane(wxT("variables")).Show(false);
+      m_manager.GetPane(wxT("draw")).Show(false);
+      m_manager.GetPane(wxT("symbols")).Show(false);
+      m_manager.GetPane(wxT("stats")).Show(false);
+      ShowToolBar(false);
+      break;
     case menu_pane_math:
       m_manager.GetPane(wxT("math")).Show(show);
       break;
@@ -1659,8 +1674,8 @@ void wxMaximaFrame::ShowPane(Event id, bool show)
     case menu_pane_xmlInspector:
       m_manager.GetPane(wxT("XmlInspector")).Show(show);
       break;
-    case menu_pane_stats:
-      m_manager.GetPane(wxT("stats")).Show(show);
+    case menu_pane_format:
+      m_manager.GetPane(wxT("format")).Show(show);
       break;
     case menu_pane_greek:
       m_manager.GetPane(wxT("greek")).Show(show);
@@ -1674,29 +1689,14 @@ void wxMaximaFrame::ShowPane(Event id, bool show)
     case menu_pane_variables:
       m_manager.GetPane(wxT("variables")).Show(show);
       break;
-    case menu_pane_symbols:
-      m_manager.GetPane(wxT("symbols")).Show(show);
-      break;
-    case menu_pane_format:
-      m_manager.GetPane(wxT("format")).Show(show);
-      break;
     case menu_pane_draw:
       m_manager.GetPane(wxT("draw")).Show(show);
       break;
-    case menu_pane_hideall:
-      m_manager.GetPane(wxT("math")).Show(false);
-      m_manager.GetPane(wxT("history")).Show(false);
-      m_manager.GetPane(wxT("structure")).Show(false);
-      m_manager.GetPane(wxT("XmlInspector")).Show(false);
-      m_manager.GetPane(wxT("stats")).Show(false);
-      m_manager.GetPane(wxT("greek")).Show(false);
-      m_manager.GetPane(wxT("log")).Show(false);
-      m_manager.GetPane(wxT("unicode")).Show(false);
-      m_manager.GetPane(wxT("variables")).Show(false);
-      m_manager.GetPane(wxT("symbols")).Show(false);
-      m_manager.GetPane(wxT("format")).Show(false);
-      m_manager.GetPane(wxT("draw")).Show(false);
-      ShowToolBar(false);
+    case menu_pane_symbols:
+      m_manager.GetPane(wxT("symbols")).Show(show);
+      break;
+    case menu_pane_stats:
+      m_manager.GetPane(wxT("stats")).Show(show);
       break;
     default:
       wxASSERT(false);
