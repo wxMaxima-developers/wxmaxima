@@ -3977,7 +3977,7 @@ bool EditorCell::FindNext(wxString str, const bool &down, const bool &ignoreCase
       if ((m_selectionStart >= 0) &&
           (str == text.SubString(
             wxMin(m_selectionStart, m_selectionEnd),
-            wxMax(m_selectionStart, m_selectionEnd))))
+            wxMax(m_selectionStart, m_selectionEnd)-1)))
       {
         if (down)
           start = wxMin(m_selectionStart, m_selectionEnd) + 1;
@@ -3986,8 +3986,19 @@ bool EditorCell::FindNext(wxString str, const bool &down, const bool &ignoreCase
       }
       else
       {
-        if(m_positionOfCaret > 0)
-          start = m_positionOfCaret;
+        if(m_selectionStart>0)
+        {
+          if (down)
+            start = wxMin(m_selectionStart, m_selectionEnd);
+          else
+            start = wxMax(m_selectionStart, m_selectionEnd) - 1;
+          
+        }
+        else
+        {
+          if(m_positionOfCaret > 0)
+            start = m_positionOfCaret;
+        }
       }
     }
   }
