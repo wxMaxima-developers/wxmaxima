@@ -3981,16 +3981,18 @@ bool EditorCell::FindNext(wxString str, const bool &down, const bool &ignoreCase
     // If the last search already has marked a match for our word we want
     // to search for the next match.
     if ((m_selectionStart >= 0) &&
+        (abs(m_selectionStart-m_selectionEnd) == str.Length()) &&
         (text.Right(text.Length()-
                     wxMin(m_selectionStart, m_selectionEnd)).StartsWith(str)))
     {
       if (down)
-        start = wxMin(m_selectionStart, m_selectionEnd);
+        start = wxMin(m_selectionStart, m_selectionEnd) + 1;
       else
         start = wxMax(m_selectionStart, m_selectionEnd);
     }
     else
     {
+      // We are at the start of a match, but the search expression has changed
       if(m_selectionStart>0)
       {
         if (down)
