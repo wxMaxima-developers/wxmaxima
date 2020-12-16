@@ -75,6 +75,9 @@ public:
   std::unique_ptr<Cell> ParseTag(wxXmlNode *node, bool all = true);
   std::unique_ptr<Cell> ParseRowTag(wxXmlNode *node);
 
+  //! Sets the group the newly parsed cells are provided with
+  void SetGroup(GroupCell *group) { m_group = group; }
+
 private:
   //! A pointer to a method that handles an XML tag for a type of Cell
   using MathCellFunc = std::unique_ptr<Cell> (MathParser::*)(wxXmlNode *node);

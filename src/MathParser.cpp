@@ -414,6 +414,7 @@ std::unique_ptr<Cell> MathParser::ParseCellTag(wxXmlNode *node)
     group = std::unique_ptr<GroupCell>(CALL_MEMBER_FN(*this, function)(node));
   else  
     return group;
+  SetGroup(group.get());
   
   wxXmlNode *children = node->GetChildren();
   children = SkipWhitespaceNode(children);
@@ -454,6 +455,7 @@ std::unique_ptr<Cell> MathParser::ParseCellTag(wxXmlNode *node)
 
   group->SetGroup(group.get()); //-V678
   group->Hide(hide);
+  SetGroup(nullptr);
   return group;
 }
 

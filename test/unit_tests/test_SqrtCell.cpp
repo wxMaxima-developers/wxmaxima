@@ -54,9 +54,10 @@ SCENARIO("SqrtCell recalculates") {
 
   Configuration *pConfig = &configuration;
   Configuration **config = &pConfig;
+  GroupCell group(config, GC_TYPE_TEXT);
 
   GIVEN("a SqrtCell") {
-    SqrtCell cell(nullptr, config, std::make_unique<VisiblyInvalidCell>(nullptr, config));
+    SqrtCell cell(&group, config, std::make_unique<VisiblyInvalidCell>(&group, config));
 
     WHEN("the cell is copied") THEN("the copy succeeds")
       REQUIRE(cell.Copy());

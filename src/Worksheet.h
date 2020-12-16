@@ -938,6 +938,9 @@ public:
   */
   void InsertLine(std::unique_ptr<Cell> &&newCell, bool forceNewLine = false);
 
+  //! The group that the line's cells will belong to - used by InsertLine
+  GroupCell *GetInsertGroup() const;
+
   // Actually recalculate the worksheet.
   bool RecalculateIfNeeded();
 
