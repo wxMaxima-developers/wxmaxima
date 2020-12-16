@@ -24,13 +24,10 @@
 wxLogNull dontLog;
 
 #define CATCH_CONFIG_RUNNER
-#include "Cell.cpp"
-#include "CellList.cpp"
-#include "CellPointers.cpp"
-#include "CellPtr.cpp"
 #include "FontAttribs.cpp"
 #include "FontCache.cpp"
 #include "StringUtils.cpp"
+#include "TestStubs.cpp"
 #include "TextCell.cpp"
 #include "TextStyle.cpp"
 #include "VisiblyInvalidCell.cpp"
@@ -38,23 +35,6 @@ wxLogNull dontLog;
 #include "SqrtCell.cpp"
 
 #include <catch2/catch.hpp>
-
-CellPointers pointers(nullptr);
-CellPointers *Cell::GetCellPointers() const { return &pointers; }
-
-long Configuration::Scale_Px(double) const { return 1; }
-AFontSize Configuration::Scale_Px(AFontSize) const { return AFontSize(10.0); }
-wxFontStyle Configuration::IsItalic(long) const { return {}; }
-bool Configuration::HideMarkerForThisMessage(wxString) {return false;}
-wxColour Configuration::GetColor(TextStyle) { return {}; }
-Style Configuration::GetStyle(TextStyle, AFontSize) const {
-  return Style(AFontSize(10.0));
-}
-void Configuration::NotifyOfCellRedraw(const Cell *) {}
-Configuration::drawMode Configuration::GetParenthesisDrawMode() { return {}; }
-bool Configuration::InUpdateRegion(wxRect) const { return true; }
-Configuration::Configuration(wxDC *dc, InitOpt) : m_dc(dc) {}
-Configuration::~Configuration() {}
 
 void Configuration::SetZoomFactor(double newzoom)
 {

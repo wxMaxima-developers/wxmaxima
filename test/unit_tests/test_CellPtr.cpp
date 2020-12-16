@@ -22,12 +22,10 @@
 #define CATCH_CONFIG_RUNNER
 #define CELLPTR_COUNT_INSTANCES 1
 #define CELL_TEST 1
-#include "Cell.cpp"
-#include "CellImpl.h"
-#include "CellIterators.h"
-#include "CellPtr.cpp"
+#define DISABLE_CELLPOINTER_STUBS 1
 #include "FontAttribs.cpp"
 #include "StringUtils.cpp"
+#include "TestStubs.cpp"
 #include <catch2/catch.hpp>
 #include <stx/optional.hpp>
 #include <array>
@@ -35,15 +33,6 @@
 AFontSize Style::GetFontSize() const { return {}; }
 AFontName Style::Default_FontName() { return {}; }
 constexpr const AFontSize Style::Default_FontSize;
-AFontSize Configuration::Scale_Px(AFontSize) const { return {}; }
-wxColour Configuration::GetColor(TextStyle) { return {}; }
-void Configuration::NotifyOfCellRedraw(const Cell *) {}
-bool Configuration::HideMarkerForThisMessage(wxString) {return false;}
-void CellListBuilderBase::base_Append(std::unique_ptr<Cell> &&) {}
-void CellList::DeleteList(Cell *) {}
-bool Configuration::InUpdateRegion(wxRect) const { return true; }
-Configuration::Configuration(wxDC *, Configuration::InitOpt) : m_dc{} {}
-Configuration::~Configuration() {}
 
 class TestCell : public Observed {};
 
