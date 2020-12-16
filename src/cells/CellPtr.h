@@ -283,7 +283,7 @@ class CellPtrBase
   mutable CellPtrImplPointer m_ptr;
 
   //! Adds a reference from this pointer to the given object
-  void Ref(Observed *obj) noexcept;
+  void Ref(Observed *obj);
 
   //! Removes a reference from this pointer to its object
   void Deref() noexcept;

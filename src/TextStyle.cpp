@@ -331,10 +331,10 @@ did_change Style::SetFromFont(const wxFont &font)
 did_change Style::SetFontFrom(const Style &o)
 {
   bool changed =
-    SetFontFaceAndSizeFrom(o) |
-    SetFontStyle(o.GetFontStyle()) |
-    SetWeight(o.GetWeight()) |
-    SetUnderlined(o.IsUnderlined()) |
+    SetFontFaceAndSizeFrom(o) | //-V792
+    SetFontStyle(o.GetFontStyle()) | //-V792
+    SetWeight(o.GetWeight()) | //-V792
+    SetUnderlined(o.IsUnderlined()) | //-V792
     SetStrikethrough(o.IsStrikethrough());
   if (GetFontHash() == o.GetFontHash())
     m.font = o.m.font;
@@ -344,14 +344,14 @@ did_change Style::SetFontFrom(const Style &o)
 did_change Style::SetFontFaceFrom(const Style &o)
 {
   return
-    SetFontName(o.GetFontName()) |
-    SetEncoding(o.GetEncoding()) |
+    SetFontName(o.GetFontName()) | //-V792
+    SetEncoding(o.GetEncoding()) | //-V792
     SetFamily(o.GetFamily());
 }
 
 did_change Style::SetFontFaceAndSizeFrom(const Style &o)
 {
-  return SetFontFaceFrom(o) | SetFontSize(o.m.fontSize);
+  return SetFontFaceFrom(o) | SetFontSize(o.m.fontSize); //-V792
 }
 
 size_t Style::GetFontHash() const

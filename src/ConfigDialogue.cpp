@@ -1883,21 +1883,19 @@ void ConfigDialogue::OnImport(wxCommandEvent&  WXUNUSED(event))
                                  wxFD_OPEN | wxFD_FILE_MUST_EXIST);
   if (file != wxEmptyString)
   {
-    wxFileInputStream str(file);
-    wxConfigBase *src = new wxFileConfig(str);
-    if(src)
-    {
-      wxString str;
-      long dummy;
-      // first enum all entries
-      bool bCont = src->GetFirstEntry(str, dummy);
-      if(bCont)
-        CopyConfig(src, wxConfigBase::Get());
-      m_configuration->ReadStyles(file);
-      SetCheckboxValues();
-      wxCommandEvent dmmy;
-      OnChangeStyle(dmmy);
-    }
+    wxFileInputStream fis(file);
+    wxConfigBase *src = new wxFileConfig(fis);
+
+    wxString str;
+    long dummy;
+    // first enum all entries
+    bool bCont = src->GetFirstEntry(str, dummy);
+    if(bCont)
+      CopyConfig(src, wxConfigBase::Get());
+    m_configuration->ReadStyles(file);
+    SetCheckboxValues();
+    wxCommandEvent dmmy;
+    OnChangeStyle(dmmy);
   }
 }
 

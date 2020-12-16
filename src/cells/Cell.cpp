@@ -334,7 +334,7 @@ void Cell::Draw(wxPoint point)
 void Cell::ClearToolTip()
 {
   if (m_ownsToolTip)
-    const_cast<wxString*>(m_toolTip)->Truncate(0);
+    const_cast<wxString*>(m_toolTip)->Truncate(0); //-V575
   else
     m_toolTip = &wxm::emptyString;
 }
