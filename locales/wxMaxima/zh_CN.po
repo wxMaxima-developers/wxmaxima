@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: wxMaxima HEAD\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-11-26 08:02+0100\n"
-"PO-Revision-Date: 2020-12-15 22:30+0800\n"
+"PO-Revision-Date: 2020-12-16 21:23+0800\n"
 "Last-Translator: Liu Rong <rong.liu@mail.bnu.edu.cn>\n"
 "Language-Team: amateur\n"
 "Language: zh\n"
@@ -4672,18 +4672,25 @@ msgid ""
 "have problems aligning and scaling with the rest of the text and might use "
 "fonts that don't match the rest of the document."
 msgstr ""
+"MathJAX 创建可缩放的高质量 2D 数学式，可用于拖放并提供一些访问选项。MathJAX "
+"的缺点是它需要 JavaScript 和一些时间来排版式子。\n"
+"如果浏览器支持 MathML，那么它比 MathJaX 快得多。但是许多 MathML 实现往往缺乏"
+"必要的特性。\n"
+"位图比其他两个选项需要更多的带宽，且缺乏对诸如拖放或可访问性等高级功能的支"
+"持。此外，它们在与其余文本对齐和缩放时容易遇到问题，还可能使用与文档其余部分"
+"不匹配的字体。"
 
 #: ../../src/ConfigDialogue.cpp:924
 msgid "MathML + MathJaX as Fill-In"
-msgstr ""
+msgstr "MathML，MathJaX 做替补"
 
 #: ../../src/ConfigDialogue.cpp:1421
 msgid "MathML as HTML"
-msgstr ""
+msgstr "MathML 的 HTML 代码"
 
 #: ../../src/ConfigDialogue.cpp:1418
 msgid "MathML description"
-msgstr ""
+msgstr "MathML 描述"
 
 #: ../../src/wxMaximaFrame.cpp:443
 msgid "Mathematical Symbols"
@@ -4700,22 +4707,21 @@ msgid ""
 "chosen, though, allowing simply reformulating the question in many cases the "
 "answer can be found.\n"
 msgstr ""
-"数学可以看成一种语言, 它只包含少量单词和语法规则. 不过, 这两者\n"
-"都是经过精心挑选的, 在很多情况下, 只要重新表述问题, 就能找到问\n"
-"题的答案.\n"
+"数学可以看成一种语言，它只包含少量单词和语法规则。不过，这两\n"
+"者都是经过精心挑选的，在很多情况下，只要重新表述问题，就能找\n"
+"到问题的答案。\n"
 
 #: ../../src/ToolBar.cpp:243
 msgid "Maths"
-msgstr ""
+msgstr "数学（命令）"
 
 #: ../../src/wxMaxima.cpp:6838 ../../src/wxMaxima.cpp:6981
 msgid "Matrix"
 msgstr "矩阵"
 
 #: ../../src/wxMaximaFrame.cpp:1035
-#, fuzzy
 msgid "Matrix from csv file"
-msgstr "从文件载入样式"
+msgstr "矩阵，从 .csv 文件"
 
 #: ../../src/wxMaxima.cpp:6962
 msgid "Matrix map"
@@ -4723,20 +4729,19 @@ msgstr "矩阵映射"
 
 #: ../../src/wxMaxima.cpp:8877
 msgid "Matrix name:"
-msgstr "矩阵名："
+msgstr "矩阵名称："
 
 #: ../../src/wxMaximaFrame.cpp:803
 msgid "Matrix parenthesis"
 msgstr "矩阵括号"
 
 #: ../../src/wxMaximaFrame.cpp:1037
-#, fuzzy
 msgid "Matrix to csv file"
-msgstr "从文件载入样式"
+msgstr "矩阵至 .csv 文件"
 
 #: ../../src/wxMaximaFrame.cpp:1310
 msgid "Matrix to nested List"
-msgstr ""
+msgstr "矩阵至嵌套列表"
 
 #: ../../src/wxMaxima.cpp:6855 ../../src/wxMaxima.cpp:6870
 #: ../../src/wxMaxima.cpp:6885 ../../src/wxMaxima.cpp:6900
@@ -4750,9 +4755,8 @@ msgid "Maxima"
 msgstr "Maxima"
 
 #: ../../src/ConfigDialogue.cpp:1072
-#, fuzzy
 msgid "Maxima Location"
-msgstr "Maxima 问题"
+msgstr "Maxima 位置"
 
 #: ../../examples/examples_gettext.list:1213
 msgid ""
@@ -4760,14 +4764,14 @@ msgid ""
 "calculate the output value that corresponds to an input value only once and "
 "then remember them for the future.\n"
 msgstr ""
-"Maxima 还允许定义递推公式: 只计算一次与输入值对应的输出值, \n"
-"然后将其储存以备将来使用.\n"
+"Maxima 还允许定义递推公式：只计算一次与输入值对应的输出值，\n"
+"然后将其储存以备将来使用。\n"
 
 #: ../../examples/examples_gettext.list:1308
 msgid ""
 "Maxima allows to customize the format floating-point numbers are displayed "
 "in:\n"
-msgstr "Maxima 允许自定义浮点数的显示格式:\n"
+msgstr "Maxima 允许自定义浮点数的显示格式：\n"
 
 #: ../../examples/examples_gettext.list:1342
 msgid ""
@@ -4777,15 +4781,15 @@ msgid ""
 "bfloat() command or by entering a \"b\" instead of an \"e\" when declaring "
 "the exponent:\n"
 msgstr ""
-"Maxima 还提供了其实现的浮点数 (bigfloats, 大浮点数), 用这种浮点\n"
-"数计算较慢 (因为必须由软件处理), 但可以准确到任意精度. 通过使用 \n"
-"bfloat() 命令或在声明指数时输入“b”而非“e”, 可以将数字转换\n"
-"为大浮点数:\n"
+"Maxima 还提供了其实现的浮点数（bigfloats，大浮点数），用这种\n"
+"浮点数计算较慢（因为必须由软件处理），但可以准确到任意精度。\n"
+"通过使用 bfloat() 命令或在声明指数时输入“b”而非“e”，可以将数字\n"
+"转换为大浮点数：\n"
 
 #: ../../src/wxMaxima.cpp:2699
 #, c-format
 msgid "Maxima architecture: %s"
-msgstr ""
+msgstr "Maxima 架构：%s"
 
 #: ../../src/wxMaximaFrame.cpp:518
 msgid "Maxima asks a question"
@@ -4793,7 +4797,7 @@ msgstr "Maxima 提出问题"
 
 #: ../../src/wxMaxima.cpp:3204
 msgid "Maxima asks a question!"
-msgstr "Maxima 抛出问题！"
+msgstr "Maxima 提出问题！"
 
 #: ../../src/ConfigDialogue.cpp:334
 #, c-format
@@ -4808,19 +4812,24 @@ msgid ""
 "order to ease discerning which line starts a new equation and which one only "
 "continues the one from the last line."
 msgstr ""
+"Maxima 给每个式子或命令分配自动标签（形如 %i1 或 %o1）。如果命令以描述性名称"
+"开头，后跟“:”，那么 wxMaxima 将把描述性名称称为“用户定义的标签”。这个选项用于"
+"告诉wxMaxima 是否只显示自动标签；或仅在没有用户定义的标签时，显示自动标签；或"
+"者仅显示 wxMaxima 找到用户定义的标签。如果取消分配自动标签，在两行式子之间会"
+"增加额外的垂直空格，以便于区分哪一行开始了一个新的式子，哪一行只是延续上一行"
+"的式子。"
 
 #: ../../src/ConfigDialogue.cpp:836
 msgid "Maxima commands to be executed at every start of Maxima"
-msgstr ""
+msgstr "Maxima 每次启动时执行的 Maxima 命令"
 
 #: ../../src/ConfigDialogue.cpp:796
 msgid "Maxima commands to be executed every time wxMaxima starts Maxima"
-msgstr ""
+msgstr "wxMaxima 每次启动 Maxima 时执行的 Maxima 命令"
 
 #: ../../src/ConfigDialogue.cpp:1124
-#, fuzzy
 msgid "Maxima configuration"
-msgstr "wxMaxima 配置"
+msgstr "wxMaxima 设置"
 
 #: ../../src/Configuration.cpp:1394
 msgid "Maxima errors"
@@ -4830,11 +4839,11 @@ msgstr "Maxima 错误"
 msgid ""
 "Maxima even offers a third fitting algorithm that is even able to understand "
 "constraints:\n"
-msgstr "Maxima 提供了第三种拟合算法, 该算法可以理解所给的限制条件:\n"
+msgstr "Maxima 提供了第三种拟合算法，该算法可以理解所给的限制条件：\n"
 
 #: ../../src/wxMaxima.cpp:9786
 msgid "Maxima has finished calculating."
-msgstr "Maxima 已完成计算"
+msgstr "Maxima 已完成计算。"
 
 #: ../../src/wxMaxima.cpp:5416
 msgid "Maxima has issued an error!"
@@ -4843,11 +4852,11 @@ msgstr "Maxima 抛出错误！"
 #: ../../src/wxMaxima.cpp:2841
 #, c-format
 msgid "Maxima has loaded the file %s."
-msgstr "Maxima 已加载文件 %s"
+msgstr "Maxima 已载入文件 %s。"
 
 #: ../../src/wxMaxima.cpp:2663
 msgid "Maxima has sent a new variable value."
-msgstr ""
+msgstr "Maxima 已给出变量的新值。"
 
 #: ../../src/Configuration.cpp:1387
 msgid "Maxima input"
@@ -4863,12 +4872,12 @@ msgid ""
 "that trying to construct a list on-the-fly creates an altogether different "
 "kind of object:\n"
 msgstr ""
-"虽然 Maxima 中的大部分运算是基于列表的, 但是会令新手惊讶的是, \n"
-"尝试动态构造列表会创建一个完全不同的对象:\n"
+"虽然 Maxima 中的大部分运算是基于列表的，但是会令新手惊讶的是，\n"
+"尝试动态构造列表会创建一个完全不同的对象：\n"
 
 #: ../../src/wxMaxima.cpp:4598
 msgid "Maxima is ready for input."
-msgstr "Maxima 输入已就绪"
+msgstr "Maxima 已就绪，等待输入"
 
 #: ../../examples/examples_gettext.list:394
 msgid ""
@@ -4879,41 +4888,41 @@ msgid ""
 "list item is stored at means having to iterate through the list querying "
 "each item where the next list item can be found.\n"
 msgstr ""
-"Maxima 倾向于使用列表: 向列表添加元素很容易; 删除列表项也很\n"
-"容易; 只需交换几个指针, 就可以对列表项重新排序. Maxima 提供了\n"
-"对列表快速排序的方法, 并可以消除重复的元素. 但是, 确定一个列表\n"
-"的长度或第 n 个列表项的存储地址也意味着必须遍历该列表, 并查询\n"
-"每项对应的下一个列表项.\n"
+"Maxima 倾向于使用列表：向列表添加元素很容易；删除列表项也\n"
+"很容易；只需交换几个指针，就可以对列表项重新排序。Maxima 提\n"
+"供了对列表快速排序的方法，并可以消除重复的元素。但是，确定一\n"
+"个列表的长度或第 n 个列表项的存储地址也意味着必须遍历该列表，\n"
+"并查询每项对应的下一个列表项。\n"
 
 #: ../../src/Dirstructure.cpp:135
 #, c-format
 msgid "Maxima not found as %s"
-msgstr "Maxima 未找到 %s"
+msgstr "Maxima 未作为 %s 被找到"
 
 #: ../../examples/examples_gettext.list:617
 msgid ""
 "Maxima now offers a simple, but powerful curve fitter that guesses the "
 "parameters a,b and c for us:\n"
 msgstr ""
-"Maxima 提供了一个简单但功能强大的拟合曲线程序包, 可以计算\n"
-"拟合曲线的参数 a, b 和 c:\n"
+"Maxima 提供了一个简单但功能强大的拟合曲线程序包，可以计算\n"
+"拟合曲线的参数 a，b 和 c：\n"
 
 #: ../../src/wxMaxima.cpp:5863
 msgid "Maxima package (*.mac)|*.mac"
-msgstr "Maxima 包 (*.mac)|*.mac"
+msgstr "Maxima 程序包 (*.mac)|*.mac"
 
 #: ../../src/wxMaxima.cpp:5851
 msgid "Maxima package (*.mac)|*.mac|Lisp package (*.lisp)|*.lisp|All|*"
-msgstr "Maxima 包 (*.mac)|*.mac|Lisp 包 (*.lisp)|*.lisp|全部类型|*"
+msgstr "Maxima 程序包 (*.mac)|*.mac|Lisp 程序包 (*.lisp)|*.lisp|全部类型|*"
 
 #: ../../src/wxMaxima.cpp:2164
 #, c-format
 msgid "Maxima process (pid %i) has terminated with exit code %i."
-msgstr ""
+msgstr "Maxima 进程（pid %i）已结束，退出代码为 %i。"
 
 #: ../../src/wxMaxima.cpp:2198
 msgid "Maxima process terminated unexpectedly."
-msgstr ""
+msgstr "Maxima 进程意外中止。"
 
 #: ../../src/ConfigDialogue.cpp:1075
 msgid "Maxima program:"
@@ -4926,9 +4935,9 @@ msgid ""
 "compile a list of the errors we want to minimize. Let's do that for data2_i "
 "and approach1:\n"
 msgstr ""
-"Maxima 提供了另一种拟合算法, 该算法通常会产生更好的结果, 但是\n"
-"使用起来有点复杂. 例如, 它要求我们手动生成一个要最小化的误差\n"
-"列表. 现在对 data2_i 和 approach1 运用这种方法:\n"
+"Maxima 提供了另一种拟合算法，该算法通常会产生更好的结果，\n"
+"但是使用起来有点复杂。例如，它要求我们手动生成一个要最小化\n"
+"的误差列表。现在对 data2_i 和 approach1 运用这种方法：\n"
 
 #: ../../src/ConfigDialogue.cpp:340
 msgid ""
@@ -4937,18 +4946,21 @@ msgid ""
 "maxima process every time the worksheet is to be re-evaluated. As this needs "
 "a little bit of time this switch allows to disable this behavior."
 msgstr ""
+"Maxima 没有提供“忘记所有内容”命令来刷新当前 Maxima 会话已有的所有设置。因此，"
+"每次重新计算工作簿中的所有式子时，wxMaxima 默认启动一个新的 Maxima 进程。这个"
+"过程通常需要一点时间，而此选项可以禁用该过程。"
 
 #: ../../src/Configuration.cpp:1389
 msgid "Maxima questions"
-msgstr "Maxima 问题"
+msgstr "Maxima 提的问题"
 
 #: ../../src/wxMaxima.cpp:2661
 msgid "Maxima sends a new set of auto-completable symbols."
-msgstr ""
+msgstr "Maxima 发送一组新的自动完成符号。"
 
 #: ../../src/wxMaxima.cpp:3027
 msgid "Maxima sends us a new set of variables for the watch list."
-msgstr ""
+msgstr "Maxima 向监视列表发送一组新变量。"
 
 #: ../../src/History.cpp:132
 msgid "Maxima session (*.mac)|*.mac"
@@ -4960,7 +4972,7 @@ msgstr "Maxima 已启动。等待连接中..."
 
 #: ../../src/ConfigDialogue.cpp:866
 msgid "Maxima startup file location: "
-msgstr "Maxima 设置语言："
+msgstr "Maxima 启动文件位置："
 
 #: ../../src/TipOfTheDay.cpp:60
 msgid ""
@@ -4980,14 +4992,13 @@ msgstr ""
 "分数来表示它，因此会引入一个（非常小的）误差。"
 
 #: ../../src/ConfigDialogue.cpp:1189
-#, fuzzy
 msgid "Maxima usage"
-msgstr "wxMaxima 代码"
+msgstr "Maxima 用法"
 
 #: ../../src/wxMaxima.cpp:2676
 #, c-format
 msgid "Maxima user configuration lies in directory %s"
-msgstr ""
+msgstr "Maxima 用户配置文件位于目录 %s"
 
 #: ../../src/TipOfTheDay.cpp:54
 msgid ""
@@ -4999,12 +5010,12 @@ msgstr ""
 #: ../../src/wxMaxima.cpp:2682
 #, c-format
 msgid "Maxima uses temp directory %s"
-msgstr ""
+msgstr "Maxima 使用临时目录 %s"
 
 #: ../../src/wxMaxima.cpp:2694
 #, c-format
 msgid "Maxima version: %s"
-msgstr ""
+msgstr "Maxima 版本：%s"
 
 #: ../../src/Configuration.cpp:1393
 msgid "Maxima warnings"
@@ -5013,7 +5024,7 @@ msgstr "Maxima 警告"
 #: ../../src/wxMaxima.cpp:2831
 #, c-format
 msgid "Maxima was compiled using %s"
-msgstr ""
+msgstr "Maxima 使用 %s 编译"
 
 #: ../../src/TipOfTheDay.cpp:159
 msgid ""
@@ -5046,19 +5057,19 @@ msgid ""
 "click on it and press on the \"Popout interactively\" button which opens a "
 "window the curve can be rotated in:\n"
 msgstr ""
-"Maxima 默认显示三维曲面的方式已优化为快速显示 (固定视角的) \n"
-"图形. 为了获得对曲面形状的整体感觉, 可以右键单击图形后选择 \n"
-"“弹出并交互”选项, 以打开一个可以在其中旋转曲面的窗口:\n"
+"Maxima 默认显示三维曲面的方式已优化为快速显示（固定视角的） \n"
+"图形。为了获得对曲面形状的整体感觉，可以右键单击图形后选择\n"
+"“弹出并交互”选项，以打开一个可以在其中旋转曲面的窗口：\n"
 
 #: ../../src/wxMaxima.cpp:2704
 #, c-format
 msgid "Maxima's manual lies in directory %s"
-msgstr ""
+msgstr "Maxima 的用户手册位于目录 %s"
 
 #: ../../src/wxMaxima.cpp:2813
 #, c-format
 msgid "Maxima's share files lie in directory %s"
-msgstr ""
+msgstr "Maxima 的共享文件位于目录 %s"
 
 #: ../../src/TipOfTheDay.cpp:153
 msgid ""
@@ -5098,6 +5109,11 @@ msgid ""
 "not only intercepts connections from the outside, but also to intercept "
 "connections between two programs that run on the same computer."
 msgstr ""
+"Maxima 是进行实际数学运算的程序，wxMaxima 是显示工作簿的程序，两者使用不同的"
+"进程。这意味着即使 Maxima 崩溃，wxMaxima（因此工作簿）也不受影响。两个程序通"
+"过本地网络套接字（socket）进行通信。这次无法创建此套接字，可能是由于防火墙设"
+"置为不仅拦截来自外部的连接，而且还拦截在同一台计算机上运行的两个程序之间的连"
+"接。"
 
 #: ../../src/StatusBar.cpp:51
 msgid ""
@@ -5112,6 +5128,12 @@ msgid ""
 "might be that maxima cannot be found (see wxMaxima's Configuration dialogue "
 "for a way to specify maxima's location) or isn't in a working order."
 msgstr ""
+"Maxima 是进行实际数学运算的程序，wxMaxima 是显示工作簿的程序，两者使用不同的"
+"进程。这意味着即使 Maxima 崩溃，wxMaxima（因此工作簿）也不受影响。目前这两个"
+"程序没有连接，可能因为 Maxima 仍在启动中或无法启动；也可能是由于防火墙设置为"
+"不仅拦截来自外部的连接，而且还拦截在同一台计算机上运行的两个程序之间的连接。"
+"Maxima 不能启动的另一个原因可能是找不到 Maxima（关于指定 Maxima 位置的方法，"
+"可查看 wxMaxima 的设置对话框）或 Maxima 没有处于工作状态。"
 
 #: ../../src/StatusBar.cpp:47
 msgid ""
@@ -5120,38 +5142,41 @@ msgid ""
 "cannot harm wxMaxima, which displays the worksheet.\n"
 "This icon indicates if data is transferred between maxima and wxMaxima."
 msgstr ""
+"Maxima（计算实际数学的程序）使用单独的进程。这种设置的最大优点是即使 Maxima "
+"崩溃也不会影响 wxMaxima（显示工作簿的程序）。\n"
+"此图标指示是否有数据在 Maxima 和 wxMaxima 之间传输。"
 
 #: ../../src/wxMaxima.cpp:8423
 msgid "Maximum absolute value printed without exponent:"
-msgstr ""
+msgstr "不自动转为工程数字表示的最大绝对值："
 
 #: ../../src/ConfigDialogue.cpp:1445
 msgid "Maximum bitmap size on clipboard [Mb]:"
-msgstr ""
+msgstr "剪贴板上的最大位图大小 [Mb]："
 
 #: ../../src/ConfigDialogue.cpp:565
 msgid "Maximum displayed number of digits:"
-msgstr "最大显示数："
+msgstr "显示数值时的最大位数："
 
 #: ../../src/wxMaxima.cpp:8424
 msgid "Maximum number of digits to be displayed:"
-msgstr ""
+msgstr "显示数值时的最大位数："
 
 #: ../../src/wxMaximaFrame.cpp:1789
 msgid "Mean Difference Test..."
-msgstr "平均差检验..."
+msgstr "均值差检验..."
 
 #: ../../src/wxMaximaFrame.cpp:1787
 msgid "Mean Test..."
-msgstr "平均值检验..."
+msgstr "均值检验..."
 
 #: ../../src/wxMaximaFrame.cpp:1776
 msgid "Mean..."
-msgstr "求平均值..."
+msgstr "均值..."
 
 #: ../../src/wxMaxima.cpp:8772
 msgid "Mean:"
-msgstr "平均值："
+msgstr "均值："
 
 #: ../../src/wxMaximaFrame.cpp:1778
 msgid "Median..."
@@ -5175,16 +5200,16 @@ msgid ""
 "hard to calculate and of which only relatively few items ever need to be "
 "calculated.\n"
 msgstr ""
-"如果计算过程步骤较多, 而每个步骤只用到少量新生成的数据, 那么\n"
-"储存这些新数据可以大大加快计算速度.\n"
+"如果计算过程步骤较多，而每个步骤只用到少量新生成的数据，那么\n"
+"储存这些新数据可以大大加快计算速度。\n"
 
 #: ../../examples/examples_gettext.list:1183
 msgid ""
 "Memoizing should speed up accessing already-known values. Let's test if that "
 "is the case:\n"
 msgstr ""
-"储存数据应该可以加快访问已知值的速度. 我们来测试一下是否确实\n"
-"如此:\n"
+"储存数据应该可以加快访问已知值的速度。我们来测试一下是否确实\n"
+"如此：\n"
 
 #: ../../examples/examples_gettext.list:1114
 msgid "Memoizing using hash maps\n"
@@ -5192,27 +5217,27 @@ msgstr "使用哈希映射储存数据\n"
 
 #: ../../src/Worksheet.cpp:1365
 msgid "Merge Cells"
-msgstr "合并单元"
+msgstr "合并单元格"
 
 #: ../../src/wxMaximaFrame.cpp:908
 msgid "Merge Cells\tCtrl+M"
-msgstr "合并单元\tCtrl+M"
+msgstr "合并单元格\tCtrl+M"
 
 #: ../../src/wxMaximaFrame.cpp:909
 msgid "Merge the text from two input cells into one"
-msgstr ""
+msgstr "将两个单元格中的文本合并到一个单元格中"
 
 #: ../../src/wxMaxima.cpp:5364
 msgid "Message from the stdout of Maxima: "
-msgstr ""
+msgstr "来自 Maxima 标准输出（stdout）的消息："
 
 #: ../../src/wxMaxima.cpp:8422
 msgid "Minimum absolute value printed without exponent:"
-msgstr ""
+msgstr "不自动转为工程数字表示的最小绝对值："
 
 #: ../../src/ConfigDialogue.cpp:952
 msgid "Misc"
-msgstr ""
+msgstr "其他"
 
 #: ../../src/wxMaxima.cpp:9713 ../../src/wxMaxima.cpp:9714
 msgid "Mismatched parenthesis"
@@ -5224,7 +5249,7 @@ msgstr "求模"
 
 #: ../../examples/examples_gettext.list:1945
 msgid "Monte carlo analysis\n"
-msgstr "蒙特卡罗 (Monte carlo) 分析\n"
+msgstr "Monte carlo（蒙特卡罗）分析\n"
 
 #: ../../examples/examples_gettext.list:1248
 msgid ""
@@ -5233,9 +5258,9 @@ msgid ""
 "in the \"1e3\" notation maxima assumes one wants to use the kind of floats "
 "the machine supports out-of-the box:\n"
 msgstr ""
-"大多数计算机都有浮点运算单元 (硬件), 可以快速进行高精度的计算. \n"
-"如果一个数字是利用小数点或形如“1e3”的记号输入的, Maxima \n"
-"会假设用户希望使用机器浮点数:\n"
+"大多数计算机都有浮点运算单元（硬件），可以快速进行高精度的计算。\n"
+"如果一个数字是利用小数点或形如“1e3”的记号输入的，Maxima\n"
+"会假设用户希望使用机器浮点数：\n"
 
 #: ../../examples/examples_gettext.list:306
 msgid "Moving pictures\n"
@@ -5243,36 +5268,36 @@ msgstr "移动图形\n"
 
 #: ../../src/wxMaximaFrame.cpp:1948
 msgid "Mu"
-msgstr ""
+msgstr "Mu"
 
 #: ../../src/wxMaxima.cpp:7030 ../../src/wxMaxima.cpp:7050
 msgid "Name:"
-msgstr "名："
+msgstr "名称："
 
 #: ../../src/wxMaximaFrame.cpp:1033
 msgid "Nested List to Matrix"
-msgstr ""
+msgstr "嵌套列表至矩阵"
 
 #: ../../src/wxMaximaFrame.cpp:1309
 msgid "Nested list to Matrix"
-msgstr ""
+msgstr "嵌套列表至矩阵"
 
 #: ../../src/ConfigDialogue.cpp:591 ../../src/ConfigDialogue.cpp:608
 #: ../../src/wxMaximaFrame.cpp:785
 msgid "Never"
-msgstr ""
+msgstr "从不"
 
 #: ../../src/wxMaxima.cpp:6186 ../../src/wxMaxima.cpp:6196
 msgid "Never autosubscript this variable"
-msgstr ""
+msgstr "从不将此变量自动显示为下标"
 
 #: ../../src/wxMaximaFrame.cpp:791
 msgid "Never display this variable with subscript"
-msgstr ""
+msgstr "从不显示此变量的下标"
 
 #: ../../src/Worksheet.cpp:1415 ../../src/Worksheet.cpp:1717
 msgid "Never offer known answers"
-msgstr ""
+msgstr "从不提供已知答案"
 
 #: ../../src/ToolBar.cpp:165
 msgid "New"
@@ -5284,15 +5309,15 @@ msgstr "新建\tCtrl+N"
 
 #: ../../src/ToolBar.cpp:622
 msgid "New button"
-msgstr ""
+msgstr "新按钮"
 
 #: ../../src/wxMaxima.cpp:1696
 msgid "New connection attempt whilst already connected."
-msgstr ""
+msgstr "已连接时仍尝试新连接。"
 
 #: ../../src/wxMaxima.cpp:1701
 msgid "New connection attempt, but no currently running maxima process."
-msgstr ""
+msgstr "尝试新的连接，但当前没有运行 Maxima 进程。"
 
 #: ../../src/ToolBar.cpp:165
 msgid "New document"
@@ -5300,7 +5325,7 @@ msgstr "新建文档"
 
 #: ../../src/ConfigDialogue.cpp:663
 msgid "New lines: Jump to text"
-msgstr ""
+msgstr "新行：跳转到文本"
 
 #: ../../src/wxMaxima.cpp:7967 ../../src/wxMaxima.cpp:8100
 #: ../../src/wxMaxima.cpp:8118
@@ -5313,61 +5338,61 @@ msgstr "下一条命令\tAlt+Down"
 
 #: ../../examples/examples_gettext.list:110
 msgid "Next let's avoid the question using assume():\n"
-msgstr ""
+msgstr "接下来，使用 assume() 命令来避免 Maxima 提出问题：\n"
 
 #: ../../src/wxMaximaFrame.cpp:774
 msgid "Nice Graphical Equations"
-msgstr ""
+msgstr "美观的图形化式子"
 
 #: ../../src/ConfigDialogue.cpp:572 ../../src/ConfigDialogue.cpp:582
 msgid "No"
-msgstr ""
+msgstr "否"
 
 #: ../../src/wxMaxima.cpp:9748
 msgid "No dollar ($) or semicolon (;) at the end of command"
-msgstr ""
+msgstr "命令末尾没有美元符号（$）或分号（;）"
 
 #: ../../src/wxMaxima.cpp:4390
 msgid "No entries in the caches for the subjects the manual contains."
-msgstr ""
+msgstr "用户手册所含主题的缓存中没有对应条目。"
 
 #: ../../src/wxMaxima.cpp:4435
 msgid ""
 "No file with the subjects the manual contained in the last wxMaxima run."
-msgstr ""
+msgstr "在上次 wxMaxima 运行中，没有包含用户手册主题的文件。"
 
 #: ../../src/Image.cpp:585
 msgid "No gnuplot data!"
-msgstr ""
+msgstr "没有 gnuplot 数据！"
 
 #: ../../src/Image.cpp:636
 msgid "No gnuplot source!"
-msgstr ""
+msgstr "没有 gnuplot 源文件！"
 
 #: ../../src/wxMaxima.cpp:4081
 #, c-format
 msgid "No helpfile found at %s."
-msgstr ""
+msgstr "没有找到 %s 的帮助文件。"
 
 #: ../../src/wxMaxima.cpp:6330 ../../src/wxMaxima.cpp:6353
 msgid "No matches found!"
-msgstr "无法找到匹配项！"
+msgstr "没有找到匹配项！"
 
 #: ../../src/wxMaxima.cpp:8916
 msgid "No saving on close necessary."
-msgstr ""
+msgstr "关闭时无需保存。"
 
 #: ../../src/wxMaximaFrame.cpp:2087
 msgid "Non-builtin symbols"
-msgstr ""
+msgstr "非内置符号"
 
 #: ../../src/wxMaximaFrame.cpp:802
 msgid "None"
-msgstr ""
+msgstr "无括号"
 
 #: ../../src/wxMaximaFrame.cpp:1791
 msgid "Normality Test..."
-msgstr "正态分布检验"
+msgstr "正态分布检验..."
 
 #: ../../src/ConfigDialogue.cpp:364
 msgid ""
@@ -5376,6 +5401,9 @@ msgid ""
 "this setting was introduces that selects the factor by which the HTML export "
 "increases the resolution in respect to the default value."
 msgstr ""
+"通常，HTML 使用的图片文件分辨率较低以节省储存空间。但是在现在的屏幕上查看时，"
+"这些图片往往显得相当模糊。因此引入此设置，用于选择当导出 HTML 文件时，相对于"
+"默认值分辨率而提高的因子。"
 
 #: ../../src/ConfigDialogue.cpp:190
 msgid "Norwegian"
@@ -5387,19 +5415,19 @@ msgstr "矩阵的大小无效！"
 
 #: ../../src/wxMaxima.cpp:6727 ../../src/wxMaxima.cpp:6752
 msgid "Not a valid number of equations!"
-msgstr "方程的个数不对！"
+msgstr "方程的个数无效！"
 
 #: ../../src/wxMaximaFrame.cpp:562
 msgid "Not connected to Maxima"
-msgstr ""
+msgstr "没有连接至 Maxima"
 
 #: ../../examples/examples_gettext.list:912
 msgid "Now let's load the package that contains the other fitter:\n"
-msgstr "接着加载包含另一个拟合算法的程序包:\n"
+msgstr "接着加载包含另一个拟合算法的程序包：\n"
 
 #: ../../examples/examples_gettext.list:523
 msgid "Now we extract the list of arguments to the matrix() command:\n"
-msgstr "现在可以将 matrix() 命令的参数列表提取出来:\n"
+msgstr "现在可以将 matrix() 命令的参数列表提取出来：\n"
 
 #: ../../examples/examples_gettext.list:762
 msgid "Now we generate a matrix of values lsquares can deal with:\n"
@@ -5407,7 +5435,7 @@ msgstr "现在生成 lsquares 程序包可以处理的数据矩阵:\n"
 
 #: ../../examples/examples_gettext.list:73
 msgid "Now we have enough information to calculate the input voltage itself:\n"
-msgstr "现在已有足够的信息来计算输入电压:\n"
+msgstr "现在已有足够的信息来计算输入电压：\n"
 
 #: ../../examples/examples_gettext.list:1883
 msgid ""
@@ -5415,12 +5443,12 @@ msgid ""
 "between 4V and 6V, typically 4.5V. For doing this a specialized function "
 "exists:\n"
 msgstr ""
-"也可以告诉 Maxima, 电源提供的电压介于 4V 和 6V 之间, 典型值为\n"
-"4.5V. 为此，有一个专门的函数:\n"
+"也可以告诉 Maxima，电源提供的电压介于 4V 和 6V 之间，典型值\n"
+"为 4.5V。为此，有一个专门的函数：\n"
 
 #: ../../src/wxMaximaFrame.cpp:1949
 msgid "Nu"
-msgstr ""
+msgstr "Nu"
 
 #: ../../src/wxMaxima.cpp:7985
 msgid "Num. deg:"
@@ -5432,7 +5460,7 @@ msgstr "数字格式\n"
 
 #: ../../src/wxMaxima.cpp:7581
 msgid "Number of elements"
-msgstr "未知量"
+msgstr "元素个数"
 
 #: ../../src/wxMaxima.cpp:6718 ../../src/wxMaxima.cpp:6743
 msgid "Number of equations:"
@@ -5440,16 +5468,15 @@ msgstr "方程个数："
 
 #: ../../src/wxMaximaFrame.cpp:1384
 msgid "Number types"
-msgstr ""
+msgstr "数值类型"
 
 #: ../../src/Configuration.cpp:1382
 msgid "Numbers"
 msgstr "数字"
 
 #: ../../src/wxMaximaFrame.cpp:1330
-#, fuzzy
 msgid "Numeric output"
-msgstr "打开数值输出"
+msgstr "数值输出"
 
 #: ../../src/LicenseDialog.cpp:73 ../../src/MaxSizeChooser.cpp:43
 #: ../../src/MaxSizeChooser.cpp:48 ../../src/TipOfTheDay.cpp:240
@@ -5459,12 +5486,12 @@ msgstr "确认"
 #: ../../src/wxMaximaFrame.cpp:108
 #, c-format
 msgid "OS: %s Version %i.%i"
-msgstr ""
+msgstr "操作系统： %s 版本 %i.%i"
 
 #: ../../examples/examples_gettext.list:533
 msgid ""
 "Of course all of these commands can be executed in one long command line:\n"
-msgstr "当然, 所有这些命令都可以在一个 (很长的) 命令行中执行:\n"
+msgstr "当然，所有这些命令都可以在一个（很长的）命令行中执行：\n"
 
 #: ../../src/ConfigDialogue.cpp:669
 msgid "Offer answers for questions known from previous runs"
@@ -5491,11 +5518,11 @@ msgstr "旧变量："
 
 #: ../../src/wxMaximaFrame.cpp:1960
 msgid "Omega"
-msgstr ""
+msgstr "Omega"
 
 #: ../../src/wxMaximaFrame.cpp:1951
 msgid "Omicron"
-msgstr ""
+msgstr "Omicron"
 
 #: ../../examples/examples_gettext.list:1043
 msgid ""
