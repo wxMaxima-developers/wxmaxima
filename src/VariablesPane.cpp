@@ -137,8 +137,8 @@ void Variablespane::InsertMenu(wxCommandEvent &event)
   {
     wxMenuEvent *VarAddEvent = new wxMenuEvent(wxEVT_MENU, varID_add_all);
     wxWindow *top = this;
-      while(top->GetParent())
-    top = top->GetParent(); 
+    while(top->GetParent())
+      top = top->GetParent(); 
     top->GetEventHandler()->QueueEvent(VarAddEvent);
     break;
   }

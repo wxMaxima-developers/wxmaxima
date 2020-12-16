@@ -161,7 +161,7 @@ void TextCell::UpdateToolTip()
     else if (m_text == wxT("infinity"))
       SetToolTip(&T_("Complex infinity."));
         
-    else if (m_text == wxT("inf"))
+    else if (m_text == wxT("minf"))
       SetToolTip(&S_("-∞."));
 
     else if (m_text.StartsWith(S_("%r")))
