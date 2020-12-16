@@ -64,6 +64,7 @@ Cell::Cell(GroupCell *group, Configuration **config) :
     m_toolTip(&wxm::emptyString),
     m_fontSize_Scaled(Scale_Px((*config)->GetMathFontSize()))
 {
+  wxASSERT(group && (group->GetType() == MC_TYPE_GROUP || group == this));
   InitBitFields();
   ResetSize();
 }
@@ -176,12 +177,6 @@ void Cell::ClearCacheList()
     tmp.ClearCache();
 }
 
-void Cell::SetGroupList(GroupCell *group)
-{
-  for (Cell &tmp : OnList(this))
-    tmp.SetGroup(group);
-}
-
 int Cell::CellsInListRecursive() const
 {
   //! The number of cells the current group contains (-1, if no GroupCell)
@@ -202,16 +197,6 @@ wxRect Cell::CropToUpdateRegion(wxRect rect) const
     return rect;
   else
     return rect.Intersect((*m_configuration)->GetUpdateRegion());
-}
-
-void Cell::SetGroup(GroupCell *group)
-{
-  m_group = group;
-  if (group)
-    wxASSERT (group->GetType() == MC_TYPE_GROUP);
-  
-  for (Cell &cell : OnInner(this))
-    cell.SetGroupList(group);
 }
 
 void Cell::FontsChangedList()

@@ -36,7 +36,6 @@ GroupCell::GroupCell(Configuration **config, GroupType groupType, const wxString
 }
 GroupCell::GroupCell(const GroupCell &cell) : GroupCell(cell.m_configuration, cell.m_groupType) {}
 GroupCell::~GroupCell() {}
-void GroupCell::SetGroup(GroupCell *group) { Cell::SetGroup(group); }
 wxString GroupCell::ToString() const { return {}; }
 bool GroupCell::NeedsRecalculation(AFontSize) const { return {}; }
 void GroupCell::Draw(wxPoint) {}

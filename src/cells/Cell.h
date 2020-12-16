@@ -730,14 +730,6 @@ public:
   virtual bool IsActive() const
   { return false; }
 
-  /*! Define which Cell is the GroupCell this list of cells belongs to
-
-    Also automatically sets this cell as the "parent" of all cells of the list.
-   */
-  void SetGroupList(GroupCell *group);
-
-  //! Define which Sell is the GroupCell this list of cells belongs to
-  virtual void SetGroup(GroupCell *group);
   //! Sets the TextStyle of this cell
   virtual void SetStyle(TextStyle style)
   {
@@ -863,11 +855,8 @@ private:
 public:
     const wxString &GetLocalToolTip() const;
 protected:
-  /*! The GroupCell this list of cells belongs to.
-    Reads NULL, if no parent cell has been set - which is treated as an Error by GetGroup():
-    every math cell has a GroupCell it belongs to.
-  */
-  CellPtr<GroupCell> m_group;
+  /*! The GroupCell this list of cells belongs to. */
+  CellPtr<GroupCell> const m_group;
   //! The next cell in the draw list. This has been factored into Cell temporarily to
   //! reduce the change "noise" when it will be subsequently removed.
   CellPtr<Cell> m_nextToDraw;

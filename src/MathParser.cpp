@@ -453,7 +453,6 @@ std::unique_ptr<Cell> MathParser::ParseCellTag(wxXmlNode *node)
     children = GetNextTag(children);
   }
 
-  group->SetGroup(group.get()); //-V678
   group->Hide(hide);
   SetGroup(nullptr);
   return group;
