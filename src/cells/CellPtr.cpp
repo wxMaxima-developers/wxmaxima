@@ -61,7 +61,7 @@ void Observed::LogDeref(const CellPtrBase *cellptr) const
 }
 #endif
 
-void CellPtrBase::Ref(Observed *obj) noexcept
+void CellPtrBase::Ref(Observed *obj)
 {
   // References can only be set on null pointers
   wxASSERT(obj && !m_ptr);
