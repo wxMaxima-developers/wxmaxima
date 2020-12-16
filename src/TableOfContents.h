@@ -65,9 +65,6 @@ public:
 
   void OnMouseRightDown(wxListEvent &event);
 
-  //! Add a file to the recently opened files list.
-  void AddToTableOfContents(wxString cmd);
-
   //! What happens if someone changes the search box contents
   void OnRegExEvent(wxCommandEvent &ev);
 

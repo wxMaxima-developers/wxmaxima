@@ -152,9 +152,6 @@ public:
 
   wxString ToTeX() const override;
 
-  //! Add Markdown to the TeX representation of input cells.
-  wxString TeXMarkdown(wxString str);
-
   wxString ToXML() const override;
 
   void Hide(bool hide) override;
