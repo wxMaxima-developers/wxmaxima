@@ -2191,8 +2191,6 @@ void Worksheet::OnMouseMotion(wxMouseEvent &event)
   if (!GetTree() || !m_leftDown)
     return;
 
-  m_updateControls = true;
-  
   m_mouseDrag = true;
   m_up.x = m_pointer_x;
   m_up.y = m_pointer_y;
@@ -8322,7 +8320,7 @@ wxAccStatus Worksheet::AccessibilityInfo::GetChild (int childId, wxAccessible **
   }
 
   *child = cell->GetAccessible();
-  return cell ? wxACC_OK : wxACC_FAIL;
+  return child ? wxACC_OK : wxACC_FAIL;
 }
 
 wxAccStatus Worksheet::AccessibilityInfo::GetDefaultAction (int childId, wxString *actionName)
@@ -8408,8 +8406,10 @@ wxAccStatus Worksheet::AccessibilityInfo::HitTest(const wxPoint &pt,
   GetLocation(currentRect, 0);
   if (!currentRect.Contains(pt))
   {
-    *childId = 0;
-    *childObject = NULL;
+    if (childId)
+      *childId = 0;
+    if (childObject)
+      *childObject = NULL;
     return wxACC_FALSE;
   }
 
