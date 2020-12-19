@@ -545,18 +545,33 @@ add_test(
     COMMAND wxmaxima --enableipc --batch ipc_copypaste_all-celltypes.wxm)
 
 find_program(DESKTOP_FILE_VALIDATE desktop-file-validate)
-add_test(
-    NAME check_desktop_file
-    COMMAND ${DESKTOP_FILE_VALIDATE} ${CMAKE_SOURCE_DIR}/data/io.github.wxmaxima_developers.wxMaxima.desktop)
-if(NOT DESKTOP_FILE_VALIDATE)
-    set_tests_properties(check_desktop_file PROPERTIES DISABLED YES)
+if(DESKTOP_FILE_VALIDATE)
+    add_test(
+        NAME check_desktop_file
+        COMMAND ${DESKTOP_FILE_VALIDATE} ${CMAKE_SOURCE_DIR}/data/io.github.wxmaxima_developers.wxMaxima.desktop)
 endif()
 
 find_program(APPSTREAM_UTIL appstream-util)
-add_test(
-    NAME check_appstream_file
-    COMMAND ${APPSTREAM_UTIL} --nonet validate ${CMAKE_SOURCE_DIR}/data/io.github.wxmaxima_developers.wxMaxima.appdata.xml)
-if(NOT APPSTREAM_UTIL)
-    set_tests_properties(check_appstream_file PROPERTIES DISABLED YES)
+if(APPSTREAM_UTIL)
+    # Get appstream-util version number
+    execute_process(COMMAND ${APPSTREAM_UTIL} --version
+                    OUTPUT_VARIABLE APPSTREAM_UTIL_VERSION_TEXT)
+    string(REGEX REPLACE "^Version:\t*([^\n]*).*" "\\1"  APPSTREAM_UTIL_VERSION "${APPSTREAM_UTIL_VERSION_TEXT}")
+    message(STATUS "Found appstream-util: ${APPSTREAM_UTIL} (found version \"${APPSTREAM_UTIL_VERSION}\")")
+    # I assume, the issue with our 'invalid' ID (io.github.wxmaxima_developers.wxMaxima)
+    # with older versions was fixed in version 0.7.2: "Do not check the suffix of <id> tags"
+    # (https://github.com/hughsie/appstream-glib/blob/appstream_glib_0_7_2/NEWS)
+    # We should not change the ID, so check for a newer appstream-util
+    if(APPSTREAM_UTIL_VERSION VERSION_LESS "0.7.2")
+        message(WARNING "appstream-util < 0.7.2 found. Please upgrade appstream-util, to check the appdata file.")
+        set(APPSTREAM_UTIL "")
+    endif()
+else()
+    message(STATUS "appstream-util not found. Do not check of the appstream file.")
+endif()
+if(APPSTREAM_UTIL)
+    add_test(
+        NAME check_appstream_file
+        COMMAND ${APPSTREAM_UTIL} --nonet validate "${CMAKE_SOURCE_DIR}/data/io.github.wxmaxima_developers.wxMaxima.appdata.xml")
 endif()
 
