@@ -794,9 +794,8 @@ msgid "Alternatively the curve can be made more colorful:\n"
 msgstr "Alternativ kann die Kurve bunter gemacht werden:\n"
 
 #: ../../src/wxMaximaFrame.cpp:780
-#, fuzzy
 msgid "Always after underscores"
-msgstr "Mache alles nach einem Unterstrich tiefgestellt"
+msgstr "Immer nach einem Unterstrich"
 
 #: ../../src/wxMaximaFrame.cpp:781
 msgid "Always autosubscript after an underscore"
@@ -804,7 +803,7 @@ msgstr "Mache alles nach einem Unterstrich tiefgestellt"
 
 #: ../../src/wxMaximaFrame.cpp:789
 msgid "Always display this variable with subscript"
-msgstr ""
+msgstr "Stelle diese Variable immer mit Tiefstellung an"
 
 #: ../../src/Worksheet.cpp:1538
 msgid "Always show all digits"
@@ -1502,7 +1501,7 @@ msgstr "Auswahl löschen"
 
 #: ../../src/ConfigDialogue.cpp:1438
 msgid "Clipboard format parameters"
-msgstr ""
+msgstr "Formatierungs-Parameter für die Zwischenablage"
 
 #: ../../src/wxMaximaFrame.cpp:659
 msgid "Close\tCtrl+W"
@@ -2028,7 +2027,7 @@ msgstr "Debug-Nachrichten"
 
 #: ../../src/wxMaximaFrame.cpp:793
 msgid "Declare Text to always be displayed as subscript"
-msgstr ""
+msgstr "Deklariere Text, der immer tiefgestellt angezeigt werden soll"
 
 #: ../../src/wxMaxima.cpp:6206
 msgid "Declare a text snippet to always be displayed as subscript"
@@ -2695,7 +2694,7 @@ msgstr "Matrix in csv-Datei exportieren"
 
 #: ../../src/History.cpp:81
 msgid "Export all history to a .mac file"
-msgstr "Exportiere die Historie als .mac-File"
+msgstr "Exportiere die Historie als .mac Datei"
 
 #: ../../src/ConfigDialogue.cpp:747
 msgid "Export all settings"
@@ -2703,7 +2702,7 @@ msgstr "Exportiere alle Einstellungen"
 
 #: ../../src/History.cpp:82
 msgid "Export commands from the current maxima session to a .mac file"
-msgstr "Exportiere die Befehle der aktuellen Maxima-Session als .mac-File"
+msgstr "Exportiere die Befehle der aktuellen Maxima-Session als .mac Datei"
 
 #: ../../src/wxMaximaFrame.cpp:672
 msgid "Export document to a HTML or LaTeX file"
@@ -2719,7 +2718,7 @@ msgstr "Exportieren der Datei ist fehlgeschlagen!"
 
 #: ../../src/History.cpp:84
 msgid "Export selected commands to a .mac file"
-msgstr "Exportiere Auswahl in ein .mac-File"
+msgstr "Exportiere ausgewählte Befehle in eine .mac Datei"
 
 #: ../../src/wxMaximaFrame.cpp:606
 msgid "Export successful."
@@ -2727,7 +2726,7 @@ msgstr "Das Exportieren war erfolgreich."
 
 #: ../../src/History.cpp:86
 msgid "Export visible commands to a .mac file"
-msgstr "Exportiere sichtbare Befehle in ein .mac-File"
+msgstr "Exportiere sichtbare Befehle in eine .mac Datei"
 
 #: ../../src/History.cpp:218
 msgid "Exporting to .mac file failed!"
@@ -2870,7 +2869,7 @@ msgstr "Fataler Fehler"
 
 #: ../../src/main.cpp:342
 msgid "File"
-msgstr "&Datei"
+msgstr "Datei"
 
 #: ../../src/wxMaxima.cpp:3309 ../../src/wxMaxima.cpp:3364
 #: ../../src/wxMaxima.cpp:3656 ../../src/wxMaxima.cpp:3666
@@ -3945,9 +3944,8 @@ msgid "Import settings"
 msgstr "Importiere die Einstellungen von einer Datei"
 
 #: ../../src/ConfigDialogue.cpp:736
-#, fuzzy
 msgid "Import+Export"
-msgstr "Exportieren"
+msgstr "Importieren+Exportieren"
 
 #: ../../examples/examples_gettext.list:288
 msgid ""
@@ -5033,9 +5031,8 @@ msgid "Maxima commands to be executed every time wxMaxima starts Maxima"
 msgstr "Maxima-Befehle, die wxMaxima jeden neuen Maxima-Prozess ausführen lassen soll: "
 
 #: ../../src/ConfigDialogue.cpp:1124
-#, fuzzy
 msgid "Maxima configuration"
-msgstr "wxMaxima Konfiguration"
+msgstr "Maxima Konfiguration"
 
 #: ../../src/Configuration.cpp:1394
 msgid "Maxima errors"
@@ -5385,7 +5382,7 @@ msgstr "Betrag der höchsten Zahl, die ohne Exponent dargestellt werden soll:"
 
 #: ../../src/ConfigDialogue.cpp:1445
 msgid "Maximum bitmap size on clipboard [Mb]:"
-msgstr ""
+msgstr "Maximale Bitmap-Größe in der Zwischenablage [MB]:"
 
 #: ../../src/ConfigDialogue.cpp:565
 msgid "Maximum displayed number of digits:"
@@ -5527,7 +5524,7 @@ msgstr ""
 
 #: ../../src/wxMaximaFrame.cpp:791
 msgid "Never display this variable with subscript"
-msgstr ""
+msgstr "Stelle diese Variable nie mit Tiefstellung an"
 
 #: ../../src/Worksheet.cpp:1415 ../../src/Worksheet.cpp:1717
 msgid "Never offer known answers"
@@ -6779,7 +6776,7 @@ msgstr "Irgendwas stimmt mit dem Zeichensatz nicht."
 #: ../../src/Autocomplete.cpp:271
 msgid "Seems like the package with the maxima share files isn't installed."
 msgstr ""
-"Das Paket mit den Share-Files von Maxima scheint nicht installiert zu sein."
+"Das Paket mit den Share-Dateien von Maxima scheint nicht installiert zu sein."
 
 #: ../../src/TableOfContents.cpp:271
 msgid "Select"
@@ -7499,7 +7496,7 @@ msgstr "Statistik\tAlt+Shift+S"
 
 #: ../../src/wxMaximaFrame.cpp:801
 msgid "Straight lines"
-msgstr "Gerade Linien."
+msgstr "Gerade Linien"
 
 #: ../../src/wxMaxima.cpp:1655
 msgid "String from maxima apparently didn't end in a newline"
@@ -7768,7 +7765,7 @@ msgid ""
 "MAXIMA_OBJDIR isn't set the subdirectory with the results from compiling "
 "maxima libraries."
 msgstr ""
-"Das Verzeichnis, das die Startup-Files, vom User geschriebene Bibliotheken "
+"Das Verzeichnis, das die Startup-Dateien, vom User geschriebene Bibliotheken "
 "und, wenn MAXIMA_OBJDIR nicht gesetzt ist, das Ergebnis vom Versuch, "
 "maxima's Bibliotheken zu compilieren enthält."
 
@@ -8760,8 +8757,8 @@ msgid ""
 msgstr ""
 "wxMaxima wird von den Einstellungen in diesem Dialog gesteuert. Das "
 "Kommandozeilentool Maxima hingegen wird mit wenigen Ausnahmefällen, in denen "
-"wxMaxima Variablen in Maxima setzt, mittels Umgebungsvariablen, dem Startup "
-"File und Kommandozeilenparametern konfiguriert."
+"wxMaxima Variablen in Maxima setzt, mittels Umgebungsvariablen, der Startup "
+"Datei und Kommandozeilenparametern konfiguriert."
 
 #: ../../src/wxMaxima.cpp:5248
 msgid ""
@@ -9602,11 +9599,11 @@ msgstr "zeta"
 #~ msgid " times"
 #~ msgstr "-mal verdoppelt."
 
-#~ msgid "&Definite integration"
-#~ msgstr "&Bestimmtes Integral"
+msgid "&Definite integration"
+msgstr "&Bestimmtes Integral"
 
-#~ msgid "&Numerical integration"
-#~ msgstr "&Numerische Integration"
+msgid "&Numerical integration"
+msgstr "&Numerische Integration"
 
 #~ msgid "&Nusum"
 #~ msgstr "&Gosper"
@@ -9902,8 +9899,8 @@ msgstr "zeta"
 #~ msgid "Maxima's power lies in symbolic operations."
 #~ msgstr "Die Stärke von Maxima liegt im symbolischen Rechnen."
 
-#~ msgid "Method:"
-#~ msgstr "Methode:"
+msgid "Method:"
+msgstr "Methode:"
 
 #~ msgid "Name of the parameter"
 #~ msgstr "Name des Parameters"
