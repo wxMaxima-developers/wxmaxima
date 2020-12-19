@@ -38,6 +38,7 @@ Buttonwrapsizer::Buttonwrapsizer(int orient) :
 
 void Buttonwrapsizer::RecalcSizes()
 {
+  wxWrapSizer::RecalcSizes();
   wxSizerItemList children = GetChildren();
   long width = -1;
   for (wxSizerItemList::Node *node = children.GetFirst(); node; node = node->GetNext())
@@ -58,6 +59,5 @@ void Buttonwrapsizer::RecalcSizes()
     item->SetMinSize(bestSize);
     item->SetSize(bestSize);
   }
-  wxWrapSizer::RecalcSizes();
 }
 
