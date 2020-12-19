@@ -493,13 +493,7 @@ wxString IntCell::ToXML() const
 
   wxString var;
   if (m_var != NULL)
-  {
-    var = m_var->ToXML();
-  }
-  if (m_var->GetNext() != NULL)
-  {
-    var = m_var->GetNext()->ListToXML();
-  }
+    var = m_var->ListToXML();
   var = wxT("<r>") + var + wxT("</r>");
 
   wxString flags;
