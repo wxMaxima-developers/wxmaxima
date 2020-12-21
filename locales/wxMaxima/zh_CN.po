@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: wxMaxima HEAD\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-11-26 08:02+0100\n"
-"PO-Revision-Date: 2020-12-20 14:57+0800\n"
+"PO-Revision-Date: 2020-12-21 21:44+0800\n"
 "Last-Translator: Liu Rong <rong.liu@mail.bnu.edu.cn>\n"
 "Language-Team: amateur\n"
 "Language: zh\n"
@@ -2139,7 +2139,7 @@ msgstr "将此输入单元格分为两个单元格"
 
 #: ../../src/wxMaxima.cpp:7704
 msgid "Do for each list element"
-msgstr "应用函数至列表元素"
+msgstr "对每个列表元素进行操作"
 
 #: ../../src/wxMaxima.cpp:10477
 #, c-format
@@ -3519,18 +3519,24 @@ msgid ""
 "If maxima was compiled by GCL: Garbage Collect at minimum allocation past "
 "this heapsize"
 msgstr ""
+"If maxima was compiled by GCL: Garbage Collect at minimum allocation past "
+"this heapsize"
 
 #: ../../src/ConfigDialogue.cpp:167
 msgid ""
 "If maxima was compiled by GCL: Minimum allocation fraction between Garbage "
 "Collects"
 msgstr ""
+"If maxima was compiled by GCL: Minimum allocation fraction between Garbage "
+"Collects"
 
 #: ../../src/ConfigDialogue.cpp:166
 msgid ""
 "If maxima was compiled by GCL: Only garbage collect past this heapsize "
 "fraction of working mem"
 msgstr ""
+"If maxima was compiled by GCL: Only garbage collect past this heapsize "
+"fraction of working mem"
 
 #: ../../src/ConfigDialogue.cpp:170
 msgid ""
@@ -3538,12 +3544,17 @@ msgid ""
 "processes. Allows more than one gcl-compiled maxima to run at the same time, "
 "but might provoke crashes."
 msgstr ""
+"If maxima was compiled by GCL: Share the allocated memory between gcl "
+"processes. Allows more than one gcl-compiled maxima to run at the same time, "
+"but might provoke crashes."
 
 #: ../../src/ConfigDialogue.cpp:169
 msgid ""
 "If maxima was compiled by GCL: The fraction of the total installed RAM to "
 "reserve for maxima"
 msgstr ""
+"If maxima was compiled by GCL: The fraction of the total installed RAM to "
+"reserve for maxima"
 
 #: ../../src/ConfigDialogue.cpp:337
 msgid ""
@@ -4388,7 +4399,7 @@ msgstr "长度"
 msgid ""
 "Let's assume that R_1 is a 100Ω with 10% tolerance. R_2 is a 1000Ω resistor "
 "with 1% tolerance instead:\n"
-msgstr "假设 R_1=100Ω 且相对误差为百分之十，R_2=1000Ω 且相对误差为百分之一：\n"
+msgstr "假设 R_1=100Ω 且相对误差为 1%，R_2=1000Ω 且相对误差为 1%：\n"
 
 #: ../../examples/examples_gettext.list:607
 msgid ""
@@ -8252,15 +8263,15 @@ msgstr "使用不同的拟合算法\n"
 msgid ""
 "Using gnuplot's antialiassing-less png driver for embedded plots as pngcairo "
 "could not be found"
-msgstr ""
+msgstr "在找不到 pngcairo 时，为嵌入式绘图使用 gnuplot 的抗锯齿 png 驱动程序"
 
 #: ../../src/wxMaxima.cpp:2139
 msgid "Using gnuplot's pngcairo driver for embedded plots"
-msgstr ""
+msgstr "为嵌入式绘图使用 gnuplot 的 pngcairo 驱动程序"
 
 #: ../../src/wxMaxima.cpp:4418
 msgid "Using the built-in list of manual anchors."
-msgstr ""
+msgstr "使用内置的用户手册锚列表。"
 
 #: ../../src/ConfigDialogue.cpp:433
 msgid "Value"
@@ -8278,7 +8289,7 @@ msgstr "变量"
 #: ../../examples/examples_gettext.list:2141
 msgid ""
 "Variable and equation names containing \"'\", \"+\", \"-\" or the like\n"
-msgstr "包含 “'”、“+”、“-” 等符号的变量和方程名称\n"
+msgstr "包含 “'、“+”、“-” 等符号的变量和方程名称\n"
 
 #: ../../src/wxMaxima.cpp:6187 ../../src/wxMaxima.cpp:6197
 #: ../../src/wxMaxima.cpp:7664
@@ -8318,11 +8329,11 @@ msgstr "视图"
 
 #: ../../examples/examples_gettext.list:196
 msgid "Visualizing 3D curves\n"
-msgstr ""
+msgstr "三维图形可视化\n"
 
 #: ../../src/ConfigDialogue.cpp:1053
 msgid "Warn if an inactive window is idle"
-msgstr ""
+msgstr "非活动窗口空闲时发出警告"
 
 #: ../../src/MathParser.cpp:1139 ../../src/wxMaxima.cpp:3770
 #: ../../src/wxMaxima.cpp:3857 ../../src/wxMaxima.cpp:3971
@@ -8331,11 +8342,11 @@ msgstr "警告"
 
 #: ../../examples/examples_gettext.list:1063
 msgid "We also can add a second element to x:\n"
-msgstr "我们还可以在 x 中添加第二个元素:\n"
+msgstr "我们还可以在 x 中添加第二个元素：\n"
 
 #: ../../examples/examples_gettext.list:1539
 msgid "We can introduce (\"substitute\") them into other equations:\n"
-msgstr "也可以将它们引入 (代入, substitute) 其他方程:\n"
+msgstr "也可以将它们引入（代入，substitute）其他方程：\n"
 
 #: ../../examples/examples_gettext.list:1788
 #, c-format
@@ -8344,13 +8355,12 @@ msgid ""
 "but are guaranteed to always deviate into the same direction by the same "
 "percentage.\n"
 msgstr ""
-"也可以假设另一组相对误差：两个电阻的相对误差都是百分之十，但\n"
-"总是以相同的百分比向\n"
-"同一方向偏离：\n"
+"也可以假设另一组相对误差：两个电阻的相对误差都是 10%，但\n"
+"总是以相同的百分比向同一方向偏离：\n"
 
 #: ../../examples/examples_gettext.list:1523
 msgid "We can use them as an input to solve:\n"
-msgstr "我们可以将它们作为 solve() 命令的参数进而求解:\n"
+msgstr "我们可以将它们作为 solve() 命令的参数进而求解：\n"
 
 #: ../../examples/examples_gettext.list:1832
 msgid ""
@@ -8359,10 +8369,10 @@ msgid ""
 "First we tell maxima not to print a warning if a float is replaced by a "
 "fraction of the same value:\n"
 msgstr ""
-"现在来测试最小值、典型值和最大值的所有组合.\n"
+"现在来测试最小值、典型值和最大值的所有组合。\n"
 "\n"
-"首先, 我们告诉 Maxima, 在将浮点数替换为与其值相同的分数时\n"
-"不显示警告:\n"
+"首先，我们告诉 Maxima，在将浮点数替换为与其值相同的分数时\n"
+"不显示警告：\n"
 
 #: ../../src/wxMaxima.cpp:4591
 msgid "Welcome to wxMaxima"
@@ -8374,7 +8384,7 @@ msgstr "没有符号解时的解决办法\n"
 
 #: ../../src/wxMaxima.cpp:7701
 msgid "What to do:"
-msgstr ""
+msgstr "如何操作："
 
 #: ../../src/TipOfTheDay.cpp:111
 msgid ""
@@ -8389,7 +8399,7 @@ msgstr ""
 msgid ""
 "Whenever a numerical value is needed this list can be introduced into any "
 "equation:\n"
-msgstr "每当需要数值时, 可将此列表代入对应的公式:\n"
+msgstr "每当需要数值时，可将此列表代入对应的公式：\n"
 
 #: ../../src/ConfigDialogue.cpp:769
 msgid ""
@@ -8398,30 +8408,35 @@ msgid ""
 "that set the value of variables within Maxima: Instead Maxima is configured "
 "using environment variables, the Startup File and command-line switches."
 msgstr ""
+"虽然可用这里的设置控制 wxMaxima，但是除了少数 wxMaxima 设置值外，作为命令行程"
+"序的 Maxima 几乎不受这里的设置值控制。可以使用环境变量、启动文件和命令行选项"
+"设置 Maxima。"
 
 #: ../../src/wxMaxima.cpp:5248
 msgid ""
 "Whole document (*.wxmx)|*.wxmx|The input, readable by load() (maxima > 5.38) "
 "(*.wxm)|*.wxm"
 msgstr ""
+"整个文档 (*.wxmx)|*.wxmx|输入的命令，可被 load() 命令读取 (maxima > 5.38) (*."
+"wxm)|*.wxm"
 
 #: ../../src/ConfigDialogue.cpp:246
 msgid "Worksheet"
-msgstr "工作表格"
+msgstr "工作簿"
 
 #: ../../src/ConfigDialogue.cpp:362
 msgid ""
 "Wrap equations exported by the \"copy as LaTeX\" feature between \\[ and \\] "
 "as equation markers"
-msgstr ""
+msgstr "对由“复制为 LaTeX”功能导出的式子，使用 \\[ 和 \\] 作为公式环境标志"
 
 #: ../../src/Worksheet.cpp:7649
 msgid "Wrapped search"
-msgstr ""
+msgstr "Wrapped search"
 
 #: ../../src/wxMaximaFrame.cpp:1950
 msgid "Xi"
-msgstr ""
+msgstr "Xi"
 
 #: ../../src/ConfigDialogue.cpp:575
 msgid "Yes"
@@ -8496,11 +8511,11 @@ msgstr ""
 
 #: ../../src/wxMaxima.cpp:10481
 msgid "Your changes will be lost if you don't save them."
-msgstr "如果您未保存，您的所有更改将会丢掉。"
+msgstr "如果不保存，所有更改将会丢失。"
 
 #: ../../src/wxMaxima.cpp:10429
 msgid "Your version of wxMaxima is up to date."
-msgstr "您的 wxMaxima 版本是最新版本。"
+msgstr "当前 wxMaxima 是最新版本。"
 
 #: ../../src/wxMaximaFrame.cpp:1942
 msgid "Zeta"
@@ -8508,7 +8523,7 @@ msgstr "Zeta"
 
 #: ../../src/wxMaximaFrame.cpp:807
 msgid "Zoom &In\tCtrl++"
-msgstr "放大(&I)\tAlt++"
+msgstr "放大(&I)\tCtrl++"
 
 #: ../../src/wxMaximaFrame.cpp:809
 msgid "Zoom Ou&t\tCtrl+-"
@@ -8582,11 +8597,11 @@ msgstr "chi"
 
 #: ../../src/ConfigDialogue.cpp:1142
 msgid "choose a lisp maxima was compiled with"
-msgstr "选择要编译的 Lisp Maxima"
+msgstr "选择编译 Maxima 的 Lisp 类型"
 
 #: ../../src/ConfigDialogue.cpp:1145
 msgid "choose between installed maxima versions"
-msgstr "选择已安装的 maxima 版本"
+msgstr "选择已安装的 Maxima 版本"
 
 #: ../../src/wxMaxima.cpp:6915
 msgid "comma-separated column numbers:"
@@ -8598,31 +8613,31 @@ msgstr "要删除的行，用逗号分隔"
 
 #: ../../src/wxMaximaFrame.cpp:1912
 msgid "delta"
-msgstr ""
+msgstr "delta"
 
 #: ../../src/wxMaximaFrame.cpp:1261
 msgid "do for each element"
-msgstr ""
+msgstr "对每个元素操作"
 
 #: ../../src/wxMaxima.cpp:7598
 msgid "element number n"
-msgstr ""
+msgstr "项数 n"
 
 #: ../../src/wxMaximaFrame.cpp:2013
 msgid "empty"
-msgstr ""
+msgstr "空集"
 
 #: ../../src/wxMaximaFrame.cpp:1913
 msgid "epsilon"
-msgstr ""
+msgstr "epsilon"
 
 #: ../../src/wxMaximaFrame.cpp:2021
 msgid "equivalent"
-msgstr ""
+msgstr "等价于"
 
 #: ../../src/wxMaximaFrame.cpp:1915
 msgid "eta"
-msgstr ""
+msgstr "eta"
 
 #: ../../src/wxMaximaFrame.cpp:2009
 msgid "exists"
@@ -8635,9 +8650,9 @@ msgid ""
 "subscript is a number or a single letter\n"
 "all=_ marks subscripts."
 msgstr ""
-"false=不生成下标\n"
-"true=如果下标是数字或单个字母，则自动将下划线转换为下标标记\n"
-"all=_标记"
+"false = 不生成下标\n"
+"true = 如果下划线后是数字或单个字母，则自动将其转换为下标\n"
+"all = 符号“_”后文本均为下标"
 
 #: ../../examples/examples_gettext.list:1688
 msgid "find_root\n"
@@ -8648,8 +8663,8 @@ msgid ""
 "find_root even works if the equation isn't differentiable and searches for a "
 "solution in between two points.\n"
 msgstr ""
-"如果函数是不可微的, 可以用 find_root() 命令寻找在两个指定点\n"
-"之间的某个零点:\n"
+"如果函数是不可微的，可以用 find_root() 命令寻找在两个指定点\n"
+"之间的某个零点：\n"
 
 #: ../../examples/examples_gettext.list:436
 msgid "for\n"
@@ -8657,19 +8672,19 @@ msgstr "for() 命令\n"
 
 #: ../../src/wxMaximaFrame.cpp:1237
 msgid "from a list"
-msgstr ""
+msgstr "从列表"
 
 #: ../../src/wxMaximaFrame.cpp:1234
 msgid "from a rule"
-msgstr ""
+msgstr "从规则"
 
 #: ../../src/wxMaximaFrame.cpp:1245
 msgid "from function arguments"
-msgstr "函数参数"
+msgstr "从函数参数"
 
 #: ../../src/wxMaximaFrame.cpp:1231
 msgid "from individual elements"
-msgstr "从单个元素中"
+msgstr "从独立元素"
 
 #: ../../src/wxMaximaFrame.cpp:1911
 msgid "gamma"
@@ -8721,7 +8736,7 @@ msgstr "map() 命令可以对列表的每个元素作用相同的函数：\n"
 
 #: ../../src/wxMaxima.cpp:7050
 msgid "matrix[i,j]:"
-msgstr "矩阵[i,j]："
+msgstr "生成矩阵 [i,j] 项的公式："
 
 #: ../../examples/examples_gettext.list:1668
 msgid "mnewton\n"
@@ -8858,8 +8873,8 @@ msgid ""
 "solve() which tries to find a symbolical solution is bound to fail here and "
 "tells us how far it got:\n"
 msgstr ""
-"solve() 命令在试图寻找上述方程的一个符号解时, 虽然注定失败, 但\n"
-"仍会输出它得到的结果:\n"
+"solve() 命令在试图寻找上述方程的一个符号解时，虽然注定失败，\n"
+"但仍会输出它得到的结果:\n"
 
 #: ../../src/wxMaxima.cpp:6578 ../../src/wxMaxima.cpp:9253
 msgid ""
@@ -8869,6 +8884,10 @@ msgid ""
 "needs to do its work can be used to tell solve() which variables to "
 "eliminate in the solution for the interesting variable."
 msgstr ""
+"只有当方程组含 n 个独立方程和要求解的 n 个变量时，solve() 命令才能解出该方程"
+"组。\n"
+"如果只对其中一个变量感兴趣，也可以填写额外的变量，以告诉 solve() 命令消除感兴"
+"趣的变量结果中额外的变量。"
 
 #: ../../src/wxMaximaFrame.cpp:2004
 msgid "sqrt (needs parenthesis for its argument to work as a Maxima command)"
@@ -8982,7 +9001,7 @@ msgid ""
 msgstr ""
 "wxMaxima 无法启动服务器。\n"
 "\n"
-"请检查您的网络支持是否已打开并再次尝试。"
+"请检查网络是否已连接并再次尝试。"
 
 #: ../../src/TipOfTheDay.cpp:105
 msgid ""
@@ -9044,6 +9063,8 @@ msgid ""
 "draw() in order to be able to open plots interactively in gnuplot later. "
 "This setting defines the limit [in Megabytes per plot] for this feature."
 msgstr ""
+"wxMaxima 通常会储存由 draw() 命令得到的每个绘图的 gnuplot 源文件，以便以后能"
+"在gnuplot 中交互式打开绘图。此设置定义了该功能的储存限制（单位：MB/图）。"
 
 #: ../../src/TipOfTheDay.cpp:141
 msgid ""
@@ -9062,6 +9083,8 @@ msgid ""
 "set it automatically offers to enter the last answer to this question the "
 "user has input."
 msgstr ""
+"wxMaxima 记得 Maxima 所提问题的答案。如果设置了此复选框，它将自动输入用户对此"
+"问题的最后一个答案。"
 
 #: ../../src/ConfigDialogue.cpp:824
 msgid "wxMaxima startup file location: "
@@ -9080,13 +9103,13 @@ msgstr "wxMaxima 的许可证"
 msgid ""
 "wxMaxma remembers answers from the last run and is able to automatically "
 "send them to maxima, if requested"
-msgstr ""
+msgstr "wxMaxma 会记住上次运行的答案，在需要时可以自动将它们发送到 Maxima"
 
 #: ../../src/Worksheet.cpp:1416 ../../src/Worksheet.cpp:1718
 msgid ""
 "wxMaxma remembers answers from the last run and is able to offer them as the "
 "default answer"
-msgstr ""
+msgstr "wxMaxma 会记住上次运行的答案，且能将它们作为默认答案"
 
 #: ../../src/wxMaximaFrame.cpp:128
 msgid "wxWidgets is using GTK 2"
@@ -9106,7 +9129,7 @@ msgstr "x"
 
 #: ../../src/wxMaxima.cpp:7304
 msgid "x direction [in multiples of the tick frequency]"
-msgstr ""
+msgstr "x 轴方向的刻度分隔份数"
 
 #: ../../src/wxMaximaFrame.cpp:1922
 msgid "xi"
@@ -9114,7 +9137,7 @@ msgstr "xi"
 
 #: ../../src/wxMaxima.cpp:3663 ../../src/wxMaxima.cpp:3803
 msgid "xml contained in the file claims not to be a wxMaxima worksheet. "
-msgstr ""
+msgstr "文件中包含的 xml 声明其不是 wxMaxima 工作簿。"
 
 #: ../../src/wxMaximaFrame.cpp:2018
 msgid "xor"
@@ -9122,7 +9145,7 @@ msgstr "异或"
 
 #: ../../src/wxMaxima.cpp:7305
 msgid "y direction [in multiples of the tick frequency]"
-msgstr ""
+msgstr "y 轴方向的刻度分隔份数"
 
 #: ../../src/wxMaxima.cpp:8468
 msgid "yes"
