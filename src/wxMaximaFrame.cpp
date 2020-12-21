@@ -1052,6 +1052,9 @@ void wxMaximaFrame::SetupMenu()
                          wxITEM_NORMAL);
   m_Algebra_Menu->Append(menu_adjoint_mat, _("Ad&joint Matrix"),
                          _("Compute the adjoint matrix"), wxITEM_NORMAL);
+  m_Algebra_Menu->Append(menu_rank, _("Rank"),
+                         _("Compute the rank of a matrix"),
+                         wxITEM_NORMAL);
   m_Algebra_Menu->Append(menu_transpose, _("&Transpose Matrix"),
                          _("Transpose a matrix"), wxITEM_NORMAL);
   m_Algebra_Menu->AppendSeparator();

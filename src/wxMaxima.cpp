@@ -556,6 +556,8 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
           wxCommandEventHandler(wxMaxima::MatrixMenu), NULL, this);
   Connect(menu_determinant, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::MatrixMenu), NULL, this);
+  Connect(menu_rank, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MatrixMenu), NULL, this);
   Connect(menu_eigen, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::MatrixMenu), NULL, this);
   Connect(menu_eigvect, wxEVT_MENU,
@@ -6937,6 +6939,10 @@ void wxMaxima::MatrixMenu(wxCommandEvent &event)
       break;
     case menu_determinant:
       cmd = wxT("determinant(") + expr + wxT(");");
+      MenuCommand(cmd);
+      break;
+    case menu_rank:
+      cmd = wxT("rank(") + expr + wxT(");");
       MenuCommand(cmd);
       break;
     case menu_eigen:
