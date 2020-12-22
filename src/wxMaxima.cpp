@@ -468,6 +468,14 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
           wxCommandEventHandler( wxMaxima::MatrixMenu), NULL, this);
   Connect(menu_submatrix, wxEVT_MENU,
           wxCommandEventHandler( wxMaxima::MatrixMenu), NULL, this);
+  Connect(menu_matrix_multiply, wxEVT_MENU,
+          wxCommandEventHandler( wxMaxima::MatrixMenu), NULL, this);
+  Connect(menu_matrix_exponent, wxEVT_MENU,
+          wxCommandEventHandler( wxMaxima::MatrixMenu), NULL, this);
+  Connect(menu_matrix_hadamard_product, wxEVT_MENU,
+          wxCommandEventHandler( wxMaxima::MatrixMenu), NULL, this);
+  Connect(menu_matrix_hadamard_exponent, wxEVT_MENU,
+          wxCommandEventHandler( wxMaxima::MatrixMenu), NULL, this);
   Connect(button_rectform, wxEVT_BUTTON,
           wxCommandEventHandler( wxMaxima::SimplifyMenu), NULL, this);
   Connect(button_trigrat, wxEVT_BUTTON,
@@ -6933,6 +6941,74 @@ void wxMaxima::MatrixMenu(wxCommandEvent &event)
       wiz->Destroy();
       break;
     }
+    case menu_matrix_multiply:
+    {
+      Gen2Wiz *wiz = new Gen2Wiz(_("Left matrix:"),
+                                 _("Right matrix:"),
+                                 expr, wxEmptyString,
+                                 m_worksheet->m_configuration,
+                                 this, -1, _("Matrix Product"), true);
+      //wiz->Centre(wxBOTH);
+      if (wiz->ShowModal() == wxID_OK)
+      {
+        cmd = wiz->GetValue1() + wxT(" . ")
+          + wiz->GetValue2() + wxT(";");
+        MenuCommand(cmd);
+      }
+      wiz->Destroy();
+    }
+    break;
+    case menu_matrix_exponent:
+    {
+      Gen2Wiz *wiz = new Gen2Wiz(_("Left matrix:"),
+                                 _("Right matrix:"),
+                                 expr, wxEmptyString,
+                                 m_worksheet->m_configuration,
+                                 this, -1, _("Matrix exponent"), true);
+      //wiz->Centre(wxBOTH);
+      if (wiz->ShowModal() == wxID_OK)
+      {
+        cmd = wiz->GetValue1() + wxT("^^")
+          + wiz->GetValue2() + wxT(";");
+        MenuCommand(cmd);
+      }
+      wiz->Destroy();
+    }
+    break;
+    case menu_matrix_hadamard_product:
+    {
+      Gen2Wiz *wiz = new Gen2Wiz(_("Matrix #1:"),
+                                 _("Matrix #2:"),
+                                 expr, wxEmptyString,
+                                 m_worksheet->m_configuration,
+                                 this, -1, _("Element-by-element Product of matrices of the same size (Hadamard product)"), true);
+      //wiz->Centre(wxBOTH);
+      if (wiz->ShowModal() == wxID_OK)
+      {
+        cmd = wiz->GetValue1() + wxT("*")
+          + wiz->GetValue2() + wxT(";");
+        MenuCommand(cmd);
+      }
+      wiz->Destroy();
+    }
+    break;
+    case menu_matrix_hadamard_exponent:
+    {
+      Gen2Wiz *wiz = new Gen2Wiz(_("Matrix #1:"),
+                                 _("Matrix #2:"),
+                                 expr, wxEmptyString,
+                                 m_worksheet->m_configuration,
+                                 this, -1, _("Exponent based on the hadamard product"), true);
+      //wiz->Centre(wxBOTH);
+      if (wiz->ShowModal() == wxID_OK)
+      {
+        cmd = wiz->GetValue1() + wxT("^")
+          + wiz->GetValue2() + wxT(";");
+        MenuCommand(cmd);
+      }
+      wiz->Destroy();
+    }
+    break;      
     case menu_invert_mat:
       cmd = wxT("invert(") + expr + wxT(");");
       MenuCommand(cmd);
