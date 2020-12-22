@@ -1068,6 +1068,15 @@ void wxMaximaFrame::SetupMenu()
                          _("Extract a column from the matrix and convert it to a list"),
                          wxITEM_NORMAL);
   m_Algebra_Menu->AppendSeparator();
+  m_Algebra_Menu->Append(menu_matrix_multiply, _("Multiply matrices"));
+  m_Algebra_Menu->Append(menu_matrix_exponent, _("Matrix exponent"));
+  m_Algebra_Menu->Append(menu_matrix_hadamard_product, _("Hadamard (element-by-element) product"),
+                         _("Element-by-element multiplication"),
+                         wxITEM_NORMAL);
+  m_Algebra_Menu->Append(menu_matrix_hadamard_exponent, _("Hadamard exponent"),
+                         _("Repetitive element-by-element multiplication"),
+                         wxITEM_NORMAL);
+  m_Algebra_Menu->AppendSeparator();
   m_Algebra_Menu->Append(menu_make_list, _("Make &List..."),
                          _("Make list from expression"), wxITEM_NORMAL);
   m_Algebra_Menu->Append(menu_apply, _("&Apply to List..."),
