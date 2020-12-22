@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-12-22 22:29+0100\n"
-"PO-Revision-Date: 2020-10-13 06:26+0200\n"
+"PO-Revision-Date: 2020-12-22 22:37+0100\n"
 "Last-Translator: Gunter Königsmann <wxMaxima@physikbuch.de>\n"
 "Language-Team: german <de@li.org>\n"
 "Language: \n"
@@ -674,7 +674,6 @@ msgid "Added much text (%li chars) to the XML inspector."
 msgstr "Stelle viel Text (%li Zeichen) im XML-Inspektor dar."
 
 #: ../../src/ConfigDialogue.cpp:1424
-#, fuzzy
 msgid "Additional clipboard formats to put on the clipboard on ordinary copy"
 msgstr "Zusätzliche Standard-Formate für \"Kopieren\":"
 
@@ -1643,9 +1642,8 @@ msgstr ""
 "Kleinstes gemeinsames Vielfaches berechnen (vorher load(functs) ausführen)"
 
 #: ../../src/wxMaximaFrame.cpp:1056
-#, fuzzy
 msgid "Compute the rank of a matrix"
-msgstr "Determinante einer Matrix berechnen"
+msgstr "Rang einer Matrix berechnen"
 
 #: ../../src/wxMaxima.cpp:8959
 msgid "Condition:"
@@ -2036,7 +2034,7 @@ msgstr "Deklariere Text, der immer tiefgestellt angezeigt werden soll"
 
 #: ../../src/wxMaxima.cpp:6218
 msgid "Declare a text snippet to always be displayed as subscript"
-msgstr ""
+msgstr "Deklariere Text, der stets als Subscript darzustellen ist"
 
 #: ../../src/wxMaximaFrame.cpp:1138
 msgid "Decompose rational function to partial fractions"
@@ -2162,9 +2160,8 @@ msgid "Direction:"
 msgstr "Richtung:"
 
 #: ../../src/ConfigDialogue.cpp:546
-#, fuzzy
 msgid "Display"
-msgstr "&Zeitanzeige"
+msgstr "Anzeige"
 
 #: ../../src/wxMaximaFrame.cpp:957
 msgid "Display Te&X Form"
@@ -2188,9 +2185,8 @@ msgid "Display resolution according to wxWidgets: %i x %i ppi"
 msgstr "Bildschirmauflösung laut wxWidgets: %i x %i punkte pro Inch"
 
 #: ../../src/wxMaximaFrame.cpp:803
-#, fuzzy
 msgid "Display string quotation marks"
-msgstr "Anzeige von Gleichungen"
+msgstr "Anzeige von Anführungsstrichen bei Strings"
 
 #: ../../src/wxMaximaFrame.cpp:953
 msgid "Display time used for evaluation"
@@ -2339,11 +2335,11 @@ msgstr "Element"
 #: ../../src/wxMaxima.cpp:6984
 msgid ""
 "Element-by-element Product of matrices of the same size (Hadamard product)"
-msgstr ""
+msgstr "Multiplizieren der einzelnen Elemente von Matritzen derselben Größe (Hadamard-Produkt)"
 
 #: ../../src/wxMaximaFrame.cpp:1077
 msgid "Element-by-element multiplication"
-msgstr ""
+msgstr "Element-für-Element-Multiplikation"
 
 #: ../../src/wxMaxima.cpp:7592
 msgid "Element:"
@@ -2415,18 +2411,16 @@ msgid "Enter a matrix"
 msgstr "Eine Matrix eingeben"
 
 #: ../../src/ConfigDialogue.cpp:678
-#, fuzzy
 msgid "Enter adds newlines, Ctrl+Enter evaluates cells"
-msgstr "'Eingabe' wertet die Zelle aus"
+msgstr "'Strg+Eingabe' wertet die Zelle aus, Enter beginnt neue Zeile"
 
 #: ../../src/wxMaxima.cpp:8012
 msgid "Enter an equation for rational simplification:"
 msgstr "Geben Sie eine Gleichung zum Vereinfachen rationaler Ausdrücke an:"
 
 #: ../../src/ConfigDialogue.cpp:676
-#, fuzzy
 msgid "Enter evaluates cells, Ctrl+Enter adds newlines"
-msgstr "'Eingabe' wertet die Zelle aus"
+msgstr "'Eingabe' wertet die Zelle aus, Strg+Enter beginnt neue Zeile"
 
 #: ../../src/wxMaxima.cpp:7082
 msgid "Enter matrix"
@@ -2688,7 +2682,7 @@ msgstr "Erwarte, dass Variablen komplexe Zahlen beinhalten"
 
 #: ../../src/wxMaxima.cpp:7001
 msgid "Exponent based on the hadamard product"
-msgstr ""
+msgstr "Exponent, basierend auf Hadamard-Produkt"
 
 #: ../../src/ConfigDialogue.cpp:249 ../../src/wxMaxima.cpp:5761
 msgid "Export"
@@ -2743,9 +2737,8 @@ msgid "Export successful."
 msgstr "Das Exportieren war erfolgreich."
 
 #: ../../src/ConfigDialogue.cpp:757
-#, fuzzy
 msgid "Export the style settings"
-msgstr "Rücksetzen aller Stil-Einstellungen"
+msgstr "Exportieren aller Stil-Einstellungen"
 
 #: ../../src/History.cpp:83
 msgid "Export visible commands to a .mac file"
@@ -3379,7 +3372,7 @@ msgstr "Gitter"
 
 #: ../../src/ConfigDialogue.cpp:928
 msgid "HTML"
-msgstr ""
+msgstr "HTML"
 
 #: ../../src/wxMaxima.cpp:5763
 msgid ""
@@ -3391,11 +3384,11 @@ msgstr ""
 
 #: ../../src/wxMaximaFrame.cpp:1076
 msgid "Hadamard (element-by-element) product"
-msgstr ""
+msgstr "Hadamard-Produkt"
 
 #: ../../src/wxMaximaFrame.cpp:1079
 msgid "Hadamard exponent"
-msgstr ""
+msgstr "Hadamard-Exponent"
 
 #: ../../examples/examples_gettext.list:1109
 msgid "Hash maps have many uses. One is to implement memoizing:\n"
@@ -3606,9 +3599,8 @@ msgstr ""
 "nächste oder vorhergehende Zelle gelöscht."
 
 #: ../../src/ConfigDialogue.cpp:675
-#, fuzzy
 msgid "Hotkeys for sending commands to maxima"
-msgstr "Sende einen Befehl an Maxima"
+msgstr "Tastenkürzen zum Senden von Befehlen an Maxima"
 
 #: ../../src/wxMaxima.cpp:8484
 msgid "How many digits to show:"
@@ -3871,7 +3863,7 @@ msgstr ""
 msgid ""
 "If this checkbox isn't checked the current command is sent to maxima only on "
 "pressing Ctrl+Enter"
-msgstr ""
+msgstr "Wenn diese Checkbox nicht angekreuzt ist, wird das aktuelle Kommando an Maxima gesendet, wenn Ctrl+Enter gedrückt wird"
 
 #: ../../examples/examples_gettext.list:2090
 msgid ""
@@ -4317,9 +4309,8 @@ msgid "Intelligently hide cell brackets"
 msgstr "Intelligentes Verstecken der Zellklammer"
 
 #: ../../src/ConfigDialogue.cpp:648
-#, fuzzy
 msgid "Interaction"
-msgstr "Schnittmenge"
+msgstr "Interaktion"
 
 #: ../../src/ConfigDialogue.cpp:1037
 msgid "Interactive popup memory limit [MB/plot]:"
@@ -4507,7 +4498,7 @@ msgstr "KGV"
 
 #: ../../src/ConfigDialogue.cpp:893
 msgid "LaTeX"
-msgstr ""
+msgstr "LaTeX"
 
 #: ../../src/ConfigDialogue.cpp:916
 msgid "LaTeX: Place exponents after, instead above subscripts"
@@ -4589,9 +4580,8 @@ msgid "Least Squares Fit..."
 msgstr "Least-Squares-Fit ..."
 
 #: ../../src/wxMaxima.cpp:6946 ../../src/wxMaxima.cpp:6963
-#, fuzzy
 msgid "Left matrix:"
-msgstr "Matrix laden"
+msgstr "Linke Matrix"
 
 #: ../../src/wxMaximaFrame.cpp:1014
 msgid "Left side to the \"=\""
@@ -4602,7 +4592,6 @@ msgid "Length"
 msgstr "Länge"
 
 #: ../../examples/examples_gettext.list:1774
-#, fuzzy
 msgid ""
 "Let's assume that R_1 is a 100Ω with 10 percents of tolerance. R_2 is a "
 "1000Ω resistor with a 1 percent tolerance instead:\n"
@@ -4951,24 +4940,20 @@ msgid "Matrix"
 msgstr "Matrix"
 
 #: ../../src/wxMaxima.cpp:6980 ../../src/wxMaxima.cpp:6997
-#, fuzzy
 msgid "Matrix #1:"
-msgstr "Matrix"
+msgstr "Matrix #1:"
 
 #: ../../src/wxMaxima.cpp:6981 ../../src/wxMaxima.cpp:6998
-#, fuzzy
 msgid "Matrix #2:"
-msgstr "Matrix"
+msgstr "Matrix #2:"
 
 #: ../../src/wxMaxima.cpp:6950
-#, fuzzy
 msgid "Matrix Product"
-msgstr "Produkt"
+msgstr "Matrix-Produkt"
 
 #: ../../src/wxMaxima.cpp:6967 ../../src/wxMaximaFrame.cpp:1075
-#, fuzzy
 msgid "Matrix exponent"
-msgstr "Matrix Name:"
+msgstr "Matrix-Exponent:"
 
 #: ../../src/wxMaximaFrame.cpp:1034
 msgid "Matrix from csv file"
@@ -5006,9 +4991,8 @@ msgid "Maxima"
 msgstr "Maxima"
 
 #: ../../src/ConfigDialogue.cpp:1082
-#, fuzzy
 msgid "Maxima Location"
-msgstr "Maxima Fragen"
+msgstr "Maxima-Binary"
 
 #: ../../examples/examples_gettext.list:1213
 msgid ""
@@ -5266,9 +5250,8 @@ msgstr ""
 "(allerdings sehr kleinen) Fehler in die Rechnung einführt."
 
 #: ../../src/ConfigDialogue.cpp:1199
-#, fuzzy
 msgid "Maxima usage"
-msgstr "Maxima-Code"
+msgstr "Verwendung von Maxima"
 
 #: ../../src/wxMaxima.cpp:2688
 #, c-format
@@ -5526,7 +5509,7 @@ msgstr "Betrag der kleinsten Zahl, die ohne Exponent dargestellt werden soll:"
 
 #: ../../src/ConfigDialogue.cpp:962
 msgid "Misc"
-msgstr ""
+msgstr "Verschiedenes"
 
 #: ../../src/wxMaxima.cpp:9796 ../../src/wxMaxima.cpp:9797
 msgid "Mismatched parenthesis"
@@ -5562,7 +5545,7 @@ msgstr "My"
 
 #: ../../src/wxMaximaFrame.cpp:1074
 msgid "Multiply matrices"
-msgstr ""
+msgstr "Multipliziere Matritzen"
 
 #: ../../src/wxMaxima.cpp:7113 ../../src/wxMaxima.cpp:7133
 msgid "Name:"
@@ -5583,7 +5566,7 @@ msgstr "Nie"
 
 #: ../../src/wxMaxima.cpp:6198 ../../src/wxMaxima.cpp:6208
 msgid "Never autosubscript this variable"
-msgstr ""
+msgstr "Diese Variable niemals automatisch mit Subscript ausstatten"
 
 #: ../../src/wxMaximaFrame.cpp:790
 msgid "Never display this variable with subscript"
@@ -6275,7 +6258,7 @@ msgstr "RTF mit OMML-Formeln"
 
 #: ../../src/wxMaximaFrame.cpp:1055
 msgid "Rank"
-msgstr ""
+msgstr "Rang"
 
 #: ../../src/wxMaximaFrame.cpp:761
 msgid "Raw XML Monitor"
@@ -6449,7 +6432,7 @@ msgstr "Entfernt Zeilen und/oder Spalten von der Matrix"
 
 #: ../../src/wxMaximaFrame.cpp:1080
 msgid "Repetitive element-by-element multiplication"
-msgstr ""
+msgstr "Wiederholte Element-für-Element-Multiplikation"
 
 #: ../../src/FindReplacePane.cpp:104
 msgid "Replace All"
@@ -6569,9 +6552,8 @@ msgid "Right arrow"
 msgstr "Pfeil nach rechts"
 
 #: ../../src/wxMaxima.cpp:6947 ../../src/wxMaxima.cpp:6964
-#, fuzzy
 msgid "Right matrix:"
-msgstr "Pfeil nach rechts"
+msgstr "Rechte Matrix:"
 
 #: ../../src/wxMaximaFrame.cpp:1017
 msgid "Right side to the \"=\""
@@ -7715,7 +7697,7 @@ msgstr "Identisch mit Auswahl"
 
 #: ../../src/wxMaxima.cpp:6219
 msgid "Text snippet"
-msgstr ""
+msgstr "Textschnipsel"
 
 #: ../../examples/examples_gettext.list:2209
 msgid ""
@@ -8767,7 +8749,6 @@ msgid "We can introduce (\"substitute\") them into other equations:\n"
 msgstr "Wir können sie in andere Gleichungen hineinsubstituieren:\n"
 
 #: ../../examples/examples_gettext.list:1784
-#, fuzzy
 msgid ""
 "We can propose another set of values: Two resistors that have a high "
 "tolerance, but are guaranteed to always deviate into the same direction by "
