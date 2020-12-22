@@ -151,6 +151,7 @@ public:
     menu_invert_mat,
     menu_cpoly,
     menu_determinant,
+    menu_rank,
     menu_eigen,
     menu_eigvect,
     menu_fun_def,
