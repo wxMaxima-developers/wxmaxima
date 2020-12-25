@@ -39,27 +39,32 @@ Buttonwrapsizer::Buttonwrapsizer(int orient) :
 void Buttonwrapsizer::RecalcSizes()
 {
   wxSizerItemList children = GetChildren();
-  long width = 50;
+  long width = -1;
   long height = 20;
   for (wxSizerItemList::Node *node = children.GetFirst(); node; node = node->GetNext())
   {
     wxSizerItem* current =  node->GetData();
     wxWindow *item = current->GetWindow();
-    if(item->GetBestSize().x > width)
-      width = item->GetBestSize().x;
-    if(item->GetBestSize().y > height)
-      width = item->GetBestSize().y;
+    item->SendSizeEvent();
+    width = wxMax(width,item->GetBestSize().x);
+    height = wxMax(height,item->GetBestSize().y);
   }
+
+  if(width < 50)
+    return;
   
-  children = GetChildren();
+//  if(width < m_availSize)
+//    width = m_availSize / (m_availSize / width);
+     
+  wxSize bestSize(width, height);
   for (wxSizerItemList::Node *node = children.GetFirst(); node; node = node->GetNext())
   {
     wxSizerItem* current =  node->GetData();
     wxWindow *item = current->GetWindow();
-    wxSize bestSize(width, height);
     item->SetInitialSize(bestSize);
     item->SetMinSize(bestSize);
     item->SetSize(bestSize);
+    item->CacheBestSize(bestSize);
   }
   wxWrapSizer::RecalcSizes();
 }
