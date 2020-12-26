@@ -1528,8 +1528,8 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
           popupMenu.Append(popid_integrate, _("Integrate..."), wxEmptyString, wxITEM_NORMAL);
           popupMenu.Append(popid_diff, _("Differentiate..."), wxEmptyString, wxITEM_NORMAL);
           popupMenu.AppendSeparator();
-          popupMenu.Append(popid_plot2d, _("Plot 2d..."), wxEmptyString, wxITEM_NORMAL);
-          popupMenu.Append(popid_plot3d, _("Plot 3d..."), wxEmptyString, wxITEM_NORMAL);
+          popupMenu.Append(popid_plot2d, _("Plot 2D..."), wxEmptyString, wxITEM_NORMAL);
+          popupMenu.Append(popid_plot3d, _("Plot 3D..."), wxEmptyString, wxITEM_NORMAL);
         }
       }
       if (

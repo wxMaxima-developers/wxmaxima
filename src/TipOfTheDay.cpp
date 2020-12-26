@@ -42,7 +42,7 @@
 #define ABS(val) ((val) >= 0 ? (val) : -(val))
 
 TipOfTheDay::TipOfTheDay(wxWindow *parent)
-  : wxDialog(parent,-1,_("Tip of the Day"))
+  : wxDialog(parent,-1,_("Tip of the day"))
 {
   m_tips.Add(
     _("To start using wxMaxima right away, start typing your command. An input cell should appear. Then press Shift-Enter to evaluate your command.")

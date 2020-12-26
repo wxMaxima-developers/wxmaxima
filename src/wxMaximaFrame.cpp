@@ -449,7 +449,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
     Gripper(false).CloseButton(true);
 
   m_manager.GetPane(wxT("log")) =
-    m_manager.GetPane(wxT("log")).Caption(_("Debug Messages")).CloseButton(true).Resizable().Gripper(false).PaneBorder(true).Movable(true);
+    m_manager.GetPane(wxT("log")).Caption(_("Debug messages")).CloseButton(true).Resizable().Gripper(false).PaneBorder(true).Movable(true);
   m_manager.GetPane(wxT("variables")) =
     m_manager.GetPane(wxT("variables")).Caption(_("Variables")).CloseButton(true).Resizable().Gripper(false).PaneBorder(true).Movable(true);
   m_manager.GetPane(wxT("math")) = m_manager.GetPane(wxT("math")).Caption(_("General Math")).
@@ -758,7 +758,7 @@ void wxMaximaFrame::SetupMenu()
   m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_draw, _("Plot using Draw"));
   m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_log,   _("Debug messages"));
   m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_variables,   _("Variables"));
-  m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_xmlInspector, _("Raw XML Monitor"));
+  m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_xmlInspector, _("Raw XML monitor"));
   m_Maxima_Panes_Sub->AppendSeparator();
   m_Maxima_Panes_Sub->Append(menu_pane_dockAll, _("Dock all Sidebars"));
   m_Maxima_Panes_Sub->AppendSeparator();
@@ -1029,7 +1029,7 @@ void wxMaximaFrame::SetupMenu()
                          wxITEM_NORMAL);
   m_Algebra_Menu->Append(menu_enter_mat, _("&Enter Matrix..."),
                          _("Enter a matrix"), wxITEM_NORMAL);
-  m_Algebra_Menu->Append(menu_list_list2matrix, _("Nested List to Matrix"),
+  m_Algebra_Menu->Append(menu_list_list2matrix, _("Nested list to Matrix"),
                          _("Convert a list of lists to a matrix"), wxITEM_NORMAL);
   m_Algebra_Menu->Append(menu_csv2mat, _("Matrix from csv file"),
                          _("Load a matrix from a csv file"), wxITEM_NORMAL);
@@ -2295,7 +2295,7 @@ wxMaximaFrame::DrawPane::DrawPane(wxWindow *parent, int id) : wxScrolled<wxPanel
   m_grid->Add(m_draw_accuracy = new wxButton(this, menu_draw_accuracy, _("Accuracy"),
                                            wxDefaultPosition, wxDefaultSize, wxBORDER_NONE | wxBU_EXACTFIT),
             0, style, border);
-  m_draw_accuracy->SetToolTip(_("The Accuracy versus speed tradeoff"));
+  m_draw_accuracy->SetToolTip(_("The accuracy versus speed tradeoff"));
   Connect(wxEVT_SIZE, wxSizeEventHandler(wxMaximaFrame::DrawPane::OnSize),NULL,this);
   vbox->Add(m_grid, wxSizerFlags(2).Expand());
   SetSizer(vbox);
