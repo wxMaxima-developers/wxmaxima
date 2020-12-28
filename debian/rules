@@ -5,7 +5,6 @@ DPKG_EXPORT_BUILDFLAGS = 1
 include /usr/share/dpkg/buildflags.mk
 
 export DEB_CXXFLAGS_MAINT_APPEND = -Wall -DNDEBUG
-export DEB_LDFLAGS_MAINT_APPEND  = -Wl,--as-needed
 
 %:
 	dh $@ --buildsystem=cmake

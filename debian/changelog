@@ -1,15 +1,17 @@
-wxmaxima (20.06.6-1) unstable; urgency=medium
+wxmaxima (20.12.0-1) unstable; urgency=medium
 
-  * A new upstream greatly inproving performance and resolving 100s of bugs.
-  * The debian package now uses GTK3.
+  * A new upstream version
+  * The debian package now uses GTK3
+  * Bumped the standards version to 4.5.0
+  * Bumped the debhelper compatibility level (and min version) to 13
+  * Removed debian/compat as it no more is needed in comp level 13
+  * override-auto-test no honors the nocheck flag
+  * Removed an no-more-needed linker flag injection
+  * Dropped the workaround for the spurious COPYING file install
   * New build depends for the automatic tests: netcat-openbsd, xvfb,
     debian-file-utils and appstream-util
-  * Added a simple packaging test
-  * Made the build tests optional which resolved a lintian informational waring
-  * ibus-gtk3 is now a hard requirement: With xim on GTK3 wxWidgets flickers.
-  * dropped the now-unneeded override of dh_auto_install
 
- -- Gunter Königsmann <wxmaxima@physikbuch.de>  Sun, 10 Nov 2019 21:54:36 +0100
+ -- Gunter Königsmann <wxmaxima@physikbuch.de>  Mon, 28 Dec 2020 12:15:36 +0100
 
 wxmaxima (19.07.0-1.1) unstable; urgency=medium
 
