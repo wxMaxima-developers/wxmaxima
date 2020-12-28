@@ -2,11 +2,12 @@ Source: wxmaxima
 Section: math
 Priority: optional
 Maintainer: Gunter Königsmann <wxmaxima@physikbuch.de>
-Build-Depends: debhelper (>= 11), cmake, libomp-dev, libwxgtk3.0-gtk3-dev, gettext, netcat-openbsd, xvfb, desktop-file-utils, appstream-util, ibus, ibus-gtk3
-Standards-Version: 4.4.0
+Build-Depends: debhelper-compat (= 13), cmake (>= 3.4) | cmake3, libwxgtk3.0-gtk3-dev, xvfb, netcat-openbsd, desktop-file-utils, appstream-util
+Standards-Version: 4.5.0
 Vcs-Git: https://github.com/wxMaxima-developers/wxmaxima.git -b DebianPackaging
 Vcs-Browser: https://github.com/wxMaxima-developers/wxmaxima
 Homepage: http://wxmaxima-developers.github.io/wxmaxima/
+Rules-Requires-Root: no
 
 Package: wxmaxima
 Architecture: any
