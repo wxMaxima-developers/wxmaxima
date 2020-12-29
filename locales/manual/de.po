@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-23 21:04+0100\n"
+"POT-Creation-Date: 2020-12-29 09:27+0100\n"
 "PO-Revision-Date: 2020-05-08 07:53+0200\n"
 "Last-Translator: Gunter Königsmann <wxMaxima@physikbuch.de>\n"
 "Language-Team: german <de@li.org>\n"
@@ -2605,8 +2605,8 @@ msgstr ""
 #| "contents therefore are helpful when debugging the problem."
 msgid ""
 "_Maxima_ tried to do something the currently installed version of _gnuplot_ "
-"isn’t able to understand. In this case, a file ending in .gnuplot located in "
-"the directory, which _Maxima_’s variable `maxima_userdir` is pointing, "
+"isn’t able to understand. In this case, a file ending in `.gnuplot` located "
+"in the directory, which _Maxima_’s variable `maxima_userdir` is pointing, "
 "contains the instructions from _Maxima_ to _gnuplot_. Most of the time, this "
 "file’s contents therefore are helpful when debugging the problem."
 msgstr ""
@@ -2630,7 +2630,9 @@ msgstr ""
 
 #. type: Bullet: '* '
 #: ../../info/wxmaxima.md:724
-msgid "Gnuplot didn’t output a valid .png file."
+#, fuzzy
+#| msgid "Gnuplot didn’t output a valid .png file."
+msgid "Gnuplot didn’t output a valid `.png` file."
 msgstr "Gnuplot hat keine funktionsfähige .png-Datei ausgegeben."
 
 #. type: Title ##
@@ -2641,11 +2643,19 @@ msgstr "Animationen enden in \"Error: Undefined Variable\""
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:728
+#, fuzzy
+#| msgid ""
+#| "The value of the slider variable by default is only substituted into the "
+#| "expression that is to be plotted if it is visible there. Using a `subst` "
+#| "command that substitutes the slider variable into the equation to plot "
+#| "(there should be an example of this in this manual) resolves this problem."
 msgid ""
 "The value of the slider variable by default is only substituted into the "
 "expression that is to be plotted if it is visible there. Using a `subst` "
 "command that substitutes the slider variable into the equation to plot "
-"(there should be an example of this in this manual) resolves this problem."
+"resolves this problem. At the end of section [Embedding animations into the "
+"spreadsheet](#embedding-animations-into-the-spreadsheet) you can see an "
+"example."
 msgstr ""
 "Der Wert für den Parameter, der bei der Animation variiert werden soll, war "
 "für _Maxima_ nicht sichtbar. Ein explizites `subst()` behebt dieses Problem, "

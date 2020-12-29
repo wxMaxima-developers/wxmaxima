@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: wxMaxima-manual\n"
-"POT-Creation-Date: 2020-11-23 21:03+0100\n"
+"POT-Creation-Date: 2020-12-29 09:27+0100\n"
 "PO-Revision-Date: 2020-12-09 23:42+0800\n"
 "Last-Translator: Liu Rong <rong.liu@mail.bnu.edu.cn>\n"
 "Language-Team: rong.liu@mail.bnu.edu.cn\n"
@@ -25,15 +25,16 @@ msgstr "wxMaxima 用户手册 {-}"
 #. type: Plain text
 #: ../../info/wxmaxima.md:5
 msgid ""
-"wxMaxima is a graphical user interface (GUI) for the _Maxima_ computer algebra system "
-"(CAS). wxMaxima allows one to use all of _Maxima_’s functions. In addition, it provides "
-"convenient wizards for accessing the most commonly used features. This manual describes "
-"some of the features that make wxMaxima one of the most popular GUIs for _Maxima_."
+"wxMaxima is a graphical user interface (GUI) for the _Maxima_ computer "
+"algebra system (CAS). wxMaxima allows one to use all of _Maxima_’s "
+"functions. In addition, it provides convenient wizards for accessing the "
+"most commonly used features. This manual describes some of the features that "
+"make wxMaxima one of the most popular GUIs for _Maxima_."
 msgstr ""
-"wxMaxima 是计算机代数系统（CAS，computer algebra system）Maxima 的图形用户界面（GUI，"
-"graphical user interface）。在 wxMaxima 中，用户可以使用 Maxima 所有的命令。此外，"
-"wxMaxima 还提供了一些向导以方便用户使用最常用的功能。本手册描述了一些 wxMaxima 的特性，这"
-"些特性使其成为最流行的 Maxima 图形用户界面之一。"
+"wxMaxima 是计算机代数系统（CAS，computer algebra system）Maxima 的图形用户界"
+"面（GUI，graphical user interface）。在 wxMaxima 中，用户可以使用 Maxima 所有"
+"的命令。此外，wxMaxima 还提供了一些向导以方便用户使用最常用的功能。本手册描述"
+"了一些 wxMaxima 的特性，这些特性使其成为最流行的 Maxima 图形用户界面之一。"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:7
@@ -43,16 +44,18 @@ msgstr "![wxMaxima 的 logo](./wxMaximaLogo.png){ id=img_wxMaximaLogo }"
 #. type: Plain text
 #: ../../info/wxmaxima.md:9
 msgid ""
-"Before we look at the content a few points regarding navigation are in order. "
-"Immediately below is a short table of contents. Clicking on any of the listed items "
-"moves the cursor to the top of the indicated section of the manual. Clicking on "
-"[Contents](#TOC) moves the cursor to an extended table of contents. This extended table "
-"can be used to navigate more directly to specific parts of the manual. The Contents link "
-"appears at locations throughout the text for navigational purposes."
+"Before we look at the content a few points regarding navigation are in "
+"order. Immediately below is a short table of contents. Clicking on any of "
+"the listed items moves the cursor to the top of the indicated section of the "
+"manual. Clicking on [Contents](#TOC) moves the cursor to an extended table "
+"of contents. This extended table can be used to navigate more directly to "
+"specific parts of the manual. The Contents link appears at locations "
+"throughout the text for navigational purposes."
 msgstr ""
-"在介绍本手册的内容之前，先给出一些关于文档导航的说明。正下方是一个简短的目录。单击任何列"
-"出的条目，即可跳转到手册对应节的顶部。单击[目录](#TOC)可定位到详细的目录。此扩展目录可用"
-"于更直接地跳转到手册的各小节、小小节，以方便查看内容。"
+"在介绍本手册的内容之前，先给出一些关于文档导航的说明。正下方是一个简短的目"
+"录。单击任何列出的条目，即可跳转到手册对应节的顶部。单击[目录](#TOC)可定位到"
+"详细的目录。此扩展目录可用于更直接地跳转到手册的各小节、小小节，以方便查看内"
+"容。"
 
 #. type: Bullet: '* '
 #: ../../info/wxmaxima.md:11
@@ -119,40 +122,45 @@ msgstr "Maxima 和 wxMaxima"
 #. type: Plain text
 #: ../../info/wxmaxima.md:49
 msgid ""
-"In the open-source domain, big systems are normally split into smaller projects that are "
-"easier to handle for small groups of developers. For example a CD burner program will "
-"consist of a command-line tool that actually burns the CD and a graphical user interface "
-"that allows users to implement it without having to learn about all the command line "
-"switches and in fact without using the command line at all. One advantage of this "
-"approach is that the developing work that was invested into the command-line program can "
-"be shared by many programs: The same CD-burner command-line program can be used as a "
-"“send-to-CD”-plug-in for a file manager application, for the “burn to CD” function of a "
-"music player and as the CD writer for a DVD backup tool. Another advantage is that "
-"splitting one big task into smaller parts allows the developers to provide several user "
+"In the open-source domain, big systems are normally split into smaller "
+"projects that are easier to handle for small groups of developers. For "
+"example a CD burner program will consist of a command-line tool that "
+"actually burns the CD and a graphical user interface that allows users to "
+"implement it without having to learn about all the command line switches and "
+"in fact without using the command line at all. One advantage of this "
+"approach is that the developing work that was invested into the command-line "
+"program can be shared by many programs: The same CD-burner command-line "
+"program can be used as a “send-to-CD”-plug-in for a file manager "
+"application, for the “burn to CD” function of a music player and as the CD "
+"writer for a DVD backup tool. Another advantage is that splitting one big "
+"task into smaller parts allows the developers to provide several user "
 "interfaces for the same program."
 msgstr ""
-"在开源领域，大型项目通常被分割成小型项目，后者对于小规模开发组来说更容易处理。例如，一个 "
-"CD 刻录机程序会包括一个实际刻录 CD 的命令行程序和一个图形用户界面，该界面使得用户不必了解"
-"所有的命令行参数就能刻录 CD，从而实际上避开了使用命令行。这种方法的一个优点是，投入到命令"
-"行程序中的开发工作可以被许多程序共享：同一个刻录 CD 的命令行程序可以用作文件管理器应用程"
-"序的“发送到 CD”插件、音乐播放器的“刻录到 CD”功能以及 DVD 备份工具的刻录 CD 功能。另一个优"
-"点是将一个大型任务分解成更小的部分时，开发人员就可以为同一个程序提供多个用户界面。"
+"在开源领域，大型项目通常被分割成小型项目，后者对于小规模开发组来说更容易处"
+"理。例如，一个 CD 刻录机程序会包括一个实际刻录 CD 的命令行程序和一个图形用户"
+"界面，该界面使得用户不必了解所有的命令行参数就能刻录 CD，从而实际上避开了使用"
+"命令行。这种方法的一个优点是，投入到命令行程序中的开发工作可以被许多程序共"
+"享：同一个刻录 CD 的命令行程序可以用作文件管理器应用程序的“发送到 CD”插件、音"
+"乐播放器的“刻录到 CD”功能以及 DVD 备份工具的刻录 CD 功能。另一个优点是将一个"
+"大型任务分解成更小的部分时，开发人员就可以为同一个程序提供多个用户界面。"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:51
 msgid ""
-"A computer algebra system (CAS) like _Maxima_ fits into this framework. A CAS can "
-"provide the logic behind an arbitrary precision calculator application or it can do "
-"automatic transforms of formulas in the background of a bigger system (e.g., [Sage]"
-"(https://www.sagemath.org/)). Alternatively, it can be used directly as a free-standing "
-"system. _Maxima_ can be accessed via a command line. Often, however, an interface like "
-"_wxMaxima_ proves a more efficient way to access the software, especially for newcomers."
+"A computer algebra system (CAS) like _Maxima_ fits into this framework. A "
+"CAS can provide the logic behind an arbitrary precision calculator "
+"application or it can do automatic transforms of formulas in the background "
+"of a bigger system (e.g., [Sage](https://www.sagemath.org/)). Alternatively, "
+"it can be used directly as a free-standing system. _Maxima_ can be accessed "
+"via a command line. Often, however, an interface like _wxMaxima_ proves a "
+"more efficient way to access the software, especially for newcomers."
 msgstr ""
-"一个像 Maxima 这样的计算机代数系统（CAS，computer algebra system）也适合前述框架。Maxima "
-"可以用作任意精度计算器程序的底层软件，也可以在更大计算系统中作为公式转换程序来帮助计算"
-"（例如 [Sage](https://www.sagemath.org/)）。Maxima 也可以直接作为独立的计算系统使用，它可"
-"以通过命令行来访问。然而，在通常情况下，像 wxMaxima 这样的用户界面是使用 Maxima 的一种更"
-"有效的方法，特别是对于新手而言更是如此。"
+"一个像 Maxima 这样的计算机代数系统（CAS，computer algebra system）也适合前述"
+"框架。Maxima 可以用作任意精度计算器程序的底层软件，也可以在更大计算系统中作为"
+"公式转换程序来帮助计算（例如 [Sage](https://www.sagemath.org/)）。Maxima 也可"
+"以直接作为独立的计算系统使用，它可以通过命令行来访问。然而，在通常情况下，像 "
+"wxMaxima 这样的用户界面是使用 Maxima 的一种更有效的方法，特别是对于新手而言更"
+"是如此。"
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:52
@@ -163,38 +171,41 @@ msgstr "Maxima"
 #. type: Plain text
 #: ../../info/wxmaxima.md:55
 msgid ""
-"_Maxima_ is a full-featured computer algebra system (CAS). A CAS is a program that can "
-"solve mathematical problems by rearranging formulas and finding a formula that solves "
-"the problem as opposed to just outputting the numeric value of the result. In other "
-"words, _Maxima_ can serve as a calculator that gives numerical representations of "
-"variables, and it can also provide analytical solutions. Furthermore, it offers a range "
-"of numerical methods of analysis for equations or systems of equations that cannot be "
-"solved analytically."
+"_Maxima_ is a full-featured computer algebra system (CAS). A CAS is a "
+"program that can solve mathematical problems by rearranging formulas and "
+"finding a formula that solves the problem as opposed to just outputting the "
+"numeric value of the result. In other words, _Maxima_ can serve as a "
+"calculator that gives numerical representations of variables, and it can "
+"also provide analytical solutions. Furthermore, it offers a range of "
+"numerical methods of analysis for equations or systems of equations that "
+"cannot be solved analytically."
 msgstr ""
-"Maxima 是一个功能齐全的计算机代数系统（CAS）。CAS 是一个程序，它可以通过对公式变形并找到"
-"问题的解来求解数学问题，而不是仅仅输出结果的数值。换言之，Maxima 可以作为一个计算器，给出"
-"变量的数值表示，也可以提供解析解。此外，它还提供了一系列数值分析方法，用于求解没有解析解"
-"的方程或方程组。"
+"Maxima 是一个功能齐全的计算机代数系统（CAS）。CAS 是一个程序，它可以通过对公"
+"式变形并找到问题的解来求解数学问题，而不是仅仅输出结果的数值。换言之，Maxima "
+"可以作为一个计算器，给出变量的数值表示，也可以提供解析解。此外，它还提供了一"
+"系列数值分析方法，用于求解没有解析解的方程或方程组。"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:57
 msgid ""
-"![Maxima screenshot, command line](./maxima_screenshot.png){ id=img_maxima_screenshot }"
-msgstr "![Maxima 截图，命令行](./maxima_screenshot.png){ id=img_maxima_screenshot }"
+"![Maxima screenshot, command line](./maxima_screenshot.png)"
+"{ id=img_maxima_screenshot }"
+msgstr ""
+"![Maxima 截图，命令行](./maxima_screenshot.png){ id=img_maxima_screenshot }"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:59
 msgid ""
-"Extensive documentation for _Maxima_ is [available in the internet](http://maxima."
-"sourceforge.net/documentation.html). Part of this documentation is also available in "
-"wxMaxima’s help menu. Pressing the Help key (on most systems the F1 key) causes "
-"_wxMaxima_’s context-sensitive help feature to automatically jump to _Maxima_’s manual "
-"page for the command at the cursor."
+"Extensive documentation for _Maxima_ is [available in the internet](http://"
+"maxima.sourceforge.net/documentation.html). Part of this documentation is "
+"also available in wxMaxima’s help menu. Pressing the Help key (on most "
+"systems the F1 key) causes _wxMaxima_’s context-sensitive help feature to "
+"automatically jump to _Maxima_’s manual page for the command at the cursor."
 msgstr ""
-"大量关于 Maxima 的文档[可在互联网上获得](http://maxima.sourceforge.net/documentation."
-"html)。wxMaxima 的“帮助”菜单中也提供了部分文档。按下帮助键（在大多数系统上是按 F1 键）"
-"后，wxMaxima 的上下文相关帮助功能会自动打开 Maxima 的手册页，并跳转到光标处命令对应的内"
-"容。"
+"大量关于 Maxima 的文档[可在互联网上获得](http://maxima.sourceforge.net/"
+"documentation.html)。wxMaxima 的“帮助”菜单中也提供了部分文档。按下帮助键（在"
+"大多数系统上是按 F1 键）后，wxMaxima 的上下文相关帮助功能会自动打开 Maxima 的"
+"手册页，并跳转到光标处命令对应的内容。"
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:60
@@ -205,23 +216,25 @@ msgstr "wxMaxima"
 #. type: Plain text
 #: ../../info/wxmaxima.md:63
 msgid ""
-"_wxMaxima_ is a graphical user interface that provides the full functionality and "
-"flexibility of _Maxima_. wxMaxima offers users a graphical display and many features "
-"that make working with _Maxima_ easier. For example _wxMaxima_ allows one to export any "
-"cell’s contents (or, if that is needed, any part of a formula, as well) as text, as "
-"LaTeX or as MathML specification at a simple right-click. Indeed, an entire workbook can "
-"be exported, either as a HTML file or as a LaTeX file. Documentation for _wxMaxima_, "
-"including workbooks to illustrate aspects of its use, is online at the _wxMaxima_ [help "
-"site](https://wxMaxima-developers.github.io/wxmaxima/help.html), as well as via the help "
-"menu."
+"_wxMaxima_ is a graphical user interface that provides the full "
+"functionality and flexibility of _Maxima_. wxMaxima offers users a graphical "
+"display and many features that make working with _Maxima_ easier. For "
+"example _wxMaxima_ allows one to export any cell’s contents (or, if that is "
+"needed, any part of a formula, as well) as text, as LaTeX or as MathML "
+"specification at a simple right-click. Indeed, an entire workbook can be "
+"exported, either as a HTML file or as a LaTeX file. Documentation for "
+"_wxMaxima_, including workbooks to illustrate aspects of its use, is online "
+"at the _wxMaxima_ [help site](https://wxMaxima-developers.github.io/wxmaxima/"
+"help.html), as well as via the help menu."
 msgstr ""
-"wxMaxima 是一个图形用户界面，它提供了 Maxima 的全部功能和灵活性。wxMaxima 为用户提供了图"
-"形显示和许多其他功能，使得 Maxima 更易于使用。例如，wxMaxima 允许用户通过右键单击将任何单"
-"元格的内容（或者，如果需要，也可以导出公式的任何部分）作为文本、LaTeX 代码或 MathML 代码"
-"导出。实际上，用户可以将整个工作簿（workbook）导出为 HTML 文件或 LaTeX 文件。有关 "
-"wxMaxima 的文档，包括说明其各种使用方法的工作簿，都可以在 wxMaxima 的[帮助站点](https://"
-"wxMaxima-developers.github.io/wxMaxima/help.html)上找到，也可以通过“帮助”菜单查看相关说"
-"明。"
+"wxMaxima 是一个图形用户界面，它提供了 Maxima 的全部功能和灵活性。wxMaxima 为"
+"用户提供了图形显示和许多其他功能，使得 Maxima 更易于使用。例如，wxMaxima 允许"
+"用户通过右键单击将任何单元格的内容（或者，如果需要，也可以导出公式的任何部"
+"分）作为文本、LaTeX 代码或 MathML 代码导出。实际上，用户可以将整个工作簿"
+"（workbook）导出为 HTML 文件或 LaTeX 文件。有关 wxMaxima 的文档，包括说明其各"
+"种使用方法的工作簿，都可以在 wxMaxima 的[帮助站点](https://wxMaxima-"
+"developers.github.io/wxMaxima/help.html)上找到，也可以通过“帮助”菜单查看相关"
+"说明。"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:65
@@ -231,8 +244,8 @@ msgstr "![wxMaxima 界面](./wxMaximaWindow.png){ id=img_wxMaximaWindow }"
 #. type: Plain text
 #: ../../info/wxmaxima.md:67
 msgid ""
-"The calculations that are entered in _wxMaxima_ are performed by the _Maxima_ command-"
-"line tool in the background."
+"The calculations that are entered in _wxMaxima_ are performed by the "
+"_Maxima_ command-line tool in the background."
 msgstr "在 wxMaxima 中输入的计算式是由 Maxima 命令行工具在后台执行的。"
 
 #. type: Title ##
@@ -244,19 +257,21 @@ msgstr "工作簿（Workbook）基础"
 #. type: Plain text
 #: ../../info/wxmaxima.md:72
 msgid ""
-"Much of _wxMaxima_ is self-explaining, but some details require attention. [This site]"
-"(https://wxMaxima-developers.github.io/wxmaxima/help.html) contains a number of "
-"workbooks that address various aspects of _wxMaxima_. Working through some of these "
-"(particularly the \"10 minute _(wx)Maxima_ tutorial\") will increase one’s familiarity "
-"with both the content of _Maxima_ and the use of _wxMaxima_ to interact with _Maxima_. "
-"This manual concentrates on describing aspects of _wxMaxima_ that are not likely to be "
+"Much of _wxMaxima_ is self-explaining, but some details require attention. "
+"[This site](https://wxMaxima-developers.github.io/wxmaxima/help.html) "
+"contains a number of workbooks that address various aspects of _wxMaxima_. "
+"Working through some of these (particularly the \"10 minute _(wx)Maxima_ "
+"tutorial\") will increase one’s familiarity with both the content of "
+"_Maxima_ and the use of _wxMaxima_ to interact with _Maxima_. This manual "
+"concentrates on describing aspects of _wxMaxima_ that are not likely to be "
 "self-evident and that might not be covered in the online material."
 msgstr ""
-"大部分 wxMaxima 功能是不言自明的，但有些细节需要注意。[这个网站](https://wxMaxima-"
-"developers.github.io/wxMaxima/help.html)包含多个工作簿，这些工作簿涉及 wxMaxima 的各个方"
-"面。学习其中的一些（特别是“10 minute _(wx)Maxima_ tutorial”，即“十分钟 (wx)Maxima 教程”）"
-"将增加用户对 Maxima 的内容和 wxMaxima 与 Maxima 交互过程的熟悉度。本手册集中描述 "
-"wxMaxima 的某些功能，这些功能可能并非不言而喻的，也可能不会被在线文档涵盖。"
+"大部分 wxMaxima 功能是不言自明的，但有些细节需要注意。[这个网站](https://"
+"wxMaxima-developers.github.io/wxMaxima/help.html)包含多个工作簿，这些工作簿涉"
+"及 wxMaxima 的各个方面。学习其中的一些（特别是“10 minute _(wx)Maxima_ "
+"tutorial”，即“十分钟 (wx)Maxima 教程”）将增加用户对 Maxima 的内容和 wxMaxima "
+"与 Maxima 交互过程的熟悉度。本手册集中描述 wxMaxima 的某些功能，这些功能可能"
+"并非不言而喻的，也可能不会被在线文档涵盖。"
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:73
@@ -267,35 +282,39 @@ msgstr "工作簿的使用"
 #. type: Plain text
 #: ../../info/wxmaxima.md:76
 msgid ""
-"One of the very few things that are not standard in _wxMaxima_ is that it organizes the "
-"data for _Maxima_ into cells that are evaluated (which means: sent to _Maxima_) only "
-"when the user requests this. When a cell is evaluated, all commands in that cell, and "
-"only that cell, are evaluated as a batch. (The preceding statement is not quite "
-"accurate: One can select a set of adjacent cells and evaluate them together. Also, one "
-"can instruct _Maxima_ to evaluate all cells in a workbook in one pass.) _wxMaxima_'s "
-"approach to submitting commands for execution might feel unfamiliar at the first sight. "
-"It does, however, drastically ease work with big documents (where the user does not want "
-"every change to automatically trigger a full re-evaluation of the whole document). Also, "
-"this approach is very handy for debugging."
+"One of the very few things that are not standard in _wxMaxima_ is that it "
+"organizes the data for _Maxima_ into cells that are evaluated (which means: "
+"sent to _Maxima_) only when the user requests this. When a cell is "
+"evaluated, all commands in that cell, and only that cell, are evaluated as a "
+"batch. (The preceding statement is not quite accurate: One can select a set "
+"of adjacent cells and evaluate them together. Also, one can instruct "
+"_Maxima_ to evaluate all cells in a workbook in one pass.) _wxMaxima_'s "
+"approach to submitting commands for execution might feel unfamiliar at the "
+"first sight. It does, however, drastically ease work with big documents "
+"(where the user does not want every change to automatically trigger a full "
+"re-evaluation of the whole document). Also, this approach is very handy for "
+"debugging."
 msgstr ""
-"wxMaxima 的特性之一是可以将发送给 Maxima 的命令提前组织到单元格中，这些单元格只在用户请求"
-"时才被处理（这意味着：把命令发送给 Maxima）。在处理单元格时，该单元格（且仅该单元格）中的"
-"所有命令将作为批处理进行计算。（前面的语句并不十分准确，因为可以选择一组相邻的单元格并且"
-"一起计算它们，或者让 Maxima 一次性算完工作簿中的所有单元格。）wxMaxima 提交命令的方法乍一"
-"看可能会觉得陌生。但是，这种做法确实大大简化了处理大型文档的工作（用户不希望每次更改都自"
-"动触发对整个文档的重新计算）。而且，该方法用于调试命令时非常方便。"
+"wxMaxima 的特性之一是可以将发送给 Maxima 的命令提前组织到单元格中，这些单元格"
+"只在用户请求时才被处理（这意味着：把命令发送给 Maxima）。在处理单元格时，该单"
+"元格（且仅该单元格）中的所有命令将作为批处理进行计算。（前面的语句并不十分准"
+"确，因为可以选择一组相邻的单元格并且一起计算它们，或者让 Maxima 一次性算完工"
+"作簿中的所有单元格。）wxMaxima 提交命令的方法乍一看可能会觉得陌生。但是，这种"
+"做法确实大大简化了处理大型文档的工作（用户不希望每次更改都自动触发对整个文档"
+"的重新计算）。而且，该方法用于调试命令时非常方便。"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:78
 msgid ""
-"If text is typed into _wxMaxima_ it automatically creates a new worksheet cell. The type "
-"of this cell can be selected in the toolbar. If a code cell is created the cell can be "
-"sent to _Maxima_, which causes the result of the calculation to be displayed below the "
-"code. A pair of such commands is shown below."
+"If text is typed into _wxMaxima_ it automatically creates a new worksheet "
+"cell. The type of this cell can be selected in the toolbar. If a code cell "
+"is created the cell can be sent to _Maxima_, which causes the result of the "
+"calculation to be displayed below the code. A pair of such commands is shown "
+"below."
 msgstr ""
-"如果输入文本到 wxMaxima 中，则会自动创建一个新的工作簿单元格。可以在工具栏中选择此单元格"
-"的类型。如果创建了一个（数学）代码单元格，则可以将该单元格发送到 Maxima，这将使得计算结果"
-"显示在代码下方。下面显示了一对这样的命令："
+"如果输入文本到 wxMaxima 中，则会自动创建一个新的工作簿单元格。可以在工具栏中"
+"选择此单元格的类型。如果创建了一个（数学）代码单元格，则可以将该单元格发送到 "
+"Maxima，这将使得计算结果显示在代码下方。下面显示了一对这样的命令："
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:80
@@ -305,45 +324,51 @@ msgstr "![输入、输出单元格](./InputCell.png){ id=img_InputCell }"
 #. type: Plain text
 #: ../../info/wxmaxima.md:82
 msgid ""
-"On evaluation of an input cell's contents the input cell _Maxima_ assigns a label to the "
-"input (by default shown in red and recognizable by the `%i`) by which it can be "
-"referenced later in the _wxMaxima_ session. The output that _Maxima_ generates also gets "
-"a label that begins with `%o` and by default is hidden, except if the user assigns the "
-"output a name. In this case by default the user-defined label is displayed. The `%o`\\-"
-"style label _Maxima_ auto-generates will also be accessible, though."
+"On evaluation of an input cell's contents the input cell _Maxima_ assigns a "
+"label to the input (by default shown in red and recognizable by the `%i`) by "
+"which it can be referenced later in the _wxMaxima_ session. The output that "
+"_Maxima_ generates also gets a label that begins with `%o` and by default is "
+"hidden, except if the user assigns the output a name. In this case by "
+"default the user-defined label is displayed. The `%o`\\-style label _Maxima_ "
+"auto-generates will also be accessible, though."
 msgstr ""
-"在计算（数学）输入单元格的内容时，Maxima 会为该输入指定一个标签（默认情况下以红色显示，并"
-"且可以由“%i”加数字识别），以便在 wxMaxima 会话的后续内容中引用该标签。Maxima 生成的输出也"
-"会获得以“%o”开头的标签，而当用户为输出指定了名称（如变量名）时，该标签是隐藏的。在后一种"
-"情况下，默认显示用户定义的名称。不过，此时仍可以访问 Maxima 自动生成的“%o”型标签。"
+"在计算（数学）输入单元格的内容时，Maxima 会为该输入指定一个标签（默认情况下以"
+"红色显示，并且可以由“%i”加数字识别），以便在 wxMaxima 会话的后续内容中引用该"
+"标签。Maxima 生成的输出也会获得以“%o”开头的标签，而当用户为输出指定了名称（如"
+"变量名）时，该标签是隐藏的。在后一种情况下，默认显示用户定义的名称。不过，此"
+"时仍可以访问 Maxima 自动生成的“%o”型标签。"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:84
 msgid ""
-"Besides the input cells _wxMaxima_ allows for text cells for documentation, image cells, "
-"title cells, chapter cells and section cells. Every cell has its own undo buffer so "
-"debugging by changing the values of several cells and then gradually reverting the "
-"unneeded changes is rather easy. Furthermore the worksheet itself has a global undo "
-"buffer that can undo cell edits, adds and deletes."
+"Besides the input cells _wxMaxima_ allows for text cells for documentation, "
+"image cells, title cells, chapter cells and section cells. Every cell has "
+"its own undo buffer so debugging by changing the values of several cells and "
+"then gradually reverting the unneeded changes is rather easy. Furthermore "
+"the worksheet itself has a global undo buffer that can undo cell edits, adds "
+"and deletes."
 msgstr ""
-"除了（数学）输入单元格外，wxMaxima 中还可以使用文本单元格、图片单元格、标题单元格、节单元"
-"格和小节单元格等。每个单元格都有独立的撤消缓冲区，因此通过更改多个单元格的内容，然后逐步"
-"撤销不需要的更改来进行调试，是非常容易的。此外，工作簿本身有一个全局撤消缓冲区，可以撤消"
-"单元格编辑、添加和删除操作。"
+"除了（数学）输入单元格外，wxMaxima 中还可以使用文本单元格、图片单元格、标题单"
+"元格、节单元格和小节单元格等。每个单元格都有独立的撤消缓冲区，因此通过更改多"
+"个单元格的内容，然后逐步撤销不需要的更改来进行调试，是非常容易的。此外，工作"
+"簿本身有一个全局撤消缓冲区，可以撤消单元格编辑、添加和删除操作。"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:86
 msgid ""
-"The figure below shows different cell types (title cells, section cells, subsection "
-"cells, text cells, input/output cells and image cells)."
+"The figure below shows different cell types (title cells, section cells, "
+"subsection cells, text cells, input/output cells and image cells)."
 msgstr ""
-"下图显示了不同的单元格类型（标题单元格、节单元格、小节单元格、文本单元格、输入/输出单元格"
-"和图片单元格）："
+"下图显示了不同的单元格类型（标题单元格、节单元格、小节单元格、文本单元格、输"
+"入/输出单元格和图片单元格）："
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:88
-msgid "![Example of different wxMaxima cells](./cell-example.png){ id=img_cell-example }"
-msgstr "![wxMaxima 的不同类型单元格](./cell-example.png){ id=img_cell-example }"
+msgid ""
+"![Example of different wxMaxima cells](./cell-example.png){ id=img_cell-"
+"example }"
+msgstr ""
+"![wxMaxima 的不同类型单元格](./cell-example.png){ id=img_cell-example }"
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:90
@@ -354,8 +379,8 @@ msgstr "单元格"
 #. type: Plain text
 #: ../../info/wxmaxima.md:93
 msgid ""
-"The worksheet is organized in cells. Each cell can contain other cells or the following "
-"types of content:"
+"The worksheet is organized in cells. Each cell can contain other cells or "
+"the following types of content:"
 msgstr "工作簿由单元格组成。每个单元格可以包含以下类型的内容："
 
 #. type: Bullet: '* '
@@ -386,23 +411,24 @@ msgstr "文档标题、节标题或小节标题等。"
 #. type: Plain text
 #: ../../info/wxmaxima.md:101
 msgid ""
-"The default behavior of _wxMaxima_ when text is entered is to automatically create a "
-"math cell. Cells of other types can be created using the Cell menu, using the hot keys "
-"shown in the menu or using the drop-down list in the toolbar. Once the non-math cell is "
-"created, whatever is typed into the file is interpreted as text."
+"The default behavior of _wxMaxima_ when text is entered is to automatically "
+"create a math cell. Cells of other types can be created using the Cell menu, "
+"using the hot keys shown in the menu or using the drop-down list in the "
+"toolbar. Once the non-math cell is created, whatever is typed into the file "
+"is interpreted as text."
 msgstr ""
-"当输入文本时，wxMaxima 的默认行为是自动创建一个数学单元格。可以使用“单元格”菜单、菜单中显"
-"示的热键或工具栏中的下拉列表创建其他类型的单元格。一旦创建了非数学单元格，输入到文档的任"
-"何内容都将被解释为文本。"
+"当输入文本时，wxMaxima 的默认行为是自动创建一个数学单元格。可以使用“单元格”菜"
+"单、菜单中显示的热键或工具栏中的下拉列表创建其他类型的单元格。一旦创建了非数"
+"学单元格，输入到文档的任何内容都将被解释为文本。"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:103
 msgid ""
-"Additional comment text can be entered into a math cell if bracketed as follows: `/*This "
-"comment will not be sent to Maxima for evaluation*/`."
+"Additional comment text can be entered into a math cell if bracketed as "
+"follows: `/*This comment will not be sent to Maxima for evaluation*/`."
 msgstr ""
-"额外的注释文本可以输入到一个数学单元格中，格式为：`/*此注释将不会发送到 Maxima 中进行计算"
-"*/`。"
+"额外的注释文本可以输入到一个数学单元格中，格式为：`/*此注释将不会发送到 "
+"Maxima 中进行计算*/`。"
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:104
@@ -413,39 +439,41 @@ msgstr "水平光标和竖直光标"
 #. type: Plain text
 #: ../../info/wxmaxima.md:107
 msgid ""
-"If the user tries to select a complete sentence a word processor will try to extend the "
-"selection to automatically begin and end with a word boundary. Likewise _wxMaxima_ if "
-"more than one cell is selected will extend the selection to whole cells."
+"If the user tries to select a complete sentence a word processor will try to "
+"extend the selection to automatically begin and end with a word boundary. "
+"Likewise _wxMaxima_ if more than one cell is selected will extend the "
+"selection to whole cells."
 msgstr ""
-"在一般的文字处理程序中，如果用户试图选择多个行，该程序将尝试扩展选择范围，使其自动包括这"
-"些行的所有内容。类似地，在 wxMaxima 中，如果同时选择了多个单元格，则 wxMaxima 会将选择范"
-"围扩展到所有这些单元格的内容。"
+"在一般的文字处理程序中，如果用户试图选择多个行，该程序将尝试扩展选择范围，使"
+"其自动包括这些行的所有内容。类似地，在 wxMaxima 中，如果同时选择了多个单元"
+"格，则 wxMaxima 会将选择范围扩展到所有这些单元格的内容。"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:109
 msgid ""
-"What isn't standard is that _wxMaxima_ provides drag-and-drop flexibility by defining "
-"two types of cursors. _wxMaxima_ will switch between them automatically when needed:"
+"What isn't standard is that _wxMaxima_ provides drag-and-drop flexibility by "
+"defining two types of cursors. _wxMaxima_ will switch between them "
+"automatically when needed:"
 msgstr ""
-"与一般程序不同的是，wxMaxima 通过定义两种类型的光标，提供了操作灵活性。wxMaxima 将在需要"
-"时自动在它们之间切换："
+"与一般程序不同的是，wxMaxima 通过定义两种类型的光标，提供了操作灵活性。"
+"wxMaxima 将在需要时自动在它们之间切换："
 
 #. type: Bullet: '* '
 #: ../../info/wxmaxima.md:112
 msgid ""
-"The cursor is drawn horizontally if it is moved in the space between two cells or by "
-"clicking there."
+"The cursor is drawn horizontally if it is moved in the space between two "
+"cells or by clicking there."
 msgstr "如果光标在两个单元格之间移动或单击，则会使用水平光标；"
 
 #. type: Bullet: '* '
 #: ../../info/wxmaxima.md:112
 msgid ""
-"A vertical cursor that works inside a cell. This cursor is activated by moving the "
-"cursor inside a cell using the mouse pointer or the cursor keys and works much like the "
-"cursor in a text editor."
+"A vertical cursor that works inside a cell. This cursor is activated by "
+"moving the cursor inside a cell using the mouse pointer or the cursor keys "
+"and works much like the cursor in a text editor."
 msgstr ""
-"如果在单元格内输入时，则会使用垂直光标。此种光标是当使用鼠标指针或方向键在单元格内移动光"
-"标时被激活的，与文本编辑器中光标的激活方式非常相似。"
+"如果在单元格内输入时，则会使用垂直光标。此种光标是当使用鼠标指针或方向键在单"
+"元格内移动光标时被激活的，与文本编辑器中光标的激活方式非常相似。"
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:113
@@ -491,55 +519,58 @@ msgstr "希腊字母"
 #. type: Plain text
 #: ../../info/wxmaxima.md:128
 msgid ""
-"Computers traditionally stored characters in 8-bit values. This allows for a maximum of "
-"256 different characters. All letters, numbers, and control symbols (end of "
-"transmission, end of string, lines and edges for drawing rectangles for menus _etc_.) of "
-"nearly any given language can fit within that limit."
+"Computers traditionally stored characters in 8-bit values. This allows for a "
+"maximum of 256 different characters. All letters, numbers, and control "
+"symbols (end of transmission, end of string, lines and edges for drawing "
+"rectangles for menus _etc_.) of nearly any given language can fit within "
+"that limit."
 msgstr ""
-"计算机一般以 8 位值（8-bit）存储字符，所以最多可以储存 256 个不同字符。大部分语言中的所有"
-"字母、数字和控制符号（传输结束、字符串结束、为菜单绘制矩形的线条和边缘等）都符合该限制。"
+"计算机一般以 8 位值（8-bit）存储字符，所以最多可以储存 256 个不同字符。大部分"
+"语言中的所有字母、数字和控制符号（传输结束、字符串结束、为菜单绘制矩形的线条"
+"和边缘等）都符合该限制。"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:130
 msgid ""
-"For most countries the codepage of 256 characters that has been chosen does not include "
-"things like Greek letters, though, that are frequently used in mathematics. To overcome "
-"this type of limitation [Unicode](https://home.unicode.org/) has been invented: An "
-"encoding that makes English text work like normal, but to use much more than 256 "
-"characters."
+"For most countries the codepage of 256 characters that has been chosen does "
+"not include things like Greek letters, though, that are frequently used in "
+"mathematics. To overcome this type of limitation [Unicode](https://home."
+"unicode.org/) has been invented: An encoding that makes English text work "
+"like normal, but to use much more than 256 characters."
 msgstr ""
-"不过，对于大多数国家来说，256 个字符的代码页并没有包括希腊字母，而这些字母是数学上常用"
-"的。为了克服这种限制，[Unicode](https://home.unicode.org/)被发明了：一种使英文文本储存方"
-"式不变的编码，可使用的字符数远超 256 个。"
+"不过，对于大多数国家来说，256 个字符的代码页并没有包括希腊字母，而这些字母是"
+"数学上常用的。为了克服这种限制，[Unicode](https://home.unicode.org/)被发明"
+"了：一种使英文文本储存方式不变的编码，可使用的字符数远超 256 个。"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:132
 msgid ""
-"_Maxima_ allows Unicode, if it was compiled using a Lisp compiler that either supports "
-"Unicode or that doesn't care about the font encoding. As at least one of this pair of "
-"conditions is likely to be true. _wxMaxima_ provides a method of entering Greek "
-"characters using the keyboard:"
+"_Maxima_ allows Unicode, if it was compiled using a Lisp compiler that "
+"either supports Unicode or that doesn't care about the font encoding. As at "
+"least one of this pair of conditions is likely to be true. _wxMaxima_ "
+"provides a method of entering Greek characters using the keyboard:"
 msgstr ""
-"如果使用支持 Unicode 或不关心字体编码的 Lisp 编译器来编译 Maxima，则在 Maxima 中可以使用 "
-"Unicode。前述两种情况中一般至少有一种是真的。wxMaxima 提供了一种使用键盘输入希腊字母的方"
-"法："
+"如果使用支持 Unicode 或不关心字体编码的 Lisp 编译器来编译 Maxima，则在 "
+"Maxima 中可以使用 Unicode。前述两种情况中一般至少有一种是真的。wxMaxima 提供"
+"了一种使用键盘输入希腊字母的方法："
 
 #. type: Bullet: '* '
 #: ../../info/wxmaxima.md:135
 msgid ""
-"A Greek letter can be entered by pressing the <kbd>ESC</kbd> key and then starting to "
-"type the Greek character's name."
-msgstr "可以通过按下 <kbd>ESC</kbd> 键，然后开始键入希腊字母的英文名称来输入该字母。"
+"A Greek letter can be entered by pressing the <kbd>ESC</kbd> key and then "
+"starting to type the Greek character's name."
+msgstr ""
+"可以通过按下 <kbd>ESC</kbd> 键，然后开始键入希腊字母的英文名称来输入该字母。"
 
 #. type: Bullet: '* '
 #: ../../info/wxmaxima.md:135
 msgid ""
-"Alternatively it can be entered by pressing <kbd>ESC</kbd>, one letter (or two for the "
-"Greek letter omicron) and <kbd>ESC</kbd> again. In this case the following letters are "
-"supported:"
+"Alternatively it can be entered by pressing <kbd>ESC</kbd>, one letter (or "
+"two for the Greek letter omicron) and <kbd>ESC</kbd> again. In this case the "
+"following letters are supported:"
 msgstr ""
-"或者，也可以通过按下 <kbd>ESC</kbd>、一个英文字母（对希腊字母 omicron 而言是两个）并再次"
-"按下 <kbd>ESC</kbd> 来输入。在这种情况下，支持以下字母："
+"或者，也可以通过按下 <kbd>ESC</kbd>、一个英文字母（对希腊字母 omicron 而言是"
+"两个）并再次按下 <kbd>ESC</kbd> 来输入。在这种情况下，支持以下字母："
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:154
@@ -585,7 +616,9 @@ msgstr ""
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:156
-msgid "The same mechanism also allows to enter some miscellaneous mathematical symbols:"
+msgid ""
+"The same mechanism also allows to enter some miscellaneous mathematical "
+"symbols:"
 msgstr "用同样的方法还可以输入一些其他的数学符号："
 
 #. type: Plain text
@@ -711,14 +744,15 @@ msgstr "因此 <kbd>ESC</kbd> <kbd>61</kbd> <kbd>ESC</kbd> 输入了字符 `a`.\
 #. type: Plain text
 #: ../../info/wxmaxima.md:214
 msgid ""
-"Please note that most of these symbols (notable exceptions are the logic symbols) do not "
-"have a special meaning in _Maxima_ and therefore will be interpreted as ordinary "
-"characters. If _Maxima_ is compiled using a Lisp that doesn’t support dealing with "
-"Unicode characters they might cause an error message instead."
+"Please note that most of these symbols (notable exceptions are the logic "
+"symbols) do not have a special meaning in _Maxima_ and therefore will be "
+"interpreted as ordinary characters. If _Maxima_ is compiled using a Lisp "
+"that doesn’t support dealing with Unicode characters they might cause an "
+"error message instead."
 msgstr ""
-"请注意，这些符号中的大多数（逻辑符号除外）在 Maxima 中没有特殊含义，因此将被解释为普通字"
-"符。如果使用不支持 Unicode 字符的 Lisp 编译器编译出 Maxima，则这些符号可能会导致输出错误"
-"消息。"
+"请注意，这些符号中的大多数（逻辑符号除外）在 Maxima 中没有特殊含义，因此将被"
+"解释为普通字符。如果使用不支持 Unicode 字符的 Lisp 编译器编译出 Maxima，则这"
+"些符号可能会导致输出错误消息。"
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:216
@@ -729,15 +763,16 @@ msgstr "侧边栏"
 #. type: Plain text
 #: ../../info/wxmaxima.md:219
 msgid ""
-"Shortcuts to the most important _Maxima_ commands or things like a table of contents, "
-"windows with debug messages or a history of the last issued commands can be accessed "
-"using the side panes. They can be enabled using the \"View\" menu. They all can be moved "
-"to other locations inside or outside the _wxMaxima_ window. Other useful panes is the "
-"one that allows to input Greek letters using the mouse."
+"Shortcuts to the most important _Maxima_ commands or things like a table of "
+"contents, windows with debug messages or a history of the last issued "
+"commands can be accessed using the side panes. They can be enabled using the "
+"\"View\" menu. They all can be moved to other locations inside or outside "
+"the _wxMaxima_ window. Other useful panes is the one that allows to input "
+"Greek letters using the mouse."
 msgstr ""
-"侧边栏可以用来访问一些常用的 Maxima 命令快捷方式、目录、包含调试消息的窗口或已执行命令的"
-"历史记录等。使用\"查看\"菜单可以启用这些侧边栏。它们都可以移动到 wxMaxima 窗口内部或外"
-"部。其中一个常用的是可用鼠标点选输入希腊字母的侧边栏。"
+"侧边栏可以用来访问一些常用的 Maxima 命令快捷方式、目录、包含调试消息的窗口或"
+"已执行命令的历史记录等。使用\"查看\"菜单可以启用这些侧边栏。它们都可以移动到 "
+"wxMaxima 窗口内部或外部。其中一个常用的是可用鼠标点选输入希腊字母的侧边栏。"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:221
@@ -753,14 +788,16 @@ msgstr "MathML 输出"
 #. type: Plain text
 #: ../../info/wxmaxima.md:225
 msgid ""
-"Several word processors and similar programs either recognize MathML input and "
-"automatically insert it as an editable 2D equation - or (like LibreOffice 5.1) have an "
-"equation editor that offers an “import MathML from clipboard” feature. Others support "
-"RTF maths. _wxMaxima_ therefore offers several entries in the right-click menu."
+"Several word processors and similar programs either recognize MathML input "
+"and automatically insert it as an editable 2D equation - or (like "
+"LibreOffice 5.1) have an equation editor that offers an “import MathML from "
+"clipboard” feature. Others support RTF maths. _wxMaxima_ therefore offers "
+"several entries in the right-click menu."
 msgstr ""
-"一些文字处理程序可以识别 MathML 输入并自动将其作为可编辑的数学公式插入，或者（像 "
-"LibreOffice 7.1 那样）有一个提供“从剪贴板导入 MathML”功能的公式编辑器。有些程序也支持 "
-"RTF 公式。因此，wxMaxima 在右键单击菜单中提供了多种复制公式的方法。"
+"一些文字处理程序可以识别 MathML 输入并自动将其作为可编辑的数学公式插入，或者"
+"（像 LibreOffice 7.1 那样）有一个提供“从剪贴板导入 MathML”功能的公式编辑器。"
+"有些程序也支持 RTF 公式。因此，wxMaxima 在右键单击菜单中提供了多种复制公式的"
+"方法。"
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:227
@@ -771,11 +808,11 @@ msgstr "标记语言（Markdown）支持"
 #. type: Plain text
 #: ../../info/wxmaxima.md:230
 msgid ""
-"_wxMaxima_ offers a set of standard markdown conventions that don't collide with "
-"mathematical notation. One of this elements is bullet lists."
+"_wxMaxima_ offers a set of standard markdown conventions that don't collide "
+"with mathematical notation. One of this elements is bullet lists."
 msgstr ""
-"wxMaxima 提供了一些标准的标记（markdown）语言支持，而这些记号不会与数学符号相冲突。其中一"
-"个支持是项目符号列表。"
+"wxMaxima 提供了一些标准的标记（markdown）语言支持，而这些记号不会与数学符号相"
+"冲突。其中一个支持是项目符号列表。"
 
 #. type: Fenced code block
 #: ../../info/wxmaxima.md:231
@@ -846,25 +883,27 @@ msgstr "快捷键"
 #. type: Plain text
 #: ../../info/wxmaxima.md:262
 msgid ""
-"Most hotkeys can be found in the text of the respective menus. Since they are actually "
-"taken from the menu text and thus can be customized by the translations of _wxMaxima_ to "
-"match the needs of users of the local keyboard, we do not document them here. A few "
-"hotkeys or hotkey aliases, though, are not documented in the menus:"
+"Most hotkeys can be found in the text of the respective menus. Since they "
+"are actually taken from the menu text and thus can be customized by the "
+"translations of _wxMaxima_ to match the needs of users of the local "
+"keyboard, we do not document them here. A few hotkeys or hotkey aliases, "
+"though, are not documented in the menus:"
 msgstr ""
-"大多数快捷键可以在相应菜单的文本中找到。由于它们实际上是从菜单文本中获取的，所以可以通过 "
-"wxMaxima 的翻译文本进行定制，以满足本地用户的需求，因此我们不在这里记录它们。但是，一些快"
-"捷键或其别名并没有记录在菜单中："
+"大多数快捷键可以在相应菜单的文本中找到。由于它们实际上是从菜单文本中获取的，"
+"所以可以通过 wxMaxima 的翻译文本进行定制，以满足本地用户的需求，因此我们不在"
+"这里记录它们。但是，一些快捷键或其别名并没有记录在菜单中："
 
 #. type: Bullet: '* '
 #: ../../info/wxmaxima.md:266
-msgid "<kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>DELETE</kbd> deletes a complete cell."
+msgid ""
+"<kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>DELETE</kbd> deletes a complete cell."
 msgstr "<kbd>CTRL+SHIFT+BACKSPACE</kbd> 删除一个单元格。"
 
 #. type: Bullet: '* '
 #: ../../info/wxmaxima.md:266
 msgid ""
-"<kbd>CTRL</kbd>+<kbd>TAB</kbd> or <kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>TAB</kbd> "
-"triggers the auto-completion mechanism."
+"<kbd>CTRL</kbd>+<kbd>TAB</kbd> or <kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>TAB</"
+"kbd> triggers the auto-completion mechanism."
 msgstr "<kbd>CTRL+TAB</kbd> 或 <kbd>CTRL+SHIFT+TAB</kbd> 开启自动补全功能。"
 
 #. type: Bullet: '* '
@@ -881,12 +920,12 @@ msgstr "导出 TeX 时的 TeX 代码"
 #. type: Plain text
 #: ../../info/wxmaxima.md:270
 msgid ""
-"If a text cell begins with `TeX:` the TeX export contains the literal text that follows "
-"the `TeX:` marker. Using this feature allows the entry of TeX markup within the "
-"_wxMaxima_ workbook."
+"If a text cell begins with `TeX:` the TeX export contains the literal text "
+"that follows the `TeX:` marker. Using this feature allows the entry of TeX "
+"markup within the _wxMaxima_ workbook."
 msgstr ""
-"如果文本单元格以 `TeX: ` 开头，则导出 TeX 时，文件将包含 `TeX: ` 标记后面的文本。使用此功"
-"能可以在 wxMaxima 工作簿中输入 TeX 代码。"
+"如果文本单元格以 `TeX: ` 开头，则导出 TeX 时，文件将包含 `TeX: ` 标记后面的文"
+"本。使用此功能可以在 wxMaxima 工作簿中输入 TeX 代码。"
 
 #. type: Title ##
 #: ../../info/wxmaxima.md:271
@@ -897,8 +936,8 @@ msgstr "文件格式"
 #. type: Plain text
 #: ../../info/wxmaxima.md:274
 msgid ""
-"The material that is developed in a _wxMaxima_ session can be stored for later use in "
-"any of three ways:"
+"The material that is developed in a _wxMaxima_ session can be stored for "
+"later use in any of three ways:"
 msgstr "在 wxMaxima 中输入的内容可以存为以下三种文件格式之一，以供以后使用："
 
 #. type: Title ###
@@ -910,11 +949,12 @@ msgstr ".mac"
 #. type: Plain text
 #: ../../info/wxmaxima.md:279
 msgid ""
-".mac files are ordinary text files that contain _Maxima_ commands. They can be read "
-"using _Maxima_’s read command or _wxMaxima_’s File/Batch File menu entry."
+".mac files are ordinary text files that contain _Maxima_ commands. They can "
+"be read using _Maxima_’s read command or _wxMaxima_’s File/Batch File menu "
+"entry."
 msgstr ""
-"`.mac` 文件是包含 Maxima 命令的普通文本文件，该文件可以使用 Maxima 的 read 命令或 "
-"wxMaxima 的\"文件->批处理\"（File->Batch）菜单项来读取它们。"
+"`.mac` 文件是包含 Maxima 命令的普通文本文件，该文件可以使用 Maxima 的 read 命"
+"令或 wxMaxima 的\"文件->批处理\"（File->Batch）菜单项来读取它们。"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:281
@@ -924,13 +964,14 @@ msgstr "例如："
 #. type: Plain text
 #: ../../info/wxmaxima.md:283
 msgid ""
-"A .mac file named Quadratic.mac was created. It consists of two commands: `f(x) := (x - "
-"5)^2;` and `wxdraw2d( explicit(f(x),x,-5,15))`. The result of entering that batch file "
-"appears below. (Some directory path information is deleted.)"
+"A .mac file named Quadratic.mac was created. It consists of two commands: "
+"`f(x) := (x - 5)^2;` and `wxdraw2d( explicit(f(x),x,-5,15))`. The result of "
+"entering that batch file appears below. (Some directory path information is "
+"deleted.)"
 msgstr ""
-"创建一个名为 Quadratic.mac 的 `.mac` 文件，它包含两个命令：`f(x) := (x - 5)^2;` 和 "
-"`wxdraw2d(explicit(f(x),x,-5,15))`。读取该批处理文件的结果如下图所示（删除了一些目录路径"
-"信息）:"
+"创建一个名为 Quadratic.mac 的 `.mac` 文件，它包含两个命令：`f(x) := (x - "
+"5)^2;` 和 `wxdraw2d(explicit(f(x),x,-5,15))`。读取该批处理文件的结果如下图所"
+"示（删除了一些目录路径信息）:"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:285
@@ -952,11 +993,12 @@ msgstr ""
 #. type: Plain text
 #: ../../info/wxmaxima.md:293
 msgid ""
-"You can be use `.mac` files for writing your own library of macros. But since they don’t "
-"contain enough structural information they cannot be read back as a _wxMaxima_ session."
+"You can be use `.mac` files for writing your own library of macros. But "
+"since they don’t contain enough structural information they cannot be read "
+"back as a _wxMaxima_ session."
 msgstr ""
-"用户可以使用 `.mac` 文件编写自己的程序包。但是由于它们没有包含足够的结构信息，因此不能作"
-"为一个 wxMaxima 工作簿来读取。"
+"用户可以使用 `.mac` 文件编写自己的程序包。但是由于它们没有包含足够的结构信"
+"息，因此不能作为一个 wxMaxima 工作簿来读取。"
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:294
@@ -979,11 +1021,11 @@ msgstr ".wxmx"
 #. type: Plain text
 #: ../../info/wxmaxima.md:301
 msgid ""
-"This XML-based file format saves the complete worksheet including things like the zoom "
-"factor and the watchlist. It is the preferred file format."
+"This XML-based file format saves the complete worksheet including things "
+"like the zoom factor and the watchlist. It is the preferred file format."
 msgstr ""
-"这种基于 XML 的文件格式保存了完整的工作簿内容，包括缩放因子和观察列表等内容。它是首选的文"
-"件格式。"
+"这种基于 XML 的文件格式保存了完整的工作簿内容，包括缩放因子和观察列表等内容。"
+"它是首选的文件格式。"
 
 #. type: Title ##
 #: ../../info/wxmaxima.md:302
@@ -993,23 +1035,27 @@ msgstr "设置选项"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:305
-msgid "For some common configuration variables _wxMaxima_ offers two ways of configuring:"
+msgid ""
+"For some common configuration variables _wxMaxima_ offers two ways of "
+"configuring:"
 msgstr "对于一些常见的可设置变量，wxMaxima提供了两种设置方法："
 
 #. type: Bullet: '* '
 #: ../../info/wxmaxima.md:308
 msgid ""
-"The configuration dialog box below lets you change their default values for the current "
-"and subsequent sessions."
+"The configuration dialog box below lets you change their default values for "
+"the current and subsequent sessions."
 msgstr "下面的设置对话框允许用户更改当前和后续会话的默认值。"
 
 #. type: Bullet: '* '
 #: ../../info/wxmaxima.md:308
 msgid ""
-"Also, the values for most configuration variables can be changed for the current session "
-"only by overwriting their values from the worksheet, as shown below."
+"Also, the values for most configuration variables can be changed for the "
+"current session only by overwriting their values from the worksheet, as "
+"shown below."
 msgstr ""
-"对于当前会话，要变更大多数可设置变量的值只能通过从工作簿添加相应的命令，见后续说明。"
+"对于当前会话，要变更大多数可设置变量的值只能通过从工作簿添加相应的命令，见后"
+"续说明。"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:310
@@ -1029,12 +1075,12 @@ msgstr "默认动图帧率"
 #. type: Plain text
 #: ../../info/wxmaxima.md:314
 msgid ""
-"The animation framerate that is used for new animations is kept in the variable "
-"`wxanimate_framerate`. The initial value this variable will contain in a new worksheet "
-"can be changed using the configuration dialogue."
+"The animation framerate that is used for new animations is kept in the "
+"variable `wxanimate_framerate`. The initial value this variable will contain "
+"in a new worksheet can be changed using the configuration dialogue."
 msgstr ""
-"用于新生成动图的帧率保存在变量 `wxanimate_framerate` 中，可以使用设置对话框更改此变量在新"
-"工作簿中的初始值。"
+"用于新生成动图的帧率保存在变量 `wxanimate_framerate` 中，可以使用设置对话框更"
+"改此变量在新工作簿中的初始值。"
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:315
@@ -1045,15 +1091,16 @@ msgstr "新 Maxima 会话的默认绘图尺寸"
 #. type: Plain text
 #: ../../info/wxmaxima.md:318
 msgid ""
-"After the next start plots embedded into the worksheet will be created with this size if "
-"the value of `wxplot_size` isn't changed by _maxima_."
-msgstr "如果 `wxplot_size` 的值没有被 Maxima 更改，则使用此大小创建绘图并嵌入工作簿。"
+"After the next start plots embedded into the worksheet will be created with "
+"this size if the value of `wxplot_size` isn't changed by _maxima_."
+msgstr ""
+"如果 `wxplot_size` 的值没有被 Maxima 更改，则使用此大小创建绘图并嵌入工作簿。"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:320
 msgid ""
-"In order to set the plot size of a single graph only use the following notation can be "
-"used that sets a variable’s value for one command only:"
+"In order to set the plot size of a single graph only use the following "
+"notation can be used that sets a variable’s value for one command only:"
 msgstr "为了仅对单个绘图命令设置绘制图形的大小，可以使用以下代码："
 
 #. type: Fenced code block (maxima)
@@ -1088,18 +1135,20 @@ msgstr "该选项使以下两个功能生效："
 #. type: Bullet: '* '
 #: ../../info/wxmaxima.md:336
 msgid ""
-"If an opening parenthesis, bracket or double quote is entered _wxMaxima_ will insert a "
-"closing one after it."
+"If an opening parenthesis, bracket or double quote is entered _wxMaxima_ "
+"will insert a closing one after it."
 msgstr ""
-"如果输入了左括号、左方括号或左双引号，wxMaxima 将自动在其后插入与之配对的右括号、右方括号"
-"或右双引号。"
+"如果输入了左括号、左方括号或左双引号，wxMaxima 将自动在其后插入与之配对的右括"
+"号、右方括号或右双引号。"
 
 #. type: Bullet: '* '
 #: ../../info/wxmaxima.md:336
 msgid ""
-"If text is selected if any of these keys is pressed the selected text will be put "
-"between the matched signs."
-msgstr "如果在输入前述字符中的任何一个时选择了文本，则所选文本将被放在配对的两个字符之间。"
+"If text is selected if any of these keys is pressed the selected text will "
+"be put between the matched signs."
+msgstr ""
+"如果在输入前述字符中的任何一个时选择了文本，则所选文本将被放在配对的两个字符"
+"之间。"
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:337
@@ -1110,16 +1159,17 @@ msgstr "不自动保存工作簿"
 #. type: Plain text
 #: ../../info/wxmaxima.md:340
 msgid ""
-"If this option is set the file the worksheet is in is overwritten only on request of the "
-"user. In case of a crash/power loss/... a recent backup copy is still made available in "
-"the temp directory, though."
+"If this option is set the file the worksheet is in is overwritten only on "
+"request of the user. In case of a crash/power loss/... a recent backup copy "
+"is still made available in the temp directory, though."
 msgstr ""
-"如果设置了此选项，则只有在用户请求时才会覆盖工作簿所在的文件。为了防止发生碰撞、断电等突"
-"发情况，临时目录（temp）中仍保留了一个最近的备份文件。"
+"如果设置了此选项，则只有在用户请求时才会覆盖工作簿所在的文件。为了防止发生碰"
+"撞、断电等突发情况，临时目录（temp）中仍保留了一个最近的备份文件。"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:342
-msgid "If this option isn't set _wxMaxima_ behaves more like a modern cellphone app:"
+msgid ""
+"If this option isn't set _wxMaxima_ behaves more like a modern cellphone app:"
 msgstr "如果未设置此选项，则 wxMaxima 的行为更像现代手机软件："
 
 #. type: Bullet: '* '
@@ -1151,12 +1201,12 @@ msgstr ""
 #. type: Plain text
 #: ../../info/wxmaxima.md:352
 msgid ""
-"If you are using Windows, the configuration will be stored in the registry. You will "
-"find the entries for _wxMaxima_ at the following position in the registry: "
-"`HKEY_CURRENT_USER\\Software\\wxMaxima`"
+"If you are using Windows, the configuration will be stored in the registry. "
+"You will find the entries for _wxMaxima_ at the following position in the "
+"registry: `HKEY_CURRENT_USER\\Software\\wxMaxima`"
 msgstr ""
-"当使用 Windows 系统时，配置信息将存储在注册表中。在注册表中的以下位置可以找到 wxMaxima 的"
-"相关条目：`HKEY_CURRENT_USER\\Software\\wxMaxima`。"
+"当使用 Windows 系统时，配置信息将存储在注册表中。在注册表中的以下位置可以找"
+"到 wxMaxima 的相关条目：`HKEY_CURRENT_USER\\Software\\wxMaxima`。"
 
 #. type: Title =
 #: ../../info/wxmaxima.md:358
@@ -1167,17 +1217,18 @@ msgstr "对 Maxima 功能的扩充"
 #. type: Plain text
 #: ../../info/wxmaxima.md:361
 msgid ""
-"_wxMaxima_ is primarily a graphical user interface for _Maxima_. As such, its main "
-"purpose is to pass along commands to _Maxima_ and to report the results of executing "
-"those commands. In some cases, however, _wxMaxima_ adds functionality to _Maxima_. "
-"_wxMaxima_’s ability to generate reports by exporting a workbook’s contents to HTML and "
-"LaTeX files has been mentioned. This section considers some ways that _wxMaxima_ "
-"enhances the inclusion of graphics into a session."
+"_wxMaxima_ is primarily a graphical user interface for _Maxima_. As such, "
+"its main purpose is to pass along commands to _Maxima_ and to report the "
+"results of executing those commands. In some cases, however, _wxMaxima_ adds "
+"functionality to _Maxima_. _wxMaxima_’s ability to generate reports by "
+"exporting a workbook’s contents to HTML and LaTeX files has been mentioned. "
+"This section considers some ways that _wxMaxima_ enhances the inclusion of "
+"graphics into a session."
 msgstr ""
-"wxMaxima 是 Maxima 的图形用户界面，因此它的主要目的是将命令传递给 Maxima，并输出执行这些"
-"命令的结果。但是，在某些情况下，wxMaxima 会为 Maxima 添加新的功能。前面已提到 wxMaxima 可"
-"以将工作簿的内容导出为 HTML 和 LaTeX 文件。本节将讨论另外一些增强功能，以及在工作簿中包含"
-"图形的方法。"
+"wxMaxima 是 Maxima 的图形用户界面，因此它的主要目的是将命令传递给 Maxima，并"
+"输出执行这些命令的结果。但是，在某些情况下，wxMaxima 会为 Maxima 添加新的功"
+"能。前面已提到 wxMaxima 可以将工作簿的内容导出为 HTML 和 LaTeX 文件。本节将讨"
+"论另外一些增强功能，以及在工作簿中包含图形的方法。"
 
 #. type: Title ##
 #: ../../info/wxmaxima.md:362
@@ -1188,11 +1239,11 @@ msgstr "为变量添加下标"
 #. type: Plain text
 #: ../../info/wxmaxima.md:365
 msgid ""
-"if `wxsubscripts` is set to true variable names of the format `x_y` are displayed using "
-"a subscript if"
+"if `wxsubscripts` is set to true variable names of the format `x_y` are "
+"displayed using a subscript if"
 msgstr ""
-"如果 `wxsubscripts` 设置为 true，则当以下条件满足时，将使用下标来显示格式为 `x_y` 的变量"
-"名："
+"如果 `wxsubscripts` 设置为 true，则当以下条件满足时，将使用下标来显示格式为 "
+"`x_y` 的变量名："
 
 #. type: Bullet: '* '
 #: ../../info/wxmaxima.md:368
@@ -1207,15 +1258,18 @@ msgstr "`y` 是一个整数。"
 #. type: Plain text
 #: ../../info/wxmaxima.md:370
 msgid ""
-"If the variable name doesn’t match these requirements it can still be declared as \"to "
-"be subscripted\" using the command `wxdeclare_subscript(variable_name);` or "
-"`wxdeclare_subscript([variable_name1,variable_name2,...]);` Declaring a variable as "
-"subscripted can be reverted using the following command: "
+"If the variable name doesn’t match these requirements it can still be "
+"declared as \"to be subscripted\" using the command "
+"`wxdeclare_subscript(variable_name);` or "
+"`wxdeclare_subscript([variable_name1,variable_name2,...]);` Declaring a "
+"variable as subscripted can be reverted using the following command: "
 "`wxdeclare_subscript(variable_name,false);`"
 msgstr ""
-"如果变量格式与上述条件不匹配，仍可以使用命令`wxdeclare_subscript(variable_name);` 或 "
-"`wxdeclare_subscript([variable_name1,variable_name2,...]);`来显示下标。声明为下标的变量可"
-"以使用以下命令还原格式：`wxdeclare_subscript(variable_name,false);`。"
+"如果变量格式与上述条件不匹配，仍可以使用命令"
+"`wxdeclare_subscript(variable_name);` 或 "
+"`wxdeclare_subscript([variable_name1,variable_name2,...]);`来显示下标。声明为"
+"下标的变量可以使用以下命令还原格式：`wxdeclare_subscript(variable_name,"
+"false);`。"
 
 #. type: Title ##
 #: ../../info/wxmaxima.md:371
@@ -1226,18 +1280,19 @@ msgstr "在状态栏中提供反馈信息"
 #. type: Plain text
 #: ../../info/wxmaxima.md:374
 msgid ""
-"Long-running commands can provide user-feedback in the status bar. This user feedback is "
-"replaced by any new feedback that is placed there (allowing to use it as a progress "
-"indicator) and is deleted as soon as the current command sent to _Maxima_ is finished. "
-"It is safe to use `wxstatusbar()` even in libraries that might be used with plain "
-"_Maxima_ (as opposed to _wxMaxima_): If _wxMaxima_ isn't present the `wxstatusbar()` "
-"command will just be left unevaluated."
+"Long-running commands can provide user-feedback in the status bar. This user "
+"feedback is replaced by any new feedback that is placed there (allowing to "
+"use it as a progress indicator) and is deleted as soon as the current "
+"command sent to _Maxima_ is finished. It is safe to use `wxstatusbar()` even "
+"in libraries that might be used with plain _Maxima_ (as opposed to "
+"_wxMaxima_): If _wxMaxima_ isn't present the `wxstatusbar()` command will "
+"just be left unevaluated."
 msgstr ""
-"长时间运行的命令中可以包含 `wxstatusbar()`，以用于在状态栏中向用户提供反馈信息。此反馈信"
-"息将被任何新生成的反馈信息覆盖（从而可以将其用作运行进度指示器），并在发送到 Maxima 的命"
-"令运行结束后立即被删除。即使在只与 Maxima（而非 wxMaxima）一起使用的库中包含命令 "
-"`wxstatusbar()` 也是可行的：如果没有运行 wxMaxima，那么命令 `wxstatusbar()` 也不会被执"
-"行。"
+"长时间运行的命令中可以包含 `wxstatusbar()`，以用于在状态栏中向用户提供反馈信"
+"息。此反馈信息将被任何新生成的反馈信息覆盖（从而可以将其用作运行进度指示"
+"器），并在发送到 Maxima 的命令运行结束后立即被删除。即使在只与 Maxima（而非 "
+"wxMaxima）一起使用的库中包含命令 `wxstatusbar()` 也是可行的：如果没有运行 "
+"wxMaxima，那么命令 `wxstatusbar()` 也不会被执行。"
 
 #. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:375
@@ -1269,10 +1324,12 @@ msgstr "绘图"
 #. type: Plain text
 #: ../../info/wxmaxima.md:389
 msgid ""
-"Plotting (having fundamentally to do with graphics) is a place where a graphical user "
-"interface will have to provide some extensions to the original program."
+"Plotting (having fundamentally to do with graphics) is a place where a "
+"graphical user interface will have to provide some extensions to the "
+"original program."
 msgstr ""
-"因为绘图功能与图形密切相关，所以图形用户界面理应为原始程序的绘图功能提供一些扩充内容。"
+"因为绘图功能与图形密切相关，所以图形用户界面理应为原始程序的绘图功能提供一些"
+"扩充内容。"
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:390
@@ -1283,17 +1340,20 @@ msgstr "将绘制的图形嵌入工作簿"
 #. type: Plain text
 #: ../../info/wxmaxima.md:393
 msgid ""
-"_Maxima_ normally instructs the external program _gnuplot_ to open a separate window for "
-"every diagram it creates. Since many times it is convenient to embed graphs into the "
-"work sheet instead _wxMaxima_ provides its own set of plot functions that don’t differ "
-"from the corresponding _maxima_ functions save in their name: They are all prefixed by a "
-"“wx”. For example `wxplot2d` corresponds to `plot2d`, `wxplot3d` corresponds to "
-"`plot3d`, `wxdraw` corresponds to `draw` and `wxhistogram` corresponds to `histogram`."
+"_Maxima_ normally instructs the external program _gnuplot_ to open a "
+"separate window for every diagram it creates. Since many times it is "
+"convenient to embed graphs into the work sheet instead _wxMaxima_ provides "
+"its own set of plot functions that don’t differ from the corresponding "
+"_maxima_ functions save in their name: They are all prefixed by a “wx”. For "
+"example `wxplot2d` corresponds to `plot2d`, `wxplot3d` corresponds to "
+"`plot3d`, `wxdraw` corresponds to `draw` and `wxhistogram` corresponds to "
+"`histogram`."
 msgstr ""
-"Maxima 在创建图形时，通常会指示外部程序 gnuplot 用单独的窗口展示每个图形。因为在工作簿中"
-"嵌入图形通常会更方便，所以 wxMaxima 提供了自己的一组绘图函数。这些函数与其名称所对应的 "
-"Maxima 函数在使用时没有区别，但是都以“wx”为前缀。例如，`wxplot2d` 对应于 `plot2d`，"
-"`wxplot3d` 对应于 `plot3d`，`wxdraw` 对应于 `draw`，`wxhistogram` 对应于 `histogram`。"
+"Maxima 在创建图形时，通常会指示外部程序 gnuplot 用单独的窗口展示每个图形。因"
+"为在工作簿中嵌入图形通常会更方便，所以 wxMaxima 提供了自己的一组绘图函数。这"
+"些函数与其名称所对应的 Maxima 函数在使用时没有区别，但是都以“wx”为前缀。例"
+"如，`wxplot2d` 对应于 `plot2d`，`wxplot3d` 对应于 `plot3d`，`wxdraw` 对应于 "
+"`draw`，`wxhistogram` 对应于 `histogram`。"
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:394
@@ -1304,14 +1364,15 @@ msgstr "设置嵌入图形的大小"
 #. type: Plain text
 #: ../../info/wxmaxima.md:397
 msgid ""
-"As noted above, the configure dialog provides a way to change the default size plots are "
-"created with which sets the starting value of `wxplot_size`. The plotting routines of "
-"_wxMaxima_ respect this variable that specifies the size of a plot in pixels. It can "
-"always be queried or used to set the size of the following plots:"
+"As noted above, the configure dialog provides a way to change the default "
+"size plots are created with which sets the starting value of `wxplot_size`. "
+"The plotting routines of _wxMaxima_ respect this variable that specifies the "
+"size of a plot in pixels. It can always be queried or used to set the size "
+"of the following plots:"
 msgstr ""
-"如前面所述，设置对话框提供了一种更改默认绘图大小的方法，该方法设置了 `wxplot_size` 的默认"
-"值。绘图时，wxMaxima 将该变量识别为图片尺寸（以像素为单位）。可以查询该变量，或以如下方式"
-"设置所绘制图片的大小："
+"如前面所述，设置对话框提供了一种更改默认绘图大小的方法，该方法设置了 "
+"`wxplot_size` 的默认值。绘图时，wxMaxima 将该变量识别为图片尺寸（以像素为单"
+"位）。可以查询该变量，或以如下方式设置所绘制图片的大小："
 
 #. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:398
@@ -1336,14 +1397,14 @@ msgstr ""
 #. type: Plain text
 #: ../../info/wxmaxima.md:409
 msgid ""
-"If the size of only one plot is to be changed _Maxima_ provides a canonical way to "
-"change an attribute only for the current cell. In this usage the specification "
-"`wxplot_size = [value1, value2]` is appended to the `wxdraw2d( )` command, and is not "
-"part of the `wxdraw2d` command."
+"If the size of only one plot is to be changed _Maxima_ provides a canonical "
+"way to change an attribute only for the current cell. In this usage the "
+"specification `wxplot_size = [value1, value2]` is appended to the "
+"`wxdraw2d( )` command, and is not part of the `wxdraw2d` command."
 msgstr ""
-"如果只更改一个绘制图片的大小，wxMaxima 提供了一种只为当前单元格更改属性的方法。具体用法"
-"为，将 `wxplot_size=[value1,value2]` 附加到 `wxdraw2d()` 命令结尾，而不是作为该命令的一部"
-"分："
+"如果只更改一个绘制图片的大小，wxMaxima 提供了一种只为当前单元格更改属性的方"
+"法。具体用法为，将 `wxplot_size=[value1,value2]` 附加到 `wxdraw2d()` 命令结"
+"尾，而不是作为该命令的一部分："
 
 #. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:410
@@ -1372,17 +1433,19 @@ msgstr "更好的绘图质量"
 #. type: Plain text
 #: ../../info/wxmaxima.md:422
 msgid ""
-"_Gnuplot_ doesn’t seem to provide a portable way of determining whether it supports the "
-"high-quality bitmap output that the cairo library provides. On systems where _gnuplot_ "
-"is compiled to use this library the pngcairo option from the configuration menu (that "
-"can be overridden by the variable `wxplot_pngcairo`) enables support for antialiasing "
-"and additional line styles. If `wxplot_pngcairo` is set without _gnuplot_ supporting "
-"this the result will be error messages instead of graphics."
+"_Gnuplot_ doesn’t seem to provide a portable way of determining whether it "
+"supports the high-quality bitmap output that the cairo library provides. On "
+"systems where _gnuplot_ is compiled to use this library the pngcairo option "
+"from the configuration menu (that can be overridden by the variable "
+"`wxplot_pngcairo`) enables support for antialiasing and additional line "
+"styles. If `wxplot_pngcairo` is set without _gnuplot_ supporting this the "
+"result will be error messages instead of graphics."
 msgstr ""
-"Gnuplot 似乎没有提供一种通用的方法来确定它是否支持 cairo 库提供的高质量位图输出。如果所编"
-"译的 gnuplot 使用了 cairo 库，勾选设置菜单中的 pngcairo 选项（可被变量 `wxplot_pngcairo` "
-"覆盖）可以提供抗锯齿和其他线条样式支持。如果设置了 `wxplot_pngcairo`，而 gnuplot 并未使"
-"用 cairo 库，则绘图将会失败并给出错误消息。"
+"Gnuplot 似乎没有提供一种通用的方法来确定它是否支持 cairo 库提供的高质量位图输"
+"出。如果所编译的 gnuplot 使用了 cairo 库，勾选设置菜单中的 pngcairo 选项（可"
+"被变量 `wxplot_pngcairo` 覆盖）可以提供抗锯齿和其他线条样式支持。如果设置了 "
+"`wxplot_pngcairo`，而 gnuplot 并未使用 cairo 库，则绘图将会失败并给出错误消"
+"息。"
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:423
@@ -1393,14 +1456,14 @@ msgstr "在交互式 gnuplot 窗口中打开嵌入的绘图"
 #. type: Plain text
 #: ../../info/wxmaxima.md:426
 msgid ""
-"If a plot was generated using the `wxdraw`-type commands (`wxplot2d` and `wxplot3d` "
-"isn't supported by this feature) and the file size of the underlying _gnuplot_ project "
-"isn't way too high _wxMaxima_ offers a right-click menu that allows to open the plot in "
-"an interactive _gnuplot_ window."
+"If a plot was generated using the `wxdraw`-type commands (`wxplot2d` and "
+"`wxplot3d` isn't supported by this feature) and the file size of the "
+"underlying _gnuplot_ project isn't way too high _wxMaxima_ offers a right-"
+"click menu that allows to open the plot in an interactive _gnuplot_ window."
 msgstr ""
-"如果绘图时使用 `wxdraw` 类型的命令（不含 `wxplot2d` 和 `wxplot3d`），并且底层的 "
-"`gnuplot` 项目文件不是太大，则 wxMaxima 提供了一个右键单击菜单，允许在交互式的 gnuplot 窗"
-"口中打开绘制的图形。"
+"如果绘图时使用 `wxdraw` 类型的命令（不含 `wxplot2d` 和 `wxplot3d`），并且底层"
+"的 `gnuplot` 项目文件不是太大，则 wxMaxima 提供了一个右键单击菜单，允许在交互"
+"式的 gnuplot 窗口中打开绘制的图形。"
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:427
@@ -1411,14 +1474,15 @@ msgstr "在绘图窗口中打开 gnuplot 控制台"
 #. type: Plain text
 #: ../../info/wxmaxima.md:430
 msgid ""
-"On MS Windows, if in _Maxima_'s variable `gnuplot_command` \"gnuplot\" is replaced by "
-"\"wgnuplot\", _gnuplot_ offers the possibility to open a console window, where _gnuplot_ "
-"commands can be entered into. Unfortunately, enabling this feature causes _gnuplot_ to "
-"\"steal\" the keyboard focus for a short time every time a plot is prepared."
+"On MS Windows, if in _Maxima_'s variable `gnuplot_command` \"gnuplot\" is "
+"replaced by \"wgnuplot\", _gnuplot_ offers the possibility to open a console "
+"window, where _gnuplot_ commands can be entered into. Unfortunately, "
+"enabling this feature causes _gnuplot_ to \"steal\" the keyboard focus for a "
+"short time every time a plot is prepared."
 msgstr ""
-"在 Windows 系统上，如果 Maxima 的变量 `gnuplot_command` 的值 “gnuplot” 被换为 "
-"“wgnuplot”，则 gnuplot 会打开一个控制台窗口，在该窗口中可以输入 gnuplot 的命令。但是，启"
-"用此功能会使得每次绘图时 gnuplot 短时间内独占键盘。"
+"在 Windows 系统上，如果 Maxima 的变量 `gnuplot_command` 的值 “gnuplot” 被换"
+"为 “wgnuplot”，则 gnuplot 会打开一个控制台窗口，在该窗口中可以输入 gnuplot 的"
+"命令。但是，启用此功能会使得每次绘图时 gnuplot 短时间内独占键盘。"
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:431
@@ -1429,26 +1493,27 @@ msgstr "在工作簿中嵌入动图"
 #. type: Plain text
 #: ../../info/wxmaxima.md:434
 msgid ""
-"3D diagrams tend to make it hard to read quantitative data. A viable alternative might "
-"be to assign the 3rd parameter to the mouse wheel. The `with_slider_draw` command is a "
-"version of `wxdraw2d` that does prepare multiple plots and allows to switch between them "
-"by moving the slider on top of the screen. _wxMaxima_ allows to export this animation as "
-"an animated gif."
+"3D diagrams tend to make it hard to read quantitative data. A viable "
+"alternative might be to assign the 3rd parameter to the mouse wheel. The "
+"`with_slider_draw` command is a version of `wxdraw2d` that does prepare "
+"multiple plots and allows to switch between them by moving the slider on top "
+"of the screen. _wxMaxima_ allows to export this animation as an animated gif."
 msgstr ""
-"在三维图形中，点的坐标往往难以读取。一个可行的替代方法是将第三个参数指定给鼠标滚轮（即绘"
-"制多个二维图形）。`with_slider_draw` 命令是 `wxdraw2d` 的一个版本，它可以绘制多幅图片，使"
-"用户可以通过移动菜单栏中的滑块（或滚动鼠标滚轮）在这些图片之间切换。wxMaxima 支持将此动图"
-"导出为 gif 格式的图片。"
+"在三维图形中，点的坐标往往难以读取。一个可行的替代方法是将第三个参数指定给鼠"
+"标滚轮（即绘制多个二维图形）。`with_slider_draw` 命令是 `wxdraw2d` 的一个版"
+"本，它可以绘制多幅图片，使用户可以通过移动菜单栏中的滑块（或滚动鼠标滚轮）在"
+"这些图片之间切换。wxMaxima 支持将此动图导出为 gif 格式的图片。"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:436
 msgid ""
-"The first two arguments for `with_slider_draw` are the name of the variable that is "
-"stepped between the plots and a list of the values of these variable. The arguments that "
-"follow are the ordinary arguments for `wxdraw2d`:"
+"The first two arguments for `with_slider_draw` are the name of the variable "
+"that is stepped between the plots and a list of the values of these "
+"variable. The arguments that follow are the ordinary arguments for "
+"`wxdraw2d`:"
 msgstr ""
-"`with_slider_draw` 命令的前两个参数是用于控制绘图的变量名称和变量值的列表，接下来的参数"
-"与 `wxdraw2d` 命令的参数相同："
+"`with_slider_draw` 命令的前两个参数是用于控制绘图的变量名称和变量值的列表，接"
+"下来的参数与 `wxdraw2d` 命令的参数相同："
 
 #. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:437
@@ -1475,10 +1540,11 @@ msgstr ""
 #. type: Plain text
 #: ../../info/wxmaxima.md:449
 msgid ""
-"The same functionality for 3D plots is accessible as `with_slider_draw3d`, which allows "
-"for rotating 3d plots:"
+"The same functionality for 3D plots is accessible as `with_slider_draw3d`, "
+"which allows for rotating 3d plots:"
 msgstr ""
-"对三维绘图而言，类似的功能由命令 `with_slider_draw3d` 提供，可用参数来旋转三维图形："
+"对三维绘图而言，类似的功能由命令 `with_slider_draw3d` 提供，可用参数来旋转三"
+"维图形："
 
 #. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:450
@@ -1517,9 +1583,12 @@ msgstr ""
 #. type: Plain text
 #: ../../info/wxmaxima.md:468
 msgid ""
-"If the general shape of the plot is what matters it might suffice to move the plot just "
-"a little bit in order to make its 3D nature available to the intuition:"
-msgstr "如果重要的是图的大致形状，那么只要稍微移动一点，就可以直观地看出它的三维特征："
+"If the general shape of the plot is what matters it might suffice to move "
+"the plot just a little bit in order to make its 3D nature available to the "
+"intuition:"
+msgstr ""
+"如果重要的是图的大致形状，那么只要稍微移动一点，就可以直观地看出它的三维特"
+"征："
 
 #. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:469
@@ -1558,7 +1627,8 @@ msgstr ""
 #. type: Plain text
 #: ../../info/wxmaxima.md:487
 msgid ""
-"For those more familiar with `plot` than with `draw` there is a second set of functions:"
+"For those more familiar with `plot` than with `draw` there is a second set "
+"of functions:"
 msgstr "对于那些更熟悉 `plot` 而不是 `draw` 的人来说，还有一组函数："
 
 #. type: Bullet: '* '
@@ -1574,12 +1644,12 @@ msgstr "`wxanimate`。"
 #. type: Plain text
 #: ../../info/wxmaxima.md:492
 msgid ""
-"Normally the animations are played back or exported with the frame rate chosen in the "
-"configuration of _wxMaxima_. To set the speed an individual animation is played back the "
-"variable `wxanimate_framerate` can be used:"
+"Normally the animations are played back or exported with the frame rate "
+"chosen in the configuration of _wxMaxima_. To set the speed an individual "
+"animation is played back the variable `wxanimate_framerate` can be used:"
 msgstr ""
-"在通常情况下，动图会以设置中选择的帧率回放或导出。要设置回放单个动图的速度，可以修改变量 "
-"`wxanimate_framerate`："
+"在通常情况下，动图会以设置中选择的帧率回放或导出。要设置回放单个动图的速度，"
+"可以修改变量 `wxanimate_framerate`："
 
 #. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:493
@@ -1594,13 +1664,14 @@ msgstr ""
 #. type: Plain text
 #: ../../info/wxmaxima.md:499
 msgid ""
-"The animation functions use _Maxima_'s `makelist` command and therefore shares the "
-"pitfall that the slider variable's value is substituted into the expression only if the "
-"variable is directly visible in the expression. Therefore the following example will "
-"fail:"
+"The animation functions use _Maxima_'s `makelist` command and therefore "
+"shares the pitfall that the slider variable's value is substituted into the "
+"expression only if the variable is directly visible in the expression. "
+"Therefore the following example will fail:"
 msgstr ""
-"动图函数使用 Maxima 的 `makelist` 命令，因此存在如下缺陷：只有当滑块变量在绘图表达式中直"
-"接可见时，才会将该变量的值替换到表达式中。因此，执行以下例子将显示错误信息："
+"动图函数使用 Maxima 的 `makelist` 命令，因此存在如下缺陷：只有当滑块变量在绘"
+"图表达式中直接可见时，才会将该变量的值替换到表达式中。因此，执行以下例子将显"
+"示错误信息："
 
 #. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:500
@@ -1625,9 +1696,10 @@ msgstr ""
 #. type: Plain text
 #: ../../info/wxmaxima.md:511
 msgid ""
-"If _Maxima_ is explicitly asked to substitute the slider’s value plotting works fine "
-"instead:"
-msgstr "如果修改为明确要求 Maxima 代入滑块变量的值，则修改后的代码可用于绘制动图："
+"If _Maxima_ is explicitly asked to substitute the slider’s value plotting "
+"works fine instead:"
+msgstr ""
+"如果修改为明确要求 Maxima 代入滑块变量的值，则修改后的代码可用于绘制动图："
 
 #. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:512
@@ -1664,12 +1736,13 @@ msgstr "同时打开多个绘图窗口"
 #. type: Plain text
 #: ../../info/wxmaxima.md:528
 msgid ""
-"While not being a provided by _wxMaxima_ this feature of _Maxima_ (on setups that "
-"support it) sometimes comes in handily. The following example comes from a post from "
-"Mario Rodriguez to the _Maxima_ mailing list:"
+"While not being a provided by _wxMaxima_ this feature of _Maxima_ (on setups "
+"that support it) sometimes comes in handily. The following example comes "
+"from a post from Mario Rodriguez to the _Maxima_ mailing list:"
 msgstr ""
-"虽然这个 Maxima 特性不是由 wxMaxima 提供的，但是（如果安装的 Maxima 支持此特性）有时使用"
-"起来会很方便。以下例子来自 Mario Rodriguez 在 Maxima 邮件列表中的一篇帖子："
+"虽然这个 Maxima 特性不是由 wxMaxima 提供的，但是（如果安装的 Maxima 支持此特"
+"性）有时使用起来会很方便。以下例子来自 Mario Rodriguez 在 Maxima 邮件列表中的"
+"一篇帖子："
 
 #. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:529
@@ -1733,12 +1806,12 @@ msgstr "“用 draw 函数绘图”侧边栏"
 #. type: Plain text
 #: ../../info/wxmaxima.md:558
 msgid ""
-"The \"Plot using draw\" sidebar hides a simple code generator that allows to generate "
-"scenes that make use of some of the flexibility of the _draw_ package _maxima_ comes "
-"with."
+"The \"Plot using draw\" sidebar hides a simple code generator that allows to "
+"generate scenes that make use of some of the flexibility of the _draw_ "
+"package _maxima_ comes with."
 msgstr ""
-"“用 draw 函数绘图”侧边栏暗含一个简单的代码生成器，使用它可以利用 Maxima 的 draw 程序包方"
-"便灵活地生成一些图形绘制命令模板。"
+"“用 draw 函数绘图”侧边栏暗含一个简单的代码生成器，使用它可以利用 Maxima 的 "
+"draw 程序包方便灵活地生成一些图形绘制命令模板。"
 
 #. type: Title ####
 #: ../../info/wxmaxima.md:559
@@ -1749,24 +1822,25 @@ msgstr "二维图形"
 #. type: Plain text
 #: ../../info/wxmaxima.md:562
 msgid ""
-"Generates the skeleton of a `draw()` command that draws a 2D scene. This scene later has "
-"to be filled with commands that generate the scene's contents, for example by using the "
-"buttons in the rows below the \"2D\" button."
+"Generates the skeleton of a `draw()` command that draws a 2D scene. This "
+"scene later has to be filled with commands that generate the scene's "
+"contents, for example by using the buttons in the rows below the \"2D\" "
+"button."
 msgstr ""
-"提供绘制二维图形的 `draw()` 命令的简单模板。然后可以使用具体的绘图命令填充该模板，例如利"
-"用“二维图形”按钮下方的其他按钮导入绘图命令。"
+"提供绘制二维图形的 `draw()` 命令的简单模板。然后可以使用具体的绘图命令填充该"
+"模板，例如利用“二维图形”按钮下方的其他按钮导入绘图命令。"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:564
 msgid ""
-"One helpful feature of the 2D button is that it allows to setup the scene as an "
-"animation in which a variable (by default it is _t_) has a different value in each "
-"frame: Often an moving 2D plot allows easier interpretation than the same data in a non-"
-"moving 3D one."
+"One helpful feature of the 2D button is that it allows to setup the scene as "
+"an animation in which a variable (by default it is _t_) has a different "
+"value in each frame: Often an moving 2D plot allows easier interpretation "
+"than the same data in a non-moving 3D one."
 msgstr ""
-"“二维图形”按钮的一个有用的功能是，用它可以设置一个生成动画的模板，其中一个变量（默认情况"
-"下是 t）在每一帧中都有不同的值。通常动态的二维图形比静态的三维图形中的相同数据更容易理"
-"解。"
+"“二维图形”按钮的一个有用的功能是，用它可以设置一个生成动画的模板，其中一个变"
+"量（默认情况下是 t）在每一帧中都有不同的值。通常动态的二维图形比静态的三维图"
+"形中的相同数据更容易理解。"
 
 #. type: Title ####
 #: ../../info/wxmaxima.md:565
@@ -1777,12 +1851,12 @@ msgstr "三维图形"
 #. type: Plain text
 #: ../../info/wxmaxima.md:568
 msgid ""
-"Generates the skeleton of a `draw()` command that draws a 3D scene. If neither a 2D or a "
-"3D scene are set up all of the other buttons set up a 2D scene that contains the command "
-"the button generates."
+"Generates the skeleton of a `draw()` command that draws a 3D scene. If "
+"neither a 2D or a 3D scene are set up all of the other buttons set up a 2D "
+"scene that contains the command the button generates."
 msgstr ""
-"提供绘制三维图形的 `draw()` 命令的简单模板。如果没有主动使用此功能和上一功能，则所有其他"
-"按钮都将自动提前调用上一功能中的绘制二维图形模板。"
+"提供绘制三维图形的 `draw()` 命令的简单模板。如果没有主动使用此功能和上一功"
+"能，则所有其他按钮都将自动提前调用上一功能中的绘制二维图形模板。"
 
 #. type: Title ####
 #: ../../info/wxmaxima.md:569
@@ -1793,13 +1867,14 @@ msgstr "表达式"
 #. type: Plain text
 #: ../../info/wxmaxima.md:572
 msgid ""
-"Appends a standard plot of an expression like `sin(x)`, `x*sin(x)` or `x^2+2*x-4` to the "
-"`draw()` command the cursor currently is in. If there is no draw command a 2D scene with "
-"the plot is generated. Each scene can be filled with any number of plots."
+"Appends a standard plot of an expression like `sin(x)`, `x*sin(x)` or "
+"`x^2+2*x-4` to the `draw()` command the cursor currently is in. If there is "
+"no draw command a 2D scene with the plot is generated. Each scene can be "
+"filled with any number of plots."
 msgstr ""
-"在光标当前所在的 `draw()` 命令中添加绘图函数表达式，如 `sin(x)`, `x*sin(x)` 或者 "
-"`x^2+2*x-4` 等 。每个图中可以绘制任意数量的图形。如果没有 `draw()` 命令，将调用绘制二维图"
-"形的模板。"
+"在光标当前所在的 `draw()` 命令中添加绘图函数表达式，如 `sin(x)`, `x*sin(x)` "
+"或者 `x^2+2*x-4` 等 。每个图中可以绘制任意数量的图形。如果没有 `draw()` 命"
+"令，将调用绘制二维图形的模板。"
 
 #. type: Title ####
 #: ../../info/wxmaxima.md:573
@@ -1810,12 +1885,14 @@ msgstr "隐式图形"
 #. type: Plain text
 #: ../../info/wxmaxima.md:576
 msgid ""
-"Tries to find all points an expression like `y=sin(x)`, `y*sin(x)=3` or `x^2+y^2=4` is "
-"true at and plots the resulting curve in the `draw()` command the cursor currently is "
-"in. If there is no draw command a 2D scene with the plot is generated."
+"Tries to find all points an expression like `y=sin(x)`, `y*sin(x)=3` or "
+"`x^2+y^2=4` is true at and plots the resulting curve in the `draw()` command "
+"the cursor currently is in. If there is no draw command a 2D scene with the "
+"plot is generated."
 msgstr ""
-"尝试寻找满足 `y=sin(x)`，`y*sin(x)=3` 或 `x^2+y^2=4` 之类的表达式的所有解，并在光标当前所"
-"在的 `draw()` 命令中绘制对应曲线。如果没有 `draw()` 命令，将调用绘制二维图形的模板。"
+"尝试寻找满足 `y=sin(x)`，`y*sin(x)=3` 或 `x^2+y^2=4` 之类的表达式的所有解，并"
+"在光标当前所在的 `draw()` 命令中绘制对应曲线。如果没有 `draw()` 命令，将调用"
+"绘制二维图形的模板。"
 
 #. type: Title ####
 #: ../../info/wxmaxima.md:577
@@ -1826,13 +1903,14 @@ msgstr "参数式图形"
 #. type: Plain text
 #: ../../info/wxmaxima.md:580
 msgid ""
-"Steps a variable from a lower limit to an upper limit and uses two expressions like "
-"`t*sin(t)` and `t*cos(t)` for generating the x, y (and in 3D plots also z) coordinates "
-"of a curve that is put into the current draw command."
+"Steps a variable from a lower limit to an upper limit and uses two "
+"expressions like `t*sin(t)` and `t*cos(t)` for generating the x, y (and in "
+"3D plots also z) coordinates of a curve that is put into the current draw "
+"command."
 msgstr ""
-"将变量（如 t）从下限变化到上限，并在当前绘图命令中使用两个表达式（如 `t*sin(t)` 和 "
-"`t*cos(t)`），以生成曲线上点的横、纵坐标 (x,y)（在三维图形中，第三个表达式生成竖坐标 "
-"z）。"
+"将变量（如 t）从下限变化到上限，并在当前绘图命令中使用两个表达式（如 "
+"`t*sin(t)` 和 `t*cos(t)`），以生成曲线上点的横、纵坐标 (x,y)（在三维图形中，"
+"第三个表达式生成竖坐标 z）。"
 
 #. type: Title ####
 #: ../../info/wxmaxima.md:581
@@ -1843,11 +1921,12 @@ msgstr "点"
 #. type: Plain text
 #: ../../info/wxmaxima.md:584
 msgid ""
-"Draws many points that can optionally be joined. The coordinates of the points are taken "
-"from a list of lists, a 2D array or one list or array for each axis."
+"Draws many points that can optionally be joined. The coordinates of the "
+"points are taken from a list of lists, a 2D array or one list or array for "
+"each axis."
 msgstr ""
-"绘制多个点，并且可以选择顺次连接它们。点的坐标取自列表的列表、二维数组或为每个轴指定的一"
-"个列表或数组。"
+"绘制多个点，并且可以选择顺次连接它们。点的坐标取自列表的列表、二维数组或为每"
+"个轴指定的一个列表或数组。"
 
 #. type: Title ####
 #: ../../info/wxmaxima.md:585
@@ -1880,13 +1959,14 @@ msgstr "等高线"
 #. type: Plain text
 #: ../../info/wxmaxima.md:596
 msgid ""
-"(Only for 3D plots): Adds contour lines similar to the ones one can find in a map of a "
-"mountain to the plot commands that follow in the current `draw()` command and/or to the "
-"ground plane of the diagram. Alternatively this wizard allows skipping drawing the "
-"curves entirely only showing the contour plot."
+"(Only for 3D plots): Adds contour lines similar to the ones one can find in "
+"a map of a mountain to the plot commands that follow in the current `draw()` "
+"command and/or to the ground plane of the diagram. Alternatively this wizard "
+"allows skipping drawing the curves entirely only showing the contour plot."
 msgstr ""
-"（仅适用于三维绘图）将类似于山地图中的等高线添加到当前 `draw()` 命令绘制的三维图形中，或"
-"图形在坐标面的二维投影上。另外，此向导也可以用来不绘制曲面而只显示等高线。"
+"（仅适用于三维绘图）将类似于山地图中的等高线添加到当前 `draw()` 命令绘制的三"
+"维图形中，或图形在坐标面的二维投影上。另外，此向导也可以用来不绘制曲面而只显"
+"示等高线。"
 
 #. type: Title ####
 #: ../../info/wxmaxima.md:597
@@ -1897,9 +1977,11 @@ msgstr "图形名称"
 #. type: Plain text
 #: ../../info/wxmaxima.md:600
 msgid ""
-"Adds a legend entry showing the next plot's name to the legend of the diagram. An empty "
-"name disables generating legend entries for the following plots."
-msgstr "在图例中增加下一个图形对应的图例项。空名称将阻止为下一个图形生成图例项。"
+"Adds a legend entry showing the next plot's name to the legend of the "
+"diagram. An empty name disables generating legend entries for the following "
+"plots."
+msgstr ""
+"在图例中增加下一个图形对应的图例项。空名称将阻止为下一个图形生成图例项。"
 
 #. type: Title ####
 #: ../../info/wxmaxima.md:601
@@ -1909,7 +1991,9 @@ msgstr "线条颜色"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:604
-msgid "Sets the line colour for the following plots the current draw command contains."
+msgid ""
+"Sets the line colour for the following plots the current draw command "
+"contains."
 msgstr "为当前 `draw()` 命令所绘图形设置线条颜色。"
 
 #. type: Title ####
@@ -1920,7 +2004,9 @@ msgstr "填充颜色"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:608
-msgid "Sets the fill colour for the following plots the current draw command contains."
+msgid ""
+"Sets the fill colour for the following plots the current draw command "
+"contains."
 msgstr "为当前 `draw()` 命令所绘图形设置填充颜色。"
 
 #. type: Title ####
@@ -1943,8 +2029,8 @@ msgstr "精度"
 #. type: Plain text
 #: ../../info/wxmaxima.md:616
 msgid ""
-"Allows to select an adequate point in the speed vs. accuracy tradeoff that is part of "
-"any plot program."
+"Allows to select an adequate point in the speed vs. accuracy tradeoff that "
+"is part of any plot program."
 msgstr "允许选择适当数目的点，以兼顾速度与精度（任何绘图程序都会权衡两者）。"
 
 #. type: Title ##
@@ -1956,13 +2042,13 @@ msgstr "嵌入图片"
 #. type: Plain text
 #: ../../info/wxmaxima.md:620
 msgid ""
-"If the `.wxmx` file format is being used embedding files in a _wxMaxima_ project can be "
-"done as easily as per drag-and-drop. But sometimes (for example if an image’s contents "
-"might change later on in a session) it is better to tell the file to load the image on "
-"evaluation:"
+"If the `.wxmx` file format is being used embedding files in a _wxMaxima_ "
+"project can be done as easily as per drag-and-drop. But sometimes (for "
+"example if an image’s contents might change later on in a session) it is "
+"better to tell the file to load the image on evaluation:"
 msgstr ""
-"如果使用的是 `.wxmx` 文件格式，则可以通过拖放将图片文件嵌入 wxMaxima 文档中。但有时（例如"
-"某个图像的内容可能在稍后发生更改）最好指明在计算时加载图像："
+"如果使用的是 `.wxmx` 文件格式，则可以通过拖放将图片文件嵌入 wxMaxima 文档中。"
+"但有时（例如某个图像的内容可能在稍后发生更改）最好指明在计算时加载图像："
 
 #. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:621
@@ -1979,33 +2065,36 @@ msgstr "启动时读取的文件"
 #. type: Plain text
 #: ../../info/wxmaxima.md:628
 msgid ""
-"The config dialogue of _wxMaxima_ offers to edit two files with commands that are "
-"executed on startup:"
-msgstr "在 wxMaxima 的设置对话框中可以编辑两个文件的命令，这些命令在启动时被执行："
+"The config dialogue of _wxMaxima_ offers to edit two files with commands "
+"that are executed on startup:"
+msgstr ""
+"在 wxMaxima 的设置对话框中可以编辑两个文件的命令，这些命令在启动时被执行："
 
 #. type: Bullet: '* '
 #: ../../info/wxmaxima.md:631
 msgid ""
-"A file that contains commands that are executed on starting up _Maxima_: `maxima-init."
-"mac`"
+"A file that contains commands that are executed on starting up _Maxima_: "
+"`maxima-init.mac`"
 msgstr "文件 `maxima-init.mac` 中包含每次启动 Maxima 时被执行的命令；"
 
 #. type: Bullet: '* '
 #: ../../info/wxmaxima.md:631
 msgid ""
-"one file of additional commands that are executed if _wxMaxima_ is starting _Maxima_: "
-"`wxmaxima-init.mac`"
-msgstr "文件 `wxmaxima-init.mac` 中包含每次 wxMaxima 调用 Maxima 时被执行的命令。"
+"one file of additional commands that are executed if _wxMaxima_ is starting "
+"_Maxima_: `wxmaxima-init.mac`"
+msgstr ""
+"文件 `wxmaxima-init.mac` 中包含每次 wxMaxima 调用 Maxima 时被执行的命令。"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:633
 msgid ""
-"These files are in the Maxima user directory (usually `maxima` in Windows, `.maxima` "
-"otherwise) in the user's home directory / user profile directory. The location can be "
-"found out with the command: `maxima_userdir;`"
+"These files are in the Maxima user directory (usually `maxima` in Windows, `."
+"maxima` otherwise) in the user's home directory / user profile directory. "
+"The location can be found out with the command: `maxima_userdir;`"
 msgstr ""
-"这些文件位于用户的主目录或配置文件目录中的 Maxima 用户目录（在 Windows 系统中通常为 "
-"maxima，在其他系统中为 .maxima）。使用命令 `maxima_userdir;` 可以确定该目录。"
+"这些文件位于用户的主目录或配置文件目录中的 Maxima 用户目录（在 Windows 系统中"
+"通常为 maxima，在其他系统中为 .maxima）。使用命令 `maxima_userdir;` 可以确定"
+"该目录。"
 
 #. type: Title ##
 #: ../../info/wxmaxima.md:635
@@ -2016,27 +2105,31 @@ msgstr "以 wx 开头的特殊变量"
 #. type: Bullet: '* '
 #: ../../info/wxmaxima.md:644
 msgid ""
-"`wxsubscripts` tells _Maxima_ if it should convert variable names that contain an "
-"underscore (`R_150` or the like) into subscripted variables. See `wxdeclare_subscript` "
-"for details which variable names are automatically converted."
+"`wxsubscripts` tells _Maxima_ if it should convert variable names that "
+"contain an underscore (`R_150` or the like) into subscripted variables. See "
+"`wxdeclare_subscript` for details which variable names are automatically "
+"converted."
 msgstr ""
-"`wxsubscripts` ：告诉 Maxima 是否应将包含下划线的变量名（例如 `R_150`）转换为带下标的变量"
-"名。有关自动转换哪些变量名的详细信息，请参见 `wxdeclare_subscript`。"
+"`wxsubscripts` ：告诉 Maxima 是否应将包含下划线的变量名（例如 `R_150`）转换为"
+"带下标的变量名。有关自动转换哪些变量名的详细信息，请参见 "
+"`wxdeclare_subscript`。"
 
 #. type: Bullet: '* '
 #: ../../info/wxmaxima.md:644
 msgid ""
-"`wxfilename`: This variable contains the name of the file currently opened in _wxMaxima_."
+"`wxfilename`: This variable contains the name of the file currently opened "
+"in _wxMaxima_."
 msgstr "`wxfilename`：此变量包含当前在 wxMaxima 中打开的文件的名称。"
 
 #. type: Bullet: '* '
 #: ../../info/wxmaxima.md:644
 msgid ""
-"`wxplot_pngcairo` tells whether _wxMaxima_ tries to use _gnuplot_’s pngcairo terminal "
-"that provides more line styles and a better overall graphics quality."
+"`wxplot_pngcairo` tells whether _wxMaxima_ tries to use _gnuplot_’s pngcairo "
+"terminal that provides more line styles and a better overall graphics "
+"quality."
 msgstr ""
-"`wxplot_pngcairo`：表明 wxMaxima 是否尝试使用 gnuplot 的 pngcairo 功能，以提供更多的线条"
-"样式和更好的整体图形质量。"
+"`wxplot_pngcairo`：表明 wxMaxima 是否尝试使用 gnuplot 的 pngcairo 功能，以提"
+"供更多的线条样式和更好的整体图形质量。"
 
 #. type: Bullet: '* '
 #: ../../info/wxmaxima.md:644
@@ -2046,22 +2139,23 @@ msgstr "`wxplot_size`：定义嵌入绘图的分辨率。"
 #. type: Bullet: '* '
 #: ../../info/wxmaxima.md:644
 msgid ""
-"`wxchangedir`: On most operating systems _wxMaxima_ automatically sets _Maxima_’s "
-"working directory to the directory of the current file. This allows file I/O (e.g. by "
-"`read_matrix`) to work without specifying the whole path to the file that has to be read "
-"or written. On Windows this feature sometimes causes error messages and therefore can be "
-"set to `false` from the config dialogue."
+"`wxchangedir`: On most operating systems _wxMaxima_ automatically sets "
+"_Maxima_’s working directory to the directory of the current file. This "
+"allows file I/O (e.g. by `read_matrix`) to work without specifying the whole "
+"path to the file that has to be read or written. On Windows this feature "
+"sometimes causes error messages and therefore can be set to `false` from the "
+"config dialogue."
 msgstr ""
-"`wxchangedir`：在大多数操作系统上，wxMaxima 自动将 Maxima 的工作目录设置为当前文件的目"
-"录。这允许文件 I/O（例如通过 `read_matrix`）工作，而无需指定必须读或写的文件的整个路径。"
-"在 Windows 操作系统上，此功能有时会导致错误消息，因此可以在设置对话框中将其设置为 "
-"`false`。"
+"`wxchangedir`：在大多数操作系统上，wxMaxima 自动将 Maxima 的工作目录设置为当"
+"前文件的目录。这允许文件 I/O（例如通过 `read_matrix`）工作，而无需指定必须读"
+"或写的文件的整个路径。在 Windows 操作系统上，此功能有时会导致错误消息，因此可"
+"以在设置对话框中将其设置为 `false`。"
 
 #. type: Bullet: '* '
 #: ../../info/wxmaxima.md:644
 msgid ""
-"`wxanimate_framerate`: The number of frames per second the following animations have to "
-"be played back with."
+"`wxanimate_framerate`: The number of frames per second the following "
+"animations have to be played back with."
 msgstr "`wxanimate_framerate`：下一个动图回放的帧率。"
 
 #. type: Bullet: '* '
@@ -2078,15 +2172,15 @@ msgstr "输出美观的二维公式"
 #. type: Plain text
 #: ../../info/wxmaxima.md:648
 msgid ""
-"The function `table_form()` displays a 2D list in a form that is more readable than the "
-"output from _Maxima_’s default output routine. The input is a list of one or more lists. "
-"Like the \"print\" command, this command displays output even when ended with a dollar "
-"sign. Ending the command with a semicolon results in the same table along with a \"done"
-"\" statement."
+"The function `table_form()` displays a 2D list in a form that is more "
+"readable than the output from _Maxima_’s default output routine. The input "
+"is a list of one or more lists. Like the \"print\" command, this command "
+"displays output even when ended with a dollar sign. Ending the command with "
+"a semicolon results in the same table along with a \"done\" statement."
 msgstr ""
-"函数 `table_form()` 显示的二维列表比 Maxima 的默认输出更具可读性。该函数的输入是一个列"
-"表，其中含一个或多个列表。与 `print` 命令类似，此命令即使以符号 `$` 结尾也会显示输出。以"
-"分号 `;` 结束命令时，除了得到列表，还会有“done”语句。"
+"函数 `table_form()` 显示的二维列表比 Maxima 的默认输出更具可读性。该函数的输"
+"入是一个列表，其中含一个或多个列表。与 `print` 命令类似，此命令即使以符号 `"
+"$` 结尾也会显示输出。以分号 `;` 结束命令时，除了得到列表，还会有“done”语句。"
 
 #. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:649
@@ -2109,27 +2203,34 @@ msgstr ""
 #. type: Plain text
 #: ../../info/wxmaxima.md:659
 msgid ""
-"As the next example shows, the lists that are assembled by the `table_form` command can "
-"be created before the command is executed."
-msgstr "正如下一个例子所示，可以在执行 `table_form` 命令之前创建需要显示的列表。"
+"As the next example shows, the lists that are assembled by the `table_form` "
+"command can be created before the command is executed."
+msgstr ""
+"正如下一个例子所示，可以在执行 `table_form` 命令之前创建需要显示的列表。"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:661
-msgid "![A third table example](./MatrixTableExample.png){ id=img_MatrixTableExample }"
-msgstr "![一个三行表的例子](./MatrixTableExample.png){ id=img_MatrixTableExample }"
+msgid ""
+"![A third table example](./MatrixTableExample.png)"
+"{ id=img_MatrixTableExample }"
+msgstr ""
+"![一个三行表的例子](./MatrixTableExample.png){ id=img_MatrixTableExample }"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:663
 msgid ""
-"Also, because a matrix is a list of lists, matrices can be converted to tables in a "
-"similar fashion."
+"Also, because a matrix is a list of lists, matrices can be converted to "
+"tables in a similar fashion."
 msgstr "此外，由于矩阵是含列表的列表，它也可以用类似的方式转换为表格。"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:665
 msgid ""
-"![Another table_form example](./SecondTableExample.png){ id=img_SecondTableExample }"
-msgstr "![另一个 table_form 的例子](./SecondTableExample.png){ id=img_SecondTableExample }"
+"![Another table_form example](./SecondTableExample.png)"
+"{ id=img_SecondTableExample }"
+msgstr ""
+"![另一个 table_form 的例子](./SecondTableExample.png)"
+"{ id=img_SecondTableExample }"
 
 #. type: Title ##
 #: ../../info/wxmaxima.md:666
@@ -2140,14 +2241,15 @@ msgstr "错误（bug）报告"
 #. type: Plain text
 #: ../../info/wxmaxima.md:669
 msgid ""
-"_wxMaxima_ provides a few functions that gather bug reporting information about the "
-"current system:"
+"_wxMaxima_ provides a few functions that gather bug reporting information "
+"about the current system:"
 msgstr "wxMaxima 提供了一些函数，用于收集当前系统的错误报告信息："
 
 #. type: Bullet: '* '
 #: ../../info/wxmaxima.md:672
 msgid ""
-"`wxbuild_info()` gathers information about the currently running version of _wxMaxima_"
+"`wxbuild_info()` gathers information about the currently running version of "
+"_wxMaxima_"
 msgstr "`wxbuild_info()` 收集当前运行的 wxMaxima 的版本信息；"
 
 #. type: Bullet: '* '
@@ -2164,7 +2266,8 @@ msgstr "让输出显示为红色"
 #. type: Plain text
 #: ../../info/wxmaxima.md:677
 msgid ""
-"_Maxima_'s `box()` command causes _wxMaxima_ to print its argument with a red foreground."
+"_Maxima_'s `box()` command causes _wxMaxima_ to print its argument with a "
+"red foreground."
 msgstr "Maxima 的 `box()` 命令使 wxMaxima 以红色输出其参数。"
 
 #. type: Title =
@@ -2182,33 +2285,35 @@ msgstr "无法连接到 Maxima"
 #. type: Plain text
 #: ../../info/wxmaxima.md:687
 msgid ""
-"Since _Maxima_ (the program that does the actual mathematics) and _wxMaxima_ (providing "
-"the easy-to-use user interface) are separate programs that communicate by the means of a "
-"local network connection. Therefore the most probable cause is that this connection is "
-"somehow not working. For example a firewall could be set up in a way that it doesn’t "
-"just prevent unauthorized connections from the internet (and perhaps to intercept some "
-"connections to the internet, too), but it also to blocks inter-process-communication "
-"inside the same computer. Note that since _Maxima_ is being run by a Lisp processor the "
-"process communication that is blocked from does not necessarily have to be named \"maxima"
-"\". Common names of the program that opens the network connection would be sbcl, gcl, "
-"ccl, lisp.exe or similar names."
+"Since _Maxima_ (the program that does the actual mathematics) and _wxMaxima_ "
+"(providing the easy-to-use user interface) are separate programs that "
+"communicate by the means of a local network connection. Therefore the most "
+"probable cause is that this connection is somehow not working. For example a "
+"firewall could be set up in a way that it doesn’t just prevent unauthorized "
+"connections from the internet (and perhaps to intercept some connections to "
+"the internet, too), but it also to blocks inter-process-communication inside "
+"the same computer. Note that since _Maxima_ is being run by a Lisp processor "
+"the process communication that is blocked from does not necessarily have to "
+"be named \"maxima\". Common names of the program that opens the network "
+"connection would be sbcl, gcl, ccl, lisp.exe or similar names."
 msgstr ""
-"由于 Maxima（进行实际数学运算的程序）和 wxMaxima（提供易于使用的用户界面的程序）是通过本"
-"地网络连接进行通信的独立程序，因此，最有可能的原因是这种连接不起作用。例如，可能设置了防"
-"火墙不仅可以阻止来自互联网的未经授权的连接（也许还会拦截一些通向互联网的连接），而且可以"
-"阻止同一台计算机内部的进程间通信。注意，由于 Maxima 由 Lisp 语言处理程序运行，因此被阻止"
-"的通信进程不一定命名为“Maxima”。此时打开网络连接的程序名称可能是 sbcl、gcl、ccl、lisp."
-"exe 或者类似的名字。"
+"由于 Maxima（进行实际数学运算的程序）和 wxMaxima（提供易于使用的用户界面的程"
+"序）是通过本地网络连接进行通信的独立程序，因此，最有可能的原因是这种连接不起"
+"作用。例如，可能设置了防火墙不仅可以阻止来自互联网的未经授权的连接（也许还会"
+"拦截一些通向互联网的连接），而且可以阻止同一台计算机内部的进程间通信。注意，"
+"由于 Maxima 由 Lisp 语言处理程序运行，因此被阻止的通信进程不一定命名"
+"为“Maxima”。此时打开网络连接的程序名称可能是 sbcl、gcl、ccl、lisp.exe 或者类"
+"似的名字。"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:689
 msgid ""
-"On Un\\*x computers another possible reason would be that the loopback network that "
-"provides network connections between two programs in the same computer isn’t properly "
-"configured."
+"On Un\\*x computers another possible reason would be that the loopback "
+"network that provides network connections between two programs in the same "
+"computer isn’t properly configured."
 msgstr ""
-"在 Un\\*x 系统上，另一个可能的原因是在同一台计算机上的两个程序之间提供网络连接的环回"
-"（loopback）网络配置不正确。"
+"在 Un\\*x 系统上，另一个可能的原因是在同一台计算机上的两个程序之间提供网络连"
+"接的环回（loopback）网络配置不正确。"
 
 #. type: Title ##
 #: ../../info/wxmaxima.md:690
@@ -2219,27 +2324,29 @@ msgstr "从损坏的 .wxmx 文件中取回信息的方法"
 #. type: Plain text
 #: ../../info/wxmaxima.md:693
 msgid ""
-"Internally most modern XML-based formats are ordinary zip-files. _wxMaxima_ doesn't turn "
-"on compression, so the contents of .wxmx files can be viewed in any text editor."
+"Internally most modern XML-based formats are ordinary zip-files. _wxMaxima_ "
+"doesn't turn on compression, so the contents of .wxmx files can be viewed in "
+"any text editor."
 msgstr ""
-"大多数现代的、基于 XML 格式的文件其实都是普通的压缩（zip）文件。wxMaxima 没有启用压缩，因"
-"此可以在任何文本编辑器中查看 `.wxmx` 文件的内容。"
+"大多数现代的、基于 XML 格式的文件其实都是普通的压缩（zip）文件。wxMaxima 没有"
+"启用压缩，因此可以在任何文本编辑器中查看 `.wxmx` 文件的内容。"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:695
 msgid ""
-"If the zip signature at the end of the file is still intact after renaming a broken ."
-"wxmx file to .zip most operating systems will provide a way to extract any portion of "
-"information that is stored inside it. This can be done when there is the need of "
-"recovering the original image files from a text processor document. If the zip signature "
-"isn’t intact that does not need to be the end of the world: If _wxMaxima_ during saving "
-"detected that something went wrong there will be a `wxmx~` file whose contents might "
-"help."
+"If the zip signature at the end of the file is still intact after renaming a "
+"broken .wxmx file to .zip most operating systems will provide a way to "
+"extract any portion of information that is stored inside it. This can be "
+"done when there is the need of recovering the original image files from a "
+"text processor document. If the zip signature isn’t intact that does not "
+"need to be the end of the world: If _wxMaxima_ during saving detected that "
+"something went wrong there will be a `wxmx~` file whose contents might help."
 msgstr ""
-"如果文件末尾的 zip 签名仍然完整，那么将损坏的 `.wxmx` 文件重命名为 `.zip` 文件后，大多数"
-"操作系统都提供了提取存储在其中的信息的方法。当需要从该文件中恢复原始图像文件时，可以执行"
-"此操作。当 zip 签名不完整时，也不是毫无办法：如果 wxMaxima 在保存文件时检测到错误，那么还"
-"会有一个 `.wxmx~` 文件，其内容可能会有所帮助。"
+"如果文件末尾的 zip 签名仍然完整，那么将损坏的 `.wxmx` 文件重命名为 `.zip` 文"
+"件后，大多数操作系统都提供了提取存储在其中的信息的方法。当需要从该文件中恢复"
+"原始图像文件时，可以执行此操作。当 zip 签名不完整时，也不是毫无办法：如果 "
+"wxMaxima 在保存文件时检测到错误，那么还会有一个 `.wxmx~` 文件，其内容可能会有"
+"所帮助。"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:697
@@ -2250,12 +2357,12 @@ msgstr "即使没有 `.wxmx~` 文件，`.wxmx` 文件中 XML 部分是未压缩�
 #. type: Plain text
 #: ../../info/wxmaxima.md:699
 msgid ""
-"If a text file containing only this contents (e.g. copy and paste this text into a new "
-"file) is saved as a file ending in `.xml`, _wxMaxima_ will know how to recover the text "
-"of the document from it."
+"If a text file containing only this contents (e.g. copy and paste this text "
+"into a new file) is saved as a file ending in `.xml`, _wxMaxima_ will know "
+"how to recover the text of the document from it."
 msgstr ""
-"如果将只包含 XML 部分的文本文件（例如，将这一部分复制并粘贴到新文件中）保存为以 `.xml` 结"
-"尾的文件，则 wxMaxima 可以从中恢复原始文档的文本。"
+"如果将只包含 XML 部分的文本文件（例如，将这一部分复制并粘贴到新文件中）保存为"
+"以 `.xml` 结尾的文件，则 wxMaxima 可以从中恢复原始文档的文本。"
 
 #. type: Title ##
 #: ../../info/wxmaxima.md:700
@@ -2266,13 +2373,15 @@ msgstr "在命令完成前显示一些调试信息"
 #. type: Plain text
 #: ../../info/wxmaxima.md:703
 msgid ""
-"Normally _wxMaxima_ waits for the whole 2D formula to be transferred before it begins to "
-"typeset. This saves time for making many attempts to typeset a only partially completed "
-"equation. There is a `disp` command, though, that will provide debug output immediately "
-"and without waiting for the current _Maxima_ command to finish:"
+"Normally _wxMaxima_ waits for the whole 2D formula to be transferred before "
+"it begins to typeset. This saves time for making many attempts to typeset a "
+"only partially completed equation. There is a `disp` command, though, that "
+"will provide debug output immediately and without waiting for the current "
+"_Maxima_ command to finish:"
 msgstr ""
-"通常 wxMaxima 会等待最后的公式形成后才开始输出，这节省了多次尝试输出部分公式的时间。不"
-"过， `disp()` 命令可以立即输出调试信息，而不必等待当前的 Maxima 命令完成："
+"通常 wxMaxima 会等待最后的公式形成后才开始输出，这节省了多次尝试输出部分公式"
+"的时间。不过， `disp()` 命令可以立即输出调试信息，而不必等待当前的 Maxima 命"
+"令完成："
 
 #. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:704
@@ -2302,8 +2411,8 @@ msgstr "绘图结果是空的绘图框和错误信息"
 #. type: Plain text
 #: ../../info/wxmaxima.md:717
 msgid ""
-"This means that _wxMaxima_ could not read the file _Maxima_ that was supposed to "
-"instruct _gnuplot_ to create."
+"This means that _wxMaxima_ could not read the file _Maxima_ that was "
+"supposed to instruct _gnuplot_ to create."
 msgstr "这意味着 wxMaxima 无法读取由 Maxima 指示 gnuplot 创建的文件。"
 
 #. type: Plain text
@@ -2314,40 +2423,52 @@ msgstr "这个错误的可能原因如下："
 #. type: Bullet: '* '
 #: ../../info/wxmaxima.md:724
 msgid ""
-"The plotting command is part of a third-party package like `implicit_plot` but this "
-"package was not loaded by _Maxima_’s `load()` command before trying to plot."
+"The plotting command is part of a third-party package like `implicit_plot` "
+"but this package was not loaded by _Maxima_’s `load()` command before trying "
+"to plot."
 msgstr ""
-"绘图命令是第三方程序包（如 `implicit_plot`）的一部分，但在尝试绘图之前，没有调用 Maxima "
-"的 `load()` 命令加载此包。"
+"绘图命令是第三方程序包（如 `implicit_plot`）的一部分，但在尝试绘图之前，没有"
+"调用 Maxima 的 `load()` 命令加载此包。"
 
 #. type: Bullet: '* '
 #: ../../info/wxmaxima.md:724
+#, fuzzy
+#| msgid ""
+#| "_Maxima_ tried to do something the currently installed version of "
+#| "_gnuplot_ isn’t able to understand. In this case, a file ending in ."
+#| "gnuplot located in the directory, which _Maxima_’s variable "
+#| "`maxima_userdir` is pointing, contains the instructions from _Maxima_ to "
+#| "_gnuplot_. Most of the time, this file’s contents therefore are helpful "
+#| "when debugging the problem."
 msgid ""
-"_Maxima_ tried to do something the currently installed version of _gnuplot_ isn’t able "
-"to understand. In this case, a file ending in .gnuplot located in the directory, which "
-"_Maxima_’s variable `maxima_userdir` is pointing, contains the instructions from "
-"_Maxima_ to _gnuplot_. Most of the time, this file’s contents therefore are helpful when "
-"debugging the problem."
+"_Maxima_ tried to do something the currently installed version of _gnuplot_ "
+"isn’t able to understand. In this case, a file ending in `.gnuplot` located "
+"in the directory, which _Maxima_’s variable `maxima_userdir` is pointing, "
+"contains the instructions from _Maxima_ to _gnuplot_. Most of the time, this "
+"file’s contents therefore are helpful when debugging the problem."
 msgstr ""
 "Maxima 试图做一些当前版本的 gnuplot 无法理解的事情。此时，在由 Maxima 的变量 "
-"`maxima_userdir` 确定的目录中，以 `.gnuplot` 结尾的文件包含了 Maxima 给 gnuplot 的指令。"
-"在调试问题时，此文件的内容在大多数情况下都是有帮助的。"
+"`maxima_userdir` 确定的目录中，以 `.gnuplot` 结尾的文件包含了 Maxima 给 "
+"gnuplot 的指令。在调试问题时，此文件的内容在大多数情况下都是有帮助的。"
 
 #. type: Bullet: '* '
 #: ../../info/wxmaxima.md:724
 msgid ""
-"Gnuplot was instructed to use the pngcairo library that provides antialiasing and "
-"additional line styles, but it was not compiled to support this possibility. Solution: "
-"Uncheck the \"Use the cairo terminal for plot\" checkbox in the configuration dialog and "
-"don’t set `wxplot_pngcairo` to true from _Maxima_."
+"Gnuplot was instructed to use the pngcairo library that provides "
+"antialiasing and additional line styles, but it was not compiled to support "
+"this possibility. Solution: Uncheck the \"Use the cairo terminal for plot\" "
+"checkbox in the configuration dialog and don’t set `wxplot_pngcairo` to true "
+"from _Maxima_."
 msgstr ""
-"Gnuplot 被设置为使用 pngcairo 库以提供抗锯齿功能和更多线条样式，但是在编译时没有开启此项"
-"功能支持。解决方案：取消选中设置对话框中的“使用 cairo 终端进行绘图”复选框，并且不要在 "
-"Maxima 中将 `wxplot_pngcairo` 设置为true。"
+"Gnuplot 被设置为使用 pngcairo 库以提供抗锯齿功能和更多线条样式，但是在编译时"
+"没有开启此项功能支持。解决方案：取消选中设置对话框中的“使用 cairo 终端进行绘"
+"图”复选框，并且不要在 Maxima 中将 `wxplot_pngcairo` 设置为true。"
 
 #. type: Bullet: '* '
 #: ../../info/wxmaxima.md:724
-msgid "Gnuplot didn’t output a valid .png file."
+#, fuzzy
+#| msgid "Gnuplot didn’t output a valid .png file."
+msgid "Gnuplot didn’t output a valid `.png` file."
 msgstr "Gnuplot 没有生成有效的 .png 文件。"
 
 #. type: Title ##
@@ -2358,14 +2479,23 @@ msgstr "绘制动图时得到“error: undefined variable（错误：未定义�
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:728
+#, fuzzy
+#| msgid ""
+#| "The value of the slider variable by default is only substituted into the "
+#| "expression that is to be plotted if it is visible there. Using a `subst` "
+#| "command that substitutes the slider variable into the equation to plot "
+#| "(there should be an example of this in this manual) resolves this problem."
 msgid ""
-"The value of the slider variable by default is only substituted into the expression that "
-"is to be plotted if it is visible there. Using a `subst` command that substitutes the "
-"slider variable into the equation to plot (there should be an example of this in this "
-"manual) resolves this problem."
+"The value of the slider variable by default is only substituted into the "
+"expression that is to be plotted if it is visible there. Using a `subst` "
+"command that substitutes the slider variable into the equation to plot "
+"resolves this problem. At the end of section [Embedding animations into the "
+"spreadsheet](#embedding-animations-into-the-spreadsheet) you can see an "
+"example."
 msgstr ""
-"在默认情况下，滑块变量的值需要被替换到要绘制图形的表达式中，即该变量在表达式中可见。使用 "
-"`subst()` 命令将滑块变量替换到要绘制图形的方程中（本手册前面有一个示例）可以解决此问题。"
+"在默认情况下，滑块变量的值需要被替换到要绘制图形的表达式中，即该变量在表达式"
+"中可见。使用 `subst()` 命令将滑块变量替换到要绘制图形的方程中（本手册前面有一"
+"个示例）可以解决此问题。"
 
 #. type: Title ##
 #: ../../info/wxmaxima.md:729
@@ -2376,40 +2506,41 @@ msgstr "删除了一个单元格，而撤销操作不起作用"
 #. type: Plain text
 #: ../../info/wxmaxima.md:732
 msgid ""
-"There are separate undo functions for cell operations and for changes inside of cells so "
-"chances are low that this ever happens. If it does there are several methods to recover "
-"data:"
+"There are separate undo functions for cell operations and for changes inside "
+"of cells so chances are low that this ever happens. If it does there are "
+"several methods to recover data:"
 msgstr ""
-"对单元格的操作和单元格内部的更改均有单独的撤消函数，因此发生这种情况的可能性很低。如果确"
-"实是这样，有如下方法可以恢复数据："
+"对单元格的操作和单元格内部的更改均有单独的撤消函数，因此发生这种情况的可能性"
+"很低。如果确实是这样，有如下方法可以恢复数据："
 
 #. type: Bullet: '* '
 #: ../../info/wxmaxima.md:737
 msgid ""
-"_wxMaxima_ actually has two undo features: The global undo buffer that is active if no "
-"cell is selected and a per-cell undo buffer that is active if the cursor is inside a "
-"cell. It is worth trying to use both undo options in order to see if an old value can "
-"still be accessed."
+"_wxMaxima_ actually has two undo features: The global undo buffer that is "
+"active if no cell is selected and a per-cell undo buffer that is active if "
+"the cursor is inside a cell. It is worth trying to use both undo options in "
+"order to see if an old value can still be accessed."
 msgstr ""
-"wxMaxima 实际上有两个撤消功能：全局撤消（如果未选择单元格）和单元格内撤消（如果光标在单元"
-"格内）。可以尝试使用这两个撤消选项，以查看是否可以恢复内容。"
+"wxMaxima 实际上有两个撤消功能：全局撤消（如果未选择单元格）和单元格内撤消（如"
+"果光标在单元格内）。可以尝试使用这两个撤消选项，以查看是否可以恢复内容。"
 
 #. type: Bullet: '* '
 #: ../../info/wxmaxima.md:737
 msgid ""
-"If you still have a way to find out what label _Maxima_ has assigned to the cell just "
-"type in the cell’s label and its contents will reappear."
+"If you still have a way to find out what label _Maxima_ has assigned to the "
+"cell just type in the cell’s label and its contents will reappear."
 msgstr ""
-"如果有办法确定 Maxima 分配给该单元格的标签，只需键入此标签，单元格的内容就会重新出现。"
+"如果有办法确定 Maxima 分配给该单元格的标签，只需键入此标签，单元格的内容就会"
+"重新出现。"
 
 #. type: Bullet: '* '
 #: ../../info/wxmaxima.md:737
 msgid ""
-"If you don’t: Don’t panic. In the “View” menu there is a way to show a history pane that "
-"shows all _Maxima_ commands that have been issued recently."
+"If you don’t: Don’t panic. In the “View” menu there is a way to show a "
+"history pane that shows all _Maxima_ commands that have been issued recently."
 msgstr ""
-"如果忘了单元格的标签，也无需惊慌。在“查看”菜单中，可以勾选显示“历史命令”侧边栏，其中显示"
-"了最近使用的所有 Maxima 命令。"
+"如果忘了单元格的标签，也无需惊慌。在“查看”菜单中，可以勾选显示“历史命令”侧边"
+"栏，其中显示了最近使用的所有 Maxima 命令。"
 
 #. type: Bullet: '* '
 #: ../../info/wxmaxima.md:737
@@ -2431,12 +2562,14 @@ msgstr "wxMaxima 启动时显示信息“Maxima process terminated（Maxima 进�
 #. type: Plain text
 #: ../../info/wxmaxima.md:745
 msgid ""
-"One possible reason is that _Maxima_ cannot be found in the location that is set in the "
-"“Maxima” tab of _wxMaxima_’s configuration dialog and therefore won’t run at all. "
-"Setting the path to a working _Maxima_ binary should fix this problem."
+"One possible reason is that _Maxima_ cannot be found in the location that is "
+"set in the “Maxima” tab of _wxMaxima_’s configuration dialog and therefore "
+"won’t run at all. Setting the path to a working _Maxima_ binary should fix "
+"this problem."
 msgstr ""
-"一个可能的原因是，在设置对话框的“Maxima”选项卡中设置的位置找不到 Maxima 程序，因此根本无"
-"法运行 Maxima。将路径设置为有效的 Maxima 二进制文件所在文件夹应该可以解决此问题。"
+"一个可能的原因是，在设置对话框的“Maxima”选项卡中设置的位置找不到 Maxima 程"
+"序，因此根本无法运行 Maxima。将路径设置为有效的 Maxima 二进制文件所在文件夹应"
+"该可以解决此问题。"
 
 #. type: Title ##
 #: ../../info/wxmaxima.md:746
@@ -2447,12 +2580,14 @@ msgstr "Maxima 永远在计算中而不响应输入"
 #. type: Plain text
 #: ../../info/wxmaxima.md:749
 msgid ""
-"It is theoretically possible that _wxMaxima_ doesn’t realize that _Maxima_ has finished "
-"calculating and therefore never gets informed it can send new data to _Maxima_. If this "
-"is the case “Trigger evaluation” might resynchronize the two programs."
+"It is theoretically possible that _wxMaxima_ doesn’t realize that _Maxima_ "
+"has finished calculating and therefore never gets informed it can send new "
+"data to _Maxima_. If this is the case “Trigger evaluation” might "
+"resynchronize the two programs."
 msgstr ""
-"理论上讲，有可能是 wxMaxima 没有意识到 Maxima 已经完成了计算，因此没有得到通知，以告知它"
-"可以向 Maxima 发送新的数据。如果是这种情况，重新求值可能会使两个程序同步。"
+"理论上讲，有可能是 wxMaxima 没有意识到 Maxima 已经完成了计算，因此没有得到通"
+"知，以告知它可以向 Maxima 发送新的数据。如果是这种情况，重新求值可能会使两个"
+"程序同步。"
 
 #. type: Title ##
 #: ../../info/wxmaxima.md:750
@@ -2463,28 +2598,31 @@ msgstr "基于 SBCL 的 Maxima 耗尽内存"
 #. type: Plain text
 #: ../../info/wxmaxima.md:753
 msgid ""
-"The Lisp compiler SBCL by default comes with a memory limit that allows it to run even "
-"on low-end computers. When compiling a big software package like Lapack or dealing with "
-"extremely big lists or equations this limit might be too low. In order to extend the "
-"limits SBCL can be provided with the command line parameter `--dynamic-space-size` that "
-"tells SBCL how many megabytes it should reserve. A 32bit Windows-SBCL can reserve up to "
-"999 Megabytes. A 64-bit SBCL version running on Windows can be instructed to use more "
-"than the about 1280 Megabytes compiling Lapack needs."
+"The Lisp compiler SBCL by default comes with a memory limit that allows it "
+"to run even on low-end computers. When compiling a big software package like "
+"Lapack or dealing with extremely big lists or equations this limit might be "
+"too low. In order to extend the limits SBCL can be provided with the command "
+"line parameter `--dynamic-space-size` that tells SBCL how many megabytes it "
+"should reserve. A 32bit Windows-SBCL can reserve up to 999 Megabytes. A 64-"
+"bit SBCL version running on Windows can be instructed to use more than the "
+"about 1280 Megabytes compiling Lapack needs."
 msgstr ""
-"默认情况下，Lisp 编译器 SBCL 有一个内存限制，以使得它能在低端计算机上运行。当编译一个大型"
-"软件包（如 Lapack）或处理特别大的列表和方程时，该限制值可能太低。为了扩展内存限制，可以"
-"向 SBCL 提供命令行参数 `--dynamic-space-size`，该参数告诉 SBCL 应该使用多少兆字节的内存。"
-"32位 Windows 系统版本的 SBCL 最多可使用 999 兆字节，64位 Windows 系统版本的 SBCL 可以被设"
-"置为使用更大的内存（例如超过编译 Lapack 所需的约 1280 兆字节）。"
+"默认情况下，Lisp 编译器 SBCL 有一个内存限制，以使得它能在低端计算机上运行。当"
+"编译一个大型软件包（如 Lapack）或处理特别大的列表和方程时，该限制值可能太低。"
+"为了扩展内存限制，可以向 SBCL 提供命令行参数 `--dynamic-space-size`，该参数告"
+"诉 SBCL 应该使用多少兆字节的内存。32位 Windows 系统版本的 SBCL 最多可使用 "
+"999 兆字节，64位 Windows 系统版本的 SBCL 可以被设置为使用更大的内存（例如超过"
+"编译 Lapack 所需的约 1280 兆字节）。"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:755
 msgid ""
-"One way to provide _Maxima_ (and thus SBCL) with command line parameters is the "
-"\"Additional parameters for Maxima\" field of _wxMaxima_’s configuration dialogue."
+"One way to provide _Maxima_ (and thus SBCL) with command line parameters is "
+"the \"Additional parameters for Maxima\" field of _wxMaxima_’s configuration "
+"dialogue."
 msgstr ""
-"为 Maxima（因此也为 SBCL）提供命令行参数的一种方法是利用 wxMaxima 设置对话框的“额外的 "
-"Maxima 参数（Additional parameters for Maxima）”字段。"
+"为 Maxima（因此也为 SBCL）提供命令行参数的一种方法是利用 wxMaxima 设置对话框"
+"的“额外的 Maxima 参数（Additional parameters for Maxima）”字段。"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:757
@@ -2500,13 +2638,13 @@ msgstr "在 Ubuntu 系统上，有时输入无响应或响应迟缓"
 #. type: Plain text
 #: ../../info/wxmaxima.md:762
 msgid ""
-"Installing the package `ibus-gtk` should resolve this issue. See ([https://bugs."
-"launchpad.net/ubuntu/+source/wxwidgets3.0/+bug/1421558](https://bugs.launchpad.net/"
-"ubuntu/+source/wxwidgets3.0/+bug/1421558)) for details."
+"Installing the package `ibus-gtk` should resolve this issue. See ([https://"
+"bugs.launchpad.net/ubuntu/+source/wxwidgets3.0/+bug/1421558](https://bugs."
+"launchpad.net/ubuntu/+source/wxwidgets3.0/+bug/1421558)) for details."
 msgstr ""
-"安装软件包 `ibus-gtk` 应该可以解决此问题. 详情见 [https://bugs.launchpad.net/ubuntu/"
-"+source/wxwidgets3.0/+bug/1421558](https://bugs.launchpad.net/ubuntu/+source/"
-"wxwidgets3.0/+bug/1421558)。"
+"安装软件包 `ibus-gtk` 应该可以解决此问题. 详情见 [https://bugs.launchpad.net/"
+"ubuntu/+source/wxwidgets3.0/+bug/1421558](https://bugs.launchpad.net/ubuntu/"
+"+source/wxwidgets3.0/+bug/1421558)。"
 
 #. type: Title ##
 #: ../../info/wxmaxima.md:763
@@ -2517,7 +2655,8 @@ msgstr "wxMaxima 在处理希腊字符或元音变音符时停止"
 #. type: Plain text
 #: ../../info/wxmaxima.md:766
 msgid ""
-"If your _Maxima_ is based on SBCL the following lines have to be added to your `.sbclrc`:"
+"If your _Maxima_ is based on SBCL the following lines have to be added to "
+"your `.sbclrc`:"
 msgstr "如果所使用的 Maxima 基于SBCL，则必须将以下行添加到 `.sbclrc` 文件中："
 
 #. type: Fenced code block (commonlisp)
@@ -2529,12 +2668,13 @@ msgstr "(setf sb-impl::*default-external-format* :utf-8)\n"
 #. type: Plain text
 #: ../../info/wxmaxima.md:772
 msgid ""
-"The folder this file has to be placed in is system- and installation-specific. But any "
-"SBCL-based _Maxima_ that already has evaluated a cell in the current session will "
-"happily tell where it can be found after getting the following command:"
+"The folder this file has to be placed in is system- and installation-"
+"specific. But any SBCL-based _Maxima_ that already has evaluated a cell in "
+"the current session will happily tell where it can be found after getting "
+"the following command:"
 msgstr ""
-"`.sbclrc` 文件应放入特定的文件夹。任何基于 SBCL 的 Maxima 如果已经在当前会话中计算了一个"
-"单元格，那么在获得如下命令后，都会显示该文件的位置："
+"`.sbclrc` 文件应放入特定的文件夹。任何基于 SBCL 的 Maxima 如果已经在当前会话"
+"中计算了一个单元格，那么在获得如下命令后，都会显示该文件的位置："
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:774
@@ -2551,8 +2691,8 @@ msgstr "是否可以同时输出和嵌入绘图文件？"
 #. type: Plain text
 #: ../../info/wxmaxima.md:780
 msgid ""
-"The worksheet embeds .png files. _wxMaxima_ allows the user to specify where they should "
-"be generated:"
+"The worksheet embeds .png files. _wxMaxima_ allows the user to specify where "
+"they should be generated:"
 msgstr "工作簿可嵌入 `.png` 文件。wxMaxima 允许用户指定它们的生成位置："
 
 #. type: Fenced code block (maxima)
@@ -2572,8 +2712,8 @@ msgstr ""
 #. type: Plain text
 #: ../../info/wxmaxima.md:789
 msgid ""
-"If a different format is to be used it is easier to generate the images and then to "
-"import them into the worksheet again:"
+"If a different format is to be used it is easier to generate the images and "
+"then to import them into the worksheet again:"
 msgstr "如果要使用不同的格式，则可以先生成图像，然后再将其导入工作簿："
 
 #. type: Fenced code block (maxima)
@@ -2684,15 +2824,15 @@ msgstr "是否有深色模式？"
 #. type: Plain text
 #: ../../info/wxmaxima.md:842
 msgid ""
-"If wxWidgets is new enough _wxMaxima_ will automatically be in dark mode if the rest of "
-"the operating system is. The worksheet itself is by default equipped with a bright "
-"background. But it can be configured otherwise. Alternatively there is a `View/Invert "
-"worksheet brightness` menu entry that allows to quickly convert the worksheet from dark "
-"to bright and vice versa."
+"If wxWidgets is new enough _wxMaxima_ will automatically be in dark mode if "
+"the rest of the operating system is. The worksheet itself is by default "
+"equipped with a bright background. But it can be configured otherwise. "
+"Alternatively there is a `View/Invert worksheet brightness` menu entry that "
+"allows to quickly convert the worksheet from dark to bright and vice versa."
 msgstr ""
-"如果 wxWidgets 版本足够新，那么当系统设置了深色主题时，wxMaxima 将自动处于深色模式。在默"
-"认情况下，工作簿本身具有浅色背景。但也可以进行其他配置：利用菜单“查看->反转工作簿亮度”，"
-"可以快速将工作簿在浅色模式和深色模式中转换。"
+"如果 wxWidgets 版本足够新，那么当系统设置了深色主题时，wxMaxima 将自动处于深"
+"色模式。在默认情况下，工作簿本身具有浅色背景。但也可以进行其他配置：利用菜"
+"单“查看->反转工作簿亮度”，可以快速将工作簿在浅色模式和深色模式中转换。"
 
 #. type: Title ##
 #: ../../info/wxmaxima.md:843
@@ -2715,12 +2855,12 @@ msgstr "命令行参数"
 #. type: Plain text
 #: ../../info/wxmaxima.md:854
 msgid ""
-"Most operating systems provide less complicated ways of starting programs than the "
-"command line so this possibility is only rarely used. _wxMaxima_ still provides some "
-"command line switches, though."
+"Most operating systems provide less complicated ways of starting programs "
+"than the command line so this possibility is only rarely used. _wxMaxima_ "
+"still provides some command line switches, though."
 msgstr ""
-"在大多数操作系统中，wxMaxima 都有比运行命令行更简单的启动方式，所以用到命令行参数的可能性"
-"很小。不过，wxMaxima 仍然提供了一些命令行选项。"
+"在大多数操作系统中，wxMaxima 都有比运行命令行更简单的启动方式，所以用到命令行"
+"参数的可能性很小。不过，wxMaxima 仍然提供了一些命令行选项。"
 
 #. type: Bullet: '* '
 #: ../../info/wxmaxima.md:869
@@ -2735,7 +2875,8 @@ msgstr "`-h` 或 `--help`: 输出简短的帮助文本。"
 #. type: Bullet: '* '
 #: ../../info/wxmaxima.md:869
 msgid ""
-"`-o` or `--open=<str>`: Open the filename given as argument to this command-line switch"
+"`-o` or `--open=<str>`: Open the filename given as argument to this command-"
+"line switch"
 msgstr "`-o` 或 `--open=<str>`：打开作为此命令行参数的文件名。"
 
 #. type: Bullet: '* '
@@ -2746,17 +2887,19 @@ msgstr "`-e` 或 `--eval`：打开文件后对公式单元格求值。"
 #. type: Bullet: '* '
 #: ../../info/wxmaxima.md:869
 msgid ""
-"`-b` or `--batch`: If the command-line opens a file all cells in this file are evaluated "
-"and the file is saved afterwards. This is for example useful if the session described in "
-"the file makes _Maxima_ generate output files. Batch-processing will be stopped if "
-"_wxMaxima_ detects that _Maxima_ has output an error and will pause if _Maxima_ has a "
-"question: Mathematics is somewhat interactive by nature so a completely interaction-free "
-"batch processing cannot always be guaranteed."
+"`-b` or `--batch`: If the command-line opens a file all cells in this file "
+"are evaluated and the file is saved afterwards. This is for example useful "
+"if the session described in the file makes _Maxima_ generate output files. "
+"Batch-processing will be stopped if _wxMaxima_ detects that _Maxima_ has "
+"output an error and will pause if _Maxima_ has a question: Mathematics is "
+"somewhat interactive by nature so a completely interaction-free batch "
+"processing cannot always be guaranteed."
 msgstr ""
-"`-b` 或 `--batch`：如果用命令行打开一个文件，则计算该文件中的所有单元格，然后保存文件。例"
-"如，如果文件中描述的会话使 Maxima 生成输出文件，则这一参数会很有用。如果 wxMaxima 检测到 "
-"Maxima 输出了错误信息，则批处理将停止；如果检测到 Maxima 有疑问，则批处理将暂停。Maxima "
-"的计算过程有一定的交互性，因此无法保证完全无交互的批处理。"
+"`-b` 或 `--batch`：如果用命令行打开一个文件，则计算该文件中的所有单元格，然后"
+"保存文件。例如，如果文件中描述的会话使 Maxima 生成输出文件，则这一参数会很有"
+"用。如果 wxMaxima 检测到 Maxima 输出了错误信息，则批处理将停止；如果检测到 "
+"Maxima 有疑问，则批处理将暂停。Maxima 的计算过程有一定的交互性，因此无法保证"
+"完全无交互的批处理。"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:869
@@ -2786,6 +2929,6 @@ msgstr ""
 #. type: Plain text
 #: ../../info/wxmaxima.md:870
 msgid ""
-"Instead of a minus some operating systems might use a dash in front of the command-line "
-"switches."
+"Instead of a minus some operating systems might use a dash in front of the "
+"command-line switches."
 msgstr "一些操作系统可能在命令行选项前面使用连接号（dash），而不是减号。"
