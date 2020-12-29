@@ -56,7 +56,16 @@
          to time zone variations 
          You can see current time at: https://en.wikipedia.org/wiki/ISO_8601
     -->
-    
+    <release version="20.12.1" date="2020-12-29T09:37:00Z">
+      <description>
+	<p>
+	  Resolved a small privacy issue: If the user used IE9 as the help browser
+	  and opened the wxMaxima manual that manual automatically downloaded a
+	  HTML5 compatibility over the internet.
+	</p>
+      </description>
+    </release>
+
     <release version="20.11.1" date="2020-11-21T14:05:00Z">
       <description>
 	<p>
