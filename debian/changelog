@@ -1,4 +1,4 @@
-wxmaxima (20.12.0-1) unstable; urgency=medium
+wxmaxima (20.12.1-1) unstable; urgency=medium
 
   * A new upstream version
   * The debian package now uses GTK3
@@ -9,7 +9,7 @@ wxmaxima (20.12.0-1) unstable; urgency=medium
   * Removed an no-more-needed linker flag injection
   * Dropped the workaround for the spurious COPYING file install
   * New build depends for the automatic tests: netcat-openbsd, xvfb,
-    debian-file-utils and appstream-util
+    debian-file-utils, xauth and appstream-util
 
  -- Gunter Königsmann <wxmaxima@physikbuch.de>  Mon, 28 Dec 2020 12:15:36 +0100
 
