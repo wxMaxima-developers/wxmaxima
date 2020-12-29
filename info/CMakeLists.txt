@@ -13,7 +13,7 @@ if(PANDOC)
 	function(generate_wxmaxima_documentation_html FILEBASENAME)
 		if(UNIX)
 			# Remove workaround for IE9
-			set(REMOVE_HTML5SHIV sed -i'' /html5shiv-printshiv.min.js/d ${FILEBASENAME}.html)
+			set(REMOVE_HTML5SHIV cp ${FILEBASENAME}.html sedinput && sed /html5shiv-printshiv.min.js/d <sedinput >${FILEBASENAME}.html)
 		endif()
 		add_custom_command(
 			OUTPUT ${FILEBASENAME}.html
