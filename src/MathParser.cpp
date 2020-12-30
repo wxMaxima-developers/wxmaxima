@@ -38,6 +38,7 @@
 #include "SubCell.h"
 #include "SqrtCell.h"
 #include "LimitCell.h"
+#include "SetCell.h"
 #include "ListCell.h"
 #include "MatrCell.h"
 #include "ParenCell.h"
@@ -195,6 +196,18 @@ std::unique_ptr<Cell> MathParser::ParseRowTag(wxXmlNode *node)
     // No special Handling for NULL args here: They are completely legal in this case.
     auto inner = ParseTag(child, true);
     auto cell = std::make_unique<ListCell>(m_group, m_configuration, std::move(inner));
+    cell->SetType(m_ParserStyle);
+    cell->SetHighlight(m_highlight);
+    ParseCommonAttrs(node, cell);
+    return cell;
+  }
+  else if (node->GetAttribute(wxT("set")) == wxT("true"))
+  {
+    wxXmlNode *child = node->GetChildren();
+    child = SkipWhitespaceNode(child);
+    // No special Handling for NULL args here: They are completely legal in this case.
+    auto inner = ParseTag(child, true);
+    auto cell = std::make_unique<SetCell>(m_group, m_configuration, std::move(inner));
     cell->SetType(m_ParserStyle);
     cell->SetHighlight(m_highlight);
     ParseCommonAttrs(node, cell);

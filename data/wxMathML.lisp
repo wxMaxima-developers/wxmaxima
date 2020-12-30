@@ -503,7 +503,7 @@
   (defprop mlist (("<mrow list=\"true\"><t listdelim=\"true\">[</t>")"<t listdelim=\"true\">]</t></mrow>") wxxmlsym)
 
   (defprop $set wxxml-matchfix wxxml)
-  (defprop $set (("<mrow><t>{</t>")"<t>}</t></mrow>") wxxmlsym)
+  (defprop $set (("<mrow set=\"true\"><t listdelim=\"true\">{</t>")"<t listdelim=\"true\">}</t></mrow>") wxxmlsym)
 
   (defprop mabs wxxml-matchfix wxxml)
   (defprop mabs (("<mrow><a>")"</a></mrow>") wxxmlsym)

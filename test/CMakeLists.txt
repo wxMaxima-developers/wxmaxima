@@ -293,7 +293,7 @@ add_test(
 add_test(
     NAME listCells_cmdline
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ${MAXIMA} --batch parenthesisCells.wxm)
+    COMMAND ${MAXIMA} --batch listCells.wxm)
 
 add_test(
     NAME listCells_cmdline_wxmathml
@@ -304,6 +304,21 @@ add_test(
     NAME listCells
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
     COMMAND wxmaxima --logtostdout --pipe --batch listCells.wxm)
+
+add_test(
+    NAME setCells_cmdline
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+    COMMAND ${MAXIMA} --batch listCells.wxm)
+
+add_test(
+    NAME setCells_cmdline_wxmathml
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+    COMMAND ${MAXIMA} --batch setCells.wxm -p ${CMAKE_SOURCE_DIR}/data/wxMathML.lisp)
+
+add_test(
+    NAME setCells
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+    COMMAND wxmaxima --logtostdout --pipe --batch setCells.wxm)
 
 add_test(
     NAME sqrtCells_cmdline

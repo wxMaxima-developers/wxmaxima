@@ -21,6 +21,7 @@ set(CELL_SOURCE_FILES
     LongNumberCell.cpp
     MatrCell.cpp
     ParenCell.cpp
+    SetCell.cpp
     SlideShowCell.cpp
     SqrtCell.cpp
     SubCell.cpp
