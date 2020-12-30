@@ -56,6 +56,17 @@
          to time zone variations 
          You can see current time at: https://en.wikipedia.org/wiki/ISO_8601
     -->
+    <release version="20.12.2" date="2020-12-30T15:47:00Z">
+      <description>
+	<p>
+	  Bugfix release: compilation failed if wxWidgets was compiled with stl support.
+	</p>
+	<ul>
+	  <li> Compilation now works if wxWidgets was compiled with stl support</li>
+	  <li> Eye candy: Nicer display of sets</li>
+	</ul>
+      </description>
+    </release>
     <release version="20.12.1" date="2020-12-29T09:37:00Z">
       <description>
 	<p>
