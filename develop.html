@@ -78,13 +78,13 @@
       Current wxMaxima <a href="https://github.com/wxMaxima-developers/wxmaxima/tarball/master">source code</a>
       is available in git repositories at
       <a href="https://github.com/wxMaxima-developers/wxmaxima">github</a>. Clone the repository with</p>
-      <pre>git clone https://github.com/wxMaxima-developers/wxmaxima</pre>
+      <code>git clone https://github.com/wxMaxima-developers/wxmaxima</code>
       <p>
       Build instructions can be found at
       <a href="https://github.com/wxMaxima-developers/wxmaxima/blob/master/Compiling.md">
 	https://github.com/wxMaxima-developers/wxmaxima/blob/master/Compiling.md</a>.
       On some Linux systems the <kbd>F1</kbd>, <kbd>Tab</kbd> and <kbd>Delete</kbd>
-      keys will be suppressed until <span class="code">ibus-gtk3</span> is installed.
+      keys will be suppressed until the package <code>ibus-gtk3</code> is installed.
     </p>
     
     <h2>Code documentation</h2>
@@ -113,14 +113,14 @@
       Launchpad</a>.
     This page also contains information on how to make debian-based
     system automatically keep updating to the latest build. For a
-    one-time install downloading the .deb file and double-clicking on
+    one-time install downloading the <code>.deb</code> file and double-clicking on
     it should suffice on most systems. Alternatively the file can be
     installed from the console, on debian-based systems by
-    typing <span class=code>sudo dpkg -i filename.deb</span>;
+    typing:<br/> <code>sudo dpkg -i filename.deb</code><br/>
     The build logs can be accessed
     using <a href="https://code.launchpad.net/~peterpall/+recipe/wxmaxima-daily">
       this page</a>.
-    <h4>Mac></h4>
+    <h4>Mac</h4>
     <p> A nightly build of wxMaxima (without maxima) can be downloaded from <a href="https://www.peterpall.de/wxMaxima/nightly/wxMaxima.dmg"> www.peterpall.de/wxMaxima/nightly/wxMaxima.dmg</a>
     <h4>Mac+Linux</h4>
     The result from trying to compile the latest version from the repository can be
@@ -150,8 +150,8 @@
  	</li>
 	<li>
 	  Clone the Maxima Git repository into some directory. In this
-	  guide, I will assume that this is C:\Maxima-Git. The
-	  repository's URL is git://git.code.sf.net/p/maxima/code. 
+	  guide, I will assume that this is <code>C:\Maxima-Git</code>. The
+	  repository's URL is: <code>git://git.code.sf.net/p/maxima/code</code>
 	</li>
 	<li>
 	  If you don't have it already, install Steel Bank Common Lisp
@@ -162,45 +162,42 @@
 	</li>
 	<li>
 	  Now we will build Maxima using SBCL only. For that,
-	  precisely follow the instructions found in the INSTALL.lisp
-	  file in C:\Maxima-Git: 
+	  precisely follow the instructions found in the <code>INSTALL.lisp</code>
+	  file in <code>C:\Maxima-Git</code>:
 	<ol>
 	  <li>
-	    Open a command prompt and CD to <span class=code>C:\Maxima-Git</span>.
+	    Open a command prompt and CD to <code>C:\Maxima-Git</code>.
 	  </li>
 	  <li>
-	    Start SBCL by entering: <span class=code>sbcl</span>
+	    Start SBCL by entering: <code>sbcl</code>
 	  </li>
 	  <li>
-	    Now we configure Maxima by entering <span class=code>(load
-	    &quot;configure.lisp&quot;)</span>,
-	    then <span class=code>(configure)</span>, and finally 
-	    <span class=code>(quit)</span> 
+	    Now we configure Maxima by entering <code>(load
+	    &quot;configure.lisp&quot;)</code>,
+	    then <code>(configure)</code>, and finally <code>(quit)</code>
 	  </li>
 	  <li>
-	    Navigate to the <span class=code>C:\Maxima-Git\src
-	    directory</span> by typing: <span class=code>cd src</span>
+	    Navigate to the <code>C:\Maxima-Git\src</code>
+	    directory by typing: <code>cd src</code>
 	  </li>
 	  <li>
-	    Start SBCL again: <span class=code>sbcl</span>
+	    Start SBCL again: <code>sbcl</code>
 	  </li>
 	  <li>
-	    Now we compile Maxima by entering <span class=code>(load
-	    &quot;maxima-build.lisp&quot;)</span>,
-	    then <span class=code>(maxima-compile)</span>, and finally 
-	    <span class=code>(quit)</span> 
+	    Now we compile Maxima by entering <code>(load
+	    &quot;maxima-build.lisp&quot;)</code>,
+	    then <code>(maxima-compile)</code>, and finally <code>(quit)</code>
 	  </li>
 	  <li>
-	    Start SBCL again: sbcl
+	    Start SBCL again: <code>sbcl</code>
 	  </li>
 	  <li>
 	    Now we load the compiled Maxima program by
-	    entering <span class=code>(load 
-	    &quot;maxima-build.lisp&quot;)</span> again,
-	    then <span class=code>(maxima-load)</span> 
+	    entering <code>(load &quot;maxima-build.lisp&quot;)</code> again,
+	    then <code>(maxima-load)</code>
 	  </li>
 	  <li>
-	    Finally, we dump an image by entering <span class=code>(maxima-dump)</span>
+	    Finally, we dump an image by entering <code>(maxima-dump)</code>
 	  </li>
 	</ol>
 	</li>
@@ -208,7 +205,7 @@
 	  After these steps, you should have a compiled version of the
 	  latest Maxima. Verify that everything worked by running the
 	  maxima.bat file that you should find in
-	  <span class=code>C:\Maxima-Git\src</span>. The Maxima
+	  <code>C:\Maxima-Git\src</code>. The Maxima
 	  command prompt should show up.
 	</li>
 	<li>
@@ -216,32 +213,31 @@
 	  version:
 	<ol>
 	  <li>
-	    Open an Explorer window and go to the bin subdirectory of
+	    Open an Explorer window and go to the <code>bin</code> subdirectory of
 	    your latest "stable" Maxima version. For me, this
-	    is <span class=code>C:\Program Files
-	      (x86)\Maxima-sbcl-5.35.1.2\bin</span>.
+	    is <code>C:\Program Files (x86)\Maxima-sbcl-5.35.1.2\bin</code>.
 	  </li>
 	  <li>
-	    Rename the <span class=code>maxima.bat</span> file
-	    to <span class=code>maxima.bat.bak</span>.
+	    Rename the <code>maxima.bat</code> file
+	    to <code>maxima.bat.bak</code>.
 	  </li>
 	  <li>
-	    Rename the <span class=code>sbcl.exe</span> file
-	    to <span class=code>sbcl.exe.bak</span>. You need to do
+	    Rename the <code>sbcl.exe</code> file
+	    to <code>sbcl.exe.bak</code>. You need to do
 	    this because the supplied version of SBCL seems to be
 	    outdated, and that would result in troubles. By renaming
 	    the file, the SBCL version you earlier installed on your
 	    machine will be used instead. 
 	  </li>
 	  <li>
-	    Copy <span class=code>C:\Maxima-Git\src\maxima.bat</span>
+	    Copy <code>C:\Maxima-Git\src\maxima.bat</code>
 	    to the current directory.
 	  </li>
 	</ol>
 	</li>
 	<li>
 	  Verify that everything worked by starting wxMaxima and
-	  entering <span class=code>build_info();</span> - pay
+	  entering <code>build_info();</code> - pay
 	  attention to the timestamp field, which should reflect the
 	  date and time when you compiled Maxima earlier. 
 	</li>
@@ -253,11 +249,11 @@
 	</li>
 	<li>
 	  If you want to undo the changes, delete
-	  the <span class=code>maxima.bat</span> file and
-	  rename <span class=code>maxima.bat.bak</span> back
-	  to <span class=code>maxima.bat</span>
-	  and <span class=code>sbcl.exe.bak</span> back
-	  to <span class=code>sbcl.exe</span>. 
+	  the <code>maxima.bat</code> file and
+	  rename <code>maxima.bat.bak</code> back
+	  to <code>maxima.bat</code>
+	  and <code>sbcl.exe.bak</code> back
+	  to <code>sbcl.exe</code>.
 	</li>
       </ol>
   </div>
