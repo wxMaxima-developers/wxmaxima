@@ -4,7 +4,7 @@
 
 # 20.12.1
  * If there are still IE9 users the manual of 20.12.0 would have included a
-   file from the internet - which debian judget to be a privacy issue.
+   file from the internet - which Debian judged to be a privacy issue.
 
 # 20.12.0
  * A chinese translation of the manual by 刘荣.
