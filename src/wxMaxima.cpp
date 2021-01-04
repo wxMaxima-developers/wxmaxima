@@ -1870,7 +1870,7 @@ bool wxMaxima::StartMaxima(bool force)
       m_maximaStdout = NULL;
       m_maximaStderr = NULL;
       m_statusBar->NetworkStatus(StatusBar::offline);
-      LoggingMessageBox(_("Can not start maxima. The most probable cause is that maxima isn't installed (it can be downloaded from http://maxima.sourceforge.net) or in wxMaxima's config dialogue the setting for maxima's location is wrong."), _("Error"),
+      LoggingMessageBox(_("Can not start Maxima. The most probable cause is that Maxima isn't installed (it can be downloaded from https://maxima.sourceforge.io) or in wxMaxima's config dialogue the setting for Maxima's location is wrong."), _("Error"),
                         wxOK | wxICON_ERROR);
       return false;
     }
@@ -2211,7 +2211,7 @@ void wxMaxima::OnProcessEvent(wxProcessEvent& event)
 
     if(m_first)
     {
-      LoggingMessageBox(_("Can not start maxima. The most probable cause is that maxima isn't installed (it can be downloaded from http://maxima.sourceforge.net) or in wxMaxima's config dialogue the setting for maxima's location is wrong."), _("Error"),
+      LoggingMessageBox(_("Can not start Maxima. The most probable cause is that Maxima isn't installed (it can be downloaded from https://maxima.sourceforge.io) or in wxMaxima's config dialogue the setting for Maxima's location is wrong."), _("Error"),
                    wxOK | wxICON_ERROR);
     }
     
@@ -3979,7 +3979,7 @@ wxString wxMaxima::GetCommand(bool params)
    // if 'maxima' is not searched in the path, check, if the file exists.
   if (command.Cmp("maxima")!=0) {
     if (!wxFileExists(command)) {
-      LoggingMessageBox(_("Can not start maxima. The most probable cause is that maxima isn't installed (it can be downloaded from http://maxima.sourceforge.net) or in wxMaxima's config dialogue the setting for maxima's location is wrong."),
+      LoggingMessageBox(_("Can not start Maxima. The most probable cause is that Maxima isn't installed (it can be downloaded from https://maxima.sourceforge.io) or in wxMaxima's config dialogue the setting for Maxima's location is wrong."),
                    _("Warning"),
                    wxOK | wxICON_EXCLAMATION);
       LeftStatusText(_("Please configure wxMaxima with 'Edit->Configure'."));
@@ -4502,7 +4502,7 @@ void wxMaxima::ShowMaximaHelp(wxString keyword)
   else
   {
     wxLogMessage(_(wxT("No offline manual found ⇒ Redirecting to the maxima homepage")));
-    LaunchHelpBrowser("http://maxima.sourceforge.net/docs/manual/maxima_singlepage.html#"+keyword);
+    LaunchHelpBrowser("https://maxima.sourceforge.io/docs/manual/maxima_singlepage.html#"+keyword);
   }
 }
 

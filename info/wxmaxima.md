@@ -55,7 +55,7 @@ _Maxima_ is a full-featured computer algebra system (CAS). A CAS is a program th
 
 ![Maxima screenshot, command line](./maxima_screenshot.png){ id=img_maxima_screenshot }
 
-Extensive documentation for _Maxima_ is  [available in the internet](http://maxima.sourceforge.net/documentation.html). Part of this documentation is also available in wxMaxima’s help menu. Pressing the Help key (on most systems the F1 key) causes _wxMaxima_’s context-sensitive help feature to automatically jump to _Maxima_’s manual page for the command at the cursor.
+Extensive documentation for _Maxima_ is  [available in the internet](https://maxima.sourceforge.io/documentation.html). Part of this documentation is also available in wxMaxima’s help menu. Pressing the Help key (on most systems the F1 key) causes _wxMaxima_’s context-sensitive help feature to automatically jump to _Maxima_’s manual page for the command at the cursor.
 
 ### wxMaxima
 
