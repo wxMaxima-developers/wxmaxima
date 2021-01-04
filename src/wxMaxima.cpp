@@ -4180,11 +4180,11 @@ void wxMaxima::ShowWxMaximaHelp()
     // On Windows the path starts e.g. with C:/path/to/helpfile
     // so a third "/" must be inserted.
     // Otherwise "C" might be considered as hostname.
-    wxString URI = wxString("file://")+
+    wxString URI = wxURI(wxString("file://")+
 #ifdef __WINDOWS__
                    wxString("/") +
 #endif
-                   helpfile;
+                   helpfile).BuildURI();
     wxLogMessage("wxMaxima help file URI: " + URI);
     // On gnome 3.35.91 wxLaunchDefaultBrowser outputs an error message to stdout
     // (No application is registered as handling this file) and returns true.
