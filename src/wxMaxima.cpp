@@ -214,6 +214,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
     m_variableReadActions[wxT("*autoconf-version*")] = &wxMaxima::VariableActionAutoconfVersion;
     m_variableReadActions[wxT("*autoconf-host*")] = &wxMaxima::VariableActionAutoconfHost;
     m_variableReadActions[wxT("*maxima-infodir*")] = &wxMaxima::VariableActionMaximaInfodir;
+    m_variableReadActions[wxT("*maxima-htmldir*")] = &wxMaxima::VariableActionMaximaHtmldir;
     m_variableReadActions[wxT("gnuplot_command")] = &wxMaxima::VariableActionGnuplotCommand;
     m_variableReadActions[wxT("*maxima-sharedir*")] = &wxMaxima::VariableActionMaximaSharedir;
     m_variableReadActions[wxT("*lisp-name*")] = &wxMaxima::VariableActionLispName;
@@ -2712,10 +2713,15 @@ void wxMaxima::VariableActionAutoconfHost(const wxString &value)
 }
 void wxMaxima::VariableActionMaximaInfodir(const wxString &value)
 {
-              m_maximaDocDir = value;
-              wxLogMessage(wxString::Format(_("Maxima's manual lies in directory %s"),value.utf8_str()));
+  m_maximaDocDir = value;
+  wxLogMessage(wxString::Format(_("Maxima's manual lies in directory %s"),value.utf8_str()));
 }
 
+void wxMaxima::VariableActionMaximaHtmldir(const wxString &value)
+{
+  m_maximaHtmlDir = value;
+  wxLogMessage(wxString::Format(_("Maxima's HTML manuals are in directory %s"),value.utf8_str()));
+}
 void wxMaxima::GnuplotCommandName(wxString gnuplot)
 {
   m_gnuplotcommand = gnuplot;

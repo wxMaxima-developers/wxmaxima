@@ -545,6 +545,7 @@ protected:
   void VariableActionAutoconfVersion(const wxString &value);
   void VariableActionAutoconfHost(const wxString &value);
   void VariableActionMaximaInfodir(const wxString &value);
+  void VariableActionMaximaHtmldir(const wxString &value);
   void VariableActionGnuplotCommand(const wxString &value);
   void VariableActionMaximaSharedir(const wxString &value);
   void VariableActionLispName(const wxString &value);
@@ -739,6 +740,7 @@ protected:
   wxString m_maximaTempDir;
   //! The directory with maxima's documentation
   wxString m_maximaDocDir;
+  wxString m_maximaHtmlDir;
   bool m_fileSaved;
   wxString m_maximaVersion;
   wxString m_maximaArch;
