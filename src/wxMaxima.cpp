@@ -4085,58 +4085,6 @@ wxString wxMaxima::GetMaximaHelpFile2()
   return wxEmptyString;
 }
 
-wxString wxMaxima::SearchwxMaximaHelp()
-{
-  if(!m_wxMaximaHelpFile.IsEmpty())
-    return m_wxMaximaHelpFile;
-
-  wxString failmsg = _("No helpfile found at %s.");
-  wxString helpfile;
-  wxString lang_long = m_locale->GetCanonicalName();
-  wxString lang_short = lang_long.Left(lang_long.Find('_'));
-  helpfile = Dirstructure::Get()->HelpDir() + wxT("/wxmaxima_") + lang_long + ".html";
-#if defined (__WXMSW__)
-  // Cygwin uses /c/something instead of c:/something and passes this path to the
-  // web browser - which doesn't support cygwin paths => convert the path to a
-  // native windows pathname if needed.
-  if(helpfile.Length()>1 && helpfile[1]==wxT('/')){helpfile[1]=helpfile[2];helpfile[2]=wxT(':');}
-#endif // __WXMSW__
-  if(wxFileExists(helpfile))
-    return (m_wxMaximaHelpFile = helpfile);
-  wxLogMessage(wxString::Format(failmsg, helpfile.utf8_str()));
-    
-  helpfile = Dirstructure::Get()->HelpDir() + wxT("/wxmaxima_") + lang_short + ".html";
-#if defined (__WXMSW__)
-  if(helpfile.Length()>1 && helpfile[1]==wxT('/')){helpfile[1]=helpfile[2];helpfile[2]=wxT(':');}
-#endif // __WXMSW__
-  if(wxFileExists(helpfile))
-    return (m_wxMaximaHelpFile = helpfile);
-  wxLogMessage(wxString::Format(failmsg, helpfile.utf8_str()));
-
-  helpfile = Dirstructure::Get()->HelpDir() + wxT("/wxmaxima.") + lang_long + ".html";
-#if defined (__WXMSW__)
-  if(helpfile.Length()>1 && helpfile[1]==wxT('/')){helpfile[1]=helpfile[2];helpfile[2]=wxT(':');}
-#endif // __WXMSW__
-  if(wxFileExists(helpfile))
-    return (m_wxMaximaHelpFile = helpfile);
-  wxLogMessage(wxString::Format(failmsg, helpfile.utf8_str()));
-    
-  helpfile = Dirstructure::Get()->HelpDir() + wxT("/wxmaxima.") + lang_short + ".html";
-#if defined (__WXMSW__)
-  if(helpfile.Length()>1 && helpfile[1]==wxT('/')){helpfile[1]=helpfile[2];helpfile[2]=wxT(':');}
-#endif // __WXMSW__
-  if(wxFileExists(helpfile))
-    return (m_wxMaximaHelpFile = helpfile);
-  wxLogMessage(wxString::Format(failmsg, helpfile.utf8_str()));
-  
-  helpfile = Dirstructure::Get()->HelpDir() + wxT("/wxmaxima.html");
-#if defined (__WXMSW__)
-  if(helpfile.Length()>1 && helpfile[1]==wxT('/')){helpfile[1]=helpfile[2];helpfile[2]=wxT(':');}
-#endif // __WXMSW__
-  if(!wxFileExists(helpfile))
-    wxLogMessage(wxString::Format(failmsg, helpfile.utf8_str()));
-  return helpfile;
-}
 
 void wxMaxima::LaunchHelpBrowser(wxString uri)
 {
@@ -4167,36 +4115,42 @@ void wxMaxima::LaunchHelpBrowser(wxString uri)
 
 void wxMaxima::ShowWxMaximaHelp()
 {
-  wxString helpfile = SearchwxMaximaHelp();
-#ifdef __WINDOWS__
-  // Replace \ with / in the path as directory separator.
-  helpfile.Replace("\\", "/", true);
-#endif
+  wxString helpfile;
+  wxString lang_long = m_locale->GetCanonicalName(); /* two- or five-letter string in xx or xx_YY format. Examples: "en", "en_GB", "en_US" or "fr_FR" */
+  wxString lang_short = lang_long.Left(lang_long.Find('_'));
 
-  if(!helpfile.IsEmpty())
-  {
-    // A Unix absolute path starts with a "/", so a valid file URI
-    // file:///path/to/helpfile (3 slashes) is constructed.
-    // On Windows the path starts e.g. with C:/path/to/helpfile
-    // so a third "/" must be inserted.
-    // Otherwise "C" might be considered as hostname.
-    wxString URI = wxURI(wxString("file://")+
-#ifdef __WINDOWS__
-                   wxString("/") +
-#endif
-                   helpfile).BuildURI();
-    wxLogMessage("wxMaxima help file URI: " + URI);
-    // On gnome 3.35.91 wxLaunchDefaultBrowser outputs an error message to stdout
-    // (No application is registered as handling this file) and returns true.
-    // Let's work around this by finding the default browser the Hard Way.
-    // if(!wxLaunchDefaultBrowser(URI))
-    LaunchHelpBrowser(URI);
+  helpfile = Dirstructure::Get()->HelpDir() + wxT("/wxmaxima.") + lang_long + ".html";
+  if(!wxFileExists(helpfile))
+    helpfile = Dirstructure::Get()->HelpDir() + wxT("/wxmaxima.") + lang_short + ".html";
+  if(!wxFileExists(helpfile))
+    helpfile = Dirstructure::Get()->HelpDir() + wxT("/wxmaxima.html");
+
+  if(!wxFileExists(helpfile)) {
+	wxLogMessage(_(wxT("No offline manual found => Redirecting to the wxMaxima homepage")));
+    helpfile = wxString("https://htmlpreview.github.io/?https://github.com/wxMaxima-developers/wxmaxima/blob/master/info/wxmaxima.html");
+  } else {
+    #ifdef __WINDOWS__
+    // Replace \ with / in the path as directory separator.
+    helpfile.Replace("\\", "/", true);
+    #endif // __WINDOWS__
+
+    #ifdef __CYGWIN__
+    // Cygwin uses /c/something instead of c:/something and passes this path to the
+    // web browser - which doesn't support cygwin paths => convert the path to a
+    // native windows pathname if needed.
+    if(helpfile.Length()>1 && helpfile[0]==wxT('/')) {
+	  helpfile[0]=helpfile[1];
+	  helpfile[1]=wxT(':');
+    }
+    #endif // __CYGWIN__
+
+    helpfile = wxURI(wxString("file://")+
+    #ifdef __WINDOWS__
+                                          wxString("/")+
+    #endif
+                                                        helpfile).BuildURI();
   }
-  else
-  {
-    wxLogMessage(_(wxT("No offline manual found ⇒ Redirecting to the wxMaxima homepage")));
-    LaunchHelpBrowser("https://htmlpreview.github.io/?https://github.com/wxMaxima-developers/wxmaxima/blob/master/info/wxmaxima.html");
-  }
+  LaunchHelpBrowser(helpfile);
 }
 
 void wxMaxima::ShowHelp(const wxString &keyword)

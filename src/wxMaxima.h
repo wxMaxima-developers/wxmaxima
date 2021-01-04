@@ -183,8 +183,6 @@ private:
   static bool m_pipeToStdout;
   static bool m_exitOnError;
   static wxString m_extraMaximaArgs;
-  //! Search for the wxMaxima help file
-  wxString SearchwxMaximaHelp();
   wxLocale *m_locale;
   //! The variable names to query for the variables pane and for internal reasons
   wxArrayString m_varNamesToQuery;
@@ -681,8 +679,6 @@ protected:
     creating this string worthwile.
    */
   wxString m_currentOutputEnd;
-  //! Caches the name of wxMaxima's help file.
-  wxString m_wxMaximaHelpFile;
   //! All from maxima's current output we still haven't interpreted
   wxString m_currentOutput;
   //! A marker for the start of maths
