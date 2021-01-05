@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: wxMaxima HEAD\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-01-05 11:51+0100\n"
-"PO-Revision-Date: 2020-12-21 21:44+0800\n"
+"PO-Revision-Date: 2021-01-05 22:43+0800\n"
 "Last-Translator: Liu Rong <rong.liu@mail.bnu.edu.cn>\n"
 "Language-Team: amateur\n"
 "Language: zh\n"
@@ -1305,14 +1305,13 @@ msgstr "无法下载版本信息。"
 
 #: ../../src/wxMaxima.cpp:1874 ../../src/wxMaxima.cpp:2215
 #: ../../src/wxMaxima.cpp:3988
-#, fuzzy
 msgid ""
 "Can not start Maxima. The most probable cause is that Maxima isn't installed "
 "(it can be downloaded from https://maxima.sourceforge.io) or in wxMaxima's "
 "config dialogue the setting for Maxima's location is wrong."
 msgstr ""
 "无法启动 Maxima。最可能的原因是没有安装 Maxima（可以从http://maxima."
-"sourceforge.net 下载）或者在 wxMaxima 的设置对话框中，Maxima 的位置设置错误。"
+"sourceforge.io 下载）或者在 wxMaxima 的设置对话框中，Maxima 的位置设置错误。"
 
 #: ../../src/MaxSizeChooser.cpp:45 ../../src/MaxSizeChooser.cpp:47
 #: ../../src/wxMaxima.cpp:10527
@@ -1395,9 +1394,8 @@ msgid "Check for Updates"
 msgstr "检查更新"
 
 #: ../../src/wxMaximaFrame.cpp:1423
-#, fuzzy
 msgid "Check if a newer version of wxMaxima is available."
-msgstr "检查是否存在新版本 wxMaxima/Maxima。"
+msgstr "检查是否存在新版本的 wxMaxima。"
 
 #: ../../src/wxMaximaFrame.cpp:1969
 msgid "Chi"
@@ -1579,9 +1577,8 @@ msgid "Compute the least common multiple (do load(functs) before using)"
 msgstr "计算最小公倍式（在使用前先执行 load(functs)）"
 
 #: ../../src/wxMaximaFrame.cpp:1056
-#, fuzzy
 msgid "Compute the rank of a matrix"
-msgstr "计算矩阵的行列式"
+msgstr "计算矩阵的秩"
 
 #: ../../src/wxMaxima.cpp:8919
 msgid "Condition:"
@@ -2249,11 +2246,11 @@ msgstr "元素"
 #: ../../src/wxMaxima.cpp:6944
 msgid ""
 "Element-by-element Product of matrices of the same size (Hadamard product)"
-msgstr ""
+msgstr "相同大小的矩阵对应元素逐个相乘（Hadamard 积）"
 
 #: ../../src/wxMaximaFrame.cpp:1077
 msgid "Element-by-element multiplication"
-msgstr ""
+msgstr "对应元素逐个相乘"
 
 #: ../../src/wxMaxima.cpp:7552
 msgid "Element:"
@@ -2593,7 +2590,7 @@ msgstr "认为变量的值为复数"
 
 #: ../../src/wxMaxima.cpp:6961
 msgid "Exponent based on the hadamard product"
-msgstr ""
+msgstr "基于 Hadamard 积的指数"
 
 #: ../../src/ConfigDialogue.cpp:249 ../../src/wxMaxima.cpp:5721
 msgid "Export"
@@ -2648,9 +2645,8 @@ msgid "Export successful."
 msgstr "成功导出。"
 
 #: ../../src/ConfigDialogue.cpp:757
-#, fuzzy
 msgid "Export the style settings"
-msgstr "重置所有样式设置"
+msgstr "导出样式设置"
 
 #: ../../src/History.cpp:83
 msgid "Export visible commands to a .mac file"
@@ -3285,11 +3281,11 @@ msgstr ""
 
 #: ../../src/wxMaximaFrame.cpp:1076
 msgid "Hadamard (element-by-element) product"
-msgstr ""
+msgstr "Hadamard 积（对应元素逐个相乘）"
 
 #: ../../src/wxMaximaFrame.cpp:1079
 msgid "Hadamard exponent"
-msgstr ""
+msgstr "Hadamard 指数"
 
 #: ../../examples/examples_gettext.list:1109
 msgid "Hash maps have many uses. One is to implement memoizing:\n"
@@ -4410,9 +4406,8 @@ msgid "Least Squares Fit..."
 msgstr "最小二乘拟合..."
 
 #: ../../src/wxMaxima.cpp:6906 ../../src/wxMaxima.cpp:6923
-#, fuzzy
 msgid "Left matrix:"
-msgstr "打开矩阵"
+msgstr "左矩阵"
 
 #: ../../src/wxMaximaFrame.cpp:1014
 msgid "Left side to the \"=\""
@@ -4423,11 +4418,10 @@ msgid "Length"
 msgstr "长度"
 
 #: ../../examples/examples_gettext.list:1774
-#, fuzzy
 msgid ""
 "Let's assume that R_1 is a 100Ω with 10 percents of tolerance. R_2 is a "
 "1000Ω resistor with a 1 percent tolerance instead:\n"
-msgstr "假设 R_1=100Ω 且相对误差为 1%，R_2=1000Ω 且相对误差为 1%：\n"
+msgstr "假设 R_1=100Ω 且相对误差为 10%，R_2=1000Ω 且相对误差为 1%：\n"
 
 #: ../../examples/examples_gettext.list:607
 msgid ""
@@ -4759,24 +4753,20 @@ msgid "Matrix"
 msgstr "矩阵"
 
 #: ../../src/wxMaxima.cpp:6940 ../../src/wxMaxima.cpp:6957
-#, fuzzy
 msgid "Matrix #1:"
-msgstr "矩阵："
+msgstr "矩阵 #1："
 
 #: ../../src/wxMaxima.cpp:6941 ../../src/wxMaxima.cpp:6958
-#, fuzzy
 msgid "Matrix #2:"
-msgstr "矩阵："
+msgstr "矩阵 #1："
 
 #: ../../src/wxMaxima.cpp:6910
-#, fuzzy
 msgid "Matrix Product"
-msgstr "乘积"
+msgstr "矩阵乘积"
 
 #: ../../src/wxMaxima.cpp:6927 ../../src/wxMaximaFrame.cpp:1075
-#, fuzzy
 msgid "Matrix exponent"
-msgstr "矩阵名称："
+msgstr "矩阵指数："
 
 #: ../../src/wxMaximaFrame.cpp:1034
 msgid "Matrix from csv file"
@@ -5105,9 +5095,9 @@ msgstr ""
 "    result_b:b=at(b,%);"
 
 #: ../../src/wxMaxima.cpp:2723
-#, fuzzy, c-format
+#, c-format
 msgid "Maxima's HTML manuals are in directory %s"
-msgstr "Maxima 的用户手册位于目录 %s"
+msgstr "Maxima 的用户手册（HTML 文件）位于目录 %s"
 
 #: ../../src/wxMaxima.cpp:2287
 #, c-format
@@ -5336,7 +5326,7 @@ msgstr "Mu"
 
 #: ../../src/wxMaximaFrame.cpp:1074
 msgid "Multiply matrices"
-msgstr ""
+msgstr "矩阵相乘"
 
 #: ../../src/wxMaxima.cpp:7073 ../../src/wxMaxima.cpp:7093
 msgid "Name:"
@@ -6018,7 +6008,7 @@ msgstr "带 OMML 的 RTF"
 
 #: ../../src/wxMaximaFrame.cpp:1055
 msgid "Rank"
-msgstr ""
+msgstr "秩"
 
 #: ../../src/wxMaximaFrame.cpp:460 ../../src/wxMaximaFrame.cpp:761
 msgid "Raw XML monitor"
@@ -6185,7 +6175,7 @@ msgstr "从矩阵中移除行或列"
 
 #: ../../src/wxMaximaFrame.cpp:1080
 msgid "Repetitive element-by-element multiplication"
-msgstr ""
+msgstr "重复计算对应元素逐个相乘"
 
 #: ../../src/FindReplacePane.cpp:104
 msgid "Replace All"
@@ -6299,9 +6289,8 @@ msgid "Right arrow"
 msgstr "右箭头"
 
 #: ../../src/wxMaxima.cpp:6907 ../../src/wxMaxima.cpp:6924
-#, fuzzy
 msgid "Right matrix:"
-msgstr "右箭头"
+msgstr "右矩阵："
 
 #: ../../src/wxMaximaFrame.cpp:1017
 msgid "Right side to the \"=\""
@@ -8388,6 +8377,8 @@ msgid ""
 "packages and caches in.\n"
 "Make sure that your system's home directory is set up correctly"
 msgstr ""
+"警告：不能新建 %s，该目录被 Maxima 用于保存配置信息、用户程序包和缓存文件.\n"
+"请确认系统中的家目录（home）设置正确"
 
 #: ../../examples/examples_gettext.list:1063
 msgid "We also can add a second element to x:\n"
@@ -8398,14 +8389,13 @@ msgid "We can introduce (\"substitute\") them into other equations:\n"
 msgstr "也可以将它们引入（代入，substitute）其他方程：\n"
 
 #: ../../examples/examples_gettext.list:1784
-#, fuzzy
 msgid ""
 "We can propose another set of values: Two resistors that have a high "
 "tolerance, but are guaranteed to always deviate into the same direction by "
 "the same percentage.\n"
 msgstr ""
-"也可以假设另一组相对误差：两个电阻的相对误差都是 10%，但\n"
-"总是以相同的百分比向同一方向偏离：\n"
+"也可以假设另一组相对误差：两个电阻值都有较高的相对误差，但总是\n"
+"以相同的百分比向同一方向偏离：\n"
 
 #: ../../examples/examples_gettext.list:1523
 msgid "We can use them as an input to solve:\n"
