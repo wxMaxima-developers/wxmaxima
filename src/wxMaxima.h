@@ -282,8 +282,11 @@ protected:
   //! A helper function for GetHelpFile()
   wxString GetMaximaHelpFile2();
 
-  //! Show the help for maxima
+  //! Show the help for Maxima
   void ShowMaximaHelp(wxString = {});
+
+  //! Show the help for Maxima (without handling of anchors).
+  void ShowMaximaHelpWithoutAnchor();
 
   //! Show the help for wxMaxima
   void ShowWxMaximaHelp();

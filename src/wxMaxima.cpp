@@ -4159,6 +4159,46 @@ void wxMaxima::ShowWxMaximaHelp()
   LaunchHelpBrowser(helpfile);
 }
 
+// Show's the complete Maxima help (offline if available, or offline)
+// No handling of anchors for contextsensitive help here
+void wxMaxima::ShowMaximaHelpWithoutAnchor()
+{
+  wxString helpfile;
+  // That may allow access to translated manuals, similar to wxMaxima::ShowWxMaximaHelp
+  // But the translated Maxima manuals are not really good maintained, so leave that for now...
+  // wxString lang_long = m_locale->GetCanonicalName(); /* two- or five-letter string in xx or xx_YY format. Examples: "en", "en_GB", "en_US" or "fr_FR" */
+  // wxString lang_short = lang_long.Left(lang_long.Find('_'));
+wxLogMessage(m_maximaHtmlDir);
+  helpfile = m_maximaHtmlDir.Trim() + wxString("/maxima_singlepage.html");
+  wxLogMessage(helpfile);
+  if(!wxFileExists(helpfile)) {
+	wxLogMessage(_(wxT("No offline manual found => Redirecting to the Maxima homepage")));
+    helpfile = wxString("https://maxima.sourceforge.io/docs/manual/maxima_singlepage.html");
+  } else {
+    #ifdef __WINDOWS__
+    // Replace \ with / in the path as directory separator.
+    helpfile.Replace("\\", "/", true);
+    #endif // __WINDOWS__
+
+    #ifdef __CYGWIN__
+    // Cygwin uses /c/something instead of c:/something and passes this path to the
+    // web browser - which doesn't support cygwin paths => convert the path to a
+    // native windows pathname if needed.
+    if(helpfile.Length()>1 && helpfile[0]==wxT('/')) {
+	  helpfile[0]=helpfile[1];
+	  helpfile[1]=wxT(':');
+    }
+    #endif // __CYGWIN__
+
+    helpfile = wxURI(wxString("file://")+
+    #ifdef __WINDOWS__
+                                          wxString("/")+
+    #endif
+                                                        helpfile).BuildURI();
+  }
+  LaunchHelpBrowser(helpfile);
+}
+
 void wxMaxima::ShowHelp(const wxString &keyword)
 {
   if((keyword.IsEmpty()) || (keyword == "%"))
@@ -8649,7 +8689,7 @@ void wxMaxima::HelpMenu(wxCommandEvent &event)
       break;
 
     case menu_maximahelp:
-      ShowMaximaHelp(expr);
+      ShowMaximaHelpWithoutAnchor();
       break;
 
     case menu_example:
