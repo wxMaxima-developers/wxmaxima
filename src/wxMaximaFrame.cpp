@@ -1420,7 +1420,7 @@ void wxMaximaFrame::SetupMenu()
                      wxITEM_NORMAL);
   m_HelpMenu->AppendSeparator();
   m_HelpMenu->Append(menu_check_updates, _("Check for Updates"),
-                     _("Check if a newer version of wxMaxima/Maxima exist."),
+                     _("Check if a newer version of wxMaxima is available."),
                      wxITEM_NORMAL);
 #ifndef __WXOSX__
   m_HelpMenu->AppendSeparator();
