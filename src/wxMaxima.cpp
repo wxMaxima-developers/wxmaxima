@@ -8533,7 +8533,7 @@ void wxMaxima::HelpMenu(wxCommandEvent &event)
       info.SetDescription(description);
       info.SetName(_("wxMaxima"));
       info.SetVersion(wxT(GITVERSION));
-      info.SetCopyright(wxT("(C) 2004-2018 Andrej Vodopivec"));
+      info.SetCopyright(wxT("(C) 2004-2021 The wxMaxima Team"));
       info.SetWebSite(wxT("https://wxMaxima-developers.github.io/wxmaxima/"));
 
       info.AddDeveloper(wxT("Andrej Vodopivec <andrej.vodopivec@gmail.com>"));
