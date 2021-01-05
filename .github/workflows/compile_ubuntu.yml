@@ -43,7 +43,7 @@ jobs:
            export HOME=`pwd`
            export CTEST_OUTPUT_ON_FAILURE=1
            export LD_PRELOAD=$(gcc -print-file-name=libSegFault.so)
-           xvfb-run -a ctest -j 3;    
+           xvfb-run -a ctest -j 3 -E "(threadtest)" --timeout 120;   
            cd ..
 
   compile_oldgcc:
