@@ -83,11 +83,14 @@ jobs:
            cd build
            cmake --build . --target update-locale
            cd ..
+
+# On this ubuntu version maxima is unable to load the draw() package => we need to skip all
+# tests that include draw()
     - name: run_tests
       run: |
            cd build
            export HOME=`pwd`
            export CTEST_OUTPUT_ON_FAILURE=1
            export LD_PRELOAD=$(gcc -print-file-name=libSegFault.so)
-           xvfb-run -a ctest -j 3 -E ImgCell;    
+           xvfb-run -a ctest -j 3 -E "(ImgCell|threadtest)" --timeout 120;
            cd ..
