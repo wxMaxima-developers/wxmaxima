@@ -1,3 +1,7 @@
+# Current
+ * Chinese translation updates by 刘荣.
+ * Many small bugfixes.
+
 # 20.12.2
  * Compilation now works if wxWidgets was compiled with stl support
  * Eye candy: Nicer display of sets
