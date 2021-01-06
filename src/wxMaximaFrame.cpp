@@ -1965,7 +1965,7 @@ void wxMaximaFrame::GreekPane::UpdateSymbols()
       {L'\u03A3', _("Sigma")},
       {L'\u03A4', _("Tau"), Cond::ShowLatinLookalikes},
       {L'\u03A5', _("Upsilon"), Cond::ShowLatinLookalikes},
-      {L'\u03A6', _("Phi"), Cond::ShowLatinLookalikes},
+      {L'\u03A6', _("Phi")},
       {L'\u03A7', _("Chi"), Cond::ShowLatinLookalikes},
       {L'\u03A8', _("Psi")},
       {L'\u03A9', _("Omega")},
