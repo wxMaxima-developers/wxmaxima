@@ -1376,10 +1376,10 @@ void wxMaximaFrame::SetupMenu()
                    _("Show wxMaxima help"), wxT("gtk-help"));
 #endif
   m_HelpMenu->Append(menu_wxmaximahelp, _("wxMaxima help"),
-                     _("The offline manual of wxMaxima"),
+                     _("The manual of wxMaxima"),
                      wxITEM_NORMAL);
   m_HelpMenu->Append(menu_maximahelp, _("&Maxima help"),
-                     _("The offline manual of Maxima"),
+                     _("The manual of Maxima"),
                      wxITEM_NORMAL);
   m_HelpMenu->Append(menu_example, _("&Example..."),
                      _("Show an example of usage"),
