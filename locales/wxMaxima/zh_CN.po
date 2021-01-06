@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: wxMaxima HEAD\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-01-05 11:51+0100\n"
-"PO-Revision-Date: 2021-01-05 22:43+0800\n"
+"PO-Revision-Date: 2021-01-06 22:44+0800\n"
 "Last-Translator: Liu Rong <rong.liu@mail.bnu.edu.cn>\n"
 "Language-Team: amateur\n"
 "Language: zh\n"
@@ -629,7 +629,7 @@ msgstr "添加目录至搜索路径："
 
 #: ../../src/wxMaximaFrame.cpp:1233
 msgid "Add equality to the rational simplifier"
-msgstr "添加等式（的根）以化简有理式"
+msgstr "添加等式以利用其根化简有理式"
 
 #: ../../src/wxMaximaFrame.cpp:2116
 msgid "Add more symbols"
@@ -742,10 +742,10 @@ msgid ""
 "out;*.xml|wxMaxima document (*.wxm, *.wxmx)|*.wxm;*.wxmx|Maxima session (*."
 "mac)|*.mac|Xmaxima session (*.out)|*.out|xml from broken .wxmx (*.xml)|*.xml"
 msgstr ""
-"所有可打开的文件类型（*.wxm，*.wxmx，*.mac，*.out，*.xml）|*.wxm；*.wxmx；*."
-"mac；*.out；*.xml|wxMaxima 文档（*.wxm，*.wxmx）|*.wxm；*.wxmx|Maxima 会话"
-"（*.mac）|*.mac|Xmaxima 会话（*.out）|*.out|来自已损坏 .wxmx 文档的 xml 文件 "
-"（*.xml）|*.xml"
+"所有可打开的文件类型 (*.wxm, *.wxmx, *.mac, *.out, *.xml)|*.wxm; *.wxmx; *."
+"mac; *.out; *.xml|wxMaxima 文档 (*.wxm, *.wxmx)|*.wxm; *.wxmx|Maxima 会话 (*."
+"mac)|*.mac|Xmaxima 会话 (*.out)|*.out|来自已损坏 .wxmx 文档的 xml 文件 (*."
+"xml)|*.xml"
 
 #: ../../src/ConfigDialogue.cpp:593
 msgid "All variable names"
@@ -755,7 +755,7 @@ msgstr "所有变量名"
 msgid ""
 "Allows to specify which not-builtin unicode symbols should be displayed in "
 "the symbols sidebar along with the built-in symbols."
-msgstr "指定未内建的 unicode 符号，以便将其与内建符号一起显示在符号侧边栏。"
+msgstr "指定未内置的 Unicode 符号，以便将其与内置符号一起显示在符号侧边栏。"
 
 #: ../../src/ConfigDialogue.cpp:1753 ../../src/ConfigDialogue.cpp:1777
 msgid "All|*"
@@ -953,7 +953,7 @@ msgstr "自动设置标签"
 #: ../../src/ConfigDialogue.cpp:605
 #, c-format
 msgid "Automatic labels (%i1, %o1,...)"
-msgstr "自动设置标签（%i1, %o1, ...)"
+msgstr "自动设置标签（%i1, %o1, ...）"
 
 #: ../../src/wxMaximaFrame.cpp:912
 msgid "Automatically answer questions"
@@ -974,7 +974,7 @@ msgstr ""
 
 #: ../../src/Worksheet.cpp:1418 ../../src/Worksheet.cpp:1720
 msgid "Automatically send known answers"
-msgstr "自动传出已有答案"
+msgstr "自动传递已有答案"
 
 #: ../../src/wxMaxima.cpp:5601
 #, c-format
@@ -1070,7 +1070,7 @@ msgstr "位图"
 
 #: ../../src/ConfigDialogue.cpp:965
 msgid "Bitmap scale for export:"
-msgstr "导出的位图比例："
+msgstr "导出位图的比例："
 
 #: ../../src/ConfigDialogue.cpp:933
 msgid "Bitmaps"
@@ -1190,7 +1190,7 @@ msgstr "Bug: Undo request for cell outside worksheet."
 
 #: ../../src/wxMaximaFrame.cpp:1414
 msgid "Build &Info"
-msgstr "编译等信息(&I)"
+msgstr "编译信息(&I)"
 
 #: ../../examples/examples_gettext.list:426
 msgid ""
