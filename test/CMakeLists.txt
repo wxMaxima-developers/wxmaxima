@@ -244,6 +244,9 @@ add_test(
     NAME imageCells
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
     COMMAND wxmaxima --logtostdout --pipe --batch imageCells.wxm)
+# Maxima sometimes fails if this test is run in parallel,
+# see https://sourceforge.net/p/maxima/bugs/3699/
+set_tests_properties(imageCells PROPERTIES RUN_SERIAL true)
 
 add_test(
     NAME limitCells_cmdline
@@ -508,6 +511,9 @@ add_test(
     NAME threadtest
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
     COMMAND wxmaxima --logtostdout --pipe --batch threadtest.wxm)
+# Maxima sometimes fails if this test is run in parallel,
+# see https://sourceforge.net/p/maxima/bugs/3699/
+set_tests_properties(threadtest PROPERTIES RUN_SERIAL true)
 
 add_test(
     NAME autosave
@@ -546,6 +552,9 @@ add_test(
     NAME multithreadtest
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
     COMMAND wxmaxima --logtostdout --pipe --single_process --batch threadtest.wxm threadtest2.wxm)
+# Maxima sometimes fails if this test is run in parallel,
+# see https://sourceforge.net/p/maxima/bugs/3699/
+set_tests_properties(multithreadtest PROPERTIES RUN_SERIAL true)
 
 add_test(
     NAME ipc_copypaste1
