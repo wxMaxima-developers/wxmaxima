@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-01-05 11:51+0100\n"
-"PO-Revision-Date: 2020-12-23 10:48+0100\n"
+"PO-Revision-Date: 2021-01-06 16:08+0100\n"
 "Last-Translator: Gunter Königsmann <wxMaxima@physikbuch.de>\n"
 "Language-Team: german <de@li.org>\n"
 "Language: \n"
@@ -1361,16 +1361,11 @@ msgstr "Kann Information zur Version nicht laden."
 
 #: ../../src/wxMaxima.cpp:1874 ../../src/wxMaxima.cpp:2215
 #: ../../src/wxMaxima.cpp:3988
-#, fuzzy
 msgid ""
 "Can not start Maxima. The most probable cause is that Maxima isn't installed "
 "(it can be downloaded from https://maxima.sourceforge.io) or in wxMaxima's "
 "config dialogue the setting for Maxima's location is wrong."
-msgstr ""
-"Kann Maxima nicht starten. Meist heißt dies, dass maxima (kann von http://"
-"maxima.sourceforge.net heruntergeladen werden) nicht installiert ist, oder "
-"im Konfigurationsdialog von wxMaxima ein falscher Ort angegeben ist, an dem "
-"Maxima zu suchen ist."
+msgstr "Kann Maxima nicht starten. Meist heißt dies, dass maxima (kann von https://maxima.sourceforge.net heruntergeladen werden) nicht installiert ist, oder im Konfigurationsdialog von wxMaxima ein falscher Ort angegeben ist, an dem Maxima zu suchen ist."
 
 #: ../../src/MaxSizeChooser.cpp:45 ../../src/MaxSizeChooser.cpp:47
 #: ../../src/wxMaxima.cpp:10527
@@ -1456,11 +1451,8 @@ msgid "Check for Updates"
 msgstr "Prüfe auf Aktualisierungen"
 
 #: ../../src/wxMaximaFrame.cpp:1423
-#, fuzzy
 msgid "Check if a newer version of wxMaxima is available."
-msgstr ""
-"Prüfen Sie bitte, ob Sie eine aktuelle Version von wxMaxima oder Maxima "
-"erhalten können."
+msgstr "Prüft, ob Sie eine aktuelle Version von wxMaxima erhältlich ist."
 
 #: ../../src/wxMaximaFrame.cpp:1969
 msgid "Chi"
@@ -5303,9 +5295,9 @@ msgstr ""
 "    result_b:b=at(b,%);"
 
 #: ../../src/wxMaxima.cpp:2723
-#, fuzzy, c-format
+#, c-format
 msgid "Maxima's HTML manuals are in directory %s"
-msgstr "Maxima's Handbuch liegt im Ordner %s"
+msgstr "Maxima's HTML-Handbuch liegt im Ordner %s"
 
 #: ../../src/wxMaxima.cpp:2287
 #, c-format
@@ -8718,7 +8710,7 @@ msgid ""
 "Warning: Cannot create %s, the directory maxima keeps configuration, user "
 "packages and caches in.\n"
 "Make sure that your system's home directory is set up correctly"
-msgstr ""
+msgstr "%s, das Verzeichnis, in denen Maxima den Cache, Pakete des Benutzers und die Konfiguration ablegt, kann nicht gefunden werden. Oft heißt dies, dass das \"Eigene Dateien\"-Verzeichnis des Systems nicht korrekt aufgesetzt ist."
 
 #: ../../examples/examples_gettext.list:1063
 msgid "We also can add a second element to x:\n"
