@@ -781,15 +781,7 @@ msgstr ""
 
 #. type: Fenced code block
 #: ../../info/wxmaxima.md:231
-#, fuzzy, no-wrap
-#| msgid ""
-#| "Ordinary text\n"
-#| " * One item, indentation level 1\n"
-#| " * Another item at indentation level 1\n"
-#| "   * An item at a second indentation level\n"
-#| "   * A second item at the second indentation level\n"
-#| " * A third item at the first indentation level\n"
-#| "Ordinary text\n"
+#, no-wrap
 msgid ""
 "Ordinary text\n"
 " * One item, indentation level 1\n"
@@ -799,7 +791,6 @@ msgid ""
 " * A third item at the first indentation level\n"
 "Ordinary text\n"
 msgstr ""
-"~~~\n"
 "Normaler Text\n"
 " * Ein eingerückter Aufzählungspunkt\n"
 " * Ein zweiter Aufzählungspunkt\n"
@@ -807,7 +798,6 @@ msgstr ""
 "   * Ein zweiter Aufzählungspunkt der Aufzählung in der Aufzählung\n"
 " * Ein Punkt in der äußeren Aufzählung\n"
 "Normaler text\n"
-"~~~\n"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:242
@@ -1409,10 +1399,6 @@ msgstr ""
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:409
-#, fuzzy
-#| msgid ""
-#| "If the size of only one plot is to be changed _Maxima_ provides a "
-#| "canonical way to change an attribute only for the current cell."
 msgid ""
 "If the size of only one plot is to be changed _Maxima_ provides a canonical "
 "way to change an attribute only for the current cell. In this usage the "
@@ -1420,7 +1406,9 @@ msgid ""
 "`wxdraw2d( )` command, and is not part of the `wxdraw2d` command."
 msgstr ""
 "Wenn die Größe nur des aktuellen Diagramms geändert werden soll, erlaubt "
-"_Maxima_ dies auf die folgende Weise zu tun:"
+"_Maxima_ dies für die aktuelle Zelle zu machen. In diesem Beispiel "
+"wird `wxplot_size = [wert1, wert2]` an den `wxdraw2d( )` Befehl angehängt, "
+"es ist nicht Teil des `wxdraw2d` Befehls."
 
 #. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:410
@@ -1455,15 +1443,6 @@ msgstr "Hochqualitativere Diagramme"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:422
-#, fuzzy
-#| msgid ""
-#| "Gnuplot doesn’t seem to provide a portable way of determining whether it "
-#| "supports the high-quality bitmap output the cairo library provides. On "
-#| "systems where gnuplot is compiled to use this library the pngcairo option "
-#| "from the configuration menu (that can be overridden by the variable "
-#| "`wxplot_pngcairo`) enables support for antialiasing and additional line "
-#| "styles. If `wxplot_pngcairo` is set without gnuplot supporting this the "
-#| "result will be error messages instead of graphics."
 msgid ""
 "_Gnuplot_ doesn’t seem to provide a portable way of determining whether it "
 "supports the high-quality bitmap output that the cairo library provides. On "
@@ -1473,13 +1452,13 @@ msgid ""
 "styles. If `wxplot_pngcairo` is set without _gnuplot_ supporting this the "
 "result will be error messages instead of graphics."
 msgstr ""
-"Gnuplot bietet keine unfehlbare Möglichkeit an, ob es Cairo unterstützt, "
+"Gnuplot bietet keine portable Möglichkeit an, festzustellen, ob es Cairo unterstützt, "
 "eine Bibliothek, die Graphik mit Antialiasing und den unterschiedlichsten "
-"Linienmustern zu zeichnen erlaubt. Wurde gnuplot mit diesen Möglichkeiten "
-"ausgestattet, schaltet die entsprechende Option im Konfigurationsmenü oder "
-"ein `wxplot_pngcairo:true` die Unterstützung hierfür ein. Wurde gnuplot ohne "
-"diese Möglichkeit erstellt, führt `wxplot_pngcairo:true` jedoch zu leeren "
-"Plots."
+"Linienmustern zu zeichnen erlaubt. Wurde Gnuplot mit diesen Möglichkeiten "
+"compiliert, schaltet die entsprechende Option im Konfigurationsmenü oder "
+"ein `wxplot_pngcairo:true` die Unterstützung hierfür ein. Wurde Gnuplot ohne "
+"Cairo-Unterstützung compiliert, führt `wxplot_pngcairo:true` jedoch zu Fehlermeldungen "
+"anstelle von Plots."
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:423
@@ -1537,9 +1516,9 @@ msgid ""
 msgstr ""
 "Es ist meist schwer, aus 3D-Diagrammen quantitative Aussagen zu entnehmen. "
 "Eine Alternative ist es, den 3. Parameter auf das Mausrad zu legen. Das "
-"Kommando `with_slider_draw` ist eine Version von  wxdraw2d`, die mehrere "
+"Kommando `with_slider_draw` ist eine Version von  `wxdraw2d`, die mehrere "
 "Plots erstellt und es erlaubt, mittels eines Schiebers zwischen diesen hin- "
-"und herzuschalten. _wxMaxima_ kann die Animation sogar als .gif-Datei "
+"und herzuschalten. _wxMaxima_ kann die Animation auch als animierte `.gif`-Datei "
 "exportieren."
 
 #. type: Plain text
@@ -1720,7 +1699,7 @@ msgstr "`with_slider` und"
 #. type: Bullet: '* '
 #: ../../info/wxmaxima.md:490
 msgid "`wxanimate`."
-msgstr "`wxanimate`:"
+msgstr "`wxanimate`."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:492
@@ -2162,16 +2141,9 @@ msgstr ""
 
 #. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:621
-#, fuzzy, no-wrap
-#| msgid ""
-#| "\n"
-#| "show_image(\"man.png\");\n"
-#| "\n"
+#, no-wrap
 msgid "show_image(\"man.png\");\n"
-msgstr ""
-"\n"
-"show_image(\"Mensch.png\");\n"
-"\n"
+msgstr "show_image(\"Mensch.png\");\n"
 
 # ## Startbefehle
 #. type: Title ##
@@ -2299,14 +2271,6 @@ msgstr "2D-Tabellen sauber ausgeben"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:648
-#, fuzzy
-#| msgid ""
-#| "The function `table_form()` displays a 2D list in a form that is more "
-#| "readable than the output _Maxima_’s default output routine. The input is "
-#| "a list of one or more lists. Like the print command, this command "
-#| "displays output even when ended with a dollar sign. Ending the command "
-#| "with a semicolon results in the same table along with a \"done\" "
-#| "statement."
 msgid ""
 "The function `table_form()` displays a 2D list in a form that is more "
 "readable than the output from _Maxima_’s default output routine. The input "
@@ -2314,8 +2278,10 @@ msgid ""
 "displays output even when ended with a dollar sign. Ending the command with "
 "a semicolon results in the same table along with a \"done\" statement."
 msgstr ""
-"Die Funktion `table_form()` konvertiert 2D-Listen in eine lesbare "
-"Tabellenform. Das abschließende `done` kann durch Verwendung eines `$` "
+"Die Funktion `table_form()` konvertiert 2D-Listen in eine lesbarere "
+"Tabellenform als _Maxima_ selbst. Die Eingabe ist eine Liste von einer oder mehreren Listen. "
+"Wie der \"print\" Befehl wird die Ausgabe auch gemacht, wenn der Befehl durch "
+"ein Dollarzeichen abgeschlossen wurde. Das abschließende `done` kann durch Verwendung eines `$` "
 "anstelle eines `;` unterdrückt werden."
 
 #. type: Fenced code block (maxima)
@@ -2596,13 +2562,6 @@ msgstr ""
 
 #. type: Bullet: '* '
 #: ../../info/wxmaxima.md:724
-#, fuzzy
-#| msgid ""
-#| "_Maxima_ tried to do something the currently installed version of gnuplot "
-#| "isn’t able to understand. In this case a file ending in .gnuplot in the "
-#| "directory _Maxima_’s variable maxima\\_userdir points to contains the "
-#| "instructions from _Maxima_ to gnuplot. Most of the time this file’s "
-#| "contents therefore are helpful when debugging the problem."
 msgid ""
 "_Maxima_ tried to do something the currently installed version of _gnuplot_ "
 "isn’t able to understand. In this case, a file ending in `.gnuplot` located "
@@ -2610,10 +2569,10 @@ msgid ""
 "contains the instructions from _Maxima_ to _gnuplot_. Most of the time, this "
 "file’s contents therefore are helpful when debugging the problem."
 msgstr ""
-"_Maxima_ hat versucht, gnuplot zu etwas zu bewegen, was dieses Programm "
-"nicht versteht. In diesem Fall stehen die betreffenden Befehle in dem "
-"Verzeichnis, auf das `maxima_userdir` zeigt in einer .gnuplot-Datei "
-"geschrieben."
+"_Maxima_ hat versucht, _Gnuplot_ zu etwas zu bewegen, was die installierte "
+" Version von _Gnuplot_ nicht versteht. In diesem Fall stehen die betreffenden Befehle in dem "
+"Verzeichnis, auf das `maxima_userdir` zeigt in einer Datei mit der Endung `.gnuplot`. "
+"Der Inhalt dieser Datei ist oft hilfreich, um den Fehler zu suchen."
 
 #. type: Bullet: '* '
 #: ../../info/wxmaxima.md:724
@@ -2630,10 +2589,8 @@ msgstr ""
 
 #. type: Bullet: '* '
 #: ../../info/wxmaxima.md:724
-#, fuzzy
-#| msgid "Gnuplot didn’t output a valid .png file."
 msgid "Gnuplot didn’t output a valid `.png` file."
-msgstr "Gnuplot hat keine funktionsfähige .png-Datei ausgegeben."
+msgstr "Gnuplot hat keine gültige `.png`-Datei ausgegeben."
 
 #. type: Title ##
 #: ../../info/wxmaxima.md:725
@@ -2795,7 +2752,7 @@ msgstr ""
 #. type: Plain text
 #: ../../info/wxmaxima.md:757
 msgid "![sbcl memory](./sbclMemory.png){ id=img_sbclMemory }"
-msgstr "![sbcl memory](./sbclMemory.png){ id=img_sbclMemory }"
+msgstr "![SBCL Speicherkonfiguration](./sbclMemory.png){ id=img_sbclMemory }"
 
 #. type: Title ##
 #: ../../info/wxmaxima.md:759
@@ -3118,16 +3075,7 @@ msgstr ""
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:869
-#, fuzzy, no-wrap
-#| msgid ""
-#| "* `--logtostdout`:                 Log all \"debug messages\" sidebar messages to stderr, too.\n"
-#| "* `--pipe`:                        Pipe messages from Maxima to stdout.\n"
-#| "* `--exit-on-error`:               Close the program on any maxima error.\n"
-#| "* `-f` or `--ini=<str>`: Use the init file that was given as argument to this command-line switch\n"
-#| "* `-u`, `--use-version=<str>`:     Use maxima version `<str>`.\n"
-#| "* `-l`, `--lisp=<str>`:              Use a Maxima compiled with Lisp compiler `<str>`.\n"
-#| "* `-X`, `--extra-args=<str>`:        Allows to specify extra Maxima arguments\n"
-#| "* `-m` or `--maxima=<str>`:    allows to specify the location of the _maxima_ binary\n"
+#, no-wrap
 msgid ""
 "* `--logtostdout`:                 Log all \"debug messages\" sidebar messages to stderr, too.\n"
 "* `--pipe`:                        Pipe messages from Maxima to stdout.\n"
@@ -3147,6 +3095,7 @@ msgstr ""
 "* `-l`, `--lisp=<str>`:            Verwende ein Maxima, das mit dem Lisp Compiler `<str>` compiliert wurde.\n"
 "* `-X`, `--extra-args=<str>`:      Erlaubt, Maxima zusätzliche Argumente mitzugeben\n"
 "* `-m` oder `--maxima=<str>`:      Sagt, wo die ausführbare Datei von _maxima_ liegt.\n"
+"* `--enableipc`: Lässt Maxima wxMaxima über Interprozesskommunikation ansteuern. Diese Option vorsichtig verwenden.\n"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:870
