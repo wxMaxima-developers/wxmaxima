@@ -123,6 +123,11 @@ public:
     display_1dASCII
   };
 
+  WX_DECLARE_STRING_HASH_MAP(int, StringHash);
+  /*! All maxima operator names we know
+  */
+  StringHash m_maximaOperators;
+
   const wxEnvVariableHashMap& MaximaEnvVars(){return m_maximaEnvVars;}
   wxEnvVariableHashMap m_maximaEnvVars;
 

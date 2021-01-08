@@ -99,7 +99,9 @@ protected:
   static const wxString m_unicodeNumbers;
   //! Operators
   static const wxString m_operators;
-  
+
+  Configuration *m_configuration;
+
   WX_DECLARE_STRING_HASH_MAP(int, StringHash);
   /*! Names of functions that don't require parenthesis
 

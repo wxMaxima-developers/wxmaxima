@@ -44,6 +44,38 @@
 Configuration::Configuration(wxDC *dc, InitOpt options) :
   m_dc(dc)
 {
+  m_maximaOperators["("] = 1;
+  m_maximaOperators["/"] = 1;
+  m_maximaOperators["{"] = 1;
+  m_maximaOperators["-"] = 1;
+  m_maximaOperators["^"] = 1;
+  m_maximaOperators["#"] = 1;
+  m_maximaOperators["="] = 1;
+  m_maximaOperators[":"] = 1;
+  m_maximaOperators["["] = 1;
+  m_maximaOperators["'"] = 1;
+  m_maximaOperators["!"] = 1;
+  m_maximaOperators["+"] = 1;
+  m_maximaOperators["*"] = 1;
+  m_maximaOperators["or"] = 1;
+  m_maximaOperators["and"] = 1;
+  m_maximaOperators["do_in"] = 1;
+  m_maximaOperators[">"] = 1;
+  m_maximaOperators["$SUBVAR"] = 1;
+  m_maximaOperators["<"] = 1;
+  m_maximaOperators["if"] = 1;
+  m_maximaOperators["::="] = 1;
+  m_maximaOperators["::"] = 1;
+  m_maximaOperators["@"] = 1;
+  m_maximaOperators["."] = 1;
+  m_maximaOperators["-->"] = 1;
+  m_maximaOperators["^^"] = 1;
+  m_maximaOperators["not"] = 1;
+  m_maximaOperators["<="] = 1;
+  m_maximaOperators[":="] = 1;
+  m_maximaOperators[">="] = 1;
+  m_maximaOperators["$BFLOAT"] = 1;
+  m_maximaOperators["do"] = 1;
   m_printing = false;
   m_clipToDrawRegion = true;
   m_inLispMode = false;
@@ -55,6 +87,11 @@ Configuration::Configuration(wxDC *dc, InitOpt options) :
   SetBackgroundBrush(*wxWHITE_BRUSH);
   ResetAllToDefaults(options);
   ReadConfig();
+  wxString operators(
+    wxT("\u221A\u22C0\u22C1\u22BB\u22BC\u22BD\u00AC\u222b\u2264\u2265\u2211\u2260+-*/^:=#'!()[]{}")
+    );
+  for (wxString::const_iterator it = operators.begin(); it != operators.end(); ++it)
+    m_maximaOperators[wxString(*it)] = 1;
 }
 
 void Configuration::ResetAllToDefaults(InitOpt options)

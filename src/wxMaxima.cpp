@@ -231,6 +231,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
     m_variableReadActions[wxT("engineering_format_floats")] = &wxMaxima::VariableActionEngineeringFormat;
     m_variableReadActions[wxT("display2d")] = &wxMaxima::VariableActionDisplay2D;
     m_variableReadActions[wxT("*alt-display2d*")] = &wxMaxima::VariableActionAltDisplay2D;
+    m_variableReadActions[wxT("*maxima-operators*")] = &wxMaxima::VariableActionOperators;
   }
   
   #ifdef HAVE_OMP_HEADER
@@ -3029,6 +3030,44 @@ void wxMaxima::VariableActionAltDisplay2D(const wxString &value)
         m_worksheet->m_configuration->DisplayMode(Configuration::display_2d);
         m_equationTypeMenuMenu->Check(menu_math_as_graphics, true);
       }
+    }
+  }
+}
+
+void wxMaxima::VariableActionOperators(const wxString &value)
+{
+  wxXmlDocument xmldoc;
+  wxString newOperators;
+  wxStringInputStream xmlStream(value);
+  xmldoc.Load(xmlStream, wxT("UTF-8"));
+  wxXmlNode *node = xmldoc.GetRoot();
+  if(node != NULL)
+  {
+    wxXmlNode *contents = node->GetChildren();
+    while(contents)
+    {
+      if(contents->GetName() == wxT("operator"))
+      {        
+        wxXmlNode *node = contents->GetChildren();
+        if(node)
+        {
+          if(m_worksheet->m_configuration->m_maximaOperators.find(node->GetContent()) ==
+             m_worksheet->m_configuration->m_maximaOperators.end()
+            )
+          {
+            m_worksheet->m_configuration->m_maximaOperators[node->GetContent()] = 1;
+            if(!newOperators.IsEmpty())
+              newOperators += wxT(", ");
+            newOperators += node->GetContent();
+          }
+        }
+      }
+      contents = contents->GetNext();
+    }
+    if(!newOperators.IsEmpty())
+    {
+      wxLogMessage(wxString::Format(_("New maxima Operators detected: %s"), newOperators.utf8_str()));
+      m_worksheet->Recalculate();
     }
   }
 }

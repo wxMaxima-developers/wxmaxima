@@ -2043,6 +2043,12 @@
     (wx-print-variable '$wxanimate_autoplay)
     (wx-print-display2d)
     (wx-print-variable '*alt-display2d*)
+    (format t "<variable><name>*maxima-operators*</name><value>&lt;operators&gt;")
+    (do-symbols
+     (s :maxima)
+     (if (get s 'op)
+	 (format t "&lt;operator&gt;~a&lt;/operator&gt;~%" (wxxml-fix-string( wxxml-fix-string (get s 'op))))))
+    (format t "&lt;/operators&gt;</value></variable>")
     (format t "</variables>~%")
     (finish-output)
     )

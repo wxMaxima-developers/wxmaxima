@@ -17,8 +17,9 @@ jobs:
         # a pull request then we can checkout the head.
         fetch-depth: 15
     - name: install_packages
-           sudo apt-get update
-      run: sudo apt-get install gettext doxygen graphviz gnuplot gnuplot-x11 libomp-dev libwxgtk3.0-gtk3-dev maxima maxima-share ninja-build netcat-openbsd xvfb appstream-util desktop-file-utils cmake
+      run: |
+        sudo apt update
+        sudo apt-get install gettext doxygen graphviz gnuplot gnuplot-x11 libomp-dev libwxgtk3.0-gtk3-dev maxima maxima-share ninja-build netcat-openbsd xvfb appstream-util desktop-file-utils cmake
     - name: configure
       run: |
            export CXXFLAGS="-Wall -Wextra -ansi -std=c++11"
