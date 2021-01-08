@@ -31,7 +31,9 @@ jobs:
         fetch-depth: 15
 
     - name: Dependencies
-      run: sudo apt install libwxbase3.0-dev libwxgtk-media3.0-gtk3-dev wx3.0-headers ninja-build
+      run: |
+        sudo apt update
+        sudo apt install libwxbase3.0-dev libwxgtk-media3.0-gtk3-dev wx3.0-headers ninja-build
 
     # If this run was triggered by a pull request event, then checkout
     # the head of the pull request instead of the merge commit.
