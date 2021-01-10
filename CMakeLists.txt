@@ -210,6 +210,9 @@ endif()
 # cmake < 3.12, but we claim to support 3.7, so this is needed.
 # Usage: list_transform_prepend(FILES_TO_TRANSLATE "prefix/")
 # See https://stackoverflow.com/a/59155344/1329652
+#
+# According to #1388 cmake 3.19.2 requires this to be definied
+# in each source file separately
 
 function(list_transform_prepend var prefix)
     set(temp "")

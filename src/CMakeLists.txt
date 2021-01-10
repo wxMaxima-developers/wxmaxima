@@ -1,5 +1,21 @@
 # -*- mode: CMake; cmake-tab-width: 4; -*-
 
+# Prepends a prefix to all elements in a list. Needed only in
+# cmake < 3.12, but we claim to support 3.7, so this is needed.
+# Usage: list_transform_prepend(FILES_TO_TRANSLATE "prefix/")
+# See https://stackoverflow.com/a/59155344/1329652
+#
+# According to #1388 cmake 3.19.2 requires this to be definied
+# in each source file separately
+
+function(list_transform_prepend var prefix)
+    set(temp "")
+    foreach(f ${${var}})
+        list(APPEND temp "${prefix}${f}")
+    endforeach()
+    set(${var} "${temp}" PARENT_SCOPE)
+endfunction()
+
 set(CELL_SOURCE_FILES
     AbsCell.cpp
     AtCell.cpp
