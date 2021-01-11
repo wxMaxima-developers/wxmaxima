@@ -155,9 +155,12 @@ include_directories(
   "${CMAKE_CURRENT_BINARY_DIR}"
 )
 
-if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.9.4")
-    include(CheckIPOSupported)
-    check_ipo_supported(RESULT lposupported)
+
+if(POLICY CMP0069)
+    if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.9.4")
+	include(CheckIPOSupported)
+	check_ipo_supported(RESULT lposupported)
+    endif()
 endif()
 
 if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.10.0" AND WXM_USE_CPPCHECK)
