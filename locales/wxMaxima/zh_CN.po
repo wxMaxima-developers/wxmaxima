@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: wxMaxima HEAD\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-01-05 11:51+0100\n"
-"PO-Revision-Date: 2021-01-10 09:09+0800\n"
+"PO-Revision-Date: 2021-01-11 22:42+0800\n"
 "Last-Translator: Liu Rong <rong.liu@mail.bnu.edu.cn>\n"
 "Language-Team: amateur\n"
 "Language: zh\n"
@@ -2788,7 +2788,7 @@ msgstr "快速访问列表\n"
 
 #: ../../src/wxMaxima.cpp:334
 msgid "Fatal error"
-msgstr "致命错误"
+msgstr "严重错误"
 
 #: ../../src/main.cpp:342
 msgid "File"
@@ -2847,7 +2847,7 @@ msgstr "求表达式的极限"
 
 #: ../../src/wxMaximaFrame.cpp:972
 msgid "Find a root of an equation on an interval"
-msgstr "求方程在区间内的根"
+msgstr "求方程在某区间内的根"
 
 #: ../../src/wxMaximaFrame.cpp:974
 msgid "Find all roots of a polynomial"
@@ -2891,7 +2891,7 @@ msgstr "查找："
 
 #: ../../src/wxMaximaFrame.cpp:1365
 msgid "Fine-tune the display of engineering-format numbers"
-msgstr "微调工程格式数字的显示方式"
+msgstr "微调工程样式数字的显示方式"
 
 #: ../../src/ConfigDialogue.cpp:179
 msgid "Finnish"
@@ -2968,11 +2968,11 @@ msgstr "跟随"
 
 #: ../../src/ConfigDialogue.cpp:389
 msgid "Font used for display in document."
-msgstr "文档显示采用的字体。"
+msgstr "文档显示时采用的字体。"
 
 #: ../../src/ConfigDialogue.cpp:390
 msgid "Font used for displaying math characters in document."
-msgstr "文档中显示数学字符采用的字体。"
+msgstr "文档中显示数学字符时采用的字体。"
 
 #: ../../src/ConfigDialogue.cpp:1513
 msgid "Fonts"
@@ -3027,7 +3027,7 @@ msgstr ""
 msgid ""
 "For many problems Maxima's solve() program instantly finds a list of "
 "solutions:\n"
-msgstr "对于许多问题，Maxima 的 solve() 命令会立即找到解，并构造为列表：\n"
+msgstr "对于许多问题，Maxima 的 solve() 命令会立即找到解，并构造出列表：\n"
 
 #: ../../examples/examples_gettext.list:578
 msgid ""
@@ -3106,15 +3106,15 @@ msgstr "函数："
 
 #: ../../src/wxMaximaFrame.cpp:1222
 msgid "Functions for complex simplification"
-msgstr "用于复数化简的函数"
+msgstr "用于复数化简的命令"
 
 #: ../../src/wxMaximaFrame.cpp:1182
 msgid "Functions for simplifying factorials and gamma function"
-msgstr "用于阶乘和 Gamma 函数化简的函数"
+msgstr "用于阶乘和 Gamma 函数化简的命令"
 
 #: ../../src/wxMaximaFrame.cpp:1199
 msgid "Functions for simplifying trigonometric expressions"
-msgstr "用于三角表达式化简的函数"
+msgstr "用于三角表达式化简的命令"
 
 #: ../../src/wxMaxima.cpp:8067
 msgid "GCD"
@@ -3130,8 +3130,8 @@ msgid ""
 "hotkeys to be broken, see for example https://trac.wxwidgets.org/"
 "ticket/18462."
 msgstr ""
-"GTK_IM_MODULE 设置为“xim”。输入时界面会闪烁，且快捷键失效，见 https://trac."
-"wxwidgets.org/ticket/18462。"
+"GTK_IM_MODULE 被设置为“xim”。输入时界面会闪烁，且快捷键会失效，见 https://"
+"trac.wxwidgets.org/ticket/18462。"
 
 #: ../../src/ConfigDialogue.cpp:181
 msgid "Galician"
@@ -3237,7 +3237,7 @@ msgstr "Gnuplot 已关闭。"
 
 #: ../../src/wxMaxima.cpp:2777
 msgid "Gnuplot not found, using the default: "
-msgstr "Gnuplot 未找到，使用默认："
+msgstr "Gnuplot 未找到，使用默认程序："
 
 #: ../../src/Worksheet.cpp:6737
 msgid ""
@@ -3261,7 +3261,7 @@ msgstr "希腊字母"
 
 #: ../../src/wxMaximaFrame.cpp:752
 msgid "Greek Letters\tAlt+Shift+G"
-msgstr "希腊字母\tAlt+Shift+M"
+msgstr "希腊字母\tAlt+Shift+G"
 
 #: ../../src/wxMaximaFrame.cpp:2290
 msgid "Grid"
@@ -3281,7 +3281,7 @@ msgstr ""
 
 #: ../../src/wxMaximaFrame.cpp:1076
 msgid "Hadamard (element-by-element) product"
-msgstr "Hadamard 积（对应元素逐个相乘）"
+msgstr "Hadamard 积（逐个对应元素相乘）"
 
 #: ../../src/wxMaximaFrame.cpp:1079
 msgid "Hadamard exponent"
@@ -3371,7 +3371,7 @@ msgstr "隐藏小小节"
 msgid ""
 "Hide all multiplication signs that aren't really necessary for understanding "
 "the equation"
-msgstr "隐藏理解公式时所有不需要的乘号"
+msgstr "隐藏理解公式时所有不必要的乘号"
 
 #: ../../src/wxMaximaFrame.cpp:766
 msgid "Hide all panes"
@@ -3395,7 +3395,7 @@ msgid ""
 "worksheet's right side and that contain the \"hide\" button of the cell if "
 "the cells aren't active."
 msgstr ""
-"如果单元格未处于活动状态，隐藏在工作簿左侧标记单元格范围的方括号及其包含的“隐"
+"如果单元格未处于活动状态，隐藏工作簿左侧标记单元格范围的方括号及其包含的“隐"
 "藏”按钮。"
 
 #: ../../src/Worksheet.cpp:1804 ../../src/Worksheet.cpp:1827
@@ -3426,7 +3426,7 @@ msgstr ""
 "* args() 命令将矩阵转换为列表的列表；\n"
 "* makelist() 命令遍历此列表, 并将每个数据点的 x 值和 y 值构成的\n"
 "    列表赋值给 i；\n"
-"* rhs() 和 lhs() 命令提取“=”左边和右边的式子；\n"
+"* rhs() 和 lhs() 命令提取等号左边和右边的式子；\n"
 "* 既然已经知道 i 中的各个元素的含义, 我们可以使用 subst() 命令\n"
 "    将 i 中的元素代入 errval，以得到在对应点处误差的大小。\n"
 
@@ -3449,8 +3449,8 @@ msgstr ""
 "    指定名字，因此使用 lambda() 命令来创建一个带参数 x 的\n"
 "    无名称命令；\n"
 "* args() 将矩阵转换为列表的列表；\n"
-"* 我们需要将参数列表和解列表转换成矩阵，以便将其转置（这意味着：\r行与列对"
-"调）。\n"
+"* 我们需要将参数列表和解列表转换成矩阵，以便将其转置（这意味着：\n"
+"    行与列对调）。\n"
 
 #: ../../src/wxMaxima.cpp:8722
 msgid "Histogram"
