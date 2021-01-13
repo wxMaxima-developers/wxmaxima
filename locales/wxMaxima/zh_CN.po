@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: wxMaxima HEAD\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-01-05 11:51+0100\n"
-"PO-Revision-Date: 2021-01-12 22:35+0800\n"
+"PO-Revision-Date: 2021-01-13 21:52+0800\n"
 "Last-Translator: Liu Rong <rong.liu@mail.bnu.edu.cn>\n"
 "Language-Team: amateur\n"
 "Language: zh\n"
@@ -4715,7 +4715,7 @@ msgstr ""
 
 #: ../../src/ConfigDialogue.cpp:934
 msgid "MathML + MathJaX as Fill-In"
-msgstr "MathML，MathJaX 做替补"
+msgstr "MathML，以 MathJaX 做替补"
 
 #: ../../src/ConfigDialogue.cpp:1431
 msgid "MathML as HTML"
@@ -4770,7 +4770,7 @@ msgstr "矩阵指数："
 
 #: ../../src/wxMaximaFrame.cpp:1034
 msgid "Matrix from csv file"
-msgstr "矩阵，从 .csv 文件"
+msgstr "矩阵（从 .csv 文件）"
 
 #: ../../src/wxMaxima.cpp:7005
 msgid "Matrix map"
@@ -4861,8 +4861,8 @@ msgid ""
 "order to ease discerning which line starts a new equation and which one only "
 "continues the one from the last line."
 msgstr ""
-"Maxima 给每个式子或命令分配自动标签（形如 %i1 或 %o1）。如果命令以描述性名称"
-"开头，后跟“:”，那么 wxMaxima 将把描述性名称称为“用户定义的标签”。这个选项用于"
+"Maxima 给每个式子或命令分配自动标签（形如 %i1 或 %o1）。如果命令以描述性文字"
+"开头，后跟“:”，那么 wxMaxima 将把描述性文字称为“用户定义的标签”。这个选项用于"
 "告诉wxMaxima 是否只显示自动标签；或仅在没有用户定义的标签时，显示自动标签；或"
 "者仅显示 wxMaxima 找到用户定义的标签。如果取消分配自动标签，在两行式子之间会"
 "增加额外的垂直空格，以便于区分哪一行开始了一个新的式子，哪一行只是延续上一行"
@@ -4878,7 +4878,7 @@ msgstr "wxMaxima 每次启动 Maxima 时执行的 Maxima 命令"
 
 #: ../../src/ConfigDialogue.cpp:1134
 msgid "Maxima configuration"
-msgstr "wxMaxima 设置"
+msgstr "Maxima 设置"
 
 #: ../../src/Configuration.cpp:1394
 msgid "Maxima errors"
@@ -4926,7 +4926,7 @@ msgstr ""
 
 #: ../../src/wxMaxima.cpp:4570
 msgid "Maxima is ready for input."
-msgstr "Maxima 已就绪，等待输入"
+msgstr "Maxima 已就绪，等待输入。"
 
 #: ../../examples/examples_gettext.list:394
 msgid ""
@@ -5347,7 +5347,7 @@ msgstr "从不将此变量自动显示为下标"
 
 #: ../../src/wxMaximaFrame.cpp:790
 msgid "Never display this variable with subscript"
-msgstr "从不显示此变量的下标"
+msgstr "从不显示此变量后的文字为下标"
 
 #: ../../src/Worksheet.cpp:1421 ../../src/Worksheet.cpp:1723
 msgid "Never offer known answers"
@@ -5404,7 +5404,7 @@ msgstr "否"
 
 #: ../../src/wxMaxima.cpp:9791
 msgid "No dollar ($) or semicolon (;) at the end of command"
-msgstr "命令末尾没有美元符号（$）或分号（;）"
+msgstr "命令末尾没有美元符号（$）或英文分号（;）"
 
 #: ../../src/wxMaxima.cpp:4362
 msgid "No entries in the caches for the subjects the manual contains."
@@ -5555,10 +5555,10 @@ msgid ""
 "simple cases an engineer encounters on a daily basis maxima can do this "
 "automatically, instead.\n"
 msgstr ""
-"大部分微分方程的解不能用符号表示，即数学上没有定义相应的函数\n"
-"而无法写出解析式。有时只能猜测解的一般形式，并用计算机帮助\n"
-"我们找到解中参数的值。对于简单的微分方程（如工程师每天遇到的\n"
-"那种），Maxima 可以自动完成求解。\n"
+"大部分微分方程的解不能用符号表示，即因为数学上没有定义相应的\n"
+"函数而无法写出解析式。有时只能猜测解的一般形式，并用计算机\n"
+"帮助我们找到解中参数的值。对于简单的微分方程（如工程师每天遇\n"
+"到的那种），Maxima 可以自动完成求解。\n"
 
 #: ../../src/wxMaxima.cpp:8009 ../../src/wxMaxima.cpp:8142
 #: ../../src/wxMaxima.cpp:8160
@@ -5587,8 +5587,8 @@ msgid ""
 "that describes a phenomenon is used for understanding real measurement "
 "data.\n"
 msgstr ""
-"Maxima 能够充分展示其强大功能的一个地方，就是用符号（函数）来\n"
-"描述一个现象，从而帮助用户理解实际测量数据。\n"
+"Maxima 能够充分展示其强大功能的一个地方，就是用符号（即函数）\n"
+"来描述一个现象，从而帮助用户理解实际测量数据。\n"
 
 #: ../../src/wxMaxima.cpp:8818
 msgid "One sample t-test"
@@ -5715,10 +5715,9 @@ msgid ""
 "Portable anymap (*.pnm)|*.pnm|Tagged image file format (*.tif)|*.tif|X "
 "pixmap (*.xpm)|*.xpm"
 msgstr ""
-"PNG 图像 (*.png)|*.png|JPEG 图像 (*.jpg)|*.jpg|GIF 图像 (*.gif)|*.gif|"
-"Scaleable vector graphics (*.svg)|*.svg|Windows bitmap (*.bmp)|*.bmp|"
-"Portable anymap (*.pnm)|*.pnm|Tagged image file format (*.tif)|*.tif|X "
-"pixmap (*.xpm)|*.xpm"
+"PNG 图像 (*.png)|*.png|JPEG 图像 (*.jpg)|*.jpg|GIF 图像 (*.gif)|*.gif|可缩放"
+"矢量图像 (*.svg)|*.svg|Windows 位图 (*.bmp)|*.bmp|Portable anymap (*.pnm)|*."
+"pnm|带标记图像文件 (*.tif)|*.tif|X pixmap (*.xpm)|*.xpm"
 
 #: ../../src/wxMaxima.cpp:9446
 msgid ""
@@ -5726,9 +5725,9 @@ msgid ""
 "bmp|GIF image (*.gif)|*.gif|Portable anymap (*.pnm)|*.pnm|Tagged image file "
 "format (*.tif)|*.tif|X pixmap (*.xpm)|*.xpm"
 msgstr ""
-"PNG 图像 (*.png)|*.png|JPEG 图像 (*.jpg)|*.jpg|Windows bitmap (*.bmp)|*.bmp|"
-"GIF image (*.gif)|*.gif|Portable anymap (*.pnm)|*.pnm|Tagged image file "
-"format (*.tif)|*.tif|X pixmap (*.xpm)|*.xpm"
+"PNG 图像 (*.png)|*.png|JPEG 图像 (*.jpg)|*.jpg|Windows 位图 (*.bmp)|*.bmp|"
+"GIF 图像 (*.gif)|*.gif|Portable anymap (*.pnm)|*.pnm|带标记图像文件 (*.tif)|"
+"*.tif|X pixmap (*.xpm)|*.xpm"
 
 #: ../../src/ConfigDialogue.cpp:374
 msgid ""
@@ -5757,7 +5756,7 @@ msgstr "参数式绘图"
 
 #: ../../src/wxMaximaFrame.cpp:556
 msgid "Parsing output"
-msgstr "解析输出"
+msgstr "正在解析输出"
 
 #: ../../src/wxMaximaFrame.cpp:1137
 msgid "Partial &Fractions..."
@@ -6000,7 +5999,7 @@ msgstr "压入（push）"
 
 #: ../../src/wxMaxima.cpp:2796
 msgid "Querying gnuplot which graphics drivers it supports."
-msgstr "正在询问 gnuplot 它支持哪些图形驱动程序。"
+msgstr "正在询问 gnuplot 其支持的图形驱动程序。"
 
 #: ../../src/ConfigDialogue.cpp:1434
 msgid "RTF with OMML maths"
@@ -6012,7 +6011,7 @@ msgstr "秩"
 
 #: ../../src/wxMaximaFrame.cpp:460 ../../src/wxMaximaFrame.cpp:761
 msgid "Raw XML monitor"
-msgstr "Raw XML 监视器"
+msgstr "原始 XML 内容监视器"
 
 #: ../../src/wxMaximaFrame.cpp:1556
 #, c-format
