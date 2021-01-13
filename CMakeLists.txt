@@ -74,11 +74,6 @@ if(POLICY CMP0066)
     cmake_policy(SET CMP0066 NEW)
 endif()
 
-# link time optimization seems to need that
-if(POLICY CMP0069)
-    cmake_policy(SET CMP0069 NEW)
-endif()
-
 ##
 # Compiler-Specific Tweaks
 #
