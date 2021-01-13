@@ -153,6 +153,9 @@ include_directories(
   "${CMAKE_SOURCE_DIR}/src/wizards"
   # Version.h is generated in the binary dir
   "${CMAKE_CURRENT_BINARY_DIR}"
+  "${CMAKE_BINARY_DIR}/examples"
+  "${CMAKE_BINARY_DIR}/art"
+  "${CMAKE_BINARY_DIR}/data"
 )
 
 

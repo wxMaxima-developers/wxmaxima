@@ -231,6 +231,7 @@ add_subdirectory(data)
 add_subdirectory(info)
 add_subdirectory(locales)
 add_subdirectory(src)
+add_subdirectory(examples)
 
 enable_testing()
 add_subdirectory(test)
