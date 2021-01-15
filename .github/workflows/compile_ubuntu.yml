@@ -19,7 +19,7 @@ jobs:
     - name: install_packages
       run: |
            sudo apt update
-           sudo apt-get install gettext doxygen graphviz gnuplot gnuplot-x11 libomp-dev libwxgtk3.0-gtk3-dev maxima maxima-share ninja-build netcat-openbsd xvfb appstream-util desktop-file-utils cmake pandoc appstream-util gettext
+           sudo apt-get install appstream-util cmake desktop-file-utils doxygen gettext gnuplot gnuplot-x11 graphviz libomp-dev libwxgtk3.0-gtk3-dev maxima maxima-share netcat-openbsd ninja-build pandoc xvfb
     - name: configure
       run: |
            export CXXFLAGS="-Wall -Wextra -ansi -std=c++11"
@@ -63,7 +63,7 @@ jobs:
            wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | gpg --dearmor - | sudo tee /etc/apt/trusted.gpg.d/kitware.gpg >/dev/null
            sudo apt-add-repository -y 'deb https://apt.kitware.com/ubuntu/ xenial main'
            sudo apt-get update
-           sudo apt-get install graphviz gnuplot gnuplot-x11 libwxgtk3.0-dev maxima maxima-share ninja-build netcat-openbsd xvfb cmake appstream-util desktop-file-utils pandoc appstream-util gettext
+           sudo apt-get install appstream-util cmake desktop-file-utils gnuplot gnuplot-x11 graphviz libwxgtk3.0-dev maxima maxima-share netcat-openbsd ninja-build pandoc xvfb
     - name: configure
       run: |
            export CC=gcc-5
