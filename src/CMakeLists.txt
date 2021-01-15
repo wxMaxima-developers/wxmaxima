@@ -212,7 +212,10 @@ if(APPLE)
 endif()
 
 if(WIN32)
-    add_executable(wxmaxima WIN32 ${SOURCE_FILES})
+  add_executable(wxmaxima WIN32 ${SOURCE_FILES})
+  if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.16")
+    set_target_properties(wxmaxima PROPERTIES VS_DPI_AWARE "PerMonitor")
+  endif()
 elseif(APPLE)
     set(MACOSX_BUNDLE_NAME wxmaxima)
     set(MACOSX_BUNDLE_ICON_FILE wxmac.icns)
@@ -238,19 +241,14 @@ elseif(APPLE)
         COMPONENT Runtime)
 else()
     add_executable(wxmaxima ${SOURCE_FILES})
-    # These don't seem to be used, and they were disabled, but perhaps they really
-    # belong on Unix platforms other than Apple
-    ##set_target_properties(wxmaxima PROPERTIES
-    ##    RESOURCE "${RESOURCE_FILES}"
 endif()
 
 if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.16")
-    set_target_properties(wxmaxima PROPERTIES VS_DPI_AWARE "PerMonitor")
-    if(WXM_ENABLE_PRECOMPILED_HEADERS)
-	target_precompile_headers(wxmaxima PUBLIC "precomp.h")
-    else()
-	set(USE_PRECOMP_HEADER "0")
-    endif()
+  if(WXM_ENABLE_PRECOMPILED_HEADERS)
+    target_precompile_headers(wxmaxima PUBLIC "precomp.h")
+  else()
+    set(USE_PRECOMP_HEADER "0")
+  endif()
 endif()
 
 file(RELATIVE_PATH TRANSLATIONS_DIR ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/../locales/wxMaxima/)
@@ -281,7 +279,8 @@ if(APPLE)
     install(TARGETS wxmaxima
 	     BUNDLE  DESTINATION .
 	     RUNTIME DESTINATION bin
-	     COMPONENT Runtime)
+	     COMPONENT Runtime
+	     RESOURCE DESTINATION resource)
 else()
     install(TARGETS wxmaxima RUNTIME DESTINATION bin)
 endif()

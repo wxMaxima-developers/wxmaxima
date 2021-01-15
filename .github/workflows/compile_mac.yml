@@ -32,10 +32,15 @@ jobs:
            mkdir build
            touch build build/build.ninja
            cd build
-           cmake -G "Ninja" -DCMAKE_UNITY_BUILD=YES -DCMAKE_BUILD_TYPE=debug -DCMAKE_UNITY_BUILD_BATCH_SIZE=8 -DWXM_UNIT_TESTS=YES ..
+           cmake -G "Ninja" -DCMAKE_UNITY_BUILD=YES -DCMAKE_BUILD_TYPE=debug -DCMAKE_UNITY_BUILD_BATCH_SIZE=8 -DWXM_UNIT_TESTS=YES -DCMAKE_INSTALL_PREFIX=`pwd` ..
            cd ..
     - name: compile
       run: |
            cd build
            cmake --build .
+           cd ..
+    - name: install
+      run: |
+           cd build
+           cmake --install .
            cd ..
