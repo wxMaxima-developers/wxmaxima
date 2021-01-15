@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: wxMaxima HEAD\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-01-05 11:51+0100\n"
-"PO-Revision-Date: 2021-01-13 21:52+0800\n"
+"PO-Revision-Date: 2021-01-15 23:08+0800\n"
 "Last-Translator: Liu Rong <rong.liu@mail.bnu.edu.cn>\n"
 "Language-Team: amateur\n"
 "Language: zh\n"
@@ -6100,7 +6100,7 @@ msgstr "直角坐标形式"
 
 #: ../../src/wxMaximaFrame.cpp:685
 msgid "Redo\tCtrl+Y"
-msgstr "撤销\tCtrl+Y"
+msgstr "重做\tCtrl+Y"
 
 #: ../../src/wxMaximaFrame.cpp:686
 msgid "Redo last change"
@@ -6116,7 +6116,7 @@ msgstr "化简三角函数表达式"
 
 #: ../../src/wxMaxima.cpp:1633 ../../src/wxMaxima.cpp:9932
 msgid "Refusing to send cell to maxima: "
-msgstr "正在拒绝向 Maxima 传输单元格："
+msgstr "正在拒绝向 Maxima 传输单元格内容："
 
 #: ../../src/ConfigDialogue.cpp:726
 msgid "Reload all GUI settings from disc"
@@ -6174,7 +6174,7 @@ msgstr "从矩阵中移除行或列"
 
 #: ../../src/wxMaximaFrame.cpp:1080
 msgid "Repetitive element-by-element multiplication"
-msgstr "重复计算对应元素逐个相乘"
+msgstr "重复计算逐个对应元素相乘"
 
 #: ../../src/FindReplacePane.cpp:104
 msgid "Replace All"
@@ -6221,7 +6221,7 @@ msgstr "生成的矩阵名称（可以为空）："
 msgid ""
 "Return the first item of the list and remove it from the list. Useful for "
 "creating stacks."
-msgstr "返回列表的第一项并将其从列表中移除。用于创建堆栈。"
+msgstr "返回列表的第一项并将其从列表中移除。可用于创建堆栈。"
 
 #: ../../src/wxMaxima.cpp:7583
 msgid "Return the list without its first n elements"
@@ -6257,11 +6257,11 @@ msgstr "返回列表长度"
 
 #: ../../src/wxMaximaFrame.cpp:1284
 msgid "Returns the list without its first n elements"
-msgstr "返回列表，不包括前 n 项"
+msgstr "返回列表，不包括原列表前 n 项"
 
 #: ../../src/wxMaximaFrame.cpp:1285
 msgid "Returns the list without its last n elements"
-msgstr "返回列表，不包括最后 n 项"
+msgstr "返回列表，不包括原列表最后 n 项"
 
 #: ../../src/wxMaximaFrame.cpp:1312
 msgid "Reverse"
@@ -6293,7 +6293,7 @@ msgstr "右矩阵："
 
 #: ../../src/wxMaximaFrame.cpp:1017
 msgid "Right side to the \"=\""
-msgstr "“=”左侧"
+msgstr "“=”右侧"
 
 #: ../../src/wxMaximaFrame.cpp:1097
 msgid "Risch Integration..."
@@ -6347,7 +6347,7 @@ msgstr ""
 
 #: ../../src/wxMaxima.cpp:5991
 msgid "Running gnuplot as: "
-msgstr "运行 gnuplot 为: "
+msgstr "运行 gnuplot 为："
 
 #: ../../src/wxMaxima.cpp:1858
 #, c-format
@@ -6487,7 +6487,7 @@ msgstr "保存中……"
 
 #: ../../src/ConfigDialogue.cpp:1437
 msgid "Scalable Vector Graphics (svg)"
-msgstr "可缩放矢量图(svg)"
+msgstr "可缩放矢量图像（svg）"
 
 #: ../../src/wxMaxima.cpp:9435
 msgid ""
@@ -6496,10 +6496,10 @@ msgid ""
 "gif)|*.gif|Windows bitmap (*.bmp)|*.bmp|Portable anymap (*.pnm)|*.pnm|Tagged "
 "image file format (*.tif)|*.tif|X pixmap (*.xpm)|*.xpm"
 msgstr ""
-"Scalable Vector image (*.svg)|*.svg|Compressed Scalable Vector Image (*."
-"svgz)|*.svgz|PNG image (*.png)|*.png|JPEG image (*.jpg)|*.jpg|GIF image (*."
-"gif)|*.gif|Windows bitmap (*.bmp)|*.bmp|Portable anymap (*.pnm)|*.pnm|Tagged "
-"image file format (*.tif)|*.tif|X pixmap (*.xpm)|*.xpm"
+"可缩放矢量图像 (*.svg)|*.svg|压缩后的可缩放矢量图像 (*.svgz)|*.svgz|PNG 图像 "
+"(*.png)|*.png|JPEG 图像 (*.jpg)|*.jpg|GIF 图像 (*.gif)|*.gif|Windows 位图 (*."
+"bmp)|*.bmp|Portable anymap (*.pnm)|*.pnm|带标签的图像文件 (*.tif)|*.tif|X "
+"pixmap (*.xpm)|*.xpm"
 
 #: ../../src/wxMaxima.cpp:8738
 msgid "Scatterplot"
@@ -6539,7 +6539,7 @@ msgstr "调度后台任务， 以载入图形的 gnuplot 数据。"
 
 #: ../../src/ToolBar.cpp:640
 msgid "Search button"
-msgstr "搜索按钮"
+msgstr "查询按钮"
 
 #: ../../src/wxMaxima.cpp:4042
 #, c-format
@@ -6564,7 +6564,7 @@ msgstr "似乎没有安装带 Maxima 共享文件的程序包。"
 
 #: ../../src/TableOfContents.cpp:269
 msgid "Select"
-msgstr "选取"
+msgstr "选择"
 
 #: ../../src/Worksheet.cpp:1581 ../../src/Worksheet.cpp:1603
 msgid "Select All"
@@ -6652,7 +6652,7 @@ msgstr "发送如何将 2D 数学式用 XML 表示的信息至 Maxima。"
 
 #: ../../src/wxMaxima.cpp:2104
 msgid "Sent wxSIGKILL to maxima, but not to its child processes"
-msgstr "已发送 wxSIGKILL 信号至 Maxima，但未发给其子进程"
+msgstr "已发送 wxSIGKILL 信号至 Maxima，但未发送给其子进程"
 
 #: ../../src/wxMaxima.cpp:8206
 msgid "Series"
@@ -6827,7 +6827,7 @@ msgstr "显示所有与此相似的命令："
 
 #: ../../src/wxMaximaFrame.cpp:2117
 msgid "Show all unicode symbols"
-msgstr "显示所有 unicode 符号"
+msgstr "显示所有 Unicode 符号"
 
 #: ../../src/wxMaxima.cpp:8657
 msgid "Show an example for the command:"
@@ -6891,7 +6891,7 @@ msgstr "显示最多 50 个数字"
 
 #: ../../src/TableOfContents.cpp:276
 msgid "Show section numbers"
-msgstr "显示节数"
+msgstr "显示节编号"
 
 #: ../../src/ToolBar.cpp:623
 msgid "Show the \"New\" button?"
@@ -6903,7 +6903,7 @@ msgstr "显示“帮助”按钮？"
 
 #: ../../src/ToolBar.cpp:641
 msgid "Show the \"search\" button?"
-msgstr "显示“搜索”按钮？"
+msgstr "显示“查询”按钮？"
 
 #: ../../src/ToolBar.cpp:638
 msgid "Show the \"select all\" button?"
@@ -6971,11 +6971,11 @@ msgstr "化简表达式"
 
 #: ../../src/wxMaximaFrame.cpp:1175
 msgid "Simplify an expression containing factorials"
-msgstr "化简含有阶乘的表达式"
+msgstr "化简含阶乘的表达式"
 
 #: ../../src/wxMaximaFrame.cpp:1150
 msgid "Simplify expression containing radicals"
-msgstr "化简含有根式的表达式"
+msgstr "化简含根式的表达式"
 
 #: ../../src/wxMaximaFrame.cpp:1148
 msgid "Simplify rational expression"
@@ -6992,7 +6992,7 @@ msgid ""
 "keep the actual numerical input values in a separate list like the following "
 "one:\n"
 msgstr ""
-"在了解了这些机制之后，通常来说更好的方法是只求问题的符号解。\n"
+"在了解这些机制之后，通常来说更好的方法是只求问题的符号解。\n"
 "并将变量的实际数值保存在单独的列表中，如下所示：\n"
 
 #: ../../examples/examples_gettext.list:695
@@ -7111,7 +7111,7 @@ msgstr "求解线性方程组"
 
 #: ../../src/wxMaximaFrame.cpp:994
 msgid "Solve ordinary differential equation of maximum degree 2"
-msgstr "求解常微分方程（最大 2 阶）"
+msgstr "求解一阶和二阶常微分方程"
 
 #: ../../src/wxMaximaFrame.cpp:1008
 msgid "Solve ordinary differential equations with Laplace transformation"
@@ -7219,11 +7219,11 @@ msgstr "开始或停止显示动图"
 msgid ""
 "Start or stop the currently selected animation that has been created with "
 "the with_slider class of commands"
-msgstr "开始或停止显示当前选中的由 with_slider 类命令绘制的动图，该动图"
+msgstr "开始或停止显示当前选中的由 with_slider 类命令绘制的动图"
 
 #: ../../src/ConfigDialogue.cpp:398
 msgid "Start searching while the phrase to search for is still being typed."
-msgstr "要搜索的短语仍在键入中时，开始搜索。"
+msgstr "要查询的内容仍在键入中时，立即开始查询。"
 
 #: ../../src/wxMaxima.cpp:347
 msgid "Starting Maxima process failed"
