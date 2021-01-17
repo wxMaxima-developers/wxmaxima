@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: wxMaxima HEAD\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-01-05 11:51+0100\n"
-"PO-Revision-Date: 2021-01-15 23:08+0800\n"
+"PO-Revision-Date: 2021-01-17 19:26+0800\n"
 "Last-Translator: Liu Rong <rong.liu@mail.bnu.edu.cn>\n"
 "Language-Team: amateur\n"
 "Language: zh\n"
@@ -7367,7 +7367,7 @@ msgstr "tellrat() 命令"
 
 #: ../../src/ConfigDialogue.cpp:157
 msgid "Tells maxima where to store the result of compiling libraries"
-msgstr "告诉 Maxima 将编译库的结果存储在何处"
+msgstr "告诉 Maxima 编译库的结果存储的位置"
 
 #: ../../src/ToolBar.cpp:244 ../../src/wxMaximaFrame.cpp:2156
 msgid "Text"
@@ -7428,7 +7428,7 @@ msgstr ""
 msgid ""
 "The .xml file doesn't seem to be valid xml or isn't a content.xml extracted "
 "from a .wxmx zip archive"
-msgstr "XML 文件似乎无效，或其内容并非从 .wxmx 型的 zip 压缩包中提取"
+msgstr "XML 文件似乎无效，或者其内容并非从 .wxmx 型的 zip 压缩包中提取"
 
 #: ../../src/wxMaxima.cpp:1948
 msgid ""
@@ -7438,7 +7438,7 @@ msgstr "Maxima 进程没有提供共享内存段，以供向它发送中断信�
 
 #: ../../src/ConfigDialogue.cpp:344
 msgid "The URL MathJaX.js should be downloaded from by our HTML export."
-msgstr "导出的 HTML 文件中包含自动下载 MathJaX.js 的 URL。"
+msgstr "包含在导出的 HTML 文件中的 URL，用于自动下载 MathJaX.js。"
 
 #: ../../src/wxMaximaFrame.cpp:2298
 msgid "The accuracy versus speed tradeoff"
@@ -7448,25 +7448,25 @@ msgstr "精度与速度的权衡"
 msgid ""
 "The buttons in this category reset wxMaxima's settings immediately, once "
 "they are pressed."
-msgstr "此类别中的按钮一旦按下，就会立即重置 wxMaxima 的设置。"
+msgstr "此类按钮一旦按下，就会立即重置 wxMaxima 的设置。"
 
 #: ../../src/wxMaxima.cpp:4413
 msgid "The cache for the subjects the manual contains cannot be read."
-msgstr "无法读取用户手册所含主题的缓存。"
+msgstr "无法读取包含用户手册主题的缓存。"
 
 #: ../../src/wxMaxima.cpp:4343
 msgid "The cache for the subjects the manual contains has no head node."
-msgstr "用户手册所含主题的缓存没有头节点。"
+msgstr "包含用户手册主题的缓存没有头节点。"
 
 #: ../../src/wxMaxima.cpp:4356
 msgid ""
 "The cache for the subjects the manual contains is from a different Maxima "
 "version."
-msgstr "用户手册所含主题的缓存来自不同版本的 Maxima。"
+msgstr "包含用户手册主题的缓存来自另一版本的 Maxima。"
 
 #: ../../src/wxMaximaFrame.cpp:2285
 msgid "The color of the next line to draw"
-msgstr "要绘制的下一条线的颜色"
+msgstr "用于绘制下一条线的颜色"
 
 #: ../../examples/examples_gettext.list:1989
 msgid "The coordinates of the points the holes touch\n"
@@ -7480,7 +7480,7 @@ msgstr "输入电容的电流为：\n"
 msgid ""
 "The default height for embedded plots. Can be read out or overridden by the "
 "maxima variable wxplot_size."
-msgstr "嵌入绘图的默认高度。可以被 Maxima 变量 wxplot_size 读取或改写。"
+msgstr "嵌入绘图的默认高度，可以被 Maxima 变量 wxplot_size 读取或改写。"
 
 #: ../../src/ConfigDialogue.cpp:394
 msgid "The default port used for communication between Maxima and wxMaxima."
@@ -7490,7 +7490,7 @@ msgstr "Maxima 和 wxMaxima 之间用于通信的默认端口。"
 msgid ""
 "The default width for embedded plots. Can be read out or overridden by the "
 "maxima variable wxplot_size"
-msgstr "嵌入绘图的默认宽度。可以被 Maxima 变量 wxplot_size 读取或改写。"
+msgstr "嵌入绘图的默认宽度，可以被 Maxima 变量 wxplot_size 读取或改写。"
 
 #: ../../src/wxMaximaFrame.cpp:2270
 msgid "The diagram title"
@@ -7532,7 +7532,7 @@ msgstr "用户家（home）目录"
 
 #: ../../src/ConfigDialogue.cpp:385
 msgid "The document class LaTeX is instructed to use for our documents."
-msgstr "指示导出的 LaTeX 文档所用文档类（document class）。"
+msgstr "导出 LaTeX 文档所用的文档类（document class）。"
 
 #: ../../examples/examples_gettext.list:1283
 msgid ""
@@ -7614,7 +7614,7 @@ msgstr "下一个绘图的标题"
 
 #: ../../src/ConfigDialogue.cpp:397
 msgid "The number of recently opened files that is to be remembered."
-msgstr "记住的最近打开的文件数量。"
+msgstr "记录的最近打开的文件数量。"
 
 #: ../../src/wxMaxima.cpp:7484
 msgid ""
@@ -7806,8 +7806,8 @@ msgid ""
 "overwritten if maxima's version changes or the file cannot be read"
 msgstr ""
 "此文件由 wxMaxima 生成\n"
-"它缓存了 Maxima 用户手册提供的主题列表，并且如果 Maxima 的版本\n"
-"更改或无法读取该文件，则自动重新生成"
+"它缓存了 Maxima 用户手册提供的主题列表，并且如果变更了 Maxima\n"
+"的版本或无法读取该文件，则自动重新生成"
 
 #: ../../src/ConfigDialogue.cpp:836
 msgid ""
@@ -7825,7 +7825,7 @@ msgid ""
 "list from list\" instead, which uses the makelist command."
 msgstr ""
 "对于较大的 n，此函数执行速度较慢。\n"
-"要高效地迭代大型列表的每个元素，请参阅“由列表生成列表”，其中使用了 "
+"要高效地对大型列表的每个元素进行迭代，请参阅“由列表生成列表”，其中使用了 "
 "makelist() 命令。"
 
 #: ../../examples/examples_gettext.list:1845
@@ -7884,7 +7884,7 @@ msgid ""
 "all sublevels of that cell will also fold/unfold."
 msgstr ""
 "标题、节和小节单元格可以折叠以隐藏其内容。要折叠或展开，请单击单元格左侧的正"
-"方形。如果按住  Shift 键并单击，该单元格的所有子单元格也将折叠或展开。"
+"方形。如果按住 Shift 键并单击，该单元格的所有子单元格也将折叠或展开。"
 
 #: ../../src/wxMaximaFrame.cpp:1348
 msgid "To &Bigfloat"
@@ -7916,14 +7916,16 @@ msgid ""
 "To put parentheses around an expression, select it, and press '(' or ')' "
 "depending on where you want the cursor to appear afterwards."
 msgstr ""
-"若要对表达式整体加括号，可以先选择该表达式，然后按“(”或“)”（决定了光标随后出"
-"现的位置）。"
+"若要对表达式整体加括号，可以先选择该表达式，然后按“(”或“)”（括号类型决定了光"
+"标随后出现的位置）。"
 
 #: ../../src/TipOfTheDay.cpp:114
 msgid ""
 "To save the size and position of wxMaxima windows between session, use 'Edit-"
 ">Configure' dialog."
-msgstr "要在不同会话之间 wxMaxima 窗口的大小和位置，可使用“编辑->配置”对话框。"
+msgstr ""
+"要在不同会话之间使用相同的 wxMaxima 窗口的大小和位置，可使用“编辑->配置”对话"
+"框。"
 
 #: ../../src/TipOfTheDay.cpp:48
 msgid ""
@@ -7931,7 +7933,7 @@ msgid ""
 "should appear. Then press Shift-Enter to evaluate your command."
 msgstr ""
 "开始使用 wxMaxima 时，键入的命令会出现在（数学）输入单元格中，输入完成后按 "
-"Shift+Enter 键执行命令（展开计算）。"
+"Shift+Enter 键执行命令（开始计算）。"
 
 #: ../../src/wxMaxima.cpp:7131 ../../src/wxMaxima.cpp:8270
 msgid "To:"
@@ -7976,16 +7978,16 @@ msgstr "尝试消除线条的锯齿（移动线条的一小部分像素，以降
 #, c-format
 msgid ""
 "Trying to cache the list of subjects the manual contains in the file %s."
-msgstr "正在尝试将用户手册包含的主题列表缓存到文件 %s 中。"
+msgstr "尝试将用户手册的主题列表缓存到文件 %s 中。"
 
 #: ../../src/Image.cpp:140 ../../src/Image.cpp:144 ../../src/Image.cpp:152
 #, c-format
 msgid "Trying to delete gnuplot file %s"
-msgstr "正在尝试删除 gnuplot 文件 %s"
+msgstr "尝试删除 gnuplot 文件 %s"
 
 #: ../../src/wxMaxima.cpp:3605
 msgid "Trying to discard all output."
-msgstr "正在尝试丢弃所有输出。"
+msgstr "尝试丢弃所有输出。"
 
 #: ../../src/wxMaxima.cpp:3561
 msgid "Trying to extract contents.xml out of a broken .zip file."
@@ -7998,7 +8000,7 @@ msgstr "尝试从文件 %s 加载自动完成符号列表"
 
 #: ../../src/wxMaxima.cpp:5049
 msgid "Trying to open a file with an empty name!"
-msgstr "尝试打开空文件名的文件！"
+msgstr "尝试打开无名文件！"
 
 #: ../../src/wxMaxima.cpp:5054
 #, c-format
@@ -8020,12 +8022,12 @@ msgstr "尝试删除旧的临时文件 %s"
 
 #: ../../src/wxMaxima.cpp:1735
 msgid "Trying to restart maxima."
-msgstr "正在尝试重启 Maxima。"
+msgstr "尝试重启 Maxima。"
 
 #: ../../src/wxMaxima.cpp:327
 #, c-format
 msgid "Trying to start a server on port %i instead"
-msgstr "正在尝试在端口 %i 上启动服务"
+msgstr "尝试在端口 %i 上启动服务"
 
 #: ../../src/ConfigDialogue.cpp:195
 msgid "Turkish"
@@ -8049,19 +8051,19 @@ msgstr "乌克兰语"
 
 #: ../../src/wxMaxima.cpp:9788
 msgid "Un-closed parenthesis"
-msgstr "未匹配的括号"
+msgstr "未配对的括号"
 
 #: ../../src/wxMaxima.cpp:9775
 msgid "Un-closed parenthesis on encountering ; or $"
-msgstr "在遇到 ; 或 $ 时有未匹配的括号"
+msgstr "在遇到 ; 或 $ 时有未配对的括号"
 
 #: ../../src/wxMaxima.cpp:10480
 msgid ""
 "Unable to interpret the version info I got from http://wxMaxima-developers."
 "github.io/wxmaxima/version.txt: "
 msgstr ""
-"无法解释来自文件 http://wxMaxima-developers.github.io/wxMaxima/version.txt 的"
-"版本信息："
+"无法解释来自 http://wxMaxima-developers.github.io/wxMaxima/version.txt 的版本"
+"信息："
 
 #: ../../src/VariablesPane.cpp:298 ../../src/VariablesPane.cpp:452
 msgid "Undefined"
