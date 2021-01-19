@@ -35,11 +35,8 @@ public:
   std::unique_ptr<Cell> Copy() const override;
   const CellTypeInfo &GetInfo() override;
 
-  InnerCellIterator InnerBegin() const override
-  {
-    if (m_cells.empty()) return {};
-    return {&m_cells.front(), &m_cells.back()};
-  }
+  int GetInnerCellCount() const override { return m_cells.size(); }
+  Cell *GetInnerCell(int index) const override { return m_cells[index].get(); }
 
   void Recalculate(AFontSize fontsize) override;
 
@@ -72,9 +69,6 @@ public:
   void StraightParens() { m_parenType = paren_straight;}
   void AngledParens()   { m_parenType = paren_angled;}
 
-  void SetNextToDraw(Cell *next) override { m_nextToDraw = next; }
-  Cell *GetNextToDraw() const override { return m_nextToDraw; }
-
 private:
   struct DropCenter
   {
@@ -89,7 +83,6 @@ private:
 
   std::vector<int> m_widths;
   std::vector<DropCenter> m_dropCenters;
-  CellPtr<Cell> m_nextToDraw;
 
   unsigned int m_matWidth = 0;
   unsigned int m_matHeight = 0;

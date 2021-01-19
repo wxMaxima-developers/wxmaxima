@@ -68,7 +68,7 @@ std::unique_ptr<Cell> Cell::MakeVisiblyInvalidCell() const
   return std::make_unique<VisiblyInvalidCell>(m_group, m_configuration);
 }
 
-std::unique_ptr<Cell> Cell::MakeVisiblyInvalidCell(Configuration **config)
+std::unique_ptr<Cell> Cell::MakeVisiblyInvalidCell(GroupCell *group, Configuration **config)
 {
-  return std::make_unique<VisiblyInvalidCell>(nullptr, config);
+  return std::make_unique<VisiblyInvalidCell>(group, config);
 }

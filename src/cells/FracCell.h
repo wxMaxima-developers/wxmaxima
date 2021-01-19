@@ -49,7 +49,8 @@ public:
   std::unique_ptr<Cell> Copy() const override;
   const CellTypeInfo &GetInfo() override;
 
-  InnerCellIterator InnerBegin() const override { return {&m_divide, &m_displayedDenom}; }
+  int GetInnerCellCount() const override { return 3; }
+  Cell *GetInnerCell(int index) const override { return (&m_displayedNum)[index]; }
 
   //! All types of fractions we support
   enum FracType : int8_t
@@ -83,7 +84,6 @@ public:
   void SetupBreakUps();
 
   void SetNextToDraw(Cell *next) override;
-  Cell *GetNextToDraw() const override { return m_nextToDraw; }
 
 private:
   //! Makes the division sign cell, used in linear form - whether when broken
@@ -95,8 +95,6 @@ private:
   //! The denominator
   Cell *Denom() const { return m_denomParenthesis->GetInner(); }
 
-  CellPtr<Cell> m_nextToDraw;
-
   //! A parenthesis around the numerator, owns the numerator
   std::unique_ptr<ParenCell> const m_numParenthesis;
   //! A parenthesis around the denominator, owns the denominaotr
@@ -105,12 +103,12 @@ private:
   std::unique_ptr<TextCell> m_divideOwner;
 
   // The pointers below point to inner cells and must be kept contiguous.
-  // ** All pointers must be the same: either Cell * [const] or std::unique_ptr<Cell>.
-  // ** NO OTHER TYPES are allowed.
-  //! The "/" sign
-  Cell* m_divide = {};
+  // ** This is the draw list order. All pointers must be the same:
+  // ** either Cell * or std::unique_ptr<Cell>. NO OTHER TYPES are allowed.
   //! The displayed version of the numerator, if needed with parenthesis
   Cell* m_displayedNum = {};
+  //! The "/" sign
+  Cell* m_divide = {};
   //! The displayed version of the denominator, if needed with parenthesis
   Cell* m_displayedDenom = {};
   // The pointers above point to inner cells and must be kept contiguous.

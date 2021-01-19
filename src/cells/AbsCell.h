@@ -59,7 +59,8 @@ public:
   std::unique_ptr<Cell> Copy() const override;
   const CellTypeInfo &GetInfo() override;
 
-  InnerCellIterator InnerBegin() const override { return {&m_innerCell, &m_close}; }
+  int GetInnerCellCount() const override { return 3; }
+  Cell *GetInnerCell(int index) const override { return (&m_open)[index].get(); }
 
   bool BreakUp() override;
 
@@ -75,20 +76,17 @@ public:
   wxString ToXML() const override;
 
   void SetNextToDraw(Cell *next) override;
-  Cell *GetNextToDraw() const override { return m_nextToDraw; }
 
 private:
   void MakeBreakupCells();
 
-  CellPtr<Cell> m_nextToDraw;
-
   // The pointers below point to inner cells and must be kept contiguous.
-  // ** All pointers must be the same: either Cell * or std::unique_ptr<Cell>.
-  // ** NO OTHER TYPES are allowed.
-  //! The contents of the abs() command
-  std::unique_ptr<Cell> m_innerCell;
+  // ** This is the draw list order. All pointers must be the same:
+  // ** either Cell * or std::unique_ptr<Cell>. NO OTHER TYPES are allowed.
   //! The cell containing the eventual "abs" and the opening parenthesis
   std::unique_ptr<Cell> m_open;
+  //! The contents of the abs() command
+  std::unique_ptr<Cell> m_innerCell;
   //! The cell containing the closing parenthesis
   std::unique_ptr<Cell> m_close;
   // The pointers above point to inner cells and must be kept contiguous.

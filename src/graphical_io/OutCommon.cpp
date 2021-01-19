@@ -50,7 +50,7 @@ OutCommon::OutCommon(Configuration **configuration, const wxString &filename, in
   // of a big unicode parenthesis wasn't accurate enough in emf to be
   // usable. Also the probability was high that the right font wasn't
   // available in inkscape.
-  m_thisconfig.SetGrouphesisDrawMode(Configuration::handdrawn);
+  m_thisconfig.SetParenthesisDrawMode(Configuration::handdrawn);
   m_thisconfig.ClipToDrawRegion(false);
 }
 

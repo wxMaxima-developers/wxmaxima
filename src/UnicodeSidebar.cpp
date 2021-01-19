@@ -63,8 +63,8 @@ UnicodeSidebar::UnicodeSidebar(wxWindow *parent, wxWindow *worksheet) :
   m_grid->Connect(wxEVT_GRID_CELL_RIGHT_CLICK, wxGridEventHandler(UnicodeSidebar::OnRightClick), NULL, this);
   m_grid->Connect(wxEVT_GRID_CELL_CHANGING, wxGridEventHandler(UnicodeSidebar::OnChangeAttempt), NULL, this);
   m_grid->EndBatch();
-  SetSizerAndFit(box);
-//  box->SetSizeHints(this);
+  SetSizer(box);
+  FitInside();
 }
 
 UnicodeSidebar::~UnicodeSidebar()

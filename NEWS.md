@@ -1,5 +1,23 @@
 # Current
+ * Chinese translation updates by 刘荣.
+ * Many small bugfixes.
+
+# 20.12.2
+ * Compilation now works if wxWidgets was compiled with stl support
+ * Eye candy: Nicer display of sets
+
+# 20.12.1
+ * If there are still IE9 users the manual of 20.12.0 would have included a
+   file from the internet - which Debian judged to be a privacy issue.
+
+# 20.12.0
  * A chinese translation of the manual by 刘荣.
+ * A Russian translation update from OlesyaGerasimenko and Yuri Chornoivan 
+ * Support for gcc 5.5
+ * Many code cleanups
+ * wxMaxima now will work even if no english locale is installed
+ * A few additional bug fixes
+ * More work on a modern look-and-feel
 
 # 20.11.1
  * Many bug fixes in various places

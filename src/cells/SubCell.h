@@ -34,7 +34,8 @@ public:
   std::unique_ptr<Cell> Copy() const override;
   const CellTypeInfo &GetInfo() override;
 
-  InnerCellIterator InnerBegin() const override { return {&m_baseCell, &m_indexCell}; }
+  int GetInnerCellCount() const override { return 2; }
+  Cell *GetInnerCell(int index) const override { return (&m_baseCell)[index].get(); }
 
   void Recalculate(AFontSize fontsize) override;
 
@@ -49,15 +50,10 @@ public:
 
   void SetAltCopyText(const wxString &text) override { m_altCopyText = text; }
   const wxString &GetAltCopyText() const override { return m_altCopyText; }
-
-  void SetNextToDraw(Cell *next) override { m_nextToDraw = next; }
-  Cell *GetNextToDraw() const override { return m_nextToDraw; }
   
 private:
   //! Text that should end up on the clipboard if this cell is copied as text.
   wxString m_altCopyText;
-
-  CellPtr<Cell> m_nextToDraw;
 
   // The pointers below point to inner cells and must be kept contiguous.
   // ** All pointers must be the same: either Cell * or std::unique_ptr<Cell>.

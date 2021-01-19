@@ -371,7 +371,7 @@ public:
      - true: Case-insensitive search
      - false: Case-sensitive search
    */
-  bool FindNext(wxString str, bool down, bool ignoreCase);
+  bool FindNext(wxString str, const bool &down, const bool &ignoreCase);
 
   bool IsSelectionChanged() const { return m_selectionChanged; }
 
@@ -463,10 +463,6 @@ public:
 
   //! Get the list of commands, parenthesis, strings and whitespaces in a code cell
   const MaximaTokenizer::TokenList &GetTokens() const {return m_tokens;}
-
-  void SetNextToDraw(Cell *next) override;
-
-  Cell *GetNextToDraw() const override {return m_nextToDraw;}
 
 private:
   //! Did the zoom factor change since the last recalculation?
@@ -614,7 +610,6 @@ private:
 //** 8/4 bytes
 //**
   AFontName m_fontName;
-  CellPtr<Cell> m_nextToDraw;
   CellPointers *const m_cellPointers = GetCellPointers();
 
 //** 4 bytes

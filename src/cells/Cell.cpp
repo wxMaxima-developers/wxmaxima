@@ -64,6 +64,7 @@ Cell::Cell(GroupCell *group, Configuration **config) :
     m_toolTip(&wxm::emptyString),
     m_fontSize_Scaled(Scale_Px((*config)->GetMathFontSize()))
 {
+  wxASSERT(group && (group->GetType() == MC_TYPE_GROUP || group == this));
   InitBitFields();
   ResetSize();
 }
@@ -176,12 +177,6 @@ void Cell::ClearCacheList()
     tmp.ClearCache();
 }
 
-void Cell::SetGroupList(GroupCell *group)
-{
-  for (Cell &tmp : OnList(this))
-    tmp.SetGroup(group);
-}
-
 int Cell::CellsInListRecursive() const
 {
   //! The number of cells the current group contains (-1, if no GroupCell)
@@ -202,16 +197,6 @@ wxRect Cell::CropToUpdateRegion(wxRect rect) const
     return rect;
   else
     return rect.Intersect((*m_configuration)->GetUpdateRegion());
-}
-
-void Cell::SetGroup(GroupCell *group)
-{
-  m_group = group;
-  if (group)
-    wxASSERT (group->GetType() == MC_TYPE_GROUP);
-  
-  for (Cell &cell : OnInner(this))
-    cell.SetGroupList(group);
 }
 
 void Cell::FontsChangedList()
@@ -349,7 +334,7 @@ void Cell::Draw(wxPoint point)
 void Cell::ClearToolTip()
 {
   if (m_ownsToolTip)
-    const_cast<wxString*>(m_toolTip)->Truncate(0);
+    const_cast<wxString*>(m_toolTip)->Truncate(0); //-V575
   else
     m_toolTip = &wxm::emptyString;
 }
@@ -1117,6 +1102,22 @@ void Cell::UnbreakList()
     tmp.Unbreak();
 }
 
+wxColour Cell::GetForegroundColor() const
+{
+  Configuration *configuration = (*m_configuration);
+  wxColour color;  
+  if (m_highlight)
+    color = configuration->GetColor(TS_HIGHLIGHT);
+  else if (m_type == MC_TYPE_PROMPT)
+    color = configuration->GetColor(TS_OTHER_PROMPT);
+  else if (m_type == MC_TYPE_INPUT)
+    color = configuration->GetColor(TS_INPUT);
+  else
+    color = configuration->GetColor(TS_DEFAULT);
+
+  return color;
+}
+
 // cppcheck-suppress functionStatic
 // cppcheck-suppress functionConst
 // Set the pen in device context according to the style of the cell.
@@ -1124,25 +1125,27 @@ void Cell::SetPen(double lineWidth) const
 {
   Configuration *configuration = (*m_configuration);
   wxDC *dc = configuration->GetDC();
-
-  wxPen pen;
-
-  if (m_highlight)
-    pen = *(wxThePenList->FindOrCreatePen(configuration->GetColor(TS_HIGHLIGHT),
-                                          lineWidth * configuration->GetDefaultLineWidth(), wxPENSTYLE_SOLID));
-  else if (m_type == MC_TYPE_PROMPT)
-    pen = *(wxThePenList->FindOrCreatePen(configuration->GetColor(TS_OTHER_PROMPT),
-                                              lineWidth * configuration->GetDefaultLineWidth(), wxPENSTYLE_SOLID));
-  else if (m_type == MC_TYPE_INPUT)
-    pen = *(wxThePenList->FindOrCreatePen(configuration->GetColor(TS_INPUT),
-                                          lineWidth * configuration->GetDefaultLineWidth(), wxPENSTYLE_SOLID));
-  else
-    pen = *(wxThePenList->FindOrCreatePen(configuration->GetColor(TS_DEFAULT),
-                                          lineWidth * configuration->GetDefaultLineWidth(), wxPENSTYLE_SOLID));
-
+  
+  wxPen pen = *(wxThePenList->FindOrCreatePen(GetForegroundColor(),
+                                              lineWidth * configuration->GetDefaultLineWidth(),
+                                              wxPENSTYLE_SOLID)
+    );
   dc->SetPen(pen);
+    
   if(configuration->GetAntialiassingDC() != dc)
     configuration->GetAntialiassingDC()->SetPen(pen);
+}
+
+void Cell::SetBrush() const
+{
+  Configuration *configuration = (*m_configuration);
+  wxDC *dc = configuration->GetDC();
+  
+  wxBrush brush = *(wxTheBrushList->FindOrCreateBrush(GetForegroundColor()));
+  dc->SetBrush(brush);
+    
+  if(configuration->GetAntialiassingDC() != dc)
+    configuration->GetAntialiassingDC()->SetBrush(brush);
 }
 
 const wxString &Cell::GetValue() const
@@ -1432,4 +1435,12 @@ wxAccStatus Cell::GetRole(int WXUNUSED(childId), wxAccRole *role) const
 
 #endif
 
-InnerCellIterator Cell::InnerBegin() const { return {}; }
+int Cell::GetInnerCellCount() const { return 0; }
+
+Cell *Cell::GetInnerCell(int) const
+{
+  // This method should never have been called since there are no inner cells
+  // in this class.
+  wxASSERT_MSG(false, "Invalid use of GetInnerCell with no inner cells");
+  return nullptr;
+}

@@ -46,40 +46,38 @@
   If it isn't broken into multiple cells m_nextToDraw points to the 
   cell that follows this Cell.
  */
-class ListCell final : public Cell
+class ListCell : public Cell
 {
 public:
   ListCell(GroupCell *parent, Configuration **config, std::unique_ptr<Cell> &&inner);
   ListCell(const ListCell &cell);
-  std::unique_ptr<Cell> Copy() const override;
-  const CellTypeInfo &GetInfo() override;
+  virtual std::unique_ptr<Cell> Copy() const override;
+  virtual const CellTypeInfo &GetInfo() override;
 
-  InnerCellIterator InnerBegin() const override { return {&m_innerCell, &m_close}; }
+  int GetInnerCellCount() const override { return 3; }
+  Cell *GetInnerCell(int index) const override { return (&m_open)[index].get(); }
 
   void Recalculate(AFontSize fontsize) override;
 
-  void Draw(wxPoint point) override;
+  virtual void Draw(wxPoint point) override;
 
   bool BreakUp() override;
 
   wxString ToMathML() const override;
-  wxString ToMatlab() const override;
+  virtual wxString ToMatlab() const override;
   wxString ToOMML() const override;
-  wxString ToString() const override;
-  wxString ToTeX() const override;
-  wxString ToXML() const override;
+  virtual wxString ToString() const override;
+  virtual wxString ToTeX() const override;
+  virtual wxString ToXML() const override;
 
   void SetNextToDraw(Cell *next) override;
-  Cell *GetNextToDraw() const override { return m_nextToDraw; }
 
-private:
-  CellPtr<Cell> m_nextToDraw;
-
+protected:
   // The pointers below point to inner cells and must be kept contiguous.
-  // ** All pointers must be the same: either Cell * or std::unique_ptr<Cell>.
-  // ** NO OTHER TYPES are allowed.
-  std::unique_ptr<Cell> m_innerCell;
+  // ** This is the draw list order. All pointers must be the same:
+  // ** either Cell * or std::unique_ptr<Cell>. NO OTHER TYPES are allowed.
   std::unique_ptr<Cell> m_open;
+  std::unique_ptr<Cell> m_innerCell;
   std::unique_ptr<Cell> m_close;
   // The pointers above point to inner cells and must be kept contiguous.
 

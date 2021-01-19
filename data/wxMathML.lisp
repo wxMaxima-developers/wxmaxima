@@ -503,7 +503,7 @@
   (defprop mlist (("<mrow list=\"true\"><t listdelim=\"true\">[</t>")"<t listdelim=\"true\">]</t></mrow>") wxxmlsym)
 
   (defprop $set wxxml-matchfix wxxml)
-  (defprop $set (("<mrow><t>{</t>")"<t>}</t></mrow>") wxxmlsym)
+  (defprop $set (("<mrow set=\"true\"><t listdelim=\"true\">{</t>")"<t listdelim=\"true\">}</t></mrow>") wxxmlsym)
 
   (defprop mabs wxxml-matchfix wxxml)
   (defprop mabs (("<mrow><a>")"</a></mrow>") wxxmlsym)
@@ -2043,6 +2043,12 @@
     (wx-print-variable '$wxanimate_autoplay)
     (wx-print-display2d)
     (wx-print-variable '*alt-display2d*)
+    (format t "<variable><name>*maxima-operators*</name><value>&lt;operators&gt;")
+    (do-symbols
+     (s :maxima)
+     (if (get s 'op)
+	 (format t "&lt;operator&gt;~a&lt;/operator&gt;~%" (wxxml-fix-string( wxxml-fix-string (get s 'op))))))
+    (format t "&lt;/operators&gt;</value></variable>")
     (format t "</variables>~%")
     (finish-output)
     )

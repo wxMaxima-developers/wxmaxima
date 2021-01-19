@@ -54,7 +54,8 @@ public:
   std::unique_ptr<Cell> Copy() const override;
   const CellTypeInfo &GetInfo() override;
 
-  InnerCellIterator InnerBegin() const override { return {&m_innerCell, &m_close}; }
+  int GetInnerCellCount() const override { return 3; }
+  Cell *GetInnerCell(int index) const override { return (&m_open)[index].get(); }
 
   Cell *GetInner() const { return m_innerCell.get(); }
   void SetInner(std::unique_ptr<Cell> inner, CellType type = MC_TYPE_DEFAULT);
@@ -76,18 +77,15 @@ public:
   wxString ToXML() const override;
 
   void SetNextToDraw(Cell *next) override;
-  Cell *GetNextToDraw() const override { return m_nextToDraw; }
 
 private:
   void SetFont(AFontSize fontsize);
 
-  CellPtr<Cell> m_nextToDraw;
-
   // The pointers below point to inner cells and must be kept contiguous.
-  // ** All pointers must be the same: either Cell * or std::unique_ptr<Cell>.
-  // ** NO OTHER TYPES are allowed.
-  std::unique_ptr<Cell> m_innerCell;
+  // ** This is the draw list order. All pointers must be the same:
+  // ** either Cell * or std::unique_ptr<Cell>. NO OTHER TYPES are allowed.
   std::unique_ptr<Cell> m_open;
+  std::unique_ptr<Cell> m_innerCell;
   std::unique_ptr<Cell> m_close;
   // The pointers above point to inner cells and must be kept contiguous.
 

@@ -88,11 +88,8 @@ public:
   //! Add a new answer to the cell
   void SetAnswer(const wxString &question, const wxString &answer);
 
-  InnerCellIterator InnerBegin() const override
-  {
-    if (m_groupType == GC_TYPE_PAGEBREAK) return {};
-    return {&m_inputLabel, &m_output};
-  }
+  int GetInnerCellCount() const override { return (m_groupType == GC_TYPE_PAGEBREAK) ? 0 : 2; }
+  Cell *GetInnerCell(int index) const override { return (&m_inputLabel)[index].get(); }
 
   /*! Which GroupCell was the last maxima was working on?
 
@@ -118,8 +115,6 @@ public:
   GroupType GetGroupType() const { return m_groupType; }
 
   void SetGroupType(GroupType type) { m_groupType = type; }
-
-  void SetGroup(GroupCell *parent) override; // setting parent for all mathcells in GC
 
   // selection methods
   Range GetInnerCellsInRect(const wxRect &rect) const override;
@@ -156,9 +151,6 @@ public:
   static wxString ToTeXImage(Cell *tmp, wxString imgDir, wxString filename, int *imgCounter);
 
   wxString ToTeX() const override;
-
-  //! Add Markdown to the TeX representation of input cells.
-  wxString TeXMarkdown(wxString str);
 
   wxString ToXML() const override;
 
@@ -352,10 +344,6 @@ public:
   //! A list of answers provided by the user
   StringHash m_knownAnswers;
 
-  void SetNextToDraw(Cell *next) override;
-
-  Cell *GetNextToDraw() const override { return m_nextToDraw; }
-
 #if wxUSE_ACCESSIBILITY
   wxAccStatus GetDescription(int childId, wxString *description) const override;
   wxAccStatus GetLocation (wxRect &rect, int elementId) override;
@@ -381,7 +369,6 @@ protected:
 
 //** 8/4 byte objects (40 bytes)
 //**
-  CellPtr<Cell> m_nextToDraw;
   CellPointers *const m_cellPointers = GetCellPointers();
 
   std::unique_ptr<GroupCell> m_hiddenTree; //!< here hidden (folded) tree of GCs is stored

@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2020-11-23 21:03+0100\n"
+"POT-Creation-Date: 2020-12-29 09:27+0100\n"
 "PO-Revision-Date: 2020-10-07 19:46+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <kde-i18n-uk@kde.org>\n"
@@ -2643,8 +2643,8 @@ msgstr ""
 #| "this file’s contents therefore are helpful when debugging the problem."
 msgid ""
 "_Maxima_ tried to do something the currently installed version of _gnuplot_ "
-"isn’t able to understand. In this case, a file ending in .gnuplot located in "
-"the directory, which _Maxima_’s variable `maxima_userdir` is pointing, "
+"isn’t able to understand. In this case, a file ending in `.gnuplot` located "
+"in the directory, which _Maxima_’s variable `maxima_userdir` is pointing, "
 "contains the instructions from _Maxima_ to _gnuplot_. Most of the time, this "
 "file’s contents therefore are helpful when debugging the problem."
 msgstr ""
@@ -2672,7 +2672,9 @@ msgstr ""
 
 #. type: Bullet: '* '
 #: ../../info/wxmaxima.md:724
-msgid "Gnuplot didn’t output a valid .png file."
+#, fuzzy
+#| msgid "Gnuplot didn’t output a valid .png file."
+msgid "Gnuplot didn’t output a valid `.png` file."
 msgstr "Gnuplot не вивів коректного файла .png."
 
 #. type: Title ##
@@ -2683,11 +2685,19 @@ msgstr "Спроба накреслити анімацію призводить 
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:728
+#, fuzzy
+#| msgid ""
+#| "The value of the slider variable by default is only substituted into the "
+#| "expression that is to be plotted if it is visible there. Using a `subst` "
+#| "command that substitutes the slider variable into the equation to plot "
+#| "(there should be an example of this in this manual) resolves this problem."
 msgid ""
 "The value of the slider variable by default is only substituted into the "
 "expression that is to be plotted if it is visible there. Using a `subst` "
 "command that substitutes the slider variable into the equation to plot "
-"(there should be an example of this in this manual) resolves this problem."
+"resolves this problem. At the end of section [Embedding animations into the "
+"spreadsheet](#embedding-animations-into-the-spreadsheet) you can see an "
+"example."
 msgstr ""
 "Значення змінної повзунка, типово, буде підставлено до виразу для креслення, "
 "лише якщо воно є видимим у цьому виразі. Використання команди `subst`, яка "

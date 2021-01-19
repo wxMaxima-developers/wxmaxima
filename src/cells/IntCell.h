@@ -48,7 +48,8 @@ public:
   std::unique_ptr<Cell> Copy() const override;
   const CellTypeInfo &GetInfo() override;
 
-  InnerCellIterator InnerBegin() const override { return {&m_base, &m_var}; }
+  int GetInnerCellCount() const override { return 9; }
+  Cell *GetInnerCell(int index) const override { return (&m_open)[index].get(); }
 
   void Recalculate(AFontSize fontsize) override;
 
@@ -73,31 +74,27 @@ public:
   bool BreakUp() override;
   void SetNextToDraw(Cell *next) override;
 
-  Cell *GetNextToDraw() const override { return m_nextToDraw; }
-
 private:
   void MakeBreakUpCells();
 
-  CellPtr<Cell> m_nextToDraw;
-
   // The pointers below point to inner cells and must be kept contiguous.
-  // ** All pointers must be the same: either Cell * or std::unique_ptr<Cell>.
-  // ** NO OTHER TYPES are allowed.
-  //! The part of the formula that is to be integrated.
-  std::unique_ptr<Cell> m_base;
-  //! The lower limit of the integral
-  std::unique_ptr<Cell> m_under;
-  //! The upper limit of the integral
-  std::unique_ptr<Cell> m_over;
+  // ** This is the draw list order. All pointers must be the same:
+  // ** either Cell * or std::unique_ptr<Cell>. NO OTHER TYPES are allowed.
   //! A text cell reading "integrate("
   std::unique_ptr<Cell> m_open;
-  //! A text cell reading ")"
-  std::unique_ptr<Cell> m_close;
+  //! The part of the formula that is to be integrated.
+  std::unique_ptr<Cell> m_base;
   std::unique_ptr<Cell> m_comma1;
-  std::unique_ptr<Cell> m_comma2;
-  std::unique_ptr<Cell> m_comma3;
   //! The integration variable
   std::unique_ptr<Cell> m_var;
+  std::unique_ptr<Cell> m_comma2;
+  //! The lower limit of the integral
+  std::unique_ptr<Cell> m_under;
+  std::unique_ptr<Cell> m_comma3;
+  //! The upper limit of the integral
+  std::unique_ptr<Cell> m_over;
+  //! A text cell reading ")"
+  std::unique_ptr<Cell> m_close;
   // The pointers above point to inner cells and must be kept contiguous.
 
   //! The height of the integral sign

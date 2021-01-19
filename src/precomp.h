@@ -23,6 +23,7 @@
 #include <wx/font.h>
 #include <wx/config.h>
 #include <wx/xml/xml.h>
+#include <wx/wrapsizer.h>
 #include <wx/filesys.h>
 #include <wx/panel.h>
 #include <wx/textctrl.h>

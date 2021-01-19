@@ -30,7 +30,7 @@
 #include <wx/intl.h>
 #include <wx/fs_zip.h>
 #include <wx/image.h>
-#include <wx/utils.h> 
+#include <wx/utils.h>
 #include <wx/cmdline.h>
 #include <wx/fileconf.h>
 #include <wx/sysopt.h>
@@ -41,7 +41,7 @@
 #include <windef.h>
 #endif
 
-#include "../examples/examples.h"
+#include "examples.h"
 #include "wxMaxima.h"
 #include "ConfigDialogue.h"
 #include "Version.h"
@@ -117,7 +117,7 @@ bool MyApp::OnInit()
     int major;
     int minor;
     wxGetOsVersion(&major, &minor);
-    
+
     // Directdraw should be faster, but crashes on closing on Win7.
     if((major > 6) || ((major == 6) && (minor >1)))
       wxSystemOptions::SetOption("msw.display.directdraw","1");
@@ -125,7 +125,7 @@ bool MyApp::OnInit()
       wxSystemOptions::SetOption("msw.display.directdraw","0");
     // No spell checking in our dialog's input portions on the mac.
     wxSystemOptions::SetOption("mac.textcontrol-use-spell-checker","0");
-    
+
     // Migrate an eventual old config file to the location XDG wants it to be.
     #ifndef __WXMSW__
     #if wxCHECK_VERSION(3, 1, 1)
@@ -139,7 +139,7 @@ bool MyApp::OnInit()
       wxStandardPaths::Get().MakeConfigFileName(
         wxString(wxT("wxMaxima")),
         wxStandardPaths::ConfigFileConv_Ext);
-    
+
     if(!wxFileExists(configFileXDG))
     {
       wxFileName xdgDir(configFileXDG);
@@ -173,7 +173,7 @@ bool MyApp::OnInit()
     if(lang == wxLANGUAGE_UNKNOWN)
       lang = wxLANGUAGE_DEFAULT;
     m_locale.Init(lang);
-    
+
     // Do we reckong we improve something if we set maxima's language, as well?
     if((wxLocale::IsAvailable(lang)) && (lang != wxLANGUAGE_DEFAULT))
     {
@@ -190,7 +190,7 @@ bool MyApp::OnInit()
           else
           {
             localeName+=wxT(".UTF-8");
-          }            
+          }
         }
         wxSetEnv(wxT("LANG"), localeName);
       }
@@ -198,11 +198,11 @@ bool MyApp::OnInit()
     m_locale.AddCatalog(wxT("wxMaxima"));
     m_locale.AddCatalog(wxT("wxMaxima-wxstd"));
   }
-  
+
   bool exitAfterEval = false;
   bool evalOnStartup = false;
   wxCmdLineParser cmdLineParser(argc, argv);
-  
+
   static const wxCmdLineEntryDesc cmdLineDesc[] =
     {
       {wxCMD_LINE_SWITCH, "v", "version", "Output the version info", wxCMD_LINE_VAL_NONE , 0},
@@ -236,7 +236,7 @@ bool MyApp::OnInit()
                   {wxCMD_LINE_PARAM, NULL, NULL, "input file", wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL | wxCMD_LINE_PARAM_MULTIPLE},
             {wxCMD_LINE_NONE, "", "", "", wxCMD_LINE_VAL_NONE, 0}
           };
-       
+
   cmdLineParser.SetDesc(cmdLineDesc);
   int cmdLineError = cmdLineParser.Parse();
 
@@ -252,7 +252,7 @@ bool MyApp::OnInit()
 
   if(cmdLineError != 0)
     exit(-1);
-  
+
   wxString ini, file;
   // Attention: The config file is changed by wxMaximaFrame::wxMaximaFrame::ReReadConfig
   if (cmdLineParser.Found(wxT("f"),&ini))
@@ -265,7 +265,7 @@ bool MyApp::OnInit()
   }
   else
     wxConfig::Set(new wxConfig(wxT("wxMaxima")));
-  
+
   if (cmdLineParser.Found(wxT("logtostdout")))
     ErrorRedirector::LogToStdErr();
 
@@ -282,7 +282,7 @@ bool MyApp::OnInit()
   wxString arg;
   if (cmdLineParser.Found(wxT("l"), &arg))
     extraMaximaArgs += " -l " +  arg;
-  
+
   if (cmdLineParser.Found(wxT("X"), &arg))
     extraMaximaArgs += " -X " +  arg;
 
@@ -290,7 +290,7 @@ bool MyApp::OnInit()
     extraMaximaArgs += " -u " +  arg;
 
   wxMaxima::ExtraMaximaArgs(extraMaximaArgs);
-  
+
   wxImage::AddHandler(new wxPNGHandler);
   wxImage::AddHandler(new wxXPMHandler);
   wxImage::AddHandler(new wxJPEGHandler);
@@ -307,10 +307,10 @@ bool MyApp::OnInit()
       wxSetWorkingDirectory(wxPathOnly(wxStandardPaths::Get().GetExecutablePath()));
   }
 #if wxCHECK_VERSION(3, 1, 1)
-  wxString fontPrefix = m_dirstruct.FontDir() + wxT("/");  
+  wxString fontPrefix = m_dirstruct.FontDir() + wxT("/");
 
   /* Add private Libertine fonts, if they exist */
-  if (wxFileExists(fontPrefix + wxT(LIBERTINE1))) 
+  if (wxFileExists(fontPrefix + wxT(LIBERTINE1)))
 	  wxFont::AddPrivateFont(fontPrefix + wxT(LIBERTINE1));
   if (wxFileExists(fontPrefix + wxT(LIBERTINE2))) wxFont::AddPrivateFont(fontPrefix + wxT(LIBERTINE2));
   if (wxFileExists(fontPrefix + wxT(LIBERTINE3))) wxFont::AddPrivateFont(fontPrefix + wxT(LIBERTINE3));
@@ -325,7 +325,7 @@ bool MyApp::OnInit()
 
 #endif
 
-  Connect(wxEVT_MENU, wxCommandEventHandler(MyApp::OnFileMenu), NULL, this);    
+  Connect(wxEVT_MENU, wxCommandEventHandler(MyApp::OnFileMenu), NULL, this);
 
 #if defined __WXOSX__
   wxString path;
@@ -342,7 +342,7 @@ bool MyApp::OnInit()
   menubar->Append(menu, _("File"));
   // add open, new, etc options to your menubar.
   wxMenuBar::MacSetCommonMenuBar(menubar);
-  
+
   menubar->Connect(wxEVT_COMMAND_MENU_SELECTED,
                    wxCommandEventHandler(MyApp::OnFileMenu),NULL, this);
   Connect(wxEVT_COMMAND_MENU_SELECTED,
@@ -366,12 +366,12 @@ bool MyApp::OnInit()
     evalOnStartup = true;
     exitAfterEval = true;
   }
-  
+
   if (cmdLineParser.Found(wxT("e")))
     evalOnStartup = true;
 
   bool windowOpened = false;
-  
+
   if (cmdLineParser.Found(wxT("o"), &file))
   {
     wxFileName FileName = file;
@@ -387,7 +387,7 @@ bool MyApp::OnInit()
     {
       wxFileName FileName = cmdLineParser.GetParam(i);
       FileName.MakeAbsolute();
-      
+
       wxString CanonicalFilename = FileName.GetFullPath();
       NewWindow(CanonicalFilename, evalOnStartup, exitAfterEval);
     }
@@ -416,14 +416,14 @@ int MyApp::OnRun()
   return 0;
 }
 
-void MyApp::NewWindow(const wxString &file, bool evalOnStartup, bool exitAfterEval, unsigned char *wxmData, int wxmLen)
+void MyApp::NewWindow(const wxString &file, bool evalOnStartup, bool exitAfterEval, unsigned char *wxmData, size_t wxmLen)
 {
   int numberOfWindows = m_topLevelWindows.size();
 
   wxString title = _("wxMaxima");
   if (file.Length() > 0)
     title = file;
-  
+
   if (numberOfWindows > 1)
     title = wxString::Format(_("wxMaxima %d"), numberOfWindows);
 
@@ -432,12 +432,11 @@ void MyApp::NewWindow(const wxString &file, bool evalOnStartup, bool exitAfterEv
   {
     // Unzip the .wxm file
     wxMemoryInputStream istream(wxmData, wxmLen);
-    wxZlibInputStream zstream(istream);
-    wxTextInputStream textIn(zstream, "\t", wxConvAuto(wxFONTENCODING_UTF8));
+    wxTextInputStream textIn(istream, "\t", wxConvAuto(wxFONTENCODING_UTF8));
     wxString initialContents;
     wxString line;
     wxString block;
-    while(!zstream.Eof())
+    while(!istream.Eof())
     {
       line = textIn.ReadLine();
       if((line.StartsWith("/*")) || (line.EndsWith("*/")))
@@ -452,7 +451,7 @@ void MyApp::NewWindow(const wxString &file, bool evalOnStartup, bool exitAfterEv
     initialContents += _(block);
     frame->SetWXMdata(initialContents);
   }
-  
+
   frame->EvalOnStartup(evalOnStartup);
   m_topLevelWindows.push_back(frame);
   frame->ExitAfterEval(exitAfterEval);
@@ -467,44 +466,40 @@ void MyApp::OnFileMenu(wxCommandEvent &ev)
   switch (ev.GetId())
   {
   case wxMaxima::menu_help_numberformats:
-    NewWindow(wxEmptyString, false, false,
-              numberFormats_wxm_gz, numberFormats_wxm_gz_len);
+    NewWindow(wxEmptyString, false, false, NUMBERFORMATS_WXM, NUMBERFORMATS_WXM_SIZE);
     break;
   case wxMaxima::menu_help_3d:
-    NewWindow(wxEmptyString, false, false,
-              displaying3DCurves_wxm_gz, displaying3DCurves_wxm_gz_len);
+    NewWindow(wxEmptyString, false, false, DISPLAYING3DCURVES_WXM, DISPLAYING3DCURVES_WXM_SIZE);
     break;
 
   case wxMaxima::menu_help_varnames:
-    NewWindow(wxEmptyString, false, false,
-              variableNames_wxm_gz, variableNames_wxm_gz_len);
+    NewWindow(wxEmptyString, false, false, VARIABLENAMES_WXM, VARIABLENAMES_WXM_SIZE);
     break;
 
   case wxMaxima::menu_help_listaccess:
-    NewWindow(wxEmptyString, false, false,
-              fastListAccess_wxm_gz, fastListAccess_wxm_gz_len);
+    NewWindow(wxEmptyString, false, false, FASTLISTACCESS_WXM, FASTLISTACCESS_WXM_SIZE);
     break;
 
   case wxMaxima::menu_help_fittingData:
-    NewWindow(wxEmptyString, false, false,
-              fittingEquations_wxm_gz, fittingEquations_wxm_gz_len);
+    NewWindow(wxEmptyString, false, false, FITTINGEQUATIONS_WXM, FITTINGEQUATIONS_WXM_SIZE);
     break;
+
   case wxMaxima::menu_help_solving:
-    NewWindow(wxEmptyString, false, false,
-              solvingEquations_wxm_gz, solvingEquations_wxm_gz_len);
+    NewWindow(wxEmptyString, false, false, SOLVINGEQUATIONS_WXM, SOLVINGEQUATIONS_WXM_SIZE);
     break;
+
   case wxMaxima::menu_help_diffequations:
-    NewWindow(wxEmptyString, false, false,
-              diffEquations_wxm_gz, diffEquations_wxm_gz_len);
+    NewWindow(wxEmptyString, false, false, DIFFEQUATIONS_WXM, DIFFEQUATIONS_WXM_SIZE);
     break;
+
   case wxMaxima::menu_help_tolerances:
-    NewWindow(wxEmptyString, false, false,
-              toleranceCalculations_wxm_gz, toleranceCalculations_wxm_gz_len);
+    NewWindow(wxEmptyString, false, false, TOLERANCECALCULATIONS_WXM, TOLERANCECALCULATIONS_WXM_SIZE);
     break;
+
   case wxMaxima::menu_help_memoizing:
-    NewWindow(wxEmptyString, false, false,
-              memoizing_wxm_gz, memoizing_wxm_gz_len);
+    NewWindow(wxEmptyString, false, false, MEMOIZING_WXM, MEMOIZING_WXM_SIZE);
     break;
+
   case wxID_OPEN:
   {
     wxString lastPath;
@@ -517,14 +512,14 @@ void MyApp::OnFileMenu(wxCommandEvent &ev)
                                      "Xmaxima session (*.out)|*.out|"
                                      "xml from broken .wxmx (*.xml)|*.xml"),
                                    wxFD_OPEN);
-    
+
     if (!file.empty())
     {
       // On the mac the "File/New" menu item by default opens a new window instead od
       // reusing the old one.
       NewWindow(file);
     }
-    
+
     break;
     }
     case wxID_NEW:
@@ -542,7 +537,7 @@ void MyApp::OnFileMenu(wxCommandEvent &ev)
           args += " -f \"" + Configuration::m_configfileLocation_override + "\"";
         if(Configuration::m_maximaLocation_override != wxEmptyString)
           args += " -m \"" + Configuration::m_maximaLocation_override + "\"";
-        
+
         wxExecute(wxT("\"") + wxStandardPaths::Get().GetExecutablePath() + wxT("\"") + args);
       }
       break;
@@ -554,7 +549,7 @@ void MyApp::OnFileMenu(wxCommandEvent &ev)
       configW->Centre(wxBOTH);
       if (configW->ShowModal() == wxID_OK)
         configW->WriteSettings();
-      
+
       configW->Destroy();
       wxConfig::Get()->Flush();
       break;

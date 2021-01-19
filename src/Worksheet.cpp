@@ -220,7 +220,13 @@ void Worksheet::OnSidebarKey(wxCommandEvent &event)
 {
   SetFocus();
   if(GetActiveCell())
+  {
     GetActiveCell()->InsertText(wxString(wxChar(event.GetId())));
+    GroupCell *parent = GetActiveCell()->GetGroup();
+    parent->InputHeightChanged();
+    Recalculate(parent);
+    RequestRedraw(parent);
+  }
   else
     OpenHCaret(wxString(wxChar(event.GetId())));
 }
@@ -601,11 +607,11 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
     
     // Draw the marker that tells us which output cells are selected -
     // if output cells are selected, that is.
-    for (Cell *tmp = m_cellPointers.m_selectionStart; tmp; tmp = tmp->GetNextToDraw())
+    for (Cell &tmp : OnDrawList(m_cellPointers.m_selectionStart.get()))
     {
-      if (!tmp->IsBrokenIntoLines() && !tmp->IsHidden() && tmp != GetActiveCell())
-        tmp->DrawBoundingBox(dc, false);
-      if (tmp == m_cellPointers.m_selectionEnd)
+      if (!tmp.IsBrokenIntoLines() && !tmp.IsHidden() && &tmp != GetActiveCell())
+        tmp.DrawBoundingBox(dc, false);
+      if (&tmp == m_cellPointers.m_selectionEnd)
         break;
     }
   }
@@ -823,23 +829,26 @@ GroupCell *Worksheet::GetWorkingGroup(bool resortToLast) const
   return tmp;
 }
 
-void Worksheet::InsertLine(std::unique_ptr<Cell> &&newCell, bool forceNewLine)
+GroupCell *Worksheet::GetInsertGroup() const
 {
-  if (!newCell)
-    return;
-
   GroupCell *tmp = GetWorkingGroup(true);
 
   if (!tmp && GetActiveCell())
     tmp = GetActiveCell()->GetGroup();
 
-  // If we still don't have a place to put the line we give up.
+  return tmp;
+}
+
+void Worksheet::InsertLine(std::unique_ptr<Cell> &&newCell, bool forceNewLine)
+{
+  if (!newCell)
+    return;
+
+  GroupCell *tmp = GetInsertGroup();
   if (!tmp)
     return;
 
   newCell->ForceBreakLine(forceNewLine);
-  newCell->SetGroupList(tmp);
-  
   tmp->AppendOutput(std::move(newCell));
   
   UpdateConfigurationClientSize();
@@ -1254,17 +1263,14 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
       // SELECTION OF OUTPUT
     else
     {
-      Cell *tmp = m_cellPointers.m_selectionStart;
-      wxRect rect;
-      while (tmp != NULL)
+      for (Cell &tmp : OnDrawList(m_cellPointers.m_selectionStart.get()))
       {
-        rect = tmp->GetRect();
+        auto rect = tmp.GetRect();
         if (rect.Contains(downx, downy))
           clickInSelection = true;
 
-        if (tmp == m_cellPointers.m_selectionEnd)
+        if (&tmp == m_cellPointers.m_selectionEnd)
           break;
-        tmp = tmp->GetNextToDraw();
       }
     }
   }
@@ -1522,8 +1528,8 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
           popupMenu.Append(popid_integrate, _("Integrate..."), wxEmptyString, wxITEM_NORMAL);
           popupMenu.Append(popid_diff, _("Differentiate..."), wxEmptyString, wxITEM_NORMAL);
           popupMenu.AppendSeparator();
-          popupMenu.Append(popid_plot2d, _("Plot 2d..."), wxEmptyString, wxITEM_NORMAL);
-          popupMenu.Append(popid_plot3d, _("Plot 3d..."), wxEmptyString, wxITEM_NORMAL);
+          popupMenu.Append(popid_plot2d, _("Plot 2D..."), wxEmptyString, wxITEM_NORMAL);
+          popupMenu.Append(popid_plot3d, _("Plot 3D..."), wxEmptyString, wxITEM_NORMAL);
         }
       }
       if (
@@ -1884,7 +1890,7 @@ void Worksheet::OnMouseLeftInGcCell(wxMouseEvent &WXUNUSED(event), GroupCell *cl
   // The user clicked at a ordinary cell
   if ((clickedInGC->GetPrompt()) && (clickedInGC->GetPrompt()->GetRect()).Contains(m_down))
   {
-    m_cellPointers.m_selectionStart = m_cellPointers.m_selectionStart = clickedInGC->GetPrompt();
+    m_cellPointers.m_selectionStart = m_cellPointers.m_selectionEnd = clickedInGC->GetPrompt();
     m_clickType = CLICK_TYPE_INPUT_LABEL_SELECTION;
   }
 
@@ -2080,7 +2086,7 @@ void Worksheet::OnMouseLeftDown(wxMouseEvent &event)
     m_clickType = CLICK_TYPE_GROUP_SELECTION;
     ScrolledAwayFromEvaluation(true);
   }
-
+  m_clickType_selectionStart = m_clickType;
   RequestRedraw();
   // Re-calculate the table of contents
   UpdateTableOfContents();
@@ -2185,8 +2191,6 @@ void Worksheet::OnMouseMotion(wxMouseEvent &event)
   if (!GetTree() || !m_leftDown)
     return;
 
-  m_updateControls = true;
-  
   m_mouseDrag = true;
   m_up.x = m_pointer_x;
   m_up.y = m_pointer_y;
@@ -2271,8 +2275,21 @@ void Worksheet::ClickNDrag(wxPoint down, wxPoint up)
   int ytop = wxMin(down.y, up.y);
   int ybottom = wxMax(down.y, up.y);
 
-  switch (m_clickType)
+  if((m_cellPointers.m_cellMouseSelectionStartedIn)
+     && (!m_cellPointers.m_cellMouseSelectionStartedIn->GetRect().Inflate(
+           m_configuration->GetGroupSkip(),
+           m_configuration->GetGroupSkip()).Contains(up)))
   {
+    SelectGroupCells(up,down);
+    if (GetActiveCell())
+    {
+      GetActiveCell()->SelectNone();
+      SetActiveCell(NULL);
+    }
+  }
+  else
+    switch (m_clickType)
+    {
     case CLICK_TYPE_NONE:
       return;
 
@@ -2340,7 +2357,7 @@ void Worksheet::ClickNDrag(wxPoint down, wxPoint up)
 
     default:
       break;
-  } // end switch
+    } // end switch
 
   // Refresh only if the selection has changed
   if ((selectionStartOld != m_cellPointers.m_selectionStart)
@@ -2357,13 +2374,12 @@ wxString Worksheet::GetString(bool lb)
     return GetActiveCell() ? GetActiveCell()->ToString() : wxString{};
 
   wxString s;
-  for (Cell *tmp = m_cellPointers.m_selectionStart;
-       tmp; tmp = tmp->GetNextToDraw())
+  for (Cell &tmp : OnDrawList(m_cellPointers.m_selectionStart.get()))
   {
-    if (lb && tmp->BreakLineHere() && s.Length() > 0)
-      s += wxT("\n");
-    s += tmp->ToString();
-    if (tmp == m_cellPointers.m_selectionEnd)
+    if (lb && tmp.BreakLineHere() && !s.empty())
+      s += wxT('\n');
+    s += tmp.ToString();
+    if (&tmp == m_cellPointers.m_selectionEnd)
       break;
   }
   return s;
@@ -7825,9 +7841,10 @@ bool Worksheet::Autocomplete(AutoComplete::autoCompletionType type)
       frontOfSelection = frontOfSelection.Mid(positionOfEzunitStart + 1);
       int numberOfParenthesis = 0;
 
-      for (size_t i = 0; i < frontOfSelection.Length() - 1; i++)
+      for (wxString::const_iterator it = frontOfSelection.begin();
+           it != frontOfSelection.end(); ++it)
       {
-        wxChar ch = frontOfSelection[i];
+        wxChar ch = *it;
         if (
                 (!wxIsalnum(ch)) &&
                 (ch != wxT('(')) &&
@@ -8303,7 +8320,7 @@ wxAccStatus Worksheet::AccessibilityInfo::GetChild (int childId, wxAccessible **
   }
 
   *child = cell->GetAccessible();
-  return cell ? wxACC_OK : wxACC_FAIL;
+  return child ? wxACC_OK : wxACC_FAIL;
 }
 
 wxAccStatus Worksheet::AccessibilityInfo::GetDefaultAction (int childId, wxString *actionName)
@@ -8389,8 +8406,10 @@ wxAccStatus Worksheet::AccessibilityInfo::HitTest(const wxPoint &pt,
   GetLocation(currentRect, 0);
   if (!currentRect.Contains(pt))
   {
-    *childId = 0;
-    *childObject = NULL;
+    if (childId)
+      *childId = 0;
+    if (childObject)
+      *childObject = NULL;
     return wxACC_FALSE;
   }
 

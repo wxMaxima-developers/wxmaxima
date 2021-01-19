@@ -1,5 +1,4 @@
-// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode:
-// nil -*-
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2020 Kuba Ober <kuba@mareimbrium.org>
 //
@@ -59,28 +58,15 @@
  * and/or otherwise needed by wxMaxima.
  */
 
-#define _SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING
 #include <wx/stream.h>
 #include <wx/string.h>
-#include <codecvt>
 #include <vector>
 
 //! A stateful decoder that can feed itself from an input stream and
 //! append its output to a string. Useful in any situation where the
 //! exact amount of data read and written must be controlled.
-class UTF8Decoder {
-#if defined(__WINDOWS__) && wxUSE_UNICODE
-  // Note: The explicit little_endian mode is needed on MinGW builds, otherwise the output is
-  // big-endian and the subsequent decoding and use of it fails. MSVC builds are OK with this
-  // mode explicitly set, or without it.
-  using Codec = std::codecvt_utf8<wxStringCharType, 0x10ffff, std::codecvt_mode::little_endian>;
-  Codec m_codec;
-#else
-  std::locale m_locale;
-  using Codec = std::codecvt<wxStringCharType, char, std::mbstate_t>;
-  const Codec &m_codec;
-#endif
-
+class UTF8Decoder
+{
 public:
   struct DecodeResult
   {
@@ -93,18 +79,18 @@ public:
 
   class State
   {
-    std::mbstate_t m_codecState = {};
     std::vector<char> m_inBuf;
     size_t m_inBufCount = {};
     std::vector<wxStringCharType> m_outBuf;
-    bool m_hadError = false;
   public:
-    DecodeResult Decode(const Codec &, wxInputStream &in, size_t maxRead, size_t maxWrite);
-    bool hadError() const { return m_hadError; }
+    DecodeResult Decode(wxInputStream &in, size_t maxRead, size_t maxWrite);
   };
 
-  UTF8Decoder();
-  DecodeResult Decode(State &state, wxInputStream &in, size_t maxRead, size_t maxWrite);
+  static DecodeResult Decode(State &state, wxInputStream &in, size_t maxRead,
+                             size_t maxWrite)
+  {
+    return state.Decode(in, maxRead, maxWrite);
+  }
 };
 
 #endif

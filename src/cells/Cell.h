@@ -135,7 +135,7 @@ public:
 
  */
 
-// 112 bytes
+// 120 bytes
 class Cell: public Observed
 {
 #if wxUSE_ACCESSIBILITY
@@ -474,9 +474,13 @@ public:
   TextStyle GetStyle() const
   { return m_textStyle; }
 
+  //! Sets the drawing pen to the cell's default foreground color 
   // cppcheck-suppress functionStatic
   // cppcheck-suppress functionConst
   void SetPen(double lineWidth = 1.0) const;
+  //! Sets the fill brush to the cell's default foreground color 
+  void SetBrush() const;
+  wxColour GetForegroundColor() const;
 
   //! Mark this cell as highlighted (e.G. being in a maxima box)
   void SetHighlight(bool highlight) { m_highlight = highlight; }
@@ -627,7 +631,7 @@ public:
     drawn as a single 2D object or the nominator, the cell containing the "/" and 
     the denominator are pointed to by GetNextToDraw() as single separate objects.
    */
-  virtual Cell *GetNextToDraw() const = 0;
+  Cell *GetNextToDraw() const { return m_nextToDraw; }
 
   /*! Tells this cell which one should be the next cell to be drawn
 
@@ -636,7 +640,7 @@ public:
     If the cell is broken into lines this sets the pointer of the last of the 
     list of cells this cell is displayed as.
    */
-  virtual void SetNextToDraw(Cell *next) = 0;
+  virtual void SetNextToDraw(Cell *next) { m_nextToDraw = next; }
   template <typename T, typename Del,
             typename std::enable_if<std::is_base_of<Cell, T>::value, bool>::type = true>
   void SetNextToDraw(const std::unique_ptr<T, Del> &ptr) { SetNextToDraw(ptr.get()); }
@@ -726,14 +730,6 @@ public:
   virtual bool IsActive() const
   { return false; }
 
-  /*! Define which Cell is the GroupCell this list of cells belongs to
-
-    Also automatically sets this cell as the "parent" of all cells of the list.
-   */
-  void SetGroupList(GroupCell *group);
-
-  //! Define which Sell is the GroupCell this list of cells belongs to
-  virtual void SetGroup(GroupCell *group);
   //! Sets the TextStyle of this cell
   virtual void SetStyle(TextStyle style)
   {
@@ -811,11 +807,14 @@ public:
 #if wxUSE_ACCESSIBILITY
   CellAccessible *GetAccessible();
 #endif
+#if CELL_TEST
+  void MockBreakUp() { m_isBrokenIntoLines = 1; }
+#endif
 
 protected:
   std::unique_ptr<Cell> MakeVisiblyInvalidCell() const;
 public:
-  static std::unique_ptr<Cell> MakeVisiblyInvalidCell(Configuration **config);
+  static std::unique_ptr<Cell> MakeVisiblyInvalidCell(GroupCell *group, Configuration **config);
 
 protected:
 //** Bases and internal members (16 bytes)
@@ -856,11 +855,11 @@ private:
 public:
     const wxString &GetLocalToolTip() const;
 protected:
-  /*! The GroupCell this list of cells belongs to.
-    Reads NULL, if no parent cell has been set - which is treated as an Error by GetGroup():
-    every math cell has a GroupCell it belongs to.
-  */
-  CellPtr<GroupCell> m_group;
+  /*! The GroupCell this list of cells belongs to. */
+  CellPtr<GroupCell> const m_group;
+  //! The next cell in the draw list. This has been factored into Cell temporarily to
+  //! reduce the change "noise" when it will be subsequently removed.
+  CellPtr<Cell> m_nextToDraw;
 
   Configuration **m_configuration;
 
@@ -935,8 +934,12 @@ private:
   bool m_highlight : 1 /* InitBitFields */;
 
 protected:
-  //! Iterator to the beginning of the inner cell range. The end iterator is default-constructed.
-  virtual InnerCellIterator InnerBegin() const;
+  friend class InnerCellIterator;
+  //! The number of inner cells - for use by the iterators
+  virtual int GetInnerCellCount() const;
+  //! Retrieve an inner cell with given index which must be
+  //! less than GetInnerCellCount.
+  virtual Cell *GetInnerCell(int index) const;
 
   inline Worksheet *GetWorksheet() const;
 
@@ -1005,8 +1008,11 @@ inline auto OnDrawList(C *cell)       { return CellDrawListAdapter<C>(cell); }
 
 //! Returns an iterable that goes over the inner cells of this cell.
 template <typename C, typename std::enable_if<std::is_base_of<Cell, C>::value, bool>::type>
-inline auto OnInner(const C *cell) { return InnerCellAdapter(cell->InnerBegin()); }
+inline auto OnInner(const C *cell) { return InnerCellAdapter(const_cast<Cell *>(cell)); }
 template <typename C, typename std::enable_if<std::is_base_of<Cell, C>::value, bool>::type>
-inline auto OnInner(C *cell) { return InnerCellAdapter(cell->InnerBegin()); }
+inline auto OnInner(C *cell) { return InnerCellAdapter(cell); }
+
+inline int InnerCellIterator::GetInnerCellCount(const Cell *cell) { return cell->GetInnerCellCount(); }
+inline Cell *InnerCellIterator::GetInnerCell(const Cell *cell, int index) { return cell->GetInnerCell(index); }
 
 #endif // MATHCELL_H

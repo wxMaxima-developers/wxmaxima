@@ -21,33 +21,16 @@
 
 #define CATCH_CONFIG_RUNNER
 #include "test_ImgCell.h"
-#include "Cell.cpp"
-#include "CellList.cpp"
-#include "CellPointers.cpp"
-#include "CellPtr.cpp"
 #include "FontAttribs.cpp"
 #include "FontCache.cpp"
 #include "Image.cpp"
 #include "ImgCell.cpp"
 #include "StringUtils.cpp"
+#include "TestStubs.cpp"
 #include "TextCell.cpp"
 #include "TextStyle.cpp"
 #include "VisiblyInvalidCell.cpp"
 #include <catch2/catch.hpp>
-
-CellPointers pointers(nullptr);
-
-Configuration::Configuration(wxDC *dc, InitOpt) : m_dc(dc) {}
-Configuration::~Configuration() {}
-bool Configuration::InUpdateRegion(wxRect) const { return true; }
-long Configuration::Scale_Px(double) const { return 1; }
-AFontSize Configuration::Scale_Px(AFontSize) const { return {}; }
-wxFontStyle Configuration::IsItalic(long) const { return {}; }
-wxColour Configuration::GetColor(TextStyle) { return {}; }
-bool Configuration::HideMarkerForThisMessage(wxString) {return false;}
-Style Configuration::GetStyle(TextStyle, AFontSize) const { return {}; }
-CellPointers *Cell::GetCellPointers() const { return &pointers; }
-void Configuration::NotifyOfCellRedraw(const Cell *) {}
 
 wxBitmap SvgBitmap::RGBA2wxBitmap(unsigned char const *, int const &, int const &, int const &) { return {}; }
 
@@ -67,8 +50,9 @@ SCENARIO("RTF Output represents the image") {
   image.AppendData(wxmaxima_art_wxmac_doc_png, wxmaxima_art_wxmac_doc_png_size);
   Configuration config;
   Configuration *pConfig = &config;
+  GroupCell group(&pConfig, GC_TYPE_IMAGE);
   GIVEN("An image with test data") {
-    ImgCell cell(nullptr, &pConfig, image, "png");
+    ImgCell cell(&group, &pConfig, image, "png");
     WHEN("we convert it to RTF") {
       auto rtf = cell.ToRTF();
       THEN("the RTF output ends in \"}\\n\"")

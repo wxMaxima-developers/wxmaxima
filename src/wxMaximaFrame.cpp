@@ -42,7 +42,6 @@
 #include <wx/display.h>
 #include <wx/wupdlock.h>
 #include <wx/sysopt.h>
-#include <wx/wrapsizer.h>
 #include "wxMaximaIcon.h"
 #include "Gen1Wiz.h"
 #include "UnicodeSidebar.h"
@@ -86,7 +85,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
     
   // We need to create one pane which doesn't do a lot before the log pane
   // Otherwise the log pane will be displayed in a very strange way
-  // The gistorx pane was chosen randomly
+  // The history pane was chosen randomly
   m_history = new History(this, -1);
 
   // Redirect all debug messages to a dockable panel and output some info
@@ -450,7 +449,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
     Gripper(false).CloseButton(true);
 
   m_manager.GetPane(wxT("log")) =
-    m_manager.GetPane(wxT("log")).Caption(_("Debug Messages")).CloseButton(true).Resizable().Gripper(false).PaneBorder(true).Movable(true);
+    m_manager.GetPane(wxT("log")).Caption(_("Debug messages")).CloseButton(true).Resizable().Gripper(false).PaneBorder(true).Movable(true);
   m_manager.GetPane(wxT("variables")) =
     m_manager.GetPane(wxT("variables")).Caption(_("Variables")).CloseButton(true).Resizable().Gripper(false).PaneBorder(true).Movable(true);
   m_manager.GetPane(wxT("math")) = m_manager.GetPane(wxT("math")).Caption(_("General Math")).
@@ -759,7 +758,7 @@ void wxMaximaFrame::SetupMenu()
   m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_draw, _("Plot using Draw"));
   m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_log,   _("Debug messages"));
   m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_variables,   _("Variables"));
-  m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_xmlInspector, _("Raw XML Monitor"));
+  m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_xmlInspector, _("Raw XML monitor"));
   m_Maxima_Panes_Sub->AppendSeparator();
   m_Maxima_Panes_Sub->Append(menu_pane_dockAll, _("Dock all Sidebars"));
   m_Maxima_Panes_Sub->AppendSeparator();
@@ -1030,7 +1029,7 @@ void wxMaximaFrame::SetupMenu()
                          wxITEM_NORMAL);
   m_Algebra_Menu->Append(menu_enter_mat, _("&Enter Matrix..."),
                          _("Enter a matrix"), wxITEM_NORMAL);
-  m_Algebra_Menu->Append(menu_list_list2matrix, _("Nested List to Matrix"),
+  m_Algebra_Menu->Append(menu_list_list2matrix, _("Nested list to Matrix"),
                          _("Convert a list of lists to a matrix"), wxITEM_NORMAL);
   m_Algebra_Menu->Append(menu_csv2mat, _("Matrix from csv file"),
                          _("Load a matrix from a csv file"), wxITEM_NORMAL);
@@ -1053,6 +1052,9 @@ void wxMaximaFrame::SetupMenu()
                          wxITEM_NORMAL);
   m_Algebra_Menu->Append(menu_adjoint_mat, _("Ad&joint Matrix"),
                          _("Compute the adjoint matrix"), wxITEM_NORMAL);
+  m_Algebra_Menu->Append(menu_rank, _("Rank"),
+                         _("Compute the rank of a matrix"),
+                         wxITEM_NORMAL);
   m_Algebra_Menu->Append(menu_transpose, _("&Transpose Matrix"),
                          _("Transpose a matrix"), wxITEM_NORMAL);
   m_Algebra_Menu->AppendSeparator();
@@ -1067,6 +1069,15 @@ void wxMaximaFrame::SetupMenu()
                          wxITEM_NORMAL);
   m_Algebra_Menu->Append(menu_matrix_col_list, _("Convert Column to list"),
                          _("Extract a column from the matrix and convert it to a list"),
+                         wxITEM_NORMAL);
+  m_Algebra_Menu->AppendSeparator();
+  m_Algebra_Menu->Append(menu_matrix_multiply, _("Multiply matrices"));
+  m_Algebra_Menu->Append(menu_matrix_exponent, _("Matrix exponent"));
+  m_Algebra_Menu->Append(menu_matrix_hadamard_product, _("Hadamard (element-by-element) product"),
+                         _("Element-by-element multiplication"),
+                         wxITEM_NORMAL);
+  m_Algebra_Menu->Append(menu_matrix_hadamard_exponent, _("Hadamard exponent"),
+                         _("Repetitive element-by-element multiplication"),
                          wxITEM_NORMAL);
   m_Algebra_Menu->AppendSeparator();
   m_Algebra_Menu->Append(menu_make_list, _("Make &List..."),
@@ -1365,10 +1376,10 @@ void wxMaximaFrame::SetupMenu()
                    _("Show wxMaxima help"), wxT("gtk-help"));
 #endif
   m_HelpMenu->Append(menu_wxmaximahelp, _("wxMaxima help"),
-                     _("The offline manual of wxMaxima"),
+                     _("The manual of wxMaxima"),
                      wxITEM_NORMAL);
   m_HelpMenu->Append(menu_maximahelp, _("&Maxima help"),
-                     _("The offline manual of Maxima"),
+                     _("The manual of Maxima"),
                      wxITEM_NORMAL);
   m_HelpMenu->Append(menu_example, _("&Example..."),
                      _("Show an example of usage"),
@@ -1409,7 +1420,7 @@ void wxMaximaFrame::SetupMenu()
                      wxITEM_NORMAL);
   m_HelpMenu->AppendSeparator();
   m_HelpMenu->Append(menu_check_updates, _("Check for Updates"),
-                     _("Check if a newer version of wxMaxima/Maxima exist."),
+                     _("Check if a newer version of wxMaxima is available."),
                      wxITEM_NORMAL);
 #ifndef __WXOSX__
   m_HelpMenu->AppendSeparator();
@@ -1647,6 +1658,21 @@ void wxMaximaFrame::ShowPane(Event id, bool show)
 {
   switch (id)
   {
+    case menu_pane_hideall:
+      m_manager.GetPane(wxT("math")).Show(false);
+      m_manager.GetPane(wxT("history")).Show(false);
+      m_manager.GetPane(wxT("structure")).Show(false);
+      m_manager.GetPane(wxT("XmlInspector")).Show(false);
+      m_manager.GetPane(wxT("format")).Show(false);
+      m_manager.GetPane(wxT("greek")).Show(false);
+      m_manager.GetPane(wxT("unicode")).Show(false);
+      m_manager.GetPane(wxT("log")).Show(false);
+      m_manager.GetPane(wxT("variables")).Show(false);
+      m_manager.GetPane(wxT("draw")).Show(false);
+      m_manager.GetPane(wxT("symbols")).Show(false);
+      m_manager.GetPane(wxT("stats")).Show(false);
+      ShowToolBar(false);
+      break;
     case menu_pane_math:
       m_manager.GetPane(wxT("math")).Show(show);
       break;
@@ -1660,8 +1686,8 @@ void wxMaximaFrame::ShowPane(Event id, bool show)
     case menu_pane_xmlInspector:
       m_manager.GetPane(wxT("XmlInspector")).Show(show);
       break;
-    case menu_pane_stats:
-      m_manager.GetPane(wxT("stats")).Show(show);
+    case menu_pane_format:
+      m_manager.GetPane(wxT("format")).Show(show);
       break;
     case menu_pane_greek:
       m_manager.GetPane(wxT("greek")).Show(show);
@@ -1675,29 +1701,14 @@ void wxMaximaFrame::ShowPane(Event id, bool show)
     case menu_pane_variables:
       m_manager.GetPane(wxT("variables")).Show(show);
       break;
-    case menu_pane_symbols:
-      m_manager.GetPane(wxT("symbols")).Show(show);
-      break;
-    case menu_pane_format:
-      m_manager.GetPane(wxT("format")).Show(show);
-      break;
     case menu_pane_draw:
       m_manager.GetPane(wxT("draw")).Show(show);
       break;
-    case menu_pane_hideall:
-      m_manager.GetPane(wxT("math")).Show(false);
-      m_manager.GetPane(wxT("history")).Show(false);
-      m_manager.GetPane(wxT("structure")).Show(false);
-      m_manager.GetPane(wxT("XmlInspector")).Show(false);
-      m_manager.GetPane(wxT("stats")).Show(false);
-      m_manager.GetPane(wxT("greek")).Show(false);
-      m_manager.GetPane(wxT("log")).Show(false);
-      m_manager.GetPane(wxT("unicode")).Show(false);
-      m_manager.GetPane(wxT("variables")).Show(false);
-      m_manager.GetPane(wxT("symbols")).Show(false);
-      m_manager.GetPane(wxT("format")).Show(false);
-      m_manager.GetPane(wxT("draw")).Show(false);
-      ShowToolBar(false);
+    case menu_pane_symbols:
+      m_manager.GetPane(wxT("symbols")).Show(show);
+      break;
+    case menu_pane_stats:
+      m_manager.GetPane(wxT("stats")).Show(show);
       break;
     default:
       wxASSERT(false);
@@ -1709,7 +1720,7 @@ void wxMaximaFrame::ShowPane(Event id, bool show)
 
 wxWindow *wxMaximaFrame::CreateMathPane()
 {
-  wxGridSizer *grid = new wxGridSizer(2);
+  wxSizer *grid = new Buttonwrapsizer();
   wxScrolled<wxPanel> *panel = new wxScrolled<wxPanel>(this, -1);
   panel->SetScrollRate(5, 5);
 
@@ -1760,7 +1771,7 @@ wxWindow *wxMaximaFrame::CreateMathPane()
 
 wxWindow *wxMaximaFrame::CreateStatPane()
 {
-  wxGridSizer *grid1 = new wxGridSizer(2);
+  wxSizer *grid1 = new Buttonwrapsizer();
   wxBoxSizer *box = new wxBoxSizer(wxVERTICAL);
   wxBoxSizer *box1 = new wxBoxSizer(wxVERTICAL);
   wxGridSizer *grid2 = new wxGridSizer(2);
@@ -1954,7 +1965,7 @@ void wxMaximaFrame::GreekPane::UpdateSymbols()
       {L'\u03A3', _("Sigma")},
       {L'\u03A4', _("Tau"), Cond::ShowLatinLookalikes},
       {L'\u03A5', _("Upsilon"), Cond::ShowLatinLookalikes},
-      {L'\u03A6', _("Phi"), Cond::ShowLatinLookalikes},
+      {L'\u03A6', _("Phi")},
       {L'\u03A7', _("Chi"), Cond::ShowLatinLookalikes},
       {L'\u03A8', _("Psi")},
       {L'\u03A9', _("Omega")},
@@ -2135,7 +2146,7 @@ void wxMaximaFrame::SymbolsPane::UpdateUserSymbols()
 
 wxWindow *wxMaximaFrame::CreateFormatPane()
 {
-  wxGridSizer *grid = new wxGridSizer(2);
+  wxSizer *grid = new Buttonwrapsizer();
   wxScrolled<wxPanel> *panel = new wxScrolled<wxPanel>(this, -1);
   panel->SetScrollRate(5, 5);
 
@@ -2216,69 +2227,77 @@ void wxMaximaFrame::DrawPane::SetDimensions(int dimensions)
   m_dimensions = dimensions;
 }
 
+void wxMaximaFrame::DrawPane::OnSize(wxSizeEvent &event)
+{
+  // Shrink the width of the wxScrolled's virtual size if the wxScrolled is shrinked 
+  SetVirtualSize(GetClientSize());
+  event.Skip();
+}
+
 wxMaximaFrame::DrawPane::DrawPane(wxWindow *parent, int id) : wxScrolled<wxPanel>(parent, id)
 {
   wxBoxSizer  *vbox = new wxBoxSizer(wxVERTICAL);
   SetScrollRate(5, 5);
-  wxGridSizer *grid = new wxGridSizer(2);
+  m_grid = new Buttonwrapsizer(wxHORIZONTAL);
   m_dimensions = -1;
   int style = wxALL | wxEXPAND;
   int border = 0;
 
-  grid->Add(m_draw_setup2d = new wxButton(this, menu_draw_2d, _("2D"),
+  m_grid->Add(m_draw_setup2d = new wxButton(this, menu_draw_2d, _("2D"),
                                           wxDefaultPosition, wxDefaultSize, wxBORDER_NONE | wxBU_EXACTFIT),
             0, style, border);
   m_draw_setup2d->SetToolTip(_("Setup a 2D plot"));
-  grid->Add(m_draw_setup3d = new wxButton(this, menu_draw_3d, _("3D"),
+  m_grid->Add(m_draw_setup3d = new wxButton(this, menu_draw_3d, _("3D"),
                                           wxDefaultPosition, wxDefaultSize, wxBORDER_NONE | wxBU_EXACTFIT),
                 0, style, border);
   m_draw_setup3d->SetToolTip(_("Setup a 3D plot"));
-  grid->Add(m_draw_explicit = new wxButton(this, menu_draw_explicit, _("Expression"),
+  m_grid->Add(m_draw_explicit = new wxButton(this, menu_draw_explicit, _("Expression"),
                                            wxDefaultPosition, wxDefaultSize, wxBORDER_NONE | wxBU_EXACTFIT),
             0, style, border);
   m_draw_explicit->SetToolTip(_("The standard plot command: Plot an equation as a curve"));
-  grid->Add(m_draw_implicit = new wxButton(this, menu_draw_implicit, _("Implicit Plot"),
+  m_grid->Add(m_draw_implicit = new wxButton(this, menu_draw_implicit, _("Implicit Plot"),
                                            wxDefaultPosition, wxDefaultSize, wxBORDER_NONE | wxBU_EXACTFIT),
             0, style, border);
-  grid->Add(m_draw_parametric = new wxButton(this, menu_draw_parametric, _("Parametric Plot"),
+  m_grid->Add(m_draw_parametric = new wxButton(this, menu_draw_parametric, _("Parametric Plot"),
                                              wxDefaultPosition, wxDefaultSize, wxBORDER_NONE | wxBU_EXACTFIT),
             0, style, border);
-  grid->Add(m_draw_points = new wxButton(this, menu_draw_points, _("Points"),
+  m_grid->Add(m_draw_points = new wxButton(this, menu_draw_points, _("Points"),
                                          wxDefaultPosition, wxDefaultSize, wxBORDER_NONE | wxBU_EXACTFIT),
             0, style, border);
-  grid->Add(m_draw_title = new wxButton(this, menu_draw_title, _("Diagram title"),
+  m_grid->Add(m_draw_title = new wxButton(this, menu_draw_title, _("Diagram title"),
                                         wxDefaultPosition, wxDefaultSize, wxBORDER_NONE | wxBU_EXACTFIT),
             0, style, border);
   m_draw_title->SetToolTip(_("The diagram title"));
-  grid->Add(m_draw_axis = new wxButton(this, menu_draw_axis, _("Axis"),wxDefaultPosition,
+  m_grid->Add(m_draw_axis = new wxButton(this, menu_draw_axis, _("Axis"),wxDefaultPosition,
                                        wxDefaultSize, wxBORDER_NONE | wxBU_EXACTFIT),
             0, style, border);
   m_draw_axis->SetToolTip(_("Setup the axis"));
-  grid->Add(m_draw_contour = new wxButton(this, menu_draw_contour, _("Contour"),
+  m_grid->Add(m_draw_contour = new wxButton(this, menu_draw_contour, _("Contour"),
                                           wxDefaultPosition, wxDefaultSize, wxBORDER_NONE | wxBU_EXACTFIT),
             0, style, border);
-  grid->Add(m_draw_key = new wxButton(this, menu_draw_key, _("Plot name"),
+  m_grid->Add(m_draw_key = new wxButton(this, menu_draw_key, _("Plot name"),
                                       wxDefaultPosition, wxDefaultSize, wxBORDER_NONE | wxBU_EXACTFIT),
             0, style, border);
   m_draw_key->SetToolTip(_("The next plot's title"));
-  grid->Add(m_draw_fgcolor = new wxButton(this, menu_draw_fgcolor, _("Line color"),
+  m_grid->Add(m_draw_fgcolor = new wxButton(this, menu_draw_fgcolor, _("Line color"),
                                           wxDefaultPosition, wxDefaultSize, wxBORDER_NONE | wxBU_EXACTFIT),
             0, style, border);
   m_draw_fgcolor->SetToolTip(_("The color of the next line to draw"));
-  grid->Add(m_draw_fillcolor = new wxButton(this, menu_draw_fillcolor, _("Fill color"),
+  m_grid->Add(m_draw_fillcolor = new wxButton(this, menu_draw_fillcolor, _("Fill color"),
                                             wxDefaultPosition, wxDefaultSize, wxBORDER_NONE | wxBU_EXACTFIT),
             0, style, border);
   m_draw_fillcolor->SetToolTip(_("The fill color for the next objects"));
-  grid->Add(m_draw_grid = new wxButton(this, menu_draw_grid, _("Grid"),wxDefaultPosition,
+  m_grid->Add(m_draw_grid = new wxButton(this, menu_draw_grid, _("Grid"),wxDefaultPosition,
                                        wxDefaultSize, wxBORDER_NONE | wxBU_EXACTFIT),
             0, style, border);
   m_draw_grid->SetToolTip(_("The grid in the background of the diagram"));
   m_draw_contour->SetToolTip(_("Contour lines for 3d plots"));
-  grid->Add(m_draw_accuracy = new wxButton(this, menu_draw_accuracy, _("Accuracy"),
+  m_grid->Add(m_draw_accuracy = new wxButton(this, menu_draw_accuracy, _("Accuracy"),
                                            wxDefaultPosition, wxDefaultSize, wxBORDER_NONE | wxBU_EXACTFIT),
             0, style, border);
-  m_draw_accuracy->SetToolTip(_("The Accuracy versus speed tradeoff"));
-  vbox->Add(grid, wxSizerFlags(2).Expand());
+  m_draw_accuracy->SetToolTip(_("The accuracy versus speed tradeoff"));
+  Connect(wxEVT_SIZE, wxSizeEventHandler(wxMaximaFrame::DrawPane::OnSize),NULL,this);
+  vbox->Add(m_grid, wxSizerFlags(2).Expand());
   SetSizer(vbox);
   FitInside();
 }

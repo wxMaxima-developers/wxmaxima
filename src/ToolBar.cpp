@@ -201,7 +201,7 @@ void ToolBar::AddTools()
   if(ShowSelectAll() || ShowOpenSave() || ShowNew() || ShowPrint() || ShowOptions())
     AddSeparator();
 #endif
-  AddTool(menu_restart_id, _("Restart maxima"), GetRestartBitmap(),
+  AddTool(menu_restart_id, _("Restart Maxima"), GetRestartBitmap(),
           _("Completely stop maxima and restart it"));
   AddTool(tb_interrupt, _("Interrupt"), GetInterruptBitmap(),
           _("Interrupt current computation. To completely restart maxima press the button left to this one."));
@@ -246,8 +246,8 @@ void ToolBar::AddTools()
   textStyle.Add(_("Section"));
   textStyle.Add(_("Subsection"));
   textStyle.Add(_("Subsubsection"));
-  textStyle.Add(_("Heading5"));
-  textStyle.Add(_("Heading6"));
+  textStyle.Add(_("Heading 5"));
+  textStyle.Add(_("Heading 6"));
   int textStyleSelection = 0;
   if(m_textStyle)
     textStyleSelection = m_textStyle->GetSelection();

@@ -42,16 +42,14 @@ TableOfContents::TableOfContents(wxWindow *parent, int id, Configuration **confi
   m_regex = new RegexCtrl(this, structure_regex_id);
 
   // A box whose 1st row is growable 
-  wxFlexGridSizer *box = new wxFlexGridSizer(1);
-  box->AddGrowableCol(0);
-  box->AddGrowableRow(0);
+  wxSizer *box = new wxBoxSizer(wxVERTICAL);
 
-  box->Add(m_displayedItems, wxSizerFlags().Expand());
+  box->Add(m_displayedItems, wxSizerFlags(1).Expand());
   box->Add(m_regex, wxSizerFlags().Expand());
   m_lastSelection = -1;
 
-  SetSizerAndFit(box);
-  box->SetSizeHints(this);
+  SetSizer(box);
+  FitInside();
   m_regex->Connect(REGEX_EVENT, wxCommandEventHandler(TableOfContents::OnRegExEvent), NULL, this);
   Connect(wxEVT_SIZE, wxSizeEventHandler(TableOfContents::OnSize));
   Connect(wxEVT_LIST_ITEM_RIGHT_CLICK, wxListEventHandler(TableOfContents::OnMouseRightDown));

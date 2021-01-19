@@ -3944,42 +3944,109 @@ int EditorCell::ReplaceAll(wxString oldString, const wxString &newString, bool i
   return count;
 }
 
-bool EditorCell::FindNext(wxString str, bool down, bool ignoreCase)
+bool EditorCell::FindNext(wxString str, const bool &down, const bool &ignoreCase)
 {
-  int start = down ? 0 : m_text.Length();
+
+  // If the search string is empty we prepare everything for a new search
+  if(str.IsEmpty())
+  {
+    m_selectionStart = m_selectionEnd = -1;
+    if(down)
+      m_positionOfCaret = 0;
+    else
+      m_positionOfCaret = m_text.Length();
+    return false;
+  }
+  
+  // Default to start the search at the right end of the cell
+  int start;
+  if(down)
+    start = 0;
+  else
+    start = m_text.Length();
+
+  // Handle soft line breaks and ignore-case
   wxString text(m_text);
-
   text.Replace(wxT('\r'), wxT(' '));
-
   if (ignoreCase)
   {
     str.MakeLower();
     text.MakeLower();
   }
 
-  if (m_selectionStart >= 0)
+  // If this cell is already active we might already be at a suitable
+  // start position for the search or within a search.
+  if(IsActive())
   {
-    if (down)
-      start = m_selectionStart + 1;
+    // If the last search already has marked a match for our word we want
+    // to search for the next match.
+    if ((m_selectionStart >= 0) &&
+        (abs(m_selectionStart-m_selectionEnd) == str.Length()) &&
+        (text.Right(text.Length()-
+                    wxMin(m_selectionStart, m_selectionEnd)).StartsWith(str)))
+    {
+      if (down)
+        start = wxMin(m_selectionStart, m_selectionEnd) + 1;
+      else
+        start = wxMax(m_selectionStart, m_selectionEnd);
+    }
     else
-      start = m_selectionStart ;
+    {
+      // We are at the start of a match, but the search expression has changed
+      if(m_selectionStart>0)
+      {
+        if (down)
+          start = wxMin(m_selectionStart, m_selectionEnd);
+        else
+          start = wxMax(m_selectionStart, m_selectionEnd) + 1;
+      }
+      else
+      {
+        if(m_positionOfCaret > 0)
+          start = m_positionOfCaret;
+      }
+    }
   }
-  else if (IsActive())
-    start = m_positionOfCaret;
-
-  if (!down && m_selectionStart == 0)
-    return false;
-
+  else
+  { // Inactive cell => try to make sure we start at a sane position
+    if(down)
+    {
+      m_positionOfCaret = 0;
+      m_selectionEnd = m_selectionStart = -1;
+    }
+    else
+    {
+      m_positionOfCaret = m_text.Length();
+      m_selectionEnd = m_selectionStart = -1;
+    }
+  }
   int strStart = wxNOT_FOUND;
   if (down)
     strStart = text.find(str, start);
   else
     strStart = text.rfind(str, start);
-
+  
   if (strStart != wxNOT_FOUND)
   {
+    if(down)
+      m_positionOfCaret = strStart;
+    else
+      m_positionOfCaret = strStart + str.Length();
     SetSelection(strStart, strStart + str.Length());
     return true;
+  }
+  if(IsActive())
+  {
+    if(down)
+    {
+      m_positionOfCaret = 0;
+      m_selectionEnd = m_selectionStart = -1;
+    }
+    else
+    {
+      m_positionOfCaret = m_text.Length();
+      m_selectionEnd = m_selectionStart = -1;
+    }
   }
   return false;
 }
@@ -4262,8 +4329,3 @@ wxAccStatus EditorCell::GetRole (int childId, wxAccRole *role) const
 }
 
 #endif
-
-void EditorCell::SetNextToDraw(Cell *next)
-{
-  m_nextToDraw = next;
-}

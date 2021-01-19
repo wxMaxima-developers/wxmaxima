@@ -40,6 +40,7 @@ surrounding the worksheet.
 #include <wx/arrstr.h>
 #include <wx/aui/aui.h>
 #include <wx/notifmsg.h>
+#include <wx/wrapsizer.h>
 
 #include "Worksheet.h"
 #include "RecentDocuments.h"
@@ -49,6 +50,7 @@ surrounding the worksheet.
 #include "XmlInspector.h"
 #include "StatusBar.h"
 #include "LogPane.h"
+#include "ButtonWrapSizer.h"
 #include <list>
 
 
@@ -146,9 +148,14 @@ public:
     menu_matrix_row_list,
     menu_matrix_col_list,
     menu_submatrix,
+    menu_matrix_multiply,
+    menu_matrix_exponent,
+    menu_matrix_hadamard_product,
+    menu_matrix_hadamard_exponent,
     menu_invert_mat,
     menu_cpoly,
     menu_determinant,
+    menu_rank,
     menu_eigen,
     menu_eigvect,
     menu_fun_def,
@@ -685,7 +692,10 @@ private:
       */
       void SetDimensions(int dimensions);
       int  GetDimensions() { return m_dimensions; }
+    protected:
+      void OnSize(wxSizeEvent &event);
     private:
+      Buttonwrapsizer *m_grid;
       wxButton *m_draw_setup2d;
       wxButton *m_draw_setup3d;
       wxButton *m_draw_explicit;

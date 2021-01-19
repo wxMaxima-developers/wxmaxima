@@ -39,7 +39,7 @@ namespace Format
 
 const wxString WXMFirstLine = wxT("/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/");
 
-struct WXMHeader
+struct WXMHeader //-V730
 {
   WXMHeaderId id;
   wxString start = {};
@@ -252,7 +252,7 @@ std::unique_ptr<GroupCell> TreeFromWXM(const wxArrayString &wxmLines, Configurat
 
   while (wxmLine != end)
   {
-    auto *const last = tree.GetTail();
+    GroupCell *const last = tree.GetTail();
     std::unique_ptr<GroupCell> cell;
     WXMHeaderId headerId = Headers.LookupStart(*wxmLine ++);
     wxString line;
@@ -295,7 +295,7 @@ std::unique_ptr<GroupCell> TreeFromWXM(const wxArrayString &wxmLines, Configurat
         auto ln = getLinesUntil(Headers.GetEnd(headerId));
         if (last && last->GetGroupType() == GC_TYPE_IMAGE)
         last->SetOutput(
-            std::make_unique<ImgCell>(nullptr, config, wxBase64Decode(ln), imgtype));
+            std::make_unique<ImgCell>(last, config, wxBase64Decode(ln), imgtype));
       }
       break;
 

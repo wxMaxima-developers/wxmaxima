@@ -100,6 +100,7 @@ void MatrCell::Recalculate(AFontSize const fontsize)
 void MatrCell::Draw(wxPoint point)
 {
   Cell::Draw(point);
+  SetBrush();
   if (DrawThisCell(point))
   {
     Configuration *configuration = (*m_configuration);

@@ -30,7 +30,9 @@
 */
 
 #include "Dirstructure.h"
+#include "LoggingMessageDialog.h"
 #include <wx/filename.h>
+#include <wx/filefn.h>
 #include <wx/dir.h>
 #include "Version.h"
 
@@ -65,10 +67,27 @@ Dirstructure::Dirstructure()
   m_userConfDir += wxT("maxima");
   
   if(!wxDirExists(m_userConfDir))
-    wxMkDir(m_userConfDir, wxS_DIR_DEFAULT);
-  
+  {
+    if(!wxMkDir(m_userConfDir, wxS_DIR_DEFAULT))
+      wxLogMessage(
+        wxString::Format(
+          _("Warning: Cannot create %s, the directory maxima keeps "
+            "configuration, user packages and caches in.\n"
+            "Make sure that your system's home directory "
+            "is set up correctly"),
+          m_userConfDir.utf8_str()
+          ));
+  }
   m_userConfDir += "/";
+}
 
+void Dirstructure::UserConfDir(wxString userConfDir)
+{
+  wxFileName dir(userConfDir + wxT("/"));
+  dir.MakeAbsolute();
+  m_userConfDir = dir.GetFullPath();
+  if(!wxDirExists(m_userConfDir))
+    wxMkdir(m_userConfDir, wxPATH_MKDIR_FULL);
 }
 
 wxString Dirstructure::ResourcesDir() const

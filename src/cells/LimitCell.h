@@ -47,7 +47,8 @@ public:
   std::unique_ptr<Cell> Copy() const override;
   const CellTypeInfo &GetInfo() override;
 
-  InnerCellIterator InnerBegin() const override { return {&m_base, &m_close}; }
+  int GetInnerCellCount() const override { return 6; }
+  Cell *GetInnerCell(int index) const override { return (&m_name)[index].get(); }
 
   void Recalculate(AFontSize fontsize) override;
 
@@ -63,21 +64,18 @@ public:
   bool BreakUp() override;
 
   void SetNextToDraw(Cell *next) override;
-  Cell *GetNextToDraw() const override {return m_nextToDraw;}
 
 private:
   void MakeBreakUpCells();
 
-  CellPtr<Cell> m_nextToDraw;
-
   // The pointers below point to inner cells and must be kept contiguous.
-  // ** All pointers must be the same: either Cell * or std::unique_ptr<Cell>.
-  // ** NO OTHER TYPES are allowed.
-  std::unique_ptr<Cell> m_base;
-  std::unique_ptr<Cell> m_under;
+  // ** This is the draw list order. All pointers must be the same:
+  // ** either Cell * or std::unique_ptr<Cell>. NO OTHER TYPES are allowed.
   std::unique_ptr<Cell> m_name;
   std::unique_ptr<Cell> m_open;
+  std::unique_ptr<Cell> m_base;
   std::unique_ptr<Cell> m_comma;
+  std::unique_ptr<Cell> m_under;
   std::unique_ptr<Cell> m_close;
   // The pointers above point to inner cells and must be kept contiguous.
 

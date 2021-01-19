@@ -46,6 +46,8 @@ public:
     varID_values,
     varID_functions,
     varID_arrays,
+    varID_macros,
+    varID_labels,
     varID_myoptions,
     varID_rules,
     varID_aliases,

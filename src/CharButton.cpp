@@ -29,6 +29,8 @@
 
 #include "CharButton.h"
 #include "UnicodeSidebar.h"
+#include "wx/sizer.h"
+#include <wx/settings.h>
 
 void CharButton::ForwardToParent(wxMouseEvent &event)
 {
@@ -37,23 +39,95 @@ void CharButton::ForwardToParent(wxMouseEvent &event)
     GetParent()->GetEventHandler()->QueueEvent(new wxMouseEvent(event));
 }
 
+void CharButton::MouseOverPanel(wxMouseEvent &event)
+{
+  m_mouseOverPanel = true;
+  m_backgroundColorChangeNeeded = true;
+  event.Skip();
+}
+void CharButton::MouseLeftPanel(wxMouseEvent &event)
+{
+  m_mouseOverPanel = false;
+  m_backgroundColorChangeNeeded = true;
+  event.Skip();
+}
+void CharButton::MouseOverText(wxMouseEvent &event)
+{
+  m_mouseOverText = true;
+  m_backgroundColorChangeNeeded = true;
+  event.Skip();
+}
+void CharButton::MouseLeftText(wxMouseEvent &event)
+{
+  m_mouseOverText = false;
+  m_backgroundColorChangeNeeded = true;
+  event.Skip();
+}
+
+void CharButton::OnIdle(wxIdleEvent &event)
+{
+  if(!m_backgroundColorChangeNeeded)
+    return;
+  m_backgroundColorChangeNeeded = false;
+  if((m_mouseOverPanel)||(m_mouseOverText))
+    SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHT));
+  else
+    // An invalid color means "the default background"
+    SetBackgroundColour(wxColour());
+  event.Skip();
+}
+
 void CharButton::CharButtonPressed(wxCommandEvent &WXUNUSED(event))
 {
   wxCommandEvent *ev = new wxCommandEvent(SIDEBARKEYEVENT, (long)(m_char));
   m_worksheet->GetEventHandler()->QueueEvent(ev);
 }
 
+void CharButton::OnSize(wxSizeEvent &event)
+{
+  wxFont fnt = GetFont();
+  wxClientDC dc(this);
+  dc.SetFont(fnt);
+  auto size = dc.GetTextExtent(m_char);
+  auto minSize = dc.GetTextExtent("M");
+  minSize.x *= 1.5;
+  minSize.y *= 1.5;
+  size.x += 2 * GetContentScaleFactor();
+  size.y += 2 * GetContentScaleFactor();
+  if(minSize.x < minSize.y)
+    minSize.x = minSize.y;
+  if(minSize.x > size.x)
+    size.x = minSize.x;
+  if(minSize.y > size.y)
+    size.y = minSize.y;
+  SetSize(size);
+  SetMinSize(size);
+  event.Skip();
+}
+
 CharButton::CharButton(wxWindow *parent, wxWindow *worksheet, const Definition &def) :
-  wxButton(parent, wxID_ANY, def.symbol, wxDefaultPosition, wxDefaultSize,
-           wxBORDER_NONE | wxBU_EXACTFIT),
+  wxPanel(parent, wxID_ANY),
     m_char(def.symbol),
     m_worksheet(worksheet)
 {
+  Connect(wxEVT_SIZE, wxSizeEventHandler(CharButton::OnSize));
+  Connect(wxEVT_IDLE,
+          wxIdleEventHandler(CharButton::OnIdle), NULL, this);
+  wxBoxSizer *sizer = new wxBoxSizer(wxHORIZONTAL);
+  m_buttonText = new wxStaticText(this, -1, wxString(m_char));
+  sizer->AddStretchSpacer(1);
+  sizer->Add(m_buttonText, 0, wxALIGN_CENTER_VERTICAL);
+  sizer->AddStretchSpacer(1);
+  SetSizer(sizer);
+  FitInside();
   SetToolTip(def.description);
-  // wxFont fnt = GetFont();
-  // wxClientDC dc(this);
-  // auto const size1 = dc.GetTextExtent(m_char);
-  // auto const size2 = dc.GetTextExtent("M");
-  Connect(wxEVT_BUTTON, wxCommandEventHandler(CharButton::CharButtonPressed), NULL, this);
+  Connect(wxEVT_LEFT_UP, wxCommandEventHandler(CharButton::CharButtonPressed), NULL, this);
   Connect(wxEVT_RIGHT_DOWN, wxMouseEventHandler(CharButton::ForwardToParent), NULL, this);
+  Connect(wxEVT_IDLE, wxIdleEventHandler(CharButton::OnIdle), NULL, this);
+  Connect(wxEVT_ENTER_WINDOW, wxMouseEventHandler(CharButton::MouseOverPanel), NULL, this);
+  Connect(wxEVT_LEAVE_WINDOW, wxMouseEventHandler(CharButton::MouseLeftPanel), NULL, this);
+  m_buttonText->Connect(wxEVT_ENTER_WINDOW, wxMouseEventHandler(CharButton::MouseOverText), NULL, this);
+  m_buttonText->Connect(wxEVT_LEAVE_WINDOW, wxMouseEventHandler(CharButton::MouseLeftText), NULL, this);
+  m_buttonText->Connect(wxEVT_LEFT_UP, wxCommandEventHandler(CharButton::CharButtonPressed), NULL, this);
+  m_buttonText->Connect(wxEVT_RIGHT_DOWN, wxMouseEventHandler(CharButton::ForwardToParent), NULL, this);
 }

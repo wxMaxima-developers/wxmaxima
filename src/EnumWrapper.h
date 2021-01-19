@@ -54,6 +54,7 @@
 #ifndef WXMAXIMA_ENUMWRAPPER_H
 #define WXMAXIMA_ENUMWRAPPER_H
 
+#include <cstddef>
 #include <functional>
 #include <type_traits>
 

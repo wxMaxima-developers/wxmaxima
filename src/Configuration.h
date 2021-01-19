@@ -123,6 +123,11 @@ public:
     display_1dASCII
   };
 
+  WX_DECLARE_STRING_HASH_MAP(int, StringHash);
+  /*! All maxima operator names we know
+  */
+  StringHash m_maximaOperators;
+
   const wxEnvVariableHashMap& MaximaEnvVars(){return m_maximaEnvVars;}
   wxEnvVariableHashMap m_maximaEnvVars;
 
@@ -728,7 +733,7 @@ public:
   wxString LispType() const {return m_lispType;}
   
   //! Which way do we want to draw parenthesis?
-  void SetGrouphesisDrawMode(drawMode mode){m_parenthesisDrawMode = mode;}
+  void SetParenthesisDrawMode(drawMode mode) { m_parenthesisDrawMode = mode; }
   
   void TocShowsSectionNumbers(bool showSectionNumbers) { m_TOCshowsSectionNumbers = showSectionNumbers; }
 

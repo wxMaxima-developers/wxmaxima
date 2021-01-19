@@ -53,7 +53,8 @@ public:
   std::unique_ptr<Cell> Copy() const override;
   const CellTypeInfo &GetInfo() override;
 
-  InnerCellIterator InnerBegin() const override { return {&m_baseCell, &m_close}; }
+  int GetInnerCellCount() const override { return 5; }
+  Cell *GetInnerCell(int index) const override { return (&m_baseCell)[index].get(); }
 
   //! By how much do we want to rise the power?
   double PowRise() const {return .3 * m_fontSize_Scaled;}
@@ -78,24 +79,19 @@ public:
   void SetAltCopyText(const wxString &text) override { m_altCopyText = text; }
   const wxString &GetAltCopyText() const override { return m_altCopyText; }
 
-  void SetNextToDraw(Cell *next) override { m_nextToDraw = next; }
-  Cell *GetNextToDraw() const override { return m_nextToDraw; }
-
 private:
   void MakeBreakupCells();
 
   //! Text that should end up on the clipboard if this cell is copied as text.
   wxString m_altCopyText;
 
-  CellPtr<Cell> m_nextToDraw;
-
   // The pointers below point to inner cells and must be kept contiguous.
-  // ** All pointers must be the same: either Cell * or std::unique_ptr<Cell>.
-  // ** NO OTHER TYPES are allowed.
+  // ** This is the draw list order. All pointers must be the same:
+  // ** either Cell * or std::unique_ptr<Cell>. NO OTHER TYPES are allowed.
   std::unique_ptr<Cell> m_baseCell;
-  std::unique_ptr<Cell> m_exptCell;
   std::unique_ptr<Cell> m_exp;
   std::unique_ptr<Cell> m_open;
+  std::unique_ptr<Cell> m_exptCell;
   std::unique_ptr<Cell> m_close;
   // The pointers above point to inner cells and must be kept contiguous.
 

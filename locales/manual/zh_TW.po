@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2020-11-23 21:03+0100\n"
+"POT-Creation-Date: 2020-12-29 09:27+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1977,8 +1977,8 @@ msgstr ""
 #: ../../info/wxmaxima.md:724
 msgid ""
 "_Maxima_ tried to do something the currently installed version of _gnuplot_ "
-"isn’t able to understand. In this case, a file ending in .gnuplot located in "
-"the directory, which _Maxima_’s variable `maxima_userdir` is pointing, "
+"isn’t able to understand. In this case, a file ending in `.gnuplot` located "
+"in the directory, which _Maxima_’s variable `maxima_userdir` is pointing, "
 "contains the instructions from _Maxima_ to _gnuplot_. Most of the time, this "
 "file’s contents therefore are helpful when debugging the problem."
 msgstr ""
@@ -1995,7 +1995,7 @@ msgstr ""
 
 #. type: Bullet: '* '
 #: ../../info/wxmaxima.md:724
-msgid "Gnuplot didn’t output a valid .png file."
+msgid "Gnuplot didn’t output a valid `.png` file."
 msgstr ""
 
 #. type: Title ##
@@ -2010,7 +2010,9 @@ msgid ""
 "The value of the slider variable by default is only substituted into the "
 "expression that is to be plotted if it is visible there. Using a `subst` "
 "command that substitutes the slider variable into the equation to plot "
-"(there should be an example of this in this manual) resolves this problem."
+"resolves this problem. At the end of section [Embedding animations into the "
+"spreadsheet](#embedding-animations-into-the-spreadsheet) you can see an "
+"example."
 msgstr ""
 
 #. type: Title ##

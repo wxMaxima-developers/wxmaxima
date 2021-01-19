@@ -5,6 +5,10 @@ os:
 dist: bionic
 jobs:
   include:
+    # From oldest to newest distro & compiler
+    - os: linux
+      dist: bionic
+      env: CC=gcc-5 CXX=g++-5
     - os: linux
       dist: bionic
     - os: linux
@@ -65,6 +69,12 @@ before_install:
     sudo apt-add-repository 'https://apt.kitware.com/ubuntu/'
     sudo apt-get -q update
     sudo apt-get -q install cmake
+    if [[ "$CXX" == "g++-5" ]]
+    then
+      set -e
+      sudo apt-get -q install g++-5
+      set +e
+    fi
     export CMAKE=/usr/bin/cmake
   fi
 - |

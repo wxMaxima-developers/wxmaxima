@@ -128,17 +128,19 @@ void Variablespane::InsertMenu(wxCommandEvent &event)
   case varID_rules:varname="rules";break;
   case varID_aliases:varname="aliases";break;
   case varID_structs:varname="structures";break;
+  case varID_labels:varname="labels";break;
   case varID_dependencies:varname="dependencies";break;
   case varID_gradefs:varname="gradefs";break;
   case varID_prop:varname="props";break;
+  case varID_macros:varname="macros";break;
   case varID_let_rule_packages:varname="let_rule_packages";break;
   case varID_clear:Clear();break;
   case varID_add_all:
   {
     wxMenuEvent *VarAddEvent = new wxMenuEvent(wxEVT_MENU, varID_add_all);
     wxWindow *top = this;
-      while(top->GetParent())
-    top = top->GetParent(); 
+    while(top->GetParent())
+      top = top->GetParent(); 
     top->GetEventHandler()->QueueEvent(VarAddEvent);
     break;
   }
@@ -185,14 +187,20 @@ void Variablespane::OnRightClick(wxGridEvent &event)
   if(m_vars["structures"] != 1)
     popupMenu->Append(varID_structs,
                       _("List of structs"), wxEmptyString, wxITEM_NORMAL);
+  if(m_vars["labels"] != 1)
+    popupMenu->Append(varID_structs,
+                      _("List of labels"), wxEmptyString, wxITEM_NORMAL);
   if(m_vars["gradefs"] != 1)
     popupMenu->Append(varID_gradefs,
                       _("List of user-defined derivatives"), wxEmptyString, wxITEM_NORMAL);
   if(m_vars["props"] != 1)
     popupMenu->Append(varID_prop,
                       _("List of user-defined properties"), wxEmptyString, wxITEM_NORMAL);
+  if(m_vars["macros"] != 1)
+    popupMenu->Append(varID_prop,
+                      _("List of user-defined macros"), wxEmptyString, wxITEM_NORMAL);
   if(m_vars["gradefs"] != 1)
-    popupMenu->Append(varID_gradefs,
+    popupMenu->Append(varID_let_rule_packages,
                       _("List of user-defined let rule packages"), wxEmptyString, wxITEM_NORMAL);
   popupMenu->AppendSeparator();    
   if(m_grid->GetGridCursorRow()>=0)

@@ -3,22 +3,27 @@
 cmake_minimum_required(VERSION 3.7)
 project(wxmaxima LANGUAGES CXX)
 
+# Set the locale to default C to prevent issues due to localization of commands.
+# This is necessary as we call commands like "po4a-translate --version"
+set(ENV{LANG} C)
+
 if(WIN32)
     enable_language(RC)
 endif()
 
-
-set(VERSION 20.11.1)
+set(VERSION 20.12.2-DevelopmentSnapshot)
 set(GITVERSION ${VERSION})
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
+set(MACOSX_BUNDLE_COPYRIGHT "GPL2+")
+set(MACOSX_BUNDLE_BUNDLE_VERSION ${VERSION})
+set(MACOSX_BUNDLE_BUNDLE_NAME "wxMaxima")
+set(MACOSX_BUNDLE_LONG_VERSION_STRING "wxMaxima ${VERSION}")
+# set(MACOSX_BUNDLE_GUI_IDENTIFIER "wxMaxima")
 ##
 # Options
 #
 
-option(WXM_BUILD_BINARY_ONLY
-    "Only build the wxmaxima binary. Don't generate documentation, translations, etc." OFF)
 option(WXM_ENABLE_PRECOMPILED_HEADERS
     "Enable precompiled headers to potentially speed up compilation." OFF)
 option(WXM_USE_CPPCHECK
@@ -71,11 +76,6 @@ endif()
 # Avoid a warning by deciding which version of this policy we prefer.
 if(POLICY CMP0066)
     cmake_policy(SET CMP0066 NEW)
-endif()
-
-# link time optimization seems to need that
-if(POLICY CMP0069)
-    cmake_policy(SET CMP0069 NEW)
 endif()
 
 ##
@@ -209,6 +209,9 @@ endif()
 # cmake < 3.12, but we claim to support 3.7, so this is needed.
 # Usage: list_transform_prepend(FILES_TO_TRANSLATE "prefix/")
 # See https://stackoverflow.com/a/59155344/1329652
+#
+# According to #1388 cmake 3.19.2 requires this to be definied
+# in each source file separately
 
 function(list_transform_prepend var prefix)
     set(temp "")
@@ -222,30 +225,26 @@ endfunction()
 # Build Items
 #
 
-if(NOT WXM_BUILD_BINARY_ONLY)
-    add_subdirectory(Doxygen)
-    add_subdirectory(data)
-    add_subdirectory(info)
-    add_subdirectory(locales)
-endif()
-
+add_subdirectory(Doxygen)
+add_subdirectory(data)
+add_subdirectory(info)
+add_subdirectory(locales)
 add_subdirectory(src)
+add_subdirectory(examples)
 
 enable_testing()
 add_subdirectory(test)
 
-if(NOT WXM_BUILD_BINARY_ONLY)
-    add_custom_target(dist COMMAND ${CMAKE_MAKE_PROGRAM} package_source)
+add_custom_target(dist COMMAND ${CMAKE_MAKE_PROGRAM} package_source)
 
-    add_custom_target(checksums
-        ${CMAKE_COMMAND} -DVERSION=${VERSION} -DCMAKE_SYSTEM_NAME=${CMAKE_SYSTEM_NAME} -P ${CMAKE_SOURCE_DIR}/checksums.cmake)
+add_custom_target(checksums
+    ${CMAKE_COMMAND} -DVERSION=${VERSION} -DCMAKE_SYSTEM_NAME=${CMAKE_SYSTEM_NAME} -P ${CMAKE_SOURCE_DIR}/checksums.cmake)
 
-    install(FILES AUTHORS COPYING ChangeLog GPL.txt NEWS.md README README.md DESTINATION share/doc/wxmaxima)
+install(FILES AUTHORS COPYING ChangeLog GPL.txt NEWS.md README README.md DESTINATION share/doc/wxmaxima)
 
-    # include wxWidgets DLLs on Windows on appveyor
-    if(WIN32 AND APPVEYOR_BUILD)
-        install(PROGRAMS ${CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS}
-            DESTINATION programs
-            COMPONENT applications)
-    endif()
+# include wxWidgets DLLs on Windows on appveyor
+if(WIN32 AND APPVEYOR_BUILD)
+    install(PROGRAMS ${CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS}
+        DESTINATION programs
+        COMPONENT applications)
 endif()
