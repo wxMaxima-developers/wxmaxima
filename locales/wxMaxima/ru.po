@@ -7,13 +7,13 @@
 # Copyright (c) Olesya Gerasimenko <gammaray@basealt.ru>, 2019.
 #
 # This file is distributed under the same license as the wxMaxima package.
-# Olesya Gerasimenko <gammaray@basealt.ru>, 2019, 2020.
+# Olesya Gerasimenko <gammaray@basealt.ru>, 2019, 2020, 2021.
 msgid ""
 msgstr ""
 "Project-Id-Version: wxMaxima\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-01-05 11:51+0100\n"
-"PO-Revision-Date: 2020-11-25 18:39+0300\n"
+"PO-Revision-Date: 2021-01-19 12:57+0300\n"
 "Last-Translator: Olesya Gerasimenko <translation-team@basealt.ru>\n"
 "Language-Team: Basealt Translation Team\n"
 "Language: ru_RU\n"
@@ -635,14 +635,12 @@ msgid "Add all"
 msgstr "Добавить все"
 
 #: ../../src/wxMaxima.cpp:7807
-#, fuzzy
 msgid "Add an element to the end of a list"
-msgstr "Добавить элемент в список"
+msgstr "Добавить элемент в конец списка"
 
 #: ../../src/wxMaxima.cpp:7789
-#, fuzzy
 msgid "Add an element to the start of a list"
-msgstr "Добавить элемент в список"
+msgstr "Добавить элемент в начало списка"
 
 #: ../../src/wxMaxima.cpp:6429
 msgid "Add dir to path:"
@@ -874,14 +872,12 @@ msgid "Append an element"
 msgstr "Добавить элемент"
 
 #: ../../src/wxMaximaFrame.cpp:1299
-#, fuzzy
 msgid "Append an element to the beginning an existing list"
-msgstr "Добавить элемент к существующему списку"
+msgstr "Добавить элемент в начало существующего списка"
 
 #: ../../src/wxMaximaFrame.cpp:1296
-#, fuzzy
 msgid "Append an element to the end of an existing list"
-msgstr "Добавить элемент к существующему списку"
+msgstr "Добавить элемент в конец существующего списка"
 
 #: ../../examples/examples_gettext.list:1890
 msgid "Appending lists of tolerances\n"
@@ -1366,14 +1362,13 @@ msgstr "Не удалось загрузить сведения о версии.
 
 #: ../../src/wxMaxima.cpp:1874 ../../src/wxMaxima.cpp:2215
 #: ../../src/wxMaxima.cpp:3988
-#, fuzzy
 msgid ""
 "Can not start Maxima. The most probable cause is that Maxima isn't installed "
 "(it can be downloaded from https://maxima.sourceforge.io) or in wxMaxima's "
 "config dialogue the setting for Maxima's location is wrong."
 msgstr ""
 "Не удалось запустить Maxima. Наиболее вероятная причина: программа Maxima не "
-"установлена (её можно загрузить с веб-сайта http://maxima.sourceforge.net) "
+"установлена (её можно загрузить с веб-сайта https://maxima.sourceforge.io) "
 "или в диалоге настройки указано неверное расположение её исполняемого файла."
 
 #: ../../src/MaxSizeChooser.cpp:45 ../../src/MaxSizeChooser.cpp:47
@@ -1459,9 +1454,8 @@ msgid "Check for Updates"
 msgstr "Проверка обновлений"
 
 #: ../../src/wxMaximaFrame.cpp:1423
-#, fuzzy
 msgid "Check if a newer version of wxMaxima is available."
-msgstr "Проверка наличия новой версии wxMaxima/Maxima."
+msgstr "Проверка доступности новой версии wxMaxima/Maxima."
 
 #: ../../src/wxMaximaFrame.cpp:1969
 msgid "Chi"
@@ -1645,9 +1639,8 @@ msgstr ""
 "использованием)"
 
 #: ../../src/wxMaximaFrame.cpp:1056
-#, fuzzy
 msgid "Compute the rank of a matrix"
-msgstr "Вычислить определитель матрицы"
+msgstr "Вычислить ранг матрицы"
 
 #: ../../src/wxMaxima.cpp:8919
 msgid "Condition:"
@@ -2186,9 +2179,8 @@ msgid "Display resolution according to wxWidgets: %i x %i ppi"
 msgstr "Разрешение экрана по данным wxWidgets: %i x %i точек на дюйм"
 
 #: ../../src/wxMaximaFrame.cpp:803
-#, fuzzy
 msgid "Display string quotation marks"
-msgstr "Отображать уравнения"
+msgstr "Отображать кавычки строк"
 
 #: ../../src/wxMaximaFrame.cpp:953
 msgid "Display time used for evaluation"
@@ -2337,10 +2329,11 @@ msgstr "Элемент"
 msgid ""
 "Element-by-element Product of matrices of the same size (Hadamard product)"
 msgstr ""
+"Покомпонентное произведение матриц одного размера (произведение Адамара)"
 
 #: ../../src/wxMaximaFrame.cpp:1077
 msgid "Element-by-element multiplication"
-msgstr ""
+msgstr "Покомпонентное умножение"
 
 #: ../../src/wxMaxima.cpp:7552
 msgid "Element:"
@@ -2687,7 +2680,7 @@ msgstr "Ожидать, что переменные будут содержат�
 
 #: ../../src/wxMaxima.cpp:6961
 msgid "Exponent based on the hadamard product"
-msgstr ""
+msgstr "Экспонента на основе произведения Адамара"
 
 #: ../../src/ConfigDialogue.cpp:249 ../../src/wxMaxima.cpp:5721
 msgid "Export"
@@ -2742,9 +2735,8 @@ msgid "Export successful."
 msgstr "Экспорт завершён успешно."
 
 #: ../../src/ConfigDialogue.cpp:757
-#, fuzzy
 msgid "Export the style settings"
-msgstr "Сбросить все параметры стиля"
+msgstr "Экспортировать параметры стиля"
 
 #: ../../src/History.cpp:83
 msgid "Export visible commands to a .mac file"
@@ -3376,7 +3368,7 @@ msgstr "Сетка"
 
 #: ../../src/ConfigDialogue.cpp:928
 msgid "HTML"
-msgstr ""
+msgstr "HTML"
 
 #: ../../src/wxMaxima.cpp:5723
 msgid ""
@@ -3388,11 +3380,11 @@ msgstr ""
 
 #: ../../src/wxMaximaFrame.cpp:1076
 msgid "Hadamard (element-by-element) product"
-msgstr ""
+msgstr "Произведение Адамара (покомпонентное)"
 
 #: ../../src/wxMaximaFrame.cpp:1079
 msgid "Hadamard exponent"
-msgstr ""
+msgstr "Экспонента Адамара"
 
 #: ../../examples/examples_gettext.list:1109
 msgid "Hash maps have many uses. One is to implement memoizing:\n"
@@ -3964,9 +3956,8 @@ msgid "Import settings"
 msgstr "Параметры импорта"
 
 #: ../../src/ConfigDialogue.cpp:746
-#, fuzzy
 msgid "Import+Export"
-msgstr "Экспорт"
+msgstr "Импорт и экспорт"
 
 #: ../../examples/examples_gettext.list:288
 msgid ""
@@ -4494,9 +4485,8 @@ msgid "LCM"
 msgstr "НОК"
 
 #: ../../src/ConfigDialogue.cpp:893
-#, fuzzy
 msgid "LaTeX"
-msgstr "Копировать LaTeX"
+msgstr "LaTeX"
 
 #: ../../src/ConfigDialogue.cpp:916
 msgid "LaTeX: Place exponents after, instead above subscripts"
@@ -4580,9 +4570,8 @@ msgid "Least Squares Fit..."
 msgstr "Прив. методом наименьших квадратов..."
 
 #: ../../src/wxMaxima.cpp:6906 ../../src/wxMaxima.cpp:6923
-#, fuzzy
 msgid "Left matrix:"
-msgstr "Открыть матрицу"
+msgstr "Левая матрица:"
 
 #: ../../src/wxMaximaFrame.cpp:1014
 msgid "Left side to the \"=\""
@@ -4593,13 +4582,12 @@ msgid "Length"
 msgstr "Длина"
 
 #: ../../examples/examples_gettext.list:1774
-#, fuzzy
 msgid ""
 "Let's assume that R_1 is a 100Ω with 10 percents of tolerance. R_2 is a "
 "1000Ω resistor with a 1 percent tolerance instead:\n"
 msgstr ""
-"Предположим, что R_1 имеет сопротивление 100Ω с допуском 10%. R_2 — резистор "
-"1000Ω с допуском 1%:\n"
+"Предположим, что R_1 имеет сопротивление 100Ω с допуском 10 процентов. R_2 — "
+"резистор 1000Ω с допуском 1 процент:\n"
 
 #: ../../examples/examples_gettext.list:607
 msgid ""
@@ -4944,24 +4932,20 @@ msgid "Matrix"
 msgstr "Матрица"
 
 #: ../../src/wxMaxima.cpp:6940 ../../src/wxMaxima.cpp:6957
-#, fuzzy
 msgid "Matrix #1:"
-msgstr "Матрица:"
+msgstr "Матрица #1:"
 
 #: ../../src/wxMaxima.cpp:6941 ../../src/wxMaxima.cpp:6958
-#, fuzzy
 msgid "Matrix #2:"
-msgstr "Матрица:"
+msgstr "Матрица #2:"
 
 #: ../../src/wxMaxima.cpp:6910
-#, fuzzy
 msgid "Matrix Product"
-msgstr "Произведение"
+msgstr "Произведение матриц"
 
 #: ../../src/wxMaxima.cpp:6927 ../../src/wxMaximaFrame.cpp:1075
-#, fuzzy
 msgid "Matrix exponent"
-msgstr "Матрица:"
+msgstr "Матричная экспонента"
 
 #: ../../src/wxMaximaFrame.cpp:1034
 msgid "Matrix from csv file"
@@ -5071,15 +5055,13 @@ msgstr ""
 "разными уравнениями от строк с одним и тем же уравнением."
 
 #: ../../src/ConfigDialogue.cpp:846
-#, fuzzy
 msgid "Maxima commands to be executed at every start of Maxima"
-msgstr "Команды Maxima для выполнения при каждом запуске Maxima: "
+msgstr "Команды Maxima для выполнения при каждом запуске Maxima"
 
 #: ../../src/ConfigDialogue.cpp:806
-#, fuzzy
 msgid "Maxima commands to be executed every time wxMaxima starts Maxima"
 msgstr ""
-"Команды Maxima для выполнения при каждом запуске Maxima программой wxMaxima: "
+"Команды Maxima для выполнения при каждом запуске Maxima программой wxMaxima"
 
 #: ../../src/ConfigDialogue.cpp:1134
 msgid "Maxima configuration"
@@ -5314,9 +5296,9 @@ msgstr ""
 "    result_b:b=at(b,%);"
 
 #: ../../src/wxMaxima.cpp:2723
-#, fuzzy, c-format
+#, c-format
 msgid "Maxima's HTML manuals are in directory %s"
-msgstr "Руководство пользователя Maxima находится в каталоге %s"
+msgstr "Руководство пользователя Maxima в формате HTML находится в каталоге %s"
 
 #: ../../src/wxMaxima.cpp:2287
 #, c-format
@@ -5520,7 +5502,7 @@ msgstr "Минимальное абсолютное значение, котор
 
 #: ../../src/ConfigDialogue.cpp:962
 msgid "Misc"
-msgstr ""
+msgstr "Прочее"
 
 #: ../../src/wxMaxima.cpp:9756 ../../src/wxMaxima.cpp:9757
 msgid "Mismatched parenthesis"
@@ -5557,7 +5539,7 @@ msgstr "Μ"
 
 #: ../../src/wxMaximaFrame.cpp:1074
 msgid "Multiply matrices"
-msgstr ""
+msgstr "Перемножить матрицы"
 
 #: ../../src/wxMaxima.cpp:7073 ../../src/wxMaxima.cpp:7093
 msgid "Name:"
@@ -6168,9 +6150,8 @@ msgid "Preferences...\tCtrl+,"
 msgstr "Параметры...\tCtrl+,"
 
 #: ../../src/wxMaximaFrame.cpp:1298
-#, fuzzy
 msgid "Prepend an element"
-msgstr "Добавить элемент"
+msgstr "Добавить элемент в начало"
 
 #: ../../src/TipOfTheDay.cpp:123
 msgid ""
@@ -6218,7 +6199,6 @@ msgid "Print the cell brackets [drawn to their left]"
 msgstr "Печать квадратных скобок полей [слева от них]"
 
 #: ../../src/ConfigDialogue.cpp:974
-#, fuzzy
 msgid "Printing"
 msgstr "Печать"
 
@@ -6256,7 +6236,7 @@ msgstr "RTF с расчётами OMML"
 
 #: ../../src/wxMaximaFrame.cpp:1055
 msgid "Rank"
-msgstr ""
+msgstr "Ранг"
 
 #: ../../src/wxMaximaFrame.cpp:460 ../../src/wxMaximaFrame.cpp:761
 msgid "Raw XML monitor"
@@ -6429,7 +6409,7 @@ msgstr "Удалить строки и/или столбцы из матрицы
 
 #: ../../src/wxMaximaFrame.cpp:1080
 msgid "Repetitive element-by-element multiplication"
-msgstr ""
+msgstr "Циклическое покомпонентное умножение"
 
 #: ../../src/FindReplacePane.cpp:104
 msgid "Replace All"
@@ -6533,9 +6513,8 @@ msgid "Revert all to defaults"
 msgstr "Вернуть все значения по умолчанию"
 
 #: ../../src/ConfigDialogue.cpp:705
-#, fuzzy
 msgid "Revert changes"
-msgstr "Сохранить изображение..."
+msgstr "Отменить изменения"
 
 #: ../../src/wxMaximaFrame.cpp:1964
 msgid "Rho"
@@ -6546,9 +6525,8 @@ msgid "Right arrow"
 msgstr "Стрелка вправо"
 
 #: ../../src/wxMaxima.cpp:6907 ../../src/wxMaxima.cpp:6924
-#, fuzzy
 msgid "Right matrix:"
-msgstr "Стрелка вправо"
+msgstr "Правая матрица:"
 
 #: ../../src/wxMaximaFrame.cpp:1017
 msgid "Right side to the \"=\""
@@ -8729,6 +8707,9 @@ msgid ""
 "packages and caches in.\n"
 "Make sure that your system's home directory is set up correctly"
 msgstr ""
+"Предупреждение: не удалось создать %s, каталог, в котором Maxima сохраняет"
+" конфигурационные данные, пользовательские пакеты и кэш.\n"
+"Убедитесь, что системный домашний каталог настроен правильно"
 
 #: ../../examples/examples_gettext.list:1063
 msgid "We also can add a second element to x:\n"
@@ -8739,13 +8720,12 @@ msgid "We can introduce (\"substitute\") them into other equations:\n"
 msgstr "Можно вставить («подставить») их в другие уравнения:\n"
 
 #: ../../examples/examples_gettext.list:1784
-#, fuzzy
 msgid ""
 "We can propose another set of values: Two resistors that have a high "
 "tolerance, but are guaranteed to always deviate into the same direction by "
 "the same percentage.\n"
 msgstr ""
-"Мы можем предложить другой набор значений: два резистора с допуском 10%, "
+"Мы можем предложить другой набор значений: два резистора с жёстким допуском, "
 "которые всегда будут отклоняться в одном и том же направлении на одно и то "
 "же процентное значение.\n"
 
