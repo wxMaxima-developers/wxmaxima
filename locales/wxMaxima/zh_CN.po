@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: wxMaxima HEAD\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-01-05 11:51+0100\n"
-"PO-Revision-Date: 2021-01-17 19:26+0800\n"
+"PO-Revision-Date: 2021-01-20 20:14+0800\n"
 "Last-Translator: Liu Rong <rong.liu@mail.bnu.edu.cn>\n"
 "Language-Team: amateur\n"
 "Language: zh\n"
@@ -8233,7 +8233,7 @@ msgstr "使用居中的点和减号，而不是星号和连字符"
 
 #: ../../src/ConfigDialogue.cpp:624
 msgid "Use centered dot character for multiplication"
-msgstr "使用居中点号（∙）表示乘法"
+msgstr "使用居中的点（∙）表示乘法"
 
 #: ../../src/wxMaximaFrame.cpp:1278
 msgid "Use list"
@@ -8259,7 +8259,7 @@ msgstr "导出为 LaTeX 文件时，使用偏导数符号表示 diff() 命令的
 
 #: ../../src/ConfigDialogue.cpp:1558
 msgid "Use unicode Math Symbols, if available"
-msgstr "尽可能使用 unicode 数学符号"
+msgstr "尽可能使用 Unicode 数学符号"
 
 #: ../../src/wxMaximaFrame.cpp:800
 msgid "Use vertical lines instead of parenthesis for matrices"
@@ -8320,7 +8320,7 @@ msgstr "变量"
 #: ../../examples/examples_gettext.list:2127
 msgid ""
 "Variable and equation names containing \"'\", \"+\", \"-\" or the like\n"
-msgstr "包含 “'、“+”、“-” 等符号的变量和方程名称\n"
+msgstr "包含 “'”、“+”、“-” 等符号的变量和方程名称\n"
 
 #: ../../src/wxMaxima.cpp:6159 ../../src/wxMaxima.cpp:6169
 #: ../../src/wxMaxima.cpp:7707
@@ -8507,7 +8507,7 @@ msgid ""
 "selection or the word under the cursor."
 msgstr ""
 "选择或单击输入的函数（命令）名称并按下 F1 键后，wxMaxima 将在帮助文档中搜索该"
-"函数相关的内容（译注：译者的版本上测试无效）。"
+"函数相关的内容。"
 
 #: ../../src/TipOfTheDay.cpp:75
 msgid ""
@@ -8545,7 +8545,7 @@ msgid ""
 "\n"
 "Select OK to visit the wxMaxima webpage."
 msgstr ""
-"您的版本是：%s. 最新版本是：%s。\n"
+"当前的版本是：%s. 最新版本是：%s。\n"
 "\n"
 "按“确认”后，会访问 wxMaxima 网页。"
 
@@ -8555,7 +8555,7 @@ msgstr "如果不保存，所有更改将会丢失。"
 
 #: ../../src/wxMaxima.cpp:10474
 msgid "Your version of wxMaxima is up to date."
-msgstr "当前 wxMaxima 是最新版本。"
+msgstr "当前的 wxMaxima 是最新版本。"
 
 #: ../../src/wxMaximaFrame.cpp:1953
 msgid "Zeta"
@@ -8591,8 +8591,7 @@ msgid ""
 "_%d.gif\"  alt=\"Animated Diagram\" loading=\"lazy\" style=\"max-width:90%%;"
 "\" />\n"
 msgstr ""
-"_%d.gif\"  alt=\"Animated Diagram\" loading=\"lazy\" style=\"max-width:90%%;"
-"\" />\n"
+"_%d.gif\"  alt=\"动态图表\" loading=\"lazy\" style=\"max-width:90%%;\" />\n"
 
 #: ../../src/Worksheet.cpp:5514
 #, c-format
@@ -8600,8 +8599,7 @@ msgid ""
 "_%d.gif\" alt=\"Animated Diagram\" style=\"max-width:90%%;\" loading=\"lazy"
 "\" />"
 msgstr ""
-"_%d.gif\" alt=\"Animated Diagram\" style=\"max-width:90%%;\" loading=\"lazy"
-"\" />"
+"_%d.gif\" alt=\"动态图表\" style=\"max-width:90%%;\" loading=\"lazy\" />"
 
 #: ../../src/wxMaximaFrame.cpp:1920
 msgid "alpha"
@@ -8645,11 +8643,11 @@ msgstr "选择已安装的 Maxima 版本"
 
 #: ../../src/wxMaxima.cpp:6886
 msgid "comma-separated column numbers:"
-msgstr "要删除的列，用逗号分隔"
+msgstr "要删除的列，用逗号分隔："
 
 #: ../../src/wxMaxima.cpp:6886
 msgid "comma-separated row numbers:"
-msgstr "要删除的行，用逗号分隔"
+msgstr "要删除的行，用逗号分隔："
 
 #: ../../src/wxMaximaFrame.cpp:1923
 msgid "delta"
@@ -8924,10 +8922,10 @@ msgid ""
 "needs to do its work can be used to tell solve() which variables to "
 "eliminate in the solution for the interesting variable."
 msgstr ""
-"只有当方程组含 n 个独立方程和要求解的 n 个变量时，solve() 命令才能解出该方程"
-"组。\n"
-"如果只对其中一个变量感兴趣，也可以填写额外的变量，以告诉 solve() 命令消除感兴"
-"趣的变量结果中额外的变量。"
+"只有当方程组含 n 个独立方程和需要求解的 n 个变量时，solve() 命令才能解出该方"
+"程组。\n"
+"如果只对其中一个变量感兴趣，也可以填写额外的变量，以告诉 solve() 命令消除结果"
+"中额外的变量。"
 
 #: ../../src/wxMaximaFrame.cpp:2015
 msgid "sqrt (needs parenthesis for its argument to work as a Maxima command)"
@@ -9075,7 +9073,7 @@ msgid ""
 msgstr ""
 "wxMaxima 是计算机代数系统 Maxima 的跨平台图形用户界面，基于 wxWidgets。\n"
 "为了渲染 svg 图形，它使用 nanosvg (https://github.com/memonenen/nanosvg).\n"
-"unicode 字符列表是由 Unicode Consortium 制定的。"
+"Unicode 字符列表是由 Unicode Consortium 制定的。"
 
 #: ../../src/TipOfTheDay.cpp:180
 msgid ""
@@ -9104,7 +9102,7 @@ msgid ""
 "This setting defines the limit [in Megabytes per plot] for this feature."
 msgstr ""
 "wxMaxima 通常会储存由 draw() 命令得到的每个绘图的 gnuplot 源文件，以便以后能"
-"在gnuplot 中交互式打开绘图。此设置定义了该功能的储存限制（单位：MB/图）。"
+"在 gnuplot 中交互式打开绘图。此设置定义了该功能的储存限制（单位：MB/图）。"
 
 #: ../../src/TipOfTheDay.cpp:141
 msgid ""
