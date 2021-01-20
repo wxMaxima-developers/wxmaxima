@@ -51,7 +51,10 @@ TipOfTheDay::TipOfTheDay(wxWindow *parent)
     _("By default, Shift-Enter is used to evaluate commands, while Enter is used for multiline input. This behaviour can be changed in 'Edit->Configure' dialog by checking 'Enter evaluates cells'. This switches the roles of these two key commands.")
     );
   m_tips.Add(
-    _("Maxima uses ':' to set values ('a : 3;') and ':=' to define functions ('f(x) := x^2;').")
+    _("Maxima uses ':' to assign values ('a : 3;').\nThis allows that an equation could be assigned to a variable, e.g.\n eq1:3*x=4;\nwhich may then be solved for x with\nsolve(eq1,x);")
+    );
+  m_tips.Add(
+    _("Maxima uses ':=' to define functions, e.g.:\nf(x) := x^2;")
     );
   m_tips.Add(
     _("You can access the last output using the variable '%'. You can access the output of previous commands using variables '%on' where n is the number of output.")
@@ -66,7 +69,7 @@ TipOfTheDay::TipOfTheDay(wxWindow *parent)
     _("You can insert different types of 'cells' in wxMaxima documents using the 'Cell' menu. Note that only 'input cells' can be evaluated, while others are used for commenting and structuring your calculations.")
     );
   m_tips.Add(
-    _("A new document format has been introduced in wxMaxima 0.8.2 that saves not only your input and text commentaries, but also the outputs of your calculations. When saving your document, select 'wxMaxima XML document' format.")
+    _("A new document format has been introduced in wxMaxima 0.8.2 that saves not only your input and text commentaries, but also the outputs of your calculations. When saving your document, select 'Whole document (*.wxmx)' format.")
     );
   m_tips.Add(
     _("Title, section and subsection cells can be folded to hide their contents. To fold or unfold, click in the square next to the cell. If you shift-click, all sublevels of that cell will also fold/unfold.")
@@ -78,7 +81,7 @@ TipOfTheDay::TipOfTheDay(wxWindow *parent)
     _("There are many resources about Maxima and wxMaxima on the internet. Visit https://wxMaxima-developers.github.io/wxmaxima/help.html for more information and to find tutorials on using wxMaxima and Maxima.")
     );
   m_tips.Add(
-    _("You can get help on a Maxima function by selecting or clicking on the function name and pressing F1. wxMaxima will search help index for the selection or the word under the cursor.")
+    _("You can get help on a Maxima function by selecting or clicking on the function name and pressing F1. wxMaxima will search the help index for the selection or the word under the cursor.")
     );
   m_tips.Add(
     _("A 'horizontal cursor' was introduced in wxMaxima 0.8.0. It looks like a horizontal line between cells. It indicates where a new cell will appear if you type or paste text or execute a menu command.")
@@ -114,7 +117,7 @@ TipOfTheDay::TipOfTheDay(wxWindow *parent)
     _("To save the size and position of wxMaxima windows between session, use 'Edit->Configure' dialog.")
     );
   m_tips.Add(
-    _("Since wxMaxima 0.8.2 you can also insert images into your documents. Use 'Cell->Insert Image...' menu command. Note that you have to save your document in 'wxMaxima XML document' format if you want the image to be saved along with your document.")
+    _("Since wxMaxima 0.8.2 you can also insert images into your documents. Use 'Cell->Insert Image...' menu command.")
     );
   m_tips.Add(
     _("Besides the global undo functionality that is active when the cursor is between cells, wxMaxima has a per-cell undo function that is active if the cursor is inside a cell. Pressing Ctrl+Z inside a cell can therefore been used for a fine-pitch undo that doesn't affect latter changes made in other cells.")
@@ -123,13 +126,13 @@ TipOfTheDay::TipOfTheDay(wxWindow *parent)
     _("Pressing Ctrl+Space or Ctrl+Tab starts an autocomplete function that can not only complete all functions that are integrated into the Maxima core and their parameters: It also knows about parameters from currently loaded packages and from functions that are defined in the current file.")
     );
   m_tips.Add(
-    _("It is possible to define reusable Maxima libraries with wxMaxima that can be later loaded by using the load() function. All that has to be done is to export a file in the .mac or to save it in the .wxm format. Note, though, that a few special characters like the \"not equal\" symbol for \"#\" are handled by wxMaxima, not by maxima and therefore cannot be recognized on load().")
+    _("It is possible to define reusable Maxima libraries with wxMaxima that can be later loaded by using the load() function. All that has to be done is to export a file in the .mac or to save it in the .wxm format. Note, though, that a few special characters like the \"not equal\" symbol for \"#\" are handled by wxMaxima, not by Maxima and therefore cannot be recognized on load().")
     );
   m_tips.Add(
-    _("wxMaxima can be made to execute commands at every start-up by placing them in a text file with the name wxmaxima.rc in the user directory. This directory can be found by typing maxima_userdir")
+    _("wxMaxima can be made to execute commands at every start-up by placing them in a text file with the name wxmaxima.rc in the user directory. This directory can be found by typing maxima_userdir;")
     );
   m_tips.Add(
-    _("Libraries can be accessed by any wxMaxima process regardless of which directory it runs in, if they are placed in the user directory. This directory can be found by typing maxima_userdir")
+    _("Libraries can be accessed by any wxMaxima process regardless of which directory it runs in, if they are placed in the user directory. This directory can be found by typing maxima_userdir;")
     );
   m_tips.Add(
     _("The load() command of Maxima versions >5.38 is able to load .wxm files as library of maxima's commands.")
@@ -165,10 +168,10 @@ TipOfTheDay::TipOfTheDay(wxWindow *parent)
     _("The rhs() (\"right hand side\") command allows to retrieve the result of an equation in exactly the format a function would have:\n\n    Values:[\n        /* m=1.2 tons */\n        m=1.2*10^3,\n        /* 100 km/h*/\n        v=100*10^3/(60*60)\n    ];\n    Energy:W=1/2*m*v^2;\n    at(Energy,Values);\n    W_mech:rhs(%);")
     );
   m_tips.Add(
-    _("In text cells Bullet lists can be created by beginning a line with \" * \". The number of spaces in front of the \"*\" determines the indentation level; Indentation can be continued in the next line by indenting the line using spaces.")
+    _("In text cells bullet lists can be created by beginning a line with \" * \". The number of spaces in front of the \"*\" determines the indentation level; Indentation can be continued in the next line by indenting the line using spaces.")
     );
   m_tips.Add(
-    _("Text cells can hold Citations that as marked as such by beginning a line with \" > \". The number of spaces in front of the \">\" determines the indentation level, as it does with bullet lists.")
+    _("Text cells can hold citations that as marked as such by beginning a line with \" > \". The number of spaces in front of the \">\" determines the indentation level, as it does with bullet lists.")
     );
   m_tips.Add(
     _("The key combination Shift+Space results in a non-breakable space.")
@@ -178,6 +181,15 @@ TipOfTheDay::TipOfTheDay(wxWindow *parent)
     );
   m_tips.Add(
     _("wxMaxima needs more developers. It is an open source project where you can contribute. Join the wxMaxima development at: https://github.com/wxMaxima-developers/wxmaxima")
+    );
+  m_tips.Add(
+    _("You found a bug in wxMaxima? Please report it at https://github.com/wxMaxima-developers/wxmaxima/issues\nA mathematical bug is maybe a bug in Maxima (the backend), which can be reported at https://sourceforge.net/p/maxima/bugs/\nPlease check, before, if the bug was not already reported.")
+    );
+  m_tips.Add(
+    _("You got a idea for an improvement of wxMaxima? Great! Please submit your idea at https://github.com/wxMaxima-developers/wxmaxima/issues. ")
+    );
+  m_tips.Add(
+    _("wxMaxima is programmed in C++ using the wxWidgets toolkit and uses CMake as build system. You can contribute to wxMaxima, if you have some knowledge with this enviroment.")
     );
 
   m_num = 0;
