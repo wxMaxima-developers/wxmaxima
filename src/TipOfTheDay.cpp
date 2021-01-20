@@ -51,7 +51,7 @@ TipOfTheDay::TipOfTheDay(wxWindow *parent)
     _("By default, Shift-Enter is used to evaluate commands, while Enter is used for multiline input. This behaviour can be changed in 'Edit->Configure' dialog by checking 'Enter evaluates cells'. This switches the roles of these two key commands.")
     );
   m_tips.Add(
-    _("Maxima uses ':' to assign values ('a : 3;').\nThis allows that an equation could be assigned to a variable, e.g.\n eq1:3*x=4;\nwhich may then be solved for x with\nsolve(eq1,x);")
+    _("Maxima uses ':' to assign values to a variable ('a : 3;'), not '=' as most programming languages do.\nThis allows, that a mathematical equation can be assigned to a variable, e.g.\n eq1:3*x=4;\nwhich may then be solved for x with\nsolve(eq1,x);")
     );
   m_tips.Add(
     _("Maxima uses ':=' to define functions, e.g.:\nf(x) := x^2;")
