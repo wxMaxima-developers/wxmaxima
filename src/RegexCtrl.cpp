@@ -65,7 +65,7 @@ void RegexCtrl::OnTextChange(wxCommandEvent &WXUNUSED(ev))
       wxString errMsg;
       {
         wxLog *logOld = wxLog::GetActiveTarget();
-        wxLogBuffer_noStdErrFlush errOut;        
+        wxLogBuffer_noStdErrFlush errOut;
         wxLog::SetActiveTarget(&errOut);
         m_regex.Compile(GetValue());
         errMsg = errOut.GetBuffer();
@@ -82,8 +82,8 @@ void RegexCtrl::OnTextChange(wxCommandEvent &WXUNUSED(ev))
         m_regexInputState = newInputState;
         const wxColor colors[3] = {
           /* empty   */ wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOW),
-          /* invalid */ {255,192,192},
-          /* valid   */ wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHTTEXT)
+          /* invalid */ {255,165,0}, /* orange. Red seems too 'dangerous'. */
+          /* valid   */ {0,255,0}    /* green. Input okay. */
         };
         if(errMsg.IsEmpty())
           errMsg = RegexTooltip_error;
@@ -92,7 +92,13 @@ void RegexCtrl::OnTextChange(wxCommandEvent &WXUNUSED(ev))
         const wxString tooltips[3] = {
           /* empty */ RegexTooltip_norm, /* invalid */ errMsg, /* valid */ RegexTooltip_norm
         };
-        SetBackgroundColour(colors[int(m_regexInputState)]);
+        // One could also set the background color, with SetBackgroundColour(...);
+        // Be careful, not only set the foreground color to black or white
+        // the backgound color may be the same (or have not enough contrast)
+        // if dark mode is used.
+        // Choose always colors with some contrast.
+        // Green and orange (as above for valid/invalid input) works with normal and dark mode.
+        SetForegroundColour(colors[int(m_regexInputState)]);
         SetToolTip(tooltips[int(m_regexInputState)]);
         Refresh();
       }
