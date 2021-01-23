@@ -8,6 +8,8 @@
 # According to #1388 cmake 3.19.2 requires this to be definied
 # in each source file separately
 
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/Info.plist.in ${CMAKE_CURRENT_BINARY_DIR}/Info.plist)
+
 function(list_transform_prepend var prefix)
     set(temp "")
     foreach(f ${${var}})
@@ -224,7 +226,7 @@ elseif(APPLE)
     add_executable(wxmaxima ${SOURCE_FILES})
     set_target_properties(wxmaxima PROPERTIES
         MACOSX_BUNDLE TRUE
-	MACOSX_BUNDLE_INFO_PLIST ${CMAKE_BINARY_DIR}/data/Info.plist
+	MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_BINARY_DIR}/Info.plist
         RESOURCE "${RESOURCE_FILES}"
     )
 
