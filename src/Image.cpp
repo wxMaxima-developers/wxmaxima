@@ -803,9 +803,6 @@ wxBitmap Image::GetBitmap(double scale)
   }
   else
     m_scaledBitmap = wxBitmap(1,1);
-  #ifdef HAVE_OMP_HEADER
-  omp_unset_lock(&m_gnuplotLock);
-  #endif
   return m_scaledBitmap;
 }
 
@@ -1029,9 +1026,6 @@ void Image::LoadImage_Backgroundtask(wxString image, std::shared_ptr<wxFileSyste
     }
   }
   m_fs_keepalive_imagedata.reset();
-  #ifdef HAVE_OMP_HEADER
-  omp_unset_lock(&m_imageLoadLock);
-  #endif
 }
 
 void Image::Recalculate(double scale)
