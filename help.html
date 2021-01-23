@@ -3,20 +3,9 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/ico" href="favicon.ico">
-<script src="https://code.jquery.com/jquery-3.4.1.min.js"
-        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-<!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" 
-      integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
-
-<!-- Optional theme -->
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap-theme.min.css"
-      integrity="sha384-6pzBo3FDv/PJ8r2KRkGHifhEocL+1X2rVCTTkUfGk7/0pbek5mMa1upzvWbrUbOZ" crossorigin="anonymous">
-
-<!-- Latest compiled and minified JavaScript -->
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
-        integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+  <link rel="icon" type="image/svg+xml" href="wxmaxima.svg" />
+<link rel="stylesheet" href="bootstrap.min.css">
+<script src="bootstrap.bundle.min.js"></script>
 
   <link rel="stylesheet" type="text/css" href="style.css">
   <title>wxMaxima - documentation</title>
@@ -25,36 +14,24 @@
 <body>
 
   <div class="container">
-
-    <nav class="navbar navbar-inverse">
-    <div class="navbar-header">
-        <button type="button"
-                class="navbar-toggle collapsed"
-                data-toggle="collapse"
-                data-target="#navbar"
-                aria-expanded="false"
-                aria-controls="navbar">
-          <span class="sr-only">Toggle navigation</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-
-        <a class="navbar-brand" href="index.html">
-          wxMaxima
-        </a>
-      </div>
-      <div class="navbar-collapse collapse" id="navbar">
-        <ul class="nav navbar-nav">
-          <li><a href="screenshots.html">Screenshots</a></li>
-          <li><a href="download.html">Download</a></li>
-          <li class="active"><a href="help.html">Documentation</a></li>
-          <li><a href="develop.html">Develop</a></li>
-          <li><a href="Example.html">Example 1</a></li>
-          <li><a href="Example2.html">Example 2</a></li>
-        </ul>
-      </div>
-    </nav>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="index.html"><img src="wxmaxima.svg" alt="" width="30" height="30">&nbsp;wxMaxima</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+          <li class="nav-item"><a class="nav-link" href="screenshots.html">Screenshots</a></li>
+          <li class="nav-item"><a class="nav-link" href="download.html">Download</a></li>
+          <li class="nav-item"><a class="nav-link active" aria-current="page" href="help.html">Documentation</a></li>
+          <li class="nav-item"><a class="nav-link" href="develop.html">Develop</a></li>
+          <li class="nav-item"><a class="nav-link" href="Example.html">Example 1</a></li>
+          <li class="nav-item"><a class="nav-link" href="Example2.html">Example 2</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
 
     <div class="page-header">
       <h1>Getting help</h1>
@@ -62,10 +39,10 @@
 
     <p class="lead">
       To get support for using Maxima, use the
-      <a href="http://maxima.sourceforge.net/maximalist.html">mailing lists</a>.
+      <a href="https://maxima.sourceforge.io/maximalist.html">mailing lists</a>.
       Questions specific to wxMaxima can be posted to a
-      <a href="http://sourceforge.net/p/wxmaxima/discussion/435775/">forum</a>.
-      A lot of documentation can also be found at <a href="http://maxima.sf.net/documentation.html">maxima webpages</a>.
+      <a href="https://sourceforge.net/p/wxmaxima/discussion/435775/">forum</a>.
+      A lot of documentation can also be found at <a href="https://maxima.sourceforge.io/documentation.html">Maxima webpages</a>.
     </p>
 
     <h2>Math fonts</h2>
@@ -85,8 +62,12 @@
     is accessible without the need of having access to the internet.
     Both manuals are accessible online, too:
     <ul>
-      <li><a href="https://htmlpreview.github.io/?https://github.com/wxMaxima-developers/wxmaxima/blob/master/info/wxmaxima.html">The wxMaxima manual is here</a>
-      <li><a href="http://maxima.sourceforge.net/documentation.html">The manual Maxima, in various formats, is here</a>
+      <li><a href="https://htmlpreview.github.io/?https://github.com/wxMaxima-developers/wxmaxima/blob/master/info/wxmaxima.html">The wxMaxima manual (English)</a></li>
+      <li><a href="https://htmlpreview.github.io/?https://github.com/wxMaxima-developers/wxmaxima/blob/master/info/wxmaxima.de.html">The wxMaxima manual (German translation)</a></li>
+      <li><a href="https://htmlpreview.github.io/?https://github.com/wxMaxima-developers/wxmaxima/blob/master/info/wxmaxima.zh_CN.html">The wxMaxima manual (Simplified Chinese translation)</a></li>
+      <li><a href="https://htmlpreview.github.io/?https://github.com/wxMaxima-developers/wxmaxima/blob/master/info/wxmaxima.uk.html">The wxMaxima manual (Ukrainian translation)</a></li>
+      <li>These are the most up-to-date translations, thanks to our translators. If you want to help to translate wxMaxima and the manual to your language, you can find more information <a href="https://github.com/wxMaxima-developers/wxmaxima/blob/master/locales/README.md">here</a>.
+      <li><a href="https://maxima.sourceforge.io/documentation.html">The manual for Maxima, in various formats, is here</a></li>
     </ul>
     <h2>Tutorials</h2>
 
@@ -149,7 +130,7 @@
 
     <h2>Cool usage examples</h2>
         <ul>
-          <li><a href="http://maxima-solved.blogspot.com">Selected maxima examples</a> by Robert Dodier.</li>
+          <li><a href="https://maxima-solved.blogspot.com/">Selected Maxima examples</a> by Robert Dodier.</li>
 	  <li><a href="https://hackaday.com/2019/02/28/computer-algebra-for-electronic-design/">Computer algebra for electronic design</a></li>
         </ul>
 
@@ -160,42 +141,20 @@
 
     <h2>Other documents</h2>
     <ul>
-      <li><a href="http://vimeo.com/maximajaj">Introducción a Maxima por Javier Arántegui</a>:
+      <li><a href="https://vimeo.com/channels/maximajaj">Introducción a Maxima por Javier Arántegui</a>:
         video tutorials in Spanish.</li>
-      <li><a href="http://www.youtube.com/watch?v=bxDilwpaCqU">Video introduction</a> to
+      <li><a href="https://www.youtube.com/watch?v=bxDilwpaCqU">Video introduction</a> to
         wxMaxima in German by Karsten Kulach.</li>
-      <li><a href="http://andrejv.wordpress.com/">A blog</a> with short maxima demonstrations.
-      <li><a href="http://blog.goo.ne.jp/slide_271828/e/983b7f31830609abc2337d5ab1461485">Japanese blog posts</a> about wxMaxima.</li>
-      <li><a href="http://statmath.wu.ac.at/~leydold/maxima/">(wx)Maxima</a> tutorial with special focus on the mathematics needed in economics by Josef Leydold and Martin Petry.</li>
-      <li><a href="http://dilijev-wxmaxima.blogspot.com">wxMaxima Developer Blog</a> by Doug Ilijev.</li>
+      <li><a href="https://andrejv.wordpress.com/">A blog</a> with short maxima demonstrations.
+      <li><a href="https://blog.goo.ne.jp/slide_271828/e/983b7f31830609abc2337d5ab1461485">Japanese blog posts</a> about wxMaxima.</li>
+      <li><a href="https://statmath.wu.ac.at/~leydold/maxima/">(wx)Maxima</a> tutorial with special focus on the mathematics needed in economics by Josef Leydold and Martin Petry.</li>
+      <li><a href="https://dilijev-wxmaxima.blogspot.com/">wxMaxima Developer Blog</a> by Doug Ilijev.</li>
       <li><a href="http://www.austromath.at/daten/maxima/zusatz/Graphics_with_Maxima.pdf">Graphics with wxMaxima</a> by Wilhelm Haager.</li>
-      <li><a href="http://wxmaximafor.wordpress.com">wxMaxima for calculus</a> a "open-text" book written by Zachary Hannan.</li>
-      <li><a href="http://www.scotchildress.com/wxmaxima/">A page full of tutorials</a>
+      <li><a href="https://wxmaximafor.wordpress.com/">wxMaxima for calculus</a> a "open-text" book written by Zachary Hannan.</li>
+      <li><a href="https://www.scotchildress.com/wxmaxima/">A page full of tutorials</a>
     </ul>
   </div>
-  <!-- Start of StatCounter Code -->
-<script>
-sc_project=318894; 
-sc_invisible=1; 
-sc_partition=1; 
-sc_security=""; 
-</script>
 
-<script src="http://www.statcounter.com/counter/counter.js"></script><noscript><div class="statcounter"><a title="web counter" href="http://www.statcounter.com/free_hit_counter.html" target="_blank"><img class="statcounter" src="http://c2.statcounter.com/318894/0//1/" alt="web counter" style="border:0"></a></div></noscript>
-<!-- End of StatCounter Code -->
-
-<!-- Google Analytics -->
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-  ga('create', 'UA-57021248-1', 'auto');
-  ga('send', 'pageview');
-
-</script>
-<!-- End of Google Analytics -->
 
 </body>
 </html>
