@@ -1,6 +1,7 @@
-# Current
+# 21.01.0
  * Chinese translation updates by 刘荣.
- * Many small bugfixes.
+ * A Russian translation update by OlesyaGerasimenko
+ * Many small bugfixes including a crash on loading files with images.
 
 # 20.12.2
  * Compilation now works if wxWidgets was compiled with stl support
