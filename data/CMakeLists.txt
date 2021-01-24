@@ -1,26 +1,18 @@
 # -*- mode: CMake; cmake-tab-width: 4; -*-
 
 
-# prepares a include file, which can be included in a string, e.g.
-# const char License_text[] =
-# #include "char-License.h"
-# ;
-# the length of the content ist written as lengthvariable to the length_output_file
-function(make_includable input_file output_file length_output_file lengthvariable)
+function(make_includable input_file output_file)
     file(READ ${input_file} content)
-    string(LENGTH "${content}" contentlength)
-    file(APPEND "${length_output_file}" "#define ${lengthvariable} ${contentlength}\n")
     set(delim "for_c++_include")
     set(content "R\"${delim}(\n${content})${delim}\"")
     file(WRITE ${output_file} "${content}")
 endfunction(make_includable)
 
-file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/arraylength.h" "#ifndef ARRAYLENGTH_H\n#define ARRAYLENGTH_H\n")
-make_includable("${CMAKE_CURRENT_SOURCE_DIR}/UnicodeData.txt" "${CMAKE_CURRENT_BINARY_DIR}/char-UnicodeData.h" "${CMAKE_CURRENT_BINARY_DIR}/arraylength.h" "UnicodeData_txt_len")
-make_includable("${CMAKE_CURRENT_SOURCE_DIR}/wxMathML.lisp" "${CMAKE_CURRENT_BINARY_DIR}/char-wxMathML.h" "${CMAKE_CURRENT_BINARY_DIR}/arraylength.h" "wxMathML_lisp_len")
-make_includable("${CMAKE_CURRENT_SOURCE_DIR}/manual_anchors.xml" "${CMAKE_CURRENT_BINARY_DIR}/char-manual_anchors.xml.h" "${CMAKE_CURRENT_BINARY_DIR}/arraylength.h" "manual_anchors_xml_len")
-make_includable("${CMAKE_SOURCE_DIR}/GPL.txt" "${CMAKE_CURRENT_BINARY_DIR}/char-License.h" "${CMAKE_CURRENT_BINARY_DIR}/arraylength.h" "License_len")
-file(APPEND "${CMAKE_CURRENT_BINARY_DIR}/arraylength.h" "#endif // ARRAYLENGTH_H\n")
+make_includable("${CMAKE_CURRENT_SOURCE_DIR}/UnicodeData.txt" "${CMAKE_CURRENT_BINARY_DIR}/char-UnicodeData.h")
+make_includable("${CMAKE_CURRENT_SOURCE_DIR}/wxMathML.lisp" "${CMAKE_CURRENT_BINARY_DIR}/char-wxMathML.h")
+make_includable("${CMAKE_CURRENT_SOURCE_DIR}/manual_anchors.xml" "${CMAKE_CURRENT_BINARY_DIR}/char-manual_anchors.xml.h")
+make_includable("${CMAKE_SOURCE_DIR}/GPL.txt" "${CMAKE_CURRENT_BINARY_DIR}/char-License.h")
+
 set(DATAFILES
         ${CMAKE_CURRENT_SOURCE_DIR}/io.github.wxmaxima_developers.wxMaxima.png
         ${CMAKE_CURRENT_SOURCE_DIR}/io.github.wxmaxima_developers.wxMaxima.svg)

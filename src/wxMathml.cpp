@@ -4,10 +4,9 @@
 #include <wx/mstream.h>
 #include <wx/txtstrm.h>
 #include <wx/string.h>
-const char wxMathML_lisp[] =
+const char * wxMathML_lisp =
 #include "char-wxMathML.h"
 ;
-#include "arraylength.h"   // the length of the above array is stored there.
 
 wxMathML::wxMathML()
 {
@@ -16,7 +15,7 @@ wxMathML::wxMathML()
       // Unzip wxMathml.lisp: We need to store it in a .zip format
       // in order to avoid a bug in the ArchLinux C compiler that
       // seems to replace long strings by a "\0".
-      wxMemoryInputStream istream(wxMathML_lisp, wxMathML_lisp_len);
+      wxMemoryInputStream istream(wxMathML_lisp, strlen(wxMathML_lisp));
       wxTextInputStream textIn(istream);
       wxString line;
       

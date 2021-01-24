@@ -34,10 +34,9 @@
 #include <wx/wfstream.h>
 #include <wx/txtstrm.h>
 #include <wx/wupdlock.h>
-const char UnicodeData_txt[] =
+const char * UnicodeData_txt =
 #include "char-UnicodeData.h"
 ;
-#include "arraylength.h"   // the length of the above array is stored there.
 #include <memory>
 
 #include "ErrorRedirector.h"
@@ -150,7 +149,7 @@ void UnicodeSidebar::OnPaint(wxPaintEvent &event)
   if(m_initialized)
     return;
 
-  wxMemoryInputStream istream(UnicodeData_txt, UnicodeData_txt_len);
+  wxMemoryInputStream istream(UnicodeData_txt, strlen(UnicodeData_txt));
   wxTextInputStream textIn(istream);
   wxString regex_string = m_regex->GetValue();
   wxRegEx regex(m_regex->GetValue());

@@ -29,17 +29,16 @@
 #include <wx/txtstrm.h>
 #include <wx/string.h>
 #include "LicenseDialog.h"
-const char License_text[] =
+const char * License_text =
 #include "char-License.h"
 ;
-#include "arraylength.h"   // the length of the above array is stored there.
 
 LicenseDialog::LicenseDialog(wxWindow *parent) :
   wxDialog(parent, -1, _("License"), wxDefaultPosition, wxDefaultSize,
            wxRESIZE_BORDER | wxCLOSE_BOX | wxMAXIMIZE_BOX | wxMINIMIZE_BOX)
 {
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
-  wxMemoryInputStream istream(License_text, License_len);
+  wxMemoryInputStream istream(License_text, strlen(License_text));
   wxTextInputStream textIn(istream);
   m_movedToStart = false;
   wxString line;
