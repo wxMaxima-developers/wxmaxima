@@ -46,6 +46,9 @@ EditorCell::EditorCell(GroupCell *parent, Configuration **config, const wxString
   m_text.Replace(wxT("\u2028"), "\n");
   m_text.Replace(wxT("\u2029"), "\n");
   SetValue(TabExpand(text, 0));
+  m_height = m_charHeight + 2 * Scale_Px(2);
+  m_center = m_height / 2;
+  m_width = 2 * Scale_Px(2);
 }
 
 wxString EditorCell::EscapeHTMLChars(wxString input)
@@ -669,7 +672,7 @@ void EditorCell::Recalculate(AFontSize fontsize)
     // Calculate the cell height
     m_height = m_numberOfLines * (m_charHeight) + 2 * Scale_Px(2);
 
-    if(m_height == 0)
+    if(m_height < m_charHeight + 2 * Scale_Px(2))
       m_height = (m_charHeight) + 2 * Scale_Px(2);
     
     // The center lies in the middle of the 1st line
@@ -2706,25 +2709,13 @@ int EditorCell::XYToPosition(int x, int y)
   return pos;
 }
 
-void EditorCell::SetCurrentPoint(wxPoint point)
-{
-  m_currentPoint = point;
-  if ((m_currentPoint.x >= 0) && (m_currentPoint.y >= 0))
-    m_currentPoint_Last = point;
-}
-
 wxPoint EditorCell::PositionToPoint(int pos)
 {
   SetFont();
 
   int x = m_currentPoint.x, y = m_currentPoint.y;
-  if (x == -1 || y == -1)
-  {
-    x = m_currentPoint_Last.x;
-    y = m_currentPoint_Last.y;
-  }
 
-  if (x == -1 || y == -1)
+  if ((x < 0) || (y < 0))
     return wxPoint(-1, -1);
 
   int width;

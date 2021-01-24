@@ -396,20 +396,11 @@ void GroupCell::AppendOutput(std::unique_ptr<Cell> &&cell)
       input->ContainsChanges(false);
   }
   else
-  {
     CellList::AppendCell(m_output, std::move(cell));
-  }
+
   UpdateCellsInGroup();
   m_updateConfusableCharWarnings = true;
   ResetSize();
-
-  // IMPORTANT! Do not Recalculate() here, as it is quadratic behavior
-  // and it makes interactive performance go down the drain. If there are
-  // visual glitches that a recalculation here would "fix", they must be
-  // fixed at their source. Doing it by recalculating here will only patch
-  // around the problem and make wxMaxima perform like molasses. IMPORTANT!
-  if (TEMPORARY_WINDOWS_PERFORMANCE_HACK)
-    Recalculate(); // FIXME this has to go away eventually
 }
 
 WX_DECLARE_STRING_HASH_MAP(int, CmdsAndVariables);
@@ -713,6 +704,39 @@ int GroupCell::GetInputIndent()
   m_labelWidth_cached = labelWidth;
     
   return labelWidth;
+}
+
+void GroupCell::UpdateOutputPositions()
+{
+  UpdateYPosition();
+  RecalculateInput();
+  RecalculateOutput();
+  if (m_output && !IsHidden())
+  {
+    wxPoint in = GetCurrentPoint();
+    auto *const configuration = (*m_configuration);
+    if (configuration->ShowCodeCells() || (m_groupType != GC_TYPE_CODE))
+      in.y += m_inputLabel->GetMaxDrop();
+    
+    m_outputRect.SetPosition(in);
+    bool first = true;
+    int drop = 0;
+    for (Cell &tmp : OnDrawList(m_output.get()))
+    {
+      if (first || tmp.BreakLineHere())
+      {
+        if (!first && tmp.HasBigSkip())
+          in.y += MC_LINE_SKIP;
+        
+        in.x = GetCurrentPoint().x + GetLineIndent(&tmp);
+        in.y += drop + tmp.GetCenterList();
+        drop = tmp.GetMaxDrop();
+      }
+      tmp.SetCurrentPoint(in);
+      in.x += tmp.GetWidth();
+      first = false;
+    }
+  }
 }
 
 void GroupCell::Draw(wxPoint const point)

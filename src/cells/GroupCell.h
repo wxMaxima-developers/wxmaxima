@@ -352,6 +352,8 @@ public:
   //! Recalculate the cell's y position using the position and height of the last one.
   void UpdateYPosition();
 
+  void UpdateOutputPositions();
+
   void UpdateYPositionList();
 
   bool GetSuppressTooltipMarker() const { return m_suppressTooltipMarker; }
