@@ -3013,14 +3013,13 @@ void Worksheet::OpenQuestionCaret(const wxString &txt)
     answerCell->CaretToEnd();
 
     group->AppendOutput(std::move(answerCell));
-
+    
     // If we filled in an answer and "AutoAnswer" is true we issue an evaluation event here.
     if(autoEvaluate)
     {
       wxMenuEvent *EvaluateEvent = new wxMenuEvent(wxEVT_MENU, wxMaximaFrame::menu_evaluate);
       GetParent()->GetEventHandler()->QueueEvent(EvaluateEvent);
     }
-    RecalculateForce();
   }
   // If the user wants to be automatically scrolled to the cell evaluation takes place
   // we scroll to this cell.
@@ -7743,20 +7742,18 @@ bool Worksheet::ScrollToCaretIfNeeded()
     if (GetActiveCell())
     {
       wxPoint point = GetActiveCell()->PositionToPoint();
-      if ((point.x < 0) || (point.y < 0))
+
+      // Carets in output cells [maxima questions] get assigned a position
+      // only when they are drawn --- or if we update the position manually.
+      if(point.y<0)
       {
-        RecalculateForce();
-        RecalculateIfNeeded();
+        GetActiveCell()->GetGroup()->UpdateOutputPositions();
+        wxASSERT(GetActiveCell()->GetGroup()->GetCurrentPoint().x >= 0);
+        wxASSERT(GetActiveCell()->GetGroup()->GetCurrentPoint().y >= 0);
         point = GetActiveCell()->PositionToPoint();
       }
-      if (QuestionPending())
-      {
-        point.x = 0;
-        point.y = GetActiveCell()->GetGroup()->GetCurrentY();
-      }
-      else
-        if (point.y > 0)
-          ShowPoint(point);
+      wxASSERT(point.y >= 0);
+      ShowPoint(point);
     }
   }
   return true;

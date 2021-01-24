@@ -3276,9 +3276,7 @@ void wxMaxima::ReadPrompt(wxString &data)
         m_worksheet->m_mainToolBar->EnableTool(ToolBar::tb_follow, true);
     }
     else
-    {
       m_worksheet->OpenQuestionCaret();
-    }
     StatusMaximaBusy(userinput);
   }
   label.Trim(false);
@@ -4656,18 +4654,6 @@ void wxMaxima::OnIdle(wxIdleEvent &event)
   }
 
   if(m_worksheet != NULL)
-  {
-    bool requestMore = m_worksheet->RecalculateIfNeeded();
-    m_worksheet->ScrollToCellIfNeeded();
-    m_worksheet->ScrollToCaretIfNeeded();
-    if(requestMore)
-    {
-      event.RequestMore();
-      return;
-    }
-  }
-
-  if(m_worksheet != NULL)
     m_worksheet->UpdateScrollPos();
 
   // Incremental search is done from the idle task. This means that we don't forcefully
@@ -4699,6 +4685,18 @@ void wxMaxima::OnIdle(wxIdleEvent &event)
   {
     event.RequestMore();
     return;
+  }
+
+  if(m_worksheet != NULL)
+  {
+    bool requestMore = m_worksheet->RecalculateIfNeeded();
+    m_worksheet->ScrollToCellIfNeeded();
+    m_worksheet->ScrollToCaretIfNeeded();
+    if(requestMore)
+    {
+      event.RequestMore();
+      return;
+    }
   }
 
   // If nothing which is visible has changed nothing that would cause us to need
