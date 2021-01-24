@@ -26,23 +26,24 @@
 
 #include <wx/textctrl.h>
 #include <wx/mstream.h>
-#include <wx/zstream.h>
 #include <wx/txtstrm.h>
 #include <wx/string.h>
 #include "LicenseDialog.h"
-#include "../data/License.h"
+const char * License_text =
+#include "char-License.h"
+;
 
 LicenseDialog::LicenseDialog(wxWindow *parent) :
   wxDialog(parent, -1, _("License"), wxDefaultPosition, wxDefaultSize,
            wxRESIZE_BORDER | wxCLOSE_BOX | wxMAXIMIZE_BOX | wxMINIMIZE_BOX)
 {
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
-  wxMemoryInputStream istream(License_gz, License_gz_len);
-  wxZlibInputStream zstream(istream);
-  wxTextInputStream textIn(zstream);
+  wxMemoryInputStream istream(License_text, strlen(License_text));
+  wxTextInputStream textIn(istream);
   m_movedToStart = false;
   wxString line;
   wxString licenseText;
+
 
   m_license = new wxTextCtrl(this, -1,
                              wxEmptyString, wxDefaultPosition,

@@ -32,10 +32,11 @@
 #include <wx/tokenzr.h>
 #include <wx/mstream.h>
 #include <wx/wfstream.h>
-#include <wx/zstream.h>
 #include <wx/txtstrm.h>
 #include <wx/wupdlock.h>
-#include "../data/UnicodeData.h"
+const char * UnicodeData_txt =
+#include "char-UnicodeData.h"
+;
 #include <memory>
 
 #include "ErrorRedirector.h"
@@ -148,14 +149,13 @@ void UnicodeSidebar::OnPaint(wxPaintEvent &event)
   if(m_initialized)
     return;
 
-  wxMemoryInputStream istream(UnicodeData_txt_gz, UnicodeData_txt_gz_len);
-  wxZlibInputStream zstream(istream);
-  wxTextInputStream textIn(zstream);
+  wxMemoryInputStream istream(UnicodeData_txt, strlen(UnicodeData_txt));
+  wxTextInputStream textIn(istream);
   wxString regex_string = m_regex->GetValue();
   wxRegEx regex(m_regex->GetValue());
   m_grid->HideRowLabels();
   m_grid->HideColLabels();
-  while(!zstream.Eof())
+  while(!istream.Eof())
   {
     wxString line = textIn.ReadLine();
     wxStringTokenizer items(line, wxT(";"), wxTOKEN_RET_EMPTY_ALL);

@@ -1,11 +1,12 @@
 #include "wxMathml.h"
-#include "../data/wxMathML.h"
 #include <iostream>
 #include <wx/wx.h>
 #include <wx/mstream.h>
-#include <wx/zstream.h>
 #include <wx/txtstrm.h>
 #include <wx/string.h>
+const char * wxMathML_lisp =
+#include "char-wxMathML.h"
+;
 
 wxMathML::wxMathML()
 {
@@ -14,10 +15,8 @@ wxMathML::wxMathML()
       // Unzip wxMathml.lisp: We need to store it in a .zip format
       // in order to avoid a bug in the ArchLinux C compiler that
       // seems to replace long strings by a "\0".
-      wxMemoryInputStream istream(wxMathML_lisp_gz, wxMathML_lisp_gz_len);
-      
-      wxZlibInputStream zstream(istream);
-      wxTextInputStream textIn(zstream);
+      wxMemoryInputStream istream(wxMathML_lisp, strlen(wxMathML_lisp));
+      wxTextInputStream textIn(istream);
       wxString line;
       
       while(!istream.Eof())

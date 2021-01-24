@@ -1,5 +1,18 @@
 # -*- mode: CMake; cmake-tab-width: 4; -*-
 
+
+function(make_includable input_file output_file)
+    file(READ ${input_file} content)
+    set(delim "for_c++_include")
+    set(content "R\"${delim}(\n${content})${delim}\"")
+    file(WRITE ${output_file} "${content}")
+endfunction(make_includable)
+
+make_includable("${CMAKE_CURRENT_SOURCE_DIR}/UnicodeData.txt" "${CMAKE_CURRENT_BINARY_DIR}/char-UnicodeData.h")
+make_includable("${CMAKE_CURRENT_SOURCE_DIR}/wxMathML.lisp" "${CMAKE_CURRENT_BINARY_DIR}/char-wxMathML.h")
+make_includable("${CMAKE_CURRENT_SOURCE_DIR}/manual_anchors.xml" "${CMAKE_CURRENT_BINARY_DIR}/char-manual_anchors.xml.h")
+make_includable("${CMAKE_SOURCE_DIR}/GPL.txt" "${CMAKE_CURRENT_BINARY_DIR}/char-License.h")
+
 set(DATAFILES
         ${CMAKE_CURRENT_SOURCE_DIR}/io.github.wxmaxima_developers.wxMaxima.png
         ${CMAKE_CURRENT_SOURCE_DIR}/io.github.wxmaxima_developers.wxMaxima.svg)
