@@ -4169,7 +4169,7 @@ void wxMaxima::ShowWxMaximaHelp()
     helpfile = Dirstructure::Get()->HelpDir() + wxT("/wxmaxima.html");
 
   if(!wxFileExists(helpfile)) {
-	wxLogMessage(_(wxT("No offline manual found => Redirecting to the wxMaxima homepage")));
+    wxLogMessage(_(wxT("No offline manual found => Redirecting to the wxMaxima homepage")));
     helpfile = wxString("https://htmlpreview.github.io/?https://github.com/wxMaxima-developers/wxmaxima/blob/master/info/wxmaxima.html");
   } else {
     #ifdef __WINDOWS__
@@ -4209,7 +4209,7 @@ wxLogMessage(m_maximaHtmlDir);
   helpfile = m_maximaHtmlDir.Trim() + wxString("/maxima_singlepage.html");
   wxLogMessage(helpfile);
   if(!wxFileExists(helpfile)) {
-	wxLogMessage(_(wxT("No offline manual found => Redirecting to the Maxima homepage")));
+    wxLogMessage(_(wxT("No offline manual found => Redirecting to the Maxima homepage")));
     helpfile = wxString("https://maxima.sourceforge.io/docs/manual/maxima_singlepage.html");
   } else {
     #ifdef __WINDOWS__
@@ -4222,8 +4222,8 @@ wxLogMessage(m_maximaHtmlDir);
     // web browser - which doesn't support cygwin paths => convert the path to a
     // native windows pathname if needed.
     if(helpfile.Length()>1 && helpfile[0]==wxT('/')) {
-	  helpfile[0]=helpfile[1];
-	  helpfile[1]=wxT(':');
+      helpfile[0]=helpfile[1];
+      helpfile[1]=wxT(':');
     }
     #endif // __CYGWIN__
 
