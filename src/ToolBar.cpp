@@ -310,7 +310,7 @@ void ToolBar::AddTools()
   AddControl(m_plotSlider);
   AddStretchSpacer(100);
   if(ShowHelp())
-    AddTool(wxID_HELP, _("Help"), GetHelpBitmap(), _("Show Maxima help"));
+    AddTool(wxID_HELP, _("Help"), GetHelpBitmap(), _("Show wxMaxima help"));
   Connect(wxEVT_SIZE,
           wxSizeEventHandler(ToolBar::OnSize),
           NULL, this);
