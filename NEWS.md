@@ -1,3 +1,6 @@
+# Current
+ * A Spanish translation update by cyphra
+
 # 21.01.0
  * Chinese translation updates by 刘荣.
  * A Russian translation update by OlesyaGerasimenko
