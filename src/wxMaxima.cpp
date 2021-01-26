@@ -4081,7 +4081,7 @@ wxString wxMaxima::GetMaximaHelpFile2()
   wxString headerFile;
   wxConfig::Get()->Read(wxT("helpFile"), &headerFile);
 
-#if defined (__WXMSW__)
+#ifdef __CYGWIN__
   // Cygwin uses /c/something instead of c:/something and passes this path to the
   // web browser - which doesn't support cygwin paths => convert the path to a
   // native windows pathname if needed.
@@ -4090,7 +4090,7 @@ wxString wxMaxima::GetMaximaHelpFile2()
     headerFile[1]=headerFile[2];
     headerFile[2]=wxT(':');
   }
-#endif
+#endif // __CYGWIN__
 
   if (headerFile.Length() && wxFileExists(headerFile))
     return headerFile;
