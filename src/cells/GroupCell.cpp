@@ -685,6 +685,15 @@ void GroupCell::UpdateYPosition()
                  previous->GetMaxDrop();
   }
   m_currentPoint = point;
+
+  EditorCell *editor = GetEditable();
+  if (editor)
+    editor->SetCurrentPoint(CalculateInputPosition());
+}
+
+wxPoint GroupCell::CalculateInputPosition()
+{
+  return wxPoint(m_currentPoint.x + GetInputIndent(), m_currentPoint.y);
 }
 
 int GroupCell::GetInputIndent()
@@ -816,7 +825,7 @@ void GroupCell::Draw(wxPoint const point)
 
       EditorCell *input = GetEditable();
       if (input)
-        input->Draw({point.x + GetInputIndent(), point.y});
+        input->Draw(CalculateInputPosition());
 
       if (GetPrompt())
         GetPrompt()->Draw(point);

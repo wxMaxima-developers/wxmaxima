@@ -203,6 +203,7 @@ public:
    */
   void Recalculate(AFontSize WXUNUSED(fontsize)) override {Recalculate();}
   void Recalculate();
+  wxPoint CalculateInputPosition();
 
   //! Recalculate the height of the input part of the cell
   void RecalculateInput();
