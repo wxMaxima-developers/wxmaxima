@@ -44,8 +44,8 @@ public:
 
   void AddNewCell(std::unique_ptr<Cell> &&cell);
 
-  void NewRow() { m_matHeight++; }
-  void NewColumn() { m_matWidth++; }
+  void NewRow() { m_matHeight++; m_dropCenters.emplace_back(-1, -1);}
+  void NewColumn() { m_matWidth++; m_widths.emplace_back(-1);}
 
   void SetDimension();
 

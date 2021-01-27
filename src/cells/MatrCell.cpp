@@ -50,6 +50,12 @@ MatrCell::MatrCell(const MatrCell &cell):
   for (unsigned int i = 0; i < cell.m_matWidth * cell.m_matHeight; i++)
     if (i < cell.m_cells.size())
       m_cells.emplace_back(cell.m_cells[i]->CopyList());
+
+  for (unsigned int i = 0; i < m_matHeight; i++)
+    m_dropCenters.emplace_back(-1, -1);
+
+  for (unsigned int i = 0; i < m_matWidth; i++)
+    m_widths.emplace_back(-1);
 }
 
 DEFINE_CELL(MatrCell)
