@@ -400,7 +400,7 @@ void GroupCell::AppendOutput(std::unique_ptr<Cell> &&cell)
 
   UpdateCellsInGroup();
   m_updateConfusableCharWarnings = true;
-  ResetSize();
+  m_cellsAppended = true;
 }
 
 WX_DECLARE_STRING_HASH_MAP(int, CmdsAndVariables);
@@ -650,13 +650,15 @@ void GroupCell::RecalculateOutput()
   m_height = m_outputRect.GetHeight() + m_inputHeight;
   // Move all cells that follow the current one down by the amount this cell has grown.
   (*m_configuration)->AdjustWorksheetSize(true);
+
+  m_cellsAppended = false;
 }
 
 bool GroupCell::NeedsRecalculation(AFontSize fontSize) const
 {
   return Cell::NeedsRecalculation(fontSize) ||
     (GetEditable() && GetEditable()->NeedsRecalculation(EditorFontSize())) ||
-    (m_clientWidth_old != (*m_configuration)->GetClientWidth());
+    (m_clientWidth_old != (*m_configuration)->GetClientWidth()) || m_cellsAppended;
 }
 
 void GroupCell::UpdateYPositionList()
