@@ -855,7 +855,6 @@ void Worksheet::InsertLine(std::unique_ptr<Cell> &&newCell, bool forceNewLine)
   if (!tmp->GetNext())
     UpdateMLast();
   OutputChanged();
-  Recalculate(tmp);
   
   if (FollowEvaluation())
   {
@@ -865,6 +864,7 @@ void Worksheet::InsertLine(std::unique_ptr<Cell> &&newCell, bool forceNewLine)
     else
       ScrollToCaret();
   }
+  Recalculate(tmp);
   RequestRedraw(tmp);
 }
 
@@ -3013,7 +3013,7 @@ void Worksheet::OpenQuestionCaret(const wxString &txt)
     answerCell->CaretToEnd();
 
     group->AppendOutput(std::move(answerCell));
-    
+    Recalculate(group);
     // If we filled in an answer and "AutoAnswer" is true we issue an evaluation event here.
     if(autoEvaluate)
     {
@@ -7135,6 +7135,7 @@ void Worksheet::PasteFromClipboard()
       wxTheClipboard->GetData(bitmap);
       auto ic = std::make_unique<ImgCell>(group, &m_configuration, bitmap.GetBitmap());
       group->AppendOutput(std::move(ic));
+      Recalculate(group);
     }
   }
 
