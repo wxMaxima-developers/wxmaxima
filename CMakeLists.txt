@@ -28,8 +28,6 @@ option(WXM_ENABLE_PRECOMPILED_HEADERS
     "Enable precompiled headers to potentially speed up compilation." OFF)
 option(WXM_USE_CPPCHECK
     "Perform CPPCHECK during compilation." OFF)
-option(WXM_USE_OPENMP
-    "Use OpenMP for parallelizing code." ON)
 option(WXM_UNIT_TESTS
     "Compile unit tests and enable the tests." OFF)
 
@@ -45,12 +43,7 @@ if(DEFINED USE_CPPCHECK)
     unset(USE_CPPCHECK CACHE)
     message(WARNING "USE_CPPCHECK is deprecated. Use WXM_USE_CPPCHECK instead")
 endif()
-if(DEFINED USE_OPENMP)
-    set(WXM_USE_OPENMP ${USE_OPENMP} FORCE)
-    unset(USE_OPENMP)
-    unset(USE_OPENMP CACHE)
-    message(WARNING "USE_OPENMP is deprecated. Use WXM_USE_OPENMP instead")
-endif()
+
 
 ##
 # Internal Options
@@ -167,39 +160,7 @@ if(Git_FOUND)
     endif()
 endif()
 
-if(WXM_USE_OPENMP)
-    find_package(OpenMP)
-    include(CheckIncludeFileCXX)
-    check_include_file_cxx("omp.h" HAVE_OMP_HEADER)
-endif()
 
-if(WXM_USE_OPENMP AND OpenMP_CXX_FOUND)
-    # For CMake < 3.9, we need to make the target ourselves
-    if(NOT TARGET OpenMP::OpenMP_CXX)
-        find_package(Threads REQUIRED)
-        add_library(OpenMP::OpenMP_CXX IMPORTED INTERFACE)
-        set_property(TARGET OpenMP::OpenMP_CXX
-            PROPERTY INTERFACE_COMPILE_OPTIONS ${OpenMP_CXX_FLAGS})
-        # Only works if the same flag is passed to the linker; use CMake 3.9+ otherwise (Intel, AppleClang)
-        set_property(TARGET OpenMP::OpenMP_CXX
-            PROPERTY INTERFACE_LINK_LIBRARIES ${OpenMP_CXX_FLAGS} Threads::Threads)
-    endif()
-    set(CMAKE_INSTALL_OPENMP_LIBRARIES TRUE) # Include OpenMP libraries in the required system libraries
-endif()
-
-if(WXM_USE_OPENMP AND OpenMP_CXX_FOUND)
-    if(OpenMP_CXX_SPEC_DATE LESS 201107)
-        message(STATUS "OpenMP too old to be used for multiprocessing in wxMaxima (" ${OpenMP_CXX_SPEC_DATE} ").")
-    else()
-        if(HAVE_OMP_HEADER)
-            message(STATUS "Using OpenMP for multiprocessing.")
-        else()
-            message(STATUS "Using OpenMP, but omp.h missing => Can use multiprocessing only in a few cases.")
-        endif()
-    endif()
-else()
-    message(STATUS "No OpenMP found => Not using multiprocessing.")
-endif()
 
 ##
 # Utility Functions

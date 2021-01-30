@@ -40,9 +40,6 @@
 #include "nanoSVG/nanosvg.h"
 #include "nanoSVG/nanosvgrast.h"
 
-#ifdef HAVE_OMP_HEADER
-#include <omp.h>
-#endif
 
 /*! Manages an auto-scaling image
 

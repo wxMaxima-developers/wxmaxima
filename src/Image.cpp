@@ -153,9 +153,6 @@ wxMemoryBuffer Image::ReadCompressedImage(wxInputStream *data)
 
 wxBitmap Image::GetUnscaledBitmap()
 {
-  #ifdef HAVE_OMP_HEADER
-  WaitForLoad waitforload(&m_imageLoadLock);
-  #endif
 
   if(!m_isOk)
   {
@@ -184,33 +181,21 @@ wxBitmap Image::GetUnscaledBitmap()
 
 wxMemoryBuffer Image::GetCompressedImage()
 {
-  #ifdef HAVE_OMP_HEADER
-  WaitForLoad waitforload(&m_imageLoadLock);
-  #endif
   return m_compressedImage;
 }
 
 size_t Image::GetOriginalWidth()
 {
-  #ifdef HAVE_OMP_HEADER
-  WaitForLoad waitforload(&m_imageLoadLock);
-  #endif
   return m_originalWidth;
 }
 
 size_t Image::GetOriginalHeight()
 {
-  #ifdef HAVE_OMP_HEADER
-  WaitForLoad waitforload(&m_imageLoadLock);
-  #endif
   return m_originalHeight;
 }
 
 bool Image::IsOk()
 {
-  #ifdef HAVE_OMP_HEADER
-  WaitForLoad waitforload(&m_imageLoadLock);
-  #endif
   return m_isOk;
 }
 
@@ -572,9 +557,6 @@ wxString Image::GnuplotSource()
  
 wxSize Image::ToImageFile(wxString filename)
 {
-  #ifdef HAVE_OMP_HEADER
-  WaitForLoad waitforload(&m_imageLoadLock);
-  #endif
   wxFileName fn(filename);
   wxString ext = fn.GetExt();
   if (filename.Lower().EndsWith(GetExtension().Lower()))
@@ -650,9 +632,6 @@ wxBitmap Image::GetBitmap(double scale)
 {
   // Recalculate contains its own WaitForLoad object.
   Recalculate(scale);
-  #ifdef HAVE_OMP_HEADER
-  WaitForLoad waitforload(&m_imageLoadLock);
-  #endif
 
   if(!m_isOk)
   {
@@ -738,9 +717,6 @@ void Image::InvalidBitmap()
 
 void Image::LoadImage(const wxBitmap &bitmap)
 {
-  #ifdef HAVE_OMP_HEADER
-  WaitForLoad waitforload(&m_imageLoadLock);
-  #endif
   // Convert the bitmap to a png image we can use as m_compressedImage
   wxImage image = bitmap.ConvertToImage();
   m_isOk = image.IsOk();
@@ -771,19 +747,12 @@ void Image::LoadImage(wxString image, std::shared_ptr<wxFileSystem> filesystem, 
   m_fs_keepalive_imagedata = filesystem;
   m_extension = wxFileName(image).GetExt();
   m_extension = m_extension.Lower();
-  // If we don't have fine-grained locking using omp.h we don't profit from sending the
-  // load process to the background and therefore load images from the main thread.
-  // Loading images is of rather high priority as they are needed during the
-  // recalculation that follows
   m_imageName = image;
   LoadImage_Backgroundtask(image, filesystem, remove);
 }
 
 void Image::LoadImage_Backgroundtask(wxString image, std::shared_ptr<wxFileSystem> filesystem, bool remove)
 {
-  #ifdef HAVE_OMP_HEADER
-  WaitForLoad waitforload(&m_imageLoadLock);
-  #endif
 
   m_compressedImage.Clear();
   m_scaledBitmap.Create(1, 1);
@@ -923,9 +892,6 @@ void Image::LoadImage_Backgroundtask(wxString image, std::shared_ptr<wxFileSyste
 
 void Image::Recalculate(double scale)
 {
-  #ifdef HAVE_OMP_HEADER
-  WaitForLoad waitforload(&m_imageLoadLock);
-  #endif
   int width = m_originalWidth;
   int height = m_originalHeight;
   Configuration *configuration = (*m_configuration);
