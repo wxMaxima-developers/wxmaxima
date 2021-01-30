@@ -37,14 +37,13 @@
 #include <wx/zstream.h>
 #include <wx/txtstrm.h>
 #include "Image.h"
+#include <cstdlib>
 
 #if wxCHECK_VERSION(3, 1, 0)
 #define TOOLBAR_ICON_SCALE (0.25)
 #else
 #define TOOLBAR_ICON_SCALE (0.35)
 #endif
-
-#define ABS(val) ((val) >= 0 ? (val) : -(val))
 
 wxBitmap ToolBar::GetBitmap(wxString name, unsigned char *data, size_t len, wxSize siz)
 {
@@ -81,7 +80,7 @@ wxBitmap ToolBar::GetBitmap(wxString name, unsigned char *data, size_t len, wxSi
       sizeB >>= 1;
     }
     
-    if(ABS(targetSize - sizeA) < ABS(targetSize - sizeB))
+    if(std::abs(targetSize - sizeA) < std::abs(targetSize - sizeB))
       targetSize = sizeA;
     else
       targetSize = sizeB;

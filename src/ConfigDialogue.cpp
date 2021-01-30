@@ -53,10 +53,10 @@
 #include "Image.h"
 #include <wx/dirdlg.h>
 #include <wx/persist/toplevel.h>
+#include <cstdlib>
 
 #define CONFIG_ICON_SCALE (1.0)
 
-#define ABS(val) ((val) >= 0 ? (val) : -(val))
 
 int ConfigDialogue::GetImageSize()
 {
@@ -89,7 +89,7 @@ int ConfigDialogue::GetImageSize()
     sizeB >>= 1;
   }
 
-  if(ABS(targetSize - sizeA) < ABS(targetSize - sizeB)) {
+  if(std::abs(targetSize - sizeA) < std::abs(targetSize - sizeB)) {
     return sizeA;
   } else {
     return sizeB;
@@ -128,7 +128,7 @@ wxBitmap ConfigDialogue::GetImage(wxString name,
     sizeB >>= 1;
   }
 
-  if(ABS(targetSize - sizeA) < ABS(targetSize - sizeB)) {
+  if(std::abs(targetSize - sizeA) < std::abs(targetSize - sizeB)) {
     targetSize = sizeA;
   } else {
     targetSize = sizeB;

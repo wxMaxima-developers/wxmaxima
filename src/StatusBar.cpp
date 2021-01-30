@@ -236,8 +236,6 @@ void StatusBar::OnSize(wxSizeEvent &event)
   event.Skip();
 }
 
-#define ABS(val) ((val) >= 0 ? (val) : -(val))
-
 wxBitmap StatusBar::GetImage(wxString name,
                           unsigned char *data, size_t len)
 {
