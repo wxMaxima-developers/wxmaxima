@@ -135,7 +135,7 @@ TipOfTheDay::TipOfTheDay(wxWindow *parent)
     _("Libraries can be accessed by any wxMaxima process regardless of which directory it runs in, if they are placed in the user directory. This directory can be found by typing maxima_userdir;")
     );
   m_tips.Add(
-    _("The load() command of Maxima versions >5.38 is able to load .wxm files as library of maxima's commands.")
+    _("The load() command of Maxima versions >5.38 is able to load .wxm files as library of Maxima's commands.")
     );
   m_tips.Add(
     _("A plot to be embedded into the work sheet by preceding its name with a \"wx\". \"draw\" can be replaced by \"wxdraw\", plot by \"wxplot\" etc.")
@@ -144,7 +144,7 @@ TipOfTheDay::TipOfTheDay(wxWindow *parent)
     _("wxMaxima provides the \"table_form\" command that shows lists in an alternative form. One example would be:\n\ntable_form([1,2,3,4,5]);")
     );
   m_tips.Add(
-    _("In order to visualize how a parameter affects an equation wxmaxima provides commands that start with \"with_slider_\" and that create animations. One example would be:\n\n    with_slider_draw(\n        a,[-16,-9,-4,-2,0,1,2,3,4,5,6,7],\n        title=concat(\"a=\",a),\n        grid=true,\n        explicit(\n            x^2-a*x,\n            x,-10,10\n        )\n    );")
+    _("In order to visualize how a parameter affects an equation wxMaxima provides commands that start with \"with_slider_\" and that create animations. One example would be:\n\n    with_slider_draw(\n        a,[-16,-9,-4,-2,0,1,2,3,4,5,6,7],\n        title=concat(\"a=\",a),\n        grid=true,\n        explicit(\n            x^2-a*x,\n            x,-10,10\n        )\n    );")
     );
   m_tips.Add(
     _("If the \"Autosave\" functionality is enabled in the configuration dialogue wxMaxima acts like mobile apps that backup the file every few minutes and save it on closing.")
@@ -189,7 +189,7 @@ TipOfTheDay::TipOfTheDay(wxWindow *parent)
     _("You got a idea for an improvement of wxMaxima? Great! Please submit your idea at https://github.com/wxMaxima-developers/wxmaxima/issues. ")
     );
   m_tips.Add(
-    _("wxMaxima is programmed in C++ using the wxWidgets toolkit and uses CMake as build system. You can contribute to wxMaxima, if you have some knowledge with this enviroment.")
+    _("wxMaxima is programmed in C++ using the wxWidgets toolkit and uses CMake as build system. You can contribute to wxMaxima, if you have some knowledge with this environment.")
     );
 
   m_num = 0;
