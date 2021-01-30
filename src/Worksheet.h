@@ -33,12 +33,13 @@
 #include "stx/optional.hpp"
 #include "precomp.h"
 #include <wx/wx.h>
+#include <wx/xml/xml.h>
 #include <wx/aui/aui.h>
 #include <wx/textfile.h>
 #include <wx/fdrepdlg.h>
 #include <wx/dc.h>
+#include <thread>
 #include <list>
-
 #include "CellPointers.h"
 #include "VariablesPane.h"
 #include "Notification.h"
@@ -89,6 +90,9 @@ public:
   //! Is an update of the worksheet controls needed?
   bool UpdateControlsNeeded(){bool result = m_updateControls; m_updateControls = false; return result;}
 private:
+  wxString m_maximaVersion;
+  //! The directory with maxima's documentation
+  wxString m_maximaDocDir;
   //! The storage for UpdateControlsNeeded()
   bool m_updateControls = true;
   //! Is a scroll to the cursor scheduled?
@@ -450,7 +454,10 @@ private:
   //! Handle pinch-to-zoom-events using the gesture interface
   void OnZoom(wxZoomGestureEvent &event);
   #endif
-
+  
+  /*! Get the name of the help file
+   */
+  wxString GetMaximaHelpFile2();
   void OnMouseExit(wxMouseEvent &event);
 
   void OnMouseEnter(wxMouseEvent &event);
@@ -602,6 +609,10 @@ private:
   AutocompletePopup *m_autocompletePopup;
 
 public:
+  wxString GetMaximaHelpFile();
+  //! A helper function for GetHelpFile()
+  void SetMaximaVersion(wxString version){m_maximaVersion = version;}
+  wxString GetMaximaVersion(){return m_maximaVersion;}
   //! Is this worksheet empty?
   bool IsEmpty() const
   { return !m_tree || (!m_tree->GetNext() && m_tree->GetEditable()->GetValue().Length()<=1); }
@@ -754,6 +765,9 @@ public:
 
   //! Re-read the configuration
   void UpdateConfig() { m_configuration->ReadConfig(); }
+
+  //! The thread the help file anchors are compiled in
+  std::unique_ptr<std::thread> m_helpfileanchorsThread;
 
   //! The name of the currently-opened file
   wxString m_currentFile;
@@ -1459,8 +1473,17 @@ public:
 
   wxString GetOutputAboveCaret();
 
-  void LoadSymbols()
-  { m_autocomplete.LoadSymbols(); }
+  void LoadSymbols();
+  //! Collect all keyword anchors in the help file
+  void CompileHelpFileAnchors();
+  //! Load the result from the last CompileHelpFileAnchors from the disk cache
+  bool LoadManualAnchorsFromCache();
+  //! Load the help file anchors from an wxXmlDocument
+  bool LoadManualAnchorsFromXML(wxXmlDocument xmlDocument, bool checkManualVersion = true);
+  //! Load the help file anchors from the built-in list
+  bool LoadBuiltInManualAnchors();
+  //! Save the list of help file anchors to the cache.
+  void SaveManualAnchorsToCache();
 
   bool Autocomplete(AutoComplete::autoCompletionType type = AutoComplete::command);
 
@@ -1515,6 +1538,11 @@ public:
   void QuestionPending(bool pending)
   { m_questionPrompt = pending; }
 
+  void SetMaximaDocDir(wxString dir)
+    {
+      m_maximaDocDir = dir;
+    }
+
 //! Does the GroupCell cell points to contain the question currently asked by maxima?
   bool GCContainsCurrentQuestion(GroupCell *cell);
 
@@ -1539,8 +1567,6 @@ public:
 
   //! All anchors for keywords maxima's helpfile contains
   HelpFileAnchors m_helpFileAnchors;
-  //! Is the help file anchors available
-  bool m_helpFileAnchorsUsable;
   //! Suggestions for how the word that was right-clicked on could continue
   wxArrayString m_replacementsForCurrentWord;
   //Simple iterator over a Maxima input string, skipping comments and strings

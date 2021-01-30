@@ -31,6 +31,8 @@
 #define AUTOCOMPLETE_H
 
 #include "precomp.h"
+#include <thread>
+#include <memory>
 #include <wx/wx.h>
 #include <wx/dir.h>
 #include <wx/arrstr.h>
@@ -116,7 +118,7 @@ private:
   //! The configuration storage
   Configuration *m_configuration;
   //! Loads the list of loadable files and can be run in a background task
-  void LoadSymbols_BackgroundTask();
+  void LoadableFiles_BackgroundTask();
   //! Prepares the list of built-in symbols and can be run in a background task
   void BuiltinSymbols_BackgroundTask();
 
@@ -267,10 +269,16 @@ private:
       }
   };
 
+  void WaitForBackgroundThread_Symbols();
+  void WaitForBackgroundThread_Files();
+  void WaitForBackgroundThreads();
+  
   //! The lists of autocompletible symbols for the classes defined in autoCompletionType
   wxArrayString m_wordList[7];
   static wxRegEx m_args;
   WorksheetWords m_worksheetWords;
+  std::unique_ptr<std::thread> m_addSymbols_backgroundThread;
+  std::unique_ptr<std::thread> m_addFiles_backgroundThread;
 };
 
 #endif // AUTOCOMPLETE_H

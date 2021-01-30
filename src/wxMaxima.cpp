@@ -76,7 +76,6 @@
 #include "WXMformat.h"
 #include "ErrorRedirector.h"
 #include "LabelCell.h"
-#include "../data/manual_anchors.xml.gz.h"
 #include <wx/colordlg.h>
 #include <wx/clipbrd.h>
 #include <wx/filedlg.h>
@@ -234,9 +233,6 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
     m_variableReadActions[wxT("*maxima-operators*")] = &wxMaxima::VariableActionOperators;
   }
   
-  #ifdef HAVE_OMP_HEADER
-  omp_init_lock(&m_helpFileAnchorsLock);
-  #endif
   // Needed for making wxSocket work for multiple threads. We currently don't
   // use this feature.
   // wxSocketBase::Initialize();
@@ -303,7 +299,6 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
   m_worksheet->SetFocus();
   m_worksheet->m_keyboardInactiveTimer.SetOwner(this, KEYBOARD_INACTIVITY_TIMER_ID);
   m_maximaStdoutPollTimer.SetOwner(this, MAXIMA_STDOUT_POLL_ID);
-  m_compileHelpAnchorsTimer.SetOwner(this, COMPILEHELPANCHORS_ID);
   
   m_autoSaveTimer.SetOwner(this, AUTO_SAVE_TIMER_ID);
   Connect(
@@ -1191,9 +1186,6 @@ wxMaxima::~wxMaxima()
     m_server->Destroy();
     m_server = NULL;
   }
-#ifdef HAVE_OPENMP_TASKS
-  #pragma omp taskwait
-  #endif
   KillMaxima(false);
   MyApp::DelistTopLevelWindow(this);
 
@@ -1678,9 +1670,6 @@ void wxMaxima::MaximaEvent(::MaximaEvent &event)
   {
     wxLogMessage(_("Connection to Maxima lost."));
     //  KillMaxima();
-    #ifdef HAVE_OPENMP_TASKS
-    #pragma omp taskwait
-    #endif
     break;
   }
   }
@@ -2045,9 +2034,6 @@ void wxMaxima::BecomeLogTarget()
 
 void wxMaxima::KillMaxima(bool logMessage)
 {
-  #ifdef HAVE_OPENMP_TASKS
-  #pragma omp taskwait
-  #endif
   if(logMessage && (m_closing || (m_process == NULL) || (m_pid > 0)))
   {
     wxLogMessage(_("Killing Maxima."));
@@ -2177,9 +2163,6 @@ void wxMaxima::OnProcessEvent(wxProcessEvent& event)
 {
   wxLogMessage(_("Maxima process (pid %i) has terminated with exit code %i."),
                event.GetPid(), event.GetExitCode());
-  #ifdef HAVE_OPENMP_TASKS
-  #pragma omp taskwait
-  #endif
   if(m_maximaStdout)
   {
     wxTextInputStream istrm(*m_maximaStdout, wxT('\t'), wxConvAuto(wxFONTENCODING_UTF8));
@@ -2704,7 +2687,7 @@ void wxMaxima::VariableActionTempDir(const wxString &value)
 
 void wxMaxima::VariableActionAutoconfVersion(const wxString &value)
 {
-  m_maximaVersion = value;
+  m_worksheet->SetMaximaVersion(value);
   wxLogMessage(wxString::Format(_("Maxima version: %s"),value.utf8_str()));
 }
 void wxMaxima::VariableActionAutoconfHost(const wxString &value)
@@ -2714,7 +2697,7 @@ void wxMaxima::VariableActionAutoconfHost(const wxString &value)
 }
 void wxMaxima::VariableActionMaximaInfodir(const wxString &value)
 {
-  m_maximaDocDir = value;
+  m_worksheet->SetMaximaDocDir(value);
   wxLogMessage(wxString::Format(_("Maxima's manual lies in directory %s"),value.utf8_str()));
 }
 
@@ -2832,16 +2815,6 @@ void wxMaxima::VariableActionMaximaSharedir(const wxString &value)
   wxLogMessage(wxString::Format(_("Maxima's share files lie in directory %s"),dir.utf8_str()));
   /// READ FUNCTIONS FOR AUTOCOMPLETION
   m_worksheet->LoadSymbols();
-  if(m_worksheet->m_helpFileAnchors.empty())
-  {
-    if(!LoadManualAnchorsFromCache())
-    {
-      if(wxFileExists(GetMaximaHelpFile()))
-        m_compileHelpAnchorsTimer.StartOnce(4000);
-      else
-        LoadBuiltInManualAnchors();
-    }
-  }
 }
 
 void wxMaxima::VariableActionLispName(const wxString &value)
@@ -3561,9 +3534,6 @@ bool wxMaxima::OpenWXMXFile(const wxString &file, Worksheet *document, bool clea
 
   // Open the file
   std::shared_ptr<wxFSFile> fsfile;
-  #ifdef HAVE_OPENMP_TASKS
-  #pragma omp critical (OpenFSFile)
-  #endif
   fsfile.reset(fs.OpenFile(filename));
   if (fsfile)
   {
@@ -3576,9 +3546,6 @@ bool wxMaxima::OpenWXMXFile(const wxString &file, Worksheet *document, bool clea
     
     // Re-open the file.
     std::shared_ptr<wxFSFile> fsfile2;
-    #ifdef HAVE_OPENMP_TASKS
-    #pragma omp critical (OpenFSFile)
-    #endif
     fsfile2.reset(fs.OpenFile(filename));
     wxString contents;
     if (fsfile2)
@@ -3980,17 +3947,7 @@ void wxMaxima::SetupVariables()
   #endif
   #endif
   #endif
-  
-  #if HAVE_OPENMP_TASKS
-  wxmaximaversion_lisp += "_OpenMP";
-  #ifdef OPENMP_SPEC_DATE
-  wxmaximaversion_lisp += + OPENMP_SPEC_DATE;
-  #ifdef HAVE_OMP_HEADER
-  wxmaximaversion_lisp += + "+Locks";
-  #endif
-  #endif
-  #endif
-  
+    
   wxmaximaversion_lisp.Replace("\\","\\\\");
   wxmaximaversion_lisp.Replace("\"","\\\"");
   wxLogMessage(_("Updating maxima's configuration"));
@@ -4064,70 +4021,6 @@ void wxMaxima::ShowTip(bool force)
   TipOfTheDay *tip = new TipOfTheDay(this);
   tip->Show();
 }
-
-wxString wxMaxima::GetMaximaHelpFile()
-{
-  // Some operating systems don't like "//" or similar in paths.
-  wxFileName helpFile(GetMaximaHelpFile2());
-  if(!helpFile.GetFullPath().IsEmpty())
-    helpFile.MakeAbsolute();
-  return helpFile.GetFullPath();
-}
-
-wxString wxMaxima::GetMaximaHelpFile2()
-{
-  wxString searchText = _("Searching for maxima help file %s");
-
-  wxString headerFile;
-  wxConfig::Get()->Read(wxT("helpFile"), &headerFile);
-
-#ifdef __CYGWIN__
-  // Cygwin uses /c/something instead of c:/something and passes this path to the
-  // web browser - which doesn't support cygwin paths => convert the path to a
-  // native windows pathname if needed.
-  if(headerFile.Length()>1 && headerFile[1]==wxT('/'))
-  {
-    headerFile[1]=headerFile[2];
-    headerFile[2]=wxT(':');
-  }
-#endif // __CYGWIN__
-
-  if (headerFile.Length() && wxFileExists(headerFile))
-    return headerFile;
-  else
-    headerFile = m_maximaDocDir + wxT("/maxima_singlepage.html");
-  wxLogMessage(wxString::Format(searchText, headerFile.utf8_str()));
-  if(wxFileExists(headerFile))
-    return headerFile;
-
-  headerFile = m_maximaDocDir + wxT("/maxima_singlepage.html");
-  wxLogMessage(wxString::Format(searchText, headerFile.utf8_str()));
-  if(wxFileExists(headerFile))
-    return headerFile;
-
-  headerFile = m_maximaDocDir + wxT("/html/maxima_singlepage.html");
-  wxLogMessage(wxString::Format(searchText, headerFile.utf8_str()));
-  if(wxFileExists(headerFile))
-    return headerFile;
-
-  headerFile = m_maximaDocDir + wxT("/../html/maxima_singlepage.html");
-  wxLogMessage(wxString::Format(searchText, headerFile.utf8_str()));
-  if(wxFileExists(headerFile))
-    return headerFile;
-
-  headerFile = m_worksheet->m_configuration->MaximaShareDir() + wxT("/../doc/html/maxima_singlepage.html");
-  wxLogMessage(wxString::Format(searchText, headerFile.utf8_str()));
-  if(wxFileExists(headerFile))
-    return headerFile;
-
-  headerFile = m_worksheet->m_configuration->MaximaShareDir() + wxT("/doc/html/maxima_singlepage.html");
-  wxLogMessage(wxString::Format(searchText, headerFile.utf8_str()));
-  if(wxFileExists(headerFile))
-    return headerFile;
-  
-  return wxEmptyString;
-}
-
 
 void wxMaxima::LaunchHelpBrowser(wxString uri)
 {
@@ -4244,277 +4137,26 @@ void wxMaxima::ShowHelp(const wxString &keyword)
     ShowMaximaHelp(keyword);
 }
 
-void wxMaxima::CompileHelpFileAnchors()
-{
-  SuppressErrorDialogs suppressor;
-  
-  wxString MaximaHelpFile = GetMaximaHelpFile();
-
-  #ifdef HAVE_OMP_HEADER
-  omp_set_lock(&m_helpFileAnchorsLock);
-  #else
-  #ifdef HAVE_OPENMP_TASKS
-  #pragma omp taskwait
-  #endif  
-  #endif
-
-  if(m_worksheet->m_helpFileAnchors.empty() && (!(MaximaHelpFile.IsEmpty())))
-  {
-    m_worksheet->m_helpFileAnchors["wxbarsplot"] = "barsplot";
-    m_worksheet->m_helpFileAnchors["wxboxplot"] = "boxplot";
-    m_worksheet->m_helpFileAnchors["wxhistogram"] = "histogram";
-    m_worksheet->m_helpFileAnchors["wxpiechart"] = "piechart";
-    m_worksheet->m_helpFileAnchors["wxscatterplot"] = "scatterplot";
-    m_worksheet->m_helpFileAnchors["wxstarplot"] = "starplot";
-    m_worksheet->m_helpFileAnchors["wxdrawdf"] = "drawdf";
-    m_worksheet->m_helpFileAnchors["wxdraw"] = "draw";
-    m_worksheet->m_helpFileAnchors["wxdraw2d"] = "draw2d";
-    m_worksheet->m_helpFileAnchors["wxdraw3d"] = "draw3d";
-    m_worksheet->m_helpFileAnchors["with_slider_draw"] = "draw";
-    m_worksheet->m_helpFileAnchors["with_slider_draw2d"] = "draw2d";
-    m_worksheet->m_helpFileAnchors["with_slider_draw3d"] = "draw3d";
-    m_worksheet->m_helpFileAnchorsUsable = true;
-
-    int foundAnchors = 0;
-    wxLogMessage(_("Compiling the list of anchors the maxima manual provides"));
-    wxRegEx idExtractor(".*<span id=\\\"([a-zAZ0-9_-]*)\\\"");
-    wxRegEx idExtractor_oldManual(".*<a name=\\\"([a-zAZ0-9_-]*)\\\"");
-    wxString escapeChars = "<=>[]`%?;\\$%&+-*/.!\'@#:^_";
-    if(wxFileExists(MaximaHelpFile))
-    {
-      wxFileInputStream input(MaximaHelpFile);
-      if(input.IsOk())
-      {
-        wxTextInputStream text(input, wxT('\t'), wxConvAuto(wxFONTENCODING_UTF8));
-        while(input.IsOk() && !input.Eof())
-        {
-          wxString line = text.ReadLine();
-          wxStringTokenizer tokens(line, wxT(">"));
-          while(tokens.HasMoreTokens())
-          {
-            wxString token = tokens.GetNextToken();
-            wxString oldToken(token);
-            wxString id;
-            if(idExtractor.Replace(&token, "\\1")>0)
-              id = token;
-            else
-            {
-              if(idExtractor_oldManual.Replace(&token, "\\1")>0)
-                id = token;
-            }
-            if(!id.IsEmpty())
-            {
-              // In anchors a space is represented by a hyphen
-              token.Replace("-", " ");
-              // Some other chars including the minus are represented by "_00xx"
-              // where xx is being the ascii code of the char.
-              for(wxString::const_iterator it = escapeChars.begin(); it != escapeChars.end(); ++it)
-                token.Replace(wxString::Format("_00%x",(char)*it), *it);
-              // What the g_t means I don't know. But we don't need it
-              if(token.StartsWith("g_t"))
-                token = token.Right(token.Length()-3);
-              //! Tokens that end with "-1" aren't too useful, normally.
-              if((!token.EndsWith("-1")) && (!token.Contains(" ")))
-              {
-                m_worksheet->m_helpFileAnchors[token] = id;
-                foundAnchors++;
-              }
-            }
-          }
-        }
-      }
-    }
-    if(m_worksheet->m_helpFileAnchors["%solve"].IsEmpty())
-      m_worksheet->m_helpFileAnchors["%solve"] = m_worksheet->m_helpFileAnchors["to_poly_solve"];
-    
-    wxLogMessage(wxString::Format(_("Found %i anchors."), foundAnchors));
-    if(foundAnchors > 50)
-      SaveManualAnchorsToCache();
-    else
-      LoadBuiltInManualAnchors();
-  }
-
-  #ifdef HAVE_OMP_HEADER
-  omp_unset_lock(&m_helpFileAnchorsLock);
-  #endif
-}
-
-void wxMaxima::SaveManualAnchorsToCache()
-{
-  long num = m_worksheet->m_helpFileAnchors.size();
-  if(num <= 50)
-  {
-    wxLogMessage(
-      wxString::Format(
-        _("Found only %li keywords in maxima's manual. Not caching them to disc."),
-        num));
-    return;
-  }
-  wxXmlAttribute *maximaVersion = new wxXmlAttribute(
-    wxT("maxima_version"),
-    m_maximaVersion);
-  wxXmlNode *topNode = new wxXmlNode(
-    NULL,
-    wxXML_DOCUMENT_NODE, wxEmptyString,
-    wxEmptyString
-    );
-  wxXmlNode *headNode = new wxXmlNode(
-    topNode,
-    wxXML_ELEMENT_NODE, wxT("maxima_toc"),
-    wxEmptyString,
-    maximaVersion
-    );
-  
-  Worksheet::HelpFileAnchors::const_iterator it;
-  for (it = m_worksheet->m_helpFileAnchors.begin();
-       it != m_worksheet->m_helpFileAnchors.end();
-       ++it)
-  {
-    wxXmlNode *manualEntry =
-      new wxXmlNode(
-        headNode,
-          wxXML_ELEMENT_NODE,
-        "entry");
-    wxXmlNode *anchorNode = new wxXmlNode(
-      manualEntry,
-      wxXML_ELEMENT_NODE,
-      "anchor");
-    new wxXmlNode(
-      anchorNode,
-      wxXML_TEXT_NODE,
-      wxEmptyString,
-      it->second);
-    wxXmlNode *keyNode = new wxXmlNode(
-      manualEntry,
-      wxXML_ELEMENT_NODE,
-        "key");
-    new wxXmlNode(
-        keyNode,
-        wxXML_TEXT_NODE,
-        wxEmptyString,
-        it->first);
-  }
-  wxXmlDocument xmlDoc;
-  xmlDoc.SetDocumentNode(topNode);
-  wxXmlNode *commentNode = new wxXmlNode(
-    NULL,
-    wxXML_COMMENT_NODE,
-    wxEmptyString,
-    _("This file is generated by wxMaxima\n"
-      "It caches the list of subjects maxima's manual offers and is automatically\n"
-      "overwritten if maxima's version changes or the file cannot be read"));
-  
-  xmlDoc.AppendToProlog(commentNode);
-  
-  wxString saveName = Dirstructure::AnchorsCacheFile();
-  wxLogMessage(wxString::Format(_("Trying to cache the list of subjects the manual contains in the file %s."),
-                                saveName.utf8_str()));
-  xmlDoc.Save(saveName);
-}
-
-bool wxMaxima::LoadManualAnchorsFromXML(wxXmlDocument xmlDocument, bool checkManualVersion)
-{
-  wxXmlNode *headNode = xmlDocument.GetDocumentNode();
-  if(!headNode)
-  {
-    wxLogMessage(_("The cache for the subjects the manual contains has no head node."));
-    return false;
-  }
-  headNode = headNode->GetChildren();
-  while((headNode) && (headNode->GetName() != wxT("maxima_toc")))
-    headNode = headNode->GetNext();
-  if(!headNode)
-  {
-    wxLogMessage(_("Anchors file has no top node."));
-    return false;
-  }
-  if(checkManualVersion && ((headNode->GetAttribute(wxT("maxima_version")) != m_maximaVersion)))
-  {
-    wxLogMessage(_("The cache for the subjects the manual contains is from a different Maxima version."));
-    return false;
-  }
-  wxXmlNode *entry = headNode->GetChildren();
-  if(entry == NULL)
-  {
-    wxLogMessage(_("No entries in the caches for the subjects the manual contains."));
-    return false;
-  }
-  while(entry)
-  {
-    if(entry->GetName() == wxT("entry"))
-    {
-      wxString key;
-      wxString anchor;
-      wxXmlNode *node = entry->GetChildren();
-      while(node)
-      {
-        if((node->GetName() == wxT("anchor")) && (node->GetChildren()))
-          anchor = node->GetChildren()->GetContent();
-        if((node->GetName() == wxT("key")) && (node->GetChildren()))
-          key = node->GetChildren()->GetContent();
-        node = node->GetNext();
-      }
-      if((!key.IsEmpty()) && (!anchor.IsEmpty()))
-        m_worksheet->m_helpFileAnchors[key] = anchor;
-    }
-    entry = entry->GetNext();
-  }
-  return !m_worksheet->m_helpFileAnchors.empty();
-}
-
-bool wxMaxima::LoadBuiltInManualAnchors()
-{
-  wxLogMessage(_("Using the built-in list of manual anchors."));
-  wxMemoryInputStream istream(manual_anchors_xml_gz, manual_anchors_xml_gz_len);
-  wxZlibInputStream zstream(istream);
-  wxXmlDocument xmlDoc;
-  xmlDoc.Load(zstream, wxT("UTF-8"));
-  if(!LoadManualAnchorsFromXML(xmlDoc, false))
-    return false;
-  m_worksheet->m_helpFileAnchorsUsable = true;
-  return true;
-}
-
-bool wxMaxima::LoadManualAnchorsFromCache()
-{
-  SuppressErrorDialogs suppressor;
-  wxString anchorsFile = Dirstructure::Get()->AnchorsCacheFile();
-  if(!wxFileExists(anchorsFile))
-  {
-    wxLogMessage(_("No file with the subjects the manual contained in the last wxMaxima run."));
-    return false;
-  }
-  wxXmlDocument xmlDocument(anchorsFile);
-  if(!xmlDocument.IsOk())
-  {
-    wxLogMessage(_("The cache for the subjects the manual contains cannot be read."));
-    wxRemoveFile(anchorsFile);
-    return false;
-  }
-  
-  if(LoadManualAnchorsFromXML(xmlDocument))
-  {
-    wxLogMessage(wxString::Format(_("Read the entries the maxima manual offers from %s"), Dirstructure::Get()->AnchorsCacheFile().utf8_str()));
-    m_worksheet->m_helpFileAnchorsUsable = true;
-    return true;
-  }
-  return !m_worksheet->m_helpFileAnchors.empty();
-}
-
 void wxMaxima::ShowMaximaHelp(wxString keyword)
-{
+{  
+  if(m_worksheet->m_helpfileanchorsThread)
+  {
+    m_worksheet->m_helpfileanchorsThread->join();
+    m_worksheet->m_helpfileanchorsThread.reset();
+  }
+  
   if(keyword.StartsWith("(%i"))
     keyword = "inchar";
   if(keyword.StartsWith("(%o"))
     keyword = "outchar";
-  wxString MaximaHelpFile = GetMaximaHelpFile();
+  wxString MaximaHelpFile = m_worksheet->GetMaximaHelpFile();
 #ifdef __WINDOWS__
   // replace \ with / als directory separator
   MaximaHelpFile.Replace("\\", "/", true);
 #endif
   
   wxBusyCursor crs;
-  CompileHelpFileAnchors();
+  m_worksheet->CompileHelpFileAnchors();
   keyword = m_worksheet->m_helpFileAnchors[keyword];
   if(keyword.IsEmpty())
     keyword = "Function-and-Variable-Index";
@@ -5617,12 +5259,6 @@ void wxMaxima::OnTimerEvent(wxTimerEvent &event)
 {
   switch (event.GetId())
   {
-    case COMPILEHELPANCHORS_ID:
-      #if HAVE_OPENMP_TASKS
-      #pragma omp task
-      CompileHelpFileAnchors();
-      #endif
-      break;
     case MAXIMA_STDOUT_POLL_ID:
       ReadStdErr();
 
@@ -8587,19 +8223,9 @@ void wxMaxima::HelpMenu(wxCommandEvent &event)
         wxMAJOR_VERSION, wxMINOR_VERSION, wxRELEASE_NUMBER,
         _("yes").utf8_str()
         );
-      #ifdef HAVE_OPENMP_TASKS
-      description += wxString::Format(_("\nMultiprocessing using OpenMP %s"), OPENMP_SPEC_DATE);
-      #ifdef HAVE_OMP_HEADER
-      description += _("\nUsing fine-grained OpenMP locks");
-      #else
-      description += _("\nNo fine-grained OpenMP locks built in");
-      #endif
-      #else
-      description += _("\nNo OpenMP support");
-      #endif
       
-      if (m_maximaVersion != wxEmptyString)
-        description += _("\nMaxima version: ") + m_maximaVersion + " ("+m_maximaArch+")";
+      if (m_worksheet->GetMaximaVersion() != wxEmptyString)
+        description += _("\nMaxima version: ") + m_worksheet->GetMaximaVersion() + " ("+m_maximaArch+")";
       else
         description += _("\nNot connected.");
       if (m_lispVersion != wxEmptyString)
@@ -9088,11 +8714,7 @@ bool wxMaxima::SaveOnClose()
 
 
 void wxMaxima::OnClose(wxCloseEvent &event)
-{
-  #ifdef HAVE_OPENMP_TASKS
-  #pragma omp taskwait
-  #endif
-  
+{  
   if(event.GetEventType() == wxEVT_END_SESSION)
     KillMaxima();
 

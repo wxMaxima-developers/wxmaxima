@@ -190,24 +190,7 @@ public:
   //! Returns the original height
   size_t GetOriginalHeight();
 
-  //! Wait until the image is loaded
-  #ifdef HAVE_OMP_HEADER
-  class WaitForLoad
-  {
-  public:
-    explicit WaitForLoad(omp_lock_t *imageLoadLock):
-      m_imageLoadLock(imageLoadLock)
-      {
-        omp_set_lock(imageLoadLock);
-      }
-      ~WaitForLoad()
-      {
-        omp_unset_lock(m_imageLoadLock);
-      }
-  private:
-    omp_lock_t *m_imageLoadLock;
-  };
-  #endif
+
   
   //! The image in its original compressed form
   wxMemoryBuffer m_compressedImage;
@@ -258,10 +241,6 @@ private:
 
   std::shared_ptr<wxFileSystem> m_fs_keepalive_gnuplotdata;
   std::shared_ptr<wxFileSystem> m_fs_keepalive_imagedata;
-  #ifdef HAVE_OMP_HEADER
-  omp_lock_t m_gnuplotLock;
-  omp_lock_t m_imageLoadLock;
-  #endif
 };
 
 #endif // IMAGE_H

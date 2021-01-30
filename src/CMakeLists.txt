@@ -266,11 +266,7 @@ else()
     configure_file("${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima-local.in" ../wxmaxima-local)
 endif()
 
-if(WXM_USE_OPENMP AND OpenMP_CXX_FOUND)
-    target_link_libraries(wxmaxima OpenMP::OpenMP_CXX ${wxWidgets_LIBRARIES})
-else()
-    target_link_libraries(wxmaxima ${wxWidgets_LIBRARIES})
-endif()
+target_link_libraries(wxmaxima ${wxWidgets_LIBRARIES})
 
 if(MINGW)
     target_link_libraries(wxmaxima -lws2_32)

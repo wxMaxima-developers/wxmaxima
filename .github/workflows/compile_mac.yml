@@ -22,7 +22,7 @@ jobs:
            export HOMEBREW_NO_AUTO_UPDATE=1
            set -e
            brew upgrade cmake
-           brew install gettext libomp ninja pandoc wxwidgets
+           brew install gettext ninja pandoc wxwidgets
            brew link cmake
            set +e
     - name: configure

@@ -19,7 +19,7 @@ jobs:
     - name: install_packages
       run: |
            sudo apt update
-           sudo apt-get install appstream-util cmake desktop-file-utils doxygen gettext gnuplot gnuplot-x11 graphviz libomp-dev libwxgtk3.0-gtk3-dev maxima maxima-share netcat-openbsd ninja-build pandoc xvfb
+           sudo apt-get install appstream-util cmake desktop-file-utils doxygen gettext gnuplot gnuplot-x11 graphviz libwxgtk3.0-gtk3-dev maxima maxima-share netcat-openbsd ninja-build pandoc xvfb
     - name: configure
       run: |
            export CXXFLAGS="-Wall -Wextra -ansi -std=c++11"

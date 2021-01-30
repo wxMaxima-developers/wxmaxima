@@ -35,7 +35,6 @@
 #include "MathParser.h"
 #include "MaximaIPC.h"
 #include "Dirstructure.h"
-
 #include <wx/socket.h>
 #include <wx/config.h>
 #include <wx/process.h>
@@ -101,15 +100,8 @@ public:
     //! The time between two auto-saves has elapsed.
             AUTO_SAVE_TIMER_ID,
     //! We look if we got new data from maxima's stdout.
-            MAXIMA_STDOUT_POLL_ID,
-            /*! We have given Maxima enough time to do the important
-
-              now it is time to compile the list of helpfile anchors */
-            COMPILEHELPANCHORS_ID
+            MAXIMA_STDOUT_POLL_ID
   };
-
-  //! A timer that ells us that we now can do the low-prio compilation of help anchors
-  wxTimer m_compileHelpAnchorsTimer;
 
   //! Is triggered when a timer this class is responsible for requires
   void OnTimerEvent(wxTimerEvent &event);
@@ -174,9 +166,6 @@ public:
   };
 
 private:
-  #ifdef HAVE_OMP_HEADER
-  omp_lock_t m_helpFileAnchorsLock;
-  #endif
   MaximaIPC m_ipc{this};
   //! wxm data the worksheet is populated from
   wxString m_initialWorkSheetContents;
@@ -247,16 +236,6 @@ protected:
   static wxRegEx m_xmlOpeningTagName;
   //! Looks if this opening tag is actually complete.
   static wxRegEx m_xmlOpeningTag;
-  //! Collect all keyword anchors in the help file
-  void CompileHelpFileAnchors();
-  //! Load the result from the last CompileHelpFileAnchors from the disk cache
-  bool LoadManualAnchorsFromCache();
-  //! Load the help file anchors from an wxXmlDocument
-  bool LoadManualAnchorsFromXML(wxXmlDocument xmlDocument, bool checkManualVersion = true);
-  //! Load the help file anchors from the built-in list
-  bool LoadBuiltInManualAnchors();
-  //! Save the list of help file anchors to the cache.
-  void SaveManualAnchorsToCache();
   //! The gnuplot process info
   wxProcess *m_gnuplotProcess = NULL;
   //! Info about the gnuplot process we start for querying the terminals it supports
@@ -275,12 +254,6 @@ protected:
   void OnSymbolAdd(wxCommandEvent &event);
   //! Called when the "Scroll to currently evaluated" button is pressed.
   void OnFollow(wxCommandEvent &event);
-
-  /*! Get the name of the help file
-   */
-  wxString GetMaximaHelpFile();
-  //! A helper function for GetHelpFile()
-  wxString GetMaximaHelpFile2();
 
   //! Show the help for Maxima
   void ShowMaximaHelp(wxString = {});
@@ -742,11 +715,8 @@ protected:
   wxString m_openFile;
   //! The directory with maxima's temp files
   wxString m_maximaTempDir;
-  //! The directory with maxima's documentation
-  wxString m_maximaDocDir;
   wxString m_maximaHtmlDir;
   bool m_fileSaved;
-  wxString m_maximaVersion;
   wxString m_maximaArch;
   wxString m_lispVersion;
   wxString m_lispType;

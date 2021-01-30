@@ -39,10 +39,6 @@
 
 Image::Image(Configuration **config)
 {
-  #ifdef HAVE_OMP_HEADER
-  omp_init_lock(&m_gnuplotLock);
-  omp_init_lock(&m_imageLoadLock);
-  #endif
   m_configuration = config;
   m_width = 1;
   m_height = 1;
@@ -56,10 +52,6 @@ Image::Image(Configuration **config)
 
 Image::Image(Configuration **config, wxMemoryBuffer image, wxString type)
 {
-  #ifdef HAVE_OMP_HEADER
-  omp_init_lock(&m_gnuplotLock);
-  omp_init_lock(&m_imageLoadLock);
-  #endif
   m_configuration = config;
   m_scaledBitmap.Create(1, 1);
   m_compressedImage = image;
@@ -87,10 +79,6 @@ Image::Image(Configuration **config, wxMemoryBuffer image, wxString type)
 
 Image::Image(Configuration **config, const wxBitmap &bitmap)
 {
-  #ifdef HAVE_OMP_HEADER
-  omp_init_lock(&m_gnuplotLock);
-  omp_init_lock(&m_imageLoadLock);
-  #endif
   m_configuration = config;
   m_isOk = false;
   m_width = 1;
@@ -110,10 +98,6 @@ Image::Image(Configuration **config, const wxBitmap &bitmap)
 Image::Image(Configuration **config, wxString image, std::shared_ptr<wxFileSystem> filesystem, bool remove):
     m_fs_keepalive_imagedata(filesystem)
 {
-  #ifdef HAVE_OMP_HEADER
-  omp_init_lock(&m_gnuplotLock);
-  omp_init_lock(&m_imageLoadLock);
-  #endif
   m_svgImage = NULL;
   m_configuration = config;
   m_scaledBitmap.Create(1, 1);
@@ -130,29 +114,24 @@ Image::Image(Configuration **config, wxString image, std::shared_ptr<wxFileSyste
 Image::~Image()
 {
   m_isOk = false;
-  #ifdef HAVE_OPENMP_TASKS
-  #pragma omp taskwait
-  #endif
+  if(!m_gnuplotSource.IsEmpty())
   {
-    if(!m_gnuplotSource.IsEmpty())
-    {
-      SuppressErrorDialogs logNull;
-      wxLogMessage(wxString::Format(_("Trying to delete gnuplot file %s"), m_gnuplotSource.utf8_str()));
-      if(wxFileExists(m_gnuplotSource))
-        wxRemoveFile(m_gnuplotSource);
-      wxString popoutname = m_gnuplotSource + wxT(".popout");
-      wxLogMessage(wxString::Format(_("Trying to delete gnuplot file %s"), popoutname.utf8_str()));
-      if(wxFileExists(popoutname))
-        wxRemoveFile(popoutname);    
-    }
+    SuppressErrorDialogs logNull;
+    wxLogMessage(wxString::Format(_("Trying to delete gnuplot file %s"), m_gnuplotSource.utf8_str()));
+    if(wxFileExists(m_gnuplotSource))
+      wxRemoveFile(m_gnuplotSource);
+    wxString popoutname = m_gnuplotSource + wxT(".popout");
+    wxLogMessage(wxString::Format(_("Trying to delete gnuplot file %s"), popoutname.utf8_str()));
+    if(wxFileExists(popoutname))
+      wxRemoveFile(popoutname);    
+  }
 
-    if(!m_gnuplotData.IsEmpty())
-    {
-      SuppressErrorDialogs logNull;
-      wxLogMessage(wxString::Format(_("Trying to delete gnuplot file %s"), m_gnuplotData.utf8_str()));
-      if(wxFileExists(m_gnuplotData))
-        wxRemoveFile(m_gnuplotData);
-    }
+  if(!m_gnuplotData.IsEmpty())
+  {
+    SuppressErrorDialogs logNull;
+    wxLogMessage(wxString::Format(_("Trying to delete gnuplot file %s"), m_gnuplotData.utf8_str()));
+    if(wxFileExists(m_gnuplotData))
+      wxRemoveFile(m_gnuplotData);
   }
   if(m_svgImage)
     free(m_svgImage);
@@ -247,9 +226,6 @@ void Image::GnuplotSource(wxString gnuplotFilename, wxString dataFilename, std::
 
 void Image::LoadGnuplotSource_Backgroundtask(wxString gnuplotFilename, wxString dataFilename, std::shared_ptr<wxFileSystem> filesystem)
 {
-  #ifdef HAVE_OMP_HEADER
-  omp_set_lock(&m_gnuplotLock);
-  #endif
   // Error dialogues need to be created by the foreground thread.
   SuppressErrorDialogs suppressor;
 
@@ -267,9 +243,6 @@ void Image::LoadGnuplotSource_Backgroundtask(wxString gnuplotFilename, wxString 
       {
         wxLogMessage(_("Too much gnuplot data => Not storing it in the worksheet"));
         m_gnuplotData_Compressed.Clear();
-        #ifdef HAVE_OMP_HEADER
-        omp_unset_lock(&m_gnuplotLock);
-        #endif
         return;
       }
       
@@ -352,9 +325,6 @@ void Image::LoadGnuplotSource_Backgroundtask(wxString gnuplotFilename, wxString 
   {
     {
       wxFSFile *fsfile;
-      #ifdef HAVE_OPENMP_TASKS
-      #pragma omp critical (OpenFSFile)
-      #endif
       fsfile = filesystem->OpenFile(m_gnuplotSource);
       if (fsfile)
       { // open successful
@@ -406,9 +376,6 @@ void Image::LoadGnuplotSource_Backgroundtask(wxString gnuplotFilename, wxString 
     }
     {
       wxFSFile *fsfile;
-      #ifdef HAVE_OPENMP_TASKS
-      #pragma omp critical (OpenFSFile)
-      #endif
       fsfile = filesystem->OpenFile(m_gnuplotData);
       if (fsfile)
       { // open successful
@@ -449,57 +416,38 @@ void Image::LoadGnuplotSource_Backgroundtask(wxString gnuplotFilename, wxString 
     }
   }
   m_fs_keepalive_gnuplotdata.reset();
-  #ifdef HAVE_OMP_HEADER
-  omp_unset_lock(&m_gnuplotLock);
-  #endif
 }
-
 wxMemoryBuffer Image::GetGnuplotSource()
 {
   wxMemoryBuffer retval;
-  #ifdef HAVE_OMP_HEADER
-  omp_set_lock(&m_gnuplotLock);
-  #else
-  #ifdef HAVE_OPENMP_TASKS
-  #pragma omp taskwait
-  #endif
-  #endif
-  {  
-    if(
-      (m_gnuplotSource_Compressed.GetDataLen() < 2) || 
-      (m_gnuplotData_Compressed.GetDataLen() < 2))
-    {
-      #ifdef HAVE_OMP_HEADER
-      omp_unset_lock(&m_gnuplotLock);
-      #endif
-      return retval;
-    }
-    wxMemoryOutputStream output;
-    wxTextOutputStream textOut(output);
-    if(output.IsOk())
-    {
-      wxMemoryInputStream mstream(
-        m_gnuplotSource_Compressed.GetData(),
-        m_gnuplotSource_Compressed.GetDataLen()
-        );
-      wxZlibInputStream zstream(mstream);
-      wxTextInputStream textIn(zstream);
-      wxString line;
-  
-      while(!zstream.Eof())
-      {
-        line = textIn.ReadLine();
-        textOut << line + wxT("\n");
-      }
-      textOut.Flush();
-
-      retval.AppendData(output.GetOutputStreamBuffer()->GetBufferStart(),
-                        output.GetOutputStreamBuffer()->GetBufferSize());
-    }
+  if(
+    (m_gnuplotSource_Compressed.GetDataLen() < 2) || 
+    (m_gnuplotData_Compressed.GetDataLen() < 2))
+  {
+    return retval;
   }
-  #ifdef HAVE_OMP_HEADER
-  omp_unset_lock(&m_gnuplotLock);
-  #endif
+  wxMemoryOutputStream output;
+  wxTextOutputStream textOut(output);
+  if(output.IsOk())
+  {
+    wxMemoryInputStream mstream(
+      m_gnuplotSource_Compressed.GetData(),
+      m_gnuplotSource_Compressed.GetDataLen()
+      );
+    wxZlibInputStream zstream(mstream);
+    wxTextInputStream textIn(zstream);
+    wxString line;
+  
+    while(!zstream.Eof())
+    {
+      line = textIn.ReadLine();
+      textOut << line + wxT("\n");
+    }
+    textOut.Flush();
+
+    retval.AppendData(output.GetOutputStreamBuffer()->GetBufferStart(),
+                      output.GetOutputStreamBuffer()->GetBufferSize());
+  }
 
   return retval;
 }
@@ -507,28 +455,57 @@ wxMemoryBuffer Image::GetGnuplotSource()
 wxMemoryBuffer Image::GetGnuplotData()
 {
   wxMemoryBuffer retval;
-  #ifdef HAVE_OMP_HEADER
-  omp_set_lock(&m_gnuplotLock);
-  #else
-  #ifdef HAVE_OPENMP_TASKS
-  #pragma omp taskwait
-  #endif
-  #endif
+  if(
+    (m_gnuplotSource_Compressed.GetDataLen() < 2) || 
+    (m_gnuplotData_Compressed.GetDataLen() < 2))
   {
-    if(
-      (m_gnuplotSource_Compressed.GetDataLen() < 2) || 
-      (m_gnuplotData_Compressed.GetDataLen() < 2))
-    {
-      #ifdef HAVE_OMP_HEADER
-      omp_unset_lock(&m_gnuplotLock);
-      #endif
-      return retval;
-    }
+    return retval;
+  }
     
-    wxMemoryOutputStream output;
+  wxMemoryOutputStream output;
+  wxTextOutputStream textOut(output);
+  if(output.IsOk())
+  {
+    wxMemoryInputStream mstream(
+      m_gnuplotData_Compressed.GetData(),
+      m_gnuplotData_Compressed.GetDataLen()
+      );
+    wxZlibInputStream zstream(mstream);
+    wxTextInputStream textIn(zstream);
+    wxString line;
+  
+    while(!zstream.Eof())
+    {
+      line = textIn.ReadLine();
+      textOut << line + wxT("\n");
+    }
+    textOut.Flush();
+
+    retval.AppendData(output.GetOutputStreamBuffer()->GetBufferStart(),
+                      output.GetOutputStreamBuffer()->GetBufferSize());
+  }
+  return retval;
+}
+
+wxString Image::GnuplotData()
+{
+  if((!m_gnuplotData.IsEmpty()) && (!wxFileExists(m_gnuplotData)))
+  {
+    // Move the gnuplot data and data file into our temp directory
+    wxFileName gnuplotSourceFile(m_gnuplotSource);
+    m_gnuplotSource = wxStandardPaths::Get().GetTempDir() + "/" + gnuplotSourceFile.GetFullName();
+    wxFileName gnuplotDataFile(m_gnuplotData);
+    m_gnuplotData = wxStandardPaths::Get().GetTempDir() + "/" + gnuplotDataFile.GetFullName();
+
+    wxFileOutputStream output(m_gnuplotData);
     wxTextOutputStream textOut(output);
     if(output.IsOk())
     {
+      if(m_gnuplotData_Compressed.GetDataLen() <= 1)
+      {
+        wxLogMessage(_("No gnuplot data!"));
+        return wxEmptyString;
+      }
       wxMemoryInputStream mstream(
         m_gnuplotData_Compressed.GetData(),
         m_gnuplotData_Compressed.GetDataLen()
@@ -543,64 +520,8 @@ wxMemoryBuffer Image::GetGnuplotData()
         textOut << line + wxT("\n");
       }
       textOut.Flush();
-
-      retval.AppendData(output.GetOutputStreamBuffer()->GetBufferStart(),
-                        output.GetOutputStreamBuffer()->GetBufferSize());
     }
   }
-  #ifdef HAVE_OMP_HEADER
-  omp_unset_lock(&m_gnuplotLock);
-  #endif
-  return retval;
-}
-
-wxString Image::GnuplotData()
-{
-  if((!m_gnuplotData.IsEmpty()) && (!wxFileExists(m_gnuplotData)))
-  {
-    #ifdef HAVE_OMP_HEADER
-    omp_set_lock(&m_gnuplotLock);
-    #else
-    #ifdef HAVE_OPENMP_TASKS
-    #pragma omp taskwait
-    #endif
-    #endif
-    {
-    // Move the gnuplot data and data file into our temp directory
-      wxFileName gnuplotSourceFile(m_gnuplotSource);
-      m_gnuplotSource = wxStandardPaths::Get().GetTempDir() + "/" + gnuplotSourceFile.GetFullName();
-      wxFileName gnuplotDataFile(m_gnuplotData);
-      m_gnuplotData = wxStandardPaths::Get().GetTempDir() + "/" + gnuplotDataFile.GetFullName();
-
-      wxFileOutputStream output(m_gnuplotData);
-      wxTextOutputStream textOut(output);
-      if(output.IsOk())
-      {
-        if(m_gnuplotData_Compressed.GetDataLen() <= 1)
-        {
-          wxLogMessage(_("No gnuplot data!"));
-          return wxEmptyString;
-        }
-        wxMemoryInputStream mstream(
-          m_gnuplotData_Compressed.GetData(),
-          m_gnuplotData_Compressed.GetDataLen()
-          );
-        wxZlibInputStream zstream(mstream);
-        wxTextInputStream textIn(zstream);
-        wxString line;
-  
-        while(!zstream.Eof())
-        {
-          line = textIn.ReadLine();
-          textOut << line + wxT("\n");
-        }
-        textOut.Flush();
-      }
-    }
-  }
-  #ifdef HAVE_OMP_HEADER
-  omp_unset_lock(&m_gnuplotLock);
-  #endif
   return m_gnuplotData;
 }
 
@@ -608,54 +529,42 @@ wxString Image::GnuplotSource()
 {
   if((!m_gnuplotSource.IsEmpty()) && (!wxFileExists(m_gnuplotSource)))
   {
-    #ifdef HAVE_OMP_HEADER
-    omp_set_lock(&m_gnuplotLock);
-    #else
-    #ifdef HAVE_OPENMP_TASKS
-    #pragma omp taskwait
-    #endif
-    #endif
-    {
-      // Move the gnuplot source and data file into our temp directory
-      wxFileName gnuplotSourceFile(m_gnuplotSource);
-      m_gnuplotSource = wxStandardPaths::Get().GetTempDir() + "/" + gnuplotSourceFile.GetFullName();
-      wxFileName gnuplotDataFile(m_gnuplotData);
-      m_gnuplotData = wxStandardPaths::Get().GetTempDir() + "/" + gnuplotDataFile.GetFullName();
+    // Move the gnuplot source and data file into our temp directory
+    wxFileName gnuplotSourceFile(m_gnuplotSource);
+    m_gnuplotSource = wxStandardPaths::Get().GetTempDir() + "/" + gnuplotSourceFile.GetFullName();
+    wxFileName gnuplotDataFile(m_gnuplotData);
+    m_gnuplotData = wxStandardPaths::Get().GetTempDir() + "/" + gnuplotDataFile.GetFullName();
   
-      wxFileOutputStream output(m_gnuplotSource);
-      wxTextOutputStream textOut(output);
-      if(output.IsOk())
-      {
+    wxFileOutputStream output(m_gnuplotSource);
+    wxTextOutputStream textOut(output);
+    if(output.IsOk())
+    {
 
-        if(m_gnuplotSource_Compressed.GetDataLen() <= 1)
-        {
-          wxLogMessage(_("No gnuplot source!"));
-          return wxEmptyString;
-        }
-        wxMemoryInputStream mstream(
-          m_gnuplotSource_Compressed.GetData(),
-          m_gnuplotSource_Compressed.GetDataLen()
-          );
-        wxZlibInputStream zstream(mstream);
-        if(zstream.IsOk())
-        {
-          wxTextInputStream textIn(zstream);
-          wxString line;
+      if(m_gnuplotSource_Compressed.GetDataLen() <= 1)
+      {
+        wxLogMessage(_("No gnuplot source!"));
+        return wxEmptyString;
+      }
+      wxMemoryInputStream mstream(
+        m_gnuplotSource_Compressed.GetData(),
+        m_gnuplotSource_Compressed.GetDataLen()
+        );
+      wxZlibInputStream zstream(mstream);
+      if(zstream.IsOk())
+      {
+        wxTextInputStream textIn(zstream);
+        wxString line;
           
-          while(!zstream.Eof())
-          {
-            line = textIn.ReadLine();
-            line.Replace(wxT("'<DATAFILENAME>'"),wxT("'")+m_gnuplotData+wxT("'"));
-            textOut << line + wxT("\n");
-          }
-          textOut.Flush();
+        while(!zstream.Eof())
+        {
+          line = textIn.ReadLine();
+          line.Replace(wxT("'<DATAFILENAME>'"),wxT("'")+m_gnuplotData+wxT("'"));
+          textOut << line + wxT("\n");
         }
+        textOut.Flush();
       }
     }
   }
-  #ifdef HAVE_OMP_HEADER
-  omp_unset_lock(&m_gnuplotLock);
-  #endif
   // Restore the data file, as well.
   GnuplotData();
   return m_gnuplotSource;
@@ -764,9 +673,6 @@ wxBitmap Image::GetBitmap(double scale)
     nsvgRasterize(m_svgRast.get(), m_svgImage, 0,0,
                   ((double)m_width)/((double)m_originalWidth),
                   imgdata.data(), m_width, m_height, m_width*4);
-    #ifdef HAVE_OMP_HEADER
-    omp_unset_lock(&m_gnuplotLock);
-    #endif
     return m_scaledBitmap = SvgBitmap::RGBA2wxBitmap(imgdata.data(), m_width, m_height);
   }
   else
@@ -885,9 +791,6 @@ void Image::LoadImage_Backgroundtask(wxString image, std::shared_ptr<wxFileSyste
   if (filesystem)
   {
     wxFSFile * fsfile;
-    #ifdef HAVE_OPENMP_TASKS
-    #pragma omp critical (OpenFSFile)
-    #endif
     fsfile = filesystem->OpenFile(image);
     if (fsfile)
     { // open successful
