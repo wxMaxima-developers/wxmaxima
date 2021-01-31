@@ -18,6 +18,8 @@ function(list_transform_prepend var prefix)
     set(${var} "${temp}" PARENT_SCOPE)
 endfunction()
 
+find_package(Threads REQUIRED)
+
 set(CELL_SOURCE_FILES
     AbsCell.cpp
     AtCell.cpp
@@ -266,7 +268,7 @@ else()
     configure_file("${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima-local.in" ../wxmaxima-local)
 endif()
 
-target_link_libraries(wxmaxima ${wxWidgets_LIBRARIES})
+target_link_libraries(wxmaxima ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
 
 if(MINGW)
     target_link_libraries(wxmaxima -lws2_32)
