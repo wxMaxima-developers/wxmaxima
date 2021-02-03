@@ -105,6 +105,19 @@ you build wxmaxima. You can get some inspiration about how to do both
 of these steps by examining the PowerShell scripts that do the building
 within `.appveyor.yml` file.
 
+
+### Note for the Mingw-w64 compiler and crosscompiler
+
+These compilers come with two forms of thread support - win32 and posix.
+The win32 thread version does not support std::thread, which wxMaxima
+uses for multithreading, so be sure to install or reconfigure the
+posix version.
+
+On Ubuntu Linux the crosscompiler x86_64-w64-mingw32-g++ can be
+reconfigured using:
+update-alternatives --config x86_64-w64-mingw32-g++
+
+
 ### Documentation of the source
 
 An html version of wxMaxima's documentation can be found at
