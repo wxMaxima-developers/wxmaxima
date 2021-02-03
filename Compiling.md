@@ -97,6 +97,8 @@ of the installer. Also select po4a, cmake, ninja and install pandoc.
 Then run the MinGW Shell and follow the instructions for compiling
 wxWidgets and wxMaxima with cmake.
 
+Another compiler option would be MinGW-w64 (http://www.mingw-w64.org/).
+
 You can also build using MS Visual Studio 2019 or newer. Since MSVS
 provides adequate versions of both cmake and ninja, there's no need
 to install those. The build has to start from within the  *x64 Native
