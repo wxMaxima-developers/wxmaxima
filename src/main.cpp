@@ -196,7 +196,7 @@ bool MyApp::OnInit()
       }
     }
     m_locale.AddCatalog(wxT("wxMaxima"));
-    m_locale.AddCatalog(wxT("wxMaxima-wxstd"));
+    m_locale.AddCatalog(wxT("wxstd"));
   }
 
   bool exitAfterEval = false;
