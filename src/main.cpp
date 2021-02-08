@@ -161,9 +161,6 @@ bool MyApp::OnInit()
     if (!wxDirExists(tempDir))
         wxMkDir(tempDir, 0x700);
 
-    #ifdef __WXMSW__
-    wxTranslations::Get()->SetLoader(new wxResourceTranslationsLoader);
-    #endif
     m_locale.AddCatalogLookupPathPrefix(m_dirstruct.LocaleDir());
     m_locale.AddCatalogLookupPathPrefix(m_dirstruct.LocaleDir() + wxT("/wxwin"));
     m_locale.AddCatalogLookupPathPrefix(wxT("/usr/share/locale"));
