@@ -291,7 +291,10 @@ public:
   // cppcheck-suppress functionConst
   //! Get the resolution of an arbitrary display
   wxSize GetPPI(wxWindow *win) const;
-  
+
+  int AutosaveMinutes(){return m_autoSaveMinutes;}
+  void AutosaveMinutes(int minutes){m_autoSaveMinutes = minutes;}
+
   //! How much vertical space is to be left between two group cells?
   long GetCursorWidth() const
   {
@@ -997,6 +1000,7 @@ private:
   int m_bitmapScale;
   int m_defaultFramerate;
   int m_maxClipbrd_BitmapMegabytes;
+  int m_autoSaveMinutes;
 };
 
 //! Sets the configuration's "printing" flag until this class is left.

@@ -96,6 +96,7 @@ Configuration::Configuration(wxDC *dc, InitOpt options) :
 
 void Configuration::ResetAllToDefaults(InitOpt options)
 {
+  m_autoSaveMinutes = 3;
   m_numpadEnterEvaluates = true;
   m_maximaEnvVars.clear();
   // Tell gnuplot not to wait for <enter> every few lines
@@ -496,6 +497,7 @@ void Configuration::ReadConfig()
     // If this preference cannot be loaded we don't want an error message about it
     SuppressErrorDialogs suppressor;
     wxString hideMessagesConfigString;
+    config->Read(wxT("autoSaveMinutes"), &m_autoSaveMinutes);
     config->Read(wxT("wrapLatexMath"), &m_wrapLatexMath);
     config->Read(wxT("exportContainsWXMX"), &m_exportContainsWXMX);
     config->Read(wxT("texPreamble"), &m_texPreamble);
@@ -1194,6 +1196,7 @@ void Configuration::WriteSettings(const wxString &file)
   config->Write(wxT("labelWidth"), m_labelWidth);
   config->Write(wxT("saveUntitled"), m_saveUntitled);
   config->Write(wxT("cursorJump"), m_cursorJump);
+  config->Write(wxT("autoSaveMinutes"), m_autoSaveMinutes);
 
   config->Write(wxT("maxClipbrd_BitmapMegabytes"), m_maxClipbrd_BitmapMegabytes);
 

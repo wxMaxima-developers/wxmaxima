@@ -347,6 +347,7 @@ protected:
   wxSpinCtrl *m_defaultPort;
   ExamplePanel *m_examplePanel;
   wxSpinCtrl *m_maxGnuplotMegabytes;
+  wxSpinCtrl *m_autosaveMinutes;
   wxTextCtrl *m_autoMathJaxURL;
   int m_maximaEmvRightClickRow = 0;
   //! Is called when the path to the maxima binary was changed.

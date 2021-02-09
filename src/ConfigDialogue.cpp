@@ -486,6 +486,8 @@ void ConfigDialogue::SetCheckboxValues()
   m_restartOnReEvaluation->SetValue(configuration->RestartOnReEvaluation());
   m_defaultFramerate->SetValue(m_configuration->DefaultFramerate());
   m_maxGnuplotMegabytes->SetValue(configuration->MaxGnuplotMegabytes());
+  configuration->AutosaveMinutes(m_autosaveMinutes->GetValue());
+  m_autosaveMinutes->SetValue(configuration->AutosaveMinutes());
   m_defaultPlotWidth->SetValue(configuration->DefaultPlotWidth());
   m_defaultPlotHeight->SetValue(configuration->DefaultPlotHeight());
   m_displayedDigits->SetValue(configuration->GetDisplayedDigits());
@@ -1040,6 +1042,13 @@ wxWindow *ConfigDialogue::CreateOptionsPanel()
   
   grid_sizer->Add(mm, 0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL, 5*GetContentScaleFactor());
   grid_sizer->Add(m_maxGnuplotMegabytes, 0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL, 5*GetContentScaleFactor());
+  
+  wxStaticText *as = new wxStaticText(panel, -1, _("Time [in Minutes] between autosaves"));
+  m_autosaveMinutes = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(150*GetContentScaleFactor(), -1), wxSP_ARROW_KEYS, 1,
+                                         60);
+  
+  grid_sizer->Add(as, 0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL, 5*GetContentScaleFactor());
+  grid_sizer->Add(m_autosaveMinutes, 0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL, 5*GetContentScaleFactor());
 
   vsizer->Add(grid_sizer, 1, wxEXPAND, 5*GetContentScaleFactor());
   
@@ -1666,6 +1675,7 @@ void ConfigDialogue::WriteSettings()
   configuration->AntiAliasLines(m_antialiasLines->GetValue());
   configuration->DefaultFramerate(m_defaultFramerate->GetValue());
   configuration->MaxGnuplotMegabytes(m_maxGnuplotMegabytes->GetValue());
+  configuration->AutosaveMinutes(m_autosaveMinutes->GetValue());
   configuration->DefaultPlotWidth(m_defaultPlotWidth->GetValue());
   configuration->DefaultPlotHeight(m_defaultPlotHeight->GetValue());
   configuration->SetDisplayedDigits(m_displayedDigits->GetValue());
