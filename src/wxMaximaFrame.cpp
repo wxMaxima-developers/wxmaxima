@@ -1555,8 +1555,9 @@ void wxMaximaFrame::ReReadConfig()
     {
       wxLogMessage(wxString::Format(_("Re-Reading the config from %s."),
                      Configuration::m_configfileLocation_override.utf8_str()));
-      wxConfig::Set(new wxConfig(wxT("wxMaxima"),
-                                 wxEmptyString, Configuration::m_configfileLocation_override));
+      wxConfig::Set(new wxFileConfig(wxT("wxMaxima"),
+                                     wxEmptyString,
+                                     Configuration::m_configfileLocation_override));
     }
   }
   #endif

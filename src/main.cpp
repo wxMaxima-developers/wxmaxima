@@ -257,8 +257,8 @@ bool MyApp::OnInit()
     wxFileName configFile(ini);
     configFile.MakeAbsolute();
     Configuration::m_configfileLocation_override = configFile.GetFullPath();
-    wxConfig::Set(new wxConfig(wxT("wxMaxima"), wxEmptyString,
-                               Configuration::m_configfileLocation_override));
+    wxConfig::Set(new wxFileConfig(wxT("wxMaxima"), wxEmptyString,
+                                   Configuration::m_configfileLocation_override));
   }
   else
     wxConfig::Set(new wxConfig(wxT("wxMaxima")));
