@@ -2765,8 +2765,17 @@ void Worksheet::DeleteSelection()
 
 void Worksheet::DeleteCurrentCell()
 {
-  GroupCell *cellToDelete = m_hCaretActive ? m_hCaretPosition : GetActiveCell()->GetGroup();
+  GroupCell *cellToDelete = NULL;
+  if(m_hCaretActive)
+    cellToDelete = m_hCaretPosition;
+  if(GetActiveCell())
+    cellToDelete = GetActiveCell()->GetGroup();
 
+  if((!cellToDelete) && (GetSelectionStart()) && (GetSelectionEnd()) &&
+     (GetSelectionStart()->GetGroup() == GetSelectionEnd()->GetGroup()))
+  {
+    cellToDelete = GetSelectionStart()->GetGroup();
+  }
   if (cellToDelete)
     DeleteRegion(cellToDelete, cellToDelete);
 }
