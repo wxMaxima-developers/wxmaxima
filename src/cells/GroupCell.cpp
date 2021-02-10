@@ -1853,6 +1853,7 @@ GroupCell *GroupCell::Unfold()
   if (!IsFoldable() || !m_hiddenTree)
     return NULL;
 
+  m_cellsAppended = true;
   auto splicedIn = CellList::SpliceInAfter(this, std::move(m_hiddenTree));
   GetNext()->SetHiddenTreeParent(m_hiddenTreeParent);
   return dynamic_cast<GroupCell *>(splicedIn.lastSpliced);
