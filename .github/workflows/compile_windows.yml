@@ -1,0 +1,96 @@
+name: compile_windows
+
+on: [push]
+
+env:
+  BUILD_TYPE: Release
+  WXVERSION: 3.1.4
+
+jobs:
+  compile_windows:
+    runs-on: windows-latest
+    steps:
+    - name: Checkout wxMaxima
+      uses: actions/checkout@v2
+      with:
+        # We must fetch at least the immediate parents so that if this is
+        # a pull request then we can checkout the head.
+        fetch-depth: 15
+        path: wxMaxima
+
+    - name: Install Ninja
+      run: |
+          choco install ninja
+
+    - name: Cache wxWidgets
+      uses: actions/cache@v2
+      env:
+        cache-name: cache-wxWidgets
+      with:
+        path: wxWidgets-${{env.WXVERSION}}
+        key: ${{ runner.os }}-build-${{ env.cache-name }}-2
+
+# multi-job compilation is broken in wxWidgets, see https://trac.wxwidgets.org/ticket/19029
+# compiling wxWidgets via cmake works, but the result isn't detected by cmake any more.
+    - name: Compile wxWidgets
+      run: |
+          if (Test-Path wxWidgets-${{env.WXVERSION}}) { echo "wxWidgets already present"} else {
+             Invoke-WebRequest -Uri https://github.com/wxWidgets/wxWidgets/releases/download/v${{env.WXVERSION}}/wxWidgets-${{env.WXVERSION}}.zip -OutFile wxWidgets-${{env.WXVERSION}}.zip 
+             Expand-Archive -LiteralPath wxWidgets-${{env.WXVERSION}}.zip -DestinationPath wxWidgets-${{env.WXVERSION}}
+             cd wxWidgets-${{env.WXVERSION}}
+             cd build
+             cd msw
+             mingw32-make -f makefile.gcc SHELL=cmd.exe SHARED=0 BUILD=release
+             cd ..
+             cd ..
+             cd ..
+          }
+
+    - name: Configure wxMaxima
+      run: |
+          cd wxMaxima
+          new-item build -itemtype directory
+          new-item build\Release -itemtype directory
+          cd build
+          cmake -DwxWidgets_ROOT_DIR="../../wxWidgets-${{env.WXVERSION}}" -DwxWidgets_LIB_DIR="../../wxWidgets-${{env.WXVERSION}}/lib/gcc_lib" -DwxWidgets_CONFIGURATION=mswu -DCMAKE_BUILD_TYPE=release -G "MinGW Makefiles" -DwxWidgets_USE_DEBUG=false -DwxWidgets_USE_UNICODE=true -DwxWidgets_USE_STATIC=true -G Ninja -DCMAKE_UNITY_BUILD=YES ..
+          cd ..
+          cd ..
+    - name: Compile wxMaxima
+      run: |
+          cd wxMaxima
+          cd build
+          cmake --build .
+          cd ..
+          cd ..
+    - name: Package wxMaxima
+      run: |
+          cd wxMaxima
+          cd build
+          cpack
+          cd ..
+          cd ..
+    - name: create_release
+      if: startsWith(github.ref, 'refs/tags/')
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
+        body: |
+          Automatic compilation on a new release
+        draft: false
+        prerelease: false
+    - name: upload_appimage
+      if: startsWith(github.ref, 'refs/tags/')
+      id: upload-release-asset 
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+        asset_path: ./wxMaxima/build/*64.exe
+        asset_name: wxmaxima-installer.exe
+        asset_content_type: application/x-executable
+        
