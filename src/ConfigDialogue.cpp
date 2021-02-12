@@ -486,7 +486,6 @@ void ConfigDialogue::SetCheckboxValues()
   m_restartOnReEvaluation->SetValue(configuration->RestartOnReEvaluation());
   m_defaultFramerate->SetValue(m_configuration->DefaultFramerate());
   m_maxGnuplotMegabytes->SetValue(configuration->MaxGnuplotMegabytes());
-  configuration->AutosaveMinutes(m_autosaveMinutes->GetValue());
   m_autosaveMinutes->SetValue(configuration->AutosaveMinutes());
   m_defaultPlotWidth->SetValue(configuration->DefaultPlotWidth());
   m_defaultPlotHeight->SetValue(configuration->DefaultPlotHeight());
