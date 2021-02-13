@@ -7,46 +7,36 @@ CMake >= 3.7 installed.
 
 ### Compiling wxMaxima on Linux and Linux-like systems (Cygwin, MacPorts, Fink, Homebrew,...)
 
-wxMaxima is built using the CMake build system. The fastest builds
-are achieved with Ninja, so ensure you've installed both CMake and
-Ninja. If you can't install ninja, please *do not provide the `-G Ninja`
-argument to CMake*.
+wxMaxima is built using the CMake build system.
 
-The following steps will build and install wxMaxima using CMake and Ninja.
+The following steps will build and install wxMaxima using CMake.
 Assume you start inside wxmaxima source tree root folder. Then:
 
-- Using cmake 3.13 or newer
-
-        mkdir -p ../build-wxm
-        cmake -G Ninja -S . -B ../build-wxm
-        cmake --build ../build-wxm
-        sudo cmake --install ../build-wxm
-
-- Using cmake 3.7-3.12
-
-        mkdir -p ../build-wxm
-        cd ../build-wxm
-        cmake ../wxmaxima
-        cd ../wxmaxima
-        cmake --build ../build-wxm
-        sudo cmake --install ../build-wxm
+        mkdir -p ../build-wxm           # create a build directory
+        cd ../build-wxm                 # change to the build directory
+        cmake ../wxmaxima               # configure the build
+                                        # ../wxmaxima is the path to the wxMaxima sources.
+        cmake --build .                 # build wxMaxima
+                                        # You can speed up the build, if you
+                                        # have multiple CPU cores, using
+                                        # cmake --build . -- -j 4
+                                        # (-j 4 means: Use 4 CPU cores).
+                                        # Adjust the number for your CPU.
+        sudo cmake --build . -- install # install it
 
 If you want to install into a special prefix (not `/usr/local`), add
 `-DCMAKE_INSTALL_PREFIX:PATH=/your/installation/prefix` to the first
 cmake invocation. E.g.
 
-    cmake -DCMAKE_INSTALL_PREFIX=/your/installation/prefix -G Ninja -S . -B ../build-wxm
+    cmake -DCMAKE_INSTALL_PREFIX=/your/installation/prefix ../wxmaxima
 
-If installed, wxMaxima can use cppcheck to check the source for potential
-bugs that may escape detection during normal compilation. You can enable
-that with: `-DWXM_USE_CPPCHECK=YES` in the initial cmake invocation. For
-best results, use the most recent cppcheck. Old cppcheck version produce
-useless output full of spurious mis-diagnostics.
+Of course you can use the CMake GUI (`cmake-gui`) or curses based CMake
+(`ccmake`) for the configure step and change some CMake variables.
 
 If you want to create binary packages (tar.gz, tar.bz2, DEB & RPM, on MacOs
 also .dmg), the following command will create them:
 
-    cmake --build ../build-wxm -- package
+    cmake --build . -- package
 
 
 #### Mac Os: Creating a portable .apk and .dmg installer
@@ -60,7 +50,7 @@ This requires wxWidgets to be installed, e.G. using macports
 
 #### Ubuntu or Debian build prerequisites
 
-    sudo apt-get install build-essential libwxbase3.0-dev libwxgtk3.0-dev ibus-gtk ibus-gtk3 checkinstall gettext cmake ninja-build pandoc po4a
+    sudo apt-get install build-essential libwxbase3.0-dev libwxgtk3.0-dev ibus-gtk ibus-gtk3 checkinstall gettext cmake pandoc po4a
 
 beforehand or (if apt-get is configured to load the source package
 repositories and not only the binary packages) by the simpler
@@ -70,8 +60,8 @@ repositories and not only the binary packages) by the simpler
 #### CentOS and Redhat build prerequisites
 
 CentOS / Redhat have rather old versions of CMake and wxWidgets installed,
-install "cmake3" and "wxGTK3-devel" from the "Extra Packages for Enterprise Linux (EPEL)"
-repository, to compile wxMaxima. (and use "cmake3" instead of "cmake" to call
+install `cmake3` and `wxGTK3-devel` from the "Extra Packages for Enterprise Linux (EPEL)"
+repository, to compile wxMaxima. (and use `cmake3` instead of `cmake` to call
 the newer version of CMake in the commands above).
 
 #### Mac OS X prerequisites
@@ -91,7 +81,7 @@ Additional information about building on MacOS:
 You can install MinGW (https://sourceforge.net/projects/mingw/). In
 the installation process make sure you select `g++`, `MSYS Basic
 System` and `MinGW Developer ToolKit` in the `Select components` page
-of the installer. Also select po4a, cmake, ninja and install pandoc.
+of the installer. Also select po4a, cmake and install pandoc.
 Then run the MinGW Shell and follow the instructions for compiling
 wxWidgets and wxMaxima with cmake.
 
