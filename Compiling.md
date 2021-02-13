@@ -1,8 +1,9 @@
 Building wxMaxima from source
 -----------------------------
 
-To build wxMaxima from sources you need to have a C++ compiler and the
-wxWidgets library installed.
+To build wxMaxima from sources you need to have a C++ compiler,
+wxWidgets >= 3.0 (including development headers) and
+CMake >= 3.7 installed.
 
 ### Compiling wxMaxima on Linux and Linux-like systems (Cygwin, MacPorts, Fink, Homebrew,...)
 
@@ -20,7 +21,7 @@ Assume you start inside wxmaxima source tree root folder. Then:
         cmake -G Ninja -S . -B ../build-wxm
         cmake --build ../build-wxm
         sudo cmake --install ../build-wxm
-        
+
 - Using cmake 3.7-3.12
 
         mkdir -p ../build-wxm
@@ -40,16 +41,13 @@ If installed, wxMaxima can use cppcheck to check the source for potential
 bugs that may escape detection during normal compilation. You can enable
 that with: `-DWXM_USE_CPPCHECK=YES` in the initial cmake invocation. For
 best results, use the most recent cppcheck. Old cppcheck version produce
-useless output full of spurious mis-diagnostics. 
+useless output full of spurious mis-diagnostics.
 
 If you want to create binary packages (tar.gz, tar.bz2, DEB & RPM, on MacOs
 also .dmg), the following command will create them:
 
     cmake --build ../build-wxm -- package
 
-At least CMake 3.7.0 is required to build wxMaxima. If your OS provides
-an older version (e.g. Ubuntu 14.04) download a recent version from
-https://cmake.org/download/ and use that.
 
 #### Mac Os: Creating a portable .apk and .dmg installer
 
@@ -59,7 +57,7 @@ This requires wxWidgets to be installed, e.G. using macports
     cmake -S . -B ../build-wxm -DCMAKE_INSTALL_PREFIX=.
     cmake --build ../build-wxm
     cmake --build ../build-wxm --install
-    
+
 #### Ubuntu or Debian build prerequisites
 
     sudo apt-get install build-essential libwxbase3.0-dev libwxgtk3.0-dev ibus-gtk ibus-gtk3 checkinstall gettext cmake ninja-build pandoc po4a
@@ -78,7 +76,7 @@ the newer version of CMake in the commands above).
 
 #### Mac OS X prerequisites
 
-On Mac OS X you most probably need the command-line compiler one can tell 
+On Mac OS X you most probably need the command-line compiler one can tell
 Xcode to install. Additionally wxWidgets needs to be installed, which can
 be done using homebrew, fink or macports and should be named wxWidgets or
 wxMac there.
@@ -115,10 +113,12 @@ The win32 thread version does not support std::thread, which wxMaxima
 uses for multithreading, so be sure to install or reconfigure the
 posix version.
 
-On Ubuntu Linux the crosscompiler x86_64-w64-mingw32-g++ can be
+On Ubuntu Linux the crosscompiler `x86_64-w64-mingw32-g++` can be
 reconfigured using:
-update-alternatives --config x86_64-w64-mingw32-g++
 
+    update-alternatives --config x86_64-w64-mingw32-g++
+
+(For 32 bit the same works for the 32 bit compiler `i686-w64-mingw32-g++`.)
 
 ### Documentation of the source
 
@@ -160,10 +160,9 @@ creating a portable app:
 
 If a wxMaxima install should come without manual or translation files that
 might not be the end of the world, neither:
-   
- * The .exe file of the MS Windows version of wxMaxima comes with built-in
-   translation files. If even these cannot be found the program will still
-   work, but will be using  english.
- * And if there are no manual files wxMaxima will redirect the system's web 
+
+ * If the translation files are not found, the program will still work,
+   but will be using english.
+ * And if there are no manual files wxMaxima will redirect the system's web
    browser to an online version of the manual, instead.
- 
+
