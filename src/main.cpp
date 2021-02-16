@@ -63,8 +63,6 @@ IMPLEMENT_WX_THEME_SUPPORT;
 int CommonMain()
 {
   wxTheApp->CallOnInit();
-  #pragma omp parallel
-  #pragma omp master
   wxTheApp->OnRun();
   wxConfigBase *config = wxConfig::Get();
   config->Flush();
