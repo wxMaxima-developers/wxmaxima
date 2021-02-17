@@ -2830,6 +2830,7 @@ void wxMaxima::VariableActionLispVersion(const wxString &value)
 void wxMaxima::VariableActionWxLoadFileName(const wxString &value)
 {
   m_recentPackages.AddDocument(value);
+  UpdateRecentDocuments();
   wxLogMessage(wxString::Format(_("Maxima has loaded the file %s."),value.utf8_str()));
 }
 
@@ -4789,6 +4790,7 @@ bool wxMaxima::OpenFile(const wxString &file, const wxString &command)
     {
       ReReadConfig();
       m_recentPackages.AddDocument(unixFilename);
+      UpdateRecentDocuments();
       ReReadConfig();
     }
   }
@@ -4856,6 +4858,7 @@ bool wxMaxima::OpenFile(const wxString &file, const wxString &command)
     MenuCommand(wxT("demo(\"") + unixFilename + wxT("\")$"));
     ReReadConfig();
     m_recentPackages.AddDocument(file);
+    UpdateRecentDocuments();
     ReReadConfig();
   }
 
@@ -4867,6 +4870,7 @@ bool wxMaxima::OpenFile(const wxString &file, const wxString &command)
     MenuCommand(wxT("load(\"") + unixFilename + wxT("\")$"));
     ReReadConfig();
     m_recentPackages.AddDocument(unixFilename);
+    UpdateRecentDocuments();
     ReReadConfig();
   }
 
