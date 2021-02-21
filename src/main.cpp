@@ -191,6 +191,9 @@ bool MyApp::OnInit()
       }
     }
     m_locale.AddCatalog(wxT("wxMaxima"));
+    /* wxWidgets introduced version suffixes to gettext catalogs, see: https://github.com/wxWidgets/wxWidgets/commit/ded4da5 */
+    /* so try to load a catalog with this suffix */
+    m_locale.AddCatalog("wxstd-" wxSTRINGIZE(wxMAJOR_VERSION) "." wxSTRINGIZE(wxMINOR_VERSION));
     m_locale.AddCatalog(wxT("wxstd"));
   }
 
