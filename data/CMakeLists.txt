@@ -15,7 +15,7 @@ set(PIXMAPS
 if(WIN32)
     add_subdirectory(fonts)
 else()
-    string(TIMESTAMP CURRENTDATE "%Y-%m-%d")
+    string(TIMESTAMP CURRENTDATE "%Y-%m-%d" UTC)
     # the config file is ~/.wxMaxima if wxWidgets < 3.1.1
     #                    ~/.config/wxMaxima.conf if wxWidgets >= 3.1.1 (XDG Specification)
     if(wxWidgets_VERSION_STRING VERSION_GREATER_EQUAL "3.1.1")
