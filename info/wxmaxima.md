@@ -829,7 +829,9 @@ FAQ
 
 ## Is there a way to make more text fit on a LaTeX page?
 
-There is: Just add the following lines to the LaTeX preamble (for example by using the respective field in the config dialogue ("Export"->"Additional lines for the TeX preamble"):
+Yes. Use the LaTeX package "geometry" to specify the size of the borders.
+
+You can add the following line to the LaTeX preamble (for example by using the respective field in the config dialogue ("Export"->"Additional lines for the TeX preamble"), to set borders of 1cm):
 
 ~~~latex
 \usepackage[left=1cm,right=1cm,top=1cm,bottom=1cm]{geometry}
