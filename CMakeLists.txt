@@ -182,6 +182,7 @@ function(list_transform_prepend var prefix)
     set(${var} "${temp}" PARENT_SCOPE)
 endfunction()
 
+set(CPACK_PACKAGE_CHECKSUM "SHA512")
 ##
 # Build Items
 #
@@ -197,9 +198,6 @@ enable_testing()
 add_subdirectory(test)
 
 add_custom_target(dist COMMAND ${CMAKE_MAKE_PROGRAM} package_source)
-
-add_custom_target(checksums
-    ${CMAKE_COMMAND} -DVERSION=${VERSION} -DCMAKE_SYSTEM_NAME=${CMAKE_SYSTEM_NAME} -P ${CMAKE_SOURCE_DIR}/checksums.cmake)
 
 install(FILES AUTHORS COPYING ChangeLog GPL.txt NEWS.md README README.md DESTINATION share/doc/wxmaxima)
 
