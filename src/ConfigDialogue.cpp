@@ -263,14 +263,10 @@ m_maximaEnvDoc["GCL_MULTIPROCESS_MEMORY_POOL"] = _("If maxima was compiled by GC
      notebookTab = 0;
   m_notebook->SetSelection(notebookTab);
 
-  // Allow the property dialogue sheets to scroll, if they don't fit
-  // on the screen.
+  // Allow the property dialogue sheets to scroll, if they don't fit on the screen.
   SetLayoutAdaptationMode(wxDIALOG_ADAPTATION_MODE_ENABLED);
-
   LayoutDialog();
-  SetMinSize(wxSize(GetContentScaleFactor()*600,GetContentScaleFactor()*800));
-  SetInitialSize(wxSize(GetContentScaleFactor()*900,GetContentScaleFactor()*800));
-
+  
   // The following two lines seem to sometimes crash
   //
   // wxPersistenceManager::Get().RegisterAndRestore(this);
@@ -543,6 +539,7 @@ wxWindow *ConfigDialogue::CreateWorksheetPanel()
 {
   wxScrolled<wxPanel> *panel = new wxScrolled<wxPanel>(m_notebook, -1);
   panel->SetScrollRate(5*GetContentScaleFactor(), 5*GetContentScaleFactor());
+  panel->SetMinSize(wxSize(GetContentScaleFactor()*mMinPanelWidth,GetContentScaleFactor()*mMinPanelHeight));
 
   wxStaticBoxSizer *displaySizer = new wxStaticBoxSizer(wxVERTICAL, panel, _("Display"));
   wxFlexGridSizer *grid_sizer = new wxFlexGridSizer(10, 2, 5, 5);
@@ -693,6 +690,8 @@ wxWindow *ConfigDialogue::CreateRevertToDefaultsPanel()
 {
   wxScrolled<wxPanel> *panel = new wxScrolled<wxPanel>(m_notebook, -1);
   panel->SetScrollRate(5*GetContentScaleFactor(), 5*GetContentScaleFactor());
+  panel->SetMinSize(wxSize(GetContentScaleFactor()*mMinPanelWidth,GetContentScaleFactor()*mMinPanelHeight));
+
   wxBoxSizer *vsizer = new wxBoxSizer(wxVERTICAL);
   WrappingStaticText *helpText1 = new WrappingStaticText(
     panel, -1,
@@ -797,6 +796,7 @@ wxWindow *ConfigDialogue::CreateStartupPanel()
 {
   wxScrolled<wxPanel> *panel = new wxScrolled<wxPanel>(m_notebook, -1);
   panel->SetScrollRate(5*GetContentScaleFactor(), 5*GetContentScaleFactor());
+  panel->SetMinSize(wxSize(GetContentScaleFactor()*mMinPanelWidth,GetContentScaleFactor()*mMinPanelHeight));
   wxBoxSizer *vsizer = new wxBoxSizer(wxVERTICAL);
 
   m_startupFileName = Dirstructure::Get()->UserConfDir();
@@ -888,6 +888,7 @@ wxWindow *ConfigDialogue::CreateExportPanel()
 {
   wxScrolled<wxPanel> *panel = new wxScrolled<wxPanel>(m_notebook, -1);
   panel->SetScrollRate(5*GetContentScaleFactor(), 5*GetContentScaleFactor());
+  panel->SetMinSize(wxSize(GetContentScaleFactor()*mMinPanelWidth,GetContentScaleFactor()*mMinPanelHeight));
 
   wxBoxSizer *vsizer = new wxBoxSizer(wxVERTICAL);    
 
@@ -1001,6 +1002,7 @@ wxWindow *ConfigDialogue::CreateOptionsPanel()
 {
   wxScrolled<wxPanel> *panel = new wxScrolled<wxPanel>(m_notebook, -1);
   panel->SetScrollRate(5*GetContentScaleFactor(), 5*GetContentScaleFactor());
+  panel->SetMinSize(wxSize(GetContentScaleFactor()*mMinPanelWidth,GetContentScaleFactor()*mMinPanelHeight));
 
   wxFlexGridSizer *grid_sizer = new wxFlexGridSizer(7, 2, 5, 5);
   wxFlexGridSizer *vsizer = new wxFlexGridSizer(18, 1, 5, 5);
@@ -1083,6 +1085,7 @@ wxWindow *ConfigDialogue::CreateMaximaPanel()
 {
   wxScrolled<wxPanel> *panel = new wxScrolled<wxPanel>(m_notebook, -1);
   panel->SetScrollRate(5*GetContentScaleFactor(), 5*GetContentScaleFactor());
+  panel->SetMinSize(wxSize(GetContentScaleFactor()*mMinPanelWidth,GetContentScaleFactor()*mMinPanelHeight));
 
   wxFlexGridSizer *sizer = new wxFlexGridSizer(5, 2, 0, 0);
   wxFlexGridSizer *sizer2 = new wxFlexGridSizer(6, 2, 0, 0);
@@ -1426,6 +1429,8 @@ wxWindow *ConfigDialogue::CreateClipboardPanel()
 {
   wxScrolled<wxPanel> *panel = new wxScrolled<wxPanel>(m_notebook, -1);
   panel->SetScrollRate(5*GetContentScaleFactor(), 5*GetContentScaleFactor());
+  panel->SetMinSize(wxSize(GetContentScaleFactor()*mMinPanelWidth,GetContentScaleFactor()*mMinPanelHeight));
+
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
   wxStaticBoxSizer *formatSizer =
     new wxStaticBoxSizer(wxVERTICAL, panel,
@@ -1517,6 +1522,7 @@ wxWindow *ConfigDialogue::CreateStylePanel()
 {
   wxScrolled<wxPanel> *panel = new wxScrolled<wxPanel>(m_notebook, -1);
   panel->SetScrollRate(5*GetContentScaleFactor(), 5*GetContentScaleFactor());
+  panel->SetMinSize(wxSize(GetContentScaleFactor()*mMinPanelWidth,GetContentScaleFactor()*mMinPanelHeight));
 
   wxStaticBox *fonts = new wxStaticBox(panel, -1, _("Fonts"));
   wxStaticBox *styles = new wxStaticBox(panel, -1, _("Styles"));
