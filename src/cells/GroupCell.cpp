@@ -376,7 +376,7 @@ void GroupCell::RemoveOutput()
     m_width = 50;
   (*m_configuration)->AdjustWorksheetSize(true);
   
-  // Move all cells that follow the current one up by the amount this cell has shrinked.
+  // Move all cells that follow the current one up by the amount this cell has shrunk.
   UpdateCellsInGroup();
 
   m_updateConfusableCharWarnings = true;
