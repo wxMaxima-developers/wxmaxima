@@ -77,7 +77,7 @@ public:
   void ReadSocket();
 
   //! Clear the first prompt state, based on what was read from maxima.
-  //! This is called from prompt recognizer code in the wxMaxima clas.
+  //! This is called from prompt recognizer code in the wxMaxima class.
   void ClearFirstPrompt() { m_first = false; }
 
 private:
