@@ -107,6 +107,10 @@ public:
   void WriteSettings();
 
 private:
+  const int mMinPanelWidth = 640;
+  const int mMinPanelHeight = 720;
+
+private:
   enum newVariables
   {
     MAXIMA_DEFAULT_LISP,
