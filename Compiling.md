@@ -25,10 +25,10 @@ Assume you start inside wxmaxima source tree root folder. Then:
         sudo cmake --build . -- install # install it
 
 If you want to install into a special prefix (not `/usr/local`), add
-`-DCMAKE_INSTALL_PREFIX:PATH=/your/installation/prefix` to the first
+`-DCMAKE_INSTALL_PREFIX=/your/installation/prefix` to the first
 cmake invocation. E.g.
 
-    cmake -DCMAKE_INSTALL_PREFIX=/your/installation/prefix ../wxmaxima
+    cmake -DCMAKE_INSTALL_PREFIX=/opt/wxmaxima ../wxmaxima
 
 Of course you can use the CMake GUI (`cmake-gui`) or curses based CMake
 (`ccmake`) for the configure step and change some CMake variables.
@@ -108,11 +108,11 @@ reconfigured using:
 
     update-alternatives --config x86_64-w64-mingw32-g++
 
-(For 32 bit the same works for the 32 bit compiler `i686-w64-mingw32-g++`.)
+(For 32 bit the same works for the 32 bit crosscompiler `i686-w64-mingw32-g++`.)
 
 ### Documentation of the source
 
-An html version of wxMaxima's documentation can be found at
+An HTML version of wxMaxima's source code documentation can be found at
 https://www.peterpall.de/wxMaxima/html/index.xhtml
 
 A local version of the documentation of wxMaxima's source can be
