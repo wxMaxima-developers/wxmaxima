@@ -1752,6 +1752,7 @@ void GroupCell::Hide(bool hide)
   if (GetLabel())
     GetLabel()->ClearCacheList();
 
+  m_cellsAppended = true;
   ResetSize();
   GetEditable()->ResetSize();
 }
