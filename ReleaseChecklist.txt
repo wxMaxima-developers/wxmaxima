@@ -1,8 +1,14 @@
+wxMaxima Release Checklist
+==========================
+
+- Does the current git version compile? Do the checks on Github work?
 - Enter the new version number into CMakeLists.txt
-- Update the version numbers in the appImage repo (update_versions.sh)
+- Update the version numbers in the 'docker-wxmaxima' repository (update_versions.sh)
 - Update NEWS.md in order to announce the new version on https://freshcode.club/
 - Update data/io.github.wxmaxima_developers.wxMaxima.appdata.xml with the information
-  about the new release.
+  about the new release. The HTML sourcecode of
+  https://github.com/wxMaxima-developers/wxmaxima/blob/master/NEWS.md
+  might be useful to convert the recent NEWS.md entries to HTML.
 - Validate the appdata file with:
   appstream-util validate data/io.github.wxmaxima_developers.wxMaxima.appdata.xml
 - Update snap/snapcraft.yaml
@@ -17,5 +23,7 @@
   gpg --armor --detach-sign <filename>
 - On the release page on github modify the release to contain the two .asc files
   the command produced.
-- In maxima's source tree in crosscompile-windows/wxmaxima/CMakeLists.txt: Change the
+- In Maxima's source tree in crosscompile-windows/wxmaxima/CMakeLists.txt: Change the
   version number and the MD5 sum of the release tarball to the newest value.
+- Create a Windows installer using the 'Crosscompiled-Windows-installer' repository
+  and add it to the release.
