@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Copyright 2020 wxMaxima Team -->
+<!-- Copyright 2021 wxMaxima Team -->
 <component type="desktop">
   <id>io.github.wxmaxima_developers.wxMaxima</id>
   <metadata_license>CC0-1.0</metadata_license>
@@ -17,7 +17,7 @@
       providing input dialogs for commands that require more than one
       argument. It also implements its own display engine that outputs
       mathematical symbols directly instead of depicting them with
-      ASCII characters. 
+      ASCII characters.
     </p>
     <p>
       wxMaxima also features 2D and 3D inline plots, simple animations,
@@ -53,11 +53,31 @@
   <releases>
 
     <!-- prefer to use date with approximate UTC time - this way the verifier won't trip due
-         to time zone variations 
+         to time zone variations
          You can see current time at: https://en.wikipedia.org/wiki/ISO_8601
     -->
-   <release version="21.01.0" date="2021-01-23T19:29:00Z">
+   <release version="21.02.0" date="2021-02-27T21:14:00Z">
       <description>
+	<p>
+	  Many bug fixes.
+	</p>
+	Many bug fixes.
+<ul>
+<li>A Spanish translation update by cyphra</li>
+<li>Replaced openMP by c++11's built-in thread handling. This should improve
+stability at the cost of making loading files with lots of images slower.</li>
+<li>Language selection now works on Windows.</li>
+<li>Resolved a crash when deleting regions.</li>
+<li>The --ini switch should work again correctly.</li>
+<li>Fix an issue, where demos didn't re-center screen anymore, when screen
+is full and print was incomplete.</li>
+<li>Made the time between autosaves configurable.</li>
+<li>Fixed an issue with reproducible builds.</li>
+</ul>
+      </description>
+    </release>
+  <release version="21.01.0" date="2021-01-23T19:29:00Z">
+    <description>
 	<p>
 	  Bugfix release: Reproducible crashes on loading files with images on MacOs.
 	</p>
@@ -67,7 +87,7 @@
 	  <li> Many small bugfixes including a crash on loading files with images</li>
 	</ul>
       </description>
-    </release> 
+    </release>
     <release version="20.12.2" date="2020-12-30T15:47:00Z">
       <description>
 	<p>
@@ -105,7 +125,7 @@
 	</ul>
       </description>
     </release>
-    
+
     <release version="20.11.0" date="2020-11-02T06:57:00Z">
       <description>
 	<p>
@@ -118,6 +138,6 @@
 	  <li> An editor for maxima's environment variables</li>
 	</ul>
       </description>
-    </release>    
+    </release>
   </releases>
 </component>
