@@ -1,8 +1,14 @@
 # Current
  * A Spanish translation update by cyphra
- * Replaced openMP by c++11's built-in thread handling. This should improve 
+ * Replaced openMP by c++11's built-in thread handling. This should improve
    stability at the cost of making loading files with lots of images slower.
  * Language selection now works on Windows.
+ * Resolved a crash when deleting regions.
+ * The --ini switch should work again correctly.
+ * Fix an issue, where demos didn't re-center screen anymore, when screen
+   is full and print was incomplete.
+ * Made the time between autosaves configurable.
+ * Fixed an issue with reproducible builds.
 
 # 21.01.0
  * Chinese translation updates by 刘荣.
@@ -19,7 +25,7 @@
 
 # 20.12.0
  * A chinese translation of the manual by 刘荣.
- * A Russian translation update from OlesyaGerasimenko and Yuri Chornoivan 
+ * A Russian translation update from OlesyaGerasimenko and Yuri Chornoivan
  * Support for gcc 5.5
  * Many code cleanups
  * wxMaxima now will work even if no english locale is installed
@@ -32,15 +38,15 @@
  * stringdisp support and a menu item for it
  * Updated the default MathJAX to version 3
  * Many autosubscripting improvements
- * Ukrainian translation update by Yuri Chornoivan 
- * Russian translation update by OlesyaGerasimenko and Yuri Chornoivan 
+ * Ukrainian translation update by Yuri Chornoivan
+ * Russian translation update by OlesyaGerasimenko and Yuri Chornoivan
 
 # 20.11.0
  * Many bug fixes
- * Ukrainian translation update by Yuri Chornoivan 
- * Russian translation update by OlesyaGerasimenko and Yuri Chornoivan 
+ * Ukrainian translation update by Yuri Chornoivan
+ * Russian translation update by OlesyaGerasimenko and Yuri Chornoivan
  * An editor for maxima's environment variables
- 
+
 # 20.09.0
  * Russian translation updates from OlesyaGerasimenko and Yuri Chornoivan
  * An italian translation update from Marco Ciampa
@@ -83,7 +89,7 @@
 .wxmx Files are technically .zip files like .pptx- files,
 .docx- files and .xlsx-files. If you ever want to extract an image
 in the original format (or remove a nasty write protection) you can
-always rename the document to an .zip file and look at its internal 
+always rename the document to an .zip file and look at its internal
 structure.
 
 Since .zip files, when broken, can be hard to handle wxMaxima invests
@@ -95,7 +101,7 @@ a big effort in making sure that saving succeeds:
    . zip file that can still be opened.
  * It also tests if the content.xml (which contains everything except
    the images) inside the .zip archive can be read and is valid xml.
- * Only then it moves the file to the final location - which doesn't 
+ * Only then it moves the file to the final location - which doesn't
    physically move the data, but just changes the directory entry to
    point from the correct name to the correct file.
  * And since on one operating system virus scanners can prevent this
@@ -103,24 +109,24 @@ a big effort in making sure that saving succeeds:
    the move has been successful and re-tries the move, if necessary.
 
 In theory nothing can go wrong here, except if the storage device is
-faulty, cosmic rays have altered a write cache before the data was 
+faulty, cosmic rays have altered a write cache before the data was
 actually written or the file has been altered by an external program.
 Even in that case not everything is lost, though:
 
- * The text part of the .wxmx file isn't compressed, so it can be 
+ * The text part of the .wxmx file isn't compressed, so it can be
    viewed when opening the .wxmx file using a text editor.
- * Also the text part of the .wxmx file is always to be found near 
+ * Also the text part of the .wxmx file is always to be found near
    the very beginning of the .wxmx file.
- 
-This means that even if there should be a bad block somewhere in the 
-middle of the file chances that wxMaxima will be able to restore at 
+
+This means that even if there should be a bad block somewhere in the
+middle of the file chances that wxMaxima will be able to restore at
 least the text and code part automatically are relatively high.
- 
+
 # 20.06.6
  * Fixed an error 20.06.5 has introduced
 
 # 20.06.5
- * wxMaxima now ships around a pecularity in MinGW 
+ * wxMaxima now ships around a pecularity in MinGW
  * wxMaxima now ships around a MinGW-specific bug in catch2
 
 # 20.06.4
@@ -174,14 +180,14 @@ least the text and code part automatically are relatively high.
 # 20.03.0
  * Corrected a few last bugs for pre- and post- super- and subscripts
  * Many improvements to the manpage and the html documentation
- * Improved support for pre- and post- super- and subscripts provided 
+ * Improved support for pre- and post- super- and subscripts provided
    by Robert Dodier
- * wxWidget's integrated help browser on some platforms was broken 
+ * wxWidget's integrated help browser on some platforms was broken
    => now the default web browser is used
  * Support for importing static and some types of animated gif files
- * Animation frames created using draw() now can be popped out 
+ * Animation frames created using draw() now can be popped out
    interactively
- * An option to configure the max amount of gnuplot data to save for 
+ * An option to configure the max amount of gnuplot data to save for
    this feature
  * wxMaxima now no more crashes on FreeBSD
  * wxMaxima now tries not to use stderr as stderr on the mac breaks
@@ -200,7 +206,7 @@ least the text and code part automatically are relatively high.
 
 # 20.02.1
  * wxMaxima now can use Multi-threading, if a new enough OpenMP is found
- * Part of the added performance is only effective if omp.h (often in the 
+ * Part of the added performance is only effective if omp.h (often in the
    libomp package) is installed.
  * Better scroll wheel support
  * A Russian translation update by OlesyaGerasimenko
@@ -216,14 +222,14 @@ are tasks that are not suited for that:
  * Essentially everything that involves GUI actions is not thread-save.
    The main purpose of wxMaxima is providing a GUI, though.
  * Loops in which every run requires knowing the result of the last cannot
-   be split into multiple threads. This includes most of the string and 
+   be split into multiple threads. This includes most of the string and
    list processing.
- * If the program needs the result now trying to calculate this result 
+ * If the program needs the result now trying to calculate this result
    in a separate thread doesn't help.
- * If a task is memory-limited and accesses memory in a linear way dividing 
-   the task into threads can increase the memory access times (due to 
+ * If a task is memory-limited and accesses memory in a linear way dividing
+   the task into threads can increase the memory access times (due to
    constantly switching memory rows)
- * Additionally for short operations the overhead of starting a new 
+ * Additionally for short operations the overhead of starting a new
    thread is way higher than the gain
 This means wxMaxima can use multiple threads. But the number of places
 this is possible in is surprisingly low.
