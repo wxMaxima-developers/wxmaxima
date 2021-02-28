@@ -1,6 +1,14 @@
 wxMaxima Release Checklist
 ==========================
 
+Github documentation about managing releases:
+---------------------------------------------
+
+https://docs.github.com/en/github/administering-a-repository/managing-releases-in-a-repository
+
+wxMaxima (additional) steps:
+----------------------------
+
 - Does the current git version compile? Do the checks on Github work?
 - Enter the new version number into CMakeLists.txt
 - Update the version numbers in the 'docker-wxmaxima' repository (update_versions.sh)
