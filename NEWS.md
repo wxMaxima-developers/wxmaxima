@@ -1,4 +1,4 @@
-# Current
+# 21.02.0
  * A Spanish translation update by cyphra
  * Replaced openMP by c++11's built-in thread handling. This should improve
    stability at the cost of making loading files with lots of images slower.
