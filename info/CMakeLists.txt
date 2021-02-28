@@ -137,7 +137,7 @@ else()
 	file(COPY ${WXMAXIMA_HTML_HELP} DESTINATION "${CMAKE_CURRENT_BINARY_DIR}")
 endif()
 
-set(HTMLHELP_ADDITIONAL_FILES wxmaxima.css Autocomplete1.jpg Autocomplete2.jpg
+set(HTMLHELP_ADDITIONAL_FILES wxmaxima.css
                               BatchImage.png cell-example.png ezUnits.png InputCell.png MatrixTableExample.png
                               maxima_screenshot.png sbclMemory.png SecondTableExample.png SidePanes.png
                               wxMaxima_configuration_001.png wxMaximaLogo.png wxMaximaWindow.png wxmaxima.svg)
