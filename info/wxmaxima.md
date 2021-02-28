@@ -274,19 +274,14 @@ The material that is developed in a _wxMaxima_ session can be stored for later u
 
 ### .mac
 
-.mac files are ordinary text files that contain _Maxima_ commands. They can be read using _Maxima_’s read command or _wxMaxima_’s File/Batch File menu entry.
+`.mac` files are ordinary text files that contain _Maxima_ commands. They can be read using _Maxima_’s `batch()` or `load()` command or _wxMaxima_’s File/Batch File menu entry.
 
-One Example:
+One Example is shown below. `Quadratic.mac` defines a function and afterwards generates a plot with `wxdraw2d()`.
+Afterwards the contents of the file `Quadratic.mac` are printed and new defined function `f()` is evaluated.
 
-A .mac file named Quadratic.mac was created. It consists of two commands: `f(x) := (x - 5)^2;` and `wxdraw2d( explicit(f(x),x,-5,15))`. The result of entering that batch file appears below. (Some directory path information is deleted.)
+![Loading a `.mac` file with `batch()`](./BatchImage.png){ id=img_BatchImage }
 
-![Batch image](./BatchImage.png){ id=img_BatchImage }
-
-~~~maxima
-
-read("test.mac");
-
-~~~
+Attention: Although the file `Quadratic.mac` has an usual _Maxima_ extension (`.mac`), it can only be read by _wxMaxima_, since the command `wxdraw2d()` is a wxMaxima-extension to _Maxima_.
 
 You can be use `.mac` files for writing your own library of macros. But since they don’t contain enough structural information they cannot be read back as a _wxMaxima_ session.
 
