@@ -1,3 +1,18 @@
+wxmaxima (21.02.1-1) unstable; urgency=medium
+
+  * A Spanish translation update by cyphra
+  * Replaced openMP by c++11's built-in thread handling. This should improve
+    stability at the cost of making loading files with lots of images slower.
+  * Language selection now works on Windows.
+  * Resolved a crash when deleting regions.
+  * The --ini switch should work again correctly.
+  * Fix an issue, where demos didn't re-center screen anymore, when screen
+    is full and print was incomplete.
+  * Made the time between autosaves configurable.
+  * Fixed an issue with reproducible builds.
+
+ -- Wolfgang Dautermann <wolfgang@dautermann.at>  Sat, 06 Mar 2021 10:48:24 +0100
+
 wxmaxima (20.12.1-1) unstable; urgency=medium
 
   * A new upstream version
