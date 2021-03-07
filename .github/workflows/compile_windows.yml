@@ -82,15 +82,10 @@ jobs:
           cpack
           cd ..
           cd ..
-    - name: upload_appimage
+    - name: Upload the .exe installer
       if: startsWith(github.ref, 'refs/tags/')
-      id: upload-release-asset 
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      uses: meeDamian/github-release@2.0
       with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-        asset_path: ./wxMaxima/build/*64.exe
-        asset_name: wxmaxima-installer.exe
-        asset_content_type: application/x-executable
-        
+         token: ${{ secrets.GITHUB_TOKEN }}
+         tag: ${{ env.RELEASE_TAG }}
+         files: ./wxMaxima/build/*64.exe
