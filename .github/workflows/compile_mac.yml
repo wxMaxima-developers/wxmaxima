@@ -53,13 +53,13 @@ jobs:
                mkdir wxWidgets_build-${{env.WXVERSION}}
                cd wxWidgets_build-${{env.WXVERSION}}
                cmake ../wxWidgets_src-${{env.WXVERSION}} -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64" -G Ninja
-               make
+               cmake --build .
                cd ..
            fi
     - name: Install wxWidgets
       run: |
            cd wxWidgets_build-${{env.WXVERSION}}
-           sudo make install
+           sudo cmake --install .
            cd ..
     - name: Configure wxMaxima
       run: |
@@ -131,13 +131,13 @@ jobs:
                mkdir wxWidgets_build-${{env.WXVERSION}}
                cd wxWidgets_build-${{env.WXVERSION}}
                cmake ../wxWidgets_src-${{env.WXVERSION}} -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64" -G Ninja
-               make
+               cmake --build .
                cd ..
            fi
     - name: Install wxWidgets
       run: |
            cd wxWidgets_build-${{env.WXVERSION}}
-           sudo make install
+           sudo cmake --install .
            cd ..
     - name: configure
       run: |
