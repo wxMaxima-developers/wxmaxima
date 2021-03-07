@@ -77,7 +77,7 @@ jobs:
            cmake --install ../build-wxm
     - name: Package wxMaxima
       run: |
-           cpack ../build-wxm
+           cpack ../build-wxm -G CPackDMG
     - name: Upload the .dmg
       if: startsWith(github.ref, 'refs/tags/')
       uses: meeDamian/github-release@2.0
