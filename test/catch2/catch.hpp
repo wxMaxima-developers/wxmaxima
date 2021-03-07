@@ -7910,7 +7910,15 @@ namespace Catch {
 
 #ifdef CATCH_PLATFORM_MAC
 
-    #define CATCH_TRAP() __asm__("int $3\n" : : ) /* NOLINT */
+    #if defined(__i386__) || defined(__x86_64__)
+        #define CATCH_TRAP()  __asm__("int $3")
+    #elif defined(__aarch64__)
+        #define CATCH_TRAP()  __asm__(".inst 0xd4200000")
+    #elif defined(__arm__) && !defined(__thumb__)
+        #define CATCH_TRAP()  __asm__(".inst 0xe7f001f0")
+    #elif defined(__arm__) &&  defined(__thumb__)
+        #define CATCH_TRAP()  __asm__(".inst 0xde01")
+    #endif
 
 #elif defined(CATCH_PLATFORM_IPHONE)
 
@@ -7929,13 +7937,9 @@ namespace Catch {
     // If we can use inline assembler, do it because this allows us to break
     // directly at the location of the failing check instead of breaking inside
     // raise() called from it, i.e. one stack frame below.
-    #if defined(__GNUC__) && (defined(__i386) || defined(__x86_64))
-        #define CATCH_TRAP() asm volatile ("int $3") /* NOLINT */
-    #else // Fall back to the generic way.
         #include <signal.h>
 
         #define CATCH_TRAP() raise(SIGTRAP)
-    #endif
 #elif defined(_MSC_VER)
     #define CATCH_TRAP() __debugbreak()
 #elif defined(__MINGW32__)

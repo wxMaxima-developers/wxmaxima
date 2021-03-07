@@ -4,38 +4,75 @@ on: [push]
 
 env:
   BUILD_TYPE: Release
+  WXVERSION: 3.1.4
+  cache-name: cache-wxWidgets
 
 jobs:
   compile_Ninja:
     runs-on: macos-latest
 
     steps:
-    - name: Checkout_git
+    - name: Checkout wxMaxima from git
       uses: actions/checkout@v2
       with:
         # We must fetch at least the immediate parents so that if this is
         # a pull request then we can checkout the head.
         fetch-depth: 15
-    - name: install_packages
+    - name: Install the dependencies
       run: |
            export PATH=$PATH:/usr/local/opt/gettext/bin
            export HOMEBREW_NO_AUTO_UPDATE=1
            set -e
            brew upgrade cmake
-           brew install gettext ninja pandoc wxwidgets
+           brew install gettext ninja pandoc wget
            brew link cmake
            set +e
-    - name: configure
+    - name: Cache wxWidgets
+      uses: actions/cache@v2
+      with:
+        path: |
+              wxWidgets_src-${{env.WXVERSION}}
+              wxWidgets_build-${{env.WXVERSION}}
+        key: ${{ runner.os }}-build-${{ env.cache-name }}-1
+    - name: Download wxWidgets
+      run: |
+           if test -d wxWidgets_src-${{env.WXVERSION}}; then
+               echo "exWidgets already downloaded"
+           else
+               wget https://github.com/wxWidgets/wxWidgets/releases/download/v${{env.WXVERSION}}/wxWidgets-${{env.WXVERSION}}.zip
+               mkdir wxWidgets_src-${{env.WXVERSION}}
+               cd wxWidgets_src-${{env.WXVERSION}}
+               unzip ../wxWidgets-${{env.WXVERSION}}.zip
+               cd ..
+           fi
+    - name: Compile wxWidgets
+      run: |
+           if test -d wxWidgets_build-${{env.WXVERSION}}; then
+               echo "exWidgets already compiledd"
+           else
+               mkdir wxWidgets_build-${{env.WXVERSION}}
+               cd wxWidgets_build-${{env.WXVERSION}}
+               cmake ../wxWidgets_src-${{env.WXVERSION}} -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64"
+               make
+               cd ..
+           fi
+    - name: Install wxWidgets
+      run: |
+           cd wxWidgets_build-${{env.WXVERSION}}
+           sudo make install
+           cd ..
+    - name: Configure wxMaxima
       run: |
            mkdir ../build-wxm
-           cmake -S . -B ../build-wxm -G Ninja -DCMAKE_INSTALL_PREFIX=. -DCMAKE_UNITY_BUILD_BATCH_SIZE=8 -DWXM_UNIT_TESTS=YES -DCMAKE_UNITY_BUILD=YES
-    - name: plist_check
+           cmake -S . -B ../build-wxm -G Ninja -DCMAKE_INSTALL_PREFIX=. -DCMAKE_UNITY_BUILD_BATCH_SIZE=8 -DWXM_UNIT_TESTS=YES -DCMAKE_UNITY_BUILD=YES -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64"
+
+    - name: Check Info.plist
       run: |
            ls -l ../build-wxm/src/Info.plist
-    - name: compile
+    - name: Compile wxMaxima
       run: |
            cmake --build ../build-wxm
-    - name: install
+    - name: Install wxMaxima
       run: |
            cmake --install ../build-wxm
 
@@ -49,15 +86,49 @@ jobs:
         # We must fetch at least the immediate parents so that if this is
         # a pull request then we can checkout the head.
         fetch-depth: 15
-    - name: install_packages
+    - name: Install the Dependencies
       run: |
            export PATH=$PATH:/usr/local/opt/gettext/bin
            export HOMEBREW_NO_AUTO_UPDATE=1
            set -e
            brew upgrade cmake
-           brew install gettext libomp wxwidgets
+           brew install gettext
            brew link cmake
            set +e
+    - name: Cache wxWidgets
+      uses: actions/cache@v2
+      with:
+        path: |
+              wxWidgets_src-${{env.WXVERSION}}
+              wxWidgets_build-${{env.WXVERSION}}
+        key: ${{ runner.os }}-build-${{ env.cache-name }}-1
+    - name: Download wxWidgets
+      run: |
+           if test -d wxWidgets_src-${{env.WXVERSION}}; then
+               echo "exWidgets already downloaded"
+           else
+               wget https://github.com/wxWidgets/wxWidgets/releases/download/v${{env.WXVERSION}}/wxWidgets-${{env.WXVERSION}}.zip
+               mkdir wxWidgets_src-${{env.WXVERSION}}
+               cd wxWidgets_src-${{env.WXVERSION}}
+               unzip ../wxWidgets-${{env.WXVERSION}}.zip
+               cd ..
+           fi
+    - name: Compile wxWidgets
+      run: |
+           if test -d wxWidgets_build-${{env.WXVERSION}}; then
+               echo "exWidgets already compiledd"
+           else
+               mkdir wxWidgets_build-${{env.WXVERSION}}
+               cd wxWidgets_build-${{env.WXVERSION}}
+               cmake ../wxWidgets_src-${{env.WXVERSION}} -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64"
+               make
+               cd ..
+           fi
+    - name: Install wxWidgets
+      run: |
+           cd wxWidgets_build-${{env.WXVERSION}}
+           sudo make install
+           cd ..
     - name: configure
       run: |
            mkdir ../build-wxm

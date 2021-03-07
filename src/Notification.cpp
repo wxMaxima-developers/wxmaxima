@@ -31,15 +31,12 @@
 #include "Notification.h"
 Notification::Notification():wxNotificationMessage()
 {
-  m_shown = false;
   m_parent = NULL;
   m_errorNotificationCell = NULL;
   #if wxCHECK_VERSION(3, 1, 0)
 //  AddAction(wxID_ANY,_("Focus window"));
   Connect(wxEVT_NOTIFICATION_MESSAGE_CLICK,
           wxCommandEventHandler(Notification::OnClick),NULL,this);
-  Connect(wxEVT_NOTIFICATION_MESSAGE_DISMISSED,
-          wxCommandEventHandler(Notification::OnDismissed),NULL,this);
   Connect(wxEVT_NOTIFICATION_MESSAGE_ACTION,
           wxCommandEventHandler(Notification::OnClick),NULL,this);
 #endif
@@ -50,15 +47,12 @@ Notification::Notification(const wxString &title,
 			   wxWindow *parent,
 			   int flags): wxNotificationMessage (title, message, parent, flags)
 {
-  m_shown = false;
   m_errorNotificationCell = NULL;
   m_parent = parent;
   #if wxCHECK_VERSION(3, 1, 0)
 //  AddAction(wxID_ANY,_("Focus window"));
   Connect(wxEVT_NOTIFICATION_MESSAGE_CLICK,
           wxCommandEventHandler(Notification::OnClick),NULL,this);
-  Connect(wxEVT_NOTIFICATION_MESSAGE_DISMISSED,
-          wxCommandEventHandler(Notification::OnDismissed),NULL,this);
   Connect(wxEVT_NOTIFICATION_MESSAGE_ACTION,
           wxCommandEventHandler(Notification::OnClick),NULL,this);
   #endif
@@ -70,22 +64,6 @@ void Notification::SetGroup(wxWindow *parent)
   wxNotificationMessage::SetParent(parent);
 }
 
-bool Notification::Show(int duration)
-{
-  m_shown = true;
-  return wxNotificationMessage::Show(duration);
-}
-
-bool Notification::Close()
-{
-  m_shown = false;
-  m_errorNotificationCell = NULL;
-  if(IsShown())
-    return wxNotificationMessage::Close();
-  else
-    return false;
-}
-
 void Notification::OnClick(wxCommandEvent &WXUNUSED(event))
 {
   if (GetGroup())
@@ -94,10 +72,5 @@ void Notification::OnClick(wxCommandEvent &WXUNUSED(event))
     GetGroup()->Show();
     GetGroup()->SetFocus();
   }
-  m_shown = false;
 }
 
-void Notification::OnDismissed(wxCommandEvent &WXUNUSED(event))
-{
-  m_shown = false;
-}

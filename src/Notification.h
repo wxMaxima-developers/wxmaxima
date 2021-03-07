@@ -60,28 +60,18 @@ public:
                         int flags=wxICON_INFORMATION);
   //! A destructor that also closes the notification
   ~Notification() override { Notification::Close(); }
-  //! Makes the notification appear.
-  bool Show(int duration = Timeout_Auto) NOTIFI_OVERRIDE;
   //! Informs the notification which the main window is it notified for.
   void SetGroup(wxWindow *parent);
   //! Returns a pointer to the main window or NULL, if no main window is set.
   wxWindow *GetGroup() { return m_parent; }
-  //! Tell the operating system that the notification may be closed.
-  bool Close() NOTIFI_OVERRIDE;
-  //! Might produce false positives, but at least tries to determine if the notification is active.
-  bool IsShown(){return m_shown;}
   //! The cell we signal an error for
   GroupCell *m_errorNotificationCell;
 private:
-  //! May this notification be currently visible?
-  bool m_shown;
   //! The main window we notify for.
   wxWindow *m_parent;
 protected:
   //! Called on clicking at the notification, if the OS supports that.
   void OnClick(wxCommandEvent &event);
-  //! Called on closing the notification by the OS or user action, if supported.
-  void OnDismissed(wxCommandEvent &event);
 };
 
 #undef NOTIFI_OVERRIDE
