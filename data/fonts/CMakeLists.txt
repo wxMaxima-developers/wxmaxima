@@ -1,9 +1,10 @@
 # -*- mode: CMake; cmake-tab-width: 4; -*-
 
 file(GLOB fontfiles *.ttf *.otf)
+file(GLOB fontlicensefiles *.txt)
 
-file(COPY ${fontfiles} OFL.txt DESTINATION ${CMAKE_BINARY_DIR}/share/wxMaxima/fonts) # used by ./wxmaxima-local
-install(FILES ${fontfiles} OFL.txt DESTINATION share/wxMaxima/fonts)
+file(COPY ${fontfiles} ${fontlicensefiles} DESTINATION ${CMAKE_BINARY_DIR}/share/wxMaxima/fonts) # used by ./wxmaxima-local
+install(FILES ${fontfiles} ${fontlicensefiles} DESTINATION share/wxMaxima/fonts)
 
 file(WRITE "${CMAKE_BINARY_DIR}/addprivatefonts.h"
 	"#include <wx/version.h>\n"
