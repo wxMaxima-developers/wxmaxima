@@ -52,7 +52,7 @@ jobs:
            else
                mkdir wxWidgets_build-${{env.WXVERSION}}
                cd wxWidgets_build-${{env.WXVERSION}}
-               cmake ../wxWidgets_src-${{env.WXVERSION}} -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64"
+               cmake ../wxWidgets_src-${{env.WXVERSION}} -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64" -G Ninja
                make
                cd ..
            fi
@@ -120,7 +120,7 @@ jobs:
            else
                mkdir wxWidgets_build-${{env.WXVERSION}}
                cd wxWidgets_build-${{env.WXVERSION}}
-               cmake ../wxWidgets_src-${{env.WXVERSION}} -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64"
+               cmake ../wxWidgets_src-${{env.WXVERSION}} -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64" -G Ninja
                make
                cd ..
            fi
