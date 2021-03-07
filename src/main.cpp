@@ -45,6 +45,7 @@
 #include "wxMaxima.h"
 #include "ConfigDialogue.h"
 #include "Version.h"
+#include "addprivatefonts.h"
 
 // On wxGTK2 we support printing only if wxWidgets is compiled with gnome_print.
 // We have to force gnome_print support to be linked in static builds of wxMaxima.
@@ -296,6 +297,7 @@ bool MyApp::OnInit()
 
   wxFileSystem::AddHandler(new wxZipFSHandler);
 
+  addprivatefonts();
 #ifdef __WXMSW__
   wxString oldWorkingDir = wxGetCwd();
   if (!wxGetEnv(wxT("BUILD_DIR"), NULL))

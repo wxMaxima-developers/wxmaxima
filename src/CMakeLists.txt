@@ -140,6 +140,7 @@ set(SOURCE_FILES
     wxMaxima.cpp
     wxMaximaFrame.cpp
     wxMaximaIcon.cpp
+    ${CMAKE_BINARY_DIR}/addprivatefonts.h
     ${CMAKE_CURRENT_BINARY_DIR}/wxmaxima.rc
     ${CMAKE_CURRENT_BINARY_DIR}/wxmaxima.manifest
 )
@@ -157,6 +158,7 @@ include_directories(
   "${CMAKE_SOURCE_DIR}/src/wizards"
   # Version.h is generated in the binary dir
   "${CMAKE_CURRENT_BINARY_DIR}"
+  "${CMAKE_BINARY_DIR}"
   "${CMAKE_BINARY_DIR}/examples"
   "${CMAKE_BINARY_DIR}/art"
   "${CMAKE_BINARY_DIR}/data"
