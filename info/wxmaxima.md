@@ -313,7 +313,7 @@ After the next start plots embedded into the worksheet will be created with this
 In order to set the plot size of a single graph only use the following notation can be used that sets a variable’s value for one command only:
 
 ~~~maxima
-wxdraw2d( 
+wxdraw2d(
    explicit(
        x^2,
 	   x,-5,5
@@ -522,13 +522,13 @@ While not being a provided by _wxMaxima_ this feature of _Maxima_ (on setups tha
 
 ~~~maxima
     load(draw);
-    
+
     /* Parabola in window #1 */
     draw2d(terminal=[wxt,1],explicit(x^2,x,-1,1));
-    
+
     /* Parabola in window #2 */
     draw2d(terminal=[wxt,2],explicit(x^2,x,-1,1));
-    
+
     /* Paraboloid in window #3 */
     draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));
 ~~~
@@ -545,7 +545,7 @@ Plotting multiple plots in the same window is possible, too:
 	   	explicit(cos(x),x,0,2*%pi))
 	 );
 ~~~
-	 
+
 ### The "Plot using draw" side pane
 
 The "Plot using draw" sidebar hides a simple code generator that allows to generate scenes that make use of some of the flexibility of the _draw_ package _maxima_ comes with.
@@ -554,7 +554,7 @@ The "Plot using draw" sidebar hides a simple code generator that allows to gener
 
 Generates the skeleton of a `draw()` command that draws a 2D scene. This scene later has to be filled with commands that generate the scene's contents, for example by using the buttons in the rows below the "2D" button.
 
-One helpful feature of the 2D button is that it allows to setup the scene as an animation in which a variable (by default it is _t_) has a different value in each frame: Often an moving 2D plot allows easier interpretation than the same data in a non-moving 3D one.
+One helpful feature of the 2D button is that it allows to setup the scene as an animation in which a variable (by default it is _t_) has a different value in each frame: Often a moving 2D plot allows easier interpretation than the same data in a non-moving 3D one.
 
 #### 3D
 

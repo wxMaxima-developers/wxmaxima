@@ -49,7 +49,7 @@
 
 # 20.09.0
  * Russian translation updates from OlesyaGerasimenko and Yuri Chornoivan
- * An italian translation update from Marco Ciampa
+ * An Italian translation update from Marco Ciampa
  * Repaired the non-case-sensitive "Replace All" functionality
  * Updated Ukrainian translation by Yuri Chornoivan
  * More efficient and accurate calculation of worksheet object sizes
@@ -75,8 +75,8 @@
 # 20.07.0
  * A massive performance update
  * A new translation of the Turkish manual by Tufan Şirin
- * Improved italian translation by Marco Ciampa
- * An Russian translation update by OlesyaGerasimenko
+ * Improved Italian translation by Marco Ciampa
+ * A Russian translation update by OlesyaGerasimenko
  * Better display of sqrt() cells
  * Better display of fractions
  * Nicer display of lists
@@ -89,7 +89,7 @@
 .wxmx Files are technically .zip files like .pptx- files,
 .docx- files and .xlsx-files. If you ever want to extract an image
 in the original format (or remove a nasty write protection) you can
-always rename the document to an .zip file and look at its internal
+always rename the document to a .zip file and look at its internal
 structure.
 
 Since .zip files, when broken, can be hard to handle wxMaxima invests
@@ -131,7 +131,7 @@ least the text and code part automatically are relatively high.
 
 # 20.06.4
  * wxMaxima now automatically recovers truncated .wxmx files
- * Resolved an compile error with the crosscompiled Windows build
+ * Resolved a compile error with the crosscompiled Windows build
 
 # 20.06.3
  * An over-zealous assert
@@ -147,9 +147,9 @@ least the text and code part automatically are relatively high.
  * Many spell corrections and bugfixes
  * Updated Russian translation by OlesyaGerasimenko
  * Updated Ukrainian translation by Yuri Chornoivan
- * Many corrections to the german translation
+ * Many corrections to the German translation
  * The history sidebar now works again
- * TextCells with copy-alt-text caused an crash
+ * TextCells with copy-alt-text caused a crash
  * A few additional small bugfixes
  * Many (really many!) big stability improvements
  * in sqrt(conjugate(f(x))) the horizontal lines coincided
@@ -163,7 +163,7 @@ least the text and code part automatically are relatively high.
 
 # 20.04.0
  * Resolved a crash on right-clicking a GroupCell
- * Help works again in the german translation
+ * Help works again in the German translation
  * View/Invert worksheet brightness now toggles an instant dark worksheet mode
  * Removed an unnecessary info dialogue on startup
  * Right-click-suggestions for similar command names
@@ -200,7 +200,7 @@ least the text and code part automatically are relatively high.
 # 20.02.2
  * Resolved two deadlocks that were introduced in 20.02.1
  * Resolved two asserts on MS Windows
- * Actually included the russian translation update
+ * Actually included the Russian translation update
  * Many code cleanups and additional bug fixes
  * Another small performance boost
 
@@ -246,7 +246,7 @@ this is possible in is surprisingly low.
 # 20.01.3
  * Language selection now works even on systems with missing language support
  * Resolved a copy-and-paste regression
- * A russian translation update by OlesyaGerasimenko
+ * A Russian translation update by OlesyaGerasimenko
  * German translation updates
  * Improved stability of the communication with Maxima
  * Preparation for Maxima's pre-sub-and supscript feature
@@ -277,7 +277,7 @@ many big improvements to the display code.
 # Transition to C++11 - Part II
 
 Many annoying bugs have to do with memory management. Typical examples are:
- * Out-of-bonds reads and writes: n+1 bytes of an n-bytes-long string are
+ * Out-of-bounds reads and writes: n+1 bytes of a n-bytes-long string are
    read or written.
  * Use of uninitialized memory: Memory is first read and then set to the
    value that one would have wanted to read from it.
@@ -347,7 +347,7 @@ finding bugs came from the cppcheck utility which caused changes in over
 1700 lines of code, mainly in order to prevent possible future bugs.
 
 # 19.11.1
-  * Improved italian translation by Marco Ciampa
+  * Improved Italian translation by Marco Ciampa
   * Autocompletion no more causes asserts
   * A better logic that decides which cell to send to maxima
   * wxMaxima now supports "-l", "-u" and "-X" command-line args like maxima
@@ -382,7 +382,7 @@ finding bugs came from the cppcheck utility which caused changes in over
   * Russian translation updates from OlesyaGerasimenko.
 
 # 19.09.1
-  * The names of greek letters are no more converted to greek letters in variable
+  * The names of Greek letters are no more converted to Greek letters in variable
     names by default.
   * Smarter Formatting of asterisk and hyphen.
   * An automatic per-commit Windows build for Appveyor.
@@ -406,7 +406,7 @@ finding bugs came from the cppcheck utility which caused changes in over
   * Better handling of multi-cell Lisp code
 
 # 19.08.0
-  * Updated the russian translation
+  * Updated the Russian translation
   * More and better test cases
   * Another SpeedUp
   * Correctly handle nested comments
@@ -442,7 +442,7 @@ finding bugs came from the cppcheck utility which caused changes in over
 # 19.05.4
  * Corrected saving formatting styles in the config dialogue
  * Allow to change the title etc. font again
- * Correctly output uppercase greek letters in TeX
+ * Correctly output uppercase Greek letters in TeX
  * Re-enable the old-style ESC commands.
  * Made wxMaxima default to auto-searching for the maxima binary.
 
@@ -490,7 +490,7 @@ finding bugs came from the cppcheck utility which caused changes in over
  * The cursor width now is taken from the current screen
  * Autocompletion sometimes cleared the result after inputting it
  * Added more commands to autocompletion
- * Spanish and italian translation updates
+ * Spanish and Italian translation updates
  * We no more need to re-implement Maxima's load() routine.
    Instead we call the original one now.
  * Animations now on load remember which slide they stopped at.
@@ -775,14 +775,14 @@ finding bugs came from the cppcheck utility which caused changes in over
   * An option to not export Maxima's input as well as the output.
   * An option to use High-resolution bitmaps for the HTML export.
   * Images that are too big for the window now are displayed in a scaled-down version.
-  * Fixed the support for out-of-tree-bulds that was broken in 15.04
+  * Fixed the support for out-of-tree-builds that was broken in 15.04
   * Meaningful ALT texts for the HTML export to provide accessibility
   * An option to include the .wxmx file in the .html export
   * Performance fixes that are espectionally effective for MSW
   * Unification of some platform-specific code
   * bash autocompletion
   * A fourth sectioning level
-  * Made entering uppercase greek letters easier and documented how to input special
+  * Made entering uppercase Greek letters easier and documented how to input special
 	unicode symbols
   * Syntax highlighting in code cells
   * Automatic highlighting of text equal to the currently selected one.
