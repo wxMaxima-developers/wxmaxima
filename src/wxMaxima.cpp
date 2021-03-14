@@ -3769,6 +3769,8 @@ bool wxMaxima::OpenWXMXFile(const wxString &file, Worksheet *document, bool clea
   }
   StatusMaximaBusy(waiting);
 
+  m_worksheet->Recalculate();
+  
   return true;
 }
 
@@ -9577,6 +9579,7 @@ void wxMaxima::TriggerEvaluation()
         m_worksheet->ClearSelection();
     }
     tmp->RemoveOutput();
+    m_worksheet->Recalculate(tmp);
     m_worksheet->RequestRedraw();
   }
   wxString text = m_worksheet->m_evaluationQueue.GetCommand();

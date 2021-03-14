@@ -959,6 +959,9 @@ bool Worksheet::RecalculateIfNeeded()
 
 void Worksheet::Recalculate(Cell *start)
 {
+  if(m_recalculateStart == start)
+    return;
+  
   GroupCell *group = GetTree();
   if (start)
     group = start->GetGroup();
@@ -7562,7 +7565,7 @@ void Worksheet::DivideCell()
   if (GetActiveCell())
     GetActiveCell()->CaretToStart();
   ScrolledAwayFromEvaluation();
-  Recalculate();
+  Recalculate(parent);
 }
 
 void Worksheet::MergeCells()
@@ -7812,6 +7815,7 @@ void Worksheet::RemoveAllOutput(GroupCell *cell)
       RemoveAllOutput(sub);
   }
   m_configuration->AdjustWorksheetSize(true);
+  Recalculate();
 }
 
 void Worksheet::OnMouseMiddleUp(wxMouseEvent &event)

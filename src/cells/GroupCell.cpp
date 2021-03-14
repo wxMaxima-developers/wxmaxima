@@ -353,6 +353,8 @@ void GroupCell::SetOutput(std::unique_ptr<Cell> &&output)
 
 void GroupCell::RemoveOutput()
 {
+  if(!m_output)
+    return;
   m_numberedAnswersCount = 0;
   if (m_output == NULL)
     return;
@@ -493,6 +495,7 @@ void GroupCell::Recalculate()
   Cell::Recalculate((*m_configuration)->GetDefaultFontSize(
                       ));
   m_clientWidth_old = (*m_configuration)->GetClientWidth();
+  wxASSERT(!NeedsRecalculation((*m_configuration)->GetDefaultFontSize()));
 }
 
 void GroupCell::InputHeightChanged()
@@ -585,6 +588,7 @@ void GroupCell::RecalculateInput()
 
 void GroupCell::RecalculateOutput()
 {
+  m_cellsAppended = false;
   m_outputRect = wxRect(m_currentPoint.x, m_currentPoint.y + m_center,
                         0, 0);
   if(IsHidden())
@@ -651,7 +655,7 @@ void GroupCell::RecalculateOutput()
   // Move all cells that follow the current one down by the amount this cell has grown.
   (*m_configuration)->AdjustWorksheetSize(true);
 
-  m_cellsAppended = false;
+   m_cellsAppended = false;
 }
 
 bool GroupCell::NeedsRecalculation(AFontSize fontSize) const
@@ -721,7 +725,10 @@ void GroupCell::UpdateOutputPositions()
 {
   UpdateYPosition();
   RecalculateInput();
+//  std::cerr<<"1:"<<m_height<<"\n";
   RecalculateOutput();
+//  std::cerr<<"2:"<<m_height<<"\n";
+//  std::cerr<<"3:"<<IsHidden()<<"\n";
   if (m_output && !IsHidden())
   {
     wxPoint in = GetCurrentPoint();
@@ -754,18 +761,15 @@ void GroupCell::Draw(wxPoint const point)
 {
   Cell::Draw(point);
   Configuration *configuration = (*m_configuration);
-
+//  if(NeedsRecalculation((*m_configuration)->GetDefaultFontSize()))
+//    std::cerr<<"content:"<<ToString()<<"\n";
+//  wxASSERT(!NeedsRecalculation((*m_configuration)->GetDefaultFontSize()));
   if (configuration->ShowBrackets())
     DrawBracket();
 
   if (!DrawThisCell(point))
     return;
 
-  if (!TEMPORARY_WINDOWS_PERFORMANCE_HACK)
-  {
-    if (NeedsRecalculation((*m_configuration)->GetDefaultFontSize()))
-      Recalculate();
-  }
   if (m_updateConfusableCharWarnings)
     UpdateConfusableCharWarnings();
 
