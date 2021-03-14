@@ -1,6 +1,9 @@
 //  SPDX-License-Identifier: GPL-2.0+
+#ifndef WXM_VERSION_H
+#define WXM_VERSION_H
 #ifndef GITVERSION
 #define GITVERSION "@VERSION@"
 #endif
 #define CMAKE_INSTALL_PREFIX "@CMAKE_INSTALL_PREFIX@"
 #cmakedefine USE_PRECOMP_HEADER
+#endif

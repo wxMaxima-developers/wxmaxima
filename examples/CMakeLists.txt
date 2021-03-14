@@ -3,7 +3,10 @@ include("${CMAKE_SOURCE_DIR}/cmake-bin2h/bin2h.cmake")
 set(HEADER_FILE "${CMAKE_BINARY_DIR}/examples.h")
 message(STATUS "Embedding following files into header file ${HEADER_FILE}")
 
-file(REMOVE "${HEADER_FILE}")
+file(WRITE "${HEADER_FILE}"
+    "#ifndef WXM_EXAMPLES_H\n"
+    "#define WXM_EXAMPLES_H\n")
+
 file(GLOB WXM_FILES *.wxm)
 foreach(file ${WXM_FILES})
     message(STATUS "   Processing: ${file}")
@@ -15,3 +18,4 @@ foreach(file ${WXM_FILES})
     file(APPEND "${HEADER_FILE}" "\n")
 endforeach()
 
+file(APPEND "${HEADER_FILE}" "#endif\n")
