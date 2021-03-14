@@ -1,6 +1,6 @@
 include("${CMAKE_SOURCE_DIR}/cmake-bin2h/bin2h.cmake")
 
-set(HEADER_FILE "${CMAKE_CURRENT_BINARY_DIR}/examples.h")
+set(HEADER_FILE "${CMAKE_BINARY_DIR}/examples.h")
 message(STATUS "Embedding following files into header file ${HEADER_FILE}")
 
 file(REMOVE "${HEADER_FILE}")

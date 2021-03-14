@@ -156,12 +156,7 @@ include_directories(
   "${CMAKE_SOURCE_DIR}/src/cells"
   "${CMAKE_SOURCE_DIR}/src/graphical_io"
   "${CMAKE_SOURCE_DIR}/src/wizards"
-  # Version.h is generated in the binary dir
-  "${CMAKE_CURRENT_BINARY_DIR}"
   "${CMAKE_BINARY_DIR}"
-  "${CMAKE_BINARY_DIR}/examples"
-  "${CMAKE_BINARY_DIR}/art"
-  "${CMAKE_BINARY_DIR}/data"
 )
 
 
@@ -276,7 +271,7 @@ if(MINGW)
     target_link_libraries(wxmaxima -lws2_32)
 endif()
 
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/Version.h.cin ${CMAKE_CURRENT_BINARY_DIR}/Version.h)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/Version.h.cin ${CMAKE_BINARY_DIR}/Version.h)
 
 if(APPLE)
     install(TARGETS wxmaxima
