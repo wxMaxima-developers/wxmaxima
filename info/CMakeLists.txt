@@ -3,7 +3,11 @@
 
 find_program(PANDOC pandoc)
 if(PANDOC)
-	message(STATUS "Found pandoc: ${PANDOC}")
+	execute_process(
+		COMMAND ${PANDOC} --version
+		OUTPUT_VARIABLE PANDOC_VERSION_TEXT)
+	string(REGEX REPLACE "^pandoc ([0-9.]*).*" "\\1" PANDOC_VERSION ${PANDOC_VERSION_TEXT})
+	message(STATUS "Found pandoc: ${PANDOC} (found version \"${PANDOC_VERSION}\")")
 
 	# "make pdf" creates the manual in PDF form. The other targets that now
 	# follow do the same for other formats
@@ -94,11 +98,6 @@ if(PANDOC)
 	generate_wxmaxima_documentation_html("wxmaxima")
 	generate_wxmaxima_documentation_epub("wxmaxima")
 	if(WXMAXIMA_LATEX_COMMAND)
-		execute_process(
-			COMMAND ${PANDOC} --version
-			OUTPUT_VARIABLE PANDOC_VERSION_TEXT)
-		# get pandoc major version number, if >=2 use --pdf-engine else --latex-engine (they changed the name of the command line option)
-		string(REGEX REPLACE "^pandoc ([0-9]).*$" "\\1" PANDOC_VERSION ${PANDOC_VERSION_TEXT})
 		if(PANDOC_VERSION LESS_EQUAL 1)
 			message(STATUS "pandoc version < 2 found - using option --latex-engine=${WXMAXIMA_LATEX_COMMAND}")
 			set(PANDOC_TEXSELECT_OPTION "--latex-engine=${WXMAXIMA_LATEX_COMMAND}")
