@@ -6,7 +6,7 @@ if(PANDOC)
 	execute_process(
 		COMMAND ${PANDOC} --version
 		OUTPUT_VARIABLE PANDOC_VERSION_TEXT)
-	string(REGEX REPLACE "^pandoc ([0-9.]*).*" "\\1" PANDOC_VERSION ${PANDOC_VERSION_TEXT})
+	string(REGEX REPLACE "^pandoc(.exe)? ([0-9.]*).*" "\\2" PANDOC_VERSION ${PANDOC_VERSION_TEXT})
 	message(STATUS "Found pandoc: ${PANDOC} (found version \"${PANDOC_VERSION}\")")
 
 	# "make pdf" creates the manual in PDF form. The other targets that now
