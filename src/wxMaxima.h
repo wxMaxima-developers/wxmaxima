@@ -518,6 +518,7 @@ protected:
   void ReadAddVariables(wxString &data);
   void VariableActionUserDir(const wxString &value);
   void VariableActionTempDir(const wxString &value);
+  void VariableActionDebugmode(const wxString &value);
   void VariableActionAutoconfVersion(const wxString &value);
   void VariableActionAutoconfHost(const wxString &value);
   void VariableActionMaximaInfodir(const wxString &value);

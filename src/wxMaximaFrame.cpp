@@ -960,6 +960,15 @@ void wxMaximaFrame::SetupMenu()
   m_MaximaMenu->Append(menu_jumptoerror, _("Jump to first error"),
                        _("Jump to the first cell Maxima has reported an error in."),
                        wxITEM_NORMAL);
+  // debugger type submenu
+  m_debugTypeMenu = new wxMenu;
+  m_debugTypeMenu->AppendRadioItem(menu_debugmode_off, _("Never"));
+  m_debugTypeMenu->AppendRadioItem(menu_debugmode_lisp, _("On lisp errors"));
+  m_debugTypeMenu->AppendRadioItem(menu_debugmode_all, _("On all errors"));
+  m_debugTypeMenu->Check(menu_debugmode_off, true);
+  m_MaximaMenu->Append(menu_debugmode, _("Debugger trigger"), m_debugTypeMenu,
+                       _("When to invoke the lisp compiler's debugger"));
+  m_MaximaMenu->Enable(menu_debugmode, false);
   m_MenuBar->Append(m_MaximaMenu, _("&Maxima"));
 
   // Equations menu

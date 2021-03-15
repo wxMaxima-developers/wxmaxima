@@ -299,6 +299,10 @@ public:
     menu_to_fact,
     menu_to_gamma,
     menu_texform,
+    menu_debugmode,
+    menu_debugmode_off,
+    menu_debugmode_lisp,
+    menu_debugmode_all,
     button_enter,
     menu_zoom_80,
     /* Instead of menu_zoom_100 we use the standard wxID_ZOOM_100, which displays an icon in the menu (currently Unix only) */
@@ -631,6 +635,8 @@ protected:
   wxMenu *m_SimplifyMenu;
   //! The factorials and gamma submenu
   wxMenu *m_Simplify_Gamma_Sub;
+  //! Contains the menu for the debugger trigger settingxc
+  wxMenu *m_debugTypeMenu;
   //! The trigonometric submenu
   wxMenu *m_Simplify_Trig_Sub;
   //! The complex submenu

@@ -210,6 +210,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
   {
     m_variableReadActions[wxT("maxima_userdir")] = &wxMaxima::VariableActionUserDir;
     m_variableReadActions[wxT("maxima_tempdir")] = &wxMaxima::VariableActionTempDir;
+    m_variableReadActions[wxT("debugmode")] = &wxMaxima::VariableActionDebugmode;
     m_variableReadActions[wxT("*autoconf-version*")] = &wxMaxima::VariableActionAutoconfVersion;
     m_variableReadActions[wxT("*autoconf-host*")] = &wxMaxima::VariableActionAutoconfHost;
     m_variableReadActions[wxT("*maxima-infodir*")] = &wxMaxima::VariableActionMaximaInfodir;
@@ -740,6 +741,12 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
   Connect(wxID_REDO, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
   Connect(menu_texform, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_debugmode_lisp, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_debugmode_all, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_debugmode_off, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
   Connect(menu_to_fact, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
@@ -2682,6 +2689,25 @@ void wxMaxima::VariableActionTempDir(const wxString &value)
     // and gnuplot won't create a new one for them.
     wxLogNull logNull;
     wxMkDir(value, wxS_DIR_DEFAULT);
+  }
+}
+
+void wxMaxima::VariableActionDebugmode(const wxString &value)
+{
+  if(value == wxT("true"))
+  {
+    m_MaximaMenu->Enable(menu_debugmode, true);
+    m_debugTypeMenu->Check(menu_debugmode_all, true);
+  }
+  if(value == wxT("false"))
+  {
+    m_MaximaMenu->Enable(menu_debugmode, true);
+    m_debugTypeMenu->Check(menu_debugmode_off, true);
+  }
+  if(value == wxT("lisp"))
+  {
+    m_MaximaMenu->Enable(menu_debugmode, true);
+    m_debugTypeMenu->Check(menu_debugmode_lisp, true);
   }
 }
 
@@ -6123,6 +6149,18 @@ void wxMaxima::MaximaMenu(wxCommandEvent &event)
       break;
     case menu_texform:
       cmd = wxT("tex(") + expr + wxT(")$");
+      MenuCommand(cmd);
+      break;
+    case menu_debugmode_lisp:
+      cmd = wxT("debugmode: lisp$");
+      MenuCommand(cmd);
+      break;
+    case menu_debugmode_all:
+      cmd = wxT("debugmode: true$");
+      MenuCommand(cmd);
+      break;
+    case menu_debugmode_off:
+      cmd = wxT("debugmode: false$");
       MenuCommand(cmd);
       break;
     case menu_time:
