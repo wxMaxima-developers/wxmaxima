@@ -489,12 +489,17 @@ void GroupCell::Recalculate()
       RecalculateInput();
 
     RecalculateOutput();
+    m_height = m_outputRect.GetHeight() + m_inputHeight;
+    // Move all cells that follow the current one down by the amount this cell has grown.
+    (*m_configuration)->AdjustWorksheetSize(true);
+    
+    m_cellsAppended = false;
+    m_clientWidth_old = (*m_configuration)->GetClientWidth();
   }
   // The line breaking will have set our "needs recalculation" flag again.
   UpdateYPosition();
   Cell::Recalculate((*m_configuration)->GetDefaultFontSize(
                       ));
-  m_clientWidth_old = (*m_configuration)->GetClientWidth();
   wxASSERT(!NeedsRecalculation((*m_configuration)->GetDefaultFontSize()));
 }
 
@@ -588,7 +593,6 @@ void GroupCell::RecalculateInput()
 
 void GroupCell::RecalculateOutput()
 {
-  m_cellsAppended = false;
   m_outputRect = wxRect(m_currentPoint.x, m_currentPoint.y + m_center,
                         0, 0);
   if(IsHidden())
@@ -650,12 +654,6 @@ void GroupCell::RecalculateOutput()
         m_outputRect.height += MC_LINE_SKIP;
     }
   }
-
-  m_height = m_outputRect.GetHeight() + m_inputHeight;
-  // Move all cells that follow the current one down by the amount this cell has grown.
-  (*m_configuration)->AdjustWorksheetSize(true);
-
-   m_cellsAppended = false;
 }
 
 bool GroupCell::NeedsRecalculation(AFontSize fontSize) const
@@ -724,11 +722,6 @@ int GroupCell::GetInputIndent()
 void GroupCell::UpdateOutputPositions()
 {
   UpdateYPosition();
-  RecalculateInput();
-//  std::cerr<<"1:"<<m_height<<"\n";
-  RecalculateOutput();
-//  std::cerr<<"2:"<<m_height<<"\n";
-//  std::cerr<<"3:"<<IsHidden()<<"\n";
   if (m_output && !IsHidden())
   {
     wxPoint in = GetCurrentPoint();
