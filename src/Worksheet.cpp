@@ -467,6 +467,10 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
   if( (GetClientSize().x < 1) || (GetClientSize().y < 1))
     return;
 
+  // It is possible that the redraw starts before the idle task attempts
+  // to recalculate the worksheet.
+  RecalculateIfNeeded();
+  
   // Prepare data
   wxRect rect = GetUpdateRegion().GetBox();
   wxSize sz = GetSize();
