@@ -763,6 +763,13 @@ private:
    */
   wxTimer m_autoSaveTimer;
 
+  /* A timer that delays redraws while maxima evaluates
+
+     If we always start a redraw when maxima has nearly finished a command that slows
+     down evaluating many simple commands in a row.
+   */
+  wxTimer m_fastResponseTimer;
+
   //! Starts a single-shot of m_autoSaveTimer.
   void StartAutoSaveTimer();
 

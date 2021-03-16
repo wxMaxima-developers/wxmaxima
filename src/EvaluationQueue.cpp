@@ -32,7 +32,7 @@
 
 bool EvaluationQueue::Empty() const
 {
-  return (m_queue.size() <= 1) && (m_commands.empty());
+  return (m_queue.empty()) && (m_commands.empty());
 }
 
 EvaluationQueue::EvaluationQueue()

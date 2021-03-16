@@ -4219,6 +4219,8 @@ bool wxMaxima::InterpretDataFromMaxima(const wxString &newData)
   if (newData.empty())
     return false;
 
+  if(!m_worksheet->m_evaluationQueue.Empty())
+    m_fastResponseTimer.StartOnce(120);
   // Speed up things if we want to output more than one line of data in this step
 
   if ((m_xmlInspector) && (IsPaneDisplayed(menu_pane_xmlInspector)))
@@ -4352,13 +4354,7 @@ void wxMaxima::OnIdle(wxIdleEvent &event)
     }
   }
 
-  if(m_worksheet->RedrawIfRequested())
-  {
-    event.RequestMore();
-    return;
-  }
-
-  if(m_worksheet != NULL)
+  if((m_worksheet != NULL) && (!m_fastResponseTimer.IsRunning()))
   {
     bool requestMore = m_worksheet->RecalculateIfNeeded();
     m_worksheet->ScrollToCellIfNeeded();
@@ -4368,6 +4364,12 @@ void wxMaxima::OnIdle(wxIdleEvent &event)
       event.RequestMore();
       return;
     }
+  }
+
+  if(m_worksheet->RedrawIfRequested() && (!m_fastResponseTimer.IsRunning()))
+  {
+    event.RequestMore();
+    return;
   }
 
   // If nothing which is visible has changed nothing that would cause us to need
@@ -9562,6 +9564,8 @@ void wxMaxima::TriggerEvaluation()
     StatusMaximaBusy(waiting);
     // Inform the user that the evaluation queue length now is 0.
     EvaluationQueueLength(0);
+    // Now we want to start to display things immediately again
+    m_fastResponseTimer.Stop();
     // The cell from the last evaluation might still be shown in it's "evaluating" state
     // so let's refresh the console to update the display of this.
     m_worksheet->RequestRedraw();
