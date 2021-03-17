@@ -63,7 +63,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   // everything.
   wxWindowUpdateLocker noUpdates(this);
   // Add some shortcuts that aren't automatically set by menu entries.
-  wxAcceleratorEntry entries[16];
+  wxAcceleratorEntry entries[18];
   entries[0].Set(wxACCEL_CTRL, wxT('K'), menu_autocomplete);
   entries[1].Set(wxACCEL_CTRL, WXK_TAB, menu_autocomplete);
   entries[2].Set(wxACCEL_CTRL | wxACCEL_SHIFT, WXK_TAB, menu_autocomplete_templates);
@@ -80,6 +80,8 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   entries[13].Set(wxACCEL_CTRL | wxACCEL_SHIFT, wxT('5'), menu_convert_to_subsubsection);
   entries[14].Set(wxACCEL_CTRL | wxACCEL_SHIFT, wxT('6'), menu_convert_to_heading5);
   entries[15].Set(wxACCEL_CTRL, wxT('.'), menu_interrupt_id); // Standard on the Mac
+  entries[16].Set(wxACCEL_NORMAL, WXK_F1, wxID_HELP);
+  entries[17].Set(wxACCEL_NORMAL, WXK_F11, menu_fullscreen);
   wxAcceleratorTable accel(sizeof(entries)/sizeof(entries[0]), entries);
   SetAcceleratorTable(accel);
     
