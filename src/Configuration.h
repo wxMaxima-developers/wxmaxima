@@ -532,6 +532,8 @@ public:
 
   bool GetMatchParens() const { return m_matchParens; }
   void SetMatchParens(bool matchParens) { m_matchParens = matchParens; }
+  bool ShowMatchingParens() const { return m_showMatchingParens; }
+  void ShowMatchingParens(bool show) { m_showMatchingParens = show; }
   
   bool GetChangeAsterisk() const{ return m_changeAsterisk; }
   
@@ -967,6 +969,7 @@ private:
   bool m_useUnicodeMaths;
   bool m_indentMaths;
   bool m_abortOnError;
+  bool m_showMatchingParens;
   bool m_hidemultiplicationsign;
   bool m_offerKnownAnswers;
   long m_defaultPort;

@@ -308,6 +308,7 @@ protected:
   wxCheckBox *m_printBrackets;
   wxChoice *m_exportWithMathJAX;
   wxCheckBox *m_matchParens;
+  wxCheckBox *m_showMatchingParens;
   wxChoice *m_showLength;
   wxChoice *m_autosubscript;
   wxRadioButton *m_enterEvaluates;

@@ -868,7 +868,7 @@ void EditorCell::Draw(wxPoint point)
       //
       // Matching parens - draw only if we don't have selection
       //
-      else if (m_paren1 != -1 && m_paren2 != -1)
+      else if ((m_paren1 != -1 && m_paren2 != -1) && (configuration->ShowMatchingParens()))
       {
 #if defined(__WXOSX__)
         dc->SetPen(wxNullPen); // no border on rectangles

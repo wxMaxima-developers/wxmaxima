@@ -372,6 +372,8 @@ void ConfigDialogue::SetCheckboxValues()
           _("Try to antialias lines (which allows to move them by a fraction of a pixel, but reduces their sharpness)."));
   m_matchParens->SetToolTip(
           _("Automatically insert matching parenthesis in text controls. Automatic highlighting of matching parenthesis can be suppressed by setting the respective color to match the background of ordinary text."));
+  m_showMatchingParens->SetToolTip(
+          _("Highlight the opening or closing parenthesis for the parenthesis the cursor is at."));
   m_showLength->SetToolTip(_("Show long expressions in wxMaxima document."));
   m_autosubscript->SetToolTip(
           _("false=Don't generate subscripts\ntrue=Automatically convert underscores to subscript markers if the would-be subscript is a number or a single letter\nall=_ marks subscripts."));
@@ -446,6 +448,7 @@ void ConfigDialogue::SetCheckboxValues()
   m_printBrackets->SetValue(configuration->PrintBrackets());
   m_exportWithMathJAX->SetSelection(configuration->HTMLequationFormat());
   m_matchParens->SetValue(configuration->GetMatchParens());
+  m_showMatchingParens->SetValue(configuration->ShowMatchingParens());
   m_showLength->SetSelection(configuration->ShowLength());
   m_autosubscript->SetSelection(configuration->GetAutosubscript_Num());
   m_changeAsterisk->SetValue(configuration->GetChangeAsterisk());
@@ -635,6 +638,9 @@ wxWindow *ConfigDialogue::CreateWorksheetPanel()
   displaySizer->Add(m_keepPercentWithSpecials, wxSizerFlags());
   m_antialiasLines = new wxCheckBox(displaySizer->GetStaticBox(), -1, _("Antialias lines."));
   displaySizer->Add(m_antialiasLines, wxSizerFlags());
+
+  m_showMatchingParens = new wxCheckBox(displaySizer->GetStaticBox(), -1, _("Highlight the matching parenthesis"));
+  displaySizer->Add(m_showMatchingParens, wxSizerFlags());
 
   m_fixedFontInTC = new wxCheckBox(displaySizer->GetStaticBox(), -1,
                                    _("Fixed font in text controls"));
@@ -1649,6 +1655,7 @@ void ConfigDialogue::WriteSettings()
   configuration->AutodetectHelpBrowser(m_autodetectHelpBrowser->GetValue());
   configuration->MaximaParameters(m_additionalParameters->GetValue());
   configuration->SetMatchParens(m_matchParens->GetValue());
+  configuration->ShowMatchingParens(m_showMatchingParens->GetValue());
   configuration->ShowLength(m_showLength->GetSelection());
   configuration->SetAutosubscript_Num(m_autosubscript->GetSelection());
   configuration->FixedFontInTextControls(m_fixedFontInTC->GetValue());

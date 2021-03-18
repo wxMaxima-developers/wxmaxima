@@ -197,6 +197,7 @@ void Configuration::ResetAllToDefaults(InitOpt options)
   m_autoIndent = true;
   m_restartOnReEvaluation = true;
   m_matchParens = true;
+  m_showMatchingParens = true;
   m_insertAns = false;
   m_openHCaret = false;
   m_labelWidth = 4;
@@ -691,6 +692,7 @@ void Configuration::ReadConfig()
   config->Read(wxT("restartOnReEvaluation"), &m_restartOnReEvaluation);
 
   config->Read(wxT("matchParens"), &m_matchParens);
+  config->Read(wxT("showMatchingParens"), &m_showMatchingParens);
 
   config->Read(wxT("insertAns"), &m_insertAns);
 
@@ -1309,6 +1311,7 @@ void Configuration::WriteStyles(wxConfigBase *config)
   config->Write(wxT("autoIndent"), m_autoIndent);
   config->Write(wxT("indentMaths"), m_indentMaths);
   config->Write(wxT("matchParens"), m_matchParens);
+  config->Write(wxT("showMatchingParens"), m_showMatchingParens);
   config->Write(wxT("changeAsterisk"), m_changeAsterisk);
   config->Write(wxT("hidemultiplicationsign"), m_hidemultiplicationsign);
   config->Write(wxT("latin2greek"), m_latin2greek);
