@@ -4359,17 +4359,9 @@ void wxMaxima::OnIdle(wxIdleEvent &event)
     bool requestMore = m_worksheet->RecalculateIfNeeded();
     m_worksheet->ScrollToCellIfNeeded();
     m_worksheet->ScrollToCaretIfNeeded();
-    if(requestMore)
-    {
-      event.RequestMore();
-      return;
-    }
-  }
 
-  if(m_worksheet->RedrawIfRequested() && (!m_fastResponseTimer.IsRunning()))
-  {
-    event.RequestMore();
-    return;
+    if(m_worksheet->RedrawIfRequested())
+      requestMore = true;
   }
 
   // If nothing which is visible has changed nothing that would cause us to need

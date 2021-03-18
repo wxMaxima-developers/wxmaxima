@@ -750,7 +750,15 @@ GroupCell *Worksheet::InsertGroupCells(std::unique_ptr<GroupCell> &&cells, Group
 
   if (renumbersections)
     NumberSections();
-  Recalculate(where);
+
+  GroupCell *recalcStart = NULL;
+  if(where)
+    recalcStart = where->GetNext();
+  if(!recalcStart)
+    recalcStart = GetTree();
+
+  if(recalcStart)
+    Recalculate(recalcStart);
   SetSaved(false); // document has been modified
 
   if (undoBuffer)
@@ -759,7 +767,7 @@ GroupCell *Worksheet::InsertGroupCells(std::unique_ptr<GroupCell> &&cells, Group
   if(worksheetSizeHasChanged)
     UpdateMLast();
   
-  RequestRedraw(where);
+  RequestRedraw(cells.get());
   AdjustSize();
   return lastOfCellsToInsert;
 }
@@ -922,19 +930,19 @@ bool Worksheet::RecalculateIfNeeded()
   UpdateConfigurationClientSize();
   if(m_configuration->GetClientWidth()<1)
     return(false);
+
+  if(m_configuration->AdjustWorksheetSize())
+    AdjustSize();
+
   if (!m_recalculateStart || !GetTree())
   {
     m_recalculateStart = {};
-    if(m_configuration->AdjustWorksheetSize())
-      AdjustSize();
     m_configuration->AdjustWorksheetSize(false);
     return false;
   }
 
   if (!GetTree()->Contains(m_recalculateStart))
     m_recalculateStart = GetTree();
-
-  UpdateConfigurationClientSize();
 
   int width;
   int height;
@@ -947,13 +955,10 @@ bool Worksheet::RecalculateIfNeeded()
                                            upperLeftScreenCorner + wxPoint(width,height)));
   m_configuration->SetWorksheetPosition(GetPosition());
 
-  for (auto &tmp : m_recalculateStart ? OnList(m_recalculateStart) : OnList(GetTree()))
+  for (auto &tmp : OnList(m_recalculateStart))
   {
     tmp.Recalculate();
   }
-
-  if (m_configuration->AdjustWorksheetSize())
-    AdjustSize();
   
   m_configuration->AdjustWorksheetSize(false);
 
@@ -963,17 +968,21 @@ bool Worksheet::RecalculateIfNeeded()
 
 void Worksheet::Recalculate(Cell *start)
 {
-  if(m_recalculateStart == start)
+  if(!GetTree())
+    return;
+  wxASSERT(start);
+  if (!start)
+    return;
+
+  GroupCell  *group = start->GetGroup();
+
+  if(m_recalculateStart == group)
     return;
   
-  GroupCell *group = GetTree();
-  if (start)
-    group = start->GetGroup();
-
   if (!m_recalculateStart)
     m_recalculateStart = group;
   else
-    // Move m_recalculateStart backwards to group, if group comes before m_recalculateStart.
+    // Move m_recalculateStart backwards to start, if start comes before m_recalculateStart.
     for (auto &tmp : OnList(GetTree()))
     {
       if (&tmp == group)
@@ -984,11 +993,10 @@ void Worksheet::Recalculate(Cell *start)
 
       if (&tmp == m_recalculateStart)
         return;
-
-      // If the cells to recalculate neither contain the start nor the tree we should
-      // better recalculate all.
-      m_recalculateStart = GetTree();
     }
+  // If the cells to recalculate neither contain the start nor the tree we should
+  // better recalculate all.
+  m_recalculateStart = GetTree();
 }
 
 /***
@@ -7362,8 +7370,8 @@ bool Worksheet::CutToClipboard()
   if (GetActiveCell())
   {
     GetActiveCell()->CutToClipboard();
-    GetActiveCell()->GetGroup()->ResetSize();
-    Recalculate();
+    GroupCell *group = GetActiveCell()->GetGroup();
+    Recalculate(group);
     RequestRedraw();
     return true;
   }
@@ -7371,6 +7379,11 @@ bool Worksheet::CutToClipboard()
   {
     if (CopyCells())
     {
+      GroupCell *group = GetActiveCell()->GetGroup()->GetPrevious();
+      if(group)
+        Recalculate(group);
+      else
+        Recalculate();
       DeleteSelection();
       return true;
     }
