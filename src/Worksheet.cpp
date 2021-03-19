@@ -862,7 +862,6 @@ void Worksheet::InsertLine(std::unique_ptr<Cell> &&newCell, bool forceNewLine)
   newCell->ForceBreakLine(forceNewLine);
   tmp->AppendOutput(std::move(newCell));
   
-  UpdateConfigurationClientSize();
   if (!tmp->GetNext())
     UpdateMLast();
   OutputChanged();
@@ -927,7 +926,6 @@ void Worksheet::SetZoomFactor(double newzoom, bool recalc)
 
 bool Worksheet::RecalculateIfNeeded()
 {
-  UpdateConfigurationClientSize();
   if(m_configuration->GetClientWidth()<1)
     return(false);
 
@@ -3522,8 +3520,6 @@ void Worksheet::OnCharInActive(wxKeyEvent &event)
   ScrollToCaret();
 
   m_blinkDisplayCaret = true;
-
-  UpdateConfigurationClientSize();
 
   if (activeCell->IsDirty())
   {
