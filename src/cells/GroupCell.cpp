@@ -526,8 +526,7 @@ void GroupCell::InputHeightChanged()
 // breakup cells and compute new line breaks
 void GroupCell::OnSize()
 {
-  InputHeightChanged();
-  BreakLines();
+  Recalculate();
 }
 
 AFontSize GroupCell::EditorFontSize() const
@@ -754,9 +753,8 @@ void GroupCell::Draw(wxPoint const point)
 {
   Cell::Draw(point);
   Configuration *configuration = (*m_configuration);
-//  if(NeedsRecalculation((*m_configuration)->GetDefaultFontSize()))
-//    std::cerr<<"content:"<<ToString()<<"\n";
-//  wxASSERT(!NeedsRecalculation((*m_configuration)->GetDefaultFontSize()));
+  if(NeedsRecalculation((*m_configuration)->GetDefaultFontSize()))
+    wxLogMessage(_("Not recalculated: \"") + ToString()+ "\"");
   if (configuration->ShowBrackets())
     DrawBracket();
 
@@ -1588,29 +1586,39 @@ void GroupCell::BreakLines()
   if(cell == NULL)
     return;
 
-  // 1st step: Break 2d objects that are wider than a line into lines
+  if(NeedsRecalculation(EditorFontSize()))
+    m_output->RecalculateList((*m_configuration)->GetMathFontSize());
+
+  // 1st step: Tell all cells to display as beautiful 2d object, if that is possible.
   if(UnBreakUpCells(cell))
   {
     m_output->ResetCellListSizesList();
     m_output->RecalculateList((*m_configuration)->GetMathFontSize());
   }
+
+  // 2nd step: Convert all objects that are wider than a line to 1D objects that (hopefully)
+  // can be broken into lines
   if(BreakUpCells(cell))
   {
     m_output->ResetCellListSizesList();
     m_output->RecalculateList((*m_configuration)->GetMathFontSize());
   }
 
-  // 2nd step: Determine a sane maximum line width
+
+  // 3rd step: Determine a sane maximum line width
   int fullWidth = (*m_configuration)->GetClientWidth();
   Configuration *configuration = (*m_configuration);
   int currentWidth = GetLineIndent(cell);
   if((cell->GetStyle() != TS_LABEL) && (cell->GetStyle() != TS_USERLABEL))
     fullWidth -= configuration->GetIndent();
 
+  // We don't want the text go exactly to the right border.
+  fullWidth -= Scale_Px(1);
+
   // Don't let the layout degenerate for small window widths
   if (fullWidth < Scale_Px(150)) fullWidth = Scale_Px(150);
 
-  // 3rd step: break the output into lines.
+  //4th step: break the output into lines.
   if (!IsHidden()) {
     bool prevBroken = false;
     for (Cell &tmp : OnDrawList(cell))
@@ -1678,18 +1686,29 @@ bool GroupCell::BreakUpCells(Cell *cell)
     showLength = 500;    
   }
 
+ int clientWidth = .8*(*m_configuration)->GetClientWidth() - (*m_configuration)->GetIndent();
+ if(clientWidth < Scale_Px(50))
+   clientWidth = Scale_Px(50);
+ 
   // Reduce the number of steps involved in layouting big equations
   if(m_cellsInGroup > showLength)
   {
-    bool lineHeightsChanged = false;
     wxLogMessage(_("Resolving to 1D layout for one cell in order to save time"));
+    return false;
+  }
+  else
+  {
+    bool lineHeightsChanged = false;
     if (!IsHidden())
       for (Cell &tmp : OnDrawList(cell))
-        lineHeightsChanged |= tmp.BreakUp();
+      {
+        if(tmp.GetWidth()<0)
+          tmp.Recalculate((*m_configuration)->GetMathFontSize());
+        if(tmp.GetWidth() > clientWidth)
+          lineHeightsChanged |= tmp.BreakUp();
+      }
     return lineHeightsChanged;
   }
-
-  return BreakUp();
 }
 
 bool GroupCell::UnBreakUpCells(Cell *cell)
@@ -1722,11 +1741,13 @@ bool GroupCell::UnBreakUpCells(Cell *cell)
  
   bool retval = false;
   for (Cell &tmp : OnDrawList(cell))
+  {
     if (tmp.IsBrokenIntoLines())
     {
       tmp.Unbreak();
       retval = true;
     }
+  }
 
   return retval;
 }

@@ -1060,18 +1060,7 @@ Cell *Cell::last() const
 
 bool Cell::BreakUp()
 {
-  bool retval = false;
-  int clientWidth = .8*(*m_configuration)->GetClientWidth() - (*m_configuration)->GetIndent();
-  if(clientWidth < 50)
-    clientWidth = 50;
-  for (Cell &cell : OnInner(this))
-    for (Cell &tmp : OnList(&cell))
-      if(tmp.GetWidth() > clientWidth)
-      {
-        tmp.BreakUp();
-        retval = true;
-    }
-  return retval;
+  return false;
 }
 
 void Cell::BreakUpAndMark()
