@@ -32,6 +32,28 @@
 #include "wx/sizer.h"
 #include <wx/settings.h>
 
+void CharButton::MouseOverTextIs(bool mouseover)
+{
+  if(m_mouseOverText != mouseover)
+  {
+    m_mouseOverText = mouseover;
+    m_backgroundColorChangeNeeded = true;
+    Connect(wxEVT_IDLE,
+            wxIdleEventHandler(CharButton::OnIdle), NULL, this);
+  }  
+}
+
+void CharButton::MouseOverPanelIs(bool mouseover)
+{
+  if(m_mouseOverPanel != mouseover)
+  {
+    m_mouseOverPanel = mouseover;
+    m_backgroundColorChangeNeeded = true;
+    Connect(wxEVT_IDLE,
+            wxIdleEventHandler(CharButton::OnIdle), NULL, this);
+  }
+}
+
 void CharButton::ForwardToParent(wxMouseEvent &event)
 {
   event.Skip();
@@ -41,31 +63,29 @@ void CharButton::ForwardToParent(wxMouseEvent &event)
 
 void CharButton::MouseOverPanel(wxMouseEvent &event)
 {
-  m_mouseOverPanel = true;
-  m_backgroundColorChangeNeeded = true;
+  MouseOverPanelIs();
   event.Skip();
 }
 void CharButton::MouseLeftPanel(wxMouseEvent &event)
 {
-  m_mouseOverPanel = false;
-  m_backgroundColorChangeNeeded = true;
+  MouseOverPanelIs(false);
   event.Skip();
 }
 void CharButton::MouseOverText(wxMouseEvent &event)
 {
-  m_mouseOverText = true;
-  m_backgroundColorChangeNeeded = true;
+  MouseOverTextIs();
   event.Skip();
 }
 void CharButton::MouseLeftText(wxMouseEvent &event)
 {
-  m_mouseOverText = false;
-  m_backgroundColorChangeNeeded = true;
+  MouseOverTextIs(false);
   event.Skip();
 }
 
 void CharButton::OnIdle(wxIdleEvent &event)
 {
+  Disconnect(wxEVT_IDLE,
+          wxIdleEventHandler(CharButton::OnIdle), NULL, this);
   if(!m_backgroundColorChangeNeeded)
     return;
   m_backgroundColorChangeNeeded = false;
@@ -111,8 +131,6 @@ CharButton::CharButton(wxWindow *parent, wxWindow *worksheet, const Definition &
     m_worksheet(worksheet)
 {
   Connect(wxEVT_SIZE, wxSizeEventHandler(CharButton::OnSize));
-  Connect(wxEVT_IDLE,
-          wxIdleEventHandler(CharButton::OnIdle), NULL, this);
   wxBoxSizer *sizer = new wxBoxSizer(wxHORIZONTAL);
   m_buttonText = new wxStaticText(this, -1, wxString(m_char));
   sizer->AddStretchSpacer(1);

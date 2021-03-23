@@ -65,6 +65,9 @@ protected:
   void MouseOverText(wxMouseEvent &event);
   void MouseLeftPanel(wxMouseEvent &event);
   void MouseLeftText(wxMouseEvent &event);
+protected:
+  void MouseOverTextIs(bool mouseOver = true);
+  void MouseOverPanelIs(bool mouseOver = true);
 private:
   bool m_mouseOverPanel = false;
   bool m_mouseOverText = false;
