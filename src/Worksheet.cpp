@@ -976,6 +976,8 @@ void Worksheet::Recalculate(Cell *start)
 
   if(m_recalculateStart == group)
     return;
+
+  group->MarkNeedsRecalculate();
   
   if (!m_recalculateStart)
     m_recalculateStart = group;
