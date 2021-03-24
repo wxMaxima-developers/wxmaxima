@@ -7375,7 +7375,11 @@ bool Worksheet::CutToClipboard()
   {
     if (CopyCells())
     {
-      GroupCell *group = GetActiveCell()->GetGroup()->GetPrevious();
+      GroupCell *group = NULL;
+      if(GetActiveCell())
+        group = GetActiveCell()->GetGroup();
+      if(group && (group->GetPrevious()))
+        group = group->GetPrevious();
       if(group)
         Recalculate(group);
       else
