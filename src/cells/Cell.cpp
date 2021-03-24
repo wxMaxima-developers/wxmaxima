@@ -1067,14 +1067,18 @@ void Cell::BreakUpAndMark()
 {
   wxASSERT(!m_isBrokenIntoLines);
   Cell::BreakUp();
+  if(!m_isBrokenIntoLines)
+    m_recalculateWidths = true;
   m_isBrokenIntoLines = true;
-  m_recalculateWidths = true;
 }
 
 void Cell::Unbreak()
 {
   if(m_isBrokenIntoLines)
+  {
     ResetData();
+    m_recalculateWidths = true;
+  }
 
   m_isBrokenIntoLines = false;
   SetNextToDraw(m_next);
