@@ -932,6 +932,11 @@ bool Worksheet::RecalculateIfNeeded()
   {
     m_recalculateStart = {};
     m_configuration->AdjustWorksheetSize(false);
+    if(m_configuration->AdjustWorksheetSize())
+    {
+      AdjustSize();
+      m_configuration->AdjustWorksheetSize(false);
+    }
     return false;
   }
 
@@ -954,11 +959,11 @@ bool Worksheet::RecalculateIfNeeded()
     tmp.Recalculate();
   }
   
-  m_configuration->AdjustWorksheetSize(false);
-
   m_recalculateStart = {};
   if(m_configuration->AdjustWorksheetSize())
     AdjustSize();
+  m_configuration->AdjustWorksheetSize(false);
+
 
   return true;
 }
