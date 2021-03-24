@@ -223,7 +223,6 @@ void Worksheet::OnSidebarKey(wxCommandEvent &event)
   {
     GetActiveCell()->InsertText(wxString(wxChar(event.GetId())));
     GroupCell *parent = GetActiveCell()->GetGroup();
-    parent->InputHeightChanged();
     Recalculate(parent);
     RequestRedraw(parent);
   }
@@ -929,9 +928,6 @@ bool Worksheet::RecalculateIfNeeded()
   if(m_configuration->GetClientWidth()<1)
     return(false);
 
-  if(m_configuration->AdjustWorksheetSize())
-    AdjustSize();
-
   if (!m_recalculateStart || !GetTree())
   {
     m_recalculateStart = {};
@@ -961,6 +957,9 @@ bool Worksheet::RecalculateIfNeeded()
   m_configuration->AdjustWorksheetSize(false);
 
   m_recalculateStart = {};
+  if(m_configuration->AdjustWorksheetSize())
+    AdjustSize();
+
   return true;
 }
 
