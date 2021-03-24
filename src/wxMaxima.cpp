@@ -4466,7 +4466,14 @@ void wxMaxima::OnIdle(wxIdleEvent &event)
   }
 
   UpdateSlider();
-  
+
+  // Update the history sidebar in case it is visible
+  if(m_historyVisible && m_history->UpdateDeferred())
+  {
+    event.RequestMore();
+    return;
+  }
+
   if (m_ipc.DrainQueue())
   {
     event.RequestMore();

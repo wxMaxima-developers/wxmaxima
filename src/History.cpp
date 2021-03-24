@@ -98,7 +98,7 @@ void History::MaximaSessionStart()
     m_history->Clear();
 }
 
-void History::OnInternalIdle()
+bool History::UpdateDeferred()
 {
   if (!m_deferredCommands.empty())
   {
@@ -107,7 +107,10 @@ void History::OnInternalIdle()
     m_current += m_deferredCommands.size();
     m_deferredCommands.clear();
     SetCurrent(0);
+    return true;
   }
+  else
+    return false;
 }
 
 void History::UnselectAll() const

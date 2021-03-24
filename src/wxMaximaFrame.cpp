@@ -472,6 +472,10 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   m_manager.Update();
   Connect(menu_pane_dockAll, wxEVT_MENU,
           wxCommandEventHandler(wxMaximaFrame::DockAllSidebars), NULL, this);
+  m_historyVisible = m_manager.GetPane(wxT("history")).IsShown();
+  m_xmlMonitorVisible = m_manager.GetPane(wxT("XmlInspector")).IsShown();
+
+  
   Layout();
 }
 
@@ -1673,6 +1677,8 @@ void wxMaximaFrame::ShowPane(Event id, bool show)
     case menu_pane_hideall:
       m_manager.GetPane(wxT("math")).Show(false);
       m_manager.GetPane(wxT("history")).Show(false);
+      m_historyVisible = false;
+      m_xmlMonitorVisible = false;
       m_manager.GetPane(wxT("structure")).Show(false);
       m_manager.GetPane(wxT("XmlInspector")).Show(false);
       m_manager.GetPane(wxT("format")).Show(false);
@@ -1690,6 +1696,7 @@ void wxMaximaFrame::ShowPane(Event id, bool show)
       break;
     case menu_pane_history:
       m_manager.GetPane(wxT("history")).Show(show);
+      m_historyVisible = show;
       break;
     case menu_pane_structure:
       m_manager.GetPane(wxT("structure")).Show(show);
@@ -1697,6 +1704,7 @@ void wxMaximaFrame::ShowPane(Event id, bool show)
       break;
     case menu_pane_xmlInspector:
       m_manager.GetPane(wxT("XmlInspector")).Show(show);
+      m_xmlMonitorVisible = show;
       break;
     case menu_pane_format:
       m_manager.GetPane(wxT("format")).Show(show);

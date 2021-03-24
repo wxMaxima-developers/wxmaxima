@@ -778,6 +778,8 @@ private:
   wxPanel *CreateSymbolsPane();
 
 protected:
+  bool m_historyVisible;
+  bool m_xmlMonitorVisible;
   SymbolsPane *m_symbolsPane;
   //! The current length of the evaluation queue of commands we still need to send to maxima
   int m_EvaluationQueueLength;

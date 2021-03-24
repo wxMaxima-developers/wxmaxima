@@ -70,11 +70,13 @@ public:
 
   void MaximaSessionStart();
 
+  //! Actually update the history sidebar. Called when no other work is to be done.
+  bool UpdateDeferred();
+
 private:
   //! Called on right-clicks on the history panel
   void OnMouseRightDown(wxMouseEvent &event);
   void OnMenu(wxCommandEvent &event);
-  void OnInternalIdle() override;
 
   void UnselectAll() const;
   void SetCurrent(long);
