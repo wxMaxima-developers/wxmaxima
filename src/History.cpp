@@ -42,11 +42,6 @@
 History::History(wxWindow *parent, int id) : wxPanel(parent, id)
 {
   wxConfig::Get()->Read(m_showCurrentSessionOnlyKey, &m_showCurrentSessionOnly);
-
-#ifdef __WXX11__
-  m_realtimeUpdate = false;
-#endif
-  
   // wxLB_MULTIPLE and wxLB_EXTENDED are mutually exclusive and will assert on Windows
   m_history = new wxListBox(this, history_ctrl_id, wxDefaultPosition, wxDefaultSize, 0, NULL,
                             wxLB_EXTENDED | wxLB_HSCROLL | wxLB_NEEDED_SB);
@@ -229,18 +224,7 @@ void History::AddToHistory(const wxString &cmd)
   m_commands.push_back(cmd);
 
   if (m_regex->Matches(cmd))
-  {
-    if (m_realtimeUpdate)
-    {
-      m_history->Insert(cmd, 0);
-      ++ m_current; // adjust because the items have moved down
-      SetCurrent(0);
-    }
-    else
-    {
-      m_deferredCommands.Add(cmd);
-    }
-  }
+    m_deferredCommands.Add(cmd);
 }
 
 void History::RebuildDisplay()

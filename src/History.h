@@ -88,8 +88,6 @@ private:
   //! The currently selected item. -1=none.
   long m_current = 0;
   wxString m_regex_Old;
-  //! Whether the history should be updated now or later
-  bool m_realtimeUpdate = true;
   //! Show only commands from the current session?
   bool m_showCurrentSessionOnly = true;
   //! The config key telling where to store m_showCurrentSessionOnly between sessions
