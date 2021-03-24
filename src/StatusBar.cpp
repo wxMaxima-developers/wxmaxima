@@ -177,9 +177,15 @@ void StatusBar::NetworkStatus(networkState status)
 //      if(status != m_oldNetworkState)
 //        m_maximaPercentage = m_oldmaximaPercentage = -1;
       if(m_maximaPercentage != 0)
-        m_networkStatus->SetBitmap(m_network_idle);
+      {
+        if((!!m_maximaPercentage) != (!!m_oldmaximaPercentage))
+          m_networkStatus->SetBitmap(m_network_idle);
+      }
       else
-        m_networkStatus->SetBitmap(m_network_idle_inactive);
+      {
+        if((!!m_maximaPercentage) != (!!m_oldmaximaPercentage))
+          m_networkStatus->SetBitmap(m_network_idle_inactive);
+      }
       
       m_networkState = status;
       wxString toolTip = m_stdToolTip;
@@ -192,21 +198,26 @@ void StatusBar::NetworkStatus(networkState status)
     }
     break;
     case error:
-      m_networkStatus->SetBitmap(m_network_error);
-      m_networkState = status;
-      m_networkStatus->SetToolTip(m_networkErrToolTip);
+      if((status != m_oldNetworkState))
+      {
+        m_networkStatus->SetBitmap(m_network_error);
+        m_networkState = status;
+        m_networkStatus->SetToolTip(m_networkErrToolTip);
+      }
       break;
     case offline:
-      m_networkStatus->SetBitmap(m_network_offline);
-      m_networkState = status;
+      if((status != m_oldNetworkState))
+      {
+        m_networkStatus->SetBitmap(m_network_offline);
+        m_networkState = status;
+      }
       m_networkStatus->SetToolTip(m_noConnectionToolTip);
       break;
     case receive:
     {
       ReceiveTimer.StartOnce(200);
       HandleTimerEvent();
-      if((m_oldmaximaPercentage >= 0) &&(m_maximaPercentage < 0))
-        m_networkStatus->SetToolTip(m_stdToolTip);
+      m_networkStatus->SetToolTip(m_stdToolTip);
     }
     break;
     case transmit:
