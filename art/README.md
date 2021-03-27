@@ -7,6 +7,10 @@ been released to the public domain.
 They were renamed to match the names of the gtk system icons they
 replace.
 
+The toolbar icons "arrow-up-square.svg" and "eye-slash.svg" are
+from the Bootstrap icons (https://icons.getbootstrap.com/).
+
+
 
 wxMaxima icons (wxmac.icns, maximaicon.ico, io.github.wxmaxima_developers.wxMaxima.png) were created
 by Sven Hodapp and are licensed under GPL.

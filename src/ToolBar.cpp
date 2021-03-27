@@ -204,8 +204,8 @@ void ToolBar::AddTools()
           _("Completely stop maxima and restart it"));
   AddTool(tb_interrupt, _("Interrupt"), GetInterruptBitmap(),
           _("Interrupt current computation. To completely restart maxima press the button left to this one."));
-  m_followIcon = GetBitmap(wxT("weather-clear"),
-                          weather_clear_svg_gz,weather_clear_svg_gz_len);
+  m_followIcon = GetBitmap(wxT("arrow_up_square"),
+                          arrow_up_square_svg_gz, arrow_up_square_svg_gz_len);
   m_needsInformationIcon = GetBitmap(wxT("software-update-urgent"),
                                     software_update_urgent_svg_gz,software_update_urgent_svg_gz_len);
   AddTool(tb_follow, _("Follow"), m_followIcon,
@@ -367,8 +367,8 @@ void ToolBar::UpdateBitmaps()
   SetToolBitmap(wxID_FIND,GetFindBitmap());
   SetToolBitmap(menu_restart_id,GetRestartBitmap());
   SetToolBitmap(tb_interrupt,GetInterruptBitmap());
-  m_followIcon = GetBitmap(wxT("weather-clear"),
-                          weather_clear_svg_gz,weather_clear_svg_gz_len);
+  m_followIcon = GetBitmap(wxT("arrow_up_square"),
+                          arrow_up_square_svg_gz, arrow_up_square_svg_gz_len);
   m_needsInformationIcon = GetBitmap(wxT("software-update-urgent"),
                                     software_update_urgent_svg_gz,software_update_urgent_svg_gz_len);
   SetToolBitmap(tb_follow, m_followIcon);
@@ -456,7 +456,7 @@ wxBitmap ToolBar::GetEvalRestBitmap(wxSize siz)
 }
 wxBitmap ToolBar::GetHideCodeBitmap(wxSize siz)
 {
-  return GetBitmap(wxT("weather-few-clouds"), weather_few_clouds_svg_gz,weather_few_clouds_svg_gz_len, siz);
+  return GetBitmap(wxT("eye-slash"), eye_slash_svg_gz, eye_slash_svg_gz_len, siz);
 }
 
 void ToolBar::SetDefaultCellStyle()
