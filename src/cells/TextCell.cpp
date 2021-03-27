@@ -455,9 +455,11 @@ void TextCell::SetFont(AFontSize fontsize)
 
 bool TextCell::IsOperator() const
 {
-  if (wxString(wxT("+*/-")).Find(m_text) >= 0)
+  if (wxString(wxT("+*/-\u2212\u00B7")).Find(m_text) >= 0)
     return true;
-  if (m_text == wxT("\u2212"))
+  if(GetHidableMultSign())
+    return true;
+  if(IsHidden())
     return true;
   return false;
 }
