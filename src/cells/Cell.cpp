@@ -531,7 +531,7 @@ wxString Cell::ListToString() const
   wxString retval;
   bool firstline = true;
 
-  for (const Cell &tmp : OnDrawList(this))
+  for (const Cell &tmp : OnList(this))
   {
     if ((!firstline) && (tmp.m_forceBreakLine))
     {
