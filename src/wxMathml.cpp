@@ -27,55 +27,47 @@ wxMathML::wxMathML()
 	}
       wxASSERT_MSG(m_wxMathML.Length()>64000,_("Compiler-Bug? wxMathml.lisp is shorter than expected!"));
     }
-}
-
-wxString wxMathML::GetCmd()
-{
-  if(m_maximaCMD.IsEmpty())
+  wxStringTokenizer lines(m_wxMathML,wxT("\n"));
+  while(lines.HasMoreTokens())
     {
-      wxStringTokenizer lines(m_wxMathML,wxT("\n"));
-      while(lines.HasMoreTokens())
+      wxString line = lines.GetNextToken();
+      wxString lineWithoutComments;
+
+      bool stringIs = false;
+      wxChar lastChar = wxT('\n');
+      wxString::const_iterator ch = line.begin();
+      while (ch < line.end())
 	{
-	  wxString line = lines.GetNextToken();
-	  wxString lineWithoutComments;
-
-	  bool stringIs = false;
-	  wxChar lastChar = wxT('\n');
-	  wxString::const_iterator ch = line.begin();
-	  while (ch < line.end())
+	  // Remove formatting spaces
+	  if(((lastChar == '\n') && ((*ch == ' ') || (*ch == '\t'))))
+	    ++ch;
+	  else
 	    {
-	      // Remove formatting spaces
-	      if(((lastChar == '\n') && ((*ch == ' ') || (*ch == '\t'))))
-		++ch;
-	      else
+	      // Handle backslashes that might escape double quotes
+	      if (*ch == wxT('\\'))
 		{
-		  // Handle backslashes that might escape double quotes
-		  if (*ch == wxT('\\'))
-		    {
-		      lineWithoutComments += *ch;
-		      ++ch;
-		    }
-		  else
-		    {
-		      // Handle strings
-		      if (*ch == wxT('\"'))
-			stringIs = !stringIs;
-
-		      // Handle comments
-		      if ((*ch == wxT(';')) && (!stringIs))
-			break;
-		    }
 		  lineWithoutComments += *ch;
-		  lastChar = *ch;
 		  ++ch;
 		}
+	      else
+		{
+		  // Handle strings
+		  if (*ch == wxT('\"'))
+		    stringIs = !stringIs;
+
+		  // Handle comments
+		  if ((*ch == wxT(';')) && (!stringIs))
+		    break;
+		}
+	      lineWithoutComments += *ch;
+	      lastChar = *ch;
+	      ++ch;
 	    }
-	  m_maximaCMD += lineWithoutComments + " ";
 	}
-      wxASSERT_MSG(m_maximaCMD.Length()>54000,_("Bug: After removing the whitespace wxMathml.lisp is shorter than expected!"));
-      m_maximaCMD = wxT(":lisp-quiet ") + m_maximaCMD + "\n";
+      m_maximaCMD += lineWithoutComments + " ";
     }
-  return m_maximaCMD;
+  wxASSERT_MSG(m_maximaCMD.Length()>54000,_("Bug: After removing the whitespace wxMathml.lisp is shorter than expected!"));
+  m_maximaCMD = wxT(":lisp-quiet ") + m_maximaCMD + "\n";
 }
 
 wxString wxMathML::m_maximaCMD;

@@ -35,7 +35,7 @@ class wxMathML
 {
  public:
   wxMathML();
-  wxString GetCmd();
+  wxString GetCmd(){ return m_maximaCMD; }
  private:
   wxString m_wxMathML;
   static wxString m_maximaCMD;
