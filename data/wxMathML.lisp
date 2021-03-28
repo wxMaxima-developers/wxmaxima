@@ -61,7 +61,7 @@
   (defvar $wxmaximaversion t "The wxMaxima version")
   (defprop $wxmaximaversion read-only-assign assign)
   (defvar $wxwidgetsversion t "The wxWidgets version wxMaxima is using.")
-  (defvar $wxsubscripts t
+  (defvar $wxsubscripts 'all
     "Recognize TeX-style subscripts")
   (defvar $wxplot_usesvg nil "Create scalable plots?")
   (defvar $wxplot_pngcairo nil "Use gnuplot's pngcairo terminal for new plots?")
