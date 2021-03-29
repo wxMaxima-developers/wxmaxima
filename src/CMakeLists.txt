@@ -244,6 +244,7 @@ elseif(APPLE)
 else()
     add_executable(wxmaxima ${SOURCE_FILES})
 endif()
+target_compile_features(wxmaxima PUBLIC cxx_std_14)
 
 if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.16")
   if(WXM_ENABLE_PRECOMPILED_HEADERS)
