@@ -1,6 +1,6 @@
 # -*- mode: CMake; cmake-tab-width: 4; -*-
 
-cmake_minimum_required(VERSION 3.7)
+cmake_minimum_required(VERSION 3.10)
 project(wxmaxima LANGUAGES CXX)
 
 # Set the locale to default C to prevent issues due to localization of commands.
