@@ -169,7 +169,7 @@ if(POLICY CMP0069)
     endif()
 endif()
 
-if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.10.0" AND WXM_USE_CPPCHECK)
+if(WXM_USE_CPPCHECK)
     find_program(CMAKE_CXX_CPPCHECK NAMES cppcheck)
     if(CMAKE_CXX_CPPCHECK)
         message(STATUS "cppcheck found at ${CMAKE_CXX_CPPCHECK}. Enable cppcheck tests.")
