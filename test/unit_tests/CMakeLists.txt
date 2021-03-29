@@ -20,11 +20,7 @@ target_compile_features(test_SqrtCell PUBLIC cxx_std_14)
 add_test(SqrtCell test_SqrtCell)
 
 add_executable(test_ImgCell test_ImgCell.cpp)
-if(WXM_USE_OPENMP AND OpenMP_CXX_FOUND)
-    target_link_libraries(test_ImgCell PRIVATE OpenMP::OpenMP_CXX ${wxWidgets_LIBRARIES})
-else()
-    target_link_libraries(test_ImgCell PRIVATE ${wxWidgets_LIBRARIES})
-endif()
+target_link_libraries(test_ImgCell PRIVATE ${wxWidgets_LIBRARIES})
 target_compile_features(test_ImgCell PUBLIC cxx_std_14)
 add_test(ImgCell test_ImgCell)
 
