@@ -163,10 +163,8 @@ include_directories(
 # link time optimization seems to need that
 if(POLICY CMP0069)
     cmake_policy(SET CMP0069 NEW)
-    if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.9.4")
-	include(CheckIPOSupported)
-	check_ipo_supported(RESULT lposupported)
-    endif()
+    include(CheckIPOSupported)
+    check_ipo_supported(RESULT lposupported)
 endif()
 
 if(WXM_USE_CPPCHECK)
