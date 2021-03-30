@@ -239,16 +239,17 @@ endif()
 target_compile_features(wxmaxima PUBLIC cxx_std_14)
 
 
-# Enable Link Time Optimization, if supported.
-cmake_policy(SET CMP0069 NEW)
-include(CheckIPOSupported)
-check_ipo_supported(RESULT lposupported)
-# Optional IPO. Do not use IPO if it's not supported by compiler.
-check_ipo_supported(RESULT IPOresult OUTPUT IPOoutput)
-if(IPOresult)
-  set_property(TARGET wxmaxima PROPERTY INTERPROCEDURAL_OPTIMIZATION TRUE)
-else()
-  message(WARNING "IPO is not supported: ${IPOoutput}")
+if(WXM_INTERPROCEDURAL_OPTIMIZATION)
+    # Enable interprocedural optimization (IPO/LTO), if supported.
+    cmake_policy(SET CMP0069 NEW)
+    include(CheckIPOSupported)
+    # Optional IPO. Do not use IPO if it's not supported by compiler.
+    check_ipo_supported(RESULT IPOresult OUTPUT IPOoutput)
+    if(IPOresult)
+        set_property(TARGET wxmaxima PROPERTY INTERPROCEDURAL_OPTIMIZATION TRUE)
+    else()
+        message(WARNING "IPO is not supported: ${IPOoutput}")
+    endif()
 endif()
 
 
