@@ -160,12 +160,6 @@ include_directories(
 )
 
 
-# link time optimization seems to need that
-if(POLICY CMP0069)
-    cmake_policy(SET CMP0069 NEW)
-    include(CheckIPOSupported)
-    check_ipo_supported(RESULT lposupported)
-endif()
 
 if(WXM_USE_CPPCHECK)
     find_program(CMAKE_CXX_CPPCHECK NAMES cppcheck)
@@ -243,6 +237,20 @@ else()
     add_executable(wxmaxima ${SOURCE_FILES})
 endif()
 target_compile_features(wxmaxima PUBLIC cxx_std_14)
+
+
+# Enable Link Time Optimization, if supported.
+cmake_policy(SET CMP0069 NEW)
+include(CheckIPOSupported)
+check_ipo_supported(RESULT lposupported)
+# Optional IPO. Do not use IPO if it's not supported by compiler.
+check_ipo_supported(RESULT IPOresult OUTPUT IPOoutput)
+if(IPOresult)
+  set_property(TARGET wxmaxima PROPERTY INTERPROCEDURAL_OPTIMIZATION TRUE)
+else()
+  message(WARNING "IPO is not supported: ${IPOoutput}")
+endif()
+
 
 if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.16")
   if(WXM_ENABLE_PRECOMPILED_HEADERS)
