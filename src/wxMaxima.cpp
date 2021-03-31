@@ -8375,7 +8375,7 @@ void wxMaxima::HelpMenu(wxCommandEvent &event)
 
       info.AddArtist(wxT("wxMaxima icon: Sven Hodapp"));
       info.AddArtist(wxT("SVG version of the icon: Gunter Königsmann"));
-      info.AddArtist(wxT("Other icons: The TANGO Project"));
+      info.AddArtist(wxT("Other icons: The TANGO Project, Bootstrap Icons"));
 
       wxAboutBox(info);
     }
