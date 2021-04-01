@@ -1775,8 +1775,7 @@ bool wxMaxima::StartServer()
 
 bool wxMaxima::StartMaxima(bool force)
 {
-  if(!m_server)
-    StartServer();
+  StartServer();
   // cppcheck-suppress duplicateCondition
   if(!m_server)
     return false;
