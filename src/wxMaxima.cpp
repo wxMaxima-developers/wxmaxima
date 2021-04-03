@@ -1707,6 +1707,9 @@ void wxMaxima::OnMaximaConnect()
 
 bool wxMaxima::StartServer()
 {
+  if ((m_server) && (m_server->IsOk()))
+    return true;
+
   if (m_server)
     m_server.reset();
 
