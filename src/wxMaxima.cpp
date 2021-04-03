@@ -235,8 +235,8 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
   }
   
   // Needed for making wxSocket work for multiple threads. We currently don't
-  // use this feature.
-  // wxSocketBase::Initialize();
+  // use this feature. But it doesn't harm to be prepared
+  wxSocketBase::Initialize();
   
   // Will be corrected by ConfigChanged()
   m_maxOutputCellsPerCommand = -1;
@@ -277,8 +277,6 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
   m_first = true;
   m_dispReadOut = false;
 
-  m_server = NULL;
-
   config->Read(wxT("lastPath"), &m_lastPath);
   m_lastPrompt = wxEmptyString;
 
@@ -315,34 +313,10 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
   m_statusBar->GetNetworkStatusElement()->Connect(wxEVT_LEFT_DCLICK,
                                                   wxCommandEventHandler(wxMaxima::NetworkDClick),
                                                   NULL, this);
-  bool server = false;
-  m_port = m_worksheet->m_configuration->DefaultPort();
-  while (!(server = StartServer()))
+  if(m_openFile.IsEmpty())
   {
-    wxLogMessage(
-      wxString::Format(
-        _("Trying to start a server on port %i instead"),m_port));
-    m_port++;
-    if ((m_port > m_worksheet->m_configuration->DefaultPort() + 15000) || (m_port > 65535))
-    {
-      LoggingMessageBox(_("wxMaxima could not start the server.\n\n"
-                          "Please check you have network support\n"
-                          "enabled and try again!"),
-                        _("Fatal error"),
-                        wxOK | wxICON_ERROR);
-      break;
-    }
-  }
-
-  if (!server)
-    LeftStatusText(_("Starting server failed"));
-  else
-  {
-    if(m_openFile.IsEmpty())
-    {
-      if (!StartMaxima())
-        LeftStatusText(_("Starting Maxima process failed"));
-    }
+    if (!StartMaxima())
+      LeftStatusText(_("Starting Maxima process failed"));
   }
   Connect(wxEVT_SCROLL_CHANGED,
           wxScrollEventHandler(wxMaxima::SliderEvent), NULL, this);
@@ -1188,11 +1162,6 @@ void wxMaxima::StartAutoSaveTimer()
 
 wxMaxima::~wxMaxima()
 {
-  if(m_server)
-  {
-    m_server->Destroy();
-    m_server = NULL;
-  }
   KillMaxima(false);
   MyApp::DelistTopLevelWindow(this);
 
@@ -1738,35 +1707,52 @@ void wxMaxima::OnMaximaConnect()
 
 bool wxMaxima::StartServer()
 {
-  if(m_server)
+  if (m_server)
+    m_server.reset();
+
+  m_port = m_worksheet->m_configuration->DefaultPort();
+
+  do
   {
-    m_server->Destroy();
-    m_server = NULL;
-  }
+    wxLogMessage(
+      wxString::Format(
+        _("Trying to start the socket a maxima on the local machine can connect to on port %i"),
+        m_port));
+    wxIPV4address addr;
+    if(!addr.AnyAddress())
+      wxLogMessage(_("Cannot set the communication address to localhost."));
+    if(!addr.Service(m_port))
+      wxLogMessage(wxString::Format(_("Cannot set the communication port to %i."), m_port));
+    m_server = std::unique_ptr<wxSocketServer, ServerDeleter> (new wxSocketServer(addr));
+    if(!m_server->IsOk())
+    {
+      m_port++;
+      m_server.reset();
+    }
+  } while(((m_port < m_worksheet->m_configuration->DefaultPort() + 15000) && (m_port < 65535) &&
+           (!m_server)));
   
-  RightStatusText(wxString::Format(_("Starting server on port %d"), m_port));
-
-  wxIPV4address addr;
-  if(!addr.AnyAddress())
-    wxLogMessage(_("Cannot set the communication address to localhost."));
-  if(!addr.Service(m_port))
-    wxLogMessage(wxString::Format(_("Cannot set the communication port to %i."), m_port));
-
-  m_server = new wxSocketServer(addr);
-  if (!m_server->IsOk())
+  if (!m_server)
   {
-    m_server->Destroy();
-    m_server = NULL;
     RightStatusText(_("Starting server failed"));
     m_statusBar->NetworkStatus(StatusBar::error);
+    LoggingMessageBox(_("wxMaxima could not start a server.\n\n"
+                        "Please check you have network support\n"
+                        "enabled and try again!"),
+                      _("Fatal error"),
+                      wxOK | wxICON_ERROR);
+    
     return false;
   }
-  m_server->SetEventHandler(*GetEventHandler());
-  m_server->Notify(true);
-  m_server->SetNotify(wxSOCKET_CONNECTION_FLAG);
-  m_server->SetTimeout(30);
-  RightStatusText(_("Server started"));
-  return true;
+  else
+  {
+    m_server->SetEventHandler(*GetEventHandler());
+    m_server->Notify(true);
+    m_server->SetNotify(wxSOCKET_CONNECTION_FLAG);
+    m_server->SetTimeout(30);
+    RightStatusText(_("Server started"));
+    return true;
+  }
 }
 
 ///--------------------------------------------------------------------------------
@@ -1775,9 +1761,7 @@ bool wxMaxima::StartServer()
 
 bool wxMaxima::StartMaxima(bool force)
 {
-  StartServer();
-  // cppcheck-suppress duplicateCondition
-  if(!m_server)
+  if(!StartServer())
     return false;
   
   wxString dirname;

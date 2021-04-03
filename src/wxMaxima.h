@@ -641,7 +641,25 @@ protected:
   }
 
   std::unique_ptr<Maxima> m_client;
-  wxSocketServer *m_server;
+  /*! The Right Way to delete a wxSocketServer
+
+    The destructor might delete the server before all pending server events have been
+    processed which leads to a crash.
+   */
+  struct ServerDeleter {
+  void operator()(wxSocketServer* server) const {
+    server->Close();
+    wxLogMessage(_("Closing the socket maxima could connect to!"));
+    server->Destroy();
+  }
+};
+  /*! The server maxima connects to as client
+
+     The destructor of the server causes 
+     crashes if there are still pending events.
+     Instead we need to call destroy.
+ */
+  std::unique_ptr<wxSocketServer,  ServerDeleter> m_server;
 
   wxProcess *m_process;
   //! The stdout of the maxima process
