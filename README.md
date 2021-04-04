@@ -20,8 +20,8 @@ Instructions on where to get a complete Maxima package from
 can be found at https://maxima.sourceforge.io/download.html.
 
 Information on how to compile wxMaxima from source instead can be
-found at https://github.com/wxMaxima-developers/wxmaxima/blob/master/Compiling.md
+found at https://github.com/wxMaxima-developers/wxmaxima/blob/main/Compiling.md
 
 
-![Travis CI Build Status](https://travis-ci.org/wxMaxima-developers/wxmaxima.svg?branch=master)
+![Travis CI Build Status](https://travis-ci.org/wxMaxima-developers/wxmaxima.svg?branch=main)
 

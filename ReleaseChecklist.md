@@ -15,7 +15,7 @@ wxMaxima (additional) steps:
 - Update NEWS.md in order to announce the new version on https://freshcode.club/
 - Update data/io.github.wxmaxima_developers.wxMaxima.appdata.xml with the information
   about the new release. The HTML sourcecode of
-  https://github.com/wxMaxima-developers/wxmaxima/blob/master/NEWS.md
+  https://github.com/wxMaxima-developers/wxmaxima/blob/main/NEWS.md
   might be useful to convert the recent NEWS.md entries to HTML.
 - Validate the appdata file with:
   appstream-util validate data/io.github.wxmaxima_developers.wxMaxima.appdata.xml

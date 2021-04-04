@@ -4078,7 +4078,7 @@ void wxMaxima::ShowWxMaximaHelp()
 
   if(!wxFileExists(helpfile)) {
     wxLogMessage(_(wxT("No offline manual found => Redirecting to the wxMaxima homepage")));
-    helpfile = wxString("https://htmlpreview.github.io/?https://github.com/wxMaxima-developers/wxmaxima/blob/master/info/wxmaxima.html");
+    helpfile = wxString("https://htmlpreview.github.io/?https://github.com/wxMaxima-developers/wxmaxima/blob/main/info/wxmaxima.html");
   } else {
     #ifdef __WINDOWS__
     // Replace \ with / in the path as directory separator.
