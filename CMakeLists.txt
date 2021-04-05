@@ -193,6 +193,7 @@ add_subdirectory(Doxygen)
 add_subdirectory(data)
 add_subdirectory(info)
 add_subdirectory(locales)
+add_subdirectory(art)
 add_subdirectory(src)
 add_subdirectory(examples)
 

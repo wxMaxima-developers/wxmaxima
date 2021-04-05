@@ -27,13 +27,13 @@
 #include "StatusBar.h"
 #include <wx/artprov.h>
 #include <wx/display.h>
-#include "../art/statusbar/images.h"
 #include "SvgBitmap.h"
 #include <wx/mstream.h>
 #include <wx/wfstream.h>
 #include <wx/zstream.h>
 #include <wx/txtstrm.h>
 #include "Image.h"
+#include "wxm_statusbar_images.h"
 
 StatusBar::StatusBar(wxWindow *parent, int id) : wxStatusBar(parent, id),
                                                  m_ppi(wxSize(-1,-1))
@@ -72,7 +72,7 @@ void StatusBar::UpdateBitmaps()
   wxSize ppi(-1,-1);
 #if wxCHECK_VERSION(3, 1, 1)
   wxDisplay display;
-  
+
   int display_idx = wxDisplay::GetFromWindow(GetParent());
   if (display_idx < 0)
     ppi = wxSize(72,72);
@@ -92,24 +92,18 @@ void StatusBar::UpdateBitmaps()
   {
     m_ppi = ppi;
     m_network_error = GetImage("network-error",
-                               network_error_svg_gz,network_error_svg_gz_len
-      );
+                               NETWORK_ERROR_SVG_GZ, NETWORK_ERROR_SVG_GZ_SIZE);
     m_network_offline = GetImage("network-offline",
-                                 network_offline_svg_gz,network_offline_svg_gz_len
-      );
+                                 NETWORK_OFFLINE_SVG_GZ, NETWORK_OFFLINE_SVG_GZ_SIZE);
     m_network_transmit = GetImage("network-transmit",
-                                  network_transmit_svg_gz,network_transmit_svg_gz_len
-      );
+                                  NETWORK_TRANSMIT_SVG_GZ, NETWORK_TRANSMIT_SVG_GZ_SIZE);
     m_network_idle = GetImage("network-idle",
-                              network_idle_svg_gz,network_idle_svg_gz_len
-      );
+                              NETWORK_IDLE_SVG_GZ, NETWORK_IDLE_SVG_GZ_SIZE);
     m_network_idle_inactive = wxBitmap(m_network_idle.ConvertToImage().ConvertToDisabled());
     m_network_receive = GetImage("network-receive",
-                                 network_receive_svg_gz,network_receive_svg_gz_len
-      );
+                                 NETWORK_RECEIVE_SVG_GZ, NETWORK_RECEIVE_SVG_GZ_SIZE);
     m_network_transmit_receive = GetImage("network-transmit-receive",
-                                          network_transmit_receive_svg_gz,network_transmit_receive_svg_gz_len
-      );
+                                          NETWORK_TRANSMIT_RECEIVE_SVG_GZ, NETWORK_TRANSMIT_RECEIVE_SVG_GZ_SIZE);
   }
 }
 
@@ -186,7 +180,7 @@ void StatusBar::NetworkStatus(networkState status)
         if((!!m_maximaPercentage) != (!!m_oldmaximaPercentage))
           m_networkStatus->SetBitmap(m_network_idle_inactive);
       }
-      
+
       m_networkState = status;
       wxString toolTip = m_stdToolTip;
       if(m_maximaPercentage >= 0)
@@ -253,7 +247,7 @@ wxBitmap StatusBar::GetImage(wxString name,
   wxSize ppi;
 #if wxCHECK_VERSION(3, 1, 1)
   wxDisplay display;
-  
+
   int display_idx = wxDisplay::GetFromWindow(GetParent());
   if (display_idx < 0)
     ppi = wxSize(72,72);
@@ -274,7 +268,7 @@ wxBitmap StatusBar::GetImage(wxString name,
     targetWidth = 16;
   if(targetHeight < 16)
     targetHeight = 16;
-  
+
   wxBitmap bmp = wxArtProvider::GetBitmap(name, wxART_TOOLBAR, wxSize(targetWidth, targetHeight));
   wxImage img;
 
