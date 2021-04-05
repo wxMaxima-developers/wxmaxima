@@ -46,7 +46,6 @@
 #include <wx/filename.h>
 #include <wx/scrolwin.h>
 #include "wxm_config_images.h"
-#include "wxm_toolbar_images.h"
 #include <wx/dcbuffer.h>
 #include "SvgBitmap.h"
 #include <wx/mstream.h>
