@@ -27,6 +27,7 @@
 //  SPDX-License-Identifier: GPL-2.0+
 
 #include "TipOfTheDay.h"
+#include "wxm_tipoftheday_images.h"
 #include <wx/config.h>
 #include <wx/display.h>
 #include <wx/persist.h>
@@ -206,9 +207,7 @@ TipOfTheDay::TipOfTheDay(wxWindow *parent)
   wxBoxSizer *hbox = new wxBoxSizer(wxHORIZONTAL);
   wxButton *backButton = new wxButton(this,-1);
   backButton->SetBitmap(
-    GetImage(
-      media_playback_start_reverse_svg_gz,media_playback_start_reverse_svg_gz_len
-      )
+    GetImage(MEDIA_PLAYBACK_START_REVERSE1_SVG_GZ, MEDIA_PLAYBACK_START_REVERSE1_SVG_GZ_SIZE)
     );
   backButton->Connect(
     wxEVT_BUTTON,
@@ -222,9 +221,7 @@ TipOfTheDay::TipOfTheDay(wxWindow *parent)
             wxSizerFlags().Proportion(10).Center());
   wxButton *forwardButton = new wxButton(this,-1);
   forwardButton->SetBitmap(
-    GetImage(
-      media_playback_start_svg_gz,media_playback_start_svg_gz_len
-      )
+    GetImage(MEDIA_PLAYBACK_START1_SVG_GZ, MEDIA_PLAYBACK_START1_SVG_GZ_SIZE)
     );
   forwardButton->Connect(
     wxEVT_BUTTON,
