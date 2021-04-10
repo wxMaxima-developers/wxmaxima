@@ -612,6 +612,10 @@ bool EditorCell::IsZoomFactorChanged() const
   return diff < -eps || diff > eps;
 }
 
+bool EditorCell::NeedsRecalculation(AFontSize fontSize) const
+{
+  return Cell::NeedsRecalculation(fontSize) | m_containsChanges;
+}
 
 void EditorCell::Recalculate(AFontSize fontsize)
 {    
@@ -627,7 +631,7 @@ void EditorCell::Recalculate(AFontSize fontsize)
   wxDC *dc = configuration->GetDC();
   SetFont();
 
-  // Measure the text hight using characters that might extend below or above the region
+  // Measure the text height using characters that moight extend below or above the region
   // ordinary characters move in.
   int charWidth;
   dc->GetTextExtent(wxT("äXÄgy"), &charWidth, &m_charHeight);
@@ -679,6 +683,7 @@ void EditorCell::Recalculate(AFontSize fontsize)
     m_center = m_charHeight / 2;
     Cell::Recalculate(fontsize);
   }
+  m_containsChanges = false;
 }
 
 wxString EditorCell::ToHTML() const
@@ -2948,7 +2953,6 @@ wxString EditorCell::DivideAtCaret()
   }
 
   SetValue(newText);
-  ResetSize();
   wxString retval = original.SubString(m_positionOfCaret, original.Length());
   // Remove an eventual newline from the beginning of a new cell
   // that would appear if the cell is divided at the end of a line.
@@ -2966,6 +2970,7 @@ wxString EditorCell::DivideAtCaret()
 
     if ((retval[whiteSpaceEnd] == wxT('\n')) || (retval[whiteSpaceEnd] == wxT('\r')))
       retval = retval.SubString(whiteSpaceEnd + 1, retval.Length());
+    m_containsChanges = true;
   }
   return retval;
 }

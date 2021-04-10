@@ -7579,9 +7579,9 @@ void Worksheet::DivideCell()
   if (GetActiveCell()->CaretAtStart() || GetActiveCell()->CaretAtEnd())
     return;
 
-  GetActiveCell()->GetGroup()->RemoveOutput();
-
+  parent->RemoveOutput();
   wxString newcellstring = GetActiveCell()->DivideAtCaret();
+  parent->InputHeightChanged();
 
   SetHCaret(parent);
   OpenHCaret(newcellstring, gctype);
