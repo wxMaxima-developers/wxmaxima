@@ -8,7 +8,8 @@
  * Fix a crash when pressing Ctrl-X while a math cell is selected (bug #1519).
  * CMake 3.10 is now required for building wxMaxima
  * C++ 14 is required for building wxMaxima. Now CMake knows about that fact.
- * Many external build scripts are now replaced by C++ and cmake commands 
+ * Many external build scripts are now replaced by C++ and cmake commands.
+ * A menu entry for when to invoke the debugger.
  
 # 21.02.0 
  * A Spanish translation update by cyphra
