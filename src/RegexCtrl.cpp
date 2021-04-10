@@ -94,7 +94,7 @@ void RegexCtrl::OnTextChange(wxCommandEvent &WXUNUSED(ev))
         };
         // One could also set the background color, with SetBackgroundColour(...);
         // Be careful, not only set the foreground color to black or white
-        // the backgound color may be the same (or have not enough contrast)
+        // the background color may be the same (or have not enough contrast)
         // if dark mode is used.
         // Choose always colors with some contrast.
         // Green and orange (as above for valid/invalid input) works with normal and dark mode.

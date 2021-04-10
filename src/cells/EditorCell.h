@@ -559,7 +559,7 @@ private:
 
   /*! Handle ESC shortcuts for special characters
 
-    These characters can be tought to LaTeX and the html browser if necessary in
+    These characters can be thought to LaTeX and the html browser if necessary in
     TextCell::ToTeX and EditorCell::ToTeX. They can also be
     converted to maxima strings in wxMaxima::SendMaxima.
    */
@@ -652,7 +652,7 @@ private:
 //** Bitfield objects (2 bytes)
 //**
   void InitBitFields()
-  { // Keep the initailization order below same as the order
+  { // Keep the initialization order below same as the order
     // of bit fields in this class!
     m_autoAnswer = false;
     m_containsChanges = false;

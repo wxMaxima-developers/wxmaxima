@@ -483,7 +483,7 @@ wxString TextCell::ToString() const
       // The only way for variable or function names to contain quotes and
       // characters that clearly represent operators is that these chars
       // are quoted by a backslash: They cannot be quoted by quotation
-      // marks since maxima would'nt allow strings here.
+      // marks since maxima wouldn't allow strings here.
     {
       wxString charsNeedingQuotes("\\'\"()[]-{}^+*/&§?:;=#<>$");
       bool isOperator = true;
@@ -545,7 +545,7 @@ wxString TextCell::ToMatlab() const
     // The only way for variable or function names to contain quotes and
     // characters that clearly represent operators is that these chars
     // are quoted by a backslash: They cannot be quoted by quotation
-    // marks since maxima would'nt allow strings here.
+    // marks since maxima wouldn't allow strings here.
   {
     wxString charsNeedingQuotes("\\'\"()[]{}^+*/&§?:;=#<>$");
     bool isOperator = true;
@@ -781,7 +781,7 @@ wxString TextCell::ToTeX() const
               ((GetPrevious()->GetStyle() == TS_VARIABLE) && (GetNext()->GetStyle() == TS_VARIABLE)) &&
               // The variable name prior to this cell has no subscript
               (!(GetPrevious()->ToString().Contains(wxT('_')))) &&
-              // we will be using \mathit{} for the TeX outout.
+              // we will be using \mathit{} for the TeX output.
               ((ToString().Length() > 1) || (GetNext()->ToString().Length() > 1))
               )
         text = wxT("\\, ");

@@ -70,7 +70,7 @@ void ConjugateCell::Recalculate(AFontSize fontsize)
   else
   {
     // The ConjugateCell itself isn't displayed if it is broken into lines.
-    // insted m_open, m_innerCell and m_close are => We can set our size to 0
+    // instead m_open, m_innerCell and m_close are => We can set our size to 0
     // in this case.
     m_width = 0;
     m_height = 0;

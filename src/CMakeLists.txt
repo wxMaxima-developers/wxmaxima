@@ -5,7 +5,7 @@
 # Usage: list_transform_prepend(FILES_TO_TRANSLATE "prefix/")
 # See https://stackoverflow.com/a/59155344/1329652
 #
-# According to #1388 cmake 3.19.2 requires this to be definied
+# According to #1388 cmake 3.19.2 requires this to be defined
 # in each source file separately
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/Info.plist.in ${CMAKE_CURRENT_BINARY_DIR}/Info.plist)

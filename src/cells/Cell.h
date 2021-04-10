@@ -898,7 +898,7 @@ private:
 //** Bitfield objects (2 bytes)
 //**
   void InitBitFields()
-  { // Keep the initailization order below same as the order
+  { // Keep the initialization order below same as the order
     // of bit fields in this class!
     m_ownsToolTip = false;
     m_bigSkip = false;

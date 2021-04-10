@@ -491,7 +491,7 @@ wxArrayString AutoComplete::CompleteSymbol(wxString partial, autoCompletionType 
     }
   }
 
-  // Add a list of words that were definied on the work sheet but that aren't
+  // Add a list of words that were defined on the work sheet but that aren't
   // defined as maxima commands or functions.
   if (type == command)
   {

@@ -67,7 +67,7 @@
  */
 #define DOCUMENT_VERSION_MINOR 5
 
-//! How many miliseconds should we wait between polling for stdout+cpu power?
+//! How many milliseconds should we wait between polling for stdout+cpu power?
 #define MAXIMAPOLLMSECS 2000
 
 class Maxima; // The Maxima process interface
@@ -112,7 +112,7 @@ public:
   void ShowTip(bool force);
 
   void SetWXMdata(const wxString &data){m_initialWorkSheetContents = data;}
-  //! Do we want to evaluate the document on statup?
+  //! Do we want to evaluate the document on startup?
   void EvalOnStartup(bool eval)
     {
       m_evalOnStartup = eval;
@@ -673,7 +673,7 @@ protected:
     this is the place we can search in fast.
 
     wxEmptyString means that the current output isn't long enough to make
-    creating this string worthwile.
+    creating this string worthwhile.
    */
   wxString m_currentOutputEnd;
   //! All from maxima's current output we still haven't interpreted

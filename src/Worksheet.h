@@ -74,7 +74,7 @@ a big bitmap) is provided by wxWidgets:
  - and the RefreshRect() method notifies wxWidgets that a rectangular region
    contains changes that need to be redrawn.
 
-The worksheet isn't immediately redrawn on a key press, a mouse klick or on
+The worksheet isn't immediately redrawn on a key press, a mouse click or on
 maxima outputting new data. Instead all such events are processed in order until
 wxMaxima has caught up with all the events (which causes wxWidgets to send a Idle
 event to the wxMaxima object) or until we reach a timeout. If the user manages
@@ -518,7 +518,7 @@ private:
    * depending on where we first clicked. If m_clickType equals
    * CLICK_TYPE_NONE - click-dragging does not result in a selection (we clicked in hideRect for instance)
    * CLICK_TYPE_GROUP_SELECTION - we are selecting full groupcells only. Only y-coordinate matters.
-   * CLICK_TYPE_INPUT_SELECTION - we clicked in an editor (GroupCell::GetEditable()) and draging
+   * CLICK_TYPE_INPUT_SELECTION - we clicked in an editor (GroupCell::GetEditable()) and dragging
    *   results in selecting text in EditorCell
    * CLICK_TYPE_OUTPUT_SELECTION - we clicked in an output, we want selection to be confined to that
    *   GroupCell's output. GC we first clicked in was stored in OnMouseMotion method

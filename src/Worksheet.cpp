@@ -1096,13 +1096,13 @@ void Worksheet::ClearDocument()
 }
 
 /***
- * Reset all input promts to "-->  "
+ * Reset all input prompts to "-->  "
  * Called when Restart Maxima is called from Maxima menu
  */
 void Worksheet::ResetInputPrompts()
 {
   if (GetTree())
-    GetTree()->ResetInputLabelList(); // recursivly reset prompts
+    GetTree()->ResetInputLabelList(); // recursively reset prompts
 }
 
 //
@@ -2471,8 +2471,8 @@ bool Worksheet::Copy(bool astext)
     if(m_configuration->CopyRTF())
     {
       // Add a RTF representation of the currently selected text
-      // to the clipboard: For some reason libreoffice likes RTF more than
-      // it likes the MathML - which is standartized.
+      // to the clipboard: For some reason Libreoffice likes RTF more than
+      // it likes the MathML - which is standardized.
       wxString rtf;
       rtf = RTFStart() + tmp->ListToRTF() + wxT("\\par\n") + RTFEnd();
       data->Add(new RtfDataObject(rtf));
@@ -4786,7 +4786,7 @@ bool Worksheet::ExportToHTML(const wxString &file)
     output << wxT("  })\n");
     output << wxT("</script>\n");
     output << wxT("<script src=\"") + m_configuration->MathJaXURL() + wxT("\" async=\"async\">\n");
-    // prevent optimizing <srcipt src="..."><script> to <script src=..."/>
+    // prevent optimizing <script src="..."><script> to <script src=..."/>
     output << wxT("  // A comment that hinders wxWidgets from optimizing this tag too much.\n");
     output << wxT("</script>\n");
   }
@@ -8006,7 +8006,7 @@ bool Worksheet::FindNext(const wxString &str, bool down, bool ignoreCase, bool w
 
   pos->GetEditable()->SearchStartedHere(pos->GetEditable()->GetCaretPosition());
 
-  // Remember where to go if we need to wrapp the search.
+  // Remember where to go if we need to wrap the search.
   GroupCell *start = pos;
 
   bool wrappedSearch = false;

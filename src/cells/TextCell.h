@@ -29,7 +29,7 @@
 
 /*! A Text cell
 
-  Everything on the worksheet that is composed of characters with the eception
+  Everything on the worksheet that is composed of characters with the exception
   of input cells: Input cells are handled by EditorCell instead.
  */
 // 304 bytes <- 744 bytes
@@ -147,7 +147,7 @@ protected:
 //** Bitfield objects (1 bytes)
 //**
   void InitBitFields()
-  { // Keep the initailization order below same as the order
+  { // Keep the initialization order below same as the order
     // of bit fields in this class!
     m_dontEscapeOpeningParenthesis = false;
     m_promptTooltip = false;
@@ -158,7 +158,7 @@ protected:
   bool m_dontEscapeOpeningParenthesis : 1 /* InitBitFields */;
   //! Default to a special tooltip for prompts?
   bool m_promptTooltip : 1 /* InitBitFields */;
-  //! The last known vallue of CheckKeepPercent
+  //! The last known value of CheckKeepPercent
   bool m_keepPercent_last : 1;
 
 };

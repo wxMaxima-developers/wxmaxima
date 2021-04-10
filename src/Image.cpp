@@ -841,7 +841,7 @@ void Image::LoadImage_Backgroundtask(wxString image, std::shared_ptr<wxFileSyste
           svgContents_string += line + wxT("\n");
         }
       }
-      // Convert the data we have read to a modifyable char * containing the svg file's contents.
+      // Convert the data we have read to a modifiable char * containing the svg file's contents.
       char *svgContents;
       svgContents = (char *)strdup(svgContents_string.utf8_str());
 

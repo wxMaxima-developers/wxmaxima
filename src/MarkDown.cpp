@@ -98,7 +98,7 @@ wxString MarkDownParser::MarkDown(wxString str)
         // Did we switch to a higher indentation level?
         if (index > indentationLevels.back())
         {
-          // A higher identation level => add the itemization-start-command.
+          // A higher indentation level => add the itemization-start-command.
           result += itemizeBegin();
           indentationLevels.push_back(index);
           indentationTypes.push_back(wxT('*'));
@@ -149,7 +149,7 @@ wxString MarkDownParser::MarkDown(wxString str)
           // Are we on a new indentation level?
           if (indentationLevels.back() < index)
           {
-            // A new identation level => add the itemization-start-command.
+            // A new indentation level => add the itemization-start-command.
             result += quoteBegin();
             indentationLevels.push_back(index);
             indentationTypes.push_back(wxT('>'));

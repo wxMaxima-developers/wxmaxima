@@ -1894,7 +1894,7 @@ GroupCell *GroupCell::FoldAll()
   return result;
 }
 
-// unfolds recursivly its contents
+// unfolds recursively its contents
 // if (all) then also calls it on it's m_next
 GroupCell *GroupCell::UnfoldAll()
 {
