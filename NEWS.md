@@ -1,4 +1,4 @@
-# 21.04.0 (not released yet)
+# 21.04.0
  * Fix visualization after "Evaluate all cells (Ctrl+Shift+R)" (bug #1512).
  * Fix context sensitive help with F1 (bug #1508).
  * Add an option for not showing matching parenthesis (bug #1509).
