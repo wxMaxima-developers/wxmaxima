@@ -203,14 +203,6 @@ msgstr ""
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:59
-#, fuzzy
-#| msgid ""
-#| "Extensive documentation for _Maxima_ is [available in the internet]"
-#| "(http://maxima.sourceforge.net/documentation.html). Part of this "
-#| "documentation is also available in wxMaxima’s help menu. Pressing the "
-#| "Help key (on most systems the F1 key) causes _wxMaxima_’s context-"
-#| "sensitive help feature to automatically jump to _Maxima_’s manual page "
-#| "for the command at the cursor."
 msgid ""
 "Extensive documentation for _Maxima_ is [available in the internet](https://"
 "maxima.sourceforge.io/documentation.html). Part of this documentation is "
@@ -219,7 +211,7 @@ msgid ""
 "automatically jump to _Maxima_’s manual page for the command at the cursor."
 msgstr ""
 "Umfangreiche Dokumentation für Maxima ist [im Internet verfügbar](http://"
-"maxima.sourceforge.net/documentation.html). Teile davon sind auch im Hilfe-"
+"maxima.sourceforge.io/documentation.html). Teile davon sind auch im Hilfe-"
 "Menü von wxMaxima erhältlich. Ein Druck auf die Hilfe-Taste (auf den meisten "
 "Systemen ist dies die F1-Taste) springt automatisch zur Stelle im _Maxima_-"
 "Handbuch, wo das Kommando unter dem Cursor erklärt wird."
@@ -928,18 +920,13 @@ msgstr ".mac"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:278
-#, fuzzy
-#| msgid ""
-#| ".mac files are ordinary text files that contain _Maxima_ commands. They "
-#| "can be read using _Maxima_’s read command or _wxMaxima_’s File/Batch File "
-#| "menu entry."
 msgid ""
 "`.mac` files are ordinary text files that contain _Maxima_ commands. They "
 "can be read using _Maxima_’s `batch()` or `load()` command or _wxMaxima_’s "
 "File/Batch File menu entry."
 msgstr ""
 ".mac-Dateien sind Textdateien mit _Maxima_-Befehlen. Sie können über "
-"Maxima's read()-Befehl oder in wxMaxima über \"Datei/Batch File laden\" "
+"Maxima's `batch()` oder `load()`-Befehl oder in wxMaxima über \"Datei/Batch File laden\" "
 "gelesen werden."
 
 #. type: Plain text
@@ -966,7 +953,9 @@ msgid ""
 "Attention: Although the file `Quadratic.mac` has an usual _Maxima_ extension "
 "(`.mac`), it can only be read by _wxMaxima_, since the command `wxdraw2d()` "
 "is a wxMaxima-extension to _Maxima_."
-msgstr ""
+msgstr "Achtung: Obwohl die Datei `Quadratic.mac` eine übliche Maxima-extension hat "
+"(`.mac`), kann sie nur durch wxMaxima verarbeitet werden, der Befehl `wxdraw2d()` "
+"ist eine wxMaxima-Erweiterung für _Maxima_."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:287
@@ -2417,20 +2406,6 @@ msgstr "Keine Verbindung zu _Maxima_ möglich"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:681
-#, fuzzy
-#| msgid ""
-#| "Since _Maxima_ (the program that does the actual mathematics) and "
-#| "_wxMaxima_ (providing the easy-to-use user interface) are separate "
-#| "programs that communicate by the means of a local network connection. "
-#| "Therefore the most probable cause is that this connection is somehow not "
-#| "working. For example a firewall could be set up in a way that it doesn’t "
-#| "just prevent against unauthorized connections from the internet (and "
-#| "perhaps to intercept some connections to the internet, too), but it also "
-#| "to blocks inter-process-communication inside the same computer. Note that "
-#| "since _Maxima_ is being run by a Lisp processor the process communication "
-#| "that is blocked from does not necessarily have to be named \"maxima\". "
-#| "Common names of the program that opens the network connection would be "
-#| "sbcl, gcl, ccl, lisp.exe or similar names."
 msgid ""
 "Since _Maxima_ (the program that does the actual mathematics) and _wxMaxima_ "
 "(providing the easy-to-use user interface) are separate programs that "
@@ -2621,12 +2596,6 @@ msgstr "Animationen enden in \"Error: Undefined Variable\""
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:722
-#, fuzzy
-#| msgid ""
-#| "The value of the slider variable by default is only substituted into the "
-#| "expression that is to be plotted if it is visible there. Using a `subst` "
-#| "command that substitutes the slider variable into the equation to plot "
-#| "(there should be an example of this in this manual) resolves this problem."
 msgid ""
 "The value of the slider variable by default is only substituted into the "
 "expression that is to be plotted if it is visible there. Using a `subst` "
@@ -2992,12 +2961,10 @@ msgstr "Gibt es eine Möglichkeit mehr Text auf eine LaTeX-Seite zu schreiben?"
 #: ../../info/wxmaxima.md:828
 msgid ""
 "Yes. Use the LaTeX package \"geometry\" to specify the size of the borders."
-msgstr ""
+msgstr "Ja. Verwenden Sie das LaTeX Paket \"geometry\" um die Größe der Ränder anzugeben."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:830
-#, fuzzy, no-wrap
-#| msgid "There is: Just add the following lines to the LaTeX preamble (for example by using the respective field in the config dialogue (\"Export\"->\"Additional lines for the TeX preamble\"):\n"
 msgid "You can add the following line to the LaTeX preamble (for example by using the respective field in the config dialogue (\"Export\"->\"Additional lines for the TeX preamble\"), to set borders of 1cm):\n"
 msgstr "Ja, gibt es. Geben Sie einfach die folgenden Zeilen im LaTeX-Vorspann (z.B. indem sie das entsprechende Feld im Konfigurationsdialog (\"Exportieren\"->\"Zusätzliche Zeilen für die LaTeX preamble\") angeben.\n"
 
