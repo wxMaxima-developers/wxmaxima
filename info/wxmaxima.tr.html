@@ -635,7 +635,7 @@ Ordinary text</code></pre>
 <h2 id="file-formats"><span class="header-section-number">1.3</span> File Formats</h2>
 <p><em>WxMaxima</em> oturumunda geliştirilen materyal, daha sonra kullanılmak üzere üç yoldan biriyle saklanabilir:</p>
 <h3 id="mac"><span class="header-section-number">1.3.1</span> .mac</h3>
-<p>.mac files are ordinary text files that contain <em>Maxima</em> commands. They can be read using <em>Maxima</em>’s <code>batch()</code> or <code>load()</code> command or <em>wxMaxima</em>’s File/Batch File menu entry.</p>
+<p><code>.mac</code> files are ordinary text files that contain <em>Maxima</em> commands. They can be read using <em>Maxima</em>’s <code>batch()</code> or <code>load()</code> command or <em>wxMaxima</em>’s File/Batch File menu entry.</p>
 <p>One Example is shown below. <code>Quadratic.mac</code> defines a function and afterwards generates a plot with <code>wxdraw2d()</code>. Afterwards the contents of the file <code>Quadratic.mac</code> are printed and new defined function <code>f()</code> is evaluated.</p>
 <figure>
 <img src="./BatchImage.png" alt="Loading a .mac file with batch()" id="img_BatchImage" /><figcaption>Loading a <code>.mac</code> file with <code>batch()</code></figcaption>
@@ -660,7 +660,7 @@ Ordinary text</code></pre>
 <h3 id="default-plot-size-for-new-maxima-sessions"><span class="header-section-number">1.4.2</span> Default plot size for new <em>maxima</em> sessions</h3>
 <p>`<code>wxplot_size</code> değeri <em>maxima</em> tarafından değiştirilmezse, bir sonraki başlangıçtan sonra çalışma sayfasına yerleştirilen grafikler bu boyutta oluşturulacaktır.</p>
 <p>Tek bir grafiğin çizim boyutunu ayarlamak için bir değişkenin değerini yalnızca bir komut için ayarlayan aşağıdaki gösterimi kullanabilirsiniz:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode maxima"><code class="sourceCode maxima"><a class="sourceLine" id="cb4-1" title="1"><span class="cn">wxdraw2d</span>( </a>
+<div class="sourceCode" id="cb4"><pre class="sourceCode maxima"><code class="sourceCode maxima"><a class="sourceLine" id="cb4-1" title="1"><span class="cn">wxdraw2d</span>(</a>
 <a class="sourceLine" id="cb4-2" title="2">   <span class="cn">explicit</span>(</a>
 <a class="sourceLine" id="cb4-3" title="3">       <span class="cn">x</span>^<span class="dv">2</span>,</a>
 <a class="sourceLine" id="cb4-4" title="4">       <span class="cn">x</span>,<span class="dv">-5</span>,<span class="dv">5</span></a>
@@ -799,13 +799,13 @@ Ordinary text</code></pre>
 <h3 id="opening-multiple-plots-in-contemporaneous-windows"><span class="header-section-number">2.3.7</span> Opening multiple plots in contemporaneous windows</h3>
 <p><em>WxMaxima</em> tarafından sağlanmasa da, <em>Maxima</em>’ın bu özelliği (bunu destekleyen kurulumlarda) bazen kolayca elde edilebilir. Aşağıdaki örnek, Mario Rodriguez’in <em>Maxima</em> posta listesine bir gönderiden geliyor:</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode maxima"><code class="sourceCode maxima"><a class="sourceLine" id="cb14-1" title="1">    <span class="fu">load</span>(<span class="fu">draw</span>);</a>
-<a class="sourceLine" id="cb14-2" title="2">    </a>
+<a class="sourceLine" id="cb14-2" title="2"></a>
 <a class="sourceLine" id="cb14-3" title="3">    <span class="co">/* Parabola in window #1 */</span></a>
 <a class="sourceLine" id="cb14-4" title="4">    <span class="fu">draw2d</span>(<span class="cn">terminal</span>=[<span class="cn">wxt</span>,<span class="dv">1</span>],<span class="cn">explicit</span>(<span class="cn">x</span>^<span class="dv">2</span>,<span class="cn">x</span>,<span class="dv">-1</span>,<span class="dv">1</span>));</a>
-<a class="sourceLine" id="cb14-5" title="5">    </a>
+<a class="sourceLine" id="cb14-5" title="5"></a>
 <a class="sourceLine" id="cb14-6" title="6">    <span class="co">/* Parabola in window #2 */</span></a>
 <a class="sourceLine" id="cb14-7" title="7">    <span class="fu">draw2d</span>(<span class="cn">terminal</span>=[<span class="cn">wxt</span>,<span class="dv">2</span>],<span class="cn">explicit</span>(<span class="cn">x</span>^<span class="dv">2</span>,<span class="cn">x</span>,<span class="dv">-1</span>,<span class="dv">1</span>));</a>
-<a class="sourceLine" id="cb14-8" title="8">    </a>
+<a class="sourceLine" id="cb14-8" title="8"></a>
 <a class="sourceLine" id="cb14-9" title="9">    <span class="co">/* Paraboloid in window #3 */</span></a>
 <a class="sourceLine" id="cb14-10" title="10">    <span class="fu">draw3d</span>(<span class="cn">terminal</span>=[<span class="cn">wxt</span>,<span class="dv">3</span>],<span class="cn">explicit</span>(<span class="cn">x</span>^<span class="dv">2</span>+<span class="cn">y</span>^<span class="dv">2</span>,<span class="cn">x</span>,<span class="dv">-1</span>,<span class="dv">1</span>,<span class="cn">y</span>,<span class="dv">-1</span>,<span class="dv">1</span>));</a></code></pre></div>
 <p>Plotting multiple plots in the same window is possible, too:</p>
@@ -821,7 +821,7 @@ Ordinary text</code></pre>
 <p>“Çizim kullanarak çizim” kenar çubuğu, <em>maxima</em> ile birlikte gelen <em>draw</em> paketinin esnekliğinden bazılarını kullanan sahneler oluşturmaya izin veren basit bir kod oluşturucuyu gizler.</p>
 <h4 id="d"><span class="header-section-number">2.3.8.1</span> 2D</h4>
 <p>2B sahne çizen bir draw () komutunun iskeletini oluşturur. Bu sahne daha sonra, örneğin “2B” düğmesinin altındaki satırlardaki düğmeleri kullanarak, sahnenin içeriğini oluşturan komutlarla doldurulmalıdır.</p>
-<p>One helpful feature of the 2D button is that it allows to setup the scene as an animation in which a variable (by default it is <em>t</em>) has a different value in each frame: Often an moving 2D plot allows easier interpretation than the same data in a non-moving 3D one.</p>
+<p>One helpful feature of the 2D button is that it allows to setup the scene as an animation in which a variable (by default it is <em>t</em>) has a different value in each frame: Often a moving 2D plot allows easier interpretation than the same data in a non-moving 3D one.</p>
 <h4 id="d-1"><span class="header-section-number">2.3.8.2</span> 3D</h4>
 <p>3B sahne çizen bir draw () komutunun iskeletini oluşturur. Bir 2B veya 3B sahne ayarlanmamışsa, diğer tüm butonlar butonun oluşturduğu komutu içeren bir 2B sahne ayarlayın.</p>
 <h4 id="expression"><span class="header-section-number">2.3.8.3</span> Expression</h4>

@@ -635,7 +635,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2 id="文件格式"><span class="header-section-number">1.3</span> 文件格式</h2>
 <p>在 wxMaxima 中输入的内容可以存为以下三种文件格式之一，以供以后使用：</p>
 <h3 id="mac"><span class="header-section-number">1.3.1</span> .mac</h3>
-<p>.mac files are ordinary text files that contain <em>Maxima</em> commands. They can be read using <em>Maxima</em>’s <code>batch()</code> or <code>load()</code> command or <em>wxMaxima</em>’s File/Batch File menu entry.</p>
+<p><code>.mac</code> files are ordinary text files that contain <em>Maxima</em> commands. They can be read using <em>Maxima</em>’s <code>batch()</code> or <code>load()</code> command or <em>wxMaxima</em>’s File/Batch File menu entry.</p>
 <p>One Example is shown below. <code>Quadratic.mac</code> defines a function and afterwards generates a plot with <code>wxdraw2d()</code>. Afterwards the contents of the file <code>Quadratic.mac</code> are printed and new defined function <code>f()</code> is evaluated.</p>
 <figure>
 <img src="./BatchImage.png" alt="Loading a .mac file with batch()" id="img_BatchImage" /><figcaption>Loading a <code>.mac</code> file with <code>batch()</code></figcaption>
@@ -660,7 +660,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h3 id="新-maxima-会话的默认绘图尺寸"><span class="header-section-number">1.4.2</span> 新 Maxima 会话的默认绘图尺寸</h3>
 <p>如果 <code>wxplot_size</code> 的值没有被 Maxima 更改，则使用此大小创建绘图并嵌入工作簿。</p>
 <p>为了仅对单个绘图命令设置绘制图形的大小，可以使用以下代码：</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode maxima"><code class="sourceCode maxima"><a class="sourceLine" id="cb4-1" title="1"><span class="cn">wxdraw2d</span>( </a>
+<div class="sourceCode" id="cb4"><pre class="sourceCode maxima"><code class="sourceCode maxima"><a class="sourceLine" id="cb4-1" title="1"><span class="cn">wxdraw2d</span>(</a>
 <a class="sourceLine" id="cb4-2" title="2">   <span class="cn">explicit</span>(</a>
 <a class="sourceLine" id="cb4-3" title="3">       <span class="cn">x</span>^<span class="dv">2</span>,</a>
 <a class="sourceLine" id="cb4-4" title="4">       <span class="cn">x</span>,<span class="dv">-5</span>,<span class="dv">5</span></a>
@@ -798,14 +798,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h3 id="同时打开多个绘图窗口"><span class="header-section-number">2.3.7</span> 同时打开多个绘图窗口</h3>
 <p>虽然这个 Maxima 特性不是由 wxMaxima 提供的，但是（如果安装的 Maxima 支持此特性）有时使用起来会很方便。以下例子来自 Mario Rodriguez 在 Maxima 邮件列表中的一篇帖子：</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode maxima"><code class="sourceCode maxima"><a class="sourceLine" id="cb14-1" title="1">    <span class="fu">load</span>(<span class="fu">draw</span>);</a>
-<a class="sourceLine" id="cb14-2" title="2">    </a>
-<a class="sourceLine" id="cb14-3" title="3">    <span class="co">/* 在第一个窗口中绘制抛物线 */</span></a>
+<a class="sourceLine" id="cb14-2" title="2"></a>
+<a class="sourceLine" id="cb14-3" title="3">    <span class="co">/* Parabola in window #1 */</span></a>
 <a class="sourceLine" id="cb14-4" title="4">    <span class="fu">draw2d</span>(<span class="cn">terminal</span>=[<span class="cn">wxt</span>,<span class="dv">1</span>],<span class="cn">explicit</span>(<span class="cn">x</span>^<span class="dv">2</span>,<span class="cn">x</span>,<span class="dv">-1</span>,<span class="dv">1</span>));</a>
-<a class="sourceLine" id="cb14-5" title="5">    </a>
-<a class="sourceLine" id="cb14-6" title="6">    <span class="co">/* 在第二个窗口中绘制抛物线 */</span></a>
+<a class="sourceLine" id="cb14-5" title="5"></a>
+<a class="sourceLine" id="cb14-6" title="6">    <span class="co">/* Parabola in window #2 */</span></a>
 <a class="sourceLine" id="cb14-7" title="7">    <span class="fu">draw2d</span>(<span class="cn">terminal</span>=[<span class="cn">wxt</span>,<span class="dv">2</span>],<span class="cn">explicit</span>(<span class="cn">x</span>^<span class="dv">2</span>,<span class="cn">x</span>,<span class="dv">-1</span>,<span class="dv">1</span>));</a>
-<a class="sourceLine" id="cb14-8" title="8">    </a>
-<a class="sourceLine" id="cb14-9" title="9">    <span class="co">/* 在第三个窗口中绘制旋转抛物面 */</span></a>
+<a class="sourceLine" id="cb14-8" title="8"></a>
+<a class="sourceLine" id="cb14-9" title="9">    <span class="co">/* Paraboloid in window #3 */</span></a>
 <a class="sourceLine" id="cb14-10" title="10">    <span class="fu">draw3d</span>(<span class="cn">terminal</span>=[<span class="cn">wxt</span>,<span class="dv">3</span>],<span class="cn">explicit</span>(<span class="cn">x</span>^<span class="dv">2</span>+<span class="cn">y</span>^<span class="dv">2</span>,<span class="cn">x</span>,<span class="dv">-1</span>,<span class="dv">1</span>,<span class="cn">y</span>,<span class="dv">-1</span>,<span class="dv">1</span>));</a></code></pre></div>
 <p>在同一个窗口中绘制这些图形也是可行的：</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode maxima"><code class="sourceCode maxima"><a class="sourceLine" id="cb15-1" title="1">    <span class="cn">wxdraw</span>(</a>
@@ -820,7 +820,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>“用 draw 函数绘图”侧边栏暗含一个简单的代码生成器，使用它可以利用 Maxima 的 draw 程序包方便灵活地生成一些图形绘制命令模板。</p>
 <h4 id="二维图形"><span class="header-section-number">2.3.8.1</span> 二维图形</h4>
 <p>提供绘制二维图形的 <code>draw()</code> 命令的简单模板。然后可以使用具体的绘图命令填充该模板，例如利用“二维图形”按钮下方的其他按钮导入绘图命令。</p>
-<p>“二维图形”按钮的一个有用的功能是，用它可以设置一个生成动画的模板，其中一个变量（默认情况下是 t）在每一帧中都有不同的值。通常动态的二维图形比静态的三维图形中的相同数据更容易理解。</p>
+<p>One helpful feature of the 2D button is that it allows to setup the scene as an animation in which a variable (by default it is <em>t</em>) has a different value in each frame: Often a moving 2D plot allows easier interpretation than the same data in a non-moving 3D one.</p>
 <h4 id="三维图形"><span class="header-section-number">2.3.8.2</span> 三维图形</h4>
 <p>提供绘制三维图形的 <code>draw()</code> 命令的简单模板。如果没有主动使用此功能和上一功能，则所有其他按钮都将自动提前调用上一功能中的绘制二维图形模板。</p>
 <h4 id="表达式"><span class="header-section-number">2.3.8.3</span> 表达式</h4>

@@ -189,13 +189,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h1 id="einführung-in-wxmaxima"><span class="header-section-number">1</span> Einführung in wxMaxima</h1>
 <h2 id="maxima-und-wxmaxima"><span class="header-section-number">1.1</span> <em>Maxima</em> und wxMaxima</h2>
 <p>Im Open-Source-Bereich ist es üblich, große Systeme in kleine Projekte aufzuteilen, die jeweils klein genug sind, dass eine endliche Menge an Entwicklern ausreicht, um sie weiterzuentwickeln. Beispielsweise ist ein CD-Brennprogramm aus einem Kommandozeilentool zusammengesetzt, das die CDs brennt und eine graphische Benutzerumgebung, die dieses Tool bedient. Ein Vorteil dieses Ansatzes ist es, daß dasselbe Kommandozeilenprogramm von vielen Stellen aus genutzt werden: Das Brennprogramm, ein “Sende an die CD”-Knopf und beispielsweise ein Backup-Tool. Ein weiterer Vorteil ist es, dass auf diese Weise für eine Funktionalität mehrere Benutzerinterfaces angeboten werden können.</p>
-<p>Ein Computer-Algebrasystem (CAS) wie <em>Maxima</em> ist hervorragend für diesen Ansatz geeignet: Es kann die Logik hinter einem Taschenrecher liefern, der mit beliebig langen Zahlen hantieren kann, Formeln für ein größeres System, z.B. <a href="http://www.sagemath.org/">Sage</a> umstellen. Alternativ kann es direkt verwendet werden. Dies kann von der Kommandozeile aus geschehen, oder von wxMaxima aus, das eine komfortablere Bedienung unterstützt.</p>
+<p>Ein Computer-Algebrasystem (CAS) wie <em>Maxima</em> ist hervorragend für diesen Ansatz geeignet: Es kann die Logik hinter einem Taschenrechner liefern, der mit beliebig langen Zahlen hantieren kann, Formeln für ein größeres System, z.B. <a href="http://www.sagemath.org/">Sage</a> umstellen. Alternativ kann es direkt verwendet werden. Dies kann von der Kommandozeile aus geschehen, oder von wxMaxima aus, das eine komfortablere Bedienung unterstützt.</p>
 <h3 id="maxima"><span class="header-section-number">1.1.1</span> <em>Maxima</em></h3>
 <p>Maxima ist ein komplettes Computer-Algebrasystem (CAS): Ein Programm, das die Formel, nicht nur die Zahl sucht, die ein mathematisches Problem löst. Auch wenn es darauf spezialisiert ist, mit Buchstaben zu rechnen, bietet es auch eine Menge an Funktionen, die Probleme lösen, für die nur numerische Lösungen existieren.</p>
 <figure>
 <img src="./maxima_screenshot.png" alt="Maxima Screenshot, Kommandozeile" id="img_maxima_screenshot" /><figcaption>Maxima Screenshot, Kommandozeile</figcaption>
 </figure>
-<p>Extensive documentation for <em>Maxima</em> is <a href="https://maxima.sourceforge.io/documentation.html">available in the internet</a>. Part of this documentation is also available in wxMaxima’s help menu. Pressing the Help key (on most systems the F1 key) causes <em>wxMaxima</em>’s context-sensitive help feature to automatically jump to <em>Maxima</em>’s manual page for the command at the cursor.</p>
+<p>Umfangreiche Dokumentation für Maxima ist <a href="http://maxima.sourceforge.io/documentation.html">im Internet verfügbar</a>. Teile davon sind auch im Hilfe-Menü von wxMaxima erhältlich. Ein Druck auf die Hilfe-Taste (auf den meisten Systemen ist dies die F1-Taste) springt automatisch zur Stelle im <em>Maxima</em>-Handbuch, wo das Kommando unter dem Cursor erklärt wird.</p>
 <h3 id="wxmaxima"><span class="header-section-number">1.1.2</span> wxMaxima</h3>
 <p><em>wxMaxima</em> ist ein graphisches Benutzer-Interface, das die komplette Funktionalität und Flexibilität von Maxima zu nutzen erlaubt. Zudem bietet es viele Funktionalitäten an, die die Verwendung von <em>Maxima</em> einfacher gestalten. Beispielsweise kann es den Inhalt eines Arbeitsblattes, einer Zelle des Arbeitsblatts oder einen Teil einer Formel nach LaTeX, MathML oder in eine RTF-Formel für eine Textverarbeitung konvertieren. Dokumentation für wxMaxima kann <a href="https://wxMaxima-developers.github.io/wxmaxima/help.html">im Internet</a> gefunden werden, oder über das Hilfemenü.</p>
 <figure>
@@ -231,7 +231,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Wenn in einer Textverarbeitung versucht wird, einen Satz auszuwählen, wird diese versuchen, Beginn und Ende der Auswahl so zu verschieben, dass ganze Wörter ausgewählt sind. <em>wxMaxima</em> wird aus diesem Grund, wenn mehr als eine Zelle ausgewählt wird, die Auswahl auf ganze Zellen ausdehnen.</p>
 <p>Was ungewöhnlich erscheinen kann ist, dass <em>wxMaxima</em> alternativ einen vertikalen oder einen horizontalen Cursor darstellen kann:</p>
 <ul>
-<li>Der Curser wird vertikal dargestellt wird, wenn er zwischen zwei Zellen zu liegen kommt.</li>
+<li>Der Cursor wird vertikal dargestellt wird, wenn er zwischen zwei Zellen zu liegen kommt.</li>
 <li>Innerhalb einer Zelle wird der Cursor vertikal dargestellt.</li>
 </ul>
 <h3 id="eingabezellen-an-maxima-schicken"><span class="header-section-number">1.2.4</span> Eingabezellen an <em>Maxima</em> schicken</h3>
@@ -248,7 +248,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Wenn Maxima mit einem Lisp-Compiler generiert wurde, der Unicode unterstützt oder sich nicht darum kümmert, auf welche Weise Zeichen codiert werden, unterstützt es Unicode. Da meist eine dieser Bedingungen gegeben ist, bietet <em>wxMaxima</em> eine Methode an, griechische Zeichen mit der Tastatur einzugeben:</p>
 <ul>
 <li>Ein griechischer Buchstabe kann eingegeben werden, indem erst auf die <kbd>ESC</kbd>-Taste gedrückt wird, und dann sein Name einzugeben begonnen wird.</li>
-<li>Ebenso kann er eingegeben werden, indem <kbd>ESC</kbd> gedrückt wird, ein Buchstabe (bzw. zwei für den griechischen Buchstaben omicorn) und dann erneut <kbd>ESC</kbd>. In diesem Fall werden die folgenden Zeichen unterstützt:</li>
+<li>Ebenso kann er eingegeben werden, indem <kbd>ESC</kbd> gedrückt wird, ein Buchstabe (bzw. zwei für den griechischen Buchstaben omicron) und dann erneut <kbd>ESC</kbd>. In diesem Fall werden die folgenden Zeichen unterstützt:</li>
 </ul>
 <table>
 <thead>
@@ -599,7 +599,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p><kbd>ESC</kbd> <kbd>61</kbd> <kbd>ESC</kbd> erzeugt daher ein <code>a</code>.</p>
 <p>Viele der Unicode-Symbole (mit der Ausnahme der logischen Verknüpfungen) haben keine direkte Entsprechung in <em>Maxima</em> und werden daher als normale Zeichen interpretiert. Falls <em>Maxima</em> eine Lisp-Version verwendet, die Unicode nicht unterstützt, kann das eine Fehlermeldung verursachen.</p>
 <h3 id="seitenleisten"><span class="header-section-number">1.2.6</span> Seitenleisten</h3>
-<p>Die meisten <em>Maxima</em>-Befehle und eine Liste der zuletzt verwendeten Befehle werden in Seitenleisten angeboten, die über das "Ansicht-Menü aktiviert und an beliebige Stellen in oder außerhalb des <em>wxMaxima</em>-Fensters verschoben werden können. Ebenso kann eine Seitenleiste mit griechischen Buchstaben geöffnet werden, die eine alternative Methode anbietet, griechische Buchstaben einzugeben.</p>
+<p>Die meisten <em>Maxima</em>-Befehle und eine Liste der zuletzt verwendeten Befehle werden in Seitenleisten angeboten, die über das “Ansicht”-Menü aktiviert und an beliebige Stellen in oder außerhalb des <em>wxMaxima</em>-Fensters verschoben werden können. Ebenso kann eine Seitenleiste mit griechischen Buchstaben geöffnet werden, die eine alternative Methode anbietet, griechische Buchstaben einzugeben.</p>
 <figure>
 <img src="./SidePanes.png" alt="Beispiele verschiedener Seitenbereiche" id="img_SidePanes" /><figcaption>Beispiele verschiedener Seitenbereiche</figcaption>
 </figure>
@@ -636,12 +636,12 @@ Normaler Text</code></pre>
 <h2 id="dateiformate"><span class="header-section-number">1.3</span> Dateiformate</h2>
 <p>Das Arbeitsblatt kann auf verschiedene Weisen gespeichert werden:</p>
 <h3 id="mac"><span class="header-section-number">1.3.1</span> .mac</h3>
-<p>.mac files are ordinary text files that contain <em>Maxima</em> commands. They can be read using <em>Maxima</em>’s <code>batch()</code> or <code>load()</code> command or <em>wxMaxima</em>’s File/Batch File menu entry.</p>
+<p>.mac-Dateien sind Textdateien mit <em>Maxima</em>-Befehlen. Sie können über Maxima’s <code>batch()</code> oder <code>load()</code>-Befehl oder in wxMaxima über “Datei/Batch File laden” gelesen werden.</p>
 <p>One Example is shown below. <code>Quadratic.mac</code> defines a function and afterwards generates a plot with <code>wxdraw2d()</code>. Afterwards the contents of the file <code>Quadratic.mac</code> are printed and new defined function <code>f()</code> is evaluated.</p>
 <figure>
 <img src="./BatchImage.png" alt="Loading a .mac file with batch()" id="img_BatchImage" /><figcaption>Loading a <code>.mac</code> file with <code>batch()</code></figcaption>
 </figure>
-<p>Attention: Although the file <code>Quadratic.mac</code> has an usual <em>Maxima</em> extension (<code>.mac</code>), it can only be read by <em>wxMaxima</em>, since the command <code>wxdraw2d()</code> is a wxMaxima-extension to <em>Maxima</em>.</p>
+<p>Achtung: Obwohl die Datei <code>Quadratic.mac</code> eine übliche Maxima-extension hat (<code>.mac</code>), kann sie nur durch wxMaxima verarbeitet werden, der Befehl <code>wxdraw2d()</code> ist eine wxMaxima-Erweiterung für <em>Maxima</em>.</p>
 <p><code>.mac</code>-Dateien eignen sich dafür, eine Bibliothek von Maxima-Befehlen aufzubauen. Ausreichend Information über die Struktur eines <em>wxMaxima</em>-Arbeitsblatts, dass sie es erlauben, dieses wieder zu rekonstruieren, enthalten sie aber nicht.</p>
 <h3 id="wxm"><span class="header-section-number">1.3.2</span> .wxm</h3>
 <p>.wxm-Dateien sollten das Arbeitsblatt außer <em>Maxima</em>’s Ausgabe enthalten. <em>Maxima</em> &gt;5.38 kann .wxm-Dateien über den <code>load()</code>-Befehl lesen. Das .wxm-Format ist allerdings oft weniger kompatibel mit älteren Versionen von <em>wxMaxima</em>, als das .wxmx-Format.</p>
@@ -661,7 +661,7 @@ Normaler Text</code></pre>
 <h3 id="die-standardgröße-der-diagramme-bei-neuen-maxima-sitzungen"><span class="header-section-number">1.4.2</span> Die Standardgröße der Diagramme bei neuen Maxima Sitzungen</h3>
 <p><code>wxplot_size</code> definiert, wie groß die nachfolgenden in das Arbeitsblatt eingebauten Diagramme sind.</p>
 <p>Diese Variable kann notfalls auch nur für das aktuelle Diagramm gesetzt werden:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode maxima"><code class="sourceCode maxima"><a class="sourceLine" id="cb4-1" title="1"><span class="cn">wxdraw2d</span>( </a>
+<div class="sourceCode" id="cb4"><pre class="sourceCode maxima"><code class="sourceCode maxima"><a class="sourceLine" id="cb4-1" title="1"><span class="cn">wxdraw2d</span>(</a>
 <a class="sourceLine" id="cb4-2" title="2">   <span class="cn">explicit</span>(</a>
 <a class="sourceLine" id="cb4-3" title="3">       <span class="cn">x</span>^<span class="dv">2</span>,</a>
 <a class="sourceLine" id="cb4-4" title="4">       <span class="cn">x</span>,<span class="dv">-5</span>,<span class="dv">5</span></a>
@@ -801,14 +801,14 @@ Normaler Text</code></pre>
 <h3 id="mehrere-diagramme-gleichzeitig-in-fenstern-öffnen"><span class="header-section-number">2.3.7</span> Mehrere Diagramme gleichzeitig in Fenstern öffnen</h3>
 <p>Strenggenommen kein Feature von <em>wxMaxima</em>. Aber Maxima erlaubt auf vielen Systemen das folgende Beispiel von Mario Rodriguez auszuführen:</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode maxima"><code class="sourceCode maxima"><a class="sourceLine" id="cb14-1" title="1">    <span class="fu">load</span>(<span class="fu">draw</span>);</a>
-<a class="sourceLine" id="cb14-2" title="2">    </a>
-<a class="sourceLine" id="cb14-3" title="3">    <span class="co">/* Parabel in Fenster #1 */</span></a>
+<a class="sourceLine" id="cb14-2" title="2"></a>
+<a class="sourceLine" id="cb14-3" title="3">    <span class="co">/* Parabola in window #1 */</span></a>
 <a class="sourceLine" id="cb14-4" title="4">    <span class="fu">draw2d</span>(<span class="cn">terminal</span>=[<span class="cn">wxt</span>,<span class="dv">1</span>],<span class="cn">explicit</span>(<span class="cn">x</span>^<span class="dv">2</span>,<span class="cn">x</span>,<span class="dv">-1</span>,<span class="dv">1</span>));</a>
-<a class="sourceLine" id="cb14-5" title="5">    </a>
-<a class="sourceLine" id="cb14-6" title="6">    <span class="co">/* Parabel in Fenster #2 */</span></a>
+<a class="sourceLine" id="cb14-5" title="5"></a>
+<a class="sourceLine" id="cb14-6" title="6">    <span class="co">/* Parabola in window #2 */</span></a>
 <a class="sourceLine" id="cb14-7" title="7">    <span class="fu">draw2d</span>(<span class="cn">terminal</span>=[<span class="cn">wxt</span>,<span class="dv">2</span>],<span class="cn">explicit</span>(<span class="cn">x</span>^<span class="dv">2</span>,<span class="cn">x</span>,<span class="dv">-1</span>,<span class="dv">1</span>));</a>
-<a class="sourceLine" id="cb14-8" title="8">    </a>
-<a class="sourceLine" id="cb14-9" title="9">    <span class="co">/* Paraboloid in Fenster #3 */</span></a>
+<a class="sourceLine" id="cb14-8" title="8"></a>
+<a class="sourceLine" id="cb14-9" title="9">    <span class="co">/* Paraboloid in window #3 */</span></a>
 <a class="sourceLine" id="cb14-10" title="10">    <span class="fu">draw3d</span>(<span class="cn">terminal</span>=[<span class="cn">wxt</span>,<span class="dv">3</span>],<span class="cn">explicit</span>(<span class="cn">x</span>^<span class="dv">2</span>+<span class="cn">y</span>^<span class="dv">2</span>,<span class="cn">x</span>,<span class="dv">-1</span>,<span class="dv">1</span>,<span class="cn">y</span>,<span class="dv">-1</span>,<span class="dv">1</span>));</a></code></pre></div>
 <p>Mehrere Diagramme im gleichen Fenster plotten ist auch möglich:</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode maxima"><code class="sourceCode maxima"><a class="sourceLine" id="cb15-1" title="1">    <span class="cn">wxdraw</span>(</a>
@@ -823,7 +823,7 @@ Normaler Text</code></pre>
 <p>Die “Plotte mittels Draw”-Seitenleiste enthält einen Codegenerator, der es erlaubt, einen Teil der Flexibilität des <em>draw</em>-Pakets von <em>Maxima</em> zu nutzen.</p>
 <h4 id="d"><span class="header-section-number">2.3.8.1</span> 2D</h4>
 <p>Generiert einen <code>draw()</code>-Befehl, der mittels der anderen Knöpfe der Seitenleiste mit einer 2D-Szene gefüllt werden kann.</p>
-<p>Dieser Knopf ist hauptsächlich dann praktisch, wenn eine Animation erstellt werden soll: Ein sich bewegendes flaches Diagramm ist einfacher abzulesen, als ein räumliches Solches.</p>
+<p>One helpful feature of the 2D button is that it allows to setup the scene as an animation in which a variable (by default it is <em>t</em>) has a different value in each frame: Often a moving 2D plot allows easier interpretation than the same data in a non-moving 3D one.</p>
 <h4 id="d-1"><span class="header-section-number">2.3.8.2</span> 3D</h4>
 <p>Wie “2D”, aber für dreidimensionale Diagramme.</p>
 <h4 id="ausdruck"><span class="header-section-number">2.3.8.3</span> Ausdruck</h4>
@@ -897,7 +897,7 @@ Normaler Text</code></pre>
 <hr />
 <h1 id="fehlersuche"><span class="header-section-number">3</span> Fehlersuche</h1>
 <h2 id="keine-verbindung-zu-maxima-möglich"><span class="header-section-number">3.1</span> Keine Verbindung zu <em>Maxima</em> möglich</h2>
-<p>Since <em>Maxima</em> (the program that does the actual mathematics) and <em>wxMaxima</em> (providing the easy-to-use user interface) are separate programs that communicate by the means of a local network connection. Therefore the most probable cause is that this connection is somehow not working. For example a firewall could be set up in a way that it doesn’t just prevent unauthorized connections from the internet (and perhaps to intercept some connections to the internet, too), but it also to blocks inter-process-communication inside the same computer. Note that since <em>Maxima</em> is being run by a Lisp processor the process communication that is blocked from does not necessarily have to be named “maxima”. Common names of the program that opens the network connection would be sbcl, gcl, ccl, lisp.exe or similar names.</p>
+<p><em>Maxima</em> und wxMaxima kommunizieren über ein lokales Netzwerk miteinander. Dies kann durch eine übereifrige Firewall unterbunden werden, die auch Verbindungen innerhalb des Rechners verbietet. Manchmal ist es schwer, herauszufinden, welches Programm erlaubt sein soll, da <em>Maxima</em> manchmal unter Namen wie sbcl, gcl, ccl, lisp.exe oder ähnlichen firmiert.</p>
 <p>Auf Unix/Linux-Rechnern kann ein weiterer Grund sein, dass das “loopback”-Netzwerkgerät nicht korrekt eingestellt ist.</p>
 <h2 id="wie-repariere-ich-kaputte-.wxmx-dateien"><span class="header-section-number">3.2</span> Wie repariere ich kaputte .wxmx-Dateien?</h2>
 <p>Die meisten modernen XML-basierten Formate sind von ihrem Inhalt her einfache .zip-Dateien. <em>wxMaxima</em> schaltet bei ihnen die Kompression nicht ein, weswegen ihr Inhalt in einem normalen Texteditor lesbar ist.</p>
@@ -924,7 +924,7 @@ Normaler Text</code></pre>
 <li>Gnuplot hat keine gültige <code>.png</code>-Datei ausgegeben.</li>
 </ul>
 <h2 id="animationen-enden-in-error-undefined-variable"><span class="header-section-number">3.5</span> Animationen enden in “Error: Undefined Variable”</h2>
-<p>The value of the slider variable by default is only substituted into the expression that is to be plotted if it is visible there. Using a <code>subst</code> command that substitutes the slider variable into the equation to plot resolves this problem. At the end of section <a href="#embedding-animations-into-the-spreadsheet">Embedding animations into the spreadsheet</a> you can see an example.</p>
+<p>Der Wert für den Parameter, der bei der Animation variiert werden soll, war für <em>Maxima</em> nicht sichtbar. Ein explizites <code>subst()</code> behebt dieses Problem, wie in einem Beispiel weiter oben gezeigt wird.</p>
 <h2 id="undo-erinnert-sich-nicht-an-das-was-ich-brauche"><span class="header-section-number">3.6</span> Undo erinnert sich nicht an das, was ich brauche</h2>
 <p>Es gibt zwei Rückgängigmach- Funktionen, die beide die wichtige Information enthalten können:</p>
 <ul>
@@ -939,7 +939,7 @@ Normaler Text</code></pre>
 <h2 id="maxima-hört-nicht-auf-zu-rechnen-und-reagiert-nicht-auf-eingaben"><span class="header-section-number">3.8</span> Maxima hört nicht auf zu rechnen und reagiert nicht auf Eingaben</h2>
 <p>Theoretisch kann es passieren, daß wxMaxima nicht erkennt, dass Maxima mit der Berechnung fertig ist und daher nie neue Befehle an Maxima sendet. In diesem Fall kann der Befehl ‘Trigger Evaluation’ die Synchronisation wieder herstellen.</p>
 <h2 id="sbcl-beschwert-sich-über-einen-mangel-an-speicher"><span class="header-section-number">3.9</span> SBCL beschwert sich über einen Mangel an Speicher</h2>
-<p>Der Lisp Compiler SBCL reserviert gleich beim Hochfahren allen Speicher, den es im Betrieb nutzen will. Wird mehr Speicher benöigt, muss ihm über den Kommandozeilenparameter <code>--dynamic-space-size</code> gesagt werden, wie viel Speicher benötigt wird. SBCL kann nur in etwa die Hälfte des freien Speichers des Systems verwenden. Auf 32-Bit-Rechnern ist dies meist unter 999 Megabytes. Auf 64-Bit-Systemen können mehr als 1280 MB verwendet werden, was notwendig ist um das Lapack-Paket zu compilieren.</p>
+<p>Der Lisp Compiler SBCL reserviert gleich beim Hochfahren allen Speicher, den es im Betrieb nutzen will. Wird mehr Speicher benötigt, muss ihm über den Kommandozeilenparameter <code>--dynamic-space-size</code> gesagt werden, wie viel Speicher benötigt wird. SBCL kann nur in etwa die Hälfte des freien Speichers des Systems verwenden. Auf 32-Bit-Rechnern ist dies meist unter 999 Megabytes. Auf 64-Bit-Systemen können mehr als 1280 MB verwendet werden, was notwendig ist um das Lapack-Paket zu compilieren.</p>
 <p>Kommandozeilenparameter für <em>Maxima</em> (und daher für SBCL) können in <em>wxMaxima</em>’s Konfigurationsdialog eingegeben werden.</p>
 <figure>
 <img src="./sbclMemory.png" alt="SBCL Speicherkonfiguration" id="img_sbclMemory" /><figcaption>SBCL Speicherkonfiguration</figcaption>
@@ -947,7 +947,7 @@ Normaler Text</code></pre>
 <h2 id="ubuntu-die-tastatur-ist-langsam-oder-ignoriert-einzelne-tasten"><span class="header-section-number">3.10</span> Ubuntu: Die Tastatur ist langsam oder ignoriert einzelne Tasten</h2>
 <p>Das Installieren von <code>ibus-gtk</code> behebt dieses Problem meist. Auf (<a href="https://bugs.launchpad.net/ubuntu/+source/wxwidgets3.0/+bug/1421558">https://bugs.launchpad.net/ubuntu/+source/wxwidgets3.0/+bug/1421558</a>) findet man genauere Angaben dazu.</p>
 <h2 id="wxmaxima-stoppt-wenn-maxima-griechische-buchstaben-oder-umlaute-verarbeitet"><span class="header-section-number">3.11</span> <em>wxMaxima</em> stoppt, wenn <em>Maxima</em> griechische Buchstaben oder Umlaute verarbeitet</h2>
-<p>Wenn <em>Maxima</em> mittels sbcl compiliert wurde, können die folgenden Befehle zur <code>.sbclrc</code> hinzugefügt werden:</p>
+<p>Wenn <em>Maxima</em> mittels SBCL compiliert wurde, können die folgenden Befehle zur <code>.sbclrc</code> hinzugefügt werden:</p>
 <div class="sourceCode" id="cb20"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><a class="sourceLine" id="cb20-1" title="1">(<span class="kw">setf</span> sb-impl::*default-external-format* :utf<span class="dv">-8</span>)</a></code></pre></div>
 <p>Wo diese Datei abgelegt werden muss, ist systemabhängig. Aber ein mit SBCL compiliertes Maxima kann durch den folgenden Befehl verleitet werden, den Ort zu nennen:</p>
 <pre><code>:lisp (sb-impl::userinit-pathname)</code></pre>
@@ -989,8 +989,8 @@ Normaler Text</code></pre>
 <hr />
 <h1 id="häufig-gestellte-fragen"><span class="header-section-number">4</span> Häufig gestellte Fragen</h1>
 <h2 id="gibt-es-eine-möglichkeit-mehr-text-auf-eine-latex-seite-zu-schreiben"><span class="header-section-number">4.1</span> Gibt es eine Möglichkeit mehr Text auf eine LaTeX-Seite zu schreiben?</h2>
-<p>Yes. Use the LaTeX package “geometry” to specify the size of the borders.</p>
-<p>You can add the following line to the LaTeX preamble (for example by using the respective field in the config dialogue (“Export”-&gt;“Additional lines for the TeX preamble”), to set borders of 1cm):</p>
+<p>Ja. Verwenden Sie das LaTeX Paket “geometry” um die Größe der Ränder anzugeben.</p>
+<p>Ja, gibt es. Geben Sie einfach die folgenden Zeilen im LaTeX-Vorspann (z.B. indem sie das entsprechende Feld im Konfigurationsdialog (“Exportieren”-&gt;“Zusätzliche Zeilen für die LaTeX preamble”) angeben.</p>
 <div class="sourceCode" id="cb25"><pre class="sourceCode latex"><code class="sourceCode latex"><a class="sourceLine" id="cb25-1" title="1"><span class="bu">\usepackage</span>[left=1cm,right=1cm,top=1cm,bottom=1cm]{<span class="ex">geometry</span>}</a></code></pre></div>
 <h2 id="gibt-es-einen-dark-mode"><span class="header-section-number">4.2</span> Gibt es einen Dark Mode?</h2>
 <p>Wenn wxWidgets neu genug ist, sollte wxMaxima sich automatisch im Dark Mode befinden, wenn der Rest des Betriebssystems es ist. Das Arbeitsblatt selbst besitzt standardmäßig einen hellen Hintergrund. Dies kann aber über die Konfiguration geändert werden. Als Alternative erlaubt <code>Ansicht/Invertiere die Helligkeit des Arbeitsblattes</code>, das Arbeitsblatt schnell zwischen hell und dunkel umzustellen.</p>

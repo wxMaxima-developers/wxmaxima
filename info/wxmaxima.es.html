@@ -495,7 +495,7 @@ Texto ordinario</code></pre>
 <h2 id="formatos-de-ficheros"><span class="header-section-number">1.3</span> Formatos de Ficheros</h2>
 <p>El material desarrollado en una sesión <em>wxMaxima</em> puede ser almacenado para un posterior uso en cualquiera de estas tras maneras:</p>
 <h3 id="mac"><span class="header-section-number">1.3.1</span> .mac</h3>
-<p>.mac files are ordinary text files that contain <em>Maxima</em> commands. They can be read using <em>Maxima</em>’s <code>batch()</code> or <code>load()</code> command or <em>wxMaxima</em>’s File/Batch File menu entry.</p>
+<p><code>.mac</code> files are ordinary text files that contain <em>Maxima</em> commands. They can be read using <em>Maxima</em>’s <code>batch()</code> or <code>load()</code> command or <em>wxMaxima</em>’s File/Batch File menu entry.</p>
 <p>One Example is shown below. <code>Quadratic.mac</code> defines a function and afterwards generates a plot with <code>wxdraw2d()</code>. Afterwards the contents of the file <code>Quadratic.mac</code> are printed and new defined function <code>f()</code> is evaluated.</p>
 <figure>
 <img src="./BatchImage.png" alt="Loading a .mac file with batch()" id="img_BatchImage" /><figcaption>Loading a <code>.mac</code> file with <code>batch()</code></figcaption>
@@ -520,7 +520,7 @@ Texto ordinario</code></pre>
 <h3 id="tamaño-de-trama-predet.-para-sesiones-maxima-nuevas"><span class="header-section-number">1.4.2</span> Tamaño de trama predet. para sesiones <em>maxima</em> nuevas</h3>
 <p>Tras el siguiente inicio de tramas empotradas a la hoja del cuaderno será creada con este tamaño si el valor de <code>wxplot_size</code> no es modificado por <em>maxima</em>.</p>
 <p>Con la intención de establecer el tamaño de trama de un grafo único solamente utilice la notación siguiente puede ser utilizado que conjuntos de un valor de variable para una instrucción únicamente:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode maxima"><code class="sourceCode maxima"><a class="sourceLine" id="cb4-1" title="1"><span class="cn">wxdraw2d</span>( </a>
+<div class="sourceCode" id="cb4"><pre class="sourceCode maxima"><code class="sourceCode maxima"><a class="sourceLine" id="cb4-1" title="1"><span class="cn">wxdraw2d</span>(</a>
 <a class="sourceLine" id="cb4-2" title="2">   <span class="cn">explicit</span>(</a>
 <a class="sourceLine" id="cb4-3" title="3">       <span class="cn">x</span>^<span class="dv">2</span>,</a>
 <a class="sourceLine" id="cb4-4" title="4">       <span class="cn">x</span>,<span class="dv">-5</span>,<span class="dv">5</span></a>
@@ -659,14 +659,14 @@ Texto ordinario</code></pre>
 <h3 id="abriendo-múltiples-tramas-en-ventanas-contemporáneas"><span class="header-section-number">2.3.7</span> Abriendo múltiples tramas en ventanas contemporáneas</h3>
 <p>Mientras no sean proporcionados por <em>wxMaxima</em> esta característica de <em>Maxima</em> (sobre configuraciones que la admitan) algunas veces vienen manualmente. Los siguientes ejemplos vienen desde una carta desde Mario Rodríguez al listado de correo de <em>Maxima</em>:</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode maxima"><code class="sourceCode maxima"><a class="sourceLine" id="cb14-1" title="1">    <span class="fu">load</span>(<span class="fu">draw</span>);</a>
-<a class="sourceLine" id="cb14-2" title="2">    </a>
-<a class="sourceLine" id="cb14-3" title="3">    <span class="co">/* Parábola en ventana nº 1 */</span></a>
+<a class="sourceLine" id="cb14-2" title="2"></a>
+<a class="sourceLine" id="cb14-3" title="3">    <span class="co">/* Parabola in window #1 */</span></a>
 <a class="sourceLine" id="cb14-4" title="4">    <span class="fu">draw2d</span>(<span class="cn">terminal</span>=[<span class="cn">wxt</span>,<span class="dv">1</span>],<span class="cn">explicit</span>(<span class="cn">x</span>^<span class="dv">2</span>,<span class="cn">x</span>,<span class="dv">-1</span>,<span class="dv">1</span>));</a>
-<a class="sourceLine" id="cb14-5" title="5">    </a>
-<a class="sourceLine" id="cb14-6" title="6">    <span class="co">/* Parábola en ventana nº 2 */</span></a>
+<a class="sourceLine" id="cb14-5" title="5"></a>
+<a class="sourceLine" id="cb14-6" title="6">    <span class="co">/* Parabola in window #2 */</span></a>
 <a class="sourceLine" id="cb14-7" title="7">    <span class="fu">draw2d</span>(<span class="cn">terminal</span>=[<span class="cn">wxt</span>,<span class="dv">2</span>],<span class="cn">explicit</span>(<span class="cn">x</span>^<span class="dv">2</span>,<span class="cn">x</span>,<span class="dv">-1</span>,<span class="dv">1</span>));</a>
-<a class="sourceLine" id="cb14-8" title="8">    </a>
-<a class="sourceLine" id="cb14-9" title="9">    <span class="co">/* Paraboloide en ventana nº 3 */</span></a>
+<a class="sourceLine" id="cb14-8" title="8"></a>
+<a class="sourceLine" id="cb14-9" title="9">    <span class="co">/* Paraboloid in window #3 */</span></a>
 <a class="sourceLine" id="cb14-10" title="10">    <span class="fu">draw3d</span>(<span class="cn">terminal</span>=[<span class="cn">wxt</span>,<span class="dv">3</span>],<span class="cn">explicit</span>(<span class="cn">x</span>^<span class="dv">2</span>+<span class="cn">y</span>^<span class="dv">2</span>,<span class="cn">x</span>,<span class="dv">-1</span>,<span class="dv">1</span>,<span class="cn">y</span>,<span class="dv">-1</span>,<span class="dv">1</span>));</a></code></pre></div>
 <p>Es posible tramar múltiples tramas dentro de la misma ventana, también:</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode maxima"><code class="sourceCode maxima"><a class="sourceLine" id="cb15-1" title="1">    <span class="cn">wxdraw</span>(</a>
@@ -681,7 +681,7 @@ Texto ordinario</code></pre>
 <p>La barra lateral «Tramado utilizando dibujo» oculta un generador de código simple que permite generar escenas que hagan uso de alguno de la flexibilidad del paquete <em>draw</em> con el que <em>maxima</em> viene.</p>
 <h4 id="d"><span class="header-section-number">2.3.8.1</span> 2D</h4>
 <p>Genera el esqueleto de una instrucción <code>draw()</code> que dibuja una escena 2D. Esta escena posteriormente tiene que ser filtrada con instrucciones que generan el contenido de la escena, por ejemplo utilizando los botones dentro de las filas debajo del botón “2D”.</p>
-<p>La característica de ayuda del botón 2D es que permite configurar la escena como una animación en la cual una variable (por defecto es <em>t</em>) tiene un valor diferente dentro de cada marco: A menudo un movimiento de trama 2D permite fácilmente interpretar que los mismos datos dentro de uno 3D sin movimiento.</p>
+<p>One helpful feature of the 2D button is that it allows to setup the scene as an animation in which a variable (by default it is <em>t</em>) has a different value in each frame: Often a moving 2D plot allows easier interpretation than the same data in a non-moving 3D one.</p>
 <h4 id="d-1"><span class="header-section-number">2.3.8.2</span> 3D</h4>
 <p>Genera el esqueleto de una instrucción <code>draw()</code> que dibuja una escena 3D. Si ni una escena 2D o 3D está configurada todo de la configuración de los otros botones en una escena 2D que contiene el botón que genera.</p>
 <h4 id="expresión"><span class="header-section-number">2.3.8.3</span> Expresión</h4>
