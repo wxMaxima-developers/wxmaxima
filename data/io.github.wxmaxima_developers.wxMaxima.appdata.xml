@@ -56,7 +56,27 @@
          to time zone variations
          You can see current time at: https://en.wikipedia.org/wiki/ISO_8601
     -->
-   <release version="21.02.0" date="2021-02-28T20:09:00Z">
+   <release version="21.04.0" date="2021-04-11T12:00:00Z">
+      <description>
+	<p>
+	  Many bug fixes.
+	</p>
+<ul>
+<li>Fix visualization after "Evaluate all cells (Ctrl+Shift+R)" (bug #1512).</li>
+<li>Fix context sensitive help with F1 (bug #1508).</li>
+<li>Add an option for not showing matching parenthesis (bug #1509).</li>
+<li>Changed the weather icons in the toolbar to more meaningful ones (bug #1514).</li>
+<li>Many bugfixes with respect to correctly breaking lines (bugs #1528, #1471, #1512).</li>
+<li>Fix a bug in copy-paste of saved/loaded results (bug #1518).</li>
+<li>Fix a crash when pressing Ctrl-X while a math cell is selected (bug #1519).</li>
+<li>CMake 3.10 is now required for building wxMaxima.</li>
+<li>C++ 14 is required for building wxMaxima. Now CMake knows about that fact.</li>
+<li>Many external build scripts are now replaced by C++ and CMake commands.</li>
+<li>A menu entry for when to invoke the debugger.</li>
+</ul>
+      </description>
+  </release>
+  <release version="21.02.0" date="2021-02-28T20:09:00Z">
       <description>
 	<p>
 	  Many bug fixes.
