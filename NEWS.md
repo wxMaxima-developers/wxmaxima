@@ -3,12 +3,12 @@
  * Fix context sensitive help with F1 (bug #1508).
  * Add an option for not showing matching parenthesis (bug #1509).
  * Changed the weather icons in the toolbar to more meaningful ones (bug #1514).
- * Many bugfixes with respect to correctly breaking lines (#1528, #1471, #1512)
+ * Many bugfixes with respect to correctly breaking lines (bugs #1528, #1471, #1512).
  * Fix a bug in copy-paste of saved/loaded results (bug #1518).
  * Fix a crash when pressing Ctrl-X while a math cell is selected (bug #1519).
- * CMake 3.10 is now required for building wxMaxima
+ * CMake 3.10 is now required for building wxMaxima.
  * C++ 14 is required for building wxMaxima. Now CMake knows about that fact.
- * Many external build scripts are now replaced by C++ and cmake commands.
+ * Many external build scripts are now replaced by C++ and CMake commands.
  * A menu entry for when to invoke the debugger.
  
 # 21.02.0 
