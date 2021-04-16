@@ -48,7 +48,7 @@ jobs:
     - name: Compile wxWidgets
       run: |
            if test -d wxWidgets_build-${{env.WXVERSION}}; then
-               echo "exWidgets already compiledd"
+               echo "wxWidgets already compiled"
            else
                mkdir wxWidgets_build-${{env.WXVERSION}}
                cd wxWidgets_build-${{env.WXVERSION}}
@@ -127,7 +127,7 @@ jobs:
     - name: Compile wxWidgets
       run: |
            if test -d wxWidgets_build-${{env.WXVERSION}}; then
-               echo "exWidgets already compiledd"
+               echo "wxWidgets already compiled"
            else
                mkdir wxWidgets_build-${{env.WXVERSION}}
                cd wxWidgets_build-${{env.WXVERSION}}
