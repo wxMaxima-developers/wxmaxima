@@ -9,16 +9,15 @@ msgstr ""
 "Project-Id-Version: wxMaxima\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-10 20:19+0200\n"
-"PO-Revision-Date: 2021-01-19 12:27+0200\n"
+"PO-Revision-Date: 2021-04-16 16:12+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Lokalize 20.11.70\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: Lokalize 20.12.0\n"
 
 #: ../../src/StatusBar.cpp:188
 #, c-format
@@ -412,7 +411,6 @@ msgstr ""
 "пунктом меню."
 
 #: ../../src/TipOfTheDay.cpp:73
-#, fuzzy
 msgid ""
 "A new document format has been introduced in wxMaxima 0.8.2 that saves not "
 "only your input and text commentaries, but also the outputs of your "
@@ -422,7 +420,7 @@ msgstr ""
 "У wxMaxima 0.8.2 було реалізовано новий формат документів, у якому можливе "
 "збереження не лише введених вами команд і текстових коментарів, але і "
 "результатів обчислень. Під час збереження вашого документа виберіть формат "
-"«XML-документ wxMaxima»."
+"«увесь документ (*.wxmx)»."
 
 #: ../../src/TipOfTheDay.cpp:142
 msgid ""
@@ -1164,6 +1162,7 @@ msgstr "Закрити вікно"
 #: ../../src/wxMaxima.h:652
 msgid "Closing the socket maxima could connect to!"
 msgstr ""
+"Закриваємо сокет, з яким могла встановити з'єднання maxima!"
 
 #: ../../src/Configuration.cpp:1456
 msgid "Code highlighting: Comments"
@@ -1663,6 +1662,7 @@ msgstr "Діагностичні повідомлення"
 #: ../../src/wxMaximaFrame.cpp:975
 msgid "Debugger trigger"
 msgstr ""
+"Критерій запуску засобу діагностики"
 
 #: ../../src/wxMaximaFrame.cpp:798
 msgid "Declare Text to always be displayed as subscript"
@@ -3028,15 +3028,15 @@ msgid "Highlight (dpart)"
 msgstr "Позначити (dpart)"
 
 #: ../../src/ConfigDialogue.cpp:642
-#, fuzzy
 msgid "Highlight the matching parenthesis"
-msgstr "Незбалансована дужка"
+msgstr "Підсвічувати парні дужки"
 
 #: ../../src/ConfigDialogue.cpp:376
 msgid ""
 "Highlight the opening or closing parenthesis for the parenthesis the cursor "
 "is at."
 msgstr ""
+"Підсвічувати відповідну початкову і кінцеву дужки для дужки, на якій перебуває курсор."
 
 #: ../../src/wxMaxima.cpp:8456
 msgid "Histogram"
@@ -3275,7 +3275,6 @@ msgid "Import+Export"
 msgstr "Імпорт+Експорт"
 
 #: ../../src/TipOfTheDay.cpp:148
-#, fuzzy
 msgid ""
 "In order to visualize how a parameter affects an equation wxMaxima provides "
 "commands that start with \"with_slider_\" and that create animations. One "
@@ -3291,7 +3290,7 @@ msgid ""
 "        )\n"
 "    );"
 msgstr ""
-"З метою візуалізації впливу параметра на рівняння у wxmaxima передбачено "
+"З метою візуалізації впливу параметра на рівняння у wxMaxima передбачено "
 "команди, які починаються з «with_slider_» і створюють анімації. Приклад:\n"
 "\n"
 "    with_slider_draw(\n"
@@ -3305,7 +3304,6 @@ msgstr ""
 "    );"
 
 #: ../../src/TipOfTheDay.cpp:172
-#, fuzzy
 msgid ""
 "In text cells bullet lists can be created by beginning a line with \" * \". "
 "The number of spaces in front of the \"*\" determines the indentation level; "
@@ -3647,7 +3645,6 @@ msgstr ""
 "діалоговому вікні налаштовування."
 
 #: ../../src/TipOfTheDay.cpp:130
-#, fuzzy
 msgid ""
 "It is possible to define reusable Maxima libraries with wxMaxima that can be "
 "later loaded by using the load() function. All that has to be done is to "
@@ -3808,7 +3805,6 @@ msgid "Length"
 msgstr "Довжина"
 
 #: ../../src/TipOfTheDay.cpp:136
-#, fuzzy
 msgid ""
 "Libraries can be accessed by any wxMaxima process regardless of which "
 "directory it runs in, if they are placed in the user directory. This "
@@ -3817,7 +3813,7 @@ msgstr ""
 "Доступ до бібліотек для будь-якого процесу wxMaxima, незалежно від каталогу, "
 "у якому він працює, можна забезпечити розташуванням цих бібліотек у каталозі "
 "користувача. Визначити потрібний каталог можна за допомогою команди "
-"maxima_userdir"
+"maxima_userdir;"
 
 #: ../../src/LicenseDialog.cpp:36
 msgid "License"
@@ -3866,9 +3862,8 @@ msgid "List of changed options"
 msgstr "Список змінених параметрів"
 
 #: ../../src/VariablesPane.cpp:192
-#, fuzzy
 msgid "List of labels"
-msgstr "Список масивів"
+msgstr "Список міток"
 
 #: ../../src/VariablesPane.cpp:189
 msgid "List of structs"
@@ -3899,9 +3894,8 @@ msgid "List of user-defined let rule packages"
 msgstr "Список let-правил користувача"
 
 #: ../../src/VariablesPane.cpp:201
-#, fuzzy
 msgid "List of user-defined macros"
-msgstr "Список визначених користувачем властивостей"
+msgstr "Список визначених користувачем макросів"
 
 #: ../../src/VariablesPane.cpp:198
 msgid "List of user-defined properties"
@@ -4323,15 +4317,19 @@ msgid ""
 "which may then be solved for x with\n"
 "solve(eq1,x);"
 msgstr ""
+"Для надання змінним значення у Maxima використовують «:» («a : 3;»), а не «=», як у більшості мов програмування.\n"
+"У цей спосіб змінній може бути надано значення математичного рівняння. Приклад:\n"
+" eq1:3*x=4;\n"
+"Таке рівняння можна розв'язати відносно x командою\n"
+"solve(eq1,x);"
 
 #: ../../src/TipOfTheDay.cpp:58
-#, fuzzy
 msgid ""
 "Maxima uses ':=' to define functions, e.g.:\n"
 "f(x) := x^2;"
 msgstr ""
-"Maxima використовує «:» для присвоєння значень («a : 3;») і «:=» для "
-"визначення функцій («f(x) := x^2;»)."
+"Для визначення функцій у Maxima використовують «:=». Приклад:\n"
+"f(x) := x^2;"
 
 #: ../../src/wxMaxima.cpp:2672
 #, c-format
@@ -4615,9 +4613,9 @@ msgid "New lines: Jump to text"
 msgstr "Нові рядки: перейти до тексту"
 
 #: ../../src/wxMaxima.cpp:3055
-#, fuzzy, c-format
+#, c-format
 msgid "New maxima Operators detected: %s"
-msgstr "Архітектура Maxima: %s"
+msgstr "Виявлено нові оператори maxima: %s"
 
 #: ../../src/wxMaxima.cpp:7754 ../../src/wxMaxima.cpp:7887
 #: ../../src/wxMaxima.cpp:7905
@@ -4764,13 +4762,13 @@ msgid "Omicron"
 msgstr "Ο"
 
 #: ../../src/wxMaximaFrame.cpp:973
-#, fuzzy
 msgid "On all errors"
-msgstr "Критична помилка"
+msgstr "При усіх помилках"
 
 #: ../../src/wxMaximaFrame.cpp:972
 msgid "On lisp errors"
 msgstr ""
+"При помилках lisp"
 
 #: ../../src/wxMaxima.cpp:8552
 msgid "One sample t-test"
@@ -6126,16 +6124,13 @@ msgid "Simplify trigonometric expression"
 msgstr "Спростити тригонометричний вираз"
 
 #: ../../src/TipOfTheDay.cpp:121
-#, fuzzy
 msgid ""
 "Since wxMaxima 0.8.2 you can also insert images into your documents. Use "
 "'Cell->Insert Image...' menu command."
 msgstr ""
 "Починаючи з версії wxMaxima 0.8.2, ви можете вставляти до ваших документів "
 "зображення. Щоб вставити зображення, скористайтеся пунктом меню «Комірка → "
-"Вставити зображення…». Зауважте, що якщо ви хочете, щоб зображення було "
-"збережено разом з вашим документом, під час збереження документа вам слід "
-"вибрати формат «XML-документ wxMaximaю."
+"Вставити зображення…»."
 
 #: ../../src/wxMaxima.cpp:6369 ../../src/wxMaxima.cpp:6385
 msgid "Solution:"
@@ -6440,7 +6435,6 @@ msgid "Text cell background"
 msgstr "Тло текстової комірки"
 
 #: ../../src/TipOfTheDay.cpp:175
-#, fuzzy
 msgid ""
 "Text cells can hold citations that as marked as such by beginning a line "
 "with \" > \". The number of spaces in front of the \">\" determines the "
@@ -6625,7 +6619,6 @@ msgstr ""
 "«Створити список/як сховище поточних значень змінних»."
 
 #: ../../src/TipOfTheDay.cpp:139
-#, fuzzy
 msgid ""
 "The load() command of Maxima versions >5.38 is able to load .wxm files as "
 "library of Maxima's commands."
@@ -6634,14 +6627,12 @@ msgstr ""
 "бібліотеки команд maxima."
 
 #: ../../src/wxMaximaFrame.cpp:1397
-#, fuzzy
 msgid "The manual of Maxima"
-msgstr "Локальний підручник з Maxima"
+msgstr "Підручник з Maxima"
 
 #: ../../src/wxMaximaFrame.cpp:1394
-#, fuzzy
 msgid "The manual of wxMaxima"
-msgstr "Локальний підручник з wxMaxima"
+msgstr "Підручник з wxMaxima"
 
 #: ../../src/MaxSizeChooser.cpp:55
 msgid "The maximum size for this image. Values <= 0 mean: Unspecified."
@@ -6789,6 +6780,7 @@ msgstr ""
 #: ../../src/ConfigDialogue.cpp:1053
 msgid "Time [in Minutes] between autosaves"
 msgstr ""
+"Час [у хвилинах] між автоматичними збереженнями"
 
 #: ../../src/wxMaxima.cpp:7923 ../../src/wxMaxima.cpp:9080
 msgid "Times:"
@@ -6970,6 +6962,7 @@ msgid ""
 "Trying to start the socket a maxima on the local machine can connect to on "
 "port %i"
 msgstr ""
+"Намагаємося відкрити сокет, із яким може встановити з'єднання maxima на локальному комп'ютері, на порту %i"
 
 #: ../../src/ConfigDialogue.cpp:195
 msgid "Turkish"
@@ -7287,6 +7280,7 @@ msgstr ""
 #: ../../src/wxMaximaFrame.cpp:976
 msgid "When to invoke the lisp compiler's debugger"
 msgstr ""
+"Коли слід викликати засіб діагностики компілятора lisp"
 
 #: ../../src/ConfigDialogue.cpp:785
 msgid ""
@@ -7355,7 +7349,6 @@ msgstr ""
 "порядку цих комірок у документі."
 
 #: ../../src/TipOfTheDay.cpp:85
-#, fuzzy
 msgid ""
 "You can get help on a Maxima function by selecting or clicking on the "
 "function name and pressing F1. wxMaxima will search the help index for the "
@@ -7410,12 +7403,17 @@ msgid ""
 "reported at https://sourceforge.net/p/maxima/bugs/\n"
 "Please check, before, if the bug was not already reported."
 msgstr ""
+"Виявили ваду у wxMaxima? Будь ласка, повідомте про неї за допомогою сторінки https://github.com/wxMaxima-"
+"developers/wxmaxima/issues\n"
+"Якщо ваду пов'язано із математичними обчисленнями, це може бути вада у Maxima (модулі обробки), про яку можна повідомити тут: https://sourceforge.net/p/maxima/bugs/\n"
+"Перш ніж створювати повідомлення, будь ласка, перевірте, чи не повідомили про цю ваду раніше."
 
 #: ../../src/TipOfTheDay.cpp:190
 msgid ""
 "You got a idea for an improvement of wxMaxima? Great! Please submit your "
 "idea at https://github.com/wxMaxima-developers/wxmaxima/issues. "
 msgstr ""
+"Маєте думки щодо удосконалення wxMaxima? Чудово! Будь ласка, повідомте про свою ідею за допомогою сторінки https://github.com/wxMaxima-developers/wxmaxima/issues. "
 
 #: ../../src/wxMaxima.cpp:10197
 #, c-format
@@ -7823,7 +7821,6 @@ msgid "wxMaxima %s "
 msgstr "wxMaxima %s"
 
 #: ../../src/TipOfTheDay.cpp:133
-#, fuzzy
 msgid ""
 "wxMaxima can be made to execute commands at every start-up by placing them "
 "in a text file with the name wxmaxima.rc in the user directory. This "
@@ -7832,7 +7829,7 @@ msgstr ""
 "wxMaxima можна змусити виконувати певні команди під час кожного запуску, "
 "якщо вказати ці команди у текстовому файлів із назвою wxmaxima.rc у "
 "домашньому каталозі користувача. Визначити адресу цього каталогу можна за "
-"допомогою команди maxima_userdir"
+"допомогою команди maxima_userdir;"
 
 #: ../../src/wxMaxima.cpp:3688
 msgid "wxMaxima cannot read the xml contents of "
@@ -7843,7 +7840,6 @@ msgid "wxMaxima configuration"
 msgstr "Налаштування wxMaxima"
 
 #: ../../src/wxMaxima.cpp:1742
-#, fuzzy
 msgid ""
 "wxMaxima could not start a server.\n"
 "\n"
@@ -7899,6 +7895,7 @@ msgid ""
 "build system. You can contribute to wxMaxima, if you have some knowledge "
 "with this environment."
 msgstr ""
+"wxMaxima написано мовою програмування C++ з використанням набору інструментів wxWidgets і системи збирання CMake. Ви можете зробити внесок у розвиток wxMaxima, якщо знаєтеся на такому середовищі розробки."
 
 #: ../../src/TipOfTheDay.cpp:184
 msgid ""

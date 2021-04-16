@@ -6,16 +6,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: 2021-04-10 20:19+0200\n"
-"PO-Revision-Date: 2021-01-19 12:23+0200\n"
+"PO-Revision-Date: 2021-04-16 16:19+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <kde-i18n-uk@kde.org>\n"
 "Language: uk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Lokalize 20.11.70\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: Lokalize 20.12.0\n"
 
 #. type: Title =
 #: ../../info/wxmaxima.md:2
@@ -216,7 +215,6 @@ msgstr ""
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:59
-#, fuzzy
 #| msgid ""
 #| "Extensive documentation for _Maxima_ is [available in the internet]"
 #| "(http://maxima.sourceforge.net/documentation.html). Part of this "
@@ -232,7 +230,7 @@ msgid ""
 "automatically jump to _Maxima_’s manual page for the command at the cursor."
 msgstr ""
 "Із докладною документацією до _Maxima_ можна [ознайомитися у інтернеті]"
-"(http://maxima.sourceforge.net/documentation.html). Доступ до частини цієї "
+"(https://maxima.sourceforge.io/documentation.html). Доступ до частини цієї "
 "документації можна отримати з меню «Довідка» у wxMaxima. Якщо ви натиснете "
 "клавішу довідки (у більшості систем це клавіша F1), використання контекстної "
 "довідки _wxMaxima_ відкриє для вас сторінку підручника з _Maxima_ із "
@@ -695,7 +693,7 @@ msgstr "У той самий спосіб можна вводити різном
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:207
-#, fuzzy, no-wrap
+#, no-wrap
 #| msgid ""
 #| "| keys to enter  | mathematical symbol                                   |\n"
 #| "|----------------|-------------------------------------------------------|\n"
@@ -809,7 +807,7 @@ msgstr ""
 "| /2             | 1/2                                                   |\n"
 "| partial        | знак частинної похідної (d у dx/dt)                   |\n"
 "| integral       | символ інтеграла                                      |\n"
-"| sq             | корінь                                                |\n"
+"| sq             | квадратний корінь                                     |\n"
 "| ii             | уявна одиниця                                         |\n"
 "| ee             | елемент                                               |\n"
 "| in             | включається                                           |\n"
@@ -839,7 +837,6 @@ msgstr ""
 "| >= або geq     | більше або дорівнює                                   |\n"
 "| << або ll      | набагато менше                                        |\n"
 "| >> або gg      | набагато більше                                       |\n"
-"| equiv          | є еквівалентним                                       |\n"
 "| qed            | що і слід було довести                                |\n"
 "| nabla          | набла-оператор                                        |\n"
 "| sum            | знак суми                                             |\n"
@@ -1089,7 +1086,6 @@ msgstr ".mac"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:278
-#, fuzzy
 #| msgid ""
 #| ".mac files are ordinary text files that contain _Maxima_ commands. They "
 #| "can be read using _Maxima_’s read command or _wxMaxima_’s File/Batch File "
@@ -1099,8 +1095,8 @@ msgid ""
 "can be read using _Maxima_’s `batch()` or `load()` command or _wxMaxima_’s "
 "File/Batch File menu entry."
 msgstr ""
-"Файли .mac є звичайними текстовими файлами, які містять команди _Maxima_. Їх "
-"можна прочитати за допомогою команди read _Maxima_ або пункту меню «Файл/"
+"Файли `.mac` є звичайними текстовими файлами, які містять команди _Maxima_. Їх "
+"можна прочитати за допомогою команди `batch()` або `load()` _Maxima_ або пункту меню «Файл/"
 "Пакетний файл»."
 
 #. type: Plain text
@@ -1111,15 +1107,17 @@ msgid ""
 "the file `Quadratic.mac` are printed and new defined function `f()` is "
 "evaluated."
 msgstr ""
+"Один з прикладів наведено нижче. `Quadratic.mac` визначає функцію і після цього створює креслення за допомогою `wxdraw2d()`. Далі, буде виведено вміст файла `Quadratic.mac` і виконано обчислення нової визначеної функції `f()`."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:283
-#, fuzzy
 #| msgid "![Batch image](./BatchImage.png){ id=img_BatchImage }"
 msgid ""
 "![Loading a `.mac` file with `batch()`](./BatchImage.png)"
 "{ id=img_BatchImage }"
-msgstr "![Зображення пакетного файла](./BatchImage.png){ id=img_BatchImage }"
+msgstr ""
+"![Завантаження файла `.mac` за допомогою `batch()`](./BatchImage.png)"
+"{ id=img_BatchImage }"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:285
@@ -1128,6 +1126,7 @@ msgid ""
 "(`.mac`), it can only be read by _wxMaxima_, since the command `wxdraw2d()` "
 "is a wxMaxima-extension to _Maxima_."
 msgstr ""
+"Увага! Хоча назва файла `Quadratic.mac` містить звичайний для _Maxima_ суфікс (`.mac`), прочитати дані з нього зможе лише _wxMaxima_, оскільки команда `wxdraw2d()` є wxMaxima-розширенням до _Maxima_."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:287
@@ -1259,7 +1258,7 @@ msgstr ""
 
 #. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:315
-#, fuzzy, no-wrap
+#, no-wrap
 #| msgid ""
 #| "wxdraw2d( \n"
 #| "   explicit(\n"
@@ -1275,7 +1274,7 @@ msgid ""
 "   )\n"
 "), wxplot_size=[480,480]$\n"
 msgstr ""
-"wxdraw2d( \n"
+"wxdraw2d(\n"
 "   explicit(\n"
 "       x^2,\n"
 "\t   x,-5,5\n"
@@ -1945,7 +1944,7 @@ msgstr ""
 
 #. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:523
-#, fuzzy, no-wrap
+#, no-wrap
 #| msgid ""
 #| "    load(draw);\n"
 #| "    \n"
@@ -1970,13 +1969,13 @@ msgid ""
 "    draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));\n"
 msgstr ""
 "    load(draw);\n"
-"    \n"
+"\n"
 "    /* Парабола у вікні 1 */\n"
 "    draw2d(terminal=[wxt,1],explicit(x^2,x,-1,1));\n"
-"    \n"
+"\n"
 "    /* Парабола у вікні 2 */\n"
 "    draw2d(terminal=[wxt,2],explicit(x^2,x,-1,1));\n"
-"    \n"
+"\n"
 "    /* Параболоїд у вікні 3 */\n"
 "    draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));\n"
 
@@ -2044,7 +2043,6 @@ msgstr ""
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:558
-#, fuzzy
 #| msgid ""
 #| "One helpful feature of the 2D button is that it allows to setup the scene "
 #| "as an animation in which a variable (by default it is _t_) has a "
@@ -3106,13 +3104,14 @@ msgstr "Чи є якийсь спосіб умістити більше текс
 msgid ""
 "Yes. Use the LaTeX package \"geometry\" to specify the size of the borders."
 msgstr ""
+"Так. Скористайтеся пакунком LaTeX «geometry» для визначення розмірів полів."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:830
-#, fuzzy, no-wrap
+#, no-wrap
 #| msgid "There is: Just add the following lines to the LaTeX preamble (for example by using the respective field in the config dialogue (\"Export\"->\"Additional lines for the TeX preamble\"):\n"
 msgid "You can add the following line to the LaTeX preamble (for example by using the respective field in the config dialogue (\"Export\"->\"Additional lines for the TeX preamble\"), to set borders of 1cm):\n"
-msgstr "Звичайно, є. Просто додайте вказані нижче рядки до преамбули LaTeX (наприклад, за допомогою відповідного поля у діалоговому вікні налаштовування («Експорт->Додаткові рядки до преамбули TeX»)):\n"
+msgstr "Ви можете додати такий рядок до преамбули LaTeX (наприклад, за допомогою відповідного поля у діалоговому вікні налаштовування («Експорт->Додаткові рядки до преамбули TeX») для встановлення розміру полів у 1 см):\n"
 
 #. type: Fenced code block (latex)
 #: ../../info/wxmaxima.md:831
