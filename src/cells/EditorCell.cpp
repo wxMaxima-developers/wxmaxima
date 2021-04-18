@@ -644,8 +644,7 @@ void EditorCell::Recalculate(AFontSize fontsize)
 
   std::vector<StyledText>::const_iterator textSnippet;
 
-  for (
-    textSnippet = m_styledText.begin();
+  for (    textSnippet = m_styledText.begin();
     textSnippet != m_styledText.end();
     ++textSnippet
     )
@@ -674,7 +673,10 @@ void EditorCell::Recalculate(AFontSize fontsize)
     m_width = width + 2 * Scale_Px(2);
 
     // Calculate the cell height
-    m_height = m_numberOfLines * (m_charHeight) + 2 * Scale_Px(2);
+    if(m_firstLineOnly)
+      m_height = m_charHeight + 2 * Scale_Px(2);
+    else
+      m_height = m_numberOfLines * m_charHeight + 2 * Scale_Px(2);
 
     if(m_height < m_charHeight + 2 * Scale_Px(2))
       m_height = (m_charHeight) + 2 * Scale_Px(2);
