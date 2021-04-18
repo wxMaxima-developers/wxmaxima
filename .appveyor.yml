@@ -142,7 +142,7 @@ build_script:
       echo "    Branch: $env:APPVEYOR_REPO_BRANCH"
       iex $env:TOOLKIT_INIT
       pushd build
-      cmake -DCMAKE_BUILD_TYPE=Release --build .
+      cmake --build .
       if (! $?) { throw "CMake failed with exit code $LastExitCode" }
       popd
 
