@@ -37,6 +37,7 @@
 #include <wx/filesys.h>
 #include <wx/fs_arc.h>
 #include <wx/buffer.h>
+#define NANOSVG_ALL_COLOR_KEYWORDS
 #include "nanoSVG/nanosvg.h"
 #include "nanoSVG/nanosvgrast.h"
 

@@ -32,6 +32,7 @@
 
 #include "precomp.h"
 #include <wx/bitmap.h>
+#define NANOSVG_ALL_COLOR_KEYWORDS
 #include "nanoSVG/nanosvg.h"
 #include "nanoSVG/nanosvgrast.h"
 
