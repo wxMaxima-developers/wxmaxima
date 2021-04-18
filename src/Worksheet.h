@@ -873,6 +873,7 @@ public:
     popid_digits_50,
     popid_digits_100,
     popid_digits_all,
+    popid_digits_all_linebreak,
     popid_image,
     popid_svg,
     popid_emf,

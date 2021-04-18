@@ -489,6 +489,15 @@ void ConfigDialogue::SetCheckboxValues()
   m_defaultPlotWidth->SetValue(configuration->DefaultPlotWidth());
   m_defaultPlotHeight->SetValue(configuration->DefaultPlotHeight());
   m_displayedDigits->SetValue(configuration->GetDisplayedDigits());
+  if(configuration->LineBreaksInLongNums() && configuration->ShowAllDigits())
+    m_linebreaksInLongNums->SetValue(true);
+  else
+  {
+    if(configuration->LineBreaksInLongNums())
+      m_displayAllDigits->SetValue(true);
+    else
+      m_displayNDigits->SetValue(true);
+  }
   m_symbolPaneAdditionalChars->SetValue(configuration->SymbolPaneAdditionalChars());
   m_getStyleFont->Enable(GetSelectedStyle() >= TS_ASCIIMATHS && GetSelectedStyle() <= TS_TITLE);
   m_showUserDefinedLabels->SetSelection(configuration->GetLabelChoice());
@@ -561,11 +570,6 @@ wxWindow *ConfigDialogue::CreateWorksheetPanel()
                      0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL);
   grid_sizer->Add(PlotWidthHbox, wxSizerFlags());
 
-  m_displayedDigits = new wxSpinCtrl(displaySizer->GetStaticBox(), -1, wxEmptyString, wxDefaultPosition, wxSize(150*GetContentScaleFactor(), -1), wxSP_ARROW_KEYS, 20,
-                                     INT_MAX);
-  grid_sizer->Add(new wxStaticText(displaySizer->GetStaticBox(), -1, _("Maximum displayed number of digits:")),
-                  0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL);
-  grid_sizer->Add(m_displayedDigits, wxSizerFlags());
 
   grid_sizer->Add(new wxStaticText(displaySizer->GetStaticBox(), -1, _("Show long expressions:")),
                   0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL);
@@ -612,7 +616,33 @@ wxWindow *ConfigDialogue::CreateWorksheetPanel()
   grid_sizer->Add(m_showUserDefinedLabels, wxSizerFlags().Border(wxUP | wxDOWN, 5*GetContentScaleFactor()));
 
   displaySizer->Add(grid_sizer, wxSizerFlags().Border(wxALL, 5*GetContentScaleFactor()));
+  
+  wxStaticBoxSizer *numDigitsSizer = new wxStaticBoxSizer(wxVERTICAL, displaySizer->GetStaticBox(),
+                                                          _("Display of long numbers"));
+  wxFlexGridSizer *numDigitsGrid = new wxFlexGridSizer(10, 2, 5, 5);
 
+  numDigitsSizer->Add(numDigitsGrid, wxSizerFlags().Border(wxALL, 5*GetContentScaleFactor()));
+  numDigitsGrid->Add(m_displayNDigits =
+                     new wxRadioButton(numDigitsSizer->GetStaticBox(), -1,
+                                       _("Maximum number of displayed digits:")),
+                     0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL);
+  m_displayedDigits = new wxSpinCtrl(numDigitsSizer->GetStaticBox(), -1, wxEmptyString, wxDefaultPosition, wxSize(150*GetContentScaleFactor(), -1), wxSP_ARROW_KEYS, 20,
+                                     INT_MAX);
+  numDigitsGrid->Add(m_displayedDigits, wxSizerFlags());
+
+  numDigitsGrid->Add(m_displayAllDigits =
+                     new wxRadioButton(numDigitsSizer->GetStaticBox(), -1,
+                                       _("Display all digits")),
+                     0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL);
+  numDigitsGrid->Add(5,5);
+
+  numDigitsGrid->Add(m_linebreaksInLongNums =
+                     new wxRadioButton(numDigitsSizer->GetStaticBox(), -1,
+                                       _("Display all and allow linebreaks in long numbers")),
+                     0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL);
+  numDigitsGrid->Add(5,5);
+  displaySizer->Add(numDigitsSizer, wxSizerFlags().Border(wxALL, 5*GetContentScaleFactor()));
+  
   m_hideBrackets = new wxCheckBox(displaySizer->GetStaticBox(), -1,
                                   _("Intelligently hide cell brackets"));
   displaySizer->Add(m_hideBrackets, wxSizerFlags());
@@ -1697,6 +1727,26 @@ void ConfigDialogue::WriteSettings()
   configuration->ExportContainsWXMX(m_exportContainsWXMX->GetValue());
   configuration->PrintBrackets(m_printBrackets->GetValue());
   configuration->HTMLequationFormat((Configuration::htmlExportFormat) m_exportWithMathJAX->GetSelection());
+
+  if(m_linebreaksInLongNums->GetValue())
+  {
+    configuration->ShowAllDigits(true);
+    configuration->LineBreaksInLongNums(true);
+  }
+  else
+  {
+    if(m_displayAllDigits->GetValue())
+    {
+      configuration->ShowAllDigits(true);
+      configuration->LineBreaksInLongNums(false);
+    }
+    else
+    {
+      std::cerr<<"no\n";
+      configuration->ShowAllDigits(false);
+      configuration->LineBreaksInLongNums(false);
+    }
+  }
   configuration->UseUnicodeMaths(m_useUnicodeMaths->GetValue());
   configuration->SetKeepPercent(m_keepPercentWithSpecials->GetValue());
   configuration->TexPreamble(m_texPreamble->GetValue());

@@ -96,6 +96,8 @@ Configuration::Configuration(wxDC *dc, InitOpt options) :
 
 void Configuration::ResetAllToDefaults(InitOpt options)
 {
+  m_showAllDigits = false;
+  m_lineBreaksInLongNums = false;
   m_autoSaveMinutes = 3;
   m_numpadEnterEvaluates = true;
   m_maximaEnvVars.clear();
@@ -498,6 +500,8 @@ void Configuration::ReadConfig()
     // If this preference cannot be loaded we don't want an error message about it
     SuppressErrorDialogs suppressor;
     wxString hideMessagesConfigString;
+    config->Read(wxT("showAllDigits"), &m_showAllDigits);
+    config->Read(wxT("lineBreaksInLongNums"), &m_lineBreaksInLongNums);
     config->Read(wxT("autoSaveMinutes"), &m_autoSaveMinutes);
     config->Read(wxT("wrapLatexMath"), &m_wrapLatexMath);
     config->Read(wxT("exportContainsWXMX"), &m_exportContainsWXMX);
@@ -1194,6 +1198,8 @@ void Configuration::WriteSettings(const wxString &file)
     config->Write(wxT("suppressYellowMarkerMessages"), hideMessagesConfigString);
   }
   
+  config->Write(wxT("showAllDigits"), m_showAllDigits);
+  config->Write(wxT("lineBreaksInLongNums"), m_lineBreaksInLongNums);
   config->Write(wxT("keepPercent"), m_keepPercent);
   config->Write(wxT("labelWidth"), m_labelWidth);
   config->Write(wxT("saveUntitled"), m_saveUntitled);

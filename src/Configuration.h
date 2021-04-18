@@ -841,6 +841,10 @@ wxString DocumentclassOptions() const {return m_documentclassOptions;}
 
   bool WrapLatexMath() const {return m_wrapLatexMath;}
   void WrapLatexMath(bool wrapLatexMath){m_wrapLatexMath = wrapLatexMath;}
+  bool ShowAllDigits() const {return m_showAllDigits;}
+  void ShowAllDigits(bool shw){m_showAllDigits = shw;}
+  bool LineBreaksInLongNums() const {return m_lineBreaksInLongNums;}
+  void LineBreaksInLongNums(bool brk){m_lineBreaksInLongNums = brk;}
   int  MaxClipbrdBitmapMegabytes() const {return m_maxClipbrd_BitmapMegabytes;}
   void MaxClipbrdBitmapMegabytes(int maxClipbrd_BitmapMegabytes)
     {m_maxClipbrd_BitmapMegabytes = maxClipbrd_BitmapMegabytes;}
@@ -920,6 +924,10 @@ private:
   long m_autoWrap;
   //! Automatically indent long lines?
   bool m_autoIndent;
+  //! Always show all digits of all numbers?
+  bool m_showAllDigits;
+  //! Allow linebreaks in numbers that are longer than a line?
+  bool m_lineBreaksInLongNums;  
   //! Do we want to automatically close parenthesis?
   bool m_matchParens;
   //! Do we want to automatically insert new cells containing a "%" at the end of every command?

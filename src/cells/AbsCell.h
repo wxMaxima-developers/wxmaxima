@@ -63,7 +63,7 @@ public:
   Cell *GetInnerCell(int index) const override { return (&m_open)[index].get(); }
 
   bool BreakUp() override;
-
+  
   void Recalculate(AFontSize fontsize) override;
 
   void Draw(wxPoint point) override;
@@ -76,7 +76,7 @@ public:
   wxString ToXML() const override;
 
   void SetNextToDraw(Cell *next) override;
-
+  
 private:
   void MakeBreakupCells();
 

@@ -42,15 +42,20 @@ public:
   void Draw(wxPoint point) override;
   bool NeedsRecalculation(AFontSize fontSize) const override;
   void SetStyle(TextStyle style) override;
+  bool BreakUp() override;
+  void SetNextToDraw(Cell *next) override;
+  int GetInnerCellCount() const override { if(m_innerCell) return 1; else return 0; }
+  Cell *GetInnerCell(int index) const override { return (&m_innerCell)[index].get(); }
 
 protected:
   virtual void UpdateDisplayedText() override;
-
 private:
   //** Large objects (144 bytes)
   //**
   //! The first few digits
   wxString m_numStart;
+  //! The inividual digits, if this cell is broken into lines
+  std::unique_ptr<Cell> m_innerCell;
   //! The "not all digits displayed" message.
   wxString m_ellipsis;
   //! Last few digits (also used for user defined label)
@@ -62,6 +67,8 @@ private:
   int m_ellipsisWidth = 0;
   //! The number of digits we did display the last time we displayed a number.
   int m_displayedDigits_old = -1;
+  bool m_showAllDigits_old = false;
+  bool m_linebreaksInLongLines_old = true;
 
   //** Bitfield objects (0 bytes)
   //**

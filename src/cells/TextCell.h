@@ -48,7 +48,7 @@ public:
   //! Set the text contained in this cell
   void SetValue(const wxString &text) override;
 
-  void Recalculate(AFontSize fontsize) override;
+  virtual void Recalculate(AFontSize fontsize) override;
 
   void Draw(wxPoint point) override;
 

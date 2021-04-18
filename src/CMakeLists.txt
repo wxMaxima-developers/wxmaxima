@@ -28,6 +28,7 @@ set(CELL_SOURCE_FILES
     CellPtr.cpp
     ConjugateCell.cpp
     DiffCell.cpp
+    DigitCell.cpp
     EditorCell.cpp
     ExptCell.cpp
     FracCell.cpp

@@ -748,6 +748,8 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
           wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
   Connect(Worksheet::popid_digits_all, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
+  Connect(Worksheet::popid_digits_all_linebreak, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
   Connect(Worksheet::popid_digits_20, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
   Connect(Worksheet::popid_digits_50, wxEVT_MENU,
@@ -5624,6 +5626,8 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
   case Worksheet::popid_digits_20:
   {
     m_worksheet->m_configuration->SetDisplayedDigits(20);
+    m_worksheet->m_configuration->ShowAllDigits(false);
+    m_worksheet->m_configuration->LineBreaksInLongNums(false);
     m_worksheet->RecalculateForce();
     m_worksheet->RequestRedraw();
     break;
@@ -5631,6 +5635,8 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
   case Worksheet::popid_digits_50:
   {
     m_worksheet->m_configuration->SetDisplayedDigits(50);
+    m_worksheet->m_configuration->ShowAllDigits(false);
+    m_worksheet->m_configuration->LineBreaksInLongNums(false);
     m_worksheet->RecalculateForce();
     m_worksheet->RequestRedraw();
     break;
@@ -5638,13 +5644,24 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
   case Worksheet::popid_digits_100:
   {
     m_worksheet->m_configuration->SetDisplayedDigits(100);
+    m_worksheet->m_configuration->ShowAllDigits(false);
+    m_worksheet->m_configuration->LineBreaksInLongNums(false);
     m_worksheet->RecalculateForce();
     m_worksheet->RequestRedraw();
     break;
   }
   case Worksheet::popid_digits_all:
   {
-    m_worksheet->m_configuration->SetDisplayedDigits(0);
+    m_worksheet->m_configuration->ShowAllDigits(true);
+    m_worksheet->m_configuration->LineBreaksInLongNums(false);
+    m_worksheet->RecalculateForce();
+    m_worksheet->RequestRedraw();
+    break;
+  }
+  case Worksheet::popid_digits_all_linebreak:
+  {
+    m_worksheet->m_configuration->ShowAllDigits(true);
+    m_worksheet->m_configuration->LineBreaksInLongNums(true);
     m_worksheet->RecalculateForce();
     m_worksheet->RequestRedraw();
     break;

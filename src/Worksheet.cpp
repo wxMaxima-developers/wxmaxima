@@ -1563,6 +1563,7 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
         popupMenu.Append(popid_digits_50, _("Show max. 50 digits"));
         popupMenu.Append(popid_digits_100, _("Show max. 100 digits"));
         popupMenu.Append(popid_digits_all, _("Always show all digits"));
+        popupMenu.Append(popid_digits_all_linebreak, _("Show all + allow linebreaks in long numbers"));
       }
 
       if (IsSelected(MC_TYPE_LABEL)  ||

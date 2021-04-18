@@ -298,6 +298,9 @@ protected:
   wxSpinCtrl *m_defaultPlotWidth;
   wxSpinCtrl *m_defaultPlotHeight;
   wxSpinCtrl *m_displayedDigits;
+  wxRadioButton *m_displayNDigits;
+  wxRadioButton *m_displayAllDigits;
+  wxRadioButton *m_linebreaksInLongNums;
   wxSpinCtrl *m_maxClipbrdBitmapMegabytes;
   //! A checkbox that asks if TeX should put the exponents above or after the subscripts.
   wxCheckBox *m_TeXExponentsAfterSubscript;
