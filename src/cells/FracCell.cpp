@@ -168,10 +168,8 @@ void FracCell::Draw(wxPoint point)
 wxString FracCell::ToString() const
 {
   wxString s;
-  std::cerr<<"toString\n";
   if (!IsBrokenIntoLines())
   {
-    std::cerr<<"normal\n";
     if (m_fracStyle == FC_NORMAL)
     {
       if (Num()->IsCompound())

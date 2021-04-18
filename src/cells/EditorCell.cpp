@@ -683,6 +683,7 @@ void EditorCell::Recalculate(AFontSize fontsize)
     
     // The center lies in the middle of the 1st line
     m_center = m_charHeight / 2;
+    std::cerr<<m_height<<"\n";
     Cell::Recalculate(fontsize);
   }
   m_containsChanges = false;

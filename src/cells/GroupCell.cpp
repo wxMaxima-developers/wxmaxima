@@ -583,6 +583,7 @@ void GroupCell::RecalculateInput()
         m_inputLabel->Recalculate(EditorFontSize());
         m_inputWidth = m_width = m_inputLabel->GetFullWidth();
         m_center = m_inputLabel->GetCenterList();
+        m_inputLabel->ResetCellListSizesList();
         m_inputHeight = m_height = m_inputLabel->GetHeightList();
       }
     }
@@ -1800,12 +1801,15 @@ bool GroupCell::HideTree(std::unique_ptr<GroupCell> &&tree)
       tmp.GetLabel()->ClearCacheList();
   }
 
+  m_cellsAppended = true;
   return true;
 }
 
 std::unique_ptr<GroupCell> GroupCell::UnhideTree()
 {
   m_hiddenTree->SetHiddenTreeParent(m_hiddenTreeParent);
+  if(m_hiddenTree)
+    m_cellsAppended = true;
   return std::move(m_hiddenTree);
 }
 
@@ -1865,6 +1869,7 @@ GroupCell *GroupCell::Fold()
   wxASSERT(tornOut.cellOwner);
   m_hiddenTree = static_unique_ptr_cast<GroupCell>(std::move(tornOut.cellOwner));
   m_hiddenTree->SetHiddenTreeParent(this);
+  m_cellsAppended = true;
   return this;
 }
 
