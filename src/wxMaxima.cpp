@@ -9986,9 +9986,9 @@ void wxMaxima::ResetTitle(bool saved, bool force)
     {
 #ifndef __WXOSX__
       if (saved)
-        SetTitle(wxString::Format(_("wxMaxima %s "), wxT(GITVERSION)) + _("[ unsaved ]"));
+        SetTitle(wxString::Format(_("wxMaxima %s (%s) "), wxT(GITVERSION), wxPlatformInfo::Get().GetOperatingSystemDescription()) + _("[ unsaved ]"));
       else
-        SetTitle(wxString::Format(_("wxMaxima %s "), wxT(GITVERSION)) + _("[ unsaved* ]"));
+        SetTitle(wxString::Format(_("wxMaxima %s (%s) "), wxT(GITVERSION), wxPlatformInfo::Get().GetOperatingSystemDescription()) + _("[ unsaved* ]"));
 #endif
     }
     else
@@ -9997,10 +9997,10 @@ void wxMaxima::ResetTitle(bool saved, bool force)
       wxFileName::SplitPath(m_worksheet->m_currentFile, NULL, NULL, &name, &ext);
 #ifndef __WXOSX__
       if (m_fileSaved)
-        SetTitle(wxString::Format(_("wxMaxima %s "), wxT(GITVERSION)) +
+        SetTitle(wxString::Format(_("wxMaxima %s (%s) "), wxT(GITVERSION), wxPlatformInfo::Get().GetOperatingSystemDescription()) +
                  wxT(" [ ") + name + wxT(".") + ext + wxT(" ]"));
       else
-        SetTitle(wxString::Format(_("wxMaxima %s "), wxT(GITVERSION)) +
+        SetTitle(wxString::Format(_("wxMaxima %s (%s) "), wxT(GITVERSION), wxPlatformInfo::Get().GetOperatingSystemDescription()) +
                  wxT(" [ ") + name + wxT(".") + ext + wxT("* ]"));
 #else
       SetTitle(name + wxT(".") + ext);

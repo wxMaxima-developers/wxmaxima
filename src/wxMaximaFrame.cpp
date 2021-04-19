@@ -198,7 +198,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   SetIcon(wxMaximaIcon());
 #endif
 #ifndef __WXOSX__
-  SetTitle(wxString::Format(_("wxMaxima %s "), wxT(GITVERSION)) + _("[ unsaved ]"));
+  SetTitle(wxString::Format(_("wxMaxima %s (%s) "), wxT(GITVERSION), wxPlatformInfo::Get().GetOperatingSystemDescription()) + _("[ unsaved ]"));
 #else
   SetTitle(_("untitled"));
 #endif
