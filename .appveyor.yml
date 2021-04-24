@@ -138,6 +138,7 @@ before_build:
       cmake -G "$env:CMAKEGEN" -DCMAKE_BUILD_TYPE=Release  `
         -DAPPVEYOR_BUILD=1 -DCMAKE_UNITY_BUILD=YES  `
         -DwxWidgets_ROOT_DIR="C:\wx"  `
+        -DwxWidgets_LIB_DIR="C:\wx\lib\gcc810_x64_dll"  `
         -DwxWidgets_CONFIGURATION=mswu  `
         $env:TOOLKIT_CMAKE_ARGS ..
       popd
