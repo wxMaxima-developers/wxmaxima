@@ -136,9 +136,7 @@ before_build:
       # cmake issue report: https://gitlab.kitware.com/cmake/cmake/-/issues/19176
       cmake -G "$env:CMAKEGEN" -DCMAKE_BUILD_TYPE=Release  `
         -DAPPVEYOR_BUILD=1 -DCMAKE_UNITY_BUILD=YES  `
-        -DWX_ROOT_DIR="$INSTALL_DIR"  `
-        -DwxWidgets_ROOT_DIR="$INSTALL_DIR"  `
-        -DwxWidgets_LIB_DIR="$INSTALL_LIB_DIR"  `
+        -DwxWidgets_ROOT_DIR="C:\wx"  `
         -DwxWidgets_CONFIGURATION=mswu  `
         $env:TOOLKIT_CMAKE_ARGS ..
       popd
