@@ -1,5 +1,5 @@
 /* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
-/* [ Created with wxMaxima version 19.07.0 ] */
+/* [ Created with wxMaxima version 20.07.0-DevelopmentSnapshot ] */
 /* [wxMaxima: title   start ]
 10 minute (wx)Maxima tutorial
    [wxMaxima: title   end   ] */
@@ -29,7 +29,7 @@ and press SHIFT-ENTER to evaluate it.
 /* [wxMaxima: comment start ]
 If you didn't get any errors, your Maxima is configured properly.
 If you did get an error, you should check wxMaxima configuration or
-visit wxMaxima website (https://wxmaxima-developers.github.io/wxmaxima/) for
+visit wxMaxima website (http://wxmaxima.sourceforge.net/) for
 instructions on how to setup wxMaxima and Maxima properly!
 
 Assuming you've delt with your problems, let's do some more
@@ -136,11 +136,13 @@ a question:
 /* [wxMaxima: input   start ] */
 integrate( 1 / (x^2 + a), x);
 /* [wxMaxima: input   end   ] */
+/* [wxMaxima: question  start ] */
+<math><st>Is </st><mi>a</mi><st> positive or negative?</st></math>
+/* [wxMaxima: question  end   ] */
 /* [wxMaxima: answer  start ] */
 p;
 /* [wxMaxima: answer  end   ] */
 /* [wxMaxima: autoanswer    ] */
-
 
 /* [wxMaxima: comment start ]
 We can also inform Maxima beforehand using the function "assume". To
@@ -246,4 +248,4 @@ Enjoy using Maxima and wxMaxima!
 
 
 /* Old versions of Maxima abort on loading files that end in a comment. */
-"Created with wxMaxima 19.07.0"$
+"Created with wxMaxima 20.07.0-DevelopmentSnapshot"$
