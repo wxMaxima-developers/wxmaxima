@@ -129,6 +129,7 @@ before_build:
       echo '- Configuring wxMaxima'
       echo "    Job:    $env:APPVEYOR_JOB_NAME"
       echo "    Branch: $env:APPVEYOR_REPO_BRANCH"
+      cd c:\projects\wxMaxima
       mkdir build | Out-Null
       pushd build
       # WX_ROOT_DIR is a workaround for a nasty bug in FindwxWidgets. Without it, the value
