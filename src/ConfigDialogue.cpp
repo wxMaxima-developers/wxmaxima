@@ -1742,7 +1742,6 @@ void ConfigDialogue::WriteSettings()
     }
     else
     {
-      std::cerr<<"no\n";
       configuration->ShowAllDigits(false);
       configuration->LineBreaksInLongNums(false);
     }

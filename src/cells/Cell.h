@@ -227,18 +227,11 @@ public:
     return result;
   }
 
-  //! Do we want this cell to start with a pagebreak?
-  void BreakPage(bool breakPage)
-  { m_breakPage = breakPage; }
-
   //! Are we allowed to break a line here?
   bool BreakLineHere() const { return m_breakLine || m_forceBreakLine; }
 
   //! Does this cell begin with a manual linebreak?
   bool HasHardLineBreak() const { return m_forceBreakLine; }
-
-  //! Does this cell begin with a forced (manually set) page break?
-  bool BreakPageHere() const { return m_breakPage; }
 
   /*! Try to split this command into lines to make it fit on the screen
 
@@ -907,7 +900,6 @@ private:
     m_isHidableMultSign = false;
     m_suppressMultiplicationDot = false;
     m_recalculateWidths = true;
-    m_breakPage = false;
     m_breakLine = false;
     m_forceBreakLine = false;
     m_highlight = false;
@@ -927,7 +919,6 @@ private:
   bool m_suppressMultiplicationDot : 1 /* InitBitFields */;
   //! true, if this cell clearly needs recalculation
   bool m_recalculateWidths : 1 /* InitBitFields */;
-  bool m_breakPage : 1 /* InitBitFields */;
   //! Are we allowed to add a line break before this cell?
   bool m_breakLine : 1 /* InitBitFields */;
   bool m_forceBreakLine : 1 /* InitBitFields */;

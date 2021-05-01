@@ -38,8 +38,8 @@ class TextCell : public Cell
 public:
   TextCell(GroupCell *parent, Configuration **config, const wxString &text = {}, TextStyle style = TS_FUNCTION);
   TextCell(const TextCell &cell);
-  std::unique_ptr<Cell> Copy() const override;
-  const CellTypeInfo &GetInfo() override;
+  virtual std::unique_ptr<Cell> Copy() const override;
+  virtual const CellTypeInfo &GetInfo() override;
 
   AFontSize GetScaledTextSize() const;
   

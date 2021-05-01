@@ -45,7 +45,7 @@ LongNumberCell::LongNumberCell(GroupCell *parent,
 // cppcheck-suppress uninitMemberVar symbolName=LongNumberCell::m_altJs
 // cppcheck-suppress uninitMemberVar symbolName=LongNumberCell::m_initialToolTip
 LongNumberCell::LongNumberCell(const LongNumberCell &cell):
-    TextCell(cell.m_group, cell.m_configuration)
+  LongNumberCell(cell.m_group, cell.m_configuration, cell.m_text)
 {
 }
 
