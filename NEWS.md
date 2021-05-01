@@ -1,3 +1,8 @@
+# Current:
+ * Long numbers now can be broken into lines 
+ * On Export long numbers could get lost
+ * The height of folded cells now is calculated correctly, again (bug #1532)
+
 # 21.04.0
  * Fix visualization after "Evaluate all cells (Ctrl+Shift+R)" (bug #1512).
  * Fix context sensitive help with F1 (bug #1508).
