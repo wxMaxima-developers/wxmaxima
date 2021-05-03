@@ -2,6 +2,11 @@
  * Long numbers now can be broken into lines 
  * On Export long numbers could get lost
  * The height of folded cells now is calculated correctly, again (bug #1532)
+ * Printing now can insert pagebreaks within GroupCells (bug #970, #1528, 
+    #1241, #181, #573,#1082)
+ * A Russian translation update by OlesyaGerasimenko
+ * A Ukrainian translation update by Yuri Chornoivan
+
 
 # 21.04.0
  * Fix visualization after "Evaluate all cells (Ctrl+Shift+R)" (bug #1512).
