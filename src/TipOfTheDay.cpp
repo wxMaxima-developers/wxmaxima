@@ -192,6 +192,9 @@ TipOfTheDay::TipOfTheDay(wxWindow *parent)
   m_tips.Add(
     _("wxMaxima is programmed in C++ using the wxWidgets toolkit and uses CMake as build system. You can contribute to wxMaxima, if you have some knowledge with this environment.")
     );
+  m_tips.Add(
+    _("There is a discussion forum for wxMaxima at https://github.com/wxMaxima-developers/wxmaxima/discussions.\nYou can ask questions there - and please help other users, by answering their questions, if you know an answer.")
+    );
 
   m_num = 0;
   wxConfigBase *config = wxConfig::Get();
