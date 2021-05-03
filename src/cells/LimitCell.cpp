@@ -32,11 +32,11 @@
 static constexpr AFontSize MIN_LIMIT_FONT_SIZE{ 8.0f };
 static constexpr float LIMIT_FONT_SIZE_DECREASE{ 1.0f };
 
-LimitCell::LimitCell(GroupCell *parent, Configuration **config,
+LimitCell::LimitCell(GroupCell *group, Configuration **config,
                      std::unique_ptr<Cell> &&base,
                      std::unique_ptr<Cell> &&under,
                      std::unique_ptr<Cell> &&name)
-    : Cell(parent, config), m_name(std::move(name)), m_base(std::move(base)),
+    : Cell(group, config), m_name(std::move(name)), m_base(std::move(base)),
       m_under(std::move(under))
 {
   InitBitFields();
@@ -46,9 +46,9 @@ LimitCell::LimitCell(GroupCell *parent, Configuration **config,
 // cppcheck-suppress uninitMemberVar symbolName=LimitCell::m_open
 // cppcheck-suppress uninitMemberVar symbolName=LimitCell::m_comma
 // cppcheck-suppress uninitMemberVar symbolName=LimitCell::m_close
-LimitCell::LimitCell(const LimitCell &cell)
-    : LimitCell(cell.m_group, cell.m_configuration, CopyList(cell.m_base.get()),
-                CopyList(cell.m_under.get()), CopyList(cell.m_name.get()))
+LimitCell::LimitCell(GroupCell *group, const LimitCell &cell)
+  : LimitCell(group, cell.m_configuration, CopyList(group, cell.m_base.get()),
+              CopyList(group, cell.m_under.get()), CopyList(group, cell.m_name.get()))
 {
   CopyCommonData(cell);
 }

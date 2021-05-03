@@ -34,23 +34,23 @@
 
 #define SUBSUP_DEC 3
 
-SubSupCell::SubSupCell(GroupCell *parent, Configuration **config, std::unique_ptr<Cell> &&base) :
-  Cell(parent, config),
+SubSupCell::SubSupCell(GroupCell *group, Configuration **config, std::unique_ptr<Cell> &&base) :
+  Cell(group, config),
   m_baseCell(std::move(base))
 {
   InitBitFields();
 }
 
-SubSupCell::SubSupCell(const SubSupCell &cell)
-    : SubSupCell(cell.m_group, cell.m_configuration,
-                 CopyList(cell.m_baseCell.get()))
+SubSupCell::SubSupCell(GroupCell *group, const SubSupCell &cell)
+    : SubSupCell(group, cell.m_configuration,
+                 CopyList(group, cell.m_baseCell.get()))
 {
   CopyCommonData(cell);
   m_altCopyText = cell.m_altCopyText;
-  SetIndex(CopyList(cell.m_postSubCell.get()));
-  SetExponent(CopyList(cell.m_postSupCell.get()));
-  SetPreSub(CopyList(cell.m_preSubCell.get()));
-  SetPreSup(CopyList(cell.m_preSupCell.get()));
+  SetIndex(CopyList(group,cell.m_postSubCell.get()));
+  SetExponent(CopyList(group, cell.m_postSupCell.get()));
+  SetPreSub(CopyList(group, cell.m_preSubCell.get()));
+  SetPreSup(CopyList(group, cell.m_preSupCell.get()));
 }
 
 DEFINE_CELL(SubSupCell)

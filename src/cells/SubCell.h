@@ -28,17 +28,16 @@
 class SubCell final : public Cell
 {
 public:
-  SubCell(GroupCell *parent, Configuration **config,
+  SubCell(GroupCell *group, Configuration **config,
           std::unique_ptr<Cell> &&base, std::unique_ptr<Cell> &&index);
-  SubCell(const SubCell &cell);
-  std::unique_ptr<Cell> Copy() const override;
+  SubCell(GroupCell *group, const SubCell &cell);
+  std::unique_ptr<Cell> Copy(GroupCell *group) const override;
   const CellTypeInfo &GetInfo() override;
 
   int GetInnerCellCount() const override { return 2; }
   Cell *GetInnerCell(int index) const override { return (&m_baseCell)[index].get(); }
 
   void Recalculate(AFontSize fontsize) override;
-
   void Draw(wxPoint point) override;
 
   wxString ToMathML() const override;

@@ -30,14 +30,14 @@
 #include "MatrCell.h"
 #include "CellImpl.h"
 
-MatrCell::MatrCell(GroupCell *parent, Configuration **config) :
-    Cell(parent, config)
+MatrCell::MatrCell(GroupCell *group, Configuration **config) :
+    Cell(group, config)
 {
   InitBitFields();
 }
 
-MatrCell::MatrCell(const MatrCell &cell):
-    MatrCell(cell.m_group, cell.m_configuration)
+MatrCell::MatrCell(GroupCell *group, const MatrCell &cell):
+    MatrCell(group, cell.m_configuration)
 {
   CopyCommonData(cell);
   m_specialMatrix = cell.m_specialMatrix;
@@ -49,7 +49,7 @@ MatrCell::MatrCell(const MatrCell &cell):
   m_matHeight = cell.m_matHeight;
   for (unsigned int i = 0; i < cell.m_matWidth * cell.m_matHeight; i++)
     if (i < cell.m_cells.size())
-      m_cells.emplace_back(cell.m_cells[i]->CopyList());
+      m_cells.emplace_back(cell.m_cells[i]->CopyList(group));
 
   for (unsigned int i = 0; i < m_matHeight; i++)
     m_dropCenters.emplace_back(-1, -1);

@@ -53,16 +53,16 @@ public:
                   worksheet this cell belongs to.
     \param filesystem The filesystem the contents of this slideshow can be found in.
                       NULL = the operating system's filesystem
-    \param parent     The parent GroupCell this cell belongs to.
+    \param group     The parent GroupCell this cell belongs to.
    */
-  SlideShow(GroupCell *parent, Configuration **config, std::shared_ptr<wxFileSystem> filesystem, int framerate = -1);
-  SlideShow(GroupCell *parent, Configuration **config, int framerate = -1);
-  SlideShow(const SlideShow &cell);
+  SlideShow(GroupCell *group, Configuration **config, std::shared_ptr<wxFileSystem> filesystem, int framerate = -1);
+  SlideShow(GroupCell *group, Configuration **config, int framerate = -1);
+  SlideShow(GroupCell *group, const SlideShow &cell);
   //! A constructor that loads the compressed file from a wxMemoryBuffer
-  SlideShow(GroupCell *parent, Configuration **config, const wxMemoryBuffer &image, const wxString &type);
-  SlideShow(GroupCell *parent, Configuration **config, const wxString &image, bool remove);
+  SlideShow(GroupCell *group, Configuration **config, const wxMemoryBuffer &image, const wxString &type);
+  SlideShow(GroupCell *group, Configuration **config, const wxString &image, bool remove);
+  std::unique_ptr<Cell> Copy(GroupCell *group) const override;
 
-  std::unique_ptr<Cell> Copy() const override;
   const CellTypeInfo &GetInfo() override;
   ~SlideShow();
   void LoadImages(wxMemoryBuffer imageData);

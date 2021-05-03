@@ -35,6 +35,7 @@ GroupCell::GroupCell(Configuration **config, GroupType groupType, const wxString
   m_type = MC_TYPE_GROUP;
 }
 GroupCell::GroupCell(const GroupCell &cell) : GroupCell(cell.m_configuration, cell.m_groupType) {}
+GroupCell::GroupCell(GroupCell *WXUNUSED(cell1), const GroupCell &cell) : GroupCell(cell.m_configuration, cell.m_groupType) {}
 GroupCell::~GroupCell() {}
 wxString GroupCell::ToString() const { return {}; }
 bool GroupCell::NeedsRecalculation(AFontSize) const { return {}; }

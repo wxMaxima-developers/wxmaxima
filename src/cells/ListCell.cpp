@@ -29,18 +29,18 @@
 #include "ListCell.h"
 #include "CellImpl.h"
 
-ListCell::ListCell(GroupCell *parent, Configuration **config, std::unique_ptr<Cell> &&inner) :
-    Cell(parent, config),
-    m_open(std::make_unique<TextCell>(parent, config, wxT("["))),
+ListCell::ListCell(GroupCell *group, Configuration **config, std::unique_ptr<Cell> &&inner) :
+    Cell(group, config),
+    m_open(std::make_unique<TextCell>(group, config, wxT("["))),
     m_innerCell(std::move(inner)),
-    m_close(std::make_unique<TextCell>(parent, config, wxT("]")))
+    m_close(std::make_unique<TextCell>(group, config, wxT("]")))
 {
   InitBitFields();
   SetStyle(TS_VARIABLE);
 
   // It is valid to construct this cell this with a null inner cell
   if (!m_innerCell)
-    m_innerCell = std::make_unique<TextCell>(parent, config);
+    m_innerCell = std::make_unique<TextCell>(group, config);
   // Tell the first of our inner cells not to begin with a multiplication dot.
   m_innerCell->SetSuppressMultiplicationDot(true);
 
@@ -62,8 +62,8 @@ ListCell::ListCell(GroupCell *parent, Configuration **config, std::unique_ptr<Ce
 // cppcheck-suppress uninitMemberVar symbolName=ListCell::m_signTopHeight
 // cppcheck-suppress uninitMemberVar symbolName=ListCell::m_signBotHeight
 // cppcheck-suppress uninitMemberVar symbolName=ListCell::m_extendHeight
-ListCell::ListCell(const ListCell &cell):
-    ListCell(cell.m_group, cell.m_configuration, CopyList(cell.m_innerCell.get()))
+ListCell::ListCell(GroupCell *group, const ListCell &cell):
+  ListCell(group, cell.m_configuration, CopyList(group, cell.m_innerCell.get()))
 {
   CopyCommonData(cell);
 }

@@ -31,8 +31,8 @@
 
 #define SIGN_FONT_SCALE 2.0
 
-SqrtCell::SqrtCell(GroupCell *parent, Configuration **config, std::unique_ptr<Cell> &&inner) :
-    Cell(parent, config),
+SqrtCell::SqrtCell(GroupCell *group, Configuration **config, std::unique_ptr<Cell> &&inner) :
+    Cell(group, config),
     m_innerCell(std::move(inner))
 {
   InitBitFields();
@@ -46,8 +46,8 @@ SqrtCell::SqrtCell(GroupCell *parent, Configuration **config, std::unique_ptr<Ce
 // cppcheck-suppress uninitMemberVar symbolName=SqrtCell::m_signTop
 // cppcheck-suppress uninitMemberVar symbolName=SqrtCell::m_signType
 // cppcheck-suppress uninitMemberVar symbolName=SqrtCell::m_signFontScale
-SqrtCell::SqrtCell(const SqrtCell &cell):
-    SqrtCell(cell.m_group, cell.m_configuration, CopyList(cell.m_innerCell.get()))
+SqrtCell::SqrtCell(GroupCell *group, const SqrtCell &cell):
+    SqrtCell(group, cell.m_configuration, CopyList(group, cell.m_innerCell.get()))
 {
   CopyCommonData(cell);
 }

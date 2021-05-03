@@ -38,8 +38,8 @@
 #include <wx/regex.h>
 #include <wx/tokenzr.h>
 
-EditorCell::EditorCell(GroupCell *parent, Configuration **config, const wxString &text) :
-    Cell(parent, config),
+EditorCell::EditorCell(GroupCell *group, Configuration **config, const wxString &text) :
+    Cell(group, config),
     m_text(text)
 {
   InitBitFields();
@@ -270,8 +270,8 @@ wxString EditorCell::PrependNBSP(wxString input)
 // cppcheck-suppress uninitMemberVar symbolName=EditorCell::m_endHistory
 // cppcheck-suppress uninitMemberVar symbolName=EditorCell::m_fontName
 // cppcheck-suppress uninitMemberVar symbolName=EditorCell::m_tokens
-EditorCell::EditorCell(const EditorCell &cell):
-  EditorCell(cell.m_group, cell.m_configuration, cell.m_text)
+EditorCell::EditorCell(GroupCell *group, const EditorCell &cell):
+  EditorCell(group, cell.m_configuration, cell.m_text)
 {
   CopyCommonData(cell);
 }

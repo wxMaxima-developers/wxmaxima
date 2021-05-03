@@ -49,10 +49,10 @@
 class ParenCell final : public Cell
 {
 public:
-  ParenCell(GroupCell *parent, Configuration **config, std::unique_ptr<Cell> &&inner);
-  ParenCell(const ParenCell &cell);
-  std::unique_ptr<Cell> Copy() const override;
+  ParenCell(GroupCell *group, Configuration **config, std::unique_ptr<Cell> &&inner);
+  ParenCell(GroupCell *group, const ParenCell &cell);
   const CellTypeInfo &GetInfo() override;
+  std::unique_ptr<Cell> Copy(GroupCell *group) const override;
 
   int GetInnerCellCount() const override { return 3; }
   Cell *GetInnerCell(int index) const override { return (&m_open)[index].get(); }

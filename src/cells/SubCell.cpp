@@ -31,19 +31,19 @@
 
 #define SUB_DEC 2
 
-SubCell::SubCell(GroupCell *parent, Configuration **config,
+SubCell::SubCell(GroupCell *group, Configuration **config,
                  std::unique_ptr<Cell> &&base, std::unique_ptr<Cell> &&index)
-    : Cell(parent, config), m_baseCell(std::move(base)),
+    : Cell(group, config), m_baseCell(std::move(base)),
       m_indexCell(std::move(index))
 {
   InitBitFields();
   SetStyle(TS_VARIABLE);
 }
 
-SubCell::SubCell(const SubCell &cell)
-    : SubCell(cell.m_group, cell.m_configuration,
-              CopyList(cell.m_baseCell.get()),
-              CopyList(cell.m_indexCell.get()))
+SubCell::SubCell(GroupCell *group, const SubCell &cell)
+    : SubCell(group, cell.m_configuration,
+              CopyList(group, cell.m_baseCell.get()),
+              CopyList(group, cell.m_indexCell.get()))
 {
   CopyCommonData(cell);
   m_altCopyText = cell.m_altCopyText;

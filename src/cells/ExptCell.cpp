@@ -40,10 +40,10 @@ ExptCell::ExptCell(GroupCell *parent, Configuration **config,
   SetStyle(TS_VARIABLE);
 }
 
-ExptCell::ExptCell(const ExptCell &cell)
-    : ExptCell(cell.m_group, cell.m_configuration,
-               CopyList(cell.m_baseCell.get()),
-               CopyList(cell.m_exptCell.get()))
+ExptCell::ExptCell(GroupCell *group, const ExptCell &cell)
+    : ExptCell(group, cell.m_configuration,
+               CopyList(group, cell.m_baseCell.get()),
+               CopyList(group, cell.m_exptCell.get()))
 {
   CopyCommonData(cell);
   m_altCopyText = cell.m_altCopyText;

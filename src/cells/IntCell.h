@@ -39,13 +39,13 @@
 class IntCell final : public Cell
 {
 public:
-  IntCell(GroupCell *parent, Configuration **config,
+  IntCell(GroupCell *group, Configuration **config,
           std::unique_ptr<Cell> &&base, std::unique_ptr<Cell> &&under,
           std::unique_ptr<Cell> &&over, std::unique_ptr<Cell> &&var);
-  IntCell(GroupCell *parent, Configuration **config,
+  IntCell(GroupCell *group, Configuration **config,
         std::unique_ptr<Cell> &&base, std::unique_ptr<Cell> &&var);
-  IntCell(const IntCell &cell);
-  std::unique_ptr<Cell> Copy() const override;
+  IntCell(GroupCell *group, const IntCell &cell);
+  std::unique_ptr<Cell> Copy(GroupCell *group) const override;
   const CellTypeInfo &GetInfo() override;
 
   int GetInnerCellCount() const override { return 9; }

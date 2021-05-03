@@ -51,8 +51,8 @@
 // filesystem cannot be passed by const reference as we want to keep the
 // pointer to the file system alive in a background task
 // cppcheck-suppress performance symbolName=filesystem
-SlideShow::SlideShow(GroupCell *parent, Configuration **config, std::shared_ptr <wxFileSystem> filesystem, int framerate) :
-    Cell(parent, config),
+SlideShow::SlideShow(GroupCell *group, Configuration **config, std::shared_ptr <wxFileSystem> filesystem, int framerate) :
+    Cell(group, config),
     m_timer(m_cellPointers->GetWorksheet(), wxNewId()),
     m_fileSystem(filesystem),
     m_framerate(framerate),
@@ -63,8 +63,8 @@ SlideShow::SlideShow(GroupCell *parent, Configuration **config, std::shared_ptr 
   ReloadTimer();
 }
 
-SlideShow::SlideShow(GroupCell *parent, Configuration **config, int framerate) :
-    Cell(parent, config),
+SlideShow::SlideShow(GroupCell *group, Configuration **config, int framerate) :
+    Cell(group, config),
     m_timer(m_cellPointers->GetWorksheet(), wxNewId()),
     m_framerate(framerate),
     m_imageBorderWidth(Scale_Px(1))
@@ -74,18 +74,26 @@ SlideShow::SlideShow(GroupCell *parent, Configuration **config, int framerate) :
   ReloadTimer();
 }
 
-SlideShow::SlideShow(GroupCell *parent, Configuration **config, const wxMemoryBuffer &image, const wxString &WXUNUSED(type)):
-    SlideShow(parent, config)
+SlideShow::SlideShow(GroupCell *group, Configuration **config, const wxMemoryBuffer &image, const wxString &WXUNUSED(type)):
+    SlideShow(group, config)
 {
   LoadImages(image);
+                      
 }
 
-SlideShow::SlideShow(GroupCell *parent, Configuration **config, const wxString &image, bool remove):
-    SlideShow(parent, config)
+SlideShow::SlideShow(GroupCell *group, Configuration **config, const wxString &image, bool remove):
+    SlideShow(group, config)
 {
   LoadImages(image);
   if (remove)
     wxRemoveFile(image);
+}
+
+SlideShow::SlideShow(GroupCell *group, const SlideShow &cell):
+    SlideShow(group, cell.m_configuration)
+{
+  for(auto i:cell.m_images)
+    m_images.push_back(std::make_shared<Image>(*(i.get())));
 }
 
 DEFINE_CELL(SlideShow)
@@ -218,20 +226,20 @@ void SlideShow::LoadImages(wxArrayString images, bool deleteRead)
   m_displayed = 0;
 }
 
-SlideShow::SlideShow(const SlideShow &cell):
-  SlideShow(cell.m_group, cell.m_configuration)
-{
-  CopyCommonData(cell);
-  AnimationRunning(false);
+// SlideShow::SlideShow(GroupCell *group, const SlideShow &cell):
+//   SlideShow(group, cell.m_configuration)
+// {
+//   CopyCommonData(cell);
+//   AnimationRunning(false);
 
-  m_images.reserve(cell.m_images.size());
-  std::copy(cell.m_images.begin(), cell.m_images.end(), std::back_inserter(m_images));
+//   m_images.reserve(cell.m_images.size());
+//   std::copy(cell.m_images.begin(), cell.m_images.end(), std::back_inserter(m_images));
 
-  m_framerate = cell.m_framerate;
-  m_displayed = true;
-  m_size = cell.m_size;
-  m_drawBoundingBox = cell.m_drawBoundingBox;
-}
+//   m_framerate = cell.m_framerate;
+//   m_displayed = true;
+//   m_size = cell.m_size;
+//   m_drawBoundingBox = cell.m_drawBoundingBox;
+// }
 
 SlideShow::~SlideShow()
 {

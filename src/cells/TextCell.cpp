@@ -33,9 +33,9 @@
 #include "StringUtils.h"
 #include "wx/config.h"
 
-TextCell::TextCell(GroupCell *parent, Configuration **config,
+TextCell::TextCell(GroupCell *group, Configuration **config,
                    const wxString &text, TextStyle style) :
-  Cell(parent, config)
+  Cell(group, config)
 {
   InitBitFields();
   m_textStyle = style;
@@ -74,8 +74,8 @@ TextCell::TextCell(GroupCell *parent, Configuration **config,
 // cppcheck-suppress uninitMemberVar symbolName=TextCell::m_alt
 // cppcheck-suppress uninitMemberVar symbolName=TextCell::m_altJs
 // cppcheck-suppress uninitMemberVar symbolName=TextCell::m_initialToolTip
-TextCell::TextCell(const TextCell &cell):
-    Cell(cell.m_group, cell.m_configuration),
+TextCell::TextCell(GroupCell *group, const TextCell &cell):
+    Cell(group, cell.m_configuration),
     m_text(cell.m_text),
     m_displayedText(cell.m_displayedText)
 {

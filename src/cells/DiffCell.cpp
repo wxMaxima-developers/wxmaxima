@@ -10,7 +10,7 @@
 //
 //  This program is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  MERCHGroupCell *groupANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //
@@ -32,8 +32,8 @@
 #include "TextCell.h"
 #include "wx/config.h"
 
-DiffCell::DiffCell(GroupCell *parent, Configuration **config, std::unique_ptr<Cell> &&base, std::unique_ptr<Cell> &&diff) :
-  Cell(parent, config),
+DiffCell::DiffCell(GroupCell *group, Configuration **config, std::unique_ptr<Cell> &&base, std::unique_ptr<Cell> &&diff) :
+  Cell(group, config),
   m_baseCell(std::move(base)),
   m_diffCell(std::move(diff))
 
@@ -43,10 +43,10 @@ DiffCell::DiffCell(GroupCell *parent, Configuration **config, std::unique_ptr<Ce
   m_diffCell->SetSuppressMultiplicationDot(true);
 }
 
-DiffCell::DiffCell(const DiffCell &cell)
-    : DiffCell(cell.m_group, cell.m_configuration,
-               CopyList(cell.m_baseCell.get()),
-               CopyList(cell.m_diffCell.get()))
+DiffCell::DiffCell(GroupCell *group, const DiffCell &cell)
+    : DiffCell(group, cell.m_configuration,
+               CopyList(group, cell.m_baseCell.get()),
+               CopyList(group, cell.m_diffCell.get()))
 {
   CopyCommonData(cell);
 }

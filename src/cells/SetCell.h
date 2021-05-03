@@ -50,9 +50,9 @@
 class SetCell final : public ListCell
 {
 public:
-  SetCell(GroupCell *parent, Configuration **config, std::unique_ptr<Cell> &&inner);
-  SetCell(const SetCell &cell);
-  std::unique_ptr<Cell> Copy() const override;
+  SetCell(GroupCell *group, Configuration **config, std::unique_ptr<Cell> &&inner);
+  SetCell(GroupCell *group, const SetCell &cell);
+  std::unique_ptr<Cell> Copy(GroupCell *group) const override;
   const CellTypeInfo &GetInfo() override;
 
   void Draw(wxPoint point) override;

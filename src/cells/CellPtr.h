@@ -488,7 +488,7 @@ public:
   //
   pointer get() const noexcept;
   inline reference operator*() const noexcept { return *get(); }
-  inline pointer operator->() const noexcept { return get(); };
+  inline pointer operator->() const noexcept { return get(); }
 
 #if CELLPTR_CAST_TO_PTR
   operator pointer() const noexcept { return get(); }

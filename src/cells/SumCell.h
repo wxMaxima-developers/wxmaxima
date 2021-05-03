@@ -49,8 +49,8 @@ public:
   SumCell(GroupCell *group, Configuration **config, sumStyle style,
           std::unique_ptr<Cell> &&under, std::unique_ptr<Cell> &&over,
           std::unique_ptr<Cell> &&base);
-  SumCell(const SumCell &cell);
-  std::unique_ptr<Cell> Copy() const override;
+  SumCell(GroupCell *group, const SumCell &cell);
+  std::unique_ptr<Cell> Copy(GroupCell *group) const override;
   const CellTypeInfo &GetInfo() override;
 
   int GetInnerCellCount() const override { return 10; }

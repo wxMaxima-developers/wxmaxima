@@ -30,9 +30,9 @@
 #include "CellImpl.h"
 #include "TextCell.h"
 
-FunCell::FunCell(GroupCell *parent, Configuration **config,
+FunCell::FunCell(GroupCell *group, Configuration **config,
                  std::unique_ptr<Cell> &&name, std::unique_ptr<Cell> &&arg)
-    : Cell(parent, config),
+    : Cell(group, config),
       m_nameCell(std::move(name)),
       m_argCell(std::move(arg))
 {
@@ -41,9 +41,9 @@ FunCell::FunCell(GroupCell *parent, Configuration **config,
   m_nameCell->SetStyle(TS_FUNCTION);
 }
 
-FunCell::FunCell(const FunCell &cell)
-    : FunCell(cell.m_group, cell.m_configuration,
-              CopyList(cell.m_nameCell.get()), CopyList(cell.m_argCell.get()))
+FunCell::FunCell(GroupCell *group,const FunCell &cell)
+    : FunCell(group, cell.m_configuration,
+              CopyList(group, cell.m_nameCell.get()), CopyList(group, cell.m_argCell.get()))
 {
   CopyCommonData(cell);
   m_altCopyText = cell.m_altCopyText;

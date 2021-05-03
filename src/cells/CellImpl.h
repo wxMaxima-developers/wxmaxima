@@ -41,9 +41,9 @@
   } \
 
 #define DEFINE_CELL_COPY(type) \
-  std::unique_ptr<Cell> type::Copy() const \
+  std::unique_ptr<Cell> type::Copy(GroupCell *group) const \
   { \
-    return std::make_unique<type>(*this); \
+    return std::make_unique<type>(group, *this); \
   } \
 
 #define DEFINE_CELL(type) \

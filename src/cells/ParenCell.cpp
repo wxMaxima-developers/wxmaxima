@@ -31,15 +31,15 @@
 #include "CellImpl.h"
 #include "VisiblyInvalidCell.h"
 
-ParenCell::ParenCell(GroupCell *parent, Configuration **config, std::unique_ptr<Cell> &&inner) :
-    Cell(parent, config),
-    m_open(std::make_unique<TextCell>(parent, config, wxT("("))),
+ParenCell::ParenCell(GroupCell *group, Configuration **config, std::unique_ptr<Cell> &&inner) :
+    Cell(group, config),
+    m_open(std::make_unique<TextCell>(group, config, wxT("("))),
     m_innerCell(std::move(inner)),
-    m_close(std::make_unique<TextCell>(parent, config, wxT(")")))
+    m_close(std::make_unique<TextCell>(group, config, wxT(")")))
 {
   InitBitFields();
   if (!m_innerCell)
-    m_innerCell = std::make_unique<VisiblyInvalidCell>(parent,config);
+    m_innerCell = std::make_unique<VisiblyInvalidCell>(group,config);
   m_innerCell->SetSuppressMultiplicationDot(true);
   m_open->SetStyle(TS_FUNCTION);
   m_close->SetStyle(TS_FUNCTION);
@@ -57,8 +57,8 @@ ParenCell::ParenCell(GroupCell *parent, Configuration **config, std::unique_ptr<
 // cppcheck-suppress uninitMemberVar symbolName=ParenCell::m_signTopHeight
 // cppcheck-suppress uninitMemberVar symbolName=ParenCell::m_signBotHeight
 // cppcheck-suppress uninitMemberVar symbolName=ParenCell::m_extendHeight
-ParenCell::ParenCell(const ParenCell &cell):
-    ParenCell(cell.m_group, cell.m_configuration, CopyList(cell.m_innerCell.get()))
+ParenCell::ParenCell(GroupCell *group, const ParenCell &cell):
+    ParenCell(group, cell.m_configuration, CopyList(group, cell.m_innerCell.get()))
 {
   CopyCommonData(cell);
 }

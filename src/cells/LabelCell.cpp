@@ -31,9 +31,9 @@
 #include "CellImpl.h"
 #include "StringUtils.h"
 
-LabelCell::LabelCell(GroupCell *parent,
+LabelCell::LabelCell(GroupCell *group,
                      Configuration **config, wxString automaticLabel, TextStyle style)
-  : TextCell(parent, config, automaticLabel, style),
+  : TextCell(group, config, automaticLabel, style),
     m_labelChoice_Last((*config)->GetLabelChoice())
 {
   InitBitFields();
@@ -43,8 +43,8 @@ LabelCell::LabelCell(GroupCell *parent,
 // cppcheck-suppress uninitMemberVar symbolName=LabelCell::m_alt
 // cppcheck-suppress uninitMemberVar symbolName=LabelCell::m_altJs
 // cppcheck-suppress uninitMemberVar symbolName=LabelCell::m_initialToolTip
-LabelCell::LabelCell(const LabelCell &cell):
-  TextCell(cell.m_group, cell.m_configuration),
+LabelCell::LabelCell(GroupCell *group, const LabelCell &cell):
+  TextCell(group, cell.m_configuration),
   m_userDefinedLabel(cell.m_userDefinedLabel)
 {
 }

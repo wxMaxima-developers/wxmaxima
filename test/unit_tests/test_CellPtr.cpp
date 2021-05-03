@@ -488,8 +488,8 @@ struct WithGroup {
 class FullTestCell : WithGroup, public Cell {
 public:
   FullTestCell() : Cell(&group, &config) {}
-  FullTestCell(const FullTestCell &) : Cell(&group, &config) {}
-  std::unique_ptr<Cell> Copy() const override;
+  FullTestCell(GroupCell *group, const FullTestCell &) : Cell(group, &config) {}
+  std::unique_ptr<Cell> Copy(GroupCell *group) const override;
   const CellTypeInfo &GetInfo() override;
 };
 DEFINE_CELL(FullTestCell)
@@ -497,7 +497,7 @@ DEFINE_CELL(FullTestCell)
 template <int N>
 class IterArrayCell : public FullTestCell {
 public:
-  std::unique_ptr<Cell> Copy() const override { return std::make_unique<IterArrayCell<N>>(); }
+  std::unique_ptr<Cell> Copy(GroupCell *group) const override { return std::make_unique<IterArrayCell<N>>(); }
 
   int GetInnerCellCount() const override { return inner.size(); }
   Cell *GetInnerCell(int index) const override { return inner[index].get(); }

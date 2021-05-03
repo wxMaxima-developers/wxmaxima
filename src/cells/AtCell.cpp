@@ -29,8 +29,8 @@
 #include "AtCell.h"
 #include "CellImpl.h"
 
-AtCell::AtCell(GroupCell *parent, Configuration **config, std::unique_ptr<Cell> &&base, std::unique_ptr<Cell> &&index) :
-    Cell(parent, config),
+AtCell::AtCell(GroupCell *group, Configuration **config, std::unique_ptr<Cell> &&base, std::unique_ptr<Cell> &&index) :
+    Cell(group, config),
     m_baseCell(std::move(base)),
     m_indexCell(std::move(index))
 {
@@ -38,10 +38,10 @@ AtCell::AtCell(GroupCell *parent, Configuration **config, std::unique_ptr<Cell> 
   SetStyle(TS_VARIABLE);
 }
 
-AtCell::AtCell(const AtCell &cell)
-    : AtCell(cell.m_group, cell.m_configuration,
-             CopyList(cell.m_baseCell.get()),
-             CopyList(cell.m_indexCell.get()))
+AtCell::AtCell(GroupCell *group, const AtCell &cell)
+    : AtCell(group, cell.m_configuration,
+             CopyList(group, cell.m_baseCell.get()),
+             CopyList(group, cell.m_indexCell.get()))
 {
   CopyCommonData(cell);
 }

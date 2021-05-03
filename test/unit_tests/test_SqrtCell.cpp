@@ -60,14 +60,14 @@ SCENARIO("SqrtCell recalculates") {
     SqrtCell cell(&group, config, std::make_unique<VisiblyInvalidCell>(&group, config));
 
     WHEN("the cell is copied") THEN("the copy succeeds")
-      REQUIRE(cell.Copy());
+      REQUIRE(cell.Copy(&group));
 
     WHEN("the cell is broken up") {
       cell.BreakUp();
       THEN("when it is copied, the copy succeeds")
-        REQUIRE(cell.Copy());
+        REQUIRE(cell.Copy(&group));
       THEN("when it is copied, the copy can recalculate") {
-        auto copy = cell.Copy();
+        auto copy = cell.Copy(&group);
         copy->Recalculate(AFontSize(10));
       }
     }

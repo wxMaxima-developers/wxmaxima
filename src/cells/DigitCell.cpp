@@ -33,12 +33,12 @@
 #include "CellList.h"
 #include "StringUtils.h"
 
-DigitCell::DigitCell(GroupCell *parent, Configuration **config, const wxString &text, TextStyle style):
-  TextCell(parent,config,text,style)
+DigitCell::DigitCell(GroupCell *group, Configuration **config, const wxString &text, TextStyle style):
+  TextCell(group,config,text,style)
 {}
 
-DigitCell::DigitCell(const DigitCell &cell):
-  DigitCell(cell.m_group, cell.m_configuration, cell.m_text, cell.GetStyle())
+DigitCell::DigitCell(GroupCell *group, const DigitCell &cell):
+  DigitCell(group, cell.m_configuration, cell.m_text, cell.GetStyle())
 {
 }
 

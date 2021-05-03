@@ -31,18 +31,20 @@
 
 #define FRAC_DEC 1
 
-FracCell::FracCell(GroupCell *parent, Configuration **config, std::unique_ptr<Cell> &&num, std::unique_ptr<Cell> &&denom) :
-    Cell(parent, config),
-    m_numParenthesis(std::make_unique<ParenCell>(m_group, m_configuration, std::move(num))),
-    m_denomParenthesis(std::make_unique<ParenCell>(m_group, m_configuration, std::move(denom)))
+FracCell::FracCell(GroupCell *group, Configuration **config, std::unique_ptr<Cell> &&num, std::unique_ptr<Cell> &&denom) :
+    Cell(group, config),
+    m_numParenthesis(std::make_unique<ParenCell>(group, m_configuration, std::move(num))),
+    m_denomParenthesis(std::make_unique<ParenCell>(group, m_configuration, std::move(denom)))
 {
   InitBitFields();
   SetStyle(TS_VARIABLE);
   SetupBreakUps();
 }
 
-FracCell::FracCell(const FracCell &cell) :
-    FracCell(cell.m_group, cell.m_configuration, CopyList(cell.Num()), CopyList(cell.Denom()))
+FracCell::FracCell(GroupCell *group, const FracCell &cell) :
+    FracCell(group, cell.m_configuration,
+             CopyList(group, cell.Num()),
+             CopyList(group, cell.Denom()))
 {
   CopyCommonData(cell);
   m_fracStyle = cell.m_fracStyle;

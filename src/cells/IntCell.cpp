@@ -37,10 +37,10 @@
 static constexpr AFontSize INTEGRAL_FONT_SIZE{ 12.0f };
 #endif
 
-IntCell::IntCell(GroupCell *parent, Configuration **config,
+IntCell::IntCell(GroupCell *group, Configuration **config,
                  std::unique_ptr<Cell> &&base, std::unique_ptr<Cell> &&under,
                  std::unique_ptr<Cell> &&over, std::unique_ptr<Cell> &&var)
-    : Cell(parent, config),
+    : Cell(group, config),
     m_base(std::move(base)),
     m_var(std::move(var)),
     m_under(std::move(under)),
@@ -50,11 +50,11 @@ IntCell::IntCell(GroupCell *parent, Configuration **config,
   SetStyle(TS_VARIABLE);
 }
 
-IntCell::IntCell(GroupCell *parent, Configuration **config,
+IntCell::IntCell(GroupCell *group, Configuration **config,
                  std::unique_ptr<Cell> &&base, std::unique_ptr<Cell> &&var)
-    : IntCell(parent, config, std::move(base),
-              std::make_unique<TextCell>(parent, config),
-              std::make_unique<TextCell>(parent, config), std::move(var))
+    : IntCell(group, config, std::move(base),
+              std::make_unique<TextCell>(group, config),
+              std::make_unique<TextCell>(group, config), std::move(var))
 {}
 
 // Old cppcheck bugs:
@@ -63,10 +63,12 @@ IntCell::IntCell(GroupCell *parent, Configuration **config,
 // cppcheck-suppress uninitMemberVar symbolName=IntCell::m_signTop
 // cppcheck-suppress uninitMemberVar symbolName=IntCell::m_charHeight
 // cppcheck-suppress uninitMemberVar symbolName=IntCell::m_charWidth
-IntCell::IntCell(const IntCell &cell)
-    : IntCell(cell.m_group, cell.m_configuration, CopyList(cell.m_base.get()),
-              CopyList(cell.m_under.get()), CopyList(cell.m_over.get()),
-              CopyList(cell.m_var.get()))
+IntCell::IntCell(GroupCell *group, const IntCell &cell)
+    : IntCell(group, cell.m_configuration,
+              CopyList(group, cell.m_base.get()),
+              CopyList(group, cell.m_under.get()),
+              CopyList(group, cell.m_over.get()),
+              CopyList(group, cell.m_var.get()))
 {
   CopyCommonData(cell);
   m_intStyle = cell.m_intStyle;

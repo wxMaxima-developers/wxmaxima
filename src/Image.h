@@ -90,6 +90,8 @@ public:
    */
   Image(Configuration **config, wxString image, std::shared_ptr<wxFileSystem> filesystem, bool remove = true);
 
+  Image(const Image &image);
+
   ~Image();
 
   //! Creates a bitmap showing an error message

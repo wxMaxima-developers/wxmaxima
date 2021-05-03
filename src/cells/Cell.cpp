@@ -59,10 +59,10 @@ const wxString &Cell::GetToolTip(const wxPoint point) const
 }
 
 Cell::Cell(GroupCell *group, Configuration **config) :
-    m_group(group),
-    m_configuration(config),
-    m_toolTip(&wxm::emptyString),
-    m_fontSize_Scaled(Scale_Px((*config)->GetMathFontSize()))
+  m_group(group),
+  m_configuration(config),
+  m_toolTip(&wxm::emptyString),
+  m_fontSize_Scaled(Scale_Px((*config)->GetMathFontSize()))
 {
   wxASSERT(group && (group->GetType() == MC_TYPE_GROUP || group == this));
   InitBitFields();
@@ -158,17 +158,17 @@ void Cell::CopyCommonData(const Cell & cell)
     BreakUp();
 }
 
-std::unique_ptr<Cell> Cell::CopyList() const
+std::unique_ptr<Cell> Cell::CopyList(GroupCell *group) const
 {
   CellListBuilder<> copy;
   for (auto &src : OnList(this))
-    copy.Append(src.Copy());
+    copy.Append(src.Copy(group));
   return std::move(copy);
 }
 
-std::unique_ptr<Cell> Cell::CopyList(const Cell *cell)
+std::unique_ptr<Cell> Cell::CopyList(GroupCell *group, const Cell *cell)
 {
-  return cell ? cell->CopyList() : nullptr;
+  return cell ? cell->CopyList(group) : nullptr;
 }
 
 void Cell::ClearCacheList()

@@ -54,9 +54,9 @@
 class AbsCell final : public Cell
 {
 public:
-  AbsCell(GroupCell *parent, Configuration **config, std::unique_ptr<Cell> &&inner);
-  AbsCell(const AbsCell &cell);
-  std::unique_ptr<Cell> Copy() const override;
+  AbsCell(GroupCell *group, Configuration **config, std::unique_ptr<Cell> &&inner);
+  AbsCell(GroupCell *group, const AbsCell &cell);
+  std::unique_ptr<Cell> Copy(GroupCell *group) const override;
   const CellTypeInfo &GetInfo() override;
 
   int GetInnerCellCount() const override { return 3; }

@@ -4586,14 +4586,14 @@ std::unique_ptr<Cell> Worksheet::CopySelection(Cell *start, Cell *end, bool asDa
   if (asData)
     for (const Cell &tmp : OnList(start))
     {
-      copy.Append(tmp.Copy());
+      copy.Append(tmp.Copy(tmp.GetGroup()));
       if (&tmp == end)
         break;
     }
   else
     for (const Cell &tmp : OnDrawList(start))
     {
-      copy.Append(tmp.Copy());
+      copy.Append(tmp.Copy(tmp.GetGroup()));
       if (&tmp == end)
         break;
     }

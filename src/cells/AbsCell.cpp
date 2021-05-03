@@ -32,8 +32,8 @@
 #include "CellImpl.h"
 #include "TextCell.h"
 
-AbsCell::AbsCell(GroupCell *parent, Configuration **config, std::unique_ptr<Cell> &&inner) :
-    Cell(parent, config),
+AbsCell::AbsCell(GroupCell *group, Configuration **config, std::unique_ptr<Cell> &&inner) :
+    Cell(group, config),
     m_innerCell(std::move(inner))
 {
   InitBitFields();
@@ -43,8 +43,8 @@ AbsCell::AbsCell(GroupCell *parent, Configuration **config, std::unique_ptr<Cell
 // Old cppcheck bugs:
 // cppcheck-suppress uninitMemberVar symbolName=AbsCell::m_open
 // cppcheck-suppress uninitMemberVar symbolName=AbsCell::m_close
-AbsCell::AbsCell(const AbsCell &cell) :
-  AbsCell(cell.m_group, cell.m_configuration, CopyList(cell.m_innerCell.get()))
+AbsCell::AbsCell(GroupCell *group, const AbsCell &cell) :
+  AbsCell(group, cell.m_configuration, CopyList(group, cell.m_innerCell.get()))
 {
   CopyCommonData(cell);
 }

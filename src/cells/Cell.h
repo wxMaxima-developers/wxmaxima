@@ -145,7 +145,7 @@ class Cell: public Observed
 
   // This class can be derived from wxAccessible which has no copy constructor
   void operator=(const Cell&) = delete;
-  Cell(const Cell&) = delete;
+  Cell(GroupCell *group, const Cell&) = delete;
 
   template <typename C, typename std::enable_if<std::is_base_of<Cell, C>::value, bool>::type>
   friend inline auto OnInner(const C *cell);
@@ -153,7 +153,7 @@ class Cell: public Observed
   friend inline auto OnInner(C *cell);
 
 public:
-
+//  Cell(GroupCell *group, Configuration **config);
   Cell(GroupCell *group, Configuration **config);
 
   /*! Create a copy of this cell
@@ -161,7 +161,7 @@ public:
     This method is purely virtual, which means every child class has to define
     its own Copy() method.
    */
-  virtual std::unique_ptr<Cell> Copy() const = 0;
+  virtual std::unique_ptr<Cell> Copy(GroupCell *group) const = 0;
 
   //! Returns the information about this cell's type.
   virtual const CellTypeInfo &GetInfo() = 0;
@@ -739,10 +739,10 @@ public:
   void CopyCommonData(const Cell & cell);
 
   //! Return a copy of the list of cells beginning with this one.
-  std::unique_ptr<Cell> CopyList() const;
+  std::unique_ptr<Cell> CopyList(GroupCell *group) const;
 
   //! Return a copy of the given list of cells.
-  static std::unique_ptr<Cell> CopyList(const Cell *cell);
+  static std::unique_ptr<Cell> CopyList(GroupCell *group, const Cell *cell);
 
   //! Remove this cell's tooltip
   void ClearToolTip();
@@ -849,7 +849,7 @@ public:
     const wxString &GetLocalToolTip() const;
 protected:
   /*! The GroupCell this list of cells belongs to. */
-  CellPtr<GroupCell> const m_group;
+  CellPtr<GroupCell> m_group;
   //! The next cell in the draw list. This has been factored into Cell temporarily to
   //! reduce the change "noise" when it will be subsequently removed.
   CellPtr<Cell> m_nextToDraw;

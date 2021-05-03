@@ -36,8 +36,8 @@ SetCell::SetCell(GroupCell *parent, Configuration **config, std::unique_ptr<Cell
   m_close = std::make_unique<TextCell>(parent, config, wxT("}"));
 }
 
-SetCell::SetCell(const SetCell &cell):
-    SetCell(cell.m_group, cell.m_configuration, CopyList(cell.m_innerCell.get()))
+SetCell::SetCell(GroupCell *group, const SetCell &cell):
+  SetCell(group, cell.m_configuration, CopyList(group, cell.m_innerCell.get()))
 {
   CopyCommonData(cell);
 }

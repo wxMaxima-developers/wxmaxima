@@ -95,7 +95,7 @@ Image::Image(Configuration **config, const wxBitmap &bitmap)
 // pointer to the file system alive in a background task
 // cppcheck-suppress performance symbolName=filesystem
 Image::Image(Configuration **config, wxString image, std::shared_ptr<wxFileSystem> filesystem, bool remove):
-    m_fs_keepalive_imagedata(filesystem)
+  m_fs_keepalive_imagedata(filesystem)
 {
   m_svgImage = NULL;
   m_configuration = config;
@@ -109,6 +109,23 @@ Image::Image(Configuration **config, wxString image, std::shared_ptr<wxFileSyste
   m_originalHeight = 480;
   LoadImage(image, filesystem, remove);
 }
+
+Image::Image(const Image &image)
+{
+  m_svgImage = NULL;
+  m_configuration = image.m_configuration;
+  m_scaledBitmap.Create(1, 1);
+  m_isOk = image.m_isOk;
+  m_width = 1;
+  m_height = 1;
+  m_maxWidth = image.m_maxWidth;
+  m_maxHeight = image.m_maxHeight;
+  m_originalWidth = image.m_originalWidth;
+  m_originalHeight = image.m_originalHeight;
+  m_compressedImage = image.m_compressedImage;
+  m_extension = image.m_extension;
+}
+
 
 Image::~Image()
 {

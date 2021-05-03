@@ -82,65 +82,53 @@ bool Printout::OnPrintPage(int num)
   GetPageMargins(&marginX, &marginY);
   (*m_configuration)->SetCanvasSize({pageWidth - marginX, pageHeight - marginY});
   
-  GroupCell *tmp = m_pages[num - 1]->GetGroup();
-  if (!tmp)
-    return false;
-  if (tmp->GetGroupType() == GC_TYPE_PAGEBREAK)
-    tmp = tmp->GetNext();
-  if (!tmp)
+  GroupCell *group = m_pages[num - 1]->GetGroup();
+  if (!group)
+    return true;
+  if (group->GetGroupType() == GC_TYPE_PAGEBREAK)
+    group = group->GetNext();
+  if (!group)
     return true;
 
   // Print the header
-  dc->SetDeviceOrigin(0,0);
-  wxPoint point;
-  point.x = marginX;
-  point.y = marginY + tmp->GetCenterList() + GetHeaderHeight();
-  wxConfigBase *config = wxConfig::Get();
-  int fontsize = 12;
-  int drop = tmp->GetMaxDrop();
-
-  config->Read(wxT("fontsize"), &fontsize);
-
+  dc->SetDeviceOrigin(0,0);  
   PrintHeader(num, dc);
-
+  
   // Print the page contents
   dc->SetDeviceOrigin(
     marginX,
-    marginY + GetHeaderHeight() - m_pages[num - 1]->GetCurrentPoint().y +
+    marginY + GetHeaderHeight() - m_pages[num - 1]->GetRect(true).GetTop() +
     (*m_configuration)->Scale_Px((*m_configuration)->GetGroupSkip())
     );
-
+  
   Cell *end = NULL;
   wxCoord startpoint;
   wxCoord endpoint;
-  startpoint = m_pages[num - 1]->GetRect().GetTop();
+  startpoint = m_pages[num - 1]->GetRect(true).GetTop();
   endpoint = startpoint + 2*pageHeight;
             
   if((m_pages.size() > num) && (m_pages[num]))
   {
-    endpoint = m_pages[num]->GetRect().GetTop()-1;
+    endpoint = m_pages[num]->GetRect(true).GetTop()-1;
     end = m_pages[num];
   }
   dc->DestroyClippingRegion();
   wxCoord len = endpoint - startpoint;
   dc->SetClippingRegion(0, startpoint, pageWidth, len);
   
-  while (tmp &&
-         (tmp->GetGroupType() != GC_TYPE_PAGEBREAK))
+  while (group &&
+         (group->GetGroupType() != GC_TYPE_PAGEBREAK))
   {
-    if(end && (tmp == end->GetGroup()))
-      break;
-    auto *const next = tmp->GetNext();
-    point = tmp->GetCurrentPoint();
-
     // The following line seems to mysteriously fix the "subsequent text
     // cells aren't printed" problem on linux.
     // No Idea why, though.
     dc->SetPen(wxPen(*wxBLACK, 1, wxPENSTYLE_SOLID));
-    point.x = 0;
-    tmp->Draw(point);
+    group->Draw(group->GetGroup()->GetCurrentPoint());
 
-    tmp = tmp->GetNext();
+    if(end && (group == end->GetGroup()))
+      break;
+
+    group = group->GetNext();
   }
 
   wxPen pen = *(wxThePenList->FindOrCreatePen(*wxRED,
@@ -169,8 +157,7 @@ void Printout::BreakPages()
   GetPageMargins(&marginX, &marginY);
   GetPageSizePixels(&pageWidth, &pageHeight);
 
-  wxCoord maxContentHeight = pageHeight - 2 * marginY;
-  int skip = (*m_configuration)->Scale_Px((*m_configuration)->GetGroupSkip());;
+  wxCoord maxContentHeight = pageHeight - 2 * marginY - headerHeight;
 
   // The 1st page starts at the beginning of the document
   GroupCell *group = m_tree.get();
@@ -179,7 +166,7 @@ void Printout::BreakPages()
   // Now see where the next pages shuld start
   for (GroupCell &group : OnList(m_tree.get()))
   {
-    wxCoord pageStart = m_pages[m_pages.size()-1]->GetRect().GetTop();
+    wxCoord pageStart = m_pages[m_pages.size()-1]->GetRect(true).GetTop();
     // Handle pagebreak cells
     if((group.GetGroupType() == GC_TYPE_PAGEBREAK) && (group.GetNext()))
     {
@@ -187,14 +174,54 @@ void Printout::BreakPages()
       continue;
     }
 
-    // Make sure that the page contains at least one GroupCell
-    if (&group == m_pages[m_pages.size()-1])
-      continue;
-    
     // Add complete GroupCells as long as they fit on the page 
-    if ((group.GetRect().GetBottom() - pageStart >
-         maxContentHeight))
-      m_pages.push_back(&group);
+    if (((group.GetRect(true).GetBottom() - pageStart >
+          maxContentHeight)) ||
+        (&group == m_pages[m_pages.size()-1]))
+    {
+      if(!group.GetOutput())
+      {
+        m_pages.push_back(&group);
+      }
+      else
+      {
+         // Drawing a cell assigns its output positions
+        group.Recalculate();
+        group.Draw(group.GetCurrentPoint());
+
+        if((group.GetOutput()) && (group.GetOutput()->GetRect(true).GetTop() - pageStart <
+                                   maxContentHeight))
+        {
+          wxLogMessage(wxString::Format("Page %li: Adding a partial GroupCell!",
+                                        (long)m_pages
+                                        .size()));
+          {
+            Cell *out = group.GetOutput();
+            if(out->GetRect(true).GetBottom() - pageStart > maxContentHeight)
+            {
+              wxLogMessage(wxString::Format("Page %li: Page break after input.",
+                                            (long)m_pages.size()));
+              m_pages.push_back(group.GetOutput());
+            }
+            while(out)
+            {
+              pageStart = m_pages[m_pages.size()-1]->GetRect(true).GetTop();
+              if(out->GetRect(true).GetBottom() - pageStart > maxContentHeight)
+              {
+                wxLogMessage(wxString::Format("Page %li: Page break in the output",
+                                              (long)m_pages.size()));
+                m_pages.push_back(out);
+              }
+              out = out->GetNextToDraw();
+              while(out && (!out->BreakLineHere()))
+                out = out->GetNextToDraw();
+            }
+          }
+        }
+        else
+          m_pages.push_back(&group);
+      }
+    }
   }
 }
 

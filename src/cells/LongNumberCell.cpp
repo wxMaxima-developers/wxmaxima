@@ -33,10 +33,10 @@
 #include "CellList.h"
 #include "StringUtils.h"
 
-LongNumberCell::LongNumberCell(GroupCell *parent,
+LongNumberCell::LongNumberCell(GroupCell *group,
                                Configuration **config,
                                const wxString &number)
-  : TextCell(parent, config, number, TS_NUMBER)
+  : TextCell(group, config, number, TS_NUMBER)
 {
   InitBitFields();
 }
@@ -44,8 +44,8 @@ LongNumberCell::LongNumberCell(GroupCell *parent,
 // cppcheck-suppress uninitMemberVar symbolName=LongNumberCell::m_alt
 // cppcheck-suppress uninitMemberVar symbolName=LongNumberCell::m_altJs
 // cppcheck-suppress uninitMemberVar symbolName=LongNumberCell::m_initialToolTip
-LongNumberCell::LongNumberCell(const LongNumberCell &cell):
-  LongNumberCell(cell.m_group, cell.m_configuration, cell.m_text)
+LongNumberCell::LongNumberCell(GroupCell *group, const LongNumberCell &cell):
+  LongNumberCell(group, cell.m_configuration, cell.m_text)
 {
 }
 

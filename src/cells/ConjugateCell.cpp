@@ -29,8 +29,8 @@
 #include "ConjugateCell.h"
 #include "CellImpl.h"
 
-ConjugateCell::ConjugateCell(GroupCell *parent, Configuration **config, std::unique_ptr<Cell> &&inner) :
-    Cell(parent, config),
+ConjugateCell::ConjugateCell(GroupCell *group, Configuration **config, std::unique_ptr<Cell> &&inner) :
+    Cell(group, config),
     m_innerCell(std::move(inner))
 {
   InitBitFields();
@@ -40,8 +40,8 @@ ConjugateCell::ConjugateCell(GroupCell *parent, Configuration **config, std::uni
 // Old cppcheck bugs:
 // cppcheck-suppress uninitMemberVar symbolName=ConjugateCell::m_open
 // cppcheck-suppress uninitMemberVar symbolName=ConjugateCell::m_close
-ConjugateCell::ConjugateCell(const ConjugateCell &cell) :
-  ConjugateCell(cell.m_group, cell.m_configuration, CopyList(cell.m_innerCell.get()))
+ConjugateCell::ConjugateCell(GroupCell *group, const ConjugateCell &cell) :
+  ConjugateCell(group, cell.m_configuration, CopyList(group, cell.m_innerCell.get()))
 {
   CopyCommonData(cell);
 }

@@ -42,16 +42,16 @@
 #include <wx/clipbrd.h>
 #include <wx/mstream.h>
 
-ImgCell::ImgCell(GroupCell *parent, Configuration **config) :
-    Cell(parent, config),
+ImgCell::ImgCell(GroupCell *group, Configuration **config) :
+    Cell(group, config),
     m_imageBorderWidth(1)
 {
   InitBitFields();
   m_type = MC_TYPE_IMAGE;
 }
 
-ImgCell::ImgCell(GroupCell *parent, Configuration **config, const wxMemoryBuffer &image, const wxString &type) :
-    Cell(parent, config),
+ImgCell::ImgCell(GroupCell *group, Configuration **config, const wxMemoryBuffer &image, const wxString &type) :
+    Cell(group, config),
     m_image(new Image(m_configuration, image, type)),
     m_imageBorderWidth(1)
 {
@@ -59,8 +59,8 @@ ImgCell::ImgCell(GroupCell *parent, Configuration **config, const wxMemoryBuffer
   m_type = MC_TYPE_IMAGE;
 }
 
-ImgCell::ImgCell(GroupCell *parent, Configuration **config, const wxBitmap &bitmap) :
-    Cell(parent, config),
+ImgCell::ImgCell(GroupCell *group, Configuration **config, const wxBitmap &bitmap) :
+    Cell(group, config),
     m_image(new Image(m_configuration, bitmap)),
     m_imageBorderWidth(1)
 {
@@ -71,8 +71,8 @@ ImgCell::ImgCell(GroupCell *parent, Configuration **config, const wxBitmap &bitm
 int ImgCell::s_counter = 0;
 
 // constructor which load image
-ImgCell::ImgCell(GroupCell *parent, Configuration **config, const wxString &image, std::shared_ptr<wxFileSystem> filesystem, bool remove)
-  : Cell(parent, config)
+ImgCell::ImgCell(GroupCell *group, Configuration **config, const wxString &image, std::shared_ptr<wxFileSystem> filesystem, bool remove)
+  : Cell(group, config)
 {
   InitBitFields();
   m_type = MC_TYPE_IMAGE;
@@ -81,6 +81,15 @@ ImgCell::ImgCell(GroupCell *parent, Configuration **config, const wxString &imag
   else
     m_image = std::make_shared<Image>(m_configuration);
   m_drawBoundingBox = false;
+}
+
+ImgCell::ImgCell(GroupCell *group, const ImgCell &cell) :
+  Cell(group, m_configuration)
+{
+  InitBitFields();
+  m_type = MC_TYPE_IMAGE;
+  m_image = cell.m_image;
+  m_drawBoundingBox = cell.m_drawBoundingBox;
 }
 
 DEFINE_CELL(ImgCell)
@@ -96,15 +105,15 @@ void ImgCell::SetBitmap(const wxBitmap &bitmap)
   m_image = std::make_shared<Image>(m_configuration, bitmap);
 }
 
-ImgCell::ImgCell(const ImgCell &cell):
-    ImgCell(cell.m_group, cell.m_configuration)
-{
-  InitBitFields();
-  CopyCommonData(cell);
-  m_drawRectangle = cell.m_drawRectangle;
-  m_drawBoundingBox = false;
-  m_image = cell.m_image;
-}
+// ImgCell::ImgCell(GroupCell *group, const ImgCell &cell):
+//     ImgCell(group, cell.m_configuration)
+// {
+//   InitBitFields();
+//   CopyCommonData(cell);
+//   m_drawRectangle = cell.m_drawRectangle;
+//   m_drawBoundingBox = false;
+//   m_image = cell.m_image;
+// }
 
 ImgCell::~ImgCell()
 {

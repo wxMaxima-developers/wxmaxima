@@ -33,13 +33,13 @@
 class ImgCell final : public Cell
 {
 public:
-  ImgCell(GroupCell *parent, Configuration **config);
-  ImgCell(GroupCell *parent, Configuration **config, const wxMemoryBuffer &image, const wxString &type);
-  ImgCell(GroupCell *parent, Configuration **config, const wxString &image, std::shared_ptr<wxFileSystem> filesystem, bool remove = true);
+  ImgCell(GroupCell *group, Configuration **config);
+  ImgCell(GroupCell *group, Configuration **config, const wxMemoryBuffer &image, const wxString &type);
+  ImgCell(GroupCell *group, Configuration **config, const wxString &image, std::shared_ptr<wxFileSystem> filesystem, bool remove = true);
 
-  ImgCell(GroupCell *parent, Configuration **config, const wxBitmap &bitmap);
-  ImgCell(const ImgCell &cell);
-  std::unique_ptr<Cell> Copy() const override;
+  ImgCell(GroupCell *group, Configuration **config, const wxBitmap &bitmap);
+  ImgCell(GroupCell *group, const ImgCell &cell);
+  std::unique_ptr<Cell> Copy(GroupCell *group) const override;
   const CellTypeInfo &GetInfo() override;
   ~ImgCell() override;
 

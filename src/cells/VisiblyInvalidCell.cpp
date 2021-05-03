@@ -33,9 +33,9 @@
 
 static wxString cellContents(wxT("?"));
 
-VisiblyInvalidCell::VisiblyInvalidCell(GroupCell *parent,
+VisiblyInvalidCell::VisiblyInvalidCell(GroupCell *group,
                                        Configuration **config)
-    : TextCell(parent, config, cellContents, TS_ERROR)
+    : TextCell(group, config, cellContents, TS_ERROR)
 {
   InitBitFields();
   // We cannot do this at the startup of the program as we first need to wait
@@ -45,20 +45,26 @@ VisiblyInvalidCell::VisiblyInvalidCell(GroupCell *parent,
   SetToolTip(&T_("Missing contents. Bug?"));
 }
 
-VisiblyInvalidCell::VisiblyInvalidCell(GroupCell *parent,
+VisiblyInvalidCell::VisiblyInvalidCell(GroupCell *group,
                                        Configuration **config, wxString &&toolTip)
-    : TextCell(parent, config, cellContents, TS_ERROR)
+    : TextCell(group, config, cellContents, TS_ERROR)
 {
   InitBitFields();
   SetToolTip(std::move(toolTip));
 }
 
-VisiblyInvalidCell::VisiblyInvalidCell(GroupCell *parent,
+VisiblyInvalidCell::VisiblyInvalidCell(GroupCell *group,
                                        Configuration **config, const wxString *toolTip)
-    : TextCell(parent, config, cellContents, TS_ERROR)
+    : TextCell(group, config, cellContents, TS_ERROR)
 {
   InitBitFields();
   SetToolTip(toolTip);
+}
+
+VisiblyInvalidCell::VisiblyInvalidCell(GroupCell *group,
+                                       const VisiblyInvalidCell &cell)
+  : VisiblyInvalidCell(group, cell.m_configuration)
+{
 }
 
 DEFINE_CELL_TYPEINFO(VisiblyInvalidCell)
