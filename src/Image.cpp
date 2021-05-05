@@ -176,6 +176,7 @@ wxBitmap Image::GetUnscaledBitmap()
     return m_scaledBitmap;    
   }
 
+  SuppressErrorDialogs logNull;
   if (m_svgRast)
   {
     std::vector<unsigned char> imgdata(m_originalWidth*m_originalHeight*4);
