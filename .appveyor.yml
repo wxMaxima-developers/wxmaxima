@@ -159,6 +159,8 @@ after_test:
 for:
   -
     matrix:
+       only:
+        - WXW_LIB: gcc_x64_lib
 #    artifacts:
 #    - path: 'wxMaxima.exe.7z'
 #      name: wxMaxima.exe.7z
