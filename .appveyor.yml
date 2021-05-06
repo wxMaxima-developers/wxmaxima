@@ -14,7 +14,7 @@ clone_depth: 15
 
 configuration:
  - debug
- 
+
 environment:
   # The wxWidgets version as referred to in the source package
   WXVERSION: 3.1.5
@@ -26,20 +26,16 @@ environment:
   CMAKEGEN: "Ninja"
   matrix:
     - TOOLKIT_INIT: ".appveyor\\MSVC_2019_x64.ps1"
-      WXW_LIB: vc_x64_lib
       EXTRA_CMAKE_ARGS: ""
     - TOOLKIT_INIT: ".appveyor\\MINGW_8.1.0_x64.ps1"
-      WXW_LIB: gcc_x64_lib
       EXTRA_CMAKE_ARGS: "-DCMAKE_AR=C:/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/mingw64/bin/ar.exe"
 
 matrix:
   exclude:
   - configuration: debug
     TOOLKIT_INIT: ".appveyor\\MINGW_8.1.0_x64.ps1"
-    WXW_LIB: vc_x64_lib
   - configuration: debug
     TOOLKIT_INIT: ".appveyor\\MSVC_2019_x64.ps1"
-    WXW_LIB: gcc_x64_lib
 
 cache:
   #- 'C:\wxwidgets-install_%WXBUILDVER%'
@@ -72,19 +68,18 @@ before_build:
       $SRC_ARCHIVE="wxWidgets-${env:WXVERSION}.7z"
       $BUILD_DIR="C:\wxwidgets-build_${env:WXBUILDVER}"
       $INSTALL_DIR="C:\wxwidgets-install_${env:WXBUILDVER}"
-      $INSTALL_LIB_DIR="$INSTALL_DIR\lib\${env:WXW_LIB}"
       $SOURCE_DIR="C:\wxwidgets-source_${env:WXVERSION}"
       copy C:/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/mingw64/bin/windres.exe C:/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/mingw64/bin/x86_64-w64-mingw32-windres.exe
       # If there's no installation of wxWidgets available, we have to build it
       if (!(Test-Path $INSTALL_DIR)) {
           echo '- No wxWidgets installation $INSTALL_DIR was found'
-          
+
           echo '* Downloading wxWidgets sources'
           Start-FileDownload "https://github.com/wxWidgets/wxWidgets/releases/download/v${env:WXVERSION}/$SRC_ARCHIVE"
-          
+
           echo '* Unpacking wxWidgets sources'
           7z x "$SRC_ARCHIVE" "-o$SOURCE_DIR" -y
-          
+
           echo '* Building wxWidgets from sources'
           mkdir $BUILD_DIR | Out-Null
           pushd $BUILD_DIR
@@ -112,11 +107,9 @@ before_build:
           popd
       }
       $env:INSTALL_DIR = $INSTALL_DIR
-      $env:INSTALL_LIB_DIR = $INSTALL_LIB_DIR
 
   - ps: |
       $INSTALL_DIR = $env:INSTALL_DIR -replace '\\', '/'
-      $INSTALL_LIB_DIR = $env:INSTALL_LIB_DIR -replace '\\', '/'
 
       echo '- Configuring wxMaxima'
       echo "    Job:    $env:APPVEYOR_JOB_NAME"
@@ -130,7 +123,6 @@ before_build:
         -DAPPVEYOR_BUILD=1 -DCMAKE_UNITY_BUILD=YES  `
         -DWX_ROOT_DIR="$INSTALL_DIR"  `
         -DwxWidgets_ROOT_DIR="$INSTALL_DIR"  `
-        -DwxWidgets_LIB_DIR="$INSTALL_LIB_DIR"  `
         -DwxWidgets_CONFIGURATION=mswu  `
         $env:TOOLKIT_CMAKE_ARGS ..
       popd
@@ -168,7 +160,6 @@ for:
   -
     matrix:
       only:
-        - WXW_LIB: gcc_x64_lib
 #    artifacts:
 #    - path: 'wxMaxima.exe.7z'
 #      name: wxMaxima.exe.7z
