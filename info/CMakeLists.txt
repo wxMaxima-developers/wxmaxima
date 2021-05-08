@@ -31,10 +31,18 @@ if(PANDOC)
 	endfunction()
 
 	function(generate_wxmaxima_documentation_pdf FILEBASENAME PANDOC_TEXSELECT_OPTION)
+		set(PDFLANG "${LANG}")
+		if("${PDFLANG}" STREQUAL "")
+			set(PDFLANG "en")
+		endif()
+		if("${PDFLANG}" STREQUAL "zh_CN")
+			set(PDFLANG "en")
+		endif()
+
 		add_custom_command(
 			OUTPUT ${FILEBASENAME}.pdf
 			DEPENDS ${FILEBASENAME}.md
-			COMMAND ${PANDOC} ${FILEBASENAME}.md -t latex -o ${FILEBASENAME}.pdf -V 'mainfont:NotoSerif-Regular.ttf' -V 'sansfont:NotoSans-Regular.ttf' -V 'monofont:NotoSansMono-Regular.ttf' -V 'mathfont:NotoSansMath-Regular.ttf' -V 'CJKmainfont:NotoSerifCJK-Regular.ttc' --number-sections --table-of-contents --standalone --metadata title="wxMaxima" ${PANDOC_TEXSELECT_OPTION}
+			COMMAND ${PANDOC} ${FILEBASENAME}.md -t latex -o ${FILEBASENAME}.pdf -M lang=${PDFLANG} -V 'mainfont:NotoSerif-Regular.ttf' -V 'sansfont:NotoSans-Regular.ttf' -V 'monofont:NotoSansMono-Regular.ttf' -V 'mathfont:NotoSansMath-Regular.ttf' -V 'CJKmainfont:NotoSerifCJK-Regular.ttc' --number-sections --table-of-contents --standalone --metadata title="wxMaxima" ${PANDOC_TEXSELECT_OPTION}
 			COMMENT "Generating ${FILEBASENAME}.pdf")
 		add_custom_target(build_${FILEBASENAME}.pdf DEPENDS ${FILEBASENAME}.pdf)
 		add_dependencies(pdf build_${FILEBASENAME}.pdf)
