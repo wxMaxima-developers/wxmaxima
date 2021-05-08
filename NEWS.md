@@ -6,7 +6,9 @@
     #1241, #181, #573,#1082)
  * A Russian translation update by OlesyaGerasimenko
  * A Ukrainian translation update by Yuri Chornoivan
-
+ * Changed the font for the PDF manuals to free Google Noto fonts.
+   Now all PDF manuals can be created without missing characters
+   (before cyrillic, chinese and greek characters were missing).
 
 # 21.04.0
  * Fix visualization after "Evaluate all cells (Ctrl+Shift+R)" (bug #1512).
