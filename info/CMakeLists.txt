@@ -32,9 +32,12 @@ if(PANDOC)
 
 	function(generate_wxmaxima_documentation_pdf FILEBASENAME PANDOC_TEXSELECT_OPTION)
 		set(PDFLANG "${LANG}")
+		# if LANG is empty, we are generating the default (english) manual.
 		if("${PDFLANG}" STREQUAL "")
 			set(PDFLANG "en")
 		endif()
+		# For Chinese use English, I have not found out, what must be
+		# set for chinese (at least on my system, nothing worked).
 		if("${PDFLANG}" STREQUAL "zh_CN")
 			set(PDFLANG "en")
 		endif()
