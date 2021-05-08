@@ -34,7 +34,7 @@ if(PANDOC)
 		add_custom_command(
 			OUTPUT ${FILEBASENAME}.pdf
 			DEPENDS ${FILEBASENAME}.md
-			COMMAND ${PANDOC} ${FILEBASENAME}.md -t latex -o ${FILEBASENAME}.pdf -V 'mainfont:DejaVuSerif.ttf' -V 'sansfont:DejaVuSans.ttf' -V 'monofont:DejaVuSansMono.ttf' -V 'mathfont:texgyredejavu-math.otf' --number-sections --table-of-contents --standalone --metadata title="wxMaxima" ${PANDOC_TEXSELECT_OPTION}
+			COMMAND ${PANDOC} ${FILEBASENAME}.md -t latex -o ${FILEBASENAME}.pdf -V 'mainfont:NotoSerif-Regular.ttf' -V 'sansfont:NotoSans-Regular.ttf' -V 'monofont:NotoSansMono-Regular.ttf' -V 'mathfont:NotoSansMath-Regular.ttf' -V 'CJKmainfont:NotoSerifCJK-Regular.ttc' --number-sections --table-of-contents --standalone --metadata title="wxMaxima" ${PANDOC_TEXSELECT_OPTION}
 			COMMENT "Generating ${FILEBASENAME}.pdf")
 		add_custom_target(build_${FILEBASENAME}.pdf DEPENDS ${FILEBASENAME}.pdf)
 		add_dependencies(pdf build_${FILEBASENAME}.pdf)
