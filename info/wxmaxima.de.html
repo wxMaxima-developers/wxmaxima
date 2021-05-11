@@ -195,7 +195,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <figure>
 <img src="./maxima_screenshot.png" alt="Maxima Screenshot, Kommandozeile" id="img_maxima_screenshot" /><figcaption>Maxima Screenshot, Kommandozeile</figcaption>
 </figure>
-<p>Umfangreiche Dokumentation für Maxima ist <a href="http://maxima.sourceforge.io/documentation.html">im Internet verfügbar</a>. Teile davon sind auch im Hilfe-Menü von wxMaxima erhältlich. Ein Druck auf die Hilfe-Taste (auf den meisten Systemen ist dies die F1-Taste) springt automatisch zur Stelle im <em>Maxima</em>-Handbuch, wo das Kommando unter dem Cursor erklärt wird.</p>
+<p>Umfangreiche Dokumentation für Maxima ist <a href="https://maxima.sourceforge.io/documentation.html">im Internet verfügbar</a>. Teile davon sind auch im Hilfe-Menü von wxMaxima erhältlich. Ein Druck auf die Hilfe-Taste (auf den meisten Systemen ist dies die F1-Taste) springt automatisch zur Stelle im <em>Maxima</em>-Handbuch, wo das Kommando unter dem Cursor erklärt wird.</p>
 <h3 id="wxmaxima"><span class="header-section-number">1.1.2</span> wxMaxima</h3>
 <p><em>wxMaxima</em> ist ein graphisches Benutzer-Interface, das die komplette Funktionalität und Flexibilität von Maxima zu nutzen erlaubt. Zudem bietet es viele Funktionalitäten an, die die Verwendung von <em>Maxima</em> einfacher gestalten. Beispielsweise kann es den Inhalt eines Arbeitsblattes, einer Zelle des Arbeitsblatts oder einen Teil einer Formel nach LaTeX, MathML oder in eine RTF-Formel für eine Textverarbeitung konvertieren. Dokumentation für wxMaxima kann <a href="https://wxMaxima-developers.github.io/wxmaxima/help.html">im Internet</a> gefunden werden, oder über das Hilfemenü.</p>
 <figure>
@@ -234,6 +234,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>Der Cursor wird vertikal dargestellt wird, wenn er zwischen zwei Zellen zu liegen kommt.</li>
 <li>Innerhalb einer Zelle wird der Cursor vertikal dargestellt.</li>
 </ul>
+<p>When you start wxMaxma, you will only see the blinking horizontal cursor. If you start typing a math cell will be automatically created (you will see a right arrow as “prompt”, after the Math cell is evaluated (<kbd>CTRL+Enter</kbd>), you will see the labels, e.g. <code>(%i1)</code>, <code>(%o1)</code>.</p>
+<figure>
+<img src="./horizontal-cursor-only.png" alt="(blinking) horizontal cursor after wxMaxima start" id="horizontal-cursor-only" /><figcaption>(blinking) horizontal cursor after wxMaxima start</figcaption>
+</figure>
+<p>You might want to create another cell type (using the “Cell” menu), maybe a title cell or text cell, which describes, what will be done, when you start creating your worksheet.</p>
+<p>If you navigate between the different cells, you will also see the (blinking) horizontal cursor, where you can insert a cell into your worksheet (either a math cell, by just start typing your formula or another cell type).</p>
+<figure>
+<img src="./horizontal-cursor-between-cells.png" alt="(blinking) horizontal cursor between cells" id="horizontal-cursor-between-cells" /><figcaption>(blinking) horizontal cursor between cells</figcaption>
+</figure>
 <h3 id="eingabezellen-an-maxima-schicken"><span class="header-section-number">1.2.4</span> Eingabezellen an <em>Maxima</em> schicken</h3>
 <p>Die Befehle in einer Codezelle werden ausgeführt, sobald <kbd>CTRL</kbd>+<kbd>ENTER</kbd>, <kbd>SHIFT</kbd>+<kbd>ENTER</kbd> oder <kbd>ENTER</kbd> key im Nummernblock gedrückt wird. <em>wxMaxima</em> nimmt Befehle mit <kbd>CTRL+ENTER</kbd> oder <kbd>SHIFT+ENTER</kbd> entgegen, aber <em>wxMaxima</em> kann auch konfiguriert werden, dass Befehle nach <kbd>ENTER</kbd> ausgeführt weren..</p>
 <h3 id="auto-vervollständigung"><span class="header-section-number">1.2.5</span> Auto-Vervollständigung</h3>

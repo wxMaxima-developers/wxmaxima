@@ -234,6 +234,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>如果光标在两个单元格之间移动或单击，则会使用水平光标；</li>
 <li>如果在单元格内输入时，则会使用垂直光标。此种光标是当使用鼠标指针或方向键在单元格内移动光标时被激活的，与文本编辑器中光标的激活方式非常相似。</li>
 </ul>
+<p>When you start wxMaxma, you will only see the blinking horizontal cursor. If you start typing a math cell will be automatically created (you will see a right arrow as “prompt”, after the Math cell is evaluated (<kbd>CTRL+Enter</kbd>), you will see the labels, e.g. <code>(%i1)</code>, <code>(%o1)</code>.</p>
+<figure>
+<img src="./horizontal-cursor-only.png" alt="(blinking) horizontal cursor after wxMaxima start" id="horizontal-cursor-only" /><figcaption>(blinking) horizontal cursor after wxMaxima start</figcaption>
+</figure>
+<p>You might want to create another cell type (using the “Cell” menu), maybe a title cell or text cell, which describes, what will be done, when you start creating your worksheet.</p>
+<p>If you navigate between the different cells, you will also see the (blinking) horizontal cursor, where you can insert a cell into your worksheet (either a math cell, by just start typing your formula or another cell type).</p>
+<figure>
+<img src="./horizontal-cursor-between-cells.png" alt="(blinking) horizontal cursor between cells" id="horizontal-cursor-between-cells" /><figcaption>(blinking) horizontal cursor between cells</figcaption>
+</figure>
 <h3 id="向-maxima-发送单元格"><span class="header-section-number">1.2.4</span> 向 Maxima 发送单元格</h3>
 <p>只要按下键盘上的 <kbd>CTRL</kbd>+<kbd>ENTER</kbd>、<kbd>SHIFT</kbd>+<kbd>ENTER</kbd> 或 <kbd>ENTER</kbd> 键，（数学）代码单元格中的命令就会执行。wxMaxima 的默认设置是 <kbd>CTRL</kbd>+<kbd>ENTER</kbd> 或 <kbd>SHIFT</kbd>+ENTER</kbd> 键会使得命令由 Maxima 执行，但也可以设置为按下 <kbd>ENTER</kbd> 键执行命令。</p>
 <h3 id="命令自动补全"><span class="header-section-number">1.2.5</span> 命令自动补全</h3>

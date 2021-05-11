@@ -195,7 +195,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <figure>
 <img src="./maxima_screenshot.png" alt="Знімок вікна Maxima, командний рядок" id="img_maxima_screenshot" /><figcaption>Знімок вікна Maxima, командний рядок</figcaption>
 </figure>
-<p>Extensive documentation for <em>Maxima</em> is <a href="https://maxima.sourceforge.io/documentation.html">available in the internet</a>. Part of this documentation is also available in wxMaxima’s help menu. Pressing the Help key (on most systems the F1 key) causes <em>wxMaxima</em>’s context-sensitive help feature to automatically jump to <em>Maxima</em>’s manual page for the command at the cursor.</p>
+<p>Із докладною документацією до <em>Maxima</em> можна <a href="https://maxima.sourceforge.io/documentation.html">ознайомитися у інтернеті</a>. Доступ до частини цієї документації можна отримати з меню «Довідка» у wxMaxima. Якщо ви натиснете клавішу довідки (у більшості систем це клавіша F1), використання контекстної довідки <em>wxMaxima</em> відкриє для вас сторінку підручника з <em>Maxima</em> із довідкою щодо команди, у якій перебуває курсор.</p>
 <h3 id="wxmaxima"><span class="header-section-number">1.1.2</span> wxMaxima</h3>
 <p><em>wxMaxima</em> — графічний інтерфейс користувача, який надає доступ до усіх функціональних можливостей і гнучкості <em>Maxima</em>. <em>wxMaxima</em> надає у розпорядження користувачам графічні засоби роботи та можливості, які значно спрощують роботу з <em>Maxima</em>. Наприклад, у wxMaxima передбачено можливість експортування вмісту будь-якої комірки (або, якщо це потрібно, будь-якої частини формули) у форматі тексту, коду LaTeX або специфікації MathML простим клацанням правою кнопкою миші. Насправді, можна експортувати увесь робочий аркуш у форматі HTML або коду LaTeX. Із документацією до <em>wxMaxima</em>, зокрема робочими книгами для ілюстрації аспектів користування, можна ознайомитися на <a href="https://wxMaxima-developers.github.io/wxmaxima/help.html">сайті довідки</a> <em>wxMaxima</em>, а також за допомогою меню «Довідка».</p>
 <figure>
@@ -234,6 +234,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>Курсор буде намальовано горизонтально, якщо його пересунуто до проміжку між двома комірками, або якщо користувач клацнув кнопкою миші у проміжку між двома комірками.</li>
 <li>Вертикальний курсор, який працює у комірці. Цей курсор активується пересуванням курсора всередину комірки за допомогою вказівника миші або клавіш зі стрілками. Цей курсор працює подібно до курсора у текстовому редакторі.</li>
 </ul>
+<p>When you start wxMaxma, you will only see the blinking horizontal cursor. If you start typing a math cell will be automatically created (you will see a right arrow as “prompt”, after the Math cell is evaluated (<kbd>CTRL+Enter</kbd>), you will see the labels, e.g. <code>(%i1)</code>, <code>(%o1)</code>.</p>
+<figure>
+<img src="./horizontal-cursor-only.png" alt="(blinking) horizontal cursor after wxMaxima start" id="horizontal-cursor-only" /><figcaption>(blinking) horizontal cursor after wxMaxima start</figcaption>
+</figure>
+<p>You might want to create another cell type (using the “Cell” menu), maybe a title cell or text cell, which describes, what will be done, when you start creating your worksheet.</p>
+<p>If you navigate between the different cells, you will also see the (blinking) horizontal cursor, where you can insert a cell into your worksheet (either a math cell, by just start typing your formula or another cell type).</p>
+<figure>
+<img src="./horizontal-cursor-between-cells.png" alt="(blinking) horizontal cursor between cells" id="horizontal-cursor-between-cells" /><figcaption>(blinking) horizontal cursor between cells</figcaption>
+</figure>
 <h3 id="надсилання-комірок-для-обчислення-у-maxima"><span class="header-section-number">1.2.4</span> Надсилання комірок для обчислення у Maxima</h3>
 <p>Команду у комірці буде виконано одразу після натискання комбінацій клавіш <kbd>CTRL</kbd>+<kbd>ENTER</kbd>, <kbd>SHIFT</kbd>+<kbd>ENTER</kbd> або клавіші <kbd>ENTER</kbd> на клавіатурі. Типовим для <em>wxMaxima</em> є введення команд за допомогою <kbd>CTRL+ENTER</kbd> або <kbd>SHIFT+ENTER</kbd>, але <em>wxMaxima</em> можна налаштувати на виконання команд у відповідь на натискання <kbd>ENTER</kbd>.</p>
 <h3 id="автоматичне-доповнення-команд"><span class="header-section-number">1.2.5</span> Автоматичне доповнення команд</h3>
@@ -396,26 +405,26 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <table>
 <thead>
 <tr class="header">
-<th>keys to enter</th>
-<th>mathematical symbol</th>
+<th>введений рядок</th>
+<th>математичний символ</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td>hbar</td>
-<td>Planck’s constant: a h with a horizontal bar above it</td>
+<td>стала Планка: h із горизонтальною рискою згори</td>
 </tr>
 <tr class="even">
 <td>Hbar</td>
-<td>a H with a horizontal bar above it</td>
+<td>H із горизонтальною рискою згори</td>
 </tr>
 <tr class="odd">
 <td>2</td>
-<td>squared</td>
+<td>квадрат</td>
 </tr>
 <tr class="even">
 <td>3</td>
-<td>to the power of three</td>
+<td>куб</td>
 </tr>
 <tr class="odd">
 <td>/2</td>
@@ -423,175 +432,175 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </tr>
 <tr class="even">
 <td>partial</td>
-<td>partial sign (the d of dx/dt)</td>
+<td>знак частинної похідної (d у dx/dt)</td>
 </tr>
 <tr class="odd">
 <td>integral</td>
-<td>integral sign</td>
+<td>символ інтеграла</td>
 </tr>
 <tr class="even">
 <td>sq</td>
-<td>square root</td>
+<td>квадратний корінь</td>
 </tr>
 <tr class="odd">
 <td>ii</td>
-<td>imaginary</td>
+<td>уявна одиниця</td>
 </tr>
 <tr class="even">
 <td>ee</td>
-<td>element</td>
+<td>елемент</td>
 </tr>
 <tr class="odd">
 <td>in</td>
-<td>in</td>
+<td>включається</td>
 </tr>
 <tr class="even">
 <td>impl implies</td>
-<td>implies</td>
+<td>випливає</td>
 </tr>
 <tr class="odd">
 <td>inf</td>
-<td>infinity</td>
+<td>нескінченність</td>
 </tr>
 <tr class="even">
 <td>empty</td>
-<td>empty</td>
+<td>порожня множина</td>
 </tr>
 <tr class="odd">
 <td>TB</td>
-<td>big triangle right</td>
+<td>великий трикутник праворуч</td>
 </tr>
 <tr class="even">
 <td>tb</td>
-<td>small triangle right</td>
+<td>малий трикутник праворуч</td>
 </tr>
 <tr class="odd">
 <td>and</td>
-<td>and</td>
+<td>і</td>
 </tr>
 <tr class="even">
 <td>or</td>
-<td>or</td>
+<td>або</td>
 </tr>
 <tr class="odd">
 <td>xor</td>
-<td>xor</td>
+<td>виключне або</td>
 </tr>
 <tr class="even">
 <td>nand</td>
-<td>nand</td>
+<td>ні-і</td>
 </tr>
 <tr class="odd">
 <td>nor</td>
-<td>nor</td>
+<td>ні-або</td>
 </tr>
 <tr class="even">
 <td>equiv</td>
-<td>equivalent to</td>
+<td>еквівалентний</td>
 </tr>
 <tr class="odd">
 <td>not</td>
-<td>not</td>
+<td>ні</td>
 </tr>
 <tr class="even">
 <td>union</td>
-<td>union</td>
+<td>об’єднання</td>
 </tr>
 <tr class="odd">
 <td>inter</td>
-<td>intersection</td>
+<td>перетин</td>
 </tr>
 <tr class="even">
 <td>subseteq</td>
-<td>subset or equal</td>
+<td>підмножина або рівна множина</td>
 </tr>
 <tr class="odd">
 <td>subset</td>
-<td>subset</td>
+<td>підмножина</td>
 </tr>
 <tr class="even">
 <td>notsubseteq</td>
-<td>not subset or equal</td>
+<td>не підмножина або рівна множина</td>
 </tr>
 <tr class="odd">
 <td>notsubset</td>
-<td>not subset</td>
+<td>не підмножина</td>
 </tr>
 <tr class="even">
 <td>approx</td>
-<td>approximately</td>
+<td>приблизно</td>
 </tr>
 <tr class="odd">
 <td>propto</td>
-<td>proportional to</td>
+<td>пропорційне до</td>
 </tr>
 <tr class="even">
-<td>neq != /= or #</td>
-<td>not equal to</td>
+<td>neq != /= або #</td>
+<td>не рівне</td>
 </tr>
 <tr class="odd">
-<td>+/- or pm</td>
-<td>a plus/minus sign</td>
+<td>+/- або pm</td>
+<td>плюс-мінус</td>
 </tr>
 <tr class="even">
-<td>&lt;= or leq</td>
-<td>equal or less than</td>
+<td>&lt;= або leq</td>
+<td>менше або дорівнює</td>
 </tr>
 <tr class="odd">
-<td>&gt;= or geq</td>
-<td>equal or greater than</td>
+<td>&gt;= або geq</td>
+<td>більше або дорівнює</td>
 </tr>
 <tr class="even">
-<td>&lt;&lt; or ll</td>
-<td>much less than</td>
+<td>&lt;&lt; або ll</td>
+<td>набагато менше</td>
 </tr>
 <tr class="odd">
-<td>&gt;&gt; or gg</td>
-<td>much greater than</td>
+<td>&gt;&gt; або gg</td>
+<td>набагато більше</td>
 </tr>
 <tr class="even">
 <td>qed</td>
-<td>end of proof</td>
+<td>що і слід було довести</td>
 </tr>
 <tr class="odd">
 <td>nabla</td>
-<td>a nabla operator</td>
+<td>набла-оператор</td>
 </tr>
 <tr class="even">
 <td>sum</td>
-<td>sum sign</td>
+<td>знак суми</td>
 </tr>
 <tr class="odd">
 <td>prod</td>
-<td>product sign</td>
+<td>знак добутку</td>
 </tr>
 <tr class="even">
 <td>exists</td>
-<td>there exists sign</td>
+<td>знак «існує»</td>
 </tr>
 <tr class="odd">
 <td>nexists</td>
-<td>there is no sign</td>
+<td>знак «не існує»</td>
 </tr>
 <tr class="even">
 <td>parallel</td>
-<td>a parallel sign</td>
+<td>знак «паралельно»</td>
 </tr>
 <tr class="odd">
 <td>perp</td>
-<td>a perpendicular sign</td>
+<td>знак «перпендикулярно»</td>
 </tr>
 <tr class="even">
 <td>leadsto</td>
-<td>a leads to sign</td>
+<td>знак «випливає»</td>
 </tr>
 <tr class="odd">
 <td>-&gt;</td>
-<td>a right arrow</td>
+<td>стрілка праворуч</td>
 </tr>
 <tr class="even">
 <td>–&gt;</td>
-<td>a long right arrow</td>
+<td>довга стрілка праворуч</td>
 </tr>
 </tbody>
 </table>
@@ -635,12 +644,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2 id="формати-файлів"><span class="header-section-number">1.3</span> Формати файлів</h2>
 <p>Матеріал, який було отримано під час сеансу роботи у <em>wxMaxima</em> може бути збережено для наступного використання у три способи:</p>
 <h3 id="mac"><span class="header-section-number">1.3.1</span> .mac</h3>
-<p><code>.mac</code> files are ordinary text files that contain <em>Maxima</em> commands. They can be read using <em>Maxima</em>’s <code>batch()</code> or <code>load()</code> command or <em>wxMaxima</em>’s File/Batch File menu entry.</p>
-<p>One Example is shown below. <code>Quadratic.mac</code> defines a function and afterwards generates a plot with <code>wxdraw2d()</code>. Afterwards the contents of the file <code>Quadratic.mac</code> are printed and new defined function <code>f()</code> is evaluated.</p>
+<p>Файли <code>.mac</code> є звичайними текстовими файлами, які містять команди <em>Maxima</em>. Їх можна прочитати за допомогою команди <code>batch()</code> або <code>load()</code> <em>Maxima</em> або пункту меню «Файл/Пакетний файл».</p>
+<p>Один з прикладів наведено нижче. <code>Quadratic.mac</code> визначає функцію і після цього створює креслення за допомогою <code>wxdraw2d()</code>. Далі, буде виведено вміст файла <code>Quadratic.mac</code> і виконано обчислення нової визначеної функції <code>f()</code>.</p>
 <figure>
-<img src="./BatchImage.png" alt="Loading a .mac file with batch()" id="img_BatchImage" /><figcaption>Loading a <code>.mac</code> file with <code>batch()</code></figcaption>
+<img src="./BatchImage.png" alt="Завантаження файла .mac за допомогою batch()" id="img_BatchImage" /><figcaption>Завантаження файла <code>.mac</code> за допомогою <code>batch()</code></figcaption>
 </figure>
-<p>Attention: Although the file <code>Quadratic.mac</code> has an usual <em>Maxima</em> extension (<code>.mac</code>), it can only be read by <em>wxMaxima</em>, since the command <code>wxdraw2d()</code> is a wxMaxima-extension to <em>Maxima</em>.</p>
+<p>Увага! Хоча назва файла <code>Quadratic.mac</code> містить звичайний для <em>Maxima</em> суфікс (<code>.mac</code>), прочитати дані з нього зможе лише <em>wxMaxima</em>, оскільки команда <code>wxdraw2d()</code> є wxMaxima-розширенням до <em>Maxima</em>.</p>
 <p>Ви можете використовувати файли <code>.mac</code> для написання власної бібліотеки макросів. Але оскільки у них не міститься достатніх даних щодо структури, їх не можна читати як сеанс <em>wxMaxima</em>.</p>
 <h3 id="wxm"><span class="header-section-number">1.3.2</span> .wxm</h3>
 <p>Файли .wxm містять дані робочого аркуша, окрім виведених даних <em>Maxima</em>. У версіях Maxima &gt;5.38 їх можна прочитати за допомогою функції <code>load()</code> <em>Maxima</em>, так само, як можна прочитати файли .mac. У цьому текстовому форматі іноді є неусувна проблема — робочі аркуші із новими можливостями не є зворотно сумісними із застарілими версіями <em>wxMaxima</em>.</p>
@@ -800,13 +809,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Хоча <em>wxMaxima</em> не надає доступу до цієї можливості, ця функція <em>Maxima</em> (у конфігураціях, де передбачено її підтримку) іноді є дуже зручною. Наведений нижче приклад походить із допису Маріо Родрігеса (Mario Rodriguez) у списку листування <em>Maxima</em>:</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode maxima"><code class="sourceCode maxima"><a class="sourceLine" id="cb14-1" title="1">    <span class="fu">load</span>(<span class="fu">draw</span>);</a>
 <a class="sourceLine" id="cb14-2" title="2"></a>
-<a class="sourceLine" id="cb14-3" title="3">    <span class="co">/* Parabola in window #1 */</span></a>
+<a class="sourceLine" id="cb14-3" title="3">    <span class="co">/* Парабола у вікні 1 */</span></a>
 <a class="sourceLine" id="cb14-4" title="4">    <span class="fu">draw2d</span>(<span class="cn">terminal</span>=[<span class="cn">wxt</span>,<span class="dv">1</span>],<span class="cn">explicit</span>(<span class="cn">x</span>^<span class="dv">2</span>,<span class="cn">x</span>,<span class="dv">-1</span>,<span class="dv">1</span>));</a>
 <a class="sourceLine" id="cb14-5" title="5"></a>
-<a class="sourceLine" id="cb14-6" title="6">    <span class="co">/* Parabola in window #2 */</span></a>
+<a class="sourceLine" id="cb14-6" title="6">    <span class="co">/* Парабола у вікні 2 */</span></a>
 <a class="sourceLine" id="cb14-7" title="7">    <span class="fu">draw2d</span>(<span class="cn">terminal</span>=[<span class="cn">wxt</span>,<span class="dv">2</span>],<span class="cn">explicit</span>(<span class="cn">x</span>^<span class="dv">2</span>,<span class="cn">x</span>,<span class="dv">-1</span>,<span class="dv">1</span>));</a>
 <a class="sourceLine" id="cb14-8" title="8"></a>
-<a class="sourceLine" id="cb14-9" title="9">    <span class="co">/* Paraboloid in window #3 */</span></a>
+<a class="sourceLine" id="cb14-9" title="9">    <span class="co">/* Параболоїд у вікні 3 */</span></a>
 <a class="sourceLine" id="cb14-10" title="10">    <span class="fu">draw3d</span>(<span class="cn">terminal</span>=[<span class="cn">wxt</span>,<span class="dv">3</span>],<span class="cn">explicit</span>(<span class="cn">x</span>^<span class="dv">2</span>+<span class="cn">y</span>^<span class="dv">2</span>,<span class="cn">x</span>,<span class="dv">-1</span>,<span class="dv">1</span>,<span class="cn">y</span>,<span class="dv">-1</span>,<span class="dv">1</span>));</a></code></pre></div>
 <p>Також можна накреслити декілька креслень в одному вікні:</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode maxima"><code class="sourceCode maxima"><a class="sourceLine" id="cb15-1" title="1">    <span class="cn">wxdraw</span>(</a>
@@ -821,7 +830,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Бічна панель «Накреслити за допомогою Draw» приховує простий генератор коду, який уможливлює створення сцен, які використовують певну гнучкість пакунка <em>draw</em>, з яким постачається <em>maxima</em>.</p>
 <h4 id="двовимірний"><span class="header-section-number">2.3.8.1</span> Двовимірний</h4>
 <p>Створює каркас команди <code>draw()</code>, яка малює плоску сцену. Цю сцену пізніше може бути заповнено за допомогою команд, які створюють вміст сцени, наприклад, за допомогою кнопок у рядках під кнопкою «Плоский».</p>
-<p>One helpful feature of the 2D button is that it allows to setup the scene as an animation in which a variable (by default it is <em>t</em>) has a different value in each frame: Often a moving 2D plot allows easier interpretation than the same data in a non-moving 3D one.</p>
+<p>Однією з корисних можливостей кнопки «Плоский» є те, що вона надає змогу налаштувати сцену як анімацію, у якій змінна (типовою змінною є <em>t</em>) має різне значення для кожного з кадрів: часто динамічне плоске креслення надає змогу простіше інтерпретувати дані за ті самі у формі нерухомого просторового креслення.</p>
 <h4 id="тривимірний"><span class="header-section-number">2.3.8.2</span> Тривимірний</h4>
 <p>Створює каркас команди <code>draw()</code>, яка малює просторову сцену. Якщо не налаштовано ні двовимірну, ні тривимірну сцену, усі інші кнопки налаштовуватимуть двовимірну сцену, яка містить команду, яку створює кнопка.</p>
 <h4 id="вираз"><span class="header-section-number">2.3.8.3</span> Вираз</h4>
@@ -986,8 +995,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <hr />
 <h1 id="поширені-питання-та-відповіді-на-них"><span class="header-section-number">4</span> Поширені питання та відповіді на них</h1>
 <h2 id="чи-є-якийсь-спосіб-умістити-більше-тексту-на-сторінку-latex"><span class="header-section-number">4.1</span> Чи є якийсь спосіб умістити більше тексту на сторінку LaTeX?</h2>
-<p>Yes. Use the LaTeX package “geometry” to specify the size of the borders.</p>
-<p>You can add the following line to the LaTeX preamble (for example by using the respective field in the config dialogue (“Export”-&gt;“Additional lines for the TeX preamble”), to set borders of 1cm):</p>
+<p>Так. Скористайтеся пакунком LaTeX «geometry» для визначення розмірів полів.</p>
+<p>Ви можете додати такий рядок до преамбули LaTeX (наприклад, за допомогою відповідного поля у діалоговому вікні налаштовування («Експорт-&gt;Додаткові рядки до преамбули TeX») для встановлення розміру полів у 1 см):</p>
 <div class="sourceCode" id="cb25"><pre class="sourceCode latex"><code class="sourceCode latex"><a class="sourceLine" id="cb25-1" title="1"><span class="bu">\usepackage</span>[left=1cm,right=1cm,top=1cm,bottom=1cm]{<span class="ex">geometry</span>}</a></code></pre></div>
 <h2 id="чи-передбачено-у-програмі-темний-режим"><span class="header-section-number">4.2</span> Чи передбачено у програмі «темний» режим?</h2>
 <p>Якщо бібліотека wxWidgets є достатньо новою, <em>wxMaxima</em> автоматично працюватиме у темному режимі, якщо у ньому працює решта операційної системи. Сам робочий аркуш типово має світле тло. Втім, колір тла можна змінити. Крім того, ви можете скористатися пунктом меню «Перегляд/Інвертувати яскравість робочого аркуша», за допомогою якого можна швидко перетворити робочий аркуш з темного на світлий, і навпаки.</p>

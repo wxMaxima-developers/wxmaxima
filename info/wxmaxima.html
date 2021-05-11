@@ -234,6 +234,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>The cursor is drawn horizontally if it is moved in the space between two cells or by clicking there.</li>
 <li>A vertical cursor that works inside a cell. This cursor is activated by moving the cursor inside a cell using the mouse pointer or the cursor keys and works much like the cursor in a text editor.</li>
 </ul>
+<p>When you start wxMaxma, you will only see the blinking horizontal cursor. If you start typing a math cell will be automatically created (you will see a right arrow as “prompt”, after the Math cell is evaluated (<kbd>CTRL+Enter</kbd>), you will see the labels, e.g. <code>(%i1)</code>, <code>(%o1)</code>.</p>
+<figure>
+<img src="./horizontal-cursor-only.png" alt="(blinking) horizontal cursor after wxMaxima start" id="horizontal-cursor-only" /><figcaption>(blinking) horizontal cursor after wxMaxima start</figcaption>
+</figure>
+<p>You might want to create another cell type (using the “Cell” menu), maybe a title cell or text cell, which describes, what will be done, when you start creating your worksheet.</p>
+<p>If you navigate between the different cells, you will also see the (blinking) horizontal cursor, where you can insert a cell into your worksheet (either a math cell, by just start typing your formula or another cell type).</p>
+<figure>
+<img src="./horizontal-cursor-between-cells.png" alt="(blinking) horizontal cursor between cells" id="horizontal-cursor-between-cells" /><figcaption>(blinking) horizontal cursor between cells</figcaption>
+</figure>
 <h3 id="sending-cells-to-maxima"><span class="header-section-number">1.2.4</span> Sending cells to Maxima</h3>
 <p>The command in a code cell are executed once <kbd>CTRL</kbd>+<kbd>ENTER</kbd>, <kbd>SHIFT</kbd>+<kbd>ENTER</kbd> or the <kbd>ENTER</kbd> key on the keypad is pressed. The <em>wxMaxima</em> default is to enter commands when either <kbd>CTRL+ENTER</kbd> or <kbd>SHIFT+ENTER</kbd> is entered, but <em>wxMaxima</em> can be configured to execute commands in response to <kbd>ENTER</kbd>.</p>
 <h3 id="command-autocompletion"><span class="header-section-number">1.2.5</span> Command autocompletion</h3>

@@ -193,7 +193,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h3 id="maxima"><span class="header-section-number">1.1.1</span> <em>Maxima</em></h3>
 <p><em>Maxima</em> es un sistema algebraico computador completo (CAS) de características. Un CAS es un programa que puede resolver problemas matemáticos reconociendo fórmulas y encontrando una fórmula que resuelva el problema como difícil a ajustar la salida del valor numérico del resultado. En otras palabras, <em>Maxima</em> pude servir como una calculadora que proporciona representaciones numéricas de variables, y además puede proporcionar soluciones analíticas. Más aún, ofrece un rango de métodos numéricos para ecuaciones o sistemas de ecuaciones que no pueden ser analíticamente resueltos.</p>
 <figure>
-<img src="./maxima_pantallazo.png" alt="Pantallazo de Maxima, línea intrucción" id="img_maxima_pantallazo" /><figcaption>Pantallazo de Maxima, línea intrucción</figcaption>
+<img src="./maxima_screenshot.png" alt="Pantallazo de Maxima, línea intrucción" id="img_maxima_pantallazo" /><figcaption>Pantallazo de Maxima, línea intrucción</figcaption>
 </figure>
 <p>Extensive documentation for <em>Maxima</em> is <a href="https://maxima.sourceforge.io/documentation.html">available in the internet</a>. Part of this documentation is also available in wxMaxima’s help menu. Pressing the Help key (on most systems the F1 key) causes <em>wxMaxima</em>’s context-sensitive help feature to automatically jump to <em>Maxima</em>’s manual page for the command at the cursor.</p>
 <h3 id="wxmaxima"><span class="header-section-number">1.1.2</span> wxMaxima</h3>
@@ -234,6 +234,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>El cursor es dibujado horizontalmente si es trasladado dentro del espacio entre dos celdas o pulsando allí.</li>
 <li>Un cursor vertical que funciona dentro de una celda. Este cursor está activado moviendo el cursor dentro de una celda utilizando el puntero del ratón o las teclas del cursor y funciona como el cursor en un editor de texto.</li>
 </ul>
+<p>When you start wxMaxma, you will only see the blinking horizontal cursor. If you start typing a math cell will be automatically created (you will see a right arrow as “prompt”, after the Math cell is evaluated (<kbd>CTRL+Enter</kbd>), you will see the labels, e.g. <code>(%i1)</code>, <code>(%o1)</code>.</p>
+<figure>
+<img src="./horizontal-cursor-only.png" alt="(blinking) horizontal cursor after wxMaxima start" id="horizontal-cursor-only" /><figcaption>(blinking) horizontal cursor after wxMaxima start</figcaption>
+</figure>
+<p>You might want to create another cell type (using the “Cell” menu), maybe a title cell or text cell, which describes, what will be done, when you start creating your worksheet.</p>
+<p>If you navigate between the different cells, you will also see the (blinking) horizontal cursor, where you can insert a cell into your worksheet (either a math cell, by just start typing your formula or another cell type).</p>
+<figure>
+<img src="./horizontal-cursor-between-cells.png" alt="(blinking) horizontal cursor between cells" id="horizontal-cursor-between-cells" /><figcaption>(blinking) horizontal cursor between cells</figcaption>
+</figure>
 <h3 id="envía-celdas-a-maxima"><span class="header-section-number">1.2.4</span> Envía celdas a “Maxima”</h3>
 <p>La instrucción dentro de una calda de código son ejecutadas una vez <kbd>CTRL</kbd>+<kbd>INTRO</kbd>, <kbd>MAYÚS</kbd>+<kbd>INTRO</kbd> o la tecla <kbd>INTRO</kbd> en el teclado numérico es presionado. La <em>wxMaxima</em> predeterminada está para introducir instrucciones cuando es introducido o bien <kbd>CTRL+INTRO</kbd> o bien <kbd>MAYÚS+INTRO</kbd>, pero <em>wxMaxima</em> puede ser configurado para ejecutar instrucciones como respuesta al <kbd>INTRO</kbd>.</p>
 <h3 id="auto-completado-de-instrucción"><span class="header-section-number">1.2.5</span> Auto-completado de instrucción</h3>
