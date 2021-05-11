@@ -110,6 +110,18 @@ What isn't standard is that _wxMaxima_ provides drag-and-drop flexibility by def
 * The cursor is drawn horizontally if it is moved in the space between two cells or by clicking there.
 * A vertical cursor that works inside a cell. This cursor is activated by moving the cursor inside a cell using the mouse pointer or the cursor keys and works much like the cursor in a text editor.
 
+When you start wxMaxma, you will only see the blinking horizontal cursor. If you start typing a math cell will be automatically created (you will see a right arrow as "prompt", after the Math cell is evaluated (<kbd>CTRL+ENTER</kbd>), you will see the labels, e.g. `(%i1)`, `(%o1)`).
+
+
+![(blinking) horizontal cursor after wxMaxima start](./horizontal-cursor-only.png){ id=horizontal-cursor-only }
+
+
+You might want to create another cell type (using the "Cell" menu), maybe a title cell or text cell, which describes, what will be done, when you start creating your worksheet.
+
+If you navigate between the different cells, you will also see the (blinking) horizontal cursor, where you can insert a cell into your worksheet (either a math cell, by just start typing your formula - or another cell type using the menu).
+
+![(blinking) horizontal cursor between cells](./horizontal-cursor-between-cells.png){ id=horizontal-cursor-between-cells }
+
 ### Sending cells to Maxima
 
 The command in a code cell are executed once <kbd>CTRL</kbd>+<kbd>ENTER</kbd>, <kbd>SHIFT</kbd>+<kbd>ENTER</kbd> or the <kbd>ENTER</kbd> key on the keypad is pressed. The _wxMaxima_ default is to enter commands when either <kbd>CTRL+ENTER</kbd> or <kbd>SHIFT+ENTER</kbd> is entered, but _wxMaxima_ can be configured to execute commands in response to <kbd>ENTER</kbd>.
