@@ -72,7 +72,8 @@ int ImgCell::s_counter = 0;
 
 // constructor which load image
 ImgCell::ImgCell(GroupCell *group, Configuration **config, const wxString &image, std::shared_ptr<wxFileSystem> filesystem, bool remove)
-  : Cell(group, config)
+  : Cell(group, config),
+    m_imageBorderWidth(1)
 {
   InitBitFields();
   m_type = MC_TYPE_IMAGE;
@@ -84,7 +85,8 @@ ImgCell::ImgCell(GroupCell *group, Configuration **config, const wxString &image
 }
 
 ImgCell::ImgCell(GroupCell *group, const ImgCell &cell) :
-  Cell(group, m_configuration)
+  Cell(group, m_configuration),
+  m_imageBorderWidth(1)
 {
   InitBitFields();
   m_type = MC_TYPE_IMAGE;

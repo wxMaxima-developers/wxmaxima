@@ -203,7 +203,7 @@ GroupCell::GroupCell(GroupCell *WXUNUSED(group), GroupCell const &cell):
 {}
 
 GroupCell::GroupCell(GroupCell const &cell):
-    GroupCell(cell.m_configuration, cell.m_groupType)
+  GroupCell(cell.m_configuration, cell.m_groupType)
 {
   CopyCommonData(cell);
   if (cell.m_inputLabel)
@@ -211,7 +211,6 @@ GroupCell::GroupCell(GroupCell const &cell):
   if (cell.m_output)
     SetOutput(cell.m_output->CopyList(this));
   SetAutoAnswer(cell.m_autoAnswer);
-  UpdateYPosition();
 }
 
 DEFINE_CELL(GroupCell)

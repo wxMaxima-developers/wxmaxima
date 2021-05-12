@@ -72,7 +72,7 @@ public:
   GroupCell(GroupCell const &cell);
   GroupCell(GroupCell *group, const GroupCell &cell);
   std::unique_ptr<Cell> Copy() const;
-  std::unique_ptr<Cell> Copy(GroupCell *WXUNUSED(group)) const;
+  std::unique_ptr<Cell> Copy(GroupCell *group) const;
   const CellTypeInfo &GetInfo() override;
   std::unique_ptr<GroupCell> CopyList() const;
   ~GroupCell();
