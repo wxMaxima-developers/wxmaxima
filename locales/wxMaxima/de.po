@@ -4150,7 +4150,7 @@ msgstr "Matrix zu verschachtelter Liste"
 #: ../../src/wxMaxima.cpp:6645 ../../src/wxMaxima.cpp:6761
 #: ../../src/wxMaxima.cpp:6816
 msgid "Matrix:"
-msgstr "Matrix"
+msgstr "Matrix:"
 
 #: ../../src/ConfigDialogue.cpp:247
 msgid "Maxima"
@@ -4557,7 +4557,7 @@ msgstr "Verbinde die markierten Eingabezellen zu einer"
 
 #: ../../src/wxMaxima.cpp:5074
 msgid "Message from the stdout of Maxima: "
-msgstr "Nachricht vom stdout von wxMaxima: "
+msgstr "Nachricht vom stdout von Maxima: "
 
 #: ../../src/wxMaxima.cpp:8224
 msgid "Minimum absolute value printed without exponent:"
@@ -4622,11 +4622,11 @@ msgstr "Der \"Neu\"-Knopf"
 
 #: ../../src/wxMaxima.cpp:1677
 msgid "New connection attempt whilst already connected."
-msgstr "Neue Verbindungsanfrage, während maxima bereits verbunden ist."
+msgstr "Neue Verbindungsanfrage, während Maxima bereits verbunden ist."
 
 #: ../../src/wxMaxima.cpp:1682
 msgid "New connection attempt, but no currently running maxima process."
-msgstr "Neuer Verbindungsversuch, aber kein Maxima-Prozess"
+msgstr "Neuer Verbindungsversuch, aber kein laufender Maxima-Prozess."
 
 #: ../../src/ToolBar.cpp:164
 msgid "New document"
@@ -4685,7 +4685,7 @@ msgstr "Keine Übereinstimmung gefunden!"
 
 #: ../../src/wxMaxima.cpp:8708
 msgid "No saving on close necessary."
-msgstr "Speichern beim Schließen fehlgeschlagen."
+msgstr "Speichern beim Schließen nicht notwendig."
 
 #: ../../src/wxMaximaFrame.cpp:2118
 msgid "Non-builtin symbols"
@@ -4697,7 +4697,7 @@ msgstr "Keine"
 
 #: ../../src/wxMaximaFrame.cpp:1822
 msgid "Normality Test..."
-msgstr "Test Normalverteilung"
+msgstr "Test Normalverteilung..."
 
 #: ../../src/ConfigDialogue.cpp:360
 msgid ""
@@ -4725,7 +4725,7 @@ msgstr "Keine gültige Anzahl an Gleichungen!"
 
 #: ../../src/wxMaximaFrame.cpp:567
 msgid "Not connected to Maxima"
-msgstr "Nicht mit Maxima verbunden\""
+msgstr "Nicht mit Maxima verbunden"
 
 #: ../../src/wxMaximaFrame.cpp:1980
 msgid "Nu"
@@ -4908,7 +4908,7 @@ msgid ""
 "Portable anymap (*.pnm)|*.pnm|Tagged image file format (*.tif)|*.tif|X "
 "pixmap (*.xpm)|*.xpm"
 msgstr ""
-"PNG-Bild (*.png)|*.png|JPEG-Bild (*.jpg)|*.jpg|GIF image (*.gif)|*.gif|"
+"PNG-Bild (*.png)|*.png|JPEG-Bild (*.jpg)|*.jpg|GIF-Bild (*.gif)|*.gif|"
 "Scaleable vector graphics (*.svg)|*.svg|Windows bitmap (*.bmp)|*.bmp|"
 "Portable anymap (*.pnm)|*.pnm|Tagged image file format (*.tif)|*.tif|X "
 "pixmap (*.xpm)|*.xpm"
@@ -5392,7 +5392,7 @@ msgstr "Setze alle Konfigurations-Einstellungen zurück"
 
 #: ../../src/ToolBar.cpp:203 ../../src/wxMaximaFrame.cpp:935
 msgid "Restart Maxima"
-msgstr "Maxima wird neu gestartet"
+msgstr "Maxima neu starten"
 
 #: ../../src/Worksheet.cpp:1331 ../../src/Worksheet.cpp:1449
 msgid "Restrict Maximum size"
@@ -5496,7 +5496,7 @@ msgstr "Nullstellen eines Polynoms (bfloat)"
 
 #: ../../src/wxMaximaFrame.cpp:803
 msgid "Rounded"
-msgstr "Rund"
+msgstr "Gerundet"
 
 #: ../../src/wxMaxima.cpp:6585 ../../src/wxMaxima.cpp:6600
 #: ../../src/wxMaxima.cpp:6615 ../../src/wxMaxima.cpp:6630
@@ -5513,7 +5513,7 @@ msgstr "Regel:"
 
 #: ../../src/wxMaxima.cpp:5738
 msgid "Running gnuplot as: "
-msgstr "Starte gnuplot als: "
+msgstr "Starte Gnuplot als: "
 
 #: ../../src/wxMaxima.cpp:1843
 #, c-format
@@ -6030,7 +6030,7 @@ msgstr "Zeige Muster der Funktion"
 
 #: ../../src/ConfigDialogue.cpp:607
 msgid "Show labels:"
-msgstr "Zeige Marken"
+msgstr "Zeige Marken:"
 
 #: ../../src/ConfigDialogue.cpp:377
 msgid "Show long expressions in wxMaxima document."
@@ -6152,9 +6152,7 @@ msgid ""
 "'Cell->Insert Image...' menu command."
 msgstr ""
 "Seit wxMaxima 0.8.2 können Sie auch Bilder in ein Dokument einfügen. Nutzen "
-"Sie dazu den Menübefehl 'Bearbeiten->Bild einfügen'. Beachten Sie, dass Sie "
-"das Dokument als 'wxMaxima XML Dokument' speichern müssen, wenn das Bild mit "
-"dem Dokument gesichert werden soll."
+"Sie dazu den Menübefehl 'Bearbeiten->Bild einfügen'."
 
 #: ../../src/wxMaxima.cpp:6384 ../../src/wxMaxima.cpp:6400
 msgid "Solution:"
@@ -6315,7 +6313,7 @@ msgstr "Das Starten des Servers ist fehlgeschlagen"
 
 #: ../../src/Worksheet.cpp:6313
 msgid "Starting to save the worksheet as .wxmx"
-msgstr "Beginne, das Arbeitsblatt zu speichern"
+msgstr "Beginne, das Arbeitsblatt als .wxmx-Datei zu speichern"
 
 #: ../../src/ConfigDialogue.cpp:252
 msgid "Startup commands"
@@ -6773,7 +6771,10 @@ msgid ""
 "developers/wxmaxima/discussions.\n"
 "You can ask questions there - and please help other users, by answering "
 "their questions, if you know an answer."
-msgstr ""
+msgstr "Es gibt ein (englischsprachiges) Diskussionsforum für wxMaxima: https://github.com/wxMaxima-"
+"developers/wxmaxima/discussions\n"
+"Sie können dort Fragen stellen - und wenn möglich, anderen helfen, indem "
+"Sie Fragen beantworten, wenn Sie eine Antwort wissen.\n"
 
 #: ../../src/wxMaxima.cpp:1369
 msgid ""
@@ -7155,7 +7156,7 @@ msgstr "Verwende \"<\" und \">\" als Klammern für Matrizen"
 
 #: ../../src/wxMaximaFrame.cpp:1295 ../../src/wxMaximaFrame.cpp:1324
 msgid "Use a list"
-msgstr "Verwenden"
+msgstr "Verwenden einer Liste"
 
 #: ../../src/wxMaxima.cpp:7488
 msgid "Use a list as parameter list for a function"
@@ -7223,7 +7224,7 @@ msgid ""
 "Using gnuplot's antialiassing-less png driver for embedded plots as pngcairo "
 "could not be found"
 msgstr ""
-"Verwende gnuplot's simplen png-Treiber, da gnuplot ohne pngcaro compiliert "
+"Verwende Gnuplot's simplen png-Treiber, da Gnuplot ohne pngcairo compiliert "
 "wurde."
 
 #: ../../src/wxMaxima.cpp:2134
