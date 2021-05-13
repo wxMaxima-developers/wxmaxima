@@ -38,26 +38,30 @@
 #define PRINT_MARGIN_HORIZONTAL 50
 #define PRINT_MARGIN_VERTICAL 50
 
-Printout::Printout(wxString title, Configuration **configuration, double scaleFactor) : wxPrintout(title)
+Printout::Printout(wxString title, GroupCell *tree, double scaleFactor) :
+  wxPrintout(title),
+  m_configuration(GetDC(), Configuration::temporary),
+  m_configPointer(&m_configuration)
 {
-  m_scaleFactor = scaleFactor;
-  m_configuration = configuration;
-  m_oldconfig = *m_configuration;
-  m_printConfigCreated = false;
+  if(tree)
+  {
+    auto copy = tree->CopyList();
+    m_tree = std::move(copy);
+    m_tree->SetConfigurationList(&m_configPointer);
+
+    m_scaleFactor = scaleFactor;
+    m_configuration.LineWidth_em(10000);
+  
+    m_configuration.ShowCodeCells(m_tree->GetConfiguration()->ShowCodeCells());
+    m_configuration.ShowBrackets((m_tree->GetConfiguration())->PrintBrackets());
+    m_configuration.ClipToDrawRegion(false);
+
+  }
 }
 
 Printout::~Printout()
 {
   DestroyTree();
-  if(m_printConfigCreated)
-    wxDELETE(*m_configuration);
-  *m_configuration = m_oldconfig;
-  (*m_configuration)->FontChanged();
-}
-
-void Printout::SetData(std::unique_ptr<GroupCell> &&tree)
-{
-  m_tree = std::move(tree);
 }
 
 bool Printout::HasPage(int num)
@@ -69,6 +73,7 @@ bool Printout::HasPage(int num)
 
 bool Printout::OnPrintPage(int num)
 {
+  m_configuration.SetContext(*GetDC());
   if(num > m_pages.size())
     return false;
 //  wxBusyInfo busyInfo(wxString::Format(_("Printing page %i..."),num));
@@ -80,7 +85,7 @@ bool Printout::OnPrintPage(int num)
   int marginX, marginY;
   GetPageSizePixels(&pageWidth, &pageHeight);
   GetPageMargins(&marginX, &marginY);
-  (*m_configuration)->SetCanvasSize({pageWidth - marginX, pageHeight - marginY});
+  m_configuration.SetCanvasSize({pageWidth - marginX, pageHeight - marginY});
   
   GroupCell *group = m_pages[num - 1]->GetGroup();
   if (!group)
@@ -98,7 +103,7 @@ bool Printout::OnPrintPage(int num)
   dc->SetDeviceOrigin(
     marginX,
     marginY + GetHeaderHeight() - m_pages[num - 1]->GetRect(true).GetTop() +
-    (*m_configuration)->Scale_Px((*m_configuration)->GetGroupSkip())
+    m_configuration.Scale_Px(m_tree->GetConfiguration()->GetGroupSkip())
     );
   
   Cell *end = NULL;
@@ -140,6 +145,7 @@ bool Printout::OnPrintPage(int num)
 
 bool Printout::OnBeginDocument(int startPage, int endPage)
 {
+  m_configuration.SetContext(*GetDC());
   if (!wxPrintout::OnBeginDocument(startPage, endPage))
     return false;
   return true;
@@ -147,6 +153,7 @@ bool Printout::OnBeginDocument(int startPage, int endPage)
 
 void Printout::BreakPages()
 {
+  m_configuration.SetContext(*GetDC());
   if (m_tree == NULL)
     return;
 
@@ -163,7 +170,7 @@ void Printout::BreakPages()
   GroupCell *group = m_tree.get();
   m_pages.push_back(group);
 
-  // Now see where the next pages shuld start
+  // Now see where the next pages should start
   for (GroupCell &group : OnList(m_tree.get()))
   {
     wxCoord pageStart = m_pages[m_pages.size()-1]->GetRect(true).GetTop();
@@ -181,7 +188,9 @@ void Printout::BreakPages()
     {
       if(!group.GetOutput())
       {
-        m_pages.push_back(&group);
+        if(((group.GetRect(true).GetBottom() - pageStart >
+             maxContentHeight)))
+          m_pages.push_back(&group);
       }
       else
       {
@@ -228,17 +237,9 @@ void Printout::BreakPages()
 
 void Printout::SetupData()
 {
-  wxDC *dc = GetDC();
-  *m_configuration = new Configuration(dc, Configuration::temporary);
-  (*m_configuration)->LineWidth_em(10000);
-  
-  m_printConfigCreated = true;
-  (*m_configuration)->ShowCodeCells(m_oldconfig->ShowCodeCells());
-  (*m_configuration)->ShowBrackets((*m_configuration)->PrintBrackets());
-  (*m_configuration)->ClipToDrawRegion(false);
-  
-//  SetUserScale(1/DCSCALE,
-//               1/DCSCALE);
+  m_configuration.SetContext(*GetDC());
+  //  SetUserScale(1/DCSCALE,
+  //               1/DCSCALE);
   // on MSW according to https://groups.google.com/forum/#!topic/wx-users/QF_W4g3Oe98
   // the wxFont::SetPointSize is scaled relative to the screen DPI rate in order to
   // get the right font size in pixels. Unfortunately this is true for printing, too,
@@ -249,44 +250,45 @@ void Printout::SetupData()
   // the DPI rate, too. It seems that for a 75dpi and a 300dpi printer the scaling
   // factor is 1.0.
   wxSize printPPI;
-  printPPI = (*m_configuration)->GetDC()->GetPPI();
+  printPPI = GetDC()->GetPPI();
   if(printPPI.x < 1)
     printPPI.x = 72;
   if(printPPI.y < 1)
     printPPI.y = 72;
-  (*m_configuration)->GetDC()->SetUserScale(1.0,1.0);
-  (*m_configuration)->SetZoomFactor_temporarily(
-    printPPI.x / DPI_REFERENCE * m_oldconfig->PrintScale() / m_scaleFactor
-  );
-
+  m_tree->GetConfiguration()->GetDC()->SetUserScale(1.0,1.0);
+  m_configuration.SetZoomFactor_temporarily(
+    printPPI.x / DPI_REFERENCE * m_tree->GetConfiguration()->PrintScale() / m_scaleFactor
+    );
+ 
   // wxSize screenPPI;
-  // screenPPI = m_oldconfig->GetDC()->GetPPI();
-  // double oldZoomFactor = m_oldconfig->GetZoomFactor();
+  // screenPPI = m_tree->GetConfiguration()->GetDC()->GetPPI();
+  // double oldZoomFactor = m_tree->GetConfiguration()->GetZoomFactor();
   // wxMessageDialog dialog(NULL,
   //   wxString::Format(wxT("screenPPI.x=%i,\nprintPPI.x=%i\nzoomFactor=%f\nUserScale.x=%f"),
   //     screenPPI.x, printPPI.x, oldZoomFactor, userScale_x),
   //   wxString("Printer Parameters"));
   // dialog.ShowModal();
 
+
   int pageWidth, pageHeight;
   int marginX, marginY;
   GetPageSizePixels(&pageWidth, &pageHeight);
   GetPageMargins(&marginX, &marginY);
 
-  (*m_configuration)->SetClientWidth(pageWidth - 2 * marginX
-    - (*m_configuration)->Scale_Px(72) // Some additional margin to compensate for title and section indent
-    - (*m_configuration)->Scale_Px((*m_configuration)->GetBaseIndent()));
-  (*m_configuration)->SetClientHeight(pageHeight - 2 * marginY);
+  m_configuration.SetClientWidth(pageWidth - 2 * marginX
+    - m_configuration.Scale_Px(72) // Some additional margin to compensate for title and section indent
+    - m_configuration.Scale_Px(m_configuration.GetBaseIndent()));
+  m_configuration.SetClientHeight(pageHeight - 2 * marginY);
 
-  if((*m_configuration)->PrintBrackets())
+  if(m_configuration.PrintBrackets())
   {
-    if(marginX < (*m_configuration)->Scale_Px(1 + (*m_configuration)->GetBaseIndent()))
-      marginX = (*m_configuration)->Scale_Px(1 + (*m_configuration)->GetBaseIndent());
+    if(marginX < m_configuration.Scale_Px(1 + m_configuration.GetBaseIndent()))
+      marginX = m_configuration.Scale_Px(1 + m_configuration.GetBaseIndent());
   }
-  (*m_configuration)->SetIndent(marginX);
+  m_configuration.SetIndent(marginX);
   // Inform the output routines that we are printing
-  (*m_configuration)->SetPrinting(true);
-  (*m_configuration)->LineWidth_em(10000);
+  m_configuration.SetPrinting(true);
+  m_configuration.LineWidth_em(10000);
   Recalculate();
   BreakPages();
 }
@@ -302,13 +304,14 @@ void Printout::GetPageInfo(int *minPage, int *maxPage,
 
 void Printout::OnPreparePrinting()
 {
+  m_configuration.SetContext(*GetDC());
   SetupData();
 }
 
 void Printout::GetPageMargins(int *horizontal, int *vertical)
 {
-  *horizontal = (int) ((*m_configuration)->Scale_Px(PRINT_MARGIN_HORIZONTAL));
-  *vertical = (int) ((*m_configuration)->Scale_Px(PRINT_MARGIN_VERTICAL));
+  *horizontal = (int) (m_configuration.Scale_Px(PRINT_MARGIN_HORIZONTAL));
+  *vertical = (int) (m_configuration.Scale_Px(PRINT_MARGIN_VERTICAL));
 }
 
 int Printout::GetHeaderHeight()
@@ -316,9 +319,9 @@ int Printout::GetHeaderHeight()
   wxDC *dc = GetDC();
   int width, height;
 
-  dc->SetFont(wxFont((*m_configuration)->Scale_Px(10), wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL));
+  dc->SetFont(wxFont(m_configuration.Scale_Px(10), wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL));
   dc->GetTextExtent(GetTitle(), &width, &height);
-  return height + (*m_configuration)->Scale_Px(12);
+  return height + m_configuration.Scale_Px(12);
 }
 
 void Printout::PrintHeader(int pageNum, wxDC *dc)
@@ -332,9 +335,9 @@ void Printout::PrintHeader(int pageNum, wxDC *dc)
   GetPageSizePixels(&pageWidth, &pageHeight);
 
   dc->SetTextForeground(wxColour(wxT("grey")));
-  dc->SetPen(wxPen(wxT("light grey"), (*m_configuration)->Scale_Px(1), wxPENSTYLE_SOLID));
+  dc->SetPen(wxPen(wxT("light grey"), m_configuration.Scale_Px(1), wxPENSTYLE_SOLID));
 
-  dc->SetFont(wxFont((*m_configuration)->Scale_Px(10), wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL));
+  dc->SetFont(wxFont(m_configuration.Scale_Px(10), wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL));
   dc->GetTextExtent(GetTitle(), &title_width, &title_height);
   wxString page = wxString::Format(wxT("%d / %li"), pageNum, (long)m_pages.size());
   dc->GetTextExtent(page, &page_width, &page_height);
@@ -342,8 +345,8 @@ void Printout::PrintHeader(int pageNum, wxDC *dc)
   dc->DrawText(GetTitle(), marginX, marginY);
   dc->DrawText(page, pageWidth - page_width - marginX, marginY);
 
-  dc->DrawLine(marginX, marginY + title_height + (*m_configuration)->Scale_Px(3),
-               pageWidth - marginX, marginY + title_height + (*m_configuration)->Scale_Px(3));
+  dc->DrawLine(marginX, marginY + title_height + m_configuration.Scale_Px(3),
+               pageWidth - marginX, marginY + title_height + m_configuration.Scale_Px(3));
 
   dc->SetTextForeground(wxColour(wxT("black")));
   dc->SetPen(wxPen(wxT("black"), 1, wxPENSTYLE_SOLID));
@@ -359,7 +362,7 @@ void Printout::Recalculate()
   int pageWidth, pageHeight;
   GetPageSizePixels(&pageWidth, &pageHeight);
 
-//  marginX += (*m_configuration)->Scale_Px((*m_configuration)->GetBaseIndent());
+//  marginX += m_configuration.Scale_Px(m_configuration.GetBaseIndent());
 
   m_tree -> ResetDataList();
 

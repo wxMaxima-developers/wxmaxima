@@ -32,6 +32,7 @@
 #include "precomp.h"
 #include <wx/wx.h>
 #include <wx/print.h>
+#include <wx/dcmemory.h>
 
 #include <vector>
 
@@ -40,15 +41,13 @@
 class Printout : public wxPrintout
 {
 public:
-  Printout(wxString title, Configuration **configuration, double scaleFactor);
+  Printout(wxString title, GroupCell *tree, double scaleFactor);
 
   ~Printout();
 
   void DestroyTree();
 
   void DestroyTree(GroupCell *tree);
-
-  void SetData(std::unique_ptr<GroupCell> &&tree);
 
   void SetupData();
 
@@ -73,11 +72,11 @@ public:
   void PrintHeader(int pageNum, wxDC *dc);
 
 private:
-  Configuration **m_configuration, *m_oldconfig;
-  bool m_printConfigCreated;
   wxString m_title;
   std::unique_ptr<GroupCell> m_tree;
   std::vector<Cell *> m_pages;
+  Configuration m_configuration;
+  Configuration *m_configPointer;
   double m_scaleFactor;
 };
 

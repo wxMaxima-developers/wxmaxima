@@ -450,6 +450,19 @@ bool Cell::HasValidPosition() const
   return (m_currentPoint.x >= 0) & (m_currentPoint.y >= 0);
 }
 
+void Cell::SetConfigurationList(Configuration **config)
+{
+  for (Cell &tmp : OnList(this))
+    tmp.SetConfiguration(config);
+}
+
+void Cell::SetConfiguration(Configuration **config)
+{
+  m_configuration = config;
+  for (Cell &cell : OnInner(this))
+    cell.SetConfigurationList(config);
+}
+
 wxRect Cell::GetRect(bool wholeList) const
 {
   if (wholeList)

@@ -272,7 +272,11 @@ public:
     For details see ClearCache().
    */
   void ClearCacheList();
+  void SetConfigurationList(Configuration **config);
+  void SetConfiguration(Configuration **config);
+  Configuration *GetConfiguration(){return *m_configuration;}
 
+  
   /*! Draw this cell
 
     \param point The x and y position this cell is drawn at: All top-level cells get their
@@ -844,7 +848,7 @@ private:
 #if wxUSE_ACCESSIBILITY
   std::unique_ptr<CellAccessible> m_accessible;
 #endif
-
+  
 public:
     const wxString &GetLocalToolTip() const;
 protected:

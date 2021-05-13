@@ -4550,9 +4550,7 @@ void wxMaxima::PrintMenu(wxCommandEvent &event)
         // events for the console
         wxWindowUpdateLocker noUpdates(m_worksheet);
         wxEventBlocker blocker(m_worksheet);
-        Printout printout(title, &m_worksheet->m_configuration, GetContentScaleFactor());
-        auto copy = m_worksheet->CopyTree();
-        printout.SetData(std::move(copy));
+        Printout printout(title, m_worksheet->GetTree(), GetContentScaleFactor());
         wxBusyCursor crs;
         if (printer.Print(this, &printout, true))
         {
