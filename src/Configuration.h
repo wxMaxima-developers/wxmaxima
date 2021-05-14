@@ -762,7 +762,7 @@ public:
   Style GetStyle(TextStyle textStyle, AFontSize fontSize) const;
   
   //! Get the worksheet this configuration storage is valid for
-  wxWindow *GetWorkSheet() const {return m_workSheet;}
+  wxWindow *GetWorkSheet() const {wxASSERT(m_workSheet != NULL); return m_workSheet;}
   //! Set the worksheet this configuration storage is valid for
   inline void SetWorkSheet(wxWindow *workSheet);
 
@@ -876,7 +876,7 @@ private:
   //! Which objects do we want to convert into subscripts if they occur after an underscore?
   long m_autoSubscript;
   //! The worksheet this configuration storage is valid for
-  wxWindow *m_workSheet;
+  wxWindow *m_workSheet = NULL;
   /*! Do these chars exist in the given font?
 
     wxWidgets currently doesn't define such a function. But we can do the following:
