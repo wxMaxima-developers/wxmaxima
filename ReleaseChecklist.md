@@ -23,6 +23,7 @@ wxMaxima (additional) steps:
 - Run "make test"
 - Does test/testbench_simple.wxmx work?
 - Create a git tag for the release
+- Push the tag to Github, using: git push origin --tags
 - Go to the releases page Github and convert the tag into a release
 - Update the release info in the files download.html and in version.txt
   in the gh_pages branch.
