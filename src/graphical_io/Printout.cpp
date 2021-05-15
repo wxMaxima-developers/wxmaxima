@@ -44,6 +44,13 @@ Printout::Printout(wxString title, GroupCell *tree, double scaleFactor) :
   m_configuration(GetDC(), Configuration::temporary),
   m_configPointer(&m_configuration)
 {
+  m_configuration.LineWidth_em(10000);
+  
+  m_configuration.ShowCodeCells(tree->GetConfiguration()->ShowCodeCells());
+  m_configuration.ShowBrackets(tree->GetConfiguration()->PrintBrackets());
+  m_configuration.SetWorkSheet(tree->GetConfiguration()->GetWorkSheet());
+
+  m_configuration.ClipToDrawRegion(false);
   if(tree)
   {
     auto copy = tree->CopyList();
@@ -51,14 +58,6 @@ Printout::Printout(wxString title, GroupCell *tree, double scaleFactor) :
     m_tree->SetConfigurationList(&m_configPointer);
 
     m_scaleFactor = scaleFactor;
-    m_configuration.LineWidth_em(10000);
-  
-    m_configuration.ShowCodeCells(tree->GetConfiguration()->ShowCodeCells());
-    m_configuration.ShowBrackets(tree->GetConfiguration()->PrintBrackets());
-    m_configuration.SetWorkSheet(tree->GetConfiguration()->GetWorkSheet());
-
-    m_configuration.ClipToDrawRegion(false);
-
   }
 }
 
