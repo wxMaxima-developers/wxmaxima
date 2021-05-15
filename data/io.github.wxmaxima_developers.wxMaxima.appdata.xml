@@ -56,6 +56,23 @@
          to time zone variations
          You can see current time at: https://en.wikipedia.org/wiki/ISO_8601
     -->
+   <release version="21.05.0" date="2021-05-15T09:49:00Z">
+      <description>
+	<p>
+	  Many bug fixes.
+	</p>
+<ul>
+<li>Long numbers now can be broken into lines</li>
+<li>On Export long numbers sometimes got lost</li>
+<li>The height of folded cells now is calculated correctly, again (bug #1532)</li>
+<li>Printing now can insert pagebreaks within GroupCells (bug #970, #1528, 
+    #1241, #181, #573,#1082)</li>
+<li>A Russian translation update by OlesyaGerasimenko</li>
+<li>A Ukrainian translation update by Yuri Chornoivan</li>
+<li>Changed the font for the PDF manuals which fixes missing characters for many languages</li>
+</ul>
+      </description>
+  </release>
    <release version="21.04.0" date="2021-04-11T12:00:00Z">
       <description>
 	<p>
