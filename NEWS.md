@@ -9,6 +9,7 @@
  * Changed the font for the PDF manuals to free Google Noto fonts.
    Now all PDF manuals can be created without missing characters
    (before cyrillic, chinese and greek characters were missing).
+ * Solved a crash when printing.
 
 # 21.04.0
  * Fix visualization after "Evaluate all cells (Ctrl+Shift+R)" (bug #1512).
