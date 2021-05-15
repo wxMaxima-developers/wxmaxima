@@ -52,9 +52,9 @@ Printout::Printout(wxString title, GroupCell *tree, double scaleFactor) :
     m_scaleFactor = scaleFactor;
     m_configuration.LineWidth_em(10000);
   
-    m_configuration.ShowCodeCells(m_tree->GetConfiguration()->ShowCodeCells());
-    m_configuration.ShowBrackets(m_tree->GetConfiguration()->PrintBrackets());
-    m_configuration.SetWorkSheet(m_tree->GetConfiguration()->GetWorkSheet());
+    m_configuration.ShowCodeCells(tree->GetConfiguration()->ShowCodeCells());
+    m_configuration.ShowBrackets(tree->GetConfiguration()->PrintBrackets());
+    m_configuration.SetWorkSheet(tree->GetConfiguration()->GetWorkSheet());
 
     m_configuration.ClipToDrawRegion(false);
 
