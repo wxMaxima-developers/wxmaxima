@@ -1,3 +1,6 @@
+# 21.05.1:
+ * Resolved a segfault on printing that could be triggered on some computers
+
 # 21.05.0:
  * Long numbers now can be broken into lines 
  * On Export long numbers sometimes got lost

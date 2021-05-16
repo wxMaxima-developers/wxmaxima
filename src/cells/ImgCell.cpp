@@ -85,7 +85,7 @@ ImgCell::ImgCell(GroupCell *group, Configuration **config, const wxString &image
 }
 
 ImgCell::ImgCell(GroupCell *group, const ImgCell &cell) :
-  Cell(group, m_configuration),
+  Cell(group, cell.m_configuration),
   m_imageBorderWidth(1)
 {
   InitBitFields();

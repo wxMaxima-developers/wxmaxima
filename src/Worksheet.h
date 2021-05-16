@@ -1637,7 +1637,11 @@ protected:
 };
 
 inline Worksheet *Cell::GetWorksheet() const
-{ return static_cast<Worksheet*>((*m_configuration)->GetWorkSheet()); }
+{
+  wxWindow *worksheet = (*m_configuration)->GetWorkSheet();
+  wxASSERT(worksheet != NULL);
+  return static_cast<Worksheet*>(worksheet);
+}
 
 inline void Configuration::SetWorkSheet(wxWindow *workSheet)
 { m_workSheet = dynamic_cast<Worksheet*>(workSheet); }
