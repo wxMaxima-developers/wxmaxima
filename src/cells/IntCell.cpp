@@ -215,107 +215,48 @@ void IntCell::Draw(wxPoint point)
     
     wxPoint base(point), under(point), over(point), var(point), sign(point);
 
-    if (configuration->CheckTeXFonts())
-    {
-      SetForeground();
-      auto fontsize1 = AFontSize(m_fontSize_Scaled * 1.5);
-      wxASSERT(fontsize1.IsValid());
-
-      Style style = Style(fontsize1)
-        .FontName(configuration->GetTeXCMEX());
-
-      if (!style.IsFontOk())
-        configuration->CheckTeXFonts(false);
-
-      dc->SetFont(style.GetFont());
-      dc->DrawText(wxT("\u005A"),
-                  sign.x,
-                  sign.y - m_signTop);
-    }
-    else
-    {
-#if defined __WXMSW__
-      SetForeground();
-      auto fontsize1 = AFontSize(Scale_Px(INTEGRAL_FONT_SIZE));
-      int m_signWCenter = m_signWidth / 2;
-      wxASSERT(fontsize1.IsValid());
-
-      Style style = Style(fontsize1)
-                      .FontName(configuration->GetSymbolFontName());
-
-      dc->SetFont(style.GetFont());
-      dc->DrawText(INTEGRAL_TOP,
-                  sign.x + m_signWCenter - m_charWidth / 2,
-                  sign.y - (m_signHeight + 1) / 2);
-      dc->DrawText(INTEGRAL_BOTTOM,
-                  sign.x + m_signWCenter - m_charWidth / 2,
-                  sign.y + (m_signHeight + 1) / 2 - m_charHeight);
-
-      int top, bottom;
-      top = sign.y - (m_signHeight + 1) / 2 + m_charHeight / 2;
-      bottom = sign.y + (m_signHeight + 1) / 2 - (3 * m_charHeight) / 2;
-      if (top <= bottom)
+    SetPen(1.5);
+    // top decoration
+    int m_signWCenter = m_signWidth / 2;
+    wxPoint points[7] =
       {
-        wxASSERT_MSG(m_charHeight>=2,_("Font issue: The char height is too small!"));
-        if(m_charHeight <= 2)
-          m_charHeight = 2;
+        {sign.x + m_signWCenter + 2 * (m_signWidth / 4),
+         sign.y - (m_signHeight - Scale_Px(1)) / 2 + m_signWidth / 4},
+        {sign.x + m_signWCenter + m_signWidth / 4,
+         sign.y - (m_signHeight - Scale_Px(1)) / 2},
+        {sign.x + m_signWCenter,
+         sign.y - (m_signHeight - Scale_Px(1)) / 2 + 2* (m_signWidth / 4)
+         + Scale_Px(.35)},
 
-        while (top < bottom)
-        {
-          dc->DrawText(INTEGRAL_EXTEND,
-          point.x + m_signWCenter - m_charWidth / 2,
-          top);
-          top += (2*m_charHeight)/3;
-        }
-        dc->DrawText(INTEGRAL_EXTEND,
-        point.x + m_signWCenter - m_charWidth / 2,
-        sign.y + (m_signHeight + 1) / 2 - (3 * m_charHeight) / 2);
-      }
-#else
-      SetPen(1.5);
-      // top decoration
-      int m_signWCenter = m_signWidth / 2;
-      wxPoint points[7] =
-        {
-          {sign.x + m_signWCenter + 2 * (m_signWidth / 4),
-           sign.y - (m_signHeight - Scale_Px(1)) / 2 + m_signWidth / 4},
-          {sign.x + m_signWCenter + m_signWidth / 4,
-           sign.y - (m_signHeight - Scale_Px(1)) / 2},
-          {sign.x + m_signWCenter,
-           sign.y - (m_signHeight - Scale_Px(1)) / 2 + 2* (m_signWidth / 4)
-             + Scale_Px(.35)},
+        // The line
+        {sign.x + m_signWCenter + Scale_Px(.5),
+         sign.y},
 
-          // The line
-          {sign.x + m_signWCenter + Scale_Px(.5),
-           sign.y},
+        // Bottom Decoration
+        {sign.x + m_signWCenter,
+         sign.y + (m_signHeight - Scale_Px(1)) / 2 - 2* (m_signWidth / 4)
+         + Scale_Px(.35)},
+        {sign.x + m_signWCenter - m_signWidth / 4,
+         sign.y + (m_signHeight - Scale_Px(1)) / 2},
+        {sign.x + m_signWCenter - 2 * (m_signWidth / 4),
+         sign.y + (m_signHeight - Scale_Px(1)) / 2 - m_signWidth / 4}
+      };
 
-          // Bottom Decoration
-          {sign.x + m_signWCenter,
-           sign.y + (m_signHeight - Scale_Px(1)) / 2 - 2* (m_signWidth / 4)
-             + Scale_Px(.35)},
-          {sign.x + m_signWCenter - m_signWidth / 4,
-           sign.y + (m_signHeight - Scale_Px(1)) / 2},
-          {sign.x + m_signWCenter - 2 * (m_signWidth / 4),
-           sign.y + (m_signHeight - Scale_Px(1)) / 2 - m_signWidth / 4}
-          };
-
-      configuration->GetAntialiassingDC()->DrawSpline(7, points);
-      points[1] = {sign.x + m_signWCenter + m_signWidth / 4,
-                   sign.y - (m_signHeight - Scale_Px(1.25)) / 2};
-      points[2] = {sign.x + m_signWCenter,
-                   sign.y - (m_signHeight - Scale_Px(1)) / 2 + 2* (m_signWidth / 4)
-                     - Scale_Px(.35)};
-      points[3] = {sign.x + m_signWCenter - Scale_Px(.5),
-                   sign.y};
-      points[4] = {sign.x + m_signWCenter,
-                   sign.y + (m_signHeight - Scale_Px(1)) / 2 - 2* (m_signWidth / 4)
-                     + Scale_Px(.35)};
-      points[5] = {sign.x + m_signWCenter - m_signWidth / 4,
-                   sign.y + (m_signHeight - Scale_Px(1.25)) / 2};
-      configuration->GetAntialiassingDC()->DrawSpline(7, points);
-      // line
-#endif
-    }
+    configuration->GetAntialiassingDC()->DrawSpline(7, points);
+    points[1] = {sign.x + m_signWCenter + m_signWidth / 4,
+      sign.y - (m_signHeight - Scale_Px(1.25)) / 2};
+    points[2] = {sign.x + m_signWCenter,
+      sign.y - (m_signHeight - Scale_Px(1)) / 2 + 2* (m_signWidth / 4)
+      - Scale_Px(.35)};
+    points[3] = {sign.x + m_signWCenter - Scale_Px(.5),
+      sign.y};
+    points[4] = {sign.x + m_signWCenter,
+      sign.y + (m_signHeight - Scale_Px(1)) / 2 - 2* (m_signWidth / 4)
+      + Scale_Px(.35)};
+    points[5] = {sign.x + m_signWCenter - m_signWidth / 4,
+      sign.y + (m_signHeight - Scale_Px(1.25)) / 2};
+    configuration->GetAntialiassingDC()->DrawSpline(7, points);
+    // line
 
     if (m_intStyle == INT_DEF)
     {
