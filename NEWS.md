@@ -1,3 +1,6 @@
+# 21.05.2:
+ * The integral signs disappeared or were misplaced on some MS Windows computers
+
 # 21.05.1:
  * Resolved a segfault on printing that could be triggered on some computers
 
