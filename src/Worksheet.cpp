@@ -88,6 +88,13 @@ Worksheet::Worksheet(wxWindow *parent, int id, Worksheet* &observer, wxPoint pos
   m_autocomplete(&m_configurationTopInstance),
   m_observer(observer)
 {
+#if wxUSE_GRAPHICS_DIRECT2D
+  void OnGraphicContextDirect2D(wxCommandEvent& WXUNUSED(event))
+  {
+    UseGraphicRenderer(wxGraphicsRenderer::GetDirect2DRenderer());
+  }
+#endif
+  
   m_dontSkipScrollEvent = false;
   m_scrollToCaret = false;
   m_newxPosition = -1;
