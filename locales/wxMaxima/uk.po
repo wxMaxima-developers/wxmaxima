@@ -9,15 +9,14 @@ msgstr ""
 "Project-Id-Version: wxMaxima\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-13 12:26+0200\n"
-"PO-Revision-Date: 2021-04-16 16:12+0300\n"
+"PO-Revision-Date: 2021-05-27 18:55+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Generator: Lokalize 20.12.0\n"
 
 #: ../../src/StatusBar.cpp:188
@@ -1804,11 +1803,11 @@ msgstr "Спосіб виведення"
 #: ../../src/ConfigDialogue.cpp:641
 msgid "Display all and allow linebreaks in long numbers"
 msgstr ""
+"Показувати все і дозволити розривати рядки із довгими числами"
 
 #: ../../src/ConfigDialogue.cpp:635
-#, fuzzy
 msgid "Display all digits"
-msgstr "Спосіб виведення"
+msgstr "Показувати усі цифри"
 
 #: ../../src/wxMaximaFrame.cpp:782
 msgid "Display equations"
@@ -1819,9 +1818,8 @@ msgid "Display last result in TeX form"
 msgstr "Показати останній результат у форматі TeX"
 
 #: ../../src/ConfigDialogue.cpp:621
-#, fuzzy
 msgid "Display of long numbers"
-msgstr "Показ просторових кривих"
+msgstr "Показ довгих чисел"
 
 #: ../../src/ToolBar.cpp:346
 #, c-format
@@ -4507,9 +4505,8 @@ msgid "Maximum number of digits to be displayed:"
 msgstr "Максимальна показана кількість цифр:"
 
 #: ../../src/ConfigDialogue.cpp:627
-#, fuzzy
 msgid "Maximum number of displayed digits:"
-msgstr "Максимальна показана кількість цифр:"
+msgstr "Максимальна кількість показаних цифр:"
 
 #: ../../src/wxMaximaFrame.cpp:1820
 msgid "Mean Difference Test..."
@@ -5981,6 +5978,7 @@ msgstr "Показати підказку"
 #: ../../src/Worksheet.cpp:1566
 msgid "Show all + allow linebreaks in long numbers"
 msgstr ""
+"Показати все + дозволити розривати рядки із довгими числами"
 
 #: ../../src/wxMaxima.cpp:8420
 msgid "Show all commands similar to:"
@@ -6758,6 +6756,9 @@ msgid ""
 "You can ask questions there - and please help other users, by answering "
 "their questions, if you know an answer."
 msgstr ""
+"Адресою форуму обговорення wxMaxima є https://github.com/wxMaxima-"
+"developers/wxmaxima/discussions.\n"
+"На форумі ви можете ставити питання. Будь ласка, допомагайте іншим користувачам, відповідаючи на їхні питання, якщо вам відома відповідь."
 
 #: ../../src/wxMaxima.cpp:1369
 msgid ""
@@ -7848,9 +7849,9 @@ msgstr "wxMaxima %d"
 #: ../../src/wxMaxima.cpp:9987 ../../src/wxMaxima.cpp:9989
 #: ../../src/wxMaxima.cpp:9998 ../../src/wxMaxima.cpp:10001
 #: ../../src/wxMaximaFrame.cpp:201
-#, fuzzy, c-format
+#, c-format
 msgid "wxMaxima %s (%s) "
-msgstr "wxMaxima %s"
+msgstr "wxMaxima %s (%s) "
 
 #: ../../src/TipOfTheDay.cpp:133
 msgid ""
