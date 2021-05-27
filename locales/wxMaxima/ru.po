@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: wxMaxima\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-13 12:26+0200\n"
-"PO-Revision-Date: 2021-04-16 15:50+0300\n"
+"PO-Revision-Date: 2021-05-27 15:51+0300\n"
 "Last-Translator: Olesya Gerasimenko <translation-team@basealt.ru>\n"
 "Language-Team: Basealt Translation Team\n"
 "Language: ru_RU\n"
@@ -1820,12 +1820,11 @@ msgstr "Способ вывода"
 
 #: ../../src/ConfigDialogue.cpp:641
 msgid "Display all and allow linebreaks in long numbers"
-msgstr ""
+msgstr "Отобразить все и включить перенос строки для длинных чисел"
 
 #: ../../src/ConfigDialogue.cpp:635
-#, fuzzy
 msgid "Display all digits"
-msgstr "Способ вывода"
+msgstr "Отобразить все цифры"
 
 #: ../../src/wxMaximaFrame.cpp:782
 msgid "Display equations"
@@ -1836,9 +1835,8 @@ msgid "Display last result in TeX form"
 msgstr "Показать последний результат в формате TeX"
 
 #: ../../src/ConfigDialogue.cpp:621
-#, fuzzy
 msgid "Display of long numbers"
-msgstr "Отображение трёхмерных кривых"
+msgstr "Отображение длинных чисел"
 
 #: ../../src/ToolBar.cpp:346
 #, c-format
@@ -4523,9 +4521,8 @@ msgid "Maximum number of digits to be displayed:"
 msgstr "Максимальное количество цифр для отображения:"
 
 #: ../../src/ConfigDialogue.cpp:627
-#, fuzzy
 msgid "Maximum number of displayed digits:"
-msgstr "Максимальное количество цифр для отображения:"
+msgstr "Максимальное количество отображаемых цифр:"
 
 #: ../../src/wxMaximaFrame.cpp:1820
 msgid "Mean Difference Test..."
@@ -5991,7 +5988,7 @@ msgstr "Показать подсказку"
 
 #: ../../src/Worksheet.cpp:1566
 msgid "Show all + allow linebreaks in long numbers"
-msgstr ""
+msgstr "Показать все + включить перенос строки для длинных чисел"
 
 #: ../../src/wxMaxima.cpp:8420
 msgid "Show all commands similar to:"
@@ -6782,6 +6779,11 @@ msgid ""
 "You can ask questions there - and please help other users, by answering "
 "their questions, if you know an answer."
 msgstr ""
+"Существует форум для обсуждения вопросов, связанных с wxMaxima:"
+" https://github.com/wxMaxima-"
+"developers/wxmaxima/discussions.\n"
+"На этом форуме можно задать свои вопросы, а также помочь другим"
+" пользователям, ответив на их вопросы."
 
 #: ../../src/wxMaxima.cpp:1369
 msgid ""
@@ -7861,9 +7863,9 @@ msgstr "wxMaxima %d"
 #: ../../src/wxMaxima.cpp:9987 ../../src/wxMaxima.cpp:9989
 #: ../../src/wxMaxima.cpp:9998 ../../src/wxMaxima.cpp:10001
 #: ../../src/wxMaximaFrame.cpp:201
-#, fuzzy, c-format
+#, c-format
 msgid "wxMaxima %s (%s) "
-msgstr "wxMaxima %s"
+msgstr "wxMaxima %s (%s) "
 
 #: ../../src/TipOfTheDay.cpp:133
 msgid ""
