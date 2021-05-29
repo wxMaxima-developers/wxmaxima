@@ -127,7 +127,7 @@ before_build:
       # of wxWidgets_LIB_DIR gets cleared (!) in FindwxWidgets.cmake(495)
       # cmake issue report: https://gitlab.kitware.com/cmake/cmake/-/issues/19176
       cmake -G "$env:CMAKEGEN" -DCMAKE_BUILD_TYPE=Release  `
-        -DAPPVEYOR_BUILD=1 -DCMAKE_UNITY_BUILD=YES  `
+        -DAPPVEYOR_BUILD=1   `
         -DWX_ROOT_DIR="$INSTALL_DIR"  `
         -DwxWidgets_ROOT_DIR="$INSTALL_DIR"  `
         -DwxWidgets_LIB_DIR="$INSTALL_LIB_DIR"  `
