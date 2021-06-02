@@ -371,7 +371,7 @@ void ConfigDialogue::SetCheckboxValues()
   m_antialiasLines->SetToolTip(
           _("Try to antialias lines (which allows to move them by a fraction of a pixel, but reduces their sharpness)."));
   m_matchParens->SetToolTip(
-          _("Automatically insert matching parenthesis in text controls. Automatic highlighting of matching parenthesis can be suppressed by setting the respective color to match the background of ordinary text."));
+          _("Automatically insert a closing parenthesis the moment the user enters an opening one."));
   m_showMatchingParens->SetToolTip(
           _("Highlight the opening or closing parenthesis for the parenthesis the cursor is at."));
   m_showLength->SetToolTip(_("Show long expressions in wxMaxima document."));
@@ -688,7 +688,7 @@ wxWindow *ConfigDialogue::CreateWorksheetPanel()
                                _("Insert % before an operator at the beginning of a cell"));
   actionSizer->Add(m_insertAns, wxSizerFlags());
 
-  m_matchParens = new wxCheckBox(actionSizer->GetStaticBox(), -1, _("Match parenthesis in text controls"));
+  m_matchParens = new wxCheckBox(actionSizer->GetStaticBox(), -1, _("Auto-insert closing parenthesis"));
   actionSizer->Add(m_matchParens, wxSizerFlags());
 
   m_autoIndent = new wxCheckBox(actionSizer->GetStaticBox(), -1, _("Auto-indent new lines"));
