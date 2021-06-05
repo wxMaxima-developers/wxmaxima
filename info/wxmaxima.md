@@ -113,14 +113,14 @@ What isn't standard is that _wxMaxima_ provides drag-and-drop flexibility by def
 When you start wxMaxma, you will only see the blinking horizontal cursor. If you start typing, a math cell will be automatically created and the cursor will change to a regular vertical one (you will see a right arrow as "prompt", after the Math cell is evaluated (<kbd>CTRL+ENTER</kbd>), you will see the labels, e.g. `(%i1)`, `(%o1)`).
 
 
-![(blinking) horizontal cursor after wxMaxima start](./horizontal-cursor-only.png){ id=horizontal-cursor-only }
+![(blinking) horizontal cursor after wxMaxima start](./horizontal-cursor-only.png){ id=img_horizontal_cursor_only }
 
 
 You might want to create another cell type (using the "Cell" menu), maybe a title cell or text cell, which describes, what will be done, when you start creating your worksheet.
 
 If you navigate between the different cells, you will also see the (blinking) horizontal cursor, where you can insert a cell into your worksheet (either a math cell, by just start typing your formula - or another cell type using the menu).
 
-![(blinking) horizontal cursor between cells](./horizontal-cursor-between-cells.png){ id=horizontal-cursor-between-cells }
+![(blinking) horizontal cursor between cells](./horizontal-cursor-between-cells.png){ id=img_horizontal_cursor_between_cells }
 
 ### Sending cells to Maxima
 
