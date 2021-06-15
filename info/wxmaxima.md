@@ -89,13 +89,14 @@ The figure below shows different cell types (title cells, section cells, subsect
 
 ### Cells
 
-The worksheet is organized in cells. Each cell can contain other cells or the following types of content:
+The worksheet is organized in cells. wxMaxima knows the following cell types:
 
-* one or more lines of _Maxima_ input
-* one or more image
-* output of,  or a question from, _Maxima_
-* a text block that can for example be used for documentation
-* a title, section or a subsection.
+* Math cells, containing one or more lines of _Maxima_ input.
+* Output of,  or a question from, _Maxima_.
+* Image cells.
+* Text cells, that can for example be used for documentation.
+* A title, section or a subsection. 6 levels of different headings are possible.
+* Line breaks.
 
 The default behavior of _wxMaxima_ when text is entered is to automatically create a math cell. Cells of other types can be created using the Cell menu,  using the hot keys shown in the menu or using the drop-down list in the toolbar. Once the non-math cell is created, whatever is typed into the file is interpreted as text.
 
