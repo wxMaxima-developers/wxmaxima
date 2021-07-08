@@ -2676,7 +2676,7 @@ void wxMaxima::VariableActionTempDir(const wxString &value)
     // Sometimes people delete their temp dir
     // and gnuplot won't create a new one for them.
     wxLogNull logNull;
-    wxMkDir(value, wxS_DIR_DEFAULT);
+    wxMkdir(value, wxS_DIR_DEFAULT);
   }
 }
 

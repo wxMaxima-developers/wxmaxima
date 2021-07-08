@@ -144,7 +144,7 @@ bool MyApp::OnInit()
       wxFileName xdgDir(configFileXDG);
       wxString dirName(xdgDir.GetPath());
       if(!wxDirExists(dirName))
-        wxMkDir(dirName,0x700);
+        wxMkdir(dirName,0x700);
       if(wxFileExists(configFileOld))
         wxCopyFile(configFileOld,configFileXDG);
     }
@@ -158,7 +158,7 @@ bool MyApp::OnInit()
     // This happens e.g. on Windows 10.
     auto const tempDir = wxStandardPaths::Get().GetTempDir();
     if (!wxDirExists(tempDir))
-        wxMkDir(tempDir, 0x700);
+        wxMkdir(tempDir, 0x700);
 
     m_locale.AddCatalogLookupPathPrefix(m_dirstruct.LocaleDir());
     m_locale.AddCatalogLookupPathPrefix(m_dirstruct.LocaleDir() + wxT("/wxwin"));

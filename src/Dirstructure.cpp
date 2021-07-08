@@ -68,7 +68,7 @@ Dirstructure::Dirstructure()
   
   if(!wxDirExists(m_userConfDir))
   {
-    if(!wxMkDir(m_userConfDir, wxS_DIR_DEFAULT))
+    if(!wxMkdir(m_userConfDir, wxS_DIR_DEFAULT))
       wxLogMessage(
         wxString::Format(
           _("Warning: Cannot create %s, the directory maxima keeps "
