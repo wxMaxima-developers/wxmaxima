@@ -48,6 +48,7 @@
 #include "DiffCell.h"
 #include "SumCell.h"
 #include "IntCell.h"
+#include "IntervalCell.h"
 #include "FunCell.h"
 #include "ImgCell.h"
 #include "LabelCell.h"
@@ -185,6 +186,21 @@ std::unique_ptr<Cell> MathParser::ParseMtdTag(wxXmlNode *node)
 {
   wxXmlNode *children = node->GetChildren();
   return children ? ParseTag(children) : nullptr;
+}
+
+int MathParser::CountChildren(wxXmlNode *node)
+{
+  wxXmlNode *children = node->GetChildren();
+  int num = 0;
+  if(children)
+    children = SkipWhitespaceNode(children);
+
+  while(children)
+  {
+    num++;
+    children = GetNextTag(children);
+  }
+  return num;
 }
 
 std::unique_ptr<Cell> MathParser::ParseRowTag(wxXmlNode *node)
@@ -795,6 +811,31 @@ std::unique_ptr<Cell> MathParser::ParseAtTag(wxXmlNode *node)
 
 std::unique_ptr<Cell> MathParser::ParseFunTag(wxXmlNode *node)
 {
+  if(node->GetAttribute(wxT("interval")) == wxT("true"))
+  {
+    wxXmlNode *fnm = node->GetChildren();
+    fnm = SkipWhitespaceNode(fnm);
+    wxXmlNode *mrow = GetNextTag(fnm);
+    if(mrow != NULL)
+    {
+      wxXmlNode *parenthesis = mrow->GetChildren();
+      parenthesis = SkipWhitespaceNode(parenthesis);
+      if(CountChildren(parenthesis) == 3)
+      {
+        wxXmlNode *child = parenthesis->GetChildren();
+        child = SkipWhitespaceNode(child);
+        auto start = HandleNullPointer(ParseTag(child, false));
+        child = GetNextTag(child);
+        // Skip the comma
+        child = GetNextTag(child);
+        auto end = HandleNullPointer(ParseTag(child, false));
+        
+        auto interval = std::make_unique<IntervalCell>(m_group, m_configuration, std::move(start), std::move(end));
+        ParseCommonAttrs(node, interval);
+        return interval;
+      }
+    }
+  }
   wxXmlNode *child = node->GetChildren();
   child = SkipWhitespaceNode(child);
 

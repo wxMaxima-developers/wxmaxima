@@ -36,6 +36,7 @@ set(CELL_SOURCE_FILES
     GroupCell.cpp
     ImgCell.cpp
     IntCell.cpp
+    IntervalCell.cpp
     LabelCell.cpp
     LimitCell.cpp
     ListCell.cpp

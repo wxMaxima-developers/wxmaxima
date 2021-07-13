@@ -118,6 +118,9 @@ private:
    */
   wxXmlNode *GetNextTag(wxXmlNode *node);
 
+  /*! Counts the number of non-whitespace children od a node */
+  int CountChildren(wxXmlNode *node);
+
   /*! Returns node - or (if node is a whitespace-only text node) the next one.
 
     If we encounter a non-whitespace text node where we shouldn't we raise an 

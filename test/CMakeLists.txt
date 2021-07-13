@@ -221,6 +221,21 @@ add_test(
     COMMAND wxmaxima --logtostdout --pipe --batch intCells.wxm)
 
 add_test(
+    NAME intervals_cmdline
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+    COMMAND ${MAXIMA} --batch intervals.wxm)
+
+add_test(
+    NAME intervals_cmdline_wxmathml
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+    COMMAND ${MAXIMA} --batch intervals.wxm -p ${CMAKE_SOURCE_DIR}/data/wxMathML.lisp)
+
+add_test(
+    NAME intervals
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+    COMMAND wxmaxima --logtostdout --pipe --batch intervals.wxm)
+
+add_test(
     NAME functionCells_cmdline
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
     COMMAND ${MAXIMA} --batch functionCells.wxm)

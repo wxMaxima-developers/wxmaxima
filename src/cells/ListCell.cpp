@@ -73,7 +73,6 @@ DEFINE_CELL(ListCell)
 void ListCell::Recalculate(AFontSize fontsize)
 {
   m_innerCell->RecalculateList(fontsize);
-  m_innerCell->RecalculateList(fontsize);
   m_open->RecalculateList(fontsize);
   m_close->RecalculateList(fontsize);
   
@@ -100,12 +99,7 @@ void ListCell::Recalculate(AFontSize fontsize)
   }
   else
   {
-    m_width = m_innerCell->GetFullWidth() + m_signWidth * 2;
-    if(m_drawAsAscii)
-      m_signHeight = m_open->GetHeight();
-    else
-      m_signHeight = m_innerCell->GetHeightList();
-      
+    m_width = m_innerCell->GetFullWidth() + m_signWidth * 2;      
     m_height = wxMax(m_signHeight,m_innerCell->GetHeightList()) + Scale_Px(4);
     m_center = m_height / 2;   
   }
@@ -162,8 +156,7 @@ void ListCell::Draw(wxPoint point)
       adc->DrawLines(4, pointsR);
     }
     
-    if(!IsBrokenIntoLines())
-      m_innerCell->DrawList(innerCellPos);
+    m_innerCell->DrawList(innerCellPos);
   }
 }
 

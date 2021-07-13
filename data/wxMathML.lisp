@@ -445,6 +445,18 @@
 		x (cdr x)
 		l nil))))
 
+    ;; set up a list , separated by symbols (, * ...)  and then tack on the
+  ;; ending item (e.g. "]" or perhaps ")"
+  (defun wxxml-list-wrapitem (x l r sym itemstart itemend)
+    (if (null x) r
+      (do ((nl))
+	  ((null (cdr x))
+	   (setq nl (nconc nl (list itemstart) (wxxml (car x) l (nconc (list itemend) r) 'mparen 'mparen) ))
+	   nl)
+	  (setq nl (nconc nl (list itemstart) (wxxml (car x) l (list itemend sym ) 'mparen 'mparen))
+		x (cdr x)
+		l nil))))
+
 ;;; Now we have functions which are called via property lists
 
   (defun wxxml-prefix (x l r)
@@ -466,7 +478,7 @@
 	  ;; car of wxxmlsym of a matchfix operator is the lead op
 	  r (append (cdr (wxxmlsym (caar x))) r)
 	  ;; cdr is the trailing op
-	  x (wxxml-list (cdr x) nil r "<mo>,</mo>"))
+	  x (wxxml-list-wrapitem (cdr x) nil r "<mo>,</mo>" "<mrow>" "</mrow>"))
     (append l x))
 
 
@@ -507,6 +519,9 @@
 
   (defprop mabs wxxml-matchfix wxxml)
   (defprop mabs (("<mrow><a>")"</a></mrow>") wxxmlsym)
+  
+  (defprop $interval wxxml-matchfix wxxml)
+  (defprop $interval (("<fn interval=\"true\"><fnm>interval</fnm><mrow><p>")"</p></mrow></fn>") wxxmlsym)
 
   (defprop $conjugate wxxml-matchfix wxxml)
   (defprop $conjugate (("<mrow><cj>")"</cj></mrow>") wxxmlsym)
