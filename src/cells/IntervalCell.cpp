@@ -83,15 +83,20 @@ DEFINE_CELL(IntervalCell)
 
 void IntervalCell::Recalculate(AFontSize fontsize)
 {
+  if(m_isBrokenIntoLines)
+  {
+    m_comma->RecalculateList(fontsize);
+    m_open->RecalculateList(fontsize);
+  }
+  else
+  {
+    m_openBracket->RecalculateList(fontsize);
+    m_closeBracket->RecalculateList(fontsize);
+    m_ellipsis->RecalculateList(fontsize);
+  }
+  m_close->RecalculateList(fontsize);
   m_start->RecalculateList(fontsize);
   m_stop->RecalculateList(fontsize);
-  m_comma->RecalculateList(fontsize);
-  m_ellipsis->RecalculateList(fontsize);
-  m_open->RecalculateList(fontsize);
-  m_openBracket->RecalculateList(fontsize);
-  m_closeBracket->RecalculateList(fontsize);
-  m_close->RecalculateList(fontsize);
-  
   m_signWidth  = m_close->GetWidth();
 
   // If our font provides all the unicode chars we need we don't need
