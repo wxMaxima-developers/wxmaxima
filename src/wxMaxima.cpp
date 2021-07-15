@@ -5988,6 +5988,7 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
       break;
     case menu_history_next:
     {
+      m_history->UpdateDeferred();
       wxString command = m_history->GetCommand(true);
       if (command != wxEmptyString)
         m_worksheet->SetActiveCellText(command);
@@ -5995,6 +5996,7 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
       break;
     case menu_history_previous:
     {
+      m_history->UpdateDeferred();
       wxString command = m_history->GetCommand(false);
       if (command != wxEmptyString)
         m_worksheet->SetActiveCellText(command);
