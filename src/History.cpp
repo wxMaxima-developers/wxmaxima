@@ -249,7 +249,8 @@ void History::RebuildDisplay()
   }
   m_history->Set(display);
   m_current = -1;
-  SetCurrent(0);
+  if(m_history->GetCount()>0)
+    SetCurrent(0);
 }
 
 void History::OnRegExEvent(wxCommandEvent &WXUNUSED(ev))
@@ -278,10 +279,13 @@ void History::SetCurrent(long current)
   if (current == m_current)
     return;
 
-  m_current = current;
-  m_history->EnsureVisible(m_current);
-  UnselectAll();
-  m_history->SetSelection(m_current);
+  if(current >= 0)
+  {
+    m_current = current;
+    m_history->EnsureVisible(m_current);
+    UnselectAll();
+    m_history->SetSelection(m_current);
+  }
 }
 
 wxString History::m_showCurrentSessionOnlyKey(wxT("history/ShowCurrentSessionOnly"));
