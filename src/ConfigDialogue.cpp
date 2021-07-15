@@ -1040,77 +1040,82 @@ wxWindow *ConfigDialogue::CreateOptionsPanel()
   panel->SetScrollRate(5*GetContentScaleFactor(), 5*GetContentScaleFactor());
   panel->SetMinSize(wxSize(GetContentScaleFactor()*mMinPanelWidth,GetContentScaleFactor()*mMinPanelHeight));
 
-  wxFlexGridSizer *grid_sizer = new wxFlexGridSizer(7, 2, 5, 5);
-  wxFlexGridSizer *vsizer = new wxFlexGridSizer(18, 1, 5, 5);
+  wxFlexGridSizer *grid_sizer = new wxFlexGridSizer(20, 2, 5, 5);
+  wxBoxSizer *vsizer = new wxBoxSizer(wxVERTICAL);
 
   wxArrayString languages;
   for(Languages::const_iterator it = m_languages.begin(); it != m_languages.end(); ++it )
     languages.Add(it->first);
 
-  m_language = new wxChoice(panel, language_id, wxDefaultPosition, wxSize(230*GetContentScaleFactor(), -1), languages);
+  m_language = new wxChoice(panel, language_id, wxDefaultPosition,
+                            wxSize(230*GetContentScaleFactor(), -1), languages);
   grid_sizer->Add(
-    new wxStaticText(panel, -1, _("Language:")), 0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL, 5*GetContentScaleFactor());
-  grid_sizer->Add(m_language, 0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL, 5*GetContentScaleFactor());
+    new wxStaticText(panel, -1, _("Language:")), 0,
+    wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL, 5*GetContentScaleFactor());
+  grid_sizer->Add(m_language,
+                  0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL,
+                  5*GetContentScaleFactor());
 
-  wxStaticText *additionalSymbols = new wxStaticText(panel, -1, _("Additional symbols for the \"symbols\" sidebar:"));
+  grid_sizer->Add(new wxStaticText(panel, -1,
+                                   _("Additional symbols for the \"symbols\" sidebar:")),
+                  0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL, 5*GetContentScaleFactor());
   m_symbolPaneAdditionalChars = new wxTextCtrl(panel, -1);
-  grid_sizer->Add(additionalSymbols, 0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL, 5*GetContentScaleFactor());
-  grid_sizer->Add(m_symbolPaneAdditionalChars, 0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL, 5*GetContentScaleFactor());
+  grid_sizer->Add(m_symbolPaneAdditionalChars,
+                  0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL, 5*GetContentScaleFactor());
 
   wxStaticText *ul = new wxStaticText(panel, -1, _("Undo limit (0 for none):"));
   m_undoLimit = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(150*GetContentScaleFactor(), -1), wxSP_ARROW_KEYS, 0, 10000);
   grid_sizer->Add(ul, 0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL, 5*GetContentScaleFactor());
   grid_sizer->Add(m_undoLimit, wxSizerFlags());
 
-  wxStaticText *rf = new wxStaticText(panel, -1, _("Recent files list length:"));
-  m_recentItems = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(150*GetContentScaleFactor(), -1), wxSP_ARROW_KEYS, 5, 30);
-  grid_sizer->Add(rf, 0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL, 5*GetContentScaleFactor());
+  grid_sizer->Add(new wxStaticText(panel, -1, _("Recent files list length:")),
+                  0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL, 5*GetContentScaleFactor());
+  m_recentItems = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition,
+                                 wxSize(150*GetContentScaleFactor(), -1), wxSP_ARROW_KEYS, 5, 30);
   grid_sizer->Add(m_recentItems, wxSizerFlags());
 
-  wxStaticText *df = new wxStaticText(panel, -1, _("Default animation framerate:"));
+  grid_sizer->Add(new wxStaticText(panel, -1, _("Default animation framerate:")),
+                  0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL, 5*GetContentScaleFactor());
   m_defaultFramerate = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(150*GetContentScaleFactor(), -1), wxSP_ARROW_KEYS, 1,
                                       200);
-  grid_sizer->Add(df, 0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL, 5*GetContentScaleFactor());
   grid_sizer->Add(m_defaultFramerate, 0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL, 5*GetContentScaleFactor());
 
-  wxStaticText *mm = new wxStaticText(panel, -1, _("Interactive popup memory limit [MB/plot]:"));
+  grid_sizer->Add(new wxStaticText(panel, -1, _("Interactive popup memory limit [MB/plot]:")),
+                  0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL, 5*GetContentScaleFactor());
   m_maxGnuplotMegabytes = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(150*GetContentScaleFactor(), -1), wxSP_ARROW_KEYS, 0,
                                          2000);
-
-  grid_sizer->Add(mm, 0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL, 5*GetContentScaleFactor());
   grid_sizer->Add(m_maxGnuplotMegabytes, 0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL, 5*GetContentScaleFactor());
 
-  wxStaticText *as = new wxStaticText(panel, -1, _("Time [in Minutes] between autosaves"));
+  grid_sizer->Add(new wxStaticText(panel, -1, _("Time [in Minutes] between autosaves")),
+                  0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL, 5*GetContentScaleFactor());
   m_autosaveMinutes = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(150*GetContentScaleFactor(), -1), wxSP_ARROW_KEYS, 1,
                                          60);
 
-  grid_sizer->Add(as, 0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL, 5*GetContentScaleFactor());
   grid_sizer->Add(m_autosaveMinutes, 0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL, 5*GetContentScaleFactor());
 
-  vsizer->Add(grid_sizer, 1, wxEXPAND, 5*GetContentScaleFactor());
+  vsizer->Add(grid_sizer, wxSizerFlags().Border(wxALL, 5*GetContentScaleFactor()));
 
   m_autoSave = new wxCheckBox(panel, -1, _("Save the worksheet automatically"));
-  vsizer->Add(m_autoSave, wxSizerFlags());
+  vsizer->Add(m_autoSave, wxSizerFlags().Border(wxALL, 5*GetContentScaleFactor()));
 
   m_usesvg = new wxCheckBox(panel, -1, _("Create scalable plots."));
   m_usesvg->Connect(wxEVT_CHECKBOX,
                          wxCommandEventHandler(ConfigDialogue::UsesvgChanged),
                          NULL, this);
   m_usesvg->Show(false);
-
-  vsizer->Add(m_usesvg, wxSizerFlags());
+  vsizer->Add(m_usesvg, wxSizerFlags().Border(wxALL, 5*GetContentScaleFactor()));
 
   m_saveUntitled = new wxCheckBox(panel, -1, _("Ask to save untitled documents"));
-  vsizer->Add(m_saveUntitled, wxSizerFlags());
+  vsizer->Add(m_saveUntitled, wxSizerFlags().Border(wxALL, 5*GetContentScaleFactor()));
 
-  m_fixReorderedIndices = new wxCheckBox(panel, -1, _("Fix reordered reference indices (of %i, %o) before saving"));
-  vsizer->Add(m_fixReorderedIndices, wxSizerFlags());
+  m_fixReorderedIndices = new wxCheckBox(panel, -1,
+                                         _("Fix reordered reference indices (of %i, %o) before saving"));
+  vsizer->Add(m_fixReorderedIndices, wxSizerFlags().Border(wxALL, 5*GetContentScaleFactor()));
 
   m_notifyIfIdle = new wxCheckBox(panel, -1, _("Warn if an inactive window is idle"));
-  vsizer->Add(m_notifyIfIdle, wxSizerFlags());
+  vsizer->Add(m_notifyIfIdle, wxSizerFlags().Border(wxALL, 5*GetContentScaleFactor()));
 
 
-  vsizer->AddGrowableRow(10*GetContentScaleFactor());
   panel->SetSizer(vsizer);
   panel->FitInside();
 
