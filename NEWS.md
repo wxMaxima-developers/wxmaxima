@@ -1,3 +1,12 @@
+# Current:
+ * Allow seeing all files in the file save dialog. (#1557)
+ * Fix a error when using Alt up arrow (show previous command) (#1566)
+ * Rewrote a config dialogue
+ * Improvements in the manual
+ * Update Spanish translation of manual
+ * Update German, Russian and Ukrainian translation
+ * Fix a warning, which occured, when starting wxMaxima the first time
+
 # 21.05.2:
  * The integral signs disappeared or were misplaced on some MS Windows computers
 
@@ -5,10 +14,10 @@
  * Resolved a segfault on printing that could be triggered on some computers
 
 # 21.05.0:
- * Long numbers now can be broken into lines 
+ * Long numbers now can be broken into lines
  * On Export long numbers sometimes got lost
  * The height of folded cells now is calculated correctly, again (bug #1532)
- * Printing now can insert pagebreaks within GroupCells (bug #970, #1528, 
+ * Printing now can insert pagebreaks within GroupCells (bug #970, #1528,
     #1241, #181, #573,#1082)
  * A Russian translation update by OlesyaGerasimenko
  * A Ukrainian translation update by Yuri Chornoivan
@@ -29,8 +38,8 @@
  * C++ 14 is required for building wxMaxima. Now CMake knows about that fact.
  * Many external build scripts are now replaced by C++ and CMake commands.
  * A menu entry for when to invoke the debugger.
- 
-# 21.02.0 
+
+# 21.02.0
  * A Spanish translation update by cyphra
  * Replaced openMP by c++11's built-in thread handling. This should improve
    stability at the cost of making loading files with lots of images slower.
