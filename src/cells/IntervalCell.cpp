@@ -83,7 +83,7 @@ DEFINE_CELL(IntervalCell)
 
 void IntervalCell::Recalculate(AFontSize fontsize)
 {
-  if(m_isBrokenIntoLines)
+  if(IsBrokenIntoLines())
   {
     m_comma->RecalculateList(fontsize);
     m_open->RecalculateList(fontsize);

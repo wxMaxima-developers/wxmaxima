@@ -2779,7 +2779,6 @@ void Worksheet::DeleteSelection()
     );
   TreeUndo_ClearRedoActionList();
   m_cellPointers.m_selectionStart = m_cellPointers.m_selectionEnd = nullptr;
-  UpdateTableOfContents();
   RequestRedraw();
 }
 
