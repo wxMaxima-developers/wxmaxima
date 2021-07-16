@@ -67,6 +67,8 @@ bool AutoComplete::LoadBuiltinSymbols()
   m_wordList[tmplte ].Add("array([<name_1>, ..., <name_m>], <dim_1>, ..., <dim_n>)"); // OPTION
   m_wordList[command].Add("arrayapply"); // FUNCTION
   m_wordList[tmplte ].Add("arrayapply(<A>, [<i_1>, ..., <i_n>])"); // OPTION
+  m_wordList[command].Add("with_default_2d_display"); // FUNCTION
+  m_wordList[tmplte ].Add("with_default_2d_display(<cmd>)"); // OPTION
   m_wordList[command].Add("arrayinfo"); // FUNCTION
   m_wordList[tmplte ].Add("arrayinfo(<A>)"); // OPTION
   m_wordList[command].Add("arraymake"); // FUNCTION
