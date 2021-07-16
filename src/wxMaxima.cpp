@@ -3039,14 +3039,18 @@ void wxMaxima::VariableActionOperators(const wxString &value)
         wxXmlNode *node = contents->GetChildren();
         if(node)
         {
-          if(m_worksheet->m_configuration->m_maximaOperators.find(node->GetContent()) ==
-             m_worksheet->m_configuration->m_maximaOperators.end()
-            )
+          wxString content = node->GetContent();
+          if((!content.IsEmpty()) &&
+              (m_worksheet->m_configuration->m_maximaOperators.find(content) ==
+               m_worksheet->m_configuration->m_maximaOperators.end()))
           {
-            m_worksheet->m_configuration->m_maximaOperators[node->GetContent()] = 1;
-            if(!newOperators.IsEmpty())
-              newOperators += wxT(", ");
-            newOperators += node->GetContent();
+            if((content[0]>'9') || (content[0]<'0'))
+            {
+              m_worksheet->m_configuration->m_maximaOperators[content] = 1;
+              if(!newOperators.IsEmpty())
+                newOperators += wxT(", ");
+              newOperators += content;
+            }
           }
         }
       }
