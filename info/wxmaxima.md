@@ -645,11 +645,14 @@ These files are in the Maxima user directory (usually `maxima` in Windows, `.max
 
 * `wxsubscripts` tells _Maxima_ if it should convert variable names that contain an underscore (`R_150` or the like) into subscripted variables. See `wxdeclare_subscript` for details which variable names are automatically converted.
 * `wxfilename`: This variable contains the name of the file currently opened in _wxMaxima_.
+* `wxdirname`: This variable contains the name the directory, in which the file currently opened in _wxMaxima_ is.
 * `wxplot_pngcairo` tells whether _wxMaxima_ tries to use _gnuplot_’s pngcairo terminal that provides more line styles and a better overall graphics quality.
 * `wxplot_size` defines the resolution of embedded plots.
 * `wxchangedir`: On most operating systems _wxMaxima_ automatically sets _Maxima_’s working directory to the directory of the current file. This allows file I/O (e.g. by `read_matrix`) to work without specifying the whole path to the file that has to be read or written. On Windows this feature sometimes causes error messages and therefore can be set to `false` from the config dialogue.
 * `wxanimate_framerate`: The number of frames per second the following animations have to be played back with.
 * `wxanimate_autoplay`: Automatically play animations by default?
+* `wxmaximaversion`: Returns the version number of _wxMaxima_.
+* `wxwidgetsversion`: Returns the wxWidgets version _wxMaxima_ is using..
 
 ## Pretty-printing 2D output
 
