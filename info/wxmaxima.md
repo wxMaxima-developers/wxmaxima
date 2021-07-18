@@ -652,7 +652,7 @@ These files are in the Maxima user directory (usually `maxima` in Windows, `.max
 * `wxanimate_framerate`: The number of frames per second the following animations have to be played back with.
 * `wxanimate_autoplay`: Automatically play animations by default?
 * `wxmaximaversion`: Returns the version number of _wxMaxima_.
-* `wxwidgetsversion`: Returns the wxWidgets version _wxMaxima_ is using..
+* `wxwidgetsversion`: Returns the wxWidgets version _wxMaxima_ is using.
 
 ## Pretty-printing 2D output
 
