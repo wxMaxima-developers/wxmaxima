@@ -3313,7 +3313,7 @@ bool AutoComplete::LoadBuiltinSymbols()
   m_wordList[command].Add("ratprint"); // OPTION
   m_wordList[command].Add("float_approx_equal_tolerance"); // OPTION
   m_wordList[command].Add("float_approx_equal"); // OPTION
-  m_wordList[tmplte ].Add("float_approx_equal(<f_1>,<f_2>)"); // OPTION  
+  m_wordList[tmplte ].Add("float_approx_equal(<f_1>,<f_2>)"); // OPTION
   m_wordList[command].Add("ratsimp"); // FUNCTION
   m_wordList[tmplte ].Add("ratsimp(<expr>)"); // OPTION
   m_wordList[tmplte ].Add("ratsimp(<expr>, <x_1>, <...>, <x_n>)"); // OPTION
@@ -4570,6 +4570,7 @@ bool AutoComplete::LoadBuiltinSymbols()
   m_wordList[command].Add(wxT("with_slider_draw"));
   m_wordList[command].Add(wxT("with_slider_draw2d"));
   m_wordList[command].Add(wxT("with_slider_draw3d"));
+  m_wordList[command].Add(wxT("wxdirname"));
   m_wordList[command].Add(wxT("wxdraw"));
   m_wordList[command].Add(wxT("wxdraw2d"));
   m_wordList[command].Add(wxT("wxdraw3d"));
@@ -4595,5 +4596,6 @@ bool AutoComplete::LoadBuiltinSymbols()
   m_wordList[command].Add(wxT("wxstatusbar"));
   m_wordList[tmplte].Add(wxT("wxstatusbar(<string>)"));
   m_wordList[command].Add(wxT("wxmaximaversion"));
+  m_wordList[command].Add(wxT("wxwidgetsversion"));
   return true;
 }
