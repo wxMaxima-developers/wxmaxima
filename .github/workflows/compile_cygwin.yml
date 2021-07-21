@@ -11,7 +11,7 @@ jobs:
       uses: egor-tensin/setup-cygwin@v3
       with:
         platform: x64
-        packages: cmake
+        packages: cmake git libwx_baseu3.0-devel libwx_gtk3u3.0-devel
 
     # Cygwin executables are added to PATH, so you can call them directly:
     - name: test_cygwin_commands
