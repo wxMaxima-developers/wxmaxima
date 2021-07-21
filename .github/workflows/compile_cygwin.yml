@@ -1,5 +1,6 @@
 # Set up Cygwin. Source: https://github.com/egor-tensin/setup-cygwin
-- name: Set up Cygwin
+on: [push]
+name: Set up Cygwin
   uses: egor-tensin/setup-cygwin@v3
   with:
     platform: x64
