@@ -11,7 +11,7 @@ jobs:
       uses: egor-tensin/setup-cygwin@v3
       with:
         platform: x64
-        packages: cmake git libwx_baseu3.0-devel libwx_gtk3u3.0-devel
+        packages: cmake git libwx_baseu3.0-devel libwx_gtk3u3.0-devel gcc-core gcc-g++ make
     - name: Checkout_git
       uses: actions/checkout@v2
     - name: configure
