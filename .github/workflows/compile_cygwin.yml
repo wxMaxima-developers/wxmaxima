@@ -1,14 +1,21 @@
 # Set up Cygwin. Source: https://github.com/egor-tensin/setup-cygwin
+name: compile_cygwin
+
 on: [push]
-name: Set up Cygwin
-  uses: egor-tensin/setup-cygwin@v3
-  with:
-    platform: x64
-    packages: cmake
 
-# Cygwin executables are added to PATH, so you can call them directly:
-- run: |
-    cmake --version
-    gcc --version
-    g++ --version
+jobs:
+  setup_cygwin:
+    runs-on: windows-latest
+    steps:
+    - name: setup_cygwin
+      uses: egor-tensin/setup-cygwin@v3
+      with:
+        platform: x64
+        packages: cmake
 
+    # Cygwin executables are added to PATH, so you can call them directly:
+    - name: test_cygwin_commands
+      run: |
+          cmake --version
+          gcc --version
+          g++ --version
