@@ -1125,26 +1125,35 @@ wxWindow *ConfigDialogue::CreateOptionsPanel()
   wxStaticBoxSizer *wxMathmlLoc_sizer = new wxStaticBoxSizer(wxVERTICAL,
                                                              devOpts_sizer->GetStaticBox(),
                                                              _("wxMathml.lisp location"));
-  m_automaticWxMathML = new wxRadioButton(wxMathmlLoc_sizer->GetStaticBox(), -1, _("Built-in"));
-  wxFlexGridSizer *wxmathmlLocGrid_sizer = new wxFlexGridSizer(9, 3, 5, 5);
-  wxmathmlLocGrid_sizer->Add(m_automaticWxMathML, wxSizerFlags());
-  wxmathmlLocGrid_sizer->Add(0, 0, wxSizerFlags());
-  wxmathmlLocGrid_sizer->Add(0, 0, wxSizerFlags());
-  m_userWxMathML = new wxRadioButton(wxMathmlLoc_sizer->GetStaticBox(), -1, _("User-specified file:"));
-  wxmathmlLocGrid_sizer->Add(m_userWxMathML, wxSizerFlags());
-  m_wxMathMLLocation = new wxTextCtrl(wxMathmlLoc_sizer->GetStaticBox(), -1, wxEmptyString, wxDefaultPosition, wxSize(350*GetContentScaleFactor(), wxDefaultSize.GetY()));
-  wxmathmlLocGrid_sizer->Add(m_wxMathMLLocation, wxSizerFlags().Expand());
-  m_mpBrowse = new wxButton(wxMathmlLoc_sizer->GetStaticBox(), wxID_OPEN, _("Open"));
-  m_mpBrowse->Connect(wxEVT_BUTTON, wxCommandEventHandler(
-                        ConfigDialogue::OnwxMathMLBrowse), NULL, this);
-  wxmathmlLocGrid_sizer->Add(m_mpBrowse, wxSizerFlags());
-
-  wxMathmlLoc_sizer->Add(wxmathmlLocGrid_sizer, wxSizerFlags().Expand().
-                     Border(wxALL, 5*GetContentScaleFactor()));
-  devOpts_sizer->Add(wxMathmlLoc_sizer, wxSizerFlags().Expand().
-                     Border(wxALL, 5*GetContentScaleFactor()));
-
-  vsizer->Add(devOpts_sizer, wxSizerFlags().Expand().Border(wxALL, 5*GetContentScaleFactor()));
+  {
+    wxString toolText = _("wxMathml.lisp, the lisp half of wxMaxima is included in the "
+                          "wxMaxima binary. But if a developer wants to try out new "
+                          "versions of this file without having to recompile wxMaxima "
+                          "wxMaxima allows to use an external file, instead.");
+    m_automaticWxMathML = new wxRadioButton(wxMathmlLoc_sizer->GetStaticBox(), -1, _("Built-in"));
+    m_automaticWxMathML->SetToolTip(toolText);
+    wxFlexGridSizer *wxmathmlLocGrid_sizer = new wxFlexGridSizer(9, 3, 5, 5);
+    wxmathmlLocGrid_sizer->Add(m_automaticWxMathML, wxSizerFlags());
+    wxmathmlLocGrid_sizer->Add(0, 0, wxSizerFlags());
+    wxmathmlLocGrid_sizer->Add(0, 0, wxSizerFlags());
+    m_userWxMathML = new wxRadioButton(wxMathmlLoc_sizer->GetStaticBox(), -1, _("User-specified file:"));
+    m_userWxMathML->SetToolTip(toolText);
+    wxmathmlLocGrid_sizer->Add(m_userWxMathML, wxSizerFlags());
+    m_wxMathMLLocation = new wxTextCtrl(wxMathmlLoc_sizer->GetStaticBox(), -1, wxEmptyString, wxDefaultPosition, wxSize(350*GetContentScaleFactor(), wxDefaultSize.GetY()));
+    m_wxMathMLLocation->SetToolTip(toolText);
+    wxmathmlLocGrid_sizer->Add(m_wxMathMLLocation, wxSizerFlags().Expand());
+    m_mpBrowse = new wxButton(wxMathmlLoc_sizer->GetStaticBox(), wxID_OPEN, _("Open"));
+    m_mpBrowse->Connect(wxEVT_BUTTON, wxCommandEventHandler(
+                          ConfigDialogue::OnwxMathMLBrowse), NULL, this);
+    wxmathmlLocGrid_sizer->Add(m_mpBrowse, wxSizerFlags());
+    
+    wxMathmlLoc_sizer->Add(wxmathmlLocGrid_sizer, wxSizerFlags().Expand().
+                           Border(wxALL, 5*GetContentScaleFactor()));
+    devOpts_sizer->Add(wxMathmlLoc_sizer, wxSizerFlags().Expand().
+                       Border(wxALL, 5*GetContentScaleFactor()));
+    
+    vsizer->Add(devOpts_sizer, wxSizerFlags().Expand().Border(wxALL, 5*GetContentScaleFactor()));
+  }
   panel->SetSizer(vsizer);
   panel->FitInside();
 
