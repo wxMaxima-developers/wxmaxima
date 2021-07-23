@@ -81,7 +81,7 @@ if(PANDOC)
         elseif(LATEX_LUALATEX_FOUND)
             set(WXMAXIMA_LATEX_COMMAND "${LUALATEX_COMPILER}")
         else()
-            message(${NONCRIT_WARNING} "Xelatex or Lualatex not found. PDF documentation can not be converted from Markdown.")
+            message(STATUS "Xelatex or Lualatex not found. PDF documentation can not be converted from Markdown.")
 	endif()
 
 	find_program(PO4A_TRANSLATE po4a-translate)

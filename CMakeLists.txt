@@ -56,14 +56,6 @@ if(CMAKE_VERSION VERSION_LESS "3.16")
     unset(CMAKE_UNITY_BUILD_BATCH_SIZE)
 endif()
 
-if(NOT APPVEYOR_BUILD)
-  set(NONCRIT_WARNING WARNING)
-else()
-  # Warnings cause trouble when running under PowerShell, since they are output to
-  # stderr and are interpreted as if they were hard failures.
-  set(NONCRIT_WARNING STATUS)
-endif()
-
 ##
 # CMake Policies
 #
