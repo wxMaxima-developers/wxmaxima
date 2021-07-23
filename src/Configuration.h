@@ -706,6 +706,10 @@ public:
   bool MathJaXURL_UseUser() const { return m_mathJaxURL_UseUser;}
   void MathJaXURL_UseUser(bool useUser){m_mathJaxURL_UseUser = useUser;}
 
+  bool WxMathML_UseFile() const { return m_wxMathML_UseFile;}
+  void WxMathML_UseFile(bool useFile){m_wxMathML_UseFile = useFile;}
+  wxString WxMathML_Filename() const { return m_wxMathML_Filename;}
+  void WxMathML_Filename(wxString name) { m_wxMathML_Filename = name;}
   bool EnterEvaluates() const {return m_enterEvaluates;}
   void EnterEvaluates(bool enterEvaluates) {m_enterEvaluates = enterEvaluates;}
   static wxString MathJaXURL_Auto() { return wxT("https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js");}
@@ -1012,6 +1016,8 @@ private:
   int m_defaultFramerate;
   int m_maxClipbrd_BitmapMegabytes;
   int m_autoSaveMinutes;
+  wxString m_wxMathML_Filename;
+  bool m_wxMathML_UseFile;
 };
 
 //! Sets the configuration's "printing" flag until this class is left.

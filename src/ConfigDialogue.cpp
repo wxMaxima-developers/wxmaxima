@@ -489,6 +489,9 @@ void ConfigDialogue::SetCheckboxValues()
   m_defaultPlotWidth->SetValue(configuration->DefaultPlotWidth());
   m_defaultPlotHeight->SetValue(configuration->DefaultPlotHeight());
   m_displayedDigits->SetValue(configuration->GetDisplayedDigits());
+  m_userWxMathML->SetValue(configuration->WxMathML_UseFile());
+  m_wxMathMLLocation->SetValue(configuration->WxMathML_Filename());
+
   if(configuration->LineBreaksInLongNums() && configuration->ShowAllDigits())
     m_linebreaksInLongNums->SetValue(true);
   else
@@ -1042,80 +1045,106 @@ wxWindow *ConfigDialogue::CreateOptionsPanel()
 
   wxFlexGridSizer *grid_sizer = new wxFlexGridSizer(20, 2, 5, 5);
   wxBoxSizer *vsizer = new wxBoxSizer(wxVERTICAL);
+  wxStaticBoxSizer *stdOpts_sizer = new wxStaticBoxSizer(wxVERTICAL, panel, _("Standard Options"));
 
   wxArrayString languages;
   for(Languages::const_iterator it = m_languages.begin(); it != m_languages.end(); ++it )
     languages.Add(it->first);
 
-  m_language = new wxChoice(panel, language_id, wxDefaultPosition,
+  m_language = new wxChoice(stdOpts_sizer->GetStaticBox(), language_id, wxDefaultPosition,
                             wxSize(230*GetContentScaleFactor(), -1), languages);
   grid_sizer->Add(
-    new wxStaticText(panel, -1, _("Language:")), 0,
+    new wxStaticText(stdOpts_sizer->GetStaticBox(), -1, _("Language:")), 0,
     wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL, 5*GetContentScaleFactor());
   grid_sizer->Add(m_language,
                   0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL,
                   5*GetContentScaleFactor());
 
-  grid_sizer->Add(new wxStaticText(panel, -1,
+  grid_sizer->Add(new wxStaticText(stdOpts_sizer->GetStaticBox(), -1,
                                    _("Additional symbols for the \"symbols\" sidebar:")),
                   0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL, 5*GetContentScaleFactor());
-  m_symbolPaneAdditionalChars = new wxTextCtrl(panel, -1);
+  m_symbolPaneAdditionalChars = new wxTextCtrl(stdOpts_sizer->GetStaticBox(), -1);
   grid_sizer->Add(m_symbolPaneAdditionalChars,
                   0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL, 5*GetContentScaleFactor());
 
-  wxStaticText *ul = new wxStaticText(panel, -1, _("Undo limit (0 for none):"));
-  m_undoLimit = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(150*GetContentScaleFactor(), -1), wxSP_ARROW_KEYS, 0, 10000);
+  wxStaticText *ul = new wxStaticText(stdOpts_sizer->GetStaticBox(), -1, _("Undo limit (0 for none):"));
+  m_undoLimit = new wxSpinCtrl(stdOpts_sizer->GetStaticBox(), -1, wxEmptyString, wxDefaultPosition, wxSize(150*GetContentScaleFactor(), -1), wxSP_ARROW_KEYS, 0, 10000);
   grid_sizer->Add(ul, 0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL, 5*GetContentScaleFactor());
   grid_sizer->Add(m_undoLimit, wxSizerFlags());
 
-  grid_sizer->Add(new wxStaticText(panel, -1, _("Recent files list length:")),
+  grid_sizer->Add(new wxStaticText(stdOpts_sizer->GetStaticBox(), -1, _("Recent files list length:")),
                   0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL, 5*GetContentScaleFactor());
-  m_recentItems = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition,
+  m_recentItems = new wxSpinCtrl(stdOpts_sizer->GetStaticBox(), -1, wxEmptyString, wxDefaultPosition,
                                  wxSize(150*GetContentScaleFactor(), -1), wxSP_ARROW_KEYS, 5, 30);
   grid_sizer->Add(m_recentItems, wxSizerFlags());
 
-  grid_sizer->Add(new wxStaticText(panel, -1, _("Default animation framerate:")),
+  grid_sizer->Add(new wxStaticText(stdOpts_sizer->GetStaticBox(), -1, _("Default animation framerate:")),
                   0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL, 5*GetContentScaleFactor());
-  m_defaultFramerate = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(150*GetContentScaleFactor(), -1), wxSP_ARROW_KEYS, 1,
+  m_defaultFramerate = new wxSpinCtrl(stdOpts_sizer->GetStaticBox(), -1, wxEmptyString, wxDefaultPosition, wxSize(150*GetContentScaleFactor(), -1), wxSP_ARROW_KEYS, 1,
                                       200);
   grid_sizer->Add(m_defaultFramerate, 0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL, 5*GetContentScaleFactor());
 
-  grid_sizer->Add(new wxStaticText(panel, -1, _("Interactive popup memory limit [MB/plot]:")),
+  grid_sizer->Add(new wxStaticText(stdOpts_sizer->GetStaticBox(), -1, _("Interactive popup memory limit [MB/plot]:")),
                   0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL, 5*GetContentScaleFactor());
-  m_maxGnuplotMegabytes = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(150*GetContentScaleFactor(), -1), wxSP_ARROW_KEYS, 0,
+  m_maxGnuplotMegabytes = new wxSpinCtrl(stdOpts_sizer->GetStaticBox(), -1, wxEmptyString, wxDefaultPosition, wxSize(150*GetContentScaleFactor(), -1), wxSP_ARROW_KEYS, 0,
                                          2000);
   grid_sizer->Add(m_maxGnuplotMegabytes, 0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL, 5*GetContentScaleFactor());
 
-  grid_sizer->Add(new wxStaticText(panel, -1, _("Time [in Minutes] between autosaves")),
+  grid_sizer->Add(new wxStaticText(stdOpts_sizer->GetStaticBox(), -1, _("Time [in Minutes] between autosaves")),
                   0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL, 5*GetContentScaleFactor());
-  m_autosaveMinutes = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(150*GetContentScaleFactor(), -1), wxSP_ARROW_KEYS, 1,
+  m_autosaveMinutes = new wxSpinCtrl(stdOpts_sizer->GetStaticBox(), -1, wxEmptyString, wxDefaultPosition, wxSize(150*GetContentScaleFactor(), -1), wxSP_ARROW_KEYS, 1,
                                          60);
 
   grid_sizer->Add(m_autosaveMinutes, 0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL, 5*GetContentScaleFactor());
 
-  vsizer->Add(grid_sizer, wxSizerFlags().Border(wxALL, 5*GetContentScaleFactor()));
+  stdOpts_sizer->Add(grid_sizer, wxSizerFlags().Border(wxALL, 5*GetContentScaleFactor()));
 
-  m_autoSave = new wxCheckBox(panel, -1, _("Save the worksheet automatically"));
-  vsizer->Add(m_autoSave, wxSizerFlags().Border(wxALL, 5*GetContentScaleFactor()));
+  m_autoSave = new wxCheckBox(stdOpts_sizer->GetStaticBox(), -1, _("Save the worksheet automatically"));
+  stdOpts_sizer->Add(m_autoSave, wxSizerFlags().Border(wxALL, 5*GetContentScaleFactor()));
 
-  m_usesvg = new wxCheckBox(panel, -1, _("Create scalable plots."));
+  m_usesvg = new wxCheckBox(stdOpts_sizer->GetStaticBox(), -1, _("Create scalable plots."));
   m_usesvg->Connect(wxEVT_CHECKBOX,
                          wxCommandEventHandler(ConfigDialogue::UsesvgChanged),
                          NULL, this);
   m_usesvg->Show(false);
-  vsizer->Add(m_usesvg, wxSizerFlags().Border(wxALL, 5*GetContentScaleFactor()));
+  stdOpts_sizer->Add(m_usesvg, wxSizerFlags().Border(wxALL, 5*GetContentScaleFactor()));
 
-  m_saveUntitled = new wxCheckBox(panel, -1, _("Ask to save untitled documents"));
-  vsizer->Add(m_saveUntitled, wxSizerFlags().Border(wxALL, 5*GetContentScaleFactor()));
+  m_saveUntitled = new wxCheckBox(stdOpts_sizer->GetStaticBox(), -1, _("Ask to save untitled documents"));
+  stdOpts_sizer->Add(m_saveUntitled, wxSizerFlags().Border(wxALL, 5*GetContentScaleFactor()));
 
-  m_fixReorderedIndices = new wxCheckBox(panel, -1,
+  m_fixReorderedIndices = new wxCheckBox(stdOpts_sizer->GetStaticBox(), -1,
                                          _("Fix reordered reference indices (of %i, %o) before saving"));
-  vsizer->Add(m_fixReorderedIndices, wxSizerFlags().Border(wxALL, 5*GetContentScaleFactor()));
+  stdOpts_sizer->Add(m_fixReorderedIndices, wxSizerFlags().Border(wxALL, 5*GetContentScaleFactor()));
 
-  m_notifyIfIdle = new wxCheckBox(panel, -1, _("Warn if an inactive window is idle"));
-  vsizer->Add(m_notifyIfIdle, wxSizerFlags().Border(wxALL, 5*GetContentScaleFactor()));
+  m_notifyIfIdle = new wxCheckBox(stdOpts_sizer->GetStaticBox(), -1, _("Warn if an inactive window is idle"));
+  stdOpts_sizer->Add(m_notifyIfIdle, wxSizerFlags().Border(wxALL, 5*GetContentScaleFactor()));
 
+  vsizer->Add(stdOpts_sizer, wxSizerFlags().Expand().Border(wxALL, 5*GetContentScaleFactor()));
 
+  wxStaticBoxSizer *devOpts_sizer = new wxStaticBoxSizer(wxVERTICAL, panel, _("Developer Options"));
+  wxStaticBoxSizer *wxMathmlLoc_sizer = new wxStaticBoxSizer(wxVERTICAL,
+                                                             devOpts_sizer->GetStaticBox(),
+                                                             _("wxMathml.lisp location"));
+  m_automaticWxMathML = new wxRadioButton(wxMathmlLoc_sizer->GetStaticBox(), -1, _("Built-in"));
+  wxFlexGridSizer *wxmathmlLocGrid_sizer = new wxFlexGridSizer(9, 3, 5, 5);
+  wxmathmlLocGrid_sizer->Add(m_automaticWxMathML, wxSizerFlags());
+  wxmathmlLocGrid_sizer->Add(0, 0, wxSizerFlags());
+  wxmathmlLocGrid_sizer->Add(0, 0, wxSizerFlags());
+  m_userWxMathML = new wxRadioButton(wxMathmlLoc_sizer->GetStaticBox(), -1, _("User-specified file:"));
+  wxmathmlLocGrid_sizer->Add(m_userWxMathML, wxSizerFlags());
+  m_wxMathMLLocation = new wxTextCtrl(wxMathmlLoc_sizer->GetStaticBox(), -1, wxEmptyString, wxDefaultPosition, wxSize(350*GetContentScaleFactor(), wxDefaultSize.GetY()));
+  wxmathmlLocGrid_sizer->Add(m_wxMathMLLocation, wxSizerFlags().Expand());
+  m_mpBrowse = new wxButton(wxMathmlLoc_sizer->GetStaticBox(), wxID_OPEN, _("Open"));
+  m_mpBrowse->Connect(wxEVT_BUTTON, wxCommandEventHandler(
+                        ConfigDialogue::OnwxMathMLBrowse), NULL, this);
+  wxmathmlLocGrid_sizer->Add(m_mpBrowse, wxSizerFlags());
+
+  wxMathmlLoc_sizer->Add(wxmathmlLocGrid_sizer, wxSizerFlags().Expand().
+                     Border(wxALL, 5*GetContentScaleFactor()));
+  devOpts_sizer->Add(wxMathmlLoc_sizer, wxSizerFlags().Expand().
+                     Border(wxALL, 5*GetContentScaleFactor()));
+
+  vsizer->Add(devOpts_sizer, wxSizerFlags().Expand().Border(wxALL, 5*GetContentScaleFactor()));
   panel->SetSizer(vsizer);
   panel->FitInside();
 
@@ -1672,14 +1701,17 @@ void ConfigDialogue::WriteSettings()
   wxArrayString out;
   wxConfigBase *config = wxConfig::Get();
   Configuration *configuration = m_configuration;
-
+  
   configuration->m_maximaEnvVars.clear();
-    for(int row=m_maximaEnvVariables->GetNumberRows()-1;row>=0;row--)
+  for(int row=m_maximaEnvVariables->GetNumberRows()-1;row>=0;row--)
   {
     if(!m_maximaEnvVariables->GetCellValue(row,0).Trim(true).Trim(false).IsEmpty())
       configuration->m_maximaEnvVars[m_maximaEnvVariables->GetCellValue(row,0)] =
         m_maximaEnvVariables->GetCellValue(row,1);
   }
+  
+  configuration->WxMathML_UseFile(m_userWxMathML->GetValue());
+  configuration->WxMathML_Filename(m_wxMathMLLocation->GetValue());
 
   configuration->SetAbortOnError(m_abortOnError->GetValue());
   configuration->MaxClipbrdBitmapMegabytes(m_maxClipbrdBitmapMegabytes->GetValue());
@@ -1814,6 +1846,22 @@ void ConfigDialogue::WriteSettings()
   }
   config->Write(wxT("ConfigDialogTab"), m_notebook->GetSelection());
 }
+
+void ConfigDialogue::OnwxMathMLBrowse(wxCommandEvent&  WXUNUSED(event))
+{
+  wxConfigBase *config = wxConfig::Get();
+  wxString dd;
+  config->Read(wxT("maxima"), &dd);
+  wxString file = wxFileSelector(_("Select wxMathml.lisp location"),
+                                 wxPathOnly(dd), wxFileNameFromPath(dd),
+                                 wxEmptyString,
+                                 _("Lisp files (*.lisp)|*.lisp|All|*"),
+                                 wxFD_OPEN);
+
+  if (file.Length())
+    m_wxMathMLLocation->SetValue(file);
+}
+
 
 void ConfigDialogue::OnMpBrowse(wxCommandEvent&  WXUNUSED(event))
 {

@@ -28,16 +28,19 @@
 #define WXMATHML_H
 
 #include "precomp.h"
+#include "Configuration.h"
 #include <wx/string.h>
 #include <wx/tokenzr.h>
 
 class wxMathML
 {
  public:
-  wxMathML();
-  wxString GetCmd(){ return m_maximaCMD; }
+  wxMathML(Configuration *config);
+  wxString GetCmd();
  private:
   wxString m_wxMathML;
+  bool m_wxMathML_UseFile;
+  Configuration *m_configuration;
   static wxString m_maximaCMD;
 };
 

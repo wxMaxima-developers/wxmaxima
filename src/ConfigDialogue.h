@@ -284,6 +284,7 @@ protected:
   wxTextCtrl *m_texPreamble;
   wxCheckBox *m_autoSave;
   wxButton *m_mpBrowse;
+  wxButton *m_wxMathMLBrowse;
   wxTextCtrl *m_additionalParameters;
   wxTextCtrl *m_mathJaxURL;
   wxChoice *m_language;
@@ -301,7 +302,10 @@ protected:
   wxRadioButton *m_displayNDigits;
   wxRadioButton *m_displayAllDigits;
   wxRadioButton *m_linebreaksInLongNums;
+  wxRadioButton *m_automaticWxMathML;
+  wxRadioButton *m_userWxMathML;
   wxSpinCtrl *m_maxClipbrdBitmapMegabytes;
+  wxTextCtrl *m_wxMathMLLocation;
   //! A checkbox that asks if TeX should put the exponents above or after the subscripts.
   wxCheckBox *m_TeXExponentsAfterSubscript;
   //! A checkbox that asks if TeX should use the \\partial symbol for representing diff()
@@ -369,6 +373,8 @@ protected:
 
   //! Starts the file chooser that allows selecting where the maxima binary lies
   void OnMpBrowse(wxCommandEvent &event);
+
+  void OnwxMathMLBrowse(wxCommandEvent &event);
 
   void OnHelpBrowserBrowse(wxCommandEvent&  event);
 

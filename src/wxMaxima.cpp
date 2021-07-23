@@ -3923,7 +3923,7 @@ void wxMaxima::SetupVariables()
              wxT("\") (setf $in_netmath nil) (setf $show_openplot t))\n"));
 
   wxLogMessage(_("Sending maxima the info how to express 2d maths as XML"));
-  wxMathML wxmathml;
+  wxMathML wxmathml(m_worksheet->m_configuration);
   SendMaxima(wxmathml.GetCmd());
   wxString cmd;
 
