@@ -100,7 +100,8 @@ wxString wxMathML::GetCmd()
 	}
       m_maximaCMD += lineWithoutComments + " ";
     }
-  wxASSERT_MSG(m_maximaCMD.Length()>54000,_("Bug: After removing the whitespace wxMathml.lisp is shorter than expected!"));
+  if(!m_configuration->WxMathML_UseFile())
+    wxASSERT_MSG(m_maximaCMD.Length()>54000,_("Bug: After removing the whitespace wxMathml.lisp is shorter than expected!"));
   m_maximaCMD = wxT(":lisp-quiet ") + m_maximaCMD + "\n";
 
   return m_maximaCMD;
