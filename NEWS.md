@@ -1,12 +1,11 @@
 # Current:
  * Allow seeing all files in the file save dialog. (#1557)
- * Alt up (show previous command) now works in all cases (#1566)
- * Rewrote a config dialogue part that was broken on M1 macs
+ * Fix a error when using Alt up arrow (show previous command) (#1566)
+ * Rewrote a config dialogue
  * Improvements in the manual
  * Update Spanish translation of manual
  * Update German, Russian and Ukrainian translation
- * Fix a warning which occured when starting wxMaxima the first time
- * kill(all) now correctly resets properties of user-modified symbols
+ * Fix a warning, which occured, when starting wxMaxima the first time
 
 # 21.05.2:
  * The integral signs disappeared or were misplaced on some MS Windows computers
