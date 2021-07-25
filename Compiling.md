@@ -156,3 +156,8 @@ might not be the end of the world, neither:
  * And if there are no manual files wxMaxima will redirect the system's web
    browser to an online version of the manual, instead.
 
+### Troubleshooting
+
+If you have problems when compiling wxMaxima, maybe a look in the configurations
+for various CI-Systems (`.appveyor.yml` and files in `.github/workflows/`)
+may be helpful to see, how wxMaxima is compiled on these systems.
