@@ -143,9 +143,11 @@ set(SOURCE_FILES
     wxMaximaFrame.cpp
     wxMaximaIcon.cpp
     ${CMAKE_BINARY_DIR}/addprivatefonts.h
-    ${CMAKE_CURRENT_BINARY_DIR}/wxmaxima.rc
-    ${CMAKE_CURRENT_BINARY_DIR}/wxmaxima.manifest
 )
+if(NOT CYGWIN)
+    list(APPEND SOURCE_FILES ${CMAKE_CURRENT_BINARY_DIR}/wxmaxima.rc)
+endif()
+list(APPEND SOURCE_FILES ${CMAKE_CURRENT_BINARY_DIR}/wxmaxima.manifest)
 
 list(APPEND SOURCE_FILES
   ${CELL_SOURCE_FILES}
