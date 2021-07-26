@@ -37,7 +37,7 @@ namespace utf {
 using utfw = utf16;
 }}
 
-#elif defined(__linux__) || defined(__APPLE__) || defined (__NetBSD__)
+#else
 
 #include <ww898/cp_utf32.hpp>
 
@@ -46,6 +46,4 @@ namespace utf {
 using utfw = utf32;
 }}
 
-#else
-#error Unsupported platform
 #endif
