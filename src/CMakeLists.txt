@@ -314,6 +314,7 @@ else()
     else()
 	message(STATUS "rpmbuild found - RPM package can be build with make package.")
 	list(APPEND CPACK_GENERATOR "RPM")
+	list(APPEND CPACK_SOURCE_GENERATOR "RPM")
     endif()
 endif()
 
@@ -326,7 +327,7 @@ set(CPACK_PACKAGE_CONTACT "The wxMaxima Team <wxmaxima-devel@lists.sourceforge.n
 set(CPACK_DEBIAN_PACKAGE_MAINTAINER "The wxMaxima Team <wxmaxima-devel@lists.sourceforge.net>")
 set(CPACK_DEBIAN_PACKAGE_SECTION "math")
 
-set(CPACK_RPM_PACKAGE_LICENSE "GPL")
+set(CPACK_RPM_PACKAGE_LICENSE "GPLv2+")
 set(CPACK_RPM_PACKAGE_GROUP "Productivity/Scientific/Math")
 SET(CPACK_RPM_PACKAGE_URL "https://wxmaxima-developers.github.io/wxmaxima/")
 SET(CPACK_RPM_PACKAGE_SUMMARY "wxMaxima is a document based interface for the computer algebra system Maxima")
