@@ -5,7 +5,7 @@
  * Improvements in the manual
  * Update Spanish translation of manual
  * Update German, Russian and Ukrainian translation
- * Fix a warning, which occured, when starting wxMaxima the first time
+ * Fix a warning, which occurred, when starting wxMaxima the first time
  * ww898 unnecessarily limited the list of supported platforms
 
 # 21.05.2:
