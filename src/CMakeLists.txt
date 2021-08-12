@@ -201,7 +201,6 @@ if(APPLE)
       ${CMAKE_SOURCE_DIR}/art/wxmac-doc-wxm.icns
       ${CMAKE_SOURCE_DIR}/art/wxmac-doc-wxmx.icns
       ${CMAKE_SOURCE_DIR}/info/*.html
-      ${CMAKE_SOURCE_DIR}/info/*.jpg
       ${CMAKE_SOURCE_DIR}/info/*.png
       ${CMAKE_SOURCE_DIR}/data/PkgInfo
       ${CMAKE_SOURCE_DIR}/data/fonts/*.ttf
