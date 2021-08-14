@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: hu\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-13 12:26+0200\n"
-"PO-Revision-Date: 2021-08-13 09:48+0200\n"
+"PO-Revision-Date: 2021-08-14 17:35+0200\n"
 "Last-Translator: Blahota István <blahota@fsf.hu>\n"
 "Language-Team: Hungarian\n"
 "Language: hu\n"
@@ -48,7 +48,7 @@ msgid ""
 "Maxima compiled using: "
 msgstr ""
 "\n"
-"A maxima fordítása ezzel:"
+"A maxima fordítása ezzel: "
 
 #: ../../src/wxMaxima.cpp:8274
 msgid ""
@@ -536,7 +536,9 @@ msgstr "Sok szöveget adott hozzá (%li karakterek) az XML lekérdezőhöz."
 
 #: ../../src/ConfigDialogue.cpp:1473
 msgid "Additional clipboard formats to put on the clipboard on ordinary copy"
-msgstr "További vágólap formátumok a vágólapra helyezése a "
+msgstr ""
+"További vágólap formátumok, amelyeket a vágólapra helyezhet a szokásos "
+"példányon"
 
 #: ../../src/ConfigDialogue.cpp:341
 msgid ""
@@ -640,7 +642,7 @@ msgstr "Az animáció framerátája..."
 
 #: ../../src/ConfigDialogue.cpp:669
 msgid "Antialias lines."
-msgstr "Élsimított vonalak"
+msgstr "Élsimított vonalak."
 
 #: ../../src/wxMaximaFrame.cpp:1322
 msgid "Append"
@@ -1316,7 +1318,7 @@ msgstr "Csatlakozási kísérlet történt, de nem sikerült."
 
 #: ../../src/wxMaxima.cpp:1649
 msgid "Connection to Maxima lost."
-msgstr "Megszakadt a kapcsolat a maximával"
+msgstr "Megszakadt a kapcsolat a maximával."
 
 #: ../../src/VariablesPane.cpp:40
 msgid "Contents"
@@ -2859,7 +2861,7 @@ msgstr "Gnuplot adatfájl-név: "
 
 #: ../../src/wxMaxima.cpp:2780
 msgid "Gnuplot found at: "
-msgstr "A gnuplot itt található:"
+msgstr "A gnuplot itt található: "
 
 #: ../../src/wxMaxima.cpp:2154
 msgid "Gnuplot has closed."
@@ -2867,7 +2869,7 @@ msgstr "A gnuplot leállt."
 
 #: ../../src/wxMaxima.cpp:2775
 msgid "Gnuplot not found, using the default: "
-msgstr "A gnuplot nem található, az alapértelmezett használatával:"
+msgstr "A gnuplot nem található, az alapértelmezett használatával: "
 
 #: ../../src/Worksheet.cpp:7095
 msgid ""
@@ -2883,7 +2885,7 @@ msgstr "Görög"
 
 #: ../../src/Configuration.cpp:1434
 msgid "Greek Constants"
-msgstr "Görög konstansok "
+msgstr "Görög konstansok"
 
 #: ../../src/wxMaximaFrame.cpp:450
 msgid "Greek Letters"
@@ -3696,7 +3698,7 @@ msgstr "Százalékjel használata speciális , mint például %e, %i, stb."
 
 #: ../../src/wxMaxima.cpp:2034
 msgid "Killing Maxima."
-msgstr "Maxima kilövése"
+msgstr "Maxima kilövése."
 
 #: ../../src/wxMaxima.cpp:7314 ../../src/wxMaxima.cpp:7810
 msgid "LCM"
@@ -4805,7 +4807,7 @@ msgstr "Mátrix megnyitása"
 
 #: ../../src/wxMaxima.cpp:3497
 msgid "Opening a wxmx file"
-msgstr "Egy wxmx fájl megnyitása."
+msgstr "Egy wxmx fájl megnyitása"
 
 #: ../../src/wxMaxima.cpp:3340 ../../src/wxMaxima.cpp:3397
 #: ../../src/wxMaxima.cpp:3501 ../../src/wxMaxima.cpp:3819
@@ -5353,7 +5355,7 @@ msgstr "A Stílusbeállítások visszaállítása"
 
 #: ../../src/ConfigDialogue.cpp:2026 ../../src/ConfigDialogue.cpp:2035
 msgid "Resetting all configuration settings"
-msgstr "Minden konfigurációs beállítás visszaállítása."
+msgstr "Minden konfigurációs beállítás visszaállítása"
 
 #: ../../src/ToolBar.cpp:203 ../../src/wxMaximaFrame.cpp:935
 msgid "Restart Maxima"
@@ -5721,7 +5723,7 @@ msgstr "Matematikai megjelenítés algoritmusának kiválasztása"
 
 #: ../../src/wxMaxima.cpp:246
 msgid "Selected language: "
-msgstr "Kiválasztott nyelv:"
+msgstr "Kiválasztott nyelv: "
 
 #: ../../src/TipOfTheDay.cpp:94
 msgid ""
@@ -5745,7 +5747,7 @@ msgstr "Az aktuális cella Maximához küldése"
 
 #: ../../src/wxMaxima.cpp:2019
 msgid "Sending Maxima a SIGINT signal."
-msgstr "SIGINT szignál küldése a Maximának"
+msgstr "SIGINT szignál küldése a Maximának."
 
 #: ../../src/wxMaximaFrame.cpp:528
 msgid "Sending a command to Maxima"
@@ -5765,7 +5767,7 @@ msgstr "Megszakítási jel küldése a Maximának."
 
 #: ../../src/wxMaxima.cpp:154
 msgid "Sending configuration data to maxima."
-msgstr "Beállító adat küldése a maximának"
+msgstr "Beállító adat küldése a maximának."
 
 #: ../../src/wxMaxima.cpp:3921
 msgid "Sending maxima the info how to express 2d maths as XML"
@@ -6945,7 +6947,7 @@ msgstr "Megpróbál megnyitni a nem létező %s fájlt"
 
 #: ../../src/wxMaxima.cpp:3658
 msgid "Trying to reconstruct the xml closing markers."
-msgstr "Az xml záró jelek rekonstruálása"
+msgstr "Az xml záró jelek rekonstruálása."
 
 #: ../../src/wxMaxima.cpp:3575
 msgid "Trying to recover a broken .wxmx file."
@@ -6958,7 +6960,7 @@ msgstr "Próbálja eltávolítani a(z) %s régi ideiglenes fájlt"
 
 #: ../../src/wxMaxima.cpp:1703
 msgid "Trying to restart maxima."
-msgstr "A maxima újraindítása"
+msgstr "A maxima újraindítása."
 
 #: ../../src/wxMaxima.cpp:1724
 #, c-format
@@ -7417,7 +7419,7 @@ msgid ""
 "idea at https://github.com/wxMaxima-developers/wxmaxima/issues. "
 msgstr ""
 "Van ötlete a wxMaxima fejlesztésére? Nagyszerű! Kérjük, mutassa be a https://"
-"github.com/wxMaxima-developers/wxmaxima/issues címen."
+"github.com/wxMaxima-developers/wxmaxima/issues címen. "
 
 #: ../../src/wxMaxima.cpp:10212
 #, c-format
@@ -7527,11 +7529,11 @@ msgstr "a telepített Maxima verziók közti választás"
 
 #: ../../src/wxMaxima.cpp:6645
 msgid "comma-separated column numbers:"
-msgstr "Vesszővel elválasztott oszlop-számok"
+msgstr "Vesszővel elválasztott oszlop-számok:"
 
 #: ../../src/wxMaxima.cpp:6645
 msgid "comma-separated row numbers:"
-msgstr "Vesszővel elválasztott sor-számok"
+msgstr "Vesszővel elválasztott sor-számok:"
 
 #: ../../src/wxMaximaFrame.cpp:1943
 msgid "delta"
@@ -7872,7 +7874,7 @@ msgstr "wxMaxima dokumentum"
 #: ../../src/wxMaxima.cpp:3350 ../../src/wxMaxima.cpp:3405
 #: ../../src/wxMaxima.cpp:3414
 msgid "wxMaxima encountered an error loading "
-msgstr "A wxMaxima nem tudta betölteni a következő fájlt:"
+msgstr "A wxMaxima nem tudta betölteni a következő fájlt: "
 
 #: ../../src/wxMaximaFrame.cpp:1393
 msgid "wxMaxima help"
