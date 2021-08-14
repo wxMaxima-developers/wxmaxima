@@ -143,9 +143,11 @@ set(SOURCE_FILES
     wxMaximaFrame.cpp
     wxMaximaIcon.cpp
     ${CMAKE_BINARY_DIR}/addprivatefonts.h
-    ${CMAKE_CURRENT_BINARY_DIR}/wxmaxima.rc
-    ${CMAKE_CURRENT_BINARY_DIR}/wxmaxima.manifest
 )
+if(NOT CYGWIN)
+    list(APPEND SOURCE_FILES ${CMAKE_CURRENT_BINARY_DIR}/wxmaxima.rc)
+endif()
+list(APPEND SOURCE_FILES ${CMAKE_CURRENT_BINARY_DIR}/wxmaxima.manifest)
 
 list(APPEND SOURCE_FILES
   ${CELL_SOURCE_FILES}
@@ -199,7 +201,6 @@ if(APPLE)
       ${CMAKE_SOURCE_DIR}/art/wxmac-doc-wxm.icns
       ${CMAKE_SOURCE_DIR}/art/wxmac-doc-wxmx.icns
       ${CMAKE_SOURCE_DIR}/info/*.html
-      ${CMAKE_SOURCE_DIR}/info/*.jpg
       ${CMAKE_SOURCE_DIR}/info/*.png
       ${CMAKE_SOURCE_DIR}/data/PkgInfo
       ${CMAKE_SOURCE_DIR}/data/fonts/*.ttf
@@ -312,6 +313,7 @@ else()
     else()
 	message(STATUS "rpmbuild found - RPM package can be build with make package.")
 	list(APPEND CPACK_GENERATOR "RPM")
+	list(APPEND CPACK_SOURCE_GENERATOR "RPM")
     endif()
 endif()
 
@@ -324,7 +326,7 @@ set(CPACK_PACKAGE_CONTACT "The wxMaxima Team <wxmaxima-devel@lists.sourceforge.n
 set(CPACK_DEBIAN_PACKAGE_MAINTAINER "The wxMaxima Team <wxmaxima-devel@lists.sourceforge.net>")
 set(CPACK_DEBIAN_PACKAGE_SECTION "math")
 
-set(CPACK_RPM_PACKAGE_LICENSE "GPL")
+set(CPACK_RPM_PACKAGE_LICENSE "GPLv2+")
 set(CPACK_RPM_PACKAGE_GROUP "Productivity/Scientific/Math")
 SET(CPACK_RPM_PACKAGE_URL "https://wxmaxima-developers.github.io/wxmaxima/")
 SET(CPACK_RPM_PACKAGE_SUMMARY "wxMaxima is a document based interface for the computer algebra system Maxima")

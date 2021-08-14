@@ -226,6 +226,8 @@ If a special symbol isn’t in the list it is possible to input arbitrary Unicod
 
 Please note that most of these symbols (notable exceptions are the logic symbols) do not have a special meaning in _Maxima_ and therefore will be interpreted as ordinary characters. If  _Maxima_ is compiled using a Lisp that doesn’t support dealing with Unicode characters they might cause an error message instead.
 
+It may be the case, that e.g. greek characters are not included in the selected font, then they can not be displayed.
+To solve that problem, select other fonts (using: Edit -> Configure -> Style).
 
 ### Side Panes
 
