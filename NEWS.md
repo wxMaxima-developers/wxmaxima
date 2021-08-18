@@ -7,6 +7,7 @@
  * Update German, Russian, Hungarian and Ukrainian translation
  * Fix a warning, which occurred, when starting wxMaxima the first time
  * ww898 unnecessarily limited the list of supported platforms
+ * wxMaxima's properties to maxima symbols can now no more be killed
 
 # 21.05.2:
  * The integral signs disappeared or were misplaced on some MS Windows computers

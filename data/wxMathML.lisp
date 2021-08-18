@@ -53,9 +53,9 @@
     (if (eq indic 'expr)
 	`(setf (symbol-function ',sym) #',val)
       `(setf (get ',sym ',indic) ',val))
-;    `(let ((existing-props (gethash sym *builtin-symbol-props*)))
-;     (setf (gethash ',sym *builtin-symbol-props*) (append (list ',indic ',val)
-;							 existing-props)))
+    `(let ((existing-props (gethash ',sym *builtin-symbol-props*)))
+     (setf (gethash ',sym *builtin-symbol-props*) (append (list ',indic ',val)
+							 existing-props)))
     )
   
 
