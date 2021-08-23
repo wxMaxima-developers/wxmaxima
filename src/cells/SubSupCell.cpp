@@ -435,3 +435,26 @@ wxString SubSupCell::ToXML() const
   }
   return retval;
 }
+
+wxString SubSupCell::GetDiffPart() const
+{
+  wxString s(wxT(","));
+  if (m_baseCell->IsCompound())
+    s += "(" + m_baseCell->ListToString() + ")";
+  else
+    s += m_baseCell->ListToString();
+
+  if (m_scriptCells.empty())
+  {
+    s += "[" + m_postSubCell->ListToString() + "]";
+    s += ",";
+    s += m_postSupCell->ListToString();
+  }
+  else
+  {
+    for (auto &cell : m_scriptCells)
+      s += "[" + cell->ListToString() + "]";
+    s += ",1";
+  }
+  return s;
+}

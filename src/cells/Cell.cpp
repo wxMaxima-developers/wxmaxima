@@ -942,11 +942,15 @@ wxString Cell::ListToXML() const
 }
 
 /***
- * Get the part for diff tag support - only ExpTag overvrides this.
+ * Get the part for diff tag support - only ExptCell and SubSupCell override this.
  */
 wxString Cell::GetDiffPart() const
 {
-  return {};
+  wxString s = ToString();
+  if (s == wxEmptyString)
+    return s;
+
+  return wxT(",") + s + wxT(",1");
 }
 
 Cell::Range Cell::GetCellsInRect(const wxRect &rect) const
