@@ -56,6 +56,8 @@ public:
   wxString ToTeX() const override;
   wxString ToXML() const override;
 
+  wxString GetDiffPart() const override;
+  
   void SetAltCopyText(const wxString &text) override { m_altCopyText = text; }
   const wxString &GetAltCopyText() const override { return m_altCopyText; }
 
