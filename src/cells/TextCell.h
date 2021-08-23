@@ -68,8 +68,6 @@ public:
   wxString ToTeX() const override;
   wxString ToXML() const override;
 
-  wxString GetDiffPart() const override;
-
   bool IsOperator() const override;
 
   const wxString &GetValue() const override { return m_text; }

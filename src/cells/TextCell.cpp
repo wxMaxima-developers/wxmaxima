@@ -1264,11 +1264,6 @@ wxString TextCell::ToXML() const
   return wxT("<") + tag + GetXMLFlags() + wxT(">") + xmlstring + wxT("</") + tag + wxT(">");
 }
 
-wxString TextCell::GetDiffPart() const
-{
-  return wxT(",") + m_text + wxT(",1");
-}
-
 bool TextCell::IsShortNum() const
 {
   return (!GetNext()) && (m_text.Length() < 4);

@@ -946,7 +946,11 @@ wxString Cell::ListToXML() const
  */
 wxString Cell::GetDiffPart() const
 {
-  return {};
+  wxString s = ToString();
+  if (s == wxEmptyString)
+    return s;
+
+  return wxT(",") + s + wxT(",1");
 }
 
 Cell::Range Cell::GetCellsInRect(const wxRect &rect) const
