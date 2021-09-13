@@ -7593,6 +7593,9 @@ void Worksheet::DivideCell()
 
 void Worksheet::MergeCells()
 {
+  if(!m_cellPointers.m_selectionStart)
+    return;
+  
   wxString newcell;
 
   for (auto &tmp : OnList(m_cellPointers.m_selectionStart.CastAs<GroupCell*>()))
