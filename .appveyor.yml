@@ -103,8 +103,8 @@ before_build:
             -DwxUSE_RIBBON=NO  `
             "-DCMAKE_INSTALL_PREFIX=$INSTALL_DIR" -Wno-dev `
             "$SOURCE_DIR"
-          cmake --build . -DCMAKE_BUILD_TYPE=Release
-          cmake --build . -DCMAKE_BUILD_TYPE=Release --target install
+          cmake --build .
+          cmake --install .
           # Remove all files other than .pdb files - we do need those so that the build is quiet
           Get-ChildItem -Recurse -File | Where {($_.Extension -ne ".pdb")} | Remove-Item
           # List the PDB files for diagnostic purposes
@@ -142,7 +142,7 @@ build_script:
       echo "    Branch: $env:APPVEYOR_REPO_BRANCH"
       iex $env:TOOLKIT_INIT
       pushd build
-      cmake --build . -DCMAKE_BUILD_TYPE=Release
+      cmake --build .
       if (! $?) { throw "CMake failed with exit code $LastExitCode" }
       popd
 
