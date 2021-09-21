@@ -3,7 +3,7 @@
 <component type="desktop">
   <id>io.github.wxmaxima_developers.wxMaxima</id>
   <metadata_license>CC0-1.0</metadata_license>
-  <project_license>GPL-2.0+</project_license>
+  <project_license>GPL-2.0-or-later</project_license>
   <name>wxMaxima</name>
   <update_contact>wxMaxima@physikbuch.de</update_contact>
   <summary>A graphical user interface for Maxima, a powerful computer algebra system</summary>
@@ -33,6 +33,12 @@
       <caption>An example of a plot embedded in a work sheet</caption>
     </screenshot>
   </screenshots>
+  <categories>
+    <category>Science</category>
+    <category>Education</category>
+  </categories>
+
+
   <url type="bugtracker">https://github.com/wxMaxima-developers/wxmaxima/issues</url>
   <url type="homepage">https://wxMaxima-developers.github.io/wxmaxima/</url>
   <url type="help">https://wxmaxima-developers.github.io/wxmaxima/help.html</url>
@@ -50,6 +56,7 @@
   <content_rating type="oars-1.0">
     <content_attribute id="social-info">mild</content_attribute>
   </content_rating>
+  <releases>
    <release version="21.05.2" date="2021-05-20T07:04:00Z">
       <description>
 	<p>
@@ -65,82 +72,5 @@
 	</p>
       </description>
   </release>
-  <releases>
-
-    <!-- prefer to use date with approximate UTC time - this way the verifier won't trip due
-         to time zone variations
-         You can see current time at: https://en.wikipedia.org/wiki/ISO_8601
-    -->
-   <release version="21.05.0" date="2021-05-15T09:49:00Z">
-      <description>
-	<p>
-	  Many bug fixes.
-	</p>
-<ul>
-<li>Long numbers now can be broken into lines</li>
-<li>On Export long numbers sometimes got lost</li>
-<li>The height of folded cells now is calculated correctly, again (bug #1532)</li>
-<li>Printing now can insert pagebreaks within GroupCells (bug #970, #1528, 
-    #1241, #181, #573,#1082)</li>
-<li>A Russian translation update by OlesyaGerasimenko</li>
-<li>A Ukrainian translation update by Yuri Chornoivan</li>
-<li>Changed the font for the PDF manuals to free Google Noto fonts.
-Now all PDF manuals can be created without missing characters
-(before cyrillic, chinese and greek characters were missing).</li>
-<li>Solved a crash when printing.</li>
-</ul>
-      </description>
-  </release>
-   <release version="21.04.0" date="2021-04-11T12:00:00Z">
-      <description>
-	<p>
-	  Many bug fixes.
-	</p>
-<ul>
-<li>Fix visualization after "Evaluate all cells (Ctrl+Shift+R)" (bug #1512).</li>
-<li>Fix context sensitive help with F1 (bug #1508).</li>
-<li>Add an option for not showing matching parenthesis (bug #1509).</li>
-<li>Changed the weather icons in the toolbar to more meaningful ones (bug #1514).</li>
-<li>Many bugfixes with respect to correctly breaking lines (bugs #1528, #1471, #1512).</li>
-<li>Fix a bug in copy-paste of saved/loaded results (bug #1518).</li>
-<li>Fix a crash when pressing Ctrl-X while a math cell is selected (bug #1519).</li>
-<li>CMake 3.10 is now required for building wxMaxima.</li>
-<li>C++ 14 is required for building wxMaxima. Now CMake knows about that fact.</li>
-<li>Many external build scripts are now replaced by C++ and CMake commands.</li>
-<li>A menu entry for when to invoke the debugger.</li>
-</ul>
-      </description>
-  </release>
-  <release version="21.02.0" date="2021-02-28T20:09:00Z">
-      <description>
-	<p>
-	  Many bug fixes.
-	</p>
-<ul>
-<li>A Spanish translation update by cyphra</li>
-<li>Replaced openMP by c++11's built-in thread handling. This should improve
-stability at the cost of making loading files with lots of images slower.</li>
-<li>Language selection now works on Windows.</li>
-<li>Resolved a crash when deleting regions.</li>
-<li>The --ini switch should work again correctly.</li>
-<li>Fix an issue, where demos didn't re-center screen anymore, when screen
-is full and print was incomplete.</li>
-<li>Made the time between autosaves configurable.</li>
-<li>Fixed an issue with reproducible builds.</li>
-</ul>
-      </description>
-    </release>
-  <release version="21.01.0" date="2021-01-23T19:29:00Z">
-    <description>
-	<p>
-	  Bugfix release: Reproducible crashes on loading files with images on MacOs.
-	</p>
-	<ul>
-	  <li> Chinese translation updates by 刘荣</li>
-	  <li> A Russian translation update by OlesyaGerasimenko</li>
-	  <li> Many small bugfixes including a crash on loading files with images</li>
-	</ul>
-      </description>
-    </release>
   </releases>
 </component>

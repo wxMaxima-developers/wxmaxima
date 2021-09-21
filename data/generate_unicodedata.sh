@@ -6,7 +6,7 @@ cat >UnicodeData.h <<END
 /* Automatically generated file using generate_unicodedata.sh                           */
 /* This file is part of wxMaxima.                                                       */
 
-/* Copyright (C) 2020 wxMaxima Team (https://wxMaxima-developers.github.io/wxmaxima/)   */
+/* Copyright (C) 2021 wxMaxima Team (https://wxMaxima-developers.github.io/wxmaxima/)   */
 
 /* This program is free software; you can redistribute it and/or modify                 */
 /* it under the terms of the GNU General Public License as published by                 */
@@ -25,7 +25,7 @@ cat >UnicodeData.h <<END
 /* The license of UnicodeData.txt can be found at: https://www.unicode.org/license.html */
 /* and is included in here as unicode-license.html                                      */
 /* UnicodeData.txt was downloaded from:                                                 */
-/* https://www.unicode.org/Public/13.0.0/ucd/UnicodeData.txt                            */
+/* https://www.unicode.org/Public/14.0.0/ucd/UnicodeData.txt                            */
 
 END
 
