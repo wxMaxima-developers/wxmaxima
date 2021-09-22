@@ -258,6 +258,13 @@
       ($put s opt '$wxxml_subscripted))
     opt)
 
+  (defun $wxdeclare_not_subscripted (x &optional (opt t))
+    (unless (listp x)
+      (setq x (list '(mlist simp) x)))
+    (dolist (s (cdr x))
+      ($put s opt '$wxxml_not_subscripted))
+    opt)
+
   (defun subscriptp (x)
     (unless (symbolp x)
       (return-from subscriptp x))
@@ -273,21 +280,21 @@
 	       (sub-int (ignore-errors
 			  (parse-integer sub))))
 	  (when (and (> (length sub-var) 0)
-		     (or
-		      ($get x '$wxxml_subscripted)
-		      (and
-				(or sub-int
-					(eq $wxsubscripts 'all)
-					(= (length sub) 1)
-					(= (length sub-var) 1)
-					($get sub-symb '$wxxml_subscript)
-				)
-				(not (some (lambda (p)
-					(and
-						(listp p)
-						(member '$WXXML_SUBSCRIPTED p)))
-					(cdr (properties x))))
-       )))
+	         (or
+	          ($get x '$wxxml_subscripted)
+	            (and
+	              (or sub-int
+	                (eq $wxsubscripts 'all)
+	                (= (length sub) 1)
+	                (= (length sub-var) 1)
+	                ($get sub-symb '$wxxml_subscript)
+	              )
+	              (not (some (lambda (p)
+	                (and
+	                  (listp p)
+	                  (member '$wxxml_not_subscripted p)))
+	                (cdr (properties x))))
+	            )))
 	    (format nil  "<munder altCopy=\"~{~a~}\"><mrow>~a</mrow><mrow>~a</mrow></munder>"
 		    (mstring x)
 		    (or (get sub-var-symb 'wxxmlword)
@@ -2287,10 +2294,10 @@
   (wx-print-gui-variables)
   (format t "~%")
   ;; Declare that we want all builtins with underscore not to be printed with subscript
-  (maphash (lambda (key val)
-	     (declare (ignore val))
-	     (if
-		 (search "_" (print_value key))
-		 ($wxdeclare_subscripted (print_value key) nil))) *variable-initial-values*)
-  (finish-output)
+	(maphash (lambda (key val)
+		(declare (ignore val))
+			(if (search "_" (print_value key))
+				($wxdeclare_not_subscripted (symbol-name key) nil)))
+		*variable-initial-values*)
+	(finish-output)
 )
