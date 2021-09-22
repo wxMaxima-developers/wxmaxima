@@ -7,7 +7,7 @@
 
 ;; This file isn't directly loaded by maxima on startup of wxMaxima.
 ;; Instead generate_wxmathml.sh, when run manually, generates a
-;; gzip'ed version that is included in the wxMaxima binary and 
+;; gzip'ed version that is included in the wxMaxima binary and
 ;; sent to maxima using a :lisp-quiet command.
 ;;
 ;; Rationale: This approach means that wxMaxima doesn't need to
@@ -55,7 +55,7 @@
 ;     (setf (gethash ',sym *builtin-symbol-props*) (append (list ',indic ',val)
 ;							 existing-props)))
     )
-  
+
 
   ;; A few variables whose value can be configured from wxMaxima
   (defvar *wx-plot-num* 0 "The serial number of the current plot")
@@ -84,7 +84,7 @@
 		   newstring
 		   (wxxml-string-substitute newstring oldchar
 				      (subseq x (1+ matchpos))))))
-  
+
 
 
   ;; Escape all chars that need escaping in XML
@@ -103,7 +103,7 @@
   ;; Generates an alt-copy-text from a command
   (defun wxxml-alt-copy-text (x)
     (wxxml-fix-string (format nil "~{~a~}" (mstring x))))
-    
+
   ;; Allow the user to communicate what to display in the statusbar whilst
   ;; the current program is running
   (defun $wxstatusbar (&rest status)
@@ -209,7 +209,7 @@
        (pre-superscripts-xml (if pre-superscripts (wxxml-list pre-superscripts (list "<mrow>") mrow-terminate separator-xml) (list "<none/>")))
        (post-subscripts-xml (if post-subscripts (wxxml-list post-subscripts (list "<mrow>") mrow-terminate separator-xml) (list "<none/>")))
        (post-superscripts-xml (if post-superscripts (wxxml-list post-superscripts (list "<mrow>") mrow-terminate separator-xml) (list "<none/>")))
-       (mmultiscripts-xml       
+       (mmultiscripts-xml
 	(append l (list (format nil "<mmultiscripts altCopy=\"~A\">" (wxxml-alt-copy-text x)))
 			(wxxml base-symbol nil nil 'mparen 'mparen)
 			post-subscripts-xml post-superscripts-xml
@@ -222,7 +222,7 @@
 			       (coerce (list #\Newline) 'string)))
 			r)))
        mmultiscripts-xml))
-    
+
   (defun wxxml-array-no-display-properties (x l r &aux f)
     (if (eq 'mqapply (caar x))
 	(setq f (cadr x)
@@ -276,21 +276,25 @@
 		     (or
 		      ($get x '$wxxml_subscripted)
 		      (and
-		       (or sub-int
-			   (eq $wxsubscripts '$all)
-			   (= (length sub) 1)
-			   (= (length sub-var) 1)
-			   ($get sub-symb '$wxxml_subscript)
-			   )
-		       (ignore-errors (not
-			 (member '$WXXML_SUBSCRIPTED (cadr (properties x))))))))
+				(or sub-int
+					(eq $wxsubscripts 'all)
+					(= (length sub) 1)
+					(= (length sub-var) 1)
+					($get sub-symb '$wxxml_subscript)
+				)
+				(not (some (lambda (p)
+					(and
+						(listp p)
+						(member '$WXXML_SUBSCRIPTED p)))
+					(cdr (properties x))))
+       )))
 	    (format nil  "<munder altCopy=\"~{~a~}\"><mrow>~a</mrow><mrow>~a</mrow></munder>"
 		    (mstring x)
 		    (or (get sub-var-symb 'wxxmlword)
 			(format nil "<mi>~a</mi>" sub-var))
 		    (if sub-int
 			;; sub-symb discarded leading zeros from subscripts
-			(format nil "<mi>~a</mi>" sub) 
+			(format nil "<mi>~a</mi>" sub)
                       (format nil "<mi>~a</mi>" sub))))))))
 
   (defun wxxmlnumformat (atom)
@@ -534,7 +538,7 @@
 
   (wx-defprop mabs wxxml-matchfix wxxml)
   (wx-defprop mabs (("<mrow><a>")"</a></mrow>") wxxmlsym)
-  
+
   (wx-defprop $interval wxxml-matchfix wxxml)
   (wx-defprop $interval (("<fn interval=\"true\"><fnm>interval</fnm><mrow><p>")"</p></mrow></fn>") wxxmlsym)
 
@@ -2021,7 +2025,7 @@
       (let (($display2d nil))
 	    (mtell "<value>~M</value>" (wxxml-fix-string(eval var)))))
     (format t "</variable>"))
-  
+
   (defun wx-print-display2d ()
     (format t "<variable><name>display2d</name><value>")
     (if (eq $display2d nil)
@@ -2058,7 +2062,7 @@
     (format t "</variables>~%")
     (finish-output)
     )
-  
+
   (defun wx-print-gui-variables ()
     (finish-output)
     (format t "<variables>")
@@ -2205,7 +2209,7 @@
 	      names)
       (format t "</slide>~%</mth>~%")
       ))
-  
+
   (when ($file_search "wxmaxima-init")
     ($load "wxmaxima-init"))
 
@@ -2240,7 +2244,7 @@
 	(arglist-from-function name)
       ;; ELSE: Possibly a Maxima function?
       (arglist-from-maxima-function name)))
-  
+
 ;;;
 ;;; Now that we have loaded the init file we can rewrite of the function load
 ;;; (maxima/src/mload.lisp) to displays functions and variable names after
@@ -2253,7 +2257,7 @@
 
   (defvar *wxmaxima-nested-loads* 0 "How many load commands are nested, currently?")
   (setf (symbol-function 'load_original_wxmaxima) (symbol-function '$load))
-  
+
   (no-warning
    (defun $load (filename)
 
