@@ -559,7 +559,7 @@ msgstr "Zusätzliche Parameter für Maxima:"
 
 #: ../../src/ConfigDialogue.cpp:1055
 msgid "Additional symbols for the \"symbols\" sidebar:"
-msgstr "Zusätzliche Symbole für die \"Symbole\"-Seitenliste:"
+msgstr "Zusätzliche Symbole für die \"Symbole\"-Seitenleiste:"
 
 #: ../../src/wxMaximaFrame.cpp:1420
 msgid "Advanced variable names"
@@ -640,7 +640,7 @@ msgstr "Automatisches Abspielen von Animationen"
 
 #: ../../src/wxMaximaFrame.cpp:1349
 msgid "Animation framerate..."
-msgstr "Bildwiederholrate für Animationen:"
+msgstr "Bildwiederholrate für Animationen..."
 
 #: ../../src/ConfigDialogue.cpp:669
 msgid "Antialias lines."
@@ -1811,12 +1811,11 @@ msgstr "Darstellungmethode"
 
 #: ../../src/ConfigDialogue.cpp:641
 msgid "Display all and allow linebreaks in long numbers"
-msgstr ""
+msgstr "Zeige alle Ziffern und erlaube Zeilenumbrüche bei langen Zahlen"
 
 #: ../../src/ConfigDialogue.cpp:635
-#, fuzzy
 msgid "Display all digits"
-msgstr "Darstellungmethode"
+msgstr "Anzeige aller Ziffern"
 
 #: ../../src/wxMaximaFrame.cpp:782
 msgid "Display equations"
@@ -3302,7 +3301,6 @@ msgid "Import+Export"
 msgstr "Importieren+Exportieren"
 
 #: ../../src/TipOfTheDay.cpp:148
-#, fuzzy
 msgid ""
 "In order to visualize how a parameter affects an equation wxMaxima provides "
 "commands that start with \"with_slider_\" and that create animations. One "
@@ -3320,7 +3318,7 @@ msgid ""
 msgstr ""
 "wxMaxima kann als Animation visualisieren, wie sich eine Funktion mit einem "
 "Parameter ändert. Hierfür stellt es mit \"with_slider_\" beginnende "
-"Kommandos zur Verfügung:\n"
+"Kommandos zur Verfügung. Ein Beispiel:\n"
 "\n"
 "    with_slider_draw(\n"
 "        a,[-16,-9,-4,-2,0,1,2,3,4,5,6,7],\n"
@@ -3333,7 +3331,6 @@ msgstr ""
 "    );"
 
 #: ../../src/TipOfTheDay.cpp:172
-#, fuzzy
 msgid ""
 "In text cells bullet lists can be created by beginning a line with \" * \". "
 "The number of spaces in front of the \"*\" determines the indentation level; "
@@ -3341,9 +3338,9 @@ msgid ""
 "spaces."
 msgstr ""
 "In Textzellen können Aufzählungen dargestellt werden, indem Zeilen mit der "
-"Zeichenkombination \" * \" begonnen werden. Die Anzahl der Leertasten vor "
+"Zeichenkombination \" * \" begonnen werden. Die Anzahl der Leerzeichen vor "
 "dem \"*\" bestimmt dabei, wie weit die Zeile eingerückt wird. Absätze in "
-"Aufzählungen werden dadurch realisiert, dass eine Zeile mit Leertasten "
+"Aufzählungen werden dadurch realisiert, dass eine Zeile mit Leerzeichen "
 "eingerückt wird."
 
 #: ../../src/ConfigDialogue.cpp:354
@@ -3677,7 +3674,6 @@ msgstr ""
 "indem sie in das entsprechende Feld des Konfigurationsdialogs kopiert werden."
 
 #: ../../src/TipOfTheDay.cpp:130
-#, fuzzy
 msgid ""
 "It is possible to define reusable Maxima libraries with wxMaxima that can be "
 "later loaded by using the load() function. All that has to be done is to "
@@ -3692,7 +3688,7 @@ msgstr ""
 "exportieren oder als .wxm-Datei zu schreiben. Es ist allerdings zu beachten, "
 "dass Sonderzeichen wie das \"ungleich\"-Symbol, anstelle dessen Maxima ein "
 "\"#\" will, vom load()-Befehl nicht automatisch in Maxima-Befehle "
-"konvertiert werden."
+"konvertiert werden und daher beim load() nicht erkannt werden.."
 
 #: ../../src/ConfigDialogue.cpp:185
 msgid "Italian"
@@ -3839,7 +3835,6 @@ msgid "Length"
 msgstr "Länge"
 
 #: ../../src/TipOfTheDay.cpp:136
-#, fuzzy
 msgid ""
 "Libraries can be accessed by any wxMaxima process regardless of which "
 "directory it runs in, if they are placed in the user directory. This "
@@ -4119,7 +4114,7 @@ msgstr "Matrix-Produkt"
 
 #: ../../src/wxMaxima.cpp:6686 ../../src/wxMaximaFrame.cpp:1090
 msgid "Matrix exponent"
-msgstr "Matrix-Exponent:"
+msgstr "Matrix-Exponent"
 
 #: ../../src/wxMaximaFrame.cpp:1049
 msgid "Matrix from csv file"
@@ -4348,16 +4343,19 @@ msgid ""
 "which may then be solved for x with\n"
 "solve(eq1,x);"
 msgstr ""
-
+"Maxima verwendet ':' um Variablen Werte zuzuweisen ('a : 3;'), nicht '=' wie die meisten "
+"Programmiersprachen.\n"
+"Das erlaubt, daß eine mathematische Gleichung einer Variable zugewiesen werden kann, z.B.\n"
+" eq1:3*x=4;\n"
+"welche dann nach x gelöst werden kann mit folgendem Befehl\n"
+"solve(eq1,x);"
 #: ../../src/TipOfTheDay.cpp:58
-#, fuzzy
 msgid ""
 "Maxima uses ':=' to define functions, e.g.:\n"
 "f(x) := x^2;"
 msgstr ""
-"Maxima verwendet den Operator ':', um Werte zu setzen, z. B. erhält die "
-"Variable 'a' den Wert 3 mit 'a : 3'. Der Operator ':=' definiert "
-"Funktionen,  z. B. 'f(x) := x^2'."
+"Maxima verwendet den Operator ':=', Funktionen zu definieren, z.B.\n"
+"f(x) := x^2;"
 
 #: ../../src/wxMaxima.cpp:2674
 #, c-format
@@ -4515,7 +4513,6 @@ msgid "Maximum number of digits to be displayed:"
 msgstr "Maximale Anzahl an anzuzeigenden Ziffern:"
 
 #: ../../src/ConfigDialogue.cpp:627
-#, fuzzy
 msgid "Maximum number of displayed digits:"
 msgstr "Maximale Anzahl an anzuzeigenden Ziffern:"
 
@@ -4783,13 +4780,12 @@ msgid "Omicron"
 msgstr "Omikron"
 
 #: ../../src/wxMaximaFrame.cpp:973
-#, fuzzy
 msgid "On all errors"
-msgstr "Fataler Fehler"
+msgstr "Bei allen Fehlern"
 
 #: ../../src/wxMaximaFrame.cpp:972
 msgid "On lisp errors"
-msgstr ""
+msgstr "Bei Lisp Fehlern"
 
 #: ../../src/wxMaxima.cpp:8567
 msgid "One sample t-test"
@@ -6146,13 +6142,12 @@ msgid "Simplify trigonometric expression"
 msgstr "Ausdruck mit Winkelfunktionen vereinfachen"
 
 #: ../../src/TipOfTheDay.cpp:121
-#, fuzzy
 msgid ""
 "Since wxMaxima 0.8.2 you can also insert images into your documents. Use "
 "'Cell->Insert Image...' menu command."
 msgstr ""
 "Seit wxMaxima 0.8.2 können Sie auch Bilder in ein Dokument einfügen. Nutzen "
-"Sie dazu den Menübefehl 'Bearbeiten->Bild einfügen'."
+"Sie dazu den Menübefehl 'Zellen->Bild einfügen'."
 
 #: ../../src/wxMaxima.cpp:6384 ../../src/wxMaxima.cpp:6400
 msgid "Solution:"
@@ -6457,7 +6452,6 @@ msgid "Text cell background"
 msgstr "Hintergrundfarbe Textzelle"
 
 #: ../../src/TipOfTheDay.cpp:175
-#, fuzzy
 msgid ""
 "Text cells can hold citations that as marked as such by beginning a line "
 "with \" > \". The number of spaces in front of the \">\" determines the "
@@ -6465,7 +6459,7 @@ msgid ""
 msgstr ""
 "Zitate können in Textzellen dadurch markiert werden, dass sie mit \" > \" "
 "begonnen werden. Wie auch bei Aufzählungen können sie durch zusätzliche "
-"Leertasten eingerückt werden. "
+"Leerzeichen eingerückt werden. "
 
 #: ../../src/Configuration.cpp:1458
 msgid "Text equal to selection"
@@ -6652,7 +6646,6 @@ msgstr ""
 "werden."
 
 #: ../../src/TipOfTheDay.cpp:139
-#, fuzzy
 msgid ""
 "The load() command of Maxima versions >5.38 is able to load .wxm files as "
 "library of Maxima's commands."
@@ -7867,7 +7860,6 @@ msgid "wxMaxima %s (%s) "
 msgstr "wxMaxima %s (%s) "
 
 #: ../../src/TipOfTheDay.cpp:133
-#, fuzzy
 msgid ""
 "wxMaxima can be made to execute commands at every start-up by placing them "
 "in a text file with the name wxmaxima.rc in the user directory. This "
