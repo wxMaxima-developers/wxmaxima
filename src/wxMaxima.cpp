@@ -4,7 +4,7 @@
 //            (C) 2008-2009 Ziga Lenarcic <zigalenarcic@users.sourceforge.net>
 //            (C) 2011-2011 cw.ahbong <cw.ahbong@gmail.com>
 //            (C) 2012-2013 Doug Ilijev <doug.ilijev@gmail.com>
-//            (C) 2014-2018 Gunter Königsmann <wxMaxima@physikbuch.de>
+//            (C) 2014-2021 Gunter Königsmann <wxMaxima@physikbuch.de>
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -4081,6 +4081,16 @@ void wxMaxima::ShowWxMaximaHelp()
     helpfile = Dirstructure::Get()->HelpDir() + wxT("/wxmaxima.") + lang_short + ".html";
   if(!wxFileExists(helpfile))
     helpfile = Dirstructure::Get()->HelpDir() + wxT("/wxmaxima.html");
+
+  /* If wxMaxima is called via ./wxmaxima-local directly from the build directory and *not* installed */
+  /* the help files are in the "info/" subdirectory of the current (build) directory */
+  if(!wxFileExists(helpfile))
+    helpfile = wxGetCwd() + wxT("/info/wxmaxima.") + lang_long + ".html";
+  if(!wxFileExists(helpfile))
+    helpfile = wxGetCwd() + wxT("/info/wxmaxima.") + lang_short + ".html";
+  if(!wxFileExists(helpfile))
+    helpfile = wxGetCwd() + wxT("/info/wxmaxima.html");
+
 
   if(!wxFileExists(helpfile)) {
     wxLogMessage(_(wxT("No offline manual found => Redirecting to the wxMaxima homepage")));
