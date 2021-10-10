@@ -1,7 +1,7 @@
 # -*- mode: CMake; cmake-tab-width: 4; -*-
 
 # Prepends a prefix to all elements in a list. Needed only in
-# cmake < 3.12, but we claim to support 3.7, so this is needed.
+# cmake < 3.12, but we claim to support 3.10, so this is needed.
 # Usage: list_transform_prepend(FILES_TO_TRANSLATE "prefix/")
 # See https://stackoverflow.com/a/59155344/1329652
 #
