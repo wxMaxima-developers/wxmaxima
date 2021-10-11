@@ -56,6 +56,8 @@ public:
 
   void LoadImage(wxString image, bool remove = true);
 
+  void ReloadImage(const wxString &image, std::shared_ptr<wxFileSystem> filesystem);
+
   //! Can this image be exported in SVG format?
   bool CanExportSVG() const {return (m_image != NULL) && m_image->CanExportSVG();}
 
