@@ -8855,9 +8855,9 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
       if (chooser->ShowModal() == wxID_OK)
       {
         if(dynamic_cast<ImgCell *>(output)->GetMaxWidth() != chooser->GetMaxWidth())
-          m_fileSaved = false;
+          m_worksheet->SetSaved(false);
         if(dynamic_cast<ImgCell *>(output)->GetHeightList() != chooser->GetHeightList())
-          m_fileSaved = false;
+          m_worksheet->SetSaved(false);
 
         dynamic_cast<ImgCell *>(output)->SetMaxWidth(chooser->GetMaxWidth());
         dynamic_cast<ImgCell *>(output)->SetMaxHeight(chooser->GetHeightList());
