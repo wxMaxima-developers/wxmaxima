@@ -875,6 +875,7 @@ public:
     popid_digits_all,
     popid_digits_all_linebreak,
     popid_image,
+    popid_change_image,
     popid_svg,
     popid_emf,
     popid_animation_save,

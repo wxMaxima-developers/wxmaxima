@@ -190,8 +190,14 @@ GroupCell::GroupCell(Configuration **config, GroupType groupType, const wxString
   if ((groupType == GC_TYPE_IMAGE) && (initString.Length() > 0))
   {
     std::unique_ptr<Cell> ic;
-    if (wxImage::GetImageCount(initString) < 2)
+    if (wxImage::GetImageCount(initString) < 2) {
       ic = std::make_unique<ImgCell>(this, m_configuration, initString, std::shared_ptr<wxFileSystem>{} /* system fs */, false);
+
+      // Since this is the (only?) place where an ImgCell is constructed when the user manually
+      // inserts an image file (not loaded from zip or gnuplot tempfile), set the filename such that reloading the
+      // file later is possible.
+      static_cast<ImgCell &>(*ic).SetOrigImageFile(initString);
+    }
     else
       ic = std::make_unique<SlideShow>(this, m_configuration, initString, false);
     AppendOutput(std::move(ic));

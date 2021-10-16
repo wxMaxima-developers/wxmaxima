@@ -915,6 +915,8 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
           wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
   Connect(Worksheet::popid_reloadimage, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
+  Connect(Worksheet::popid_change_image, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
   Connect(TableOfContents::popid_Fold, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
   Connect(TableOfContents::popid_Unfold, wxEVT_MENU,
@@ -8880,7 +8882,7 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
         if(output->GetType() != MC_TYPE_IMAGE)
             return;
 
-        wxString imgFile = m_worksheet->GetSelectionStart()->GetGroup()->GetEditable()->GetValue();
+        wxString imgFile = dynamic_cast<ImgCell *>(output)->GetOrigImageFile();
 
         if(!wxFileExists(imgFile)) {
           LoggingMessageDialog dialog(this,
@@ -8894,6 +8896,9 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
           return;
         }
 
+        wxLogMessage(
+            wxString::Format(_("Reloading image file %s."),
+                imgFile));
         dynamic_cast<ImgCell *>(output)->ReloadImage(imgFile, std::shared_ptr<wxFileSystem>{} /* system fs */);
         
         m_worksheet->RecalculateForce();
@@ -9262,6 +9267,58 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
       m_worksheet->CopyToFile(file);
       m_lastPath = wxPathOnly(file);
     }
+  }
+  break;
+  case Worksheet::popid_change_image:
+  {
+    if(!m_worksheet->GetSelectionStart())
+        return;
+        
+    Cell *cell = m_worksheet->GetSelectionStart()->GetGroup()->GetLabel();
+    if(cell == NULL)
+        return;
+
+    if(cell->GetType() != MC_TYPE_IMAGE)
+        return;
+
+    wxString newImg = wxFileSelector(_("Change Image"), m_lastPath,
+                                     wxEmptyString, wxEmptyString,
+                                     _("Image files (*.png, *.jpg, *.bmp, *.xpm, *.gif, *.svg, *.svgz)|*.png;*.jpg;*.bmp;*.xpm;*.gif;*.svg;*.svgz"),
+                                     wxFD_OPEN);
+
+    if(!newImg.Length()) {
+        return;
+    }
+
+    if(!wxFileExists(newImg)) {
+      LoggingMessageDialog dialog(this,
+                             wxString::Format(_("The image file \"%s\" cannot be found."),
+                                              newImg.utf8_str()),
+                             "wxMaxima", wxCENTER | wxOK);
+      dialog.SetOKLabel(_("OK"));
+      
+      dialog.ShowModal();
+      
+      return;
+    }
+
+    ImgCell* ic = dynamic_cast<ImgCell *>(cell);
+
+    wxLogMessage(
+        wxString::Format(_("Changing image originally loaded from file %s to %s."),
+            ic->GetOrigImageFile(),
+            newImg));
+    ic->ReloadImage(newImg, std::shared_ptr<wxFileSystem>{} /* system fs */);
+    ic->SetOrigImageFile(newImg);
+    
+    
+    m_worksheet->RecalculateForce();
+    m_worksheet->RequestRedraw();
+    m_worksheet->SetSaved(false);
+    m_lastPath = wxPathOnly(newImg);
+    
+    UpdateMenus();
+    UpdateToolBar();
   }
   break;
   case Worksheet::popid_animation_save:

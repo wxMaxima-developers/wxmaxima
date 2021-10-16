@@ -1330,6 +1330,7 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
           popupMenu.AppendSeparator();
           popupMenu.Append(popid_maxsizechooser, _("Restrict Maximum size"), wxEmptyString, wxITEM_NORMAL);
           popupMenu.Append(popid_reloadimage, _("Reload Image"), wxEmptyString, wxITEM_NORMAL);
+          popupMenu.Append(popid_change_image, _("Change Image..."), wxEmptyString, wxITEM_NORMAL);
         }
       }
       if (m_cellPointers.m_selectionStart && m_cellPointers.m_selectionStart->CanPopOut())
