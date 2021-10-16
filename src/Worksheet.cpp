@@ -1330,12 +1330,21 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
           popupMenu.AppendSeparator();
           popupMenu.Append(popid_maxsizechooser, _("Restrict Maximum size"), wxEmptyString, wxITEM_NORMAL);
           
-          wxMenuItem* reloadItem = popupMenu.Append(popid_reloadimage, _("Reload Image"), wxEmptyString, wxITEM_NORMAL);              
+          Cell *cell = m_cellPointers.m_selectionStart->GetGroup()->GetGroup()->GetLabel();
+          wxString imgFile = dynamic_cast<ImgCell *>(cell)->GetOrigImageFile();
+          
           
           // Disable the reload menu item if the original file name is unknown.
-          Cell *cell = m_cellPointers.m_selectionStart->GetGroup()->GetGroup()->GetLabel();
-          if(dynamic_cast<ImgCell *>(cell)->GetOrigImageFile().Length() == 0) {
+          if(imgFile.Length() == 0)
+          {
+              wxMenuItem* reloadItem = popupMenu.Append(popid_reloadimage, _("Reload Image"), wxEmptyString, wxITEM_NORMAL);              
               reloadItem->Enable(false);
+          }
+          else
+          {
+            popupMenu.Append(popid_reloadimage,
+              wxString::Format(_("Reload Image \"%s\""), imgFile),
+              wxEmptyString, wxITEM_NORMAL);              
           }
           
           popupMenu.Append(popid_change_image, _("Change Image..."), wxEmptyString, wxITEM_NORMAL);
