@@ -343,8 +343,12 @@ wxString ImgCell::ToXML() const
   if(m_image->GetHeightList() > 0)
     flags += wxString::Format(wxT(" maxHeight=\"%f\""), m_image->GetHeightList());
 
-  if(m_origImageFile != wxEmptyString) {
-    flags += wxString::Format(wxT(" origImageFile=\"%s\""), XMLescape(m_origImageFile));
+  if(m_origImageFile != wxEmptyString)
+  {
+    if((*m_configuration)->SaveImgFileName())
+    {
+      flags += wxString::Format(wxT(" origImageFile=\"%s\""), XMLescape(m_origImageFile));
+    }
   }
 
   if (m_image)

@@ -459,6 +459,7 @@ void ConfigDialogue::SetCheckboxValues()
   else
     m_ctrlEnterEvaluates->SetValue(true);
   m_numpadEnterEvaluates->SetValue(configuration->NumpadEnterEvaluates());
+  m_saveImgFileName->SetValue(configuration->SaveImgFileName());
   m_saveUntitled->SetValue(configuration->SaveUntitled());
   m_openHCaret->SetValue(configuration->GetOpenHCaret());
   m_insertAns->SetValue(configuration->GetInsertAns());
@@ -718,6 +719,18 @@ wxWindow *ConfigDialogue::CreateWorksheetPanel()
   m_numpadEnterEvaluates = new wxCheckBox(evalSizer->GetStaticBox(), -1, _("\"Numpad Enter\" always evaluates cells"));
   evalSizer->Add(m_numpadEnterEvaluates, wxSizerFlags());
   vsizer->Add(evalSizer, wxSizerFlags().Expand().Border(wxALL, 5*GetContentScaleFactor()));
+
+  wxStaticBoxSizer *evalPrivacy = new wxStaticBoxSizer(wxVERTICAL, panel, _("Privacy settings"));
+  m_saveImgFileName = new wxCheckBox(evalPrivacy->GetStaticBox(), -1, _("Store filenames in image cells to enable image reloading after re-opening the worksheet"));
+  m_saveImgFileName->SetToolTip(_("If this option is enabled, the filename and path of images inserted with \"Cell\" -> \"Insert Image...\" "
+                                  "is stored in the worksheet file on save. This enables reloading of the image file via the "
+                                  "context menu after re-opening the worksheet, but storing the filenames and paths may be an "
+                                  "undesired data leak. If this option is disabled, reloading still works as long as the worksheet "
+                                  "is not closed."
+                                  "\n\nNote: Storing the filenames for the reload functionality is independent of the automatically "
+                                  "generated image captions."));
+  evalPrivacy->Add(m_saveImgFileName, wxSizerFlags());
+  vsizer->Add(evalPrivacy, wxSizerFlags().Expand().Border(wxALL, 5*GetContentScaleFactor()));
 
   panel->SetSizer(vsizer);
   panel->FitInside();
@@ -1741,6 +1754,7 @@ void ConfigDialogue::WriteSettings()
   configuration->Latin2Greek(m_latin2Greek->GetValue());
   configuration->EnterEvaluates(m_enterEvaluates->GetValue());
   configuration->NumpadEnterEvaluates(m_numpadEnterEvaluates->GetValue());
+  configuration->SaveImgFileName(m_saveImgFileName->GetValue());
   configuration->SaveUntitled(m_saveUntitled->GetValue());
   configuration->SetOpenHCaret(m_openHCaret->GetValue());
   configuration->SetInsertAns(m_insertAns->GetValue());
