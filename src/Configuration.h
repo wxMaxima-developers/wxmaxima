@@ -413,6 +413,9 @@ public:
   bool NumpadEnterEvaluates(){ return m_numpadEnterEvaluates;}
   void NumpadEnterEvaluates(bool eval){m_numpadEnterEvaluates = eval;}
 
+  bool SaveImgFileName() { return m_saveImgFileName;}
+  void SaveImgFileName(bool save) { m_saveImgFileName = save;}
+
   //! Do we want to have automatic line breaks for text cells?
   bool GetAutoWrap() const
   { return m_autoWrap > 0; }
@@ -991,6 +994,7 @@ private:
   bool m_saveUntitled;
   bool m_cursorJump;
   bool m_numpadEnterEvaluates;
+  bool m_saveImgFileName;
   std::unique_ptr<CellRedrawTrace> m_cellRedrawTrace;
   wxString m_documentclass;
   wxString m_documentclassOptions;

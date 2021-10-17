@@ -56,6 +56,8 @@ public:
 
   void LoadImage(wxString image, bool remove = true);
 
+  void ReloadImage(const wxString &image, std::shared_ptr<wxFileSystem> filesystem);
+
   //! Can this image be exported in SVG format?
   bool CanExportSVG() const {return (m_image != NULL) && m_image->CanExportSVG();}
 
@@ -91,6 +93,14 @@ public:
   //! Returns the file name extension that matches the image type
   wxString GetExtension() const
   { if (m_image)return m_image->GetExtension(); else return wxEmptyString; }
+
+  //! Returns the name of the file the image was originally created from
+  wxString GetOrigImageFile() const
+  { return m_origImageFile; }
+  
+  //! Sets the name of the file the image was originally created from
+  void SetOrigImageFile(wxString file)
+  { m_origImageFile = file; }
 
   //! Returns the original compressed version of the image
   wxMemoryBuffer GetCompressedImage() const { return m_image->m_compressedImage; }
@@ -134,6 +144,8 @@ private:
   bool m_drawBoundingBox : 1 /* InitBitFields */;
 
   static int s_counter;
+  
+  wxString m_origImageFile;
 };
 
 #endif // IMGCELL_H

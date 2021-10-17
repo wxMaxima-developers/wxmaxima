@@ -78,7 +78,9 @@ ImgCell::ImgCell(GroupCell *group, Configuration **config, const wxString &image
   InitBitFields();
   m_type = MC_TYPE_IMAGE;
   if (image != wxEmptyString)
+  {
     m_image = std::make_shared<Image>(m_configuration, image, filesystem, remove);
+  }
   else
     m_image = std::make_shared<Image>(m_configuration);
   m_drawBoundingBox = false;
@@ -95,6 +97,19 @@ ImgCell::ImgCell(GroupCell *group, const ImgCell &cell) :
 }
 
 DEFINE_CELL(ImgCell)
+
+void ImgCell::ReloadImage(const wxString &image, std::shared_ptr<wxFileSystem> filesystem) {
+    // Store old size limits
+    double width = m_image->GetMaxWidth();
+    double height = m_image->GetHeightList();
+    
+    // Load new image
+    m_image = std::make_shared<Image>(m_configuration, image, filesystem, false);
+    
+    // Restore size limits
+    m_image->SetMaxHeight(height);
+    m_image->SetMaxWidth(width);
+}
 
 void ImgCell::LoadImage(wxString image, bool remove)
 {
@@ -327,6 +342,14 @@ wxString ImgCell::ToXML() const
 
   if(m_image->GetHeightList() > 0)
     flags += wxString::Format(wxT(" maxHeight=\"%f\""), m_image->GetHeightList());
+
+  if(m_origImageFile != wxEmptyString)
+  {
+    if((*m_configuration)->SaveImgFileName())
+    {
+      flags += wxString::Format(wxT(" origImageFile=\"%s\""), XMLescape(m_origImageFile));
+    }
+  }
 
   if (m_image)
   {

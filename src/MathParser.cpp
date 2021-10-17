@@ -325,7 +325,16 @@ std::unique_ptr<Cell> MathParser::ParseImageTag(wxXmlNode *node)
   wxString filename(node->GetChildren()->GetContent());
 
   if (m_fileSystem) // loading from zip
+  {
     imageCell = std::make_unique<ImgCell>(m_group, m_configuration, filename, m_fileSystem, false);
+
+    wxString origImageFile = node->GetAttribute(wxT("origImageFile"), wxEmptyString);
+  
+    if(!origImageFile.empty())
+    {
+      imageCell->SetOrigImageFile(origImageFile);
+    }
+  }
   else
   {
     std::shared_ptr<wxFileSystem> system_fs = {};
@@ -372,6 +381,7 @@ std::unique_ptr<Cell> MathParser::ParseImageTag(wxXmlNode *node)
     if (sizeString.ToDouble(&height))
       imageCell->SetMaxHeight(height);
   }
+  
   return imageCell;
 }
 

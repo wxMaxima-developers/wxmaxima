@@ -321,6 +321,7 @@ protected:
   wxRadioButton *m_enterEvaluates;
   wxRadioButton *m_ctrlEnterEvaluates;
   wxCheckBox *m_numpadEnterEvaluates;
+  wxCheckBox *m_saveImgFileName;
   wxCheckBox *m_saveUntitled;
   wxCheckBox *m_openHCaret;
   wxCheckBox *m_insertAns;

@@ -100,6 +100,7 @@ void Configuration::ResetAllToDefaults(InitOpt options)
   m_lineBreaksInLongNums = false;
   m_autoSaveMinutes = 3;
   m_numpadEnterEvaluates = true;
+  m_saveImgFileName = false;
   m_maximaEnvVars.clear();
   // Tell gnuplot not to wait for <enter> every few lines
   #ifndef __WXMSW__
@@ -612,6 +613,7 @@ void Configuration::ReadConfig()
   if(m_maxClipbrd_BitmapMegabytes<0)
     m_maxClipbrd_BitmapMegabytes = 1;
   config->Read(wxT("numpadEnterEvaluates"), &m_numpadEnterEvaluates);
+  config->Read(wxT("saveImgFileName"), &m_saveImgFileName);
   config->Read(wxT("usePartialForDiff"), &m_usePartialForDiff);
   config->Read(wxT("TeXExponentsAfterSubscript"), &m_TeXExponentsAfterSubscript);
   config->Read(wxT("defaultPlotWidth"), &m_defaultPlotWidth);
@@ -1308,6 +1310,7 @@ void Configuration::WriteStyles(wxConfigBase *config)
   config->Write(wxT("exportContainsWXMX"), m_exportContainsWXMX);
   config->Write(wxT("texPreamble"), m_texPreamble);
   config->Write(wxT("numpadEnterEvaluates"), m_numpadEnterEvaluates);
+  config->Write(wxT("saveImgFileName"), m_saveImgFileName);
   config->Write(wxT("usePartialForDiff"), m_usePartialForDiff);
   config->Write(wxT("TeXExponentsAfterSubscript"), m_TeXExponentsAfterSubscript);
   config->Write(wxT("defaultPlotWidth"), m_defaultPlotWidth);
