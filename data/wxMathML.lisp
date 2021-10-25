@@ -1913,11 +1913,11 @@
 	 (setq res ($apply ',fun (cons '(mlist simp) args)))
 	 ($apply '$wxdraw2d res))))
 
-  (create-statistics-wrapper $histogram $wxhistogram)
-  (create-statistics-wrapper $scatterplot $wxscatterplot)
-  (create-statistics-wrapper $barsplot $wxbarsplot)
-  (create-statistics-wrapper $piechart $wxpiechart)
-  (create-statistics-wrapper $boxplot $wxboxplot)
+  (create-statistics-wrapper $histogram_description $wxhistogram)
+  (create-statistics-wrapper $scatterplot_description $wxscatterplot)
+  (create-statistics-wrapper $barsplot_description $wxbarsplot)
+  (create-statistics-wrapper $piechart_description $wxpiechart)
+  (create-statistics-wrapper $boxplot_description $wxboxplot)
 
   (dolist (fun '($histogram
 		 $scatterplot
