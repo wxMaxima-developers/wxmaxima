@@ -8337,6 +8337,7 @@ void wxMaxima::HelpMenu(wxCommandEvent &event)
       info.AddDeveloper(wxT("Frank S. Thomas"));
       info.AddDeveloper(wxT("Frédéric Chapoton"));
       info.AddDeveloper(wxT("fweng <fweng@users.sourceforge.net>"));
+      info.AddDeveloper(wxT("gcem"));
       info.AddDeveloper(wxT("hut <hut@lepus.uberspace.de>"));
       info.AddDeveloper(wxT("Innocent De Marchi"));
       info.AddDeveloper(wxT("Johan Kristensen"));
@@ -8362,6 +8363,7 @@ void wxMaxima::HelpMenu(wxCommandEvent &event)
       info.AddDeveloper(wxT("rtopolnicki <rtopolnicki@users.sourceforge.net>"));
       info.AddDeveloper(wxT("scx <scx.mail@gmail.com>"));
       info.AddDeveloper(wxT("Simon Ruderich"));
+      info.AddDeveloper(wxT("Thomas Wiesner"));
       info.AddDeveloper(wxT("Tufan Şirin"));
       info.AddDeveloper(wxT("vvzhy <vvzhy@users.sourceforge.net>"));
       info.AddDeveloper(wxT("Warren MacEvoy"));
