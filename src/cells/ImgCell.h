@@ -56,6 +56,8 @@ public:
 
   void LoadImage(wxString image, bool remove = true);
 
+  //! Set the image's resolution
+  void SetPPI(int ppi){m_image->SetPPI(ppi);}
   void ReloadImage(const wxString &image, std::shared_ptr<wxFileSystem> filesystem);
 
   //! Can this image be exported in SVG format?

@@ -334,6 +334,8 @@ wxString ImgCell::ToXML() const
   if (HasHardLineBreak())
     flags += wxT(" breakline=\"true\"");
 
+  flags += wxString::Format(wxT(" ppi=\"%i\""), m_image->GetPPI());
+
   if(!m_drawRectangle)
     flags += wxT(" rect=\"false\"");
 

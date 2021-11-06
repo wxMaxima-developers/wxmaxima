@@ -422,6 +422,8 @@ wxString SlideShow::ToXML() const
   wxString flags;
   flags = " gnuplotSources=\"" + gnuplotSourceFiles + "\"";
   flags += " gnuplotData=\"" + gnuplotDataFiles + "\"";
+  if(m_size>0)
+    flags += wxString::Format(wxT(" ppi=\"%i\""), m_images[1]->GetPPI());
   if (HasHardLineBreak())
     flags += wxT(" breakline=\"true\"");
   if (m_animationRunning)
@@ -433,6 +435,12 @@ wxString SlideShow::ToXML() const
   if (m_framerate > 0)
     flags +=  wxString::Format(wxT(" fr=\"%i\""), GetFrameRate());
   return wxT("\n<slide") + flags + wxT(">") + images + wxT("</slide>");
+}
+
+void SlideShow::SetPPI(int ppi)
+{
+  for(std::vector<std::shared_ptr<Image>>::const_iterator i = m_images.begin(); i != m_images.end(); ++i)
+    (*i)->SetPPI(ppi);
 }
 
 wxSize SlideShow::ToImageFile(wxString file)

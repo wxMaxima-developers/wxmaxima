@@ -24,6 +24,8 @@
   This file declares the class SlideShowCell
 
   SlideShowCell is the Cell type that represents animations.
+
+  \todo m_size should be replaced by m_images.size();
 */
 
 #ifndef SLIDESHOWCELL_H
@@ -67,7 +69,8 @@ public:
   ~SlideShow();
   void LoadImages(wxMemoryBuffer imageData);
   void LoadImages(wxString imageFile);
-
+  //! Set the slideshow's resolution
+  void SetPPI(int ppi);
   //! A class that publishes wxm data to the clipboard
   static wxDataFormat m_gifFormat;
 

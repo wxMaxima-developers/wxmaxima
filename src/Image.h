@@ -94,6 +94,11 @@ public:
 
   ~Image();
 
+  //! Return the image's resolution
+  int GetPPI() const {return m_ppi;}
+  //! Set the image's resolution
+  int SetPPI(int ppi) {return m_ppi;}
+
   //! Creates a bitmap showing an error message
   void InvalidBitmap();
 
@@ -222,19 +227,22 @@ private:
   wxString m_gnuplotData;
   void LoadImage_Backgroundtask(wxString image, std::shared_ptr<wxFileSystem> filesystem, bool remove);
   void LoadGnuplotSource_Backgroundtask(wxString gnuplotFilename, wxString dataFilename, std::shared_ptr<wxFileSystem> filesystem);
-
   //! Loads an image from a file
   void LoadImage(wxString image, std::shared_ptr<wxFileSystem> filesystem, bool remove = true);
   //! Reads the compressed image into a memory buffer
   static wxMemoryBuffer ReadCompressedImage(wxInputStream *data);
   Configuration **m_configuration;
-  //! The upper width limit for displaying this image
+  /*! The upper width limit for displaying this image
+
+    \todo: Why is this a float and not an integer value?
+   */
   double m_maxWidth;
   //! The upper height limit for displaying this image
   double m_maxHeight;
   //! The name of the image, if known.
   wxString m_imageName;
-  
+  //! The image resolution
+  double m_ppi;
   struct free_deleter { void operator()(void *p) const { std::free(p); } };
   NSVGimage* m_svgImage = {};
   std::unique_ptr<struct NSVGrasterizer, free_deleter> m_svgRast{nullptr};

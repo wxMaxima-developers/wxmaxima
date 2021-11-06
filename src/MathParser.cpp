@@ -301,6 +301,12 @@ std::unique_ptr<Cell> MathParser::ParseSlideshowTag(wxXmlNode *node)
   }
 
   slideShow->LoadImages(images, del);
+
+  wxString ppi = node->GetAttribute(wxT("ppi"), wxEmptyString);
+  long ppi_num;
+  if (ppi.ToLong(&ppi_num) && (slideShow != NULL))
+    slideShow->SetPPI(ppi_num);
+
   wxStringTokenizer dataFiles(gnuplotData, wxT(";"));
   wxStringTokenizer gnuplotFiles(gnuplotSources, wxT(";"));
   for(int i=0; i<numImgs; i++)
@@ -360,6 +366,12 @@ std::unique_ptr<Cell> MathParser::ParseImageTag(wxXmlNode *node)
         return std::make_unique<SlideShow>(m_group, m_configuration, filename, false);
     }
   }
+
+  wxString ppi = node->GetAttribute(wxT("ppi"), wxEmptyString);
+  long ppi_num;
+  if (ppi.ToLong(&ppi_num) && (imageCell != NULL))
+    imageCell->SetPPI(ppi_num);
+  
   wxString gnuplotSource = node->GetAttribute(wxT("gnuplotsource"), wxEmptyString);
   wxString gnuplotData = node->GetAttribute(wxT("gnuplotdata"), wxEmptyString);
 

@@ -107,6 +107,7 @@ Image::Image(Configuration **config, wxString image, std::shared_ptr<wxFileSyste
   m_maxHeight = -1;
   m_originalWidth = 640;
   m_originalHeight = 480;
+  m_ppi = (*m_configuration)->GetDC()->GetPPI().x;
   LoadImage(image, filesystem, remove);
 }
 
@@ -123,6 +124,7 @@ Image::Image(const Image &image)
   m_originalWidth = image.m_originalWidth;
   m_originalHeight = image.m_originalHeight;
   m_compressedImage = image.m_compressedImage;
+  m_ppi = image.m_ppi;
   m_extension = image.m_extension;
 }
 
@@ -707,7 +709,7 @@ wxBitmap Image::GetBitmap(double scale)
 void Image::InvalidBitmap()
 {
   m_isOk = false;
-  m_width = 800; m_height = 600;
+  m_width = 800 * m_ppi / 96; m_height = 600 * m_ppi / 96;
   // Create a "image not loaded" bitmap.
   m_scaledBitmap.Create(m_width, m_height);
   
@@ -897,6 +899,16 @@ void Image::LoadImage_Backgroundtask(wxString image, std::shared_ptr<wxFileSyste
         m_originalWidth = Image.GetWidth();
         m_originalHeight = Image.GetHeight();
         m_isOk = true;
+        if(Image.HasOption(wxT("wxIMAGE_OPTION_RESOLUTION")))
+        {
+          int resolution;
+          resolution = Image.GetOptionInt(wxT("wxIMAGE_OPTION_RESOLUTION"));
+          if(Image.HasOption(wxT("wxIMAGE_OPTION_RESOLUTIONUNIT")))
+          {
+            if(Image.GetOptionInt("wxIMAGE_OPTION_RESOLUTIONUNIT") == wxIMAGE_RESOLUTION_CM)
+              resolution *= 2.54;
+          }
+        }
       }
       else
       {
@@ -912,7 +924,7 @@ void Image::Recalculate(double scale)
   int width = m_originalWidth;
   int height = m_originalHeight;
   Configuration *configuration = (*m_configuration);
-
+  
   // We want the image to get bigger if the user zooms in - and
   // if a high printing resolution requires us to scale everything up.
   // To also take care of the user's printing-scale,
@@ -921,6 +933,11 @@ void Image::Recalculate(double scale)
   // Ensure a minimum size for images.
   if (scale < 0.01) scale = 0.01;
 
+
+  // pre-scale the image according to the current output's ppi and the image's ppi;
+  scale *= (*m_configuration)->GetDC()->GetPPI().x;
+  scale /= m_ppi;
+  
   if ((width < 1) || (height < 1))
   {
     m_width = 700;
@@ -935,13 +952,6 @@ void Image::Recalculate(double scale)
     viewPortHeight = 10;
   if (viewPortWidth < 10)
     viewPortWidth = 10;
-
-  if (!configuration->GetPrinting())
-  {
-    // Change the scale only if we are not printing.
-    // Resetting the scale for printing makes the images become too small.
-    scale = 1.0;
-  }
   
   // Shrink to .9* the canvas size, if needed
   if (scale * width > .9 * viewPortWidth)
