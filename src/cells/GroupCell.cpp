@@ -1143,8 +1143,9 @@ wxString GroupCell::ToRTF() const
 
 wxString GroupCell::ToTeX(wxString imgDir, wxString filename, int *imgCounter) const
 {
-  wxASSERT_MSG((imgCounter != NULL), _(wxT("Bug: No image counter to write to!")));
-  if (imgCounter == NULL) return wxEmptyString;
+  int myImgCounter = 0;
+  if(imgCounter == NULL)
+    imgCounter = &myImgCounter; 
   wxString str;
   switch (m_groupType)
   {

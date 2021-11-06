@@ -144,7 +144,16 @@ public:
 
   //! GroupCells warn if they contain both greek and latin lookalike chars.
   void UpdateConfusableCharWarnings();
-  
+
+  /*! Convert the cell to TeX code
+
+    \param imgDir The directory eventual images should be stored in
+    \param filename The base filename for all images
+    \param imgCounter The location of the counter that tells how many unique
+    image filenames we have already generated. NULL means: This TeX export
+    doesn't contain other GroupCells that can export images and therefore
+    need to enumerate them.
+   */
   wxString ToTeX(wxString imgDir, wxString filename, int *imgCounter) const;
 
   wxString ToRTF() const override;
