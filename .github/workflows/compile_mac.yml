@@ -112,7 +112,7 @@ jobs:
           path: |
                 wxWidgets_src-${{env.WXVERSION}}
                 wxWidgets_build-${{env.WXVERSION}}
-          key: ${{ runner.os }}-build-${{env.github_ref}}-${{ env.cache-name }}-3
+          key: ${{ runner.os }}-build-${{env.github_ref}}-${{ env.cache-name }}-4
       - name: Download wxWidgets
         run: |
              if test -d wxWidgets_src-${{env.WXVERSION}}; then
