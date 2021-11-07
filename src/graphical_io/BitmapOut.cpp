@@ -118,9 +118,7 @@ wxSize BitmapOut::ToFile(const wxString &file)
 {
   // Assign a resolution to the bitmap.
   wxImage img = m_bmp.ConvertToImage();
-  int resolution = img.GetOptionInt(wxIMAGE_OPTION_RESOLUTION);
-  if (resolution <= 0)
-    resolution = 75;
+  int resolution = m_cmn.GetScreenConfig().GetDC()->GetPPI().x;
   img.SetOption(wxIMAGE_OPTION_RESOLUTION, resolution * m_cmn.GetScale());
 
   bool success = false;
