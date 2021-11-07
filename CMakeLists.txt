@@ -181,6 +181,24 @@ set(CPACK_PACKAGE_CHECKSUM "SHA512")
 # Build Items
 #
 
+# Convert AUTHORS to a C++ include, which can be included in wxMaxima.cpp
+file(WRITE "${CMAKE_BINARY_DIR}/contributors.h" "") # create a empty file
+file(STRINGS AUTHORS AUTHORSLINES ENCODING UTF-8)
+    foreach(l ${AUTHORSLINES})
+      if ("${l}" STREQUAL "Developers:")
+        set(AUTHORTYPE "AddDeveloper")
+      elseif ("${l}" STREQUAL "Translators:")
+        set(AUTHORTYPE "AddTranslator")
+      elseif ("${l}" STREQUAL "Artwork:")
+        set(AUTHORTYPE "AddArtist")
+      elseif ("${l}" STREQUAL "The Manual:")
+        set(AUTHORTYPE "AddDocWriter")
+      else()
+        string(REPLACE "  - " "" l2 "${l}")
+        file(APPEND "${CMAKE_BINARY_DIR}/contributors.h" "info.${AUTHORTYPE}(wxT(\"${l2}\"));\n")
+      endif()
+    endforeach()
+
 add_subdirectory(Doxygen)
 add_subdirectory(data)
 add_subdirectory(info)
