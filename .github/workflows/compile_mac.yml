@@ -131,7 +131,7 @@ jobs:
              else
                  mkdir wxWidgets_build-${{env.WXVERSION}}
                  cd wxWidgets_build-${{env.WXVERSION}}
-                 cmake ../wxWidgets_src-${{env.WXVERSION}} -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64" -G Ninja
+                 cmake ../wxWidgets_src-${{env.WXVERSION}} -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64"
                  cmake --build .
                  cd ..
              fi
