@@ -45,6 +45,7 @@
 #include <wx/txtstrm.h>
 #include <wx/sckstrm.h>
 #include <wx/buffer.h>
+#include <wx/power.h>
 #include <memory>
 #ifdef __WXMSW__
 #include <windows.h>
@@ -102,6 +103,10 @@ public:
     //! We look if we got new data from maxima's stdout.
             MAXIMA_STDOUT_POLL_ID
   };
+
+#ifdef wxHAS_POWER_EVENTS 
+  void OnPowerEvent(wxPowerEvent &event);
+#endif 
 
   //! Is triggered when a timer this class is responsible for requires
   void OnTimerEvent(wxTimerEvent &event);

@@ -305,6 +305,12 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
     wxEVT_TIMER,
     wxTimerEventHandler(wxMaxima::OnTimerEvent), NULL, this);
 
+#ifdef wxHAS_POWER_EVENTS 
+  Connect(
+    wxEVT_POWER_SUSPENDED,
+    wxTimerEventHandler(wxMaxima::OnPowerEvent), NULL, this);
+#endif
+  
 #if wxUSE_DRAG_AND_DROP
   m_worksheet->SetDropTarget(new MyDropTarget(this));
 #endif
