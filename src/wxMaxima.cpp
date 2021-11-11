@@ -308,7 +308,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
 #ifdef wxHAS_POWER_EVENTS 
   Connect(
     wxEVT_POWER_SUSPENDED,
-    wxTimerEventHandler(wxMaxima::OnPowerEvent), NULL, this);
+    wxPowerEventHandler(wxMaxima::OnPowerEvent), NULL, this);
 #endif
   
 #if wxUSE_DRAG_AND_DROP
