@@ -1168,6 +1168,14 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
   StartAutoSaveTimer();
 }
 
+
+#ifdef wxHAS_POWER_EVENTS 
+void wxMaxima::OnPowerEvent(wxPowerEvent &event)
+{
+  AutoSave();
+}
+#endif 
+
 void wxMaxima::StartAutoSaveTimer()
 {
   m_autoSaveTimer.StartOnce(60000 * m_worksheet->m_configuration->AutosaveMinutes());
