@@ -1,13 +1,17 @@
 # Current:
  * Allow seeing all files in the file save dialog. (#1557)
- * Fix a error when using Alt up arrow (show previous command) (#1566)
+ * Fix an error when using Alt up arrow (show previous command) (#1566)
  * Rewrote a config dialogue
  * Improvements in the manual
  * Update Spanish translation of manual
  * Update German, Russian, Hungarian and Ukrainian translation
  * Fix a warning, which occurred, when starting wxMaxima the first time
  * ww898 unnecessarily limited the list of supported platforms
- * wxMaxima's properties to maxima symbols can now no more be killed
+ * wxMaxima's properties to Maxima symbols can now no more be killed
+ * Allow single GroupCells to be converted to LaTeX
+ * Enable reloading and changing images inserted via "Cell" -> "Insert Image..." (#1597)
+ * Correctly set the document saved state when the size of an image is changed
+ * Use the AUTHORS file for the Credits page in the "About" dialogue
 
 # 21.05.2:
  * The integral signs disappeared or were misplaced on some MS Windows computers
