@@ -1890,14 +1890,14 @@ wxMaximaFrame::GreekPane::GreekPane(wxWindow *parent, Configuration *configurati
 
 void wxMaximaFrame::GreekPane::OnSize(wxSizeEvent &event)
 {
-  // Shrink the width of the wxScrolled's virtual size if the wxScrolled is shrinked
+  // Shrink the width of the wxScrolled's virtual size if the wxScrolled is shrinking
   SetVirtualSize(GetClientSize());
   event.Skip();
 }
 
 void wxMaximaFrame::SymbolsPane::OnSize(wxSizeEvent &event)
 {
-  // Shrink the width of the wxScrolled's virtual size if the wxScrolled is shrinked
+  // Shrink the width of the wxScrolled's virtual size if the wxScrolled is shrinking
   SetVirtualSize(GetClientSize());
   event.Skip();
 }
@@ -2249,7 +2249,7 @@ void wxMaximaFrame::DrawPane::SetDimensions(int dimensions)
 
 void wxMaximaFrame::DrawPane::OnSize(wxSizeEvent &event)
 {
-  // Shrink the width of the wxScrolled's virtual size if the wxScrolled is shrinked
+  // Shrink the width of the wxScrolled's virtual size if the wxScrolled is shrinking
   SetVirtualSize(GetClientSize());
   event.Skip();
 }
