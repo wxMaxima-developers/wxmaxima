@@ -7,9 +7,6 @@ jobs:
   setup_cygwin:
     runs-on: windows-latest
     steps:
-      - name: Disable defender
-        run: |
-            choco install disabledefender-winconfig
       - name: setup_cygwin
         uses: egor-tensin/setup-cygwin@v3
         with:
