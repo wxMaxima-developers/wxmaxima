@@ -24,7 +24,10 @@ wxMaxima (additional) steps:
 - Does test/testbench_simple.wxmx work?
 - Create an (annotated) git tag for the release
 - Push the tag to Github, using: git push origin --tags
-- Go to the releases page Github and convert the tag into a release
+- Go to the releases page Github and convert the tag into a release.
+  If possible add an Windows installer too.
+  Be sure, to remove the 'draft' status. Log out from Github and check,
+  if you see the release as an anonymous user too.
 - Update the release info in the files download.html and in version.txt
   in the gh_pages branch.
 - Append "-DevelopmentSnapshot" to the version number in CMakeLists.txt for the new development version.
