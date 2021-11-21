@@ -1,4 +1,4 @@
-# Current:
+# 21.11.0:
  * Allow seeing all files in the file save dialog. (#1557)
  * Fix an error when using Alt up arrow (show previous command) (#1566)
  * Rewrote a config dialogue
@@ -12,6 +12,8 @@
  * Enable reloading and changing images inserted via "Cell" -> "Insert Image..." (#1597)
  * Correctly set the document saved state when the size of an image is changed
  * Use the AUTHORS file for the Credits page in the "About" dialogue
+ * Handle power events (#1607)
+ * Fix ugly buttons in the sidebars with recent wxWidgets
 
 # 21.05.2:
  * The integral signs disappeared or were misplaced on some MS Windows computers
