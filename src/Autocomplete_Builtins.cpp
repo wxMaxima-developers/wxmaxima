@@ -2940,6 +2940,9 @@ bool AutoComplete::LoadBuiltinSymbols()
   m_wordList[command].Add("find_root"); // FUNCTION
   m_wordList[tmplte ].Add("find_root(<expr>, <x>, <a>, <b>)"); // OPTION
   m_wordList[tmplte ].Add("find_root(<f>, <a>, <b>)"); // OPTION
+  m_wordList[command].Add("bf_find_root"); // FUNCTION
+  m_wordList[tmplte ].Add("bf_find_root(<expr>, <x>, <a>, <b>)"); // OPTION
+  m_wordList[tmplte ].Add("bf_find_root(<f>, <a>, <b>)"); // OPTION
   m_wordList[command].Add("newton"); // FUNCTION
   m_wordList[tmplte ].Add("newton(<expr>, <x>, <x_0>, <eps>)"); // OPTION
   m_wordList[command].Add("equalp"); // FUNCTION
