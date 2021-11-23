@@ -5919,8 +5919,7 @@ void Worksheet::CompileHelpFileAnchors()
               if(token.StartsWith("g_t"))
                 token = token.Right(token.Length()-3);
               //! Tokens that end with "-1" aren't too useful, normally.
-              if((!token.EndsWith("-1")) && (!token.Contains(" ")))
-              {
+              if((!token.EndsWith("-1")) && (!token.Contains(" ")))              {
                 m_helpFileAnchors[token] = id;
                 foundAnchors++;
               }
@@ -5931,7 +5930,11 @@ void Worksheet::CompileHelpFileAnchors()
     }
     if(m_helpFileAnchors["%solve"].IsEmpty())
       m_helpFileAnchors["%solve"] = m_helpFileAnchors["to_poly_solve"];
-    
+
+    if((m_helpFileAnchors.find("find_root_error") == m_helpFileAnchors.end()) &&
+       (m_helpFileAnchors.find("find_root") != m_helpFileAnchors.end()))
+      m_helpFileAnchors["find_root_error"] = m_helpFileAnchors["find_root"];
+
     wxLogMessage(wxString::Format(_("Found %i anchors."), foundAnchors));
     if(foundAnchors > 50)
       SaveManualAnchorsToCache();

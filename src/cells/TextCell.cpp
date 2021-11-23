@@ -221,7 +221,7 @@ void TextCell::UpdateToolTip()
     else if (m_text.Contains(S_("Illegal use of delimiter")))
       SetToolTip(&T_("Most probable cause: an operator was directly followed by a closing parenthesis."));
     else if (m_text.StartsWith(S_("find_root: function has same sign at endpoints: ")))
-      SetToolTip(&T_("find_root only works if the function the solution is searched for crosses the solution exactly once in the given range."));
+      SetToolTip(&T_("Maxima tried to find out where between two points a curve crosses the zero line. Since the curve is on the same side of the zero line in both points its algorithms fails here. Set find_root_error to false if you want it to return false instead of an error."));
     else if (m_text.StartsWith(S_("part: fell off the end.")))
       SetToolTip(&T_("part() or the [] operator was used in order to extract the nth element "
                      "of something that was less than n elements long."));

@@ -2934,6 +2934,9 @@ bool AutoComplete::LoadBuiltinSymbols()
   m_wordList[command].Add("horner"); // FUNCTION
   m_wordList[tmplte ].Add("horner(<expr>, <x>)"); // OPTION
   m_wordList[tmplte ].Add("horner(<expr>)"); // OPTION
+  m_wordList[command].Add("find_root_error"); // OPTION
+  m_wordList[command].Add("find_root_abs"); // OPTION
+  m_wordList[command].Add("find_root_rel"); // OPTION
   m_wordList[command].Add("find_root"); // FUNCTION
   m_wordList[tmplte ].Add("find_root(<expr>, <x>, <a>, <b>)"); // OPTION
   m_wordList[tmplte ].Add("find_root(<f>, <a>, <b>)"); // OPTION
