@@ -595,12 +595,10 @@ if(APPSTREAM_UTIL)
                     OUTPUT_VARIABLE APPSTREAM_UTIL_VERSION_TEXT)
     string(REGEX REPLACE "^Version:\t*([^\n]*).*" "\\1"  APPSTREAM_UTIL_VERSION "${APPSTREAM_UTIL_VERSION_TEXT}")
     message(STATUS "Found appstream-util: ${APPSTREAM_UTIL} (found version \"${APPSTREAM_UTIL_VERSION}\")")
-    # I assume, the issue with our 'invalid' ID (io.github.wxmaxima_developers.wxMaxima)
-    # with older versions was fixed in version 0.7.2: "Do not check the suffix of <id> tags"
-    # (https://github.com/hughsie/appstream-glib/blob/appstream_glib_0_7_2/NEWS)
-    # We should not change the ID, so check for a newer appstream-util
-    if(APPSTREAM_UTIL_VERSION VERSION_LESS "0.7.2")
-        message(WARNING "appstream-util < 0.7.2 found. Please upgrade appstream-util, to check the appdata file.")
+    # In older versions (e.g. the version included in Ubuntu 18.04) the test fails, so disable it.
+    # If it is okay in newer versions, I assume, our appstream file is valid and just the test was to hard.
+    if(APPSTREAM_UTIL_VERSION VERSION_LESS "0.7.16")
+        message(WARNING "appstream-util < 0.7.16 found. Disable the appdata validation test.")
         set(APPSTREAM_UTIL "")
     endif()
 else()
