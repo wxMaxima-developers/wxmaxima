@@ -599,14 +599,12 @@ if(APPSTREAM_UTIL)
     # If it is okay in newer versions, I assume, our appstream file is valid and just the test was to hard.
     if(APPSTREAM_UTIL_VERSION VERSION_LESS "0.7.16")
         message(WARNING "appstream-util < 0.7.16 found. Disable the appdata validation test.")
-        set(APPSTREAM_UTIL "")
+    else()
+        add_test(
+            NAME check_appstream_file
+            COMMAND ${APPSTREAM_UTIL} --nonet validate "${CMAKE_SOURCE_DIR}/data/io.github.wxmaxima_developers.wxMaxima.appdata.xml")
     endif()
 else()
     message(STATUS "appstream-util not found. Do not check of the appstream file.")
-endif()
-if(APPSTREAM_UTIL)
-    add_test(
-        NAME check_appstream_file
-        COMMAND ${APPSTREAM_UTIL} --nonet validate "${CMAKE_SOURCE_DIR}/data/io.github.wxmaxima_developers.wxMaxima.appdata.xml")
 endif()
 
