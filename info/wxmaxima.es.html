@@ -195,7 +195,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <figure>
 <img src="./maxima_screenshot.png" alt="Pantallazo de Maxima, línea intrucción" id="img_maxima_pantallazo" /><figcaption>Pantallazo de Maxima, línea intrucción</figcaption>
 </figure>
-<p>Extensive documentation for <em>Maxima</em> is <a href="https://maxima.sourceforge.io/documentation.html">available in the internet</a>. Part of this documentation is also available in wxMaxima’s help menu. Pressing the Help key (on most systems the F1 key) causes <em>wxMaxima</em>’s context-sensitive help feature to automatically jump to <em>Maxima</em>’s manual page for the command at the cursor.</p>
+<p>Extensive documentation for <em>Maxima</em> is <a href="https://maxima.sourceforge.io/documentation.html">available in the internet</a>. Part of this documentation is also available in wxMaxima’s help menu. Pressing the Help key (on most systems the <kbd>F1</kbd> key) causes <em>wxMaxima</em>’s context-sensitive help feature to automatically jump to <em>Maxima</em>’s manual page for the command at the cursor.</p>
 <h3 id="wxmaxima"><span class="header-section-number">1.1.2</span> wxMaxima</h3>
 <p><em>wxMaxima</em> es un interfaz del usuario gráfico que proporciona la completa funcionalidad y flexibilidad de <em>Maxima</em>. wxMaxima proporciona a los usuarios una pantalla gráfica y varias características que hacen trabajar más fácilmente con <em>Maxima</em>. Por ejemplo <em>wxMaxima</em> permite uno exportar cualquier contenido de celdas (o, si eso es necesario, cualquier parte de una fórmula, también) como texto, como especificación LaTeX o MathML solo con una pulsación secundaria. Por cierto, un cuaderno completo , puede ser exportado, o bien como un fichero HTML o como un fichero LaTeX. La documentación para <em>wxMaxima</em>, incluyendo cuadernos para ilustrar aspectos de su uso, está por conexión al <a href="https://wxMaxima-developers.github.io/wxmaxima/help.html">sitio web</a> de <em>wxMaxima</em>, así como a través del menú de ayuda.</p>
 <figure>
@@ -206,7 +206,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Mucho de <em>wxMaxima</em> son auto-explicativos, pero algunos detalles requieren atención. <a href="https://wxMaxima-developers.github.io/wxmaxima/help.html">Este sitio</a> contiene un número de cuadernos que dirige varios aspectos de <em>wxMaxima</em>. Trabajar junto algunos de estos (particularmente el tutorial de «10 minutos <em>(wx)Maxima</em>») incrementará la familiaridad de uno con los ambos del contenido de <em>Maxima</em> y el uso de <em>wxMAxima</em> para interactuar con <em>maxima</em>. Este manual se concentra en describir aspectos de <em>wxMaxima</em> que no son como los evidentes y que tal vez no está cubierto dentro del material por línea.</p>
 <h3 id="la-aproximación-del-cuaderno"><span class="header-section-number">1.2.1</span> La aproximación del cuaderno</h3>
 <p>Una de las muy pocas cosas que no son normalizadas en <em>wxMaxima</em> es que se organiza los datos para <em>Maxima</em> dentro de celdas que son evaluadas (la cual indica: envía a <em>maxima</em>) solamente cuando solicita el usuario esto. Cuando una celda es evaluada, todas las instrucciones dentro de esa celda, y solamente esa celda, son evaluadas como un guión. (El enunciado precedente no es muy preciso: uno puede seleccionar un conjunto de celdas adyacentes y evaluarlas a la vez. Además , una pude instruir a <em>Maxima</em> que evalúe todas las celdas dentro de un cuaderno en una pasada). La aproximación de _wxMaxima para enviar instrucciones para ejecutar tal vez se siente poco familiar en el primer momento. Sin embargo, drásticamente trabaja fácilmente con documentos grandes (cuando el usuario no desea cada modificación para disparar automáticamente una re-evaluación completa del documento completo). Además, esta aproximación es muy útil para depurar.</p>
-<p>Si está tecleado el texto en <em>wxMaxima</em> automáticamente crea una celda de hoja de trabajo nueva. El tipo de esta celda puede ser seleccionado en la barra de herramientas. Si se crea una celda de código, la celda puede ser enviada a <em>Maxima</em>, la cual causa que el resultado del cálculo es desplegado debajo del código. Un par de dichas instrucciones se muestra debajo.</p>
+<p>Si el texto está tecleado en <em>wxMaxima</em> automáticamente crea una celda de hoja de trabajo nueva. El tipo de esta celda puede ser seleccionado en la barra de herramientas. Si se crea una celda de código, la celda puede ser enviada a <em>Maxima</em>, la cual causa que el resultado del cálculo es desplegado debajo del código. Una pareja de dichas instrucciones se muestra debajo.</p>
 <figure>
 <img src="./InputCell.png" alt="Celda de entrada/salida" id="img_InputCell" /><figcaption>Celda de entrada/salida</figcaption>
 </figure>
@@ -217,16 +217,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <img src="./cell-example.png" alt="Ejemplo de celdas wxMaxima" id="img_cell-example" /><figcaption>Ejemplo de celdas wxMaxima</figcaption>
 </figure>
 <h3 id="celdas"><span class="header-section-number">1.2.2</span> Celdas</h3>
-<p>El cuaderno está organizado dentro de celdas. Cada celda puede contener otras celdas o los tipos de contenidos siguientes:</p>
+<p>The worksheet is organized in cells. wxMaxima knows the following cell types:</p>
 <ul>
-<li>una o más líneas <em>Maxima</em> de entrada</li>
-<li>una o más imágenes</li>
-<li>salida de, o una pregunta desde, <em>Maxima</em></li>
-<li>un bloque de texto que puede por ejemplo ser utilizado para documentación</li>
-<li>un título, sección o una subsección.</li>
+<li>Math cells, containing one or more lines of <em>Maxima</em> input.</li>
+<li>Output of, or a question from, <em>Maxima</em>.</li>
+<li>Image cells.</li>
+<li>Text cells, that can for example be used for documentation.</li>
+<li>A title, section or a subsection. 6 levels of different headings are possible.</li>
+<li>Page breaks.</li>
 </ul>
 <p>El comportamiento predeterminado de <em>wxMaxima</em> cuando el texto es teclado para creación automática de una celda matemática. Las celdas de otros tipos puede ser creadas utilizando el menú Celda, utilizando las teclas resaltadas mostradas dentro del menú o utilizando el listado de arrastrar-bajar dentro de la barra de herramientas. Una vez que la celda no matemática es creada, lo que se teclee dentro del fichero es interpretado como texto.</p>
-<p>El texto de los comentarios adicionales pueden introducirse dentro de una celda matemática si está encorchetado tal como sigue_ /<em>Este comentario no se enviará a Maxima para evaluación</em>/`.</p>
+<p>A (C-style) comment text can be part of a math cell as follows: <code>/* This comment will be ignored by Maxima */</code></p>
+<p>“<code>/*</code>” marks the start of the comment, “<code>*/</code>” the end.</p>
 <h3 id="cursores-horizontales-y-verticales"><span class="header-section-number">1.2.3</span> Cursores horizontales y verticales</h3>
 <p>Si el usuario intenta seccionar una oración completa, un procesador de palabras intentará extender la selección para iniciar y finalizar automáticamente con una palabra frontera. Tal como <em>WxMaxima</em> si es seleccionada más de una celda extenderá la selección a todas las celdas completamente.</p>
 <p>Qué no es estándar es que <em>wxMaxima</em> proporciona flexibilidad para arrastrar-y-soltar definiendo dos tipos de cursores. <em>wxMaxima</em> aplicará entre estos automáticamente cuando lo necesite:</p>
@@ -234,14 +236,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>El cursor es dibujado horizontalmente si es trasladado dentro del espacio entre dos celdas o pulsando allí.</li>
 <li>Un cursor vertical que funciona dentro de una celda. Este cursor está activado moviendo el cursor dentro de una celda utilizando el puntero del ratón o las teclas del cursor y funciona como el cursor en un editor de texto.</li>
 </ul>
-<p>When you start wxMaxma, you will only see the blinking horizontal cursor. If you start typing a math cell will be automatically created (you will see a right arrow as “prompt”, after the Math cell is evaluated (<kbd>CTRL+Enter</kbd>), you will see the labels, e.g. <code>(%i1)</code>, <code>(%o1)</code>.</p>
+<p>When you start wxMaxma, you will only see the blinking horizontal cursor. If you start typing, a math cell will be automatically created and the cursor will change to a regular vertical one (you will see a right arrow as “prompt”, after the Math cell is evaluated (<kbd>CTRL+ENTER</kbd>), you will see the labels, e.g. <code>(%i1)</code>, <code>(%o1)</code>).</p>
 <figure>
-<img src="./horizontal-cursor-only.png" alt="(blinking) horizontal cursor after wxMaxima start" id="horizontal-cursor-only" /><figcaption>(blinking) horizontal cursor after wxMaxima start</figcaption>
+<img src="./horizontal-cursor-only.png" alt="(blinking) horizontal cursor after wxMaxima start" id="img_horizontal_cursor_only" /><figcaption>(blinking) horizontal cursor after wxMaxima start</figcaption>
 </figure>
 <p>You might want to create another cell type (using the “Cell” menu), maybe a title cell or text cell, which describes, what will be done, when you start creating your worksheet.</p>
-<p>If you navigate between the different cells, you will also see the (blinking) horizontal cursor, where you can insert a cell into your worksheet (either a math cell, by just start typing your formula or another cell type).</p>
+<p>If you navigate between the different cells, you will also see the (blinking) horizontal cursor, where you can insert a cell into your worksheet (either a math cell, by just start typing your formula - or another cell type using the menu).</p>
 <figure>
-<img src="./horizontal-cursor-between-cells.png" alt="(blinking) horizontal cursor between cells" id="horizontal-cursor-between-cells" /><figcaption>(blinking) horizontal cursor between cells</figcaption>
+<img src="./horizontal-cursor-between-cells.png" alt="(blinking) horizontal cursor between cells" id="img_horizontal_cursor_between_cells" /><figcaption>(blinking) horizontal cursor between cells</figcaption>
 </figure>
 <h3 id="envía-celdas-a-maxima"><span class="header-section-number">1.2.4</span> Envía celdas a “Maxima”</h3>
 <p>La instrucción dentro de una calda de código son ejecutadas una vez <kbd>CTRL</kbd>+<kbd>INTRO</kbd>, <kbd>MAYÚS</kbd>+<kbd>INTRO</kbd> o la tecla <kbd>INTRO</kbd> en el teclado numérico es presionado. La <em>wxMaxima</em> predeterminada está para introducir instrucciones cuando es introducido o bien <kbd>CTRL+INTRO</kbd> o bien <kbd>MAYÚS+INTRO</kbd>, pero <em>wxMaxima</em> puede ser configurado para ejecutar instrucciones como respuesta al <kbd>INTRO</kbd>.</p>
@@ -253,7 +255,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Al lado de completar un nombre de fichero, un nombre de unidad o las instrucción actuales o el nombre de variable el auto-completado es capas de mostrar una plantilla para mucho de las instrucciones iniciando el tipo (y seleccionando) de los parámetros de este programa espera. Para activar esta característica presione <kbd>MAYÚS</kbd>+<kbd>CTRL</kbd>+<kbd>ESPACIO</kbd> o seleccione el ítem del menú respectivo (Celda/Mostrar Plantilla).</p>
 <h4 id="caracteres-griegos"><span class="header-section-number">1.2.5.1</span> Caracteres griegos</h4>
 <p>Equipos tradicionalmente almacenados en valores 8-bit. Esto permite para un máximo de 256 caracteres diferentes. Todas las letras, números t y símbolos de control (final de transmisión, final de cadena, líneas y bordes para dibujar rectángulos para menús :etc_.) de cerca cualquier idioma puede caber dentro de ese límite.</p>
-<p>Para muchos países la página de código de 256 caracteres que han sido elegidos no incluyen cosas como letras griegas, por lo que, eso son frecuentemente utilizadas en matemáticas. Para solucionar este tipo de limitación [Unicode] (http://home.unicode.org/) ha sido inventado: Una codificación que hace que el texto inglés funcione como normal, pero para utilizar más de 256 caracteres.</p>
+<p>Para muchos países la página de código de 256 caracteres que han sido elegidos no incluyen cosas como letras griegas, por lo que, eso son frecuentemente utilizadas en matemáticas. Para solucionar este tipo de limitación [Unicode] (https://home.unicode.org/) ha sido inventado: Una codificación que hace que el texto inglés funcione como normal, pero para utilizar más de 256 caracteres.</p>
 <p><em>Maxima</em> permite Unicode, si fue compilado utilizando un compilador Lisp que o bien admite Unicode o que no tomen en cuenta acerca de la codificación tipográfica. Al menos una de este par de condiciones debe ser cierta. <em>wxMaxima</em> proporciona un método de introducción de caracteres griegos utilizando el teclado:</p>
 <ul>
 <li>Puede introducir una tecla griega pulsando la tecla <kbd>ESC</kbd> y después pulsando la tecla del nombre del carácter griego.</li>
@@ -467,6 +469,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Si un símbolo especial no está dentro del listado es posible introducir caracteres Unicode arbitrarios pulsando <kbd>ESC</kbd> [número del carácter (hexadecimal)] <kbd>ESC</kbd>.</p>
 <p><kbd>ESC</kbd> <kbd>61</kbd> <kbd>ESC</kbd> por lo tanto resulta en un <code>a</code>.</p>
 <p>Note que muchos de estos símbolos (notablemente excepciones son los símbolos lógicos) no tener un significado especial dentro de <em>Maxima</em> y por lo tanto serán interpretados como caracteres ordinarios. Si <em>Maxima</em> está compilado utilizando un Lisp que no admite utilizar caracteres Unicode quizá en su lugar cause un mensaje de error.</p>
+<p>It may be the case, that e.g. greek characters are not included in the selected font, then they can not be displayed. To solve that problem, select other fonts (using: Edit -&gt; Configure -&gt; Style).</p>
 <h3 id="paneles-laterales"><span class="header-section-number">1.2.6</span> Paneles Laterales</h3>
 <p>Enlaces para las instrucciones de <em>Maxima</em> más importantes de las cosas como un índice de contenidos, ventanas con mensajes de depuración o un historial de las últimas instrucciones emitidas pueden ser accedidas utilizando los paneles laterales. Puede ser habilitados utilizando el menú de “Vistas”. Todos ellos pueden ser trasladas a otras localización dentro o fuera de la ventana de _wxMaxima. Otro de los paneles útiles es el que permite introducir letras griegas utilizando el ratón.</p>
 <figure>
@@ -504,13 +507,13 @@ Texto ordinario</code></pre>
 <h2 id="formatos-de-ficheros"><span class="header-section-number">1.3</span> Formatos de Ficheros</h2>
 <p>El material desarrollado en una sesión <em>wxMaxima</em> puede ser almacenado para un posterior uso en cualquiera de estas tras maneras:</p>
 <h3 id="mac"><span class="header-section-number">1.3.1</span> .mac</h3>
-<p><code>.mac</code> files are ordinary text files that contain <em>Maxima</em> commands. They can be read using <em>Maxima</em>’s <code>batch()</code> or <code>load()</code> command or <em>wxMaxima</em>’s File/Batch File menu entry.</p>
-<p>One Example is shown below. <code>Quadratic.mac</code> defines a function and afterwards generates a plot with <code>wxdraw2d()</code>. Afterwards the contents of the file <code>Quadratic.mac</code> are printed and new defined function <code>f()</code> is evaluated.</p>
+<p>los ficheros <code>.mac</code> son ficheros de texto ordinario que contiene instrucciones de <em>Maxima</em>. Pueden ser leídos utilizando la instrucción de lectura de <em>Maxima</em> o un apunte del menú de Archivo de Archivo/Fichero batch de <em>wxMaxima</em>.</p>
+<p>Un ejemplo se muestra debajo. <code>Quadratic.mac</code> define una función y posteriormente genera un tramado con <code>wxdraw2d()</code>. Posteriormente el contenido del fichero <code>Quadratic.mac</code> es representado y la nueva función <code>f()</code> definida es evaluada.</p>
 <figure>
-<img src="./BatchImage.png" alt="Loading a .mac file with batch()" id="img_BatchImage" /><figcaption>Loading a <code>.mac</code> file with <code>batch()</code></figcaption>
+<img src="./BatchImage.png" alt="Cargando un fichero .mac con batch()" id="img_BatchImage" /><figcaption>Cargando un fichero <code>.mac</code> con <code>batch()</code></figcaption>
 </figure>
-<p>Attention: Although the file <code>Quadratic.mac</code> has an usual <em>Maxima</em> extension (<code>.mac</code>), it can only be read by <em>wxMaxima</em>, since the command <code>wxdraw2d()</code> is a wxMaxima-extension to <em>Maxima</em>.</p>
-<p>Puede utilizar los ficheros ‘.mac’ para escribir su propia biblioteca de macros. Pero desde que no contengan suficiente información estructural no puede releer como una sesión <em>wxMaxima</em>.</p>
+<p>Atención: aunque el fichero <code>Quadratic.mac</code> tiene una extensión usual de <em>Maxima</em> (<code>.mac</code>), solamente puede ser leído por <em>wxMaxima</em>, ya que la instrucción <code>wxdraw2d()</code> es una extensión de wxMaxima para <em>Maxima</em>.</p>
+<p>Puede utilizar los ficheros <code>.mac</code> para escribir su propia biblioteca de macros. Pero desde que no contengan suficiente información estructural no puede releer como una sesión <em>wxMaxima</em>.</p>
 <h3 id="wxm"><span class="header-section-number">1.3.2</span> .wxm</h3>
 <p>Los ficheros .wxm contienen el cuaderno excepto la salida de <em>Maxima</em>. En las versiones &gt;5.38 de <em>Maxima</em> pueden leerse utilizando la función `load()’ de <em>Maxima</em> tan solo como pueden ser ficheros .mac. Con este formato de texto simple algunas veces es inevitable que los cuadernos que utilicen características nuevas no sean compatibles con las versiones más antiguas de <em>wxMaxima</em>.</p>
 <h3 id="wxmx"><span class="header-section-number">1.3.3</span> .wxmx</h3>
@@ -690,7 +693,7 @@ Texto ordinario</code></pre>
 <p>La barra lateral «Tramado utilizando dibujo» oculta un generador de código simple que permite generar escenas que hagan uso de alguno de la flexibilidad del paquete <em>draw</em> con el que <em>maxima</em> viene.</p>
 <h4 id="d"><span class="header-section-number">2.3.8.1</span> 2D</h4>
 <p>Genera el esqueleto de una instrucción <code>draw()</code> que dibuja una escena 2D. Esta escena posteriormente tiene que ser filtrada con instrucciones que generan el contenido de la escena, por ejemplo utilizando los botones dentro de las filas debajo del botón “2D”.</p>
-<p>One helpful feature of the 2D button is that it allows to setup the scene as an animation in which a variable (by default it is <em>t</em>) has a different value in each frame: Often a moving 2D plot allows easier interpretation than the same data in a non-moving 3D one.</p>
+<p>La característica de ayuda del botón 2D es que permite configurar la escena como una animación en la cual una variable (por defecto es <em>t</em>) tiene un valor diferente dentro de cada marco: A menudo un movimiento de trama 2D permite una interpretación más fácil que el de datos dentro de uno sin movimiento 3D.</p>
 <h4 id="d-1"><span class="header-section-number">2.3.8.2</span> 3D</h4>
 <p>Genera el esqueleto de una instrucción <code>draw()</code> que dibuja una escena 3D. Si ni una escena 2D o 3D está configurada todo de la configuración de los otros botones en una escena 2D que contiene el botón que genera.</p>
 <h4 id="expresión"><span class="header-section-number">2.3.8.3</span> Expresión</h4>
@@ -731,11 +734,14 @@ Texto ordinario</code></pre>
 <ul>
 <li>‘wxsubscripts’ le dice a <em>Maxima</em> si debería convertir los nombres de variables que contengan un guión bajo (‘R_150’ o lo similar) en variables sub-guion. Vea ‘wxdeclare_subscript’ para detalles los cuales nombres de variables son convertidos automáticamente.</li>
 <li><code>wxfilename</code>: esta variable contiene el nombre del fichero actualmente abierto en <em>wxMaxima</em>.</li>
+<li><code>wxdirname</code>: This variable contains the name the directory, in which the file currently opened in <em>wxMaxima</em> is.</li>
 <li><code>wxplot_pngcairo</code> indica si <em>wxMaxima</em> intenta utilizar el terminal de pngcairo <em>gnuplot</em> que proporciona más estilos de línea y un mejor calidad gráfica sobre todo.</li>
 <li><code>wxplot_size</code> define la resolución de tramas empotradas.</li>
 <li><code>wxchangedir</code>: en la mayoría de los sistemas <em>wxMaxima</em> establece automáticamente el directorio de trabajo de <em>Maxima</em> al directorio del fichero actual. Esto permite la E/S del fichero (p.ej. a través de <code>read_matrix</code>) para trabajar sin especificar la ruta completa del fichero que tiene que ser leído o escrito. En Windows algunas veces esta característica causa mensajes de error y por lo tanto puede ser puesta a <code>false</code> desde el dialogo de configuración.</li>
 <li><code>wxanimate_framerate</code>: El número de marcos por segundo de las siguientes animaciones con las que tienen que ser representadas.</li>
 <li><code>wxanimate_autoplay</code>: Reproduce automáticamente animaciones predeterminadamente?</li>
+<li><code>wxmaximaversion</code>: Returns the version number of <em>wxMaxima</em>.</li>
+<li><code>wxwidgetsversion</code>: Returns the wxWidgets version <em>wxMaxima</em> is using.</li>
 </ul>
 <h2 id="salida-de-2d-con-impresión-bonita"><span class="header-section-number">2.7</span> Salida de 2D con impresión bonita</h2>
 <p>La función <code>table_form()</code> despliega un listado 2D dentro de un formato que es más legible que la salida desde la rutina de salida predeterminada de <em>Maxima</em>, esta instrucción despliega la salida incluso cuando finaliza con un signo de dólar. Finalizando la instrucción con un resultado punto y como dentro de la misma tabla a lo largo con un enunciado “done”.</p>
@@ -855,8 +861,8 @@ Texto ordinario</code></pre>
 <hr />
 <h1 id="pf"><span class="header-section-number">4</span> P+F</h1>
 <h2 id="hay-una-manera-de-crear-más-texto-que-quepa-en-una-página-latex"><span class="header-section-number">4.1</span> ¿Hay una manera de crear más texto que quepa en una página LaTeX?</h2>
-<p>Yes. Use the LaTeX package “geometry” to specify the size of the borders.</p>
-<p>You can add the following line to the LaTeX preamble (for example by using the respective field in the config dialogue (“Export”-&gt;“Additional lines for the TeX preamble”), to set borders of 1cm):</p>
+<p>Sí. Utilice el paquete “geometry” de LaTeX para especificar el tamaño de los bordes.</p>
+<p>Puede agregar la línea siguiente al preámbulo LaTeX (por ejemplo utilizando el campo respectivo dentro del diálogo de configuración («Exportar» → «Líneas adicionales para el preámbulo TeX»), para fijar bordes de 1cm):</p>
 <div class="sourceCode" id="cb25"><pre class="sourceCode latex"><code class="sourceCode latex"><a class="sourceLine" id="cb25-1" title="1"><span class="bu">\usepackage</span>[izq=1cm,der=1cm,cim=1cm,fon=1cm]{<span class="ex">geometría</span>}</a></code></pre></div>
 <h2 id="hay-un-modo-oscuro"><span class="header-section-number">4.2</span> ¿Hay un modo oscuro?</h2>
 <p>Si wxWidgets es suficientemente nuevo <em>wxMaxima</em> automáticamente estará en modo oscuro si el resto del sistema operativo también lo está. La misma hoja de trabajo por defecto está equivocada con un fondo brillante. Pero puede ser configurado de otras maneras. Alternativamente hay un apunte del menú para ‘Ver/Invertir brillo del cuaderno’ para convertir rápidamente la hoja del cuaderno desde oscuro a claro y viceversa.</p>

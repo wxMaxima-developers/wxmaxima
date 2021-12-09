@@ -195,7 +195,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <figure>
 <img src="./maxima_screenshot.png" alt="Maxima screenshot, command line" id="img_maxima_screenshot" /><figcaption>Maxima screenshot, command line</figcaption>
 </figure>
-<p>Extensive documentation for <em>Maxima</em> is <a href="https://maxima.sourceforge.io/documentation.html">available in the internet</a>. Part of this documentation is also available in wxMaxima’s help menu. Pressing the Help key (on most systems the F1 key) causes <em>wxMaxima</em>’s context-sensitive help feature to automatically jump to <em>Maxima</em>’s manual page for the command at the cursor.</p>
+<p>Extensive documentation for <em>Maxima</em> is <a href="https://maxima.sourceforge.io/documentation.html">available in the internet</a>. Part of this documentation is also available in wxMaxima’s help menu. Pressing the Help key (on most systems the <kbd>F1</kbd> key) causes <em>wxMaxima</em>’s context-sensitive help feature to automatically jump to <em>Maxima</em>’s manual page for the command at the cursor.</p>
 <h3 id="wxmaxima"><span class="header-section-number">1.1.2</span> wxMaxima</h3>
 <p><em>wxMaxima</em> is a graphical user interface that provides the full functionality and flexibility of <em>Maxima</em>. wxMaxima offers users a graphical display and many features that make working with <em>Maxima</em> easier. For example <em>wxMaxima</em> allows one to export any cell’s contents (or, if that is needed, any part of a formula, as well) as text, as LaTeX or as MathML specification at a simple right-click. Indeed, an entire workbook can be exported, either as a HTML file or as a LaTeX file. Documentation for <em>wxMaxima</em>, including workbooks to illustrate aspects of its use, is online at the <em>wxMaxima</em> <a href="https://wxMaxima-developers.github.io/wxmaxima/help.html">help site</a>, as well as via the help menu.</p>
 <figure>
@@ -217,16 +217,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <img src="./cell-example.png" alt="Example of different wxMaxima cells" id="img_cell-example" /><figcaption>Example of different wxMaxima cells</figcaption>
 </figure>
 <h3 id="cells"><span class="header-section-number">1.2.2</span> Cells</h3>
-<p>Çalışma sayfası hücreler halinde düzenlenmiştir. Her hücre başka hücreler veya aşağıdaki içerik türlerini içerebilir:</p>
+<p>The worksheet is organized in cells. wxMaxima knows the following cell types:</p>
 <ul>
-<li>bir veya daha fazla satır <em>Maxima</em> girişi</li>
-<li>bir yada daha fazla görsel</li>
-<li>’Maxima çıktısı ya da Maxima’dan soru</li>
-<li>örneğin dokümantasyon için kullanılabilecek bir metin bloğu</li>
-<li>bir başlık, bölüm yada bir alt bölüm.</li>
+<li>Math cells, containing one or more lines of <em>Maxima</em> input.</li>
+<li>Output of, or a question from, <em>Maxima</em>.</li>
+<li>Image cells.</li>
+<li>Text cells, that can for example be used for documentation.</li>
+<li>A title, section or a subsection. 6 levels of different headings are possible.</li>
+<li>Page breaks.</li>
 </ul>
 <p>The default behavior of <em>wxMaxima</em> when text is entered is to automatically create a math cell. Cells of other types can be created using the Cell menu, using the hot keys shown in the menu or using the drop-down list in the toolbar. Once the non-math cell is created, whatever is typed into the file is interpreted as text.</p>
-<p>Additional comment text can be entered into a math cell if bracketed as follows: <code>/*This comment will not be sent to Maxima for evaluation*/</code>.</p>
+<p>A (C-style) comment text can be part of a math cell as follows: <code>/* This comment will be ignored by Maxima */</code></p>
+<p>“<code>/*</code>” marks the start of the comment, “<code>*/</code>” the end.</p>
 <h3 id="horizontal-and-vertical-cursors"><span class="header-section-number">1.2.3</span> Horizontal and vertical cursors</h3>
 <p>Kullanıcı tam bir cümle seçmeye çalışırsa, bir sözcük işlemci seçimi otomatik olarak bir sözcük sınırıyla başlayıp bitecek şekilde genişletmeye çalışır. Aynı şekilde, birden fazla hücre seçilirse <em>wxMaxima</em> seçimi tüm hücrelere genişletir.</p>
 <p>Standart olmayan, <em>wxMaxima</em>’ın iki tür imleç tanımlayarak sürükle ve bırak esnekliği sağlamasıdır. <em>wxMaxima</em> gerektiğinde bunlar arasında otomatik olarak geçiş yapar:</p>
@@ -234,14 +236,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>The cursor is drawn horizontally if it is moved in the space between two cells or by clicking there.</li>
 <li>Bir hücrenin içinde çalışan dikey bir imleç. Bu imleç, fare imlecini veya imleç tuşlarını kullanarak imleci bir hücrenin içinde hareket ettirerek etkinleştirilir ve bir metin düzenleyicide imleç gibi çalışır.</li>
 </ul>
-<p>When you start wxMaxma, you will only see the blinking horizontal cursor. If you start typing a math cell will be automatically created (you will see a right arrow as “prompt”, after the Math cell is evaluated (<kbd>CTRL+Enter</kbd>), you will see the labels, e.g. <code>(%i1)</code>, <code>(%o1)</code>.</p>
+<p>When you start wxMaxma, you will only see the blinking horizontal cursor. If you start typing, a math cell will be automatically created and the cursor will change to a regular vertical one (you will see a right arrow as “prompt”, after the Math cell is evaluated (<kbd>CTRL+ENTER</kbd>), you will see the labels, e.g. <code>(%i1)</code>, <code>(%o1)</code>).</p>
 <figure>
-<img src="./horizontal-cursor-only.png" alt="(blinking) horizontal cursor after wxMaxima start" id="horizontal-cursor-only" /><figcaption>(blinking) horizontal cursor after wxMaxima start</figcaption>
+<img src="./horizontal-cursor-only.png" alt="(blinking) horizontal cursor after wxMaxima start" id="img_horizontal_cursor_only" /><figcaption>(blinking) horizontal cursor after wxMaxima start</figcaption>
 </figure>
 <p>You might want to create another cell type (using the “Cell” menu), maybe a title cell or text cell, which describes, what will be done, when you start creating your worksheet.</p>
-<p>If you navigate between the different cells, you will also see the (blinking) horizontal cursor, where you can insert a cell into your worksheet (either a math cell, by just start typing your formula or another cell type).</p>
+<p>If you navigate between the different cells, you will also see the (blinking) horizontal cursor, where you can insert a cell into your worksheet (either a math cell, by just start typing your formula - or another cell type using the menu).</p>
 <figure>
-<img src="./horizontal-cursor-between-cells.png" alt="(blinking) horizontal cursor between cells" id="horizontal-cursor-between-cells" /><figcaption>(blinking) horizontal cursor between cells</figcaption>
+<img src="./horizontal-cursor-between-cells.png" alt="(blinking) horizontal cursor between cells" id="img_horizontal_cursor_between_cells" /><figcaption>(blinking) horizontal cursor between cells</figcaption>
 </figure>
 <h3 id="sending-cells-to-maxima"><span class="header-section-number">1.2.4</span> Sending cells to Maxima</h3>
 <p>The command in a code cell are executed once <kbd>CTRL</kbd>+<kbd>ENTER</kbd>, <kbd>SHIFT</kbd>+<kbd>ENTER</kbd> or the <kbd>ENTER</kbd> key on the keypad is pressed. The <em>wxMaxima</em> default is to enter commands when either <kbd>CTRL+ENTER</kbd> or <kbd>SHIFT+ENTER</kbd> is entered, but <em>wxMaxima</em> can be configured to execute commands in response to <kbd>ENTER</kbd>.</p>
@@ -607,6 +609,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>If a special symbol isn’t in the list it is possible to input arbitrary Unicode characters by pressing <kbd>ESC</kbd> [number of the character (hexadecimal)] <kbd>ESC</kbd>.</p>
 <p><kbd>ESC</kbd> <kbd>61</kbd> <kbd>ESC</kbd> therefore results in an <code>a</code>.</p>
 <p>Bu simgelerin çoğunun (dikkate değer istisnalar mantık sembolleri olduğu) <em>Maxima</em>’da özel bir anlamı olmadığını ve bu nedenle sıradan karakterler olarak yorumlanacağını lütfen unutmayın. <em>Maxima</em>, Unicode karakterlerle uğraşmayı desteklemeyen bir Lisp kullanılarak derlenirse, bunun yerine bir hata iletisine neden olabilir.</p>
+<p>It may be the case, that e.g. greek characters are not included in the selected font, then they can not be displayed. To solve that problem, select other fonts (using: Edit -&gt; Configure -&gt; Style).</p>
 <h3 id="side-panes"><span class="header-section-number">1.2.6</span> Side Panes</h3>
 <p>En önemli <em>Maxima</em> komutlarının kısayollarına veya içindekiler tablosu, hata ayıklama iletilerine sahip pencereler veya son verilen komutların geçmişi gibi yan bölmeler kullanılarak erişilebilir. “Görünüm” menüsü kullanılarak etkinleştirilebilirler. Hepsi <em>wxMaxima</em> penceresinin içindeki veya dışındaki diğer konumlara taşınabilir. Diğer kullanışlı bölmeler, fareyi kullanarak Yunanca harflerin girilmesine izin veren bölmelerdir.</p>
 <figure>
@@ -871,11 +874,14 @@ Ordinary text</code></pre>
 <ul>
 <li><code>wxsubscripts</code>, <em>Maxima</em> öğesine alt çizgi (<code>R_150</code> veya benzeri) içeren değişken adlarını abone değişkenlere dönüştürüp dönüştürmeyeceğini bildirir. Hangi değişken adlarının otomatik olarak dönüştürüldüğünü öğrenmek için `wxdeclare_subscript’e bakınız.</li>
 <li><code>wxfilename</code>: Bu değişken, şu anda <em>wxMaxima</em> içinde açılmış olan dosyanın adını içerir.</li>
+<li><code>wxdirname</code>: This variable contains the name the directory, in which the file currently opened in <em>wxMaxima</em> is.</li>
 <li><code>wxplot_pngcairo</code>, <em>wxMaxima</em>’nın <em>gnuplot</em>’ın daha fazla çizgi stili ve daha iyi bir genel grafik kalitesi sağlayan pngcairo terminali kullanmaya çalışıp çalışmadığını söyler.</li>
 <li>"wxplot_size`, katıştırılmış grafiklerin çözünürlüğünü tanımlar.</li>
 <li><code>wxchangedir</code>: Çoğu işletim sisteminde <em>wxMaxima</em> <em>Maxima</em>’ın çalışma dizinini geçerli dosyanın dizinine otomatik olarak ayarlar. Bu, dosya G / Ç’sinin (ör. <code>Read_matrix</code> ile) okunması veya yazılması gereken dosyanın tam yolunu belirtmeden çalışmasını sağlar. Windows’ta bu özellik bazen hata mesajlarına neden olur ve bu nedenle yapılandırma iletişim kutusundan “false” olarak ayarlanabilir.</li>
 <li>“wxanimate_framerate”: Aşağıdaki animasyonların oynatılması gereken saniye başına kare sayısı.</li>
 <li>"wxanimate_autoplay`: Animasyonlar varsayılan olarak otomatik olarak oynatılsın mı?</li>
+<li><code>wxmaximaversion</code>: Returns the version number of <em>wxMaxima</em>.</li>
+<li><code>wxwidgetsversion</code>: Returns the wxWidgets version <em>wxMaxima</em> is using.</li>
 </ul>
 <h2 id="pretty-printing-2d-output"><span class="header-section-number">2.7</span> Pretty-printing 2D output</h2>
 <p>The function <code>table_form()</code> displays a 2D list in a form that is more readable than the output from <em>Maxima</em>’s default output routine. The input is a list of one or more lists. Like the “print” command, this command displays output even when ended with a dollar sign. Ending the command with a semicolon results in the same table along with a “done” statement.</p>
