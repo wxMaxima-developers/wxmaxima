@@ -4,8 +4,6 @@ on: [push]
 
 env:
   BUILD_TYPE: Release
-  WXVERSION: 3.1.4
-  cache-name: cache-wxWidgets
 
 jobs:
   compile_Ninja:
@@ -28,7 +26,7 @@ jobs:
       - name: Configure wxMaxima
         run: |
              mkdir ../build-wxm
-             cmake -S . -B ../build-wxm -G Ninja -DCMAKE_INSTALL_PREFIX=. -DCMAKE_UNITY_BUILD_BATCH_SIZE=8 -DWXM_UNIT_TESTS=YES -DCMAKE_UNITY_BUILD=YES -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64"
+             cmake -S . -B ../build-wxm -G Ninja -DCMAKE_INSTALL_PREFIX=. -DCMAKE_UNITY_BUILD_BATCH_SIZE=8 -DWXM_UNIT_TESTS=YES -DCMAKE_UNITY_BUILD=YES
 
       - name: Check Info.plist
         run: |
