@@ -23,42 +23,8 @@ jobs:
              export PATH=$PATH:/usr/local/opt/gettext/bin
              export HOMEBREW_NO_AUTO_UPDATE=1
              set -e
-             brew install gettext ninja pandoc wget wxwidgets
+             brew install gettext ninja pandoc wxwidgets
              set +e
-      - name: Cache wxWidgets
-        uses: actions/cache@v2
-        with:
-          path: |
-                wxWidgets_src-${{env.WXVERSION}}
-                wxWidgets_build-${{env.WXVERSION}}
-          key: ${{ runner.os }}-build-${{env.github_ref}}-${{ env.cache-name }}-4
-      - name: Download wxWidgets
-        run: |
-             if test -d wxWidgets_src-${{env.WXVERSION}}; then
-                 echo "exWidgets already downloaded"
-             else
-                wget https://github.com/wxWidgets/wxWidgets/releases/download/v${{env.WXVERSION}}/wxWidgets-${{env.WXVERSION}}.zip
-                 mkdir wxWidgets_src-${{env.WXVERSION}}
-                 cd wxWidgets_src-${{env.WXVERSION}}
-                 unzip ../wxWidgets-${{env.WXVERSION}}.zip
-                 cd ..
-             fi
-      - name: Compile wxWidgets
-        run: |
-             if test -d wxWidgets_build-${{env.WXVERSION}}; then
-                 echo "wxWidgets already compiled"
-             else
-                 mkdir wxWidgets_build-${{env.WXVERSION}}
-                 cd wxWidgets_build-${{env.WXVERSION}}
-                 cmake ../wxWidgets_src-${{env.WXVERSION}} -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64" -G Ninja
-                 cmake --build .
-                 cd ..
-             fi
-      - name: Install wxWidgets
-        run: |
-             cd wxWidgets_build-${{env.WXVERSION}}
-             sudo cmake --install .
-             cd ..
       - name: Configure wxMaxima
         run: |
              mkdir ../build-wxm
@@ -100,42 +66,8 @@ jobs:
              export PATH=$PATH:/usr/local/opt/gettext/bin
              export HOMEBREW_NO_AUTO_UPDATE=1
              set -e
-             brew install gettext pandoc wget wxwidgets
+             brew install gettext pandoc wxwidgets
              set +e
-      - name: Cache wxWidgets
-        uses: actions/cache@v2
-        with:
-          path: |
-                wxWidgets_src-${{env.WXVERSION}}
-                wxWidgets_build-${{env.WXVERSION}}
-          key: ${{ runner.os }}-build-${{env.github_ref}}-${{ env.cache-name }}-4
-      - name: Download wxWidgets
-        run: |
-             if test -d wxWidgets_src-${{env.WXVERSION}}; then
-                 echo "exWidgets already downloaded"
-             else
-                 wget https://github.com/wxWidgets/wxWidgets/releases/download/v${{env.WXVERSION}}/wxWidgets-${{env.WXVERSION}}.zip
-                 mkdir wxWidgets_src-${{env.WXVERSION}}
-                 cd wxWidgets_src-${{env.WXVERSION}}
-                 unzip ../wxWidgets-${{env.WXVERSION}}.zip
-                 cd ..
-             fi
-      - name: Compile wxWidgets
-        run: |
-             if test -d wxWidgets_build-${{env.WXVERSION}}; then
-                 echo "wxWidgets already compiled"
-             else
-                 mkdir wxWidgets_build-${{env.WXVERSION}}
-                 cd wxWidgets_build-${{env.WXVERSION}}
-                 cmake ../wxWidgets_src-${{env.WXVERSION}} -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64"
-                 cmake --build .
-                 cd ..
-             fi
-      - name: Install wxWidgets
-        run: |
-             cd wxWidgets_build-${{env.WXVERSION}}
-             sudo cmake --install .
-             cd ..
       - name: configure
         run: |
              mkdir ../build-wxm
