@@ -22,6 +22,7 @@ wxMaxima (additional) steps:
 - Update snap/snapcraft.yaml
 - Run "make test"
 - Does test/testbench_simple.wxmx work?
+- Update the included HTML manuals.
 - Create an (annotated) git tag for the release
 - Push the tag to Github, using: git push origin --tags
 - Go to the releases page Github and convert the tag into a release.
