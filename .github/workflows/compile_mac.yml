@@ -100,7 +100,7 @@ jobs:
              export PATH=$PATH:/usr/local/opt/gettext/bin
              export HOMEBREW_NO_AUTO_UPDATE=1
              set -e
-             brew install gettext
+             brew install gettext pandoc wget wxwidgets
              set +e
       - name: Cache wxWidgets
         uses: actions/cache@v2
