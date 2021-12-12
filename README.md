@@ -22,6 +22,3 @@ can be found at https://maxima.sourceforge.io/download.html.
 Information on how to compile wxMaxima from source instead can be
 found at https://github.com/wxMaxima-developers/wxmaxima/blob/main/Compiling.md
 
-
-![Travis CI Build Status](https://travis-ci.org/wxMaxima-developers/wxmaxima.svg?branch=main)
-
