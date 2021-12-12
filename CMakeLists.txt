@@ -189,20 +189,21 @@ set(CPACK_PACKAGE_CHECKSUM "SHA512")
 # Build Items
 #
 
-# Convert AUTHORS to a C++ include, which can be included in wxMaxima.cpp
+# Convert AUTHORS.md to a C++ include, which can be included in wxMaxima.cpp
 file(WRITE "${CMAKE_BINARY_DIR}/contributors.h" "") # create a empty file
-file(STRINGS AUTHORS AUTHORSLINES ENCODING UTF-8)
+file(STRINGS AUTHORS.md AUTHORSLINES ENCODING UTF-8)
+list(REMOVE_AT AUTHORSLINES 0 1) # remove main heading line.
     foreach(l ${AUTHORSLINES})
-      if("${l}" STREQUAL "Developers:")
+      if("${l}" STREQUAL "## Developers")
         set(AUTHORTYPE "AddDeveloper")
-      elseif("${l}" STREQUAL "Translators:")
+      elseif("${l}" STREQUAL "## Translators")
         set(AUTHORTYPE "AddTranslator")
-      elseif("${l}" STREQUAL "Artwork:")
+      elseif("${l}" STREQUAL "## Artwork")
         set(AUTHORTYPE "AddArtist")
-      elseif("${l}" STREQUAL "The Manual:")
+      elseif("${l}" STREQUAL "## The Manual")
         set(AUTHORTYPE "AddDocWriter")
       else()
-        string(REPLACE "  - " "" l2 "${l}")
+        string(REPLACE "- " "" l2 "${l}")
         file(APPEND "${CMAKE_BINARY_DIR}/contributors.h" "info.${AUTHORTYPE}(wxT(\"${l2}\"));\n")
       endif()
     endforeach()
@@ -220,7 +221,7 @@ add_subdirectory(test)
 
 add_custom_target(dist COMMAND ${CMAKE_MAKE_PROGRAM} package_source)
 
-install(FILES AUTHORS COPYING ChangeLog GPL.txt NEWS.md README README.md DESTINATION share/doc/wxmaxima)
+install(FILES AUTHORS.md COPYING ChangeLog GPL.txt NEWS.md README README.md DESTINATION share/doc/wxmaxima)
 
 # include wxWidgets DLLs on Windows on appveyor
 if(WIN32 AND APPVEYOR_BUILD)
