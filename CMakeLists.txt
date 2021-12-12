@@ -32,6 +32,14 @@ option(WXM_UNIT_TESTS
     "Compile unit tests and enable the tests." OFF)
 option(WXM_INTERPROCEDURAL_OPTIMIZATION
     "Enable interprocedural optimization (IPO/LTO)." OFF)
+option(WXM_INCLUDE_FONTS
+    "Include additional fonts." ON)
+
+if(WXM_INCLUDE_FONTS)
+    add_definitions("-DADD_PRIVATE_FONTS=1")
+else()
+    add_definitions("-DADD_PRIVATE_FONTS=0")
+endif()
 
 if(DEFINED MACOSX_VERSION_MIN)
     set(CMAKE_OSX_DEPLOYMENT_TARGET ${MACOSX_VERSION_MIN} CACHE STRING FORCE)

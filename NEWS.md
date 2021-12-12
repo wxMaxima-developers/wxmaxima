@@ -1,3 +1,10 @@
+# Current:
+ * Add an compile option "WXM_INCLUDE_FONTS", which allows to
+   specify, if additional fonts should be included.
+   Current default: YES; set WXM_INCLUDE_FONTS=NO when calling
+   CMake to disable that.
+   Including fonts caused some issues on MacOS. (#1580)
+
 # 21.11.0:
  * Allow seeing all files in the file save dialog. (#1557)
  * Fix an error when using Alt up arrow (show previous command) (#1566)

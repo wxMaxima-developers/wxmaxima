@@ -12,8 +12,10 @@ set(PIXMAPS
         ${CMAKE_CURRENT_SOURCE_DIR}/io.github.wxmaxima_developers.wxMaxima.svg
         ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima-32.xpm)
 
+if(WXM_INCLUDE_FONTS)
+    add_subdirectory(fonts)
+endif()
 
-add_subdirectory(fonts)
 if(NOT WIN32)
     string(TIMESTAMP CURRENTDATE "%Y-%m-%d" UTC)
     # the config file is ~/.wxMaxima if wxWidgets < 3.1.1
