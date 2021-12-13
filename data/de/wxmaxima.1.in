@@ -4,7 +4,7 @@ wxmaxima \- wxWidgets Interface f\(:ur Maxima
 
 .SH "SYNTAX" 
 .PP 
-\fBwxmaxima\fR [-v] [-h] [-o <str>] [-e] [-b] [--logtostdout] [--pipe] [--exit-on-error] [-f <str>] [-u <str>] [-l <str>] [-X <str>] [-m <str>]  [--enableipc] [input file...]
+\fBwxmaxima\fR [-v] [-h] [-o <str>] [-e] [-b] [--logtostderr] [--pipe] [--exit-on-error] [-f <str>] [-u <str>] [-l <str>] [-X <str>] [-m <str>]  [--enableipc] [input file...]
 
 .SH "BESCHREIBUNG" 
 .PP 
@@ -50,7 +50,7 @@ W\(:urde anhalten, wenn Maxima eine Fehlermeldung produziert oder eine Frage ste
 \(:Offnet eine Datei und verarbeitet sie nach dem Programmstart.
 
 .TP
-.I \-\-logtostdout
+.I \-\-logtostderr
 Loggt "Debugging-Nachrichten" auch auf der Standard-Fehlerausgabe.
 
 .TP

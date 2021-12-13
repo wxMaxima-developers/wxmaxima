@@ -4,6 +4,8 @@
    Current default: YES; set WXM_INCLUDE_FONTS=NO when calling
    CMake to disable that.
    Including fonts caused some issues on MacOS. (#1580)
+ * Rename command line option --logtostdout to --logtostderr.
+   Because the option does print the log messages to STDERR, not STDOUT.
 
 # 21.11.0:
  * Allow seeing all files in the file save dialog. (#1557)

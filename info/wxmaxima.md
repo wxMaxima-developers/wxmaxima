@@ -873,7 +873,7 @@ Most operating systems provide less complicated ways of starting programs than t
 * `-o` or `--open=<str>`: Open the filename given as argument to this command-line switch
 * `-e` or `--eval`: Evaluate the file after opening it.
 * `-b` or `--batch`: If the command-line opens a file all cells in this file are evaluated and the file is saved afterwards. This is for example useful if the session described in the file makes _Maxima_ generate output files. Batch-processing will be stopped if _wxMaxima_ detects that _Maxima_ has output an error and will pause if _Maxima_ has a question: Mathematics is somewhat interactive by nature so a completely interaction-free batch processing cannot always be guaranteed.
-* `--logtostdout`:                 Log all "debug messages" sidebar messages to stderr, too.
+* `--logtostderr`:                 Log all "debug messages" sidebar messages to stderr, too.
 * `--pipe`:                        Pipe messages from Maxima to stdout.
 * `--exit-on-error`:               Close the program on any maxima error.
 * `-f` or `--ini=<str>`: Use the init file that was given as argument to this command-line switch

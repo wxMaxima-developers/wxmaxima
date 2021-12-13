@@ -218,7 +218,7 @@ bool MyApp::OnInit()
        "Open all files from within the same process.", wxCMD_LINE_VAL_NONE , 0},
       {wxCMD_LINE_SWITCH, "b", "batch",
        "run the file and exit afterwards. Halts on questions and stops on errors.",  wxCMD_LINE_VAL_NONE, 0},
-                  {wxCMD_LINE_SWITCH, "", "logtostdout",
+                  {wxCMD_LINE_SWITCH, "", "logtostderr",
                    "Log all \"debug messages\" sidebar messages to stderr, too.",  wxCMD_LINE_VAL_NONE, 0},
                   {wxCMD_LINE_SWITCH, "", "pipe",
                    "Pipe messages from Maxima to stdout.",  wxCMD_LINE_VAL_NONE, 0},
@@ -267,7 +267,7 @@ bool MyApp::OnInit()
   else
     wxConfig::Set(new wxConfig(wxT("wxMaxima")));
 
-  if (cmdLineParser.Found(wxT("logtostdout")))
+  if (cmdLineParser.Found(wxT("logtostderr")))
     ErrorRedirector::LogToStdErr();
 
   if (cmdLineParser.Found(wxT("pipe")))

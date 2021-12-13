@@ -4,7 +4,7 @@ wxmaxima \- wxWidgets interface for Maxima
 
 .SH "SYNOPSIS"
 .PP
-\fBwxmaxima\fR [-v] [-h] [-o <str>] [-e] [-b] [--logtostdout] [--pipe] [--exit-on-error] [-f <str>] [-u <str>] [-l <str>] [-X <str>] [-m <str>] [--enableipc] [input file...]
+\fBwxmaxima\fR [-v] [-h] [-o <str>] [-e] [-b] [--logtostderr] [--pipe] [--exit-on-error] [-f <str>] [-u <str>] [-l <str>] [-X <str>] [-m <str>] [--enableipc] [input file...]
 
 .SH "DESCRIPTION"
 .PP
@@ -51,7 +51,7 @@ Open a file at startup.
 Evaluate the file after opening it.
 
 .TP
-.I \-\-logtostdout
+.I \-\-logtostderr
 Log all "debug messages" sidebar messages to stderr, too.
 
 .TP

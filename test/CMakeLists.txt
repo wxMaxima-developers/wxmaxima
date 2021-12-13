@@ -47,12 +47,12 @@ add_test(
 add_test(
     NAME wxmaxima_batch_emptyFile
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --logtostdout --pipe --batch empty_file.wxm)
+    COMMAND wxmaxima --logtostderr --pipe --batch empty_file.wxm)
 
 add_test(
     NAME wxmaxima_performance
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --logtostdout --pipe --batch performance.wxm)
+    COMMAND wxmaxima --logtostderr --pipe --batch performance.wxm)
 if(ENV{TRAVIS_DIST} EQUAL bionic)
   set_tests_properties(wxmaxima_performance PROPERTIES TIMEOUT 20)
 elseif(ENV{TRAVIS_DIST} EQUAL focal)
@@ -62,61 +62,61 @@ endif()
 add_test(
     NAME wxmaxima_batch_textcell
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --logtostdout --pipe --batch textcells.wxm)
+    COMMAND wxmaxima --logtostderr --pipe --batch textcells.wxm)
 
 add_test(
     NAME wxmaxima_batch_foreign_characters
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --logtostdout --pipe --batch foreign-characters.wxm)
+    COMMAND wxmaxima --logtostderr --pipe --batch foreign-characters.wxm)
 
 add_test(
     NAME wxmaxima_version_string
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --logtostdout --pipe --version)
+    COMMAND wxmaxima --logtostderr --pipe --version)
 set_tests_properties(wxmaxima_version_string PROPERTIES  PASS_REGULAR_EXPRESSION "wxMaxima ${VERSION}.*")
 
 add_test(
     NAME wxmaxima_version_returncode
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --logtostdout --pipe --version)
+    COMMAND wxmaxima --logtostderr --pipe --version)
 
 #add_test(
 #    NAME maxima_lisp_switch
 #    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-#    COMMAND wxmaxima --logtostdout --pipe -l undefined_lisp)
+#    COMMAND wxmaxima --logtostderr --pipe -l undefined_lisp)
 #set_tests_properties(maxima_lisp_switch PROPERTIES WILL_FAIL true)
 
 #add_test(
 #    NAME maxima_version_switch
 #    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-#    COMMAND wxmaxima --logtostdout --pipe -u undefined_version)
+#    COMMAND wxmaxima --logtostderr --pipe -u undefined_version)
 #set_tests_properties(maxima_version_switch PROPERTIES WILL_FAIL true)
 
 #add_test(
 #    NAME maxima_args_switch
 #    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-#    COMMAND wxmaxima --logtostdout --pipe -X gibberish)
+#    COMMAND wxmaxima --logtostderr --pipe -X gibberish)
 #set_tests_properties(maxima_args_switch PROPERTIES WILL_FAIL true)
 
 add_test(
     NAME wxmaxima_help
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --logtostdout --pipe --help)
+    COMMAND wxmaxima --logtostderr --pipe --help)
 
 add_test(
     NAME all_celltypes
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --logtostdout --pipe --batch testbench_all_celltypes.wxm)
+    COMMAND wxmaxima --logtostderr --pipe --batch testbench_all_celltypes.wxm)
 
 add_test(
     NAME simpleInput
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --logtostdout --pipe --batch simpleInput.wxm)
+    COMMAND wxmaxima --logtostderr --pipe --batch simpleInput.wxm)
 
 add_test(
     NAME rememberingAnswers
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --logtostdout --pipe --batch rememberingAnswers.wxm)
+    COMMAND wxmaxima --logtostderr --pipe --batch rememberingAnswers.wxm)
 
 add_test(
     NAME absCells_cmdline
@@ -126,7 +126,7 @@ add_test(
 add_test(
     NAME absCells
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --logtostdout --pipe --batch absCells.wxm)
+    COMMAND wxmaxima --logtostderr --pipe --batch absCells.wxm)
 
 add_test(
     NAME diffCells_cmdline
@@ -136,7 +136,7 @@ add_test(
 add_test(
     NAME diffCells
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --logtostdout --pipe --batch diffCells.wxm)
+    COMMAND wxmaxima --logtostderr --pipe --batch diffCells.wxm)
 
 add_test(
     NAME atCells_cmdline
@@ -151,7 +151,7 @@ add_test(
 add_test(
     NAME atCells
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --logtostdout --pipe --batch atCells.wxm)
+    COMMAND wxmaxima --logtostderr --pipe --batch atCells.wxm)
 
 add_test(
     NAME conjugateCells_cmdline
@@ -166,7 +166,7 @@ add_test(
 add_test(
     NAME conjugateCells
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --logtostdout --pipe --batch conjugateCells.wxm)
+    COMMAND wxmaxima --logtostderr --pipe --batch conjugateCells.wxm)
 
 add_test(
     NAME exptCells_cmdline
@@ -181,7 +181,7 @@ add_test(
 add_test(
     NAME exptCells
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --logtostdout --pipe --batch exptCells.wxm)
+    COMMAND wxmaxima --logtostderr --pipe --batch exptCells.wxm)
 
 add_test(
     NAME fracCells_cmdline
@@ -203,7 +203,7 @@ add_test(
 add_test(
     NAME fracCells
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --logtostdout --pipe --batch fracCells.wxm)
+    COMMAND wxmaxima --logtostderr --pipe --batch fracCells.wxm)
 
 add_test(
     NAME intCells_cmdline
@@ -218,7 +218,7 @@ add_test(
 add_test(
     NAME intCells
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --logtostdout --pipe --batch intCells.wxm)
+    COMMAND wxmaxima --logtostderr --pipe --batch intCells.wxm)
 
 add_test(
     NAME intervals_cmdline
@@ -233,7 +233,7 @@ add_test(
 add_test(
     NAME intervals
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --logtostdout --pipe --batch intervals.wxm)
+    COMMAND wxmaxima --logtostderr --pipe --batch intervals.wxm)
 
 add_test(
     NAME functionCells_cmdline
@@ -248,17 +248,17 @@ add_test(
 add_test(
     NAME functionCells
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --logtostdout --pipe --batch functionCells.wxm)
+    COMMAND wxmaxima --logtostderr --pipe --batch functionCells.wxm)
 
 add_test(
     NAME slideshowCells
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --logtostdout --pipe --batch slideshowCells.wxm)
+    COMMAND wxmaxima --logtostderr --pipe --batch slideshowCells.wxm)
 
 add_test(
     NAME imageCells
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --logtostdout --pipe --batch imageCells.wxm)
+    COMMAND wxmaxima --logtostderr --pipe --batch imageCells.wxm)
 # Maxima sometimes fails if this test is run in parallel,
 # see https://sourceforge.net/p/maxima/bugs/3699/
 set_tests_properties(imageCells PROPERTIES RUN_SERIAL true)
@@ -276,7 +276,7 @@ add_test(
 add_test(
     NAME limitCells
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --logtostdout --pipe --batch limitCells.wxm)
+    COMMAND wxmaxima --logtostderr --pipe --batch limitCells.wxm)
 
 add_test(
     NAME matrixCells_cmdline
@@ -291,7 +291,7 @@ add_test(
 add_test(
     NAME matrixCells
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --logtostdout --pipe --batch matrixCells.wxm)
+    COMMAND wxmaxima --logtostderr --pipe --batch matrixCells.wxm)
 
 add_test(
     NAME parenthesisCells_cmdline
@@ -306,7 +306,7 @@ add_test(
 add_test(
     NAME parenthesisCells
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --logtostdout --pipe --batch parenthesisCells.wxm)
+    COMMAND wxmaxima --logtostderr --pipe --batch parenthesisCells.wxm)
 
 add_test(
     NAME listCells_cmdline
@@ -321,7 +321,7 @@ add_test(
 add_test(
     NAME listCells
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --logtostdout --pipe --batch listCells.wxm)
+    COMMAND wxmaxima --logtostderr --pipe --batch listCells.wxm)
 
 add_test(
     NAME setCells_cmdline
@@ -336,7 +336,7 @@ add_test(
 add_test(
     NAME setCells
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --logtostdout --pipe --batch setCells.wxm)
+    COMMAND wxmaxima --logtostderr --pipe --batch setCells.wxm)
 
 add_test(
     NAME sqrtCells_cmdline
@@ -351,7 +351,7 @@ add_test(
 add_test(
     NAME sqrtCells
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --logtostdout --pipe --batch sqrtCells.wxm)
+    COMMAND wxmaxima --logtostderr --pipe --batch sqrtCells.wxm)
 
 add_test(
     NAME subCells_cmdline
@@ -366,7 +366,7 @@ add_test(
 add_test(
     NAME subCells
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --logtostdout --pipe --batch subCells.wxm)
+    COMMAND wxmaxima --logtostderr --pipe --batch subCells.wxm)
 
 add_test(
     NAME subsupCells_cmdline
@@ -381,7 +381,7 @@ add_test(
 add_test(
     NAME subsupCells
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --logtostdout --pipe --batch subsupCells.wxm)
+    COMMAND wxmaxima --logtostderr --pipe --batch subsupCells.wxm)
 
 add_test(
     NAME presubsupcells_cmdline
@@ -396,7 +396,7 @@ add_test(
 add_test(
     NAME presubsupcells
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --logtostdout --pipe --batch presubsupcells.wxm)
+    COMMAND wxmaxima --logtostderr --pipe --batch presubsupcells.wxm)
 
 add_test(
     NAME sumCells_cmdline
@@ -411,7 +411,7 @@ add_test(
 add_test(
     NAME sumCells
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --logtostdout --pipe --batch sumCells.wxm)
+    COMMAND wxmaxima --logtostderr --pipe --batch sumCells.wxm)
 
 add_test(
     NAME printf_simple_cmdline
@@ -426,7 +426,7 @@ add_test(
 add_test(
     NAME printf_simple
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --logtostdout --pipe --batch printf_simple.wxm)
+    COMMAND wxmaxima --logtostderr --pipe --batch printf_simple.wxm)
 
 add_test(
     NAME printf_equations_cmdline
@@ -441,7 +441,7 @@ add_test(
 add_test(
     NAME printf_equations
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --logtostdout --pipe --batch printf_equations.wxm)
+    COMMAND wxmaxima --logtostderr --pipe --batch printf_equations.wxm)
 
 add_test(
     NAME printf_continuationLines_cmdline
@@ -456,76 +456,76 @@ add_test(
 add_test(
     NAME printf_continuationLines
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --logtostdout --pipe --batch printf_continuationLines.wxm)
+    COMMAND wxmaxima --logtostderr --pipe --batch printf_continuationLines.wxm)
 
 add_test(
     NAME weirdLabels
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --logtostdout --pipe --batch weirdLabels.wxm)
+    COMMAND wxmaxima --logtostderr --pipe --batch weirdLabels.wxm)
 
 add_test(
     NAME xmlQuote
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --logtostdout --pipe --batch xmlQuote.wxm)
+    COMMAND wxmaxima --logtostderr --pipe --batch xmlQuote.wxm)
 
 add_test(
     NAME formerCrashes
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --logtostdout --pipe --batch formerCrashes.wxm)
+    COMMAND wxmaxima --logtostderr --pipe --batch formerCrashes.wxm)
 
 add_test(
     NAME multiplication
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --logtostdout --pipe --batch multiplication.wxm)
+    COMMAND wxmaxima --logtostderr --pipe --batch multiplication.wxm)
 add_test(
     NAME nonsenseConstructs
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --logtostdout --pipe --batch nonsenseConstructs.wxm)
+    COMMAND wxmaxima --logtostderr --pipe --batch nonsenseConstructs.wxm)
 
 add_test(
     NAME lisp
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --logtostdout --pipe --batch lisp.wxm)
+    COMMAND wxmaxima --logtostderr --pipe --batch lisp.wxm)
 
 add_test(
     NAME boxes
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --logtostdout --pipe --batch boxes.wxm)
+    COMMAND wxmaxima --logtostderr --pipe --batch boxes.wxm)
 
 add_test(
     NAME unicode
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --logtostdout --pipe --batch unicode.wxm)
+    COMMAND wxmaxima --logtostderr --pipe --batch unicode.wxm)
 
 add_test(
     NAME unicode_specialchars
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --logtostdout --pipe --batch unicode_specialchars.wxm)
+    COMMAND wxmaxima --logtostderr --pipe --batch unicode_specialchars.wxm)
 
 add_test(
     NAME openMacFiles
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --logtostdout --pipe -f autosave.cfg --batch testbench_simple.mac)
+    COMMAND wxmaxima --logtostderr --pipe -f autosave.cfg --batch testbench_simple.mac)
 
 add_test(
     NAME openMacFiles2
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --logtostdout --pipe -f autosave.cfg --batch testbench_simple2.mac)
+    COMMAND wxmaxima --logtostderr --pipe -f autosave.cfg --batch testbench_simple2.mac)
 
 add_test(
     NAME tutorial_10Minutes
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --logtostdout --pipe  --batch 10MinuteTutorial.wxm)
+    COMMAND wxmaxima --logtostderr --pipe  --batch 10MinuteTutorial.wxm)
 
 add_test(
     NAME comment_begin
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --logtostdout --pipe --batch commentBegin.wxm)
+    COMMAND wxmaxima --logtostderr --pipe --batch commentBegin.wxm)
 
 add_test(
     NAME threadtest
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --logtostdout --pipe --batch threadtest.wxm)
+    COMMAND wxmaxima --logtostderr --pipe --batch threadtest.wxm)
 # Maxima sometimes fails if this test is run in parallel,
 # see https://sourceforge.net/p/maxima/bugs/3699/
 set_tests_properties(threadtest PROPERTIES RUN_SERIAL true)
@@ -533,17 +533,17 @@ set_tests_properties(threadtest PROPERTIES RUN_SERIAL true)
 add_test(
     NAME autosave
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --logtostdout --pipe -f autosave.cfg --batch unicode.wxm)
+    COMMAND wxmaxima --logtostderr --pipe -f autosave.cfg --batch unicode.wxm)
 
 add_test(
     NAME noautosave
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --logtostdout --pipe -f noautosave.cfg --batch unicode.wxm)
+    COMMAND wxmaxima --logtostderr --pipe -f noautosave.cfg --batch unicode.wxm)
 
 add_test(
     NAME config_from_19.11
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --logtostdout --pipe -f config_from_19.11.cfg --batch unicode.wxm)
+    COMMAND wxmaxima --logtostderr --pipe -f config_from_19.11.cfg --batch unicode.wxm)
 
 add_test(
     NAME invalid_commandline_arg
@@ -566,7 +566,7 @@ set_tests_properties(multiple_batch_files2 PROPERTIES WILL_FAIL true)
 add_test(
     NAME multithreadtest
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --logtostdout --pipe --single_process --batch threadtest.wxm threadtest2.wxm)
+    COMMAND wxmaxima --logtostderr --pipe --single_process --batch threadtest.wxm threadtest2.wxm)
 # Maxima sometimes fails if this test is run in parallel,
 # see https://sourceforge.net/p/maxima/bugs/3699/
 set_tests_properties(multithreadtest PROPERTIES RUN_SERIAL true)
