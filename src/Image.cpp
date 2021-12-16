@@ -731,7 +731,6 @@ void Image::InvalidBitmap()
   
   dc.GetTextExtent(error, &width, &height);
   dc.DrawText(error, (m_width - width) / 2, (m_height - height) / 2);
-  m_scaledBitmap = m_scaledBitmap.ConvertToImage();
 }
 
 void Image::LoadImage(const wxBitmap &bitmap)
