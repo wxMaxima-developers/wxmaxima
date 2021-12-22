@@ -768,7 +768,7 @@ void GroupCell::Draw(wxPoint const point)
   Cell::Draw(point);
   Configuration *configuration = (*m_configuration);
   if(NeedsRecalculation((*m_configuration)->GetDefaultFontSize()))
-    wxLogMessage(_("Not recalculated: \"") + ToString()+ "\"");
+    wxLogMessage(wxString::Format(_("Not recalculated: \"%s\"", ToString().utf8_str())));
   if (configuration->ShowBrackets())
     DrawBracket();
 
