@@ -32,7 +32,7 @@ class wxMaxima;
 class wxEvent;
 class wxEvtHandler;
 
-/*! Handles the <ipc> tag from Maxima
+/*! Handles the "<ipc>" tag from Maxima
  *
  * This is used mainly for testing, so that Maxima can send synthetic events to wxMaxima.
  */

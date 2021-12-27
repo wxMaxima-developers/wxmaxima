@@ -22,7 +22,8 @@
 //  SPDX-License-Identifier: GPL-2.0+
 
 /*!
- * \file This file implements the text style system.
+ * \file
+ * This file implements the text style system.
  */
 
 #define wxNO_UNSAFE_WXSTRING_CONV

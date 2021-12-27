@@ -98,7 +98,7 @@ bool EndsWithChar(const wxString &str, char ch);
 
 // String normalization
 
-//! Removes all NULs from the string, converts \r\n to \n, and lone \r to \n.
+//! Removes all NULs from the string, converts "\r\n" to "\n", and lone "\r" to "\n".
 void NormalizeEOLsRemoveNULs(wxString &str);
 
 } // namespace wxm

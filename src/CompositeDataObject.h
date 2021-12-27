@@ -27,7 +27,8 @@
 #include <vector>
 
 /*!
- * \file The declaration of the CompositeDataObject class - a superset
+ * \file
+ * The declaration of the CompositeDataObject class - a superset
  * of the wxDataObjectComposite functionality.
  */
 
