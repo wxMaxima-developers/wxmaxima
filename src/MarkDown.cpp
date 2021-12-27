@@ -155,7 +155,7 @@ wxString MarkDownParser::MarkDown(wxString str)
             indentationTypes.push_back(wxT('>'));
           }
 
-          // End lists if we are at a old indentation level.
+          // End lists if we are at an old indentation level.
           // cppcheck-suppress knownConditionTrueFalse
           while (!indentationLevels.empty() && (indentationLevels.back() > index))
           {
@@ -176,7 +176,7 @@ wxString MarkDownParser::MarkDown(wxString str)
       {
         // Ordinary text.
         //
-        // If we are at a old indentation level we need to end some lists
+        // If we are at an old indentation level we need to end some lists
         // and add a new item if we still are inside a list.
         if (!indentationLevels.empty())
         {

@@ -190,7 +190,7 @@ set(CPACK_PACKAGE_CHECKSUM "SHA512")
 #
 
 # Convert AUTHORS.md to a C++ include, which can be included in wxMaxima.cpp
-file(WRITE "${CMAKE_BINARY_DIR}/contributors.h" "") # create a empty file
+file(WRITE "${CMAKE_BINARY_DIR}/contributors.h" "") # create an empty file
 file(STRINGS AUTHORS.md AUTHORSLINES ENCODING UTF-8)
 list(REMOVE_AT AUTHORSLINES 0 1) # remove main heading line.
     foreach(l ${AUTHORSLINES})

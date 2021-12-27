@@ -84,7 +84,7 @@ public:
   */
   bool LoadBuiltinSymbols();
 
-  //! Manually add a autocompletable symbol to our symbols lists
+  //! Manually add an autocompletable symbol to our symbols lists
   void AddSymbol(wxString fun, autoCompletionType type = command);
   //! Interprets the XML autocompletable symbol list maxima can send us
   void AddSymbols(wxString xml);

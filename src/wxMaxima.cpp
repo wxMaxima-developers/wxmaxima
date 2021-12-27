@@ -1290,7 +1290,7 @@ TextCell *wxMaxima::ConsoleAppend(wxString s, CellType type, const wxString &use
 
   if (m_maxOutputCellsPerCommand > 0)
   {
-    // If we already have output more lines than we are allowed to we a inform the user
+    // If we already have output more lines than we are allowed to, we inform the user
     // about this and return.
     if (m_outputCellsFromCurrentCommand > m_maxOutputCellsPerCommand)
     {
@@ -5095,7 +5095,7 @@ void wxMaxima::ReadStdErr()
 
   if (m_process->IsInputAvailable())
   {
-    wxASSERT_MSG(m_maximaStdout != NULL, wxT("Bug: Trying to read from maxima but don't have a input stream"));
+    wxASSERT_MSG(m_maximaStdout != NULL, wxT("Bug: Trying to read from maxima but don't have an input stream"));
     wxTextInputStream istrm(*m_maximaStdout, wxT('\t'), wxConvAuto(wxFONTENCODING_UTF8));
     wxString o;
     wxChar ch;

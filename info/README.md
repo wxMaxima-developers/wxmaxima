@@ -19,7 +19,7 @@ The translation of the manual
 
 ### Translating the manual to a new language
 
-In order to translate the manual to a entirely new language it is sufficient to 
+In order to translate the manual to an entirely new language it is sufficient to
 equip wxmaxima.md.pot with the translations and to give the resulting file a name in 
 the format `<language>.po`.
 

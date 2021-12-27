@@ -3704,7 +3704,7 @@ void EditorCell::StyleTextTexts()
         else
         {
           // No "begin indenting" marker => Let's see if this is a continuation
-          // of a indentation
+          // of an indentation
           while (!prefixes.empty())
           {
             if (line.StartsWith(prefixes.back()))

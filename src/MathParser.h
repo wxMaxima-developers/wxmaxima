@@ -44,7 +44,7 @@ The header file for the xml cell parser
 
 /*! This class handles parsing the xml representation of a cell tree.
 
-The xml representation of a cell tree can be found in the file contents.xml 
+The xml representation of a cell tree can be found in the file contents.xml
 inside a wxmx file
  */
 class MathParser
@@ -52,7 +52,7 @@ class MathParser
 public:
   /*! The constructor
 
-     \todo I guess we could increase the performance further by putting the 
+     \todo I guess we could increase the performance further by putting the
      most-frequently-used tags to the front of the list.
    */
   explicit MathParser(Configuration **cfg, const wxString &zipfile = {});
@@ -110,10 +110,10 @@ private:
      - One mode skips all whitespace between the beginning of the line and the first
        character if that character was escaped by a & for including it into the XML
        stream. This obviously is a bad idea in our case.
-     - And the other mode inserts bogus whitespace text nodes if there is whitespace 
+     - And the other mode inserts bogus whitespace text nodes if there is whitespace
        between XML tags. This one is more helpful - but only if we provide a function
        that skips these whitespace text nodes.
-    If we encounter a non-whitespace text node where we shouldn't we raise an 
+    If we encounter a non-whitespace text node where we shouldn't we raise an
     assertion that informs the user that we might want a bug report about this.
    */
   wxXmlNode *GetNextTag(wxXmlNode *node);
@@ -123,7 +123,7 @@ private:
 
   /*! Returns node - or (if node is a whitespace-only text node) the next one.
 
-    If we encounter a non-whitespace text node where we shouldn't we raise an 
+    If we encounter a non-whitespace text node where we shouldn't we raise an
     assertion that informs the user that we might want a bug report about this.
    */
   wxXmlNode *SkipWhitespaceNode(wxXmlNode *node);
@@ -142,7 +142,7 @@ private:
   std::unique_ptr<Cell> ParseCellTag(wxXmlNode *node);
   //! Convert a code cell XML tag to a GroupCell
   std::unique_ptr<GroupCell> GroupCellFromCodeTag(wxXmlNode *node);
-  //! Convert a image XML tag to a GroupCell
+  //! Convert an image XML tag to a GroupCell
   std::unique_ptr<GroupCell> GroupCellFromImageTag(wxXmlNode *node);
   //! Convert a title XML tag to a GroupCell
   std::unique_ptr<GroupCell> GroupCellFromTitleTag(wxXmlNode *WXUNUSED(node));
@@ -167,82 +167,82 @@ private:
   */
   //! Parse an editor XML tag to a Cell.
   std::unique_ptr<Cell> ParseEditorTag(wxXmlNode *node);
-  //! Parse an frac XML tag to a Cell. 
+  //! Parse an frac XML tag to a Cell.
   std::unique_ptr<Cell> ParseFracTag(wxXmlNode *node);
   //! Parse a text XML tag to a Cell.
   std::unique_ptr<Cell> ParseText(wxXmlNode *node, TextStyle style = TS_DEFAULT);
   //! Parse a Variable name tag t a Cell.
   std::unique_ptr<Cell> ParseVariableNameTag(wxXmlNode *node){return ParseText(node->GetChildren(), TS_VARIABLE);}
-  //! Parse an Operator name tag to a Cell. 
+  //! Parse an Operator name tag to a Cell.
   std::unique_ptr<Cell> ParseOperatorNameTag(wxXmlNode *node){return ParseText(node->GetChildren(), TS_FUNCTION);}
-  //! Parse a miscellaneous text tag to a Cell. 
+  //! Parse a miscellaneous text tag to a Cell.
   std::unique_ptr<Cell> ParseMiscTextTag(wxXmlNode *node);
-  //! Parse a number tag to a Cell. 
+  //! Parse a number tag to a Cell.
   std::unique_ptr<Cell> ParseNumberTag(wxXmlNode *node){return ParseText(node->GetChildren(), TS_NUMBER);}
-  //! Parse a hidden operator tag to a Cell. 
+  //! Parse a hidden operator tag to a Cell.
   std::unique_ptr<Cell> ParseHiddenOperatorTag(wxXmlNode *node);
-  //! Parse an hidden operator tag to a Cell. 
+  //! Parse an hidden operator tag to a Cell.
   std::unique_ptr<Cell> ParseGreekTag(wxXmlNode *node){return ParseText(node->GetChildren(), TS_GREEK_CONSTANT);}
-  //! Parse a special constant tag to a Cell. 
+  //! Parse a special constant tag to a Cell.
   std::unique_ptr<Cell> ParseSpecialConstantTag(wxXmlNode *node){return ParseText(node->GetChildren(), TS_SPECIAL_CONSTANT);}
-  //! Parse a function name tag to a Cell. 
+  //! Parse a function name tag to a Cell.
   std::unique_ptr<Cell> ParseFunctionNameTag(wxXmlNode *node){return ParseText(node->GetChildren(), TS_FUNCTION);}
   //! Parse a space tag to a Cell.
   std::unique_ptr<Cell> ParseSpaceTag(wxXmlNode *WXUNUSED(node)){return std::make_unique<TextCell>(m_group, m_configuration, wxT(" "));}
-  /*! Parse a math-in-maths tag to a Cell. 
+  /*! Parse a math-in-maths tag to a Cell.
 
     \todo Does such a thing actually exist?
    */
   std::unique_ptr<Cell> ParseMthTag(wxXmlNode *node);
-  //! Parse an output label tag to a Cell. 
+  //! Parse an output label tag to a Cell.
   std::unique_ptr<Cell> ParseOutputLabelTag(wxXmlNode *node);
-  //! Parse a string tag to a Cell. 
+  //! Parse a string tag to a Cell.
   std::unique_ptr<Cell> ParseStringTag(wxXmlNode *node);
-  //! Parse a highlight tag to a Cell. 
+  //! Parse a highlight tag to a Cell.
   std::unique_ptr<Cell> ParseHighlightTag(wxXmlNode *node);
-  //! Parse a image tag to a Cell. 
+  //! Parse an image tag to a Cell.
   std::unique_ptr<Cell> ParseImageTag(wxXmlNode *node);
-  //! Parse a animation tag to a Cell. 
+  //! Parse an animation tag to a Cell.
   std::unique_ptr<Cell> ParseSlideshowTag(wxXmlNode *node);
-  //! Parse a charcode tag to a Cell. 
+  //! Parse a charcode tag to a Cell.
   std::unique_ptr<Cell> ParseCharCode(wxXmlNode *node);
-  //! Parse a superscript tag to a Cell. 
+  //! Parse a superscript tag to a Cell.
   std::unique_ptr<Cell> ParseSupTag(wxXmlNode *node);
-  //! Parse a subscript tag to a Cell. 
+  //! Parse a subscript tag to a Cell.
   std::unique_ptr<Cell> ParseSubTag(wxXmlNode *node);
-  //! Parse a abs tag to a Cell. 
+  //! Parse an abs tag to a Cell.
   std::unique_ptr<Cell> ParseAbsTag(wxXmlNode *node);
-  //! Parse a conjugate cell tag to a Cell. 
+  //! Parse a conjugate cell tag to a Cell.
   std::unique_ptr<Cell> ParseConjugateTag(wxXmlNode *node);
 #if 0
   //! Parse an index tag to a Cell. FIXME this is unused, without implementation.
   std::unique_ptr<Cell> ParseUnderTag(wxXmlNode *node);
 #endif
-  //! Parse an table tag to a Cell. 
+  //! Parse an table tag to a Cell.
   std::unique_ptr<Cell> ParseTableTag(wxXmlNode *node);
-  //! Parse an atcell tag to a Cell. 
+  //! Parse an atcell tag to a Cell.
   std::unique_ptr<Cell> ParseAtTag(wxXmlNode *node);
-  //! Parse a diff tag to a Cell. 
+  //! Parse a diff tag to a Cell.
   std::unique_ptr<Cell> ParseDiffTag(wxXmlNode *node);
-  //! Parse a sum tag to a Cell. 
+  //! Parse a sum tag to a Cell.
   std::unique_ptr<Cell> ParseSumTag(wxXmlNode *node);
-  //! Parse a integral tag to a Cell. 
+  //! Parse an integral tag to a Cell.
   std::unique_ptr<Cell> ParseIntTag(wxXmlNode *node);
-  //! Parse a function tag to a Cell. 
+  //! Parse a function tag to a Cell.
   std::unique_ptr<Cell> ParseFunTag(wxXmlNode *node);
-  //! Parse a square root tag to a Cell. 
+  //! Parse a square root tag to a Cell.
   std::unique_ptr<Cell> ParseSqrtTag(wxXmlNode *node);
-  //! Parse a lim() tag to a Cell. 
+  //! Parse a lim() tag to a Cell.
   std::unique_ptr<Cell> ParseLimitTag(wxXmlNode *node);
-  //! Parse a parenthesis() tag to a Cell. 
+  //! Parse a parenthesis() tag to a Cell.
   std::unique_ptr<Cell> ParseParenTag(wxXmlNode *node);
-  //! Parse a super-and-subscript cell tag to a Cell. 
+  //! Parse a super-and-subscript cell tag to a Cell.
   std::unique_ptr<Cell> ParseSubSupTag(wxXmlNode *node);
-  //! Parse a pre-and-post-super-and-subscript cell tag to a Cell. 
+  //! Parse a pre-and-post-super-and-subscript cell tag to a Cell.
   std::unique_ptr<Cell> ParseMmultiscriptsTag(wxXmlNode *node);
-  //! Parse an Output tag telling that the math is from maxima. 
+  //! Parse an Output tag telling that the math is from maxima.
   std::unique_ptr<Cell> ParseOutputTag(wxXmlNode *node);
-  //! Parse an Matrix cell tag. 
+  //! Parse an Matrix cell tag.
   std::unique_ptr<Cell> ParseMtdTag(wxXmlNode *node);
   // @}
   //! The last user defined label

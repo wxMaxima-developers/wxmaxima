@@ -187,7 +187,7 @@ TipOfTheDay::TipOfTheDay(wxWindow *parent)
     _("You found a bug in wxMaxima? Please report it at https://github.com/wxMaxima-developers/wxmaxima/issues\nA mathematical bug is maybe a bug in Maxima (the backend), which can be reported at https://sourceforge.net/p/maxima/bugs/\nPlease check, before, if the bug was not already reported.")
     );
   m_tips.Add(
-    _("You got a idea for an improvement of wxMaxima? Great! Please submit your idea at https://github.com/wxMaxima-developers/wxmaxima/issues. ")
+    _("You got an idea for an improvement of wxMaxima? Great! Please submit your idea at https://github.com/wxMaxima-developers/wxmaxima/issues. ")
     );
   m_tips.Add(
     _("wxMaxima is programmed in C++ using the wxWidgets toolkit and uses CMake as build system. You can contribute to wxMaxima, if you have some knowledge with this environment.")

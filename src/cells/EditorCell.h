@@ -525,7 +525,7 @@ private:
     //! If IsStyleSet() is true this function returns the style of this text
     //! portion
     TextStyle GetStyle() const { return m_style; }
-    // Has a individual text style been set for this text portion?
+    // Has an individual text style been set for this text portion?
     bool IsStyleSet() const { return m_styleThisText; }
   };
 

@@ -1932,7 +1932,7 @@ void Worksheet::OnMouseLeftInGcCell(wxMouseEvent &WXUNUSED(event), GroupCell *cl
     return;
   }
 
-  // The user clicked at a ordinary cell
+  // The user clicked at an ordinary cell
   if ((clickedInGC->GetPrompt()) && (clickedInGC->GetPrompt()->GetRect()).Contains(m_down))
   {
     m_cellPointers.m_selectionStart = m_cellPointers.m_selectionEnd = clickedInGC->GetPrompt();
@@ -7225,7 +7225,7 @@ bool Worksheet::TreeUndo(UndoActions *sourcelist, UndoActions *undoForThisOperat
   return true;
 }
 
-/*! Mark a editor cell as the active one
+/*! Mark an editor cell as the active one
 
  */
 void Worksheet::SetActiveCell(EditorCell *cell, bool callRefresh)
@@ -7443,7 +7443,7 @@ void Worksheet::PasteFromClipboard()
 
     {
       // Opening assert dialogues in this context might cause gtk to end up in
-      // a endless wait before the dialogue's buttons can be displayed.
+      // an endless wait before the dialogue's buttons can be displayed.
       SuppressErrorDialogs suppressor;
 
       if (wxTheClipboard->IsSupported(m_wxmFormat))
@@ -8260,7 +8260,7 @@ bool Worksheet::Autocomplete(AutoComplete::autoCompletionType type)
     if (inEzUnit)
       type = AutoComplete::unit;
 
-    // If we don't have an unit to complete we perhaps want to autocomplete a package name
+    // If we don't have a unit to complete we perhaps want to autocomplete a package name
     // or the name of a demo file
     if(!inEzUnit)
     {

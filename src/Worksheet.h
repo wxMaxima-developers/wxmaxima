@@ -213,7 +213,7 @@ private:
   /*! \defgroup UndoBufferFill Undo methods for cell additions/deletions:
 
     Each EditorCell has its own private undo buffer Additionally wxMaxima
-    maintains a undo buffer for worksheet changes. It works the following way:
+    maintains an undo buffer for worksheet changes. It works the following way:
 
      - Cells normally aren't deleted. They are moved into an undo buffer instead.
      - The undo buffer is also notified when Cells that are added
@@ -546,7 +546,7 @@ private:
   //! Finds the end of the current chapter/section/...
   GroupCell *EndOfSectioningUnit(GroupCell *start);
 
-  //! Is called if a action from the autocomplete menu is selected
+  //! Is called if an action from the autocomplete menu is selected
   void OnComplete(wxCommandEvent &event);
 
   /*! Is called if wxWidgets wants to erase the worksheet's background
@@ -1430,7 +1430,7 @@ public:
     Why we need to override this signal is that on Linux and at least on
     wxGTK and wxWidgets 3.0+3.1 each single scroll step generates its own
     thumbtrack event that forces an immediate scroll of the worksheet 
-    including an immediate redraw. It therefore is possible for an user 
+    including an immediate redraw. It therefore is possible for a user
     to queue hundreds of thumbtrack events per seconds while wxMaxima's 
     framerate (and event processing speed) might be considerably lower 
     than that.
