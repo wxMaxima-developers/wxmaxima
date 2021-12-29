@@ -1290,7 +1290,7 @@ TextCell *wxMaxima::ConsoleAppend(wxString s, CellType type, const wxString &use
 
   if (m_maxOutputCellsPerCommand > 0)
   {
-    // If we already have output more lines than we are allowed to, we inform the user
+    // If we already have output more lines than we are allowed, we inform the user
     // about this and return.
     if (m_outputCellsFromCurrentCommand > m_maxOutputCellsPerCommand)
     {
