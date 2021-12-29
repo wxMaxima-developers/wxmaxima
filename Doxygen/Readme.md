@@ -57,7 +57,9 @@ How to get documentation for the code?
  - Configure wxMaxima using `cmake` (see Compiling.md) and build
    the Doxygen sources using
 
-   `cmake --build . -- doxygen`
+   `cmake --build . -- Doxygen`
+
+   (or `make Doxygen` if you use `make` as build tool).
 
    afterwards.
 
