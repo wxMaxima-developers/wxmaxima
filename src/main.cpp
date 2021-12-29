@@ -45,7 +45,7 @@
 #include "wxMaxima.h"
 #include "ConfigDialogue.h"
 #include "Version.h"
-#ifdef ADD_PRIVATE_FONTS
+#ifdef WXM_INCLUDE_FONTS
 #include "addprivatefonts.h"
 #endif
 
@@ -299,7 +299,7 @@ bool MyApp::OnInit()
 
   wxFileSystem::AddHandler(new wxZipFSHandler);
 
-#ifdef ADD_PRIVATE_FONTS
+#ifdef WXM_INCLUDE_FONTS
   addprivatefonts();
 #endif
 

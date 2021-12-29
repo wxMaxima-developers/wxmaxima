@@ -36,9 +36,7 @@ option(WXM_INCLUDE_FONTS
     "Include additional fonts." ON)
 
 if(WXM_INCLUDE_FONTS)
-    add_definitions("-DADD_PRIVATE_FONTS=1")
-else()
-    add_definitions("-DADD_PRIVATE_FONTS=0")
+    add_definitions("-DWXM_INCLUDE_FONTS")
 endif()
 
 if(DEFINED MACOSX_VERSION_MIN)
