@@ -208,7 +208,7 @@ bool MyApp::OnInit()
     {
       {wxCMD_LINE_SWITCH, "v", "version", "Output the version info", wxCMD_LINE_VAL_NONE , 0},
       /* Usually wxCMD_LINE_OPTION_HELP is used with the following option, but that displays a message
-       * using its own window and we want the message on the command line. If a user enters a command
+       * using its own window and we want the message on the command line.  If a user enters a command
        * line option, he expects probably an answer just on the command line... */
       {wxCMD_LINE_SWITCH, "h", "help", "show this help message", wxCMD_LINE_VAL_NONE, 0},
       {wxCMD_LINE_OPTION, "o", "open", "open a file", wxCMD_LINE_VAL_STRING , 0},
