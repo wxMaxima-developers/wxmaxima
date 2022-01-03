@@ -1748,41 +1748,41 @@ wxWindow *wxMaximaFrame::CreateMathPane()
   int border = 0;
 
   grid->Add(new wxButton(panel, button_ratsimp, _("Simplify"),
-                         wxDefaultPosition, wxDefaultSize, wxBORDER_NONE), 0, style, border);
+                         wxDefaultPosition, wxDefaultSize), 0, style, border);
   grid->Add(new wxButton(panel, button_radcan, _("Simplify (r)"),
-                         wxDefaultPosition, wxDefaultSize, wxBORDER_NONE), 0, style, border);
+                         wxDefaultPosition, wxDefaultSize), 0, style, border);
   grid->Add(new wxButton(panel, button_factor, _("Factor"),
-                         wxDefaultPosition, wxDefaultSize, wxBORDER_NONE), 0, style, border);
+                         wxDefaultPosition, wxDefaultSize), 0, style, border);
   grid->Add(new wxButton(panel, button_expand, _("Expand"),
-                         wxDefaultPosition, wxDefaultSize, wxBORDER_NONE), 0, style, border);
+                         wxDefaultPosition, wxDefaultSize), 0, style, border);
   grid->Add(new wxButton(panel, button_rectform, _("Rectform"),
-                         wxDefaultPosition, wxDefaultSize, wxBORDER_NONE), 0, style, border);
+                         wxDefaultPosition, wxDefaultSize), 0, style, border);
   grid->Add(new wxButton(panel, button_subst, _("Subst..."),
-                         wxDefaultPosition, wxDefaultSize, wxBORDER_NONE), 0, style, border);
+                         wxDefaultPosition, wxDefaultSize), 0, style, border);
   grid->Add(new wxButton(panel, button_trigrat, _("Canonical (tr)"),
-                         wxDefaultPosition, wxDefaultSize, wxBORDER_NONE), 0, style, border);
+                         wxDefaultPosition, wxDefaultSize), 0, style, border);
   grid->Add(new wxButton(panel, button_trigsimp, _("Simplify (tr)"),
-                         wxDefaultPosition, wxDefaultSize, wxBORDER_NONE), 0, style, border);
+                         wxDefaultPosition, wxDefaultSize), 0, style, border);
   grid->Add(new wxButton(panel, button_trigexpand, _("Expand (tr)"),
-                         wxDefaultPosition, wxDefaultSize, wxBORDER_NONE), 0, style, border);
+                         wxDefaultPosition, wxDefaultSize), 0, style, border);
   grid->Add(new wxButton(panel, button_trigreduce, _("Reduce (tr)"),
-                         wxDefaultPosition, wxDefaultSize, wxBORDER_NONE), 0, style, border);
+                         wxDefaultPosition, wxDefaultSize), 0, style, border);
   grid->Add(new wxButton(panel, button_solve, _("Solve..."),
-                         wxDefaultPosition, wxDefaultSize, wxBORDER_NONE), 0, style, border);
+                         wxDefaultPosition, wxDefaultSize), 0, style, border);
   grid->Add(new wxButton(panel, button_solve_ode, _("Solve ODE..."),
-                         wxDefaultPosition, wxDefaultSize, wxBORDER_NONE), 0, style, border);
+                         wxDefaultPosition, wxDefaultSize), 0, style, border);
   grid->Add(new wxButton(panel, button_diff, _("Diff..."),
-                         wxDefaultPosition, wxDefaultSize, wxBORDER_NONE), 0, style, border);
+                         wxDefaultPosition, wxDefaultSize), 0, style, border);
   grid->Add(new wxButton(panel, button_integrate, _("Integrate..."),
-                         wxDefaultPosition, wxDefaultSize, wxBORDER_NONE), 0, style, border);
+                         wxDefaultPosition, wxDefaultSize), 0, style, border);
   grid->Add(new wxButton(panel, button_limit, _("Limit..."),
-                         wxDefaultPosition, wxDefaultSize, wxBORDER_NONE), 0, style, border);
+                         wxDefaultPosition, wxDefaultSize), 0, style, border);
   grid->Add(new wxButton(panel, button_taylor, _("Series..."),
-                         wxDefaultPosition, wxDefaultSize, wxBORDER_NONE), 0, style, border);
+                         wxDefaultPosition, wxDefaultSize), 0, style, border);
   grid->Add(new wxButton(panel, button_plot2, _("Plot 2D..."),
-                         wxDefaultPosition, wxDefaultSize, wxBORDER_NONE), 0, style, border);
+                         wxDefaultPosition, wxDefaultSize), 0, style, border);
   grid->Add(new wxButton(panel, button_plot3, _("Plot 3D..."),
-                         wxDefaultPosition, wxDefaultSize, wxBORDER_NONE), 0, style, border);
+                         wxDefaultPosition, wxDefaultSize), 0, style, border);
 
   panel->SetSizer(grid);
   panel->FitInside();
@@ -1805,51 +1805,51 @@ wxWindow *wxMaximaFrame::CreateStatPane()
   int sizerBorder = 2;
 
   grid1->Add(new wxButton(panel, menu_stats_mean, _("Mean..."),
-                         wxDefaultPosition, wxDefaultSize, wxBORDER_NONE), 0, style, border);
+                         wxDefaultPosition, wxDefaultSize), 0, style, border);
   grid1->Add(new wxButton(panel, menu_stats_median, _("Median..."),
-                         wxDefaultPosition, wxDefaultSize, wxBORDER_NONE), 0, style, border);
+                         wxDefaultPosition, wxDefaultSize), 0, style, border);
   grid1->Add(new wxButton(panel, menu_stats_var, _("Variance..."),
-                         wxDefaultPosition, wxDefaultSize, wxBORDER_NONE), 0, style, border);
+                         wxDefaultPosition, wxDefaultSize), 0, style, border);
   grid1->Add(new wxButton(panel, menu_stats_dev, _("Deviation..."),
-                         wxDefaultPosition, wxDefaultSize, wxBORDER_NONE), 0, style, border);
+                         wxDefaultPosition, wxDefaultSize), 0, style, border);
 
   box->Add(grid1, 0, style, sizerBorder);
 
   box1->Add(new wxButton(panel, menu_stats_tt1, _("Mean Test..."),
-                         wxDefaultPosition, wxDefaultSize, wxBORDER_NONE), 0, style, border);
+                         wxDefaultPosition, wxDefaultSize), 0, style, border);
   box1->Add(new wxButton(panel, menu_stats_tt2, _("Mean Difference Test..."),
-                         wxDefaultPosition, wxDefaultSize, wxBORDER_NONE), 0, style, border);
+                         wxDefaultPosition, wxDefaultSize), 0, style, border);
   box1->Add(new wxButton(panel, menu_stats_tnorm, _("Normality Test..."),
-                         wxDefaultPosition, wxDefaultSize, wxBORDER_NONE), 0, style, border);
+                         wxDefaultPosition, wxDefaultSize), 0, style, border);
   box1->Add(new wxButton(panel, menu_stats_linreg, _("Linear Regression..."),
-                         wxDefaultPosition, wxDefaultSize, wxBORDER_NONE), 0, style, border);
+                         wxDefaultPosition, wxDefaultSize), 0, style, border);
   box1->Add(new wxButton(panel, menu_stats_lsquares, _("Least Squares Fit..."),
-                         wxDefaultPosition, wxDefaultSize, wxBORDER_NONE), 0, style, border);
+                         wxDefaultPosition, wxDefaultSize), 0, style, border);
 
   box->Add(box1, 0, style, sizerBorder);
 
   grid2->Add(new wxButton(panel, menu_stats_histogram, _("Histogram..."),
-                         wxDefaultPosition, wxDefaultSize, wxBORDER_NONE), 0, style, border);
+                         wxDefaultPosition, wxDefaultSize), 0, style, border);
   grid2->Add(new wxButton(panel, menu_stats_scatterplot, _("Scatterplot..."),
-                         wxDefaultPosition, wxDefaultSize, wxBORDER_NONE), 0, style, border);
+                         wxDefaultPosition, wxDefaultSize), 0, style, border);
   grid2->Add(new wxButton(panel, menu_stats_barsplot, _("Barsplot..."),
-                         wxDefaultPosition, wxDefaultSize, wxBORDER_NONE), 0, style, border);
+                         wxDefaultPosition, wxDefaultSize), 0, style, border);
   grid2->Add(new wxButton(panel, menu_stats_piechart, _("Piechart..."),
-                         wxDefaultPosition, wxDefaultSize, wxBORDER_NONE), 0, style, border);
+                         wxDefaultPosition, wxDefaultSize), 0, style, border);
   grid2->Add(new wxButton(panel, menu_stats_boxplot, _("Boxplot..."),
-                         wxDefaultPosition, wxDefaultSize, wxBORDER_NONE), 0, style, border);
+                         wxDefaultPosition, wxDefaultSize), 0, style, border);
 
   box->Add(grid2, 0, style, sizerBorder);
 
   grid3->Add(new wxButton(panel, menu_stats_readm, _("Read Matrix..."),
-                         wxDefaultPosition, wxDefaultSize, wxBORDER_NONE), 0, style, border);
+                         wxDefaultPosition, wxDefaultSize), 0, style, border);
   grid3->Add(new wxButton(panel, menu_stats_enterm, _("Enter Matrix..."),
-                         wxDefaultPosition, wxDefaultSize, wxBORDER_NONE), 0, style, border);
+                         wxDefaultPosition, wxDefaultSize), 0, style, border);
 
   box->Add(grid3, 0, style, sizerBorder);
 
   box3->Add(new wxButton(panel, menu_stats_subsample, _("Subsample..."),
-                         wxDefaultPosition, wxDefaultSize, wxBORDER_NONE), 0, style, border);
+                         wxDefaultPosition, wxDefaultSize), 0, style, border);
 
   box->Add(box3, 0, style, sizerBorder);
 
@@ -2174,23 +2174,23 @@ wxWindow *wxMaximaFrame::CreateFormatPane()
   int border = 0;
 
   grid->Add(new wxButton(panel, menu_format_text, _("Text"),
-                         wxDefaultPosition, wxDefaultSize, wxBORDER_NONE), 0, style, border);
+                         wxDefaultPosition, wxDefaultSize), 0, style, border);
   grid->Add(new wxButton(panel, menu_format_title, _("Title"),
-                         wxDefaultPosition, wxDefaultSize, wxBORDER_NONE), 0, style, border);
+                         wxDefaultPosition, wxDefaultSize), 0, style, border);
   grid->Add(new wxButton(panel, menu_format_section, _("Section"),
-                         wxDefaultPosition, wxDefaultSize, wxBORDER_NONE), 0, style, border);
+                         wxDefaultPosition, wxDefaultSize), 0, style, border);
   grid->Add(new wxButton(panel, menu_format_subsection, _("Subsection"),
-                         wxDefaultPosition, wxDefaultSize, wxBORDER_NONE), 0, style, border);
+                         wxDefaultPosition, wxDefaultSize), 0, style, border);
   grid->Add(new wxButton(panel, menu_format_subsubsection, _("Subsubsection"),
-                         wxDefaultPosition, wxDefaultSize, wxBORDER_NONE), 0, style, border);
+                         wxDefaultPosition, wxDefaultSize), 0, style, border);
   grid->Add(new wxButton(panel, menu_format_heading5, _("Heading 5"),
-                         wxDefaultPosition, wxDefaultSize, wxBORDER_NONE), 0, style, border);
+                         wxDefaultPosition, wxDefaultSize), 0, style, border);
   grid->Add(new wxButton(panel, menu_format_heading6, _("Heading 6"),
-                         wxDefaultPosition, wxDefaultSize, wxBORDER_NONE), 0, style, border);
+                         wxDefaultPosition, wxDefaultSize), 0, style, border);
   grid->Add(new wxButton(panel, menu_format_image, _("Image"),
-                         wxDefaultPosition, wxDefaultSize, wxBORDER_NONE), 0, style, border);
+                         wxDefaultPosition, wxDefaultSize), 0, style, border);
   grid->Add(new wxButton(panel, menu_format_pagebreak, _("Pagebreak"),
-                         wxDefaultPosition, wxDefaultSize, wxBORDER_NONE), 0, style, border);
+                         wxDefaultPosition, wxDefaultSize), 0, style, border);
 
   panel->SetSizer(grid);
   panel->FitInside();
@@ -2264,56 +2264,56 @@ wxMaximaFrame::DrawPane::DrawPane(wxWindow *parent, int id) : wxScrolled<wxPanel
   int border = 0;
 
   m_grid->Add(m_draw_setup2d = new wxButton(this, menu_draw_2d, _("2D"),
-                                          wxDefaultPosition, wxDefaultSize, wxBORDER_NONE),
+                                          wxDefaultPosition, wxDefaultSize),
             0, style, border);
   m_draw_setup2d->SetToolTip(_("Setup a 2D plot"));
   m_grid->Add(m_draw_setup3d = new wxButton(this, menu_draw_3d, _("3D"),
-                                          wxDefaultPosition, wxDefaultSize, wxBORDER_NONE),
+                                          wxDefaultPosition, wxDefaultSize),
                 0, style, border);
   m_draw_setup3d->SetToolTip(_("Setup a 3D plot"));
   m_grid->Add(m_draw_explicit = new wxButton(this, menu_draw_explicit, _("Expression"),
-                                           wxDefaultPosition, wxDefaultSize, wxBORDER_NONE),
+                                           wxDefaultPosition, wxDefaultSize),
             0, style, border);
   m_draw_explicit->SetToolTip(_("The standard plot command: Plot an equation as a curve"));
   m_grid->Add(m_draw_implicit = new wxButton(this, menu_draw_implicit, _("Implicit Plot"),
-                                           wxDefaultPosition, wxDefaultSize, wxBORDER_NONE),
+                                           wxDefaultPosition, wxDefaultSize),
             0, style, border);
   m_grid->Add(m_draw_parametric = new wxButton(this, menu_draw_parametric, _("Parametric Plot"),
-                                             wxDefaultPosition, wxDefaultSize, wxBORDER_NONE),
+                                             wxDefaultPosition, wxDefaultSize),
             0, style, border);
   m_grid->Add(m_draw_points = new wxButton(this, menu_draw_points, _("Points"),
-                                         wxDefaultPosition, wxDefaultSize, wxBORDER_NONE),
+                                         wxDefaultPosition, wxDefaultSize),
             0, style, border);
   m_grid->Add(m_draw_title = new wxButton(this, menu_draw_title, _("Diagram title"),
-                                        wxDefaultPosition, wxDefaultSize, wxBORDER_NONE),
+                                        wxDefaultPosition, wxDefaultSize),
             0, style, border);
   m_draw_title->SetToolTip(_("The diagram title"));
   m_grid->Add(m_draw_axis = new wxButton(this, menu_draw_axis, _("Axis"),wxDefaultPosition,
-                                       wxDefaultSize, wxBORDER_NONE),
+                                       wxDefaultSize),
             0, style, border);
   m_draw_axis->SetToolTip(_("Setup the axis"));
   m_grid->Add(m_draw_contour = new wxButton(this, menu_draw_contour, _("Contour"),
-                                          wxDefaultPosition, wxDefaultSize, wxBORDER_NONE),
+                                          wxDefaultPosition, wxDefaultSize),
             0, style, border);
   m_grid->Add(m_draw_key = new wxButton(this, menu_draw_key, _("Plot name"),
-                                      wxDefaultPosition, wxDefaultSize, wxBORDER_NONE),
+                                      wxDefaultPosition, wxDefaultSize),
             0, style, border);
   m_draw_key->SetToolTip(_("The next plot's title"));
   m_grid->Add(m_draw_fgcolor = new wxButton(this, menu_draw_fgcolor, _("Line color"),
-                                          wxDefaultPosition, wxDefaultSize, wxBORDER_NONE),
+                                          wxDefaultPosition, wxDefaultSize),
             0, style, border);
   m_draw_fgcolor->SetToolTip(_("The color of the next line to draw"));
   m_grid->Add(m_draw_fillcolor = new wxButton(this, menu_draw_fillcolor, _("Fill color"),
-                                            wxDefaultPosition, wxDefaultSize, wxBORDER_NONE),
+                                            wxDefaultPosition, wxDefaultSize),
             0, style, border);
   m_draw_fillcolor->SetToolTip(_("The fill color for the next objects"));
   m_grid->Add(m_draw_grid = new wxButton(this, menu_draw_grid, _("Grid"),wxDefaultPosition,
-                                       wxDefaultSize, wxBORDER_NONE),
+                                       wxDefaultSize),
             0, style, border);
   m_draw_grid->SetToolTip(_("The grid in the background of the diagram"));
   m_draw_contour->SetToolTip(_("Contour lines for 3d plots"));
   m_grid->Add(m_draw_accuracy = new wxButton(this, menu_draw_accuracy, _("Accuracy"),
-                                           wxDefaultPosition, wxDefaultSize, wxBORDER_NONE),
+                                           wxDefaultPosition, wxDefaultSize),
             0, style, border);
   m_draw_accuracy->SetToolTip(_("The accuracy versus speed tradeoff"));
   Connect(wxEVT_SIZE, wxSizeEventHandler(wxMaximaFrame::DrawPane::OnSize),NULL,this);
