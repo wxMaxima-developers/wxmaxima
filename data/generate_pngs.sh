@@ -7,7 +7,7 @@
 /* SVG images are converted to PNG (using inkscape) and then converted to C using xxd   */
 /* This file is part of wxMaxima.                                                       */
 
-/* Copyright (C) 2020 wxMaxima Team (https://wxMaxima-developers.github.io/wxmaxima/)   */
+/* Copyright (C) 2022 wxMaxima Team (https://wxMaxima-developers.github.io/wxmaxima/)   */
 
 /* This program is free software; you can redistribute it and/or modify                 */
 /* it under the terms of the GNU General Public License as published by                 */

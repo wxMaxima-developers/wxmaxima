@@ -4,7 +4,7 @@
 //            (C) 2008-2009 Ziga Lenarcic <zigalenarcic@users.sourceforge.net>
 //            (C) 2011-2011 cw.ahbong <cw.ahbong@gmail.com>
 //            (C) 2012-2013 Doug Ilijev <doug.ilijev@gmail.com>
-//            (C) 2014-2021 Gunter Königsmann <wxMaxima@physikbuch.de>
+//            (C) 2014-2022 Gunter Königsmann <wxMaxima@physikbuch.de>
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -8318,7 +8318,7 @@ void wxMaxima::HelpMenu(wxCommandEvent &event)
       info.SetDescription(description);
       info.SetName(_("wxMaxima"));
       info.SetVersion(wxT(GITVERSION));
-      info.SetCopyright(wxT("(C) 2004-2021 The wxMaxima Team"));
+      info.SetCopyright(wxT("(C) 2004-2022 The wxMaxima Team"));
       info.SetWebSite(wxT("https://wxMaxima-developers.github.io/wxmaxima/"));
 #include "contributors.h"
       wxAboutBox(info);
