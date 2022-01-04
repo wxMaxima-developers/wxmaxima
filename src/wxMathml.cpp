@@ -1,5 +1,5 @@
 #include "wxMathml.h"
-#include "../data/wxMathML.h"
+#include "wxMathML_lisp.h"
 #include <iostream>
 #include <wx/wx.h>
 #include <wx/mstream.h>
@@ -21,7 +21,7 @@ wxString wxMathML::GetCmd()
   // the file has changed.
   // If we have transitioned from using a file to using the internal
   // data we read the info anew, instead, as it might differ from the file.
-  if(m_configuration->WxMathML_UseFile() || m_wxMathML_UseFile)    
+  if(m_configuration->WxMathML_UseFile() || m_wxMathML_UseFile)
     m_maximaCMD = wxEmptyString;
   m_wxMathML_UseFile = m_configuration->WxMathML_UseFile();
 
@@ -29,15 +29,11 @@ wxString wxMathML::GetCmd()
     {
       if(!m_configuration->WxMathML_UseFile())
 	{
-	  // Unzip wxMathml.lisp: We to store it in a .zip format
-	  // in order to avoid a bug in an old ArchLinux C compiler that
-	  // seems to replace long strings by a "\0".
-	  wxMemoryInputStream istream(wxMathML_lisp_gz, wxMathML_lisp_gz_len);
-	  
-	  wxZlibInputStream zstream(istream);
-	  wxTextInputStream textIn(zstream);
+	  wxLogMessage(_("Reading the Lisp part of wxMaxima from the included header file."));
+	  wxMemoryInputStream istream(WXMATHML_LISP, WXMATHML_LISP_SIZE);
+	  wxTextInputStream textIn(istream);
 	  wxString line;
-	  
+
 	  while(!istream.Eof())
 	    {
 	      line = textIn.ReadLine();
@@ -47,19 +43,19 @@ wxString wxMathML::GetCmd()
 	}
       else
 	{
-	  wxLogMessage(wxString::Format(_("Reading the lisp part of wxMaxima from the file %s"),
+	  wxLogMessage(wxString::Format(_("Reading the Lisp part of wxMaxima from the file %s"),
 					m_configuration->WxMathML_Filename().c_str()));
 	  wxFileInputStream input(m_configuration->WxMathML_Filename());
 	  wxTextInputStream textIn(input);
 	  wxString line;
-	  
+
 	  while(!input.Eof())
 	    {
 	      line = textIn.ReadLine();
 	      m_wxMathML += line + wxT("\n");
 	    }
 	}
-	 
+
     }
   wxStringTokenizer lines(m_wxMathML,wxT("\n"));
   while(lines.HasMoreTokens())
