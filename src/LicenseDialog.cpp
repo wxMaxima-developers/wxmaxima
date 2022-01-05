@@ -30,16 +30,15 @@
 #include <wx/txtstrm.h>
 #include <wx/string.h>
 #include "LicenseDialog.h"
-#include "../data/License.h"
+#include "wxm_license.h"
 
 LicenseDialog::LicenseDialog(wxWindow *parent) :
   wxDialog(parent, -1, _("License"), wxDefaultPosition, wxDefaultSize,
            wxRESIZE_BORDER | wxCLOSE_BOX | wxMAXIMIZE_BOX | wxMINIMIZE_BOX)
 {
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
-  wxMemoryInputStream istream(License_gz, License_gz_len);
-  wxZlibInputStream zstream(istream);
-  wxTextInputStream textIn(zstream);
+  wxMemoryInputStream istream(WXM_LICENSE, WXM_LICENSE_SIZE);
+  wxTextInputStream textIn(istream);
   m_movedToStart = false;
   wxString line;
   wxString licenseText;
@@ -48,7 +47,7 @@ LicenseDialog::LicenseDialog(wxWindow *parent) :
                              wxEmptyString, wxDefaultPosition,
                              wxDefaultSize,
                              wxTE_MULTILINE | wxHSCROLL | wxTE_READONLY);
-  
+
   wxFont fnt = m_license->GetFont();
   wxClientDC dc(this );
   dc.SetFont(fnt);
@@ -64,15 +63,15 @@ LicenseDialog::LicenseDialog(wxWindow *parent) :
       m_longestLine = line;
     }
   }
-  
+
   m_license->SetMinSize(wxSize(textWidth + 20*GetContentScaleFactor(),550*GetContentScaleFactor()));
-  m_license->SetValue(licenseText);  
+  m_license->SetValue(licenseText);
   vbox->Add(m_license, wxSizerFlags(10).Expand().Border(wxALL, 5));
   wxBoxSizer *buttonSizer = new wxBoxSizer(wxHORIZONTAL);
-  
+
   wxButton *okButton = new wxButton(this, wxID_OK, _("OK"));
   buttonSizer->Add(okButton, wxSizerFlags());
-  okButton->SetDefault(); 
+  okButton->SetDefault();
   vbox->Add(buttonSizer, wxSizerFlags(0).Right());
 
   SetName("License");
