@@ -3,21 +3,32 @@
 
 include("${CMAKE_SOURCE_DIR}/cmake-bin2h/bin2h.cmake")
 
+
+set(HEADER_FILE "${CMAKE_BINARY_DIR}/wxm_license.h")
+message(STATUS "Embedding GPL.txt into header file ${HEADER_FILE}")
+file(WRITE "${HEADER_FILE}"
+    "/** \\file wxm_license.h\n"
+    " * This header file was generated from GPL.txt.\n"
+    " */\n"
+    "#ifndef WXM_LICENSE_H\n"
+    "#define WXM_LICENSE_H\n")
+get_filename_component(variableName ${HEADER_FILE} NAME)
+bin2h(SOURCE_FILE "${CMAKE_SOURCE_DIR}/GPL.txt" HEADER_FILE ${HEADER_FILE} VARIABLE_NAME "wxm_license" APPEND NULL_TERMINATE)
+file(APPEND "${HEADER_FILE}" "#endif // WXM_LICENSE_H\n")
+
+
 set(HEADER_FILE "${CMAKE_BINARY_DIR}/wxMathML_lisp.h")
 message(STATUS "Embedding wxMathML.lisp into header file ${HEADER_FILE}")
-
 file(WRITE "${HEADER_FILE}"
     "/** \\file wxMathML_lisp.h\n"
     " * This header file was generated from wxMathML.lisp.\n"
     " */\n"
     "#ifndef WXM_WXMATHML_LISP_H\n"
     "#define WXM_WXMATHML_LISP_H\n")
-
 get_filename_component(variableName ${HEADER_FILE} NAME)
-
 bin2h(SOURCE_FILE "${CMAKE_CURRENT_SOURCE_DIR}/wxMathML.lisp" HEADER_FILE ${HEADER_FILE} VARIABLE_NAME "wxMathML_lisp" APPEND NULL_TERMINATE)
-
 file(APPEND "${HEADER_FILE}" "#endif // WXM_WXMATHML_LISP_H\n")
+
 
 set(DATAFILES
         ${CMAKE_CURRENT_SOURCE_DIR}/io.github.wxmaxima_developers.wxMaxima.png
