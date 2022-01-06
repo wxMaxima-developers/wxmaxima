@@ -4230,7 +4230,7 @@ void wxMaxima::ShowMaximaHelp(wxString keyword)
   }
   else
   {
-    wxLogMessage(_(wxT("No offline manual found ⇒ Redirecting to the maxima homepage")));
+    wxLogMessage(_(wxT("No offline manual found => Redirecting to the Maxima homepage")));
     LaunchHelpBrowser("https://maxima.sourceforge.io/docs/manual/maxima_singlepage.html#"+keyword);
   }
 }
