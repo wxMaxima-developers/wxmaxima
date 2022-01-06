@@ -70,6 +70,7 @@
 #include <wx/txtstrm.h>
 #include <wx/filesys.h>
 #include <wx/fs_mem.h>
+#include <wx/filefn.h>
 #include <stdlib.h>
 #include "memory"
 
@@ -6067,20 +6068,15 @@ bool Worksheet::LoadManualAnchorsFromXML(wxXmlDocument xmlDocument, bool checkMa
 
 wxString Worksheet::GetMaximaHelpFile()
 {
-  // Some operating systems don't like "//" or similar in paths.
-  wxFileName helpFile(GetMaximaHelpFile2());
-  if(!helpFile.GetFullPath().IsEmpty())
-    helpFile.MakeAbsolute();
-  return helpFile.GetFullPath();
-}
-
-wxString Worksheet::GetMaximaHelpFile2()
-{
-  wxString searchText = _("Searching for maxima help file %s");
-
+  // One may set the help file location in the wxMaxima configuration (on Unix: ~/.wxMaxima), e.g.
+  // helpFile=/usr/local/share/maxima/5.44.0/doc/html/maxima_singlepage.html
+  // Use that file, if the configration option is used.
   wxString headerFile;
   wxConfig::Get()->Read(wxT("helpFile"), &headerFile);
-
+  if (headerFile.Length() && wxFileExists(headerFile)) {
+    wxLogMessage(_("Using Maxima help file from wxMaxima configuration file (helpFile=...))"));
+    return headerFile;
+  }
 #ifdef __CYGWIN__
   // Cygwin uses /c/something instead of c:/something and passes this path to the
   // web browser - which doesn't support cygwin paths => convert the path to a
@@ -6091,41 +6087,20 @@ wxString Worksheet::GetMaximaHelpFile2()
     headerFile[2]=wxT(':');
   }
 #endif // __CYGWIN__
-
-  if (headerFile.Length() && wxFileExists(headerFile))
-    return headerFile;
-  else
-    headerFile = m_maximaDocDir + wxT("/maxima_singlepage.html");
-  wxLogMessage(wxString::Format(searchText, headerFile.utf8_str()));
-  if(wxFileExists(headerFile))
-    return headerFile;
-
-  headerFile = m_maximaDocDir + wxT("/maxima_singlepage.html");
-  wxLogMessage(wxString::Format(searchText, headerFile.utf8_str()));
-  if(wxFileExists(headerFile))
-    return headerFile;
-
-  headerFile = m_maximaDocDir + wxT("/html/maxima_singlepage.html");
-  wxLogMessage(wxString::Format(searchText, headerFile.utf8_str()));
-  if(wxFileExists(headerFile))
-    return headerFile;
-
-  headerFile = m_maximaDocDir + wxT("/../html/maxima_singlepage.html");
-  wxLogMessage(wxString::Format(searchText, headerFile.utf8_str()));
-  if(wxFileExists(headerFile))
-    return headerFile;
-
-  headerFile = m_configuration->MaximaShareDir() + wxT("/../doc/html/maxima_singlepage.html");
-  wxLogMessage(wxString::Format(searchText, headerFile.utf8_str()));
-  if(wxFileExists(headerFile))
-    return headerFile;
-
-  headerFile = m_configuration->MaximaShareDir() + wxT("/doc/html/maxima_singlepage.html");
-  wxLogMessage(wxString::Format(searchText, headerFile.utf8_str()));
-  if(wxFileExists(headerFile))
-    return headerFile;
-
-  return wxEmptyString;
+  wxPathList helpfilepaths;
+  helpfilepaths.Add(m_maximaDocDir);
+  helpfilepaths.Add(m_maximaDocDir+"/html");
+  helpfilepaths.Add(m_maximaDocDir+"/../html");
+  helpfilepaths.Add(m_configuration->MaximaShareDir() + "/../doc/html");
+  helpfilepaths.Add(m_configuration->MaximaShareDir() + "/doc/html");
+  wxString helpfile_location = helpfilepaths.FindAbsoluteValidPath("maxima_singlepage.html");
+  wxFileName helpfile_cleanup(helpfile_location);
+  helpfile_cleanup.Normalize();
+  if (helpfile_cleanup.IsFileReadable()) {
+    return helpfile_cleanup.GetFullPath();
+  } else {
+    return wxEmptyString;
+  }
 }
 
 wxString Worksheet::UnicodeToMaxima(wxString s)

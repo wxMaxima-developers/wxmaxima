@@ -103,7 +103,7 @@ private:
   int m_newxPosition;
   // The y position to scroll to
   int m_newyPosition;
-  // false = collect scroll events without redrawing for every single one  
+  // false = collect scroll events without redrawing for every single one
   bool m_dontSkipScrollEvent;
   //! Which zoom level were we at when we started the zoom gesture?
   double m_zoomAtGestureStart;
@@ -454,10 +454,7 @@ private:
   //! Handle pinch-to-zoom-events using the gesture interface
   void OnZoom(wxZoomGestureEvent &event);
   #endif
-  
-  /*! Get the name of the help file
-   */
-  wxString GetMaximaHelpFile2();
+
   void OnMouseExit(wxMouseEvent &event);
 
   void OnMouseEnter(wxMouseEvent &event);
@@ -474,7 +471,7 @@ private:
   void OnMouseRightDown(wxMouseEvent &event);
 
   void OnSidebarKey(wxCommandEvent &event);
-  
+
   void OnMouseLeftUp(wxMouseEvent &event);
 
   //! Is called if we loose the mouse connection whilst selecting text/cells
@@ -610,7 +607,6 @@ private:
 
 public:
   wxString GetMaximaHelpFile();
-  //! A helper function for GetHelpFile()
   void SetMaximaVersion(wxString version){m_maximaVersion = version;}
   wxString GetMaximaVersion(){return m_maximaVersion;}
   //! Is this worksheet empty?
@@ -1063,7 +1059,7 @@ public:
   void DivideCell();
 
   void MergeCells();
-  
+
   void SetLastQuestion(const wxString &lastQuestion){m_lastQuestion = lastQuestion;}
   wxString GetLastQuestion(){return m_lastQuestion;}
 
@@ -1210,7 +1206,7 @@ public:
 
   //! Scrolls to the cell given by ScheduleScrollToCell; Is called once we have time to do so.
   void ScrollToCellIfNeeded();
-  
+
   //! Schedules scrolling to a given cell
   void ScheduleScrollToCell(Cell *cell, bool scrollToTop = true)
     {
@@ -1283,7 +1279,7 @@ public:
   void SetDefaultHCaret();
 
   /*! Set the HCaret at the location of the given Cell.
-    
+
     @param where   The cell to place the cursor before.
   */
   void SetHCaret(GroupCell *where); // call with false, when manually refreshing
@@ -1429,10 +1425,10 @@ public:
 
     Why we need to override this signal is that on Linux and at least on
     wxGTK and wxWidgets 3.0+3.1 each single scroll step generates its own
-    thumbtrack event that forces an immediate scroll of the worksheet 
+    thumbtrack event that forces an immediate scroll of the worksheet
     including an immediate redraw. It therefore is possible for a user
-    to queue hundreds of thumbtrack events per seconds while wxMaxima's 
-    framerate (and event processing speed) might be considerably lower 
+    to queue hundreds of thumbtrack events per seconds while wxMaxima's
+    framerate (and event processing speed) might be considerably lower
     than that.
 
     OnThumbtrack is a try to merge all scroll events until the idle task
@@ -1577,13 +1573,13 @@ public:
   {
   public:
     explicit SimpleMathConfigurationIterator(const wxString &ainput);
-    
+
     void operator++();
 
     bool isValid() const
       { return pos < input.length(); }
-    
-    
+
+
     inline wxChar operator*() const
       { return input[pos]; }
 
@@ -1595,7 +1591,7 @@ public:
      */
     const wxString &input;
   };
-    
+
 #if wxUSE_ACCESSIBILITY
   class AccessibilityInfo: public wxAccessible
   {
