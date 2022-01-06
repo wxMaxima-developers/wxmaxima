@@ -51,7 +51,7 @@
 #include "SlideShowCell.h"
 #include "ImgCell.h"
 #include "MarkDown.h"
-#include "../data/manual_anchors.xml.gz.h"
+#include "wxm_manual_anchors_xml.h"
 #include "ConfigDialogue.h"
 
 #include <wx/clipbrd.h>
@@ -106,10 +106,10 @@ Worksheet::Worksheet(wxWindow *parent, int id, Worksheet* &observer, wxPoint pos
   SetMinClientSize(wxSize(100,100));
   // This is somehow needed for wxAutoBufferedPaintDC
   SetBackgroundStyle(wxBG_STYLE_PAINT);
-  GetTargetWindow()->SetBackgroundStyle(wxBG_STYLE_PAINT);  
+  GetTargetWindow()->SetBackgroundStyle(wxBG_STYLE_PAINT);
   m_virtualWidth_Last = -1;
   m_virtualHeight_Last = -1;
- 
+
 #if wxUSE_ACCESSIBILITY
   m_accessibilityInfo = NULL;
 #endif
@@ -129,7 +129,7 @@ Worksheet::Worksheet(wxWindow *parent, int id, Worksheet* &observer, wxPoint pos
   SetBackgroundColour(m_configuration->DefaultBackgroundColor());
   m_configuration->SetBackgroundBrush(
     *(wxTheBrushList->FindOrCreateBrush(m_configuration->DefaultBackgroundColor(),
-                                        wxBRUSHSTYLE_SOLID)));  
+                                        wxBRUSHSTYLE_SOLID)));
   m_redrawStart = NULL;
   m_redrawRequested = false;
   m_autocompletePopup = NULL;
@@ -396,7 +396,7 @@ Worksheet::~Worksheet()
     wxConfig::Get()->Flush();
   if (HasCapture())
     ReleaseMouse();
-  
+
   m_mainToolBar = NULL;
 
   ClearDocument();
@@ -430,7 +430,7 @@ Worksheet::~Worksheet()
 #else
 #define ANTIALIASSING_DC_NOT_CORRECTLY_SCROLLED 1
 #endif
-#endif    
+#endif
 
 #define WORKING_AUTO_BUFFER 1
 
@@ -444,7 +444,7 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
   if(!dc.IsOk())
     return;
 
-  // Some drawing contents 
+  // Some drawing contents
   #ifndef DC_ALREADY_SCROLLED
   PrepareDC(dc);
   #endif
@@ -469,7 +469,7 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
   // It is possible that the redraw starts before the idle task attempts
   // to recalculate the worksheet.
   RecalculateIfNeeded();
-  
+
   // Prepare data
   wxRect rect = GetUpdateRegion().GetBox();
   wxSize sz = GetSize();
@@ -486,7 +486,7 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
   // Don't draw into a window of the size 0.
   if ((sz.x < 1) || (sz.y < 1))
     return;
-  
+
 #ifdef WORKING_AUTO_BUFFER
   m_configuration->SetContext(dc);
 
@@ -533,10 +533,10 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
   {
 #ifdef ANTIALIASSING_DC_NOT_CORRECTLY_SCROLLED
     PrepareDC(antiAliassingDC);
-#endif    
+#endif
     m_configuration->SetAntialiassingDC(antiAliassingDC);
   }
-  
+
 
   SetBackgroundColour(m_configuration->DefaultBackgroundColor());
 
@@ -566,14 +566,14 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
   {
     m_configuration->GetDC()->SetPen(*(wxThePenList->FindOrCreatePen(m_configuration->GetColor(TS_CURSOR), 1, wxPENSTYLE_SOLID)));
     m_configuration->GetDC()->SetBrush(*(wxTheBrushList->FindOrCreateBrush(m_configuration->GetColor(TS_CURSOR), wxBRUSHSTYLE_SOLID)));
-    
+
     wxRect currentGCRect = m_hCaretPosition->GetRect();
     int caretY = ((int) m_configuration->GetGroupSkip()) / 2 + currentGCRect.GetBottom() + 1;
     m_configuration->GetDC()->DrawRectangle(xstart + m_configuration->GetBaseIndent(),
                      caretY - m_configuration->GetCursorWidth() / 2,
                      MC_HCARET_WIDTH, m_configuration->GetCursorWidth());
   }
-  
+
   if ((m_hCaretActive) && (m_hCaretPositionStart == NULL) && (m_hasFocus) && (m_hCaretPosition == NULL))
   {
     if (!m_hCaretBlinkVisible)
@@ -586,19 +586,19 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
       m_configuration->GetDC()->SetPen(*(wxThePenList->FindOrCreatePen(m_configuration->GetColor(TS_CURSOR), m_configuration->Scale_Px(1), wxPENSTYLE_SOLID)));
       m_configuration->GetDC()->SetBrush(*(wxTheBrushList->FindOrCreateBrush(m_configuration->GetColor(TS_CURSOR), wxBRUSHSTYLE_SOLID)));
     }
-    
+
     wxRect cursor = wxRect(xstart + m_configuration->GetCellBracketWidth(),
                            (m_configuration->GetBaseIndent() - m_configuration->GetCursorWidth()) / 2,
                            MC_HCARET_WIDTH, m_configuration->GetCursorWidth());
     m_configuration->GetDC()->DrawRectangle(cursor);
   }
-  
+
   if (GetTree() == NULL)
   {
     m_configuration->SetContext(m_dc);
     return;
   }
-  
+
   //
   // Draw the selection marks
   //
@@ -606,7 +606,7 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
   {
     m_configuration->GetDC()->SetPen(*(wxThePenList->FindOrCreatePen(m_configuration->GetColor(TS_SELECTION), 1, wxPENSTYLE_SOLID)));
     m_configuration->GetDC()->SetBrush(*(wxTheBrushList->FindOrCreateBrush(m_configuration->GetColor(TS_SELECTION))));
-    
+
     // Draw the marker that tells us which output cells are selected -
     // if output cells are selected, that is.
     for (Cell &tmp : OnDrawList(m_cellPointers.m_selectionStart.get()))
@@ -617,7 +617,7 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
         break;
     }
   }
-  
+
   //
   // Draw the cell contents
   //
@@ -628,7 +628,7 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
   // Draw tree
   m_configuration->GetDC()->SetPen(*(wxThePenList->FindOrCreatePen(m_configuration->GetColor(TS_DEFAULT), 1, wxPENSTYLE_SOLID)));
   m_configuration->GetDC()->SetBrush(*(wxTheBrushList->FindOrCreateBrush(m_configuration->GetColor(TS_DEFAULT))));
-  
+
   bool atStart = true;
   for (auto &tmp : OnList(GetTree()))
   {
@@ -640,11 +640,11 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
     atStart = false;
 
     wxRect cellRect = tmp.GetRect();
-    
+
     int width;
     int height;
     GetClientSize(&width, &height);
-    
+
     wxPoint upperLeftScreenCorner;
     CalcScrolledPosition(0, 0,
                          &upperLeftScreenCorner.x, &upperLeftScreenCorner.y);
@@ -663,7 +663,7 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
           tmp.GetOutput()->ClearCacheList();
       }
     }
-    
+
     tmp.SetCurrentPoint(point);
     if (tmp.DrawThisCell(point))
     {
@@ -672,14 +672,14 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
     }
     tmp.Draw(point);
   }
-    
+
   #ifndef WORKING_AUTO_BUFFER
   // Blit the memory image to the window
   dcm.SetDeviceOrigin(0, 0);
   dc.Blit(0, rect.GetTop(), sz.x, rect.GetBottom() - rect.GetTop() + 1, &dcm,
           0, rect.GetTop());
   #endif
-  
+
   m_configuration->SetContext(m_dc);
   m_configuration->UnsetAntialiassingDC();
   m_lastTop = top;
@@ -765,7 +765,7 @@ GroupCell *Worksheet::InsertGroupCells(std::unique_ptr<GroupCell> &&cells, Group
 
   if(worksheetSizeHasChanged)
     UpdateMLast();
-  
+
   RequestRedraw(cells.get());
   AdjustSize();
   return lastOfCellsToInsert;
@@ -860,11 +860,11 @@ void Worksheet::InsertLine(std::unique_ptr<Cell> &&newCell, bool forceNewLine)
 
   newCell->ForceBreakLine(forceNewLine);
   tmp->AppendOutput(std::move(newCell));
-  
+
   if (!tmp->GetNext())
     UpdateMLast();
   OutputChanged();
-  
+
   if (FollowEvaluation())
   {
     ClearSelection();
@@ -958,7 +958,7 @@ bool Worksheet::RecalculateIfNeeded()
   {
     tmp.Recalculate();
   }
-  
+
   m_recalculateStart = {};
   if(m_configuration->AdjustWorksheetSize())
     AdjustSize();
@@ -982,7 +982,7 @@ void Worksheet::Recalculate(Cell *start)
     return;
 
   group->MarkNeedsRecalculate();
-  
+
   if (!m_recalculateStart)
     m_recalculateStart = group;
   else
@@ -1329,24 +1329,24 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
         {
           popupMenu.AppendSeparator();
           popupMenu.Append(popid_maxsizechooser, _("Restrict Maximum size"), wxEmptyString, wxITEM_NORMAL);
-          
+
           Cell *cell = m_cellPointers.m_selectionStart->GetGroup()->GetGroup()->GetLabel();
           wxString imgFile = dynamic_cast<ImgCell *>(cell)->GetOrigImageFile();
-          
-          
+
+
           // Disable the reload menu item if the original file name is unknown.
           if(imgFile.Length() == 0)
           {
-              wxMenuItem* reloadItem = popupMenu.Append(popid_reloadimage, _("Reload Image"), wxEmptyString, wxITEM_NORMAL);              
+              wxMenuItem* reloadItem = popupMenu.Append(popid_reloadimage, _("Reload Image"), wxEmptyString, wxITEM_NORMAL);
               reloadItem->Enable(false);
           }
           else
           {
             popupMenu.Append(popid_reloadimage,
               wxString::Format(_("Reload Image \"%s\""), imgFile),
-              wxEmptyString, wxITEM_NORMAL);              
+              wxEmptyString, wxITEM_NORMAL);
           }
-          
+
           popupMenu.Append(popid_change_image, _("Change Image..."), wxEmptyString, wxITEM_NORMAL);
         }
       }
@@ -1368,7 +1368,7 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
           m_helpfileanchorsThread.reset();
         }
         if(m_helpFileAnchors.find(wordUnderCursor) != m_helpFileAnchors.end())
-        {          
+        {
           popupMenu.Append(wxID_HELP, wxString::Format(_("Help on \"%s\""), wordUnderCursor));
           popupMenu.AppendSeparator();
         }
@@ -1454,7 +1454,7 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
         if((group->ContainsSavedAnswers())
            || (GCContainsCurrentQuestion(group)))
         {
-          popupMenu.AppendSeparator();          
+          popupMenu.AppendSeparator();
           popupMenu.AppendCheckItem(popid_auto_answer, _("Automatically send known answers"),
                                     _("wxMaxma remembers answers from the last run and is able to automatically send them to maxima, if requested"));
           popupMenu.Check(popid_auto_answer, group->AutoAnswer());
@@ -1551,7 +1551,7 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
             popupMenu.AppendSeparator();
           popupMenu.Append(popid_add_watch, _("Add to watchlist"), wxEmptyString, wxITEM_NORMAL);
         }
-        
+
         if (IsSelected(MC_TYPE_DEFAULT) || IsSelected(MC_TYPE_LABEL))
         {
           popupMenu.AppendSeparator();
@@ -1716,12 +1716,12 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
               if(m_helpfileanchorsThread->joinable())
                 m_helpfileanchorsThread->join();
               m_helpfileanchorsThread.reset();
-            } 
-           
+            }
+
             if((m_helpFileAnchors.find(wordUnderCursor) != m_helpFileAnchors.end()))
               popupMenu.Append(wxID_HELP, wxString::Format(_("Help on \"%s\""),
                                                            wordUnderCursor));
-              
+
             HelpFileAnchors::const_iterator it;
             for (it = m_helpFileAnchors.begin(); it != m_helpFileAnchors.end(); ++it)
             {
@@ -1761,7 +1761,7 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
           if((group->ContainsSavedAnswers())
              || (GCContainsCurrentQuestion(group)))
           {
-            popupMenu.AppendSeparator();          
+            popupMenu.AppendSeparator();
             popupMenu.AppendCheckItem(popid_auto_answer, _("Automatically send known answers"),
                                       _("wxMaxma remembers answers from the last run and is able to automatically send them to maxima, if requested"));
             popupMenu.Check(popid_auto_answer, group->AutoAnswer());
@@ -1841,7 +1841,7 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
       wxString toolTip = GetActiveCell()->GetLocalToolTip();
       if((toolTip.IsEmpty()) && (group))
         toolTip = group->GetLocalToolTip();
-      
+
       if (!(toolTip.IsEmpty()))
       {
         if(popupMenu.GetMenuItemCount() > 0)
@@ -1855,7 +1855,7 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
         popupMenu.Check(popid_hide_tooltipMarkerForThisMessage,
                         m_configuration->HideMarkerForThisMessage(toolTip));
       }
-    } 
+    }
   }
 
   if((m_cellPointers.m_selectionStart))
@@ -1864,7 +1864,7 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
     GroupCell *group = m_cellPointers.m_selectionStart->GetGroup();
     if(toolTip.IsEmpty())
       toolTip = group->GetLocalToolTip();
-    
+
     if (!(toolTip.IsEmpty()))
     {
       if(popupMenu.GetMenuItemCount() > 0)
@@ -2437,7 +2437,7 @@ bool Worksheet::Copy(bool astext)
 {
   if (GetActiveCell())
     return GetActiveCell()->CopyToClipboard();
-  
+
   if (!m_cellPointers.m_selectionStart)
     return false;
 
@@ -2568,7 +2568,7 @@ wxString Worksheet::ConvertSelectionToMathML()
 
       // Now the string has a header we want to get rid of again.
       s = s.SubString(s.Find("\n") + 1, s.Length());
-      
+
     }
   }
   Recalculate();
@@ -2898,7 +2898,7 @@ void Worksheet::TreeUndo_CellLeft()
 
   if (!activeCell->GetEditable())
     return;
-  
+
   // We only can undo a text change if the text has actually changed.
   if (
     (m_treeUndo_ActiveCellOldText.Length() > 1) &&
@@ -3022,7 +3022,7 @@ void Worksheet::SetAnswer(const wxString &answer)
       || m_lastQuestion.empty()
       )
     return;
-  
+
   answerCell->SetAnswer(m_lastQuestion, answer);
 }
 
@@ -4116,7 +4116,7 @@ void Worksheet::OnCharNoActive(wxKeyEvent &event)
           OpenHCaret(tx);
       }
   }
-  
+
   RequestRedraw();
 }
 
@@ -4155,7 +4155,7 @@ void Worksheet::OnChar(wxKeyEvent &event)
   // them they need to be passed to it using the event's Skip() function.
   if(event.AltDown())
     event.Skip();
-    
+
   if (m_autocompletePopup)
   {
     // We don't want autocompletion to be able to trigger another autocompletion:
@@ -4214,7 +4214,7 @@ void Worksheet::OnChar(wxKeyEvent &event)
       return;
     }
   }
-  
+
   // If the find dialogue is open we use the ESC key as a hotkey that closes
   // the dialogue. If it isn't it is used as part of the shortcuts for
   // entering unicode characters instead.
@@ -4290,7 +4290,7 @@ void Worksheet::AdjustSize()
     // screen.
     if (m_scrollUnit < 10)
       m_scrollUnit = 10;
-    
+
     SetScrollRate(m_scrollUnit, m_scrollUnit);
   }
   m_configuration->AdjustWorksheetSize(false);
@@ -4689,10 +4689,10 @@ void Worksheet::CalculateReorderedCellIndices(GroupCell *tree, int &cellIndex, s
       wxString input;
       Cell *prompt = tmp.GetPrompt();
       Cell *cell = tmp.GetEditable();
-      
+
       if (cell)
          input = cell->ToString();
-      
+
       if (prompt && cell && input.Len() > 0)
       {
         int outputExpressions = 0;
@@ -4780,7 +4780,7 @@ bool Worksheet::ExportToHTML(const wxString &file)
   wxTextOutputStream css(cssfile);
 
   wxString output;
-  
+
 
   m_configuration->ClipToDrawRegion(false);
   output << wxT("<!DOCTYPE html>\n");
@@ -5504,7 +5504,7 @@ bool Worksheet::ExportToHTML(const wxString &file)
           output << wxT("\n\n<!-- Subsection cell -->\n\n\n");
           output << wxT("<div class=\"subsect\">\n");
           output << wxT("<p>\n");
-          output << 
+          output <<
                   EditorCell::EscapeHTMLChars(tmp.GetPrompt()->ToString() + tmp.GetEditable()->ToString()) + "\n";
           output << wxT("</p>\n");
           output << wxT("</div>\n");
@@ -5623,7 +5623,7 @@ bool Worksheet::ExportToHTML(const wxString &file)
     wxMemoryInputStream istream(ostream);
     doc.Load(istream);
   }
-      
+
   // Replace the raw document by the indented one. If that step worked, that ist.
   if (doc.IsOk())
   {
@@ -5631,19 +5631,19 @@ bool Worksheet::ExportToHTML(const wxString &file)
     doc.Save(ostream);
     output = wxString::FromUTF8((char *) ostream.GetOutputStreamBuffer()->GetBufferStart(),
                                 ostream.GetOutputStreamBuffer()->GetBufferSize());
-    
+
     // Now the string has a header we want to drop again.
     output = output.SubString(output.Find("\n") + 1, output.Length());
   }
   else
     wxLogMessage(_("Bug: HTML output is no valid XML"));
-  
+
   wxFileOutputStream outfile(file);
   if (!outfile.IsOk())
   {
     return false;
   }
-  
+
   wxTextOutputStream outstream(outfile);
   outstream << "<!DOCTYPE html>\n";
   outstream << output;
@@ -5822,10 +5822,9 @@ void Worksheet::LoadSymbols()
 bool Worksheet::LoadBuiltInManualAnchors()
 {
   wxLogMessage(_("Using the built-in list of manual anchors."));
-  wxMemoryInputStream istream(manual_anchors_xml_gz, manual_anchors_xml_gz_len);
-  wxZlibInputStream zstream(istream);
+  wxMemoryInputStream istream(MANUAL_ANCHORS_XML, MANUAL_ANCHORS_XML_SIZE);
   wxXmlDocument xmlDoc;
-  if(!xmlDoc.Load(zstream, wxT("UTF-8")))
+  if(!xmlDoc.Load(istream, wxT("UTF-8")))
     return false;
   if(!LoadManualAnchorsFromXML(xmlDoc, false))
     return false;
@@ -5848,7 +5847,7 @@ bool Worksheet::LoadManualAnchorsFromCache()
     wxRemoveFile(anchorsFile);
     return false;
   }
-  
+
   if(LoadManualAnchorsFromXML(xmlDocument))
   {
     wxLogMessage(wxString::Format(_("Read the entries the maxima manual offers from %s"), Dirstructure::Get()->AnchorsCacheFile().utf8_str()));
@@ -5861,9 +5860,9 @@ bool Worksheet::LoadManualAnchorsFromCache()
 void Worksheet::CompileHelpFileAnchors()
 {
   SuppressErrorDialogs suppressor;
-  
+
   wxString MaximaHelpFile = GetMaximaHelpFile();
-  
+
   if(m_helpFileAnchors.empty() && (!(MaximaHelpFile.IsEmpty())))
   {
     m_helpFileAnchors["wxbarsplot"] = "barsplot";
@@ -5968,7 +5967,7 @@ void Worksheet::SaveManualAnchorsToCache()
     wxEmptyString,
     maximaVersion
     );
-  
+
   Worksheet::HelpFileAnchors::const_iterator it;
   for (it = m_helpFileAnchors.begin();
        it != m_helpFileAnchors.end();
@@ -6007,9 +6006,9 @@ void Worksheet::SaveManualAnchorsToCache()
     _("This file is generated by wxMaxima\n"
       "It caches the list of subjects maxima's manual offers and is automatically\n"
       "overwritten if maxima's version changes or the file cannot be read"));
-  
+
   xmlDoc.AppendToProlog(commentNode);
-  
+
   wxString saveName = Dirstructure::AnchorsCacheFile();
   wxLogMessage(wxString::Format(_("Trying to cache the list of subjects the manual contains in the file %s."),
                                 saveName.utf8_str()));
@@ -6125,7 +6124,7 @@ wxString Worksheet::GetMaximaHelpFile2()
   wxLogMessage(wxString::Format(searchText, headerFile.utf8_str()));
   if(wxFileExists(headerFile))
     return headerFile;
-  
+
   return wxEmptyString;
 }
 
@@ -6138,7 +6137,7 @@ wxString Worksheet::UnicodeToMaxima(wxString s)
   s.Replace(wxT("\uFB29"), "+"); // hebrew alternate plus
 
   wxString retval;
-  
+
   for (auto const &tok : MaximaTokenizer(s, m_configuration).PopTokens())
   {
     auto &tokenString = tok.GetText();
@@ -6238,7 +6237,7 @@ void Worksheet::ExportToMAC(wxTextFile &output, GroupCell *tree, bool wxm, const
 bool Worksheet::ExportToMAC(const wxString &file)
 {
   bool wasSaved = m_saved;
-  
+
   // Show a busy cursor as long as we export or save.
   wxBusyCursor crs;
   // Don't update the worksheet whilst exporting
@@ -6481,7 +6480,7 @@ bool Worksheet::ExportToWXMX(const wxString &file, bool markAsSaved)
           for(unsigned long i = 0; i<variables.GetCount(); i++)
             xmlText += wxString::Format(" variables_%li=\"%s\"", i, Cell::XMLescape(variables[i]).utf8_str());
         }
-  
+
         xmlText << ">\n";
 
         // Reset image counter
@@ -6605,12 +6604,12 @@ bool Worksheet::ExportToWXMX(const wxString &file, bool markAsSaved)
   // If all data is saved now we can overwrite the actual save file.
   // We will try to do so a few times if we suspect a MSW virus scanner or similar
   // temporarily hindering us from doing so.
-  
+
   // The following line is paranoia as closing (and thus writing) the file has
   // succeeded.
   if(!wxFileExists(backupfile))
     return false;
-  
+
   // Now we try to open the file in order to see if saving hasn't failed
   // without returning an error - which can apparently happen on MSW.
   wxString wxmxURI = wxURI(wxT("file://") + backupfile).BuildURI();
@@ -6632,7 +6631,7 @@ bool Worksheet::ExportToWXMX(const wxString &file, bool markAsSaved)
     wxFileSystem fs;
     wxFSFile *fsfile;
     fsfile = fs.OpenFile(filename);
-    
+
     // Did we succeed in opening the file?
     if (!fsfile)
     {
@@ -6641,7 +6640,7 @@ bool Worksheet::ExportToWXMX(const wxString &file, bool markAsSaved)
     }
     wxDELETE(fsfile);
   }
-  
+
   {
     bool done;
     SuppressErrorDialogs suppressor;
@@ -6670,7 +6669,7 @@ bool Worksheet::ExportToWXMX(const wxString &file, bool markAsSaved)
     }
     if (markAsSaved)
       SetSaved(true);
-    
+
     wxLogMessage(_("wxmx file saved"));
   }
   return true;
@@ -7454,7 +7453,7 @@ void Worksheet::PasteFromClipboard()
         if(!inputs.StartsWith(wxT("/* [wxMaxima: ")))
           wxLogMessage(_(".wxm clipboard data with unusual header"));
         else
-          wxLogMessage(_("Read .wxm data from clipboard"));          
+          wxLogMessage(_("Read .wxm data from clipboard"));
       }
       else
       {
@@ -7552,7 +7551,7 @@ void Worksheet::PasteFromClipboard()
       }
     }
   }
-  
+
   // Make sure the clipboard is closed!
   wxTheClipboard->Close();
 
@@ -7617,7 +7616,7 @@ void Worksheet::MergeCells()
 {
   if(!m_cellPointers.m_selectionStart)
     return;
-  
+
   wxString newcell;
 
   for (auto &tmp : OnList(m_cellPointers.m_selectionStart.CastAs<GroupCell*>()))
@@ -7923,12 +7922,12 @@ void Worksheet::OnThumbtrack(wxScrollWinEvent &ev)
      //! Step the slide show.
      auto *tmp = m_cellPointers.m_selectionStart.CastAs<SlideShow*>();
      tmp->AnimationRunning(false);
-  
+
      if (ev.GetEventType() == wxEVT_SCROLLWIN_LINEUP)
        tmp->SetDisplayedIndex((tmp->GetDisplayedIndex() + 1) % tmp->Length());
      else
        tmp->SetDisplayedIndex((tmp->GetDisplayedIndex() - 1) % tmp->Length());
-    
+
      wxRect rect = m_cellPointers.m_selectionStart->GetRect();
      RequestRedraw(rect);
    }
@@ -8125,7 +8124,7 @@ bool Worksheet::ScrollToCaretIfNeeded()
     return false;
 
   m_scrollToCaret = false;
-  
+
   RecalculateIfNeeded();
   if (m_hCaretActive)
   {
