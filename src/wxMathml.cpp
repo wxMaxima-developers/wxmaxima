@@ -3,7 +3,6 @@
 #include <iostream>
 #include <wx/wx.h>
 #include <wx/mstream.h>
-#include <wx/zstream.h>
 #include <wx/txtstrm.h>
 #include <wx/wfstream.h>
 #include <wx/string.h>
