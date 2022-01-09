@@ -1,6 +1,44 @@
-Most files of wxMaxima are under the GPL 2.0+ (see the file GPL.txt).
+wxMaxima - a document based interface for the computer algebra system Maxima.
+Copyright (C) 2022 wxMaxima Team
 
-The exceptions are:
- * A few of the translations and all the bitmaps are Public Domain
- * src/nanoSVG/ uses its own (gpl-compatible) license.
- * data/UnicodeData.* uses the (also gpl-compatible) Unicode License.
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along
+with this program; if not, write to the Free Software Foundation, Inc.,
+51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+The GPL 2.0+ license text: https://www.gnu.org/licenses/gpl-2.0.html
+
+wxMaxima contains also the following free components:
+
+* Some Tango Icons: http://tango.freedesktop.org/Tango_Desktop_Project
+  (Public Domain)
+
+* Some Bootstrap Icons: https://icons.getbootstrap.com/
+  License: https://github.com/twbs/icons/blob/main/LICENSE.md
+
+* Unicode data from https://www.unicode.org
+  License: https://www.unicode.org/license.html
+
+* Nanosvg: https://github.com/memononen/nanosvg
+  License: https://github.com/memononen/nanosvg/blob/master/LICENSE.txt
+
+* ww898 UTF-8/16/32 C++ library: https://github.com/ww898/utf-cpp
+  License: https://github.com/ww898/utf-cpp/blob/master/LICENSE.md
+
+Thanks to all these projects and also to
+* The wxWidgets project (https://wxwidgets.org/)
+  (Cross-Platform GUI Library on which wxMaxima is based)
+* The Maxima project (https://maxima.sourceforge.io/)
+  (The free Computer Algebra System, which does the mathematics in the background)
+
+
+The wxMaxima Team

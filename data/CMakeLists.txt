@@ -5,15 +5,15 @@ include("${CMAKE_SOURCE_DIR}/cmake-bin2h/bin2h.cmake")
 
 
 set(HEADER_FILE "${CMAKE_BINARY_DIR}/wxm_license.h")
-message(STATUS "Embedding GPL.txt into header file ${HEADER_FILE}")
+message(STATUS "Embedding COPYING into header file ${HEADER_FILE}")
 file(WRITE "${HEADER_FILE}"
     "/** \\file wxm_license.h\n"
-    " * This header file was generated from GPL.txt.\n"
+    " * This header file was generated from wxMaxima's COPYING file.\n"
     " */\n"
     "#ifndef WXM_LICENSE_H\n"
     "#define WXM_LICENSE_H\n")
 get_filename_component(variableName ${HEADER_FILE} NAME)
-bin2h(SOURCE_FILE "${CMAKE_SOURCE_DIR}/GPL.txt" HEADER_FILE ${HEADER_FILE} VARIABLE_NAME "wxm_license" APPEND NULL_TERMINATE)
+bin2h(SOURCE_FILE "${CMAKE_SOURCE_DIR}/COPYING" HEADER_FILE ${HEADER_FILE} VARIABLE_NAME "wxm_license" APPEND NULL_TERMINATE)
 file(APPEND "${HEADER_FILE}" "#endif // WXM_LICENSE_H\n")
 
 
