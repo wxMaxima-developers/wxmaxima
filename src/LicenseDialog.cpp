@@ -21,12 +21,11 @@
 //  SPDX-License-Identifier: GPL-2.0+
 
 /*! \file
-  This file contains all the wizards the draw sidepane needs.
+  A dialog that shows the program's license.
  */
 
 #include <wx/textctrl.h>
 #include <wx/mstream.h>
-#include <wx/zstream.h>
 #include <wx/txtstrm.h>
 #include <wx/string.h>
 #include "LicenseDialog.h"
@@ -46,7 +45,7 @@ LicenseDialog::LicenseDialog(wxWindow *parent) :
   m_license = new wxTextCtrl(this, -1,
                              wxEmptyString, wxDefaultPosition,
                              wxDefaultSize,
-                             wxTE_MULTILINE | wxHSCROLL | wxTE_READONLY);
+                             wxTE_MULTILINE | wxHSCROLL | wxTE_READONLY | wxTE_AUTO_URL);
 
   wxFont fnt = m_license->GetFont();
   wxClientDC dc(this );
@@ -113,3 +112,17 @@ void LicenseDialog::OnSize(wxSizeEvent &event)
     m_license->ShowPosition(0);
   }
 }
+
+
+void LicenseDialog::OnTextURLEvent(wxTextUrlEvent& event)
+{
+  if(event.GetMouseEvent().LeftUp())
+  {
+    wxTextCtrl* pTextCtrl = (wxTextCtrl*)event.GetEventObject();
+    wxLaunchDefaultBrowser(pTextCtrl->GetRange(event.GetURLStart(), event.GetURLEnd()));
+  }
+}
+
+BEGIN_EVENT_TABLE(LicenseDialog, wxDialog)
+	EVT_TEXT_URL(wxID_ANY, LicenseDialog::OnTextURLEvent)
+END_EVENT_TABLE()

@@ -34,10 +34,7 @@
 #include <wx/persist/toplevel.h>
 
 
-/*! A dialog that shows the program's license
- */
-
-//! A wizard for parametric plots using draw
+//! A dialog that shows the program's license.
 class LicenseDialog : public wxDialog
 {
 public:
@@ -48,6 +45,8 @@ private:
   wxString m_longestLine;
   wxTextCtrl *m_license;
   bool m_movedToStart;
+  DECLARE_EVENT_TABLE()
+  void OnTextURLEvent(wxTextUrlEvent& event);
 };
 
 #endif // LICENSEDIALOG_H
