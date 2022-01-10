@@ -6,6 +6,8 @@
    Including fonts caused some issues on MacOS. (#1580)
  * Rename command line option --logtostdout to --logtostderr.
    Because the option does print the log messages to STDERR, not STDOUT.
+ * A better heuristics for finding out what to style as 1D maths
+ * An updated french translation from Frédéric Chapoton
 
 # 21.11.0:
  * Allow seeing all files in the file save dialog. (#1557)

@@ -2396,6 +2396,11 @@ bool wxMaxima::ParseNextChunkFromMaxima(wxString &data)
 
 void wxMaxima::ReadMiscText(const wxString &data)
 {
+  auto style = MC_TYPE_TEXT;
+  
+  if(data.StartsWith(wxT("(%")))
+    style = MC_TYPE_ASCIIMATHS;
+
   if (data.IsEmpty())
     return;
 
@@ -2426,8 +2431,6 @@ void wxMaxima::ReadMiscText(const wxString &data)
       whitespace = false;
   }
 
-  bool error   = false;
-  bool warning = false;
   if (
     (mergedWhitespace.Contains(wxT("\n-- an error."))) ||
     (mergedWhitespace.Contains(wxT(":incorrect syntax:"))) ||
@@ -2437,7 +2440,7 @@ void wxMaxima::ReadMiscText(const wxString &data)
     (mergedWhitespace.Contains(wxT("\ndbl:MAXIMA>>"))) ||  // a gcl error message
     (mergedWhitespace.Contains(wxT("\nTo enable the Lisp debugger set *debugger-hook* to nil."))) // a scbl error message
     )
-    error = true;
+    style = MC_TYPE_ERROR;
 
   if ((mergedWhitespace.StartsWith(wxT("Warning:"))) ||
       (mergedWhitespace.StartsWith(wxT("warning:"))) ||
@@ -2448,12 +2451,12 @@ void wxMaxima::ReadMiscText(const wxString &data)
       (mergedWhitespace.Contains(wxT(": Warning:"))) ||
       (mergedWhitespace.Contains(wxT(": warning:")))
     )
-    warning = true;
+    style = MC_TYPE_WARNING;
   else
   {
     // Gnuplot errors differ from gnuplot warnings by not containing a "warning:"
     if (m_gnuplotErrorRegex.Matches(mergedWhitespace))
-      error = true;
+      style = MC_TYPE_ERROR;
   }
 
   // Add all text lines to the console
@@ -2469,23 +2472,9 @@ void wxMaxima::ReadMiscText(const wxString &data)
 
     if (!textline.empty() && textline != wxT("\n"))
     {
-      if (error)
-      {
-        m_worksheet->SetCurrentTextCell(ConsoleAppend(textline, MC_TYPE_ERROR));
+      m_worksheet->SetCurrentTextCell(ConsoleAppend(textline, style));
+      if(style == MC_TYPE_ERROR)
         AbortOnError();
-      }
-      else
-      {
-        if (warning)
-          m_worksheet->SetCurrentTextCell(ConsoleAppend(textline, MC_TYPE_WARNING));
-        else
-        {
-          if(m_worksheet->m_configuration->DisplayMode() != Configuration::display_2dASCII)
-            m_worksheet->SetCurrentTextCell(ConsoleAppend(textline, MC_TYPE_TEXT));
-          else
-            m_worksheet->SetCurrentTextCell(ConsoleAppend(textline, MC_TYPE_ASCIIMATHS));
-        }
-      }
     }
     if (lines.HasMoreTokens())
       m_worksheet->SetCurrentTextCell(nullptr);
