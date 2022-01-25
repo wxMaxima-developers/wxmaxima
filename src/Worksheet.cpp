@@ -124,7 +124,6 @@ Worksheet::Worksheet(wxWindow *parent, int id, Worksheet* &observer, wxPoint pos
   m_pointer_y = -1;
   m_recalculateStart = NULL;
   m_mouseMotionWas = false;
-  m_rectToRefresh = wxRect(-1,-1,-1,-1);
   m_configuration->SetContext(m_dc);
   m_configuration->SetWorkSheet(this);
   m_configuration->ReadConfig();
@@ -340,18 +339,27 @@ bool Worksheet::RedrawIfRequested()
     m_redrawRequested = false;
     m_redrawStart = NULL;
     redrawIssued = true;
-    m_rectToRefresh = wxRect(-1, -1, -1, -1);
+    m_rectToRefresh.Clear();
   }
   else
   {
-    if(m_rectToRefresh.GetLeft()>=0)
+
+    wxRegionIterator region(m_rectToRefresh);
+    while(region)
     {
-      CalcScrolledPosition(m_rectToRefresh.x, m_rectToRefresh.y, &m_rectToRefresh.x, &m_rectToRefresh.y);
-      RefreshRect(m_rectToRefresh);
+      wxRect rect = region.GetRect();
+      
+      // Don't draw rectangles with zero size or height
+      if ((rect.GetWidth() >= 1) && (rect.GetHeight() >= 1))  
+      {
+        CalcScrolledPosition(rect.x, rect.y, &rect.x, &rect.y);
+        RefreshRect(rect);
+      }
       redrawIssued = true;
+      region++;
     }
   }
-  m_rectToRefresh = wxRect(-1, -1, -1, -1);
+  m_rectToRefresh.Clear();
 
   return redrawIssued;
 }
@@ -4464,10 +4472,8 @@ void Worksheet::OnTimer(wxTimerEvent &event)
 
 void Worksheet::RequestRedraw(wxRect rect)
 {
-  if (m_rectToRefresh.IsEmpty())
-    m_rectToRefresh = rect;
-  else
-    m_rectToRefresh = m_rectToRefresh.Union(rect);
+  if(!m_rectToRefresh.Union(rect))
+    m_rectToRefresh = wxRegion(rect);
 }
 
 /***

@@ -113,8 +113,8 @@ private:
   bool m_windowActive;
   //! The configuration storage
   Configuration m_configurationTopInstance;
-  //! The rectangle we need to refresh. -1 as "left" coordinate means: No rectangle
-  wxRect m_rectToRefresh;
+  //! The rectangle we need to refresh.
+  wxRegion m_rectToRefresh;
   /*! The size of a scroll step
 
     Defines the size of a
@@ -754,7 +754,7 @@ public:
 
   //! Is a Redraw requested?
   bool RedrawRequested() const
-  { return m_redrawRequested || m_mouseMotionWas || m_rectToRefresh.GetLeft() != -1; }
+    { return m_redrawRequested || m_mouseMotionWas || m_rectToRefresh.IsEmpty(); }
 
   //! To be called after enabling or disabling the visibility of code cells
   void CodeCellVisibilityChanged();
