@@ -7648,7 +7648,9 @@ void Worksheet::CheckUnixCopy()
       wxASSERT_MSG(!wxTheClipboard->IsOpened(),_("Bug: The clipboard is already opened"));
       if (wxTheClipboard->Open())
       {
-        wxTheClipboard->SetData(new wxTextDataObject(GetString()));
+        wxString data = GetString();
+        wxLogMessage(wxString::Format(_("Middle-click clipboard data: %s"),data.c_str()));
+        wxTheClipboard->SetData(new wxTextDataObject(data));
         wxTheClipboard->Close();
       }
     }
