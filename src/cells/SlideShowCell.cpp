@@ -90,7 +90,9 @@ SlideShow::SlideShow(GroupCell *group, Configuration **config, const wxString &i
 }
 
 SlideShow::SlideShow(GroupCell *group, const SlideShow &cell):
-    SlideShow(group, cell.m_configuration)
+  SlideShow(group, cell.m_configuration),
+  m_displayed(cell.m_displayed)
+
 {
   for(auto i:cell.m_images)
     m_images.push_back(std::make_shared<Image>(*(i.get())));
