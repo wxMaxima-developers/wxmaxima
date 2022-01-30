@@ -24,8 +24,6 @@
   This file declares the class SlideShowCell
 
   SlideShowCell is the Cell type that represents animations.
-
-  \todo m_size should be replaced by m_images.size();
 */
 
 #ifndef SLIDESHOWCELL_H
@@ -64,9 +62,12 @@ public:
   SlideShow(GroupCell *group, Configuration **config, const wxMemoryBuffer &image, const wxString &type);
   SlideShow(GroupCell *group, Configuration **config, const wxString &image, bool remove);
   std::unique_ptr<Cell> Copy(GroupCell *group) const override;
+  void operator=(const SlideShow&) = delete;
+  SlideShow(const SlideShow&) = delete;
 
   const CellTypeInfo &GetInfo() override;
   ~SlideShow();
+  int Length() const {return m_images.size();}
   void LoadImages(wxMemoryBuffer imageData);
   void LoadImages(wxString imageFile);
   //! Set the slideshow's resolution
@@ -89,7 +90,7 @@ public:
     wxCharBuffer m_databuf;
   };
 
-  bool IsOk() const {return (m_size>0) && (m_images[m_displayed]->IsOk());}
+  bool IsOk() const {return (m_images.size()>0) && (m_images[m_displayed]->IsOk());}
   
   const wxString &GetToolTip(wxPoint point) const override;
 
@@ -108,8 +109,6 @@ public:
   { return m_images[n]->GetUnscaledBitmap().ConvertToImage(); }
 
   void SetDisplayedIndex(int ind);
-
-  int Length() const { return m_size; }
 
   //! Exports the image the slideshow currently displays
   wxSize ToImageFile(wxString file);
@@ -175,7 +174,6 @@ private:
     Can contain a frame rate [in Hz] or a -1, which means: Use the default frame rate.
   */
   int m_framerate = -1;
-  int m_size = 0;
   int m_displayed = 0;
   int m_imageBorderWidth = 0;
 
