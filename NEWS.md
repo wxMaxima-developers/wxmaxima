@@ -8,6 +8,8 @@
    Because the option does print the log messages to STDERR, not STDOUT.
  * A better heuristics for finding out what to style as 1D maths
  * An updated french translation from Frédéric Chapoton
+ * Consistent image resolutions
+ * Resolved a crash on exporting sheets with multiple animations
 
 # 21.11.0:
  * Allow seeing all files in the file save dialog. (#1557)
