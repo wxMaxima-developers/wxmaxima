@@ -56,6 +56,7 @@ SlideShow::SlideShow(GroupCell *group, Configuration **config, std::shared_ptr <
     m_timer(m_cellPointers->GetWorksheet(), wxNewId()),
     m_fileSystem(filesystem),
     m_framerate(framerate),
+    m_displayed(0),
     m_imageBorderWidth(Scale_Px(1))
 {
   InitBitFields();
@@ -66,6 +67,7 @@ SlideShow::SlideShow(GroupCell *group, Configuration **config, std::shared_ptr <
 SlideShow::SlideShow(GroupCell *group, Configuration **config, int framerate) :
     Cell(group, config),
     m_timer(m_cellPointers->GetWorksheet(), wxNewId()),
+    m_displayed(0),
     m_framerate(framerate),
     m_imageBorderWidth(Scale_Px(1))
 {
@@ -87,6 +89,26 @@ SlideShow::SlideShow(GroupCell *group, Configuration **config, const wxString &i
   LoadImages(image);
   if (remove)
     wxRemoveFile(image);
+}
+
+SlideShow::SlideShow(GroupCell *group, const SlideShow &cell):
+  SlideShow(group, cell.m_configuration)
+{
+   CopyCommonData(cell);
+
+   m_images.reserve(cell.Length());
+   std::copy(cell.m_images.begin(), cell.m_images.end(), std::back_inserter(m_images));
+
+   m_framerate = cell.m_framerate;
+   m_displayed = cell.m_displayed;
+   m_animationRunning = cell.m_animationRunning;
+   m_drawBoundingBox = cell.m_drawBoundingBox;
+}
+
+SlideShow::~SlideShow()
+{
+  StopTimer();
+  SlideShow::ClearCache();
 }
 
 DEFINE_CELL(SlideShow)
@@ -214,26 +236,6 @@ void SlideShow::LoadImages(wxArrayString images, bool deleteRead)
   m_displayed = 0;
 }
 
-SlideShow::SlideShow(GroupCell *group, const SlideShow &cell):
-  SlideShow(group, cell.m_configuration)
-{
-   CopyCommonData(cell);
-
-   m_images.reserve(cell.Length());
-   std::copy(cell.m_images.begin(), cell.m_images.end(), std::back_inserter(m_images));
-
-   m_framerate = cell.m_framerate;
-   m_displayed = cell.m_displayed;
-   m_animationRunning = cell.m_animationRunning;
-   m_drawBoundingBox = cell.m_drawBoundingBox;
-}
-
-SlideShow::~SlideShow()
-{
-  StopTimer();
-  SlideShow::ClearCache();
-}
-
 void SlideShow::SetDisplayedIndex(int ind)
 {
   m_displayed = ind;
@@ -245,6 +247,12 @@ void SlideShow::SetDisplayedIndex(int ind)
 
 void SlideShow::Recalculate(AFontSize fontsize)
 {
+  if(!IsOk())
+  {
+    m_height = m_width = 10;
+    m_center = 0;
+    return;
+  }
   Configuration *configuration = *m_configuration;
 
   // Assuming a minimum size maybe isn't that bad.
@@ -273,6 +281,8 @@ void SlideShow::Recalculate(AFontSize fontsize)
 void SlideShow::Draw(wxPoint point)
 {
   Cell::Draw(point);
+  if(!IsOk())
+    return;
   // If the animation leaves the screen the timer is stopped automatically.
   if(m_animationRunning)
     ReloadTimer();
@@ -347,6 +357,8 @@ wxString SlideShow::ToTeX() const
 
 wxString SlideShow::ToXML() const
 {
+  if(!IsOk())
+    return wxEmptyString;
   wxString images;
   wxString gnuplotSourceFiles;
   wxString gnuplotDataFiles;
@@ -438,6 +450,9 @@ wxSize SlideShow::ToImageFile(wxString file)
 
 wxString SlideShow::ToRTF() const
 {
+  if(!IsOk())
+    return wxEmptyString;
+  
   // Animations aren't supported by RTF so we just export the currently shown
   // image.
 
@@ -499,6 +514,9 @@ const wxString &SlideShow::GetToolTip(const wxPoint point) const
 
 wxSize SlideShow::ToGif(wxString file)
 {
+  if(!IsOk())
+    return wxSize(1,1);
+  
   // Show a busy cursor as long as we export a .gif file (which might be a lengthy
   // action).
   wxBusyCursor crs;
@@ -545,6 +563,8 @@ SlideShow::GifDataObject::GifDataObject(const wxMemoryOutputStream &str) : wxCus
 
 bool SlideShow::CopyToClipboard() const
 {
+  if(!IsOk())
+    return false;
   wxASSERT_MSG(!wxTheClipboard->IsOpened(),_("Bug: The clipboard is already opened"));
   if (wxTheClipboard->Open())
   {
@@ -555,8 +575,25 @@ bool SlideShow::CopyToClipboard() const
   return false;
 }
 
+bool SlideShow::IsOk() const
+{
+  if (Length() < 1) return false;
+  if (m_displayed >= Length())
+    return false;
+  if (m_displayed < 0)
+    return false;
+  if (!m_images[m_displayed])
+    return false;
+  if (!m_images[m_displayed]->IsOk())
+    return false;
+  return true;
+}
+
 bool SlideShow::CopyAnimationToClipboard()
 {
+  if(!IsOk())
+    return false;
+  
   if (wxTheClipboard->Open())
   {
     // Show a busy cursor as long as we export a .gif file (which might be a lengthy

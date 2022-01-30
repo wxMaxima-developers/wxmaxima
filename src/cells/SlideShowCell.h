@@ -90,7 +90,7 @@ public:
     wxCharBuffer m_databuf;
   };
 
-  bool IsOk() const {return (m_images.size()>0) && (m_images[m_displayed]->IsOk());}
+  bool IsOk() const;
   
   const wxString &GetToolTip(wxPoint point) const override;
 
