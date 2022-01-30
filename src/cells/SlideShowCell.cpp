@@ -219,7 +219,7 @@ SlideShow::SlideShow(GroupCell *group, const SlideShow &cell):
 {
    CopyCommonData(cell);
 
-   m_images.reserve(cell.m_images.size());
+   m_images.reserve(cell.Length());
    std::copy(cell.m_images.begin(), cell.m_images.end(), std::back_inserter(m_images));
 
    m_framerate = cell.m_framerate;
@@ -237,8 +237,8 @@ SlideShow::~SlideShow()
 void SlideShow::SetDisplayedIndex(int ind)
 {
   m_displayed = ind;
-  if(m_displayed > m_images.size())
-    m_displayed = m_images.size() - 1;
+  if(m_displayed > Length())
+    m_displayed = Length() - 1;
   if(m_displayed < 0 )
     m_displayed = 0;
 }
@@ -251,7 +251,7 @@ void SlideShow::Recalculate(AFontSize fontsize)
   m_height = m_width = 10;
 
   // Make the cell as big as the biggest image plus its border.
-  for (int i = 0; i < m_images.size(); i++)
+  for (int i = 0; i < Length(); i++)
   {
     if(m_images[i] != NULL)
     {
@@ -351,7 +351,7 @@ wxString SlideShow::ToXML() const
   wxString gnuplotSourceFiles;
   wxString gnuplotDataFiles;
 
-  for (int i = 0; i < m_images.size(); i++)
+  for (int i = 0; i < Length(); i++)
   {
     wxString basename = m_cellPointers->WXMXGetNewFileName();
     // add the file to memory
@@ -410,7 +410,7 @@ wxString SlideShow::ToXML() const
   wxString flags;
   flags = " gnuplotSources=\"" + gnuplotSourceFiles + "\"";
   flags += " gnuplotData=\"" + gnuplotDataFiles + "\"";
-  if(m_images.size() > 0)
+  if(Length() > 0)
     flags += wxString::Format(wxT(" ppi=\"%i\""), m_images[1]->GetPPI());
   if (HasHardLineBreak())
     flags += wxT(" breakline=\"true\"");
@@ -505,7 +505,7 @@ wxSize SlideShow::ToGif(wxString file)
 
   wxImageArray gifFrames;
 
-  for (int i = 0; i < m_images.size(); i++)
+  for (int i = 0; i < Length(); i++)
   {
     wxImage frame;
     // Reduce the frame to at most 256 colors
@@ -532,7 +532,7 @@ wxSize SlideShow::ToGif(wxString file)
 
 void SlideShow::ClearCache()
 {
-  for (int i = 0; i < m_images.size(); i++)
+  for (int i = 0; i < Length(); i++)
     if(m_images[i] != NULL)
       m_images[i]->ClearCache();
 }
@@ -565,7 +565,7 @@ bool SlideShow::CopyAnimationToClipboard()
     
     wxImageArray gifFrames;
     
-    for (int i = 0; i < m_images.size(); i++)
+    for (int i = 0; i < Length(); i++)
     {
       wxImage frame;
       // Reduce the frame to at most 256 colors
