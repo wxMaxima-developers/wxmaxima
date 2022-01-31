@@ -4385,6 +4385,18 @@ void wxMaxima::OnIdle(wxIdleEvent &event)
     return;
   }
 
+  if(m_worksheet->StatusTextChangedHas())
+  {
+    if(m_worksheet->StatusTextHas())
+    {
+      SetStatusText(m_worksheet->GetStatusText(), 1);
+      event.RequestMore();
+      return;
+    }
+    else
+      m_newRightStatusText = true;
+  }
+
   if((m_newLeftStatusText) || (m_newRightStatusText))
   {
     if(m_newRightStatusText)
