@@ -1,7 +1,7 @@
 # wxMaxima italian po translation
 # Copyright (C) 2005-2020 Marco Ciampa
 # This file is distributed under the same license as the wxMaxima package.
-# Marco Ciampa <ciampix@posteo.net>, 2005-2020.
+# Marco Ciampa <ciampix@posteo.net>, 2005-2022.
 #
 # Convenzioni adottate:
 # combining diacritics = diacritici combinanti
@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: wxMaxima\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-13 12:26+0200\n"
-"PO-Revision-Date: 2020-07-12 00:35+0200\n"
+"PO-Revision-Date: 2022-02-01 10:16+0100\n"
 "Last-Translator: Marco Ciampa <ciampix@posteo.net>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "Language: it\n"
@@ -67,18 +67,16 @@ msgstr ""
 "Non connesso."
 
 #: ../../src/ConfigDialogue.cpp:1210
-#, fuzzy
 msgid "      -X \"--control-stack-size <int>\""
-msgstr "      -X \"--dynamic-space-size <int>\""
+msgstr "      -X \"--control-stack-size <int>\""
 
 #: ../../src/ConfigDialogue.cpp:1209
 msgid "      -X \"--dynamic-space-size <int>\""
 msgstr "      -X \"--dynamic-space-size <int>\""
 
 #: ../../src/ConfigDialogue.cpp:1213
-#, fuzzy
 msgid "      -X '--control-stack-size <int>'"
-msgstr "      -X '--dynamic-space-size <int>'"
+msgstr "      -X '--control-stack-size <int>'"
 
 #: ../../src/ConfigDialogue.cpp:1212
 msgid "      -X '--dynamic-space-size <int>'"
@@ -97,9 +95,8 @@ msgid "\"Copy LaTeX\" adds equation markers"
 msgstr "\"Copia LaTeX\" aggiunge marcatori di equazione"
 
 #: ../../src/ConfigDialogue.cpp:715
-#, fuzzy
 msgid "\"Numpad Enter\" always evaluates cells"
-msgstr "Invio elabora le celle"
+msgstr "\"Invio numerico\" elabora sempre le celle"
 
 #: ../../src/wxMaximaFrame.cpp:2042
 msgid "\"implies\" symbol"
@@ -111,9 +108,8 @@ msgid "%i cells in evaluation queue"
 msgstr "%i celle nella coda di elaborazione"
 
 #: ../../src/wxMaximaFrame.cpp:1245
-#, fuzzy
 msgid "&Algebraic Mode"
-msgstr "&Algebra"
+msgstr "Modalità &algebrica"
 
 #: ../../src/wxMaximaFrame.cpp:1100
 msgid "&Apply to List..."
@@ -284,9 +280,8 @@ msgid "&Numeric"
 msgstr "&Numerico"
 
 #: ../../src/wxMaximaFrame.cpp:1355
-#, fuzzy
 msgid "&Numeric Output"
-msgstr "Mostra/nascondi risultati &numerici"
+msgstr "Risultati &numerici"
 
 #: ../../src/main.cpp:339
 msgid "&Open\tCtrl+O"
@@ -341,9 +336,8 @@ msgid "&Solve..."
 msgstr "Ris&olvi..."
 
 #: ../../src/wxMaximaFrame.cpp:958
-#, fuzzy
 msgid "&Time Display"
-msgstr "Mostra/nascondi la visualizzazione del &tempo"
+msgstr "Mostra &tempo"
 
 #: ../../src/wxMaximaFrame.cpp:1073
 msgid "&Transpose Matrix"
@@ -371,7 +365,7 @@ msgstr ""
 
 #: ../../src/Worksheet.cpp:7434
 msgid ".wxm clipboard data with unusual header"
-msgstr ""
+msgstr ".wxm dati appunti con insolita intestazione"
 
 #: ../../src/wxMaximaFrame.cpp:2032
 msgid "1/2"
@@ -417,17 +411,12 @@ msgstr ""
 "comando dai menu."
 
 #: ../../src/TipOfTheDay.cpp:73
-#, fuzzy
 msgid ""
 "A new document format has been introduced in wxMaxima 0.8.2 that saves not "
 "only your input and text commentaries, but also the outputs of your "
 "calculations. When saving your document, select 'Whole document (*.wxmx)' "
 "format."
-msgstr ""
-"A partire da wxMaxima versione 0.8.2 è stato introdotto un nuovo formato di "
-"documenti che salva non solamente il testo immesso ed i commenti, ma anche i "
-"risultati del calcoli. Quando salva il documento, selezionare \"Documento "
-"XML wxMaxima\" per salvare in questo nuovo formato."
+msgstr "A partire da wxMaxima versione 0.8.2 è stato introdotto un nuovo formato di documenti che salva non solamente il testo immesso ed i commenti, ma anche i risultati del calcoli. Quando si salva il documento, selezionare il formato 'Documento intero (*.wxmx)'."
 
 #: ../../src/TipOfTheDay.cpp:142
 msgid ""
@@ -455,9 +444,8 @@ msgid "A&t Value..."
 msgstr "A&l valore..."
 
 #: ../../src/Configuration.cpp:1444
-#, fuzzy
 msgid "ASCII maths"
-msgstr "come ASCII Art"
+msgstr "Matem. ASCII"
 
 #: ../../src/ConfigDialogue.cpp:1248
 msgid "Abort evaluation on error"
@@ -503,14 +491,12 @@ msgid "Add all"
 msgstr "Aggiugi tutto"
 
 #: ../../src/wxMaxima.cpp:7566
-#, fuzzy
 msgid "Add an element to the end of a list"
-msgstr "Aggiungi un elemento ad una lista"
+msgstr "Aggiungi un elemento alla fine di una lista"
 
 #: ../../src/wxMaxima.cpp:7548
-#, fuzzy
 msgid "Add an element to the start of a list"
-msgstr "Aggiungi un elemento ad una lista"
+msgstr "Aggiungi un elemento all'inizio di una lista"
 
 #: ../../src/wxMaxima.cpp:6188
 msgid "Add dir to path:"
@@ -547,10 +533,8 @@ msgid "Added much text (%li chars) to the XML inspector."
 msgstr "Aggiunto molto testo (%li caratteri) all'ispettore XML."
 
 #: ../../src/ConfigDialogue.cpp:1473
-#, fuzzy
 msgid "Additional clipboard formats to put on the clipboard on ordinary copy"
-msgstr ""
-"Formati appunti aggiuntivi da metter sugli appunti con una normale copia:"
+msgstr "Formati appunti aggiuntivi da metter negli appunti con una copia normale"
 
 #: ../../src/ConfigDialogue.cpp:341
 msgid ""
@@ -622,9 +606,8 @@ msgid "All|*"
 msgstr "Tutti|*"
 
 #: ../../src/wxMaximaFrame.cpp:785
-#, fuzzy
 msgid "Always after underscores"
-msgstr "Passa sempre al pedice dopo un carattere di sottolineato"
+msgstr "Sempre dopo un carattere di sottolineato"
 
 #: ../../src/wxMaximaFrame.cpp:786
 msgid "Always autosubscript after an underscore"
@@ -632,7 +615,7 @@ msgstr "Passa sempre al pedice dopo un carattere di sottolineato"
 
 #: ../../src/wxMaximaFrame.cpp:794
 msgid "Always display this variable with subscript"
-msgstr ""
+msgstr "Mostra sempre questa variabile col pedice"
 
 #: ../../src/Worksheet.cpp:1565
 msgid "Always show all digits"
@@ -644,12 +627,11 @@ msgstr "Il file ancore non ha un nodo cima."
 
 #: ../../src/wxMaximaFrame.cpp:805
 msgid "Angles"
-msgstr ""
+msgstr "Angoli"
 
 #: ../../src/wxMaximaFrame.cpp:1347
-#, fuzzy
 msgid "Animation autoplay"
-msgstr "Commuta l'autoesecuzione animazioni"
+msgstr "Autoesecuzione animazioni"
 
 #: ../../src/wxMaximaFrame.cpp:1349
 msgid "Animation framerate..."
@@ -680,14 +662,12 @@ msgid "Append an element"
 msgstr "Accoda un elemento"
 
 #: ../../src/wxMaximaFrame.cpp:1314
-#, fuzzy
 msgid "Append an element to the beginning an existing list"
-msgstr "Accoda un elemento ad una lista esistente"
+msgstr "Accoda un elemento all'inizio di una lista esistente"
 
 #: ../../src/wxMaximaFrame.cpp:1311
-#, fuzzy
 msgid "Append an element to the end of an existing list"
-msgstr "Accoda un elemento ad una lista esistente"
+msgstr "Accoda un elemento alla fine di ad una lista esistente"
 
 #: ../../src/wxMaxima.cpp:6911
 msgid "Apply"
@@ -775,9 +755,8 @@ msgstr ""
 "impostando il colore al colore dello sfondo del testo normale."
 
 #: ../../src/Worksheet.cpp:1439 ../../src/Worksheet.cpp:1746
-#, fuzzy
 msgid "Automatically send known answers"
-msgstr "Rispondi alle domande automaticamente"
+msgstr "Invia automaticamente domande conosciute"
 
 #: ../../src/wxMaxima.cpp:5333
 #, c-format
@@ -1036,16 +1015,11 @@ msgstr "Impossibile scaricare le informazioni di versione."
 
 #: ../../src/wxMaxima.cpp:1859 ../../src/wxMaxima.cpp:2194
 #: ../../src/wxMaxima.cpp:3999
-#, fuzzy
 msgid ""
 "Can not start Maxima. The most probable cause is that Maxima isn't installed "
 "(it can be downloaded from https://maxima.sourceforge.io) or in wxMaxima's "
 "config dialogue the setting for Maxima's location is wrong."
-msgstr ""
-"Impossibile avviare maxima. La causa più probabile è che maxima non sia "
-"installato (si può scaricare da http://maxima.sourceforge.net) o che le "
-"impostazioni della pozione di maxima nella finestra di configurazione di "
-"wxMaxima siano errate."
+msgstr "Impossibile avviare Maxima. La causa più probabile è che Maxima non sia installato (si può scaricare da https://maxima.sourceforge.io) o che le impostazioni della pozione di Maxima nella finestra di configurazione di wxMaxima siano errate."
 
 #: ../../src/MaxSizeChooser.cpp:45 ../../src/MaxSizeChooser.cpp:47
 #: ../../src/wxMaxima.cpp:10275
@@ -1133,9 +1107,8 @@ msgid "Check for Updates"
 msgstr "Controlla gli aggiornamenti"
 
 #: ../../src/wxMaximaFrame.cpp:1438
-#, fuzzy
 msgid "Check if a newer version of wxMaxima is available."
-msgstr "Controlla se esiste una versione più recente di wxMaxima/Maxima."
+msgstr "Controlla se esiste una versione più recente di wxMaxima"
 
 #: ../../src/wxMaximaFrame.cpp:1989
 msgid "Chi"
@@ -1168,18 +1141,16 @@ msgid "Classes:"
 msgstr "Classi:"
 
 #: ../../src/History.cpp:83
-#, fuzzy
 msgid "Clear all history"
-msgstr "&Cancella la memoria"
+msgstr "Cancella la cronologia"
 
 #: ../../src/History.cpp:82
-#, fuzzy
 msgid "Clear the selection"
-msgstr "Taglia la selezione"
+msgstr "Cancella la selezione"
 
 #: ../../src/ConfigDialogue.cpp:1497
 msgid "Clipboard format parameters"
-msgstr ""
+msgstr "Parametri formato appunti"
 
 #: ../../src/wxMaximaFrame.cpp:664
 msgid "Close\tCtrl+W"
@@ -1191,7 +1162,7 @@ msgstr "Chiudi la finestra"
 
 #: ../../src/wxMaxima.h:652
 msgid "Closing the socket maxima could connect to!"
-msgstr ""
+msgstr "Chiusura del socket a cui maxima può connettersi!"
 
 #: ../../src/Configuration.cpp:1462
 msgid "Code highlighting: Comments"
@@ -1325,9 +1296,8 @@ msgstr ""
 "Calcola il minimo comune multiplo (esegui load(functs) prima di usarlo)"
 
 #: ../../src/wxMaximaFrame.cpp:1071
-#, fuzzy
 msgid "Compute the rank of a matrix"
-msgstr "Calcola il determinante di una matrice"
+msgstr "Calcola il rango di una matrice"
 
 #: ../../src/wxMaxima.cpp:8668
 msgid "Condition:"
@@ -1341,7 +1311,7 @@ msgstr "File di configurazione (*.ini)|*.ini"
 #: ../../src/ConfigDialogue.cpp:2006
 #, c-format
 msgid "Config item \"%s\" was of an unknown type"
-msgstr ""
+msgstr "L'elemento di configurazione \"%s\" era di tipo sconosciuto"
 
 #: ../../src/ConfigDialogue.cpp:2072
 msgid "Configuration warning"
@@ -1385,19 +1355,16 @@ msgid "Contract Logarithms"
 msgstr "Contrai i logaritmi"
 
 #: ../../src/wxMaximaFrame.cpp:1085
-#, fuzzy
 msgid "Convert Column to list"
-msgstr "Converti in &fattoriali"
+msgstr "Converti colonna in lista"
 
 #: ../../src/wxMaximaFrame.cpp:1082
-#, fuzzy
 msgid "Convert Row to list"
-msgstr "Converti in &fattoriali"
+msgstr "Converti riga in lista"
 
 #: ../../src/wxMaximaFrame.cpp:1048
-#, fuzzy
 msgid "Convert a list of lists to a matrix"
-msgstr "Converte una lista annidata come [[1,2],[3,4]] in una matrice"
+msgstr "Converti una lista di liste in una matrice"
 
 #: ../../src/wxMaximaFrame.cpp:1184
 msgid "Convert binomials, beta and gamma function to factorials"
@@ -1578,22 +1545,22 @@ msgstr "Pulsante copia, taglia e incolla"
 #: ../../src/ConfigDialogue.cpp:1991
 #, c-format
 msgid "Copying config bool \"%s\""
-msgstr ""
+msgstr "Copia booleano di configurazione \"%s\""
 
 #: ../../src/ConfigDialogue.cpp:2001
-#, fuzzy, c-format
+#, c-format
 msgid "Copying config float \"%s\""
-msgstr "Lettura della configurazione da %s."
+msgstr "Copia virgola mobile di configurazione \"%s\""
 
 #: ../../src/ConfigDialogue.cpp:1996
 #, c-format
 msgid "Copying config int \"%s\""
-msgstr ""
+msgstr "Copia intero di configurazione \"%s\""
 
 #: ../../src/ConfigDialogue.cpp:1986
 #, c-format
 msgid "Copying config string \"%s\""
-msgstr ""
+msgstr "Copia stringa di configurazione \"%s\""
 
 #: ../../src/wxMaxima.cpp:1986
 msgid ""
@@ -1694,15 +1661,15 @@ msgstr "Messaggi di debug"
 
 #: ../../src/wxMaximaFrame.cpp:975
 msgid "Debugger trigger"
-msgstr ""
+msgstr "Innesco debugger"
 
 #: ../../src/wxMaximaFrame.cpp:798
 msgid "Declare Text to always be displayed as subscript"
-msgstr ""
+msgstr "Dichiara che il testo sia sempre mostrato come pedice"
 
 #: ../../src/wxMaxima.cpp:5925
 msgid "Declare a text snippet to always be displayed as subscript"
-msgstr ""
+msgstr "Dichiara che il ritaglio di testo sia sempre mostrato come pedice"
 
 #: ../../src/wxMaximaFrame.cpp:1153
 msgid "Decompose rational function to partial fractions"
@@ -1824,9 +1791,8 @@ msgid "Direction:"
 msgstr "Direzione:"
 
 #: ../../src/ConfigDialogue.cpp:556
-#, fuzzy
 msgid "Display"
-msgstr "Mostra/nascondi la visualizzazione del &tempo"
+msgstr "Mostra"
 
 #: ../../src/wxMaximaFrame.cpp:963
 msgid "Display Te&X Form"
@@ -1838,12 +1804,11 @@ msgstr "Mostra l'algoritmo"
 
 #: ../../src/ConfigDialogue.cpp:641
 msgid "Display all and allow linebreaks in long numbers"
-msgstr ""
+msgstr "Mostra tutto e permetti interruzioni di riga nei numeri linghi"
 
 #: ../../src/ConfigDialogue.cpp:635
-#, fuzzy
 msgid "Display all digits"
-msgstr "Mostra l'algoritmo"
+msgstr "Mostra tutte le cifre"
 
 #: ../../src/wxMaximaFrame.cpp:782
 msgid "Display equations"
@@ -1854,9 +1819,8 @@ msgid "Display last result in TeX form"
 msgstr "Mostra l'espressione precedente in TeX"
 
 #: ../../src/ConfigDialogue.cpp:621
-#, fuzzy
 msgid "Display of long numbers"
-msgstr "Visualizzazione curve 3d"
+msgstr "Visualizzazione di numeri lunghi"
 
 #: ../../src/ToolBar.cpp:346
 #, c-format
@@ -1864,9 +1828,8 @@ msgid "Display resolution according to wxWidgets: %i x %i ppi"
 msgstr "Risoluzione display secondo gli wxWidget: %i x %i ppi"
 
 #: ../../src/wxMaximaFrame.cpp:809
-#, fuzzy
 msgid "Display string quotation marks"
-msgstr "Mostra le equazioni"
+msgstr "Mostra virgolette delle stringhe"
 
 #: ../../src/wxMaximaFrame.cpp:959
 msgid "Display time used for evaluation"
@@ -1911,7 +1874,7 @@ msgstr "Salvare i cambiamenti effettuati nel documento \"%s\"?\""
 
 #: ../../src/wxMaximaFrame.cpp:769
 msgid "Dock all Sidebars"
-msgstr ""
+msgstr "Aggancia tutte le barre laterali"
 
 #: ../../src/Configuration.cpp:1453
 msgid "Document background"
@@ -1955,9 +1918,8 @@ msgid "Don't mark cells that contain tooltips in yellow"
 msgstr "Non marcare le celle che contengono suggerimenti in giallo"
 
 #: ../../src/Worksheet.cpp:1835 ../../src/Worksheet.cpp:1858
-#, fuzzy
 msgid "Don't mark this message text in yellow"
-msgstr "Non marcare le celle che contengono suggerimenti in giallo"
+msgstr "Non marcare il testo di questo messaggio in giallo"
 
 #: ../../src/wxMaxima.cpp:10275
 msgid "Don't save"
@@ -1968,9 +1930,8 @@ msgid "Don't show labels"
 msgstr "Non mostrare etichette"
 
 #: ../../src/wxMaximaFrame.cpp:807
-#, fuzzy
 msgid "Don't use parenthesis for matrices"
-msgstr "Usa le parentesi quadre per le matrici"
+msgstr "Non usare le parentesi per le matrici"
 
 #: ../../src/FindReplacePane.cpp:86
 msgid "Down"
@@ -2013,11 +1974,11 @@ msgstr "Elemento"
 #: ../../src/wxMaxima.cpp:6703
 msgid ""
 "Element-by-element Product of matrices of the same size (Hadamard product)"
-msgstr ""
+msgstr "Prodotto di matrici elemento-per-elemento della stessa dimensione (prodotto Hadamard)"
 
 #: ../../src/wxMaximaFrame.cpp:1092
 msgid "Element-by-element multiplication"
-msgstr ""
+msgstr "Moltiplicazione elemento-per-elemento"
 
 #: ../../src/wxMaxima.cpp:7311
 msgid "Element:"
@@ -2085,18 +2046,16 @@ msgid "Enter a matrix"
 msgstr "Inserisci una matrice"
 
 #: ../../src/ConfigDialogue.cpp:712
-#, fuzzy
 msgid "Enter adds newlines, Ctrl+Enter evaluates cells"
-msgstr "Invio elabora le celle"
+msgstr "Invio aggiunge ritorni a capo, Ctrl+Invio elabora le celle"
 
 #: ../../src/wxMaxima.cpp:7731
 msgid "Enter an equation for rational simplification:"
 msgstr "Inserire un'equazione per la semplificazione razionale:"
 
 #: ../../src/ConfigDialogue.cpp:710
-#, fuzzy
 msgid "Enter evaluates cells, Ctrl+Enter adds newlines"
-msgstr "Invio elabora le celle"
+msgstr "Invio elabora le celle, Ctrl+Invio aggiunge ritorni a capo"
 
 #: ../../src/wxMaxima.cpp:6801
 msgid "Enter matrix"
@@ -2115,9 +2074,8 @@ msgid "Enter the path to the Maxima executable."
 msgstr "Inserire il percorso dell'eseguibile Maxima."
 
 #: ../../src/ConfigDialogue.cpp:1241
-#, fuzzy
 msgid "Environment variables for maxima"
-msgstr "Parametri aggiuntivi per maxima"
+msgstr "Variabili ambiente per maxima"
 
 #: ../../src/wxMaximaFrame.cpp:1972
 msgid "Epsilon"
@@ -2310,7 +2268,7 @@ msgstr "Esegue un comando per ogni elemento della lista"
 
 #: ../../src/main.cpp:341
 msgid "Exit"
-msgstr ""
+msgstr "Uscita"
 
 #: ../../src/wxMaximaFrame.cpp:684
 msgid "Exit wxMaxima"
@@ -2342,52 +2300,47 @@ msgstr "Espandi l'espressione trigonometrica"
 
 #: ../../src/wxMaximaFrame.cpp:1357
 msgid "Expect numbers harder to be complex"
-msgstr ""
+msgstr "Aspettarsi che i numeri più difficili siano complessi"
 
 #: ../../src/wxMaximaFrame.cpp:1358
 msgid "Expect variables to contain complex numbers"
-msgstr ""
+msgstr "Aspettarsi che le variabili contengano numeri complessi"
 
 #: ../../src/wxMaxima.cpp:6720
 msgid "Exponent based on the hadamard product"
-msgstr ""
+msgstr "Base esponenziale nel prodotto hadamard"
 
 #: ../../src/ConfigDialogue.cpp:249 ../../src/wxMaxima.cpp:5453
 msgid "Export"
 msgstr "Esporta"
 
 #: ../../src/History.cpp:125
-#, fuzzy
 msgid "Export As"
-msgstr "Esporta"
+msgstr "Esporta come"
 
 #: ../../src/wxMaximaFrame.cpp:1290
-#, fuzzy
 msgid "Export List to csv file"
-msgstr "Esportazione in TeX fallita!"
+msgstr "Esporta lista in file csv"
 
 #: ../../src/wxMaximaFrame.cpp:1291
-#, fuzzy
 msgid "Export a list to a csv file"
-msgstr "Carica un file pacchetto Maxima"
+msgstr "Esporta una lista in un file csv"
 
 #: ../../src/wxMaximaFrame.cpp:1052
-#, fuzzy
 msgid "Export a matrix to a csv file"
-msgstr "Carica un file pacchetto Maxima"
+msgstr "Esporta una matrice in un file csv"
 
 #: ../../src/History.cpp:73
 msgid "Export all history to a .mac file"
-msgstr ""
+msgstr "Esporta tutta la cronologia in un file .mac"
 
 #: ../../src/ConfigDialogue.cpp:784
-#, fuzzy
 msgid "Export all settings"
-msgstr "Ripiega tutte le sezioni"
+msgstr "Esporta tutte le impostazioni"
 
 #: ../../src/History.cpp:74
 msgid "Export commands from the current maxima session to a .mac file"
-msgstr ""
+msgstr "Esporta i comandi dalla sessione maxima corrente in un file .mac"
 
 #: ../../src/wxMaximaFrame.cpp:677
 msgid "Export document to a HTML or LaTeX file"
@@ -2403,25 +2356,23 @@ msgstr "Esportazione fallita."
 
 #: ../../src/History.cpp:76
 msgid "Export selected commands to a .mac file"
-msgstr ""
+msgstr "Esporta i comandi selezionati in un file .mac"
 
 #: ../../src/wxMaximaFrame.cpp:611
 msgid "Export successful."
 msgstr "Esportazione effettuata."
 
 #: ../../src/ConfigDialogue.cpp:793
-#, fuzzy
 msgid "Export the style settings"
-msgstr "Ripiega tutte le sezioni"
+msgstr "Esporta le impostazioni di stile"
 
 #: ../../src/History.cpp:78
 msgid "Export visible commands to a .mac file"
-msgstr ""
+msgstr "Esporta i comandi visibili in un file .mac"
 
 #: ../../src/History.cpp:213
-#, fuzzy
 msgid "Exporting to .mac file failed!"
-msgstr "Esportazione su file batch maxima fallita!"
+msgstr "Esportazione su file .mac fallita!"
 
 #: ../../src/wxMaxima.cpp:5536
 msgid "Exporting to HTML failed!"
@@ -2452,9 +2403,8 @@ msgid "Expression:"
 msgstr "Espressione:"
 
 #: ../../src/wxMaximaFrame.cpp:1078
-#, fuzzy
 msgid "Extract Column"
-msgstr "Estrai elementi"
+msgstr "Estrai colonna"
 
 #: ../../src/wxMaximaFrame.cpp:1306
 msgid "Extract Elements"
@@ -2462,33 +2412,29 @@ msgstr "Estrai elementi"
 
 #: ../../src/wxMaximaFrame.cpp:1076
 msgid "Extract Row"
-msgstr ""
+msgstr "Estrai riga"
 
 #: ../../src/wxMaximaFrame.cpp:1079
-#, fuzzy
 msgid "Extract a column from the matrix"
-msgstr "Estrai il valore corrente di una variabile"
+msgstr "Estrai una colonna dalla matrice"
 
 #: ../../src/wxMaximaFrame.cpp:1086
-#, fuzzy
 msgid "Extract a column from the matrix and convert it to a list"
-msgstr "Estrai il valore di una variabile assegnata in una lista"
+msgstr "Estrai una colonna dalla matrice e convertila in una lista"
 
 #: ../../src/wxMaxima.cpp:6588 ../../src/wxMaxima.cpp:6603
 #: ../../src/wxMaxima.cpp:6618 ../../src/wxMaxima.cpp:6633
 #: ../../src/wxMaxima.cpp:6648
-#, fuzzy
 msgid "Extract a matrix row"
-msgstr "Inserisci una matrice"
+msgstr "Estrai una riga di matrice"
 
 #: ../../src/wxMaximaFrame.cpp:1077
 msgid "Extract a row from the matrix"
-msgstr ""
+msgstr "Estrai una riga dalla matrice"
 
 #: ../../src/wxMaximaFrame.cpp:1083
-#, fuzzy
 msgid "Extract a row from the matrix and convert it to a list"
-msgstr "Estrai gli ultimi n elementi da una lista"
+msgstr "Estrai una riga dalla matrice e convertila in una lista"
 
 #: ../../src/wxMaxima.cpp:7470
 msgid "Extract a variable's value from a list of variable values"
@@ -2756,7 +2702,7 @@ msgstr "Trovati %i file caricabili."
 #: ../../src/Worksheet.cpp:5932
 #, c-format
 msgid "Found only %li keywords in maxima's manual. Not caching them to disc."
-msgstr ""
+msgstr "Trovate solo %li parole chiave nel manuale di maxima. Non memorizzate temporaneamente su disco."
 
 #: ../../src/ToolBar.cpp:124
 #, c-format
@@ -2964,7 +2910,7 @@ msgstr "Griglia"
 
 #: ../../src/ConfigDialogue.cpp:966
 msgid "HTML"
-msgstr ""
+msgstr "HTML"
 
 #: ../../src/wxMaxima.cpp:5455
 msgid ""
@@ -2976,11 +2922,11 @@ msgstr ""
 
 #: ../../src/wxMaximaFrame.cpp:1091
 msgid "Hadamard (element-by-element) product"
-msgstr ""
+msgstr "Prodotto Hadamard (elemento-per-elemento)"
 
 #: ../../src/wxMaximaFrame.cpp:1094
 msgid "Hadamard exponent"
-msgstr ""
+msgstr "Esponente Hadamard"
 
 #: ../../src/Configuration.cpp:1447 ../../src/ToolBar.cpp:248
 #: ../../src/wxMaximaFrame.cpp:2186
@@ -3066,9 +3012,8 @@ msgid "Hide contents"
 msgstr "Nascondi i contenuti"
 
 #: ../../src/Worksheet.cpp:1515
-#, fuzzy
 msgid "Hide multiplication dots"
-msgstr "Nascondi segni delle moltiplicazioni, se possibile"
+msgstr "Nascondi punti moltiplicazioni"
 
 #: ../../src/ConfigDialogue.cpp:659
 msgid "Hide multiplication signs, if possible"
@@ -3085,29 +3030,26 @@ msgstr ""
 "\"nascondi\" della cella se le celle non sono attive."
 
 #: ../../src/Worksheet.cpp:1830 ../../src/Worksheet.cpp:1853
-#, fuzzy
 msgid "Hide yellow tooltip marker for this cell"
-msgstr "Nascondi evidenziatore suggerimenti comandi"
+msgstr "Nascondi marcatore giallo suggerimenti per questa cella"
 
 #: ../../src/Worksheet.cpp:1834 ../../src/Worksheet.cpp:1857
-#, fuzzy
 msgid "Hide yellow tooltip marker for this message type"
-msgstr "Nascondi evidenziatore suggerimenti comandi"
+msgstr "Nascondi marcatore giallo suggerimenti per questo tipo di messaggi"
 
 #: ../../src/Configuration.cpp:1441
 msgid "Highlight (dpart)"
 msgstr "Evidenzia (dpart)"
 
 #: ../../src/ConfigDialogue.cpp:672
-#, fuzzy
 msgid "Highlight the matching parenthesis"
-msgstr "Parentesi sbilanciate"
+msgstr "Evidenzia la parentesi corrispondente"
 
 #: ../../src/ConfigDialogue.cpp:376
 msgid ""
 "Highlight the opening or closing parenthesis for the parenthesis the cursor "
 "is at."
-msgstr ""
+msgstr "Evidenzia la parentesi di apertura o chiusura per la parentesi al cursore."
 
 #: ../../src/wxMaxima.cpp:8471
 msgid "Histogram"
@@ -3138,9 +3080,8 @@ msgstr ""
 "backspace o Canc due volte si cancellerà la cella vicina ad esso."
 
 #: ../../src/ConfigDialogue.cpp:709
-#, fuzzy
 msgid "Hotkeys for sending commands to maxima"
-msgstr "Invio di un comand a Maxima"
+msgstr "Tasti acceleratori per inviare comandi a maxima"
 
 #: ../../src/wxMaxima.cpp:8203
 msgid "How many digits to show:"
@@ -3170,38 +3111,38 @@ msgstr "Identico a"
 msgid ""
 "If maxima versions compiled with different lisps are installed: The name of "
 "the lisp to use by default"
-msgstr ""
+msgstr "Se sono state installate diverse versioni di maxima compilate con lisp differenti: il nome del lisp da usare come impostazione predefinita"
 
 #: ../../src/ConfigDialogue.cpp:168
 msgid ""
 "If maxima was compiled by GCL: Garbage Collect at minimum allocation past "
 "this heapsize"
-msgstr ""
+msgstr "Se maxima è stato compilato con GCL: Garbage Collect alla minima allocazione oltre il suo heapsize"
 
 #: ../../src/ConfigDialogue.cpp:167
 msgid ""
 "If maxima was compiled by GCL: Minimum allocation fraction between Garbage "
 "Collects"
-msgstr ""
+msgstr "Se maxima è stato compilato con GCL: frazione di allocazione minima tra le operazioni di Garbage Collection"
 
 #: ../../src/ConfigDialogue.cpp:166
 msgid ""
 "If maxima was compiled by GCL: Only garbage collect past this heapsize "
 "fraction of working mem"
-msgstr ""
+msgstr "Se maxima è stato compilato con GCL: fa la garbage collection oltre questa frazione di heapsize di memoria di lavoro"
 
 #: ../../src/ConfigDialogue.cpp:170
 msgid ""
 "If maxima was compiled by GCL: Share the allocated memory between gcl "
 "processes. Allows more than one gcl-compiled maxima to run at the same time, "
 "but might provoke crashes."
-msgstr ""
+msgstr "Se maxima è stato compilato con GCL: condividi la memoria allocata tra tutti i processi gcl. Permette a più di un solo maxima compilato con gcl di venir eseguito contemporaneamente; può provocare dei malfunzionamenti."
 
 #: ../../src/ConfigDialogue.cpp:169
 msgid ""
 "If maxima was compiled by GCL: The fraction of the total installed RAM to "
 "reserve for maxima"
-msgstr ""
+msgstr "Se maxima è stato compilato con GCL: la frazione della RAM totale installata da riservare a maxima"
 
 #: ../../src/ConfigDialogue.cpp:333
 msgid ""
@@ -3272,7 +3213,7 @@ msgstr ""
 msgid ""
 "If this checkbox isn't checked the current command is sent to maxima only on "
 "pressing Ctrl+Enter"
-msgstr ""
+msgstr "Se questa opzione non è selezionata il comando corrente viene mandato a maxima solo premendo Ctrl+Invio"
 
 #: ../../src/ConfigDialogue.cpp:364
 msgid ""
@@ -3320,15 +3261,13 @@ msgstr "Grafico implicito"
 
 #: ../../src/ConfigDialogue.cpp:802
 msgid "Import settings"
-msgstr ""
+msgstr "Importa impostazioni"
 
 #: ../../src/ConfigDialogue.cpp:782
-#, fuzzy
 msgid "Import+Export"
-msgstr "Esporta"
+msgstr "Importa+Esporta"
 
 #: ../../src/TipOfTheDay.cpp:148
-#, fuzzy
 msgid ""
 "In order to visualize how a parameter affects an equation wxMaxima provides "
 "commands that start with \"with_slider_\" and that create animations. One "
@@ -3344,9 +3283,7 @@ msgid ""
 "        )\n"
 "    );"
 msgstr ""
-"Al fine di visualizzare come un parametro influisce su un'equazione, "
-"wxmaxima fornisce comandi che iniziano con \"with_slider_\" che creano "
-"animazioni. Un esempio potrebbe essere:\n"
+"Al fine di visualizzare come un parametro influisce su un'equazione, wxMaxima fornisce comandi che iniziano con \"with_slider_\" che creano animazioni. Per esempio:\n"
 "\n"
 "    with_slider_draw(\n"
 "        a,[-16,-9,-4,-2,0,1,2,3,4,5,6,7],\n"
@@ -3359,17 +3296,12 @@ msgstr ""
 "    );"
 
 #: ../../src/TipOfTheDay.cpp:172
-#, fuzzy
 msgid ""
 "In text cells bullet lists can be created by beginning a line with \" * \". "
 "The number of spaces in front of the \"*\" determines the indentation level; "
 "Indentation can be continued in the next line by indenting the line using "
 "spaces."
-msgstr ""
-"Nelle celle di testo gli elenchi puntati possono essere creati iniziando una "
-"riga con \" * \". Il numero di spazi di fronte al \"*\" determina il livello "
-"di indenzazione; l'indentazione può continuare nella riga seguente "
-"indentando la linea usando gli spazi."
+msgstr "Nelle celle di testo gli elenchi puntati possono essere creati iniziando una riga con \" * \". Il numero di spazi di fronte al \"*\" determina il livello di indenzazione; l'indentazione può continuare nella riga seguente indentando la linea usando gli spazi."
 
 #: ../../src/ConfigDialogue.cpp:354
 msgid ""
@@ -3438,7 +3370,7 @@ msgstr "Problema ai valori iniziali (&2)..."
 
 #: ../../src/RegexCtrl.cpp:36
 msgid "Input a RegEx here to filter the results"
-msgstr ""
+msgstr "Inserire una espr. reg. per filtrare i risultati"
 
 #: ../../src/Configuration.cpp:1437
 msgid "Input labels"
@@ -3605,9 +3537,8 @@ msgid "Intelligently hide cell brackets"
 msgstr "Nascondi intelligentemente le parentesi della cella"
 
 #: ../../src/ConfigDialogue.cpp:682
-#, fuzzy
 msgid "Interaction"
-msgstr "intersezione"
+msgstr "Interazione"
 
 #: ../../src/ConfigDialogue.cpp:1076
 msgid "Interactive popup memory limit [MB/plot]:"
@@ -3656,7 +3587,7 @@ msgstr "Inserisce i valori correnti delle variabili memorizzate nella lista"
 
 #: ../../src/RegexCtrl.cpp:38
 msgid "Invalid RegEx!"
-msgstr ""
+msgstr "Espr. reg. non valida!"
 
 #: ../../src/ConfigDialogue.cpp:1831
 msgid ""
@@ -3702,7 +3633,6 @@ msgstr ""
 "configurazione."
 
 #: ../../src/TipOfTheDay.cpp:130
-#, fuzzy
 msgid ""
 "It is possible to define reusable Maxima libraries with wxMaxima that can be "
 "later loaded by using the load() function. All that has to be done is to "
@@ -3710,13 +3640,7 @@ msgid ""
 "that a few special characters like the \"not equal\" symbol for \"#\" are "
 "handled by wxMaxima, not by Maxima and therefore cannot be recognized on "
 "load()."
-msgstr ""
-"È possibile definire librerie Maxima riutilizzabili con wxMaxima che possono "
-"essere in seguito caricate usando la funzione load(). Non si deve fare altro "
-"che esportare un file nel .mac o salvarlo nel formato .wxm . Si noti però "
-"che, qualche carattere speciale come il simbolo di \"non uguale\" per \"#\" "
-"sono gestiti da wxMaxima, non da maxima e perciò non possono essere "
-"riconosciuti da load()."
+msgstr "È possibile definire librerie Maxima riutilizzabili con wxMaxima che possono essere in seguito caricate usando la funzione load(). Non si deve fare altro che esportare un file nel .mac o salvarlo nel formato .wxm . Si noti però che, qualche carattere speciale come il simbolo di \"non uguale\" per \"#\" sono gestiti da wxMaxima, non da maxima e perciò non possono essere riconosciuti da load()."
 
 #: ../../src/ConfigDialogue.cpp:185
 msgid "Italian"
@@ -3770,7 +3694,7 @@ msgstr "mcm"
 
 #: ../../src/ConfigDialogue.cpp:931
 msgid "LaTeX"
-msgstr ""
+msgstr "LaTeX"
 
 #: ../../src/ConfigDialogue.cpp:954
 msgid "LaTeX: Place exponents after, instead above subscripts"
@@ -3782,9 +3706,8 @@ msgstr ""
 "LaTeX: Usa il simbolo di \"derivata parziale\" per rappresentare diff()"
 
 #: ../../src/Worksheet.cpp:1596
-#, fuzzy
 msgid "Label width"
-msgstr "Larghezza etichetta:"
+msgstr "Larghezza etichetta"
 
 #: ../../src/ConfigDialogue.cpp:602
 msgid "Label width:"
@@ -3854,9 +3777,8 @@ msgid "Least Squares Fit..."
 msgstr "Metodo dei minimi quadrati..."
 
 #: ../../src/wxMaxima.cpp:6665 ../../src/wxMaxima.cpp:6682
-#, fuzzy
 msgid "Left matrix:"
-msgstr "Apri matrice"
+msgstr "Matrice sinistra:"
 
 #: ../../src/wxMaximaFrame.cpp:1029
 msgid "Left side to the \"=\""
@@ -3867,16 +3789,11 @@ msgid "Length"
 msgstr "Lunghezza"
 
 #: ../../src/TipOfTheDay.cpp:136
-#, fuzzy
 msgid ""
 "Libraries can be accessed by any wxMaxima process regardless of which "
 "directory it runs in, if they are placed in the user directory. This "
 "directory can be found by typing maxima_userdir;"
-msgstr ""
-"Le librerie sono accessibili da qualsiasi processo wxMaxima, "
-"indipendentemente dalla cartella da cui questo viene eseguito, se piazzato "
-"nella cartella utente. La posizione di questa cartella può essere verificata "
-"battendo il comando maxima_userdir."
+msgstr "Le librerie sono accessibili da qualsiasi processo wxMaxima, indipendentemente dalla cartella da cui questo viene eseguito, se piazzato nella cartella utente. La posizione di questa cartella può essere verificata battendo il comando maxima_userdir;"
 
 #: ../../src/LicenseDialog.cpp:36
 msgid "License"
@@ -3925,9 +3842,8 @@ msgid "List of changed options"
 msgstr "Elenco di opzioni cambiate"
 
 #: ../../src/VariablesPane.cpp:192
-#, fuzzy
 msgid "List of labels"
-msgstr "Elenco di array"
+msgstr "Elenco di etichette"
 
 #: ../../src/VariablesPane.cpp:189
 msgid "List of structs"
@@ -3958,9 +3874,8 @@ msgid "List of user-defined let rule packages"
 msgstr "Elenco di pacchetti di regole definiti dall'utente"
 
 #: ../../src/VariablesPane.cpp:201
-#, fuzzy
 msgid "List of user-defined macros"
-msgstr "Elenco di proprietà definite dall'utente"
+msgstr "Elenco di macro definite dall'utente"
 
 #: ../../src/VariablesPane.cpp:198
 msgid "List of user-defined properties"
@@ -4008,14 +3923,12 @@ msgid "Load a Maxima package file"
 msgstr "Carica un file pacchetto Maxima"
 
 #: ../../src/wxMaximaFrame.cpp:1267
-#, fuzzy
 msgid "Load a list from a csv file"
-msgstr "Carica un file pacchetto Maxima"
+msgstr "Carica una lista da un file csv"
 
 #: ../../src/wxMaximaFrame.cpp:1050
-#, fuzzy
 msgid "Load a matrix from a csv file"
-msgstr "Carica un file pacchetto Maxima"
+msgstr "Carica una matrice da un file csv"
 
 #: ../../src/ConfigDialogue.cpp:2119
 msgid "Load style from file"
@@ -4030,9 +3943,8 @@ msgid "Lower bound:"
 msgstr "Intorno basso:"
 
 #: ../../src/wxMaximaFrame.cpp:1106
-#, fuzzy
 msgid "M&atrix"
-msgstr "Matrice"
+msgstr "M&atrice"
 
 #: ../../src/XmlInspector.cpp:118
 msgid "MAXIMA RESPONSE:"
@@ -4083,13 +3995,12 @@ msgid "Match parenthesis in text controls"
 msgstr "Corrispondenza parentesi nei controlli di testo"
 
 #: ../../src/Configuration.cpp:1468
-#, fuzzy
 msgid "Math Default"
-msgstr "Predefinito"
+msgstr "Matem. predefinita"
 
 #: ../../src/ConfigDialogue.cpp:1578
 msgid "Math font:"
-msgstr "Carattere matematica:"
+msgstr "Carattere matem.:"
 
 #: ../../src/ConfigDialogue.cpp:368
 msgid ""
@@ -4142,29 +4053,24 @@ msgid "Matrix"
 msgstr "Matrice"
 
 #: ../../src/wxMaxima.cpp:6699 ../../src/wxMaxima.cpp:6716
-#, fuzzy
 msgid "Matrix #1:"
-msgstr "Matrice:"
+msgstr "Matrice #1:"
 
 #: ../../src/wxMaxima.cpp:6700 ../../src/wxMaxima.cpp:6717
-#, fuzzy
 msgid "Matrix #2:"
-msgstr "Matrice:"
+msgstr "Matrice #2:"
 
 #: ../../src/wxMaxima.cpp:6669
-#, fuzzy
 msgid "Matrix Product"
-msgstr "Prodotto"
+msgstr "Prodotto matrice"
 
 #: ../../src/wxMaxima.cpp:6686 ../../src/wxMaximaFrame.cpp:1090
-#, fuzzy
 msgid "Matrix exponent"
-msgstr "Nome matrice:"
+msgstr "Esponente matrice"
 
 #: ../../src/wxMaximaFrame.cpp:1049
-#, fuzzy
 msgid "Matrix from csv file"
-msgstr "Carica lo stile da file"
+msgstr "Matrice da file csv"
 
 #: ../../src/wxMaxima.cpp:6764
 msgid "Matrix map"
@@ -4179,9 +4085,8 @@ msgid "Matrix parenthesis"
 msgstr "Parentesi di matrice"
 
 #: ../../src/wxMaximaFrame.cpp:1051
-#, fuzzy
 msgid "Matrix to csv file"
-msgstr "Carica lo stile da file"
+msgstr "Matrice verso file csv"
 
 #: ../../src/wxMaximaFrame.cpp:1336
 msgid "Matrix to nested List"
@@ -4199,9 +4104,8 @@ msgid "Maxima"
 msgstr "Maxima"
 
 #: ../../src/ConfigDialogue.cpp:1129
-#, fuzzy
 msgid "Maxima Location"
-msgstr "Domande di Maxima"
+msgstr "Posizione di Maxima"
 
 #: ../../src/wxMaxima.cpp:2710
 #, c-format
@@ -4242,19 +4146,16 @@ msgstr ""
 "continuazione della riga precedente."
 
 #: ../../src/ConfigDialogue.cpp:883
-#, fuzzy
 msgid "Maxima commands to be executed at every start of Maxima"
-msgstr "Comandi Maxima che devono essere eseguiti ad ogni avvio di Maxima: "
+msgstr "Comandi Maxima che devono essere eseguiti ad ogni avvio di Maxima"
 
 #: ../../src/ConfigDialogue.cpp:843
-#, fuzzy
 msgid "Maxima commands to be executed every time wxMaxima starts Maxima"
-msgstr "Comandi Maxima da eseguire ogni volta che wxMaxima avvia Maxima: "
+msgstr "Comandi Maxima da eseguire ogni volta che wxMaxima avvia Maxima"
 
 #: ../../src/ConfigDialogue.cpp:1181
-#, fuzzy
 msgid "Maxima configuration"
-msgstr "Configurazione di wxMaxima"
+msgstr "Configurazione di Maxima"
 
 #: ../../src/Configuration.cpp:1443
 msgid "Maxima errors"
@@ -4342,9 +4243,8 @@ msgid "Maxima sends us a new set of variables for the watch list."
 msgstr "Maxima ci spedisce un nuovo insieme di variabili per la watch list."
 
 #: ../../src/History.cpp:127
-#, fuzzy
 msgid "Maxima session (*.mac)|*.mac"
-msgstr "Pacchetto Maxima (*.mac)|*.mac"
+msgstr "Sessione Maxima (*.mac)|*.mac"
 
 #: ../../src/wxMaximaFrame.cpp:572
 msgid "Maxima started. Waiting for connection..."
@@ -4376,9 +4276,8 @@ msgstr ""
 "per il valore 0.1."
 
 #: ../../src/ConfigDialogue.cpp:1246
-#, fuzzy
 msgid "Maxima usage"
-msgstr "Codice Maxima"
+msgstr "Uso di Maxima"
 
 #: ../../src/wxMaxima.cpp:2668
 #, c-format
@@ -4395,15 +4294,19 @@ msgid ""
 "which may then be solved for x with\n"
 "solve(eq1,x);"
 msgstr ""
+"Maxima usa ':' per assegnare valori ad una variabile ('a : 3;'), non '=' come fanno molti linguaggi di programmazione.\n"
+"Questo permette di assegnare una equazione matematica ad una variabile, per es.\n"
+" eq1:3*x=4;\n"
+"la quale può essere risolta per x con\n"
+"solve(eq1,x);"
 
 #: ../../src/TipOfTheDay.cpp:58
-#, fuzzy
 msgid ""
 "Maxima uses ':=' to define functions, e.g.:\n"
 "f(x) := x^2;"
 msgstr ""
-"Maxima usa \":\" per impostare i valori (\"a : 3;\") e \":=\" per definire "
-"le funzioni (\"f(x) := x^2;\")."
+"Maxima usa ':=' per definire le funzioni, per es.:\n"
+"f(x) := x^2;"
 
 #: ../../src/wxMaxima.cpp:2674
 #, c-format
@@ -4445,9 +4348,9 @@ msgstr ""
 "    result_b:b=at(b,%);"
 
 #: ../../src/wxMaxima.cpp:2721
-#, fuzzy, c-format
+#, c-format
 msgid "Maxima's HTML manuals are in directory %s"
-msgstr "Il manuale di Maxima sta nella cartella %s"
+msgstr "I manuali HTML di Maxima stanno nella cartella %s"
 
 #: ../../src/wxMaxima.cpp:2266
 #, c-format
@@ -4561,16 +4464,15 @@ msgstr "Valore massimo assoluto stampato senza esponente:"
 
 #: ../../src/ConfigDialogue.cpp:1504
 msgid "Maximum bitmap size on clipboard [Mb]:"
-msgstr ""
+msgstr "Dimensione massima bitmap negli appunti [Mb]:"
 
 #: ../../src/wxMaxima.cpp:8226
 msgid "Maximum number of digits to be displayed:"
 msgstr "Numero massimo di cifre da visualizzare:"
 
 #: ../../src/ConfigDialogue.cpp:627
-#, fuzzy
 msgid "Maximum number of displayed digits:"
-msgstr "Numero massimo di cifre da visualizzare:"
+msgstr "Numero massimo di cifre visualizzate:"
 
 #: ../../src/wxMaximaFrame.cpp:1820
 msgid "Mean Difference Test..."
@@ -4618,7 +4520,7 @@ msgstr "Valore assoluto minimo stampato senza esponente:"
 
 #: ../../src/ConfigDialogue.cpp:1000
 msgid "Misc"
-msgstr ""
+msgstr "Varie"
 
 #: ../../src/wxMaxima.cpp:9501 ../../src/wxMaxima.cpp:9502
 msgid "Mismatched parenthesis"
@@ -4634,7 +4536,7 @@ msgstr "Mu"
 
 #: ../../src/wxMaximaFrame.cpp:1089
 msgid "Multiply matrices"
-msgstr ""
+msgstr "Moltiplicazione matrici"
 
 #: ../../src/wxMaxima.cpp:6832 ../../src/wxMaxima.cpp:6852
 msgid "Name:"
@@ -4651,16 +4553,15 @@ msgstr "Mai"
 
 #: ../../src/wxMaxima.cpp:5905 ../../src/wxMaxima.cpp:5915
 msgid "Never autosubscript this variable"
-msgstr ""
+msgstr "Mai pedice questa variabile"
 
 #: ../../src/wxMaximaFrame.cpp:796
 msgid "Never display this variable with subscript"
-msgstr ""
+msgstr "Mai mostrare in pedice questa variabile"
 
 #: ../../src/Worksheet.cpp:1442 ../../src/Worksheet.cpp:1749
-#, fuzzy
 msgid "Never offer known answers"
-msgstr "Offri risposte conosciute"
+msgstr "Non offrire mai risposte conosciute"
 
 #: ../../src/ToolBar.cpp:164
 msgid "New"
@@ -4693,9 +4594,9 @@ msgid "New lines: Jump to text"
 msgstr "Nuove righe: salta al testo"
 
 #: ../../src/wxMaxima.cpp:3057
-#, fuzzy, c-format
+#, c-format
 msgid "New maxima Operators detected: %s"
-msgstr "Architettura di Maxima: %s"
+msgstr "Rilevato nuovo operatore maxima: %s"
 
 #: ../../src/wxMaxima.cpp:7769 ../../src/wxMaxima.cpp:7902
 #: ../../src/wxMaxima.cpp:7920
@@ -4751,7 +4652,7 @@ msgstr "Nessun simbolo incorporato"
 
 #: ../../src/wxMaximaFrame.cpp:807
 msgid "None"
-msgstr ""
+msgstr "Nulla"
 
 #: ../../src/wxMaximaFrame.cpp:1822
 msgid "Normality Test..."
@@ -4811,9 +4712,8 @@ msgid "Numbers"
 msgstr "Numeri"
 
 #: ../../src/wxMaximaFrame.cpp:1356
-#, fuzzy
 msgid "Numeric output"
-msgstr "Mostra/nascondi i risultati numerici"
+msgstr "Risultati numerici"
 
 #: ../../src/LicenseDialog.cpp:73 ../../src/MaxSizeChooser.cpp:43
 #: ../../src/MaxSizeChooser.cpp:48 ../../src/TipOfTheDay.cpp:252
@@ -4827,7 +4727,7 @@ msgstr "OS: %s Versione %i.%i"
 
 #: ../../src/ConfigDialogue.cpp:703
 msgid "Offer answers for questions known from previous runs"
-msgstr ""
+msgstr "Offre risposte a domande prese dalle esecuzioni precedenti"
 
 #: ../../src/wxMaxima.cpp:7768 ../../src/wxMaxima.cpp:7901
 #: ../../src/wxMaxima.cpp:7919
@@ -4843,13 +4743,12 @@ msgid "Omicron"
 msgstr "Omicron"
 
 #: ../../src/wxMaximaFrame.cpp:973
-#, fuzzy
 msgid "On all errors"
-msgstr "Errore fatale"
+msgstr "Con tutti gli errori"
 
 #: ../../src/wxMaximaFrame.cpp:972
 msgid "On lisp errors"
-msgstr ""
+msgstr "Con errori lisp"
 
 #: ../../src/wxMaxima.cpp:8567
 msgid "One sample t-test"
@@ -4860,9 +4759,8 @@ msgid "Online tutorials"
 msgstr "Guide online"
 
 #: ../../src/wxMaximaFrame.cpp:788
-#, fuzzy
 msgid "Only Integers and single letters"
-msgstr "Interi e lettere singole"
+msgstr "Solo interi e lettere singole"
 
 #: ../../src/ConfigDialogue.cpp:612
 msgid "Only user-defined labels"
@@ -5161,9 +5059,8 @@ msgid "Prefer user labels"
 msgstr "Preferisci le etichette utente"
 
 #: ../../src/main.cpp:340
-#, fuzzy
 msgid "Preferences"
-msgstr "Punsante delle preferenze"
+msgstr "Preferenze"
 
 #: ../../src/ToolBar.cpp:633
 msgid "Preferences button"
@@ -5174,9 +5071,8 @@ msgid "Preferences...\tCtrl+,"
 msgstr "Preferenze...\tCtrl+,"
 
 #: ../../src/wxMaximaFrame.cpp:1313
-#, fuzzy
 msgid "Prepend an element"
-msgstr "Accoda un elemento"
+msgstr "Metti in cima un elemento"
 
 #: ../../src/TipOfTheDay.cpp:127
 msgid ""
@@ -5207,9 +5103,8 @@ msgid "Print document"
 msgstr "Stampa documento"
 
 #: ../../src/wxMaximaFrame.cpp:1378
-#, fuzzy
 msgid "Print floating-point numbers with exponents dividable by 3"
-msgstr "Stampa i numeri in virgola mobile con esponenti divisibili per 2"
+msgstr "Stampa i numeri in virgola mobile con esponenti divisibili per 3"
 
 #: ../../src/ConfigDialogue.cpp:1014
 msgid "Print scale:"
@@ -5220,9 +5115,8 @@ msgid "Print the cell brackets [drawn to their left]"
 msgstr "Stampa le parentesi delle celle [disegna alla loro sinistra]"
 
 #: ../../src/ConfigDialogue.cpp:1012
-#, fuzzy
 msgid "Printing"
-msgstr "Stampa"
+msgstr "Stampa in corso"
 
 #: ../../src/Worksheet.cpp:6525
 msgid ""
@@ -5250,7 +5144,7 @@ msgstr "Push"
 
 #: ../../src/wxMaxima.cpp:2794
 msgid "Querying gnuplot which graphics drivers it supports."
-msgstr ""
+msgstr "Interrogazione di gnuplot sui driver grafici supportati."
 
 #: ../../src/ConfigDialogue.cpp:1483
 msgid "RTF with OMML maths"
@@ -5258,7 +5152,7 @@ msgstr "RTF con formule OMML"
 
 #: ../../src/wxMaximaFrame.cpp:1070
 msgid "Rank"
-msgstr ""
+msgstr "Rango"
 
 #: ../../src/wxMaximaFrame.cpp:462 ../../src/wxMaximaFrame.cpp:767
 msgid "Raw XML monitor"
@@ -5282,23 +5176,21 @@ msgid "Re-evaluate all cells below the one the cursor is in"
 msgstr "Ri-elabora tutte le celle sopra quella dove si trova il cursore"
 
 #: ../../src/Worksheet.cpp:7436
-#, fuzzy
 msgid "Read .wxm data from clipboard"
-msgstr "Incolla testo dagli appunti"
+msgstr "Leggi dati .wxm dagli appunti"
 
 #: ../../src/wxMaximaFrame.cpp:1266
-#, fuzzy
 msgid "Read List from csv file"
-msgstr "Carica lo stile da file"
+msgstr "Leggi lista da file csv"
 
 #: ../../src/wxMaximaFrame.cpp:1844
 msgid "Read Matrix..."
 msgstr "Leggi la matrice..."
 
+# Ambiguous...
 #: ../../src/ConfigDialogue.cpp:1951
-#, fuzzy
 msgid "Read config to file"
-msgstr "Salva la selezione su file"
+msgstr "Leggi configurazione su file"
 
 #: ../../src/Worksheet.cpp:5836
 #, c-format
@@ -5370,21 +5262,19 @@ msgstr "Rifiuto di spedire la cella a maxima:"
 
 #: ../../src/ConfigDialogue.cpp:762
 msgid "Reload all GUI settings from disc"
-msgstr ""
+msgstr "Ricarica tutte le impostazioni GUI da disco"
 
 #: ../../src/ConfigDialogue.cpp:771
 msgid "Reload the style settings from disc"
-msgstr ""
+msgstr "Ricarica le impostazioni di stile da disco"
 
 #: ../../src/ConfigDialogue.cpp:2044
-#, fuzzy
 msgid "Reloading the configuration from disc"
-msgstr "Lettura della configurazione da %s."
+msgstr "Ricaricamento configurazione da disco"
 
 #: ../../src/ConfigDialogue.cpp:2053
-#, fuzzy
 msgid "Reloading the styles from disc"
-msgstr "Lettura della configurazione da %s."
+msgstr "Ricaricamento stili da disco"
 
 #: ../../src/VariablesPane.cpp:209
 msgid "Remove"
@@ -5396,7 +5286,7 @@ msgstr "Elimina tutti i risultati"
 
 #: ../../src/wxMaximaFrame.cpp:1080
 msgid "Remove Rows or Columns"
-msgstr ""
+msgstr "Rimuovi righe o colonne"
 
 #: ../../src/VariablesPane.cpp:215
 msgid "Remove all"
@@ -5424,11 +5314,11 @@ msgstr "Elimina tutti i risultati dalla celle d'ingresso"
 
 #: ../../src/wxMaximaFrame.cpp:1081
 msgid "Remove rows and/or columns from the matrix"
-msgstr ""
+msgstr "Rimuovi righe e/o colonne dalla matrice"
 
 #: ../../src/wxMaximaFrame.cpp:1095
 msgid "Repetitive element-by-element multiplication"
-msgstr ""
+msgstr "Moltiplicazione ripetitiva elemento-per-elemento"
 
 #: ../../src/FindReplacePane.cpp:104
 msgid "Replace All"
@@ -5449,17 +5339,15 @@ msgstr "Riporta un bug"
 
 #: ../../src/ConfigDialogue.cpp:743
 msgid "Reset all GUI settings"
-msgstr ""
+msgstr "Reimposta la GUI"
 
 #: ../../src/ConfigDialogue.cpp:753
 msgid "Reset the Style settings"
-msgstr ""
+msgstr "Reimposta tutte le impostazioni di stile"
 
 #: ../../src/ConfigDialogue.cpp:2026 ../../src/ConfigDialogue.cpp:2035
-#, fuzzy
 msgid "Resetting all configuration settings"
-msgstr ""
-"(espressione più lunga del consentito dalle impostazioni di configurazione)"
+msgstr "Reimpostazione di tutta la configurazione"
 
 #: ../../src/ToolBar.cpp:203 ../../src/wxMaximaFrame.cpp:935
 msgid "Restart Maxima"
@@ -5531,12 +5419,11 @@ msgstr "Inverti l'ordine degli elementi della lista"
 
 #: ../../src/ConfigDialogue.cpp:253
 msgid "Revert all to defaults"
-msgstr ""
+msgstr "Reimposta tutto ai predefiniti"
 
 #: ../../src/ConfigDialogue.cpp:741
-#, fuzzy
 msgid "Revert changes"
-msgstr "Ripeti l'ultima modifica"
+msgstr "Annulla modifiche"
 
 #: ../../src/wxMaximaFrame.cpp:1984
 msgid "Rho"
@@ -5547,9 +5434,8 @@ msgid "Right arrow"
 msgstr "Freccia destra"
 
 #: ../../src/wxMaxima.cpp:6666 ../../src/wxMaxima.cpp:6683
-#, fuzzy
 msgid "Right matrix:"
-msgstr "Freccia destra"
+msgstr "Matrice destra:"
 
 #: ../../src/wxMaximaFrame.cpp:1032
 msgid "Right side to the \"=\""
@@ -5574,7 +5460,7 @@ msgstr "Arrotondato"
 #: ../../src/wxMaxima.cpp:6585 ../../src/wxMaxima.cpp:6600
 #: ../../src/wxMaxima.cpp:6615 ../../src/wxMaxima.cpp:6630
 msgid "Row number:"
-msgstr ""
+msgstr "Numero riga:"
 
 #: ../../src/wxMaxima.cpp:6832 ../../src/wxMaxima.cpp:6852
 msgid "Rows:"
@@ -5679,9 +5565,8 @@ msgid "Save animation to file"
 msgstr "Salva l'animazione su file"
 
 #: ../../src/ConfigDialogue.cpp:1938
-#, fuzzy
 msgid "Save config to file"
-msgstr "Salva la selezione su file"
+msgstr "Salva config su file"
 
 #: ../../src/ToolBar.cpp:168 ../../src/wxMaximaFrame.cpp:667
 msgid "Save document"
@@ -5752,20 +5637,14 @@ msgid "Scatterplot..."
 msgstr "Grafico a dispersione..."
 
 #: ../../src/Autocomplete.cpp:66
-#, fuzzy
 msgid ""
 "Scheduling a background task that compiles a new list of autocompletible "
 "maxima commands."
-msgstr ""
-"Avvio di un'attività in background che compila una nuova lista di comandi "
-"maxima autocompletabili."
+msgstr "Programmazione attività in background che compila una nuova lista di comandi maxima autocompletabili."
 
 #: ../../src/Autocomplete.cpp:416
-#, fuzzy
 msgid "Scheduling a background task that scans for autocompletible file names."
-msgstr ""
-"Avvio di un'attività in background che esegue la scansione dei nomi di file "
-"autocompletabili."
+msgstr "Programmazione attività in background che esegue la scansione dei nomi di file autocompletabili."
 
 #: ../../src/ToolBar.cpp:639
 msgid "Search button"
@@ -5924,9 +5803,8 @@ msgid "Set plot format"
 msgstr "Imposta il formato del grafico"
 
 #: ../../src/wxMaximaFrame.cpp:1246
-#, fuzzy
 msgid "Set the \"algebraic\" flag"
-msgstr "Mostra/nascondi algebrica"
+msgstr "Imposta flag \"algebrico\""
 
 #: ../../src/wxMaxima.cpp:7038
 msgid "Set the diagram title"
@@ -5979,7 +5857,7 @@ msgstr "Imposta lo zoom al 80%"
 #: ../../src/ConfigDialogue.cpp:164
 msgid ""
 "Sets the language, line ending type and charset encoding programs will use"
-msgstr ""
+msgstr "Imposta la lingua, il tipo di ritorno a capo e la codifica dei caratteri che i programmi useranno"
 
 #: ../../src/wxMaxima.cpp:3914
 msgid "Setting a few prerequisites for wxMaxima"
@@ -5993,7 +5871,7 @@ msgstr "Impostazione gnuplot_binary a %s"
 #: ../../src/ConfigDialogue.cpp:165
 msgid ""
 "Setting this to \"cat\" causes gnuplot not to halt if there is much output"
-msgstr ""
+msgstr "Impostando questo a \"cat\" fa in modo che gnuplot non si blocchi se non ci sono molti dati in uscita"
 
 #: ../../src/wxMaximaFrame.cpp:2269
 msgid "Setup a 2D plot"
@@ -6021,9 +5899,8 @@ msgid "Setup the engineering format..."
 msgstr "Imposta il formato ingegneristico..."
 
 #: ../../src/Worksheet.cpp:1501
-#, fuzzy
 msgid "Show \"%\" in special constants"
-msgstr "Costanti speciali"
+msgstr "Mostra \"%\" nelle costanti speciali"
 
 #: ../../src/wxMaximaFrame.cpp:947
 msgid "Show &Definition..."
@@ -6043,7 +5920,7 @@ msgstr "Mostra le &variabili"
 
 #: ../../src/Worksheet.cpp:1520
 msgid "Show * as multiplication dot"
-msgstr ""
+msgstr "Mostra * come punto moltiplicativo"
 
 #: ../../src/wxMaximaFrame.cpp:879
 msgid "Show Template\tCtrl+Shift+Space"
@@ -6055,7 +5932,7 @@ msgstr "Mostra un suggerimento"
 
 #: ../../src/Worksheet.cpp:1566
 msgid "Show all + allow linebreaks in long numbers"
-msgstr ""
+msgstr "Mostra tutto + permette i ritorni a capo nei numeri lunghi"
 
 #: ../../src/wxMaxima.cpp:8420
 msgid "Show all commands similar to:"
@@ -6075,7 +5952,7 @@ msgstr "Mostra un esempio di uso"
 
 #: ../../src/History.cpp:87
 msgid "Show commands from current session only"
-msgstr ""
+msgstr "Mostra i comandi solo dalla sessione corrente"
 
 #: ../../src/wxMaximaFrame.cpp:1403
 msgid "Show commands similar to"
@@ -6219,15 +6096,10 @@ msgid "Simplify trigonometric expression"
 msgstr "Semplifica espressione trigonometrica"
 
 #: ../../src/TipOfTheDay.cpp:121
-#, fuzzy
 msgid ""
 "Since wxMaxima 0.8.2 you can also insert images into your documents. Use "
 "'Cell->Insert Image...' menu command."
-msgstr ""
-"Dalla versione 0.8.2 di wxMaxima è possibile inserire immagini nei "
-"documenti. Usare il comando dal menu \"Cella->Inserisci immagine...\". "
-"Notare bene che è necessario salvare il documento in formato \"documento XML "
-"wxMaxima\" se si desidera che l'immagine venga salvata assieme al documento."
+msgstr "Dalla versione 0.8.2 di wxMaxima è possibile inserire immagini nei documenti. Usare il comando da menu \"Cella->Inserisci immagine...\"."
 
 #: ../../src/wxMaxima.cpp:6384 ../../src/wxMaxima.cpp:6400
 msgid "Solution:"
@@ -6404,9 +6276,8 @@ msgid "Statistics\tAlt+Shift+S"
 msgstr "Statistiche\tAlt+Shift+S"
 
 #: ../../src/wxMaximaFrame.cpp:806
-#, fuzzy
 msgid "Straight lines"
-msgstr "Righe antialias."
+msgstr "Righe diritte"
 
 #: ../../src/wxMaxima.cpp:1639
 msgid "String from maxima apparently didn't end in a newline"
@@ -6514,7 +6385,7 @@ msgstr "Sempraz"
 
 #: ../../src/ConfigDialogue.cpp:157
 msgid "Tells maxima where to store the result of compiling libraries"
-msgstr ""
+msgstr "Dice a maxima dove memorizzare il risultato delle librerie di compilazione"
 
 #: ../../src/ToolBar.cpp:243 ../../src/wxMaximaFrame.cpp:2176
 msgid "Text"
@@ -6533,16 +6404,11 @@ msgid "Text cell background"
 msgstr "Sfondo della cella di testo"
 
 #: ../../src/TipOfTheDay.cpp:175
-#, fuzzy
 msgid ""
 "Text cells can hold citations that as marked as such by beginning a line "
 "with \" > \". The number of spaces in front of the \">\" determines the "
 "indentation level, as it does with bullet lists."
-msgstr ""
-"Le celle di testo possono contenere citazioni marcate come tali "
-"dall'iniziare una riga con \" > \". Il numero di spazi davanti al carattere "
-"\">\" determina il livello di indentazione, come accade con gli elenchi "
-"puntati."
+msgstr "Le celle di testo possono contenere citazioni marcate come tali dall'inizio riga con \" > \". Il numero di spazi davanti al carattere \">\" determina il livello di indentazione, come accade con gli elenchi puntati."
 
 #: ../../src/Configuration.cpp:1458
 msgid "Text equal to selection"
@@ -6550,7 +6416,7 @@ msgstr "Testo uguale alla selezione"
 
 #: ../../src/wxMaxima.cpp:5926
 msgid "Text snippet"
-msgstr ""
+msgstr "Ritaglio di testo"
 
 #: ../../src/TipOfTheDay.cpp:166
 msgid ""
@@ -6596,7 +6462,7 @@ msgstr "Compromesso tra velocità e accuratezza"
 msgid ""
 "The buttons in this category reset wxMaxima's settings immediately, once "
 "they are pressed."
-msgstr ""
+msgstr "I pulsanti in questa categoria reimpostano le impostazioni di wxMaxima immediatamente, una volta premuti."
 
 #: ../../src/Worksheet.cpp:5829
 msgid "The cache for the subjects the manual contains cannot be read."
@@ -6658,26 +6524,25 @@ msgid ""
 "The directory containing the startup files, any user libraries and, if "
 "MAXIMA_OBJDIR isn't set the subdirectory with the results from compiling "
 "maxima libraries."
-msgstr ""
+msgstr "La cartella contenente i file di avvio, qualunque libreria utente e, se MAXIMA_OBJDIR non è impostata, la sottocartella con il risultati dalla compilazione delle librerie maxima."
 
 #: ../../src/ConfigDialogue.cpp:159
 msgid ""
 "The directory maxima places temporary files in, for example plots that are "
 "to be included in the worksheet."
-msgstr ""
+msgstr "La cartella dove maxima mette i file temporanei, per esempio grafici da includere nel foglio di lavoro."
 
 #: ../../src/ConfigDialogue.cpp:160
 msgid "The directory the compiled versions of maxima are placed in"
-msgstr ""
+msgstr "La cartella dove vengono messe le versioni compilate di maxima"
 
 #: ../../src/ConfigDialogue.cpp:161
-#, fuzzy
 msgid "The directory the maxima manual can be found in"
-msgstr "Leggi le voci che il manuale di maxima offre da %s"
+msgstr "La cartella dove si può trovare il manuale di maxima"
 
 #: ../../src/ConfigDialogue.cpp:162
 msgid "The directory the user's home directory is in"
-msgstr ""
+msgstr "La cartella dove si trova la cartella utente"
 
 #: ../../src/ConfigDialogue.cpp:383
 msgid "The document class LaTeX is instructed to use for our documents."
@@ -6710,7 +6575,7 @@ msgstr "La combinazione di tasti Maiusc+Spazio crea uno spazio non divisibile."
 
 #: ../../src/ConfigDialogue.cpp:163
 msgid "The list of directories the operating system looks for programs in"
-msgstr ""
+msgstr "L'elenco di cartelle che il sistema operativo controlla per la presenza di programmi eseguibili"
 
 #: ../../src/wxMaxima.cpp:7452
 msgid ""
@@ -6721,23 +6586,18 @@ msgstr ""
 "lista -> come contenitore dei valori correnti delle variabili\"."
 
 #: ../../src/TipOfTheDay.cpp:139
-#, fuzzy
 msgid ""
 "The load() command of Maxima versions >5.38 is able to load .wxm files as "
 "library of Maxima's commands."
-msgstr ""
-"Il comando load() di Maxima versione >5.38 è in grado di caricare file .wxm "
-"come librerie di comandi maxima."
+msgstr "Il comando load() di Maxima versione >5.38 è in grado di caricare file .wxm come librerie di comandi Maxima."
 
 #: ../../src/wxMaximaFrame.cpp:1397
-#, fuzzy
 msgid "The manual of Maxima"
-msgstr "Il manuale locale di Maxima"
+msgstr "Il manuale di Maxima"
 
 #: ../../src/wxMaximaFrame.cpp:1394
-#, fuzzy
 msgid "The manual of wxMaxima"
-msgstr "Il manuale locale di wxMaxima"
+msgstr "Il manuale di wxMaxima"
 
 #: ../../src/MaxSizeChooser.cpp:55
 msgid "The maximum size for this image. Values <= 0 mean: Unspecified."
@@ -6845,6 +6705,8 @@ msgid ""
 "You can ask questions there - and please help other users, by answering "
 "their questions, if you know an answer."
 msgstr ""
+"C'è un forum di discussioni per wxMaxima su https://github.com/wxMaxima-developers/wxmaxima/discussions.\n"
+"Là si possono porre domande - vi preghiamo di usarlo anche per aiutare gli altri utenti, rispondendo alle loro domande, se conoscete già la risposta."
 
 #: ../../src/wxMaxima.cpp:1369
 msgid ""
@@ -6895,7 +6757,7 @@ msgstr ""
 
 #: ../../src/ConfigDialogue.cpp:1083
 msgid "Time [in Minutes] between autosaves"
-msgstr ""
+msgstr "Tempo [in minuti] tra autosalvataggi"
 
 #: ../../src/wxMaxima.cpp:7938 ../../src/wxMaxima.cpp:9095
 msgid "Times:"
@@ -7073,7 +6935,7 @@ msgstr "Tentativo di riavviare maxima."
 msgid ""
 "Trying to start the socket a maxima on the local machine can connect to on "
 "port %i"
-msgstr ""
+msgstr "Tentativo di far partire il socket su cui maxima può collegarsi sulla macchina locale alla porta %i"
 
 #: ../../src/ConfigDialogue.cpp:195
 msgid "Turkish"
@@ -7217,9 +7079,8 @@ msgid "Upsilon"
 msgstr "Upsilon"
 
 #: ../../src/wxMaximaFrame.cpp:805
-#, fuzzy
 msgid "Use \"<\" and \">\" as parenthesis for matrices"
-msgstr "Usa le parentesi tonde per le matrici"
+msgstr "Usa \"<\" e \">\" come parentesi per le matrici"
 
 #: ../../src/wxMaximaFrame.cpp:1295 ../../src/wxMaximaFrame.cpp:1324
 msgid "Use a list"
@@ -7266,9 +7127,8 @@ msgid "Use unicode Math Symbols, if available"
 msgstr "Usa simboli matematici unicode se disponibili"
 
 #: ../../src/wxMaximaFrame.cpp:806
-#, fuzzy
 msgid "Use vertical lines instead of parenthesis for matrices"
-msgstr "Usa le parentesi tonde per le matrici"
+msgstr "Usa le linee verticali invece delle parentesi per le matrici"
 
 #: ../../src/Worksheet.cpp:1576
 msgid "User labels only"
@@ -7291,15 +7151,15 @@ msgstr "Etichette definite dall'utente se disponibili"
 msgid ""
 "Using gnuplot's antialiassing-less png driver for embedded plots as pngcairo "
 "could not be found"
-msgstr ""
+msgstr "Uso del driver png senza antialias di gnuplot per i grafici incorporati dato che non si riesce a trovare pngcairo"
 
 #: ../../src/wxMaxima.cpp:2134
 msgid "Using gnuplot's pngcairo driver for embedded plots"
-msgstr ""
+msgstr "Uso del driver di gnuplot pngcairo per i grafici incorportati"
 
 #: ../../src/Worksheet.cpp:5806
 msgid "Using the built-in list of manual anchors."
-msgstr ""
+msgstr "Uso della lista incorporata di àncore manuali."
 
 #: ../../src/ConfigDialogue.cpp:431
 msgid "Value"
@@ -7366,6 +7226,8 @@ msgid ""
 "packages and caches in.\n"
 "Make sure that your system's home directory is set up correctly"
 msgstr ""
+"Attenzione: impossibile creare %s, la cartella nella quale maxima tiene la configurazione, i pacchetti utenti e le memorie di lavoro.\n"
+"Assicurarsi che la cartella utente del sistema operativo sia configurata correttamente"
 
 #: ../../src/wxMaxima.cpp:4301
 msgid "Welcome to wxMaxima"
@@ -7387,7 +7249,7 @@ msgstr ""
 
 #: ../../src/wxMaximaFrame.cpp:976
 msgid "When to invoke the lisp compiler's debugger"
-msgstr ""
+msgstr "Quando invocare il debugger del compilatore lisp"
 
 #: ../../src/ConfigDialogue.cpp:815
 msgid ""
@@ -7395,7 +7257,7 @@ msgid ""
 "program isn't controlled by settings, except of the few wxMaxima settings "
 "that set the value of variables within Maxima: Instead Maxima is configured "
 "using environment variables, the Startup File and command-line switches."
-msgstr ""
+msgstr "Mentre wxMaxima è controllato dalle impostazioni qui presenti, Maxima invece, essendo un programma a riga di comando non è controllato dalle impostazioni, eccetto quelle poche di  wxMaxima che impostano il valore di variabili dentro Maxima. Diversamente, Maxima viene configurato usando variabili ambiente, dal file di avvio e dalle opzioni a riga di comando."
 
 #: ../../src/wxMaxima.cpp:4958
 msgid ""
@@ -7450,15 +7312,11 @@ msgstr ""
 "Le celle saranno valutate nell'ordine di apparizione nel documento."
 
 #: ../../src/TipOfTheDay.cpp:85
-#, fuzzy
 msgid ""
 "You can get help on a Maxima function by selecting or clicking on the "
 "function name and pressing F1. wxMaxima will search the help index for the "
 "selection or the word under the cursor."
-msgstr ""
-"Si può ottenere aiuto su una funzione di Maxima selezionandola o facendo "
-"clic sul nome della funzione e premendo F1. wxMaxima cercherà nell'indice "
-"della guida la parola o la selezione di parole sutto il cursore."
+msgstr "Si può ottenere aiuto su una funzione di Maxima selezionandola o facendo clic sul nome della funzione e premendo F1. wxMaxima cercherà nell'indice della guida la parola o la selezione di parole sutto il cursore."
 
 #: ../../src/TipOfTheDay.cpp:79
 msgid ""
@@ -7502,12 +7360,15 @@ msgid ""
 "reported at https://sourceforge.net/p/maxima/bugs/\n"
 "Please check, before, if the bug was not already reported."
 msgstr ""
+"Avete trovato un difetto in wxMaxima? Segnalatecelo su https://github.com/wxMaxima-developers/wxmaxima/issues\n"
+"Un difetto matematico può essere in effetti un difetto in Maxima (il backend), e può essere segnalato su https://sourceforge.net/p/maxima/bugs/\n"
+"Ma prima di farlo, per favore, controllate che non sia già stato segnalato."
 
 #: ../../src/TipOfTheDay.cpp:190
 msgid ""
 "You got an idea for an improvement of wxMaxima? Great! Please submit your "
 "idea at https://github.com/wxMaxima-developers/wxmaxima/issues. "
-msgstr ""
+msgstr "Avete un'idea su come si può migliorare wxMaxima? Ottimo! Sottoponeteci la vostra idea su https://github.com/wxMaxima-developers/wxmaxima/issues."
 
 #: ../../src/wxMaxima.cpp:10212
 #, c-format
@@ -7615,14 +7476,12 @@ msgid "choose between installed maxima versions"
 msgstr "scegliere tra le versioni di maxima installate"
 
 #: ../../src/wxMaxima.cpp:6645
-#, fuzzy
 msgid "comma-separated column numbers:"
-msgstr "Elementi separati da virgole"
+msgstr "numeri di colonna separati da virgole:"
 
 #: ../../src/wxMaxima.cpp:6645
-#, fuzzy
 msgid "comma-separated row numbers:"
-msgstr "Variabili separate da virgole"
+msgstr "numeri di riga separati da virgole:"
 
 #: ../../src/wxMaximaFrame.cpp:1943
 msgid "delta"
@@ -7817,13 +7676,12 @@ msgid "rho"
 msgstr "rho"
 
 #: ../../src/ConfigDialogue.cpp:1216
-#, fuzzy
 msgid "sbcl: use <int>Mbytes of heap"
-msgstr "dice a sbcl di usare <int>Mbytes di heap"
+msgstr "sbcl: usa <int>Mbyte di heap"
 
 #: ../../src/ConfigDialogue.cpp:1219
 msgid "sbcl: use <int>Mbytes of stack for function calls"
-msgstr ""
+msgstr "sbcl: usa <int>Mbyte di stack per le chiamate a funzioni"
 
 #: ../../src/wxMaximaFrame.cpp:1957
 msgid "sigma"
@@ -7914,21 +7772,16 @@ msgstr "wxMaxima %d"
 #: ../../src/wxMaxima.cpp:9987 ../../src/wxMaxima.cpp:9989
 #: ../../src/wxMaxima.cpp:9998 ../../src/wxMaxima.cpp:10001
 #: ../../src/wxMaximaFrame.cpp:201
-#, fuzzy, c-format
+#, c-format
 msgid "wxMaxima %s (%s) "
-msgstr "wxMaxima %s "
+msgstr "wxMaxima %s (%s) "
 
 #: ../../src/TipOfTheDay.cpp:133
-#, fuzzy
 msgid ""
 "wxMaxima can be made to execute commands at every start-up by placing them "
 "in a text file with the name wxmaxima.rc in the user directory. This "
 "directory can be found by typing maxima_userdir;"
-msgstr ""
-"wxMaxima può essere impostato per eseguire dei comandi ad ogni avvio "
-"ponendoli in un file di testo di nome wxmaxima.rc nella cartella utente. La "
-"posizione di questa cartella può essere verificata battendo il comando "
-"maxima_userdir."
+msgstr "wxMaxima può essere impostato per eseguire dei comandi ad ogni avvio ponendoli in un file di testo di nome wxmaxima.rc nella cartella utente. La posizione di questa cartella può essere verificata battendo il comando maxima_userdir;"
 
 #: ../../src/wxMaxima.cpp:3690
 msgid "wxMaxima cannot read the xml contents of "
@@ -7939,14 +7792,13 @@ msgid "wxMaxima configuration"
 msgstr "Configurazione di wxMaxima"
 
 #: ../../src/wxMaxima.cpp:1744
-#, fuzzy
 msgid ""
 "wxMaxima could not start a server.\n"
 "\n"
 "Please check you have network support\n"
 "enabled and try again!"
 msgstr ""
-"wxMaxima non riesce a eseguire il server.\n"
+"wxMaxima non riesce a eseguire un server.\n"
 "\n"
 "Controllare che il supporto alla rete\n"
 "sia abilitato e riprovare!"
@@ -7993,7 +7845,7 @@ msgid ""
 "wxMaxima is programmed in C++ using the wxWidgets toolkit and uses CMake as "
 "build system. You can contribute to wxMaxima, if you have some knowledge "
 "with this environment."
-msgstr ""
+msgstr "wxMaxima è programmato in C++ usando il toolkit wxWidgets e usa CMake come sistema di compilazione. Si può contribuire a wxMaxima, se si possiede qualche conoscenza su questo ambiente."
 
 #: ../../src/TipOfTheDay.cpp:184
 msgid ""
@@ -8065,13 +7917,13 @@ msgstr "Licenza di wxMaxima"
 msgid ""
 "wxMaxma remembers answers from the last run and is able to automatically "
 "send them to maxima, if requested"
-msgstr ""
+msgstr "wxMaxma ricorda le risposte dall'ultima esecuzione ed è in grado di inviare automaticamente a maxima, se richiesto"
 
 #: ../../src/Worksheet.cpp:1443 ../../src/Worksheet.cpp:1750
 msgid ""
 "wxMaxma remembers answers from the last run and is able to offer them as the "
 "default answer"
-msgstr ""
+msgstr "wxMaxma ricorda le risposte dall'ultima esecuzione ed è in grado di offrirle come risposte predefinite"
 
 #: ../../src/wxMaximaFrame.cpp:129
 msgid "wxWidgets is using GTK 2"
@@ -8118,2299 +7970,3 @@ msgstr "sì"
 #: ../../src/wxMaximaFrame.cpp:1945
 msgid "zeta"
 msgstr "zeta"
-
-#~ msgid "Maximum displayed number of digits:"
-#~ msgstr "Numero massimo di cifre mostrate:"
-
-#, c-format
-#~ msgid ""
-#~ "\n"
-#~ "Multiprocessing using OpenMP %s"
-#~ msgstr ""
-#~ "\n"
-#~ "Multiprocessing con OpenMP %s"
-
-#~ msgid ""
-#~ "\n"
-#~ "No OpenMP support"
-#~ msgstr ""
-#~ "\n"
-#~ "Nessun supporto OpenMP"
-
-#~ msgid ""
-#~ "\n"
-#~ "No fine-grained OpenMP locks built in"
-#~ msgstr ""
-#~ "\n"
-#~ "Nessun lock OpenMP di precisione incorporato"
-
-#~ msgid ""
-#~ "\n"
-#~ "Using fine-grained OpenMP locks"
-#~ msgstr ""
-#~ "\n"
-#~ "Uso dei lock di precisione OpenMP"
-
-#~ msgid ""
-#~ " * Open the \"mathematical symbols\" sidebar (if it isn't already "
-#~ "displayed) and right-click on it\n"
-#~ " * Drag-and-drop a combining diacritic to the \"add new symbols\" "
-#~ "dialogue, for example one of the following.\n"
-#~ " * The \"symbols\" sidebar now should allow for easy access to these "
-#~ "characters.\n"
-#~ msgstr ""
-#~ " * Aprire la barra laterale dei \"simboli matematici\" (se non è già "
-#~ "mostrata) e fare clic destro su di essa\n"
-#~ " * Trascinare-e-rilasciare un diacritico combinante sulla finestra di "
-#~ "dialogo \"aggiungi nuovi simboli\", per esempio uno dei seguenti.\n"
-#~ " * La barra laterale dei \"simboli\" ora dovrebbe permettere un facile "
-#~ "accesso a questi caratteri.\n"
-
-#~ msgid ""
-#~ " * ̂\n"
-#~ " * ̃\n"
-#~ " * ̅\n"
-#~ msgstr ""
-#~ " * ̂\n"
-#~ " * ̃\n"
-#~ " * ̅\n"
-
-#~ msgid ""
-#~ "* First enter the character you want to equip with new accents or the "
-#~ "like.\n"
-#~ "* Then add a Backslash (\"\\\") in order to tell maxima that the symbol "
-#~ "that now follows is to be interpreted as an ordinary character\n"
-#~ "* Then add the combining diacritic(s):\n"
-#~ msgstr ""
-#~ "* Per primo inserire il carattere a cui si vuole aggiungere nuovi accenti "
-#~ "o cose simili.\n"
-#~ "* Poi aggiungere una barra retroversa (\"\\\") in modo da rire a maxima "
-#~ "che il simbolo che segue va interpretato come un semplice carattere\n"
-#~ "* Poi aggiungere i diacritici combinanti:\n"
-
-#~ msgid "...and let's plot the result for different L_Cable:\n"
-#~ msgstr "...e grafichiamo il risultato per differenti L_Cable:\n"
-
-#~ msgid "...and over this list we can iterate efficiently again:\n"
-#~ msgstr "...e su questa lista possiamo iterare efficientemente di nuovo:\n"
-
-#~ msgid ""
-#~ "A better approach is therefore to use Caruana's approach for fitting:\n"
-#~ msgstr ""
-#~ "Un approccio migliore è quindi quello di usare l'approccio di Caruana per "
-#~ "il fitting:\n"
-
-#~ msgid ""
-#~ "A circuit is provided with an input capacitance of C_In=100nF, provides a "
-#~ "resistive load R_Load and is connected to a power supply U_Supply via a "
-#~ "cable of the inductivity L_Cable. In this moment the circuit is destroyed "
-#~ "by an overvoltage. Let's see if we can calculate how high this voltage "
-#~ "was.\n"
-#~ msgstr ""
-#~ "Un circuito è dotato di una capacità di ingresso di C_In=100nF, fornisce "
-#~ "un carico resistivo R_Load ed è collegato ad un alimentatore U_Supply "
-#~ "tramite un cavo ddi induttività L_Cable. In questo momento il circuito "
-#~ "viene distrutto da una sovratensione. Vediamo se possiamo calcolare "
-#~ "quanto era alta questa tensione.\n"
-
-#~ msgid "A few combining diacritics are:\n"
-#~ msgstr "Alcuni diacritici combinanti sono:\n"
-
-#~ msgid "A ridiculously advanced example\n"
-#~ msgstr "Un esempio ridicolmente avanzato\n"
-
-#~ msgid ""
-#~ "A simple voltage divider of R_1 and R_2 is powered by a voltage source "
-#~ "U_In. In which range can U_Out lie?\n"
-#~ msgstr ""
-#~ "Un semplice divisore di tensione formato da R_1 e R_2 è alimentato da una "
-#~ "sorgente di tensione U_In. In quale intervallo può trovarsi U_Out?\n"
-
-#~ msgid "A third fitting algorithm\n"
-#~ msgstr "Un terzo algoritmo di fitting\n"
-
-#~ msgid "A weird example, just for showing off\n"
-#~ msgstr "Uno strano esempio, solo per mettersi in mostra\n"
-
-#~ msgid ""
-#~ "Accessing a random item of a list involves a time-consuming iterating "
-#~ "over the list. But if one plans to iterate through the whole list, anyway "
-#~ "(as one normally has to) this work isn't much of an overhead - and maxima "
-#~ "offers several functions for this purpose:\n"
-#~ msgstr ""
-#~ "L'accesso a un elemento casuale di una lista comporta un'iterazione che "
-#~ "richiede molto tempo. Ma se si prevede di scorrere l'intera lista, "
-#~ "comunque (come si fa normalmente) questo lavoro non è un granché pesante "
-#~ "- e maxima offre diverse funzioni per questo scopo:\n"
-
-#~ msgid "Actually using combining diacritics\n"
-#~ msgstr "Diacritici combinanti attualmente in uso\n"
-
-#~ msgid ""
-#~ "Additionally haven given nearly all equations names allows us to "
-#~ "reference the equations whenever we need them. For example we can print "
-#~ "them out again:\n"
-#~ msgstr ""
-#~ "Inoltre, avendo dato dei nomi a quasi tutte le equazioni ciò ci consente "
-#~ "di fare riferimento alle equazioni ogni volta che ne abbiamo bisogno.\n"
-
-#~ msgid ""
-#~ "Additionally https://ieeexplore.ieee.org/document/5999593 offers an "
-#~ "iterative method that allows to reduce the influence of noise in each "
-#~ "step:\n"
-#~ msgstr ""
-#~ "Inoltre, https://ieeexplore.ieee.org/document/5999593 offre un metodo "
-#~ "iterativo che permette di ridurre l'influenza del rumore ad ogni passo:\n"
-
-#~ msgid ""
-#~ "Additionally we are interested only in the first item in the result "
-#~ "list:\n"
-#~ msgstr ""
-#~ "Inoltre, siamo interessati solo al primo elemento della lista dei "
-#~ "risultati:\n"
-
-#~ msgid ""
-#~ "Additionally, the left hand side and the right hand side can be extracted "
-#~ "using the command lhs() and rhs(), which allows to use the part left or "
-#~ "right of the \"=\" in a new equation:\n"
-#~ msgstr ""
-#~ "Inoltre, il lato sinistro e il lato destro possono essere estratti usando "
-#~ "il comando lhs () e rhs (), che consente di utilizzare la parte sinistra "
-#~ "o destra di \"=\" in una nuova equazione:\n"
-
-#~ msgid "Advanced variable names\n"
-#~ msgstr "Nomi variabili avanzati\n"
-
-#~ msgid "Alternatively the curve can be made more colorful:\n"
-#~ msgstr "In alternativa si può rendere la curva più colorata:\n"
-
-#~ msgid "An example\n"
-#~ msgstr "Un esempio\n"
-
-#~ msgid ""
-#~ "Another drawback is that mathematics is based on the fact that two things "
-#~ "that cancel each other out actually do so:\n"
-#~ msgstr ""
-#~ "Un altro svantaggio è che la matematica si basa sul fatto che se due cose "
-#~ "che si annullano a vicenda lo facciano effettivamente:\n"
-
-#~ msgid ""
-#~ "Any other number can be converted to a floating-point one using the "
-#~ "float() keyword:\n"
-#~ msgstr ""
-#~ "Qualsiasi altro numero può essere convertito in virgola mobile "
-#~ "utilizzando la parola chiave float() :\n"
-
-#~ msgid "Appending lists of tolerances\n"
-#~ msgstr "Accodamento elenchi di tolleranze\n"
-
-#~ msgid ""
-#~ "As a first step normally the real measurement data is loaded from a .csv "
-#~ "file using read_matrix:\n"
-#~ msgstr ""
-#~ "Come primo passo normalmente i dati delle misure vengono caricati da un "
-#~ "file .csv usando read_matrix:\n"
-
-#~ msgid ""
-#~ "As can easily be seen if one pops out the above images interactively and "
-#~ "moves them the human brain is quite efficient in grasping the complete "
-#~ "shape of a moving picture. wxMaxima allows to embed such a thing into the "
-#~ "worksheet:\n"
-#~ msgstr ""
-#~ "Come si può facilmente vedere se si estraggono interattivamente le "
-#~ "immagini sopra e le si spostano, il cervello umano è abbastanza "
-#~ "efficiente nel cogliere la forma completa di un'immagine in movimento. "
-#~ "wxMaxima consente di incorporare una cosa del genere nel foglio di "
-#~ "lavoro:\n"
-
-#~ msgid ""
-#~ "As seen above the last equation displayed by maxima can be referenced by "
-#~ "using the placeholder \"%\":\n"
-#~ msgstr ""
-#~ "Come visto sopra, l'ultima equazione visualizzata da maxima può essere "
-#~ "referenziata usando il segnaposto \"%\":\n"
-
-#~ msgid "As we have guessed the 2nd voltage divider was the better one.\n"
-#~ msgstr ""
-#~ "Come abbiamo intuito, il secondo divisore di tensione è il migliore.\n"
-
-#~ msgid ""
-#~ "Besides lsquares_estimates_approximate the lsquares package also provides "
-#~ "a command named lsquares_estimates that tries to find the exact optimum "
-#~ "by running the problem through solve() before finding the answer "
-#~ "numerically. But as it is always the case with computers if the problem "
-#~ "that is to be solved is complex one does never know in advance how long "
-#~ "it will take and if it ever will finish. lsquares_estimates_approximate "
-#~ "doesn't have this drawback.\n"
-#~ msgstr ""
-#~ "Oltre a lsquares_estimates_approximate, il pacchetto lsquares fornisce "
-#~ "anche un comando chiamato lsquares_estimates che cerca di trovare "
-#~ "l'esatto ottimale eseguendo il problema attraverso solve() prima di "
-#~ "trovare numericamente la risposta. Ma come sempre accade con i computer "
-#~ "se il problema che deve essere risolto è complesso, non si può mai sapere "
-#~ "in anticipo quanto tempo ci vorrà e se mai finirà. "
-#~ "lsquares_estimates_approximate non ha questo inconveniente.\n"
-
-#~ msgid "Bigfloats\n"
-#~ msgstr "Bigfloat\n"
-
-#~ msgid "Boiling it down to numbers\n"
-#~ msgstr "Riducendolo in numeri\n"
-
-#~ msgid ""
-#~ "Both solutions solve() offers are valid. We can pick any of them "
-#~ "manually, for example:\n"
-#~ msgstr ""
-#~ "Entrambe le soluzioni che solve() offre sono valide. Possiamo prelevarne "
-#~ "una qualsiasi manualmente, per esempio:\n"
-
-#~ msgid ""
-#~ "But you can also tell makelist to iterate over a list - which is quite "
-#~ "fast:\n"
-#~ msgstr ""
-#~ "Ma si può anche dire a makelist di iterare una lista - cosa che è "
-#~ "piuttosto veloce:\n"
-
-#~ msgid ""
-#~ "By choosing [a,b] as the list of solution variables, maxima is "
-#~ "automatically told to eliminate these two variables on the right side of "
-#~ "the equations, if possible.\n"
-#~ msgstr ""
-#~ "Scegliendo [a,b] come lista di variabili della soluzione, si indica "
-#~ "automaticamente a maxima di eliminare queste due variabili sul lato "
-#~ "destro delle equazioni, se possibile.\n"
-
-#~ msgid ""
-#~ "By default the wrstcse package tests all combinations of 3 values per "
-#~ "tol[n]: The minimum, the maximum and the typical value. If we only want "
-#~ "to test 2 values (the minimum and the maximum) that might speed up "
-#~ "lengthy calculations with many values that contain tolerances:\n"
-#~ msgstr ""
-#~ "Per impostazione predefinita il pacchetto wrstcse testa tutte le "
-#~ "combinazioni di 3 valori per tol[n]: Il minimo, il massimo e il valore "
-#~ "tipico. Se si vuole testare solo per 2 valori (il minimo e il massimo) "
-#~ "ciò può velocizzare il calcoli lenti con molti valori che contengono "
-#~ "tolleranze:\n"
-
-#~ msgid ""
-#~ "By escaping it with a backslash nearly every symbol can be made to be "
-#~ "interpreted as an ordinary character:\n"
-#~ msgstr ""
-#~ "Facendone l'escape tramite barra inversa quasi ogni simbolo può essere "
-#~ "reso interpretabile come un normale carattere:\n"
-
-#~ msgid ""
-#~ "By having given this equation a name (\"sol2\") we gained a way to re-use "
-#~ "this equation later.\n"
-#~ msgstr ""
-#~ "Avendo dato un nome a questa equazione (\"sol2\") abbiamo ottenuto un "
-#~ "modo per riutilizzare in seguito questa equazione.\n"
-
-#~ msgid "Contour lines\n"
-#~ msgstr "Linee di contorno\n"
-
-#~ msgid "Converting the data to a continuous curve\n"
-#~ msgstr "Conversione dei dati in una linea continua\n"
-
-#~ msgid ""
-#~ "Converting the result into a list of equations is a bit more "
-#~ "complicated:\n"
-#~ msgstr ""
-#~ "La conversione del risultato in una lista di equazioni è un po' più "
-#~ "complicata:\n"
-
-#~ msgid "Dealing with non-evenly-spaced data\n"
-#~ msgstr "Trattare con dati non distribuiti uniformemente\n"
-
-#~ msgid "Description of the problem\n"
-#~ msgstr "Descrizione del problema\n"
-
-#~ msgid "Easy access to combining diacritics\n"
-#~ msgstr "Facile accesso ai diacritici combinanti\n"
-
-#~ msgid "Engineer-style Subscripts\n"
-#~ msgstr "Pedici in formati ingegneristico\n"
-
-#~ msgid "Equipping any character with accents\n"
-#~ msgstr "Dotazione di accenti per ogni carattere\n"
-
-#~ msgid "Exact numbers\n"
-#~ msgstr "Numeri esatti\n"
-
-#~ msgid "Fast access to all list elements\n"
-#~ msgstr "Accesso veloce a tutti gli elementi lista\n"
-
-#~ msgid "Fast list access\n"
-#~ msgstr "Accesso veloce lista\n"
-
-#~ msgid ""
-#~ "First we describe the energy-storing circuit elements. The voltage over "
-#~ "the inductivity of the cable is calculated as follows:\n"
-#~ msgstr ""
-#~ "Innanzitutto si descrivono gli elementi del circuito di accumulo "
-#~ "dell'energia. La tensione sull'induttanza del cavo viene calcolata come "
-#~ "segue:\n"
-
-#~ msgid ""
-#~ "First we generate the new data and time vector. As always the fact that a "
-#~ "subst() is necessary in this step is caused by a bug in makelist.\n"
-#~ msgstr ""
-#~ "Per primo generiamo i nuovi dati e il vettore tempo. Come sempre il fatto "
-#~ "che sia necessaria una subst() in questo passo è dovuta ad un bug nella "
-#~ "makelist.\n"
-
-#~ msgid "First we load the tolerance calculation package:\n"
-#~ msgstr "Prima carichiamo il pacchetto di calcolo della tolleranza:\n"
-
-#~ msgid "Fitting data to a·exp(k·t)\n"
-#~ msgstr "Fit dei dati su a·exp(k·t)\n"
-
-#~ msgid "Fitting equations to real measurement data\n"
-#~ msgstr "Fit delle equazioni sui dati reali di misurazione\n"
-
-#~ msgid "Fitting the data is simple:\n"
-#~ msgstr "Il fit dei dati è semplice:\n"
-
-#~ msgid ""
-#~ "Fitting this curve will yield a better result as the first attempt:\n"
-#~ msgstr ""
-#~ "Il fit di questa curva otterrà un migliore risultato al primo tentativo:\n"
-
-#~ msgid "Floating-point numbers\n"
-#~ msgstr "Numeri in virgola mobile\n"
-
-#~ msgid "For all xkcd fans:\n"
-#~ msgstr "Per tutti i fan di xkcd:\n"
-
-#~ msgid ""
-#~ "For does do nearly the same as makelist except that it doesn't return a "
-#~ "list.:\n"
-#~ msgstr ""
-#~ "For fa quasi la stessa cosa di makelist eccetto il fatto che non "
-#~ "restituisce una lista:\n"
-
-#~ msgid ""
-#~ "For many problems Maxima's solve() program instantly finds a list of "
-#~ "solutions:\n"
-#~ msgstr ""
-#~ "Per molti problemi il comando Maxima solve() trova istantaneamente un "
-#~ "elenco di soluzioni:\n"
-
-#~ msgid ""
-#~ "For the sake of generating a self-contained example we generate this data "
-#~ "synthetically. For the first example a parabola with a bit of measurement "
-#~ "noise might be a good start:\n"
-#~ msgstr ""
-#~ "Per generare un esempio autonomo, produciamo questi dati sintetizzandoli. "
-#~ "Per il primo esempio, una parabola con un po' di rumore di misurazione "
-#~ "potrebbe essere un buon inizio:\n"
-
-#~ msgid "Generating a list of 100 sets of possible values of \"coords\"\n"
-#~ msgstr ""
-#~ "Generazione di una lista di 100 insiemi di valori possibili di "
-#~ "\"coordinate\"\n"
-
-#~ msgid "Generating evenly-spaced samples from this curve\n"
-#~ msgstr "Generazione di campioni equalmente spaziati da questa curva\n"
-
-#~ msgid ""
-#~ "Hints for understanding this construct:\n"
-#~ " * args() converts a matrix to a list of lists, \n"
-#~ " * The makelist() command steps through this list and for each  data "
-#~ "point assigns the list of the x and y value to i\n"
-#~ " * rhs() and lhs() extract the right hand side and the left hand side of "
-#~ "an equation (the part right and left of the \"=\") \n"
-#~ " * and since we know which element in i means which variable we can use "
-#~ "subst() in order to substitute the elements in i into errval, the "
-#~ "equation that tells us how big the error in this point is.\n"
-#~ msgstr ""
-#~ "Suggerimenti per comprendere questo costrutto:\n"
-#~ " * args() converte una matrice in una lista di liste, \n"
-#~ " * il comando makelist() elabora questa lista e per ogni punto dati "
-#~ "assegna la lista dei valori x e y ad i\n"
-#~ " * rhs() e lhs() estraggono il lato destro e sinistro di un'equazione (la "
-#~ "parte a destra e a sinistra del segno \"=\") \n"
-#~ " * e siccome sappiamo quale elemento in i corrisponde a quale variabile, "
-#~ "possiamo usare subst() per sostituire gli elementi in i in errval, "
-#~ "l'equazione che ci dice quanto è grande l'errore in quel punto.\n"
-
-#~ msgid ""
-#~ "Hints for understanding this line:\n"
-#~ " * Map runs a command on each element of a list\n"
-#~ " * We want to  provide map with a command that converts something of the "
-#~ "type \"[a,3]\" to an \"a=3\".  But we won't re-use this command so there "
-#~ "is no need to actually give this command a name. Therefore we use "
-#~ "lambda() in order to create a name-less command with one parameter, x.\n"
-#~ " * args again converts a matrix to a list of lists and\n"
-#~ " * we need to convert our input data into a list in order to transpose it "
-#~ "(which means: exchange the columns by rows and vice versa)\n"
-#~ msgstr ""
-#~ "Suggerimenti per capire questa riga:\n"
-#~ " * Map esegue un comando per ogni elemento di una lista\n"
-#~ " * Vogliamo fornire una mappa con un comando che converte qualcosa del "
-#~ "tipo \"[a,3]\" in un \"a=3\".  Ma non riuseremo questo comando così non "
-#~ "ci serve dare un nome a questo comando. Perciò usiamo lambda() per creare "
-#~ "un comando anonimo con un parametro, x.\n"
-#~ " * args converte nuovamente una matrice in una lista di liste e\n"
-#~ " * ci serve convertire i nostri dati in ingresso in una lista in modo da "
-#~ "trasporla (cioè: scambiare le colonne con le righe e viceversa)\n"
-
-#~ msgid ""
-#~ "If in mathematics two things cancel each other out, they do so exactly. "
-#~ "The same isn't true with IEEE floating-point numbers like the ones the "
-#~ "computer uses:\n"
-#~ msgstr ""
-#~ "Se in matematica due cose si cancellano a vicenda, queste lo fanno "
-#~ "completamente. Lo stesso non è sempre vero con i numeri in virgola mobile "
-#~ "formato IEEE come quelli usati dal computer:\n"
-
-#~ msgid ""
-#~ "If it is necessary to append two lists of values with tolerances to each "
-#~ "other without risking a collision of tol[n] that happen to have the same "
-#~ "n in the two lists the following function can be used:\n"
-#~ msgstr ""
-#~ "Se bisogna accodare due elenchi di valori con tolleranze reciproche senza "
-#~ "rischiare una collisione di tol[n] che risulta avere lo stesso n nelle "
-#~ "due liste, è possibile utilizzare la seguente funzione:\n"
-
-#~ msgid ""
-#~ "If not the shape, but the absolute heights are important maxima offers "
-#~ "contour lines.\n"
-#~ msgstr ""
-#~ "Se non sono le forme ma le altezze massime che sono importanti, maxima "
-#~ "offre linee di contorno.\n"
-
-#~ msgid ""
-#~ "If one wants to store a bunch of items there is basically two methods:\n"
-#~ " * Arrays: If you know in advance that you want to store n items and that "
-#~ "all have the same size m it is easy to allocate m*n bytes of memory. "
-#~ "Determining the address the k-th element starts is easy in this case.\n"
-#~ " * Lists: Memory for each list element is allocated the moment a new "
-#~ "element is needed and each element knows where in the computer's memory "
-#~ "the next list element is stored.\n"
-#~ msgstr ""
-#~ "Se si desidera archiviare molti oggetti, ci sono fondamentalmente due "
-#~ "metodi:\n"
-#~ "  * Matrici: se si sa in anticipo che si desidera archiviare n elementi e "
-#~ "che hanno tutti la stessa dimensione m, è facile allocare m * n byte di "
-#~ "memoria. Determinare l'indirizzo che inizia il k-esimo elemento è facile "
-#~ "in questo caso.\n"
-#~ "  * Liste: la memoria per ciascun elemento dell'elenco viene allocata nel "
-#~ "momento in cui è necessario un nuovo elemento e ogni elemento sa dove è "
-#~ "memorizzato il successivo elemento dell'elenco nella memoria del "
-#~ "computer.\n"
-
-#~ msgid ""
-#~ "If the equation that defines the shape of a curve references the "
-#~ "steepness of the curve (diff('f(x),x)), the steepness of the steepness of "
-#~ "the curve (diff('f(x),x,2)) or any other derivation of the curve the "
-#~ "result is a differential equation that describes the general shapes the "
-#~ "curve can have without describing its actual height.\n"
-#~ msgstr ""
-#~ "Se l'equazione che definisce la forma di una curva fa riferimento alla "
-#~ "pendenza della curva (diff('f(x),x)), la pendenza della pendenza della "
-#~ "curva (diff('f(x),x,2)) o qualsiasi altra derivata della curva, il "
-#~ "risultato è un'equazione differenziale che descrive le forme generali che "
-#~ "la curva può avere senza descriverne l'altezza effettiva.\n"
-
-#~ msgid ""
-#~ "If the function one wants to run on each list element is only used once "
-#~ "and one doesn't want to give this one-time-function a name one can ask "
-#~ "the lambda() command to generate a name-less function with one argument: "
-#~ "Just pass lambda() first the list of the arguments the new command shall "
-#~ "have and the contents of that command:\n"
-#~ msgstr ""
-#~ "Se la funzione che si desidera eseguire su ciascun elemento della lista "
-#~ "viene utilizzata una sola volta e non si desidera assegnare un nome a "
-#~ "questa funzione una tantum, è possibile chiedere al comando lambda() di "
-#~ "generare una funzione senza nome con un argomento: Basta passare a "
-#~ "lambda(), prima l'elenco degli argomenti che il nuovo comando deve avere, "
-#~ "e poi il contenuto di quel comando:\n"
-
-#~ msgid ""
-#~ "If the outcome of a calculation depends on many factors determining "
-#~ "manually which cases are the worst-case one is a manual and error-prone "
-#~ "process. Alternatives to doing so are:\n"
-#~ " * Implementing a full-fledged interval arithmetics that automatically "
-#~ "determines the range of the output depending on the ranges of the input "
-#~ "parameters. Unfortunately doing so is so complex that any interval "
-#~ "arithmetics is bound to work only in more or less trivial cases.\n"
-#~ " * Calculating the derivation of the result over the tolerance of each "
-#~ "parameter hoping these derivations point to a global maximum, not only to "
-#~ "a local one.\n"
-#~ " * A montecarlo analysis: All parameters are filled with random values "
-#~ "out of their tolerance range. Then the calculation is repeated until the "
-#~ "spread of the outcome can be seen.\n"
-#~ " * Or systematically trying out all combinations at the edges of the n-"
-#~ "dimensional tolerance space. \n"
-#~ "The last two of these methods are described here.\n"
-#~ msgstr ""
-#~ "Se il risultato di un calcolo dipende da molti fattori, determinare "
-#~ "manualmente quali siano i casi peggiori è un processo manuale soggetto a "
-#~ "errori. Le alternative sono:\n"
-#~ "  * Implementazione di un intervallo aritmetico completo che determina "
-#~ "automaticamente l'intervallo d'uscita in base agli intervalli dei "
-#~ "parametri d'ingresso. Sfortunatamente, farlo è così complesso che "
-#~ "qualsiasi aritmetica di intervallo è destinata a funzionare solo in casi "
-#~ "più o meno banali.\n"
-#~ "  * Calcolo della derivata del risultato sulla tolleranza di ciascun "
-#~ "parametro sperando che queste derivate puntino a un massimo globale, non "
-#~ "solo a uno locale.\n"
-#~ "  * Un'analisi montecarlo: a tutti i parametri vengono assegnati valori "
-#~ "casuali al di fuori del loro intervallo di tolleranza. Quindi il calcolo "
-#~ "viene ripetuto fino a quando non si vede la diffusione del risultato.\n"
-#~ "  * Provare sistematicamente tutte le combinazioni ai bordi dello spazio "
-#~ "di tolleranza n-dimensionale.\n"
-#~ "Gli ultimi due metodi sono qui descritti.\n"
-
-#~ msgid ""
-#~ "If this calculation is repeated it will naturally result in slightly "
-#~ "different numeric values:\n"
-#~ msgstr ""
-#~ "Se questo calcolo viene ripetuto, si otterranno naturalmente valori "
-#~ "numerici leggermente diversi:\n"
-
-#~ msgid ""
-#~ "If this feature is over-eager (or not eagerly enough) wxMaxima offers "
-#~ "additional control:\n"
-#~ msgstr ""
-#~ "Se questa funzione è troppo intraprendente (o non abbastanza) wxMaxima "
-#~ "offre un controllo aggiuntivo:\n"
-
-#~ msgid ""
-#~ "If too low or to high a number of digits is displayed here when right-"
-#~ "clicking on such a number opens up a menu that allows to customize this "
-#~ "behavior.\n"
-#~ msgstr ""
-#~ "Se viene visualizzato un numero di cifre troppo basso o troppo alto "
-#~ "quando si fa clic con il pulsante destro del mouse su tale numero, si "
-#~ "apre un menu che consente di personalizzare questo comportamento.\n"
-
-#~ msgid ""
-#~ "If we did everything right maxima now can determine the equation that "
-#~ "defines the general shape of all possible loading curves:\n"
-#~ msgstr ""
-#~ "Se abbiamo fatto tutto nel modo giusto, i massimi ora possono determinare "
-#~ "l'equazione che definisce la forma generale di tutte le possibili curve "
-#~ "di carico:\n"
-
-#~ msgid "If we just want to know the typical value we can do the following:\n"
-#~ msgstr ""
-#~ "Se vogliamo solo conoscere il valore tipico, possiamo fare quanto segue:\n"
-
-#~ msgid ""
-#~ "If you are studying mathematics the good news is that solving equations "
-#~ "is an art, a computer can help with in many special cases, but that often "
-#~ "relies on human creativity for finding algorithms and ways.\n"
-#~ msgstr ""
-#~ "Se si sta studiando matematica, la buona notizia è che risolvere "
-#~ "equazioni è un'arte, nella quale un computer può aiutare a trovare "
-#~ "soluzioni dei casi speciali, ma queste spesso si basano sulla creatività "
-#~ "umana per trovare algoritmi e metodi.\n"
-
-#~ msgid ""
-#~ "In many cases the actual curve actually isn't important while the height "
-#~ "values are. In this case it is possible to generate a top view without "
-#~ "drawing the actual surface:\n"
-#~ msgstr ""
-#~ "In molti casi la curva effettiva in realtà non è importante mentre lo "
-#~ "sono i valori di altezza. In questo caso è possibile generare una vista "
-#~ "dall'alto senza disegnare la superficie effettiva:\n"
-
-#~ msgid "In order to allow to read values more easily\n"
-#~ msgstr "In modo da permettere di leggere i valori più facilmente\n"
-
-#~ msgid "In order to make the 3d shape easier to grasp\n"
-#~ msgstr "In modo da rendere le forme 3d più facili da comprendere\n"
-
-#~ msgid ""
-#~ "In order to view this picture just click on it and move the mouse wheel. "
-#~ "The fact that y needs to substituted into the equation to plot manually "
-#~ "is a long-standing bug in maxima's makelist() command.\n"
-#~ msgstr ""
-#~ "Per visualizzare questa immagine basta fare clic su di essa e spostare la "
-#~ "rotellina del mouse. Il fatto che y debba essere sostituito "
-#~ "nell'equazione per graficare manualmente è un bug di vecchia data nel "
-#~ "comando makelist() di maxima.\n"
-
-#~ msgid ""
-#~ "In this case maxima offers several options to at least find the numerical "
-#~ "values, two examples are given below:\n"
-#~ msgstr ""
-#~ "In questo caso maxima offre diverse opzioni per trovare per lo meno i "
-#~ "valori numerici, due esempi sono rappresentati di seguito:\n"
-
-#~ msgid ""
-#~ "In this case the answer to the question desolve() asks doesn't actually "
-#~ "affect the shape of the result, but the way the result is expressed. The "
-#~ "equations we get are very generic, though, still, as maxima knows the "
-#~ "general set of shapes the function might have, but in order to draw "
-#~ "actual curves lacks I_Cable(0) and U_In(0):\n"
-#~ msgstr ""
-#~ "In questo caso la risposta alla domanda che desolve() pone, in realtà non "
-#~ "influenza la forma del risultato, ma il modo in cui il risultato viene "
-#~ "espresso. Le equazioni che otteniamo sono molto generiche, tuttavia, "
-#~ "poiché Maxima conosce l'insieme generale di forme che la funzione "
-#~ "potrebbe avere, ma per disegnare le curve effettive manca I_Cable(0) e "
-#~ "U_In(0):\n"
-
-#~ msgid ""
-#~ "In this example the \"initial=\" wasn't really necessary. But sometimes "
-#~ "using the wrong starting point means that lsquares heads for the wrong "
-#~ "local optimum of the problem.\n"
-#~ msgstr ""
-#~ "In questo esempio \"initial=\" non era veramente necessario. Ma a volte, "
-#~ "usare il punto di partenza sbagliato significa che lsquares si dirige "
-#~ "verso l'ottimale locale sbagliato del problema.\n"
-
-#~ msgid "Input values that include a tolerance\n"
-#~ msgstr "Valori in ingresso che includono una tolleranza\n"
-
-#~ msgid ""
-#~ "It is possible to access all list elements by accessing and removing the "
-#~ "first element repeatedly:\n"
-#~ msgstr ""
-#~ "È possibile accedere a tutti gli elementi lista accedendo e rimuovendo il "
-#~ "primo elemento ripetutamente:\n"
-
-#~ msgid "Iterating through two lists at the same time\n"
-#~ msgstr "Iterazione attraverso due liste allo stesso tempo\n"
-
-#~ msgid ""
-#~ "Just substituting the values into the equations provides us with the "
-#~ "equation containing the real values and the tolerances in wrstcse's "
-#~ "notation:\n"
-#~ msgstr ""
-#~ "La semplice sostituzione dei valori nelle equazioni ci fornisce "
-#~ "l'equazione contenente i valori reali e le tolleranze nella notazione di "
-#~ "wrstcse:\n"
-
-#, fuzzy
-#~ msgid ""
-#~ "Let's assume that R_1 is a 100Ω with 10 percents of tolerance. R_2 is a "
-#~ "1000Ω resistor with a 1 percent tolerance instead:\n"
-#~ msgstr ""
-#~ "Assumiamo che R_1 sia 100Ω con una tolleranza del 10%. R_2 è invece una "
-#~ "resistenza di 1000Ω con una tolleranza del 1%:\n"
-
-#~ msgid ""
-#~ "Let's assume we have guessed that the curve might be something parabola-"
-#~ "like:\n"
-#~ msgstr ""
-#~ "Assumiamo di intuire che la curva potrebbe essere simile ad una "
-#~ "parabola:\n"
-
-#~ msgid ""
-#~ "Let's hope the font that is used to display this includes cherries, pear "
-#~ "and banana symbols.\n"
-#~ msgstr ""
-#~ "Speriamo che il font usato per mostrare i risultati includa i simboli "
-#~ "delle ciliege, pere e banane.\n"
-
-#~ msgid "Let's specify the circuit values we might know about...\n"
-#~ msgstr "Specifichiamo i valori del circuito che possiamo conoscere...\n"
-
-#~ msgid "Lists and Arrays\n"
-#~ msgstr "Liste e array\n"
-
-#~ msgid ""
-#~ "Makelist is a quite universal swiss-army knife, if what you want to "
-#~ "generate is shaped like a list.\n"
-#~ "The most widely known form of this command is:\n"
-#~ msgstr ""
-#~ "Makelist è un coltellino svizzero piuttosto universale, se ciò che si "
-#~ "vuole generare ha la forma di una lista.\n"
-#~ "La forma più conosciuta di questo comando è:\n"
-
-#~ msgid ""
-#~ "Many computer programs are configured to show small numbers as \"0\" or "
-#~ "only to show the first few digits after the decimal point hoping that the "
-#~ "rest is a rounding error that doesn't add up (see wilkinson's polynomial "
-#~ "for an example where this happens quickly). Maxima's solve instead tries "
-#~ "to replace floating-point numbers by the exact fraction it most likely "
-#~ "means and warns about doing so:\n"
-#~ msgstr ""
-#~ "Molti programmi per computer sono configurati per mostrare i numeri molto "
-#~ "piccoli come \"0\" o solo per mostrare le prime cifre dopo il punto "
-#~ "decimale sperando che il resto sia un errore di arrotondamento che non si "
-#~ "somma (vedere il polinomio di Wilkinson per un esempio in cui ciò accade "
-#~ "rapidamente ). La funzione \"solve\" di Maxima cerca invece di sostituire "
-#~ "i numeri in virgola mobile con la frazione esatta che molto probabilmente "
-#~ "rappresenta il risultato, e nel farlo avverte dell'operazione "
-#~ "effettuata:\n"
-
-#~ msgid ""
-#~ "Many hard-to-find errors can be avoided by using exact numbers. It is "
-#~ "therefore wise to use exact numbers wherever possible and only to convert "
-#~ "the results to floats using float() or bfloat():\n"
-#~ msgstr ""
-#~ "Molti errori difficili da scovare possono essere evitati utilizzando "
-#~ "numeri esatti. È quindi saggio usare numeri esatti ove possibile e usare "
-#~ "float() o bfloat() solo per convertire i risultati in virgola mobile:\n"
-
-#~ msgid "Mathematical description\n"
-#~ msgstr "Descrizione matematica\n"
-
-#~ msgid ""
-#~ "Mathematics can be seen as a language consisting only of a rather small "
-#~ "set of words and only a handful of grammatical rules. Both sets are "
-#~ "carefully chosen, though, allowing simply reformulating the question in "
-#~ "many cases the answer can be found.\n"
-#~ msgstr ""
-#~ "La matematica si può vedere come una lingua composta solo da un insieme "
-#~ "piuttosto piccolo di parole e poche regole grammaticali. Entrambi gli "
-#~ "insiemi, scelti con cura, tuttavia, semplicemente di riformulando la "
-#~ "domanda, in molti casi consentono di trovare una risposta.\n"
-
-#~ msgid ""
-#~ "Maxima allows to customize the format floating-point numbers are "
-#~ "displayed in:\n"
-#~ msgstr ""
-#~ "Maxima permette di personalizzare il formato nel quale i numeri in "
-#~ "virgola mobile vengono visualizzati:\n"
-
-#~ msgid ""
-#~ "Maxima alternatively provides its own implementation of floating-point "
-#~ "numbers that are slow (they have to be processed in software), but can be "
-#~ "provided with any precision. Numbers can be converted to bigfloats using "
-#~ "the bfloat() command or by entering a \"b\" instead of an \"e\" when "
-#~ "declaring the exponent:\n"
-#~ msgstr ""
-#~ "Maxima fornisce in alternativa la propria implementazione di numeri in "
-#~ "virgola mobile che sono lenti (devono essere elaborati nel software), ma "
-#~ "possono essere forniti con qualsiasi precisione. I numeri possono essere "
-#~ "convertiti in bigfloat usando il comando bfloat() o inserendo una \"b\" "
-#~ "invece di una \"e\" quando si dichiara l'esponente:\n"
-
-#~ msgid ""
-#~ "Maxima even offers a third fitting algorithm that is even able to "
-#~ "understand constraints:\n"
-#~ msgstr ""
-#~ "Maxima offre anche un terzo algoritmo di fit che è anche in grado di "
-#~ "comprendere i limiti:\n"
-
-#~ msgid ""
-#~ "Maxima loves Lists: It is easy to append items to a lists at any time. It "
-#~ "is easy to delete list items. List items can be re-ordered just by "
-#~ "swapping a few pointers. Maxima contains fast methods to sort lists, to "
-#~ "eliminate double elements. But determining the length of a list or the "
-#~ "address the nth list item is stored at means having to iterate through "
-#~ "the list querying each item where the next list item can be found.\n"
-#~ msgstr ""
-#~ "Maxima ama le liste: è facile aggiungere elementi ad una lista in "
-#~ "qualsiasi momento. È facile eliminare elementi dalla lista. Gli elementi "
-#~ "della lista possono venire riordinati semplicemente scambiando alcuni "
-#~ "puntatori. Maxima contiene metodi veloci per ordinare liste e per "
-#~ "eliminare elementi doppi. Ma per determinare la lunghezza di una lista o "
-#~ "l'indirizzo in cui è memorizzato l'ennesimo elemento della lista, "
-#~ "significa dover scorrere la lista ricavando da ciascun elemento dove si "
-#~ "trova l'elemento successivo.\n"
-
-#~ msgid ""
-#~ "Maxima now offers a simple, but powerful curve fitter that guesses the "
-#~ "parameters a,b and c for us:\n"
-#~ msgstr ""
-#~ "Maxima offre un semplice ma potente fit di curve che ricava per noi i "
-#~ "parametri a,b e c:\n"
-
-#~ msgid ""
-#~ "Maxima provides a second algorithm that often produces even better "
-#~ "results, but is a bit more complicated to use. For example it requires us "
-#~ "to manually compile a list of the errors we want to minimize. Let's do "
-#~ "that for data2_i and approach1:\n"
-#~ msgstr ""
-#~ "Maxima fornisce un secondo algoritmo che spesso produce risultati ancora "
-#~ "migliori, ma è un po' più complicato da usare. Ad esempio, richiede di "
-#~ "compilare manualmente un elenco degli errori che si vuole minimizzare. "
-#~ "Proviamo per data2_i e approach1:\n"
-
-#~ msgid ""
-#~ "Maxima's default way of displaying 3d surfaces is optimized on fast "
-#~ "display. In order to get a feeling for the shape of the curve it might "
-#~ "help to right-click on it and press on the \"Popout interactively\" "
-#~ "button which opens a window the curve can be rotated in:\n"
-#~ msgstr ""
-#~ "Il modo predefinito di Maxima di visualizzare le superfici 3D è "
-#~ "ottimizzato per la visualizzazione veloce. Per avere un'idea della forma "
-#~ "della curva, può essere utile fare clic con il pulsante destro del mouse "
-#~ "su di essa e premere il pulsante \"Popout interattivamente\" che apre una "
-#~ "finestra in cui è possibile ruotare la curva:\n"
-
-#, fuzzy
-#~ msgid "Memoizing functions\n"
-#~ msgstr "Risoluzione equazioni\n"
-
-#~ msgid "Monte carlo analysis\n"
-#~ msgstr "Analisi Monte carlo\n"
-
-#~ msgid ""
-#~ "Most computers include floating-point units that make relatively-high-"
-#~ "precision calculations very fast. If a number is input with a decimal dot "
-#~ "or in the \"1e3\" notation maxima assumes one wants to use the kind of "
-#~ "floats the machine supports out-of-the box:\n"
-#~ msgstr ""
-#~ "Molti computer incorporano unità in virgola mobile che rendono i calcoli "
-#~ "in relativa alta precisione molto veloci. Se un numero in ingresso ha un "
-#~ "punto decimale ha la notazione \"1e3\", maxima assume che si voglia usare "
-#~ "il tipo di virgola mobile che la macchina supporta direttamente:\n"
-
-#~ msgid "Moving pictures\n"
-#~ msgstr "Immagini in movimento\n"
-
-#~ msgid "Next let's avoid the question using assume():\n"
-#~ msgstr "Successivamente evitiamo la domanda usando assume():\n"
-
-#~ msgid "Now let's load the package that contains the other fitter:\n"
-#~ msgstr "Ora carichiamo il pacchetto che contiene l'altro fitter:\n"
-
-#~ msgid "Now we extract the list of arguments to the matrix() command:\n"
-#~ msgstr "Ora estraiamo l'elenco degli argomenti al comando matrix():\n"
-
-#~ msgid "Now we generate a matrix of values lsquares can deal with:\n"
-#~ msgstr "Ora generiamo una matrice di valori che lsquares può elaborare:\n"
-
-#~ msgid ""
-#~ "Now we have enough information to calculate the input voltage itself:\n"
-#~ msgstr ""
-#~ "Ora abbiamo abbastanza informazioni per calcolare la stessa tensione "
-#~ "d'ingresso:\n"
-
-#~ msgid ""
-#~ "Now we want to tell maxima that the voltage source provides a voltage "
-#~ "between 4V and 6V, typically 4.5V. For doing this a specialized function "
-#~ "exists:\n"
-#~ msgstr ""
-#~ "Ora vogliamo dire a maxima che la sorgente di tensione fornisce una "
-#~ "tensione tra 4 V e 6 V, tipicamente 4,5 V. Per fare ciò esiste una "
-#~ "funzione specializzata:\n"
-
-#~ msgid "Number formats\n"
-#~ msgstr "Formati numerici\n"
-
-#~ msgid ""
-#~ "Of course all of these commands can be executed in one long command "
-#~ "line:\n"
-#~ msgstr ""
-#~ "Naturalmente tutti questi comandi possono essere eseguiti in un'unica "
-#~ "lunga riga di comando:\n"
-
-#~ msgid ""
-#~ "Often a differential equation has a solution that cannot be expressed "
-#~ "symbolically as mathematics lacks the necessary functions. In other cases "
-#~ "one has to guess the general form of the solution and the computer only "
-#~ "helps in finding the values of the parameters this solution contains. In "
-#~ "the simple cases an engineer encounters on a daily basis maxima can do "
-#~ "this automatically, instead.\n"
-#~ msgstr ""
-#~ "Spesso un'equazione differenziale ha una soluzione che non può essere "
-#~ "espressa simbolicamente poiché la matematica non ha le funzioni "
-#~ "necessarie. In altri casi bisogna indovinare la forma generale della "
-#~ "soluzione e il computer aiuta solo a trovare i valori dei parametri "
-#~ "contenuti in questa soluzione. Nei casi semplici, un ingegnere che lavora "
-#~ "quotidianamente con maxima, può farlo invece automaticamente.\n"
-
-#~ msgid ""
-#~ "One place Maxima can show its full power at is where symbolical "
-#~ "mathematics that describes a phenomenon is used for understanding real "
-#~ "measurement data.\n"
-#~ msgstr ""
-#~ "Un campo in cui Maxima può mostrare la sua piena potenza è quello in cui "
-#~ "la matematica simbolica che descrive un fenomeno viene utilizzata per "
-#~ "comprendere i dati di misurazione reali.\n"
-
-#~ msgid ""
-#~ "One way to do so efficiently is to use the pop() method on both lists. "
-#~ "The other is to make a list of lists:\n"
-#~ msgstr ""
-#~ "Un metodo per farlo efficientemente è usare il metodo pop() su entrambe "
-#~ "le liste. Un altro è di fare una lista di liste:\n"
-
-#~ msgid "Plotting these lists\n"
-#~ msgstr "Disegno di queste liste\n"
-
-#~ msgid "Pre- and post- super- and subscripts\n"
-#~ msgstr "Prefissi, suffissi, apici e pedici\n"
-
-#~ msgid "Print out the results\n"
-#~ msgstr "Stampa dei risultati\n"
-
-#~ msgid "Re-using the solutions\n"
-#~ msgstr "Riutilizzo delle soluzioni\n"
-
-#~ msgid "Round holes can be described as follows:\n"
-#~ msgstr "I buchi di arrotondamento possono essere descritti come segue:\n"
-
-#, fuzzy
-#~ msgid ""
-#~ "Rump and Wilkinson have provided warning examples of simple polynomials "
-#~ "where this adds up to catastrophic errors quickly and it is surprising "
-#~ "how often one encounters similar in real live including a big fraction of "
-#~ "the glitches one can find in computer games, black borders in panorama "
-#~ "photos and loudness calculators that fail with long audio files; As a "
-#~ "mathematics program that was created with exact numbers in mind maxima is "
-#~ "likely to hit that kind of problem from time to time, if floating-point "
-#~ "numbers are used.\n"
-#~ msgstr ""
-#~ "Rump e Wilkinson hanno fornito esempi di avvertimento di semplici "
-#~ "polinomi in cui questo cumula rapidamente errori con effetti catastrofici "
-#~ "ed è sorprendente quanto spesso ci si imbatte in eventi simili nella vita "
-#~ "reale, compresa una grande parte dei difetti che si possono trovare nei "
-#~ "giochi per computer.\n"
-
-#, fuzzy
-#~ msgid ""
-#~ "Scheduling a background task that setups the autocompletable files list."
-#~ msgstr ""
-#~ "Avvio di un'attività in background che imposta la lista di file "
-#~ "autocompletabili."
-
-#, fuzzy
-#~ msgid ""
-#~ "Scheduling a background task that setups the autocomplete builtins list."
-#~ msgstr ""
-#~ "Avvio di un'attività in background che imposta la lista di "
-#~ "autocompletamenti incorporati."
-
-#, fuzzy
-#~ msgid "Scheduling background task that loads an image"
-#~ msgstr "Avvio di un'attività in background che carica un'immagine."
-
-#, fuzzy
-#~ msgid "Scheduling background task that loads the gnuplot data for a plot."
-#~ msgstr ""
-#~ "Avvio di un'attività in background per carica i dati gnuplot per un "
-#~ "grafico."
-
-#~ msgid "Show Maxima help"
-#~ msgstr "Mostra la guida di maxima"
-
-#~ msgid "Simple equations\n"
-#~ msgstr "Equazioni semplici\n"
-
-#~ msgid ""
-#~ "Since it is the general case that allows to learn about the fundamental "
-#~ "mechanisms often a good approach is to solve everything symbolically and "
-#~ "to keep the actual numerical input values in a separate list like the "
-#~ "following one:\n"
-#~ msgstr ""
-#~ "Poiché è il caso generale che consente di comprendere i meccanismi "
-#~ "fondamentali, spesso un buon approccio è quello di risolvere tutto "
-#~ "simbolicamente e mantenere i valori numerici effettivi in ingresso in un "
-#~ "elenco separato come il seguente:\n"
-
-#~ msgid ""
-#~ "Since the biggest error occurs where we have the highest density of data "
-#~ "the result of fitting the curve to this data directly will be "
-#~ "suboptimal:\n"
-#~ msgstr ""
-#~ "Poiché l'errore più grande si verifica quando abbiamo la più alta densità "
-#~ "di dati, il risultato del fit diretto della curva a questi dati non sarà "
-#~ "ottimale:\n"
-
-#~ msgid ""
-#~ "Slower to draw, but easier to understand the curve is if the surface "
-#~ "isn't transparent:\n"
-#~ msgstr ""
-#~ "È più lento da disegnare, ma più facile la comprensione della curva, se "
-#~ "la superficie non è trasparente:\n"
-
-#~ msgid ""
-#~ "Solve also accepts lists as its arguments. In this case it will only find "
-#~ "solutions, if the following conditions are all met:\n"
-#~ " * The number of linearly independent equations matches the number of "
-#~ "variables to solve.\n"
-#~ " * The solution doesn't completely change its form depending on the range "
-#~ "one variable is in.\n"
-#~ msgstr ""
-#~ "Solve accetta anche liste come argomenti. In questo caso troverà "
-#~ "soluzioni solo se sono soddisfatte tutte le seguenti condizioni:\n"
-#~ "  * Il numero di equazioni linearmente indipendenti corrisponde al numero "
-#~ "di variabili da risolvere.\n"
-#~ "  * La soluzione non cambia completamente forma a seconda dell'intervallo "
-#~ "in cui si trova una variabile.\n"
-
-#~ msgid "Solving differential equations\n"
-#~ msgstr "<Risoluzione equazioni differenziali\n"
-
-#~ msgid "Solving equations\n"
-#~ msgstr "Risoluzione equazioni\n"
-
-#~ msgid ""
-#~ "Some solutions have never been assigned a name in mathematics. One "
-#~ "popular example would be:\n"
-#~ msgstr ""
-#~ "Ad alcune soluzioni la matematica non ha mai assegnato un nome. Un "
-#~ "esempio comune è:\n"
-
-#~ msgid ""
-#~ "Someone constructs a magic drill that is guaranteed to generate holes "
-#~ "that exactly meet 3 points. But that points unfortunately all have "
-#~ "tolerances. We now are asked to produce images of the possible outcome.\n"
-#~ msgstr ""
-#~ "Qualcuno costruisce un trapano magico che è garantito generare fori che "
-#~ "incontrano esattamente 3 punti. Ma questi punti purtroppo hanno tutti "
-#~ "tolleranze. Ora ci viene chiesto di produrre immagini del possibile "
-#~ "risultato.\n"
-
-#~ msgid ""
-#~ "Sometimes it isn't actually necessary to display the whole 3D shape and "
-#~ "the height of the curve is more easy to read if one assigns the mouse's "
-#~ "scroll wheel to the y coordinate.\n"
-#~ msgstr ""
-#~ "A volte non è effettivamente necessario visualizzare l'intera forma 3D e "
-#~ "l'altezza della curva è più facile da leggere se si assegna la rotellina "
-#~ "del mouse alla coordinata y.\n"
-
-#~ msgid "Sometimes the input data isn't evenly spaced.\n"
-#~ msgstr "Alle volte i dati in ingresso non sono distribuiti uniformemente.\n"
-
-#~ msgid "Specifying complex tolerances\n"
-#~ msgstr "Specifica delle tolleranza complesse\n"
-
-#~ msgid "Standard curves\n"
-#~ msgstr "Curve standard\n"
-
-#, c-format
-#~ msgid "Starting server on port %d"
-#~ msgstr "Avvio del server sul port %d"
-
-#~ msgid ""
-#~ "Thanks to Robert Dodier it is now possible to equip variables with "
-#~ "super-, and subscripts that are displayed left of the variable name, "
-#~ "too:\n"
-#~ msgstr ""
-#~ "Grazie a Robert Dodier è ora possibile dotare le variabili anche di apici "
-#~ "e pedici che vengono mostrati a sinistra del nome della variabile:\n"
-
-#~ msgid "The coordinates of the points the holes touch\n"
-#~ msgstr "Le coordinate dei punti che i buchi toccano\n"
-
-#~ msgid "The current into the input capacitance is:\n"
-#~ msgstr "La corrente nella capacità d'ingresso è:\n"
-
-#~ msgid ""
-#~ "The drawback the enhanced speed comes with is that using floating-point "
-#~ "numbers come with inaccuracies that might hit when one least expects "
-#~ "them. For example machine floats cannot exactly express seemingly simple "
-#~ "numbers like 0.1:\n"
-#~ msgstr ""
-#~ "Lo svantaggio dell'aumento di velocità è che l'uso di numeri in virgola "
-#~ "mobile comporta imprecisioni che potrebbero colpire quando meno ci si "
-#~ "aspetta. Ad esempio i numeri in virgola mobile non possono esprimere "
-#~ "esattamente numeri apparentemente semplici come 0.1:\n"
-
-#~ msgid "The general approach\n"
-#~ msgstr "L'approccio generale\n"
-
-#~ msgid ""
-#~ "The interpol package allows to generate continuous and half-way smooth "
-#~ "curves from any input data.\n"
-#~ msgstr ""
-#~ "Il pacchetto interpol permette di generare curve continue o a metà strada "
-#~ "da qualunque dato in ingresso.\n"
-
-#~ msgid ""
-#~ "The natural approach to fitting data to exponential curves would be:\n"
-#~ msgstr ""
-#~ "L'approccio naturale al fit di dati su curve esponenziali sarebbe:\n"
-
-#~ msgid ""
-#~ "The places with a higher density of samples have more weight when fitting "
-#~ "data to the curves. So let's add an error to the place with the highest "
-#~ "data density and see if we can cope with it.\n"
-#~ msgstr ""
-#~ "I luoghi con una maggiore densità di campioni hanno più peso quando si fa "
-#~ "il fit dei dati alle curve. Quindi aggiungiamo un errore nel luogo con la "
-#~ "più alta densità di dati e vediamo se possiamo farcela.\n"
-
-#~ msgid "The problem\n"
-#~ msgstr "Il problema\n"
-
-#~ msgid ""
-#~ "The problem with noise causing finding erroneous parameters is still "
-#~ "valid, though, in this case.  It can be partially eliminated by "
-#~ "introducing a c_noise, as proposed by Guo.\n"
-#~ msgstr ""
-#~ "Il problema del rumore che causa la rilevazione di parametri errati è "
-#~ "comunque valido, in questo caso. Può essere parzialmente eliminato "
-#~ "introducendo un c_noise, come proposto da Guo.\n"
-
-#~ msgid ""
-#~ "The result is a list of error values, each in the following format:\n"
-#~ msgstr ""
-#~ "Il risultato è una lista di valori di errore, ognuno nel seguente "
-#~ "formato:\n"
-
-#~ msgid ""
-#~ "The result is a still noisy and distorted, but more evenly-spaced curve:\n"
-#~ msgstr ""
-#~ "Il risultato è ancora una curva rumorosa e distorta, ma più uniformemente "
-#~ "distanziata:\n"
-
-#~ msgid "The result isn't too bad, this time, neither:\n"
-#~ msgstr "Il risultato non è neppure troppo male, questa volta:\n"
-
-#~ msgid ""
-#~ "The tolerance calculation package lets tol[n] tolerate between -1 and 1. "
-#~ "tol[n] with the same n are coupled tolerances that share the same value. "
-#~ "In theory the \"n\" doesn't need to be a number. But if it is a symbolic "
-#~ "name one has to make sure this name is never assigned a value else "
-#~ "tol[name] will be replaced by tol[<value of the variable \"name\">]\n"
-#~ msgstr ""
-#~ "Il pacchetto di calcolo della tolleranza consente a tol[n] di tollerare "
-#~ "tra -1 e 1. tol[n] con lo stesso n sono tolleranze accoppiate che "
-#~ "condividono lo stesso valore. In teoria la \"n\" non deve essere per "
-#~ "forza un numero. Ma se si tratta di un nome simbolico bisogna assicurarsi "
-#~ "che questo nome non sia mai assegnato un valore altrimenti tol[nome] "
-#~ "verrà sostituito da tol[<valore della variabile \"nome\">]\n"
-
-#~ msgid ""
-#~ "The type of number maxima was written for is exact numbers instead. "
-#~ "Maxima assumes any number that doesn't contain a decimal dot to be "
-#~ "intended as being an exact number:\n"
-#~ msgstr ""
-#~ "Il tipo di numero per cui è stato scritto maxima sono però i numeri "
-#~ "esatti. Maxima presuppone che qualsiasi numero che non contenga un punto "
-#~ "decimale sia inteso come un numero esatto:\n"
-
-#~ msgid ""
-#~ "Then we ask wrstcse to print out the tolerances of the right hand side of "
-#~ "our equation \"uout\":\n"
-#~ msgstr ""
-#~ "Quindi chiediamo a wrstcse di stampare le tolleranze del lato destro "
-#~ "della nostra equazione \"uout\":\n"
-
-#~ msgid ""
-#~ "These equations are simple enough that there is no need to use solve() to "
-#~ "introduce them into each other:\n"
-#~ msgstr ""
-#~ "Queste equazioni sono abbastanza semplici da non rendere necessario "
-#~ "utilizzare solve() per introdurle l'una nell'altra:\n"
-
-#~ msgid ""
-#~ "This approach is much more good-natured for finding the parameters (that "
-#~ "can then be substituted into approach2).\n"
-#~ msgstr ""
-#~ "Questo approccio è molto più adatto per trovare i parametri (che possono "
-#~ "quindi essere sostituiti in approach2).\n"
-
-#~ msgid ""
-#~ "This result is still - well, hard to interpret, because Maxima didn't "
-#~ "know the value of U_In which is necessary to decide which of all the "
-#~ "terms is the minimum and which is the maximum. But we can inform maxima "
-#~ "about the necessary facts:\n"
-#~ msgstr ""
-#~ "Questo risultato è ancora - beh, difficile da interpretare, perché Maxima "
-#~ "non conosceva il valore di U_In che è necessario per decidere quale di "
-#~ "tutti i termini è il minimo e quale è il massimo. Ma possiamo informare "
-#~ "Maxima del necessario:\n"
-
-#~ msgid ""
-#~ "This time we want the tolerance package to use 1000 random sets of values "
-#~ "and to find the best and worst case that can be reached using these "
-#~ "values:\n"
-#~ msgstr ""
-#~ "Questa volta vogliamo che il pacchetto di tolleranza utilizzi 1000 "
-#~ "insiemi casuali di valori e trovi il caso migliore e peggiore che può "
-#~ "essere raggiunto usando questi valori:\n"
-
-#~ msgid ""
-#~ "This time, the type of solutions we can get depends on the value of a, "
-#~ "which is why maxima asked about it. One can avoid asking questions by "
-#~ "telling the answers to maxima's assume database:\n"
-#~ msgstr ""
-#~ "Questa volta, il tipo di soluzioni che possiamo ottenere dipende dal "
-#~ "valore di a, motivo per cui Maxima ce lo ha chiesto. Si può evitare di "
-#~ "porre domande inserendo le risposte nel database delle assunzioni di "
-#~ "maxima:\n"
-
-#~ msgid "Tolerance calculations\n"
-#~ msgstr "Calcoli delle tolleranze\n"
-
-#, c-format
-#~ msgid "Trying to start a server on port %i instead"
-#~ msgstr "Tentativo di avviare un server sulla porta alternativa %i"
-
-#~ msgid ""
-#~ "Unfortunately it is hard to fit to experimental data to this approach in "
-#~ "many ways, for example:\n"
-#~ " * One part of this curve results in low values. Even small measurement "
-#~ "noise on this part will yield widely incorrect results for the curve "
-#~ "parameters as the fitter is trying to model the noise, too, and as noise "
-#~ "in nonlinear systems tends not to be averaged out completely.\n"
-#~ " * Another part of this curve contains very high values and is sensitive "
-#~ "to even small changes in k. As the fitter wants to keep the overall error "
-#~ "low it will therefore respect this part much more than the lower, more "
-#~ "good-natured part of the curve.\n"
-#~ " * Starting from the wrong point and optimizing a and k in the direction "
-#~ "that reduces the error most in each step might lead to a point that is "
-#~ "far from being the solution\n"
-#~ " * and trying to use lsquares_estimates to find the ideal solution often "
-#~ "leads to numbers that exceed the floating-point range (or exact numbers "
-#~ "longer than the computer's memory).\n"
-#~ msgstr ""
-#~ "Sfortunatamente è difficile adattare i dati sperimentali a questo "
-#~ "approccio in molti modi, ad esempio:\n"
-#~ "  * Una parte di questa curva produce valori bassi. Anche un piccolo "
-#~ "rumore di misurazione su questa parte produrrà risultati ampiamente "
-#~ "errati per i parametri della curva poiché anche il fitter sta cercando di "
-#~ "modellizzare il rumore e poiché il rumore nei sistemi non lineari tende a "
-#~ "non essere mediato completamente.\n"
-#~ "  * Un'altra parte di questa curva contiene valori molto alti ed è "
-#~ "sensibile anche a piccole modifiche in k. Poiché il fitter desidera "
-#~ "mantenere basso l'errore complessivo, rispetterà quindi questa parte "
-#~ "molto più della parte inferiore e più bonaria della curva.\n"
-#~ "  * Partendo dal punto sbagliato e ottimizzando a e k nella direzione che "
-#~ "riduce maggiormente l'errore in ogni fase, si potrebbe arrivare a un "
-#~ "punto lungi dall'essere la soluzione\n"
-#~ "  * e provare a usare lsquares_estimates per trovare la soluzione ideale "
-#~ "spesso porta a numeri che superano l'intervallo in virgola mobile (o "
-#~ "numeri esatti più lunghi della memoria del computer).\n"
-
-#~ msgid ""
-#~ "Unicode supports so-called \"combining diacritics\" that allow to "
-#~ "assemble a character from several elements. Maxima might not know that "
-#~ "the individual parts these characters are combined to are meant to be "
-#~ "interpreted as ordinary letters, though, so assembling weird characters "
-#~ "is a multi-step process:\n"
-#~ msgstr ""
-#~ "Unicode supporta i cosiddetti \"diacritici combinanti\" che consentono di "
-#~ "assemblare un carattere da più elementi. Ma Maxima potrebbe non sapere "
-#~ "che le singole parti di cui questi caratteri sono formati, devono essere "
-#~ "interpretate come normali lettere, quindi assemblare strani caratteri è "
-#~ "un processo in più fasi:\n"
-
-#~ msgid "Using a bigger or lower number of samples\n"
-#~ msgstr "Uso di un numero di campioni più grande o più piccolo\n"
-
-#~ msgid "Using a different fitting algorithm\n"
-#~ msgstr "Uso di un diverso algoritmo di fit\n"
-
-#~ msgid ""
-#~ "Variable and equation names containing \"'\", \"+\", \"-\" or the like\n"
-#~ msgstr ""
-#~ "Nomi di variabili e equazioni contenenti \"'\", \"+\", \"-\" o simili\n"
-
-#~ msgid "Visualizing 3D curves\n"
-#~ msgstr "Visualizzazione curve 3D\n"
-
-#~ msgid "We can introduce (\"substitute\") them into other equations:\n"
-#~ msgstr "Possiamo introdurle (\"sostituirle\") in altre equazioni:\n"
-
-#, fuzzy
-#~ msgid ""
-#~ "We can propose another set of values: Two resistors that have a high "
-#~ "tolerance, but are guaranteed to always deviate into the same direction "
-#~ "by the same percentage.\n"
-#~ msgstr ""
-#~ "Possiamo proporre un altro insieme di valori: due resistenze che sono "
-#~ "solo il 10%, ma sono garantite per deviare sempre nella stessa direzione "
-#~ "della stessa percentuale.\n"
-
-#~ msgid "We can use them as an input to solve:\n"
-#~ msgstr "Possiamo usare come ingresso per solve:\n"
-
-#~ msgid ""
-#~ "We now want to test all combinations of minimum, typical or maximum "
-#~ "value, instead.\n"
-#~ "First we tell maxima not to print a warning if a float is replaced by a "
-#~ "fraction of the same value:\n"
-#~ msgstr ""
-#~ "Vogliamo ora testare tutte le combinazioni di valore minimo, tipico o "
-#~ "massimo.\n"
-#~ "Innanzitutto diciamo a maxima di non stampare un avviso se un numero in "
-#~ "virgola mobile viene sostituito da una frazione dello stesso valore:\n"
-
-#~ msgid "What if there exists no symbolical solution?\n"
-#~ msgstr "E se non esistesse una soluzione simbolica?\n"
-
-#~ msgid ""
-#~ "Whenever a numerical value is needed this list can be introduced into any "
-#~ "equation:\n"
-#~ msgstr ""
-#~ "Ogni volta che è necessario un valore numerico, questa lista può essere "
-#~ "introdotta in qualsiasi equazione:\n"
-
-#~ msgid "find_root\n"
-#~ msgstr "find_root\n"
-
-#~ msgid ""
-#~ "find_root even works if the equation isn't differentiable and searches "
-#~ "for a solution in between two points.\n"
-#~ msgstr ""
-#~ "find_root funziona anche se l'equazione non è differenziabile e non si "
-#~ "può cercare una soluzione tra due punti.\n"
-
-#~ msgid "for\n"
-#~ msgstr "per\n"
-
-#~ msgid "makelist\n"
-#~ msgstr "crea lista\n"
-
-#~ msgid "map\n"
-#~ msgstr "mappa\n"
-
-#~ msgid "map runs the same function on every single list element:\n"
-#~ msgstr "mappa esegue la stessa funzione su ogni elemento della lista:\n"
-
-#~ msgid "mnewton\n"
-#~ msgstr "mnewton\n"
-
-#~ msgid ""
-#~ "mnewton uses a modified version of newton's method for finding a solution "
-#~ "of a nonlinear, but differentiable, statical and monotonic function near "
-#~ "to a point (in this example 0.1)\n"
-#~ msgstr ""
-#~ "mnewton usa una versione modificata del metodo di newton per trovare una "
-#~ "soluzione di una nonlineare, ma derivabile, funzione statistica e "
-#~ "monotona vicina ad un punto (in questo esempio 0.1)\n"
-
-#~ msgid "pop\n"
-#~ msgstr "pop\n"
-
-#~ msgid ""
-#~ "solve() which tries to find a symbolical solution is bound to fail here "
-#~ "and tells us how far it got:\n"
-#~ msgstr ""
-#~ "solve(), che prova a trovare una soluzione simbolica, quì è destinato a "
-#~ "fallire e ci dice quanto è andato lontano:\n"
-
-#~ msgid ""
-#~ "wc_tolappend() appends values with tolerances and renumbers the tol[n]\n"
-#~ msgstr ""
-#~ "wc_tolappend() accoda i valori con tolleranze e rinumera il tol[n]\n"
-
-#~ msgid ""
-#~ "wxMaxima allows to use engineer-style subscripts in variable or function "
-#~ "names:\n"
-#~ msgstr ""
-#~ "wxMaxima permette di usare pedici in stile ingegneristico nei nomi di "
-#~ "variabile o di funzione:\n"
-
-#~ msgid "Debug Messages"
-#~ msgstr "Messaggi di debug"
-
-#~ msgid "Heading5"
-#~ msgstr "Intestazione5"
-
-#~ msgid "Heading6"
-#~ msgstr "Intestazione6"
-
-#, fuzzy
-#~ msgid "Nested List to Matrix"
-#~ msgstr "Lista annidata a matrice"
-
-#~ msgid "No helpfile found at %s."
-#~ msgstr "Nessun file d'aiuto trovato in %s."
-
-#~ msgid "Plot 2d..."
-#~ msgstr "Grafico 2d..."
-
-#~ msgid "Plot 3d..."
-#~ msgstr "Grafico 3d..."
-
-#~ msgid "Raw XML Monitor"
-#~ msgstr "Monitor XML grezzo"
-
-#~ msgid "Restart maxima"
-#~ msgstr "Riavvia maxima"
-
-#~ msgid "Tip of the Day"
-#~ msgstr "Suggerimento del giorno"
-
-#~ msgid "Always"
-#~ msgstr "Sempre"
-
-#~ msgid ""
-#~ "Export animations to TeX (Images only move if the PDF viewer supports "
-#~ "this)"
-#~ msgstr ""
-#~ "Esporta le animazioni in TeX (le immagini si muoveranno solo se il "
-#~ "visualizzatore PDF lo supporterà)"
-
-#~ msgid "Gnuplot can be found at %s"
-#~ msgstr "Gnuplot si trova in %s"
-
-#~ msgid ""
-#~ "Some PDF viewers are able to display moving images and wxMaxima is able "
-#~ "to output them. If this option is selected additional LaTeX packages "
-#~ "might be needed in order to compile the output, though."
-#~ msgstr ""
-#~ "Alcuni visualizzatori PDF sono in grado di visualizzare immagini in "
-#~ "movimento che wxMaxima è in grado generare. Se questa opzione è "
-#~ "selezionata potrebbero però essere necessari ulteriori pacchetti LaTeX "
-#~ "per poter compilare i risultati."
-
-#~ msgid "Toggle &Algebraic Flag"
-#~ msgstr "Mostra/nascondi &algebrica"
-
-#~ msgid "Choose the Math Font"
-#~ msgstr "Scegli il font matematico"
-
-#~ msgid "Connected."
-#~ msgstr "Connesso."
-
-#~ msgid ""
-#~ "Parts of the document will not be loaded correctly:\n"
-#~ "Found unknown XML Tag name "
-#~ msgstr ""
-#~ "Parti del documento non saranno caricate correttamente:\n"
-#~ "Trovato un nome marcatore XML sconosciuto "
-
-#~ msgid "Save panes layout"
-#~ msgstr "Salva la disposizione pannelli"
-
-#~ msgid "Save panes layout between sessions."
-#~ msgstr "Salva la disposizione dei pannelli tra le sessioni."
-
-#~ msgid " (Graphics) "
-#~ msgstr " (grafiche) "
-
-#~ msgid " ... + %i hidden lines"
-#~ msgstr " ... + %i righe nascoste"
-
-#~ msgid " ... + 1 hidden line"
-#~ msgstr " ... + 1 riga nascosta"
-
-#~ msgid " samples"
-#~ msgstr " campioni"
-
-#~ msgid " samples, on demand split "
-#~ msgstr " campioni, separati su richiesta"
-
-#~ msgid " times"
-#~ msgstr " volte"
-
-#~ msgid "&Definite integration"
-#~ msgstr "Integrazione &definita"
-
-#~ msgid "&Numerical integration"
-#~ msgstr "Integrazione &numerica"
-
-#~ msgid "&Nusum"
-#~ msgstr "Som&nu"
-
-#~ msgid "&Power series"
-#~ msgstr "Serie di &potenze"
-
-#~ msgid "&Rational"
-#~ msgstr "&Razionale"
-
-#~ msgid "&Special"
-#~ msgstr "&Speciale"
-
-#~ msgid "&Taylor series"
-#~ msgstr "Serie di &Taylor:"
-
-#~ msgid "&pm3d"
-#~ msgstr "&pm3d"
-
-#~ msgid "-"
-#~ msgstr "-"
-
-#~ msgid "- Infinity"
-#~ msgstr "- infinito"
-
-#~ msgid "A GroupCell that bundles input with its output"
-#~ msgstr "Una cella di gruppo che assiema l'ingresso con la sua uscita"
-
-#~ msgid "A function f(a,b), named"
-#~ msgstr "Una funzione f(a,b), con nome"
-
-#~ msgid "A good example equation would be x^2+y^2=1"
-#~ msgstr "Un buona equazione di esempio potrebbe essere x^2+y^2=1"
-
-#~ msgid "A page break"
-#~ msgstr "Un saltopagina"
-
-#~ msgid "A section heading"
-#~ msgstr "Una intestazione di sezione"
-
-#~ msgid "A space between GroupCells"
-#~ msgstr "Uno spazio tra celle di gruppo"
-
-#~ msgid "A static plot"
-#~ msgstr "Un grafico statico"
-
-#~ msgid "A sub-sub-sub-subsection heading"
-#~ msgstr "Una intestazione di sub-sub-sub-subsezione"
-
-#~ msgid "A sub-sub-subsection heading"
-#~ msgstr "Una intestazione di sub-sub-subsezione"
-
-#~ msgid "A sub-subsection heading"
-#~ msgstr "Una intestazione di sub-subsezione"
-
-#~ msgid "A subsection heading"
-#~ msgstr "Una intestazione di subsezione"
-
-#~ msgid "Allows to provide separate expressions for calculating"
-#~ msgstr "Permette di fornire espressioni separate per il calcolo"
-
-#~ msgid "An animation with multiple frames"
-#~ msgstr "Un'animazione con più quadri"
-
-#~ msgid "Browse"
-#~ msgstr "Naviga"
-
-#~ msgid "Bug: Math Cell that claims to have no group Cell it belongs to"
-#~ msgstr ""
-#~ "Bug: cella di formule che dichiara di non avere gruppi di celle a cui "
-#~ "appartenere"
-
-#~ msgid "Bug: No image counter to write to!"
-#~ msgstr "Bug: nessun contatore immagine su cui scrivere!"
-
-#~ msgid "Bug: The clipboard isn't open on pasting into an editor cell"
-#~ msgstr ""
-#~ "Bug: gli appunti non sono aperti sull'incollamento in una cella "
-#~ "dell'editor"
-
-#~ msgid "Bug: Trying to append NULL to a group cell."
-#~ msgstr "Bug: tentativo di accodare NULL ad un gruppo di celle."
-
-#~ msgid "Bug: Unknown type of text"
-#~ msgstr "Bug: tipo di testo sconosciuto"
-
-#~ msgid "Bug: x position of cell is unknown!"
-#~ msgstr "Bug: posizione x della cella sconosciuta!"
-
-#~ msgid "Bug: y position of cell is unknown!"
-#~ msgstr "Bug: posizione y della cella sconosciuta!"
-
-#~ msgid "Cannot put the copied text on the clipboard"
-#~ msgstr "Impossibile mettere il testo copiato negli appunti"
-
-#~ msgid "Cannot put the copied text on the clipboard (1st try)"
-#~ msgstr "Impossibile mettere il testo copiato negli appunti (1° tentativo)"
-
-#~ msgid "Cannot put the copied text on the clipboard (2nd try)"
-#~ msgstr "Impossibile mettere il testo copiato negli appunti (2° tentativo)"
-
-#~ msgid "Cannot remove the file %s"
-#~ msgstr "Impossibile rimuovere il file %s"
-
-#~ msgid "Choose new plot format:"
-#~ msgstr "Scegliere un nuovo formato per il grafico:"
-
-#~ msgid "Comma separated x coordinates"
-#~ msgstr "Coordinate x separate da virgole"
-
-#~ msgid "Comma separated y coordinates"
-#~ msgstr "Coordinate y separate da virgole"
-
-#~ msgid "Comment (ordinary worksheet text that isn't fed to maxima)"
-#~ msgstr ""
-#~ "Commento (testo di foglio di lavoro normale che non viene inviato a "
-#~ "maxima)"
-
-#~ msgid "Connect the dots"
-#~ msgstr "Connetti i punti"
-
-#~ msgid "Constant"
-#~ msgstr "Costante"
-
-#~ msgid "Continuing sending data to maxima."
-#~ msgstr "Continuo a spedire dati a maxima."
-
-#~ msgid "Contour lines on surface and Bottom"
-#~ msgstr "Linee di contorno sulla superficie e sul fondo"
-
-#~ msgid "Contour lines on the Bottom"
-#~ msgstr "Linee di contorno sul fondo"
-
-#~ msgid "Contour lines on the Surface"
-#~ msgstr "Linee di contorno sulla superficie"
-
-#~ msgid "Contour lines settings for the following 3d plots"
-#~ msgstr "Impostazioni delle linee di contorno per i seguenti grafici 3D"
-
-#~ msgid "Create f(a,b) on-the-fly, contents:"
-#~ msgstr "Crea f(a,b) al volo, contenuti:"
-
-#~ msgid "Data format"
-#~ msgstr "Formato dati"
-
-#~ msgid "Depth:"
-#~ msgstr "profondità:"
-
-#~ msgid "Discrete plot"
-#~ msgstr "Grafico discreto"
-
-#~ msgid "Draw all points where an equation is true."
-#~ msgstr "Disegna tutti i punti dove un'equazione è vera."
-
-#~ msgid "Draw points"
-#~ msgstr "Disegna punti"
-
-#~ msgid "EditorCell Ignoring the font name as the selected font didn't work"
-#~ msgstr ""
-#~ "L'editor della cella ignora il nome del font dato che il font selezionato "
-#~ "non funziona"
-
-#~ msgid "End of the x value"
-#~ msgstr "Fine del valore x"
-
-#~ msgid "End of the y value"
-#~ msgstr "Fine del valore y"
-
-#~ msgid "End of the z value"
-#~ msgstr "Fine del valore z"
-
-#~ msgid "End value of the parameter"
-#~ msgstr "Fine del valore del parametro"
-
-#~ msgid "Enhanced 3D settings:"
-#~ msgstr "Impostazioni del 3D avanzato:"
-
-#~ msgid "Enter comma separated list of variables."
-#~ msgstr "Inserire la lista di variabili separate dalla virgola."
-
-#~ msgid "Equation %d:"
-#~ msgstr "Equazione %d:"
-
-#~ msgid "Expression that calculates the x value"
-#~ msgstr "Espressione che calcola il valore x"
-
-#~ msgid "Expression that calculates the y value"
-#~ msgstr "Espressione che calcola il valore y"
-
-#~ msgid "Expression that calculates the z value"
-#~ msgstr "Espressione che calcola il valore z"
-
-#~ msgid "Expression to plot"
-#~ msgstr "Espressione da tracciare"
-
-#~ msgid "Expression(s):"
-#~ msgstr "Espressioni:"
-
-#~ msgid "Figure %d:"
-#~ msgstr "Figura %d:"
-
-#~ msgid "File:"
-#~ msgstr "File:"
-
-#~ msgid "Following plots use secondary x axis"
-#~ msgstr "I grafici seguenti usano l'asse x secondario"
-
-#~ msgid "Following plots use secondary y axis"
-#~ msgstr "I grafici seguenti usano l'asse y secondario"
-
-#~ msgid "Font issue: The char height is too small!"
-#~ msgstr "Problema di font: l'altezza del carattere è troppo bassa!"
-
-#~ msgid "Font issue: The sqrt() sign has the size 0!"
-#~ msgstr "Problema di font: Il segno di sqrt() ha dimensione 0!"
-
-#~ msgid "Font issue? The contents of a sqrt() has the size 0."
-#~ msgstr "Problema di font? I contenuti di una sqrt() hanno dimensione 0."
-
-#~ msgid "Format:"
-#~ msgstr "Formato:"
-
-#~ msgid "Frame counter"
-#~ msgstr "Contatore di quadro"
-
-#~ msgid "Frame counter end"
-#~ msgstr "Fine contatore di quadro"
-
-#~ msgid "Frame counter start"
-#~ msgstr "Inizio contatore di quadro"
-
-#~ msgid "Grid:"
-#~ msgstr "Griglia:"
-
-#~ msgid "Hide objects behind the surface"
-#~ msgstr "Nascondi gli oggetti dietro la superficie"
-
-#~ msgid "It needs to be filled with objects to draw afterwards."
-#~ msgstr "Necessita di essere riempito con oggetti da disegnare in seguito."
-
-#~ msgid ""
-#~ "It therefore makes sense to apply the known values for variables as late "
-#~ "as possible."
-#~ msgstr ""
-#~ "Perciò ha senso applicare i valori conosciuti delle variabili il più "
-#~ "tardi possibile."
-
-#~ msgid "List name:"
-#~ msgstr "Nome lista:"
-
-#~ msgid "Math output"
-#~ msgstr "Uscita matematica"
-
-#~ msgid "Maxima's power lies in symbolic operations."
-#~ msgstr "La potenza di Maxima è nelle operazioni simboliche."
-
-#~ msgid "Method:"
-#~ msgstr "Metodo:"
-
-#~ msgid "Name of the parameter"
-#~ msgstr "Nome del parametro"
-
-#~ msgid "New value:"
-#~ msgstr "Nuovo valore:"
-
-#~ msgid "No contour lines"
-#~ msgstr "No linee di bordo"
-
-#~ msgid "No plot, only contour lines"
-#~ msgstr "No grafico, solo linee di bordo"
-
-#~ msgid "No points"
-#~ msgstr "No punti"
-
-#~ msgid "Old value:"
-#~ msgstr "Vecchio valore:"
-
-#~ msgid "Optional: A 2nd expression that defines a region to fill"
-#~ msgstr ""
-#~ "Opzionale: una seconda espressione che definisce una regione da riempire"
-
-#~ msgid "Options:"
-#~ msgstr "Opzioni:"
-
-#~ msgid "Parametric plot"
-#~ msgstr "Grafico parametrico"
-
-#~ msgid "Plot a parametric curve"
-#~ msgstr "Grafico di una curva parametrica"
-
-#~ msgid "Plot an explicit expression"
-#~ msgstr "Fa il grafico di un'espressione"
-
-#~ msgid "Plot an expression, for example sin(x) or (x+1)^2."
-#~ msgstr "Fa il grafico di una espressione, per esempio sin(x) o (x+1)^2."
-
-#~ msgid "Plot to file:"
-#~ msgstr "Grafico su file:"
-
-#~ msgid "Point type:"
-#~ msgstr "Tipo di punto:"
-
-#~ msgid "Postscript file (*.eps)|*.eps|All|*"
-#~ msgstr "File postscript (*.eps)|*.eps|Tutti|"
-
-#~ msgid "Resolving to 1D layout for one cell in order to save time"
-#~ msgstr "Risolvi in una disposizione 1D per una cella per risparmiare tempo"
-
-#~ msgid "Resolving to linear layout for one big cell in order to save time"
-#~ msgstr ""
-#~ "Risolvi in una disposizione lineare per una cella grande per risparmiare "
-#~ "tempo"
-
-#~ msgid "Reuse last"
-#~ msgstr "Riutilizza l'ultima"
-
-#~ msgid "Samples for explicit and parametric plots:"
-#~ msgstr "Campioni per grafici espliciti e parametrici:"
-
-#~ msgid "Samples for implicit plots and regions:"
-#~ msgstr "Campioni per grafici e regioni impliciti:"
-
-#~ msgid "Samples for implicit plots:"
-#~ msgstr "Campioni per grafici impliciti:"
-
-#~ msgid "Samples on a line:"
-#~ msgstr "Campioni su una linea:"
-
-#~ msgid "Save plot to file"
-#~ msgstr "Salva il grafico su file"
-
-#~ msgid "See also the speed <-> accuracy button."
-#~ msgstr "Vedere anche il pulsante velocità <-> accuratezza."
-
-#~ msgid "Seems like something is broken with the maths font."
-#~ msgstr "Sembra che ci sia un problema con un font matematico."
-
-#~ msgid "Select a constant"
-#~ msgstr "Seleziona una costante"
-
-#~ msgid "Settings for the following 3d plots"
-#~ msgstr "Impostazioni per i seguenti grafici 3D"
-
-#~ msgid "Setup a %iD scene"
-#~ msgstr "Imposta una scena %iD"
-
-#~ msgid "Setup the axis for the current plot."
-#~ msgstr "Imposta l'asse per il grafico corrente."
-
-#~ msgid "Simplify the sum"
-#~ msgstr "Semplifica la somma"
-
-#~ msgid "Sort Criterion:"
-#~ msgstr "Criterio di ordinamento:"
-
-#~ msgid "Special"
-#~ msgstr "Speciale"
-
-#~ msgid "Speed versus accuracy"
-#~ msgstr "Velocità contro accuratezza"
-
-#~ msgid "Start of the x value"
-#~ msgstr "Inizio del valore x"
-
-#~ msgid "Start of the y value"
-#~ msgstr "Inizio del valore y"
-
-#~ msgid "Start of the z value"
-#~ msgstr "Inizio del valore z"
-
-#~ msgid "Start value of the parameter"
-#~ msgstr "Valore iniziale del parametro"
-
-#~ msgid "Take surface color from steepness"
-#~ msgstr "Prendi il colore della superficie dalla pendenza"
-
-#~ msgid "This wizard setups a %iD scene."
-#~ msgstr "Questo assistente imposta una scena %iD."
-
-#~ msgid "Ticks:"
-#~ msgstr "Tacche:"
-
-#~ msgid "Type in text"
-#~ msgstr "Tipo nel testo"
-
-#~ msgid "Type:"
-#~ msgstr "Tipo:"
-
-#~ msgid "Unexpected text style %i for TextCell"
-#~ msgstr "Stile di testo %i inaspettato per TextCell"
-
-#~ msgid ""
-#~ "Until then the actual values for all variables can be kept in a list."
-#~ msgstr ""
-#~ "Fino ad allora i valori correnti per tutte le variabili possono essere "
-#~ "mantenuti in una lista."
-
-#~ msgid "Use Gosper algorithm"
-#~ msgstr "Usa l'algoritmo di Gosper"
-
-#~ msgid "Variable for the x value"
-#~ msgstr "Variabile per il valore x"
-
-#~ msgid "Variable for the y value"
-#~ msgstr "Variabile per il valore y"
-
-#~ msgid "Variable for the z value"
-#~ msgstr "Variabile per il valore z"
-
-#~ msgid "Warning: Lookalike chars: "
-#~ msgstr "Attenzione: caratteri confondibili:"
-
-#~ msgid "X"
-#~ msgstr "X"
-
-#~ msgid "[%i digits]"
-#~ msgstr "[%i cifre]"
-
-#~ msgid "[[x_1,x_2,...],[y_1,y_2,...]]"
-#~ msgstr "[[x_1,x_2,...],[y_1,y_2,...]]"
-
-#~ msgid ""
-#~ "[x_1, x_2,...] or [x_1, x_2,...],[y_1, y_2,...] or matrix([x_1,y_1],[x_2,"
-#~ "y_2],...)"
-#~ msgstr ""
-#~ "[x_1, x_2,...] o [x_1, x_2,...],[y_1, y_2,...] o matrice([x_1,y_1],[x_2,"
-#~ "y_2],...)"
-
-#~ msgid "a>b"
-#~ msgstr "a>b"
-
-#~ msgid "antisymmetric"
-#~ msgstr "antimmetrica"
-
-#~ msgid "both sides"
-#~ msgstr "entrambi i lati"
-
-#~ msgid "default"
-#~ msgstr "predefinito"
-
-#~ msgid "diagonal"
-#~ msgstr "diagonale"
-
-#~ msgid "general"
-#~ msgstr "generale"
-
-#~ msgid "inline"
-#~ msgstr "inlinea"
-
-#~ msgid "left"
-#~ msgstr "sinistro"
-
-#~ msgid "logscale"
-#~ msgstr "scala log"
-
-#~ msgid "matrix([x_1,x_2,...],[y_1,y_2,...])"
-#~ msgstr "matrice([x_1,x_2,...],[y_1,y_2,...])"
-
-#~ msgid "right"
-#~ msgstr "destro"
-
-#~ msgid "secondary x axis label"
-#~ msgstr "etichetta asse x secondario"
-
-#~ msgid "secondary x range (automatic if incomplete)"
-#~ msgstr "campo x secondario (automatico se incompleto)"
-
-#~ msgid "secondary y axis label"
-#~ msgstr "etichetta asse y secondario"
-
-#~ msgid "secondary y range (automatic if incomplete)"
-#~ msgstr "campo y secondario (automatico se incompleto)"
-
-#~ msgid "symmetric"
-#~ msgstr "simmetrica"
-
-#~ msgid "the x and the y coordinate."
-#~ msgstr "le coordinate x e y."
-
-#~ msgid "the x, the y and the z coordinate."
-#~ msgstr "le coordinate x, y e z."
-
-#~ msgid "x axis label"
-#~ msgstr "etichetta asse x"
-
-#~ msgid "x range (automatic if incomplete)"
-#~ msgstr "campo x (automatico se incompleto)"
-
-#~ msgid "y axis label"
-#~ msgstr "etichetta asse y"
-
-#~ msgid "y range (automatic if incomplete)"
-#~ msgstr "campo y (automatico se incompleto)"
-
-#~ msgid "z axis label"
-#~ msgstr "etichetta asse z"
-
-#~ msgid "z range (automatic if incomplete)"
-#~ msgstr "campo z (automatico se incompleto)"
-
-#~ msgid ""
-#~ "A command or number wasn't preceded by a \":\", a \"$\", a \";\" or a \","
-#~ "\".\n"
-#~ "Most probable cause: A missing comma between two list items."
-#~ msgstr ""
-#~ "Un comando o numero non era preceduto da un \":\", un \"$\", un \";\" o "
-#~ "un \",\".\n"
-#~ "Causa molto probabile: una virgola mancante tra due elementi lista."
-
-#~ msgid ""
-#~ "A variable that can be assigned a number to.\n"
-#~ "Often used by solve() and algsys(), if there is an infinite number of "
-#~ "results."
-#~ msgstr ""
-#~ "Una variabile a cui è possibile assegnare un numero.\n"
-#~ "Spesso usata da solve() e algsys(), se c'è un infinito numero di "
-#~ "risultati."
-
-#~ msgid "An integration constant."
-#~ msgstr "Una costante di integrazione."
-
-#~ msgid ""
-#~ "As calculating 0.1^12 demonstrates maxima by default doesn't tend to hide "
-#~ "what looks like being the small error using floating-point numbers "
-#~ "introduces.\n"
-#~ "If this seems to be the case here the error can be avoided by using exact "
-#~ "numbers like 1/10, 1*10^-1 or rat(.1).\n"
-#~ "It also can be hidden by setting fpprintprec to an appropriate value. But "
-#~ "be aware in this case that even small errors can add up."
-#~ msgstr ""
-#~ "Come il calcolo di 0.1^12 dimostra, maxima per impostazione predefinita "
-#~ "non tende a nascondere cosa sembra essere il piccolo errore che l'uso dei "
-#~ "numeri in virgola mobile introduce.\n"
-#~ "Se è questo il caso in questione, l'errore può essere evitato usando "
-#~ "numeri esatti come 1/10, 1*10^-1 o rat(.1).\n"
-#~ "L'errore può anche essere nascosto impostando fpprintprec ad un valore "
-#~ "appropriato. Ma bisogna stare molto attenti in questo caso, perché anche "
-#~ "piccoli errori possono sommarsi."
-
-#~ msgid ""
-#~ "Besides a division by 0 the reason for this error message can be a "
-#~ "calculation that returns +/-infinity."
-#~ msgstr ""
-#~ "A parte la divisione per 0, la ragione per questo messaggio di errore può "
-#~ "essere un calcolo che restituisce +/- infinito."
-
-#~ msgid "Complex infinity."
-#~ msgstr "Infinito complesso."
-
-#~ msgid "Division by 0."
-#~ msgstr "Divisione per 0."
-
-#~ msgid ""
-#~ "Either negative or zero.\n"
-#~ "A possible result of sign()."
-#~ msgstr ""
-#~ "Negativo o zero.\n"
-#~ "Un possibile risultato di sign()."
-
-#~ msgid ""
-#~ "Either positive or zero.\n"
-#~ "A possible result of sign()."
-#~ msgstr ""
-#~ "Positivo o zero.\n"
-#~ "Un possibile risultato di sign()."
-
-#~ msgid ""
-#~ "Either positive, negative or zero.\n"
-#~ "Normally the result of sign() if the sign cannot be determined."
-#~ msgstr ""
-#~ "Positive, negativo o zero.\n"
-#~ "Normalmente il risultato di sign() se il segno non può essere determinato."
-
-#~ msgid ""
-#~ "If this isn't a function returning a lambda() expression a multiplication "
-#~ "sign (*) between closing and opening parenthesis is missing here."
-#~ msgstr ""
-#~ "Se questa non è una funzione che restituisce un'espressione lambda(), qui "
-#~ "manca un segno di moltiplicazione (*) tra la parentesi chiusa e aperta."
-
-#~ msgid "Infinitesimal above zero."
-#~ msgstr "Infinitesimale sopra lo zero."
-
-#~ msgid "Infinitesimal below zero."
-#~ msgstr "Infinitesimale sotto lo zero."
-
-#~ msgid "Might also indicate a missing multiplication sign (\"*\")."
-#~ msgstr ""
-#~ "Potrebbe anche indicare che manca un segno di moltiplicazione (\"*\")."
-
-#~ msgid "Missing contents. Bug?"
-#~ msgstr "Contenuti mancanti. Bug?"
-
-#~ msgid ""
-#~ "Most probable cause: A dot instead a comma between two list items "
-#~ "containing assignments."
-#~ msgstr ""
-#~ "Probabile causa: un punto invece che una virgola tra due elementi lista "
-#~ "contenenti assegnamenti."
-
-#~ msgid ""
-#~ "Most probable cause: A function was called with a parameter that causes "
-#~ "it to return infinity and/or -infinity."
-#~ msgstr ""
-#~ "Probabile causa: una funzione è stata chiamata senza un parametro che "
-#~ "causa la restituzione di infinito e/o -infinito."
-
-#~ msgid "Most probable cause: Two commas or similar separators in a row."
-#~ msgstr "Causa più probabile: due virgole o separatori simili in una riga."
-
-#~ msgid ""
-#~ "Most probable cause: an operator was directly followed by a closing "
-#~ "parenthesis."
-#~ msgstr ""
-#~ "Probabile causa: un operatore seguito immediatamente da una parentesi "
-#~ "chiusa."
-
-#~ msgid ""
-#~ "Most probably it was attempted to append something to a list that isn't a "
-#~ "list.\n"
-#~ "Enclosing the new element for the list in brackets ([]) converts it to a "
-#~ "list and makes it appendable."
-#~ msgstr ""
-#~ "Molto probabilmente è stato tentato di accodare qualcosa ad una lista che "
-#~ "non è una lista.\n"
-#~ "Raccogliendo il nuovo elemento per la lista in parentesi ([]) lo converte "
-#~ "in una lista e lo rende accodabile."
-
-#~ msgid ""
-#~ "Most questions can be avoided using the assume() and the declare() "
-#~ "command. If that isn't possible the \"Automatically answer questions\" "
-#~ "button makes wxMaxima automatically fill in all answers it still "
-#~ "remembers from a previous run."
-#~ msgstr ""
-#~ "La maggior parte delle domande può essere evitata usando i comandi "
-#~ "assume() e declare(). Se ciò non è possibile, il pulsante \"Rispondi "
-#~ "automaticamente alle domande\" fa sì che wxMaxima compili automaticamente "
-#~ "tutte le risposte che ricorda ancora da un'esecuzione precedente."
-
-#~ msgid ""
-#~ "Normally computers use floating-point numbers that can be handled "
-#~ "incredibly fast while being accurate to dozens of digits. They will, "
-#~ "though, introduce a small error into some common numbers. For example 0.1 "
-#~ "is represented as 3602879701896397/36028797018963968.\n"
-#~ "As mathematics is based on the fact that numbers that are exactly equal "
-#~ "cancel each other out small errors can quickly add up to big errors (see "
-#~ "Wilkinson's Polynomials or Rump's Polynomials). Some maxima commands "
-#~ "therefore use rat() in order to automatically convert floats to exact "
-#~ "numbers (like 1/10 or sqrt(2)/2) where floating-point errors might add "
-#~ "up.\n"
-#~ "\n"
-#~ "This error message doesn't occur if exact numbers (1/10 instead of 0.1) "
-#~ "are used.\n"
-#~ "The info that numbers have automatically been converted can be suppressed "
-#~ "by setting ratprint to false."
-#~ msgstr ""
-#~ "Normalmente i computer usano numeri in virgola mobile che possono essere "
-#~ "gestiti in maniera incredibilmente veloce mantenendo nel contempo "
-#~ "l'accuratezza di una dozzina di cifre. Essi comunque introdurranno una "
-#~ "serie di piccoli errori in alcuni numeri normali. Per esempio 0.1 viene "
-#~ "rappresentato come 3602879701896397/36028797018963968.\n"
-#~ "Dato che la matematica è basata sul fatto che sottraendo numeri "
-#~ "esattamente uguali questi si eliminano l'un l'altro, questi piccoli "
-#~ "errori di approssimazione possono velocemente sommarsi in grandi errori "
-#~ "(vedere i polinomiali di Wilkinson o di Rump). Alcuni comandi maxima "
-#~ "perciò usano rat() in modo da automaticamente convertire i numeri in "
-#~ "virgola mobile in numeri esatti (come 1/10 o sqrt(2)/2) dove gli errori "
-#~ "dei numeri in virgola mobile potrebbero sommarsi.\n"
-#~ "\n"
-#~ "Questo messaggio di errore non si presenta se vengono usati numeri esatti "
-#~ "(1/10 al posto di 0.1).\n"
-#~ "L'informazione che i numeri sono stati automaticamente convertiti può "
-#~ "essere soppressa impostando ratprint a falso."
-
-#~ msgid ""
-#~ "Please enter a regex here that searches for the required unicode character"
-#~ msgstr ""
-#~ "Inserire qui un'espressione regolare che cerca il carattere Unicode "
-#~ "richiesto"
-
-#~ msgid ""
-#~ "The [] or the part() command tried to access a list or matrix element "
-#~ "that doesn't exist."
-#~ msgstr ""
-#~ "Le [] o il comando part() hanno tentato di accedere ad una lista o ad un "
-#~ "elemento di matrice non esistenti."
-
-#~ msgid ""
-#~ "The argument of a function was of the wrong type. Most probably an "
-#~ "equation was expected but was lacking an \"=\"."
-#~ msgstr ""
-#~ "L'argomento di una funzione era di tipo sbagliato. Probabilmente si "
-#~ "aspettava un'equazione ma manca un \"=\"."
-
-#~ msgid ""
-#~ "The first argument of subst() isn't an equation or a list of equations. "
-#~ "Most probably it was lacking an \"=\"."
-#~ msgstr ""
-#~ "Il primo argomento di subst() non è un'equazione o un elenco di "
-#~ "equazioni. Probabilmente manca un \"=\"."
-
-#~ msgid ""
-#~ "The image could not be displayed. It may be broken, in a wrong format or "
-#~ "be the result of gnuplot not being able to write the image or not being "
-#~ "able to understand what maxima wanted to plot.\n"
-#~ "One example of the latter would be: Gnuplot refuses to plot entirely "
-#~ "empty images"
-#~ msgstr ""
-#~ "L'immagine non può essere visualizzata. Può essere rovinata, o in un "
-#~ "formato sbagliato o il risultato del fatto che gnuplot non è stato in "
-#~ "grado di scrivere l'immagine o non è stato in grado di capire cosa maxima "
-#~ "voleva mettere sul grafico.\n"
-#~ "Un esempio di quest'ultimo caso potrebbe essere: Gnuplot si rifiuta di "
-#~ "stampare immagini completamente vuote"
-
-#~ msgid "The inverse laplace transform."
-#~ msgstr "Trasformata di Laplace inversa."
-
-#~ msgid ""
-#~ "The list of time-dependent variables to solve to doesn't match the time-"
-#~ "dependent variables the list of dgls contains."
-#~ msgstr ""
-#~ "La lista delle variabili dipendenti dal tempo da risolvere, non "
-#~ "corrisponde alle variabili dipendenti dal tempo contenute nella lista di "
-#~ "dgls."
-
-#~ msgid ""
-#~ "The maximum size of the expressions wxMaxima is allowed to display can be "
-#~ "changed in the configuration dialogue."
-#~ msgstr ""
-#~ "La dimensione massima delle espressioni che a wxMaxima è consentito "
-#~ "mostrare può essere cambiata nella finestra di dialogo della "
-#~ "configurazione."
-
-#~ msgid "The result was undefined."
-#~ msgstr "Il risultato era non definito."
-
-#~ msgid ""
-#~ "The second argument of at() isn't an equation or a list of equations. "
-#~ "Most probably it was lacking an \"=\"."
-#~ msgstr ""
-#~ "Il secondo argomento di at() non è un'equazione o un elenco di equazioni. "
-#~ "Molto probabilmente manca un \"=\"."
-
-#~ msgid ""
-#~ "The value of few special variables is assigned by Maxima and cannot be "
-#~ "changed by the user. Also a few constructs aren't variable names and "
-#~ "therefore cannot be written to."
-#~ msgstr ""
-#~ "Il valore di alcune variabili speciali viene assegnato da Maxima e non "
-#~ "può essere cambiato dall'utente. Inoltre alcuni costrutti non sono nomi "
-#~ "di variabili e perciò non vi si può scrivere sopra."
-
-#~ msgid ""
-#~ "The xml data from maxima or from the .wxmx file was missing data here.\n"
-#~ "If you find a way how to reproduce this problem please file a bug report "
-#~ "against wxMaxima."
-#~ msgstr ""
-#~ "Ai dati xml da maxima o dal file .wxmx mancavano dei dati.\n"
-#~ "Se si riesce a riprodurre questo problema si prega di inviare un rapporto "
-#~ "bug su wxMaxima."
-
-#~ msgid ""
-#~ "This error message is most probably caused by a try to assign a value to "
-#~ "a number instead of a variable name.\n"
-#~ "One probable cause is using a variable that already has a numeric value "
-#~ "as a loop counter."
-#~ msgstr ""
-#~ "Queso messaggio di errore è molto probabilmente causato da un tentativo "
-#~ "di assegnamento di un valore ad un numero invece che ad un nome di "
-#~ "variabile.\n"
-#~ "Una probabile causa è l'uso di una variabile che ha già un valore "
-#~ "numerico come un contatore di cicli."
-
-#~ msgid ""
-#~ "This message can appear when trying to numerically find an optimum. In "
-#~ "this case it might indicate that a starting point lies in a local optimum "
-#~ "that fits the data best if one parameter is increased to infinity or "
-#~ "decreased to -infinity. It also can indicate that an attempt was made to "
-#~ "fit data to an equation that actually matches the data best if one "
-#~ "parameter is set to +/- infinity."
-#~ msgstr ""
-#~ "Questo messaggio può apparire quando si prova a trovare numericamente "
-#~ "l'ottimo. In questo caso può indicare che un punto di inizio giace in un "
-#~ "ottimo locale che fitta il dato meglio se un parametro viene incrementato "
-#~ "verso l'infinito o decrementato verso -infinito. Può anche indicare che "
-#~ "un tentativo è stato fatto per fare il fit dei dati verso una equasione "
-#~ "che attualmente corrisponde i dati meglio se uno dei parametri viene "
-#~ "posto a +/- infinito."
-
-#~ msgid ""
-#~ "find_root only works if the function the solution is searched for crosses "
-#~ "the solution exactly once in the given range."
-#~ msgstr ""
-#~ "find_root funziona solo se la funzione la cui soluzione si sta cercando "
-#~ "incrocia la soluzione esattamente una volta nel dato intervallo."
-
-#~ msgid ""
-#~ "part() or the [] operator was used in order to extract the nth element of "
-#~ "something that was less than n elements long."
-#~ msgstr ""
-#~ "part() o l'operatore [] sono stati usati per estrarre l'n-esimo elemento "
-#~ "di qualcosa che era lungo meno di n elementi."
-
-#~ msgid ""
-#~ "rest() tried to drop more entries from a list than the list was long."
-#~ msgstr ""
-#~ "rest() ha provato a eliminare più voci da una lista della lunghezza della "
-#~ "lista stessa."
-
-#~ msgid ""
-#~ "the [] operator tried to extract an element of a list, a matrix, an "
-#~ "equation or an array. But instead of an integer number something was used "
-#~ "whose numerical value is unknown or not an integer.\n"
-#~ "Floating-point numbers are bound to contain small rounding errors and "
-#~ "therefore in most cases don't work as an array index thatneeds to be an "
-#~ "exact integer number."
-#~ msgstr ""
-#~ "l'operatore [] ha tentato di estrarre un elemento da una lista, una "
-#~ "matrice, un'equazione o un array. Ma invece di un numero intero è stato "
-#~ "usato qualcosa il cui valore numerico è sconosciuto o non è un numero "
-#~ "intero.\n"
-#~ "I numeri in virgola mobile sono destinati ad avere piccoli errori di "
-#~ "arrotondamento e pertanto nella maggior parte dei casi non funzionano "
-#~ "come indice di array che deve essere un numero intero esatto."
-
-#~ msgid "The result was indefinite."
-#~ msgstr "Il risultato era indefinito."
