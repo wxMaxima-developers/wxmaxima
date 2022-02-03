@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: hu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-02-03 09:03+0100\n"
+"POT-Creation-Date: 2022-02-03 09:36+0100\n"
 "PO-Revision-Date: 2021-08-14 17:35+0200\n"
 "Last-Translator: Blahota István <blahota@fsf.hu>\n"
 "Language-Team: Hungarian\n"
@@ -451,7 +451,7 @@ msgstr "Egy szimbólum a beállításokból"
 msgid "A&t Value..."
 msgstr "Ér&tékadás..."
 
-#: ../../src/Configuration.cpp:1454
+#: ../../src/Configuration.cpp:1457
 msgid "ASCII maths"
 msgstr "ASCII matematika"
 
@@ -472,7 +472,7 @@ msgstr "Névjegy: wxMaxima"
 msgid "Accuracy"
 msgstr "Pontosság"
 
-#: ../../src/Configuration.cpp:1465
+#: ../../src/Configuration.cpp:1468
 msgid "Active cell bracket"
 msgstr "Aktív cella zárójele"
 
@@ -903,7 +903,7 @@ msgstr ""
 msgid "Bug: HTML output is no valid XML"
 msgstr "Hiba: A HTML kimenet nem érvényes XML"
 
-#: ../../src/Configuration.h:585
+#: ../../src/Configuration.h:574
 msgid "Bug: Maximum number of digits that is to be displayed is too low!"
 msgstr "Hiba: A megjelenítendő számjegyek maximális száma túl alacsony!"
 
@@ -1067,7 +1067,7 @@ msgstr "Katalán"
 msgid "Ce&ll"
 msgstr "Ce&lla"
 
-#: ../../src/Configuration.cpp:1464
+#: ../../src/Configuration.cpp:1467
 msgid "Cell bracket"
 msgstr "Cella zárójel"
 
@@ -1181,35 +1181,35 @@ msgstr "Ablak bezárása"
 msgid "Closing the socket maxima could connect to!"
 msgstr "A socket bezárása esetén a maxima nem biztos, hogy tud csatlakozni!"
 
-#: ../../src/Configuration.cpp:1472
+#: ../../src/Configuration.cpp:1475
 msgid "Code highlighting: Comments"
 msgstr "Kód kiemelése: Megjegyzések"
 
-#: ../../src/Configuration.cpp:1477
+#: ../../src/Configuration.cpp:1480
 msgid "Code highlighting: End of line"
 msgstr "Kód kiemelése: Sorvég"
 
-#: ../../src/Configuration.cpp:1471
+#: ../../src/Configuration.cpp:1474
 msgid "Code highlighting: Functions"
 msgstr "Kód kiemelése: Függvények"
 
-#: ../../src/Configuration.cpp:1476
+#: ../../src/Configuration.cpp:1479
 msgid "Code highlighting: Lisp"
 msgstr "Kód kiemelése: Lisp"
 
-#: ../../src/Configuration.cpp:1473
+#: ../../src/Configuration.cpp:1476
 msgid "Code highlighting: Numbers"
 msgstr "Kód kiemelése: Számok"
 
-#: ../../src/Configuration.cpp:1475
+#: ../../src/Configuration.cpp:1478
 msgid "Code highlighting: Operators"
 msgstr "Kód kiemelése: Műveletek"
 
-#: ../../src/Configuration.cpp:1474
+#: ../../src/Configuration.cpp:1477
 msgid "Code highlighting: Strings"
 msgstr "Kód kiemelése: Szövegek"
 
-#: ../../src/Configuration.cpp:1470
+#: ../../src/Configuration.cpp:1473
 msgid "Code highlighting: Variables"
 msgstr "Kód kiemelése: Változók"
 
@@ -1628,7 +1628,7 @@ msgstr "Lista létrehozása vesszővel elválasztott elemekből"
 msgid "Create scalable plots."
 msgstr "Skálázható ábrák készítése."
 
-#: ../../src/Configuration.cpp:1466
+#: ../../src/Configuration.cpp:1469
 msgid "Cursor"
 msgstr "Kurzor"
 
@@ -1689,7 +1689,7 @@ msgstr "Egy szövegrészlet mindig alindexként jelenjen meg"
 msgid "Decompose rational function to partial fractions"
 msgstr "Racionális törtfüggvény parciális törtekre bontása"
 
-#: ../../src/Configuration.cpp:1439
+#: ../../src/Configuration.cpp:1442
 msgid "Default"
 msgstr "Alapértelmezett"
 
@@ -1895,7 +1895,7 @@ msgstr "Akarja menteni a változásokat az alábbi dokumentumban \"%s\"?"
 msgid "Dock all Sidebars"
 msgstr "Dokkolja az összes oldalsávot"
 
-#: ../../src/Configuration.cpp:1463
+#: ../../src/Configuration.cpp:1466
 msgid "Document background"
 msgstr "Szöveg háttere"
 
@@ -2757,7 +2757,7 @@ msgstr "Függvény"
 msgid "Function name"
 msgstr "Függvénynév"
 
-#: ../../src/Configuration.cpp:1442
+#: ../../src/Configuration.cpp:1445
 msgid "Function names"
 msgstr "Függvénynevek"
 
@@ -2914,7 +2914,7 @@ msgstr ""
 msgid "Greek"
 msgstr "Görög"
 
-#: ../../src/Configuration.cpp:1444
+#: ../../src/Configuration.cpp:1447
 msgid "Greek Constants"
 msgstr "Görög konstansok"
 
@@ -2950,12 +2950,12 @@ msgstr "Hadamard (elemenkénti) szorzat"
 msgid "Hadamard exponent"
 msgstr "Hadamard kitevő"
 
-#: ../../src/Configuration.cpp:1457 ../../src/ToolBar.cpp:248
+#: ../../src/Configuration.cpp:1460 ../../src/ToolBar.cpp:248
 #: ../../src/wxMaximaFrame.cpp:2186
 msgid "Heading 5"
 msgstr "5. cím"
 
-#: ../../src/Configuration.cpp:1456 ../../src/ToolBar.cpp:249
+#: ../../src/Configuration.cpp:1459 ../../src/ToolBar.cpp:249
 #: ../../src/wxMaximaFrame.cpp:2188
 msgid "Heading 6"
 msgstr "6. cím"
@@ -3059,7 +3059,7 @@ msgstr "Elrejti a sárga eszköztipp-jelölőt ezen cella esetén"
 msgid "Hide yellow tooltip marker for this message type"
 msgstr "Sárga eszköztipp-jelölő elrejtése ezen üzenettípus esetén"
 
-#: ../../src/Configuration.cpp:1451
+#: ../../src/Configuration.cpp:1454
 msgid "Highlight (dpart)"
 msgstr "Kiemelés"
 
@@ -3425,7 +3425,7 @@ msgstr "Kezdetiérték-probléma (&2)..."
 msgid "Input a RegEx here to filter the results"
 msgstr "RegEx beírása az eredmények szűréséhez"
 
-#: ../../src/Configuration.cpp:1447
+#: ../../src/Configuration.cpp:1450
 msgid "Input labels"
 msgstr "Bemeneti címkék"
 
@@ -4056,7 +4056,7 @@ msgstr "Mátrix leképezése mátrixba"
 msgid "Match Case"
 msgstr "Kisbetű-nagybetű érzékeny keresés"
 
-#: ../../src/Configuration.cpp:1478
+#: ../../src/Configuration.cpp:1481
 msgid "Math Default"
 msgstr "Alapértelmezett matematika"
 
@@ -4219,7 +4219,7 @@ msgstr "Maxima parancsok végrehajtása a wxMaxima minden indításakor"
 msgid "Maxima configuration"
 msgstr "A wxMaxima beállítása"
 
-#: ../../src/Configuration.cpp:1453
+#: ../../src/Configuration.cpp:1456
 msgid "Maxima errors"
 msgstr "Maxima hibák"
 
@@ -4240,7 +4240,7 @@ msgstr "A Maxima betöltötte a(z) %s fájlt."
 msgid "Maxima has sent a new variable value."
 msgstr "A Maxima új változó értéket küldött."
 
-#: ../../src/Configuration.cpp:1446
+#: ../../src/Configuration.cpp:1449
 msgid "Maxima input"
 msgstr "Maxima bemenet"
 
@@ -4290,7 +4290,7 @@ msgstr ""
 "szerint új Maximát indít minden munkalap-újraértékelésnél. Mivel ez "
 "időigényes lehet, ez a kapcsoló lehetővé teszi az újraindítás kiiktatását."
 
-#: ../../src/Configuration.cpp:1448
+#: ../../src/Configuration.cpp:1451
 msgid "Maxima questions"
 msgstr "Maxima kérdései"
 
@@ -4379,7 +4379,7 @@ msgstr "A maxima a(z) %s ideiglenes könyvtárat használja"
 msgid "Maxima version: %s"
 msgstr "Maxima verzió: %s"
 
-#: ../../src/Configuration.cpp:1452
+#: ../../src/Configuration.cpp:1455
 msgid "Maxima warnings"
 msgstr "Maxima figyelmeztetések"
 
@@ -4763,7 +4763,7 @@ msgstr "Egyenletek száma:"
 msgid "Number types"
 msgstr "Számtípusok"
 
-#: ../../src/Configuration.cpp:1441
+#: ../../src/Configuration.cpp:1444
 msgid "Numbers"
 msgstr "Számok"
 
@@ -4908,11 +4908,11 @@ msgstr ""
 "\n"
 "rendkívül hatékony módszer minden listaelemre."
 
-#: ../../src/Configuration.cpp:1469
+#: ../../src/Configuration.cpp:1472
 msgid "Outdated cells"
 msgstr "Elavult cellák"
 
-#: ../../src/Configuration.cpp:1449
+#: ../../src/Configuration.cpp:1452
 msgid "Output labels"
 msgstr "Kimeneti címkék"
 
@@ -5748,11 +5748,11 @@ msgstr "Keresés gomb"
 msgid "Section"
 msgstr "Fejezet"
 
-#: ../../src/Configuration.cpp:1460
+#: ../../src/Configuration.cpp:1463
 msgid "Section cell (Heading 2)"
 msgstr "Szakasz cella (2. címsor)"
 
-#: ../../src/BTextCtrl.cpp:50 ../../src/Configuration.cpp:774
+#: ../../src/BTextCtrl.cpp:50 ../../src/Configuration.cpp:777
 msgid "Seems like something is broken with a font."
 msgstr "Úgy tűnik, valami gond van a betűtípusokkal."
 
@@ -5814,7 +5814,7 @@ msgstr ""
 "A kimenetet egy részét kijelölve az egérrel és arra a jobb egérgombbal "
 "kattintva egy menüt kapunk a kijelölt részen való lehetséges műveletekkel."
 
-#: ../../src/Configuration.cpp:1467
+#: ../../src/Configuration.cpp:1470
 msgid "Selection"
 msgstr "Kijelölés"
 
@@ -5892,7 +5892,12 @@ msgstr "Rögzített szélességű betűtípus beállítása a bemeneti sorban."
 msgid "Set image resolution"
 msgstr ""
 
-#: ../../src/MaxSizeChooser.cpp:30 ../../src/ResolutionChooser.cpp:29
+#: ../../src/ResolutionChooser.cpp:29
+#, fuzzy
+msgid "Set image resolution [in ppi]"
+msgstr "A maximális képméret beállítása [mm-ben]"
+
+#: ../../src/MaxSizeChooser.cpp:30
 msgid "Set maximum image size [in mm]"
 msgstr "A maximális képméret beállítása [mm-ben]"
 
@@ -6323,7 +6328,7 @@ msgstr "Forrás lista:"
 msgid "Spanish"
 msgstr "Spanyol"
 
-#: ../../src/Configuration.cpp:1443
+#: ../../src/Configuration.cpp:1446
 msgid "Special constants"
 msgstr "Különleges állandó"
 
@@ -6402,7 +6407,7 @@ msgstr "Egyenes vonalak"
 msgid "String from maxima apparently didn't end in a newline"
 msgstr "A Maxima sztringje nyilvánvalóan nem végződött új sorban"
 
-#: ../../src/Configuration.cpp:1445
+#: ../../src/Configuration.cpp:1448
 msgid "Strings"
 msgstr "Karakterláncok"
 
@@ -6422,7 +6427,7 @@ msgstr "Részminta..."
 msgid "Subsection"
 msgstr "Alfejezet"
 
-#: ../../src/Configuration.cpp:1459
+#: ../../src/Configuration.cpp:1462
 msgid "Subsection cell (Heading 3)"
 msgstr "Alfejezetcella (3. fejléc)"
 
@@ -6442,7 +6447,7 @@ msgstr "&Behelyettesítés..."
 msgid "Subsubsection"
 msgstr "Al-alfejezet"
 
-#: ../../src/Configuration.cpp:1458
+#: ../../src/Configuration.cpp:1461
 msgid "Subsubsection cell (Heading 4)"
 msgstr "Al-alfejezetcella (4. fejléc)"
 
@@ -6515,11 +6520,11 @@ msgstr "Szöveg"
 msgid "Text Only"
 msgstr "Csak szöveg"
 
-#: ../../src/Configuration.cpp:1455
+#: ../../src/Configuration.cpp:1458
 msgid "Text cell"
 msgstr "Cellák kivágása"
 
-#: ../../src/Configuration.cpp:1462
+#: ../../src/Configuration.cpp:1465
 msgid "Text cell background"
 msgstr "Szöveg háttere"
 
@@ -6533,7 +6538,7 @@ msgstr ""
 "\">\" jel előtti szóközök száma határozza meg a behúzás mértékét, ahogyan az "
 "a felsorolás lista esetében is történt."
 
-#: ../../src/Configuration.cpp:1468
+#: ../../src/Configuration.cpp:1471
 msgid "Text equal to selection"
 msgstr "Kijelölt rész kivágása"
 
@@ -6735,7 +6740,7 @@ msgstr "A maxima kézikönyve"
 msgid "The manual of wxMaxima"
 msgstr "A maxima kézikönyve"
 
-#: ../../src/MaxSizeChooser.cpp:55 ../../src/ResolutionChooser.cpp:50
+#: ../../src/MaxSizeChooser.cpp:55
 msgid "The maximum size for this image. Values <= 0 mean: Unspecified."
 msgstr "A kép maximális mérete. Értékek <= 0 jelentés: Meghatározatlan."
 
@@ -6768,6 +6773,10 @@ msgstr ""
 "Ezen parancsoknak a kimenetelének azt a részét, melyet nem \"matematikaiként"
 "\" deklarálnak, a wxMaxima elhagyhatja, mivel a Maxima parancsoknak a \";\" "
 "vagy a \"$\" jelre kell végződniük"
+
+#: ../../src/ResolutionChooser.cpp:50
+msgid "The resolution for this image."
+msgstr ""
 
 #: ../../src/TipOfTheDay.cpp:169
 msgid ""
@@ -6906,7 +6915,7 @@ msgstr "Cím"
 msgid "Title (Sub- and superscripts as x_{10} or x^{10})"
 msgstr "Cím (alsó és felső indexek, mint x_{10} vagy x^{10})"
 
-#: ../../src/Configuration.cpp:1461
+#: ../../src/Configuration.cpp:1464
 msgid "Title cell (Heading 1)"
 msgstr "Címcella (1. fejléc)"
 
@@ -7275,7 +7284,7 @@ msgstr "Csak a felhasználó által definiált címkék"
 msgid "User specified"
 msgstr "Felhasználó által meghatározott"
 
-#: ../../src/Configuration.cpp:1450
+#: ../../src/Configuration.cpp:1453
 msgid "User-defined labels"
 msgstr "Felhasználó által definiált címkék"
 
@@ -7340,7 +7349,7 @@ msgstr "Változó(k):"
 msgid "Variable:"
 msgstr "Változó:"
 
-#: ../../src/Configuration.cpp:1440 ../../src/wxMaximaFrame.cpp:456
+#: ../../src/Configuration.cpp:1443 ../../src/wxMaximaFrame.cpp:456
 #: ../../src/wxMaximaFrame.cpp:766
 msgid "Variables"
 msgstr "Változók"

@@ -26,7 +26,7 @@ ResolutionChooser::ResolutionChooser(wxWindow *parent, int id,
           const int &resolution,
           const wxPoint &pos,
           const wxSize &size, long style) :
-  wxDialog(parent, id, _("Set maximum image size [in mm]"), pos, size, style)
+  wxDialog(parent, id, _("Set image resolution [in ppi]"), pos, size, style)
 {
   wxStaticText *resolutionText = new wxStaticText(this, -1, wxT("Image resolution [in ppi]:"));
 
@@ -47,7 +47,7 @@ ResolutionChooser::ResolutionChooser(wxWindow *parent, int id,
   wxBoxSizer *vsizer = new wxBoxSizer(wxVERTICAL);
   wxFlexGridSizer *grid_sizer_1 = new wxFlexGridSizer(4, 2, 0, 0);
   wxBoxSizer *sizer_1 = new wxBoxSizer(wxHORIZONTAL);
-  vsizer->Add(new wxStaticText(this, -1, _("The maximum size for this image. Values <= 0 mean: Unspecified.")), 0, wxALL | wxALIGN_CENTER_HORIZONTAL, 5);
+  vsizer->Add(new wxStaticText(this, -1, _("The resolution for this image.")), 0, wxALL | wxALIGN_CENTER_HORIZONTAL, 5);
   grid_sizer_1->Add(resolutionText, 0, wxALL | wxEXPAND, 5);
   grid_sizer_1->Add(m_resolution, 0, wxEXPAND | wxLEFT | wxRIGHT, 2);
   

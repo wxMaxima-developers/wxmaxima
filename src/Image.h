@@ -99,7 +99,7 @@ public:
   //! Return the image's resolution
   int GetPPI() const {return m_ppi;}
   //! Set the image's resolution
-  int SetPPI(int ppi) {return m_ppi;}
+  void SetPPI(int ppi) {m_ppi = ppi;}
 
   //! Creates a bitmap showing an error message
   void InvalidBitmap();

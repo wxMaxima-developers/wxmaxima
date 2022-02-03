@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wxMaxima\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-02-03 09:03+0100\n"
+"POT-Creation-Date: 2022-02-03 09:36+0100\n"
 "PO-Revision-Date: 2021-05-27 15:51+0300\n"
 "Last-Translator: Olesya Gerasimenko <translation-team@basealt.ru>\n"
 "Language-Team: Basealt Translation Team\n"
@@ -455,7 +455,7 @@ msgstr "Символ из диалога настройки"
 msgid "A&t Value..."
 msgstr "Значение в &точке..."
 
-#: ../../src/Configuration.cpp:1454
+#: ../../src/Configuration.cpp:1457
 msgid "ASCII maths"
 msgstr "Расчёты ASCII"
 
@@ -476,7 +476,7 @@ msgstr "О wxMaxima"
 msgid "Accuracy"
 msgstr "Точность"
 
-#: ../../src/Configuration.cpp:1465
+#: ../../src/Configuration.cpp:1468
 msgid "Active cell bracket"
 msgstr "Квадратная скобка активного поля"
 
@@ -921,7 +921,7 @@ msgstr ""
 msgid "Bug: HTML output is no valid XML"
 msgstr "Ошибка: вывод HTML не является корректным XML."
 
-#: ../../src/Configuration.h:585
+#: ../../src/Configuration.h:574
 msgid "Bug: Maximum number of digits that is to be displayed is too low!"
 msgstr ""
 "Ошибка: слишком маленькое максимальное количество цифр для отображения!"
@@ -1088,7 +1088,7 @@ msgstr "Каталанский"
 msgid "Ce&ll"
 msgstr "&Поле"
 
-#: ../../src/Configuration.cpp:1464
+#: ../../src/Configuration.cpp:1467
 msgid "Cell bracket"
 msgstr "Квадратная скобка поля"
 
@@ -1203,35 +1203,35 @@ msgstr "Закрыть окно"
 msgid "Closing the socket maxima could connect to!"
 msgstr "Выполняется закрытие сокета, к которому могла бы подключиться Maxima!"
 
-#: ../../src/Configuration.cpp:1472
+#: ../../src/Configuration.cpp:1475
 msgid "Code highlighting: Comments"
 msgstr "Выделение кода: комментарии"
 
-#: ../../src/Configuration.cpp:1477
+#: ../../src/Configuration.cpp:1480
 msgid "Code highlighting: End of line"
 msgstr "Выделение кода: конец строки"
 
-#: ../../src/Configuration.cpp:1471
+#: ../../src/Configuration.cpp:1474
 msgid "Code highlighting: Functions"
 msgstr "Выделение кода: функции"
 
-#: ../../src/Configuration.cpp:1476
+#: ../../src/Configuration.cpp:1479
 msgid "Code highlighting: Lisp"
 msgstr "Выделение кода: Lisp"
 
-#: ../../src/Configuration.cpp:1473
+#: ../../src/Configuration.cpp:1476
 msgid "Code highlighting: Numbers"
 msgstr "Выделение кода: числа"
 
-#: ../../src/Configuration.cpp:1475
+#: ../../src/Configuration.cpp:1478
 msgid "Code highlighting: Operators"
 msgstr "Выделение кода: операторы"
 
-#: ../../src/Configuration.cpp:1474
+#: ../../src/Configuration.cpp:1477
 msgid "Code highlighting: Strings"
 msgstr "Выделение кода: строки"
 
-#: ../../src/Configuration.cpp:1470
+#: ../../src/Configuration.cpp:1473
 msgid "Code highlighting: Variables"
 msgstr "Выделение кода: переменные"
 
@@ -1657,7 +1657,7 @@ msgstr "Создать список на основе элементов, раз
 msgid "Create scalable plots."
 msgstr "Создать масштабируемые графики."
 
-#: ../../src/Configuration.cpp:1466
+#: ../../src/Configuration.cpp:1469
 msgid "Cursor"
 msgstr "Курсор"
 
@@ -1718,7 +1718,7 @@ msgstr "Всегда показывать фрагмент текста как �
 msgid "Decompose rational function to partial fractions"
 msgstr "Разложить рациональную функцию на простые дроби"
 
-#: ../../src/Configuration.cpp:1439
+#: ../../src/Configuration.cpp:1442
 msgid "Default"
 msgstr "По умолчанию"
 
@@ -1922,7 +1922,7 @@ msgstr "Сохранить изменения в документе «%s»?"
 msgid "Dock all Sidebars"
 msgstr "Закрепить все боковые панели"
 
-#: ../../src/Configuration.cpp:1463
+#: ../../src/Configuration.cpp:1466
 msgid "Document background"
 msgstr "Фон документа"
 
@@ -2789,7 +2789,7 @@ msgstr "Функция"
 msgid "Function name"
 msgstr "Имя функции"
 
-#: ../../src/Configuration.cpp:1442
+#: ../../src/Configuration.cpp:1445
 msgid "Function names"
 msgstr "Имена функций"
 
@@ -2944,7 +2944,7 @@ msgstr ""
 msgid "Greek"
 msgstr "Греческий"
 
-#: ../../src/Configuration.cpp:1444
+#: ../../src/Configuration.cpp:1447
 msgid "Greek Constants"
 msgstr "Греческие константы"
 
@@ -2980,12 +2980,12 @@ msgstr "Произведение Адамара (покомпонентное)"
 msgid "Hadamard exponent"
 msgstr "Экспонента Адамара"
 
-#: ../../src/Configuration.cpp:1457 ../../src/ToolBar.cpp:248
+#: ../../src/Configuration.cpp:1460 ../../src/ToolBar.cpp:248
 #: ../../src/wxMaximaFrame.cpp:2186
 msgid "Heading 5"
 msgstr "Заголовок 5"
 
-#: ../../src/Configuration.cpp:1456 ../../src/ToolBar.cpp:249
+#: ../../src/Configuration.cpp:1459 ../../src/ToolBar.cpp:249
 #: ../../src/wxMaximaFrame.cpp:2188
 msgid "Heading 6"
 msgstr "Заголовок 6"
@@ -3090,7 +3090,7 @@ msgstr "Скрыть жёлтый маркер подсказки для это�
 msgid "Hide yellow tooltip marker for this message type"
 msgstr "Скрыть жёлтый маркер подсказки для этого типа сообщения"
 
-#: ../../src/Configuration.cpp:1451
+#: ../../src/Configuration.cpp:1454
 msgid "Highlight (dpart)"
 msgstr "Выделение (dpart)"
 
@@ -3461,7 +3461,7 @@ msgstr "Задача с начальным условием (&2) ..."
 msgid "Input a RegEx here to filter the results"
 msgstr "Введите здесь регулярное выражение для фильтрации результатов"
 
-#: ../../src/Configuration.cpp:1447
+#: ../../src/Configuration.cpp:1450
 msgid "Input labels"
 msgstr "Метки ввода"
 
@@ -4094,7 +4094,7 @@ msgstr "Применить функцию к элементам матрицы"
 msgid "Match Case"
 msgstr "Учитывать регистр"
 
-#: ../../src/Configuration.cpp:1478
+#: ../../src/Configuration.cpp:1481
 msgid "Math Default"
 msgstr "Значения по умолчанию для математики"
 
@@ -4257,7 +4257,7 @@ msgstr ""
 msgid "Maxima configuration"
 msgstr "Конфигурация Maxima"
 
-#: ../../src/Configuration.cpp:1453
+#: ../../src/Configuration.cpp:1456
 msgid "Maxima errors"
 msgstr "Ошибки Maxima"
 
@@ -4278,7 +4278,7 @@ msgstr "Maxima загрузила файл %s."
 msgid "Maxima has sent a new variable value."
 msgstr "Maxima отправила новое значение переменной."
 
-#: ../../src/Configuration.cpp:1446
+#: ../../src/Configuration.cpp:1449
 msgid "Maxima input"
 msgstr "Ввод Maxima"
 
@@ -4330,7 +4330,7 @@ msgstr ""
 "можно изменить с помощью этого переключателя (он позволяет отключить "
 "перезапуск сеансов и сэкономить время)."
 
-#: ../../src/Configuration.cpp:1448
+#: ../../src/Configuration.cpp:1451
 msgid "Maxima questions"
 msgstr "Вопросы Maxima"
 
@@ -4419,7 +4419,7 @@ msgstr "Maxima использует временный каталог %s"
 msgid "Maxima version: %s"
 msgstr "Версия Maxima: %s"
 
-#: ../../src/Configuration.cpp:1452
+#: ../../src/Configuration.cpp:1455
 msgid "Maxima warnings"
 msgstr "Предупреждения Maxima"
 
@@ -4805,7 +4805,7 @@ msgstr "Число уравнений:"
 msgid "Number types"
 msgstr "Типы чисел"
 
-#: ../../src/Configuration.cpp:1441
+#: ../../src/Configuration.cpp:1444
 msgid "Numbers"
 msgstr "Числа"
 
@@ -4950,11 +4950,11 @@ msgstr ""
 "\n"
 "позволяет эффективно выполнять действия над каждым элементом списка."
 
-#: ../../src/Configuration.cpp:1469
+#: ../../src/Configuration.cpp:1472
 msgid "Outdated cells"
 msgstr "Устаревшие поля"
 
-#: ../../src/Configuration.cpp:1449
+#: ../../src/Configuration.cpp:1452
 msgid "Output labels"
 msgstr "Метки вывода"
 
@@ -5788,11 +5788,11 @@ msgstr "Кнопка «Найти»"
 msgid "Section"
 msgstr "Раздел"
 
-#: ../../src/Configuration.cpp:1460
+#: ../../src/Configuration.cpp:1463
 msgid "Section cell (Heading 2)"
 msgstr "Поле раздела (Заголовок 2)"
 
-#: ../../src/BTextCtrl.cpp:50 ../../src/Configuration.cpp:774
+#: ../../src/BTextCtrl.cpp:50 ../../src/Configuration.cpp:777
 msgid "Seems like something is broken with a font."
 msgstr "Вероятно, что-то не так со шрифтом."
 
@@ -5852,7 +5852,7 @@ msgstr ""
 "Выбор части вывода и щелчок правой кнопкой мыши по выделению вызовет меню с "
 "функциями, которые позволяют управлять выделенным."
 
-#: ../../src/Configuration.cpp:1467
+#: ../../src/Configuration.cpp:1470
 msgid "Selection"
 msgstr "Выделение"
 
@@ -5931,7 +5931,12 @@ msgstr "Установить фиксированный шрифт в текст
 msgid "Set image resolution"
 msgstr "Повторное использование решений\n"
 
-#: ../../src/MaxSizeChooser.cpp:30 ../../src/ResolutionChooser.cpp:29
+#: ../../src/ResolutionChooser.cpp:29
+#, fuzzy
+msgid "Set image resolution [in ppi]"
+msgstr "Повторное использование решений\n"
+
+#: ../../src/MaxSizeChooser.cpp:30
 msgid "Set maximum image size [in mm]"
 msgstr "Установить максимальный размер изображения [в мм]"
 
@@ -6361,7 +6366,7 @@ msgstr "Исходный список:"
 msgid "Spanish"
 msgstr "Испанский"
 
-#: ../../src/Configuration.cpp:1443
+#: ../../src/Configuration.cpp:1446
 msgid "Special constants"
 msgstr "Специальные константы"
 
@@ -6440,7 +6445,7 @@ msgstr "Прямые линии"
 msgid "String from maxima apparently didn't end in a newline"
 msgstr "Похоже, в конце строки от Maxima отсутствует символ новой строки"
 
-#: ../../src/Configuration.cpp:1445
+#: ../../src/Configuration.cpp:1448
 msgid "Strings"
 msgstr "Строки"
 
@@ -6460,7 +6465,7 @@ msgstr "Подвыборка..."
 msgid "Subsection"
 msgstr "Подраздел"
 
-#: ../../src/Configuration.cpp:1459
+#: ../../src/Configuration.cpp:1462
 msgid "Subsection cell (Heading 3)"
 msgstr "Поле подраздела (Заголовок 3)"
 
@@ -6480,7 +6485,7 @@ msgstr "Подставить..."
 msgid "Subsubsection"
 msgstr "Под-подраздел"
 
-#: ../../src/Configuration.cpp:1458
+#: ../../src/Configuration.cpp:1461
 msgid "Subsubsection cell (Heading 4)"
 msgstr "Поле под-подраздела (Заголовок 4)"
 
@@ -6553,11 +6558,11 @@ msgstr "Текст"
 msgid "Text Only"
 msgstr "Только текст"
 
-#: ../../src/Configuration.cpp:1455
+#: ../../src/Configuration.cpp:1458
 msgid "Text cell"
 msgstr "Текстовое поле"
 
-#: ../../src/Configuration.cpp:1462
+#: ../../src/Configuration.cpp:1465
 msgid "Text cell background"
 msgstr "Фон текстового поля"
 
@@ -6571,7 +6576,7 @@ msgstr ""
 "«>» в начале строки. Количество пробелов перед «>» определяет уровень "
 "отступа, как и в случае маркированных списков."
 
-#: ../../src/Configuration.cpp:1468
+#: ../../src/Configuration.cpp:1471
 msgid "Text equal to selection"
 msgstr "Текст, который совпадает с выделением"
 
@@ -6772,7 +6777,7 @@ msgstr "Руководство по Maxima"
 msgid "The manual of wxMaxima"
 msgstr "Руководство по wxMaxima"
 
-#: ../../src/MaxSizeChooser.cpp:55 ../../src/ResolutionChooser.cpp:50
+#: ../../src/MaxSizeChooser.cpp:55
 msgid "The maximum size for this image. Values <= 0 mean: Unspecified."
 msgstr ""
 "Максимальный размер изображения. Значения, которые меньше или равны нулю, "
@@ -6811,6 +6816,10 @@ msgstr ""
 "Часть вывода этих команд, которая не объявлена как «math», может подавляться "
 "wxMaxima. Как и всегда, команды Maxima должны заканчиваться символом «;» или "
 "«$»"
+
+#: ../../src/ResolutionChooser.cpp:50
+msgid "The resolution for this image."
+msgstr ""
 
 #: ../../src/TipOfTheDay.cpp:169
 msgid ""
@@ -6951,7 +6960,7 @@ msgstr "Заголовок"
 msgid "Title (Sub- and superscripts as x_{10} or x^{10})"
 msgstr "Заголовок (нижний и верхний индексы как x_{10} или x^{10})"
 
-#: ../../src/Configuration.cpp:1461
+#: ../../src/Configuration.cpp:1464
 msgid "Title cell (Heading 1)"
 msgstr "Поле заголовка (Заголовок 1)"
 
@@ -7315,7 +7324,7 @@ msgstr "Только пользовательские метки"
 msgid "User specified"
 msgstr "Задаётся пользователем"
 
-#: ../../src/Configuration.cpp:1450
+#: ../../src/Configuration.cpp:1453
 msgid "User-defined labels"
 msgstr "Пользовательские метки"
 
@@ -7380,7 +7389,7 @@ msgstr "Переменные:"
 msgid "Variable:"
 msgstr "Переменная:"
 
-#: ../../src/Configuration.cpp:1440 ../../src/wxMaximaFrame.cpp:456
+#: ../../src/Configuration.cpp:1443 ../../src/wxMaximaFrame.cpp:456
 #: ../../src/wxMaximaFrame.cpp:766
 msgid "Variables"
 msgstr "Переменные"
