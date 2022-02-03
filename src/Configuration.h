@@ -286,18 +286,7 @@ public:
 
   void SetPPI(wxSize ppi){m_ppi = ppi;}
   //! Get the resolution of the display showing the worksheet
-  wxSize GetPPI() const {
-    if(GetWorkSheet())
-      return GetPPI(GetWorkSheet());
-    else
-      return m_ppi;
-  }
-
-  // cppcheck-suppress functionStatic
-  // cppcheck-suppress functionConst
-  //! Get the resolution of an arbitrary display
-  wxSize GetPPI(wxWindow *win) const;
-
+  wxSize GetPPI() const;
   int AutosaveMinutes(){return m_autoSaveMinutes;}
   void AutosaveMinutes(int minutes){m_autoSaveMinutes = minutes;}
 

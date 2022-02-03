@@ -94,6 +94,31 @@ Configuration::Configuration(wxDC *dc, InitOpt options) :
     m_maximaOperators[wxString(*it)] = 1;
 }
 
+wxSize Configuration::GetPPI() const
+{
+  if(GetWorkSheet())
+  {
+    wxSize ppi;
+#if wxCHECK_VERSION(3, 1, 1)
+    wxDisplay display;
+    
+    int display_idx = wxDisplay::GetFromWindow(GetWorkSheet());
+    ppi = wxSize(72, 72);
+    else
+      ppi = wxDisplay(display_idx).GetPPI();
+#else
+    ppi = wxGetDisplayPPI();
+#endif
+    if((ppi.x < 10) || (ppi.x < 10))
+      ppi = wxGetDisplayPPI();
+    if((ppi.x <= 10) || (ppi.y < 10))
+      ppi = wxSize(72, 72);
+  return ppi;;
+  }
+  else
+    return m_ppi;
+}
+
 void Configuration::ResetAllToDefaults(InitOpt options)
 {
   m_showAllDigits = false;
@@ -420,29 +445,6 @@ Configuration::EscCodeIterator Configuration::EscCodesBegin()
 Configuration::EscCodeIterator Configuration::EscCodesEnd()
 { return EscCodes().cend(); }
 
-wxSize Configuration::GetPPI(wxWindow *win) const
-{
-  if(win == NULL)
-    return wxSize(96,96);
-  
-  wxSize ppi(-1,-1);
-#if wxCHECK_VERSION(3, 1, 1)
-  wxDisplay display;
-  
-  int display_idx = wxDisplay::GetFromWindow(win);
-  if (display_idx < 0)
-    ppi = wxSize(72,72);
-  else
-    ppi = wxDisplay(display_idx).GetPPI();
-#endif
-
-  if((ppi.x < 10) || (ppi.y < 10))
-    ppi = wxGetDisplayPPI();
-  if((ppi.x <= 10) || (ppi.y <= 10))
-    ppi = wxSize(72,72);
-
-  return ppi;
-}
 
 wxString Configuration::GetAutosubscript_string() const
 {
