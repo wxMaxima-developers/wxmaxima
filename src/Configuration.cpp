@@ -103,7 +103,8 @@ wxSize Configuration::GetPPI() const
     wxDisplay display;
     
     int display_idx = wxDisplay::GetFromWindow(GetWorkSheet());
-    ppi = wxSize(72, 72);
+    if(display_idx < 0)
+      ppi = wxSize(72, 72);
     else
       ppi = wxDisplay(display_idx).GetPPI();
 #else
