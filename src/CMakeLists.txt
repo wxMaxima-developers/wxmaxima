@@ -35,6 +35,7 @@ set(CELL_SOURCE_FILES
     FunCell.cpp
     GroupCell.cpp
     ImgCell.cpp
+    ImgCellBase.cpp
     IntCell.cpp
     IntervalCell.cpp
     LabelCell.cpp

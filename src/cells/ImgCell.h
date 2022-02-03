@@ -26,11 +26,12 @@
 #include "Cell.h"
 #include <wx/image.h>
 #include "Image.h"
+#include "ImgCellBase.h"
 
 #include <wx/filesys.h>
 #include <wx/fs_arc.h>
 
-class ImgCell final : public Cell
+class ImgCell final : public ImgCellBase
 {
 public:
   ImgCell(GroupCell *group, Configuration **config);
@@ -59,8 +60,8 @@ public:
   //! Set the image's resolution
   void SetPPI(int ppi){m_image->SetPPI(ppi);}
   int GetPPI() const{return m_image->GetPPI();}
-  size_t GetOriginalWidth(){return m_image->GetOriginalWidth();}
-  size_t GetOriginalHeight(){return m_image->GetOriginalHeight();}
+  size_t GetOriginalWidth() const {return m_image->GetOriginalWidth();}
+  size_t GetOriginalHeight() const {return m_image->GetOriginalHeight();}
 
   void ReloadImage(const wxString &image, std::shared_ptr<wxFileSystem> filesystem);
 
@@ -113,8 +114,8 @@ public:
 
   double GetMaxWidth() const { return m_image ? m_image->GetMaxWidth() : -1; }
   double GetHeightList() const { return m_image ? m_image->GetHeightList() : -1; }
-  void SetMaxWidth(double width) const { if (m_image) m_image->SetMaxWidth(width); }
-  void SetMaxHeight(double height) const { if (m_image) m_image->SetMaxHeight(height); }
+  void SetMaxWidth(double width) { if (m_image) m_image->SetMaxWidth(width); }
+  void SetMaxHeight(double height) { if (m_image) m_image->SetMaxHeight(height); }
 
   void Recalculate(AFontSize fontsize) override;
 

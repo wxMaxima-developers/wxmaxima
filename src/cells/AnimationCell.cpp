@@ -52,7 +52,7 @@
 // pointer to the file system alive in a background task
 // cppcheck-suppress performance symbolName=filesystem
 AnimationCell::AnimationCell(GroupCell *group, Configuration **config, std::shared_ptr <wxFileSystem> filesystem, int framerate) :
-    Cell(group, config),
+    ImgCellBase(group, config),
     m_timer(m_cellPointers->GetWorksheet(), wxNewId()),
     m_fileSystem(filesystem),
     m_framerate(framerate),
@@ -65,7 +65,7 @@ AnimationCell::AnimationCell(GroupCell *group, Configuration **config, std::shar
 }
 
 AnimationCell::AnimationCell(GroupCell *group, Configuration **config, int framerate) :
-    Cell(group, config),
+    ImgCellBase(group, config),
     m_timer(m_cellPointers->GetWorksheet(), wxNewId()),
     m_displayed(0),
     m_framerate(framerate),
@@ -254,6 +254,34 @@ void AnimationCell::SetDisplayedIndex(int ind)
     m_displayed = Length() - 1;
   if(m_displayed < 0 )
     m_displayed = 0;
+}
+
+double AnimationCell::GetMaxWidth() const
+{
+  if(!IsOk())
+    return -1;
+  else
+    return m_images[m_displayed]->GetMaxWidth();
+}
+
+double AnimationCell::GetHeightList() const
+{
+  if(!IsOk())
+    return -1;
+  else
+    return m_images[m_displayed]->GetHeightList();
+}
+
+void AnimationCell::SetMaxWidth(double width)
+{
+  for(std::vector<std::shared_ptr<Image>>::iterator i = m_images.begin(); i != m_images.end();i++)
+    (*i)->SetMaxWidth(width);
+}
+  
+void AnimationCell::SetMaxHeight(double height)
+{
+  for(std::vector<std::shared_ptr<Image>>::iterator i = m_images.begin(); i != m_images.end();i++)
+    (*i)->SetMaxHeight(height);
 }
 
 void AnimationCell::Recalculate(AFontSize fontsize)

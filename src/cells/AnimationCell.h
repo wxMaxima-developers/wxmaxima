@@ -31,6 +31,7 @@
 
 #include "Cell.h"
 #include "Image.h"
+#include "ImgCellBase.h"
 #include <wx/image.h>
 #include <wx/timer.h>
 
@@ -41,7 +42,7 @@
 
 #include <vector>
 
-class AnimationCell final : public Cell
+class AnimationCell final : public ImgCellBase
 {
 public:
   /*! The constructor
@@ -67,8 +68,8 @@ public:
 
   void SetConfiguration(Configuration **config);
   int GetPPI() const{if(IsOk())return m_images[m_displayed]->GetPPI();else return 0;}
-  size_t GetOriginalWidth(){if(IsOk())return m_images[m_displayed]->GetOriginalWidth();else return 0;}
-  size_t GetOriginalHeight(){if(IsOk())return m_images[m_displayed]->GetOriginalHeight();else return 0;}
+  size_t GetOriginalWidth() const {if(IsOk())return m_images[m_displayed]->GetOriginalWidth();else return 0;}
+  size_t GetOriginalHeight() const {if(IsOk())return m_images[m_displayed]->GetOriginalHeight();else return 0;}
   wxString GetExtension() const
     { if (IsOk())return m_images[m_displayed]->GetExtension(); else return wxEmptyString; }
 
@@ -209,6 +210,11 @@ private:
   wxString ToTeX() const override;
   wxString ToXML() const override;
 
+  double GetMaxWidth() const;
+  double GetHeightList() const;
+  void SetMaxWidth(double width);
+  void SetMaxHeight(double height);
+  
   void DrawBoundingBox(wxDC &WXUNUSED(dc), bool WXUNUSED(all) = false)  override
   { m_drawBoundingBox = true; }
 };

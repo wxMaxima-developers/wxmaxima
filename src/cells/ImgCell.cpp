@@ -43,7 +43,7 @@
 #include <wx/mstream.h>
 
 ImgCell::ImgCell(GroupCell *group, Configuration **config) :
-    Cell(group, config),
+    ImgCellBase(group, config),
     m_imageBorderWidth(1)
 {
   InitBitFields();
@@ -51,7 +51,7 @@ ImgCell::ImgCell(GroupCell *group, Configuration **config) :
 }
 
 ImgCell::ImgCell(GroupCell *group, Configuration **config, const wxMemoryBuffer &image, const wxString &type) :
-    Cell(group, config),
+    ImgCellBase(group, config),
     m_image(new Image(m_configuration, image, type)),
     m_imageBorderWidth(1)
 {
@@ -60,7 +60,7 @@ ImgCell::ImgCell(GroupCell *group, Configuration **config, const wxMemoryBuffer 
 }
 
 ImgCell::ImgCell(GroupCell *group, Configuration **config, const wxBitmap &bitmap) :
-    Cell(group, config),
+    ImgCellBase(group, config),
     m_image(new Image(m_configuration, bitmap)),
     m_imageBorderWidth(1)
 {
@@ -72,7 +72,7 @@ int ImgCell::s_counter = 0;
 
 // constructor which load image
 ImgCell::ImgCell(GroupCell *group, Configuration **config, const wxString &image, std::shared_ptr<wxFileSystem> filesystem, bool remove)
-  : Cell(group, config),
+  : ImgCellBase(group, config),
     m_imageBorderWidth(1)
 {
   InitBitFields();
@@ -93,7 +93,7 @@ void ImgCell::SetConfiguration(Configuration **config)
 }
 
 ImgCell::ImgCell(GroupCell *group, const ImgCell &cell) :
-  Cell(group, cell.m_configuration),
+  ImgCellBase(group, cell.m_configuration),
   m_imageBorderWidth(1)
 {
   InitBitFields();
@@ -129,7 +129,7 @@ void ImgCell::SetBitmap(const wxBitmap &bitmap)
 }
 
 // ImgCell::ImgCell(GroupCell *group, const ImgCell &cell):
-//     ImgCell(group, cell.m_configuration)
+//     ImgImgCellBase(group, cell.m_configuration)
 // {
 //   InitBitFields();
 //   CopyCommonData(cell);
