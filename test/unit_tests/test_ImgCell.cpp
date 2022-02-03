@@ -25,6 +25,7 @@
 #include "FontCache.cpp"
 #include "Image.cpp"
 #include "ImgCell.cpp"
+#include "ImgCellBase.cpp"
 #include "StringUtils.cpp"
 #include "TestStubs.cpp"
 #include "TextCell.cpp"
