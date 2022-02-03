@@ -181,7 +181,7 @@ private:
     CellTimerId() = default;
     CellTimerId(Cell *cell, int timerId) : cell(cell), timerId(timerId) {}
   };
-  //! Timer ids for slideshow cells
+  //! Timer ids for animation cells
   std::vector<CellTimerId> m_timerIds;
   //! If m_scrollToCell = true: Which cell do we need to scroll to?
   CellPtr<Cell> m_cellToScrollTo;

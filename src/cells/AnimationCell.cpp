@@ -21,15 +21,15 @@
 //  SPDX-License-Identifier: GPL-2.0+
 
 /*! \file
-  This file defines the class SlideShowCell
+  This file defines the class AnimationCell
 
-  SlideShowCell is the Cell type that represents animations.
+  AnimationCell is the Cell type that represents animations.
 */
 
 // 72 points per inch / 96 pixels per inch
 #define PRINT_SIZE_MULTIPLIER (72.0 / 96.0)
 
-#include "SlideShowCell.h"
+#include "AnimationCell.h"
 #include "CellImpl.h"
 #include "CellPointers.h"
 #include "ImgCell.h"
@@ -51,7 +51,7 @@
 // filesystem cannot be passed by const reference as we want to keep the
 // pointer to the file system alive in a background task
 // cppcheck-suppress performance symbolName=filesystem
-SlideShow::SlideShow(GroupCell *group, Configuration **config, std::shared_ptr <wxFileSystem> filesystem, int framerate) :
+AnimationCell::AnimationCell(GroupCell *group, Configuration **config, std::shared_ptr <wxFileSystem> filesystem, int framerate) :
     Cell(group, config),
     m_timer(m_cellPointers->GetWorksheet(), wxNewId()),
     m_fileSystem(filesystem),
@@ -64,7 +64,7 @@ SlideShow::SlideShow(GroupCell *group, Configuration **config, std::shared_ptr <
   ReloadTimer();
 }
 
-SlideShow::SlideShow(GroupCell *group, Configuration **config, int framerate) :
+AnimationCell::AnimationCell(GroupCell *group, Configuration **config, int framerate) :
     Cell(group, config),
     m_timer(m_cellPointers->GetWorksheet(), wxNewId()),
     m_displayed(0),
@@ -76,23 +76,23 @@ SlideShow::SlideShow(GroupCell *group, Configuration **config, int framerate) :
   ReloadTimer();
 }
 
-SlideShow::SlideShow(GroupCell *group, Configuration **config, const wxMemoryBuffer &image, const wxString &WXUNUSED(type)):
-    SlideShow(group, config)
+AnimationCell::AnimationCell(GroupCell *group, Configuration **config, const wxMemoryBuffer &image, const wxString &WXUNUSED(type)):
+    AnimationCell(group, config)
 {
   LoadImages(image);
                       
 }
 
-SlideShow::SlideShow(GroupCell *group, Configuration **config, const wxString &image, bool remove):
-    SlideShow(group, config)
+AnimationCell::AnimationCell(GroupCell *group, Configuration **config, const wxString &image, bool remove):
+    AnimationCell(group, config)
 {
   LoadImages(image);
   if (remove)
     wxRemoveFile(image);
 }
 
-SlideShow::SlideShow(GroupCell *group, const SlideShow &cell):
-  SlideShow(group, cell.m_configuration)
+AnimationCell::AnimationCell(GroupCell *group, const AnimationCell &cell):
+  AnimationCell(group, cell.m_configuration)
 {
    CopyCommonData(cell);
 
@@ -109,22 +109,22 @@ SlideShow::SlideShow(GroupCell *group, const SlideShow &cell):
    m_drawBoundingBox = cell.m_drawBoundingBox;
 }
 
-void SlideShow::SetConfiguration(Configuration **config)
+void AnimationCell::SetConfiguration(Configuration **config)
 {
   m_configuration = config;
   for(std::vector<std::shared_ptr<Image>>::const_iterator i = m_images.begin(); i != m_images.end(); ++i)
     (*i)->SetConfiguration(config);
 }
 
-SlideShow::~SlideShow()
+AnimationCell::~AnimationCell()
 {
   StopTimer();
-  SlideShow::ClearCache();
+  AnimationCell::ClearCache();
 }
 
-DEFINE_CELL(SlideShow)
+DEFINE_CELL(AnimationCell)
 
-int SlideShow::GetFrameRate() const
+int AnimationCell::GetFrameRate() const
 {
   int framerate = 2;
 
@@ -142,7 +142,7 @@ int SlideShow::GetFrameRate() const
   return (framerate);
 }
 
-void SlideShow::ReloadTimer()
+void AnimationCell::ReloadTimer()
 {
   if (!m_timer.IsRunning())
   {
@@ -152,13 +152,13 @@ void SlideShow::ReloadTimer()
   }
 }
 
-void SlideShow::StopTimer()
+void AnimationCell::StopTimer()
 {
   m_timer.Stop();
   m_cellPointers->RemoveTimerIdForCell(this);
 }
 
-void SlideShow::AnimationRunning(bool run)
+void AnimationCell::AnimationRunning(bool run)
 {
   if(run)
     ReloadTimer();
@@ -167,7 +167,7 @@ void SlideShow::AnimationRunning(bool run)
   m_animationRunning = run;
 }
 
-int SlideShow::SetFrameRate(int Freq)
+int AnimationCell::SetFrameRate(int Freq)
 {
 
   m_framerate = Freq;
@@ -185,7 +185,7 @@ int SlideShow::SetFrameRate(int Freq)
   return m_framerate;
 }
 
-void SlideShow::LoadImages(wxMemoryBuffer imageData)
+void AnimationCell::LoadImages(wxMemoryBuffer imageData)
 {
   wxImage images;
   wxMemoryInputStream istream(imageData.GetData(), imageData.GetDataLen());
@@ -200,7 +200,7 @@ void SlideShow::LoadImages(wxMemoryBuffer imageData)
   }
 }
 
-void SlideShow::LoadImages(wxString imageFile)
+void AnimationCell::LoadImages(wxString imageFile)
 {
   wxImage images;
   size_t count = wxImage::GetImageCount(imageFile);
@@ -213,7 +213,7 @@ void SlideShow::LoadImages(wxString imageFile)
   }
 }
 
-void SlideShow::LoadImages(wxArrayString images, bool deleteRead)
+void AnimationCell::LoadImages(wxArrayString images, bool deleteRead)
 {
   wxString gnuplotFilename;
   wxString dataFilename;
@@ -247,7 +247,7 @@ void SlideShow::LoadImages(wxArrayString images, bool deleteRead)
   m_displayed = 0;
 }
 
-void SlideShow::SetDisplayedIndex(int ind)
+void AnimationCell::SetDisplayedIndex(int ind)
 {
   m_displayed = ind;
   if(m_displayed > Length())
@@ -256,7 +256,7 @@ void SlideShow::SetDisplayedIndex(int ind)
     m_displayed = 0;
 }
 
-void SlideShow::Recalculate(AFontSize fontsize)
+void AnimationCell::Recalculate(AFontSize fontsize)
 {
   if(!IsOk())
   {
@@ -289,7 +289,7 @@ void SlideShow::Recalculate(AFontSize fontsize)
   Cell::Recalculate(fontsize);
 }
 
-void SlideShow::Draw(wxPoint point)
+void AnimationCell::Draw(wxPoint point)
 {
   Cell::Draw(point);
   if(!IsOk())
@@ -351,22 +351,22 @@ void SlideShow::Draw(wxPoint point)
   m_drawBoundingBox = false;
 }
 
-wxString SlideShow::ToString() const
+wxString AnimationCell::ToString() const
 {
   return wxT(" << Animation >> ");
 }
 
-wxString SlideShow::ToMatlab() const
+wxString AnimationCell::ToMatlab() const
 {
   return wxT(" << Animation >> ");
 }
 
-wxString SlideShow::ToTeX() const
+wxString AnimationCell::ToTeX() const
 {
   return wxT(" << Graphics >> ");
 }
 
-wxString SlideShow::ToXML() const
+wxString AnimationCell::ToXML() const
 {
   if(!IsOk())
     return wxEmptyString;
@@ -448,18 +448,18 @@ wxString SlideShow::ToXML() const
   return wxT("\n<slide") + flags + wxT(">") + images + wxT("</slide>");
 }
 
-void SlideShow::SetPPI(int ppi)
+void AnimationCell::SetPPI(int ppi)
 {
   for(std::vector<std::shared_ptr<Image>>::const_iterator i = m_images.begin(); i != m_images.end(); ++i)
     (*i)->SetPPI(ppi);
 }
 
-wxSize SlideShow::ToImageFile(wxString file)
+wxSize AnimationCell::ToImageFile(wxString file)
 {
   return m_images[m_displayed]->ToImageFile(file);
 }
 
-wxString SlideShow::ToRTF() const
+wxString AnimationCell::ToRTF() const
 {
   if(!IsOk())
     return wxEmptyString;
@@ -511,19 +511,19 @@ wxString SlideShow::ToRTF() const
 }
 
 
-const wxString &SlideShow::GetToolTip(const wxPoint point) const
+const wxString &AnimationCell::GetToolTip(const wxPoint point) const
 {
   if (!ContainsPoint(point))
     return wxm::emptyString;
 
-  m_cellPointers->m_cellUnderPointer = const_cast<SlideShow*>(this);
+  m_cellPointers->m_cellUnderPointer = const_cast<AnimationCell*>(this);
   if (!IsOk())
     return Image::GetBadImageToolTip();
 
   return GetLocalToolTip();
 }
 
-wxSize SlideShow::ToGif(wxString file)
+wxSize AnimationCell::ToGif(wxString file)
 {
   if(!IsOk())
     return wxSize(1,1);
@@ -559,20 +559,20 @@ wxSize SlideShow::ToGif(wxString file)
   return wxSize(-1,-1);
 }
 
-void SlideShow::ClearCache()
+void AnimationCell::ClearCache()
 {
   for (int i = 0; i < Length(); i++)
     if(m_images[i] != NULL)
       m_images[i]->ClearCache();
 }
 
-SlideShow::GifDataObject::GifDataObject(const wxMemoryOutputStream &str) : wxCustomDataObject(m_gifFormat)
+AnimationCell::GifDataObject::GifDataObject(const wxMemoryOutputStream &str) : wxCustomDataObject(m_gifFormat)
 {
   SetData(str.GetOutputStreamBuffer()->GetBufferSize(),
           str.GetOutputStreamBuffer()->GetBufferStart());
 }
 
-bool SlideShow::CopyToClipboard() const
+bool AnimationCell::CopyToClipboard() const
 {
   if(!IsOk())
     return false;
@@ -586,7 +586,7 @@ bool SlideShow::CopyToClipboard() const
   return false;
 }
 
-bool SlideShow::IsOk() const
+bool AnimationCell::IsOk() const
 {
   if (Length() < 1) return false;
   if (m_displayed >= Length())
@@ -600,7 +600,7 @@ bool SlideShow::IsOk() const
   return true;
 }
 
-bool SlideShow::CopyAnimationToClipboard()
+bool AnimationCell::CopyAnimationToClipboard()
 {
   if(!IsOk())
     return false;
@@ -637,4 +637,4 @@ bool SlideShow::CopyAnimationToClipboard()
   return false;
 }
 
-wxDataFormat SlideShow::m_gifFormat(wxT("image/gif"));
+wxDataFormat AnimationCell::m_gifFormat(wxT("image/gif"));

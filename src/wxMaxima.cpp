@@ -65,7 +65,7 @@
 #include "Printout.h"
 #include "TipOfTheDay.h"
 #include "EditorCell.h"
-#include "SlideShowCell.h"
+#include "AnimationCell.h"
 #include "PlotFormatWiz.h"
 #include "ActualValuesStorageWiz.h"
 #include "MaxSizeChooser.h"
@@ -4692,8 +4692,8 @@ void wxMaxima::UpdateToolBar()
   // start/stop button instead.
   if (m_worksheet->CanAnimate())
   {
-    SlideShow *slideShow = dynamic_cast<SlideShow *>(m_worksheet->GetSelectionStart());
-    if (slideShow->AnimationRunning())
+    AnimationCell *animation = dynamic_cast<AnimationCell *>(m_worksheet->GetSelectionStart());
+    if (animation->AnimationRunning())
       m_worksheet->m_mainToolBar->AnimationButtonState(ToolBar::Running);
     else
       m_worksheet->m_mainToolBar->AnimationButtonState(ToolBar::Stopped);
@@ -5612,8 +5612,8 @@ void wxMaxima::FileMenu(wxCommandEvent &event)
     case ToolBar::tb_animation_startStop:
       if (m_worksheet->CanAnimate())
       {
-        SlideShow *slideShow = dynamic_cast<SlideShow *>(m_worksheet->GetSelectionStart());
-        if (slideShow->AnimationRunning())
+        AnimationCell *animation = dynamic_cast<AnimationCell *>(m_worksheet->GetSelectionStart());
+        if (animation->AnimationRunning())
           m_worksheet->Animate(false);
         else
           m_worksheet->Animate(true);
@@ -5623,8 +5623,8 @@ void wxMaxima::FileMenu(wxCommandEvent &event)
     case Worksheet::popid_animation_start:
       if (m_worksheet->CanAnimate())
       {
-        SlideShow *slideShow = dynamic_cast<SlideShow *>(m_worksheet->GetSelectionStart());
-        slideShow->AnimationRunning(true);
+        AnimationCell *animation = dynamic_cast<AnimationCell *>(m_worksheet->GetSelectionStart());
+        animation->AnimationRunning(true);
       }
       break;
 
@@ -8806,17 +8806,16 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
         return;
 
       ResolutionChooser *chooser = new ResolutionChooser(this, -1,
-                                                   dynamic_cast<ImgCell *>(output)->GetPPI().x,
+                                                         dynamic_cast<ImgCell *>(output)->GetPPI()
         );
       chooser->Centre(wxBOTH);
       if (chooser->ShowModal() == wxID_OK)
       {
-        if(dynamic_cast<ImgCell *>(output)->GetPPI().x != chooser->GetResolution())
+        if(dynamic_cast<ImgCell *>(output)->GetPPI() != chooser->GetResolution())
           m_worksheet->SetSaved(false);
 
         dynamic_cast<ImgCell *>(output)->SetPPI(
-          wxSize(chooser->GetResolution(),
-                 chooser->GetResolution()));
+                 chooser->GetResolution());
       }
     }
     m_worksheet->RecalculateForce();
@@ -9182,7 +9181,7 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
         canExportSVG = true;
 
     if(m_worksheet->GetSelectionStart()->GetType() == MC_TYPE_SLIDE)
-      if(dynamic_cast<SlideShow *>(m_worksheet->GetSelectionStart())->CanExportSVG())
+      if(dynamic_cast<AnimationCell *>(m_worksheet->GetSelectionStart())->CanExportSVG())
         canExportSVG = true;
 
     wxString selectorString;
@@ -9282,7 +9281,7 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
     {
       Cell *selectedCell = m_worksheet->GetSelectionStart();
       if (selectedCell != NULL && selectedCell->GetType() == MC_TYPE_SLIDE)
-        dynamic_cast<SlideShow *>(selectedCell)->ToGif(file);
+        dynamic_cast<AnimationCell *>(selectedCell)->ToGif(file);
     }
   }
   break;
@@ -10099,7 +10098,7 @@ void wxMaxima::UpdateSlider()
     {
       if (m_worksheet->IsSelected(MC_TYPE_SLIDE))
       {
-        SlideShow *cell = dynamic_cast<SlideShow *>(m_worksheet->GetSelectionStart());
+        AnimationCell *cell = dynamic_cast<AnimationCell *>(m_worksheet->GetSelectionStart());
 
         m_worksheet->m_mainToolBar->UpdateSlider(cell);
       }
@@ -10109,17 +10108,17 @@ void wxMaxima::UpdateSlider()
 
 void wxMaxima::SliderEvent(wxScrollEvent &event)
 {
-  SlideShow *slideShow = dynamic_cast<SlideShow *>(m_worksheet->GetSelectionStart());
+  AnimationCell *animation = dynamic_cast<AnimationCell *>(m_worksheet->GetSelectionStart());
 
-  if (slideShow != NULL)
+  if (animation != NULL)
   {
-    slideShow->AnimationRunning(false);
-    slideShow->SetDisplayedIndex(event.GetPosition());
+    animation->AnimationRunning(false);
+    animation->SetDisplayedIndex(event.GetPosition());
 
-    wxRect rect = slideShow->GetRect();
+    wxRect rect = animation->GetRect();
     m_worksheet->RequestRedraw(rect);
     if(m_worksheet->m_mainToolBar)
-      m_worksheet->m_mainToolBar->UpdateSlider(slideShow);
+      m_worksheet->m_mainToolBar->UpdateSlider(animation);
   }
 }
 

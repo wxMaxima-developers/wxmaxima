@@ -30,7 +30,7 @@
 #include <wx/wx.h>
 #include <wx/aui/aui.h>
 #include <wx/choice.h>
-#include "SlideShowCell.h"
+#include "AnimationCell.h"
 #include "GroupCell.h"
 
 #ifndef _WXMAXIMA_TOOLBAR_H
@@ -180,7 +180,7 @@ public:
     }
 
   //! Updates the slider to match the Slide Show cell.
-  void UpdateSlider(SlideShow *cell);
+  void UpdateSlider(AnimationCell *cell);
 
   int GetIdealHeight(){
     return m_needsInformationIcon.GetSize().y;
@@ -264,10 +264,10 @@ private:
   GroupType m_defaultCellStyle;
   //! The drop-down-box for text styles
   wxChoice *m_textStyle;
-  //! The position in the current slideshow at the last call of UpdateSlider()
-  int m_slideShowDisplayedIndex;
-  //! The length of the current slideshow at the last call of UpdateSlider()
-  int m_slideShowMaxIndex;
+  //! The position in the current animation at the last call of UpdateSlider()
+  int m_animationDisplayedIndex;
+  //! The length of the current animation at the last call of UpdateSlider()
+  int m_animationMaxIndex;
   bool m_canCopy_old;
   bool m_canCut_old;
   bool m_canSave_old;

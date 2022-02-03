@@ -44,7 +44,7 @@ set(CELL_SOURCE_FILES
     MatrCell.cpp
     ParenCell.cpp
     SetCell.cpp
-    SlideShowCell.cpp
+    AnimationCell.cpp
     SqrtCell.cpp
     SubCell.cpp
     SubSupCell.cpp

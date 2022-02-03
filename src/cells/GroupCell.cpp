@@ -36,7 +36,7 @@
 #include "CellPointers.h"
 #include "ImgCell.h"
 #include "MarkDown.h"
-#include "SlideShowCell.h"
+#include "AnimationCell.h"
 #include "TextCell.h"
 #include "LabelCell.h"
 #include "stx/unique_cast.hpp"
@@ -199,7 +199,7 @@ GroupCell::GroupCell(Configuration **config, GroupType groupType, const wxString
       static_cast<ImgCell &>(*ic).SetOrigImageFile(initString);
     }
     else
-      ic = std::make_unique<SlideShow>(this, m_configuration, initString, false);
+      ic = std::make_unique<AnimationCell>(this, m_configuration, initString, false);
     AppendOutput(std::move(ic));
   }
 }

@@ -56,7 +56,7 @@
 #include "SubSupCell.h"
 #include "StringUtils.h"
 #include "VisiblyInvalidCell.h"
-#include "SlideShowCell.h"
+#include "AnimationCell.h"
 
 /*! Calls a member function from a function pointer
 
@@ -137,7 +137,7 @@ MathParser::MathParser(Configuration **cfg, const wxString &zipfile)
     m_innerTags[wxT("hl")] = &MathParser::ParseHighlightTag;
     m_innerTags[wxT("h")] = &MathParser::ParseHiddenOperatorTag;
     m_innerTags[wxT("img")] = &MathParser::ParseImageTag;
-    m_innerTags[wxT("slide")] = &MathParser::ParseSlideshowTag;
+    m_innerTags[wxT("slide")] = &MathParser::ParseAnimationTag;
     m_innerTags[wxT("editor")] = &MathParser::ParseEditorTag;
     m_innerTags[wxT("cell")] = &MathParser::ParseCellTag;
     m_innerTags[wxT("ascii")] = &MathParser::ParseCharCode;
@@ -263,14 +263,14 @@ std::unique_ptr<Cell> MathParser::ParseMiscTextTag(wxXmlNode *node)
   }
 }
 
-std::unique_ptr<Cell> MathParser::ParseSlideshowTag(wxXmlNode *node)
+std::unique_ptr<Cell> MathParser::ParseAnimationTag(wxXmlNode *node)
 {
   wxString gnuplotSources;
   wxString gnuplotData;
   bool del = node->GetAttribute(wxT("del"), wxT("false")) == wxT("true");
   node->GetAttribute(wxT("gnuplotSources"), &gnuplotSources);
   node->GetAttribute(wxT("gnuplotData"), &gnuplotData);
-  auto slideShow = std::make_unique<SlideShow>(m_group, m_configuration, m_fileSystem);
+  auto animation = std::make_unique<AnimationCell>(m_group, m_configuration, m_fileSystem);
   auto const &str = node->GetChildren()->GetContent();
   wxArrayString images;
   wxString framerate;
@@ -278,16 +278,16 @@ std::unique_ptr<Cell> MathParser::ParseSlideshowTag(wxXmlNode *node)
   {
     long fr;
     if (framerate.ToLong(&fr))
-      slideShow->SetFrameRate(fr);
+      animation->SetFrameRate(fr);
   }
   if (node->GetAttribute(wxT("frame"), &framerate))
   {
     long frame;
     if (framerate.ToLong(&frame))
-      slideShow->SetDisplayedIndex(frame);
+      animation->SetDisplayedIndex(frame);
   }
   if (node->GetAttribute(wxT("running"), wxT("true")) == wxT("false"))
-    slideShow->AnimationRunning(false);
+    animation->AnimationRunning(false);
   wxStringTokenizer imageFiles(str, wxT(";"));
   int numImgs = 0;
   while (imageFiles.HasMoreTokens())
@@ -300,12 +300,12 @@ std::unique_ptr<Cell> MathParser::ParseSlideshowTag(wxXmlNode *node)
     }
   }
 
-  slideShow->LoadImages(images, del);
+  animation->LoadImages(images, del);
 
   wxString ppi = node->GetAttribute(wxT("ppi"), wxEmptyString);
   long ppi_num;
-  if (ppi.ToLong(&ppi_num) && (slideShow != NULL))
-    slideShow->SetPPI(ppi_num);
+  if (ppi.ToLong(&ppi_num) && (animation != NULL))
+    animation->SetPPI(ppi_num);
 
   wxStringTokenizer dataFiles(gnuplotData, wxT(";"));
   wxStringTokenizer gnuplotFiles(gnuplotSources, wxT(";"));
@@ -313,7 +313,7 @@ std::unique_ptr<Cell> MathParser::ParseSlideshowTag(wxXmlNode *node)
   {
     if((dataFiles.HasMoreTokens()) && (gnuplotFiles.HasMoreTokens()))
     {
-      slideShow->GnuplotSource(
+      animation->GnuplotSource(
         i,
         gnuplotFiles.GetNextToken(),
         dataFiles.GetNextToken(),
@@ -322,7 +322,7 @@ std::unique_ptr<Cell> MathParser::ParseSlideshowTag(wxXmlNode *node)
     }
   }
 
-  return slideShow;
+  return animation;
 }
 
 std::unique_ptr<Cell> MathParser::ParseImageTag(wxXmlNode *node)
@@ -349,7 +349,7 @@ std::unique_ptr<Cell> MathParser::ParseImageTag(wxXmlNode *node)
       if (wxImage::GetImageCount(filename) < 2)
         imageCell = std::make_unique<ImgCell>(m_group, m_configuration, filename, system_fs, true);
       else
-        return std::make_unique<SlideShow>(m_group, m_configuration, filename, true);
+        return std::make_unique<AnimationCell>(m_group, m_configuration, filename, true);
     }
     else
     {
@@ -363,7 +363,7 @@ std::unique_ptr<Cell> MathParser::ParseImageTag(wxXmlNode *node)
       if (wxImage::GetImageCount(filename) < 2)
         imageCell = std::make_unique<ImgCell>(m_group, m_configuration, filename, system_fs, false);
       else
-        return std::make_unique<SlideShow>(m_group, m_configuration, filename, false);
+        return std::make_unique<AnimationCell>(m_group, m_configuration, filename, false);
     }
   }
 

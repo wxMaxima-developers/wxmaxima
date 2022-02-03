@@ -50,7 +50,7 @@
 #include "wxMaximaFrame.h"
 #include "Worksheet.h"
 #include "BitmapOut.h"
-#include "SlideShowCell.h"
+#include "AnimationCell.h"
 #include "ImgCell.h"
 #include "MarkDown.h"
 #include "wxm_manual_anchors_xml.h"
@@ -340,7 +340,7 @@ bool Worksheet::RedrawIfRequested()
           }
           if(m_cellPointers.m_cellUnderPointer->GetType() == MC_TYPE_SLIDE)
           {
-            SlideShow *image = dynamic_cast<SlideShow *>(m_cellPointers.m_cellUnderPointer.get());
+            AnimationCell *image = dynamic_cast<AnimationCell *>(m_cellPointers.m_cellUnderPointer.get());
             StatusText(
               wxString::Format(_("%s image, %li×%li, %li ppi"),
                                image->GetExtension().c_str(),
@@ -2195,8 +2195,8 @@ void Worksheet::OnMouseLeftUp(wxMouseEvent &event)
   if (GetSelectionStart() && GetSelectionStart() == GetSelectionEnd() &&
       m_leftDownPosition == wxPoint(event.GetX(),event.GetY()) &&
       GetSelectionStart()->GetType() == MC_TYPE_SLIDE)
-    dynamic_cast<SlideShow *>(GetSelectionStart())->AnimationRunning(
-      !dynamic_cast<SlideShow *>(GetSelectionStart())->AnimationRunning());
+    dynamic_cast<AnimationCell *>(GetSelectionStart())->AnimationRunning(
+      !dynamic_cast<AnimationCell *>(GetSelectionStart())->AnimationRunning());
 
   m_leftDown = false;
   m_mouseDrag = false;
@@ -2230,7 +2230,7 @@ void Worksheet::OnMouseWheel(wxMouseEvent &event)
   //! Step the slide show.
   int rot = event.GetWheelRotation();
 
-  SlideShow *tmp = m_cellPointers.m_selectionStart.CastAs<SlideShow *>();
+  AnimationCell *tmp = m_cellPointers.m_selectionStart.CastAs<AnimationCell *>();
   tmp->AnimationRunning(false);
 
   if (rot > 0)
@@ -2476,7 +2476,7 @@ bool Worksheet::Copy(bool astext)
   if (!astext && m_cellPointers.m_selectionStart->GetType() == MC_TYPE_GROUP)
     return CopyCells();
 
-  // If the selection is IMAGE or SLIDESHOW, copy it to clipboard
+  // If the selection is IMAGE or ANIMATION, copy it to clipboard
   // as image.
   if (m_cellPointers.m_selectionStart == m_cellPointers.m_selectionEnd &&
       (m_cellPointers.m_selectionStart->GetType() == MC_TYPE_IMAGE
@@ -3800,8 +3800,8 @@ void Worksheet::OnCharNoActive(wxKeyEvent &event)
       m_cellPointers.m_selectionStart->GetType() == MC_TYPE_SLIDE &&
       ccode == WXK_SPACE)
   {
-    m_cellPointers.m_selectionStart.CastAs<SlideShow*>()->AnimationRunning(
-      !m_cellPointers.m_selectionStart.CastAs<SlideShow*>()->AnimationRunning());
+    m_cellPointers.m_selectionStart.CastAs<AnimationCell*>()->AnimationRunning(
+      !m_cellPointers.m_selectionStart.CastAs<AnimationCell*>()->AnimationRunning());
     return;
   }
 
@@ -3963,8 +3963,8 @@ void Worksheet::OnCharNoActive(wxKeyEvent &event)
     case WXK_LEFT:
       if (CanAnimate())
       {
-        SlideShow *slideShow = dynamic_cast<SlideShow *>(GetSelectionStart());
-        slideShow->AnimationRunning(false);
+        AnimationCell *animation = dynamic_cast<AnimationCell *>(GetSelectionStart());
+        animation->AnimationRunning(false);
         StepAnimation(-1);
         break;
       }
@@ -4041,8 +4041,8 @@ void Worksheet::OnCharNoActive(wxKeyEvent &event)
     case WXK_RIGHT:
       if (CanAnimate())
       {
-        SlideShow *slideShow = dynamic_cast<SlideShow *>(GetSelectionStart());
-        slideShow->AnimationRunning(false);
+        AnimationCell *animation = dynamic_cast<AnimationCell *>(GetSelectionStart());
+        animation->AnimationRunning(false);
         StepAnimation(1);
         break;
       }
@@ -4372,7 +4372,7 @@ void Worksheet::StepAnimation(int change)
   if (GetSelectionStart() && GetSelectionStart() == GetSelectionEnd() &&
       GetSelectionStart()->GetType() == MC_TYPE_SLIDE)
   {
-    SlideShow *tmp = m_cellPointers.m_selectionStart.CastAs<SlideShow*>();
+    AnimationCell *tmp = m_cellPointers.m_selectionStart.CastAs<AnimationCell*>();
     int pos = tmp->GetDisplayedIndex() + change;
 
     if (change != 0)
@@ -4472,28 +4472,28 @@ void Worksheet::OnTimer(wxTimerEvent &event)
   {
       // Determine if the timer that has expired belongs to a slide show cell.
       Cell *const cell = m_cellPointers.GetCellForTimerId(event.GetId());
-      SlideShow *const slideshow = dynamic_cast<SlideShow*>(cell);
-      if (slideshow)
+      AnimationCell *const animation = dynamic_cast<AnimationCell*>(cell);
+      if (animation)
       {
-        int pos = slideshow->GetDisplayedIndex() + 1;
+        int pos = animation->GetDisplayedIndex() + 1;
 
-        if (pos >= slideshow->Length())
+        if (pos >= animation->Length())
           pos = 0;
-        slideshow->SetDisplayedIndex(pos);
+        animation->SetDisplayedIndex(pos);
 
         // Refresh the displayed bitmap
         if (!m_configuration->ClipToDrawRegion())
-          slideshow->ReloadTimer();
+          animation->ReloadTimer();
         else
         {
-          wxRect rect = slideshow->GetRect();
+          wxRect rect = animation->GetRect();
           RequestRedraw(rect);
         }
 
-        if (m_mainToolBar && GetSelectionStart() == slideshow)
+        if (m_mainToolBar && GetSelectionStart() == animation)
         {
           if (m_mainToolBar->m_plotSlider)
-            m_mainToolBar->UpdateSlider(slideshow);
+            m_mainToolBar->UpdateSlider(animation);
         }
       }
       break;
@@ -4538,7 +4538,7 @@ bool Worksheet::CopyAnimation()
 {
   if (GetSelectionStart() && GetSelectionStart() == GetSelectionEnd() &&
       GetSelectionStart()->GetType() == MC_TYPE_SLIDE)
-    return dynamic_cast<SlideShow *>(GetSelectionStart())->CopyAnimationToClipboard();
+    return dynamic_cast<AnimationCell *>(GetSelectionStart())->CopyAnimationToClipboard();
   else
     return false;
 }
@@ -4603,7 +4603,7 @@ wxSize Worksheet::CopyToFile(const wxString &file)
     if (m_cellPointers.m_selectionStart->GetType() == MC_TYPE_IMAGE)
       return m_cellPointers.m_selectionStart.CastAs<ImgCell*>()->ToImageFile(file);
     else
-      return m_cellPointers.m_selectionStart.CastAs<SlideShow*>()->ToImageFile(file);
+      return m_cellPointers.m_selectionStart.CastAs<AnimationCell*>()->ToImageFile(file);
   }
   else
   {
@@ -5375,7 +5375,7 @@ bool Worksheet::ExportToHTML(const wxString &file)
       {
 
         // We got output.
-        // Output is a list that can consist of equations, images and slideshows.
+        // Output is a list that can consist of equations, images and animations.
         // We need to handle each of these item types separately => break down the list
         // into chunks of one type.
         Cell *chunkStart = tmp.GetLabel();
@@ -5407,7 +5407,7 @@ bool Worksheet::ExportToHTML(const wxString &file)
 
           if (chunk->GetType() == MC_TYPE_SLIDE)
           {
-            dynamic_cast<SlideShow *>(&(*chunk))->ToGif(
+            dynamic_cast<AnimationCell *>(&(*chunk))->ToGif(
                     imgDir + wxT("/") + filename + wxString::Format(wxT("_%d.gif"), count));
             output << wxT("  <img src=\"") + filename_encoded + wxT("_htmlimg/") +
                       filename_encoded +
@@ -5587,7 +5587,7 @@ bool Worksheet::ExportToHTML(const wxString &file)
           output << wxT("<br/>\n");
           if (tmp.GetLabel()->GetType() == MC_TYPE_SLIDE)
           {
-            dynamic_cast<SlideShow *>(tmp.GetOutput())->ToGif(imgDir + wxT("/") + filename +
+            dynamic_cast<AnimationCell *>(tmp.GetOutput())->ToGif(imgDir + wxT("/") + filename +
                                                               wxString::Format(wxT("_%d.gif"), count));
             output << wxT("  <img src=\"") + filename_encoded + wxT("_htmlimg/") +
                       filename_encoded +
@@ -7704,8 +7704,8 @@ void Worksheet::Animate(bool run)
 {
   if (CanAnimate())
   {
-    SlideShow *slideShow = dynamic_cast<SlideShow *>(GetSelectionStart());
-    slideShow->AnimationRunning(run);
+    AnimationCell *animation = dynamic_cast<AnimationCell *>(GetSelectionStart());
+    animation->AnimationRunning(run);
   }
 }
 
@@ -7926,7 +7926,7 @@ void Worksheet::OnThumbtrack(wxScrollWinEvent &ev)
   if (CanAnimate())
    {
      //! Step the slide show.
-     auto *tmp = m_cellPointers.m_selectionStart.CastAs<SlideShow*>();
+     auto *tmp = m_cellPointers.m_selectionStart.CastAs<AnimationCell*>();
      tmp->AnimationRunning(false);
 
      if (ev.GetEventType() == wxEVT_SCROLLWIN_LINEUP)

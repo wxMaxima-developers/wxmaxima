@@ -1266,7 +1266,7 @@ public:
   //! Does the selection start with a cell of the type "type"
   bool IsSelected(CellType type);
 
-  /*! Set the slide of the currently selected slideshow or advance it by one step
+  /*! Set the slide of the currently selected animation or advance it by one step
 
     \param change
       - >=0: The slide the animation has to be set to

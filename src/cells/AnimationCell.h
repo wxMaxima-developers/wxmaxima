@@ -21,13 +21,13 @@
 //  SPDX-License-Identifier: GPL-2.0+
 
 /*! \file
-  This file declares the class SlideShowCell
+  This file declares the class AnimationCell
 
-  SlideShowCell is the Cell type that represents animations.
+  AnimationCell is the Cell type that represents animations.
 */
 
-#ifndef SLIDESHOWCELL_H
-#define SLIDESHOWCELL_H
+#ifndef ANIMATIONCELL_H
+#define ANIMATIONCELL_H
 
 #include "Cell.h"
 #include "Image.h"
@@ -41,7 +41,7 @@
 
 #include <vector>
 
-class SlideShow final : public Cell
+class AnimationCell final : public Cell
 {
 public:
   /*! The constructor
@@ -51,19 +51,19 @@ public:
     has to be set to -1.
     \param config A pointer to the pointer to the configuration storage of the 
                   worksheet this cell belongs to.
-    \param filesystem The filesystem the contents of this slideshow can be found in.
+    \param filesystem The filesystem the contents of this animation can be found in.
                       NULL = the operating system's filesystem
     \param group     The parent GroupCell this cell belongs to.
    */
-  SlideShow(GroupCell *group, Configuration **config, std::shared_ptr<wxFileSystem> filesystem, int framerate = -1);
-  SlideShow(GroupCell *group, Configuration **config, int framerate = -1);
-  SlideShow(GroupCell *group, const SlideShow &cell);
+  AnimationCell(GroupCell *group, Configuration **config, std::shared_ptr<wxFileSystem> filesystem, int framerate = -1);
+  AnimationCell(GroupCell *group, Configuration **config, int framerate = -1);
+  AnimationCell(GroupCell *group, const AnimationCell &cell);
   //! A constructor that loads the compressed file from a wxMemoryBuffer
-  SlideShow(GroupCell *group, Configuration **config, const wxMemoryBuffer &image, const wxString &type);
-  SlideShow(GroupCell *group, Configuration **config, const wxString &image, bool remove);
+  AnimationCell(GroupCell *group, Configuration **config, const wxMemoryBuffer &image, const wxString &type);
+  AnimationCell(GroupCell *group, Configuration **config, const wxString &image, bool remove);
   std::unique_ptr<Cell> Copy(GroupCell *group) const override;
-  void operator=(const SlideShow&) = delete;
-  SlideShow(const SlideShow&) = delete;
+  void operator=(const AnimationCell&) = delete;
+  AnimationCell(const AnimationCell&) = delete;
 
   void SetConfiguration(Configuration **config);
   int GetPPI() const{if(IsOk())return m_images[m_displayed]->GetPPI();else return 0;}
@@ -73,11 +73,11 @@ public:
     { if (IsOk())return m_images[m_displayed]->GetExtension(); else return wxEmptyString; }
 
   const CellTypeInfo &GetInfo() override;
-  ~SlideShow();
+  ~AnimationCell();
   int Length() const {return m_images.size();}
   void LoadImages(wxMemoryBuffer imageData);
   void LoadImages(wxString imageFile);
-  //! Set the slideshow's resolution
+  //! Set the animation's resolution
   void SetPPI(int ppi);
   //! A class that publishes wxm data to the clipboard
   static wxDataFormat m_gifFormat;
@@ -103,7 +103,7 @@ public:
 
   /*! Remove all cached scaled images from memory
 
-    To be called when the slideshow is outside of the displayed portion 
+    To be called when the animation is outside of the displayed portion 
     of the screen; The bitmaps will be re-generated when needed.
    */
   void ClearCache() override;
@@ -117,7 +117,7 @@ public:
 
   void SetDisplayedIndex(int ind);
 
-  //! Exports the image the slideshow currently displays
+  //! Exports the image the animation currently displays
   wxSize ToImageFile(wxString file);
 
   //! Exports the whole animation as animated gif
@@ -128,7 +128,7 @@ public:
   //! Put the animation on the clipboard.
   bool CopyAnimationToClipboard();
 
-  /*! Get the frame rate of this SlideShow [in Hz].
+  /*! Get the frame rate of this AnimationCell [in Hz].
 
     Returns either the frame rate set for this slide show cell individually or 
     the default frame rate chosen in the config.
@@ -147,7 +147,7 @@ public:
    */
   void StopTimer();
 
-  /*! Set the frame rate of this SlideShow [in Hz].
+  /*! Set the frame rate of this AnimationCell [in Hz].
     
     \param Freq The requested frequency [in Hz] or -1 for: Use the default value.
     \return The frame rate that was actually set.
@@ -213,4 +213,4 @@ private:
   { m_drawBoundingBox = true; }
 };
 
-#endif // SLIDESHOWCELL_H
+#endif // ANIMATIONCELL_H

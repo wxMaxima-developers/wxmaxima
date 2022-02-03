@@ -106,17 +106,17 @@ ToolBar::~ToolBar()
   m_plotSlider = NULL;
 }
 
-void ToolBar::UpdateSlider(SlideShow *cell)
+void ToolBar::UpdateSlider(AnimationCell *cell)
 {
   if(cell == NULL)
     return;
-  int slideShowDisplayedIndex = cell->GetDisplayedIndex();
-  int slideShowMaxIndex = cell->Length();
+  int animationDisplayedIndex = cell->GetDisplayedIndex();
+  int animationMaxIndex = cell->Length();
 
-  if ((m_slideShowDisplayedIndex != slideShowDisplayedIndex) || (m_slideShowMaxIndex != slideShowMaxIndex))
+  if ((m_animationDisplayedIndex != animationDisplayedIndex) || (m_animationMaxIndex != animationMaxIndex))
   {
-    m_slideShowMaxIndex = slideShowMaxIndex;
-    m_slideShowDisplayedIndex = slideShowDisplayedIndex;
+    m_animationMaxIndex = animationMaxIndex;
+    m_animationDisplayedIndex = animationDisplayedIndex;
     if (m_plotSlider != NULL)
     {
       m_plotSlider->SetRange(0, cell->Length() - 1);
@@ -304,8 +304,8 @@ void ToolBar::AddTools()
   m_plotSlider->SetToolTip(
     _("After clicking on animations created with with_slider_draw() or similar this slider allows to change the current frame."));
   m_plotSlider->Enable(false);
-  m_slideShowMaxIndex = -1;
-  m_slideShowDisplayedIndex = -1;
+  m_animationMaxIndex = -1;
+  m_animationDisplayedIndex = -1;
   AddControl(m_plotSlider);
   AddStretchSpacer(100);
   if(ShowHelp())
@@ -595,8 +595,8 @@ void ToolBar::AnimationButtonState(AnimationStartStopState state)
         m_plotSlider->Enable(false);
         m_plotSlider->SetToolTip(
                 _("After clicking on animations created with with_slider_draw() or similar this slider allows to change the current frame."));
-        m_slideShowMaxIndex = -1;
-        m_slideShowDisplayedIndex = -1;
+        m_animationMaxIndex = -1;
+        m_animationDisplayedIndex = -1;
 
         if (m_AnimationStartStopState == Running)
         {

@@ -203,7 +203,7 @@ private:
   //! Parse an image tag to a Cell.
   std::unique_ptr<Cell> ParseImageTag(wxXmlNode *node);
   //! Parse an animation tag to a Cell.
-  std::unique_ptr<Cell> ParseSlideshowTag(wxXmlNode *node);
+  std::unique_ptr<Cell> ParseAnimationTag(wxXmlNode *node);
   //! Parse a charcode tag to a Cell.
   std::unique_ptr<Cell> ParseCharCode(wxXmlNode *node);
   //! Parse a superscript tag to a Cell.
