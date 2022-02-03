@@ -327,20 +327,11 @@ bool Worksheet::RedrawIfRequested()
 
         if(m_cellPointers.m_cellUnderPointer)
         {
-          if(m_cellPointers.m_cellUnderPointer->GetType() == MC_TYPE_IMAGE)
+          if(
+            (m_cellPointers.m_cellUnderPointer->GetType() == MC_TYPE_IMAGE) ||
+            (m_cellPointers.m_cellUnderPointer->GetType() == MC_TYPE_SLIDE))
           {
-            ImgCell *image = dynamic_cast<ImgCell *>(m_cellPointers.m_cellUnderPointer.get());
-            StatusText(
-              wxString::Format(_("%s image, %li×%li, %li ppi"),
-                               image->GetExtension().c_str(),
-                               (long)image->GetOriginalWidth(),
-                               (long)image->GetOriginalWidth(),
-                               (long)image->GetPPI())
-              );
-          }
-          if(m_cellPointers.m_cellUnderPointer->GetType() == MC_TYPE_SLIDE)
-          {
-            AnimationCell *image = dynamic_cast<AnimationCell *>(m_cellPointers.m_cellUnderPointer.get());
+            ImgCellBase*image = dynamic_cast<ImgCellBase *>(m_cellPointers.m_cellUnderPointer.get());
             StatusText(
               wxString::Format(_("%s image, %li×%li, %li ppi"),
                                image->GetExtension().c_str(),
@@ -4600,10 +4591,7 @@ wxSize Worksheet::CopyToFile(const wxString &file)
       (m_cellPointers.m_selectionStart->GetType() == MC_TYPE_IMAGE ||
        m_cellPointers.m_selectionStart->GetType() == MC_TYPE_SLIDE))
   {
-    if (m_cellPointers.m_selectionStart->GetType() == MC_TYPE_IMAGE)
-      return m_cellPointers.m_selectionStart.CastAs<ImgCell*>()->ToImageFile(file);
-    else
-      return m_cellPointers.m_selectionStart.CastAs<AnimationCell*>()->ToImageFile(file);
+    return m_cellPointers.m_selectionStart.CastAs<ImgCellBase*>()->ToImageFile(file);
   }
   else
   {
@@ -5488,8 +5476,8 @@ bool Worksheet::ExportToHTML(const wxString &file)
           else
           {
             wxSize size;
-            ext = wxT(".") + dynamic_cast<ImgCell *>(&(*chunk))->GetExtension();
-            size = dynamic_cast<ImgCell *>(&(*chunk))->ToImageFile(
+            ext = wxT(".") + dynamic_cast<ImgCellBase *>(&(*chunk))->GetExtension();
+            size = dynamic_cast<ImgCellBase *>(&(*chunk))->ToImageFile(
               imgDir + wxT("/") + filename + wxString::Format(wxT("_%d"), count) + ext);
             int borderwidth = 0;
             wxString alttext = EditorCell::EscapeHTMLChars(chunk->ListToString());
@@ -5596,7 +5584,7 @@ bool Worksheet::ExportToHTML(const wxString &file)
           }
           else
           {
-            ImgCell *imgCell = dynamic_cast<ImgCell *>(out);
+            ImgCellBase *imgCell = dynamic_cast<ImgCellBase *>(out);
             imgCell->ToImageFile(
                     imgDir + wxT("/") + filename + wxString::Format(wxT("_%d."), count) +
                     imgCell->GetExtension());

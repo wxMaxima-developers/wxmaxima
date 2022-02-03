@@ -8774,23 +8774,24 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
       Cell *output = m_worksheet->GetSelectionStart()->GetGroup()->GetLabel();
       if (output == NULL)
         return;
-      if(output->GetType() != MC_TYPE_IMAGE)
+      if((output->GetType() != MC_TYPE_IMAGE) &&
+         (output->GetType() != MC_TYPE_SLIDE))
         return;
 
       MaxSizeChooser *chooser = new MaxSizeChooser(this, -1,
-                                                   dynamic_cast<ImgCell *>(output)->GetMaxWidth(),
-                                                   dynamic_cast<ImgCell *>(output)->GetHeightList()
+                                                   dynamic_cast<ImgCellBase *>(output)->GetMaxWidth(),
+                                                   dynamic_cast<ImgCellBase *>(output)->GetHeightList() 
         );
       chooser->Centre(wxBOTH);
       if (chooser->ShowModal() == wxID_OK)
       {
-        if(dynamic_cast<ImgCell *>(output)->GetMaxWidth() != chooser->GetMaxWidth())
+        if(dynamic_cast<ImgCellBase *>(output)->GetMaxWidth() != chooser->GetMaxWidth())
           m_worksheet->SetSaved(false);
-        if(dynamic_cast<ImgCell *>(output)->GetHeightList() != chooser->GetHeightList())
+        if(dynamic_cast<ImgCellBase *>(output)->GetHeightList() != chooser->GetHeightList())
           m_worksheet->SetSaved(false);
 
-        dynamic_cast<ImgCell *>(output)->SetMaxWidth(chooser->GetMaxWidth());
-        dynamic_cast<ImgCell *>(output)->SetMaxHeight(chooser->GetHeightList());
+        dynamic_cast<ImgCellBase *>(output)->SetMaxWidth(chooser->GetMaxWidth());
+        dynamic_cast<ImgCellBase *>(output)->SetMaxHeight(chooser->GetHeightList());
       }
     }
     m_worksheet->RecalculateForce();
@@ -8802,19 +8803,19 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
       Cell *output = m_worksheet->GetSelectionStart()->GetGroup()->GetLabel();
       if (output == NULL)
         return;
-      if(output->GetType() != MC_TYPE_IMAGE)
+      if((output->GetType() != MC_TYPE_IMAGE) && (output->GetType() != MC_TYPE_SLIDE))
         return;
 
       ResolutionChooser *chooser = new ResolutionChooser(this, -1,
-                                                         dynamic_cast<ImgCell *>(output)->GetPPI()
+                                                         dynamic_cast<ImgCellBase *>(output)->GetPPI()
         );
       chooser->Centre(wxBOTH);
       if (chooser->ShowModal() == wxID_OK)
       {
-        if(dynamic_cast<ImgCell *>(output)->GetPPI() != chooser->GetResolution())
+        if(dynamic_cast<ImgCellBase *>(output)->GetPPI() != chooser->GetResolution())
           m_worksheet->SetSaved(false);
 
-        dynamic_cast<ImgCell *>(output)->SetPPI(
+        dynamic_cast<ImgCellBase *>(output)->SetPPI(
                  chooser->GetResolution());
       }
     }
@@ -9176,12 +9177,9 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
 
     bool canExportSVG = false;
 
-    if(m_worksheet->GetSelectionStart()->GetType() == MC_TYPE_IMAGE)
-      if(dynamic_cast<ImgCell *>(m_worksheet->GetSelectionStart())->CanExportSVG())
-        canExportSVG = true;
-
-    if(m_worksheet->GetSelectionStart()->GetType() == MC_TYPE_SLIDE)
-      if(dynamic_cast<AnimationCell *>(m_worksheet->GetSelectionStart())->CanExportSVG())
+    if((m_worksheet->GetSelectionStart()->GetType() == MC_TYPE_IMAGE) ||
+       (m_worksheet->GetSelectionStart()->GetType() == MC_TYPE_SLIDE))
+      if(dynamic_cast<ImgCellBase *>(m_worksheet->GetSelectionStart())->CanExportSVG())
         canExportSVG = true;
 
     wxString selectorString;
