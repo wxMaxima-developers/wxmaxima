@@ -35,6 +35,7 @@
 #include "CompositeDataObject.h"
 #include "ErrorRedirector.h"
 #include "MaxSizeChooser.h"
+#include "ResolutionChooser.h"
 #include "SVGout.h"
 #include "EMFout.h"
 #include "WXMformat.h"
@@ -1358,6 +1359,7 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
         {
           popupMenu.AppendSeparator();
           popupMenu.Append(popid_maxsizechooser, _("Restrict Maximum size"), wxEmptyString, wxITEM_NORMAL);
+          popupMenu.Append(popid_resolutionchooser, _("Set image resolution"), wxEmptyString, wxITEM_NORMAL);
 
           Cell *cell = m_cellPointers.m_selectionStart->GetGroup()->GetGroup()->GetLabel();
           wxString imgFile = dynamic_cast<ImgCell *>(cell)->GetOrigImageFile();
@@ -1495,6 +1497,7 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
         {
           popupMenu.AppendSeparator();
           popupMenu.Append(popid_maxsizechooser, _("Restrict Maximum size"), wxEmptyString, wxITEM_NORMAL);
+          popupMenu.Append(popid_resolutionchooser, _("Set image resolution"), wxEmptyString, wxITEM_NORMAL);
         }
         if (m_cellPointers.m_selectionStart && m_cellPointers.m_selectionStart->CanPopOut())
         {

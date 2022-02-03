@@ -892,6 +892,7 @@ public:
     popid_fold,
     popid_unfold,
     popid_maxsizechooser,
+    popid_resolutionchooser,
     popid_reloadimage,
     popid_suggestion1,
     popid_suggestion2,

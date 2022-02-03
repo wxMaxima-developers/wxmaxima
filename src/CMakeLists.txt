@@ -120,6 +120,7 @@ set(SOURCE_FILES
     Notification.cpp
     RecentDocuments.cpp
     RegexCtrl.cpp
+    ResolutionChooser.cpp
     StatusBar.cpp
     StreamUtils.cpp
     StringUtils.cpp

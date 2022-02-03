@@ -69,6 +69,7 @@
 #include "PlotFormatWiz.h"
 #include "ActualValuesStorageWiz.h"
 #include "MaxSizeChooser.h"
+#include "ResolutionChooser.h"
 #include "ListSortWiz.h"
 #include "StringUtils.h"
 #include "Maxima.h"
@@ -918,6 +919,8 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
   Connect(Worksheet::popid_merge_cells, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
   Connect(Worksheet::popid_maxsizechooser, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
+  Connect(Worksheet::popid_resolutionchooser, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
   Connect(Worksheet::popid_reloadimage, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
@@ -8788,6 +8791,32 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
 
         dynamic_cast<ImgCell *>(output)->SetMaxWidth(chooser->GetMaxWidth());
         dynamic_cast<ImgCell *>(output)->SetMaxHeight(chooser->GetHeightList());
+      }
+    }
+    m_worksheet->RecalculateForce();
+    m_worksheet->RequestRedraw();
+    break;
+  case Worksheet::popid_resolutionchooser:
+    if (m_worksheet->GetSelectionStart())
+    {
+      Cell *output = m_worksheet->GetSelectionStart()->GetGroup()->GetLabel();
+      if (output == NULL)
+        return;
+      if(output->GetType() != MC_TYPE_IMAGE)
+        return;
+
+      ResolutionChooser *chooser = new ResolutionChooser(this, -1,
+                                                   dynamic_cast<ImgCell *>(output)->GetPPI().x,
+        );
+      chooser->Centre(wxBOTH);
+      if (chooser->ShowModal() == wxID_OK)
+      {
+        if(dynamic_cast<ImgCell *>(output)->GetPPI().x != chooser->GetResolution())
+          m_worksheet->SetSaved(false);
+
+        dynamic_cast<ImgCell *>(output)->SetPPI(
+          wxSize(chooser->GetResolution(),
+                 chooser->GetResolution()));
       }
     }
     m_worksheet->RecalculateForce();
