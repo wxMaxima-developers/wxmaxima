@@ -19,6 +19,7 @@ Configuration::Configuration(wxDC *dc, InitOpt) : m_dc(dc) {}
 Configuration::~Configuration() {}
 bool Configuration::InUpdateRegion(wxRect) const { return true; }
 long Configuration::Scale_Px(double) const { return 1; }
+wxSize Configuration::GetPPI(double) const { return wxSize(72, 72); }
 AFontSize Configuration::Scale_Px(AFontSize) const { return AFontSize(10.0); }
 wxFontStyle Configuration::IsItalic(long) const { return {}; }
 wxColour Configuration::GetColor(TextStyle) { return {}; }
