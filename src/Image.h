@@ -90,10 +90,12 @@ public:
    */
   Image(Configuration **config, wxString image, std::shared_ptr<wxFileSystem> filesystem, bool remove = true);
 
-  Image(const Image &image);
+  Image(Configuration **config, const Image &image);
+  Image(const Image &image) = delete;
 
   ~Image();
 
+  void SetConfiguration(Configuration **config){ m_configuration = config; }
   //! Return the image's resolution
   int GetPPI() const {return m_ppi;}
   //! Set the image's resolution

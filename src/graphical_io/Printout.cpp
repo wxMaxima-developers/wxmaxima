@@ -48,9 +48,11 @@ Printout::Printout(wxString title, GroupCell *tree, double scaleFactor) :
   
   m_configuration.ShowCodeCells(tree->GetConfiguration()->ShowCodeCells());
   m_configuration.ShowBrackets(tree->GetConfiguration()->PrintBrackets());
-  m_configuration.SetWorkSheet(tree->GetConfiguration()->GetWorkSheet());
+  // Don't take the ppi rate from the worksheet
+  m_configuration.SetWorkSheet(NULL);
 
   m_configuration.ClipToDrawRegion(false);
+
   if(tree)
   {
     auto copy = tree->CopyList();
@@ -75,7 +77,6 @@ bool Printout::HasPage(int num)
 
 bool Printout::OnPrintPage(int num)
 {
-  m_configuration.SetContext(*GetDC());
   if(num > m_pages.size())
     return false;
 //  wxBusyInfo busyInfo(wxString::Format(_("Printing page %i..."),num));
@@ -358,7 +359,12 @@ void Printout::Recalculate()
 {
   if(!m_tree)
     return;
-  
+
+  // Don't take the ppi rate from the worksheet but use a fixed one instead
+  m_configuration.SetWorkSheet(NULL);
+  m_configuration.SetContext(*GetDC());
+  m_configuration.SetPPI(GetDC()->GetPPI());  
+
   int marginX, marginY;
   GetPageMargins(&marginX, &marginY);
   int pageWidth, pageHeight;

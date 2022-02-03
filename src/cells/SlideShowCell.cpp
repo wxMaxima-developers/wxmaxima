@@ -97,12 +97,23 @@ SlideShow::SlideShow(GroupCell *group, const SlideShow &cell):
    CopyCommonData(cell);
 
    m_images.reserve(cell.Length());
-   std::copy(cell.m_images.begin(), cell.m_images.end(), std::back_inserter(m_images));
-
+   for(
+     std::vector<std::shared_ptr<Image>>::const_iterator i = cell.m_images.begin();
+     i != cell.m_images.end(); ++i)
+     m_images.push_back(  
+       std::make_shared<Image>(cell.m_configuration,**i));
+ 
    m_framerate = cell.m_framerate;
    m_displayed = cell.m_displayed;
    m_animationRunning = cell.m_animationRunning;
    m_drawBoundingBox = cell.m_drawBoundingBox;
+}
+
+void SlideShow::SetConfiguration(Configuration **config)
+{
+  m_configuration = config;
+  for(std::vector<std::shared_ptr<Image>>::const_iterator i = m_images.begin(); i != m_images.end(); ++i)
+    (*i)->SetConfiguration(config);
 }
 
 SlideShow::~SlideShow()

@@ -86,13 +86,19 @@ ImgCell::ImgCell(GroupCell *group, Configuration **config, const wxString &image
   m_drawBoundingBox = false;
 }
 
+void ImgCell::SetConfiguration(Configuration **config)
+{
+  m_configuration = config;
+  m_image->SetConfiguration(config);
+}
+
 ImgCell::ImgCell(GroupCell *group, const ImgCell &cell) :
   Cell(group, cell.m_configuration),
   m_imageBorderWidth(1)
 {
   InitBitFields();
   m_type = MC_TYPE_IMAGE;
-  m_image = cell.m_image;
+  m_image = std::make_shared<Image>(cell.m_configuration,*cell.m_image);
   m_drawBoundingBox = cell.m_drawBoundingBox;
 }
 

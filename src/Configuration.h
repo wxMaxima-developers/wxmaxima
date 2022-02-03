@@ -284,8 +284,14 @@ public:
       return m_indent;
   }
 
+  void SetPPI(wxSize ppi){m_ppi = ppi;}
   //! Get the resolution of the display showing the worksheet
-  wxSize GetPPI() const {return GetPPI(GetWorkSheet());}
+  wxSize GetPPI() const {
+    if(GetWorkSheet())
+      return GetPPI(GetWorkSheet());
+    else
+      return m_ppi;
+  }
 
   // cppcheck-suppress functionStatic
   // cppcheck-suppress functionConst
@@ -769,7 +775,7 @@ public:
   Style GetStyle(TextStyle textStyle, AFontSize fontSize) const;
   
   //! Get the worksheet this configuration storage is valid for
-  wxWindow *GetWorkSheet() const {wxASSERT(m_workSheet != NULL); return m_workSheet;}
+  wxWindow *GetWorkSheet() const {return m_workSheet;}
   //! Set the worksheet this configuration storage is valid for
   inline void SetWorkSheet(wxWindow *workSheet);
 
@@ -865,6 +871,8 @@ wxString DocumentclassOptions() const {return m_documentclassOptions;}
   //! Initialize the text styles on construction.
   void InitStyles();
 private:
+  //! The ppi rate if we don't have a worksheet that provides a current ppi rate
+  wxSize m_ppi = wxSize(-1, -1);
   mathDisplayMode m_displayMode = display_2d;
   using CellRedrawTrace = std::vector<const Cell*>;
   bool m_usePartialForDiff;

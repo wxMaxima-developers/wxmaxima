@@ -129,6 +129,7 @@ public:
   bool CanPopOut() const override { return !m_image->GnuplotSource().empty(); }
 
 private:
+  void SetConfiguration(Configuration **config);
   void DrawBoundingBox(wxDC &WXUNUSED(dc), bool WXUNUSED(all) = false) override;
   int GetImageBorderWidth() const override { return m_imageBorderWidth; }
 

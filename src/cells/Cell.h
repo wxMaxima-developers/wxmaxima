@@ -273,7 +273,7 @@ public:
    */
   void ClearCacheList();
   void SetConfigurationList(Configuration **config);
-  void SetConfiguration(Configuration **config);
+  virtual void SetConfiguration(Configuration **config);
   Configuration *GetConfiguration(){return *m_configuration;}
 
   

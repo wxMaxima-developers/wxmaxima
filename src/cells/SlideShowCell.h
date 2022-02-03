@@ -65,6 +65,7 @@ public:
   void operator=(const SlideShow&) = delete;
   SlideShow(const SlideShow&) = delete;
 
+  void SetConfiguration(Configuration **config);
   int GetPPI() const{if(IsOk())return m_images[m_displayed]->GetPPI();else return 0;}
   size_t GetOriginalWidth(){if(IsOk())return m_images[m_displayed]->GetOriginalWidth();else return 0;}
   size_t GetOriginalHeight(){if(IsOk())return m_images[m_displayed]->GetOriginalHeight();else return 0;}
