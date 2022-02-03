@@ -285,7 +285,11 @@ public:
   }
 
   void SetPPI(wxSize ppi){m_ppi = ppi;}
-  //! Get the resolution of the display showing the worksheet
+  /*! Get the resolution 
+
+    During recalculation the drawing context doesn't know the display's resolution
+    so we need to do some additional tricks here.
+  */
   wxSize GetPPI() const;
   int AutosaveMinutes(){return m_autoSaveMinutes;}
   void AutosaveMinutes(int minutes){m_autoSaveMinutes = minutes;}
