@@ -79,7 +79,7 @@ public:
   void LoadImages(wxMemoryBuffer imageData);
   void LoadImages(wxString imageFile);
   //! Set the animation's resolution
-  void SetPPI(int ppi);
+  void SetPPI(int ppi) override;
   //! A class that publishes wxm data to the clipboard
   static wxDataFormat m_gifFormat;
 
@@ -119,7 +119,7 @@ public:
   void SetDisplayedIndex(int ind);
 
   //! Exports the image the animation currently displays
-  wxSize ToImageFile(wxString file);
+  wxSize ToImageFile(wxString file) override;
 
   //! Exports the whole animation as animated gif
   wxSize ToGif(wxString file);
