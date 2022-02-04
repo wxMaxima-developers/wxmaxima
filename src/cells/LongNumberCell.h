@@ -45,6 +45,7 @@ public:
   bool BreakUp() override;
   void SetNextToDraw(Cell *next) override;
   int GetInnerCellCount() const override { if(m_innerCell) return 1; else return 0; }
+  // cppcheck-suppress objectIndex
   Cell *GetInnerCell(int index) const override { return (&m_innerCell)[index].get(); }
 
 protected:

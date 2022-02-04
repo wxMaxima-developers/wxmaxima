@@ -117,14 +117,14 @@ void Maxima::SocketEvent(wxSocketEvent &event)
   case wxSOCKET_OUTPUT:
     if (Write(nullptr, 0))
     {
-      MaximaEvent event(MaximaEvent::WRITE_PENDING, this);
-      ProcessEvent(event);
+      MaximaEvent discEvent(MaximaEvent::WRITE_PENDING, this);
+      ProcessEvent(discEvent);
     }
     break;
   case wxSOCKET_LOST:
   {
-    MaximaEvent event(MaximaEvent::DISCONNECTED, this);
-    ProcessEvent(event);
+    MaximaEvent discEvent(MaximaEvent::DISCONNECTED, this);
+    ProcessEvent(discEvent);
     break;
   }
   case wxSOCKET_CONNECTION:
@@ -137,8 +137,8 @@ void Maxima::TimerEvent(wxTimerEvent &event)
 {
   if (&event.GetTimer() == &m_stringEndTimer)
   {
-    MaximaEvent event(MaximaEvent::READ_TIMEOUT, this, std::move(m_socketInputData));
-    ProcessEvent(event);
+    MaximaEvent sendevent(MaximaEvent::READ_TIMEOUT, this, std::move(m_socketInputData));
+    ProcessEvent(sendevent);
   }
   else if (&event.GetTimer() == &m_readIdleTimer)
   {

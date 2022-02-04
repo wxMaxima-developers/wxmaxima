@@ -175,10 +175,13 @@ class Observed
   public:
     constexpr CellPtrImplPointer() noexcept {}
     constexpr CellPtrImplPointer(const CellPtrImplPointer &) noexcept = default;
+    // cppcheck-suppress noExplicitConstructor
     constexpr CellPtrImplPointer(decltype(nullptr)) noexcept {}
-
+    // cppcheck-suppress noExplicitConstructor
     CellPtrImplPointer(Observed *ptr) noexcept     : m_ptr(ReprFor(ptr)) {}
+    // cppcheck-suppress noExplicitConstructor
     CellPtrImplPointer(ControlBlock *ptr) noexcept : m_ptr(ReprFor(ptr)) {}
+    // cppcheck-suppress noExplicitConstructor
     CellPtrImplPointer(CellPtrBase *ptr) noexcept  : m_ptr(ReprFor(ptr)) {}
 
     constexpr CellPtrImplPointer &operator=(decltype(nullptr)) noexcept    { m_ptr = {};           return *this; }

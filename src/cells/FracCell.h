@@ -50,6 +50,7 @@ public:
   const CellTypeInfo &GetInfo() override;
 
   int GetInnerCellCount() const override { return 3; }
+  // cppcheck-suppress objectIndex
   Cell *GetInnerCell(int index) const override { return (&m_displayedNum)[index]; }
 
   //! All types of fractions we support

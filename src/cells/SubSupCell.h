@@ -36,6 +36,7 @@ public:
   std::unique_ptr<Cell> Copy(GroupCell *group) const override;
 
   int GetInnerCellCount() const override { return 5; }
+  // cppcheck-suppress objectIndex
   Cell *GetInnerCell(int index) const override { return (&m_baseCell)[index].get(); }
 
   void SetIndex(std::unique_ptr<Cell> &&index);

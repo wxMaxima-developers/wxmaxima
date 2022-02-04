@@ -244,7 +244,7 @@ private:
   //! The name of the image, if known.
   wxString m_imageName;
   //! The image resolution
-  double m_ppi;
+  double m_ppi = 72;
   struct free_deleter { void operator()(void *p) const { std::free(p); } };
   NSVGimage* m_svgImage = {};
   std::unique_ptr<struct NSVGrasterizer, free_deleter> m_svgRast{nullptr};

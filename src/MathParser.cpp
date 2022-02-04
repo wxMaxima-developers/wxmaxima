@@ -304,7 +304,7 @@ std::unique_ptr<Cell> MathParser::ParseAnimationTag(wxXmlNode *node)
 
   wxString ppi = node->GetAttribute(wxT("ppi"), wxEmptyString);
   long ppi_num;
-  if (ppi.ToLong(&ppi_num) && (animation != NULL))
+  if (ppi.ToLong(&ppi_num))
     animation->SetPPI(ppi_num);
 
   wxStringTokenizer dataFiles(gnuplotData, wxT(";"));

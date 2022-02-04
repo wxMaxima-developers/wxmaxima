@@ -121,7 +121,7 @@ public:
   {};
 
   //! Is GroupCell gr part of the evaluation queue?
-  bool IsLastInQueue(GroupCell *gr)
+  bool IsLastInQueue(GroupCell const *gr)
   {
     return !m_queue.empty() && (gr == m_queue.front());
   }

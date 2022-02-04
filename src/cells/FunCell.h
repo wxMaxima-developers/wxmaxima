@@ -59,6 +59,7 @@ public:
   const CellTypeInfo &GetInfo() override;
 
   int GetInnerCellCount() const override { return 2; }
+  // cppcheck-suppress objectIndex
   Cell *GetInnerCell(int index) const override { return (&m_nameCell)[index].get(); }
 
   void Recalculate(AFontSize fontsize) override;

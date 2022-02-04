@@ -364,8 +364,10 @@ struct optional_base
 
     constexpr optional_base() noexcept : init_(false), storage_(trivial_init) {};
 
+    // cppcheck-suppress noExplicitConstructor
     explicit constexpr optional_base(const T& v) : init_(true), storage_(v) {}
 
+    // cppcheck-suppress noExplicitConstructor
     explicit constexpr optional_base(T&& v) : init_(true), storage_(constexpr_move(v)) {}
 
     template <class... Args> explicit optional_base(in_place_t, Args&&... args)
@@ -387,8 +389,10 @@ struct constexpr_optional_base
 
     constexpr constexpr_optional_base() noexcept : init_(false), storage_(trivial_init) {};
 
+    // cppcheck-suppress noExplicitConstructor
     explicit constexpr constexpr_optional_base(const T& v) : init_(true), storage_(v) {}
 
+    // cppcheck-suppress noExplicitConstructor
     explicit constexpr constexpr_optional_base(T&& v) : init_(true), storage_(constexpr_move(v)) {}
 
     template <class... Args> explicit constexpr constexpr_optional_base(in_place_t, Args&&... args)
@@ -462,7 +466,7 @@ public:
   // 20.5.5.1, constructors
   constexpr optional() noexcept : OptionalBase<T>()  {};
   // cppcheck-suppress noExplicitConstructor
-  constexpr optional(nullopt_t) noexcept : OptionalBase<T>() {};
+  explicit constexpr optional(nullopt_t) noexcept : OptionalBase<T>() {};
 
   optional(const optional& rhs)
   : OptionalBase<T>()
@@ -483,10 +487,10 @@ public:
   }
 
   // cppcheck-suppress noExplicitConstructor
-  constexpr optional(const T& v) : OptionalBase<T>(v) {}
+  explicit constexpr optional(const T& v) : OptionalBase<T>(v) {}
 
   // cppcheck-suppress noExplicitConstructor
-  constexpr optional(T&& v) : OptionalBase<T>(constexpr_move(v)) {}
+  explicit constexpr optional(T&& v) : OptionalBase<T>(constexpr_move(v)) {}
 
   template <class... Args>
   explicit constexpr optional(in_place_t, Args&&... args)
@@ -683,10 +687,10 @@ public:
   constexpr optional() noexcept : ref(nullptr) {}
   
   // cppcheck-suppress noExplicitConstructor
-  constexpr optional(nullopt_t) noexcept : ref(nullptr) {}
+  explicit constexpr optional(nullopt_t) noexcept : ref(nullptr) {}
 
   // cppcheck-suppress noExplicitConstructor
-  constexpr optional(T& v) noexcept : ref(detail_::static_addressof(v)) {}
+  explicit constexpr optional(T& v) noexcept : ref(detail_::static_addressof(v)) {}
   
   optional(T&&) = delete;
   

@@ -146,7 +146,7 @@ class InnerCellIterator
   static Cell *GetInnerCell(const Cell *cell, int index);
 public:
   InnerCellIterator() = default;
-  InnerCellIterator(Cell *parentCell) :
+  explicit InnerCellIterator(Cell *parentCell) :
     m_parentCell(parentCell),
     m_endIndex(parentCell ? GetInnerCellCount(parentCell) : 0)
   {

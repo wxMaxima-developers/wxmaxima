@@ -907,6 +907,8 @@ void Image::LoadImage_Backgroundtask(wxString image, std::shared_ptr<wxFileSyste
             if(Image.GetOptionInt("wxIMAGE_OPTION_RESOLUTIONUNIT") == wxIMAGE_RESOLUTION_CM)
               resolution *= 2.54;
           }
+          if(resolution > 50)
+            m_ppi = resolution;
         }
       }
       else

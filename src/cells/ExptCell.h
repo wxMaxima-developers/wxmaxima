@@ -54,6 +54,7 @@ public:
   const CellTypeInfo &GetInfo() override;
 
   int GetInnerCellCount() const override { return 5; }
+  // cppcheck-suppress objectIndex
   Cell *GetInnerCell(int index) const override { return (&m_baseCell)[index].get(); }
 
   //! By how much do we want to rise the power?
