@@ -58,15 +58,15 @@ public:
   void LoadImage(wxString image, bool remove = true);
 
   //! Set the image's resolution
-  void SetPPI(int ppi){m_image->SetPPI(ppi);}
-  int GetPPI() const{return m_image->GetPPI();}
-  size_t GetOriginalWidth() const {return m_image->GetOriginalWidth();}
-  size_t GetOriginalHeight() const {return m_image->GetOriginalHeight();}
+  void SetPPI(int ppi) override {m_image->SetPPI(ppi);}
+  int GetPPI() const override {return m_image->GetPPI();}
+  size_t GetOriginalWidth() const override {return m_image->GetOriginalWidth();}
+  size_t GetOriginalHeight() const override {return m_image->GetOriginalHeight();}
 
   void ReloadImage(const wxString &image, std::shared_ptr<wxFileSystem> filesystem);
 
   //! Can this image be exported in SVG format?
-  bool CanExportSVG() const {return (m_image != NULL) && m_image->CanExportSVG();}
+  bool CanExportSVG() const override {return (m_image != NULL) && m_image->CanExportSVG();}
 
   friend class AnimationCell;
 
@@ -78,7 +78,7 @@ public:
 
     See also GetExtension().
    */
-  wxSize ToImageFile(wxString filename);
+  wxSize ToImageFile(wxString filename) override;
 
   /*! Removes the cached scaled image from memory
 
@@ -98,7 +98,7 @@ public:
   void DrawRectangle(bool draw) { m_drawRectangle = draw; }
 
   //! Returns the file name extension that matches the image type
-  wxString GetExtension() const
+  wxString GetExtension() const override
   { if (m_image)return m_image->GetExtension(); else return wxEmptyString; }
 
   //! Returns the name of the file the image was originally created from
@@ -112,10 +112,10 @@ public:
   //! Returns the original compressed version of the image
   wxMemoryBuffer GetCompressedImage() const { return m_image->m_compressedImage; }
 
-  double GetMaxWidth() const { return m_image ? m_image->GetMaxWidth() : -1; }
-  double GetHeightList() const { return m_image ? m_image->GetHeightList() : -1; }
-  void SetMaxWidth(double width) { if (m_image) m_image->SetMaxWidth(width); }
-  void SetMaxHeight(double height) { if (m_image) m_image->SetMaxHeight(height); }
+  double GetMaxWidth() const override { return m_image ? m_image->GetMaxWidth() : -1; }
+  double GetHeightList() const override { return m_image ? m_image->GetHeightList() : -1; }
+  void SetMaxWidth(double width) override { if (m_image) m_image->SetMaxWidth(width); }
+  void SetMaxHeight(double height) override { if (m_image) m_image->SetMaxHeight(height); }
 
   void Recalculate(AFontSize fontsize) override;
 
