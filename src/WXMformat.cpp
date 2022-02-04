@@ -343,7 +343,7 @@ std::unique_ptr<GroupCell> TreeFromWXM(const wxArrayString &wxmLines, Configurat
 
     tree.Append(std::move(cell));
   }
-  return tree;
+  return std::move(tree);
 }
 
 std::unique_ptr<GroupCell> ParseWXMFile(wxTextBuffer &text, Configuration **config)
@@ -523,7 +523,7 @@ std::unique_ptr<GroupCell> ParseMACContents(const wxString &macContents, Configu
   if (!line.empty())
     tree.Append(std::make_unique<GroupCell>(config, GC_TYPE_CODE, line));
 
-  return tree;
+  return std::move(tree);
 }
 
 std::unique_ptr<GroupCell> ParseMACFile(wxTextBuffer &text, bool xMaximaFile, Configuration **config)
