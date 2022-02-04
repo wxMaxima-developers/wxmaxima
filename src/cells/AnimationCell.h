@@ -210,10 +210,10 @@ private:
   wxString ToTeX() const override;
   wxString ToXML() const override;
 
-  double GetMaxWidth() const;
-  double GetHeightList() const;
-  void SetMaxWidth(double width);
-  void SetMaxHeight(double height);
+  double GetMaxWidth() const override;
+  double GetHeightList() const override;
+  void SetMaxWidth(double width) override;
+  void SetMaxHeight(double height) override;
   
   void DrawBoundingBox(wxDC &WXUNUSED(dc), bool WXUNUSED(all) = false)  override
   { m_drawBoundingBox = true; }
