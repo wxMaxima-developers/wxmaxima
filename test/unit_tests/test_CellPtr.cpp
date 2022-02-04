@@ -497,7 +497,7 @@ DEFINE_CELL(FullTestCell)
 template <int N>
 class IterArrayCell : public FullTestCell {
 public:
-  std::unique_ptr<Cell> Copy(GroupCell *group) const override { return std::make_unique<IterArrayCell<N>>(); }
+  std::unique_ptr<Cell> Copy(GroupCell *WXUNUSED(group)) const override { return std::make_unique<IterArrayCell<N>>(); }
 
   int GetInnerCellCount() const override { return inner.size(); }
   Cell *GetInnerCell(int index) const override { return inner[index].get(); }

@@ -66,11 +66,11 @@ public:
   void operator=(const AnimationCell&) = delete;
   AnimationCell(const AnimationCell&) = delete;
 
-  void SetConfiguration(Configuration **config);
-  int GetPPI() const{if(IsOk())return m_images[m_displayed]->GetPPI();else return 0;}
-  size_t GetOriginalWidth() const {if(IsOk())return m_images[m_displayed]->GetOriginalWidth();else return 0;}
-  size_t GetOriginalHeight() const {if(IsOk())return m_images[m_displayed]->GetOriginalHeight();else return 0;}
-  wxString GetExtension() const
+  void SetConfiguration(Configuration **config) override;
+  int GetPPI() const override {if(IsOk()) return m_images[m_displayed]->GetPPI();else return 0;}
+  size_t GetOriginalWidth() const override {if(IsOk())return m_images[m_displayed]->GetOriginalWidth();else return 0;}
+  size_t GetOriginalHeight() const override {if(IsOk())return m_images[m_displayed]->GetOriginalHeight();else return 0;}
+  wxString GetExtension() const override
     { if (IsOk())return m_images[m_displayed]->GetExtension(); else return wxEmptyString; }
 
   const CellTypeInfo &GetInfo() override;

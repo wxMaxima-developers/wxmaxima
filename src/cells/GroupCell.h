@@ -72,7 +72,7 @@ public:
   GroupCell(GroupCell const &cell);
   GroupCell(GroupCell *group, const GroupCell &cell);
   std::unique_ptr<Cell> Copy() const;
-  std::unique_ptr<Cell> Copy(GroupCell *group) const;
+  std::unique_ptr<Cell> Copy(GroupCell *group) const override;
   const CellTypeInfo &GetInfo() override;
   std::unique_ptr<GroupCell> CopyList() const;
   ~GroupCell();
@@ -92,6 +92,7 @@ public:
   void SetAnswer(const wxString &question, const wxString &answer);
 
   int GetInnerCellCount() const override { return (m_groupType == GC_TYPE_PAGEBREAK) ? 0 : 2; }
+  // cppcheck-suppress objectIndex
   Cell *GetInnerCell(int index) const override { return (&m_inputLabel)[index].get(); }
 
   /*! Which GroupCell was the last maxima was working on?
