@@ -47,7 +47,6 @@ DEFINE_CELL(DigitCell)
 
 void DigitCell::Recalculate(AFontSize fontsize)
 {
-  Configuration *configuration = (*m_configuration);
   if(NeedsRecalculation(fontsize))
   {      
     Cell::Recalculate(fontsize);

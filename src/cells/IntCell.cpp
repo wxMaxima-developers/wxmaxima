@@ -210,9 +210,7 @@ void IntCell::Draw(wxPoint point)
   if (DrawThisCell(point))
   {
     Configuration *configuration = (*m_configuration);
-    
-    wxDC *dc = configuration->GetDC();
-    
+        
     wxPoint base(point), under(point), over(point), var(point), sign(point);
 
     SetPen(1.5);

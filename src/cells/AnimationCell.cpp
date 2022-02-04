@@ -67,8 +67,8 @@ AnimationCell::AnimationCell(GroupCell *group, Configuration **config, std::shar
 AnimationCell::AnimationCell(GroupCell *group, Configuration **config, int framerate) :
     ImgCellBase(group, config),
     m_timer(m_cellPointers->GetWorksheet(), wxNewId()),
-    m_displayed(0),
     m_framerate(framerate),
+    m_displayed(0),
     m_imageBorderWidth(Scale_Px(1))
 {
   InitBitFields();

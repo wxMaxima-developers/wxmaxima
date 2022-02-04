@@ -68,7 +68,7 @@ Printout::~Printout()
   DestroyTree();
 }
 
-bool Printout::HasPage(int num)
+bool Printout::HasPage(unsigned int num)
 {
   if (num > 0 && num <= m_pages.size())
     return true;
@@ -77,7 +77,7 @@ bool Printout::HasPage(int num)
 
 bool Printout::OnPrintPage(int num)
 {
-  if(num > m_pages.size())
+  if((unsigned)num > m_pages.size())
     return false;
 //  wxBusyInfo busyInfo(wxString::Format(_("Printing page %i..."),num));
   wxDC *dc = GetDC();
@@ -115,7 +115,7 @@ bool Printout::OnPrintPage(int num)
   startpoint = m_pages[num - 1]->GetRect(true).GetTop();
   endpoint = startpoint + 2*pageHeight;
             
-  if((m_pages.size() > num) && (m_pages[num]))
+  if((m_pages.size() > (unsigned)num) && (m_pages[num]))
   {
     endpoint = m_pages[num]->GetRect(true).GetTop()-1;
     end = m_pages[num];

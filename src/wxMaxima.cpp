@@ -3914,7 +3914,7 @@ std::unique_ptr<GroupCell> wxMaxima::CreateTreeFromXMLNode(wxXmlNode *xmlcells, 
       }
     }
   }
-  return std::move(tree);
+  return tree;
 }
 
 wxString wxMaxima::EscapeForLisp(wxString str)
@@ -4375,6 +4375,11 @@ void wxMaxima::OnIdle(wxIdleEvent &event)
 
     if(m_worksheet->RedrawIfRequested())
       requestMore = true;
+    if(requestMore)
+    {
+      event.RequestMore();
+      return;
+    }
   }
 
   // If nothing which is visible has changed nothing that would cause us to need

@@ -57,7 +57,7 @@ public:
 
   bool OnPrintPage(int num);
 
-  bool HasPage(int num);
+  bool HasPage(unsigned int num);
 
   void GetPageInfo(int *minPage, int *maxPage, int *fromPage, int *toPage);
 

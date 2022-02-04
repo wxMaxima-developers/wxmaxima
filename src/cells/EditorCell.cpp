@@ -3979,7 +3979,7 @@ bool EditorCell::FindNext(wxString str, const bool &down, const bool &ignoreCase
     // If the last search already has marked a match for our word we want
     // to search for the next match.
     if ((m_selectionStart >= 0) &&
-        (abs(m_selectionStart-m_selectionEnd) == str.Length()) &&
+        ((size_t) abs(m_selectionStart-m_selectionEnd) == str.Length()) &&
         (text.Right(text.Length()-
                     wxMin(m_selectionStart, m_selectionEnd)).StartsWith(str)))
     {

@@ -165,7 +165,6 @@ void IntervalCell::Draw(wxPoint point)
       wxDC *adc = configuration->GetAntialiassingDC();
       SetPen(1.5);
 
-      int signWidth = m_signWidth - Scale_Px(2);
       innerCellPos.x = point.x + m_signWidth;
 
       // Left bracket
