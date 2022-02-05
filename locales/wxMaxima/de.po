@@ -412,7 +412,6 @@ msgstr ""
 "Cursor zeigt an, wo z. B. die nächste neue Zelle eingefügt wird."
 
 #: ../../src/TipOfTheDay.cpp:73
-#, fuzzy
 msgid ""
 "A new document format has been introduced in wxMaxima 0.8.2 that saves not "
 "only your input and text commentaries, but also the outputs of your "
@@ -422,7 +421,7 @@ msgstr ""
 "Mit wxMaxima 0.8.2 wurde ein neues Format für Dokumente eingeführt. Dieses "
 "sichert nicht nur die Eingaben, sondern auch die Ergebnisse der "
 "Berechnungen. Wenn Sie Ihr Dokument speichern, können Sie dazu das Format "
-"'wxMaxima-XML-Dokument' auswählen."
+"'Gesamtes Dokument (*.wxmx)' auswählen."
 
 #: ../../src/TipOfTheDay.cpp:142
 msgid ""
@@ -712,9 +711,8 @@ msgid "Auto-indent new lines"
 msgstr "Automatisches Einrücken neuer Zeilen"
 
 #: ../../src/ConfigDialogue.cpp:695
-#, fuzzy
 msgid "Auto-insert closing parenthesis"
-msgstr "Nicht geschlossene Klammer"
+msgstr "Schließende Klammer automatisch einfügen"
 
 #: ../../src/Autocomplete.cpp:320
 #, c-format
@@ -964,7 +962,7 @@ msgstr "&Info über Maxima"
 
 #: ../../src/ConfigDialogue.cpp:1146
 msgid "Built-in"
-msgstr ""
+msgstr "Im wxMaxima-Programm eingebaut"
 
 #: ../../src/TipOfTheDay.cpp:52
 msgid ""
@@ -1093,14 +1091,12 @@ msgid "Change &2d Display"
 msgstr "Format &2D Anzeige"
 
 #: ../../src/wxMaxima.cpp:9234
-#, fuzzy
 msgid "Change Image"
-msgstr "Variable ersetzen"
+msgstr "Bild ändern"
 
 #: ../../src/Worksheet.cpp:1381
-#, fuzzy
 msgid "Change Image..."
-msgstr "Bild speichern ..."
+msgstr "Bild ändern..."
 
 #: ../../src/ConfigDialogue.cpp:667
 msgid "Change names of greek letters to greek letters"
@@ -1788,7 +1784,7 @@ msgstr "Ableitung:"
 
 #: ../../src/ConfigDialogue.cpp:1137
 msgid "Developer Options"
-msgstr ""
+msgstr "Entwickler Optionen"
 
 #: ../../src/wxMaximaFrame.cpp:1813
 msgid "Deviation..."
@@ -1855,9 +1851,8 @@ msgid "Display last result in TeX form"
 msgstr "Zeige letztes Ergebnis in TeX Format"
 
 #: ../../src/ConfigDialogue.cpp:625
-#, fuzzy
 msgid "Display of long numbers"
-msgstr "Anzeige dreidimensionaler Kurven"
+msgstr "Anzeige von großen Zahlen"
 
 #: ../../src/ToolBar.cpp:346
 #, c-format
@@ -3906,9 +3901,8 @@ msgid "Linear Regression..."
 msgstr "Lineare Regression..."
 
 #: ../../src/ConfigDialogue.cpp:1881
-#, fuzzy
 msgid "Lisp files (*.lisp)|*.lisp|All|*"
-msgstr "Postscript-Datei (*.eps)|*.eps|Alle|*"
+msgstr "Lisp Dateien (*.lisp)|*.lisp|Alle|*"
 
 #: ../../src/wxMaxima.cpp:4331
 msgid "Lisp mode."
@@ -3937,9 +3931,8 @@ msgid "List of changed options"
 msgstr "Liste der geänderten Optionen"
 
 #: ../../src/VariablesPane.cpp:192
-#, fuzzy
 msgid "List of labels"
-msgstr "Liste der Arrays"
+msgstr "Liste der Markierungen"
 
 #: ../../src/VariablesPane.cpp:189
 msgid "List of structs"
@@ -3967,12 +3960,11 @@ msgstr "Liste der gradefs"
 
 #: ../../src/VariablesPane.cpp:204
 msgid "List of user-defined let rule packages"
-msgstr "List der let-Regeln"
+msgstr "Liste der let-Regeln"
 
 #: ../../src/VariablesPane.cpp:201
-#, fuzzy
 msgid "List of user-defined macros"
-msgstr "Liste der benutzerdefinierten Eigenschaften"
+msgstr "Liste der benutzerdefinierten Makros"
 
 #: ../../src/VariablesPane.cpp:198
 msgid "List of user-defined properties"
@@ -4211,7 +4203,7 @@ msgid "Maxima asks a question!"
 msgstr "Maxima hat eine Frage."
 
 #: ../../src/ConfigDialogue.cpp:330
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Maxima assigns each command/equation an automatic label (which looks like "
 "%i1 or %o1). If a command begins with a descriptive name followed by a : "
@@ -4228,10 +4220,10 @@ msgstr ""
 "beginnt, der durch ein : gefolgt wird, kann wxMaxima dies erkennen und "
 "stattdessen diesen Bezeichner als \"benutzerdefinierte Marke\" verwenden. "
 "Diese Option erlaubt nun, zu entscheiden, was von beiden angezeigt wird, "
-"wenn überhaupt; Falls keine Marken angezeigt werden, die zeigen, wo eine "
+"wenn überhaupt; Falls die Marken nicht angezeigt werden, die zeigen, wo eine "
 "neue Gleichung beginnt und wo die Gleichung von der letzten Zeile "
 "fortgesetzt wird, wird ein kleiner vertikaler Abstand zwischen den Zeilen "
-"eingeführt."
+"eingefügt."
 
 #: ../../src/ConfigDialogue.cpp:899
 msgid "Maxima commands to be executed at every start of Maxima"
@@ -4683,14 +4675,14 @@ msgid "New lines: Jump to text"
 msgstr "Neue Zeilen: Springe zum Text"
 
 #: ../../src/wxMaxima.cpp:3072
-#, fuzzy, c-format
+#, c-format
 msgid "New maxima Operators detected: %s"
-msgstr "Architektur von Maxima: %s"
+msgstr "Neue Maxima Operatoren erkannt: %s"
 
 #: ../../src/wxMaxima.cpp:7809 ../../src/wxMaxima.cpp:7942
 #: ../../src/wxMaxima.cpp:7960
 msgid "New variable:"
-msgstr "Parameter:"
+msgstr "Neue Variable:"
 
 #: ../../src/wxMaximaFrame.cpp:910
 msgid "Next Command\tAlt+Down"
@@ -5045,7 +5037,7 @@ msgstr "Pi"
 
 #: ../../src/wxMaximaFrame.cpp:1837
 msgid "Piechart..."
-msgstr "Kreisdiagramm"
+msgstr "Kreisdiagramm..."
 
 #: ../../src/wxMaxima.cpp:4017
 msgid "Please configure wxMaxima with 'Edit->Configure'."
@@ -5208,9 +5200,8 @@ msgid "Printing"
 msgstr "Drucken"
 
 #: ../../src/ConfigDialogue.cpp:723
-#, fuzzy
 msgid "Privacy settings"
-msgstr "Importiere die Einstellungen von einer Datei"
+msgstr "Privatspähreneinstellungen"
 
 #: ../../src/Worksheet.cpp:6549
 msgid ""
@@ -5364,14 +5355,13 @@ msgid "Refusing to send cell to maxima: "
 msgstr "Weigere mich, die Zelle an Maxima zu senden: "
 
 #: ../../src/Worksheet.cpp:1371
-#, fuzzy
 msgid "Reload Image"
-msgstr "Als Bild kopieren"
+msgstr "Bild neu laden"
 
 #: ../../src/Worksheet.cpp:1377
 #, c-format
 msgid "Reload Image \"%s\""
-msgstr ""
+msgstr "Bild \"%s\" neu laden"
 
 #: ../../src/ConfigDialogue.cpp:778
 msgid "Reload all GUI settings from disc"
@@ -5382,9 +5372,9 @@ msgid "Reload the style settings from disc"
 msgstr "Neuladen aller Stil-Einstellungen"
 
 #: ../../src/wxMaxima.cpp:8850
-#, fuzzy, c-format
+#, c-format
 msgid "Reloading image file %s."
-msgstr "Automatisches Speichern als temporäre Datei %s"
+msgstr "Bilddatei %s neu laden."
 
 #: ../../src/ConfigDialogue.cpp:2120
 msgid "Reloading the configuration from disc"
@@ -5392,7 +5382,7 @@ msgstr "Lade die Konfiguration von der Festplatte."
 
 #: ../../src/ConfigDialogue.cpp:2129
 msgid "Reloading the styles from disc"
-msgstr "Lade die Konfiguration von der Festplatte."
+msgstr "Lade die Stil-Einstellungen von der Festplatte."
 
 #: ../../src/VariablesPane.cpp:209
 msgid "Remove"
@@ -5827,7 +5817,7 @@ msgstr "Algorithmus zum Anzeigen von Formeln auswählen"
 
 #: ../../src/ConfigDialogue.cpp:1878
 msgid "Select wxMathml.lisp location"
-msgstr ""
+msgstr "Wähle wxMathml.lisp Speicherort"
 
 #: ../../src/wxMaxima.cpp:248
 msgid "Selected language: "
@@ -5918,14 +5908,12 @@ msgid "Set fixed font in text controls."
 msgstr "In Eingabefeldern eine Schrift mit fester Breite verwenden."
 
 #: ../../src/Worksheet.cpp:1362 ../../src/Worksheet.cpp:1500
-#, fuzzy
 msgid "Set image resolution"
-msgstr "Wiederverwendung von Lösungen\n"
+msgstr "Bildauflösung einstellen"
 
 #: ../../src/ResolutionChooser.cpp:29
-#, fuzzy
 msgid "Set image resolution [in ppi]"
-msgstr "Wiederverwendung von Lösungen\n"
+msgstr "Bildauflösung [in ppi]"
 
 #: ../../src/MaxSizeChooser.cpp:30
 msgid "Set maximum image size [in mm]"
@@ -6361,9 +6349,8 @@ msgid "Square"
 msgstr "Rechteckig"
 
 #: ../../src/ConfigDialogue.cpp:1061
-#, fuzzy
 msgid "Standard Options"
-msgstr "Einfache Kurven\n"
+msgstr "Standard Optionen"
 
 #: ../../src/Worksheet.cpp:1354
 msgid "Start Animation"
@@ -6421,7 +6408,8 @@ msgstr "Statistik\tAlt+Shift+S"
 msgid ""
 "Store filenames in image cells to enable image reloading after re-opening "
 "the worksheet"
-msgstr ""
+msgstr "Speichere die Dateinamen in Bild-Zellen, um das Laden des Bildes "
+"nach dem erneuten Öffnen des Arbeitsblattes zu ermöglichen."
 
 #: ../../src/wxMaximaFrame.cpp:806
 msgid "Straight lines"
@@ -6760,14 +6748,12 @@ msgstr ""
 "mit Maxima-Befehlen."
 
 #: ../../src/wxMaximaFrame.cpp:1397
-#, fuzzy
 msgid "The manual of Maxima"
-msgstr "Das Offline-Handbuch von Maxima"
+msgstr "Das Handbuch von Maxima"
 
 #: ../../src/wxMaximaFrame.cpp:1394
-#, fuzzy
 msgid "The manual of wxMaxima"
-msgstr "Das Offline-Handbuch von wxMaxima"
+msgstr "Das Handbuch von wxMaxima"
 
 #: ../../src/MaxSizeChooser.cpp:55
 msgid "The maximum size for this image. Values <= 0 mean: Unspecified."
@@ -7324,9 +7310,8 @@ msgid "User-defined labels if available"
 msgstr "Benutzerdefinierte Marken, falls vorhanden"
 
 #: ../../src/ConfigDialogue.cpp:1152
-#, fuzzy
 msgid "User-specified file:"
-msgstr "Benutzerdefiniert"
+msgstr "Benutzerdefiniert:"
 
 #: ../../src/Worksheet.cpp:6106
 msgid "Using Maxima help file from wxMaxima configuration file (helpFile=...))"
@@ -7455,13 +7440,12 @@ msgstr ""
 "Datei und Kommandozeilenparametern konfiguriert."
 
 #: ../../src/wxMaxima.cpp:4995
-#, fuzzy
 msgid ""
 "Whole document (*.wxmx)|*.wxmx|The input, readable by load() (maxima > 5.38) "
 "(*.wxm)|*.wxm|All Files (*.*)|*"
 msgstr ""
 "Gesamtes Dokument (*.wxmx)|*.wxmx|Die Eingabezellen, lesbar von load() in "
-"Maxima > 5.38 (*.wxm)|*.wxm"
+"Maxima > 5.38 (*.wxm)|*.wxm|Alle Dateien (*.*)|*"
 
 #: ../../src/ConfigDialogue.cpp:246
 msgid "Worksheet"
@@ -7511,14 +7495,13 @@ msgstr ""
 "erscheinen."
 
 #: ../../src/TipOfTheDay.cpp:85
-#, fuzzy
 msgid ""
 "You can get help on a Maxima function by selecting or clicking on the "
 "function name and pressing F1. wxMaxima will search the help index for the "
 "selection or the word under the cursor."
 msgstr ""
 "Sie erhalten Hilfe zu einer Maxima-Funktion, indem Sie die Funktion im "
-"Dokument markieren oder doppelklicken und dann F1 drücken. wxMaxima öffnet "
+"Dokument markieren oder auf den Funktionsnamen klicken und F1 drücken. wxMaxima öffnet "
 "das Maxima-Manual und sucht im Index den markierten Begriff."
 
 #: ../../src/TipOfTheDay.cpp:79
@@ -7968,7 +7951,7 @@ msgstr "verwende die konkreten in der Liste gespeicherten Variablenwerte"
 
 #: ../../src/ConfigDialogue.cpp:1140
 msgid "wxMathml.lisp location"
-msgstr ""
+msgstr "wxMathml.lisp Speicherort"
 
 #: ../../src/ConfigDialogue.cpp:1142
 msgid ""
@@ -7989,7 +7972,7 @@ msgstr "wxMaxima %d"
 #: ../../src/wxMaxima.cpp:10050 ../../src/wxMaxima.cpp:10052
 #: ../../src/wxMaxima.cpp:10061 ../../src/wxMaxima.cpp:10064
 #: ../../src/wxMaximaFrame.cpp:201
-#, fuzzy, c-format
+#, c-format
 msgid "wxMaxima %s (%s) "
 msgstr "wxMaxima %s (%s) "
 
@@ -8013,7 +7996,6 @@ msgid "wxMaxima configuration"
 msgstr "wxMaxima Konfiguration"
 
 #: ../../src/wxMaxima.cpp:1766
-#, fuzzy
 msgid ""
 "wxMaxima could not start a server.\n"
 "\n"
