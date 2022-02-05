@@ -2441,54 +2441,29 @@ bool EditorCell::HandleOrdinaryKey(wxKeyEvent &event)
  */
 bool EditorCell::FindMatchingQuotes()
 {
-  int pos = m_positionOfCaret;
-  if (pos < 0)
+  if (m_positionOfCaret < 0)
   {
     m_paren1 = m_paren2 = -1;
     return false;
   }
 
-  if (pos > (long) m_text.Length())
-    pos = (long) m_text.Length();
-  if ((pos == (long) m_text.Length()) ||
-      (wxString(wxT("\"")).Find(m_text.GetChar(pos)) == -1))
+  size_t pos = 0;
+  for (auto const &tok : MaximaTokenizer(m_text, *m_configuration).PopTokens())
   {
-    pos--;
-    if (pos < 0 ||
-        wxString(wxT("\"")).Find(m_text.GetChar(pos)) == -1)
+    if((tok.GetText().StartsWith(wxT("\""))) && (tok.GetText().EndsWith(wxT("\""))))
     {
-      m_paren1 = m_paren2 = -1;
+      size_t tokenEnd = pos + tok.GetText().Length() - 1;
+      if ((m_positionOfCaret == tokenEnd) || (m_positionOfCaret == pos))
+      {
+        m_paren1 = pos;
+        m_paren2 = tokenEnd;
+        return true;
+      }
+    }
+    if(pos > m_positionOfCaret)
       return false;
-    }
+    pos += tok.GetText().Length();
   }
-
-  decltype(m_text)::char_type prevCh = {};
-  int count = 0;
-  int i = 0;
-  for (auto ch : m_text) {
-    if (ch == '"' && prevCh != '\\')
-    {
-      ++count;
-      if (count & 1)
-      {
-        m_paren1 = i;  // open quote here
-      }
-      else
-      {
-        m_paren2 = i;  // close quote here
-        if (m_paren1 == pos || m_paren2 == pos)
-        {
-          // found the pair of quotes under the cursor
-          return true;
-        }
-      }
-    }
-    ++i;
-    prevCh = ch;
-  }
-
-  // didn't find matching quotes; do not highlight quotes
-  m_paren1 = m_paren2 = -1;
   return false;
 }
 
