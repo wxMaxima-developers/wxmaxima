@@ -2469,83 +2469,96 @@ bool EditorCell::FindMatchingQuotes()
 
 void EditorCell::FindMatchingParens()
 {
-  if (FindMatchingQuotes())
+  m_paren1 = m_paren2 = -1;
+  if (m_positionOfCaret < 0)
+    return;
+
+  wxChar charUnderCursor = m_text.GetChar(m_positionOfCaret);
+  if(charUnderCursor == wxT('\"'))
   {
+    FindMatchingQuotes();
     return;
   }
-
-  m_paren2 = m_positionOfCaret;
-  if(m_paren2 >= (long)m_text.Length())
-    m_paren2 = m_text.Length() - 1;
-  if (m_paren2 < 0)
+  if(
+    (charUnderCursor == wxT('(')) ||
+    (charUnderCursor == wxT('[')) ||
+    (charUnderCursor == wxT('{'))
+    )
   {
-    m_paren1 = m_paren2 = -1;
-    return;
-  }
-
-  if ((m_paren2 >= (long) m_text.Length())||
-      (wxString(wxT("([{}])")).Find(m_text.GetChar(m_paren2)) == -1))
-  {
-    m_paren2--;
-    if (m_paren2 < 0 ||
-        wxString(wxT("([{}])")).Find(m_text.GetChar(m_paren2)) == -1)
+    unsigned int parenLevel = 0;
+    unsigned int pos = 0;
+    for (auto const &tok : MaximaTokenizer(m_text, *m_configuration).PopTokens())
     {
-      m_paren1 = m_paren2 = -1;
-      return;
+      if(pos >= m_positionOfCaret)
+      {
+        if(
+          (tok.GetText().StartsWith(wxT("("))) ||
+          (tok.GetText().StartsWith(wxT("["))) ||
+          (tok.GetText().StartsWith(wxT("{")))
+          )
+          parenLevel++;
+        else
+        {
+          if(
+            (tok.GetText().StartsWith(wxT(")"))) ||
+            (tok.GetText().StartsWith(wxT("]"))) ||
+            (tok.GetText().StartsWith(wxT("}")))
+            )
+          {
+            parenLevel--;
+            if(parenLevel == 0)
+            {
+              m_paren1 = m_positionOfCaret;
+              m_paren2 = pos;
+            }
+          }
+        }
+      }
+      pos += tok.GetText().Length();
+    }
+    return;
+  }
+  if(
+    (charUnderCursor == wxT(')')) ||
+    (charUnderCursor == wxT(']')) ||
+    (charUnderCursor == wxT(']'))
+    )
+  {
+    unsigned int parenLevel = 0;
+    unsigned int pos = m_text.Length()-1;
+    auto const tokens = MaximaTokenizer(m_text, *m_configuration).PopTokens();
+    for (auto tok = tokens.rbegin(); tok != tokens.rend(); ++tok)
+    {
+      if(pos <= m_positionOfCaret)
+      {
+        if(
+          (tok->GetText().StartsWith(wxT("("))) ||
+          (tok->GetText().StartsWith(wxT("["))) ||
+          (tok->GetText().StartsWith(wxT("{")))
+          )
+        {
+          parenLevel--;
+          if(parenLevel == 0)
+          {
+            m_paren1 = pos;
+            m_paren2 = m_positionOfCaret;
+          }
+        }
+        else
+        {
+          if(
+            (tok->GetText().StartsWith(wxT(")"))) ||
+            (tok->GetText().StartsWith(wxT("]"))) ||
+            (tok->GetText().StartsWith(wxT("}")))
+            )
+          {
+            parenLevel++;
+          }
+        }
+      }
+      pos -= tok->GetText().Length();
     }
   }
-
-  wxChar first = m_text.GetChar(m_paren2);
-  wxChar second;
-  int dir;
-
-  switch (first)
-  {
-  case '(':
-    second = ')';
-    dir = 1;
-    break;
-  case '[':
-    second = ']';
-    dir = 1;
-    break;
-  case '{':
-    second = '}';
-    dir = 1;
-    break;
-  case ')':
-    second = '(';
-    dir = -1;
-    break;
-  case ']':
-    second = '[';
-    dir = -1;
-    break;
-  case '}':
-    second = '{';
-    dir = -1;
-    break;
-  default:
-    return;
-  }
-
-  m_paren1 = m_paren2 + dir;
-  int depth = 1;
-
-  while (m_paren1 >= 0 && m_paren1 < (int) m_text.Length())
-  {
-    if (m_text.GetChar(m_paren1) == second)
-      depth--;
-    else if (m_text.GetChar(m_paren1) == first)
-      depth++;
-
-    if (depth == 0)
-      break;
-    m_paren1 += dir;
-  }
-
-  if (m_paren1 < 0 || m_paren1 >= (int) m_text.Length())
-    m_paren1 = m_paren2 = -1;
 }
 
 wxString EditorCell::InterpretEscapeString(const wxString &txt) const
