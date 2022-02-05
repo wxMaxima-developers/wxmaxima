@@ -203,10 +203,9 @@ msgstr ""
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:59
-#, fuzzy, no-wrap
-#| msgid "Extensive documentation for _Maxima_ is [available in the internet](https://maxima.sourceforge.io/documentation.html). Part of this documentation is also available in wxMaxima’s help menu. Pressing the Help key (on most systems the F1 key) causes _wxMaxima_’s context-sensitive help feature to automatically jump to _Maxima_’s manual page for the command at the cursor."
+#, no-wrap
 msgid "Extensive documentation for _Maxima_ is  [available in the internet](https://maxima.sourceforge.io/documentation.html). Part of this documentation is also available in wxMaxima’s help menu. Pressing the Help key (on most systems the <kbd>F1</kbd> key) causes _wxMaxima_’s context-sensitive help feature to automatically jump to _Maxima_’s manual page for the command at the cursor.\n"
-msgstr "Umfangreiche Dokumentation für Maxima ist [im Internet verfügbar](https://maxima.sourceforge.io/documentation.html). Teile davon sind auch im Hilfe-Menü von wxMaxima erhältlich. Ein Druck auf die Hilfe-Taste (auf den meisten Systemen ist dies die F1-Taste) springt automatisch zur Stelle im _Maxima_-Handbuch, wo das Kommando unter dem Cursor erklärt wird."
+msgstr "Umfangreiche Dokumentation für Maxima ist [im Internet verfügbar](https://maxima.sourceforge.io/documentation.html). Teile davon sind auch im Hilfe-Menü von wxMaxima verfügbar. Ein Druck auf die Hilfe-Taste (auf den meisten Systemen ist dies die <kbd>F1</kbd>-Taste) springt automatisch zur Stelle im _Maxima_-Handbuch, wo das Kommando unter dem Cursor erklärt wird.\n"
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:60
@@ -379,29 +378,20 @@ msgstr "Zellen"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:93
-#, fuzzy
-#| msgid ""
-#| "The worksheet is organized in cells. Each cell can contain other cells or "
-#| "the following types of content:"
 msgid ""
 "The worksheet is organized in cells. wxMaxima knows the following cell types:"
 msgstr ""
-"Das Arbeitsblatt ist in Zellen aufgeteilt, von denen jede mehr Zellen oder "
-"Elemente der folgenden Typen enthalten kann:"
+"Das Arbeitsblatt ist in Zellen aufgeteilt. wxMaxima kennt die folgenden Zelltypen:"
 
 #. type: Bullet: '* '
 #: ../../info/wxmaxima.md:100
-#, fuzzy
-#| msgid "one or more lines of _Maxima_ input"
 msgid "Math cells, containing one or more lines of _Maxima_ input."
-msgstr "Eine oder mehr Zeilen an Eingabe für _Maxima_"
+msgstr "Mathematik-Eingabezellen beinhalten eine oder mehrere Eingabe-Zeilen für _Maxima_"
 
 #. type: Bullet: '* '
 #: ../../info/wxmaxima.md:100
-#, fuzzy
-#| msgid "output of, or a question from, _Maxima_"
 msgid "Output of, or a question from, _Maxima_."
-msgstr "Ausgaben oder Fragen von _Maxima_"
+msgstr "Ausgaben oder Fragen von _Maxima_."
 
 #. type: Bullet: '* '
 #: ../../info/wxmaxima.md:100
@@ -410,10 +400,8 @@ msgstr ""
 
 #. type: Bullet: '* '
 #: ../../info/wxmaxima.md:100
-#, fuzzy
-#| msgid "a text block that can for example be used for documentation"
 msgid "Text cells, that can for example be used for documentation."
-msgstr "Einen Textblock mit Dokumentation"
+msgstr "Text-Zellen, die beispielsweise für Dokumentation verwendet werden können."
 
 #. type: Bullet: '* '
 #: ../../info/wxmaxima.md:100
@@ -443,18 +431,13 @@ msgstr ""
 "erzeugt wurde, wird alles was eingetippt wird, als Text interpretiert."
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:104
-#, fuzzy
-#| msgid ""
-#| "Additional comment text can be entered into a math cell if bracketed as "
-#| "follows: `/*This comment will not be sent to Maxima for evaluation*/`."
+#: ../../info/wxmaxima.md:104"
 msgid ""
 "A (C-style) comment text can be part of a math cell as follows: `/* This "
 "comment will be ignored by Maxima */`"
 msgstr ""
-"Zusätzlicher Text kann in einer mathematischen Zelle als Kommentar zwischen "
-"`/*` und `*/` (wie z.B. in der Programmiersprache C) eingegeben werden: `/* "
-"Dieser Kommentar wird von Maxima nicht beachtet */`."
+"Ein Kommentar (wie in der Programmiersprache C) kann als Teil einer Mathematik-Eingabezelle "
+"eingegeben werden: `/* Dieser Kommentar wird von Maxima ignoriert */`."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:106
@@ -564,8 +547,7 @@ msgstr "Auto-Vervollständigung"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:135
-#, fuzzy, no-wrap
-#| msgid "_wxMaxima_ contains an autocompletion feature that is triggered via the menu (Cell/Complete Word) or alternatively by pressing the key combination <kbd>CTRL</kbd>+<kbd>SPACE</kbd>. The autocompletion is context-sensitive. For example if activated within an unit specification for ezUnits it will offer a list of applicable units.\n"
+#, no-wrap
 msgid "_wxMaxima_ contains an autocompletion feature that is triggered via the menu (Cell/Complete Word) or alternatively by pressing the key combination <kbd>CTRL</kbd>+<kbd>SPACE</kbd>. The autocompletion is context-sensitive. For example if activated within a unit specification for ezUnits it will offer a list of applicable units.\n"
 msgstr "wxMaxima versucht, automatisch die Namen von Befehlen oder Variablen zu vervollständigen, wenn der Menüpunkt (Vervollständige Befehl) angewählt wird, oder die Tastenkombination <kbd>CTRL</kbd>+<kbd>SPACE</kbd> gedrückt wird. Die automatische Vervollständigung erkennt oft den Kontext, in dem sie ausgeführt wird, und kann beispielsweise Dateinamen oder Einheiten für ezUnits vorschlagen.\n"
 
@@ -892,8 +874,7 @@ msgstr "Die TeX- und HTML-Ausgabe von _wxMaxima_ erkennen auch `=>` und ersetzen
 
 #. type: Fenced code block
 #: ../../info/wxmaxima.md:269
-#, fuzzy, no-wrap
-#| msgid "cogito => sum.\n"
+#, no-wrap
 msgid "cogito => sum.\n"
 msgstr "cogito => sum.\n"
 
@@ -1003,12 +984,10 @@ msgstr ""
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:300
-#, fuzzy
-#| msgid "![Batch image](./BatchImage.png){ id=img_BatchImage }"
 msgid ""
 "![Loading a `.mac` file with `batch()`](./BatchImage.png)"
 "{ id=img_BatchImage }"
-msgstr "![Batch image](./BatchImage.png){ id=img_BatchImage }"
+msgstr "![Laden einer `.mac` Datei mit `batch()`](./BatchImage.png){ id=img_BatchImage }"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:302
@@ -1143,11 +1122,7 @@ msgstr ""
 
 #. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:332
-#, fuzzy, no-wrap
-#| msgid ""
-#| "\n"
-#| "wxdraw2d( explicit(x^2,x,-5,5)), wxplot_size=[480,480]$\n"
-#| "\n"
+#, no-wrap
 msgid ""
 "wxdraw2d(\n"
 "   explicit(\n"
@@ -1156,13 +1131,12 @@ msgid ""
 "   )\n"
 "), wxplot_size=[480,480]$\n"
 msgstr ""
-"\n"
-"wxdraw2d( \n"
+"wxdraw2d(\n"
 "   explicit(\n"
-"       x^2\n"
-"\t   ,x,-5,5\n"
-"   )), wxplot_size=[480,480]$\n"
-"\n"
+"       x^2,\n"
+"\t   x,-5,5\n"
+"   )\n"
+"), wxplot_size=[480,480]$\n"
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:341
@@ -1426,15 +1400,7 @@ msgstr ""
 
 #. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:409
-#, fuzzy, no-wrap
-#| msgid ""
-#| "wxplot_size:[1200,800]$\n"
-#| "wxdraw2d(\n"
-#| "    explicit(\n"
-#| "        sin(x),\n"
-#| "        x,1,10\n"
-#| "    )\n"
-#| ")$\n"
+#, no-wrap
 msgid ""
 "wxplot_size:[1200,800]$\n"
 "wxdraw2d(\n"
@@ -1467,14 +1433,7 @@ msgstr ""
 
 #. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:421
-#, fuzzy, no-wrap
-#| msgid ""
-#| "     wxdraw2d(\n"
-#| "        explicit(\n"
-#| "            sin(x),\n"
-#| "            x,1,10\n"
-#| "        )\n"
-#| "     ),wxplot_size=[1600,800]$\n"
+#, no-wrap
 msgid ""
 "wxdraw2d(\n"
 "    explicit(\n"
@@ -1591,16 +1550,7 @@ msgstr ""
 
 #. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:448
-#, fuzzy, no-wrap
-#| msgid ""
-#| "    with_slider_draw(\n"
-#| "        f,[1,2,3,4,5,6,7,10],\n"
-#| "        title=concat(\"f=\",f,\"Hz\"),\n"
-#| "        explicit(\n"
-#| "            sin(2*%pi*f*x),\n"
-#| "            x,0,1\n"
-#| "        ),grid=true\n"
-#| "    );\n"
+#, no-wrap
 msgid ""
 "with_slider_draw(\n"
 "    f,[1,2,3,4,5,6,7,10],\n"
@@ -1611,14 +1561,14 @@ msgid ""
 "    ),grid=true\n"
 ");\n"
 msgstr ""
-"    with_slider_draw(\n"
-"        f,[1,2,3,4,5,6,7,10],\n"
-"        title=concat(\\\"f=\\\",f,\\\"Hz\\\"),\n"
-"        explicit(\n"
-"            sin(2*%pi*f*x),\n"
-"            x,0,1\n"
-"        ),grid=true\n"
-"    );\n"
+"with_slider_draw(\n"
+"    f,[1,2,3,4,5,6,7,10],\n"
+"    title=concat(\"f=\",f,\"Hz\"),\n"
+"    explicit(\n"
+"        sin(2*%pi*f*x),\n"
+"        x,0,1\n"
+"    ),grid=true\n"
+");\n"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:460
@@ -1631,22 +1581,7 @@ msgstr ""
 
 #. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:461
-#, fuzzy, no-wrap
-#| msgid ""
-#| "    wxanimate_autoplay:true;\n"
-#| "    wxanimate_framerate:20;\n"
-#| "    with_slider_draw3d(\n"
-#| "        α,makelist(i,i,1,360,3),\n"
-#| "        title=sconcat(\"α=\",α),\n"
-#| "        surface_hide=true,\n"
-#| "        contour=both,\n"
-#| "        view=[60,α],\n"
-#| "        explicit(\n"
-#| "            sin(x)*sin(y),\n"
-#| "            x,-π,π,\n"
-#| "            y,-π,π\n"
-#| "        )\n"
-#| "    )$\n"
+#, no-wrap
 msgid ""
 "wxanimate_autoplay:true;\n"
 "wxanimate_framerate:20;\n"
@@ -1663,20 +1598,20 @@ msgid ""
 "    )\n"
 ")$\n"
 msgstr ""
-"    wxanimate_autoplay:true;\n"
-"    wxanimate_framerate:20;\n"
-"    with_slider_draw3d(\n"
-"        α,makelist(i,i,1,360,3),\n"
-"        title=sconcat(\\\"α=\\\",α),\n"
-"        surface_hide=true,\n"
-"        contour=both,\n"
-"        view=[60,α],\n"
-"        explicit(\n"
-"            sin(x)*sin(y),\n"
-"            x,-π,π,\n"
-"            y,-π,π\n"
-"        )\n"
-"    )$\n"
+"wxanimate_autoplay:true;\n"
+"wxanimate_framerate:20;\n"
+"with_slider_draw3d(\n"
+"    α,makelist(i,i,1,360,3),\n"
+"    title=sconcat(\"α=\",α),\n"
+"    surface_hide=true,\n"
+"    contour=both,\n"
+"    view=[60,α],\n"
+"    explicit(\n"
+"        sin(x)*sin(y),\n"
+"        x,-π,π,\n"
+"        y,-π,π\n"
+"    )\n"
+")$\n"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:479
@@ -1690,23 +1625,23 @@ msgstr ""
 
 #. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:480
-#, fuzzy, no-wrap
-#| msgid ""
-#| "    wxanimate_autoplay:true;\n"
-#| "    wxanimate_framerate:20;\n"
-#| "    with_slider_draw3d(\n"
-#| "        t,makelist(i,i,0,2*π,.05*π),\n"
-#| "        title=sconcat(\"α=\",α),\n"
-#| "        surface_hide=true,\n"
-#| "        contour=both,\n"
-#| "        view=[60,30+5*sin(t)],\n"
-#| "        explicit(\n"
-#| "            sin(x)*y^2,\n"
-#| "            x,-2*π,2*π,\n"
-#| "            y,-2*π,2*π\n"
-#| "        )\n"
-#| "    )$\n"
+#, no-wrap
 msgid ""
+"wxanimate_autoplay:true;\n"
+"wxanimate_framerate:20;\n"
+"with_slider_draw3d(\n"
+"    t,makelist(i,i,fuzzy, 0,2*π,.05*π),\n"
+"    title=sconcat(\"α=\",α),\n"
+"    surface_hide=true,\n"
+"    contour=both,\n"
+"    view=[60,30+5*sin(t)],\n"
+"    explicit(\n"
+"        sin(x)*y^2,\n"
+"        x,-2*π,2*π,\n"
+"        y,-2*π,2*π\n"
+"    )\n"
+")$\n"
+msgstr ""
 "wxanimate_autoplay:true;\n"
 "wxanimate_framerate:20;\n"
 "with_slider_draw3d(\n"
@@ -1721,21 +1656,6 @@ msgid ""
 "        y,-2*π,2*π\n"
 "    )\n"
 ")$\n"
-msgstr ""
-"    wxanimate_autoplay:true;\n"
-"    wxanimate_framerate:20;\n"
-"    with_slider_draw3d(\n"
-"        t,makelist(i,i,0,2*π,.05*π),\n"
-"        title=sconcat(\\\"α=\\\",α),\n"
-"        surface_hide=true,\n"
-"        contour=both,\n"
-"        view=[60,30+5*sin(t)],\n"
-"        explicit(\n"
-"            sin(x)*y^2,\n"
-"            x,-2*π,2*π,\n"
-"            y,-2*π,2*π\n"
-"        )\n"
-"    )$\n"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:498
@@ -1763,16 +1683,13 @@ msgid ""
 "chosen in the configuration of _wxMaxima_. To set the speed an individual "
 "animation is played back the variable `wxanimate_framerate` can be used:"
 msgstr ""
-"Die Standard-Bildwiderholrate für Animationen kann im Konfigurations-Dialog "
+"Die Standard-Bildwiederholrate für Animationen kann im Konfigurations-Dialog "
 "von _wxMaxima_ eingestellt werden. Um die Geschwindigkeit einer einzelnen "
 "Animation zu ändern, kann die Variable `wxanimate_framerate` geändert werden:"
 
 #. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:504
-#, fuzzy, no-wrap
-#| msgid ""
-#| "    wxanimate(a, 10,\n"
-#| "        sin(a*x), [x,-5,5]), wxanimate_framerate=6$\n"
+#, no-wrap
 msgid ""
 "wxanimate(a, 10,\n"
 "    sin(a*x), [x,-5,5]), wxanimate_framerate=6$\n"
@@ -1795,15 +1712,7 @@ msgstr ""
 
 #. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:511
-#, fuzzy, no-wrap
-#| msgid ""
-#| "    f:sin(a*x);\n"
-#| "    with_slider_draw(\n"
-#| "        a,makelist(i/2,i,1,10),\n"
-#| "        title=concat(\"a=\",float(a)),\n"
-#| "        grid=true,\n"
-#| "        explicit(f,x,0,10)\n"
-#| "    )$\n"
+#, no-wrap
 msgid ""
 "f:sin(a*x);\n"
 "with_slider_draw(\n"
@@ -1813,13 +1722,13 @@ msgid ""
 "    explicit(f,x,0,10)\n"
 ")$\n"
 msgstr ""
-"    f:sin(a*x);\n"
-"    with_slider_draw(\n"
-"        a,makelist(i/2,i,1,10),\n"
-"        title=concat(\\\"a=\\\",float(a)),\n"
-"        grid=true,\n"
-"        explicit(f,x,0,10)\n"
-"    )$\n"
+"f:sin(a*x);\n"
+"with_slider_draw(\n"
+"    a,makelist(i/2,i,1,10),\n"
+"    title=concat(\"a=\",float(a)),\n"
+"    grid=true,\n"
+"    explicit(f,x,0,10)\n"
+")$\n"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:522
@@ -1832,18 +1741,7 @@ msgstr ""
 
 #. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:523
-#, fuzzy, no-wrap
-#| msgid ""
-#| "    f:sin(a*x);\n"
-#| "    with_slider_draw(\n"
-#| "        b,makelist(i/2,i,1,10),\n"
-#| "        title=concat(\"a=\",float(b)),\n"
-#| "        grid=true,\n"
-#| "        explicit(\n"
-#| "            subst(a=b,f),\n"
-#| "            x,0,10\n"
-#| "        )\n"
-#| "    )$\n"
+#, no-wrap
 msgid ""
 "f:sin(a*x);\n"
 "with_slider_draw(\n"
@@ -1856,13 +1754,16 @@ msgid ""
 "    )\n"
 ")$\n"
 msgstr ""
-"    f:sin(a*x);\n"
-"    with_slider_draw(\n"
-"        a,makelist(i/2,i,1,10),\n"
-"        title=concat(\\\"a=\\\",float(a)),\n"
-"        grid=true,\n"
-"        explicit(f,x,0,10)\n"
-"    )$\n"
+"f:sin(a*x);\n"
+"with_slider_draw(\n"
+"    b,makelist(i/2,i,1,10),\n"
+"    title=concat(\"a=\",float(b)),\n"
+"    grid=true,\n"
+"    explicit(\n"
+"        subst(a=b,f),\n"
+"        x,0,10\n"
+"    )\n"
+")$\n"
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:536
@@ -2018,7 +1919,7 @@ msgid ""
 msgstr ""
 "Fügt den aktuellen `draw()`-Befehl den Plot einer Kurve wie `sin(x)`, "
 "`x*sin(x)` oder `x^2+2*x-4` hinzu. Besteht noch kein `draw()`-Befehl, wird "
-"automatisch eine 2D-Szene erzeugt."
+"automatisch eine 2D-Szene erzeugt. Jede Szene kann beliebig viele Plots beinhalten."
 
 #. type: Title ####
 #: ../../info/wxmaxima.md:584
@@ -2208,8 +2109,9 @@ msgid ""
 "example if an image’s contents might change later on in a session) it is "
 "better to tell the file to load the image on evaluation:"
 msgstr ""
-"Das `.wxmx`-Dateiformat erlaubt es, Bilder per Drag-And-Drop einzubetten. Es "
-"ist aber auch möglich, _Maxima_ anzuweisen, Bilder einzubauen:"
+"Das `.wxmx`-Dateiformat erlaubt es, Bilder per Drag-And-Drop einzubetten. Manchmal "
+"(z.B. wenn die Bildinhlate sich später während einer Sitzung ändern könnten) "
+"ist es besser, die Bilddatei während der Auswertung zu laden:"
 
 #. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:632
@@ -2382,14 +2284,7 @@ msgstr ""
 
 #. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:663
-#, fuzzy, no-wrap
-#| msgid ""
-#| "    table_form(\n"
-#| "        [\n"
-#| "            [1,2],\n"
-#| "            [3,4]\n"
-#| "        ]\n"
-#| "    )$\n"
+#, no-wrap
 msgid ""
 "table_form(\n"
 "    [\n"
@@ -2866,10 +2761,9 @@ msgstr ""
 
 #. type: Fenced code block (commonlisp)
 #: ../../info/wxmaxima.md:781
-#, fuzzy, no-wrap
-#| msgid "    (setf sb-impl::*default-external-format* :utf-8)\n"
+#, no-wrap
 msgid "(setf sb-impl::*default-external-format* :utf-8)\n"
-msgstr "    (setf sb-impl::*default-external-format* :utf-8)\n"
+msgstr "(setf sb-impl::*default-external-format* :utf-8)\n"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:786
@@ -2880,7 +2774,7 @@ msgid ""
 "the following command:"
 msgstr ""
 "Wo diese Datei abgelegt werden muss, ist systemabhängig. Aber ein mit SBCL "
-"compiliertes Maxima kann durch den folgenden Befehl verleitet werden, den "
+"compiliertes Maxima kann durch den folgenden Befehl angewiesen werden, den "
 "Ort zu nennen:"
 
 #. type: Plain text
@@ -3060,10 +2954,9 @@ msgstr "Ja, gibt es. Geben Sie einfach die folgenden Zeilen im LaTeX-Vorspann (z
 
 #. type: Fenced code block (latex)
 #: ../../info/wxmaxima.md:851
-#, fuzzy, no-wrap
-#| msgid "    \\usepackage[left=1cm,right=1cm,top=1cm,bottom=1cm]{geometry}\n"
+#, no-wrap
 msgid "\\usepackage[left=1cm,right=1cm,top=1cm,bottom=1cm]{geometry}\n"
-msgstr "    \\usepackage[left=1cm,right=1cm,top=1cm,bottom=1cm]{geometry}\n"
+msgstr "\\usepackage[left=1cm,right=1cm,top=1cm,bottom=1cm]{geometry}\n"
 
 #. type: Title ##
 #: ../../info/wxmaxima.md:855
@@ -3160,17 +3053,7 @@ msgstr ""
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:885
-#, fuzzy, no-wrap
-#| msgid ""
-#| "* `--logtostdout`:                 Log all \"debug messages\" sidebar messages to stderr, too.\n"
-#| "* `--pipe`:                        Pipe messages from Maxima to stdout.\n"
-#| "* `--exit-on-error`:               Close the program on any maxima error.\n"
-#| "* `-f` or `--ini=<str>`: Use the init file that was given as argument to this command-line switch\n"
-#| "* `-u`, `--use-version=<str>`:     Use maxima version `<str>`.\n"
-#| "* `-l`, `--lisp=<str>`:              Use a Maxima compiled with Lisp compiler `<str>`.\n"
-#| "* `-X`, `--extra-args=<str>`:        Allows to specify extra Maxima arguments\n"
-#| "* `-m` or `--maxima=<str>`:    allows to specify the location of the _maxima_ binary\n"
-#| "* `--enableipc`: Lets Maxima control wxMaxima via interprocess communications. Use this option with care.\n"
+#, no-wrap
 msgid ""
 "* `--logtostderr`:                 Log all \"debug messages\" sidebar messages to stderr, too.\n"
 "* `--pipe`:                        Pipe messages from Maxima to stdout.\n"
@@ -3182,7 +3065,7 @@ msgid ""
 "* `-m` or `--maxima=<str>`:    allows to specify the location of the _maxima_ binary\n"
 "* `--enableipc`: Lets Maxima control wxMaxima via interprocess communications. Use this option with care.\n"
 msgstr ""
-"* `--logtostdout`:                 Gebe alle all Debug-Nachrichten auch auf die Konsole aus.\n"
+"* `--logtostderr`:                 Gebe alle all Debug-Nachrichten auch auf der Standardfehlerausgabe (stderr) aus.\n"
 "* `--pipe`:                        Gebe die Nachrichten von Maxima auch auf die Konsole aus.\n"
 "* `--exit-on-error`:               Schließe wxMaxima, wenn Maxima einen Fehler detektiert.\n"
 "* `-f` oder `--ini=<str>`:           Speichere die Konfiguration in der Datei `<str>`\n"
