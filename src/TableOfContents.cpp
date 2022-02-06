@@ -173,7 +173,7 @@ void TableOfContents::UpdateDisplay()
     // Update the name of all existing items and add new items, if necessary.
     // We don't just empty the item list and create a new one since on Windows this
     // causes excessive flickering.
-    for (unsigned int i = 0; i < items.GetCount(); i++)
+    for (signed int i = 0; i < (signed)items.GetCount(); i++)
     {
       if ((i < m_displayedItems->GetItemCount()) && (m_displayedItems->GetItemCount() > 0))
         m_displayedItems->SetItemText(i, items[i]);

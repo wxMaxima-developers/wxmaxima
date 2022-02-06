@@ -54,8 +54,6 @@
 #include "ImgCell.h"
 #include "MarkDown.h"
 #include "wxm_manual_anchors_xml.h"
-#include "ConfigDialogue.h"
-
 #include <wx/clipbrd.h>
 #include <wx/caret.h>
 #include <wx/config.h>
