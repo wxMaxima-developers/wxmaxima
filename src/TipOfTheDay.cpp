@@ -198,10 +198,12 @@ TipOfTheDay::TipOfTheDay(wxWindow *parent)
 
   m_num = 0;
   wxConfigBase *config = wxConfig::Get();
-  config->Read(wxT("tipNum"), &m_num);
-  if(m_num < 0)
-    m_num = m_tips.GetCount()-1;
-  if((unsigned)m_num >=m_tips.GetCount())
+
+  // If nm is negative the if will make it posigive.
+  long nm;
+  config->Read(wxT("tipNum"), &nm);
+  m_num = nm;
+  if(m_num >=m_tips.GetCount())
     m_num = 0;
 
   SetName("TipOfTheDay");
@@ -329,15 +331,16 @@ wxImage TipOfTheDay::GetImage(unsigned char *data, size_t len)
 void TipOfTheDay::OnNextButton(wxCommandEvent &WXUNUSED(dummy))
 {
   m_num++;
-  if((unsigned)m_num >=m_tips.GetCount())
+  if(m_num >=m_tips.GetCount())
     m_num = 0;
   m_tip->SetValue(m_tips[m_num]);
 }
 
 void TipOfTheDay::OnPreviousButton(wxCommandEvent &WXUNUSED(dummy))
 {
-  m_num--;
-  if(m_num < 0)
+  if(m_num > 0)
+    m_num--;
+  else
     m_num = m_tips.GetCount()-1;
   m_tip->SetValue(m_tips[m_num]);
 }

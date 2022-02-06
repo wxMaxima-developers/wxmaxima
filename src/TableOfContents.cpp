@@ -175,7 +175,7 @@ void TableOfContents::UpdateDisplay()
     // causes excessive flickering.
     for (unsigned int i = 0; i < items.GetCount(); i++)
     {
-      if (i < (unsigned) m_displayedItems->GetItemCount())
+      if ((i < m_displayedItems->GetItemCount()) && (m_displayedItems->GetItemCount() > 0))
         m_displayedItems->SetItemText(i, items[i]);
       else
         m_displayedItems->InsertItem(i, items[i]);

@@ -197,10 +197,10 @@ void AutocompletePopup::OnKeyDown(wxKeyEvent &event)
   case WXK_PAGEDOWN:
   case WXK_NUMPAD_PAGEDOWN:
   {
-    int selection = GetNextItem(0,wxLIST_NEXT_ALL,
+    unsigned int selection = GetNextItem(0,wxLIST_NEXT_ALL,
                                 wxLIST_STATE_SELECTED);
     selection += 8;
-    if ((unsigned) selection >= m_completions.GetCount())
+    if (selection >= m_completions.GetCount())
       selection = m_completions.GetCount() - 1;
 
     if (m_completions.GetCount() > 0)

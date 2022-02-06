@@ -292,8 +292,8 @@ wxString EditorCell::ToString(bool dontLimitToSelection) const
   if (SelectionActive() && (!dontLimitToSelection))
   {
     long start = wxMin(m_selectionStart, m_selectionEnd);
-    long end = wxMax(m_selectionStart, m_selectionEnd) - 1;
-    if (end >= (signed)m_text.Length()) end = m_text.Length() - 1;
+    unsigned long end = wxMax(m_selectionStart, m_selectionEnd) - 1;
+    if (end >= m_text.Length()) end = m_text.Length() - 1;
     if (start < 0) start = 0;
     text = m_text.SubString(start, end);
   }
@@ -316,8 +316,8 @@ wxString EditorCell::ToMatlab(bool dontLimitToSelection) const
   if (SelectionActive() && (!dontLimitToSelection))
   {
     long start = wxMin(m_selectionStart, m_selectionEnd);
-    long end = wxMax(m_selectionStart, m_selectionEnd) - 1;
-    if (end >= (signed)m_text.Length()) end = m_text.Length() - 1;
+    unsigned long end = wxMax(m_selectionStart, m_selectionEnd) - 1;
+    if (end >= m_text.Length()) end = m_text.Length() - 1;
     if (start < 0) start = 0;
     text = m_text.SubString(start, end);
   }
@@ -1738,7 +1738,10 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent &event)
       ClearSelection();
 
     if (event.ControlDown())
+    {
       m_positionOfCaret = (signed) m_text.Length();
+      if(m_positionOfCaret < -1) m_positionOfCaret = -1;
+    }
     else
     {
       while (m_positionOfCaret < (signed) m_text.Length() &&
@@ -1819,6 +1822,7 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent &event)
       else
       { // we can't go down. move caret to the end
         m_positionOfCaret = (signed) m_text.Length();
+        if(m_positionOfCaret < -1) m_positionOfCaret = -1; 
         m_caretColumn = -1; // make caretColumn invalid
       }
 
@@ -1852,6 +1856,7 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent &event)
       else
       { // we can't go down. move caret to the end
         m_positionOfCaret = (signed) m_text.Length();
+        if(m_positionOfCaret < -1) m_positionOfCaret = -1; 
         m_caretColumn = -1; // make caretColumn invalid
       }
 
@@ -2453,7 +2458,8 @@ bool EditorCell::FindMatchingQuotes()
     if((tok.GetText().StartsWith(wxT("\""))) && (tok.GetText().EndsWith(wxT("\""))))
     {
       size_t tokenEnd = pos + tok.GetText().Length() - 1;
-      if ((m_positionOfCaret == tokenEnd) || (m_positionOfCaret == pos))
+      if ((m_positionOfCaret >= 0 ) &&
+          (((unsigned) m_positionOfCaret == tokenEnd) || (m_positionOfCaret == pos)))
       {
         m_paren1 = pos;
         m_paren2 = tokenEnd;
@@ -2819,6 +2825,7 @@ void EditorCell::SelectPointText(const wxPoint point)
     FindMatchingParens();
     // The line that now follows is pure paranoia.
     m_positionOfCaret = wxMin(m_positionOfCaret, (signed) m_text.Length());
+    if(m_positionOfCaret < -1) m_positionOfCaret = -1; 
   }
   else
   {
@@ -2840,7 +2847,7 @@ void EditorCell::SelectPointText(const wxPoint point)
       m_positionOfCaret++;
     }
     m_positionOfCaret = wxMin(m_positionOfCaret, (signed) text.Length());
-
+    if(m_positionOfCaret < -1) m_positionOfCaret = -1; 
 
     m_displayCaret = true;
     m_caretColumn = -1;
@@ -2913,7 +2920,7 @@ bool EditorCell::IsPointInSelection(wxPoint point)
     positionOfCaret++;
   }
   positionOfCaret = wxMin(positionOfCaret, (signed) text.Length());
-
+  if(positionOfCaret < -1) positionOfCaret = -1; 
   return !((m_selectionStart >= positionOfCaret) || (m_selectionEnd <= positionOfCaret));
 
 }
