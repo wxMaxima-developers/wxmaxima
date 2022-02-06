@@ -2447,7 +2447,7 @@ bool EditorCell::FindMatchingQuotes()
     return false;
   }
 
-  size_t pos = 0;
+  long pos = 0;
   for (auto const &tok : MaximaTokenizer(m_text, *m_configuration).PopTokens())
   {
     if((tok.GetText().StartsWith(wxT("\""))) && (tok.GetText().EndsWith(wxT("\""))))
@@ -2485,8 +2485,8 @@ void EditorCell::FindMatchingParens()
     (charUnderCursor == wxT('{'))
     )
   {
-    unsigned int parenLevel = 0;
-    unsigned int pos = 0;
+    int parenLevel = 0;
+    long pos = 0;
     for (auto const &tok : MaximaTokenizer(m_text, *m_configuration).PopTokens())
     {
       if(pos >= m_positionOfCaret)
@@ -2524,8 +2524,8 @@ void EditorCell::FindMatchingParens()
     (charUnderCursor == wxT(']'))
     )
   {
-    unsigned int parenLevel = 0;
-    unsigned int pos = m_text.Length()-1;
+    int parenLevel = 0;
+    long pos = m_text.Length()-1;
     auto const tokens = MaximaTokenizer(m_text, *m_configuration).PopTokens();
     for (auto tok = tokens.rbegin(); tok != tokens.rend(); ++tok)
     {
