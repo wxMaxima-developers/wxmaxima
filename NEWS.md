@@ -14,6 +14,7 @@
  * Parenthesis and quote matching now uses the maxima parser.
    This means it now both knows the details of the maxima language
    and is much faster than before.
+ * A way of limiting the toc depth shown in the table of contents
 
 # 21.11.0:
  * Allow seeing all files in the file save dialog. (#1557)

@@ -938,6 +938,18 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
           wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
   Connect(TableOfContents::popid_ToggleTOCshowsSectionNumbers, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
+  Connect(TableOfContents::popid_tocLevel1, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
+  Connect(TableOfContents::popid_tocLevel2, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
+  Connect(TableOfContents::popid_tocLevel3, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
+  Connect(TableOfContents::popid_tocLevel4, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
+  Connect(TableOfContents::popid_tocLevel5, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
+  Connect(TableOfContents::popid_tocLevel6, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
   Connect(Worksheet::popid_fold, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
   Connect(Worksheet::popid_unfold, wxEVT_MENU,
@@ -8951,6 +8963,42 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
   case TableOfContents::popid_ToggleTOCshowsSectionNumbers:
   {
     m_worksheet->m_configuration->TocShowsSectionNumbers(event.IsChecked());
+    m_worksheet->UpdateTableOfContents();
+    break;
+  }
+  case TableOfContents::popid_tocLevel1:
+  {
+    m_worksheet->m_configuration->TocDepth(1);
+    m_worksheet->UpdateTableOfContents();
+    break;
+  }
+  case TableOfContents::popid_tocLevel2:
+  {
+    m_worksheet->m_configuration->TocDepth(2);
+    m_worksheet->UpdateTableOfContents();
+    break;
+  }
+  case TableOfContents::popid_tocLevel3:
+  {
+    m_worksheet->m_configuration->TocDepth(3);
+    m_worksheet->UpdateTableOfContents();
+    break;
+  }
+  case TableOfContents::popid_tocLevel4:
+  {
+    m_worksheet->m_configuration->TocDepth(4);
+    m_worksheet->UpdateTableOfContents();
+    break;
+  }
+  case TableOfContents::popid_tocLevel5:
+  {
+    m_worksheet->m_configuration->TocDepth(5);
+    m_worksheet->UpdateTableOfContents();
+    break;
+  }
+  case TableOfContents::popid_tocLevel6:
+  {
+    m_worksheet->m_configuration->TocDepth(6);
     m_worksheet->UpdateTableOfContents();
     break;
   }

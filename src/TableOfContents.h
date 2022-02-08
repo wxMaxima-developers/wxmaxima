@@ -54,7 +54,13 @@ public:
     popid_Unfold,
     popid_SelectTocChapter,
     popid_EvalTocChapter,
-    popid_ToggleTOCshowsSectionNumbers
+    popid_ToggleTOCshowsSectionNumbers,
+    popid_tocLevel1,
+    popid_tocLevel2,
+    popid_tocLevel3,
+    popid_tocLevel4,
+    popid_tocLevel5,
+    popid_tocLevel6,
   };
 
   TableOfContents(wxWindow *parent, int id, Configuration **config);
@@ -91,7 +97,7 @@ private:
   GroupCell *m_cellRightClickedOn;
   //! The last selected item
   long m_lastSelection;
-
+  
   //! Update the displayed contents.
   void UpdateDisplay();
 

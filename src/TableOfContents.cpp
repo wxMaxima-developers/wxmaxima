@@ -127,7 +127,35 @@ void TableOfContents::UpdateDisplay()
     // sparingly. But we should perhaps add at least a little bit of it to make
     // the list more readable.
     wxString curr;
+    int tocDepth = 0;
+    switch (m_structure[i]->GetGroupType())
+    {
+    case GC_TYPE_TITLE:
+      tocDepth = 0;
+      break;
+    case GC_TYPE_SECTION:
+      tocDepth = 1;
+      break;
+    case GC_TYPE_SUBSECTION:
+      tocDepth = 2;
+      break;
+    case GC_TYPE_SUBSUBSECTION:
+      tocDepth = 3;
+      break;
+    case GC_TYPE_HEADING5:
+      tocDepth = 4;
+      break;
+    case GC_TYPE_HEADING6:
+      tocDepth = 5;
+      break;
+    default:
+      break;
+    }
 
+    // Limit the toc depth shown
+    if((*m_configuration)->TocDepth() <= tocDepth)
+      continue;
+    
     if ((*m_configuration)->TocShowsSectionNumbers())
     {
       if(m_structure[i]->GetPrompt() != NULL)
@@ -271,6 +299,16 @@ void TableOfContents::OnMouseRightDown(wxListEvent &event)
     }
   }
 
+  wxMenu *tocLevelMenu = new wxMenu();
+  tocLevelMenu->AppendRadioItem(popid_tocLevel1, _("1 Level"));
+  tocLevelMenu->AppendRadioItem(popid_tocLevel2, _("2 Levels"));
+  tocLevelMenu->AppendRadioItem(popid_tocLevel3, _("3 Levels"));
+  tocLevelMenu->AppendRadioItem(popid_tocLevel4, _("4 Levels"));
+  tocLevelMenu->AppendRadioItem(popid_tocLevel5, _("5 Levels"));
+  tocLevelMenu->AppendRadioItem(popid_tocLevel6, _("6 Levels"));
+  tocLevelMenu->Check(popid_tocLevel1 + (*m_configuration)->TocDepth() - 1, true);
+  popupMenu->Append(wxID_ANY, _("Toc levels shown here"), tocLevelMenu);
+  
   if (popupMenu->GetMenuItemCount() > 0)
     popupMenu->AppendSeparator();
   popupMenu->AppendCheckItem(popid_ToggleTOCshowsSectionNumbers, _("Show section numbers"));

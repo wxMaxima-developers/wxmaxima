@@ -835,6 +835,8 @@ wxString DocumentclassOptions() const {return m_documentclassOptions;}
   int DefaultPlotWidth() const {return m_defaultPlotWidth;}
   void DefaultFramerate(int fps){m_defaultFramerate = fps;}
   int DefaultFramerate() const {return m_defaultFramerate;}
+  void TocDepth(int depth){m_tocDepth = depth;}
+  int TocDepth() const {return m_tocDepth;}
   bool TeXExponentsAfterSubscript() const {return m_TeXExponentsAfterSubscript;}
   void TeXExponentsAfterSubscript(bool ExponentsAfterSubscript)
     {m_TeXExponentsAfterSubscript = ExponentsAfterSubscript;}
@@ -1019,6 +1021,7 @@ private:
   wxString m_lispType;
   int m_bitmapScale;
   int m_defaultFramerate;
+  int m_tocDepth;
   int m_maxClipbrd_BitmapMegabytes;
   int m_autoSaveMinutes;
   wxString m_wxMathML_Filename;

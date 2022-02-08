@@ -138,6 +138,7 @@ void Configuration::ResetAllToDefaults(InitOpt options)
   m_bitmapScale = 3;
   m_maxClipbrd_BitmapMegabytes = 4;
   m_defaultFramerate = 12;
+  m_tocDepth = 6;
   m_fixedFontTC = false;
   m_hideMarkerForThisMessage.clear();
   #ifdef __WXOSX__
@@ -676,6 +677,9 @@ void Configuration::ReadConfig()
   config->Read(wxT("copyBitmap"), &m_copyBitmap);
   config->Read(wxT("bitmapScale"), &m_bitmapScale);
   config->Read(wxT("DefaultFramerate"), &m_defaultFramerate);
+  config->Read(wxT("tocDepth"), &m_tocDepth);
+  if(m_tocDepth < 1)
+    m_tocDepth = 1;
   config->Read(wxT("copyBitmap"), &m_copyBitmap);
   config->Read(wxT("copyMathML"), &m_copyMathML);
   config->Read(wxT("copyMathMLHTML"), &m_copyMathMLHTML);
@@ -1322,6 +1326,7 @@ void Configuration::WriteStyles(wxConfigBase *config)
   config->Write(wxT("fixedFontTC"), m_fixedFontTC);
   config->Write(wxT("bitmapScale"), m_bitmapScale);
   config->Write(wxT("DefaultFramerate"), m_defaultFramerate);
+  config->Write(wxT("tocDepth"), m_tocDepth);
   config->Write(wxT("usepngCairo"), m_usepngCairo);
   config->Write("incrementalSearch", m_incrementalSearch);
   config->Write(wxT("hideBrackets"), m_hideBrackets);
