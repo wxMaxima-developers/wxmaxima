@@ -10,6 +10,9 @@
  * An updated french translation from Frédéric Chapoton
  * Consistent image resolutions
  * Resolved a crash on exporting sheets with multiple animations
+ * Parenthesis and quote matching now uses the maxima parser.
+   This means it now both knows the details of the maxima language
+   and is much faster than before.
 
 # 21.11.0:
  * Allow seeing all files in the file save dialog. (#1557)
