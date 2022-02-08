@@ -2722,8 +2722,13 @@ void wxMaxima::VariableActionAutoconfHost(const wxString &value)
 }
 void wxMaxima::VariableActionMaximaInfodir(const wxString &value)
 {
-  m_worksheet->SetMaximaDocDir(value);
-  wxLogMessage(wxString::Format(_("Maxima's manual lies in directory %s"),value.utf8_str()));
+  // Make sure that we get out all ".." and "~" of the path as they seem to confuse
+  // the help browser logic
+  wxFileName dir(value);
+  dir.MakeAbsolute();
+  wxString dir_canonical = dir.GetPath();
+  m_worksheet->SetMaximaDocDir(dir_canonical);
+  wxLogMessage(wxString::Format(_("Maxima's manual lies in directory %s"),dir_canonical.utf8_str()));
 }
 
 void wxMaxima::VariableActionMaximaHtmldir(const wxString &value)
