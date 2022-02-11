@@ -8998,7 +8998,7 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
   }
   case TableOfContents::popid_tocLevel6:
   {
-    m_worksheet->m_configuration->TocDepth(6);
+    m_worksheet->m_configuration->TocDepth(255);
     m_worksheet->UpdateTableOfContents();
     break;
   }

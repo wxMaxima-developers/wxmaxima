@@ -305,7 +305,7 @@ void TableOfContents::OnMouseRightDown(wxListEvent &event)
   tocLevelMenu->AppendRadioItem(popid_tocLevel3, _("3 Levels"));
   tocLevelMenu->AppendRadioItem(popid_tocLevel4, _("4 Levels"));
   tocLevelMenu->AppendRadioItem(popid_tocLevel5, _("5 Levels"));
-  tocLevelMenu->AppendRadioItem(popid_tocLevel6, _("6 Levels"));
+  tocLevelMenu->AppendRadioItem(popid_tocLevel6, _("All Levels"));
   tocLevelMenu->Check(popid_tocLevel1 + (*m_configuration)->TocDepth() - 1, true);
   popupMenu->Append(wxID_ANY, _("Toc levels shown here"), tocLevelMenu);
   

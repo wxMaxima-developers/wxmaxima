@@ -138,7 +138,7 @@ void Configuration::ResetAllToDefaults(InitOpt options)
   m_bitmapScale = 3;
   m_maxClipbrd_BitmapMegabytes = 4;
   m_defaultFramerate = 12;
-  m_tocDepth = 6;
+  m_tocDepth = 255;
   m_fixedFontTC = false;
   m_hideMarkerForThisMessage.clear();
   #ifdef __WXOSX__
