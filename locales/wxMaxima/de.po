@@ -784,7 +784,7 @@ msgstr ""
 msgid ""
 "Automatically insert a closing parenthesis the moment the user enters an "
 "opening one."
-msgstr ""
+msgstr "Automatisch eine schließende Klammer einfügen, wenn eine öffnende eingetippt wurde."
 
 #: ../../src/Worksheet.cpp:1478 ../../src/Worksheet.cpp:1786
 msgid "Automatically send known answers"
@@ -887,7 +887,7 @@ msgstr "Kastengraphik..."
 msgid ""
 "Bug: After removing the whitespace wxMathml.lisp is shorter than expected!"
 msgstr ""
-"Fehler: Nach dem Entfernen von Leertasten und Zeilenwechseln ist wxMathml."
+"Fehler: Nach dem Entfernen von Leerzeichen und Zeilenwechseln ist wxMathml."
 "lisp kürzer als erwartet!"
 
 #: ../../src/Autocomplete.cpp:467
@@ -901,7 +901,7 @@ msgstr "Interner Fehler: Zelle wurde verlassen, aber zuvor nie besucht."
 
 #: ../../src/Worksheet.cpp:6941
 msgid "Bug: Cell with negative y position!"
-msgstr "Interner Fehler: Zelle mit negativer y-Position"
+msgstr "Interner Fehler: Zelle mit negativer y-Position!"
 
 #: ../../src/Worksheet.cpp:3053
 msgid "Bug: Got a question but no cell to answer it in"
@@ -1148,7 +1148,7 @@ msgstr "Variable in Integral oder Summe ersetzen"
 #: ../../src/wxMaxima.cpp:9314
 #, c-format
 msgid "Changing image originally loaded from file %s to %s."
-msgstr ""
+msgstr "Ändere das Bild, das von %s geladen wurde zu %s."
 
 #: ../../src/wxMaxima.cpp:6881
 msgid "Char poly"
@@ -1214,7 +1214,7 @@ msgstr "Schließe Fenster"
 
 #: ../../src/wxMaxima.h:657
 msgid "Closing the socket maxima could connect to!"
-msgstr ""
+msgstr "Schließe das Netzwerksocket zu dem sich Maxima verbinden könnte!"
 
 #: ../../src/Configuration.cpp:1481
 msgid "Code highlighting: Comments"
@@ -1278,8 +1278,7 @@ msgstr "Komma-getrennte Variablen"
 
 #: ../../src/ConfigDialogue.cpp:931
 msgid "Commands that are executed at every start of maxima."
-msgstr ""
-"Maxima-Befehle, die beim Hochfahren von Maxima ausgeführt werden sollen."
+msgstr "Maxima-Befehle, die bei jedem Start von Maxima ausgeführt werden."
 
 #: ../../src/Worksheet.cpp:1668
 msgid "Comment Selection"
@@ -1295,7 +1294,7 @@ msgstr "Auswahl auskommentieren\tCtrl+/"
 
 #: ../../src/wxMathml.cpp:41
 msgid "Compiler-Bug? wxMathml.lisp is shorter than expected!"
-msgstr "Compiler-Fehler? wwxMathml.lisp ist kürzer als erwartet."
+msgstr "Compiler-Fehler? wwxMathml.lisp ist kürzer als erwartet!"
 
 #: ../../src/wxMaxima.cpp:1490
 #, c-format
@@ -3112,7 +3111,7 @@ msgstr "Zusammengehörige Klammern hervorheben"
 msgid ""
 "Highlight the opening or closing parenthesis for the parenthesis the cursor "
 "is at."
-msgstr ""
+msgstr "Markiere die öffnende oder schließende Klammer, die zu der Klammer unter dem Cursor gehört."
 
 #: ../../src/wxMaxima.cpp:8440
 msgid "Histogram"
@@ -4619,7 +4618,7 @@ msgstr "Nachricht vom stdout von Maxima: "
 #: ../../src/Worksheet.cpp:7669
 #, c-format
 msgid "Middle-click clipboard data: %s"
-msgstr ""
+msgstr "Inhalt der Zwischenablage für Klicks mit dem mittleren Maus-Button: %s"
 
 #: ../../src/wxMaxima.cpp:8286
 msgid "Minimum absolute value printed without exponent:"
@@ -5318,11 +5317,11 @@ msgstr "Die Ausgabe von Maxima wird gelesen: %li bytes"
 #: ../../src/wxMathml.cpp:45
 #, c-format
 msgid "Reading the Lisp part of wxMaxima from the file %s"
-msgstr ""
+msgstr "Lese den Lisp-Teil von wxMaxima aus folgender Datei: %s"
 
 #: ../../src/wxMathml.cpp:31
 msgid "Reading the Lisp part of wxMaxima from the included header file."
-msgstr ""
+msgstr "Lese den Lisp-Teil von wxMaxima aus der eingebauten Header-Datei."
 
 #: ../../src/wxMaximaFrame.cpp:138
 #, c-format
@@ -5755,10 +5754,10 @@ msgid ""
 "gif)|*.gif|Windows bitmap (*.bmp)|*.bmp|Portable anymap (*.pnm)|*.pnm|Tagged "
 "image file format (*.tif)|*.tif|X pixmap (*.xpm)|*.xpm"
 msgstr ""
-"Scalable Vector image (*.svg)|*.svg|Compressed Scalable Vector Image (*."
-"svgz)|*.svgz|PNG image (*.png)|*.png|JPEG image (*.jpg)|*.jpg|GIF image (*."
-"gif)|*.gif|Windows bitmap (*.bmp)|*.bmp|Portable anymap (*.pnm)|*.pnm|Tagged "
-"image file format (*.tif)|*.tif|X pixmap (*.xpm)|*.xpm"
+"Skalierbare Vektorgraphik (*.svg)|*.svg|Komprimierte Skalierbare Vektorgraphik (*."
+"svgz)|*.svgz|PNG Build (*.png)|*.png|JPEG Bild (*.jpg)|*.jpg|GIF Bild (*."
+"gif)|*.gif|Windows Bitmap (*.bmp)|*.bmp|Portable Anymap (*.pnm)|*.pnm|Tagged "
+"Image File Format (*.tif)|*.tif|X PixMap (*.xpm)|*.xpm"
 
 #: ../../src/wxMaxima.cpp:8456
 msgid "Scatterplot"
@@ -6080,7 +6079,7 @@ msgstr "Zeige einen Tipp"
 
 #: ../../src/Worksheet.cpp:1606
 msgid "Show all + allow linebreaks in long numbers"
-msgstr ""
+msgstr "Alles anzeigen und Zeilenumbrüche bei langen Zahlen erlauben"
 
 #: ../../src/wxMaxima.cpp:8389
 msgid "Show all commands similar to:"
@@ -6742,7 +6741,7 @@ msgstr "Die Seite der Gleichung, die rechts vom \"=\" steht."
 #: ../../src/wxMaxima.cpp:8862 ../../src/wxMaxima.cpp:9301
 #, c-format
 msgid "The image file \"%s\" cannot be found."
-msgstr ""
+msgstr "Die Bilddate \"%s\" wurde nicht gefunden."
 
 #: ../../src/TipOfTheDay.cpp:178
 msgid "The key combination Shift+Space results in a non-breakable space."
@@ -6818,7 +6817,7 @@ msgstr ""
 
 #: ../../src/ResolutionChooser.cpp:50
 msgid "The resolution for this image."
-msgstr ""
+msgstr "Die Auflösung für dieses Bild."
 
 #: ../../src/TipOfTheDay.cpp:169
 msgid ""
@@ -7032,7 +7031,7 @@ msgstr "bis:"
 
 #: ../../src/TableOfContents.cpp:310
 msgid "Toc levels shown here"
-msgstr ""
+msgstr "Inhaltsverzeichnis-Ebenen, die hier angezeigt werden."
 
 #: ../../src/wxMaximaFrame.cpp:828 ../../src/wxMaximaFrame.cpp:831
 msgid "Toggle full screen editing"
@@ -7126,7 +7125,8 @@ msgstr "Versuche, Maxima neuzustarten."
 msgid ""
 "Trying to start the socket a maxima on the local machine can connect to on "
 "port %i"
-msgstr ""
+msgstr "Versuche, den Netzwerksocket des lokalen Rechners, zu dem sich Maxima "
+"verbinden kann an Port %i zu erstellen."
 
 #: ../../src/ConfigDialogue.cpp:195
 msgid "Turkish"
@@ -7344,7 +7344,7 @@ msgstr "Benutzerdefiniert:"
 
 #: ../../src/Worksheet.cpp:6092
 msgid "Using Maxima help file from wxMaxima configuration file (helpFile=...))"
-msgstr ""
+msgstr "Verwende die Maxima Hilfedatei aus der wxMaxima Konfiguration (helpFile=...)."
 
 #: ../../src/wxMaxima.cpp:2175
 msgid ""
@@ -7454,7 +7454,7 @@ msgstr ""
 
 #: ../../src/wxMaximaFrame.cpp:976
 msgid "When to invoke the lisp compiler's debugger"
-msgstr ""
+msgstr "Wann soll der Lisp Debugger aufgerufen werden"
 
 #: ../../src/ConfigDialogue.cpp:831
 msgid ""
@@ -7987,7 +7987,9 @@ msgid ""
 "wxMathml.lisp, the lisp half of wxMaxima is included in the wxMaxima binary. "
 "But if a developer wants to try out new versions of this file without having "
 "to recompile wxMaxima wxMaxima allows to use an external file, instead."
-msgstr ""
+msgstr "wxMathml.lisp, der Lisp-Teil von wxMaxima ist im Binary eingebaut."
+"Aber ein Enwickler möchte vielleicht neue Varianten testen, ohne ständig "
+"wxMaxima neu compilieren zu müssen. wxMaxima kann daher eine externe Datei verwenden."
 
 #: ../../src/main.cpp:428 ../../src/wxMaxima.cpp:8345
 msgid "wxMaxima"
