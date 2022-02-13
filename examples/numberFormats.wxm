@@ -1,5 +1,5 @@
 /* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
-/* [ Created with wxMaxima version 20.07.0-DevelopmentSnapshot ] */
+/* [ Created with wxMaxima version 21.11.0-DevelopmentSnapshot ] */
 /* [wxMaxima: title   start ]
 Number formats
    [wxMaxima: title   end   ] */
@@ -172,6 +172,42 @@ float(%);
 /* [wxMaxima: input   end   ] */
 
 
+/* [wxMaxima: section start ]
+Integer values
+   [wxMaxima: section end   ] */
+
+
+/* [wxMaxima: comment start ]
+Integers in Maxima can be arbitrary long (they are not limited to 32 or 64 bit length as in most programming languages).
+E.g. the factorial of 500 (500!), a integer with 1135 decimal digits can be computed:
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+factorial(500);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+wxMaxima by default 'shortens' the output and prints only the first and last digits, and in the middle [nnn digits], if you do a right click on the number, you can select to show more - or of cause all - digits.
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: section start ]
+Imaginary and complex numbers
+   [wxMaxima: section end   ] */
+
+
+/* [wxMaxima: comment start ]
+Of course Maxima knows about imaginary and complex numbers. The imaginary unit √(-1) is displayed as %i in Maxima:
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+sqrt(-1);
+/* [wxMaxima: input   end   ] */
+
+
 
 /* Old versions of Maxima abort on loading files that end in a comment. */
-"Created with wxMaxima 20.07.0-DevelopmentSnapshot"$
+"Created with wxMaxima 21.11.0-DevelopmentSnapshot"$
