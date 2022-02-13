@@ -171,7 +171,7 @@ endif()
 # Usage: list_transform_prepend(FILES_TO_TRANSLATE "prefix/")
 # See https://stackoverflow.com/a/59155344/1329652
 #
-# According to #1388 cmake 3.19.2 requires this to be definied
+# According to #1388 cmake 3.19.2 requires this to be defined
 # in each source file separately
 
 function(list_transform_prepend var prefix)

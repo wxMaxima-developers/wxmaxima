@@ -5640,7 +5640,7 @@ bool Worksheet::ExportToHTML(const wxString &file)
     doc.Load(istream);
   }
 
-  // Replace the raw document by the indented one. If that step worked, that ist.
+  // Replace the raw document by the indented one. If that step worked, that is it.
   if (doc.IsOk())
   {
     wxMemoryOutputStream ostream;
@@ -6085,7 +6085,7 @@ wxString Worksheet::GetMaximaHelpFile()
 {
   // One may set the help file location in the wxMaxima configuration (on Unix: ~/.wxMaxima), e.g.
   // helpFile=/usr/local/share/maxima/5.44.0/doc/html/maxima_singlepage.html
-  // Use that file, if the configration option is used.
+  // Use that file, if the configuration option is used.
   wxString headerFile;
   wxConfig::Get()->Read(wxT("helpFile"), &headerFile);
   if (headerFile.Length() && wxFileExists(headerFile)) {
