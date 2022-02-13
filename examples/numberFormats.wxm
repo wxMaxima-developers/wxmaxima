@@ -208,6 +208,88 @@ sqrt(-1);
 /* [wxMaxima: input   end   ] */
 
 
+/* [wxMaxima: section start ]
+Other numerical constants
+   [wxMaxima: section end   ] */
+
+
+/* [wxMaxima: comment start ]
+Several other numerical constants are use a similar notation with a percent sign as first character. If you want an numerical approximation, you can add ",numer" to the constant or use the function float(). They are:
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: subsect start ]
+Eulers number, e
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: input   start ] */
+%e;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+%e,numer; float(%e);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsect start ]
+Pi
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: input   start ] */
+%pi;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+%pi,numer; float(%pi);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsect start ]
+Phi, the golden mean
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: input   start ] */
+%phi;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+%phi,numer; float(%phi);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsect start ]
+Gamma, the Euler-Mascheroni constant
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: input   start ] */
+%gamma;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+%gamma,numer; float(%gamma);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+(%i40)	float(%gamma);
+(%o40)	0.5772156649015329
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+More information about these constants can be found in the Maxima manual:
+https://maxima.sourceforge.io/docs/manual/maxima_singlepage.html#Constants
+   [wxMaxima: comment end   ] */
+
+
 
 /* Old versions of Maxima abort on loading files that end in a comment. */
 "Created with wxMaxima 21.11.0-DevelopmentSnapshot"$
