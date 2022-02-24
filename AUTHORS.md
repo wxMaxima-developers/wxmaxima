@@ -10,7 +10,7 @@
 - Elias Mårtenson
 - Steven McDonald
 - Tomio Arisaka
-- Michael Stern
+- Michel Talon
 - Rene Hansen
 - Adam Mróz
 - Mizuki Arata
