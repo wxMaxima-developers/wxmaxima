@@ -53,15 +53,7 @@
     `(let ((existing-props (gethash ',sym *builtin-symbol-props*)))
        (setf (gethash ',sym *builtin-symbol-props*) (append (list ',indic ',val) existing-props)))
     `(defprop ,sym ,val ,indic)
-    )
-
-  (defmacro wx-defprop (sym val indic)
-    `(defprop ,sym ,val ,indic)
-;    `(let ((existing-props (gethash ',sym *builtin-symbol-props*)))
-;     (setf (gethash ',sym *builtin-symbol-props*) (append (list ',indic ',val)
-;							 existing-props)))
-    )
-  
+    )  
 
   ;; A few variables whose value can be configured from wxMaxima
   (defvar *wx-plot-num* 0 "The serial number of the current plot")
