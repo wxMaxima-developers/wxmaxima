@@ -3304,6 +3304,9 @@ void wxMaxima::ReadPrompt(wxString &data)
     else
       m_worksheet->OpenQuestionCaret();
     StatusMaximaBusy(userinput);
+    // A lisp debug prompt puts us into lisp mode
+    if(label.StartsWith("(dbm:"))
+      m_worksheet->m_configuration->InLispMode(true);
   }
   label.Trim(false);
   if (label.StartsWith(wxT("MAXIMA>")))
