@@ -82,7 +82,7 @@
 		   newstring
 		   (wxxml-string-substitute newstring oldchar
 				      (subseq x (1+ matchpos))))))
-  
+ 
 
 
   ;; Escape all chars that need escaping in XML
@@ -291,25 +291,33 @@
 			(format nil "<mi>~a</mi>" sub) 
                       (format nil "<mi>~a</mi>" sub))))))))
 
+  (defun wxxmlescapenum (atom)
+    (wxxml-fix-string
+      (format nil "~{~c~}" atom)))
+
   (defun wxxmlnumformat (atom)
     (let (r firstpart exponent)
       (cond ((integerp atom)
-	     (format nil "<mn>~{~c~}</mn>" (exploden atom)))
+	     (format nil "<mn>~a</mn>" (wxxmlescapenum (exploden atom))))
 	    (t
 	     (setq r (exploden atom))
 	     (setq exponent (member 'e r :test #'string-equal))
 	     (cond ((null exponent)
-		    (format nil "<mn>~{~c~}</mn>" r))
+		    (format nil "<mn>~a</mn>" (wxxmlescapenum r)))
 		   (t
 		    (setq firstpart
 			  (nreverse (cdr (member 'e (reverse r)
 						 :test #'string-equal))))
-		    (if (char= (cadr exponent) #\+)
+		    (if (/= atom atom)
+			(format nil
+				"<mn>~a</mn>"
+			(wxxmlescapenum (exploden atom)))
+		    (progn (if (char= (cadr exponent) #\+)
 			(setq exponent (cddr exponent))
 		      (setq exponent (cdr exponent)))
 		    (format nil
-			    "<mrow><mn>~{~c~}</mn><h>*</h><msup><mn>10</mn><mn>~{~c~}</mn></msup></mrow>"
-			    firstpart exponent)))))))
+			    "<mrow><mn>~a</mn><h>*</h><msup><mn>10</mn><mn>~a</mn></msup></mrow>"
+			    (wxxmlescapenum firstpart) (wxxmlescapenum exponent))))))))))
 
   (defun wxxml-stripdollar (sym &aux pname)
     (or (symbolp sym)
