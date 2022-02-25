@@ -3136,7 +3136,7 @@ bool wxMaxima::QueryVariableValue()
   if(m_maximaBusy)
     return false;
 
-  if(m_worksheet->m_configuration->InLispMode)
+  if(m_worksheet->m_configuration->InLispMode())
     return false;
 
   if(m_worksheet->QuestionPending())
