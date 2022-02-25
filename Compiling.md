@@ -33,15 +33,15 @@ cmake invocation. E.g.
 Of course you can use the CMake GUI (`cmake-gui`) or curses based CMake
 (`ccmake`) for the configure step and change some CMake variables.
 
-If you want to create binary packages (tar.gz, tar.bz2, DEB & RPM, on MacOs
+If you want to create binary packages (tar.gz, tar.bz2, DEB & RPM, on macOS
 also .dmg), the following command will create them:
 
     cmake --build . -- package
 
 
-#### Mac Os: Creating a portable .apk and .dmg installer
+#### macOS: Creating a portable .apk and .dmg installer
 
-This requires wxWidgets to be installed, e.G. using macports
+This requires wxWidgets to be installed, e.G. using MacPorts
 
     mkdir ../build-wxm
     cmake -S . -B ../build-wxm -DCMAKE_INSTALL_PREFIX=.
@@ -64,14 +64,14 @@ install `cmake3` and `wxGTK3-devel` from the "Extra Packages for Enterprise Linu
 repository, to compile wxMaxima. (and use `cmake3` instead of `cmake` to call
 the newer version of CMake in the commands above).
 
-#### Mac OS X prerequisites
+#### macOS X prerequisites
 
-On Mac OS X you most probably need the command-line compiler one can tell
+On macOS X you most probably need the command-line compiler one can tell
 Xcode to install. Additionally wxWidgets needs to be installed, which can
-be done using homebrew, fink or macports and should be named wxWidgets or
+be done using Homebrew, Fink or MacPorts and should be named wxWidgets or
 wxMac there.
 
-Additional information about building on MacOS:
+Additional information about building on macOS:
 
 - https://themaximalist.org/about/my-mac-os-installation/
 
@@ -141,7 +141,7 @@ the `xvfb-run` wrapper should be used:
 
     xvfb-run ctest
 
-On Mac OS or Windows, X displays aren't used, and the test suite can be
+On macOS or Windows, X displays aren't used, and the test suite can be
 run directly:
 
     ctest

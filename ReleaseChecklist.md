@@ -1,7 +1,7 @@
 wxMaxima Release Checklist
 ==========================
 
-Github documentation about managing releases:
+GitHub documentation about managing releases:
 ---------------------------------------------
 
 https://docs.github.com/en/github/administering-a-repository/managing-releases-in-a-repository
@@ -9,7 +9,7 @@ https://docs.github.com/en/github/administering-a-repository/managing-releases-i
 wxMaxima (additional) steps:
 ----------------------------
 
-- Does the current git version compile? Do the checks on Github work?
+- Does the current git version compile? Do the checks on GitHub work?
 - Enter the new version number into CMakeLists.txt
 - Update the version numbers in the 'docker-wxmaxima' repository (update_versions.sh)
 - Update NEWS.md in order to announce the new version on https://freshcode.club/
@@ -24,10 +24,10 @@ wxMaxima (additional) steps:
 - Does test/testbench_simple.wxmx work?
 - Update the included HTML manuals.
 - Create an (annotated) git tag for the release
-- Push the tag to Github, using: git push origin --tags
-- Go to the releases page Github and convert the tag into a release.
+- Push the tag to GitHub, using: git push origin --tags
+- Go to the releases page GitHub and convert the tag into a release.
   If possible add an Windows installer too.
-  Be sure, to remove the 'draft' status. Log out from Github and check,
+  Be sure, to remove the 'draft' status. Log out from GitHub and check,
   if you see the release as an anonymous user too.
 - Update the release info in the files download.html and in version.txt
   in the gh_pages branch.
