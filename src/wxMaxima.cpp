@@ -3200,10 +3200,13 @@ void wxMaxima::ReadPrompt(wxString &data)
   // Depending on ibase the digits of the number might lie between 'A' and 'Z',
   // too. Input prompts also begin with a "(". Questions (hopefully)
   // don't do that; Lisp prompts look like question prompts.
+  //
+  // sbcl debug prompts have the format "(dbm:1)".
   if (
     (
       (label.Length() > 2) &&
       label.StartsWith("(%") &&
+      (!label.StartsWith("(dbm:")) &&
       label.EndsWith(")") &&
       (((label[label.Length()-2] >= (wxT('0'))) &&
         (label[label.Length()-2] <= (wxT('9')))) ||
