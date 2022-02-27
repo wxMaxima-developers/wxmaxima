@@ -264,10 +264,14 @@
 	   #-gcl (*readtable* (copy-readtable nil)))
       #-gcl (setf (readtable-case *readtable*) :invert)
       (when pos
-	(let* ((sub (subseq name (+ pos 1)))
+	(let* (
+	       ;; sub is the part of x after the "_"
+	       (sub (subseq name (+ pos 1)))
+	       ;; sub-var is the part of x in front of the "_"
 	       (sub-var (subseq name 0 pos))
 	       (sub-var-symb (read-from-string (concatenate 'string "$" sub-var)))
 	       (sub-symb (read-from-string (concatenate 'string "$" sub)))
+	       ;; sub-int is the part of x after the "_" converted to integer
 	       (sub-int (ignore-errors
 			  (parse-integer sub))))
 	  (when (and (> (length sub-var) 0)
@@ -284,12 +288,8 @@
 			 (member '$WXXML_SUBSCRIPTED (cadr (properties x))))))))
 	    (format nil  "<munder altCopy=\"~{~a~}\"><mrow>~a</mrow><mrow>~a</mrow></munder>"
 		    (mstring x)
-		    (or (get sub-var-symb 'wxxmlword)
-			(format nil "<mi>~a</mi>" sub-var))
-		    (if sub-int
-			;; sub-symb discarded leading zeros from subscripts
-			(format nil "<mi>~a</mi>" sub) 
-                      (format nil "<mi>~a</mi>" sub))))))))
+			(format nil "<mi>~a</mi>" sub-var)
+			(format nil "<mi>~a</mi>" sub)))))))
 
   (defun wxxmlescapenum (atom)
     (wxxml-fix-string
