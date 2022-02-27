@@ -3304,20 +3304,22 @@ void wxMaxima::ReadPrompt(wxString &data)
     else
       m_worksheet->OpenQuestionCaret();
     StatusMaximaBusy(userinput);
-    // A lisp debug prompt puts us into lisp mode
-    if(label.StartsWith("(dbm:"))
-      m_worksheet->m_configuration->InLispMode(true);
   }
   label.Trim(false);
-  if (label.StartsWith(wxT("MAXIMA>")))
+  if (label.StartsWith(wxT("MAXIMA>")) || label.StartsWith("(dbm:"))
   {
     if(!m_worksheet->m_configuration->InLispMode())
+    {
+      if(label.StartsWith("(dbm:"))
+        wxLogMessage(_("Switched to lisp mode after receiving a lisp debug prompt!"));
+      else
       wxLogMessage(_("Switched to lisp mode after receiving a lisp prompt!"));
+    }
     m_worksheet->m_configuration->InLispMode(true);
   }
   else
   {
-    if(  m_worksheet->m_configuration->InLispMode())
+    if(m_worksheet->m_configuration->InLispMode())
       wxLogMessage(_("Ended lisp mode after receiving a maxima prompt!"));
     m_worksheet->m_configuration->InLispMode(false);
   }
