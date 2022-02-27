@@ -287,9 +287,9 @@
 		       (ignore-errors (not
 			 (member '$WXXML_SUBSCRIPTED (cadr (properties x))))))))
 	    (format nil  "<munder altCopy=\"~{~a~}\"><mrow>~a</mrow><mrow>~a</mrow></munder>"
-		    (mstring x)
-			(format nil "<mi>~a</mi>" sub-var)
-			(format nil "<mi>~a</mi>" sub)))))))
+		    (wxxml-fix-string (format nil "~a" (mstring x)))
+			(wxxml-fix-string (format nil "<mi>~a</mi>" sub-var))
+			(wxxml-fix-string (format nil "<mi>~a</mi>" sub))))))))
 
   (defun wxxmlescapenum (atom)
     (wxxml-fix-string
