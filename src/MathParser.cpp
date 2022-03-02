@@ -1168,6 +1168,8 @@ std::unique_ptr<Cell> MathParser::ParseTag(wxXmlNode *node, bool all)
   CellListBuilder<> tree;
   bool gotInvalid = false;
 
+  Cell *last = NULL;
+
   node = SkipWhitespaceNode(node);
   for (; node; node = GetNextTag(node))
   {
@@ -1197,6 +1199,16 @@ std::unique_ptr<Cell> MathParser::ParseTag(wxXmlNode *node, bool all)
 
       if (tree.GetLastAppended())
         ParseCommonAttrs(node, tree.GetLastAppended());
+
+      // If our current cell begins with a minus and the last cell is a
+      // multiplication sign we must not hide that sign.
+      if((last) && (tree.GetLastAppended()))
+      {
+        wxString currentString = tree.GetLastAppended()->ToString();
+        if (currentString.StartsWith(wxT("-")) || currentString.StartsWith(wxT("\u2212")))
+          last->SetHidableMultSign(false);
+      }
+      last = tree.GetLastAppended();
     }
     else
     {
