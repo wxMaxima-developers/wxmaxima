@@ -20,6 +20,7 @@
  * Machine-Float NaNs no more causes XML errors
  * Labels with hexadecimal numbers no more cause crashes (#1633)
  * wxMaxima no more skips chars in subscripted variables (#1632)
+ * Merging cells per keyboard shortcut works again (#1626)
 
 # 21.11.0:
  * Allow seeing all files in the file save dialog. (#1557)
