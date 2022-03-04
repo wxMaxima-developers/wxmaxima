@@ -4228,7 +4228,10 @@ void Worksheet::OnChar(wxKeyEvent &event)
             (event.GetKeyCode() == wxT('4')) ||
             (event.GetKeyCode() == wxT('5')) ||
             (event.GetKeyCode() == wxT('+')) ||
-            (event.GetKeyCode() == wxT('-'))
+            (event.GetKeyCode() == wxT('-')) ||
+            (event.GetKeyCode() == wxT('m')) ||
+            (event.GetKeyCode() == wxT('\n')) ||
+            (event.GetKeyCode() == WXK_RETURN)
             )
     {
       event.Skip();
