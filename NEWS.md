@@ -16,6 +16,11 @@
    and is much faster than before.
  * A way of limiting the toc depth shown in the table of contents
  * Now the problems after a kill(all) should be finally resolved
+ * Better support for the debugger (#1625)
+ * Machine-Float NaNs no more causes XML errors
+ * Labels with hexadecimal numbers no more cause crashes (#1633)
+ * wxMaxima no more skips chars in subscripted variables (#1632)
+
 # 21.11.0:
  * Allow seeing all files in the file save dialog. (#1557)
  * Fix an error when using Alt up arrow (show previous command) (#1566)
