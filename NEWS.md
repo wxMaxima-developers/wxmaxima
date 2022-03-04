@@ -10,7 +10,7 @@
  * An updated french translation from Frédéric Chapoton
  * Consistent image resolutions
  * No more crashes on exporting multiple animations at once (#1616)
- * Resolved a crash on exporting sheets with multiple animations
+ * Drag-and-Drop in the table of contents
  * Parenthesis and quote matching now uses the maxima parser.
    This means it now both knows the details of the maxima language
    and is much faster than before.
