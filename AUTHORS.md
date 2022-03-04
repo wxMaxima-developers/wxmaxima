@@ -54,6 +54,7 @@
 - Murmele <mailto:Murmele@users.noreply.github.com>
 - Nicola Stanislao Vitale
 - Olesya Gerasimenko
+- Richard Fateman
 - Robert Dodier
 - Robert Pollak
 - rtopolnicki <mailto:rtopolnicki@users.sourceforge.net>
