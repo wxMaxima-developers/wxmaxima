@@ -950,6 +950,8 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
           wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
   Connect(TableOfContents::popid_tocLevel6, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
+  Connect(TableOfContents::popid_tocdnd, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
   Connect(Worksheet::popid_fold, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
   Connect(Worksheet::popid_unfold, wxEVT_MENU,
@@ -4464,7 +4466,7 @@ void wxMaxima::OnIdle(wxIdleEvent &event)
         else
           cursorPos = m_worksheet->FirstVisibleGC();
       }
-      m_worksheet->m_tableOfContents->UpdateTableOfContents(m_worksheet->GetTree(), cursorPos);
+      m_worksheet->m_tableOfContents->UpdateTableOfContents(cursorPos);
     }
     m_worksheet->m_scheduleUpdateToc = false;
 
@@ -4972,7 +4974,7 @@ bool wxMaxima::OpenFile(const wxString &file, const wxString &command)
   if (m_worksheet->m_tableOfContents != NULL)
   {
     m_worksheet->m_scheduleUpdateToc = false;
-    m_worksheet->m_tableOfContents->UpdateTableOfContents(m_worksheet->GetTree(), m_worksheet->GetHCaret());
+    m_worksheet->m_tableOfContents->UpdateTableOfContents(m_worksheet->GetHCaret());
   }
 
   if(!retval)
@@ -9011,6 +9013,40 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
   {
     m_worksheet->m_configuration->TocDepth(255);
     m_worksheet->UpdateTableOfContents();
+    break;
+  }
+  case TableOfContents::popid_tocdnd:
+  {
+    GroupCell *droppedRegionStart =  m_worksheet->m_tableOfContents->DNDStart();
+    GroupCell *droppedRegionend = droppedRegionStart;
+    if(droppedRegionend->GetNext())
+      droppedRegionend = droppedRegionend->GetNext();
+    while((droppedRegionend != NULL) &&
+          (
+            (droppedRegionend->GetNext() == NULL) ||
+            (droppedRegionend->GetNext()->IsLesserGCType(droppedRegionStart->GetGroupType()))))
+      droppedRegionend = droppedRegionend->GetNext();
+    
+    auto droppedRegion = CellList::TearOut(droppedRegionStart, droppedRegionend);
+      auto cells = static_unique_ptr_cast<GroupCell>(std::move(droppedRegion.cellOwner));
+    if(m_worksheet->m_tableOfContents->DNDEnd() != NULL)
+    {
+      wxLogMessage(
+        wxString::Format(
+          _("Drag and drop: Dropping cells begining with %s after the cell reading %s."),
+          m_worksheet->m_tableOfContents->DNDStart()->ToString().c_str(),
+          m_worksheet->m_tableOfContents->DNDEnd()->ToString().c_str()
+          ));
+      CellList::SpliceInAfter(m_worksheet->m_tableOfContents->DNDEnd(), std::move(cells));
+    }
+    else
+    {
+      wxLogMessage("Drag and drop: Dropping cells at the beginning of the worksheet.");
+      m_worksheet->InsertGroupCells(std::move(cells));
+    }
+    break;
+    m_worksheet->RecalculateForce();
+    m_worksheet->RequestRedraw();
     break;
   }
   case Worksheet::popid_evaluate_section:

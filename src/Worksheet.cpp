@@ -727,7 +727,7 @@ GroupCell *Worksheet::InsertGroupCells(std::unique_ptr<GroupCell> &&cells, Group
 
   m_configuration->AdjustWorksheetSize(true);
   bool renumbersections = false; // only renumber when true
-
+  
   // TODO What we have here is an iteration through all the cells to see if they
   // fulfill some criterion, and additionally we find the last() cell.
   // When cell list management is refactored, the foldable status should be kept

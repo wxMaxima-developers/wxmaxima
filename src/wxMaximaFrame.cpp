@@ -172,7 +172,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   wxWindowUpdateLocker worksheetBlocker(m_worksheet);
 
   // The table of contents
-  m_worksheet->m_tableOfContents = new TableOfContents(this, -1, &m_worksheet->m_configuration);
+  m_worksheet->m_tableOfContents = new TableOfContents(this, -1, &m_worksheet->m_configuration, m_worksheet->GetTreeAddress());
 
   m_xmlInspector = new XmlInspector(this, -1);
   wxWindowUpdateLocker xmlInspectorBlocker(m_xmlInspector);
@@ -1700,7 +1700,7 @@ void wxMaximaFrame::ShowPane(Event id, bool show)
       break;
     case menu_pane_structure:
       m_manager.GetPane(wxT("structure")).Show(show);
-      m_worksheet->m_tableOfContents->UpdateTableOfContents(m_worksheet->GetTree(), m_worksheet->GetHCaret());
+      m_worksheet->m_tableOfContents->UpdateTableOfContents(m_worksheet->GetHCaret());
       break;
     case menu_pane_xmlInspector:
       m_manager.GetPane(wxT("XmlInspector")).Show(show);

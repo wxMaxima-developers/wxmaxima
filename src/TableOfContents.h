@@ -29,7 +29,9 @@
 #include "Configuration.h"
 #include "RegexCtrl.h"
 #include <wx/wx.h>
+#include <wx/timer.h>
 #include <wx/listctrl.h>
+#include <wx/dragimag.h>
 #include <vector>
 #include "GroupCell.h"
 
@@ -61,9 +63,10 @@ public:
     popid_tocLevel4,
     popid_tocLevel5,
     popid_tocLevel6,
+    popid_tocdnd
   };
 
-  TableOfContents(wxWindow *parent, int id, Configuration **config);
+  TableOfContents(wxWindow *parent, int id, Configuration **config, std::unique_ptr<GroupCell> *tree);
 
   /* The destructor
    */
@@ -81,20 +84,44 @@ public:
       - we call it only on creation of a cell and on leaving it again
       - and we only traverse the tree if the pane is actually shown.
    */
-  void UpdateTableOfContents(GroupCell *tree, GroupCell *pos);
+  void UpdateTableOfContents(GroupCell *pos);
 
   //! Get the nth Cell in the table of contents.
-  GroupCell *GetCell(int index);
+  GroupCell *GetCell(long index);
 
   //! Returns the cell that was last right-clicked on.
   GroupCell *RightClickedOn()
   { return m_cellRightClickedOn; }
 
+  GroupCell *DNDStart() {return m_dndStartCell;}
+  GroupCell *DNDEnd() {return m_dndEndCell;}
 protected:
   void OnSize(wxSizeEvent &event);
+  void OnDragStart(wxListEvent &evt);
+  void OnMouseUp(wxMouseEvent &evt);
+  void OnMouseCaptureLost(wxMouseCaptureLostEvent &event);
+  void OnMouseMotion(wxMouseEvent &event);
+  void OnTimer(wxTimerEvent &event);
 
+  wxString TocEntryString(GroupCell *cell);
 private:
+  void UpdateStruct();
+  std::unique_ptr<GroupCell> *m_tree;
+  GroupCell *m_dndStartCell;
+  GroupCell *m_dndEndCell;
+  wxTimer m_scrollUpTimer;
+  wxTimer m_scrollDownTimer;
+  wxDragImage *m_dragImage = NULL;
+  std::vector<GroupCell *> m_displayedGroupCells;
+  //! How many toc items did the user drag at the same time?
+  int m_numberOfCaptionsDragged;
   GroupCell *m_cellRightClickedOn;
+  //! The item that was dragged away at the start of the current drag-and-drop
+  int m_dragStart = -1;
+  int m_dragStop = -1;
+  long m_dragCurrentPos = -1;
+  //! The position the dragged item was when we last displayed the reordered toc
+  int m_dragFeedback_Last = -1;
   //! The last selected item
   long m_lastSelection;
   

@@ -1857,7 +1857,7 @@ GroupCell *GroupCell::Fold()
     return NULL;
   if (GetNext() == NULL)
     return NULL;
-  int nextgct = GetNext()->GetGroupType(); // groupType of the next cell
+  GroupType nextgct = GetNext()->GetGroupType(); // groupType of the next cell
   if ((m_groupType == nextgct) || IsLesserGCType(nextgct))
     return NULL; // if the next gc shouldn't be folded, exit
 
@@ -1933,7 +1933,7 @@ GroupCell *GroupCell::UnfoldAll()
   return result;
 }
 
-bool GroupCell::IsLesserGCType(int comparedTo) const
+bool GroupCell::IsLesserGCType(GroupType comparedTo) const
 {
   switch (m_groupType)
   {

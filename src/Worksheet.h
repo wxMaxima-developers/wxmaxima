@@ -1161,6 +1161,7 @@ public:
   wxString GetString(bool lb = false);
 
   GroupCell *GetTree() const { return m_tree.get(); }
+  std::unique_ptr<GroupCell> *GetTreeAddress() { return &m_tree; }
 
   /*! Return the first of the currently selected cells.
 

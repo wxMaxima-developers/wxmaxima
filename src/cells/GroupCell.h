@@ -307,7 +307,7 @@ public:
     For example ordinary text cells can be part of a chapter and sections can be
     part of a chapter, too.
    */
-  bool IsLesserGCType(int comparedTo) const;
+  bool IsLesserGCType(GroupType comparedTo) const;
 
   //! @}
   bool IsMainInput(Cell *active) const;

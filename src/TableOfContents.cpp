@@ -29,8 +29,13 @@
 #include "TableOfContents.h"
 
 #include <wx/sizer.h>
+#include <list>
 
-TableOfContents::TableOfContents(wxWindow *parent, int id, Configuration **config) : wxPanel(parent, id)
+TableOfContents::TableOfContents(wxWindow *parent, int id, Configuration **config, std::unique_ptr<GroupCell> *tree) :
+  wxPanel(parent, id),
+  m_tree(tree),
+  m_scrollUpTimer(this, wxUP),
+  m_scrollDownTimer(this, wxDOWN)
 {
   m_configuration = config;
   m_displayedItems = new wxListCtrl(
@@ -53,6 +58,163 @@ TableOfContents::TableOfContents(wxWindow *parent, int id, Configuration **confi
   m_regex->Connect(REGEX_EVENT, wxCommandEventHandler(TableOfContents::OnRegExEvent), NULL, this);
   Connect(wxEVT_SIZE, wxSizeEventHandler(TableOfContents::OnSize));
   Connect(wxEVT_LIST_ITEM_RIGHT_CLICK, wxListEventHandler(TableOfContents::OnMouseRightDown));
+  m_displayedItems->Connect(wxEVT_LIST_BEGIN_DRAG, wxListEventHandler(TableOfContents::OnDragStart), NULL, this);
+  m_displayedItems->Connect(wxEVT_LEFT_UP, wxMouseEventHandler(TableOfContents::OnMouseUp), NULL, this);
+  m_displayedItems->Connect(wxEVT_MOTION, wxMouseEventHandler(TableOfContents::OnMouseMotion), NULL, this);
+  m_displayedItems->Connect(wxEVT_MOUSE_CAPTURE_LOST, wxMouseCaptureLostEventHandler(TableOfContents::OnMouseCaptureLost), NULL, this);
+  Connect(wxEVT_TIMER, wxTimerEventHandler(TableOfContents::OnTimer));
+}
+
+void TableOfContents::OnTimer(wxTimerEvent &event)
+{
+  switch (event.GetId())
+  {
+  case wxUP:
+  {
+    if(m_displayedItems->GetItemCount() < 1)
+      return;
+    long item = m_displayedItems->GetTopItem() - 1;
+    if(item < 0)
+    {
+      item = 0;
+    }
+    m_displayedItems->EnsureVisible(item);
+    break;
+  }
+  case wxDOWN:
+  {
+    if(m_displayedItems->GetItemCount() < 1)
+      return;
+    long item = m_displayedItems->GetTopItem() + m_displayedItems->GetCountPerPage();
+    if(item >= m_displayedItems->GetItemCount())
+    {
+      item = m_displayedItems->GetItemCount() - 1;
+    }
+    m_displayedItems->EnsureVisible(item);
+    break;
+  }
+  default:
+  {
+  }
+  }
+}
+
+void TableOfContents::OnMouseMotion(wxMouseEvent &event)
+{
+  if(m_dragImage != NULL)
+  {
+    int flags;
+    m_dragCurrentPos = m_displayedItems->HitTest(event.GetPosition(), flags, NULL);
+    if(m_dragCurrentPos >= m_displayedItems->GetItemCount() - m_numberOfCaptionsDragged)
+      m_dragCurrentPos = m_numberOfCaptionsDragged - 1;
+    if(m_dragFeedback_Last != m_dragCurrentPos)
+    {
+      m_dragImage->Hide();
+      UpdateDisplay();
+    }
+    m_dragImage->Move(wxPoint(event.GetX(),event.GetY()));
+    if(m_dragFeedback_Last != m_dragCurrentPos)
+    {
+      m_dragImage->Show();
+      m_dragFeedback_Last = m_dragCurrentPos;
+    }
+    if(event.GetY() < 0)
+    {
+      if(!m_scrollUpTimer.IsRunning())
+      {
+        m_scrollUpTimer.Start(50);
+      }
+    }
+    else
+      m_scrollUpTimer.Stop();
+    if(event.GetY() > m_displayedItems->GetRect().GetHeight())
+    {
+      if(!m_scrollDownTimer.IsRunning())
+      {
+        m_scrollDownTimer.Start(50);
+      }
+    }
+    else
+      m_scrollDownTimer.Stop();
+  }
+  event.Skip();
+}
+
+void TableOfContents::OnMouseCaptureLost(wxMouseCaptureLostEvent &event)
+{
+  m_dragStart = -1;
+  m_scrollUpTimer.Stop();
+  m_scrollDownTimer.Stop();
+  UpdateDisplay();
+  event.Skip();
+}
+
+void TableOfContents::OnDragStart(wxListEvent &evt)
+{
+//  UpdateStruct();
+  m_dragStart = evt.GetIndex();
+  m_dragFeedback_Last = m_dragStart;
+  if(m_dragStart >= 0)
+  {
+    // Tell the OS that until the drop event this control wants to receive all mouse events
+    if (!m_displayedItems->HasCapture())
+    {
+      wxString dragImageLabel = m_displayedItems->GetItemText(evt.GetIndex());
+      if(dragImageLabel.Length() > 15)
+        dragImageLabel = dragImageLabel.Left(12)+wxT("...");
+      m_dragImage = new wxDragImage(dragImageLabel);
+      m_dragImage->BeginDrag (
+        wxPoint(-20 * GetContentScaleFactor(),-20 * GetContentScaleFactor()),
+        m_displayedItems);
+    }
+    m_dragImage->Show();
+
+    // For the visual feedback: How many toc items does the user drag?
+    m_numberOfCaptionsDragged = 1;
+    GroupCell *tmp = m_displayedGroupCells[evt.GetIndex()];    
+    long index = evt.GetIndex() + 1;
+    tmp = tmp->GetNext();
+    while((tmp!= NULL) && (index <= m_displayedItems->GetItemCount()))
+    {
+      if(!tmp->IsLesserGCType(m_displayedGroupCells[evt.GetIndex()]->GetGroupType()))
+        break;
+      if(m_displayedGroupCells[index] == tmp)
+      {
+        index++;
+        m_numberOfCaptionsDragged++;
+      }
+      tmp = tmp->GetNext();
+    }
+  }
+}
+
+void TableOfContents::OnMouseUp(wxMouseEvent &evt)
+{
+  m_scrollUpTimer.Stop();
+  m_scrollDownTimer.Stop();
+  if(m_dragImage != NULL)
+  {
+    m_dragImage->Hide();
+    m_dragImage->EndDrag();
+    delete m_dragImage;
+    m_dragImage = NULL;
+  }
+  int flags;
+  m_dragStop = m_displayedItems->HitTest(evt.GetPosition(), flags, NULL);
+  if(m_dragStop >= m_displayedItems->GetItemCount() - m_numberOfCaptionsDragged)
+    m_dragStop = m_numberOfCaptionsDragged - 1;
+  if((m_dragStart >= 0) && (m_dragStop >= 0) && (m_dragStart != m_dragStop))
+  {
+    wxWindow *mainWin = this;
+    while(mainWin->GetParent() != NULL)
+      mainWin = mainWin->GetParent();
+    wxCommandEvent *tocEv = new wxCommandEvent;
+    tocEv->SetEventType(wxEVT_MENU);
+    tocEv->SetId(popid_tocdnd);
+    mainWin->GetEventHandler()->QueueEvent(tocEv);
+  }
+  UpdateDisplay();
+  evt.Skip();
 }
 
 void TableOfContents::OnSize(wxSizeEvent &event)
@@ -63,41 +225,52 @@ void TableOfContents::OnSize(wxSizeEvent &event)
 
 TableOfContents::~TableOfContents()
 {
+  if(m_dragImage != NULL)
+  {
+    m_dragImage->EndDrag();
+    m_dragImage = NULL;
+  }
 }
 
-void TableOfContents::UpdateTableOfContents(GroupCell *tree, GroupCell *pos)
+void TableOfContents::UpdateStruct()
+{
+  m_structure.clear();
+
+  // Get the current list of tokens that should be in the Table Of Contents.
+  for (auto &cell : OnList(m_tree->get()))
+  {
+    int groupType = cell.GetGroupType();
+    if (
+      (groupType == GC_TYPE_TITLE) ||
+      (groupType == GC_TYPE_SECTION) ||
+      (groupType == GC_TYPE_SUBSECTION) ||
+      (groupType == GC_TYPE_SUBSUBSECTION) ||
+      (groupType == GC_TYPE_HEADING5) ||
+      (groupType == GC_TYPE_HEADING6)
+      )
+      m_structure.push_back(&cell);
+
+  }
+}
+
+void TableOfContents::UpdateTableOfContents(GroupCell *pos)
 {
   long selection = m_lastSelection;
   if (IsShown())
   {
-    m_structure.clear();
-
-    // Get the current list of tokens that should be in the Table Of Contents.
-    for (auto &cell : OnList(tree))
+    long item = m_displayedItems->GetNextItem(-1,
+                                              wxLIST_NEXT_ALL,
+                                              wxLIST_STATE_SELECTED);
+    UpdateStruct();
+    // Select the cell with the cursor
+    for (auto &cell : OnList(m_tree->get()))
     {
-      int groupType = cell.GetGroupType();
-      if (
-              (groupType == GC_TYPE_TITLE) ||
-              (groupType == GC_TYPE_SECTION) ||
-              (groupType == GC_TYPE_SUBSECTION) ||
-              (groupType == GC_TYPE_SUBSUBSECTION) ||
-              (groupType == GC_TYPE_HEADING5) ||
-              (groupType == GC_TYPE_HEADING6)
-              )
-        m_structure.push_back(&cell);
-
-      // Select the cell with the cursor
       if (&cell == pos)
       {
         if (!m_structure.empty())
           selection = m_structure.size() - 1;
       }
-    }
-
-    long item = m_displayedItems->GetNextItem(-1,
-                                              wxLIST_NEXT_ALL,
-                                              wxLIST_STATE_SELECTED);
-
+    }      
     if ((selection >= 0) && (item != selection))
     {
       if ((long) m_displayedItems->GetItemCount() < selection)
@@ -117,7 +290,7 @@ void TableOfContents::UpdateTableOfContents(GroupCell *tree, GroupCell *pos)
 
 void TableOfContents::UpdateDisplay()
 {
-  wxArrayString items;
+  m_displayedGroupCells.clear();
 
   // Create a wxArrayString containing all section/chapter/... titles we want
   // to display
@@ -126,7 +299,6 @@ void TableOfContents::UpdateDisplay()
     // Indentation further reduces the screen real-estate. So it is to be used
     // sparingly. But we should perhaps add at least a little bit of it to make
     // the list more readable.
-    wxString curr;
     int tocDepth = 0;
     switch (m_structure[i]->GetGroupType())
     {
@@ -156,122 +328,155 @@ void TableOfContents::UpdateDisplay()
     if((*m_configuration)->TocDepth() <= tocDepth)
       continue;
     
-    if ((*m_configuration)->TocShowsSectionNumbers())
+    wxString curr = TocEntryString(m_structure[i]);
+    
+    if (m_regex->Matches(curr))
     {
-      if(m_structure[i]->GetPrompt() != NULL)
-        curr = m_structure[i]->GetPrompt() -> ToString() + wxT(" ");
-      curr.Trim(false);
+      m_displayedGroupCells.push_back(m_structure[i]);
     }
-    else
-      switch (m_structure[i]->GetGroupType())
+  }
+
+  std::vector<GroupCell *> displayedCells_dndOrder;
+
+  if((m_dragStart >= 0) && (m_dragCurrentPos >= 0) && (m_dragStart != m_dragCurrentPos))
+  {
+    m_dndStartCell = m_displayedGroupCells[m_dragStart];
+    
+    std::list<GroupCell *> m_draggedCells;
+    std::list<GroupCell *> m_otherCells;
+    for (unsigned long i = 0; i < m_structure.size(); i++)
+    {
+      if((i >= m_dragStart) && (i < m_dragStart + m_numberOfCaptionsDragged))
+        m_draggedCells.push_back(m_displayedGroupCells[i]);
+      else
+        m_otherCells.push_back(m_displayedGroupCells[i]);
+    }
+    
+    m_dndEndCell = NULL;
+
+    for (unsigned long index = 0; index < m_structure.size(); index++)
+    {
+      if(index >= m_dragCurrentPos)
       {
-      case GC_TYPE_TITLE:
-        break;
-      case GC_TYPE_SECTION:
-        curr = wxT("  ");
-        break;
-      case GC_TYPE_SUBSECTION:
-        curr = wxT("    ");
-        break;
-      case GC_TYPE_SUBSUBSECTION:
-        curr = wxT("      ");
-        break;
-      case GC_TYPE_HEADING5:
-        curr = wxT("        ");
-        break;
-      case GC_TYPE_HEADING6:
-        curr = wxT("          ");
-        break;
-      default:
+        m_dndEndCell = m_tree->get();
+        if(m_otherCells.empty())
+        {
+          while(m_dndEndCell->GetNext() != NULL)
+            m_dndEndCell = m_dndEndCell->GetNext();          
+        }
+        else
+        {
+          while((m_dndEndCell->GetNext() != NULL) && (m_dndEndCell->GetNext() != m_otherCells.front()))
+            m_dndEndCell = m_dndEndCell->GetNext();
+          if(m_dndEndCell->GetNext() != m_otherCells.front())
+            m_dndEndCell = NULL;
+        }
+
+        while(!m_draggedCells.empty())
+        {
+          displayedCells_dndOrder.push_back(m_draggedCells.front());
+          m_draggedCells.pop_front();
+        }
         break;
       }
-    
-    curr += m_structure[i]->GetEditable()->ToString(true);
+      else
+      {
+        if(!m_otherCells.empty())
+        {
+          displayedCells_dndOrder.push_back(m_otherCells.front());
+          m_otherCells.pop_front();
+        }
+      }
+    }
 
-    // Respecting linebreaks doesn't make much sense here.
-    curr.Replace(wxT("\n"), wxT(" "));
-
-    if (m_regex->Matches(curr))
-      items.Add(curr);
+    while(!m_otherCells.empty())
+    {
+      displayedCells_dndOrder.push_back(m_otherCells.front());
+      m_otherCells.pop_front();
+    }
   }
-  
+  else
+    displayedCells_dndOrder = m_displayedGroupCells;
+
+  wxArrayString items;
+  for(auto i : displayedCells_dndOrder)
+    items.Add(TocEntryString(&(*i)));
   // Work around a wxWidgets bug: items==m_items_old if items is empty and m_items_old isn't.
   if ((items != m_items_old) || (items.GetCount() == 0))
   {
+    // Delete superfluous items
+    for (unsigned int i = m_displayedItems->GetItemCount();
+         i > displayedCells_dndOrder.size() ; i--)
+      m_displayedItems->DeleteItem(i - 1);
+
     // Update the name of all existing items and add new items, if necessary.
     // We don't just empty the item list and create a new one since on Windows this
     // causes excessive flickering.
     for (signed int i = 0; i < (signed)items.GetCount(); i++)
     {
       if ((i < m_displayedItems->GetItemCount()) && (m_displayedItems->GetItemCount() > 0))
-        m_displayedItems->SetItemText(i, items[i]);
+        m_displayedItems->SetItemText(i, TocEntryString(displayedCells_dndOrder[i]));
       else
-        m_displayedItems->InsertItem(i, items[i]);
+        m_displayedItems->InsertItem(i, TocEntryString(displayedCells_dndOrder[i]));
       
-      if (m_structure[i]->GetHiddenTree())
+      if (displayedCells_dndOrder[i]->GetHiddenTree())
         m_displayedItems->SetItemTextColour(i, wxSystemSettings::GetColour(wxSYS_COLOUR_GRAYTEXT));
       else
         m_displayedItems->SetItemTextColour(i, wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOWTEXT));
     }
-    // Delete superfluous items
-    for (unsigned int i = m_displayedItems->GetItemCount(); i > items.GetCount() ; i--)
-      m_displayedItems->DeleteItem(i - 1);
     m_items_old = items;
   }
 }
 
-GroupCell *TableOfContents::GetCell(int index)
+GroupCell *TableOfContents::GetCell(long index)
 {
-  int currentIndex = -1;
+  if((unsigned long) index > m_structure.size())
+    return NULL;
+  if(index < 0)
+    return NULL;
 
-  for (unsigned int i = 0; i < m_structure.size(); i++)
+  return m_displayedGroupCells[index]; 
+}
+
+wxString TableOfContents::TocEntryString(GroupCell *cell)
+{
+  wxString curr;
+  if(cell->GetEditable())
+    curr = cell->GetEditable()->ToString();
+  
+  if ((*m_configuration)->TocShowsSectionNumbers())
   {
-    wxString curr;
-    
-    if ((*m_configuration)->TocShowsSectionNumbers())
-    {
-      if(m_structure[i]->GetPrompt() != NULL)
-        curr = m_structure[i]->GetPrompt()->ToString() + wxT(" ");
-      curr.Trim(false);
-    }
-    else
-      switch (m_structure[i]->GetGroupType())
-      {
-      case GC_TYPE_TITLE:
-        break;
-      case GC_TYPE_SECTION:
-        curr = wxT("  ");
-        break;
-      case GC_TYPE_SUBSECTION:
-        curr = wxT("    ");
-        break;
-      case GC_TYPE_SUBSUBSECTION:
-        curr = wxT("      ");
-        break;
-      case GC_TYPE_HEADING5:
-        curr = wxT("        ");
-        break;
-      case GC_TYPE_HEADING6:
-        curr = wxT("          ");
-        break;
-      default:
-      {}
-    }
-    
-    curr += m_structure[i]->GetEditable()->ToString(true);
-
-    // Respecting linebreaks doesn't make much sense here.
-    curr.Replace(wxT("\n"), wxT(" "));
-
-    if (m_regex->Matches(curr))
-      currentIndex++;
-    
-    if (currentIndex == index)
-    {
-      return m_structure[i];
-    }
+    if(cell->GetPrompt() != NULL)
+      curr = cell->GetPrompt()->ToString() + wxT(" ") + curr;
+    curr.Trim(false);
   }
-  return NULL;
+  else
+    switch (cell->GetGroupType())
+    {
+    case GC_TYPE_TITLE:
+      break;
+    case GC_TYPE_SECTION:
+      curr = wxT("  ") + curr;
+      break;
+    case GC_TYPE_SUBSECTION:
+      curr = wxT("    ") + curr;
+      break;
+    case GC_TYPE_SUBSUBSECTION:
+      curr = wxT("      ") + curr;
+      break;
+    case GC_TYPE_HEADING5:
+      curr = wxT("        ") + curr;
+      break;
+    case GC_TYPE_HEADING6:
+      curr = wxT("          ") + curr;
+      break;
+    default:
+    {}
+    }
+
+  // Respecting linebreaks doesn't make much sense here.
+  curr.Replace(wxT("\n"), wxT(" "));
+  return curr;
 }
 
 void TableOfContents::OnRegExEvent(wxCommandEvent& WXUNUSED(ev))
