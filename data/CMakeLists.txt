@@ -3,7 +3,6 @@
 
 include("${CMAKE_SOURCE_DIR}/cmake-bin2h/bin2h.cmake")
 
-
 set(HEADER_FILE "${CMAKE_BINARY_DIR}/wxm_license.h")
 message(STATUS "Embedding COPYING into header file ${HEADER_FILE}")
 file(WRITE "${HEADER_FILE}"
@@ -15,20 +14,6 @@ file(WRITE "${HEADER_FILE}"
 get_filename_component(variableName ${HEADER_FILE} NAME)
 bin2h(SOURCE_FILE "${CMAKE_SOURCE_DIR}/COPYING" HEADER_FILE ${HEADER_FILE} VARIABLE_NAME "wxm_license" APPEND NULL_TERMINATE)
 file(APPEND "${HEADER_FILE}" "#endif // WXM_LICENSE_H\n")
-
-
-set(HEADER_FILE "${CMAKE_BINARY_DIR}/wxMathML_lisp.h")
-message(STATUS "Embedding wxMathML.lisp into header file ${HEADER_FILE}")
-file(WRITE "${HEADER_FILE}"
-    "/** \\file wxMathML_lisp.h\n"
-    " * This header file was generated from wxMathML.lisp.\n"
-    " */\n"
-    "#ifndef WXM_WXMATHML_LISP_H\n"
-    "#define WXM_WXMATHML_LISP_H\n")
-get_filename_component(variableName ${HEADER_FILE} NAME)
-bin2h(SOURCE_FILE "${CMAKE_CURRENT_SOURCE_DIR}/wxMathML.lisp" HEADER_FILE ${HEADER_FILE} VARIABLE_NAME "wxMathML_lisp" APPEND NULL_TERMINATE)
-file(APPEND "${HEADER_FILE}" "#endif // WXM_WXMATHML_LISP_H\n")
-
 
 set(HEADER_FILE "${CMAKE_BINARY_DIR}/wxm_manual_anchors_xml.h")
 message(STATUS "Embedding manual_anchors.xml into header file ${HEADER_FILE}")
