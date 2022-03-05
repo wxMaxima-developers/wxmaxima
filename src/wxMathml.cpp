@@ -1,5 +1,4 @@
 #include "wxMathml.h"
-#include "wxMathML_lisp.h"
 #include <iostream>
 #include <wx/wx.h>
 #include <wx/mstream.h>

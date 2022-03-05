@@ -146,7 +146,7 @@ add_test(
 add_test(
     NAME atCells_cmdline_wxmathml
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ${MAXIMA} --batch atCells.wxm -p ${CMAKE_SOURCE_DIR}/data/wxMathML.lisp)
+    COMMAND ${MAXIMA} --batch atCells.wxm -p ${CMAKE_SOURCE_DIR}/src/wxMathML.lisp)
 
 add_test(
     NAME atCells
@@ -161,7 +161,7 @@ add_test(
 add_test(
     NAME conjugateCells_cmdline_wxmathml
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ${MAXIMA} --batch conjugateCells.wxm -p ${CMAKE_SOURCE_DIR}/data/wxMathML.lisp)
+    COMMAND ${MAXIMA} --batch conjugateCells.wxm -p ${CMAKE_SOURCE_DIR}/src/wxMathML.lisp)
 
 add_test(
     NAME conjugateCells
@@ -176,7 +176,7 @@ add_test(
 add_test(
     NAME exptCells_cmdline_wxmathml
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ${MAXIMA} --batch exptCells.wxm -p ${CMAKE_SOURCE_DIR}/data/wxMathML.lisp)
+    COMMAND ${MAXIMA} --batch exptCells.wxm -p ${CMAKE_SOURCE_DIR}/src/wxMathML.lisp)
 
 add_test(
     NAME exptCells
@@ -191,7 +191,7 @@ add_test(
 add_test(
     NAME fracCells_cmdline_wxmathml
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ${MAXIMA} --batch fracCells.wxm -p ${CMAKE_SOURCE_DIR}/data/wxMathML.lisp)
+    COMMAND ${MAXIMA} --batch fracCells.wxm -p ${CMAKE_SOURCE_DIR}/src/wxMathML.lisp)
 
 add_test(
     NAME fracCells_cmdline_wxmathml_over_network
@@ -213,7 +213,7 @@ add_test(
 add_test(
     NAME intCells_cmdline_wxmathml
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ${MAXIMA} --batch intCells.wxm -p ${CMAKE_SOURCE_DIR}/data/wxMathML.lisp)
+    COMMAND ${MAXIMA} --batch intCells.wxm -p ${CMAKE_SOURCE_DIR}/src/wxMathML.lisp)
 
 add_test(
     NAME intCells
@@ -228,7 +228,7 @@ add_test(
 add_test(
     NAME intervals_cmdline_wxmathml
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ${MAXIMA} --batch intervals.wxm -p ${CMAKE_SOURCE_DIR}/data/wxMathML.lisp)
+    COMMAND ${MAXIMA} --batch intervals.wxm -p ${CMAKE_SOURCE_DIR}/src/wxMathML.lisp)
 
 add_test(
     NAME intervals
@@ -243,7 +243,7 @@ add_test(
 add_test(
     NAME functionCells_cmdline_wxmathml
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ${MAXIMA} --batch functionCells.wxm -p ${CMAKE_SOURCE_DIR}/data/wxMathML.lisp)
+    COMMAND ${MAXIMA} --batch functionCells.wxm -p ${CMAKE_SOURCE_DIR}/src/wxMathML.lisp)
 
 add_test(
     NAME functionCells
@@ -271,7 +271,7 @@ add_test(
 add_test(
     NAME limitCells_cmdline_wxmathml
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ${MAXIMA} --batch limitCells.wxm -p ${CMAKE_SOURCE_DIR}/data/wxMathML.lisp)
+    COMMAND ${MAXIMA} --batch limitCells.wxm -p ${CMAKE_SOURCE_DIR}/src/wxMathML.lisp)
 
 add_test(
     NAME limitCells
@@ -286,7 +286,7 @@ add_test(
 add_test(
     NAME matrixCells_cmdline_wxmathml
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ${MAXIMA} --batch matrixCells.wxm -p ${CMAKE_SOURCE_DIR}/data/wxMathML.lisp)
+    COMMAND ${MAXIMA} --batch matrixCells.wxm -p ${CMAKE_SOURCE_DIR}/src/wxMathML.lisp)
 
 add_test(
     NAME matrixCells
@@ -301,7 +301,7 @@ add_test(
 add_test(
     NAME parenthesisCells_cmdline_wxmathml
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ${MAXIMA} --batch parenthesisCells.wxm -p ${CMAKE_SOURCE_DIR}/data/wxMathML.lisp)
+    COMMAND ${MAXIMA} --batch parenthesisCells.wxm -p ${CMAKE_SOURCE_DIR}/src/wxMathML.lisp)
 
 add_test(
     NAME parenthesisCells
@@ -316,7 +316,7 @@ add_test(
 add_test(
     NAME listCells_cmdline_wxmathml
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ${MAXIMA} --batch listCells.wxm -p ${CMAKE_SOURCE_DIR}/data/wxMathML.lisp)
+    COMMAND ${MAXIMA} --batch listCells.wxm -p ${CMAKE_SOURCE_DIR}/src/wxMathML.lisp)
 
 add_test(
     NAME listCells
@@ -331,7 +331,7 @@ add_test(
 add_test(
     NAME setCells_cmdline_wxmathml
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ${MAXIMA} --batch setCells.wxm -p ${CMAKE_SOURCE_DIR}/data/wxMathML.lisp)
+    COMMAND ${MAXIMA} --batch setCells.wxm -p ${CMAKE_SOURCE_DIR}/src/wxMathML.lisp)
 
 add_test(
     NAME setCells
@@ -346,7 +346,7 @@ add_test(
 add_test(
     NAME sqrtCells_cmdline_wxmathml
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ${MAXIMA} --batch sqrtCells.wxm -p ${CMAKE_SOURCE_DIR}/data/wxMathML.lisp)
+    COMMAND ${MAXIMA} --batch sqrtCells.wxm -p ${CMAKE_SOURCE_DIR}/src/wxMathML.lisp)
 
 add_test(
     NAME sqrtCells
@@ -361,7 +361,7 @@ add_test(
 add_test(
     NAME subCells_cmdline_wxmathml
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ${MAXIMA} --pipe --batch subCells.wxm -p ${CMAKE_SOURCE_DIR}/data/wxMathML.lisp)
+    COMMAND ${MAXIMA} --pipe --batch subCells.wxm -p ${CMAKE_SOURCE_DIR}/src/wxMathML.lisp)
 
 add_test(
     NAME subCells
@@ -376,7 +376,7 @@ add_test(
 add_test(
     NAME subsupCells_cmdline_wxmathml
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ${MAXIMA} --batch subsupCells.wxm -p ${CMAKE_SOURCE_DIR}/data/wxMathML.lisp)
+    COMMAND ${MAXIMA} --batch subsupCells.wxm -p ${CMAKE_SOURCE_DIR}/src/wxMathML.lisp)
 
 add_test(
     NAME subsupCells
@@ -391,7 +391,7 @@ add_test(
 add_test(
     NAME presubsupcells_cmdline_wxmathml
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ${MAXIMA} --pipe --batch presubsupcells.wxm -p ${CMAKE_SOURCE_DIR}/data/wxMathML.lisp)
+    COMMAND ${MAXIMA} --pipe --batch presubsupcells.wxm -p ${CMAKE_SOURCE_DIR}/src/wxMathML.lisp)
 
 add_test(
     NAME presubsupcells
@@ -406,7 +406,7 @@ add_test(
 add_test(
     NAME sumCells_cmdline_wxmathml
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ${MAXIMA} --batch sumCells.wxm -p ${CMAKE_SOURCE_DIR}/data/wxMathML.lisp)
+    COMMAND ${MAXIMA} --batch sumCells.wxm -p ${CMAKE_SOURCE_DIR}/src/wxMathML.lisp)
 
 add_test(
     NAME sumCells
@@ -421,7 +421,7 @@ add_test(
 add_test(
     NAME printf_simple_cmdline_wxmathml
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ${MAXIMA} --batch printf_simple.wxm -p ${CMAKE_SOURCE_DIR}/data/wxMathML.lisp)
+    COMMAND ${MAXIMA} --batch printf_simple.wxm -p ${CMAKE_SOURCE_DIR}/src/wxMathML.lisp)
 
 add_test(
     NAME printf_simple
@@ -436,7 +436,7 @@ add_test(
 add_test(
     NAME printf_equations_cmdline_wxmathml
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ${MAXIMA} --pipe --batch printf_equations.wxm -p ${CMAKE_SOURCE_DIR}/data/wxMathML.lisp)
+    COMMAND ${MAXIMA} --pipe --batch printf_equations.wxm -p ${CMAKE_SOURCE_DIR}/src/wxMathML.lisp)
 
 add_test(
     NAME printf_equations
@@ -451,7 +451,7 @@ add_test(
 add_test(
     NAME printf_continuationLines_cmdline_wxmathml
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ${MAXIMA} --pipe --batch printf_continuationLines.wxm -p ${CMAKE_SOURCE_DIR}/data/wxMathML.lisp)
+    COMMAND ${MAXIMA} --pipe --batch printf_continuationLines.wxm -p ${CMAKE_SOURCE_DIR}/src/wxMathML.lisp)
 
 add_test(
     NAME printf_continuationLines

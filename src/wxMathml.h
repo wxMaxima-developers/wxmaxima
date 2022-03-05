@@ -27,10 +27,14 @@
 #ifndef WXMATHML_H
 #define WXMATHML_H
 
+#include <cstddef>
 #include "precomp.h"
 #include "Configuration.h"
 #include <wx/string.h>
 #include <wx/tokenzr.h>
+
+extern "C" unsigned char WXMATHML_LISP[];
+extern "C" size_t WXMATHML_LISP_SIZE;
 
 class wxMathML
 {
