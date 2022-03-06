@@ -63,7 +63,9 @@ public:
     popid_tocLevel4,
     popid_tocLevel5,
     popid_tocLevel6,
-    popid_tocdnd
+    popid_tocdnd,
+    popid_tocMoveIn,
+    popid_tocMoveOut
   };
 
   TableOfContents(wxWindow *parent, int id, Configuration **config, std::unique_ptr<GroupCell> *tree);

@@ -950,6 +950,10 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
           wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
   Connect(TableOfContents::popid_tocLevel6, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
+  Connect(TableOfContents::popid_tocMoveIn, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
+  Connect(TableOfContents::popid_tocMoveOut, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
   Connect(TableOfContents::popid_tocdnd, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
   Connect(Worksheet::popid_fold, wxEVT_MENU,
@@ -9047,8 +9051,24 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
     break;
     m_worksheet->RecalculateForce();
     m_worksheet->RequestRedraw();
+    m_worksheet->UpdateTableOfContents();
+    m_worksheet->NumberSections();
     break;
   }
+  case TableOfContents::popid_tocMoveIn:
+    m_worksheet->m_tableOfContents->RightClickedOn()->SectioningMoveIn();
+    m_worksheet->Recalculate();
+    m_worksheet->RequestRedraw();
+    m_worksheet->UpdateTableOfContents();
+    m_worksheet->NumberSections();
+    break;
+  case TableOfContents::popid_tocMoveOut:
+    m_worksheet->m_tableOfContents->RightClickedOn()->SectioningMoveOut();
+    m_worksheet->Recalculate();
+    m_worksheet->RequestRedraw();
+    m_worksheet->UpdateTableOfContents();
+    m_worksheet->NumberSections();
+    break;
   case Worksheet::popid_evaluate_section:
   {
     GroupCell *group = NULL;

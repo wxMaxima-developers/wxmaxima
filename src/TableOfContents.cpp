@@ -501,6 +501,46 @@ void TableOfContents::OnMouseRightDown(wxListEvent &event)
       popupMenu->Append(popid_Fold, _("Hide"), wxEmptyString, wxITEM_NORMAL);
       popupMenu->Append(popid_SelectTocChapter, _("Select"), wxEmptyString, wxITEM_NORMAL);
       popupMenu->Append(popid_EvalTocChapter, _("Evaluate"), wxEmptyString, wxITEM_NORMAL);
+      if(m_cellRightClickedOn->SectioningCanMoveIn())
+      {
+        wxString message;
+        switch (m_cellRightClickedOn->GetGroupType())
+        {
+        case GC_TYPE_HEADING5:
+          message = _("Convert to Heading 6");break;
+        case GC_TYPE_SUBSUBSECTION:
+          message = _("Convert to Heading 5");break;
+        case GC_TYPE_SUBSECTION:
+          message = _("Convert to Sub-Subsection");break;
+        case GC_TYPE_SECTION:
+          message = _("Convert to Subsection");break;
+        case GC_TYPE_TITLE:
+          message = _("Convert to Section");break;
+        default:
+        {}
+        }
+        popupMenu->Append(popid_tocMoveIn, message, wxEmptyString, wxITEM_NORMAL);
+      }
+      if(m_cellRightClickedOn->SectioningCanMoveOut())
+      {
+        wxString message;
+        switch (m_cellRightClickedOn->GetGroupType())
+        {
+        case GC_TYPE_HEADING6:
+          message = _("Convert to Heading 5");break;
+        case GC_TYPE_HEADING5:
+          message = _("Convert to Sub-Subsection");break;
+        case GC_TYPE_SUBSUBSECTION:
+          message = _("Convert to Subsection");break;
+        case GC_TYPE_SUBSECTION:
+          message = _("Convert to Section");break;
+        case GC_TYPE_SECTION:
+          message = _("Convert to Title");break;
+        default:
+        {}
+        }
+        popupMenu->Append(popid_tocMoveOut, message, wxEmptyString, wxITEM_NORMAL);
+      }
     }
   }
 

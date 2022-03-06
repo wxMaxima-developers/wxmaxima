@@ -129,57 +129,10 @@ GroupCell::GroupCell(Configuration **config, GroupType groupType, const wxString
     m_inputLabel->SetType(MC_TYPE_MAIN_PROMPT);
   }
 
-  std::unique_ptr<EditorCell> editor;
-  switch (groupType)
-  {
-    case GC_TYPE_CODE:
-      editor = std::make_unique<EditorCell>(this, m_configuration);
-      editor->SetType(MC_TYPE_INPUT);
-      break;
-    case GC_TYPE_TEXT:
-      m_inputLabel->SetType(MC_TYPE_TEXT);
-      editor = std::make_unique<EditorCell>(this, m_configuration);
-      editor->SetType(MC_TYPE_TEXT);
-      break;
-    case GC_TYPE_TITLE:
-      m_inputLabel->SetType(MC_TYPE_TITLE);
-      editor = std::make_unique<EditorCell>(this, m_configuration);
-      editor->SetType(MC_TYPE_TITLE);
-      break;
-    case GC_TYPE_SECTION:
-      m_inputLabel->SetType(MC_TYPE_SECTION);
-      editor = std::make_unique<EditorCell>(this, m_configuration);
-      editor->SetType(MC_TYPE_SECTION);
-      break;
-    case GC_TYPE_SUBSECTION:
-      m_inputLabel->SetType(MC_TYPE_SUBSECTION);
-      editor = std::make_unique<EditorCell>(this, m_configuration);
-      editor->SetType(MC_TYPE_SUBSECTION);
-      break;
-    case GC_TYPE_SUBSUBSECTION:
-      m_inputLabel->SetType(MC_TYPE_SUBSUBSECTION);
-      editor = std::make_unique<EditorCell>(this, m_configuration);
-      editor->SetType(MC_TYPE_SUBSUBSECTION);
-      break;
-    case GC_TYPE_HEADING5:
-      m_inputLabel->SetType(MC_TYPE_HEADING5);
-      editor = std::make_unique<EditorCell>(this, m_configuration);
-      editor->SetType(MC_TYPE_HEADING5);
-      break;
-    case GC_TYPE_HEADING6:
-      m_inputLabel->SetType(MC_TYPE_HEADING6);
-      editor = std::make_unique<EditorCell>(this, m_configuration);
-      editor->SetType(MC_TYPE_HEADING6);
-      break;
-    case GC_TYPE_IMAGE:
-      m_inputLabel->SetType(MC_TYPE_IMAGE);
-      editor = std::make_unique<EditorCell>(this, m_configuration);
-      editor->SetType(MC_TYPE_IMAGE);
-      break;
-    default:
-      break;
-  }
+  std::unique_ptr<EditorCell> editor = std::make_unique<EditorCell>(this, m_configuration);
 
+  SetGroupType(groupType);
+  
   if (editor && !initString.empty())
     editor->SetValue(initString);
   if (editor)
@@ -220,6 +173,40 @@ GroupCell::GroupCell(GroupCell const &cell):
 }
 
 DEFINE_CELL(GroupCell)
+
+void GroupCell::SetGroupType(GroupType groupType)
+{
+  CellType type = MC_TYPE_DEFAULT;
+  switch (groupType)
+  {
+    case GC_TYPE_CODE:
+      type= MC_TYPE_INPUT; break;
+    case GC_TYPE_TEXT:
+      type= MC_TYPE_TEXT; break;
+    case GC_TYPE_TITLE:
+      type= MC_TYPE_TITLE; break;
+    case GC_TYPE_SECTION:
+      type= MC_TYPE_SECTION; break;
+    case GC_TYPE_SUBSECTION:
+      type= MC_TYPE_SUBSECTION; break;
+    case GC_TYPE_SUBSUBSECTION:
+      type= MC_TYPE_SUBSUBSECTION; break;
+    case GC_TYPE_HEADING5:
+      type= MC_TYPE_HEADING5; break;
+    case GC_TYPE_HEADING6:
+      type= MC_TYPE_HEADING6; break;
+    case GC_TYPE_IMAGE:
+      type= MC_TYPE_IMAGE; break;
+    default:
+      break;
+  }
+  if(GetEditable())
+    GetEditable()->SetType(type);
+  if(GetPrompt())
+    GetPrompt()->SetType(type);
+  m_groupType = groupType;
+  ResetSize();
+}
 
 std::unique_ptr<GroupCell> GroupCell::CopyList() const
 {
@@ -1963,6 +1950,120 @@ bool GroupCell::IsLesserGCType(GroupType comparedTo) const
     default:
       return false;
   }
+}
+
+bool GroupCell::IsHeading() const
+{
+  switch (m_groupType)
+  {
+    case GC_TYPE_HEADING6:
+    case GC_TYPE_HEADING5:
+    case GC_TYPE_SUBSUBSECTION:
+    case GC_TYPE_SUBSECTION:
+    case GC_TYPE_SECTION:
+    case GC_TYPE_TITLE:
+      return true;
+  default:
+    return false;
+  }
+}
+
+bool GroupCell::SectioningCanMoveIn() const
+{
+  if(!IsHeading())
+    return false;
+  for (auto const &tmp : OnList(this))
+  {
+    if(!tmp.IsLesserGCType(GetGroupType()))
+      break;
+    if(tmp.GetGroupType() == GC_TYPE_HEADING6)
+      return false;
+  }
+  return true;
+}
+
+bool GroupCell::SectioningMoveIn()
+{
+  if(!SectioningCanMoveIn())
+    return false;
+
+  GroupType type = GetGroupType();
+  for (auto &tmp : OnList(this))
+  {
+    if((&tmp != this) && (!tmp.IsLesserGCType(type)))
+      break;
+    if(tmp.IsHeading())
+    {
+      switch (tmp.m_groupType)
+      {
+      case GC_TYPE_HEADING6:
+        break;
+      case GC_TYPE_HEADING5:
+        tmp.SetGroupType(GC_TYPE_HEADING6);
+        break;
+      case GC_TYPE_SUBSUBSECTION:
+        tmp.SetGroupType(GC_TYPE_HEADING5);
+        break;
+      case GC_TYPE_SUBSECTION:
+        tmp.SetGroupType(GC_TYPE_SUBSUBSECTION);
+        break;
+      case GC_TYPE_SECTION:
+        tmp.SetGroupType(GC_TYPE_SUBSECTION);
+        break;
+      case GC_TYPE_TITLE:
+        tmp.SetGroupType(GC_TYPE_SECTION);
+        break;
+      default:
+        wxASSERT_MSG(false,
+          _("Bug: Encountered a heading I don't know how to move in one sectioning unit"));
+        return false;
+      }
+    }
+  }
+  return true;
+}
+
+bool GroupCell::SectioningMoveOut()
+{
+  if(!SectioningCanMoveOut())
+    return false;
+
+  GroupType type = GetGroupType();
+  for (auto &tmp : OnList(this))
+  {
+    if((&tmp != this) && (!tmp.IsLesserGCType(type)))
+      break;
+    if(tmp.IsHeading())
+    {
+      switch (tmp.m_groupType)
+      {
+      case GC_TYPE_HEADING6:
+        tmp.SetGroupType(GC_TYPE_HEADING5);
+        break;
+      case GC_TYPE_HEADING5:
+        tmp.SetGroupType(GC_TYPE_SUBSUBSECTION);
+        break;
+      case GC_TYPE_SUBSUBSECTION:
+        tmp.SetGroupType(GC_TYPE_SUBSECTION);
+        break;
+      case GC_TYPE_SUBSECTION:
+        tmp.SetGroupType(GC_TYPE_SECTION);
+        break;
+      case GC_TYPE_SECTION:
+        tmp.SetGroupType(GC_TYPE_TITLE);
+        break;
+      case GC_TYPE_TITLE:
+        wxASSERT_MSG(false,
+          _("Bug: Trying to move a title out by one sectioning unit"));        
+        break;
+      default:
+        wxASSERT_MSG(false,
+          _("Bug: Encountered a heading I don't know how to move out one sectioning unit"));
+        return false;
+      }
+    }
+  }
+  return true;
 }
 
 void GroupCell::Number(int &section, int &subsection, int &subsubsection, int &heading5, int &heading6, int &image) const
