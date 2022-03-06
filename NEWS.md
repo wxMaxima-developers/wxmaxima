@@ -11,6 +11,7 @@
  * Consistent image resolutions
  * No more crashes on exporting multiple animations at once (#1616)
  * Drag-and-Drop in the table of contents
+ * table of contents: Convert sections to subsections and similar (#1629)
  * Parenthesis and quote matching now uses the maxima parser.
    This means it now both knows the details of the maxima language
    and is much faster than before.
