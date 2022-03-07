@@ -131,12 +131,13 @@ GroupCell::GroupCell(Configuration **config, GroupType groupType, const wxString
 
   std::unique_ptr<EditorCell> editor = std::make_unique<EditorCell>(this, m_configuration);
 
-  SetGroupType(groupType);
-  
   if (editor && !initString.empty())
     editor->SetValue(initString);
   if (editor)
     AppendInput(std::move(editor));
+
+  SetGroupType(groupType);
+    
 
   // when creating an image cell, if a string is provided
   // it loads an image (without deleting it)
@@ -180,7 +181,6 @@ void GroupCell::SetGroupType(GroupType groupType)
   switch (groupType)
   {
     case GC_TYPE_CODE:
-      m_inputLabel->SetType(MC_TYPE_MAIN_PROMPT);
       type = MC_TYPE_INPUT; break;
     case GC_TYPE_TEXT:
       type = MC_TYPE_TEXT; break;
@@ -204,7 +204,12 @@ void GroupCell::SetGroupType(GroupType groupType)
   if(GetEditable())
     GetEditable()->SetType(type);
   if(GetPrompt())
-    GetPrompt()->SetType(type);
+  {
+    if(groupType == GC_TYPE_CODE)
+      GetPrompt()->SetType(MC_TYPE_MAIN_PROMPT);
+    else
+      GetPrompt()->SetType(type);
+  }
   m_groupType = groupType;
   ResetSize();
 }
