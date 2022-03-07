@@ -180,23 +180,24 @@ void GroupCell::SetGroupType(GroupType groupType)
   switch (groupType)
   {
     case GC_TYPE_CODE:
-      type= MC_TYPE_INPUT; break;
+      m_inputLabel->SetType(MC_TYPE_MAIN_PROMPT);
+      type = MC_TYPE_INPUT; break;
     case GC_TYPE_TEXT:
-      type= MC_TYPE_TEXT; break;
+      type = MC_TYPE_TEXT; break;
     case GC_TYPE_TITLE:
-      type= MC_TYPE_TITLE; break;
+      type = MC_TYPE_TITLE; break;
     case GC_TYPE_SECTION:
-      type= MC_TYPE_SECTION; break;
+      type = MC_TYPE_SECTION; break;
     case GC_TYPE_SUBSECTION:
-      type= MC_TYPE_SUBSECTION; break;
+      type = MC_TYPE_SUBSECTION; break;
     case GC_TYPE_SUBSUBSECTION:
-      type= MC_TYPE_SUBSUBSECTION; break;
+      type = MC_TYPE_SUBSUBSECTION; break;
     case GC_TYPE_HEADING5:
-      type= MC_TYPE_HEADING5; break;
+      type = MC_TYPE_HEADING5; break;
     case GC_TYPE_HEADING6:
-      type= MC_TYPE_HEADING6; break;
+      type = MC_TYPE_HEADING6; break;
     case GC_TYPE_IMAGE:
-      type= MC_TYPE_IMAGE; break;
+      type = MC_TYPE_IMAGE; break;
     default:
       break;
   }
