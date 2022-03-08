@@ -141,7 +141,6 @@ set(SOURCE_FILES
     main.cpp
     wxImagePanel.cpp
     wxMathml.cpp
-    wxMathML_lisp.cpp
     wxMaxima.cpp
     wxMaximaFrame.cpp
     wxMaximaIcon.cpp
@@ -153,23 +152,22 @@ endif()
 list(APPEND SOURCE_FILES ${CMAKE_CURRENT_BINARY_DIR}/wxmaxima.manifest)
 
 
-set(HEADER_FILE "wxMathML_lisp.cpp")
-message(STATUS "Embedding wxMathML.lisp into header file ${HEADER_FILE}")
-file(WRITE "${HEADER_FILE}"
-  "/** \\file wxMathML_lisp.cpp\n"
+message(STATUS "Embedding wxMathML.lisp into header file wxMathML_lisp.h")
+file(WRITE "${CMAKE_BINARY_DIR}/wxMathML_lisp.h"
+  "/** \\file wxMathML_lisp.h\n"
   " * This header file was generated from wxMathML.lisp.\n"
   " */\n"
-  " #include<wx/wx.h>\n"
+  "#ifndef WXMATHML_LISP_H\n"
+  "#define WXMATHML_LISP_H\n"
   " #include <cstddef>\n"
   )
-get_filename_component(variableName ${HEADER_FILE} NAME)
-bin2h(SOURCE_FILE "wxMathML.lisp" HEADER_FILE "wxMathML_lisp.cpp" VARIABLE_NAME "wxMathML_lisp" APPEND NULL_TERMINATE)
+bin2h(SOURCE_FILE "wxMathML.lisp" HEADER_FILE "${CMAKE_BINARY_DIR}/wxMathML_lisp.h" VARIABLE_NAME "wxMathML_lisp" APPEND NULL_TERMINATE)
+file(APPEND "${CMAKE_BINARY_DIR}/wxMathML_lisp.h" "#endif // WXMATHML_LISP_H\n")
 
 list(APPEND SOURCE_FILES
   ${CELL_SOURCE_FILES}
   ${GRAPHICAL_IO_SOURCE_FILES}
   ${WIZARD_SOURCE_FILES}
-  wxMathML_lisp.cpp
 )
 
 include_directories(

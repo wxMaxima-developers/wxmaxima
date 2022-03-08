@@ -1,10 +1,12 @@
-#include "wxMathml.h"
 #include <iostream>
 #include <wx/wx.h>
 #include <wx/mstream.h>
 #include <wx/txtstrm.h>
 #include <wx/wfstream.h>
 #include <wx/string.h>
+#include "wxMathml.h"
+#include "wxMathML_lisp.h"
+
 
 wxMathML::wxMathML(Configuration *config):
   m_configuration(config)
