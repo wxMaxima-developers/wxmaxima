@@ -152,10 +152,24 @@ if(NOT CYGWIN)
 endif()
 list(APPEND SOURCE_FILES ${CMAKE_CURRENT_BINARY_DIR}/wxmaxima.manifest)
 
+
+set(HEADER_FILE "wxMathML_lisp.cpp")
+message(STATUS "Embedding wxMathML.lisp into header file ${HEADER_FILE}")
+file(WRITE "${HEADER_FILE}"
+  "/** \\file wxMathML_lisp.cpp\n"
+  " * This header file was generated from wxMathML.lisp.\n"
+  " */\n"
+  " #include<wx/wx.h>\n"
+  " #include <cstddef>\n"
+  )
+get_filename_component(variableName ${HEADER_FILE} NAME)
+bin2h(SOURCE_FILE "wxMathML.lisp" HEADER_FILE "wxMathML_lisp.cpp" VARIABLE_NAME "wxMathML_lisp" APPEND NULL_TERMINATE)
+
 list(APPEND SOURCE_FILES
   ${CELL_SOURCE_FILES}
   ${GRAPHICAL_IO_SOURCE_FILES}
   ${WIZARD_SOURCE_FILES}
+  wxMathML_lisp.cpp
 )
 
 include_directories(
@@ -382,12 +396,3 @@ add_custom_target(gpg DEPENDS dist
 
 
 include(CPack)
-
-add_custom_target(build_wxMathML_lisp_h ALL
-    DEPENDS wxMathML_lisp.cpp
-    )
-add_custom_command(
-    MAIN_DEPENDENCY wxMathML.lisp
-    OUTPUT wxMathML_lisp.cpp
-    COMMAND ${CMAKE_COMMAND} -DSRC=${CMAKE_CURRENT_SOURCE_DIR}/wxMathML.lisp -DBIN2H=${CMAKE_SOURCE_DIR}/cmake-bin2h/bin2h.cmake  -P "${CMAKE_CURRENT_SOURCE_DIR}/embed_wxmathml.cmake"
-)
