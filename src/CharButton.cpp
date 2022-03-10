@@ -163,7 +163,7 @@ CharButton::CharButton(wxWindow *parent, wxWindow *worksheet, const Definition &
 
 }
 
-bool CharButton::FontDisplaysChar()
+bool CharButton::FontDisplaysChar(const wxFont &font)
 {
   int width = 200;
   int height = 200;
@@ -177,6 +177,8 @@ bool CharButton::FontDisplaysChar()
     );
   wxMemoryDC characterDC;
   wxMemoryDC referenceDC;
+  characterDC.SetFont(font);
+  referenceDC.SetFont(font);
   characterDC.SelectObject(characterBitmap);
   referenceDC.SelectObject(referenceBitmap);
   characterDC.SetBrush(*wxWHITE_BRUSH);
@@ -213,7 +215,7 @@ bool CharButton::FontDisplaysChar()
   return false;
 }
 
-bool CharButton::CharVisiblyDifferent(wxChar otherChar)
+bool CharButton::CharVisiblyDifferent(wxChar otherChar, const wxFont &font)
 {
   int width = 200;
   int height = 200;
@@ -227,6 +229,8 @@ bool CharButton::CharVisiblyDifferent(wxChar otherChar)
     );
   wxMemoryDC characterDC;
   wxMemoryDC referenceDC;
+  characterDC.SetFont(font);
+  referenceDC.SetFont(font);
   characterDC.SelectObject(characterBitmap);
   referenceDC.SelectObject(referenceBitmap);
   characterDC.SetBrush(*wxWHITE_BRUSH);
