@@ -54,7 +54,8 @@ public:
     \param worksheet The worksheet this button sends char events to
     \param def The definition of the button
   */
-  CharButton(wxWindow *parent, wxWindow *worksheet, const Definition &def);
+  CharButton(wxWindow *parent, wxWindow *worksheet, const Definition &def,
+             bool forceShow = false);
 protected:
   void ForwardToParent(wxMouseEvent &event);
   void CharButtonPressed(wxCommandEvent &event);
@@ -68,6 +69,11 @@ protected:
 protected:
   void MouseOverTextIs(bool mouseOver = true);
   void MouseOverPanelIs(bool mouseOver = true);
+  //! True if drawing the char this button displays alters at least one pixel
+  bool FontDisplaysChar();
+  //! True if drawing the char this button displays differs visibly from otherChar
+  bool CharVisiblyDifferent(wxChar otherChar);
+
 private:
   bool m_mouseOverPanel = false;
   bool m_mouseOverText = false;

@@ -1999,14 +1999,14 @@ void wxMaximaFrame::GreekPane::UpdateSymbols()
     if (def.condition == Cond::None ||
         (def.condition == Cond::Show_mu && Show_mu) ||
         (def.condition == Cond::ShowLatinLookalikes && ShowLatinLookalikes))
-      m_lowercaseSizer->Add(new CharButton(this, m_worksheet, def), wxSizerFlags().Expand());
+      m_lowercaseSizer->Add(new CharButton(this, m_worksheet, def, true), wxSizerFlags().Expand());
 
   m_uppercaseSizer->Clear(true);
   for (auto &def : upperCaseDefs)
     if (def.condition == Cond::None ||
         (def.condition == Cond::Show_mu && Show_mu) ||
         (def.condition == Cond::ShowLatinLookalikes && ShowLatinLookalikes))
-      m_uppercaseSizer->Add(new CharButton(this, m_worksheet, def), wxSizerFlags().Expand());
+      m_uppercaseSizer->Add(new CharButton(this, m_worksheet, def, true), wxSizerFlags().Expand());
 }
 
 void wxMaximaFrame::GreekPane::OnMouseRightDown(wxMouseEvent &WXUNUSED(event))
@@ -2157,7 +2157,8 @@ void wxMaximaFrame::SymbolsPane::UpdateUserSymbols()
   for (auto ch : m_configuration->SymbolPaneAdditionalChars())
   {
     wxWindow *button = new CharButton(m_userSymbols, m_worksheet,
-                                     {ch, _("A symbol from the configuration dialogue")});
+                                      {ch, _("A symbol from the configuration dialogue")},
+                                      true);
     m_userSymbolButtons.push_back(button);
     m_userSymbolsSizer->Add(button, wxSizerFlags().Expand());
   }

@@ -31,6 +31,7 @@
 #include "UnicodeSidebar.h"
 #include "wx/sizer.h"
 #include <wx/settings.h>
+#include <wx/dcbuffer.h>
 
 void CharButton::MouseOverTextIs(bool mouseover)
 {
@@ -125,7 +126,8 @@ void CharButton::OnSize(wxSizeEvent &event)
   event.Skip();
 }
 
-CharButton::CharButton(wxWindow *parent, wxWindow *worksheet, const Definition &def) :
+CharButton::CharButton(wxWindow *parent, wxWindow *worksheet, const Definition &def,
+                       bool forceShow) :
   wxPanel(parent, wxID_ANY),
     m_char(def.symbol),
     m_worksheet(worksheet)
@@ -148,4 +150,113 @@ CharButton::CharButton(wxWindow *parent, wxWindow *worksheet, const Definition &
   m_buttonText->Connect(wxEVT_LEAVE_WINDOW, wxMouseEventHandler(CharButton::MouseLeftText), NULL, this);
   m_buttonText->Connect(wxEVT_LEFT_UP, wxCommandEventHandler(CharButton::CharButtonPressed), NULL, this);
   m_buttonText->Connect(wxEVT_RIGHT_DOWN, wxMouseEventHandler(CharButton::ForwardToParent), NULL, this);
+  if(!(forceShow ||
+       (FontDisplaysChar() &&
+        CharVisiblyDifferent(wxT('\1')) &&
+        CharVisiblyDifferent(wxT('\uF299')) &&
+        CharVisiblyDifferent(wxT('\uF000'))
+         )))
+  {
+    Hide();
+  }
+    
+
+}
+
+bool CharButton::FontDisplaysChar()
+{
+  int width = 200;
+  int height = 200;
+
+  // Prepare two identical device contexts that create identical bitmaps
+  wxBitmap characterBitmap = wxBitmap(wxSize(width,height) * wxWindow::GetContentScaleFactor(),
+                                      wxBITMAP_SCREEN_DEPTH
+    );
+  wxBitmap referenceBitmap = wxBitmap(wxSize(width,height) * wxWindow::GetContentScaleFactor(),
+                                      wxBITMAP_SCREEN_DEPTH
+    );
+  wxMemoryDC characterDC;
+  wxMemoryDC referenceDC;
+  characterDC.SelectObject(characterBitmap);
+  referenceDC.SelectObject(referenceBitmap);
+  characterDC.SetBrush(*wxWHITE_BRUSH);
+  referenceDC.SetBrush(*wxWHITE_BRUSH);
+  characterDC.DrawRectangle(0,0,200,200);
+  referenceDC.DrawRectangle(0,0,200,200);
+  characterDC.SetPen(*wxBLACK_PEN);
+  referenceDC.SetPen(*wxBLACK_PEN);
+
+  // Now draw the character our button shows into one of these bitmaps and see
+  // if that changed any aspect of the bitmap
+  characterDC.DrawText(wxString(m_char),
+                       100,
+                       100);
+  wxImage characterImage = characterBitmap.ConvertToImage(); 
+  wxImage referenceImage = referenceBitmap.ConvertToImage(); 
+  for(int x=0; x < width; x++)
+    for(int y=0; y < height; y++)
+    {
+      if(characterImage.GetRed(x,y) != referenceImage.GetRed(x,y))
+        return true;
+      if(characterImage.GetGreen(x,y) != referenceImage.GetGreen(x,y))
+        return true;
+      if(characterImage.GetBlue(x,y) != referenceImage.GetBlue(x,y))
+        return true;
+    }
+  wxLogMessage(
+    wxString::Format(
+      wxT("Char '%s' seems not to be displayed in the default GUI font. Hiding the button that generates it."),
+      wxString(m_char).c_str()));
+
+  // characterImage.SaveFile(wxString(m_char)+".png");
+  
+  return false;
+}
+
+bool CharButton::CharVisiblyDifferent(wxChar otherChar)
+{
+  int width = 200;
+  int height = 200;
+
+  // Prepare two identical device contexts that create identical bitmaps
+  wxBitmap characterBitmap = wxBitmap(wxSize(width,height) * wxWindow::GetContentScaleFactor(),
+                                      wxBITMAP_SCREEN_DEPTH
+    );
+  wxBitmap referenceBitmap = wxBitmap(wxSize(width,height) * wxWindow::GetContentScaleFactor(),
+                                      wxBITMAP_SCREEN_DEPTH
+    );
+  wxMemoryDC characterDC;
+  wxMemoryDC referenceDC;
+  characterDC.SelectObject(characterBitmap);
+  referenceDC.SelectObject(referenceBitmap);
+  characterDC.SetBrush(*wxWHITE_BRUSH);
+  referenceDC.SetBrush(*wxWHITE_BRUSH);
+  characterDC.DrawRectangle(0,0,200,200);
+  referenceDC.DrawRectangle(0,0,200,200);
+  characterDC.SetPen(*wxBLACK_PEN);
+  referenceDC.SetPen(*wxBLACK_PEN);
+  characterDC.DrawText(wxString(m_char),
+                       100,
+                       100);
+  referenceDC.DrawText(wxString(otherChar),
+                       100,
+                       100);
+  wxImage characterImage = characterBitmap.ConvertToImage(); 
+  wxImage referenceImage = referenceBitmap.ConvertToImage(); 
+  for(int x=0; x < width; x++)
+    for(int y=0; y < height; y++)
+    {
+      if(characterImage.GetRed(x,y) != referenceImage.GetRed(x,y))
+        return true;
+      if(characterImage.GetGreen(x,y) != referenceImage.GetGreen(x,y))
+        return true;
+      if(characterImage.GetBlue(x,y) != referenceImage.GetBlue(x,y))
+        return true;
+    }
+  wxLogMessage(
+    wxString::Format(
+      wxT("Char '%s' looks identical to '%s' in the default GUI font. Hiding the button that generates it."),
+      wxString(m_char).c_str(),
+      wxString(otherChar).c_str()));
+  return false;
 }
