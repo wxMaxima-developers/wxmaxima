@@ -22,7 +22,8 @@
  * Labels with hexadecimal numbers no more cause crashes (#1633)
  * wxMaxima no more skips chars in subscripted variables (#1632)
  * Merging cells per keyboard shortcut works again (#1626)
- * Symbols buttons whose symbols cannot be displayed in the GUI are now hidden
+ * Symbols buttons whose symbols the GUI font lacks are now hidden
+
 # 21.11.0:
  * Allow seeing all files in the file save dialog. (#1557)
  * Fix an error when using Alt up arrow (show previous command) (#1566)
