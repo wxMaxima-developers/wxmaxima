@@ -33,9 +33,6 @@
 #include <wx/string.h>
 #include <wx/tokenzr.h>
 
-extern "C" unsigned char WXMATHML_LISP[];
-extern "C" size_t WXMATHML_LISP_SIZE;
-
 class wxMathML
 {
  public:
