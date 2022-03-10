@@ -1365,7 +1365,7 @@ public:
   { return m_saved; }
 
   void SetSaved(bool saved)
-  { m_saved = saved; }
+    { if(m_saved != saved) m_updateControls = true;m_saved = saved;}
 
   void OutputChanged()
     {
