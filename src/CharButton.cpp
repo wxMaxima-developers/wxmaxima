@@ -132,6 +132,7 @@ CharButton::CharButton(wxWindow *parent, wxWindow *worksheet, Configuration *con
   wxPanel(parent, wxID_ANY),
   m_char(def.symbol),
   m_configuration(config),
+  m_description(def.description),
   m_worksheet(worksheet)
 {
   Connect(wxEVT_SIZE, wxSizeEventHandler(CharButton::OnSize));
@@ -161,8 +162,36 @@ CharButton::CharButton(wxWindow *parent, wxWindow *worksheet, Configuration *con
   {
     Hide();
   }
-    
 
+  wxFont mathFont = m_configuration->GetStyle(TS_INPUT, AFontSize(10.0)).GetFont();
+  wxFont textFont = m_configuration->GetStyle(TS_DEFAULT, AFontSize(10.0)).GetFont();
+  if(
+    ((!mathFont.IsOk()) ||
+     (
+       CharVisiblyDifferent(wxT('\1'), mathFont) &&
+       CharVisiblyDifferent(wxT('\uF299'), mathFont) &&
+       CharVisiblyDifferent(wxT('\uF000'), mathFont) &&
+       FontDisplaysChar(mathFont)
+       )
+      )
+    ||
+    ((!textFont.IsOk()) ||
+     (
+       CharVisiblyDifferent(wxT('\1'), textFont) &&
+       CharVisiblyDifferent(wxT('\uF299'), textFont) &&
+       CharVisiblyDifferent(wxT('\uF000'), textFont) &&
+       FontDisplaysChar(textFont))
+      )
+    )
+    {
+      SetToolTip(m_description);
+    }
+    else
+    {
+      m_buttonText->SetForegroundColour(wxColor(128,128,128));
+      SetToolTip(m_description + wxT("\n") +
+                 _("(Might not be displayed correctly in at least one of the worksheet fonts)"));
+    }
 }
 
 bool CharButton::FontDisplaysChar(const wxFont &font)
@@ -209,7 +238,7 @@ bool CharButton::FontDisplaysChar(const wxFont &font)
     }
   wxLogMessage(
     wxString::Format(
-      wxT("Char '%s' seems not to be displayed in the default GUI font. Hiding the button that generates it."),
+      wxT("Char '%s' seems not to be displayed."),
       wxString(m_char).c_str()));
 
   // characterImage.SaveFile(wxString(m_char)+".png");
@@ -261,7 +290,7 @@ bool CharButton::CharVisiblyDifferent(wxChar otherChar, const wxFont &font)
     }
   wxLogMessage(
     wxString::Format(
-      wxT("Char '%s' looks identical to '%s' in the default GUI font. Hiding the button that generates it."),
+      wxT("Char '%s' looks identical to '%s'."),
       wxString(m_char).c_str(),
       wxString(otherChar).c_str()));
   return false;

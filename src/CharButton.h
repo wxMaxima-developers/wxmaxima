@@ -76,6 +76,7 @@ protected:
   bool FontDisplaysChar(const wxFont &font = *wxNORMAL_FONT);
   //! True if drawing the char this button displays differs visibly from otherChar
   bool CharVisiblyDifferent(wxChar otherChar, const wxFont &font = *wxNORMAL_FONT);
+  wxString m_description;
 
 private:
   bool m_mouseOverPanel = false;
