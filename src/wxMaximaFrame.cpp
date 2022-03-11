@@ -1999,14 +1999,14 @@ void wxMaximaFrame::GreekPane::UpdateSymbols()
     if (def.condition == Cond::None ||
         (def.condition == Cond::Show_mu && Show_mu) ||
         (def.condition == Cond::ShowLatinLookalikes && ShowLatinLookalikes))
-      m_lowercaseSizer->Add(new CharButton(this, m_worksheet, def, true), wxSizerFlags().Expand());
+      m_lowercaseSizer->Add(new CharButton(this, m_worksheet, m_worksheet->m_configuration, def, true), wxSizerFlags().Expand());
 
   m_uppercaseSizer->Clear(true);
   for (auto &def : upperCaseDefs)
     if (def.condition == Cond::None ||
         (def.condition == Cond::Show_mu && Show_mu) ||
         (def.condition == Cond::ShowLatinLookalikes && ShowLatinLookalikes))
-      m_uppercaseSizer->Add(new CharButton(this, m_worksheet, def, true), wxSizerFlags().Expand());
+      m_uppercaseSizer->Add(new CharButton(this, m_worksheet, m_worksheet->m_configuration, def, true), wxSizerFlags().Expand());
 }
 
 void wxMaximaFrame::GreekPane::OnMouseRightDown(wxMouseEvent &WXUNUSED(event))
@@ -2087,7 +2087,7 @@ wxMaximaFrame::SymbolsPane::SymbolsPane(wxWindow *parent, Configuration *configu
   wxSizer *builtInSymbolsSizer = new wxWrapSizer(wxHORIZONTAL);
   wxPanel *builtInSymbols = new wxPanel(this);
   for (auto &def : symbolButtonDefinitions)
-    builtInSymbolsSizer->Add(new CharButton(builtInSymbols, m_worksheet, def), wxSizerFlags().Expand());
+    builtInSymbolsSizer->Add(new CharButton(builtInSymbols, m_worksheet, m_worksheet->m_configuration, def), wxSizerFlags().Expand());
   builtInSymbols->SetSizer(builtInSymbolsSizer);
   vbox->Add(builtInSymbols, wxSizerFlags().Expand());
 
@@ -2156,7 +2156,7 @@ void wxMaximaFrame::SymbolsPane::UpdateUserSymbols()
   // Populate the pane with a button per user symbol
   for (auto ch : m_configuration->SymbolPaneAdditionalChars())
   {
-    wxWindow *button = new CharButton(m_userSymbols, m_worksheet,
+    wxWindow *button = new CharButton(m_userSymbols, m_worksheet, m_worksheet->m_configuration,
                                       {ch, _("A symbol from the configuration dialogue")},
                                       true);
     m_userSymbolButtons.push_back(button);

@@ -126,11 +126,13 @@ void CharButton::OnSize(wxSizeEvent &event)
   event.Skip();
 }
 
-CharButton::CharButton(wxWindow *parent, wxWindow *worksheet, const Definition &def,
+CharButton::CharButton(wxWindow *parent, wxWindow *worksheet, Configuration *config,
+                       const Definition &def,
                        bool forceShow) :
   wxPanel(parent, wxID_ANY),
-    m_char(def.symbol),
-    m_worksheet(worksheet)
+  m_char(def.symbol),
+  m_configuration(config),
+  m_worksheet(worksheet)
 {
   Connect(wxEVT_SIZE, wxSizeEventHandler(CharButton::OnSize));
   wxBoxSizer *sizer = new wxBoxSizer(wxHORIZONTAL);
