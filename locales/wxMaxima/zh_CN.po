@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wxMaxima HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-03-06 16:47+0100\n"
+"POT-Creation-Date: 2022-03-12 17:12+0100\n"
 "PO-Revision-Date: 2021-01-20 20:14+0800\n"
 "Last-Translator: Liu Rong <rong.liu@mail.bnu.edu.cn>\n"
 "Language-Team: amateur\n"
@@ -352,6 +352,11 @@ msgstr "转置矩阵(&T)"
 msgid "&Trigonometric Simplification"
 msgstr "三角函数化简(&T)"
 
+#: ../../src/CharButton.cpp:193
+msgid ""
+"(Might not be displayed correctly in at least one of the worksheet fonts)"
+msgstr ""
+
 #: ../../src/VariablesPane.cpp:251
 msgid "(Not a valid variable name)"
 msgstr "（非可用变量名）"
@@ -382,7 +387,7 @@ msgstr "1/2"
 msgid "2 Levels"
 msgstr ""
 
-#: ../../src/wxMaximaFrame.cpp:2266
+#: ../../src/wxMaximaFrame.cpp:2267
 msgid "2D"
 msgstr "二维绘图"
 
@@ -394,7 +399,7 @@ msgstr "使用 ASCII 艺术的 2D 方程"
 msgid "3 Levels"
 msgstr ""
 
-#: ../../src/wxMaximaFrame.cpp:2270
+#: ../../src/wxMaximaFrame.cpp:2271
 msgid "3D"
 msgstr "三维绘图"
 
@@ -481,7 +486,7 @@ msgstr "关于"
 msgid "About wxMaxima"
 msgstr "关于 wxMaxima"
 
-#: ../../src/wxMaximaFrame.cpp:2315
+#: ../../src/wxMaximaFrame.cpp:2316
 msgid "Accuracy"
 msgstr "精度"
 
@@ -802,7 +807,7 @@ msgstr "自动将单个字母后的数字显示为下标"
 msgid "Autowrap long lines:"
 msgstr "对较长的行自动换行："
 
-#: ../../src/wxMaximaFrame.cpp:2291
+#: ../../src/wxMaximaFrame.cpp:2292
 msgid "Axis"
 msgstr "坐标轴"
 
@@ -867,7 +872,7 @@ msgstr "水平光标和竖直光标同时被激活"
 msgid "Boxplot..."
 msgstr "箱线图..."
 
-#: ../../src/wxMathml.cpp:98
+#: ../../src/wxMathml.cpp:100
 msgid ""
 "Bug: After removing the whitespace wxMathml.lisp is shorter than expected!"
 msgstr ""
@@ -1262,7 +1267,7 @@ msgstr "注释掉当前所选内容"
 msgid "Comment selection\tCtrl+/"
 msgstr "注释掉所选内容\tCtrl+/"
 
-#: ../../src/wxMathml.cpp:40
+#: ../../src/wxMathml.cpp:42
 msgid "Compiler-Bug? wxMathml.lisp is shorter than expected!"
 msgstr "编译器有错误（bug）？wxMathml.lisp 文件比预期的要小！"
 
@@ -1362,11 +1367,11 @@ msgstr "上下文相关的帮助(&H)\tCtrl+?"
 msgid "Context-sensitive &Help\tF1"
 msgstr "上下文相关的帮助(&H)\tF1"
 
-#: ../../src/wxMaximaFrame.cpp:2295
+#: ../../src/wxMaximaFrame.cpp:2296
 msgid "Contour"
 msgstr "等高线"
 
-#: ../../src/wxMaximaFrame.cpp:2314
+#: ../../src/wxMaximaFrame.cpp:2315
 msgid "Contour lines for 3d plots"
 msgstr "三维图形的等高线"
 
@@ -1804,7 +1809,7 @@ msgstr "偏差..."
 msgid "Di&vide Polynomials..."
 msgstr "多项式相除(&V)..."
 
-#: ../../src/wxMaximaFrame.cpp:2287
+#: ../../src/wxMaximaFrame.cpp:2288
 msgid "Diagram title"
 msgstr "图表标题"
 
@@ -2432,7 +2437,7 @@ msgstr "导出为 Maxima 批处理（.mac）文件失败！"
 msgid "Exporting..."
 msgstr "正在导出"
 
-#: ../../src/wxMaximaFrame.cpp:2274
+#: ../../src/wxMaximaFrame.cpp:2275
 msgid "Expression"
 msgstr "表达式"
 
@@ -2565,7 +2570,7 @@ msgstr "文件已打开"
 msgid "File you tried to open does not exist."
 msgstr "要打开的文件不存在。"
 
-#: ../../src/wxMaximaFrame.cpp:2306
+#: ../../src/wxMaximaFrame.cpp:2307
 msgid "Fill color"
 msgstr "填充色"
 
@@ -2940,7 +2945,7 @@ msgstr "希腊字母"
 msgid "Greek Letters\tAlt+Shift+G"
 msgstr "希腊字母\tAlt+Shift+G"
 
-#: ../../src/wxMaximaFrame.cpp:2310
+#: ../../src/wxMaximaFrame.cpp:2311
 msgid "Grid"
 msgstr "网格"
 
@@ -2965,12 +2970,12 @@ msgid "Hadamard exponent"
 msgstr "Hadamard 指数"
 
 #: ../../src/Configuration.cpp:1466 ../../src/ToolBar.cpp:248
-#: ../../src/wxMaximaFrame.cpp:2186
+#: ../../src/wxMaximaFrame.cpp:2187
 msgid "Heading 5"
 msgstr "五级标题"
 
 #: ../../src/Configuration.cpp:1465 ../../src/ToolBar.cpp:249
-#: ../../src/wxMaximaFrame.cpp:2188
+#: ../../src/wxMaximaFrame.cpp:2189
 msgid "Heading 6"
 msgstr "六级标题"
 
@@ -3291,7 +3296,7 @@ msgstr ""
 "如果计算时花费了太长时间仍无结果，可以尝试用菜单命令“Maxima->中断”或“Maxima->"
 "重新启动”来中止计算。"
 
-#: ../../src/wxMaximaFrame.cpp:2190
+#: ../../src/wxMaximaFrame.cpp:2191
 msgid "Image"
 msgstr "图片"
 
@@ -3303,7 +3308,7 @@ msgstr ""
 "图片文件 (*.png, *.jpg, *.bmp, *.xpm, *.gif, *.svg, *.svgz)|*.png;*.jpg;*."
 "bmp;*.xpm;*.gif;*.svg;*.svgz"
 
-#: ../../src/wxMaximaFrame.cpp:2278
+#: ../../src/wxMaximaFrame.cpp:2279
 msgid "Implicit Plot"
 msgstr "隐式图形"
 
@@ -3857,7 +3862,7 @@ msgstr "极限"
 msgid "Limit..."
 msgstr "极限..."
 
-#: ../../src/wxMaximaFrame.cpp:2302
+#: ../../src/wxMaximaFrame.cpp:2303
 msgid "Line color"
 msgstr "线条颜色"
 
@@ -4911,7 +4916,7 @@ msgstr "Pade 近似"
 msgid "Pade approximation of a Taylor series"
 msgstr "Taylor（泰勒）级数的 Pade 近似"
 
-#: ../../src/wxMaximaFrame.cpp:2192
+#: ../../src/wxMaximaFrame.cpp:2193
 msgid "Pagebreak"
 msgstr "换页符"
 
@@ -4919,7 +4924,7 @@ msgstr "换页符"
 msgid "Parallel to"
 msgstr "平行于"
 
-#: ../../src/wxMaximaFrame.cpp:2281
+#: ../../src/wxMaximaFrame.cpp:2282
 msgid "Parametric Plot"
 msgstr "参数式绘图"
 
@@ -5020,7 +5025,7 @@ msgstr "在二维平面绘图"
 msgid "Plot in 3 dimensions"
 msgstr "在三维空间绘图"
 
-#: ../../src/wxMaximaFrame.cpp:2298
+#: ../../src/wxMaximaFrame.cpp:2299
 msgid "Plot name"
 msgstr "图形名称"
 
@@ -5033,7 +5038,7 @@ msgstr "使用 draw() 函数绘图"
 msgid "Point:"
 msgstr "点："
 
-#: ../../src/wxMaximaFrame.cpp:2284
+#: ../../src/wxMaximaFrame.cpp:2285
 msgid "Points"
 msgstr "点"
 
@@ -5222,12 +5227,12 @@ msgstr "正在读取 Maxima 输入"
 msgid "Reading Maxima output: %li bytes"
 msgstr "正在读取 Maxima 输出：%li 字节"
 
-#: ../../src/wxMathml.cpp:44
+#: ../../src/wxMathml.cpp:46
 #, c-format
 msgid "Reading the Lisp part of wxMaxima from the file %s"
 msgstr ""
 
-#: ../../src/wxMathml.cpp:30
+#: ../../src/wxMathml.cpp:32
 msgid "Reading the Lisp part of wxMaxima from the included header file."
 msgstr ""
 
@@ -5684,7 +5689,7 @@ msgstr "调度后台任务，以扫描可自动完成的文件的名称。"
 msgid "Search button"
 msgstr "查询按钮"
 
-#: ../../src/ToolBar.cpp:245 ../../src/wxMaximaFrame.cpp:2180
+#: ../../src/ToolBar.cpp:245 ../../src/wxMaximaFrame.cpp:2181
 msgid "Section"
 msgstr "节"
 
@@ -5913,11 +5918,11 @@ msgid ""
 "Setting this to \"cat\" causes gnuplot not to halt if there is much output"
 msgstr "将此变量设置为“cat”可使 gnuplot 不会因为要输出的数据太多而停止。"
 
-#: ../../src/wxMaximaFrame.cpp:2269
+#: ../../src/wxMaximaFrame.cpp:2270
 msgid "Setup a 2D plot"
 msgstr "设置二维绘图"
 
-#: ../../src/wxMaximaFrame.cpp:2273
+#: ../../src/wxMaximaFrame.cpp:2274
 msgid "Setup a 3D plot"
 msgstr "设置三维绘图"
 
@@ -5929,7 +5934,7 @@ msgstr "设置边界条件，以使用 Laplace 变换解常微分方程"
 msgid "Setup modulus computation"
 msgstr "设置模运算"
 
-#: ../../src/wxMaximaFrame.cpp:2294
+#: ../../src/wxMaximaFrame.cpp:2295
 msgid "Setup the axis"
 msgstr "设置坐标轴"
 
@@ -6350,7 +6355,7 @@ msgstr "样式"
 msgid "Subsample..."
 msgstr "子样本..."
 
-#: ../../src/ToolBar.cpp:246 ../../src/wxMaximaFrame.cpp:2182
+#: ../../src/ToolBar.cpp:246 ../../src/wxMaximaFrame.cpp:2183
 msgid "Subsection"
 msgstr "小节"
 
@@ -6370,7 +6375,7 @@ msgstr "代入"
 msgid "Substitute..."
 msgstr "代入..."
 
-#: ../../src/ToolBar.cpp:247 ../../src/wxMaximaFrame.cpp:2184
+#: ../../src/ToolBar.cpp:247 ../../src/wxMaximaFrame.cpp:2185
 msgid "Subsubsection"
 msgstr "小小节"
 
@@ -6442,7 +6447,7 @@ msgstr "tellrat() 命令"
 msgid "Tells maxima where to store the result of compiling libraries"
 msgstr "告诉 Maxima 编译库的结果存储的位置"
 
-#: ../../src/ToolBar.cpp:243 ../../src/wxMaximaFrame.cpp:2176
+#: ../../src/ToolBar.cpp:243 ../../src/wxMaximaFrame.cpp:2177
 msgid "Text"
 msgstr "文本"
 
@@ -6506,7 +6511,7 @@ msgstr "Maxima 进程没有提供共享内存段，以供向它发送中断信�
 msgid "The URL MathJaX.js should be downloaded from by our HTML export."
 msgstr "包含在导出的 HTML 文件中的 URL，用于自动下载 MathJaX.js。"
 
-#: ../../src/wxMaximaFrame.cpp:2318
+#: ../../src/wxMaximaFrame.cpp:2319
 msgid "The accuracy versus speed tradeoff"
 msgstr "精度与速度的权衡"
 
@@ -6530,7 +6535,7 @@ msgid ""
 "version."
 msgstr "包含用户手册主题的缓存来自另一版本的 Maxima。"
 
-#: ../../src/wxMaximaFrame.cpp:2305
+#: ../../src/wxMaximaFrame.cpp:2306
 msgid "The color of the next line to draw"
 msgstr "用于绘制下一条线的颜色"
 
@@ -6550,7 +6555,7 @@ msgid ""
 "maxima variable wxplot_size"
 msgstr "嵌入绘图的默认宽度，可以被 Maxima 变量 wxplot_size 读取或改写。"
 
-#: ../../src/wxMaximaFrame.cpp:2290
+#: ../../src/wxMaximaFrame.cpp:2291
 msgid "The diagram title"
 msgstr "图表标题"
 
@@ -6592,7 +6597,7 @@ msgstr "用户家（home）目录"
 msgid "The document class LaTeX is instructed to use for our documents."
 msgstr "导出 LaTeX 文档所用的文档类（document class）。"
 
-#: ../../src/wxMaximaFrame.cpp:2309
+#: ../../src/wxMaximaFrame.cpp:2310
 msgid "The fill color for the next objects"
 msgstr "下一个对象的填充颜色"
 
@@ -6600,7 +6605,7 @@ msgstr "下一个对象的填充颜色"
 msgid "The function call whose arguments to extract"
 msgstr "要提取其参数的函数调用"
 
-#: ../../src/wxMaximaFrame.cpp:2313
+#: ../../src/wxMaximaFrame.cpp:2314
 msgid "The grid in the background of the diagram"
 msgstr "图表背景的网格"
 
@@ -6655,7 +6660,7 @@ msgstr "wxMaxima 离线用户手册"
 msgid "The maximum size for this image. Values <= 0 mean: Unspecified."
 msgstr "此图片的最小尺寸，小于等于零的值对应“未指定”。"
 
-#: ../../src/wxMaximaFrame.cpp:2301
+#: ../../src/wxMaximaFrame.cpp:2302
 msgid "The next plot's title"
 msgstr "下一个绘图的标题"
 
@@ -6724,7 +6729,7 @@ msgstr ""
 "解释如何生成列表项的值的规则。\n"
 "可以是 i，i^2，sin(i) 等"
 
-#: ../../src/wxMaximaFrame.cpp:2277
+#: ../../src/wxMaximaFrame.cpp:2278
 msgid "The standard plot command: Plot an equation as a curve"
 msgstr "标准绘图命令：绘制方程对应的曲线"
 
@@ -6809,7 +6814,7 @@ msgstr "微分次数："
 msgid "Tip of the day"
 msgstr "每日提示"
 
-#: ../../src/ToolBar.cpp:244 ../../src/wxMaximaFrame.cpp:2178
+#: ../../src/ToolBar.cpp:244 ../../src/wxMaximaFrame.cpp:2179
 msgid "Title"
 msgstr "标题"
 

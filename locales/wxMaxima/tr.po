@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tr\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-03-06 16:47+0100\n"
+"POT-Creation-Date: 2022-03-12 17:12+0100\n"
 "PO-Revision-Date: 2020-06-03 03:13+0300\n"
 "Last-Translator: Tufan Şirin <tsirin@turgutozal.edu.tr>\n"
 "Language-Team: Tufan Şirin <tsirin@turgutozal.edu.tr>\n"
@@ -356,6 +356,11 @@ msgstr "&Matrisin Transpozesi"
 msgid "&Trigonometric Simplification"
 msgstr "&Trigonometrik Sadeleştirme"
 
+#: ../../src/CharButton.cpp:193
+msgid ""
+"(Might not be displayed correctly in at least one of the worksheet fonts)"
+msgstr ""
+
 #: ../../src/VariablesPane.cpp:251
 msgid "(Not a valid variable name)"
 msgstr "Geçerli bir değişken adı değil"
@@ -388,7 +393,7 @@ msgstr "1/2"
 msgid "2 Levels"
 msgstr ""
 
-#: ../../src/wxMaximaFrame.cpp:2266
+#: ../../src/wxMaximaFrame.cpp:2267
 msgid "2D"
 msgstr "2B"
 
@@ -400,7 +405,7 @@ msgstr "ASCII kullanan 2B eşitlikler"
 msgid "3 Levels"
 msgstr ""
 
-#: ../../src/wxMaximaFrame.cpp:2270
+#: ../../src/wxMaximaFrame.cpp:2271
 msgid "3D"
 msgstr "3B"
 
@@ -495,7 +500,7 @@ msgstr "Hakkında"
 msgid "About wxMaxima"
 msgstr "'wxMaxima' hakkında"
 
-#: ../../src/wxMaximaFrame.cpp:2315
+#: ../../src/wxMaximaFrame.cpp:2316
 msgid "Accuracy"
 msgstr "Doğruluk"
 
@@ -830,7 +835,7 @@ msgstr "Autosubscript sayıları ve tek harflerden sonra gelen metinler"
 msgid "Autowrap long lines:"
 msgstr "Uzun satırları otomatik olarak kısalt:"
 
-#: ../../src/wxMaximaFrame.cpp:2291
+#: ../../src/wxMaximaFrame.cpp:2292
 msgid "Axis"
 msgstr "Eksenler"
 
@@ -896,7 +901,7 @@ msgstr "Hem yatay hem de dikey imleç aynı anda etkin"
 msgid "Boxplot..."
 msgstr "Kutu Diyagram..."
 
-#: ../../src/wxMathml.cpp:98
+#: ../../src/wxMathml.cpp:100
 msgid ""
 "Bug: After removing the whitespace wxMathml.lisp is shorter than expected!"
 msgstr ""
@@ -1306,7 +1311,7 @@ msgstr "Seçili metni açıklama"
 msgid "Comment selection\tCtrl+/"
 msgstr "Yorum Seçimi\tCtrl+/"
 
-#: ../../src/wxMathml.cpp:40
+#: ../../src/wxMathml.cpp:42
 msgid "Compiler-Bug? wxMathml.lisp is shorter than expected!"
 msgstr "Derleyici-Hatası? wxMathml.lisp beklenenden daha kısa!"
 
@@ -1408,11 +1413,11 @@ msgstr "Bağlama-duyarlı Yardım &Help\tCtrl+?"
 msgid "Context-sensitive &Help\tF1"
 msgstr "Bağlama-duyarlı Yardım &Help\tF1"
 
-#: ../../src/wxMaximaFrame.cpp:2295
+#: ../../src/wxMaximaFrame.cpp:2296
 msgid "Contour"
 msgstr "Eşyükselti eğrisi"
 
-#: ../../src/wxMaximaFrame.cpp:2314
+#: ../../src/wxMaximaFrame.cpp:2315
 msgid "Contour lines for 3d plots"
 msgstr "3B çizimler için eşyükselti eğrileri"
 
@@ -1862,7 +1867,7 @@ msgstr "Sapma..."
 msgid "Di&vide Polynomials..."
 msgstr "Polinomları Böl."
 
-#: ../../src/wxMaximaFrame.cpp:2287
+#: ../../src/wxMaximaFrame.cpp:2288
 msgid "Diagram title"
 msgstr "Diyagram başlığı"
 
@@ -2510,7 +2515,7 @@ msgstr "Maxima Kütük Dosyası olarak çıkarım başarısız!"
 msgid "Exporting..."
 msgstr "Çıkarılıyor..."
 
-#: ../../src/wxMaximaFrame.cpp:2274
+#: ../../src/wxMaximaFrame.cpp:2275
 msgid "Expression"
 msgstr "İfade"
 
@@ -2648,7 +2653,7 @@ msgstr "Dosya açıldı"
 msgid "File you tried to open does not exist."
 msgstr "Açmaya çalıştığınız dosya yok."
 
-#: ../../src/wxMaximaFrame.cpp:2306
+#: ../../src/wxMaximaFrame.cpp:2307
 msgid "Fill color"
 msgstr "Renk doldur"
 
@@ -3030,7 +3035,7 @@ msgstr "Yunanca harfler"
 msgid "Greek Letters\tAlt+Shift+G"
 msgstr "Yunanca harfler\tAlt+Shift+G"
 
-#: ../../src/wxMaximaFrame.cpp:2310
+#: ../../src/wxMaximaFrame.cpp:2311
 msgid "Grid"
 msgstr "Izgara"
 
@@ -3056,12 +3061,12 @@ msgid "Hadamard exponent"
 msgstr ""
 
 #: ../../src/Configuration.cpp:1466 ../../src/ToolBar.cpp:248
-#: ../../src/wxMaximaFrame.cpp:2186
+#: ../../src/wxMaximaFrame.cpp:2187
 msgid "Heading 5"
 msgstr "Başlık 5"
 
 #: ../../src/Configuration.cpp:1465 ../../src/ToolBar.cpp:249
-#: ../../src/wxMaximaFrame.cpp:2188
+#: ../../src/wxMaximaFrame.cpp:2189
 msgid "Heading 6"
 msgstr "Başlık 6"
 
@@ -3382,7 +3387,7 @@ msgstr ""
 "Mkomut menüsünden Maxima-> Interrupt (Yarıda Kes) yada Maxima-> Restart "
 "Maxima (Maximayı Yeninden Başlat) yapın."
 
-#: ../../src/wxMaximaFrame.cpp:2190
+#: ../../src/wxMaximaFrame.cpp:2191
 msgid "Image"
 msgstr "Resim"
 
@@ -3394,7 +3399,7 @@ msgstr ""
 "Resim Dosyaları (*.png, *.jpg, *.bmp, *.xpm, *.gif, *.svg, *.svgz)|*.png;*."
 "jpg;*.bmp;*.xpm;*.gif;*.svg;*.svgz"
 
-#: ../../src/wxMaximaFrame.cpp:2278
+#: ../../src/wxMaximaFrame.cpp:2279
 msgid "Implicit Plot"
 msgstr "Kapalı Çizim"
 
@@ -3959,7 +3964,7 @@ msgstr "Limit"
 msgid "Limit..."
 msgstr "Limit..."
 
-#: ../../src/wxMaximaFrame.cpp:2302
+#: ../../src/wxMaximaFrame.cpp:2303
 msgid "Line color"
 msgstr "Çizgi rengi"
 
@@ -5064,7 +5069,7 @@ msgstr "Padé Yaklaşımı"
 msgid "Pade approximation of a Taylor series"
 msgstr "Bir Taylor Serisinin Padé Yaklaşımı"
 
-#: ../../src/wxMaximaFrame.cpp:2192
+#: ../../src/wxMaximaFrame.cpp:2193
 msgid "Pagebreak"
 msgstr "Sayfa sonu"
 
@@ -5072,7 +5077,7 @@ msgstr "Sayfa sonu"
 msgid "Parallel to"
 msgstr "'e paralel"
 
-#: ../../src/wxMaximaFrame.cpp:2281
+#: ../../src/wxMaximaFrame.cpp:2282
 msgid "Parametric Plot"
 msgstr "Parametrik Grafik çizimi"
 
@@ -5173,7 +5178,7 @@ msgstr "2 Boyutlu Grafik çiz"
 msgid "Plot in 3 dimensions"
 msgstr "3 Boyutlu Grafik çiz"
 
-#: ../../src/wxMaximaFrame.cpp:2298
+#: ../../src/wxMaximaFrame.cpp:2299
 msgid "Plot name"
 msgstr "Çizimin adı"
 
@@ -5186,7 +5191,7 @@ msgstr "Draw  kullanarak grafik çiz"
 msgid "Point:"
 msgstr "Nokta:"
 
-#: ../../src/wxMaximaFrame.cpp:2284
+#: ../../src/wxMaximaFrame.cpp:2285
 msgid "Points"
 msgstr "Noktalar"
 
@@ -5385,12 +5390,12 @@ msgstr "'Maxima çıktısı'nı okuyor"
 msgid "Reading Maxima output: %li bytes"
 msgstr "Maxima çıktısını okuma:% li bayt"
 
-#: ../../src/wxMathml.cpp:44
+#: ../../src/wxMathml.cpp:46
 #, c-format
 msgid "Reading the Lisp part of wxMaxima from the file %s"
 msgstr ""
 
-#: ../../src/wxMathml.cpp:30
+#: ../../src/wxMathml.cpp:32
 msgid "Reading the Lisp part of wxMaxima from the included header file."
 msgstr ""
 
@@ -5867,7 +5872,7 @@ msgstr ""
 msgid "Search button"
 msgstr "Arama butonu"
 
-#: ../../src/ToolBar.cpp:245 ../../src/wxMaximaFrame.cpp:2180
+#: ../../src/ToolBar.cpp:245 ../../src/wxMaximaFrame.cpp:2181
 msgid "Section"
 msgstr "Bölüm"
 
@@ -6099,11 +6104,11 @@ msgid ""
 "Setting this to \"cat\" causes gnuplot not to halt if there is much output"
 msgstr ""
 
-#: ../../src/wxMaximaFrame.cpp:2269
+#: ../../src/wxMaximaFrame.cpp:2270
 msgid "Setup a 2D plot"
 msgstr "2B bir çizim ayarla"
 
-#: ../../src/wxMaximaFrame.cpp:2273
+#: ../../src/wxMaximaFrame.cpp:2274
 msgid "Setup a 3D plot"
 msgstr "3B bir çizim ayarla"
 
@@ -6115,7 +6120,7 @@ msgstr "ADD'yi Laplace dönüşümleri ile çözerken başlangıç değerlerini 
 msgid "Setup modulus computation"
 msgstr "Modül Hesaplamasını Kur"
 
-#: ../../src/wxMaximaFrame.cpp:2294
+#: ../../src/wxMaximaFrame.cpp:2295
 msgid "Setup the axis"
 msgstr "Eksenleri ayarla"
 
@@ -6542,7 +6547,7 @@ msgstr "Stiller"
 msgid "Subsample..."
 msgstr "Alt Örnek..."
 
-#: ../../src/ToolBar.cpp:246 ../../src/wxMaximaFrame.cpp:2182
+#: ../../src/ToolBar.cpp:246 ../../src/wxMaximaFrame.cpp:2183
 msgid "Subsection"
 msgstr "Altbölüm"
 
@@ -6562,7 +6567,7 @@ msgstr "Yerine koy"
 msgid "Substitute..."
 msgstr "Yerine koy..."
 
-#: ../../src/ToolBar.cpp:247 ../../src/wxMaximaFrame.cpp:2184
+#: ../../src/ToolBar.cpp:247 ../../src/wxMaximaFrame.cpp:2185
 msgid "Subsubsection"
 msgstr "Alt+alt Bölüm"
 
@@ -6635,7 +6640,7 @@ msgstr "Tellrat"
 msgid "Tells maxima where to store the result of compiling libraries"
 msgstr ""
 
-#: ../../src/ToolBar.cpp:243 ../../src/wxMaximaFrame.cpp:2176
+#: ../../src/ToolBar.cpp:243 ../../src/wxMaximaFrame.cpp:2177
 msgid "Text"
 msgstr "Metin"
 
@@ -6705,7 +6710,7 @@ msgstr ""
 msgid "The URL MathJaX.js should be downloaded from by our HTML export."
 msgstr "MathJaX URL ' si bizim HTML (olarak) 'Çıkart'tan indirilmeli."
 
-#: ../../src/wxMaximaFrame.cpp:2318
+#: ../../src/wxMaximaFrame.cpp:2319
 msgid "The accuracy versus speed tradeoff"
 msgstr "Doğruluk, hız değişimlerine karşı"
 
@@ -6729,7 +6734,7 @@ msgid ""
 "version."
 msgstr ""
 
-#: ../../src/wxMaximaFrame.cpp:2305
+#: ../../src/wxMaximaFrame.cpp:2306
 msgid "The color of the next line to draw"
 msgstr "Çizilecek bir sonraki çizginin rengi"
 
@@ -6753,7 +6758,7 @@ msgstr ""
 "Sayfaya gömülü grafikler için varsayılan genişlik. wxplot_size maxima "
 "değişkeni tarafından değerlendirilebilir veya geçersiz kılınabilir"
 
-#: ../../src/wxMaximaFrame.cpp:2290
+#: ../../src/wxMaximaFrame.cpp:2291
 msgid "The diagram title"
 msgstr "Diyagram başlığı"
 
@@ -6795,7 +6800,7 @@ msgstr ""
 msgid "The document class LaTeX is instructed to use for our documents."
 msgstr "LaTeX belge sınıfı bizim belgelerimizi kullanmak için yönlendirilir."
 
-#: ../../src/wxMaximaFrame.cpp:2309
+#: ../../src/wxMaximaFrame.cpp:2310
 msgid "The fill color for the next objects"
 msgstr "Sonraki nesneler için dolgu rengi"
 
@@ -6803,7 +6808,7 @@ msgstr "Sonraki nesneler için dolgu rengi"
 msgid "The function call whose arguments to extract"
 msgstr "Çıkarmak için argümanları olan işlev çağrısı"
 
-#: ../../src/wxMaximaFrame.cpp:2313
+#: ../../src/wxMaximaFrame.cpp:2314
 msgid "The grid in the background of the diagram"
 msgstr "Diyagramın arkasındaki ızgara"
 
@@ -6859,7 +6864,7 @@ msgstr "WxMaxima çevrimdışı kılavuzu"
 msgid "The maximum size for this image. Values <= 0 mean: Unspecified."
 msgstr "Bu resim için maksimum boyut. Değerler <= 0 ortalama: Belirtilmemiş."
 
-#: ../../src/wxMaximaFrame.cpp:2301
+#: ../../src/wxMaximaFrame.cpp:2302
 msgid "The next plot's title"
 msgstr "Sonraki çizimin başlığı"
 
@@ -6931,7 +6936,7 @@ msgstr ""
 "Bir liste öğesinin değerini nasıl üretileceğini açıklayan kural.\n"
 "Böyle bir şey olabilir \"i\", \"i ^ 2\" veya \"sin (i)\""
 
-#: ../../src/wxMaximaFrame.cpp:2277
+#: ../../src/wxMaximaFrame.cpp:2278
 msgid "The standard plot command: Plot an equation as a curve"
 msgstr "Standart çizim komutu: Bir denklemi eğri olarak çizme"
 
@@ -7014,7 +7019,7 @@ msgstr "Kaç kez :"
 msgid "Tip of the day"
 msgstr "Günün ipucu"
 
-#: ../../src/ToolBar.cpp:244 ../../src/wxMaximaFrame.cpp:2178
+#: ../../src/ToolBar.cpp:244 ../../src/wxMaximaFrame.cpp:2179
 msgid "Title"
 msgstr "Başlık"
 

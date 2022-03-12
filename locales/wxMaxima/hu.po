@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: hu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-03-06 16:47+0100\n"
+"POT-Creation-Date: 2022-03-12 17:12+0100\n"
 "PO-Revision-Date: 2021-08-14 17:35+0200\n"
 "Last-Translator: Blahota István <blahota@fsf.hu>\n"
 "Language-Team: Hungarian\n"
@@ -352,6 +352,11 @@ msgstr "Mátri&x transzponálás"
 msgid "&Trigonometric Simplification"
 msgstr "&Trigonometrikus átalakítás"
 
+#: ../../src/CharButton.cpp:193
+msgid ""
+"(Might not be displayed correctly in at least one of the worksheet fonts)"
+msgstr ""
+
 #: ../../src/VariablesPane.cpp:251
 msgid "(Not a valid variable name)"
 msgstr "(Nem egy érvényes változó neve)"
@@ -384,7 +389,7 @@ msgstr "1/2"
 msgid "2 Levels"
 msgstr ""
 
-#: ../../src/wxMaximaFrame.cpp:2266
+#: ../../src/wxMaximaFrame.cpp:2267
 msgid "2D"
 msgstr "2D"
 
@@ -396,7 +401,7 @@ msgstr "2D-s egyenletek az ASCII Artot használják"
 msgid "3 Levels"
 msgstr ""
 
-#: ../../src/wxMaximaFrame.cpp:2270
+#: ../../src/wxMaximaFrame.cpp:2271
 msgid "3D"
 msgstr "3D"
 
@@ -488,7 +493,7 @@ msgstr "Névjegy"
 msgid "About wxMaxima"
 msgstr "Névjegy: wxMaxima"
 
-#: ../../src/wxMaximaFrame.cpp:2315
+#: ../../src/wxMaximaFrame.cpp:2316
 msgid "Accuracy"
 msgstr "Pontosság"
 
@@ -815,7 +820,7 @@ msgstr "Automatikusan indexel számokat és betűk utáni szöveget"
 msgid "Autowrap long lines:"
 msgstr "Hosszú szövegek automatikus sortörése:"
 
-#: ../../src/wxMaximaFrame.cpp:2291
+#: ../../src/wxMaximaFrame.cpp:2292
 msgid "Axis"
 msgstr "Tengely"
 
@@ -881,7 +886,7 @@ msgstr "A vízszintes és függőleges kurzor is legyen aktív egyidőben"
 msgid "Boxplot..."
 msgstr "Doboz ábra..."
 
-#: ../../src/wxMathml.cpp:98
+#: ../../src/wxMathml.cpp:100
 msgid ""
 "Bug: After removing the whitespace wxMathml.lisp is shorter than expected!"
 msgstr ""
@@ -1281,7 +1286,7 @@ msgstr "A megjegyzés a kiválasztott szövegen kívül van"
 msgid "Comment selection\tCtrl+/"
 msgstr "Megjegyzés kiválasztása\tCtrl+/"
 
-#: ../../src/wxMathml.cpp:40
+#: ../../src/wxMathml.cpp:42
 msgid "Compiler-Bug? wxMathml.lisp is shorter than expected!"
 msgstr "Fordító hiba? A wxMathml.lisp a vártnál rövidebb!"
 
@@ -1383,11 +1388,11 @@ msgstr "Környezetfüggő &Súgó\tCtrl +?"
 msgid "Context-sensitive &Help\tF1"
 msgstr "Környezetfüggő &Súgó\tF1"
 
-#: ../../src/wxMaximaFrame.cpp:2295
+#: ../../src/wxMaximaFrame.cpp:2296
 msgid "Contour"
 msgstr "Kontúr"
 
-#: ../../src/wxMaximaFrame.cpp:2314
+#: ../../src/wxMaximaFrame.cpp:2315
 msgid "Contour lines for 3d plots"
 msgstr "Kontúrvonalak 3d-s ábrákhoz"
 
@@ -1835,7 +1840,7 @@ msgstr "Szórás..."
 msgid "Di&vide Polynomials..."
 msgstr "P&olinomok osztása..."
 
-#: ../../src/wxMaximaFrame.cpp:2287
+#: ../../src/wxMaximaFrame.cpp:2288
 msgid "Diagram title"
 msgstr "Diagram címe"
 
@@ -2468,7 +2473,7 @@ msgstr "Maxima batch fájlba való exportálás meghiúsult!"
 msgid "Exporting..."
 msgstr "Exportálás..."
 
-#: ../../src/wxMaximaFrame.cpp:2274
+#: ../../src/wxMaximaFrame.cpp:2275
 msgid "Expression"
 msgstr "Kifejezés"
 
@@ -2601,7 +2606,7 @@ msgstr "Fájl megnyitva"
 msgid "File you tried to open does not exist."
 msgstr "A megnyitni próbált fájl nem található."
 
-#: ../../src/wxMaximaFrame.cpp:2306
+#: ../../src/wxMaximaFrame.cpp:2307
 msgid "Fill color"
 msgstr "Kitöltőszín"
 
@@ -2986,7 +2991,7 @@ msgstr "Görög betűk"
 msgid "Greek Letters\tAlt+Shift+G"
 msgstr "Görög betűk\tAlt+Shift+G"
 
-#: ../../src/wxMaximaFrame.cpp:2310
+#: ../../src/wxMaximaFrame.cpp:2311
 msgid "Grid"
 msgstr "Rács"
 
@@ -3011,12 +3016,12 @@ msgid "Hadamard exponent"
 msgstr "Hadamard kitevő"
 
 #: ../../src/Configuration.cpp:1466 ../../src/ToolBar.cpp:248
-#: ../../src/wxMaximaFrame.cpp:2186
+#: ../../src/wxMaximaFrame.cpp:2187
 msgid "Heading 5"
 msgstr "5. cím"
 
 #: ../../src/Configuration.cpp:1465 ../../src/ToolBar.cpp:249
-#: ../../src/wxMaximaFrame.cpp:2188
+#: ../../src/wxMaximaFrame.cpp:2189
 msgid "Heading 6"
 msgstr "6. cím"
 
@@ -3351,7 +3356,7 @@ msgstr ""
 ">Megszakítás' vagy a 'Maxima->A Maxima újraindítása' menüparancsok "
 "használatát."
 
-#: ../../src/wxMaximaFrame.cpp:2190
+#: ../../src/wxMaximaFrame.cpp:2191
 msgid "Image"
 msgstr "Kép"
 
@@ -3363,7 +3368,7 @@ msgstr ""
 "Képfájlok ( *.png, *.jpg, *.bmp, *.xpm, *.gif, *.svg, *.svgz) | *.png; *. "
 "Jpg; *. Bmp; *. Xpm; *. gif;*. svg;*. svgz"
 
-#: ../../src/wxMaximaFrame.cpp:2278
+#: ../../src/wxMaximaFrame.cpp:2279
 msgid "Implicit Plot"
 msgstr "Implicit ábra"
 
@@ -3928,7 +3933,7 @@ msgstr "Határérték"
 msgid "Limit..."
 msgstr "Határérték..."
 
-#: ../../src/wxMaximaFrame.cpp:2302
+#: ../../src/wxMaximaFrame.cpp:2303
 msgid "Line color"
 msgstr "Sorszín"
 
@@ -5017,7 +5022,7 @@ msgstr "Padé-approximáció"
 msgid "Pade approximation of a Taylor series"
 msgstr "Taylor-sor Padé-approximációja"
 
-#: ../../src/wxMaximaFrame.cpp:2192
+#: ../../src/wxMaximaFrame.cpp:2193
 msgid "Pagebreak"
 msgstr "Laptörés"
 
@@ -5025,7 +5030,7 @@ msgstr "Laptörés"
 msgid "Parallel to"
 msgstr "Párhuzamos"
 
-#: ../../src/wxMaximaFrame.cpp:2281
+#: ../../src/wxMaximaFrame.cpp:2282
 msgid "Parametric Plot"
 msgstr "Paraméteres ábrázolás"
 
@@ -5126,7 +5131,7 @@ msgstr "Ábrázolás két dimenzióban"
 msgid "Plot in 3 dimensions"
 msgstr "Ábrázolás három dimenzióban"
 
-#: ../../src/wxMaximaFrame.cpp:2298
+#: ../../src/wxMaximaFrame.cpp:2299
 msgid "Plot name"
 msgstr "Ábrázolandó neve"
 
@@ -5139,7 +5144,7 @@ msgstr "Ábrázolás rajzolással"
 msgid "Point:"
 msgstr "Hely:"
 
-#: ../../src/wxMaximaFrame.cpp:2284
+#: ../../src/wxMaximaFrame.cpp:2285
 msgid "Points"
 msgstr "Pontok"
 
@@ -5332,12 +5337,12 @@ msgstr "Maxima kimenetelének olvasása"
 msgid "Reading Maxima output: %li bytes"
 msgstr "Maxima kimenet olvasása: %li bájt"
 
-#: ../../src/wxMathml.cpp:44
+#: ../../src/wxMathml.cpp:46
 #, c-format
 msgid "Reading the Lisp part of wxMaxima from the file %s"
 msgstr ""
 
-#: ../../src/wxMathml.cpp:30
+#: ../../src/wxMathml.cpp:32
 msgid "Reading the Lisp part of wxMaxima from the included header file."
 msgstr ""
 
@@ -5804,7 +5809,7 @@ msgstr ""
 msgid "Search button"
 msgstr "Keresés gomb"
 
-#: ../../src/ToolBar.cpp:245 ../../src/wxMaximaFrame.cpp:2180
+#: ../../src/ToolBar.cpp:245 ../../src/wxMaximaFrame.cpp:2181
 msgid "Section"
 msgstr "Fejezet"
 
@@ -6037,11 +6042,11 @@ msgid ""
 "Setting this to \"cat\" causes gnuplot not to halt if there is much output"
 msgstr "Ha ezt \"cat\" -re állítja, a gnuplot nem áll le, ha sok kimenet van"
 
-#: ../../src/wxMaximaFrame.cpp:2269
+#: ../../src/wxMaximaFrame.cpp:2270
 msgid "Setup a 2D plot"
 msgstr "2D-s diagram készítése"
 
-#: ../../src/wxMaximaFrame.cpp:2273
+#: ../../src/wxMaximaFrame.cpp:2274
 msgid "Setup a 3D plot"
 msgstr "3D-s diagram készítése"
 
@@ -6055,7 +6060,7 @@ msgstr ""
 msgid "Setup modulus computation"
 msgstr "Modulus értékének beállítása"
 
-#: ../../src/wxMaximaFrame.cpp:2294
+#: ../../src/wxMaximaFrame.cpp:2295
 msgid "Setup the axis"
 msgstr "A tengely beállítása"
 
@@ -6483,7 +6488,7 @@ msgstr "Stílusok"
 msgid "Subsample..."
 msgstr "Részminta..."
 
-#: ../../src/ToolBar.cpp:246 ../../src/wxMaximaFrame.cpp:2182
+#: ../../src/ToolBar.cpp:246 ../../src/wxMaximaFrame.cpp:2183
 msgid "Subsection"
 msgstr "Alfejezet"
 
@@ -6503,7 +6508,7 @@ msgstr "Behelyettesítés"
 msgid "Substitute..."
 msgstr "&Behelyettesítés..."
 
-#: ../../src/ToolBar.cpp:247 ../../src/wxMaximaFrame.cpp:2184
+#: ../../src/ToolBar.cpp:247 ../../src/wxMaximaFrame.cpp:2185
 msgid "Subsubsection"
 msgstr "Al-alfejezet"
 
@@ -6577,7 +6582,7 @@ msgid "Tells maxima where to store the result of compiling libraries"
 msgstr ""
 "Megmondja a maximának, hogy hol tárolja a könyvtárak fordításának eredményét"
 
-#: ../../src/ToolBar.cpp:243 ../../src/wxMaximaFrame.cpp:2176
+#: ../../src/ToolBar.cpp:243 ../../src/wxMaximaFrame.cpp:2177
 msgid "Text"
 msgstr "Szöveg"
 
@@ -6645,7 +6650,7 @@ msgstr ""
 msgid "The URL MathJaX.js should be downloaded from by our HTML export."
 msgstr "Az MathJaX.js URL-t HTML exportálással kell letölteni."
 
-#: ../../src/wxMaximaFrame.cpp:2318
+#: ../../src/wxMaximaFrame.cpp:2319
 msgid "The accuracy versus speed tradeoff"
 msgstr "Pontosság vs. sebesség"
 
@@ -6674,7 +6679,7 @@ msgstr ""
 "A kézikönyvben szereplő tárgyak gyorsítótára egy másik maxima verzióból "
 "származik."
 
-#: ../../src/wxMaximaFrame.cpp:2305
+#: ../../src/wxMaximaFrame.cpp:2306
 msgid "The color of the next line to draw"
 msgstr "A következő vonal színe a rajzoláshoz"
 
@@ -6700,7 +6705,7 @@ msgstr ""
 "A beágyazott pontok alapértelmezett szélessége. A Maxima wxplot_size nevű "
 "változója olvashatja vagy átírhatja"
 
-#: ../../src/wxMaximaFrame.cpp:2290
+#: ../../src/wxMaximaFrame.cpp:2291
 msgid "The diagram title"
 msgstr "Diagram címe"
 
@@ -6747,7 +6752,7 @@ msgstr "A könyvtár, amelyben a felhasználó könyvtára található"
 msgid "The document class LaTeX is instructed to use for our documents."
 msgstr "Dokumentumjainkhoz a LaTeX dokumentum osztályt használjuk."
 
-#: ../../src/wxMaximaFrame.cpp:2309
+#: ../../src/wxMaximaFrame.cpp:2310
 msgid "The fill color for the next objects"
 msgstr "A következő objektum kitöltőszíne"
 
@@ -6755,7 +6760,7 @@ msgstr "A következő objektum kitöltőszíne"
 msgid "The function call whose arguments to extract"
 msgstr "Függvényhívás, mely argumentumait ki kell csomagolni"
 
-#: ../../src/wxMaximaFrame.cpp:2313
+#: ../../src/wxMaximaFrame.cpp:2314
 msgid "The grid in the background of the diagram"
 msgstr "A rács a diagram hátterében"
 
@@ -6809,7 +6814,7 @@ msgstr "A maxima kézikönyve"
 msgid "The maximum size for this image. Values <= 0 mean: Unspecified."
 msgstr "A kép maximális mérete. Értékek <= 0 jelentés: Meghatározatlan."
 
-#: ../../src/wxMaximaFrame.cpp:2301
+#: ../../src/wxMaximaFrame.cpp:2302
 msgid "The next plot's title"
 msgstr "A következő ábra címe"
 
@@ -6879,7 +6884,7 @@ msgstr ""
 "A szabály, amely meghatározza, hogyan generálja a listaelem értékét.\n"
 "Lehet, hogy olyasmi, mint \"i\", \"i ^ 2\" vagy \"sin(i)\""
 
-#: ../../src/wxMaximaFrame.cpp:2277
+#: ../../src/wxMaximaFrame.cpp:2278
 msgid "The standard plot command: Plot an equation as a curve"
 msgstr "A szokásos plot parancs: egyenletet ábrázolása görbe formájában"
 
@@ -6972,7 +6977,7 @@ msgstr "Ennyiszer:"
 msgid "Tip of the day"
 msgstr "A nap tippje"
 
-#: ../../src/ToolBar.cpp:244 ../../src/wxMaximaFrame.cpp:2178
+#: ../../src/ToolBar.cpp:244 ../../src/wxMaximaFrame.cpp:2179
 msgid "Title"
 msgstr "Cím"
 

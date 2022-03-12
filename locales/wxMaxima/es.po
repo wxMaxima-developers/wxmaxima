@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wmMaxima 20.12.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-03-06 16:47+0100\n"
+"POT-Creation-Date: 2022-03-12 17:12+0100\n"
 "PO-Revision-Date: 2021-01-19 17:29+0100\n"
 "Last-Translator: Francisco Serrador <serrador@tecknolabs.com>\n"
 "Language-Team: Spanish Team <serrador@tecknolabs.com>\n"
@@ -355,6 +355,11 @@ msgstr "&Transponer matriz"
 msgid "&Trigonometric Simplification"
 msgstr "Simplificación &trigonométrica"
 
+#: ../../src/CharButton.cpp:193
+msgid ""
+"(Might not be displayed correctly in at least one of the worksheet fonts)"
+msgstr ""
+
 #: ../../src/VariablesPane.cpp:251
 msgid "(Not a valid variable name)"
 msgstr "(No un nombre de variable válido)"
@@ -388,7 +393,7 @@ msgstr "½"
 msgid "2 Levels"
 msgstr ""
 
-#: ../../src/wxMaximaFrame.cpp:2266
+#: ../../src/wxMaximaFrame.cpp:2267
 msgid "2D"
 msgstr "2D"
 
@@ -400,7 +405,7 @@ msgstr "Ecuaciones 2D empleando Arte ASCII"
 msgid "3 Levels"
 msgstr ""
 
-#: ../../src/wxMaximaFrame.cpp:2270
+#: ../../src/wxMaximaFrame.cpp:2271
 msgid "3D"
 msgstr "3D"
 
@@ -494,7 +499,7 @@ msgstr "Acerca de…"
 msgid "About wxMaxima"
 msgstr "Acerca de wxMaxima"
 
-#: ../../src/wxMaximaFrame.cpp:2315
+#: ../../src/wxMaximaFrame.cpp:2316
 msgid "Accuracy"
 msgstr "Precisión"
 
@@ -825,7 +830,7 @@ msgstr "Números autosuscritos y texto seguido de letras simples"
 msgid "Autowrap long lines:"
 msgstr "Autocortar líneas largas:"
 
-#: ../../src/wxMaximaFrame.cpp:2291
+#: ../../src/wxMaximaFrame.cpp:2292
 msgid "Axis"
 msgstr "Eje"
 
@@ -891,7 +896,7 @@ msgstr "Ambos cursores horizontal y vertical se activa al mismo tiempo"
 msgid "Boxplot..."
 msgstr "Traza de cajas…"
 
-#: ../../src/wxMathml.cpp:98
+#: ../../src/wxMathml.cpp:100
 msgid ""
 "Bug: After removing the whitespace wxMathml.lisp is shorter than expected!"
 msgstr ""
@@ -1310,7 +1315,7 @@ msgstr "Descomentar el texto seleccionado"
 msgid "Comment selection\tCtrl+/"
 msgstr "Comentar selección\tCtrl+/"
 
-#: ../../src/wxMathml.cpp:40
+#: ../../src/wxMathml.cpp:42
 msgid "Compiler-Bug? wxMathml.lisp is shorter than expected!"
 msgstr "¿Defecto-compilador? ¡wxMathml.lisp es más corto que lo esperado!"
 
@@ -1412,11 +1417,11 @@ msgstr "&Ayuda distinguiendo contexto\tCtrl+?"
 msgid "Context-sensitive &Help\tF1"
 msgstr "&Ayuda distinguiendo contexto\tF1"
 
-#: ../../src/wxMaximaFrame.cpp:2295
+#: ../../src/wxMaximaFrame.cpp:2296
 msgid "Contour"
 msgstr "Contorno"
 
-#: ../../src/wxMaximaFrame.cpp:2314
+#: ../../src/wxMaximaFrame.cpp:2315
 msgid "Contour lines for 3d plots"
 msgstr "Líneas de contorno para trazados de 3d"
 
@@ -1866,7 +1871,7 @@ msgid "Di&vide Polynomials..."
 msgstr "Di&vidir polinomios…"
 
 # Tratado
-#: ../../src/wxMaximaFrame.cpp:2287
+#: ../../src/wxMaximaFrame.cpp:2288
 msgid "Diagram title"
 msgstr "Título Diagramático"
 
@@ -2508,7 +2513,7 @@ msgstr "¡Ha fallado la exportación a fichero por lotes de ‘maxima’!"
 msgid "Exporting..."
 msgstr "Exportando…"
 
-#: ../../src/wxMaximaFrame.cpp:2274
+#: ../../src/wxMaximaFrame.cpp:2275
 msgid "Expression"
 msgstr "Expresión"
 
@@ -2645,7 +2650,7 @@ msgid "File you tried to open does not exist."
 msgstr "El fichero que ha intentado abrir no existe."
 
 # Tratado
-#: ../../src/wxMaximaFrame.cpp:2306
+#: ../../src/wxMaximaFrame.cpp:2307
 msgid "Fill color"
 msgstr "Color de relleno"
 
@@ -3027,7 +3032,7 @@ msgstr "Letras Griegas"
 msgid "Greek Letters\tAlt+Shift+G"
 msgstr "Letras griegas\tAlt+Mayús+G"
 
-#: ../../src/wxMaximaFrame.cpp:2310
+#: ../../src/wxMaximaFrame.cpp:2311
 msgid "Grid"
 msgstr "Cuadrícula"
 
@@ -3052,12 +3057,12 @@ msgid "Hadamard exponent"
 msgstr "Exponente Hadamard"
 
 #: ../../src/Configuration.cpp:1466 ../../src/ToolBar.cpp:248
-#: ../../src/wxMaximaFrame.cpp:2186
+#: ../../src/wxMaximaFrame.cpp:2187
 msgid "Heading 5"
 msgstr "Cabecera 5"
 
 #: ../../src/Configuration.cpp:1465 ../../src/ToolBar.cpp:249
-#: ../../src/wxMaximaFrame.cpp:2188
+#: ../../src/wxMaximaFrame.cpp:2189
 msgid "Heading 6"
 msgstr "Cabecera 6"
 
@@ -3396,7 +3401,7 @@ msgstr ""
 "Si un cálculo dura mucho tiempo, se puede parar seleccionando '‘Maxima’ → "
 "Interrumpir' o '‘Maxima’ → Reiniciar Maxima' en el menú de instrucciones."
 
-#: ../../src/wxMaximaFrame.cpp:2190
+#: ../../src/wxMaximaFrame.cpp:2191
 msgid "Image"
 msgstr "Imagen"
 
@@ -3408,7 +3413,7 @@ msgstr ""
 "Ficheros de imagen (*.png, *.jpg, *.bmp, *.xpm, *.gif, *.svg, *.svgz)|*.png;"
 "*.jpg;*.bmp;*.xpm;*.gif;*.svg;*.svgz"
 
-#: ../../src/wxMaximaFrame.cpp:2278
+#: ../../src/wxMaximaFrame.cpp:2279
 msgid "Implicit Plot"
 msgstr "Trazado Implícito"
 
@@ -3984,7 +3989,7 @@ msgid "Limit..."
 msgstr "Límite…"
 
 # Tratado
-#: ../../src/wxMaximaFrame.cpp:2302
+#: ../../src/wxMaximaFrame.cpp:2303
 msgid "Line color"
 msgstr "Color lineal"
 
@@ -5090,7 +5095,7 @@ msgstr "Aproximación de Padé"
 msgid "Pade approximation of a Taylor series"
 msgstr "Aproximación de Padé de una serie de Taylor"
 
-#: ../../src/wxMaximaFrame.cpp:2192
+#: ../../src/wxMaximaFrame.cpp:2193
 msgid "Pagebreak"
 msgstr "Salto de página"
 
@@ -5098,7 +5103,7 @@ msgstr "Salto de página"
 msgid "Parallel to"
 msgstr "Paralelo a"
 
-#: ../../src/wxMaximaFrame.cpp:2281
+#: ../../src/wxMaximaFrame.cpp:2282
 msgid "Parametric Plot"
 msgstr "Tramado Paramétrico"
 
@@ -5199,7 +5204,7 @@ msgstr "Tramado en 2 dimensiones"
 msgid "Plot in 3 dimensions"
 msgstr "Tramado en 3 dimensiones"
 
-#: ../../src/wxMaximaFrame.cpp:2298
+#: ../../src/wxMaximaFrame.cpp:2299
 msgid "Plot name"
 msgstr "Tramado nombrado"
 
@@ -5212,7 +5217,7 @@ msgstr "Tramado utilizando Dibujo"
 msgid "Point:"
 msgstr "Punto:"
 
-#: ../../src/wxMaximaFrame.cpp:2284
+#: ../../src/wxMaximaFrame.cpp:2285
 msgid "Points"
 msgstr "Puntos"
 
@@ -5404,12 +5409,12 @@ msgstr "Leyendo salida de Maxima"
 msgid "Reading Maxima output: %li bytes"
 msgstr "Leyendo salida de ‘Maxima’: %li bytes"
 
-#: ../../src/wxMathml.cpp:44
+#: ../../src/wxMathml.cpp:46
 #, c-format
 msgid "Reading the Lisp part of wxMaxima from the file %s"
 msgstr ""
 
-#: ../../src/wxMathml.cpp:30
+#: ../../src/wxMathml.cpp:32
 msgid "Reading the Lisp part of wxMaxima from the included header file."
 msgstr ""
 
@@ -5878,7 +5883,7 @@ msgstr ""
 msgid "Search button"
 msgstr "Botón de Búsqueda"
 
-#: ../../src/ToolBar.cpp:245 ../../src/wxMaximaFrame.cpp:2180
+#: ../../src/ToolBar.cpp:245 ../../src/wxMaximaFrame.cpp:2181
 msgid "Section"
 msgstr "Sección"
 
@@ -6115,11 +6120,11 @@ msgid ""
 msgstr ""
 "Estableciendo esto a \"cat\" causa que gnuplot no detenga si hay mucha salida"
 
-#: ../../src/wxMaximaFrame.cpp:2269
+#: ../../src/wxMaximaFrame.cpp:2270
 msgid "Setup a 2D plot"
 msgstr "Preparar un tramado 2D"
 
-#: ../../src/wxMaximaFrame.cpp:2273
+#: ../../src/wxMaximaFrame.cpp:2274
 msgid "Setup a 3D plot"
 msgstr "Preparar un tramado 3D"
 
@@ -6133,7 +6138,7 @@ msgstr ""
 msgid "Setup modulus computation"
 msgstr "Preparar cálculo de módulo"
 
-#: ../../src/wxMaximaFrame.cpp:2294
+#: ../../src/wxMaximaFrame.cpp:2295
 msgid "Setup the axis"
 msgstr "Configura el eje"
 
@@ -6560,7 +6565,7 @@ msgstr "Estilos"
 msgid "Subsample..."
 msgstr "Submuestra…"
 
-#: ../../src/ToolBar.cpp:246 ../../src/wxMaximaFrame.cpp:2182
+#: ../../src/ToolBar.cpp:246 ../../src/wxMaximaFrame.cpp:2183
 msgid "Subsection"
 msgstr "Subsección"
 
@@ -6580,7 +6585,7 @@ msgstr "Sustituir"
 msgid "Substitute..."
 msgstr "Sustituir…"
 
-#: ../../src/ToolBar.cpp:247 ../../src/wxMaximaFrame.cpp:2184
+#: ../../src/ToolBar.cpp:247 ../../src/wxMaximaFrame.cpp:2185
 msgid "Subsubsection"
 msgstr "Subsubsección"
 
@@ -6656,7 +6661,7 @@ msgstr "Tellrat"
 msgid "Tells maxima where to store the result of compiling libraries"
 msgstr "Dice ‘maxima’ donde almacenar el resultado de bibliotecas compiladas"
 
-#: ../../src/ToolBar.cpp:243 ../../src/wxMaximaFrame.cpp:2176
+#: ../../src/ToolBar.cpp:243 ../../src/wxMaximaFrame.cpp:2177
 msgid "Text"
 msgstr "Texto"
 
@@ -6725,7 +6730,7 @@ msgstr ""
 msgid "The URL MathJaX.js should be downloaded from by our HTML export."
 msgstr "La URL MathJax.js debería ser descargarse por nuestro exportador HTML."
 
-#: ../../src/wxMaximaFrame.cpp:2318
+#: ../../src/wxMaximaFrame.cpp:2319
 msgid "The accuracy versus speed tradeoff"
 msgstr "La precisión frente a velocidad obtenida"
 
@@ -6754,7 +6759,7 @@ msgstr ""
 "La caché para los asuntos que el manual contiene está desde una versión "
 "diferente de ‘Maxima’."
 
-#: ../../src/wxMaximaFrame.cpp:2305
+#: ../../src/wxMaximaFrame.cpp:2306
 msgid "The color of the next line to draw"
 msgstr "El color de la siguiente linea a dibujar"
 
@@ -6778,7 +6783,7 @@ msgstr ""
 "La anchura por defecto de las tramas empotrados.  Puede ser leída o "
 "descartada por la variable de ‘maxima’ wxplot_size"
 
-#: ../../src/wxMaximaFrame.cpp:2290
+#: ../../src/wxMaximaFrame.cpp:2291
 msgid "The diagram title"
 msgstr "El título del diagrama"
 
@@ -6827,7 +6832,7 @@ msgstr ""
 msgid "The document class LaTeX is instructed to use for our documents."
 msgstr "La clase de documento que utilizará LaTeX para nuestros documentos."
 
-#: ../../src/wxMaximaFrame.cpp:2309
+#: ../../src/wxMaximaFrame.cpp:2310
 msgid "The fill color for the next objects"
 msgstr "Este color de relleno para los objetos siguientes"
 
@@ -6835,7 +6840,7 @@ msgstr "Este color de relleno para los objetos siguientes"
 msgid "The function call whose arguments to extract"
 msgstr "La invocación a función cuyos argumentos extraer"
 
-#: ../../src/wxMaximaFrame.cpp:2313
+#: ../../src/wxMaximaFrame.cpp:2314
 msgid "The grid in the background of the diagram"
 msgstr "La rejilla dentro del fondo del diagrama"
 
@@ -6893,7 +6898,7 @@ msgid "The maximum size for this image. Values <= 0 mean: Unspecified."
 msgstr ""
 "El tamaño máximo para esta imagen. Valores <= 0 signidican: inespecificado."
 
-#: ../../src/wxMaximaFrame.cpp:2301
+#: ../../src/wxMaximaFrame.cpp:2302
 msgid "The next plot's title"
 msgstr "El siguiente título del tramado"
 
@@ -6968,7 +6973,7 @@ msgstr ""
 "La regla que explica cómo generar el valor de un elemento listado.\n"
 "Quizá es algo como \"i\", \"i^2\" o \"sin(i)\""
 
-#: ../../src/wxMaximaFrame.cpp:2277
+#: ../../src/wxMaximaFrame.cpp:2278
 msgid "The standard plot command: Plot an equation as a curve"
 msgstr "La instrucción de trama común: tramar una ecuación como una curva"
 
@@ -7060,7 +7065,7 @@ msgstr "Veces:"
 msgid "Tip of the day"
 msgstr "Consejo del día"
 
-#: ../../src/ToolBar.cpp:244 ../../src/wxMaximaFrame.cpp:2178
+#: ../../src/ToolBar.cpp:244 ../../src/wxMaximaFrame.cpp:2179
 msgid "Title"
 msgstr "Título"
 

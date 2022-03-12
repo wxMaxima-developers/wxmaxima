@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Greek translation of wxMaxima GUI\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-03-06 16:47+0100\n"
+"POT-Creation-Date: 2022-03-12 17:12+0100\n"
 "PO-Revision-Date: 2010-06-04 19:46+0200\n"
 "Last-Translator: aga <akritas@uth.gr>\n"
 "Language-Team: uth <aakritas@uth.gr>\n"
@@ -356,6 +356,11 @@ msgstr "Ανάστροφος πίνακας"
 msgid "&Trigonometric Simplification"
 msgstr "Τριγωνομετρική απλοποίηση"
 
+#: ../../src/CharButton.cpp:193
+msgid ""
+"(Might not be displayed correctly in at least one of the worksheet fonts)"
+msgstr ""
+
 #: ../../src/VariablesPane.cpp:251
 msgid "(Not a valid variable name)"
 msgstr ""
@@ -386,7 +391,7 @@ msgstr ""
 msgid "2 Levels"
 msgstr ""
 
-#: ../../src/wxMaximaFrame.cpp:2266
+#: ../../src/wxMaximaFrame.cpp:2267
 msgid "2D"
 msgstr ""
 
@@ -398,7 +403,7 @@ msgstr ""
 msgid "3 Levels"
 msgstr ""
 
-#: ../../src/wxMaximaFrame.cpp:2270
+#: ../../src/wxMaximaFrame.cpp:2271
 msgid "3D"
 msgstr ""
 
@@ -485,7 +490,7 @@ msgstr "Πληροφορίες για το wxMaxima"
 msgid "About wxMaxima"
 msgstr "Πληροφορίες για το wxMaxima"
 
-#: ../../src/wxMaximaFrame.cpp:2315
+#: ../../src/wxMaximaFrame.cpp:2316
 msgid "Accuracy"
 msgstr ""
 
@@ -814,7 +819,7 @@ msgstr ""
 msgid "Autowrap long lines:"
 msgstr ""
 
-#: ../../src/wxMaximaFrame.cpp:2291
+#: ../../src/wxMaximaFrame.cpp:2292
 msgid "Axis"
 msgstr ""
 
@@ -878,7 +883,7 @@ msgstr ""
 msgid "Boxplot..."
 msgstr "Θηκόγραμμα"
 
-#: ../../src/wxMathml.cpp:98
+#: ../../src/wxMathml.cpp:100
 msgid ""
 "Bug: After removing the whitespace wxMathml.lisp is shorter than expected!"
 msgstr ""
@@ -1278,7 +1283,7 @@ msgstr ""
 msgid "Comment selection\tCtrl+/"
 msgstr "Επιλογή Σχολίων"
 
-#: ../../src/wxMathml.cpp:40
+#: ../../src/wxMathml.cpp:42
 msgid "Compiler-Bug? wxMathml.lisp is shorter than expected!"
 msgstr ""
 
@@ -1382,11 +1387,11 @@ msgstr ""
 msgid "Context-sensitive &Help\tF1"
 msgstr ""
 
-#: ../../src/wxMaximaFrame.cpp:2295
+#: ../../src/wxMaximaFrame.cpp:2296
 msgid "Contour"
 msgstr ""
 
-#: ../../src/wxMaximaFrame.cpp:2314
+#: ../../src/wxMaximaFrame.cpp:2315
 msgid "Contour lines for 3d plots"
 msgstr ""
 
@@ -1846,7 +1851,7 @@ msgstr "Απόκλιση"
 msgid "Di&vide Polynomials..."
 msgstr "Διαίρεση πολυωνύμων..."
 
-#: ../../src/wxMaximaFrame.cpp:2287
+#: ../../src/wxMaximaFrame.cpp:2288
 msgid "Diagram title"
 msgstr ""
 
@@ -2511,7 +2516,7 @@ msgstr "Η εξαγωγή σε TeX απέτυχε"
 msgid "Exporting..."
 msgstr "Εξαγωγή..."
 
-#: ../../src/wxMaximaFrame.cpp:2274
+#: ../../src/wxMaximaFrame.cpp:2275
 msgid "Expression"
 msgstr "Παράσταση:"
 
@@ -2653,7 +2658,7 @@ msgstr "Το αρχείο δεν βρέθηκε"
 msgid "File you tried to open does not exist."
 msgstr "Το αρχείο που προσπαθήσατε να ανοίξετε δεν υπάρχει"
 
-#: ../../src/wxMaximaFrame.cpp:2306
+#: ../../src/wxMaximaFrame.cpp:2307
 msgid "Fill color"
 msgstr ""
 
@@ -3020,7 +3025,7 @@ msgstr "Ελληνικές σταθερές"
 msgid "Greek Letters\tAlt+Shift+G"
 msgstr "Γενικά Μαθηματικά\tAlt+Shift+M"
 
-#: ../../src/wxMaximaFrame.cpp:2310
+#: ../../src/wxMaximaFrame.cpp:2311
 #, fuzzy
 msgid "Grid"
 msgstr "Πλέγμα:"
@@ -3045,12 +3050,12 @@ msgid "Hadamard exponent"
 msgstr ""
 
 #: ../../src/Configuration.cpp:1466 ../../src/ToolBar.cpp:248
-#: ../../src/wxMaximaFrame.cpp:2186
+#: ../../src/wxMaximaFrame.cpp:2187
 msgid "Heading 5"
 msgstr ""
 
 #: ../../src/Configuration.cpp:1465 ../../src/ToolBar.cpp:249
-#: ../../src/wxMaximaFrame.cpp:2188
+#: ../../src/wxMaximaFrame.cpp:2189
 msgid "Heading 6"
 msgstr ""
 
@@ -3354,7 +3359,7 @@ msgstr ""
 "Αν ο υπολογισμός σας καθυστερεί πολύ, μπορείτε να δοκιμάσετε τις εντολές του "
 "μενού 'Maxima->Διακοπή' ή 'Maxima->Επανεκκίνηση Maxima'."
 
-#: ../../src/wxMaximaFrame.cpp:2190
+#: ../../src/wxMaximaFrame.cpp:2191
 msgid "Image"
 msgstr "Εικόνα"
 
@@ -3364,7 +3369,7 @@ msgid ""
 "bmp;*.xpm;*.gif;*.svg;*.svgz"
 msgstr ""
 
-#: ../../src/wxMaximaFrame.cpp:2278
+#: ../../src/wxMaximaFrame.cpp:2279
 msgid "Implicit Plot"
 msgstr ""
 
@@ -3913,7 +3918,7 @@ msgstr "Όριο"
 msgid "Limit..."
 msgstr "Όριο..."
 
-#: ../../src/wxMaximaFrame.cpp:2302
+#: ../../src/wxMaximaFrame.cpp:2303
 msgid "Line color"
 msgstr ""
 
@@ -4932,7 +4937,7 @@ msgstr "Προσέγγιση Pade..."
 msgid "Pade approximation of a Taylor series"
 msgstr "Προσέγγιση Pade σειράς Taylor"
 
-#: ../../src/wxMaximaFrame.cpp:2192
+#: ../../src/wxMaximaFrame.cpp:2193
 msgid "Pagebreak"
 msgstr "Αλλαγή σελίδας"
 
@@ -4940,7 +4945,7 @@ msgstr "Αλλαγή σελίδας"
 msgid "Parallel to"
 msgstr ""
 
-#: ../../src/wxMaximaFrame.cpp:2281
+#: ../../src/wxMaximaFrame.cpp:2282
 #, fuzzy
 msgid "Parametric Plot"
 msgstr "Παραμετρικό γράφημα"
@@ -5045,7 +5050,7 @@ msgstr "Γράφημα σε 2 διαστάσεις"
 msgid "Plot in 3 dimensions"
 msgstr "Γράφημα σε 3 διαστάσεις"
 
-#: ../../src/wxMaximaFrame.cpp:2298
+#: ../../src/wxMaximaFrame.cpp:2299
 #, fuzzy
 msgid "Plot name"
 msgstr "Λίστα:"
@@ -5059,7 +5064,7 @@ msgstr ""
 msgid "Point:"
 msgstr "Σημείο:"
 
-#: ../../src/wxMaximaFrame.cpp:2284
+#: ../../src/wxMaximaFrame.cpp:2285
 #, fuzzy
 msgid "Points"
 msgstr "Σημείο:"
@@ -5254,12 +5259,12 @@ msgstr "Διάβασμα αποτελέσματος Maxima"
 msgid "Reading Maxima output: %li bytes"
 msgstr ""
 
-#: ../../src/wxMathml.cpp:44
+#: ../../src/wxMathml.cpp:46
 #, c-format
 msgid "Reading the Lisp part of wxMaxima from the file %s"
 msgstr ""
 
-#: ../../src/wxMathml.cpp:30
+#: ../../src/wxMathml.cpp:32
 msgid "Reading the Lisp part of wxMaxima from the included header file."
 msgstr ""
 
@@ -5722,7 +5727,7 @@ msgstr ""
 msgid "Search button"
 msgstr ""
 
-#: ../../src/ToolBar.cpp:245 ../../src/wxMaximaFrame.cpp:2180
+#: ../../src/ToolBar.cpp:245 ../../src/wxMaximaFrame.cpp:2181
 msgid "Section"
 msgstr "Ενότητα"
 
@@ -5954,11 +5959,11 @@ msgid ""
 "Setting this to \"cat\" causes gnuplot not to halt if there is much output"
 msgstr ""
 
-#: ../../src/wxMaximaFrame.cpp:2269
+#: ../../src/wxMaximaFrame.cpp:2270
 msgid "Setup a 2D plot"
 msgstr ""
 
-#: ../../src/wxMaximaFrame.cpp:2273
+#: ../../src/wxMaximaFrame.cpp:2274
 msgid "Setup a 3D plot"
 msgstr ""
 
@@ -5972,7 +5977,7 @@ msgstr ""
 msgid "Setup modulus computation"
 msgstr "Εγκατάσταση υπολογισμών modulo"
 
-#: ../../src/wxMaximaFrame.cpp:2294
+#: ../../src/wxMaximaFrame.cpp:2295
 msgid "Setup the axis"
 msgstr ""
 
@@ -6403,7 +6408,7 @@ msgstr "Στυλ"
 msgid "Subsample..."
 msgstr "Υποδείγμα..."
 
-#: ../../src/ToolBar.cpp:246 ../../src/wxMaximaFrame.cpp:2182
+#: ../../src/ToolBar.cpp:246 ../../src/wxMaximaFrame.cpp:2183
 msgid "Subsection"
 msgstr "Υποενότητα"
 
@@ -6423,7 +6428,7 @@ msgstr "Αντικατάσταση"
 msgid "Substitute..."
 msgstr "Αντικατάσταση..."
 
-#: ../../src/ToolBar.cpp:247 ../../src/wxMaximaFrame.cpp:2184
+#: ../../src/ToolBar.cpp:247 ../../src/wxMaximaFrame.cpp:2185
 #, fuzzy
 msgid "Subsubsection"
 msgstr "Υποενότητα"
@@ -6496,7 +6501,7 @@ msgstr "Tellrat"
 msgid "Tells maxima where to store the result of compiling libraries"
 msgstr ""
 
-#: ../../src/ToolBar.cpp:243 ../../src/wxMaximaFrame.cpp:2176
+#: ../../src/ToolBar.cpp:243 ../../src/wxMaximaFrame.cpp:2177
 msgid "Text"
 msgstr "Κείμενο"
 
@@ -6554,7 +6559,7 @@ msgstr ""
 msgid "The URL MathJaX.js should be downloaded from by our HTML export."
 msgstr ""
 
-#: ../../src/wxMaximaFrame.cpp:2318
+#: ../../src/wxMaximaFrame.cpp:2319
 msgid "The accuracy versus speed tradeoff"
 msgstr ""
 
@@ -6578,7 +6583,7 @@ msgid ""
 "version."
 msgstr ""
 
-#: ../../src/wxMaximaFrame.cpp:2305
+#: ../../src/wxMaximaFrame.cpp:2306
 msgid "The color of the next line to draw"
 msgstr ""
 
@@ -6600,7 +6605,7 @@ msgid ""
 "maxima variable wxplot_size"
 msgstr ""
 
-#: ../../src/wxMaximaFrame.cpp:2290
+#: ../../src/wxMaximaFrame.cpp:2291
 msgid "The diagram title"
 msgstr ""
 
@@ -6640,7 +6645,7 @@ msgstr ""
 msgid "The document class LaTeX is instructed to use for our documents."
 msgstr ""
 
-#: ../../src/wxMaximaFrame.cpp:2309
+#: ../../src/wxMaximaFrame.cpp:2310
 msgid "The fill color for the next objects"
 msgstr ""
 
@@ -6648,7 +6653,7 @@ msgstr ""
 msgid "The function call whose arguments to extract"
 msgstr ""
 
-#: ../../src/wxMaximaFrame.cpp:2313
+#: ../../src/wxMaximaFrame.cpp:2314
 msgid "The grid in the background of the diagram"
 msgstr ""
 
@@ -6698,7 +6703,7 @@ msgstr "Καλωσορίσατε στο wxMaxima"
 msgid "The maximum size for this image. Values <= 0 mean: Unspecified."
 msgstr ""
 
-#: ../../src/wxMaximaFrame.cpp:2301
+#: ../../src/wxMaximaFrame.cpp:2302
 msgid "The next plot's title"
 msgstr ""
 
@@ -6751,7 +6756,7 @@ msgid ""
 "Might be something like \"i\", \"i^2\" or \"sin(i)\""
 msgstr ""
 
-#: ../../src/wxMaximaFrame.cpp:2277
+#: ../../src/wxMaximaFrame.cpp:2278
 msgid "The standard plot command: Plot an equation as a curve"
 msgstr ""
 
@@ -6823,7 +6828,7 @@ msgstr "Φορές:"
 msgid "Tip of the day"
 msgstr ""
 
-#: ../../src/ToolBar.cpp:244 ../../src/wxMaximaFrame.cpp:2178
+#: ../../src/ToolBar.cpp:244 ../../src/wxMaximaFrame.cpp:2179
 msgid "Title"
 msgstr "Τίτλος"
 
