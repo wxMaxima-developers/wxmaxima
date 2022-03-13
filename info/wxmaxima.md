@@ -235,6 +235,11 @@ Shortcuts to the most important _Maxima_ commands or things like a table of cont
 
 ![Example of different side panes](./SidePanes.png){ id=img_SidePanes }
 
+In the "table of contents" side pane one can increase or decrease a heading, just click on the heading with the right mouse button
+and select the next higher or lower heading type.
+
+![Increase or decrease headings in the TOC side pane](./Sidepane-TOC-convert-headings.png){ id=Sidepane-TOC-convert-headings }
+
 ### MathML output
 
 Several word processors and similar programs either recognize MathML input and automatically insert it as an editable 2D equation - or (like LibreOffice 5.1) have an equation editor that offers an “import MathML from clipboard” feature. Others support RTF maths. _wxMaxima_ therefore offers several entries in the right-click menu.
