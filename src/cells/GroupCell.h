@@ -313,9 +313,9 @@ public:
   bool IsMainInput(Cell *active) const;
 
   bool IsHeading() const;
-  //! Can this chapter/section/... be made a section/subsection/... changing its subheadings, too?
-  bool SectioningCanMoveIn() const;
-  //! Can this section/subsection/... be made a chapter/section/... changing its subheadings, too?
+  //! Can this chapter/section/... converted to a 'smaller' cell, e.g. section->subsection, paragraph->subparagraph, ...?
+  bool SectioningCanMoveIn() const {return IsHeading() && (GetGroupType() != GC_TYPE_HEADING6);};
+  //! Can this chapter/section/... converted to a 'larger' cell, e.g. subsection->section, subparagraph->paragraph, ...?
   bool SectioningCanMoveOut() const {return IsHeading() && (GetGroupType() != GC_TYPE_TITLE);}
   //! Get the end of this section/subsection/...
   GroupCell *SectioningUnitGetEndOf() const;

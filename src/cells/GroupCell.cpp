@@ -1974,19 +1974,6 @@ bool GroupCell::IsHeading() const
   }
 }
 
-bool GroupCell::SectioningCanMoveIn() const
-{
-  if(!IsHeading())
-    return false;
-  for (auto const &tmp : OnList(this))
-  {
-    if(!tmp.IsLesserGCType(GetGroupType()))
-      break;
-    if(tmp.GetGroupType() == GC_TYPE_HEADING6)
-      return false;
-  }
-  return true;
-}
 
 bool GroupCell::SectioningMoveIn()
 {
