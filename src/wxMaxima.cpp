@@ -4227,7 +4227,7 @@ void wxMaxima::ShowMaximaHelp(wxString keyword)
     keyword = "outchar";
   wxString MaximaHelpFile = m_worksheet->GetMaximaHelpFile();
 #ifdef __WINDOWS__
-  // replace \ with / als directory separator
+  // replace \ with / as directory separator
   MaximaHelpFile.Replace("\\", "/", true);
 #endif
 
@@ -5484,7 +5484,7 @@ void wxMaxima::FileMenu(wxCommandEvent &event)
 
       if (!file.empty())
       {
-        // On the mac the "File/New" menu item by default opens a new window instead od
+        // On the mac the "File/New" menu item by default opens a new window instead of
         // reusing the old one.
         #ifdef __WXOSX__
         if(m_worksheet->IsEmpty())
@@ -9037,7 +9037,7 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
     {
       wxLogMessage(
         wxString::Format(
-          _("Drag and drop: Dropping cells begining with %s after the cell reading %s."),
+          _("Drag and drop: Dropping cells beginning with %s after the cell reading %s."),
           m_worksheet->m_tableOfContents->DNDStart()->ToString().c_str(),
           m_worksheet->m_tableOfContents->DNDEnd()->ToString().c_str()
           ));

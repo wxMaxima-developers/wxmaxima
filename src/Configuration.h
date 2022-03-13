@@ -382,7 +382,7 @@ public:
       return GetZoomFactor();
   }
 
-  //! The minimum sensible line width in withs of a letter.
+  //! The minimum sensible line width in widths of a letter.
   long LineWidth_em() const 
   {
     if(!m_printing)

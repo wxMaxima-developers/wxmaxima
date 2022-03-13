@@ -520,7 +520,7 @@ void MyApp::OnFileMenu(wxCommandEvent &ev)
 
     if (!file.empty())
     {
-      // On the mac the "File/New" menu item by default opens a new window instead od
+      // On the mac the "File/New" menu item by default opens a new window instead of
       // reusing the old one.
       NewWindow(file);
     }
