@@ -4616,6 +4616,43 @@ std::unique_ptr<Cell> Worksheet::CopySelection(bool asData) const
   return CopySelection(m_cellPointers.m_selectionStart, m_cellPointers.m_selectionEnd, asData);
 }
 
+void Worksheet::TOCdnd()
+{
+    // Select the region that is to be moved
+    m_cellPointers.m_selectionStart =  m_tableOfContents->DNDStart();
+    m_cellPointers.m_selectionEnd = m_cellPointers.m_selectionStart;
+    if(m_cellPointers.m_selectionEnd->GetNext())
+      m_cellPointers.m_selectionEnd = m_cellPointers.m_selectionEnd->GetNext();
+    while((m_cellPointers.m_selectionEnd != NULL) &&
+          (
+            (m_cellPointers.m_selectionEnd->GetNext() == NULL) ||
+            (dynamic_cast<GroupCell *>(m_cellPointers.m_selectionEnd->GetNext())->IsLesserGCType(dynamic_cast<GroupCell *>(m_cellPointers.m_selectionEnd.get())->GetGroupType()))))
+      m_cellPointers.m_selectionEnd = m_cellPointers.m_selectionEnd->GetNext();
+
+    // Copy the region we want to move
+    CellListBuilder<> copy;
+    for (auto &src : OnList(m_cellPointers.m_selectionStart.get()))
+    {
+      copy.Append(src.Copy(dynamic_cast<GroupCell *>(&src)));
+      if(&src == m_cellPointers.m_selectionEnd)
+        break;
+    }
+
+    // Delete the region we just copied and tell the undo buffer that this
+    // is only half of the action we want to perform
+    DeleteSelection();
+    TreeUndo_AppendAction();
+
+    std::unique_ptr<Cell> copiedCells = std::move(copy);
+    std::unique_ptr<GroupCell> copiedGroupCells =
+      std::move(unique_cast<Cell, GroupCell>(std::move(copiedCells)));
+    InsertGroupCells(std::move(copiedGroupCells), m_tableOfContents->DNDEnd());
+    RecalculateForce();
+    RequestRedraw();
+    UpdateTableOfContents();
+    NumberSections();
+}
+
 std::unique_ptr<Cell> Worksheet::CopySelection(Cell *start, Cell *end, bool asData) const
 {
   CellListBuilder<> copy;

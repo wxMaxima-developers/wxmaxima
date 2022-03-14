@@ -9021,38 +9021,7 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
   }
   case TableOfContents::popid_tocdnd:
   {
-    GroupCell *droppedRegionStart =  m_worksheet->m_tableOfContents->DNDStart();
-    GroupCell *droppedRegionend = droppedRegionStart;
-    if(droppedRegionend->GetNext())
-      droppedRegionend = droppedRegionend->GetNext();
-    while((droppedRegionend != NULL) &&
-          (
-            (droppedRegionend->GetNext() == NULL) ||
-            (droppedRegionend->GetNext()->IsLesserGCType(droppedRegionStart->GetGroupType()))))
-      droppedRegionend = droppedRegionend->GetNext();
-    
-    auto droppedRegion = CellList::TearOut(droppedRegionStart, droppedRegionend);
-      auto cells = static_unique_ptr_cast<GroupCell>(std::move(droppedRegion.cellOwner));
-    if(m_worksheet->m_tableOfContents->DNDEnd() != NULL)
-    {
-      wxLogMessage(
-        wxString::Format(
-          _("Drag and drop: Dropping cells beginning with %s after the cell reading %s."),
-          m_worksheet->m_tableOfContents->DNDStart()->ToString().c_str(),
-          m_worksheet->m_tableOfContents->DNDEnd()->ToString().c_str()
-          ));
-      CellList::SpliceInAfter(m_worksheet->m_tableOfContents->DNDEnd(), std::move(cells));
-    }
-    else
-    {
-      wxLogMessage("Drag and drop: Dropping cells at the beginning of the worksheet.");
-      m_worksheet->InsertGroupCells(std::move(cells));
-    }
-    break;
-    m_worksheet->RecalculateForce();
-    m_worksheet->RequestRedraw();
-    m_worksheet->UpdateTableOfContents();
-    m_worksheet->NumberSections();
+    m_worksheet->TOCdnd();
     break;
   }
   case TableOfContents::popid_tocMoveIn:

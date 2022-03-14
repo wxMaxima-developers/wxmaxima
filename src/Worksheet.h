@@ -1030,6 +1030,8 @@ public:
   */
   void DeleteSelection();
 
+  void TOCdnd();
+  
   //! Is it possible to delete the cells between start and end?
   bool CanDeleteRegion(GroupCell *start, GroupCell *end) const;
 
@@ -1202,6 +1204,16 @@ public:
   }
   bool StatusTextHas(){return m_statusTextHas;}
 private:
+  template <class T_SRC, class T_DEST>
+  inline std::unique_ptr<T_DEST> unique_cast(std::unique_ptr<T_SRC> &&src)
+    {
+      if (!src) return std::unique_ptr<T_DEST>();
+
+      T_DEST *dest_ptr = &dynamic_cast<T_DEST &>(*src.get());
+
+      src.release();
+      return std::move(std::unique_ptr<T_DEST>(dest_ptr));
+    }
   wxString m_statusText;
   wxString m_statusText_old;
   bool m_statusTextHas = false;
