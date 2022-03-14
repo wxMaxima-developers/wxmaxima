@@ -9026,17 +9026,17 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
   }
   case TableOfContents::popid_tocMoveIn:
     m_worksheet->m_tableOfContents->RightClickedOn()->SectioningMoveIn();
+    m_worksheet->NumberSections();
     m_worksheet->Recalculate();
     m_worksheet->RequestRedraw();
     m_worksheet->UpdateTableOfContents();
-    m_worksheet->NumberSections();
     break;
   case TableOfContents::popid_tocMoveOut:
     m_worksheet->m_tableOfContents->RightClickedOn()->SectioningMoveOut();
+    m_worksheet->NumberSections();
     m_worksheet->Recalculate();
     m_worksheet->RequestRedraw();
     m_worksheet->UpdateTableOfContents();
-    m_worksheet->NumberSections();
     break;
   case Worksheet::popid_evaluate_section:
   {
