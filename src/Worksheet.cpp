@@ -4623,7 +4623,7 @@ void Worksheet::TOCdnd()
     m_cellPointers.m_selectionEnd = m_cellPointers.m_selectionStart;
     if(m_cellPointers.m_selectionEnd->GetNext())
       m_cellPointers.m_selectionEnd = m_cellPointers.m_selectionEnd->GetNext();
-    while((m_cellPointers.m_selectionEnd != NULL) &&
+    while((m_cellPointers.m_selectionEnd) &&
           (
             (m_cellPointers.m_selectionEnd->GetNext() == NULL) ||
             (dynamic_cast<GroupCell *>(m_cellPointers.m_selectionEnd->GetNext())->IsLesserGCType(dynamic_cast<GroupCell *>(m_cellPointers.m_selectionEnd.get())->GetGroupType()))))
