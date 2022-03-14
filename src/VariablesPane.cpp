@@ -20,7 +20,7 @@
 //  SPDX-License-Identifier: GPL-2.0+
 
 #include "VariablesPane.h"
-#include "memory"
+#include <memory>
 
 Variablespane::Variablespane(wxWindow *parent, wxWindowID id) :
   wxPanel(parent, id)

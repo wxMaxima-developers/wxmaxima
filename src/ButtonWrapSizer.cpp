@@ -29,7 +29,7 @@
 
 #include "ButtonWrapSizer.h"
 #include "UnicodeSidebar.h"
-#include "wx/sizer.h"
+#include <wx/sizer.h>
 #include <wx/settings.h>
 Buttonwrapsizer::Buttonwrapsizer(int orient) :
   wxWrapSizer(orient)

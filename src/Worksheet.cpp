@@ -72,7 +72,7 @@
 #include <wx/fs_mem.h>
 #include <wx/filefn.h>
 #include <stdlib.h>
-#include "memory"
+#include <memory>
 
 //! This class represents the worksheet shown in the middle of the wxMaxima window.
 Worksheet::Worksheet(wxWindow *parent, int id, Worksheet* &observer, wxPoint pos, wxSize size) :

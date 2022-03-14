@@ -38,7 +38,7 @@
 #include "utils/CachedValue.h"
 #include <wx/defs.h>
 #if wxUSE_ACCESSIBILITY
-#include "wx/access.h"
+#include <wx/access.h>
 #endif // wxUSE_ACCESSIBILITY
 #include <algorithm>
 #include <map>

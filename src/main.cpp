@@ -54,7 +54,7 @@
 
 #if defined wxUSE_LIBGNOMEPRINT
 #if wxUSE_LIBGNOMEPRINT
-#include "wx/html/forcelnk.h"
+#include <wx/html/forcelnk.h>
 FORCE_LINK(gnome_print)
 #endif
 #endif

@@ -23,7 +23,7 @@
 #ifndef BUTTONWRAPSIZER_H
 #define BUTTONWRAPSIZER_H
 
-#include "wx/stattext.h"
+#include <wx/stattext.h>
 
 /*! \file
 

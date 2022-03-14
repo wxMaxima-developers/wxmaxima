@@ -34,7 +34,7 @@ that still have to be sent to maxima.
 
 #include "precomp.h"
 #include "GroupCell.h"
-#include "wx/arrstr.h"
+#include <wx/arrstr.h>
 #include <vector>
 
 //! A simple FIFO queue with manual removal of elements
