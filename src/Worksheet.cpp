@@ -8488,6 +8488,97 @@ void Worksheet::OnComplete(wxCommandEvent &event)
   RequestRedraw();
 }
 
+bool Worksheet::SectioningMoveIn()
+{
+  if(!m_tableOfContents->RightClickedOn()->SectioningCanMoveIn())
+    return false;
+
+  std::list<GroupCell *> sections;
+  GroupType type = m_tableOfContents->RightClickedOn()->GetGroupType();
+  for (auto &tmp : OnList(m_tableOfContents->RightClickedOn()))
+  {
+    if((&tmp != m_tableOfContents->RightClickedOn()) && (!tmp.IsLesserGCType(type)))
+      break;
+    if(tmp.IsHeading())
+      sections.push_back(&tmp);
+  }
+  
+  for (auto &tmp : sections)
+  {
+    switch (tmp->GetGroupType())
+    {
+    case GC_TYPE_HEADING6:
+      break;
+    case GC_TYPE_HEADING5:
+      SetCellStyle(tmp,GC_TYPE_HEADING6);
+      break;
+    case GC_TYPE_SUBSUBSECTION:
+      SetCellStyle(tmp,GC_TYPE_HEADING5);
+      break;
+    case GC_TYPE_SUBSECTION:
+      SetCellStyle(tmp,GC_TYPE_SUBSUBSECTION);
+      break;
+    case GC_TYPE_SECTION:
+      SetCellStyle(tmp,GC_TYPE_SUBSECTION);
+      break;
+    case GC_TYPE_TITLE:
+      SetCellStyle(tmp,GC_TYPE_SECTION);
+      break;
+    default:
+      wxASSERT_MSG(false,
+                   _("Bug: Encountered a heading I don't know how to move in one sectioning unit"));
+      return false;
+    }
+  }
+  return true;
+}
+
+bool Worksheet::SectioningMoveOut()
+{
+  if(!m_tableOfContents->RightClickedOn()->SectioningCanMoveOut())
+    return false;
+
+  GroupType type = m_tableOfContents->RightClickedOn()->GetGroupType();
+  std::list<GroupCell *> sections;
+  for (auto &tmp : OnList(m_tableOfContents->RightClickedOn()))
+  {
+    if((&tmp != m_tableOfContents->RightClickedOn()) && (!tmp.IsLesserGCType(type)))
+      break;
+    if(tmp.IsHeading())
+      sections.push_back(&tmp);
+  }
+  for (auto &tmp: sections)
+  {
+    switch (tmp->GetGroupType())
+    {
+    case GC_TYPE_HEADING6:
+      SetCellStyle(tmp,GC_TYPE_HEADING5);
+      break;
+    case GC_TYPE_HEADING5:
+      SetCellStyle(tmp,GC_TYPE_SUBSUBSECTION);
+      break;
+    case GC_TYPE_SUBSUBSECTION:
+      SetCellStyle(tmp,GC_TYPE_SUBSECTION);
+      break;
+    case GC_TYPE_SUBSECTION:
+      SetCellStyle(tmp,GC_TYPE_SECTION);
+      break;
+    case GC_TYPE_SECTION:
+      SetCellStyle(tmp,GC_TYPE_TITLE);
+      break;
+    case GC_TYPE_TITLE:
+      wxASSERT_MSG(false,
+                   _("Bug: Trying to move a title out by one sectioning unit"));        
+      break;
+    default:
+      wxASSERT_MSG(false,
+                   _("Bug: Encountered a heading I don't know how to move out one sectioning unit"));
+      return false;
+    }
+  }
+  return true;
+}
+
 
 void Worksheet::SetActiveCellText(const wxString &text)
 {
