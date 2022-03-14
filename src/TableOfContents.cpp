@@ -400,7 +400,7 @@ void TableOfContents::UpdateDisplay()
 
   wxArrayString items;
   for(auto i : displayedCells_dndOrder)
-    items.Add(TocEntryString(&(*i)));
+    items.Add(TocEntryString(i));
   // Work around a wxWidgets bug: items==m_items_old if items is empty and m_items_old isn't.
   if ((items != m_items_old) || (items.GetCount() == 0))
   {
