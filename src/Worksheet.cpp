@@ -4618,6 +4618,8 @@ std::unique_ptr<Cell> Worksheet::CopySelection(bool asData) const
 
 void Worksheet::TOCdnd()
 {
+  if(!m_tableOfContents->DNDStart())
+    return;
     // Select the region that is to be moved
     m_cellPointers.m_selectionStart =  m_tableOfContents->DNDStart();
     m_cellPointers.m_selectionEnd = m_cellPointers.m_selectionStart;
@@ -4625,7 +4627,7 @@ void Worksheet::TOCdnd()
       m_cellPointers.m_selectionEnd = m_cellPointers.m_selectionEnd->GetNext();
     while((m_cellPointers.m_selectionEnd) &&
           (
-            (m_cellPointers.m_selectionEnd->GetNext() == NULL) ||
+            (m_cellPointers.m_selectionEnd->GetNext() != NULL) &&
             (dynamic_cast<GroupCell *>(m_cellPointers.m_selectionEnd->GetNext())->IsLesserGCType(dynamic_cast<GroupCell *>(m_cellPointers.m_selectionEnd.get())->GetGroupType()))))
       m_cellPointers.m_selectionEnd = m_cellPointers.m_selectionEnd->GetNext();
 
