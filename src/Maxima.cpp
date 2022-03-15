@@ -50,7 +50,7 @@ Maxima::Maxima(wxSocketBase *socket) : m_socket(socket)
   m_socket->SetNotify(wxSOCKET_INPUT_FLAG|wxSOCKET_OUTPUT_FLAG|wxSOCKET_LOST_FLAG);
   m_socket->Notify(true);
   m_socket->SetFlags(wxSOCKET_NOWAIT|wxSOCKET_REUSEADDR);
-  m_socket->SetTimeout(30);
+  m_socket->SetTimeout(120);
 
   // There are some hints in the code history that wxSOCKET_INPUT
   // event may be "flaky". We don't want wxMaxima to get stuck, but we don't want
