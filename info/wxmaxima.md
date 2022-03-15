@@ -226,7 +226,7 @@ If a special symbol isn’t in the list it is possible to input arbitrary Unicod
 
 Please note that most of these symbols (notable exceptions are the logic symbols) do not have a special meaning in _Maxima_ and therefore will be interpreted as ordinary characters. If  _Maxima_ is compiled using a Lisp that doesn’t support dealing with Unicode characters they might cause an error message instead.
 
-It may be the case, that e.g. greek characters are not included in the selected font, then they can not be displayed.
+It may be the case, that e.g. greek characters or mathematical symbols are not included in the selected font, then they can not be displayed.
 To solve that problem, select other fonts (using: Edit -> Configure -> Style).
 
 ### Side Panes
@@ -708,9 +708,9 @@ On Un\*x computers another possible reason would be that the loopback network th
 
 ## How to save data from a broken .wxmx file
 
-Internally most modern XML-based formats are ordinary zip-files. _wxMaxima_ doesn't turn on compression, so the contents of .wxmx files can be viewed in any text editor.
+Internally most modern XML-based formats are ordinary zip-files. _wxMaxima_ doesn't turn on compression, so the contents of `.wxmx` files can be viewed in any text editor.
 
-If the zip signature at the end of the file is still intact after renaming a broken .wxmx file to .zip most operating systems will provide a way to extract any portion of information that is stored inside it. This can be done when there is the need of recovering the original image files from a text processor document. If the zip signature isn’t intact that does not need to be the end of the world: If _wxMaxima_ during saving detected that something went wrong there will be a `wxmx~` file whose contents might help.
+If the zip signature at the end of the file is still intact after renaming a broken `.wxmx` file to `.zip` most operating systems will provide a way to extract any portion of information that is stored inside it. This can be done when there is the need of recovering the original image files from a text processor document. If the zip signature isn’t intact that does not need to be the end of the world: If _wxMaxima_ during saving detected that something went wrong there will be a `.wxmx~` file whose contents might help.
 
 And even if there isn’t such a file: The `.wxmx` file is a container format and the XML portion is stored uncompressed. It it is possible to rename the `.wxmx` file to a `.txt` file and to use a text editor to recover the XML portion of the file's contents (it starts with `<?xml version="1.0" encoding="UTF-8"?>` and ends with `</wxMaximaDocument>`. Before and after that text you will see some unreadable binary contents in the text editor).
 
