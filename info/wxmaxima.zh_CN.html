@@ -248,7 +248,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h3 id="向-maxima-发送单元格"><span class="header-section-number">1.2.4</span> 向 Maxima 发送单元格</h3>
 <p>只要按下键盘上的 <kbd>CTRL</kbd>+<kbd>ENTER</kbd>、<kbd>SHIFT</kbd>+<kbd>ENTER</kbd> 或 <kbd>ENTER</kbd> 键，（数学）代码单元格中的命令就会执行。wxMaxima 的默认设置是 <kbd>CTRL</kbd>+<kbd>ENTER</kbd> 或 <kbd>SHIFT</kbd>+ENTER</kbd> 键会使得命令由 Maxima 执行，但也可以设置为按下 <kbd>ENTER</kbd> 键执行命令。</p>
 <h3 id="命令自动补全"><span class="header-section-number">1.2.5</span> 命令自动补全</h3>
-<p>wxMaxima 包含自动补全功能，该功能可以通过菜单“单元格-&gt;自动补全”（Cell-&gt;Complete Word）或按组合键 <kbd>CTRL</kbd>+<kbd>K</kbd> 来触发。自动补全是上下文相关的。例如，如果在使用 ezUnits （单位换算包）的单元格中激活，它将提供适用的单位列表。</p>
+<p><em>wxMaxima</em> contains an autocompletion feature that is triggered via the menu (Cell/Complete Word) or alternatively by pressing the key combination <kbd>CTRL</kbd>+<kbd>SPACE</kbd>. The autocompletion is context-sensitive. For example if activated within a unit specification for ezUnits it will offer a list of applicable units.</p>
 <figure>
 <img src="./ezUnits.png" alt="ezUnits" id="img_ezUnits" /><figcaption>ezUnits</figcaption>
 </figure>
@@ -609,11 +609,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>如果某个特殊的 Unicode 字符不在上表中，则可以用如下方式输入：按下 <kbd>ESC</kbd> 后，输入该字符的 16 进制编码，再按下 <kbd>ESC</kbd>。</p>
 <p>因此 <kbd>ESC</kbd> <kbd>61</kbd> <kbd>ESC</kbd> 输入了字符 <code>a</code>.</p>
 <p>请注意，这些符号中的大多数（逻辑符号除外）在 Maxima 中没有特殊含义，因此将被解释为普通字符。如果使用不支持 Unicode 字符的 Lisp 编译器编译出 Maxima，则这些符号可能会导致输出错误消息。</p>
-<p>It may be the case, that e.g. greek characters are not included in the selected font, then they can not be displayed. To solve that problem, select other fonts (using: Edit -&gt; Configure -&gt; Style).</p>
+<p>It may be the case, that e.g. greek characters or mathematical symbols are not included in the selected font, then they can not be displayed. To solve that problem, select other fonts (using: Edit -&gt; Configure -&gt; Style).</p>
 <h3 id="侧边栏"><span class="header-section-number">1.2.6</span> 侧边栏</h3>
 <p>侧边栏可以用来访问一些常用的 Maxima 命令快捷方式、目录、包含调试消息的窗口或已执行命令的历史记录等。使用“查看”菜单可以启用这些侧边栏。它们都可以移动到 wxMaxima 窗口内部或外部。其中一个常用的是可用鼠标点选输入希腊字母的侧边栏。</p>
 <figure>
 <img src="./SidePanes.png" alt="各种类型的侧边栏" id="img_SidePanes" /><figcaption>各种类型的侧边栏</figcaption>
+</figure>
+<p>In the “table of contents” side pane one can increase or decrease a heading, just click on the heading with the right mouse button and select the next higher or lower heading type.</p>
+<figure>
+<img src="./Sidepane-TOC-convert-headings.png" alt="Increase or decrease headings in the TOC side pane" id="Sidepane-TOC-convert-headings" /><figcaption>Increase or decrease headings in the TOC side pane</figcaption>
 </figure>
 <h3 id="mathml-输出"><span class="header-section-number">1.2.7</span> MathML 输出</h3>
 <p>一些文字处理程序可以识别 MathML 输入并自动将其作为可编辑的数学公式插入，或者（像 LibreOffice 7.1 那样）有一个提供“从剪贴板导入 MathML”功能的公式编辑器。有些程序也支持 RTF 公式。因此，wxMaxima 在右键单击菜单中提供了多种复制公式的方法。</p>
@@ -652,7 +656,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <figure>
 <img src="./BatchImage.png" alt="Loading a .mac file with batch()" id="img_BatchImage" /><figcaption>Loading a <code>.mac</code> file with <code>batch()</code></figcaption>
 </figure>
-<p>Attention: Although the file <code>Quadratic.mac</code> has an usual <em>Maxima</em> extension (<code>.mac</code>), it can only be read by <em>wxMaxima</em>, since the command <code>wxdraw2d()</code> is a wxMaxima-extension to <em>Maxima</em>.</p>
+<p>Attention: Although the file <code>Quadratic.mac</code> has a usual <em>Maxima</em> extension (<code>.mac</code>), it can only be read by <em>wxMaxima</em>, since the command <code>wxdraw2d()</code> is a wxMaxima-extension to <em>Maxima</em>.</p>
 <p>用户可以使用 <code>.mac</code> 文件编写自己的程序包。但是由于它们没有包含足够的结构信息，因此不能作为一个 wxMaxima 工作簿来读取。</p>
 <h3 id="wxm"><span class="header-section-number">1.3.2</span> .wxm</h3>
 <p><code>.wxm</code> 文件包含除 Maxima 输出之外的工作簿内容。在版本号大于 5.38 的 Maxima 上，可以像 <code>.mac</code> 文件一样，使用 Maxima 的 <code>load()</code> 函数来读取。如果采用这种文本格式，使用含新功能的工作簿时会不可避免地与旧版本的 wxMaxima 不兼容。</p>
@@ -912,8 +916,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>由于 Maxima（进行实际数学运算的程序）和 wxMaxima（提供易于使用的用户界面的程序）是通过本地网络连接进行通信的独立程序，因此，最有可能的原因是这种连接不起作用。例如，可能设置了防火墙不仅可以阻止来自互联网的未经授权的连接（也许还会拦截一些通向互联网的连接），而且可以阻止同一台计算机内部的进程间通信。注意，由于 Maxima 由 Lisp 语言处理程序运行，因此被阻止的通信进程不一定命名为“Maxima”。此时打开网络连接的程序名称可能是 sbcl、gcl、ccl、lisp.exe 或者类似的名字。</p>
 <p>在 Un*x 系统上，另一个可能的原因是在同一台计算机上的两个程序之间提供网络连接的环回（loopback）网络配置不正确。</p>
 <h2 id="从损坏的-.wxmx-文件中取回信息的方法"><span class="header-section-number">3.2</span> 从损坏的 .wxmx 文件中取回信息的方法</h2>
-<p>大多数现代的、基于 XML 格式的文件其实都是普通的压缩（zip）文件。wxMaxima 没有启用压缩，因此可以在任何文本编辑器中查看 <code>.wxmx</code> 文件的内容。</p>
-<p>如果文件末尾的 zip 签名仍然完整，那么将损坏的 <code>.wxmx</code> 文件重命名为 <code>.zip</code> 文件后，大多数操作系统都提供了提取存储在其中的信息的方法。当需要从该文件中恢复原始图像文件时，可以执行此操作。当 zip 签名不完整时，也不是毫无办法：如果 wxMaxima 在保存文件时检测到错误，那么还会有一个 <code>.wxmx~</code> 文件，其内容可能会有所帮助。</p>
+<p>Internally most modern XML-based formats are ordinary zip-files. <em>wxMaxima</em> doesn’t turn on compression, so the contents of <code>.wxmx</code> files can be viewed in any text editor.</p>
+<p>If the zip signature at the end of the file is still intact after renaming a broken <code>.wxmx</code> file to <code>.zip</code> most operating systems will provide a way to extract any portion of information that is stored inside it. This can be done when there is the need of recovering the original image files from a text processor document. If the zip signature isn’t intact that does not need to be the end of the world: If <em>wxMaxima</em> during saving detected that something went wrong there will be a <code>.wxmx~</code> file whose contents might help.</p>
 <p>即使没有 <code>.wxmx~</code> 文件，<code>.wxmx</code> 文件中 XML 部分是未压缩的，可以将该文件重命名为 <code>.txt</code> 文件，并使用文本编辑器恢复文件中的 XML 部分（以 <code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;</code> 开头，并以 <code>&lt;/wxMaximaDocument&gt;</code> 结尾（在 XML 部分的前后，可在文本编辑器中看到一些不可读的二进制内容）。</p>
 <p>如果将只包含 XML 部分的文本文件（例如，将这一部分复制并粘贴到新文件中）保存为以 <code>.xml</code> 结尾的文件，则 wxMaxima 可以从中恢复原始文档的文本。</p>
 <h2 id="在命令完成前显示一些调试信息"><span class="header-section-number">3.3</span> 在命令完成前显示一些调试信息</h2>
@@ -1015,15 +1019,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><code>-o</code> 或 <code>--open=&lt;str&gt;</code>：打开作为此命令行参数的文件名。</li>
 <li><code>-e</code> 或 <code>--eval</code>：打开文件后对公式单元格求值。</li>
 <li><code>-b</code> 或 <code>--batch</code>：如果用命令行打开一个文件，则计算该文件中的所有单元格，然后保存文件。例如，如果文件中描述的会话使 Maxima 生成输出文件，则这一参数会很有用。如果 wxMaxima 检测到 Maxima 输出了错误信息，则批处理将停止；如果检测到 Maxima 有疑问，则批处理将暂停。Maxima 的计算过程有一定的交互性，因此无法保证完全无交互的批处理。</li>
-<li><code>--logtostdout</code>：将所有“调试信息”侧边栏里的信息也输出到标准错误文件（stderr）。</li>
-<li><code>--pipe</code>：将 Maxima 的信息通过管道（pipe）输出到标准输出文件（stdout）。</li>
-<li><code>--exit-on-error</code>：在遇到任何 Maxima 错误时关闭程序。</li>
-<li><code>-f</code> 或 <code>--ini=&lt;str&gt;</code>： 指定要使用的初始设定文件。</li>
-<li><code>-u</code> 或 <code>--use-version=&lt;str&gt;</code>：指定要使用的 Maxima 的版本。</li>
-<li><code>-l</code> 或 <code>--lisp=&lt;str&gt;</code>：指定 Maxima 使用的 Lisp 解释器。</li>
-<li><code>-X</code> 或 <code>--extra-args=&lt;str&gt;</code>：指定额外的 Maxima 参数。</li>
-<li><code>-m</code> 或 <code>--maxima=&lt;str&gt;</code>：指定 Maxima 程序的位置。</li>
-<li><code>--enableipc</code>：使 Maxima 通过内部进程通讯来控制 wxMaxima （应谨慎使用此选项）。</li>
+<li><code>--logtostderr</code>: Log all “debug messages” sidebar messages to stderr, too.</li>
+<li><code>--pipe</code>: Pipe messages from Maxima to stdout.</li>
+<li><code>--exit-on-error</code>: Close the program on any maxima error.</li>
+<li><code>-f</code> or <code>--ini=&lt;str&gt;</code>: Use the init file that was given as argument to this command-line switch</li>
+<li><code>-u</code>, <code>--use-version=&lt;str&gt;</code>: Use maxima version <code>&lt;str&gt;</code>.</li>
+<li><code>-l</code>, <code>--lisp=&lt;str&gt;</code>: Use a Maxima compiled with Lisp compiler <code>&lt;str&gt;</code>.</li>
+<li><code>-X</code>, <code>--extra-args=&lt;str&gt;</code>: Allows to specify extra Maxima arguments</li>
+<li><code>-m</code> or <code>--maxima=&lt;str&gt;</code>: allows to specify the location of the <em>maxima</em> binary</li>
+<li><code>--enableipc</code>: Lets Maxima control wxMaxima via interprocess communications. Use this option with care.</li>
 </ul>
 <p>一些操作系统可能在命令行选项前面使用连字符（-，dash），而不是减号。</p>
 </body>

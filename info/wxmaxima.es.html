@@ -248,7 +248,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h3 id="envía-celdas-a-maxima"><span class="header-section-number">1.2.4</span> Envía celdas a “Maxima”</h3>
 <p>La instrucción dentro de una calda de código son ejecutadas una vez <kbd>CTRL</kbd>+<kbd>INTRO</kbd>, <kbd>MAYÚS</kbd>+<kbd>INTRO</kbd> o la tecla <kbd>INTRO</kbd> en el teclado numérico es presionado. La <em>wxMaxima</em> predeterminada está para introducir instrucciones cuando es introducido o bien <kbd>CTRL+INTRO</kbd> o bien <kbd>MAYÚS+INTRO</kbd>, pero <em>wxMaxima</em> puede ser configurado para ejecutar instrucciones como respuesta al <kbd>INTRO</kbd>.</p>
 <h3 id="auto-completado-de-instrucción"><span class="header-section-number">1.2.5</span> Auto-completado de instrucción</h3>
-<p><em>wxMaxima</em> contiene una característica de auto-completado que es disparada a través del menú (Celda/Palabra Completa) o alternativamente pulsando la combinación de teclas <kbd>CTRL</kbd>+<kbd>ESPACIO</kbd>. El auto-completado distingue MAYÚS-minús. Por ejemplo si está activado dentro de una especificación unitaria para ezUnits ofrecerá un listado de unidades aplicables.</p>
+<p><em>wxMaxima</em> contains an autocompletion feature that is triggered via the menu (Cell/Complete Word) or alternatively by pressing the key combination <kbd>CTRL</kbd>+<kbd>SPACE</kbd>. The autocompletion is context-sensitive. For example if activated within a unit specification for ezUnits it will offer a list of applicable units.</p>
 <figure>
 <img src="./ezUnits.png" alt="ezUnits" id="img_ezUnits" /><figcaption>ezUnits</figcaption>
 </figure>
@@ -469,11 +469,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Si un símbolo especial no está dentro del listado es posible introducir caracteres Unicode arbitrarios pulsando <kbd>ESC</kbd> [número del carácter (hexadecimal)] <kbd>ESC</kbd>.</p>
 <p><kbd>ESC</kbd> <kbd>61</kbd> <kbd>ESC</kbd> por lo tanto resulta en un <code>a</code>.</p>
 <p>Note que muchos de estos símbolos (notablemente excepciones son los símbolos lógicos) no tener un significado especial dentro de <em>Maxima</em> y por lo tanto serán interpretados como caracteres ordinarios. Si <em>Maxima</em> está compilado utilizando un Lisp que no admite utilizar caracteres Unicode quizá en su lugar cause un mensaje de error.</p>
-<p>It may be the case, that e.g. greek characters are not included in the selected font, then they can not be displayed. To solve that problem, select other fonts (using: Edit -&gt; Configure -&gt; Style).</p>
+<p>It may be the case, that e.g. greek characters or mathematical symbols are not included in the selected font, then they can not be displayed. To solve that problem, select other fonts (using: Edit -&gt; Configure -&gt; Style).</p>
 <h3 id="paneles-laterales"><span class="header-section-number">1.2.6</span> Paneles Laterales</h3>
 <p>Enlaces para las instrucciones de <em>Maxima</em> más importantes de las cosas como un índice de contenidos, ventanas con mensajes de depuración o un historial de las últimas instrucciones emitidas pueden ser accedidas utilizando los paneles laterales. Puede ser habilitados utilizando el menú de “Vistas”. Todos ellos pueden ser trasladas a otras localización dentro o fuera de la ventana de _wxMaxima. Otro de los paneles útiles es el que permite introducir letras griegas utilizando el ratón.</p>
 <figure>
 <img src="./SidePanes.png" alt="Ejemplo de diferentes paneles laterales" id="img_SidePanes" /><figcaption>Ejemplo de diferentes paneles laterales</figcaption>
+</figure>
+<p>In the “table of contents” side pane one can increase or decrease a heading, just click on the heading with the right mouse button and select the next higher or lower heading type.</p>
+<figure>
+<img src="./Sidepane-TOC-convert-headings.png" alt="Increase or decrease headings in the TOC side pane" id="Sidepane-TOC-convert-headings" /><figcaption>Increase or decrease headings in the TOC side pane</figcaption>
 </figure>
 <h3 id="salida-mathml"><span class="header-section-number">1.2.7</span> Salida MathML</h3>
 <p>Varios procesadores de palabras y programas similares o bien reconocen entradas de MathML y lo insertan automáticamente como una ecuación editable 2D - o (como LibreOffice 5.1) tiene un editor de ecuación que ofrece una característica “importar MathML desde portapapeles“. Otros admiten matemáticas RTF. <em>wxMaxima</em> por lo tanto ofrece varios apuntes dentro del menú a través de la pulsación secundaria del menú.</p>
@@ -773,8 +777,8 @@ Texto ordinario</code></pre>
 <p>Dese <em>Maxima</em> (el programa que hace las matemáticas actuales) y <em>wxMaxima</em> (proporcionando el interfaz de usuario fácil-de-uso) con programas separados que se comunican por los medios de una conexión de red local. Por lo tanto la causa más probable es que esta conexión es algo que no funciona. Por ejemplo un cortafuegos pude establecer de una manara que no impida conexiones no autorizadas desde el Internet (y quizá interceptar algunas conexiones para Internet, también), pero también para bloques de comunicación de inter-procesos dentro del mismo computador. Nota que desde <em>Maxima</em> es siendo ejecutado por un procesador Lisp la comunicación de procesos que están bloqueados desde unos no necesariamente tienen que ser nombrados “maxima”. Los nombres comunes del programa que abre la conexión de red pudo ser sbcl, gcl, ccl, lisp.exe o nombres similares.</p>
 <p>En los equipos Un*x otra razón posible podría ser que la res del loopback que proporciona conexiones de la red entre dos programas dentro del mismo equipo no está configurado apropiadamente.</p>
 <h2 id="cómo-guardar-datos-desde-un-fichero-estropeado-.wxmx"><span class="header-section-number">3.2</span> Cómo guardar datos desde un fichero estropeado .wxmx</h2>
-<p>Internamente muchos formatos modernos basados en XML están normalmente en ficheros zip. <em>wxMaxima</em> no activa la compresión, por lo que los contenidos de los ficheros .wxmx pueden verse en cualquier editor de texto.</p>
-<p>Si la firma zip en el final del fichero es aún intacta tras renombrar un fichero .wxmx estropeado para .zip muchos sistemas operativos proporcionarán una manera de extraer cualquier porción de información que está almacenada dentro de esta. Esto puede ser hecho cuando hay la necesitad de recuperar la imagen original de ficheros desde un documento de procesamiento de texto. Si la firma zip no está intacta que do necesita estar el final del mundo: si <em>wxMaxima</em> al guardar ha detectado que algo es erróneo habrá un fichero <code>wxmx~</code> cuyo contenido quizá ayude.</p>
+<p>Internally most modern XML-based formats are ordinary zip-files. <em>wxMaxima</em> doesn’t turn on compression, so the contents of <code>.wxmx</code> files can be viewed in any text editor.</p>
+<p>If the zip signature at the end of the file is still intact after renaming a broken <code>.wxmx</code> file to <code>.zip</code> most operating systems will provide a way to extract any portion of information that is stored inside it. This can be done when there is the need of recovering the original image files from a text processor document. If the zip signature isn’t intact that does not need to be the end of the world: If <em>wxMaxima</em> during saving detected that something went wrong there will be a <code>.wxmx~</code> file whose contents might help.</p>
 <p>E incluso si no hay un fichero: el fichero <code>.wxmx</code> es un formato de contenedor y la porción es almacenada sin comprimir. Es posible renombrar el fichero <code>.wxmx</code> a un fichero <code>.tct</code> y utilizar un editor de texto para recuperar la porción XML del contenido del fichero (se inicia con <code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;</code> y termina con <code>&lt;/wxMaximaDocument&gt;</code>. Antes y después de ese texto verá algún contenido binario no legible dentro del editor del texto).</p>
 <p>Si un fichero de texto conteniendo solamente estos contenidos (p.ej. copiar y pegar este texto dentro de un fichero nuevo) es guardado como un fichero terminando en <code>.xml</code>, <em>wxMaxima</em> conocerá cómo recuperar el texto del documento desde éste.</p>
 <h2 id="desea-algo-de-información-de-depuración-para-ser-desplegada-sobre-la-pantalla-antes-que-mi-instrucción-haya-finalizado"><span class="header-section-number">3.3</span> Desea algo de información de depuración para ser desplegada sobre la pantalla antes que mi instrucción haya finalizado</h2>
@@ -877,15 +881,15 @@ Texto ordinario</code></pre>
 <li>‘-o’ o ‘–open=<cdn>’: abre el nombre del fichero dado como argumento a este interruptor de línea-transaccional</li>
 <li>‘-e’ o ‘–eval’: evalúa el fichero tras abrirlo.</li>
 <li>‘-b’ o ‘–batch’: si la línea de instrucción abre un fichero todas las celdas dentro de este fichero son evaluadas y el fichero es guardado después. Esto es para ejemplo útil si la sesión descrita dentro del fichero hace que <em>Maxima</em> genere ficheros de salida. Los procesamientos batch serán detenidos si <em>wxMaxima</em> detecta que <em>Maxima</em> tiene un error de salida y lo detendrá si <em>Maxima</em> tiene una cuestión: las matemáticas es algo interactivo por naturaliza por lo que un proceso de batch libre de interacción no puede ser completamente garantizado.</li>
-<li><code>--logtostdout</code>: registra todos los mensajes del lateral “men- sajes de depuración” también a la ‘stderr’.</li>
-<li><code>--pipe</code>: mensajes entubados desde Maxima a ‘stdout’.</li>
-<li><code>--exit-on-error</code>: cierra el programa en cualquier error de maxima.</li>
-<li><code>-f</code> or <code>--ini=&lt;cdn&gt;</code>: utilice el fichero de init que fue proporcionado como argumento a esta contorno de línea de instrucciones.</li>
-<li><code>-u</code>, <code>--use-version=&lt;cdn&gt;</code>: utilice la versión de ‘maxima’ <code>&lt;cdn&gt;</code>.</li>
-<li><code>-l</code>, <code>--lisp=&lt;cdn&gt;</code>: utilice un compilador de Maxima compilado con Lisp <code>&lt;cdn&gt;</code>.</li>
-<li><code>-X</code>, <code>--extra-args=&lt;cdn&gt;</code>: permite especificar argumentos adicionales de “Maxima”</li>
-<li><code>-m</code> or <code>--maxima=&lt;cdn&gt;</code>: permite especificar la ubicación del binario de <em>maxima</em></li>
-<li><code>--enableipc</code>: permite que “Maxima” controle “wxMaxima” a través de comunicaciones de interprocesos. Utilice esa opción con cuidado.</li>
+<li><code>--logtostderr</code>: Log all “debug messages” sidebar messages to stderr, too.</li>
+<li><code>--pipe</code>: Pipe messages from Maxima to stdout.</li>
+<li><code>--exit-on-error</code>: Close the program on any maxima error.</li>
+<li><code>-f</code> or <code>--ini=&lt;str&gt;</code>: Use the init file that was given as argument to this command-line switch</li>
+<li><code>-u</code>, <code>--use-version=&lt;str&gt;</code>: Use maxima version <code>&lt;str&gt;</code>.</li>
+<li><code>-l</code>, <code>--lisp=&lt;str&gt;</code>: Use a Maxima compiled with Lisp compiler <code>&lt;str&gt;</code>.</li>
+<li><code>-X</code>, <code>--extra-args=&lt;str&gt;</code>: Allows to specify extra Maxima arguments</li>
+<li><code>-m</code> or <code>--maxima=&lt;str&gt;</code>: allows to specify the location of the <em>maxima</em> binary</li>
+<li><code>--enableipc</code>: Lets Maxima control wxMaxima via interprocess communications. Use this option with care.</li>
 </ul>
 <p>En vez de un menos algunos sistemas operativos tal vez utilicen un guión al frente de las opciones de línea de instrucciones.</p>
 </body>

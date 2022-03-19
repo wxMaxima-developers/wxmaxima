@@ -248,7 +248,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h3 id="sending-cells-to-maxima"><span class="header-section-number">1.2.4</span> Sending cells to Maxima</h3>
 <p>The command in a code cell are executed once <kbd>CTRL</kbd>+<kbd>ENTER</kbd>, <kbd>SHIFT</kbd>+<kbd>ENTER</kbd> or the <kbd>ENTER</kbd> key on the keypad is pressed. The <em>wxMaxima</em> default is to enter commands when either <kbd>CTRL+ENTER</kbd> or <kbd>SHIFT+ENTER</kbd> is entered, but <em>wxMaxima</em> can be configured to execute commands in response to <kbd>ENTER</kbd>.</p>
 <h3 id="command-autocompletion"><span class="header-section-number">1.2.5</span> Command autocompletion</h3>
-<p><em>wxMaxima</em> contains an autocompletion feature that is triggered via the menu (Cell/Complete Word) or alternatively by pressing the key combination <kbd>CTRL</kbd>+<kbd>SPACE</kbd>. The autocompletion is context-sensitive. For example if activated within an unit specification for ezUnits it will offer a list of applicable units.</p>
+<p><em>wxMaxima</em> contains an autocompletion feature that is triggered via the menu (Cell/Complete Word) or alternatively by pressing the key combination <kbd>CTRL</kbd>+<kbd>SPACE</kbd>. The autocompletion is context-sensitive. For example if activated within a unit specification for ezUnits it will offer a list of applicable units.</p>
 <figure>
 <img src="./ezUnits.png" alt="ezUnits" id="img_ezUnits" /><figcaption>ezUnits</figcaption>
 </figure>
@@ -609,11 +609,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>If a special symbol isn’t in the list it is possible to input arbitrary Unicode characters by pressing <kbd>ESC</kbd> [number of the character (hexadecimal)] <kbd>ESC</kbd>.</p>
 <p><kbd>ESC</kbd> <kbd>61</kbd> <kbd>ESC</kbd> therefore results in an <code>a</code>.</p>
 <p>Bu simgelerin çoğunun (dikkate değer istisnalar mantık sembolleri olduğu) <em>Maxima</em>’da özel bir anlamı olmadığını ve bu nedenle sıradan karakterler olarak yorumlanacağını lütfen unutmayın. <em>Maxima</em>, Unicode karakterlerle uğraşmayı desteklemeyen bir Lisp kullanılarak derlenirse, bunun yerine bir hata iletisine neden olabilir.</p>
-<p>It may be the case, that e.g. greek characters are not included in the selected font, then they can not be displayed. To solve that problem, select other fonts (using: Edit -&gt; Configure -&gt; Style).</p>
+<p>It may be the case, that e.g. greek characters or mathematical symbols are not included in the selected font, then they can not be displayed. To solve that problem, select other fonts (using: Edit -&gt; Configure -&gt; Style).</p>
 <h3 id="side-panes"><span class="header-section-number">1.2.6</span> Side Panes</h3>
 <p>En önemli <em>Maxima</em> komutlarının kısayollarına veya içindekiler tablosu, hata ayıklama iletilerine sahip pencereler veya son verilen komutların geçmişi gibi yan bölmeler kullanılarak erişilebilir. “Görünüm” menüsü kullanılarak etkinleştirilebilirler. Hepsi <em>wxMaxima</em> penceresinin içindeki veya dışındaki diğer konumlara taşınabilir. Diğer kullanışlı bölmeler, fareyi kullanarak Yunanca harflerin girilmesine izin veren bölmelerdir.</p>
 <figure>
 <img src="./SidePanes.png" alt="Farklı Kenar Panelleri Örneği" id="img_SidePanes" /><figcaption>Farklı Kenar Panelleri Örneği</figcaption>
+</figure>
+<p>In the “table of contents” side pane one can increase or decrease a heading, just click on the heading with the right mouse button and select the next higher or lower heading type.</p>
+<figure>
+<img src="./Sidepane-TOC-convert-headings.png" alt="Increase or decrease headings in the TOC side pane" id="Sidepane-TOC-convert-headings" /><figcaption>Increase or decrease headings in the TOC side pane</figcaption>
 </figure>
 <h3 id="mathml-output"><span class="header-section-number">1.2.7</span> MathML output</h3>
 <p>Birkaç kelime işlemcisi ve benzeri programlar ya MathML girişini tanır ve otomatik olarak düzenlenebilir bir 2D denklemi olarak ekler - ya da (LibreOffice 5.1 gibi) “MathML’yi panodan içe aktar” özelliği sunan bir denklem düzenleyicisine sahiptir. Diğerleri RTF matematiğini destekler. <em>wxMaxima</em>, sağ tıklama menüsünde çeşitli girişler sunar.</p>
@@ -652,7 +656,7 @@ Ordinary text</code></pre>
 <figure>
 <img src="./BatchImage.png" alt="Loading a .mac file with batch()" id="img_BatchImage" /><figcaption>Loading a <code>.mac</code> file with <code>batch()</code></figcaption>
 </figure>
-<p>Attention: Although the file <code>Quadratic.mac</code> has an usual <em>Maxima</em> extension (<code>.mac</code>), it can only be read by <em>wxMaxima</em>, since the command <code>wxdraw2d()</code> is a wxMaxima-extension to <em>Maxima</em>.</p>
+<p>Attention: Although the file <code>Quadratic.mac</code> has a usual <em>Maxima</em> extension (<code>.mac</code>), it can only be read by <em>wxMaxima</em>, since the command <code>wxdraw2d()</code> is a wxMaxima-extension to <em>Maxima</em>.</p>
 <p>You can be use <code>.mac</code> files for writing your own library of macros. But since they don’t contain enough structural information they cannot be read back as a <em>wxMaxima</em> session.</p>
 <h3 id="wxm"><span class="header-section-number">1.3.2</span> .wxm</h3>
 <p>.wxm files contain the worksheet except <em>Maxima</em>’s output. On Maxima versions &gt;5.38 they can be read using <em>Maxima</em>’s <code>load()</code> function just as .mac files can be. With this plain-text format it sometimes is unavoidable that worksheets that use new features are not downwards-compatible with older versions of <em>wxMaxima</em>.</p>
@@ -913,8 +917,8 @@ Ordinary text</code></pre>
 <p>Since <em>Maxima</em> (the program that does the actual mathematics) and <em>wxMaxima</em> (providing the easy-to-use user interface) are separate programs that communicate by the means of a local network connection. Therefore the most probable cause is that this connection is somehow not working. For example a firewall could be set up in a way that it doesn’t just prevent unauthorized connections from the internet (and perhaps to intercept some connections to the internet, too), but it also to blocks inter-process-communication inside the same computer. Note that since <em>Maxima</em> is being run by a Lisp processor the process communication that is blocked from does not necessarily have to be named “maxima”. Common names of the program that opens the network connection would be sbcl, gcl, ccl, lisp.exe or similar names.</p>
 <p>Un  * x bilgisayarlarda başka bir olası neden, aynı bilgisayardaki iki program arasında ağ bağlantısı sağlayan geri döngü ağının düzgün yapılandırılmamış olması olabilir.</p>
 <h2 id="how-to-save-data-from-a-broken-.wxmx-file"><span class="header-section-number">3.2</span> How to save data from a broken .wxmx file</h2>
-<p>Internally most modern XML-based formats are ordinary zip-files. <em>wxMaxima</em> doesn’t turn on compression, so the contents of .wxmx files can be viewed in any text editor.</p>
-<p>If the zip signature at the end of the file is still intact after renaming a broken .wxmx file to .zip most operating systems will provide a way to extract any portion of information that is stored inside it. This can be done when there is the need of recovering the original image files from a text processor document. If the zip signature isn’t intact that does not need to be the end of the world: If <em>wxMaxima</em> during saving detected that something went wrong there will be a <code>wxmx~</code> file whose contents might help.</p>
+<p>Internally most modern XML-based formats are ordinary zip-files. <em>wxMaxima</em> doesn’t turn on compression, so the contents of <code>.wxmx</code> files can be viewed in any text editor.</p>
+<p>If the zip signature at the end of the file is still intact after renaming a broken <code>.wxmx</code> file to <code>.zip</code> most operating systems will provide a way to extract any portion of information that is stored inside it. This can be done when there is the need of recovering the original image files from a text processor document. If the zip signature isn’t intact that does not need to be the end of the world: If <em>wxMaxima</em> during saving detected that something went wrong there will be a <code>.wxmx~</code> file whose contents might help.</p>
 <p>And even if there isn’t such a file: The <code>.wxmx</code> file is a container format and the XML portion is stored uncompressed. It it is possible to rename the <code>.wxmx</code> file to a <code>.txt</code> file and to use a text editor to recover the XML portion of the file’s contents (it starts with <code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;</code> and ends with <code>&lt;/wxMaximaDocument&gt;</code>. Before and after that text you will see some unreadable binary contents in the text editor).</p>
 <p>If a text file containing only this contents (e.g. copy and paste this text into a new file) is saved as a file ending in <code>.xml</code>, <em>wxMaxima</em> will know how to recover the text of the document from it.</p>
 <h2 id="i-want-some-debug-info-to-be-displayed-on-the-screen-before-my-command-has-finished"><span class="header-section-number">3.3</span> I want some debug info to be displayed on the screen before my command has finished</h2>
@@ -1017,7 +1021,7 @@ Ordinary text</code></pre>
 <li><code>-o</code> veya<code>--open = &lt;str&gt;</code>: Bu komut satırı anahtarına bağımsız değişken olarak verilen dosya adını açın</li>
 <li><code>-e</code> veya<code>--eval</code>: Dosyayı açtıktan sonra değerlendirin.</li>
 <li><code>-b</code> veya<code>--batch</code>: Komut satırı bir dosyayı açarsa, bu dosyadaki tüm hücreler değerlendirilir ve daha sonra dosya kaydedilir. Bu, örneğin, dosyada açıklanan oturum <em>Maxima</em> çıktı dosyaları oluşturuyorsa yararlıdır. <em>WxMaxima</em>, <em>Maxima</em> öğesinin bir hata verdiğini algılarsa ve <em>Maxima</em>’ın bir sorusu varsa duraklatılırsa, toplu işlem durdurulur: Matematik, doğası gereği biraz etkileşimlidir, bu nedenle tamamen etkileşimsiz bir toplu işlem her zaman garanti edilemez.</li>
-<li><code>--logtostdout</code>: Log all “debug messages” sidebar messages to stderr, too.</li>
+<li><code>--logtostderr</code>: Log all “debug messages” sidebar messages to stderr, too.</li>
 <li><code>--pipe</code>: Pipe messages from Maxima to stdout.</li>
 <li><code>--exit-on-error</code>: Close the program on any maxima error.</li>
 <li><code>-f</code> or <code>--ini=&lt;str&gt;</code>: Use the init file that was given as argument to this command-line switch</li>

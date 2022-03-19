@@ -248,7 +248,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h3 id="надсилання-комірок-для-обчислення-у-maxima"><span class="header-section-number">1.2.4</span> Надсилання комірок для обчислення у Maxima</h3>
 <p>Команду у комірці буде виконано одразу після натискання комбінацій клавіш <kbd>CTRL</kbd>+<kbd>ENTER</kbd>, <kbd>SHIFT</kbd>+<kbd>ENTER</kbd> або клавіші <kbd>ENTER</kbd> на клавіатурі. Типовим для <em>wxMaxima</em> є введення команд за допомогою <kbd>CTRL+ENTER</kbd> або <kbd>SHIFT+ENTER</kbd>, але <em>wxMaxima</em> можна налаштувати на виконання команд у відповідь на натискання <kbd>ENTER</kbd>.</p>
 <h3 id="автоматичне-доповнення-команд"><span class="header-section-number">1.2.5</span> Автоматичне доповнення команд</h3>
-<p>У <em>wxMaxima</em> реалізовано можливість автоматичного доповнення коду, якою можна скористатися за допомогою меню (Комірка/Доповнити слово) або натисканням комбінації клавіш <kbd>CTRL</kbd>+<kbd>Пробіл</kbd>. Автоматичне доповнення є чутливим до регістру символів. Наприклад, якщо його активувати зі специфікацією модулів для ezUnits, воно запропонує список відповідних модулів.</p>
+<p><em>wxMaxima</em> contains an autocompletion feature that is triggered via the menu (Cell/Complete Word) or alternatively by pressing the key combination <kbd>CTRL</kbd>+<kbd>SPACE</kbd>. The autocompletion is context-sensitive. For example if activated within a unit specification for ezUnits it will offer a list of applicable units.</p>
 <figure>
 <img src="./ezUnits.png" alt="ezUnits" id="img_ezUnits" /><figcaption>ezUnits</figcaption>
 </figure>
@@ -609,11 +609,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Якщо спеціального символу немає у списку, ви можете ввести його як довільний символ Юнікод натисканням послідовності клавіш <kbd>ESC</kbd> [номер символу (шістнадцятковий)] <kbd>ESC</kbd>.</p>
 <p>Отже, <kbd>ESC</kbd> <kbd>61</kbd> <kbd>ESC</kbd> дасть «a».</p>
 <p>Будь ласка, зауважте, що більшість цих символів (виключеннями є логічні символи) не мають спеціального значення у <em>Maxima</em> і тому можуть бути оброблені як звичайні символи. Якщо <em>Maxima</em> зібрано із Lisp, у якому не передбачено обробки символів Юнікоду, використання цих символів може призвести до показу повідомлення про помилку.</p>
-<p>It may be the case, that e.g. greek characters are not included in the selected font, then they can not be displayed. To solve that problem, select other fonts (using: Edit -&gt; Configure -&gt; Style).</p>
+<p>It may be the case, that e.g. greek characters or mathematical symbols are not included in the selected font, then they can not be displayed. To solve that problem, select other fonts (using: Edit -&gt; Configure -&gt; Style).</p>
 <h3 id="бічні-панелі"><span class="header-section-number">1.2.6</span> Бічні панелі</h3>
 <p>Доступ до найважливіших команд <em>Maxima</em> або речей, подібних до таблиці змісту, вікон із діагностичними повідомленнями або журналу останніх виданих команд можна отримати за допомогою бічних панелей. Увімкнути бічні панелі можна за допомогою меню «Перегляд». Панелі можна пересувати як всередині вікна <em>wxMaxima</em>, так і ззовні. Ще однією корисною панеллю є панель введення грецьких літер за допомогою вказівника миші.</p>
 <figure>
 <img src="./SidePanes.png" alt="Приклад різних бічних панелей" id="img_SidePanes" /><figcaption>Приклад різних бічних панелей</figcaption>
+</figure>
+<p>In the “table of contents” side pane one can increase or decrease a heading, just click on the heading with the right mouse button and select the next higher or lower heading type.</p>
+<figure>
+<img src="./Sidepane-TOC-convert-headings.png" alt="Increase or decrease headings in the TOC side pane" id="Sidepane-TOC-convert-headings" /><figcaption>Increase or decrease headings in the TOC side pane</figcaption>
 </figure>
 <h3 id="виведення-коду-mathml"><span class="header-section-number">1.2.7</span> Виведення коду MathML</h3>
 <p>Деякі текстові процесори і подібні програми або розпізнають вхідні дані MathML і автоматично вставляють їх до придатного для редагування рівняння, або (подібно до LibreOffice 5.1) мають у складі редактор рівнянь, у якому передбачено можливість імпортування даних MathML з буфера обміну даними. У інших редакторах передбачено підтримку формул у RTF. Через це у <em>wxMaxima</em> передбачено декілька відповідних пунктів у контекстному меню.</p>
@@ -913,8 +917,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Оскільки <em>Maxima</em> (програма, яка виконує самі обчислення) і <em>wxMaxima</em> (програма, яка надає простий у користуванні інтерфейс користувача) є окремими програмами, які обмінюються даними за допомогою з’єднання локальною мережею. Тому найімовірнішою причиною є те, що це з’єднання чомусь не працює. Наприклад, брандмауер може бути налаштовано таким чином, що він не просто запобігає неуповноваженим з’єднання з інтернету (і, можливо, також перехоплює з’єднання із інтернетом), але і блокує обмін даними між процесами на тому самому комп’ютері. Зауважте, що оскільки <em>Maxima</em> виконується процесором Lisp, процес. із яким блокується обмін даними, не обов’язково називається «maxima». Типовими назвами програм, які відкривають з’єднання мережі, можуть бути sbcl, gcl, ccl, lisp.exe або щось подібне.</p>
 <p>У системах Un*x іншою можливою причиною є те, що петльову мережу, яка забезпечує з’єднання мережі між двома програмам, які працюють на одному комп’ютері, не налаштовано належним чином.</p>
 <h2 id="як-зберегти-дані-із-пошкодженого-файла-.wxmx"><span class="header-section-number">3.2</span> Як зберегти дані із пошкодженого файла .wxmx</h2>
-<p>На внутрішньому рівні більшість сучасних форматів на основі XML є звичайними файлами zip. <em>wxMaxima</em> не увімкнула стискання, що робить вміст файлів .wxmx придатним до перекладу у будь-якому текстовому редакторі.</p>
-<p>Якщо підпис zip наприкінці файла є неушкодженим після перейменовування пошкодженого файла .wxmx на .zip, у більшості операційних систем передбачено спосіб видобування будь-якої частини даних, яка у ньому зберігається. Виконати таке видобування можна, якщо потрібно відновити початкові файли зображень з документа текстового процесора. Якщо підпис zip пошкоджено, це ще не кінець світу: якщо <em>wxMaxima</em> під час збереження виявила якусь помилку, має ще бути файл wxmx~, чий вміст може допомогти у відновленні даних.</p>
+<p>Internally most modern XML-based formats are ordinary zip-files. <em>wxMaxima</em> doesn’t turn on compression, so the contents of <code>.wxmx</code> files can be viewed in any text editor.</p>
+<p>If the zip signature at the end of the file is still intact after renaming a broken <code>.wxmx</code> file to <code>.zip</code> most operating systems will provide a way to extract any portion of information that is stored inside it. This can be done when there is the need of recovering the original image files from a text processor document. If the zip signature isn’t intact that does not need to be the end of the world: If <em>wxMaxima</em> during saving detected that something went wrong there will be a <code>.wxmx~</code> file whose contents might help.</p>
 <p>І навіть якщо такого файла не існує — якщо встановлено параметр налаштування для оптимізації файлів .wxmx для системи керування версіями, можна перейменувати файл .wxmx на файл .txt і скористатися текстовим редактором для відновлення частини XML із вмісту файла (він починається з <code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;</code> і завершується <code>&lt;/wxMaximaDocument&gt;</code>. До і після цього фрагмента тексту у текстовому редакторі ви побачите непридатні до читання двійкові дані).</p>
 <p>Якщо текстовий файл, що містить ці дані (наприклад скопійовані і вставлені як текст до звичайного файла), збережено як файл із суфіксом назви .xml, <em>wxMaxima</em> відомий спосіб відновлення тексту документа з цього файла.</p>
 <h2 id="хочу-бачити-діагностичні-відомості-на-екрані-перш-ніж-команда-завершить-свою-роботу"><span class="header-section-number">3.3</span> Хочу бачити діагностичні відомості на екрані, перш ніж команда завершить свою роботу</h2>
@@ -1017,15 +1021,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><code>-o</code> або <code>--open=&lt;рядок&gt;</code>: відкрити файл, який передано як аргумент до цього параметра командного рядка</li>
 <li><code>-e</code> або <code>--eval</code>: обробити файл після його відкриття</li>
 <li><code>-b</code> або <code>--batch</code>: якщо ви відкриваєте файл з командного рядка, усі комірки у цьому файлі обчислюються, а потім програма виконує збереження файла. Це, наприклад, корисно, якщо сеанс, який описано у файлі, призводить до того, що <em>Maxima</em> щось виводить до файлів. Пакетну обробку буде зупинено, якщо <em>wxMaxima</em> виявить, що <em>Maxima</em> вивела повідомлення про помилку, і призупинить обробку, якщо <em>Maxima</em> задасть питання: математика є дещо інтерактивною за природою, тому повністю автономна пакетна обробка можлива далеко не завжди.</li>
-<li><code>--logtostdout</code>: записувати до stderr і усі «діагностичні повідомлення» бічної панелі.</li>
-<li><code>--pipe</code>: передавати каналом повідомлення від Maxima до stdout.</li>
-<li><code>--exit-on-error</code>: завершити роботу програми за будь-якої помилки maxima.</li>
-<li><code>-f</code> або <code>--ini=&lt;рядок&gt;</code>: скористатися файлом init, який передано як аргумент цього параметра командного рядка</li>
-<li><code>-u</code>, <code>--use-version=&lt;рядок&gt;</code>: скористатися версією maxima <code>&lt;рядок&gt;</code>.</li>
-<li><code>-l</code>, <code>--lisp=&lt;рядок&gt;</code>: скористатися Maxima, яку зібрано за допомогою компілятора Lisp <code>&lt;рядок&gt;</code>.</li>
-<li><code>-X</code>, <code>--extra-args=&lt;рядок&gt;</code>: надає змогу вказати додаткові аргументи Maxima</li>
-<li><code>-m</code> або <code>--maxima=&lt;рядок&gt;</code>: надає змогу вказати розташування виконуваного файла <em>maxima</em></li>
-<li><code>--enableipc</code>: дозволяє Maxima керувати wxMaxima шляхом міжпроцесорної взаємодії. Будьте обережні із використанням цього параметра.</li>
+<li><code>--logtostderr</code>: Log all “debug messages” sidebar messages to stderr, too.</li>
+<li><code>--pipe</code>: Pipe messages from Maxima to stdout.</li>
+<li><code>--exit-on-error</code>: Close the program on any maxima error.</li>
+<li><code>-f</code> or <code>--ini=&lt;str&gt;</code>: Use the init file that was given as argument to this command-line switch</li>
+<li><code>-u</code>, <code>--use-version=&lt;str&gt;</code>: Use maxima version <code>&lt;str&gt;</code>.</li>
+<li><code>-l</code>, <code>--lisp=&lt;str&gt;</code>: Use a Maxima compiled with Lisp compiler <code>&lt;str&gt;</code>.</li>
+<li><code>-X</code>, <code>--extra-args=&lt;str&gt;</code>: Allows to specify extra Maxima arguments</li>
+<li><code>-m</code> or <code>--maxima=&lt;str&gt;</code>: allows to specify the location of the <em>maxima</em> binary</li>
+<li><code>--enableipc</code>: Lets Maxima control wxMaxima via interprocess communications. Use this option with care.</li>
 </ul>
 <p>Замість символу мінуса у деяких операційних системах перед перемикачами командного рядка використовується тире.</p>
 </body>
