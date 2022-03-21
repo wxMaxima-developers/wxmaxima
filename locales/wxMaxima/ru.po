@@ -7,13 +7,13 @@
 # Copyright (c) Olesya Gerasimenko <gammaray@basealt.ru>, 2019.
 #
 # This file is distributed under the same license as the wxMaxima package.
-# Olesya Gerasimenko <gammaray@basealt.ru>, 2019, 2020, 2021.
+# Olesya Gerasimenko <gammaray@basealt.ru>, 2019, 2020, 2021, 2022.
 msgid ""
 msgstr ""
 "Project-Id-Version: wxMaxima\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-03-12 17:12+0100\n"
-"PO-Revision-Date: 2021-05-27 15:51+0300\n"
+"PO-Revision-Date: 2022-03-21 12:27+0300\n"
 "Last-Translator: Olesya Gerasimenko <translation-team@basealt.ru>\n"
 "Language-Team: Basealt Translation Team\n"
 "Language: ru_RU\n"
@@ -21,7 +21,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 19.12.3\n"
+"X-Generator: Lokalize 21.12.1\n"
 
 #: ../../src/StatusBar.cpp:188
 #, c-format
@@ -115,7 +115,7 @@ msgstr "%i полей в очереди на вычисление"
 #: ../../src/Worksheet.cpp:334
 #, c-format
 msgid "%s image, %li×%li, %li ppi"
-msgstr ""
+msgstr "%s изображение, %li×%li, %li пикселов на дюйм"
 
 #: ../../src/wxMaximaFrame.cpp:1245
 msgid "&Algebraic Mode"
@@ -361,6 +361,7 @@ msgstr "&Тригонометрическое упрощение"
 msgid ""
 "(Might not be displayed correctly in at least one of the worksheet fonts)"
 msgstr ""
+"(Может отображаться некорректно по крайней мере в одном из шрифтов листа)"
 
 #: ../../src/VariablesPane.cpp:251
 msgid "(Not a valid variable name)"
@@ -384,7 +385,7 @@ msgstr "Данные .wxm в буфере обмена с необычным з�
 
 #: ../../src/TableOfContents.cpp:548
 msgid "1 Level"
-msgstr ""
+msgstr "1 уровень"
 
 #: ../../src/wxMaximaFrame.cpp:2032
 msgid "1/2"
@@ -392,7 +393,7 @@ msgstr "1/2"
 
 #: ../../src/TableOfContents.cpp:549
 msgid "2 Levels"
-msgstr ""
+msgstr "2 уровня"
 
 #: ../../src/wxMaximaFrame.cpp:2267
 msgid "2D"
@@ -404,7 +405,7 @@ msgstr "Двумерные уравнения из символов ASCII"
 
 #: ../../src/TableOfContents.cpp:550
 msgid "3 Levels"
-msgstr ""
+msgstr "3 уровня"
 
 #: ../../src/wxMaximaFrame.cpp:2271
 msgid "3D"
@@ -412,11 +413,11 @@ msgstr "3D"
 
 #: ../../src/TableOfContents.cpp:551
 msgid "4 Levels"
-msgstr ""
+msgstr "4 уровня"
 
 #: ../../src/TableOfContents.cpp:552
 msgid "5 Levels"
-msgstr ""
+msgstr "5 уровней"
 
 #: ../../src/Autocomplete.cpp:238
 #, c-format
@@ -613,7 +614,7 @@ msgstr ""
 
 #: ../../src/TableOfContents.cpp:553
 msgid "All Levels"
-msgstr ""
+msgstr "Все уровни"
 
 #: ../../src/wxMaximaFrame.cpp:1299
 msgid "All but the 1st n elements"
@@ -748,9 +749,8 @@ msgid "Auto-indent new lines"
 msgstr "Автоотступ в новых строках"
 
 #: ../../src/ConfigDialogue.cpp:695
-#, fuzzy
 msgid "Auto-insert closing parenthesis"
-msgstr "Незакрытая скобка"
+msgstr "Автоматически вставлять закрывающую скобку"
 
 #: ../../src/Autocomplete.cpp:320
 #, c-format
@@ -803,6 +803,8 @@ msgid ""
 "Automatically insert a closing parenthesis the moment the user enters an "
 "opening one."
 msgstr ""
+"Автоматически вставлять закрывающую скобку при вводе открывающей скобки"
+" пользователем."
 
 #: ../../src/Worksheet.cpp:1478 ../../src/Worksheet.cpp:1786
 msgid "Automatically send known answers"
@@ -1003,7 +1005,7 @@ msgstr "Информация о сборке"
 
 #: ../../src/ConfigDialogue.cpp:1146
 msgid "Built-in"
-msgstr ""
+msgstr "Встроенный"
 
 #: ../../src/TipOfTheDay.cpp:52
 msgid ""
@@ -1130,14 +1132,12 @@ msgid "Change &2d Display"
 msgstr "Изменить способ отображения"
 
 #: ../../src/wxMaxima.cpp:9357
-#, fuzzy
 msgid "Change Image"
-msgstr "Заменить переменную"
+msgstr "Сменить изображение"
 
 #: ../../src/Worksheet.cpp:1370
-#, fuzzy
 msgid "Change Image..."
-msgstr "Сохранить изображение..."
+msgstr "Сменить изображение..."
 
 #: ../../src/ConfigDialogue.cpp:667
 msgid "Change names of greek letters to greek letters"
@@ -1164,7 +1164,7 @@ msgstr "Заменить переменную в интеграле или су�
 #: ../../src/wxMaxima.cpp:9381
 #, c-format
 msgid "Changing image originally loaded from file %s to %s."
-msgstr ""
+msgstr "Смена изображения, изначально загруженного из файла, с %s на %s."
 
 #: ../../src/wxMaxima.cpp:6898
 msgid "Char poly"
@@ -1486,34 +1486,28 @@ msgid "Convert to &Rectform"
 msgstr "Преобразовать в &стандартную форму"
 
 #: ../../src/TableOfContents.cpp:512 ../../src/TableOfContents.cpp:530
-#, fuzzy
 msgid "Convert to Heading 5"
-msgstr "Показать Заголовок 5"
+msgstr "Преобразовать в Заголовок 5"
 
 #: ../../src/TableOfContents.cpp:510
-#, fuzzy
 msgid "Convert to Heading 6"
-msgstr "Показать Заголовок 6"
+msgstr "Преобразовать в Заголовок 6"
 
 #: ../../src/TableOfContents.cpp:518 ../../src/TableOfContents.cpp:536
-#, fuzzy
 msgid "Convert to Section"
-msgstr "Преобразовать в &стандартную форму"
+msgstr "Преобразовать в раздел"
 
 #: ../../src/TableOfContents.cpp:514 ../../src/TableOfContents.cpp:532
-#, fuzzy
 msgid "Convert to Sub-Subsection"
-msgstr "Вставить поле под-подраздела"
+msgstr "Преобразовать в под-подраздел"
 
 #: ../../src/TableOfContents.cpp:516 ../../src/TableOfContents.cpp:534
-#, fuzzy
 msgid "Convert to Subsection"
-msgstr "Преобразовать в &стандартную форму"
+msgstr "Преобразовать в подраздел"
 
 #: ../../src/TableOfContents.cpp:538
-#, fuzzy
 msgid "Convert to Title"
-msgstr "Преобразовать строку в список"
+msgstr "Преобразовать в заголовок"
 
 #: ../../src/wxMaximaFrame.cpp:1210
 msgid "Convert trigonometric expression to canonical quasilinear form"
@@ -1857,7 +1851,7 @@ msgstr "Производная:"
 
 #: ../../src/ConfigDialogue.cpp:1137
 msgid "Developer Options"
-msgstr ""
+msgstr "Параметры разработчика"
 
 #: ../../src/wxMaximaFrame.cpp:1813
 msgid "Deviation..."
@@ -2046,6 +2040,7 @@ msgstr "Вниз"
 msgid ""
 "Drag and drop: Dropping cells begining with %s after the cell reading %s."
 msgstr ""
+"Перетаскивание: перетаскивание полей, начинающихся с %s, после чтения поля %s."
 
 #: ../../src/wxMaximaFrame.cpp:2124
 msgid "Drag-and-drop unicode symbols here"
@@ -3363,6 +3358,16 @@ msgid ""
 "Note: Storing the filenames for the reload functionality is independent of "
 "the automatically generated image captions."
 msgstr ""
+"Если этот параметр включён, имена файлов и пути к изображениям, вставленным с"
+" помощью пункта меню «Поле» -> «Вставить изображение...», сохраняются в файле"
+" листа при сохранении. "
+"Это позволяет перезагружать файл изображения с помощью контекстного меню"
+" после повторного открытия листа, но хранение имён файлов и путей может"
+" привести к нежелательной утечке данных. Когда этот параметр отключён,"
+" перезагрузка всё равно сработает, если лист не закрыт.\n"
+"\n"
+"Примечание: хранение имён файлов для работы функции перезагрузки не зависит"
+" от автоматически создаваемых заголовков изображений."
 
 #: ../../src/ConfigDialogue.cpp:364
 msgid ""
@@ -3980,9 +3985,8 @@ msgid "Linear Regression..."
 msgstr "Линейная регрессия..."
 
 #: ../../src/ConfigDialogue.cpp:1881
-#, fuzzy
 msgid "Lisp files (*.lisp)|*.lisp|All|*"
-msgstr "Postscript (*.eps)|*.eps|Все|*"
+msgstr "Файлы Lisp (*.lisp)|*.lisp|Все|*"
 
 #: ../../src/wxMaxima.cpp:4365
 msgid "Lisp mode."
@@ -4286,7 +4290,7 @@ msgid "Maxima asks a question!"
 msgstr "У Maxima есть вопрос!"
 
 #: ../../src/ConfigDialogue.cpp:330
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Maxima assigns each command/equation an automatic label (which looks like "
 "%i1 or %o1). If a command begins with a descriptive name followed by a : "
@@ -4676,7 +4680,7 @@ msgstr "Сообщение потока stdout Maxima: "
 #: ../../src/Worksheet.cpp:7672
 #, c-format
 msgid "Middle-click clipboard data: %s"
-msgstr ""
+msgstr "Данные буфера обмена для щелчков средней кнопкой мыши: %s"
 
 #: ../../src/wxMaxima.cpp:8303
 msgid "Minimum absolute value printed without exponent:"
@@ -5285,9 +5289,8 @@ msgid "Printing"
 msgstr "Печать"
 
 #: ../../src/ConfigDialogue.cpp:723
-#, fuzzy
 msgid "Privacy settings"
-msgstr "Параметры импорта"
+msgstr "Параметры конфиденциальности"
 
 #: ../../src/Worksheet.cpp:6538
 msgid ""
@@ -5383,11 +5386,11 @@ msgstr "Чтение вывода Maxima: %li байт"
 #: ../../src/wxMathml.cpp:46
 #, c-format
 msgid "Reading the Lisp part of wxMaxima from the file %s"
-msgstr ""
+msgstr "Чтение части Lisp wxMaxima из файла %s"
 
 #: ../../src/wxMathml.cpp:32
 msgid "Reading the Lisp part of wxMaxima from the included header file."
-msgstr ""
+msgstr "Чтение части Lisp wxMaxima из включённого файла заголовка."
 
 #: ../../src/wxMaximaFrame.cpp:138
 #, c-format
@@ -5444,14 +5447,13 @@ msgid "Refusing to send cell to maxima: "
 msgstr "Отказ в отправке поля в Maxima: "
 
 #: ../../src/Worksheet.cpp:1360
-#, fuzzy
 msgid "Reload Image"
-msgstr "Копировать как изображение"
+msgstr "Перезагрузить изображение"
 
 #: ../../src/Worksheet.cpp:1366
 #, c-format
 msgid "Reload Image \"%s\""
-msgstr ""
+msgstr "Перезагрузить изображение «%s»"
 
 #: ../../src/ConfigDialogue.cpp:778
 msgid "Reload all GUI settings from disc"
@@ -5462,9 +5464,9 @@ msgid "Reload the style settings from disc"
 msgstr "Перезагрузить все параметры стиля с диска"
 
 #: ../../src/wxMaxima.cpp:8890
-#, fuzzy, c-format
+#, c-format
 msgid "Reloading image file %s."
-msgstr "Автосохранение во временный файл %s"
+msgstr "Перезагрузка файла изображения %s."
 
 #: ../../src/ConfigDialogue.cpp:2120
 msgid "Reloading the configuration from disc"
@@ -5903,7 +5905,7 @@ msgstr "Выбрать способ отображения"
 
 #: ../../src/ConfigDialogue.cpp:1878
 msgid "Select wxMathml.lisp location"
-msgstr ""
+msgstr "Выбрать расположение wxMathml.lisp"
 
 #: ../../src/wxMaxima.cpp:248
 msgid "Selected language: "
@@ -5992,14 +5994,12 @@ msgid "Set fixed font in text controls."
 msgstr "Установить фиксированный шрифт в текстовом вводе."
 
 #: ../../src/Worksheet.cpp:1351 ../../src/Worksheet.cpp:1489
-#, fuzzy
 msgid "Set image resolution"
-msgstr "Повторное использование решений\n"
+msgstr "Установить разрешение изображения"
 
 #: ../../src/ResolutionChooser.cpp:29
-#, fuzzy
 msgid "Set image resolution [in ppi]"
-msgstr "Повторное использование решений\n"
+msgstr "Установить разрешение изображения [в пикселах на дюйм]"
 
 #: ../../src/MaxSizeChooser.cpp:30
 msgid "Set maximum image size [in mm]"
@@ -6440,9 +6440,8 @@ msgid "Square"
 msgstr "Квадратные"
 
 #: ../../src/ConfigDialogue.cpp:1061
-#, fuzzy
 msgid "Standard Options"
-msgstr "Стандартные кривые\n"
+msgstr "Стандартные параметры"
 
 #: ../../src/Worksheet.cpp:1343
 msgid "Start Animation"
@@ -6501,6 +6500,8 @@ msgid ""
 "Store filenames in image cells to enable image reloading after re-opening "
 "the worksheet"
 msgstr ""
+"Сохранять имена файлов в полях изображений, чтобы изображения можно было"
+" перезагружать после повторного открытия листа"
 
 #: ../../src/wxMaximaFrame.cpp:806
 msgid "Straight lines"
@@ -6567,9 +6568,9 @@ msgid "Suppressing a redraw during printing/export"
 msgstr "Подавление обновление изображения на экране при печати/экспорте"
 
 #: ../../src/wxMaxima.cpp:3320
-#, fuzzy
 msgid "Switched to lisp mode after receiving a lisp debug prompt!"
-msgstr "Выполнено переключение в режим Lisp после получения запроса Lisp!"
+msgstr ""
+"Выполнено переключение в режим Lisp после получения запроса отладки Lisp!"
 
 #: ../../src/wxMaxima.cpp:3322
 msgid "Switched to lisp mode after receiving a lisp prompt!"
@@ -6812,7 +6813,7 @@ msgstr "Половина уравнения, которая находится �
 #: ../../src/wxMaxima.cpp:8879 ../../src/wxMaxima.cpp:9368
 #, c-format
 msgid "The image file \"%s\" cannot be found."
-msgstr ""
+msgstr "Не удалось найти файл изображения «%s»."
 
 #: ../../src/TipOfTheDay.cpp:178
 msgid "The key combination Shift+Space results in a non-breakable space."
@@ -6889,7 +6890,7 @@ msgstr ""
 
 #: ../../src/ResolutionChooser.cpp:50
 msgid "The resolution for this image."
-msgstr ""
+msgstr "Разрешение этого изображения."
 
 #: ../../src/TipOfTheDay.cpp:169
 msgid ""
@@ -7101,7 +7102,7 @@ msgstr "К:"
 
 #: ../../src/TableOfContents.cpp:558
 msgid "Toc levels shown here"
-msgstr ""
+msgstr "Здесь показаны уровни содержания"
 
 #: ../../src/wxMaximaFrame.cpp:828 ../../src/wxMaximaFrame.cpp:831
 msgid "Toggle full screen editing"
@@ -7407,13 +7408,14 @@ msgid "User-defined labels if available"
 msgstr "Пользовательские метки (если доступно)"
 
 #: ../../src/ConfigDialogue.cpp:1152
-#, fuzzy
 msgid "User-specified file:"
-msgstr "Задаётся пользователем"
+msgstr "Указанный пользователем файл:"
 
 #: ../../src/Worksheet.cpp:6095
 msgid "Using Maxima help file from wxMaxima configuration file (helpFile=...))"
 msgstr ""
+"Использование файла справки Maxima из файла конфигурации wxMaxima"
+" (helpFile=...))"
 
 #: ../../src/wxMaxima.cpp:2181
 msgid ""
@@ -7538,13 +7540,12 @@ msgstr ""
 "запуска и параметров командной строки."
 
 #: ../../src/wxMaxima.cpp:5034
-#, fuzzy
 msgid ""
 "Whole document (*.wxmx)|*.wxmx|The input, readable by load() (maxima > 5.38) "
 "(*.wxm)|*.wxm|All Files (*.*)|*"
 msgstr ""
 "Весь документ (*.wxmx)|*.wxmx|Ввод, доступный для чтения функцией load() "
-"(Maxima > 5.38) (*.wxm)|*.wxm"
+"(Maxima > 5.38) (*.wxm)|*.wxm|Все файлы (*.*)|*"
 
 #: ../../src/ConfigDialogue.cpp:246
 msgid "Worksheet"
@@ -8046,7 +8047,7 @@ msgstr "использовать сохранённые фактические �
 
 #: ../../src/ConfigDialogue.cpp:1140
 msgid "wxMathml.lisp location"
-msgstr ""
+msgstr "Расположение wxMathml.lisp"
 
 #: ../../src/ConfigDialogue.cpp:1142
 msgid ""
@@ -8054,6 +8055,10 @@ msgid ""
 "But if a developer wants to try out new versions of this file without having "
 "to recompile wxMaxima wxMaxima allows to use an external file, instead."
 msgstr ""
+"wxMathml.lisp, Lisp-часть wxMaxima, встроена в исполняемый файл. Но"
+" разработчику может быть нужно протестировать новые варианты без"
+" необходимости постоянно перекомпилировать wxMaxima, поэтому wxMaxima также"
+" предусматривает использование внешнего файла."
 
 #: ../../src/main.cpp:428 ../../src/wxMaxima.cpp:8362
 msgid "wxMaxima"
