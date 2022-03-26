@@ -80,7 +80,7 @@
 - Italian: Marco Ciampa
 - Polish: Rafal Topolnicki
 - Portuguese BR: Eduardo M. Kalinowski
-- Russian: Vadim V. Zhytnikov, Alexey Beshenov, Max Musatov
+- Russian: Vadim V. Zhytnikov, Alexey Beshenov, Max Musatov, Olesya Gerasimenko
 - Spanish: Antonio Ullán, Mario Rodrigues Riotorto
 - Ukrainian: Sergey Semerikov
 - Chinese TW: Frenk Weng, cw.ahbong
