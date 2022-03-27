@@ -865,8 +865,18 @@ If wxWidgets is new enough _wxMaxima_ will automatically be in dark mode if the 
 
 _wxMaxima_ delegates some big tasks like parsing _Maxima_'s >1000-page-manual to background tasks, which normally goes totally unnoticed. In the moment the result of such a task is needed, though, it is possible that _wxMaxima_ needs to wait a couple of seconds before it can continue its work.
 
-* * *
+## Especially when testing new locale settings, a message box "locale 'xx_YY' can not be set" occurs
 
+![Locale warning](./locale-warning.png){ id=img_locale_warning}
+
+(The same problem can occur with other applications too).The translations seem okay after
+you click on 'OK'. wxMaxima does not only use it's own translations, but the translations
+of the wxWidgets framework too.
+
+These locales may be not present on the system. On Ubuntu/Debian systems they can be generated
+using: `dpkg-reconfigure locales`
+
+* * *
 
 Command-line arguments
 ======================
