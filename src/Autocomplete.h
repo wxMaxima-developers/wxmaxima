@@ -273,7 +273,7 @@ private:
   void WaitForBackgroundThread_Files();
   void WaitForBackgroundThreads();
   
-  //! The lists of autocompletible symbols for the classes defined in autoCompletionType
+  //! The lists of autocompletable symbols for the classes defined in autoCompletionType
   wxArrayString m_wordList[7];
   static wxRegEx m_args;
   WorksheetWords m_worksheetWords;

@@ -63,7 +63,7 @@ void AutoComplete::ClearDemofileList()
 void AutoComplete::AddSymbols(wxString xml)
 {
   WaitForBackgroundThread_Symbols();
-  wxLogMessage(_("Scheduling a background task that compiles a new list of autocompletible maxima commands."));
+  wxLogMessage(_("Scheduling a background task that compiles a new list of autocompletable maxima commands."));
 
   m_addSymbols_backgroundThread =
     std::unique_ptr<std::thread>(
@@ -207,7 +207,7 @@ void AutoComplete::BuiltinSymbols_BackgroundTask()
   wxString privateList;
   privateList = Dirstructure::Get()->UserAutocompleteFile();
   wxLogMessage(wxString::Format(
-                 _("Trying to load a list of autocompletible symbols from file %s"),
+                 _("Trying to load a list of autocompletable symbols from file %s"),
                  privateList.utf8_str()));
   if (wxFileExists(privateList))
   {
@@ -413,7 +413,7 @@ void AutoComplete::UpdateGeneralFiles(wxString partial, wxString maximaDir)
 
 void AutoComplete::UpdateLoadFiles(wxString partial, wxString maximaDir)
 {
-  wxLogMessage(_("Scheduling a background task that scans for autocompletible file names."));
+  wxLogMessage(_("Scheduling a background task that scans for autocompletable file names."));
   WaitForBackgroundThread_Files();
   // Remove the opening quote from the partial.
   if(partial[0] == wxT('\"'))
