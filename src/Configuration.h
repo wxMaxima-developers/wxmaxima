@@ -865,7 +865,17 @@ wxString DocumentclassOptions() const {return m_documentclassOptions;}
   Style m_styles[NUMBEROFSTYLES];
   //! Initialize the text styles on construction.
   void InitStyles();
+  //! True if we are confident that the font renders this char
+  bool FontRendersChar(wxChar ch, const wxFont &font = *wxNORMAL_FONT);
+  
 private:
+  WX_DECLARE_STRING_HASH_MAP(wxString, RenderablecharsHash);
+  RenderablecharsHash m_renderableChars;
+  RenderablecharsHash m_nonRenderableChars;
+  //! True if drawing the char this button displays alters at least one pixel
+  bool FontDisplaysChar(wxChar ch, const wxFont &font = *wxNORMAL_FONT);
+  //! True if drawing the char this button displays differs visibly from otherChar
+  bool CharVisiblyDifferent(wxChar ch, wxChar otherChar, const wxFont &font = *wxNORMAL_FONT);
   //! The ppi rate if we don't have a worksheet that provides a current ppi rate
   wxSize m_ppi = wxSize(-1, -1);
   mathDisplayMode m_displayMode = display_2d;
