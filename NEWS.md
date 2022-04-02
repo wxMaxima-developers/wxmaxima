@@ -1,5 +1,6 @@
 # Current:
  * A Russian translation update from Olesya Gerasimenko
+ * A faster startup
 
 # 22.03.0:
  * Add an compile option "WXM_INCLUDE_FONTS", which allows to
