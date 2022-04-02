@@ -218,9 +218,11 @@ GroupCell *Cell::GetGroup() const
 
 bool Cell::NeedsRecalculation(AFontSize fontSize) const
 {
-  bool const result = (!HasValidSize()) ||
-                      (GetType() != MC_TYPE_GROUP && !EqualToWithin(Scale_Px(fontSize), m_fontSize_Scaled, 0.1f));
-  return result;
+  if (!HasValidSize())
+    return true;
+  if (GetType() == MC_TYPE_GROUP)
+    return false;
+  return !EqualToWithin(Scale_Px(fontSize), m_fontSize_Scaled, 0.1f);
 }
 
 int Cell::GetCenterList() const
@@ -437,12 +439,12 @@ bool Cell::DrawThisCell(wxPoint point)
 bool Cell::HasValidSize() const
 {
   return !m_recalculateWidths &&
-         m_width > 0 && m_height > 0 && m_center >= 0;
+         m_width >= 0 && m_height >= 0 && m_center >= 0;
 }
 
 bool Cell::HasStaleSize() const
 {
-  return m_width > 0 && m_height > 0 && m_center >= 0;
+  return m_width >= 0 && m_height >= 0 && m_center >= 0;
 }
 
 bool Cell::HasValidPosition() const
