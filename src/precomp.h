@@ -1,3 +1,4 @@
+#define wxNO_UNSAFE_WXSTRING_CONV 1
 #include "Version.h"
 #ifdef USE_PRECOMP_HEADER
 #include <wx/wx.h>
