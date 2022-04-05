@@ -23,6 +23,7 @@
   This file contains code to create a wxPanel containing image data.
  */
 
+#define wxNO_UNSAFE_WXSTRING_CONV 1
 #include "SvgPanel.h"
 
 SvgPanel::SvgPanel(wxWindow* parent, unsigned char *data, size_t len) :

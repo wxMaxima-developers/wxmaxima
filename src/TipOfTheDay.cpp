@@ -26,6 +26,7 @@
 //
 //  SPDX-License-Identifier: GPL-2.0+
 
+#define wxNO_UNSAFE_WXSTRING_CONV 1
 #include "TipOfTheDay.h"
 #include "wxm_tipoftheday_images.h"
 #include <wx/config.h>

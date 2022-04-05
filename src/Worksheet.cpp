@@ -30,6 +30,7 @@
  */
 
 
+#define wxNO_UNSAFE_WXSTRING_CONV 1
 #include "wxMaxima.h"
 #include "CellList.h"
 #include "CompositeDataObject.h"

@@ -27,6 +27,7 @@
   between parenthesis.
  */
 
+#define wxNO_UNSAFE_WXSTRING_CONV 1
 #include "ParenCell.h"
 #include "CellImpl.h"
 #include "VisiblyInvalidCell.h"

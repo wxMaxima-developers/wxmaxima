@@ -3,6 +3,7 @@
 // from mjuergens (mjx). It is under the wxWidgets license
 // (https://www.wxwidgets.org/about/licence/) that is GPL-compatible.
 
+#define wxNO_UNSAFE_WXSTRING_CONV 1
 #include "levenshtein.h"
 
 int LevenshteinDistance(const wxString &s1, const wxString &s2)

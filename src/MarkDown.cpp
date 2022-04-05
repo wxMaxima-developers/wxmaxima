@@ -25,6 +25,7 @@
   MarkDownParser is the class that handles the markdown syntax
 */
 
+#define wxNO_UNSAFE_WXSTRING_CONV 1
 #include "MarkDown.h"
 
 MarkDownParser::MarkDownParser(Configuration *cfg)

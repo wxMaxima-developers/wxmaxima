@@ -27,6 +27,7 @@
   dynamically appending maxima commands to this list as soon as they are defined.
 */
 
+#define wxNO_UNSAFE_WXSTRING_CONV 1
 #include <wx/sstream.h>
 #include "Autocomplete.h"
 #include "Dirstructure.h"

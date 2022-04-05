@@ -26,6 +26,7 @@
   SubCell is the Cell type that represents a math element with subscript.
  */
 
+#define wxNO_UNSAFE_WXSTRING_CONV 1
 #include "SubCell.h"
 #include "CellImpl.h"
 

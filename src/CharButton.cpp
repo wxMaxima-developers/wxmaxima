@@ -27,6 +27,7 @@
   select arbitrary unicode symbols.
  */
 
+#define wxNO_UNSAFE_WXSTRING_CONV 1
 #include "CharButton.h"
 #include "UnicodeSidebar.h"
 #include "wx/sizer.h"

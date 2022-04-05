@@ -26,6 +26,7 @@
   SqrtCell is the Cell type that represents a square root.
  */
 
+#define wxNO_UNSAFE_WXSTRING_CONV 1
 #include "SqrtCell.h"
 #include "CellImpl.h"
 

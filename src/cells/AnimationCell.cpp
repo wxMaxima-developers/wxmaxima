@@ -29,6 +29,7 @@
 // 72 points per inch / 96 pixels per inch
 #define PRINT_SIZE_MULTIPLIER (72.0 / 96.0)
 
+#define wxNO_UNSAFE_WXSTRING_CONV 1
 #include "AnimationCell.h"
 #include "CellImpl.h"
 #include "CellPointers.h"

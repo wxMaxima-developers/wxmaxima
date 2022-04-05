@@ -19,6 +19,7 @@
 //
 //  SPDX-License-Identifier: GPL-2.0+
 
+#define wxNO_UNSAFE_WXSTRING_CONV 1
 #include "ListSortWiz.h"
 
 ListSortWiz::ListSortWiz(Configuration *WXUNUSED(cfg),

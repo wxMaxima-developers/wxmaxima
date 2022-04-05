@@ -24,6 +24,7 @@
   A dialog that shows the program's license.
  */
 
+#define wxNO_UNSAFE_WXSTRING_CONV 1
 #include <wx/textctrl.h>
 #include <wx/mstream.h>
 #include <wx/txtstrm.h>

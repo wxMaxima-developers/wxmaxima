@@ -29,6 +29,7 @@
 
 
 
+#define wxNO_UNSAFE_WXSTRING_CONV 1
 #include "ConfigDialogue.h"
 #include "BTextCtrl.h"
 #include "Cell.h"

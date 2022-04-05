@@ -24,6 +24,7 @@
   The file that defines the starting point of the program
  */
 
+#define wxNO_UNSAFE_WXSTRING_CONV 1
 #include <wx/wx.h>
 #include <wx/tipdlg.h>
 #include <wx/config.h>

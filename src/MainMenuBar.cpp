@@ -23,6 +23,7 @@
   This file contains the logic needed in order to build a (hopefully) flicker-free main menu bar.
  */
 
+#define wxNO_UNSAFE_WXSTRING_CONV 1
 #include "MainMenuBar.h"
 
 MainMenuBar::MainMenuBar() : wxMenuBar()

@@ -30,6 +30,7 @@
   everything surrounding it in wxMaximaFrame.
  */
 
+#define wxNO_UNSAFE_WXSTRING_CONV 1
 #include <wx/notifmsg.h>
 #include "MaximaTokenizer.h"
 #if defined __WXMSW__

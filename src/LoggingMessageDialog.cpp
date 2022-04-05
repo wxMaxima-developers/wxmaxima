@@ -1,3 +1,4 @@
+#define wxNO_UNSAFE_WXSTRING_CONV 1
 #include "LoggingMessageDialog.h"
 
 int LoggingMessageBox( 	const wxString &  	message,

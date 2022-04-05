@@ -26,6 +26,7 @@
  */
 
 
+#define wxNO_UNSAFE_WXSTRING_CONV 1
 #include "FindReplaceDialog.h"
 #include "EditorCell.h"
 

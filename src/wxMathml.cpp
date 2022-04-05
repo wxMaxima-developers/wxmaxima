@@ -1,3 +1,4 @@
+#define wxNO_UNSAFE_WXSTRING_CONV 1
 #include <iostream>
 #include <wx/wx.h>
 #include <wx/mstream.h>

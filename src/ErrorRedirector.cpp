@@ -28,6 +28,7 @@
   It is a customized copy of a portion of wxWidget's log.cpp.
  */
 
+#define wxNO_UNSAFE_WXSTRING_CONV 1
 #include "ErrorRedirector.h"
 #include <wx/datetime.h>
 #include <cassert>

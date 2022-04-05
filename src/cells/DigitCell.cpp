@@ -28,6 +28,7 @@
   line.
  */
 
+#define wxNO_UNSAFE_WXSTRING_CONV 1
 #include "DigitCell.h"
 #include "CellImpl.h"
 #include "CellList.h"

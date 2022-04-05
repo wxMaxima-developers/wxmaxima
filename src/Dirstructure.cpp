@@ -29,6 +29,7 @@
   DirStructure informs about what directory is to be found where on the current system.
 */
 
+#define wxNO_UNSAFE_WXSTRING_CONV 1
 #include "Dirstructure.h"
 #include "LoggingMessageDialog.h"
 #include <wx/filename.h>

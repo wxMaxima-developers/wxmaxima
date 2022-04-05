@@ -27,6 +27,7 @@
   EditorCell is the Cell type that represents the field that contains user input.
 */
 
+#define wxNO_UNSAFE_WXSTRING_CONV 1
 #include "EditorCell.h"
 
 #include "CellImpl.h"

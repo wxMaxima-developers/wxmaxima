@@ -23,6 +23,7 @@
   This file contains code to create a wxPanel containing image data.
  */
 
+#define wxNO_UNSAFE_WXSTRING_CONV 1
 #include "WrappingStaticText.h"
 #include <wx/wupdlock.h>
 

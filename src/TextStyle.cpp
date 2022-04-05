@@ -27,6 +27,7 @@
  */
 
 #define wxNO_UNSAFE_WXSTRING_CONV
+#define wxNO_UNSAFE_WXSTRING_CONV 1
 #include "TextStyle.h"
 #include "FontCache.h"
 #include <wx/fontenum.h>

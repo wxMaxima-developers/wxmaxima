@@ -27,6 +27,7 @@
   This queue contains all code cells that still have to be passed to maxima.
 */
 
+#define wxNO_UNSAFE_WXSTRING_CONV 1
 #include "EvaluationQueue.h"
 #include "MaximaTokenizer.h"
 

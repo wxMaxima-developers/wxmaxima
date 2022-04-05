@@ -26,6 +26,7 @@
   ExptCell is the Cell type that represents exponents.
  */
 
+#define wxNO_UNSAFE_WXSTRING_CONV 1
 #include "ExptCell.h"
 #include "CellImpl.h"
 

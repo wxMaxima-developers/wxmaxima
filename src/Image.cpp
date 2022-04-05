@@ -23,6 +23,7 @@
   This file defines the class Image that stores compressed images and handles scaling and uncompressing them.
 */
 
+#define wxNO_UNSAFE_WXSTRING_CONV 1
 #include "Image.h"
 #define NANOSVG_IMPLEMENTATION
 #define NANOSVGRAST_IMPLEMENTATION

@@ -27,6 +27,7 @@
   only works on systems that allow popups to handle key presses.
 */
 
+#define wxNO_UNSAFE_WXSTRING_CONV 1
 #include "AutocompletePopup.h"
 #include "Dirstructure.h"
 #include "wxMaximaFrame.h"

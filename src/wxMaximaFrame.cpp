@@ -29,6 +29,7 @@
   worksheet - which is displayed by Worksheet and whose logic partially is defined in
   wxMaxima.
  */
+#define wxNO_UNSAFE_WXSTRING_CONV 1
 #include "wxMaximaFrame.h"
 #include "Dirstructure.h"
 

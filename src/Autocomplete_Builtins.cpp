@@ -27,6 +27,7 @@
   a separate file.
 */
 
+#define wxNO_UNSAFE_WXSTRING_CONV 1
 #include "Autocomplete.h"
 
 bool AutoComplete::LoadBuiltinSymbols()

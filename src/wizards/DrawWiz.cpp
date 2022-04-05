@@ -24,6 +24,7 @@
   This file contains all the wizards the draw sidepane needs.
  */
 
+#define wxNO_UNSAFE_WXSTRING_CONV 1
 #include "DrawWiz.h"
 #include <wx/statbox.h>
 #include <wx/display.h>

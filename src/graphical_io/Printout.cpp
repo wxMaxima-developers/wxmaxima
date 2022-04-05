@@ -29,6 +29,7 @@
 //! Bitmaps are scaled down if the resolution of the DC is too low.
 #define DPI_REFERENCE 96.0
 
+#define wxNO_UNSAFE_WXSTRING_CONV 1
 #include "Printout.h"
 #include "Worksheet.h"
 

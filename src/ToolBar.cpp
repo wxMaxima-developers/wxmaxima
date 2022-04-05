@@ -26,6 +26,7 @@
   This file defines the class ToolBar that represents wxMaxima's main tool bar.
  */
 
+#define wxNO_UNSAFE_WXSTRING_CONV 1
 #include "ToolBar.h"
 #include "wxm_toolbar_images.h"
 #include <wx/mstream.h>

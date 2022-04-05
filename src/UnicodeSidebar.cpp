@@ -28,6 +28,7 @@
  */
 
 
+#define wxNO_UNSAFE_WXSTRING_CONV 1
 #include <wx/sizer.h>
 #include <wx/tokenzr.h>
 #include <wx/mstream.h>

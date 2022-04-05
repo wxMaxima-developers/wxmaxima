@@ -26,6 +26,7 @@
   FracCell is the Cell type that represents fractions.
 */
 
+#define wxNO_UNSAFE_WXSTRING_CONV 1
 #include "FracCell.h"
 #include "CellImpl.h"
 

@@ -24,6 +24,7 @@
   This file defines the class BitMap that renders math as bitmap.
  */
 
+#define wxNO_UNSAFE_WXSTRING_CONV 1
 #include "BitmapOut.h"
 #include "Cell.h"
 #include <wx/clipbrd.h>

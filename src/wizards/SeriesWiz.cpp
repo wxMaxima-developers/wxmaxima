@@ -26,6 +26,7 @@ enum
 };
 
 
+#define wxNO_UNSAFE_WXSTRING_CONV 1
 #include "SeriesWiz.h"
 
 SeriesWiz::SeriesWiz(wxWindow *parent, int id,

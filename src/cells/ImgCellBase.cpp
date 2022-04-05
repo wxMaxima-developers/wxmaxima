@@ -27,6 +27,7 @@
  */
 
 
+#define wxNO_UNSAFE_WXSTRING_CONV 1
 #include "ImgCellBase.h"
 #include "CellImpl.h"
 #include "CellPointers.h"

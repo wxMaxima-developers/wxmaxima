@@ -28,6 +28,7 @@
   <code>abs()</code> and <code>cabs()</code> commands.
 */
 
+#define wxNO_UNSAFE_WXSTRING_CONV 1
 #include "AbsCell.h"
 #include "CellImpl.h"
 #include "TextCell.h"
