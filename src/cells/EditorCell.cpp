@@ -3191,7 +3191,8 @@ void EditorCell::PasteFromClipboard(const bool primary)
 {
   wxTheClipboard->UsePrimarySelection(primary);
   wxASSERT_MSG(wxTheClipboard->IsOpened(),_("Bug: The clipboard isn't open on pasting into an editor cell"));
-  if (wxTheClipboard->IsSupported(wxDF_TEXT))
+  if (wxTheClipboard->IsSupported(wxDF_TEXT)
+    || wxTheClipboard->IsSupported(wxDF_UNICODETEXT))
   {
     wxTextDataObject obj;
     wxTheClipboard->GetData(obj);

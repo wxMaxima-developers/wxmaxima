@@ -7469,7 +7469,10 @@ void Worksheet::PasteFromClipboard()
     return;
 
   // Check if the clipboard contains text.
-  if ((wxTheClipboard->IsSupported(wxDF_TEXT)) || (wxTheClipboard->IsSupported(m_wxmFormat)))
+  wxClipboard *clip = wxClipboard::Get();
+  if ((wxTheClipboard->IsSupported(wxDF_TEXT))
+    || (wxTheClipboard->IsSupported(wxDF_UNICODETEXT))
+    || (wxTheClipboard->IsSupported(m_wxmFormat)))
   {
     wxString inputs;
 
@@ -7573,7 +7576,8 @@ void Worksheet::PasteFromClipboard()
     }
     else
     {
-      if (m_hCaretActive && wxTheClipboard->IsSupported(wxDF_TEXT))
+      if (m_hCaretActive && (wxTheClipboard->IsSupported(wxDF_TEXT)
+        || wxTheClipboard->IsSupported(wxDF_UNICODETEXT)))
       {
         wxTextDataObject obj;
         wxTheClipboard->GetData(obj);
