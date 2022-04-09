@@ -1,6 +1,8 @@
-# Current:
+# 22.04.0:
  * A Russian translation update from Olesya Gerasimenko
- * A faster startup
+ * Faster startup logic
+ * Repaired drag-and-drop on MacOs (#1624)
+ * Resolved a bug in parenthesis matching (#1649)
 
 # 22.03.0:
  * Add an compile option "WXM_INCLUDE_FONTS", which allows to

@@ -40,6 +40,7 @@
 - Jonathan Wakely
 - Mika Kahkonen
 - Kuba Ober
+- k-yaegashi
 - Lauri Nurmi
 - Lennart Ferlemann
 - Lennart Jern
