@@ -24,8 +24,20 @@
 */
 
 #include "Image.h"
+
+/* The nanosvg .h files contain both the header and the implementation.
+   In exactly one file of the project need to be defined in order to
+   make the implementation visible to the compiler.
+   
+   In wxWidgets >3.1.6 this is done in wxWidgets itself so we need to 
+   skip that step there.
+ */
+#if wxCHECK_VERSION(3, 1, 6)
+#else
 #define NANOSVG_IMPLEMENTATION
 #define NANOSVGRAST_IMPLEMENTATION
+#endif
+
 #include <wx/mstream.h>
 #include <wx/wfstream.h>
 #include <wx/zstream.h>
