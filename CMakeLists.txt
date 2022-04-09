@@ -206,6 +206,8 @@ list(REMOVE_AT AUTHORSLINES 0 1) # remove main heading line.
       endif()
     endforeach()
 
+add_definitions(-DwxNO_UNSAFE_WXSTRING_CONV)
+
 add_subdirectory(Doxygen)
 add_subdirectory(data)
 add_subdirectory(info)
