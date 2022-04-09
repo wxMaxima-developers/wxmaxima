@@ -2517,6 +2517,7 @@ void EditorCell::FindMatchingParens()
             {
               m_paren1 = m_positionOfCaret;
               m_paren2 = pos;
+              return;
             }
           }
         }
@@ -2549,6 +2550,7 @@ void EditorCell::FindMatchingParens()
           {
             m_paren1 = pos;
             m_paren2 = m_positionOfCaret;
+            return;
           }
         }
         else
