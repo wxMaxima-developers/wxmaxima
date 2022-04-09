@@ -26,7 +26,6 @@
  * This file implements the text style system.
  */
 
-#define wxNO_UNSAFE_WXSTRING_CONV
 #include "TextStyle.h"
 #include "FontCache.h"
 #include <wx/fontenum.h>
