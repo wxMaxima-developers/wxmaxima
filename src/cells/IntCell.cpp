@@ -26,7 +26,6 @@
   IntCell is the Cell type that represents maxima's <code>integrate()</code> command.
 */
 
-#define wxNO_UNSAFE_WXSTRING_CONV 1
 #include "IntCell.h"
 #include "CellImpl.h"
 #include "TextCell.h"

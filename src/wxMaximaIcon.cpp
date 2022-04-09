@@ -24,7 +24,6 @@
   This file defines the class Image that stores compressed images and handles scaling and uncompressing them.
 */
 
-#define wxNO_UNSAFE_WXSTRING_CONV 1
 #include "wxMaximaIcon.h"
 #include <wx/mstream.h>
 #include <wx/wfstream.h>

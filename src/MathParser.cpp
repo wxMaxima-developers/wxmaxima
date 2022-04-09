@@ -25,7 +25,6 @@
   This file defines the class MathParser that reads wxmx data and math from Maxima.
 */
 
-#define wxNO_UNSAFE_WXSTRING_CONV 1
 #include <wx/config.h>
 #include <wx/tokenzr.h>
 #include <wx/sstream.h>

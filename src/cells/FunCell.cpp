@@ -26,7 +26,6 @@
   FunCell is the Cell type that represents functions that don't require special handling.
  */
 
-#define wxNO_UNSAFE_WXSTRING_CONV 1
 #include "FunCell.h"
 #include "CellImpl.h"
 #include "TextCell.h"

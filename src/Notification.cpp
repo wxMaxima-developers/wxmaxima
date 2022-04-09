@@ -28,7 +28,6 @@
   It represents a non-disturbing message to the user.
  */
 
-#define wxNO_UNSAFE_WXSTRING_CONV 1
 #include "Notification.h"
 Notification::Notification():wxNotificationMessage()
 {

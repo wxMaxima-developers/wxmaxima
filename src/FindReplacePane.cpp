@@ -26,7 +26,6 @@
  */
 
 
-#define wxNO_UNSAFE_WXSTRING_CONV 1
 #include "FindReplacePane.h"
 #include "EditorCell.h"
 #include <wx/stattext.h>

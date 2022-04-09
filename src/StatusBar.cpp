@@ -24,7 +24,6 @@
   This file defines the contents of the class StatusBar that represents wxMaxima's status bar.
 
 */
-#define wxNO_UNSAFE_WXSTRING_CONV 1
 #include "StatusBar.h"
 #include <wx/artprov.h>
 #include <wx/display.h>

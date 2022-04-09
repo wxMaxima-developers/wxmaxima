@@ -24,7 +24,6 @@
   This file contains all the wizards the draw sidepane needs.
  */
 
-#define wxNO_UNSAFE_WXSTRING_CONV 1
 #include "CsvWiz.h"
 #include <wx/persist/toplevel.h>
 #include <wx/arrstr.h>

@@ -50,7 +50,6 @@
 //
 //  SPDX-License-Identifier: wxWindows
 
-#define wxNO_UNSAFE_WXSTRING_CONV 1
 #include "StringUtils.h"
 
 #include <iterator>

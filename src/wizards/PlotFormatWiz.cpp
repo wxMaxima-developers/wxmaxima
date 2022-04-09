@@ -20,7 +20,6 @@
 //
 //  SPDX-License-Identifier: GPL-2.0+
 
-#define wxNO_UNSAFE_WXSTRING_CONV 1
 #include "PlotFormatWiz.h"
 
 PlotFormatWiz::PlotFormatWiz(wxWindow *parent, int id,

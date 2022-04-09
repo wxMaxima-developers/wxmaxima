@@ -19,7 +19,6 @@
 //
 //  SPDX-License-Identifier: GPL-2.0+
 
-#define wxNO_UNSAFE_WXSTRING_CONV 1
 #include "SystemWiz.h"
 
 SysWiz::SysWiz(wxWindow *parent, int id, Configuration *cfg, const wxString &title, int numEq,

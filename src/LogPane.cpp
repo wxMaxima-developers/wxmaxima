@@ -19,7 +19,6 @@
 //
 //  SPDX-License-Identifier: GPL-2.0+
 
-#define wxNO_UNSAFE_WXSTRING_CONV 1
 #include "LogPane.h"
 LogPane::LogPane(wxWindow *parent, wxWindowID id, bool becomeLogTarget) : wxPanel(parent, id)
 {

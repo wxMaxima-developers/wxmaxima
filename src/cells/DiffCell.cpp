@@ -26,7 +26,6 @@
   DiffCell is the Cell type that represents the field that represents the diff() command.
  */
 
-#define wxNO_UNSAFE_WXSTRING_CONV 1
 #include "DiffCell.h"
 #include "CellImpl.h"
 #include "GroupCell.h"

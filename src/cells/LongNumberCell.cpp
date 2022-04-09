@@ -27,7 +27,6 @@
   should be overridden, before they are displayed.
  */
 
-#define wxNO_UNSAFE_WXSTRING_CONV 1
 #include "DigitCell.h"
 #include "LongNumberCell.h"
 #include "CellImpl.h"

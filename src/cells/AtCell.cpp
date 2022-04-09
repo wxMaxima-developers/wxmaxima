@@ -26,7 +26,6 @@
   AtCell is the Cell type that represents maxima's at() command.
 */
 
-#define wxNO_UNSAFE_WXSTRING_CONV 1
 #include "AtCell.h"
 #include "CellImpl.h"
 

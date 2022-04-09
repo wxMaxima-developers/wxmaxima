@@ -21,7 +21,6 @@
 //
 //  SPDX-License-Identifier: GPL-2.0+
 
-#define wxNO_UNSAFE_WXSTRING_CONV 1
 #include "CellPointers.h"
 #include "GroupCell.h"
 #include <algorithm>

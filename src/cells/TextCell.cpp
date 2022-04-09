@@ -28,7 +28,6 @@
   contained in maxima's output.
  */
 
-#define wxNO_UNSAFE_WXSTRING_CONV 1
 #include "TextCell.h"
 #include "CellImpl.h"
 #include "StringUtils.h"

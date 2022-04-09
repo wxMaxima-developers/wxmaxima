@@ -24,7 +24,6 @@
   This file defines the class Emfout that renders math as scalable emf graphics.
  */
 
-#define wxNO_UNSAFE_WXSTRING_CONV 1
 #include "EMFout.h"
 #include "Cell.h"
 

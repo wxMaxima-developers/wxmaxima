@@ -1,4 +1,3 @@
-#define wxNO_UNSAFE_WXSTRING_CONV 1
 #include "RecentDocuments.h"
 #include <wx/filename.h>
 

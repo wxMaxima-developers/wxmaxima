@@ -19,7 +19,6 @@
 //
 //  SPDX-License-Identifier: GPL-2.0+
 
-#define wxNO_UNSAFE_WXSTRING_CONV 1
 #include "Plot2dWiz.h"
 
 #include <wx/artprov.h>

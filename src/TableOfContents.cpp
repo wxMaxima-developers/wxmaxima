@@ -26,7 +26,6 @@
   Structure is the class that serves as the Table-Of-Contents sidebar.
 */
 
-#define wxNO_UNSAFE_WXSTRING_CONV 1
 #include "TableOfContents.h"
 
 #include <wx/sizer.h>

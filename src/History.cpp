@@ -27,7 +27,6 @@
   History is a side bar that shows all recently issued maxima commands.
  */
 
-#define wxNO_UNSAFE_WXSTRING_CONV 1
 #include "History.h"
 
 #include <wx/sizer.h>

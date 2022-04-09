@@ -24,7 +24,6 @@
   This file defines the class Svgout that renders math as scalable vector graphics.
  */
 
-#define wxNO_UNSAFE_WXSTRING_CONV 1
 #include "SVGout.h"
 #include "ErrorRedirector.h"
 #include <wx/txtstrm.h> 

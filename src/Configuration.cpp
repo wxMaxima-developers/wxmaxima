@@ -24,7 +24,6 @@
   This file defines the class Configuration which serves as a fast configuration storage.
  */
 
-#define wxNO_UNSAFE_WXSTRING_CONV 1
 #include "Configuration.h"
 
 #include "Cell.h"

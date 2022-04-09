@@ -26,7 +26,6 @@
   conjugate() command.
  */
 
-#define wxNO_UNSAFE_WXSTRING_CONV 1
 #include "ConjugateCell.h"
 #include "CellImpl.h"
 

@@ -26,7 +26,6 @@
   and wxMaxima.
  */
 
-#define wxNO_UNSAFE_WXSTRING_CONV 1
 #include "XmlInspector.h"
 
 #include <wx/sizer.h>

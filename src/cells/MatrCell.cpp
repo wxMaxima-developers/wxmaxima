@@ -27,7 +27,6 @@
   elements like the table_form command.
 */
 
-#define wxNO_UNSAFE_WXSTRING_CONV 1
 #include "MatrCell.h"
 #include "CellImpl.h"
 

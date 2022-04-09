@@ -27,7 +27,6 @@
   Cell is the base class for all cell- or list-type elements.
 */
 
-#define wxNO_UNSAFE_WXSTRING_CONV 1
 #include "Cell.h"
 #include "CellList.h"
 #include "GroupCell.h"

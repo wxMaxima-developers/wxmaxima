@@ -26,7 +26,6 @@
   SetCell is the Cell type that represents a list of math elements.
  */
 
-#define wxNO_UNSAFE_WXSTRING_CONV 1
 #include "SetCell.h"
 #include "CellImpl.h"
 

@@ -50,7 +50,6 @@
 //
 //  SPDX-License-Identifier: wxWindows
 
-#define wxNO_UNSAFE_WXSTRING_CONV 1
 #include "StreamUtils.h"
 #include "ww898/utf_selector.hpp"
 #include <cstring>

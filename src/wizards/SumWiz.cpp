@@ -19,7 +19,6 @@
 //
 //  SPDX-License-Identifier: GPL-2.0+
 
-#define wxNO_UNSAFE_WXSTRING_CONV 1
 #include "SumWiz.h"
 
 SumWiz::SumWiz(wxWindow *parent, int id, Configuration *cfg, const wxString &title,

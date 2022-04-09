@@ -27,7 +27,6 @@
   superscript.
  */
 
-#define wxNO_UNSAFE_WXSTRING_CONV 1
 #include "SubSupCell.h"
 #include "CellImpl.h"
 #include "TextCell.h"
