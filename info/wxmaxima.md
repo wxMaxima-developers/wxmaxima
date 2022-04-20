@@ -876,6 +876,10 @@ of the wxWidgets framework too.
 These locales may be not present on the system. On Ubuntu/Debian systems they can be generated
 using: `dpkg-reconfigure locales`
 
+## How can I use symbols for real numbers, natural numbers (ℝ, ℕ), etc.?
+
+You can find these symbols in the unicode side bar (search for 'double-struck capital'). But the selected font must also support these symbols. If they do not display properly, select another font.
+
 * * *
 
 Command-line arguments
