@@ -1476,10 +1476,10 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
         {
           popupMenu.AppendSeparator();
           popupMenu.AppendCheckItem(popid_auto_answer, _("Automatically send known answers"),
-                                    _("wxMaxma remembers answers from the last run and is able to automatically send them to maxima, if requested"));
+                                    _("wxMaxima remembers answers from the last run and is able to automatically send them to maxima, if requested"));
           popupMenu.Check(popid_auto_answer, group->AutoAnswer());
           popupMenu.AppendCheckItem(popid_never_autoanswer, _("Never offer known answers"),
-                                    _("wxMaxma remembers answers from the last run and is able to offer them as the default answer"));
+                                    _("wxMaxima remembers answers from the last run and is able to offer them as the default answer"));
           popupMenu.Check(popid_never_autoanswer, !m_configuration->OfferKnownAnswers());
         }
         if (group->GetGroupType() == GC_TYPE_IMAGE)
@@ -1784,10 +1784,10 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
           {
             popupMenu.AppendSeparator();
             popupMenu.AppendCheckItem(popid_auto_answer, _("Automatically send known answers"),
-                                      _("wxMaxma remembers answers from the last run and is able to automatically send them to maxima, if requested"));
+                                      _("wxMaxima remembers answers from the last run and is able to automatically send them to maxima, if requested"));
             popupMenu.Check(popid_auto_answer, group->AutoAnswer());
             popupMenu.AppendCheckItem(popid_never_autoanswer, _("Never offer known answers"),
-                                      _("wxMaxma remembers answers from the last run and is able to offer them as the default answer"));
+                                      _("wxMaxima remembers answers from the last run and is able to offer them as the default answer"));
             popupMenu.Check(popid_never_autoanswer, !m_configuration->OfferKnownAnswers());
           }
           break;

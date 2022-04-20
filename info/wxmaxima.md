@@ -113,7 +113,7 @@ What isn't standard is that _wxMaxima_ provides drag-and-drop flexibility by def
 * The cursor is drawn horizontally if it is moved in the space between two cells or by clicking there.
 * A vertical cursor that works inside a cell. This cursor is activated by moving the cursor inside a cell using the mouse pointer or the cursor keys and works much like the cursor in a text editor.
 
-When you start wxMaxma, you will only see the blinking horizontal cursor. If you start typing, a math cell will be automatically created and the cursor will change to a regular vertical one (you will see a right arrow as "prompt", after the Math cell is evaluated (<kbd>CTRL+ENTER</kbd>), you will see the labels, e.g. `(%i1)`, `(%o1)`).
+When you start wxMaxima, you will only see the blinking horizontal cursor. If you start typing, a math cell will be automatically created and the cursor will change to a regular vertical one (you will see a right arrow as "prompt", after the Math cell is evaluated (<kbd>CTRL+ENTER</kbd>), you will see the labels, e.g. `(%i1)`, `(%o1)`).
 
 
 ![(blinking) horizontal cursor after wxMaxima start](./horizontal-cursor-only.png){ id=img_horizontal_cursor_only }
