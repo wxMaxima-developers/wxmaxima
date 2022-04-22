@@ -1,3 +1,6 @@
+# Current:
+ * Update the Ukrainian translation
+
 # 22.04.0:
  * A Russian translation update from Olesya Gerasimenko
  * Repaired drag-and-drop on MacOs (#1624)
