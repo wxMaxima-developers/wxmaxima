@@ -6152,7 +6152,7 @@ wxString Worksheet::GetMaximaHelpFile()
   helpfilepaths.Add(m_configuration->MaximaShareDir() + "/doc/html");
   wxString helpfile_location = helpfilepaths.FindAbsoluteValidPath("maxima_singlepage.html");
   wxFileName helpfile_cleanup(helpfile_location);
-  helpfile_cleanup.Normalize();
+  helpfile_cleanup.Normalize(wxPATH_NORM_ENV_VARS | wxPATH_NORM_DOTS | wxPATH_NORM_TILDE | wxPATH_NORM_ABSOLUTE | wxPATH_NORM_LONG | wxPATH_NORM_SHORTCUT);
   if (helpfile_cleanup.IsFileReadable()) {
     return helpfile_cleanup.GetFullPath();
   } else {
