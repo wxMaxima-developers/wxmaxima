@@ -31,8 +31,15 @@
    
    In wxWidgets >3.1.6 this is done in wxWidgets itself so we need to 
    skip that step there.
+
+   So that should work. But for Linux builds with 3.1.6 I get linking errors, e.g.:
+   undefined reference to `nsvgRasterize'
+   Therefore do not define NANOSVG_IMPLEMENTATION/NANOSVGRAST_IMPLEMENTATION only for Windows.
+   That is probably not correct (a FIXME), but I have no idea, why Linux still requires
+   that NANOSVG_IMPLEMENTATION/NANOSVGRAST_IMPLEMENTATION is defined.
+
  */
-#if wxCHECK_VERSION(3, 1, 6)
+#if (wxCHECK_VERSION(3, 1, 6)) && (__WINDOWS__)
 #else
 #define NANOSVG_IMPLEMENTATION
 #define NANOSVGRAST_IMPLEMENTATION
