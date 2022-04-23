@@ -585,9 +585,9 @@ void Plot2DPar::do_layout()
   grid_sizer_2->Add(text_ctrl_2, 0, wxALL | wxEXPAND, 5);
   grid_sizer_2->Add(label_4, 0, wxALL | wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL, 5);
   sizer_1->Add(text_ctrl_3, 0, wxALL, 5);
-  sizer_1->Add(label_5, 0, wxALL | wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL, 5);
+  sizer_1->Add(label_5, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   sizer_1->Add(text_ctrl_4, 0, wxALL, 5);
-  sizer_1->Add(label_6, 0, wxALL | wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL, 5);
+  sizer_1->Add(label_6, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   sizer_1->Add(text_ctrl_5, 0, wxALL, 5);
   grid_sizer_2->Add(sizer_1, 1, 0, 0);
   grid_sizer_2->Add(label_7, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
