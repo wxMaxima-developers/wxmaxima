@@ -83,7 +83,7 @@
 - Portuguese BR: Eduardo M. Kalinowski
 - Russian: Vadim V. Zhytnikov, Alexey Beshenov, Max Musatov, Olesya Gerasimenko
 - Spanish: Antonio Ullán, Mario Rodrigues Riotorto
-- Ukrainian: Sergey Semerikov
+- Ukrainian: Sergey Semerikov, Yuri Chornoivan
 - Chinese TW: Frenk Weng, cw.ahbong
 
 ## Artwork
