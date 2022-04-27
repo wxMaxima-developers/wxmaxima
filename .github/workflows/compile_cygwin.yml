@@ -12,8 +12,6 @@ jobs:
         with:
           platform: x64
           packages: cmake git libwx_baseu3.0-devel libwx_gtk3u3.0-devel gcc-core gcc-g++ make gettext-devel
-      - name: adding github workspace as safe directory
-        run: git config --global --add safe.directory $GITHUB_WORKSPACE
       - name: Checkout_git
         uses: actions/checkout@v3
       - name: configure
