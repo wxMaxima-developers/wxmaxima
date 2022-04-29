@@ -74,9 +74,9 @@ const SvgBitmap &SvgBitmap::SetSize(int width, int height)
 {
   // Set the bitmap to the new size
   #if defined __WXOSX__
-  wxBitmap::operator=(wxBitmap(width, height, 32, m_window->GetContentScaleFactor()));
+  wxBitmap::operator=(wxBitmap(wxSize(width, height), 32, m_window->GetContentScaleFactor()));
   #else
-  wxBitmap::operator=(wxBitmap(width, height, 32));
+  wxBitmap::operator=(wxBitmap(wxSize(width, height), 32));
   #endif
   if (!m_svgImage)
   {
@@ -150,7 +150,7 @@ wxBitmap SvgBitmap::RGBA2wxBitmap(const unsigned char imgdata[],
   #if defined __WXOSX__
   wxBitmap retval = wxBitmap(wxSize(width, height), 32, scaleFactor);
   #else
-  wxBitmap retval = wxBitmap(width, height, 32);
+  wxBitmap retval = wxBitmap(wxSize(width, height), 32);
   #endif
   const unsigned char* rgba = imgdata;
   if(!retval.Ok())
