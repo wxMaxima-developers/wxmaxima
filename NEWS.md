@@ -1,5 +1,6 @@
 # Current:
  * Update the Ukrainian translation
+ * Many MacOs fixes
 
 # 22.04.0:
  * A Russian translation update from Olesya Gerasimenko
