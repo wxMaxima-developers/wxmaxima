@@ -57,15 +57,8 @@ public:
   //! Gets the original size of the svg image
   wxSize GetOriginalSize() const
   { return m_svgImage ? wxSize(m_svgImage->width, m_svgImage->height) : wxDefaultSize; }
-  /*! An "invalid bitmap" sign
-    
-    We should make the image static and generate it on start-up 
-    so whenever we need it it already would be available as a 
-    refcounted object and therefore be likely to 
-    be available even if the problem was a failing malloc(). 
-    But with wx3.0 gtk crashes in this case.
-   */
-  static wxBitmap GetInvalidBitmap(int targetSize);
+  /*! An "invalid bitmap" sign */
+  wxBitmap GetInvalidBitmap(int targetSize);
 private:
   //! The scale factor the bitmap is created with
   int m_scaleFactor;
