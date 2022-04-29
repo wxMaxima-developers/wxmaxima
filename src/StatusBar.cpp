@@ -287,7 +287,7 @@ wxBitmap StatusBar::GetImage(wxString name,
   }
 
   if(!img.IsOk())
-    return SvgBitmap(data, len, targetWidth, targetWidth);
+    return SvgBitmap(this, data, len, targetWidth, targetWidth);
 
   targetWidth = static_cast<double>(GetSize().GetHeight());
   targetHeight = static_cast<double>(GetSize().GetHeight());

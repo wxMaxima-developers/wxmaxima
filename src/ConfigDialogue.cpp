@@ -141,7 +141,7 @@ wxBitmap ConfigDialogue::GetImage(wxString name,
     img = bmp.ConvertToImage();
   }
   if(!img.IsOk())
-    return SvgBitmap(data, len, targetSize, targetSize);
+    return SvgBitmap(this, data, len, targetSize, targetSize);
   else
   {
     img.Rescale(targetSize, targetSize, wxIMAGE_QUALITY_HIGH);

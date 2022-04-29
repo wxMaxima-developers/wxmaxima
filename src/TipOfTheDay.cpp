@@ -312,7 +312,7 @@ wxImage TipOfTheDay::GetImage(unsigned char *data, size_t len)
     targetSize = sizeB;
   }
 
-  wxImage img = SvgBitmap(data, len, targetSize, targetSize).ConvertToImage();
+  wxImage img = SvgBitmap(this, data, len, targetSize, targetSize).ConvertToImage();
 
 #if defined __WXMSW__
 #if wxCHECK_VERSION(3, 1, 1)
