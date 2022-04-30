@@ -23,5 +23,6 @@ jobs:
       - name: compile
         run: |
              cd build
-             cmake --build .
+             find /cygdrive/d/a/wxmaxima
+             cmake --build . --verbose
              cd ..
