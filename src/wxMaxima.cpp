@@ -528,6 +528,12 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
           wxCommandEventHandler(wxMaxima::NumericalMenu), NULL, this);
   Connect(menu_to_float, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::NumericalMenu), NULL, this);
+  Connect(menu_rat, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::NumericalMenu), NULL, this);
+  Connect(menu_rationalize, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::NumericalMenu), NULL, this);
+  Connect(menu_guess_exact_number, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::NumericalMenu), NULL, this);
   Connect(menu_to_bfloat, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::NumericalMenu), NULL, this);
   Connect(menu_to_numer, wxEVT_MENU,
@@ -8252,6 +8258,18 @@ void wxMaxima::NumericalMenu(wxCommandEvent &event)
       break;
     case menu_to_numer:
       cmd = expr + wxT(",numer;");
+      MenuCommand(cmd);
+      break;
+    case menu_rat:
+      cmd = wxT("rat(") + expr + wxT(");");
+      MenuCommand(cmd);
+      break;
+    case menu_rationalize:
+      cmd = wxT("rationalize(") + expr + wxT(");");
+      MenuCommand(cmd);
+      break;
+    case menu_guess_exact_number:
+      cmd = wxT("guess_exact_number(") + expr + wxT(");");
       MenuCommand(cmd);
       break;
     case menu_num_out:

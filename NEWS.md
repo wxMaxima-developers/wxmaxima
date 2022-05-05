@@ -1,6 +1,7 @@
 # Current:
  * Update the Ukrainian translation
  * Many MacOs fixes
+ * Add `guess_exact_number` to the numeric menu.
 
 # 22.04.0:
  * A Russian translation update from Olesya Gerasimenko
