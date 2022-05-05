@@ -1034,76 +1034,94 @@ void wxMaximaFrame::SetupMenu()
                           wxITEM_NORMAL);
   m_MenuBar->Append(m_EquationsMenu, _("E&quations"));
 
-  // Algebra menu
-  m_Algebra_Menu = new wxMenu;
-  m_Algebra_Menu->Append(menu_gen_mat, _("&Generate Matrix..."),
+  // Matrix menu
+  m_matrix_menu = new wxMenu;
+  wxMenu *gen_matrix_menu = new wxMenu;
+  gen_matrix_menu->Append(menu_gen_mat, _("&Generate Matrix..."),
                          _("Generate a matrix from a 2-dimensional array"),
                          wxITEM_NORMAL);
-  m_Algebra_Menu->Append(menu_gen_mat_lambda, _("Generate Matrix from Expression..."),
+  gen_matrix_menu->Append(menu_gen_mat_lambda, _("Generate Matrix from Expression..."),
                          _("Generate a matrix from a lambda expression"),
                          wxITEM_NORMAL);
-  m_Algebra_Menu->Append(menu_enter_mat, _("&Enter Matrix..."),
+  gen_matrix_menu->Append(menu_enter_mat, _("&Enter Matrix..."),
                          _("Enter a matrix"), wxITEM_NORMAL);
-  m_Algebra_Menu->Append(menu_list_list2matrix, _("Nested list to Matrix"),
+  gen_matrix_menu->Append(menu_list_list2matrix, _("Nested list to Matrix"),
                          _("Convert a list of lists to a matrix"), wxITEM_NORMAL);
-  m_Algebra_Menu->Append(menu_csv2mat, _("Matrix from csv file"),
+  gen_matrix_menu->Append(menu_csv2mat, _("Matrix from csv file"),
                          _("Load a matrix from a csv file"), wxITEM_NORMAL);
-  m_Algebra_Menu->Append(menu_mat2csv, _("Matrix to csv file"),
+  m_matrix_menu->Append(wxNewId(), _("Create Matrix"),
+                         gen_matrix_menu,
+                         _("Methods of generating a matrix"));
+  
+  wxMenu *fileio_menu = new wxMenu;
+  fileio_menu->Append(menu_csv2mat, _("Matrix from csv file"),
+                         _("Load a matrix from a csv file"), wxITEM_NORMAL);
+  fileio_menu->Append(menu_mat2csv, _("Matrix to csv file"),
                          _("Export a matrix to a csv file"), wxITEM_NORMAL);
-  m_Algebra_Menu->AppendSeparator();
-  m_Algebra_Menu->Append(menu_invert_mat, _("&Invert Matrix"),
-                         _("Compute the inverse of a matrix"),
-                         wxITEM_NORMAL);
-  m_Algebra_Menu->Append(menu_cpoly, _("&Characteristic Polynomial..."),
-                         _("Compute the characteristic polynomial "
-                                   "of a matrix"), wxITEM_NORMAL);
-  m_Algebra_Menu->Append(menu_determinant, _("&Determinant"),
-                         _("Compute the determinant of a matrix"),
-                         wxITEM_NORMAL);
-  m_Algebra_Menu->Append(menu_eigen, _("Eigen&values"),
-                         _("Find eigenvalues of a matrix"), wxITEM_NORMAL);
-  m_Algebra_Menu->Append(menu_eigvect, _("Eige&nvectors"),
-                         _("Find eigenvectors of a matrix"),
-                         wxITEM_NORMAL);
-  m_Algebra_Menu->Append(menu_adjoint_mat, _("Ad&joint Matrix"),
-                         _("Compute the adjoint matrix"), wxITEM_NORMAL);
-  m_Algebra_Menu->Append(menu_rank, _("Rank"),
-                         _("Compute the rank of a matrix"),
-                         wxITEM_NORMAL);
-  m_Algebra_Menu->Append(menu_transpose, _("&Transpose Matrix"),
-                         _("Transpose a matrix"), wxITEM_NORMAL);
-  m_Algebra_Menu->AppendSeparator();
-  m_Algebra_Menu->Append(menu_matrix_row, _("Extract Row"),
-                         _("Extract a row from the matrix"), wxITEM_NORMAL);
-  m_Algebra_Menu->Append(menu_matrix_col, _("Extract Column"),
-                         _("Extract a column from the matrix"), wxITEM_NORMAL);
-  m_Algebra_Menu->Append(menu_submatrix, _("Remove Rows or Columns"),
-                         _("Remove rows and/or columns from the matrix"), wxITEM_NORMAL);
-  m_Algebra_Menu->Append(menu_matrix_row_list, _("Convert Row to list"),
-                         _("Extract a row from the matrix and convert it to a list"),
-                         wxITEM_NORMAL);
-  m_Algebra_Menu->Append(menu_matrix_col_list, _("Convert Column to list"),
-                         _("Extract a column from the matrix and convert it to a list"),
-                         wxITEM_NORMAL);
-  m_Algebra_Menu->AppendSeparator();
-  m_Algebra_Menu->Append(menu_matrix_multiply, _("Multiply matrices"));
-  m_Algebra_Menu->Append(menu_matrix_exponent, _("Matrix exponent"));
-  m_Algebra_Menu->Append(menu_matrix_hadamard_product, _("Hadamard (element-by-element) product"),
+  m_matrix_menu->Append(wxNewId(), _("File I/O"),
+                         fileio_menu,
+                         _("Matrix to file or Matrix from file"));
+  m_matrix_menu->AppendSeparator();
+
+  wxMenu *matrix_basic_sub = new wxMenu;
+  matrix_basic_sub->Append(menu_matrix_multiply, _("Multiply matrices"));
+  matrix_basic_sub->Append(menu_matrix_exponent, _("Matrix exponent"));
+  matrix_basic_sub->Append(menu_matrix_hadamard_product, _("Hadamard (element-by-element) product"),
                          _("Element-by-element multiplication"),
                          wxITEM_NORMAL);
-  m_Algebra_Menu->Append(menu_matrix_hadamard_exponent, _("Hadamard exponent"),
+  matrix_basic_sub->Append(menu_matrix_hadamard_exponent, _("Hadamard exponent"),
                          _("Repetitive element-by-element multiplication"),
                          wxITEM_NORMAL);
-  m_Algebra_Menu->AppendSeparator();
-  m_Algebra_Menu->Append(menu_make_list, _("Make &List..."),
-                         _("Make list from expression"), wxITEM_NORMAL);
-  m_Algebra_Menu->Append(menu_apply, _("&Apply to List..."),
-                          _("Apply function to a list"), wxITEM_NORMAL);
-  m_Algebra_Menu->Append(menu_map, _("&Map to List(s)..."),
-                         _("Map function to a list"), wxITEM_NORMAL);
-  m_Algebra_Menu->Append(menu_map_mat, _("Ma&p to Matrix..."),
+  m_matrix_menu->Append(wxNewId(), _("Basic matrix operations"),
+                         matrix_basic_sub,
+                         _("Multiplication, exponent and similar"));
+
+  wxMenu *matrix_classicOP_menu = new wxMenu;
+  matrix_classicOP_menu->Append(menu_invert_mat, _("&Invert Matrix"),
+                         _("Compute the inverse of a matrix"),
+                         wxITEM_NORMAL);
+  matrix_classicOP_menu->Append(menu_cpoly, _("&Characteristic Polynomial..."),
+                         _("Compute the characteristic polynomial "
+                                   "of a matrix"), wxITEM_NORMAL);
+  matrix_classicOP_menu->Append(menu_determinant, _("&Determinant"),
+                         _("Compute the determinant of a matrix"),
+                         wxITEM_NORMAL);
+  matrix_classicOP_menu->Append(menu_eigen, _("Eigen&values"),
+                         _("Find eigenvalues of a matrix"), wxITEM_NORMAL);
+  matrix_classicOP_menu->Append(menu_eigvect, _("Eige&nvectors"),
+                         _("Find eigenvectors of a matrix"),
+                         wxITEM_NORMAL);
+  matrix_classicOP_menu->Append(menu_adjoint_mat, _("Ad&joint Matrix"),
+                         _("Compute the adjoint matrix"), wxITEM_NORMAL);
+  matrix_classicOP_menu->Append(menu_rank, _("Rank"),
+                         _("Compute the rank of a matrix"),
+                         wxITEM_NORMAL);
+  matrix_classicOP_menu->Append(menu_transpose, _("&Transpose Matrix"),
+                         _("Transpose a matrix"), wxITEM_NORMAL);
+  m_matrix_menu->Append(wxNewId(), _("Classic matrix operations"),
+                         matrix_classicOP_menu,
+                         _("The classic operations one typically uses matrices for"));
+  m_matrix_menu->AppendSeparator();
+  wxMenu *matrix_rowOp_sub = new wxMenu;
+  matrix_rowOp_sub->Append(menu_matrix_row, _("Extract Row"),
+                         _("Extract a row from the matrix"), wxITEM_NORMAL);
+  matrix_rowOp_sub->Append(menu_matrix_col, _("Extract Column"),
+                         _("Extract a column from the matrix"), wxITEM_NORMAL);
+  matrix_rowOp_sub->Append(menu_submatrix, _("Remove Rows or Columns"),
+                         _("Remove rows and/or columns from the matrix"), wxITEM_NORMAL);
+  matrix_rowOp_sub->Append(menu_matrix_row_list, _("Convert Row to list"),
+                         _("Extract a row from the matrix and convert it to a list"),
+                         wxITEM_NORMAL);
+  matrix_rowOp_sub->Append(menu_matrix_col_list, _("Convert Column to list"),
+                         _("Extract a column from the matrix and convert it to a list"),
+                         wxITEM_NORMAL);
+  m_matrix_menu->Append(wxNewId(), _("Row and column operations"),
+                         matrix_rowOp_sub,
+                         _("Extract, append or delete rows or columns"));
+  m_matrix_menu->AppendSeparator();
+  m_matrix_menu->Append(menu_map_mat, _("A&pply function to each Matrix element..."),
                          _("Map function to a matrix"), wxITEM_NORMAL);
-  m_MenuBar->Append(m_Algebra_Menu, _("M&atrix"));
+  m_MenuBar->Append(m_matrix_menu, _("M&atrix"));
 
   // Calculus menu
   m_CalculusMenu = new wxMenu;
@@ -1397,6 +1415,7 @@ void wxMaximaFrame::SetupMenu()
                         wxITEM_NORMAL);
   m_MenuBar->Append(m_NumericMenu, _("&Numeric"));
 
+  
   // Help menu
   m_HelpMenu = new wxMenu;
 #if defined __WXOSX__

@@ -209,7 +209,6 @@ public:
     menu_lbfgs,
     menu_series,
     menu_pade,
-    menu_map,
     menu_diff,
     menu_solve_de,
     menu_atvalue,
@@ -220,8 +219,6 @@ public:
     menu_example,
     menu_apropos,
     menu_product,
-    menu_make_list,
-    menu_apply,
     menu_time,
     menu_factsimp,
     menu_factcomb,
@@ -632,8 +629,8 @@ protected:
   wxMenu *m_EquationsMenu;
   //! The maxima menu.
   wxMenu *m_MaximaMenu;
-  //! The algebra menu.
-  wxMenu *m_Algebra_Menu;
+  //! The matrix menu.
+  wxMenu *m_matrix_menu;
   //! The simplify menu
   wxMenu *m_SimplifyMenu;
   //! The factorials and gamma submenu

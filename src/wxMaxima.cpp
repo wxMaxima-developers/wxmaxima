@@ -644,8 +644,6 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
           wxCommandEventHandler(wxMaxima::MatrixMenu), NULL, this);
   Connect(menu_gen_mat_lambda, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::MatrixMenu), NULL, this);
-  Connect(menu_map, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MatrixMenu), NULL, this);
   Connect(menu_sum, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::CalculusMenu), NULL, this);
   Connect(menu_maximahelp, wxEVT_MENU,
@@ -674,10 +672,6 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
           wxCommandEventHandler(wxMaxima::CalculusMenu), NULL, this);
   Connect(menu_change_var, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::CalculusMenu), NULL, this);
-  Connect(menu_make_list, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MatrixMenu), NULL, this);
-  Connect(menu_apply, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MatrixMenu), NULL, this);
   Connect(menu_time, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
   Connect(menu_factsimp, wxEVT_MENU,
@@ -6953,7 +6947,6 @@ void wxMaxima::MatrixMenu(wxCommandEvent &event)
     }
       break;
     case button_map:
-    case menu_map:
     {
       Gen2Wiz *wiz = new Gen2Wiz(_("Function:"), _("List(s):"),
                                  wxEmptyString, expr,
@@ -6964,41 +6957,6 @@ void wxMaxima::MatrixMenu(wxCommandEvent &event)
       {
         cmd = wxT("map(") + wiz->GetValue1() + wxT(", ") + wiz->GetValue2() +
               wxT(");");
-        MenuCommand(cmd);
-      }
-      wiz->Destroy();
-    }
-      break;
-    case menu_make_list:
-    {
-      Gen4Wiz *wiz = new Gen4Wiz(_("Expression:"), _("Variable:"),
-                                 _("From:"), _("To:"),
-                                 expr, wxT("k"), wxT("1"), wxT("10"),
-                                 m_worksheet->m_configuration,
-                                 this, -1, _("Make list"));
-      //wiz->Centre(wxBOTH);
-      if (wiz->ShowModal() == wxID_OK)
-      {
-        cmd = wxT("makelist(") + wiz->GetValue1() + wxT(", ") +
-              wiz->GetValue2() + wxT(", ") +
-              wiz->GetValue3() + wxT(", ") +
-              wiz->GetValue4() + wxT(");");
-        MenuCommand(cmd);
-      }
-      wiz->Destroy();
-    }
-      break;
-    case menu_apply:
-    {
-      Gen2Wiz *wiz = new Gen2Wiz(_("Function:"), _("List:"),
-                                 wxT("\"+\""), expr,
-                                 m_worksheet->m_configuration,
-                                 this, -1, _("Apply"), true);
-      //wiz->Centre(wxBOTH);
-      if (wiz->ShowModal() == wxID_OK)
-      {
-        cmd = wxT("apply(") + wiz->GetValue1() + wxT(", ")
-              + wiz->GetValue2() + wxT(");");
         MenuCommand(cmd);
       }
       wiz->Destroy();
