@@ -1132,6 +1132,8 @@ void wxMaximaFrame::SetupMenu()
   lapack_menu->Append(menu_matrix_zlange_inf, _("L[inf] Norm (complex)"));
   lapack_menu->Append(menu_matrix_dlange_frobenius, _("Frobenius Norm sqrt(sum((A(i,j))^2)) (real)"));
   lapack_menu->Append(menu_matrix_zlange_frobenius, _("Frobenius Norm sqrt(sum((A(i,j))^2)) (complex)"));
+  // TODO: What is menu_matrix_zheev (means: lapack's function zheev) for?
+
   m_matrix_menu->Append(wxNewId(), _("Numerical operations (lapack)"),
                         lapack_menu,
                         _("Fast fortran routines that perform numerical tasks"));

@@ -456,6 +456,42 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
           wxCommandEventHandler( wxMaxima::MatrixMenu), NULL, this);
   Connect(menu_matrix_hadamard_exponent, wxEVT_MENU,
           wxCommandEventHandler( wxMaxima::MatrixMenu), NULL, this);
+  Connect(menu_matrix_loadLapack, wxEVT_MENU,
+          wxCommandEventHandler( wxMaxima::MatrixMenu), NULL, this);
+  Connect(menu_matrix_dgeev_eigenvaluesOnly, wxEVT_MENU,
+          wxCommandEventHandler( wxMaxima::MatrixMenu), NULL, this);
+  Connect(menu_matrix_dgeev, wxEVT_MENU,
+          wxCommandEventHandler( wxMaxima::MatrixMenu), NULL, this);
+  Connect(menu_matrix_zgeev_eigenvaluesOnly, wxEVT_MENU,
+          wxCommandEventHandler( wxMaxima::MatrixMenu), NULL, this);
+  Connect(menu_matrix_zgeev, wxEVT_MENU,
+          wxCommandEventHandler( wxMaxima::MatrixMenu), NULL, this);
+  Connect(menu_matrix_dgeqrf, wxEVT_MENU,
+          wxCommandEventHandler( wxMaxima::MatrixMenu), NULL, this);
+  Connect(menu_matrix_dgesv, wxEVT_MENU,
+          wxCommandEventHandler( wxMaxima::MatrixMenu), NULL, this);
+  Connect(menu_matrix_dgesvd, wxEVT_MENU,
+          wxCommandEventHandler( wxMaxima::MatrixMenu), NULL, this);
+  Connect(menu_matrix_dgesvd_valuesOnly, wxEVT_MENU,
+          wxCommandEventHandler( wxMaxima::MatrixMenu), NULL, this);
+  Connect(menu_matrix_dlange_max, wxEVT_MENU,
+          wxCommandEventHandler( wxMaxima::MatrixMenu), NULL, this);
+  Connect(menu_matrix_dlange_one, wxEVT_MENU,
+          wxCommandEventHandler( wxMaxima::MatrixMenu), NULL, this);
+  Connect(menu_matrix_dlange_inf, wxEVT_MENU,
+          wxCommandEventHandler( wxMaxima::MatrixMenu), NULL, this);
+  Connect(menu_matrix_dlange_frobenius, wxEVT_MENU,
+          wxCommandEventHandler( wxMaxima::MatrixMenu), NULL, this);
+  Connect(menu_matrix_zlange_max, wxEVT_MENU,
+          wxCommandEventHandler( wxMaxima::MatrixMenu), NULL, this);
+  Connect(menu_matrix_zlange_one, wxEVT_MENU,
+          wxCommandEventHandler( wxMaxima::MatrixMenu), NULL, this);
+  Connect(menu_matrix_zlange_inf, wxEVT_MENU,
+          wxCommandEventHandler( wxMaxima::MatrixMenu), NULL, this);
+  Connect(menu_matrix_zlange_frobenius, wxEVT_MENU,
+          wxCommandEventHandler( wxMaxima::MatrixMenu), NULL, this);
+  Connect(menu_matrix_zheev, wxEVT_MENU,
+          wxCommandEventHandler( wxMaxima::MatrixMenu), NULL, this);
   Connect(button_rectform, wxEVT_BUTTON,
           wxCommandEventHandler( wxMaxima::SimplifyMenu), NULL, this);
   Connect(button_trigrat, wxEVT_BUTTON,
