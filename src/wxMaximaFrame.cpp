@@ -1116,11 +1116,22 @@ void wxMaximaFrame::SetupMenu()
                       wxITEM_NORMAL);
   lapack_menu->Append(menu_matrix_dgeev, _("Eigenvalues, left+right eigenvectors (complex)"),
                       _("Compile eigenvalues+eigenvectors using zgeev"));
-  lapack_menu->Append(menu_matrix_dgeqrf, _("QR decomposition)"),
+  lapack_menu->Append(menu_matrix_dgeqrf, _("QR decomposition"),
                       _("Compile a QR decomposition using dgeqrf"));
   lapack_menu->Append(menu_matrix_dgesv, _("Solve Ax=b)"),
                       _("Solve a linear equation system using dgesv"));
-  
+  lapack_menu->Append(menu_matrix_dgesvd_valuesOnly, _("Singular Values)"),
+                      _("Singular values using dgesvd"));
+  lapack_menu->Append(menu_matrix_dgesvd, _("Singular values, left + right vectors"),
+                      _("Singular values using dgesvd"));
+  lapack_menu->Append(menu_matrix_dlange_max, _("max(abs(A(i,j))) (real)"));
+  lapack_menu->Append(menu_matrix_zlange_max, _("max(abs(A(i,j))) (complex)"));
+  lapack_menu->Append(menu_matrix_dlange_one, _("L[1] Norm (real)"));
+  lapack_menu->Append(menu_matrix_zlange_one, _("L[1] Norm (complex)"));
+  lapack_menu->Append(menu_matrix_dlange_inf, _("L[inf] Norm (real)"));
+  lapack_menu->Append(menu_matrix_zlange_inf, _("L[inf] Norm (complex)"));
+  lapack_menu->Append(menu_matrix_dlange_frobenius, _("Frobenius Norm sqrt(sum((A(i,j))^2)) (real)"));
+  lapack_menu->Append(menu_matrix_zlange_frobenius, _("Frobenius Norm sqrt(sum((A(i,j))^2)) (complex)"));
   m_matrix_menu->Append(wxNewId(), _("Numerical operations (lapack)"),
                         lapack_menu,
                         _("Fast fortran routines that perform numerical tasks"));
