@@ -456,6 +456,42 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
           wxCommandEventHandler( wxMaxima::MatrixMenu), NULL, this);
   Connect(menu_matrix_hadamard_exponent, wxEVT_MENU,
           wxCommandEventHandler( wxMaxima::MatrixMenu), NULL, this);
+  Connect(menu_matrix_loadLapack, wxEVT_MENU,
+          wxCommandEventHandler( wxMaxima::MatrixMenu), NULL, this);
+  Connect(menu_matrix_dgeev_eigenvaluesOnly, wxEVT_MENU,
+          wxCommandEventHandler( wxMaxima::MatrixMenu), NULL, this);
+  Connect(menu_matrix_dgeev, wxEVT_MENU,
+          wxCommandEventHandler( wxMaxima::MatrixMenu), NULL, this);
+  Connect(menu_matrix_zgeev_eigenvaluesOnly, wxEVT_MENU,
+          wxCommandEventHandler( wxMaxima::MatrixMenu), NULL, this);
+  Connect(menu_matrix_zgeev, wxEVT_MENU,
+          wxCommandEventHandler( wxMaxima::MatrixMenu), NULL, this);
+  Connect(menu_matrix_dgeqrf, wxEVT_MENU,
+          wxCommandEventHandler( wxMaxima::MatrixMenu), NULL, this);
+  Connect(menu_matrix_dgesv, wxEVT_MENU,
+          wxCommandEventHandler( wxMaxima::MatrixMenu), NULL, this);
+  Connect(menu_matrix_dgesvd, wxEVT_MENU,
+          wxCommandEventHandler( wxMaxima::MatrixMenu), NULL, this);
+  Connect(menu_matrix_dgesvd_valuesOnly, wxEVT_MENU,
+          wxCommandEventHandler( wxMaxima::MatrixMenu), NULL, this);
+  Connect(menu_matrix_dlange_max, wxEVT_MENU,
+          wxCommandEventHandler( wxMaxima::MatrixMenu), NULL, this);
+  Connect(menu_matrix_dlange_one, wxEVT_MENU,
+          wxCommandEventHandler( wxMaxima::MatrixMenu), NULL, this);
+  Connect(menu_matrix_dlange_inf, wxEVT_MENU,
+          wxCommandEventHandler( wxMaxima::MatrixMenu), NULL, this);
+  Connect(menu_matrix_dlange_frobenius, wxEVT_MENU,
+          wxCommandEventHandler( wxMaxima::MatrixMenu), NULL, this);
+  Connect(menu_matrix_zlange_max, wxEVT_MENU,
+          wxCommandEventHandler( wxMaxima::MatrixMenu), NULL, this);
+  Connect(menu_matrix_zlange_one, wxEVT_MENU,
+          wxCommandEventHandler( wxMaxima::MatrixMenu), NULL, this);
+  Connect(menu_matrix_zlange_inf, wxEVT_MENU,
+          wxCommandEventHandler( wxMaxima::MatrixMenu), NULL, this);
+  Connect(menu_matrix_zlange_frobenius, wxEVT_MENU,
+          wxCommandEventHandler( wxMaxima::MatrixMenu), NULL, this);
+  Connect(menu_matrix_zheev, wxEVT_MENU,
+          wxCommandEventHandler( wxMaxima::MatrixMenu), NULL, this);
   Connect(button_rectform, wxEVT_BUTTON,
           wxCommandEventHandler( wxMaxima::SimplifyMenu), NULL, this);
   Connect(button_trigrat, wxEVT_BUTTON,
@@ -6807,6 +6843,191 @@ void wxMaxima::MatrixMenu(wxCommandEvent &event)
       wiz->Destroy();
     }
     break;
+  case menu_matrix_loadLapack:
+    MenuCommand(wxT("load(\"lapack\");"));
+    break;
+  case menu_matrix_dgeev_eigenvaluesOnly:
+  {
+    Gen1Wiz *wiz = new Gen1Wiz(this, -1, m_worksheet->m_configuration,
+                               _("Calculate the eigenvalues of a matrix numerically"),
+                               _("Matrix"),expr);
+    //wiz->Centre(wxBOTH);
+    if (wiz->ShowModal() == wxID_OK)
+      MenuCommand(wxT("dgeev(")+wiz->GetValue()+wxT(",false,false)[1]"));
+    wiz->Destroy();
+    break;
+  }
+  case menu_matrix_dgeev:
+  {
+    Gen1Wiz *wiz = new Gen1Wiz(this, -1, m_worksheet->m_configuration,
+                               _("Calculate the eigenvalues and eigenvectors numerically"),
+                               _("Matrix"),expr);
+    //wiz->Centre(wxBOTH);
+    if (wiz->ShowModal() == wxID_OK)
+      MenuCommand(wxT("dgeev(")+wiz->GetValue()+wxT(",true,true)"));
+    wiz->Destroy();
+    break;
+  }
+  case menu_matrix_zgeev_eigenvaluesOnly:
+  {
+    Gen1Wiz *wiz = new Gen1Wiz(this, -1, m_worksheet->m_configuration,
+                               _("Calculate the eigenvalues of a matrix numerically"),
+                               _("Matrix"),expr);
+    //wiz->Centre(wxBOTH);
+    if (wiz->ShowModal() == wxID_OK)
+      MenuCommand(wxT("zgeev(")+wiz->GetValue()+wxT(",false,false)[1]"));
+    wiz->Destroy();
+    break;
+  }
+  case menu_matrix_zgeev:
+  {
+    Gen1Wiz *wiz = new Gen1Wiz(this, -1, m_worksheet->m_configuration,
+                               _("Calculate the eigenvalues and eigenvectors numerically"),
+                               _("Matrix"),expr);
+    //wiz->Centre(wxBOTH);
+    if (wiz->ShowModal() == wxID_OK)
+      MenuCommand(wxT("zgeev(")+wiz->GetValue()+wxT(",true,true)"));
+    wiz->Destroy();
+    break;
+  }
+  case menu_matrix_dgeqrf:
+  {
+    Gen1Wiz *wiz = new Gen1Wiz(this, -1, m_worksheet->m_configuration,
+                               _("Numerical QR decomposition of a matrix"),
+                               _("Matrix"),expr);
+    //wiz->Centre(wxBOTH);
+    if (wiz->ShowModal() == wxID_OK)
+      MenuCommand(wxT("dgeqrf(")+wiz->GetValue()+wxT(")"));
+    wiz->Destroy();
+    break;
+  }
+  case menu_matrix_dgesv:
+  {
+      Gen2Wiz *wiz = new Gen2Wiz(_("m×n Matrix A:"),
+                                 _("1×n Matrix b:"),
+                                 expr, wxEmptyString,
+                                 m_worksheet->m_configuration,
+                                 this, -1, _("Solve A*x=b numerically"), true);
+      //wiz->Centre(wxBOTH);
+      if (wiz->ShowModal() == wxID_OK)
+        MenuCommand(wxT("dgesv(") + wiz->GetValue1() + wxT(",")
+                    + wiz->GetValue2() + wxT(");"));
+      wiz->Destroy();
+    }
+    break;
+  case menu_matrix_dgesvd:
+  {
+    Gen1Wiz *wiz = new Gen1Wiz(this, -1, m_worksheet->m_configuration,
+                               _("Calculate Singular Value Decomposition, left and right singular vectors numerically"),
+                               _("Matrix"),expr);
+    //wiz->Centre(wxBOTH);
+    if (wiz->ShowModal() == wxID_OK)
+      MenuCommand(wxT("dgesvd(")+wiz->GetValue()+wxT(",true,true)"));
+    wiz->Destroy();
+    break;
+  }
+  case menu_matrix_dgesvd_valuesOnly:
+  {
+    Gen1Wiz *wiz = new Gen1Wiz(this, -1, m_worksheet->m_configuration,
+                               _("Calculate the Singular Value Decomposition of a matrix numerically"),
+                               _("Matrix"),expr);
+    //wiz->Centre(wxBOTH);
+    if (wiz->ShowModal() == wxID_OK)
+      MenuCommand(wxT("dgesvd(")+wiz->GetValue()+wxT(",false,false)[1]"));
+    wiz->Destroy();
+    break;
+  }
+  case menu_matrix_dlange_max:
+  {
+    Gen1Wiz *wiz = new Gen1Wiz(this, -1, m_worksheet->m_configuration,
+                               _("Find the maximum absolute value of a matrix entry"),
+                               _("Matrix"),expr);
+    //wiz->Centre(wxBOTH);
+    if (wiz->ShowModal() == wxID_OK)
+      MenuCommand(wxT("dlange(")+wiz->GetValue()+wxT(",'max)"));
+    wiz->Destroy();
+    break;
+  }
+  case menu_matrix_dlange_one:
+  {
+    Gen1Wiz *wiz = new Gen1Wiz(this, -1, m_worksheet->m_configuration,
+                               _("Find the maximum sum of the absolute values of a matrix column"),
+                               _("Matrix"),expr);
+    //wiz->Centre(wxBOTH);
+    if (wiz->ShowModal() == wxID_OK)
+      MenuCommand(wxT("dlange(")+wiz->GetValue()+wxT(",'one_norm)"));
+    wiz->Destroy();
+    break;
+  }
+  case menu_matrix_dlange_inf:
+  {
+    Gen1Wiz *wiz = new Gen1Wiz(this, -1, m_worksheet->m_configuration,
+                               _("Find the maximum sum of the absolute values of a matrix row"),
+                               _("Matrix"),expr);
+    //wiz->Centre(wxBOTH);
+    if (wiz->ShowModal() == wxID_OK)
+      MenuCommand(wxT("dlange(")+wiz->GetValue()+wxT(",'inf_norm)"));
+    wiz->Destroy();
+    break;
+  }
+  case menu_matrix_dlange_frobenius:
+  {
+    Gen1Wiz *wiz = new Gen1Wiz(this, -1, m_worksheet->m_configuration,
+                               _("Calculate the root of the sum of squares of matrix entries"),
+                               _("Matrix"),expr);
+    //wiz->Centre(wxBOTH);
+    if (wiz->ShowModal() == wxID_OK)
+      MenuCommand(wxT("dlange(")+wiz->GetValue()+wxT(",'frobenius)"));
+    wiz->Destroy();
+    break;
+  }
+  case menu_matrix_zlange_max:
+  {
+    Gen1Wiz *wiz = new Gen1Wiz(this, -1, m_worksheet->m_configuration,
+                               _("Find the maximum absolute value of a matrix entry"),
+                               _("Matrix"),expr);
+    //wiz->Centre(wxBOTH);
+    if (wiz->ShowModal() == wxID_OK)
+      MenuCommand(wxT("zlange(")+wiz->GetValue()+wxT(",'max)"));
+    wiz->Destroy();
+    break;
+  }
+  case menu_matrix_zlange_one:
+  {
+    Gen1Wiz *wiz = new Gen1Wiz(this, -1, m_worksheet->m_configuration,
+                               _("Find the maximum sum of the absolute values of a matrix column"),
+                               _("Matrix"),expr);
+    //wiz->Centre(wxBOTH);
+    if (wiz->ShowModal() == wxID_OK)
+      MenuCommand(wxT("zlange(")+wiz->GetValue()+wxT(",'one_norm)"));
+    wiz->Destroy();
+    break;
+  }
+  case menu_matrix_zlange_inf:
+  {
+    Gen1Wiz *wiz = new Gen1Wiz(this, -1, m_worksheet->m_configuration,
+                               _("Find the maximum sum of the absolute values of a matrix row"),
+                               _("Matrix"),expr);
+    //wiz->Centre(wxBOTH);
+    if (wiz->ShowModal() == wxID_OK)
+      MenuCommand(wxT("zlange(")+wiz->GetValue()+wxT(",'inf_norm)"));
+    wiz->Destroy();
+    break;
+  }
+  case menu_matrix_zlange_frobenius:
+  {
+    Gen1Wiz *wiz = new Gen1Wiz(this, -1, m_worksheet->m_configuration,
+                               _("Calculate the root of the sum of squares of matrix entries"),
+                               _("Matrix"),expr);
+    //wiz->Centre(wxBOTH);
+    if (wiz->ShowModal() == wxID_OK)
+      MenuCommand(wxT("zlange(")+wiz->GetValue()+wxT(",'frobenius)"));
+    wiz->Destroy();
+    break;
+  }
+  case menu_matrix_zheev:
+    break;
+
     case menu_invert_mat:
       cmd = wxT("invert(") + expr + wxT(");");
       MenuCommand(cmd);
