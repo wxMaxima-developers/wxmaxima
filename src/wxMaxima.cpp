@@ -8448,7 +8448,7 @@ void wxMaxima::NumericalMenu(wxCommandEvent &event)
       MenuCommand(cmd);
       break;
     case menu_guess_exact_number:
-      cmd = wxT("guess_exact_number(") + expr + wxT(");");
+      cmd = wxT("guess_exact_value(") + expr + wxT(");");
       MenuCommand(cmd);
       break;
     case menu_num_out:
