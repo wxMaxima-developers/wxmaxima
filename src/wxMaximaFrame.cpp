@@ -1428,7 +1428,7 @@ void wxMaximaFrame::SetupMenu()
   floatToExactSub->Append(menu_rat, _("Approximate by nice fraction"),
                         _("Find a nice fraction that is similar to this float"),
                         wxITEM_NORMAL);
-  floatToExactSub->Append(menu_guess_exact_number, _("Advanced guess (PSLQ algorithm)"),
+  floatToExactSub->Append(menu_guess_exact_value, _("Advanced guess (PSLQ algorithm)"),
                         _("Approximate by a fraction using log(), sqrt() and %pi, when needed. Only available in maxima > 5.46.0"),
                         wxITEM_NORMAL);
   m_NumericMenu->Append(wxNewId(), _("To exact number"),

@@ -203,7 +203,7 @@ public:
     menu_to_numer,
     menu_rat,
     menu_rationalize,
-    menu_guess_exact_number,
+    menu_guess_exact_value,
     menu_num_domain,
     menu_set_precision,
     menu_set_displayprecision,
