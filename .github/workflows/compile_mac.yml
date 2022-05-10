@@ -5,6 +5,9 @@ on: [push]
 env:
   BUILD_TYPE: Release
 
+permissions:
+  contents: read
+
 jobs:
   compile_Ninja:
     runs-on: macos-latest
