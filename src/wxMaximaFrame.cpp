@@ -1118,7 +1118,7 @@ void wxMaximaFrame::SetupMenu()
                       _("Compile eigenvalues+eigenvectors using zgeev"));
   lapack_menu->Append(menu_matrix_dgeqrf, _("QR decomposition"),
                       _("Compile a QR decomposition using dgeqrf"));
-  lapack_menu->Append(menu_matrix_dgesv, _("Solve Ax=b)"),
+  lapack_menu->Append(menu_matrix_dgesv, _("Solve Ax=b"),
                       _("Solve a linear equation system using dgesv"));
   lapack_menu->Append(menu_matrix_dgesvd_valuesOnly, _("Singular Values)"),
                       _("Singular values using dgesvd"));
