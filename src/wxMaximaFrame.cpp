@@ -1114,7 +1114,7 @@ void wxMaximaFrame::SetupMenu()
   lapack_menu->Append(menu_matrix_dgeev, _("Eigenvalues, left+right eigenvectors (real)"),
                       _("Compile eigenvalues+eigenvectors using dgeev"),
                       wxITEM_NORMAL);
-  lapack_menu->Append(menu_matrix_dgeev, _("Eigenvalues, left+right eigenvectors (complex)"),
+  lapack_menu->Append(menu_matrix_zgeev, _("Eigenvalues, left+right eigenvectors (complex)"),
                       _("Compile eigenvalues+eigenvectors using zgeev"));
   lapack_menu->Append(menu_matrix_dgeqrf, _("QR decomposition"),
                       _("Compile a QR decomposition using dgeqrf"));
