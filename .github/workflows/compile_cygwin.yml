@@ -3,6 +3,10 @@ name: compile_cygwin
 
 on: [push]
 
+permissions:
+  contents: read
+
+
 jobs:
   setup_cygwin:
     runs-on: windows-latest
