@@ -1,7 +1,9 @@
 # Current:
  * Update the Ukrainian translation
  * Many MacOs fixes
- * Add `guess_exact_value` to the numeric menu.
+ * Added `guess_exact_value` to the numeric menu.
+ * Added lapack to the matrix menu
+ * Added a "declare facts" right-click menu entry to variables
 
 # 22.04.0:
  * A Russian translation update from Olesya Gerasimenko
