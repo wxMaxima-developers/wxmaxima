@@ -566,6 +566,7 @@ void GroupCell::RecalculateInput()
   // special case
   if (m_groupType == GC_TYPE_PAGEBREAK)
   {
+    m_height = Scale_Px(3);
     m_inputWidth = m_width = configuration->GetCellBracketWidth();
     m_inputHeight = m_height = 2;
     m_center = 0;
@@ -589,9 +590,14 @@ void GroupCell::RecalculateInput()
         m_inputLabel->ResetCellListSizesList();
         m_inputHeight = m_height = m_inputLabel->GetHeightList();
       }
+      m_height = m_inputHeight;
+    }
+    else
+    {
+      m_inputHeight = 0;
+      m_height = 0;
     }
   }
-  m_height = m_inputHeight;
   if(!m_inputLabel)
     m_center = m_height;
   m_width = m_inputWidth;
