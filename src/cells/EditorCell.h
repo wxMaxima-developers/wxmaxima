@@ -401,6 +401,9 @@ public:
   //! Convert the current selection to a string
   wxString GetSelectionString() const;
 
+  //! Try to determine the selection's text style
+  TextStyle GetSelectionStyle() const;
+
   //! The word the cursor currently is at
   wxString GetWordUnderCaret();
 

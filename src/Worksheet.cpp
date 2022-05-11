@@ -1876,6 +1876,82 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
         popupMenu.Check(popid_hide_tooltipMarkerForThisMessage,
                         m_configuration->HideMarkerForThisMessage(toolTip));
       }
+      TextStyle selectionStyle = GetActiveCell()->GetSelectionStyle();
+      if (
+        (selectionStyle == TS_CODE_VARIABLE) ||
+        (selectionStyle == TS_STRING) ||
+        (selectionStyle == TS_GREEK_CONSTANT) ||
+        (selectionStyle == TS_FUNCTION) ||
+        (selectionStyle == TS_USERLABEL)
+        )
+      {
+        wxMenu *facts_sub = new wxMenu;
+        if((selectionStyle != TS_FUNCTION) &&
+           (selectionStyle != TS_STRING))
+        {
+          facts_sub->Append(popid_property_real, _("Is a real variable"), _("This symbol has no imaginary part"));
+          facts_sub->Append(popid_property_complex, _("Is a complex variable"), _("This symbol might have both real and imaginary part"));
+          facts_sub->Append(popid_property_imaginary, _("Is an imaginary variable"), _("This symbol has no real part"));
+          facts_sub->Append(popid_property_even, _("Even number"));
+          facts_sub->Append(popid_property_odd, _("Odd number"));
+          facts_sub->Append(popid_property_integer, _("Is an integer variable"));
+          facts_sub->Append(popid_property_noninteger, _("Is no integer variable"));
+          facts_sub->Append(popid_property_rational, _("A rational variable"));
+          facts_sub->Append(popid_property_irrational, _("A irrational variable"));
+          facts_sub->Append(popid_property_greaterThan, _("Greater or less than a value"),
+                          _("Calls assume() in order to tell maxima about the variable's range"));
+          facts_sub->AppendSeparator();
+          facts_sub->Append(popid_property_constant, _("Symbolic Constant"));
+          facts_sub->Append(popid_property_nonarray, _("No Array"));
+          facts_sub->Append(popid_property_scalar, _("A Scalar"));
+          facts_sub->Append(popid_property_nonscalar, _("No Scalar"));
+          facts_sub->Append(popid_property_mainvar, _("Likely to be the main variable"));
+          facts_sub->AppendSeparator();
+          facts_sub->Append(popid_property_bindtest, _("Don't use if unassigned"),
+                            _("Throw an error if this symbol is used before assigning it any contents"));
+          facts_sub->AppendSeparator();
+        }
+        if (
+          (selectionStyle == TS_CODE_VARIABLE) ||
+          (selectionStyle == TS_FUNCTION)
+          )
+        {
+          facts_sub->Append(popid_property_evenfun, _("Is an even function"), _("This function will return even integers"));
+          facts_sub->Append(popid_property_oddfun, _("Is an odd function"), _("This function will return odd integers"));
+          facts_sub->Append(popid_property_additive, _("Additive function: f(a+b)=f(a)+f(b)"));
+          facts_sub->Append(popid_property_multiplicative, _("Multiplicative function: f(a*b)=f(a)*f(b)"));
+          facts_sub->Append(popid_property_nary, _("nary: f(x, f(y,z)) = foo(x,y,z)"));
+          facts_sub->Append(popid_property_antisymmetric, _("Antisymmetric function"));
+          facts_sub->Append(popid_property_commutative, _("Commutative function"));
+          facts_sub->Append(popid_property_symmetric, _("Symmetric function"));
+          facts_sub->Append(popid_property_increasing, _("Increasing function f(x)>x"));
+          facts_sub->Append(popid_property_decreasing, _("Decreasing function f(x)<x"));
+          facts_sub->Append(popid_property_integervalued, _("A function returning integers"));
+          facts_sub->Append(popid_property_posfun, _("A function returning positive numbers"));
+          facts_sub->Append(popid_property_lassociative, _("A left-associative function"));
+          facts_sub->Append(popid_property_rassociative, _("A right-associative function"));
+          facts_sub->Append(popid_property_linear, _("A linear function"));
+          facts_sub->Append(popid_property_outative, _("outative: f(2*x) = 2*f(x)"));
+          facts_sub->AppendSeparator();
+          facts_sub->Append(popid_property_noun, _("noun: Not evaluated by default"),
+                            _("f(x) stays f(x) even if the value of f(x) is computable"));
+          facts_sub->Append(popid_property_evfun, _("ev() shall evaluate this automatically"), _("Make an eventual ev() evaluate this"));
+          facts_sub->Append(popid_property_evflag, _("Suitable as flag for ev()"), _("Can be specified as flag in ev(exp, flag)"));
+        }
+        if (
+          (selectionStyle == TS_CODE_VARIABLE) ||
+          (selectionStyle == TS_STRING)
+        )
+        {
+          
+          if(facts_sub->GetMenuItemCount() > 0)
+            facts_sub->AppendSeparator();
+          facts_sub->Append(popid_property_alphabetic, _("Declare these chars as ordinary letters"));
+        }
+        popupMenu.Append(wxNewId(), wxString::Format(_("Declare facts about %s"), selectionString.c_str()),
+                         facts_sub,
+                         _("Inform maxima about facts you know for this symbol"));
+      }
     }
   }
 

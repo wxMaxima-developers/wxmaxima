@@ -315,6 +315,7 @@ protected:
   void FileMenu(wxCommandEvent &event);            //!< Processes "file menu" clicks
   void MaximaMenu(wxCommandEvent &event);          //!< Processes "maxima menu" clicks
   void MatrixMenu(wxCommandEvent &event);         //!< Processes "algebra menu" clicks
+  void PropertiesMenu(wxCommandEvent &event);         //!< Processes "Variable/Function props menu" clicks
   void EquationsMenu(wxCommandEvent &event);       //!< Processes "equations menu" clicks
   void CalculusMenu(wxCommandEvent &event);        //!< event handling for menus
   void SimplifyMenu(wxCommandEvent &event);        //!< Processes "Simplify menu" clicks

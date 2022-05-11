@@ -346,7 +346,8 @@ enum TextStyle : int8_t
   TS_CODE_LISP           = 37,
   TS_CODE_ENDOFLINE      = 38,
   TS_MATH                = 39,  // custom font = math font
-  NUMBEROFSTYLES //!< This is not a style, but its value tells us how many styles are defined
+  NUMBEROFSTYLES, //!< This is not a style, but its value tells us how many styles are defined
+  TS_INVALID //!< If a text style cannot be determined this value is used
 };
 
 #endif // TEXTSTYLE_H
