@@ -418,6 +418,9 @@ void TextCell::Draw(wxPoint point)
   if (DrawThisCell(point) &&
       !(IsHidden() || (GetHidableMultSign() && configuration->HidemultiplicationSign())))
   {
+    // An experimental go at #1655. TODO: Can we delete this line again?
+    SetPen(1);
+    
     wxDC *dc = configuration->GetDC();
     int padding = 0;
     if (GetStyle() != TS_ASCIIMATHS)
