@@ -6944,7 +6944,7 @@ void wxMaxima::MatrixMenu(wxCommandEvent &event)
                                _("Matrix"),expr);
     //wiz->Centre(wxBOTH);
     if (wiz->ShowModal() == wxID_OK)
-      MenuCommand(wxT("dlange(")+wxT("'max,")+wiz->GetValue()+wxT(")"));
+      MenuCommand(wxT("dlange('max,")+wiz->GetValue()+wxT(")"));
     wiz->Destroy();
     break;
   }
@@ -6955,7 +6955,7 @@ void wxMaxima::MatrixMenu(wxCommandEvent &event)
                                _("Matrix"),expr);
     //wiz->Centre(wxBOTH);
     if (wiz->ShowModal() == wxID_OK)
-      MenuCommand(wxT("dlange(")+wxT("'one_norm,")+wiz->GetValue()+wxT(")"));
+      MenuCommand(wxT("dlange('one_norm,")+wiz->GetValue()+wxT(")"));
     wiz->Destroy();
     break;
   }
@@ -6966,7 +6966,7 @@ void wxMaxima::MatrixMenu(wxCommandEvent &event)
                                _("Matrix"),expr);
     //wiz->Centre(wxBOTH);
     if (wiz->ShowModal() == wxID_OK)
-      MenuCommand(wxT("dlange(")+wxT("'inf_norm,")+wiz->GetValue()+wxT(")"));
+      MenuCommand(wxT("dlange('inf_norm,")+wiz->GetValue()+wxT(")"));
     wiz->Destroy();
     break;
   }
@@ -6977,7 +6977,7 @@ void wxMaxima::MatrixMenu(wxCommandEvent &event)
                                _("Matrix"),expr);
     //wiz->Centre(wxBOTH);
     if (wiz->ShowModal() == wxID_OK)
-      MenuCommand(wxT("dlange(")+wxT("'frobenius,")+wiz->GetValue()+wxT(")"));
+      MenuCommand(wxT("dlange('frobenius,")+wiz->GetValue()+wxT(")"));
     wiz->Destroy();
     break;
   }
@@ -6988,7 +6988,7 @@ void wxMaxima::MatrixMenu(wxCommandEvent &event)
                                _("Matrix"),expr);
     //wiz->Centre(wxBOTH);
     if (wiz->ShowModal() == wxID_OK)
-      MenuCommand(wxT("zlange(")+wxT("'max,")+wiz->GetValue()+wxT(")"));
+      MenuCommand(wxT("zlange('max,")+wiz->GetValue()+wxT(")"));
     wiz->Destroy();
     break;
   }
@@ -6999,7 +6999,7 @@ void wxMaxima::MatrixMenu(wxCommandEvent &event)
                                _("Matrix"),expr);
     //wiz->Centre(wxBOTH);
     if (wiz->ShowModal() == wxID_OK)
-      MenuCommand(wxT("zlange(")+wxT("'one_norm,")+wiz->GetValue()+wxT(")"));
+      MenuCommand(wxT("zlange('one_norm,")+wiz->GetValue()+wxT(")"));
     wiz->Destroy();
     break;
   }
@@ -7010,7 +7010,7 @@ void wxMaxima::MatrixMenu(wxCommandEvent &event)
                                _("Matrix"),expr);
     //wiz->Centre(wxBOTH);
     if (wiz->ShowModal() == wxID_OK)
-      MenuCommand(wxT("zlange(")+wxT("'inf_norm,")+wiz->GetValue()+wxT(")"));
+      MenuCommand(wxT("zlange('inf_norm,")+wiz->GetValue()+wxT(")"));
     wiz->Destroy();
     break;
   }
@@ -7021,7 +7021,7 @@ void wxMaxima::MatrixMenu(wxCommandEvent &event)
                                _("Matrix"),expr);
     //wiz->Centre(wxBOTH);
     if (wiz->ShowModal() == wxID_OK)
-      MenuCommand(wxT("zlange(")+wxT("'frobenius,")+wiz->GetValue()+wxT(")"));
+      MenuCommand(wxT("zlange('frobenius,")+wiz->GetValue()+wxT(")"));
     wiz->Destroy();
     break;
   }
