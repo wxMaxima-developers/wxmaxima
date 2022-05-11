@@ -53,9 +53,11 @@
 - Mihai Moldovan
 - MSoegtropIMC
 - Murmele <mailto:Murmele@users.noreply.github.com>
+  Naveen Srinivasan
 - Nicola Stanislao Vitale
 - Olesya Gerasimenko
 - Richard Fateman
+  Richard Gobeli
 - Robert Dodier
 - Robert Pollak
 - rtopolnicki <mailto:rtopolnicki@users.sourceforge.net>
