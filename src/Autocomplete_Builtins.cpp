@@ -36,6 +36,8 @@ bool AutoComplete::LoadBuiltinSymbols()
   m_wordList[command].Add("pathname_name"); // FUNCTION
   m_wordList[command].Add("fast_linsolve"); // FUNCTION
   m_wordList[tmplte ].Add("fast_linsolve([<expr_1>, ..., <expr_m>], [<x_1>, ..., <x_n>])"); // OPTION
+  m_wordList[command].Add("guess_exact_value"); // FUNCTION
+  m_wordList[tmplte ].Add("guess_exact_value([<expr>])"); // OPTION
   m_wordList[command].Add("grobner_basis"); // FUNCTION
   m_wordList[tmplte ].Add("grobner_basis([<expr_1>, ..., <expr_m>])"); // OPTION
   m_wordList[command].Add("set_up_dot_simplifications"); // FUNCTION
