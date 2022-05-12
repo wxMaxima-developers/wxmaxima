@@ -522,6 +522,7 @@ protected:
   /*! Reads the "add variable to watch list" tag maxima can send us
    */
   void ReadAddVariables(wxString &data);
+  void VariableActionLogexpand(const wxString &value);
   void VariableActionUserDir(const wxString &value);
   void VariableActionTempDir(const wxString &value);
   void VariableActionDebugmode(const wxString &value);
@@ -758,6 +759,8 @@ protected:
   MathParser m_parser;
   bool m_maximaBusy;
 private:
+  //! The value of maxima's logexpand variable
+  wxString m_logexpand;
   //! A pointer to a method that handles a text chunk
   typedef void (wxMaxima::*ParseFunction)(wxString &s);
   WX_DECLARE_STRING_HASH_MAP(ParseFunction, ParseFunctionHash);

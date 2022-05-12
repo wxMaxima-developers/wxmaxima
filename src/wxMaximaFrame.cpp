@@ -1225,9 +1225,17 @@ void wxMaximaFrame::SetupMenu()
                          wxITEM_NORMAL);
   m_SimplifyMenu->Append(menu_expand, _("&Expand Expression"),
                          _("Expand an expression"), wxITEM_NORMAL);
-  m_SimplifyMenu->Append(menu_logexpand, _("Expand Logarithms"),
-                         _("Convert logarithm of product to sum of logarithms"),
-                         wxITEM_NORMAL);
+  m_logexpand_Sub = new wxMenu;
+  m_logexpand_Sub->Append(menu_logexpand, _("Expand log in current expression"),
+                        _("\u26A0 No test if the argument of the log is complex, positive or negative"),
+                        wxITEM_NORMAL);
+  m_logexpand_Sub->AppendSeparator();
+  m_logexpand_Sub->AppendRadioItem(menu_logexpand_false, _("No"));
+  m_logexpand_Sub->AppendRadioItem(menu_logexpand_true, _("log(a^b)=b*log(a) \u26A0 Bad, if a is complex"));
+  m_logexpand_Sub->AppendRadioItem(menu_logexpand_all, _("Additionally: log(a*b)=log(a)+log(b)"));
+  m_logexpand_Sub->AppendRadioItem(menu_logexpand_super, _("Additionally: log(a/b)=log(a)-log(b)"));
+  m_SimplifyMenu->Append(wxNewId(), _("Simplify Logarithms"),
+                         m_logexpand_Sub);
   m_SimplifyMenu->Append(menu_logcontract, _("Contract Logarithms"),
                          _("Convert sum of logarithms to logarithm of product"),
                          wxITEM_NORMAL);

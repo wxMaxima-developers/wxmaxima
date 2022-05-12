@@ -211,6 +211,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
   if(m_variableReadActions.empty())
   {
     m_variableReadActions[wxT("maxima_userdir")] = &wxMaxima::VariableActionUserDir;
+    m_variableReadActions[wxT("logexpand")] = &wxMaxima::VariableActionLogexpand;
     m_variableReadActions[wxT("maxima_tempdir")] = &wxMaxima::VariableActionTempDir;
     m_variableReadActions[wxT("debugmode")] = &wxMaxima::VariableActionDebugmode;
     m_variableReadActions[wxT("*autoconf-version*")] = &wxMaxima::VariableActionAutoconfVersion;
@@ -723,6 +724,16 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
   Connect(menu_logcontract, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
   Connect(menu_logexpand, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
+  Connect(menu_logexpand, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
+  Connect(menu_logexpand_false, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
+  Connect(menu_logexpand_true, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
+  Connect(menu_logexpand_all, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
+  Connect(menu_logexpand_super, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
   Connect(gp_plot2, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::PlotMenu), NULL, this);
@@ -2767,6 +2778,26 @@ void wxMaxima::VariableActionUserDir(const wxString &value)
   Dirstructure::Get()->UserConfDir(value);
   wxLogMessage(wxString::Format(
                  _("Maxima user configuration lies in directory %s"),value.utf8_str()));
+}
+
+void wxMaxima::VariableActionLogexpand(const wxString &value)
+{
+  m_logexpand = value;
+  if(value == wxT("false"))
+    m_logexpand_Sub->Check(menu_logexpand_false, true);
+  else if(value == wxT("true"))
+    m_logexpand_Sub->Check(menu_logexpand_true, true);
+  else if(value == wxT("all"))
+    m_logexpand_Sub->Check(menu_logexpand_all, true);
+  else if(value == wxT("super"))
+    m_logexpand_Sub->Check(menu_logexpand_super, true);
+  else
+  {
+    m_logexpand_Sub->Check(menu_logexpand_false, false);
+    m_logexpand_Sub->Check(menu_logexpand_true, false);
+    m_logexpand_Sub->Check(menu_logexpand_all, false);
+    m_logexpand_Sub->Check(menu_logexpand_super, false);
+  }
 }
 
 void wxMaxima::VariableActionTempDir(const wxString &value)
@@ -8089,6 +8120,18 @@ void wxMaxima::SimplifyMenu(wxCommandEvent &event)
     case menu_logexpand:
       cmd = expr + wxT(", logexpand=super;");
       MenuCommand(cmd);
+      break;
+    case menu_logexpand_false:
+      MenuCommand(wxT("logexpand:false$"));
+      break;
+    case menu_logexpand_true:
+      MenuCommand(wxT("logexpand:true$"));
+      break;
+    case menu_logexpand_all:
+      MenuCommand(wxT("logexpand:all$"));
+      break;
+    case menu_logexpand_super:
+      MenuCommand(wxT("logexpand:super$"));
       break;
     case button_expand:
     case menu_expand:

@@ -5,6 +5,7 @@
  * Added lapack to the matrix menu
  * Added a "declare facts" right-click menu entry to variables
  * We no more reserve space for hidden input
+ * A better logexpand menu
 
 # 22.04.0:
  * A Russian translation update from Olesya Gerasimenko

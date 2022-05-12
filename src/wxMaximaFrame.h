@@ -247,6 +247,10 @@ public:
     menu_math_as_1D_ASCII,
     menu_math_as_2D_ASCII,
     menu_math_as_graphics,
+    menu_logexpand_false,
+    menu_logexpand_true,
+    menu_logexpand_all,
+    menu_logexpand_super,
     menu_noAutosubscript,
     menu_defaultAutosubscript,
     menu_alwaysAutosubscript,
@@ -633,6 +637,8 @@ protected:
   StatusBar *m_statusBar;
   //! The menu bar
   MainMenuBar *m_MenuBar;
+  //! The logexpand submenu
+  wxMenu * m_logexpand_Sub;
   //! The file menu.
   wxMenu *m_FileMenu;
   //! The edit menu.
