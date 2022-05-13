@@ -55,15 +55,15 @@ public:
 
   void Recalculate();
 
-  bool OnPrintPage(int num);
+  virtual bool OnPrintPage(int num) override;
 
-  bool HasPage(unsigned int num);
+  virtual bool HasPage(int num) override;
 
-  void GetPageInfo(int *minPage, int *maxPage, int *fromPage, int *toPage);
+  virtual void GetPageInfo(int *minPage, int *maxPage, int *fromPage, int *toPage) override;
 
-  bool OnBeginDocument(int startPage, int endPage);
+  virtual bool OnBeginDocument(int startPage, int endPage) override;
 
-  void OnPreparePrinting();
+  virtual void OnPreparePrinting() override;
 
   void GetPageMargins(int *horizontal, int *vertical);
 

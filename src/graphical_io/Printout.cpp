@@ -68,7 +68,7 @@ Printout::~Printout()
   DestroyTree();
 }
 
-bool Printout::HasPage(unsigned int num)
+bool Printout::HasPage(int num)
 {
   if (num > 0 && num <= m_pages.size())
     return true;

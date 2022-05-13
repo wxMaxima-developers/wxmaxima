@@ -430,6 +430,9 @@ bool Cell::DrawThisCell(wxPoint point)
   if(m_isBrokenIntoLines)
     return false;
   
+  if((*m_configuration)->GetPrinting())
+    return true;
+
   if(!(*m_configuration)->ClipToDrawRegion())
     return true;
   
