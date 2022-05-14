@@ -1921,9 +1921,9 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
           facts_sub->Append(popid_property_additive, _("Additive function: f(a+b)=f(a)+f(b)"));
           facts_sub->Append(popid_property_multiplicative, _("Multiplicative function: f(a*b)=f(a)*f(b)"));
           facts_sub->Append(popid_property_nary, _("nary: f(x, f(y,z)) = foo(x,y,z)"));
-          facts_sub->Append(popid_property_antisymmetric, _("Antisymmetric function"));
+          facts_sub->Append(popid_property_antisymmetric, _("Antisymmetric function: f(x)=-f(-x)"));
           facts_sub->Append(popid_property_commutative, _("Commutative function"));
-          facts_sub->Append(popid_property_symmetric, _("Symmetric function"));
+          facts_sub->Append(popid_property_symmetric, _("Symmetric function: f(x)=f(-x)"));
           facts_sub->Append(popid_property_increasing, _("Increasing function f(x)>x"));
           facts_sub->Append(popid_property_decreasing, _("Decreasing function f(x)<x"));
           facts_sub->Append(popid_property_integervalued, _("A function returning integers"));
