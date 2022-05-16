@@ -193,6 +193,12 @@ TipOfTheDay::TipOfTheDay(wxWindow *parent)
     _("wxMaxima is programmed in C++ using the wxWidgets toolkit and uses CMake as build system. You can contribute to wxMaxima, if you have some knowledge with this environment.")
     );
   m_tips.Add(
+    _("While wxMaxima is programmed mostly in C++, it also uses some Lisp code. You can help to improve wxMaxima, if you have knowledge of Common Lisp.")
+    );
+  m_tips.Add(
+    _("If you have ideas, how to improve the design or functionality of wxMaxima, please share your ideas at the issue list or discussion forum at https://github.com/wxMaxima-developers/wxmaxima/.")
+    );
+  m_tips.Add(
     _("There is a discussion forum for wxMaxima at https://github.com/wxMaxima-developers/wxmaxima/discussions.\nYou can ask questions there - and please help other users, by answering their questions, if you know an answer.")
     );
 
