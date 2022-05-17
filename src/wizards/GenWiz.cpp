@@ -40,7 +40,9 @@ GenWiz::GenWiz(wxWindow *parent, Configuration *cfg, const wxString &title,
   m_commandRule(commandRule)
 {
   SetName(title);
-  wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
+  wxFlexGridSizer *vbox =
+    new wxFlexGridSizer(1,
+                        wxSize(5*GetContentScaleFactor(), 5*GetContentScaleFactor()));
   m_description = new WrappingStaticText(this, wxID_ANY, description);
   if(description.IsEmpty())
     m_description->Show(false);
