@@ -1258,7 +1258,7 @@ void wxMaximaFrame::SetupMenu()
                          m_Simplify_Gamma_Sub,
                          _("Functions for simplifying factorials and gamma function"));
   // Trigonometric submenu
-  wxMenu *m_Simplify_Trig_Sub = new wxMenu;
+  m_Simplify_Trig_Sub = new wxMenu;
   m_Simplify_Trig_Sub->Append(menu_trigsimp, _("&Simplify Trigonometric"),
                               _("Simplify trigonometric expression"),
                               wxITEM_NORMAL);
