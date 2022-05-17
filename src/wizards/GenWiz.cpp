@@ -116,7 +116,9 @@ GenWiz::GenWiz(wxWindow *parent, Configuration *cfg, const wxString &title,
   m_textctrl[8]->SetToolTip(tooltip9);
     
   m_textctrl[0]->SetFocus();
-  wxFlexGridSizer *grid_sizer = new wxFlexGridSizer(2, 5*GetContentScaleFactor(), 5*GetContentScaleFactor());
+  wxFlexGridSizer *grid_sizer =
+    new wxFlexGridSizer(2,
+                        wxSize(5*GetContentScaleFactor(), 5*GetContentScaleFactor()));
   grid_sizer->AddGrowableCol(1);
   for(int i = 0; i<9; i++)
   {
