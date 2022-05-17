@@ -43,6 +43,7 @@ GenWiz::GenWiz(wxWindow *parent, Configuration *cfg, const wxString &title,
   wxFlexGridSizer *vbox =
     new wxFlexGridSizer(1,
                         wxSize(5*GetContentScaleFactor(), 5*GetContentScaleFactor()));
+  vbox->AddGrowableCol(0);
   m_description = new WrappingStaticText(this, wxID_ANY, description);
   if(description.IsEmpty())
     m_description->Show(false);
@@ -141,7 +142,7 @@ GenWiz::GenWiz(wxWindow *parent, Configuration *cfg, const wxString &title,
   button_2->SetDefault();
 #endif
     
-  vbox->Add(grid_sizer, wxSizerFlags(1).Border(wxALL, 5*GetContentScaleFactor()));
+  vbox->Add(grid_sizer, wxSizerFlags(1).Expand().Border(wxALL, 5*GetContentScaleFactor()));
   
 //  if(m_warning != NULL)
 //    grid_sizer->Add(m_warning, 0, wxALL, 5);
