@@ -7611,21 +7611,11 @@ void wxMaxima::ListMenu(wxCommandEvent &event)
       break;
     }
   case menu_list_create_from_args:
-  {
-    wxString arg;
-    Gen1Wiz *wiz = new Gen1Wiz(this, -1, m_worksheet->m_configuration,
-                               _("Extract function arguments"),
-                               _("The function call whose arguments to extract"),
-                               expr);
-    wiz->SetLabel1ToolTip(_("Something like f(x_1,x_2)"));
-    //wiz->Centre(wxBOTH);
-    if (wiz->ShowModal() == wxID_OK)
-    {
-      cmd = wxT("args(") + wiz->GetValue() + wxT(")");
-      MenuCommand(cmd);
-    }
-    wiz->Destroy();
-  }
+    CommandWiz(
+      _("Extract function arguments"),
+      wxEmptyString,wxEmptyString,
+      wxT("args(#1#)$"),
+      _("The function call whose arguments to extract"),expr,wxEmptyString);
     break;
   case menu_list_list2matrix:
     MenuCommand(wxT("apply('matrix,") + expr + wxT(")"));
@@ -7634,19 +7624,12 @@ void wxMaxima::ListMenu(wxCommandEvent &event)
     MenuCommand(wxT("args(") + expr + wxT(")"));
     break;
   case menu_list_create_from_elements:
-  {
-    Gen1Wiz *wiz = new Gen1Wiz(this, -1, m_worksheet->m_configuration,
-                               _("Create list from comma-separated elements"),
-                               _("Comma-separated elements"),expr);
-    //wiz->Centre(wxBOTH);
-    if (wiz->ShowModal() == wxID_OK)
-    {
-      cmd = wxT("[") + wiz->GetValue() + wxT("]");
-      MenuCommand(cmd);
-    }
-    wiz->Destroy();
-  }
-  break;
+    CommandWiz(
+      _("Create list from comma-separated elements"),
+      wxEmptyString,wxEmptyString,
+      wxT("args(#1#)$"),
+      _("Comma-separated elements"),expr,wxEmptyString);
+    break;
   case menu_list_create_from_rule:
   {
     Gen5Wiz *wiz = new Gen5Wiz(_("Rule:"), _("Index variable:"),
