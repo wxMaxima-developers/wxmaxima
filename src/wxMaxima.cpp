@@ -6108,35 +6108,26 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
       MenuCommand(wxT("wxsubscripts: 'all$"));
       break;
     case menu_autosubscriptIndividual:
-    {
-      Gen1Wiz *wiz = new Gen1Wiz(this, -1, m_worksheet->m_configuration,
-                                 _("Never autosubscript this variable"),
-                                 _("Variable name"),expr);
-      if (wiz->ShowModal() == wxID_OK)
-        MenuCommand(wxT("wxdeclare_subscripted(")+wiz->GetValue()+wxT(")$"));
-      wiz->Destroy();
-      break;
-    }
+      CommandWiz(
+        _("Autosubscript this variable"),
+        wxEmptyString,wxEmptyString,
+        wxT("wxdeclare_subscripted(#1#)$"),
+        _("Variable name"),expr,wxEmptyString);
+        break;
     case menu_noAutosubscriptIndividual:
-    {
-      Gen1Wiz *wiz = new Gen1Wiz(this, -1, m_worksheet->m_configuration,
-                                 _("Never autosubscript this variable"),
-                                 _("Variable name"),expr);
-      if (wiz->ShowModal() == wxID_OK)
-        MenuCommand(wxT("wxdeclare_subscripted(")+wiz->GetValue()+wxT(",false)$"));
-      wiz->Destroy();
-      break;
-    }
+      CommandWiz(
+        _("Never autosubscript this variable"),
+        wxEmptyString,wxEmptyString,
+        wxT("wxdeclare_subscripted(#1#,false)$"),
+        _("Variable name"),expr,wxEmptyString);
+        break;
     case menu_declareAutosubscript:
-    {
-      Gen1Wiz *wiz = new Gen1Wiz(this, -1, m_worksheet->m_configuration,
-                                 _("Declare a text snippet to always be displayed as subscript"),
-                                 _("Text snippet"),expr);
-      if (wiz->ShowModal() == wxID_OK)
-        MenuCommand(wxT("wxdeclare_subscript(")+wiz->GetValue()+wxT(")$"));
-      wiz->Destroy();
-      break;
-    }
+      CommandWiz(
+        _("Declare a text snippet to always be displayed as subscript"),
+        wxEmptyString,wxEmptyString,
+        wxT("wxdeclare_subscript(#1#)$"),
+        _("Text snippet"),expr,wxEmptyString);
+        break;
     case menu_roundedMatrixParens:
       MenuCommand(wxT("lmxchar:\"(\"$rmxchar:\")\"$"));
       break;
@@ -6421,15 +6412,12 @@ void wxMaxima::PropertiesMenu(wxCommandEvent &event)
       MenuCommand(wxT("declare(") + obj + wxT(", evflag)$"));
       break;
     case Worksheet::popid_property_greaterThan:
-    {
-      Gen1Wiz *wiz = new Gen1Wiz(this, -1, m_worksheet->m_configuration,
-                                 _("Assume a value range for a variable"),
-                                 _("variable"),obj + wxT(">0"));
-      if (wiz->ShowModal() == wxID_OK)
-        MenuCommand(wxT("assume(")+wiz->GetValue()+wxT(")"));
-      wiz->Destroy();
+      CommandWiz(
+        _("Assume a value range for a variable"),
+        wxEmptyString,wxEmptyString,
+        wxT("assume(#1#)"),
+        _("Variable"),obj + wxT(">0"),wxEmptyString);
       break;
-    }
     }
 }
 
@@ -7071,60 +7059,40 @@ void wxMaxima::MatrixMenu(wxCommandEvent &event)
     MenuCommand(wxT("load(\"lapack\");"));
     break;
   case menu_matrix_dgeev_eigenvaluesOnly:
-  {
-    Gen1Wiz *wiz = new Gen1Wiz(this, -1, m_worksheet->m_configuration,
-                               _("Calculate the eigenvalues of a matrix numerically"),
-                               _("Matrix"),expr);
-    //wiz->Centre(wxBOTH);
-    if (wiz->ShowModal() == wxID_OK)
-      MenuCommand(wxT("dgeev(")+wiz->GetValue()+wxT(",false,false)[1]"));
-    wiz->Destroy();
+    CommandWiz(
+      _("Calculate the eigenvalues of a matrix numerically"),
+      wxEmptyString,wxEmptyString,
+      wxT("dgeev(#1#,false,false)[1]"),
+      _("Matrix"),expr,wxEmptyString);
     break;
-  }
   case menu_matrix_dgeev:
-  {
-    Gen1Wiz *wiz = new Gen1Wiz(this, -1, m_worksheet->m_configuration,
-                               _("Calculate the eigenvalues and eigenvectors numerically"),
-                               _("Matrix"),expr);
-    //wiz->Centre(wxBOTH);
-    if (wiz->ShowModal() == wxID_OK)
-      MenuCommand(wxT("dgeev(")+wiz->GetValue()+wxT(",true,true)"));
-    wiz->Destroy();
+    CommandWiz(
+      _("Calculate the eigenvalues and eigenvectors numerically"),
+      wxEmptyString,wxEmptyString,
+      wxT("dgeev(#1#,true,true)"),
+      _("Matrix"),expr,wxEmptyString);
     break;
-  }
   case menu_matrix_zgeev_eigenvaluesOnly:
-  {
-    Gen1Wiz *wiz = new Gen1Wiz(this, -1, m_worksheet->m_configuration,
-                               _("Calculate the eigenvalues of a matrix numerically"),
-                               _("Matrix"),expr);
-    //wiz->Centre(wxBOTH);
-    if (wiz->ShowModal() == wxID_OK)
-      MenuCommand(wxT("zgeev(")+wiz->GetValue()+wxT(",false,false)[1]"));
-    wiz->Destroy();
+    CommandWiz(
+      _("Calculate the eigenvalues of a matrix numerically"),
+      wxEmptyString,wxEmptyString,
+      wxT("zgeev(#1#,false,false)[1]"),
+      _("Matrix"),expr,wxEmptyString);
     break;
-  }
   case menu_matrix_zgeev:
-  {
-    Gen1Wiz *wiz = new Gen1Wiz(this, -1, m_worksheet->m_configuration,
-                               _("Calculate the eigenvalues and eigenvectors numerically"),
-                               _("Matrix"),expr);
-    //wiz->Centre(wxBOTH);
-    if (wiz->ShowModal() == wxID_OK)
-      MenuCommand(wxT("zgeev(")+wiz->GetValue()+wxT(",true,true)"));
-    wiz->Destroy();
+    CommandWiz(
+      _("Calculate the eigenvalues and eigenvectors numerically"),
+      wxEmptyString,wxEmptyString,
+      wxT("zgeev(#1#,true,true)"),
+      _("Matrix"),expr,wxEmptyString);
     break;
-  }
   case menu_matrix_dgeqrf:
-  {
-    Gen1Wiz *wiz = new Gen1Wiz(this, -1, m_worksheet->m_configuration,
-                               _("Numerical QR decomposition of a matrix"),
-                               _("Matrix"),expr);
-    //wiz->Centre(wxBOTH);
-    if (wiz->ShowModal() == wxID_OK)
-      MenuCommand(wxT("dgeqrf(")+wiz->GetValue()+wxT(")"));
-    wiz->Destroy();
+    CommandWiz(
+      _("Numerical QR decomposition of a matrix"),
+      wxEmptyString,wxEmptyString,
+      wxT("dgeqrf(#1#)"),
+      _("Matrix"),expr,wxEmptyString);
     break;
-  }
   case menu_matrix_dgesv:
   {
       Gen2Wiz *wiz = new Gen2Wiz(_("m×n Matrix A:"),
@@ -7140,115 +7108,75 @@ void wxMaxima::MatrixMenu(wxCommandEvent &event)
     }
     break;
   case menu_matrix_dgesvd:
-  {
-    Gen1Wiz *wiz = new Gen1Wiz(this, -1, m_worksheet->m_configuration,
-                               _("Calculate Singular Value Decomposition, left and right singular vectors numerically"),
-                               _("Matrix"),expr);
-    //wiz->Centre(wxBOTH);
-    if (wiz->ShowModal() == wxID_OK)
-      MenuCommand(wxT("dgesvd(")+wiz->GetValue()+wxT(",true,true)"));
-    wiz->Destroy();
+    CommandWiz(
+      _("Calculate Singular Value Decomposition, left and right singular vectors numerically"),
+      wxEmptyString,wxEmptyString,
+      wxT("dgesvd(#1#,true,true)"),
+      _("Matrix"),expr,wxEmptyString);
     break;
-  }
   case menu_matrix_dgesvd_valuesOnly:
-  {
-    Gen1Wiz *wiz = new Gen1Wiz(this, -1, m_worksheet->m_configuration,
-                               _("Calculate the Singular Value Decomposition of a matrix numerically"),
-                               _("Matrix"),expr);
-    //wiz->Centre(wxBOTH);
-    if (wiz->ShowModal() == wxID_OK)
-      MenuCommand(wxT("dgesvd(")+wiz->GetValue()+wxT(",false,false)[1]"));
-    wiz->Destroy();
+    CommandWiz(
+      _("Calculate Singular Value Decomposition of a matrix numerically"),
+      wxEmptyString,wxEmptyString,
+      wxT("dgesvd(#1#,false,false)[1]"),
+      _("Matrix"),expr,wxEmptyString);
     break;
-  }
   case menu_matrix_dlange_max:
-  {
-    Gen1Wiz *wiz = new Gen1Wiz(this, -1, m_worksheet->m_configuration,
-                               _("Find the maximum absolute value of a matrix entry"),
-                               _("Matrix"),expr);
-    //wiz->Centre(wxBOTH);
-    if (wiz->ShowModal() == wxID_OK)
-      MenuCommand(wxT("dlange('max,")+wiz->GetValue()+wxT(")"));
-    wiz->Destroy();
+    CommandWiz(
+      _("Find the maximum absolute value of a matrix entry"),
+      wxEmptyString,wxEmptyString,
+      wxT("dlange('max,#1#)"),
+      _("Matrix"),expr,wxEmptyString);
     break;
-  }
   case menu_matrix_dlange_one:
-  {
-    Gen1Wiz *wiz = new Gen1Wiz(this, -1, m_worksheet->m_configuration,
-                               _("Find the maximum sum of the absolute values of a matrix column"),
-                               _("Matrix"),expr);
-    //wiz->Centre(wxBOTH);
-    if (wiz->ShowModal() == wxID_OK)
-      MenuCommand(wxT("dlange('one_norm,")+wiz->GetValue()+wxT(")"));
-    wiz->Destroy();
+    CommandWiz(
+      _("Find the maximum sum of the absolute values of a matrix column"),
+      wxEmptyString,wxEmptyString,
+      wxT("dlange('one_norm,#1#)"),
+      _("Matrix"),expr,wxEmptyString);
     break;
-  }
   case menu_matrix_dlange_inf:
-  {
-    Gen1Wiz *wiz = new Gen1Wiz(this, -1, m_worksheet->m_configuration,
-                               _("Find the maximum sum of the absolute values of a matrix row"),
-                               _("Matrix"),expr);
-    //wiz->Centre(wxBOTH);
-    if (wiz->ShowModal() == wxID_OK)
-      MenuCommand(wxT("dlange('inf_norm,")+wiz->GetValue()+wxT(")"));
-    wiz->Destroy();
+    CommandWiz(
+      _("Find the maximum sum of the absolute values of a matrix row"),
+      wxEmptyString,wxEmptyString,
+      wxT("dlange('inf_norm,#1#)"),
+      _("Matrix"),expr,wxEmptyString);
     break;
-  }
   case menu_matrix_dlange_frobenius:
-  {
-    Gen1Wiz *wiz = new Gen1Wiz(this, -1, m_worksheet->m_configuration,
-                               _("Calculate the root of the sum of squares of matrix entries"),
-                               _("Matrix"),expr);
-    //wiz->Centre(wxBOTH);
-    if (wiz->ShowModal() == wxID_OK)
-      MenuCommand(wxT("dlange('frobenius,")+wiz->GetValue()+wxT(")"));
-    wiz->Destroy();
+    CommandWiz(
+      _("Calculate the root of the sum of squares of matrix entries"),
+      wxEmptyString,wxEmptyString,
+      wxT("dlange('frobenius,#1#)"),
+      _("Matrix"),expr,wxEmptyString);
     break;
-  }
   case menu_matrix_zlange_max:
-  {
-    Gen1Wiz *wiz = new Gen1Wiz(this, -1, m_worksheet->m_configuration,
-                               _("Find the maximum absolute value of a matrix entry"),
-                               _("Matrix"),expr);
-    //wiz->Centre(wxBOTH);
-    if (wiz->ShowModal() == wxID_OK)
-      MenuCommand(wxT("zlange('max,")+wiz->GetValue()+wxT(")"));
-    wiz->Destroy();
+    CommandWiz(
+      _("Find the maximum absolute value of a matrix entry"),
+      wxEmptyString,wxEmptyString,
+      wxT("dlange('max,#1#)"),
+      _("Matrix"),expr,wxEmptyString);
     break;
-  }
   case menu_matrix_zlange_one:
-  {
-    Gen1Wiz *wiz = new Gen1Wiz(this, -1, m_worksheet->m_configuration,
-                               _("Find the maximum sum of the absolute values of a matrix column"),
-                               _("Matrix"),expr);
-    //wiz->Centre(wxBOTH);
-    if (wiz->ShowModal() == wxID_OK)
-      MenuCommand(wxT("zlange('one_norm,")+wiz->GetValue()+wxT(")"));
-    wiz->Destroy();
+    CommandWiz(
+      _("Find the maximum sum of the absolute values of a matrix column"),
+      wxEmptyString,wxEmptyString,
+      wxT("dlange('one_norm,#1#)"),
+      _("Matrix"),expr,wxEmptyString);
     break;
-  }
   case menu_matrix_zlange_inf:
-  {
-    Gen1Wiz *wiz = new Gen1Wiz(this, -1, m_worksheet->m_configuration,
-                               _("Find the maximum sum of the absolute values of a matrix row"),
-                               _("Matrix"),expr);
-    //wiz->Centre(wxBOTH);
-    if (wiz->ShowModal() == wxID_OK)
-      MenuCommand(wxT("zlange('inf_norm,")+wiz->GetValue()+wxT(")"));
-    wiz->Destroy();
+    CommandWiz(
+      _("Find the maximum sum of the absolute values of a matrix row"),
+      wxEmptyString,wxEmptyString,
+      wxT("dlange('inf_norm,#1#)"),
+      _("Matrix"),expr,wxEmptyString);
     break;
-  }
   case menu_matrix_zlange_frobenius:
-  {
-    Gen1Wiz *wiz = new Gen1Wiz(this, -1, m_worksheet->m_configuration,
-                               _("Calculate the root of the sum of squares of matrix entries"),
-                               _("Matrix"),expr);
-    //wiz->Centre(wxBOTH);
-    if (wiz->ShowModal() == wxID_OK)
-      MenuCommand(wxT("zlange('frobenius,")+wiz->GetValue()+wxT(")"));
-    wiz->Destroy();
+    CommandWiz(
+      _("Calculate the root of the sum of squares of matrix entries"),
+      wxEmptyString,wxEmptyString,
+      wxT("dlange('frobenius,#1#)"),
+      _("Matrix"),expr,wxEmptyString);
     break;
-  }
   case menu_matrix_zheev:
     break;
 
@@ -8760,15 +8688,15 @@ void wxMaxima::NumericalMenu(wxCommandEvent &event)
     CommandWiz(
       integralSign+_("(f(x),x,a,b)), Strategy of Aind"),
       wxEmptyString,wxEmptyString,
-      _("quad_qag(#1#,#2#,#3#,#4#,#5#,epsrel=#6#,epsabs=#7#,limit=#8#)"),
-      _("f(x)"),_("%"),wxEmptyString,
-      _("x"),_("x"),wxEmptyString,
-      _("a"),_("0"),wxEmptyString,
-      _("b"),_("10"),wxEmptyString,
-      _("key"),_("4"),wxEmptyString,
-      _("epsrel"),_("1d-8"),wxEmptyString,
-      _("epsabs"),_("0"),wxEmptyString,
-      _("limit"),_("200"),wxEmptyString);
+      wxT("quad_qag(#1#,#2#,#3#,#4#,#5#,epsrel=#6#,epsabs=#7#,limit=#8#)"),
+      wxT("f(x)"),wxT("%"),wxEmptyString,
+      wxT("x"),wxT("x"),wxEmptyString,
+      wxT("a"),wxT("0"),wxEmptyString,
+      wxT("b"),wxT("10"),wxEmptyString,
+      wxT("key"),wxT("4"),wxEmptyString,
+      wxT("epsrel"),wxT("1d-8"),wxEmptyString,
+      wxT("epsabs"),wxT("0"),wxEmptyString,
+      wxT("limit"),wxT("200"),wxEmptyString);
     break;
   }
   case menu_quad_qags:
@@ -8776,29 +8704,29 @@ void wxMaxima::NumericalMenu(wxCommandEvent &event)
     CommandWiz(
       integralSign+_("(f(x),x,a,b)), Epsilon algorithm"),
       wxEmptyString,wxEmptyString,
-      _("quad_qags(#1#,#2#,#3#,#4#,epsrel=#5#,epsabs=#6#,limit=#7#)"),
-      _("f(x)"),_("%"),wxEmptyString,
-      _("x"),_("x"),wxEmptyString,
-      _("a"),_("0"),wxEmptyString,
-      _("b"),_("10"),wxEmptyString,
-      _("epsrel"),_("1d-8"),wxEmptyString,
-      _("epsabs"),_("0"),wxEmptyString,
-      _("limit"),_("200"),wxEmptyString);
+      wxT("quad_qags(#1#,#2#,#3#,#4#,epsrel=#5#,epsabs=#6#,limit=#7#)"),
+      wxT("f(x)"),wxT("%"),wxEmptyString,
+      wxT("x"),wxT("x"),wxEmptyString,
+      wxT("a"),wxT("0"),wxEmptyString,
+      wxT("b"),wxT("10"),wxEmptyString,
+      wxT("epsrel"),wxT("1d-8"),wxEmptyString,
+      wxT("epsabs"),wxT("0"),wxEmptyString,
+      wxT("limit"),wxT("200"),wxEmptyString);
     break;
   }
   case menu_quad_qagi:
   {
     CommandWiz(
-      integralSign+_("(f(x),x,a,b), infinite interval"),
+      integralSign+_("(f(x),x,a,b), (semi-) infinite interval"),
       wxEmptyString,wxEmptyString,
-      _("quad_qagi(#1#,#2#,#3#,#4#,epsrel=#5#,epsabs=#6#,limit=#7#)"),
-      _("f(x)"),_("%"),wxEmptyString,
-      _("x"),_("x"),wxEmptyString,
-      _("a"),_("0"),wxEmptyString,
-      _("b"),_("10"),wxEmptyString,
-      _("epsrel"),_("1d-8"),wxEmptyString,
-      _("epsabs"),_("0"),wxEmptyString,
-      _("limit"),_("200"),wxEmptyString);
+      wxT("quad_qagi(#1#,#2#,#3#,#4#,epsrel=#5#,epsabs=#6#,limit=#7#)"),
+      wxT("f(x)"),wxT("%"),wxEmptyString,
+      wxT("x"),wxT("x"),wxEmptyString,
+      wxT("a"),wxT("0"),wxEmptyString,
+      wxT("b"),wxT("10"),wxEmptyString,
+      wxT("epsrel"),wxT("1d-8"),wxEmptyString,
+      wxT("epsabs"),wxT("0"),wxEmptyString,
+      wxT("limit"),wxT("200"),wxEmptyString);
     break;
   }
   case menu_quad_qawc:
@@ -8806,15 +8734,15 @@ void wxMaxima::NumericalMenu(wxCommandEvent &event)
     CommandWiz(
       _("Cauchy principial value of f(x)/(x-c), finite interval"),
       wxEmptyString,wxEmptyString,
-      _("quad_qawc(#1#,#2#,#3#,#4#,epsrel=#5#,epsabs=#6#,limit=#7#)"),
-      _("f(x)"),_("%"),wxEmptyString,
-      _("x"),_("x"),wxEmptyString,
-      _("c"),_("4"),wxEmptyString,
-      _("a"),_("0"),wxEmptyString,
-      _("b"),_("10"),wxEmptyString,
-      _("epsrel"),_("1d-8"),wxEmptyString,
-      _("epsabs"),_("0"),wxEmptyString,
-      _("limit"),_("200"),wxEmptyString);
+      wxT("quad_qawc(#1#,#2#,#3#,#4#,epsrel=#5#,epsabs=#6#,limit=#7#)"),
+      wxT("f(x)"),wxT("%"),wxEmptyString,
+      wxT("x"),wxT("x"),wxEmptyString,
+      wxT("c"),wxT("4"),wxEmptyString,
+      wxT("a"),wxT("0"),wxEmptyString,
+      wxT("b"),wxT("10"),wxEmptyString,
+      wxT("epsrel"),wxT("1d-8"),wxEmptyString,
+      wxT("epsabs"),wxT("0"),wxEmptyString,
+      wxT("limit"),wxT("200"),wxEmptyString);
     break;
   }
   case menu_quad_qawf_sin:
@@ -8822,13 +8750,13 @@ void wxMaxima::NumericalMenu(wxCommandEvent &event)
     CommandWiz(
       integralSign+wxT("(f(x)*sin(ω·x),x,a,∞)"),
       wxEmptyString,wxEmptyString,
-      _("quad_qawf(#1#,#2#,#3#,#4#,sin,epsabs=#5#,limit=#6#)"),
-      _("f(x)"),_("%"),wxEmptyString,
-      _("x"),_("x"),wxEmptyString,
-      _("a"),_("a"),wxEmptyString,
-      _("ω"),_("2"),wxEmptyString,
-      _("epsabs"),_("0"),wxEmptyString,
-      _("limit"),_("200"),wxEmptyString);
+      wxT("quad_qawf(#1#,#2#,#3#,#4#,sin,epsabs=#5#,limit=#6#)"),
+      wxT("f(x)"),wxT("%"),wxEmptyString,
+      wxT("x"),wxT("x"),wxEmptyString,
+      wxT("a"),wxT("a"),wxEmptyString,
+      wxT("ω"),wxT("2"),wxEmptyString,
+      wxT("epsabs"),wxT("0"),wxEmptyString,
+      wxT("limit"),wxT("200"),wxEmptyString);
     break;
   }
   case menu_quad_qawf_cos:
@@ -8836,13 +8764,13 @@ void wxMaxima::NumericalMenu(wxCommandEvent &event)
     CommandWiz(
       integralSign+wxT("(f(x)*cos(ω·x),x,a,∞)"),
       wxEmptyString,wxEmptyString,
-      _("quad_qawf(#1#,#2#,#3#,#4#,cos,epsabs=#5#,limit=#6#)"),
-      _("f(x)"),_("%"),wxEmptyString,
-      _("x"),_("x"),wxEmptyString,
-      _("a"),_("a"),wxEmptyString,
-      _("ω"),_("2"),wxEmptyString,
-      _("epsabs"),_("0"),wxEmptyString,
-      _("limit"),_("200"),wxEmptyString);
+      wxT("quad_qawf(#1#,#2#,#3#,#4#,cos,epsabs=#5#,limit=#6#)"),
+      wxT("f(x)"),wxT("%"),wxEmptyString,
+      wxT("x"),wxT("x"),wxEmptyString,
+      wxT("a"),wxT("a"),wxEmptyString,
+      wxT("ω"),wxT("2"),wxEmptyString,
+      wxT("epsabs"),wxT("0"),wxEmptyString,
+      wxT("limit"),wxT("200"),wxEmptyString);
     break;
   }
   case menu_quad_qawo_sin:
@@ -8850,15 +8778,15 @@ void wxMaxima::NumericalMenu(wxCommandEvent &event)
     CommandWiz(
       integralSign+wxT("(f(x)*sin(ω·x),x,a,b)"),
       wxEmptyString,wxEmptyString,
-      _("quad_qawo(#1#,#2#,#3#,#4#,#5#sin,epsrel=#6#,epsabs=#7#,limit=#8#)"),
-      _("f(x)"),_("%"),wxEmptyString,
-      _("x"),_("x"),wxEmptyString,
-      _("a"),_("a"),wxEmptyString,
-      _("b"),_("a"),wxEmptyString,
-      _("ω"),_("2"),wxEmptyString,
-      _("epsrel"),_("1d-8"),wxEmptyString,
-      _("epsabs"),_("0"),wxEmptyString,
-      _("limit"),_("200"),wxEmptyString);
+      wxT("quad_qawo(#1#,#2#,#3#,#4#,#5#sin,epsrel=#6#,epsabs=#7#,limit=#8#)"),
+      wxT("f(x)"),wxT("%"),wxEmptyString,
+      wxT("x"),wxT("x"),wxEmptyString,
+      wxT("a"),wxT("a"),wxEmptyString,
+      wxT("b"),wxT("a"),wxEmptyString,
+      wxT("ω"),wxT("2"),wxEmptyString,
+      wxT("epsrel"),wxT("1d-8"),wxEmptyString,
+      wxT("epsabs"),wxT("0"),wxEmptyString,
+      wxT("limit"),wxT("200"),wxEmptyString);
     break;
   }
   case menu_quad_qawo_cos:
@@ -8866,14 +8794,14 @@ void wxMaxima::NumericalMenu(wxCommandEvent &event)
     CommandWiz(
       integralSign+wxT("(f(x)*cos(ω·x),x,a,b)"),
       wxEmptyString,wxEmptyString,
-      _("quad_qawo(#1#,#2#,#3#,#4#,#5#,cos,epsrel=#6#,epsabs=#7#,limit=#8#)"),
-      _("f(x)"),_("%"),wxEmptyString,
-      _("x"),_("x"),wxEmptyString,
-      _("a"),_("a"),wxEmptyString,
-      _("ω"),_("2"),wxEmptyString,
-      _("epsrel"),_("1d-8"),wxEmptyString,
-      _("epsabs"),_("0"),wxEmptyString,
-      _("limit"),_("200"),wxEmptyString);
+      wxT("quad_qawo(#1#,#2#,#3#,#4#,#5#,cos,epsrel=#6#,epsabs=#7#,limit=#8#)"),
+      wxT("f(x)"),wxT("%"),wxEmptyString,
+      wxT("x"),wxT("x"),wxEmptyString,
+      wxT("a"),wxT("a"),wxEmptyString,
+      wxT("ω"),wxT("2"),wxEmptyString,
+      wxT("epsrel"),wxT("1d-8"),wxEmptyString,
+      wxT("epsabs"),wxT("0"),wxEmptyString,
+      wxT("limit"),wxT("200"),wxEmptyString);
     break;
   }
     
@@ -8882,14 +8810,14 @@ void wxMaxima::NumericalMenu(wxCommandEvent &event)
     CommandWiz(
       integralSign+wxT("(f(x)*(x-a)^α(b-x)^β,x,a,b)"),
       wxEmptyString,wxEmptyString,
-      _("quad_qaws(#1#,#2#,#3#,#4#,1,epsrel=#5#,epsabs=#6#,limit=#7#)"),
-      _("f(x)"),_("%"),wxEmptyString,
-      _("x"),_("x"),wxEmptyString,
-      _("a"),_("1"),wxEmptyString,
-      _("b"),_("2"),wxEmptyString,
-      _("epsrel"),_("1d-8"),wxEmptyString,
-      _("epsabs"),_("0"),wxEmptyString,
-      _("limit"),_("200"),wxEmptyString);
+      wxT("quad_qaws(#1#,#2#,#3#,#4#,1,epsrel=#5#,epsabs=#6#,limit=#7#)"),
+      wxT("f(x)"),wxT("%"),wxEmptyString,
+      wxT("x"),wxT("x"),wxEmptyString,
+      wxT("a"),wxT("1"),wxEmptyString,
+      wxT("b"),wxT("2"),wxEmptyString,
+      wxT("epsrel"),wxT("1d-8"),wxEmptyString,
+      wxT("epsabs"),wxT("0"),wxEmptyString,
+      wxT("limit"),wxT("200"),wxEmptyString);
     break;
   }
   case menu_quad_qaws2:
@@ -8897,14 +8825,14 @@ void wxMaxima::NumericalMenu(wxCommandEvent &event)
     CommandWiz(
       integralSign+wxT("(f(x)*(x-a)^α(b-x)^β·log(x-a),x,a,b)"),
       wxEmptyString,wxEmptyString,
-      _("quad_qaws(#1#,#2#,#3#,#4#,2,epsrel=#5#,epsabs=#6#,limit=#7#)"),
-      _("f(x)"),_("%"),wxEmptyString,
-      _("x"),_("x"),wxEmptyString,
-      _("a"),_("1"),wxEmptyString,
-      _("b"),_("2"),wxEmptyString,
-      _("epsrel"),_("1d-8"),wxEmptyString,
-      _("epsabs"),_("0"),wxEmptyString,
-      _("limit"),_("200"),wxEmptyString);
+      wxT("quad_qaws(#1#,#2#,#3#,#4#,2,epsrel=#5#,epsabs=#6#,limit=#7#)"),
+      wxT("f(x)"),wxT("%"),wxEmptyString,
+      wxT("x"),wxT("x"),wxEmptyString,
+      wxT("a"),wxT("1"),wxEmptyString,
+      wxT("b"),wxT("2"),wxEmptyString,
+      wxT("epsrel"),wxT("1d-8"),wxEmptyString,
+      wxT("epsabs"),wxT("0"),wxEmptyString,
+      wxT("limit"),wxT("200"),wxEmptyString);
     break;
   }
   case menu_quad_qaws3:
@@ -8912,14 +8840,14 @@ void wxMaxima::NumericalMenu(wxCommandEvent &event)
     CommandWiz(
       integralSign+wxT("(f(x)*(x-a)^α(b-x)^β·log(b-x),x,a,b)"),
       wxEmptyString,wxEmptyString,
-      _("quad_qaws(#1#,#2#,#3#,#4#,3,epsrel=#5#,epsabs=#6#,limit=#7#)"),
-      _("f(x)"),_("%"),wxEmptyString,
-      _("x"),_("x"),wxEmptyString,
-      _("a"),_("1"),wxEmptyString,
-      _("b"),_("2"),wxEmptyString,
-      _("epsrel"),_("1d-8"),wxEmptyString,
-      _("epsabs"),_("0"),wxEmptyString,
-      _("limit"),_("200"),wxEmptyString);
+      wxT("quad_qaws(#1#,#2#,#3#,#4#,3,epsrel=#5#,epsabs=#6#,limit=#7#)"),
+      wxT("f(x)"),wxT("%"),wxEmptyString,
+      wxT("x"),wxT("x"),wxEmptyString,
+      wxT("a"),wxT("1"),wxEmptyString,
+      wxT("b"),wxT("2"),wxEmptyString,
+      wxT("epsrel"),wxT("1d-8"),wxEmptyString,
+      wxT("epsabs"),wxT("0"),wxEmptyString,
+      wxT("limit"),wxT("200"),wxEmptyString);
     break;
   }
   case menu_quad_qaws4:
@@ -8927,14 +8855,14 @@ void wxMaxima::NumericalMenu(wxCommandEvent &event)
     CommandWiz(
       integralSign+wxT("(f(x)*(x-a)^α(b-x)^β·log(x-a)·log(b-x),x,a,b)"),
       wxEmptyString,wxEmptyString,
-      _("quad_qaws(#1#,#2#,#3#,#4#,4,epsrel=#5#,epsabs=#6#,limit=#7#)"),
-      _("f(x)"),_("%"),wxEmptyString,
-      _("x"),_("x"),wxEmptyString,
-      _("a"),_("1"),wxEmptyString,
-      _("b"),_("2"),wxEmptyString,
-      _("epsrel"),_("1d-8"),wxEmptyString,
-      _("epsabs"),_("0"),wxEmptyString,
-      _("limit"),_("200"),wxEmptyString);
+      wxT("quad_qaws(#1#,#2#,#3#,#4#,4,epsrel=#5#,epsabs=#6#,limit=#7#)"),
+      wxT("f(x)"),wxT("%"),wxEmptyString,
+      wxT("x"),wxT("x"),wxEmptyString,
+      wxT("a"),wxT("1"),wxEmptyString,
+      wxT("b"),wxT("2"),wxEmptyString,
+      wxT("epsrel"),wxT("1d-8"),wxEmptyString,
+      wxT("epsabs"),wxT("0"),wxEmptyString,
+      wxT("limit"),wxT("200"),wxEmptyString);
     break;
   }
   case menu_quad_qagp:
@@ -8942,15 +8870,15 @@ void wxMaxima::NumericalMenu(wxCommandEvent &event)
     CommandWiz(
       integralSign+_("(f(x),x,y) with singularities+discontinuities"),
       wxEmptyString,wxEmptyString,
-      _("qagp(#1#,#2#,#3#,#4#,[#5#],epsrel=#6#,epsabs=#7#,limit=#8#)"),
-      _("f(x)"),_("%"),wxEmptyString,
-      _("x"),_("x"),wxEmptyString,
-      _("a"),_("1"),wxEmptyString,
-      _("b"),_("2"),wxEmptyString,
-      _("points"),_(".5,.75"),wxEmptyString,
-      _("epsrel"),_("1d-8"),wxEmptyString,
-      _("epsabs"),_("0"),wxEmptyString,
-      _("limit"),_("200"),wxEmptyString);
+      wxT("qagp(#1#,#2#,#3#,#4#,[#5#],epsrel=#6#,epsabs=#7#,limit=#8#)"),
+      wxT("f(x)"),wxT("%"),wxEmptyString,
+      wxT("x"),wxT("x"),wxEmptyString,
+      wxT("a"),wxT("1"),wxEmptyString,
+      wxT("b"),wxT("2"),wxEmptyString,
+      wxT("points"),wxT(".5,.75"),wxEmptyString,
+      wxT("epsrel"),wxT("1d-8"),wxEmptyString,
+      wxT("epsabs"),wxT("0"),wxEmptyString,
+      wxT("limit"),wxT("200"),wxEmptyString);
     break;
   }
   default:
