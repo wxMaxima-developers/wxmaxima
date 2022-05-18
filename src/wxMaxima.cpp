@@ -6635,47 +6635,32 @@ void wxMaxima::EquationsMenu(wxCommandEvent &event)
           "variables solve needs to do its work can be used to tell "
           "solve() which variables to eliminate in the solution "
           "for the interesting variable."),wxEmptyString,
-        wxT("solve([#1#],[#2#])$"),
+        wxT("solve([#1#],[#2#]);"),
         _("Equation(s)"),expr,_("Comma-separated equations"),
         _("Variable(s)"),wxT("x"),_("Comma-separated variables"));
       break;
     case menu_solve_to_poly:
-    {
-      Gen2Wiz *wiz = new Gen2Wiz(_("Equation(s):"), _("Variable(s):"),
-                                 expr, wxT("x"),
-                                 m_worksheet->m_configuration,
-                                 this, -1, _("Solve"), true);
-      //wiz->Centre(wxBOTH);
-      if (wiz->ShowModal() == wxID_OK)
-      {
-        cmd = wxT("to_poly_solve([") + wiz->GetValue1() + wxT("], [") +
-              wiz->GetValue2() + wxT("]);");
-        MenuCommand(cmd);
-      }
-      wiz->Destroy();
-    }
+      CommandWiz(
+        _("Solve equations to polynom"),
+        wxEmptyString,wxEmptyString,
+        wxT("to_poly_solve([#1#],[#2#]);"),
+        _("Equation(s)"),expr,_("Comma-separated equations"),
+        _("Variable(s)"),wxT("x"),_("Comma-separated variables"));
       break;
     case menu_solve_num:
     {
       if (expr.StartsWith(wxT("%")))
         expr = wxT("''(") + expr + wxT(")");
-      Gen4Wiz *wiz = new Gen4Wiz(_("Equation:"), _("Variable:"),
-                                 _("Lower bound:"), _("Upper bound:"),
-                                 expr, wxT("x"), wxT("-1"), wxT("1"),
-                                 m_worksheet->m_configuration,
-                                 this, -1, _("Find root"), true);
-      //wiz->Centre(wxBOTH);
-      if (wiz->ShowModal() == wxID_OK)
-      {
-        cmd = wxT("find_root(") + wiz->GetValue1() + wxT(", ") +
-              wiz->GetValue2() + wxT(", ") +
-              wiz->GetValue3() + wxT(", ") +
-              wiz->GetValue4() + wxT(");");
-        MenuCommand(cmd);
-      }
-      wiz->Destroy();
-    }
+      CommandWiz(
+        _("Solve equations to numerically"),
+        wxEmptyString,wxEmptyString,
+        wxT("find_root(#1#,#2#,#3#,#4#);"),
+        _("Equation:"),expr,wxEmptyString,
+        _("Variable:"),wxT("x"),wxEmptyString,
+        _("Lower bound:"),wxT("-1"),wxEmptyString,
+        _("Upper bound:"),wxT("1"),wxEmptyString);
       break;
+    }
     case button_solve_ode:
     case menu_solve_ode:
     {
