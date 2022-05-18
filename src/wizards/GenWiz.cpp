@@ -44,6 +44,7 @@ GenWiz::GenWiz(wxWindow *parent, Configuration *cfg, const wxString &title,
     new wxFlexGridSizer(1,
                         wxSize(5*GetContentScaleFactor(), 5*GetContentScaleFactor()));
   vbox->AddGrowableCol(0);
+  vbox->AddGrowableRow(2);
   m_description = new WrappingStaticText(this, wxID_ANY, description);
   if(description.IsEmpty())
     m_description->Show(false);
@@ -54,7 +55,7 @@ GenWiz::GenWiz(wxWindow *parent, Configuration *cfg, const wxString &title,
   {
     m_label.push_back(new wxStaticText(this, -1, wxEmptyString));
     m_textctrl.push_back(new BTextCtrl(this, -1, cfg, wxEmptyString, wxDefaultPosition,
-                                       wxSize(300*GetContentScaleFactor(), -1)));
+                                       wxSize(100*GetContentScaleFactor(), -1)));
   }
 
   m_textctrl[0]->SetValue(defaultval1);
@@ -152,8 +153,7 @@ GenWiz::GenWiz(wxWindow *parent, Configuration *cfg, const wxString &title,
   wxStaticBoxSizer *resultBox = new wxStaticBoxSizer(wxVERTICAL, this, _("Maxima Code:"));
   resultBox->Add(m_output, wxSizerFlags(1).Border(wxALL, 5*GetContentScaleFactor()).Expand());
   vbox->Add(resultBox, wxSizerFlags(1).Border(wxALL, 5*GetContentScaleFactor()).Expand());
-  if(commandRule.IsEmpty())
-    resultBox->Show(false);
+  resultBox->Show(!commandRule.IsEmpty());
 
   wxBoxSizer *buttonSizer = new wxBoxSizer(wxHORIZONTAL);
   buttonSizer->Add(button_1, wxSizerFlags(1).Border(wxALL, 5*GetContentScaleFactor()));
