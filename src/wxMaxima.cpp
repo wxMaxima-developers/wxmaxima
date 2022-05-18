@@ -8757,297 +8757,238 @@ void wxMaxima::NumericalMenu(wxCommandEvent &event)
   }
   case menu_quad_qag:
   {
-    GenWiz *wiz = new GenWiz(this, m_worksheet->m_configuration,
-                             integralSign+_("(f(x),x,a,b)), Strategy of Aind"),
-                             wxEmptyString,wxEmptyString,
-                             _("quad_qag(#1#,#2#,#3#,#4#,#5#,epsrel=#6#,epsabs=#7#,limit=#8#)"),
-                             _("f(x)"),_("%"),wxEmptyString,
-                             _("x"),_("x"),wxEmptyString,
-                             _("a"),_("0"),wxEmptyString,
-                             _("b"),_("10"),wxEmptyString,
-                             _("key"),_("4"),wxEmptyString,
-                             _("epsrel"),_("1d-8"),wxEmptyString,
-                             _("epsabs"),_("0"),wxEmptyString,
-                             _("limit"),_("200"),wxEmptyString);
-    //wiz->Centre(wxBOTH);
-    if (wiz->ShowModal() == wxID_OK)
-    {
-      cmd = wiz->GetOutput();
-      MenuCommand(cmd);
-    }
-    wiz->Destroy();
+    CommandWiz(
+      integralSign+_("(f(x),x,a,b)), Strategy of Aind"),
+      wxEmptyString,wxEmptyString,
+      _("quad_qag(#1#,#2#,#3#,#4#,#5#,epsrel=#6#,epsabs=#7#,limit=#8#)"),
+      _("f(x)"),_("%"),wxEmptyString,
+      _("x"),_("x"),wxEmptyString,
+      _("a"),_("0"),wxEmptyString,
+      _("b"),_("10"),wxEmptyString,
+      _("key"),_("4"),wxEmptyString,
+      _("epsrel"),_("1d-8"),wxEmptyString,
+      _("epsabs"),_("0"),wxEmptyString,
+      _("limit"),_("200"),wxEmptyString);
     break;
   }
   case menu_quad_qags:
   {
-    GenWiz *wiz = new GenWiz(this, m_worksheet->m_configuration,
-                             integralSign+_("(f(x),x,a,b)), Epsilon algorithm"),
-                             wxEmptyString,wxEmptyString,
-                             _("quad_qags(#1#,#2#,#3#,#4#,epsrel=#5#,epsabs=#6#,limit=#7#)"),
-                             _("f(x)"),_("%"),wxEmptyString,
-                             _("x"),_("x"),wxEmptyString,
-                             _("a"),_("0"),wxEmptyString,
-                             _("b"),_("10"),wxEmptyString,
-                             _("epsrel"),_("1d-8"),wxEmptyString,
-                             _("epsabs"),_("0"),wxEmptyString,
-                             _("limit"),_("200"),wxEmptyString);
-    //wiz->Centre(wxBOTH);
-    if (wiz->ShowModal() == wxID_OK)
-    {
-      cmd = wiz->GetOutput();
-      MenuCommand(cmd);
-    }
-    wiz->Destroy();
+    CommandWiz(
+      integralSign+_("(f(x),x,a,b)), Epsilon algorithm"),
+      wxEmptyString,wxEmptyString,
+      _("quad_qags(#1#,#2#,#3#,#4#,epsrel=#5#,epsabs=#6#,limit=#7#)"),
+      _("f(x)"),_("%"),wxEmptyString,
+      _("x"),_("x"),wxEmptyString,
+      _("a"),_("0"),wxEmptyString,
+      _("b"),_("10"),wxEmptyString,
+      _("epsrel"),_("1d-8"),wxEmptyString,
+      _("epsabs"),_("0"),wxEmptyString,
+      _("limit"),_("200"),wxEmptyString);
     break;
   }
   case menu_quad_qagi:
   {
-    GenWiz *wiz = new GenWiz(this, m_worksheet->m_configuration,
-                             integralSign+_("(f(x),x,a,b), infinite interval"),
-                             wxEmptyString,wxEmptyString,
-                             _("quad_qagi(#1#,#2#,#3#,#4#,epsrel=#5#,epsabs=#6#,limit=#7#)"),
-                             _("f(x)"),_("%"),wxEmptyString,
-                             _("x"),_("x"),wxEmptyString,
-                             _("a"),_("0"),wxEmptyString,
-                             _("b"),_("10"),wxEmptyString,
-                             _("epsrel"),_("1d-8"),wxEmptyString,
-                             _("epsabs"),_("0"),wxEmptyString,
-                             _("limit"),_("200"),wxEmptyString);
-    //wiz->Centre(wxBOTH);
-    if (wiz->ShowModal() == wxID_OK)
-    {
-      cmd = wiz->GetOutput();
-      MenuCommand(cmd);
-    }
-    wiz->Destroy();
+    CommandWiz(
+      integralSign+_("(f(x),x,a,b), infinite interval"),
+      wxEmptyString,wxEmptyString,
+      _("quad_qagi(#1#,#2#,#3#,#4#,epsrel=#5#,epsabs=#6#,limit=#7#)"),
+      _("f(x)"),_("%"),wxEmptyString,
+      _("x"),_("x"),wxEmptyString,
+      _("a"),_("0"),wxEmptyString,
+      _("b"),_("10"),wxEmptyString,
+      _("epsrel"),_("1d-8"),wxEmptyString,
+      _("epsabs"),_("0"),wxEmptyString,
+      _("limit"),_("200"),wxEmptyString);
     break;
   }
   case menu_quad_qawc:
   {
-    GenWiz *wiz = new GenWiz(this, m_worksheet->m_configuration,
-                             _("Cauchy principial value of f(x)/(x-c), finite interval"),
-                             wxEmptyString,wxEmptyString,
-                             _("quad_qawc(#1#,#2#,#3#,#4#,epsrel=#5#,epsabs=#6#,limit=#7#)"),
-                             _("f(x)"),_("%"),wxEmptyString,
-                             _("x"),_("x"),wxEmptyString,
-                             _("c"),_("4"),wxEmptyString,
-                             _("a"),_("0"),wxEmptyString,
-                             _("b"),_("10"),wxEmptyString,
-                             _("epsrel"),_("1d-8"),wxEmptyString,
-                             _("epsabs"),_("0"),wxEmptyString,
-                             _("limit"),_("200"),wxEmptyString);
-    //wiz->Centre(wxBOTH);
-    if (wiz->ShowModal() == wxID_OK)
-    {
-      cmd = wiz->GetOutput();
-      MenuCommand(cmd);
-    }
-    wiz->Destroy();
+    CommandWiz(
+      _("Cauchy principial value of f(x)/(x-c), finite interval"),
+      wxEmptyString,wxEmptyString,
+      _("quad_qawc(#1#,#2#,#3#,#4#,epsrel=#5#,epsabs=#6#,limit=#7#)"),
+      _("f(x)"),_("%"),wxEmptyString,
+      _("x"),_("x"),wxEmptyString,
+      _("c"),_("4"),wxEmptyString,
+      _("a"),_("0"),wxEmptyString,
+      _("b"),_("10"),wxEmptyString,
+      _("epsrel"),_("1d-8"),wxEmptyString,
+      _("epsabs"),_("0"),wxEmptyString,
+      _("limit"),_("200"),wxEmptyString);
     break;
   }
   case menu_quad_qawf_sin:
   {
-    GenWiz *wiz = new GenWiz(this, m_worksheet->m_configuration,
-                             integralSign+wxT("(f(x)*sin(ω·x),x,a,∞)"),
-                             wxEmptyString,wxEmptyString,
-                             _("quad_qawf(#1#,#2#,#3#,#4#,sin,epsabs=#5#,limit=#6#)"),
-                             _("f(x)"),_("%"),wxEmptyString,
-                             _("x"),_("x"),wxEmptyString,
-                             _("a"),_("a"),wxEmptyString,
-                             _("ω"),_("2"),wxEmptyString,
-                             _("epsabs"),_("0"),wxEmptyString,
-                             _("limit"),_("200"),wxEmptyString);
-    //wiz->Centre(wxBOTH);
-    if (wiz->ShowModal() == wxID_OK)
-    {
-      cmd = wiz->GetOutput();
-      MenuCommand(cmd);
-    }
-    wiz->Destroy();
+    CommandWiz(
+      integralSign+wxT("(f(x)*sin(ω·x),x,a,∞)"),
+      wxEmptyString,wxEmptyString,
+      _("quad_qawf(#1#,#2#,#3#,#4#,sin,epsabs=#5#,limit=#6#)"),
+      _("f(x)"),_("%"),wxEmptyString,
+      _("x"),_("x"),wxEmptyString,
+      _("a"),_("a"),wxEmptyString,
+      _("ω"),_("2"),wxEmptyString,
+      _("epsabs"),_("0"),wxEmptyString,
+      _("limit"),_("200"),wxEmptyString);
     break;
   }
   case menu_quad_qawf_cos:
   {
-    GenWiz *wiz = new GenWiz(this, m_worksheet->m_configuration,
-                             integralSign+wxT("(f(x)*cos(ω·x),x,a,∞)"),
-                             wxEmptyString,wxEmptyString,
-                             _("quad_qawf(#1#,#2#,#3#,#4#,cos,epsabs=#5#,limit=#6#)"),
-                             _("f(x)"),_("%"),wxEmptyString,
-                             _("x"),_("x"),wxEmptyString,
-                             _("a"),_("a"),wxEmptyString,
-                             _("ω"),_("2"),wxEmptyString,
-                             _("epsabs"),_("0"),wxEmptyString,
-                             _("limit"),_("200"),wxEmptyString);
-    //wiz->Centre(wxBOTH);
-    if (wiz->ShowModal() == wxID_OK)
-    {
-      cmd = wiz->GetOutput();
-      MenuCommand(cmd);
-    }
-    wiz->Destroy();
+    CommandWiz(
+      integralSign+wxT("(f(x)*cos(ω·x),x,a,∞)"),
+      wxEmptyString,wxEmptyString,
+      _("quad_qawf(#1#,#2#,#3#,#4#,cos,epsabs=#5#,limit=#6#)"),
+      _("f(x)"),_("%"),wxEmptyString,
+      _("x"),_("x"),wxEmptyString,
+      _("a"),_("a"),wxEmptyString,
+      _("ω"),_("2"),wxEmptyString,
+      _("epsabs"),_("0"),wxEmptyString,
+      _("limit"),_("200"),wxEmptyString);
     break;
   }
   case menu_quad_qawo_sin:
   {
-    GenWiz *wiz = new GenWiz(this, m_worksheet->m_configuration,
-                             integralSign+wxT("(f(x)*sin(ω·x),x,a,b)"),
-                             wxEmptyString,wxEmptyString,
-                             _("quad_qawo(#1#,#2#,#3#,#4#,#5#sin,epsrel=#6#,epsabs=#7#,limit=#8#)"),
-                             _("f(x)"),_("%"),wxEmptyString,
-                             _("x"),_("x"),wxEmptyString,
-                             _("a"),_("a"),wxEmptyString,
-                             _("b"),_("a"),wxEmptyString,
-                             _("ω"),_("2"),wxEmptyString,
-                             _("epsrel"),_("1d-8"),wxEmptyString,
-                             _("epsabs"),_("0"),wxEmptyString,
-                             _("limit"),_("200"),wxEmptyString);
-    //wiz->Centre(wxBOTH);
-    if (wiz->ShowModal() == wxID_OK)
-    {
-      cmd = wiz->GetOutput();
-      MenuCommand(cmd);
-    }
-    wiz->Destroy();
+    CommandWiz(
+      integralSign+wxT("(f(x)*sin(ω·x),x,a,b)"),
+      wxEmptyString,wxEmptyString,
+      _("quad_qawo(#1#,#2#,#3#,#4#,#5#sin,epsrel=#6#,epsabs=#7#,limit=#8#)"),
+      _("f(x)"),_("%"),wxEmptyString,
+      _("x"),_("x"),wxEmptyString,
+      _("a"),_("a"),wxEmptyString,
+      _("b"),_("a"),wxEmptyString,
+      _("ω"),_("2"),wxEmptyString,
+      _("epsrel"),_("1d-8"),wxEmptyString,
+      _("epsabs"),_("0"),wxEmptyString,
+      _("limit"),_("200"),wxEmptyString);
     break;
   }
   case menu_quad_qawo_cos:
   {
-    GenWiz *wiz = new GenWiz(this, m_worksheet->m_configuration,
-                             integralSign+wxT("(f(x)*cos(ω·x),x,a,b)"),
-                             wxEmptyString,wxEmptyString,
-                             _("quad_qawo(#1#,#2#,#3#,#4#,#5#,cos,epsrel=#6#,epsabs=#7#,limit=#8#)"),
-                             _("f(x)"),_("%"),wxEmptyString,
-                             _("x"),_("x"),wxEmptyString,
-                             _("a"),_("a"),wxEmptyString,
-                             _("ω"),_("2"),wxEmptyString,
-                             _("epsrel"),_("1d-8"),wxEmptyString,
-                             _("epsabs"),_("0"),wxEmptyString,
-                             _("limit"),_("200"),wxEmptyString);
-    //wiz->Centre(wxBOTH);
-    if (wiz->ShowModal() == wxID_OK)
-    {
-      cmd = wiz->GetOutput();
-      MenuCommand(cmd);
-    }
-    wiz->Destroy();
+    CommandWiz(
+      integralSign+wxT("(f(x)*cos(ω·x),x,a,b)"),
+      wxEmptyString,wxEmptyString,
+      _("quad_qawo(#1#,#2#,#3#,#4#,#5#,cos,epsrel=#6#,epsabs=#7#,limit=#8#)"),
+      _("f(x)"),_("%"),wxEmptyString,
+      _("x"),_("x"),wxEmptyString,
+      _("a"),_("a"),wxEmptyString,
+      _("ω"),_("2"),wxEmptyString,
+      _("epsrel"),_("1d-8"),wxEmptyString,
+      _("epsabs"),_("0"),wxEmptyString,
+      _("limit"),_("200"),wxEmptyString);
     break;
   }
     
   case menu_quad_qaws1:
   {
-    GenWiz *wiz = new GenWiz(this, m_worksheet->m_configuration,
-                             integralSign+wxT("(f(x)*(x-a)^α(b-x)^β,x,a,b)"),
-                             wxEmptyString,wxEmptyString,
-                             _("quad_qaws(#1#,#2#,#3#,#4#,1,epsrel=#5#,epsabs=#6#,limit=#7#)"),
-                             _("f(x)"),_("%"),wxEmptyString,
-                             _("x"),_("x"),wxEmptyString,
-                             _("a"),_("1"),wxEmptyString,
-                             _("b"),_("2"),wxEmptyString,
-                             _("epsrel"),_("1d-8"),wxEmptyString,
-                             _("epsabs"),_("0"),wxEmptyString,
-                             _("limit"),_("200"),wxEmptyString);
-    //wiz->Centre(wxBOTH);
-    if (wiz->ShowModal() == wxID_OK)
-    {
-      cmd = wiz->GetOutput();
-      MenuCommand(cmd);
-    }
-    wiz->Destroy();
+    CommandWiz(
+      integralSign+wxT("(f(x)*(x-a)^α(b-x)^β,x,a,b)"),
+      wxEmptyString,wxEmptyString,
+      _("quad_qaws(#1#,#2#,#3#,#4#,1,epsrel=#5#,epsabs=#6#,limit=#7#)"),
+      _("f(x)"),_("%"),wxEmptyString,
+      _("x"),_("x"),wxEmptyString,
+      _("a"),_("1"),wxEmptyString,
+      _("b"),_("2"),wxEmptyString,
+      _("epsrel"),_("1d-8"),wxEmptyString,
+      _("epsabs"),_("0"),wxEmptyString,
+      _("limit"),_("200"),wxEmptyString);
     break;
   }
   case menu_quad_qaws2:
   {
-    GenWiz *wiz = new GenWiz(this, m_worksheet->m_configuration,
-                             integralSign+wxT("(f(x)*(x-a)^α(b-x)^β·log(x-a),x,a,b)"),
-                             wxEmptyString,wxEmptyString,
-                             _("quad_qaws(#1#,#2#,#3#,#4#,2,epsrel=#5#,epsabs=#6#,limit=#7#)"),
-                             _("f(x)"),_("%"),wxEmptyString,
-                             _("x"),_("x"),wxEmptyString,
-                             _("a"),_("1"),wxEmptyString,
-                             _("b"),_("2"),wxEmptyString,
-                             _("epsrel"),_("1d-8"),wxEmptyString,
-                             _("epsabs"),_("0"),wxEmptyString,
-                             _("limit"),_("200"),wxEmptyString);
-    //wiz->Centre(wxBOTH);
-    if (wiz->ShowModal() == wxID_OK)
-    {
-      cmd = wiz->GetOutput();
-      MenuCommand(cmd);
-    }
-    wiz->Destroy();
+    CommandWiz(
+      integralSign+wxT("(f(x)*(x-a)^α(b-x)^β·log(x-a),x,a,b)"),
+      wxEmptyString,wxEmptyString,
+      _("quad_qaws(#1#,#2#,#3#,#4#,2,epsrel=#5#,epsabs=#6#,limit=#7#)"),
+      _("f(x)"),_("%"),wxEmptyString,
+      _("x"),_("x"),wxEmptyString,
+      _("a"),_("1"),wxEmptyString,
+      _("b"),_("2"),wxEmptyString,
+      _("epsrel"),_("1d-8"),wxEmptyString,
+      _("epsabs"),_("0"),wxEmptyString,
+      _("limit"),_("200"),wxEmptyString);
     break;
   }
   case menu_quad_qaws3:
   {
-    GenWiz *wiz = new GenWiz(this, m_worksheet->m_configuration,
-                             integralSign+wxT("(f(x)*(x-a)^α(b-x)^β·log(b-x),x,a,b)"),
-                             wxEmptyString,wxEmptyString,
-                             _("quad_qaws(#1#,#2#,#3#,#4#,3,epsrel=#5#,epsabs=#6#,limit=#7#)"),
-                             _("f(x)"),_("%"),wxEmptyString,
-                             _("x"),_("x"),wxEmptyString,
-                             _("a"),_("1"),wxEmptyString,
-                             _("b"),_("2"),wxEmptyString,
-                             _("epsrel"),_("1d-8"),wxEmptyString,
-                             _("epsabs"),_("0"),wxEmptyString,
-                             _("limit"),_("200"),wxEmptyString);
-    //wiz->Centre(wxBOTH);
-    if (wiz->ShowModal() == wxID_OK)
-    {
-      cmd = wiz->GetOutput();
-      MenuCommand(cmd);
-    }
-    wiz->Destroy();
+    CommandWiz(
+      integralSign+wxT("(f(x)*(x-a)^α(b-x)^β·log(b-x),x,a,b)"),
+      wxEmptyString,wxEmptyString,
+      _("quad_qaws(#1#,#2#,#3#,#4#,3,epsrel=#5#,epsabs=#6#,limit=#7#)"),
+      _("f(x)"),_("%"),wxEmptyString,
+      _("x"),_("x"),wxEmptyString,
+      _("a"),_("1"),wxEmptyString,
+      _("b"),_("2"),wxEmptyString,
+      _("epsrel"),_("1d-8"),wxEmptyString,
+      _("epsabs"),_("0"),wxEmptyString,
+      _("limit"),_("200"),wxEmptyString);
     break;
   }
   case menu_quad_qaws4:
   {
-    GenWiz *wiz = new GenWiz(this, m_worksheet->m_configuration,
-                             integralSign+wxT("(f(x)*(x-a)^α(b-x)^β·log(x-a)·log(b-x),x,a,b)"),
-                             wxEmptyString,wxEmptyString,
-                             _("quad_qaws(#1#,#2#,#3#,#4#,4,epsrel=#5#,epsabs=#6#,limit=#7#)"),
-                             _("f(x)"),_("%"),wxEmptyString,
-                             _("x"),_("x"),wxEmptyString,
-                             _("a"),_("1"),wxEmptyString,
-                             _("b"),_("2"),wxEmptyString,
-                             _("epsrel"),_("1d-8"),wxEmptyString,
-                             _("epsabs"),_("0"),wxEmptyString,
-                             _("limit"),_("200"),wxEmptyString);
-    //wiz->Centre(wxBOTH);
-    if (wiz->ShowModal() == wxID_OK)
-    {
-      cmd = wiz->GetOutput();
-      MenuCommand(cmd);
-    }
-    wiz->Destroy();
+    CommandWiz(
+      integralSign+wxT("(f(x)*(x-a)^α(b-x)^β·log(x-a)·log(b-x),x,a,b)"),
+      wxEmptyString,wxEmptyString,
+      _("quad_qaws(#1#,#2#,#3#,#4#,4,epsrel=#5#,epsabs=#6#,limit=#7#)"),
+      _("f(x)"),_("%"),wxEmptyString,
+      _("x"),_("x"),wxEmptyString,
+      _("a"),_("1"),wxEmptyString,
+      _("b"),_("2"),wxEmptyString,
+      _("epsrel"),_("1d-8"),wxEmptyString,
+      _("epsabs"),_("0"),wxEmptyString,
+      _("limit"),_("200"),wxEmptyString);
     break;
   }
   case menu_quad_qagp:
   {
-    GenWiz *wiz = new GenWiz(this, m_worksheet->m_configuration,
-                             integralSign+_("(f(x),x,y) with singularities+discontinuities"),
-                             wxEmptyString,wxEmptyString,
-                             _("qagp(#1#,#2#,#3#,#4#,[#5#],epsrel=#6#,epsabs=#7#,limit=#8#)"),
-                             _("f(x)"),_("%"),wxEmptyString,
-                             _("x"),_("x"),wxEmptyString,
-                             _("a"),_("1"),wxEmptyString,
-                             _("b"),_("2"),wxEmptyString,
-                             _("points"),_(".5,.75"),wxEmptyString,
-                             _("epsrel"),_("1d-8"),wxEmptyString,
-                             _("epsabs"),_("0"),wxEmptyString,
-                             _("limit"),_("200"),wxEmptyString);
-    //wiz->Centre(wxBOTH);
-    if (wiz->ShowModal() == wxID_OK)
-    {
-      cmd = wiz->GetOutput();
-      MenuCommand(cmd);
-    }
-    wiz->Destroy();
+    CommandWiz(
+      integralSign+_("(f(x),x,y) with singularities+discontinuities"),
+      wxEmptyString,wxEmptyString,
+      _("qagp(#1#,#2#,#3#,#4#,[#5#],epsrel=#6#,epsabs=#7#,limit=#8#)"),
+      _("f(x)"),_("%"),wxEmptyString,
+      _("x"),_("x"),wxEmptyString,
+      _("a"),_("1"),wxEmptyString,
+      _("b"),_("2"),wxEmptyString,
+      _("points"),_(".5,.75"),wxEmptyString,
+      _("epsrel"),_("1d-8"),wxEmptyString,
+      _("epsabs"),_("0"),wxEmptyString,
+      _("limit"),_("200"),wxEmptyString);
     break;
   }
-  // menu_quad_qagp,
   default:
     break;
   }
+}
+
+void wxMaxima::CommandWiz(const wxString &title,
+                          const wxString &description, const wxString &description_tooltip,
+                          const wxString &commandRule,
+                          wxString label1, wxString defaultval1, wxString tooltip1,
+                          wxString label2, wxString defaultval2, wxString tooltip2,
+                          wxString label3, wxString defaultval3, wxString tooltip3,
+                          wxString label4, wxString defaultval4, wxString tooltip4,
+                          wxString label5, wxString defaultval5, wxString tooltip5,
+                          wxString label6, wxString defaultval6, wxString tooltip6,
+                          wxString label7, wxString defaultval7, wxString tooltip7,
+                          wxString label8, wxString defaultval8, wxString tooltip8,
+                          wxString label9, wxString defaultval9, wxString tooltip9
+  )
+{
+  GenWiz *wiz = new GenWiz(this, m_worksheet->m_configuration,
+                           title,
+                           description,description_tooltip,
+                           commandRule,
+                           label1, defaultval1, tooltip1,
+                           label2, defaultval2, tooltip2,
+                           label3, defaultval3, tooltip3,
+                           label4, defaultval4, tooltip4,
+                           label5, defaultval5, tooltip5,
+                           label6, defaultval6, tooltip6,
+                           label7, defaultval7, tooltip7,
+                           label8, defaultval8, tooltip8,
+                           label9, defaultval9, tooltip9);
+  //wiz->Centre(wxBOTH);
+  if (wiz->ShowModal() == wxID_OK)
+    MenuCommand(wiz->GetOutput());
+  wiz->Destroy();
 }
 
 void wxMaxima::HelpMenu(wxCommandEvent &event)
