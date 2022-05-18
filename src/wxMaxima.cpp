@@ -6627,29 +6627,17 @@ void wxMaxima::EquationsMenu(wxCommandEvent &event)
       break;
     case button_solve:
     case menu_solve:
-    {
-      Gen2Wiz *wiz = new Gen2Wiz(_("Equation(s):"), _("Variable(s):"),
-                                 expr, wxT("x"),
-                                 m_worksheet->m_configuration,
-                                 this, -1, _("Solve"), true,
-                                 _("solve() will solve a list of equations only if for n "
-                                   "independent equations there are n variables to solve to.\n"
-                                   "If only one result variable is of interest the other result "
-                                   "variables solve needs to do its work can be used to tell "
-                                   "solve() which variables to eliminate in the solution "
-                                   "for the interesting variable.")
-        );
-      //wiz->Centre(wxBOTH);
-      wiz->SetLabel1ToolTip(_("Comma-separated equations"));
-      wiz->SetLabel2ToolTip(_("Comma-separated variables"));
-      if (wiz->ShowModal() == wxID_OK)
-      {
-        cmd = wxT("solve([") + wiz->GetValue1() + wxT("], [") +
-              wiz->GetValue2() + wxT("]);");
-        MenuCommand(cmd);
-      }
-      wiz->Destroy();
-    }
+      CommandWiz(
+        _("Solve equations"),
+        _("solve() will solve a list of equations only if for n "
+          "independent equations there are n variables to solve to.\n"
+          "If only one result variable is of interest the other result "
+          "variables solve needs to do its work can be used to tell "
+          "solve() which variables to eliminate in the solution "
+          "for the interesting variable."),wxEmptyString,
+        wxT("solve([#1#],[#2#])$"),
+        _("Equation(s)"),expr,_("Comma-separated equations"),
+        _("Variable(s)"),wxT("x"),_("Comma-separated variables"));
       break;
     case menu_solve_to_poly:
     {
