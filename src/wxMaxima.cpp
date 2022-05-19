@@ -6878,7 +6878,7 @@ void wxMaxima::MatrixMenu(wxCommandEvent &event)
         wxT("submatrix(#1,[#2#],[#3#]);"),
         _("Matrix:"),expr,wxEmptyString,
         _("Row numbers:"),wxEmptyString,wxEmptyString,
-        _("Column numbers:"),wxEmptyString,wxEmptyString,
+        _("Column numbers:"),wxEmptyString,wxEmptyString
         );
       break;
     case menu_matrix_multiply:
@@ -7118,40 +7118,25 @@ void wxMaxima::MatrixMenu(wxCommandEvent &event)
     }
       break;
     case menu_cpoly:
-    {
-      Gen2Wiz *wiz = new Gen2Wiz(_("Matrix:"), _("Variable:"),
-                                 expr, wxT("x"),
-                                 m_worksheet->m_configuration,
-                                 this, -1, _("Char poly"));
-      //wiz->Centre(wxBOTH);
-      if (wiz->ShowModal() == wxID_OK)
-      {
-        cmd = wxT("expand(charpoly(") + wiz->GetValue1() + wxT(", ")
-              + wiz->GetValue2() + wxT("));");
-        MenuCommand(cmd);
-      }
-      wiz->Destroy();
-    }
+      CommandWiz(
+        _("Characteristic polynom"),
+        wxEmptyString,wxEmptyString,
+        wxT("expand(charpoly(,#1#,#2#));"),
+        _("Matrix"),expr,wxEmptyString,
+        _("Variable"),wxEmptyString,wxEmptyString
+        );
       break;
     case menu_gen_mat:
-    {
-      Gen4Wiz *wiz = new Gen4Wiz(_("Array:"), _("Rows:"), _("Columns:"), _("Name:"),
-                                 expr, wxT("3"), wxT("3"), wxEmptyString,
-                                 m_worksheet->m_configuration,
-                                 this, -1, _("Generate Matrix"));
-      wiz->SetValue(expr);
-      //wiz->Centre(wxBOTH);
-      if (wiz->ShowModal() == wxID_OK)
-      {
-        wxString val = wxT("genmatrix(") + wiz->GetValue1() +
-                       wxT(", ") + wiz->GetValue2() +
-                       wxT(", ") + wiz->GetValue3() + wxT(");");
-        if (wiz->GetValue4() != wxEmptyString)
-          val = wiz->GetValue4() + wxT(": ") + val;
-        MenuCommand(val);
-      }
-      wiz->Destroy();
-    }
+      CommandWiz(
+        _("Extract matrix from 2D array"),
+        wxEmptyString,wxEmptyString,
+        wxT("genmatrix(#1#,#2#,#3#,#4#,#5#);"),
+        _("Array"),expr,wxEmptyString,
+        _("Right end"),wxT("10"),wxEmptyString,
+        _("Bottom end"),wxT("10"),wxEmptyString,
+        _("Left end"),wxT("0"),wxEmptyString,
+        _("Top end"),wxT("0"),wxEmptyString
+        );
       break;
     case menu_gen_mat_lambda:
     {
