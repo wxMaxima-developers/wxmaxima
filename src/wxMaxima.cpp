@@ -7599,7 +7599,7 @@ void wxMaxima::ListMenu(wxCommandEvent &event)
       _("Iterator name:"),wxT("i"),_("The variable the value of the current source item is stored in."),
       _("What to do:"),wxT("disp(i)"),_("Either a single expression or a comma-separated list of expressions "
                             "between parenthesis. In the latter case the result of the last "
-                            "expression in the parenthesis is used."),
+                            "expression in the parenthesis is used.")
       );
     break;
   case menu_list_remove_duplicates:
