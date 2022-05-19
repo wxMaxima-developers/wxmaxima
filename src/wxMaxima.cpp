@@ -7454,52 +7454,29 @@ void wxMaxima::ListMenu(wxCommandEvent &event)
       _("Comma-separated elements"),expr,wxEmptyString);
     break;
   case menu_list_create_from_rule:
-  {
-    Gen5Wiz *wiz = new Gen5Wiz(_("Rule:"), _("Index variable:"),
-                               _("Index Start:"), _("Index End:"), _("Index Step:"),
-                               expr, wxT("i"), wxT("1"), wxT("100"), wxT("1"),
-                               m_worksheet->m_configuration,
-                               this, -1, _("Create a list from a rule"), true);
-    wiz->SetLabel1ToolTip(_("The rule that explains how to generate the value of a list item.\n"
-                            "Might be something like \"i\", \"i^2\" or \"sin(i)\""));
-    wiz->SetLabel2ToolTip(_("The number of the item which is stepped from \"Index Start\" to \"Index End\"."));
-    wiz->SetValue(expr);
-    //wiz->Centre(wxBOTH);
-    if (wiz->ShowModal() == wxID_OK)
-    {
-      wxString val = wxT("makelist(") + wiz->GetValue1() + wxT(", ") +
-        wiz->GetValue2() + wxT(", ") + wiz->GetValue3() + wxT(", ") +
-        wiz->GetValue4();
-      wxString tst = wiz->GetValue5();
-      tst.Trim(true);
-      tst.Trim(false);
-      if(tst != wxT("1"))
-      val += wxT(",") + wiz->GetValue5();
-      val += wxT(")");
-      MenuCommand(val);
-    }
-    wiz->Destroy();
-  }
+    CommandWiz(
+      _("Create a list from a rule"),
+      wxEmptyString,wxEmptyString,
+      wxT("makelist(#1#,#2#,#3#,#4#,#5#)$"),
+      _("Rule:"),expr,_("The rule that explains how to generate the value of a list item.\n"
+                            "Might be something like \"i\", \"i^2\" or \"sin(i)\""),
+      _("Index variable:"),wxT("i"),_("The number of the item which is stepped from \"Index Start\" to \"Index End\"."),
+      _("Index Start:"),wxT("1"),wxEmptyString,
+      _("Index End:"),wxT("100"),wxEmptyString,
+      _("Index Step:"),wxT("1"),wxEmptyString
+      );
     break;
+
   case menu_list_create_from_list:
-  {
-    Gen3Wiz *wiz = new Gen3Wiz(_("Rule:"), _("Iterator:"),
-                               _("Source list:"),
-                               expr, wxT("i"), wxT("list"),
-                               m_worksheet->m_configuration,
-                               this, -1, _("Create a list from another list"), true);
-    wiz->SetLabel1ToolTip(_("The rule that explains how to generate the value of a list item.\n"
-                            "Might be something like \"i\", \"i^2\" or \"sin(i)\""));
-    wiz->SetLabel2ToolTip(_("The variable the value of the current source item is stored in."));
-    wiz->SetValue(expr);
-    //wiz->Centre(wxBOTH);    if (wiz->ShowModal() == wxID_OK)
-    {
-      wxString val = wxT("makelist(") + wiz->GetValue1() + wxT(", ") +
-        wiz->GetValue2() + wxT(", ") + wiz->GetValue3() + wxT(")");
-      MenuCommand(val);
-    }
-    wiz->Destroy();
-  }
+    CommandWiz(
+      _("Create a list from a rule"),
+      wxEmptyString,wxEmptyString,
+      wxT("makelist(#1#,#2#,#3#)$"),
+      _("Rule:"),expr,_("The rule that explains how to generate the value of a list item.\n"
+                            "Might be something like \"i\", \"i^2\" or \"sin(i)\""),
+      _("Index variable:"),wxT("i"),_("The variable the value of the current source item is stored in."),
+      _("Source list:"),wxT("[1,8,32]"),wxEmptyString
+      );
     break;
   case menu_list_actual_values_storage:
   {
@@ -7529,20 +7506,12 @@ void wxMaxima::ListMenu(wxCommandEvent &event)
     MenuCommand(wxT("length(") + expr + wxT(")"));
     break;
   case menu_list_push:
-    {
-      Gen2Wiz *wiz = new Gen2Wiz(_("List:"), _("Element:"),
-                                 expr, wxT("1"),
-                                 m_worksheet->m_configuration,
-                                 this, -1, _("LCM"), true);
-      //wiz->Centre(wxBOTH);
-      if (wiz->ShowModal() == wxID_OK)
-      {
-        cmd = wxT("push(") + wiz->GetValue1() + wxT(", ")
-              + wiz->GetValue2() + wxT(");");
-        MenuCommand(cmd);
-      }
-      wiz->Destroy();
-    }
+    CommandWiz(
+      _("Push an element to a list"),
+      wxEmptyString,wxEmptyString,
+      wxT("push(#1#,#2#);"),
+      _("List:"),expr,wxEmptyString,
+      _("Element:"),wxEmptyString,wxEmptyString);
     break;
   case menu_list_pop:
     MenuCommand(wxT("pop(") + expr + wxT(")"));
@@ -7557,263 +7526,116 @@ void wxMaxima::ListMenu(wxCommandEvent &event)
     MenuCommand(wxT("last(") + expr + wxT(")"));
     break;
   case menu_list_rest:
-    {
-      Gen2Wiz *wiz = new Gen2Wiz(_("List"), _("n"),
-                                 expr, wxEmptyString,
-                                 m_worksheet->m_configuration,
-                                 this, -1, _("Return the list without its first n elements"),
-                                 true);
-      //wiz->Centre(wxBOTH);
-      if (wiz->ShowModal() == wxID_OK)
-      {
-        cmd = wxT("rest(") + wiz->GetValue1();
-        wxString num = wiz->GetValue2();
-        num.Trim(true);
-        num.Trim(false);
-        if(num != wxT("1"))
-        {
-          cmd += wxT(",") + wiz->GetValue2();
-        }
-        cmd += wxT(")");
-        MenuCommand(cmd);
-      }
-      wiz->Destroy();
-    }
+    CommandWiz(
+      _("Drop the first n list elements"),
+      _("Return the list without its first n elements"),wxEmptyString,
+      wxT("rest(#1#,#2#);"),
+      _("List:"),expr,wxEmptyString,
+      _("n:"),wxEmptyString,wxEmptyString);
     break;
   case menu_list_restN:
-    {
-      Gen2Wiz *wiz = new Gen2Wiz(_("List"), _("n"),
-                                 expr, wxEmptyString,
-                                 m_worksheet->m_configuration,
-                                 this, -1, _("Return the list without its last n elements"),
-                                 true);
-      //wiz->Centre(wxBOTH);
-      if (wiz->ShowModal() == wxID_OK)
-      {
-        cmd = wxT("rest(") + wiz->GetValue1();
-        wxString num = wiz->GetValue2();
-        num.Trim(true);
-        num.Trim(false);
-        cmd += wxT(", -") + num + wxT(")");
-        MenuCommand(cmd);
-      }
-      wiz->Destroy();
-    }
+    CommandWiz(
+      _("Drop the last n list elements"),
+      _("Return the list without its last n elements"),wxEmptyString,
+      wxT("rest(#1#,-#2#);"),
+      _("List:"),expr,wxEmptyString,
+      _("n:"),wxEmptyString,wxEmptyString);
     break;
   case menu_list_lastn:
-    {
-      Gen2Wiz *wiz = new Gen2Wiz(_("List"), _("Number of elements"),
-                                 expr, wxEmptyString,
-                                 m_worksheet->m_configuration,
-                                 this, -1, _("Extract the last n elements from a list"),
-                                 true);
-      //wiz->Centre(wxBOTH);
-      if (wiz->ShowModal() == wxID_OK)
-      {
-        cmd = wxT("rest(") + wiz->GetValue1() + wxT(",")
-          + wiz->GetValue2() + wxT(")");
-        MenuCommand(cmd);
-      }
-      wiz->Destroy();
-    }
+    CommandWiz(
+      _("Drop the last n list elements"),
+      _("Extract the last n elements from a list"),wxEmptyString,
+      wxT("rest(#1#,#2#);"),
+      _("List"),expr,wxEmptyString,
+      _("Number of elements"),wxEmptyString,wxEmptyString);
     break;
   case menu_list_nth:
-    {
-      Gen2Wiz *wiz = new Gen2Wiz(_("List"), _("element number n"),
-                                 expr, wxEmptyString,
-                                 m_worksheet->m_configuration,
-                                 this, -1, _("Extract the nth element from a list. Slow for n>>0"),
-                                 true,
-                                 _("This function is slow for large n.\n"
-                                   "For efficiently iterating through every element of a large list see \"Create list from list\" instead, which uses the makelist command."),
-                                 _("Other than declared arrays in lists there is no way to jump to "
-                                   "determine the address of the nth element other than iterating "
-                                   "from one element to the other until the nth element is reached. "
-                                   "Which isn't a maxima-specific phenomenon but the price one has "
-                                   "to pay for lists being way easier to resize than declared "
-                                   "arrays. If the address of the current element is known "
-                                   "iterating to the next one is trivial, though, so\n\n"
-                                   "   for i in list do <something>\n\n"
-                                   "or\n\n"
-                                   "   makelist(expression,i,list)\n\n"
-                                   "provide highly efficient ways to do something on every list "
-                                   "element.")
-        );
-      //wiz->Centre(wxBOTH);
-      if (wiz->ShowModal() == wxID_OK)
-      {
-        cmd = wiz->GetValue1() + wxT("[")
-          + wiz->GetValue2() + wxT("]");
-        MenuCommand(cmd);
-      }
-      wiz->Destroy();
-    }
-  break;
+    CommandWiz(
+      _("Extract the nth list elements"),
+      _("Attention: Extracting a random list element isn't efficient for long lists."
+        "Iterating over lists using makelist() or for loops is way faster."),wxEmptyString,
+      wxT("#1#[#2];"),
+      _("List"),expr,wxEmptyString,
+      _("Element number"),wxEmptyString,wxEmptyString);
+    break;
   case menu_list_map:
-    {
-      Gen2Wiz *wiz = new Gen2Wiz(_("Function"), _("List"),
-                                 expr, wxEmptyString,
-                                 m_worksheet->m_configuration,
-                                 this, -1, _("Apply a function to each list element"), true);
-      //wiz->Centre(wxBOTH);
-      if (wiz->ShowModal() == wxID_OK)
-      {
-        cmd = wxT("map(") + wiz->GetValue1() + wxT(",")
-          + wiz->GetValue2() + wxT(")");
-        MenuCommand(cmd);
-      }
-      wiz->Destroy();
-    }
+    CommandWiz(
+      _("Apply a function to each list element"),
+      wxEmptyString,wxEmptyString,
+      wxT("map(#1#,#2);"),
+      _("function"),expr,wxEmptyString,
+      _("list"),wxEmptyString,wxEmptyString);
     break;
   case menu_list_use_actual_values:
-    {
-      Gen2Wiz *wiz = new Gen2Wiz(_("Equation"), _("List with values"),
-                                 expr, wxEmptyString,
-                                 m_worksheet->m_configuration,
-                                 this, -1, _("Introduce a list of actual values into an equation"), true);
-      wiz->SetLabel2ToolTip(_("The list with values can be generated by \"solve()\" or using "
-                              "\"Create list/as storage for actual values for variables\"."));
-      //wiz->Centre(wxBOTH);
-      if (wiz->ShowModal() == wxID_OK)
-      {
-        cmd = wxT("subst(") + wiz->GetValue2() + wxT(",")
-          + wiz->GetValue1() + wxT(")");
-        MenuCommand(cmd);
-      }
-      wiz->Destroy();
-    }
+    CommandWiz(
+      _("Introduce a list of actual values into an equation"),
+      wxEmptyString,wxEmptyString,
+      wxT("subst(#1#,#2#);"),
+      _("List with values"),wxEmptyString,_("Comma-separated list entry in the format val1=1,val2=2"),
+      _("Equation"),expr,wxEmptyString);
     break;
   case menu_list_extract_value:
-    {
-      Gen2Wiz *wiz = new Gen2Wiz(_("List"), _("Variable name"),
-                                 expr, wxEmptyString,
-                                 m_worksheet->m_configuration,
-                                 this, -1,
-                                 _("Extract a variable's value from a list of variable values"),
-                                 true);
-      //wiz->Centre(wxBOTH);
-      if (wiz->ShowModal() == wxID_OK)
-      {
-        cmd = wxT("subst(") + wiz->GetValue1() + wxT(",")
-          + wiz->GetValue2() + wxT(")");
-        MenuCommand(cmd);
-      }
-      wiz->Destroy();
-    }
+    CommandWiz(
+      _("Extract a variable's value from a list of variable values"),
+      wxEmptyString,wxEmptyString,
+      wxT("subst(#1#,#2#);"),
+      _("List"),expr,_("Comma-separated list entry in the format val1=1,val2=2"),
+      _("Variable name"),wxEmptyString,wxEmptyString);
     break;
   case menu_list_as_function_arguments:
-    {
-      Gen2Wiz *wiz = new Gen2Wiz(_("Function name"), _("List"),
-                                 expr, wxEmptyString,
-                                 m_worksheet->m_configuration,
-                                 this, -1,
-                                 _("Use a list as parameter list for a function"),
-                                 true);
-      //wiz->Centre(wxBOTH);
-      if (wiz->ShowModal() == wxID_OK)
-      {
-        cmd = wxT("apply(") + wiz->GetValue1() + wxT(",")
-          + wiz->GetValue2() + wxT(")");
-        MenuCommand(cmd);
-      }
-      wiz->Destroy();
-    }
+    CommandWiz(
+      _("Use a list as parameter list for a function"),
+      wxEmptyString,wxEmptyString,
+      wxT("apply(#1#,#2#);"),
+      _("Function name"),expr,_("Comma-separated list entry in the format val1=1,val2=2"),
+      _("List"),wxEmptyString,wxEmptyString);
     break;
   case menu_list_do_for_each_element:
-  {
-    Gen3Wiz *wiz = new Gen3Wiz(_("List:"), _("Iterator:"),
-                               _("What to do:"),
-                               expr, wxT("i"), wxT("disp(i)"),
-                               m_worksheet->m_configuration,
-                               this, -1, _("Do for each list element"), true);
-    wiz->SetValue(expr);
-    wiz->SetLabel2ToolTip(_("The variable the value of the current source item is stored in."));
-    wiz->SetLabel3ToolTip(_("Either a single expression or a comma-separated list of expressions "
+    CommandWiz(
+      _("Do for each list element"),
+      wxEmptyString,wxEmptyString,
+      wxT("for #2# om #1# do #3#;"),
+      _("List:"),expr,_("Comma-separated list entry in the format val1=1,val2=2"),
+      _("Iterator name:"),wxT("i"),_("The variable the value of the current source item is stored in."),
+      _("What to do:"),wxT("disp(i)"),_("Either a single expression or a comma-separated list of expressions "
                             "between parenthesis. In the latter case the result of the last "
-                            "expression in the parenthesis is used."));
-    //wiz->Centre(wxBOTH);    if (wiz->ShowModal() == wxID_OK)
-    {
-      wxString val = wxT("for ") + wiz->GetValue2() + wxT(" in ") +
-        wiz->GetValue1() + wxT(" do ") + wiz->GetValue3();
-      MenuCommand(val);
-    }
-    wiz->Destroy();
-  }
+                            "expression in the parenthesis is used."),
+      );
     break;
   case menu_list_remove_duplicates:
     MenuCommand(wxT("unique(") + expr + wxT(")"));
     break;
   case menu_list_remove_element:
-    {
-      Gen2Wiz *wiz = new Gen2Wiz(_("Element"), _("List"),
-                                 wxT("1"), expr,
-                                 m_worksheet->m_configuration,
-                                 this, -1,
-                                 _("Remove an element from a list"),
-                                 true);
-      //wiz->Centre(wxBOTH);
-      if (wiz->ShowModal() == wxID_OK)
-      {
-        cmd = wxT("delete(") + wiz->GetValue1() + wxT(",")
-          + wiz->GetValue2() + wxT(")");
-        MenuCommand(cmd);
-      }
-      wiz->Destroy();
-    }
+    CommandWiz(
+      _("Remove an element from a list"),
+      wxEmptyString,wxEmptyString,
+      wxT("delete(#1#,#2#);"),
+      _("Element"),expr,wxEmptyString,
+      _("List"),wxEmptyString,wxEmptyString);
     break;
   case menu_list_append_item_start:
-    {
-      Gen2Wiz *wiz = new Gen2Wiz(_("Item"), _("List"),
-                                 wxT("1"), expr,
-                                 m_worksheet->m_configuration,
-                                 this, -1,
-                                 _("Add an element to the start of a list"),
-                                 true);
-      //wiz->Centre(wxBOTH);
-      if (wiz->ShowModal() == wxID_OK)
-      {
-        cmd = wxT("cons(") + wiz->GetValue1() + wxT(",")
-          + wiz->GetValue2() + wxT(")");
-        MenuCommand(cmd);
-      }
-      wiz->Destroy();
-    }
+    CommandWiz(
+      _("Add an element to the start of a list"),
+      wxEmptyString,wxEmptyString,
+      wxT("cons(#1#,#2#);"),
+      _("Item"),expr,wxEmptyString,
+      _("List"),wxEmptyString,wxEmptyString);
     break;
   case menu_list_append_item_end:
-    {
-      Gen2Wiz *wiz = new Gen2Wiz(_("List"), _("Item"),
-                                 expr, wxT("1"),
-                                 m_worksheet->m_configuration,
-                                 this, -1,
-                                 _("Add an element to the end of a list"),
-                                 true);
-      //wiz->Centre(wxBOTH);
-      if (wiz->ShowModal() == wxID_OK)
-      {
-        cmd = wxT("append(") + wiz->GetValue1() + wxT(",[")
-          + wiz->GetValue2() + wxT("])");
-        MenuCommand(cmd);
-      }
-      wiz->Destroy();
-    }
+    CommandWiz(
+      _("Add an element to the end of a list"),
+      wxEmptyString,wxEmptyString,
+      wxT("append(#1#,[#2#]);"),
+      _("List"),expr,wxEmptyString,
+      _("Item"),wxEmptyString,wxEmptyString);
     break;
   case menu_list_append_list:
-    {
-      Gen2Wiz *wiz = new Gen2Wiz(_("List1"), _("List2"),
-                                 expr, wxT("[1]"),
-                                 m_worksheet->m_configuration,
-                                 this, -1,
-                                 _("Append a list to a list"),
-                                 true);
-      //wiz->Centre(wxBOTH);
-      if (wiz->ShowModal() == wxID_OK)
-      {
-        cmd = wxT("append(") + wiz->GetValue1() + wxT(",")
-          + wiz->GetValue2() + wxT(")");
-        MenuCommand(cmd);
-      }
-      wiz->Destroy();
-    }
+    CommandWiz(
+      _("Append a list to another list"),
+      wxEmptyString,wxEmptyString,
+      wxT("append(#1#,#2#);"),
+      _("List #1"),expr,wxEmptyString,
+      _("List #2"),wxT("[1]"),wxEmptyString);
     break;
   case menu_list_interleave:
     {
