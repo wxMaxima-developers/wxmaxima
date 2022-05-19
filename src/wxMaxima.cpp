@@ -6652,7 +6652,7 @@ void wxMaxima::EquationsMenu(wxCommandEvent &event)
       if (expr.StartsWith(wxT("%")))
         expr = wxT("''(") + expr + wxT(")");
       CommandWiz(
-        _("Solve equations to numerically"),
+        _("Solve equations numerically"),
         wxEmptyString,wxEmptyString,
         wxT("find_root(#1#,#2#,#3#,#4#);"),
         _("Equation:"),expr,wxEmptyString,
@@ -6663,180 +6663,139 @@ void wxMaxima::EquationsMenu(wxCommandEvent &event)
     }
     case button_solve_ode:
     case menu_solve_ode:
-    {
-      Gen3Wiz *wiz = new Gen3Wiz(_("Equation:"), _("Function:"), _("Variable:"),
-                                 expr, wxT("y"), wxT("x"),
-                                 m_worksheet->m_configuration,
-                                 this, -1, _("Solve ODE"));
-      wiz->SetValue(expr);
-      //wiz->Centre(wxBOTH);
-      if (wiz->ShowModal() == wxID_OK)
-      {
-        wxString val = wxT("ode2(") + wiz->GetValue1() + wxT(", ") +
-                       wiz->GetValue2() + wxT(", ") + wiz->GetValue3() + wxT(");");
-        MenuCommand(val);
-      }
-      wiz->Destroy();
-    }
+      CommandWiz(
+        _("Solve ODE"),
+        _("solves an equation of the form\n    'diff(y,t) = -y;"),wxEmptyString,
+        wxT("ode2(#1#,#2#,#3#);"),
+        _("Equation:"),expr,wxEmptyString,
+        _("y:"),wxT("y"),wxEmptyString,
+        _("t:"),wxT("t"),wxEmptyString);
       break;
     case menu_ivp_1:
-    {
-      Gen3Wiz *wiz = new Gen3Wiz(_("Solution:"), _("Point:"), _("Value:"),
-                                 expr, wxT("x="), wxT("y="),
-                                 m_worksheet->m_configuration,
-                                 this, -1, _("IC1"), true);
-      //wiz->Centre(wxBOTH);
-      if (wiz->ShowModal() == wxID_OK)
-      {
-        wxString val = wxT("ic1(") + wiz->GetValue1() + wxT(", ") +
-                       wiz->GetValue2() + wxT(", ") + wiz->GetValue3() + wxT(");");
-        MenuCommand(val);
-      }
-      wiz->Destroy();
-    }
+      CommandWiz(
+        _("Initial Condition"),
+        wxEmptyString,wxEmptyString,
+        _("The solution of an ODE tells the shape, but not the height of the solution.\n"
+          "If the ODE\'s state is known at a point this "
+          "function fills in the correct values for the constants"),wxEmptyString,
+        wxT("ic1(#1#,#2#,#3#);"),
+        _("Solution of the ODE:"),expr,wxEmptyString,
+        _("Point the value is known at:"),wxT("t="),wxEmptyString,
+        _("Value at that point:"),wxT("y="),wxEmptyString);
       break;
     case menu_ivp_2:
-    {
-      Gen4Wiz *wiz = new Gen4Wiz(_("Solution:"), _("Point:"),
-                                 _("Value:"), _("Derivative:"),
-                                 expr, wxT("x="), wxT("y="), wxT("'diff(y,x)="),
-                                 m_worksheet->m_configuration,
-                                 this, -1, _("IC2"), true);
-      //wiz->Centre(wxBOTH);
-      if (wiz->ShowModal() == wxID_OK)
-      {
-        wxString val = wxT("ic2(") + wiz->GetValue1() + wxT(", ") +
-                       wiz->GetValue2() + wxT(", ") + wiz->GetValue3() +
-                       wxT(", ") + wiz->GetValue4() + wxT(");");
-        MenuCommand(val);
-      }
-      wiz->Destroy();
-    }
+      CommandWiz(
+        _("Initial Condition"),
+        _("The solution of an ODE tells the shape, but not the height of the solution.\n"
+          "If the ODE\'s state is known at a point this "
+          "function fills in the correct values for the constants"),wxEmptyString,
+        wxT("ic2(#1#,#2#,#3#,#4#);"),
+        _("Solution of the ODE:"),expr,wxEmptyString,
+        _("Point the value is known at:"),wxT("t="),wxEmptyString,
+        _("Value y at that point:"),wxT("y="),wxEmptyString,
+        _("Derivate of y at that point:"),wxT("\'diff(y,t)="),wxEmptyString);
       break;
     case menu_bvp:
-    {
-      BC2Wiz *wiz = new BC2Wiz(this, -1, m_worksheet->m_configuration, _("BC2"));
-      wiz->SetValue(expr);
-      //wiz->Centre(wxBOTH);
-      if (wiz->ShowModal() == wxID_OK)
-      {
-        wxString val = wiz->GetValue();
-        MenuCommand(val);
-      }
-      wiz->Destroy();
-    }
+      CommandWiz(
+        _("Boundary value problem"),
+        _("The solution of an ODE tells the shape, but not the height of the solution.\n"
+          "If the ODE\'s result is known at two points this "
+          "function fills in the correct values for the  constants"),wxEmptyString,
+        wxT("bc2(#1#,#2#,#3#,#4#,#5#);"),
+        _("Solution of the ODE:"),expr,wxEmptyString,
+        _("Point #1 with known value:"),wxT("t="),wxEmptyString,
+        _("Value y at that point:"),wxT("y="),wxEmptyString,
+        _("Point #2 with known value:"),wxT("t="),wxEmptyString,
+        _("Value y at that point:"),wxT("y="),wxEmptyString);
       break;
     case menu_eliminate:
-    {
-      Gen2Wiz *wiz = new Gen2Wiz(_("Equations:"),
-                                 _("Variables:"),
-                                 expr, wxEmptyString,
-                                 m_worksheet->m_configuration,
-                                 this, -1, _("Eliminate"), true);
-      //wiz->Centre(wxBOTH);
-      if (wiz->ShowModal() == wxID_OK)
-      {
-        cmd = wxT("eliminate([") + wiz->GetValue1() + wxT("],[")
-              + wiz->GetValue2() + wxT("]);");
-        MenuCommand(cmd);
-      }
-      wiz->Destroy();
-    }
+      CommandWiz(
+        _("Eliminate a variable"),
+        wxEmptyString,wxEmptyString,
+        wxT("eliminate([#1#],[#2#]);"),
+        _("Equation(s):"),expr,wxEmptyString,
+        _("Variable(s):"),wxEmptyString,wxEmptyString);
       break;
-    case menu_solve_algsys:
+  case menu_solve_algsys:
+  {
+    wxString sz = GetTextFromUser(_("Number of equations:"),
+                                  _("Solve algebraic system"),
+                                  m_worksheet->m_configuration,
+                                  wxT("3"), this);
+    if (sz.Length() == 0)
+      return;
+    long isz;
+    if (!sz.ToLong(&isz) || isz <= 0)
     {
-      wxString sz = GetTextFromUser(_("Number of equations:"),
-                                    _("Solve algebraic system"),
-                                    m_worksheet->m_configuration,
-                                    wxT("3"), this);
-      if (sz.Length() == 0)
-        return;
-      long isz;
-      if (!sz.ToLong(&isz) || isz <= 0)
-      {
-        LoggingMessageBox(_("Not a valid number of equations!"), _("Error!"),
-                     wxOK | wxICON_ERROR);
-        return;
-      }
-      SysWiz *wiz = new SysWiz(this, -1, m_worksheet->m_configuration, _("Solve algebraic system"), isz);
-      //wiz->Centre(wxBOTH);
-      if (wiz->ShowModal() == wxID_OK)
-      {
-        cmd = wxT("algsys") + wiz->GetValue();
-        MenuCommand(cmd);
-      }
-      wiz->Destroy();
+      LoggingMessageBox(_("Not a valid number of equations!"), _("Error!"),
+                        wxOK | wxICON_ERROR);
+      return;
     }
-      break;
-    case menu_solve_lin:
+    SysWiz *wiz = new SysWiz(this, -1, m_worksheet->m_configuration, _("Solve algebraic system"), isz);
+    //wiz->Centre(wxBOTH);
+    if (wiz->ShowModal() == wxID_OK)
     {
-      wxString sz = GetTextFromUser(_("Number of equations:"),
-                                    _("Solve linear system"),
-                                    m_worksheet->m_configuration,
-                                    wxT("3"), this);
-      if (sz.Length() == 0)
-        return;
-      long isz;
-      if (!sz.ToLong(&isz) || isz <= 0)
-      {
-        LoggingMessageBox(_("Not a valid number of equations!"), _("Error!"),
-                     wxOK | wxICON_ERROR);
-        return;
-      }
-      SysWiz *wiz = new SysWiz(this, -1, m_worksheet->m_configuration, _("Solve linear system"), isz);
-      //wiz->Centre(wxBOTH);
-      if (wiz->ShowModal() == wxID_OK)
-      {
-        cmd = wxT("linsolve") + wiz->GetValue();
-        MenuCommand(cmd);
-      }
-      wiz->Destroy();
-    }
-      break;
-    case menu_solve_de:
-    {
-      Gen2Wiz *wiz = new Gen2Wiz(_("Equation(s):"), _("Function(s):"),
-                                 expr, wxT("y(x)"),
-                                 m_worksheet->m_configuration,
-                                 this, -1, _("Solve ODE"));
-      //wiz->Centre(wxBOTH);
-      if (wiz->ShowModal() == wxID_OK)
-      {
-        cmd = wxT("desolve([") + wiz->GetValue1() + wxT("],[")
-              + wiz->GetValue2() + wxT("]);");
-        MenuCommand(cmd);
-      }
-      wiz->Destroy();
-    }
-      break;
-    case menu_atvalue:
-    {
-      Gen3Wiz *wiz = new Gen3Wiz(_("Expression:"), _("Point:"),
-                                 _("Value:"), expr, wxT("x=0"), wxT("0"),
-                                 m_worksheet->m_configuration,
-                                 this, -1, _("At value"));
-      wiz->SetValue(expr);
-      //wiz->Centre(wxBOTH);
-      if (wiz->ShowModal() == wxID_OK)
-      {
-        wxString val = wxT("atvalue(") + wiz->GetValue1() + wxT(", ")
-                       + wiz->GetValue2() +
-                       wxT(", ") + wiz->GetValue3() + wxT(");");
-        MenuCommand(val);
-      }
-      wiz->Destroy();
-    }
-      break;
-    case menu_lhs:
-      cmd = wxT("lhs(") + expr + wxT(");");
+      cmd = wxT("algsys") + wiz->GetValue();
       MenuCommand(cmd);
-      break;
-    case menu_rhs:
-      cmd = wxT("rhs(") + expr + wxT(");");
+    }
+    wiz->Destroy();
+  }
+  break;
+  case menu_solve_lin:
+  {
+    wxString sz = GetTextFromUser(_("Number of equations:"),
+                                  _("Solve linear system"),
+                                  m_worksheet->m_configuration,
+                                  wxT("3"), this);
+    if (sz.Length() == 0)
+      return;
+    long isz;
+    if (!sz.ToLong(&isz) || isz <= 0)
+    {
+      LoggingMessageBox(_("Not a valid number of equations!"), _("Error!"),
+                        wxOK | wxICON_ERROR);
+      return;
+    }
+    SysWiz *wiz = new SysWiz(this, -1, m_worksheet->m_configuration, _("Solve linear system"), isz);
+    //wiz->Centre(wxBOTH);
+    if (wiz->ShowModal() == wxID_OK)
+    {
+      cmd = wxT("linsolve") + wiz->GetValue();
       MenuCommand(cmd);
-      break;
-    default:
-      break;
+    }
+    wiz->Destroy();
+  }
+  break;
+  case menu_solve_de:
+    CommandWiz(
+      _("Solve differential equations using laplace()"),
+      _("The solution variable needs to be in the form\n"
+        "   U(t)=1/2*U(t)+3*diff(U(t),t)\n"
+        "for this to work"),wxEmptyString,
+      wxT("desolve([#1#],[#2#]);"),
+      _("Equation(s):"),expr,wxEmptyString,
+      _("Variable(s):"),wxEmptyString,wxEmptyString);
+    break;
+  case menu_atvalue:
+    CommandWiz(
+      _("Make a function value at a specific point known"),
+      _("Tells maxima for an f(x), that f(x=t)=a"),wxEmptyString,
+      wxT("atvalue(#1#,#2#,#3#);"),
+      _("Function f(x):"),expr,wxEmptyString,
+      _("Point:"),wxT("x=0"),wxEmptyString,
+      _("Value:"),wxT("0"),wxEmptyString
+      );
+    break;
+  case menu_lhs:
+    cmd = wxT("lhs(") + expr + wxT(");");
+    MenuCommand(cmd);
+    break;
+  case menu_rhs:
+    cmd = wxT("rhs(") + expr + wxT(");");
+    MenuCommand(cmd);
+    break;
+  default:
+    break;
   }
 }
 
@@ -6881,153 +6840,80 @@ void wxMaxima::MatrixMenu(wxCommandEvent &event)
       break;
     }
     case menu_matrix_row:
-    {
-      Gen2Wiz *wiz = new Gen2Wiz(_("Matrix:"), _("Row number:"),
-                                 expr, wxT("%"),
-                                 m_worksheet->m_configuration,
-                                 this, -1, _("Extract a matrix row"));
-      if (wiz->ShowModal() == wxID_OK)
-      {
-        cmd = wxT("row(") + wiz->GetValue1() + wxT(", ") + wiz->GetValue2() +
-          wxT(");");
-        MenuCommand(cmd);
-      }
-      wiz->Destroy();
+      CommandWiz(
+        _("Extract a matrix row"),
+        wxEmptyString,wxEmptyString,
+        wxT("row(#1#,#2#);"),
+        _("Matrix:"),expr,wxEmptyString,
+        _("Row number:"),wxEmptyString,wxEmptyString);
       break;
-    }
     case menu_matrix_col:
-    {
-      Gen2Wiz *wiz = new Gen2Wiz(_("Matrix:"), _("Row number:"),
-                                 expr, wxT("%"),
-                                 m_worksheet->m_configuration,
-                                 this, -1, _("Extract a matrix row"));
-      if (wiz->ShowModal() == wxID_OK)
-      {
-        cmd = wxT("col(") + wiz->GetValue1() + wxT(", ") + wiz->GetValue2() +
-          wxT(");");
-        MenuCommand(cmd);
-      }
-      wiz->Destroy();
+      CommandWiz(
+        _("Extract a matrix column"),
+        wxEmptyString,wxEmptyString,
+        wxT("col(#1#,#2#);"),
+        _("Matrix:"),expr,wxEmptyString,
+        _("Column number:"),wxEmptyString,wxEmptyString);
       break;
-    }
     case menu_matrix_row_list:
-    {
-      Gen2Wiz *wiz = new Gen2Wiz(_("Matrix:"), _("Row number:"),
-                                 expr, wxT("%"),
-                                 m_worksheet->m_configuration,
-                                 this, -1, _("Extract a matrix row"));
-      if (wiz->ShowModal() == wxID_OK)
-      {
-        cmd = wiz->GetValue1() + wxT("[") + wiz->GetValue2() +
-          wxT("];");
-        MenuCommand(cmd);
-      }
-      wiz->Destroy();
+      CommandWiz(
+        _("Extract a matrix row as a list"),
+        wxEmptyString,wxEmptyString,
+        wxT("#1#[#2#];"),
+        _("Matrix:"),expr,wxEmptyString,
+        _("Row number:"),wxEmptyString,wxEmptyString);
       break;
-    }
     case menu_matrix_col_list:
-    {
-      Gen2Wiz *wiz = new Gen2Wiz(_("Matrix:"), _("Row number:"),
-                                 expr, wxT("%"),
-                                 m_worksheet->m_configuration,
-                                 this, -1, _("Extract a matrix row"));
-      if (wiz->ShowModal() == wxID_OK)
-      {
-        cmd = wxT("transpose(") + wiz->GetValue1() + wxT(")[") + wiz->GetValue2() +
-          wxT("];");
-        MenuCommand(cmd);
-      }
-      wiz->Destroy();
+      CommandWiz(
+        _("Extract a matrix column as a list"),
+        wxEmptyString,wxEmptyString,
+        wxT("transpose(#1#)[#2#];"),
+        _("Matrix:"),expr,wxEmptyString,
+        _("Row number:"),wxEmptyString,wxEmptyString);
       break;
-    }
     case menu_submatrix:
-    {
-      Gen3Wiz *wiz = new Gen3Wiz(_("Matrix:"), _("comma-separated row numbers:"), _("comma-separated column numbers:"),
-                                 expr, wxEmptyString, wxEmptyString,
-                                 m_worksheet->m_configuration,
-                                 this, -1, _("Extract a matrix row"));
-      if (wiz->ShowModal() == wxID_OK)
-      {
-        cmd = wxT("submatrix(");
-        if(!wiz->GetValue2().IsEmpty())
-          cmd += wiz->GetValue2() + wxT(",");
-        cmd += wiz->GetValue1();
-        if(!wiz->GetValue3().IsEmpty())
-          cmd += wxT(",") + wiz->GetValue3();
-        cmd += wxT(");");
-        MenuCommand(cmd);
-      }
-      wiz->Destroy();
+      CommandWiz(
+        _("Remove rows and/or columns"),
+        wxEmptyString,wxEmptyString,
+        wxT("submatrix(#1,[#2#],[#3#]);"),
+        _("Matrix:"),expr,wxEmptyString,
+        _("Row numbers:"),wxEmptyString,wxEmptyString,
+        _("Column numbers:"),wxEmptyString,wxEmptyString,
+        );
       break;
-    }
     case menu_matrix_multiply:
-    {
-      Gen2Wiz *wiz = new Gen2Wiz(_("Left matrix:"),
-                                 _("Right matrix:"),
-                                 expr, wxEmptyString,
-                                 m_worksheet->m_configuration,
-                                 this, -1, _("Matrix Product"), true);
-      //wiz->Centre(wxBOTH);
-      if (wiz->ShowModal() == wxID_OK)
-      {
-        cmd = wiz->GetValue1() + wxT(" . ")
-          + wiz->GetValue2() + wxT(";");
-        MenuCommand(cmd);
-      }
-      wiz->Destroy();
-    }
-    break;
+      CommandWiz(
+        _("Multiply two matrices"),
+        wxEmptyString,wxEmptyString,
+        wxT("#1#.#2#;"),
+        _("Left Matrix:"),expr,wxEmptyString,
+        _("Right Matrix:"),wxEmptyString,wxEmptyString);
+      break;
     case menu_matrix_exponent:
-    {
-      Gen2Wiz *wiz = new Gen2Wiz(_("Left matrix:"),
-                                 _("Right matrix:"),
-                                 expr, wxEmptyString,
-                                 m_worksheet->m_configuration,
-                                 this, -1, _("Matrix exponent"), true);
-      //wiz->Centre(wxBOTH);
-      if (wiz->ShowModal() == wxID_OK)
-      {
-        cmd = wiz->GetValue1() + wxT("^^")
-          + wiz->GetValue2() + wxT(";");
-        MenuCommand(cmd);
-      }
-      wiz->Destroy();
-    }
-    break;
+      CommandWiz(
+        _("Matrix Exponent"),
+        wxEmptyString,wxEmptyString,
+        wxT("#1#^^#2#;"),
+        _("Left Matrix:"),expr,wxEmptyString,
+        _("Right Matrix:"),wxEmptyString,wxEmptyString);
+      break;
     case menu_matrix_hadamard_product:
-    {
-      Gen2Wiz *wiz = new Gen2Wiz(_("Matrix #1:"),
-                                 _("Matrix #2:"),
-                                 expr, wxEmptyString,
-                                 m_worksheet->m_configuration,
-                                 this, -1, _("Element-by-element Product of matrices of the same size (Hadamard product)"), true);
-      //wiz->Centre(wxBOTH);
-      if (wiz->ShowModal() == wxID_OK)
-      {
-        cmd = wiz->GetValue1() + wxT("*")
-          + wiz->GetValue2() + wxT(";");
-        MenuCommand(cmd);
-      }
-      wiz->Destroy();
-    }
-    break;
+      CommandWiz(
+        _("Multiply two matrices"),
+        _("Element-by-element Product of matrices of the same size (Hadamard product)"),
+        wxEmptyString,
+        wxT("#1#*#2#;"),
+        _("Left Matrix:"),expr,wxEmptyString,
+        _("Right Matrix:"),wxEmptyString,wxEmptyString);
+      break;
     case menu_matrix_hadamard_exponent:
-    {
-      Gen2Wiz *wiz = new Gen2Wiz(_("Matrix #1:"),
-                                 _("Matrix #2:"),
-                                 expr, wxEmptyString,
-                                 m_worksheet->m_configuration,
-                                 this, -1, _("Exponent based on the hadamard product"), true);
-      //wiz->Centre(wxBOTH);
-      if (wiz->ShowModal() == wxID_OK)
-      {
-        cmd = wiz->GetValue1() + wxT("^")
-          + wiz->GetValue2() + wxT(";");
-        MenuCommand(cmd);
-      }
-      wiz->Destroy();
-    }
-    break;
+      CommandWiz(
+        _("Element-by-element exponentiation of two matrices"),
+        wxEmptyString,wxEmptyString,
+        wxT("#1#^#2#;"),
+        _("Left Matrix:"),expr,wxEmptyString,
+        _("Right Matrix:"),wxEmptyString,wxEmptyString);
+      break;
   case menu_matrix_loadLapack:
     MenuCommand(wxT("load(\"lapack\");"));
     break;
@@ -7067,18 +6953,13 @@ void wxMaxima::MatrixMenu(wxCommandEvent &event)
       _("Matrix"),expr,wxEmptyString);
     break;
   case menu_matrix_dgesv:
-  {
-      Gen2Wiz *wiz = new Gen2Wiz(_("m×n Matrix A:"),
-                                 _("1×n Matrix b:"),
-                                 expr, wxEmptyString,
-                                 m_worksheet->m_configuration,
-                                 this, -1, _("Solve A*x=b numerically"), true);
-      //wiz->Centre(wxBOTH);
-      if (wiz->ShowModal() == wxID_OK)
-        MenuCommand(wxT("dgesv(") + wiz->GetValue1() + wxT(",")
-                    + wiz->GetValue2() + wxT(");"));
-      wiz->Destroy();
-    }
+    CommandWiz(
+      _("Solve A*x=b numerically"),
+      wxEmptyString,wxEmptyString,
+      wxT("dgesv(#1#,true,true)"),
+      _("m×n Matrix A:"),expr,wxEmptyString,
+      _("1×n Matrix b:"),wxEmptyString,wxEmptyString
+      );
     break;
   case menu_matrix_dgesvd:
     CommandWiz(
