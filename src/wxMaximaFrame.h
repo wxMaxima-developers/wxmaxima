@@ -136,6 +136,7 @@ public:
     menu_ivp_1,
     menu_ivp_2,
     menu_bvp,
+    menu_genmatrix,
     menu_gen_mat,
     menu_gen_mat_lambda,
     menu_enter_mat,

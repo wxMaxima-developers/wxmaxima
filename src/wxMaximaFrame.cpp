@@ -1037,8 +1037,8 @@ void wxMaximaFrame::SetupMenu()
   // Matrix menu
   m_matrix_menu = new wxMenu;
   wxMenu *gen_matrix_menu = new wxMenu;
-  gen_matrix_menu->Append(menu_gen_mat, _("&Generate Matrix..."),
-                         _("Generate a matrix from a 2-dimensional array"),
+  gen_matrix_menu->Append(menu_genmatrix, _("2D Array to Matrix..."),
+                         _("Extract a matrix from a 2-dimensional array"),
                          wxITEM_NORMAL);
   gen_matrix_menu->Append(menu_gen_mat_lambda, _("Generate Matrix from Expression..."),
                          _("Generate a matrix from a lambda expression"),

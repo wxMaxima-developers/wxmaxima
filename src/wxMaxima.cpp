@@ -7126,7 +7126,7 @@ void wxMaxima::MatrixMenu(wxCommandEvent &event)
         _("Variable"),wxEmptyString,wxEmptyString
         );
       break;
-    case menu_gen_mat:
+    case menu_genmatrix:
       CommandWiz(
         _("Extract matrix from 2D array"),
         wxEmptyString,wxEmptyString,
@@ -7139,40 +7139,24 @@ void wxMaxima::MatrixMenu(wxCommandEvent &event)
         );
       break;
     case menu_gen_mat_lambda:
-    {
-      Gen4Wiz *wiz = new Gen4Wiz(_("matrix[i,j]:"), _("Rows:"), _("Columns:"), _("Name:"),
-                                 expr, wxT("3"), wxT("3"), wxEmptyString,
-                                 m_worksheet->m_configuration,
-                                 this, -1, _("Generate Matrix"));
-      wiz->SetValue(expr);
-      //wiz->Centre(wxBOTH);
-      if (wiz->ShowModal() == wxID_OK)
-      {
-        wxString val = wxT("genmatrix(lambda([i,j], ") + wiz->GetValue1() +
-                       wxT("), ") + wiz->GetValue2() +
-                       wxT(", ") + wiz->GetValue3() + wxT(");");
-        if (wiz->GetValue4() != wxEmptyString)
-          val = wiz->GetValue4() + wxT(": ") + val;
-        MenuCommand(val);
-      }
-      wiz->Destroy();
-    }
+      CommandWiz(
+        _("Generate matrix from a rule"),
+        wxEmptyString,wxEmptyString,
+        wxT("apply('matrix,makelist(makelist(lambda([#2#,#3#],#1#),#2#,1,#4#),#3#,1,#5#);"),
+        _("Rule"),expr,wxEmptyString,
+        _("Var #1"),wxT("i"),wxEmptyString,
+        _("Var #2"),wxT("j"),wxEmptyString,
+        _("Matrix width"),wxT("5"),wxEmptyString,
+        _("Matrix height"),wxT("6"),wxEmptyString
+        );
       break;
     case button_map:
-    {
-      Gen2Wiz *wiz = new Gen2Wiz(_("Function:"), _("List(s):"),
-                                 wxEmptyString, expr,
-                                 m_worksheet->m_configuration,
-                                 this, -1, _("Map"));
-      //wiz->Centre(wxBOTH);
-      if (wiz->ShowModal() == wxID_OK)
-      {
-        cmd = wxT("map(") + wiz->GetValue1() + wxT(", ") + wiz->GetValue2() +
-              wxT(");");
-        MenuCommand(cmd);
-      }
-      wiz->Destroy();
-    }
+      CommandWiz(
+        _("Map"),
+        wxEmptyString,wxEmptyString,
+        wxT("apply('matrix,makelist(makelist(lambda([#2#,#3#],#1#),#2#,1,#4#),#3#,1,#5#);"),
+        _("Function"),expr,wxEmptyString,
+        _("List)s="),wxEmptyString,wxEmptyString);
       break;
     default:
       break;
