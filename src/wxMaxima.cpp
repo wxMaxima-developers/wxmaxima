@@ -7121,7 +7121,7 @@ void wxMaxima::MatrixMenu(wxCommandEvent &event)
       CommandWiz(
         _("Characteristic polynom"),
         wxEmptyString,wxEmptyString,
-        wxT("expand(charpoly(,#1#,#2#));"),
+        wxT("expand(charpoly(#1#,#2#));"),
         _("Matrix"),expr,wxEmptyString,
         _("Variable"),wxEmptyString,wxEmptyString
         );
