@@ -7456,7 +7456,7 @@ void wxMaxima::ListMenu(wxCommandEvent &event)
     CommandWiz(
       _("Create list from comma-separated elements"),
       wxEmptyString,wxEmptyString,
-      wxT("args(#1#)$"),
+      wxT("[#1#]"),
       _("Comma-separated elements"),expr,wxEmptyString);
     break;
   case menu_list_create_from_rule:
