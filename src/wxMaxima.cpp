@@ -659,6 +659,8 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
           wxCommandEventHandler(wxMaxima::MatrixMenu), NULL, this);
   Connect(menu_cpoly, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::MatrixMenu), NULL, this);
+  Connect(menu_genmatrix, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MatrixMenu), NULL, this);
   Connect(menu_solve_lin, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::EquationsMenu), NULL, this);
   Connect(menu_solve_algsys, wxEVT_MENU,
@@ -7159,8 +7161,8 @@ void wxMaxima::MatrixMenu(wxCommandEvent &event)
         wxT("apply('matrix,makelist(makelist(lambda([#2#,#3#],#1#),#2#,1,#4#),#3#,1,#5#);"),
         _("Equation"),expr,wxEmptyString,
         _("Variable name of the element="),wxT("i"),_("The equation will use this variable name in order to referto the current element"),
-        _("Equation="),wxT("cabs(i)"),wxEmptyString,
-);
+        _("Equation="),wxT("cabs(i)"),wxEmptyString
+        );
       break;
     default:
       break;
