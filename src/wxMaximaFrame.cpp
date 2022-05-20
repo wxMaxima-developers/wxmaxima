@@ -1457,10 +1457,6 @@ void wxMaximaFrame::SetupMenu()
   m_NumericMenu->Append(menu_engineeringFormatSetup, _("Setup the engineering format..."),
                         _("Fine-tune the display of engineering-format numbers"),
                         wxITEM_NORMAL);
-  m_NumericMenu->AppendSeparator();
-  m_NumericMenu->Append(wxNewId(), _("To exact number"),
-                     floatToExactSub,
-                     _("Guess an exact number that could be meant by this float"));
   
   wxMenu *quadpack_sub = new wxMenu;
   wxString integralSign = wxT("∫");

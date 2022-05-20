@@ -7638,22 +7638,12 @@ void wxMaxima::ListMenu(wxCommandEvent &event)
       _("List #2"),wxT("[1]"),wxEmptyString);
     break;
   case menu_list_interleave:
-    {
-      Gen2Wiz *wiz = new Gen2Wiz(_("List1"), _("List2"),
-                                 expr, wxT("[1]"),
-                                 m_worksheet->m_configuration,
-                                 this, -1,
-                                 _("Interleave two lists"),
-                                 true);
-      //wiz->Centre(wxBOTH);
-      if (wiz->ShowModal() == wxID_OK)
-      {
-        cmd = wxT("join(") + wiz->GetValue1() + wxT(",")
-          + wiz->GetValue2() + wxT(")");
-        MenuCommand(cmd);
-      }
-      wiz->Destroy();
-    }
+    CommandWiz(
+      _("Interleave two lists"),
+      wxEmptyString,wxEmptyString,
+      wxT("join(#1#,#2#);"),
+      _("List #1"),expr,wxEmptyString,
+      _("List #2"),wxEmptyString,wxEmptyString);
     break;
   }
 }
@@ -7820,123 +7810,74 @@ void wxMaxima::CalculusMenu(wxCommandEvent &event)
   switch (event.GetId())
   {
     case menu_change_var:
-    {
-      Gen4Wiz *wiz = new Gen4Wiz(_("Integral/Sum:"), _("Old variable:"),
-                                 _("New variable:"), _("Equation:"),
-                                 expr, wxT("x"), wxT("y"), wxT("y=x"),
-                                 m_worksheet->m_configuration,
-                                 this, -1, _("Change variable"), true);
-      wiz->SetValue(expr);
-      //wiz->Centre(wxBOTH);
-      if (wiz->ShowModal() == wxID_OK)
-      {
-        wxString val = wxT("changevar(") + wiz->GetValue1() + wxT(", ") +
-                       wiz->GetValue4() + wxT(", ") + wiz->GetValue3() + wxT(", ") +
-                       wiz->GetValue2() + wxT(");");
-        MenuCommand(val);
-      }
-      wiz->Destroy();
-    }
+      CommandWiz(
+        _("Change variable"),
+        wxEmptyString,wxEmptyString,
+        wxT("changevar(#1#,#4#,#3#,#2#);"),
+        _("Integral/Sum:"),expr,wxEmptyString,
+        _("Old variable:"),wxT("x"),wxEmptyString,
+        _("New variable:"),wxT("y"),wxEmptyString,
+        _("Equation:"),wxT("y=x"),wxEmptyString
+        );
       break;
     case menu_pade:
-    {
-      Gen3Wiz *wiz = new Gen3Wiz(_("Taylor series:"), _("Num. deg:"),
-                                 _("Denom. deg:"), expr, wxT("4"), wxT("4"),
-                                 m_worksheet->m_configuration,
-                                 this, -1, _("Pade approximation"));
-      //wiz->Centre(wxBOTH);
-      if (wiz->ShowModal() == wxID_OK)
-      {
-        wxString val = wxT("pade(") + wiz->GetValue1() + wxT(", ") +
-                       wiz->GetValue2() + wxT(", ") + wiz->GetValue3() + wxT(");");
-        MenuCommand(val);
-      }
-      wiz->Destroy();
-    }
+      CommandWiz(
+        _("Pade approximation"),
+        wxEmptyString,wxEmptyString,
+        wxT("pade(#1#,#2#,#3#);"),
+        _("Taylor series:"),expr,wxEmptyString,
+        _("Num. deg:"),wxT("4"),wxEmptyString,
+        _("Denom. deg:"),wxT("4"),wxEmptyString
+        );
       break;
     case menu_continued_fraction:
       cmd += wxT("cfdisrep(cf(") + expr + wxT("));");
       MenuCommand(cmd);
       break;
     case menu_lcm:
-    {
-      Gen2Wiz *wiz = new Gen2Wiz(_("Polynomial 1:"), _("Polynomial 2:"),
-                                 wxEmptyString, wxEmptyString,
-                                 m_worksheet->m_configuration,
-                                 this, -1, _("LCM"), true);
-      //wiz->Centre(wxBOTH);
-      if (wiz->ShowModal() == wxID_OK)
-      {
-        cmd = wxT("lcm(") + wiz->GetValue1() + wxT(", ")
-              + wiz->GetValue2() + wxT(");");
-        MenuCommand(cmd);
-      }
-      wiz->Destroy();
-    }
+      CommandWiz(
+        _("LCM"),
+        wxEmptyString,wxEmptyString,
+        wxT("lcm(#1#,#2#);"),
+        _("Polynomial 1:"),expr,wxEmptyString,
+        _("Polynomial 2:"),wxEmptyString,wxEmptyString
+        );
       break;
     case menu_gcd:
-    {
-      Gen2Wiz *wiz = new Gen2Wiz(_("Polynomial 1:"), _("Polynomial 2:"),
-                                 wxEmptyString, wxEmptyString,
-                                 m_worksheet->m_configuration,
-                                 this, -1, _("GCD"), true);
-      //wiz->Centre(wxBOTH);
-      if (wiz->ShowModal() == wxID_OK)
-      {
-        cmd = wxT("gcd(") + wiz->GetValue1() + wxT(", ")
-              + wiz->GetValue2() + wxT(");");
-        MenuCommand(cmd);
-      }
-      wiz->Destroy();
-    }
+      CommandWiz(
+        _("GCD"),
+        wxEmptyString,wxEmptyString,
+        wxT("gcd(#1#,#2#);"),
+        _("Polynomial 1:"),expr,wxEmptyString,
+        _("Polynomial 2:"),wxEmptyString,wxEmptyString
+        );
       break;
     case menu_divide:
-    {
-      Gen2Wiz *wiz = new Gen2Wiz(_("Polynomial 1:"), _("Polynomial 2:"),
-                                 expr, wxEmptyString,
-                                 m_worksheet->m_configuration,
-                                 this, -1, _("Divide"), true);
-      //wiz->Centre(wxBOTH);
-      if (wiz->ShowModal() == wxID_OK)
-      {
-        cmd = wxT("divide(") + wiz->GetValue1() + wxT(", ") +
-              wiz->GetValue2() + wxT(");");
-        MenuCommand(cmd);
-      }
-      wiz->Destroy();
-    }
+      CommandWiz(
+        _("GCD"),
+        wxEmptyString,wxEmptyString,
+        wxT("divide(#1#,#2#);"),
+        _("Polynomial 1:"),expr,wxEmptyString,
+        _("Polynomial 2:"),wxEmptyString,wxEmptyString
+        );
       break;
     case menu_partfrac:
-    {
-      Gen2Wiz *wiz = new Gen2Wiz(_("Expression:"), _("Variable:"),
-                                 expr, wxT("n"),
-                                 m_worksheet->m_configuration,
-                                 this, -1, _("Partial fractions"));
-      //wiz->Centre(wxBOTH);
-      if (wiz->ShowModal() == wxID_OK)
-      {
-        cmd = wxT("partfrac(") + wiz->GetValue1() + wxT(", ")
-              + wiz->GetValue2() + wxT(");");
-        MenuCommand(cmd);
-      }
-      wiz->Destroy();
-    }
+      CommandWiz(
+        _("Partial Fractions"),
+        wxEmptyString,wxEmptyString,
+        wxT("partfrac(#1#,#2#);"),
+        _("Expression:"),expr,wxEmptyString,
+        _("Variable:"),wxT("n"),wxEmptyString
+        );
       break;
     case menu_risch:
-    {
-      Gen2Wiz *wiz = new Gen2Wiz(_("Expression:"), _("Variable:"),
-                                 expr, wxT("x"),
-                                 m_worksheet->m_configuration,
-                                 this, -1, _("Integrate (risch)"));
-      //wiz->Centre(wxBOTH);
-      if (wiz->ShowModal() == wxID_OK)
-      {
-        cmd = wxT("risch(") + wiz->GetValue1() + wxT(", ")
-              + wiz->GetValue2() + wxT(");");
-        MenuCommand(cmd);
-      }
-      wiz->Destroy();
-    }
+      CommandWiz(
+        _("Integrate (risch)"),
+        wxEmptyString,wxEmptyString,
+        wxT("risch(#1#,#2#);"),
+        _("Expression:"),expr,wxEmptyString,
+        _("Variable:"),wxT("x"),wxEmptyString
+        );
       break;
     case button_integrate:
     case menu_integrate:
@@ -7953,67 +7894,35 @@ void wxMaxima::CalculusMenu(wxCommandEvent &event)
     }
       break;
     case menu_laplace:
-    {
-      Gen3Wiz *wiz = new Gen3Wiz(_("Expression:"), _("Old variable:"),
-                                 _("New variable:"), expr, wxT("t"), wxT("s"),
-                                 m_worksheet->m_configuration,
-                                 this, -1, _("Laplace"));
-      wiz->SetValue(expr);
-      //wiz->Centre(wxBOTH);
-      if (wiz->ShowModal() == wxID_OK)
-      {
-        wxString val = wxT("laplace(") + wiz->GetValue1() + wxT(", ")
-                       + wiz->GetValue2() +
-                       wxT(", ") + wiz->GetValue3() + wxT(");");
-        MenuCommand(val);
-      }
-      wiz->Destroy();
-    }
+      CommandWiz(
+        _("Laplace"),
+        wxEmptyString,wxEmptyString,
+        wxT("laplace(#1#,#2#,#3#);"),
+        _("Expression:"),expr,wxEmptyString,
+        _("Old variable:"),wxT("t"),wxEmptyString,
+        _("New variable:"),wxT("s"),wxEmptyString
+        );
       break;
     case menu_ilt:
-    {
-      Gen3Wiz *wiz = new Gen3Wiz(_("Expression:"), _("Old variable:"),
-                                 _("New variable:"), expr, wxT("s"), wxT("t"),
-                                 m_worksheet->m_configuration,
-                                 this, -1, _("Inverse Laplace"));
-      wiz->SetValue(expr);
-      //wiz->Centre(wxBOTH);
-      if (wiz->ShowModal() == wxID_OK)
-      {
-        wxString val = wxT("ilt(") + wiz->GetValue1() + wxT(", ") +
-                       wiz->GetValue2() + wxT(", ") + wiz->GetValue3() + wxT(");");
-        MenuCommand(val);
-      }
-      wiz->Destroy();
-    }
+      CommandWiz(
+        _("Inverse Laplace"),
+        wxEmptyString,wxEmptyString,
+        wxT("ilt(#1#,#2#,#3#);"),
+        _("Expression:"),expr,wxEmptyString,
+        _("Old variable:"),wxT("s"),wxEmptyString,
+        _("New variable:"),wxT("t"),wxEmptyString
+        );
       break;
     case button_diff:
     case menu_diff:
-    {
-      Gen3Wiz *wiz = new Gen3Wiz(_("Expression:"), _("Variable(s):"),
-                                 _("Times:"), expr, wxT("x"), wxT("1"),
-                                 m_worksheet->m_configuration,
-                                 this, -1, _("Differentiate"));
-      wiz->SetValue(expr);
-      //wiz->Centre(wxBOTH);
-      if (wiz->ShowModal() == wxID_OK)
-      {
-        wxStringTokenizer vars(wiz->GetValue2(), wxT(","));
-        wxStringTokenizer times(wiz->GetValue3(), wxT(","));
-
-        wxString val = wxT("diff(") + wiz->GetValue1();
-
-        while (vars.HasMoreTokens() && times.HasMoreTokens())
-        {
-          val += wxT(",") + vars.GetNextToken();
-          val += wxT(",") + times.GetNextToken();
-        }
-
-        val += wxT(");");
-        MenuCommand(val);
-      }
-      wiz->Destroy();
-    }
+      CommandWiz(
+        _("Differentiate"),
+        wxEmptyString,wxEmptyString,
+        wxT("diff(#1#,#2#,#3#);"),
+        _("Expression:"),expr,wxEmptyString,
+        _("Variable(s):"),wxT("x"),wxEmptyString,
+        _("Times:"),wxT("1"),wxEmptyString
+        );
       break;
     case button_taylor:
     case menu_series:
@@ -8044,25 +7953,15 @@ void wxMaxima::CalculusMenu(wxCommandEvent &event)
     }
       break;
     case menu_lbfgs:
-    {
-      Gen4Wiz *wiz = new Gen4Wiz(_("Expression:"),
-                                 _("Variables:"),
-                                 _("Initial Estimates:"),
-                                 _("Epsilon:"),
-                                 expr, wxT("x"), wxT("1.0"), wxT("1e-4"),
-                                 m_worksheet->m_configuration,
-                                 this, -1, _("Find minimum"));
-      //wiz->Centre(wxBOTH);
-      if (wiz->ShowModal() == wxID_OK)
-      {
-        cmd = wxT("lbfgs(") + wiz->GetValue1() + wxT(", [") +
-              wiz->GetValue2() + wxT("], [") +
-              wiz->GetValue3() + wxT("], ") +
-              wiz->GetValue4() + wxT(", [-1,0]);");
-        MenuCommand(cmd);
-      }
-      wiz->Destroy();
-    }
+      CommandWiz(
+        _("Find minimum"),
+        wxEmptyString,wxEmptyString,
+        wxT("lbfgs(#1#,#2#,#3#);"),
+        _("Expression:"),expr,wxEmptyString,
+        _("Variables:"),wxT("x"),wxEmptyString,
+        _("Initial estimates:"),wxT("1.0"),wxEmptyString,
+        _("Epsilon:"),wxT("1e-4"),wxEmptyString
+        );
       break;
     case button_sum:
     case menu_sum:
@@ -8080,22 +7979,15 @@ void wxMaxima::CalculusMenu(wxCommandEvent &event)
       break;
     case button_product:
     case menu_product:
-    {
-      Gen4Wiz *wiz = new Gen4Wiz(_("Expression:"), _("Variable:"), _("From:"),
-                                 _("To:"), expr, wxT("k"), wxT("1"), wxT("n"),
-                                 m_worksheet->m_configuration,
-                                 this, -1, _("Product"));
-      //wiz->Centre(wxBOTH);
-      if (wiz->ShowModal() == wxID_OK)
-      {
-        cmd = wxT("product(") + wiz->GetValue1() + wxT(", ") +
-              wiz->GetValue2() + wxT(", ") +
-              wiz->GetValue3() + wxT(", ") +
-              wiz->GetValue4() + wxT(");");
-        MenuCommand(cmd);
-      }
-      wiz->Destroy();
-    }
+      CommandWiz(
+        _("Product"),
+        wxEmptyString,wxEmptyString,
+        wxT("product(#1#,#2#,#3#,#4#);"),
+        _("Expression:"),expr,wxEmptyString,
+        _("Variable:"),wxT("k"),wxEmptyString,
+        _("From:"),wxT("1"),wxEmptyString,
+        _("To:"),wxT("n"),wxEmptyString
+        );
       break;
     default:
       break;
@@ -8291,26 +8183,20 @@ void wxMaxima::NumericalMenu(wxCommandEvent &event)
       MenuCommand(wxT("engineering_format_floats:true$"));
     break;
   case menu_engineeringFormatSetup:
-  {
-    Gen4Wiz *wiz = new Gen4Wiz(_("Enable:"),
-                               _("Minimum absolute value printed without exponent:"),
-                               _("Maximum absolute value printed without exponent:"),
-                               _("Maximum number of digits to be displayed:"),
-                               wxT("true"), wxT(".01"), wxT("1000"), wxT("6"),
-                               m_worksheet->m_configuration,
-                               this, -1, _("Engineering format setup"));
-    //wiz->Centre(wxBOTH);
-    if (wiz->ShowModal() == wxID_OK)
-    {
-      cmd = wxT("engineering_format_floats: ") + wiz->GetValue1() + wxT("$\n") +
-        wxT("engineering_format_min: ") + wiz->GetValue2() + wxT("$\n") +
-        wxT("engineering_format_max: ") + wiz->GetValue3() + wxT("$\n") +
-        wxT("fpprintprec: ") + wiz->GetValue4() + wxT("$");
-      MenuCommand(cmd);
-    }
-    wiz->Destroy();
-    break;
-  }
+      CommandWiz(
+        _("Setup the engineering format"),
+        wxEmptyString,wxEmptyString,
+        wxT(
+          "engineering_format_floats: #1#$\n"
+          "engineering_format_min: #2#$\n"
+          "engineering_format_max: #3#$\n"
+          "fpprintprec: #4#$"),
+        _("Enable:"),wxT("true"),wxEmptyString,
+        _("Minimum absolute value printed without exponent:"),wxT(".01"),wxEmptyString,
+        _("Maximum absolute value printed without exponent"),wxT("1000"),wxEmptyString,
+        _("Maximum number of digits to be displayed:"),wxT("6"),wxEmptyString
+        );
+      break;
   case menu_quad_qag:
   {
     CommandWiz(
@@ -8674,36 +8560,22 @@ void wxMaxima::StatsMenu(wxCommandEvent &event)
   switch (event.GetId())
   {
     case menu_stats_histogram:
-    {
-      Gen2Wiz *wiz = new Gen2Wiz(_("Data:"), _("Classes:"),
-                                 expr, wxT("10"),
-                                 m_worksheet->m_configuration,
-                                 this, -1, _("Histogram"), false);
-      //wiz->Centre(wxBOTH);
-      if (wiz->ShowModal() == wxID_OK)
-      {
-        wxString cmd = wxT("wxhistogram(") + wiz->GetValue1() + wxT(", nclasses=") +
-                       wiz->GetValue2() + wxT(");");
-        MenuCommand(cmd);
-      }
-      wiz->Destroy();
-    }
+      CommandWiz(
+        _("Histogram"),
+        wxEmptyString,wxEmptyString,
+        wxT("wxhistogram(#1#,nclasses=#2#);"),
+        _("Data:"),expr,wxEmptyString,
+        _("Classes:"),wxT("10"),wxEmptyString
+        );
       break;
     case menu_stats_scatterplot:
-    {
-      Gen2Wiz *wiz = new Gen2Wiz(_("Data:"), _("Classes:"),
-                                 expr, wxT("10"),
-                                 m_worksheet->m_configuration,
-                                 this, -1, _("Scatterplot"), false);
-      //wiz->Centre(wxBOTH);
-      if (wiz->ShowModal() == wxID_OK)
-      {
-        wxString cmd = wxT("wxscatterplot(") + wiz->GetValue1() + wxT(", nclasses=") +
-                       wiz->GetValue2() + wxT(");");
-        MenuCommand(cmd);
-      }
-      wiz->Destroy();
-    }
+      CommandWiz(
+        _("Scatterplot"),
+        wxEmptyString,wxEmptyString,
+        wxT("wxscatterplot(#1#,nclasses=#2#);"),
+        _("Data:"),expr,wxEmptyString,
+        _("Classes:"),wxT("10"),wxEmptyString
+        );
       break;
     case menu_stats_barsplot:
     {
@@ -8770,37 +8642,22 @@ void wxMaxima::StatsMenu(wxCommandEvent &event)
     }
       break;
     case menu_stats_tt1:
-    {
-      Gen2Wiz *wiz = new Gen2Wiz(_("Sample:"), _("Mean:"),
-                                 expr, wxT("0"),
-                                 m_worksheet->m_configuration,
-                                 this, -1, _("One sample t-test"), false);
-      //wiz->Centre(wxBOTH);
-      if (wiz->ShowModal() == wxID_OK)
-      {
-        wxString cmd = wxT("test_mean(") + wiz->GetValue1() + wxT(", mean=") +
-                       wiz->GetValue2() + wxT(");");
-        MenuCommand(cmd);
-      }
-      wiz->Destroy();
-    }
+      CommandWiz(
+        _("One sample t-test"),
+        wxEmptyString,wxEmptyString,
+        wxT("test_mean(#1#,mean=#2#);"),
+        _("Sample:"),expr,wxEmptyString,
+        _("Mean:"),wxT("0"),wxEmptyString
+        );
       break;
     case menu_stats_tt2:
-    {
-      Gen2Wiz *wiz = new Gen2Wiz(_("Sample 1:"), _("Sample 2:"),
-                                 wxEmptyString, wxEmptyString,
-                                 m_worksheet->m_configuration,
-                                 this, -1,
-                                 _("Two sample t-test"), true);
-      //wiz->Centre(wxBOTH);
-      if (wiz->ShowModal() == wxID_OK)
-      {
-        wxString cmd = wxT("test_means_difference(") + wiz->GetValue1() + wxT(", ") +
-                       wiz->GetValue2() + wxT(");");
-        MenuCommand(cmd);
-      }
-      wiz->Destroy();
-    }
+      CommandWiz(
+        _("Two sample t-test"),
+        wxEmptyString,wxEmptyString,
+        wxT("test_means_difference(#1#,#2#);"),
+        _("Sample 1:"),expr,wxEmptyString,
+        _("Sample 2:"),wxT("0"),wxEmptyString
+        );
       break;
     case menu_stats_tnorm:
     {
@@ -8822,23 +8679,15 @@ void wxMaxima::StatsMenu(wxCommandEvent &event)
     }
       break;
     case menu_stats_lsquares:
-    {
-      Gen4Wiz *wiz = new Gen4Wiz(_("Data Matrix:"), _("Col. names:"),
-                                 _("Equation:"), _("Variables:"),
-                                 expr, wxT("x,y"), wxT("y=A*x+B"), wxT("A,B"),
-                                 m_worksheet->m_configuration,
-                                 this, -1, _("Least Squares Fit"), true);
-      //wiz->Centre(wxBOTH);
-      if (wiz->ShowModal() == wxID_OK)
-      {
-        wxString cmd = wxT("lsquares_estimates(") + wiz->GetValue1() + wxT(", [") +
-                       wiz->GetValue2() + wxT("], ") +
-                       wiz->GetValue3() + wxT(", [") +
-                       wiz->GetValue4() + wxT("], iprint=[-1,0]);");
-        MenuCommand(cmd);
-      }
-      wiz->Destroy();
-    }
+      CommandWiz(
+        _("Least Squares Fit"),
+        wxEmptyString,wxEmptyString,
+        wxT("lsquares_estimates(#1#,[#2#],#3#,[#4#],iprint=[-1,0]);"),
+        _("Data Matrix:"),expr,_("A matrix in which each row is a set of variables"),
+        _("Col. names:"),wxT("x,y"),_("The list of variables contained in each matrix row"),
+        _("Equation:"),wxT("y=A*x+B"),_("The equation to fit the data to"),
+        _("Variables:"),wxT("A,B"),_("The variables to search the optimum solution for")
+        );
       break;
     case menu_stats_readm:
     {
