@@ -352,7 +352,7 @@ This option enables two things:
 
 ### Don't save the worksheet automatically
 
-If this option is set the file the worksheet is in is overwritten only on request of the user. In case of a crash/power loss/... a recent backup copy is still made available in the temp directory, though.
+If this option is set, the file where the worksheet is will be overwritten only on request of the user. In case of a crash/power loss/... a recent backup copy is still made available in the temp directory, though.
 
 If this option isn't set _wxMaxima_ behaves more like a modern cellphone app:
 
