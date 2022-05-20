@@ -65,6 +65,7 @@ set(WIZARD_SOURCE_FILES
     Gen3Wiz.cpp
     Gen4Wiz.cpp
     Gen5Wiz.cpp
+    GenWizPanel.cpp
     GenWiz.cpp
     IntegrateWiz.cpp
     LimitWiz.cpp
