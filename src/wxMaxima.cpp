@@ -8722,7 +8722,8 @@ void wxMaxima::StatsMenu(wxCommandEvent &event)
       }
     }
     break;
-    case menu_stats_subsample:
+
+  case menu_stats_subsample:
     {
       Gen4Wiz *wiz = new Gen4Wiz(_("Data Matrix:"), _("Condition:"),
                                  _("Include columns:"), _("Matrix name:"),
@@ -9212,49 +9213,30 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
     MenuCommand(wxT("factor(") + selection + wxT(");"));
     break;
   case Worksheet::popid_solve:
-  {
-    Gen2Wiz *wiz = new Gen2Wiz(_("Equation(s):"), _("Variable(s):"),
-                               selection, wxT("x"),
-                               m_worksheet->m_configuration,
-                               this, -1, _("Solve"), true,
-                               _("solve() will solve a list of equations only if for n "
-                                 "independent equations there are n variables to solve to.\n"
-                                 "If only one result variable is of interest the other result "
-                                 "variables solve needs to do its work can be used to tell "
-                                 "solve() which variables to eliminate in the solution "
-                                 "for the interesting variable.")
+    CommandWiz(
+      _("Solve"),
+      _("solve() will solve a list of equations only if for n "
+        "independent equations there are n variables to solve to.\n"
+        "If only one result variable is of interest the other result "
+        "variables solve needs to do its work can be used to tell "
+        "solve() which variables to eliminate in the solution "
+        "for the interesting variable."),wxEmptyString,
+      wxT("solve([#1#],[#2#]);"),
+      _("Data:"),selection,_("Comma-separated equations"),
+      _("Result variables:"),wxT("x"),_("Comma-separated variables")
       );
-    //wiz->Centre(wxBOTH);
-    wiz->SetLabel1ToolTip(_("Comma-separated equations"));
-    wiz->SetLabel2ToolTip(_("Comma-separated variables"));
-    if (wiz->ShowModal() == wxID_OK)
-    {
-      wxString cmd = wxT("solve([") + wiz->GetValue1() + wxT("], [") +
-        wiz->GetValue2() + wxT("]);");
-      MenuCommand(cmd);
-    }
-    wiz->Destroy();
-  }
-  break;
+    break;
   case Worksheet::popid_solve_num:
-  {
-    Gen4Wiz *wiz = new Gen4Wiz(_("Equation:"), _("Variable:"),
-                               _("Lower bound:"), _("Upper bound:"),
-                               selection, wxT("x"), wxT("-1"), wxT("1"),
-                               m_worksheet->m_configuration,
-                               this, -1, _("Find root"), true);
-    //wiz->Centre(wxBOTH);
-    if (wiz->ShowModal() == wxID_OK)
-    {
-      wxString cmd = wxT("find_root(") + wiz->GetValue1() + wxT(", ") +
-        wiz->GetValue2() + wxT(", ") +
-        wiz->GetValue3() + wxT(", ") +
-        wiz->GetValue4() + wxT(");");
-      MenuCommand(cmd);
-    }
-    wiz->Destroy();
-  }
-  break;
+    CommandWiz(
+      _("Find root (solve numerically)"),
+      _("Tries to find a solution of the equation that lies between the two bounds."),wxEmptyString,
+      wxT("find_root(#1#,#2#,#3#,#4#);"),
+      _("Equation:"),selection,wxEmptyString,
+      _("Variable:"),wxEmptyString,wxEmptyString,
+      _("Lower bound:"),wxT("1"),wxEmptyString,
+      _("Upper bound:"),wxT("2"),wxEmptyString
+      );
+    break;
   case Worksheet::popid_integrate:
   {
     IntegrateWiz *wiz = new IntegrateWiz(this, -1, m_worksheet->m_configuration, _("Integrate"));
@@ -9269,45 +9251,24 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
   }
   break;
   case Worksheet::popid_diff:
-  {
-    Gen3Wiz *wiz = new Gen3Wiz(_("Expression:"), _("Variable(s):"),
-                               _("Times:"), selection, wxT("x"), wxT("1"),
-                               m_worksheet->m_configuration,
-                               this, -1, _("Differentiate"));
-    wiz->SetValue(selection);
-    //wiz->Centre(wxBOTH);
-    if (wiz->ShowModal() == wxID_OK)
-    {
-      wxStringTokenizer vars(wiz->GetValue2(), wxT(","));
-      wxStringTokenizer times(wiz->GetValue3(), wxT(","));
-
-      wxString val = wxT("diff(") + wiz->GetValue1();
-
-      while (vars.HasMoreTokens() && times.HasMoreTokens())
-      {
-        val += wxT(",") + vars.GetNextToken();
-        val += wxT(",") + times.GetNextToken();
-      }
-
-      val += wxT(");");
-      MenuCommand(val);
-    }
-    wiz->Destroy();
-  }
-  break;
+    CommandWiz(
+      _("Differentiate"),
+      _("Differentiates the expression n times"),wxEmptyString,
+      wxT("diff(#1#,#2#,#3#);"),
+      _("Expression:"),selection,wxEmptyString,
+      _("Variable(s):"),wxEmptyString,wxEmptyString,
+      _("Times:"),wxT("1"),wxEmptyString
+      );
+    break;
   case Worksheet::popid_subst:
-  {
-    SubstituteWiz *wiz = new SubstituteWiz(this, -1, m_worksheet->m_configuration, _("Substitute"));
-    wiz->SetValue(selection);
-    //wiz->Centre(wxBOTH);
-    if (wiz->ShowModal() == wxID_OK)
-    {
-      wxString val = wiz->GetValue();
-      MenuCommand(val);
-    }
-    wiz->Destroy();
-  }
-  break;
+    CommandWiz(
+      _("Substitute"),
+      _("Introduces one or more assignments into an expression"),wxEmptyString,
+      wxT("subst(#1#,#2#);"),
+      _("Assignment(s):"),wxEmptyString,_("Assignments of the format a=10,b=20"),
+      _("Expression"),selection,wxEmptyString
+      );
+    break;
   case Worksheet::popid_plot2d:
   {
     Plot2DWiz *wiz = new Plot2DWiz(this, -1, m_worksheet->m_configuration, _("Plot 2D"));
