@@ -19,7 +19,7 @@ jobs:
       - name: cppcheck
         working-directory: ${{runner.workspace}}/wxmaxima
         run: cppcheck --inline-suppr  --force --enable=all -DGITVERSION="cppcheck" -DWXMAXIMA_GIT_VERSION="cppcheck" -DCMAKE_INSTALL_PREFIX="/usr" -DUSE_PRECOMP_HEADER=0 -q -i src/nanoSVG src --suppress="*:src/nanoSVG/nanosvg.h" --suppress="*:src/nanoSVG/nanosvgrast.h" -UWXK_NEXT -UWXK_NUMPAD_NEXT -UWXK_NUMPAD_PRIOR -UWXK_PRIOR -DCELLPTR_LOG_REFS=1 |& tee ../cppcheck.txt
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: cppcheck.txt
           path: ${{runner.workspace}}/cppcheck.txt
