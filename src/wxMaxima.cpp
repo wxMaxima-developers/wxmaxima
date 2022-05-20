@@ -6628,7 +6628,7 @@ void wxMaxima::EquationsMenu(wxCommandEvent &event)
     case button_solve:
     case menu_solve:
       CommandWiz(
-        _("Solve equations"),
+        _("Solve equation(s)"),
         _("solve() will solve a list of equations only if for n "
           "independent equations there are n variables to solve to.\n"
           "If only one result variable is of interest the other result "
@@ -6653,7 +6653,7 @@ void wxMaxima::EquationsMenu(wxCommandEvent &event)
         expr = wxT("''(") + expr + wxT(")");
       CommandWiz(
         _("Solve equations numerically"),
-        wxEmptyString,wxEmptyString,
+        _("Tries to find a value of the variable that solves Equation between the two bonds"),wxEmptyString,
         wxT("find_root(#1#,#2#,#3#,#4#);"),
         _("Equation:"),expr,wxEmptyString,
         _("Variable:"),wxT("x"),wxEmptyString,
@@ -6665,7 +6665,7 @@ void wxMaxima::EquationsMenu(wxCommandEvent &event)
     case menu_solve_ode:
       CommandWiz(
         _("Solve ODE"),
-        _("solves an equation of the form\n    'diff(y,t) = -y;"),wxEmptyString,
+        _("solves an equation of the form\n    'diff(y,t) = -y;"),_("The solution of an ODE describes the general shape of the resulting curve. The actual height of that curve is defined by the initial condition or boundary values, lateron."),
         wxT("ode2(#1#,#2#,#3#);"),
         _("Equation:"),expr,wxEmptyString,
         _("y:"),wxT("y"),wxEmptyString,
@@ -6680,8 +6680,8 @@ void wxMaxima::EquationsMenu(wxCommandEvent &event)
           "function fills in the correct values for the constants"),wxEmptyString,
         wxT("ic1(#1#,#2#,#3#);"),
         _("Solution of the ODE:"),expr,wxEmptyString,
-        _("Point the value is known at:"),wxT("t="),wxEmptyString,
-        _("Value at that point:"),wxT("y="),wxEmptyString);
+        _("Point the value is known at:"),wxT("t=0"),wxEmptyString,
+        _("Value at that point:"),wxT("y=1"),wxEmptyString);
       break;
     case menu_ivp_2:
       CommandWiz(
@@ -6691,9 +6691,9 @@ void wxMaxima::EquationsMenu(wxCommandEvent &event)
           "function fills in the correct values for the constants"),wxEmptyString,
         wxT("ic2(#1#,#2#,#3#,#4#);"),
         _("Solution of the ODE:"),expr,wxEmptyString,
-        _("Point the value is known at:"),wxT("t="),wxEmptyString,
-        _("Value y at that point:"),wxT("y="),wxEmptyString,
-        _("Derivate of y at that point:"),wxT("\'diff(y,t)="),wxEmptyString);
+        _("Point the value is known at:"),wxT("t=0"),wxEmptyString,
+        _("Value y at that point:"),wxT("y=1"),wxEmptyString,
+        _("Derivate of y at that point:"),wxT("\'diff(y,t)=-1"),wxEmptyString);
       break;
     case menu_bvp:
       CommandWiz(
@@ -6703,10 +6703,10 @@ void wxMaxima::EquationsMenu(wxCommandEvent &event)
           "function fills in the correct values for the  constants"),wxEmptyString,
         wxT("bc2(#1#,#2#,#3#,#4#,#5#);"),
         _("Solution of the ODE:"),expr,wxEmptyString,
-        _("Point #1 with known value:"),wxT("t="),wxEmptyString,
-        _("Value y at that point:"),wxT("y="),wxEmptyString,
-        _("Point #2 with known value:"),wxT("t="),wxEmptyString,
-        _("Value y at that point:"),wxT("y="),wxEmptyString);
+        _("Point #1 with known value:"),wxT("t=0"),wxEmptyString,
+        _("Value y at that point:"),wxT("y=0"),wxEmptyString,
+        _("Point #2 with known value:"),wxT("t=1"),wxEmptyString,
+        _("Value y at that point:"),wxT("y=1"),wxEmptyString);
       break;
     case menu_eliminate:
       CommandWiz(
@@ -6771,7 +6771,7 @@ void wxMaxima::EquationsMenu(wxCommandEvent &event)
       _("Solve differential equations using laplace()"),
       _("The solution variable needs to be in the form\n"
         "   U(t)=1/2*U(t)+3*diff(U(t),t)\n"
-        "for this to work"),wxEmptyString,
+        "for this to work; Initial conditions can be specified using atvalue()."),wxEmptyString,
       wxT("desolve([#1#],[#2#]);"),
       _("Equation(s):"),expr,wxEmptyString,
       _("Variable(s):"),wxEmptyString,wxEmptyString);
@@ -6899,7 +6899,7 @@ void wxMaxima::MatrixMenu(wxCommandEvent &event)
       break;
     case menu_matrix_hadamard_product:
       CommandWiz(
-        _("Multiply two matrices"),
+        _("Hadamard Product"),
         _("Element-by-element Product of matrices of the same size (Hadamard product)"),
         wxEmptyString,
         wxT("#1#*#2#;"),
@@ -6908,8 +6908,8 @@ void wxMaxima::MatrixMenu(wxCommandEvent &event)
       break;
     case menu_matrix_hadamard_exponent:
       CommandWiz(
-        _("Element-by-element exponentiation of two matrices"),
-        wxEmptyString,wxEmptyString,
+        _("Hadamard exponent"),
+        _("Element-by-element exponentiation of two matrices"),wxEmptyString,
         wxT("#1#^#2#;"),
         _("Left Matrix:"),expr,wxEmptyString,
         _("Right Matrix:"),wxEmptyString,wxEmptyString);
@@ -7153,10 +7153,12 @@ void wxMaxima::MatrixMenu(wxCommandEvent &event)
     case button_map:
       CommandWiz(
         _("Map"),
-        wxEmptyString,wxEmptyString,
+        _("Runs each element through an equation individually"),wxEmptyString,
         wxT("apply('matrix,makelist(makelist(lambda([#2#,#3#],#1#),#2#,1,#4#),#3#,1,#5#);"),
-        _("Function"),expr,wxEmptyString,
-        _("List)s="),wxEmptyString,wxEmptyString);
+        _("Equation"),expr,wxEmptyString,
+        _("Variable name of the element="),wxT("i"),_("The equation will use this variable name in order to referto the current element"),
+        _("Equation="),wxT("cabs(i)"),wxEmptyString,
+);
       break;
     default:
       break;
@@ -7917,7 +7919,7 @@ void wxMaxima::CalculusMenu(wxCommandEvent &event)
     case menu_diff:
       CommandWiz(
         _("Differentiate"),
-        wxEmptyString,wxEmptyString,
+        _("Differentiates an expression n times"),wxEmptyString,
         wxT("diff(#1#,#2#,#3#);"),
         _("Expression:"),expr,wxEmptyString,
         _("Variable(s):"),wxT("x"),wxEmptyString,
@@ -7955,7 +7957,7 @@ void wxMaxima::CalculusMenu(wxCommandEvent &event)
     case menu_lbfgs:
       CommandWiz(
         _("Find minimum"),
-        wxEmptyString,wxEmptyString,
+        _("Allows to vary the parameters of a function until it fits experimental data."),wxEmptyString,
         wxT("lbfgs(#1#,#2#,#3#);"),
         _("Expression:"),expr,wxEmptyString,
         _("Variables:"),wxT("x"),wxEmptyString,
@@ -8207,7 +8209,7 @@ void wxMaxima::NumericalMenu(wxCommandEvent &event)
       wxT("x"),wxT("x"),wxEmptyString,
       wxT("a"),wxT("0"),wxEmptyString,
       wxT("b"),wxT("10"),wxEmptyString,
-      wxT("key"),wxT("4"),wxEmptyString,
+      wxT("key"),wxT("4"),_("An integer between 1..6; Higher numbers work better for oscillating integrands"),
       wxT("epsrel"),wxT("1d-8"),wxEmptyString,
       wxT("epsabs"),wxT("0"),wxEmptyString,
       wxT("limit"),wxT("200"),wxEmptyString);
@@ -8722,8 +8724,7 @@ void wxMaxima::StatsMenu(wxCommandEvent &event)
       }
     }
     break;
-
-  case menu_stats_subsample:
+    case menu_stats_subsample:
     {
       Gen4Wiz *wiz = new Gen4Wiz(_("Data Matrix:"), _("Condition:"),
                                  _("Include columns:"), _("Matrix name:"),
@@ -9232,9 +9233,9 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
       _("Tries to find a solution of the equation that lies between the two bounds."),wxEmptyString,
       wxT("find_root(#1#,#2#,#3#,#4#);"),
       _("Equation:"),selection,wxEmptyString,
-      _("Variable:"),wxEmptyString,wxEmptyString,
-      _("Lower bound:"),wxT("1"),wxEmptyString,
-      _("Upper bound:"),wxT("2"),wxEmptyString
+      _("Variable:"),wxT("x"),wxEmptyString,
+      _("Lower bound:"),wxT("-1"),wxEmptyString,
+      _("Upper bound:"),wxT("1"),wxEmptyString
       );
     break;
   case Worksheet::popid_integrate:
@@ -9256,7 +9257,7 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
       _("Differentiates the expression n times"),wxEmptyString,
       wxT("diff(#1#,#2#,#3#);"),
       _("Expression:"),selection,wxEmptyString,
-      _("Variable(s):"),wxEmptyString,wxEmptyString,
+      _("Variable(s):"),wxT("x"),wxEmptyString,
       _("Times:"),wxT("1"),wxEmptyString
       );
     break;
@@ -9265,7 +9266,7 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
       _("Substitute"),
       _("Introduces one or more assignments into an expression"),wxEmptyString,
       wxT("subst(#1#,#2#);"),
-      _("Assignment(s):"),wxEmptyString,_("Assignments of the format a=10,b=20"),
+      _("Assignment(s):"),wxT("x=sqrt(u)"),_("Assignments of the format a=10,b=20"),
       _("Expression"),selection,wxEmptyString
       );
     break;
