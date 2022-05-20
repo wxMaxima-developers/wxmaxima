@@ -1273,6 +1273,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
   Connect(Worksheet::popid_property_even, wxEVT_MENU, wxCommandEventHandler(wxMaxima::PropertiesMenu), NULL, this);
   Connect(Worksheet::popid_property_odd, wxEVT_MENU, wxCommandEventHandler(wxMaxima::PropertiesMenu), NULL, this);
   Connect(Worksheet::popid_property_evenfun, wxEVT_MENU, wxCommandEventHandler(wxMaxima::PropertiesMenu), NULL, this);
+  Connect(Worksheet::popid_property_atvalue, wxEVT_MENU, wxCommandEventHandler(wxMaxima::EquationsMenu), NULL, this);
   Connect(Worksheet::popid_property_oddfun, wxEVT_MENU, wxCommandEventHandler(wxMaxima::PropertiesMenu), NULL, this);
   Connect(Worksheet::popid_property_increasing, wxEVT_MENU, wxCommandEventHandler(wxMaxima::PropertiesMenu), NULL, this);
   Connect(Worksheet::popid_property_decreasing, wxEVT_MENU, wxCommandEventHandler(wxMaxima::PropertiesMenu), NULL, this);
@@ -6777,6 +6778,7 @@ void wxMaxima::EquationsMenu(wxCommandEvent &event)
       _("Variable(s):"),wxEmptyString,wxEmptyString);
     break;
   case menu_atvalue:
+  case Worksheet:: popid_property_atvalue:
     CommandWiz(
       _("Make a function value at a specific point known"),
       _("Tells maxima for an f(x), that f(x=t)=a"),wxEmptyString,

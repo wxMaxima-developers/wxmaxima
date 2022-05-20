@@ -945,7 +945,8 @@ public:
     popid_property_irrational,
     popid_property_greaterThan,
     popid_property_evfun,
-    popid_property_evflag
+    popid_property_evflag,
+    popid_property_atvalue
   };
 
   //! The constructor

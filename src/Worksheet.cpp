@@ -1916,6 +1916,8 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
           (selectionStyle == TS_FUNCTION)
           )
         {
+          facts_sub->Append(popid_property_atvalue, _("Value at a specific point"), _("Inform maxima about the value of the function at a specific point, e.G. for declaring initialinitial conditions"));
+          facts_sub->AppendSeparator();
           facts_sub->Append(popid_property_evenfun, _("Is an even function"), _("This function will return even integers"));
           facts_sub->Append(popid_property_oddfun, _("Is an odd function"), _("This function will return odd integers"));
           facts_sub->Append(popid_property_additive, _("Additive function: f(a+b)=f(a)+f(b)"));
