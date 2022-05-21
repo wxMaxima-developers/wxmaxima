@@ -43,7 +43,7 @@ GenWizPanel::GenWizPanel(wxWindow *parent, Configuration *cfg,
                         wxSize(5*GetContentScaleFactor(), 5*GetContentScaleFactor()));
   vbox->AddGrowableCol(0);
   vbox->AddGrowableRow(2);
-  m_description = new WrappingStaticText(this, wxID_ANY, wxEmptyString);
+  m_description = new WrappingStaticText(this, wxID_ANY, wxT("Test"));
   vbox->Add(m_description, wxSizerFlags(1).Border(wxALL, 5*GetContentScaleFactor()));
   
   for(int i = 0; i< 9; i++)
@@ -123,10 +123,10 @@ void GenWizPanel::NewWizard(const wxString &description, const wxString &descrip
                             wxString label8, wxString defaultval8, wxString tooltip8,
                             wxString label9, wxString defaultval9, wxString tooltip9)
 {
-  m_description->SetLabel(description);
   m_description->Show(!description.IsEmpty());
   m_description->SetToolTip(description_tooltip);
-
+  if(!description.IsEmpty())
+    m_description->SetLabel(description);
   m_commandRule = commandRule;
 
   m_textctrl[0]->SetValue(defaultval1);

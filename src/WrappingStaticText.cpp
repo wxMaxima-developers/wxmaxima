@@ -27,8 +27,7 @@
 #include <wx/wupdlock.h>
 
 WrappingStaticText::WrappingStaticText(wxWindow* parent, int id, wxString text):
-  wxPanel(parent, -1),
-  m_text(text)
+  wxPanel(parent, -1)
 {
   wxWindowUpdateLocker SpeedUp(this);
   m_textCtrl = new wxStaticText(this, id, text);
@@ -45,7 +44,7 @@ WrappingStaticText::WrappingStaticText(wxWindow* parent, int id, wxString text):
 void WrappingStaticText::OnSize(wxSizeEvent &event)
 {
   wxWindowUpdateLocker SpeedUp(this);
-  m_textCtrl->SetLabel(m_text);
+  m_textCtrl->SetLabel(m_textCtrl->GetLabel());
   m_textCtrl->Wrap(event.GetSize().GetWidth());
   Layout();
 //Fit();
