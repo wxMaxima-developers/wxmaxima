@@ -192,7 +192,6 @@ void GenWizPanel::NewWizard(const wxString &description, const wxString &descrip
 
   m_output->Show(!commandRule.IsEmpty());
   UpdateOutput();
-  Layout();
 }
 
 void GenWizPanel::UpdateOutput()

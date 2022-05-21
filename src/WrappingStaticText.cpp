@@ -47,8 +47,6 @@ void WrappingStaticText::OnSize(wxSizeEvent &event)
   m_textCtrl->SetLabel(m_textCtrl->GetLabel());
   m_textCtrl->Wrap(event.GetSize().GetWidth());
   Layout();
-//Fit();
-//GetParent()->Fit();
   event.Skip();
 }
 
