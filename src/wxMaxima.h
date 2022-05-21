@@ -273,6 +273,9 @@ protected:
   void OnSymbolAdd(wxCommandEvent &event);
   //! Called when the "Scroll to currently evaluated" button is pressed.
   void OnFollow(wxCommandEvent &event);
+  void OnWizardAbort(wxCommandEvent &event);
+  void OnWizardOK(wxCommandEvent &event);
+  void OnWizardInsert(wxCommandEvent &event);
 
   //! Show the help for Maxima
   void ShowMaximaHelp(wxString = {});

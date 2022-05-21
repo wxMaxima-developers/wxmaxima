@@ -317,17 +317,48 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
                             RightDockable(true).
                             PaneBorder(true).
                             FloatingSize(m_symbolsPane->GetEffectiveMinSize()).
-                            Left());
+                    Left());
   m_manager.AddPane(CreateMathPane(),
                     wxAuiPaneInfo().Name(wxT("math")).
-                            CloseButton(true).
-                            TopDockable(true).
-                            BottomDockable(true).
-                            LeftDockable(true).
-                            RightDockable(true).
-                            PaneBorder(true).
-                            Left());
-
+                    CloseButton(true).
+                    TopDockable(true).
+                    BottomDockable(true).
+                    LeftDockable(true).
+                    RightDockable(true).
+                    PaneBorder(true).
+                    Left());
+  
+  wxAuiPaneInfo().Name(wxT("math")).
+    CloseButton(true).
+    TopDockable(true).
+    BottomDockable(true).
+    LeftDockable(true).
+    RightDockable(true).
+    PaneBorder(true).
+    Left();
+  
+  m_manager.AddPane(
+    m_wizard = new GenWizPanel(
+      this, m_worksheet->m_configuration,
+      wxEmptyString,wxEmptyString,
+      wxT(" "),
+      wxT("x"),wxT(" "), wxEmptyString
+      ),
+    wxAuiPaneInfo().Name(wxT("wizard")).
+    CloseButton(true).
+    TopDockable(true).
+    MinSize(wxSize(200*GetContentScaleFactor(),200*GetContentScaleFactor())).
+    FloatingSize(wxSize(300*GetContentScaleFactor(),500*GetContentScaleFactor())).
+    BottomDockable(true).
+    LeftDockable(true).
+    RightDockable(true).
+    PaneBorder(true).
+    Resizable(true).
+    Movable(true).
+    CaptionVisible(true).
+    Show(true).
+    Caption(wxT("Example Wizard")));
+  
   m_manager.AddPane(CreateFormatPane(),
                     wxAuiPaneInfo().Name(wxT("format")).
                             CloseButton(true).
@@ -369,7 +400,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
                     BottomDockable(true).
                     LeftDockable(true).
                     RightDockable(true).
-                    MinSize(wxSize(100,100)).
+                    MinSize(wxSize(100*GetContentScaleFactor(),100*GetContentScaleFactor())).
                     PaneBorder(false).Row(2));
 
   SetupMenu();
@@ -425,6 +456,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   // It somehow is possible to hide the Maxima worksheet - which renders wxMaxima
   // basically useless => force it to be enabled.
   m_manager.GetPane("console").Show(true);
+  m_manager.GetPane("wizard").Show(false).Float();
 
   m_manager.GetPane("console") = m_manager.GetPane("console").
     Center().
@@ -1760,6 +1792,7 @@ void wxMaximaFrame::DockAllSidebars(wxCommandEvent & WXUNUSED(ev))
   m_manager.GetPane(wxT("XmlInspector")).Dock();
   m_manager.GetPane(wxT("stats")).Dock();
   m_manager.GetPane(wxT("greek")).Dock();
+  m_manager.GetPane(wxT("wizard")).Dock();
   m_manager.GetPane(wxT("log")).Dock();
   m_manager.GetPane(wxT("unicode")).Dock();
   m_manager.GetPane(wxT("variables")).Dock();

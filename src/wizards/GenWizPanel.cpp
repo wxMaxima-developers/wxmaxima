@@ -66,16 +66,6 @@ GenWizPanel::GenWizPanel(wxWindow *parent, Configuration *cfg,
                            NULL, this);
     grid_sizer->Add(m_textctrl[i], wxSizerFlags(1).Expand());
   }
-  
-#if defined __WXMSW__
-  button_1 = new wxButton(this, wxID_OK, _("OK"));
-  button_1->SetDefault();
-  button_2 = new wxButton(this, wxID_CANCEL, _("Cancel"));
-#else
-  button_1 = new wxButton(this, wxID_CANCEL, _("Cancel"));
-  button_2 = new wxButton(this, wxID_OK, _("OK"));
-  button_2->SetDefault();
-#endif
     
   vbox->Add(grid_sizer, wxSizerFlags(1).Expand().Border(wxALL, 5*GetContentScaleFactor()));
   
@@ -89,7 +79,19 @@ GenWizPanel::GenWizPanel(wxWindow *parent, Configuration *cfg,
   vbox->Add(resultBox, wxSizerFlags(1).Border(wxALL, 5*GetContentScaleFactor()).Expand());
 
   wxBoxSizer *buttonSizer = new wxBoxSizer(wxHORIZONTAL);
+  m_insertButton = new wxButton(this, wxID_ANY, _("Insert"));
+#if defined __WXMSW__
+  button_1 = new wxButton(this, wxID_OK, _("OK"));
+  button_1->SetDefault();
+  button_2 = new wxButton(this, wxID_CANCEL, _("Cancel"));
+#else
+  button_1 = new wxButton(this, wxID_CANCEL, _("Cancel"));
+  button_2 = new wxButton(this, wxID_OK, _("OK"));
+  button_2->SetDefault();
+#endif
   buttonSizer->Add(button_1, wxSizerFlags(1).Border(wxALL, 5*GetContentScaleFactor()));
+  buttonSizer->Add(m_insertButton, wxSizerFlags(1).Border(wxALL, 5*GetContentScaleFactor()));
+  buttonSizer->Show(!m_commandRule.IsEmpty());
   buttonSizer->Add(button_2, wxSizerFlags(1).Border(wxALL, 5*GetContentScaleFactor()));
 
   vbox->Add(buttonSizer, wxSizerFlags(1).Border(wxALL, 5*GetContentScaleFactor()));
@@ -190,6 +192,7 @@ void GenWizPanel::NewWizard(const wxString &description, const wxString &descrip
 
   m_output->Show(!commandRule.IsEmpty());
   UpdateOutput();
+  Layout();
 }
 
 void GenWizPanel::UpdateOutput()
