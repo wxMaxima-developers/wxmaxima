@@ -1262,10 +1262,10 @@ void wxMaximaFrame::SetupMenu()
                         _("Warning: No test if the argument of the log is complex, positive or negative"),
                         wxITEM_NORMAL);
   m_logexpand_Sub->AppendSeparator();
-  m_logexpand_Sub->AppendRadioItem(menu_logexpand_false, _("No"), _("Switch off simplifications of log()."));
-  m_logexpand_Sub->AppendRadioItem(menu_logexpand_true, _("log(a^b)=b*log(a) Warning: Bad, if a is complex"));
-  m_logexpand_Sub->AppendRadioItem(menu_logexpand_all, _("Additionally: log(a*b)=log(a)+log(b)"));
-  m_logexpand_Sub->AppendRadioItem(menu_logexpand_super, _("Additionally: log(a/b)=log(a)-log(b)"));
+  m_logexpand_Sub->AppendRadioItem(menu_logexpand_false, _("No"), _("Switch off simplifications of log(). Set Maxima option variable logexpand:false"));
+  m_logexpand_Sub->AppendRadioItem(menu_logexpand_true, _("log(a^b)=b*log(a) Warning: Bad, if a is complex"), _("Set Maxima option variable logexpand:true"));
+  m_logexpand_Sub->AppendRadioItem(menu_logexpand_all, _("Additionally: log(a*b)=log(a)+log(b)"), _("Set Maxima option variable logexpand:all"));
+  m_logexpand_Sub->AppendRadioItem(menu_logexpand_super, _("Additionally: log(a/b)=log(a)-log(b), a and b positive integers"), _("Set Maxima option variable logexpand:super"));
   m_SimplifyMenu->Append(wxNewId(), _("Simplify Logarithms"),
                          m_logexpand_Sub);
   m_SimplifyMenu->Append(menu_logcontract, _("Contract Logarithms"),
