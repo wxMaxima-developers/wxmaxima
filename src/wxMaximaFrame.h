@@ -506,6 +506,7 @@ public:
     menu_unsaved_document_27,
     menu_unsaved_document_28,
     menu_unsaved_document_29,
+    menu_construct_fraction,
     menu_insert_image,
     menu_stats_mean,
     menu_stats_median,

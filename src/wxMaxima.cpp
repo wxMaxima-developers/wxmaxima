@@ -740,6 +740,8 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
           wxCommandEventHandler(wxMaxima::EquationsMenu), NULL, this);
   Connect(menu_rhs, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::EquationsMenu), NULL, this);
+  Connect(menu_construct_fraction, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::EquationsMenu), NULL, this);
   Connect(menu_sum, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::CalculusMenu), NULL, this);
   Connect(menu_product, wxEVT_MENU,
@@ -6805,6 +6807,16 @@ void wxMaxima::EquationsMenu(wxCommandEvent &event)
     cmd = wxT("rhs(") + expr + wxT(");");
     MenuCommand(cmd);
     break;
+  case menu_construct_fraction:
+    CommandWiz(
+      _("Construct a fraction"),
+      wxEmptyString,wxEmptyString,
+      wxT("(#1#)/(#2#)"),
+      _("Enumerator:"),expr,wxEmptyString,
+      _("Denominator:"),wxT("1"),wxEmptyString
+      );
+    break;
+    
   default:
     break;
   }

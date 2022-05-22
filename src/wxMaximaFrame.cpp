@@ -1064,6 +1064,8 @@ void wxMaximaFrame::SetupMenu()
   m_EquationsMenu->Append(menu_rhs, _("Right side to the \"=\""),
                           _("The half of the equation that is to the right of the \"=\""),
                           wxITEM_NORMAL);
+  m_EquationsMenu->AppendSeparator();
+  m_EquationsMenu->Append(menu_construct_fraction, _("Construct fraction..."));
   m_MenuBar->Append(m_EquationsMenu, _("E&quations"));
 
   // Matrix menu
