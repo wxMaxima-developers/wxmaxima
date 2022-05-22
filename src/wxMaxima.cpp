@@ -8427,6 +8427,8 @@ void wxMaxima::CommandWiz(const wxString &title,
                           wxString label9, wxString defaultval9, wxString tooltip9
   )
 {
+  if(m_worksheet->m_configuration->DockableWizards())
+  {
   m_wizard->NewWizard(description,description_tooltip,
                       commandRule,
                       label1, defaultval1, tooltip1,
@@ -8440,6 +8442,27 @@ void wxMaxima::CommandWiz(const wxString &title,
                       label9, defaultval9, tooltip9);
   m_manager.GetPane("wizard").Show(true).Caption(title);
   m_manager.Update();
+}
+  else
+  {
+    GenWiz *wiz = new GenWiz(this, m_worksheet->m_configuration,
+                             title,
+                             description,description_tooltip,
+                             commandRule,
+                             label1, defaultval1, tooltip1,
+                             label2, defaultval2, tooltip2,
+                             label3, defaultval3, tooltip3,
+                             label4, defaultval4, tooltip4,
+                             label5, defaultval5, tooltip5,
+                             label6, defaultval6, tooltip6,
+                             label7, defaultval7, tooltip7,
+                             label8, defaultval8, tooltip8,
+                             label9, defaultval9, tooltip9);
+    //wiz->Centre(wxBOTH);
+    if (wiz->ShowModal() == wxID_OK)
+      MenuCommand(wiz->GetOutput());
+    wiz->Destroy();
+  }
 }
 
 void wxMaxima::OnWizardAbort(wxCommandEvent &WXUNUSED(event))
