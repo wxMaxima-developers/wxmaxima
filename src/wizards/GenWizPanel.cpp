@@ -35,6 +35,32 @@ GenWizPanel::GenWizPanel(wxWindow *parent, Configuration *cfg,
                          wxString label7, wxString defaultval7, wxString tooltip7,
                          wxString label8, wxString defaultval8, wxString tooltip8,
                          wxString label9, wxString defaultval9, wxString tooltip9) :
+  GenWizPanel(parent, cfg,
+              description, description_tooltip,
+              commandRule, false,
+              label1, defaultval1, tooltip1,
+              label2, defaultval2, tooltip2,
+              label3, defaultval3, tooltip3,
+              label4, defaultval4, tooltip4,
+              label5, defaultval5, tooltip5,
+              label6, defaultval6, tooltip6,
+              label7, defaultval7, tooltip7,
+              label8, defaultval8, tooltip8,
+              label9, defaultval9, tooltip9)
+{}
+  
+GenWizPanel::GenWizPanel(wxWindow *parent, Configuration *cfg,
+                         const wxString &description, const wxString &description_tooltip,
+                         const wxString &commandRule, bool dockable,
+                         wxString label1, wxString defaultval1, wxString tooltip1,
+                         wxString label2, wxString defaultval2, wxString tooltip2,
+                         wxString label3, wxString defaultval3, wxString tooltip3,
+                         wxString label4, wxString defaultval4, wxString tooltip4,
+                         wxString label5, wxString defaultval5, wxString tooltip5,
+                         wxString label6, wxString defaultval6, wxString tooltip6,
+                         wxString label7, wxString defaultval7, wxString tooltip7,
+                         wxString label8, wxString defaultval8, wxString tooltip8,
+                         wxString label9, wxString defaultval9, wxString tooltip9) :
   wxPanel(parent, wxID_ANY),
   m_commandRule(commandRule)
 {
@@ -91,7 +117,7 @@ GenWizPanel::GenWizPanel(wxWindow *parent, Configuration *cfg,
 #endif
   buttonSizer->Add(button_1, wxSizerFlags(1).Border(wxALL, 5*GetContentScaleFactor()));
   buttonSizer->Add(m_insertButton, wxSizerFlags(1).Border(wxALL, 5*GetContentScaleFactor()));
-  buttonSizer->Show(!m_commandRule.IsEmpty());
+  m_insertButton->Show(dockable);
   buttonSizer->Add(button_2, wxSizerFlags(1).Border(wxALL, 5*GetContentScaleFactor()));
 
   vbox->Add(buttonSizer, wxSizerFlags(1).Border(wxALL, 5*GetContentScaleFactor()));

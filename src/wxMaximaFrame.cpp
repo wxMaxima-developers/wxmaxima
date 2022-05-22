@@ -339,11 +339,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   
   m_manager.AddPane(
     m_wizard = new GenWizPanel(
-      this, m_worksheet->m_configuration,
-      wxEmptyString,wxEmptyString,
-      wxT(" "),
-      wxT("x"),wxT(" "), wxEmptyString
-      ),
+      this, m_worksheet->m_configuration),
     wxAuiPaneInfo().Name(wxT("wizard")).
     CloseButton(true).
     TopDockable(true).
