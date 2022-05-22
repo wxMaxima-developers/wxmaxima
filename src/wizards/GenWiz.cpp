@@ -39,9 +39,7 @@ GenWiz::GenWiz(wxWindow *parent, Configuration *cfg, const wxString &title,
     wxMINIMIZE_BOX | wxMAXIMIZE_BOX | wxRESIZE_BORDER | wxCAPTION | wxCLOSE_BOX | wxCLIP_CHILDREN)
 {
   SetName(title);
-  wxFlexGridSizer *vbox =
-    new wxFlexGridSizer(1,
-                        wxSize(5*GetContentScaleFactor(), 5*GetContentScaleFactor()));
+  wxSizer *vbox = new wxBoxSizer(wxVERTICAL);
   m_panel = new GenWizPanel(this, cfg, description, description_tooltip, commandRule,
                             label1, defaultval1, tooltip1,
                             label2, defaultval2, tooltip2,
