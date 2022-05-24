@@ -78,6 +78,7 @@ set(WIZARD_SOURCE_FILES
     SubstituteWiz.cpp
     SumWiz.cpp
     SystemWiz.cpp
+    WizardHelp.cpp
 )
 list_transform_prepend(WIZARD_SOURCE_FILES wizards/)
 

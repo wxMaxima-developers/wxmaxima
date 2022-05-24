@@ -21,7 +21,8 @@
 //  SPDX-License-Identifier: GPL-2.0+
 
 #include "GenWizPanel.h"
-#include <wx/persist/toplevel.h>
+#include "WizardHelp.h"
+#include <wx/msgdlg.h>
 
 GenWizPanel::GenWizPanel(wxWindow *parent, Configuration *cfg,
                          const wxString &description, const wxString &description_tooltip,
@@ -62,16 +63,16 @@ GenWizPanel::GenWizPanel(wxWindow *parent, Configuration *cfg,
                          wxString label8, wxString defaultval8, wxString tooltip8,
                          wxString label9, wxString defaultval9, wxString tooltip9) :
   wxPanel(parent, wxID_ANY),
-  m_commandRule(commandRule)
+  m_commandRule(commandRule),
+  m_description(description),
+  m_descriptionToolTip(description_tooltip)
 {
   wxFlexGridSizer *vbox =
     new wxFlexGridSizer(1,
                         wxSize(5*GetContentScaleFactor(), 5*GetContentScaleFactor()));
   vbox->AddGrowableCol(0);
 //  vbox->AddGrowableRow(0);
-  vbox->AddGrowableRow(2);
-  m_description = new WrappingStaticText(this, wxID_ANY, wxT("Test wdqqwd qwdqw qwd qwd qwdwq ddq dqwd qwd qwd qwd qwd qwd qwd wqd dqwqdw qdq wdqwdqwqdwqwd qwdqdwqwqdwqwdqwd"));
-  vbox->Add(m_description, wxSizerFlags(1).Expand().Border(wxALL, 5*GetContentScaleFactor()));
+  vbox->AddGrowableRow(1);
   
   for(int i = 0; i< 9; i++)
   {
@@ -107,6 +108,11 @@ GenWizPanel::GenWizPanel(wxWindow *parent, Configuration *cfg,
 
   wxBoxSizer *buttonSizer = new wxBoxSizer(wxHORIZONTAL);
   m_insertButton = new wxButton(this, wxID_ANY, _("Insert"));
+  m_helpButton = new wxContextHelpButton(this, wxID_ANY);
+  m_helpButton->Connect(wxEVT_BUTTON,
+                        wxCommandEventHandler(GenWizPanel::OnHelpButton), NULL, this);
+  m_helpButton->Show(!description.IsEmpty());
+
 #if defined __WXMSW__
   button_1 = new wxButton(this, wxID_OK, _("OK"));
   button_1->SetDefault();
@@ -117,6 +123,8 @@ GenWizPanel::GenWizPanel(wxWindow *parent, Configuration *cfg,
   button_2->SetDefault();
 #endif
   buttonSizer->Add(button_1, wxSizerFlags(1).Border(wxALL, 5*GetContentScaleFactor()));
+  buttonSizer->Add(m_helpButton, wxSizerFlags(1).Border(wxALL, 5*GetContentScaleFactor()));
+  m_insertButton->Show(dockable);
   buttonSizer->Add(m_insertButton, wxSizerFlags(1).Border(wxALL, 5*GetContentScaleFactor()));
   m_insertButton->Show(dockable);
   buttonSizer->Add(button_2, wxSizerFlags(1).Border(wxALL, 5*GetContentScaleFactor()));
@@ -138,7 +146,14 @@ GenWizPanel::GenWizPanel(wxWindow *parent, Configuration *cfg,
   FitInside();
 }
 
-void GenWizPanel::NewWizard(const wxString &description, const wxString &description_tooltip,
+void GenWizPanel::OnHelpButton(wxCommandEvent& event)
+{
+  wxMessageDialog *help = new wxMessageDialog(this, 
+                                              m_description);
+  help->Show();
+}
+  
+void GenWizPanel::NewWizard(wxString description, const wxString &description_tooltip,
                             const wxString &commandRule,
                             wxString label1, wxString defaultval1, wxString tooltip1,
                             wxString label2, wxString defaultval2, wxString tooltip2,
@@ -150,12 +165,11 @@ void GenWizPanel::NewWizard(const wxString &description, const wxString &descrip
                             wxString label8, wxString defaultval8, wxString tooltip8,
                             wxString label9, wxString defaultval9, wxString tooltip9)
 {
-  m_description->Show(!description.IsEmpty());
-  m_description->SetToolTip(description_tooltip);
-  if(!description.IsEmpty())
-    m_description->SetLabel(description);
+  m_helpButton->SetToolTip(description);
   m_commandRule = commandRule;
-
+  m_description = description;
+  m_descriptionToolTip = description_tooltip;
+  m_helpButton->Show(!description.IsEmpty());
   m_textctrl[0]->SetValue(defaultval1);
   m_label[0]->SetLabel(label1);
   m_label[0]->SetToolTip(tooltip1);

@@ -27,8 +27,8 @@
 #include <wx/wx.h>
 #include <wx/statline.h>
 #include <vector>
+#include <wx/cshelp.h>
 #include "BTextCtrl.h"
-#include "WrappingStaticText.h"
 
 class GenWizPanel : public wxPanel
 {
@@ -59,7 +59,7 @@ public:
               wxString label8 = {}, wxString defaultval8 = {}, wxString tooltip8 = {},
               wxString label9 = {}, wxString defaultval9 = {}, wxString tooltip9 = {});
   
-  void NewWizard(const wxString &description, const wxString &description_tooltip,
+  void NewWizard(wxString description, const wxString &description_tooltip,
                  const wxString &commandRule,
                  wxString label1, wxString defaultval1, wxString tooltip1,
                  wxString label2, wxString defaultval2, wxString tooltip2,
@@ -86,15 +86,19 @@ public:
 protected:
   void UpdateOutput();
   void OnParamChange(wxCommandEvent& event);
+  void OnHelpButton(wxCommandEvent& event);
 
   std::vector<BTextCtrl*> m_textctrl;
   std::vector<wxStaticText *> m_label;
   wxButton *button_1;
   wxButton *button_2;
+  wxContextHelpButton *m_helpButton;
   wxButton *m_insertButton;
-  WrappingStaticText *m_description;
   wxString m_commandRule;
   wxTextCtrl *m_output;
+  wxString m_description;
+  wxString m_descriptionToolTip;
+  wxString m_title;
 };
 
 #endif // GENWIZ_PANEL_H
