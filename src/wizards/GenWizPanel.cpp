@@ -68,7 +68,7 @@ GenWizPanel::GenWizPanel(wxWindow *parent, Configuration *cfg,
     new wxFlexGridSizer(1,
                         wxSize(5*GetContentScaleFactor(), 5*GetContentScaleFactor()));
   vbox->AddGrowableCol(0);
-  vbox->AddGrowableRow(0);
+//  vbox->AddGrowableRow(0);
   vbox->AddGrowableRow(2);
   m_description = new WrappingStaticText(this, wxID_ANY, wxT("Test wdqqwd qwdqw qwd qwd qwdwq ddq dqwd qwd qwd qwd qwd qwd qwd wqd dqwqdw qdq wdqwdqwqdwqwd qwdqdwqwqdwqwdqwd"));
   vbox->Add(m_description, wxSizerFlags(1).Expand().Border(wxALL, 5*GetContentScaleFactor()));
