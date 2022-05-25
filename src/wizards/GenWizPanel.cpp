@@ -108,11 +108,7 @@ GenWizPanel::GenWizPanel(wxWindow *parent, Configuration *cfg,
 
   wxBoxSizer *buttonSizer = new wxBoxSizer(wxHORIZONTAL);
   m_insertButton = new wxButton(this, wxID_ANY, _("Insert"));
-  m_helpButton = new wxContextHelpButton(this, wxID_ANY);
-  m_helpButton->Connect(wxEVT_BUTTON,
-                        wxCommandEventHandler(GenWizPanel::OnHelpButton), NULL, this);
-  m_helpButton->Show(!description.IsEmpty());
-
+  
 #if defined __WXMSW__
   button_1 = new wxButton(this, wxID_OK, _("OK"));
   button_1->SetDefault();
@@ -123,7 +119,6 @@ GenWizPanel::GenWizPanel(wxWindow *parent, Configuration *cfg,
   button_2->SetDefault();
 #endif
   buttonSizer->Add(button_1, wxSizerFlags(1).Border(wxALL, 5*GetContentScaleFactor()));
-  buttonSizer->Add(m_helpButton, wxSizerFlags(1).Border(wxALL, 5*GetContentScaleFactor()));
   m_insertButton->Show(dockable);
   buttonSizer->Add(m_insertButton, wxSizerFlags(1).Border(wxALL, 5*GetContentScaleFactor()));
   m_insertButton->Show(dockable);
@@ -146,13 +141,6 @@ GenWizPanel::GenWizPanel(wxWindow *parent, Configuration *cfg,
   FitInside();
 }
 
-void GenWizPanel::OnHelpButton(wxCommandEvent& event)
-{
-  wxMessageDialog *help = new wxMessageDialog(this, 
-                                              m_description);
-  help->Show();
-}
-  
 void GenWizPanel::NewWizard(wxString description, const wxString &description_tooltip,
                             const wxString &commandRule,
                             wxString label1, wxString defaultval1, wxString tooltip1,
@@ -165,70 +153,64 @@ void GenWizPanel::NewWizard(wxString description, const wxString &description_to
                             wxString label8, wxString defaultval8, wxString tooltip8,
                             wxString label9, wxString defaultval9, wxString tooltip9)
 {
-  m_helpButton->SetToolTip(description);
+  for(unsigned int i=0; i<m_label.size();i++)
+    m_label[i]->SetToolTip(description);
+  
+  m_output->SetToolTip(description);
+  
   m_commandRule = commandRule;
   m_description = description;
   m_descriptionToolTip = description_tooltip;
-  m_helpButton->Show(!description.IsEmpty());
   m_textctrl[0]->SetValue(defaultval1);
   m_label[0]->SetLabel(label1);
-  m_label[0]->SetToolTip(tooltip1);
-  m_textctrl[1]->SetToolTip(tooltip1);
+  m_textctrl[0]->SetToolTip(tooltip1);
 
   m_textctrl[1]->SetValue(defaultval2);
   m_label[1]->SetLabel(label2);
   m_label[1]->Show(!label2.IsEmpty());
   m_textctrl[1]->Show(!label2.IsEmpty());
-  m_label[1]->SetToolTip(tooltip2);
   m_textctrl[1]->SetToolTip(tooltip2);
 
   m_textctrl[2]->SetValue(defaultval3);
   m_label[2]->SetLabel(label3);
   m_label[2]->Show(!label3.IsEmpty());
   m_textctrl[2]->Show(!label3.IsEmpty());
-  m_label[2]->SetToolTip(tooltip3);
   m_textctrl[2]->SetToolTip(tooltip3);
 
   m_textctrl[3]->SetValue(defaultval4);
   m_label[3]->SetLabel(label4);
   m_label[3]->Show(!label4.IsEmpty());
   m_textctrl[3]->Show(!label4.IsEmpty());
-  m_label[3]->SetToolTip(tooltip4);
   m_textctrl[3]->SetToolTip(tooltip4);
 
   m_label[4]->SetLabel(label5);
   m_textctrl[4]->SetValue(defaultval5);
   m_label[4]->Show(!label5.IsEmpty());
   m_textctrl[4]->Show(!label5.IsEmpty());
-  m_label[4]->SetToolTip(tooltip5);
   m_textctrl[4]->SetToolTip(tooltip5);
 
   m_label[5]->SetLabel(label6);
   m_textctrl[5]->SetValue(defaultval6);
   m_label[5]->Show(!label6.IsEmpty());
   m_textctrl[5]->Show(!label6.IsEmpty());
-  m_label[5]->SetToolTip(tooltip6);
   m_textctrl[5]->SetToolTip(tooltip6);
 
   m_label[6]->SetLabel(label7);
   m_textctrl[6]->SetValue(defaultval7);
   m_label[6]->Show(!label7.IsEmpty());
   m_textctrl[6]->Show(!label7.IsEmpty());
-  m_label[6]->SetToolTip(tooltip7);
   m_textctrl[6]->SetToolTip(tooltip7);
 
   m_label[7]->SetLabel(label8);
   m_textctrl[7]->SetValue(defaultval8);
   m_label[7]->Show(!label8.IsEmpty());
   m_textctrl[7]->Show(!label8.IsEmpty());
-  m_label[7]->SetToolTip(tooltip8);
   m_textctrl[7]->SetToolTip(tooltip8);
 
   m_label[8]->SetLabel(label9);
   m_textctrl[8]->SetValue(defaultval9);
   m_label[8]->Show(!label9.IsEmpty());
   m_textctrl[8]->Show(!label9.IsEmpty());
-  m_label[8]->SetToolTip(tooltip9);
   m_textctrl[8]->SetToolTip(tooltip9);
 
   m_output->Show(!commandRule.IsEmpty());

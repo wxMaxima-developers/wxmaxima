@@ -86,7 +86,6 @@ public:
 protected:
   void UpdateOutput();
   void OnParamChange(wxCommandEvent& event);
-  void OnHelpButton(wxCommandEvent& event);
 
   std::vector<BTextCtrl*> m_textctrl;
   std::vector<wxStaticText *> m_label;
