@@ -51,6 +51,7 @@ public:
 
   enum popupitems
   {
+    undo_redo,
     copy_paste,
     open_save,
     print,
@@ -110,10 +111,30 @@ public:
   //! The slider for animations
   wxSlider *m_plotSlider;
 
+  wxBitmap  m_undoIcon;
+  wxBitmap  m_redoIcon;
   wxBitmap  m_followIcon;
   wxBitmap  m_needsInformationIcon;
   wxBitmap  m_PlayButton;
   wxBitmap  m_StopButton;
+  
+  void CanUndo(bool value)
+  {
+    if (value != m_canUndo_old)
+    {
+      EnableTool(wxID_UNDO, value);
+      m_canUndo_old = value;
+    }
+  }
+
+  void CanRedo(bool value)
+  {
+    if (value != m_canRedo_old)
+    {
+      EnableTool(wxID_UNDO, value);
+      m_canRedo_old = value;
+    }
+  }
 
   void CanCopy(bool value)
   {
@@ -202,6 +223,9 @@ public:
   //! Update the bitmaps on ppi changes.
   void UpdateBitmaps();
 
+
+  wxBitmap GetCopyBitmap(wxSize siz = wxSize(-1, -1));
+  wxBitmap GetPasteBitmap(wxSize siz = wxSize(-1, -1));
   wxBitmap GetEvalAllBitmap(wxSize siz = wxSize(-1, -1));
   wxBitmap GetEvalBitmap(wxSize siz = wxSize(-1, -1));
   wxBitmap GetNewBitmap(wxSize siz = wxSize(-1, -1));
@@ -210,8 +234,8 @@ public:
   wxBitmap GetPrintBitmap(wxSize siz = wxSize(-1, -1));
   wxBitmap GetPreferencesBitmap(wxSize siz = wxSize(-1, -1));
   wxBitmap GetCutBitmap(wxSize siz = wxSize(-1, -1));
-  wxBitmap GetCopyBitmap(wxSize siz = wxSize(-1, -1));
-  wxBitmap GetPasteBitmap(wxSize siz = wxSize(-1, -1));
+  wxBitmap GetUndoBitmap(wxSize siz = wxSize(-1, -1));
+  wxBitmap GetRedoBitmap(wxSize siz = wxSize(-1, -1));
   wxBitmap GetSelectAllBitmap(wxSize siz = wxSize(-1, -1));
   wxBitmap GetFindBitmap(wxSize siz = wxSize(-1, -1));
   wxBitmap GetRestartBitmap(wxSize siz = wxSize(-1, -1));
@@ -220,6 +244,10 @@ public:
   wxBitmap GetHelpBitmap(wxSize siz = wxSize(-1, -1));
   wxBitmap GetEvalRestBitmap(wxSize siz = wxSize(-1, -1));
   wxBitmap GetHideCodeBitmap(wxSize siz = wxSize(-1, -1));
+
+  bool ShowUndoRedo(){bool show = false;wxConfig::Get()->Read("Toolbar/showUndoRedo",&show);
+    return show;}
+  void ShowUndoRedo(bool show){wxConfig::Get()->Write("Toolbar/showUndoRedo",show);}
 
   bool ShowCopyPaste(){bool show = true;wxConfig::Get()->Read("Toolbar/showCopyPaste",&show);
     return show;}
@@ -268,6 +296,8 @@ private:
   int m_animationDisplayedIndex;
   //! The length of the current animation at the last call of UpdateSlider()
   int m_animationMaxIndex;
+  bool m_canRedo_old;
+  bool m_canUndo_old;
   bool m_canCopy_old;
   bool m_canCut_old;
   bool m_canSave_old;

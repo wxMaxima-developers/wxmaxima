@@ -175,11 +175,27 @@ void ToolBar::AddTools()
 #endif
     AddTool(wxID_PRINT, _("Print"), GetPrintBitmap(), _("Print document"));
   }
+  if(ShowUndoRedo())
+  {
+#ifndef __WXOSX__
+    if(ShowOpenSave() || ShowNew())
+      AddSeparator();
+#endif
+    AddTool(wxID_UNDO, _("Undo"), GetUndoBitmap());
+    AddTool(wxID_REDO, _("Redo"), GetRedoBitmap());
+  }
   if(ShowOptions())
+  {
+#ifndef __WXOSX__
+    if(ShowOpenSave() || ShowNew() || ShowUndoRedo())
+      AddSeparator();
+#endif
     AddTool(wxID_PREFERENCES, _("Options"), GetPreferencesBitmap(), _("Configure wxMaxima"));
+  }
   if(ShowCopyPaste())
   {
 #ifndef __WXOSX__
+    if(ShowSelectAll() || ShowOpenSave() || ShowNew() || ShowPrint() || ShowUndoRedo())
     AddSeparator();
 #endif
     AddTool(wxID_CUT, _("Cut"), GetCutBitmap(), _("Cut selection"));
@@ -191,13 +207,13 @@ void ToolBar::AddTools()
   if(ShowSearch())
   {
 #ifndef __WXOSX__
-    if(ShowSelectAll() || ShowOpenSave() || ShowNew() || ShowPrint())
+    if(ShowSelectAll() || ShowOpenSave() || ShowNew() || ShowPrint() || ShowUndoRedo() || ShowCopyPaste())
       AddSeparator();
 #endif
     AddTool(wxID_FIND, _("Find"), GetFindBitmap(), _("Find and replace"));
   }
 #ifndef __WXOSX__
-  if(ShowSelectAll() || ShowOpenSave() || ShowNew() || ShowPrint() || ShowOptions())
+  if(ShowSelectAll() || ShowOpenSave() || ShowNew() || ShowPrint() || ShowOptions() || ShowUndoRedo() || ShowSearch())
     AddSeparator();
 #endif
   AddTool(menu_restart_id, _("Restart Maxima"), GetRestartBitmap(),
@@ -358,6 +374,8 @@ void ToolBar::UpdateBitmaps()
   SetToolBitmap(wxID_NEW,GetNewBitmap());
   SetToolBitmap(wxID_OPEN,GetOpenBitmap());
   SetToolBitmap(wxID_SAVE,GetSaveBitmap());
+  SetToolBitmap(wxID_UNDO,GetUndoBitmap());
+  SetToolBitmap(wxID_REDO,GetRedoBitmap());
   SetToolBitmap(wxID_PRINT,GetPrintBitmap());
   SetToolBitmap(wxID_PREFERENCES,GetPreferencesBitmap());
   SetToolBitmap(wxID_CUT,GetCutBitmap());
@@ -409,6 +427,14 @@ wxBitmap ToolBar::GetOpenBitmap(wxSize siz)
 wxBitmap ToolBar::GetSaveBitmap(wxSize siz)
 {
   return GetBitmap(wxT("gtk-save"), GTK_SAVE_SVG_GZ, GTK_SAVE_SVG_GZ_SIZE, siz);
+}
+wxBitmap ToolBar::GetUndoBitmap(wxSize siz)
+{
+  return GetBitmap(wxT("gtk-undo"), GTK_UNDO_SVG_GZ, GTK_UNDO_SVG_GZ_SIZE, siz);
+}
+wxBitmap ToolBar::GetRedoBitmap(wxSize siz)
+{
+  return GetBitmap(wxT("gtk-redo"), GTK_REDO_SVG_GZ, GTK_REDO_SVG_GZ_SIZE, siz);
 }
 wxBitmap ToolBar::GetPreferencesBitmap(wxSize siz)
 {
@@ -621,6 +647,9 @@ void ToolBar::OnMouseRightDown(wxMouseEvent &WXUNUSED(event))
   popupMenu->AppendCheckItem(shownew, _("New button"),
                              _("Show the \"New\" button?"));
   popupMenu->Check(shownew, ShowNew());
+  popupMenu->AppendCheckItem(undo_redo, _("Undo and redo button"),
+                             _("Show the undo and redo button?"));
+  popupMenu->Check(undo_redo, ShowUndoRedo());
   popupMenu->AppendCheckItem(open_save, _("Open and save button"),
                              _("Show the open and the save button?"));
   popupMenu->Check(open_save, ShowOpenSave());
@@ -663,6 +692,10 @@ void ToolBar::OnMenu(wxMenuEvent &event)
     break;
   case open_save:
     ShowOpenSave(!ShowOpenSave());
+    AddTools();
+    break;
+  case undo_redo:
+    ShowUndoRedo(!ShowUndoRedo());
     AddTools();
     break;
   case print:

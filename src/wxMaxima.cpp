@@ -806,7 +806,11 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
           wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
   Connect(wxID_UNDO, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
+  Connect(wxID_UNDO, wxEVT_BUTTON,
+          wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
   Connect(wxID_REDO, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
+  Connect(wxID_REDO, wxEVT_BUTTON,
           wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
   Connect(menu_texform, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
@@ -4858,6 +4862,8 @@ void wxMaxima::UpdateToolBar()
   if (!m_worksheet->m_mainToolBar)
     return;
 
+  m_worksheet->m_mainToolBar->CanUndo(m_worksheet->CanUndo());
+  m_worksheet->m_mainToolBar->CanRedo(m_worksheet->CanRedo());
   m_worksheet->m_mainToolBar->CanCopy(m_worksheet->CanCopy(true));
   m_worksheet->m_mainToolBar->CanCut(m_worksheet->CanCut());
   m_worksheet->m_mainToolBar->CanSave((!m_fileSaved));
