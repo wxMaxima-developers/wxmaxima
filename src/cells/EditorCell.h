@@ -466,7 +466,13 @@ public:
   }
 
   //! Get the list of commands, parenthesis, strings and whitespaces in a code cell
-  const MaximaTokenizer::TokenList &GetTokens() const {return m_tokens;}
+  const MaximaTokenizer::TokenList &GetTokens()
+    {
+      // If we never show a code cell it might still not be tokenized
+      if(!(*m_configuration)->ShowCodeCells())
+        StyleText();
+      return m_tokens; 
+    }
 
 private:
   //! Did the zoom factor change since the last recalculation?
