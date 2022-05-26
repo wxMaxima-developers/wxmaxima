@@ -1,6 +1,5 @@
-# Current:
- * Update the Ukrainian translation
- * Many MacOs fixes
+# 22.05.0:
+ * Updated the Ukrainian translation
  * Added `guess_exact_value` to the numeric menu.
  * Added lapack to the matrix menu
  * Added linpack to the numeric menu
@@ -16,6 +15,7 @@
  * Hidden code cells now are correctly sent to maxime (#1674)
  * MacOs: The toolbar icons work now on retina screens (#1657)
  * MacOs: The config dialogue works again (#1662)
+ * Many additional MacOs fixes
  * The Cygwin build works again
  * Support for wxWidgets 3.1.6
 

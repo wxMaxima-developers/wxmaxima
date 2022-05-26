@@ -57,6 +57,34 @@
     <content_attribute id="social-info">mild</content_attribute>
   </content_rating>
   <releases>
+   <release version="22.05.0" date="2022-05-26T22:50:00Z">
+     <description>
+       <p>
+	 Mainly Bug fixes.
+	 <ul>
+ <li>Updated the Ukrainian translation</li>
+ <li>Added guess_exact_value to the numeric menu</li>
+ <li>Added lapack to the matrix menu</li>
+ <li>Added linpack to the numeric menu</li>
+ <li>Added a "declare facts" right-click menu entry to variables</li>
+ <li>We no more reserve space for hidden input</li>
+ <li>A better logexpand section in the numeric menu</li>
+ <li>Many wizards have a more modern look and feel, now</li>
+ <li>The modern-style wizards are now dockable by default</li>
+ <li>Undo and redo buttons for the toolbar</li>
+ <li>A "construct fraction" wizard (#1664)</li>
+ <li>Printing multiple-page documents now should work again on Linux (#1671)</li>
+ <li>The selection should now no more overwrite test (#1665)</li>
+ <li>Hidden code cells now are correctly sent to maxime (#1674)</li>
+ <li>MacOs: The toolbar icons work now on retina screens (#1657)</li>
+ <li>MacOs: The config dialogue works again (#1662)</li>
+ <li>Many additional MacOs fixes</li>
+ <li>The Cygwin build works again</li>
+ <li>Support for wxWidgets 3.1.6</li>
+	 </ul>
+       </p>
+     </description>
+  </release>
    <release version="22.04.0" date="2022-04-09T09:36:00Z">
      <description>
        <p>
