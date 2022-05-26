@@ -101,7 +101,7 @@ GenWizPanel::GenWizPanel(wxWindow *parent, Configuration *cfg,
 //    grid_sizer->Add(m_warning, 0, wxALL, 5);
   m_output = new wxTextCtrl(this, wxID_ANY, wxEmptyString, wxDefaultPosition,
                             wxDefaultSize,
-                            wxTE_READONLY|wxTE_MULTILINE|wxTE_CHARWRAP);
+                            wxTE_READONLY|wxTE_MULTILINE|wxTE_CHARWRAP|ywxTE_NO_VSCROLL);
   wxStaticBoxSizer *resultBox = new wxStaticBoxSizer(wxVERTICAL, this, _("Maxima Code:"));
   resultBox->Add(m_output, wxSizerFlags(1).Border(wxALL, 5*GetContentScaleFactor()).Expand());
   vbox->Add(resultBox, wxSizerFlags(1).Border(wxALL, 5*GetContentScaleFactor()).Expand());
