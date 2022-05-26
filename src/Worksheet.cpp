@@ -530,6 +530,8 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
 #endif
   
   // Don't fill the text background with the background color
+  // No need to do the same for the antialiassing DC: We won't use that
+  // one for drawing text as on MS Windows it doesn't support all fonts
   m_configuration->GetDC()->SetMapMode(wxMM_TEXT);
 
   if(antiAliassingDC.IsOk())
@@ -554,7 +556,7 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
     m_configuration->GetDC()->SetPen(*wxTRANSPARENT_PEN);
     m_configuration->GetDC()->SetLogicalFunction(wxCOPY);
         
-    // Tell the configuration where to crop in this redraw
+    // Tell the configuration where to crop in this region
     int xstart, xend, top, bottom;
     CalcUnscrolledPosition(rect.GetLeft(), rect.GetTop(), &xstart, &top);
     CalcUnscrolledPosition(rect.GetRight(), rect.GetBottom(), &xend, &bottom);
@@ -567,6 +569,25 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
 
     // Clear the drawing area
     m_configuration->GetDC()->DrawRectangle(unscrolledRect);
+
+    //
+    // Draw the selection marks
+    //
+    if (HasCellsSelected() && m_cellPointers.m_selectionStart->GetType() != MC_TYPE_GROUP)
+    {
+      m_configuration->GetDC()->SetPen(*(wxThePenList->FindOrCreatePen(m_configuration->GetColor(TS_SELECTION), 1, wxPENSTYLE_SOLID)));
+      m_configuration->GetDC()->SetBrush(*(wxTheBrushList->FindOrCreateBrush(m_configuration->GetColor(TS_SELECTION))));
+
+      // Draw the marker that tells us which output cells are selected -
+      // if output cells are selected, that is.
+      for (Cell &tmp : OnDrawList(m_cellPointers.m_selectionStart.get()))
+      {
+        if (!tmp.IsBrokenIntoLines() && !tmp.IsHidden() && &tmp != GetActiveCell())
+          tmp.DrawBoundingBox(dc, false);
+        if (&tmp == m_cellPointers.m_selectionEnd)
+          break;
+      }
+    }
 
     //
     // Draw the cell contents
@@ -675,26 +696,6 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
       m_configuration->SetContext(m_dc);
       return;
     }
-
-    //
-    // Draw the selection marks
-    //
-    if (HasCellsSelected() && m_cellPointers.m_selectionStart->GetType() != MC_TYPE_GROUP)
-    {
-      m_configuration->GetDC()->SetPen(*(wxThePenList->FindOrCreatePen(m_configuration->GetColor(TS_SELECTION), 1, wxPENSTYLE_SOLID)));
-      m_configuration->GetDC()->SetBrush(*(wxTheBrushList->FindOrCreateBrush(m_configuration->GetColor(TS_SELECTION))));
-
-      // Draw the marker that tells us which output cells are selected -
-      // if output cells are selected, that is.
-      for (Cell &tmp : OnDrawList(m_cellPointers.m_selectionStart.get()))
-      {
-        if (!tmp.IsBrokenIntoLines() && !tmp.IsHidden() && &tmp != GetActiveCell())
-          tmp.DrawBoundingBox(dc, false);
-        if (&tmp == m_cellPointers.m_selectionEnd)
-          break;
-      }
-    }
-
     
     m_configuration->SetContext(m_dc);
     m_configuration->UnsetAntialiassingDC();
