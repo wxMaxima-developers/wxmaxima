@@ -3,9 +3,21 @@
  * Many MacOs fixes
  * Added `guess_exact_value` to the numeric menu.
  * Added lapack to the matrix menu
+ * Added linpack to the numeric menu
  * Added a "declare facts" right-click menu entry to variables
  * We no more reserve space for hidden input
- * A better logexpand menu
+ * A better logexpand section in the numeric menu
+ * Modernized many wizards
+ * The modernized are now dockable by default
+ * Undo and redo buttons for the toolbar
+ * A "construct fraction" wizard (#1664)
+ * Printing multiple-page documents now should work again on Linux (#1671)
+ * The selection should now no more overwrite test (#1665)
+ * Hidden code cells now are correctly sent to maxime (#1674)
+ * MacOs: The toolbar icons work now on retina screens (#1657)
+ * MacOs: The config dialogue works again (#1662)
+ * The Cygwin build works again
+ * Support for wxWidgets 3.1.6
 
 # 22.04.0:
  * A Russian translation update from Olesya Gerasimenko
