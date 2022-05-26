@@ -7,8 +7,8 @@
  * Added a "declare facts" right-click menu entry to variables
  * We no more reserve space for hidden input
  * A better logexpand section in the numeric menu
- * Modernized many wizards
- * The modernized are now dockable by default
+ * Many wizards have a more modern look and feel, now
+ * The modern-style wizards are now dockable by default
  * Undo and redo buttons for the toolbar
  * A "construct fraction" wizard (#1664)
  * Printing multiple-page documents now should work again on Linux (#1671)
