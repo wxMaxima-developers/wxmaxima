@@ -338,7 +338,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
     Left();
   
   m_manager.AddPane(
-    m_wizard = new GenWizPanel(
+    m_wizard = new ScrollingGenWizPanel(
       this, m_worksheet->m_configuration),
     wxAuiPaneInfo().Name(wxT("wizard")).
     CloseButton(true).

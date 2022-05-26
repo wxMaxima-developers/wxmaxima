@@ -66,6 +66,7 @@ set(WIZARD_SOURCE_FILES
     Gen4Wiz.cpp
     Gen5Wiz.cpp
     GenWizPanel.cpp
+    ScrollingGenWizPanel.cpp
     GenWiz.cpp
     IntegrateWiz.cpp
     LimitWiz.cpp
