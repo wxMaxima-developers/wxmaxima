@@ -11,7 +11,7 @@ if(WIN32)
     enable_language(RC)
 endif()
 
-set(VERSION 22.05.0)
+set(VERSION 22.05.0-DevelopmentSnapshot)
 set(GITVERSION ${VERSION})
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -221,7 +221,7 @@ add_subdirectory(test)
 
 add_custom_target(dist COMMAND ${CMAKE_MAKE_PROGRAM} package_source)
 
-install(FILES AUTHORS.md COPYING ChangeLog GPL.txt NEWS.md README README.md DESTINATION share/doc/wxmaxima)
+install(FILES AUTHORS.md COPYING GPL.txt NEWS.md README README.md DESTINATION share/doc/wxmaxima)
 
 # include wxWidgets DLLs on Windows on appveyor
 if(WIN32 AND APPVEYOR_BUILD)
