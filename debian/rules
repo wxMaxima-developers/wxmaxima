@@ -12,6 +12,10 @@ export DEB_CXXFLAGS_MAINT_APPEND = -Wall -DNDEBUG
 override_dh_auto_build:
 	dh_auto_build -- all
 
+# Don't install the bundled fonts: On debian there is a package for them, instead.
+override_dh_auto_configure:
+	dh_auto_configure -- -DWXM_INCLUDE_FONTS=OFF
+
 override_dh_auto_test:
 ifeq (,$(filter nocheck,$(DEB_BUILD_OPTIONS)))
 	xvfb-run make test
