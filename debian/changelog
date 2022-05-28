@@ -1,24 +1,13 @@
 wxmaxima (22.09.0-1) unstable; urgency=medium
 
-  * New upstream version
-  * Added the new dependency to wxWebView
-  * Allow building with wxWidgets 3.2
+  * A new upstream version
+  * The main branch of wxMaxima is no named "main"
+  * Told the build system not to install fonts the package manager can install
+  * A patch that hinders wxMaxima from installing the old empty ChangeLog
 
- -- Gunter Königsmann <wxmaxima@physikbuch.de>  Thu, 15 Sep 2022 09:36:36 +0100
-
-wxmaxima (21.05.1-1) unstable; urgency=medium
-
-  * New upstream version
-
- -- Gunter Königsmann <wxmaxima@physikbuch.de>  Sat, 23 Jan 2021 19:54:36 +0100
+ -- Gunter Königsmann <wxmaxima@physikbuch.de>  Fri, 27 May 2022 08:25:36 +0100
 
 wxmaxima (20.12.1-1) unstable; urgency=medium
-
-  * IE9 only: Don't downlad a file unasked when opening the manual
-
- -- Gunter Königsmann <wxmaxima@physikbuch.de>  Mon, 29 Dec 2020 10:12:36 +0100
-
-wxmaxima (20.12.0-1) unstable; urgency=medium
 
   * A new upstream version
   * The debian package now uses GTK3
@@ -29,13 +18,13 @@ wxmaxima (20.12.0-1) unstable; urgency=medium
   * Removed an no-more-needed linker flag injection
   * Dropped the workaround for the spurious COPYING file install
   * New build depends for the automatic tests: netcat-openbsd, xvfb,
-    debian-file-utils and appstream-util
+    debian-file-utils, xauth and appstream-util
 
  -- Gunter Königsmann <wxmaxima@physikbuch.de>  Mon, 28 Dec 2020 12:15:36 +0100
 
 wxmaxima (19.07.0-1.1) unstable; urgency=medium
 
-  * Non-maintainer upload without maintainers permission.
+  * Non-maintainer upload with maintainers permission.
   * Update to build against GTK3 flavour of wxwidgets3.0. (Closes: #933429)
 
  -- Olly Betts <olly@survex.com>  Fri, 27 Sep 2019 09:06:45 +1200
