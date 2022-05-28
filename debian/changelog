@@ -1,8 +1,8 @@
 wxmaxima (22.05.0-1) unstable; urgency=medium
 
-  * A new upstream version
-  * The main branch of wxMaxima is no named "main"
-  * Told the build system not to install fonts the package manager can install
+  * A new upstream version bringing vast improvements
+  * The main branch of wxMaxima is now named "main"
+  * Added a cmake flag that tells not to install fonts there is a package for
   * A patch that hinders wxMaxima from installing the old empty ChangeLog
 
  -- Gunter Königsmann <wxmaxima@physikbuch.de>  Fri, 27 May 2022 08:25:36 +0100
