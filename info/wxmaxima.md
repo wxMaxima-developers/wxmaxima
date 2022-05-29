@@ -106,7 +106,7 @@ A (C-style) comment text can be part of a math cell as follows: `/* This comment
 
 ### Horizontal and vertical cursors
 
-If the user tries to select a complete sentence a word processor will try to extend the selection to automatically begin and end with a word boundary. Likewise _wxMaxima_ if more than one cell is selected will extend the selection to whole cells.
+If the user tries to select a complete sentence a word processor will try to extend the selection to automatically begin and end with a word boundary. Likewise, if more than one cell is selected, _wxMaxima_ will extend the selection to whole cells.
 
 What isn't standard is that _wxMaxima_ provides drag-and-drop flexibility by defining two types of cursors. _wxMaxima_ will switch between them automatically when needed:
 
@@ -119,9 +119,9 @@ When you start wxMaxima, you will only see the blinking horizontal cursor. If yo
 ![(blinking) horizontal cursor after wxMaxima start](./horizontal-cursor-only.png){ id=img_horizontal_cursor_only }
 
 
-You might want to create another cell type (using the "Cell" menu), maybe a title cell or text cell, which describes, what will be done, when you start creating your worksheet.
+You might want to create a different cell type (using the "Cell" menu), maybe a title cell or text cell, which describes, what will be done, when you start creating your worksheet.
 
-If you navigate between the different cells, you will also see the (blinking) horizontal cursor, where you can insert a cell into your worksheet (either a math cell, by just start typing your formula - or another cell type using the menu).
+If you navigate between the different cells, you will also see the (blinking) horizontal cursor, where you can insert a cell into your worksheet (either a math cell, by just start typing your formula - or a different cell type using the menu).
 
 ![(blinking) horizontal cursor between cells](./horizontal-cursor-between-cells.png){ id=img_horizontal_cursor_between_cells }
 
