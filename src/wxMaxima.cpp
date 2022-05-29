@@ -6518,14 +6518,13 @@ void wxMaxima::MaximaMenu(wxCommandEvent &event)
       MenuCommand(cmd);
       break;
     case menu_fun_def:
-      cmd = GetTextFromUser(_("Show the definition of function:"),
-                            _("Function"), m_worksheet->m_configuration, wxEmptyString, this);
-      if (cmd.Length())
-      {
-        cmd = wxT("fundef(") + cmd + wxT(");");
-        MenuCommand(cmd);
-      }
-      break;
+      CommandWiz(_("Show the function's definition"),
+      wxEmptyString,wxEmptyString,
+      wxT("fundef(#1#);"),
+      wxT("function"),wxT("%"),wxEmptyString);
+    break;
+
+      
     case menu_add_path:
     {
       if (m_lastPath.Length() == 0)
@@ -8411,7 +8410,6 @@ void wxMaxima::NumericalMenu(wxCommandEvent &event)
     break;
   }
   case menu_quad_qagp:
-  {
     CommandWiz(
       integralSign+_("(f(x),x,y) with singularities+discontinuities"),
       wxEmptyString,wxEmptyString,
@@ -8425,7 +8423,6 @@ void wxMaxima::NumericalMenu(wxCommandEvent &event)
       wxT("epsabs"),wxT("0"),wxEmptyString,
       wxT("limit"),wxT("200"),wxEmptyString);
     break;
-  }
   default:
     break;
   }
