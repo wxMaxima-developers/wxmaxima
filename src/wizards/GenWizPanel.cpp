@@ -100,7 +100,7 @@ GenWizPanel::GenWizPanel(wxWindow *parent, Configuration *cfg,
   
 //  if(m_warning != NULL)
 //    grid_sizer->Add(m_warning, 0, wxALL, 5);  
-  wxCollapsiblePane *m_collpane = new wxCollapsiblePane(this, wxID_ANY, _("Maxima Code:"));
+  *m_collpane = new wxCollapsiblePane(this, wxID_ANY, _("Maxima Code:"));
   m_collpane->Collapse(m_configuration->WizardCollapseOutput());
   wxSizer *collSizer = new wxBoxSizer(wxVERTICAL);
   m_output = new wxTextCtrl(m_collpane->GetPane(), wxID_ANY, wxEmptyString, wxDefaultPosition,
