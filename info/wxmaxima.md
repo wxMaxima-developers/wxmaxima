@@ -106,7 +106,7 @@ A (C-style) comment text can be part of a math cell as follows: `/* This comment
 
 ### Horizontal and vertical cursors
 
-If the user tries to select a complete sentence a word processor will try to extend the selection to automatically begin and end with a word boundary. Likewise _wxMaxima_ if more than one cell is selected will extend the selection to whole cells.
+If the user tries to select a complete sentence, a word processor will try to extend the selection to automatically begin and end with a word boundary. Likewise, if more than one cell is selected, _wxMaxima_ will extend the selection to whole cells.
 
 What isn't standard is that _wxMaxima_ provides drag-and-drop flexibility by defining two types of cursors. _wxMaxima_ will switch between them automatically when needed:
 
@@ -119,23 +119,23 @@ When you start wxMaxima, you will only see the blinking horizontal cursor. If yo
 ![(blinking) horizontal cursor after wxMaxima start](./horizontal-cursor-only.png){ id=img_horizontal_cursor_only }
 
 
-You might want to create another cell type (using the "Cell" menu), maybe a title cell or text cell, which describes, what will be done, when you start creating your worksheet.
+You might want to create a different cell type (using the "Cell" menu), maybe a title cell or text cell, which describes, what will be done, when you start creating your worksheet.
 
-If you navigate between the different cells, you will also see the (blinking) horizontal cursor, where you can insert a cell into your worksheet (either a math cell, by just start typing your formula - or another cell type using the menu).
+If you navigate between the different cells, you will also see the (blinking) horizontal cursor, where you can insert a cell into your worksheet (either a math cell, by just start typing your formula - or a different cell type using the menu).
 
 ![(blinking) horizontal cursor between cells](./horizontal-cursor-between-cells.png){ id=img_horizontal_cursor_between_cells }
 
 ### Sending cells to Maxima
 
-The command in a code cell are executed once <kbd>CTRL</kbd>+<kbd>ENTER</kbd>, <kbd>SHIFT</kbd>+<kbd>ENTER</kbd> or the <kbd>ENTER</kbd> key on the keypad is pressed. The _wxMaxima_ default is to enter commands when either <kbd>CTRL+ENTER</kbd> or <kbd>SHIFT+ENTER</kbd> is entered, but _wxMaxima_ can be configured to execute commands in response to <kbd>ENTER</kbd>.
+The command in a code cell is executed once by pressing <kbd>CTRL</kbd>+<kbd>ENTER</kbd>, <kbd>SHIFT</kbd>+<kbd>ENTER</kbd> or the <kbd>ENTER</kbd> key on the keypad. The _wxMaxima_ default is to enter commands when either <kbd>CTRL+ENTER</kbd> or <kbd>SHIFT+ENTER</kbd> is entered, but _wxMaxima_ can be configured to execute commands in response to <kbd>ENTER</kbd>.
 
 ### Command autocompletion
 
-_wxMaxima_ contains an autocompletion feature that is triggered via the menu (Cell/Complete Word) or alternatively by pressing the key combination <kbd>CTRL</kbd>+<kbd>SPACE</kbd>. The autocompletion is context-sensitive. For example if activated within a unit specification for ezUnits it will offer a list of applicable units.
+_wxMaxima_ contains an autocompletion feature that is triggered via the menu (Cell/Complete Word) or alternatively by pressing the key combination <kbd>CTRL</kbd>+<kbd>SPACE</kbd>. The autocompletion is context-sensitive. For example, if activated within a unit specification for ezUnits it will offer a list of applicable units.
 
 ![ezUnits](./ezUnits.png){ id=img_ezUnits }
 
-Besides completing a file name, a unit name or the current command’s or variable’s name the autocompletion is able to show a template for most of the commands indicating the type (and meaning) of the parameters this program expects. To activate this feature press <kbd>SHIFT</kbd>+<kbd>CTRL</kbd>+<kbd>SPACE</kbd> or select the respective menu item (Cell/Show Template).
+Besides completing a file name, a unit name, or the current command or variable name, the autocompletion is able to show a template for most of the commands indicating the type (and meaning) of the parameters this program expects. To activate this feature press <kbd>SHIFT</kbd>+<kbd>CTRL</kbd>+<kbd>SPACE</kbd> or select the respective menu item (Cell/Show Template).
 
 #### Greek characters
 
@@ -714,7 +714,7 @@ If the zip signature at the end of the file is still intact after renaming a bro
 
 And even if there isn’t such a file: The `.wxmx` file is a container format and the XML portion is stored uncompressed. It it is possible to rename the `.wxmx` file to a `.txt` file and to use a text editor to recover the XML portion of the file's contents (it starts with `<?xml version="1.0" encoding="UTF-8"?>` and ends with `</wxMaximaDocument>`. Before and after that text you will see some unreadable binary contents in the text editor).
 
-If a text file containing only this contents (e.g. copy and paste this text into a new file) is saved as a file ending in `.xml`, _wxMaxima_ will know how to recover the text of the document from it.
+If a text file containing only this contents (e.g. copy and paste this text into a new file) is saved as a file ending in `.xml`, _wxMaxima_ will know how to recover the text from the document.
 
 ## I want some debug info to be displayed on the screen before my command has finished
 
