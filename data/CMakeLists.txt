@@ -45,7 +45,6 @@ if(WXM_INCLUDE_FONTS)
 endif()
 
 if(NOT WIN32)
-    string(TIMESTAMP CURRENTDATE "%Y-%m-%d" UTC)
     # the config file is ~/.wxMaxima if wxWidgets < 3.1.1
     #                    ~/.config/wxMaxima.conf if wxWidgets >= 3.1.1 (XDG Specification)
     if(wxWidgets_VERSION_STRING VERSION_GREATER_EQUAL "3.1.1")
