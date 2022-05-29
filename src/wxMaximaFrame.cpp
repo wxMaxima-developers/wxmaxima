@@ -1256,6 +1256,9 @@ void wxMaximaFrame::SetupMenu()
   m_SimplifyMenu->Append(menu_expand, _("&Expand Expression"),
                          _("Expand an expression"), wxITEM_NORMAL);
   m_logexpand_Sub = new wxMenu;
+  m_logexpand_Sub->Append(menu_logcontract, _("Contract Logarithms"),
+                          _("Convert sum of logarithms to logarithm of product"),
+                          wxITEM_NORMAL);
   m_logexpand_Sub->Append(menu_logexpand, _("Expand log in previous expression"),
                         _("Warning: No test if the argument of the log is complex, positive or negative"),
                         wxITEM_NORMAL);
@@ -1266,9 +1269,6 @@ void wxMaximaFrame::SetupMenu()
   m_logexpand_Sub->AppendRadioItem(menu_logexpand_super, _("Additionally: log(a/b)=log(a)-log(b), a and b positive integers"), _("Set Maxima option variable logexpand:super"));
   m_SimplifyMenu->Append(wxNewId(), _("Simplify Logarithms"),
                          m_logexpand_Sub);
-  m_SimplifyMenu->Append(menu_logcontract, _("Contract Logarithms"),
-                         _("Convert sum of logarithms to logarithm of product"),
-                         wxITEM_NORMAL);
   m_SimplifyMenu->AppendSeparator();
   // Factorials and gamma
   m_Simplify_Gamma_Sub = new wxMenu;
