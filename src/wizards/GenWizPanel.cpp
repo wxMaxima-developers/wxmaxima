@@ -108,8 +108,7 @@ GenWizPanel::GenWizPanel(wxWindow *parent, Configuration *cfg,
                             wxTE_READONLY|wxTE_MULTILINE|wxTE_CHARWRAP|wxTE_NO_VSCROLL);
   collSizer->Add(m_output, wxSizerFlags(1).Border(wxALL, 5*GetContentScaleFactor()).Expand());
   m_collpane->GetPane()->SetSizer(collSizer);
-  collSizer->SetSizeHints(m_collpane->GetPane());
-  vbox->Add(m_collpane, wxSizerFlags(1).Border(wxALL, 5*GetContentScaleFactor()).Expand());
+  vbox->Add(m_collpane, wxSizerFlags(0).Border(wxALL, 5*GetContentScaleFactor()).Expand());
 
   wxBoxSizer *buttonSizer = new wxBoxSizer(wxHORIZONTAL);
   m_insertButton = new wxButton(this, wxID_ANY, _("Insert"));
