@@ -6522,7 +6522,7 @@ void wxMaxima::MaximaMenu(wxCommandEvent &event)
       wxEmptyString,wxEmptyString,
       wxT("fundef(#1#);"),
       wxT("function"),wxT("%"),wxEmptyString);
-    break;
+      break;
 
       
     case menu_add_path:
@@ -6583,24 +6583,20 @@ void wxMaxima::MaximaMenu(wxCommandEvent &event)
     }
       break;
     case menu_clear_var:
-      cmd = GetTextFromUser(_("Delete variable(s):"), _("Delete"),
-                            m_worksheet->m_configuration,
-                            wxT("all"), this);
-      if (cmd.Length())
-      {
-        cmd = wxT("remvalue(") + cmd + wxT(");");
-        MenuCommand(cmd);
-      }
+      CommandWiz(
+        _("Delete variable(s)"),
+        wxEmptyString,wxEmptyString,
+        wxT("remvalue(#1#);"),
+        _("Variable name:"),wxT("all"),wxEmptyString
+        );
       break;
     case menu_clear_fun:
-      cmd = GetTextFromUser(_("Delete function(s):"), _("Delete"),
-                            m_worksheet->m_configuration,
-                            wxT("all"), this);
-      if (cmd.Length())
-      {
-        cmd = wxT("remfunction(") + cmd + wxT(");");
-        MenuCommand(cmd);
-      }
+      CommandWiz(
+        _("Delete function(s)"),
+        wxEmptyString,wxEmptyString,
+        wxT("remfunction(#1#);"),
+        _("Runction name:"),wxT("all"),wxEmptyString
+        );
       break;
     case menu_subst:
     case button_subst:
@@ -7804,26 +7800,16 @@ void wxMaxima::SimplifyMenu(wxCommandEvent &event)
       MenuCommand(cmd);
       break;
     case menu_tellrat:
-      cmd = GetTextFromUser(_("Enter an equation for rational simplification:"),
-                            _("Tellrat"),
-                            m_worksheet->m_configuration,
-                            wxEmptyString, this);
-      if (cmd.Length())
-      {
-        cmd = wxT("tellrat(") + cmd + wxT(");");
-        MenuCommand(cmd);
-      }
+      CommandWiz(_("Enter an equation for rational simplification:"),
+                 wxEmptyString,wxEmptyString,
+                 wxT("tellrat(#1#);"),
+                 wxT("Equation"),wxT("%"),wxEmptyString);
       break;
     case menu_modulus:
-      cmd = GetTextFromUser(_("Calculate modulus:"),
-                            _("Modulus"),
-                            m_worksheet->m_configuration,
-                            wxT("false"), this);
-      if (cmd.Length())
-      {
-        cmd = wxT("modulus : ") + cmd + wxT(";");
-        MenuCommand(cmd);
-      }
+      CommandWiz(_("Calculate modulus:"),
+                 wxEmptyString,wxEmptyString,
+                 wxT("modulus : #1#$"),
+                 wxT("Modulus"),wxT("%"),wxEmptyString);
       break;
     default:
       break;
@@ -8055,16 +8041,11 @@ void wxMaxima::PlotMenu(wxCommandEvent &event)
       break;
     case menu_animationframerate:
     {
-      cmd = GetTextFromUser(_("Enter new animation frame rate [Hz, integer]:"), _("Frame rate"),
-                            m_worksheet->m_configuration,
-                            wxT("2"), this);
-      wxRegEx number("^[0-9][0-9]*$");
-
-      if (number.Matches(cmd))
-      {
-        cmd = wxT("wxanimate_framerate : ") + cmd + wxT(";");
-        MenuCommand(cmd);
-      }
+      CommandWiz(_("Enter new animation frame rate [Hz, integer]:"),
+                 wxEmptyString,wxEmptyString,
+                 wxT("wxanimate_framerate : #1#$"),
+                 _("Frame rate"),wxT("%"),wxEmptyString);
+      break;
     }
     break;
     case button_plot2:
@@ -8184,24 +8165,16 @@ void wxMaxima::NumericalMenu(wxCommandEvent &event)
       MenuCommand(cmd);
       break;
     case menu_set_precision:
-      cmd = GetTextFromUser(_("Enter new precision for bigfloats:"), _("Precision"),
-                            m_worksheet->m_configuration,
-                            wxT("16"), this);
-      if (cmd.Length())
-      {
-        cmd = wxT("fpprec : ") + cmd + wxT(";");
-        MenuCommand(cmd);
-      }
+      CommandWiz(_("Enter new precision for bigfloats:"),
+                 wxEmptyString,wxEmptyString,
+                 wxT("fpprec : #1#$"),
+                 _("Precision"),wxT("%"),wxEmptyString);
       break;
     case menu_set_displayprecision:
-      cmd = GetTextFromUser(_("How many digits to show:"), _("Displayed Precision"),
-                            m_worksheet->m_configuration,
-                            wxT("0"), this);
-      if (cmd.Length())
-      {
-        cmd = wxT("fpprintprec : ") + cmd + wxT(";");
-        MenuCommand(cmd);
-      }
+      CommandWiz(_("Displayed Precision"),
+                 wxEmptyString,wxEmptyString,
+                 wxT("fpprintprec : #1#$"),
+                 _("How many digits to show:"),wxT("%"),wxEmptyString);
       break;
   case menu_engineeringFormat:
     if((m_maximaVariable_engineeringFormat != wxT("true")) &&
@@ -8562,31 +8535,17 @@ void wxMaxima::HelpMenu(wxCommandEvent &event)
       break;
 
     case menu_example:
-      if (expr == wxT("%"))
-        cmd = GetTextFromUser(_("Show an example for the command:"), _("Example"),
-                              m_worksheet->m_configuration,
-                              wxEmptyString, this);
-      else
-        cmd = expr;
-      if (cmd.Length())
-      {
-        cmd = wxT("example(") + cmd + wxT(");");
-        MenuCommand(cmd);
-      }
+      CommandWiz(_("Show an example for the command:"),
+                 wxEmptyString,wxEmptyString,
+                 wxT("example(#1);"),
+                 _("Command:"),wxT("%"),wxEmptyString);
       break;
 
-    case menu_apropos:
-      if (expr == wxT("%"))
-        cmd = GetTextFromUser(_("Show all commands similar to:"), _("Apropos"),
-                              m_worksheet->m_configuration,
-                              wxEmptyString, this);
-      else
-        cmd = expr;
-      if (cmd.Length())
-      {
-        cmd = wxT("apropos(\"") + cmd + wxT("\");");
-        MenuCommand(cmd);
-      }
+  case menu_apropos:
+      CommandWiz(_("Apropos"),
+                 wxEmptyString,wxEmptyString,
+                 wxT("apropos(#1);"),
+                 _("Show all commands similar to:"),wxT("%"),wxEmptyString);
       break;
 
     case menu_show_tip:
@@ -8642,68 +8601,46 @@ void wxMaxima::StatsMenu(wxCommandEvent &event)
         );
       break;
     case menu_stats_barsplot:
-    {
-      wxString data = GetTextFromUser(_("Data:"), _("Enter Data"),
-                                      m_worksheet->m_configuration,
-                                      expr, this);
-      if (data.Length() > 0)
-        MenuCommand(wxT("wxbarsplot(") + data + wxT(");"));
-    }
+      CommandWiz(_("Plot as bars"),
+                 wxEmptyString,wxEmptyString,
+                 wxT("wxbarsplot(#1);"),
+                 _("Data:"),wxT("%"),wxEmptyString);
       break;
     case menu_stats_boxplot:
-    {
-      wxString data = GetTextFromUser(_("Data:"), _("Enter Data"),
-                                      m_worksheet->m_configuration,
-                                      expr, this);
-      if (data.Length() > 0)
-        MenuCommand(wxT("wxboxplot([") + data + wxT("]);"));
-    }
+      CommandWiz(_("Plot as error bars"),
+                 wxEmptyString,wxEmptyString,
+                 wxT("wxboxplot(#1);"),
+                 _("Data:"),wxT("%"),wxEmptyString);
       break;
     case menu_stats_piechart:
-    {
-      wxString data = GetTextFromUser(_("Data:"), _("Enter Data"),
-                                      m_worksheet->m_configuration,
-                                      expr, this);
-      if (data.Length() > 0)
-        MenuCommand(wxT("wxpiechart(") + data + wxT(");"));
-    }
+      CommandWiz(_("Plot as pie chart"),
+                 wxEmptyString,wxEmptyString,
+                 wxT("wxpiechart(#1);"),
+                 _("Data:"),wxT("%"),wxEmptyString);
       break;
     case menu_stats_mean:
-    {
-
-      wxString data = GetTextFromUser(_("Data:"), _("Enter Data"),
-                                      m_worksheet->m_configuration,
-                                      expr, this);
-      if (data.Length() > 0)
-        MenuCommand(wxT("mean(") + data + wxT(");"));
-    }
+      CommandWiz(_("Calculate mean value"),
+                 wxEmptyString,wxEmptyString,
+                 wxT("mean(#1);"),
+                 _("Data:"),wxT("%"),wxEmptyString);
       break;
     case menu_stats_median:
-    {
-      wxString data = GetTextFromUser(_("Data:"), _("Enter Data"),
-                                      m_worksheet->m_configuration,
-                                      expr, this);
-      if (data.Length() > 0)
-        MenuCommand(wxT("median(") + data + wxT(");"));
-    }
+      CommandWiz(_("Calculate median value"),
+                 wxEmptyString,wxEmptyString,
+                 wxT("median(#1);"),
+                 _("Data:"),wxT("%"),wxEmptyString);
       break;
     case menu_stats_var:
-    {
-      wxString data = GetTextFromUser(_("Data:"), _("Enter Data"),
-                                      m_worksheet->m_configuration,
-                                      expr, this);
-      if (data.Length() > 0)
-        MenuCommand(wxT("var(") + data + wxT(");"));
-    }
+      CommandWiz(_("Calculate variation"),
+                 wxEmptyString,wxEmptyString,
+                 wxT("var(#1);"),
+                 _("Data:"),wxT("%"),wxEmptyString);
       break;
     case menu_stats_dev:
-    {
-      wxString data = GetTextFromUser(_("Data:"), _("Enter Data"),
-                                      m_worksheet->m_configuration,
-                                      expr, this);
-      if (data.Length() > 0)
-        MenuCommand(wxT("std(") + data + wxT(");"));
-    }
+      CommandWiz(_("Calculate standard deviation"),
+                 wxEmptyString,wxEmptyString,
+                 wxT("std(#1);"),
+                 _("Data:"),wxT("%"),wxEmptyString);
       break;
     case menu_stats_tt1:
       CommandWiz(
@@ -8724,23 +8661,20 @@ void wxMaxima::StatsMenu(wxCommandEvent &event)
         );
       break;
     case menu_stats_tnorm:
-    {
-      wxString data = GetTextFromUser(_("Data:"), _("Enter Data"),
-                                      m_worksheet->m_configuration,
-                                      expr, this);
-      if (data.Length() > 0)
-        MenuCommand(wxT("test_normality(") + data + wxT(");"));
-    }
+      CommandWiz(
+        _("Shapiro-Wilk test for normality"),
+        wxEmptyString,wxEmptyString,
+        wxT("test_normality(#1#);"),
+        _("Data:"),expr,wxEmptyString
+        );
       break;
     case menu_stats_linreg:
-    {
-
-      wxString data = GetTextFromUser(_("Data Matrix:"), _("Enter Data"),
-                                      m_worksheet->m_configuration,
-                                      expr, this);
-      if (data.Length() > 0)
-        MenuCommand(wxT("simple_linear_regression(") + data + wxT(");"));
-    }
+      CommandWiz(
+        _("Multivariate linear regression"),
+        wxEmptyString,wxEmptyString,
+        wxT("simple_linear_regression(#1#);"),
+        _("Data:"),expr,wxEmptyString
+        );
       break;
     case menu_stats_lsquares:
       CommandWiz(
