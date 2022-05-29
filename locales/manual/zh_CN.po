@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: wxMaxima-manual\n"
-"POT-Creation-Date: 2022-02-03 09:03+0100\n"
+"POT-Creation-Date: 2022-05-29 21:54+0200\n"
 "PO-Revision-Date: 2021-01-05 21:54+0800\n"
 "Last-Translator: Liu Rong <rong.liu@mail.bnu.edu.cn>\n"
 "Language-Team: rong.liu@mail.bnu.edu.cn\n"
@@ -865,7 +865,7 @@ msgstr ""
 #: ../../info/wxmaxima.md:231
 #, no-wrap
 msgid ""
-"It may be the case, that e.g. greek characters are not included in the selected font, then they can not be displayed.\n"
+"It may be the case, that e.g. greek characters or mathematical symbols are not included in the selected font, then they can not be displayed.\n"
 "To solve that problem, select other fonts (using: Edit -> Configure -> Style).\n"
 msgstr ""
 
@@ -894,14 +894,29 @@ msgstr ""
 msgid "![Example of different side panes](./SidePanes.png){ id=img_SidePanes }"
 msgstr "![各种类型的侧边栏](./SidePanes.png){ id=img_SidePanes }"
 
+#. type: Plain text
+#: ../../info/wxmaxima.md:240
+msgid ""
+"In the \"table of contents\" side pane one can increase or decrease a "
+"heading, just click on the heading with the right mouse button and select "
+"the next higher or lower heading type."
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:242
+msgid ""
+"![Increase or decrease headings in the TOC side pane](./Sidepane-TOC-convert-"
+"headings.png){ id=Sidepane-TOC-convert-headings }"
+msgstr ""
+
 #. type: Title ###
-#: ../../info/wxmaxima.md:238
+#: ../../info/wxmaxima.md:243
 #, no-wrap
 msgid "MathML output"
 msgstr "MathML 输出"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:241
+#: ../../info/wxmaxima.md:246
 msgid ""
 "Several word processors and similar programs either recognize MathML input "
 "and automatically insert it as an editable 2D equation - or (like "
@@ -915,13 +930,13 @@ msgstr ""
 "方法。"
 
 #. type: Title ###
-#: ../../info/wxmaxima.md:243
+#: ../../info/wxmaxima.md:248
 #, no-wrap
 msgid "Markdown support"
 msgstr "标记语言（Markdown）支持"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:246
+#: ../../info/wxmaxima.md:251
 msgid ""
 "_wxMaxima_ offers a set of standard markdown conventions that don't collide "
 "with mathematical notation. One of this elements is bullet lists."
@@ -930,7 +945,7 @@ msgstr ""
 "冲突。其中一个支持是项目符号列表。"
 
 #. type: Fenced code block
-#: ../../info/wxmaxima.md:247
+#: ../../info/wxmaxima.md:252
 #, no-wrap
 msgid ""
 "Ordinary text\n"
@@ -950,13 +965,13 @@ msgstr ""
 "普通文本\n"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:258
+#: ../../info/wxmaxima.md:263
 #, no-wrap
 msgid "_wxMaxima_ will recognize text starting with `>` chars as block quotes:\n"
 msgstr "wxMaxima 也能将以 `>` 字符开头的文本识别为引用块：\n"
 
 #. type: Fenced code block
-#: ../../info/wxmaxima.md:259
+#: ../../info/wxmaxima.md:264
 #, no-wrap
 msgid ""
 "Ordinary text\n"
@@ -972,31 +987,31 @@ msgstr ""
 "普通文本\n"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:268
+#: ../../info/wxmaxima.md:273
 #, no-wrap
 msgid "_wxMaxima_'s TeX and HTML output will also recognize `=>` and replace it by the corresponding Unicode sign:\n"
 msgstr "wxMaxima 的 TeX 和 HTML 输出也能识别 `=>`，并将其替换为相应的 Unicode 符号：\n"
 
 #. type: Fenced code block
-#: ../../info/wxmaxima.md:269
+#: ../../info/wxmaxima.md:274
 #, no-wrap
 msgid "cogito => sum.\n"
 msgstr "cogito => sum.\n"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:274
+#: ../../info/wxmaxima.md:279
 #, no-wrap
 msgid "Other symbols the HTML and TeX export will recognize are `<=` and `>=` for comparisons, a double-pointed double arrow (`<=>`), single- headed arrows (`<->`, `->` and `<-`) and `+/-` as the respective sign. For TeX output also `<<` and `>>` are recognized.\n"
 msgstr "导出 TeX 和 HTML 文件时将识别的其他符号还有不等号（`<=` 和 `>=`）、双线箭头（`<=>`）、单线箭头（`<->`、`->` 和 `<-`）以及 `+/-`。对于 TeX 输出，还可以识别 `<<` 和 `>>`。\n"
 
 #. type: Title ###
-#: ../../info/wxmaxima.md:275
+#: ../../info/wxmaxima.md:280
 #, no-wrap
 msgid "Hotkeys"
 msgstr "快捷键"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:278
+#: ../../info/wxmaxima.md:283
 msgid ""
 "Most hotkeys can be found in the text of the respective menus. Since they "
 "are actually taken from the menu text and thus can be customized by the "
@@ -1009,31 +1024,31 @@ msgstr ""
 "这里记录它们。但是，一些快捷键或其别名并没有记录在菜单中："
 
 #. type: Bullet: '* '
-#: ../../info/wxmaxima.md:282
+#: ../../info/wxmaxima.md:287
 msgid ""
 "<kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>DELETE</kbd> deletes a complete cell."
 msgstr "<kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>DELETE</kbd> 删除一个单元格。"
 
 #. type: Bullet: '* '
-#: ../../info/wxmaxima.md:282
+#: ../../info/wxmaxima.md:287
 msgid ""
 "<kbd>CTRL</kbd>+<kbd>TAB</kbd> or <kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>TAB</"
 "kbd> triggers the auto-completion mechanism."
 msgstr "<kbd>CTRL+TAB</kbd> 或 <kbd>CTRL+SHIFT+TAB</kbd> 开启自动补全功能。"
 
 #. type: Bullet: '* '
-#: ../../info/wxmaxima.md:282
+#: ../../info/wxmaxima.md:287
 msgid "<kbd>SHIFT</kbd>+<kbd>SPACE</kbd> inserts a non-breaking space."
 msgstr "<kbd>SHIFT</kbd>+<kbd>SPACE</kbd> 插入一个不可断行的空格。"
 
 #. type: Title ###
-#: ../../info/wxmaxima.md:283
+#: ../../info/wxmaxima.md:288
 #, no-wrap
 msgid "Raw TeX in the TeX export"
 msgstr "导出 TeX 时的原始 TeX 代码"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:286
+#: ../../info/wxmaxima.md:291
 msgid ""
 "If a text cell begins with `TeX:` the TeX export contains the literal text "
 "that follows the `TeX:` marker. Using this feature allows the entry of TeX "
@@ -1043,26 +1058,26 @@ msgstr ""
 "本。使用此功能可以在 wxMaxima 工作簿中输入 TeX 代码。"
 
 #. type: Title ##
-#: ../../info/wxmaxima.md:287
+#: ../../info/wxmaxima.md:292
 #, no-wrap
 msgid "File Formats"
 msgstr "文件格式"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:290
+#: ../../info/wxmaxima.md:295
 msgid ""
 "The material that is developed in a _wxMaxima_ session can be stored for "
 "later use in any of three ways:"
 msgstr "在 wxMaxima 中输入的内容可以存为以下三种文件格式之一，以供以后使用："
 
 #. type: Title ###
-#: ../../info/wxmaxima.md:292
+#: ../../info/wxmaxima.md:297
 #, no-wrap
 msgid ".mac"
 msgstr ".mac"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:295
+#: ../../info/wxmaxima.md:300
 #, fuzzy
 #| msgid ""
 #| ".mac files are ordinary text files that contain _Maxima_ commands. They "
@@ -1077,7 +1092,7 @@ msgstr ""
 "令或 wxMaxima 的\"文件->批处理\"（File->Batch）菜单项来读取它们。"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:298
+#: ../../info/wxmaxima.md:303
 msgid ""
 "One Example is shown below. `Quadratic.mac` defines a function and "
 "afterwards generates a plot with `wxdraw2d()`.  Afterwards the contents of "
@@ -1086,7 +1101,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:300
+#: ../../info/wxmaxima.md:305
 #, fuzzy
 #| msgid "![Batch image](./BatchImage.png){ id=img_BatchImage }"
 msgid ""
@@ -1095,7 +1110,7 @@ msgid ""
 msgstr "![批处理](./BatchImage.png){ id=img_BatchImage }"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:302
+#: ../../info/wxmaxima.md:307
 msgid ""
 "Attention: Although the file `Quadratic.mac` has a usual _Maxima_ extension "
 "(`.mac`), it can only be read by _wxMaxima_, since the command `wxdraw2d()` "
@@ -1103,7 +1118,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:304
+#: ../../info/wxmaxima.md:309
 msgid ""
 "You can be use `.mac` files for writing your own library of macros. But "
 "since they don’t contain enough structural information they cannot be read "
@@ -1113,25 +1128,25 @@ msgstr ""
 "息，因此不能作为一个 wxMaxima 工作簿来读取。"
 
 #. type: Title ###
-#: ../../info/wxmaxima.md:305
+#: ../../info/wxmaxima.md:310
 #, no-wrap
 msgid ".wxm"
 msgstr ".wxm"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:308
+#: ../../info/wxmaxima.md:313
 #, no-wrap
 msgid ".wxm files contain the worksheet except _Maxima_'s output. On Maxima versions >5.38 they can be read using _Maxima_'s `load()` function just as .mac files can be. With this plain-text format it sometimes is unavoidable that worksheets that use new features are not downwards-compatible with older versions of _wxMaxima_.\n"
 msgstr "`.wxm` 文件包含除 Maxima 输出之外的工作簿内容。在版本号大于 5.38 的 Maxima 上，可以像 `.mac` 文件一样，使用 Maxima 的 `load()` 函数来读取。如果采用这种文本格式，使用含新功能的工作簿时会不可避免地与旧版本的 wxMaxima 不兼容。\n"
 
 #. type: Title ###
-#: ../../info/wxmaxima.md:309
+#: ../../info/wxmaxima.md:314
 #, no-wrap
 msgid ".wxmx"
 msgstr ".wxmx"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:312
+#: ../../info/wxmaxima.md:317
 msgid ""
 "This XML-based file format saves the complete worksheet including things "
 "like the zoom factor and the watchlist. It is the preferred file format."
@@ -1140,27 +1155,27 @@ msgstr ""
 "它是首选的文件格式。"
 
 #. type: Title ##
-#: ../../info/wxmaxima.md:313
+#: ../../info/wxmaxima.md:318
 #, no-wrap
 msgid "Configuration options"
 msgstr "设置选项"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:316
+#: ../../info/wxmaxima.md:321
 msgid ""
 "For some common configuration variables _wxMaxima_ offers two ways of "
 "configuring:"
 msgstr "对于一些常见的可设置变量，wxMaxima提供了两种设置方法："
 
 #. type: Bullet: '* '
-#: ../../info/wxmaxima.md:319
+#: ../../info/wxmaxima.md:324
 msgid ""
 "The configuration dialog box below lets you change their default values for "
 "the current and subsequent sessions."
 msgstr "下面的设置对话框允许用户更改当前和后续会话的默认值。"
 
 #. type: Bullet: '* '
-#: ../../info/wxmaxima.md:319
+#: ../../info/wxmaxima.md:324
 msgid ""
 "Also, the values for most configuration variables can be changed for the "
 "current session only by overwriting their values from the worksheet, as "
@@ -1170,7 +1185,7 @@ msgstr ""
 "续说明。"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:321
+#: ../../info/wxmaxima.md:326
 msgid ""
 "![wxMaxima configuration 1](./wxMaxima_configuration_001.png)"
 "{ id=img_wxMaxima_configuration_001 }"
@@ -1179,13 +1194,13 @@ msgstr ""
 "{ id=img_wxMaxima_configuration_001 }"
 
 #. type: Title ###
-#: ../../info/wxmaxima.md:322
+#: ../../info/wxmaxima.md:327
 #, no-wrap
 msgid "Default animation framerate"
 msgstr "默认动图帧率"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:325
+#: ../../info/wxmaxima.md:330
 msgid ""
 "The animation framerate that is used for new animations is kept in the "
 "variable `wxanimate_framerate`. The initial value this variable will contain "
@@ -1195,13 +1210,13 @@ msgstr ""
 "改此变量在新工作簿中的初始值。"
 
 #. type: Title ###
-#: ../../info/wxmaxima.md:326
+#: ../../info/wxmaxima.md:331
 #, no-wrap
 msgid "Default plot size for new _maxima_ sessions"
 msgstr "新 Maxima 会话的默认绘图尺寸"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:329
+#: ../../info/wxmaxima.md:334
 msgid ""
 "After the next start plots embedded into the worksheet will be created with "
 "this size if the value of `wxplot_size` isn't changed by _maxima_."
@@ -1209,14 +1224,14 @@ msgstr ""
 "如果 `wxplot_size` 的值没有被 Maxima 更改，则使用此大小创建绘图并嵌入工作簿。"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:331
+#: ../../info/wxmaxima.md:336
 msgid ""
 "In order to set the plot size of a single graph only use the following "
 "notation can be used that sets a variable’s value for one command only:"
 msgstr "为了仅对单个绘图命令设置绘制图形的大小，可以使用以下代码："
 
 #. type: Fenced code block (maxima)
-#: ../../info/wxmaxima.md:332
+#: ../../info/wxmaxima.md:337
 #, fuzzy, no-wrap
 #| msgid ""
 #| "wxdraw2d( \n"
@@ -1241,18 +1256,18 @@ msgstr ""
 "), wxplot_size=[480,480]$\n"
 
 #. type: Title ###
-#: ../../info/wxmaxima.md:341
+#: ../../info/wxmaxima.md:346
 #, no-wrap
 msgid "Match parenthesis in text controls"
 msgstr "在文本中匹配括号"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:344
+#: ../../info/wxmaxima.md:349
 msgid "This option enables two things:"
 msgstr "该选项使以下两个功能生效："
 
 #. type: Bullet: '* '
-#: ../../info/wxmaxima.md:347
+#: ../../info/wxmaxima.md:352
 msgid ""
 "If an opening parenthesis, bracket or double quote is entered _wxMaxima_ "
 "will insert a closing one after it."
@@ -1261,7 +1276,7 @@ msgstr ""
 "号、右方括号或右双引号。"
 
 #. type: Bullet: '* '
-#: ../../info/wxmaxima.md:347
+#: ../../info/wxmaxima.md:352
 msgid ""
 "If text is selected if any of these keys is pressed the selected text will "
 "be put between the matched signs."
@@ -1270,45 +1285,50 @@ msgstr ""
 "之间。"
 
 #. type: Title ###
-#: ../../info/wxmaxima.md:348
+#: ../../info/wxmaxima.md:353
 #, no-wrap
 msgid "Don't save the worksheet automatically"
 msgstr "不自动保存工作簿"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:351
+#: ../../info/wxmaxima.md:356
+#, fuzzy
+#| msgid ""
+#| "If this option is set the file the worksheet is in is overwritten only on "
+#| "request of the user. In case of a crash/power loss/... a recent backup "
+#| "copy is still made available in the temp directory, though."
 msgid ""
-"If this option is set the file the worksheet is in is overwritten only on "
-"request of the user. In case of a crash/power loss/... a recent backup copy "
-"is still made available in the temp directory, though."
+"If this option is set, the file where the worksheet is will be overwritten "
+"only on request of the user. In case of a crash/power loss/... a recent "
+"backup copy is still made available in the temp directory, though."
 msgstr ""
 "如果设置了此选项，则只有在用户请求时才会覆盖工作簿所在的文件。为了防止发生碰"
 "撞、断电等突发情况，临时目录（temp）中仍保留了一个最近的备份文件。"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:353
+#: ../../info/wxmaxima.md:358
 msgid ""
 "If this option isn't set _wxMaxima_ behaves more like a modern cellphone app:"
 msgstr "如果未设置此选项，则 wxMaxima 的行为更像现代手机软件："
 
 #. type: Bullet: '* '
-#: ../../info/wxmaxima.md:356
+#: ../../info/wxmaxima.md:361
 msgid "Files are saved automatically on exit"
 msgstr "文件在退出时被自动保存；"
 
 #. type: Bullet: '* '
-#: ../../info/wxmaxima.md:356
+#: ../../info/wxmaxima.md:361
 msgid "And the file will automatically be saved every 3 minutes."
 msgstr "每 3 分钟文件被自动保存一次；"
 
 #. type: Title ###
-#: ../../info/wxmaxima.md:357
+#: ../../info/wxmaxima.md:362
 #, no-wrap
 msgid "Where is the configuration saved?"
 msgstr "设置信息保存的位置"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:361
+#: ../../info/wxmaxima.md:366
 #, no-wrap
 msgid ""
 "If you are using Unix/Linux, the configuration information will be saved in a file `.wxMaxima` in your home directory (if you are using wxWidgets < 3.1.1), or `.config/wxMaxima.conf` ((XDG-Standard) if wxWidgets >= 3.1.1 is used). You can retrieve the wxWidgets version from the command `wxbuild_info();` or by using the menu option Help->About. [wxWidgets](https://www.wxwidgets.org/) is the cross-platform GUI library, which is the base for _wxMaxima_ (therefore the `wx` in the name).\n"
@@ -1318,7 +1338,7 @@ msgstr ""
 "（由于文件名以点“.”开头，文件 `.wxMaxima` 或 `.config` 将被隐藏）。\n"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:363
+#: ../../info/wxmaxima.md:368
 msgid ""
 "If you are using Windows, the configuration will be stored in the registry. "
 "You will find the entries for _wxMaxima_ at the following position in the "
@@ -1328,13 +1348,13 @@ msgstr ""
 "到 wxMaxima 的相关条目：`HKEY_CURRENT_USER\\Software\\wxMaxima`。"
 
 #. type: Title =
-#: ../../info/wxmaxima.md:369
+#: ../../info/wxmaxima.md:374
 #, no-wrap
 msgid "Extensions to _Maxima_"
 msgstr "对 Maxima 功能的扩充"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:372
+#: ../../info/wxmaxima.md:377
 msgid ""
 "_wxMaxima_ is primarily a graphical user interface for _Maxima_. As such, "
 "its main purpose is to pass along commands to _Maxima_ and to report the "
@@ -1350,13 +1370,13 @@ msgstr ""
 "论另外一些增强功能，以及在工作簿中包含图形的方法。"
 
 #. type: Title ##
-#: ../../info/wxmaxima.md:373
+#: ../../info/wxmaxima.md:378
 #, no-wrap
 msgid "Subscripted variables"
 msgstr "为变量添加下标"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:376
+#: ../../info/wxmaxima.md:381
 msgid ""
 "if `wxsubscripts` is set to true variable names of the format `x_y` are "
 "displayed using a subscript if"
@@ -1365,17 +1385,17 @@ msgstr ""
 "`x_y` 的变量名："
 
 #. type: Bullet: '* '
-#: ../../info/wxmaxima.md:379
+#: ../../info/wxmaxima.md:384
 msgid "`y` is a single letter"
 msgstr "`y` 是一个字母；"
 
 #. type: Bullet: '* '
-#: ../../info/wxmaxima.md:379
+#: ../../info/wxmaxima.md:384
 msgid "`y` is an integer"
 msgstr "`y` 是一个整数。"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:381
+#: ../../info/wxmaxima.md:386
 msgid ""
 "If the variable name doesn’t match these requirements it can still be "
 "declared as \"to be subscripted\" using the command "
@@ -1391,13 +1411,13 @@ msgstr ""
 "false);`。"
 
 #. type: Title ##
-#: ../../info/wxmaxima.md:382
+#: ../../info/wxmaxima.md:387
 #, no-wrap
 msgid "User feedback in the status bar"
 msgstr "在状态栏中提供反馈信息"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:385
+#: ../../info/wxmaxima.md:390
 msgid ""
 "Long-running commands can provide user-feedback in the status bar. This user "
 "feedback is replaced by any new feedback that is placed there (allowing to "
@@ -1414,7 +1434,7 @@ msgstr ""
 "wxMaxima，那么命令 `wxstatusbar()` 也不会被执行。"
 
 #. type: Fenced code block (maxima)
-#: ../../info/wxmaxima.md:386
+#: ../../info/wxmaxima.md:391
 #, no-wrap
 msgid ""
 "for i:1 thru 10 do (\n"
@@ -1435,13 +1455,13 @@ msgstr ""
 ")$\n"
 
 #. type: Title ##
-#: ../../info/wxmaxima.md:397 ../../info/wxmaxima.md:789
+#: ../../info/wxmaxima.md:402 ../../info/wxmaxima.md:794
 #, no-wrap
 msgid "Plotting"
 msgstr "绘图"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:400
+#: ../../info/wxmaxima.md:405
 msgid ""
 "Plotting (having fundamentally to do with graphics) is a place where a "
 "graphical user interface will have to provide some extensions to the "
@@ -1451,13 +1471,13 @@ msgstr ""
 "扩充内容。"
 
 #. type: Title ###
-#: ../../info/wxmaxima.md:401
+#: ../../info/wxmaxima.md:406
 #, no-wrap
 msgid "Embedding a plot into the work sheet"
 msgstr "将绘制的图形嵌入工作簿"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:404
+#: ../../info/wxmaxima.md:409
 msgid ""
 "_Maxima_ normally instructs the external program _gnuplot_ to open a "
 "separate window for every diagram it creates. Since many times it is "
@@ -1475,13 +1495,13 @@ msgstr ""
 "`draw`，`wxhistogram` 对应于 `histogram`。"
 
 #. type: Title ###
-#: ../../info/wxmaxima.md:405
+#: ../../info/wxmaxima.md:410
 #, no-wrap
 msgid "Making embedded plots bigger or smaller"
 msgstr "设置嵌入图形的大小"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:408
+#: ../../info/wxmaxima.md:413
 msgid ""
 "As noted above, the configure dialog provides a way to change the default "
 "size plots are created with which sets the starting value of `wxplot_size`. "
@@ -1494,7 +1514,7 @@ msgstr ""
 "位）。可以查询该变量，或以如下方式设置所绘制图片的大小："
 
 #. type: Fenced code block (maxima)
-#: ../../info/wxmaxima.md:409
+#: ../../info/wxmaxima.md:414
 #, no-wrap
 msgid ""
 "wxplot_size:[1200,800]$\n"
@@ -1514,7 +1534,7 @@ msgstr ""
 ")$\n"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:420
+#: ../../info/wxmaxima.md:425
 msgid ""
 "If the size of only one plot is to be changed _Maxima_ provides a canonical "
 "way to change an attribute only for the current cell. In this usage the "
@@ -1526,7 +1546,7 @@ msgstr ""
 "尾，而不是作为该命令的一部分："
 
 #. type: Fenced code block (maxima)
-#: ../../info/wxmaxima.md:421
+#: ../../info/wxmaxima.md:426
 #, no-wrap
 msgid ""
 "wxdraw2d(\n"
@@ -1544,13 +1564,13 @@ msgstr ""
 "),wxplot_size=[1600,800]$\n"
 
 #. type: Title ###
-#: ../../info/wxmaxima.md:430
+#: ../../info/wxmaxima.md:435
 #, no-wrap
 msgid "Better quality plots"
 msgstr "更好的绘图质量"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:433
+#: ../../info/wxmaxima.md:438
 msgid ""
 "_Gnuplot_ doesn’t seem to provide a portable way of determining whether it "
 "supports the high-quality bitmap output that the cairo library provides. On "
@@ -1567,13 +1587,13 @@ msgstr ""
 "息。"
 
 #. type: Title ###
-#: ../../info/wxmaxima.md:434
+#: ../../info/wxmaxima.md:439
 #, no-wrap
 msgid "Opening embedded plots in interactive _gnuplot_ windows"
 msgstr "在交互式 gnuplot 窗口中打开嵌入的绘图"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:437
+#: ../../info/wxmaxima.md:442
 msgid ""
 "If a plot was generated using the `wxdraw`-type commands (`wxplot2d` and "
 "`wxplot3d` isn't supported by this feature) and the file size of the "
@@ -1585,13 +1605,13 @@ msgstr ""
 "式的 gnuplot 窗口中打开绘制的图形。"
 
 #. type: Title ###
-#: ../../info/wxmaxima.md:438
+#: ../../info/wxmaxima.md:443
 #, no-wrap
 msgid "Opening gnuplot's command console in `plot` windows"
 msgstr "在绘图窗口中打开 gnuplot 控制台"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:441
+#: ../../info/wxmaxima.md:446
 msgid ""
 "On MS Windows, if in _Maxima_'s variable `gnuplot_command` \"gnuplot\" is "
 "replaced by \"wgnuplot\", _gnuplot_ offers the possibility to open a console "
@@ -1604,13 +1624,13 @@ msgstr ""
 "命令。但是，启用此功能会使得每次绘图时 gnuplot 短时间内独占键盘。"
 
 #. type: Title ###
-#: ../../info/wxmaxima.md:442
+#: ../../info/wxmaxima.md:447
 #, no-wrap
 msgid "Embedding animations into the spreadsheet"
 msgstr "在工作簿中嵌入动图"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:445
+#: ../../info/wxmaxima.md:450
 msgid ""
 "3D diagrams tend to make it hard to read quantitative data. A viable "
 "alternative might be to assign the 3rd parameter to the mouse wheel. The "
@@ -1624,7 +1644,7 @@ msgstr ""
 "这些图片之间切换。wxMaxima 支持将此动图导出为 gif 格式的图片。"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:447
+#: ../../info/wxmaxima.md:452
 msgid ""
 "The first two arguments for `with_slider_draw` are the name of the variable "
 "that is stepped between the plots and a list of the values of these "
@@ -1635,7 +1655,7 @@ msgstr ""
 "下来的参数与 `wxdraw2d` 命令的参数相同："
 
 #. type: Fenced code block (maxima)
-#: ../../info/wxmaxima.md:448
+#: ../../info/wxmaxima.md:453
 #, no-wrap
 msgid ""
 "with_slider_draw(\n"
@@ -1657,7 +1677,7 @@ msgstr ""
 ");\n"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:460
+#: ../../info/wxmaxima.md:465
 msgid ""
 "The same functionality for 3D plots is accessible as `with_slider_draw3d`, "
 "which allows for rotating 3d plots:"
@@ -1666,7 +1686,7 @@ msgstr ""
 "维图形："
 
 #. type: Fenced code block (maxima)
-#: ../../info/wxmaxima.md:461
+#: ../../info/wxmaxima.md:466
 #, no-wrap
 msgid ""
 "wxanimate_autoplay:true;\n"
@@ -1700,7 +1720,7 @@ msgstr ""
 ")$\n"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:479
+#: ../../info/wxmaxima.md:484
 msgid ""
 "If the general shape of the plot is what matters it might suffice to move "
 "the plot just a little bit in order to make its 3D nature available to the "
@@ -1710,7 +1730,7 @@ msgstr ""
 "征："
 
 #. type: Fenced code block (maxima)
-#: ../../info/wxmaxima.md:480
+#: ../../info/wxmaxima.md:485
 #, no-wrap
 msgid ""
 "wxanimate_autoplay:true;\n"
@@ -1744,24 +1764,24 @@ msgstr ""
 ")$\n"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:498
+#: ../../info/wxmaxima.md:503
 msgid ""
 "For those more familiar with `plot` than with `draw` there is a second set "
 "of functions:"
 msgstr "对于更熟悉 `plot` 而不是 `draw` 的用户来说，还有一组函数："
 
 #. type: Bullet: '* '
-#: ../../info/wxmaxima.md:501
+#: ../../info/wxmaxima.md:506
 msgid "`with_slider` and"
 msgstr "`with_slider`；"
 
 #. type: Bullet: '* '
-#: ../../info/wxmaxima.md:501
+#: ../../info/wxmaxima.md:506
 msgid "`wxanimate`."
 msgstr "`wxanimate`。"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:503
+#: ../../info/wxmaxima.md:508
 msgid ""
 "Normally the animations are played back or exported with the frame rate "
 "chosen in the configuration of _wxMaxima_. To set the speed an individual "
@@ -1771,7 +1791,7 @@ msgstr ""
 "可以修改变量 `wxanimate_framerate`："
 
 #. type: Fenced code block (maxima)
-#: ../../info/wxmaxima.md:504
+#: ../../info/wxmaxima.md:509
 #, no-wrap
 msgid ""
 "wxanimate(a, 10,\n"
@@ -1781,7 +1801,7 @@ msgstr ""
 "     wxanimate_framerate=6$\n"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:510
+#: ../../info/wxmaxima.md:515
 msgid ""
 "The animation functions use _Maxima_'s `makelist` command and therefore "
 "shares the pitfall that the slider variable's value is substituted into the "
@@ -1793,7 +1813,7 @@ msgstr ""
 "示错误信息："
 
 #. type: Fenced code block (maxima)
-#: ../../info/wxmaxima.md:511
+#: ../../info/wxmaxima.md:516
 #, no-wrap
 msgid ""
 "f:sin(a*x);\n"
@@ -1813,7 +1833,7 @@ msgstr ""
 ")$\n"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:522
+#: ../../info/wxmaxima.md:527
 msgid ""
 "If _Maxima_ is explicitly asked to substitute the slider’s value plotting "
 "works fine instead:"
@@ -1821,7 +1841,7 @@ msgstr ""
 "如果修改为明确要求 Maxima 代入滑块变量的值，则修改后的代码可用于绘制动图："
 
 #. type: Fenced code block (maxima)
-#: ../../info/wxmaxima.md:523
+#: ../../info/wxmaxima.md:528
 #, no-wrap
 msgid ""
 "f:sin(a*x);\n"
@@ -1847,13 +1867,13 @@ msgstr ""
 ")$\n"
 
 #. type: Title ###
-#: ../../info/wxmaxima.md:536
+#: ../../info/wxmaxima.md:541
 #, no-wrap
 msgid "Opening multiple plots in contemporaneous windows"
 msgstr "同时打开多个绘图窗口"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:539
+#: ../../info/wxmaxima.md:544
 msgid ""
 "While not being a provided by _wxMaxima_ this feature of _Maxima_ (on setups "
 "that support it) sometimes comes in handily. The following example comes "
@@ -1864,7 +1884,7 @@ msgstr ""
 "一篇帖子："
 
 #. type: Fenced code block (maxima)
-#: ../../info/wxmaxima.md:540
+#: ../../info/wxmaxima.md:545
 #, fuzzy, no-wrap
 #| msgid ""
 #| "    load(draw);\n"
@@ -1901,12 +1921,12 @@ msgstr ""
 "    draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));\n"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:554
+#: ../../info/wxmaxima.md:559
 msgid "Plotting multiple plots in the same window is possible, too:"
 msgstr "在同一个窗口中绘制这些图形也是可行的："
 
 #. type: Fenced code block (maxima)
-#: ../../info/wxmaxima.md:555
+#: ../../info/wxmaxima.md:560
 #, no-wrap
 msgid ""
 "\twxdraw(\n"
@@ -1928,13 +1948,13 @@ msgstr ""
 "\t );\n"
 
 #. type: Title ###
-#: ../../info/wxmaxima.md:566
+#: ../../info/wxmaxima.md:571
 #, no-wrap
 msgid "The \"Plot using draw\" side pane"
 msgstr "“用 draw 函数绘图”侧边栏"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:569
+#: ../../info/wxmaxima.md:574
 msgid ""
 "The \"Plot using draw\" sidebar hides a simple code generator that allows to "
 "generate scenes that make use of some of the flexibility of the _draw_ "
@@ -1944,13 +1964,13 @@ msgstr ""
 "draw 程序包方便灵活地生成一些图形绘制命令模板。"
 
 #. type: Title ####
-#: ../../info/wxmaxima.md:570
+#: ../../info/wxmaxima.md:575
 #, no-wrap
 msgid "2D"
 msgstr "二维图形"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:573
+#: ../../info/wxmaxima.md:578
 msgid ""
 "Generates the skeleton of a `draw()` command that draws a 2D scene. This "
 "scene later has to be filled with commands that generate the scene's "
@@ -1961,7 +1981,7 @@ msgstr ""
 "模板，例如利用“二维图形”按钮下方的其他按钮导入绘图命令。"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:575
+#: ../../info/wxmaxima.md:580
 #, fuzzy
 #| msgid ""
 #| "One helpful feature of the 2D button is that it allows to setup the scene "
@@ -1979,13 +1999,13 @@ msgstr ""
 "形中的相同数据更容易理解。"
 
 #. type: Title ####
-#: ../../info/wxmaxima.md:576
+#: ../../info/wxmaxima.md:581
 #, no-wrap
 msgid "3D"
 msgstr "三维图形"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:579
+#: ../../info/wxmaxima.md:584
 msgid ""
 "Generates the skeleton of a `draw()` command that draws a 3D scene. If "
 "neither a 2D or a 3D scene are set up all of the other buttons set up a 2D "
@@ -1995,13 +2015,13 @@ msgstr ""
 "能，则所有其他按钮都将自动提前调用上一功能中的绘制二维图形模板。"
 
 #. type: Title ####
-#: ../../info/wxmaxima.md:580
+#: ../../info/wxmaxima.md:585
 #, no-wrap
 msgid "Expression"
 msgstr "表达式"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:583
+#: ../../info/wxmaxima.md:588
 msgid ""
 "Appends a standard plot of an expression like `sin(x)`, `x*sin(x)` or "
 "`x^2+2*x-4` to the `draw()` command the cursor currently is in. If there is "
@@ -2013,13 +2033,13 @@ msgstr ""
 "令，将调用绘制二维图形的模板。"
 
 #. type: Title ####
-#: ../../info/wxmaxima.md:584
+#: ../../info/wxmaxima.md:589
 #, no-wrap
 msgid "Implicit plot"
 msgstr "隐式图形"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:587
+#: ../../info/wxmaxima.md:592
 msgid ""
 "Tries to find all points an expression like `y=sin(x)`, `y*sin(x)=3` or "
 "`x^2+y^2=4` is true at and plots the resulting curve in the `draw()` command "
@@ -2031,13 +2051,13 @@ msgstr ""
 "绘制二维图形的模板。"
 
 #. type: Title ####
-#: ../../info/wxmaxima.md:588
+#: ../../info/wxmaxima.md:593
 #, no-wrap
 msgid "Parametric plot"
 msgstr "参数式图形"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:591
+#: ../../info/wxmaxima.md:596
 msgid ""
 "Steps a variable from a lower limit to an upper limit and uses two "
 "expressions like `t*sin(t)` and `t*cos(t)` for generating the x, y (and in "
@@ -2049,13 +2069,13 @@ msgstr ""
 "第三个表达式生成竖坐标 z）。"
 
 #. type: Title ####
-#: ../../info/wxmaxima.md:592
+#: ../../info/wxmaxima.md:597
 #, no-wrap
 msgid "Points"
 msgstr "点"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:595
+#: ../../info/wxmaxima.md:600
 msgid ""
 "Draws many points that can optionally be joined. The coordinates of the "
 "points are taken from a list of lists, a 2D array or one list or array for "
@@ -2065,35 +2085,35 @@ msgstr ""
 "个轴指定的一个列表或数组。"
 
 #. type: Title ####
-#: ../../info/wxmaxima.md:596
+#: ../../info/wxmaxima.md:601
 #, no-wrap
 msgid "Diagram title"
 msgstr "图形标题"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:599
+#: ../../info/wxmaxima.md:604
 msgid "Draws a title on the upper end of the diagram,"
 msgstr "在图形上方绘制标题。"
 
 #. type: Title ####
-#: ../../info/wxmaxima.md:600
+#: ../../info/wxmaxima.md:605
 #, no-wrap
 msgid "Axis"
 msgstr "坐标轴"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:603
+#: ../../info/wxmaxima.md:608
 msgid "Sets up the axis."
 msgstr "设置坐标轴。"
 
 #. type: Title ####
-#: ../../info/wxmaxima.md:604
+#: ../../info/wxmaxima.md:609
 #, no-wrap
 msgid "Contour"
 msgstr "等高线"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:607
+#: ../../info/wxmaxima.md:612
 msgid ""
 "(Only for 3D plots): Adds contour lines similar to the ones one can find in "
 "a map of a mountain to the plot commands that follow in the current `draw()` "
@@ -2105,13 +2125,13 @@ msgstr ""
 "示等高线。"
 
 #. type: Title ####
-#: ../../info/wxmaxima.md:608
+#: ../../info/wxmaxima.md:613
 #, no-wrap
 msgid "Plot name"
 msgstr "图形名称"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:611
+#: ../../info/wxmaxima.md:616
 msgid ""
 "Adds a legend entry showing the next plot's name to the legend of the "
 "diagram. An empty name disables generating legend entries for the following "
@@ -2120,63 +2140,63 @@ msgstr ""
 "在图例中增加下一个图形对应的图例项。空名称将阻止为下一个图形生成图例项。"
 
 #. type: Title ####
-#: ../../info/wxmaxima.md:612
+#: ../../info/wxmaxima.md:617
 #, no-wrap
 msgid "Line colour"
 msgstr "线条颜色"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:615
+#: ../../info/wxmaxima.md:620
 msgid ""
 "Sets the line colour for the following plots the current draw command "
 "contains."
 msgstr "为当前 `draw()` 命令所绘图形设置线条颜色。"
 
 #. type: Title ####
-#: ../../info/wxmaxima.md:616
+#: ../../info/wxmaxima.md:621
 #, no-wrap
 msgid "Fill colour"
 msgstr "填充颜色"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:619
+#: ../../info/wxmaxima.md:624
 msgid ""
 "Sets the fill colour for the following plots the current draw command "
 "contains."
 msgstr "为当前 `draw()` 命令所绘图形设置填充颜色。"
 
 #. type: Title ####
-#: ../../info/wxmaxima.md:620
+#: ../../info/wxmaxima.md:625
 #, no-wrap
 msgid "Grid"
 msgstr "网格"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:623
+#: ../../info/wxmaxima.md:628
 msgid "Pops up a wizard that allows to set up grid lines."
 msgstr "弹出设置网格线的向导。"
 
 #. type: Title ####
-#: ../../info/wxmaxima.md:624
+#: ../../info/wxmaxima.md:629
 #, no-wrap
 msgid "Accuracy"
 msgstr "精度"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:627
+#: ../../info/wxmaxima.md:632
 msgid ""
 "Allows to select an adequate point in the speed vs. accuracy tradeoff that "
 "is part of any plot program."
 msgstr "允许选择适当数目的点，以兼顾速度与精度（任何绘图程序都会权衡两者）。"
 
 #. type: Title ##
-#: ../../info/wxmaxima.md:628
+#: ../../info/wxmaxima.md:633
 #, no-wrap
 msgid "Embedding graphics"
 msgstr "嵌入图片"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:631
+#: ../../info/wxmaxima.md:636
 msgid ""
 "If the `.wxmx` file format is being used embedding files in a _wxMaxima_ "
 "project can be done as easily as per drag-and-drop. But sometimes (for "
@@ -2187,19 +2207,19 @@ msgstr ""
 "但有时（例如某个图像的内容可能在稍后发生更改）最好指明在计算时加载图像："
 
 #. type: Fenced code block (maxima)
-#: ../../info/wxmaxima.md:632
+#: ../../info/wxmaxima.md:637
 #, no-wrap
 msgid "show_image(\"man.png\");\n"
 msgstr "show_image(\"man.png\");\n"
 
 #. type: Title ##
-#: ../../info/wxmaxima.md:636
+#: ../../info/wxmaxima.md:641
 #, no-wrap
 msgid "Startup files"
 msgstr "启动时读取的文件"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:639
+#: ../../info/wxmaxima.md:644
 msgid ""
 "The config dialogue of _wxMaxima_ offers to edit two files with commands "
 "that are executed on startup:"
@@ -2207,14 +2227,14 @@ msgstr ""
 "在 wxMaxima 的设置对话框中可以编辑两个文件的命令，这些命令在启动时被执行："
 
 #. type: Bullet: '* '
-#: ../../info/wxmaxima.md:642
+#: ../../info/wxmaxima.md:647
 msgid ""
 "A file that contains commands that are executed on starting up _Maxima_: "
 "`maxima-init.mac`"
 msgstr "文件 `maxima-init.mac` 中包含每次启动 Maxima 时被执行的命令；"
 
 #. type: Bullet: '* '
-#: ../../info/wxmaxima.md:642
+#: ../../info/wxmaxima.md:647
 msgid ""
 "one file of additional commands that are executed if _wxMaxima_ is starting "
 "_Maxima_: `wxmaxima-init.mac`"
@@ -2222,7 +2242,7 @@ msgstr ""
 "文件 `wxmaxima-init.mac` 中包含每次 wxMaxima 调用 Maxima 时被执行的命令。"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:644
+#: ../../info/wxmaxima.md:649
 msgid ""
 "These files are in the Maxima user directory (usually `maxima` in Windows, `."
 "maxima` otherwise) in the user's home directory / user profile directory. "
@@ -2233,13 +2253,13 @@ msgstr ""
 "该目录。"
 
 #. type: Title ##
-#: ../../info/wxmaxima.md:646
+#: ../../info/wxmaxima.md:651
 #, no-wrap
 msgid "Special variables wx..."
 msgstr "以 wx 开头的特殊变量"
 
 #. type: Bullet: '* '
-#: ../../info/wxmaxima.md:658
+#: ../../info/wxmaxima.md:663
 msgid ""
 "`wxsubscripts` tells _Maxima_ if it should convert variable names that "
 "contain an underscore (`R_150` or the like) into subscripted variables. See "
@@ -2251,14 +2271,14 @@ msgstr ""
 "`wxdeclare_subscript`。"
 
 #. type: Bullet: '* '
-#: ../../info/wxmaxima.md:658
+#: ../../info/wxmaxima.md:663
 msgid ""
 "`wxfilename`: This variable contains the name of the file currently opened "
 "in _wxMaxima_."
 msgstr "`wxfilename`：此变量包含当前在 wxMaxima 中打开的文件的名称。"
 
 #. type: Bullet: '* '
-#: ../../info/wxmaxima.md:658
+#: ../../info/wxmaxima.md:663
 #, fuzzy
 #| msgid ""
 #| "`wxfilename`: This variable contains the name of the file currently "
@@ -2269,7 +2289,7 @@ msgid ""
 msgstr "`wxfilename`：此变量包含当前在 wxMaxima 中打开的文件的名称。"
 
 #. type: Bullet: '* '
-#: ../../info/wxmaxima.md:658
+#: ../../info/wxmaxima.md:663
 msgid ""
 "`wxplot_pngcairo` tells whether _wxMaxima_ tries to use _gnuplot_’s pngcairo "
 "terminal that provides more line styles and a better overall graphics "
@@ -2279,12 +2299,12 @@ msgstr ""
 "供更多的线条样式和更好的整体图形质量。"
 
 #. type: Bullet: '* '
-#: ../../info/wxmaxima.md:658
+#: ../../info/wxmaxima.md:663
 msgid "`wxplot_size` defines the resolution of embedded plots."
 msgstr "`wxplot_size`：定义嵌入绘图的分辨率。"
 
 #. type: Bullet: '* '
-#: ../../info/wxmaxima.md:658
+#: ../../info/wxmaxima.md:663
 msgid ""
 "`wxchangedir`: On most operating systems _wxMaxima_ automatically sets "
 "_Maxima_’s working directory to the directory of the current file. This "
@@ -2299,35 +2319,35 @@ msgstr ""
 "以在设置对话框中将其设置为 `false`。"
 
 #. type: Bullet: '* '
-#: ../../info/wxmaxima.md:658
+#: ../../info/wxmaxima.md:663
 msgid ""
 "`wxanimate_framerate`: The number of frames per second the following "
 "animations have to be played back with."
 msgstr "`wxanimate_framerate`：下一个动图回放的帧率。"
 
 #. type: Bullet: '* '
-#: ../../info/wxmaxima.md:658
+#: ../../info/wxmaxima.md:663
 msgid "`wxanimate_autoplay`: Automatically play animations by default?"
 msgstr "`wxanimate_autoplay`：是否在默认情况下自动播放动图。"
 
 #. type: Bullet: '* '
-#: ../../info/wxmaxima.md:658
+#: ../../info/wxmaxima.md:663
 msgid "`wxmaximaversion`: Returns the version number of _wxMaxima_."
 msgstr ""
 
 #. type: Bullet: '* '
-#: ../../info/wxmaxima.md:658
+#: ../../info/wxmaxima.md:663
 msgid "`wxwidgetsversion`: Returns the wxWidgets version _wxMaxima_ is using."
 msgstr ""
 
 #. type: Title ##
-#: ../../info/wxmaxima.md:659
+#: ../../info/wxmaxima.md:664
 #, no-wrap
 msgid "Pretty-printing 2D output"
 msgstr "输出美观的二维公式"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:662
+#: ../../info/wxmaxima.md:667
 msgid ""
 "The function `table_form()` displays a 2D list in a form that is more "
 "readable than the output from _Maxima_’s default output routine. The input "
@@ -2336,11 +2356,11 @@ msgid ""
 "a semicolon results in the same table along with a \"done\" statement."
 msgstr ""
 "函数 `table_form()` 显示的二维列表比 Maxima 的默认输出更具可读性。该函数的输"
-"入是一个列表，其中含一个或多个列表。与 `print` 命令类似，此命令即使以符号 `"
-"$` 结尾也会显示输出。以分号 `;` 结束命令时，除了得到列表，还会有“done”语句。"
+"入是一个列表，其中含一个或多个列表。与 `print` 命令类似，此命令即使以符号 "
+"`$` 结尾也会显示输出。以分号 `;` 结束命令时，除了得到列表，还会有“done”语句。"
 
 #. type: Fenced code block (maxima)
-#: ../../info/wxmaxima.md:663
+#: ../../info/wxmaxima.md:668
 #, no-wrap
 msgid ""
 "table_form(\n"
@@ -2358,7 +2378,7 @@ msgstr ""
 ")$\n"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:673
+#: ../../info/wxmaxima.md:678
 msgid ""
 "As the next example shows, the lists that are assembled by the `table_form` "
 "command can be created before the command is executed."
@@ -2366,7 +2386,7 @@ msgstr ""
 "正如下一个例子所示，可以在执行 `table_form` 命令之前创建需要显示的列表。"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:675
+#: ../../info/wxmaxima.md:680
 msgid ""
 "![A third table example](./MatrixTableExample.png)"
 "{ id=img_MatrixTableExample }"
@@ -2374,14 +2394,14 @@ msgstr ""
 "![一个三行表的例子](./MatrixTableExample.png){ id=img_MatrixTableExample }"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:677
+#: ../../info/wxmaxima.md:682
 msgid ""
 "Also, because a matrix is a list of lists, matrices can be converted to "
 "tables in a similar fashion."
 msgstr "此外，由于矩阵是含列表的列表，它也可以用类似的方式转换为表格。"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:679
+#: ../../info/wxmaxima.md:684
 msgid ""
 "![Another table_form example](./SecondTableExample.png)"
 "{ id=img_SecondTableExample }"
@@ -2390,57 +2410,57 @@ msgstr ""
 "{ id=img_SecondTableExample }"
 
 #. type: Title ##
-#: ../../info/wxmaxima.md:680
+#: ../../info/wxmaxima.md:685
 #, no-wrap
 msgid "Bug reporting"
 msgstr "错误（bug）报告"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:683
+#: ../../info/wxmaxima.md:688
 msgid ""
 "_wxMaxima_ provides a few functions that gather bug reporting information "
 "about the current system:"
 msgstr "wxMaxima 提供了一些函数，用于收集当前系统的错误报告信息："
 
 #. type: Bullet: '* '
-#: ../../info/wxmaxima.md:686
+#: ../../info/wxmaxima.md:691
 msgid ""
 "`wxbuild_info()` gathers information about the currently running version of "
 "_wxMaxima_"
 msgstr "`wxbuild_info()` 收集当前运行的 wxMaxima 的版本信息；"
 
 #. type: Bullet: '* '
-#: ../../info/wxmaxima.md:686
+#: ../../info/wxmaxima.md:691
 msgid "`wxbug_report()` tells how and where to file bugs"
 msgstr "`wxbug_report()` 说明如何以及在何处提交错误报告。"
 
 #. type: Title ##
-#: ../../info/wxmaxima.md:688
+#: ../../info/wxmaxima.md:693
 #, no-wrap
 msgid "Marking output being drawn in red"
 msgstr "让输出显示为红色"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:691
+#: ../../info/wxmaxima.md:696
 msgid ""
 "_Maxima_'s `box()` command causes _wxMaxima_ to print its argument with a "
 "red foreground."
 msgstr "Maxima 的 `box()` 命令使 wxMaxima 以红色输出其参数。"
 
 #. type: Title =
-#: ../../info/wxmaxima.md:696
+#: ../../info/wxmaxima.md:701
 #, no-wrap
 msgid "Troubleshooting"
 msgstr "疑难解答"
 
 #. type: Title ##
-#: ../../info/wxmaxima.md:698
+#: ../../info/wxmaxima.md:703
 #, no-wrap
 msgid "Cannot connect to _Maxima_"
 msgstr "无法连接到 Maxima"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:701
+#: ../../info/wxmaxima.md:706
 msgid ""
 "Since _Maxima_ (the program that does the actual mathematics) and _wxMaxima_ "
 "(providing the easy-to-use user interface) are separate programs that "
@@ -2463,7 +2483,7 @@ msgstr ""
 "似的名字。"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:703
+#: ../../info/wxmaxima.md:708
 msgid ""
 "On Un\\*x computers another possible reason would be that the loopback "
 "network that provides network connections between two programs in the same "
@@ -2473,31 +2493,46 @@ msgstr ""
 "接的环回（loopback）网络配置不正确。"
 
 #. type: Title ##
-#: ../../info/wxmaxima.md:704
+#: ../../info/wxmaxima.md:709
 #, no-wrap
 msgid "How to save data from a broken .wxmx file"
 msgstr "从损坏的 .wxmx 文件中取回信息的方法"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:707
+#: ../../info/wxmaxima.md:712
+#, fuzzy
+#| msgid ""
+#| "Internally most modern XML-based formats are ordinary zip-files. "
+#| "_wxMaxima_ doesn't turn on compression, so the contents of .wxmx files "
+#| "can be viewed in any text editor."
 msgid ""
 "Internally most modern XML-based formats are ordinary zip-files. _wxMaxima_ "
-"doesn't turn on compression, so the contents of .wxmx files can be viewed in "
-"any text editor."
+"doesn't turn on compression, so the contents of `.wxmx` files can be viewed "
+"in any text editor."
 msgstr ""
 "大多数现代的、基于 XML 格式的文件其实都是普通的压缩（zip）文件。wxMaxima 没有"
 "启用压缩，因此可以在任何文本编辑器中查看 `.wxmx` 文件的内容。"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:709
+#: ../../info/wxmaxima.md:714
+#, fuzzy
+#| msgid ""
+#| "If the zip signature at the end of the file is still intact after "
+#| "renaming a broken .wxmx file to .zip most operating systems will provide "
+#| "a way to extract any portion of information that is stored inside it. "
+#| "This can be done when there is the need of recovering the original image "
+#| "files from a text processor document. If the zip signature isn’t intact "
+#| "that does not need to be the end of the world: If _wxMaxima_ during "
+#| "saving detected that something went wrong there will be a `wxmx~` file "
+#| "whose contents might help."
 msgid ""
 "If the zip signature at the end of the file is still intact after renaming a "
-"broken .wxmx file to .zip most operating systems will provide a way to "
+"broken `.wxmx` file to `.zip` most operating systems will provide a way to "
 "extract any portion of information that is stored inside it. This can be "
 "done when there is the need of recovering the original image files from a "
 "text processor document. If the zip signature isn’t intact that does not "
 "need to be the end of the world: If _wxMaxima_ during saving detected that "
-"something went wrong there will be a `wxmx~` file whose contents might help."
+"something went wrong there will be a `.wxmx~` file whose contents might help."
 msgstr ""
 "如果文件末尾的 zip 签名仍然完整，那么将损坏的 `.wxmx` 文件重命名为 `.zip` 文"
 "件后，大多数操作系统都提供了提取存储在其中的信息的方法。当需要从该文件中恢复"
@@ -2506,13 +2541,13 @@ msgstr ""
 "所帮助。"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:711
+#: ../../info/wxmaxima.md:716
 #, no-wrap
 msgid "And even if there isn’t such a file: The `.wxmx` file is a container format and the XML portion is stored uncompressed. It it is possible to rename the `.wxmx` file to a `.txt` file and to use a text editor to recover the XML portion of the file's contents (it starts with `<?xml version=\"1.0\" encoding=\"UTF-8\"?>` and ends with `</wxMaximaDocument>`. Before and after that text you will see some unreadable binary contents in the text editor).\n"
 msgstr "即使没有 `.wxmx~` 文件，`.wxmx` 文件中 XML 部分是未压缩的，可以将该文件重命名为 `.txt` 文件，并使用文本编辑器恢复文件中的 XML 部分（以 `<?xml version=\"1.0\" encoding=\"UTF-8\"?>` 开头，并以 `</wxMaximaDocument>` 结尾（在 XML 部分的前后，可在文本编辑器中看到一些不可读的二进制内容）。\n"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:713
+#: ../../info/wxmaxima.md:718
 msgid ""
 "If a text file containing only this contents (e.g. copy and paste this text "
 "into a new file) is saved as a file ending in `.xml`, _wxMaxima_ will know "
@@ -2522,13 +2557,13 @@ msgstr ""
 "以 `.xml` 结尾的文件，则 wxMaxima 可以从中恢复原始文档的文本。"
 
 #. type: Title ##
-#: ../../info/wxmaxima.md:714
+#: ../../info/wxmaxima.md:719
 #, no-wrap
 msgid "I want some debug info to be displayed on the screen before my command has finished"
 msgstr "在命令完成前显示一些调试信息"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:717
+#: ../../info/wxmaxima.md:722
 msgid ""
 "Normally _wxMaxima_ waits for the whole 2D formula to be transferred before "
 "it begins to typeset. This saves time for making many attempts to typeset a "
@@ -2541,7 +2576,7 @@ msgstr ""
 "令完成："
 
 #. type: Fenced code block (maxima)
-#: ../../info/wxmaxima.md:718
+#: ../../info/wxmaxima.md:723
 #, no-wrap
 msgid ""
 "for i:1 thru 10 do (\n"
@@ -2560,25 +2595,25 @@ msgstr ""
 ")$\n"
 
 #. type: Title ##
-#: ../../info/wxmaxima.md:728
+#: ../../info/wxmaxima.md:733
 #, no-wrap
 msgid "Plotting only shows a closed empty envelope with an error message"
 msgstr "绘图结果是空的绘图框和错误信息"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:731
+#: ../../info/wxmaxima.md:736
 msgid ""
 "This means that _wxMaxima_ could not read the file _Maxima_ that was "
 "supposed to instruct _gnuplot_ to create."
 msgstr "这意味着 wxMaxima 无法读取由 Maxima 指示 gnuplot 创建的文件。"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:733
+#: ../../info/wxmaxima.md:738
 msgid "Possible reasons for this error are:"
 msgstr "这个错误的可能原因如下："
 
 #. type: Bullet: '* '
-#: ../../info/wxmaxima.md:738
+#: ../../info/wxmaxima.md:743
 msgid ""
 "The plotting command is part of a third-party package like `implicit_plot` "
 "but this package was not loaded by _Maxima_’s `load()` command before trying "
@@ -2588,7 +2623,7 @@ msgstr ""
 "调用 Maxima 的 `load()` 命令加载此包。"
 
 #. type: Bullet: '* '
-#: ../../info/wxmaxima.md:738
+#: ../../info/wxmaxima.md:743
 msgid ""
 "_Maxima_ tried to do something the currently installed version of _gnuplot_ "
 "isn’t able to understand. In this case, a file ending in `.gnuplot` located "
@@ -2601,7 +2636,7 @@ msgstr ""
 "gnuplot 的指令。在调试问题时，此文件的内容在大多数情况下都是有帮助的。"
 
 #. type: Bullet: '* '
-#: ../../info/wxmaxima.md:738
+#: ../../info/wxmaxima.md:743
 msgid ""
 "Gnuplot was instructed to use the pngcairo library that provides "
 "antialiasing and additional line styles, but it was not compiled to support "
@@ -2614,18 +2649,18 @@ msgstr ""
 "图”复选框，并且不要在 Maxima 中将 `wxplot_pngcairo` 设置为true。"
 
 #. type: Bullet: '* '
-#: ../../info/wxmaxima.md:738
+#: ../../info/wxmaxima.md:743
 msgid "Gnuplot didn’t output a valid `.png` file."
 msgstr "Gnuplot 没有生成有效的 .png 文件。"
 
 #. type: Title ##
-#: ../../info/wxmaxima.md:739
+#: ../../info/wxmaxima.md:744
 #, no-wrap
 msgid "Plotting an animation results in “error: undefined variable”"
 msgstr "绘制动图时得到“error: undefined variable（错误：未定义的变量）”"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:742
+#: ../../info/wxmaxima.md:747
 msgid ""
 "The value of the slider variable by default is only substituted into the "
 "expression that is to be plotted if it is visible there. Using a `subst` "
@@ -2640,13 +2675,13 @@ msgstr ""
 "一个例子。"
 
 #. type: Title ##
-#: ../../info/wxmaxima.md:743
+#: ../../info/wxmaxima.md:748
 #, no-wrap
 msgid "I lost a cell contents and undo doesn’t remember"
 msgstr "删除了一个单元格，而撤销操作不起作用"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:746
+#: ../../info/wxmaxima.md:751
 msgid ""
 "There are separate undo functions for cell operations and for changes inside "
 "of cells so chances are low that this ever happens. If it does there are "
@@ -2656,7 +2691,7 @@ msgstr ""
 "很低。如果确实是这样，有如下方法可以恢复数据："
 
 #. type: Bullet: '* '
-#: ../../info/wxmaxima.md:751
+#: ../../info/wxmaxima.md:756
 msgid ""
 "_wxMaxima_ actually has two undo features: The global undo buffer that is "
 "active if no cell is selected and a per-cell undo buffer that is active if "
@@ -2667,7 +2702,7 @@ msgstr ""
 "果光标在单元格内）。可以尝试使用这两个撤消选项，以查看是否可以恢复内容。"
 
 #. type: Bullet: '* '
-#: ../../info/wxmaxima.md:751
+#: ../../info/wxmaxima.md:756
 msgid ""
 "If you still have a way to find out what label _Maxima_ has assigned to the "
 "cell just type in the cell’s label and its contents will reappear."
@@ -2676,7 +2711,7 @@ msgstr ""
 "重新出现。"
 
 #. type: Bullet: '* '
-#: ../../info/wxmaxima.md:751
+#: ../../info/wxmaxima.md:756
 msgid ""
 "If you don’t: Don’t panic. In the “View” menu there is a way to show a "
 "history pane that shows all _Maxima_ commands that have been issued recently."
@@ -2685,24 +2720,24 @@ msgstr ""
 "栏，其中显示了最近使用的所有 Maxima 命令。"
 
 #. type: Bullet: '* '
-#: ../../info/wxmaxima.md:751
+#: ../../info/wxmaxima.md:756
 msgid "If nothing else helps _Maxima_ contains a replay feature:"
 msgstr "如果以上都没有帮助，可以调用 Maxima 的回放功能："
 
 #. type: Fenced code block (maxima)
-#: ../../info/wxmaxima.md:752
+#: ../../info/wxmaxima.md:757
 #, no-wrap
 msgid "playback();\n"
 msgstr "playback();\n"
 
 #. type: Title ##
-#: ../../info/wxmaxima.md:756
+#: ../../info/wxmaxima.md:761
 #, no-wrap
 msgid "_wxMaxima_ starts up with the message “Maxima process terminated.”"
 msgstr "wxMaxima 启动时显示信息“Maxima process terminated（Maxima 进程已终止）。”"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:759
+#: ../../info/wxmaxima.md:764
 msgid ""
 "One possible reason is that _Maxima_ cannot be found in the location that is "
 "set in the “Maxima” tab of _wxMaxima_’s configuration dialog and therefore "
@@ -2714,13 +2749,13 @@ msgstr ""
 "该可以解决此问题。"
 
 #. type: Title ##
-#: ../../info/wxmaxima.md:760
+#: ../../info/wxmaxima.md:765
 #, no-wrap
 msgid "Maxima is forever calculating and not responding to input"
 msgstr "Maxima 永远在计算中而不响应输入"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:763
+#: ../../info/wxmaxima.md:768
 msgid ""
 "It is theoretically possible that _wxMaxima_ doesn’t realize that _Maxima_ "
 "has finished calculating and therefore never gets informed it can send new "
@@ -2732,13 +2767,13 @@ msgstr ""
 "程序同步。"
 
 #. type: Title ##
-#: ../../info/wxmaxima.md:764
+#: ../../info/wxmaxima.md:769
 #, no-wrap
 msgid "My SBCL-based _Maxima_ runs out of memory"
 msgstr "基于 SBCL 的 Maxima 耗尽内存"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:767
+#: ../../info/wxmaxima.md:772
 msgid ""
 "The Lisp compiler SBCL by default comes with a memory limit that allows it "
 "to run even on low-end computers. When compiling a big software package like "
@@ -2757,7 +2792,7 @@ msgstr ""
 "编译 Lapack 所需的约 1280 兆字节）。"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:769
+#: ../../info/wxmaxima.md:774
 msgid ""
 "One way to provide _Maxima_ (and thus SBCL) with command line parameters is "
 "the \"Additional parameters for Maxima\" field of _wxMaxima_’s configuration "
@@ -2767,18 +2802,18 @@ msgstr ""
 "的“额外的 Maxima 参数（Additional parameters for Maxima）”字段。"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:771
+#: ../../info/wxmaxima.md:776
 msgid "![sbcl memory](./sbclMemory.png){ id=img_sbclMemory }"
 msgstr "![SBCL 内存](./sbclMemory.png){ id=img_sbclMemory }"
 
 #. type: Title ##
-#: ../../info/wxmaxima.md:773
+#: ../../info/wxmaxima.md:778
 #, no-wrap
 msgid "Input sometimes is sluggish/ignoring keys on Ubuntu"
 msgstr "在 Ubuntu 系统上，有时输入无响应或响应迟缓"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:776
+#: ../../info/wxmaxima.md:781
 msgid ""
 "Installing the package `ibus-gtk` should resolve this issue. See ([https://"
 "bugs.launchpad.net/ubuntu/+source/wxwidgets3.0/+bug/1421558](https://bugs."
@@ -2789,26 +2824,26 @@ msgstr ""
 "+source/wxwidgets3.0/+bug/1421558)。"
 
 #. type: Title ##
-#: ../../info/wxmaxima.md:777
+#: ../../info/wxmaxima.md:782
 #, no-wrap
 msgid "_wxMaxima_ halts when _Maxima_ processes Greek characters or Umlauts"
 msgstr "wxMaxima 在处理希腊字符或元音变音符时停止"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:780
+#: ../../info/wxmaxima.md:785
 msgid ""
 "If your _Maxima_ is based on SBCL the following lines have to be added to "
 "your `.sbclrc`:"
 msgstr "如果所使用的 Maxima 基于SBCL，则必须将以下行添加到 `.sbclrc` 文件中："
 
 #. type: Fenced code block (commonlisp)
-#: ../../info/wxmaxima.md:781
+#: ../../info/wxmaxima.md:786
 #, no-wrap
 msgid "(setf sb-impl::*default-external-format* :utf-8)\n"
 msgstr "(setf sb-impl::*default-external-format* :utf-8)\n"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:786
+#: ../../info/wxmaxima.md:791
 msgid ""
 "The folder this file has to be placed in is system- and installation-"
 "specific. But any SBCL-based _Maxima_ that already has evaluated a cell in "
@@ -2819,26 +2854,26 @@ msgstr ""
 "中计算了一个单元格，那么在获得如下命令后，都会显示该文件的位置："
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:788
+#: ../../info/wxmaxima.md:793
 #, no-wrap
 msgid "    :lisp (sb-impl::userinit-pathname)\n"
 msgstr "    :lisp (sb-impl::userinit-pathname)\n"
 
 #. type: Title ###
-#: ../../info/wxmaxima.md:791
+#: ../../info/wxmaxima.md:796
 #, no-wrap
 msgid "Can I make _wxMaxima_ output both image files and embedded plots at once?"
 msgstr "是否可以同时输出和嵌入绘图文件？"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:794
+#: ../../info/wxmaxima.md:799
 msgid ""
 "The worksheet embeds .png files. _wxMaxima_ allows the user to specify where "
 "they should be generated:"
 msgstr "工作簿可嵌入 `.png` 文件。wxMaxima 允许用户指定它们的生成位置："
 
 #. type: Fenced code block (maxima)
-#: ../../info/wxmaxima.md:795
+#: ../../info/wxmaxima.md:800
 #, no-wrap
 msgid ""
 "wxdraw2d(\n"
@@ -2852,14 +2887,14 @@ msgstr ""
 ");\n"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:803
+#: ../../info/wxmaxima.md:808
 msgid ""
 "If a different format is to be used it is easier to generate the images and "
 "then to import them into the worksheet again:"
 msgstr "如果要使用不同的格式，则可以先生成图像，然后再将其导入工作簿："
 
 #. type: Fenced code block (maxima)
-#: ../../info/wxmaxima.md:804
+#: ../../info/wxmaxima.md:809
 #, no-wrap
 msgid ""
 "load(\"draw\");\n"
@@ -2907,18 +2942,18 @@ msgstr ""
 ");\n"
 
 #. type: Title ###
-#: ../../info/wxmaxima.md:828
+#: ../../info/wxmaxima.md:833
 #, no-wrap
 msgid "Can I set the aspect ratio of a plot?"
 msgstr "是否可以指定绘制图形的相对比例？"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:831
+#: ../../info/wxmaxima.md:836
 msgid "Not directly using _Maxima_. But there are gnuplot commands for it:"
 msgstr "直接使用 Maxima 无法完成此功能，但是可以利用 gnuplot 命令："
 
 #. type: Fenced code block (maxima)
-#: ../../info/wxmaxima.md:832
+#: ../../info/wxmaxima.md:837
 #, no-wrap
 msgid ""
 "wxdraw2d(\n"
@@ -2932,7 +2967,7 @@ msgstr ""
 "),wxplot_size=[1000,1000];\n"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:843
+#: ../../info/wxmaxima.md:848
 #, no-wrap
 msgid ""
 "FAQ\n"
@@ -2942,38 +2977,38 @@ msgstr ""
 "===\n"
 
 #. type: Title ##
-#: ../../info/wxmaxima.md:845
+#: ../../info/wxmaxima.md:850
 #, no-wrap
 msgid "Is there a way to make more text fit on a LaTeX page?"
 msgstr "有没有办法在 LaTeX 页面中显示更多的文字？"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:848
+#: ../../info/wxmaxima.md:853
 msgid ""
 "Yes. Use the LaTeX package \"geometry\" to specify the size of the borders."
 msgstr ""
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:850
+#: ../../info/wxmaxima.md:855
 #, fuzzy, no-wrap
 #| msgid "There is: Just add the following lines to the LaTeX preamble (for example by using the respective field in the config dialogue (\"Export\"->\"Additional lines for the TeX preamble\"):\n"
 msgid "You can add the following line to the LaTeX preamble (for example by using the respective field in the config dialogue (\"Export\"->\"Additional lines for the TeX preamble\"), to set borders of 1cm):\n"
 msgstr "有，只需将以下文字添加到 LaTeX 文件的导言区，例如通过修改设置对话框中的相应字段（导出->在 TeX 导言区中添加额外的内容（Export->Additional lines for the TeX preamble））：\n"
 
 #. type: Fenced code block (latex)
-#: ../../info/wxmaxima.md:851
+#: ../../info/wxmaxima.md:856
 #, no-wrap
 msgid "\\usepackage[left=1cm,right=1cm,top=1cm,bottom=1cm]{geometry}\n"
 msgstr "\\usepackage[left=1cm,right=1cm,top=1cm,bottom=1cm]{geometry}\n"
 
 #. type: Title ##
-#: ../../info/wxmaxima.md:855
+#: ../../info/wxmaxima.md:860
 #, no-wrap
 msgid "Is there a dark mode?"
 msgstr "是否有深色模式？"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:858
+#: ../../info/wxmaxima.md:863
 msgid ""
 "If wxWidgets is new enough _wxMaxima_ will automatically be in dark mode if "
 "the rest of the operating system is. The worksheet itself is by default "
@@ -2986,25 +3021,65 @@ msgstr ""
 "单“查看->反转工作簿亮度”，可以快速将工作簿在浅色模式和深色模式中转换。"
 
 #. type: Title ##
-#: ../../info/wxmaxima.md:859
+#: ../../info/wxmaxima.md:864
 #, no-wrap
 msgid "_wxMaxima_ sometimes hangs for a several seconds once in the first minute"
 msgstr "wxMaxima 有时在启动后的一段时间内无响应"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:862
+#: ../../info/wxmaxima.md:867
 #, no-wrap
 msgid "_wxMaxima_ delegates some big tasks like parsing _Maxima_'s >1000-page-manual to background tasks, which normally goes totally unnoticed. In the moment the result of such a task is needed, though, it is possible that _wxMaxima_ needs to wait a couple of seconds before it can continue its work.\n"
 msgstr "wxMaxima 将一些大型任务（如解析 Maxima 的超过 1000 页的手册）委托给后台任务，而这些任务通常不会被执行。然而，当需要执行这样一个任务时，可能需要等待几秒钟才能继续工作。\n"
 
+#. type: Title ##
+#: ../../info/wxmaxima.md:868
+#, no-wrap
+msgid "Especially when testing new locale settings, a message box \"locale 'xx_YY' can not be set\" occurs"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:871
+msgid "![Locale warning](./locale-warning.png){ id=img_locale_warning}"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:875
+msgid ""
+"(The same problem can occur with other applications too).The translations "
+"seem okay after you click on 'OK'. wxMaxima does not only use it's own "
+"translations, but the translations of the wxWidgets framework too."
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:878
+msgid ""
+"These locales may be not present on the system. On Ubuntu/Debian systems "
+"they can be generated using: `dpkg-reconfigure locales`"
+msgstr ""
+
+#. type: Title ##
+#: ../../info/wxmaxima.md:879
+#, no-wrap
+msgid "How can I use symbols for real numbers, natural numbers (ℝ, ℕ), etc.?"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:882
+msgid ""
+"You can find these symbols in the unicode side bar (search for 'double-"
+"struck capital'). But the selected font must also support these symbols. If "
+"they do not display properly, select another font."
+msgstr ""
+
 #. type: Title =
-#: ../../info/wxmaxima.md:867
+#: ../../info/wxmaxima.md:886
 #, no-wrap
 msgid "Command-line arguments"
 msgstr "命令行参数"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:870
+#: ../../info/wxmaxima.md:889
 msgid ""
 "Most operating systems provide less complicated ways of starting programs "
 "than the command line so this possibility is only rarely used. _wxMaxima_ "
@@ -3014,29 +3089,29 @@ msgstr ""
 "参数的可能性很小。不过，wxMaxima 仍然提供了一些命令行选项。"
 
 #. type: Bullet: '* '
-#: ../../info/wxmaxima.md:885
+#: ../../info/wxmaxima.md:904
 msgid "`-v` or `--version`: Output the version information"
 msgstr "`-v` 或 `--version`：输出版本信息。"
 
 #. type: Bullet: '* '
-#: ../../info/wxmaxima.md:885
+#: ../../info/wxmaxima.md:904
 msgid "`-h` or `--help`: Output a short help text"
 msgstr "`-h` 或 `--help`: 输出简短的帮助文本。"
 
 #. type: Bullet: '* '
-#: ../../info/wxmaxima.md:885
+#: ../../info/wxmaxima.md:904
 msgid ""
 "`-o` or `--open=<str>`: Open the filename given as argument to this command-"
 "line switch"
 msgstr "`-o` 或 `--open=<str>`：打开作为此命令行参数的文件名。"
 
 #. type: Bullet: '* '
-#: ../../info/wxmaxima.md:885
+#: ../../info/wxmaxima.md:904
 msgid "`-e` or `--eval`: Evaluate the file after opening it."
 msgstr "`-e` 或 `--eval`：打开文件后对公式单元格求值。"
 
 #. type: Bullet: '* '
-#: ../../info/wxmaxima.md:885
+#: ../../info/wxmaxima.md:904
 msgid ""
 "`-b` or `--batch`: If the command-line opens a file all cells in this file "
 "are evaluated and the file is saved afterwards. This is for example useful "
@@ -3053,7 +3128,7 @@ msgstr ""
 "完全无交互的批处理。"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:885
+#: ../../info/wxmaxima.md:904
 #, fuzzy, no-wrap
 #| msgid ""
 #| "* `--logtostdout`:                 Log all \"debug messages\" sidebar messages to stderr, too.\n"
@@ -3088,7 +3163,7 @@ msgstr ""
 "\n"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:886
+#: ../../info/wxmaxima.md:905
 msgid ""
 "Instead of a minus some operating systems might use a dash in front of the "
 "command-line switches."
