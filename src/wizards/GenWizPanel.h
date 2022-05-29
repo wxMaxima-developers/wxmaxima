@@ -29,6 +29,7 @@
 #include <vector>
 #include <wx/cshelp.h>
 #include "BTextCtrl.h"
+#include <wx/collpane.h>
 
 class GenWizPanel : public wxPanel
 {
@@ -83,7 +84,9 @@ public:
   wxButton *GetAbortButton() const {return button_1;}
   #endif
   wxButton *GetInsertButton() const{return m_insertButton;}
+  virtual ~GenWizPanel();
 protected:
+  wxCollapsiblePane *m_collpane;
   void UpdateOutput();
   void OnParamChange(wxCommandEvent& event);
 
@@ -98,6 +101,7 @@ protected:
   wxString m_description;
   wxString m_descriptionToolTip;
   wxString m_title;
+  Configuration *m_configuration;
 };
 
 #endif // GENWIZ_PANEL_H

@@ -861,6 +861,9 @@ wxString DocumentclassOptions() const {return m_documentclassOptions;}
   bool ExportContainsWXMX() const {return m_exportContainsWXMX;}
   void DockableWizards(bool dockableWizards){m_dockableWizards = dockableWizards;}
   bool DockableWizards() const {return m_dockableWizards;}
+  void WizardCollapseOutput(bool collapse){m_wizardCollapseOutput = collapse;}
+  bool WizardCollapseOutput() const {return m_wizardCollapseOutput;}
+
   wxString TexPreamble() const {return m_texPreamble;}
   void TexPreamble(wxString texPreamble) {m_texPreamble = texPreamble;}
 
@@ -883,6 +886,7 @@ private:
   mathDisplayMode m_displayMode = display_2d;
   using CellRedrawTrace = std::vector<const Cell*>;
   bool m_dockableWizards;
+  bool m_wizardCollapseOutput;
   bool m_usePartialForDiff;
   //! true = Autosave doesn't save into the current file.
   bool m_autoSaveAsTempFile;
