@@ -167,6 +167,7 @@ void GenWizPanel::NewWizard(wxString description, const wxString &description_to
     m_label[i]->SetToolTip(description);
   
   m_output->SetToolTip(description);
+  m_collpane->Show(!commandRule.IsEmpty());
   
   m_commandRule = commandRule;
   m_description = description;
@@ -223,7 +224,6 @@ void GenWizPanel::NewWizard(wxString description, const wxString &description_to
   m_textctrl[8]->Show(!label9.IsEmpty());
   m_textctrl[8]->SetToolTip(tooltip9);
 
-  m_collpane->Show(!commandRule.IsEmpty());
   UpdateOutput();
   Layout();
 }
