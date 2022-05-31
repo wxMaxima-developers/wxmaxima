@@ -275,7 +275,7 @@ _wxMaxima_'s TeX and HTML output will also recognize `=>` and replace it by the 
 cogito => sum.
 ~~~
 
-Other symbols the HTML and TeX export will recognize are `<=` and `>=` for comparisons, a double-pointed double arrow (`<=>`), single- headed arrows (`<->`, `->` and `<-`) and `+/-` as the respective sign. For TeX output also `<<` and `>>` are recognized.
+Other symbols the HTML and TeX export will recognize are `<=` and `>=` for comparisons, a double-pointed double arrow (`<=>`), single-headed arrows (`<->`, `->` and `<-`) and `+/-` as the respective sign. For TeX output also `<<` and `>>` are recognized.
 
 ### Hotkeys
 
@@ -298,8 +298,8 @@ The material that is developed in a _wxMaxima_ session can be stored for later u
 
 `.mac` files are ordinary text files that contain _Maxima_ commands. They can be read using _Maxima_’s `batch()` or `load()` command or _wxMaxima_’s File/Batch File menu entry.
 
-One Example is shown below. `Quadratic.mac` defines a function and afterwards generates a plot with `wxdraw2d()`.
-Afterwards the contents of the file `Quadratic.mac` are printed and new defined function `f()` is evaluated.
+One example is shown below. `Quadratic.mac` defines a function and afterward generates a plot with `wxdraw2d()`.
+Afterward the contents of the file `Quadratic.mac` are printed and newly defined function `f()` is evaluated.
 
 ![Loading a `.mac` file with `batch()`](./BatchImage.png){ id=img_BatchImage }
 
@@ -309,7 +309,7 @@ You can be use `.mac` files for writing your own library of macros. But since th
 
 ### .wxm
 
-.wxm files contain the worksheet except _Maxima_'s output. On Maxima versions >5.38 they can be read using _Maxima_'s `load()` function just as .mac files can be. With this plain-text format it sometimes is unavoidable that worksheets that use new features are not downwards-compatible with older versions of _wxMaxima_.
+.wxm files contain the worksheet except for _Maxima_'s output. On Maxima versions >5.38 they can be read using _Maxima_'s `load()` function just as .mac files can be. With this plain-text format, it sometimes is unavoidable that worksheets that use new features are not downwards-compatible with older versions of _wxMaxima_.
 
 ### .wxmx
 
@@ -330,7 +330,7 @@ The animation framerate that is used for new animations is kept in the variable 
 
 ### Default plot size for new _maxima_ sessions
 
-After the next start plots embedded into the worksheet will be created with this size if the value of `wxplot_size` isn't changed by _maxima_.
+After the next start, plots embedded into the worksheet will be created with this size if the value of `wxplot_size` isn't changed by _maxima_.
 
 In order to set the plot size of a single graph only use the following notation can be used that sets a variable’s value for one command only:
 
@@ -347,12 +347,12 @@ wxdraw2d(
 
 This option enables two things:
 
-* If an opening parenthesis, bracket or double quote is entered _wxMaxima_ will insert a closing one after it.
+* If an opening parenthesis, bracket, or double quote is entered _wxMaxima_ will insert a closing one after it.
 * If text is selected if any of these keys is pressed the selected text will be put between the matched signs.
 
 ### Don't save the worksheet automatically
 
-If this option is set, the file where the worksheet is will be overwritten only on request of the user. In case of a crash/power loss/... a recent backup copy is still made available in the temp directory, though.
+If this option is set, the file where the worksheet is will be overwritten only the request of the user. In case of a crash/power loss/... a recent backup copy is still made available in the temp directory, though.
 
 If this option isn't set _wxMaxima_ behaves more like a modern cellphone app:
 
