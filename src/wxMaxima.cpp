@@ -549,6 +549,14 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
           wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
   Connect(menu_expand, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
+  Connect(menu_expandwrt, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
+  Connect(menu_expandwrt_denom, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
+  Connect(menu_scsimp, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
+  Connect(menu_xthru, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
   Connect(menu_factor, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
   Connect(menu_horner, wxEVT_MENU,
@@ -7752,10 +7760,32 @@ void wxMaxima::SimplifyMenu(wxCommandEvent &event)
       cmd = wxT("expand(") + expr + wxT(");");
       MenuCommand(cmd);
       break;
+    case menu_scsimp:
+      cmd = wxT("scsimp(") + expr + wxT(");");
+      MenuCommand(cmd);
+      break;
+    case menu_xthru:
+      cmd = wxT("xthru(") + expr + wxT(");");
+      MenuCommand(cmd);
+      break;
     case button_factor:
     case menu_factor:
       cmd = wxT("factor(") + expr + wxT(");");
       MenuCommand(cmd);
+      break;
+    case menu_expandwrt:
+      CommandWiz(_("Expand for variable(s):"),
+                 wxEmptyString,wxEmptyString,
+                 wxT("explandwrt(#1#,#2#);"),
+                 wxT("Expression"),wxT("%"),wxEmptyString,
+                 wxT("Variable(s)"),wxT("x"),_("Comma-separated variables"));
+      break;
+    case menu_expandwrt_denom:
+      CommandWiz(_("Expand for variable(s) including denominator:"),
+                 wxEmptyString,wxEmptyString,
+                 wxT("explandwrt(#1#,#2#),expandwrt_denom=true;"),
+                 wxT("Expression"),wxT("%"),wxEmptyString,
+                 wxT("Variable(s)"),wxT("x"),_("Comma-separated variables"));
       break;
     case menu_horner:
       cmd = wxT("horner(") + expr + wxT(");");

@@ -1269,8 +1269,11 @@ void wxMaximaFrame::SetupMenu()
   m_SimplifyMenu->Append(menu_horner, _("Horner's rule"),
                          _("Reorganize an expression using horner's rule"), wxITEM_NORMAL);
   m_SimplifyMenu->Append(menu_collapse, _("Optimize for memory"));
-  m_SimplifyMenu->Append(menu_optimize, _("Optimize for CPU time"),
-                         _("Reorganize an expression using horner's rule"), wxITEM_NORMAL);
+  m_SimplifyMenu->Append(menu_optimize, _("Optimize for CPU time"));
+  m_SimplifyMenu->Append(menu_expandwrt, _("Expand for given variables"));
+  m_SimplifyMenu->Append(menu_expandwrt_denom, _("Dito, including denominator"));
+  m_SimplifyMenu->Append(menu_scsimp, _("Sequential Comparative Simplification"));
+  m_SimplifyMenu->Append(menu_xthru, _("Find common denominator"));
   m_SimplifyMenu->Append(menu_partfrac, _("Partial &Fractions..."),
                          _("Decompose rational function to partial fractions"),
                          wxITEM_NORMAL);
