@@ -39,7 +39,7 @@ ScrollingGenWizPanel::ScrollingGenWizPanel(
   wxScrolled<wxPanel>(parent, wxID_ANY)
 {
   wxSizer *vbox = new wxBoxSizer(wxVERTICAL);
-  m_panel = new GenWizPanel(this, cfg, description, description_tooltip, commandRule,
+  m_panel = new GenWizPanel(this, cfg, description, description_tooltip, commandRule, true,
                             label1, defaultval1, tooltip1,
                             label2, defaultval2, tooltip2,
                             label3, defaultval3, tooltip3,
