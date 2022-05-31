@@ -231,23 +231,23 @@ To solve that problem, select other fonts (using: Edit -> Configure -> Style).
 
 ### Side Panes
 
-Shortcuts to the most important _Maxima_ commands or things like a table of contents, windows with debug messages or a history of the last issued commands can be accessed using the side panes. They can be enabled using the "View" menu. They all can be moved to other locations inside or outside the _wxMaxima_ window. Other useful panes is the one that allows to input Greek letters using the mouse.
+Shortcuts to the most important _Maxima_ commands, things like a table of contents, windows with debug messages or a history of the last issued commands can be accessed using the side panes. They can be enabled using the "View" menu. They all can be moved to other locations inside or outside the _wxMaxima_ window. Other useful panes is the one that allows to input Greek letters using the mouse.
 
 ![Example of different side panes](./SidePanes.png){ id=img_SidePanes }
 
-In the "table of contents" side pane one can increase or decrease a heading, just click on the heading with the right mouse button
+In the "table of contents" side pane, one can increase or decrease a heading by just clicking on the heading with the right mouse button
 and select the next higher or lower heading type.
 
 ![Increase or decrease headings in the TOC side pane](./Sidepane-TOC-convert-headings.png){ id=Sidepane-TOC-convert-headings }
 
 ### MathML output
 
-Several word processors and similar programs either recognize MathML input and automatically insert it as an editable 2D equation - or (like LibreOffice 5.1) have an equation editor that offers an “import MathML from clipboard” feature. Others support RTF maths. _wxMaxima_ therefore offers several entries in the right-click menu.
+Several word processors and similar programs either recognize MathML input and automatically insert it as an editable 2D equation - or (like LibreOffice 5.1) have an equation editor that offers an “import MathML from clipboard” feature. Others support RTF maths. _wxMaxima_, therefore, offers several entries in the right-click menu.
 
 
 ### Markdown support
 
-_wxMaxima_ offers a set of standard markdown conventions that don't collide with mathematical notation. One of this elements is bullet lists.
+_wxMaxima_ offers a set of standard markdown conventions that don't collide with mathematical notation. One of these elements is bullet lists.
 
 ~~~
 Ordinary text
