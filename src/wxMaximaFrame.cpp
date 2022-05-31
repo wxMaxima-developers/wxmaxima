@@ -1007,31 +1007,36 @@ void wxMaximaFrame::SetupMenu()
 
   // Equations menu
   m_EquationsMenu = new wxMenu;
-  m_EquationsMenu->Append(menu_solve, _("&Solve..."),
-                          _("Solve equation(s)"), wxITEM_NORMAL);
-  m_EquationsMenu->Append(menu_solve_to_poly, _("Solve (to_poly)..."),
-                          _("Solve equation(s) with to_poly_solve"), wxITEM_NORMAL);
-  m_EquationsMenu->Append(menu_solve_num, _("&Find Root..."),
-                          _("Find a root of an equation on an interval"), wxITEM_NORMAL);
-  m_EquationsMenu->Append(menu_allroots, _("Roots of &Polynomial"),
-                          _("Find all roots of a polynomial"),
+  wxMenu *solve_sub = new wxMenu;
+  solve_sub->Append(menu_solve, _("&Solve..."),
+                    _("Solve equation(s)"), wxITEM_NORMAL);
+  solve_sub->Append(menu_solve_to_poly, _("Solve (to_poly)..."),
+                    _("Solve equation(s) with to_poly_solve"), wxITEM_NORMAL);
+  solve_sub->Append(menu_solve_lin, _("Solve &Linear System..."),
+                    _("Solve linear system of equations"),
+                    wxITEM_NORMAL);
+  solve_sub->Append(menu_solve_algsys, _("Solve &Algebraic System..."),
+                    _("Solve algebraic system of equations"),
                           wxITEM_NORMAL);
-  m_EquationsMenu->Append(menu_bfallroots, _("Roots of Polynomial (bfloat)"),
-                          _("Find all roots of a polynomial (bfloat)"),
-                          wxITEM_NORMAL);
-  m_EquationsMenu->Append(menu_realroots, _("&Roots of Polynomial (Real)"),
-                          _("Find real roots of a polynomial"),
-                          wxITEM_NORMAL);
-  m_EquationsMenu->Append(menu_solve_lin, _("Solve &Linear System..."),
-                          _("Solve linear system of equations"),
-                          wxITEM_NORMAL);
-  m_EquationsMenu->Append(menu_solve_algsys, _("Solve &Algebraic System..."),
-                          _("Solve algebraic system of equations"),
-                          wxITEM_NORMAL);
-  m_EquationsMenu->Append(menu_eliminate, _("&Eliminate Variable..."),
+  solve_sub->Append(menu_eliminate, _("&Eliminate Variable..."),
                           _("Eliminate a variable from a system "
-                                    "of equations"),
-                          wxITEM_NORMAL);
+                            "of equations"));
+  m_EquationsMenu->Append(wxNewId(), _("Solve symbolically"),
+                          solve_sub);
+  wxMenu *solveNum1_sub = new wxMenu;
+  solveNum1_sub->Append(menu_solve_num, _("&Find Root..."),
+                        _("Find a root of an equation on an interval"), wxITEM_NORMAL);
+  solveNum1_sub->Append(menu_allroots, _("Roots of &Polynomial"),
+                        _("Find all roots of a polynomial"),
+                        wxITEM_NORMAL);
+  solveNum1_sub->Append(menu_bfallroots, _("Roots of Polynomial (bfloat)"),
+                        _("Find all roots of a polynomial (bfloat)"),
+                        wxITEM_NORMAL);
+  solveNum1_sub->Append(menu_realroots, _("&Roots of Polynomial (Real)"),
+                        _("Find real roots of a polynomial"),
+                        wxITEM_NORMAL);
+  m_EquationsMenu->Append(wxNewId(), _("Solve numerical, 1 Variable"),
+                          solveNum1_sub);
   m_EquationsMenu->AppendSeparator();
   m_EquationsMenu->Append(menu_solve_ode, _("Solve &ODE..."),
                           _("Solve ordinary differential equation "
