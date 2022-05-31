@@ -1251,32 +1251,35 @@ void wxMaximaFrame::SetupMenu()
 
   // Simplify menu
   m_SimplifyMenu = new wxMenu;
-  m_SimplifyMenu->Append(menu_mainvar, _("Set main variable..."));
-  m_SimplifyMenu->Append(menu_ratsimp, _("&Simplify Expression"),
+  wxMenu *simplify_sub = new wxMenu;
+  simplify_sub->Append(menu_mainvar, _("Set main variable..."));
+  simplify_sub->Append(menu_ratsimp, _("Try to guess which form is &simple"),
                          _("Simplify rational expression"), wxITEM_NORMAL);
-  m_SimplifyMenu->Append(menu_radsimp, _("Simplify &Radicals"),
+  simplify_sub->Append(menu_radsimp, _("Simplify &Radicals"),
                          _("Simplify expression containing radicals"),
                          wxITEM_NORMAL);
-  m_SimplifyMenu->Append(menu_factor, _("&Factor Expression"),
+  simplify_sub->Append(menu_factor, _("&Factor Expression"),
                          _("Factor an expression"), wxITEM_NORMAL);
-  m_SimplifyMenu->Append(menu_scanmapfactor, _("Factor Expression including subexpressions"),
+  simplify_sub->Append(menu_scanmapfactor, _("Factor Expression including subexpressions"),
                          _("Factor an expression"), wxITEM_NORMAL);
-  m_SimplifyMenu->Append(menu_gfactor, _("Factor Complex"),
+  simplify_sub->Append(menu_gfactor, _("Factor Complex"),
                          _("Factor an expression in Gaussian numbers"),
                          wxITEM_NORMAL);
-  m_SimplifyMenu->Append(menu_expand, _("&Expand Expression"),
+  simplify_sub->Append(menu_expand, _("&Expand Expression"),
                          _("Expand an expression"), wxITEM_NORMAL);
-  m_SimplifyMenu->Append(menu_horner, _("Horner's rule"),
+  simplify_sub->Append(menu_horner, _("Horner's rule"),
                          _("Reorganize an expression using horner's rule"), wxITEM_NORMAL);
-  m_SimplifyMenu->Append(menu_collapse, _("Optimize for memory"));
-  m_SimplifyMenu->Append(menu_optimize, _("Optimize for CPU time"));
-  m_SimplifyMenu->Append(menu_expandwrt, _("Expand for given variables"));
-  m_SimplifyMenu->Append(menu_expandwrt_denom, _("Dito, including denominator"));
-  m_SimplifyMenu->Append(menu_scsimp, _("Sequential Comparative Simplification"));
-  m_SimplifyMenu->Append(menu_xthru, _("Find common denominator"));
-  m_SimplifyMenu->Append(menu_partfrac, _("Partial &Fractions..."),
+  simplify_sub->Append(menu_collapse, _("Optimize for memory"));
+  simplify_sub->Append(menu_optimize, _("Optimize for CPU time"));
+  simplify_sub->Append(menu_expandwrt, _("Expand for given variables"));
+  simplify_sub->Append(menu_expandwrt_denom, _("Dito, including denominator"));
+  simplify_sub->Append(menu_scsimp, _("Sequential Comparative Simplification"));
+  simplify_sub->Append(menu_xthru, _("Find common denominator"));
+  simplify_sub->Append(menu_partfrac, _("Partial &Fractions..."),
                          _("Decompose rational function to partial fractions"),
                          wxITEM_NORMAL);
+  m_SimplifyMenu->Append(wxNewId(), _("Simplify equations"),
+                         simplify_sub);
   m_logexpand_Sub = new wxMenu;
   m_logexpand_Sub->Append(menu_logcontract, _("Contract Logarithms"),
                           _("Convert sum of logarithms to logarithm of product"),
