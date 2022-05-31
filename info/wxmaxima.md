@@ -373,7 +373,7 @@ If you are using Windows, the configuration will be stored in the registry. You 
 Extensions to _Maxima_
 ======================
 
-_wxMaxima_ is primarily a graphical user interface for _Maxima_. As such, its main purpose is to pass along commands to _Maxima_ and to report the results of executing those commands. In some cases, however, _wxMaxima_ adds functionality to _Maxima_. _wxMaxima_’s ability to generate reports by exporting a workbook’s contents to HTML and LaTeX files has been mentioned. This section considers some ways that _wxMaxima_ enhances the inclusion of graphics into a session.
+_wxMaxima_ is primarily a graphical user interface for _Maxima_. As such, its main purpose is to pass along commands to _Maxima_ and to report the results of executing those commands. In some cases, however, _wxMaxima_ adds functionality to _Maxima_. _wxMaxima_’s ability to generate reports by exporting a workbook’s contents to HTML and LaTeX files has been mentioned. This section considers some ways that _wxMaxima_ enhances the inclusion of graphics in a session.
 
 ## Subscripted variables
 
@@ -382,11 +382,11 @@ if `wxsubscripts` is set to true variable names of the format `x_y` are displaye
 * `y` is a single letter
 * `y` is an integer
 
-If the variable name doesn’t match these requirements it can still be declared as "to be subscripted" using the command `wxdeclare_subscript(variable_name);` or `wxdeclare_subscript([variable_name1,variable_name2,...]);` Declaring a variable as subscripted can be reverted using the following command: `wxdeclare_subscript(variable_name,false);`
+If the variable name doesn’t match these requirements, it can still be declared as "to be subscripted" using the command `wxdeclare_subscript(variable_name);` or `wxdeclare_subscript([variable_name1,variable_name2,...]);` Declaring a variable as subscripted can be reverted using the following command: `wxdeclare_subscript(variable_name,false);`
 
 ## User feedback in the status bar
 
-Long-running commands can provide user-feedback in the status bar. This user feedback is replaced by any new feedback that is placed there (allowing to use it as a progress indicator) and is deleted as soon as the current command sent to _Maxima_ is finished. It is safe to use `wxstatusbar()` even in libraries that might be used with plain _Maxima_ (as opposed to _wxMaxima_): If _wxMaxima_ isn't present the `wxstatusbar()` command will just be left unevaluated.
+Long-running commands can provide user feedback in the status bar. This user feedback is replaced by any new feedback that is placed there (allowing to use it as a progress indicator) and is deleted as soon as the current command sent to _Maxima_ is finished. It is safe to use `wxstatusbar()` even in libraries that might be used with plain _Maxima_ (as opposed to _wxMaxima_): If _wxMaxima_ isn't present the `wxstatusbar()` command will just be left unevaluated.
 
 ~~~maxima
 for i:1 thru 10 do (
@@ -405,11 +405,11 @@ Plotting (having fundamentally to do with graphics) is a place where a graphical
 
 ### Embedding a plot into the work sheet
 
-_Maxima_ normally instructs the external program _gnuplot_ to open a separate window for every diagram it creates. Since many times it is convenient to embed graphs into the work sheet instead _wxMaxima_ provides its own set of plot functions that don’t differ from the corresponding _maxima_ functions save in their name: They are all prefixed by a “wx”. For example `wxplot2d` corresponds to `plot2d`, `wxplot3d` corresponds to `plot3d`, `wxdraw` corresponds to `draw` and `wxhistogram` corresponds to `histogram`.
+_Maxima_ normally instructs the external program _gnuplot_ to open a separate window for every diagram it creates. Since many times it is convenient to embed graphs into the worksheet instead _wxMaxima_ provides its own set of plot functions that don’t differ from the corresponding _maxima_ functions save in their name: They are all prefixed by a “wx”. For example `wxplot2d` corresponds to `plot2d`, `wxplot3d` corresponds to `plot3d`, `wxdraw` corresponds to `draw` and `wxhistogram` corresponds to `histogram`.
 
 ### Making embedded plots bigger or smaller
 
-As noted above, the configure dialog provides a way to change the default size plots are created with which sets the starting value of `wxplot_size`. The plotting routines of _wxMaxima_ respect this variable that specifies the size of a plot in pixels. It can always be queried or used to set the size of the following plots:
+As noted above, the configure dialog provides a way to change the default size plots created which sets the starting value of `wxplot_size`. The plotting routines of _wxMaxima_ respect this variable that specifies the size of a plot in pixels. It can always be queried or used to set the size of the following plots:
 
 ~~~maxima
 wxplot_size:[1200,800]$
@@ -434,7 +434,7 @@ wxdraw2d(
 
 ### Better quality plots
 
-_Gnuplot_ doesn’t seem to provide a portable way of determining whether it supports the high-quality bitmap output that the cairo library provides. On systems where _gnuplot_ is compiled to use this library the pngcairo option from the configuration menu (that can be overridden by the variable `wxplot_pngcairo`) enables support for antialiasing and additional line styles. If `wxplot_pngcairo` is set without _gnuplot_ supporting this the result will be error messages instead of graphics.
+_Gnuplot_ doesn’t seem to provide a portable way of determining whether it supports the high-quality bitmap output that the Cairo library provides. On systems where _gnuplot_ is compiled to use this library the pngCairo option from the configuration menu (that can be overridden by the variable `wxplot_pngcairo`) enables support for antialiasing and additional line styles. If `wxplot_pngCairo` is set without _gnuplot_ supporting this the result will be error messages instead of graphics.
 
 ### Opening embedded plots in interactive _gnuplot_ windows
 
@@ -499,19 +499,19 @@ with_slider_draw3d(
 )$
 ~~~
 
-For those more familiar with `plot` than with `draw` there is a second set of functions:
+For those more familiar with `plot` than with `draw`, there is a second set of functions:
 
 * `with_slider` and
 * `wxanimate`.
 
-Normally the animations are played back or exported with the frame rate chosen in the configuration of _wxMaxima_. To set the speed an individual animation is played back the variable `wxanimate_framerate` can be used:
+Normally the animations are played back or exported with the frame rate chosen in the configuration of _wxMaxima_. To set the speed at an individual animation is played back the variable `wxanimate_framerate` can be used:
 
 ~~~maxima
 wxanimate(a, 10,
     sin(a*x), [x,-5,5]), wxanimate_framerate=6$
 ~~~
 
-The animation functions use _Maxima_'s `makelist` command and therefore shares the pitfall that the slider variable's value is substituted into the expression only if the variable is directly visible in the expression. Therefore the following example will fail:
+The animation functions use _Maxima_'s `makelist` command and therefore share the pitfall that the slider variable's value is substituted into the expression only if the variable is directly visible in the expression. Therefore the following example will fail:
 
 ~~~maxima
 f:sin(a*x);
@@ -540,7 +540,7 @@ with_slider_draw(
 
 ### Opening multiple plots in contemporaneous windows
 
-While not being a provided by _wxMaxima_ this feature of _Maxima_ (on setups that support it) sometimes comes in handily. The following example comes from a post from Mario Rodriguez to the _Maxima_ mailing list:
+While not being provided by _wxMaxima_ this feature of _Maxima_ (on setups that support it) sometimes comes in handily. The following example comes from a post from Mario Rodriguez to the _Maxima_ mailing list:
 
 ~~~maxima
     load(draw);
@@ -570,17 +570,17 @@ Plotting multiple plots in the same window is possible, too:
 
 ### The "Plot using draw" side pane
 
-The "Plot using draw" sidebar hides a simple code generator that allows to generate scenes that make use of some of the flexibility of the _draw_ package _maxima_ comes with.
+The "Plot using draw" sidebar hides a simple code generator that allows generating scenes that make use of some of the flexibility of the _draw_ package _maxima_ comes with.
 
 #### 2D
 
 Generates the skeleton of a `draw()` command that draws a 2D scene. This scene later has to be filled with commands that generate the scene's contents, for example by using the buttons in the rows below the "2D" button.
 
-One helpful feature of the 2D button is that it allows to setup the scene as an animation in which a variable (by default it is _t_) has a different value in each frame: Often a moving 2D plot allows easier interpretation than the same data in a non-moving 3D one.
+One helpful feature of the 2D button is that it allows to set up the scene as an animation in which a variable (by default it is _t_) has a different value in each frame: Often a moving 2D plot allows easier interpretation than the same data in a non-moving 3D one.
 
 #### 3D
 
-Generates the skeleton of a `draw()` command that draws a 3D scene. If neither a 2D or a 3D scene are set up all of the other buttons set up a 2D scene that contains the command the button generates.
+Generates the skeleton of a `draw()` command that draws a 3D scene. If neither a 2D nor a 3D scene is set up, all of the other buttons set up a 2D scene that contains the command the button generates.
 
 #### Expression
 
@@ -608,7 +608,7 @@ Sets up the axis.
 
 #### Contour
 
-(Only for 3D plots): Adds contour lines similar to the ones one can find in a map of a mountain to the plot commands that follow in the current `draw()` command and/or to the ground plane of the diagram. Alternatively this wizard allows skipping drawing the curves entirely only showing the contour plot.
+(Only for 3D plots): Adds contour lines similar to the ones one can find in a map of a mountain to the plot commands that follow in the current `draw()` command and/or to the ground plane of the diagram. Alternatively, this wizard allows skipping drawing the curves entirely only showing the contour plot.
 
 #### Plot name
 
