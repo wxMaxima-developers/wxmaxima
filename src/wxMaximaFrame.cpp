@@ -990,6 +990,9 @@ void wxMaximaFrame::SetupMenu()
                        wxITEM_NORMAL);
   m_MaximaMenu->Append(menu_texform, _("Display Te&X Form"),
                        _("Display last result in TeX form"), wxITEM_NORMAL);
+  m_MaximaMenu->Append(menu_grind, _("Maxima input"),
+                       _("Convert a command to maxima code"), wxITEM_NORMAL);
+
   m_MaximaMenu->AppendSeparator();
   m_MaximaMenu->Append(menu_jumptoerror, _("Jump to first error"),
                        _("Jump to the first cell Maxima has reported an error in."),
@@ -1248,6 +1251,7 @@ void wxMaximaFrame::SetupMenu()
 
   // Simplify menu
   m_SimplifyMenu = new wxMenu;
+  m_SimplifyMenu->Append(menu_mainvar, _("Set main variable..."));
   m_SimplifyMenu->Append(menu_ratsimp, _("&Simplify Expression"),
                          _("Simplify rational expression"), wxITEM_NORMAL);
   m_SimplifyMenu->Append(menu_radsimp, _("Simplify &Radicals"),
@@ -1255,11 +1259,21 @@ void wxMaximaFrame::SetupMenu()
                          wxITEM_NORMAL);
   m_SimplifyMenu->Append(menu_factor, _("&Factor Expression"),
                          _("Factor an expression"), wxITEM_NORMAL);
+  m_SimplifyMenu->Append(menu_scanmapfactor, _("Factor Expression including subexpressions"),
+                         _("Factor an expression"), wxITEM_NORMAL);
   m_SimplifyMenu->Append(menu_gfactor, _("Factor Complex"),
                          _("Factor an expression in Gaussian numbers"),
                          wxITEM_NORMAL);
   m_SimplifyMenu->Append(menu_expand, _("&Expand Expression"),
                          _("Expand an expression"), wxITEM_NORMAL);
+  m_SimplifyMenu->Append(menu_horner, _("Horner's rule"),
+                         _("Reorganize an expression using horner's rule"), wxITEM_NORMAL);
+  m_SimplifyMenu->Append(menu_collapse, _("Optimize for memory"));
+  m_SimplifyMenu->Append(menu_optimize, _("Optimize for CPU time"),
+                         _("Reorganize an expression using horner's rule"), wxITEM_NORMAL);
+  m_SimplifyMenu->Append(menu_partfrac, _("Partial &Fractions..."),
+                         _("Decompose rational function to partial fractions"),
+                         wxITEM_NORMAL);
   m_logexpand_Sub = new wxMenu;
   m_logexpand_Sub->Append(menu_logcontract, _("Contract Logarithms"),
                           _("Convert sum of logarithms to logarithm of product"),

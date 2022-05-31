@@ -371,8 +371,6 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
           wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
   Connect(Worksheet::popid_simplify, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
-  Connect(Worksheet::popid_factor, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
   Connect(Worksheet::popid_expand, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
   Connect(Worksheet::popid_solve, wxEVT_MENU,
@@ -552,6 +550,16 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
   Connect(menu_expand, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
   Connect(menu_factor, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
+  Connect(menu_horner, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
+  Connect(menu_collapse, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
+  Connect(menu_optimize, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
+  Connect(menu_mainvar, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
+  Connect(menu_scanmapfactor, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
   Connect(menu_gfactor, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
@@ -813,6 +821,8 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
   Connect(wxID_REDO, wxEVT_BUTTON,
           wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
   Connect(menu_texform, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_grind, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
   Connect(menu_debugmode_lisp, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
@@ -6498,6 +6508,10 @@ void wxMaxima::MaximaMenu(wxCommandEvent &event)
       cmd = wxT("tex(") + expr + wxT(")$");
       MenuCommand(cmd);
       break;
+    case menu_grind:
+      cmd = wxT("grind(") + expr + wxT(")$");
+      MenuCommand(cmd);
+      break;
     case menu_debugmode_lisp:
       cmd = wxT("debugmode: lisp$");
       MenuCommand(cmd);
@@ -7741,6 +7755,28 @@ void wxMaxima::SimplifyMenu(wxCommandEvent &event)
     case button_factor:
     case menu_factor:
       cmd = wxT("factor(") + expr + wxT(");");
+      MenuCommand(cmd);
+      break;
+    case menu_horner:
+      cmd = wxT("horner(") + expr + wxT(");");
+      MenuCommand(cmd);
+      break;
+    case menu_collapse:
+      cmd = wxT("collapse(") + expr + wxT(");");
+      MenuCommand(cmd);
+      break;
+    case menu_optimize:
+      cmd = wxT("optimize(") + expr + wxT(");");
+      MenuCommand(cmd);
+      break;
+    case menu_mainvar:
+      CommandWiz(_("Declare main variable:"),
+                 wxEmptyString,wxEmptyString,
+                 wxT("declare(#1#,mainvar);"),
+                 wxT("Variable"),wxT("%"),wxEmptyString);
+      break;
+    case menu_scanmapfactor:
+      cmd = wxT("scanmap('factor,") + expr + wxT(");");
       MenuCommand(cmd);
       break;
     case menu_gfactor:
