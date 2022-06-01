@@ -1520,7 +1520,7 @@ void wxMaximaFrame::SetupMenu()
   quadpack_sub->Append(menu_quad_qag, integralSign+_("(f(x),x,a,b), strategy of Aind"));
   quadpack_sub->Append(menu_quad_qags, integralSign+_("(f(x),x,a,b), Epsilon algorithm"));
   quadpack_sub->Append(menu_quad_qagi, integralSign+_("(f(x),x,a,b), infinite interval"));
-  quadpack_sub->Append(menu_quad_qawc, _("Cauchy principial value, finite interval"));
+  quadpack_sub->Append(menu_quad_qawc, _("Cauchy principal value, finite interval"));
   quadpack_sub->Append(menu_quad_qawf_sin, integralSign+wxT("(f(x)*sin(ω·x),x,a,∞)"));
   quadpack_sub->Append(menu_quad_qawf_cos, integralSign+wxT("(f(x)*cos(ω·x),x,a,∞)"));
   quadpack_sub->Append(menu_quad_qawo_sin, integralSign+wxT("(f(x)*sin(ω·x),x,a,b)"));

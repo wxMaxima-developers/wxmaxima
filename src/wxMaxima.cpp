@@ -6700,7 +6700,7 @@ void wxMaxima::EquationsMenu(wxCommandEvent &event)
     case menu_solve_ode:
       CommandWiz(
         _("Solve ODE"),
-        _("solves an equation of the form\n    'diff(y,t) = -y;"),_("The solution of an ODE describes the general shape of the resulting curve. The actual height of that curve is defined by the initial condition or boundary values, lateron."),
+        _("solves an equation of the form\n    'diff(y,t) = -y;"),_("The solution of an ODE describes the general shape of the resulting curve. The actual height of that curve is defined by the initial condition or boundary values, later on."),
         wxT("ode2(#1#,#2#,#3#);"),
         _("Equation:"),expr,wxEmptyString,
         _("y:"),wxT("y"),wxEmptyString,
@@ -7202,7 +7202,7 @@ void wxMaxima::MatrixMenu(wxCommandEvent &event)
         _("Runs each element through an equation individually"),wxEmptyString,
         wxT("apply('matrix,makelist(makelist(lambda([#2#,#3#],#1#),#2#,1,#4#),#3#,1,#5#);"),
         _("Equation"),expr,wxEmptyString,
-        _("Variable name of the element="),wxT("i"),_("The equation will use this variable name in order to referto the current element"),
+        _("Variable name of the element="),wxT("i"),_("The equation will use this variable name in order to refer to the current element"),
         _("Equation="),wxT("cabs(i)"),wxEmptyString
         );
       break;
@@ -8315,7 +8315,7 @@ void wxMaxima::NumericalMenu(wxCommandEvent &event)
   case menu_quad_qawc:
   {
     CommandWiz(
-      _("Cauchy principial value of f(x)/(x-c), finite interval"),
+      _("Cauchy principal value of f(x)/(x-c), finite interval"),
       wxEmptyString,wxEmptyString,
       wxT("quad_qawc(#1#,#2#,#3#,#4#,epsrel=#5#,epsabs=#6#,limit=#7#)"),
       wxT("f(x)"),wxT("%"),wxEmptyString,
