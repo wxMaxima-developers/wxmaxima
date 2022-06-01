@@ -213,6 +213,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
   {
     m_variableReadActions[wxT("maxima_userdir")] = &wxMaxima::VariableActionUserDir;
     m_variableReadActions[wxT("logexpand")] = &wxMaxima::VariableActionLogexpand;
+    m_variableReadActions[wxT("opsubst")] = &wxMaxima::VariableActionOpSubst;    
     m_variableReadActions[wxT("maxima_tempdir")] = &wxMaxima::VariableActionTempDir;
     m_variableReadActions[wxT("debugmode")] = &wxMaxima::VariableActionDebugmode;
     m_variableReadActions[wxT("*autoconf-version*")] = &wxMaxima::VariableActionAutoconfVersion;
@@ -775,6 +776,20 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
   Connect(menu_imagpart, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
   Connect(menu_nouns, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
+  Connect(menu_subst, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
+  Connect(menu_psubst, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
+  Connect(menu_ratsubst, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
+  Connect(menu_fullratsubst, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
+  Connect(menu_at, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
+  Connect(menu_substinpart, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
+  Connect(menu_opsubst, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
   Connect(menu_logcontract, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
@@ -2840,6 +2855,14 @@ void wxMaxima::VariableActionUserDir(const wxString &value)
   Dirstructure::Get()->UserConfDir(value);
   wxLogMessage(wxString::Format(
                  _("Maxima user configuration lies in directory %s"),value.utf8_str()));
+}
+
+void wxMaxima::VariableActionOpSubst(const wxString &value)
+{
+  if(value == wxT("false"))
+    m_subst_Sub->Check(menu_opsubst, false);
+  else if(value == wxT("true"))
+    m_subst_Sub->Check(menu_opsubst, true);
 }
 
 void wxMaxima::VariableActionLogexpand(const wxString &value)
@@ -6620,7 +6643,6 @@ void wxMaxima::MaximaMenu(wxCommandEvent &event)
         _("Runction name:"),wxT("all"),wxEmptyString
         );
       break;
-    case menu_subst:
     case button_subst:
     {
       SubstituteWiz *wiz = new SubstituteWiz(this, -1, m_worksheet->m_configuration, _("Substitute"));
@@ -7776,14 +7798,65 @@ void wxMaxima::SimplifyMenu(wxCommandEvent &event)
     case menu_expandwrt:
       CommandWiz(_("Expand for variable(s):"),
                  wxEmptyString,wxEmptyString,
-                 wxT("explandwrt(#1#,#2#);"),
+                 wxT("expandwrt(#1#,#2#);"),
                  wxT("Expression"),wxT("%"),wxEmptyString,
                  wxT("Variable(s)"),wxT("x"),_("Comma-separated variables"));
       break;
+  case menu_subst:
+      CommandWiz(_("Substitute"),
+                 _("Subst is a better string-search-and-replace for expressions."),wxEmptyString,
+                 wxT("subst(#2#,#1#);"),
+                 wxT("Expression"),wxT("%"),wxEmptyString,
+                 wxT("Substituents"),wxT("x^2=u"),_("Comma-separated expressions"));
+      break;
+  case menu_ratsubst:
+      CommandWiz(_("Smart substitution"),
+                 _("ŕatsubst works like subst, but it knows some basic maths, if needed."),wxEmptyString,
+                 wxT("ratsubst(#2#,#1#);"),
+                 wxT("Expression"),wxT("%"),wxEmptyString,
+                 wxT("Substituents"),wxT("x^2=u"),_("Comma-separated expressions"));
+      break;
+  case menu_psubst:
+      CommandWiz(_("Parallel substitution"),
+                 _("Substitutes, but makes sure that nothing is substituted into the other substituents."),wxEmptyString,
+                 wxT("ratsubst(#2#,#1#);"),
+                 wxT("Expression"),wxT("%"),wxEmptyString,
+                 wxT("Substituents"),wxT("x^2=u,u=x^2"),_("Comma-separated expressions"));
+      break;
+  case menu_fullratsubst:
+      CommandWiz(_("Recursive substitution"),
+                 _("Substitutes up to lrats_max_iter times, or until the expression stops changing when substituting."),wxEmptyString,
+                 wxT("fullratsubst(#2#,#1#);"),
+                 wxT("Expression"),wxT("%"),wxEmptyString,
+                 wxT("Substituents"),wxT("x^2=u"),_("Comma-separated expressions"));
+      break;
+  case menu_at:
+      CommandWiz(_("Value at a given point"),
+                 _("Substitutes, but makes sure that if substituting t=0 in diff(x,t) the result isn't 0 (as t no more changes), but %at(diff(x,t),t=0)."),wxEmptyString,
+                 wxT("at(#1#,#2#);"),
+                 wxT("Expression"),wxT("%"),wxEmptyString,
+                 wxT("Substituents"),wxT("x^2=u"),_("Comma-separated expressions"));
+      break;
+  case menu_substinpart:
+      CommandWiz(_("Substitute only in specific parts"),
+                 _("Substitutes, but only in the n_1th, n_2th and so on term of the equation."),wxEmptyString,
+                 wxT("substinpart(#2#,#1#,#3#);"),
+                 wxT("Expression"),wxT("%"),wxEmptyString,
+                 wxT("Substituents"),wxT("x^2=u,u=x^2"),_("Comma-separated expressions"),
+                 wxT("Term numbers"),wxT("x^2=u,u=x^2"),_("Comma-separated numbers of the terms to substitute in")
+        );
+      break;
+  case menu_opsubst:
+      if(event.IsChecked())
+        cmd = wxT("opsubst:true$");
+      else
+        cmd = wxT("opsubst:false$");
+      MenuCommand(cmd);
+    break;
     case menu_expandwrt_denom:
       CommandWiz(_("Expand for variable(s) including denominator:"),
                  wxEmptyString,wxEmptyString,
-                 wxT("explandwrt(#1#,#2#),expandwrt_denom=true;"),
+                 wxT("expandwrt(#1#,#2#),expandwrt_denom=true;"),
                  wxT("Expression"),wxT("%"),wxEmptyString,
                  wxT("Variable(s)"),wxT("x"),_("Comma-separated variables"));
       break;

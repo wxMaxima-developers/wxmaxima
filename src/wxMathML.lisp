@@ -2077,6 +2077,7 @@
     (finish-output)
     (format t "<variables>")
     (wx-print-variable '$wxsubscripts)
+    (wx-print-variable '$opsubst)
     (wx-print-variable '$logexpand)
     (wx-print-variable '$lmxchar)
     (wx-print-variable '$numer)

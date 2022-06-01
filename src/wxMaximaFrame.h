@@ -268,6 +268,12 @@ public:
     menu_realpart,
     menu_imagpart,
     menu_subst,
+    menu_psubst,
+    menu_ratsubst,
+    menu_fullratsubst,
+    menu_at,
+    menu_substinpart,
+    menu_opsubst,
     menu_jumptoerror,
     menu_math_as_1D_ASCII,
     menu_math_as_2D_ASCII,
@@ -663,6 +669,8 @@ protected:
   StatusBar *m_statusBar;
   //! The menu bar
   MainMenuBar *m_MenuBar;
+  //! The subst submenu
+  wxMenu *m_subst_Sub;
   //! The logexpand submenu
   wxMenu * m_logexpand_Sub;
   //! The file menu.

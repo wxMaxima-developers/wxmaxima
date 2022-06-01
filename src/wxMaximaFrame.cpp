@@ -1353,9 +1353,28 @@ void wxMaximaFrame::SetupMenu()
                          m_Simplify_Complex_Sub,
                          _("Functions for complex simplification"));
   m_SimplifyMenu->AppendSeparator();
-  m_SimplifyMenu->Append(menu_subst, _("Substitute..."),
-                         _("Make substitution in expression"),
+  m_subst_Sub = new wxMenu;
+  m_subst_Sub->Append(menu_subst, _("Substitute..."),
+                         _("A search-and-replace for equations"),
                          wxITEM_NORMAL);
+  m_subst_Sub->Append(menu_ratsubst, _("Smart Substitute..."),
+                         _("A subst with basic maths knowledge"),
+                         wxITEM_NORMAL);
+  m_subst_Sub->Append(menu_psubst, _("Parallel Substitute..."),
+                         _("Substitutes, but not in the other substituents"),
+                         wxITEM_NORMAL);
+  m_subst_Sub->Append(menu_fullratsubst, _("Recursive Substitute..."),
+                         _("Substitutes until the equation no more changes"),
+                         wxITEM_NORMAL);
+  m_subst_Sub->Append(menu_at, _("Subst constant t into eq with diff(x,t)..."),
+                         _("Substitutes until the equation no more changes"),
+                         wxITEM_NORMAL);
+  m_subst_Sub->Append(menu_subst, _("Substitute only in parts..."),
+                         _("Substitute only in the elements n_1, n_2,..."),
+                         wxITEM_NORMAL);
+  m_subst_Sub->AppendCheckItem(menu_opsubst, _("Allow to substitute operators"));
+  m_SimplifyMenu->Append(wxNewId(), _("Substitute"),
+                         m_subst_Sub);
   m_SimplifyMenu->Append(menu_nouns, _("Evaluate &Noun Forms"),
                          _("Evaluate all noun forms in expression"),
                          wxITEM_NORMAL);
