@@ -403,7 +403,7 @@ for i:1 thru 10 do (
 
 Plotting (having fundamentally to do with graphics) is a place where a graphical user interface will have to provide some extensions to the original program.
 
-### Embedding a plot into the work sheet
+### Embedding a plot into the worksheet
 
 _Maxima_ normally instructs the external program _gnuplot_ to open a separate window for every diagram it creates. Since many times it is convenient to embed graphs into the worksheet instead _wxMaxima_ provides its own set of plot functions that don’t differ from the corresponding _maxima_ functions save in their name: They are all prefixed by a “wx”. For example `wxplot2d` corresponds to `plot2d`, `wxplot3d` corresponds to `plot3d`, `wxdraw` corresponds to `draw` and `wxhistogram` corresponds to `histogram`.
 
