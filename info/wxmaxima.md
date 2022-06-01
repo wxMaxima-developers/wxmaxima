@@ -859,47 +859,47 @@ You can add the following line to the LaTeX preamble (for example by using the r
 
 ## Is there a dark mode?
 
-If wxWidgets is new enough _wxMaxima_ will automatically be in dark mode if the rest of the operating system is. The worksheet itself is by default equipped with a bright background. But it can be configured otherwise. Alternatively there is a `View/Invert worksheet brightness` menu entry that allows to quickly convert the worksheet from dark to bright and vice versa.
+If wxWidgets is new enough, _wxMaxima_ will automatically be in dark mode if the rest of the operating system is. The worksheet itself is by default equipped with a bright background. But it can be configured otherwise. Alternatively, there is a `View/Invert worksheet brightness` menu entry that allows to quickly convert the worksheet from dark to bright and vice versa.
 
-## _wxMaxima_ sometimes hangs for a several seconds once in the first minute
+## _wxMaxima_ sometimes hangs for several seconds once in the first minute
 
-_wxMaxima_ delegates some big tasks like parsing _Maxima_'s >1000-page-manual to background tasks, which normally goes totally unnoticed. In the moment the result of such a task is needed, though, it is possible that _wxMaxima_ needs to wait a couple of seconds before it can continue its work.
+_wxMaxima_ delegates some big tasks like parsing _Maxima_'s >1000-page-manual to background tasks, which normally goes totally unnoticed. At the moment the result of such a task is needed, though, it is possible that _wxMaxima_ needs to wait a couple of seconds before it can continue its work.
 
 ## Especially when testing new locale settings, a message box "locale 'xx_YY' can not be set" occurs
 
 ![Locale warning](./locale-warning.png){ id=img_locale_warning}
 
-(The same problem can occur with other applications too).The translations seem okay after
-you click on 'OK'. wxMaxima does not only use it's own translations, but the translations
+(The same problem can occur with other applications too). The translations seem okay after
+you click on 'OK'. wxMaxima does not only use its own translations but the translations
 of the wxWidgets framework too.
 
-These locales may be not present on the system. On Ubuntu/Debian systems they can be generated
+These locales maybe not present in the system. On Ubuntu/Debian systems they can be generated
 using: `dpkg-reconfigure locales`
 
 ## How can I use symbols for real numbers, natural numbers (ℝ, ℕ), etc.?
 
-You can find these symbols in the unicode side bar (search for 'double-struck capital'). But the selected font must also support these symbols. If they do not display properly, select another font.
+You can find these symbols in the Unicode sidebar (search for 'double-struck capital'). But the selected font must also support these symbols. If they do not display properly, select another font.
 
 * * *
 
 Command-line arguments
 ======================
 
-Most operating systems provide less complicated ways of starting programs than the command line so this possibility is only rarely used. _wxMaxima_ still provides some command line switches, though.
+Most operating systems provide less complicated ways of starting programs than the command line so this possibility is only rarely used. _wxMaxima_ still provides some command-line switches, though.
 
 * `-v` or `--version`: Output the version information
 * `-h` or `--help`: Output a short help text
-* `-o` or `--open=<str>`: Open the filename given as argument to this command-line switch
+* `-o` or `--open=<str>`: Open the filename given as an argument to this command-line switch
 * `-e` or `--eval`: Evaluate the file after opening it.
-* `-b` or `--batch`: If the command-line opens a file all cells in this file are evaluated and the file is saved afterwards. This is for example useful if the session described in the file makes _Maxima_ generate output files. Batch-processing will be stopped if _wxMaxima_ detects that _Maxima_ has output an error and will pause if _Maxima_ has a question: Mathematics is somewhat interactive by nature so a completely interaction-free batch processing cannot always be guaranteed.
+* `-b` or `--batch`: If the command-line opens a file all cells in this file are evaluated and the file is saved afterward. This is for example useful if the session described in the file makes _Maxima_ generate output files. Batch-processing will be stopped if _wxMaxima_ detects that _Maxima_ has output an error and will pause if _Maxima_ has a question: Mathematics is somewhat interactive by nature so a completely interaction-free batch processing cannot always be guaranteed.
 * `--logtostderr`:                 Log all "debug messages" sidebar messages to stderr, too.
 * `--pipe`:                        Pipe messages from Maxima to stdout.
 * `--exit-on-error`:               Close the program on any maxima error.
-* `-f` or `--ini=<str>`: Use the init file that was given as argument to this command-line switch
+* `-f` or `--ini=<str>`: Use the init file that was given as an argument to this command-line switch
 * `-u`, `--use-version=<str>`:     Use maxima version `<str>`.
 * `-l`, `--lisp=<str>`:              Use a Maxima compiled with Lisp compiler `<str>`.
 * `-X`, `--extra-args=<str>`:        Allows to specify extra Maxima arguments
-* `-m` or `--maxima=<str>`:    allows to specify the location of the _maxima_ binary
+* `-m` or `--maxima=<str>`:    allows specifying the location of the _maxima_ binary
 * `--enableipc`: Lets Maxima control wxMaxima via interprocess communications. Use this option with care.
 
-Instead of a minus some operating systems might use a dash in front of the command-line switches.
+Instead of a minus, some operating systems might use a dash in front of the command-line switches.
