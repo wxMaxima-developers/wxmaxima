@@ -539,6 +539,7 @@ protected:
   /*! Reads the "add variable to watch list" tag maxima can send us
    */
   void ReadAddVariables(wxString &data);
+  void VariableActionOpSubst(const wxString &value);
   void VariableActionLogexpand(const wxString &value);
   void VariableActionUserDir(const wxString &value);
   void VariableActionTempDir(const wxString &value);
