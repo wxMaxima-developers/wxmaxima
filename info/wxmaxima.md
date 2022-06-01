@@ -702,19 +702,19 @@ Troubleshooting
 
 ## Cannot connect to _Maxima_
 
-Since _Maxima_ (the program that does the actual mathematics) and _wxMaxima_ (providing the easy-to-use user interface) are separate programs that communicate by the means of a local network connection. Therefore the most probable cause is that this connection is somehow not working. For example a firewall could be set up in a way that it doesn’t just prevent unauthorized connections from the internet (and perhaps to intercept some connections to the internet, too), but it also to blocks inter-process-communication inside the same computer. Note that since _Maxima_ is being run by a Lisp processor the process communication that is blocked from does not necessarily have to be named "maxima". Common names of the program that opens the network connection would be sbcl, gcl, ccl, lisp.exe or similar names.
+Since _Maxima_ (the program that does the actual mathematics) and _wxMaxima_ (providing the easy-to-use user interface) are separate programs that communicate by the means of a local network connection. Therefore the most probable cause is that this connection is somehow not working. For example, a firewall could be set up in a way that it doesn’t just prevent unauthorized connections from the internet (and perhaps intercept some connections to the internet, too), but also blocks inter-process-communication inside the same computer. Note that since _Maxima_ is being run by a Lisp processor the process communication that is blocked does not necessarily have to be named "maxima". Common names of the program that opens the network connection would be sbcl, gcl, ccl, lisp.exe, or similar names.
 
-On Un\*x computers another possible reason would be that the loopback network that provides network connections between two programs in the same computer isn’t properly configured.
+On Unix computers another possible reason would be that the loopback network that provides network connections between two programs in the same computer isn’t properly configured.
 
 ## How to save data from a broken .wxmx file
 
-Internally most modern XML-based formats are ordinary zip-files. _wxMaxima_ doesn't turn on compression, so the contents of `.wxmx` files can be viewed in any text editor.
+Internally most modern XML-based formats are ordinary zip files. _wxMaxima_ doesn't turn on compression, so the contents of `.wxmx` files can be viewed in any text editor.
 
-If the zip signature at the end of the file is still intact after renaming a broken `.wxmx` file to `.zip` most operating systems will provide a way to extract any portion of information that is stored inside it. This can be done when there is the need of recovering the original image files from a text processor document. If the zip signature isn’t intact that does not need to be the end of the world: If _wxMaxima_ during saving detected that something went wrong there will be a `.wxmx~` file whose contents might help.
+If the zip signature at the end of the file is still intact after renaming a broken `.wxmx` file to `.zip` most operating systems will provide a way to extract any portion of the information that is stored inside it. This can be done when there is a need of recovering the original image files from a text processor document. If the zip signature isn’t intact that does not need to be the end of the world: If _wxMaxima_ during saving detected that something went wrong there will be a `.wxmx~` file whose contents might help.
 
 And even if there isn’t such a file: The `.wxmx` file is a container format and the XML portion is stored uncompressed. It it is possible to rename the `.wxmx` file to a `.txt` file and to use a text editor to recover the XML portion of the file's contents (it starts with `<?xml version="1.0" encoding="UTF-8"?>` and ends with `</wxMaximaDocument>`. Before and after that text you will see some unreadable binary contents in the text editor).
 
-If a text file containing only this contents (e.g. copy and paste this text into a new file) is saved as a file ending in `.xml`, _wxMaxima_ will know how to recover the text from the document.
+If a text file containing only these contents (e.g. copy and paste this text into a new file) is saved as a file ending in `.xml`, _wxMaxima_ will know how to recover the text from the document.
 
 ## I want some debug info to be displayed on the screen before my command has finished
 
@@ -738,14 +738,14 @@ Possible reasons for this error are:
 
 * The plotting command is part of a third-party package like `implicit_plot` but this package was not loaded by _Maxima_’s `load()` command before trying to plot.
 * _Maxima_ tried to do something the currently installed version of _gnuplot_ isn’t able to understand. In this case, a file ending in `.gnuplot` located in the directory, which  _Maxima_’s variable `maxima_userdir` is pointing, contains the instructions from _Maxima_ to _gnuplot_. Most of the time, this file’s contents therefore are helpful when debugging the problem.
-* Gnuplot was instructed to use the pngcairo library that provides antialiasing and additional line styles, but it was not compiled to support this possibility. Solution: Uncheck the "Use the cairo terminal for plot" checkbox in the configuration dialog and don’t set `wxplot_pngcairo` to true from _Maxima_.
+* Gnuplot was instructed to use the pngCairo library that provides antialiasing and additional line styles, but it was not compiled to support this possibility. Solution: Uncheck the "Use the Cairo terminal for the plot" checkbox in the configuration dialog and don’t set `wxplot_pngCairo` to true from _Maxima_.
 * Gnuplot didn’t output a valid `.png` file.
 
 ## Plotting an animation results in “error: undefined variable”
 
-The value of the slider variable by default is only substituted into the expression that is to be plotted if it is visible there. Using a `subst` command that substitutes the slider variable into the equation to plot resolves this problem. At the end of section [Embedding animations into the spreadsheet](#embedding-animations-into-the-spreadsheet) you can see an example.
+The value of the slider variable by default is only substituted into the expression that is to be plotted if it is visible there. Using a `subst` command that substitutes the slider variable into the equation to plot resolves this problem. At the end of section [Embedding animations into the spreadsheet](#embedding-animations-into-the-spreadsheet), you can see an example.
 
-## I lost a cell contents and undo doesn’t remember
+## I lost cell content and undo doesn’t remember
 
 There are separate undo functions for cell operations and for changes inside of cells so chances are low that this ever happens. If it does there are several methods to recover data:
 
@@ -768,7 +768,7 @@ It is theoretically possible that _wxMaxima_ doesn’t realize that _Maxima_ has
 
 ## My SBCL-based _Maxima_ runs out of memory
 
-The Lisp compiler SBCL by default comes with a memory limit that allows it to run even on low-end computers. When compiling a big software package like Lapack or dealing with extremely big lists or equations this limit might be too low. In order to extend the limits SBCL can be provided with the command line parameter `--dynamic-space-size` that tells SBCL how many megabytes it should reserve. A 32bit Windows-SBCL can reserve up to 999 Megabytes. A 64-bit SBCL version running on Windows can be instructed to use more than the about 1280 Megabytes compiling Lapack needs.
+The Lisp compiler SBCL by default comes with a memory limit that allows it to run even on low-end computers. When compiling a big software package like Lapack or dealing with extremely big lists of equations this limit might be too low. In order to extend the limits, SBCL can be provided with the command line parameter `--dynamic-space-size` that tells SBCL how many megabytes it should reserve. A 32bit Windows-SBCL can reserve up to 999 Megabytes. A 64-bit SBCL version running on Windows can be instructed to use more than the about 1280 Megabytes compiling Lapack needs.
 
 One way to provide _Maxima_ (and thus SBCL) with command line parameters is the "Additional parameters for Maxima" field of _wxMaxima_’s configuration dialogue.
 
@@ -787,7 +787,7 @@ If your _Maxima_ is based on SBCL the following lines have to be added to your `
 (setf sb-impl::*default-external-format* :utf-8)
 ~~~
 
-The folder this file has to be placed in is system- and installation-specific. But any SBCL-based _Maxima_ that already has evaluated a cell in the current session will happily tell where it can be found after getting the following command:
+The folder where this file has to be placed is system- and installation-specific. But any SBCL-based _Maxima_ that already has evaluated a cell in the current session will happily tell where it can be found after getting the following command:
 
     :lisp (sb-impl::userinit-pathname)
 
@@ -804,7 +804,7 @@ wxdraw2d(
 );
 ~~~
 
-If a different format is to be used it is easier to generate the images and then to import them into the worksheet again:
+If a different format is to be used, it is easier to generate the images and then import them into the worksheet again:
 
 ~~~maxima
 load("draw");
@@ -832,7 +832,7 @@ pngdraw2d("Test",
 
 ### Can I set the aspect ratio of a plot?
 
-Not directly using _Maxima_. But there are gnuplot commands for it:
+Not directly using _Maxima_. But there are Gnuplot commands for it:
 
 ~~~maxima
 wxdraw2d(
