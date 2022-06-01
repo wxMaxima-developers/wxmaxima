@@ -885,7 +885,7 @@ You can find these symbols in the Unicode sidebar (search for 'double-struck cap
 Command-line arguments
 ======================
 
-Most operating systems provide less complicated ways of starting programs than the command line so this possibility is only rarely used. _wxMaxima_ still provides some command-line switches, though.
+Most operating systems provide less complicated ways of starting programs than the command-line so this possibility is only rarely used. _wxMaxima_ still provides some command-line switches, though.
 
 * `-v` or `--version`: Output the version information
 * `-h` or `--help`: Output a short help text
