@@ -907,24 +907,27 @@ void wxMaximaFrame::SetupMenu()
   m_CellMenu->Append(menu_autocomplete_templates, _("Show Template\tCtrl+Shift+Space"),
                      _("Show function template"), wxITEM_NORMAL);
   m_CellMenu->AppendSeparator();
-  m_CellMenu->Append(menu_insert_input, _("Insert Input &Cell\tCtrl+0"),
+  wxMenu *insert_sub = new wxMenu;  
+  insert_sub->Append(menu_insert_input, _("Insert Input &Cell\tCtrl+0"),
                      _("Insert a new input cell"));
-  m_CellMenu->Append(menu_add_comment, _("Insert &Text Cell\tCtrl+1"),
+  insert_sub->Append(menu_add_comment, _("Insert &Text Cell\tCtrl+1"),
                      _("Insert a new text cell"));
-  m_CellMenu->Append(menu_add_title, _("Insert T&itle Cell\tCtrl+2"),
+  insert_sub->Append(menu_add_title, _("Insert T&itle Cell\tCtrl+2"),
                      _("Insert a new title cell"));
-  m_CellMenu->Append(menu_add_section, _("Insert &Section Cell\tCtrl+3"),
+  insert_sub->Append(menu_add_section, _("Insert &Section Cell\tCtrl+3"),
                      _("Insert a new section cell"));
-  m_CellMenu->Append(menu_add_subsection, _("Insert S&ubsection Cell\tCtrl+4"),
+  insert_sub->Append(menu_add_subsection, _("Insert S&ubsection Cell\tCtrl+4"),
                      _("Insert a new subsection cell"));
-  m_CellMenu->Append(menu_add_subsubsection, _("Insert S&ubsubsection Cell\tCtrl+5"),
+  insert_sub->Append(menu_add_subsubsection, _("Insert S&ubsubsection Cell\tCtrl+5"),
                      _("Insert a new subsubsection cell"));
-  m_CellMenu->Append(menu_add_heading5, _("Insert heading5 Cell\tCtrl+6"),
+  insert_sub->Append(menu_add_heading5, _("Insert heading5 Cell\tCtrl+6"),
                      _("Insert a new heading5 cell"));
-  m_CellMenu->Append(menu_add_heading6, _("Insert heading6 Cell\tCtrl+7"),
+  insert_sub->Append(menu_add_heading6, _("Insert heading6 Cell\tCtrl+7"),
                      _("Insert a new heading6 cell"));
-  m_CellMenu->Append(menu_add_pagebreak, _("Insert Page Break"),
+  insert_sub->Append(menu_add_pagebreak, _("Insert Page Break"),
                      _("Insert a page break"));
+  m_CellMenu->Append(wxNewId(), _("Insert textbased cell"),
+                          insert_sub);
   m_CellMenu->Append(menu_insert_image, _("Insert Image..."),
                      _("Insert image"), wxITEM_NORMAL);
   m_CellMenu->AppendSeparator();
