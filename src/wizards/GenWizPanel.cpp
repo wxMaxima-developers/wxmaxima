@@ -68,15 +68,14 @@ GenWizPanel::GenWizPanel(wxWindow *parent, Configuration *cfg,
   m_descriptionToolTip(description_tooltip),
   m_configuration(cfg)
 {
-  wxFlexGridSizer *vbox =
-    new wxFlexGridSizer(1,
-                        wxSize(5*GetContentScaleFactor(), 5*GetContentScaleFactor()));
-  vbox->AddGrowableCol(0);
-//  vbox->AddGrowableRow(0);
-  vbox->AddGrowableRow(1);
-  
-  for(int i = 0; i< 9; i++)
-  {
+  wxBoxSizer *vbox =
+    new wxBoxSizer(wxVERTICAL);
+  m_descriptionSizer = new wxBoxSizer(wxVERTICAL);
+  m_descriptionCtrl = new WrappingStaticText(this, wxID_ANY, description);
+  m_descriptionSizer->Add(m_descriptionCtrl, wxSizerFlags(0).Border(wxALL, 5*GetContentScaleFactor()).Expand());
+  vbox->Add(m_descriptionSizer, wxSizerFlags(0).Border(wxALL, 0).Expand());
+  for(int i= 0; i< 9; i++)
+ {
     m_label.push_back(new wxStaticText(this, -1, wxEmptyString));
     m_textctrl.push_back(new BTextCtrl(this, -1, cfg, wxEmptyString, wxDefaultPosition,
                                        wxSize(100*GetContentScaleFactor(), -1)));
@@ -96,22 +95,22 @@ GenWizPanel::GenWizPanel(wxWindow *parent, Configuration *cfg,
     grid_sizer->Add(m_textctrl[i], wxSizerFlags(1).Expand());
   }
     
-  vbox->Add(grid_sizer, wxSizerFlags(1).Expand().Border(wxALL, 5*GetContentScaleFactor()));
+  vbox->Add(grid_sizer, wxSizerFlags(0).Expand().Border(wxALL, 5*GetContentScaleFactor()));
   
 //  if(m_warning != NULL)
 //    grid_sizer->Add(m_warning, 0, wxALL, 5);  
-  m_collpane = new wxCollapsiblePane(this, wxID_ANY, _("Maxima Code:"),
+  m_outputpane  = new wxCollapsiblePane(this, wxID_ANY, _("Maxima Code:"),
                                      wxDefaultPosition, wxDefaultSize,
                                      wxCP_DEFAULT_STYLE | wxCP_NO_TLW_RESIZE
     );
-  m_collpane->Collapse(m_configuration->WizardCollapseOutput());
+  m_outputpane->Collapse(m_configuration->WizardCollapseOutput());
   wxSizer *collSizer = new wxBoxSizer(wxVERTICAL);
-  m_output = new wxTextCtrl(m_collpane->GetPane(), wxID_ANY, wxEmptyString, wxDefaultPosition,
+  m_output = new wxTextCtrl(m_outputpane->GetPane(), wxID_ANY, wxEmptyString, wxDefaultPosition,
                             wxDefaultSize,
                             wxTE_READONLY|wxTE_MULTILINE|wxTE_CHARWRAP|wxTE_NO_VSCROLL);
   collSizer->Add(m_output, wxSizerFlags(1).Border(wxALL, 5*GetContentScaleFactor()).Expand());
-  m_collpane->GetPane()->SetSizer(collSizer);
-  vbox->Add(m_collpane, wxSizerFlags(0).Border(wxALL, 5*GetContentScaleFactor()).Expand());
+  m_outputpane->GetPane()->SetSizer(collSizer);
+  vbox->Add(m_outputpane, wxSizerFlags(1).Border(wxALL, 5*GetContentScaleFactor()).Expand());
 
   wxBoxSizer *buttonSizer = new wxBoxSizer(wxHORIZONTAL);
   m_insertButton = new wxButton(this, wxID_ANY, _("Insert"));
@@ -131,7 +130,7 @@ GenWizPanel::GenWizPanel(wxWindow *parent, Configuration *cfg,
   m_insertButton->Show(dockable);
   buttonSizer->Add(button_2, wxSizerFlags(1).Border(wxALL, 5*GetContentScaleFactor()));
 
-  vbox->Add(buttonSizer, wxSizerFlags(1).Border(wxALL, 5*GetContentScaleFactor()));
+  vbox->Add(buttonSizer, wxSizerFlags(0).Border(wxALL, 5*GetContentScaleFactor()));
   NewWizard(description, description_tooltip,
             commandRule,
             label1, defaultval1, tooltip1,
@@ -145,12 +144,20 @@ GenWizPanel::GenWizPanel(wxWindow *parent, Configuration *cfg,
             label9, defaultval9, tooltip9
     );
   SetSizer(vbox);
+  Connect(wxEVT_SIZE, wxSizeEventHandler(GenWizPanel::OnSize),
+          NULL, this);
+  
   FitInside();
+}
+
+void GenWizPanel::OnSize(wxSizeEvent &event)
+{
+  event.Skip();
 }
 
 GenWizPanel::~GenWizPanel()
 {
-  m_configuration->WizardCollapseOutput(m_collpane->IsCollapsed());
+  m_configuration->WizardCollapseOutput(m_outputpane->IsCollapsed());
 }
 
 void GenWizPanel::NewWizard(wxString description, const wxString &description_tooltip,
@@ -165,11 +172,12 @@ void GenWizPanel::NewWizard(wxString description, const wxString &description_to
                             wxString label8, wxString defaultval8, wxString tooltip8,
                             wxString label9, wxString defaultval9, wxString tooltip9)
 {
-  for(unsigned int i=0; i<m_label.size();i++)
-    m_label[i]->SetToolTip(description);
-  
-  m_output->SetToolTip(description);
-  m_collpane->Show(!commandRule.IsEmpty());
+  m_descriptionCtrl->Destroy();
+  m_descriptionCtrl = new WrappingStaticText(this, wxID_ANY, description);
+  m_descriptionSizer->Add(m_descriptionCtrl, wxSizerFlags(0).Border(wxALL, 5*GetContentScaleFactor()).Expand());
+  m_descriptionCtrl->Show(!description.IsEmpty());
+  m_descriptionCtrl->SetToolTip(description_tooltip);
+  m_outputpane->Show(!commandRule.IsEmpty());
   
   m_commandRule = commandRule;
   m_description = description;
@@ -242,3 +250,4 @@ void GenWizPanel::OnParamChange(wxCommandEvent& event)
 {
   UpdateOutput();
 }
+

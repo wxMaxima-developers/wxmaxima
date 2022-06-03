@@ -46,15 +46,13 @@ WrappingStaticText::WrappingStaticText(wxWindow* parent, int id, wxString text):
 void WrappingStaticText::SetLabel(wxString const &value)
 {
   m_textCtrl->SetLabel(m_label = value);
-  m_textCtrl->Wrap(GetSize().GetWidth());
+//  m_textCtrl->Wrap(GetSize().GetWidth());
 }
 
 void WrappingStaticText::OnSize(wxSizeEvent &event)
 {
-  wxWindowUpdateLocker SpeedUp(this);
   m_textCtrl->SetLabel(m_label);
   m_textCtrl->Wrap(event.GetSize().GetWidth());
-  Layout();
   event.Skip();
 }
 

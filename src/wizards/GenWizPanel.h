@@ -30,6 +30,7 @@
 #include <wx/cshelp.h>
 #include "BTextCtrl.h"
 #include <wx/collpane.h>
+#include "WrappingStaticText.h"
 
 class GenWizPanel : public wxPanel
 {
@@ -86,7 +87,10 @@ public:
   wxButton *GetInsertButton() const{return m_insertButton;}
   virtual ~GenWizPanel();
 protected:
-  wxCollapsiblePane *m_collpane;
+  void OnSize(wxSizeEvent &event);
+  wxSizer *m_descriptionSizer;
+  WrappingStaticText *m_descriptionCtrl;
+  wxCollapsiblePane *m_outputpane;
   void UpdateOutput();
   void OnParamChange(wxCommandEvent& event);
 
