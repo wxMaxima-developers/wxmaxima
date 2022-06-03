@@ -60,6 +60,6 @@ ScrollingGenWizPanel::ScrollingGenWizPanel(
 void ScrollingGenWizPanel::OnSize(wxSizeEvent &event)
 {
   // Shrink the width of the wxScrolled's virtual size if the wxScrolled is shrinking
-  SetVirtualSize(GetClientSize());
+  SetVirtualSize(GetClientSize().x, wxDefaultSize.y);
   event.Skip();
 }

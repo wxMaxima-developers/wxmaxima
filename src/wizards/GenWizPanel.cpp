@@ -78,7 +78,7 @@ GenWizPanel::GenWizPanel(wxWindow *parent, Configuration *cfg,
  {
     m_label.push_back(new wxStaticText(this, -1, wxEmptyString));
     m_textctrl.push_back(new BTextCtrl(this, -1, cfg, wxEmptyString, wxDefaultPosition,
-                                       wxSize(100*GetContentScaleFactor(), -1)));
+                                       wxSize(50*GetContentScaleFactor(), -1)));
   }
     
   m_textctrl[0]->SetFocus();
@@ -92,7 +92,7 @@ GenWizPanel::GenWizPanel(wxWindow *parent, Configuration *cfg,
     m_textctrl[i]->Connect(wxEVT_TEXT,
                            wxCommandEventHandler(GenWizPanel::OnParamChange),
                            NULL, this);
-    grid_sizer->Add(m_textctrl[i], wxSizerFlags(1).Expand());
+    grid_sizer->Add(m_textctrl[i], wxSizerFlags(0).Expand());
   }
     
   vbox->Add(grid_sizer, wxSizerFlags(0).Expand().Border(wxALL, 5*GetContentScaleFactor()));
