@@ -3771,6 +3771,7 @@ bool AutoComplete::LoadBuiltinSymbols()
   m_wordList[tmplte ].Add("fresnel_c(<z>)"); // OPTION
   m_wordList[command].Add("fresnel_s"); // FUNCTION
   m_wordList[tmplte ].Add("fresnel_s(<z>)"); // OPTION
+  m_wordList[command].Add("gensym"); // FUNCTION
   m_wordList[command].Add("erf_representation"); // OPTION
   m_wordList[command].Add("hypergeometric_representation"); // OPTION
   m_wordList[command].Add("struve_h"); // FUNCTION
