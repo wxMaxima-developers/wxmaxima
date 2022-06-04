@@ -52,7 +52,7 @@ void WrappingStaticText::SetLabel(wxString const &value)
 void WrappingStaticText::OnSize(wxSizeEvent &event)
 {
   m_textCtrl->SetLabel(m_label);
-  m_textCtrl->Wrap(event.GetSize().GetWidth());
+  m_textCtrl->Wrap(wxMax(event.GetSize().GetWidth(), 150*GetContentScaleFactor()));
   event.Skip();
 }
 
