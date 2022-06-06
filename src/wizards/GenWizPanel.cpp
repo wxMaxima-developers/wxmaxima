@@ -187,7 +187,9 @@ void GenWizPanel::NewWizard(wxString description, const wxString &description_to
   {
     wxSizer *pageSizer = new wxBoxSizer(wxVERTICAL);
     wxPanel *descriptionpane = new wxPanel(m_notebook, wxID_ANY);
-    WrappingStaticText *desc = new WrappingStaticText(descriptionpane, wxID_ANY, description);
+    wxTextCtrl *desc = new wxTextCtrl(descriptionpane, wxID_ANY, description, wxDefaultPosition,
+                                      wxDefaultSize,
+                                      wxTE_READONLY|wxTE_MULTILINE|wxTE_BESTWRAP|wxTE_NO_VSCROLL);
     pageSizer->Add(desc, wxSizerFlags(1).Border(wxALL, 0*GetContentScaleFactor()).Expand());
     descriptionpane->SetSizer(pageSizer);
     descriptionpane->FitInside();

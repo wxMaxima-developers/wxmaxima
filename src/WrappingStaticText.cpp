@@ -33,14 +33,16 @@ WrappingStaticText::WrappingStaticText(wxWindow* parent, int id, wxString text):
 {
   wxWindowUpdateLocker SpeedUp(this);
   m_textCtrl = new wxStaticText(this, id, text);
-  m_textCtrl->Wrap(GetContentScaleFactor()*600);
+  m_textCtrl->Wrap(GetContentScaleFactor()*50);
+//  m_textCtrl->SetMinSize(wxSize(50,10));
   wxSizer *sizer = new wxBoxSizer(wxHORIZONTAL);
   sizer->Add(m_textCtrl,
              wxSizerFlags().
              Expand()
     );
   Connect(wxEVT_SIZE, wxSizeEventHandler(WrappingStaticText::OnSize), NULL, this);
-  SetSizerAndFit(sizer);
+  SetSizer(sizer);
+  FitInside();
 }
 
 void WrappingStaticText::SetLabel(wxString const &value)
@@ -52,7 +54,7 @@ void WrappingStaticText::SetLabel(wxString const &value)
 void WrappingStaticText::OnSize(wxSizeEvent &event)
 {
   m_textCtrl->SetLabel(m_label);
-  m_textCtrl->Wrap(wxMax(event.GetSize().GetWidth(), 150*GetContentScaleFactor()));
+  m_textCtrl->Wrap(wxMax(event.GetSize().GetWidth(), 50*GetContentScaleFactor()));
   event.Skip();
 }
 
