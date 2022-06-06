@@ -29,7 +29,7 @@
 #include <vector>
 #include <wx/cshelp.h>
 #include "BTextCtrl.h"
-#include <wx/collpane.h>
+#include <wx/notebook.h>
 #include "WrappingStaticText.h"
 
 class GenWizPanel : public wxPanel
@@ -89,8 +89,7 @@ public:
 protected:
   void OnSize(wxSizeEvent &event);
   wxSizer *m_descriptionSizer;
-  WrappingStaticText *m_descriptionCtrl;
-  wxCollapsiblePane *m_outputpane;
+  wxNotebook *m_notebook;
   void UpdateOutput();
   void OnParamChange(wxCommandEvent& event);
 
