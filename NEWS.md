@@ -1,3 +1,6 @@
+# Current:
+ * The description field for wizards no more is a MouseOverToolTip
+
 # 22.05.0:
  * Updated the Ukrainian translation
  * Added `guess_exact_value` to the numeric menu.
