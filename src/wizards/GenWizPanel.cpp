@@ -247,8 +247,7 @@ void GenWizPanel::NewWizard(wxString description, const wxString &description_to
   m_label[8]->Show(!label9.IsEmpty());
   m_textctrl[8]->Show(!label9.IsEmpty());
   m_textctrl[8]->SetToolTip(tooltip9);
-
-  return;
+  Layout();
 }
 
 void GenWizPanel::UpdateOutput()
