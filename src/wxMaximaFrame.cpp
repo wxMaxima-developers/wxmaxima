@@ -1225,7 +1225,7 @@ m_CalculusMenu->AppendSeparator();
   m_CalculusMenu->Append(menu_series, _("Get &Series..."),
                          _("Get the Taylor or power series of expression"),
                          wxITEM_NORMAL);
-  m_CalculusMenu->Append(menu_pade, _("P&ade Approximation..."),
+  m_CalculusMenu->Append(menu_pade, _("P&adé Approximation..."),
                          _("Pade approximation of a Taylor series"),
                          wxITEM_NORMAL);
   m_CalculusMenu->Append(menu_sum, _("Calculate Su&m..."),
