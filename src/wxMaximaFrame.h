@@ -372,6 +372,7 @@ public:
     menu_copy_to_file,
     menu_export_html,
     menu_change_var,
+    menu_change_var_evaluate,
     menu_nouns,
     menu_evaluate,
     menu_convert_to_code,

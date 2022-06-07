@@ -7967,12 +7967,38 @@ void wxMaxima::CalculusMenu(wxCommandEvent &event)
     case menu_change_var:
       CommandWiz(
         _("Change variable"),
-        wxEmptyString,wxEmptyString,
-        wxT("changevar(#1#,#4#,#3#,#2#);"),
+        wxT("Takes an integral or sum in respect to the Old Variable and replaces "
+            "that variable by a new one both adjusting the integrand and the limits "
+            "accordingly. The field \"Equation\" specifies how the Old Variable and "
+            "the New Variable are related to each other; For sums changevar isn't "
+            "intelligent enough to do more than a shift of the variable.\n\n"
+          "changevar(integrate(f(x),x,1,10),u=sqrt(x),u,x);\n"
+          "results in\n"
+          "2*integrate(u*f(u^2),u,1,sqrt(10))\n\n"),wxEmptyString,
+        wxT("changevar(#1#,#2#,#3#,#4#);"),
         _("Integral/Sum:"),expr,wxEmptyString,
-        _("Old variable:"),wxT("x"),wxEmptyString,
-        _("New variable:"),wxT("y"),wxEmptyString,
-        _("Equation:"),wxT("y=x"),wxEmptyString
+        _("Equation:"),wxT("u=sqrt(x)"),wxEmptyString,
+        _("New variable:"),wxT("u"),wxEmptyString,
+        _("Old variable:"),wxT("x"),wxEmptyString
+        );
+      break;
+    case menu_change_var_evaluate:
+      CommandWiz(
+        _("Change variable and evaluate"),
+        wxT("Takes an integral or sum in respect to the Old Variable and replaces "
+            "that variable by a new one both adjusting the integrand and the limits "
+            "accordingly. Then evaluates the resulting integral or sum. "
+            "The field \"Equation\" specifies how the Old Variable and "
+            "the New Variable are related to each other; For sums changevar isn't "
+            "intelligent enough to do more than a shift of the variable.\n\n"
+          "changevar(integrate(f(x),x,1,10),u=sqrt(x),u,x);\n"
+          "results in\n"
+          "2*integrate(u*f(u^2),u,1,sqrt(10))\n\n"),wxEmptyString,
+        wxT("changevar(#1#,#2#,#3#,#4#),nouns;"),
+        _("Integral/Sum:"),expr,wxEmptyString,
+        _("Equation:"),wxT("u=sqrt(x)"),wxEmptyString,
+        _("New variable:"),wxT("u"),wxEmptyString,
+        _("Old variable:"),wxT("x"),wxEmptyString
         );
       break;
     case menu_pade:

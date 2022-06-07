@@ -1207,9 +1207,13 @@ void wxMaximaFrame::SetupMenu()
   m_CalculusMenu->Append(menu_risch, _("Risch Integration..."),
                          _("Integrate expression with Risch algorithm"),
                          wxITEM_NORMAL);
-  m_CalculusMenu->Append(menu_change_var, _("C&hange Variable..."),
+  m_CalculusMenu->Append(menu_change_var, _("C&hange Variable in Integrate..."),
                          _("Change variable in integral or sum"),
                          wxITEM_NORMAL);
+  m_CalculusMenu->Append(menu_change_var_evaluate, _("Dito, and evaluate the result..."),
+                         _("Change variable in integral or sum and evaluate the result"),
+                         wxITEM_NORMAL);
+m_CalculusMenu->AppendSeparator();
   m_CalculusMenu->Append(menu_diff, _("&Differentiate..."),
                          _("Differentiate expression"), wxITEM_NORMAL);
   m_CalculusMenu->Append(menu_limit, _("Find &Limit..."),
