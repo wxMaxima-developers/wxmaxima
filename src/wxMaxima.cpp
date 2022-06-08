@@ -3364,6 +3364,7 @@ bool wxMaxima::QueryVariableValue()
 
   if(m_varNamesToQuery.GetCount() > 0)
   {
+
     SendMaxima(wxT(":lisp-quiet (wx-query-variable \"") +
                m_varNamesToQuery.Last()+wxT("\")\n"));
     m_varNamesToQuery.RemoveAt(m_varNamesToQuery.GetCount()-1);
@@ -9990,6 +9991,7 @@ void wxMaxima::TriggerEvaluation()
     if(m_configCommands != wxEmptyString)
       SendMaxima(m_configCommands);
     m_configCommands = wxEmptyString;
+    QueryVariableValue();
     return; //empty queue
   }
 
