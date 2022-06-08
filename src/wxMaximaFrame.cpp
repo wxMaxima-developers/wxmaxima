@@ -1222,12 +1222,14 @@ m_CalculusMenu->AppendSeparator();
   m_CalculusMenu->Append(menu_lbfgs, _("Find Minimum..."),
                          _("Find a (unconstrained) minimum of an expression"),
                          wxITEM_NORMAL);
-  m_CalculusMenu->Append(menu_series, _("Get &Series..."),
-                         _("Get the Taylor or power series of expression"),
-                         wxITEM_NORMAL);
-  m_CalculusMenu->Append(menu_pade, _("P&adé Approximation..."),
-                         _("Pade approximation of a Taylor series"),
-                         wxITEM_NORMAL);
+  wxMenu *series_sub = new wxMenu;
+  series_sub->Append(menu_taylor, _("Taylor series"));
+  series_sub->Append(menu_powerseries, _("Power series"));
+  series_sub->Append(menu_fourier, _("Fourier coefficients"));
+  series_sub->Append(menu_pade, _("P&adé Approximation..."),
+                     _("Pade approximation of a Taylor series"));
+  m_CalculusMenu->Append(wxNewId(), _("Series approximation"),
+                         series_sub);
   m_CalculusMenu->Append(menu_sum, _("Calculate Su&m..."),
                          _("Calculate sums"), wxITEM_NORMAL);
   m_CalculusMenu->Append(menu_product, _("Calculate &Product..."),
@@ -1957,8 +1959,6 @@ wxWindow *wxMaximaFrame::CreateMathPane()
   grid->Add(new wxButton(panel, button_integrate, _("Integrate..."),
                          wxDefaultPosition, wxDefaultSize), 0, style, border);
   grid->Add(new wxButton(panel, button_limit, _("Limit..."),
-                         wxDefaultPosition, wxDefaultSize), 0, style, border);
-  grid->Add(new wxButton(panel, button_taylor, _("Series..."),
                          wxDefaultPosition, wxDefaultSize), 0, style, border);
   grid->Add(new wxButton(panel, button_plot2, _("Plot 2D..."),
                          wxDefaultPosition, wxDefaultSize), 0, style, border);

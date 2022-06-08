@@ -212,6 +212,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
   if(m_variableReadActions.empty())
   {
     m_variableReadActions[wxT("maxima_userdir")] = &wxMaxima::VariableActionUserDir;
+    m_variableReadActions[wxT("sinnpiflag")] = &wxMaxima::VariableActionSinnpiflag;
     m_variableReadActions[wxT("logexpand")] = &wxMaxima::VariableActionLogexpand;
     m_variableReadActions[wxT("opsubst")] = &wxMaxima::VariableActionOpSubst;    
     m_variableReadActions[wxT("maxima_tempdir")] = &wxMaxima::VariableActionTempDir;
@@ -237,6 +238,11 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
     m_variableReadActions[wxT("display2d")] = &wxMaxima::VariableActionDisplay2D;
     m_variableReadActions[wxT("*alt-display2d*")] = &wxMaxima::VariableActionAltDisplay2D;
     m_variableReadActions[wxT("*maxima-operators*")] = &wxMaxima::VariableActionOperators;
+  }
+
+  if(m_variableUndefinedActions.empty())
+  {
+    m_variableUndefinedActions[wxT("sinnpiflag")] = &wxMaxima::VariableActionSinnpiflagUndefined;
   }
 
   // Needed for making wxSocket work for multiple threads. We currently don't
@@ -725,7 +731,11 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
           wxCommandEventHandler(wxMaxima::CalculusMenu), NULL, this);
   Connect(menu_diff, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::CalculusMenu), NULL, this);
-  Connect(menu_series, wxEVT_MENU,
+  Connect(menu_taylor, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::CalculusMenu), NULL, this);
+  Connect(menu_powerseries, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::CalculusMenu), NULL, this);
+  Connect(menu_fourier, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::CalculusMenu), NULL, this);
   Connect(menu_limit, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::CalculusMenu), NULL, this);
@@ -2830,10 +2840,16 @@ void wxMaxima::ReadVariables(wxString &data)
               CALL_MEMBER_FN(*this, varFunc->second)(value);
           }
           else
+          {
             m_worksheet->m_variablesPane->VariableUndefined(name);
+            auto varFunc = m_variableUndefinedActions.find(name);
+            if(varFunc != m_variableUndefinedActions.end())
+              CALL_MEMBER_FN(*this, varFunc->second)();
+          }
 
           var = var->GetNext();
         }
+        
         vars = vars->GetNext();
       }
     }
@@ -2848,6 +2864,16 @@ void wxMaxima::ReadVariables(wxString &data)
     TriggerEvaluation();
     QueryVariableValue();
   }
+}
+
+void wxMaxima::VariableActionSinnpiflag(const wxString &value)
+{
+  m_fourierLoaded = true;
+}
+
+void wxMaxima::VariableActionSinnpiflagUndefined()
+{
+  m_fourierLoaded = false;
 }
 
 void wxMaxima::VariableActionUserDir(const wxString &value)
@@ -8011,6 +8037,42 @@ void wxMaxima::CalculusMenu(wxCommandEvent &event)
         _("Denom. deg:"),wxT("4"),wxEmptyString
         );
       break;
+    case menu_taylor:
+      CommandWiz(
+        _("Taylor series"),
+        _("Approximates a expression as a polynom"),wxEmptyString,
+        wxT("taylor(#1#,#2#,#3#,#4#);"),
+        _("Expression:"),expr,wxEmptyString,
+        _("Variable:"),wxT("x"),wxEmptyString,
+        _("Point:"),wxT("0"),wxEmptyString,
+        _("Degree:"),wxT("3"),wxEmptyString
+        );
+      break;
+    case menu_powerseries:
+      CommandWiz(
+        _("Power series"),
+        _("Approximates a expression as a polynom"),wxEmptyString,
+        wxT("niceindices(powerseries(#1#,#2#,#3#);"),
+        _("Expression:"),expr,wxEmptyString,
+        _("Variable:"),wxT("x"),wxEmptyString,
+        _("point:"),wxT("0"),wxEmptyString
+        );
+      break;
+    case menu_fourier:
+    {
+      wxString loadCmd;
+      if(!m_fourierLoaded)
+        loadCmd = wxT("load(\"fourie\")$\n");
+      CommandWiz(
+        _("Fourier coefficients"),
+        _("Calculates the fourier coefficients for the expression from -p to p"),wxEmptyString,
+        loadCmd+wxT("fourier(#1#,#2#,#3#);"),
+        _("Expression:"),expr,wxEmptyString,
+        _("Variable:"),wxT("x"),wxEmptyString,
+        _("Range radius:"),wxT("2"),wxEmptyString
+        );
+      break;
+    }
     case menu_continued_fraction:
       cmd += wxT("cfdisrep(cf(") + expr + wxT("));");
       MenuCommand(cmd);
@@ -8106,7 +8168,6 @@ void wxMaxima::CalculusMenu(wxCommandEvent &event)
         );
       break;
     case button_taylor:
-    case menu_series:
     {
       SeriesWiz *wiz = new SeriesWiz(this, -1, m_worksheet->m_configuration, _("Series"));
       wiz->SetValue(expr);
@@ -10710,3 +10771,4 @@ wxString wxMaxima::m_firstPrompt(wxT("(%i1) "));
 //wxString wxMaxima::m_outputPromptSuffix(wxT("</lbl"));
 wxMaxima::ParseFunctionHash wxMaxima::m_knownXMLTags;
 wxMaxima::VarReadFunctionHash wxMaxima::m_variableReadActions;
+wxMaxima::VarUndefinedFunctionHash wxMaxima::m_variableUndefinedActions;

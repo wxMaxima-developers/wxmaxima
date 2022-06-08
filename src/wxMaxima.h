@@ -540,6 +540,8 @@ protected:
    */
   void ReadAddVariables(wxString &data);
   void VariableActionOpSubst(const wxString &value);
+  void VariableActionSinnpiflag(const wxString &value);
+  void VariableActionSinnpiflagUndefined();
   void VariableActionLogexpand(const wxString &value);
   void VariableActionUserDir(const wxString &value);
   void VariableActionTempDir(const wxString &value);
@@ -777,6 +779,7 @@ protected:
   MathParser m_parser;
   bool m_maximaBusy;
 private:
+  bool m_fourierLoaded = false;
   //! The value of maxima's logexpand variable
   wxString m_logexpand;
   //! A pointer to a method that handles a text chunk
@@ -784,10 +787,14 @@ private:
   WX_DECLARE_STRING_HASH_MAP(ParseFunction, ParseFunctionHash);
   typedef void (wxMaxima::*VarReadFunction)(const wxString &value);
   WX_DECLARE_STRING_HASH_MAP(VarReadFunction, VarReadFunctionHash);
+  typedef void (wxMaxima::*VarUndefinedFunction)();
+  WX_DECLARE_STRING_HASH_MAP(VarUndefinedFunction, VarUndefinedFunctionHash);
   //! A list of XML tags we know and what we want to do if we encounter them
   static ParseFunctionHash m_knownXMLTags;
   //! A list of actions we want to execute if we are sent the contents of specific variables
   static VarReadFunctionHash m_variableReadActions;
+  //! A list of actions we want to execute if certain variables are undefined;
+  static VarUndefinedFunctionHash m_variableUndefinedActions;
 
 #if wxUSE_DRAG_AND_DROP
 
