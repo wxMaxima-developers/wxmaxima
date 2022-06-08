@@ -1,5 +1,7 @@
 # Current:
  * The description field for wizards no more is a MouseOverToolTip
+ * More work on the wizards
+ * The watchlist was broken
 
 # 22.05.0:
  * Updated the Ukrainian translation
