@@ -2,6 +2,7 @@
  * The description field for wizards no more is a MouseOverToolTip
  * More work on the wizards
  * The watchlist was broken
+ * In MacOs the config dialogue crashed
 
 # 22.05.0:
  * Updated the Ukrainian translation
