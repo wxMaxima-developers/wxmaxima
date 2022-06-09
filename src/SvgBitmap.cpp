@@ -72,17 +72,28 @@ SvgBitmap::~SvgBitmap()
 
 const SvgBitmap &SvgBitmap::SetSize(int width, int height)
 {
+  if (width < 1)
+    width = 1;
+  if (height < 1)
+    height = 1;
   // Set the bitmap to the new size
   #if defined __WXOSX__
-  wxBitmap::operator=(wxBitmap(wxSize(width, height), 32, m_window->GetContentScaleFactor()));
+  int scaleFactor = m_window->GetContentScaleFactor();
+  if(scaleFactor < 1)
+    scaleFactor = 1;
+  if(scaleFactor > 16)
+    scaleFactor = 16;
+  this->wxBitmap::operator=(wxBitmap(wxSize(width, height), 32, scaleFactor));
   #else
-  wxBitmap::operator=(wxBitmap(wxSize(width, height), 32));
+  this->wxBitmap::operator=(wxBitmap(wxSize(width, height), 32));
   #endif
+
   if (!m_svgImage)
   {
-    wxBitmap::operator=(GetInvalidBitmap(width));
+    this->wxBitmap::operator=(GetInvalidBitmap(width));
     return *this;
   }
+  
   std::vector<unsigned char> imgdata((long)width*height*4);
 
   // Actually render the bitmap

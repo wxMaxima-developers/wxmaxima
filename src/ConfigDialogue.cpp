@@ -204,6 +204,9 @@ m_maximaEnvDoc["GCL_MULTIPROCESS_MEMORY_POOL"] = _("If maxima was compiled by GC
   SetSheetInnerBorder(3);
   SetSheetOuterBorder(3);
 
+  Create(parent, wxID_ANY, _("wxMaxima configuration"),
+         wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER);
+  
   int imgSize = GetImageSize();
   m_imageList = std::unique_ptr<wxImageList>(new wxImageList(imgSize, imgSize));
   m_imageList->Add(GetImage(wxT("editing"),
@@ -230,9 +233,6 @@ m_maximaEnvDoc["GCL_MULTIPROCESS_MEMORY_POOL"] = _("If maxima was compiled by GC
   m_imageList->Add(GetImage(wxT("edit-undo"),
                             VIEW_REFRESH_SVG_GZ, VIEW_REFRESH_SVG_GZ_SIZE
                      ));
-
-  Create(parent, wxID_ANY, _("wxMaxima configuration"),
-         wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER);
 
 #if defined(__WXMSW__)
   // Must be called before pages are added, otherwise wxWidgets dumps a warning to the console:
