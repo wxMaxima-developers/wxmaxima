@@ -159,6 +159,13 @@ void GenWizPanel::NewWizard(wxString description, const wxString &description_to
                             wxString label8, wxString defaultval8, wxString tooltip8,
                             wxString label9, wxString defaultval9, wxString tooltip9)
 {
+  m_ignorePageChange = true;
+  long page = m_configuration->WizardTab();
+  if(page < 0)
+    page = 0;
+  if(page > 1)
+    page = 1;
+  
   m_commandRule = commandRule;
   if((!commandRule.IsEmpty()) || (!description.IsEmpty()))
   {
@@ -170,9 +177,6 @@ void GenWizPanel::NewWizard(wxString description, const wxString &description_to
   {
     m_notebook->Hide();
   }
-
-  if((!commandRule.IsEmpty()) && (!description.IsEmpty()))
-    m_notebook->ChangeSelection(m_configuration->WizardTab());
 
   if(!commandRule.IsEmpty())
   {
@@ -186,6 +190,7 @@ void GenWizPanel::NewWizard(wxString description, const wxString &description_to
     outputpane->FitInside();
     m_notebook->AddPage(outputpane, _("Command"));
   }
+
   UpdateOutput();
   m_description = description;
   if(!description.IsEmpty())
@@ -200,8 +205,10 @@ void GenWizPanel::NewWizard(wxString description, const wxString &description_to
     descriptionpane->FitInside();
     m_notebook->AddPage(descriptionpane, _("Description"));
   }
+  if((!commandRule.IsEmpty()) && (!description.IsEmpty()))
+    m_notebook->ChangeSelection(page);
 
-   m_descriptionToolTip = description_tooltip;
+  m_descriptionToolTip = description_tooltip;
   m_textctrl[0]->SetValue(defaultval1);
   m_label[0]->SetLabel(label1);
   m_textctrl[0]->SetToolTip(tooltip1);
@@ -254,6 +261,7 @@ void GenWizPanel::NewWizard(wxString description, const wxString &description_to
   m_textctrl[8]->Show(!label9.IsEmpty());
   m_textctrl[8]->SetToolTip(tooltip9);
   Layout();
+  m_ignorePageChange = false;
 }
 
 void GenWizPanel::UpdateOutput()
@@ -270,6 +278,9 @@ void GenWizPanel::UpdateOutput()
 
 void GenWizPanel::OnNotebookPageChange(wxBookCtrlEvent& event)
 {
+  event.Skip();
+  if(m_ignorePageChange)
+    return;
   m_configuration->WizardTab(event.GetSelection());
 }
 

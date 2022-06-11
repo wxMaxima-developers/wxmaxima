@@ -106,6 +106,8 @@ protected:
   wxString m_descriptionToolTip;
   wxString m_title;
   Configuration *m_configuration;
+private:
+  bool m_ignorePageChange = true;
 };
 
 #endif // GENWIZ_PANEL_H

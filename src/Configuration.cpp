@@ -660,7 +660,7 @@ void Configuration::ReadConfig()
   config->Read(wxT("maxClipbrd_BitmapMegabytes"), &m_maxClipbrd_BitmapMegabytes);
   if(m_maxClipbrd_BitmapMegabytes<0)
     m_maxClipbrd_BitmapMegabytes = 1;
-  config->Read(wxT("wizardTab"), m_wizardTab);
+  config->Read(wxT("wizardTab"), &m_wizardTab);
   config->Read(wxT("numpadEnterEvaluates"), &m_numpadEnterEvaluates);
   config->Read(wxT("saveImgFileName"), &m_saveImgFileName);
   config->Read(wxT("usePartialForDiff"), &m_usePartialForDiff);
