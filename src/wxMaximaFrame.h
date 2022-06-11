@@ -136,6 +136,7 @@ public:
     menu_solve_ode,
     menu_ivp_1,
     menu_ivp_2,
+    menu_rk,
     menu_bvp,
     menu_genmatrix,
     menu_gen_mat,

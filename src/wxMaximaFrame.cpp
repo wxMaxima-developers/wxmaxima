@@ -1057,6 +1057,9 @@ void wxMaximaFrame::SetupMenu()
   m_EquationsMenu->Append(menu_bvp, _("&Boundary Value Problem..."),
                           _("Solve boundary value problem for second "
                                     "degree ODE"), wxITEM_NORMAL);
+  m_EquationsMenu->Append(menu_rk, _("Numerical solution..."),
+                          _("Find a numerical solution for a fist "
+                                    "degree ODE"), wxITEM_NORMAL);
   m_EquationsMenu->AppendSeparator();
   m_EquationsMenu->Append(menu_solve_de, _("Solve ODE with Lapla&ce..."),
                           _("Solve ordinary differential equations "

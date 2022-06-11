@@ -6806,6 +6806,20 @@ void wxMaxima::EquationsMenu(wxCommandEvent &event)
         _("Point #2 with known value:"),wxT("t=1"),wxEmptyString,
         _("Value y at that point:"),wxT("y=1"),wxEmptyString);
       break;
+    case menu_rk:
+      CommandWiz(
+        _("Numerical solution for 1st degree ODE"),
+        _("Tries to find a numerical solution for a 1st order ODE (or in other words: a equation of the format depends(x,t);diff(x,t)=(something containing x and t)"),wxEmptyString,
+        wxT("rk(#1#,#2#,#3#,[#4#,#5#,#6#,#7#]);"),
+        _("diff(x,t)="),expr,_("Accepts one expression or a list in the format [ode1,ode2,...]"),
+        _("Name of x:"),wxT("x"),_("Accepts one variable or a list in the format [var1,var2,...]"),
+        _("Initial x:"),wxT("1"),_("Accepts one variable or a list in the format [1,4,...]"),
+        _("Name of t:"),wxT("t"),wxEmptyString,
+        _("Start of t:"),wxT("0"),wxEmptyString,
+        _("End of t:"),wxT("10"),wxEmptyString,
+        _("Step width:"),wxT(".1"),wxEmptyString)y;
+      break;
+      
     case menu_eliminate:
       CommandWiz(
         _("Eliminate a variable"),
