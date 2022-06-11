@@ -7848,8 +7848,15 @@ void wxMaxima::SimplifyMenu(wxCommandEvent &event)
       break;
     case button_radcan:
     case menu_radsimp:
-      cmd = wxT("radcan(") + expr + wxT(");");
-      MenuCommand(cmd);
+      CommandWiz(
+        _("Simplify radicals"),
+        _("radcan() is a powerful tools for simplification trigonometric functions "
+          "but needs to be taken with care: If a function has more than one branch "
+          "radcan uses the one that looks like it would fit best, not necessarily "
+          "the one that makes sense for the problem that resulted in the "
+          "Expression that is to be simplified."),wxEmptyString,
+        wxT("radcan(#1#);"),
+        _("Expression"),expr,wxEmptyString);
       break;
     case menu_to_fact:
       cmd = wxT("makefact(") + expr + wxT(");");

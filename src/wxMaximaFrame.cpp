@@ -1272,7 +1272,7 @@ m_CalculusMenu->AppendSeparator();
   simplify_sub->Append(menu_mainvar, _("Set main variable..."));
   simplify_sub->Append(menu_ratsimp, _("Try to guess which form is &simple"),
                          _("Simplify rational expression"), wxITEM_NORMAL);
-  simplify_sub->Append(menu_radsimp, _("Simplify &Radicals"),
+  simplify_sub->Append(menu_radsimp, _("Simplify &Radicals..."),
                          _("Simplify expression containing radicals"),
                          wxITEM_NORMAL);
   simplify_sub->Append(menu_factor, _("&Factor Expression"),
