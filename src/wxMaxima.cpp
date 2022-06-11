@@ -7825,10 +7825,12 @@ void wxMaxima::SimplifyMenu(wxCommandEvent &event)
     case menu_nouns:
       CommandWiz(
         _("Evaluate Nouns"),
-        _("A noun is a function for which maxima was "
-          "(for example by declaring it a noun, preceding it with a  \' "
-          "or putting it between the parenthesis of \'() ) "
-          "instructed not to evaluate it's value right now."),wxEmptyString,
+        _("Maxima allows to make functions \"nouns\", which means that they "
+          "aren't auntomatically evaluated as soon as maxima encounters them.\n"
+          "Ways make a function a noun include declaring it a noun, preceding "
+          "it with a  \' or putting it between the parenthesis of \'().\n\n"
+          "This command tells maxima that the nouns in this expression "
+          "shall now be evaluated, too."),wxEmptyString,
         wxT("#1#,nouns;"),
         _("Expression"),expr,wxEmptyString);
       break;
