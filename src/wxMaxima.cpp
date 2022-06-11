@@ -6817,7 +6817,7 @@ void wxMaxima::EquationsMenu(wxCommandEvent &event)
         _("Name of t:"),wxT("t"),wxEmptyString,
         _("Start of t:"),wxT("0"),wxEmptyString,
         _("End of t:"),wxT("10"),wxEmptyString,
-        _("Step width:"),wxT(".1"),wxEmptyString)y;
+        _("Step width:"),wxT(".1"),wxEmptyString);
       break;
       
     case menu_eliminate:
