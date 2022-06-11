@@ -1306,7 +1306,14 @@ m_CalculusMenu->AppendSeparator();
                         wxITEM_NORMAL);
   m_logexpand_Sub->AppendSeparator();
   m_logexpand_Sub->AppendRadioItem(menu_logexpand_false, _("No"), _("Switch off simplifications of log(). Set Maxima option variable logexpand:false"));
-  m_logexpand_Sub->AppendRadioItem(menu_logexpand_true, _("log(a^b)=b*log(a) Warning: Bad, if a is complex"), _("Set Maxima option variable logexpand:true"));
+
+  wxString warningSign = wxT("\u26A0");
+  if(!m_worksheet->m_configuration->FontRendersChar(wxT('\u26A0'), *wxNORMAL_FONT))
+    warningSign = _("Warning:");
+  m_logexpand_Sub->AppendRadioItem(menu_logexpand_true,
+                                   wxT("log(a^b)=b*log(a) ") + warningSign +
+                                   _(" Wrong, if a is complex"),
+                                   _("Set Maxima option variable logexpand:true"));
   m_logexpand_Sub->AppendRadioItem(menu_logexpand_all, _("Additionally: log(a*b)=log(a)+log(b)"), _("Set Maxima option variable logexpand:all"));
   m_logexpand_Sub->AppendRadioItem(menu_logexpand_super, _("Additionally: log(a/b)=log(a)-log(b), a and b positive integers"), _("Set Maxima option variable logexpand:super"));
   m_SimplifyMenu->Append(wxNewId(), _("Simplify Logarithms"),
@@ -1553,8 +1560,8 @@ m_CalculusMenu->AppendSeparator();
                         wxITEM_NORMAL);
   
   wxMenu *quadpack_sub = new wxMenu;
-  wxString integralSign = wxT("∫");
-  if(!m_worksheet->m_configuration->FontRendersChar(wxT('∫'), *wxNORMAL_FONT))
+  wxString integralSign = wxT("\u222B");
+  if(!m_worksheet->m_configuration->FontRendersChar(wxT('\u222B'), *wxNORMAL_FONT))
     integralSign = wxT("integrate");
   quadpack_sub->Append(menu_quad_qag, integralSign+_("(f(x),x,a,b), strategy of Aind"));
   quadpack_sub->Append(menu_quad_qags, integralSign+_("(f(x),x,a,b), Epsilon algorithm"));
