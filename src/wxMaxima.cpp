@@ -448,6 +448,10 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
           wxCommandEventHandler( wxMaxima::PlotMenu), NULL, this);
   Connect(button_map, wxEVT_BUTTON,
           wxCommandEventHandler( wxMaxima::MatrixMenu), NULL, this);
+  Connect(menu_map, wxEVT_MENU,
+          wxCommandEventHandler( wxMaxima::MatrixMenu), NULL, this);
+  Connect(menu_map_lambda, wxEVT_MENU,
+          wxCommandEventHandler( wxMaxima::MatrixMenu), NULL, this);
   Connect(menu_matrix_row, wxEVT_MENU,
           wxCommandEventHandler( wxMaxima::MatrixMenu), NULL, this);
   Connect(menu_matrix_col, wxEVT_MENU,
@@ -469,6 +473,8 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
   Connect(menu_matrix_hadamard_product, wxEVT_MENU,
           wxCommandEventHandler( wxMaxima::MatrixMenu), NULL, this);
   Connect(menu_matrix_hadamard_exponent, wxEVT_MENU,
+          wxCommandEventHandler( wxMaxima::MatrixMenu), NULL, this);
+  Connect(menu_copymatrix, wxEVT_MENU,
           wxCommandEventHandler( wxMaxima::MatrixMenu), NULL, this);
   Connect(menu_matrix_loadLapack, wxEVT_MENU,
           wxCommandEventHandler( wxMaxima::MatrixMenu), NULL, this);
@@ -7022,6 +7028,17 @@ void wxMaxima::MatrixMenu(wxCommandEvent &event)
         _("Left Matrix:"),expr,wxEmptyString,
         _("Right Matrix:"),wxEmptyString,wxEmptyString);
       break;
+    case menu_copymatrix:
+      CommandWiz(
+        _("Copy a matrix"),
+        _("In order to save memory the \":\" operator does clone the matrix, not copy it:\n"
+          "If you change an element of one matrix the same element will change "
+          "in all of its clones. copymatrix() instead generates a copy od a matrix: "
+          "A new matrix that, if changed in any way, won't change the original."),
+        wxEmptyString,
+        wxT("copymatrix(#1#);"),
+        _("Matrix:"),expr,wxEmptyString);
+      break;
     case menu_matrix_hadamard_product:
       CommandWiz(
         _("Hadamard Product"),
@@ -7254,7 +7271,7 @@ void wxMaxima::MatrixMenu(wxCommandEvent &event)
     case menu_genmatrix:
       CommandWiz(
         _("Extract matrix from 2D array"),
-        wxEmptyString,wxEmptyString,
+        _("Extracts a rectangle from a 2D array and converts it to a matrix"),wxEmptyString,
         wxT("genmatrix(#1#,#2#,#3#,#4#,#5#);"),
         _("Array"),expr,wxEmptyString,
         _("Right end"),wxT("10"),wxEmptyString,
@@ -7266,8 +7283,9 @@ void wxMaxima::MatrixMenu(wxCommandEvent &event)
     case menu_gen_mat_lambda:
       CommandWiz(
         _("Generate matrix from a rule"),
-        wxEmptyString,wxEmptyString,
-        wxT("apply('matrix,makelist(makelist(lambda([#2#,#3#],#1#),#2#,1,#4#),#3#,1,#5#);"),
+        _("Generates a rectangular matrix and fills each element with the result "
+          "of the expression \"Rule\"."),wxEmptyString,
+        wxT("apply('matrix,makelist(makelist(#1#,#2#,1,#4#),#3#,1,#5#));"),
         _("Rule"),expr,wxEmptyString,
         _("Var #1"),wxT("i"),wxEmptyString,
         _("Var #2"),wxT("j"),wxEmptyString,
@@ -7276,13 +7294,25 @@ void wxMaxima::MatrixMenu(wxCommandEvent &event)
         );
       break;
     case button_map:
+    case menu_map:
       CommandWiz(
         _("Map"),
-        _("Runs each element through an equation individually"),wxEmptyString,
-        wxT("apply('matrix,makelist(makelist(lambda([#2#,#3#],#1#),#2#,1,#4#),#3#,1,#5#);"),
-        _("Equation"),expr,wxEmptyString,
-        _("Variable name of the element="),wxT("i"),_("The equation will use this variable name in order to refer to the current element"),
-        _("Equation="),wxT("cabs(i)"),wxEmptyString
+        _("Runs each element of an object (list, matrix, equation,...) "
+          "through a function individually"),wxEmptyString,
+        wxT("map(#1#,#2#);"),
+        _("function"),wxT("sin"),wxEmptyString,
+        _("Object composed of elements"),wxT("expr")
+        );
+      break;
+    case menu_map_lambda:
+      CommandWiz(
+        _("Map an expression"),
+        _("Runs each element of an object (list, matrix, equation,...) "
+          "through an expression individually"),wxEmptyString,
+        wxT("map(lambda([#2#],#1#),#3#);"),
+        _("Expression"),wxT("sin(i)"),wxEmptyString,
+        _("Loop variable"),wxT("i"),_("The name of the variable that shall contain the current element"),
+        _("Object composed of elements"),wxT("expr")
         );
       break;
     default:

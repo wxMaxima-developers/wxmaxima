@@ -1116,6 +1116,9 @@ void wxMaximaFrame::SetupMenu()
   matrix_basic_sub->Append(menu_matrix_hadamard_exponent, _("Hadamard exponent..."),
                          _("Repetitive element-by-element multiplication"),
                          wxITEM_NORMAL);
+  matrix_basic_sub->Append(menu_copymatrix, _("Create copy, not clone..."),
+                         _("Creates an independent matrix with the same contents"),
+                         wxITEM_NORMAL);
   m_matrix_menu->Append(wxNewId(), _("Basic matrix operations"),
                          matrix_basic_sub,
                          _("Multiplication, exponent and similar"));
@@ -1201,6 +1204,8 @@ void wxMaximaFrame::SetupMenu()
   m_matrix_menu->AppendSeparator();
   m_matrix_menu->Append(menu_map_mat, _("A&pply function to each Matrix element..."),
                          _("Map function to a matrix"), wxITEM_NORMAL);
+  m_matrix_menu->Append(menu_map, _("Dito, but affect all clones of the Matrix..."),
+                         _("Map function to a matrix, affecting all of its clones"), wxITEM_NORMAL);
   m_MenuBar->Append(m_matrix_menu, _("M&atrix"));
 
   // Calculus menu
@@ -1425,6 +1430,9 @@ m_CalculusMenu->AppendSeparator();
   wxMenu *listuseSub = new wxMenu;
   listuseSub->Append(menu_list_map, _("apply function to each element"),
                         _("Runs each element through a function"),
+                        wxITEM_NORMAL);
+  listuseSub->Append(menu_map_lambda, _("Run each element through an expression"),
+                        _("Runs each element through an expression"),
                         wxITEM_NORMAL);
   listuseSub->Append(menu_list_use_actual_values, _("use the actual values stored"),
                         _("Introduce the actual values for variables stored in the list"),
