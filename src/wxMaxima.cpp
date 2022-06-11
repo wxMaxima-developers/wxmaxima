@@ -7033,7 +7033,7 @@ void wxMaxima::MatrixMenu(wxCommandEvent &event)
         _("Copy a matrix"),
         _("In order to save memory the \":\" operator does clone the matrix, not copy it:\n"
           "If you change an element of one matrix the same element will change "
-          "in all of its clones. copymatrix() instead generates a copy od a matrix: "
+          "in all of its clones. copymatrix() instead generates a copy of a matrix: "
           "A new matrix that, if changed in any way, won't change the original."),
         wxEmptyString,
         wxT("copymatrix(#1#);"),
