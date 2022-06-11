@@ -252,6 +252,7 @@ public:
     menu_divide,
     menu_partfrac,
     menu_sum,
+    menu_simpsum,
     menu_limit,
     menu_lbfgs,
     menu_taylor,

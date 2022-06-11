@@ -795,6 +795,8 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
           wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
   Connect(menu_nouns, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
+  Connect(menu_simpsum, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
   Connect(menu_subst, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
   Connect(menu_psubst, wxEVT_MENU,
@@ -7821,8 +7823,21 @@ void wxMaxima::SimplifyMenu(wxCommandEvent &event)
   switch (event.GetId())
   {
     case menu_nouns:
-      cmd = wxT("ev(") + expr + wxT(", nouns);");
-      MenuCommand(cmd);
+      CommandWiz(
+        _("Evaluate Nouns"),
+        _("A noun is a function for which maxima was "
+          "(for example by declaring it a noun, preceding it with a  \' "
+          "or putting it between the parenthesis of \'() ) "
+          "instructed not to evaluate it's value right now."),wxEmptyString,
+        wxT("#1#,nouns;"),
+        _("Expression"),expr,wxEmptyString);
+      break;
+    case menu_simpsum:
+      CommandWiz(
+        _("Simplify sums"),
+        _("Try to simplify sums that result from sum() commands."),wxEmptyString,
+        wxT("simpsum(#1#);"),
+        _("Expression"),expr,wxEmptyString);
       break;
     case button_ratsimp:
     case menu_ratsimp:

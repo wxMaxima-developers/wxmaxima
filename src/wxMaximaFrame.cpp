@@ -1295,6 +1295,8 @@ m_CalculusMenu->AppendSeparator();
   simplify_sub->Append(menu_partfrac, _("Partial &Fractions..."),
                          _("Decompose rational function to partial fractions"),
                          wxITEM_NORMAL);
+  simplify_sub->Append(menu_simpsum, _("Simplify sum() commands...")),
+                         wxITEM_NORMAL);
   m_SimplifyMenu->Append(wxNewId(), _("Simplify equations"),
                          simplify_sub);
   m_logexpand_Sub = new wxMenu;
@@ -1399,7 +1401,7 @@ m_CalculusMenu->AppendSeparator();
   m_subst_Sub->AppendCheckItem(menu_opsubst, _("Allow to substitute operators"));
   m_SimplifyMenu->Append(wxNewId(), _("Substitute"),
                          m_subst_Sub);
-  m_SimplifyMenu->Append(menu_nouns, _("Evaluate &Noun Forms"),
+  m_SimplifyMenu->Append(menu_nouns, _("Evaluate &Noun Forms..."),
                          _("Evaluate all noun forms in expression"),
                          wxITEM_NORMAL);
   m_SimplifyMenu->AppendCheckItem(menu_talg, _("&Algebraic Mode"),
