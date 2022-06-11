@@ -92,6 +92,7 @@ protected:
   wxNotebook *m_notebook;
   void UpdateOutput();
   void OnParamChange(wxCommandEvent& event);
+  void OnNotebookPageChange(wxBookCtrlEvent& event);
 
   std::vector<BTextCtrl*> m_textctrl;
   std::vector<wxStaticText *> m_label;

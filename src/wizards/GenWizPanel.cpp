@@ -133,7 +133,8 @@ GenWizPanel::GenWizPanel(wxWindow *parent, Configuration *cfg,
   SetSizer(vbox);
   Connect(wxEVT_SIZE, wxSizeEventHandler(GenWizPanel::OnSize),
           NULL, this);
-  
+  m_notebook->Connect(wxEVT_NOTEBOOK_PAGE_CHANGED,
+                      wxBookCtrlEventHandler(GenWizPanel::OnNotebookPageChange), NULL, this);
   FitInside();
 }
 
@@ -169,6 +170,10 @@ void GenWizPanel::NewWizard(wxString description, const wxString &description_to
   {
     m_notebook->Hide();
   }
+
+  if((!commandRule.IsEmpty()) && (!description.IsEmpty()))
+    m_notebook->ChangeSelection(m_configuration->WizardTab());
+
   if(!commandRule.IsEmpty())
   {
     wxSizer *pageSizer = new wxBoxSizer(wxVERTICAL);
@@ -195,7 +200,8 @@ void GenWizPanel::NewWizard(wxString description, const wxString &description_to
     descriptionpane->FitInside();
     m_notebook->AddPage(descriptionpane, _("Description"));
   }
-  m_descriptionToolTip = description_tooltip;
+
+   m_descriptionToolTip = description_tooltip;
   m_textctrl[0]->SetValue(defaultval1);
   m_label[0]->SetLabel(label1);
   m_textctrl[0]->SetToolTip(tooltip1);
@@ -260,6 +266,11 @@ void GenWizPanel::UpdateOutput()
     output.Replace(wxString::Format("#%i#",i+1), m_textctrl[i]->GetValue());
   if(m_output)
     m_output->SetValue(output);
+}
+
+void GenWizPanel::OnNotebookPageChange(wxBookCtrlEvent& event)
+{
+  m_configuration->WizardTab(event.GetSelection());
 }
 
 void GenWizPanel::OnParamChange(wxCommandEvent& event)

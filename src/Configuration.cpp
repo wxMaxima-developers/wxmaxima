@@ -123,7 +123,7 @@ wxSize Configuration::GetPPI() const
 
 void Configuration::ResetAllToDefaults(InitOpt options)
 {
-  m_wizardCollapseOutput = false;
+  m_wizardTab = 0;
   m_dockableWizards = true;
   for(auto i:m_renderableChars)
     m_renderableChars[i.first] = wxEmptyString;
@@ -660,6 +660,7 @@ void Configuration::ReadConfig()
   config->Read(wxT("maxClipbrd_BitmapMegabytes"), &m_maxClipbrd_BitmapMegabytes);
   if(m_maxClipbrd_BitmapMegabytes<0)
     m_maxClipbrd_BitmapMegabytes = 1;
+  config->Read(wxT("wizardTab"), m_wizardTab);
   config->Read(wxT("numpadEnterEvaluates"), &m_numpadEnterEvaluates);
   config->Read(wxT("saveImgFileName"), &m_saveImgFileName);
   config->Read(wxT("usePartialForDiff"), &m_usePartialForDiff);
@@ -669,7 +670,6 @@ void Configuration::ReadConfig()
   config->Read(wxT("fixedFontTC"), &m_fixedFontTC);
   config->Read(wxT("usepngCairo"), &m_usepngCairo);
   config->Read(wxT("dockableWizards"), &m_dockableWizards);
-  config->Read(wxT("wizardCollapseOutput"), &m_wizardCollapseOutput);
   
   if(!config->Read(wxT("AutoSaveAsTempFile"), &m_autoSaveAsTempFile))
   {
@@ -1269,7 +1269,6 @@ void Configuration::WriteSettings(const wxString &file)
   config->Write(wxT("wxMathML_Filename"), m_wxMathML_Filename);
   config->Write(wxT("wxMathML_UseFile"), m_wxMathML_UseFile);
   config->Write(wxT("dockableWizards"), m_dockableWizards);
-  config->Write(wxT("wizardCollapseOutput"), m_wizardCollapseOutput);
 
   config->Write(wxT("maxClipbrd_BitmapMegabytes"), m_maxClipbrd_BitmapMegabytes);
 
@@ -1495,6 +1494,7 @@ void Configuration::WriteStyles(wxConfigBase *config)
   config->Write(wxT("wrapLatexMath"), m_wrapLatexMath);
   config->Write(wxT("exportContainsWXMX"), m_exportContainsWXMX);
   config->Write(wxT("texPreamble"), m_texPreamble);
+  config->Write(wxT("wizardTab"), m_wizardTab);
   config->Write(wxT("numpadEnterEvaluates"), m_numpadEnterEvaluates);
   config->Write(wxT("saveImgFileName"), m_saveImgFileName);
   config->Write(wxT("usePartialForDiff"), m_usePartialForDiff);
