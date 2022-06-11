@@ -1088,7 +1088,7 @@ void wxMaximaFrame::SetupMenu()
                          _("Enter a matrix"), wxITEM_NORMAL);
   gen_matrix_menu->Append(menu_list_list2matrix, _("Nested list to Matrix"),
                          _("Convert a list of lists to a matrix"), wxITEM_NORMAL);
-  gen_matrix_menu->Append(menu_csv2mat, _("Matrix from csv file"),
+  gen_matrix_menu->Append(menu_csv2mat, _("Matrix from csv file..."),
                          _("Load a matrix from a csv file"), wxITEM_NORMAL);
   m_matrix_menu->Append(wxNewId(), _("Create Matrix"),
                          gen_matrix_menu,
@@ -1105,12 +1105,12 @@ void wxMaximaFrame::SetupMenu()
   m_matrix_menu->AppendSeparator();
 
   wxMenu *matrix_basic_sub = new wxMenu;
-  matrix_basic_sub->Append(menu_matrix_multiply, _("Multiply matrices"));
-  matrix_basic_sub->Append(menu_matrix_exponent, _("Matrix exponent"));
-  matrix_basic_sub->Append(menu_matrix_hadamard_product, _("Hadamard (element-by-element) product"),
+  matrix_basic_sub->Append(menu_matrix_multiply, _("Multiply matrices..."));
+  matrix_basic_sub->Append(menu_matrix_exponent, _("Matrix exponent..."));
+  matrix_basic_sub->Append(menu_matrix_hadamard_product, _("Hadamard (element-by-element) product..."),
                          _("Element-by-element multiplication"),
                          wxITEM_NORMAL);
-  matrix_basic_sub->Append(menu_matrix_hadamard_exponent, _("Hadamard exponent"),
+  matrix_basic_sub->Append(menu_matrix_hadamard_exponent, _("Hadamard exponent..."),
                          _("Repetitive element-by-element multiplication"),
                          wxITEM_NORMAL);
   m_matrix_menu->Append(wxNewId(), _("Basic matrix operations"),
@@ -1180,16 +1180,16 @@ void wxMaximaFrame::SetupMenu()
                         _("Fast fortran routines that perform numerical tasks"));
   m_matrix_menu->AppendSeparator();
   wxMenu *matrix_rowOp_sub = new wxMenu;
-  matrix_rowOp_sub->Append(menu_matrix_row, _("Extract Row"),
+  matrix_rowOp_sub->Append(menu_matrix_row, _("Extract Row..."),
                          _("Extract a row from the matrix"), wxITEM_NORMAL);
-  matrix_rowOp_sub->Append(menu_matrix_col, _("Extract Column"),
+  matrix_rowOp_sub->Append(menu_matrix_col, _("Extract Column..."),
                          _("Extract a column from the matrix"), wxITEM_NORMAL);
-  matrix_rowOp_sub->Append(menu_submatrix, _("Remove Rows or Columns"),
+  matrix_rowOp_sub->Append(menu_submatrix, _("Remove Rows or Columns..."),
                          _("Remove rows and/or columns from the matrix"), wxITEM_NORMAL);
-  matrix_rowOp_sub->Append(menu_matrix_row_list, _("Convert Row to list"),
+  matrix_rowOp_sub->Append(menu_matrix_row_list, _("Convert Row to list..."),
                          _("Extract a row from the matrix and convert it to a list"),
                          wxITEM_NORMAL);
-  matrix_rowOp_sub->Append(menu_matrix_col_list, _("Convert Column to list"),
+  matrix_rowOp_sub->Append(menu_matrix_col_list, _("Convert Column to list..."),
                          _("Extract a column from the matrix and convert it to a list"),
                          wxITEM_NORMAL);
   m_matrix_menu->Append(wxNewId(), _("Row and column operations"),
@@ -1223,10 +1223,10 @@ m_CalculusMenu->AppendSeparator();
                          _("Find a (unconstrained) minimum of an expression"),
                          wxITEM_NORMAL);
   wxMenu *series_sub = new wxMenu;
-  series_sub->Append(menu_taylor, _("Taylor series"));
-  series_sub->Append(menu_powerseries, _("Power series"));
-  series_sub->Append(menu_fourier, _("Fourier coefficients"));
-  series_sub->Append(menu_pade, _("P&adé Approximation..."),
+  series_sub->Append(menu_taylor, _("Taylor series..."));
+  series_sub->Append(menu_powerseries, _("Power series..."));
+  series_sub->Append(menu_fourier, _("Fourier coefficients..."));
+  series_sub->Append(menu_pade, _("P&ad\u00E9 Approximation..."),
                      _("Pade approximation of a Taylor series"));
   m_CalculusMenu->Append(wxNewId(), _("Series approximation"),
                          series_sub);
@@ -1408,7 +1408,7 @@ m_CalculusMenu->AppendSeparator();
   listcreateSub->Append(menu_list_create_from_list, _("from a list"),
                         _("Generate a new list using a lists' elements"),
                         wxITEM_NORMAL);
-  listcreateSub->Append(menu_csv2list, _("Read List from csv file"),
+  listcreateSub->Append(menu_csv2list, _("Read List from csv file..."),
                          _("Load a list from a csv file"), wxITEM_NORMAL);
   listcreateSub->Append(menu_list_actual_values_storage, _("as storage for actual values for variables"),
                         _("Generate a storage for variable values that can be introduced into equations at any time"),
@@ -1432,7 +1432,7 @@ m_CalculusMenu->AppendSeparator();
   listuseSub->Append(menu_list_do_for_each_element, _("do for each element"),
                         _("Execute a command for each element of the list"),
                         wxITEM_NORMAL);
-  listuseSub->Append(menu_list2csv, _("Export List to csv file"),
+  listuseSub->Append(menu_list2csv, _("Export List to csv file..."),
                          _("Export a list to a csv file"), wxITEM_NORMAL);
 
   m_listMenu->Append(wxNewId(), _("Use list"),
