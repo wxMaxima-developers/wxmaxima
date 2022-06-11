@@ -709,6 +709,8 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
           wxCommandEventHandler(wxMaxima::EquationsMenu), NULL, this);
   Connect(menu_bvp, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::EquationsMenu), NULL, this);
+  Connect(menu_rk, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::EquationsMenu), NULL, this);
   Connect(menu_fun_def, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
   Connect(menu_divide, wxEVT_MENU,
