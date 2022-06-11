@@ -1295,8 +1295,7 @@ m_CalculusMenu->AppendSeparator();
   simplify_sub->Append(menu_partfrac, _("Partial &Fractions..."),
                          _("Decompose rational function to partial fractions"),
                          wxITEM_NORMAL);
-  simplify_sub->Append(menu_simpsum, _("Simplify sum() commands...")),
-                         wxITEM_NORMAL);
+  simplify_sub->Append(menu_simpsum, _("Simplify sum() commands..."));
   m_SimplifyMenu->Append(wxNewId(), _("Simplify equations"),
                          simplify_sub);
   m_logexpand_Sub = new wxMenu;

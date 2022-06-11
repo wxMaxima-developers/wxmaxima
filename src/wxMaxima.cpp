@@ -8122,7 +8122,8 @@ void wxMaxima::CalculusMenu(wxCommandEvent &event)
     case menu_taylor:
       CommandWiz(
         _("Taylor series"),
-        _("Approximates a expression as a polynom"),wxEmptyString,
+        _("Approximates a expression around a point as a polynom\n"
+          "The trailing \"...\" can be removed by using ratdisrep()"),wxEmptyString,
         wxT("taylor(#1#,#2#,#3#,#4#);"),
         _("Expression:"),expr,wxEmptyString,
         _("Variable:"),wxT("x"),wxEmptyString,
