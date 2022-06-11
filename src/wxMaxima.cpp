@@ -6773,7 +6773,6 @@ void wxMaxima::EquationsMenu(wxCommandEvent &event)
     case menu_ivp_1:
       CommandWiz(
         _("Initial Condition"),
-        wxEmptyString,wxEmptyString,
         _("The solution of an ODE tells the shape, but not the height of the solution.\n"
           "If the ODE\'s state is known at a point this "
           "function fills in the correct values for the constants"),wxEmptyString,
