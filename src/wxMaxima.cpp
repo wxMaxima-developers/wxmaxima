@@ -6698,16 +6698,40 @@ void wxMaxima::EquationsMenu(wxCommandEvent &event)
   switch (event.GetId())
   {
     case menu_allroots:
-      cmd = wxT("allroots(") + expr + wxT(");");
-      MenuCommand(cmd);
+      CommandWiz(
+        _("Solve polynomials numerically"),
+        _("Tries to find all solutions of a polynomial numerically.\n"
+          "Might be able to detect solutions in non-polynomials, as well, if "
+          "the expression is approximated by an polynomial, beforehand:\n\n"
+          "    allroots(ratdisrep(taylor(expression,0,30)));"),wxEmptyString,
+        wxT("allroots(#1#,#2#);"),
+        _("Polynomial:"),expr,wxEmptyString,
+        _("Variable:"),wxT("x"),wxEmptyString);
       break;
     case menu_bfallroots:
-      cmd = wxT("bfallroots(") + expr + wxT(");");
-      MenuCommand(cmd);
+      CommandWiz(
+        _("Solve polynomials numerically (bfloats)"),
+        _("Tries to find all solutions of a polynomial numerically using bfloats.\n"
+          "Might be able to detect solutions in non-polynomials, as well, if "
+          "the expression is approximated by an polynomial, beforehand:\n\n"
+          "    bfallroots(ratdisrep(taylor(expression,0,30)));"),wxEmptyString,
+        wxT("bfallroots(#1#,#2#);"),
+        _("Polynomial:"),expr,wxEmptyString,
+        _("Variable:"),wxT("x"),wxEmptyString);
       break;
     case menu_realroots:
-      cmd = wxT("realroots(") + expr + wxT(");");
-      MenuCommand(cmd);
+      CommandWiz(
+        _("Solve polynomials numerically (real roots)"),
+        _("Tries to find exact fractions that match the numerical solutions of a polynomial.\n"
+          "Is not able to deal with solutions with a imaginary part. "
+          "Numerical constants like %pi% need to be eliminated using float() or similar\n"
+          "Might be able to detect solutions in non-polynomials, as well, if "
+          "the expression is approximated by an polynomial, beforehand:\n\n"
+          "    realroots(ratdisrep(taylor(expression,0,30)));\n\n"
+          "See also guess_exact_value()"),wxEmptyString,
+        wxT("realroots(#1#,#2#);"),
+        _("Polynomial:"),expr,wxEmptyString,
+        _("precision:"),wxT("1e-12"),wxEmptyString);
       break;
     case button_solve:
     case menu_solve:
@@ -6734,17 +6758,8 @@ void wxMaxima::EquationsMenu(wxCommandEvent &event)
     case menu_solve_num:
     {
       if (expr.StartsWith(wxT("%")))
-        expr = wxT("''(") + expr + wxT(")");
-      CommandWiz(
-        _("Solve equations numerically"),
-        _("Tries to find a value of the variable that solves Equation between the two bonds"),wxEmptyString,
-        wxT("find_root(#1#,#2#,#3#,#4#);"),
-        _("Equation:"),expr,wxEmptyString,
-        _("Variable:"),wxT("x"),wxEmptyString,
-        _("Lower bound:"),wxT("-1"),wxEmptyString,
-        _("Upper bound:"),wxT("1"),wxEmptyString);
-      break;
-    }
+        expr = wxT("''(") + expr + wxT(")"); 
+   }
     case button_solve_ode:
     case menu_solve_ode:
       CommandWiz(
@@ -9442,9 +9457,14 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
       _("solve() will solve a list of equations only if for n "
         "independent equations there are n variables to solve to.\n"
         "If only one result variable is of interest the other result "
-        "variables solve needs to do its work can be used to tell "
-        "solve() which variables to eliminate in the solution "
-        "for the interesting variable."),wxEmptyString,
+        "variables can be used to to tell solve() which variables to "
+        "eliminate from the solution\n"
+        "solve() searches for a global solution. If a problem has different "
+        "solutions depending on the range its variables are in one way "
+        "to successfully use solve() is to use solve() to eliminate variables "
+        "one by one and to manually choose which of the solutions solve() found "
+        "matches the current problem."
+        ),wxEmptyString,
       wxT("solve([#1#],[#2#]);"),
       _("Data:"),selection,_("Comma-separated equations"),
       _("Result variables:"),wxT("x"),_("Comma-separated variables")

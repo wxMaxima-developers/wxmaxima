@@ -1030,16 +1030,16 @@ void wxMaximaFrame::SetupMenu()
   m_EquationsMenu->Append(wxNewId(), _("Solve symbolically"),
                           solve_sub);
   wxMenu *solveNum1_sub = new wxMenu;
-  solveNum1_sub->Append(menu_solve_num, _("&Find Root..."),
+  solveNum1_sub->Append(menu_solve_num, _("Find numerical solution..."),
                         _("Find a root of an equation on an interval"), wxITEM_NORMAL);
-  solveNum1_sub->Append(menu_allroots, _("Roots of &Polynomial"),
+  solveNum1_sub->Append(menu_realroots, _("Dito, but as fraction (real only)..."),
+                        _("Find fractions that real roots of a polynomial and "),
+                        wxITEM_NORMAL);
+  solveNum1_sub->Append(menu_allroots, _("Numerical solutions of polynomial..."),
                         _("Find all roots of a polynomial"),
                         wxITEM_NORMAL);
-  solveNum1_sub->Append(menu_bfallroots, _("Roots of Polynomial (bfloat)"),
+  solveNum1_sub->Append(menu_bfallroots, _("Numerical solutions of polynomial..."),
                         _("Find all roots of a polynomial (bfloat)"),
-                        wxITEM_NORMAL);
-  solveNum1_sub->Append(menu_realroots, _("&Roots of Polynomial (Real)"),
-                        _("Find real roots of a polynomial"),
                         wxITEM_NORMAL);
   m_EquationsMenu->Append(wxNewId(), _("Solve numerical, 1 Variable"),
                           solveNum1_sub);

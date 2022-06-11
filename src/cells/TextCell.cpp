@@ -273,6 +273,10 @@ void TextCell::UpdateToolTip()
       SetToolTip(&T_("Might be caused by reading an csv file with an empty last line:\n"
                      "Technically that line can be described as having the length 0 "
                      "which differs from the other lines of this file."));
+    else if (m_text.Contains(S_("expected a polynomial")))
+      SetToolTip(&T_("If the thing maxima complains about actually looks like a polynomial "
+                   "you can try running it through ratdisrep() in order to fix that "
+                   "problem."));
     else if (m_text.Contains(S_("Control stack exhausted")))
       SetToolTip(&T_("Often caused by recursive function calls. Some lisps allow to increase "
                    "the control stack size using command-line arguments."));
