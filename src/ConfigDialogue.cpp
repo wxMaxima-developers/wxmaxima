@@ -561,6 +561,7 @@ wxWindow *ConfigDialogue::CreateWorksheetPanel()
   wxStaticBoxSizer *displaySizer = new wxStaticBoxSizer(wxVERTICAL, panel, _("Display"));
   wxFlexGridSizer *grid_sizer = new wxFlexGridSizer(10, 2, 5, 5);
   auto *vsizer = new wxBoxSizer(wxVERTICAL);
+  panel->SetSizer(vsizer);
 
   wxBoxSizer *PlotWidthHbox = new wxBoxSizer(wxHORIZONTAL);
   m_defaultPlotWidth = new wxSpinCtrl(displaySizer->GetStaticBox(), -1, wxEmptyString, wxDefaultPosition, wxSize(150*GetContentScaleFactor(), -1), wxSP_ARROW_KEYS,
@@ -628,21 +629,21 @@ wxWindow *ConfigDialogue::CreateWorksheetPanel()
 
   numDigitsSizer->Add(numDigitsGrid, wxSizerFlags().Border(wxALL, 5*GetContentScaleFactor()));
   numDigitsGrid->Add(m_displayNDigits =
-                     new wxRadioButton(displaySizer->GetStaticBox(), -1,
+                     new wxRadioButton(numDigitsSizer->GetStaticBox(), -1,
                                        _("Maximum number of displayed digits:")),
                      0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL);
-  m_displayedDigits = new wxSpinCtrl(displaySizer->GetStaticBox(), -1, wxEmptyString, wxDefaultPosition, wxSize(150*GetContentScaleFactor(), -1), wxSP_ARROW_KEYS, 20,
+  m_displayedDigits = new wxSpinCtrl(numDigitsSizer->GetStaticBox(), -1, wxEmptyString, wxDefaultPosition, wxSize(150*GetContentScaleFactor(), -1), wxSP_ARROW_KEYS, 20,
                                      INT_MAX);
   numDigitsGrid->Add(m_displayedDigits, wxSizerFlags());
 
   numDigitsGrid->Add(m_displayAllDigits =
-                     new wxRadioButton(displaySizer->GetStaticBox(), -1,
+                     new wxRadioButton(numDigitsSizer->GetStaticBox(), -1,
                                        _("Display all digits")),
                      0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL);
   numDigitsGrid->Add(5,5);
 
   numDigitsGrid->Add(m_linebreaksInLongNums =
-                     new wxRadioButton(displaySizer->GetStaticBox(), -1,
+                     new wxRadioButton(numDigitsSizer->GetStaticBox(), -1,
                                        _("Display all and allow linebreaks in long numbers")),
                      0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL);
   numDigitsGrid->Add(5,5);
@@ -711,7 +712,7 @@ wxWindow *ConfigDialogue::CreateWorksheetPanel()
   vsizer->Add(actionSizer, wxSizerFlags().Expand().Border(wxALL, 5*GetContentScaleFactor()));
   vsizer->Add(10*GetContentScaleFactor(), 10*GetContentScaleFactor());
 
-  wxStaticBoxSizer *evalSizer = new wxStaticBoxSizer(wxVERTICAL, evalSizer->GetStaticBox(), _("Hotkeys for sending commands to maxima"));
+  wxStaticBoxSizer *evalSizer = new wxStaticBoxSizer(wxVERTICAL, panel, _("Hotkeys for sending commands to maxima"));
   m_enterEvaluates = new wxRadioButton(evalSizer->GetStaticBox(), -1, _("Enter evaluates cells, Ctrl+Enter adds newlines"));
   evalSizer->Add(m_enterEvaluates, wxSizerFlags());
   m_ctrlEnterEvaluates = new wxRadioButton(evalSizer->GetStaticBox(), -1, _("Enter adds newlines, Ctrl+Enter evaluates cells"));
@@ -721,7 +722,7 @@ wxWindow *ConfigDialogue::CreateWorksheetPanel()
   evalSizer->Add(m_numpadEnterEvaluates, wxSizerFlags());
   vsizer->Add(evalSizer, wxSizerFlags().Expand().Border(wxALL, 5*GetContentScaleFactor()));
 
-  wxStaticBoxSizer *evalPrivacy = new wxStaticBoxSizer(wxVERTICAL, evalPrivacy->GetStaticBox(), _("Privacy settings"));
+  wxStaticBoxSizer *evalPrivacy = new wxStaticBoxSizer(wxVERTICAL, panel, _("Privacy settings"));
   m_saveImgFileName = new wxCheckBox(evalPrivacy->GetStaticBox(), -1, _("Store filenames in image cells to enable image reloading after re-opening the worksheet"));
   m_saveImgFileName->SetToolTip(_("If this option is enabled, the filename and path of images inserted with \"Cell\" -> \"Insert Image...\" "
                                   "is stored in the worksheet file on save. This enables reloading of the image file via the "
@@ -733,7 +734,6 @@ wxWindow *ConfigDialogue::CreateWorksheetPanel()
   evalPrivacy->Add(m_saveImgFileName, wxSizerFlags());
   vsizer->Add(evalPrivacy, wxSizerFlags().Expand().Border(wxALL, 5*GetContentScaleFactor()));
 
-  panel->SetSizer(vsizer);
   panel->FitInside();
 
   return panel;
@@ -746,6 +746,7 @@ wxWindow *ConfigDialogue::CreateRevertToDefaultsPanel()
   panel->SetMinSize(wxSize(GetContentScaleFactor()*mMinPanelWidth,GetContentScaleFactor()*mMinPanelHeight));
 
   wxBoxSizer *vsizer = new wxBoxSizer(wxVERTICAL);
+  panel->SetSizer(vsizer);
   WrappingStaticText *helpText1 = new WrappingStaticText(
     panel, -1,
     _("The buttons in this category reset wxMaxima's settings "
@@ -757,7 +758,7 @@ wxWindow *ConfigDialogue::CreateRevertToDefaultsPanel()
 
   wxStaticBoxSizer *revertSizer = new wxStaticBoxSizer(wxVERTICAL, panel, _("Revert changes"));
 
-  wxButton *resetAllButton = new wxButton(panel, -1, _("Reset all GUI settings"));
+  wxButton *resetAllButton = new wxButton(revertSizer->GetStaticBox(), -1, _("Reset all GUI settings"));
   resetAllButton->Connect(wxEVT_BUTTON,
                           wxCommandEventHandler(ConfigDialogue::OnResetAllToDefaults),
                           NULL, this);
@@ -767,7 +768,7 @@ wxWindow *ConfigDialogue::CreateRevertToDefaultsPanel()
     Expand()
     );
 
-  wxButton *resetStylesButton = new wxButton(panel, -1, _("Reset the Style settings"));
+  wxButton *resetStylesButton = new wxButton(revertSizer->GetStaticBox(), -1, _("Reset the Style settings"));
   resetStylesButton->Connect(wxEVT_BUTTON,
                           wxCommandEventHandler(ConfigDialogue::OnResetStyles),
                           NULL, this);
@@ -776,7 +777,7 @@ wxWindow *ConfigDialogue::CreateRevertToDefaultsPanel()
     wxSizerFlags().Border(wxALL,5*GetContentScaleFactor()).
     Expand()
     );
-  wxButton *reloadAllButton = new wxButton(panel, -1, _("Reload all GUI settings from disc"));
+  wxButton *reloadAllButton = new wxButton(revertSizer->GetStaticBox(), -1, _("Reload all GUI settings from disc"));
   reloadAllButton->Connect(wxEVT_BUTTON,
                           wxCommandEventHandler(ConfigDialogue::OnReloadAll),
                           NULL, this);
@@ -785,7 +786,7 @@ wxWindow *ConfigDialogue::CreateRevertToDefaultsPanel()
     wxSizerFlags().Border(wxALL,5*GetContentScaleFactor()).
     Expand()
     );
-  wxButton *reloadStylesButton = new wxButton(panel, -1, _("Reload the style settings from disc"));
+  wxButton *reloadStylesButton = new wxButton(revertSizer->GetStaticBox(), -1, _("Reload the style settings from disc"));
   reloadStylesButton->Connect(wxEVT_BUTTON,
                           wxCommandEventHandler(ConfigDialogue::OnReloadStyles),
                           NULL, this);
@@ -798,7 +799,7 @@ wxWindow *ConfigDialogue::CreateRevertToDefaultsPanel()
 
   wxStaticBoxSizer *exportSizer = new wxStaticBoxSizer(wxVERTICAL, panel, _("Import+Export"));
 
-  wxButton *exportAllButton = new wxButton(panel, -1, _("Export all settings"));
+  wxButton *exportAllButton = new wxButton(exportSizer->GetStaticBox(), -1, _("Export all settings"));
   exportAllButton->Connect(wxEVT_BUTTON,
                           wxCommandEventHandler(ConfigDialogue::OnExportAll),
                           NULL, this);
@@ -807,7 +808,7 @@ wxWindow *ConfigDialogue::CreateRevertToDefaultsPanel()
     wxSizerFlags().Border(wxALL,5*GetContentScaleFactor()).
     Expand()
     );
-  wxButton *exportStylesButton = new wxButton(panel, save_id, _("Export the style settings"));
+  wxButton *exportStylesButton = new wxButton(exportSizer->GetStaticBox(), save_id, _("Export the style settings"));
   exportStylesButton->Connect(wxEVT_BUTTON,
                               wxCommandEventHandler(ConfigDialogue::LoadSave),
                               NULL, this);
@@ -816,7 +817,7 @@ wxWindow *ConfigDialogue::CreateRevertToDefaultsPanel()
     wxSizerFlags().Border(wxALL,5*GetContentScaleFactor()).
     Expand()
     );
-  wxButton *importSettingsButton = new wxButton(panel, -1, _("Import settings"));
+  wxButton *importSettingsButton = new wxButton(exportSizer->GetStaticBox(), -1, _("Import settings"));
   importSettingsButton->Connect(wxEVT_BUTTON,
                           wxCommandEventHandler(ConfigDialogue::OnImport),
                           NULL, this);
@@ -840,7 +841,6 @@ wxWindow *ConfigDialogue::CreateRevertToDefaultsPanel()
     wxSizerFlags().Border(wxUP | wxDOWN,5*GetContentScaleFactor()).
     Expand()
     );
-  panel->SetSizer(vsizer);
   panel->FitInside();
   return panel;
 }
@@ -851,6 +851,7 @@ wxWindow *ConfigDialogue::CreateStartupPanel()
   panel->SetScrollRate(5*GetContentScaleFactor(), 5*GetContentScaleFactor());
   panel->SetMinSize(wxSize(GetContentScaleFactor()*mMinPanelWidth,GetContentScaleFactor()*mMinPanelHeight));
   wxBoxSizer *vsizer = new wxBoxSizer(wxVERTICAL);
+  panel->SetSizer(vsizer);
 
   m_startupFileName = Dirstructure::Get()->UserConfDir();
   m_wxStartupFileName += m_startupFileName + wxT("wxmaxima-init.mac");
@@ -879,11 +880,11 @@ wxWindow *ConfigDialogue::CreateStartupPanel()
       }
     }
   }
-  m_wxStartupCommands = new BTextCtrl(panel, -1, m_configuration, wxEmptyString, wxDefaultPosition, wxSize(150*GetContentScaleFactor(),250*GetContentScaleFactor()),
+  m_wxStartupCommands = new BTextCtrl(wxMaximaStartupSizer->GetStaticBox(), -1, m_configuration, wxEmptyString, wxDefaultPosition, wxSize(150*GetContentScaleFactor(),250*GetContentScaleFactor()),
                                      wxTE_MULTILINE | wxHSCROLL);
   m_wxStartupCommands->SetValue(contents);
   wxMaximaStartupSizer->Add(m_wxStartupCommands, wxSizerFlags().Expand().Border(wxALL,5*GetContentScaleFactor()));
-  wxStaticText *wxStartupFileLocation = new wxStaticText(panel,
+  wxStaticText *wxStartupFileLocation = new wxStaticText(wxMaximaStartupSizer->GetStaticBox(),
                                                          wxID_ANY,
                                                          _("wxMaxima startup file location: ") +
                                                          m_wxStartupFileName);
@@ -918,7 +919,7 @@ wxWindow *ConfigDialogue::CreateStartupPanel()
       }
     }
   }
-  m_startupCommands = new BTextCtrl(panel,
+  m_startupCommands = new BTextCtrl(maximaStartupSizer->GetStaticBox(),
                                     -1, m_configuration, wxEmptyString,
                                     wxDefaultPosition,
                                     wxSize(150*GetContentScaleFactor(),250*GetContentScaleFactor()),
@@ -926,13 +927,12 @@ wxWindow *ConfigDialogue::CreateStartupPanel()
   m_startupCommands->SetValue(contents);
 
   maximaStartupSizer->Add(m_startupCommands, wxSizerFlags().Expand().Border(wxALL,5*GetContentScaleFactor()));
-  wxStaticText *startupFileLocation = new wxStaticText(panel, wxID_ANY,
+  wxStaticText *startupFileLocation = new wxStaticText(maximaStartupSizer->GetStaticBox(), wxID_ANY,
                                                        _("Maxima startup file location: ") +
                                                        m_startupFileName);
   startupFileLocation->SetToolTip(_("Commands that are executed at every start of maxima."));
   maximaStartupSizer->Add(startupFileLocation, wxSizerFlags().Border(wxALL,5*GetContentScaleFactor()));
   vsizer->Add(maximaStartupSizer,wxSizerFlags().Expand().Border(wxALL, 5*GetContentScaleFactor()));
-  panel->SetSizer(vsizer);
   panel->FitInside();
   return panel;
 }
@@ -944,71 +944,72 @@ wxWindow *ConfigDialogue::CreateExportPanel()
   panel->SetMinSize(wxSize(GetContentScaleFactor()*mMinPanelWidth,GetContentScaleFactor()*mMinPanelHeight));
 
   wxBoxSizer *vsizer = new wxBoxSizer(wxVERTICAL);
+  panel->SetSizer(vsizer);
 
   wxStaticBoxSizer *texSizer = new wxStaticBoxSizer(wxVERTICAL, panel, _("LaTeX"));
   wxFlexGridSizer *texGrid_sizer = new wxFlexGridSizer(9, 2, 5, 5);
 
-  wxStaticText *dc = new wxStaticText(panel, -1,
+  wxStaticText *dc = new wxStaticText(texSizer->GetStaticBox(), -1,
                                       _("Documentclass for TeX export:"));
-  m_documentclass = new wxTextCtrl(panel, -1,
+  m_documentclass = new wxTextCtrl(texSizer->GetStaticBox(), -1,
                                    wxEmptyString, wxDefaultPosition,
                                    wxSize(350*GetContentScaleFactor(), wxDefaultSize.GetY()));
   texGrid_sizer->Add(dc, wxSizerFlags());
   texGrid_sizer->Add(m_documentclass, wxSizerFlags());
 
-  wxStaticText *dco = new wxStaticText(panel, -1, _("Documentclass options:"));
-  m_documentclassOptions = new wxTextCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(350*GetContentScaleFactor(), wxDefaultSize.GetY()));
+  wxStaticText *dco = new wxStaticText(texSizer->GetStaticBox(), -1, _("Documentclass options:"));
+  m_documentclassOptions = new wxTextCtrl(texSizer->GetStaticBox(), -1, wxEmptyString, wxDefaultPosition, wxSize(350*GetContentScaleFactor(), wxDefaultSize.GetY()));
   texGrid_sizer->Add(dco, wxSizerFlags());
   texGrid_sizer->Add(m_documentclassOptions, wxSizerFlags());
 
-  wxStaticText *tp = new wxStaticText(panel, -1, _("Additional lines for the TeX preamble:"));
-  m_texPreamble = new wxTextCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(350*GetContentScaleFactor(), 100),
+  wxStaticText *tp = new wxStaticText(texSizer->GetStaticBox(), -1, _("Additional lines for the TeX preamble:"));
+  m_texPreamble = new wxTextCtrl(texSizer->GetStaticBox(), -1, wxEmptyString, wxDefaultPosition, wxSize(350*GetContentScaleFactor(), 100),
                                  wxTE_MULTILINE | wxHSCROLL);
   texGrid_sizer->Add(tp, wxSizerFlags());
   texGrid_sizer->Add(m_texPreamble, wxSizerFlags());
 
   texSizer->Add(texGrid_sizer, wxSizerFlags(1).Expand().Border(wxALL, 5*GetContentScaleFactor()));
-  m_TeXExponentsAfterSubscript = new wxCheckBox(panel, -1, _("LaTeX: Place exponents after, instead above subscripts"));
+  m_TeXExponentsAfterSubscript = new wxCheckBox(texSizer->GetStaticBox(), -1, _("LaTeX: Place exponents after, instead above subscripts"));
   texSizer->Add(m_TeXExponentsAfterSubscript, wxSizerFlags());
 
-  m_usePartialForDiff = new wxCheckBox(panel, -1,
+  m_usePartialForDiff = new wxCheckBox(texSizer->GetStaticBox(), -1,
                                        _("LaTeX: Use the \"partial derivative\" symbol to represent diff()"));
   texSizer->Add(m_usePartialForDiff, wxSizerFlags());
 
-  m_wrapLatexMath = new wxCheckBox(panel, -1, _("\"Copy LaTeX\" adds equation markers"));
+  m_wrapLatexMath = new wxCheckBox(texSizer->GetStaticBox(), -1, _("\"Copy LaTeX\" adds equation markers"));
   texSizer->Add(m_wrapLatexMath, wxSizerFlags());
 
   vsizer->Add(texSizer, wxSizerFlags().Expand().Border(wxALL, 5*GetContentScaleFactor()));
 
   wxStaticBoxSizer *html_sizer = new wxStaticBoxSizer(wxVERTICAL, panel, _("HTML"));
   wxFlexGridSizer *htmlGrid_sizer = new wxFlexGridSizer(9, 2, 5, 5);
-  wxStaticText *mju = new wxStaticText(panel, -1, _("Export equations to HTML as:"));
+  wxStaticText *mju = new wxStaticText(html_sizer->GetStaticBox(), -1, _("Export equations to HTML as:"));
   wxArrayString mathJaxChoices;
   mathJaxChoices.Add(_("TeX, interpreted by MathJaX"));
   mathJaxChoices.Add(_("Bitmaps"));
   mathJaxChoices.Add(_("MathML + MathJaX as Fill-In"));
   mathJaxChoices.Add(_("SVG graphics"));
-  m_exportWithMathJAX = new wxChoice(panel, -1, wxDefaultPosition, wxDefaultSize, mathJaxChoices);
+  m_exportWithMathJAX = new wxChoice(html_sizer->GetStaticBox(), -1, wxDefaultPosition, wxDefaultSize, mathJaxChoices);
   htmlGrid_sizer->Add(mju, wxSizerFlags());
   htmlGrid_sizer->Add(m_exportWithMathJAX, wxSizerFlags());
-  wxStaticText *mj = new wxStaticText(panel, -1, _("URL MathJaX.js lies at:"));
+  wxStaticText *mj = new wxStaticText(html_sizer->GetStaticBox(), -1, _("URL MathJaX.js lies at:"));
   htmlGrid_sizer->Add(mj, wxSizerFlags());
   htmlGrid_sizer->Add(5*GetContentScaleFactor(),5*GetContentScaleFactor());
 
-  m_autodetectMathJaX = new wxRadioButton(panel, -1, _("Automatic"), wxDefaultPosition,
+  m_autodetectMathJaX = new wxRadioButton(html_sizer->GetStaticBox(), -1, _("Automatic"), wxDefaultPosition,
                                           wxDefaultSize, wxRB_GROUP);
   htmlGrid_sizer->Add(m_autodetectMathJaX, wxSizerFlags().Border(wxUP | wxDOWN, 5*GetContentScaleFactor()));
-  m_autoMathJaxURL = new wxTextCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(350*GetContentScaleFactor(), wxDefaultSize.GetY()), wxTE_READONLY);
+  m_autoMathJaxURL = new wxTextCtrl(html_sizer->GetStaticBox(), -1, wxEmptyString, wxDefaultPosition, wxSize(350*GetContentScaleFactor(), wxDefaultSize.GetY()), wxTE_READONLY);
   htmlGrid_sizer->Add(m_autoMathJaxURL, wxSizerFlags());
 
-  m_noAutodetectMathJaX = new wxRadioButton(panel, -1, _("User specified"));
+  m_noAutodetectMathJaX = new wxRadioButton(html_sizer->GetStaticBox(), -1, _("User specified"));
   htmlGrid_sizer->Add(m_noAutodetectMathJaX, 0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL, 5*GetContentScaleFactor());
 
-  m_mathJaxURL = new wxTextCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(350*GetContentScaleFactor(), wxDefaultSize.GetY()));
+  m_mathJaxURL = new wxTextCtrl(html_sizer->GetStaticBox(), -1, wxEmptyString, wxDefaultPosition, wxSize(350*GetContentScaleFactor(), wxDefaultSize.GetY()));
   htmlGrid_sizer->Add(m_mathJaxURL, wxSizerFlags());
   html_sizer->Add(htmlGrid_sizer, wxSizerFlags().Expand().Border(wxALL, 5*GetContentScaleFactor()));
 
-  m_exportContainsWXMX = new wxCheckBox(panel, -1,
+  m_exportContainsWXMX = new wxCheckBox(html_sizer->GetStaticBox(), -1,
                                         _("Add the .wxmx file to the HTML export"));
   html_sizer->Add(m_exportContainsWXMX, wxSizerFlags().Border(wxALL, 5*GetContentScaleFactor()));
 
@@ -1016,9 +1017,9 @@ wxWindow *ConfigDialogue::CreateExportPanel()
 
   wxStaticBoxSizer *misc_sizer = new wxStaticBoxSizer(wxVERTICAL, panel, _("Misc"));
   wxFlexGridSizer *miscGrid_sizer = new wxFlexGridSizer(9, 2, 5, 5);
-  wxStaticText *bs = new wxStaticText(panel, -1,
+  wxStaticText *bs = new wxStaticText(misc_sizer->GetStaticBox(), -1,
                                       _("Bitmap scale for export:"));
-  m_bitmapScale = new wxSpinCtrl(panel, -1,
+  m_bitmapScale = new wxSpinCtrl(misc_sizer->GetStaticBox(), -1,
                                  wxEmptyString, wxDefaultPosition,
                                  wxSize(150*GetContentScaleFactor(), -1), wxSP_ARROW_KEYS, 1, 3);
   miscGrid_sizer->Add(bs, 0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL, 5*GetContentScaleFactor());
@@ -1028,8 +1029,8 @@ wxWindow *ConfigDialogue::CreateExportPanel()
 
   wxStaticBoxSizer *print_sizer = new wxStaticBoxSizer(wxVERTICAL, panel, _("Printing"));
   wxFlexGridSizer *printGrid_sizer = new wxFlexGridSizer(9, 2, 5, 5);
-  wxStaticText *ps = new wxStaticText(panel, -1, _("Print scale:"));
-  m_printScale = new wxSpinCtrlDouble(panel, -1,
+  wxStaticText *ps = new wxStaticText(print_sizer->GetStaticBox(), -1, _("Print scale:"));
+  m_printScale = new wxSpinCtrlDouble(print_sizer->GetStaticBox(), -1,
                                       wxEmptyString, wxDefaultPosition,
                                       wxSize(150*GetContentScaleFactor(), -1),
                                       wxSP_ARROW_KEYS, .1, 4, .1);
@@ -1038,14 +1039,13 @@ wxWindow *ConfigDialogue::CreateExportPanel()
   printGrid_sizer->Add(ps, 0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL, 5*GetContentScaleFactor());
   printGrid_sizer->Add(m_printScale, wxSizerFlags());
 
-  m_printBrackets = new wxCheckBox(panel, -1,
+  m_printBrackets = new wxCheckBox(print_sizer->GetStaticBox(), -1,
                                    _("Print the cell brackets [drawn to their left]"));
   print_sizer->Add(m_printBrackets, wxSizerFlags());
   print_sizer->Add(printGrid_sizer,
                    wxSizerFlags().Expand().Border(wxALL, 5*GetContentScaleFactor()));
   vsizer->Add(print_sizer, wxSizerFlags().Expand().Border(wxALL, 5*GetContentScaleFactor()));
 
-  panel->SetSizer(vsizer);
   panel->FitInside();
 
   return panel;
@@ -1059,108 +1059,109 @@ wxWindow *ConfigDialogue::CreateOptionsPanel()
 
   wxFlexGridSizer *grid_sizer = new wxFlexGridSizer(20, 2, 5, 5);
   wxBoxSizer *vsizer = new wxBoxSizer(wxVERTICAL);
+  panel->SetSizer(vsizer);
   wxStaticBoxSizer *stdOpts_sizer = new wxStaticBoxSizer(wxVERTICAL, panel, _("Standard Options"));
 
   wxArrayString languages;
   for(Languages::const_iterator it = m_languages.begin(); it != m_languages.end(); ++it )
     languages.Add(it->first);
 
-  m_language = new wxChoice(panel, language_id, wxDefaultPosition,
+  m_language = new wxChoice(stdOpts_sizer->GetStaticBox(), language_id, wxDefaultPosition,
                             wxSize(230*GetContentScaleFactor(), -1), languages);
   grid_sizer->Add(
-    new wxStaticText(panel, -1, _("Language:")), 0,
+    new wxStaticText(stdOpts_sizer->GetStaticBox(), -1, _("Language:")), 0,
     wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL, 5*GetContentScaleFactor());
   grid_sizer->Add(m_language,
                   0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL,
                   5*GetContentScaleFactor());
 
-  grid_sizer->Add(new wxStaticText(panel, -1,
+  grid_sizer->Add(new wxStaticText(stdOpts_sizer->GetStaticBox(), -1,
                                    _("Additional symbols for the \"symbols\" sidebar:")),
                   0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL, 5*GetContentScaleFactor());
-  m_symbolPaneAdditionalChars = new wxTextCtrl(panel, -1);
+  m_symbolPaneAdditionalChars = new wxTextCtrl(stdOpts_sizer->GetStaticBox(), -1);
   grid_sizer->Add(m_symbolPaneAdditionalChars,
                   0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL, 5*GetContentScaleFactor());
 
-  wxStaticText *ul = new wxStaticText(panel, -1, _("Undo limit (0 for none):"));
-  m_undoLimit = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(150*GetContentScaleFactor(), -1), wxSP_ARROW_KEYS, 0, 10000);
+  wxStaticText *ul = new wxStaticText(stdOpts_sizer->GetStaticBox(), -1, _("Undo limit (0 for none):"));
+  m_undoLimit = new wxSpinCtrl(stdOpts_sizer->GetStaticBox(), -1, wxEmptyString, wxDefaultPosition, wxSize(150*GetContentScaleFactor(), -1), wxSP_ARROW_KEYS, 0, 10000);
   grid_sizer->Add(ul, 0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL, 5*GetContentScaleFactor());
   grid_sizer->Add(m_undoLimit, wxSizerFlags());
 
-  grid_sizer->Add(new wxStaticText(panel, -1, _("Recent files list length:")),
+  grid_sizer->Add(new wxStaticText(stdOpts_sizer->GetStaticBox(), -1, _("Recent files list length:")),
                   0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL, 5*GetContentScaleFactor());
-  m_recentItems = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition,
+  m_recentItems = new wxSpinCtrl(stdOpts_sizer->GetStaticBox(), -1, wxEmptyString, wxDefaultPosition,
                                  wxSize(150*GetContentScaleFactor(), -1), wxSP_ARROW_KEYS, 5, 30);
   grid_sizer->Add(m_recentItems, wxSizerFlags());
 
-  grid_sizer->Add(new wxStaticText(panel, -1, _("Default animation framerate:")),
+  grid_sizer->Add(new wxStaticText(stdOpts_sizer->GetStaticBox(), -1, _("Default animation framerate:")),
                   0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL, 5*GetContentScaleFactor());
-  m_defaultFramerate = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(150*GetContentScaleFactor(), -1), wxSP_ARROW_KEYS, 1,
+  m_defaultFramerate = new wxSpinCtrl(stdOpts_sizer->GetStaticBox(), -1, wxEmptyString, wxDefaultPosition, wxSize(150*GetContentScaleFactor(), -1), wxSP_ARROW_KEYS, 1,
                                       200);
   grid_sizer->Add(m_defaultFramerate, 0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL, 5*GetContentScaleFactor());
 
-  grid_sizer->Add(new wxStaticText(panel, -1, _("Interactive popup memory limit [MB/plot]:")),
+  grid_sizer->Add(new wxStaticText(stdOpts_sizer->GetStaticBox(), -1, _("Interactive popup memory limit [MB/plot]:")),
                   0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL, 5*GetContentScaleFactor());
-  m_maxGnuplotMegabytes = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(150*GetContentScaleFactor(), -1), wxSP_ARROW_KEYS, 0,
+  m_maxGnuplotMegabytes = new wxSpinCtrl(stdOpts_sizer->GetStaticBox(), -1, wxEmptyString, wxDefaultPosition, wxSize(150*GetContentScaleFactor(), -1), wxSP_ARROW_KEYS, 0,
                                          2000);
   grid_sizer->Add(m_maxGnuplotMegabytes, 0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL, 5*GetContentScaleFactor());
 
-  grid_sizer->Add(new wxStaticText(panel, -1, _("Time [in Minutes] between autosaves")),
+  grid_sizer->Add(new wxStaticText(stdOpts_sizer->GetStaticBox(), -1, _("Time [in Minutes] between autosaves")),
                   0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL, 5*GetContentScaleFactor());
-  m_autosaveMinutes = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(150*GetContentScaleFactor(), -1), wxSP_ARROW_KEYS, 1,
+  m_autosaveMinutes = new wxSpinCtrl(stdOpts_sizer->GetStaticBox(), -1, wxEmptyString, wxDefaultPosition, wxSize(150*GetContentScaleFactor(), -1), wxSP_ARROW_KEYS, 1,
                                          60);
 
   grid_sizer->Add(m_autosaveMinutes, 0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL, 5*GetContentScaleFactor());
 
   stdOpts_sizer->Add(grid_sizer, wxSizerFlags().Border(wxALL, 5*GetContentScaleFactor()));
 
-  m_autoSave = new wxCheckBox(panel, -1, _("Save the worksheet automatically"));
+  m_autoSave = new wxCheckBox(stdOpts_sizer->GetStaticBox(), -1, _("Save the worksheet automatically"));
   stdOpts_sizer->Add(m_autoSave, wxSizerFlags().Border(wxALL, 5*GetContentScaleFactor()));
 
-  m_dockableWizards = new wxCheckBox(panel, -1, _("Dockable wizards"));
+  m_dockableWizards = new wxCheckBox(stdOpts_sizer->GetStaticBox(), -1, _("Dockable wizards"));
   stdOpts_sizer->Add(m_dockableWizards, wxSizerFlags().Border(wxALL, 5*GetContentScaleFactor()));
 
   
-  m_usesvg = new wxCheckBox(panel, -1, _("Create scalable plots."));
+  m_usesvg = new wxCheckBox(stdOpts_sizer->GetStaticBox(), -1, _("Create scalable plots."));
   m_usesvg->Connect(wxEVT_CHECKBOX,
                          wxCommandEventHandler(ConfigDialogue::UsesvgChanged),
                          NULL, this);
   m_usesvg->Show(false);
   stdOpts_sizer->Add(m_usesvg, wxSizerFlags().Border(wxALL, 5*GetContentScaleFactor()));
 
-  m_saveUntitled = new wxCheckBox(panel, -1, _("Ask to save untitled documents"));
+  m_saveUntitled = new wxCheckBox(stdOpts_sizer->GetStaticBox(), -1, _("Ask to save untitled documents"));
   stdOpts_sizer->Add(m_saveUntitled, wxSizerFlags().Border(wxALL, 5*GetContentScaleFactor()));
 
-  m_fixReorderedIndices = new wxCheckBox(panel, -1,
+  m_fixReorderedIndices = new wxCheckBox(stdOpts_sizer->GetStaticBox(), -1,
                                          _("Fix reordered reference indices (of %i, %o) before saving"));
   stdOpts_sizer->Add(m_fixReorderedIndices, wxSizerFlags().Border(wxALL, 5*GetContentScaleFactor()));
 
-  m_notifyIfIdle = new wxCheckBox(panel, -1, _("Warn if an inactive window is idle"));
+  m_notifyIfIdle = new wxCheckBox(stdOpts_sizer->GetStaticBox(), -1, _("Warn if an inactive window is idle"));
   stdOpts_sizer->Add(m_notifyIfIdle, wxSizerFlags().Border(wxALL, 5*GetContentScaleFactor()));
 
   vsizer->Add(stdOpts_sizer, wxSizerFlags().Expand().Border(wxALL, 5*GetContentScaleFactor()));
 
   wxStaticBoxSizer *devOpts_sizer = new wxStaticBoxSizer(wxVERTICAL, panel, _("Developer Options"));
   wxStaticBoxSizer *wxMathmlLoc_sizer = new wxStaticBoxSizer(wxVERTICAL,
-                                                             panel,
+                                                             devOpts_sizer->GetStaticBox(),
                                                              _("wxMathml.lisp location"));
   {
     wxString toolText = _("wxMathml.lisp, the lisp half of wxMaxima is included in the "
                           "wxMaxima binary. But if a developer wants to try out new "
                           "versions of this file without having to recompile wxMaxima "
                           "wxMaxima allows to use an external file, instead.");
-    m_automaticWxMathML = new wxRadioButton(panel, -1, _("Built-in"));
+    m_automaticWxMathML = new wxRadioButton(devOpts_sizer->GetStaticBox(), -1, _("Built-in"));
     m_automaticWxMathML->SetToolTip(toolText);
     wxFlexGridSizer *wxmathmlLocGrid_sizer = new wxFlexGridSizer(9, 3, 5, 5);
     wxmathmlLocGrid_sizer->Add(m_automaticWxMathML, wxSizerFlags());
     wxmathmlLocGrid_sizer->Add(0, 0, wxSizerFlags());
     wxmathmlLocGrid_sizer->Add(0, 0, wxSizerFlags());
-    m_userWxMathML = new wxRadioButton(panel, -1, _("User-specified file:"));
+    m_userWxMathML = new wxRadioButton(devOpts_sizer->GetStaticBox(), -1, _("User-specified file:"));
     m_userWxMathML->SetToolTip(toolText);
     wxmathmlLocGrid_sizer->Add(m_userWxMathML, wxSizerFlags());
-    m_wxMathMLLocation = new wxTextCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(350*GetContentScaleFactor(), wxDefaultSize.GetY()));
+    m_wxMathMLLocation = new wxTextCtrl(devOpts_sizer->GetStaticBox(), -1, wxEmptyString, wxDefaultPosition, wxSize(350*GetContentScaleFactor(), wxDefaultSize.GetY()));
     m_wxMathMLLocation->SetToolTip(toolText);
     wxmathmlLocGrid_sizer->Add(m_wxMathMLLocation, wxSizerFlags().Expand());
-    m_mpBrowse = new wxButton(panel, wxID_OPEN, _("Open"));
+    m_mpBrowse = new wxButton(devOpts_sizer->GetStaticBox(), wxID_OPEN, _("Open"));
     m_mpBrowse->Connect(wxEVT_BUTTON, wxCommandEventHandler(
                           ConfigDialogue::OnwxMathMLBrowse), NULL, this);
     wxmathmlLocGrid_sizer->Add(m_mpBrowse, wxSizerFlags());
@@ -1172,7 +1173,6 @@ wxWindow *ConfigDialogue::CreateOptionsPanel()
     
     vsizer->Add(devOpts_sizer, wxSizerFlags().Expand().Border(wxALL, 5*GetContentScaleFactor()));
   }
-  panel->SetSizer(vsizer);
   panel->FitInside();
 
   return panel;
@@ -1187,26 +1187,27 @@ wxWindow *ConfigDialogue::CreateMaximaPanel()
   wxFlexGridSizer *sizer = new wxFlexGridSizer(5, 2, 0, 0);
   wxFlexGridSizer *sizer2 = new wxFlexGridSizer(6, 2, 0, 0);
   wxBoxSizer *vsizer = new wxBoxSizer(wxVERTICAL);
+  panel->SetSizer(vsizer);
   wxStaticBoxSizer *invocationSizer = new wxStaticBoxSizer(wxVERTICAL, panel, _("Maxima Location"));
 
   wxFlexGridSizer *nameSizer = new wxFlexGridSizer(6, 3, 0, 0);
-  nameSizer->Add(new wxStaticText(panel, -1, _("Maxima program:")),
+  nameSizer->Add(new wxStaticText(invocationSizer->GetStaticBox(), -1, _("Maxima program:")),
                  wxSizerFlags().Expand().Border(wxUP | wxDOWN, 0));
   nameSizer->Add(10*GetContentScaleFactor(), 10*GetContentScaleFactor());
   nameSizer->Add(10*GetContentScaleFactor(), 10*GetContentScaleFactor());
-  m_autodetectMaxima = new wxRadioButton(panel, -1, _("Autodetect"), wxDefaultPosition,
+  m_autodetectMaxima = new wxRadioButton(invocationSizer->GetStaticBox(), -1, _("Autodetect"), wxDefaultPosition,
                                          wxDefaultSize, wxRB_GROUP);
   nameSizer->Add(m_autodetectMaxima, wxSizerFlags().Expand().Border(wxUP | wxDOWN, 0));
   nameSizer->Add(
-    new wxTextCtrl(panel, -1, m_configuration->MaximaDefaultLocation(),
+    new wxTextCtrl(invocationSizer->GetStaticBox(), -1, m_configuration->MaximaDefaultLocation(),
                    wxDefaultPosition, wxSize(250*GetContentScaleFactor(), -1), wxTE_RICH|wxTE_READONLY));
   nameSizer->Add(10*GetContentScaleFactor(), 10*GetContentScaleFactor());
 
-  m_noAutodetectMaxima = new wxRadioButton(panel, -1, _("User specified"));
+  m_noAutodetectMaxima = new wxRadioButton(invocationSizer->GetStaticBox(), -1, _("User specified"));
   nameSizer->Add(m_noAutodetectMaxima, wxSizerFlags().Expand().Border(wxUP | wxDOWN, 0));
-  m_maximaUserLocation = new wxTextCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(250*GetContentScaleFactor(), -1), wxTE_RICH);
+  m_maximaUserLocation = new wxTextCtrl(invocationSizer->GetStaticBox(), -1, wxEmptyString, wxDefaultPosition, wxSize(250*GetContentScaleFactor(), -1), wxTE_RICH);
   m_maximaUserLocation->AutoCompleteFileNames();
-  m_mpBrowse = new wxButton(panel, wxID_OPEN, _("Open"));
+  m_mpBrowse = new wxButton(invocationSizer->GetStaticBox(), wxID_OPEN, _("Open"));
   m_mpBrowse->Connect(wxEVT_BUTTON, wxCommandEventHandler(ConfigDialogue::OnMpBrowse), NULL, this);
 
   nameSizer->Add(m_maximaUserLocation, wxSizerFlags().Expand().Border(wxUP | wxDOWN, 0));
@@ -1215,21 +1216,21 @@ wxWindow *ConfigDialogue::CreateMaximaPanel()
                            wxCommandEventHandler(ConfigDialogue::MaximaLocationChanged),
                            NULL, this);
 
-  nameSizer->Add(new wxStaticText(panel, -1, _("Help browser:")),
+  nameSizer->Add(new wxStaticText(invocationSizer->GetStaticBox(), -1, _("Help browser:")),
                  wxSizerFlags().Expand().Border(wxUP | wxDOWN, 0));
   nameSizer->Add(10*GetContentScaleFactor(), 10*GetContentScaleFactor());
   nameSizer->Add(10*GetContentScaleFactor(), 10*GetContentScaleFactor());
-  m_autodetectHelpBrowser = new wxRadioButton(panel, -1, _("Autodetect"), wxDefaultPosition,
+  m_autodetectHelpBrowser = new wxRadioButton(invocationSizer->GetStaticBox(), -1, _("Autodetect"), wxDefaultPosition,
                                               wxDefaultSize, wxRB_GROUP);
   nameSizer->Add(m_autodetectHelpBrowser, wxSizerFlags().Expand().Border(wxUP | wxDOWN, 0));
   nameSizer->Add(10*GetContentScaleFactor(), 10*GetContentScaleFactor());
   nameSizer->Add(10*GetContentScaleFactor(), 10*GetContentScaleFactor());
 
-  m_noAutodetectHelpBrowser= new wxRadioButton(panel, -1, _("User specified"));
+  m_noAutodetectHelpBrowser= new wxRadioButton(invocationSizer->GetStaticBox(), -1, _("User specified"));
   nameSizer->Add(m_noAutodetectHelpBrowser, wxSizerFlags().Expand().Border(wxUP | wxDOWN, 0));
-  m_helpBrowserUserLocation = new wxTextCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(250*GetContentScaleFactor(), -1), wxTE_RICH);
+  m_helpBrowserUserLocation = new wxTextCtrl(invocationSizer->GetStaticBox(), -1, wxEmptyString, wxDefaultPosition, wxSize(250*GetContentScaleFactor(), -1), wxTE_RICH);
   m_helpBrowserUserLocation->AutoCompleteFileNames();
-  wxButton *mpBrowse2 = new wxButton(panel, wxID_OPEN, _("Open"));
+  wxButton *mpBrowse2 = new wxButton(invocationSizer->GetStaticBox(), wxID_OPEN, _("Open"));
   mpBrowse2->Connect(wxEVT_BUTTON, wxCommandEventHandler(ConfigDialogue::OnHelpBrowserBrowse), NULL, this);
 
   nameSizer->Add(m_helpBrowserUserLocation, wxSizerFlags().Expand().Border(wxUP | wxDOWN, 0));
@@ -1241,26 +1242,26 @@ wxWindow *ConfigDialogue::CreateMaximaPanel()
 
   wxStaticBoxSizer *configSizer = new wxStaticBoxSizer(wxVERTICAL, panel, _("Maxima configuration"));
 
-  m_defaultPort = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(230*GetContentScaleFactor(), -1), wxSP_ARROW_KEYS, 50,
+  m_defaultPort = new wxSpinCtrl(configSizer->GetStaticBox(), -1, wxEmptyString, wxDefaultPosition, wxSize(230*GetContentScaleFactor(), -1), wxSP_ARROW_KEYS, 50,
                                  65534);
 
-  wxStaticText *dp = new wxStaticText(panel, -1, _("Default port for communication with wxMaxima:"));
+  wxStaticText *dp = new wxStaticText(configSizer->GetStaticBox(), -1, _("Default port for communication with wxMaxima:"));
   sizer->Add(dp, 0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL, 5*GetContentScaleFactor());
   sizer->Add(m_defaultPort, wxSizerFlags().Border(wxUP | wxDOWN, 5*GetContentScaleFactor()));
 
   sizer->Add(10*GetContentScaleFactor(), 10*GetContentScaleFactor());
   configSizer->Add(sizer);
-  wxStaticText *ap = new wxStaticText(panel, -1, _("Additional parameters for maxima"));
+  wxStaticText *ap = new wxStaticText(configSizer->GetStaticBox(), -1, _("Additional parameters for maxima"));
   sizer2->Add(ap, wxSizerFlags());
   sizer2->Add(10*GetContentScaleFactor(), 10*GetContentScaleFactor());
-  wxStaticText *ap1 = new wxStaticText(panel, -1, _("Examples:"));
+  wxStaticText *ap1 = new wxStaticText(configSizer->GetStaticBox(), -1, _("Examples:"));
   sizer2->Add(ap1, wxSizerFlags());
   sizer2->Add(10*GetContentScaleFactor(), 10*GetContentScaleFactor());
-  sizer2->Add(new wxStaticText(panel, -1, _("      -l <name>")), wxSizerFlags());
-  sizer2->Add(new wxStaticText(panel, -1, _("choose a lisp maxima was compiled with")),
+  sizer2->Add(new wxStaticText(configSizer->GetStaticBox(), -1, _("      -l <name>")), wxSizerFlags());
+  sizer2->Add(new wxStaticText(configSizer->GetStaticBox(), -1, _("choose a lisp maxima was compiled with")),
               wxSizerFlags());
-  sizer2->Add(new wxStaticText(panel, -1, _("      -u <number>")), wxSizerFlags());
-  sizer2->Add(new wxStaticText(panel, -1, _("choose between installed maxima versions")),
+  sizer2->Add(new wxStaticText(configSizer->GetStaticBox(), -1, _("      -u <number>")), wxSizerFlags());
+  sizer2->Add(new wxStaticText(configSizer->GetStaticBox(), -1, _("choose between installed maxima versions")),
               wxSizerFlags());
   if(m_configuration->LispType().Lower().Contains(wxT("sbcl")))
   {
@@ -1273,19 +1274,19 @@ wxWindow *ConfigDialogue::CreateMaximaPanel()
     sbclMemoryParameter1 = _("      -X '--dynamic-space-size <int>'");
     sbclMemoryParameter2 = _("      -X '--control-stack-size <int>'");
 #endif
-    sizer2->Add(new wxStaticText(panel, -1, sbclMemoryParameter1), wxSizerFlags());
-    sizer2->Add(new wxStaticText(panel, -1, _("sbcl: use <int>Mbytes of heap")),
+    sizer2->Add(new wxStaticText(configSizer->GetStaticBox(), -1, sbclMemoryParameter1), wxSizerFlags());
+    sizer2->Add(new wxStaticText(configSizer->GetStaticBox(), -1, _("sbcl: use <int>Mbytes of heap")),
                 wxSizerFlags());
-    sizer2->Add(new wxStaticText(panel, -1, sbclMemoryParameter2), wxSizerFlags());
-    sizer2->Add(new wxStaticText(panel, -1, _("sbcl: use <int>Mbytes of stack for function calls")),
+    sizer2->Add(new wxStaticText(configSizer->GetStaticBox(), -1, sbclMemoryParameter2), wxSizerFlags());
+    sizer2->Add(new wxStaticText(configSizer->GetStaticBox(), -1, _("sbcl: use <int>Mbytes of stack for function calls")),
                 wxSizerFlags());
   }
   configSizer->Add(sizer2);
-  m_additionalParameters = new wxTextCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(600*GetContentScaleFactor(), -1), wxTE_RICH);
+  m_additionalParameters = new wxTextCtrl(configSizer->GetStaticBox(), -1, wxEmptyString, wxDefaultPosition, wxSize(600*GetContentScaleFactor(), -1), wxTE_RICH);
   configSizer->Add(m_additionalParameters, wxSizerFlags().Border(wxRIGHT, 10*GetContentScaleFactor()).Expand());
 
   configSizer->Add(10*GetContentScaleFactor(), 10*GetContentScaleFactor());
-  m_maximaEnvVariables = new wxGrid(panel,-1);
+  m_maximaEnvVariables = new wxGrid(configSizer->GetStaticBox(),-1);
   m_maximaEnvVariables->CreateGrid(0,2);
   m_maximaEnvVariables->Connect(wxEVT_GRID_CELL_LEFT_CLICK,
                                 wxGridEventHandler(ConfigDialogue::OnChangeMaximaCellClick),
@@ -1298,7 +1299,7 @@ wxWindow *ConfigDialogue::CreateMaximaPanel()
                                 NULL, this);
   m_maximaEnvVariables->GetGridWindow()->Connect(wxEVT_MOTION, wxMouseEventHandler(ConfigDialogue::OnMouseMotion_MaximaEnv), NULL, this);
 
-  configSizer->Add(new wxStaticText(panel, -1,
+  configSizer->Add(new wxStaticText(configSizer->GetStaticBox(), -1,
                              _("Environment variables for maxima")), wxSizerFlags().Expand());
   configSizer->Add(m_maximaEnvVariables, wxSizerFlags().Expand().Border(wxRIGHT | wxBOTTOM, 10*GetContentScaleFactor()));
   vsizer->Add(configSizer, wxSizerFlags().Expand().Border(wxALL, 5*GetContentScaleFactor()));
@@ -1306,13 +1307,12 @@ wxWindow *ConfigDialogue::CreateMaximaPanel()
   vsizer->Add(10*GetContentScaleFactor(), 10*GetContentScaleFactor());
   wxStaticBoxSizer *handlingSizer = new wxStaticBoxSizer(wxVERTICAL, panel, _("Maxima usage"));
 
-  m_abortOnError = new wxCheckBox(panel, -1, _("Abort evaluation on error"));
+  m_abortOnError = new wxCheckBox(handlingSizer->GetStaticBox(), -1, _("Abort evaluation on error"));
   handlingSizer->Add(m_abortOnError, wxSizerFlags());
-  m_restartOnReEvaluation = new wxCheckBox(panel, -1, _("Start a new maxima for each re-evaluation"));
+  m_restartOnReEvaluation = new wxCheckBox(handlingSizer->GetStaticBox(), -1, _("Start a new maxima for each re-evaluation"));
   handlingSizer->Add(m_restartOnReEvaluation, wxSizerFlags());
   vsizer->Add(handlingSizer, wxSizerFlags().Expand().Border(wxALL, 5*GetContentScaleFactor()));
 
-  panel->SetSizer(vsizer);
   panel->FitInside();
   return panel;
 }
@@ -1532,23 +1532,23 @@ wxWindow *ConfigDialogue::CreateClipboardPanel()
   wxStaticBoxSizer *formatSizer =
     new wxStaticBoxSizer(wxVERTICAL, panel,
                          _("Additional clipboard formats to put on the clipboard on ordinary copy"));
-  m_copyBitmap = new wxCheckBox(panel, -1, _("Bitmap"));
+  m_copyBitmap = new wxCheckBox(formatSizer->GetStaticBox(), -1, _("Bitmap"));
   formatSizer->Add(m_copyBitmap, wxSizerFlags());
 
-  m_copyMathML = new wxCheckBox(panel, -1, _("MathML description"));
+  m_copyMathML = new wxCheckBox(formatSizer->GetStaticBox(), -1, _("MathML description"));
   formatSizer->Add(m_copyMathML, wxSizerFlags());
 
-  m_copyMathMLHTML = new wxCheckBox(panel, -1, _("MathML as HTML"));
+  m_copyMathMLHTML = new wxCheckBox(formatSizer->GetStaticBox(), -1, _("MathML as HTML"));
   formatSizer->Add(m_copyMathMLHTML, wxSizerFlags());
 
-  m_copyRTF = new wxCheckBox(panel, -1, _("RTF with OMML maths"));
+  m_copyRTF = new wxCheckBox(formatSizer->GetStaticBox(), -1, _("RTF with OMML maths"));
   formatSizer->Add(m_copyRTF, wxSizerFlags());
 
-  m_copySVG = new wxCheckBox(panel, -1, _("Scalable Vector Graphics (svg)"));
+  m_copySVG = new wxCheckBox(formatSizer->GetStaticBox(), -1, _("Scalable Vector Graphics (svg)"));
   formatSizer->Add(m_copySVG, wxSizerFlags());
 
   #if wxUSE_ENH_METAFILE
-  m_copyEMF = new wxCheckBox(panel, -1, _("Enhanced meta file (emf)"));
+  m_copyEMF = new wxCheckBox(formatSizer->GetStaticBox(), -1, _("Enhanced meta file (emf)"));
   formatSizer->Add(m_copyEMF, wxSizerFlags());
   #endif
   vbox->Add(formatSizer, wxSizerFlags().Expand().Border(wxALL, 5*GetContentScaleFactor()));
@@ -1561,10 +1561,10 @@ wxWindow *ConfigDialogue::CreateClipboardPanel()
 
   wxFlexGridSizer *sizer = new wxFlexGridSizer(5, 2, 0, 0);
 
-  sizer->Add(new wxStaticText(panel, -1,
+  sizer->Add(new wxStaticText(formatParamsSizer->GetStaticBox(), -1,
                               _("Maximum bitmap size on clipboard [Mb]:")),
              0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL, 5*GetContentScaleFactor());
-  m_maxClipbrdBitmapMegabytes = new wxSpinCtrl(panel, -1,
+  m_maxClipbrdBitmapMegabytes = new wxSpinCtrl(formatParamsSizer->GetStaticBox(), -1,
                                                wxEmptyString, wxDefaultPosition,
                                                wxSize(150*GetContentScaleFactor(), -1),
                                                wxSP_ARROW_KEYS,
@@ -1622,22 +1622,23 @@ wxWindow *ConfigDialogue::CreateStylePanel()
   panel->SetMinSize(wxSize(GetContentScaleFactor()*mMinPanelWidth,GetContentScaleFactor()*mMinPanelHeight));
 
   wxStaticBox *fonts = new wxStaticBox(panel, -1, _("Fonts"));
+  wxStaticBoxSizer *fontsSizer = new wxStaticBoxSizer(fonts, wxVERTICAL);
   wxStaticBox *styles = new wxStaticBox(panel, -1, _("Styles"));
+  wxStaticBoxSizer *stylesSizer = new wxStaticBoxSizer(styles, wxVERTICAL);
 
   wxBoxSizer *vsizer = new wxBoxSizer(wxVERTICAL);
+  panel->SetSizer(vsizer);
   wxFlexGridSizer *grid_sizer_1 = new wxFlexGridSizer(4, 2, 2, 2);
-  wxStaticBoxSizer *sb_sizer_1 = new wxStaticBoxSizer(fonts, wxVERTICAL);
-  wxStaticBoxSizer *sb_sizer_2 = new wxStaticBoxSizer(styles, wxVERTICAL);
   wxBoxSizer *hbox_sizer_1 = new wxBoxSizer(wxHORIZONTAL);
   wxBoxSizer *hbox_sizer_2 = new wxBoxSizer(wxHORIZONTAL);
   wxBoxSizer *hbox_sizer_3 = new wxBoxSizer(wxHORIZONTAL);
   wxBoxSizer *vbox_sizer = new wxBoxSizer(wxVERTICAL);
 
-  auto *defaultFontLabel = new wxStaticText(panel, -1, _("Documentation+Code font:"));
-  m_getDefaultFont = new wxButton(panel, button_defaultFont, _("Choose font"), wxDefaultPosition, wxSize(250*GetContentScaleFactor(), -1));
+  auto *defaultFontLabel = new wxStaticText(fontsSizer->GetStaticBox(), -1, _("Documentation+Code font:"));
+  m_getDefaultFont = new wxButton(fontsSizer->GetStaticBox(), button_defaultFont, _("Choose font"), wxDefaultPosition, wxSize(250*GetContentScaleFactor(), -1));
 
-  auto *mathFontLabel = new wxStaticText(panel, -1, _("Math font:"));
-  m_getMathFont = new wxButton(panel, button_mathFont, _("Choose font"), wxDefaultPosition, wxSize(250*GetContentScaleFactor(), -1));
+  auto *mathFontLabel = new wxStaticText(fontsSizer->GetStaticBox(), -1, _("Math font:"));
+  m_getMathFont = new wxButton(fontsSizer->GetStaticBox(), button_mathFont, _("Choose font"), wxDefaultPosition, wxSize(250*GetContentScaleFactor(), -1));
 
   wxArrayString m_styleFor_choices;
   for (int i = 0; i < NUMBEROFSTYLES; i++)
@@ -1645,33 +1646,33 @@ wxWindow *ConfigDialogue::CreateStylePanel()
     auto style = StyleForListIndex(i);
     m_styleFor_choices.Add(m_configuration->GetStyleName(style));
   }
-  m_styleFor = new wxListBox(panel, listbox_styleFor, wxDefaultPosition, wxSize(250*GetContentScaleFactor(), -1), m_styleFor_choices,
+  m_styleFor = new wxListBox(stylesSizer->GetStaticBox(), listbox_styleFor, wxDefaultPosition, wxSize(250*GetContentScaleFactor(), -1), m_styleFor_choices,
                              wxLB_SINGLE);
   m_styleFor->Connect(wxEVT_LISTBOX,
                          wxCommandEventHandler(ConfigDialogue::OnStyleToEditChanged),
                          NULL, this);
 
-  m_getStyleFont = new wxButton(panel, style_font_family, _("Choose font"), wxDefaultPosition, wxSize(150*GetContentScaleFactor(), -1));
-  m_styleColor = new ColorPanel(this, panel, color_id, wxDefaultPosition, wxSize(150*GetContentScaleFactor(), 30),
+  m_getStyleFont = new wxButton(stylesSizer->GetStaticBox(), style_font_family, _("Choose font"), wxDefaultPosition, wxSize(150*GetContentScaleFactor(), -1));
+  m_styleColor = new ColorPanel(this, stylesSizer->GetStaticBox(), color_id, wxDefaultPosition, wxSize(150*GetContentScaleFactor(), 30),
                                 wxSUNKEN_BORDER | wxFULL_REPAINT_ON_RESIZE);
-  m_boldCB = new wxCheckBox(panel, checkbox_bold, _("Bold"));
-  m_italicCB = new wxCheckBox(panel, checkbox_italic, _("Italic"));
-  m_underlinedCB = new wxCheckBox(panel, checkbox_underlined, _("Underlined"));
-  m_examplePanel = new ExamplePanel(panel, -1, wxDefaultPosition, wxSize(250*GetContentScaleFactor(), 60));
-  m_loadStyle = new wxButton(panel, load_id, _("Load"));
-  m_saveStyle = new wxButton(panel, save_id, _("Save"));
+  m_boldCB = new wxCheckBox(stylesSizer->GetStaticBox(), checkbox_bold, _("Bold"));
+  m_italicCB = new wxCheckBox(stylesSizer->GetStaticBox(), checkbox_italic, _("Italic"));
+  m_underlinedCB = new wxCheckBox(stylesSizer->GetStaticBox(), checkbox_underlined, _("Underlined"));
+  m_examplePanel = new ExamplePanel(stylesSizer->GetStaticBox(), -1, wxDefaultPosition, wxSize(250*GetContentScaleFactor(), 60));
+  m_loadStyle = new wxButton(stylesSizer->GetStaticBox(), load_id, _("Load"));
+  m_saveStyle = new wxButton(stylesSizer->GetStaticBox(), save_id, _("Save"));
 
   grid_sizer_1->Add(defaultFontLabel, wxSizerFlags().Border(wxALL, 5*GetContentScaleFactor()));
   grid_sizer_1->Add(m_getDefaultFont, wxSizerFlags().Border(wxALL, 5*GetContentScaleFactor()).Expand());
   grid_sizer_1->Add(mathFontLabel, wxSizerFlags().Border(wxALL, 5*GetContentScaleFactor()));
   grid_sizer_1->Add(m_getMathFont, wxSizerFlags().Border(wxALL, 5*GetContentScaleFactor()).Expand());
   grid_sizer_1->Add(10*GetContentScaleFactor(), 10*GetContentScaleFactor());
-  m_useUnicodeMaths = new wxCheckBox(panel, -1, _("Use unicode Math Symbols, if available"));
+  m_useUnicodeMaths = new wxCheckBox(fontsSizer->GetStaticBox(), -1, _("Use unicode Math Symbols, if available"));
   grid_sizer_1->Add(10*GetContentScaleFactor(), 10*GetContentScaleFactor());
   grid_sizer_1->Add(m_useUnicodeMaths, wxSizerFlags().Border(wxUP | wxDOWN, 5*GetContentScaleFactor()));
 
-  sb_sizer_1->Add(grid_sizer_1, wxSizerFlags(1).Expand());
-  vsizer->Add(sb_sizer_1, wxSizerFlags().Expand().Border(wxALL, 5*GetContentScaleFactor()));
+  fontsSizer->Add(grid_sizer_1, wxSizerFlags(1).Expand());
+  vsizer->Add(fontsSizer, wxSizerFlags().Expand().Border(wxALL, 5*GetContentScaleFactor()));
 
   vbox_sizer->Add(m_styleColor, 0, wxUP | wxDOWN | wxALIGN_CENTER, 5*GetContentScaleFactor());
   vbox_sizer->Add(m_getStyleFont, 0, wxUP | wxDOWN | wxALIGN_CENTER, 5*GetContentScaleFactor());
@@ -1682,16 +1683,15 @@ wxWindow *ConfigDialogue::CreateStylePanel()
   vbox_sizer->Add(m_examplePanel, wxSizerFlags().Expand().Border(wxALL, 5*GetContentScaleFactor()));
   hbox_sizer_2->Add(m_styleFor, wxSizerFlags().Border(wxALL, 5*GetContentScaleFactor()));
   hbox_sizer_2->Add(vbox_sizer, 1, wxUP | wxDOWN | wxEXPAND, 0);
-  sb_sizer_2->Add(hbox_sizer_2, 0, wxUP | wxDOWN | wxEXPAND, 0);
+  stylesSizer->Add(hbox_sizer_2, 0, wxUP | wxDOWN | wxEXPAND, 0);
 
-  vsizer->Add(sb_sizer_2, 0, wxALL, 5*GetContentScaleFactor());
+  vsizer->Add(stylesSizer, 0, wxALL, 5*GetContentScaleFactor());
 
   // load save buttons
   hbox_sizer_3->Add(m_loadStyle, wxSizerFlags().Border(wxUP | wxDOWN, 5*GetContentScaleFactor()));
   hbox_sizer_3->Add(m_saveStyle, wxSizerFlags().Border(wxUP | wxDOWN, 5*GetContentScaleFactor()));
   vsizer->Add(hbox_sizer_3, 0, wxALIGN_RIGHT | wxALL, 5*GetContentScaleFactor());
 
-  panel->SetSizer(vsizer);
   panel->FitInside();
   wxConfigBase *config = wxConfig::Get();
   int styleToEditNum = 0;
