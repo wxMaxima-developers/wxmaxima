@@ -1635,10 +1635,19 @@ wxWindow *ConfigDialogue::CreateStylePanel()
   wxBoxSizer *vbox_sizer = new wxBoxSizer(wxVERTICAL);
 
   auto *defaultFontLabel = new wxStaticText(fontsSizer->GetStaticBox(), -1, _("Documentation+Code font:"));
+  grid_sizer_1->Add(defaultFontLabel, wxSizerFlags().Border(wxALL, 5*GetContentScaleFactor()));
   m_getDefaultFont = new wxButton(fontsSizer->GetStaticBox(), button_defaultFont, _("Choose font"), wxDefaultPosition, wxSize(250*GetContentScaleFactor(), -1));
+  grid_sizer_1->Add(m_getDefaultFont, wxSizerFlags().Border(wxALL, 5*GetContentScaleFactor()).Expand());
 
   auto *mathFontLabel = new wxStaticText(fontsSizer->GetStaticBox(), -1, _("Math font:"));
+  grid_sizer_1->Add(mathFontLabel, wxSizerFlags().Border(wxALL, 5*GetContentScaleFactor()));
   m_getMathFont = new wxButton(fontsSizer->GetStaticBox(), button_mathFont, _("Choose font"), wxDefaultPosition, wxSize(250*GetContentScaleFactor(), -1));
+  grid_sizer_1->Add(m_getMathFont, wxSizerFlags().Border(wxALL, 5*GetContentScaleFactor()).Expand());
+  grid_sizer_1->Add(10*GetContentScaleFactor(), 10*GetContentScaleFactor());
+  m_useUnicodeMaths = new wxCheckBox(fontsSizer->GetStaticBox(), -1, _("Use unicode Math Symbols, if available"));
+  grid_sizer_1->Add(m_useUnicodeMaths, wxSizerFlags().Border(wxUP | wxDOWN, 5*GetContentScaleFactor()));
+  
+  fontsSizer->Add(grid_sizer_1, wxSizerFlags(1).Expand());
 
   wxArrayString m_styleFor_choices;
   for (int i = 0; i < NUMBEROFSTYLES; i++)
@@ -1662,16 +1671,6 @@ wxWindow *ConfigDialogue::CreateStylePanel()
   m_loadStyle = new wxButton(stylesSizer->GetStaticBox(), load_id, _("Load"));
   m_saveStyle = new wxButton(stylesSizer->GetStaticBox(), save_id, _("Save"));
 
-  grid_sizer_1->Add(defaultFontLabel, wxSizerFlags().Border(wxALL, 5*GetContentScaleFactor()));
-  grid_sizer_1->Add(m_getDefaultFont, wxSizerFlags().Border(wxALL, 5*GetContentScaleFactor()).Expand());
-  grid_sizer_1->Add(mathFontLabel, wxSizerFlags().Border(wxALL, 5*GetContentScaleFactor()));
-  grid_sizer_1->Add(m_getMathFont, wxSizerFlags().Border(wxALL, 5*GetContentScaleFactor()).Expand());
-  grid_sizer_1->Add(10*GetContentScaleFactor(), 10*GetContentScaleFactor());
-  m_useUnicodeMaths = new wxCheckBox(fontsSizer->GetStaticBox(), -1, _("Use unicode Math Symbols, if available"));
-  grid_sizer_1->Add(10*GetContentScaleFactor(), 10*GetContentScaleFactor());
-  grid_sizer_1->Add(m_useUnicodeMaths, wxSizerFlags().Border(wxUP | wxDOWN, 5*GetContentScaleFactor()));
-
-  fontsSizer->Add(grid_sizer_1, wxSizerFlags(1).Expand());
   vsizer->Add(fontsSizer, wxSizerFlags().Expand().Border(wxALL, 5*GetContentScaleFactor()));
 
   vbox_sizer->Add(m_styleColor, 0, wxUP | wxDOWN | wxALIGN_CENTER, 5*GetContentScaleFactor());
