@@ -1689,10 +1689,9 @@ wxWindow *ConfigDialogue::CreateStylePanel()
   m_styleFor->SetSelection(StyleListIndexForStyle(TextStyle(styleToEditNum)));
   wxCommandEvent dummy;
   OnChangeStyle(dummy);
+  vsizer->Add(stylesSizer, wxSizerFlags().Expand().Border(wxALL, 5*GetContentScaleFactor()));
 
-  vsizer->Add(stylesSizer, 0, wxALL, 5*GetContentScaleFactor());
-
-  // load save buttons
+  // load+save buttons
   wxBoxSizer *loadSavesizer = new wxBoxSizer(wxHORIZONTAL);
   m_loadStyle = new wxButton(panel, load_id, _("Load"));
   m_saveStyle = new wxButton(panel, save_id, _("Save"));
