@@ -1620,19 +1620,13 @@ wxWindow *ConfigDialogue::CreateStylePanel()
   wxScrolled<wxPanel> *panel = new wxScrolled<wxPanel>(m_notebook, -1);
   panel->SetScrollRate(5*GetContentScaleFactor(), 5*GetContentScaleFactor());
   panel->SetMinSize(wxSize(GetContentScaleFactor()*mMinPanelWidth,GetContentScaleFactor()*mMinPanelHeight));
-
-  wxStaticBox *fonts = new wxStaticBox(panel, -1, _("Fonts"));
-  wxStaticBoxSizer *fontsSizer = new wxStaticBoxSizer(fonts, wxVERTICAL);
-  wxStaticBox *styles = new wxStaticBox(panel, -1, _("Styles"));
-  wxStaticBoxSizer *stylesSizer = new wxStaticBoxSizer(styles, wxVERTICAL);
-
   wxBoxSizer *vsizer = new wxBoxSizer(wxVERTICAL);
   panel->SetSizer(vsizer);
+
+  // The fonts box
+  wxStaticBox *fonts = new wxStaticBox(panel, -1, _("Fonts"));
+  wxStaticBoxSizer *fontsSizer = new wxStaticBoxSizer(fonts, wxVERTICAL);
   wxFlexGridSizer *grid_sizer_1 = new wxFlexGridSizer(4, 2, 2, 2);
-  wxBoxSizer *hbox_sizer_1 = new wxBoxSizer(wxHORIZONTAL);
-  wxBoxSizer *hbox_sizer_2 = new wxBoxSizer(wxHORIZONTAL);
-  wxBoxSizer *hbox_sizer_3 = new wxBoxSizer(wxHORIZONTAL);
-  wxBoxSizer *vbox_sizer = new wxBoxSizer(wxVERTICAL);
 
   auto *defaultFontLabel = new wxStaticText(fontsSizer->GetStaticBox(), -1, _("Documentation+Code font:"));
   grid_sizer_1->Add(defaultFontLabel, wxSizerFlags().Border(wxALL, 5*GetContentScaleFactor()));
@@ -1648,6 +1642,14 @@ wxWindow *ConfigDialogue::CreateStylePanel()
   grid_sizer_1->Add(m_useUnicodeMaths, wxSizerFlags().Border(wxUP | wxDOWN, 5*GetContentScaleFactor()));
   
   fontsSizer->Add(grid_sizer_1, wxSizerFlags(1).Expand());
+  vsizer->Add(fontsSizer, wxSizerFlags().Expand().Border(wxALL, 5*GetContentScaleFactor()));
+
+  // The styles box
+  wxStaticBox *styles = new wxStaticBox(panel, -1, _("Styles"));
+  wxStaticBoxSizer *stylesSizer = new wxStaticBoxSizer(styles, wxVERTICAL);
+  wxBoxSizer *hbox_sizer_1 = new wxBoxSizer(wxHORIZONTAL);
+  wxBoxSizer *hbox_sizer_2 = new wxBoxSizer(wxHORIZONTAL);
+  wxBoxSizer *vbox_sizer = new wxBoxSizer(wxVERTICAL);
 
   wxArrayString m_styleFor_choices;
   for (int i = 0; i < NUMBEROFSTYLES; i++)
@@ -1668,10 +1670,6 @@ wxWindow *ConfigDialogue::CreateStylePanel()
   m_italicCB = new wxCheckBox(stylesSizer->GetStaticBox(), checkbox_italic, _("Italic"));
   m_underlinedCB = new wxCheckBox(stylesSizer->GetStaticBox(), checkbox_underlined, _("Underlined"));
   m_examplePanel = new ExamplePanel(stylesSizer->GetStaticBox(), -1, wxDefaultPosition, wxSize(250*GetContentScaleFactor(), 60));
-  m_loadStyle = new wxButton(stylesSizer->GetStaticBox(), load_id, _("Load"));
-  m_saveStyle = new wxButton(stylesSizer->GetStaticBox(), save_id, _("Save"));
-
-  vsizer->Add(fontsSizer, wxSizerFlags().Expand().Border(wxALL, 5*GetContentScaleFactor()));
 
   vbox_sizer->Add(m_styleColor, 0, wxUP | wxDOWN | wxALIGN_CENTER, 5*GetContentScaleFactor());
   vbox_sizer->Add(m_getStyleFont, 0, wxUP | wxDOWN | wxALIGN_CENTER, 5*GetContentScaleFactor());
@@ -1683,15 +1681,6 @@ wxWindow *ConfigDialogue::CreateStylePanel()
   hbox_sizer_2->Add(m_styleFor, wxSizerFlags().Border(wxALL, 5*GetContentScaleFactor()));
   hbox_sizer_2->Add(vbox_sizer, 1, wxUP | wxDOWN | wxEXPAND, 0);
   stylesSizer->Add(hbox_sizer_2, 0, wxUP | wxDOWN | wxEXPAND, 0);
-
-  vsizer->Add(stylesSizer, 0, wxALL, 5*GetContentScaleFactor());
-
-  // load save buttons
-  hbox_sizer_3->Add(m_loadStyle, wxSizerFlags().Border(wxUP | wxDOWN, 5*GetContentScaleFactor()));
-  hbox_sizer_3->Add(m_saveStyle, wxSizerFlags().Border(wxUP | wxDOWN, 5*GetContentScaleFactor()));
-  vsizer->Add(hbox_sizer_3, 0, wxALIGN_RIGHT | wxALL, 5*GetContentScaleFactor());
-
-  panel->FitInside();
   wxConfigBase *config = wxConfig::Get();
   int styleToEditNum = 0;
   config->Read(wxT("StyleToEdit"), &styleToEditNum);
@@ -1700,6 +1689,18 @@ wxWindow *ConfigDialogue::CreateStylePanel()
   m_styleFor->SetSelection(StyleListIndexForStyle(TextStyle(styleToEditNum)));
   wxCommandEvent dummy;
   OnChangeStyle(dummy);
+
+  vsizer->Add(stylesSizer, 0, wxALL, 5*GetContentScaleFactor());
+
+  // load save buttons
+  wxBoxSizer *loadSavesizer = new wxBoxSizer(wxHORIZONTAL);
+  m_loadStyle = new wxButton(panel, load_id, _("Load"));
+  m_saveStyle = new wxButton(panel, save_id, _("Save"));
+  loadSavesizer->Add(m_loadStyle, wxSizerFlags().Border(wxUP | wxDOWN, 5*GetContentScaleFactor()));
+  loadSavesizer->Add(m_saveStyle, wxSizerFlags().Border(wxUP | wxDOWN, 5*GetContentScaleFactor()));
+  vsizer->Add(loadSavesizer, 0, wxALIGN_RIGHT | wxALL, 5*GetContentScaleFactor());
+
+  panel->FitInside();
   return panel;
 }
 
