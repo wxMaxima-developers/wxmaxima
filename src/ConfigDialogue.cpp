@@ -150,7 +150,8 @@ wxBitmap ConfigDialogue::GetImage(wxString name,
 }
 
 
-ConfigDialogue::ConfigDialogue(wxWindow *parent, Configuration *cfg)
+ConfigDialogue::ConfigDialogue(wxWindow *parent, Configuration *cfg):
+  wxPropertySheetDialog()
 {
   SetName("Configuration");
   m_maximaEnvDoc["MAXIMA_DEFAULT_LISP"] = _("If maxima versions compiled with different lisps are installed: The name of the lisp to use by default");
