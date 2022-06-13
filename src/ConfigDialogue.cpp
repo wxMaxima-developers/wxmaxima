@@ -153,7 +153,6 @@ wxBitmap ConfigDialogue::GetImage(wxString name,
 ConfigDialogue::ConfigDialogue(wxWindow *parent, Configuration *cfg):
   wxPropertySheetDialog()
 {
-  SetName("Configuration");
   m_maximaEnvDoc["MAXIMA_DEFAULT_LISP"] = _("If maxima versions compiled with different lisps are installed: The name of the lisp to use by default");
   m_maximaEnvDoc["MAXIMA_OBJDIR"] = _("Tells maxima where to store the result of compiling libraries");
   m_maximaEnvDoc["MAXIMA_USERDIR"] = _("The directory containing the startup files, any user libraries and, if MAXIMA_OBJDIR isn't set the subdirectory with the results from compiling maxima libraries.");
@@ -207,6 +206,7 @@ m_maximaEnvDoc["GCL_MULTIPROCESS_MEMORY_POOL"] = _("If maxima was compiled by GC
 
   Create(parent, wxID_ANY, _("wxMaxima configuration"),
          wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER);
+  SetName("Configuration");
   
   int imgSize = GetImageSize();
   m_imageList = std::unique_ptr<wxImageList>(new wxImageList(imgSize, imgSize));
@@ -268,10 +268,8 @@ m_maximaEnvDoc["GCL_MULTIPROCESS_MEMORY_POOL"] = _("If maxima was compiled by GC
   SetLayoutAdaptationMode(wxDIALOG_ADAPTATION_MODE_ENABLED);
   LayoutDialog();
 
-  // The following two lines seem to sometimes crash
-  //
-  // wxPersistenceManager::Get().RegisterAndRestore(this);
-  // SetTitle(_("wxMaxima configuration"));
+  SetTitle(_("wxMaxima configuration"));
+  wxPersistenceManager::Get().RegisterAndRestore(this);
 
   SetCheckboxValues();
 
