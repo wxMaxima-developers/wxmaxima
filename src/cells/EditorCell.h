@@ -469,6 +469,8 @@ public:
   const MaximaTokenizer::TokenList &GetTokens();
 
 private:
+  MaximaTokenizer::TokenList m_tokens_including_hidden;
+
   //! Did the zoom factor change since the last recalculation?
   bool IsZoomFactorChanged() const;
   //! The zoom factor we had the last time we recalculated this cell.

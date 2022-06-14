@@ -3790,10 +3790,10 @@ const MaximaTokenizer::TokenList &EditorCell::GetTokens()
   {
     m_firstLineOnly = false;
     StyleText();
-    MaximaTokenizer::TokenList tokens = m_tokens;
+    m_tokens_including_hidden = m_tokens;
     m_firstLineOnly = true;
     StyleText();
-    return tokens;
+    return m_tokens_including_hidden;
   }
   else
     return m_tokens;
