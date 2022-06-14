@@ -2566,7 +2566,7 @@ bool wxMaxima::ParseNextChunkFromMaxima(wxString &data)
         }
       }
       it = it2;
-      if(!tagFound)
+      if((!tagFound) && (!tagName.IsEmpty()))
         miscText += wxT("<") + tagName;
     }
     else
