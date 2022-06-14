@@ -3780,6 +3780,26 @@ void EditorCell::StyleTextTexts()
   ResetSize();
 } // Style text, not code?
 
+const MaximaTokenizer::TokenList &EditorCell::GetTokens()
+{
+  // If we never show a code cell it might still not be tokenized
+  if(!(*m_configuration)->ShowCodeCells())
+    StyleText();
+
+  if(m_firstLineOnly)
+  {
+    m_firstLineOnly = false;
+    StyleText();
+    MaximaTokenizer::TokenList tokens = m_tokens;
+    m_firstLineOnly = true;
+    StyleText();
+    return tokens;
+  }
+  else
+    return m_tokens;
+
+}
+
 void EditorCell::StyleText()
 {
   // We will need to determine the width of text and therefore need to set
