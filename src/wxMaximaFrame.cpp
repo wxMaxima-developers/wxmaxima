@@ -1025,7 +1025,7 @@ void wxMaximaFrame::SetupMenu()
                        wxITEM_NORMAL);
   programMenu->Append(menu_lambda, _("unnamed function (lambda)..."));
   programMenu->Append(menu_quotequote, _("Compile function..."));
-  programMenu->Append(menu_quotequote, _("Define parameter type..."));
+  programMenu->Append(menu_paramType, _("Define parameter type..."));
   programMenu->Append(menu_trace, _("Trace a function..."));
   programMenu->Append(menu_def_macro, _("Define macro..."));
   programMenu->Append(menu_def_variable, _("Define variable..."));

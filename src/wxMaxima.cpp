@@ -6726,7 +6726,7 @@ void wxMaxima::MaximaMenu(wxCommandEvent &event)
                  "name was used with the ' operator in order to make maxima not evaluate "
                  "it. In other places one wants % to mean \"the last expression at the "
                  "time this function was created\", not \"the last expression now\".\n"
-                 "In both cases the '' operator will ."),wxEmptyString,
+                 "In both cases the '' operator will do what is requested."),wxEmptyString,
                wxT("''#1#;"),
                wxT("Expression:"),expr,_("Expression whose output is to be used as maxima's input."),
                wxT("Contents:"),expr,_("Comma-separated expressions.")
