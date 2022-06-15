@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wxMaxima\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-15 22:24+0200\n"
+"POT-Creation-Date: 2022-06-15 22:25+0200\n"
 "PO-Revision-Date: 2022-06-01 12:09+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
@@ -6826,10 +6826,6 @@ msgstr "НАДІСЛАНО ДО MAXIMA:"
 msgid "SVG graphics"
 msgstr "графіка SVG"
 
-#: ../../src/wxMaximaFrame.cpp:1042
-msgid "Safe as lisp..."
-msgstr ""
-
 #: ../../src/wxMaxima.cpp:9242
 msgid "Sample 1:"
 msgstr "Вибірка 1:"
@@ -6878,6 +6874,11 @@ msgstr "Зберегти анімацію до файла"
 #: ../../src/wxMaxima.cpp:6837
 msgid "Save as lisp code"
 msgstr ""
+
+#: ../../src/wxMaximaFrame.cpp:1042
+#, fuzzy
+msgid "Save as lisp..."
+msgstr "Завантажити lapack"
 
 #: ../../src/ConfigDialogue.cpp:2018
 msgid "Save config to file"

@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wmMaxima 20.12.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-15 22:24+0200\n"
+"POT-Creation-Date: 2022-06-15 22:25+0200\n"
 "PO-Revision-Date: 2021-01-19 17:29+0100\n"
 "Last-Translator: Francisco Serrador <serrador@tecknolabs.com>\n"
 "Language-Team: Spanish Team <serrador@tecknolabs.com>\n"
@@ -6930,10 +6930,6 @@ msgstr "ENVIADO A ‘MAXIMA’:"
 msgid "SVG graphics"
 msgstr "Gráficos SVG"
 
-#: ../../src/wxMaximaFrame.cpp:1042
-msgid "Safe as lisp..."
-msgstr ""
-
 #: ../../src/wxMaxima.cpp:9242
 msgid "Sample 1:"
 msgstr "Muestra 1:"
@@ -6983,6 +6979,11 @@ msgstr "Guardar animación al fichero"
 #: ../../src/wxMaxima.cpp:6837
 msgid "Save as lisp code"
 msgstr ""
+
+#: ../../src/wxMaximaFrame.cpp:1042
+#, fuzzy
+msgid "Save as lisp..."
+msgstr "Cargar Paquete"
 
 #: ../../src/ConfigDialogue.cpp:2018
 msgid "Save config to file"

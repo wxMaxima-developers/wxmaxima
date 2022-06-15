@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wxMaxima\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-15 22:24+0200\n"
+"POT-Creation-Date: 2022-06-15 22:25+0200\n"
 "PO-Revision-Date: 2022-02-01 10:16+0100\n"
 "Last-Translator: Marco Ciampa <ciampix@posteo.net>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
@@ -6897,10 +6897,6 @@ msgstr "INVIATO A MAXIMA:"
 msgid "SVG graphics"
 msgstr "Grafiche SVG"
 
-#: ../../src/wxMaximaFrame.cpp:1042
-msgid "Safe as lisp..."
-msgstr ""
-
 #: ../../src/wxMaxima.cpp:9242
 msgid "Sample 1:"
 msgstr "Esempio 1:"
@@ -6949,6 +6945,11 @@ msgstr "Salva l'animazione su file"
 #: ../../src/wxMaxima.cpp:6837
 msgid "Save as lisp code"
 msgstr ""
+
+#: ../../src/wxMaximaFrame.cpp:1042
+#, fuzzy
+msgid "Save as lisp..."
+msgstr "Carica il pacchetto"
 
 #: ../../src/ConfigDialogue.cpp:2018
 msgid "Save config to file"

@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cs\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-15 22:24+0200\n"
+"POT-Creation-Date: 2022-06-15 22:25+0200\n"
 "PO-Revision-Date: 2010-03-10 14:21+0100\n"
 "Last-Translator: Robert Marik <maarik@mendelu.cz>\n"
 "Language-Team:  <cs@li.org>\n"
@@ -6764,10 +6764,6 @@ msgstr ""
 msgid "SVG graphics"
 msgstr " (Gràfics) "
 
-#: ../../src/wxMaximaFrame.cpp:1042
-msgid "Safe as lisp..."
-msgstr ""
-
 #: ../../src/wxMaxima.cpp:9242
 msgid "Sample 1:"
 msgstr "Příklad 1:"
@@ -6816,6 +6812,11 @@ msgstr "Uložit animaci do souboru"
 #: ../../src/wxMaxima.cpp:6837
 msgid "Save as lisp code"
 msgstr ""
+
+#: ../../src/wxMaximaFrame.cpp:1042
+#, fuzzy
+msgid "Save as lisp..."
+msgstr "Načíst balíček\tCtrl+L"
 
 #: ../../src/ConfigDialogue.cpp:2018
 #, fuzzy

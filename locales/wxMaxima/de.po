@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-15 22:24+0200\n"
+"POT-Creation-Date: 2022-06-15 22:25+0200\n"
 "PO-Revision-Date: 2021-01-06 16:08+0100\n"
 "Last-Translator: Gunter Königsmann <wxMaxima@physikbuch.de>\n"
 "Language-Team: german <de@li.org>\n"
@@ -6878,10 +6878,6 @@ msgstr "AN MAXIMA GESENDET:"
 msgid "SVG graphics"
 msgstr "SVG-Grafik"
 
-#: ../../src/wxMaximaFrame.cpp:1042
-msgid "Safe as lisp..."
-msgstr ""
-
 #: ../../src/wxMaxima.cpp:9242
 msgid "Sample 1:"
 msgstr "Probe 1:"
@@ -6930,6 +6926,11 @@ msgstr "Sichere Animation in Datei"
 #: ../../src/wxMaxima.cpp:6837
 msgid "Save as lisp code"
 msgstr ""
+
+#: ../../src/wxMaximaFrame.cpp:1042
+#, fuzzy
+msgid "Save as lisp..."
+msgstr "Paket laden"
 
 #: ../../src/ConfigDialogue.cpp:2018
 msgid "Save config to file"

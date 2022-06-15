@@ -1039,7 +1039,7 @@ void wxMaximaFrame::SetupMenu()
   programMenu->Append(menu_maximatostring, _("Expression to string..."));
   programMenu->Append(menu_stringtomaxima, _("Interpret string..."));
   programMenu->AppendSeparator();
-  programMenu->Append(menu_saveLisp, _("Safe as lisp..."));
+  programMenu->Append(menu_saveLisp, _("Save as lisp..."));
   programMenu->Append(menu_loadLisp, _("Load lisp..."));
   m_MaximaMenu->Append(wxNewId(), _("Program"), programMenu);
     
