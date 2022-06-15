@@ -875,6 +875,52 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
           wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
   Connect(menu_debugmode_off, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_for, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_while, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_block, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_block_noLocal, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_local, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_return, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_trace, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_lambda, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_quotequote, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_quote, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_quoteblock, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_def_fun, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_def_macro, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_def_variable, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_compile, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_paramType, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_structdef, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_structnew, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_structuse, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_saveLisp, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_loadLisp, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_maximatostring, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_stringtomaxima, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
   Connect(menu_to_fact, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
   Connect(menu_to_gamma, wxEVT_MENU,
@@ -6608,6 +6654,215 @@ void wxMaxima::MaximaMenu(wxCommandEvent &event)
       wxT("function"),wxT("%"),wxEmptyString);
       break;
 
+  case menu_for:
+    CommandWiz(_("For loop"),
+               wxEmptyString,wxEmptyString,
+               wxT("for #1#:#2# thru #3# step #4# do #5#;"),
+               wxT("loop variable:"),wxT("i"),wxEmptyString,
+               wxT("Start:"),wxT("1"),wxEmptyString,
+               wxT("End:"),wxT("10"),wxEmptyString,
+               wxT("Step width:"),wxT("1"),wxEmptyString,
+               wxT("What to do:"),wxT("disp(i)"),wxEmptyString);
+    break;
+
+  case menu_while:
+    CommandWiz(_("While loop"),
+               wxEmptyString,wxEmptyString,
+               wxT("while #1# do #2#;for #1#:#2# thru #3# step #4# do"),
+               wxT("Condition:"),wxT("%"),wxEmptyString,
+               wxT("What to do:"),wxT("disp(i)"),wxEmptyString);
+    break;
+  case menu_block:
+    CommandWiz(_("Program block"),
+               wxEmptyString,wxEmptyString,
+               wxT("block([#1#], #2#);"),
+               wxT("Local variable(s):"),wxT("i:0"),_("Comma-separated variable names, can be initialized by the \":\" operator."),
+               wxT("What to do:"),wxT("i:i+1,disp(i)"),_("Comma-separated commands"));
+    break;
+  case menu_block_noLocal:
+    CommandWiz(_("Program (no local variables)"),
+               _("If a program doesn't need local variables maxima allows"
+                 "to put the commands between parenthesis. The result of the last "
+                 "operation is the return value of the program."),wxEmptyString,
+               wxT("(#1#);"),
+               wxT("What to do:"),wxT("i:i+1,disp(i)"),_("Comma-separated commands"));
+    break;
+  case menu_local:
+    CommandWiz(_("Declare a function local to a Program"),
+               _("The command local() allows to tell maxima which functions to "
+                 "make local to the current program when defined."),wxEmptyString,
+               wxT("local(#1#);"),
+               wxT("Function name:"),expr,_("Comma-separated function names"));
+    break;
+  case menu_return:
+    CommandWiz(_("Return from a block or loop"),
+               _("Unlike in other programming language return() only exits from the "
+                 "current loop or block(), not from the whole function."),wxEmptyString,
+               wxT("return(#1#);"),
+               wxT("return value:"),expr,wxEmptyString);
+    break;
+  case menu_trace:
+    CommandWiz(_("Trace function(s)"),
+               wxEmptyString,wxEmptyString,
+               wxT("trace(#1#);"),
+               wxT("Function(s):"),expr,_("Comma-separated function names."));
+    break;
+  case menu_lambda:
+    CommandWiz(_("Lambda"),
+               _("Lambda generates a function, but doesn't give it a name.\n"
+                 "This is useful if you want to use a function only once, perhaps"
+                 "as a parameter to another function and don't need it to be named.\n"
+                 "Also you can fill a variable with a lambda() construct, effectively "
+                 "generating a function pointer: A variable that can be used "
+                 "as a function, and filled with a different function, if needed."),wxEmptyString,
+               wxT("lambda([#1#],#2#);"),
+               wxT("Names for the parameters:"),expr,_("Comma-separated names the parameters will referenced by later."),
+               wxT("Contents:"),expr,_("Comma-separated expressions.")
+      );
+    break;
+  case menu_quotequote:
+    CommandWiz(_("Interpret maxima's output as input"),
+               _("Sometimes one wants maxima to loose the information that a function "
+                 "name was used with the ' operator in order to make maxima not evaluate "
+                 "it. In other places one wants % to mean \"the last expression at the "
+                 "time this function was created\", not \"the last expression now\".\n"
+                 "In both cases the '' operator will ."),wxEmptyString,
+               wxT("''#1#;"),
+               wxT("Expression:"),expr,_("Expression whose output is to be used as maxima's input."),
+               wxT("Contents:"),expr,_("Comma-separated expressions.")
+      );
+    break;
+  case menu_quote:
+    CommandWiz(_("Don't evaluate one command"),
+               _("Maxima automatically simplifys expressions it gets as input "
+                 "and then tries to evaluate their value. The ' operator "
+                 "tells maxima that we want a command to be in noun form, which means: "
+                 "stand here as is, and unevaluated.\n"
+                 "The ' operator can be undone by using the '' operator."),wxEmptyString,
+               wxT("'#1#;"),
+               wxT("Command:"),expr,_("The name of a function we don't want to be evaluated here")
+      );
+    break;
+  case menu_quoteblock:
+    CommandWiz(_("Don't evaluate one whole expression"),
+               _("Maxima automatically simplifys expressions it gets as input "
+                 "and then tries to evaluate their value. The '() operator "
+                 "tells maxima that we want a whole expression to be in noun form, which means: "
+                 "stand here as is, and unevaluated.\n"
+                 "This is useful, for example, if one doesn't want an if() to be executed "
+                 "prematurely (which means: Before enough information is available in order "
+                 "to decide if the condition is false or true). Another example would be "
+                 "if a command checks if its argument contains unassigned variables "
+                 "too early.\n"
+                 "The ' operator can be undone by using the '' operator."),wxEmptyString,
+               wxT("'(#1#);"),
+               wxT("expression:"),expr,_("The name of an expression that we don't want to be evaluated.")
+      );
+    break;
+  case menu_def_fun:
+    CommandWiz(_("Define a function"),
+               wxEmptyString,wxEmptyString,
+               wxT("#1#(#2#):=#3#;"),
+               wxT("Function name:"),expr, wxEmptyString,
+               wxT("Parameter(s):"),wxT("x,[y]"), _("Comma-separated parameter names. A parameter in square brackets [] will be filled with the list of any additional arguments the function gets."),
+               wxT("Function contents:"),wxT("sin(x)+lsum(i,i,y)"), wxEmptyString
+      );
+    break;
+  case menu_def_macro:
+    CommandWiz(_("Define a macro"),
+               wxEmptyString,wxEmptyString,
+               wxT("#1#(#2#)::=#3#;"),
+               wxT("Macro name:"),expr, wxEmptyString,
+               wxT("Parameter(s):"),wxT("x,[y]"), _("Comma-separated parameter names. A parameter in square brackets [] will be filled with the list of any additional arguments the function gets."),
+               wxT("Macro contents:"),wxT("sin(x)+lsum(i,i,y)"), wxEmptyString
+      );
+    break;
+  case menu_def_variable:
+    CommandWiz(_("Define a variable"),
+               wxEmptyString,wxEmptyString,
+               wxT("#1#:#2#;"),
+               wxT("Variable name:"),expr, wxEmptyString,
+               wxT("Contents:"),wxT("1"), wxEmptyString
+      );
+    break;
+  case menu_compile:
+    CommandWiz(_("Compile a function"),
+               _("Compiling a function can generate a considerable speed boost if "
+                 "the types of the function parameters are made known to the function "
+                 "before it is compiled. Else the generated code has to be "
+                 "hideously generic."),wxEmptyString,
+               wxT("compile(#1#);"),
+               wxT("Function name(s):"),expr, _("Comma-separated function names")
+      );
+    break;
+  case menu_paramType:
+    CommandWiz(_("Declare the type of a function parameter"),
+               _("If the type of a function parameter is known when compiling a function "
+                 "the code can vastly be optimized.\n"
+                 "Known types:\n\n"
+                 "array, boolean, integer, fixnum (machine-length integer), "
+                 "float (machine-size floating-point numbers), "
+                 "real or any (which is useful for declaring arrays of any)"
+                 ),wxEmptyString,
+               wxT("mode_declare(#1#);"),
+               wxT("Parametername:"),expr, wxEmptyString,
+               wxT("Type:"),wxT("boolean"), wxEmptyString
+      );
+    break;
+  case menu_structdef:
+    CommandWiz(_("Define a structure type"),
+               wxEmptyString,wxEmptyString,
+               wxT("defstruct(#1#(#2#));"),
+               wxT("Struct type name:"),expr, _("The name of the new struct type"),
+               wxT("Fields:"),wxT("U,I"), _("The comma-separated names of the struct fields")
+      );
+    break;
+  case menu_structnew:
+    CommandWiz(_("Define a structure"),
+               wxEmptyString,wxEmptyString,
+               wxT("new(#1#(#2#));"),
+               wxT("Struct type name:"),expr, _("The name of the struct type"),
+               wxT("Field contents:"),wxT("1,2"), _("The comma-separated contents of the struct fields")
+      );
+    break;
+  case menu_structuse:
+    CommandWiz(_("Read a structure field"),
+               wxEmptyString,wxEmptyString,
+               wxT("#1#@#2#;"),
+               wxT("Struct :"),expr, _("The name of the struct"),
+               wxT("Field name:"),wxT("U"), _("The name of the field to read")
+      );
+    break;
+  case menu_saveLisp:
+    CommandWiz(_("Save as lisp code"),
+               wxEmptyString,wxEmptyString,
+               wxT("save(#1#);"),
+               wxT("filename:"),wxEmptyString,
+               wxT("Elements:"),expr, _("Comma-separated names of the elements that shall be written")
+      );
+    break;
+  case menu_loadLisp:
+    CommandWiz(_("Load lisp code"),
+               wxEmptyString,wxEmptyString,
+               wxT("load(#1#);"),
+               wxT("filename:"),wxEmptyString
+      );
+    break;
+  case menu_maximatostring:
+    CommandWiz(_("Maxima to string"),
+               wxEmptyString,wxEmptyString,
+               wxT("sconcat(#1#);"),
+               wxT("Expression(s):"),expr, _("Comma-separated expressions that shall be converted to a string")
+      );
+    break;
+  case menu_stringtomaxima:
+    CommandWiz(_("Interpret string as maxima code"),
+               wxEmptyString,wxEmptyString,
+               wxT("parse_string(#1#);"),
+               wxT("String:"),expr, wxEmptyString
+      );
+    break;
+
       
     case menu_add_path:
     {
@@ -8300,7 +8555,7 @@ void wxMaxima::CalculusMenu(wxCommandEvent &event)
       CommandWiz(
         _("Find minimum"),
         _("Allows to vary the parameters of a function until it fits experimental data."),wxEmptyString,
-        wxT("lbfgs(#1#,#2#,#3#);"),
+        wxT("lbfgs(#1#,#2#,#3#,#4#,[1,1]);"),
         _("Expression:"),expr,wxEmptyString,
         _("Variables:"),wxT("x"),wxEmptyString,
         _("Initial estimates:"),wxT("1.0"),wxEmptyString,

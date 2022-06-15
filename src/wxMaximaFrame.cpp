@@ -975,9 +975,6 @@ void wxMaximaFrame::SetupMenu()
   m_MaximaMenu->AppendSeparator();
   m_MaximaMenu->Append(menu_functions, _("Show &Functions"),
                        _("Show defined functions"), wxITEM_NORMAL);
-  m_MaximaMenu->Append(menu_fun_def, _("Show &Definition..."),
-                       _("Show definition of a function"),
-                       wxITEM_NORMAL);
   m_MaximaMenu->Append(menu_variables, _("Show &Variables"),
                        _("Show defined variables"), wxITEM_NORMAL);
   m_MaximaMenu->Append(menu_clear_fun, _("Delete F&unction..."),
@@ -1011,6 +1008,41 @@ void wxMaximaFrame::SetupMenu()
   m_MaximaMenu->Append(menu_debugmode, _("Debugger trigger"), m_debugTypeMenu,
                        _("When to invoke the lisp compiler's debugger"));
   m_MaximaMenu->Enable(menu_debugmode, false);
+
+  wxMenu *programMenu = new wxMenu;
+  programMenu->Append(menu_for, _("For loop..."));
+  programMenu->Append(menu_while, _("While loop..."));
+  programMenu->Append(menu_list_do_for_each_element, _("do for each element"));
+  programMenu->AppendSeparator();
+  programMenu->Append(menu_block, _("Program block with local variables..."));
+  programMenu->Append(menu_block_noLocal, _("Program block, no local variables..."));
+  programMenu->Append(menu_return, _("Return from current block/loop..."));
+  programMenu->Append(menu_local, _("Make function local..."));
+  programMenu->AppendSeparator();
+  programMenu->Append(menu_quotequote, _("Define function..."));
+  m_MaximaMenu->Append(menu_fun_def, _("Show function &Definition..."),
+                       _("Show definition of a function"),
+                       wxITEM_NORMAL);
+  programMenu->Append(menu_lambda, _("unnamed function (lambda)..."));
+  programMenu->Append(menu_quotequote, _("Compile function..."));
+  programMenu->Append(menu_quotequote, _("Define parameter type..."));
+  programMenu->Append(menu_trace, _("Trace a function..."));
+  programMenu->Append(menu_def_macro, _("Define macro..."));
+  programMenu->Append(menu_def_variable, _("Define variable..."));
+  programMenu->Append(menu_structdef, _("Define struct..."));
+  programMenu->Append(menu_structnew, _("Create struct..."));
+  programMenu->Append(menu_structuse, _("Use struct field..."));
+  programMenu->AppendSeparator();
+  programMenu->Append(menu_quote, _("Variable name, not contents..."));
+  programMenu->Append(menu_quoteblock, _("Don't evaluate Expression..."));
+  programMenu->Append(menu_quotequote, _("Interpret like input..."));
+  programMenu->Append(menu_maximatostring, _("Expression to string..."));
+  programMenu->Append(menu_stringtomaxima, _("Interpret string..."));
+  programMenu->AppendSeparator();
+  programMenu->Append(menu_saveLisp, _("Safe as lisp..."));
+  programMenu->Append(menu_loadLisp, _("Load lisp..."));
+  m_MaximaMenu->Append(wxNewId(), _("Program"), programMenu);
+    
   m_MenuBar->Append(m_MaximaMenu, _("&Maxima"));
 
   // Equations menu
