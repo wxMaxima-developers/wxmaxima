@@ -242,6 +242,7 @@ public:
     menu_variables,
     menu_clear_var,
     menu_clear_fun,
+    menu_kill,
     menu_integrate,
     menu_risch,
     menu_laplace,

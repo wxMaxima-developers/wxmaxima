@@ -705,6 +705,8 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
           wxCommandEventHandler(wxMaxima::EquationsMenu), NULL, this);
   Connect(menu_clear_var, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_kill, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
   Connect(menu_clear_fun, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
   Connect(menu_ivp_1, wxEVT_MENU,
@@ -6670,6 +6672,14 @@ void wxMaxima::MaximaMenu(wxCommandEvent &event)
         wxEmptyString,wxEmptyString,
         wxT("remvalue(#1#);"),
         _("Variable name:"),wxT("all"),wxEmptyString
+        );
+      break;
+    case menu_kill:
+      CommandWiz(
+        _("Delete named object(s)"),
+        wxEmptyString,wxEmptyString,
+        wxT("kill(#1#);"),
+        _("Object name:"),wxT("all"),wxEmptyString
         );
       break;
     case menu_clear_fun:

@@ -984,6 +984,8 @@ void wxMaximaFrame::SetupMenu()
                        _("Delete a function"), wxITEM_NORMAL);
   m_MaximaMenu->Append(menu_clear_var, _("Delete V&ariable..."),
                        _("Delete a variable"), wxITEM_NORMAL);
+  m_MaximaMenu->Append(menu_kill, _("Delete named object..."),
+                       _("Delete all objects with a given name"), wxITEM_NORMAL);
 
   m_MaximaMenu->AppendSeparator();
   m_MaximaMenu->AppendCheckItem(menu_time, _("&Time Display"),
