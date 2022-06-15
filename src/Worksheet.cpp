@@ -4941,7 +4941,7 @@ bool Worksheet::ExportToHTML(const wxString &file)
     output << wxT("    TeX: {TagSide: \"left\"}\n");
     output << wxT("  })\n");
     output << wxT("</script>\n");
-    output << wxT("<script src=\"") + m_configuration->MathJaXURL() + wxT("\" async=\"async\">\n");
+    output << wxT("<script id="MathJax-script" async src=\"") + m_configuration->MathJaXURL() + wxT("\">\n");
     // prevent optimizing <script src="..."><script> to <script src=..."/>
     output << wxT("  // A comment that hinders wxWidgets from optimizing this tag too much.\n");
     output << wxT("</script>\n");
