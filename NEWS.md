@@ -3,6 +3,9 @@
  * More work on the wizards
  * The watchlist was broken
  * In MacOs the config dialogue crashed
+ * Better scalability of the config dialogue
+ * Folded multiline code cells are now sent to maxima correctly (#1674)
+ * The output of the "?" command contained spurious "<" (#1688)
 
 # 22.05.0:
  * Updated the Ukrainian translation
