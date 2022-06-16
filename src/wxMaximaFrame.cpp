@@ -1268,7 +1268,7 @@ m_CalculusMenu->AppendSeparator();
   series_sub->Append(menu_taylor, _("Taylor series..."));
   series_sub->Append(menu_powerseries, _("Power series..."));
   series_sub->Append(menu_fourier, _("Fourier coefficients..."));
-  series_sub->Append(menu_pade, _("P&ad\u00E9 Approximation..."),
+  series_sub->Append(menu_pade, _(wxT("P&ad\u00E9 Approximation...")),
                      _("Pade approximation of a Taylor series"));
   m_CalculusMenu->Append(wxNewId(), _("Series approximation"),
                          series_sub);
