@@ -265,7 +265,7 @@ m_maximaEnvDoc["GCL_MULTIPROCESS_MEMORY_POOL"] = _("If maxima was compiled by GC
   m_notebook->SetSelection(notebookTab);
 
   // Allow the property dialogue sheets to scroll, if they don't fit on the screen.
-  SetLayoutAdaptationMode(wxDIALOG_ADAPTATION_MODE_ENABLED);
+  // SetLayoutAdaptationMode(wxDIALOG_ADAPTATION_MODE_ENABLED);
   LayoutDialog();
 
   SetTitle(_("wxMaxima configuration"));

@@ -163,7 +163,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   m_forceStatusbarUpdate = false;
 
   // Better support for low-resolution netbook screens.
-  wxDialog::EnableLayoutAdaptation(wxDIALOG_ADAPTATION_MODE_ENABLED);
+  // wxDialog::EnableLayoutAdaptation(wxDIALOG_ADAPTATION_MODE_ENABLED);
 
   // Now it is time to construct the window contents.
 
