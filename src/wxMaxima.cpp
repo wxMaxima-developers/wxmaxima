@@ -7025,13 +7025,13 @@ void wxMaxima::EquationsMenu(wxCommandEvent &event)
     case menu_solve_to_poly:
       CommandWiz(
         _("Solve equations to polynom"),
-        _("The function to_poly_solve tries to solve the equations "
+        _(wxT("The function to_poly_solve tries to solve the equations "
           "e for the variables l. The equation(s) e can either be a "
           "single expression or a set or list of expressions; "
           "similarly, l can either be a single symbol or a list of "
           "set of symbols. When a member of e isn’t explicitly an "
           "equation, for example x^2 -1, the solver assumes that the "
-          "expression vanishes."),wxEmptyString,
+          "expression vanishes.")),wxEmptyString,
         wxT("to_poly_solve([#1#],[#2#]);"),
         _("Equation(s)"),expr,_("Comma-separated equations"),
         _("Variable(s)"),wxT("x"),_("Comma-separated variables"));
