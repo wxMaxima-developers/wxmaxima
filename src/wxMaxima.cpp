@@ -1059,6 +1059,33 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
   Connect(menu_sregex_string_to_regex, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::MaximaMenu));
 
+  Connect(menu_opsyst_load, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu));
+  Connect(menu_opsyst_chdir, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu));
+  Connect(menu_opsyst_mkdir, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu));
+  Connect(menu_opsyst_rmdir, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu));
+  Connect(menu_opsyst_getcurrentdirectory, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu));
+  Connect(menu_opsyst_copy_file, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu));
+  Connect(menu_opsyst_rename_file, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu));
+  Connect(menu_opsyst_delete_file, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu));
+  Connect(menu_opsyst_getenv, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu));
+  Connect(menu_opsyst_directory, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu));
+  Connect(menu_opsyst_pathname_directory, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu));
+  Connect(menu_opsyst_pathname_name, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu));
+  Connect(menu_opsyst_pathname_type, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu));
+  
   Connect(menu_to_fact, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
   Connect(menu_to_gamma, wxEVT_MENU,
@@ -7499,12 +7526,108 @@ void wxMaxima::MaximaMenu(wxCommandEvent &event)
   case menu_sregex_string_to_regex:
     CommandWiz(_("Convert string to matching regex"),
                _("Escapes all special characters in a string. The result is a regex that matches this string exactly."),wxEmptyString,
-               wxT("string_to_regex(#1#,#2#);"),
+               wxT("string_to_regex(#1#);"),
                wxT("String:"),expr, wxEmptyString
       );
     break;
 
-      
+  case menu_opsyst_load:
+    MenuCommand("load(\"operatingsystem\");");
+    break;
+    
+  case menu_opsyst_chdir:
+    CommandWiz(_("Change directory"),
+               wxEmptyString,wxEmptyString,
+               wxT("chdir(#1#);"),
+               wxT("Directory:"),expr, _("\"..\" means \"one directory up\".")
+      );
+    break;
+    
+  case menu_opsyst_mkdir:
+    CommandWiz(_("Create directory"),
+               wxEmptyString,wxEmptyString,
+               wxT("mkdir(#1#);"),
+               wxT("Directory:"),expr, _("\"..\" means \"one directory up\".")
+      );
+    break;    
+  case menu_opsyst_rmdir:
+    CommandWiz(_("Remove directory"),
+               wxEmptyString,wxEmptyString,
+               wxT("rmdir(#1#);"),
+               wxT("Directory:"),expr, _("\"..\" means \"one directory up\".")
+      );
+    break;    
+    
+  case menu_opsyst_getcurrentdirectory:
+    MenuCommand(wxT("getcurrentdirectory();"));
+    break;
+    
+  case menu_opsyst_copy_file:
+    CommandWiz(_("Copy file"),
+               wxEmptyString,wxEmptyString,
+               wxT("copy_file(#1#,#2#);"),
+               wxT("Source:"),expr, wxEmptyString,
+               wxT("Destination:"),expr, wxEmptyString
+      );
+    break;    
+    
+  case menu_opsyst_rename_file:
+    CommandWiz(_("Rename file"),
+               wxEmptyString,wxEmptyString,
+               wxT("rename_file(#1#,#2#);"),
+               wxT("Source:"),expr, wxEmptyString,
+               wxT("Destination:"),expr, wxEmptyString
+      );
+    break;    
+    
+  case menu_opsyst_delete_file:
+    CommandWiz(_("Delete file"),
+               wxEmptyString,wxEmptyString,
+               wxT("delete_file(#1#);"),
+               wxT("File:"),expr, wxEmptyString
+      );
+    break;    
+    
+  case menu_opsyst_getenv:
+    CommandWiz(_("Read environment variable"),
+               wxEmptyString,wxEmptyString,
+               wxT("getenv(#1#);"),
+               wxT("Variable name:"),expr, wxEmptyString
+      );
+    break;    
+    
+  case menu_opsyst_directory:
+    CommandWiz(_("Read Directory"),
+               wxEmptyString,wxEmptyString,
+               wxT("dierectory(#1#);"),
+               wxT("Directory name:"),expr, _("\".\" = \"The current directory\"\n\"..\" = \"One directory up\"")
+      );
+    break;    
+    
+  case menu_opsyst_pathname_directory:
+    CommandWiz(_("Extract directory part"),
+               wxEmptyString,wxEmptyString,
+               wxT("pathname_directory(#1#);"),
+               wxT("Path name:"),expr, wxEmptyString
+      );
+    break;    
+    
+  case menu_opsyst_pathname_name:
+    CommandWiz(_("Extract filename part"),
+               wxEmptyString,wxEmptyString,
+               wxT("pathname_name(#1#);"),
+               wxT("Path name:"),expr, wxEmptyString
+      );
+    break;    
+    
+  case menu_opsyst_pathname_type:
+    CommandWiz(_("Extract file type extension"),
+               wxEmptyString,wxEmptyString,
+               wxT("pathname_type(#1#);"),
+               wxT("Path name:"),expr, wxEmptyString
+      );
+    break;
+
     case menu_add_path:
     {
       if (m_lastPath.Length() == 0)

@@ -1115,6 +1115,7 @@ void wxMaximaFrame::SetupMenu()
   transformMenu->Append(menu_stringproc_striml, _("Trim left..."));
   transformMenu->Append(menu_stringproc_strimr, _("Trim right..."));
   stringMenu->Append(wxNewId(), _("Transformations"), transformMenu);
+  m_MaximaMenu->Append(wxNewId(), _("String"), stringMenu);    
   wxMenu *regexMenu = new wxMenu;
   regexMenu->Append(menu_sregex_load, _("Load the regex processor"));
   regexMenu->Append(menu_sregex_regex_compile, _("Compile a regex"));
@@ -1125,8 +1126,28 @@ void wxMaximaFrame::SetupMenu()
   regexMenu->Append(menu_sregex_regex_subst, _("Substitite all matches"));
   regexMenu->Append(menu_sregex_string_to_regex, _("Regex that matches a string"));
   stringMenu->Append(wxNewId(), _("RegEx"), regexMenu);
-
-  m_MaximaMenu->Append(wxNewId(), _("String"), stringMenu);    
+  wxMenu *operatingSystemMenu = new wxMenu;
+  regexMenu->Append(menu_opsyst_load, _("Load the file/dir operations"));   
+  wxMenu *dirMenu = new wxMenu;
+  dirMenu->Append(menu_opsyst_directory, _("List directory"));
+  dirMenu->Append(menu_opsyst_getcurrentdirectory, _("Get current directory"));
+  dirMenu->Append(menu_opsyst_chdir, _("Change directory..."));
+  dirMenu->Append(menu_opsyst_mkdir, _("Create directory..."));
+  dirMenu->Append(menu_opsyst_rmdir, _("Remove directory..."));
+  dirMenu->Append(menu_opsyst_directory, _("List directory..."));
+  dirMenu->Append(menu_opsyst_pathname_directory, _("Extract dir from path..."));
+  dirMenu->Append(menu_opsyst_pathname_name, _("Extract filename from path..."));
+  dirMenu->Append(menu_opsyst_pathname_type, _("Extract filetype from path..."));
+  operatingSystemMenu->Append(wxNewId(), _("Directory operations"), dirMenu);
+  wxMenu *fileMenu = new wxMenu;
+  fileMenu->Append(menu_opsyst_copy_file, _("Copy file..."));
+  fileMenu->Append(menu_opsyst_rename_file, _("Rename file..."));
+  fileMenu->Append(menu_opsyst_delete_file, _("Delete file..."));
+  operatingSystemMenu->Append(wxNewId(), _("File operations"), fileMenu);
+  wxMenu *envMenu = new wxMenu;
+  envMenu->Append(menu_opsyst_getenv, _("Read environment variable..."));
+  operatingSystemMenu->Append(wxNewId(), _("Environment variables"), envMenu);
+  m_MaximaMenu->Append(wxNewId(), _("mkdir,..."), operatingSystemMenu);
   m_MenuBar->Append(m_MaximaMenu, _("&Maxima"));
 
   // Equations menu
