@@ -75,7 +75,7 @@ GenWizPanel::GenWizPanel(wxWindow *parent, Configuration *cfg,
  {
     m_label.push_back(new wxStaticText(this, -1, wxEmptyString));
     m_textctrl.push_back(new BTextCtrl(this, -1, cfg, wxEmptyString, wxDefaultPosition,
-                                       wxSize(50*GetContentScaleFactor(), -1)));
+                                       wxSize(50*GetContentScaleFactor(), -1), wxTE_PROCESS_ENTER));
   }
     
   m_textctrl[0]->SetFocus();
@@ -88,6 +88,9 @@ GenWizPanel::GenWizPanel(wxWindow *parent, Configuration *cfg,
     grid_sizer->Add(m_label[i], 0, wxALIGN_CENTER_VERTICAL, 0);
     m_textctrl[i]->Connect(wxEVT_TEXT,
                            wxCommandEventHandler(GenWizPanel::OnParamChange),
+                           NULL, this);
+    m_textctrl[i]->Connect(wxEVT_TEXT_ENTER,
+                           wxCommandEventHandler(GenWizPanel::OnTextEnter),
                            NULL, this);
     grid_sizer->Add(m_textctrl[i], wxSizerFlags(0).Expand());
   }
@@ -262,6 +265,17 @@ void GenWizPanel::NewWizard(wxString description, const wxString &description_to
   m_textctrl[8]->SetToolTip(tooltip9);
   Layout();
   m_ignorePageChange = false;
+}
+
+void GenWizPanel::OnTextEnter(wxCommandEvent& event)
+{
+  std::cerr<<"Enter\n";
+  if(m_insertButton)
+  {
+    wxCommandEvent *bttnprss = new wxCommandEvent(wxEVT_BUTTON, wxID_OK);
+    m_insertButton->GetEventHandler()->QueueEvent(bttnprss);
+  }
+  event.Skip();
 }
 
 void GenWizPanel::UpdateOutput()
