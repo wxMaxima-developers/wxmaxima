@@ -1115,6 +1115,17 @@ void wxMaximaFrame::SetupMenu()
   transformMenu->Append(menu_stringproc_striml, _("Trim left..."));
   transformMenu->Append(menu_stringproc_strimr, _("Trim right..."));
   stringMenu->Append(wxNewId(), _("Transformations"), transformMenu);
+  wxMenu *regexMenu = new wxMenu;
+  regexMenu->Append(menu_sregex_load, _("Load the regex processor"));
+  regexMenu->Append(menu_sregex_regex_compile, _("Compile a regex"));
+  regexMenu->Append(menu_sregex_regex_match_pos, _("Position of a match"));
+  regexMenu->Append(menu_sregex_regex_match, _("Return a match"));
+  regexMenu->Append(menu_sregex_regex_split, _("Split on match"));
+  regexMenu->Append(menu_sregex_subst_first, _("Substitite first match"));
+  regexMenu->Append(menu_sregex_regex_subst, _("Substitite all matches"));
+  regexMenu->Append(menu_sregex_string_to_regex, _("Regex that matches a string"));
+  stringMenu->Append(wxNewId(), _("RegEx"), regexMenu);
+
   m_MaximaMenu->Append(wxNewId(), _("String"), stringMenu);    
   m_MenuBar->Append(m_MaximaMenu, _("&Maxima"));
 

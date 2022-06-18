@@ -1042,6 +1042,22 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
           wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
   Connect(menu_stringproc_string_to_octets, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_sregex_load, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu));
+  Connect(menu_sregex_regex_compile, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu));
+  Connect(menu_sregex_regex_match_pos, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu));
+  Connect(menu_sregex_regex_match, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu));
+  Connect(menu_sregex_regex_split, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu));
+  Connect(menu_sregex_subst_first, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu));
+  Connect(menu_sregex_regex_subst, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu));
+  Connect(menu_sregex_string_to_regex, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu));
 
   Connect(menu_to_fact, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
@@ -7427,6 +7443,63 @@ void wxMaxima::MaximaMenu(wxCommandEvent &event)
     CommandWiz(_("Interpret string as maxima code"),
                wxEmptyString,wxEmptyString,
                wxT("parse_string(#1#);"),
+               wxT("String:"),expr, wxEmptyString
+      );
+    break;
+
+  case menu_sregex_load:
+    MenuCommand("load(\"sregex\");");
+  case menu_sregex_regex_compile:
+    CommandWiz(_("Compile regex"),
+               _("Re-using a compiled regex is faster that using the same regex string multiple times."),wxEmptyString,
+               wxT("regex_compile(#1#);"),
+               wxT("String:"),expr, wxEmptyString
+      );
+    break;
+  case menu_sregex_regex_match_pos:
+    CommandWiz(_("Regex match position"),
+               wxEmptyString,wxEmptyString,
+               wxT("regex_match_pos(#1#,#2#);"),
+               wxT("Regex:"),expr, wxEmptyString,
+               wxT("String:"),expr, wxEmptyString
+      );
+    break;
+  case menu_sregex_regex_match:
+    CommandWiz(_("Regex match"),
+               wxEmptyString,wxEmptyString,
+               wxT("regex_match(#1#,#2#);"),
+               wxT("Regex:"),expr, wxEmptyString,
+               wxT("String:"),expr, wxEmptyString
+      );
+    break;
+  case menu_sregex_regex_split:
+    CommandWiz(_("Split on regex match"),
+               wxEmptyString,wxEmptyString,
+               wxT("regex_split(#1#,#2#);"),
+               wxT("Regex:"),expr, wxEmptyString,
+               wxT("String:"),expr, wxEmptyString
+      );
+    break;
+  case menu_sregex_subst_first:
+    CommandWiz(_("Replace first regex match"),
+               wxEmptyString,wxEmptyString,
+               wxT("regex_subst_first(#1#,#2#);"),
+               wxT("Regex:"),expr, wxEmptyString,
+               wxT("String:"),expr, wxEmptyString
+      );
+    break;
+  case menu_sregex_regex_subst:
+    CommandWiz(_("Replace all regex matches"),
+               wxEmptyString,wxEmptyString,
+               wxT("regex_subst(#1#,#2#);"),
+               wxT("Regex:"),expr, wxEmptyString,
+               wxT("String:"),expr, wxEmptyString
+      );
+    break;
+  case menu_sregex_string_to_regex:
+    CommandWiz(_("Convert string to matching regex"),
+               _("Escapes all special characters in a string. The result is a regex that matches this string exactly."),wxEmptyString,
+               wxT("string_to_regex(#1#,#2#);"),
                wxT("String:"),expr, wxEmptyString
       );
     break;
