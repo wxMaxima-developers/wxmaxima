@@ -921,6 +921,128 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
           wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
   Connect(menu_stringtomaxima, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+
+  Connect(menu_stringproc_setposition, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_stringproc_getposition, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_stringproc_flush_output, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_stringproc_flength, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_stringproc_close, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_stringproc_opena, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_stringproc_openr, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_stringproc_openw, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_stringproc_printf, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_stringproc_readline, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_stringproc_readchar, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_stringproc_readbyte, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_stringproc_writebyte, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_stringproc_charp, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_stringproc_alphacharp, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_stringproc_alphanumericp, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_stringproc_digitcharp, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_stringproc_constituent, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_stringproc_uppercasep, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_stringproc_lowercasep, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_stringproc_create_ascii, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_stringproc_cequal, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_stringproc_cequalignore, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_stringproc_clessp, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_stringproc_clesspignore, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_stringproc_cgreaterp, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_stringproc_cgreaterpignore, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_stringproc_sequal, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_stringproc_sequalignore, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_stringproc_ascii, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_stringproc_cint, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_stringproc_unicode, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_stringproc_unicode_to_utf8, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_stringproc_utf8_to_unicode, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_stringproc_charat, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_stringproc_charlist, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_stringproc_simplode, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_stringproc_sinsert, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_stringproc_eval_string, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_stringproc_parse_string, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_stringproc_scopy, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_stringproc_sdowncase, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_stringproc_slength, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_stringproc_smake, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_stringproc_smismatch, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_stringproc_split, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_stringproc_sposition, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_stringproc_sremove, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_stringproc_sremovefirst, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_stringproc_tokens, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_stringproc_ssearch, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_stringproc_ssort, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_stringproc_ssubstfirst, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_stringproc_strim, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_stringproc_striml, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_stringproc_strimr, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_stringproc_number_to_octets, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_stringproc_octets_to_number, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_stringproc_octets_to_string, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_stringproc_string_to_octets, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+
   Connect(menu_to_fact, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
   Connect(menu_to_gamma, wxEVT_MENU,
@@ -6756,33 +6878,33 @@ void wxMaxima::MaximaMenu(wxCommandEvent &event)
                  "too early.\n"
                  "The ' operator can be undone by using the '' operator."),wxEmptyString,
                wxT("'(#1#);"),
-               wxT("expression:"),expr,_("The name of an expression that we don't want to be evaluated.")
+               _("expression:"),expr,_("The name of an expression that we don't want to be evaluated.")
       );
     break;
   case menu_def_fun:
     CommandWiz(_("Define a function"),
                wxEmptyString,wxEmptyString,
                wxT("#1#(#2#):=#3#;"),
-               wxT("Function name:"),expr, wxEmptyString,
-               wxT("Parameter(s):"),wxT("x,[y]"), _("Comma-separated parameter names. A parameter in square brackets [] will be filled with the list of any additional arguments the function gets."),
-               wxT("Function contents:"),wxT("sin(x)+lsum(i,i,y)"), wxEmptyString
+               _("Function name:"),expr, wxEmptyString,
+               _("Parameter(s):"),wxT("x,[y]"), _("Comma-separated parameter names. A parameter in square brackets [] will be filled with the list of any additional arguments the function gets."),
+               _("Function contents:"),wxT("sin(x)+lsum(i,i,y)"), wxEmptyString
       );
     break;
   case menu_def_macro:
     CommandWiz(_("Define a macro"),
                wxEmptyString,wxEmptyString,
                wxT("#1#(#2#)::=#3#;"),
-               wxT("Macro name:"),expr, wxEmptyString,
-               wxT("Parameter(s):"),wxT("x,[y]"), _("Comma-separated parameter names. A parameter in square brackets [] will be filled with the list of any additional arguments the function gets."),
-               wxT("Macro contents:"),wxT("sin(x)+lsum(i,i,y)"), wxEmptyString
+               _("Macro name:"),expr, wxEmptyString,
+               _("Parameter(s):"),wxT("x,[y]"), _("Comma-separated parameter names. A parameter in square brackets [] will be filled with the list of any additional arguments the function gets."),
+               _("Macro contents:"),wxT("sin(x)+lsum(i,i,y)"), wxEmptyString
       );
     break;
   case menu_def_variable:
     CommandWiz(_("Define a variable"),
                wxEmptyString,wxEmptyString,
                wxT("#1#:#2#;"),
-               wxT("Variable name:"),expr, wxEmptyString,
-               wxT("Contents:"),wxT("1"), wxEmptyString
+               _("Variable name:"),expr, wxEmptyString,
+               _("Contents:"),wxT("1"), wxEmptyString
       );
     break;
   case menu_compile:
@@ -6792,7 +6914,7 @@ void wxMaxima::MaximaMenu(wxCommandEvent &event)
                  "before it is compiled. Else the generated code has to be "
                  "hideously generic."),wxEmptyString,
                wxT("compile(#1#);"),
-               wxT("Function name(s):"),expr, _("Comma-separated function names")
+               _("Function name(s):"),expr, _("Comma-separated function names")
       );
     break;
   case menu_paramType:
@@ -6805,56 +6927,502 @@ void wxMaxima::MaximaMenu(wxCommandEvent &event)
                  "real or any (which is useful for declaring arrays of any)"
                  ),wxEmptyString,
                wxT("mode_declare(#1#);"),
-               wxT("Parametername:"),expr, wxEmptyString,
-               wxT("Type:"),wxT("boolean"), wxEmptyString
+               _("Parametername:"),expr, wxEmptyString,
+               _("Type:"),wxT("boolean"), wxEmptyString
       );
     break;
   case menu_structdef:
     CommandWiz(_("Define a structure type"),
                wxEmptyString,wxEmptyString,
                wxT("defstruct(#1#(#2#));"),
-               wxT("Struct type name:"),expr, _("The name of the new struct type"),
-               wxT("Fields:"),wxT("U,I"), _("The comma-separated names of the struct fields")
+               _("Struct type name:"),expr, _("The name of the new struct type"),
+               _("Fields:"),wxT("U,I"), _("The comma-separated names of the struct fields")
       );
     break;
   case menu_structnew:
     CommandWiz(_("Define a structure"),
                wxEmptyString,wxEmptyString,
                wxT("new(#1#(#2#));"),
-               wxT("Struct type name:"),expr, _("The name of the struct type"),
-               wxT("Field contents:"),wxT("1,2"), _("The comma-separated contents of the struct fields")
+               _("Struct type name:"),expr, _("The name of the struct type"),
+               _("Field contents:"),wxT("1,2"), _("The comma-separated contents of the struct fields")
       );
     break;
   case menu_structuse:
     CommandWiz(_("Read a structure field"),
                wxEmptyString,wxEmptyString,
                wxT("#1#@#2#;"),
-               wxT("Struct :"),expr, _("The name of the struct"),
-               wxT("Field name:"),wxT("U"), _("The name of the field to read")
+               _("Struct :"),expr, _("The name of the struct"),
+               _("Field name:"),wxT("U"), _("The name of the field to read")
       );
     break;
   case menu_saveLisp:
     CommandWiz(_("Save as lisp code"),
                wxEmptyString,wxEmptyString,
                wxT("save(#1#);"),
-               wxT("filename:"),wxEmptyString,
-               wxT("Elements:"),expr, _("Comma-separated names of the elements that shall be written")
+               _("filename:"),wxEmptyString,
+               _("Elements:"),expr, _("Comma-separated names of the elements that shall be written")
       );
     break;
   case menu_loadLisp:
     CommandWiz(_("Load lisp code"),
                wxEmptyString,wxEmptyString,
                wxT("load(#1#);"),
-               wxT("filename:"),wxEmptyString
+               _("filename:"),wxEmptyString
       );
     break;
   case menu_maximatostring:
     CommandWiz(_("Maxima to string"),
                wxEmptyString,wxEmptyString,
                wxT("sconcat(#1#);"),
-               wxT("Expression(s):"),expr, _("Comma-separated expressions that shall be converted to a string")
+               _("Expression(s):"),expr, _("Comma-separated expressions that shall be converted to a string")
       );
     break;
+
+  case menu_stringproc_setposition:
+    CommandWiz(_("Seek to position"),
+               wxEmptyString,wxEmptyString,
+               wxT("fposition(#1#,#2#);"),
+               _("Stream:"),expr, wxEmptyString,
+               _("Position:"),wxT("0"), wxEmptyString
+      );
+    break;
+  case menu_stringproc_getposition:
+    CommandWiz(_("Get position in stream"),
+               wxEmptyString,wxEmptyString,
+               wxT("fposition(#1#);"),
+               _("Stream:"),expr, wxEmptyString
+      );
+    break;
+  case menu_stringproc_flush_output:
+    CommandWiz(_("Flush stream"),
+               wxEmptyString,wxEmptyString,
+               wxT("flush_output(#1#);"),
+               _("Stream:"),expr, wxEmptyString
+      );
+    break;
+  case menu_stringproc_flength:
+    CommandWiz(_("Stream length"),
+               wxEmptyString,wxEmptyString,
+               wxT("flength(#1#);"),
+               _("Stream:"),expr, wxEmptyString
+      );
+    break;
+  case menu_stringproc_close:
+    CommandWiz(_("Close Stream"),
+               wxEmptyString,wxEmptyString,
+               wxT("close(#1#);"),
+               _("Stream:"),expr, wxEmptyString
+      );
+    break;
+  case menu_stringproc_opena:
+    CommandWiz(_("Open for appending"),
+               wxEmptyString,wxEmptyString,
+               wxT("#1#:opena(#2#);"),
+               _("Stream:"),expr, wxEmptyString,
+               _("File name:"),expr, wxEmptyString
+      );
+    break;
+  case menu_stringproc_openr:
+    CommandWiz(_("Open for reading"),
+               wxEmptyString,wxEmptyString,
+               wxT("#1#:openr(#2#);"),
+               _("Stream:"),expr, wxEmptyString,
+               _("File name:"),expr, wxEmptyString
+      );
+    break;
+  case menu_stringproc_openw:
+    CommandWiz(_("Open for writing"),
+               wxEmptyString,wxEmptyString,
+               wxT("#1#:openw(#2#);"),
+               _("Stream:"),expr, wxEmptyString,
+               _("File name:"),expr, wxEmptyString
+      );
+    break;
+  case menu_stringproc_printf:
+    CommandWiz(_("printf"),
+               wxEmptyString,wxEmptyString,
+               wxT("printf(#1#,#2#,#3#);"),
+               _("Stream:"),wxT("false"), wxEmptyString,
+               _("Lisp format string:"),wxT("~a"), _("Lisp format strings are more powerful than c++ format strings"),
+               _("Arguments:"),expr, _("Comma-separated arguments")
+      );
+    break;
+  case menu_stringproc_readline:
+    CommandWiz(_("Read line"),
+               wxEmptyString,wxEmptyString,
+               wxT("readline(#1#);"),
+               _("Stream:"), expr, wxEmptyString
+      );
+    break;
+  case menu_stringproc_readchar:
+    CommandWiz(_("Read char"),
+               wxEmptyString,wxEmptyString,
+               wxT("readchar(#1#);"),
+               _("Stream:"), expr, wxEmptyString
+      );
+    break;
+  case menu_stringproc_readbyte:
+    CommandWiz(_("Read byte"),
+               wxEmptyString,wxEmptyString,
+               wxT("readbyte(#1#);"),
+               _("Stream:"), expr, wxEmptyString
+      );
+    break;
+  case menu_stringproc_writebyte:
+    CommandWiz(_("Read byte"),
+               wxEmptyString,wxEmptyString,
+               wxT("writebyte(#1#,#2#);"),
+               _("Byte:"), wxT("65"), wxEmptyString,
+               _("Stream:"), expr, wxEmptyString
+      );
+    break;
+  case menu_stringproc_charp:
+    CommandWiz(_("Is a char?"),
+               _("Chars are strings that are one character long"),wxEmptyString,
+               wxT("charp(#1#);"),
+               _("Object:"), expr, wxEmptyString
+      );
+    break;
+  case menu_stringproc_alphacharp:
+    CommandWiz(_("Is an alphabetic char?"),
+               wxEmptyString,wxEmptyString,
+               wxT("alphacharp(#1#);"),
+               _("Char:"), expr, wxEmptyString
+      );
+    break;
+  case menu_stringproc_alphanumericp:
+    CommandWiz(_("Is an alphanumeric char?"),
+               wxEmptyString,wxEmptyString,
+               wxT("alphanumericp(#1#);"),
+               _("Char:"), expr, wxEmptyString
+      );
+    break;
+  case menu_stringproc_digitcharp:
+    CommandWiz(_("Is a digit?"),
+               wxEmptyString,wxEmptyString,
+               wxT("alphanumericp(#1#);"),
+               _("Char:"), expr, wxEmptyString
+      );
+    break;
+  case menu_stringproc_constituent:
+    CommandWiz(_("Is a printable char?"),
+               wxEmptyString,wxEmptyString,
+               wxT("constituent(#1#);"),
+               _("Char:"), expr, wxEmptyString
+      );
+    break;
+  case menu_stringproc_uppercasep:
+    CommandWiz(_("Is a uppercase char?"),
+               wxEmptyString,wxEmptyString,
+               wxT("uppercasep(#1#);"),
+               _("Char:"), expr, wxEmptyString
+      );
+    break;
+  case menu_stringproc_lowercasep:
+    CommandWiz(_("Is a lowercase char?"),
+               wxEmptyString,wxEmptyString,
+               wxT("lowercasep(#1#);"),
+               _("Char:"), expr, wxEmptyString
+      );
+    break;
+  case menu_stringproc_create_ascii:
+    CommandWiz(_("Ascii code to char"),
+               wxEmptyString,wxEmptyString,
+               wxT("ascii(#1#);"),
+               _("Code number:"), expr, wxEmptyString
+      );
+    break;
+  case menu_stringproc_cequal:
+    CommandWiz(_("Are the chars equal?"),
+               wxEmptyString,wxEmptyString,
+               wxT("cequal(#1#,#2#);"),
+               _("Char #1:"), expr, wxEmptyString,
+               _("Char #2:"), expr, wxEmptyString
+      );
+    break;
+  case menu_stringproc_cequalignore:
+    CommandWiz(_("Are the chars equal, if case is ignored?"),
+               wxEmptyString,wxEmptyString,
+               wxT("cequalignore(#1#,#2#);"),
+               _("Char #1:"), expr, wxEmptyString,
+               _("Char #2:"), expr, wxEmptyString
+      );
+    break;
+  case menu_stringproc_clessp:
+    CommandWiz(_("Is Char 1 less than Char2?"),
+               wxEmptyString,wxEmptyString,
+               wxT("clessp(#1#,#2#);"),
+               _("Char #1:"), expr, wxEmptyString,
+               _("Char #2:"), expr, wxEmptyString
+      );
+    break;
+  case menu_stringproc_clesspignore:
+    CommandWiz(_("Is Char 1 less than Char2, if case is ignored?"),
+               wxEmptyString,wxEmptyString,
+               wxT("clesspignore(#1#,#2#);"),
+               _("Char #1:"), expr, wxEmptyString,
+               _("Char #2:"), expr, wxEmptyString
+      );
+    break;
+  case menu_stringproc_cgreaterp:
+    CommandWiz(_("Is Char 1 greater than Char2?"),
+               wxEmptyString,wxEmptyString,
+               wxT("cgreaterp(#1#,#2#);"),
+               _("Char #1:"), expr, wxEmptyString,
+               _("Char #2:"), expr, wxEmptyString
+      );
+    break;
+  case menu_stringproc_cgreaterpignore:
+    CommandWiz(_("Is Char 1 greater than Char2, if case is ignored?"),
+               wxEmptyString,wxEmptyString,
+               wxT("cgreaterpignore(#1#,#2#);"),
+               _("Char #1:"), expr, wxEmptyString,
+               _("Char #2:"), expr, wxEmptyString
+      );
+    break;
+  case menu_stringproc_sequal:
+    CommandWiz(_("Are these strings equal?"),
+               wxEmptyString,wxEmptyString,
+               wxT("sequal(#1#);"),
+               _("String #1:"),expr, wxEmptyString,
+               _("String #2:"),expr, wxEmptyString
+      );
+    break;
+  case menu_stringproc_sequalignore:
+    CommandWiz(_("Are these strings equal if case is ignored?"),
+               wxEmptyString,wxEmptyString,
+               wxT("sequalignore(#1#);"),
+               _("String #1:"),expr, wxEmptyString,
+               _("String #2:"),expr, wxEmptyString
+      );
+    break;
+  case menu_stringproc_ascii:
+    CommandWiz(_("Ascii code to char"),
+               wxEmptyString,wxEmptyString,
+               wxT("ascii(#1#);"),
+               _("Code number:"), expr, wxEmptyString
+      );
+  case menu_stringproc_cint:
+    CommandWiz(_("Char to unicode code point"),
+               wxEmptyString,wxEmptyString,
+               wxT("cint(#1#);"),
+               _("Char:"), expr, wxEmptyString
+      );
+    break;
+  case menu_stringproc_unicode:
+    CommandWiz(_("Char to unicode code point"),
+               wxEmptyString,wxEmptyString,
+               wxT("cint(#1#);"),
+               _("Char:"), expr, wxEmptyString
+      );
+    break;
+  case menu_stringproc_unicode_to_utf8:
+    CommandWiz(_("Unicode code point to char"),
+               wxEmptyString,wxEmptyString,
+               wxT("unicode(#1#);"),
+               _("Codepoint number:"), expr, wxEmptyString
+      );
+    break;
+  case menu_stringproc_utf8_to_unicode:
+    CommandWiz(_("Unicode code point to utf8 numbers"),
+               wxEmptyString,wxEmptyString,
+               wxT("utf8_to_unicode(#1#);"),
+               _("Codepoint number:"), expr, wxEmptyString
+      );
+    break;
+  case menu_stringproc_charat:
+    CommandWiz(_("Extract the nth char of a string"),
+               wxEmptyString,wxEmptyString,
+               wxT("charat(#1#, #2#);"),
+               _("String:"), expr, wxEmptyString,
+               _("n:"), expr, wxEmptyString
+      );
+    break;
+  case menu_stringproc_charlist:
+    CommandWiz(_("String to list of char"),
+               wxEmptyString,wxEmptyString,
+               wxT("charlist(#1#);"),
+               _("String:"), expr, wxEmptyString
+      );
+    break;
+  case menu_stringproc_simplode:
+    CommandWiz(_("List of char to String"),
+               wxEmptyString,wxEmptyString,
+               wxT("simplode(#1#);"),
+               _("List of chars:"), expr, wxEmptyString
+      );
+    break;
+  case menu_stringproc_sinsert:
+    CommandWiz(_("List of char to String"),
+               wxEmptyString,wxEmptyString,
+               wxT("simplode(#1#);"),
+               _("New part:"), expr, wxEmptyString,
+               _("String:"), wxEmptyString, wxEmptyString,
+               _("Position:"), wxT("0"), wxEmptyString
+      );
+    break;
+  case menu_stringproc_eval_string:
+    CommandWiz(_("Evaluate string"),
+               wxEmptyString,wxEmptyString,
+               wxT("eval_string(#1#);"),
+               _("String:"), expr, wxEmptyString
+      );
+    break;
+  case menu_stringproc_parse_string:
+    CommandWiz(_("Parse string"),
+               wxEmptyString,wxEmptyString,
+               wxT("parse_string(#1#);"),
+               _("String:"), expr, wxEmptyString
+      );
+    break;
+  case menu_stringproc_scopy:
+    CommandWiz(_("Copy string"),
+               _("In order to save memory the : operator doesn't create an individual copy of the string, but a clone that changes when the original string changes."),wxEmptyString,
+               wxT("scopy(#1#);"),
+               _("String:"), expr, wxEmptyString
+      );
+  case menu_stringproc_sdowncase:
+    CommandWiz(_("Convert string to lowercase"),
+               wxEmptyString,wxEmptyString,
+               wxT("sdowncase(#1#);"),
+               _("String:"), expr, wxEmptyString
+      );
+    break;
+  case menu_stringproc_slength:
+    CommandWiz(_("String length"),
+               wxEmptyString,wxEmptyString,
+               wxT("slength(#1#);"),
+               _("String:"), expr, wxEmptyString
+      );
+    break;
+  case menu_stringproc_smake:
+    CommandWiz(_("Create empty string"),
+               wxEmptyString,wxEmptyString,
+               wxT("smake(#1#,#2#);"),
+               _("String:"), expr, wxEmptyString,
+               _("Length:"), wxT("10"), wxEmptyString
+      );
+    break;
+  case menu_stringproc_smismatch:
+    CommandWiz(_("Find first difference"),
+               wxEmptyString,wxEmptyString,
+               wxT("smismatch(#1#,#2#);"),
+               _("String #1:"), expr, wxEmptyString,
+               _("String #2:"), wxEmptyString, wxEmptyString
+      );
+    break;
+  case menu_stringproc_split:
+    CommandWiz(_("Split"),
+               wxEmptyString,wxEmptyString,
+               wxT("split(#1#,#2#);"),
+               _("String:"), expr, wxEmptyString,
+               _("Deliminiter:"), wxT(";"), wxEmptyString
+      );
+    break;
+  case menu_stringproc_sposition:
+    CommandWiz(_("Find char in string"),
+               wxEmptyString,wxEmptyString,
+               wxT("sposition(#1#,#2#);"),
+               _("Char:"), wxT(";"), wxEmptyString,
+               _("String:"), expr, wxEmptyString
+      );
+    break;
+  case menu_stringproc_sremove:
+    CommandWiz(_("Remove all occurrences of part"),
+               wxEmptyString,wxEmptyString,
+               wxT("sremove(#1#,#2#);"),
+               _("part:"), expr, wxEmptyString,
+               _("String:"), wxEmptyString, wxEmptyString
+      );
+    break;
+  case menu_stringproc_sremovefirst:
+    CommandWiz(_("Remove first occurrence of part"),
+               wxEmptyString,wxEmptyString,
+               wxT("sremovefirst(#1#,#2#);"),
+               _("part:"), expr, wxEmptyString,
+               _("String:"), wxEmptyString, wxEmptyString
+      );
+    break;
+  case menu_stringproc_tokens:
+    CommandWiz(_("Split string into tokens"),
+               wxEmptyString,wxEmptyString,
+               wxT("tokens(#1#,#2#);"),
+               _("String:"), wxEmptyString, wxEmptyString
+      );
+    break;
+  case menu_stringproc_ssearch:
+    CommandWiz(_("Search first occurrence of part"),
+               wxEmptyString,wxEmptyString,
+               wxT("ssearch(#1#,#2#);"),
+               _("part:"), expr, wxEmptyString,
+               _("String:"), wxEmptyString, wxEmptyString
+      );
+    break;
+  case menu_stringproc_ssort:
+    CommandWiz(_("Sort all characters in string"),
+               wxEmptyString,wxEmptyString,
+               wxT("ssort(#1#);"),
+               _("String:"), wxEmptyString, wxEmptyString
+      );
+    break;
+  case menu_stringproc_ssubstfirst:
+    CommandWiz(_("Replace the first occurrence of Part"),
+               wxEmptyString,wxEmptyString,
+               wxT("ssubstfirst(#1#,#2#);"),
+               _("Part:"), wxEmptyString, wxEmptyString,
+               _("String:"), wxEmptyString, wxEmptyString
+      );
+    break;
+  case menu_stringproc_strim:
+    CommandWiz(_("Trim string on both ends"),
+               wxEmptyString,wxEmptyString,
+               wxT("strim(#1#);"),
+               _("String:"), wxEmptyString, wxEmptyString
+      );
+    break;
+  case menu_stringproc_striml:
+    CommandWiz(_("Trim string left"),
+               wxEmptyString,wxEmptyString,
+               wxT("striml(#1#);"),
+               _("String:"), wxEmptyString, wxEmptyString
+      );
+    break;
+  case menu_stringproc_strimr:
+    CommandWiz(_("Trim string right"),
+               wxEmptyString,wxEmptyString,
+               wxT("strimr(#1#);"),
+               _("String:"), wxEmptyString, wxEmptyString
+      );
+    break;
+  case menu_stringproc_number_to_octets:
+    CommandWiz(_("Number to octets"),
+               wxEmptyString,wxEmptyString,
+               wxT("number_to_octets(#1#);"),
+               _("Number:"), wxEmptyString, wxEmptyString
+      );
+    break;
+  case menu_stringproc_octets_to_number:
+    CommandWiz(_("Octets to Number"),
+               wxEmptyString,wxEmptyString,
+               wxT("octets_to_number(#1#);"),
+               _("Octets:"), _("Comma-separated numbers from 0 to 255"), wxEmptyString
+      );
+    break;
+  case menu_stringproc_octets_to_string:
+    CommandWiz(_("Octets to String"),
+               wxEmptyString,wxEmptyString,
+               wxT("octets_to_string(#1#);"),
+               _("Octets:"), _("Comma-separated numbers from 0 to 255"), wxEmptyString
+      );
+    break;
+  case menu_stringproc_string_to_octets:
+    CommandWiz(_("String to octets"),
+               wxEmptyString,wxEmptyString,
+               wxT("string_to_octets(#1#);"),
+               _("String:"), wxEmptyString, wxEmptyString
+      );
+    break;
+
   case menu_stringtomaxima:
     CommandWiz(_("Interpret string as maxima code"),
                wxEmptyString,wxEmptyString,
