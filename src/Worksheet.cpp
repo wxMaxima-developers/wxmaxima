@@ -7851,10 +7851,12 @@ void Worksheet::SetDefaultHCaret()
   SetHCaret(m_last);
 }
 
-void Worksheet::OnActivate(wxActivateEvent &WXUNUSED(event))
+void Worksheet::OnActivate(wxActivateEvent &event)
 {
   // If the focus changes we might want to refresh the menu.
   RequestRedraw();
+  if(event.GetActive())
+    m_configuration->LastActiveTextCtrl(this);
 }
 
 void Worksheet::SetHCaret(GroupCell *where)

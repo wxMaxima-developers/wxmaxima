@@ -56,6 +56,9 @@ BTextCtrl::BTextCtrl(wxWindow *parent,
 #else
   Connect(wxEVT_CHAR, wxKeyEventHandler(BTextCtrl::OnChar), NULL, this);
 #endif
+  Connect(wxEVT_SET_FOCUS,
+          wxFocusEventHandler(BTextCtrl::OnFocus), NULL, this);
+
   #ifdef __WXOSX__
   #if wxCHECK_VERSION(3, 1, 1)
   OSXDisableAllSmartSubstitutions();
@@ -63,9 +66,17 @@ BTextCtrl::BTextCtrl(wxWindow *parent,
   #endif
 }
 
+void BTextCtrl::OnFocus(wxFocusEvent &event)
+{
+  m_config->LastActiveTextCtrl(this);
+}
+
 
 BTextCtrl::~BTextCtrl()
-{}
+{
+  if(m_config->LastActiveTextCtrl() == this)
+    m_config->LastActiveTextCtrl(NULL);
+}
 
 void BTextCtrl::OnChar(wxKeyEvent &event)
 {

@@ -1534,8 +1534,8 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
           wxFindDialogEventHandler(wxMaxima::OnReplaceAll), NULL, this);
   Connect(wxEVT_FIND_CLOSE,
           wxFindDialogEventHandler(wxMaxima::OnFindClose), NULL, this);
-  Connect(wxEVT_ACTIVATE,
-          wxActivateEventHandler(wxMaxima::OnActivate), NULL, this);
+  Connect(wxEVT_SET_FOCUS,
+          wxFocusEventHandler(wxMaxima::OnFocus), NULL, this);
   Connect(wxEVT_ICONIZE,
           wxIconizeEventHandler(wxMaxima::OnMinimize), NULL, this);
   Connect(SYMBOLADDEVENT, wxCommandEventHandler(wxMaxima::OnSymbolAdd), NULL, this);
@@ -9803,17 +9803,20 @@ void wxMaxima::OnWizardAbort(wxCommandEvent &WXUNUSED(event))
 {
   m_manager.GetPane("wizard").Show(false);
   m_manager.Update();
+  m_worksheet->m_configuration->LastActiveTextCtrl(m_worksheet);
 }
 
 void wxMaxima::OnWizardOK(wxCommandEvent &event)
 {
   OnWizardInsert(event);
   OnWizardAbort(event);
+  m_worksheet->m_configuration->LastActiveTextCtrl(m_worksheet);
 }
 
 void wxMaxima::OnWizardInsert(wxCommandEvent &event)
 {
   MenuCommand(m_wizard->GetOutput());
+  m_worksheet->m_configuration->LastActiveTextCtrl(m_worksheet);
 }
 
 
@@ -11816,12 +11819,19 @@ int wxMaxima::SaveDocumentP()
   return dialog.ShowModal();
 }
 
-void wxMaxima::OnActivate(wxActivateEvent &event)
+void wxMaxima::OnFocus(wxFocusEvent &event)
 {
-  if (m_worksheet)
-    m_worksheet->WindowActive(event.GetActive());
+  // We cannot change the focus during an focus event, but can tell the
+  // event loop to do so.
+  CallAfter(&wxMaxima::PassKeyboardFocus);
   event.Skip();
 }
+void wxMaxima::PassKeyboardFocus()
+{
+  if (m_worksheet)
+  m_worksheet->m_configuration->LastActiveTextCtrl()->SetFocus();
+}
+
 
 void wxMaxima::OnMinimize(wxIconizeEvent &event)
 {

@@ -261,8 +261,11 @@ protected:
   wxProcess *m_gnuplotTerminalQueryProcess = NULL;
   //! Is this window active?
   bool m_isActive;
-  //! Called when this window is activated or deactivated.
-  void OnActivate(wxActivateEvent &event);
+  //! Called when this window is focussed or defocussed.
+  void OnFocus(wxFocusEvent &event);
+
+  //! Forwards the keyboard focus to a text control that might need it
+  void PassKeyboardFocus();
   //! Called when this window is minimized.
   void OnMinimize(wxIconizeEvent &event);
   //! Is called on start and whenever the configuration changes

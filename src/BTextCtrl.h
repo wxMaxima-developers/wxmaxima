@@ -55,6 +55,7 @@ private:
   void CloseParenthesis(wxString open, wxString close, bool fromOpen);
 
   void OnChar(wxKeyEvent &event);
+  void OnFocus(wxFocusEvent &event);
 
   Configuration *m_config;
 };
