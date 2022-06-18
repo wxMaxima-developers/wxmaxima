@@ -269,7 +269,6 @@ void GenWizPanel::NewWizard(wxString description, const wxString &description_to
 
 void GenWizPanel::OnTextEnter(wxCommandEvent& event)
 {
-  std::cerr<<"Enter\n";
   if(m_insertButton)
   {
     wxCommandEvent *bttnprss = new wxCommandEvent(wxEVT_BUTTON, wxID_OK);
