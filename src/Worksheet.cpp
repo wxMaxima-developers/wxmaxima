@@ -237,8 +237,13 @@ void Worksheet::OnSidebarKey(wxCommandEvent &event)
   {
     // Send the char to the last active text control
     wxTextCtrl *textCtrl = m_configuration->LastActiveTextCtrl();
-    textCtrl->WriteText(wxString(wxChar(event.GetId())));
+    long pos = textCtrl->GetInsertionPoint();
+    wxString text = textCtrl->GetRange(0,pos) + wxString(wxChar(event.GetId()));
+    if(pos != textCtrl->GetLastPosition())
+      text += textCtrl->GetRange(pos,textCtrl->GetLastPosition());
+    textCtrl->SetValue(text);
     textCtrl->SetFocus();
+    textCtrl->SetInsertionPoint(pos+1);
   }
 }
 

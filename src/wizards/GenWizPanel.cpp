@@ -215,7 +215,8 @@ void GenWizPanel::NewWizard(wxString description, const wxString &description_to
   m_textctrl[0]->SetValue(defaultval1);
   m_label[0]->SetLabel(label1);
   m_textctrl[0]->SetToolTip(tooltip1);
-
+  m_textctrl[0]->SetFocus();
+  
   m_textctrl[1]->SetValue(defaultval2);
   m_label[1]->SetLabel(label2);
   m_label[1]->Show(!label2.IsEmpty());
