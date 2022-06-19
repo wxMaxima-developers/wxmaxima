@@ -11829,7 +11829,12 @@ void wxMaxima::OnFocus(wxFocusEvent &event)
 void wxMaxima::PassKeyboardFocus()
 {
   if (m_worksheet)
-  m_worksheet->m_configuration->LastActiveTextCtrl()->SetFocus();
+  {
+    if (m_worksheet->m_configuration->LastActiveTextCtrl())
+      m_worksheet->m_configuration->LastActiveTextCtrl()->SetFocus();
+    else
+      m_worksheet->SetFocus();
+  }
 }
 
 
