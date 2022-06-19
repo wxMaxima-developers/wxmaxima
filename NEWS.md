@@ -6,6 +6,9 @@
  * Better scalability of the config dialogue
  * Folded multiline code cells are now sent to maxima correctly (#1674)
  * The output of the "?" command contained spurious "<" (#1688)
+ * Wizards now accept chars from the unicode buttons
+ * Wizards for operatingsystem, basic programming and string operations.
+ * Support for wxWidgets 3.1.7
 
 # 22.05.0:
  * Updated the Ukrainian translation
