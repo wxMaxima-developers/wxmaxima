@@ -23,13 +23,13 @@ parts:
   wxmaxima:
     plugin: cmake
     source: https://github.com/wxMaxima-developers/wxmaxima.git
+    cmake-parameters: ["-DCMAKE_PREFIX_PATH=/usr"]
     build-packages:
      - libwxbase3.0-dev
-     - libwxgtk3.0-dev
+     - libwxgtk3.0-gtk3-dev
      - gettext
     stage-packages:
      - maxima
      - maxima-doc
      - gnuplot
-     - tcl-vtk6
-     - python-vtk6
+     - tcl-vtk7
