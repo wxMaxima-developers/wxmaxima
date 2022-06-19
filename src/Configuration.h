@@ -872,17 +872,8 @@ wxString DocumentclassOptions() const {return m_documentclassOptions;}
   void InitStyles();
   //! True if we are confident that the font renders this char
   bool FontRendersChar(wxChar ch, const wxFont &font = *wxNORMAL_FONT);
-  wxWindow *LastActiveTextCtrl()
-    {
-      if(m_lastActiveTextCtrl != NULL)
-        return m_lastActiveTextCtrl;
-      else
-        return m_workSheet;
-    }
-  void LastActiveTextCtrl(wxWindow *last)
-    {
-      m_lastActiveTextCtrl = last;
-    }
+  wxTextCtrl *LastActiveTextCtrl() const { return m_lastActiveTextCtrl; }
+  void LastActiveTextCtrl(wxTextCtrl *last);
 private:
   WX_DECLARE_STRING_HASH_MAP(wxString, RenderablecharsHash);
   RenderablecharsHash m_renderableChars;
@@ -1053,7 +1044,7 @@ private:
   int m_autoSaveMinutes;
   wxString m_wxMathML_Filename;
   bool m_wxMathML_UseFile;
-  wxWindow *m_lastActiveTextCtrl = NULL;
+  wxTextCtrl *m_lastActiveTextCtrl = NULL;
 };
 
 //! Sets the configuration's "printing" flag until this class is left.

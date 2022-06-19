@@ -786,6 +786,11 @@ void Configuration::ReadConfig()
   ReadStyles();
 }
 
+void Configuration::LastActiveTextCtrl(wxTextCtrl *last)
+{
+  m_lastActiveTextCtrl = last;
+}
+
 bool Configuration::HideMarkerForThisMessage(wxString message)
 {
   auto it = m_hideMarkerForThisMessage.find(message);

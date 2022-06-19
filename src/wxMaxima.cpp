@@ -9803,20 +9803,20 @@ void wxMaxima::OnWizardAbort(wxCommandEvent &WXUNUSED(event))
 {
   m_manager.GetPane("wizard").Show(false);
   m_manager.Update();
-  m_worksheet->m_configuration->LastActiveTextCtrl(m_worksheet);
+  m_worksheet->m_configuration->LastActiveTextCtrl(NULL);
 }
 
 void wxMaxima::OnWizardOK(wxCommandEvent &event)
 {
   OnWizardInsert(event);
   OnWizardAbort(event);
-  m_worksheet->m_configuration->LastActiveTextCtrl(m_worksheet);
+  m_worksheet->m_configuration->LastActiveTextCtrl(NULL);
 }
 
 void wxMaxima::OnWizardInsert(wxCommandEvent &event)
 {
   MenuCommand(m_wizard->GetOutput());
-  m_worksheet->m_configuration->LastActiveTextCtrl(m_worksheet);
+  m_worksheet->m_configuration->LastActiveTextCtrl(NULL);
 }
 
 

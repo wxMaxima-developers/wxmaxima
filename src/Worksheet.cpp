@@ -218,16 +218,28 @@ Worksheet::Worksheet(wxWindow *parent, int id, Worksheet* &observer, wxPoint pos
 
 void Worksheet::OnSidebarKey(wxCommandEvent &event)
 {
-  SetFocus();
-  if(GetActiveCell())
+  if((m_configuration->LastActiveTextCtrl() == NULL) ||
+    (m_configuration->LastActiveTextCtrl() == NULL))
   {
-    GetActiveCell()->InsertText(wxString(wxChar(event.GetId())));
-    GroupCell *parent = GetActiveCell()->GetGroup();
-    Recalculate(parent);
-    RequestRedraw(parent);
+    SetFocus();
+    // Send the char button to the active cell or a new cell on the worksheet
+    if(GetActiveCell())
+    {
+      GetActiveCell()->InsertText(wxString(wxChar(event.GetId())));
+      GroupCell *parent = GetActiveCell()->GetGroup();
+      Recalculate(parent);
+      RequestRedraw(parent);
+    }
+    else
+      OpenHCaret(wxString(wxChar(event.GetId())));
   }
   else
-    OpenHCaret(wxString(wxChar(event.GetId())));
+  {
+    // Send the char to the last active text control
+    wxTextCtrl *textCtrl = m_configuration->LastActiveTextCtrl();
+    textCtrl->WriteText(wxString(wxChar(event.GetId())));
+    textCtrl->SetFocus();
+  }
 }
 
 void Worksheet::EraseBackground(wxEraseEvent &WXUNUSED(event)){}
@@ -7856,7 +7868,7 @@ void Worksheet::OnActivate(wxActivateEvent &event)
   // If the focus changes we might want to refresh the menu.
   RequestRedraw();
   if(event.GetActive())
-    m_configuration->LastActiveTextCtrl(this);
+    m_configuration->LastActiveTextCtrl(NULL);
 }
 
 void Worksheet::SetHCaret(GroupCell *where)
