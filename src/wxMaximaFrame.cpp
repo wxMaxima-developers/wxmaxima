@@ -1019,7 +1019,7 @@ void wxMaximaFrame::SetupMenu()
   programMenu->Append(menu_return, _("Return from current block/loop..."));
   programMenu->Append(menu_local, _("Make function local..."));
   programMenu->AppendSeparator();
-  programMenu->Append(menu_quotequote, _("Define function..."));
+  programMenu->Append(menu_def_fun, _("Define function..."));
   m_MaximaMenu->Append(menu_fun_def, _("Show function &Definition..."),
                        _("Show definition of a function"),
                        wxITEM_NORMAL);
@@ -1041,6 +1041,8 @@ void wxMaximaFrame::SetupMenu()
   programMenu->AppendSeparator();
   programMenu->Append(menu_saveLisp, _("Save as lisp..."));
   programMenu->Append(menu_loadLisp, _("Load lisp..."));
+  programMenu->AppendSeparator();
+  programMenu->Append(menu_gensym, _("Generate unused symbol name"));
   m_MaximaMenu->Append(wxNewId(), _("Program"), programMenu);
   wxMenu *stringMenu = new wxMenu;
   wxMenu *streamMenu = new wxMenu;

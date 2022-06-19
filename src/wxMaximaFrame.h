@@ -180,6 +180,7 @@ public:
     menu_eigen,
     menu_eigvect,
     menu_fun_def,
+    menu_gensym,
     menu_adjoint_mat,
     menu_transpose,
     menu_map_mat,

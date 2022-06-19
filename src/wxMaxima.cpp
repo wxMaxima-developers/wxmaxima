@@ -721,6 +721,8 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
           wxCommandEventHandler(wxMaxima::EquationsMenu), NULL, this);
   Connect(menu_fun_def, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_gensym, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
   Connect(menu_divide, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::CalculusMenu), NULL, this);
   Connect(menu_gcd, wxEVT_MENU,
@@ -6932,6 +6934,9 @@ void wxMaxima::MaximaMenu(wxCommandEvent &event)
                _("Parameter(s):"),wxT("x,[y]"), _("Comma-separated parameter names. A parameter in square brackets [] will be filled with the list of any additional arguments the function gets."),
                _("Function contents:"),wxT("sin(x)+lsum(i,i,y)"), wxEmptyString
       );
+    break;
+  case menu_gensym:
+    MenuCommand("gensym();");
     break;
   case menu_def_macro:
     CommandWiz(_("Define a macro"),
