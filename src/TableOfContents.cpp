@@ -44,7 +44,7 @@ TableOfContents::TableOfContents(wxWindow *parent, int id, Configuration **confi
           wxLC_SINGLE_SEL | wxLC_ALIGN_LEFT | wxLC_REPORT | wxLC_NO_HEADER
   );
   m_displayedItems->AppendColumn(wxEmptyString);
-  m_regex = new RegexCtrl(this, structure_regex_id);
+  m_regex = new RegexCtrl(this, structure_regex_id, *config);
 
   // A box whose 1st row is growable 
   wxSizer *box = new wxBoxSizer(wxVERTICAL);

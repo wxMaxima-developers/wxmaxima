@@ -38,14 +38,15 @@
 #include <algorithm>
 #include <memory>
 #include <wx/wupdlock.h>
+#include "Configuration.h"
 
-History::History(wxWindow *parent, int id) : wxPanel(parent, id)
+History::History(wxWindow *parent, int id, Configuration *cfg) : wxPanel(parent, id)
 {
   wxConfig::Get()->Read(m_showCurrentSessionOnlyKey, &m_showCurrentSessionOnly);
   // wxLB_MULTIPLE and wxLB_EXTENDED are mutually exclusive and will assert on Windows
   m_history = new wxListBox(this, history_ctrl_id, wxDefaultPosition, wxDefaultSize, 0, NULL,
                             wxLB_EXTENDED | wxLB_HSCROLL | wxLB_NEEDED_SB);
-  m_regex = new RegexCtrl(this, wxID_ANY);
+  m_regex = new RegexCtrl(this, wxID_ANY, cfg);
   wxBoxSizer *box = new wxBoxSizer(wxVERTICAL);
 
   box->Add(m_history, wxSizerFlags(1).Expand());

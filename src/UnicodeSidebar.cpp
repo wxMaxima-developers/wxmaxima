@@ -43,14 +43,14 @@
 wxDEFINE_EVENT(SIDEBARKEYEVENT, SidebarKeyEvent);
 wxDEFINE_EVENT(SYMBOLADDEVENT, SymboladdEvent);
 
-UnicodeSidebar::UnicodeSidebar(wxWindow *parent, wxWindow *worksheet) :
+UnicodeSidebar::UnicodeSidebar(wxWindow *parent, wxWindow *worksheet, Configuration *cfg) :
   wxPanel(parent),
   m_worksheet(worksheet)
 {
   wxWindowUpdateLocker speedUp(this);
   wxBoxSizer *box = new wxBoxSizer(wxVERTICAL);
   m_initialized = false;
-  m_regex = new RegexCtrl(this, wxID_ANY);
+  m_regex = new RegexCtrl(this, wxID_ANY, cfg);
   m_regex->Connect(REGEX_EVENT, wxCommandEventHandler(UnicodeSidebar::OnRegExEvent), NULL, this);
   m_grid = new wxGrid(this, wxID_ANY);
   m_grid->CreateGrid(0,3);

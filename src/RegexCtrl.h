@@ -27,11 +27,12 @@
 #include <wx/regex.h>
 #include <wx/textctrl.h>
 #include "Configuration.h"
+#include "BTextCtrl.h"
 
-/*! A wxTextCtrl that allows to input a regex
+/*! A BTextCtrl that allows to input a regex
 
 */
-class RegexCtrl : public wxTextCtrl
+class RegexCtrl : public BTextCtrl
 {
   class wxLogBuffer_noStdErrFlush : public wxLogBuffer
   {
@@ -42,7 +43,7 @@ class RegexCtrl : public wxTextCtrl
   };
 public:
   RegexCtrl(wxWindow *parent,
-            wxWindowID id);
+            wxWindowID id, Configuration *cfg);
   bool Matches(wxString text);
 
 protected:

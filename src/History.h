@@ -55,7 +55,7 @@ enum
 class History final : public wxPanel
 {
 public:
-  History(wxWindow *parent, int id);
+  History(wxWindow *parent, int id, Configuration *cfg);
 
   ~History();
 

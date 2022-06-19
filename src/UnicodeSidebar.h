@@ -40,7 +40,7 @@ class UnicodeSidebar : public wxPanel
 {
 public:
   //! The constructor
-  UnicodeSidebar(wxWindow *parent, wxWindow *worksheet);
+  UnicodeSidebar(wxWindow *parent, wxWindow *worksheet, Configuration *cfg);
 
   /* The destructor
 

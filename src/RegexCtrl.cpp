@@ -24,10 +24,11 @@
 #include <wx/txtstrm.h>
 #include <wx/sstream.h>
 #include <wx/log.h>
+#include "Configuration.h"
 
 RegexCtrl::RegexCtrl(wxWindow *parent,
-                     wxWindowID id) :
-  wxTextCtrl(parent, id)
+                     wxWindowID id, Configuration *cfg) :
+  BTextCtrl(parent, id, cfg)
 {
   SetToolTip(RegexTooltip_norm);
   Connect(wxEVT_TEXT,

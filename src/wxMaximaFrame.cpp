@@ -85,11 +85,6 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   wxAcceleratorTable accel(sizeof(entries)/sizeof(entries[0]), entries);
   SetAcceleratorTable(accel);
 
-  // We need to create one pane which doesn't do a lot before the log pane
-  // Otherwise the log pane will be displayed in a very strange way
-  // The history pane was chosen randomly
-  m_history = new History(this, -1);
-
   // Redirect all debug messages to a dockable panel and output some info
   // about this program.
   m_logPane = new LogPane(this, -1, becomeLogTarget);
@@ -170,6 +165,11 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   // console
   new Worksheet(this, -1, m_worksheet);
   wxWindowUpdateLocker worksheetBlocker(m_worksheet);
+
+  // We need to create one pane which doesn't do a lot before the log pane
+  // Otherwise the log pane will be displayed in a very strange way
+  // The history pane was chosen randomly
+  m_history = new History(this, -1, m_worksheet->m_configuration);
 
   // The table of contents
   m_worksheet->m_tableOfContents = new TableOfContents(this, -1, &m_worksheet->m_configuration, m_worksheet->GetTreeAddress());
@@ -261,7 +261,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
                             FloatingSize(greekPane->GetEffectiveMinSize()).
                             Left());
 
-  wxPanel *unicodePane = new UnicodeSidebar(this, m_worksheet);
+  wxPanel *unicodePane = new UnicodeSidebar(this, m_worksheet, m_worksheet->m_configuration);
   wxWindowUpdateLocker unicodeBlocker(unicodePane);
   m_manager.AddPane(unicodePane,
                     wxAuiPaneInfo().Name(wxT("unicode")).
