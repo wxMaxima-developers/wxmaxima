@@ -5,7 +5,7 @@ description: wxMaxima is a quite full-featured graphical user interface for Maxi
 confinement: strict
 grade: stable
 icon: data/io.github.wxmaxima_developers.wxMaxima.svg
-base: core20
+base: core22
 
 apps:
   wxmaxima:
@@ -22,8 +22,9 @@ apps:
 parts:
   wxmaxima:
     plugin: cmake
+    cmake-parameters:
+      - -DCMAKE_INSTALL_PREFIX=/usr
     source: https://github.com/wxMaxima-developers/wxmaxima.git
-    cmake-parameters: ["-DCMAKE_PREFIX_PATH=/usr"]
     build-packages:
      - libwxbase3.0-dev
      - libwxgtk3.0-gtk3-dev
@@ -33,3 +34,4 @@ parts:
      - maxima-doc
      - gnuplot
      - tcl-vtk7
+     - libpsm-infinipath1
