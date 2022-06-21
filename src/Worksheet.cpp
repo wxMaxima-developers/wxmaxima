@@ -239,10 +239,22 @@ void Worksheet::OnSidebarKey(wxCommandEvent &event)
     wxTextCtrl *textCtrl = m_configuration->LastActiveTextCtrl();
     long pos = textCtrl->GetInsertionPoint();
     textCtrl->WriteText(wxString(wxChar(event.GetId())));
-    textCtrl->SetFocus();
     textCtrl->SetInsertionPoint(pos+1);
+    CallAfter(&Worksheet::FocusTextControl);
   }
 }
+
+void Worksheet::FocusTextControl()
+{
+  wxTextCtrl *textCtrl = m_configuration->LastActiveTextCtrl();
+  if(textCtrl)
+  {
+    long pos = textCtrl->GetInsertionPoint();
+    textCtrl->SetFocus();
+    textCtrl->SetInsertionPoint(pos);
+  }    
+}
+
 
 void Worksheet::EraseBackground(wxEraseEvent &WXUNUSED(event)){}
 

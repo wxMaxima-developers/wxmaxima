@@ -1682,6 +1682,7 @@ public:
   };
 #endif
 protected:
+  void FocusTextControl();
   wxString m_lastQuestion;
   int m_virtualWidth_Last;
   int m_virtualHeight_Last;
