@@ -1,6 +1,6 @@
 # -*- mode: CMake; cmake-tab-width: 4; -*-
 
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/po4a.cfg.in ${CMAKE_CURRENT_BINARY_DIR}/po4a.cfg)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/po4a.cfg.in po4a.cfg)
 
 find_program(PO4A-UPDATEPO po4a-updatepo)
 
@@ -12,12 +12,12 @@ if(PO4A-UPDATEPO)
     foreach(POFILE ${TRANSLATION_FILES})
         string(REGEX REPLACE ".*/(.*).po$" "\\1" LANG ${POFILE})
         file(RELATIVE_PATH WXMAXIMA_MD_RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}" "${CMAKE_SOURCE_DIR}/info/wxmaxima.md")
-        add_custom_target(wxmaxima-manual-locale-${LANG} ALL DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/${LANG}.po")
+        add_custom_target(wxmaxima-manual-locale-${LANG} ALL DEPENDS "${LANG}.po")
         add_custom_command(
             DEPENDS ${CMAKE_SOURCE_DIR}/info/wxmaxima.md
-            OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/${LANG}.po
-            COMMAND ${PO4A-UPDATEPO} -f text -o markdown -m "${WXMAXIMA_MD_RELATIVE}" -p "${CMAKE_CURRENT_BINARY_DIR}/${LANG}.po" -M UTF-8
-            COMMAND touch "${CMAKE_CURRENT_BINARY_DIR}/${LANG}.po"
+            OUTPUT ${LANG}.po
+            COMMAND ${PO4A-UPDATEPO} -f text -o markdown -m "${WXMAXIMA_MD_RELATIVE}" -p "${LANG}.po" -M UTF-8
+            COMMAND touch "${LANG}.po"
             COMMENT "Created and updated ${LANG}.po in order to sync the file with the changes in ${CMAKE_SOURCE_DIR}/info/wxmaxima.md"
         )
 
