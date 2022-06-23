@@ -1589,6 +1589,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
 void wxMaxima::OnPowerEvent(wxPowerEvent &event)
 {
   AutoSave();
+  event.Skip();
 }
 #endif 
 
@@ -2544,7 +2545,7 @@ void wxMaxima::KillMaxima(bool logMessage)
   m_pid = -1;
 }
 
-void wxMaxima::OnGnuplotQueryTerminals(wxProcessEvent& WXUNUSED(event))
+void wxMaxima::OnGnuplotQueryTerminals(wxProcessEvent& event)
 {
   if(!m_gnuplotTerminalQueryProcess)
     return;
@@ -2580,13 +2581,14 @@ void wxMaxima::OnGnuplotQueryTerminals(wxProcessEvent& WXUNUSED(event))
   }
   m_gnuplotTerminalQueryProcess->CloseOutput();
   m_gnuplotTerminalQueryProcess = NULL;
-
+  event.Skip();
 }
 
-void wxMaxima::OnGnuplotClose(wxProcessEvent& WXUNUSED(event))
+void wxMaxima::OnGnuplotClose(wxProcessEvent& event)
 {
   m_gnuplotProcess = NULL;
   wxLogMessage(_("Gnuplot has closed."));
+  event.Skip();
 }
 
 void wxMaxima::OnProcessEvent(wxProcessEvent& event)
@@ -2653,6 +2655,7 @@ void wxMaxima::OnProcessEvent(wxProcessEvent& event)
   StatusMaximaBusy(disconnected);
   UpdateToolBar();
   UpdateMenus();
+  event.Skip();
 }
 
 ///--------------------------------------------------------------------------------
@@ -4776,6 +4779,7 @@ bool wxMaxima::InterpretDataFromMaxima(const wxString &newData)
 
 void wxMaxima::OnIdle(wxIdleEvent &event)
 {
+  event.Skip();
   // Update the info what maxima is currently doing
   UpdateStatusMaximaBusy();
 
@@ -6558,18 +6562,21 @@ void wxMaxima::OnFind(wxFindDialogEvent &event)
                            event.GetFlags() & wxFR_DOWN,
                            !(event.GetFlags() & wxFR_MATCHCASE)))
     LoggingMessageBox(_("No matches found!"));
+  event.Skip();
 }
 
-void wxMaxima::OnFindClose(wxFindDialogEvent &WXUNUSED(event))
+void wxMaxima::OnFindClose(wxFindDialogEvent &event)
 {
   if (m_worksheet->m_findDialog != NULL)
     m_worksheet->m_findDialog->Destroy();
   m_oldFindString = wxEmptyString;
   m_worksheet->m_findDialog = NULL;
+  event.Skip();
 }
 
 void wxMaxima::OnReplace(wxFindDialogEvent &event)
 {
+  event.Skip();
   m_worksheet->Replace(event.GetFindString(),
                      event.GetReplaceString(),
                      !(event.GetFlags() & wxFR_MATCHCASE)
@@ -6587,6 +6594,7 @@ void wxMaxima::OnReplace(wxFindDialogEvent &event)
 
 void wxMaxima::OnReplaceAll(wxFindDialogEvent &event)
 {
+  event.Skip();
   int count = m_worksheet->ReplaceAll(
           event.GetFindString(),
           event.GetReplaceString(),
@@ -6600,6 +6608,7 @@ void wxMaxima::OnReplaceAll(wxFindDialogEvent &event)
 
 void wxMaxima::OnSymbolAdd(wxCommandEvent &event)
 {
+  event.Skip();
   m_worksheet->m_configuration->SymbolPaneAdditionalChars(
     m_worksheet->m_configuration->SymbolPaneAdditionalChars() +
     wxString(wxChar(event.GetId())));
@@ -6608,6 +6617,7 @@ void wxMaxima::OnSymbolAdd(wxCommandEvent &event)
 
 void wxMaxima::PropertiesMenu(wxCommandEvent &event)
 {
+  event.Skip();
   EditorCell *editor = m_worksheet->GetActiveCell();
   if(editor == NULL)
     return;
