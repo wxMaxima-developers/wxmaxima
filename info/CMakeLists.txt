@@ -103,8 +103,8 @@ if(PANDOC)
 
 
 	file(GLOB IMAGEFILES ${CMAKE_CURRENT_SOURCE_DIR}/*.png)
-	file(COPY ${IMAGEFILES} DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
-	file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.md DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+	file(COPY ${IMAGEFILES} DESTINATION .)
+	file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.md DESTINATION .)
 
 	generate_wxmaxima_documentation_html("wxmaxima")
 	generate_wxmaxima_documentation_epub("wxmaxima")
@@ -144,7 +144,7 @@ else()
     message(STATUS "Pandoc not found. Documentation can not be converted from Markdown. Included HTML documentation will be installed.")
 	file(GLOB WXMAXIMA_HTML_HELP "${CMAKE_CURRENT_SOURCE_DIR}/*.html")
 	install(FILES ${WXMAXIMA_HTML_HELP} DESTINATION share/doc/wxmaxima)
-	file(COPY ${WXMAXIMA_HTML_HELP} DESTINATION "${CMAKE_CURRENT_BINARY_DIR}")
+	file(COPY ${WXMAXIMA_HTML_HELP} DESTINATION .)
 endif()
 
 set(HTMLHELP_ADDITIONAL_FILES wxmaxima.css
@@ -153,7 +153,7 @@ set(HTMLHELP_ADDITIONAL_FILES wxmaxima.css
                               wxMaxima_configuration_001.png wxMaximaLogo.png wxMaximaWindow.png wxmaxima.svg)
 foreach(CURRENTFILE ${HTMLHELP_ADDITIONAL_FILES})
 	install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/${CURRENTFILE}" DESTINATION share/doc/wxmaxima)
-	file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/${CURRENTFILE}" DESTINATION "${CMAKE_CURRENT_BINARY_DIR}")
+	file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/${CURRENTFILE}" DESTINATION .)
 endforeach()
 
 
