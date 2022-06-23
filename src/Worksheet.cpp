@@ -249,6 +249,7 @@ void Worksheet::FocusTextControl()
   wxTextCtrl *textCtrl = m_configuration->LastActiveTextCtrl();
   if(textCtrl)
   {
+    wxLogMessage(_("Forwarding the keyboard focus to a text control"));
     long pos = textCtrl->GetInsertionPoint();
     textCtrl->SetFocus();
     textCtrl->SetInsertionPoint(pos);

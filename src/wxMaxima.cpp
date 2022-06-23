@@ -11836,9 +11836,15 @@ void wxMaxima::PassKeyboardFocus()
   if (m_worksheet)
   {
     if (m_worksheet->m_configuration->LastActiveTextCtrl())
+    {
+      wxLogMessage(_("Forwarding the keyboard focus to a text control"));
       m_worksheet->m_configuration->LastActiveTextCtrl()->SetFocus();
+    }
     else
+    {
+      wxLogMessage(_("Forwarding the keyboard focus to the worksheet"));
       m_worksheet->SetFocus();
+    }
   }
 }
 

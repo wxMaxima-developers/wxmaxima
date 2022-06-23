@@ -69,6 +69,7 @@ BTextCtrl::BTextCtrl(wxWindow *parent,
 void BTextCtrl::OnFocus(wxFocusEvent &event)
 {
   m_config->LastActiveTextCtrl(this);
+  event.skip();
 }
 
 
