@@ -107,12 +107,18 @@ GenWizPanel::GenWizPanel(wxWindow *parent, Configuration *cfg,
   
 #if defined __WXMSW__
   button_1 = new wxButton(this, wxID_OK, _("OK"));
-  button_1->SetDefault();
+  if(dockable)
+    m_insertButton->SetDefault();
+  else
+    button_1->SetDefault();
   button_2 = new wxButton(this, wxID_CANCEL, _("Cancel"));
 #else
   button_1 = new wxButton(this, wxID_CANCEL, _("Cancel"));
   button_2 = new wxButton(this, wxID_OK, _("OK"));
-  button_2->SetDefault();
+  if(dockable)
+    m_insertButton->SetDefault();
+  else
+    button_2->SetDefault();
 #endif
   buttonSizer->Add(button_1, wxSizerFlags(0).Border(wxALL, 5*GetContentScaleFactor()));
   m_insertButton->Show(dockable);
