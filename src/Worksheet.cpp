@@ -1295,6 +1295,7 @@ void Worksheet::UnfoldAll()
  */
 void Worksheet::OnMouseRightDown(wxMouseEvent &event)
 {
+  m_configuration->LastActiveTextCtrl(NULL);
   m_updateControls = true;
   RecalculateIfNeeded();
   RedrawIfRequested();
@@ -2137,6 +2138,7 @@ void Worksheet::OnMouseLeftInGc(wxMouseEvent &event, GroupCell *clickedInGC)
  */
 void Worksheet::OnMouseLeftDown(wxMouseEvent &event)
 {
+  m_configuration->LastActiveTextCtrl(NULL);
   m_updateControls = true;
   RecalculateIfNeeded();
   RedrawIfRequested();
@@ -3287,6 +3289,7 @@ void Worksheet::Evaluate()
  */
 void Worksheet::OnKeyDown(wxKeyEvent &event)
 {
+  m_configuration->LastActiveTextCtrl(NULL);
   m_updateControls = true;
   m_configuration->AdjustWorksheetSize(true);
   ClearNotification();
@@ -4277,6 +4280,7 @@ void Worksheet::SetNotification(const wxString &message, int flags)
  */
 void Worksheet::OnChar(wxKeyEvent &event)
 {
+  m_configuration->LastActiveTextCtrl(NULL);
   m_configuration->AdjustWorksheetSize(true);
   // Alt+Up and Alt+Down are hotkeys. In order for the main application to realize
   // them they need to be passed to it using the event's Skip() function.
@@ -6832,6 +6836,7 @@ bool Worksheet::CanEdit()
 
 void Worksheet::OnDoubleClick(wxMouseEvent &WXUNUSED(event))
 {
+  m_configuration->LastActiveTextCtrl(NULL);
   m_updateControls = true;
   // No more track the mouse when it is outside the worksheet
   if (HasCapture())
@@ -7885,10 +7890,7 @@ void Worksheet::OnActivate(wxActivateEvent &event)
   // If the focus changes we might want to refresh the menu.
   RequestRedraw();
   if(event.GetActive())
-  {
     wxLogMessage(_("Worksheet got activated"));
-    m_configuration->LastActiveTextCtrl(NULL);
-  }
 }
 
 void Worksheet::SetHCaret(GroupCell *where)
