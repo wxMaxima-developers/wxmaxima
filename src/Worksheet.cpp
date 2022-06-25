@@ -218,8 +218,7 @@ Worksheet::Worksheet(wxWindow *parent, int id, Worksheet* &observer, wxPoint pos
 
 void Worksheet::OnSidebarKey(wxCommandEvent &event)
 {
-  if((m_configuration->LastActiveTextCtrl() == NULL) ||
-    (m_configuration->LastActiveTextCtrl() == NULL))
+  if(m_configuration->LastActiveTextCtrl() == NULL)
   {
     SetFocus();
     // Send the char button to the active cell or a new cell on the worksheet
@@ -7794,7 +7793,6 @@ void Worksheet::MergeCells()
 void Worksheet::OnSetFocus(wxFocusEvent &event)
 {
   wxLogMessage(_("Worksheet got the mouse focus"));
-  m_configuration->LastActiveTextCtrl(NULL);
   m_hasFocus = true;
   
   // We want the cursor to blink and to start doing so soon
