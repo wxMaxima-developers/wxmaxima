@@ -377,12 +377,22 @@ _wxMaxima_ is primarily a graphical user interface for _Maxima_. As such, its ma
 
 ## Subscripted variables
 
-if `wxsubscripts` is set to true variable names of the format `x_y` are displayed using a subscript if
+`wxsubscripts` specifies, if (and how) _wxMaxima_ will autosubscript variable names:
 
-* `y` is a single letter
-* `y` is an integer
+If it is `false`, the functionality is off, wxMaxima will not autosubscript part of variable names after an underscore.
+
+If it is set to `'all`, everything after an underscore will be subscripted.
+
+If it is set to true variable names of the format `x_y` are displayed using a subscript if
+
+* Either `x` or `y` is a single letter or
+* `y` is an integer (can include more than one character).
+
+![How variables are autosubscripted using wxsubscripts](./wxsubscripts.png){ id=img_wxsubscripts }
 
 If the variable name doesn’t match these requirements, it can still be declared as "to be subscripted" using the command `wxdeclare_subscript(variable_name);` or `wxdeclare_subscript([variable_name1,variable_name2,...]);` Declaring a variable as subscripted can be reverted using the following command: `wxdeclare_subscript(variable_name,false);`
+
+You can use the menu "View->Autosubscript" to set these values.
 
 ## User feedback in the status bar
 
