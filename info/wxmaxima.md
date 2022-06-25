@@ -383,7 +383,7 @@ If it is `false`, the functionality is off, wxMaxima will not autosubscript part
 
 If it is set to `'all`, everything after an underscore will be subscripted.
 
-If it is set to true variable names of the format `x_y` are displayed using a subscript if
+If it is set to `true` variable names of the format `x_y` are displayed using a subscript if
 
 * Either `x` or `y` is a single letter or
 * `y` is an integer (can include more than one character).
