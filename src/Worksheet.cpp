@@ -7788,8 +7788,10 @@ void Worksheet::MergeCells()
 
 void Worksheet::OnSetFocus(wxFocusEvent &event)
 {
-  return;
+  wxLogMessage(_("Worksheet got the mouse focus"));
+  m_configuration->LastActiveTextCtrl(NULL);
   m_hasFocus = true;
+  
   // We want the cursor to blink and to start doing so soon
   m_caretTimer.StartOnce(1);
   if (GetActiveCell())
@@ -7883,7 +7885,10 @@ void Worksheet::OnActivate(wxActivateEvent &event)
   // If the focus changes we might want to refresh the menu.
   RequestRedraw();
   if(event.GetActive())
+  {
+    wxLogMessage(_("Worksheet got activated"));
     m_configuration->LastActiveTextCtrl(NULL);
+  }
 }
 
 void Worksheet::SetHCaret(GroupCell *where)

@@ -68,6 +68,7 @@ BTextCtrl::BTextCtrl(wxWindow *parent,
 
 void BTextCtrl::OnFocus(wxFocusEvent &event)
 {
+  wxLogMessage(_("A text control got the mouse focus"));
   m_config->LastActiveTextCtrl(this);
   event.Skip();
 }
