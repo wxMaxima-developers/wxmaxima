@@ -3886,6 +3886,8 @@ bool AutoComplete::LoadBuiltinSymbols()
   m_wordList[tmplte ].Add("alphacharp(<char>)    "); // OPTION
   m_wordList[command].Add("alphanumericp"); // FUNCTION
   m_wordList[tmplte ].Add("alphanumericp(<char>) "); // OPTION
+  m_wordList[command].Add("askequal"); // FUNCTION
+  m_wordList[tmplte ].Add("askequal(<exp1>,<exp2>)"); // OPTION
   m_wordList[command].Add("ascii"); // FUNCTION
   m_wordList[tmplte ].Add("ascii(<int>) "); // OPTION
   m_wordList[command].Add("cequal"); // FUNCTION
