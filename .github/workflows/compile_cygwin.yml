@@ -23,7 +23,7 @@ jobs:
              mkdir build
              cd build
              find /cygdrive/d/a/wxmaxima
-             cmake d:\a/wxmaxima/wxmaxima/
+             cmake /cygdrive/d/a/wxmaxima/wxmaxima
              cd ..
       - name: compile
         run: |
