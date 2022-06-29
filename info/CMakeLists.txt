@@ -22,7 +22,7 @@ if(PANDOC)
 		add_custom_command(
 			OUTPUT ${FILEBASENAME}.html
 			DEPENDS ${FILEBASENAME}.md
-			COMMAND ${PANDOC} ${FILEBASENAME}.md -t html5 "--include-in-header=${CMAKE_CURRENT_SOURCE_DIR}/header.html" -o ${FILEBASENAME}.html --number-sections --table-of-contents --standalone --css=wxmaxima.css --metadata title="wxMaxima"
+			COMMAND ${PANDOC} ${FILEBASENAME}.md -t html5 "--include-in-header=${CMAKE_CURRENT_SOURCE_DIR}/header.html" -o ${FILEBASENAME}.html --number-sections --table-of-contents --standalone --css=wxmaxima.css --metadata title="WxMaxima"
 			COMMAND ${REMOVE_HTML5SHIV}
 			COMMENT "Generating ${FILEBASENAME}.html")
 		add_custom_target(build_${FILEBASENAME}.html DEPENDS ${FILEBASENAME}.html)
