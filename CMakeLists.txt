@@ -34,6 +34,8 @@ option(WXM_INTERPROCEDURAL_OPTIMIZATION
     "Enable interprocedural optimization (IPO/LTO)." OFF)
 option(WXM_INCLUDE_FONTS
     "Include additional fonts." ON)
+option(WXM_USE_DOXYGEN
+    "Enable Doxygen for source code documentation." OFF)
 
 if(WXM_INCLUDE_FONTS)
     add_definitions("-DWXM_INCLUDE_FONTS")
@@ -208,7 +210,9 @@ list(REMOVE_AT AUTHORSLINES 0 1) # remove main heading line.
 
 add_definitions(-DwxNO_UNSAFE_WXSTRING_CONV)
 
-add_subdirectory(Doxygen)
+if(WXM_USE_DOXYGEN)
+    add_subdirectory(Doxygen)
+endif()
 add_subdirectory(data)
 add_subdirectory(info)
 add_subdirectory(locales)
