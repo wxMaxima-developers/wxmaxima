@@ -29,5 +29,5 @@ jobs:
         run: |
              cd build
              find /cygdrive/d/a/wxmaxima
-             C:/tools/cygwin/bin/make.exe
+             make VERBOSE=1
              cd ..
