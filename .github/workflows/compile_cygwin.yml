@@ -27,7 +27,7 @@ jobs:
              cd ..
       - name: compile
         run: |
-             cd build
+             cd /cygdrive/d/a/wxmaxima/build
              find /cygdrive/d/a/wxmaxima
              make VERBOSE=1
              cd ..
