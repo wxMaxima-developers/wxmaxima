@@ -31,3 +31,4 @@ jobs:
              find /cygdrive/d/a/wxmaxima
              make VERBOSE=1
              cd ..
+        shell: C:\tools\cygwin\bin\bash.exe --login --norc -eo pipefail -o igncr '{0}'
