@@ -27,8 +27,9 @@ jobs:
              cd ..
       - name: compile
         run: |
-             cd /cygdrive/d/a/wxmaxima/build
              find /cygdrive/d/a/wxmaxima
+             cd /cygdrive/d/a/wxmaxima/wxmaxima
+	     cd build
              make VERBOSE=1
              cd ..
         shell: C:\tools\cygwin\bin\bash.exe --login --norc -eo pipefail -o igncr '{0}'
