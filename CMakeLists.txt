@@ -137,17 +137,6 @@ message(STATUS "Looking for wxWidgets libraries in: ${wxWidgets_LIB_DIR}")
 find_package(wxWidgets 3 REQUIRED richtext aui adv html core xml net base)
 include(${wxWidgets_USE_FILE})
 
-find_program(CCACHE_PROGRAM ccache)
-if(CCACHE_PROGRAM)
-  # Support Unix Makefiles and Ninja
-  set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE "${CCACHE_PROGRAM}")
-  if(UNIX)
-    set_property(GLOBAL PROPERTY RULE_LAUNCH_LINK "${CCACHE_PROGRAM}")
-  endif()
-  message(STATUS "Found CCache ${CCACHE_PROGRAM}")
-else()
-  message(STATUS "Not found a ccache that speeds up incremental compilation.")
-endif()
 
 # Get the git version, if available.
 find_package(Git)
