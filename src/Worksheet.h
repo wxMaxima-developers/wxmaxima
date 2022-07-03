@@ -1542,6 +1542,9 @@ public:
 
   wxString GetOutputAboveCaret();
 
+  //! Search maxima's help file for command and variable names
+  void LoadHelpFileAnchors();
+  //! Compile a list of known autocompletion symbols
   void LoadSymbols();
   //! Collect all keyword anchors in the help file
   void CompileHelpFileAnchors();

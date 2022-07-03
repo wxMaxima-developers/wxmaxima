@@ -5956,7 +5956,7 @@ bool Worksheet::ExportToTeX(const wxString &file)
   return done;
 }
 
-void Worksheet::LoadSymbols()
+void Worksheet::LoadHelpFileAnchors()
 {
   if(m_helpfileanchorsThread)
   {
@@ -5980,9 +5980,17 @@ void Worksheet::LoadSymbols()
             new std::thread(&Worksheet::CompileHelpFileAnchors, this));
       }
       else
+      {
+        wxLogMessage(wxString::Format(_("Help file %s not found!"),
+                                      GetMaximaHelpFile().c_str()));
         LoadBuiltInManualAnchors();
+      }
     }
   }
+}
+
+void Worksheet::LoadSymbols()
+{
   m_autocomplete.LoadSymbols();
 }
 
@@ -6049,6 +6057,7 @@ void Worksheet::CompileHelpFileAnchors()
     int foundAnchors = 0;
     wxLogMessage(_("Compiling the list of anchors the maxima manual provides"));
     wxRegEx idExtractor(".*<span id=\\\"([a-zAZ0-9_-]*)\\\"");
+    wxRegEx idExtractor2("<dt id=\\\"(index-[a-zAZ0-9_-]*)\\\"");
     wxRegEx idExtractor_oldManual(".*<a name=\\\"([a-zAZ0-9_-]*)\\\"");
     wxString escapeChars = "<=>[]`%?;\\$%&+-*/.!\'@#:^_";
     if(wxFileExists(MaximaHelpFile))
@@ -6069,12 +6078,17 @@ void Worksheet::CompileHelpFileAnchors()
             if(idExtractor.Replace(&token, "\\1")>0)
               id = token;
             else
-            {
-              if(idExtractor_oldManual.Replace(&token, "\\1")>0)
+              if(idExtractor2.Replace(&token, "\\1")>0)
                 id = token;
-            }
+              else
+              {
+                if(idExtractor_oldManual.Replace(&token, "\\1")>0)
+                  id = token;
+              }
             if(!id.IsEmpty())
             {
+              // anchorless tokens begin with "index-"
+              token.Replace("index-", "");
               // In anchors a space is represented by a hyphen
               token.Replace("-", " ");
               // Some other chars including the minus are represented by "_00xx"
@@ -6255,6 +6269,8 @@ wxString Worksheet::GetMaximaHelpFile()
 #endif // __CYGWIN__
   wxPathList helpfilepaths;
   helpfilepaths.Add(m_maximaDocDir);
+  helpfilepaths.Add(m_maximaDocDir+"/info");
+  helpfilepaths.Add(m_maximaDocDir+"/info/html");
   helpfilepaths.Add(m_maximaDocDir+"/html");
   helpfilepaths.Add(m_maximaDocDir+"/../html");
   helpfilepaths.Add(m_configuration->MaximaShareDir() + "/../doc/html");
