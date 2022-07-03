@@ -1747,26 +1747,30 @@ m_CalculusMenu->AppendSeparator();
   APPEND_MENU_ITEM(m_HelpMenu, menu_show_tip, _("Show &Tips..."),
                    _("Show a tip"), wxART_TIP);
   m_HelpMenu->AppendSeparator();
-  m_HelpMenu->Append(menu_help_solving, _("Solving equations with Maxima"),
+  
+  wxMenu *tutorials_sub = new wxMenu;
+  tutorials_sub->Append(menu_help_solving, _("Solving equations with Maxima"),
                      "", wxITEM_NORMAL);
-  m_HelpMenu->Append(menu_help_numberformats, _("Number types"),
+  tutorials_sub->Append(menu_help_numberformats, _("Number types"),
                      "", wxITEM_NORMAL);
-  m_HelpMenu->Append(menu_help_tolerances, _("Tolerance calculations with Maxima"),
+  tutorials_sub->Append(menu_help_tolerances, _("Tolerance calculations with Maxima"),
                      "", wxITEM_NORMAL);
-  m_HelpMenu->Append(menu_help_3d, _("Displaying 3d curves"),
+  tutorials_sub->Append(menu_help_3d, _("Displaying 3d curves"),
                      "", wxITEM_NORMAL);
-  m_HelpMenu->Append(menu_help_diffequations, _("Solving differential equations"),
+  tutorials_sub->Append(menu_help_diffequations, _("Solving differential equations"),
                      "", wxITEM_NORMAL);
-  m_HelpMenu->Append(menu_help_fittingData, _("Fitting curves to measurement data"),
+  tutorials_sub->Append(menu_help_fittingData, _("Fitting curves to measurement data"),
                      "", wxITEM_NORMAL);
-  m_HelpMenu->Append(menu_help_varnames, _("Advanced variable names"),
+  tutorials_sub->Append(menu_help_varnames, _("Advanced variable names"),
                      "", wxITEM_NORMAL);
-  m_HelpMenu->Append(menu_help_listaccess, _("Fast list access"),
+  tutorials_sub->Append(menu_help_listaccess, _("Fast list access"),
                      "", wxITEM_NORMAL);
-  m_HelpMenu->Append(menu_help_memoizing, _("Memoizing"),
+  tutorials_sub->Append(menu_help_memoizing, _("Memoizing"),
                      "", wxITEM_NORMAL);
-  m_HelpMenu->Append(menu_help_tutorials, _(wxT("↗Tutorials on the web")),
+  tutorials_sub->Append(menu_help_tutorials, _(wxT("↗Tutorials on the web")),
                      _("Online tutorials"), wxITEM_NORMAL);
+  m_HelpMenu->Append(wxNewId(), _("Tutorials"), tutorials_sub);
+
   m_HelpMenu->AppendSeparator();
   m_HelpMenu->Append(menu_build_info, _("Build &Info"),
                      _("Info about Maxima build"), wxITEM_NORMAL);
