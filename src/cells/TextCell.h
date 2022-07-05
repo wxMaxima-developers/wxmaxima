@@ -36,7 +36,7 @@
 class TextCell : public Cell
 {
 public:
-  TextCell(GroupCell *group, Configuration **config, const wxString &text = {}, TextStyle style = TS_FUNCTION);
+  TextCell(GroupCell *group, Configuration *config, const wxString &text = {}, TextStyle style = TS_FUNCTION);
   TextCell(GroupCell *group, const TextCell &cell);
   virtual const CellTypeInfo &GetInfo() override;
   std::unique_ptr<Cell> Copy(GroupCell *group) const override;
@@ -149,7 +149,7 @@ protected:
     // of bit fields in this class!
     m_dontEscapeOpeningParenthesis = false;
     m_promptTooltip = false;
-    m_keepPercent_last = (*m_configuration)->CheckKeepPercent();
+    m_keepPercent_last = m_configuration->CheckKeepPercent();
   }
 
   //! Is an ending "(" of a function name the opening parenthesis of the function?

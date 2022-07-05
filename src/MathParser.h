@@ -55,7 +55,7 @@ public:
      \todo I guess we could increase the performance further by putting the
      most-frequently-used tags to the front of the list.
    */
-  explicit MathParser(Configuration **cfg, const wxString &zipfile = {});
+  explicit MathParser(Configuration *cfg, const wxString &zipfile = {});
   //! This class doesn't have a copy constructor
   MathParser(const MathParser&) = delete;
   //! This class doesn't have a = operator
@@ -253,7 +253,7 @@ private:
   CellType m_ParserStyle;
   FracCell::FracType m_FracStyle;
   CellPtr<GroupCell> m_group;
-  Configuration **m_configuration;
+  Configuration *m_configuration;
   bool m_highlight;
   std::shared_ptr<wxFileSystem> m_fileSystem; // used for loading pictures in <img> and <slide>
   static wxString m_unknownXMLTagToolTip;

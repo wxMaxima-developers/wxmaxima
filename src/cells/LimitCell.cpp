@@ -32,7 +32,7 @@
 static constexpr AFontSize MIN_LIMIT_FONT_SIZE{ 8.0f };
 static constexpr float LIMIT_FONT_SIZE_DECREASE{ 1.0f };
 
-LimitCell::LimitCell(GroupCell *group, Configuration **config,
+LimitCell::LimitCell(GroupCell *group, Configuration *config,
                      std::unique_ptr<Cell> &&base,
                      std::unique_ptr<Cell> &&under,
                      std::unique_ptr<Cell> &&name)

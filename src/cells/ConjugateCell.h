@@ -48,7 +48,7 @@
 class ConjugateCell final : public Cell
 {
 public:
-  ConjugateCell(GroupCell *group, Configuration **config, std::unique_ptr<Cell> &&inner);
+  ConjugateCell(GroupCell *group, Configuration *config, std::unique_ptr<Cell> &&inner);
   ConjugateCell(GroupCell *group, const ConjugateCell &cell);
   std::unique_ptr<Cell> Copy(GroupCell *group) const override;
   const CellTypeInfo &GetInfo() override;

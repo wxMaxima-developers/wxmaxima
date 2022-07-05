@@ -31,7 +31,7 @@
 
 #define SIGN_FONT_SCALE 2.0
 
-SqrtCell::SqrtCell(GroupCell *group, Configuration **config, std::unique_ptr<Cell> &&inner) :
+SqrtCell::SqrtCell(GroupCell *group, Configuration *config, std::unique_ptr<Cell> &&inner) :
     Cell(group, config),
     m_innerCell(std::move(inner))
 {
@@ -65,19 +65,18 @@ void SqrtCell::MakeBreakUpCells()
 
 void SqrtCell::Recalculate(AFontSize fontsize)
 {
-  Configuration *configuration = (*m_configuration);
   m_innerCell->RecalculateList(fontsize);
 
-  if (configuration->CheckTeXFonts())
+  if (m_configuration->CheckTeXFonts())
   {
-    wxDC *dc = configuration->GetDC();
+    wxDC *dc = m_configuration->GetDC();
 
     m_signFontScale = 1.0;
     auto fontsize1 = AFontSize(Scale_Px(SIGN_FONT_SCALE * fontsize * m_signFontScale));
     wxASSERT(fontsize1.IsValid());
 
     auto style = Style(fontsize1)
-                   .FontName(configuration->GetTeXCMEX());
+                   .FontName(m_configuration->GetTeXCMEX());
 
     dc->SetFont(style.GetFont());
     dc->GetTextExtent(wxT("s"), &m_signWidth, &m_signSize);
@@ -117,7 +116,7 @@ void SqrtCell::Recalculate(AFontSize fontsize)
     wxASSERT(fontsize1.IsValid());
 
     style = Style(fontsize1)
-              .FontName(configuration->GetTeXCMEX());
+              .FontName(m_configuration->GetTeXCMEX());
 
     dc->SetFont(style.GetFont());
     dc->GetTextExtent(wxT("s"), &m_signWidth, &m_signSize);
@@ -147,12 +146,11 @@ void SqrtCell::Draw(wxPoint point)
   Cell::Draw(point);
   if (DrawThisCell(point))
   {
-    Configuration *configuration = (*m_configuration);
-    wxDC *dc = configuration->GetDC();
+    wxDC *dc = m_configuration->GetDC();
 
     wxPoint in(point);
 
-    if (configuration->CheckTeXFonts())
+    if (m_configuration->CheckTeXFonts())
     {
       SetPen();
 
@@ -162,7 +160,7 @@ void SqrtCell::Draw(wxPoint point)
       wxASSERT(fontsize1.IsValid());
 
       auto style = Style(fontsize1)
-                     .FontName(configuration->GetTeXCMEX());
+                     .FontName(m_configuration->GetTeXCMEX());
 
       dc->SetFont(style.GetFont());
       SetForeground();
@@ -200,7 +198,7 @@ void SqrtCell::Draw(wxPoint point)
         }
       }
 
-      wxDC *adc = configuration->GetAntialiassingDC();
+      wxDC *adc = m_configuration->GetAntialiassingDC();
       adc->DrawLine(point.x + m_signWidth,
                   point.y - m_innerCell->GetCenterList(),
                   point.x + m_signWidth + m_innerCell->GetFullWidth(),
@@ -209,7 +207,7 @@ void SqrtCell::Draw(wxPoint point)
     }
     else
     {
-      wxDC *adc = configuration->GetAntialiassingDC();
+      wxDC *adc = m_configuration->GetAntialiassingDC();
       in.x += Scale_Px(11) + 1;
       SetPen(1.2);
 

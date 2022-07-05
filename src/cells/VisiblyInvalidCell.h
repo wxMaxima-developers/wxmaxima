@@ -33,10 +33,10 @@ class VisiblyInvalidCell final : public TextCell
 {
 public:
   //! The constructor for cell that, if displayed, means that something is amiss
-  VisiblyInvalidCell(GroupCell *group, Configuration **config);
+  VisiblyInvalidCell(GroupCell *group, Configuration *config);
   //! Constructor for a cell that shows that something is amiss using a custom tooltip
-  VisiblyInvalidCell(GroupCell *group, Configuration **config, wxString &&toolTip);
-  VisiblyInvalidCell(GroupCell *group, Configuration **config, const wxString *toolTip);
+  VisiblyInvalidCell(GroupCell *group, Configuration *config, wxString &&toolTip);
+  VisiblyInvalidCell(GroupCell *group, Configuration *config, const wxString *toolTip);
   VisiblyInvalidCell(GroupCell *group, const VisiblyInvalidCell &cell);
 //  std::unique_ptr<Cell> Copy(GroupCell *cell) const override;
   const CellTypeInfo &GetInfo() override;

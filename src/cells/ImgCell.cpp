@@ -42,7 +42,7 @@
 #include <wx/clipbrd.h>
 #include <wx/mstream.h>
 
-ImgCell::ImgCell(GroupCell *group, Configuration **config) :
+ImgCell::ImgCell(GroupCell *group, Configuration *config) :
     ImgCellBase(group, config),
     m_imageBorderWidth(1)
 {
@@ -50,7 +50,7 @@ ImgCell::ImgCell(GroupCell *group, Configuration **config) :
   m_type = MC_TYPE_IMAGE;
 }
 
-ImgCell::ImgCell(GroupCell *group, Configuration **config, const wxMemoryBuffer &image, const wxString &type) :
+ImgCell::ImgCell(GroupCell *group, Configuration *config, const wxMemoryBuffer &image, const wxString &type) :
     ImgCellBase(group, config),
     m_image(new Image(m_configuration, image, type)),
     m_imageBorderWidth(1)
@@ -59,7 +59,7 @@ ImgCell::ImgCell(GroupCell *group, Configuration **config, const wxMemoryBuffer 
   m_type = MC_TYPE_IMAGE;
 }
 
-ImgCell::ImgCell(GroupCell *group, Configuration **config, const wxBitmap &bitmap) :
+ImgCell::ImgCell(GroupCell *group, Configuration *config, const wxBitmap &bitmap) :
     ImgCellBase(group, config),
     m_image(new Image(m_configuration, bitmap)),
     m_imageBorderWidth(1)
@@ -71,7 +71,7 @@ ImgCell::ImgCell(GroupCell *group, Configuration **config, const wxBitmap &bitma
 int ImgCell::s_counter = 0;
 
 // constructor which load image
-ImgCell::ImgCell(GroupCell *group, Configuration **config, const wxString &image, std::shared_ptr<wxFileSystem> filesystem, bool remove)
+ImgCell::ImgCell(GroupCell *group, Configuration *config, const wxString &image, std::shared_ptr<wxFileSystem> filesystem, bool remove)
   : ImgCellBase(group, config),
     m_imageBorderWidth(1)
 {
@@ -86,7 +86,7 @@ ImgCell::ImgCell(GroupCell *group, Configuration **config, const wxString &image
   m_drawBoundingBox = false;
 }
 
-void ImgCell::SetConfiguration(Configuration **config)
+void ImgCell::SetConfiguration(Configuration *config)
 {
   m_configuration = config;
   m_image->SetConfiguration(config);
@@ -129,7 +129,7 @@ void ImgCell::SetBitmap(const wxBitmap &bitmap)
 }
 
 // ImgCell::ImgCell(GroupCell *group, const ImgCell &cell):
-//     ImgImgCellBase(group, cell.m_configuration)
+//     ImgImgCellBase(group, cell.m_configuration
 // {
 //   InitBitFields();
 //   CopyCommonData(cell);
@@ -157,24 +157,23 @@ const wxString &ImgCell::GetToolTip(const wxPoint point) const
 
 void ImgCell::Recalculate(AFontSize fontsize)
 {
-  Configuration *configuration = (*m_configuration);
   if (m_image)
   {
     // Here we recalculate the height, as well:
     //  - This doesn't cost much time and
     //  - as image cell's sizes might change when the resolution does
     //    we might have intermittent calculation issues otherwise
-    if (configuration->GetPrinting())
+    if (m_configuration->GetPrinting())
     {
-      m_image->Recalculate(configuration->GetZoomFactor() * PRINT_SIZE_MULTIPLIER);
+      m_image->Recalculate(m_configuration->GetZoomFactor() * PRINT_SIZE_MULTIPLIER);
       m_imageBorderWidth = Scale_Px(1);
     }
     else
       m_image->Recalculate();
     m_width = m_image->m_width + 2 * m_imageBorderWidth;
-    if (configuration->GetPrinting())
+    if (m_configuration->GetPrinting())
     {
-      m_image->Recalculate(configuration->GetZoomFactor() * PRINT_SIZE_MULTIPLIER);
+      m_image->Recalculate(m_configuration->GetZoomFactor() * PRINT_SIZE_MULTIPLIER);
       m_imageBorderWidth = Scale_Px(1);
     }
     else
@@ -190,22 +189,20 @@ void ImgCell::Draw(wxPoint point)
   Cell::Draw(point);
   if (DrawThisCell(point) && (m_image != NULL))
   {
-    Configuration *configuration = (*m_configuration);
-
     if (!InUpdateRegion()) return;
     
-    wxDC *dc = configuration->GetDC();
+    wxDC *dc = m_configuration->GetDC();
     wxMemoryDC bitmapDC;
 
     if (m_drawBoundingBox)
-      dc->SetBrush(*(wxTheBrushList->FindOrCreateBrush(configuration->GetColor(TS_SELECTION))));
+      dc->SetBrush(*(wxTheBrushList->FindOrCreateBrush(m_configuration->GetColor(TS_SELECTION))));
     else
       SetPen();
 
     if (m_drawRectangle || m_drawBoundingBox)
       dc->DrawRectangle(wxRect(point.x, point.y - m_center, m_width, m_height));
 
-    wxBitmap bitmap = (configuration->GetPrinting() ? m_image->GetUnscaledBitmap() : m_image->GetBitmap());
+    wxBitmap bitmap = (m_configuration->GetPrinting() ? m_image->GetUnscaledBitmap() : m_image->GetBitmap());
     bitmapDC.SelectObject(bitmap);
 
     int xDst = point.x + m_imageBorderWidth;
@@ -223,7 +220,7 @@ void ImgCell::Draw(wxPoint point)
       xSrc += SELECTION_BORDER_WDTH;
       ySrc += SELECTION_BORDER_WDTH;
     }
-    if (configuration->GetPrinting()) {
+    if (m_configuration->GetPrinting()) {
       dc->StretchBlit(xDst, yDst, widthDst, heightDst, &bitmapDC, xSrc, ySrc,
                       bitmap.GetWidth(), bitmap.GetHeight());
     }
@@ -353,7 +350,7 @@ wxString ImgCell::ToXML() const
 
   if(m_origImageFile != wxEmptyString)
   {
-    if((*m_configuration)->SaveImgFileName())
+    if(m_configuration->SaveImgFileName())
     {
       flags += wxString::Format(wxT(" origImageFile=\"%s\""), XMLescape(m_origImageFile));
     }

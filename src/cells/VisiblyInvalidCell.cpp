@@ -34,7 +34,7 @@
 static wxString cellContents(wxT("?"));
 
 VisiblyInvalidCell::VisiblyInvalidCell(GroupCell *group,
-                                       Configuration **config)
+                                       Configuration *config)
     : TextCell(group, config, cellContents, TS_ERROR)
 {
   InitBitFields();
@@ -46,7 +46,7 @@ VisiblyInvalidCell::VisiblyInvalidCell(GroupCell *group,
 }
 
 VisiblyInvalidCell::VisiblyInvalidCell(GroupCell *group,
-                                       Configuration **config, wxString &&toolTip)
+                                       Configuration *config, wxString &&toolTip)
     : TextCell(group, config, cellContents, TS_ERROR)
 {
   InitBitFields();
@@ -54,7 +54,7 @@ VisiblyInvalidCell::VisiblyInvalidCell(GroupCell *group,
 }
 
 VisiblyInvalidCell::VisiblyInvalidCell(GroupCell *group,
-                                       Configuration **config, const wxString *toolTip)
+                                       Configuration *config, const wxString *toolTip)
     : TextCell(group, config, cellContents, TS_ERROR)
 {
   InitBitFields();
@@ -74,7 +74,7 @@ std::unique_ptr<Cell> Cell::MakeVisiblyInvalidCell() const
   return std::make_unique<VisiblyInvalidCell>(m_group, m_configuration);
 }
 
-std::unique_ptr<Cell> Cell::MakeVisiblyInvalidCell(GroupCell *group, Configuration **config)
+std::unique_ptr<Cell> Cell::MakeVisiblyInvalidCell(GroupCell *group, Configuration *config)
 {
   return std::make_unique<VisiblyInvalidCell>(group, config);
 }

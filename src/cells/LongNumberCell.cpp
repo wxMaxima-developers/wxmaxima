@@ -34,7 +34,7 @@
 #include "StringUtils.h"
 
 LongNumberCell::LongNumberCell(GroupCell *group,
-                               Configuration **config,
+                               Configuration *config,
                                const wxString &number)
   : TextCell(group, config, number, TS_NUMBER)
 {
@@ -53,9 +53,9 @@ DEFINE_CELL(LongNumberCell)
 
 void LongNumberCell::UpdateDisplayedText()
 {
-  unsigned int displayedDigits = (*m_configuration)->GetDisplayedDigits();
+  unsigned int displayedDigits = m_configuration->GetDisplayedDigits();
   if ((m_displayedText.Length() > displayedDigits) &&
-      (!(*m_configuration)->ShowAllDigits()))
+      (!m_configuration->ShowAllDigits()))
   {
     int left = displayedDigits / 3;
     if (left > 30) left = 30;      
@@ -70,16 +70,16 @@ void LongNumberCell::UpdateDisplayedText()
     m_numEnd.clear();
   }
   m_sizeCache.clear();
-  m_displayedDigits_old = (*m_configuration)->GetDisplayedDigits();
+  m_displayedDigits_old = m_configuration->GetDisplayedDigits();
   m_textStyle = TS_NUMBER;
 }
 
 bool LongNumberCell::NeedsRecalculation(AFontSize fontSize) const
 {
   return TextCell::NeedsRecalculation(fontSize) ||
-    (m_displayedDigits_old != (*m_configuration)->GetDisplayedDigits()) ||
-    (m_showAllDigits_old != (*m_configuration)->ShowAllDigits()) ||
-    (m_linebreaksInLongLines_old != (*m_configuration)->LineBreaksInLongNums());
+    (m_displayedDigits_old != m_configuration->GetDisplayedDigits()) ||
+    (m_showAllDigits_old != m_configuration->ShowAllDigits()) ||
+    (m_linebreaksInLongLines_old != m_configuration->LineBreaksInLongNums());
 }
 
 void LongNumberCell::SetStyle(TextStyle style)
@@ -93,8 +93,8 @@ void LongNumberCell::Recalculate(AFontSize fontsize)
   // If the config settings about how many digits to display has changed we
   // need to regenerate the info which number to show.
   if (
-    ((m_displayedDigits_old != (*m_configuration)->GetDisplayedDigits())) ||
-    (m_showAllDigits_old = (*m_configuration)->ShowAllDigits())
+    ((m_displayedDigits_old != m_configuration->GetDisplayedDigits())) ||
+    (m_showAllDigits_old = m_configuration->ShowAllDigits())
     )
     UpdateDisplayedText();
   
@@ -103,7 +103,7 @@ void LongNumberCell::Recalculate(AFontSize fontsize)
     if (IsBrokenIntoLines())
     {
       m_innerCell->RecalculateList(fontsize);
-      m_keepPercent_last = (*m_configuration)->CheckKeepPercent();
+      m_keepPercent_last = m_configuration->CheckKeepPercent();
       Cell::Recalculate(fontsize);
       m_width = 0;
       m_height = 0;
@@ -119,10 +119,9 @@ void LongNumberCell::Recalculate(AFontSize fontsize)
       else
       {
         Cell::Recalculate(fontsize);
-        m_keepPercent_last = (*m_configuration)->CheckKeepPercent();
+        m_keepPercent_last = m_configuration->CheckKeepPercent();
         SetFont(m_fontSize_Scaled);
-        Configuration *configuration = (*m_configuration);
-        wxDC *dc = configuration->GetDC();
+        wxDC *dc = m_configuration->GetDC();
         auto numStartSize = CalculateTextSize(dc, m_numStart, numberStart);
         auto ellipsisSize = CalculateTextSize(dc, m_ellipsis, ellipsis);
         auto numEndSize   = CalculateTextSize(dc, m_numEnd,   numberEnd);
@@ -135,9 +134,9 @@ void LongNumberCell::Recalculate(AFontSize fontsize)
       }
     }
   }
-  m_displayedDigits_old = (*m_configuration)->GetDisplayedDigits();
-  m_showAllDigits_old = (*m_configuration)->ShowAllDigits();
-  m_linebreaksInLongLines_old = (*m_configuration)->LineBreaksInLongNums();
+  m_displayedDigits_old = m_configuration->GetDisplayedDigits();
+  m_showAllDigits_old = m_configuration->ShowAllDigits();
+  m_linebreaksInLongLines_old = m_configuration->LineBreaksInLongNums();
 }
 
 void LongNumberCell::Draw(wxPoint point)
@@ -155,8 +154,7 @@ void LongNumberCell::Draw(wxPoint point)
         return;
       SetForeground();
       SetFont(m_fontSize_Scaled);
-      Configuration *configuration = (*m_configuration);
-      wxDC *dc = configuration->GetDC();
+      wxDC *dc = m_configuration->GetDC();
       dc->DrawText(m_numStart,
                    point.x + MC_TEXT_PADDING,
                    point.y - m_center + MC_TEXT_PADDING);
@@ -185,9 +183,9 @@ bool LongNumberCell::BreakUp()
   if (IsBrokenIntoLines())
     return false;
 
-  if (!(*m_configuration)->ShowAllDigits())
+  if (!m_configuration->ShowAllDigits())
     return false;
-  if (!(*m_configuration)->LineBreaksInLongNums())
+  if (!m_configuration->LineBreaksInLongNums())
     return false;
   if(m_text.IsEmpty())
     return false;

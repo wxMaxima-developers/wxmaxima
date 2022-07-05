@@ -56,17 +56,17 @@ public:
                       NULL = the operating system's filesystem
     \param group     The parent GroupCell this cell belongs to.
    */
-  AnimationCell(GroupCell *group, Configuration **config, std::shared_ptr<wxFileSystem> filesystem, int framerate = -1);
-  AnimationCell(GroupCell *group, Configuration **config, int framerate = -1);
+  AnimationCell(GroupCell *group, Configuration *config, std::shared_ptr<wxFileSystem> filesystem, int framerate = -1);
+  AnimationCell(GroupCell *group, Configuration *config, int framerate = -1);
   AnimationCell(GroupCell *group, const AnimationCell &cell);
   //! A constructor that loads the compressed file from a wxMemoryBuffer
-  AnimationCell(GroupCell *group, Configuration **config, const wxMemoryBuffer &image, const wxString &type);
-  AnimationCell(GroupCell *group, Configuration **config, const wxString &image, bool remove);
+  AnimationCell(GroupCell *group, Configuration *config, const wxMemoryBuffer &image, const wxString &type);
+  AnimationCell(GroupCell *group, Configuration *config, const wxString &image, bool remove);
   std::unique_ptr<Cell> Copy(GroupCell *group) const override;
   void operator=(const AnimationCell&) = delete;
   AnimationCell(const AnimationCell&) = delete;
 
-  void SetConfiguration(Configuration **config) override;
+  void SetConfiguration(Configuration *config) override;
   int GetPPI() const override {if(IsOk()) return m_images[m_displayed]->GetPPI();else return 0;}
   size_t GetOriginalWidth() const override {if(IsOk())return m_images[m_displayed]->GetOriginalWidth();else return 0;}
   size_t GetOriginalHeight() const override {if(IsOk())return m_images[m_displayed]->GetOriginalHeight();else return 0;}

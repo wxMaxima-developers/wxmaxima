@@ -28,7 +28,7 @@
 class AtCell final : public Cell
 {
 public:
-  AtCell(GroupCell *group, Configuration **config,
+  AtCell(GroupCell *group, Configuration *config,
     std::unique_ptr<Cell> &&base, std::unique_ptr<Cell> &&index);
   AtCell(GroupCell *group, const AtCell &cell);
   std::unique_ptr<Cell> Copy(GroupCell *group) const override;

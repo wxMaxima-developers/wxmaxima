@@ -68,7 +68,7 @@ public:
     popid_tocMoveOut
   };
 
-  TableOfContents(wxWindow *parent, int id, Configuration **config, std::unique_ptr<GroupCell> *tree);
+  TableOfContents(wxWindow *parent, int id, Configuration *config, std::unique_ptr<GroupCell> *tree);
 
   /* The destructor
    */
@@ -134,7 +134,7 @@ private:
   RegexCtrl *m_regex;
   //! The items we displayed the last time update() was called
   wxArrayString m_items_old;
-  Configuration **m_configuration;
+  Configuration *m_configuration;
 
   std::vector<GroupCell *> m_structure;
 };

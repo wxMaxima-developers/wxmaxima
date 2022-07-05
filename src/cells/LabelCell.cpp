@@ -32,12 +32,12 @@
 #include "StringUtils.h"
 
 LabelCell::LabelCell(GroupCell *group,
-                     Configuration **config, wxString automaticLabel, TextStyle style)
+                     Configuration *config, wxString automaticLabel, TextStyle style)
   : TextCell(group, config, automaticLabel, style),
-    m_labelChoice_Last((*config)->GetLabelChoice())
+    m_labelChoice_Last(config->GetLabelChoice())
 {
   InitBitFields();
-  m_width = Scale_Px((*m_configuration)->GetLabelWidth());
+  m_width = Scale_Px(m_configuration->GetLabelWidth());
 }
 
 // cppcheck-suppress uninitMemberVar symbolName=LabelCell::m_alt
@@ -54,18 +54,17 @@ DEFINE_CELL(LabelCell)
 void LabelCell::Draw(wxPoint point)
 {
   Cell::Draw(point);
-  Configuration *configuration = (*m_configuration);
-  if(!configuration->ShowLabels())
+  if(!m_configuration->ShowLabels())
     return;
   if (InUpdateRegion())
   {
     SetForeground();
-    wxDC *dc = configuration->GetDC();
+    wxDC *dc = m_configuration->GetDC();
     
     auto const index = GetLabelIndex();
     if (index != noText)
     {
-      auto const style = (*m_configuration)->GetStyle(
+      auto const style = m_configuration->GetStyle(
         m_textStyle,
         Scale_Px(m_fontSize_scaledToFit));
       dc->SetFont(style.GetFont());
@@ -102,36 +101,34 @@ void LabelCell::SetUserDefinedLabel(const wxString &userDefinedLabel)
 
 bool LabelCell::NeedsRecalculation(AFontSize fontSize) const
 {
-  Configuration *configuration = (*m_configuration);
   return TextCell::NeedsRecalculation(fontSize) ||
     (
       (m_textStyle == TS_USERLABEL) &&
-      (!(*m_configuration)->UseUserLabels())
+      (!m_configuration->UseUserLabels())
       ) ||
     (
       (m_textStyle == TS_LABEL) &&
-      ((*m_configuration)->UseUserLabels()) &&
+      (m_configuration->UseUserLabels()) &&
       (!m_userDefinedLabel.empty())
       ) ||
-    (configuration->GetLabelChoice() != m_labelChoice_Last);
+    (m_configuration->GetLabelChoice() != m_labelChoice_Last);
 }
 
 void LabelCell::UpdateDisplayedText()
 {
   m_displayedText = m_text;
   
-  Configuration *configuration = (*m_configuration);
   if((m_textStyle == TS_USERLABEL) || (m_textStyle == TS_LABEL))
   {
-    if(!configuration->ShowLabels())
+    if(!m_configuration->ShowLabels())
       m_displayedText = wxEmptyString;
     else
     {
-      if(configuration->UseUserLabels())
+      if(m_configuration->UseUserLabels())
       {
         if(m_userDefinedLabel.empty())
         {
-          if(configuration->ShowAutomaticLabels())
+          if(m_configuration->ShowAutomaticLabels())
             m_displayedText = m_text;
           else
             m_displayedText = wxEmptyString;
@@ -233,10 +230,9 @@ void LabelCell::Recalculate(AFontSize fontsize)
       ForceBreakLine(true);
       SetBigSkip(true);
     }
-    Configuration *configuration = (*m_configuration);
-    if(configuration->GetLabelChoice() != m_labelChoice_Last)
+    if(m_configuration->GetLabelChoice() != m_labelChoice_Last)
     {
-      m_labelChoice_Last = configuration->GetLabelChoice();
+      m_labelChoice_Last = m_configuration->GetLabelChoice();
       UpdateDisplayedText();
     }
 
@@ -246,12 +242,12 @@ void LabelCell::Recalculate(AFontSize fontsize)
     // instead of an automatic one or vice versa we decide that here.
     if(
       (m_textStyle == TS_USERLABEL) &&
-      (!configuration->UseUserLabels())
+      (!m_configuration->UseUserLabels())
       )
       m_textStyle = TS_LABEL;
     if(
       (m_textStyle == TS_LABEL) &&
-      (configuration->UseUserLabels()) &&
+      (m_configuration->UseUserLabels()) &&
       (!m_userDefinedLabel.empty())
       )
       m_textStyle = TS_USERLABEL;
@@ -261,19 +257,19 @@ void LabelCell::Recalculate(AFontSize fontsize)
     auto const index = GetLabelIndex();
     if (index != noText)
     {
-      Style style = configuration->GetStyle(m_textStyle, configuration->GetDefaultFontSize());
-      wxDC *dc = configuration->GetDC();
+      Style style = m_configuration->GetStyle(m_textStyle, m_configuration->GetDefaultFontSize());
+      wxDC *dc = m_configuration->GetDC();
       style.SetFontSize(Scale_Px(fontsize));
       dc->SetFont(style.GetFont());
       
-      wxSize labelSize = CalculateTextSize(configuration->GetDC(), m_displayedText, index);
+      wxSize labelSize = CalculateTextSize(m_configuration->GetDC(), m_displayedText, index);
       m_height = labelSize.GetHeight();
       m_center = m_height / 2;
 
       wxASSERT_MSG((labelSize.GetWidth() > 0) || (m_displayedText.IsEmpty()),
                    _("Seems like something is broken with the maths font."));
 
-      while ((labelSize.GetWidth() + Scale_Px(2) >= Scale_Px(configuration->GetLabelWidth())) &&
+      while ((labelSize.GetWidth() + Scale_Px(2) >= Scale_Px(m_configuration->GetLabelWidth())) &&
              (!m_fontSize_scaledToFit.IsMinimal()))
       {
 #if wxCHECK_VERSION(3, 1, 2)
@@ -283,7 +279,7 @@ void LabelCell::Recalculate(AFontSize fontsize)
 #endif
         style.SetFontSize(Scale_Px(m_fontSize_scaledToFit));
         dc->SetFont(style.GetFont());
-        labelSize = CalculateTextSize((*m_configuration)->GetDC(), m_displayedText, index);
+        labelSize = CalculateTextSize(m_configuration->GetDC(), m_displayedText, index);
       }
       m_width = labelSize.GetWidth() + Scale_Px(2);
     }
@@ -291,7 +287,7 @@ void LabelCell::Recalculate(AFontSize fontsize)
     {
       m_width = m_height = m_center = 0;
     }
-    m_width = wxMax(m_width, Scale_Px(configuration->GetLabelWidth())) + MC_TEXT_PADDING;
+    m_width = wxMax(m_width, Scale_Px(m_configuration->GetLabelWidth())) + MC_TEXT_PADDING;
   }
 }
 
@@ -299,7 +295,7 @@ const wxString &LabelCell::GetAltCopyText() const
 {
   auto &text = m_altCopyText;
   text = m_text;
-  if ((*m_configuration)->UseUserLabels() && !m_userDefinedLabel.empty())
+  if (m_configuration->UseUserLabels() && !m_userDefinedLabel.empty())
     text = wxT("(") + m_userDefinedLabel + wxT(")");
   text.Replace(wxT("\u2794"), wxT("-->"));
   text.Replace(wxT("\u2192"), wxT("->"));

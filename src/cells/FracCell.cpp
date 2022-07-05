@@ -31,7 +31,7 @@
 
 #define FRAC_DEC 1
 
-FracCell::FracCell(GroupCell *group, Configuration **config, std::unique_ptr<Cell> &&num, std::unique_ptr<Cell> &&denom) :
+FracCell::FracCell(GroupCell *group, Configuration *config, std::unique_ptr<Cell> &&num, std::unique_ptr<Cell> &&denom) :
     Cell(group, config),
     m_numParenthesis(std::make_unique<ParenCell>(group, m_configuration, std::move(num))),
     m_denomParenthesis(std::make_unique<ParenCell>(group, m_configuration, std::move(denom)))
@@ -94,7 +94,7 @@ void FracCell::Recalculate(AFontSize fontsize)
     }
     else
     {
-      m_protrusion = Scale_Px((*m_configuration)->GetMathFontSize() / 2);
+      m_protrusion = Scale_Px(m_configuration->GetMathFontSize() / 2);
       
       // We want half a space's widh of blank space to separate us from the
       // next minus.
@@ -124,10 +124,8 @@ void FracCell::Draw(wxPoint point)
 {
   Cell::Draw(point);
   if (DrawThisCell(point))
-  {
-    Configuration *configuration = (*m_configuration);
-    
-    wxDC *dc = configuration->GetDC();
+  {    
+    wxDC *dc = m_configuration->GetDC();
     wxPoint num, denom;
 
     if(IsBrokenIntoLines())
@@ -158,9 +156,9 @@ void FracCell::Draw(wxPoint point)
       m_displayedDenom->DrawList(denom);
       SetPen(1.2);
       if (m_fracStyle != FC_CHOOSE)
-        dc->DrawLine(point.x + m_horizontalGapLeft + (*m_configuration)->GetDefaultLineWidth() / 2,
+        dc->DrawLine(point.x + m_horizontalGapLeft + m_configuration->GetDefaultLineWidth() / 2,
                      point.y + Scale_Px(2),
-                    point.x + m_width - m_horizontalGapRight - (*m_configuration)->GetDefaultLineWidth() / 2,
+                    point.x + m_width - m_horizontalGapRight - m_configuration->GetDefaultLineWidth() / 2,
                     point.y + Scale_Px(2)
         );
     }

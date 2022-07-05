@@ -774,6 +774,7 @@ public:
   void StatusExportFailed();
 
 protected:
+  Configuration m_configuration;
   //! How many bytes did maxima send us until now?
   long m_bytesFromMaxima;
   //! The process id of maxima. Is determined by ReadFirstPrompt.

@@ -50,7 +50,7 @@
 class SetCell final : public ListCell
 {
 public:
-  SetCell(GroupCell *group, Configuration **config, std::unique_ptr<Cell> &&inner);
+  SetCell(GroupCell *group, Configuration *config, std::unique_ptr<Cell> &&inner);
   SetCell(GroupCell *group, const SetCell &cell);
   std::unique_ptr<Cell> Copy(GroupCell *group) const override;
   const CellTypeInfo &GetInfo() override;

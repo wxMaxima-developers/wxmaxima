@@ -163,16 +163,16 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   // Now it is time to construct the window contents.
 
   // console
-  new Worksheet(this, -1, m_worksheet);
+  new Worksheet(this, -1, m_worksheet, &m_configuration);
   wxWindowUpdateLocker worksheetBlocker(m_worksheet);
 
   // We need to create one pane which doesn't do a lot before the log pane
   // Otherwise the log pane will be displayed in a very strange way
   // The history pane was chosen randomly
-  m_history = new History(this, -1, m_worksheet->m_configuration);
+  m_history = new History(this, -1, &m_configuration);
 
   // The table of contents
-  m_worksheet->m_tableOfContents = new TableOfContents(this, -1, &m_worksheet->m_configuration, m_worksheet->GetTreeAddress());
+  m_worksheet->m_tableOfContents = new TableOfContents(this, -1, &m_configuration, m_worksheet->GetTreeAddress());
 
   m_xmlInspector = new XmlInspector(this, -1);
   wxWindowUpdateLocker xmlInspectorBlocker(m_xmlInspector);
@@ -245,7 +245,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
                             Left());
   wxWindowUpdateLocker statBlocker(statPane);
 
-  wxPanel *greekPane = new GreekPane(this, m_worksheet->m_configuration, m_worksheet);
+  wxPanel *greekPane = new GreekPane(this, &m_configuration, m_worksheet);
   wxWindowUpdateLocker greekBlocker(greekPane);
   m_manager.AddPane(greekPane,
                     wxAuiPaneInfo().Name(wxT("greek")).
@@ -261,7 +261,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
                             FloatingSize(greekPane->GetEffectiveMinSize()).
                             Left());
 
-  wxPanel *unicodePane = new UnicodeSidebar(this, m_worksheet, m_worksheet->m_configuration);
+  wxPanel *unicodePane = new UnicodeSidebar(this, m_worksheet, &m_configuration);
   wxWindowUpdateLocker unicodeBlocker(unicodePane);
   m_manager.AddPane(unicodePane,
                     wxAuiPaneInfo().Name(wxT("unicode")).
@@ -305,7 +305,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
                             FloatingSize(m_worksheet->m_variablesPane->GetEffectiveMinSize()).
                             Bottom());
 
-  m_symbolsPane = new SymbolsPane(this, m_worksheet->m_configuration, m_worksheet);
+  m_symbolsPane = new SymbolsPane(this, &m_configuration, m_worksheet);
   wxWindowUpdateLocker symbolsBlocker(m_symbolsPane);
   m_manager.AddPane(m_symbolsPane,
                     wxAuiPaneInfo().Name(wxT("symbols")).
@@ -339,7 +339,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   
   m_manager.AddPane(
     m_wizard = new ScrollingGenWizPanel(
-      this, m_worksheet->m_configuration),
+      this, &m_configuration),
     wxAuiPaneInfo().Name(wxT("wizard")).
     CloseButton(true).
     TopDockable(true).
@@ -861,7 +861,7 @@ void wxMaximaFrame::SetupMenu()
   m_Maxima_Panes_Sub->AppendSeparator();
   m_Maxima_Panes_Sub->AppendCheckItem(menu_invertWorksheetBackground, _("Invert worksheet brightness"));
   m_Maxima_Panes_Sub->Check(menu_invertWorksheetBackground,
-                    m_worksheet->m_configuration->InvertBackground());
+                    m_configuration.InvertBackground());
 
 
   m_MenuBar->Append(m_Maxima_Panes_Sub, _("View"));
@@ -1450,7 +1450,7 @@ m_CalculusMenu->AppendSeparator();
   m_logexpand_Sub->AppendRadioItem(menu_logexpand_false, _("No"), _("Switch off simplifications of log(). Set Maxima option variable logexpand:false"));
 
   wxString warningSign = wxT("\u26A0");
-  if(!m_worksheet->m_configuration->FontRendersChar(wxT('\u26A0'), *wxNORMAL_FONT))
+  if(!m_configuration.FontRendersChar(wxT('\u26A0'), *wxNORMAL_FONT))
     warningSign = _("Warning:");
   m_logexpand_Sub->AppendRadioItem(menu_logexpand_true,
                                    wxT("log(a^b)=b*log(a) ") + warningSign +
@@ -1703,7 +1703,7 @@ m_CalculusMenu->AppendSeparator();
   
   wxMenu *quadpack_sub = new wxMenu;
   wxString integralSign = wxT("\u222B");
-  if(!m_worksheet->m_configuration->FontRendersChar(wxT('\u222B'), *wxNORMAL_FONT))
+  if(!m_configuration.FontRendersChar(wxT('\u222B'), *wxNORMAL_FONT))
     integralSign = wxT("integrate");
   quadpack_sub->Append(menu_quad_qag, integralSign+_("(f(x),x,a,b), strategy of Aind"));
   quadpack_sub->Append(menu_quad_qags, integralSign+_("(f(x),x,a,b), Epsilon algorithm"));
@@ -2344,14 +2344,14 @@ void wxMaximaFrame::GreekPane::UpdateSymbols()
     if (def.condition == Cond::None ||
         (def.condition == Cond::Show_mu && Show_mu) ||
         (def.condition == Cond::ShowLatinLookalikes && ShowLatinLookalikes))
-      m_lowercaseSizer->Add(new CharButton(this, m_worksheet, m_worksheet->m_configuration, def, true), wxSizerFlags().Expand());
+      m_lowercaseSizer->Add(new CharButton(this, m_worksheet, m_configuration, def, true), wxSizerFlags().Expand());
 
   m_uppercaseSizer->Clear(true);
   for (auto &def : upperCaseDefs)
     if (def.condition == Cond::None ||
         (def.condition == Cond::Show_mu && Show_mu) ||
         (def.condition == Cond::ShowLatinLookalikes && ShowLatinLookalikes))
-      m_uppercaseSizer->Add(new CharButton(this, m_worksheet, m_worksheet->m_configuration, def, true), wxSizerFlags().Expand());
+      m_uppercaseSizer->Add(new CharButton(this, m_worksheet, m_configuration, def, true), wxSizerFlags().Expand());
 }
 
 void wxMaximaFrame::GreekPane::OnMouseRightDown(wxMouseEvent &WXUNUSED(event))
@@ -2432,7 +2432,7 @@ wxMaximaFrame::SymbolsPane::SymbolsPane(wxWindow *parent, Configuration *configu
   wxSizer *builtInSymbolsSizer = new wxWrapSizer(wxHORIZONTAL);
   wxPanel *builtInSymbols = new wxPanel(this);
   for (auto &def : symbolButtonDefinitions)
-    builtInSymbolsSizer->Add(new CharButton(builtInSymbols, m_worksheet, m_worksheet->m_configuration, def), wxSizerFlags().Expand());
+    builtInSymbolsSizer->Add(new CharButton(builtInSymbols, m_worksheet, m_configuration, def), wxSizerFlags().Expand());
   builtInSymbols->SetSizer(builtInSymbolsSizer);
   vbox->Add(builtInSymbols, wxSizerFlags().Expand());
 
@@ -2501,7 +2501,7 @@ void wxMaximaFrame::SymbolsPane::UpdateUserSymbols()
   // Populate the pane with a button per user symbol
   for (auto ch : m_configuration->SymbolPaneAdditionalChars())
   {
-    wxWindow *button = new CharButton(m_userSymbols, m_worksheet, m_worksheet->m_configuration,
+    wxWindow *button = new CharButton(m_userSymbols, m_worksheet, m_configuration,
                                       {ch, _("A symbol from the configuration dialogue")},
                                       true);
     m_userSymbolButtons.push_back(button);

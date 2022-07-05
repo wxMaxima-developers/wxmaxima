@@ -51,7 +51,7 @@
 // filesystem cannot be passed by const reference as we want to keep the
 // pointer to the file system alive in a background task
 // cppcheck-suppress performance symbolName=filesystem
-AnimationCell::AnimationCell(GroupCell *group, Configuration **config, std::shared_ptr <wxFileSystem> filesystem, int framerate) :
+AnimationCell::AnimationCell(GroupCell *group, Configuration *config, std::shared_ptr <wxFileSystem> filesystem, int framerate) :
     ImgCellBase(group, config),
     m_timer(m_cellPointers->GetWorksheet(), wxNewId()),
     m_fileSystem(filesystem),
@@ -64,7 +64,7 @@ AnimationCell::AnimationCell(GroupCell *group, Configuration **config, std::shar
   ReloadTimer();
 }
 
-AnimationCell::AnimationCell(GroupCell *group, Configuration **config, int framerate) :
+AnimationCell::AnimationCell(GroupCell *group, Configuration *config, int framerate) :
     ImgCellBase(group, config),
     m_timer(m_cellPointers->GetWorksheet(), wxNewId()),
     m_framerate(framerate),
@@ -76,14 +76,14 @@ AnimationCell::AnimationCell(GroupCell *group, Configuration **config, int frame
   ReloadTimer();
 }
 
-AnimationCell::AnimationCell(GroupCell *group, Configuration **config, const wxMemoryBuffer &image, const wxString &WXUNUSED(type)):
+AnimationCell::AnimationCell(GroupCell *group, Configuration *config, const wxMemoryBuffer &image, const wxString &WXUNUSED(type)):
     AnimationCell(group, config)
 {
   LoadImages(image);
                       
 }
 
-AnimationCell::AnimationCell(GroupCell *group, Configuration **config, const wxString &image, bool remove):
+AnimationCell::AnimationCell(GroupCell *group, Configuration *config, const wxString &image, bool remove):
     AnimationCell(group, config)
 {
   LoadImages(image);
@@ -109,7 +109,7 @@ AnimationCell::AnimationCell(GroupCell *group, const AnimationCell &cell):
    m_drawBoundingBox = cell.m_drawBoundingBox;
 }
 
-void AnimationCell::SetConfiguration(Configuration **config)
+void AnimationCell::SetConfiguration(Configuration *config)
 {
   m_configuration = config;
   for(std::vector<std::shared_ptr<Image>>::const_iterator i = m_images.begin(); i != m_images.end(); ++i)
@@ -133,7 +133,7 @@ int AnimationCell::GetFrameRate() const
   else
   {
 
-    framerate = (*m_configuration)->DefaultFramerate();
+    framerate = m_configuration->DefaultFramerate();
   }
   if (framerate > 30)
     framerate = 30;
@@ -292,7 +292,6 @@ void AnimationCell::Recalculate(AFontSize fontsize)
     m_center = 0;
     return;
   }
-  Configuration *configuration = *m_configuration;
 
   // Assuming a minimum size maybe isn't that bad.
   m_height = m_width = 10;
@@ -302,8 +301,8 @@ void AnimationCell::Recalculate(AFontSize fontsize)
   {
     if(m_images[i] != NULL)
     {
-      if(configuration->GetPrinting()) {
-        m_images[i]->Recalculate(configuration->GetZoomFactor() * PRINT_SIZE_MULTIPLIER);
+      if(m_configuration->GetPrinting()) {
+        m_images[i]->Recalculate(m_configuration->GetZoomFactor() * PRINT_SIZE_MULTIPLIER);
       } else {
         m_images[i]->Recalculate();
       }
@@ -334,34 +333,33 @@ void AnimationCell::Draw(wxPoint point)
     // will trigger this function and will trigger the animation to be
     // restarted anyway.
     //
-    Configuration *configuration = (*m_configuration);
-    if(configuration->GetPrinting()) {
-        m_images[m_displayed]->Recalculate(configuration->GetZoomFactor() * PRINT_SIZE_MULTIPLIER);
+    if(m_configuration->GetPrinting()) {
+        m_images[m_displayed]->Recalculate(m_configuration->GetZoomFactor() * PRINT_SIZE_MULTIPLIER);
     } else {
       m_images[m_displayed]->Recalculate();
     }
     
     if (!InUpdateRegion()) return;
     
-    wxDC *dc = configuration->GetDC();
+    wxDC *dc = m_configuration->GetDC();
     wxMemoryDC bitmapDC;
 
     // Slide show cells have a red border except if they are selected
     if (m_drawBoundingBox)
-      dc->SetPen(*(wxThePenList->FindOrCreatePen(configuration->GetColor(TS_SELECTION))));
+      dc->SetPen(*(wxThePenList->FindOrCreatePen(m_configuration->GetColor(TS_SELECTION))));
     else
       dc->SetPen(*wxRED_PEN);
 
     dc->DrawRectangle(wxRect(point.x, point.y - m_center, m_width, m_height));
 
-    wxBitmap bitmap = (configuration->GetPrinting() ? m_images[m_displayed]->GetBitmap(configuration->GetZoomFactor() * PRINT_SIZE_MULTIPLIER) : m_images[m_displayed]->GetBitmap());
+    wxBitmap bitmap = (m_configuration->GetPrinting() ? m_images[m_displayed]->GetBitmap(m_configuration->GetZoomFactor() * PRINT_SIZE_MULTIPLIER) : m_images[m_displayed]->GetBitmap());
     bitmapDC.SelectObject(bitmap);
 
     int imageBorderWidth = m_imageBorderWidth;
     if (m_drawBoundingBox)
     {
       imageBorderWidth = Scale_Px(3);
-      dc->SetBrush(*(wxTheBrushList->FindOrCreateBrush(configuration->GetColor(TS_SELECTION))));
+      dc->SetBrush(*(wxTheBrushList->FindOrCreateBrush(m_configuration->GetColor(TS_SELECTION))));
       dc->DrawRectangle(wxRect(point.x, point.y - m_center, m_width, m_height));
     }
 

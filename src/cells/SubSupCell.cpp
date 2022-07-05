@@ -34,7 +34,7 @@
 
 #define SUBSUP_DEC 3
 
-SubSupCell::SubSupCell(GroupCell *group, Configuration **config, std::unique_ptr<Cell> &&base) :
+SubSupCell::SubSupCell(GroupCell *group, Configuration *config, std::unique_ptr<Cell> &&base) :
   Cell(group, config),
   m_baseCell(std::move(base))
 {
@@ -282,7 +282,7 @@ wxString SubSupCell::ToTeX() const
 
   if (m_scriptCells.empty())
   {
-    if ((*m_configuration)->TeXExponentsAfterSubscript())
+    if (m_configuration->TeXExponentsAfterSubscript())
     {
       s = "{{{" + m_baseCell->ListToTeX() + "}";
       if(m_postSubCell)

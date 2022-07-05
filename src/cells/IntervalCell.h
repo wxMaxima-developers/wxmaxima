@@ -49,7 +49,7 @@
 class IntervalCell : public Cell
 {
 public:
-  IntervalCell(GroupCell *group, Configuration **config, std::unique_ptr<Cell> &&start,
+  IntervalCell(GroupCell *group, Configuration *config, std::unique_ptr<Cell> &&start,
                std::unique_ptr<Cell> &&end);
   IntervalCell(GroupCell *group, const IntervalCell &cell);
   virtual std::unique_ptr<Cell> Copy(GroupCell *group) const override;

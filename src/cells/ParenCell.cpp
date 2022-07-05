@@ -31,7 +31,7 @@
 #include "CellImpl.h"
 #include "VisiblyInvalidCell.h"
 
-ParenCell::ParenCell(GroupCell *group, Configuration **config, std::unique_ptr<Cell> &&inner) :
+ParenCell::ParenCell(GroupCell *group, Configuration *config, std::unique_ptr<Cell> &&inner) :
     Cell(group, config),
     m_open(std::make_unique<TextCell>(group, config, wxT("("))),
     m_innerCell(std::move(inner)),
@@ -81,14 +81,13 @@ void ParenCell::SetFont(AFontSize fontsize)
 {
   wxASSERT(fontsize.IsValid());
 
-  Configuration *configuration = (*m_configuration);
-  wxDC *dc = configuration->GetDC();
+  wxDC *dc = m_configuration->GetDC();
 
   Style style;
   if (m_bigParenType == Configuration::ascii)
-    style = configuration->GetStyle(TS_FUNCTION, fontsize);
+    style = m_configuration->GetStyle(TS_FUNCTION, fontsize);
   else
-    style = configuration->GetStyle(TS_FUNCTION, configuration->GetMathFontSize());
+    style = m_configuration->GetStyle(TS_FUNCTION, m_configuration->GetMathFontSize());
 
   wxASSERT(style.GetFontSize().IsValid());
 
@@ -132,28 +131,26 @@ void ParenCell::SetFont(AFontSize fontsize)
 }
 
 void ParenCell::Recalculate(AFontSize fontsize)
-{
-  Configuration *configuration = (*m_configuration);
-  
+{  
   m_innerCell->RecalculateList(fontsize);
   m_open->RecalculateList(fontsize);
   m_close->RecalculateList(fontsize);
   
-  wxDC *dc = configuration->GetDC();
+  wxDC *dc = m_configuration->GetDC();
   int size = m_innerCell->GetHeightList();
   auto fontsize1 = Scale_Px(fontsize);
   // If our font provides all the unicode chars we need we don't need
   // to bother which exotic method we need to use for drawing nice parenthesis.
   if (fontsize1*3 > size)
   {
-    if(configuration->GetParenthesisDrawMode() != Configuration::handdrawn)
+    if(m_configuration->GetParenthesisDrawMode() != Configuration::handdrawn)
       m_bigParenType = Configuration::ascii;
     m_signHeight = m_open->GetHeightList();
     m_signWidth  = m_open->GetWidth();
   }
   else
   {
-    m_bigParenType = configuration->GetParenthesisDrawMode();
+    m_bigParenType = m_configuration->GetParenthesisDrawMode();
     if(m_bigParenType != Configuration::handdrawn)
     {
       SetFont(fontsize);
@@ -181,7 +178,7 @@ void ParenCell::Recalculate(AFontSize fontsize)
     }
     else
     {
-      m_signWidth = Scale_Px(6) + (*m_configuration)->GetDefaultLineWidth();
+      m_signWidth = Scale_Px(6) + m_configuration->GetDefaultLineWidth();
       if(m_signWidth < size / 15)
         m_signWidth = size / 15;
     }
@@ -245,11 +242,10 @@ void ParenCell::Draw(wxPoint point)
   Cell::Draw(point);
   if (DrawThisCell(point))
   { 
-    Configuration *configuration = (*m_configuration);
-    wxDC *dc = configuration->GetDC();
+    wxDC *dc = m_configuration->GetDC();
     wxPoint innerCellPos(point);
 
-    SetFont(configuration->GetMathFontSize());
+    SetFont(m_configuration->GetMathFontSize());
     
     switch(m_bigParenType)
     {            
@@ -294,7 +290,7 @@ void ParenCell::Draw(wxPoint point)
     break;
     default:
     {
-      wxDC *adc = configuration->GetAntialiassingDC();
+      wxDC *adc = m_configuration->GetAntialiassingDC();
       innerCellPos.y += (m_innerCell->GetCenterList() - m_innerCell->GetHeightList() /2);
       SetPen(1.0);
       SetBrush();

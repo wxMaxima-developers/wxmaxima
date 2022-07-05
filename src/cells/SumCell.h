@@ -46,7 +46,7 @@ enum sumStyle : int8_t
 class SumCell final : public Cell
 {
 public:
-  SumCell(GroupCell *group, Configuration **config, sumStyle style,
+  SumCell(GroupCell *group, Configuration *config, sumStyle style,
           std::unique_ptr<Cell> &&under, std::unique_ptr<Cell> &&over,
           std::unique_ptr<Cell> &&base);
   SumCell(GroupCell *group, const SumCell &cell);

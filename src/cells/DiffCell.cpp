@@ -32,7 +32,7 @@
 #include "TextCell.h"
 #include <wx/config.h>
 
-DiffCell::DiffCell(GroupCell *group, Configuration **config, std::unique_ptr<Cell> &&base, std::unique_ptr<Cell> &&diff) :
+DiffCell::DiffCell(GroupCell *group, Configuration *config, std::unique_ptr<Cell> &&base, std::unique_ptr<Cell> &&diff) :
   Cell(group, config),
   m_baseCell(std::move(base)),
   m_diffCell(std::move(diff))
@@ -130,7 +130,7 @@ wxString DiffCell::ToTeX() const
   wxString diff = m_diffCell->ListToTeX();
   wxString function = m_baseCell->ListToTeX();
 
-  if ((*m_configuration)->UsePartialForDiff())
+  if (m_configuration->UsePartialForDiff())
     diff.Replace(wxT("\\frac{d}{d"), wxT("\\frac{\\partial}{\\partial"));
 
   wxString s = diff + function;

@@ -29,7 +29,7 @@
 #include "IntervalCell.h"
 #include "CellImpl.h"
 
-IntervalCell::IntervalCell(GroupCell *group, Configuration **config,
+IntervalCell::IntervalCell(GroupCell *group, Configuration *config,
                            std::unique_ptr<Cell> &&start, std::unique_ptr<Cell> &&end) :
     Cell(group, config),
     m_leftBracketOpensLeft(start->ListToString() == wxT("-inf")),
@@ -145,7 +145,6 @@ void IntervalCell::Draw(wxPoint point)
   Cell::Draw(point);
   if (DrawThisCell(point))
   { 
-    Configuration *configuration = (*m_configuration);
     wxPoint innerCellPos(point);
     
     if(m_drawAsAscii)
@@ -162,7 +161,7 @@ void IntervalCell::Draw(wxPoint point)
     }
     else
     {
-      wxDC *adc = configuration->GetAntialiassingDC();
+      wxDC *adc = m_configuration->GetAntialiassingDC();
       SetPen(1.5);
 
       innerCellPos.x = point.x + m_signWidth;

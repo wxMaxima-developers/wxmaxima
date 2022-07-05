@@ -32,7 +32,7 @@
 class DigitCell : public TextCell
 {
 public:
-  DigitCell(GroupCell *group, Configuration **config, const wxString &text = {}, TextStyle style = TS_NUMBER);
+  DigitCell(GroupCell *group, Configuration *config, const wxString &text = {}, TextStyle style = TS_NUMBER);
   DigitCell(GroupCell *group, const DigitCell &cell);
   ~DigitCell(){}
   std::unique_ptr<Cell> Copy(GroupCell *group) const override;

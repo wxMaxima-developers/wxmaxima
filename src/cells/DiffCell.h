@@ -28,7 +28,7 @@
 class DiffCell final : public Cell
 {
 public:
-  DiffCell(GroupCell *group, Configuration **config, std::unique_ptr<Cell> &&base,
+  DiffCell(GroupCell *group, Configuration *config, std::unique_ptr<Cell> &&base,
            std::unique_ptr<Cell> &&diff);
   DiffCell(GroupCell *group, const DiffCell &cell);
   std::unique_ptr<Cell> Copy(GroupCell *group) const override;

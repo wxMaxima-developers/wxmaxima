@@ -38,7 +38,7 @@
 #include <wx/clipbrd.h>
 #include <wx/mstream.h>
 
-ImgCellBase::ImgCellBase(GroupCell *group, Configuration **config) :
+ImgCellBase::ImgCellBase(GroupCell *group, Configuration *config) :
   Cell(group, config)
 {
 }

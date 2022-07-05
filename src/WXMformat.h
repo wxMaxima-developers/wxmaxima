@@ -66,27 +66,27 @@ namespace Format
 wxString TreeToWXM(GroupCell *cell, bool wxm = true);
 
 //! Converts a wxm description into individual cells
-std::unique_ptr<GroupCell> TreeFromWXM(const wxArrayString &wxmLines, Configuration **config);
+std::unique_ptr<GroupCell> TreeFromWXM(const wxArrayString &wxmLines, Configuration *config);
 
 /*! Parses the contents of a .wxm file into individual cells.
  * Invokes TreeFromWXM on pre-processed data,
  * concatenates the results.
  * \returns the tree, or nullptr on failure.
  */
-std::unique_ptr<GroupCell> ParseWXMFile(wxTextBuffer &buf, Configuration **config);
+std::unique_ptr<GroupCell> ParseWXMFile(wxTextBuffer &buf, Configuration *config);
 
 /*! Parses the contents of a preloaded .mac file into individual cells.
  *
  * Invokes TreeFromWXM on pre-processed data.
  * \returns the cell tree, or nullptr on failure.
  */
-std::unique_ptr<GroupCell> ParseMACContents(const wxString &macContents, Configuration **config);
+std::unique_ptr<GroupCell> ParseMACContents(const wxString &macContents, Configuration *config);
 
 /*! Parses the contents of a .mac or a .out file into individual cells.
  * Invokes ParseMACContents on pre-processed data.
  * \returns the cell tree, or nullptr on failure.
  */
-std::unique_ptr<GroupCell> ParseMACFile(wxTextBuffer &buf, bool xMaximaFile, Configuration **config);
+std::unique_ptr<GroupCell> ParseMACFile(wxTextBuffer &buf, bool xMaximaFile, Configuration *config);
 
 //! First line of the WXM files - used by both loading and saving code.
 extern const wxString WXMFirstLine;

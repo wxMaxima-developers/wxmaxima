@@ -32,7 +32,7 @@
 #include "CellImpl.h"
 #include "TextCell.h"
 
-SumCell::SumCell(GroupCell *group, Configuration **config, sumStyle style,
+SumCell::SumCell(GroupCell *group, Configuration *config, sumStyle style,
                  std::unique_ptr<Cell> &&under, std::unique_ptr<Cell> &&over,
                  std::unique_ptr<Cell> &&base)
     : Cell(group, config),
@@ -164,8 +164,7 @@ void SumCell::Draw(wxPoint point)
 
   if (DrawThisCell(point))
   {
-    Configuration *configuration = (*m_configuration);
-    wxDC *dc = configuration->GetDC();
+    wxDC *dc = m_configuration->GetDC();
 
     wxPoint base(point), under(point), over(point);
 
@@ -180,7 +179,7 @@ void SumCell::Draw(wxPoint point)
     SetPen(1.5);
     if (m_sumStyle == SM_SUM)
     {
-      wxDC *adc = configuration->GetAntialiassingDC();
+      wxDC *adc = m_configuration->GetAntialiassingDC();
       //DRAW SUM SIGN
       // Upper part
       const wxPoint points[5] = {

@@ -30,7 +30,7 @@ Style Configuration::GetStyle(TextStyle, AFontSize) const
   return Style(AFontSize(10.0));
 }
 
-GroupCell::GroupCell(Configuration **config, GroupType groupType, const wxString &) :
+GroupCell::GroupCell(Configuration *config, GroupType groupType, const wxString &) :
   Cell(this, config), m_groupType(groupType)
 {
   m_type = MC_TYPE_GROUP;

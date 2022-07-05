@@ -88,7 +88,7 @@ wxXmlNode *MathParser::GetNextTag(wxXmlNode *node)
   return SkipWhitespaceNode(node);
 }
 
-MathParser::MathParser(Configuration **cfg, const wxString &zipfile)
+MathParser::MathParser(Configuration *cfg, const wxString &zipfile)
 {
   // We cannot do this at the startup of the program as we first need to wait
   // for the language selection to take place
@@ -357,9 +357,9 @@ std::unique_ptr<Cell> MathParser::ParseImageTag(wxXmlNode *node)
       // case we might get a local path
       if (
         (!wxFileExists(filename)) &&
-        (wxFileExists((*m_configuration)->GetWorkingDirectory() + wxT("/") + filename))
+        (wxFileExists(m_configuration->GetWorkingDirectory() + wxT("/") + filename))
         )
-        filename = (*m_configuration)->GetWorkingDirectory() + wxT("/") + filename;
+        filename = m_configuration->GetWorkingDirectory() + wxT("/") + filename;
       if (wxImage::GetImageCount(filename) < 2)
         imageCell = std::make_unique<ImgCell>(m_group, m_configuration, filename, system_fs, false);
       else
@@ -1244,7 +1244,7 @@ std::unique_ptr<Cell> MathParser::ParseLine(wxString s, CellType style)
 
   int showLength;
 
-  switch ((*m_configuration)->ShowLength())
+  switch (m_configuration->ShowLength())
   {
     case 0:
       showLength = 6000;

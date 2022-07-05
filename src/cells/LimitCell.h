@@ -40,7 +40,7 @@
 class LimitCell final : public Cell
 {
 public:
-  LimitCell(GroupCell *group, Configuration **config,
+  LimitCell(GroupCell *group, Configuration *config,
             std::unique_ptr<Cell> &&base, std::unique_ptr<Cell> &&under,
             std::unique_ptr<Cell> &&name);
   LimitCell(GroupCell *group, const LimitCell &cell);

@@ -514,19 +514,11 @@ void Configuration::ReadConfig()
   wxString str;
   long dummy;
   config->SetPath("/renderability/good");
-  wxLogMessage(_("Reading the glyph renderability cache"));
   bool bCont = config->GetFirstEntry(str, dummy);
   while (bCont)
   {
     wxString chars;
     config->Read(str, &chars);
-    wxLogMessage(
-      wxString::Format(
-        _("Font %s should render the glyphs \"%s\" correctly."),
-        str.c_str(),
-        chars.c_str()
-        )
-      );
     m_renderableChars[str] = chars;
     bCont = config->GetNextEntry(str, dummy);
   }
@@ -536,13 +528,6 @@ void Configuration::ReadConfig()
   {
     wxString chars;
     config->Read(str, &chars);
-    wxLogMessage(
-      wxString::Format(
-        _("Font %s cannot render the glyphs \"%s\"."),
-        str.c_str(),
-        chars.c_str()
-        )
-      );
     m_nonRenderableChars[str] = chars;
     bCont = config->GetNextEntry(str, dummy);
   }
@@ -559,6 +544,7 @@ void Configuration::ReadConfig()
     config->Read(wxT("exportContainsWXMX"), &m_exportContainsWXMX);
     config->Read(wxT("texPreamble"), &m_texPreamble);
     {
+      wxLogNull suppressor;
       config->Read(wxT("suppressYellowMarkerMessages"), &hideMessagesConfigString);
       // Write the string into a memory buffer
       wxMemoryOutputStream ostream;
@@ -567,7 +553,7 @@ void Configuration::ReadConfig()
       wxMemoryInputStream istream(ostream.GetOutputStreamBuffer()->GetBufferStart(),
                                   ostream.GetOutputStreamBuffer()->GetBufferSize());
       wxXmlDocument xmlDocument;
-      if(xmlDocument.Load(istream))
+      if((!hideMessagesConfigString.IsEmpty())&&(xmlDocument.Load(istream)))
       {
         wxXmlNode *headNode = xmlDocument.GetDocumentNode();
         if(headNode)
@@ -593,6 +579,7 @@ void Configuration::ReadConfig()
       }
     }
     {
+      wxLogNull suppressor;
       wxString maximaEnvironmentString;
       config->Read(wxT("maximaEnvironment"), &maximaEnvironmentString);
       // Write the string into a memory buffer
@@ -602,7 +589,7 @@ void Configuration::ReadConfig()
       wxMemoryInputStream istream(ostream.GetOutputStreamBuffer()->GetBufferStart(),
                                   ostream.GetOutputStreamBuffer()->GetBufferSize());
       wxXmlDocument xmlDocument;
-      if(xmlDocument.Load(istream))
+      if((!maximaEnvironmentString.IsEmpty())&&(xmlDocument.Load(istream)))
       {
         wxXmlNode *headNode = xmlDocument.GetDocumentNode();
         if(headNode)

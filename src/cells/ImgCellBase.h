@@ -40,7 +40,7 @@ to both
 class ImgCellBase : public Cell
 {
 public:
-  ImgCellBase(GroupCell *group, Configuration **config);
+  ImgCellBase(GroupCell *group, Configuration *config);
 
   virtual std::unique_ptr<Cell> Copy(GroupCell *group) const override = 0;
   virtual const CellTypeInfo &GetInfo() override = 0;

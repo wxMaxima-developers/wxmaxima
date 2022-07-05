@@ -37,7 +37,7 @@
 static constexpr AFontSize INTEGRAL_FONT_SIZE{ 12.0f };
 #endif
 
-IntCell::IntCell(GroupCell *group, Configuration **config,
+IntCell::IntCell(GroupCell *group, Configuration *config,
                  std::unique_ptr<Cell> &&base, std::unique_ptr<Cell> &&under,
                  std::unique_ptr<Cell> &&over, std::unique_ptr<Cell> &&var)
     : Cell(group, config),
@@ -50,7 +50,7 @@ IntCell::IntCell(GroupCell *group, Configuration **config,
   SetStyle(TS_VARIABLE);
 }
 
-IntCell::IntCell(GroupCell *group, Configuration **config,
+IntCell::IntCell(GroupCell *group, Configuration *config,
                  std::unique_ptr<Cell> &&base, std::unique_ptr<Cell> &&var)
     : IntCell(group, config, std::move(base),
               std::make_unique<TextCell>(group, config),
@@ -89,10 +89,9 @@ void IntCell::MakeBreakUpCells()
 void IntCell::Recalculate(AFontSize fontsize)
 {
   wxASSERT(fontsize.IsValid());
-  Configuration *configuration = (*m_configuration);
   
-  m_signHeight = Scale_Px(35 * configuration->GetZoomFactor());
-  m_signWidth = Scale_Px(18 * configuration->GetZoomFactor());
+  m_signHeight = Scale_Px(35 * m_configuration->GetZoomFactor());
+  m_signWidth = Scale_Px(18 * m_configuration->GetZoomFactor());
   if(m_signWidth < 4)
     m_signWidth = 4;
   
@@ -122,14 +121,14 @@ void IntCell::Recalculate(AFontSize fontsize)
   }
   else
   {
-    if (configuration->CheckTeXFonts())
+    if (m_configuration->CheckTeXFonts())
     {
-      wxDC *dc = configuration->GetDC();
+      wxDC *dc = m_configuration->GetDC();
       auto fontsize1 = AFontSize(Scale_Px(fontsize * 1.5));
       wxASSERT(fontsize1.IsValid());
       
       Style style = Style(fontsize1)
-        .FontName(configuration->GetTeXCMEX());
+        .FontName(m_configuration->GetTeXCMEX());
       if (!style.IsFontOk())
       {
         style = Style::FromStockFont(wxStockGDI::FONT_NORMAL);
@@ -154,12 +153,12 @@ void IntCell::Recalculate(AFontSize fontsize)
     else
     {
 #if defined __WXMSW__
-      wxDC *dc = configuration->GetDC();
+      wxDC *dc = m_configuration->GetDC();
       auto fontsize1 = Scale_Px(INTEGRAL_FONT_SIZE);
       wxASSERT(fontsize1.IsValid());
       
       Style style = Style(fontsize1)
-        .FontName(configuration->GetSymbolFontName());
+        .FontName(m_configuration->GetSymbolFontName());
       
       if (!style.IsFontOk())
       {
@@ -208,9 +207,7 @@ void IntCell::Draw(wxPoint point)
 {
   Cell::Draw(point);
   if (DrawThisCell(point))
-  {
-    Configuration *configuration = (*m_configuration);
-        
+  {        
     wxPoint base(point), under(point), over(point), var(point), sign(point);
 
     SetPen(1.5);
@@ -240,7 +237,7 @@ void IntCell::Draw(wxPoint point)
          sign.y + (m_signHeight - Scale_Px(1)) / 2 - m_signWidth / 4}
       };
 
-    configuration->GetAntialiassingDC()->DrawSpline(7, points);
+    m_configuration->GetAntialiassingDC()->DrawSpline(7, points);
     points[1] = {sign.x + m_signWCenter + m_signWidth / 4,
       sign.y - (m_signHeight - Scale_Px(1.25)) / 2};
     points[2] = {sign.x + m_signWCenter,
@@ -253,7 +250,7 @@ void IntCell::Draw(wxPoint point)
       + Scale_Px(.35)};
     points[5] = {sign.x + m_signWCenter - m_signWidth / 4,
       sign.y + (m_signHeight - Scale_Px(1.25)) / 2};
-    configuration->GetAntialiassingDC()->DrawSpline(7, points);
+    m_configuration->GetAntialiassingDC()->DrawSpline(7, points);
     // line
 
     if (m_intStyle == INT_DEF)
@@ -263,7 +260,7 @@ void IntCell::Draw(wxPoint point)
                 m_signHeight / 3;
       m_under->DrawList(under);
 
-      if (configuration->CheckTeXFonts())
+      if (m_configuration->CheckTeXFonts())
         over.x += 2 * m_signWidth;
       else
         over.x += m_signWidth;
@@ -272,7 +269,7 @@ void IntCell::Draw(wxPoint point)
                m_signHeight / 3;
       m_over->DrawList(over);
 
-      if (configuration->CheckTeXFonts())
+      if (m_configuration->CheckTeXFonts())
       {
         base.x += m_signWidth +
                   wxMax(m_over->GetFullWidth() + m_signWidth, m_under->GetFullWidth());
@@ -282,7 +279,7 @@ void IntCell::Draw(wxPoint point)
                   wxMax(m_over->GetFullWidth(), m_under->GetFullWidth());
     }
 
-    else if (configuration->CheckTeXFonts())
+    else if (m_configuration->CheckTeXFonts())
       base.x += 2 * m_signWidth;
     else
       base.x += m_signWidth;

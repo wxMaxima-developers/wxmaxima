@@ -48,7 +48,7 @@
 class SqrtCell final : public Cell
 {
 public:
-  SqrtCell(GroupCell *group, Configuration **config, std::unique_ptr<Cell> &&inner);
+  SqrtCell(GroupCell *group, Configuration *config, std::unique_ptr<Cell> &&inner);
   SqrtCell(GroupCell *group, const SqrtCell &cell);
   std::unique_ptr<Cell> Copy(GroupCell *group) const override;
   const CellTypeInfo &GetInfo() override;

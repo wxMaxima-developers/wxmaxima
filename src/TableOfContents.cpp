@@ -31,7 +31,7 @@
 #include <wx/sizer.h>
 #include <list>
 
-TableOfContents::TableOfContents(wxWindow *parent, int id, Configuration **config, std::unique_ptr<GroupCell> *tree) :
+TableOfContents::TableOfContents(wxWindow *parent, int id, Configuration *config, std::unique_ptr<GroupCell> *tree) :
   wxPanel(parent, id),
   m_tree(tree),
   m_scrollUpTimer(this, wxUP),
@@ -44,7 +44,7 @@ TableOfContents::TableOfContents(wxWindow *parent, int id, Configuration **confi
           wxLC_SINGLE_SEL | wxLC_ALIGN_LEFT | wxLC_REPORT | wxLC_NO_HEADER
   );
   m_displayedItems->AppendColumn(wxEmptyString);
-  m_regex = new RegexCtrl(this, structure_regex_id, *config);
+  m_regex = new RegexCtrl(this, structure_regex_id, config);
 
   // A box whose 1st row is growable 
   wxSizer *box = new wxBoxSizer(wxVERTICAL);
@@ -325,7 +325,7 @@ void TableOfContents::UpdateDisplay()
     }
 
     // Limit the toc depth shown
-    if((*m_configuration)->TocDepth() <= tocDepth)
+    if(m_configuration->TocDepth() <= tocDepth)
       continue;
     
     wxString curr = TocEntryString(m_structure[i]);
@@ -444,7 +444,7 @@ wxString TableOfContents::TocEntryString(GroupCell *cell)
   if(cell->GetEditable())
     curr = cell->GetEditable()->ToString();
   
-  if ((*m_configuration)->TocShowsSectionNumbers())
+  if (m_configuration->TocShowsSectionNumbers())
   {
     if(cell->GetPrompt() != NULL)
       curr = cell->GetPrompt()->ToString() + wxT(" ") + curr;
@@ -551,8 +551,8 @@ void TableOfContents::OnMouseRightDown(wxListEvent &event)
   tocLevelMenu->AppendRadioItem(popid_tocLevel4, _("4 Levels"));
   tocLevelMenu->AppendRadioItem(popid_tocLevel5, _("5 Levels"));
   tocLevelMenu->AppendRadioItem(popid_tocLevel6, _("All Levels"));
-  if((*m_configuration)->TocDepth() < 6)
-    tocLevelMenu->Check(popid_tocLevel1 + (*m_configuration)->TocDepth() - 1, true);
+  if(m_configuration->TocDepth() < 6)
+    tocLevelMenu->Check(popid_tocLevel1 + m_configuration->TocDepth() - 1, true);
   else
     tocLevelMenu->Check(popid_tocLevel6, true);
   popupMenu->Append(wxID_ANY, _("Toc levels shown here"), tocLevelMenu);
@@ -561,7 +561,7 @@ void TableOfContents::OnMouseRightDown(wxListEvent &event)
     popupMenu->AppendSeparator();
   popupMenu->AppendCheckItem(popid_ToggleTOCshowsSectionNumbers, _("Show section numbers"));
   popupMenu->Check(popid_ToggleTOCshowsSectionNumbers,
-                   (*m_configuration)->TocShowsSectionNumbers());
+                   m_configuration->TocShowsSectionNumbers());
 
   // create menu if we have any items
   if (popupMenu->GetMenuItemCount() > 0)

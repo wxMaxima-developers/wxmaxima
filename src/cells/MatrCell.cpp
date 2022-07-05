@@ -30,14 +30,14 @@
 #include "MatrCell.h"
 #include "CellImpl.h"
 
-MatrCell::MatrCell(GroupCell *group, Configuration **config) :
+MatrCell::MatrCell(GroupCell *group, Configuration *config) :
     Cell(group, config)
 {
   InitBitFields();
 }
 
 MatrCell::MatrCell(GroupCell *group, const MatrCell &cell):
-    MatrCell(group, cell.m_configuration)
+  MatrCell(group, cell.m_configuration)
 {
   CopyCommonData(cell);
   m_specialMatrix = cell.m_specialMatrix;
@@ -109,8 +109,7 @@ void MatrCell::Draw(wxPoint point)
   SetBrush();
   if (DrawThisCell(point))
   {
-    Configuration *configuration = (*m_configuration);
-    wxDC *dc = configuration->GetDC();
+    wxDC *dc = m_configuration->GetDC();
     wxPoint mp;
     mp.x = point.x + Scale_Px(5);
     mp.y = point.y - m_center;
@@ -154,7 +153,7 @@ void MatrCell::Draw(wxPoint point)
     }
     else
     {
-      wxDC &adc = *configuration->GetAntialiassingDC();
+      wxDC &adc = *m_configuration->GetAntialiassingDC();
       switch(m_parenType)
       {
       case paren_rounded:

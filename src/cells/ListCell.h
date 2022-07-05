@@ -49,7 +49,7 @@
 class ListCell : public Cell
 {
 public:
-  ListCell(GroupCell *group, Configuration **config, std::unique_ptr<Cell> &&inner);
+  ListCell(GroupCell *group, Configuration *config, std::unique_ptr<Cell> &&inner);
   ListCell(GroupCell *group, const ListCell &cell);
   virtual std::unique_ptr<Cell> Copy(GroupCell *group) const override;
   virtual const CellTypeInfo &GetInfo() override;

@@ -111,8 +111,6 @@ private:
   bool m_scrollToTopOfCell;
   //! Is our window currently active?
   bool m_windowActive;
-  //! The configuration storage
-  Configuration m_configurationTopInstance;
   //! The rectangle we need to refresh.
   wxRegion m_rectToRefresh;
   /*! The size of a scroll step
@@ -655,12 +653,11 @@ public:
 
   //! Is called if this element looses or gets the focus
   void OnActivate(wxActivateEvent &event);
-  /*! The pointer to the currently active central settings storage
-
-    Whilst printing or exporting the worksheet a settings storage
-    with the print settings might be active.
+private:
+  /*! The pointer to thesettings storage
    */
   Configuration *m_configuration;
+public:
   //! The storage for the autocompletion feature
   AutoComplete m_autocomplete;
 
@@ -950,7 +947,7 @@ public:
   };
 
   //! The constructor
-  Worksheet(wxWindow *parent, int id, Worksheet *&observer,
+  Worksheet(wxWindow *parent, int id, Worksheet *&observer, Configuration *config,
             wxPoint pos = wxDefaultPosition, wxSize size = wxDefaultSize);
 
   //! The destructor
@@ -1710,7 +1707,7 @@ protected:
 
 inline Worksheet *Cell::GetWorksheet() const
 {
-  wxWindow *worksheet = (*m_configuration)->GetWorkSheet();
+  wxWindow *worksheet = m_configuration->GetWorkSheet();
   wxASSERT(worksheet != NULL);
   return static_cast<Worksheet*>(worksheet);
 }

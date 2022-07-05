@@ -153,8 +153,8 @@ class Cell: public Observed
   friend inline auto OnInner(C *cell);
 
 public:
-//  Cell(GroupCell *group, Configuration **config);
-  Cell(GroupCell *group, Configuration **config);
+//  Cell(GroupCell *group, Configuration *config);
+  Cell(GroupCell *group, Configuration *config);
 
   /*! Create a copy of this cell
 
@@ -170,8 +170,8 @@ public:
 
     Is used for displaying/printing/exporting of text/maths
    */
-  int Scale_Px(double px) const {return (*m_configuration)->Scale_Px(px);}
-  AFontSize Scale_Px(AFontSize size) const { return (*m_configuration)->Scale_Px(size); }
+  int Scale_Px(double px) const {return m_configuration->Scale_Px(px);}
+  AFontSize Scale_Px(AFontSize size) const { return m_configuration->Scale_Px(size); }
 
 #if wxUSE_ACCESSIBILITY
   // The methods whose implementation within Cell should be sufficient are
@@ -272,9 +272,9 @@ public:
     For details see ClearCache().
    */
   void ClearCacheList();
-  void SetConfigurationList(Configuration **config);
-  virtual void SetConfiguration(Configuration **config);
-  Configuration *GetConfiguration(){return *m_configuration;}
+  void SetConfigurationList(Configuration *config);
+  virtual void SetConfiguration(Configuration *config);
+  Configuration *GetConfiguration(){return m_configuration;}
 
   
   /*! Draw this cell
@@ -811,7 +811,7 @@ public:
 protected:
   std::unique_ptr<Cell> MakeVisiblyInvalidCell() const;
 public:
-  static std::unique_ptr<Cell> MakeVisiblyInvalidCell(GroupCell *group, Configuration **config);
+  static std::unique_ptr<Cell> MakeVisiblyInvalidCell(GroupCell *group, Configuration *config);
 
 protected:
 //** Bases and internal members (16 bytes)
@@ -858,7 +858,7 @@ protected:
   //! reduce the change "noise" when it will be subsequently removed.
   CellPtr<Cell> m_nextToDraw;
 
-  Configuration **m_configuration;
+  Configuration *m_configuration;
 
   //! This tooltip is owned by us when m_ownsToolTip is true. Otherwise,
   //! it points to a "static" string.

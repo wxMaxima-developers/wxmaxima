@@ -75,7 +75,7 @@
 #include <memory>
 
 //! This class represents the worksheet shown in the middle of the wxMaxima window.
-Worksheet::Worksheet(wxWindow *parent, int id, Worksheet* &observer, wxPoint pos, wxSize size) :
+Worksheet::Worksheet(wxWindow *parent, int id, Worksheet* &observer, Configuration *config, wxPoint pos, wxSize size) :
   wxScrolled<wxWindow>(
     parent, id, pos, size,
     wxVSCROLL | wxHSCROLL | wxWANTS_CHARS
@@ -85,8 +85,8 @@ Worksheet::Worksheet(wxWindow *parent, int id, Worksheet* &observer, wxPoint pos
     ),
   m_cellPointers(this),
   m_dc(this),
-  m_configuration(&m_configurationTopInstance),
-  m_autocomplete(&m_configurationTopInstance),
+  m_configuration(config),
+  m_autocomplete(config),
   m_observer(observer)
 {
   m_dontSkipScrollEvent = false;
@@ -3057,7 +3057,7 @@ void Worksheet::SetCellStyle(GroupCell *group, GroupType style)
   wxString cellContents;
   if (group->GetEditable())
     cellContents = group->GetEditable()->GetValue();
-  auto newGroupCell = std::make_unique<GroupCell>(&m_configuration, style);
+  auto newGroupCell = std::make_unique<GroupCell>(m_configuration, style);
   newGroupCell->GetEditable()->SetValue(cellContents);
   GroupCell *prev = group->GetPrevious();
   DeleteRegion(group,group);
@@ -3177,7 +3177,7 @@ void Worksheet::OpenQuestionCaret(const wxString &txt)
   // If we still haven't a cell to put the answer in we now create one.
   if (!m_cellPointers.m_answerCell)
   {
-    auto answerCell = std::make_unique<EditorCell>(group, &m_configuration);
+    auto answerCell = std::make_unique<EditorCell>(group, m_configuration);
     m_cellPointers.m_answerCell = answerCell;
     answerCell->SetType(MC_TYPE_INPUT);
     bool autoEvaluate = false;
@@ -3242,7 +3242,7 @@ void Worksheet::OpenHCaret(const wxString &txt, GroupType type)
   }
 
   // insert a new group cell
-  auto group = std::make_unique<GroupCell>(&m_configuration, type, txt);
+  auto group = std::make_unique<GroupCell>(m_configuration, type, txt);
   // check how much to unfold for this type
   if (m_hCaretPosition)
   {
@@ -7634,7 +7634,7 @@ void Worksheet::PasteFromClipboard()
         lines_array.Add(lines.GetNextToken());
 
       // Load the array like we would do with a .wxm file
-      auto contents = Format::TreeFromWXM(lines_array, &m_configuration);
+      auto contents = Format::TreeFromWXM(lines_array, m_configuration);
 
       // Add the result of the last operation to the worksheet.
       if (contents)
@@ -7682,7 +7682,7 @@ void Worksheet::PasteFromClipboard()
     {
       wxBitmapDataObject bitmap;
       wxTheClipboard->GetData(bitmap);
-      auto ic = std::make_unique<ImgCell>(group, &m_configuration, bitmap.GetBitmap());
+      auto ic = std::make_unique<ImgCell>(group, m_configuration, bitmap.GetBitmap());
       group->AppendOutput(std::move(ic));
       Recalculate(group);
     }

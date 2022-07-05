@@ -29,7 +29,7 @@
 #include "ConjugateCell.h"
 #include "CellImpl.h"
 
-ConjugateCell::ConjugateCell(GroupCell *group, Configuration **config, std::unique_ptr<Cell> &&inner) :
+ConjugateCell::ConjugateCell(GroupCell *group, Configuration *config, std::unique_ptr<Cell> &&inner) :
     Cell(group, config),
     m_innerCell(std::move(inner))
 {
@@ -85,10 +85,8 @@ void ConjugateCell::Draw(wxPoint point)
 {
   Cell::Draw(point);
   if (DrawThisCell(point))
-  {
-    Configuration *configuration = (*m_configuration);
-    
-    wxDC *dc = configuration->GetDC();
+  {    
+    wxDC *dc = m_configuration->GetDC();
     SetPen();
     wxPoint in;
     in.x = point.x + Scale_Px(4);

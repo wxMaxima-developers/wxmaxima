@@ -50,10 +50,9 @@ SCENARIO("RTF Output represents the image") {
   wxMemoryBuffer image;
   image.AppendData(wxmaxima_art_wxmac_doc_png, wxmaxima_art_wxmac_doc_png_size);
   Configuration config;
-  Configuration *pConfig = &config;
-  GroupCell group(&pConfig, GC_TYPE_IMAGE);
+  GroupCell group(&config, GC_TYPE_IMAGE);
   GIVEN("An image with test data") {
-    ImgCell cell(&group, &pConfig, image, "png");
+    ImgCell cell(&group, &config, image, "png");
     WHEN("we convert it to RTF") {
       auto rtf = cell.ToRTF();
       THEN("the RTF output ends in \"}\\n\"")

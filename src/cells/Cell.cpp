@@ -58,7 +58,7 @@ const wxString &Cell::GetToolTip(const wxPoint point) const
   return *m_toolTip;
 }
 
-Cell::Cell(GroupCell *group, Configuration **config) :
+Cell::Cell(GroupCell *group, Configuration *config) :
   m_group(group),
   m_configuration(config),
   m_toolTip(&wxm::emptyString),
@@ -193,10 +193,10 @@ int Cell::CellsInListRecursive() const
 
 wxRect Cell::CropToUpdateRegion(wxRect rect) const
 {
-  if (!(*m_configuration)->ClipToDrawRegion())
+  if (!m_configuration->ClipToDrawRegion())
     return rect;
   else
-    return rect.Intersect((*m_configuration)->GetUpdateRegion());
+    return rect.Intersect(m_configuration->GetUpdateRegion());
 }
 
 void Cell::FontsChangedList()
@@ -306,30 +306,29 @@ int Cell::GetLineWidth() const
  */
 void Cell::Draw(wxPoint point)
 {
-  Configuration *configuration = *m_configuration;
-  configuration->NotifyOfCellRedraw(this);
+  m_configuration->NotifyOfCellRedraw(this);
 
   if((point.x >= 0) && (point.y >= 0))
     SetCurrentPoint(point);
   
   // Mark all cells that contain tooltips
   if (!m_toolTip->empty() && (GetStyle() != TS_LABEL) && (GetStyle() != TS_USERLABEL) &&
-      configuration->ClipToDrawRegion() && !configuration->GetPrinting() && !m_group->GetSuppressTooltipMarker() && (!configuration->HideMarkerForThisMessage(*m_toolTip)))
+      m_configuration->ClipToDrawRegion() && !m_configuration->GetPrinting() && !m_group->GetSuppressTooltipMarker() && (!m_configuration->HideMarkerForThisMessage(*m_toolTip)))
   {
     wxRect rect = Cell::CropToUpdateRegion(GetRect());
-    if (configuration->InUpdateRegion(rect) && !rect.IsEmpty())
+    if (m_configuration->InUpdateRegion(rect) && !rect.IsEmpty())
     {
-      wxDC *dc = configuration->GetDC();
+      wxDC *dc = m_configuration->GetDC();
       dc->SetPen(*wxTRANSPARENT_PEN);
-      dc->SetBrush((*m_configuration)->GetTooltipBrush());
+      dc->SetBrush(m_configuration->GetTooltipBrush());
       dc->DrawRectangle(rect);
     }
   }
   
   // Tell the screen reader that this cell's contents might have changed.
 #if wxUSE_ACCESSIBILITY
-  if (configuration->GetWorkSheet())
-    wxAccessible::NotifyEvent(0, configuration->GetWorkSheet(), wxOBJID_CLIENT, wxOBJID_CLIENT);
+  if (m_configuration->GetWorkSheet())
+    wxAccessible::NotifyEvent(0, m_configuration->GetWorkSheet(), wxOBJID_CLIENT, wxOBJID_CLIENT);
 #endif
 }
 
@@ -430,10 +429,10 @@ bool Cell::DrawThisCell(wxPoint point)
   if(m_isBrokenIntoLines)
     return false;
   
-  if((*m_configuration)->GetPrinting())
+  if(m_configuration->GetPrinting())
     return true;
 
-  if(!(*m_configuration)->ClipToDrawRegion())
+  if(!m_configuration->ClipToDrawRegion())
     return true;
   
   return(InUpdateRegion());
@@ -455,13 +454,13 @@ bool Cell::HasValidPosition() const
   return (m_currentPoint.x >= 0) & (m_currentPoint.y >= 0);
 }
 
-void Cell::SetConfigurationList(Configuration **config)
+void Cell::SetConfigurationList(Configuration *config)
 {
   for (Cell &tmp : OnList(this))
     tmp.SetConfiguration(config);
 }
 
-void Cell::SetConfiguration(Configuration **config)
+void Cell::SetConfiguration(Configuration *config)
 {
   m_configuration = config;
   for (Cell &cell : OnInner(this))
@@ -480,11 +479,10 @@ wxRect Cell::GetRect(bool wholeList) const
 
 bool Cell::InUpdateRegion() const
 {
-  auto *const configuration = *m_configuration;
-  if (!configuration->ClipToDrawRegion())
+  if (!m_configuration->ClipToDrawRegion())
     return true;
   if (HasStaleSize())
-    return configuration->InUpdateRegion(GetRect());
+    return m_configuration->InUpdateRegion(GetRect());
   if (HasValidPosition())
   {
     // The cell hasn't been recalculated yet: we perform a best-attempt
@@ -492,12 +490,12 @@ bool Cell::InUpdateRegion() const
     // scrolled by the user, or when maxima is updating it.
     wxRect cellRect;
     cellRect.SetPosition(m_currentPoint);
-    cellRect.SetWidth(configuration->GetClientWidth() - m_currentPoint.x);
+    cellRect.SetWidth(m_configuration->GetClientWidth() - m_currentPoint.x);
     if (m_next && m_next->HasValidPosition())
       cellRect.SetHeight(m_next->m_currentPoint.y - m_currentPoint.y);
     else
       cellRect.SetHeight(1);
-    return configuration->InUpdateRegion(cellRect);
+    return m_configuration->InUpdateRegion(cellRect);
   }
   return false;
 }
@@ -1119,16 +1117,15 @@ void Cell::UnbreakList()
 
 wxColour Cell::GetForegroundColor() const
 {
-  Configuration *configuration = (*m_configuration);
   wxColour color;  
   if (m_highlight)
-    color = configuration->GetColor(TS_HIGHLIGHT);
+    color = m_configuration->GetColor(TS_HIGHLIGHT);
   else if (m_type == MC_TYPE_PROMPT)
-    color = configuration->GetColor(TS_OTHER_PROMPT);
+    color = m_configuration->GetColor(TS_OTHER_PROMPT);
   else if (m_type == MC_TYPE_INPUT)
-    color = configuration->GetColor(TS_INPUT);
+    color = m_configuration->GetColor(TS_INPUT);
   else
-    color = configuration->GetColor(TS_DEFAULT);
+    color = m_configuration->GetColor(TS_DEFAULT);
 
   return color;
 }
@@ -1138,29 +1135,27 @@ wxColour Cell::GetForegroundColor() const
 // Set the pen in device context according to the style of the cell.
 void Cell::SetPen(double lineWidth) const
 {
-  Configuration *configuration = (*m_configuration);
-  wxDC *dc = configuration->GetDC();
+  wxDC *dc = m_configuration->GetDC();
   
   wxPen pen = *(wxThePenList->FindOrCreatePen(GetForegroundColor(),
-                                              lineWidth * configuration->GetDefaultLineWidth(),
+                                              lineWidth * m_configuration->GetDefaultLineWidth(),
                                               wxPENSTYLE_SOLID)
     );
   dc->SetPen(pen);
     
-  if(configuration->GetAntialiassingDC() != dc)
-    configuration->GetAntialiassingDC()->SetPen(pen);
+  if(m_configuration->GetAntialiassingDC() != dc)
+    m_configuration->GetAntialiassingDC()->SetPen(pen);
 }
 
 void Cell::SetBrush() const
 {
-  Configuration *configuration = (*m_configuration);
-  wxDC *dc = configuration->GetDC();
+  wxDC *dc = m_configuration->GetDC();
   
   wxBrush brush = *(wxTheBrushList->FindOrCreateBrush(GetForegroundColor()));
   dc->SetBrush(brush);
     
-  if(configuration->GetAntialiassingDC() != dc)
-    configuration->GetAntialiassingDC()->SetBrush(brush);
+  if(m_configuration->GetAntialiassingDC() != dc)
+    m_configuration->GetAntialiassingDC()->SetBrush(brush);
 }
 
 const wxString &Cell::GetValue() const
@@ -1170,34 +1165,33 @@ const wxString &Cell::GetValue() const
 
 void Cell::SetForeground()
 {
-  Configuration *configuration = (*m_configuration);
   wxColour color;
-  wxDC *dc = configuration->GetDC();
+  wxDC *dc = m_configuration->GetDC();
   if (m_highlight)
   {
-    color = configuration->GetColor(TS_HIGHLIGHT);
+    color = m_configuration->GetColor(TS_HIGHLIGHT);
   }
   else
   {
     switch (m_type)
     {
       case MC_TYPE_PROMPT:
-        color = configuration->GetColor(TS_OTHER_PROMPT);
+        color = m_configuration->GetColor(TS_OTHER_PROMPT);
         break;
       case MC_TYPE_MAIN_PROMPT:
-        color = configuration->GetColor(TS_MAIN_PROMPT);
+        color = m_configuration->GetColor(TS_MAIN_PROMPT);
         break;
       case MC_TYPE_ERROR:
         color = wxColour(wxT("red"));
         break;
       case MC_TYPE_WARNING:
-        color = configuration->GetColor(TS_WARNING);
+        color = m_configuration->GetColor(TS_WARNING);
         break;
       case MC_TYPE_LABEL:
-        color = configuration->GetColor(TS_LABEL);
+        color = m_configuration->GetColor(TS_LABEL);
         break;
       default:
-        color = configuration->GetColor(m_textStyle);
+        color = m_configuration->GetColor(m_textStyle);
         break;
     }
   }
@@ -1246,9 +1240,8 @@ wxAccStatus CellAccessible::GetParent(wxAccessible **parent)
   auto rc = m_cell->GetParent(&parentCell);
   if (rc == wxACC_OK)
   {
-    Configuration *const configuration = *m_cell->m_configuration;
-    if (!parentCell && configuration->GetWorkSheet())
-      return (*parent = configuration->GetWorkSheet()->GetAccessible()), wxACC_OK;
+    if (!parentCell && m_cell->GetConfiguration()->GetWorkSheet())
+      return (*parent = m_cell->GetConfiguration()->GetWorkSheet()->GetAccessible()), wxACC_OK;
 
     return parentCell ? (*parent = parentCell->GetAccessible()), wxACC_OK : wxACC_FAIL;
   }
@@ -1414,17 +1407,18 @@ wxAccStatus Cell::GetLocation(wxRect &rect, int elementId)
 {
   if (elementId == 0)
   {
-    rect = wxRect(GetRect().GetTopLeft()     + (*m_configuration)->GetVisibleRegion().GetTopLeft(),
-                  GetRect().GetBottomRight() + (*m_configuration)->GetVisibleRegion().GetTopLeft());
+    rect = wxRect(GetRect().GetTopLeft()     + m_configuration->GetVisibleRegion().GetTopLeft(),
+                  GetRect().GetBottomRight() + m_configuration->GetVisibleRegion().GetTopLeft());
     if(rect.GetTop() < 0)
       rect.SetTop(0);
     if(rect.GetLeft() < 0)
       rect.SetLeft(0);
-    if(rect.GetBottom() > (*m_configuration)->GetVisibleRegion().GetWidth())
-      rect.SetBottom((*m_configuration)->GetVisibleRegion().GetWidth());
-    if(rect.GetRight() > (*m_configuration)->GetVisibleRegion().GetHeight())
-      rect.SetRight((*m_configuration)->GetVisibleRegion().GetHeight());
-    rect = wxRect(rect.GetTopLeft()+(*m_configuration)->GetWorksheetPosition(),rect.GetBottomRight()+(*m_configuration)->GetWorksheetPosition());
+    if(rect.GetBottom() > m_configuration->GetVisibleRegion().GetWidth())
+      rect.SetBottom(m_configuration->GetVisibleRegion().GetWidth());
+    if(rect.GetRight() > m_configuration->GetVisibleRegion().GetHeight())
+      rect.SetRight(m_configuration->GetVisibleRegion().GetHeight());
+    rect = wxRect(rect.GetTopLeft()+m_configuration->GetWorksheetPosition(),
+                  rect.GetBottomRight()+m_configuration->GetWorksheetPosition());
     return wxACC_OK;
   }
 

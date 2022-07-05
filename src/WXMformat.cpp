@@ -212,7 +212,7 @@ wxString TreeToWXM(GroupCell *cell, bool wxm)
   return retval;
 }
 
-std::unique_ptr<GroupCell> TreeFromWXM(const wxArrayString &wxmLines, Configuration **config)
+std::unique_ptr<GroupCell> TreeFromWXM(const wxArrayString &wxmLines, Configuration *config)
 {
   auto wxmLine = wxmLines.begin();
   auto const end = wxmLines.end();
@@ -346,7 +346,7 @@ std::unique_ptr<GroupCell> TreeFromWXM(const wxArrayString &wxmLines, Configurat
   return std::move(tree);
 }
 
-std::unique_ptr<GroupCell> ParseWXMFile(wxTextBuffer &text, Configuration **config)
+std::unique_ptr<GroupCell> ParseWXMFile(wxTextBuffer &text, Configuration *config)
 {
   wxArrayString wxmLines;
   for (auto line = text.GetFirstLine(); ; line = text.GetNextLine())
@@ -359,7 +359,7 @@ std::unique_ptr<GroupCell> ParseWXMFile(wxTextBuffer &text, Configuration **conf
   return Format::TreeFromWXM(wxmLines, config);
 }
 
-std::unique_ptr<GroupCell> ParseMACContents(const wxString &macContents, Configuration **config)
+std::unique_ptr<GroupCell> ParseMACContents(const wxString &macContents, Configuration *config)
 {
   wxString wxmLines;
   CellListBuilder<GroupCell> tree;
@@ -526,7 +526,7 @@ std::unique_ptr<GroupCell> ParseMACContents(const wxString &macContents, Configu
   return std::move(tree);
 }
 
-std::unique_ptr<GroupCell> ParseMACFile(wxTextBuffer &text, bool xMaximaFile, Configuration **config)
+std::unique_ptr<GroupCell> ParseMACFile(wxTextBuffer &text, bool xMaximaFile, Configuration *config)
 {
   bool input = true;
   wxString macContents;

@@ -55,7 +55,7 @@
 #include "ErrorRedirector.h"
 #include "StringUtils.h"
 
-Image::Image(Configuration **config)
+Image::Image(Configuration *config)
 {
   m_configuration = config;
   m_width = 1;
@@ -68,7 +68,7 @@ Image::Image(Configuration **config)
   m_maxHeight = -1;
 }
 
-Image::Image(Configuration **config, wxMemoryBuffer image, wxString type)
+Image::Image(Configuration *config, wxMemoryBuffer image, wxString type)
 {
   m_configuration = config;
   m_scaledBitmap.Create(1, 1);
@@ -95,7 +95,7 @@ Image::Image(Configuration **config, wxMemoryBuffer image, wxString type)
   m_maxHeight = -1;
 }
 
-Image::Image(Configuration **config, const wxBitmap &bitmap)
+Image::Image(Configuration *config, const wxBitmap &bitmap)
 {
   m_configuration = config;
   m_isOk = false;
@@ -113,7 +113,7 @@ Image::Image(Configuration **config, const wxBitmap &bitmap)
 // filesystem cannot be passed by const reference as we want to keep the
 // pointer to the file system alive in a background task
 // cppcheck-suppress performance symbolName=filesystem
-Image::Image(Configuration **config, wxString image, std::shared_ptr<wxFileSystem> filesystem, bool remove):
+Image::Image(Configuration *config, wxString image, std::shared_ptr<wxFileSystem> filesystem, bool remove):
   m_fs_keepalive_imagedata(filesystem)
 {
   m_svgImage = NULL;
@@ -126,11 +126,11 @@ Image::Image(Configuration **config, wxString image, std::shared_ptr<wxFileSyste
   m_maxHeight = -1;
   m_originalWidth = 640;
   m_originalHeight = 480;
-  m_ppi = (*m_configuration)->GetDC()->GetPPI().x;
+  m_ppi = m_configuration->GetDC()->GetPPI().x;
   LoadImage(image, filesystem, remove);
 }
 
-Image::Image(Configuration **config, const Image &image)
+Image::Image(Configuration *config, const Image &image)
 {
   m_svgImage = NULL;
   m_configuration = config;
@@ -262,7 +262,7 @@ void Image::LoadGnuplotSource_Backgroundtask(wxString gnuplotFilename, wxString 
       // Don't cache the data for unreasonably long files.
       wxStructStat strucStat;
       wxStat(dataFilename, &strucStat);
-      if (strucStat.st_size > (*m_configuration)->MaxGnuplotMegabytes()*1000*1000)
+      if (strucStat.st_size > m_configuration->MaxGnuplotMegabytes()*1000*1000)
       {
         wxLogMessage(_("Too much gnuplot data => Not storing it in the worksheet"));
         m_gnuplotData_Compressed.Clear();
@@ -814,8 +814,8 @@ void Image::LoadImage_Backgroundtask(wxString image, std::shared_ptr<wxFileSyste
   {
     wxFile file;
     // Support relative and absolute paths.
-    if(wxFileExists((*m_configuration)->GetWorkingDirectory() + wxT("/") + image))
-      file.Open((*m_configuration)->GetWorkingDirectory() + wxT("/") + image);
+    if(wxFileExists(m_configuration->GetWorkingDirectory() + wxT("/") + image))
+      file.Open(m_configuration->GetWorkingDirectory() + wxT("/") + image);
     else
       file.Open(image);
 
@@ -884,8 +884,8 @@ void Image::LoadImage_Backgroundtask(wxString image, std::shared_ptr<wxFileSyste
 
       // Parse the svg file's contents
       int ppi;
-      if((*m_configuration)->GetDC()->GetPPI().x > 50)
-        ppi = (*m_configuration)->GetDC()->GetPPI().x;
+      if(m_configuration->GetDC()->GetPPI().x > 50)
+        ppi = m_configuration->GetDC()->GetPPI().x;
       else
         ppi = 96;
       
@@ -943,7 +943,6 @@ void Image::Recalculate(double scale)
 {
   int width = m_originalWidth;
   int height = m_originalHeight;
-  Configuration *configuration = (*m_configuration);
   
   // We want the image to get bigger if the user zooms in - and
   // if a high printing resolution requires us to scale everything up.
@@ -955,7 +954,7 @@ void Image::Recalculate(double scale)
 
 
   // pre-scale the image according to the current output's ppi and the image's ppi;
-  scale *= (*m_configuration)->GetPPI().x;
+  scale *= m_configuration->GetPPI().x;
   scale /= m_ppi;
 
   if ((width < 1) || (height < 1))
@@ -965,8 +964,8 @@ void Image::Recalculate(double scale)
     return;
   }
 
-  int viewPortHeight = configuration->GetClientHeight();
-  int viewPortWidth = configuration->GetClientWidth();
+  int viewPortHeight = m_configuration->GetClientHeight();
+  int viewPortWidth = m_configuration->GetClientWidth();
 
   if (viewPortHeight < 10)
     viewPortHeight = 10;
@@ -984,10 +983,10 @@ void Image::Recalculate(double scale)
   }
 
   // Shrink to be smaller than the maximum size.
-  if ((m_maxWidth > 0) && (scale * width > m_maxWidth * (*m_configuration)->GetPPI().x))
-    scale = m_maxWidth * (*m_configuration)->GetPPI().x / width;
-  if ((m_maxHeight > 0) && (scale * height > m_maxHeight * (*m_configuration)->GetPPI().y))
-    scale = m_maxHeight * (*m_configuration)->GetPPI().y / height;
+  if ((m_maxWidth > 0) && (scale * width > m_maxWidth * m_configuration->GetPPI().x))
+    scale = m_maxWidth * m_configuration->GetPPI().x / width;
+  if ((m_maxHeight > 0) && (scale * height > m_maxHeight * m_configuration->GetPPI().y))
+    scale = m_maxHeight * m_configuration->GetPPI().y / height;
   
   // Set the width of the scaled image
   m_height = (int) (scale * height);
