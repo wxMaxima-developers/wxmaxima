@@ -73,7 +73,7 @@ const std::pair<const Style, wxFont> &FontCache::GetStyleFont(const Style &style
   wxASSERT(styleFont.second);
   wxASSERT(styleFont.first->first.m.fontHash);
   styleFont.first->first.m.font = &styleFont.first->second;
-  wxLogMessage("FontCache Raw Miss: %s", styleFont.first->first.GetDump());
+//  wxLogMessage("FontCache Raw Miss: %s", styleFont.first->first.GetDump());
   if (!font.IsOk())
     return *styleFont.first;
 
@@ -90,7 +90,7 @@ const std::pair<const Style, wxFont> &FontCache::GetStyleFont(const Style &style
       wxASSERT(styleFont.second);
       wxASSERT(styleFont.first->first.m.fontHash);
       styleFont.first->first.m.font = &styleFont.first->second;
-      wxLogMessage("FontCache Resolved: %s", updatedStyle.GetDump());
+//      wxLogMessage("FontCache Resolved: %s", updatedStyle.GetDump());
     }
     else
     {
@@ -101,7 +101,7 @@ const std::pair<const Style, wxFont> &FontCache::GetStyleFont(const Style &style
       wxASSERT(!rawStyleFont.second);
       wxASSERT(rawStyleFont.first->first.m.fontHash);
       rawStyleFont.first->first.m.font = &rawStyleFont.first->second;
-      wxLogMessage("FontCache Rekeyed:  %s", updatedStyle.GetDump());
+//      wxLogMessage("FontCache Rekeyed:  %s", updatedStyle.GetDump());
       styleFont.first = it;
     }
   }
