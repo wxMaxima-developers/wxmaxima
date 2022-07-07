@@ -6922,16 +6922,7 @@ void wxMaxima::MaximaMenu(wxCommandEvent &event)
     break;
   case menu_quoteblock:
     CommandWiz(_("Don't evaluate one whole expression"),
-               _("Maxima automatically simplifys expressions it gets as input "
-                 "and then tries to evaluate their value. The '() operator "
-                 "tells maxima that we want a whole expression to be in noun form, which means: "
-                 "stand here as is, and unevaluated.\n"
-                 "This is useful, for example, if one doesn't want an if() to be executed "
-                 "prematurely (which means: Before enough information is available in order "
-                 "to decide if the condition is false or true). Another example would be "
-                 "if a command checks if its argument contains unassigned variables "
-                 "too early.\n"
-                 "The ' operator can be undone by using the '' operator."),wxEmptyString,
+               wxEmptyString, wxEmptyString,
                wxT("'(#1#);"),
                _("expression:"),expr,_("The name of an expression that we don't want to be evaluated.")
       );
