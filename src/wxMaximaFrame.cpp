@@ -279,7 +279,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   m_manager.AddPane(m_logPane,
                     wxAuiPaneInfo().Name("log").
                     CloseButton(true).PinButton(false).
-                    Gripper(false).
+                   Gripper(false).
                     TopDockable(true).
                     BottomDockable(true).
                     LeftDockable(true).
@@ -777,10 +777,10 @@ void wxMaximaFrame::SetupMenu()
 #endif
   m_MenuBar->Append(m_EditMenu, _("&Edit"));
 
-  // panes
+  m_viewMenu = new wxMenu;
+  // Sidebars
   m_Maxima_Panes_Sub = new wxMenu;
   m_Maxima_Panes_Sub->AppendCheckItem(menu_show_toolbar, _("Main Toolbar\tAlt+Shift+B"));
-  m_Maxima_Panes_Sub->AppendSeparator();
   m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_math, _("General Math\tAlt+Shift+M"));
   m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_stats, _("Statistics\tAlt+Shift+S"));
   m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_greek, _("Greek Letters\tAlt+Shift+G"));
@@ -799,7 +799,10 @@ void wxMaximaFrame::SetupMenu()
   m_Maxima_Panes_Sub->AppendCheckItem(ToolBar::tb_hideCode, _("Hide Code Cells\tAlt+Ctrl+H"));
   m_Maxima_Panes_Sub->Append(menu_pane_hideall, _("Hide All Toolbars\tAlt+Shift+-"), _("Hide all panes"),
                              wxITEM_NORMAL);
-  m_Maxima_Panes_Sub->AppendSeparator();
+
+  m_viewMenu->Append(wxNewId(), _("Sidebars"), m_Maxima_Panes_Sub, _("All visible sidebars"));
+  m_viewMenu->AppendSeparator();
+  
   // equation display type submenu
   m_equationTypeMenuMenu = new wxMenu;
   m_equationTypeMenuMenu->AppendRadioItem(menu_math_as_1D_ASCII, _("as 1D ASCII"), _("Show equations in their linear form"));
@@ -807,7 +810,7 @@ void wxMaximaFrame::SetupMenu()
   m_equationTypeMenuMenu->AppendRadioItem(menu_math_as_graphics, _("in 2D"), _("Nice Graphical Equations"));
   m_equationTypeMenuMenu->Check(menu_math_as_graphics, true);
 
-  m_Maxima_Panes_Sub->Append(wxNewId(), _("Display equations"), m_equationTypeMenuMenu, _("How to display new equations"));
+  m_viewMenu->Append(wxNewId(), _("Display equations"), m_equationTypeMenuMenu, _("How to display new equations"));
 
   m_autoSubscriptMenu = new wxMenu;
   m_autoSubscriptMenu->AppendRadioItem(menu_alwaysAutosubscript, _("Always after underscores"),
@@ -825,7 +828,7 @@ void wxMaximaFrame::SetupMenu()
   m_autoSubscriptMenu->Append(menu_declareAutosubscript,
                               _("Declare Text to always be displayed as subscript"));
 
-  m_Maxima_Panes_Sub->Append(wxNewId(), _("Autosubscript"), m_autoSubscriptMenu,
+  m_viewMenu->Append(wxNewId(), _("Autosubscript"), m_autoSubscriptMenu,
                              _("Autosubscript chars after an underscore"));
   m_roundedMatrixParensMenu = new wxMenu;
   m_roundedMatrixParensMenu->AppendRadioItem(menu_roundedMatrixParens, _("Rounded"), _("Use rounded parenthesis for matrices"));
@@ -833,13 +836,13 @@ void wxMaximaFrame::SetupMenu()
   m_roundedMatrixParensMenu->AppendRadioItem(menu_angledMatrixParens, _("Angles"), _("Use \"<\" and \">\" as parenthesis for matrices"));
   m_roundedMatrixParensMenu->AppendRadioItem(menu_straightMatrixParens, _("Straight lines"), _("Use vertical lines instead of parenthesis for matrices"));
   m_roundedMatrixParensMenu->AppendRadioItem(menu_noMatrixParens, _("None"), _("Don't use parenthesis for matrices"));
-  m_Maxima_Panes_Sub->Append(wxNewId(), _("Matrix parenthesis"), m_roundedMatrixParensMenu, _("Choose the parenthesis type for Matrices"));
-    m_Maxima_Panes_Sub->AppendCheckItem(menu_stringdisp, _("Display string quotation marks"));
+  m_viewMenu->Append(wxNewId(), _("Matrix parenthesis"), m_roundedMatrixParensMenu, _("Choose the parenthesis type for Matrices"));
+  m_viewMenu->AppendCheckItem(menu_stringdisp, _("Display string quotation marks"));
 
-  m_Maxima_Panes_Sub->AppendSeparator();
-  APPEND_MENU_ITEM(m_Maxima_Panes_Sub, wxID_ZOOM_IN, _("Zoom &In\tCtrl++"),
+  m_viewMenu->AppendSeparator();
+  APPEND_MENU_ITEM(m_viewMenu, wxID_ZOOM_IN, _("Zoom &In\tCtrl++"),
                    _("Zoom in 10%"), wxT("gtk-zoom-in"));
-  APPEND_MENU_ITEM(m_Maxima_Panes_Sub, wxID_ZOOM_OUT, _("Zoom Ou&t\tCtrl+-"),
+  APPEND_MENU_ITEM(m_viewMenu, wxID_ZOOM_OUT, _("Zoom Ou&t\tCtrl+-"),
                    _("Zoom out 10%"), wxT("gtk-zoom-out"));
   // zoom submenu
   m_Edit_Zoom_Sub = new wxMenu;
@@ -850,21 +853,21 @@ void wxMaximaFrame::SetupMenu()
   m_Edit_Zoom_Sub->Append(menu_zoom_200, wxT("200%"), _("Set zoom to 200%"), wxITEM_NORMAL);
   m_Edit_Zoom_Sub->Append(menu_zoom_300, wxT("300%"), _("Set zoom to 300%"), wxITEM_NORMAL);
 
-  m_Maxima_Panes_Sub->Append(wxNewId(), _("Set Zoom"), m_Edit_Zoom_Sub, _("Set Zoom"));
+  m_viewMenu->Append(wxNewId(), _("Set Zoom"), m_Edit_Zoom_Sub, _("Set Zoom"));
 #ifdef __UNIX__
-  m_Maxima_Panes_Sub->Append(menu_fullscreen, _("Full Screen\tF11"),
+  m_viewMenu->Append(menu_fullscreen, _("Full Screen\tF11"),
                              _("Toggle full screen editing"), wxITEM_NORMAL);
 #else
-  m_Maxima_Panes_Sub->Append(menu_fullscreen, _("Full Screen\tAlt-Enter"),
+  m_viewMenu->Append(menu_fullscreen, _("Full Screen\tAlt-Enter"),
                              _("Toggle full screen editing"), wxITEM_NORMAL);
 #endif
-  m_Maxima_Panes_Sub->AppendSeparator();
-  m_Maxima_Panes_Sub->AppendCheckItem(menu_invertWorksheetBackground, _("Invert worksheet brightness"));
-  m_Maxima_Panes_Sub->Check(menu_invertWorksheetBackground,
+  m_viewMenu->AppendSeparator();
+  m_viewMenu->AppendCheckItem(menu_invertWorksheetBackground, _("Invert worksheet brightness"));
+  m_viewMenu->Check(menu_invertWorksheetBackground,
                     m_configuration.InvertBackground());
 
 
-  m_MenuBar->Append(m_Maxima_Panes_Sub, _("View"));
+  m_MenuBar->Append(m_viewMenu, _("View"));
 
 
   // Cell menu

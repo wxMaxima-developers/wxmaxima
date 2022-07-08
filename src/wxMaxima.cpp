@@ -3396,13 +3396,13 @@ void wxMaxima::VariableActionStringdisp(const wxString &value)
 {
   if(value == wxT("true"))
   {
-    if(!m_Maxima_Panes_Sub->IsChecked(menu_stringdisp))
-      m_Maxima_Panes_Sub->Check(menu_stringdisp, true);
+    if(!m_viewMenu->IsChecked(menu_stringdisp))
+      m_viewMenu->Check(menu_stringdisp, true);
   }
   else
   {
-    if(m_Maxima_Panes_Sub->IsChecked(menu_stringdisp))
-      m_Maxima_Panes_Sub->Check(menu_stringdisp, false);
+    if(m_viewMenu->IsChecked(menu_stringdisp))
+      m_viewMenu->Check(menu_stringdisp, false);
   }
 }
 
@@ -6488,7 +6488,7 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
     case menu_invertWorksheetBackground:
       m_configuration.InvertBackground(
         !m_configuration.InvertBackground());
-      m_Maxima_Panes_Sub->Check(menu_invertWorksheetBackground,
+      m_viewMenu->Check(menu_invertWorksheetBackground,
                         m_configuration.InvertBackground());
       m_worksheet->RequestRedraw();
       break;

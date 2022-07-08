@@ -793,6 +793,8 @@ protected:
   StatusBar *m_statusBar;
   //! The menu bar
   MainMenuBar *m_MenuBar;
+  //! The "view" menu
+  wxMenu *m_viewMenu;
   //! The gentran menu
   wxMenu *m_gentranMenu;
   //! The subst submenu
