@@ -542,6 +542,7 @@ protected:
   /*! Reads the "add variable to watch list" tag maxima can send us
    */
   void ReadAddVariables(wxString &data);
+  void VariableActionGentranlang(const wxString &value);
   void VariableActionOpSubst(const wxString &value);
   void VariableActionSinnpiflag(const wxString &value);
   void VariableActionSinnpiflagUndefined();

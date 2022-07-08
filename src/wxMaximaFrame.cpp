@@ -1150,6 +1150,15 @@ void wxMaximaFrame::SetupMenu()
   envMenu->Append(menu_opsyst_getenv, _("Read environment variable..."));
   operatingSystemMenu->Append(wxNewId(), _("Environment variables"), envMenu);
   m_MaximaMenu->Append(wxNewId(), _("mkdir,..."), operatingSystemMenu);
+
+  m_gentranMenu = new wxMenu;
+  m_gentranMenu->Append(gentran_load, _("Load the converter"));   
+  m_gentranMenu->AppendRadioItem(gentran_lang_c, _("Output C"));   
+  m_gentranMenu->AppendRadioItem(gentran_lang_fortran, _("Output Fortran"));   
+  m_gentranMenu->AppendRadioItem(gentran_lang_ratfor, _("Output Rational Fortran"));   
+  m_gentranMenu->Append(gentran_to_stdout, _("Convert"));   
+  m_gentranMenu->Append(gentran_to_file, _("Convert + Write to file"));   
+  m_MaximaMenu->Append(wxNewId(), _("maxima to other language"), m_gentranMenu);
   m_MenuBar->Append(m_MaximaMenu, _("&Maxima"));
 
   // Equations menu

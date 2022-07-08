@@ -211,6 +211,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
 
   if(m_variableReadActions.empty())
   {
+    m_variableReadActions[wxT("gentranlang")] = &wxMaxima::VariableActionGentranlang;
     m_variableReadActions[wxT("maxima_userdir")] = &wxMaxima::VariableActionUserDir;
     m_variableReadActions[wxT("sinnpiflag")] = &wxMaxima::VariableActionSinnpiflag;
     m_variableReadActions[wxT("logexpand")] = &wxMaxima::VariableActionLogexpand;
@@ -1086,6 +1087,19 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
   Connect(menu_opsyst_pathname_name, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::MaximaMenu));
   Connect(menu_opsyst_pathname_type, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu));
+
+  Connect(gentran_load, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu));
+  Connect(gentran_lang_c, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu));
+  Connect(gentran_lang_fortran, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu));
+  Connect(gentran_lang_ratfor, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu));
+  Connect(gentran_to_stdout, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu));
+  Connect(gentran_to_file, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::MaximaMenu));
   
   Connect(menu_to_fact, wxEVT_MENU,
@@ -3109,6 +3123,16 @@ void wxMaxima::VariableActionUserDir(const wxString &value)
   Dirstructure::Get()->UserConfDir(value);
   wxLogMessage(wxString::Format(
                  _("Maxima user configuration lies in directory %s"),value.utf8_str()));
+}
+
+void wxMaxima::VariableActionGentranlang(const wxString &value)
+{
+  if(value == wxT("c"))
+    m_gentranMenu->Check(gentran_lang_c, true);
+  if(value == wxT("fortran"))
+    m_gentranMenu->Check(gentran_lang_fortran, true);
+  if(value == wxT("ratfor"))
+    m_gentranMenu->Check(gentran_lang_ratfor, true);
 }
 
 void wxMaxima::VariableActionOpSubst(const wxString &value)
@@ -6824,7 +6848,36 @@ void wxMaxima::MaximaMenu(wxCommandEvent &event)
         cmd = wxT("showtime:false$");
       MenuCommand(cmd);
       break;
-    case menu_fun_def:
+  case gentran_lang_c:
+    MenuCommand(wxT("gentranlang:c;"));
+    break;
+  case gentran_lang_fortran:
+    MenuCommand(wxT("gentranlang:fortran;"));
+    break;
+  case gentran_lang_ratfor:
+    MenuCommand(wxT("gentranlang:ratfor;"));
+    break;
+  case gentran_to_stdout:
+    CommandWiz(_("Convert to programming language"),
+               wxEmptyString,wxEmptyString,
+               wxT("gentran(#1#);"),
+               wxT("Expression(s)"),wxT("%"),
+               _("Expression or a list of expressions in square brackets (\"[]\")"));
+    break;
+  case gentran_to_file:
+    CommandWiz(_("Convert to programming language file"),
+               wxEmptyString,wxEmptyString,
+               wxT("gentran(#1#,[#2#]);"),
+               wxT("Expression(s)"),wxT("%"),
+               _("Expression or a list of expressions in square brackets (\"[]\")"),
+               wxT("Filename(s)"),wxT("%"),
+               _("Filename or a list of comma-separated file names"));
+    break;
+  case gentran_load:
+    MenuCommand(wxT("load(\"gentran\")$"));
+    break;
+
+  case menu_fun_def:
       CommandWiz(_("Show the function's definition"),
       wxEmptyString,wxEmptyString,
       wxT("fundef(#1#);"),

@@ -2059,6 +2059,7 @@
     (wx-print-variable '*maxima-htmldir*)
 					;  (wx-print-variable '*maxima-topdir*)
     (wx-print-variable '$gnuplot_command)
+    (wx-print-variable '$gentranlang)
     (wx-print-variable '*maxima-demodir*)
     (wx-print-variable '*autoconf-version*) ; Must be queried before maxima-sharedir is
     (wx-print-variable '*maxima-sharedir*)

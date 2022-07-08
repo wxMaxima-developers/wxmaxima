@@ -684,6 +684,12 @@ public:
     menu_history_previous,
     menu_history_next,
     menu_check_updates,
+    gentran_load,
+    gentran_lang_c,
+    gentran_lang_fortran,
+    gentran_lang_ratfor,
+    gentran_to_stdout,
+    gentran_to_file,
     socket_client_id,
     socket_server_id,
     maxima_process_id,
@@ -787,6 +793,8 @@ protected:
   StatusBar *m_statusBar;
   //! The menu bar
   MainMenuBar *m_MenuBar;
+  //! The gentran menu
+  wxMenu *m_gentranMenu;
   //! The subst submenu
   wxMenu *m_subst_Sub;
   //! The logexpand submenu
