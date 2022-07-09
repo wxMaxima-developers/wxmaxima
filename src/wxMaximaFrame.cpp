@@ -977,10 +977,20 @@ void wxMaximaFrame::SetupMenu()
 
   m_MaximaMenu->AppendSeparator();
   wxMenu *infolists_sub = new wxMenu;
-  infolists_sub->Append(menu_functions, _("Show &Functions"),
+  infolists_sub->Append(menu_functions, _("&Functions"),
                        _("Show defined functions"), wxITEM_NORMAL);
-  infolists_sub->Append(menu_variables, _("Show &Variables"),
+  infolists_sub->Append(menu_variables, _("&Variables"),
                        _("Show defined variables"), wxITEM_NORMAL);
+  infolists_sub->Append(menu_arrays, _("Arrays"));
+  infolists_sub->Append(menu_macros, _("Macros"));
+  infolists_sub->Append(menu_labels, _("Labels"));
+  infolists_sub->Append(menu_myoptions, _("Changed option varsiables"));
+  infolists_sub->Append(menu_rules, _("Rules"));
+  infolists_sub->Append(menu_aliases, _("Aliases"));
+  infolists_sub->Append(menu_structs, _("Structs"));
+  infolists_sub->Append(menu_dependencies, _("Dependencies"));
+  infolists_sub->Append(menu_gradefs, _("Gradefs"));
+  infolists_sub->Append(menu_let_rule_packages, _("Letrules"));
   m_MaximaMenu->Append(wxNewId(), _("Show user definitions"), infolists_sub);
   
   m_MaximaMenu->Append(menu_clear_fun, _("Delete F&unction..."),

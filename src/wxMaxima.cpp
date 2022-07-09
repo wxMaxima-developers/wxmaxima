@@ -537,6 +537,27 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
           wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
   Connect(menu_variables, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_arrays, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_macros, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_labels, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_myoptions, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_rules, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_aliases, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_structs, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_dependencies, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_gradefs, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(menu_let_rule_packages, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+
   Connect(wxID_PREFERENCES, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
   Connect(menu_sconsole_id, wxEVT_MENU,
@@ -6801,7 +6822,38 @@ void wxMaxima::MaximaMenu(wxCommandEvent &event)
     case menu_variables:
       MenuCommand(wxT("values;"));
       break;
-    case menu_display:
+  case menu_arrays:
+    MenuCommand(wxT("arrays;"));
+    break;
+  case  menu_macros:
+    MenuCommand(wxT("macros;"));
+    break;
+  case  menu_labels:
+    MenuCommand(wxT("labels;"));
+    break;
+  case  menu_myoptions:
+    MenuCommand(wxT("myoptions;"));
+    break;
+  case  menu_rules:
+    MenuCommand(wxT("rules;"));
+    break;
+  case  menu_aliases:
+    MenuCommand(wxT("aliases;"));
+    break;
+  case  menu_structs:
+    MenuCommand(wxT("structures;"));
+    break;
+  case  menu_dependencies:
+    MenuCommand(wxT("dependencies;"));
+    break;
+  case  menu_gradefs:
+    MenuCommand(wxT("gradefs;"));
+    break;
+  case  menu_let_rule_packages:
+    MenuCommand(wxT("let_rule_packages;"));
+    break;
+
+  case menu_display:
     {
       wxString choices[] =
               {

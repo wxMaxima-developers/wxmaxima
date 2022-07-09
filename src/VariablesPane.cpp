@@ -166,6 +166,9 @@ void Variablespane::OnRightClick(wxGridEvent &event)
     m_vars[m_grid->GetCellValue(i,0)] = 1;
   
   std::unique_ptr<wxMenu> popupMenu(new wxMenu);
+  if(m_vars["dependencies"] != 1)
+    popupMenu->Append(varID_dependencies,
+                      _("List of functional dependencies"), wxEmptyString, wxITEM_NORMAL);
   if(m_vars["values"] != 1)
     popupMenu->Append(varID_values,
                       _("List of user variables"), wxEmptyString, wxITEM_NORMAL);
@@ -197,9 +200,9 @@ void Variablespane::OnRightClick(wxGridEvent &event)
     popupMenu->Append(varID_prop,
                       _("List of user-defined properties"), wxEmptyString, wxITEM_NORMAL);
   if(m_vars["macros"] != 1)
-    popupMenu->Append(varID_prop,
+    popupMenu->Append(varID_macros,
                       _("List of user-defined macros"), wxEmptyString, wxITEM_NORMAL);
-  if(m_vars["gradefs"] != 1)
+  if(m_vars["let_rule_packages"] != 1)
     popupMenu->Append(varID_let_rule_packages,
                       _("List of user-defined let rule packages"), wxEmptyString, wxITEM_NORMAL);
   popupMenu->AppendSeparator();    
