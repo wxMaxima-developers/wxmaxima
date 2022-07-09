@@ -234,6 +234,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
     m_variableReadActions[wxT("algebraic")] = &wxMaxima::VariableActionAlgebraic;
     m_variableReadActions[wxT("domain")] = &wxMaxima::VariableActionDomain;
     m_variableReadActions[wxT("wxanimate_autoplay")] = &wxMaxima::VariableActionAutoplay;
+    m_variableReadActions[wxT("describe_uses_html")] = &wxMaxima::VariableActionHtmlHelp;
     m_variableReadActions[wxT("showtime")] = &wxMaxima::VariableActionShowtime;
     m_variableReadActions[wxT("engineering_format_floats")] = &wxMaxima::VariableActionEngineeringFormat;
     m_variableReadActions[wxT("display2d")] = &wxMaxima::VariableActionDisplay2D;
@@ -788,6 +789,8 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
   Connect(menu_example, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::HelpMenu), NULL, this);
   Connect(menu_apropos, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::HelpMenu), NULL, this);
+  Connect(menu_maxima_uses_html_help, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::HelpMenu), NULL, this);
   Connect(menu_show_tip, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::HelpMenu), NULL, this);
@@ -3467,6 +3470,20 @@ void wxMaxima::VariableActionEngineeringFormat(const wxString &value)
       m_NumericMenu->Check(menu_engineeringFormat, false);
   }
 }
+void wxMaxima::VariableActionHtmlHelp(const wxString &value)
+{
+  if(value == wxT("true"))
+  {
+    if(!m_HelpMenu->IsChecked(menu_maxima_uses_html_help))
+      m_HelpMenu->Check(menu_maxima_uses_html_help, true);
+  }
+  else
+  {
+    if(m_HelpMenu->IsChecked(menu_maxima_uses_html_help))
+      m_HelpMenu->Check(menu_maxima_uses_html_help, false);
+  }
+}
+
 void wxMaxima::VariableActionAutoplay(const wxString &value)
 {
   if(value == wxT("true"))
@@ -10014,6 +10031,20 @@ void wxMaxima::HelpMenu(wxCommandEvent &event)
                  _("Show all commands similar to:"),wxT("%"),wxEmptyString);
       break;
 
+  case menu_maxima_uses_html_help:
+      if(!event.IsChecked())
+      {
+        cmd = wxT("describe_uses_html:false$");
+        m_configuration.MaximaUsesHtmlBrowser(false);
+      }
+      
+      else
+      {
+        cmd = wxT("describe_uses_html:true$");
+        m_configuration.MaximaUsesHtmlBrowser(true);
+      }
+      MenuCommand(cmd);
+      break;
     case menu_show_tip:
       ShowTip(true);
       break;

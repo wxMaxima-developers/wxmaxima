@@ -333,6 +333,7 @@ public:
     menu_gradefs,
     menu_let_rule_packages,
 /*    menu_prop,*/
+    menu_maxima_uses_html_help,
     menu_clear_var,
     menu_clear_fun,
     menu_kill,
