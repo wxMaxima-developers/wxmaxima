@@ -6862,14 +6862,14 @@ void wxMaxima::MaximaMenu(wxCommandEvent &event)
                wxEmptyString,wxEmptyString,
                wxT("gentran(#1#);"),
                wxT("Expression(s)"),wxT("%"),
-               _("Expression or a list of expressions in square brackets (\"[]\")"));
+               _("Expression or a list of comma-separated expressions"));
     break;
   case gentran_to_file:
     CommandWiz(_("Convert to programming language file"),
                wxEmptyString,wxEmptyString,
                wxT("gentran(#1#,[#2#]);"),
                wxT("Expression(s)"),wxT("%"),
-               _("Expression or a list of expressions in square brackets (\"[]\")"),
+               _("Expression or a list of comma-separated expressions"),
                wxT("Filename(s)"),wxT("%"),
                _("Filename or a list of comma-separated file names"));
     break;

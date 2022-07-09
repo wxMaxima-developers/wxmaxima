@@ -1155,7 +1155,7 @@ void wxMaximaFrame::SetupMenu()
   m_MaximaMenu->Append(wxNewId(), _("mkdir,..."), operatingSystemMenu);
 
   m_gentranMenu = new wxMenu;
-  m_gentranMenu->Append(gentran_load, _("Load the converter"));   
+  m_gentranMenu->Append(gentran_load, _("Load the translation generator"));   
   m_gentranMenu->AppendRadioItem(gentran_lang_c, _("Output C"));   
   m_gentranMenu->AppendRadioItem(gentran_lang_fortran, _("Output Fortran"));   
   m_gentranMenu->AppendRadioItem(gentran_lang_ratfor, _("Output Rational Fortran"));   
