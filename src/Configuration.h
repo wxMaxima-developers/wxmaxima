@@ -857,6 +857,8 @@ wxString DocumentclassOptions() const {return m_documentclassOptions;}
   void MaxClipbrdBitmapMegabytes(int maxClipbrd_BitmapMegabytes)
     {m_maxClipbrd_BitmapMegabytes = maxClipbrd_BitmapMegabytes;}
   
+  void MaximaUsesHtmlBrowser(bool maximaUsesHhtmlBrowser){m_maximaUsesHhtmlBrowser = maximaUsesHhtmlBrowser;}
+  bool MaximaUsesHtmlBrowser() const {return m_maximaUsesHhtmlBrowser;}
   void ExportContainsWXMX(bool exportContainsWXMX){m_exportContainsWXMX = exportContainsWXMX;}
   bool ExportContainsWXMX() const {return m_exportContainsWXMX;}
   void DockableWizards(bool dockableWizards){m_dockableWizards = dockableWizards;}
@@ -889,6 +891,7 @@ private:
   bool m_dockableWizards;
   long m_wizardTab;
   bool m_usePartialForDiff;
+  bool m_maximaUsesHhtmlBrowser;
   //! true = Autosave doesn't save into the current file.
   bool m_autoSaveAsTempFile;
   //! The number of the language wxMaxima uses.

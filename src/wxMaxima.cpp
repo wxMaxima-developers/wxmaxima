@@ -4449,12 +4449,17 @@ wxString wxMaxima::EscapeForLisp(wxString str)
 
 void wxMaxima::SetupVariables()
 {
+  wxString useHtml = wxT("nil");
+  if (m_configuration.MaximaUsesHtmlBrowser())
+    useHtml = wxT("t");
   wxLogMessage(_("Setting a few prerequisites for wxMaxima"));
   SendMaxima(wxT(":lisp-quiet (progn (setf *prompt-suffix* \"") +
              m_promptSuffix +
              wxT("\") (setf *prompt-prefix* \"") +
              m_promptPrefix +
-             wxT("\") (setf $in_netmath nil) (setf $show_openplot t))\n"));
+             wxT("\") (setf $in_netmath nil) (setf $show_openplot t)) ") +
+             wxT("(setf $describe_uses_html ") + useHtml + wxT(")") +
+             wxT("\n"));
 
   wxLogMessage(_("Sending maxima the info how to express 2d maths as XML"));
   wxMathML wxmathml(&m_configuration);

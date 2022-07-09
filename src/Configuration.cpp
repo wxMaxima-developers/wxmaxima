@@ -141,6 +141,7 @@ void Configuration::ResetAllToDefaults(InitOpt options)
   #endif
   m_wrapLatexMath = true;
   m_exportContainsWXMX = true;
+  m_maximaUsesHhtmlBrowser = true;
   m_bitmapScale = 3;
   m_maxClipbrd_BitmapMegabytes = 4;
   m_defaultFramerate = 12;
@@ -542,6 +543,7 @@ void Configuration::ReadConfig()
     config->Read(wxT("autoSaveMinutes"), &m_autoSaveMinutes);
     config->Read(wxT("wrapLatexMath"), &m_wrapLatexMath);
     config->Read(wxT("exportContainsWXMX"), &m_exportContainsWXMX);
+    config->Read(wxT("maximaUsesHhtmlBrowser"), &m_maximaUsesHhtmlBrowser);
     config->Read(wxT("texPreamble"), &m_texPreamble);
     {
       wxLogNull suppressor;
@@ -1485,6 +1487,7 @@ void Configuration::WriteStyles(wxConfigBase *config)
 {
   config->Write(wxT("wrapLatexMath"), m_wrapLatexMath);
   config->Write(wxT("exportContainsWXMX"), m_exportContainsWXMX);
+  config->Write(wxT("maximaUsesHhtmlBrowser"), m_maximaUsesHhtmlBrowser);
   config->Write(wxT("texPreamble"), m_texPreamble);
   config->Write(wxT("wizardTab"), m_wizardTab);
   config->Write(wxT("numpadEnterEvaluates"), m_numpadEnterEvaluates);

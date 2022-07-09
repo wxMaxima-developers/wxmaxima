@@ -536,6 +536,7 @@ void ConfigDialogue::SetCheckboxValues()
   m_autodetectMaxima->SetValue(m_configuration->AutodetectMaxima());
   m_noAutodetectMaxima->SetValue(!m_configuration->AutodetectMaxima());
   m_helpBrowserUserLocation->SetValue(m_configuration->HelpBrowserUserLocation());
+  m_maximaUsesHtmlHelp->SetValue(m_configuration->MaximaUsesHtmlBrowser());
   m_defaultPort->SetValue(m_configuration->DefaultPort());
   m_copyBitmap->SetValue(m_configuration->CopyBitmap());
   m_copyMathML->SetValue(m_configuration->CopyMathML());
@@ -1227,6 +1228,7 @@ wxWindow *ConfigDialogue::CreateMaximaPanel()
 
   m_noAutodetectHelpBrowser= new wxRadioButton(invocationSizer->GetStaticBox(), -1, _("User specified"));
   nameSizer->Add(m_noAutodetectHelpBrowser, wxSizerFlags().Expand().Border(wxUP | wxDOWN, 0));
+
   m_helpBrowserUserLocation = new wxTextCtrl(invocationSizer->GetStaticBox(), -1, wxEmptyString, wxDefaultPosition, wxSize(250*GetContentScaleFactor(), -1), wxTE_RICH);
   m_helpBrowserUserLocation->AutoCompleteFileNames();
   wxButton *mpBrowse2 = new wxButton(invocationSizer->GetStaticBox(), wxID_OPEN, _("Open"));
@@ -1234,13 +1236,17 @@ wxWindow *ConfigDialogue::CreateMaximaPanel()
 
   nameSizer->Add(m_helpBrowserUserLocation, wxSizerFlags().Expand().Border(wxUP | wxDOWN, 0));
   nameSizer->Add(mpBrowse2, wxSizerFlags().Expand().Border(wxUP | wxDOWN, 0));
-
+      
   invocationSizer->Add(nameSizer, wxSizerFlags().Expand().Border(wxUP | wxDOWN, 0));
   vsizer->Add(invocationSizer, wxSizerFlags().Expand().Border(wxALL, 5*GetContentScaleFactor()));
   vsizer->Add(10*GetContentScaleFactor(), 10*GetContentScaleFactor());
-
+    
   wxStaticBoxSizer *configSizer = new wxStaticBoxSizer(wxVERTICAL, panel, _("Maxima configuration"));
 
+  m_maximaUsesHtmlHelp = new wxCheckBox(configSizer->GetStaticBox(),
+                                        -1,
+                                        _("? and ?? command open a html browser window"));
+  configSizer->Add(m_maximaUsesHtmlHelp, wxSizerFlags().Expand().Border(wxALL, 5*GetContentScaleFactor()));
   m_defaultPort = new wxSpinCtrl(configSizer->GetStaticBox(), -1, wxEmptyString, wxDefaultPosition, wxSize(230*GetContentScaleFactor(), -1), wxSP_ARROW_KEYS, 50,
                                  65534);
 
@@ -1744,6 +1750,7 @@ void ConfigDialogue::WriteSettings()
   configuration->MaximaUserLocation(m_maximaUserLocation->GetValue());
   configuration->AutodetectMaxima(m_autodetectMaxima->GetValue());
   configuration->HelpBrowserUserLocation(m_helpBrowserUserLocation->GetValue());
+  configuration->MaximaUsesHtmlBrowser(m_maximaUsesHtmlHelp->GetValue());
   configuration->AutodetectHelpBrowser(m_autodetectHelpBrowser->GetValue());
   configuration->MaximaParameters(m_additionalParameters->GetValue());
   configuration->SetMatchParens(m_matchParens->GetValue());

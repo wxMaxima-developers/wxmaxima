@@ -11,6 +11,7 @@
  * Support for wxWidgets 3.1.7
  * Now we find maxima manual entries that have no explicit anchor
  * Search harder for the maxima manual
+ * ?, ?? an describe() now use a browser window, by default
 
 # 22.05.0:
  * Updated the Ukrainian translation
