@@ -984,7 +984,7 @@ void wxMaximaFrame::SetupMenu()
   infolists_sub->Append(menu_arrays, _("Arrays"));
   infolists_sub->Append(menu_macros, _("Macros"));
   infolists_sub->Append(menu_labels, _("Labels"));
-  infolists_sub->Append(menu_myoptions, _("Changed option varsiables"));
+  infolists_sub->Append(menu_myoptions, _("Changed option variables"));
   infolists_sub->Append(menu_rules, _("Rules"));
   infolists_sub->Append(menu_aliases, _("Aliases"));
   infolists_sub->Append(menu_structs, _("Structs"));
