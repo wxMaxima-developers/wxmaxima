@@ -976,10 +976,13 @@ void wxMaximaFrame::SetupMenu()
                    _("Add a directory to search path"), wxT("gtk-add"));
 
   m_MaximaMenu->AppendSeparator();
-  m_MaximaMenu->Append(menu_functions, _("Show &Functions"),
+  wxMenu *infolists_sub = new wxMenu;
+  infolists_sub->Append(menu_functions, _("Show &Functions"),
                        _("Show defined functions"), wxITEM_NORMAL);
-  m_MaximaMenu->Append(menu_variables, _("Show &Variables"),
+  infolists_sub->Append(menu_variables, _("Show &Variables"),
                        _("Show defined variables"), wxITEM_NORMAL);
+  m_MaximaMenu->Append(wxNewId(), _("Show user definitions"), infolists_sub);
+  
   m_MaximaMenu->Append(menu_clear_fun, _("Delete F&unction..."),
                        _("Delete a function"), wxITEM_NORMAL);
   m_MaximaMenu->Append(menu_clear_var, _("Delete V&ariable..."),
