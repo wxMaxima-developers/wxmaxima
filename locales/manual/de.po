@@ -2850,10 +2850,10 @@ msgstr "Kann _wxMaxima_ das eingebettete Diagramm gleich noch als Datei ausgeben
 #. type: Plain text
 #: ../../info/wxmaxima.md:799
 msgid ""
-"The worksheet embeds .png files. _wxMaxima_ allows the user to specify where "
+"The worksheet embeds .png files. _WxMaxima_ allows the user to specify where "
 "they should be generated:"
 msgstr ""
-"Das Arbeitsblatt enthält png-Dateien. _wxMaxima_ erlaubt dem User anzugeben, "
+"Das Arbeitsblatt enthält png-Dateien. _WxMaxima_ erlaubt dem User anzugeben, "
 "wo sie generiert werden sollen:"
 
 #. type: Fenced code block (maxima)
@@ -2958,7 +2958,7 @@ msgstr "Kann ich das Seitenverhältnis des Plots angeben?"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:836
-msgid "Not directly using _Maxima_. But there are gnuplot commands for it:"
+msgid "Not directly using _Maxima_. But there are Gnuplot commands for it:"
 msgstr "Nicht direkt bei _Maxima_. Aber es gibt Gnuplot-Kommandos dafür:"
 
 #. type: Fenced code block (maxima)
@@ -3041,14 +3041,14 @@ msgstr ""
 #. type: Title ##
 #: ../../info/wxmaxima.md:864
 #, no-wrap
-msgid "_wxMaxima_ sometimes hangs for a several seconds once in the first minute"
-msgstr "_wxMaxima_ hängt manchmal in der ersten Minute einmal für mehrere Sekunden"
+msgid "_WxMaxima_ sometimes hangs for several seconds once in the first minute"
+msgstr "_WxMaxima_ hängt manchmal in der ersten Minute einmal für mehrere Sekunden"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:867
 #, no-wrap
-msgid "_wxMaxima_ delegates some big tasks like parsing _Maxima_'s >1000-page-manual to background tasks, which normally goes totally unnoticed. In the moment the result of such a task is needed, though, it is possible that _wxMaxima_ needs to wait a couple of seconds before it can continue its work.\n"
-msgstr "wxMaxima lagert große Aufgaben, wie das Interpretieren des >1000-Seiten-Handbuchs von Maxima an Hintergrundtasks aus. Solange die Ergebnisse dieser Tasks nicht benötigt werden, kann während dieser Zeit ganz normal weitergearbeitet werden. Wird aber eine Aktion ausgeführt, für die die Ergebnisse eines Tasks benötigt werden, muss wxMaxima warten, bis dieser beendet ist.\n"
+msgid "_WxMaxima_ delegates some big tasks like parsing _Maxima_'s >1000-page-manual to background tasks, which normally goes totally unnoticed. In the moment the result of such a task is needed, though, it is possible that _wxMaxima_ needs to wait a couple of seconds before it can continue its work.\n"
+msgstr "WxMaxima lagert große Aufgaben, wie das Interpretieren des >1000-Seiten-Handbuchs von Maxima an Hintergrundtasks aus. Solange die Ergebnisse dieser Tasks nicht benötigt werden, kann während dieser Zeit ganz normal weitergearbeitet werden. Wird aber eine Aktion ausgeführt, für die die Ergebnisse eines Tasks benötigt werden, muss wxMaxima warten, bis dieser beendet ist.\n"
 
 #. type: Title ##
 #: ../../info/wxmaxima.md:868
@@ -3064,10 +3064,12 @@ msgstr ""
 #. type: Plain text
 #: ../../info/wxmaxima.md:875
 msgid ""
-"(The same problem can occur with other applications too).The translations "
-"seem okay after you click on 'OK'. wxMaxima does not only use it's own "
-"translations, but the translations of the wxWidgets framework too."
-msgstr ""
+"(The same problem can occur with other applications too). The translations "
+"seem okay after you click on 'OK'. WxMaxima does not only use its own "
+"translations but the translations of the wxWidgets framework too."
+msgstr "(Dieses Problem kann bei anderen Anwendungen auch auftreten). Die Übersetzungen "
+"scheinen okay zu sein, nachdem auf 'OK' geklickt wurde. WxMaxima verwendet nicht nur "
+"die eigenen Übersetzungen sondern auch einige Übersetzungen des wxWidgets Frameworks."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:878
@@ -3101,11 +3103,11 @@ msgstr "Kommandozeilen-Optionen"
 #: ../../info/wxmaxima.md:889
 msgid ""
 "Most operating systems provide less complicated ways of starting programs "
-"than the command line so this possibility is only rarely used. _wxMaxima_ "
+"than the command line so this possibility is only rarely used. _WxMaxima_ "
 "still provides some command line switches, though."
 msgstr ""
 "Die meisten Betriebssysteme bieten unkompliziertere Arten, um ein GUI-"
-"Programm zu starten, als die Kommandozeile. _wxMaxima_ bietet trotzdem "
+"Programm zu starten, als die Kommandozeile. _WxMaxima_ bietet trotzdem "
 "mehrere Kommandozeilenoptionen an."
 
 #. type: Bullet: '* '
@@ -3121,7 +3123,7 @@ msgstr "`-h` oder `--help`: Gibt einen kurzen Hilfetext aus"
 #. type: Bullet: '* '
 #: ../../info/wxmaxima.md:904
 msgid ""
-"`-o` or `--open=<str>`: Open the filename given as argument to this command-"
+"`-o` or `--open=<str>`: Open the filename given as an argument to this command-"
 "line switch"
 msgstr ""
 "`-o` oder `--open=<str>`: Öffnet den Dateinamen, der als Argument dieser "
