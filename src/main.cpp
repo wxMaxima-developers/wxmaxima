@@ -314,6 +314,7 @@ bool MyApp::OnInit()
 #if wxCHECK_VERSION(3, 1, 1)
   wxString fontPrefix = m_dirstruct.FontDir() + wxT("/");
 
+  #if wxUSE_PRIVATE_FONTS
   /* Add private Libertine fonts, if they exist */
   if (wxFileExists(fontPrefix + wxT(LIBERTINE1)))
 	  wxFont::AddPrivateFont(fontPrefix + wxT(LIBERTINE1));
@@ -327,7 +328,7 @@ bool MyApp::OnInit()
   if (wxFileExists(fontPrefix + wxT(LIBERTINE9))) wxFont::AddPrivateFont(fontPrefix + wxT(LIBERTINE9));
 #endif
   wxSetWorkingDirectory(oldWorkingDir);
-
+#endif
 #endif
 
   Connect(wxEVT_MENU, wxCommandEventHandler(MyApp::OnFileMenu), NULL, this);
