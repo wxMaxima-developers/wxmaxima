@@ -13,8 +13,8 @@
  * Search harder for the Maxima manual
  * ?, ?? and describe() now use a browser window, by default
    (an up-to-date Maxima is required for that feature)
- * wxMaxima can ow compiled if wxWidgets does not support the private fonts
-   especially the function AddPrivateFont(), when wxWidgets was configured
+ * wxMaxima can now compiled if wxWidgets does not support the private fonts
+   especially without the function AddPrivateFont(), when wxWidgets was configured
    using the option "--enable-privatefonts=no".
    Use the option -DWXM_INCLUDE_FONTS=NO when compiling wxMaxima.
 
