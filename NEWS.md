@@ -4,14 +4,19 @@
  * The watchlist was broken
  * In MacOs the config dialogue crashed
  * Better scalability of the config dialogue
- * Folded multiline code cells are now sent to maxima correctly (#1674)
+ * Folded multiline code cells are now sent to Maxima correctly (#1674)
  * The output of the "?" command contained spurious "<" (#1688)
  * Wizards now accept chars from the unicode buttons
  * Wizards for operatingsystem, basic programming and string operations.
  * Support for wxWidgets 3.1.7
- * Now we find maxima manual entries that have no explicit anchor
- * Search harder for the maxima manual
- * ?, ?? an describe() now use a browser window, by default
+ * Now we find Maxima manual entries that have no explicit anchor
+ * Search harder for the Maxima manual
+ * ?, ?? and describe() now use a browser window, by default
+   (an up-to-date Maxima is required for that feature)
+ * wxMaxima can ow compiled if wxWidgets does not support the private fonts
+   especially the function AddPrivateFont(), when wxWidgets was configured
+   using the option "--enable-privatefonts=no".
+   Use the option -DWXM_INCLUDE_FONTS=NO when compiling wxMaxima.
 
 # 22.05.0:
  * Updated the Ukrainian translation
@@ -54,8 +59,8 @@
  * No more crashes on exporting multiple animations at once (#1616)
  * Drag-and-Drop in the table of contents
  * Table of contents: Convert sections to subsections and similar (#1629)
- * Parenthesis and quote matching now uses the maxima parser.
-   This means it now both knows the details of the maxima language
+ * Parenthesis and quote matching now uses the Maxima parser.
+   This means it now both knows the details of the Maxima language
    and is much faster than before.
  * A way of limiting the toc depth shown in the table of contents
  * Now the problems after a kill(all) should be finally resolved
