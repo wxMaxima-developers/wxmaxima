@@ -107,6 +107,7 @@
 #include <wx/sstream.h>
 #include <list>
 #include <memory>
+wxDECLARE_APP (MyApp);
 
 #if defined __WXOSX__
 #define MACPREFIX "wxMaxima.app/Contents/Resources/"
