@@ -78,6 +78,7 @@
 #include "WXMformat.h"
 #include "ErrorRedirector.h"
 #include "LabelCell.h"
+#include <wx/app.h>
 #include <wx/colordlg.h>
 #include <wx/clipbrd.h>
 #include <wx/filedlg.h>
