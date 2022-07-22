@@ -36,6 +36,7 @@
 #include "MathParser.h"
 #include "MaximaIPC.h"
 #include "Dirstructure.h"
+#include <wx/app.h>
 #include <wx/socket.h>
 #include <wx/config.h>
 #include <wx/process.h>
