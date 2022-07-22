@@ -107,6 +107,7 @@
 #include <wx/sstream.h>
 #include <list>
 #include <memory>
+#include "main.h"
 wxDECLARE_APP (MyApp);
 
 #if defined __WXOSX__
