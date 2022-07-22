@@ -23,7 +23,8 @@
 #include "GenWiz.h"
 #include <wx/persist/toplevel.h>
 
-GenWiz::GenWiz(wxWindow *parent, Configuration *cfg, const wxString &title,
+GenWiz::GenWiz(wxWindow *parent, Configuration *cfg, MaximaManual *manual,
+               const wxString &title,
                const wxString &description, const wxString &description_tooltip,
                const wxString &commandRule,
                wxString label1, wxString defaultval1, wxString tooltip1,
@@ -40,7 +41,7 @@ GenWiz::GenWiz(wxWindow *parent, Configuration *cfg, const wxString &title,
 {
   SetName(title);
   wxSizer *vbox = new wxBoxSizer(wxVERTICAL);
-  m_panel = new GenWizPanel(this, cfg, description, description_tooltip, commandRule,
+  m_panel = new GenWizPanel(this, cfg, manual, description, description_tooltip, commandRule,
                             label1, defaultval1, tooltip1,
                             label2, defaultval2, tooltip2,
                             label3, defaultval3, tooltip3,

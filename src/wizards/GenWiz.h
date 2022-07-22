@@ -29,7 +29,7 @@
 class GenWiz : public wxDialog
 {
 public:
-  GenWiz(wxWindow *parent, Configuration *cfg,
+  GenWiz(wxWindow *parent, Configuration *cfg, MaximaManual *manual,
          const wxString &title,
          const wxString &description, const wxString &description_tooltip,
          const wxString &commandRule,
@@ -46,6 +46,7 @@ public:
   wxString operator[](int i) const { return m_panel->operator[](i); }
 
   wxString GetOutput() const {return m_panel->GetOutput();}
+  wxString GetHelpKeyword(int ID){return m_panel->GetHelpKeyword(ID);}
   
 protected:
   GenWizPanel *m_panel;

@@ -44,6 +44,7 @@ surrounding the worksheet.
 
 #include "ScrollingGenWizPanel.h"
 #include "Worksheet.h"
+#include "HelpBrowser.h"
 #include "RecentDocuments.h"
 #include "Version.h"
 #include "MainMenuBar.h"
@@ -60,7 +61,7 @@ surrounding the worksheet.
 class wxMaximaFrame : public wxFrame
 {
 public:
-  wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
+  wxMaximaFrame(wxWindow *parent, int id, wxLocale *locale, const wxString &title,
                 const wxPoint &pos = wxDefaultPosition,
                 const wxSize &size = wxDefaultSize,
                 long style = wxDEFAULT_FRAME_STYLE | wxSYSTEM_MENU | wxCAPTION, bool becomeLogTarget = true);
@@ -110,6 +111,7 @@ public:
     menu_pane_log,       //!< Both the "toggle the log pane" command and the "log" pane
     menu_pane_variables, //!< Both the "toggle the variables pane" command and the "variables" pane
     menu_pane_draw,      //!< Both the "toggle the draw pane" command for the "draw" pane
+    menu_pane_help,      //!< Both the "toggle the draw pane" command for the help browser
     menu_pane_symbols,   //!< Both the "toggle the symbols pane" command for the "symbols" pane
     /*! Both used as the "toggle the stats pane" command and as the ID of the stats pane
 
@@ -841,6 +843,7 @@ protected:
   wxMenu *m_Simplify_Complex_Sub;
   //! The calculus menu
   wxMenu *m_CalculusMenu;
+  
   //! The plot menu
   wxMenu *m_PlotMenu;
   //! The list menu
@@ -856,12 +859,16 @@ protected:
   //! Remember a temporary autosave file name.
   void RegisterAutoSaveFile();
   /*! An instant single-window mode
-
+   
     A last resort if https://trac.wxwidgets.org/ticket/18815 hinders one from 
     re-docking windows.
    */
   void DockAllSidebars(wxCommandEvent &ev);
 
+  wxString wxMaximaManualLocation();
+protected:
+  wxLocale *m_locale;
+  
 private:
   //! How many bytes did maxima send us when we updated the statusbar?
   long m_bytesFromMaxima_last;
@@ -937,6 +944,7 @@ protected:
   virtual wxSize DoGetBestClientSize() const;
   //! The sidebar with the draw commands
   DrawPane *m_drawPane;
+  HelpBrowser *m_helpPane;
 private:
   class GreekPane : public wxScrolled<wxPanel>
   {

@@ -30,12 +30,12 @@
 #include <wx/cshelp.h>
 #include "BTextCtrl.h"
 #include <wx/notebook.h>
-#include "WrappingStaticText.h"
+#include "MaximaManual.h"
 
 class GenWizPanel : public wxPanel
 {
 public:
-  GenWizPanel(wxWindow *parent, Configuration *cfg,
+  GenWizPanel(wxWindow *parent, Configuration *cfg, MaximaManual *manual,
          const wxString &description, const wxString &description_tooltip,
          const wxString &commandRule,
          wxString label1, wxString defaultval1, wxString tooltip1 = {},
@@ -48,7 +48,7 @@ public:
          wxString label8 = {}, wxString defaultval8 = {}, wxString tooltip8 = {},
          wxString label9 = {}, wxString defaultval9 = {}, wxString tooltip9 = {});
 
-  GenWizPanel(wxWindow *parent, Configuration *cfg,
+  GenWizPanel(wxWindow *parent, Configuration *cfg, MaximaManual *manual,
               const wxString &description = {}, const wxString &description_tooltip = {},
               const wxString &commandRule = {}, bool dockable = true,
               wxString label1 = {}, wxString defaultval1 = {}, wxString tooltip1 = {},
@@ -85,6 +85,7 @@ public:
   wxButton *GetAbortButton() const {return button_1;}
   #endif
   wxButton *GetInsertButton() const{return m_insertButton;}
+  wxString GetHelpKeyword(int ID);
   virtual ~GenWizPanel();
 protected:
   void OnSize(wxSizeEvent &event);
@@ -107,8 +108,10 @@ protected:
   wxString m_descriptionToolTip;
   wxString m_title;
   Configuration *m_configuration;
+  MaximaManual *m_maximaManual;
 private:
   bool m_ignorePageChange = true;
+  wxArrayString m_manualKeywords;
 };
 
 #endif // GENWIZ_PANEL_H

@@ -22,9 +22,9 @@
 
 #include "ScrollingGenWizPanel.h"
 #include <wx/persist/toplevel.h>
-
+ 
 ScrollingGenWizPanel::ScrollingGenWizPanel(
-  wxWindow *parent, Configuration *cfg,
+  wxWindow *parent, Configuration *cfg, MaximaManual *manual,
   const wxString &description, const wxString &description_tooltip,
   const wxString &commandRule,
   wxString label1, wxString defaultval1, wxString tooltip1,
@@ -39,7 +39,7 @@ ScrollingGenWizPanel::ScrollingGenWizPanel(
   wxScrolled<wxPanel>(parent, wxID_ANY)
 {
   wxSizer *vbox = new wxBoxSizer(wxVERTICAL);
-  m_panel = new GenWizPanel(this, cfg, description, description_tooltip, commandRule, true,
+  m_panel = new GenWizPanel(this, cfg, manual, description, description_tooltip, commandRule, true,
                             label1, defaultval1, tooltip1,
                             label2, defaultval2, tooltip2,
                             label3, defaultval3, tooltip3,

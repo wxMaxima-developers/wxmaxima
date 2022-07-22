@@ -677,15 +677,27 @@ public:
   //! Sets the location of the maxima binary.
   void MaximaUserLocation(wxString maxima) { m_maximaUserLocation = maxima; }
 
-  //! Autodetect maxima's location? (If false the user-specified location is used)
+  //! Autodetect the web browser? (If false the user-specified location is used)
   bool AutodetectHelpBrowser() const {return m_autodetectHelpBrowser;}
-  //! Autodetect maxima's location?
+  //! Autodetect the web browser?
   void AutodetectHelpBrowser(bool autodetect){m_autodetectHelpBrowser = autodetect;}
 
-  //! Returns the location of the help browser the user has selected.
+  //! Use the internal help browser? If not a external web browser is used.
+  bool InternalHelpBrowser() const {return m_useInternalHelpBrowser;}
+  //! Use the internal help browser? If not a external web browser is used.
+  void InternalHelpBrowser(bool useInternalHelpBrowser)
+    {m_useInternalHelpBrowser = useInternalHelpBrowser;}
+
+  //! Prefer the single-page manual?
+  bool SinglePageManual() const {return m_singlePageManual;}
+  //! Prefer the single-page manual?
+  void SinglePageManual(bool singlePageManual)
+    {m_singlePageManual = singlePageManual;}
+
+  //! Returns the location of the web browser the user has selected.
   wxString HelpBrowserUserLocation() const {return m_helpBrowserUserLocation;}
 
-  //! Sets the location of the maxima binary.
+  //! Sets the location of the web browser the user has detected.
   void HelpBrowserUserLocation(wxString helpBrowser) { m_helpBrowserUserLocation = helpBrowser;}
 
   /*! Could a maxima binary be found in the path we expect it to be in?
@@ -849,6 +861,8 @@ wxString DocumentclassOptions() const {return m_documentclassOptions;}
 
   bool WrapLatexMath() const {return m_wrapLatexMath;}
   void WrapLatexMath(bool wrapLatexMath){m_wrapLatexMath = wrapLatexMath;}
+  bool AllowNetworkHelp() const {return m_allowNetworkHelp;}
+  void AllowNetworkHelp(bool allowNetworkHelp){m_allowNetworkHelp = allowNetworkHelp;}
   bool ShowAllDigits() const {return m_showAllDigits;}
   void ShowAllDigits(bool shw){m_showAllDigits = shw;}
   bool LineBreaksInLongNums() const {return m_lineBreaksInLongNums;}
@@ -861,8 +875,6 @@ wxString DocumentclassOptions() const {return m_documentclassOptions;}
   bool MaximaUsesHtmlBrowser() const {return m_maximaUsesHhtmlBrowser;}
   void ExportContainsWXMX(bool exportContainsWXMX){m_exportContainsWXMX = exportContainsWXMX;}
   bool ExportContainsWXMX() const {return m_exportContainsWXMX;}
-  void DockableWizards(bool dockableWizards){m_dockableWizards = dockableWizards;}
-  bool DockableWizards() const {return m_dockableWizards;}
   void WizardTab(long tab){m_wizardTab = tab;}
   long WizardTab() const {return m_wizardTab;}
 
@@ -888,7 +900,6 @@ private:
   wxSize m_ppi = wxSize(-1, -1);
   mathDisplayMode m_displayMode = display_2d;
   using CellRedrawTrace = std::vector<const Cell*>;
-  bool m_dockableWizards;
   long m_wizardTab;
   bool m_usePartialForDiff;
   bool m_maximaUsesHhtmlBrowser;
@@ -900,6 +911,10 @@ private:
   bool m_autodetectMaxima;
   //! Autodetect the help browser?
   bool m_autodetectHelpBrowser;
+  //! Use the internal help browser?
+  bool m_useInternalHelpBrowser;
+  //! Prefer the single-page manual?
+  bool m_singlePageManual;
   //! The worksheet all cells are drawn on
   wxRect m_updateRegion;
   //! Do we want to use incremental search?
@@ -923,6 +938,7 @@ private:
   bool CharsExistInFont(const wxFont &font, const wxString& chars);
   //! Caches the information on how to draw big parenthesis for GetParenthesisDrawMode().
   bool m_wrapLatexMath;
+  bool m_allowNetworkHelp;
   bool m_exportContainsWXMX;
   wxString m_texPreamble;
 

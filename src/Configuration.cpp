@@ -124,7 +124,6 @@ wxSize Configuration::GetPPI() const
 void Configuration::ResetAllToDefaults(InitOpt options)
 {
   m_wizardTab = 0;
-  m_dockableWizards = true;
   for(auto i:m_renderableChars)
     m_renderableChars[i.first] = wxEmptyString;
   for(auto i:m_nonRenderableChars)
@@ -140,6 +139,7 @@ void Configuration::ResetAllToDefaults(InitOpt options)
   m_maximaEnvVars[wxT("PAGER")] = wxT("cat");
   #endif
   m_wrapLatexMath = true;
+  m_allowNetworkHelp = false;
   m_exportContainsWXMX = true;
   m_maximaUsesHhtmlBrowser = true;
   m_bitmapScale = 3;
@@ -164,6 +164,8 @@ void Configuration::ResetAllToDefaults(InitOpt options)
   m_symbolPaneAdditionalChars = wxT("Øü§");
   m_hidemultiplicationsign = true;
   m_autodetectHelpBrowser = true;
+  m_singlePageManual = true;
+  m_useInternalHelpBrowser = true;
   #ifdef __WXGTK__
   m_helpBrowserUserLocation = wxT("xdg-open");
   #else
@@ -542,6 +544,7 @@ void Configuration::ReadConfig()
     config->Read(wxT("lineBreaksInLongNums"), &m_lineBreaksInLongNums);
     config->Read(wxT("autoSaveMinutes"), &m_autoSaveMinutes);
     config->Read(wxT("wrapLatexMath"), &m_wrapLatexMath);
+    config->Read(wxT("allowNetworkHelp"), &m_allowNetworkHelp);
     config->Read(wxT("exportContainsWXMX"), &m_exportContainsWXMX);
     config->Read(wxT("maximaUsesHhtmlBrowser"), &m_maximaUsesHhtmlBrowser);
     config->Read(wxT("texPreamble"), &m_texPreamble);
@@ -658,7 +661,6 @@ void Configuration::ReadConfig()
   config->Read(wxT("defaultPlotHeight"), &m_defaultPlotHeight);
   config->Read(wxT("fixedFontTC"), &m_fixedFontTC);
   config->Read(wxT("usepngCairo"), &m_usepngCairo);
-  config->Read(wxT("dockableWizards"), &m_dockableWizards);
   
   if(!config->Read(wxT("AutoSaveAsTempFile"), &m_autoSaveAsTempFile))
   {
@@ -688,6 +690,8 @@ void Configuration::ReadConfig()
   config->Read("symbolPaneAdditionalChars", &m_symbolPaneAdditionalChars);
   config->Read("parameters", &m_maximaParameters);
   config->Read("autodetectHelpBrowser", &m_autodetectHelpBrowser);
+  config->Read(wxT("useInternalHelpBrowser"), &m_useInternalHelpBrowser);
+  config->Read(wxT("singlePageManual"), &m_singlePageManual);
   config->Read("helpBrowser", &m_helpBrowserUserLocation);
   {
     int tmp;
@@ -1262,7 +1266,6 @@ void Configuration::WriteSettings(const wxString &file)
   config->Write(wxT("autoSaveMinutes"), m_autoSaveMinutes);
   config->Write(wxT("wxMathML_Filename"), m_wxMathML_Filename);
   config->Write(wxT("wxMathML_UseFile"), m_wxMathML_UseFile);
-  config->Write(wxT("dockableWizards"), m_dockableWizards);
 
   config->Write(wxT("maxClipbrd_BitmapMegabytes"), m_maxClipbrd_BitmapMegabytes);
 
@@ -1486,6 +1489,7 @@ bool Configuration::CharVisiblyDifferent(wxChar ch, wxChar otherChar, const wxFo
 void Configuration::WriteStyles(wxConfigBase *config)
 {
   config->Write(wxT("wrapLatexMath"), m_wrapLatexMath);
+  config->Write(wxT("allowNetworkHelp"), m_allowNetworkHelp);
   config->Write(wxT("exportContainsWXMX"), m_exportContainsWXMX);
   config->Write(wxT("maximaUsesHhtmlBrowser"), m_maximaUsesHhtmlBrowser);
   config->Write(wxT("texPreamble"), m_texPreamble);
@@ -1530,6 +1534,8 @@ void Configuration::WriteStyles(wxConfigBase *config)
   config->Write(wxT("parameters"),m_maximaParameters);
   config->Write(wxT("maxima"), m_maximaUserLocation);
   config->Write(wxT("autodetectHelpBrowser"), m_autodetectHelpBrowser);
+  config->Write(wxT("useInternalHelpBrowser"), m_useInternalHelpBrowser);
+  config->Write(wxT("singlePageManual"), m_singlePageManual);
   config->Write(wxT("helpBrowser"), m_helpBrowserUserLocation);
   config->Write(wxT("fixReorderedIndices"), m_fixReorderedIndices);
   config->Write(wxT("mathJaxURL_UseUser"), m_mathJaxURL_UseUser);

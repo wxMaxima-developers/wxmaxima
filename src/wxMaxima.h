@@ -279,9 +279,13 @@ protected:
   void OnWizardAbort(wxCommandEvent &event);
   void OnWizardOK(wxCommandEvent &event);
   void OnWizardInsert(wxCommandEvent &event);
+  void OnWizardHelpButton(wxCommandEvent &event);
 
   //! Show the help for Maxima
   void ShowMaximaHelp(wxString = {});
+  
+  //! Ask the user if we are allowed to access an online manual
+  bool AllowOnlineManualP();
 
   //! Show the help for Maxima (without handling of anchors).
   void ShowMaximaHelpWithoutAnchor();
@@ -723,6 +727,10 @@ protected:
 public:
   //! The marker for the end of a input prompt
   const static wxString m_promptSuffix;
+  //! Remove the said window from the list of toplevel windows
+  static void DelistTopLevelWindow(wxMaxima *);
+  //! The list of toplevel windows we currently maintain
+  static std::vector<wxMaxima *> m_topLevelWindows;
 protected:
   //! Sets gnuplot's command name and tries to determine gnuplot's path
   void GnuplotCommandName(wxString gnuplot);
@@ -852,53 +860,5 @@ private:
 
 
 // cppcheck-suppress noConstructor
-class MyApp : public wxApp
-{
-public:
-  virtual bool OnInit();
-  virtual int OnRun();
-  virtual int OnExit();
-  wxLocale m_locale;
-
-  /*! Create a new window
-
-    The mac platform insists in making all windows of an application
-    share the same process. On the other platforms we create a separate
-    process for every wxMaxima session instead which means that each
-    process uses the NewWindow() function only once.
-
-    \param file The file name
-    \param evalOnStartup Do we want to execute the file automatically, but halt on error?
-    \param exitAfterEval Do we want to close the window after the file has been evaluated?
-    \param wxmData A .wxm file containing the initial worksheet contents
-    \param wxmLen  The length of wxmData
-   */
-  void NewWindow(const wxString &file = {}, bool evalOnStartup = false, bool exitAfterEval = false, unsigned char *wxmData = NULL, size_t wxmLen = 0);
-
-  static std::vector<wxMaxima *> m_topLevelWindows;
-  static void DelistTopLevelWindow(wxMaxima *);
-
-  void OnFileMenu(wxCommandEvent &ev);
-
-  virtual void MacNewFile();
-  void BecomeLogTarget();
-
-  virtual void MacOpenFile(const wxString &file);
-
-private:
-  //! The name of the config file. Empty = Use the default one.
-  wxString m_configFileName;
-  Dirstructure m_dirstruct;
-  #if defined __WXOSX__
-  bool m_allWindowsInOneProcess = true;
-  #else
-  bool m_allWindowsInOneProcess = false;
-  #endif
-};
-
-
-
-// cppcheck-suppress unknownMacro
-DECLARE_APP(MyApp)
 
 #endif // WXMAXIMA_H

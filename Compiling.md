@@ -50,7 +50,7 @@ This requires wxWidgets to be installed, e.G. using MacPorts
 
 #### Ubuntu or Debian build prerequisites
 
-    sudo apt-get install build-essential libwxbase3.0-dev libwxgtk3.0-dev ibus-gtk ibus-gtk3 checkinstall gettext cmake pandoc po4a
+    sudo apt-get install build-essential libwxbase3.0-dev libwxgtk3.0-dev libwxgtk-webview3.0-gtk3-dev ibus-gtk ibus-gtk3 checkinstall gettext cmake pandoc po4a
 
 beforehand or (if apt-get is configured to load the source package
 repositories and not only the binary packages) by the simpler

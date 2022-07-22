@@ -22,7 +22,7 @@ jobs:
       - name: install_packages
         run: |
              sudo apt update
-             sudo apt-get install appstream-util cmake desktop-file-utils doxygen gettext gnuplot gnuplot-x11 graphviz libwxgtk3.0-gtk3-dev maxima maxima-share netcat-openbsd ninja-build pandoc xvfb
+             sudo apt-get install appstream-util cmake desktop-file-utils doxygen gettext gnuplot gnuplot-x11 graphviz libwxgtk3.0-gtk3-dev libwxgtk-webview3.0-gtk3-dev maxima maxima-share netcat-openbsd ninja-build pandoc xvfb
       - name: configure
         run: |
              export CXXFLAGS="-Wall -Wextra -ansi -std=c++11"
@@ -64,7 +64,7 @@ jobs:
       - name: install_packages
         run: |
              sudo apt-get update
-             sudo apt-get install appstream-util cmake desktop-file-utils gnuplot gnuplot-x11 graphviz libwxgtk3.0-dev maxima maxima-share netcat-openbsd ninja-build pandoc xvfb g++-5 gcc-5
+             sudo apt-get install appstream-util cmake desktop-file-utils gnuplot gnuplot-x11 graphviz libwxgtk3.0-dev libwxgtk-webview3.0-dev maxima maxima-share netcat-openbsd ninja-build pandoc xvfb g++-5 gcc-5
       - name: configure
         run: |
              export CC=gcc-5

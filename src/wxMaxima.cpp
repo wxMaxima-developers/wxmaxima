@@ -117,15 +117,6 @@
  */
 #define CALL_MEMBER_FN(object, ptrToMember)  ((object).*(ptrToMember))
 
-wxDECLARE_APP (MyApp);
-
-void MyApp::DelistTopLevelWindow(wxMaxima *window)
-{
-  auto pos = std::find(m_topLevelWindows.begin(), m_topLevelWindows.end(), window);
-  if (pos != m_topLevelWindows.end())
-    m_topLevelWindows.erase(pos);
-}
-
 void wxMaxima::ConfigChanged()
 {
   if(m_worksheet->GetTree())
@@ -189,8 +180,8 @@ void wxMaxima::ConfigChanged()
 
 wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString title,
                    const wxString &filename, const wxPoint pos, const wxSize size) :
-  wxMaximaFrame(parent, id, title, pos, size, wxDEFAULT_FRAME_STYLE | wxSYSTEM_MENU | wxCAPTION,
-                MyApp::m_topLevelWindows.empty()),
+  wxMaximaFrame(parent, id, locale, title, pos, size, wxDEFAULT_FRAME_STYLE | wxSYSTEM_MENU | wxCAPTION,
+                m_topLevelWindows.empty()),
   m_openFile(filename),
   m_gnuplotcommand("gnuplot"),
   m_parser(&m_configuration)
@@ -255,13 +246,10 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
   m_maxOutputCellsPerCommand = -1;
   m_exitAfterEval = false;
   m_exitOnError = false;
-  m_locale = locale;
-  wxLogMessage(_("Selected language: ") + m_locale->GetCanonicalName() +
-               " (" + wxString::Format("%i", m_locale->GetLanguage()) + ")");
   wxString lang;
   if(wxGetEnv("LANG", &lang))
     wxLogMessage("LANG=" + lang);
-  m_isLogTarget = MyApp::m_topLevelWindows.empty();
+  m_isLogTarget = m_topLevelWindows.empty();
   // Suppress window updates until this window has fully been created.
   // Not redrawing the window whilst constructing it hopefully speeds up
   // everything.
@@ -323,7 +311,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
     wxEVT_BUTTON, wxCommandEventHandler(wxMaxima::OnWizardAbort), NULL, this);
   m_wizard->GetInsertButton()->Connect(
     wxEVT_BUTTON, wxCommandEventHandler(wxMaxima::OnWizardInsert), NULL, this);
-  
+  m_wizard->Connect(wxEVT_BUTTON, wxCommandEventHandler(wxMaxima::OnWizardHelpButton), NULL, this);
 #ifdef wxHAS_POWER_EVENTS 
   Connect(
     wxEVT_POWER_SUSPENDED,
@@ -1639,16 +1627,16 @@ void wxMaxima::StartAutoSaveTimer()
 wxMaxima::~wxMaxima()
 {
   KillMaxima(false);
-  MyApp::DelistTopLevelWindow(this);
+  DelistTopLevelWindow(this);
 
-  if(MyApp::m_topLevelWindows.empty())
+  if(m_topLevelWindows.empty())
     wxExit();
   else
   {
     if(m_isLogTarget)
     {
       m_logPane->DropLogTarget();
-      MyApp::m_topLevelWindows.back()->BecomeLogTarget();
+      m_topLevelWindows.back()->BecomeLogTarget();
     }
   }
   wxSocketBase::Shutdown();
@@ -3232,18 +3220,18 @@ void wxMaxima::VariableActionMaximaInfodir(const wxString &value)
 {
   // Make sure that we get out all ".." and "~" of the path as they seem to confuse
   // the help browser logic
-  wxFileName dir(value);
-  dir.MakeAbsolute();
-  wxString dir_canonical = dir.GetPath();
-  m_worksheet->SetMaximaDocDir(dir_canonical);
-  wxLogMessage(wxString::Format(_("Maxima's manual lies in directory %s"),dir_canonical.utf8_str()));
-  m_worksheet->LoadHelpFileAnchors();
+  wxLogMessage(wxString::Format(_("Maxima's manual lies in directory %s"),value.utf8_str()));
 }
 
 void wxMaxima::VariableActionMaximaHtmldir(const wxString &value)
 {
   m_maximaHtmlDir = value;
-  wxLogMessage(wxString::Format(_("Maxima's HTML manuals are in directory %s"),value.utf8_str()));
+  wxFileName dir(value);
+  dir.MakeAbsolute();
+  wxString dir_canonical = dir.GetPath();
+  wxLogMessage(wxString::Format(_("Maxima's HTML manuals are in directory %s"),dir_canonical.utf8_str()));
+  m_worksheet->SetMaximaDocDir(dir_canonical);
+  m_worksheet->LoadHelpFileAnchors(dir_canonical, m_worksheet->GetMaximaVersion());
 }
 void wxMaxima::GnuplotCommandName(wxString gnuplot)
 {
@@ -4600,54 +4588,47 @@ void wxMaxima::ShowTip(bool force)
 
 void wxMaxima::LaunchHelpBrowser(wxString uri)
 {
-  if(m_configuration.AutodetectHelpBrowser())
+  if(m_configuration.InternalHelpBrowser())
   {
-    bool helpBrowserLaunched;
-    {
-      SuppressErrorDialogs suppressor;
-      helpBrowserLaunched = wxLaunchDefaultBrowser(uri);
-    }
-    if(!helpBrowserLaunched)
-    {
-      // see https://docs.wxwidgets.org/3.0/classwx_mime_types_manager.html
-      auto *manager = wxTheMimeTypesManager;
-      wxFileType *filetype = manager->GetFileTypeFromExtension("html");
-      wxString command = filetype->GetOpenCommand(uri);
-      wxLogMessage(wxString::Format(_("Launching the system's default help browser failed. Trying to execute %s instead."), command.utf8_str()));
-      wxExecute(command);
-    }
+    m_helpPane->SetURL(uri);
+    wxMaximaFrame::ShowPane(menu_pane_help);
   }
   else
   {
-    wxString command;
-    command = m_configuration.HelpBrowserUserLocation() + wxT(" ") + uri;
-    wxExecute(command);
+    if(m_configuration.AutodetectHelpBrowser())
+    {
+      bool helpBrowserLaunched;
+      {
+        SuppressErrorDialogs suppressor;
+        helpBrowserLaunched = wxLaunchDefaultBrowser(uri);
+      }
+      if(!helpBrowserLaunched)
+      {
+        // see https://docs.wxwidgets.org/3.0/classwx_mime_types_manager.html
+        auto *manager = wxTheMimeTypesManager;
+        wxFileType *filetype = manager->GetFileTypeFromExtension("html");
+        wxString command = filetype->GetOpenCommand(uri);
+        wxLogMessage(wxString::Format(_("Launching the system's default help browser failed. Trying to execute %s instead."), command.utf8_str()));
+        wxExecute(command);
+      }
+    }
+    else
+    {
+      wxString command;
+      command = m_configuration.HelpBrowserUserLocation() + wxT(" ") + uri;
+      wxExecute(command);
+    }
   }
 }
 
 void wxMaxima::ShowWxMaximaHelp()
 {
-  wxString helpfile;
-  wxString lang_long = m_locale->GetCanonicalName(); /* two- or five-letter string in xx or xx_YY format. Examples: "en", "en_GB", "en_US" or "fr_FR" */
-  wxString lang_short = lang_long.Left(lang_long.Find('_'));
-
-  helpfile = Dirstructure::Get()->HelpDir() + wxT("/wxmaxima.") + lang_long + ".html";
-  if(!wxFileExists(helpfile))
-    helpfile = Dirstructure::Get()->HelpDir() + wxT("/wxmaxima.") + lang_short + ".html";
-  if(!wxFileExists(helpfile))
-    helpfile = Dirstructure::Get()->HelpDir() + wxT("/wxmaxima.html");
-
-  /* If wxMaxima is called via ./wxmaxima-local directly from the build directory and *not* installed */
-  /* the help files are in the "info/" subdirectory of the current (build) directory */
-  if(!wxFileExists(helpfile))
-    helpfile = wxGetCwd() + wxT("/info/wxmaxima.") + lang_long + ".html";
-  if(!wxFileExists(helpfile))
-    helpfile = wxGetCwd() + wxT("/info/wxmaxima.") + lang_short + ".html";
-  if(!wxFileExists(helpfile))
-    helpfile = wxGetCwd() + wxT("/info/wxmaxima.html");
-
+  wxString helpfile = wxMaximaManualLocation();
 
   if(!wxFileExists(helpfile)) {
+    if(!AllowOnlineManualP())
+      return;
+
     wxLogMessage(_(wxT("No offline manual found => Redirecting to the wxMaxima homepage")));
     helpfile = wxString("https://htmlpreview.github.io/?https://github.com/wxMaxima-developers/wxmaxima/blob/main/info/wxmaxima.html");
   } else {
@@ -4688,6 +4669,9 @@ wxLogMessage(m_maximaHtmlDir);
   helpfile = m_maximaHtmlDir.Trim() + wxString("/maxima_singlepage.html");
   wxLogMessage(helpfile);
   if(!wxFileExists(helpfile)) {
+    if(!AllowOnlineManualP())
+      return;
+
     wxLogMessage(_(wxT("No offline manual found => Redirecting to the Maxima homepage")));
     helpfile = wxString("https://maxima.sourceforge.io/docs/manual/maxima_singlepage.html");
   } else {
@@ -4725,49 +4709,29 @@ void wxMaxima::ShowHelp(const wxString &keyword)
 
 void wxMaxima::ShowMaximaHelp(wxString keyword)
 {
-  if(m_worksheet->m_helpfileanchorsThread)
-  {
-    m_worksheet->m_helpfileanchorsThread->join();
-    m_worksheet->m_helpfileanchorsThread.reset();
-  }
-
   if(keyword.StartsWith("(%i"))
     keyword = "inchar";
   if(keyword.StartsWith("(%o"))
     keyword = "outchar";
-  wxString MaximaHelpFile = m_worksheet->GetMaximaHelpFile();
-#ifdef __WINDOWS__
-  // replace \ with / as directory separator
-  MaximaHelpFile.Replace("\\", "/", true);
-#endif
+  wxString tmp = m_worksheet->GetHelpfileAnchorName(keyword);
+  if(tmp.IsEmpty())
+    keyword = "Function-and-Variable-Index";
+
+  wxString maximaHelpURL = m_worksheet->GetHelpfileURL(keyword);
 
   wxBusyCursor crs;
-  m_worksheet->CompileHelpFileAnchors();
-  keyword = m_worksheet->m_helpFileAnchors[keyword];
-  if(keyword.IsEmpty())
-    keyword = "Function-and-Variable-Index";
-  if(!MaximaHelpFile.IsEmpty())
+  if(!maximaHelpURL.IsEmpty())
   {
-    // A Unix absolute path starts with a "/", so a valid file URI
-    // file:///path/to/helpfile (3 slashes!!) is constructed.
-    // On Windows the path starts e.g. with C:/path/to/helpfile
-    // so a third "/" must be inserted.
-    // Otherwise "C" might be considered as hostname.
-    wxString maximaHelpfileURI = wxString("file://")+
-#ifdef __WINDOWS__
-      wxString("/") +
-#endif
-      MaximaHelpFile;
-    if(!keyword.IsEmpty()) {
-      maximaHelpfileURI = maximaHelpfileURI + "#" + keyword;
-    }
-    wxLogMessage(wxString::Format(_("Opening help file %s"),maximaHelpfileURI.utf8_str()));
-    LaunchHelpBrowser(maximaHelpfileURI);
+    wxLogMessage(wxString::Format(_("Opening help file %s"),maximaHelpURL.utf8_str()));
+    LaunchHelpBrowser(maximaHelpURL);
   }
   else
   {
-    wxLogMessage(_(wxT("No offline manual found => Redirecting to the Maxima homepage")));
-    LaunchHelpBrowser("https://maxima.sourceforge.io/docs/manual/maxima_singlepage.html#"+keyword);
+    if(AllowOnlineManualP())
+    {
+      wxLogMessage(_(wxT("No offline manual found => Redirecting to the Maxima homepage")));
+      LaunchHelpBrowser("https://maxima.sourceforge.io/docs/manual/maxima_singlepage.html#"+keyword);
+    }
   }
 }
 
@@ -9895,41 +9859,19 @@ void wxMaxima::CommandWiz(const wxString &title,
                           wxString label9, wxString defaultval9, wxString tooltip9
   )
 {
-  if(m_configuration.DockableWizards())
-  {
-    m_wizard->NewWizard(description,description_tooltip,
-                        commandRule,
-                        label1, defaultval1, tooltip1,
-                        label2, defaultval2, tooltip2,
-                        label3, defaultval3, tooltip3,
-                        label4, defaultval4, tooltip4,
-                        label5, defaultval5, tooltip5,
-                        label6, defaultval6, tooltip6,
-                        label7, defaultval7, tooltip7,
-                        label8, defaultval8, tooltip8,
-                        label9, defaultval9, tooltip9);
-    m_manager.GetPane("wizard").Show(true).Caption(title);
-    m_manager.Update();
-  }
-  else
-  {
-    GenWiz *wiz = new GenWiz(this, &m_configuration,
-                             title,
-                             description,description_tooltip,
-                             commandRule,
-                             label1, defaultval1, tooltip1,
-                             label2, defaultval2, tooltip2,
-                             label3, defaultval3, tooltip3,
-                             label4, defaultval4, tooltip4,
-                             label5, defaultval5, tooltip5,
-                             label6, defaultval6, tooltip6,
-                             label7, defaultval7, tooltip7,
-                             label8, defaultval8, tooltip8,
-                             label9, defaultval9, tooltip9);
-    if (wiz->ShowModal() == wxID_OK)
-      MenuCommand(wiz->GetOutput());
-    wiz->Destroy();
-  }
+  m_wizard->NewWizard(description,description_tooltip,
+                      commandRule,
+                      label1, defaultval1, tooltip1,
+                      label2, defaultval2, tooltip2,
+                      label3, defaultval3, tooltip3,
+                      label4, defaultval4, tooltip4,
+                      label5, defaultval5, tooltip5,
+                      label6, defaultval6, tooltip6,
+                      label7, defaultval7, tooltip7,
+                      label8, defaultval8, tooltip8,
+                      label9, defaultval9, tooltip9);
+  m_manager.GetPane("wizard").Show(true).Caption(title);
+  m_manager.Update();
 }
 
 void wxMaxima::OnWizardAbort(wxCommandEvent &WXUNUSED(event))
@@ -9944,6 +9886,11 @@ void wxMaxima::OnWizardOK(wxCommandEvent &event)
   OnWizardInsert(event);
   OnWizardAbort(event);
   m_configuration.LastActiveTextCtrl(NULL);
+}
+
+void wxMaxima::OnWizardHelpButton(wxCommandEvent &event)
+{
+  ShowMaximaHelp(m_wizard->GetHelpKeyword(event.GetId()));
 }
 
 void wxMaxima::OnWizardInsert(wxCommandEvent &event)
@@ -10348,8 +10295,16 @@ void wxMaxima::OnClose(wxCloseEvent &event)
   if(m_fileSaved)
     RemoveTempAutosavefile();
   KillMaxima();
-  MyApp::DelistTopLevelWindow(this);
+  DelistTopLevelWindow(this);
 }
+
+void wxMaxima::DelistTopLevelWindow(wxMaxima *window)
+{
+  auto pos = std::find(m_topLevelWindows.begin(), m_topLevelWindows.end(), window);
+  if (pos != m_topLevelWindows.end())
+    m_topLevelWindows.erase(pos);
+}
+
 
 void wxMaxima::PopupMenu(wxCommandEvent &event)
 {
@@ -11966,6 +11921,33 @@ int wxMaxima::SaveDocumentP()
   return dialog.ShowModal();
 }
 
+bool wxMaxima::AllowOnlineManualP()
+{
+  if(m_configuration.AllowNetworkHelp())
+    return true;
+  
+  LoggingMessageDialog dialog(this,
+                              _("Allow to access a online manual for maxima?"),
+                              "Manual", wxCENTER | wxYES_NO | wxCANCEL);
+  
+  dialog.SetExtendedMessage(_("Didn't find an installed offline manual."));
+  
+  int result = dialog.ShowModal();
+
+  if(result == wxID_CANCEL)
+    return false;
+
+ 
+  if(result == wxID_YES)
+  {
+    m_configuration.AllowNetworkHelp(true);
+    return true;
+  }
+
+  m_configuration.AllowNetworkHelp(false);
+  return false;
+}
+
 void wxMaxima::OnFocus(wxFocusEvent &event)
 {
   // We cannot change the focus during an focus event, but can tell the
@@ -12067,3 +12049,4 @@ wxString wxMaxima::m_firstPrompt(wxT("(%i1) "));
 wxMaxima::ParseFunctionHash wxMaxima::m_knownXMLTags;
 wxMaxima::VarReadFunctionHash wxMaxima::m_variableReadActions;
 wxMaxima::VarUndefinedFunctionHash wxMaxima::m_variableUndefinedActions;
+std::vector<wxMaxima *> wxMaxima::m_topLevelWindows;

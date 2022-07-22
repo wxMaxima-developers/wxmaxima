@@ -35,6 +35,7 @@
 #include <wx/fileconf.h>
 #include <wx/sysopt.h>
 #include "Dirstructure.h"
+#include "main.h"
 #include <iostream>
 #ifdef __WXMSW__
 #include <winuser.h>
@@ -100,8 +101,6 @@ int WINAPI WinMain( HINSTANCE hI, HINSTANCE hPrevI, LPSTR lpCmdLine, int nCmdSho
   return CommonMain();
 }
 #endif
-
-std::vector<wxMaxima *> MyApp::m_topLevelWindows;
 
 
 bool MyApp::OnInit()
@@ -411,6 +410,7 @@ bool MyApp::OnInit()
   return true;
 }
 
+
 int MyApp::OnExit()
 {
   return 0;
@@ -424,7 +424,7 @@ int MyApp::OnRun()
 
 void MyApp::NewWindow(const wxString &file, bool evalOnStartup, bool exitAfterEval, unsigned char *wxmData, size_t wxmLen)
 {
-  int numberOfWindows = m_topLevelWindows.size();
+  int numberOfWindows = wxMaxima::m_topLevelWindows.size();
 
   wxString title = _("wxMaxima");
   if (file.Length() > 0)
@@ -459,7 +459,7 @@ void MyApp::NewWindow(const wxString &file, bool evalOnStartup, bool exitAfterEv
   }
 
   frame->EvalOnStartup(evalOnStartup);
-  m_topLevelWindows.push_back(frame);
+  wxMaxima::m_topLevelWindows.push_back(frame);
   frame->ExitAfterEval(exitAfterEval);
 
   SetTopWindow(frame);
@@ -562,7 +562,7 @@ void MyApp::OnFileMenu(wxCommandEvent &ev)
     }
     case wxID_EXIT:
     {
-      for (wxMaxima *win : m_topLevelWindows)
+      for (wxMaxima *win : wxMaxima::m_topLevelWindows)
       {
         wxASSERT(win);
         wxCloseEvent *event = new wxCloseEvent(wxEVT_CLOSE_WINDOW);
@@ -570,7 +570,7 @@ void MyApp::OnFileMenu(wxCommandEvent &ev)
         event->SetLoggingOff(false);
         win->GetEventHandler()->QueueEvent(event);
       }
-      if(m_topLevelWindows.empty())
+      if(wxMaxima::m_topLevelWindows.empty())
         wxExit();
     }
     break;

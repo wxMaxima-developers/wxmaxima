@@ -39,7 +39,7 @@ jobs:
       - name: Dependencies
         run: |
           sudo apt update
-          sudo apt install libwxbase3.0-dev libwxgtk-media3.0-gtk3-dev wx3.0-headers ninja-build
+          sudo apt install libwxbase3.0-dev libwxgtk-media3.0-gtk3-dev libwxgtk-webview3.0-gtk3-dev wx3.0-headers ninja-build
 
       # Initializes the CodeQL tools for scanning.
       - name: Initialize CodeQL

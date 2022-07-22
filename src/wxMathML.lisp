@@ -2014,6 +2014,8 @@
 		   (format t "~a" (print_value key))))
 	     *variable-initial-values*)
 
+;;    (mapcar (lambda(key) (if (eq (char (format nil "~a" key) 0) #\$ ) (symbol-to-xml (make-symbol key)))) (wx-list-all-maxima-vars))
+
     ;; ezunits publishes all known units in a function.
     (if (boundp '$known_units)
     	(no-warning
@@ -2073,7 +2075,17 @@
     (format t "</variables>~%")
     (finish-output)
     )
-  
+
+  ;tttt
+;  (defun wx-list-all-maxima-vars () (let ((lst ())) (do-symbols (s (find-package 'maxima)) (push s lst)) lst))
+; 	       (if (eq (char (format nil "~a" key) 0) #\$ )
+
+  ;  (let ((lst ())) (do-symbols (s (find-package 'maxima)) (push s lst)) lst)
+; 	       (if (eq (char (format nil "~a" key) 0) #\$ )
+
+;    (mapcar (lambda(key) (if (eq (char (format nil "~a" key) 0) #\$ ) (symbol-to-xml (make-symbol key)))) (wx-list-all-maxima-vars))
+
+
   (defun wx-print-gui-variables ()
     (finish-output)
     (format t "<variables>")

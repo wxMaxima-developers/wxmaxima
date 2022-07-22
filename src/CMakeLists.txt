@@ -110,6 +110,7 @@ set(SOURCE_FILES
     FindReplacePane.cpp
     FontAttribs.cpp
     FontCache.cpp
+    HelpBrowser.cpp
     History.cpp
     Image.cpp
     LicenseDialog.cpp
@@ -122,6 +123,7 @@ set(SOURCE_FILES
     MaximaIPC.cpp
     MaximaTokenizer.cpp
     MaxSizeChooser.cpp
+    MaximaManual.cpp
     Notification.cpp
     RecentDocuments.cpp
     RegexCtrl.cpp

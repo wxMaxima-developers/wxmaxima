@@ -47,7 +47,7 @@
 #include "UnicodeSidebar.h"
 #include "CharButton.h"
 
-wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
+wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, wxLocale *locale, const wxString &title,
                              const wxPoint &pos, const wxSize &size,
                              long style, bool becomeLogTarget) :
   wxFrame(parent, id, title, pos, size, style),
@@ -56,6 +56,10 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   m_unsavedDocuments(wxT("unsaved")),
   m_recentPackages(wxT("packages"))
 {
+  m_locale = locale;
+//  wxLogMessage(_("Selected language: ") + m_locale->GetCanonicalName() +
+//               " (" + wxString::Format("%i", m_locale->GetLanguage()) + ")");
+
   m_bytesFromMaxima = 0;
   m_drawDimensions_last = -1;
   // Suppress window updates until this window has fully been created.
@@ -339,7 +343,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   
   m_manager.AddPane(
     m_wizard = new ScrollingGenWizPanel(
-      this, &m_configuration),
+      this, &m_configuration, m_worksheet->GetMaximaManual()),
     wxAuiPaneInfo().Name(wxT("wizard")).
     CloseButton(true).
     TopDockable(true).
@@ -376,6 +380,18 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
                     Left());
   wxWindowUpdateLocker drawBlocker(m_drawPane);
 
+  m_manager.AddPane(m_helpPane = new HelpBrowser(this, &m_configuration,
+                                                 wxT("file://") + wxMaximaManualLocation()),
+                    wxAuiPaneInfo().Name(wxT("help")).
+                    CloseButton(true).
+                    TopDockable(true).
+                    BottomDockable(true).
+                    LeftDockable(true).
+                    RightDockable(true).
+                    PaneBorder(true).
+                    Right());
+
+  
   m_worksheet->m_mainToolBar = new ToolBar(this);
 
   m_manager.AddPane(m_worksheet->m_mainToolBar,
@@ -474,6 +490,8 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
     m_manager.GetPane(wxT("format")).Caption(_("Insert")).CloseButton(true).Resizable().PaneBorder(true).Movable(true);
   m_manager.GetPane(wxT("draw")) =
     m_manager.GetPane(wxT("draw")).Caption(_("Plot using Draw")).CloseButton(true).Resizable().PaneBorder(true).Movable(true);
+  m_manager.GetPane(wxT("help")) =
+    m_manager.GetPane(wxT("help")).Caption(_("Help")).CloseButton(true).Resizable().PaneBorder(true).Movable(true);
   m_manager.GetPane(wxT("greek")) =
     m_manager.GetPane(wxT("greek")).Caption(_("Greek Letters")).CloseButton(true).Resizable().Gripper(false).PaneBorder(true).Movable(true).
     Gripper(false).CloseButton(true);
@@ -790,6 +808,7 @@ void wxMaximaFrame::SetupMenu()
   m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_structure, _("Table of Contents\tAlt+Shift+T"));
   m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_format, _("Insert Cell\tAlt+Shift+C"));
   m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_draw, _("Plot using Draw"));
+  m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_help, _("The integrated help browser"));
   m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_log,   _("Debug messages"));
   m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_variables,   _("Variables"));
   m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_xmlInspector, _("Raw XML monitor"));
@@ -1827,6 +1846,29 @@ m_CalculusMenu->AppendSeparator();
 #undef APPEND_MENU_ITEM
 }
 
+wxString wxMaximaFrame::wxMaximaManualLocation()
+{
+  wxString helpfile;
+  wxString lang_long = m_locale->GetCanonicalName(); /* two- or five-letter string in xx or xx_YY format. Examples: "en", "en_GB", "en_US" or "fr_FR" */
+  wxString lang_short = lang_long.Left(lang_long.Find('_'));
+  
+  helpfile = Dirstructure::Get()->HelpDir() + wxT("/wxmaxima.") + lang_long + ".html";
+  if(!wxFileExists(helpfile))
+    helpfile = Dirstructure::Get()->HelpDir() + wxT("/wxmaxima.") + lang_short + ".html";
+  if(!wxFileExists(helpfile))
+    helpfile = Dirstructure::Get()->HelpDir() + wxT("/wxmaxima.html");
+  
+  /* If wxMaxima is called via ./wxmaxima-local directly from the build directory and *not* installed */
+  /* the help files are in the "info/" subdirectory of the current (build) directory */
+  if(!wxFileExists(helpfile))
+    helpfile = wxGetCwd() + wxT("/info/wxmaxima.") + lang_long + ".html";
+  if(!wxFileExists(helpfile))
+    helpfile = wxGetCwd() + wxT("/info/wxmaxima.") + lang_short + ".html";
+  if(!wxFileExists(helpfile))
+    helpfile = wxGetCwd() + wxT("/info/wxmaxima.html");
+  return helpfile;
+}
+
 bool wxMaximaFrame::ToolbarIsShown()
 {
   return m_manager.GetPane(wxT("toolbar")).IsShown();
@@ -2018,6 +2060,9 @@ bool wxMaximaFrame::IsPaneDisplayed(Event id)
     case menu_pane_draw:
       displayed = m_manager.GetPane(wxT("draw")).IsShown();
       break;
+    case menu_pane_help:
+      displayed = m_manager.GetPane(wxT("help")).IsShown();
+      break;
     default:
       wxASSERT(false);
       break;
@@ -2041,6 +2086,7 @@ void wxMaximaFrame::DockAllSidebars(wxCommandEvent & WXUNUSED(ev))
   m_manager.GetPane(wxT("symbols")).Dock();
   m_manager.GetPane(wxT("format")).Dock();
   m_manager.GetPane(wxT("draw")).Dock();
+  m_manager.GetPane(wxT("help")).Dock();
   m_manager.Update();
 }
 
@@ -2061,6 +2107,7 @@ void wxMaximaFrame::ShowPane(Event id, bool show)
       m_manager.GetPane(wxT("log")).Show(false);
       m_manager.GetPane(wxT("variables")).Show(false);
       m_manager.GetPane(wxT("draw")).Show(false);
+      m_manager.GetPane(wxT("wizard")).Show(false);
       m_manager.GetPane(wxT("symbols")).Show(false);
       m_manager.GetPane(wxT("stats")).Show(false);
       ShowToolBar(false);
@@ -2097,6 +2144,9 @@ void wxMaximaFrame::ShowPane(Event id, bool show)
       break;
     case menu_pane_draw:
       m_manager.GetPane(wxT("draw")).Show(show);
+      break;
+    case menu_pane_help:
+      m_manager.GetPane(wxT("help")).Show(show);
       break;
     case menu_pane_symbols:
       m_manager.GetPane(wxT("symbols")).Show(show);
