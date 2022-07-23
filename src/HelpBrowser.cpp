@@ -69,6 +69,11 @@ void HelpBrowser::CreateIfNeeded()
     m_searchText->Connect(wxEVT_TEXT_ENTER,
                           wxCommandEventHandler(HelpBrowser::OnTextEnter),
                           NULL, this);
+    Connect(wxID_FIND, wxEVT_MENU,
+            wxCommandEventHandler(HelpBrowser::OnTextEnter), NULL, this);
+    m_webView->Connect(wxID_FIND, wxEVT_MENU,
+            wxCommandEventHandler(HelpBrowser::OnTextEnter), NULL, this);
+    
     wxButton *upbutton = new wxButton(this, wxID_UP);
     upbutton->Connect(
       wxEVT_BUTTON, wxCommandEventHandler(HelpBrowser::OnSearchUp), NULL, this);
@@ -113,6 +118,7 @@ void HelpBrowser::OnTextEnter(wxCommandEvent& event)
     flags = wxWEBVIEW_FIND_BACKWARDS;
   wxString searchString = m_searchText->GetValue();
   m_webView->Find(searchString, flags);
+  event.Skip();
 }
 
 void HelpBrowser::OnSearchUp(wxCommandEvent& event)
