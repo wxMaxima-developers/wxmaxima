@@ -35,6 +35,7 @@
 #include <wx/wx.h>
 #include <wx/webview.h>
 #include <wx/panel.h>
+#include <wx/sizer.h>
 #include "Configuration.h"
 
 /* The help browser sidebar
@@ -45,16 +46,20 @@ public:
   explicit HelpBrowser(wxWindow *parent, Configuration *configuration, wxString url);
   void SetURL(wxString url);
 private:
+  void CreateIfNeeded();
   void OnTextEnter(wxCommandEvent& event);
   void OnSearchUp(wxCommandEvent& event);
   void OnSearchDown(wxCommandEvent& event);
   void OnSearchboxKeyDown(wxKeyEvent &event);
   void OnWebviewKeyDown(wxKeyEvent &event);
+  void OnActivate(wxActivateEvent &event);
 
-  wxWebView *m_webView;
-  wxTextCtrl *m_searchText;
+  wxWebView *m_webView = NULL;
+  wxTextCtrl *m_searchText = NULL;
   Configuration *m_configuration;
+  wxString m_startUrl;
   bool m_findDown = true;
+  wxBoxSizer *m_vbox;
 };
 
 #endif // HELPBROWSER_H

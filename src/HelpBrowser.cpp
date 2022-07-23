@@ -33,39 +33,52 @@
 
 HelpBrowser::HelpBrowser(wxWindow *parent, Configuration *configuration, wxString url):
   wxPanel(parent, wxID_ANY),
-  m_configuration(configuration)
+  m_configuration(configuration),
+  m_startUrl(url)
 {
-  auto *vbox = new wxBoxSizer(wxVERTICAL);
-  
-  m_webView = wxWebView::New(this, wxID_ANY, url);
-  m_webView->Connect(wxEVT_KEY_DOWN,
-                     wxCharEventHandler(HelpBrowser::OnWebviewKeyDown), NULL, this);
-
-  m_webView->SetMinSize(wxSize(GetContentScaleFactor()*100,GetContentScaleFactor()*100));
- vbox->Add(m_webView, wxSizerFlags(1).Expand());
-
-  auto *searchbox = new wxBoxSizer(wxHORIZONTAL);
-  m_searchText = new wxTextCtrl(this, wxID_ANY, wxEmptyString, wxDefaultPosition,
-                                        wxDefaultSize, wxTE_PROCESS_ENTER);
-  searchbox->Add(m_searchText, wxSizerFlags(1).Expand());
-  m_webView->Connect(wxEVT_KEY_DOWN,
-                     wxCharEventHandler(HelpBrowser::OnSearchboxKeyDown), NULL, this);
-
-  m_searchText->Connect(wxEVT_TEXT_ENTER,
-                      wxCommandEventHandler(HelpBrowser::OnTextEnter),
-                      NULL, this);
-  wxButton *upbutton = new wxButton(this, wxID_UP);
-  upbutton->Connect(
-    wxEVT_BUTTON, wxCommandEventHandler(HelpBrowser::OnSearchUp), NULL, this);
-  searchbox->Add(upbutton, wxSizerFlags());
-  wxButton *downbutton = new wxButton(this, wxID_DOWN);
-  downbutton->Connect(
-    wxEVT_BUTTON, wxCommandEventHandler(HelpBrowser::OnSearchDown), NULL, this);
-  searchbox->Add(downbutton, wxSizerFlags());
-  vbox->Add(searchbox, wxSizerFlags().Expand());
-
-  SetSizer(vbox);
+  m_vbox = new wxBoxSizer(wxVERTICAL);
+  Connect(wxEVT_ACTIVATE, wxActivateEventHandler(HelpBrowser::OnActivate),NULL, this);
+  SetSizer(m_vbox);
   FitInside();
+}
+
+void HelpBrowser::OnActivate(wxActivateEvent &WXUNUSED(event))
+{
+  CreateIfNeeded();
+}
+
+void HelpBrowser::CreateIfNeeded()
+{
+  if(m_webView == NULL)
+  {
+    wxLogMessage(_("Instantiating the HTML manual browser"));
+    m_webView = wxWebView::New(this, wxID_ANY, m_startUrl);
+    m_webView->Connect(wxEVT_KEY_DOWN,
+                       wxCharEventHandler(HelpBrowser::OnWebviewKeyDown), NULL, this);
+
+    m_webView->SetMinSize(wxSize(GetContentScaleFactor()*100,GetContentScaleFactor()*100));
+    m_vbox->Add(m_webView, wxSizerFlags(1).Expand());
+
+    auto *searchbox = new wxBoxSizer(wxHORIZONTAL);
+    m_searchText = new wxTextCtrl(this, wxID_ANY, wxEmptyString, wxDefaultPosition,
+                                  wxDefaultSize, wxTE_PROCESS_ENTER);
+    searchbox->Add(m_searchText, wxSizerFlags(1).Expand());
+    m_webView->Connect(wxEVT_KEY_DOWN,
+                       wxCharEventHandler(HelpBrowser::OnSearchboxKeyDown), NULL, this);
+
+    m_searchText->Connect(wxEVT_TEXT_ENTER,
+                          wxCommandEventHandler(HelpBrowser::OnTextEnter),
+                          NULL, this);
+    wxButton *upbutton = new wxButton(this, wxID_UP);
+    upbutton->Connect(
+      wxEVT_BUTTON, wxCommandEventHandler(HelpBrowser::OnSearchUp), NULL, this);
+    searchbox->Add(upbutton, wxSizerFlags());
+    wxButton *downbutton = new wxButton(this, wxID_DOWN);
+    downbutton->Connect(
+      wxEVT_BUTTON, wxCommandEventHandler(HelpBrowser::OnSearchDown), NULL, this);
+    searchbox->Add(downbutton, wxSizerFlags());
+    m_vbox->Add(searchbox, wxSizerFlags().Expand());
+  }
 }
 
 void HelpBrowser::OnSearchboxKeyDown(wxKeyEvent &event)
@@ -89,6 +102,7 @@ void HelpBrowser::OnWebviewKeyDown(wxKeyEvent &event)
 
 void HelpBrowser::SetURL(wxString url)
 {
+  CreateIfNeeded();
   m_webView->LoadURL(url);
 }
 
