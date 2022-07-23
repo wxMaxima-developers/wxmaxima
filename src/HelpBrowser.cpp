@@ -28,23 +28,86 @@
 
 #include "HelpBrowser.h"
 #include <wx/sizer.h>
+#include <wx/textctrl.h>
+#include <wx/button.h>
 
 HelpBrowser::HelpBrowser(wxWindow *parent, Configuration *configuration, wxString url):
-  wxScrolled<wxPanel>(parent, wxID_ANY),
+  wxPanel(parent, wxID_ANY),
   m_configuration(configuration)
 {
-  SetScrollRate(5*GetContentScaleFactor(), 5*GetContentScaleFactor());
-  SetMinSize(wxSize(GetContentScaleFactor()*100,GetContentScaleFactor()*100));
-
   auto *vbox = new wxBoxSizer(wxVERTICAL);
   
   m_webView = wxWebView::New(this, wxID_ANY, url);
-  vbox->Add(m_webView, wxSizerFlags(1).Expand());
+  m_webView->Connect(wxEVT_KEY_DOWN,
+                     wxCharEventHandler(HelpBrowser::OnWebviewKeyDown), NULL, this);
+
+  m_webView->SetMinSize(wxSize(GetContentScaleFactor()*100,GetContentScaleFactor()*100));
+ vbox->Add(m_webView, wxSizerFlags(1).Expand());
+
+  auto *searchbox = new wxBoxSizer(wxHORIZONTAL);
+  m_searchText = new wxTextCtrl(this, wxID_ANY, wxEmptyString, wxDefaultPosition,
+                                        wxDefaultSize, wxTE_PROCESS_ENTER);
+  searchbox->Add(m_searchText, wxSizerFlags(1).Expand());
+  m_webView->Connect(wxEVT_KEY_DOWN,
+                     wxCharEventHandler(HelpBrowser::OnSearchboxKeyDown), NULL, this);
+
+  m_searchText->Connect(wxEVT_TEXT_ENTER,
+                      wxCommandEventHandler(HelpBrowser::OnTextEnter),
+                      NULL, this);
+  wxButton *upbutton = new wxButton(this, wxID_UP);
+  upbutton->Connect(
+    wxEVT_BUTTON, wxCommandEventHandler(HelpBrowser::OnSearchUp), NULL, this);
+  searchbox->Add(upbutton, wxSizerFlags());
+  wxButton *downbutton = new wxButton(this, wxID_DOWN);
+  downbutton->Connect(
+    wxEVT_BUTTON, wxCommandEventHandler(HelpBrowser::OnSearchDown), NULL, this);
+  searchbox->Add(downbutton, wxSizerFlags());
+  vbox->Add(searchbox, wxSizerFlags().Expand());
+
   SetSizer(vbox);
   FitInside();
+}
+
+void HelpBrowser::OnSearchboxKeyDown(wxKeyEvent &event)
+{
+  if(event.ControlDown() && (event.GetUnicodeKey() == wxT('F')))
+  {
+    wxCommandEvent dummy;
+    OnTextEnter(dummy);
+  }
+  else
+    event.Skip();
+}
+
+void HelpBrowser::OnWebviewKeyDown(wxKeyEvent &event)
+{
+  if(event.ControlDown() && (event.GetUnicodeKey() == wxT('F')))
+    m_searchText->SetFocus();
+  else
+    event.Skip();
 }
 
 void HelpBrowser::SetURL(wxString url)
 {
   m_webView->LoadURL(url);
+}
+
+void HelpBrowser::OnTextEnter(wxCommandEvent& event)
+{
+  wxWebViewFindFlags flags = wxWEBVIEW_FIND_DEFAULT;
+  if(!m_findDown)
+    flags = wxWEBVIEW_FIND_BACKWARDS;
+  wxString searchString = m_searchText->GetValue();
+  m_webView->Find(searchString, flags);
+}
+
+void HelpBrowser::OnSearchUp(wxCommandEvent& event)
+{
+  m_findDown = false;
+  m_webView->Find(m_searchText->GetValue(), wxWEBVIEW_FIND_DEFAULT| wxWEBVIEW_FIND_BACKWARDS);
+}
+void HelpBrowser::OnSearchDown(wxCommandEvent& event)
+{
+  m_findDown = true;
+  m_webView->Find(m_searchText->GetValue(), wxWEBVIEW_FIND_DEFAULT);
 }

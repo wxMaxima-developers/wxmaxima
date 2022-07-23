@@ -34,20 +34,27 @@
 #include "precomp.h"
 #include <wx/wx.h>
 #include <wx/webview.h>
-#include <wx/scrolwin.h>
 #include <wx/panel.h>
 #include "Configuration.h"
 
 /* The help browser sidebar
  */
-class HelpBrowser : public wxScrolled<wxPanel>
+class HelpBrowser : public wxPanel
 {
 public:
   explicit HelpBrowser(wxWindow *parent, Configuration *configuration, wxString url);
   void SetURL(wxString url);
 private:
+  void OnTextEnter(wxCommandEvent& event);
+  void OnSearchUp(wxCommandEvent& event);
+  void OnSearchDown(wxCommandEvent& event);
+  void OnSearchboxKeyDown(wxKeyEvent &event);
+  void OnWebviewKeyDown(wxKeyEvent &event);
+
   wxWebView *m_webView;
+  wxTextCtrl *m_searchText;
   Configuration *m_configuration;
+  bool m_findDown = true;
 };
 
 #endif // HELPBROWSER_H
