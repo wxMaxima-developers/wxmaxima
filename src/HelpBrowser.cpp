@@ -57,6 +57,11 @@ void HelpBrowser::CreateIfNeeded()
                        wxCharEventHandler(HelpBrowser::OnWebviewKeyDown), NULL, this);
 
     m_webView->SetMinSize(wxSize(GetContentScaleFactor()*100,GetContentScaleFactor()*100));
+    #ifdef __WXMSW__
+    // Don't emulate bugs in IE7
+    m_webView->MSWSetEmulationLevel();
+    #endif
+    
     m_vbox->Add(m_webView, wxSizerFlags(1).Expand());
 
     auto *searchbox = new wxBoxSizer(wxHORIZONTAL);
