@@ -198,6 +198,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
     m_knownXMLTags[wxT("variables")] = &wxMaxima::ReadVariables;
     m_knownXMLTags[wxT("watch_variables_add")] = &wxMaxima::ReadAddVariables;
     m_knownXMLTags[wxT("statusbar")] = &wxMaxima::ReadStatusBar;
+    m_knownXMLTags[wxT("html-manual-keyword")] = &wxMaxima::ReadManualTopicName;
     m_knownXMLTags[wxT("mth")] = &wxMaxima::ReadMath;
     m_knownXMLTags[wxT("math")] = &wxMaxima::ReadMath;
     m_knownXMLTags[wxT("ipc")] = &wxMaxima::ReadMaximaIPC;
@@ -2965,6 +2966,34 @@ void wxMaxima::ReadStatusBar(wxString &data)
     }
     // Remove the status bar info from the data string
     data = data.Right(data.Length()-end-m_statusbarSuffix.Length());
+  }
+}
+
+void wxMaxima::ReadManualTopicName(wxString &data)
+{
+  if (!data.StartsWith(m_jumpManualPrefix))
+    return;
+
+  m_worksheet->SetCurrentTextCell(nullptr);
+
+  int end;
+  if ((end = FindTagEnd(data,m_jumpManualPrefix)) != wxNOT_FOUND)
+  {
+    wxXmlDocument xmldoc;
+    wxString xml = data.Left( end + m_jumpManualPrefix.Length());
+    wxStringInputStream xmlStream(xml);
+    xmldoc.Load(xmlStream, wxT("UTF-8"));
+    wxXmlNode *node = xmldoc.GetRoot();
+    if(node != NULL)
+    {
+      wxXmlNode *contents = node->GetChildren();
+      if(contents)
+      { 
+        ShowHelp(contents->GetContent());
+      }
+    }
+    // Remove the status bar info from the data string
+    data = data.Right(data.Length()-end-m_jumpManualPrefix.Length());
   }
 }
 
@@ -12041,6 +12070,8 @@ wxString wxMaxima::m_addVariablesPrefix(wxT("<watch_variables_add>"));
 wxString wxMaxima::m_addVariablesSuffix(wxT("</watch_variables_add>"));
 wxString wxMaxima::m_statusbarPrefix(wxT("<statusbar>"));
 wxString wxMaxima::m_statusbarSuffix(wxT("</statusbar>\n"));
+wxString wxMaxima::m_jumpManualPrefix(wxT("<html-manual-keyword>"));
+wxString wxMaxima::m_jumpManualSuffix(wxT("</html-manual-keyword>\n"));
 wxString wxMaxima::m_mathPrefix1(wxT("<mth>"));
 wxString wxMaxima::m_mathPrefix2(wxT("<math>"));
 wxString wxMaxima::m_mathSuffix1(wxT("</mth>"));

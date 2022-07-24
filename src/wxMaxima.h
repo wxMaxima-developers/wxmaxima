@@ -517,6 +517,8 @@ protected:
     commands and makes sure this feedback is deleted once the command is finished.
    */
   void ReadStatusBar(wxString &data);
+  //! Read a manual topic name so we can jump to the right documentation page
+  void ReadManualTopicName(wxString &data);
 
   /*! Reads the math cell's contents from Maxima.
 
@@ -746,6 +748,10 @@ protected:
   static wxString m_statusbarPrefix;
   //! The marker for the end of a variables section
   static wxString m_statusbarSuffix;
+  //! The marker for the start of a "add variables" section
+  static wxString m_jumpManualPrefix;
+  //! The marker for the end of a variables section
+  static wxString m_jumpManualSuffix;
   //! The marker for the start of a "add variables" section
   static wxString m_addVariablesPrefix;
   //! The marker for the end of a "add variables" section
