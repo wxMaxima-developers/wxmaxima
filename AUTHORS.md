@@ -36,6 +36,7 @@
 - gcem
 - hut <mailto:hut@lepus.uberspace.de>
 - Innocent De Marchi
+- Jára Cimrman
 - Johan Kristensen
 - Jonathan Wakely
 - Mika Kahkonen
