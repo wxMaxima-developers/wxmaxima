@@ -27,19 +27,43 @@
 */
 
 #include "HelpBrowser.h"
+#include "WrappingStaticText.h"
 #include <wx/sizer.h>
 #include <wx/textctrl.h>
 #include <wx/button.h>
+#include <wx/wupdlock.h>
 
-HelpBrowser::HelpBrowser(wxWindow *parent, Configuration *configuration, wxString url):
+HelpBrowser::HelpBrowser(wxWindow *parent, Configuration *configuration,
+                         MaximaManual *manual, wxString url):
   wxPanel(parent, wxID_ANY),
+  m_maximaManual(manual),
   m_configuration(configuration),
   m_startUrl(url)
 {
+  wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
   m_vbox = new wxBoxSizer(wxVERTICAL);
+  m_browserPanel = new wxPanel(this, wxID_ANY);
+  m_browserPanel->SetSizer(m_vbox);
+  vbox->Add(m_browserPanel, wxSizerFlags(1).Expand());
+  m_topicSizer = new wxBoxSizer(wxVERTICAL);
+  m_topicPanel = new wxPanel(this, wxID_ANY);
+  m_topicSizer = new wxBoxSizer(wxVERTICAL);
+  m_topicPanel->SetSizer(m_vbox);
+  vbox->Add(m_topicPanel, wxSizerFlags(1).Expand());
+
+  SetSizer(vbox);
   Connect(wxEVT_ACTIVATE, wxActivateEventHandler(HelpBrowser::OnActivate),NULL, this);
-  SetSizer(m_vbox);
   FitInside();
+}
+
+wxString HelpBrowser::GetKeyword(int id)
+{
+  if(id < wxID_HIGHEST + 8000)
+    return wxEmptyString;
+  id -= wxID_HIGHEST + 8000;
+  if(id > m_keywords.GetCount())
+    return wxEmptyString;
+  return m_keywords[id];
 }
 
 void HelpBrowser::OnActivate(wxActivateEvent &WXUNUSED(event))
@@ -52,9 +76,9 @@ void HelpBrowser::CreateIfNeeded()
   if(m_webView == NULL)
   {
     wxLogMessage(_("Instantiating the HTML manual browser"));
-    m_webView = wxWebView::New(this, wxID_ANY, m_startUrl);
+    m_webView = wxWebView::New(m_browserPanel, wxID_ANY, m_startUrl);
     m_webView->Connect(wxEVT_KEY_DOWN,
-                       wxCharEventHandler(HelpBrowser::OnWebviewKeyDown), NULL, this);
+                       wxCharEventHandler(HelpBrowser::OnWebviewKeyDown), NULL, m_browserPanel);
 
     m_webView->SetMinSize(wxSize(GetContentScaleFactor()*100,GetContentScaleFactor()*100));
     #ifdef __WXMSW__
@@ -65,7 +89,7 @@ void HelpBrowser::CreateIfNeeded()
     m_vbox->Add(m_webView, wxSizerFlags(1).Expand());
 
     auto *searchbox = new wxBoxSizer(wxHORIZONTAL);
-    m_searchText = new wxTextCtrl(this, wxID_ANY, wxEmptyString, wxDefaultPosition,
+    m_searchText = new wxTextCtrl(m_browserPanel, wxID_ANY, wxEmptyString, wxDefaultPosition,
                                   wxDefaultSize, wxTE_PROCESS_ENTER);
     searchbox->Add(m_searchText, wxSizerFlags(1).Expand());
     m_webView->Connect(wxEVT_KEY_DOWN,
@@ -79,11 +103,11 @@ void HelpBrowser::CreateIfNeeded()
     m_webView->Connect(wxID_FIND, wxEVT_MENU,
             wxCommandEventHandler(HelpBrowser::OnTextEnter), NULL, this);
     
-    wxButton *upbutton = new wxButton(this, wxID_UP);
+    wxButton *upbutton = new wxButton(m_browserPanel, wxID_UP);
     upbutton->Connect(
       wxEVT_BUTTON, wxCommandEventHandler(HelpBrowser::OnSearchUp), NULL, this);
     searchbox->Add(upbutton, wxSizerFlags());
-    wxButton *downbutton = new wxButton(this, wxID_DOWN);
+    wxButton *downbutton = new wxButton(m_browserPanel, wxID_DOWN);
     downbutton->Connect(
       wxEVT_BUTTON, wxCommandEventHandler(HelpBrowser::OnSearchDown), NULL, this);
     searchbox->Add(downbutton, wxSizerFlags());
@@ -110,9 +134,94 @@ void HelpBrowser::OnWebviewKeyDown(wxKeyEvent &event)
     event.Skip();
 }
 
+bool HelpBrowser::AllowOnlineManualP()
+{
+  if(m_configuration->AllowNetworkHelp())
+    return true;
+  
+  LoggingMessageDialog dialog(this,
+                              _("Allow to access a online manual for maxima?"),
+                              "Manual", wxCENTER | wxYES_NO | wxCANCEL);
+  
+  dialog.SetExtendedMessage(_("Didn't find an installed offline manual."));
+  
+  int result = dialog.ShowModal();
+
+  if(result == wxID_CANCEL)
+    return false;
+
+ 
+  if(result == wxID_YES)
+  {
+    m_configuration->AllowNetworkHelp(true);
+    return true;
+  }
+
+  m_configuration->AllowNetworkHelp(false);
+  return false;
+}
+
+void HelpBrowser::JumpToKeyword(wxString keyword)
+{
+  wxWindowUpdateLocker speedUp(this);
+  wxString maximaHelpURL = m_maximaManual->GetHelpfileURL(keyword);
+  m_topicPanel->Show(false);
+  
+  wxBusyCursor crs;
+  if(!maximaHelpURL.IsEmpty())
+  {
+    wxLogMessage(wxString::Format(_("Opening help file %s"),maximaHelpURL.utf8_str()));
+    SetURL(maximaHelpURL);
+  }
+  else
+  {
+    if(AllowOnlineManualP())
+    {
+      wxLogMessage(_(wxT("No offline manual found => Redirecting to the Maxima homepage")));
+      SetURL("https://maxima.sourceforge.io/docs/manual/maxima_singlepage.html#"+keyword);
+    }
+  }
+  m_browserPanel->Show(true);
+  Layout();
+}
+
+void HelpBrowser::SelectKeywords(wxArrayString keywords)
+{
+  wxWindowUpdateLocker speedUp(this);
+  if(keywords.GetCount() == 0)
+    return;
+
+  if(keywords.GetCount() == 1)
+  {
+    JumpToKeyword(keywords[0]);
+    return;
+  }
+  
+  m_browserPanel->Show(false);
+  m_topicPanel->DestroyChildren();
+  m_topicSizer->Add(
+    new WrappingStaticText(m_topicPanel, wxID_ANY,
+                           _("Choose between the following help topics:")),
+    wxSizerFlags());
+  int id = 6000 + wxID_HIGHEST;
+
+  
+  m_keywords = keywords;
+  for(auto i:keywords)
+  {
+    m_topicSizer->Add(
+      new wxButton(m_topicPanel, id++, i),
+    wxSizerFlags().Expand());
+  }
+  m_topicPanel->Show(true);
+  Layout();
+}
+
 void HelpBrowser::SetURL(wxString url)
 {
   CreateIfNeeded();
+  m_browserPanel->Show(true);
+  m_topicPanel->Show(false);
   m_webView->LoadURL(url);
 }
 

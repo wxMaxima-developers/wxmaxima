@@ -381,6 +381,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, wxLocale *locale, const w
   wxWindowUpdateLocker drawBlocker(m_drawPane);
 
   m_manager.AddPane(m_helpPane = new HelpBrowser(this, &m_configuration,
+                                                 m_worksheet->GetMaximaManual(),
                                                  wxT("file://") + wxMaximaManualLocation()),
                     wxAuiPaneInfo().Name(wxT("help")).
                     CloseButton(true).

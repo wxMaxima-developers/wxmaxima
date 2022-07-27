@@ -198,7 +198,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
     m_knownXMLTags[wxT("variables")] = &wxMaxima::ReadVariables;
     m_knownXMLTags[wxT("watch_variables_add")] = &wxMaxima::ReadAddVariables;
     m_knownXMLTags[wxT("statusbar")] = &wxMaxima::ReadStatusBar;
-    m_knownXMLTags[wxT("html-manual-keyword")] = &wxMaxima::ReadManualTopicName;
+    m_knownXMLTags[wxT("html-manual-keywords")] = &wxMaxima::ReadManualTopicNames;
     m_knownXMLTags[wxT("mth")] = &wxMaxima::ReadMath;
     m_knownXMLTags[wxT("math")] = &wxMaxima::ReadMath;
     m_knownXMLTags[wxT("ipc")] = &wxMaxima::ReadMaximaIPC;
@@ -2969,28 +2969,45 @@ void wxMaxima::ReadStatusBar(wxString &data)
   }
 }
 
-void wxMaxima::ReadManualTopicName(wxString &data)
+void wxMaxima::ReadManualTopicNames(wxString &data)
 {
   if (!data.StartsWith(m_jumpManualPrefix))
     return;
 
-  m_worksheet->SetCurrentTextCell(nullptr);
-
   int end;
-  if ((end = FindTagEnd(data,m_jumpManualPrefix)) != wxNOT_FOUND)
+  if ((end = FindTagEnd(data,m_jumpManualSuffix)) != wxNOT_FOUND)
   {
+    wxArrayString topics;
     wxXmlDocument xmldoc;
-    wxString xml = data.Left( end + m_jumpManualPrefix.Length());
+    wxString xml = data.Left( end + m_jumpManualSuffix.Length());
     wxStringInputStream xmlStream(xml);
     xmldoc.Load(xmlStream, wxT("UTF-8"));
     wxXmlNode *node = xmldoc.GetRoot();
-    if(node != NULL)
+    while((node) && (node->GetName() != wxT("html-manual-keywords")))
+      node = node->GetNext();
+
+    if(node == NULL)
     {
-      wxXmlNode *contents = node->GetChildren();
-      if(contents)
-      { 
-        ShowHelp(contents->GetContent());
+      wxLogMessage(_("No topics found in topic tag"));
+    }
+    else
+    {
+      wxXmlNode *entry = node->GetChildren();
+      if(entry->GetName() == wxT("keyword"))
+      {
+        wxXmlNode *topic = entry->GetChildren();
+        if(topic)
+        {
+          wxLogMessage(wxString::Format(_("Received manual topic request: %s"),
+                                        topic->GetContent().c_str()));
+          topics.Add(topic->GetContent());
+        }
+        if(topics.IsEmpty())
+          wxLogMessage(_("No topics found in topic flag"));
+        else
+          m_helpPane->SelectKeywords(topics);
       }
+      entry = entry->GetNext();
     }
     // Remove the status bar info from the data string
     data = data.Right(data.Length()-end-m_jumpManualPrefix.Length());
@@ -4658,7 +4675,7 @@ void wxMaxima::ShowWxMaximaHelp()
   wxString helpfile = wxMaximaManualLocation();
 
   if(!wxFileExists(helpfile)) {
-    if(!AllowOnlineManualP())
+    if(!m_helpPane->AllowOnlineManualP())
       return;
 
     wxLogMessage(_(wxT("No offline manual found => Redirecting to the wxMaxima homepage")));
@@ -4701,7 +4718,7 @@ wxLogMessage(m_maximaHtmlDir);
   helpfile = m_maximaHtmlDir.Trim() + wxString("/maxima_singlepage.html");
   wxLogMessage(helpfile);
   if(!wxFileExists(helpfile)) {
-    if(!AllowOnlineManualP())
+    if(!m_helpPane->AllowOnlineManualP())
       return;
 
     wxLogMessage(_(wxT("No offline manual found => Redirecting to the Maxima homepage")));
@@ -4759,7 +4776,7 @@ void wxMaxima::ShowMaximaHelp(wxString keyword)
   }
   else
   {
-    if(AllowOnlineManualP())
+    if(m_helpPane->AllowOnlineManualP())
     {
       wxLogMessage(_(wxT("No offline manual found => Redirecting to the Maxima homepage")));
       LaunchHelpBrowser("https://maxima.sourceforge.io/docs/manual/maxima_singlepage.html#"+keyword);
@@ -11953,33 +11970,6 @@ int wxMaxima::SaveDocumentP()
   return dialog.ShowModal();
 }
 
-bool wxMaxima::AllowOnlineManualP()
-{
-  if(m_configuration.AllowNetworkHelp())
-    return true;
-  
-  LoggingMessageDialog dialog(this,
-                              _("Allow to access a online manual for maxima?"),
-                              "Manual", wxCENTER | wxYES_NO | wxCANCEL);
-  
-  dialog.SetExtendedMessage(_("Didn't find an installed offline manual."));
-  
-  int result = dialog.ShowModal();
-
-  if(result == wxID_CANCEL)
-    return false;
-
- 
-  if(result == wxID_YES)
-  {
-    m_configuration.AllowNetworkHelp(true);
-    return true;
-  }
-
-  m_configuration.AllowNetworkHelp(false);
-  return false;
-}
-
 void wxMaxima::OnFocus(wxFocusEvent &event)
 {
   // We cannot change the focus during an focus event, but can tell the
@@ -12070,8 +12060,8 @@ wxString wxMaxima::m_addVariablesPrefix(wxT("<watch_variables_add>"));
 wxString wxMaxima::m_addVariablesSuffix(wxT("</watch_variables_add>"));
 wxString wxMaxima::m_statusbarPrefix(wxT("<statusbar>"));
 wxString wxMaxima::m_statusbarSuffix(wxT("</statusbar>\n"));
-wxString wxMaxima::m_jumpManualPrefix(wxT("<html-manual-keyword>"));
-wxString wxMaxima::m_jumpManualSuffix(wxT("</html-manual-keyword>\n"));
+wxString wxMaxima::m_jumpManualPrefix(wxT("<html-manual-keywords>"));
+wxString wxMaxima::m_jumpManualSuffix(wxT("</html-manual-keywords>\n"));
 wxString wxMaxima::m_mathPrefix1(wxT("<mth>"));
 wxString wxMaxima::m_mathPrefix2(wxT("<math>"));
 wxString wxMaxima::m_mathSuffix1(wxT("</mth>"));

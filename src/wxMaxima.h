@@ -284,9 +284,6 @@ protected:
   //! Show the help for Maxima
   void ShowMaximaHelp(wxString = {});
   
-  //! Ask the user if we are allowed to access an online manual
-  bool AllowOnlineManualP();
-
   //! Show the help for Maxima (without handling of anchors).
   void ShowMaximaHelpWithoutAnchor();
 
@@ -518,7 +515,7 @@ protected:
    */
   void ReadStatusBar(wxString &data);
   //! Read a manual topic name so we can jump to the right documentation page
-  void ReadManualTopicName(wxString &data);
+  void ReadManualTopicNames(wxString &data);
 
   /*! Reads the math cell's contents from Maxima.
 

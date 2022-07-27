@@ -37,14 +37,22 @@
 #include <wx/panel.h>
 #include <wx/sizer.h>
 #include "Configuration.h"
+#include "MaximaManual.h"
 
 /* The help browser sidebar
  */
 class HelpBrowser : public wxPanel
 {
 public:
-  explicit HelpBrowser(wxWindow *parent, Configuration *configuration, wxString url);
+  explicit HelpBrowser(wxWindow *parent, Configuration *configuration, MaximaManual *manual,
+                       wxString url);
   void SetURL(wxString url);
+  void JumpToKeyword(wxString keyword);
+  void SelectKeywords(wxArrayString keywords);
+  wxString GetKeyword(int id);
+  //! Ask the user if we are allowed to access an online manual
+  bool AllowOnlineManualP();
+
 private:
   void CreateIfNeeded();
   void OnTextEnter(wxCommandEvent& event);
@@ -54,12 +62,17 @@ private:
   void OnWebviewKeyDown(wxKeyEvent &event);
   void OnActivate(wxActivateEvent &event);
 
+  MaximaManual *m_maximaManual = NULL;
   wxWebView *m_webView = NULL;
   wxTextCtrl *m_searchText = NULL;
   Configuration *m_configuration;
   wxString m_startUrl;
   bool m_findDown = true;
   wxBoxSizer *m_vbox;
+  wxPanel *m_browserPanel;
+  wxPanel *m_topicPanel;
+  wxBoxSizer *m_topicSizer;
+  wxArrayString m_keywords;
 };
 
 #endif // HELPBROWSER_H
