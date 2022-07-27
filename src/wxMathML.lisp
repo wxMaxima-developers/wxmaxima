@@ -2096,7 +2096,7 @@
   (defun wx-print-gui-variables ()
     (finish-output)
     (format t "<variables>")
-    (wx-print-variable '$describe_uses_html)
+    (wx-print-variable '$output_format_for_help)
     (wx-print-variable '$wxsubscripts)
     (wx-print-variable '$opsubst)
     (wx-print-variable '$logexpand)

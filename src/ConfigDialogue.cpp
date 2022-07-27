@@ -542,6 +542,17 @@ void ConfigDialogue::SetCheckboxValues()
   m_autodetectMaxima->SetValue(m_configuration->AutodetectMaxima());
   m_noAutodetectMaxima->SetValue(!m_configuration->AutodetectMaxima());
   m_helpBrowserUserLocation->SetValue(m_configuration->HelpBrowserUserLocation());
+  if(m_configuration->MaximaUsesWxmaximaBrowser())
+  {
+    m_maximaUsesWxmaximaHelp->SetValue(true);
+  }
+  else
+  {
+    if(m_configuration->MaximaUsesHtmlBrowser())
+      m_maximaUsesHtmlHelp->SetValue(true);
+    else
+      m_maximaUsesInternalHelp->SetValue(true);
+  }
   m_maximaUsesHtmlHelp->SetValue(m_configuration->MaximaUsesHtmlBrowser());
   m_defaultPort->SetValue(m_configuration->DefaultPort());
   m_copyBitmap->SetValue(m_configuration->CopyBitmap());
@@ -1258,10 +1269,14 @@ wxWindow *ConfigDialogue::CreateMaximaPanel()
     
   wxStaticBoxSizer *configSizer = new wxStaticBoxSizer(wxVERTICAL, panel, _("Maxima configuration"));
 
-  m_maximaUsesHtmlHelp = new wxCheckBox(configSizer->GetStaticBox(),
-                                        -1,
-                                        _("? and ?? command open a html browser window"));
+  m_maximaUsesInternalHelp = new wxRadioButton(configSizer->GetStaticBox(), -1, _("Maxima shows help in the console"), wxDefaultPosition,
+                                       wxDefaultSize, wxRB_GROUP);
+  configSizer->Add(m_maximaUsesInternalHelp, wxSizerFlags().Expand().Border(wxALL, 5*GetContentScaleFactor()));
+  m_maximaUsesHtmlHelp = new wxRadioButton(configSizer->GetStaticBox(), -1, _("Maxima shows help in a browser"));
   configSizer->Add(m_maximaUsesHtmlHelp, wxSizerFlags().Expand().Border(wxALL, 5*GetContentScaleFactor()));
+  m_maximaUsesWxmaximaHelp = new
+    wxRadioButton(configSizer->GetStaticBox(), -1, _("Maxima shows help in a sidebar"));
+  configSizer->Add(m_maximaUsesWxmaximaHelp, wxSizerFlags().Expand().Border(wxALL, 5*GetContentScaleFactor()));
   m_defaultPort = new wxSpinCtrl(configSizer->GetStaticBox(), -1, wxEmptyString, wxDefaultPosition, wxSize(230*GetContentScaleFactor(), -1), wxSP_ARROW_KEYS, 50,
                                  65534);
 
@@ -1765,7 +1780,21 @@ void ConfigDialogue::WriteSettings()
   configuration->MaximaUserLocation(m_maximaUserLocation->GetValue());
   configuration->AutodetectMaxima(m_autodetectMaxima->GetValue());
   configuration->HelpBrowserUserLocation(m_helpBrowserUserLocation->GetValue());
-  configuration->MaximaUsesHtmlBrowser(m_maximaUsesHtmlHelp->GetValue());
+  if(m_maximaUsesHtmlHelp->GetValue())
+  {
+    configuration->MaximaUsesHtmlBrowser(true);
+    configuration->MaximaUsesWxmaximaBrowser(false);
+  }
+  if(m_maximaUsesInternalHelp->GetValue())
+  {
+    configuration->MaximaUsesHtmlBrowser(false);
+    configuration->MaximaUsesWxmaximaBrowser(false);
+  }
+  if(m_maximaUsesWxmaximaHelp->GetValue())
+  {
+    configuration->MaximaUsesHtmlBrowser(false);
+    configuration->MaximaUsesWxmaximaBrowser(true);
+  }
   configuration->SinglePageManual(m_singlePageManual->GetValue());
   if(m_internalHelpBrowser->GetValue())
   {

@@ -1996,7 +1996,7 @@ bool AutoComplete::LoadBuiltinSymbols()
   m_wordList[command].Add("demo"); // FUNCTION
   m_wordList[tmplte ].Add("demo(<filename>)"); // OPTION
   m_wordList[command].Add("describe"); // FUNCTION
-  m_wordList[tmplte ].Add("describe_uses_html"); // OPTION
+  m_wordList[tmplte ].Add("output_format_for_help"); // OPTION
   m_wordList[tmplte ].Add("browser"); // OPTION
   m_wordList[tmplte ].Add("browser_options"); // OPTION
   m_wordList[tmplte ].Add("url_base"); // OPTION

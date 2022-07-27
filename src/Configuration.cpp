@@ -142,6 +142,7 @@ void Configuration::ResetAllToDefaults(InitOpt options)
   m_allowNetworkHelp = false;
   m_exportContainsWXMX = true;
   m_maximaUsesHhtmlBrowser = true;
+  m_maximaUsesWxmaximaBrowser = true;
   m_bitmapScale = 3;
   m_maxClipbrd_BitmapMegabytes = 4;
   m_defaultFramerate = 12;
@@ -547,6 +548,7 @@ void Configuration::ReadConfig()
     config->Read(wxT("allowNetworkHelp"), &m_allowNetworkHelp);
     config->Read(wxT("exportContainsWXMX"), &m_exportContainsWXMX);
     config->Read(wxT("maximaUsesHhtmlBrowser"), &m_maximaUsesHhtmlBrowser);
+    config->Read(wxT("maximaUsesWxmaximaBrowser"), &m_maximaUsesWxmaximaBrowser);
     config->Read(wxT("texPreamble"), &m_texPreamble);
     {
       wxLogNull suppressor;
@@ -1492,6 +1494,7 @@ void Configuration::WriteStyles(wxConfigBase *config)
   config->Write(wxT("allowNetworkHelp"), m_allowNetworkHelp);
   config->Write(wxT("exportContainsWXMX"), m_exportContainsWXMX);
   config->Write(wxT("maximaUsesHhtmlBrowser"), m_maximaUsesHhtmlBrowser);
+  config->Write(wxT("maximaUsesWxmaximaBrowser"), m_maximaUsesWxmaximaBrowser);
   config->Write(wxT("texPreamble"), m_texPreamble);
   config->Write(wxT("wizardTab"), m_wizardTab);
   config->Write(wxT("numpadEnterEvaluates"), m_numpadEnterEvaluates);

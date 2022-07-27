@@ -229,7 +229,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
     m_variableReadActions[wxT("algebraic")] = &wxMaxima::VariableActionAlgebraic;
     m_variableReadActions[wxT("domain")] = &wxMaxima::VariableActionDomain;
     m_variableReadActions[wxT("wxanimate_autoplay")] = &wxMaxima::VariableActionAutoplay;
-    m_variableReadActions[wxT("describe_uses_html")] = &wxMaxima::VariableActionHtmlHelp;
+    m_variableReadActions[wxT("output_format_for_help")] = &wxMaxima::VariableActionHtmlHelp;
     m_variableReadActions[wxT("showtime")] = &wxMaxima::VariableActionShowtime;
     m_variableReadActions[wxT("engineering_format_floats")] = &wxMaxima::VariableActionEngineeringFormat;
     m_variableReadActions[wxT("display2d")] = &wxMaxima::VariableActionDisplay2D;
@@ -783,6 +783,10 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
   Connect(menu_apropos, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::HelpMenu), NULL, this);
   Connect(menu_maxima_uses_html_help, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::HelpMenu), NULL, this);
+  Connect(menu_maxima_uses_internal_help, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::HelpMenu), NULL, this);
+  Connect(menu_maxima_uses_wxmaxima_help, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::HelpMenu), NULL, this);
   Connect(menu_show_tip, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::HelpMenu), NULL, this);
@@ -3509,15 +3513,20 @@ void wxMaxima::VariableActionEngineeringFormat(const wxString &value)
 }
 void wxMaxima::VariableActionHtmlHelp(const wxString &value)
 {
-  if(value == wxT("true"))
+  if(value == wxT("text"))
+  {
+    if(!m_HelpMenu->IsChecked(menu_maxima_uses_internal_help))
+      m_HelpMenu->Check(menu_maxima_uses_internal_help, true);
+  }
+  if(value == wxT("html"))
   {
     if(!m_HelpMenu->IsChecked(menu_maxima_uses_html_help))
       m_HelpMenu->Check(menu_maxima_uses_html_help, true);
   }
-  else
+  if((value == wxT("wxmaxima")) || (value == wxT("frontend")))
   {
-    if(m_HelpMenu->IsChecked(menu_maxima_uses_html_help))
-      m_HelpMenu->Check(menu_maxima_uses_html_help, false);
+    if(!m_HelpMenu->IsChecked(menu_maxima_uses_wxmaxima_help))
+      m_HelpMenu->Check(menu_maxima_uses_wxmaxima_help, true);
   }
 }
 
@@ -4503,16 +4512,18 @@ wxString wxMaxima::EscapeForLisp(wxString str)
 
 void wxMaxima::SetupVariables()
 {
-  wxString useHtml = wxT("nil");
+  wxString useHtml = wxT("'text");
   if (m_configuration.MaximaUsesHtmlBrowser())
-    useHtml = wxT("t");
+    useHtml = wxT("'html");
+  if (m_configuration.MaximaUsesWxmaximaBrowser())
+    useHtml = wxT("'wxmaxima");
   wxLogMessage(_("Setting a few prerequisites for wxMaxima"));
   SendMaxima(wxT(":lisp-quiet (progn (setf *prompt-suffix* \"") +
              m_promptSuffix +
              wxT("\") (setf *prompt-prefix* \"") +
              m_promptPrefix +
              wxT("\") (setf $in_netmath nil) (setf $show_openplot t)) ") +
-             wxT("(setf $describe_uses_html ") + useHtml + wxT(")") +
+             wxT("(setf $output_format_for_help ") + useHtml + wxT(")") +
              wxT("\n"));
 
   wxLogMessage(_("Sending maxima the info how to express 2d maths as XML"));
@@ -10027,21 +10038,22 @@ void wxMaxima::HelpMenu(wxCommandEvent &event)
                  _("Show all commands similar to:"),wxT("%"),wxEmptyString);
       break;
 
-  case menu_maxima_uses_html_help:
-      if(!event.IsChecked())
-      {
-        cmd = wxT("describe_uses_html:false$");
+  case menu_maxima_uses_internal_help:
         m_configuration.MaximaUsesHtmlBrowser(false);
-      }
-      
-      else
-      {
-        cmd = wxT("describe_uses_html:true$");
+        m_configuration.MaximaUsesWxmaximaBrowser(false);
+        MenuCommand(wxT("output_format_for_help:'text"));
+        break;
+  case menu_maxima_uses_html_help:
         m_configuration.MaximaUsesHtmlBrowser(true);
-      }
-      MenuCommand(cmd);
-      break;
-    case menu_show_tip:
+        m_configuration.MaximaUsesWxmaximaBrowser(false);
+        MenuCommand(wxT("output_format_for_help:'html"));
+        break;
+  case menu_maxima_uses_wxmaxima_help:
+        m_configuration.MaximaUsesWxmaximaBrowser(true);
+        MenuCommand(wxT("output_format_for_help:'wxmaxima"));
+        break;
+
+  case menu_show_tip:
       ShowTip(true);
       break;
 

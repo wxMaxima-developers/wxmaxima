@@ -873,6 +873,8 @@ wxString DocumentclassOptions() const {return m_documentclassOptions;}
   
   void MaximaUsesHtmlBrowser(bool maximaUsesHhtmlBrowser){m_maximaUsesHhtmlBrowser = maximaUsesHhtmlBrowser;}
   bool MaximaUsesHtmlBrowser() const {return m_maximaUsesHhtmlBrowser;}
+  void MaximaUsesWxmaximaBrowser(bool maximaUsesWxmaximaBrowser){m_maximaUsesWxmaximaBrowser = maximaUsesWxmaximaBrowser;}
+  bool MaximaUsesWxmaximaBrowser() const {return m_maximaUsesWxmaximaBrowser;}
   void ExportContainsWXMX(bool exportContainsWXMX){m_exportContainsWXMX = exportContainsWXMX;}
   bool ExportContainsWXMX() const {return m_exportContainsWXMX;}
   void WizardTab(long tab){m_wizardTab = tab;}
@@ -903,6 +905,7 @@ private:
   long m_wizardTab;
   bool m_usePartialForDiff;
   bool m_maximaUsesHhtmlBrowser;
+  bool m_maximaUsesWxmaximaBrowser;
   //! true = Autosave doesn't save into the current file.
   bool m_autoSaveAsTempFile;
   //! The number of the language wxMaxima uses.
