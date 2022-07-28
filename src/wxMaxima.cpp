@@ -4518,7 +4518,7 @@ void wxMaxima::SetupVariables()
   if (m_configuration.MaximaUsesHtmlBrowser())
     useHtml = wxT("'html");
   if (m_configuration.MaximaUsesWxmaximaBrowser())
-    useHtml = wxT("'wxmaxima");
+    useHtml = wxT("'frontend");
   wxLogMessage(_("Setting a few prerequisites for wxMaxima"));
   SendMaxima(wxT(":lisp-quiet (progn (setf *prompt-suffix* \"") +
              m_promptSuffix +
@@ -10067,7 +10067,7 @@ void wxMaxima::HelpMenu(wxCommandEvent &event)
         break;
   case menu_maxima_uses_wxmaxima_help:
         m_configuration.MaximaUsesWxmaximaBrowser(true);
-        MenuCommand(wxT("output_format_for_help:'wxmaxima"));
+        MenuCommand(wxT("output_format_for_help:'frontend"));
         break;
 
   case menu_show_tip:

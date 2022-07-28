@@ -86,7 +86,7 @@
 
 
   ;; Tell maxima how to send a list of manual topics to show to us
-  (defun display-wxmaxima-topics (topiclist)
+  (defun display-frontend-topics (topiclist)
     (format t "<html-manual-keywords>")
     (mapcar #'(lambda (&rest x) (format t "<keyword>~a</keyword>" (first (second (first x))))) topiclist)
     (format t "</html-manual-keywords>~%")
