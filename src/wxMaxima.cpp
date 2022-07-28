@@ -561,6 +561,8 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
           wxCommandEventHandler(wxMaxima::HelpMenu), NULL, this);
   Connect(menu_help_tutorials, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::HelpMenu), NULL, this);
+  Connect(menu_goto_url, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::HelpMenu), NULL, this);
   Connect(menu_bug_report, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::HelpMenu), NULL, this);
   Connect(menu_build_info, wxEVT_MENU,
@@ -9970,10 +9972,25 @@ void wxMaxima::HelpMenu(wxCommandEvent &event)
 
   switch (event.GetId())
   {
-    case wxID_ABOUT:
+    case menu_goto_url:
     {
-      wxAboutDialogInfo info;
-      wxString description;
+      GenWiz *wiz = new GenWiz(this, &m_configuration, m_worksheet->GetMaximaManual(),
+                               _("Go to URL"),
+                               wxEmptyString, wxEmptyString,
+                               _("URL"), wxEmptyString, wxEmptyString);
+      //wiz->Centre(wxBOTH);
+      if (wiz->ShowModal() == wxID_OK)
+      {
+        m_helpPane->SetURL((*wiz)[0]);
+        wxMaximaFrame::ShowPane(menu_pane_help);
+      }
+      wiz->Destroy();
+    }
+    break;
+  case wxID_ABOUT:
+  {
+        wxAboutDialogInfo info;
+        wxString description;
 
       description = _("wxMaxima is a cross-platform graphical user interface for the computer algebra system Maxima based on wxWidgets.\nFor rendering svg graphics it uses nanosvg (https://github.com/memononen/nanosvg).\nThe unicode character list has been compiled by the Unicode Consortium.");
 

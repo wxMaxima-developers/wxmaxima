@@ -1799,6 +1799,7 @@ m_CalculusMenu->AppendSeparator();
   m_HelpMenu->AppendRadioItem(menu_maxima_uses_html_help, _("Maxima shows help in a browser"),
                               _("Tells maxima to show the help for ?, ?? and describe() in a separate browser window"));
   m_HelpMenu->AppendSeparator();
+  m_HelpMenu->Append(menu_goto_url, _("Go to URL"));
   
   wxMenu *tutorials_sub = new wxMenu;
   tutorials_sub->Append(menu_help_solving, _("Solving equations with Maxima"),

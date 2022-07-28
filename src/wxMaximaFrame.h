@@ -338,6 +338,7 @@ public:
     menu_maxima_uses_internal_help,
     menu_maxima_uses_html_help,
     menu_maxima_uses_wxmaxima_help,
+    menu_goto_url,
     menu_clear_var,
     menu_clear_fun,
     menu_kill,
