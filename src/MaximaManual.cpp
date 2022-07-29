@@ -398,9 +398,17 @@ bool MaximaManual::LoadManualAnchorsFromXML(wxXmlDocument xmlDocument, bool chec
     wxLogMessage(_("Anchors file has no top node."));
     return false;
   }
-  if(checkManualVersion && ((headNode->GetAttribute(wxT("maxima_version")) != m_maximaVersion)))
+  wxString cacheMaximaVersion = headNode->GetAttribute(wxT("maxima_version"));
+  wxLogMessage(wxString::Format(_("Maxima version: %s, Anchors cache version"),
+                                m_maximaVersion.utf8_str(),
+                                cacheMaximaVersion.utf8_str()
+                 ));
+  if(checkManualVersion && ((cacheMaximaVersion != m_maximaVersion)))
   {
-    wxLogMessage(_("The cache for the subjects the manual contains is from a different Maxima version."));
+    if(cacheMaximaVersion != m_maximaVersion)
+      wxLogMessage(_("The cache for the subjects the manual contains is from a different Maxima version."));
+    else
+      wxLogMessage(_("Ignoring the cache version."));
     return false;
   }
   wxXmlNode *entry = headNode->GetChildren();
