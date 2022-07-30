@@ -403,10 +403,15 @@ bool MaximaManual::LoadManualAnchorsFromXML(wxXmlDocument xmlDocument, bool chec
                                 m_maximaVersion.utf8_str(),
                                 cacheMaximaVersion.utf8_str()
                  ));
-  if(checkManualVersion && ((cacheMaximaVersion != m_maximaVersion)))
+  if(checkManualVersion && (
+       (cacheMaximaVersion != m_maximaVersion) ||
+       (htmlDir != m_maximaHtmlDir)
+       ))
   {
     if(cacheMaximaVersion != m_maximaVersion)
       wxLogMessage(_("The cache for the subjects the manual contains is from a different Maxima version."));
+    else if (htmlDir != m_maximaHtmlDir)
+      wxLogMessage(_("The help dir from the cache differs from the current one."));
     else
       wxLogMessage(_("Ignoring the cache version."));
     return false;
