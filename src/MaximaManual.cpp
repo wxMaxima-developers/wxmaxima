@@ -164,7 +164,7 @@ void MaximaManual::CompileHelpFileAnchors()
 {
   SuppressErrorDialogs suppressor;
 
-  int foundAnchors = 0;
+  int foundAnchorsTotal = 0;
   if(m_helpFileURLs_singlePage.empty() && (!(m_maximaHtmlDir.IsEmpty())))
   {
     wxArrayString helpFiles;
@@ -174,6 +174,7 @@ void MaximaManual::CompileHelpFileAnchors()
     
     for (auto file: helpFiles)
     {
+      int foundAnchors = 0;
       wxString fileURI = wxURI(wxT("file://") + file).BuildURI();
       // wxWidgets cannot automatically replace a # as it doesn't know if it is a anchor
       // separator
@@ -239,6 +240,7 @@ void MaximaManual::CompileHelpFileAnchors()
               else
                 m_helpFileURLs_filePerChapter[token] = fileURI + "#" + id;
               m_helpFileAnchors[token] = id;
+              foundAnchorsTotal++;
               foundAnchors++;
             }
           }
@@ -247,9 +249,10 @@ void MaximaManual::CompileHelpFileAnchors()
       AnchorAliasses(m_helpFileAnchors);
       AnchorAliasses(m_helpFileURLs_filePerChapter);
       AnchorAliasses(m_helpFileURLs_singlePage);
-      wxLogMessage(wxString::Format(_("Found %i anchors."), foundAnchors));
+      wxLogMessage(wxString::Format(_("Found %i anchors, %i anchors total."),
+                                    foundAnchors, foundAnchorsTotal));
     }
-    if(foundAnchors > 50)
+    if(foundAnchorsTotal > 100)
       SaveManualAnchorsToCache();
     else
       LoadBuiltInManualAnchors();
