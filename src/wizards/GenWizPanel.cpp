@@ -185,6 +185,10 @@ void GenWizPanel::NewWizard(wxString description, const wxString &description_to
     if(!m_maximaManual->GetHelpfileAnchorName(word).IsEmpty())
       m_manualKeywords.Add(word);
   }
+  if(commandRule.Contains(wxT("''")))
+    m_manualKeywords.Add(wxT("''"));
+  if(commandRule.Contains(wxT("'")))
+    m_manualKeywords.Add(wxT("'"));
   m_ignorePageChange = true;
   long page = m_configuration->WizardTab();
   if(page < 0)
