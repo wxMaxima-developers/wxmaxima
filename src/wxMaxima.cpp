@@ -4514,11 +4514,11 @@ wxString wxMaxima::EscapeForLisp(wxString str)
 
 void wxMaxima::SetupVariables()
 {
-  wxString useHtml = wxT("'text");
+  wxString useHtml = wxT("'$text");
   if (m_configuration.MaximaUsesHtmlBrowser())
-    useHtml = wxT("'html");
+    useHtml = wxT("'$html");
   if (m_configuration.MaximaUsesWxmaximaBrowser())
-    useHtml = wxT("'frontend");
+    useHtml = wxT("'$frontend");
   wxLogMessage(_("Setting a few prerequisites for wxMaxima"));
   SendMaxima(wxT(":lisp-quiet (progn (setf *prompt-suffix* \"") +
              m_promptSuffix +

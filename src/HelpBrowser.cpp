@@ -71,6 +71,15 @@ void HelpBrowser::OnActivate(wxActivateEvent &WXUNUSED(event))
   CreateIfNeeded();
 }
 
+void HelpBrowser::OnTopicButton(wxCommandEvent& event)
+{
+  wxString keyword = GetKeyword(event.GetId());
+  if(!keyword.IsEmpty())
+    JumpToKeyword(keyword);
+  else
+    event.Skip();
+}
+
 void HelpBrowser::CreateIfNeeded()
 {
   if(m_webView == NULL)
@@ -100,6 +109,8 @@ void HelpBrowser::CreateIfNeeded()
                           NULL, this);
     Connect(wxID_FIND, wxEVT_MENU,
             wxCommandEventHandler(HelpBrowser::OnTextEnter), NULL, this);
+    Connect(wxEVT_BUTTON,
+            wxCommandEventHandler(HelpBrowser::OnTopicButton), NULL, this);
     m_webView->Connect(wxID_FIND, wxEVT_MENU,
             wxCommandEventHandler(HelpBrowser::OnTextEnter), NULL, this);
     

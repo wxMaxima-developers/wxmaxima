@@ -61,6 +61,7 @@ private:
   void OnSearchboxKeyDown(wxKeyEvent &event);
   void OnWebviewKeyDown(wxKeyEvent &event);
   void OnActivate(wxActivateEvent &event);
+  void OnTopicButton(wxCommandEvent& event);
 
   MaximaManual *m_maximaManual = NULL;
   wxWebView *m_webView = NULL;
