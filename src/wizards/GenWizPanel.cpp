@@ -171,7 +171,7 @@ void GenWizPanel::NewWizard(wxString description, const wxString &description_to
 {
   wxString::const_iterator it = commandRule.begin();
 
-  m_manualKeywords.Clear();
+  m_manualKeywords.clear();
   while(it < commandRule.end())
   {
     while((it < commandRule.end()) && (!wxIsalpha(*it)) && (!(*it == '_')))
@@ -183,14 +183,14 @@ void GenWizPanel::NewWizard(wxString description, const wxString &description_to
       it++;
     }
     if(!m_maximaManual->GetHelpfileAnchorName(word).IsEmpty())
-      m_manualKeywords.Add(word);
+      m_manualKeywords[word]=1;
   }
   if(commandRule.Contains(wxT("''")))
-    m_manualKeywords.Add(wxT("''"));
+    m_manualKeywords[wxT("''")] = 1;
   if(commandRule.Contains(wxT("'")))
-    m_manualKeywords.Add(wxT("'"));
+    m_manualKeywords[wxT("'")] = 1;
   if(commandRule.Contains(wxT("!")))
-    m_manualKeywords.Add(wxT("!"));
+    m_manualKeywords[wxT("!")] = 1;
   wxString hashFinder = commandRule;
   hashFinder.Replace(wxT("#1#"),wxEmptyString);
   hashFinder.Replace(wxT("#2#"),wxEmptyString);
@@ -202,7 +202,7 @@ void GenWizPanel::NewWizard(wxString description, const wxString &description_to
   hashFinder.Replace(wxT("#8#"),wxEmptyString);
   hashFinder.Replace(wxT("#9#"),wxEmptyString);
   if(hashFinder.Contains(wxT("#")))
-    m_manualKeywords.Add(wxT("'"));
+    m_manualKeywords[wxT("#")] = 1;
   m_ignorePageChange = true;
   long page = m_configuration->WizardTab();
   if(page < 0)
@@ -211,7 +211,7 @@ void GenWizPanel::NewWizard(wxString description, const wxString &description_to
     page = 1;
   
   m_commandRule = commandRule;
-  if((!commandRule.IsEmpty()) || (!description.IsEmpty()) || (!m_manualKeywords.IsEmpty()))
+  if((!commandRule.IsEmpty()) || (!description.IsEmpty()) || (!m_manualKeywords.empty()))
   {
     m_notebook->DeleteAllPages();
     m_output = NULL;
@@ -237,7 +237,7 @@ void GenWizPanel::NewWizard(wxString description, const wxString &description_to
 
   UpdateOutput();
   m_description = description;
-  if((!description.IsEmpty()) || (!m_manualKeywords.IsEmpty()))
+  if((!description.IsEmpty()) || (!m_manualKeywords.empty()))
   {
     wxSizer *pageSizer = new wxBoxSizer(wxVERTICAL);
     wxPanel *descriptionpane = new wxPanel(m_notebook, wxID_ANY);
@@ -254,7 +254,7 @@ void GenWizPanel::NewWizard(wxString description, const wxString &description_to
     {
       wxButton *button = new wxButton(descriptionpane, id,
                                       wxString::Format(_("Help on %s"),
-                                                       m_manualKeywords[buttonNum]));
+                                                       i.first));
       pageSizer->Add(button, wxSizerFlags(0).Expand());
       buttonNum ++;
       id++;
@@ -328,9 +328,14 @@ wxString GenWizPanel::GetHelpKeyword(int ID)
   ID -= wxID_HIGHEST + 5000;
   if(ID < 0)
     return wxEmptyString;
-  if(ID >= m_manualKeywords.GetCount())
+  if(ID >= m_manualKeywords.size())
     return wxEmptyString;
-  return m_manualKeywords[ID];
+  for(auto i:m_manualKeywords)
+  {
+    if(ID-- == 0)
+      return i.first;
+  }
+  return wxEmptyString;
 }
 
 void GenWizPanel::OnTextEnter(wxCommandEvent& event)

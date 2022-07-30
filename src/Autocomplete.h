@@ -39,6 +39,7 @@
 #include <wx/regex.h>
 #include <wx/filename.h>
 #include <vector>
+#include <wx/hashmap.h>
 #include "Configuration.h"
 
 /* The autocompletion logic

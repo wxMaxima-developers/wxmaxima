@@ -31,6 +31,7 @@
 #include "BTextCtrl.h"
 #include <wx/notebook.h>
 #include "MaximaManual.h"
+#include <wx/hashmap.h>
 
 class GenWizPanel : public wxPanel
 {
@@ -88,6 +89,8 @@ public:
   wxString GetHelpKeyword(int ID);
   virtual ~GenWizPanel();
 protected:
+  WX_DECLARE_STRING_HASH_MAP(int, keywordHash);
+
   void OnSize(wxSizeEvent &event);
   wxSizer *m_descriptionSizer;
   wxNotebook *m_notebook;
@@ -111,7 +114,7 @@ protected:
   MaximaManual *m_maximaManual;
 private:
   bool m_ignorePageChange = true;
-  wxArrayString m_manualKeywords;
+  keywordHash m_manualKeywords;
 };
 
 #endif // GENWIZ_PANEL_H
