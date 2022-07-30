@@ -35,31 +35,23 @@
 #include <wx/tokenzr.h>
 #include <wx/txtstrm.h>
 #include <wx/uri.h>
+#include <wx/utils.h>
+#include <wx/busyinfo.h>
 
 MaximaManual::MaximaManual(Configuration *configuration)
 {
   m_configuration = configuration;
 }
 
-  MaximaManual::HelpFileAnchors MaximaManual::GetHelpfileAnchors()
-  {
-    if(m_helpfileanchorsThread)
-    {
-      if(m_helpfileanchorsThread->joinable())
-        m_helpfileanchorsThread->join();
-      m_helpfileanchorsThread.reset();
-    }
-    return m_helpFileAnchors;
-  }
+MaximaManual::HelpFileAnchors MaximaManual::GetHelpfileAnchors()
+{
+  WaitForBackgroundProcess();
+  return m_helpFileAnchors;
+}
 
 wxString MaximaManual::GetHelpfileAnchorName(wxString keyword)
 {
-  if(m_helpfileanchorsThread)
-  {
-    if(m_helpfileanchorsThread->joinable())
-      m_helpfileanchorsThread->join();
-    m_helpfileanchorsThread.reset();
-  }
+  WaitForBackgroundProcess();
   
   auto anchor = m_helpFileAnchors.find(keyword);
   if(anchor == m_helpFileAnchors.end())
@@ -67,15 +59,23 @@ wxString MaximaManual::GetHelpfileAnchorName(wxString keyword)
   else
     return anchor->second;
 }
-wxString MaximaManual::GetHelpfileUrl_Singlepage(wxString keyword)
+void MaximaManual::WaitForBackgroundProcess()
 {
   if(m_helpfileanchorsThread)
   {
-    if(m_helpfileanchorsThread->joinable())
-      m_helpfileanchorsThread->join();
-    m_helpfileanchorsThread.reset();
+    wxBusyCursor crs;
+    wxBusyInfo wait(_("Please wait while wxMaxima parses the maxima manual"));
+    while(m_helpfileanchorsThread)
+    {
+      wxMilliSleep(100);
+      
+    }
   }
+}
 
+wxString MaximaManual::GetHelpfileUrl_Singlepage(wxString keyword)
+{
+  WaitForBackgroundProcess();
   auto anchor = m_helpFileURLs_singlePage.find(keyword);
   if(anchor == m_helpFileURLs_singlePage.end())
     return wxEmptyString;
@@ -84,12 +84,7 @@ wxString MaximaManual::GetHelpfileUrl_Singlepage(wxString keyword)
 }
 wxString MaximaManual::GetHelpfileUrl_FilePerChapter(wxString keyword)
 {
-  if(m_helpfileanchorsThread)
-  {
-    if(m_helpfileanchorsThread->joinable())
-      m_helpfileanchorsThread->join();
-    m_helpfileanchorsThread.reset();
-  }
+  WaitForBackgroundProcess();
 
   auto anchor = m_helpFileURLs_filePerChapter.find(keyword);
   if(anchor == m_helpFileURLs_filePerChapter.end())
@@ -521,11 +516,7 @@ void MaximaManual::LoadHelpFileAnchors(wxString docdir, wxString maximaVersion)
 {
   FindMaximaHtmlDir(docdir);
   m_maximaVersion = maximaVersion;
-  if(m_helpfileanchorsThread)
-  {
-    m_helpfileanchorsThread->join();
-    m_helpfileanchorsThread.reset();
-  }
+  WaitForBackgroundProcess();
   if(m_helpFileURLs_singlePage.empty())
   {
     if(!LoadManualAnchorsFromCache())
@@ -554,10 +545,5 @@ void MaximaManual::LoadHelpFileAnchors(wxString docdir, wxString maximaVersion)
 MaximaManual::~MaximaManual()
 {
   wxLogMessage(_("Waiting for the thread that parses the maxima manual to finish"));
-  if(m_helpfileanchorsThread)
-  {
-    if(m_helpfileanchorsThread->joinable())
-      m_helpfileanchorsThread->join();
-    m_helpfileanchorsThread.reset();
-  }
+  WaitForBackgroundProcess();
 }

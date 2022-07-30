@@ -79,6 +79,7 @@ public:
 
   ~MaximaManual();
 private:
+  void WaitForBackgroundProcess();
   //! Add our aliasses to a list of anchors
   void AnchorAliasses(HelpFileAnchors &anchors);
     //! Scans the maxima directory for a list of loadable files
@@ -90,7 +91,7 @@ private:
     virtual wxDirTraverseResult OnFile(const wxString& filename) override;
     virtual wxDirTraverseResult OnDir(const wxString& dirname) override;
     wxArrayString& GetResult() const {return m_files;}
-  protected: 
+  protected:
     wxArrayString& m_files;
     wxString m_prefix;
   };
