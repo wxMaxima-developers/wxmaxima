@@ -61,14 +61,14 @@ wxString MaximaManual::GetHelpfileAnchorName(wxString keyword)
 }
 void MaximaManual::WaitForBackgroundProcess()
 {
-  if(m_helpfileanchorsThread)
+  if((m_helpfileanchorsThread) && (m_helpfileanchorsThread->joinable()))
   {
     wxBusyCursor crs;
     wxBusyInfo wait(_("Please wait while wxMaxima parses the maxima manual"));
-    while(m_helpfileanchorsThread)
+    while((m_helpfileanchorsThread) && m_helpfileanchorsThread->joinable())
     {
       wxMilliSleep(100);
-      
+      wxYield();
     }
   }
 }
