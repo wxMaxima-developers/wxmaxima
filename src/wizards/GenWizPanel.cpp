@@ -189,6 +189,20 @@ void GenWizPanel::NewWizard(wxString description, const wxString &description_to
     m_manualKeywords.Add(wxT("''"));
   if(commandRule.Contains(wxT("'")))
     m_manualKeywords.Add(wxT("'"));
+  if(commandRule.Contains(wxT("!")))
+    m_manualKeywords.Add(wxT("!"));
+  wxString hashFinder = commandRule;
+  hashFinder.Replace(wxT("#1#"),wxEmptyString);
+  hashFinder.Replace(wxT("#2#"),wxEmptyString);
+  hashFinder.Replace(wxT("#3#"),wxEmptyString);
+  hashFinder.Replace(wxT("#4#"),wxEmptyString);
+  hashFinder.Replace(wxT("#5#"),wxEmptyString);
+  hashFinder.Replace(wxT("#6#"),wxEmptyString);
+  hashFinder.Replace(wxT("#7#"),wxEmptyString);
+  hashFinder.Replace(wxT("#8#"),wxEmptyString);
+  hashFinder.Replace(wxT("#9#"),wxEmptyString);
+  if(hashFinder.Contains(wxT("#")))
+    m_manualKeywords.Add(wxT("'"));
   m_ignorePageChange = true;
   long page = m_configuration->WizardTab();
   if(page < 0)
