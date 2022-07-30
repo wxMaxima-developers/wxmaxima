@@ -234,17 +234,12 @@ void MaximaManual::CompileHelpFileAnchors()
               // What the g_t means I don't know. But we don't need it
               if(token.StartsWith("g_t"))
                 token = token.Right(token.Length()-3);
-              //! Tokens that end with "-1" aren't too useful, normally.
-              if((!token.EndsWith("-1")) && (!token.Contains(" ")))              {
-                {
-                  if(!file.EndsWith(wxT("_singlepage.html")))
-                    m_helpFileURLs_singlePage[token] = fileURI + "#" + id;
-                  else
-                    m_helpFileURLs_filePerChapter[token] = fileURI + "#" + id;
-                  m_helpFileAnchors[token] = id;
-                  foundAnchors++;
-                }
-              }
+              if(!file.EndsWith(wxT("_singlepage.html")))
+                m_helpFileURLs_singlePage[token] = fileURI + "#" + id;
+              else
+                m_helpFileURLs_filePerChapter[token] = fileURI + "#" + id;
+              m_helpFileAnchors[token] = id;
+              foundAnchors++;
             }
           }
         }
@@ -287,9 +282,15 @@ void MaximaManual::SaveManualAnchorsToCache()
         num));
     return;
   }
+  wxXmlAttribute *htmlDir = new wxXmlAttribute(
+    wxT("html_dir"),
+    m_maximaHtmlDir);
+  
   wxXmlAttribute *maximaVersion = new wxXmlAttribute(
     wxT("maxima_version"),
-    m_maximaVersion);
+    m_maximaVersion,
+    htmlDir);
+
   wxXmlNode *topNode = new wxXmlNode(
     NULL,
     wxXML_DOCUMENT_NODE, wxEmptyString,
@@ -393,6 +394,7 @@ bool MaximaManual::LoadManualAnchorsFromXML(wxXmlDocument xmlDocument, bool chec
     wxLogMessage(_("Anchors file has no top node."));
     return false;
   }
+  wxString htmlDir = headNode->GetAttribute(wxT("html_dir"));
   wxString cacheMaximaVersion = headNode->GetAttribute(wxT("maxima_version"));
   wxLogMessage(wxString::Format(_("Maxima version: %s, Anchors cache version"),
                                 m_maximaVersion.utf8_str(),

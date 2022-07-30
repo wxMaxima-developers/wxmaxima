@@ -1764,7 +1764,15 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
             for (it = helpFileAnchors.begin(); it !=helpFileAnchors.end(); ++it)
             {
               wxString cmdName = it->first;
+              if(cmdName.Contains(" "))
+                continue;
               if(cmdName.EndsWith("_"))
+                continue;
+              if(cmdName.EndsWith("_1"))
+                continue;
+              if(cmdName.EndsWith("_2"))
+                continue;
+              if(cmdName.EndsWith("_3"))
                 continue;
               if(cmdName.EndsWith("pkg"))
                 continue;
