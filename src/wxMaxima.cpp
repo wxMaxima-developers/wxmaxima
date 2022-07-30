@@ -9976,7 +9976,7 @@ void wxMaxima::HelpMenu(wxCommandEvent &event)
     {
       GenWiz *wiz = new GenWiz(this, &m_configuration, m_worksheet->GetMaximaManual(),
                                _("Go to URL"),
-                               wxEmptyString, wxEmptyString,
+                               wxEmptyString, wxEmptyString, wxEmptyString,
                                _("URL"), wxEmptyString, wxEmptyString);
       //wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
