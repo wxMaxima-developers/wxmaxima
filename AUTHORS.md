@@ -57,6 +57,7 @@
 - Naveen Srinivasan
 - Nicola Stanislao Vitale
 - Olesya Gerasimenko
+- Raymond Toy
 - Richard Fateman
 - Richard Gobeli
 - Robert Dodier

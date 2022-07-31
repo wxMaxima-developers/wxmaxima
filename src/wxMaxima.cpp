@@ -4514,20 +4514,6 @@ wxString wxMaxima::EscapeForLisp(wxString str)
 
 void wxMaxima::SetupVariables()
 {
-  wxString useHtml = wxT("'$text");
-  if (m_configuration.MaximaUsesHtmlBrowser())
-    useHtml = wxT("'$html");
-  if (m_configuration.MaximaUsesWxmaximaBrowser())
-    useHtml = wxT("'$frontend");
-  wxLogMessage(_("Setting a few prerequisites for wxMaxima"));
-  SendMaxima(wxT(":lisp-quiet (progn (setf *prompt-suffix* \"") +
-             m_promptSuffix +
-             wxT("\") (setf *prompt-prefix* \"") +
-             m_promptPrefix +
-             wxT("\") (setf $in_netmath nil) (setf $show_openplot t)) ") +
-             wxT("(setf $output_format_for_help ") + useHtml + wxT(")") +
-             wxT("\n"));
-
   wxLogMessage(_("Sending maxima the info how to express 2d maths as XML"));
   wxMathML wxmathml(&m_configuration);
   SendMaxima(wxmathml.GetCmd());
@@ -4586,6 +4572,19 @@ void wxMaxima::SetupVariables()
              wxT("\")   (if (boundp $maxima_frontend_version) (setq $maxima_frontend_version \"" +
                  wxmaximaversion_lisp + "\")) (ignore-errors (setf (symbol-value '*lisp-quiet-suppressed-prompt*) \"" + m_promptPrefix + "(%i1)" + m_promptSuffix + "\")))\n")
     );
+  wxString useHtml = wxT("'$text");
+  if (m_configuration.MaximaUsesHtmlBrowser())
+    useHtml = wxT("'$html");
+  if (m_configuration.MaximaUsesWxmaximaBrowser())
+    useHtml = wxT("'$frontend");
+  wxLogMessage(_("Setting prompt and help format"));
+  SendMaxima(wxT(":lisp-quiet (progn (setf *prompt-suffix* \"") +
+             m_promptSuffix +
+             wxT("\") (setf *prompt-prefix* \"") +
+             m_promptPrefix +
+             wxT("\") (setf $in_netmath nil) (setf $show_openplot t)) ") +
+             wxT("(if (fboundp 'set-output-format-for-help) (set-output-format-for-help nil ") + useHtml + wxT("))") +
+             wxT("\n"));
 
   ConfigChanged();
 }
