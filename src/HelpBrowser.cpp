@@ -92,7 +92,9 @@ void HelpBrowser::CreateIfNeeded()
     m_webView->SetMinSize(wxSize(GetContentScaleFactor()*100,GetContentScaleFactor()*100));
     #ifdef __WXMSW__
     // Don't emulate bugs in IE7
-    m_webView->MSWSetEmulationLevel();
+   #if wxCHECK_VERSION(3, 1, 3)
+       m_webView->MSWSetEmulationLevel();
+    #endif
     #endif
     
     m_vbox->Add(m_webView, wxSizerFlags(1).Expand());
