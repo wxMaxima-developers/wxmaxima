@@ -50,7 +50,6 @@ add_test(
     NAME wxmaxima_performance
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
     COMMAND wxmaxima --logtostderr --pipe --batch performance.wxm)
-endif()
 
 add_test(
     NAME wxmaxima_batch_textcell
