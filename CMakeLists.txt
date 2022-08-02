@@ -134,7 +134,7 @@ message(STATUS "Looking for wxWidgets libraries in: ${wxWidgets_LIB_DIR}")
 # here: https://docs.wxwidgets.org/3.0/page_libs.html#page_libs_wxrichtext
 # The root dependency (base) must come last.
 #
-find_package(wxWidgets 3 REQUIRED richtext aui adv html core xml net base webview)
+find_package(wxWidgets 3 REQUIRED richtext aui adv html webview core xml net base)
 include(${wxWidgets_USE_FILE})
 
 
