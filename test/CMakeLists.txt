@@ -23,7 +23,7 @@ file(
 
 find_program(MAXIMA maxima)
 
-set(CTEST_TEST_TIMEOUT 60)
+set(CTEST_TEST_TIMEOUT 120)
 
 if(WXM_UNIT_TESTS)
     add_subdirectory(unit_tests)
