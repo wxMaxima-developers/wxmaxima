@@ -4569,7 +4569,7 @@ void wxMaxima::SetupVariables()
              wxT("\") ($put \'$wxmaxima (read-wxmaxima-version \"" +
              wxString(wxmaximaversion_lisp) +
              wxT("\") '$version) (setq $wxwidgetsversion \"")) + wxString(wxVERSION_STRING) +
-             wxT("\")   (if (boundp $maxima_frontend_version) (setq $maxima_frontend_version \"" +
+             wxT("\")   (if (boundp '$maxima_frontend_version) (setq $maxima_frontend_version \"" +
                  wxmaximaversion_lisp + "\")) (ignore-errors (setf (symbol-value '*lisp-quiet-suppressed-prompt*) \"" + m_promptPrefix + "(%i1)" + m_promptSuffix + "\")))\n")
     );
   wxString useHtml = wxT("'$text");

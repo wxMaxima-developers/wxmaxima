@@ -85,6 +85,11 @@ void HelpBrowser::CreateIfNeeded()
   if(m_webView == NULL)
   {
     wxLogMessage(_("Instantiating the HTML manual browser"));
+    #ifdef __WXMSW__
+    // Tell MSW not to emulate all bugs of Internet Explorer 7
+    // (which hinder MathJaX from working)
+    wxWebViewIE::MSWSetEmulationLevel();
+    #endif
     m_webView = wxWebView::New(m_browserPanel, wxID_ANY, m_startUrl);
     m_webView->Connect(wxEVT_KEY_DOWN,
                        wxCharEventHandler(HelpBrowser::OnWebviewKeyDown), NULL, m_browserPanel);
