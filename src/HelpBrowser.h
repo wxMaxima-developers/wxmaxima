@@ -49,7 +49,7 @@ public:
   void SetURL(wxString url);
   void JumpToKeyword(wxString keyword);
   void SelectKeywords(wxArrayString keywords);
-  wxString GetKeyword(int id);
+  wxString GetKeyword(unsigned int id);
   //! Ask the user if we are allowed to access an online manual
   bool AllowOnlineManualP();
 

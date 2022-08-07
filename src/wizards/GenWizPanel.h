@@ -86,7 +86,7 @@ public:
   wxButton *GetAbortButton() const {return button_1;}
   #endif
   wxButton *GetInsertButton() const{return m_insertButton;}
-  wxString GetHelpKeyword(int ID);
+  wxString GetHelpKeyword(unsigned int ID);
   virtual ~GenWizPanel();
 protected:
   WX_DECLARE_STRING_HASH_MAP(int, keywordHash);

@@ -4144,6 +4144,7 @@ TextStyle EditorCell::GetSelectionStyle() const
       if(
         (wxMin(m_selectionStart, m_selectionEnd) <= pos) &&
         (pos+text.Length() < wxMax(m_selectionStart, m_selectionEnd))
+        &&(wxMax(m_selectionStart, m_selectionEnd) >= 0)
         )
       {
         if (textSnippet->IsStyleSet())

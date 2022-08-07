@@ -59,10 +59,10 @@ public:
              const Definition &def,
              bool forceShow = false);
 protected:
+  wchar_t m_char;
   Configuration *m_configuration;
   void ForwardToParent(wxMouseEvent &event);
   void CharButtonPressed(wxCommandEvent &event);
-  wchar_t m_char;
   void OnSize(wxSizeEvent &event);
   void OnIdle(wxIdleEvent &event);
   void MouseOverPanel(wxMouseEvent &event);

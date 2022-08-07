@@ -177,7 +177,7 @@ void GenWizPanel::NewWizard(wxString description, const wxString &description_to
     while((it < commandRule.end()) && (!wxIsalpha(*it)) && (!(*it == '_')))
       it++;
     wxString word;
-    while((it < commandRule.end()) && (wxIsalpha(*it)) || ((*it == '_')))
+    while(((it < commandRule.end()) && (wxIsalpha(*it))) || ((*it == '_')))
     {
       word += *it;
       it++;
@@ -323,11 +323,11 @@ void GenWizPanel::NewWizard(wxString description, const wxString &description_to
   m_ignorePageChange = false;
 }
 
-wxString GenWizPanel::GetHelpKeyword(int ID)
+wxString GenWizPanel::GetHelpKeyword(unsigned int ID)
 {
-  ID -= wxID_HIGHEST + 5000;
-  if(ID < 0)
+  if(ID < wxID_HIGHEST + 5000)
     return wxEmptyString;
+  ID -= wxID_HIGHEST + 5000;
   if(ID >= m_manualKeywords.size())
     return wxEmptyString;
   for(auto i:m_manualKeywords)
@@ -354,7 +354,7 @@ void GenWizPanel::UpdateOutput()
     return;
   
   wxString output(m_commandRule);
-  for(int i=0;i<m_textctrl.size();i++)
+  for(unsigned int i=0;i<m_textctrl.size();i++)
     output.Replace(wxString::Format("#%i#",i+1), m_textctrl[i]->GetValue());
   if(m_output)
     m_output->SetValue(output);
@@ -368,7 +368,7 @@ void GenWizPanel::OnNotebookPageChange(wxBookCtrlEvent& event)
   m_configuration->WizardTab(event.GetSelection());
 }
 
-void GenWizPanel::OnParamChange(wxCommandEvent& event)
+void GenWizPanel::OnParamChange(wxCommandEvent& WXUNUSED(event))
 {
   UpdateOutput();
 }

@@ -283,7 +283,7 @@ wxDirTraverseResult MaximaManual::GetHTMLFiles::OnFile(const wxString& filename)
   return wxDIR_CONTINUE;
 }
 
-wxDirTraverseResult MaximaManual::GetHTMLFiles::OnDir(const wxString& dirname)
+wxDirTraverseResult MaximaManual::GetHTMLFiles::OnDir(const wxString& WXUNUSED(dirname))
 {
   return wxDIR_IGNORE;
 }
@@ -299,7 +299,7 @@ wxDirTraverseResult MaximaManual::GetHTMLFiles_Recursive::OnFile(const wxString&
   return wxDIR_CONTINUE;
 }
 
-wxDirTraverseResult MaximaManual::GetHTMLFiles_Recursive::OnDir(const wxString& dirname)
+wxDirTraverseResult MaximaManual::GetHTMLFiles_Recursive::OnDir(const wxString& WXUNUSED(dirname))
 {
   return wxDIR_CONTINUE;
 }

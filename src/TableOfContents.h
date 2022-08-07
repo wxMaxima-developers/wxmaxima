@@ -116,11 +116,11 @@ private:
   wxDragImage *m_dragImage = NULL;
   std::vector<GroupCell *> m_displayedGroupCells;
   //! How many toc items did the user drag at the same time?
-  int m_numberOfCaptionsDragged;
+  unsigned int m_numberOfCaptionsDragged;
   GroupCell *m_cellRightClickedOn;
   //! The item that was dragged away at the start of the current drag-and-drop
-  int m_dragStart = -1;
-  int m_dragStop = -1;
+  size_t m_dragStart = -1;
+  size_t m_dragStop = -1;
   long m_dragCurrentPos = -1;
   //! The position the dragged item was when we last displayed the reordered toc
   int m_dragFeedback_Last = -1;

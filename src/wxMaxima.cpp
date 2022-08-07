@@ -3175,7 +3175,7 @@ void wxMaxima::ReadVariables(wxString &data)
   }
 }
 
-void wxMaxima::VariableActionSinnpiflag(const wxString &value)
+void wxMaxima::VariableActionSinnpiflag(const wxString &WXUNUSED(value))
 {
   m_fourierLoaded = true;
 }
@@ -6716,122 +6716,122 @@ void wxMaxima::PropertiesMenu(wxCommandEvent &event)
   wxString obj = editor->GetWordUnderCaret();
   if(obj.IsEmpty())
     obj = editor->GetSelectionString();
-
-    switch (event.GetId())
-    {
-    case Worksheet::popid_property_real:
-      MenuCommand(wxT("declare(") + obj + wxT(", real") + wxT(")$"));
-      break;
-    case Worksheet::popid_property_imaginary:
-      MenuCommand(wxT("declare(") + obj + wxT(", imaginary)$"));
-      break;
-    case Worksheet::popid_property_complex:
-      MenuCommand(wxT("declare(") + obj + wxT(", complex)$"));
-      break;
-    case Worksheet::popid_property_additive:
-      MenuCommand(wxT("declare(") + obj + wxT(", additive)$"));
-      break;
-    case Worksheet::popid_property_alphabetic:
-      MenuCommand(wxT("declare(") + obj + wxT(", alphabetic)$"));
-      break;
-    case Worksheet::popid_property_bindtest:
-      MenuCommand(wxT("declare(") + obj + wxT(", bindtest)$"));
-      break;
-    case Worksheet::popid_property_antisymmetric:
-      MenuCommand(wxT("declare(") + obj + wxT(", antisymmetric)$"));
-      break;
-    case Worksheet::popid_property_commutative:
-      MenuCommand(wxT("declare(") + obj + wxT(", commutative)$"));
-      break;
-    case Worksheet::popid_property_symmetric:
-      MenuCommand(wxT("declare(") + obj + wxT(", symmetric)$"));
-      break;
-    case Worksheet::popid_property_constant:
-      MenuCommand(wxT("declare(") + obj + wxT(", constant)$"));
-      break;
-    case Worksheet::popid_property_even:
-      MenuCommand(wxT("declare(") + obj + wxT(", even)$"));
-      break;
-    case Worksheet::popid_property_odd:
-      MenuCommand(wxT("declare(") + obj + wxT(", odd)$"));
-      break;
-    case Worksheet::popid_property_evenfun:
-      MenuCommand(wxT("declare(") + obj + wxT(", evenfun)$"));
-      break;
-    case Worksheet::popid_property_oddfun:
-      MenuCommand(wxT("declare(") + obj + wxT(", oddfun)$"));
-      break;
-    case Worksheet::popid_property_increasing:
-      MenuCommand(wxT("declare(") + obj + wxT(", increasing)$"));
-      break;
-    case Worksheet::popid_property_decreasing:
-      MenuCommand(wxT("declare(") + obj + wxT(", decreasing)$"));
-      break;
-    case Worksheet::popid_property_integer:
-      MenuCommand(wxT("declare(") + obj + wxT(", integer)$"));
-      break;
-    case Worksheet::popid_property_noninteger:
-      MenuCommand(wxT("declare(") + obj + wxT(", noninteger)$"));
-      break;
-    case Worksheet::popid_property_integervalued:
-      MenuCommand(wxT("declare(") + obj + wxT(", integervalued)$"));
-      break;
-    case Worksheet::popid_property_lassociative:
-      MenuCommand(wxT("declare(") + obj + wxT(", lassociative)$"));
-      break;
-    case Worksheet::popid_property_rassociative:
-      MenuCommand(wxT("declare(") + obj + wxT(", rassociative)$"));
-      break;
-    case Worksheet::popid_property_linear:
-      MenuCommand(wxT("declare(") + obj + wxT(", linear)$"));
-      break;
-    case Worksheet::popid_property_mainvar:
-      MenuCommand(wxT("declare(") + obj + wxT(", mainvar)$"));
-      break;
-    case Worksheet::popid_property_multiplicative:
-      MenuCommand(wxT("declare(") + obj + wxT(", multiplicative)$"));
-      break;
-    case Worksheet::popid_property_nary:
-      MenuCommand(wxT("declare(") + obj + wxT(", nary)$"));
-      break;
-    case Worksheet::popid_property_nonarray:
-      MenuCommand(wxT("declare(") + obj + wxT(", nonarray)$"));
-      break;
-    case Worksheet::popid_property_nonscalar:
-      MenuCommand(wxT("declare(") + obj + wxT(", nonscalar)$"));
-      break;
-    case Worksheet::popid_property_scalar:
-      MenuCommand(wxT("declare(") + obj + wxT(", scalar)$"));
-      break;
-    case Worksheet::popid_property_noun:
-      MenuCommand(wxT("declare(") + obj + wxT(", noun)$"));
-      break;
-    case Worksheet::popid_property_outative:
-      MenuCommand(wxT("declare(") + obj + wxT(", outative)$"));
-      break;
-    case Worksheet::popid_property_posfun:
-      MenuCommand(wxT("declare(") + obj + wxT(", posfun)$"));
-      break;
-    case Worksheet::popid_property_rational:
-      MenuCommand(wxT("declare(") + obj + wxT(", rational)$"));
-      break;
-    case Worksheet::popid_property_irrational:
-      MenuCommand(wxT("declare(") + obj + wxT(", irrational)$"));
-      break;
-    case Worksheet::popid_property_evfun:
-      MenuCommand(wxT("declare(") + obj + wxT(", evfun)$"));
-      break;
-    case Worksheet::popid_property_evflag:
-      MenuCommand(wxT("declare(") + obj + wxT(", evflag)$"));
-      break;
-    case Worksheet::popid_property_greaterThan:
-      CommandWiz(
-        _("Assume a value range for a variable"),
-        wxEmptyString,wxEmptyString,
-        wxT("assume(#1#)"),
-        _("Variable"),obj + wxT(">0"),wxEmptyString);
-      break;
-    }
+  
+  switch (event.GetId())
+  {
+  case Worksheet::popid_property_real:
+    MenuCommand(wxT("declare(") + obj + wxT(", real") + wxT(")$"));
+    break;
+  case Worksheet::popid_property_imaginary:
+    MenuCommand(wxT("declare(") + obj + wxT(", imaginary)$"));
+    break;
+  case Worksheet::popid_property_complex:
+    MenuCommand(wxT("declare(") + obj + wxT(", complex)$"));
+    break;
+  case Worksheet::popid_property_additive:
+    MenuCommand(wxT("declare(") + obj + wxT(", additive)$"));
+    break;
+  case Worksheet::popid_property_alphabetic:
+    MenuCommand(wxT("declare(") + obj + wxT(", alphabetic)$"));
+    break;
+  case Worksheet::popid_property_bindtest:
+    MenuCommand(wxT("declare(") + obj + wxT(", bindtest)$"));
+    break;
+  case Worksheet::popid_property_antisymmetric:
+    MenuCommand(wxT("declare(") + obj + wxT(", antisymmetric)$"));
+    break;
+  case Worksheet::popid_property_commutative:
+    MenuCommand(wxT("declare(") + obj + wxT(", commutative)$"));
+    break;
+  case Worksheet::popid_property_symmetric:
+    MenuCommand(wxT("declare(") + obj + wxT(", symmetric)$"));
+    break;
+  case Worksheet::popid_property_constant:
+    MenuCommand(wxT("declare(") + obj + wxT(", constant)$"));
+    break;
+  case Worksheet::popid_property_even:
+    MenuCommand(wxT("declare(") + obj + wxT(", even)$"));
+    break;
+  case Worksheet::popid_property_odd:
+    MenuCommand(wxT("declare(") + obj + wxT(", odd)$"));
+    break;
+  case Worksheet::popid_property_evenfun:
+    MenuCommand(wxT("declare(") + obj + wxT(", evenfun)$"));
+    break;
+  case Worksheet::popid_property_oddfun:
+    MenuCommand(wxT("declare(") + obj + wxT(", oddfun)$"));
+    break;
+  case Worksheet::popid_property_increasing:
+    MenuCommand(wxT("declare(") + obj + wxT(", increasing)$"));
+    break;
+  case Worksheet::popid_property_decreasing:
+    MenuCommand(wxT("declare(") + obj + wxT(", decreasing)$"));
+    break;
+  case Worksheet::popid_property_integer:
+    MenuCommand(wxT("declare(") + obj + wxT(", integer)$"));
+    break;
+  case Worksheet::popid_property_noninteger:
+    MenuCommand(wxT("declare(") + obj + wxT(", noninteger)$"));
+    break;
+  case Worksheet::popid_property_integervalued:
+    MenuCommand(wxT("declare(") + obj + wxT(", integervalued)$"));
+    break;
+  case Worksheet::popid_property_lassociative:
+    MenuCommand(wxT("declare(") + obj + wxT(", lassociative)$"));
+    break;
+  case Worksheet::popid_property_rassociative:
+    MenuCommand(wxT("declare(") + obj + wxT(", rassociative)$"));
+    break;
+  case Worksheet::popid_property_linear:
+    MenuCommand(wxT("declare(") + obj + wxT(", linear)$"));
+    break;
+  case Worksheet::popid_property_mainvar:
+    MenuCommand(wxT("declare(") + obj + wxT(", mainvar)$"));
+    break;
+  case Worksheet::popid_property_multiplicative:
+    MenuCommand(wxT("declare(") + obj + wxT(", multiplicative)$"));
+    break;
+  case Worksheet::popid_property_nary:
+    MenuCommand(wxT("declare(") + obj + wxT(", nary)$"));
+    break;
+  case Worksheet::popid_property_nonarray:
+    MenuCommand(wxT("declare(") + obj + wxT(", nonarray)$"));
+    break;
+  case Worksheet::popid_property_nonscalar:
+    MenuCommand(wxT("declare(") + obj + wxT(", nonscalar)$"));
+    break;
+  case Worksheet::popid_property_scalar:
+    MenuCommand(wxT("declare(") + obj + wxT(", scalar)$"));
+    break;
+  case Worksheet::popid_property_noun:
+    MenuCommand(wxT("declare(") + obj + wxT(", noun)$"));
+    break;
+  case Worksheet::popid_property_outative:
+    MenuCommand(wxT("declare(") + obj + wxT(", outative)$"));
+    break;
+  case Worksheet::popid_property_posfun:
+    MenuCommand(wxT("declare(") + obj + wxT(", posfun)$"));
+    break;
+  case Worksheet::popid_property_rational:
+    MenuCommand(wxT("declare(") + obj + wxT(", rational)$"));
+    break;
+  case Worksheet::popid_property_irrational:
+    MenuCommand(wxT("declare(") + obj + wxT(", irrational)$"));
+    break;
+  case Worksheet::popid_property_evfun:
+    MenuCommand(wxT("declare(") + obj + wxT(", evfun)$"));
+    break;
+  case Worksheet::popid_property_evflag:
+    MenuCommand(wxT("declare(") + obj + wxT(", evflag)$"));
+    break;
+  case Worksheet::popid_property_greaterThan:
+    CommandWiz(
+      _("Assume a value range for a variable"),
+      wxEmptyString,wxEmptyString,
+      wxT("assume(#1#)"),
+      _("Variable"),obj + wxT(">0"),wxEmptyString);
+    break;
+  }
 }
 
 void wxMaxima::MaximaMenu(wxCommandEvent &event)
@@ -7403,6 +7403,7 @@ void wxMaxima::MaximaMenu(wxCommandEvent &event)
                wxT("ascii(#1#);"),
                _("Code number:"), expr, wxEmptyString
       );
+    break;
   case menu_stringproc_cint:
     CommandWiz(_("Char to unicode code point"),
                wxEmptyString,wxEmptyString,
@@ -7482,6 +7483,7 @@ void wxMaxima::MaximaMenu(wxCommandEvent &event)
                wxT("scopy(#1#);"),
                _("String:"), expr, wxEmptyString
       );
+    break;
   case menu_stringproc_sdowncase:
     CommandWiz(_("Convert string to lowercase"),
                wxEmptyString,wxEmptyString,
@@ -7634,6 +7636,7 @@ void wxMaxima::MaximaMenu(wxCommandEvent &event)
 
   case menu_sregex_load:
     MenuCommand("load(\"sregex\");");
+    break;
   case menu_sregex_regex_compile:
     CommandWiz(_("Compile regex"),
                _("Re-using a compiled regex is faster that using the same regex string multiple times."),wxEmptyString,
@@ -7962,7 +7965,8 @@ void wxMaxima::EquationsMenu(wxCommandEvent &event)
     {
       if (expr.StartsWith(wxT("%")))
         expr = wxT("''(") + expr + wxT(")"); 
-   }
+    }
+    break;
     case button_solve_ode:
     case menu_solve_ode:
       CommandWiz(
@@ -9954,7 +9958,7 @@ void wxMaxima::OnWizardHelpButton(wxCommandEvent &event)
   ShowMaximaHelp(m_wizard->GetHelpKeyword(event.GetId()));
 }
 
-void wxMaxima::OnWizardInsert(wxCommandEvent &event)
+void wxMaxima::OnWizardInsert(wxCommandEvent &WXUNUSED(event))
 {
   MenuCommand(m_wizard->GetOutput());
   m_configuration.LastActiveTextCtrl(NULL);

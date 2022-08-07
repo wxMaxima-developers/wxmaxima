@@ -59,7 +59,7 @@ HelpBrowser::HelpBrowser(wxWindow *parent, Configuration *configuration,
   FitInside();
 }
 
-wxString HelpBrowser::GetKeyword(int id)
+wxString HelpBrowser::GetKeyword(unsigned int id)
 {
   if(id < wxID_HIGHEST + 8000)
     return wxEmptyString;
@@ -253,12 +253,12 @@ void HelpBrowser::OnTextEnter(wxCommandEvent& event)
   event.Skip();
 }
 
-void HelpBrowser::OnSearchUp(wxCommandEvent& event)
+void HelpBrowser::OnSearchUp(wxCommandEvent& WXUNUSED(event))
 {
   m_findDown = false;
   m_webView->Find(m_searchText->GetValue(), wxWEBVIEW_FIND_DEFAULT| wxWEBVIEW_FIND_BACKWARDS);
 }
-void HelpBrowser::OnSearchDown(wxCommandEvent& event)
+void HelpBrowser::OnSearchDown(wxCommandEvent& WXUNUSED(event))
 {
   m_findDown = true;
   m_webView->Find(m_searchText->GetValue(), wxWEBVIEW_FIND_DEFAULT);
