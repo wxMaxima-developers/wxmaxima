@@ -73,7 +73,7 @@ void MaximaManual::WaitForBackgroundProcess()
     {
       wxMilliSleep(100);
       wxLogNull suppressRecursiveYieldWarning;
-      wxTheApp->SafeYield(NULL, false);
+//      wxTheApp->SafeYield(NULL, false);
       m_helpfileanchorsThread->join();
       m_helpfileanchorsThread.reset();
     }
