@@ -100,8 +100,4 @@ private:
 
 
 
-// cppcheck-suppress unknownMacro
-DECLARE_APP(MyApp)
-wxDECLARE_APP (MyApp);
-
 #endif // MAIN_H

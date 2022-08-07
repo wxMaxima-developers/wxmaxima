@@ -64,6 +64,8 @@ FORCE_LINK(gnome_print)
 IMPLEMENT_APP_NO_MAIN(MyApp);
 IMPLEMENT_WX_THEME_SUPPORT;
 
+wxDECLARE_APP (MyApp);
+
 int CommonMain()
 {
   wxTheApp->CallOnInit();

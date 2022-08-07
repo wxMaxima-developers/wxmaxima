@@ -26,6 +26,7 @@
   MaximaManual creates the list of maxima's manual anchors.
 */
 
+#include "main.h"
 #include "MaximaManual.h"
 #include "Dirstructure.h"
 #include "ErrorRedirector.h"
@@ -35,8 +36,11 @@
 #include <wx/tokenzr.h>
 #include <wx/txtstrm.h>
 #include <wx/uri.h>
+#include <wx/log.h>
 #include <wx/utils.h>
 #include <wx/busyinfo.h>
+
+wxDECLARE_APP (MyApp);
 
 MaximaManual::MaximaManual(Configuration *configuration)
 {
@@ -68,7 +72,8 @@ void MaximaManual::WaitForBackgroundProcess()
     while((m_helpfileanchorsThread) && m_helpfileanchorsThread->joinable())
     {
       wxMilliSleep(100);
-      wxYield();
+      wxLogNull suppressRecursiveYieldWarning;
+      wxTheApp->SafeYield(NULL, false);
       m_helpfileanchorsThread->join();
       m_helpfileanchorsThread.reset();
     }
