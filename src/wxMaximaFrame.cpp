@@ -1794,8 +1794,9 @@ m_CalculusMenu->AppendSeparator();
 
   m_HelpMenu->AppendRadioItem(menu_maxima_uses_internal_help, _("Maxima shows help in the console"),
                               _("Tells maxima to show the help for ?, ?? and describe() on the console"));
-  m_HelpMenu->AppendRadioItem(menu_maxima_uses_wxmaxima_help, _("Maxima shows help in a sidebar"),
-                              _("Tells maxima to show the help for ?, ?? and describe() in a wxMaxima sidebar"));
+  if(m_configuration.fferInternalHelpBrowser())
+    m_HelpMenu->AppendRadioItem(menu_maxima_uses_wxmaxima_help, _("Maxima shows help in a sidebar"),
+                                _("Tells maxima to show the help for ?, ?? and describe() in a wxMaxima sidebar"));
   m_HelpMenu->AppendRadioItem(menu_maxima_uses_html_help, _("Maxima shows help in a browser"),
                               _("Tells maxima to show the help for ?, ?? and describe() in a separate browser window"));
   m_HelpMenu->AppendSeparator();

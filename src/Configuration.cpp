@@ -142,7 +142,7 @@ void Configuration::ResetAllToDefaults(InitOpt options)
   m_allowNetworkHelp = false;
   m_exportContainsWXMX = true;
   m_maximaUsesHhtmlBrowser = true;
-  m_maximaUsesWxmaximaBrowser = true;
+  m_maximaUsesWxmaximaBrowser = OfferInternalHelpBrowser();
   m_bitmapScale = 3;
   m_maxClipbrd_BitmapMegabytes = 4;
   m_defaultFramerate = 12;
@@ -166,7 +166,7 @@ void Configuration::ResetAllToDefaults(InitOpt options)
   m_hidemultiplicationsign = true;
   m_autodetectHelpBrowser = true;
   m_singlePageManual = true;
-  m_useInternalHelpBrowser = true;
+  m_useInternalHelpBrowser = OfferInternalHelpBrowser();
   #ifdef __WXGTK__
   m_helpBrowserUserLocation = wxT("xdg-open");
   #else

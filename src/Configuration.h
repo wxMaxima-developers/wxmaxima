@@ -858,7 +858,8 @@ wxString DocumentclassOptions() const {return m_documentclassOptions;}
   void NotifyOfCellRedraw(const Cell *cell);
   void ClearAndEnableRedrawTracing();
   void ReportMultipleRedraws();
-
+  //! If we decide that the HTML browser in the sidebar doesn't work for every platform...
+  bool OfferInternalHelpBrowser() const {return true;}
   bool WrapLatexMath() const {return m_wrapLatexMath;}
   void WrapLatexMath(bool wrapLatexMath){m_wrapLatexMath = wrapLatexMath;}
   bool AllowNetworkHelp() const {return m_allowNetworkHelp;}

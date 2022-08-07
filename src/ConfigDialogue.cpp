@@ -1236,6 +1236,7 @@ wxWindow *ConfigDialogue::CreateMaximaPanel()
   m_internalHelpBrowser = new wxRadioButton(invocationSizer->GetStaticBox(), -1, _("Internal"), wxDefaultPosition,
                                             wxDefaultSize, wxRB_GROUP);
   nameSizer->Add(m_internalHelpBrowser, wxSizerFlags().Expand().Border(wxUP | wxDOWN, 0));
+  m_internalHelpBrowser->Show(m_configuration->OfferInternalHelpBrowser());
   nameSizer->Add(10*GetContentScaleFactor(), 10*GetContentScaleFactor());
   nameSizer->Add(10*GetContentScaleFactor(), 10*GetContentScaleFactor());
   m_autodetectHelpBrowser = new wxRadioButton(invocationSizer->GetStaticBox(), -1, _("Autodetect"), wxDefaultPosition,
@@ -1277,6 +1278,7 @@ wxWindow *ConfigDialogue::CreateMaximaPanel()
   m_maximaUsesWxmaximaHelp = new
     wxRadioButton(configSizer->GetStaticBox(), -1, _("Maxima shows help in a sidebar"));
   configSizer->Add(m_maximaUsesWxmaximaHelp, wxSizerFlags().Expand().Border(wxALL, 5*GetContentScaleFactor()));
+  m_maximaUsesWxmaximaHelp->Show(m_configuration->OfferInternalHelpBrowser());
   m_defaultPort = new wxSpinCtrl(configSizer->GetStaticBox(), -1, wxEmptyString, wxDefaultPosition, wxSize(230*GetContentScaleFactor(), -1), wxSP_ARROW_KEYS, 50,
                                  65534);
 
