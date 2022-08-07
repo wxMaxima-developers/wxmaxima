@@ -69,6 +69,8 @@ void MaximaManual::WaitForBackgroundProcess()
     {
       wxMilliSleep(100);
       wxYield();
+      m_helpfileanchorsThread->join();
+      m_helpfileanchorsThread.reset();
     }
   }
 }
@@ -560,7 +562,7 @@ void MaximaManual::LoadHelpFileAnchors(wxString docdir, wxString maximaVersion)
         {
           // Show a busy cursor as long as we finish the old background task
           wxBusyCursor crs;
-          m_helpfileanchorsThread->join();
+          WaitForBackgroundProcess();
         }
         m_helpfileanchorsThread =
           std::unique_ptr<std::thread>(
