@@ -95,6 +95,20 @@ private:
     wxArrayString& m_files;
     wxString m_prefix;
   };
+  class GetHTMLFiles_Recursive : public wxDirTraverser
+  {
+  public:
+    explicit GetHTMLFiles_Recursive(wxArrayString& files, wxString prefix = wxEmptyString) :
+      m_files(files), m_prefix(prefix) { }
+    virtual wxDirTraverseResult OnFile(const wxString& filename) override;
+    virtual wxDirTraverseResult OnDir(const wxString& dirname) override;
+    wxArrayString& GetResult() const {return m_files;}
+  protected:
+    wxArrayString& m_files;
+    wxString m_prefix;
+  };
+
+  //    m_configuration.MaximaShareDir(dir);
 
   //! The thread the help file anchors are compiled in
   std::unique_ptr<std::thread> m_helpfileanchorsThread;

@@ -168,9 +168,16 @@ void MaximaManual::CompileHelpFileAnchors()
   if(m_helpFileURLs_singlePage.empty() && (!(m_maximaHtmlDir.IsEmpty())))
   {
     wxArrayString helpFiles;
-    GetHTMLFiles htmlFilesTraverser(helpFiles, m_maximaHtmlDir);
-    wxDir dir(m_maximaHtmlDir);
-    dir.Traverse(htmlFilesTraverser);
+    {
+      GetHTMLFiles htmlFilesTraverser(helpFiles, m_maximaHtmlDir);
+      wxDir dir(m_maximaHtmlDir);
+      dir.Traverse(htmlFilesTraverser);
+    }
+    {
+      GetHTMLFiles_Recursive htmlFilesTraverser(helpFiles, m_configuration->MaximaShareDir());
+      wxDir dir(m_configuration->MaximaShareDir());
+      dir.Traverse(htmlFilesTraverser);
+    }
     
     for (auto file: helpFiles)
     {
@@ -272,6 +279,22 @@ wxDirTraverseResult MaximaManual::GetHTMLFiles::OnFile(const wxString& filename)
 wxDirTraverseResult MaximaManual::GetHTMLFiles::OnDir(const wxString& dirname)
 {
   return wxDIR_IGNORE;
+}
+
+wxDirTraverseResult MaximaManual::GetHTMLFiles_Recursive::OnFile(const wxString& filename)
+{
+  wxFileName newItemName(filename);
+  newItemName.MakeAbsolute();
+  wxString newItem = newItemName.GetFullPath();
+  newItem.Replace(wxFileName::GetPathSeparator(),"/");
+  if(newItem.EndsWith(".html") && (m_files.Index(newItem) == wxNOT_FOUND))
+    m_files.Add(newItem);
+  return wxDIR_CONTINUE;
+}
+
+wxDirTraverseResult MaximaManual::GetHTMLFiles_Recursive::OnDir(const wxString& dirname)
+{
+  return wxDIR_CONTINUE;
 }
 
 void MaximaManual::SaveManualAnchorsToCache()
