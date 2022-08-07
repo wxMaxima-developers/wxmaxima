@@ -33,7 +33,7 @@
 #include <wx/button.h>
 #include <wx/wupdlock.h>
 #ifdef __WXMSW__
-#include <include/wx/msw/webview_ie.h>
+#include <wx/msw/webview_ie.h>
 #endif
 
 HelpBrowser::HelpBrowser(wxWindow *parent, Configuration *configuration,
