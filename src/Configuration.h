@@ -683,7 +683,7 @@ public:
   void AutodetectHelpBrowser(bool autodetect){m_autodetectHelpBrowser = autodetect;}
 
   //! Use the internal help browser? If not a external web browser is used.
-  bool InternalHelpBrowser() const {return m_useInternalHelpBrowser;}
+  bool InternalHelpBrowser() const {return m_useInternalHelpBrowser && OfferInternalHelpBrowser();}
   //! Use the internal help browser? If not a external web browser is used.
   void InternalHelpBrowser(bool useInternalHelpBrowser)
     {m_useInternalHelpBrowser = useInternalHelpBrowser;}
@@ -859,7 +859,7 @@ wxString DocumentclassOptions() const {return m_documentclassOptions;}
   void ClearAndEnableRedrawTracing();
   void ReportMultipleRedraws();
   //! If we decide that the HTML browser in the sidebar doesn't work for every platform...
-  bool OfferInternalHelpBrowser() const {return true;}
+  bool OfferInternalHelpBrowser() const;
   bool WrapLatexMath() const {return m_wrapLatexMath;}
   void WrapLatexMath(bool wrapLatexMath){m_wrapLatexMath = wrapLatexMath;}
   bool AllowNetworkHelp() const {return m_allowNetworkHelp;}
@@ -875,7 +875,7 @@ wxString DocumentclassOptions() const {return m_documentclassOptions;}
   void MaximaUsesHtmlBrowser(bool maximaUsesHhtmlBrowser){m_maximaUsesHhtmlBrowser = maximaUsesHhtmlBrowser;}
   bool MaximaUsesHtmlBrowser() const {return m_maximaUsesHhtmlBrowser;}
   void MaximaUsesWxmaximaBrowser(bool maximaUsesWxmaximaBrowser){m_maximaUsesWxmaximaBrowser = maximaUsesWxmaximaBrowser;}
-  bool MaximaUsesWxmaximaBrowser() const {return m_maximaUsesWxmaximaBrowser;}
+  bool MaximaUsesWxmaximaBrowser() const {return m_maximaUsesWxmaximaBrowser && OfferInternalHelpBrowser();}
   void ExportContainsWXMX(bool exportContainsWXMX){m_exportContainsWXMX = exportContainsWXMX;}
   bool ExportContainsWXMX() const {return m_exportContainsWXMX;}
   void WizardTab(long tab){m_wizardTab = tab;}

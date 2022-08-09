@@ -1488,6 +1488,15 @@ bool Configuration::CharVisiblyDifferent(wxChar ch, wxChar otherChar, const wxFo
 }
 
 
+bool Configuration::OfferInternalHelpBrowser() const
+{
+#ifdef __WINDOWS__
+  return wxWebView::IsBackendAvailable(wxWebViewBackendEdge);
+#else
+  return true;
+#endif
+}
+
 void Configuration::WriteStyles(wxConfigBase *config)
 {
   config->Write(wxT("wrapLatexMath"), m_wrapLatexMath);
