@@ -1503,7 +1503,8 @@ void Configuration::WriteStyles(wxConfigBase *config)
   config->Write(wxT("allowNetworkHelp"), m_allowNetworkHelp);
   config->Write(wxT("exportContainsWXMX"), m_exportContainsWXMX);
   config->Write(wxT("maximaUsesHhtmlBrowser"), m_maximaUsesHhtmlBrowser);
-  config->Write(wxT("maximaUsesWxmaximaBrowser"), m_maximaUsesWxmaximaBrowser);
+  if(OfferInternalHelpBrowser())
+    config->Write(wxT("maximaUsesWxmaximaBrowser"), m_maximaUsesWxmaximaBrowser);
   config->Write(wxT("texPreamble"), m_texPreamble);
   config->Write(wxT("wizardTab"), m_wizardTab);
   config->Write(wxT("numpadEnterEvaluates"), m_numpadEnterEvaluates);
@@ -1546,7 +1547,8 @@ void Configuration::WriteStyles(wxConfigBase *config)
   config->Write(wxT("parameters"),m_maximaParameters);
   config->Write(wxT("maxima"), m_maximaUserLocation);
   config->Write(wxT("autodetectHelpBrowser"), m_autodetectHelpBrowser);
-  config->Write(wxT("useInternalHelpBrowser"), m_useInternalHelpBrowser);
+  if(OfferInternalHelpBrowser())
+    config->Write(wxT("useInternalHelpBrowser"), m_useInternalHelpBrowser);
   config->Write(wxT("singlePageManual"), m_singlePageManual);
   config->Write(wxT("helpBrowser"), m_helpBrowserUserLocation);
   config->Write(wxT("fixReorderedIndices"), m_fixReorderedIndices);
