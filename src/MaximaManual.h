@@ -33,6 +33,7 @@
 #include <wx/dir.h>
 #include "precomp.h"
 #include <thread>
+#include <mutex>
 #include <memory>
 #include <wx/wx.h>
 #include <wx/dir.h>
@@ -112,6 +113,7 @@ private:
 
   //! The thread the help file anchors are compiled in
   std::unique_ptr<std::thread> m_helpfileanchorsThread;
+  std::mutex m_helpFileAnchorsThreadActive;
   //! The configuration storage
   Configuration *m_configuration;
   //! All anchors for keywords maxima's helpfile contains (singlepage version)

@@ -65,19 +65,24 @@ wxString MaximaManual::GetHelpfileAnchorName(wxString keyword)
 }
 void MaximaManual::WaitForBackgroundProcess()
 {
-  if((m_helpfileanchorsThread) && (m_helpfileanchorsThread->joinable()))
+  if(!m_helpFileAnchorsThreadActive.try_lock())
   {
     wxBusyCursor crs;
+    wxWindowDisabler disableAll;
     wxBusyInfo wait(_("Please wait while wxMaxima parses the maxima manual"));
-    while((m_helpfileanchorsThread) && m_helpfileanchorsThread->joinable())
+    while(!m_helpFileAnchorsThreadActive.try_lock())
     {
       wxMilliSleep(100);
       wxLogNull suppressRecursiveYieldWarning;
-//      wxTheApp->SafeYield(NULL, false);
-      m_helpfileanchorsThread->join();
-      m_helpfileanchorsThread.reset();
+      wxTheApp->SafeYield(NULL, false);
     }
   }
+  if(m_helpfileanchorsThread)
+  {
+    m_helpfileanchorsThread->join();
+    m_helpfileanchorsThread.reset();
+  }
+  m_helpFileAnchorsThreadActive.unlock();
 }
 
 wxString MaximaManual::GetHelpfileUrl_Singlepage(wxString keyword)
@@ -212,7 +217,7 @@ void MaximaManual::CompileHelpFileAnchors()
       wxRegEx idExtractor(".*<span id=\\\"([a-zAZ0-9_-]*)\\\"");
       wxRegEx idExtractor2("<dt id=\\\"(index-[a-zAZ0-9_-]*)\\\"");
       wxRegEx idExtractor_oldManual(".*<a name=\\\"([a-zAZ0-9_-]*)\\\"");
-      wxString escapeChars = "§`´\"^()<=>[]`%?;\\$%&+-*/.!\'@#:^_";
+      wxString escapeChars = "`\"^()<=>[]`%?;\\$%&+-*/.!\'@#:^_";
       wxFileInputStream input(file);
       if(input.IsOk())
       {
@@ -271,6 +276,7 @@ void MaximaManual::CompileHelpFileAnchors()
     else
       LoadBuiltInManualAnchors();
   }
+  m_helpFileAnchorsThreadActive.unlock();
 }
 
 wxDirTraverseResult MaximaManual::GetHTMLFiles::OnFile(const wxString& filename)
@@ -569,6 +575,7 @@ void MaximaManual::LoadHelpFileAnchors(wxString docdir, wxString maximaVersion)
           wxBusyCursor crs;
           WaitForBackgroundProcess();
         }
+        m_helpFileAnchorsThreadActive.lock();
         m_helpfileanchorsThread =
           std::unique_ptr<std::thread>(
             new std::thread(&MaximaManual::CompileHelpFileAnchors, this));

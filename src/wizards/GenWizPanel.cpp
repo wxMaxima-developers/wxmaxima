@@ -191,6 +191,12 @@ void GenWizPanel::NewWizard(wxString description, const wxString &description_to
     m_manualKeywords[wxT("'")] = 1;
   if(commandRule.Contains(wxT("!")))
     m_manualKeywords[wxT("!")] = 1;
+  if(commandRule.Contains(wxT(";")))
+    m_manualKeywords[wxT(";")] = 1;
+  if(commandRule.Contains(wxT("$")))
+    m_manualKeywords[wxT("$")] = 1;
+  if(commandRule.Contains(wxT("\\")))
+    m_manualKeywords[wxT("\\")] = 1;
   wxString hashFinder = commandRule;
   hashFinder.Replace(wxT("#1#"),wxEmptyString);
   hashFinder.Replace(wxT("#2#"),wxEmptyString);
