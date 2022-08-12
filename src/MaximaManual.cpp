@@ -212,7 +212,7 @@ void MaximaManual::CompileHelpFileAnchors()
       wxRegEx idExtractor(".*<span id=\\\"([a-zAZ0-9_-]*)\\\"");
       wxRegEx idExtractor2("<dt id=\\\"(index-[a-zAZ0-9_-]*)\\\"");
       wxRegEx idExtractor_oldManual(".*<a name=\\\"([a-zAZ0-9_-]*)\\\"");
-      wxString escapeChars = "<=>[]`%?;\\$%&+-*/.!\'@#:^_";
+      wxString escapeChars = "§`´\"^°\()<=>[]`%?;\\$%&+-*/.!\'@#:^_";
       wxFileInputStream input(file);
       if(input.IsOk())
       {
