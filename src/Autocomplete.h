@@ -30,6 +30,7 @@
 #ifndef AUTOCOMPLETE_H
 #define AUTOCOMPLETE_H
 
+#include "Configuration.h"
 #include "precomp.h"
 #include <thread>
 #include <memory>
@@ -40,7 +41,6 @@
 #include <wx/filename.h>
 #include <vector>
 #include <wx/hashmap.h>
-#include "Configuration.h"
 
 /* The autocompletion logic
 
@@ -136,16 +136,16 @@ private:
   public:
     explicit GetGeneralFiles(wxArrayString& files, wxString prefix = wxEmptyString) :
       m_files(files), m_prefix(prefix) { }
-    virtual wxDirTraverseResult OnFile(const wxString& filename) override
+    wxDirTraverseResult OnFile(const wxString& filename) override
       {
         wxFileName newItemName(filename);
         wxString newItem = "\"" + m_prefix + newItemName.GetFullName() + "\"";
-        newItem.Replace(wxFileName::GetPathSeparator(),"/");
+        newItem.Replace(wxFileName::GetPathSeparator(), "/");
         if(m_files.Index(newItem) == wxNOT_FOUND)
           m_files.Add(newItem);
         return wxDIR_CONTINUE;
       }
-    virtual wxDirTraverseResult OnDir(const wxString& dirname) override
+    wxDirTraverseResult OnDir(const wxString& dirname) override
       {
         wxFileName newItemName(dirname);
         wxString newItem = "\"" + m_prefix + newItemName.GetFullName() + "/\"";

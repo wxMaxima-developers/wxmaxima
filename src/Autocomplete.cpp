@@ -27,14 +27,14 @@
   dynamically appending maxima commands to this list as soon as they are defined.
 */
 
-#include <wx/sstream.h>
 #include "Autocomplete.h"
 #include "Dirstructure.h"
 #include "Version.h"
+#include "ErrorRedirector.h"
+#include <wx/sstream.h>
 #include <wx/textfile.h>
 #include <wx/filename.h>
 #include <wx/xml/xml.h>
-#include "ErrorRedirector.h"
 #include <wx/wfstream.h>
 #include <wx/txtstrm.h>
 #include <wx/utils.h>
@@ -52,7 +52,7 @@ void AutoComplete::ClearWorksheetWords()
 
 void AutoComplete::ClearDemofileList()
 {
-  if(m_addFiles_backgroundThread)
+  if (m_addFiles_backgroundThread)
   {
     WaitForBackgroundThread_Files();
     m_addFiles_backgroundThread.reset();
@@ -63,7 +63,9 @@ void AutoComplete::ClearDemofileList()
 void AutoComplete::AddSymbols(wxString xml)
 {
   WaitForBackgroundThread_Symbols();
-  wxLogMessage(_("Scheduling a background task that compiles a new list of autocompletable maxima commands."));
+  wxLogMessage(
+    _("Scheduling a background task that compiles a new list "
+      "of autocompletable maxima commands."));
 
   m_addSymbols_backgroundThread =
     std::unique_ptr<std::thread>(
@@ -76,7 +78,7 @@ void AutoComplete::AddSymbols_Backgroundtask(wxString xml)
   wxStringInputStream xmlStream(xml);
   xmldoc.Load(xmlStream, wxT("UTF-8"));
   wxXmlNode *node = xmldoc.GetRoot();
-  if(node != NULL)
+  if (node != NULL)
   {
     wxXmlNode *children = node->GetChildren();
     while (children != NULL)
@@ -273,8 +275,8 @@ void AutoComplete::LoadableFiles_BackgroundTask()
   {
     GetMacFiles_includingSubdirs maximaLispIterator (m_builtInLoadFiles);
     wxString sharedir = m_configuration->MaximaShareDir();
-    sharedir.Replace("\n","");
-    sharedir.Replace("\r","");
+    sharedir.Replace("\n", "");
+    sharedir.Replace("\r", "");
     if(sharedir.IsEmpty())
       wxLogMessage(_("Seems like the package with the maxima share files isn't installed."));
     else
@@ -287,7 +289,7 @@ void AutoComplete::LoadableFiles_BackgroundTask()
           shareDir.GetFullPath().utf8_str()));
       wxDir maximadir(shareDir.GetFullPath());
       if(maximadir.IsOpened())
-        maximadir.Traverse(maximaLispIterator); //todo
+        maximadir.Traverse(maximaLispIterator); // todo
     }
     GetMacFiles userLispIterator (m_builtInLoadFiles);
     wxFileName userDir(Dirstructure::Get()->UserConfDir() + "/");
