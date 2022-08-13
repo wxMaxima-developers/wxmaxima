@@ -104,8 +104,8 @@ MaximaTokenizer::MaximaTokenizer(wxString commands, Configuration *configuration
     {
       wxString token;
       // Add the comment start
-      token+=*it;++it;
-      token+=*it;++it;
+      token+=*it; ++it;
+      token+=*it; ++it;
 
       int commentDepth = 0;
       while (it < commands.end())
@@ -175,7 +175,7 @@ MaximaTokenizer::MaximaTokenizer(wxString commands, Configuration *configuration
         wxString breakCommand;
         wxString::const_iterator it3(it);
         int len = 14;
-        while((len>0) && (it3 < commands.end()))
+        while((len > 0) && (it3 < commands.end()))
         {
           len--;
           breakCommand += wxString(*it3);
@@ -309,7 +309,7 @@ MaximaTokenizer::MaximaTokenizer(wxString commands, Configuration *configuration
       wxString token;
       while ((it < commands.end()) && IsSpace(Ch))
       {
-	if(Ch == '\t')
+        if(Ch == '\t')
           token += "\t";
         else
           token += " ";

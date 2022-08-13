@@ -198,7 +198,7 @@ void MaximaManual::CompileHelpFileAnchors()
       dir.Traverse(htmlFilesTraverser);
     }
     
-    for (auto file: helpFiles)
+    for (auto file : helpFiles)
     {
       int foundAnchors = 0;
       wxString fileURI = wxURI(wxT("file://") + file).BuildURI();
@@ -238,16 +238,18 @@ void MaximaManual::CompileHelpFileAnchors()
             wxString token = tokens.GetNextToken();
             wxString oldToken(token);
             wxString id;
-            if(idExtractor.Replace(&token, "\\1")>0)
+            if(idExtractor.Replace(&token, "\\1") > 0)
               id = token;
             else
-              if(idExtractor2.Replace(&token, "\\1")>0)
+            {
+              if(idExtractor2.Replace(&token, "\\1") > 0)
                 id = token;
               else
               {
-                if(idExtractor_oldManual.Replace(&token, "\\1")>0)
+                if(idExtractor_oldManual.Replace(&token, "\\1") > 0)
                   id = token;
               }
+            }
             if(!id.IsEmpty())
             {
               // anchorless tokens begin with "index-"
@@ -290,7 +292,7 @@ wxDirTraverseResult MaximaManual::GetHTMLFiles::OnFile(const wxString& filename)
 {
   wxFileName newItemName(filename);
   wxString newItem = m_prefix + wxFileName::GetPathSeparator() + newItemName.GetFullName();
-  newItem.Replace(wxFileName::GetPathSeparator(),"/");
+  newItem.Replace(wxFileName::GetPathSeparator(), "/");
   if(newItem.EndsWith(".html") && (m_files.Index(newItem) == wxNOT_FOUND))
     m_files.Add(newItem);
   return wxDIR_CONTINUE;
@@ -306,7 +308,7 @@ wxDirTraverseResult MaximaManual::GetHTMLFiles_Recursive::OnFile(const wxString&
   wxFileName newItemName(filename);
   newItemName.MakeAbsolute();
   wxString newItem = newItemName.GetFullPath();
-  newItem.Replace(wxFileName::GetPathSeparator(),"/");
+  newItem.Replace(wxFileName::GetPathSeparator(), "/");
   if(newItem.EndsWith(".html") && (m_files.Index(newItem) == wxNOT_FOUND))
     m_files.Add(newItem);
   return wxDIR_CONTINUE;
@@ -533,10 +535,10 @@ void MaximaManual::FindMaximaHtmlDir(wxString docDir)
   // Cygwin uses /c/something instead of c:/something and passes this path to the
   // web browser - which doesn't support cygwin paths => convert the path to a
   // native windows pathname if needed.
-  if(headerFile.Length()>1 && headerFile[1]==wxT('/'))
+  if(headerFile.Length() > 1 && headerFile[1] == wxT('/'))
   {
-    headerFile[1]=headerFile[2];
-    headerFile[2]=wxT(':');
+    headerFile[1] = headerFile[2];
+    headerFile[2] = wxT(':');
   }
 #endif // __CYGWIN__
   wxPathList helpfilepaths;
@@ -561,7 +563,6 @@ void MaximaManual::FindMaximaHtmlDir(wxString docDir)
   {
     m_maximaHtmlDir.clear();
     wxLogMessage(_("Didn't find the maxima HTML manual."));
-    
   }
 }
 

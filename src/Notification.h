@@ -56,8 +56,8 @@ public:
   //! A constructor that completely prepares the notification, but doesn't call Show() yet.
   explicit Notification(const wxString &title,
                         const wxString &message = {},
-                        wxWindow *parent=NULL,
-                        int flags=wxICON_INFORMATION);
+                        wxWindow *parent = NULL,
+                        int flags = wxICON_INFORMATION);
   //! A destructor that also closes the notification
   ~Notification() override { Notification::Close(); }
   //! Informs the notification which the main window is it notified for.
