@@ -65,16 +65,20 @@ wxString MaximaManual::GetHelpfileAnchorName(wxString keyword)
 }
 void MaximaManual::WaitForBackgroundProcess()
 {
+  unsigned long nestedWaits = m_nestedBackgroundProcessWaits;
+  m_nestedBackgroundProcessWaits++;
+
   if(!m_helpFileAnchorsThreadActive.try_lock())
   {
     wxBusyCursor crs;
     wxWindowDisabler disableAll;
     wxBusyInfo wait(_("Please wait while wxMaxima parses the maxima manual"));
+    wxLogNull suppressRecursiveYieldWarning;
     while(!m_helpFileAnchorsThreadActive.try_lock())
     {
       wxMilliSleep(100);
-      wxLogNull suppressRecursiveYieldWarning;
-      wxTheApp->SafeYield(NULL, false);
+      if(nestedWaits == 0)
+        wxTheApp->SafeYield(NULL, false);
     }
   }
   if(m_helpfileanchorsThread)
@@ -82,6 +86,7 @@ void MaximaManual::WaitForBackgroundProcess()
     m_helpfileanchorsThread->join();
     m_helpfileanchorsThread.reset();
   }
+  m_nestedBackgroundProcessWaits--;
   m_helpFileAnchorsThreadActive.unlock();
 }
 

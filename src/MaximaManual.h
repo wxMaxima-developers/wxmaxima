@@ -124,6 +124,7 @@ private:
   HelpFileAnchors m_helpFileAnchors;
   wxString m_maximaHtmlDir;
   wxString m_maximaVersion;
+  unsigned long m_nestedBackgroundProcessWaits = 0;
 };
 
 #endif // MAXIMAMANUAL_H
