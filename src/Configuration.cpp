@@ -40,6 +40,10 @@
 #include <wx/txtstrm.h>
 #include <wx/mstream.h>
 #include <wx/xml/xml.h>
+#include <wx/webview.h>
+#ifdef __WXMSW__
+#include <wx/msw/webview_ie.h>
+#endif
 
 Configuration::Configuration(wxDC *dc, InitOpt options) :
   m_dc(dc)
