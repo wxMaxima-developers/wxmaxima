@@ -8,4 +8,4 @@ jobs:
     - uses: actions/checkout@v1
     - uses: actions/setup-python@v4
     - run: pip install cpplint
-    - run: cpplint --filter="-whitespace/end_of_line,-whitespace/braces,-whitespace/line_length,-whitespace/parens,-whitespace/comments,-whitespace/newline" --recursive .
+    - run: cpplint --filter="-whitespace/end_of_line,-whitespace/braces,-whitespace/line_length,-whitespace/parens,-whitespace/comments,-whitespace/newline,-runtime/int,-build/header_guard,-build/include_subdir,-build/c++11,-whitespace/indent,-readability/inheritance" --recursive .

@@ -30,8 +30,6 @@
 #ifndef AUTOCOMPLETE_H
 #define AUTOCOMPLETE_H
 
-#include "Configuration.h"
-#include "precomp.h"
 #include <thread>
 #include <memory>
 #include <wx/wx.h>
@@ -41,6 +39,8 @@
 #include <wx/filename.h>
 #include <vector>
 #include <wx/hashmap.h>
+#include "Configuration.h"
+#include "precomp.h"
 
 /* The autocompletion logic
 
@@ -149,7 +149,7 @@ private:
       {
         wxFileName newItemName(dirname);
         wxString newItem = "\"" + m_prefix + newItemName.GetFullName() + "/\"";
-        newItem.Replace(wxFileName::GetPathSeparator(),"/");
+        newItem.Replace(wxFileName::GetPathSeparator(), "/");
         if(m_files.Index(newItem) == wxNOT_FOUND)
           m_files.Add(newItem);
         return wxDIR_IGNORE;
@@ -166,7 +166,7 @@ private:
   public:
     explicit GetMacFiles_includingSubdirs(wxArrayString& files, wxString prefix = wxEmptyString) :
       m_files(files), m_prefix(prefix)  { }
-    virtual wxDirTraverseResult OnFile(const wxString& filename) override
+    wxDirTraverseResult OnFile(const wxString& filename) override
       {
         if(
           (filename.EndsWith(".mac"))||
@@ -176,13 +176,13 @@ private:
         {
           wxFileName newItemName(filename);
           wxString newItem = "\"" + m_prefix + newItemName.GetName() + "\"";
-          newItem.Replace(wxFileName::GetPathSeparator(),"/");
+          newItem.Replace(wxFileName::GetPathSeparator(), "/");
           if(m_files.Index(newItem) == wxNOT_FOUND)
             m_files.Add(newItem);
         }
         return wxDIR_CONTINUE;
       }
-    virtual wxDirTraverseResult OnDir(const wxString& dirname) override
+    wxDirTraverseResult OnDir(const wxString& dirname) override
       {
         if((dirname.EndsWith(".git")) ||
            (dirname.EndsWith("/share/share")) ||
@@ -206,11 +206,11 @@ private:
   public:
     explicit GetMacFiles(wxArrayString& files, wxString prefix = wxEmptyString) :
       GetMacFiles_includingSubdirs(files, prefix){ }
-    virtual wxDirTraverseResult OnDir(const wxString& dirname) override
+    wxDirTraverseResult OnDir(const wxString& dirname) override
       {
         wxFileName newItemName(dirname);
         wxString newItem = "\"" + m_prefix + newItemName.GetFullName() + "/\"";
-        newItem.Replace(wxFileName::GetPathSeparator(),"/");
+        newItem.Replace(wxFileName::GetPathSeparator(), "/");
         if(m_files.Index(newItem) == wxNOT_FOUND)
           m_files.Add(newItem);
         return wxDIR_IGNORE;
@@ -223,19 +223,19 @@ private:
   public:
     explicit GetDemoFiles_includingSubdirs(wxArrayString& files, wxString prefix = wxEmptyString) :
       m_files(files), m_prefix(prefix) { }
-    virtual wxDirTraverseResult OnFile(const wxString& filename) override
+    wxDirTraverseResult OnFile(const wxString& filename) override
       {
         if(filename.EndsWith(".dem"))
         {
           wxFileName newItemName(filename);
           wxString newItem = "\"" + m_prefix + newItemName.GetName() + "\"";
-          newItem.Replace(wxFileName::GetPathSeparator(),"/");
+          newItem.Replace(wxFileName::GetPathSeparator(), "/");
           if(m_files.Index(newItem) == wxNOT_FOUND)
             m_files.Add(newItem);
         }
         return wxDIR_CONTINUE;
       }
-    virtual wxDirTraverseResult OnDir(const wxString& dirname) override
+    wxDirTraverseResult OnDir(const wxString& dirname) override
       {
         if((dirname.EndsWith(".git")) ||
            (dirname.EndsWith("/share/share")) ||
