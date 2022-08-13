@@ -79,8 +79,8 @@ bool Maxima::Write(const void *buffer, size_t length)
   m_socket->Write(buffer, length);
   if (m_socket->Error() && m_socket->LastError() != wxSOCKET_WOULDBLOCK)
   {
-    MaximaEvent event(MaximaEvent::WRITE_ERROR, this);
-    ProcessEvent(event);
+    MaximaEvent *event = new MaximaEvent(MaximaEvent::WRITE_ERROR, this);
+    QueueEvent(event);
     m_socketOutputData.Clear();
     return true;
   }
@@ -117,14 +117,14 @@ void Maxima::SocketEvent(wxSocketEvent &event)
   case wxSOCKET_OUTPUT:
     if (Write(nullptr, 0))
     {
-      MaximaEvent discEvent(MaximaEvent::WRITE_PENDING, this);
-      ProcessEvent(discEvent);
+      MaximaEvent *discEvent = new MaximaEvent(MaximaEvent::WRITE_PENDING, this);
+      QueueEvent(discEvent);
     }
     break;
   case wxSOCKET_LOST:
   {
-    MaximaEvent discEvent(MaximaEvent::DISCONNECTED, this);
-    ProcessEvent(discEvent);
+    MaximaEvent *discEvent = new MaximaEvent(MaximaEvent::DISCONNECTED, this);
+    QueueEvent(discEvent);
     break;
   }
   case wxSOCKET_CONNECTION:
@@ -137,8 +137,8 @@ void Maxima::TimerEvent(wxTimerEvent &event)
 {
   if (&event.GetTimer() == &m_stringEndTimer)
   {
-    MaximaEvent sendevent(MaximaEvent::READ_TIMEOUT, this, std::move(m_socketInputData));
-    ProcessEvent(sendevent);
+    MaximaEvent *sendevent = new MaximaEvent(MaximaEvent::READ_TIMEOUT, this, std::move(m_socketInputData));
+    QueueEvent(sendevent);
   }
   else if (&event.GetTimer() == &m_readIdleTimer)
   {
@@ -168,8 +168,8 @@ void Maxima::ReadSocket()
       // so it's best to play it safe and trigger a "continuation" read anyway.
       // The 16 byte "margin of safety" is probably unnecessary but at least it'd protect
       // against platform-specific off-by-one errors.
-      MaximaEvent event(MaximaEvent::READ_PENDING, this);
-      ProcessEvent(event);
+      MaximaEvent *event = new MaximaEvent(MaximaEvent::READ_PENDING, this);
+      QueueEvent(event);
       CallAfter(&Maxima::ReadSocket);
       return; // Don't process pending data further
     }
@@ -183,8 +183,8 @@ void Maxima::ReadSocket()
   if (m_first || wxm::EndsWithChar(m_socketInputData, '\n') || m_socketInputData.EndsWith(wxMaxima::m_promptSuffix))
   {
     m_stringEndTimer.Stop();
-    MaximaEvent event(MaximaEvent::READ_DATA, this, std::move(m_socketInputData));
-    ProcessEvent(event);
+    MaximaEvent *event = new MaximaEvent(MaximaEvent::READ_DATA, this, std::move(m_socketInputData));
+    QueueEvent(event);
   }
   else
     m_stringEndTimer.StartOnce(STRING_END_TIMEOUT);
