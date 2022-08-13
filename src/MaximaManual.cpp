@@ -77,8 +77,10 @@ void MaximaManual::WaitForBackgroundProcess()
     while(!m_helpFileAnchorsThreadActive.try_lock())
     {
       wxMilliSleep(100);
+#if wxCHECK_VERSION(3, 0, 5)
       if(nestedWaits == 0)
         wxTheApp->SafeYield(NULL, false);
+#endif
     }
   }
   if(m_helpfileanchorsThread)
