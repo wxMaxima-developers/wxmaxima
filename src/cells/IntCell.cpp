@@ -32,7 +32,7 @@
 #include "CellImpl.h"
 #include "TextCell.h"
 #include <memory>
-#include <utilit>
+#include <utility>
 
 #if defined __WXMSW__
 #define INTEGRAL_TOP "\xF3"
