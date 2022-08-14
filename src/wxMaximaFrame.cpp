@@ -32,6 +32,8 @@
 */
 #include "wxMaximaFrame.h"
 #include "Dirstructure.h"
+#include <string>
+#include <memory>
 
 #include "CharButton.h"
 #include "Gen1Wiz.h"

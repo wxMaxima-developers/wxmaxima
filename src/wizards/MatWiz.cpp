@@ -119,7 +119,6 @@ wxString MatWiz::GetValue() {
   for (int i = 0; i < m_height; i++) {
     cmd += wxT("\n [");
     for (int j = 0; j < m_width; j++) {
-
       if (m_matrixType == MATRIX_SYMMETRIC && i > j)
         cmd += m_inputs[j * m_width + i]->GetValue();
       else if (m_matrixType == MATRIX_ANTISYMMETRIC && i > j)

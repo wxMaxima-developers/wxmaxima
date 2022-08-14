@@ -43,7 +43,6 @@
 class CsvImportWiz : public wxDialog
 {
 public:
-
   CsvImportWiz(wxWindow *parent, Configuration *config);
   ~CsvImportWiz();
   wxString GetFilename(){return m_filename->GetValue();}
@@ -60,7 +59,6 @@ private:
 class CsvExportWiz : public wxDialog
 {
 public:
-
   CsvExportWiz(wxWindow *parent, Configuration *config, wxString objectType);
   ~CsvExportWiz();
   wxString GetFilename(){return m_filename->GetValue();}

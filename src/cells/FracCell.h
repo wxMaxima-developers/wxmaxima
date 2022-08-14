@@ -29,6 +29,7 @@
 #ifndef FRACCELL_H
 #define FRACCELL_H
 
+#include <memory>
 #include "Cell.h"
 #include "TextCell.h"
 #include "ParenCell.h"

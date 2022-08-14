@@ -29,6 +29,8 @@
 
 #include "FracCell.h"
 #include "CellImpl.h"
+#include <utility>
+#include <memory>
 
 #define FRAC_DEC 1
 

@@ -31,6 +31,8 @@
 #include "FunCell.h"
 #include "CellImpl.h"
 #include "TextCell.h"
+#include <utility>
+#include <memory>
 
 FunCell::FunCell(GroupCell *group, Configuration *config,
                  std::unique_ptr<Cell> &&name, std::unique_ptr<Cell> &&arg)
@@ -70,7 +72,6 @@ void FunCell::Recalculate(AFontSize fontsize) {
 void FunCell::Draw(wxPoint point) {
   Cell::Draw(point);
   if (DrawThisCell(point)) {
-
     wxPoint name(point), arg(point);
     m_nameCell->DrawList(name);
 

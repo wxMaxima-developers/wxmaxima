@@ -31,6 +31,8 @@
 #include "IntCell.h"
 #include "CellImpl.h"
 #include "TextCell.h"
+#include <memory>
+#include <utilit>
 
 #if defined __WXMSW__
 #define INTEGRAL_TOP "\xF3"

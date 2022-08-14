@@ -37,6 +37,8 @@
 #if defined __WXMSW__
 //#include <wchar.h>
 #endif
+#include <utility>
+#include <vector>
 #include "ActualValuesStorageWiz.h"
 #include "AnimationCell.h"
 #include "BC2Wiz.h"
@@ -1706,7 +1708,6 @@ wxMaxima::~wxMaxima() {
 
 bool MyDropTarget::OnDropFiles(wxCoord WXUNUSED(x), wxCoord WXUNUSED(y),
                                const wxArrayString &files) {
-
   if (files.GetCount() != 1)
     return true;
 
@@ -1956,7 +1957,7 @@ TextCell *wxMaxima::DoRawConsoleAppend(wxString s, CellType type,
         if (tokens.HasMoreTokens())
           cell->SetBigSkip(false);
 
-        auto breakLine = bool(tree);
+        auto breakLine = static_cast<bool>(tree);
         tree.Append(std::move(owned));
         if (breakLine)
           tree.GetLastAppended()->ForceBreakLine(true);
@@ -2442,7 +2443,7 @@ void wxMaxima::Interrupt(wxCommandEvent &WXUNUSED(event)) {
 
       // Set the bit for the SIGINT handler
       int value = (1 << (wxSIGINT));
-      volatile int *sharedMemoryContents = (int *)(sharedMemoryAddress);
+      volatile int *sharedMemoryContents = reinterpret_cast<int *>(sharedMemoryAddress);
       *sharedMemoryContents = *sharedMemoryContents | value;
       wxLogMessage(_("Sending an interrupt signal to Maxima."));
       UnmapViewOfFile(sharedMemoryAddress);
@@ -3546,7 +3547,6 @@ bool wxMaxima::QueryVariableValue() {
     return false;
 
   if (m_varNamesToQuery.GetCount() > 0) {
-
     SendMaxima(wxT(":lisp-quiet (wx-query-variable \"") +
                m_varNamesToQuery.Last() + wxT("\")\n"));
     m_varNamesToQuery.RemoveAt(m_varNamesToQuery.GetCount() - 1);
@@ -4141,7 +4141,7 @@ bool wxMaxima::OpenWXMXFile(const wxString &file, Worksheet *document,
     long int zoom = 100;
     if (!(doczoom.ToLong(&zoom)))
       zoom = 100;
-    document->SetZoomFactor(double(zoom) / 100.0,
+    document->SetZoomFactor(static_cast<double>(zoom) / 100.0,
                             false); // Set zoom if opening, don't recalculate
   }
 
@@ -4182,8 +4182,8 @@ bool wxMaxima::OpenWXMXFile(const wxString &file, Worksheet *document,
 bool wxMaxima::CheckWXMXVersion(const wxString &docversion) {
   double version = 1.0;
   if (docversion.ToDouble(&version)) {
-    int version_major = int(version);
-    int version_minor = int(10 * (version - double(version_major)));
+    int version_major = static_cast<int>(version);
+    int version_minor = static_cast<int>(10 * (version - static_cast<double>(version_major)));
 
     if (version_major > DOCUMENT_VERSION_MAJOR) {
       LoggingMessageBox(_("Document was saved using a newer version of "
@@ -5069,7 +5069,6 @@ void wxMaxima::UpdateToolBar() {
   bool canEvaluateNext = ((editor != NULL) && (editor->GetStyle() == TS_INPUT));
 
   if (!canEvaluateNext) {
-
     if (m_worksheet->HCaretActive()) {
       GroupCell *group = m_worksheet->GetHCaret();
       if (group == NULL)
@@ -5252,7 +5251,6 @@ bool wxMaxima::OpenFile(const wxString &file, const wxString &command) {
 			    m_worksheet->m_evaluationQueue.CommandsLeftInCell());
       TriggerEvaluation();
     }
-
   } else
     RightStatusText(_("File could not be opened"));
 
@@ -5543,7 +5541,6 @@ long long wxMaxima::GetMaximaCpuTime() {
 }
 
 double wxMaxima::GetMaximaCPUPercentage() {
-
   int CpuJiffies = GetTotalCpuTime();
   if (CpuJiffies < 0)
     return -1;
@@ -5563,7 +5560,7 @@ double wxMaxima::GetMaximaCPUPercentage() {
   if (maximaJiffies < 0)
     return -1;
 
-  double retval = (double)(maximaJiffies - m_maximaJiffies_old) /
+  double retval = static_cast<double>(maximaJiffies - m_maximaJiffies_old) /
     (CpuJiffies - m_cpuTotalJiffies_old) * 100;
 
   m_maximaJiffies_old = maximaJiffies;

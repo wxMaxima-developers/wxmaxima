@@ -30,6 +30,8 @@
 #ifndef GROUPCELL_H
 #define GROUPCELL_H
 
+#include <utility>
+#include <memory>
 #include "Cell.h"
 #include "EditorCell.h"
 

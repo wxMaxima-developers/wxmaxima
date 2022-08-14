@@ -418,7 +418,7 @@ public:
 
   bool ErrorIndexSet() const {return m_errorIndex >= 0;}
 
-  void GotoError(){SetCaretPosition(m_errorIndex);ActivateCursor();}
+  void GotoError(){SetCaretPosition(m_errorIndex); ActivateCursor();}
 
   //! Start a new line and optionally auto-indent it.
   void ProcessNewline(bool keepCursorAtStartOfLine = true);

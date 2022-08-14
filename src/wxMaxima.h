@@ -31,6 +31,7 @@
 #ifndef WXMAXIMA_H
 #define WXMAXIMA_H
 
+#include <vector>
 #include "wxMaximaFrame.h"
 #include "MathParser.h"
 #include "MaximaIPC.h"
@@ -80,7 +81,6 @@ class MaximaEvent;
 class wxMaxima : public wxMaximaFrame
 {
 public:
-
   wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString title,
            const wxString &filename = wxEmptyString,
            const wxPoint pos = wxDefaultPosition, const wxSize size = wxDefaultSize);
@@ -229,7 +229,7 @@ private:
 
     If text doesn't contain any error this function returns wxEmptyString
   */
-  wxString GetUnmatchedParenthesisState(wxString text,int &index);
+  wxString GetUnmatchedParenthesisState(wxString text, int &index);
   //! The buffer all text from maxima is stored in before converting it to a wxString.
   wxMemoryBuffer m_uncompletedChars;
 
@@ -840,9 +840,6 @@ private:
 
   //! Starts a single-shot of m_autoSaveTimer.
   void StartAutoSaveTimer();
-
-
-
 };
 
 #if wxUSE_DRAG_AND_DROP

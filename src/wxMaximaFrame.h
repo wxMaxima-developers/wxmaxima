@@ -89,7 +89,6 @@ public:
   */
   enum Event
   {
-
     /*! Hide all panes
       
       This event is assigned an ID higher than the highest ID wxWidgets assigns to 

@@ -283,18 +283,18 @@ constexpr struct trivial_init_t{} trivial_init{};
 #ifndef STX_HAVE_IN_PLACE_T
 
 struct in_place_t {
-    explicit in_place_t() = default;
+    in_place_t() = default;
 };
 
 constexpr in_place_t in_place{};
 
 template <class T> struct in_place_type_t {
-    explicit in_place_type_t() = default;
+    in_place_type_t() = default;
 };
 
 
 template <size_t I> struct in_place_index_t {
-    explicit in_place_index_t() = default;
+    in_place_index_t() = default;
 };
 
 

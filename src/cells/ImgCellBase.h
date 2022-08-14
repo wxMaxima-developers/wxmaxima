@@ -23,6 +23,7 @@
 #ifndef IMGCELLBASE_H
 #define IMGCELLBASE_H
 
+#include <memory>
 #include "Cell.h"
 #include <wx/image.h>
 #include "Image.h"

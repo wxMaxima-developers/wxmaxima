@@ -36,6 +36,7 @@
 #include "CellImpl.h"
 #include "CellPointers.h"
 #include "StringUtils.h"
+#include <memory>
 #include <wx/clipbrd.h>
 #include <wx/file.h>
 #include <wx/filename.h>

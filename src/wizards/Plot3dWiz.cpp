@@ -334,7 +334,6 @@ wxString Plot3DWiz::GetValue() {
   s += text_ctrl_2->GetValue();
   s += wxT(",") + text_ctrl_3->GetValue();
   s += wxT(",") + text_ctrl_4->GetValue();
-  ;
   s += wxT("], [");
   s += text_ctrl_5->GetValue();
   s += wxT(",") + text_ctrl_6->GetValue();

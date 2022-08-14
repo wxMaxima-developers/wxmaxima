@@ -36,7 +36,7 @@
 class wxMathML
 {
 public:
-  wxMathML(Configuration *config);
+  explicit wxMathML(Configuration *config);
   wxString GetCmd();
 private:
   wxString m_wxMathML;

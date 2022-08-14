@@ -36,6 +36,7 @@
 #include "MarkDown.h"
 #include "wxMaxima.h"
 #include "wxMaximaFrame.h"
+#include <algorithm>
 #include <wx/clipbrd.h>
 #include <wx/regex.h>
 #include <wx/tokenzr.h>
@@ -317,14 +318,14 @@ wxString EditorCell::ToRTF() const {
 	  wxString::Format(wxT("\\cf%i "), static_cast<int>(textSnippet->GetStyle()));
         retval += RTFescape(textSnippet->GetText());
       } else {
-        retval += wxString::Format(wxT("\\cf%i "), (int)TS_DEFAULT);
+        retval += wxString::Format(wxT("\\cf%i "), static_cast<int>(TS_DEFAULT));
         retval += wxT("{") + RTFescape(textSnippet->GetText()) + wxT("}\n");
       }
       if (textSnippet->GetText().Contains(wxT("\n"))) {
         retval += wxT("\\pard\\s21\\li1105\\lin1105\\f0\\fs24 ");
       }
     }
-    retval += wxString::Format(wxT("\\cf%i "), (int)TS_DEFAULT);
+    retval += wxString::Format(wxT("\\cf%i "), static_cast<int>(TS_DEFAULT));
     break;
   }
   default:
@@ -1147,7 +1148,7 @@ bool EditorCell::HandleCtrlCommand(wxKeyEvent &ev) {
     ClearSelection();
     SaveValue();
     size_t end = EndOfLine(m_positionOfCaret);
-    if (end == (size_t)m_positionOfCaret)
+    if (end == static_cast<size_t>(m_positionOfCaret))
       end++;
     m_text = m_text.SubString(0, m_positionOfCaret - 1) +
       m_text.SubString(end, m_text.length());
@@ -1209,7 +1210,6 @@ void EditorCell::ProcessEvent(wxKeyEvent &event) {
 }
 
 int EditorCell::GetIndentDepth(wxString text, int positionOfCaret) {
-
   // Don't indent parenthesis that aren't part of code cells.
   if (m_type != MC_TYPE_INPUT)
     return 0;
@@ -2398,7 +2398,7 @@ int EditorCell::XYToPosition(int x, int y) {
     ++pos;
   }
 
-  while ((it < m_text.end()) && (pos < (int)m_text.Length()) && (col < x)) {
+  while ((it < m_text.end()) && (pos < static_cast<int>(m_text.Length())) && (col < x)) {
     if ((*it == '\n') || (*it == '\r'))
       break;
     ++pos;
@@ -3121,7 +3121,6 @@ void EditorCell::StyleTextCode() {
 }
 
 void EditorCell::StyleTextTexts() {
-
   // Remove all bullets of item lists as we will introduce them again in the
   // next step, as well.
   m_text.Replace(wxT("\u2022"), wxT("*"));
@@ -3196,7 +3195,6 @@ void EditorCell::StyleTextTexts() {
           // Spaces, newlines and reaching the end of the text all trigger
           // auto-wrapping
           if ((*it == ' ') || (nextChar >= m_text.end())) {
-
             // Determine the current line's length
             width = GetTextSize(m_text.SubString(lastLineStart, i)).GetWidth();
             // Determine the current indentation
@@ -3329,7 +3327,6 @@ void EditorCell::StyleTextTexts() {
       m_styledText.push_back(StyledText(line, 0, indentChar));
 
       if (it < m_text.end()) {
-
         // If the cell doesn't end with the last char of this line we have to
         // add a line ending to the list of styled text snippets
         if ((i + 1 < m_text.Length()) || (m_text[i] == wxT('\n'))) {
@@ -3515,7 +3512,6 @@ int EditorCell::ReplaceAll(wxString oldString, const wxString &newString,
 
 bool EditorCell::FindNext(wxString str, const bool &down,
                           const bool &ignoreCase) {
-
   // If the search string is empty we prepare everything for a new search
   if (str.IsEmpty()) {
     m_selectionStart = m_selectionEnd = -1;
@@ -3547,7 +3543,7 @@ bool EditorCell::FindNext(wxString str, const bool &down,
     // If the last search already has marked a match for our word we want
     // to search for the next match.
     if ((m_selectionStart >= 0) &&
-        ((size_t)abs(m_selectionStart - m_selectionEnd) == str.Length()) &&
+        (static_cast<size_t>(abs(m_selectionStart - m_selectionEnd)) == str.Length()) &&
         (text.Right(text.Length() - wxMin(m_selectionStart, m_selectionEnd))
 	 .StartsWith(str))) {
       if (down)
@@ -3660,7 +3656,6 @@ wxString EditorCell::GetSelectionString() const {
 }
 
 TextStyle EditorCell::GetSelectionStyle() const {
-
   long pos = 0;
 
   if (SelectionActive()) {

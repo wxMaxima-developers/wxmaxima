@@ -17,7 +17,6 @@
 #include <wx/radiobut.h>
 #include <wx/spinctrl.h>
 #include <wx/hashmap.h>
-#include <wx/string.h>
 #include <wx/tokenzr.h>
 #include <wx/colour.h>
 #include <wx/font.h>

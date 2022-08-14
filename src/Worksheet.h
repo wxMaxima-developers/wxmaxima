@@ -1246,7 +1246,8 @@ private:
     {
       if (!src) return std::unique_ptr<T_DEST>();
 
-      T_DEST *dest_ptr = &dynamic_cast<T_DEST &>(*src.get());
+      auto tmp = *src.get();
+      T_DEST *dest_ptr = &dynamic_cast<T_DEST &>(tmp);
 
       src.release();
       return std::move(std::unique_ptr<T_DEST>(dest_ptr));

@@ -23,7 +23,8 @@
 #ifndef CONJUGATECELL_H
 #define CONJUGATECELL_H
 
-#include<utility>
+#include <memory>
+#include <utility>
 #include "Cell.h"
 #include "TextCell.h"
 

@@ -29,6 +29,8 @@
 
 #include "ExptCell.h"
 #include "CellImpl.h"
+#include <utility>
+#include <memory>
 
 #define EXPT_DEC 2
 

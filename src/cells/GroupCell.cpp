@@ -30,8 +30,10 @@
   output from maxima that belongs to it.
 */
 
+#include <string>
+#include <memory>
+#include <utility>
 #include "GroupCell.h"
-
 #include "AnimationCell.h"
 #include "CellImpl.h"
 #include "CellList.h"
@@ -1121,12 +1123,11 @@ wxString GroupCell::ToTeXCodeCell(wxString imgDir, wxString filename,
     str += wxString::Format(
 			    "\n\n\\noindent\n%%%%%%%%%%%%%%%%\n%%%% "
 			    "INPUT:\n\\begin{minipage}[t]{%fem}\\color{red}\\bfseries\n",
-			    (double)m_configuration->GetLabelWidth() / 14) +
+			    static_cast<double>(m_configuration->GetLabelWidth() / 14)) +
       m_inputLabel->ToTeX() + wxString("\n\\end{minipage}");
     setlocale(LC_NUMERIC, saved_lc_numeric.c_str());
 
     if (m_inputLabel->GetNext()) {
-
       str += wxT("\n\\begin{minipage}[t]{\\textwidth}\\color{blue}\n") +
 	m_inputLabel->GetNext()->ToTeX() + "\n\\end{minipage}";
     }
@@ -1141,12 +1142,10 @@ wxString GroupCell::ToTeXCodeCell(wxString imgDir, wxString filename,
     bool mathMode = false;
 
     for (Cell &tmp : OnDrawList(m_output.get())) {
-
       if (tmp.GetType() == MC_TYPE_IMAGE || tmp.GetType() == MC_TYPE_SLIDE) {
         str << ToTeXImage(&tmp, imgDir, filename, imgCounter);
       } else {
         switch (tmp.GetStyle()) {
-
         case TS_LABEL:
         case TS_USERLABEL:
           if (mathMode)

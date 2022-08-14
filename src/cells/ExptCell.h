@@ -25,6 +25,8 @@
 
 #include "Cell.h"
 #include "TextCell.h"
+#include <memory>
+#include <utility>
 
 /*!\file
 

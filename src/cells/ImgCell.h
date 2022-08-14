@@ -27,6 +27,7 @@
 #include <wx/image.h>
 #include "Image.h"
 #include "ImgCellBase.h"
+#include <memory>
 
 #include <wx/filesys.h>
 #include <wx/fs_arc.h>
@@ -49,7 +50,7 @@ public:
 
   //! Tell the image which gnuplot files it was made from
   void GnuplotSource(wxString sourcefile, wxString datafile, std::shared_ptr<wxFileSystem> filesystem)
-    { if (m_image) m_image->GnuplotSource(sourcefile,datafile, filesystem); }
+    { if (m_image) m_image->GnuplotSource(sourcefile, datafile, filesystem); }
 
   //! The name of the file with gnuplot commands that created this file
   wxString GnuplotSource() const override
@@ -129,7 +130,7 @@ public:
 
   bool CanPopOut() const override { return !m_image->GnuplotSource().empty(); }
 
-private:
+private: xy   ccccccccccc
   void SetConfiguration(Configuration *config) override;
   void DrawBoundingBox(wxDC &WXUNUSED(dc), bool WXUNUSED(all) = false) override;
   int GetImageBorderWidth() const override { return m_imageBorderWidth; }
