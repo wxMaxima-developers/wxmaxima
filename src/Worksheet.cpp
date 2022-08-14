@@ -3869,32 +3869,33 @@ void Worksheet::OnCharNoActive(wxKeyEvent &event) {
             while ((tmp->GetPrevious()) &&
                    ((tmp->GetGroupType() != GC_TYPE_TITLE) &&
                     (tmp->GetGroupType() != GC_TYPE_SECTION) &&
-                    (tmp->GetGroupType() != GC_TYPE_SUBSECTION)))
+                    (tmp->GetGroupType() != GC_TYPE_SUBSECTION)));
+	      
 	      if (tmp->GetEditable())
 		SetHCaret(tmp);
-          } else {
-            if (m_hCaretPosition && m_hCaretPosition->GetEditable())
-              SelectEditable(tmp->GetEditable(), false);
-          }
-        } else
-          SetHCaret(m_cellPointers.m_selectionStart->GetGroup()->GetPrevious());
+	  } else {
+	    if (m_hCaretPosition && m_hCaretPosition->GetEditable())
+	      SelectEditable(tmp->GetEditable(), false);
+	  }
+	} else
+	  SetHCaret(m_cellPointers.m_selectionStart->GetGroup()->GetPrevious());
       } else if (m_hCaretPosition) {
-        if (event.CmdDown()) {
-          GroupCell *tmp = m_hCaretPosition;
-          if (tmp->GetPrevious()) {
-            do
-              tmp = tmp->GetPrevious();
-            while ((tmp->GetPrevious()) &&
-                   ((tmp->GetGroupType() != GC_TYPE_TITLE) &&
-                    (tmp->GetGroupType() != GC_TYPE_SECTION) &&
-                    (tmp->GetGroupType() != GC_TYPE_SUBSECTION)));
-            SetHCaret(tmp);
-          } else if (tmp->GetEditable())
-            SelectEditable(tmp->GetEditable(), false);
-        } else {
-          if (m_hCaretPosition->GetEditable())
-            SelectEditable(m_hCaretPosition->GetEditable(), false);
-        }
+	if (event.CmdDown()) {
+	  GroupCell *tmp = m_hCaretPosition;
+	  if (tmp->GetPrevious()) {
+	    do
+	      tmp = tmp->GetPrevious();
+	    while ((tmp->GetPrevious()) &&
+		   ((tmp->GetGroupType() != GC_TYPE_TITLE) &&
+		    (tmp->GetGroupType() != GC_TYPE_SECTION) &&
+		    (tmp->GetGroupType() != GC_TYPE_SUBSECTION)));
+	    SetHCaret(tmp);
+	  } else if (tmp->GetEditable())
+	    SelectEditable(tmp->GetEditable(), false);
+	} else {
+	  if (m_hCaretPosition->GetEditable())
+	    SelectEditable(m_hCaretPosition->GetEditable(), false);
+	}
       }
       //      This allows to use WXK_UP in order to move the cursorup from the
       //      worksheet to the toolbar. But a down key doesn't go back from the
