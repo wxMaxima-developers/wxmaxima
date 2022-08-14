@@ -206,7 +206,7 @@ public:
 
   long GetCellBracketWidth() const
   {
-    return (int) (GetZoomFactor() * 16);
+    return static_cast<int>(GetZoomFactor() * 16);
   }
 
   //! Hide brackets that are not under the pointer?
@@ -440,7 +440,7 @@ public:
 
   //! Do we want to indent all maths?
   bool IndentMaths() const {return m_indentMaths;}
-  void IndentMaths(bool indent){m_indentMaths=indent;}
+  void IndentMaths(bool indent){m_indentMaths = indent;}
   AFontSize GetFontSize(TextStyle st) const
   {
     if (st == TS_TEXT || st == TS_HEADING5 || st == TS_HEADING6 || st == TS_SUBSUBSECTION || st == TS_SUBSECTION || st == TS_SECTION || st == TS_TITLE)
@@ -715,7 +715,11 @@ public:
   void FixReorderedIndices(bool fix) { m_fixReorderedIndices = fix;}
 
   //! Returns the URL MathJaX can be found at.
-  wxString MathJaXURL() const {if(m_mathJaxURL_UseUser) return m_mathJaxURL; else return MathJaXURL_Auto();}
+  wxString MathJaXURL() const {
+    if(m_mathJaxURL_UseUser)
+      return m_mathJaxURL;
+    else
+      return MathJaXURL_Auto();}
   wxString MathJaXURL_User() const { return m_mathJaxURL;}
   bool MathJaXURL_UseUser() const { return m_mathJaxURL_UseUser;}
   void MathJaXURL_UseUser(bool useUser){m_mathJaxURL_UseUser = useUser;}

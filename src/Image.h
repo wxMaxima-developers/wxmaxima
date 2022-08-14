@@ -29,6 +29,7 @@
 #ifndef IMAGE_H
 #define IMAGE_H
 
+#include <memory>
 #include "precomp.h"
 #include "Cell.h"
 #include "Version.h"

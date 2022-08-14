@@ -43,6 +43,7 @@
 #include <wx/wfstream.h>
 #include <wx/wx.h>
 #include <wx/xml/xml.h>
+#include <algorithm>
 #ifdef __WXMSW__
 #include <wx/msw/webview_ie.h>
 #endif
@@ -118,7 +119,6 @@ wxSize Configuration::GetPPI() const {
       ppi = wxSize(72, 72);
 
     return ppi;
-    ;
   } else
     return m_ppi;
 }
@@ -562,7 +562,6 @@ void Configuration::ReadConfig() {
             headNode = headNode->GetNext();
           wxXmlNode *entry = headNode->GetChildren();
           while (entry) {
-
             if (entry->GetName() == wxT("hide")) {
               wxXmlNode *node = entry->GetChildren();
               if (node) {
@@ -1419,7 +1418,7 @@ void Configuration::WriteStyles(wxConfigBase *config) {
   config->Write(wxT("invertBackground"), m_invertBackground);
   config->Write("recentItems", m_recentItems);
   config->Write(wxT("undoLimit"), m_undoLimit);
-  config->Write(wxT("showLabelChoice"), (int)(m_showLabelChoice));
+  config->Write(wxT("showLabelChoice"), static_cast<int>(m_showLabelChoice));
   config->Write(wxT("printBrackets"), m_printBrackets);
   config->Write(wxT("autodetectMaxima"), m_autodetectMaxima);
   config->Write(wxT("parameters"), m_maximaParameters);
@@ -1451,7 +1450,7 @@ void Configuration::WriteStyles(wxConfigBase *config) {
   config->Write("offerKnownAnswers", m_offerKnownAnswers);
   config->Write("documentclass", m_documentclass);
   config->Write("documentclassoptions", m_documentclassOptions);
-  config->Write("HTMLequationFormat", (int)(m_htmlEquationFormat));
+  config->Write("HTMLequationFormat", static_cast<int>(m_htmlEquationFormat));
   config->Write("autosubscript", m_autoSubscript);
   config->Write(wxT("ZoomFactor"), m_zoomFactor);
   // Fonts

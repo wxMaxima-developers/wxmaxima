@@ -30,18 +30,17 @@
 #ifndef MAXIMAMANUAL_H
 #define MAXIMAMANUAL_H
 
-#include <wx/dir.h>
-#include "precomp.h"
 #include <thread>
 #include <mutex>
 #include <memory>
-#include <wx/wx.h>
+#include <vector>
 #include <wx/dir.h>
+#include <wx/wx.h>
 #include <wx/arrstr.h>
 #include <wx/regex.h>
 #include <wx/xml/xml.h>
 #include <wx/filename.h>
-#include <vector>
+#include "precomp.h"
 #include "Configuration.h"
 
 /* The autocompletion logic
@@ -55,7 +54,6 @@
  */
 class MaximaManual
 {
-
 public:
   explicit MaximaManual(Configuration *configuration);
   WX_DECLARE_STRING_HASH_MAP(wxString, HelpFileAnchors);

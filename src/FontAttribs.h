@@ -106,7 +106,8 @@ public:
 
   constexpr AFontSize() = default;
   constexpr explicit AFontSize(float size) : m_uSize(ToUSize(size)) {}
-  constexpr AFontSize(AFontSize minimum, double size) : m_uSize(std::max(minimum.m_uSize, ToUSize(float(size)))) {}
+  constexpr AFontSize(AFontSize minimum, double size) :
+    m_uSize(std::max(minimum.m_uSize, ToUSize(static_cast<float>(size)))) {}
   constexpr AFontSize(AFontSize minimum, AFontSize size) : m_uSize(std::max(minimum.m_uSize, size.m_uSize)) {}
   constexpr AFontSize(const AFontSize &o) = default;
 
@@ -156,7 +157,8 @@ constexpr double operator+(double offset, AFontSize size)   { return offset + si
 constexpr double operator+(AFontSize size, double offset)   { return size.Get() + offset; }
 constexpr double operator-(double offset, AFontSize size)   { return offset - size.Get(); }
 constexpr double operator-(AFontSize size, double offset)   { return size.Get() - offset; }
-constexpr AFontSize operator-=(AFontSize &size, double factor) { return size.Set(float(size - factor)), size; }
+constexpr AFontSize operator-=(AFontSize &size, double factor)
+{ return size.Set(static_cast<float>(size - factor)), size; }
 
 constexpr AFontSize::value_type AFontSize::ToUSize(float size)
 {
@@ -166,7 +168,7 @@ constexpr AFontSize::value_type AFontSize::ToUSize(float size)
 //! Get the numerical value suitable for passing to wxFont/wxFontInfo.
 constexpr auto AFontSize::GetForWX() const
 {
-#if wxCHECK_VERSION(3,1,2)
+#if wxCHECK_VERSION(3, 1, 2)
   return Get();
 #else
   return GetAsLong();

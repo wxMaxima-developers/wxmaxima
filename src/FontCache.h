@@ -27,6 +27,7 @@
 #include <wx/font.h>
 #include <functional>
 #include <list>
+#include <utility>
 #include <unordered_map>
 
 /*! \file

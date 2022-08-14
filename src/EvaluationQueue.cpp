@@ -186,6 +186,6 @@ wxString EvaluationQueue::GetCommand() {
       }
       m_userLabel = userLabel;
     }
-  };
+  }
   return retval;
 }

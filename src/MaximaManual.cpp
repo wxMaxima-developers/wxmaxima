@@ -241,7 +241,7 @@ void MaximaManual::CompileHelpFileAnchors() {
               // where xx is being the ascii code of the char.
               for (wxString::const_iterator it = escapeChars.begin();
                    it != escapeChars.end(); ++it)
-                token.Replace(wxString::Format("_00%02x", (char)*it), *it);
+                token.Replace(wxString::Format("_00%02x", static_cast<char>(*it)), *it);
               // What the g_t means I don't know. But we don't need it
               if (token.StartsWith("g_t"))
                 token = token.Right(token.Length() - 3);

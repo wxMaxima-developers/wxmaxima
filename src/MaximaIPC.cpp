@@ -20,14 +20,15 @@
 //
 //  SPDX-License-Identifier: GPL-2.0+
 
-#include "MaximaIPC.h"
-#include "wxMaxima.h"
+#include <utility>
 #include <memory>
 #include <vector>
 #include <wx/event.h>
 #include <wx/hashmap.h>
 #include <wx/sstream.h>
 #include <wx/xml/xml.h>
+#include "MaximaIPC.h"
+#include "wxMaxima.h"
 
 bool MaximaIPC::m_enabled;
 

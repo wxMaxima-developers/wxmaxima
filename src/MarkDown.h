@@ -75,14 +75,14 @@ public:
     { return regexReplaceList; }
 
 private:
-  virtual wxString itemizeBegin()=0;      //!< The marker for the begin of an item list
-  virtual wxString itemizeEnd()=0;        //!< The marker for the end of an item list
-  virtual wxString quoteChar()=0;         //!< The marker for a quote
-  virtual wxString quoteBegin()=0;        //!< The marker that says we want to start quote
-  virtual wxString quoteEnd()=0;        //!< The marker that says we want to end quote
-  virtual wxString itemizeItem()=0;       //!< The marker for the begin of an item
-  virtual wxString itemizeEndItem()=0;    //!< The marker for the end of an item
-  virtual wxString NewLine()=0;           //!< The marker for the beginning of a new line
+  virtual wxString itemizeBegin() = 0;      //!< The marker for the begin of an item list
+  virtual wxString itemizeEnd() = 0;        //!< The marker for the end of an item list
+  virtual wxString quoteChar() = 0;         //!< The marker for a quote
+  virtual wxString quoteBegin() = 0;        //!< The marker that says we want to start quote
+  virtual wxString quoteEnd() = 0;        //!< The marker that says we want to end quote
+  virtual wxString itemizeItem() = 0;       //!< The marker for the begin of an item
+  virtual wxString itemizeEndItem() = 0;    //!< The marker for the end of an item
+  virtual wxString NewLine() = 0;           //!< The marker for the beginning of a new line
 };
 
 //! A markdown parser for TeX
@@ -115,7 +115,6 @@ private:
 
   virtual wxString NewLine() override
   { return wxT("\n\n"); }
-
 };
 
 //! A markdown parser for HTML

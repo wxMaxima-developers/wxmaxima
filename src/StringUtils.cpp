@@ -51,9 +51,10 @@
 //
 //  SPDX-License-Identifier: wxWindows
 
+#include <iterator>
+#include <utility>
 #include "StringUtils.h"
 
-#include <iterator>
 
 namespace wxm {
 

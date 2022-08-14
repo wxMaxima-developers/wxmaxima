@@ -87,9 +87,9 @@ class EnumWrapper {
 
 public:
   constexpr EnumWrapper() = default;
-  constexpr EnumWrapper(Storage) = delete;
+  explicit constexpr EnumWrapper(Storage) = delete;
   // cppcheck-suppress noExplicitConstructor
-  constexpr EnumWrapper(Enum value) noexcept : value(value) {}
+  explicit constexpr EnumWrapper(Enum value) noexcept : value(value) {}
   constexpr operator Enum() const noexcept { return Enum(value); }
   constexpr operator Storage() const = delete;
   constexpr size_t hash() const { return std::hash<Storage>()(value); }
@@ -101,10 +101,10 @@ public:
 };
 
 template <typename E, typename S, E defVal>
-constexpr bool operator==(E a, EnumWrapper<E,S,defVal> b) { return b == a;  }
+constexpr bool operator==(E a, EnumWrapper<E, S, defVal> b) { return b == a;  }
 
 template <typename E, typename S, E defVal>
-constexpr bool operator!=(E a, EnumWrapper<E,S,defVal> b) { return b != a;  }
+constexpr bool operator!=(E a, EnumWrapper<E, S, defVal> b) { return b != a;  }
 
 namespace std {
 
@@ -116,6 +116,6 @@ struct hash<EnumWrapper<Enum, Storage, defaultValue>> {
   }
 };
 
-}
+} // namespace std
 
 #endif

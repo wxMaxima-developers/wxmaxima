@@ -27,10 +27,10 @@
   Structure is the class that serves as the Table-Of-Contents sidebar.
 */
 
-#include "TableOfContents.h"
-
 #include <list>
+#include <memory>
 #include <wx/sizer.h>
+#include "TableOfContents.h"
 
 TableOfContents::TableOfContents(wxWindow *parent, int id,
                                  Configuration *config,
@@ -447,7 +447,6 @@ void TableOfContents::OnMouseRightDown(wxListEvent &event) {
   m_cellRightClickedOn = m_structure[event.GetIndex()];
 
   if (m_cellRightClickedOn != NULL) {
-
     if (m_cellRightClickedOn->GetHiddenTree())
       popupMenu->Append(popid_Unfold, _("Unhide"), wxEmptyString,
                         wxITEM_NORMAL);

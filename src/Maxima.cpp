@@ -22,6 +22,7 @@
 //
 //  SPDX-License-Identifier: GPL-2.0+
 
+#include <utility>
 #include "Maxima.h"
 #include "wxMaxima.h"
 #include <iostream>

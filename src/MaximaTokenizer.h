@@ -23,14 +23,15 @@
 #ifndef MAXIMATOKENIZER_H
 #define MAXIMATOKENIZER_H
 
-#include "precomp.h"
+#include <utility>
+#include <vector>
+#include <memory>
 #include <wx/wx.h>
 #include <wx/string.h>
 #include <wx/arrstr.h>
+#include "precomp.h"
 #include "TextStyle.h"
 #include "Configuration.h"
-#include <vector>
-#include <memory>
 
 /*!\file
 

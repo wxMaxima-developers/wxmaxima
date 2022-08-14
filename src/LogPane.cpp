@@ -21,6 +21,7 @@
 //  SPDX-License-Identifier: GPL-2.0+
 
 #include "LogPane.h"
+#include <memory>
 LogPane::LogPane(wxWindow *parent, wxWindowID id, bool becomeLogTarget)
     : wxPanel(parent, id) {
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);

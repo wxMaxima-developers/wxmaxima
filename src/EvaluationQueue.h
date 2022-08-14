@@ -36,12 +36,12 @@ that still have to be sent to maxima.
 #include "GroupCell.h"
 #include <wx/arrstr.h>
 #include <vector>
+#include <utility>
 
 //! A simple FIFO queue with manual removal of elements
 class EvaluationQueue
 {
 private:
-
   class Command{
   public:
     Command(const wxString &string, int index) : m_indexStart(index), m_command(string) {}

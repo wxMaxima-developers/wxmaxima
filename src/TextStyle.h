@@ -235,7 +235,8 @@ public:
   //! Sets font-face and size only properties based on another style (not attributes like bold, etc.)
   did_change SetFontFaceAndSizeFrom(const Style&);
 
-  constexpr static bool IsFractionalFontSizeSupported() { return wxCHECK_VERSION(3,1,2); } //-V686 //-V501
+  constexpr static bool IsFractionalFontSizeSupported() {
+    return wxCHECK_VERSION(3, 1, 2); } //-V686 //-V501
   static AFontSize GetFontSize(const wxFont &);
   static void SetFontSize(wxFont &, AFontSize fontSize);
 
@@ -269,7 +270,7 @@ private:
     Data() : underlined(false), strikethrough(false), isNotOK(false) {}
     static constexpr enum class NotOK_t {} NotOK = {};
     // cppcheck-suppress noExplicitConstructor
-    Data(NotOK_t) : underlined(false), strikethrough(false), isNotOK(true) {}
+    explicit Data(NotOK_t) : underlined(false), strikethrough(false), isNotOK(true) {}
   } m;
   static_assert(sizeof(Data) <= 40,
                 "Style::Data is misaligned and grew too big.");

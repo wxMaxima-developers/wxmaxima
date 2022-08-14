@@ -27,6 +27,8 @@
   Maxima.
 */
 
+#include <utility>
+#include <memory>
 #include <wx/config.h>
 #include <wx/intl.h>
 #include <wx/sstream.h>
@@ -1198,7 +1200,6 @@ std::unique_ptr<Cell> MathParser::ParseLine(wxString s, CellType style) {
   m_graphRegex.Replace(&s, wxT("\uFFFD"));
 
   if (((long)s.Length() < showLength) || (showLength == 0)) {
-
     wxXmlDocument xml;
 
     wxStringInputStream xmlStream(s);

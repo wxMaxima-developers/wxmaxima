@@ -29,6 +29,7 @@ The header file for the xml cell parser
 #ifndef MATHPARSER_H
 #define MATHPARSER_H
 
+#include <memory>
 #include "precomp.h"
 #include <wx/xml/xml.h>
 

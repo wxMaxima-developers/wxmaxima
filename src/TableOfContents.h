@@ -25,14 +25,15 @@
   This file contains the definition of the class TableOfContents that handles the 
   table of contents pane.
  */
-#include "precomp.h"
-#include "Configuration.h"
-#include "RegexCtrl.h"
+#include <memory>
 #include <wx/wx.h>
 #include <wx/timer.h>
 #include <wx/listctrl.h>
 #include <wx/dragimag.h>
 #include <vector>
+#include "precomp.h"
+#include "Configuration.h"
+#include "RegexCtrl.h"
 #include "GroupCell.h"
 
 #ifndef TABLEOFCONTENTS_H

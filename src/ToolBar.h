@@ -63,7 +63,7 @@ public:
   };
 
   wxBitmap GetBitmap(wxString name,
-                     unsigned char *data, size_t len, wxSize siz = wxSize(-1,-1));
+                     unsigned char *data, size_t len, wxSize siz = wxSize(-1, -1));
 
   virtual ~ToolBar();
 
@@ -245,41 +245,41 @@ public:
   wxBitmap GetEvalRestBitmap(wxSize siz = wxSize(-1, -1));
   wxBitmap GetHideCodeBitmap(wxSize siz = wxSize(-1, -1));
 
-  bool ShowUndoRedo(){bool show = false;wxConfig::Get()->Read("Toolbar/showUndoRedo",&show);
+  bool ShowUndoRedo(){bool show = false; wxConfig::Get()->Read("Toolbar/showUndoRedo", &show);
     return show;}
-  void ShowUndoRedo(bool show){wxConfig::Get()->Write("Toolbar/showUndoRedo",show);}
+  void ShowUndoRedo(bool show){wxConfig::Get()->Write("Toolbar/showUndoRedo", show);}
 
-  bool ShowCopyPaste(){bool show = true;wxConfig::Get()->Read("Toolbar/showCopyPaste",&show);
+  bool ShowCopyPaste(){bool show = true; wxConfig::Get()->Read("Toolbar/showCopyPaste",&show);
     return show;}
-  void ShowCopyPaste(bool show){wxConfig::Get()->Write("Toolbar/showCopyPaste",show);}
+  void ShowCopyPaste(bool show){wxConfig::Get()->Write("Toolbar/showCopyPaste", show);}
 
-  bool ShowOpenSave(){bool show = true;wxConfig::Get()->Read("Toolbar/showOpenSave",&show);
+  bool ShowOpenSave(){bool show = true; wxConfig::Get()->Read("Toolbar/showOpenSave",&show);
     return show;}
-  void ShowOpenSave(bool show){wxConfig::Get()->Write("Toolbar/showOpenSave",show);}
+  void ShowOpenSave(bool show){wxConfig::Get()->Write("Toolbar/showOpenSave", show);}
   
-  bool ShowNew(){bool show = true;wxConfig::Get()->Read("Toolbar/showNew",&show);
+  bool ShowNew(){bool show = true; wxConfig::Get()->Read("Toolbar/showNew",&show);
     return show;}
-  void ShowNew(bool show){wxConfig::Get()->Write("Toolbar/showNew",show);}
+  void ShowNew(bool show){wxConfig::Get()->Write("Toolbar/showNew", show);}
 
-  bool ShowSearch(){bool show = true;wxConfig::Get()->Read("Toolbar/showSearch",&show);
+  bool ShowSearch(){bool show = true; wxConfig::Get()->Read("Toolbar/showSearch",&show);
     return show;}
-  void ShowSearch(bool show){wxConfig::Get()->Write("Toolbar/showSearch",show);}
+  void ShowSearch(bool show){wxConfig::Get()->Write("Toolbar/showSearch", show);}
 
-  bool ShowHelp(){bool show = true;wxConfig::Get()->Read("Toolbar/showHelp",&show);
+  bool ShowHelp(){bool show = true; wxConfig::Get()->Read("Toolbar/showHelp",&show);
     return show;}
-  void ShowHelp(bool show){wxConfig::Get()->Write("Toolbar/showHelp",show);}
+  void ShowHelp(bool show){wxConfig::Get()->Write("Toolbar/showHelp", show);}
 
-  bool ShowPrint(){bool show = true;wxConfig::Get()->Read("Toolbar/showPrint",&show);
+  bool ShowPrint(){bool show = true; wxConfig::Get()->Read("Toolbar/showPrint",&show);
     return show;}
-  void ShowPrint(bool show){wxConfig::Get()->Write("Toolbar/showPrint",show);}
+  void ShowPrint(bool show){wxConfig::Get()->Write("Toolbar/showPrint", show);}
 
-  bool ShowOptions(){bool show = true;wxConfig::Get()->Read("Toolbar/showOptions",&show);
+  bool ShowOptions(){bool show = true; wxConfig::Get()->Read("Toolbar/showOptions",&show);
     return show;}
-  void ShowOptions(bool show){wxConfig::Get()->Write("Toolbar/showOptions",show);}
+  void ShowOptions(bool show){wxConfig::Get()->Write("Toolbar/showOptions", show);}
 
-  bool ShowSelectAll(){bool show = true;wxConfig::Get()->Read("Toolbar/showSelectAll",&show);
+  bool ShowSelectAll(){bool show = true; wxConfig::Get()->Read("Toolbar/showSelectAll",&show);
     return show;}
-  void ShowSelectAll(bool show){wxConfig::Get()->Write("Toolbar/showSelectAll",show);}
+  void ShowSelectAll(bool show){wxConfig::Get()->Write("Toolbar/showSelectAll", show);}
 
 protected:
   void OnSize(wxSizeEvent &event);

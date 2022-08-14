@@ -2117,7 +2117,7 @@ wxWindow *ConfigDialogue::CreateStylePanel() {
 
 void ConfigDialogue::OnStyleToEditChanged(wxCommandEvent &event) {
   wxConfigBase *config = wxConfig::Get();
-  config->Write(wxT("StyleToEdit"), int(GetSelectedStyle()));
+  config->Write(wxT("StyleToEdit"), static_cast<int>(GetSelectedStyle()));
   OnChangeStyle(event);
 }
 
@@ -2247,7 +2247,7 @@ void ConfigDialogue::WriteSettings() {
   configuration->MathJaXURL(m_mathJaxURL->GetValue());
   configuration->MathJaXURL_UseUser(m_noAutodetectMathJaX->GetValue());
   {
-    configuration->SetLanguage((int)wxLANGUAGE_DEFAULT);
+    configuration->SetLanguage(static_cast<int>(wxLANGUAGE_DEFAULT));
     long i = 0;
     for (Languages::const_iterator it = m_languages.begin();
          it != m_languages.end(); ++it) {

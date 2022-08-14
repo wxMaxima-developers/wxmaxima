@@ -22,11 +22,12 @@
 #ifndef WXMAXIMA_MAXIMA_IPC_H
 #define WXMAXIMA_MAXIMA_IPC_H
 
-#include <wx/hashmap.h>
-#include <wx/string.h>
 #include <memory>
 #include <unordered_map>
 #include <vector>
+#include <utility>
+#include <wx/hashmap.h>
+#include <wx/string.h>
 
 class wxMaxima;
 class wxEvent;

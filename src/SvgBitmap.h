@@ -28,13 +28,13 @@
 #ifndef SVGBITMAP_H
 #define SVGBITMAP_H
 
-#include "Cell.h"
-
+#include <memory>
 #include "precomp.h"
 #include <wx/bitmap.h>
-#define NANOSVG_ALL_COLOR_KEYWORDS
 #include "nanoSVG/nanosvg.h"
 #include "nanoSVG/nanosvgrast.h"
+#include "Cell.h"
+#define NANOSVG_ALL_COLOR_KEYWORDS
 
 /*! A wxBitmap with a constructor that generates the image from SVG.
  */
@@ -49,7 +49,9 @@ public:
   SvgBitmap &operator=(SvgBitmap &&o);
 
   //! Converts rgba data to a wxBitmap
-  static wxBitmap RGBA2wxBitmap(const unsigned char imgdata[],const int &width, const int &height, const int &scaleFactor = 1);
+  static wxBitmap RGBA2wxBitmap(const unsigned char imgdata[],
+                                const int &width, const int &height,
+                                const int &scaleFactor = 1);
   //! Sets the bitmap to a new size and renders the svg image at this size.
   const SvgBitmap& SetSize(int width, int height);
   //! Sets the bitmap to a new size and renders the svg image at this size.

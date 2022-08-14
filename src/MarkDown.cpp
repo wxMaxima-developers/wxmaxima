@@ -69,7 +69,6 @@ wxString MarkDownParser::MarkDown(wxString str) {
       // Let's see if the line is the start of a bullet list item
       if ((st.StartsWith("* ")) && ((indentationTypes.empty()) ||
                                     (indentationTypes.back() == wxT('*')))) {
-
         // Remove the bullet list start marker from our string.
         st = st.Right(st.Length() - 2);
         st = st.Trim(false);

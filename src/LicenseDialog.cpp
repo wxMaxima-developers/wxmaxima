@@ -111,7 +111,7 @@ void LicenseDialog::OnSize(wxSizeEvent &event) {
 
 void LicenseDialog::OnTextURLEvent(wxTextUrlEvent &event) {
   if (event.GetMouseEvent().LeftUp()) {
-    wxTextCtrl *pTextCtrl = (wxTextCtrl *)event.GetEventObject();
+    wxTextCtrl *pTextCtrl = static_cast<wxTextCtrl *>(event.GetEventObject());
     wxLaunchDefaultBrowser(
         pTextCtrl->GetRange(event.GetURLStart(), event.GetURLEnd()));
   }

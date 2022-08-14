@@ -524,7 +524,6 @@ GroupType ToolBar::GetCellType() {
 }
 
 void ToolBar::SetCellStyle(GroupType style) {
-
   switch (style) {
   case GC_TYPE_CODE:
   case GC_TYPE_TEXT:

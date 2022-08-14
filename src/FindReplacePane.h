@@ -85,7 +85,6 @@ protected:
   void OnMatchCase(wxCommandEvent &event);
 
   void OnKeyDown(wxKeyEvent &event);
-
 };
 
 #endif // FINDREPLACEPANE_H

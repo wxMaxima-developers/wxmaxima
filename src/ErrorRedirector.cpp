@@ -33,6 +33,7 @@
 #include "ErrorRedirector.h"
 #include <cassert>
 #include <iostream>
+#include <utility>
 #include <wx/datetime.h>
 
 ErrorRedirector::ErrorRedirector(std::unique_ptr<wxLog> &&newLog)

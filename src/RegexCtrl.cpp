@@ -77,10 +77,10 @@ void RegexCtrl::OnTextChange(wxCommandEvent &WXUNUSED(ev)) {
       if (m_regexInputState != newInputState) {
         m_regexInputState = newInputState;
         const wxColor colors[3] = {
-            /* empty   */ wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOW),
-            /* invalid */ {255, 165, 0}, /* orange. Red seems too 'dangerous'.
+            wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOW), /* empty regexx field  */ 
+            {255, 165, 0}, /* invalid is orange. Red seems too 'dangerous'.
                                           */
-            /* valid   */ {0, 255, 0}    /* green. Input okay. */
+            {0, 255, 0}    /* valid is green: Input okay. */
         };
         if (errMsg.IsEmpty())
           errMsg = RegexTooltip_error;
@@ -95,8 +95,8 @@ void RegexCtrl::OnTextChange(wxCommandEvent &WXUNUSED(ev)) {
         // not enough contrast) if dark mode is used. Choose always colors with
         // some contrast. Green and orange (as above for valid/invalid input)
         // works with normal and dark mode.
-        SetForegroundColour(colors[int(m_regexInputState)]);
-        SetToolTip(tooltips[int(m_regexInputState)]);
+        SetForegroundColour(colors[static_cast<int>(m_regexInputState)]);
+        SetToolTip(tooltips[static_cast<int>(m_regexInputState)]);
         Refresh();
       }
     }

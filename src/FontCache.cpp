@@ -22,10 +22,11 @@
 
 #include "FontCache.h"
 #include <wx/log.h>
+#include <utility>
 
 FontCache::~FontCache() {
   wxLogMessage("~FontCache: hits=%d misses=%d h:m ratio=%.2f", m_hits, m_misses,
-               double(m_hits) / m_misses);
+               static_cast<double>(m_hits) / m_misses);
 }
 
 FontCache::FontCache() {}

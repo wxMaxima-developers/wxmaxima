@@ -25,9 +25,8 @@
   The C code that generates bitmaps from compressed svg data
 */
 
-#include "SvgBitmap.h"
-#include "Image.h"
-#include "invalidImage.h"
+#include <vector>
+#include <utility>
 #include <wx/mstream.h>
 #include <wx/rawbmp.h>
 #include <wx/txtstrm.h>
@@ -35,6 +34,9 @@
 #include <wx/window.h>
 #include <wx/wx.h>
 #include <wx/zstream.h>
+#include "SvgBitmap.h"
+#include "Image.h"
+#include "invalidImage.h"
 
 SvgBitmap::SvgBitmap(wxWindow *window, const unsigned char *data, size_t len,
                      int width, int height, int scaleFactor)
@@ -95,8 +97,8 @@ const SvgBitmap &SvgBitmap::SetSize(int width, int height) {
 
   // Actually render the bitmap
   nsvgRasterize(m_svgRast, m_svgImage.get(), 0, 0,
-                wxMin((double)width / (double)m_svgImage->width,
-                      (double)height / (double)m_svgImage->height),
+                wxMin(static_cast<double>(width) / static_cast<double>(m_svgImage->width),
+                      static_cast<double>(height) / static_cast<double>(m_svgImage->height)),
                 imgdata.data(), width, height, width * 4);
 
   // Copy the bitmap to this object's bitmap storage
