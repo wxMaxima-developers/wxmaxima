@@ -39,9 +39,9 @@
 class Buttonwrapsizer : public wxWrapSizer
 {
 public:
-  Buttonwrapsizer(int orient=wxHORIZONTAL);
+  explicit Buttonwrapsizer(int orient = wxHORIZONTAL);
 protected:
-  virtual void 	RecalcSizes();
+  virtual void RecalcSizes();
 };
 
 #endif // BUTTONWRAPSIZER_H

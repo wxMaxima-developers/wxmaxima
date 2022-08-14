@@ -43,11 +43,11 @@ public:
   void Add(wxDataObject *object, bool preferred = false);
   wxDataObject *GetObject(const wxDataFormat& format,
                                 wxDataObjectBase::Direction dir = Get) const;
-  wxDataFormat GetPreferredFormat(Direction dir=Get) const override;
+  wxDataFormat GetPreferredFormat(Direction dir = Get) const override;
   void SetPreferredFormat(const wxDataFormat &format);
 
-  size_t GetFormatCount(Direction dir=Get) const override;
-  void GetAllFormats(wxDataFormat *formats, Direction dir=Get) const override;
+  size_t GetFormatCount(Direction dir = Get) const override;
+  void GetAllFormats(wxDataFormat *formats, Direction dir = Get) const override;
   size_t GetDataSize(const wxDataFormat &format) const override;
   bool GetDataHere(const wxDataFormat &format, void *buf) const override;
 

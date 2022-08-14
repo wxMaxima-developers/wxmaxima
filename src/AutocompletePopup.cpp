@@ -47,10 +47,10 @@ void AutocompletePopup::UpdateResults()
     if((m_type == AutoComplete::esccommand) && (m_partial.Length() < 2))
     {
       DeleteAllItems();
-      for(unsigned int i=0; i < m_completions.GetCount(); i++)
+      for(unsigned int i = 0; i < m_completions.GetCount(); i++)
         InsertItem(i, m_completions[i]);
       
-      Select(0);Focus(0);
+      Select(0); Focus(0);
       break;
     }
 
@@ -80,10 +80,10 @@ void AutocompletePopup::UpdateResults()
     return void(Destroy());
   default:
     DeleteAllItems();
-    for(unsigned int i=0; i < m_completions.GetCount(); i++)
+    for(unsigned int i = 0; i < m_completions.GetCount(); i++)
       InsertItem(i, m_completions[i]);
 
-    Select(0);Focus(0);
+    Select(0); Focus(0);
   }
 }
 
@@ -125,7 +125,7 @@ void AutocompletePopup::OnKeyDown(wxKeyEvent &event)
   case WXK_RIGHT:
   case WXK_NUMPAD_ENTER:
   {
-    int selection = GetNextItem(0,wxLIST_NEXT_ALL,
+    int selection = GetNextItem(0, wxLIST_NEXT_ALL,
                                 wxLIST_STATE_SELECTED);
     if (selection < 0)
       selection = 0;
@@ -150,7 +150,7 @@ void AutocompletePopup::OnKeyDown(wxKeyEvent &event)
   case WXK_ESCAPE:
     if((m_type == AutoComplete::esccommand) && (m_partial != wxEmptyString))
     {
-      int selection = GetNextItem(0,wxLIST_NEXT_ALL,
+      int selection = GetNextItem(0, wxLIST_NEXT_ALL,
                                   wxLIST_STATE_SELECTED);
       if(selection < 0)
         selection = 0;
@@ -163,17 +163,17 @@ void AutocompletePopup::OnKeyDown(wxKeyEvent &event)
   case WXK_UP:
   case WXK_NUMPAD_UP:
   {
-    int selection = GetNextItem(0,wxLIST_NEXT_ALL,
+    int selection = GetNextItem(0, wxLIST_NEXT_ALL,
                                 wxLIST_STATE_SELECTED);
     if (selection > 0)
     {
-      Select(selection - 1);Focus(selection - 1);
+      Select(selection - 1); Focus(selection - 1);
     }
     else
     {
       if (m_completions.GetCount() > 0)
       {
-        Select(0);Focus(0);
+        Select(0); Focus(0);
       }
     }
     break;
@@ -181,7 +181,7 @@ void AutocompletePopup::OnKeyDown(wxKeyEvent &event)
   case WXK_PAGEUP:
   case WXK_NUMPAD_PAGEUP:
   {
-    int selection = GetNextItem(0,wxLIST_NEXT_ALL,
+    int selection = GetNextItem(0, wxLIST_NEXT_ALL,
                                 wxLIST_STATE_SELECTED);
     selection -= 8;
     if (selection < 0)
@@ -189,7 +189,7 @@ void AutocompletePopup::OnKeyDown(wxKeyEvent &event)
     
     if (m_completions.GetCount() > 0)
     {
-      Select(selection);Focus(selection);
+      Select(selection); Focus(selection);
     }
     
     break;
@@ -197,7 +197,7 @@ void AutocompletePopup::OnKeyDown(wxKeyEvent &event)
   case WXK_PAGEDOWN:
   case WXK_NUMPAD_PAGEDOWN:
   {
-    unsigned int selection = GetNextItem(0,wxLIST_NEXT_ALL,
+    unsigned int selection = GetNextItem(0, wxLIST_NEXT_ALL,
                                 wxLIST_STATE_SELECTED);
     selection += 8;
     if (selection >= m_completions.GetCount())
@@ -213,7 +213,7 @@ void AutocompletePopup::OnKeyDown(wxKeyEvent &event)
   case WXK_DOWN:
   case WXK_NUMPAD_DOWN:
   {
-    long selection = GetNextItem(0,wxLIST_NEXT_ALL,
+    long selection = GetNextItem(0, wxLIST_NEXT_ALL,
                                  wxLIST_STATE_SELECTED);
     if (selection < 0) selection = 0;
     selection++;
@@ -221,7 +221,7 @@ void AutocompletePopup::OnKeyDown(wxKeyEvent &event)
       selection--;
     if (m_completions.GetCount() > 0)
     {
-      Select(selection);Focus(selection);
+      Select(selection); Focus(selection);
     }
     break;
   }
@@ -236,7 +236,7 @@ void AutocompletePopup::OnKeyDown(wxKeyEvent &event)
       UpdateResults();
       
       if(m_type != AutoComplete::esccommand)
-        m_editor->ReplaceSelection(oldString,m_partial,true);
+        m_editor->ReplaceSelection(oldString, m_partial, true);
     }
     else
       m_parent->GetParent()->Refresh();
@@ -253,18 +253,18 @@ void AutocompletePopup::OnKeyDown(wxKeyEvent &event)
 
 bool AutocompletePopup::Create(wxWindow* parent)
 {
-  bool retval = wxListView::Create(parent,1,m_position,wxDefaultSize,
+  bool retval = wxListView::Create(parent, 1, m_position, wxDefaultSize,
                                    wxLC_ALIGN_LEFT |
                                    wxLC_REPORT |
                                    wxLC_NO_HEADER |
                                    wxLC_SINGLE_SEL);
   wxWindowUpdateLocker lock(this);
-  InsertColumn(0,wxEmptyString);
+  InsertColumn(0, wxEmptyString);
   UpdateResults();
   SetColumnWidth(0, wxLIST_AUTOSIZE);
 
   wxSize minSize;
-  wxSize optimumSize = wxSize(-1,0);
+  wxSize optimumSize = wxSize(-1, 0);
   for (size_t i = 0; i < m_completions.GetCount(); i++)
   {
     wxRect itemRect;
@@ -363,7 +363,7 @@ void AutocompletePopup::OnChar(wxKeyEvent &event)
   }
   else if (wxIsprint(key))
   {
-    int selection = GetNextItem(0,wxLIST_NEXT_ALL,
+    int selection = GetNextItem(0, wxLIST_NEXT_ALL,
                                 wxLIST_STATE_SELECTED);
 
     // The current key is no more part of the current command

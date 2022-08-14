@@ -90,7 +90,7 @@ void CharButton::OnIdle(wxIdleEvent &event)
   if(!m_backgroundColorChangeNeeded)
     return;
   m_backgroundColorChangeNeeded = false;
-  if((m_mouseOverPanel)||(m_mouseOverText))
+  if((m_mouseOverPanel) || (m_mouseOverText))
     SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHT));
   else
     // An invalid color means "the default background"
@@ -173,7 +173,7 @@ CharButton::CharButton(wxWindow *parent, wxWindow *worksheet, Configuration *con
     }
     else
     {
-      m_buttonText->SetForegroundColour(wxColor(128,128,128));
+      m_buttonText->SetForegroundColour(wxColor(128, 128, 128));
       SetToolTip(m_description + wxT("\n") +
                  _("(Might not be displayed correctly in at least one of the worksheet fonts)"));
     }

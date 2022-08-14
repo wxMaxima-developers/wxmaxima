@@ -57,7 +57,7 @@ void CompositeDataObject::Add(wxDataObject *object, bool preferred)
         addedFormat = addedFormats.erase(addedFormat);
         continue;
       }
-      ++ addedFormat;
+      ++addedFormat;
     }
 
   // Add all remaining formats
@@ -101,7 +101,7 @@ void CompositeDataObject::GetAllFormats(wxDataFormat *formats, Direction dir) co
     return;
 
   for (auto &entry : m_entries)
-    *formats ++ = entry.format;
+    *formats++ = entry.format;
 }
 
 size_t CompositeDataObject::GetDataSize(const wxDataFormat &format) const

@@ -53,7 +53,7 @@ class AutocompletePopup final : public wxListView, public wxComboPopup
   // Translate string into a list selection
   void SetStringValue(const wxString& s) override
   {
-    int n = wxListView::FindItem(-1,s);
+    int n = wxListView::FindItem(-1, s);
     if (n >= 0 && n < wxListView::GetItemCount() )
       wxListView::Select(n);
   }

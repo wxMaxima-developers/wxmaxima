@@ -46,8 +46,8 @@ void Buttonwrapsizer::RecalcSizes()
     wxSizerItem* current =  node->GetData();
     wxWindow *item = current->GetWindow();
     item->SendSizeEvent();
-    width = wxMax(width,item->GetBestSize().x);
-    height = wxMax(height,item->GetBestSize().y);
+    width = wxMax(width, item->GetBestSize().x);
+    height = wxMax(height, item->GetBestSize().y);
   }
 
   if(width < 50)

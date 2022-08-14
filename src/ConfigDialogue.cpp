@@ -77,12 +77,12 @@ int ConfigDialogue::GetImageSize()
   if(ppi <= 10)
     ppi = 72;
 
-  double targetSize = wxMax(ppi,75) * CONFIG_ICON_SCALE;
+  double targetSize = wxMax(ppi, 75) * CONFIG_ICON_SCALE;
 
   int sizeA = 128 << 4;
   while(sizeA * 3 / 2 > targetSize && sizeA >= 32) {
     sizeA >>= 1;
-  };
+  }
 
   int sizeB = 192 << 4;
   while(sizeB * 4 / 3 > targetSize && sizeB >= 32) {
@@ -116,12 +116,12 @@ wxBitmap ConfigDialogue::GetImage(wxString name,
   if(ppi <= 10)
     ppi = 72;
 
-  int targetSize = wxMax(ppi,75) * CONFIG_ICON_SCALE;
+  int targetSize = wxMax(ppi, 75) * CONFIG_ICON_SCALE;
 
   int sizeA = 128 << 4;
   while(sizeA * 3 / 2 > targetSize && sizeA >= 32) {
     sizeA >>= 1;
-  };
+  }
 
   int sizeB = 192 << 4;
   while(sizeB * 4 / 3 > targetSize && sizeB >= 32) {
@@ -145,7 +145,7 @@ wxBitmap ConfigDialogue::GetImage(wxString name,
   else
   {
     img.Rescale(targetSize, targetSize, wxIMAGE_QUALITY_HIGH);
-    return wxBitmap(img,wxBITMAP_SCREEN_DEPTH);
+    return wxBitmap(img, wxBITMAP_SCREEN_DEPTH);
   }
 }
 
@@ -273,7 +273,7 @@ m_maximaEnvDoc["GCL_MULTIPROCESS_MEMORY_POOL"] = _("If maxima was compiled by GC
 
   SetCheckboxValues();
 
-  Connect(wxEVT_CLOSE_WINDOW, wxCloseEventHandler(ConfigDialogue::OnClose),NULL, this);
+  Connect(wxEVT_CLOSE_WINDOW, wxCloseEventHandler(ConfigDialogue::OnClose), NULL, this);
   Connect(button_defaultFont, wxEVT_BUTTON, wxCommandEventHandler(ConfigDialogue::OnFontButton), NULL, this);
   Connect(button_mathFont, wxEVT_BUTTON, wxCommandEventHandler(ConfigDialogue::OnFontButton), NULL, this);
   Connect(listbox_styleFor, wxEVT_LISTBOX, wxCommandEventHandler(ConfigDialogue::OnChangeStyle), NULL, this);
@@ -422,12 +422,12 @@ void ConfigDialogue::SetCheckboxValues()
   {
     m_maximaEnvVariables->AppendRows(1);
     int row = m_maximaEnvVariables->GetNumberRows() - 1;
-    m_maximaEnvVariables->SetCellValue(row,0,it->first);
-    m_maximaEnvVariables->SetCellValue(row,1,it->second);
+    m_maximaEnvVariables->SetCellValue(row, 0, it->first);
+    m_maximaEnvVariables->SetCellValue(row, 1, it->second);
   }
   m_maximaEnvVariables->AppendRows(1);
-  m_maximaEnvVariables->SetColLabelValue(0,_("Variable"));
-  m_maximaEnvVariables->SetColLabelValue(1,_("Value"));
+  m_maximaEnvVariables->SetColLabelValue(0, _("Variable"));
+  m_maximaEnvVariables->SetColLabelValue(1, _("Value"));
   m_maximaEnvVariables->AutoSize();
   m_maximaEnvVariables->EndBatch();
   m_maximaEnvVariables->GetParent()->GetParent()->Layout();
@@ -573,7 +573,8 @@ wxWindow *ConfigDialogue::CreateWorksheetPanel()
 {
   wxScrolled<wxPanel> *panel = new wxScrolled<wxPanel>(m_notebook, -1);
   panel->SetScrollRate(5*GetContentScaleFactor(), 5*GetContentScaleFactor());
-  panel->SetMinSize(wxSize(GetContentScaleFactor()*mMinPanelWidth,GetContentScaleFactor()*mMinPanelHeight));
+  panel->SetMinSize(wxSize(GetContentScaleFactor()*mMinPanelWidth,
+                           GetContentScaleFactor()*mMinPanelHeight));
 
   wxStaticBoxSizer *displaySizer = new wxStaticBoxSizer(wxVERTICAL, panel, _("Display"));
   wxFlexGridSizer *grid_sizer = new wxFlexGridSizer(10, 2, 5, 5);
@@ -657,13 +658,13 @@ wxWindow *ConfigDialogue::CreateWorksheetPanel()
                      new wxRadioButton(numDigitsSizer->GetStaticBox(), -1,
                                        _("Display all digits")),
                      0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL);
-  numDigitsGrid->Add(5,5);
+  numDigitsGrid->Add(5*GetContentScaleFactor(), 5*GetContentScaleFactor());
 
   numDigitsGrid->Add(m_linebreaksInLongNums =
                      new wxRadioButton(numDigitsSizer->GetStaticBox(), -1,
                                        _("Display all and allow linebreaks in long numbers")),
                      0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL);
-  numDigitsGrid->Add(5,5);
+  numDigitsGrid->Add(5*GetContentScaleFactor(), 5*GetContentScaleFactor());
   displaySizer->Add(numDigitsSizer, wxSizerFlags().Border(wxALL, 5*GetContentScaleFactor()));
   
   m_hideBrackets = new wxCheckBox(displaySizer->GetStaticBox(), -1,
@@ -760,7 +761,8 @@ wxWindow *ConfigDialogue::CreateRevertToDefaultsPanel()
 {
   wxScrolled<wxPanel> *panel = new wxScrolled<wxPanel>(m_notebook, -1);
   panel->SetScrollRate(5*GetContentScaleFactor(), 5*GetContentScaleFactor());
-  panel->SetMinSize(wxSize(GetContentScaleFactor()*mMinPanelWidth,GetContentScaleFactor()*mMinPanelHeight));
+  panel->SetMinSize(wxSize(GetContentScaleFactor()*mMinPanelWidth,
+                           GetContentScaleFactor()*mMinPanelHeight));
 
   wxBoxSizer *vsizer = new wxBoxSizer(wxVERTICAL);
   panel->SetSizer(vsizer);
@@ -769,8 +771,8 @@ wxWindow *ConfigDialogue::CreateRevertToDefaultsPanel()
     _("The buttons in this category reset wxMaxima's settings "
       "immediately, once they are pressed."));
   vsizer->Add(helpText1,
-              wxSizerFlags().Border(wxUP | wxDOWN,5*GetContentScaleFactor()).
-              Expand()
+              wxSizerFlags().Border(wxUP | wxDOWN,
+                                    5*GetContentScaleFactor()).Expand()
     );
 
   wxStaticBoxSizer *revertSizer = new wxStaticBoxSizer(wxVERTICAL, panel, _("Revert changes"));
@@ -791,7 +793,7 @@ wxWindow *ConfigDialogue::CreateRevertToDefaultsPanel()
                           NULL, this);
   revertSizer->Add(
     resetStylesButton,
-    wxSizerFlags().Border(wxALL,5*GetContentScaleFactor()).
+    wxSizerFlags().Border(wxALL, 5*GetContentScaleFactor()).
     Expand()
     );
   wxButton *reloadAllButton = new wxButton(revertSizer->GetStaticBox(), -1, _("Reload all GUI settings from disc"));
@@ -800,7 +802,7 @@ wxWindow *ConfigDialogue::CreateRevertToDefaultsPanel()
                           NULL, this);
   revertSizer->Add(
     reloadAllButton,
-    wxSizerFlags().Border(wxALL,5*GetContentScaleFactor()).
+    wxSizerFlags().Border(wxALL, 5*GetContentScaleFactor()).
     Expand()
     );
   wxButton *reloadStylesButton = new wxButton(revertSizer->GetStaticBox(), -1, _("Reload the style settings from disc"));
@@ -809,7 +811,7 @@ wxWindow *ConfigDialogue::CreateRevertToDefaultsPanel()
                           NULL, this);
   revertSizer->Add(
     reloadStylesButton,
-    wxSizerFlags().Border(wxALL,5*GetContentScaleFactor()).
+    wxSizerFlags().Border(wxALL, 5*GetContentScaleFactor()).
     Expand()
     );
   vsizer->Add(revertSizer, wxSizerFlags().Expand().Border(wxALL, 5*GetContentScaleFactor()));
@@ -822,7 +824,7 @@ wxWindow *ConfigDialogue::CreateRevertToDefaultsPanel()
                           NULL, this);
   exportSizer->Add(
     exportAllButton,
-    wxSizerFlags().Border(wxALL,5*GetContentScaleFactor()).
+    wxSizerFlags().Border(wxALL, 5*GetContentScaleFactor()).
     Expand()
     );
   wxButton *exportStylesButton = new wxButton(exportSizer->GetStaticBox(), save_id, _("Export the style settings"));
@@ -831,7 +833,7 @@ wxWindow *ConfigDialogue::CreateRevertToDefaultsPanel()
                               NULL, this);
   exportSizer->Add(
     exportStylesButton,
-    wxSizerFlags().Border(wxALL,5*GetContentScaleFactor()).
+    wxSizerFlags().Border(wxALL, 5*GetContentScaleFactor()).
     Expand()
     );
   wxButton *importSettingsButton = new wxButton(exportSizer->GetStaticBox(), -1, _("Import settings"));
@@ -840,7 +842,7 @@ wxWindow *ConfigDialogue::CreateRevertToDefaultsPanel()
                           NULL, this);
   exportSizer->Add(
     importSettingsButton,
-    wxSizerFlags().Border(wxALL,5*GetContentScaleFactor()).
+    wxSizerFlags().Border(wxALL, 5*GetContentScaleFactor()).
     Expand()
     );
 
@@ -855,7 +857,7 @@ wxWindow *ConfigDialogue::CreateRevertToDefaultsPanel()
       "File and command-line switches."));
   vsizer->Add(
     helpText2,
-    wxSizerFlags().Border(wxUP | wxDOWN,5*GetContentScaleFactor()).
+    wxSizerFlags().Border(wxUP | wxDOWN, 5*GetContentScaleFactor()).
     Expand()
     );
   panel->FitInside();
@@ -900,7 +902,7 @@ wxWindow *ConfigDialogue::CreateStartupPanel()
   m_wxStartupCommands = new BTextCtrl(wxMaximaStartupSizer->GetStaticBox(), -1, m_configuration, wxEmptyString, wxDefaultPosition, wxSize(150*GetContentScaleFactor(),250*GetContentScaleFactor()),
                                      wxTE_MULTILINE | wxHSCROLL);
   m_wxStartupCommands->SetValue(contents);
-  wxMaximaStartupSizer->Add(m_wxStartupCommands, wxSizerFlags().Expand().Border(wxALL,5*GetContentScaleFactor()));
+  wxMaximaStartupSizer->Add(m_wxStartupCommands, wxSizerFlags().Expand().Border(wxALL, 5*GetContentScaleFactor()));
   wxStaticText *wxStartupFileLocation = new wxStaticText(wxMaximaStartupSizer->GetStaticBox(),
                                                          wxID_ANY,
                                                          _("wxMaxima startup file location: ") +
@@ -909,7 +911,7 @@ wxWindow *ConfigDialogue::CreateStartupPanel()
                                       "without wxMaxima. In order to add startup commands "
                                       "that are executed in this case, "
                                       "too, please add them to maxima-init.mac, instead."));
-  wxMaximaStartupSizer->Add(wxStartupFileLocation, wxSizerFlags().Border(wxALL,5*GetContentScaleFactor()));
+  wxMaximaStartupSizer->Add(wxStartupFileLocation, wxSizerFlags().Border(wxALL, 5*GetContentScaleFactor()));
 
   vsizer->Add(wxMaximaStartupSizer,wxSizerFlags().Expand().Border(wxALL, 5*GetContentScaleFactor()));
 
@@ -943,12 +945,12 @@ wxWindow *ConfigDialogue::CreateStartupPanel()
                                      wxTE_MULTILINE | wxHSCROLL);
   m_startupCommands->SetValue(contents);
 
-  maximaStartupSizer->Add(m_startupCommands, wxSizerFlags().Expand().Border(wxALL,5*GetContentScaleFactor()));
+  maximaStartupSizer->Add(m_startupCommands, wxSizerFlags().Expand().Border(wxALL, 5*GetContentScaleFactor()));
   wxStaticText *startupFileLocation = new wxStaticText(maximaStartupSizer->GetStaticBox(), wxID_ANY,
                                                        _("Maxima startup file location: ") +
                                                        m_startupFileName);
   startupFileLocation->SetToolTip(_("Commands that are executed at every start of maxima."));
-  maximaStartupSizer->Add(startupFileLocation, wxSizerFlags().Border(wxALL,5*GetContentScaleFactor()));
+  maximaStartupSizer->Add(startupFileLocation, wxSizerFlags().Border(wxALL, 5*GetContentScaleFactor()));
   vsizer->Add(maximaStartupSizer,wxSizerFlags().Expand().Border(wxALL, 5*GetContentScaleFactor()));
   panel->FitInside();
   return panel;
@@ -1011,7 +1013,7 @@ wxWindow *ConfigDialogue::CreateExportPanel()
   htmlGrid_sizer->Add(m_exportWithMathJAX, wxSizerFlags());
   wxStaticText *mj = new wxStaticText(html_sizer->GetStaticBox(), -1, _("URL MathJaX.js lies at:"));
   htmlGrid_sizer->Add(mj, wxSizerFlags());
-  htmlGrid_sizer->Add(5*GetContentScaleFactor(),5*GetContentScaleFactor());
+  htmlGrid_sizer->Add(5*GetContentScaleFactor(), 5*GetContentScaleFactor());
 
   m_autodetectMathJaX = new wxRadioButton(html_sizer->GetStaticBox(), -1, _("Automatic"), wxDefaultPosition,
                                           wxDefaultSize, wxRB_GROUP);

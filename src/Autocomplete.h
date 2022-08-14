@@ -263,7 +263,7 @@ private:
       {
         wxFileName newItemName(dirname);
         wxString newItem = "\"" + m_prefix + newItemName.GetFullName() + "/\"";
-        newItem.Replace(wxFileName::GetPathSeparator(),"/");
+        newItem.Replace(wxFileName::GetPathSeparator(), "/");
         if(m_files.Index(newItem) == wxNOT_FOUND)
           m_files.Add(newItem);
         return wxDIR_IGNORE;
