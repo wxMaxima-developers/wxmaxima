@@ -1,4 +1,5 @@
-// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode:
+// nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2014-2018 Gunter Königsmann <wxMaxima@physikbuch.de>
@@ -34,8 +35,7 @@
 ExptCell::ExptCell(GroupCell *parent, Configuration *config,
                    std::unique_ptr<Cell> &&base, std::unique_ptr<Cell> &&expt)
     : Cell(parent, config), m_baseCell(std::move(base)),
-      m_exptCell(std::move(expt))
-{
+      m_exptCell(std::move(expt)) {
   InitBitFields();
   SetStyle(TS_VARIABLE);
 }
@@ -43,37 +43,33 @@ ExptCell::ExptCell(GroupCell *parent, Configuration *config,
 ExptCell::ExptCell(GroupCell *group, const ExptCell &cell)
     : ExptCell(group, cell.m_configuration,
                CopyList(group, cell.m_baseCell.get()),
-               CopyList(group, cell.m_exptCell.get()))
-{
+               CopyList(group, cell.m_exptCell.get())) {
   CopyCommonData(cell);
   m_altCopyText = cell.m_altCopyText;
 }
 
 DEFINE_CELL(ExptCell)
 
-void ExptCell::MakeBreakupCells()
-{
-  if (m_open) return;
+void ExptCell::MakeBreakupCells() {
+  if (m_open)
+    return;
   m_exp = std::make_unique<TextCell>(m_group, m_configuration, "^");
   m_exp->SetStyle(TS_FUNCTION);
   m_open = std::make_unique<TextCell>(m_group, m_configuration, "(");
   m_open->SetStyle(TS_FUNCTION);
-  static_cast<TextCell&>(*m_open).DontEscapeOpeningParenthesis();
+  static_cast<TextCell &>(*m_open).DontEscapeOpeningParenthesis();
   m_close = std::make_unique<TextCell>(m_group, m_configuration, ")");
   m_close->SetStyle(TS_FUNCTION);
 
-  if (!m_exptCell->IsCompound())
-  {
+  if (!m_exptCell->IsCompound()) {
     m_open->Hide();
     m_close->Hide();
   }
 }
 
-void ExptCell::Draw(wxPoint point)
-{
+void ExptCell::Draw(wxPoint point) {
   Cell::Draw(point);
-  if (DrawThisCell(point))
-  {    
+  if (DrawThisCell(point)) {
     wxPoint bs, pw;
     bs.x = point.x;
     bs.y = point.y;
@@ -85,46 +81,40 @@ void ExptCell::Draw(wxPoint point)
   }
 }
 
-void ExptCell::Recalculate(AFontSize fontsize)
-{
+void ExptCell::Recalculate(AFontSize fontsize) {
   m_baseCell->RecalculateList(fontsize);
   if (IsBrokenIntoLines())
     m_exptCell->RecalculateList(fontsize);
   else
-    m_exptCell->RecalculateList({ MC_MIN_SIZE, fontsize - EXPT_DEC });
-  
-  if (IsBrokenIntoLines())
-  {
+    m_exptCell->RecalculateList({MC_MIN_SIZE, fontsize - EXPT_DEC});
+
+  if (IsBrokenIntoLines()) {
     m_height = m_width = m_center = 0;
     m_exp->RecalculateList(fontsize);
     m_open->RecalculateList(fontsize);
     m_close->RecalculateList(fontsize);
-  }
-  else
-  {
+  } else {
     m_width = m_baseCell->GetFullWidth() + m_exptCell->GetFullWidth() -
-      MC_TEXT_PADDING;
+              MC_TEXT_PADDING;
     m_expt_yoffset = m_exptCell->GetMaxDrop() + PowRise();
-    
+
     m_height = m_baseCell->GetHeightList();
     m_center = m_baseCell->GetCenterList();
-    
+
     int baseHeight = m_baseCell->GetHeightList() - m_baseCell->GetMaxDrop();
-    int exptHeight = m_exptCell->GetHeightList() - m_exptCell->GetMaxDrop() + m_expt_yoffset;
-    
-    if(baseHeight < exptHeight)
-    {
+    int exptHeight =
+        m_exptCell->GetHeightList() - m_exptCell->GetMaxDrop() + m_expt_yoffset;
+
+    if (baseHeight < exptHeight) {
       m_height += exptHeight - baseHeight;
       m_center += exptHeight - baseHeight;
-    }
-    else
+    } else
       m_expt_yoffset += baseHeight - exptHeight;
   }
   Cell::Recalculate(fontsize);
 }
 
-wxString ExptCell::ToString() const
-{
+wxString ExptCell::ToString() const {
   if (m_altCopyText != wxEmptyString)
     return m_altCopyText;
   if (IsBrokenIntoLines())
@@ -139,24 +129,22 @@ wxString ExptCell::ToString() const
   return s;
 }
 
-wxString ExptCell::ToMatlab() const
-{
+wxString ExptCell::ToMatlab() const {
   if (m_altCopyText != wxEmptyString)
-	return m_altCopyText;
+    return m_altCopyText;
   if (IsBrokenIntoLines())
-	return wxEmptyString;
+    return wxEmptyString;
   wxString s = m_baseCell->ListToMatlab() + wxT("^");
   if (m_isMatrix)
-	s += wxT("^");
+    s += wxT("^");
   if (m_exptCell->IsCompound())
-	s += wxT("(") + m_exptCell->ListToMatlab() + wxT(")");
+    s += wxT("(") + m_exptCell->ListToMatlab() + wxT(")");
   else
-	s += m_exptCell->ListToMatlab();
+    s += m_exptCell->ListToMatlab();
   return s;
 }
 
-wxString ExptCell::ToTeX() const
-{
+wxString ExptCell::ToTeX() const {
   if (IsBrokenIntoLines())
     return wxEmptyString;
   wxString s = wxT("{{") + m_baseCell->ListToTeX() + wxT("}^{") +
@@ -164,8 +152,7 @@ wxString ExptCell::ToTeX() const
   return s;
 }
 
-wxString ExptCell::GetDiffPart() const
-{
+wxString ExptCell::GetDiffPart() const {
   wxString s(wxT(","));
   if (m_baseCell != NULL)
     s += m_baseCell->ListToString();
@@ -175,35 +162,31 @@ wxString ExptCell::GetDiffPart() const
   return s;
 }
 
-wxString ExptCell::ToMathML() const
-{
-  return wxT("<msup>") +
-         m_baseCell->ListToMathML() +
-         m_exptCell->ListToMathML() +
-         wxT("</msup>\n");
-//  return wxT("<apply><power/>") + m_baseCell->ListToMathML() + m_exptCell->ListToMathML() + wxT("</apply>");
+wxString ExptCell::ToMathML() const {
+  return wxT("<msup>") + m_baseCell->ListToMathML() +
+         m_exptCell->ListToMathML() + wxT("</msup>\n");
+  //  return wxT("<apply><power/>") + m_baseCell->ListToMathML() +
+  //  m_exptCell->ListToMathML() + wxT("</apply>");
 }
 
-wxString ExptCell::ToOMML() const
-{
-  return wxT("<m:sSup><m:e>") + m_baseCell->ListToOMML() + wxT("</m:e><m:sup>") +
-         m_exptCell->ListToOMML() + wxT("</m:sup></m:sSup>\n");
+wxString ExptCell::ToOMML() const {
+  return wxT("<m:sSup><m:e>") + m_baseCell->ListToOMML() +
+         wxT("</m:e><m:sup>") + m_exptCell->ListToOMML() +
+         wxT("</m:sup></m:sSup>\n");
 }
 
-wxString ExptCell::ToXML() const
-{
-//  if (IsBrokenIntoLines())
-//    return wxEmptyString;
+wxString ExptCell::ToXML() const {
+  //  if (IsBrokenIntoLines())
+  //    return wxEmptyString;
   wxString flags;
   if (HasHardLineBreak())
     flags += wxT(" breakline=\"true\"");
 
-  return wxT("<e") + flags + wxT("><r>") + m_baseCell->ListToXML() + _T("</r><r>") +
-         m_exptCell->ListToXML() + _T("</r></e>");
+  return wxT("<e") + flags + wxT("><r>") + m_baseCell->ListToXML() +
+         _T("</r><r>") + m_exptCell->ListToXML() + _T("</r></e>");
 }
 
-bool ExptCell::BreakUp()
-{
+bool ExptCell::BreakUp() {
   if (IsBrokenIntoLines())
     return false;
 

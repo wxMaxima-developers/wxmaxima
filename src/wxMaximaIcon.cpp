@@ -1,4 +1,5 @@
-// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode:
+// nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2015-2018 Gunter Königsmann <wxMaxima@physikbuch.de>
@@ -21,20 +22,21 @@
 //  SPDX-License-Identifier: GPL-2.0+
 
 /*! \file
-  This file defines the class Image that stores compressed images and handles scaling and uncompressing them.
+  This file defines the class Image that stores compressed images and handles
+  scaling and uncompressing them.
 */
 
 #include "wxMaximaIcon.h"
+#include "../data/icon.h"
 #include <wx/mstream.h>
 #include <wx/wfstream.h>
-#include "../data/icon.h"
 
-wxIcon wxMaximaIcon()
-{
-    wxImage img;
-    wxMemoryInputStream istream(io_github_wxmaxima_developers_wxMaxima_png,io_github_wxmaxima_developers_wxMaxima_png_len);
-    img.LoadFile(istream);
-    wxIcon icon;
-    icon.CopyFromBitmap(wxBitmap(img));
-    return icon;
+wxIcon wxMaximaIcon() {
+  wxImage img;
+  wxMemoryInputStream istream(io_github_wxmaxima_developers_wxMaxima_png,
+                              io_github_wxmaxima_developers_wxMaxima_png_len);
+  img.LoadFile(istream);
+  wxIcon icon;
+  icon.CopyFromBitmap(wxBitmap(img));
+  return icon;
 }

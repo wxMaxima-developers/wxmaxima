@@ -1,4 +1,5 @@
-// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode:
+// nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2014-2018 Gunter Königsmann <wxMaxima@physikbuch.de>
@@ -33,10 +34,8 @@
 
 static wxString cellContents(wxT("?"));
 
-VisiblyInvalidCell::VisiblyInvalidCell(GroupCell *group,
-                                       Configuration *config)
-    : TextCell(group, config, cellContents, TS_ERROR)
-{
+VisiblyInvalidCell::VisiblyInvalidCell(GroupCell *group, Configuration *config)
+    : TextCell(group, config, cellContents, TS_ERROR) {
   InitBitFields();
   // We cannot do this at the startup of the program as we first need to wait
   // for the language selection to take place.
@@ -45,36 +44,31 @@ VisiblyInvalidCell::VisiblyInvalidCell(GroupCell *group,
   SetToolTip(&T_("Missing contents. Bug?"));
 }
 
-VisiblyInvalidCell::VisiblyInvalidCell(GroupCell *group,
-                                       Configuration *config, wxString &&toolTip)
-    : TextCell(group, config, cellContents, TS_ERROR)
-{
+VisiblyInvalidCell::VisiblyInvalidCell(GroupCell *group, Configuration *config,
+                                       wxString &&toolTip)
+    : TextCell(group, config, cellContents, TS_ERROR) {
   InitBitFields();
   SetToolTip(std::move(toolTip));
 }
 
-VisiblyInvalidCell::VisiblyInvalidCell(GroupCell *group,
-                                       Configuration *config, const wxString *toolTip)
-    : TextCell(group, config, cellContents, TS_ERROR)
-{
+VisiblyInvalidCell::VisiblyInvalidCell(GroupCell *group, Configuration *config,
+                                       const wxString *toolTip)
+    : TextCell(group, config, cellContents, TS_ERROR) {
   InitBitFields();
   SetToolTip(toolTip);
 }
 
 VisiblyInvalidCell::VisiblyInvalidCell(GroupCell *group,
                                        const VisiblyInvalidCell &cell)
-  : VisiblyInvalidCell(group, cell.m_configuration)
-{
-}
+    : VisiblyInvalidCell(group, cell.m_configuration) {}
 
 DEFINE_CELL_TYPEINFO(VisiblyInvalidCell)
 
-std::unique_ptr<Cell> Cell::MakeVisiblyInvalidCell() const
-{
+std::unique_ptr<Cell> Cell::MakeVisiblyInvalidCell() const {
   return std::make_unique<VisiblyInvalidCell>(m_group, m_configuration);
 }
 
-std::unique_ptr<Cell> Cell::MakeVisiblyInvalidCell(GroupCell *group, Configuration *config)
-{
+std::unique_ptr<Cell> Cell::MakeVisiblyInvalidCell(GroupCell *group,
+                                                   Configuration *config) {
   return std::make_unique<VisiblyInvalidCell>(group, config);
 }

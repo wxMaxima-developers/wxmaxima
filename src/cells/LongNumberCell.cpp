@@ -1,4 +1,5 @@
-// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode:
+// nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2014-2018 Gunter Königsmann <wxMaxima@physikbuch.de>
@@ -27,44 +28,38 @@
   should be overridden, before they are displayed.
  */
 
-#include "DigitCell.h"
 #include "LongNumberCell.h"
 #include "CellImpl.h"
 #include "CellList.h"
+#include "DigitCell.h"
 #include "StringUtils.h"
 
-LongNumberCell::LongNumberCell(GroupCell *group,
-                               Configuration *config,
+LongNumberCell::LongNumberCell(GroupCell *group, Configuration *config,
                                const wxString &number)
-  : TextCell(group, config, number, TS_NUMBER)
-{
+    : TextCell(group, config, number, TS_NUMBER) {
   InitBitFields();
 }
 
 // cppcheck-suppress uninitMemberVar symbolName=LongNumberCell::m_alt
 // cppcheck-suppress uninitMemberVar symbolName=LongNumberCell::m_altJs
 // cppcheck-suppress uninitMemberVar symbolName=LongNumberCell::m_initialToolTip
-LongNumberCell::LongNumberCell(GroupCell *group, const LongNumberCell &cell):
-  LongNumberCell(group, cell.m_configuration, cell.m_text)
-{
-}
+LongNumberCell::LongNumberCell(GroupCell *group, const LongNumberCell &cell)
+    : LongNumberCell(group, cell.m_configuration, cell.m_text) {}
 
 DEFINE_CELL(LongNumberCell)
 
-void LongNumberCell::UpdateDisplayedText()
-{
+void LongNumberCell::UpdateDisplayedText() {
   unsigned int displayedDigits = m_configuration->GetDisplayedDigits();
   if ((m_displayedText.Length() > displayedDigits) &&
-      (!m_configuration->ShowAllDigits()))
-  {
+      (!m_configuration->ShowAllDigits())) {
     int left = displayedDigits / 3;
-    if (left > 30) left = 30;      
+    if (left > 30)
+      left = 30;
     m_numStart = m_displayedText.Left(left);
-    m_ellipsis = wxString::Format(_("[%i digits]"), (int) m_displayedText.Length() - 2 * left);
+    m_ellipsis = wxString::Format(_("[%i digits]"),
+                                  (int)m_displayedText.Length() - 2 * left);
     m_numEnd = m_displayedText.Right(left);
-  }
-  else
-  {
+  } else {
     m_numStart.clear();
     m_ellipsis.clear();
     m_numEnd.clear();
@@ -74,34 +69,28 @@ void LongNumberCell::UpdateDisplayedText()
   m_textStyle = TS_NUMBER;
 }
 
-bool LongNumberCell::NeedsRecalculation(AFontSize fontSize) const
-{
+bool LongNumberCell::NeedsRecalculation(AFontSize fontSize) const {
   return TextCell::NeedsRecalculation(fontSize) ||
-    (m_displayedDigits_old != m_configuration->GetDisplayedDigits()) ||
-    (m_showAllDigits_old != m_configuration->ShowAllDigits()) ||
-    (m_linebreaksInLongLines_old != m_configuration->LineBreaksInLongNums());
+         (m_displayedDigits_old != m_configuration->GetDisplayedDigits()) ||
+         (m_showAllDigits_old != m_configuration->ShowAllDigits()) ||
+         (m_linebreaksInLongLines_old !=
+          m_configuration->LineBreaksInLongNums());
 }
 
-void LongNumberCell::SetStyle(TextStyle style)
-{
-  wxASSERT (style == TS_NUMBER);
+void LongNumberCell::SetStyle(TextStyle style) {
+  wxASSERT(style == TS_NUMBER);
   TextCell::SetStyle(TS_NUMBER);
 }
 
-void LongNumberCell::Recalculate(AFontSize fontsize)
-{
+void LongNumberCell::Recalculate(AFontSize fontsize) {
   // If the config settings about how many digits to display has changed we
   // need to regenerate the info which number to show.
-  if (
-    ((m_displayedDigits_old != m_configuration->GetDisplayedDigits())) ||
-    (m_showAllDigits_old = m_configuration->ShowAllDigits())
-    )
+  if (((m_displayedDigits_old != m_configuration->GetDisplayedDigits())) ||
+      (m_showAllDigits_old = m_configuration->ShowAllDigits()))
     UpdateDisplayedText();
-  
-  if(NeedsRecalculation(fontsize))
-  {
-    if (IsBrokenIntoLines())
-    {
+
+  if (NeedsRecalculation(fontsize)) {
+    if (IsBrokenIntoLines()) {
       m_innerCell->RecalculateList(fontsize);
       m_keepPercent_last = m_configuration->CheckKeepPercent();
       Cell::Recalculate(fontsize);
@@ -111,25 +100,23 @@ void LongNumberCell::Recalculate(AFontSize fontsize)
       m_numStart.clear();
       m_ellipsis.clear();
       m_numEnd.clear();
-    }
-    else
-    {
-      if(m_numStart.IsEmpty())
+    } else {
+      if (m_numStart.IsEmpty())
         TextCell::Recalculate(fontsize);
-      else
-      {
+      else {
         Cell::Recalculate(fontsize);
         m_keepPercent_last = m_configuration->CheckKeepPercent();
         SetFont(m_fontSize_Scaled);
         wxDC *dc = m_configuration->GetDC();
         auto numStartSize = CalculateTextSize(dc, m_numStart, numberStart);
         auto ellipsisSize = CalculateTextSize(dc, m_ellipsis, ellipsis);
-        auto numEndSize   = CalculateTextSize(dc, m_numEnd,   numberEnd);
+        auto numEndSize = CalculateTextSize(dc, m_numEnd, numberEnd);
         m_numStartWidth = numStartSize.GetWidth();
         m_ellipsisWidth = ellipsisSize.GetWidth();
         m_width = m_numStartWidth + m_ellipsisWidth + numEndSize.GetWidth();
-        m_height = wxMax(
-          wxMax(numStartSize.GetHeight(), ellipsisSize.GetHeight()), numEndSize.GetHeight());
+        m_height =
+            wxMax(wxMax(numStartSize.GetHeight(), ellipsisSize.GetHeight()),
+                  numEndSize.GetHeight());
         m_center = m_height / 2;
       }
     }
@@ -139,47 +126,38 @@ void LongNumberCell::Recalculate(AFontSize fontsize)
   m_linebreaksInLongLines_old = m_configuration->LineBreaksInLongNums();
 }
 
-void LongNumberCell::Draw(wxPoint point)
-{
-  if((point.x >= 0) && (point.y >= 0))
+void LongNumberCell::Draw(wxPoint point) {
+  if ((point.x >= 0) && (point.y >= 0))
     SetCurrentPoint(point);
-  if (InUpdateRegion())
-  {
-    if(m_numStart == wxEmptyString)
+  if (InUpdateRegion()) {
+    if (m_numStart == wxEmptyString)
       TextCell::Draw(point);
-    else
-    {
+    else {
       Cell::Draw(point);
-      if(IsBrokenIntoLines())
+      if (IsBrokenIntoLines())
         return;
       SetForeground();
       SetFont(m_fontSize_Scaled);
       wxDC *dc = m_configuration->GetDC();
-      dc->DrawText(m_numStart,
-                   point.x + MC_TEXT_PADDING,
+      dc->DrawText(m_numStart, point.x + MC_TEXT_PADDING,
                    point.y - m_center + MC_TEXT_PADDING);
       dc->DrawText(m_numEnd,
                    point.x + MC_TEXT_PADDING + m_numStartWidth +
-                   m_ellipsisWidth,
+                       m_ellipsisWidth,
                    point.y - m_center + MC_TEXT_PADDING);
       wxColor textColor = dc->GetTextForeground();
       wxColor backgroundColor = dc->GetTextBackground();
       dc->SetTextForeground(
-        wxColor(
-          (textColor.Red() + backgroundColor.Red()) / 2,
-          (textColor.Green() + backgroundColor.Green()) / 2,
-          (textColor.Blue() + backgroundColor.Blue()) / 2
-          )
-        );
-      dc->DrawText(m_ellipsis,
-                   point.x + MC_TEXT_PADDING + m_numStartWidth,
+          wxColor((textColor.Red() + backgroundColor.Red()) / 2,
+                  (textColor.Green() + backgroundColor.Green()) / 2,
+                  (textColor.Blue() + backgroundColor.Blue()) / 2));
+      dc->DrawText(m_ellipsis, point.x + MC_TEXT_PADDING + m_numStartWidth,
                    point.y - m_center + MC_TEXT_PADDING);
     }
   }
 }
 
-bool LongNumberCell::BreakUp()
-{
+bool LongNumberCell::BreakUp() {
   if (IsBrokenIntoLines())
     return false;
 
@@ -187,23 +165,21 @@ bool LongNumberCell::BreakUp()
     return false;
   if (!m_configuration->LineBreaksInLongNums())
     return false;
-  if(m_text.IsEmpty())
+  if (m_text.IsEmpty())
     return false;
-  
-  if(!m_innerCell)
-  {
+
+  if (!m_innerCell) {
     Cell *last = NULL;
-    for (wxString::const_iterator it = m_text.begin(); it != m_text.end(); ++it)
-    {
-      if(!last)
-      {
-        m_innerCell = std::make_unique<DigitCell>(GetGroup(), m_configuration, wxString(*it));
+    for (wxString::const_iterator it = m_text.begin(); it != m_text.end();
+         ++it) {
+      if (!last) {
+        m_innerCell = std::make_unique<DigitCell>(GetGroup(), m_configuration,
+                                                  wxString(*it));
         last = m_innerCell.get();
-      }
-      else
-      {
+      } else {
         CellList::AppendCell(last, std::make_unique<DigitCell>(GetGroup(),
-                                                               m_configuration, wxString(*it)));
+                                                               m_configuration,
+                                                               wxString(*it)));
         last = last->GetNext();
       }
     }
@@ -215,9 +191,8 @@ bool LongNumberCell::BreakUp()
   return true;
 }
 
-void LongNumberCell::SetNextToDraw(Cell *next)
-{
-  if(IsBrokenIntoLines())
+void LongNumberCell::SetNextToDraw(Cell *next) {
+  if (IsBrokenIntoLines())
     m_innerCell->last()->SetNextToDraw(next);
   else
     m_nextToDraw = next;

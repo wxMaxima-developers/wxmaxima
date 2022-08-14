@@ -1,4 +1,5 @@
-// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode:
+// nil -*-
 //
 //  Copyright (C) 2020 Kuba Ober <kuba@mareimbrium.org>
 //
@@ -60,62 +61,49 @@ const wxString emptyString;
 
 // String Comparisons
 
-bool StartsWithChar(const wxString &str, wxUniChar ch)
-{
+bool StartsWithChar(const wxString &str, wxUniChar ch) {
   return !str.empty() && *str.begin() == ch;
 }
 
-bool StartsWithChar(const wxString &str, wxStringCharType ch)
-{
+bool StartsWithChar(const wxString &str, wxStringCharType ch) {
   return !str.empty() && *str.begin() == ch;
 }
 
-bool StartsWithChar(const wxString &str, char ch)
-{
+bool StartsWithChar(const wxString &str, char ch) {
   return !str.empty() && *str.begin() == ch;
 }
 
-bool EndsWithChar(const wxString &str, wxUniChar ch)
-{
+bool EndsWithChar(const wxString &str, wxUniChar ch) {
   return !str.empty() && *std::next(str.end(), -1) == ch;
 }
 
-bool EndsWithChar(const wxString &str, wxStringCharType ch)
-{
+bool EndsWithChar(const wxString &str, wxStringCharType ch) {
   return !str.empty() && *std::next(str.end(), -1) == ch;
 }
 
-bool EndsWithChar(const wxString &str, char ch)
-{
+bool EndsWithChar(const wxString &str, char ch) {
   return !str.empty() && *std::next(str.end(), -1) == ch;
 }
 
 // String normalization
 
-void NormalizeEOLsRemoveNULs(wxString &str)
-{
+void NormalizeEOLsRemoveNULs(wxString &str) {
   using std::swap;
   wxString normalized;
   normalized.reserve(str.size());
 
   // Clean up the output from zeroes, and normalize the line endings
   wxStringCharType prevCh = {};
-  for (auto const ch : const_cast<const wxString &>(str))
-  {
-    if (ch == '\0')
-    { /* "\0" -> "" */ }
-    else if (prevCh == '\r' && ch != '\n')
-    { /* "\r[^\n]" -> "\n" */
+  for (auto const ch : const_cast<const wxString &>(str)) {
+    if (ch == '\0') {                          /* "\0" -> "" */
+    } else if (prevCh == '\r' && ch != '\n') { /* "\r[^\n]" -> "\n" */
       normalized += '\n';
-    }
-    else if (ch != '\r')
-    {
+    } else if (ch != '\r') {
       normalized += ch;
     }
     prevCh = ch;
   }
-  if (prevCh == '\r')
-  { /* "\r$" -> "\n" */
+  if (prevCh == '\r') { /* "\r$" -> "\n" */
     normalized += '\n';
   }
 

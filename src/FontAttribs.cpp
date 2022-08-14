@@ -1,4 +1,5 @@
-// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode:
+// nil -*-
 //
 //  Copyright (C) 2020 Kuba Ober <kuba@mareimbrium.org>
 //
@@ -60,11 +61,10 @@ constexpr float AFontSize::Minimum_Size;
 constexpr float AFontSize::Maximum_Size;
 constexpr float AFontSize::Size_Unit;
 
-bool EqualToWithin(AFontSize left, AFontSize right, float limit)
-{
-  if (left.IsValid() && right.IsValid())
-  {
-    auto const uLimit = AFontSize::value_type(limit / AFontSize::Size_Unit + 0.5f);
+bool EqualToWithin(AFontSize left, AFontSize right, float limit) {
+  if (left.IsValid() && right.IsValid()) {
+    auto const uLimit =
+        AFontSize::value_type(limit / AFontSize::Size_Unit + 0.5f);
     if (left.m_uSize >= right.m_uSize)
       return (left.m_uSize - right.m_uSize) < uLimit;
     return (right.m_uSize - left.m_uSize) < uLimit;

@@ -1,4 +1,5 @@
-// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode:
+// nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2014-2018 Gunter Königsmann <wxMaxima@physikbuch.de>
@@ -23,7 +24,8 @@
 /*! \file
   This file defines the class FunCell
 
-  FunCell is the Cell type that represents functions that don't require special handling.
+  FunCell is the Cell type that represents functions that don't require special
+  handling.
  */
 
 #include "FunCell.h"
@@ -32,48 +34,42 @@
 
 FunCell::FunCell(GroupCell *group, Configuration *config,
                  std::unique_ptr<Cell> &&name, std::unique_ptr<Cell> &&arg)
-    : Cell(group, config),
-      m_nameCell(std::move(name)),
-      m_argCell(std::move(arg))
-{
+    : Cell(group, config), m_nameCell(std::move(name)),
+      m_argCell(std::move(arg)) {
   InitBitFields();
   SetStyle(TS_FUNCTION);
   m_nameCell->SetStyle(TS_FUNCTION);
 }
 
-FunCell::FunCell(GroupCell *group,const FunCell &cell)
+FunCell::FunCell(GroupCell *group, const FunCell &cell)
     : FunCell(group, cell.m_configuration,
-              CopyList(group, cell.m_nameCell.get()), CopyList(group, cell.m_argCell.get()))
-{
+              CopyList(group, cell.m_nameCell.get()),
+              CopyList(group, cell.m_argCell.get())) {
   CopyCommonData(cell);
   m_altCopyText = cell.m_altCopyText;
 }
 
 DEFINE_CELL(FunCell)
 
-void FunCell::Recalculate(AFontSize fontsize)
-{
+void FunCell::Recalculate(AFontSize fontsize) {
   m_argCell->RecalculateList(fontsize);
   m_nameCell->RecalculateList(fontsize);
 
-  if(IsBrokenIntoLines())
-  {
+  if (IsBrokenIntoLines()) {
     m_width = m_center = m_height = 0;
-  }
-  else
-  {
-    m_width = m_nameCell->GetFullWidth() + m_argCell->GetFullWidth() - Scale_Px(1);
+  } else {
+    m_width =
+        m_nameCell->GetFullWidth() + m_argCell->GetFullWidth() - Scale_Px(1);
     m_center = wxMax(m_nameCell->GetCenterList(), m_argCell->GetCenterList());
-    m_height = m_center + wxMax(m_nameCell->GetMaxDrop(), m_argCell->GetMaxDrop());
+    m_height =
+        m_center + wxMax(m_nameCell->GetMaxDrop(), m_argCell->GetMaxDrop());
   }
   Cell::Recalculate(fontsize);
 }
 
-void FunCell::Draw(wxPoint point)
-{
+void FunCell::Draw(wxPoint point) {
   Cell::Draw(point);
-  if (DrawThisCell(point))
-  {
+  if (DrawThisCell(point)) {
 
     wxPoint name(point), arg(point);
     m_nameCell->DrawList(name);
@@ -83,8 +79,7 @@ void FunCell::Draw(wxPoint point)
   }
 }
 
-wxString FunCell::ToString() const
-{
+wxString FunCell::ToString() const {
   if (IsBrokenIntoLines())
     return wxEmptyString;
   if (m_altCopyText != wxEmptyString)
@@ -92,68 +87,60 @@ wxString FunCell::ToString() const
   return m_nameCell->ListToString() + m_argCell->ListToString();
 }
 
-wxString FunCell::ToMatlab() const
-{
+wxString FunCell::ToMatlab() const {
   if (IsBrokenIntoLines())
-	return wxEmptyString;
+    return wxEmptyString;
   if (m_altCopyText != wxEmptyString)
-	return m_altCopyText + Cell::ListToMatlab();
+    return m_altCopyText + Cell::ListToMatlab();
   wxString s = m_nameCell->ListToMatlab() + m_argCell->ListToMatlab();
   return s;
 }
 
-wxString FunCell::ToTeX() const
-{
+wxString FunCell::ToTeX() const {
   if (IsBrokenIntoLines())
     return wxEmptyString;
 
   wxString s;
 
-  if (
-    (m_nameCell->ToString() == wxT("sin")) ||
-    (m_nameCell->ToString() == wxT("cos")) ||
-    (m_nameCell->ToString() == wxT("cosh")) ||
-    (m_nameCell->ToString() == wxT("sinh")) ||
-    (m_nameCell->ToString() == wxT("log")) ||
-    (m_nameCell->ToString() == wxT("cot")) ||
-    (m_nameCell->ToString() == wxT("sec")) ||
-    (m_nameCell->ToString() == wxT("csc")) ||
-    (m_nameCell->ToString() == wxT("tan"))
-    )
-    s = wxT("\\") + m_nameCell->ToString() + wxT("{") + m_argCell->ListToTeX() + wxT("}");
+  if ((m_nameCell->ToString() == wxT("sin")) ||
+      (m_nameCell->ToString() == wxT("cos")) ||
+      (m_nameCell->ToString() == wxT("cosh")) ||
+      (m_nameCell->ToString() == wxT("sinh")) ||
+      (m_nameCell->ToString() == wxT("log")) ||
+      (m_nameCell->ToString() == wxT("cot")) ||
+      (m_nameCell->ToString() == wxT("sec")) ||
+      (m_nameCell->ToString() == wxT("csc")) ||
+      (m_nameCell->ToString() == wxT("tan")))
+    s = wxT("\\") + m_nameCell->ToString() + wxT("{") + m_argCell->ListToTeX() +
+        wxT("}");
   else
     s = m_nameCell->ListToTeX() + m_argCell->ListToTeX();
-  
+
   return s;
 }
 
-wxString FunCell::ToXML() const
-{
-//  if (IsBrokenIntoLines())
-//    return wxEmptyString;
+wxString FunCell::ToXML() const {
+  //  if (IsBrokenIntoLines())
+  //    return wxEmptyString;
   wxString flags;
   if (HasHardLineBreak())
     flags += wxT(" breakline=\"true\"");
-  return wxT("<fn") + flags + wxT("><r>") + m_nameCell->ListToXML() + wxT("</r>") +
-         m_argCell->ListToXML() + wxT("</fn>");
+  return wxT("<fn") + flags + wxT("><r>") + m_nameCell->ListToXML() +
+         wxT("</r>") + m_argCell->ListToXML() + wxT("</fn>");
 }
 
-wxString FunCell::ToMathML() const
-{
-//  if (IsBrokenIntoLines())
-//    return wxEmptyString;
-  return wxT("<mrow>") + m_nameCell->ListToMathML() +
-         wxT("<mo>&#x2061;</mo>") + m_argCell->ListToMathML() + wxT("</mrow>\n");
+wxString FunCell::ToMathML() const {
+  //  if (IsBrokenIntoLines())
+  //    return wxEmptyString;
+  return wxT("<mrow>") + m_nameCell->ListToMathML() + wxT("<mo>&#x2061;</mo>") +
+         m_argCell->ListToMathML() + wxT("</mrow>\n");
 }
 
-wxString FunCell::ToOMML() const
-{
-  return m_nameCell->ListToOMML() +
-         m_argCell->ListToOMML();
+wxString FunCell::ToOMML() const {
+  return m_nameCell->ListToOMML() + m_argCell->ListToOMML();
 }
 
-bool FunCell::BreakUp()
-{
+bool FunCell::BreakUp() {
   if (IsBrokenIntoLines())
     return false;
 
@@ -167,9 +154,8 @@ bool FunCell::BreakUp()
   return true;
 }
 
-void FunCell::SetNextToDraw(Cell *next)
-{
-  if(IsBrokenIntoLines())
+void FunCell::SetNextToDraw(Cell *next) {
+  if (IsBrokenIntoLines())
     m_argCell->last()->SetNextToDraw(next);
   else
     m_nextToDraw = next;

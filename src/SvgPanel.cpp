@@ -1,4 +1,5 @@
-// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode:
+// nil -*-
 //
 //  Copyright (C) 2017-2019 Gunter Königsmann <wxMaxima@physikbuch.de>
 //
@@ -25,14 +26,12 @@
 
 #include "SvgPanel.h"
 
-SvgPanel::SvgPanel(wxWindow* parent, unsigned char *data, size_t len) :
-  wxPanel(parent),
-  m_bitmap(this, data, len)
-{  
+SvgPanel::SvgPanel(wxWindow *parent, unsigned char *data, size_t len)
+    : wxPanel(parent), m_bitmap(this, data, len) {
   int ppi;
 #if wxCHECK_VERSION(3, 1, 1)
   wxDisplay display;
-  
+
   int display_idx = wxDisplay::GetFromWindow(GetParent());
   if (display_idx < 0)
     ppi = 72;
@@ -41,20 +40,15 @@ SvgPanel::SvgPanel(wxWindow* parent, unsigned char *data, size_t len) :
 #else
   ppi = wxGetDisplayPPI().x;
 #endif
-  ppi = wxMax(ppi,75);
+  ppi = wxMax(ppi, 75);
 
-  SetMinSize(wxSize(ppi*4, ppi*4));
-  
-  Connect(wxEVT_PAINT,
-          wxPaintEventHandler(SvgPanel::paintEvent),
-          NULL, this);
-  Connect(wxEVT_SIZE,
-          wxSizeEventHandler(SvgPanel::OnSize),
-          NULL, this);
+  SetMinSize(wxSize(ppi * 4, ppi * 4));
+
+  Connect(wxEVT_PAINT, wxPaintEventHandler(SvgPanel::paintEvent), NULL, this);
+  Connect(wxEVT_SIZE, wxSizeEventHandler(SvgPanel::OnSize), NULL, this);
 }
 
-void SvgPanel::Load(unsigned char *data, size_t len)
-{
+void SvgPanel::Load(unsigned char *data, size_t len) {
   m_bitmap = SvgBitmap(this, data, len);
   Refresh();
 }
@@ -64,24 +58,23 @@ void SvgPanel::Load(unsigned char *data, size_t len)
  * to be redrawn. You can also trigger this call by
  * calling Refresh()/Update().
  */
- 
-void SvgPanel::paintEvent(wxPaintEvent& WXUNUSED(evt))
-{
+
+void SvgPanel::paintEvent(wxPaintEvent &WXUNUSED(evt)) {
   // depending on your system you may need to look at double-buffered dcs
   wxMemoryDC dcm;
   wxPaintDC dc(this);
   wxSize newSize(dc.GetSize());
-  
-  if(newSize != m_bitmap.GetSize())
+
+  if (newSize != m_bitmap.GetSize())
     m_bitmap.SetSize(newSize);
-  dc.DrawBitmap( m_bitmap, 0, 0, false );
+  dc.DrawBitmap(m_bitmap, 0, 0, false);
 }
- 
+
 /*
  * Here we call refresh to tell the panel to draw itself again.
  * So when the user resizes the image panel the image should be resized too.
  */
-void SvgPanel::OnSize(wxSizeEvent& event){
-    Refresh();
-    event.Skip();
+void SvgPanel::OnSize(wxSizeEvent &event) {
+  Refresh();
+  event.Skip();
 }

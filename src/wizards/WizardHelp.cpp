@@ -1,4 +1,5 @@
-// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode:
+// nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //  Copyright (C) 2017-2018 Gunter Königsmann <wxMaxima@physikbuch.de>
@@ -24,11 +25,10 @@
 #include <wx/persist/toplevel.h>
 
 Wizardhelp::Wizardhelp(wxWindow *parent, int id, const wxString &title,
-                       const wxString &message,
-                       const wxString &tooltip):
-  wxDialog(parent, id, title, wxDefaultPosition, wxDefaultSize,
-           wxMINIMIZE_BOX | wxMAXIMIZE_BOX | wxRESIZE_BORDER | wxCAPTION | wxCLOSE_BOX | wxCLIP_CHILDREN)
-{
+                       const wxString &message, const wxString &tooltip)
+    : wxDialog(parent, id, title, wxDefaultPosition, wxDefaultSize,
+               wxMINIMIZE_BOX | wxMAXIMIZE_BOX | wxRESIZE_BORDER | wxCAPTION |
+                   wxCLOSE_BOX | wxCLIP_CHILDREN) {
   SetName(title);
   m_message = new WrappingStaticText(this, -1, message);
   m_message->SetToolTip(tooltip);
@@ -37,11 +37,10 @@ Wizardhelp::Wizardhelp(wxWindow *parent, int id, const wxString &title,
   button_1 = new wxButton(this, wxID_OK, _("OK"));
   button_1->SetDefault();
   wxSizer *vbox = new wxBoxSizer(wxVERTICAL);
-  vbox->Add(m_message, wxSizerFlags(1).Expand().Border(wxALL, 5*GetContentScaleFactor()));
+  vbox->Add(m_message, wxSizerFlags(1).Expand().Border(
+                           wxALL, 5 * GetContentScaleFactor()));
   vbox->Add(static_line_1, wxSizerFlags(1).Expand());
   vbox->Fit(this);
   vbox->SetSizeHints(this);
   Layout();
 }
-
-

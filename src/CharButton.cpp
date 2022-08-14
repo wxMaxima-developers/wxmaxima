@@ -1,4 +1,5 @@
-// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode:
+// nil -*-
 //
 //  Copyright (C) 2009-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2014-2016 Gunter Königsmann <wxMaxima@physikbuch.de>
@@ -23,74 +24,61 @@
 /*! \file
   This file defines the class CharacterButton
 
-  This file contains the definition of the class CharacterButton that allows to 
+  This file contains the definition of the class CharacterButton that allows to
   select arbitrary unicode symbols.
  */
 
 #include "CharButton.h"
 #include "UnicodeSidebar.h"
 #include "wx/sizer.h"
-#include <wx/settings.h>
 #include <wx/dcbuffer.h>
+#include <wx/settings.h>
 
-void CharButton::MouseOverTextIs(bool mouseover)
-{
-  if(m_mouseOverText != mouseover)
-  {
+void CharButton::MouseOverTextIs(bool mouseover) {
+  if (m_mouseOverText != mouseover) {
     m_mouseOverText = mouseover;
     m_backgroundColorChangeNeeded = true;
-    Connect(wxEVT_IDLE,
-            wxIdleEventHandler(CharButton::OnIdle), NULL, this);
-  }  
-}
-
-void CharButton::MouseOverPanelIs(bool mouseover)
-{
-  if(m_mouseOverPanel != mouseover)
-  {
-    m_mouseOverPanel = mouseover;
-    m_backgroundColorChangeNeeded = true;
-    Connect(wxEVT_IDLE,
-            wxIdleEventHandler(CharButton::OnIdle), NULL, this);
+    Connect(wxEVT_IDLE, wxIdleEventHandler(CharButton::OnIdle), NULL, this);
   }
 }
 
-void CharButton::ForwardToParent(wxMouseEvent &event)
-{
+void CharButton::MouseOverPanelIs(bool mouseover) {
+  if (m_mouseOverPanel != mouseover) {
+    m_mouseOverPanel = mouseover;
+    m_backgroundColorChangeNeeded = true;
+    Connect(wxEVT_IDLE, wxIdleEventHandler(CharButton::OnIdle), NULL, this);
+  }
+}
+
+void CharButton::ForwardToParent(wxMouseEvent &event) {
   event.Skip();
-  if(GetParent())
+  if (GetParent())
     GetParent()->GetEventHandler()->QueueEvent(new wxMouseEvent(event));
 }
 
-void CharButton::MouseOverPanel(wxMouseEvent &event)
-{
+void CharButton::MouseOverPanel(wxMouseEvent &event) {
   MouseOverPanelIs();
   event.Skip();
 }
-void CharButton::MouseLeftPanel(wxMouseEvent &event)
-{
+void CharButton::MouseLeftPanel(wxMouseEvent &event) {
   MouseOverPanelIs(false);
   event.Skip();
 }
-void CharButton::MouseOverText(wxMouseEvent &event)
-{
+void CharButton::MouseOverText(wxMouseEvent &event) {
   MouseOverTextIs();
   event.Skip();
 }
-void CharButton::MouseLeftText(wxMouseEvent &event)
-{
+void CharButton::MouseLeftText(wxMouseEvent &event) {
   MouseOverTextIs(false);
   event.Skip();
 }
 
-void CharButton::OnIdle(wxIdleEvent &event)
-{
-  Disconnect(wxEVT_IDLE,
-          wxIdleEventHandler(CharButton::OnIdle), NULL, this);
-  if(!m_backgroundColorChangeNeeded)
+void CharButton::OnIdle(wxIdleEvent &event) {
+  Disconnect(wxEVT_IDLE, wxIdleEventHandler(CharButton::OnIdle), NULL, this);
+  if (!m_backgroundColorChangeNeeded)
     return;
   m_backgroundColorChangeNeeded = false;
-  if((m_mouseOverPanel) || (m_mouseOverText))
+  if ((m_mouseOverPanel) || (m_mouseOverText))
     SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHT));
   else
     // An invalid color means "the default background"
@@ -98,14 +86,12 @@ void CharButton::OnIdle(wxIdleEvent &event)
   event.Skip();
 }
 
-void CharButton::CharButtonPressed(wxCommandEvent &WXUNUSED(event))
-{
+void CharButton::CharButtonPressed(wxCommandEvent &WXUNUSED(event)) {
   wxCommandEvent *ev = new wxCommandEvent(SIDEBARKEYEVENT, (long)(m_char));
   m_worksheet->GetEventHandler()->QueueEvent(ev);
 }
 
-void CharButton::OnSize(wxSizeEvent &event)
-{
+void CharButton::OnSize(wxSizeEvent &event) {
   wxFont fnt = GetFont();
   wxClientDC dc(this);
   dc.SetFont(fnt);
@@ -115,26 +101,22 @@ void CharButton::OnSize(wxSizeEvent &event)
   minSize.y *= 1.5;
   size.x += 2 * GetContentScaleFactor();
   size.y += 2 * GetContentScaleFactor();
-  if(minSize.x < minSize.y)
+  if (minSize.x < minSize.y)
     minSize.x = minSize.y;
-  if(minSize.x > size.x)
+  if (minSize.x > size.x)
     size.x = minSize.x;
-  if(minSize.y > size.y)
+  if (minSize.y > size.y)
     size.y = minSize.y;
   SetSize(size);
   SetMinSize(size);
   event.Skip();
 }
 
-CharButton::CharButton(wxWindow *parent, wxWindow *worksheet, Configuration *config,
-                       const Definition &def,
-                       bool forceShow) :
-  wxPanel(parent, wxID_ANY),
-  m_char(def.symbol),
-  m_configuration(config),
-  m_description(def.description),
-  m_worksheet(worksheet)
-{
+CharButton::CharButton(wxWindow *parent, wxWindow *worksheet,
+                       Configuration *config, const Definition &def,
+                       bool forceShow)
+    : wxPanel(parent, wxID_ANY), m_char(def.symbol), m_configuration(config),
+      m_description(def.description), m_worksheet(worksheet) {
   Connect(wxEVT_SIZE, wxSizeEventHandler(CharButton::OnSize));
   wxBoxSizer *sizer = new wxBoxSizer(wxHORIZONTAL);
   m_buttonText = new wxStaticText(this, -1, wxString(m_char));
@@ -144,37 +126,44 @@ CharButton::CharButton(wxWindow *parent, wxWindow *worksheet, Configuration *con
   SetSizer(sizer);
   FitInside();
   SetToolTip(def.description);
-  Connect(wxEVT_LEFT_UP, wxCommandEventHandler(CharButton::CharButtonPressed), NULL, this);
-  Connect(wxEVT_RIGHT_DOWN, wxMouseEventHandler(CharButton::ForwardToParent), NULL, this);
+  Connect(wxEVT_LEFT_UP, wxCommandEventHandler(CharButton::CharButtonPressed),
+          NULL, this);
+  Connect(wxEVT_RIGHT_DOWN, wxMouseEventHandler(CharButton::ForwardToParent),
+          NULL, this);
   Connect(wxEVT_IDLE, wxIdleEventHandler(CharButton::OnIdle), NULL, this);
-  Connect(wxEVT_ENTER_WINDOW, wxMouseEventHandler(CharButton::MouseOverPanel), NULL, this);
-  Connect(wxEVT_LEAVE_WINDOW, wxMouseEventHandler(CharButton::MouseLeftPanel), NULL, this);
-  m_buttonText->Connect(wxEVT_ENTER_WINDOW, wxMouseEventHandler(CharButton::MouseOverText), NULL, this);
-  m_buttonText->Connect(wxEVT_LEAVE_WINDOW, wxMouseEventHandler(CharButton::MouseLeftText), NULL, this);
-  m_buttonText->Connect(wxEVT_LEFT_UP, wxCommandEventHandler(CharButton::CharButtonPressed), NULL, this);
-  m_buttonText->Connect(wxEVT_RIGHT_DOWN, wxMouseEventHandler(CharButton::ForwardToParent), NULL, this);
-  if(!(forceShow || m_configuration->FontRendersChar(m_char)))
-  {
+  Connect(wxEVT_ENTER_WINDOW, wxMouseEventHandler(CharButton::MouseOverPanel),
+          NULL, this);
+  Connect(wxEVT_LEAVE_WINDOW, wxMouseEventHandler(CharButton::MouseLeftPanel),
+          NULL, this);
+  m_buttonText->Connect(wxEVT_ENTER_WINDOW,
+                        wxMouseEventHandler(CharButton::MouseOverText), NULL,
+                        this);
+  m_buttonText->Connect(wxEVT_LEAVE_WINDOW,
+                        wxMouseEventHandler(CharButton::MouseLeftText), NULL,
+                        this);
+  m_buttonText->Connect(wxEVT_LEFT_UP,
+                        wxCommandEventHandler(CharButton::CharButtonPressed),
+                        NULL, this);
+  m_buttonText->Connect(wxEVT_RIGHT_DOWN,
+                        wxMouseEventHandler(CharButton::ForwardToParent), NULL,
+                        this);
+  if (!(forceShow || m_configuration->FontRendersChar(m_char))) {
     Hide();
   }
 
-  wxFont mathFont = m_configuration->GetStyle(TS_INPUT, AFontSize(10.0)).GetFont();
-  wxFont textFont = m_configuration->GetStyle(TS_DEFAULT, AFontSize(10.0)).GetFont();
-  if(
-    ((!mathFont.IsOk()) ||
-     m_configuration->FontRendersChar(m_char, mathFont)
-      )
-    ||
-    ((!textFont.IsOk()) ||
-     m_configuration->FontRendersChar(m_char, textFont)
-      ))
-    {
-      SetToolTip(m_description);
-    }
-    else
-    {
-      m_buttonText->SetForegroundColour(wxColor(128, 128, 128));
-      SetToolTip(m_description + wxT("\n") +
-                 _("(Might not be displayed correctly in at least one of the worksheet fonts)"));
-    }
+  wxFont mathFont =
+      m_configuration->GetStyle(TS_INPUT, AFontSize(10.0)).GetFont();
+  wxFont textFont =
+      m_configuration->GetStyle(TS_DEFAULT, AFontSize(10.0)).GetFont();
+  if (((!mathFont.IsOk()) ||
+       m_configuration->FontRendersChar(m_char, mathFont)) ||
+      ((!textFont.IsOk()) ||
+       m_configuration->FontRendersChar(m_char, textFont))) {
+    SetToolTip(m_description);
+  } else {
+    m_buttonText->SetForegroundColour(wxColor(128, 128, 128));
+    SetToolTip(m_description + wxT("\n") +
+               _("(Might not be displayed correctly in at least one of the "
+                 "worksheet fonts)"));
+  }
 }

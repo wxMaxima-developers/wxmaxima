@@ -1,4 +1,5 @@
-// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode:
+// nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2016-2018 Gunter Königsmann <wxMaxima@physikbuch.de>
@@ -21,7 +22,8 @@
 //  SPDX-License-Identifier: GPL-2.0+
 
 /*! \file
-  This file defines the class Configuration which serves as a fast configuration storage.
+  This file defines the class Configuration which serves as a fast configuration
+  storage.
  */
 
 #include "Configuration.h"
@@ -30,24 +32,22 @@
 #include "Dirstructure.h"
 #include "ErrorRedirector.h"
 #include "StringUtils.h"
-#include <wx/wx.h>
-#include <wx/mimetype.h>
-#include <wx/string.h>
-#include <wx/font.h>
 #include <wx/config.h>
-#include <wx/wfstream.h>
 #include <wx/fileconf.h>
-#include <wx/txtstrm.h>
+#include <wx/font.h>
+#include <wx/mimetype.h>
 #include <wx/mstream.h>
-#include <wx/xml/xml.h>
+#include <wx/string.h>
+#include <wx/txtstrm.h>
 #include <wx/webview.h>
+#include <wx/wfstream.h>
+#include <wx/wx.h>
+#include <wx/xml/xml.h>
 #ifdef __WXMSW__
 #include <wx/msw/webview_ie.h>
 #endif
 
-Configuration::Configuration(wxDC *dc, InitOpt options) :
-  m_dc(dc)
-{
+Configuration::Configuration(wxDC *dc, InitOpt options) : m_dc(dc) {
   m_maximaOperators["("] = 1;
   m_maximaOperators["/"] = 1;
   m_maximaOperators["{"] = 1;
@@ -91,46 +91,43 @@ Configuration::Configuration(wxDC *dc, InitOpt options) :
   SetBackgroundBrush(*wxWHITE_BRUSH);
   ResetAllToDefaults(options);
   ReadConfig();
-  wxString operators(
-    wxT("\u221A\u22C0\u22C1\u22BB\u22BC\u22BD\u00AC\u222b\u2264\u2265\u2211\u2260+-*/^:=#'!()[]{}")
-    );
-  for (wxString::const_iterator it = operators.begin(); it != operators.end(); ++it)
+  wxString operators(wxT("\u221A\u22C0\u22C1\u22BB\u22BC\u22BD\u00AC\u222b"
+                         "\u2264\u2265\u2211\u2260+-*/^:=#'!()[]{}"));
+  for (wxString::const_iterator it = operators.begin(); it != operators.end();
+       ++it)
     m_maximaOperators[wxString(*it)] = 1;
 }
 
-wxSize Configuration::GetPPI() const
-{
-  if(GetWorkSheet())
-  {
+wxSize Configuration::GetPPI() const {
+  if (GetWorkSheet()) {
     wxSize ppi;
 #if wxCHECK_VERSION(3, 1, 1)
     wxDisplay display;
-    
+
     int display_idx = wxDisplay::GetFromWindow(GetWorkSheet());
-    if(display_idx < 0)
+    if (display_idx < 0)
       ppi = wxSize(72, 72);
     else
       ppi = wxDisplay(display_idx).GetPPI();
 #else
     ppi = wxGetDisplayPPI();
 #endif
-    if((ppi.x < 10) || (ppi.y < 10))
+    if ((ppi.x < 10) || (ppi.y < 10))
       ppi = wxGetDisplayPPI();
-    if((ppi.x <= 10) || (ppi.y < 10))
+    if ((ppi.x <= 10) || (ppi.y < 10))
       ppi = wxSize(72, 72);
-    
-    return ppi;;
-  }
-  else
+
+    return ppi;
+    ;
+  } else
     return m_ppi;
 }
 
-void Configuration::ResetAllToDefaults(InitOpt options)
-{
+void Configuration::ResetAllToDefaults(InitOpt options) {
   m_wizardTab = 0;
-  for(auto i:m_renderableChars)
+  for (auto i : m_renderableChars)
     m_renderableChars[i.first] = wxEmptyString;
-  for(auto i:m_nonRenderableChars)
+  for (auto i : m_nonRenderableChars)
     m_nonRenderableChars[i.first] = wxEmptyString;
   m_showAllDigits = false;
   m_lineBreaksInLongNums = false;
@@ -138,10 +135,10 @@ void Configuration::ResetAllToDefaults(InitOpt options)
   m_numpadEnterEvaluates = true;
   m_saveImgFileName = false;
   m_maximaEnvVars.clear();
-  // Tell gnuplot not to wait for <enter> every few lines
-  #ifndef __WXMSW__
+// Tell gnuplot not to wait for <enter> every few lines
+#ifndef __WXMSW__
   m_maximaEnvVars[wxT("PAGER")] = wxT("cat");
-  #endif
+#endif
   m_wrapLatexMath = true;
   m_allowNetworkHelp = false;
   m_exportContainsWXMX = true;
@@ -153,17 +150,17 @@ void Configuration::ResetAllToDefaults(InitOpt options)
   m_tocDepth = 255;
   m_fixedFontTC = false;
   m_hideMarkerForThisMessage.clear();
-  #ifdef __WXOSX__
+#ifdef __WXOSX__
   m_usepngCairo = false;
-  #else
+#else
   m_usepngCairo = true;
-  #endif
+#endif
   m_wxMathML_Filename = wxEmptyString;
   m_wxMathML_UseFile = false;
 
-  m_mathJaxURL = wxT("https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js");
-  m_usePartialForDiff = false,
-  m_documentclass = wxT("article");
+  m_mathJaxURL =
+      wxT("https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js");
+  m_usePartialForDiff = false, m_documentclass = wxT("article");
   m_documentclassOptions = wxT("fleqn");
   m_incrementalSearch = true;
   m_symbolPaneAdditionalChars = wxT("Øü§");
@@ -171,14 +168,14 @@ void Configuration::ResetAllToDefaults(InitOpt options)
   m_autodetectHelpBrowser = true;
   m_singlePageManual = true;
   m_useInternalHelpBrowser = OfferInternalHelpBrowser();
-  #ifdef __WXGTK__
+#ifdef __WXGTK__
   m_helpBrowserUserLocation = wxT("xdg-open");
-  #else
+#else
   // see https://docs.wxwidgets.org/3.0/classwx_mime_types_manager.html
   auto *manager = wxTheMimeTypesManager;
   wxFileType *filetype = manager->GetFileTypeFromExtension("html");
   m_helpBrowserUserLocation = filetype->GetOpenCommand({});
-  #endif
+#endif
 
   m_TeXExponentsAfterSubscript = false;
   m_saveUntitled = true;
@@ -214,10 +211,9 @@ void Configuration::ResetAllToDefaults(InitOpt options)
   m_maxGnuplotMegabytes = 12;
   m_clientWidth = 1024;
   m_clientHeight = 768;
-  m_indentMaths=true;
-  if (!(options & InitOpt::temporary))
-  {
-    if(m_maximaLocation_override != wxEmptyString)
+  m_indentMaths = true;
+  if (!(options & InitOpt::temporary)) {
+    if (m_maximaLocation_override != wxEmptyString)
       m_maximaUserLocation = m_maximaLocation_override;
     else
       m_maximaUserLocation = Dirstructure::Get()->MaximaDefaultLocation();
@@ -228,9 +224,10 @@ void Configuration::ResetAllToDefaults(InitOpt options)
   m_showCodeCells = true;
   m_greekSidebar_ShowLatinLookalikes = false;
   m_greekSidebar_Show_mu = false;
-  m_copyBitmap = false; // Otherwise MS Office, OpenOffice and LibreOffice prefer the bitmap
-  // to Mathml and RTF. Also mail programs prefer bitmaps to text - which is counter-productive
-  // for maxima-discuss.
+  m_copyBitmap = false; // Otherwise MS Office, OpenOffice and LibreOffice
+                        // prefer the bitmap
+  // to Mathml and RTF. Also mail programs prefer bitmaps to text - which is
+  // counter-productive for maxima-discuss.
   m_copyMathML = true;
   m_copyMathMLHTML = false;
   m_copyRTF = true;
@@ -251,172 +248,169 @@ void Configuration::ResetAllToDefaults(InitOpt options)
   m_labelWidth = 4;
   m_zoomFactor = 1.0;
   m_TeXFonts = false;
-  m_keepPercent = true;  
+  m_keepPercent = true;
   InitStyles();
 }
 
-static const Configuration::EscCodeContainer &EscCodes()
-{
+static const Configuration::EscCodeContainer &EscCodes() {
   static const Configuration::EscCodeContainer escCodes{
-    {wxT("pm"), wxT("\u00B1")},
-    {wxT("+/-"), wxT("\u00B1")},
-    {wxT("alpha"), wxT("\u03B1")},
-    {wxT("beta"), wxT("\u03B2")},
-    {wxT("gamma"), wxT("\u03B3")},
-    {wxT("delta"), wxT("\u03B4")},
-    {wxT("epsilon"), wxT("\u03B5")},
-    {wxT("zeta"), wxT("\u03B6")},
-    {wxT("eta"), wxT("\u03B7")},
-    {wxT("theta"), wxT("\u03B8")},
-    {wxT("iota"), wxT("\u03B9")},
-    {wxT("kappa"), wxT("\u03BA")},
-    {wxT("lambda"), wxT("\u03BB")},
-    {wxT("mu"), wxT("\u03BC")},
-    {wxT("nu"), wxT("\u03BD")},
-    {wxT("xi"), wxT("\u03BE")},
-    {wxT("om"), wxT("\u03BF")},
-    {wxT("omicron"), wxT("\u03BF")},
-    {wxT("nabla"), wxT("\u2207")},
-    {wxT("pi"), wxT("\u03C0")},
-    {wxT("rho"), wxT("\u03C1")},
-    {wxT("sigma"), wxT("\u03C3")},
-    {wxT("tau"), wxT("\u03C4")},
-    {wxT("upsilon"), wxT("\u03C5")},
-    {wxT("phi"), wxT("\u03C6")},
-    {wxT("chi"), wxT("\u03C7")},
-    {wxT("psi"), wxT("\u03C8")},
-    {wxT("omega"), wxT("\u03C9")},
-    {wxT("Alpha"), wxT("\u0391")},
-    {wxT("Beta"), wxT("\u0392")},
-    {wxT("Gamma"), wxT("\u0393")},
-    {wxT("Delta"), wxT("\u0394")},
-    {wxT("Epsilon"), wxT("\u0395")},
-    {wxT("Zeta"), wxT("\u0396")},
-    {wxT("Eta"), wxT("\u0397")},
-    {wxT("Theta"), wxT("\u0398")},
-    {wxT("Iota"), wxT("\u0399")},
-    {wxT("Kappa"), wxT("\u039A")},
-    {wxT("Lambda"), wxT("\u039B")},
-    {wxT("Mu"), wxT("\u039C")},
-    {wxT("Nu"), wxT("\u039D")},
-    {wxT("Xi"), wxT("\u039E")},
-    {wxT("Omicron"), wxT("\u039F")},
-    {wxT("Pi"), wxT("\u03A0")},
-    {wxT("Rho"), wxT("\u03A1")},
-    {wxT("Sigma"), wxT("\u03A3")},
-    {wxT("Tau"), wxT("\u03A4")},
-    {wxT("Upsilon"), wxT("\u03A5")},
-    {wxT("Phi"), wxT("\u03A6")},
-    {wxT("Chi"), wxT("\u03A7")},
-    {wxT("Psi"), wxT("\u03A8")},
-    {wxT("Omega"), wxT("\u03A9")},
-    {wxT("Ohm"), wxT("\u03A9")},
-    //////////////////////////
-    {wxT("^2"), wxT("\u00B2")},
-    {wxT("^3"), wxT("\u00B3")},
-    {wxT("/2"), wxT("\u00BD")},
-    {wxT("sq"), wxT("\u221A")},
-    {wxT("ii"), wxT("\u2148")},
-    {wxT("ee"), wxT("\u2147")},
-    {wxT("hb"), wxT("\u210F")},
-    {wxT("in"), wxT("\u2208")},
-    {wxT("impl"), wxT("\u21D2")},
-    {wxT("inf"), wxT("\u221e")},
-    {wxT("empty"), wxT("\u2205")},
-    {wxT("TB"), wxT("\u25b6")},
-    {wxT("tb"), wxT("\u25b8")},
-    {wxT("and"), wxT("\u22C0")},
-    {wxT("or"), wxT("\u22C1")},
-    {wxT("xor"), wxT("\u22BB")},
-    {wxT("nand"), wxT("\u22BC")},
-    {wxT("nor"), wxT("\u22BD")},
-    {wxT("implies"), wxT("\u21D2")},
-    {wxT("=>"), wxT("\u21D2")},
-    {wxT("<=>"), wxT("\u21D4")},
-    {wxT("not"), wxT("\u00AC")},
-    {wxT("union"), wxT("\u22C3")},
-    {wxT("inter"), wxT("\u22C2")},
-    {wxT("subseteq"), wxT("\u2286")},
-    {wxT("subset"), wxT("\u2282")},
-    {wxT("notsubseteq"), wxT("\u2288")},
-    {wxT("notsubset"), wxT("\u2284")},
-    {wxT("hbar"), wxT("\u0127")},
-    {wxT("Hbar"), wxT("\u0126")},
-    {wxT("partial"), wxT("\u2202")},
-    {wxT("integral"), wxT("\u222b")},
-    {wxT("approx"), wxT("\u2245")},
-    {wxT("prop"), wxT("\u221d")},
-    {wxT("propto"), wxT("\u221d")},
-    {wxT("neq"), wxT("\u2260")},
-    {wxT("!="), wxT("\u2260")},
-    {wxT("/="), wxT("\u2260")},
-    {wxT("#"), wxT("\u2260")},
-    {wxT("<="), wxT("\u2264")},
-    {wxT("leq"), wxT("\u2264")},
-    {wxT(">="), wxT("\u2265")},
-    {wxT("geq"), wxT("\u2265")},
-    {wxT("ll"), wxT("\u226A")},
-    {wxT("<<"), wxT("\u226A")},
-    {wxT("gg"), wxT("\u226B")},
-    {wxT(">>"), wxT("\u226B")},
-    {wxT("qed"), wxT("\u220E")},
-    {wxT("equiv"), wxT("\u2263")},
-    {wxT("sum"), wxT("\u2211")},
-    {wxT("prod"), wxT("\u220F")},
-    {wxT("product"), wxT("\u220F")},
-    {wxT("exists"), wxT("\u2203")},
-    {wxT("nexists"), wxT("\u2204")},
-    {wxT("parallel"), wxT("\u2225")},
-    {wxT("perp"), wxT("\u27C2")},
-    {wxT("perpendicular"), wxT("\u27C2")},
-    {wxT("bot"), wxT("\u27C2")},
-    {wxT("leadsto"), wxT("\u219D")},
-    {wxT("->"), wxT("\u2192")},
-    {wxT("-->"), wxT("\u27F6")},
-    {wxT(" --> "), wxT("\u27F6")},
-    };
+      {wxT("pm"), wxT("\u00B1")},
+      {wxT("+/-"), wxT("\u00B1")},
+      {wxT("alpha"), wxT("\u03B1")},
+      {wxT("beta"), wxT("\u03B2")},
+      {wxT("gamma"), wxT("\u03B3")},
+      {wxT("delta"), wxT("\u03B4")},
+      {wxT("epsilon"), wxT("\u03B5")},
+      {wxT("zeta"), wxT("\u03B6")},
+      {wxT("eta"), wxT("\u03B7")},
+      {wxT("theta"), wxT("\u03B8")},
+      {wxT("iota"), wxT("\u03B9")},
+      {wxT("kappa"), wxT("\u03BA")},
+      {wxT("lambda"), wxT("\u03BB")},
+      {wxT("mu"), wxT("\u03BC")},
+      {wxT("nu"), wxT("\u03BD")},
+      {wxT("xi"), wxT("\u03BE")},
+      {wxT("om"), wxT("\u03BF")},
+      {wxT("omicron"), wxT("\u03BF")},
+      {wxT("nabla"), wxT("\u2207")},
+      {wxT("pi"), wxT("\u03C0")},
+      {wxT("rho"), wxT("\u03C1")},
+      {wxT("sigma"), wxT("\u03C3")},
+      {wxT("tau"), wxT("\u03C4")},
+      {wxT("upsilon"), wxT("\u03C5")},
+      {wxT("phi"), wxT("\u03C6")},
+      {wxT("chi"), wxT("\u03C7")},
+      {wxT("psi"), wxT("\u03C8")},
+      {wxT("omega"), wxT("\u03C9")},
+      {wxT("Alpha"), wxT("\u0391")},
+      {wxT("Beta"), wxT("\u0392")},
+      {wxT("Gamma"), wxT("\u0393")},
+      {wxT("Delta"), wxT("\u0394")},
+      {wxT("Epsilon"), wxT("\u0395")},
+      {wxT("Zeta"), wxT("\u0396")},
+      {wxT("Eta"), wxT("\u0397")},
+      {wxT("Theta"), wxT("\u0398")},
+      {wxT("Iota"), wxT("\u0399")},
+      {wxT("Kappa"), wxT("\u039A")},
+      {wxT("Lambda"), wxT("\u039B")},
+      {wxT("Mu"), wxT("\u039C")},
+      {wxT("Nu"), wxT("\u039D")},
+      {wxT("Xi"), wxT("\u039E")},
+      {wxT("Omicron"), wxT("\u039F")},
+      {wxT("Pi"), wxT("\u03A0")},
+      {wxT("Rho"), wxT("\u03A1")},
+      {wxT("Sigma"), wxT("\u03A3")},
+      {wxT("Tau"), wxT("\u03A4")},
+      {wxT("Upsilon"), wxT("\u03A5")},
+      {wxT("Phi"), wxT("\u03A6")},
+      {wxT("Chi"), wxT("\u03A7")},
+      {wxT("Psi"), wxT("\u03A8")},
+      {wxT("Omega"), wxT("\u03A9")},
+      {wxT("Ohm"), wxT("\u03A9")},
+      //////////////////////////
+      {wxT("^2"), wxT("\u00B2")},
+      {wxT("^3"), wxT("\u00B3")},
+      {wxT("/2"), wxT("\u00BD")},
+      {wxT("sq"), wxT("\u221A")},
+      {wxT("ii"), wxT("\u2148")},
+      {wxT("ee"), wxT("\u2147")},
+      {wxT("hb"), wxT("\u210F")},
+      {wxT("in"), wxT("\u2208")},
+      {wxT("impl"), wxT("\u21D2")},
+      {wxT("inf"), wxT("\u221e")},
+      {wxT("empty"), wxT("\u2205")},
+      {wxT("TB"), wxT("\u25b6")},
+      {wxT("tb"), wxT("\u25b8")},
+      {wxT("and"), wxT("\u22C0")},
+      {wxT("or"), wxT("\u22C1")},
+      {wxT("xor"), wxT("\u22BB")},
+      {wxT("nand"), wxT("\u22BC")},
+      {wxT("nor"), wxT("\u22BD")},
+      {wxT("implies"), wxT("\u21D2")},
+      {wxT("=>"), wxT("\u21D2")},
+      {wxT("<=>"), wxT("\u21D4")},
+      {wxT("not"), wxT("\u00AC")},
+      {wxT("union"), wxT("\u22C3")},
+      {wxT("inter"), wxT("\u22C2")},
+      {wxT("subseteq"), wxT("\u2286")},
+      {wxT("subset"), wxT("\u2282")},
+      {wxT("notsubseteq"), wxT("\u2288")},
+      {wxT("notsubset"), wxT("\u2284")},
+      {wxT("hbar"), wxT("\u0127")},
+      {wxT("Hbar"), wxT("\u0126")},
+      {wxT("partial"), wxT("\u2202")},
+      {wxT("integral"), wxT("\u222b")},
+      {wxT("approx"), wxT("\u2245")},
+      {wxT("prop"), wxT("\u221d")},
+      {wxT("propto"), wxT("\u221d")},
+      {wxT("neq"), wxT("\u2260")},
+      {wxT("!="), wxT("\u2260")},
+      {wxT("/="), wxT("\u2260")},
+      {wxT("#"), wxT("\u2260")},
+      {wxT("<="), wxT("\u2264")},
+      {wxT("leq"), wxT("\u2264")},
+      {wxT(">="), wxT("\u2265")},
+      {wxT("geq"), wxT("\u2265")},
+      {wxT("ll"), wxT("\u226A")},
+      {wxT("<<"), wxT("\u226A")},
+      {wxT("gg"), wxT("\u226B")},
+      {wxT(">>"), wxT("\u226B")},
+      {wxT("qed"), wxT("\u220E")},
+      {wxT("equiv"), wxT("\u2263")},
+      {wxT("sum"), wxT("\u2211")},
+      {wxT("prod"), wxT("\u220F")},
+      {wxT("product"), wxT("\u220F")},
+      {wxT("exists"), wxT("\u2203")},
+      {wxT("nexists"), wxT("\u2204")},
+      {wxT("parallel"), wxT("\u2225")},
+      {wxT("perp"), wxT("\u27C2")},
+      {wxT("perpendicular"), wxT("\u27C2")},
+      {wxT("bot"), wxT("\u27C2")},
+      {wxT("leadsto"), wxT("\u219D")},
+      {wxT("->"), wxT("\u2192")},
+      {wxT("-->"), wxT("\u27F6")},
+      {wxT(" --> "), wxT("\u27F6")},
+  };
   return escCodes;
 }
 
-void Configuration::InitStyles()
-{  
+void Configuration::InitStyles() {
   std::fill(std::begin(m_styles), std::end(m_styles), Style{});
 
   Style defaultStyle;
 
-  #ifdef __WINDOWS__
+#ifdef __WINDOWS__
   // Font defaulting for Windows
   m_styles[TS_DEFAULT].FontName(AFontName::Arial());
 
   for (auto fontName :
        {AFontName::Linux_Libertine_G(), AFontName::Linux_Libertine_O(),
-        AFontName::Linux_Libertine(), AFontName::Times_New_Roman()})
-  {
+        AFontName::Linux_Libertine(), AFontName::Times_New_Roman()}) {
     auto style = Style().FontName(fontName);
     style.ResolveToFont();
-    if (style.IsFontOk() && style.GetFontName() == fontName)
-    {
+    if (style.IsFontOk() && style.GetFontName() == fontName) {
       m_styles[TS_MATH].FontName(style.GetFontName());
       break;
     }
   }
-  #endif
+#endif
 
   // TODO It's a fat chance that this font actually will be monospace.
-  wxFont monospace(10, wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
+  wxFont monospace(10, wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL,
+                   wxFONTWEIGHT_NORMAL);
   m_styles[TS_ASCIIMATHS].SetFontName(AFontName(monospace.GetFaceName()));
   m_styles[TS_DEFAULT].Bold().Italic().FontSize(12);
   m_styles[TS_MATH].FontSize(12.0);
 
   m_styles[TS_TEXT].FontSize(12);
-  m_styles[TS_CODE_VARIABLE].Color(0,128,0).Italic();
-  m_styles[TS_CODE_FUNCTION].Color(128,0,0).Italic();
-  m_styles[TS_CODE_COMMENT].Color(64,64,64).Italic();
-  m_styles[TS_CODE_NUMBER].Color(128,64,0).Italic();
-  m_styles[TS_CODE_STRING].Color(0,0,128).Italic();
+  m_styles[TS_CODE_VARIABLE].Color(0, 128, 0).Italic();
+  m_styles[TS_CODE_FUNCTION].Color(128, 0, 0).Italic();
+  m_styles[TS_CODE_COMMENT].Color(64, 64, 64).Italic();
+  m_styles[TS_CODE_NUMBER].Color(128, 64, 0).Italic();
+  m_styles[TS_CODE_STRING].Color(0, 0, 128).Italic();
   m_styles[TS_CODE_OPERATOR].Italic();
-  m_styles[TS_CODE_LISP].Color(255,0,128).Italic();
-  m_styles[TS_CODE_ENDOFLINE].Color(128,128,128).Italic();
+  m_styles[TS_CODE_LISP].Color(255, 0, 128).Italic();
+  m_styles[TS_CODE_ENDOFLINE].Color(128, 128, 128).Italic();
   m_styles[TS_GREEK_CONSTANT].Italic();
   m_styles[TS_HEADING6].Bold().FontSize(14);
   m_styles[TS_HEADING5].Bold().FontSize(15);
@@ -426,30 +420,31 @@ void Configuration::InitStyles()
   m_styles[TS_TITLE].Bold().Underlined().FontSize(24);
   m_styles[TS_WARNING].Color(wxT("orange")).Bold().FontSize(12);
   m_styles[TS_ERROR].Color(*wxRED).FontSize(12);
-  m_styles[TS_MAIN_PROMPT].Color(255,128,128);
+  m_styles[TS_MAIN_PROMPT].Color(255, 128, 128);
   m_styles[TS_OTHER_PROMPT].Color(*wxRED).Italic();
-  m_styles[TS_LABEL].Color(255,192,128);
-  m_styles[TS_USERLABEL].Color(255,64,0);
-  //m_styles[TS_SPECIAL_CONSTANT];
+  m_styles[TS_LABEL].Color(255, 192, 128);
+  m_styles[TS_USERLABEL].Color(255, 64, 0);
+  // m_styles[TS_SPECIAL_CONSTANT];
   m_styles[TS_INPUT].Color(*wxBLUE);
-  //m_styles[TS_NUMBER];
+  // m_styles[TS_NUMBER];
   m_styles[TS_STRING].Italic();
-  //m_styles[TS_GREEK_CONSTANT];
+  // m_styles[TS_GREEK_CONSTANT];
   m_styles[TS_VARIABLE].Italic();
-  //m_styles[TS_FUNCTION];
+  // m_styles[TS_FUNCTION];
   m_styles[TS_HIGHLIGHT].Color(*wxRED);
   m_styles[TS_TEXT_BACKGROUND].Color(*wxWHITE);
   m_styles[TS_DOCUMENT_BACKGROUND].Color(*wxWHITE);
-  //m_styles[TS_CELL_BRACKET];
+  // m_styles[TS_CELL_BRACKET];
   m_styles[TS_ACTIVE_CELL_BRACKET].Color(*wxRED);
-  //m_styles[TS_CURSOR];
+  // m_styles[TS_CURSOR];
   m_styles[TS_SELECTION].Color(wxSYS_COLOUR_HIGHLIGHT);
-  m_styles[TS_EQUALSSELECTION].Color(wxSYS_COLOUR_HIGHLIGHT).ChangeLightness(150);
-  m_styles[TS_OUTDATED].Color(153,153,153);
+  m_styles[TS_EQUALSSELECTION]
+      .Color(wxSYS_COLOUR_HIGHLIGHT)
+      .ChangeLightness(150);
+  m_styles[TS_OUTDATED].Color(153, 153, 153);
 }
 
-const wxString &Configuration::GetEscCode(const wxString &key)
-{
+const wxString &Configuration::GetEscCode(const wxString &key) {
   auto &escCodes = EscCodes();
   auto it = escCodes.find(key);
   if (it != escCodes.end())
@@ -457,16 +452,15 @@ const wxString &Configuration::GetEscCode(const wxString &key)
   return wxm::emptyString;
 }
 
-Configuration::EscCodeIterator Configuration::EscCodesBegin()
-{ return EscCodes().cbegin(); }
-Configuration::EscCodeIterator Configuration::EscCodesEnd()
-{ return EscCodes().cend(); }
+Configuration::EscCodeIterator Configuration::EscCodesBegin() {
+  return EscCodes().cbegin();
+}
+Configuration::EscCodeIterator Configuration::EscCodesEnd() {
+  return EscCodes().cend();
+}
 
-
-wxString Configuration::GetAutosubscript_string() const
-{
-  switch (m_autoSubscript)
-  {
+wxString Configuration::GetAutosubscript_string() const {
+  switch (m_autoSubscript) {
   case 0:
     return "nil";
   case 1:
@@ -476,23 +470,18 @@ wxString Configuration::GetAutosubscript_string() const
   }
 }
 
-void Configuration::ShowCodeCells(bool show)
-{
-  m_showCodeCells = show;
-}
+void Configuration::ShowCodeCells(bool show) { m_showCodeCells = show; }
 
-void Configuration::SetBackgroundBrush(wxBrush brush)
-{
+void Configuration::SetBackgroundBrush(wxBrush brush) {
   m_BackgroundBrush = brush;
   m_tooltipBrush = brush;
   m_tooltipBrush.SetColour(wxColour(255, 255, 192, 128));
 }
 
-bool Configuration::MaximaFound(wxString location)
-{
-  if(location == wxEmptyString)
+bool Configuration::MaximaFound(wxString location) {
+  if (location == wxEmptyString)
     return false;
-  
+
   bool maximaFound = false;
   if (wxFileExists(location))
     maximaFound = true;
@@ -504,8 +493,7 @@ bool Configuration::MaximaFound(wxString location)
   // Don't complain if PATH doesn't yield a result.
   SuppressErrorDialogs logNull;
 
-  if(!(location.EndsWith("/") || location.EndsWith("\\")))
-  {
+  if (!(location.EndsWith("/") || location.EndsWith("\\"))) {
     wxPathList pathlist;
     pathlist.AddEnvList(wxT("PATH"));
     wxString path = pathlist.FindAbsoluteValidPath(location);
@@ -515,16 +503,14 @@ bool Configuration::MaximaFound(wxString location)
   return maximaFound;
 }
 
-void Configuration::ReadConfig()
-{
+void Configuration::ReadConfig() {
   wxConfigBase *config = wxConfig::Get();
 
   wxString str;
   long dummy;
   config->SetPath("/renderability/good");
   bool bCont = config->GetFirstEntry(str, dummy);
-  while (bCont)
-  {
+  while (bCont) {
     wxString chars;
     config->Read(str, &chars);
     m_renderableChars[str] = chars;
@@ -532,8 +518,7 @@ void Configuration::ReadConfig()
   }
   config->SetPath("/renderability/bad");
   bCont = config->GetFirstEntry(str, dummy);
-  while (bCont)
-  {
+  while (bCont) {
     wxString chars;
     config->Read(str, &chars);
     m_nonRenderableChars[str] = chars;
@@ -542,7 +527,8 @@ void Configuration::ReadConfig()
   config->SetPath("/");
 
   {
-    // If this preference cannot be loaded we don't want an error message about it
+    // If this preference cannot be loaded we don't want an error message about
+    // it
     SuppressErrorDialogs suppressor;
     wxString hideMessagesConfigString;
     config->Read(wxT("showAllDigits"), &m_showAllDigits);
@@ -552,35 +538,34 @@ void Configuration::ReadConfig()
     config->Read(wxT("allowNetworkHelp"), &m_allowNetworkHelp);
     config->Read(wxT("exportContainsWXMX"), &m_exportContainsWXMX);
     config->Read(wxT("maximaUsesHhtmlBrowser"), &m_maximaUsesHhtmlBrowser);
-    config->Read(wxT("maximaUsesWxmaximaBrowser"), &m_maximaUsesWxmaximaBrowser);
+    config->Read(wxT("maximaUsesWxmaximaBrowser"),
+                 &m_maximaUsesWxmaximaBrowser);
     config->Read(wxT("texPreamble"), &m_texPreamble);
     {
       wxLogNull suppressor;
-      config->Read(wxT("suppressYellowMarkerMessages"), &hideMessagesConfigString);
+      config->Read(wxT("suppressYellowMarkerMessages"),
+                   &hideMessagesConfigString);
       // Write the string into a memory buffer
       wxMemoryOutputStream ostream;
       wxTextOutputStream txtstrm(ostream);
       txtstrm.WriteString(hideMessagesConfigString);
-      wxMemoryInputStream istream(ostream.GetOutputStreamBuffer()->GetBufferStart(),
-                                  ostream.GetOutputStreamBuffer()->GetBufferSize());
+      wxMemoryInputStream istream(
+          ostream.GetOutputStreamBuffer()->GetBufferStart(),
+          ostream.GetOutputStreamBuffer()->GetBufferSize());
       wxXmlDocument xmlDocument;
-      if((!hideMessagesConfigString.IsEmpty())&&(xmlDocument.Load(istream)))
-      {
+      if ((!hideMessagesConfigString.IsEmpty()) &&
+          (xmlDocument.Load(istream))) {
         wxXmlNode *headNode = xmlDocument.GetDocumentNode();
-        if(headNode)
-        {
+        if (headNode) {
           headNode = headNode->GetChildren();
-          while((headNode) && (headNode->GetName() != wxT("markers")))
+          while ((headNode) && (headNode->GetName() != wxT("markers")))
             headNode = headNode->GetNext();
           wxXmlNode *entry = headNode->GetChildren();
-          while(entry)
-          {
+          while (entry) {
 
-            if(entry->GetName() == wxT("hide"))
-            {
+            if (entry->GetName() == wxT("hide")) {
               wxXmlNode *node = entry->GetChildren();
-              if(node)
-              {
+              if (node) {
                 HideMarkerForThisMessage(node->GetContent(), true);
               }
             }
@@ -597,53 +582,43 @@ void Configuration::ReadConfig()
       wxMemoryOutputStream ostream;
       wxTextOutputStream txtstrm(ostream);
       txtstrm.WriteString(maximaEnvironmentString);
-      wxMemoryInputStream istream(ostream.GetOutputStreamBuffer()->GetBufferStart(),
-                                  ostream.GetOutputStreamBuffer()->GetBufferSize());
+      wxMemoryInputStream istream(
+          ostream.GetOutputStreamBuffer()->GetBufferStart(),
+          ostream.GetOutputStreamBuffer()->GetBufferSize());
       wxXmlDocument xmlDocument;
-      if((!maximaEnvironmentString.IsEmpty())&&(xmlDocument.Load(istream)))
-      {
+      if ((!maximaEnvironmentString.IsEmpty()) && (xmlDocument.Load(istream))) {
         wxXmlNode *headNode = xmlDocument.GetDocumentNode();
-        if(headNode)
-        {
+        if (headNode) {
           headNode = headNode->GetChildren();
-          while(headNode)
-          {
-            if(headNode->GetName() == wxT("entries"))
-            {
+          while (headNode) {
+            if (headNode->GetName() == wxT("entries")) {
               m_maximaEnvVars.clear();
               wxXmlNode *entryNode = headNode->GetChildren();
-              while(entryNode)
-              {
-                if(entryNode->GetName() == wxT("entry"))
-                {
+              while (entryNode) {
+                if (entryNode->GetName() == wxT("entry")) {
                   wxXmlNode *entry = entryNode->GetChildren();
                   wxString var;
                   wxString value;
-                  while(entry)
-                  {
-                    if(entry->GetName() == wxT("var"))
-                    {
+                  while (entry) {
+                    if (entry->GetName() == wxT("var")) {
                       wxXmlNode *node = entry->GetChildren();
-                      while(node)
-                      {
-                        if(node->GetType() == wxXML_TEXT_NODE)
+                      while (node) {
+                        if (node->GetType() == wxXML_TEXT_NODE)
                           var = node->GetContent();
                         node = node->GetNext();
                       }
                     }
-                    if(entry->GetName() == wxT("value"))
-                    {
+                    if (entry->GetName() == wxT("value")) {
                       wxXmlNode *node = entry->GetChildren();
-                      while(node)
-                      {
-                        if(node->GetType() == wxXML_TEXT_NODE)
+                      while (node) {
+                        if (node->GetType() == wxXML_TEXT_NODE)
                           value = node->GetContent();
                         node = node->GetNext();
                       }
                     }
                     entry = entry->GetNext();
                   }
-                  if(!var.IsEmpty())
+                  if (!var.IsEmpty())
                     m_maximaEnvVars[var] = value;
                 }
                 entryNode = entryNode->GetNext();
@@ -655,21 +630,22 @@ void Configuration::ReadConfig()
       }
     }
   }
-  config->Read(wxT("maxClipbrd_BitmapMegabytes"), &m_maxClipbrd_BitmapMegabytes);
-  if(m_maxClipbrd_BitmapMegabytes<0)
+  config->Read(wxT("maxClipbrd_BitmapMegabytes"),
+               &m_maxClipbrd_BitmapMegabytes);
+  if (m_maxClipbrd_BitmapMegabytes < 0)
     m_maxClipbrd_BitmapMegabytes = 1;
   config->Read(wxT("wizardTab"), &m_wizardTab);
   config->Read(wxT("numpadEnterEvaluates"), &m_numpadEnterEvaluates);
   config->Read(wxT("saveImgFileName"), &m_saveImgFileName);
   config->Read(wxT("usePartialForDiff"), &m_usePartialForDiff);
-  config->Read(wxT("TeXExponentsAfterSubscript"), &m_TeXExponentsAfterSubscript);
+  config->Read(wxT("TeXExponentsAfterSubscript"),
+               &m_TeXExponentsAfterSubscript);
   config->Read(wxT("defaultPlotWidth"), &m_defaultPlotWidth);
   config->Read(wxT("defaultPlotHeight"), &m_defaultPlotHeight);
   config->Read(wxT("fixedFontTC"), &m_fixedFontTC);
   config->Read(wxT("usepngCairo"), &m_usepngCairo);
-  
-  if(!config->Read(wxT("AutoSaveAsTempFile"), &m_autoSaveAsTempFile))
-  {
+
+  if (!config->Read(wxT("AutoSaveAsTempFile"), &m_autoSaveAsTempFile)) {
     long autoSaveMinutes = 0;
     config->Read(wxT("autoSaveMinutes"), &autoSaveMinutes);
     m_autoSaveAsTempFile = (autoSaveMinutes == 0);
@@ -691,7 +667,8 @@ void Configuration::ReadConfig()
   config->Read(wxT("latin2greek"), &m_latin2greek);
   config->Read(wxT("enterEvaluates"), &m_enterEvaluates);
   config->Read(wxT("hidemultiplicationsign"), &m_hidemultiplicationsign);
-  config->Read("greekSidebar_ShowLatinLookalikes", &m_greekSidebar_ShowLatinLookalikes);
+  config->Read("greekSidebar_ShowLatinLookalikes",
+               &m_greekSidebar_ShowLatinLookalikes);
   config->Read("greekSidebar_Show_mu", &m_greekSidebar_Show_mu);
   config->Read("symbolPaneAdditionalChars", &m_symbolPaneAdditionalChars);
   config->Read("parameters", &m_maximaParameters);
@@ -704,7 +681,7 @@ void Configuration::ReadConfig()
     config->Read("HTMLequationFormat", &tmp);
     m_htmlEquationFormat = (Configuration::htmlExportFormat)tmp;
   }
-  
+
   config->Read(wxT("TOCshowsSectionNumbers"), &m_TOCshowsSectionNumbers);
   config->Read(wxT("autoWrapMode"), &m_autoWrap);
   config->Read(wxT("mathJaxURL_UseUser"), &m_mathJaxURL_UseUser);
@@ -713,8 +690,8 @@ void Configuration::ReadConfig()
   config->Read(wxT("autosubscript"), &m_autoSubscript);
   config->Read(wxT("antiAliasLines"), &m_antiAliasLines);
   config->Read(wxT("indentMaths"), &m_indentMaths);
-  config->Read(wxT("abortOnError"),&m_abortOnError);
-  config->Read("defaultPort",&m_defaultPort);
+  config->Read(wxT("abortOnError"), &m_abortOnError);
+  config->Read("defaultPort", &m_defaultPort);
   config->Read(wxT("fixReorderedIndices"), &m_fixReorderedIndices);
   config->Read(wxT("showLength"), &m_showLength);
   config->Read(wxT("printScale"), &m_printScale);
@@ -723,14 +700,14 @@ void Configuration::ReadConfig()
   config->Read(wxT("bitmapScale"), &m_bitmapScale);
   config->Read(wxT("DefaultFramerate"), &m_defaultFramerate);
   config->Read(wxT("tocDepth"), &m_tocDepth);
-  if(m_tocDepth < 1)
+  if (m_tocDepth < 1)
     m_tocDepth = 1;
   config->Read(wxT("copyBitmap"), &m_copyBitmap);
   config->Read(wxT("copyMathML"), &m_copyMathML);
   config->Read(wxT("copyMathMLHTML"), &m_copyMathMLHTML);
   config->Read(wxT("copyRTF"), &m_copyRTF);
-  config->Read(wxT("copySVG"), &m_copySVG );
-  config->Read(wxT("copyEMF"), &m_copyEMF );
+  config->Read(wxT("copySVG"), &m_copySVG);
+  config->Read(wxT("copyEMF"), &m_copyEMF);
   config->Read(wxT("autodetectMaxima"), &m_autodetectMaxima);
   config->Read(wxT("maxima"), &m_maximaUserLocation);
   // Fix wrong" maxima=1" parameter in ~/.wxMaxima if upgrading from 0.7.0a
@@ -741,7 +718,7 @@ void Configuration::ReadConfig()
 
   int showLabelChoice = 0;
   config->Read(wxT("showLabelChoice"), &showLabelChoice);
-  m_showLabelChoice = (showLabels) showLabelChoice; 
+  m_showLabelChoice = (showLabels)showLabelChoice;
 
   config->Read(wxT("changeAsterisk"), &m_changeAsterisk);
 
@@ -761,19 +738,23 @@ void Configuration::ReadConfig()
   config->Read(wxT("insertAns"), &m_insertAns);
 
   config->Read(wxT("openHCaret"), &m_openHCaret);
-  
+
   config->Read(wxT("labelWidth"), &m_labelWidth);
 
   config->Read(wxT("printBrackets"), &m_printBrackets);
 
   config->Read(wxT("ZoomFactor"), &m_zoomFactor);
 
-  if (wxFontEnumerator::IsValidFacename((m_fontCMEX = AFontName::CMEX10()).GetAsString()) &&
-      wxFontEnumerator::IsValidFacename((m_fontCMSY = AFontName::CMSY10()).GetAsString()) &&
-      wxFontEnumerator::IsValidFacename((m_fontCMRI = AFontName::CMR10()).GetAsString()) &&
-      wxFontEnumerator::IsValidFacename((m_fontCMMI = AFontName::CMMI10()).GetAsString()) &&
-      wxFontEnumerator::IsValidFacename((m_fontCMTI = AFontName::CMTI10()).GetAsString()))
-  {
+  if (wxFontEnumerator::IsValidFacename(
+          (m_fontCMEX = AFontName::CMEX10()).GetAsString()) &&
+      wxFontEnumerator::IsValidFacename(
+          (m_fontCMSY = AFontName::CMSY10()).GetAsString()) &&
+      wxFontEnumerator::IsValidFacename(
+          (m_fontCMRI = AFontName::CMR10()).GetAsString()) &&
+      wxFontEnumerator::IsValidFacename(
+          (m_fontCMMI = AFontName::CMMI10()).GetAsString()) &&
+      wxFontEnumerator::IsValidFacename(
+          (m_fontCMTI = AFontName::CMTI10()).GetAsString())) {
     m_TeXFonts = true;
     config->Read(wxT("usejsmath"), &m_TeXFonts);
   }
@@ -785,13 +766,11 @@ void Configuration::ReadConfig()
   ReadStyles();
 }
 
-void Configuration::LastActiveTextCtrl(wxTextCtrl *last)
-{
+void Configuration::LastActiveTextCtrl(wxTextCtrl *last) {
   m_lastActiveTextCtrl = last;
 }
 
-bool Configuration::HideMarkerForThisMessage(wxString message)
-{
+bool Configuration::HideMarkerForThisMessage(wxString message) {
   auto it = m_hideMarkerForThisMessage.find(message);
   if (it == m_hideMarkerForThisMessage.end())
     return false;
@@ -799,13 +778,11 @@ bool Configuration::HideMarkerForThisMessage(wxString message)
     return it->second;
 }
 
-Style Configuration::GetStyle(TextStyle ts, AFontSize fontSize) const
-{
+Style Configuration::GetStyle(TextStyle ts, AFontSize fontSize) const {
   Style style = m_styles[ts];
 
   if ((ts == TS_TITLE) || (ts == TS_SECTION) || (ts == TS_SUBSECTION) ||
-      (ts == TS_SUBSUBSECTION) || (ts == TS_HEADING5) || (ts == TS_HEADING6))
-  {
+      (ts == TS_SUBSUBSECTION) || (ts == TS_HEADING5) || (ts == TS_HEADING6)) {
     // While titles and section names may be underlined the section number
     // isn't. Else the space between section number and section title
     // would look weird.
@@ -821,8 +798,7 @@ Style Configuration::GetStyle(TextStyle ts, AFontSize fontSize) const
     style.SetFontName({});
 
   // cppcheck-suppress duplicateCondition
-  if (!style.IsFontOk())
-  {
+  if (!style.IsFontOk()) {
     auto size = style.GetFontSize();
     style = Style::FromStockFont(wxStockGDI::FONT_NORMAL);
     style.SetFontSize(size);
@@ -830,28 +806,25 @@ Style Configuration::GetStyle(TextStyle ts, AFontSize fontSize) const
 
   wxASSERT_MSG(style.IsFontOk(),
                _("Seems like something is broken with a font."));
-  
+
   return style;
 }
 
-wxColor Configuration::DefaultBackgroundColor()
-{
-  if(InvertBackground())
+wxColor Configuration::DefaultBackgroundColor() {
+  if (InvertBackground())
     return InvertColour(m_styles[TS_DOCUMENT_BACKGROUND].GetColor());
   else
     return m_styles[TS_DOCUMENT_BACKGROUND].GetColor();
 }
 
-wxColor Configuration::EditorBackgroundColor()
-{
-  if(InvertBackground())
+wxColor Configuration::EditorBackgroundColor() {
+  if (InvertBackground())
     return InvertColour(m_styles[TS_TEXT_BACKGROUND].GetColor());
   else
     return m_styles[TS_TEXT_BACKGROUND].GetColor();
 }
 
-void Configuration::NotifyOfCellRedraw(const Cell *cell)
-{
+void Configuration::NotifyOfCellRedraw(const Cell *cell) {
   if (!m_cellRedrawTrace || !cell)
     return;
   // This operation is fast and doesn't allocate after the configuration
@@ -859,16 +832,14 @@ void Configuration::NotifyOfCellRedraw(const Cell *cell)
   m_cellRedrawTrace->push_back(cell);
 }
 
-void Configuration::ClearAndEnableRedrawTracing()
-{
+void Configuration::ClearAndEnableRedrawTracing() {
   if (!m_cellRedrawTrace)
     m_cellRedrawTrace.reset(new CellRedrawTrace);
   else
     m_cellRedrawTrace->clear();
 }
 
-void Configuration::ReportMultipleRedraws()
-{
+void Configuration::ReportMultipleRedraws() {
   if (!m_cellRedrawTrace)
     return;
 
@@ -877,81 +848,67 @@ void Configuration::ReportMultipleRedraws()
   std::sort(m_cellRedrawTrace->begin(), m_cellRedrawTrace->end());
   int counter = 0;
   const Cell *prev = {};
-  for (auto *cell : *m_cellRedrawTrace)
-  {
-    if (prev != cell)
-    {
+  for (auto *cell : *m_cellRedrawTrace) {
+    if (prev != cell) {
       if (counter > 1)
-        wxLogMessage("Bug: %i redraws in one screen refresh for a cell reading \"%s\"",
-                     counter, prev->ToString());
+        wxLogMessage(
+            "Bug: %i redraws in one screen refresh for a cell reading \"%s\"",
+            counter, prev->ToString());
       prev = cell;
       counter = 1;
-    }
-    else
+    } else
       ++counter;
   }
 }
 
-void Configuration::SetPrinting(bool printing)
-{
+void Configuration::SetPrinting(bool printing) {
   m_printing = printing;
-  if(printing)
+  if (printing)
     m_invertBackground = false;
   else
     wxConfig::Get()->Read("invertBackground", m_invertBackground);
-  if(printing)
+  if (printing)
     ClipToDrawRegion(false);
 }
 
-wxColour Configuration::InvertColour(wxColour col)
-{
-  return wxColour(
-    255 - col.Red(),
-    255 - col.Green(),
-    255 - col.Blue(),
-    col.Alpha());
+wxColour Configuration::InvertColour(wxColour col) {
+  return wxColour(255 - col.Red(), 255 - col.Green(), 255 - col.Blue(),
+                  col.Alpha());
 }
 
-long Configuration::GetLineWidth() const
-{
-  // The default line width is the width of the viewport minus the indentation minus
-  // roughly one char
-  long lineWidth = m_clientWidth - Scale_Px(GetLabelWidth() +
-                                           GetCellBracketWidth() + GetDefaultFontSize());
+long Configuration::GetLineWidth() const {
+  // The default line width is the width of the viewport minus the indentation
+  // minus roughly one char
+  long lineWidth =
+      m_clientWidth -
+      Scale_Px(GetLabelWidth() + GetCellBracketWidth() + GetDefaultFontSize());
 
   // If that was suspiciously wide we reduce the default line width again.
-  if((lineWidth >= Scale_Px(GetDefaultFontSize()) * LineWidth_em()) &&
-     (!m_printing))
+  if ((lineWidth >= Scale_Px(GetDefaultFontSize()) * LineWidth_em()) &&
+      (!m_printing))
     lineWidth = Scale_Px(GetDefaultFontSize()) * LineWidth_em();
   return lineWidth;
 }
 
-Configuration::drawMode Configuration::GetParenthesisDrawMode()
-{
-  if (m_parenthesisDrawMode == unknown)
-  {
-    static const wxString parens{
-      (wxT(PAREN_OPEN_TOP_UNICODE)
-         wxT(PAREN_OPEN_EXTEND_UNICODE)
-           wxT(PAREN_OPEN_BOTTOM_UNICODE))};
+Configuration::drawMode Configuration::GetParenthesisDrawMode() {
+  if (m_parenthesisDrawMode == unknown) {
+    static const wxString parens{(wxT(PAREN_OPEN_TOP_UNICODE) wxT(
+        PAREN_OPEN_EXTEND_UNICODE) wxT(PAREN_OPEN_BOTTOM_UNICODE))};
 
     m_parenthesisDrawMode = handdrawn;
     auto style = GetStyle(TS_FUNCTION, AFontSize(20.0f));
 
-    if (CharsExistInFont(style.GetFont(), parens))
-    {
+    if (CharsExistInFont(style.GetFont(), parens)) {
       m_parenthesisDrawMode = assembled_unicode;
       return m_parenthesisDrawMode;
     }
     style.SetFontName(AFontName::Linux_Libertine());
-    if (CharsExistInFont(style.GetFont(), parens))
-    {
+    if (CharsExistInFont(style.GetFont(), parens)) {
       m_parenthesisDrawMode = assembled_unicode_fallbackfont;
       return m_parenthesisDrawMode;
     }
     style.SetFontName(AFontName::Linux_Libertine_O());
-    if (CharsExistInFont(style.GetFont(), parens))
-    {
+    if (CharsExistInFont(style.GetFont(), parens)) {
       m_parenthesisDrawMode = assembled_unicode_fallbackfont2;
       return m_parenthesisDrawMode;
     }
@@ -960,8 +917,7 @@ Configuration::drawMode Configuration::GetParenthesisDrawMode()
 }
 
 //! A comparison operator for wxImage
-static bool operator==(const wxImage &a, const wxImage &b)
-{
+static bool operator==(const wxImage &a, const wxImage &b) {
   if (a.GetSize() != b.GetSize())
     return false;
 
@@ -972,8 +928,7 @@ static bool operator==(const wxImage &a, const wxImage &b)
   return memcmp(a.GetData(), b.GetData(), bytes) == 0;
 }
 
-void Configuration::SetZoomFactor(double newzoom)
-{
+void Configuration::SetZoomFactor(double newzoom) {
   if (newzoom > GetMaxZoomFactor())
     newzoom = GetMaxZoomFactor();
   if (newzoom < GetMinZoomFactor())
@@ -982,22 +937,20 @@ void Configuration::SetZoomFactor(double newzoom)
   m_zoomFactor = newzoom;
 }
 
-Configuration::~Configuration()
-{
+Configuration::~Configuration() {
   WriteStyles();
   WriteSettings();
 }
 
-bool Configuration::CharsExistInFont(const wxFont &font, const wxString &chars)
-{
+bool Configuration::CharsExistInFont(const wxFont &font,
+                                     const wxString &chars) {
   wxASSERT(!chars.empty());
   for (auto const &ex : m_charsInFont)
     // cppcheck-suppress useStlAlgorithm
     if (ex.chars == chars)
       return ex.exist;
 
-  auto const cache = [this, &chars](bool result)
-  {
+  auto const cache = [this, &chars](bool result) {
     m_charsInFont.emplace_back(chars, result);
     return result;
   };
@@ -1005,14 +958,15 @@ bool Configuration::CharsExistInFont(const wxFont &font, const wxString &chars)
   if (!font.IsOk())
     return cache(false);
 
-  // Seems like Apple didn't hold to their high standards as the maths part of this font
-  // don't form nice big mathematical symbols => Blacklisting this font.
+  // Seems like Apple didn't hold to their high standards as the maths part of
+  // this font don't form nice big mathematical symbols => Blacklisting this
+  // font.
   if (font.GetFaceName() == wxT("Monaco"))
     return cache(false);
 
   if (!m_useUnicodeMaths)
     return cache(false);
-  
+
   struct Params {
     wxUniChar ch;
     wxSize size;
@@ -1023,42 +977,39 @@ bool Configuration::CharsExistInFont(const wxFont &font, const wxString &chars)
 
   // Letters with width or height = 0 don't exist in the current font
   GetDC()->SetFont(font);
-  for (auto &p : P)
-  {
+  for (auto &p : P) {
     wxCoord descent;
     GetDC()->GetTextExtent(p.ch, &p.size.x, &p.size.y, &descent);
-    if ((p.size.x < 1) || ((p.size.y-descent) < 1))
+    if ((p.size.x < 1) || ((p.size.y - descent) < 1))
       return cache(false);
   }
 
   bool allDifferentSizes = true;
   for (auto i = P.begin(); allDifferentSizes && i != P.end(); ++i)
-    for (auto j = i+1; allDifferentSizes && j != P.end(); ++j)
+    for (auto j = i + 1; allDifferentSizes && j != P.end(); ++j)
       allDifferentSizes &= i->size != j->size;
 
   if (allDifferentSizes)
     return cache(true);
 
-  for (auto &p : P)
-  {
+  for (auto &p : P) {
     wxBitmap bmp(p.size);
     wxMemoryDC dc(bmp);
     dc.SetFont(font);
     dc.Clear();
-    dc.DrawText(p.ch, wxPoint(0,0));
+    dc.DrawText(p.ch, wxPoint(0, 0));
     p.image = bmp.ConvertToImage();
   }
 
   for (auto i = P.begin(); i != P.end(); ++i)
-    for (auto j = i+1; j != P.end(); ++j)
+    for (auto j = i + 1; j != P.end(); ++j)
       if (i->image == j->image)
         return cache(false);
 
   return cache(true);
 }
 
-AFontName Configuration::GetFontName(TextStyle const ts) const
-{
+AFontName Configuration::GetFontName(TextStyle const ts) const {
   AFontName retval;
 
   if (ts == TS_TITLE || ts == TS_SUBSECTION || ts == TS_SUBSUBSECTION ||
@@ -1076,26 +1027,22 @@ AFontName Configuration::GetFontName(TextStyle const ts) const
   return retval;
 }
 
-wxString Configuration::MaximaLocation() const
-{
-  if(m_autodetectMaxima)
+wxString Configuration::MaximaLocation() const {
+  if (m_autodetectMaxima)
     return MaximaDefaultLocation();
   else
     return m_maximaUserLocation;
 }
 
-wxString Configuration::MaximaDefaultLocation()
-{ 
+wxString Configuration::MaximaDefaultLocation() {
   return Dirstructure::Get()->MaximaDefaultLocation();
 }
 
-void Configuration::ReadStyles(const wxString &file)
-{
+void Configuration::ReadStyles(const wxString &file) {
   wxConfigBase *config = NULL;
   if (file == wxEmptyString)
     config = wxConfig::Get();
-  else
-  {
+  else {
     wxFileInputStream str(file);
     config = new wxFileConfig(str);
   }
@@ -1107,7 +1054,8 @@ void Configuration::ReadStyles(const wxString &file)
   if (config->Read(wxT("mathfontsize"), &tmpLong) && tmpLong > 1)
     m_styles[TS_MATH].SetFontSize(AFontSize(tmpLong));
   wxString tmpString;
-  if (config->Read(wxT("Style/Math/fontname"), &tmpString) && tmpString.size() > 1)
+  if (config->Read(wxT("Style/Math/fontname"), &tmpString) &&
+      tmpString.size() > 1)
     m_styles[TS_MATH].SetFontName(AFontName(tmpString));
 
   m_styles[TS_MATH].Read(config, "Style/Math/");
@@ -1129,7 +1077,7 @@ void Configuration::ReadStyles(const wxString &file)
   m_styles[TS_WARNING].Read(config, "Style/Warning/");
   m_styles[TS_MAIN_PROMPT].Read(config, "Style/MainPrompt/");
   m_styles[TS_OTHER_PROMPT].Read(config, "Style/OtherPrompt/");
-  m_styles[TS_LABEL].Read(config, "Style/Label/");  
+  m_styles[TS_LABEL].Read(config, "Style/Label/");
   m_styles[TS_USERLABEL].Read(config, "Style/UserDefinedLabel/");
   m_styles[TS_SPECIAL_CONSTANT].Read(config, "Style/Special/");
   m_styles[TS_GREEK_CONSTANT].Read(config, "Style/Greek/");
@@ -1139,22 +1087,23 @@ void Configuration::ReadStyles(const wxString &file)
   m_styles[TS_ASCIIMATHS].Read(config, "Style/ASCIImaths/");
   m_styles[TS_VARIABLE].Read(config, "Style/Variable/");
   m_styles[TS_FUNCTION].Read(config, "Style/Function/");
-  m_styles[TS_HIGHLIGHT].Read(config, "Style/Highlight/");  
-  m_styles[TS_TEXT_BACKGROUND].Read(config, "Style/Background/");    
+  m_styles[TS_HIGHLIGHT].Read(config, "Style/Highlight/");
+  m_styles[TS_TEXT_BACKGROUND].Read(config, "Style/Background/");
   m_styles[TS_DOCUMENT_BACKGROUND].Read(config, "Style/DocumentBackground/");
   m_styles[TS_ERROR].Read(config, "Style/Error/");
   m_styles[TS_CELL_BRACKET].Read(config, "Style/CellBracket/");
-  m_styles[TS_ACTIVE_CELL_BRACKET].Read(config,wxT("Style/ActiveCellBracket/"));
-  m_styles[TS_CURSOR].Read(config,wxT("Style/ActiveCellBracket/"));
-  m_styles[TS_SELECTION].Read(config,wxT("Style/Selection/"));
-  m_styles[TS_EQUALSSELECTION].Read(config,wxT("Style/EqualsSelection/"));
-  m_styles[TS_OUTDATED].Read(config,wxT("Style/Outdated/"));
-  m_BackgroundBrush = *wxTheBrushList->FindOrCreateBrush(m_styles[TS_DOCUMENT_BACKGROUND].GetColor(), wxBRUSHSTYLE_SOLID);
+  m_styles[TS_ACTIVE_CELL_BRACKET].Read(config,
+                                        wxT("Style/ActiveCellBracket/"));
+  m_styles[TS_CURSOR].Read(config, wxT("Style/ActiveCellBracket/"));
+  m_styles[TS_SELECTION].Read(config, wxT("Style/Selection/"));
+  m_styles[TS_EQUALSSELECTION].Read(config, wxT("Style/EqualsSelection/"));
+  m_styles[TS_OUTDATED].Read(config, wxT("Style/Outdated/"));
+  m_BackgroundBrush = *wxTheBrushList->FindOrCreateBrush(
+      m_styles[TS_DOCUMENT_BACKGROUND].GetColor(), wxBRUSHSTYLE_SOLID);
 }
 
 //! Saves the settings to a file.
-void Configuration::WriteSettings(const wxString &file)
-{
+void Configuration::WriteSettings(const wxString &file) {
   wxConfigBase *config = NULL;
   if (file == wxEmptyString)
     config = wxConfig::Get();
@@ -1162,48 +1111,21 @@ void Configuration::WriteSettings(const wxString &file)
     config = new wxFileConfig(wxT("wxMaxima"), wxEmptyString, file);
 
   {
-    wxXmlNode *topNode = new wxXmlNode(
-      NULL,
-      wxXML_DOCUMENT_NODE, wxEmptyString,
-      wxEmptyString
-      );
+    wxXmlNode *topNode =
+        new wxXmlNode(NULL, wxXML_DOCUMENT_NODE, wxEmptyString, wxEmptyString);
     wxXmlNode *entriesNode =
-      new wxXmlNode(
-        topNode,
-        wxXML_ELEMENT_NODE,
-        "entries");
+        new wxXmlNode(topNode, wxXML_ELEMENT_NODE, "entries");
     wxEnvVariableHashMap::const_iterator it;
-    for (it = m_maximaEnvVars.begin();
-         it != m_maximaEnvVars.end();
-         ++it)
-    {
-      if(!it->first.IsEmpty())
-      {
+    for (it = m_maximaEnvVars.begin(); it != m_maximaEnvVars.end(); ++it) {
+      if (!it->first.IsEmpty()) {
         wxXmlNode *entryNode =
-          new wxXmlNode(
-            entriesNode,
-            wxXML_ELEMENT_NODE,
-            "entry");
+            new wxXmlNode(entriesNode, wxXML_ELEMENT_NODE, "entry");
         wxXmlNode *varNode =
-          new wxXmlNode(
-            entryNode,
-            wxXML_ELEMENT_NODE,
-            "var");
+            new wxXmlNode(entryNode, wxXML_ELEMENT_NODE, "var");
         wxXmlNode *valueNode =
-          new wxXmlNode(
-            entryNode,
-            wxXML_ELEMENT_NODE,
-            "value");
-        new wxXmlNode(
-          varNode,
-          wxXML_TEXT_NODE,
-          wxEmptyString,
-          it->first);
-        new wxXmlNode(
-          valueNode,
-          wxXML_TEXT_NODE,
-          wxEmptyString,
-          it->second);
+            new wxXmlNode(entryNode, wxXML_ELEMENT_NODE, "value");
+        new wxXmlNode(varNode, wxXML_TEXT_NODE, wxEmptyString, it->first);
+        new wxXmlNode(valueNode, wxXML_TEXT_NODE, wxEmptyString, it->second);
       }
     }
     wxXmlDocument xmlDoc;
@@ -1211,42 +1133,27 @@ void Configuration::WriteSettings(const wxString &file)
     // Write the string into a memory buffer
     wxMemoryOutputStream ostream;
     xmlDoc.Save(ostream);
-    wxMemoryInputStream istream(ostream.GetOutputStreamBuffer()->GetBufferStart(),
-                                ostream.GetOutputStreamBuffer()->GetBufferSize());
+    wxMemoryInputStream istream(
+        ostream.GetOutputStreamBuffer()->GetBufferStart(),
+        ostream.GetOutputStreamBuffer()->GetBufferSize());
     wxTextInputStream text(istream);
     wxString maximaEnvConfigString;
-    while(!istream.Eof())
+    while (!istream.Eof())
       maximaEnvConfigString += text.ReadLine() + wxT("\n");
     config->Write(wxT("maximaEnvironment"), maximaEnvConfigString);
   }
   {
-    wxXmlNode *topNode = new wxXmlNode(
-      NULL,
-      wxXML_DOCUMENT_NODE, wxEmptyString,
-      wxEmptyString
-      );
-    wxXmlNode *headNode = new wxXmlNode(
-      topNode,
-      wxXML_ELEMENT_NODE, wxT("markers"),
-      wxEmptyString
-      );
+    wxXmlNode *topNode =
+        new wxXmlNode(NULL, wxXML_DOCUMENT_NODE, wxEmptyString, wxEmptyString);
+    wxXmlNode *headNode = new wxXmlNode(topNode, wxXML_ELEMENT_NODE,
+                                        wxT("markers"), wxEmptyString);
     StringBoolHash::const_iterator it;
     for (it = m_hideMarkerForThisMessage.begin();
-         it != m_hideMarkerForThisMessage.end();
-         ++it)
-    {
-      if(it->second)
-      {
+         it != m_hideMarkerForThisMessage.end(); ++it) {
+      if (it->second) {
         wxXmlNode *hideNode =
-          new wxXmlNode(
-            headNode,
-            wxXML_ELEMENT_NODE,
-            "hide");
-        new wxXmlNode(
-          hideNode,
-          wxXML_TEXT_NODE,
-          wxEmptyString,
-          it->first);
+            new wxXmlNode(headNode, wxXML_ELEMENT_NODE, "hide");
+        new wxXmlNode(hideNode, wxXML_TEXT_NODE, wxEmptyString, it->first);
       }
     }
     wxXmlDocument xmlDoc;
@@ -1254,15 +1161,17 @@ void Configuration::WriteSettings(const wxString &file)
     // Write the string into a memory buffer
     wxMemoryOutputStream ostream;
     xmlDoc.Save(ostream);
-    wxMemoryInputStream istream(ostream.GetOutputStreamBuffer()->GetBufferStart(),
-                                ostream.GetOutputStreamBuffer()->GetBufferSize());
+    wxMemoryInputStream istream(
+        ostream.GetOutputStreamBuffer()->GetBufferStart(),
+        ostream.GetOutputStreamBuffer()->GetBufferSize());
     wxTextInputStream text(istream);
     wxString hideMessagesConfigString;
-    while(!istream.Eof())
+    while (!istream.Eof())
       hideMessagesConfigString += text.ReadLine() + wxT("\n");
-    config->Write(wxT("suppressYellowMarkerMessages"), hideMessagesConfigString);
+    config->Write(wxT("suppressYellowMarkerMessages"),
+                  hideMessagesConfigString);
   }
-  
+
   config->Write(wxT("showAllDigits"), m_showAllDigits);
   config->Write(wxT("lineBreaksInLongNums"), m_lineBreaksInLongNums);
   config->Write(wxT("keepPercent"), m_keepPercent);
@@ -1273,36 +1182,33 @@ void Configuration::WriteSettings(const wxString &file)
   config->Write(wxT("wxMathML_Filename"), m_wxMathML_Filename);
   config->Write(wxT("wxMathML_UseFile"), m_wxMathML_UseFile);
 
-  config->Write(wxT("maxClipbrd_BitmapMegabytes"), m_maxClipbrd_BitmapMegabytes);
+  config->Write(wxT("maxClipbrd_BitmapMegabytes"),
+                m_maxClipbrd_BitmapMegabytes);
 
   WriteStyles(config);
-  if(file != wxEmptyString)
-  {
+  if (file != wxEmptyString) {
     config->Flush();
     delete config;
   }
-  for(auto i:m_renderableChars)
-    config->Write(wxT("renderability/good/")+i.first, i.second);
-  for(auto i:m_nonRenderableChars)
-    config->Write(wxT("renderability/bad/")+i.first, i.second);
+  for (auto i : m_renderableChars)
+    config->Write(wxT("renderability/good/") + i.first, i.second);
+  for (auto i : m_nonRenderableChars)
+    config->Write(wxT("renderability/bad/") + i.first, i.second);
 }
 
-wxFontWeight Configuration::IsBold(long st) const
-{
+wxFontWeight Configuration::IsBold(long st) const {
   if (m_styles[st].IsBold())
     return wxFONTWEIGHT_BOLD;
   return wxFONTWEIGHT_NORMAL;
 }
 
-wxFontStyle Configuration::IsItalic(long st) const
-{
+wxFontStyle Configuration::IsItalic(long st) const {
   if (m_styles[st].IsItalic())
     return wxFONTSTYLE_ITALIC;
   return wxFONTSTYLE_NORMAL;
 }
 
-class AFontName Configuration::GetSymbolFontName() const
-{
+class AFontName Configuration::GetSymbolFontName() const {
 #ifdef __WINDOWS__
   return AFontName::Symbol();
 #else
@@ -1310,97 +1216,79 @@ class AFontName Configuration::GetSymbolFontName() const
 #endif
 }
 
-wxColour Configuration::GetColor(TextStyle style)
-{
+wxColour Configuration::GetColor(TextStyle style) {
   wxColour col = m_styles[style].GetColor();
   if (m_outdated)
     col = m_styles[TS_OUTDATED].GetColor();
 
-  if(InvertBackground() &&
-     (style != TS_TEXT_BACKGROUND) &&
-     (style != TS_DOCUMENT_BACKGROUND))
+  if (InvertBackground() && (style != TS_TEXT_BACKGROUND) &&
+      (style != TS_DOCUMENT_BACKGROUND))
     col = MakeColorDifferFromBackground(col);
   return col;
 }
 
-long Configuration::Scale_Px(double px) const
-{
+long Configuration::Scale_Px(double px) const {
   long retval = lround(px * GetZoomFactor());
   return std::max(retval, 1l);
 }
 
-AFontSize Configuration::Scale_Px(AFontSize size) const
-{
+AFontSize Configuration::Scale_Px(AFontSize size) const {
   auto retval = size.Get() * GetZoomFactor();
   return AFontSize(retval);
 }
 
-wxColor Configuration::MakeColorDifferFromBackground(wxColor color)
-{
+wxColor Configuration::MakeColorDifferFromBackground(wxColor color) {
   int newBrightness = 255 - (color.Red() + color.Green() + color.Blue()) / 3;
-  if(color == DefaultBackgroundColor())
-  {
+  if (color == DefaultBackgroundColor()) {
     return InvertColour(color);
-  }
-  else
-  {
+  } else {
     int maxOldCol = wxMax(wxMax(color.Red(), color.Green()), color.Blue());
-    return wxColour(
-      newBrightness * color.Red() / maxOldCol,
-      newBrightness * color.Green() / maxOldCol,
-      newBrightness * color.Blue() / maxOldCol
-      );
+    return wxColour(newBrightness * color.Red() / maxOldCol,
+                    newBrightness * color.Green() / maxOldCol,
+                    newBrightness * color.Blue() / maxOldCol);
   }
 }
 
-bool Configuration::InUpdateRegion(wxRect const rect) const
-{
+bool Configuration::InUpdateRegion(wxRect const rect) const {
   if (!ClipToDrawRegion())
     return true;
 
   wxRect const updateRegion = GetUpdateRegion();
 
-  return updateRegion.Intersects(rect) ||
-         updateRegion.Contains(rect) ||
-         (updateRegion == rect) ||
-         rect.Contains(updateRegion);
+  return updateRegion.Intersects(rect) || updateRegion.Contains(rect) ||
+         (updateRegion == rect) || rect.Contains(updateRegion);
 }
 
-bool Configuration::FontRendersChar(wxChar ch, const wxFont &font)
-{
+bool Configuration::FontRendersChar(wxChar ch, const wxFont &font) {
   wxString fontName = font.GetNativeFontInfoDesc();
-  fontName.Replace("/","_");
-  if(m_renderableChars[fontName].Contains(ch))
+  fontName.Replace("/", "_");
+  if (m_renderableChars[fontName].Contains(ch))
     return true;
-  if(m_nonRenderableChars[fontName].Contains(ch))
+  if (m_nonRenderableChars[fontName].Contains(ch))
     return false;
-  
-  bool retval = 
-    FontDisplaysChar(ch, font) &&
-    CharVisiblyDifferent(ch, wxT('\1'), font) &&
-    CharVisiblyDifferent(ch, wxT('\uF299'), font) &&
-    CharVisiblyDifferent(ch, wxT('\uF000'), font);
 
-  if(retval)
+  bool retval = FontDisplaysChar(ch, font) &&
+                CharVisiblyDifferent(ch, wxT('\1'), font) &&
+                CharVisiblyDifferent(ch, wxT('\uF299'), font) &&
+                CharVisiblyDifferent(ch, wxT('\uF000'), font);
+
+  if (retval)
     m_renderableChars[fontName] += wxString(ch);
   else
     m_nonRenderableChars[fontName] += wxString(ch);
-    
+
   return retval;
 }
 
-bool Configuration::FontDisplaysChar(wxChar ch, const wxFont &font)
-{
+bool Configuration::FontDisplaysChar(wxChar ch, const wxFont &font) {
   int width = 200;
   int height = 200;
 
   // Prepare two identical device contexts that create identical bitmaps
-  wxBitmap characterBitmap = wxBitmap(wxSize(width,height),
-                                      wxBITMAP_SCREEN_DEPTH
-    );
-  wxBitmap referenceBitmap = wxBitmap(wxSize(width,height),
-                                      wxBITMAP_SCREEN_DEPTH
-    );
+  wxBitmap characterBitmap =
+      wxBitmap(wxSize(width, height), wxBITMAP_SCREEN_DEPTH);
+  wxBitmap referenceBitmap =
+      wxBitmap(wxSize(width, height), wxBITMAP_SCREEN_DEPTH);
   wxMemoryDC characterDC;
   wxMemoryDC referenceDC;
   characterDC.SetFont(font);
@@ -1409,50 +1297,43 @@ bool Configuration::FontDisplaysChar(wxChar ch, const wxFont &font)
   referenceDC.SelectObject(referenceBitmap);
   characterDC.SetBrush(*wxWHITE_BRUSH);
   referenceDC.SetBrush(*wxWHITE_BRUSH);
-  characterDC.DrawRectangle(0,0,200,200);
-  referenceDC.DrawRectangle(0,0,200,200);
+  characterDC.DrawRectangle(0, 0, 200, 200);
+  referenceDC.DrawRectangle(0, 0, 200, 200);
   characterDC.SetPen(*wxBLACK_PEN);
   referenceDC.SetPen(*wxBLACK_PEN);
 
   // Now draw the character our button shows into one of these bitmaps and see
   // if that changed any aspect of the bitmap
-  characterDC.DrawText(wxString(ch),
-                       100,
-                       100);
-  wxImage characterImage = characterBitmap.ConvertToImage(); 
-  wxImage referenceImage = referenceBitmap.ConvertToImage(); 
-  for(int x=0; x < width; x++)
-    for(int y=0; y < height; y++)
-    {
-      if(characterImage.GetRed(x,y) != referenceImage.GetRed(x,y))
+  characterDC.DrawText(wxString(ch), 100, 100);
+  wxImage characterImage = characterBitmap.ConvertToImage();
+  wxImage referenceImage = referenceBitmap.ConvertToImage();
+  for (int x = 0; x < width; x++)
+    for (int y = 0; y < height; y++) {
+      if (characterImage.GetRed(x, y) != referenceImage.GetRed(x, y))
         return true;
-      if(characterImage.GetGreen(x,y) != referenceImage.GetGreen(x,y))
+      if (characterImage.GetGreen(x, y) != referenceImage.GetGreen(x, y))
         return true;
-      if(characterImage.GetBlue(x,y) != referenceImage.GetBlue(x,y))
+      if (characterImage.GetBlue(x, y) != referenceImage.GetBlue(x, y))
         return true;
     }
-  wxLogMessage(
-    wxString::Format(
-      wxT("Char '%s' seems not to be displayed."),
-      wxString(ch).c_str()));
+  wxLogMessage(wxString::Format(wxT("Char '%s' seems not to be displayed."),
+                                wxString(ch).c_str()));
 
   // characterImage.SaveFile(wxString(m_char)+".png");
-  
+
   return false;
 }
 
-bool Configuration::CharVisiblyDifferent(wxChar ch, wxChar otherChar, const wxFont &font)
-{
+bool Configuration::CharVisiblyDifferent(wxChar ch, wxChar otherChar,
+                                         const wxFont &font) {
   int width = 200;
   int height = 200;
 
   // Prepare two identical device contexts that create identical bitmaps
-  wxBitmap characterBitmap = wxBitmap(wxSize(width,height),
-                                      wxBITMAP_SCREEN_DEPTH
-    );
-  wxBitmap referenceBitmap = wxBitmap(wxSize(width,height),
-                                      wxBITMAP_SCREEN_DEPTH
-    );
+  wxBitmap characterBitmap =
+      wxBitmap(wxSize(width, height), wxBITMAP_SCREEN_DEPTH);
+  wxBitmap referenceBitmap =
+      wxBitmap(wxSize(width, height), wxBITMAP_SCREEN_DEPTH);
   wxMemoryDC characterDC;
   wxMemoryDC referenceDC;
   characterDC.SetFont(font);
@@ -1461,39 +1342,30 @@ bool Configuration::CharVisiblyDifferent(wxChar ch, wxChar otherChar, const wxFo
   referenceDC.SelectObject(referenceBitmap);
   characterDC.SetBrush(*wxWHITE_BRUSH);
   referenceDC.SetBrush(*wxWHITE_BRUSH);
-  characterDC.DrawRectangle(0,0,200,200);
-  referenceDC.DrawRectangle(0,0,200,200);
+  characterDC.DrawRectangle(0, 0, 200, 200);
+  referenceDC.DrawRectangle(0, 0, 200, 200);
   characterDC.SetPen(*wxBLACK_PEN);
   referenceDC.SetPen(*wxBLACK_PEN);
-  characterDC.DrawText(wxString(ch),
-                       100,
-                       100);
-  referenceDC.DrawText(wxString(otherChar),
-                       100,
-                       100);
-  wxImage characterImage = characterBitmap.ConvertToImage(); 
-  wxImage referenceImage = referenceBitmap.ConvertToImage(); 
-  for(int x=0; x < width; x++)
-    for(int y=0; y < height; y++)
-    {
-      if(characterImage.GetRed(x,y) != referenceImage.GetRed(x,y))
+  characterDC.DrawText(wxString(ch), 100, 100);
+  referenceDC.DrawText(wxString(otherChar), 100, 100);
+  wxImage characterImage = characterBitmap.ConvertToImage();
+  wxImage referenceImage = referenceBitmap.ConvertToImage();
+  for (int x = 0; x < width; x++)
+    for (int y = 0; y < height; y++) {
+      if (characterImage.GetRed(x, y) != referenceImage.GetRed(x, y))
         return true;
-      if(characterImage.GetGreen(x,y) != referenceImage.GetGreen(x,y))
+      if (characterImage.GetGreen(x, y) != referenceImage.GetGreen(x, y))
         return true;
-      if(characterImage.GetBlue(x,y) != referenceImage.GetBlue(x,y))
+      if (characterImage.GetBlue(x, y) != referenceImage.GetBlue(x, y))
         return true;
     }
-  wxLogMessage(
-    wxString::Format(
-      wxT("Char '%s' looks identical to '%s'."),
-      wxString(ch).c_str(),
-      wxString(otherChar).c_str()));
+  wxLogMessage(wxString::Format(wxT("Char '%s' looks identical to '%s'."),
+                                wxString(ch).c_str(),
+                                wxString(otherChar).c_str()));
   return false;
 }
 
-
-bool Configuration::OfferInternalHelpBrowser() const
-{
+bool Configuration::OfferInternalHelpBrowser() const {
 #ifdef __WINDOWS__
   return wxWebView::IsBackendAvailable(wxWebViewBackendEdge);
 #else
@@ -1501,20 +1373,21 @@ bool Configuration::OfferInternalHelpBrowser() const
 #endif
 }
 
-void Configuration::WriteStyles(wxConfigBase *config)
-{
+void Configuration::WriteStyles(wxConfigBase *config) {
   config->Write(wxT("wrapLatexMath"), m_wrapLatexMath);
   config->Write(wxT("allowNetworkHelp"), m_allowNetworkHelp);
   config->Write(wxT("exportContainsWXMX"), m_exportContainsWXMX);
   config->Write(wxT("maximaUsesHhtmlBrowser"), m_maximaUsesHhtmlBrowser);
-  if(OfferInternalHelpBrowser())
-    config->Write(wxT("maximaUsesWxmaximaBrowser"), m_maximaUsesWxmaximaBrowser);
+  if (OfferInternalHelpBrowser())
+    config->Write(wxT("maximaUsesWxmaximaBrowser"),
+                  m_maximaUsesWxmaximaBrowser);
   config->Write(wxT("texPreamble"), m_texPreamble);
   config->Write(wxT("wizardTab"), m_wizardTab);
   config->Write(wxT("numpadEnterEvaluates"), m_numpadEnterEvaluates);
   config->Write(wxT("saveImgFileName"), m_saveImgFileName);
   config->Write(wxT("usePartialForDiff"), m_usePartialForDiff);
-  config->Write(wxT("TeXExponentsAfterSubscript"), m_TeXExponentsAfterSubscript);
+  config->Write(wxT("TeXExponentsAfterSubscript"),
+                m_TeXExponentsAfterSubscript);
   config->Write(wxT("defaultPlotWidth"), m_defaultPlotWidth);
   config->Write(wxT("defaultPlotHeight"), m_defaultPlotHeight);
   config->Write(wxT("fixedFontTC"), m_fixedFontTC);
@@ -1534,9 +1407,10 @@ void Configuration::WriteStyles(wxConfigBase *config)
   config->Write(wxT("changeAsterisk"), m_changeAsterisk);
   config->Write(wxT("hidemultiplicationsign"), m_hidemultiplicationsign);
   config->Write(wxT("latin2greek"), m_latin2greek);
-  config->Write(wxT("greekSidebar_ShowLatinLookalikes"), m_greekSidebar_ShowLatinLookalikes);
+  config->Write(wxT("greekSidebar_ShowLatinLookalikes"),
+                m_greekSidebar_ShowLatinLookalikes);
   config->Write(wxT("greekSidebar_Show_mu"), m_greekSidebar_Show_mu);
-  config->Write(wxT("symbolPaneAdditionalChars"),m_symbolPaneAdditionalChars);
+  config->Write(wxT("symbolPaneAdditionalChars"), m_symbolPaneAdditionalChars);
   config->Write(wxT("notifyIfIdle"), m_notifyIfIdle);
   config->Write(wxT("displayedDigits"), m_displayedDigits);
   config->Write(wxT("insertAns"), m_insertAns);
@@ -1545,13 +1419,13 @@ void Configuration::WriteStyles(wxConfigBase *config)
   config->Write(wxT("invertBackground"), m_invertBackground);
   config->Write("recentItems", m_recentItems);
   config->Write(wxT("undoLimit"), m_undoLimit);
-  config->Write(wxT("showLabelChoice"), (int) (m_showLabelChoice));
+  config->Write(wxT("showLabelChoice"), (int)(m_showLabelChoice));
   config->Write(wxT("printBrackets"), m_printBrackets);
   config->Write(wxT("autodetectMaxima"), m_autodetectMaxima);
-  config->Write(wxT("parameters"),m_maximaParameters);
+  config->Write(wxT("parameters"), m_maximaParameters);
   config->Write(wxT("maxima"), m_maximaUserLocation);
   config->Write(wxT("autodetectHelpBrowser"), m_autodetectHelpBrowser);
-  if(OfferInternalHelpBrowser())
+  if (OfferInternalHelpBrowser())
     config->Write(wxT("useInternalHelpBrowser"), m_useInternalHelpBrowser);
   config->Write(wxT("singlePageManual"), m_singlePageManual);
   config->Write(wxT("helpBrowser"), m_helpBrowserUserLocation);
@@ -1570,14 +1444,14 @@ void Configuration::WriteStyles(wxConfigBase *config)
   config->Write(wxT("showLength"), m_showLength);
   config->Write(wxT("TOCshowsSectionNumbers"), m_TOCshowsSectionNumbers);
   config->Write(wxT("useUnicodeMaths"), m_useUnicodeMaths);
-  config->Write("defaultPort",m_defaultPort);
-  config->Write("abortOnError",m_abortOnError);
-  config->Write("language",m_language);
-  config->Write("maxGnuplotMegabytes",m_maxGnuplotMegabytes);
-  config->Write("offerKnownAnswers",m_offerKnownAnswers);
-  config->Write("documentclass",m_documentclass);
-  config->Write("documentclassoptions",m_documentclassOptions);
-  config->Write("HTMLequationFormat", (int) (m_htmlEquationFormat));
+  config->Write("defaultPort", m_defaultPort);
+  config->Write("abortOnError", m_abortOnError);
+  config->Write("language", m_language);
+  config->Write("maxGnuplotMegabytes", m_maxGnuplotMegabytes);
+  config->Write("offerKnownAnswers", m_offerKnownAnswers);
+  config->Write("documentclass", m_documentclass);
+  config->Write("documentclassoptions", m_documentclassOptions);
+  config->Write("HTMLequationFormat", (int)(m_htmlEquationFormat));
   config->Write("autosubscript", m_autoSubscript);
   config->Write(wxT("ZoomFactor"), m_zoomFactor);
   // Fonts
@@ -1591,7 +1465,8 @@ void Configuration::WriteStyles(wxConfigBase *config)
   m_styles[TS_CODE_STRING].Write(config, "Style/CodeHighlighting/String/");
   m_styles[TS_CODE_OPERATOR].Write(config, "Style/CodeHighlighting/Operator/");
   m_styles[TS_CODE_LISP].Write(config, "Style/CodeHighlighting/Lisp/");
-  m_styles[TS_CODE_ENDOFLINE].Write(config, "Style/CodeHighlighting/EndOfLine/");
+  m_styles[TS_CODE_ENDOFLINE].Write(config,
+                                    "Style/CodeHighlighting/EndOfLine/");
   m_styles[TS_HEADING6].Write(config, "Style/Heading6/");
   m_styles[TS_HEADING5].Write(config, "Style/Heading5/");
   m_styles[TS_SUBSUBSECTION].Write(config, "Style/Subsubsection/");
@@ -1601,7 +1476,7 @@ void Configuration::WriteStyles(wxConfigBase *config)
   m_styles[TS_WARNING].Write(config, "Style/Warning/");
   m_styles[TS_MAIN_PROMPT].Write(config, "Style/MainPrompt/");
   m_styles[TS_OTHER_PROMPT].Write(config, "Style/OtherPrompt/");
-  m_styles[TS_LABEL].Write(config, "Style/Label/");  
+  m_styles[TS_LABEL].Write(config, "Style/Label/");
   m_styles[TS_USERLABEL].Write(config, "Style/UserDefinedLabel/");
   m_styles[TS_SPECIAL_CONSTANT].Write(config, "Style/Special/");
   m_styles[TS_GREEK_CONSTANT].Write(config, "Style/Greek/");
@@ -1611,21 +1486,21 @@ void Configuration::WriteStyles(wxConfigBase *config)
   m_styles[TS_ASCIIMATHS].Write(config, "Style/ASCIImaths/");
   m_styles[TS_VARIABLE].Write(config, "Style/Variable/");
   m_styles[TS_FUNCTION].Write(config, "Style/Function/");
-  m_styles[TS_HIGHLIGHT].Write(config, "Style/Highlight/");  
-  m_styles[TS_TEXT_BACKGROUND].Write(config, "Style/Background/");    
+  m_styles[TS_HIGHLIGHT].Write(config, "Style/Highlight/");
+  m_styles[TS_TEXT_BACKGROUND].Write(config, "Style/Background/");
   m_styles[TS_DOCUMENT_BACKGROUND].Write(config, "Style/DocumentBackground/");
   m_styles[TS_ERROR].Write(config, "Style/Error/");
   m_styles[TS_CELL_BRACKET].Write(config, "Style/CellBracket/");
-  m_styles[TS_ACTIVE_CELL_BRACKET].Write(config,wxT("Style/ActiveCellBracket/"));
-  m_styles[TS_CURSOR].Write(config,wxT("Style/ActiveCellBracket/"));
-  m_styles[TS_SELECTION].Write(config,wxT("Style/Selection/"));
-  m_styles[TS_EQUALSSELECTION].Write(config,wxT("Style/EqualsSelection/"));
-  m_styles[TS_OUTDATED].Write(config,wxT("Style/Outdated/"));
+  m_styles[TS_ACTIVE_CELL_BRACKET].Write(config,
+                                         wxT("Style/ActiveCellBracket/"));
+  m_styles[TS_CURSOR].Write(config, wxT("Style/ActiveCellBracket/"));
+  m_styles[TS_SELECTION].Write(config, wxT("Style/Selection/"));
+  m_styles[TS_EQUALSSELECTION].Write(config, wxT("Style/EqualsSelection/"));
+  m_styles[TS_OUTDATED].Write(config, wxT("Style/Outdated/"));
 }
 
 //! Saves the style settings to a file.
-void Configuration::WriteStyles(const wxString &file)
-{
+void Configuration::WriteStyles(const wxString &file) {
   wxConfigBase *config = NULL;
   if (file == wxEmptyString)
     config = wxConfig::Get();
@@ -1633,55 +1508,53 @@ void Configuration::WriteStyles(const wxString &file)
     config = new wxFileConfig(wxT("wxMaxima"), wxEmptyString, file);
 
   WriteStyles(config);
-  if(file != wxEmptyString)
-  {
+  if (file != wxEmptyString) {
     config->Flush();
     delete config;
   }
 }
-const wxString &Configuration::GetStyleName(TextStyle style) const
-{
+const wxString &Configuration::GetStyleName(TextStyle style) const {
   static const wxString *names[NUMBEROFSTYLES] = {
-    &_("Default"),
-    &_("Variables"),
-    &_("Numbers"),
-    &_("Function names"),
-    &_("Special constants"),
-    &_("Greek Constants"),
-    &_("Strings"),
-    &_("Maxima input"),
-    &_("Input labels"),
-    &_("Maxima questions"),
-    &_("Output labels"),
-    &_("User-defined labels"),
-    &_("Highlight (dpart)"),
-    &_("Maxima warnings"),
-    &_("Maxima errors"),
-    &_("ASCII maths"),
-    &_("Text cell"),
-    &_("Heading 6"),
-    &_("Heading 5"),
-    &_("Subsubsection cell (Heading 4)"),
-    &_("Subsection cell (Heading 3)"),
-    &_("Section cell (Heading 2)"),
-    &_("Title cell (Heading 1)"),
-    &_("Text cell background"),
-    &_("Document background"),
-    &_("Cell bracket"),
-    &_("Active cell bracket"),
-    &_("Cursor"),
-    &_("Selection"),
-    &_("Text equal to selection"),
-    &_("Outdated cells"),
-    &_("Code highlighting: Variables"),
-    &_("Code highlighting: Functions"),
-    &_("Code highlighting: Comments"),
-    &_("Code highlighting: Numbers"),
-    &_("Code highlighting: Strings"),
-    &_("Code highlighting: Operators"),
-    &_("Code highlighting: Lisp"),
-    &_("Code highlighting: End of line"),
-    &_("Math Default"),
+      &_("Default"),
+      &_("Variables"),
+      &_("Numbers"),
+      &_("Function names"),
+      &_("Special constants"),
+      &_("Greek Constants"),
+      &_("Strings"),
+      &_("Maxima input"),
+      &_("Input labels"),
+      &_("Maxima questions"),
+      &_("Output labels"),
+      &_("User-defined labels"),
+      &_("Highlight (dpart)"),
+      &_("Maxima warnings"),
+      &_("Maxima errors"),
+      &_("ASCII maths"),
+      &_("Text cell"),
+      &_("Heading 6"),
+      &_("Heading 5"),
+      &_("Subsubsection cell (Heading 4)"),
+      &_("Subsection cell (Heading 3)"),
+      &_("Section cell (Heading 2)"),
+      &_("Title cell (Heading 1)"),
+      &_("Text cell background"),
+      &_("Document background"),
+      &_("Cell bracket"),
+      &_("Active cell bracket"),
+      &_("Cursor"),
+      &_("Selection"),
+      &_("Text equal to selection"),
+      &_("Outdated cells"),
+      &_("Code highlighting: Variables"),
+      &_("Code highlighting: Functions"),
+      &_("Code highlighting: Comments"),
+      &_("Code highlighting: Numbers"),
+      &_("Code highlighting: Strings"),
+      &_("Code highlighting: Operators"),
+      &_("Code highlighting: Lisp"),
+      &_("Code highlighting: End of line"),
+      &_("Math Default"),
   };
   if (style >= 0 && style < NUMBEROFSTYLES)
     return *names[style];

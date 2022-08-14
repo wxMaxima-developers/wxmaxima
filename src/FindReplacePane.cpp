@@ -1,4 +1,5 @@
-// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode:
+// nil -*-
 //
 //  Copyright (C)      2016 Gunter Königsmann <wxMaxima@physikbuch.de>
 //
@@ -25,15 +26,13 @@
   FindReplacePane is the contents of the find/replace dialog/sidebar
  */
 
-
 #include "FindReplacePane.h"
 #include "EditorCell.h"
-#include <wx/stattext.h>
 #include <wx/button.h>
+#include <wx/stattext.h>
 
-FindReplacePane::FindReplacePane(wxWindow *parent, wxFindReplaceData *data) :
-        wxPanel(parent, -1)
-{
+FindReplacePane::FindReplacePane(wxWindow *parent, wxFindReplaceData *data)
+    : wxPanel(parent, -1) {
   m_active = true;
   m_findReplaceData = data;
   wxFlexGridSizer *grid_sizer = new wxFlexGridSizer(3, 1, 1);
@@ -42,108 +41,95 @@ FindReplacePane::FindReplacePane(wxWindow *parent, wxFindReplaceData *data) :
   grid_sizer->AddGrowableCol(1, 1);
   grid_sizer->AddGrowableCol(2, 0);
 
-  grid_sizer->Add(new wxStaticText(this, -1, _("Find:")), wxSizerFlags().Right().Center().Border(wxALL, 5));
+  grid_sizer->Add(new wxStaticText(this, -1, _("Find:")),
+                  wxSizerFlags().Right().Center().Border(wxALL, 5));
 
   m_searchText = new wxTextCtrl(this, -1, data->GetFindString());
   m_searchText->Connect(
-          wxEVT_TEXT,
-          wxCommandEventHandler(FindReplacePane::OnFindStringChange),
-          NULL, this
-  );
+      wxEVT_TEXT, wxCommandEventHandler(FindReplacePane::OnFindStringChange),
+      NULL, this);
   grid_sizer->Add(m_searchText, wxSizerFlags().Expand().Border(wxALL, 5));
 
   m_searchButton = new wxButton(this, wxID_FIND);
   grid_sizer->Add(m_searchButton, wxSizerFlags().Expand().Border(wxALL, 5));
-  m_searchButton->Connect(
-          wxEVT_BUTTON,
-          wxCommandEventHandler(FindReplacePane::OnSearch),
-          NULL, this
-  );
+  m_searchButton->Connect(wxEVT_BUTTON,
+                          wxCommandEventHandler(FindReplacePane::OnSearch),
+                          NULL, this);
 
-  grid_sizer->Add(new wxStaticText(this, -1, _("Replacement:")), wxSizerFlags().Right().Center().Border(wxALL, 5));
+  grid_sizer->Add(new wxStaticText(this, -1, _("Replacement:")),
+                  wxSizerFlags().Right().Center().Border(wxALL, 5));
 
   m_replaceText = new wxTextCtrl(this, -1, data->GetReplaceString());
   m_replaceText->Connect(
-          wxEVT_TEXT,
-          wxCommandEventHandler(FindReplacePane::OnReplaceStringChange),
-          NULL, this
-  );
+      wxEVT_TEXT, wxCommandEventHandler(FindReplacePane::OnReplaceStringChange),
+      NULL, this);
   grid_sizer->Add(m_replaceText, wxSizerFlags().Expand().Border(wxALL, 5));
 
   m_replaceButton = new wxButton(this, wxID_REPLACE);
-  m_replaceButton->Connect(
-          wxEVT_BUTTON,
-          wxCommandEventHandler(FindReplacePane::OnReplace),
-          NULL, this
-  );
+  m_replaceButton->Connect(wxEVT_BUTTON,
+                           wxCommandEventHandler(FindReplacePane::OnReplace),
+                           NULL, this);
   grid_sizer->Add(m_replaceButton, wxSizerFlags().Expand().Border(wxALL, 5));
 
-  grid_sizer->Add(new wxStaticText(this, -1, _("Direction:")), wxSizerFlags().Right().Center().Border(wxALL, 5));
+  grid_sizer->Add(new wxStaticText(this, -1, _("Direction:")),
+                  wxSizerFlags().Right().Center().Border(wxALL, 5));
 
   wxBoxSizer *fbbox = new wxBoxSizer(wxHORIZONTAL);
-  m_forward = new wxRadioButton(this, -1, _("Up"), wxDefaultPosition, wxDefaultSize, wxRB_GROUP);
+  m_forward = new wxRadioButton(this, -1, _("Up"), wxDefaultPosition,
+                                wxDefaultSize, wxRB_GROUP);
   fbbox->Add(m_forward, wxSizerFlags().Expand().Border(wxALL, 5));
   m_backwards = new wxRadioButton(this, -1, _("Down"));
   fbbox->Add(m_backwards, wxSizerFlags().Expand().Border(wxALL, 5));
 
   m_forward->SetValue(!(data->GetFlags() & wxFR_DOWN));
   m_backwards->SetValue(!!(data->GetFlags() & wxFR_DOWN));
-  m_forward->Connect(
-          wxEVT_RADIOBUTTON,
-          wxCommandEventHandler(FindReplacePane::OnDirectionChange),
-          NULL, this
-  );
+  m_forward->Connect(wxEVT_RADIOBUTTON,
+                     wxCommandEventHandler(FindReplacePane::OnDirectionChange),
+                     NULL, this);
   m_backwards->Connect(
-          wxEVT_RADIOBUTTON,
-          wxCommandEventHandler(FindReplacePane::OnDirectionChange),
-          NULL, this
-  );
+      wxEVT_RADIOBUTTON,
+      wxCommandEventHandler(FindReplacePane::OnDirectionChange), NULL, this);
 
   grid_sizer->Add(fbbox, wxSizerFlags().Expand());
 
   m_replaceAllButton = new wxButton(this, 1, _("Replace All"));
   grid_sizer->Add(m_replaceAllButton, wxSizerFlags().Expand().Border(wxALL, 5));
   m_replaceAllButton->Connect(
-          wxEVT_BUTTON,
-          wxCommandEventHandler(FindReplacePane::OnReplaceAll),
-          NULL, this
-  );
+      wxEVT_BUTTON, wxCommandEventHandler(FindReplacePane::OnReplaceAll), NULL,
+      this);
 
   grid_sizer->AddSpacer(0);
 
   m_matchCase = new wxCheckBox(this, -1, _("Match Case"));
   m_matchCase->SetValue(!!(data->GetFlags() & wxFR_MATCHCASE));
   grid_sizer->Add(m_matchCase, wxSizerFlags().Expand().Border(wxALL, 5));
-  m_matchCase->Connect(
-          wxEVT_CHECKBOX,
-          wxCommandEventHandler(FindReplacePane::OnMatchCase),
-          NULL, this
-  );
+  m_matchCase->Connect(wxEVT_CHECKBOX,
+                       wxCommandEventHandler(FindReplacePane::OnMatchCase),
+                       NULL, this);
 
   // If I press <tab> in the search text box I want to arrive in the
   // replacement text box immediately.
   m_replaceText->MoveAfterInTabOrder(m_searchText);
   this->SetSizerAndFit(grid_sizer);
-  Connect(wxEVT_ACTIVATE, wxActivateEventHandler(FindReplacePane::OnActivate),NULL, this);
-  Connect(wxEVT_CHAR_HOOK, wxKeyEventHandler(FindReplacePane::OnKeyDown),NULL, this);
+  Connect(wxEVT_ACTIVATE, wxActivateEventHandler(FindReplacePane::OnActivate),
+          NULL, this);
+  Connect(wxEVT_CHAR_HOOK, wxKeyEventHandler(FindReplacePane::OnKeyDown), NULL,
+          this);
 }
 
-void FindReplacePane::SetFindString(wxString string)
-{
+void FindReplacePane::SetFindString(wxString string) {
   m_findReplaceData->SetFindString(string);
   m_searchText->SetValue(string);
 }
 
-void FindReplacePane::OnSearch(wxCommandEvent &WXUNUSED(event))
-{
+void FindReplacePane::OnSearch(wxCommandEvent &WXUNUSED(event)) {
   wxFindDialogEvent *findEvent = new wxFindDialogEvent(wxEVT_FIND_NEXT);
   findEvent->SetFindString(m_findReplaceData->GetFindString());
   findEvent->SetFlags(m_findReplaceData->GetFlags());
   GetParent()->GetParent()->GetEventHandler()->QueueEvent(findEvent);
 }
 
-void FindReplacePane::OnReplace(wxCommandEvent &WXUNUSED(event))
-{
+void FindReplacePane::OnReplace(wxCommandEvent &WXUNUSED(event)) {
   wxFindDialogEvent *findEvent = new wxFindDialogEvent(wxEVT_FIND_REPLACE);
   findEvent->SetFindString(m_findReplaceData->GetFindString());
   findEvent->SetReplaceString(m_findReplaceData->GetReplaceString());
@@ -151,8 +137,7 @@ void FindReplacePane::OnReplace(wxCommandEvent &WXUNUSED(event))
   GetParent()->GetParent()->GetEventHandler()->QueueEvent(findEvent);
 }
 
-void FindReplacePane::OnReplaceAll(wxCommandEvent &WXUNUSED(event))
-{
+void FindReplacePane::OnReplaceAll(wxCommandEvent &WXUNUSED(event)) {
   wxFindDialogEvent *findEvent = new wxFindDialogEvent(wxEVT_FIND_REPLACE_ALL);
   findEvent->SetFindString(m_findReplaceData->GetFindString());
   findEvent->SetReplaceString(m_findReplaceData->GetReplaceString());
@@ -160,23 +145,20 @@ void FindReplacePane::OnReplaceAll(wxCommandEvent &WXUNUSED(event))
   GetParent()->GetParent()->GetEventHandler()->QueueEvent(findEvent);
 }
 
-void FindReplacePane::OnDirectionChange(wxCommandEvent &WXUNUSED(event))
-{
-  m_findReplaceData->SetFlags(
-          !((m_findReplaceData->GetFlags() & (~wxFR_DOWN)) | (m_forward->GetValue() * wxFR_DOWN)));
-  wxConfig::Get()->Write(wxT("findFlags"), m_findReplaceData->GetFlags());  
+void FindReplacePane::OnDirectionChange(wxCommandEvent &WXUNUSED(event)) {
+  m_findReplaceData->SetFlags(!((m_findReplaceData->GetFlags() & (~wxFR_DOWN)) |
+                                (m_forward->GetValue() * wxFR_DOWN)));
+  wxConfig::Get()->Write(wxT("findFlags"), m_findReplaceData->GetFlags());
 }
 
-
-void FindReplacePane::OnMatchCase(wxCommandEvent &event)
-{
+void FindReplacePane::OnMatchCase(wxCommandEvent &event) {
   m_findReplaceData->SetFlags(
-          (m_findReplaceData->GetFlags() & (~wxFR_MATCHCASE)) | (event.IsChecked() * wxFR_MATCHCASE));
-  wxConfig::Get()->Write(wxT("findFlags"), m_findReplaceData->GetFlags());  
+      (m_findReplaceData->GetFlags() & (~wxFR_MATCHCASE)) |
+      (event.IsChecked() * wxFR_MATCHCASE));
+  wxConfig::Get()->Write(wxT("findFlags"), m_findReplaceData->GetFlags());
 }
 
-void FindReplacePane::OnActivate(wxActivateEvent &event)
-{
+void FindReplacePane::OnActivate(wxActivateEvent &event) {
   if (event.GetActive())
     SetTransparent(255);
   else
@@ -184,38 +166,27 @@ void FindReplacePane::OnActivate(wxActivateEvent &event)
   m_active = true;
 }
 
-void FindReplacePane::OnFindStringChange(wxCommandEvent &WXUNUSED(event))
-{
+void FindReplacePane::OnFindStringChange(wxCommandEvent &WXUNUSED(event)) {
   m_findReplaceData->SetFindString(m_searchText->GetValue());
 }
 
-void FindReplacePane::OnReplaceStringChange(wxCommandEvent &WXUNUSED(event))
-{
+void FindReplacePane::OnReplaceStringChange(wxCommandEvent &WXUNUSED(event)) {
   m_findReplaceData->SetReplaceString(m_replaceText->GetValue());
 }
 
-void FindReplacePane::OnKeyDown(wxKeyEvent &event)
-{
-  if (event.ControlDown() && (event.GetUnicodeKey() == wxT('F')))
-  {
+void FindReplacePane::OnKeyDown(wxKeyEvent &event) {
+  if (event.ControlDown() && (event.GetUnicodeKey() == wxT('F'))) {
     wxCommandEvent dummyEvent;
     OnSearch(dummyEvent);
-  }
-  else if (event.GetKeyCode() == WXK_RETURN)
-  {
-    if (m_searchText->HasFocus())
-    {
+  } else if (event.GetKeyCode() == WXK_RETURN) {
+    if (m_searchText->HasFocus()) {
       wxCommandEvent dummyEvent;
       OnSearch(dummyEvent);
-    }
-    else if (m_replaceText->HasFocus())
-    {
+    } else if (m_replaceText->HasFocus()) {
       wxCommandEvent dummyEvent;
       OnReplace(dummyEvent);
-    }
-    else
+    } else
       event.Skip();
-  }
-  else
+  } else
     event.Skip();
 }

@@ -1,4 +1,5 @@
-// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode:
+// nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //  Copyright (C) 2015      Gunter Königsmann <wxMaxima@physikbuch.de>
@@ -25,30 +26,29 @@
 #include "ErrorRedirector.h"
 #include "GroupCell.h"
 #include "Worksheet.h"
+#include <cmath>
 #include <wx/clipbrd.h>
 #include <wx/filename.h>
 #include <wx/wfstream.h>
-#include <cmath>
 
-static wxString MakeTempFilename()
-{
+static wxString MakeTempFilename() {
   return wxFileName::CreateTempFileName(wxT("wxmaxima_size_"));
 }
 
-OutCommon::OutCommon(Configuration **configuration, const wxString &filename, int fullWidth, double scale) :
-    m_tempFilename(MakeTempFilename()),
-    m_filename(filename.empty() ? wxFileName::CreateTempFileName(wxT("wxmaxima_")) : filename),
-    m_configuration(configuration),
-    m_scale(scale),
-    m_fullWidth(fullWidth)
-{
+OutCommon::OutCommon(Configuration **configuration, const wxString &filename,
+                     int fullWidth, double scale)
+    : m_tempFilename(MakeTempFilename()),
+      m_filename(filename.empty()
+                     ? wxFileName::CreateTempFileName(wxT("wxmaxima_"))
+                     : filename),
+      m_configuration(configuration), m_scale(scale), m_fullWidth(fullWidth) {
   m_thisconfig.ShowCodeCells(m_oldconfig->ShowCodeCells());
   m_thisconfig.SetWorkSheet((*configuration)->GetWorkSheet());
 
   *m_configuration = &m_thisconfig;
   m_thisconfig.SetZoomFactor_temporarily(1);
   m_thisconfig.FontChanged();
-  
+
   // The last time I tried it the vertical positioning of the elements
   // of a big unicode parenthesis wasn't accurate enough in emf to be
   // usable. Also the probability was high that the right font wasn't
@@ -57,41 +57,35 @@ OutCommon::OutCommon(Configuration **configuration, const wxString &filename, in
   m_thisconfig.ClipToDrawRegion(false);
 }
 
-OutCommon::OutCommon(Configuration **configuration, int fullWidth, double scale) :
-    OutCommon(configuration, {}, fullWidth, scale)
-{}
+OutCommon::OutCommon(Configuration **configuration, int fullWidth, double scale)
+    : OutCommon(configuration, {}, fullWidth, scale) {}
 
-OutCommon::~OutCommon()
-{
-  if (wxFileExists(m_tempFilename))
-  {
-    // We don't want a braindead virus scanner that disallows us to delete our temp
-    // files to trigger asserts.
+OutCommon::~OutCommon() {
+  if (wxFileExists(m_tempFilename)) {
+    // We don't want a braindead virus scanner that disallows us to delete our
+    // temp files to trigger asserts.
     SuppressErrorDialogs messageBlocker;
 
     if (!wxRemoveFile(m_tempFilename))
-      wxLogMessage(_("Cannot remove the file %s"),m_tempFilename.utf8_str());
+      wxLogMessage(_("Cannot remove the file %s"), m_tempFilename.utf8_str());
   }
   *m_configuration = m_oldconfig;
   (*m_configuration)->FontChanged();
 }
 
-wxSize OutCommon::GetScaledSize() const
-{
+wxSize OutCommon::GetScaledSize() const {
   int w = std::lround(m_size.x * m_scale);
   int h = std::lround(m_size.y * m_scale);
   return {w, h};
 }
 
-wxSize OutCommon::GetInvScaledSize() const
-{
+wxSize OutCommon::GetInvScaledSize() const {
   int w = std::lround(m_size.x / m_scale);
   int h = std::lround(m_size.y / m_scale);
   return {w, h};
 }
 
-bool OutCommon::PrepareLayout(Cell *tree)
-{
+bool OutCommon::PrepareLayout(Cell *tree) {
   wxASSERT(m_recalculationDc);
   if (!tree)
     return false;
@@ -100,15 +94,12 @@ bool OutCommon::PrepareLayout(Cell *tree)
   tree->ResetSize();
   m_thisconfig.SetContext(*m_recalculationDc);
 
-  if (tree->GetType() != MC_TYPE_GROUP)
-  {
+  if (tree->GetType() != MC_TYPE_GROUP) {
     Recalculate(tree);
     BreakUpCells(tree);
     BreakLines(tree);
     Recalculate(tree);
-  }
-  else
-  {
+  } else {
     for (GroupCell &tmp : OnList(dynamic_cast<GroupCell *>(tree)))
       tmp.Recalculate();
   }
@@ -120,8 +111,7 @@ bool OutCommon::PrepareLayout(Cell *tree)
   return true;
 }
 
-void OutCommon::Recalculate(Cell *tree) const
-{
+void OutCommon::Recalculate(Cell *tree) const {
   auto fontsize = m_thisconfig.GetDefaultFontSize();
   auto mathFontsize = m_thisconfig.GetMathFontSize();
 
@@ -129,13 +119,11 @@ void OutCommon::Recalculate(Cell *tree) const
     tmp.Recalculate(tmp.IsMath() ? mathFontsize : fontsize);
 }
 
-void OutCommon::BreakLines(Cell *tree) const
-{
+void OutCommon::BreakLines(Cell *tree) const {
   int currentWidth = 0;
   int fullWidth = m_fullWidth * m_scale;
 
-  for (Cell &tmp : OnDrawList(tree))
-  {
+  for (Cell &tmp : OnDrawList(tree)) {
     if (tmp.IsBrokenIntoLines())
       continue;
 
@@ -145,18 +133,15 @@ void OutCommon::BreakLines(Cell *tree) const
       // an ommission. This note is here in case bugs were found in this area.
       tmp.ResetData();
 
-    if (tmp.BreakLineHere() || (currentWidth + tmp.GetWidth() >= fullWidth))
-    {
+    if (tmp.BreakLineHere() || (currentWidth + tmp.GetWidth() >= fullWidth)) {
       currentWidth = tmp.GetWidth();
       tmp.SoftLineBreak(true);
-    }
-    else
+    } else
       currentWidth += (tmp.GetWidth());
   }
 }
 
-void OutCommon::GetMaxPoint(Cell *tree, int *width, int *height) const
-{
+void OutCommon::GetMaxPoint(Cell *tree, int *width, int *height) const {
   int currentHeight = 0;
   int currentWidth = 0;
   *width = 0;
@@ -164,24 +149,21 @@ void OutCommon::GetMaxPoint(Cell *tree, int *width, int *height) const
   bool bigSkip = false;
   bool firstCell = true;
 
-  for (Cell &tmp : OnDrawList(tree))
-  {
+  for (Cell &tmp : OnDrawList(tree)) {
     if (tmp.IsBrokenIntoLines())
       continue;
 
-    if (tmp.BreakLineHere() || firstCell)
-    {
+    if (tmp.BreakLineHere() || firstCell) {
       firstCell = false;
       currentHeight += tmp.GetHeightList();
       if (bigSkip)
-        // Note: This skip was observerd in EMFout and SVGout, but not BitmapOut.
+        // Note: This skip was observerd in EMFout and SVGout, but not
+        // BitmapOut.
         currentHeight += MC_LINE_SKIP;
       *height = currentHeight;
       currentWidth = tmp.GetWidth();
       *width = wxMax(currentWidth, *width);
-    }
-    else
-    {
+    } else {
       currentWidth += (tmp.GetWidth());
       *width = wxMax(currentWidth, *width);
     }
@@ -189,39 +171,33 @@ void OutCommon::GetMaxPoint(Cell *tree, int *width, int *height) const
   }
 }
 
-void OutCommon::Draw(Cell *tree)
-{
+void OutCommon::Draw(Cell *tree) {
   wxPoint point;
   point.x = 0;
   point.y = tree->GetCenterList();
   int drop = tree->GetMaxDrop();
 
-  for (Cell &tmp : OnDrawList(tree))
-  {
+  for (Cell &tmp : OnDrawList(tree)) {
     Cell *const next = tmp.GetNext();
-    if (!tmp.IsBrokenIntoLines())
-    {
+    if (!tmp.IsBrokenIntoLines()) {
       tmp.Draw(point);
-      if (next && next->BreakLineHere())
-      {
+      if (next && next->BreakLineHere()) {
         point.x = 0;
         point.y += drop + next->GetCenterList();
         if (tmp.HasBigSkip())
-          // Note: This skip was observerd in EMFout and SVGout, but not BitmapOut.
+          // Note: This skip was observerd in EMFout and SVGout, but not
+          // BitmapOut.
           point.y += MC_LINE_SKIP;
         drop = next->GetMaxDrop();
-      }
-      else
+      } else
         point.x += tmp.GetWidth();
-    }
-    else
-    {
-      if (next && next->BreakLineHere())
-      {
+    } else {
+      if (next && next->BreakLineHere()) {
         point.x = 0;
         point.y += drop + next->GetCenterList();
         if (tmp.HasBigSkip())
-          // Note: This skip was observerd in EMFout and SVGout, but not BitmapOut.
+          // Note: This skip was observerd in EMFout and SVGout, but not
+          // BitmapOut.
           point.y += MC_LINE_SKIP;
         drop = next->GetMaxDrop();
       }
@@ -234,24 +210,21 @@ void OutCommon::Draw(Cell *tree)
   m_ppi.y *= m_scale;
 }
 
-void OutCommon::BreakUpCells(Cell *tree)
-{
+void OutCommon::BreakUpCells(Cell *tree) {
   int fullWidth = m_fullWidth * m_scale;
   auto fontsize = m_thisconfig.GetDefaultFontSize();
   auto mathFontsize = m_thisconfig.GetMathFontSize();
 
-  for (Cell &tmp : OnDrawList(tree))
-  {
+  for (Cell &tmp : OnDrawList(tree)) {
     if (tmp.GetWidth() > fullWidth && tmp.BreakUp())
       tmp.Recalculate(tmp.IsMath() ? mathFontsize : fontsize);
   }
 }
 
-bool OutCommon::ToClipboard(const wxDataFormat &format)
-{
-  wxASSERT_MSG(!wxTheClipboard->IsOpened(),_("Bug: The clipboard is already opened"));
-  if (wxTheClipboard->Open())
-  {
+bool OutCommon::ToClipboard(const wxDataFormat &format) {
+  wxASSERT_MSG(!wxTheClipboard->IsOpened(),
+               _("Bug: The clipboard is already opened"));
+  if (wxTheClipboard->Open()) {
     bool res = wxTheClipboard->SetData(GetDataObject(format).release());
     wxTheClipboard->Close();
     m_filename.clear();
@@ -260,23 +233,21 @@ bool OutCommon::ToClipboard(const wxDataFormat &format)
   return false;
 }
 
-std::unique_ptr<OutCommon::DataObject> OutCommon::GetDataObject(const wxDataFormat &format)
-{
+std::unique_ptr<OutCommon::DataObject>
+OutCommon::GetDataObject(const wxDataFormat &format) {
   constexpr auto chunkSize = 8192;
   wxMemoryBuffer contents;
   {
     wxFileInputStream str(m_filename);
     if (str.IsOk())
-      while (!str.Eof())
-      {
+      while (!str.Eof()) {
         auto *buf = contents.GetAppendBuf(chunkSize);
         str.Read(buf, chunkSize);
         contents.UngetAppendBuf(str.LastRead());
       }
   }
 
-  if ((!m_filename.empty()) && wxFileExists(m_filename))
-  {
+  if ((!m_filename.empty()) && wxFileExists(m_filename)) {
     // Don't output error messages if the worst thing that can happen is that we
     // cannot clean up a temp file
     SuppressErrorDialogs messageBlocker;
@@ -287,27 +258,23 @@ std::unique_ptr<OutCommon::DataObject> OutCommon::GetDataObject(const wxDataForm
   return std::unique_ptr<DataObject>(new DataObject(format, contents));
 }
 
-OutCommon::DataObject::DataObject(const wxDataFormat &format, const wxMemoryBuffer &data) :
-    wxCustomDataObject(format),
-    m_databuf(0)
-    // We can't point m_databuf to data here, since TakeData calls Free() and will ruin it!
+OutCommon::DataObject::DataObject(const wxDataFormat &format,
+                                  const wxMemoryBuffer &data)
+    : wxCustomDataObject(format), m_databuf(0)
+// We can't point m_databuf to data here, since TakeData calls Free() and will
+// ruin it!
 {
   // cppcheck-suppress useInitializationList
   m_databuf = data;
 }
 
-bool OutCommon::DataObject::GetDataHere(void *buf) const
-{
+bool OutCommon::DataObject::GetDataHere(void *buf) const {
   memcpy(buf, m_databuf.GetData(), m_databuf.GetDataLen());
   return true;
 }
 
-size_t OutCommon::DataObject::GetDataSize() const
-{
+size_t OutCommon::DataObject::GetDataSize() const {
   return m_databuf.GetDataLen();
 }
 
-void OutCommon::DataObject::Free()
-{
-  m_databuf.Clear();
-}
+void OutCommon::DataObject::Free() { m_databuf.Clear(); }

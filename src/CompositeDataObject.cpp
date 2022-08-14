@@ -1,4 +1,5 @@
-// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode:
+// nil -*-
 //
 //  Copyright (C) 2020 Kuba Ober <kuba@bertec.com>
 //
@@ -21,14 +22,11 @@
 
 #include "CompositeDataObject.h"
 
-CompositeDataObject::CompositeDataObject()
-{}
+CompositeDataObject::CompositeDataObject() {}
 
-CompositeDataObject::~CompositeDataObject()
-{}
+CompositeDataObject::~CompositeDataObject() {}
 
-void CompositeDataObject::Add(wxDataObject *object, bool preferred)
-{
+void CompositeDataObject::Add(wxDataObject *object, bool preferred) {
   if (!object)
     return;
 
@@ -45,13 +43,12 @@ void CompositeDataObject::Add(wxDataObject *object, bool preferred)
   if (preferred && !addedFormats.empty())
     SetPreferredFormat(addedFormats.front());
 
-  // Check if any prior entries have some of the added formats, and replace their
-  // objects if necessary.
+  // Check if any prior entries have some of the added formats, and replace
+  // their objects if necessary.
   for (auto &priorEntry : m_entries)
-    for (auto addedFormat = addedFormats.begin(); addedFormat != addedFormats.end(); )
-    {
-      if (priorEntry.format == *addedFormat)
-      {
+    for (auto addedFormat = addedFormats.begin();
+         addedFormat != addedFormats.end();) {
+      if (priorEntry.format == *addedFormat) {
         priorEntry.format = *addedFormat;
         priorEntry.object = objPtr;
         addedFormat = addedFormats.erase(addedFormat);
@@ -66,9 +63,9 @@ void CompositeDataObject::Add(wxDataObject *object, bool preferred)
     m_entries.emplace_back(addedFormat, objPtr);
 }
 
-wxDataObject *CompositeDataObject::GetObject(const wxDataFormat& format,
-                                             wxDataObjectBase::Direction dir) const
-{
+wxDataObject *
+CompositeDataObject::GetObject(const wxDataFormat &format,
+                               wxDataObjectBase::Direction dir) const {
   if (!(dir & wxDataObject::Get))
     return 0;
 
@@ -80,23 +77,20 @@ wxDataObject *CompositeDataObject::GetObject(const wxDataFormat& format,
   return {};
 }
 
-wxDataFormat CompositeDataObject::GetPreferredFormat(Direction dir) const
-{
+wxDataFormat CompositeDataObject::GetPreferredFormat(Direction dir) const {
   return (dir & wxDataObject::Get) ? m_preferredFormat : wxDataFormat();
 }
 
-void CompositeDataObject::SetPreferredFormat(const wxDataFormat &format)
-{
+void CompositeDataObject::SetPreferredFormat(const wxDataFormat &format) {
   m_preferredFormat = format;
 }
 
-size_t CompositeDataObject::GetFormatCount(Direction dir) const
-{
+size_t CompositeDataObject::GetFormatCount(Direction dir) const {
   return (dir & wxDataObject::Get) ? m_entries.size() : 0;
 }
 
-void CompositeDataObject::GetAllFormats(wxDataFormat *formats, Direction dir) const
-{
+void CompositeDataObject::GetAllFormats(wxDataFormat *formats,
+                                        Direction dir) const {
   if (!(dir & wxDataObject::Get))
     return;
 
@@ -104,8 +98,7 @@ void CompositeDataObject::GetAllFormats(wxDataFormat *formats, Direction dir) co
     *formats++ = entry.format;
 }
 
-size_t CompositeDataObject::GetDataSize(const wxDataFormat &format) const
-{
+size_t CompositeDataObject::GetDataSize(const wxDataFormat &format) const {
   for (auto &entry : m_entries)
     // cppcheck-suppress useStlAlgorithm
     if (entry.format == format)
@@ -114,8 +107,8 @@ size_t CompositeDataObject::GetDataSize(const wxDataFormat &format) const
   return 0;
 }
 
-bool CompositeDataObject::GetDataHere(const wxDataFormat &format, void *buf) const
-{
+bool CompositeDataObject::GetDataHere(const wxDataFormat &format,
+                                      void *buf) const {
   for (auto &entry : m_entries)
     // cppcheck-suppress useStlAlgorithm
     if (entry.format == format)
@@ -126,15 +119,14 @@ bool CompositeDataObject::GetDataHere(const wxDataFormat &format, void *buf) con
 
 #ifdef __WXMSW__
 
-const void* CompositeDataObject::GetSizeFromBuffer(const void* buffer, size_t* size,
-                                                   const wxDataFormat& format)
-{
+const void *CompositeDataObject::GetSizeFromBuffer(const void *buffer,
+                                                   size_t *size,
+                                                   const wxDataFormat &format) {
   if (!size)
     return {};
 
   auto *object = GetObject(format);
-  if (!object)
-  {
+  if (!object) {
     *size = 0;
     return {};
   }
@@ -142,15 +134,13 @@ const void* CompositeDataObject::GetSizeFromBuffer(const void* buffer, size_t* s
   return object->GetSizeFromBuffer(buffer, size, format);
 }
 
-void* CompositeDataObject::SetSizeInBuffer(void* buffer, size_t size,
-                                           const wxDataFormat& format)
-{
+void *CompositeDataObject::SetSizeInBuffer(void *buffer, size_t size,
+                                           const wxDataFormat &format) {
   auto *object = GetObject(format);
   return object ? object->SetSizeInBuffer(buffer, size, format) : nullptr;
 }
 
-size_t CompositeDataObject::GetBufferOffset(const wxDataFormat& format)
-{
+size_t CompositeDataObject::GetBufferOffset(const wxDataFormat &format) {
   auto *object = GetObject(format);
   return object ? object->GetBufferOffset(format) : 0;
 }

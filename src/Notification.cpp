@@ -1,4 +1,5 @@
-// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode:
+// nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2008-2009 Ziga Lenarcic <zigalenarcic@users.sourceforge.net>
@@ -29,12 +30,11 @@
  */
 
 #include "Notification.h"
-Notification::Notification():wxNotificationMessage()
-{
+Notification::Notification() : wxNotificationMessage() {
   m_parent = NULL;
   m_errorNotificationCell = NULL;
-  #if wxCHECK_VERSION(3, 1, 0)
-//  AddAction(wxID_ANY,_("Focus window"));
+#if wxCHECK_VERSION(3, 1, 0)
+  //  AddAction(wxID_ANY,_("Focus window"));
   Connect(wxEVT_NOTIFICATION_MESSAGE_CLICK,
           wxCommandEventHandler(Notification::OnClick), NULL, this);
   Connect(wxEVT_NOTIFICATION_MESSAGE_ACTION,
@@ -42,35 +42,29 @@ Notification::Notification():wxNotificationMessage()
 #endif
 }
 
-Notification::Notification(const wxString &title,
-                           const wxString &message,
-                           wxWindow *parent,
-                           int flags): wxNotificationMessage (title, message, parent, flags)
-{
+Notification::Notification(const wxString &title, const wxString &message,
+                           wxWindow *parent, int flags)
+    : wxNotificationMessage(title, message, parent, flags) {
   m_errorNotificationCell = NULL;
   m_parent = parent;
-  #if wxCHECK_VERSION(3, 1, 0)
-//  AddAction(wxID_ANY,_("Focus window"));
+#if wxCHECK_VERSION(3, 1, 0)
+  //  AddAction(wxID_ANY,_("Focus window"));
   Connect(wxEVT_NOTIFICATION_MESSAGE_CLICK,
           wxCommandEventHandler(Notification::OnClick), NULL, this);
   Connect(wxEVT_NOTIFICATION_MESSAGE_ACTION,
           wxCommandEventHandler(Notification::OnClick), NULL, this);
-  #endif
+#endif
 }
 
-void Notification::SetGroup(wxWindow *parent)
-{
+void Notification::SetGroup(wxWindow *parent) {
   m_parent = parent;
   wxNotificationMessage::SetParent(parent);
 }
 
-void Notification::OnClick(wxCommandEvent &WXUNUSED(event))
-{
-  if (GetGroup())
-  {
+void Notification::OnClick(wxCommandEvent &WXUNUSED(event)) {
+  if (GetGroup()) {
     GetGroup()->Raise();
     GetGroup()->Show();
     GetGroup()->SetFocus();
   }
 }
-

@@ -1,4 +1,5 @@
-// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode:
+// nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //  Copyright (C) 2017-2018 Gunter Königsmann <wxMaxima@physikbuch.de>
@@ -23,19 +24,17 @@
 #include "Gen1Wiz.h"
 #include <wx/persist/toplevel.h>
 
-Gen1Wiz::Gen1Wiz(wxWindow *parent, int id, Configuration *cfg, const wxString &title,
-                 const wxString &label,
-                 const wxString &val,
-                 const wxString &warning,
-                 const wxString &warningToolTip,
-                 const wxPoint &pos, const wxSize &size, long style) :
-        wxDialog(parent, id, title, pos, size, style)
-{
+Gen1Wiz::Gen1Wiz(wxWindow *parent, int id, Configuration *cfg,
+                 const wxString &title, const wxString &label,
+                 const wxString &val, const wxString &warning,
+                 const wxString &warningToolTip, const wxPoint &pos,
+                 const wxSize &size, long style)
+    : wxDialog(parent, id, title, pos, size, style) {
   SetName(title);
   label_2 = new wxStaticText(this, -1, label);
   text_ctrl_1 = new BTextCtrl(this, -1, cfg, wxEmptyString, wxDefaultPosition,
                               wxSize(300, -1));
-  text_ctrl_1 -> SetValue(val);
+  text_ctrl_1->SetValue(val);
   static_line_1 = new wxStaticLine(this, -1);
 
 #if defined __WXMSW__
@@ -46,13 +45,11 @@ Gen1Wiz::Gen1Wiz(wxWindow *parent, int id, Configuration *cfg, const wxString &t
   button_2 = new wxButton(this, wxID_OK, _("OK"));
 #endif
 
-  if(warning != wxEmptyString)    
-  {
+  if (warning != wxEmptyString) {
     m_warningText = warning;
     m_warning = new wxStaticText(this, -1, wxEmptyString);
     m_warning->SetToolTip(warningToolTip);
-  }
-  else
+  } else
     m_warning = NULL;
 
   set_properties();
@@ -61,9 +58,7 @@ Gen1Wiz::Gen1Wiz(wxWindow *parent, int id, Configuration *cfg, const wxString &t
   do_layout();
 }
 
-
-void Gen1Wiz::set_properties()
-{
+void Gen1Wiz::set_properties() {
 #if defined __WXMSW__
   button_1->SetDefault();
 #else
@@ -73,16 +68,14 @@ void Gen1Wiz::set_properties()
   text_ctrl_1->SetFocus();
 }
 
-
-void Gen1Wiz::do_layout()
-{
+void Gen1Wiz::do_layout() {
   wxFlexGridSizer *grid_sizer_1 = new wxFlexGridSizer(5, 1, 0, 0);
   wxBoxSizer *sizer_1 = new wxBoxSizer(wxHORIZONTAL);
   grid_sizer_1->Add(label_2, 0, wxALL | wxALIGN_CENTER_HORIZONTAL, 5);
   grid_sizer_1->Add(text_ctrl_1, 0, wxALL | wxEXPAND, 5);
   grid_sizer_1->Add(static_line_1, 0, wxEXPAND | wxLEFT | wxRIGHT, 2);
 
-  if(m_warning != NULL)
+  if (m_warning != NULL)
     grid_sizer_1->Add(m_warning, 0, wxALL, 5);
 
   sizer_1->Add(button_1, 0, wxALL, 5);
@@ -95,15 +88,13 @@ void Gen1Wiz::do_layout()
   Layout();
 }
 
-wxString GetTextFromUser(wxString label, wxString title, Configuration *cfg, wxString value,
-                         wxWindow *parent)
-{
+wxString GetTextFromUser(wxString label, wxString title, Configuration *cfg,
+                         wxString value, wxWindow *parent) {
   Gen1Wiz *wiz = new Gen1Wiz(parent, -1, cfg, title, label);
   wiz->SetValue(value);
   wxString val;
   wiz->Centre(wxBOTH);
-  if (wiz->ShowModal() == wxID_OK)
-  {
+  if (wiz->ShowModal() == wxID_OK) {
     val = wiz->GetValue();
     val.Trim();
     val.Trim(false);

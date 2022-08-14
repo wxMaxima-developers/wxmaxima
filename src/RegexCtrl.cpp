@@ -1,4 +1,5 @@
-// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode:
+// nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //
@@ -20,47 +21,42 @@
 //  SPDX-License-Identifier: GPL-2.0+
 
 #include "RegexCtrl.h"
-#include "ErrorRedirector.h"
-#include <wx/txtstrm.h>
-#include <wx/sstream.h>
-#include <wx/log.h>
 #include "Configuration.h"
+#include "ErrorRedirector.h"
+#include <wx/log.h>
+#include <wx/sstream.h>
+#include <wx/txtstrm.h>
 
-RegexCtrl::RegexCtrl(wxWindow *parent,
-                     wxWindowID id, Configuration *cfg) :
-  BTextCtrl(parent, id, cfg)
-{
+RegexCtrl::RegexCtrl(wxWindow *parent, wxWindowID id, Configuration *cfg)
+    : BTextCtrl(parent, id, cfg) {
   SetToolTip(RegexTooltip_norm);
-  Connect(wxEVT_TEXT,
-          wxCommandEventHandler(RegexCtrl::OnTextChange), NULL, this);
+  Connect(wxEVT_TEXT, wxCommandEventHandler(RegexCtrl::OnTextChange), NULL,
+          this);
   if (RegexTooltip_norm.IsEmpty())
     RegexTooltip_norm = _("Input a RegEx here to filter the results");
   if (RegexTooltip_error.IsEmpty())
     RegexTooltip_error = _("Invalid RegEx!");
 }
 
-RegexCtrl::RegexInputState RegexCtrl::GetNewRegexInputState() const
-{
-  if (GetValue().empty()) return RegexInputState::empty;
-  if (m_regex.IsValid())  return RegexInputState::valid;
+RegexCtrl::RegexInputState RegexCtrl::GetNewRegexInputState() const {
+  if (GetValue().empty())
+    return RegexInputState::empty;
+  if (m_regex.IsValid())
+    return RegexInputState::valid;
   return RegexInputState::invalid;
 }
 
-bool RegexCtrl::Matches(wxString text)
-{
-  if(GetValue().IsEmpty())
+bool RegexCtrl::Matches(wxString text) {
+  if (GetValue().IsEmpty())
     return true;
-  if(!m_regex.IsValid())
+  if (!m_regex.IsValid())
     return true;
   return m_regex.Matches(text);
 }
 
-void RegexCtrl::OnTextChange(wxCommandEvent &WXUNUSED(ev))
-{
-  if (GetValue() != m_oldRegex)
-  {
-    if(!GetValue().empty())
-    {
+void RegexCtrl::OnTextChange(wxCommandEvent &WXUNUSED(ev)) {
+  if (GetValue() != m_oldRegex) {
+    if (!GetValue().empty()) {
       m_oldRegex = GetValue();
       wxRegEx regex;
       wxString errMsg;
@@ -72,33 +68,33 @@ void RegexCtrl::OnTextChange(wxCommandEvent &WXUNUSED(ev))
         errMsg = errOut.GetBuffer();
         errMsg.Trim(true);
         int colonPos = errMsg.Find(": ");
-        if(colonPos > 2)
+        if (colonPos > 2)
           errMsg = errMsg.Right(errMsg.Length() - colonPos - 2);
         wxLog::SetActiveTarget(logOld);
       }
       // Update UI feedback if the state of the regex input control has changed
       auto const newInputState = GetNewRegexInputState();
-      if (m_regexInputState != newInputState)
-      {
+      if (m_regexInputState != newInputState) {
         m_regexInputState = newInputState;
         const wxColor colors[3] = {
-          /* empty   */ wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOW),
-          /* invalid */ {255,165,0}, /* orange. Red seems too 'dangerous'. */
-          /* valid   */ {0,255,0}    /* green. Input okay. */
+            /* empty   */ wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOW),
+            /* invalid */ {255, 165, 0}, /* orange. Red seems too 'dangerous'.
+                                          */
+            /* valid   */ {0, 255, 0}    /* green. Input okay. */
         };
-        if(errMsg.IsEmpty())
+        if (errMsg.IsEmpty())
           errMsg = RegexTooltip_error;
         else
           wxLogMessage(errMsg);
-        const wxString tooltips[3] = {
-          /* empty */ RegexTooltip_norm, /* invalid */ errMsg, /* valid */ RegexTooltip_norm
-        };
-        // One could also set the background color, with SetBackgroundColour(...);
-        // Be careful, not only set the foreground color to black or white
-        // the background color may be the same (or have not enough contrast)
-        // if dark mode is used.
-        // Choose always colors with some contrast.
-        // Green and orange (as above for valid/invalid input) works with normal and dark mode.
+        const wxString tooltips[3] = {/* empty */ RegexTooltip_norm,
+                                      /* invalid */ errMsg,
+                                      /* valid */ RegexTooltip_norm};
+        // One could also set the background color, with
+        // SetBackgroundColour(...); Be careful, not only set the foreground
+        // color to black or white the background color may be the same (or have
+        // not enough contrast) if dark mode is used. Choose always colors with
+        // some contrast. Green and orange (as above for valid/invalid input)
+        // works with normal and dark mode.
         SetForegroundColour(colors[int(m_regexInputState)]);
         SetToolTip(tooltips[int(m_regexInputState)]);
         Refresh();
@@ -109,9 +105,7 @@ void RegexCtrl::OnTextChange(wxCommandEvent &WXUNUSED(ev))
   }
 }
 
-
-RegexCtrl::~RegexCtrl()
-{}
+RegexCtrl::~RegexCtrl() {}
 
 wxDEFINE_EVENT(REGEX_EVENT, wxCommandEvent);
 

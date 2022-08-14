@@ -1,4 +1,5 @@
-// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode:
+// nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //
@@ -21,12 +22,10 @@
 
 #include "LimitWiz.h"
 
-LimitWiz::LimitWiz(wxWindow *parent, int id,
-                   Configuration *cfg,
-                   const wxString &title,
-                   const wxPoint &pos, const wxSize &size, long style) :
-        wxDialog(parent, id, title, pos, size, style)
-{
+LimitWiz::LimitWiz(wxWindow *parent, int id, Configuration *cfg,
+                   const wxString &title, const wxPoint &pos,
+                   const wxSize &size, long style)
+    : wxDialog(parent, id, title, pos, size, style) {
   label_2 = new wxStaticText(this, -1, _("Expression:"));
   text_ctrl_1 = new BTextCtrl(this, -1, cfg, wxEmptyString, wxDefaultPosition,
                               wxSize(230, -1));
@@ -38,14 +37,9 @@ LimitWiz::LimitWiz(wxWindow *parent, int id,
                               wxSize(110, -1));
   button_1 = new wxButton(this, special, _("Special"));
   label_5 = new wxStaticText(this, -1, _("Direction:"));
-  const wxString choice_1_choices[] =
-          {
-                  _("both sides"),
-                  _("left"),
-                  _("right")
-          };
-  choice_1 = new wxChoice(this, -1, wxDefaultPosition, wxSize(130, -1),
-                          3, choice_1_choices);
+  const wxString choice_1_choices[] = {_("both sides"), _("left"), _("right")};
+  choice_1 = new wxChoice(this, -1, wxDefaultPosition, wxSize(130, -1), 3,
+                          choice_1_choices);
   checkbox_1 = new wxCheckBox(this, -1, _("&Taylor series"));
   static_line_1 = new wxStaticLine(this, -1);
 
@@ -63,9 +57,7 @@ LimitWiz::LimitWiz(wxWindow *parent, int id,
   do_layout();
 }
 
-
-void LimitWiz::set_properties()
-{
+void LimitWiz::set_properties() {
   SetTitle(_("Limit"));
   choice_1->SetSelection(0);
 #if defined __WXMSW__
@@ -77,22 +69,24 @@ void LimitWiz::set_properties()
   text_ctrl_1->SetFocus();
 }
 
-
-void LimitWiz::do_layout()
-{
+void LimitWiz::do_layout() {
   wxFlexGridSizer *grid_sizer_1 = new wxFlexGridSizer(3, 1, 0, 0);
   wxBoxSizer *sizer_2 = new wxBoxSizer(wxHORIZONTAL);
   wxFlexGridSizer *grid_sizer_2 = new wxFlexGridSizer(5, 2, 0, 0);
   wxBoxSizer *sizer_1 = new wxBoxSizer(wxHORIZONTAL);
-  grid_sizer_2->Add(label_2, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
+  grid_sizer_2->Add(label_2, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL,
+                    5);
   grid_sizer_2->Add(text_ctrl_1, 0, wxALL, 5);
-  grid_sizer_2->Add(label_3, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
+  grid_sizer_2->Add(label_3, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL,
+                    5);
   grid_sizer_2->Add(text_ctrl_2, 0, wxALL, 5);
-  grid_sizer_2->Add(label_4, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
+  grid_sizer_2->Add(label_4, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL,
+                    5);
   sizer_1->Add(text_ctrl_3, 0, wxALL | wxEXPAND, 5);
   sizer_1->Add(button_1, 0, wxALL, 5);
   grid_sizer_2->Add(sizer_1, 1, 0, 0);
-  grid_sizer_2->Add(label_5, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
+  grid_sizer_2->Add(label_5, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL,
+                    5);
   grid_sizer_2->Add(choice_1, 0, wxALL, 5);
   grid_sizer_2->Add(20, 20, 0, wxALL, 5);
   grid_sizer_2->Add(checkbox_1, 9, wxALL, 5);
@@ -108,8 +102,7 @@ void LimitWiz::do_layout()
   Layout();
 }
 
-wxString LimitWiz::GetValue()
-{
+wxString LimitWiz::GetValue() {
   wxString s;
   if (checkbox_1->GetValue())
     s = wxT("tlimit(");
@@ -120,8 +113,7 @@ wxString LimitWiz::GetValue()
   s += text_ctrl_2->GetValue();
   s += wxT(", ");
   s += text_ctrl_3->GetValue();
-  if (choice_1->IsEnabled())
-  {
+  if (choice_1->IsEnabled()) {
     int f = choice_1->GetSelection();
     if (f == 1)
       s += wxT(", minus");
@@ -133,14 +125,11 @@ wxString LimitWiz::GetValue()
   return s;
 }
 
-void LimitWiz::OnButton(wxCommandEvent &WXUNUSED(event))
-{
-  wxString choices[] = {wxT("Pi"), wxT("E"), _("Infinity"),
-                        _("- Infinity")};
-  wxString choice = wxGetSingleChoice(_("Select a constant"),
-                                      _("Constant"), 4, choices, this);
-  if (choice.Length())
-  {
+void LimitWiz::OnButton(wxCommandEvent &WXUNUSED(event)) {
+  wxString choices[] = {wxT("Pi"), wxT("E"), _("Infinity"), _("- Infinity")};
+  wxString choice = wxGetSingleChoice(_("Select a constant"), _("Constant"), 4,
+                                      choices, this);
+  if (choice.Length()) {
     if (choice == wxT("Pi"))
       text_ctrl_3->SetValue(wxT("%pi"));
     else if (choice == wxT("E"))
@@ -152,22 +141,16 @@ void LimitWiz::OnButton(wxCommandEvent &WXUNUSED(event))
   }
 }
 
-void LimitWiz::OnIdle(wxIdleEvent &WXUNUSED(ev))
-{
+void LimitWiz::OnIdle(wxIdleEvent &WXUNUSED(ev)) {
   wxString point = text_ctrl_3->GetValue();
 
   if (point == wxT("inf") || point == wxT("-inf") || point == wxT("+inf") ||
-      point == wxT("minf") || point == wxT("-minf") || point == wxT("+minf"))
-  {
+      point == wxT("minf") || point == wxT("-minf") || point == wxT("+minf")) {
     choice_1->Enable(false);
-  }
-  else if (choice_1->IsEnabled() == false)
-  {
+  } else if (choice_1->IsEnabled() == false) {
     choice_1->Enable(true);
   }
 }
 
-wxBEGIN_EVENT_TABLE(LimitWiz, wxDialog)
-                EVT_BUTTON(special, LimitWiz::OnButton)
-                EVT_IDLE(LimitWiz::OnIdle)
-wxEND_EVENT_TABLE()
+wxBEGIN_EVENT_TABLE(LimitWiz, wxDialog) EVT_BUTTON(special, LimitWiz::OnButton)
+    EVT_IDLE(LimitWiz::OnIdle) wxEND_EVENT_TABLE()

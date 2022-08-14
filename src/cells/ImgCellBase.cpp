@@ -1,4 +1,5 @@
-// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode:
+// nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2014-2018 Gunter Königsmann <wxMaxima@physikbuch.de>
@@ -21,29 +22,23 @@
 //  SPDX-License-Identifier: GPL-2.0+
 
 /*! \file
-  This file defines the class ImgCellBase. 
+  This file defines the class ImgCellBase.
 
   Pointers to this class can both point to images or to animations.
  */
-
 
 #include "ImgCellBase.h"
 #include "CellImpl.h"
 #include "CellPointers.h"
 #include "StringUtils.h"
+#include <wx/clipbrd.h>
 #include <wx/file.h>
 #include <wx/filename.h>
 #include <wx/filesys.h>
 #include <wx/fs_mem.h>
-#include <wx/clipbrd.h>
 #include <wx/mstream.h>
 
-ImgCellBase::ImgCellBase(GroupCell *group, Configuration *config) :
-  Cell(group, config)
-{
-}
+ImgCellBase::ImgCellBase(GroupCell *group, Configuration *config)
+    : Cell(group, config) {}
 
-ImgCellBase::~ImgCellBase()
-{
-}
-
+ImgCellBase::~ImgCellBase() {}

@@ -1,4 +1,5 @@
-// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode:
+// nil -*-
 //
 //  Copyright (C) 2009-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //  Copyright (C) 2015-2019 Gunter Königsmann     <wxMaxima@physikbuch.de>
@@ -24,102 +25,84 @@
   This file defines the class AutoComplete.
 
   AutoComplete creates the list of autocompletions for a string and allows
-  dynamically appending maxima commands to this list as soon as they are defined.
+  dynamically appending maxima commands to this list as soon as they are
+  defined.
 */
 
 #include "Autocomplete.h"
 #include "Dirstructure.h"
-#include "Version.h"
 #include "ErrorRedirector.h"
+#include "Version.h"
+#include <wx/filename.h>
 #include <wx/sstream.h>
 #include <wx/textfile.h>
-#include <wx/filename.h>
-#include <wx/xml/xml.h>
-#include <wx/wfstream.h>
 #include <wx/txtstrm.h>
 #include <wx/utils.h>
+#include <wx/wfstream.h>
+#include <wx/xml/xml.h>
 
-AutoComplete::AutoComplete(Configuration *configuration)
-{
+AutoComplete::AutoComplete(Configuration *configuration) {
   m_configuration = configuration;
 }
 
-void AutoComplete::ClearWorksheetWords()
-{
+void AutoComplete::ClearWorksheetWords() {
   WaitForBackgroundThreads();
   m_worksheetWords.clear();
 }
 
-void AutoComplete::ClearDemofileList()
-{
-  if (m_addFiles_backgroundThread)
-  {
+void AutoComplete::ClearDemofileList() {
+  if (m_addFiles_backgroundThread) {
     WaitForBackgroundThread_Files();
     m_addFiles_backgroundThread.reset();
   }
   m_wordList[demofile] = m_builtInDemoFiles;
 }
 
-void AutoComplete::AddSymbols(wxString xml)
-{
+void AutoComplete::AddSymbols(wxString xml) {
   WaitForBackgroundThread_Symbols();
-  wxLogMessage(
-    _("Scheduling a background task that compiles a new list "
-      "of autocompletable maxima commands."));
+  wxLogMessage(_("Scheduling a background task that compiles a new list "
+                 "of autocompletable maxima commands."));
 
-  m_addSymbols_backgroundThread =
-    std::unique_ptr<std::thread>(
-      new std::thread(&AutoComplete::AddSymbols_Backgroundtask, this, xml));  
+  m_addSymbols_backgroundThread = std::unique_ptr<std::thread>(
+      new std::thread(&AutoComplete::AddSymbols_Backgroundtask, this, xml));
 }
 
-void AutoComplete::AddSymbols_Backgroundtask(wxString xml)
-{
+void AutoComplete::AddSymbols_Backgroundtask(wxString xml) {
   wxXmlDocument xmldoc;
   wxStringInputStream xmlStream(xml);
   xmldoc.Load(xmlStream, wxT("UTF-8"));
   wxXmlNode *node = xmldoc.GetRoot();
-  if (node != NULL)
-  {
+  if (node != NULL) {
     wxXmlNode *children = node->GetChildren();
-    while (children != NULL)
-    {
-      if(children->GetType() == wxXML_ELEMENT_NODE)
-      { 
-        if (children->GetName() == wxT("function"))
-        {
+    while (children != NULL) {
+      if (children->GetType() == wxXML_ELEMENT_NODE) {
+        if (children->GetName() == wxT("function")) {
           wxXmlNode *val = children->GetChildren();
-          if(val)
-          {
+          if (val) {
             wxString name = val->GetContent();
             AddSymbol_nowait(name, command);
           }
         }
-          
-        if (children->GetName() == wxT("template"))
-        {
+
+        if (children->GetName() == wxT("template")) {
           wxXmlNode *val = children->GetChildren();
-          if(val)
-          {
+          if (val) {
             wxString name = val->GetContent();
             AddSymbol_nowait(name, tmplte);
           }
         }
-          
-        if (children->GetName() == wxT("unit"))
-        {
+
+        if (children->GetName() == wxT("unit")) {
           wxXmlNode *val = children->GetChildren();
-          if(val)
-          {
+          if (val) {
             wxString name = val->GetContent();
             AddSymbol_nowait(name, unit);
           }
         }
-          
-        if (children->GetName() == wxT("value"))
-        {
+
+        if (children->GetName() == wxT("value")) {
           wxXmlNode *val = children->GetChildren();
-          if(val)
-          {
+          if (val) {
             wxString name = val->GetContent();
             AddSymbol_nowait(name, command);
           }
@@ -130,103 +113,88 @@ void AutoComplete::AddSymbols_Backgroundtask(wxString xml)
   }
 }
 
-void AutoComplete::WaitForBackgroundThread_Symbols()
-{
-  if(m_addSymbols_backgroundThread)
-  {
+void AutoComplete::WaitForBackgroundThread_Symbols() {
+  if (m_addSymbols_backgroundThread) {
     wxBusyCursor crs;
-    if(m_addSymbols_backgroundThread->joinable())
+    if (m_addSymbols_backgroundThread->joinable())
       m_addSymbols_backgroundThread->join();
     m_addSymbols_backgroundThread.reset();
   }
 }
 
-void AutoComplete::WaitForBackgroundThread_Files()
-{
-  if(m_addFiles_backgroundThread)
-  {
+void AutoComplete::WaitForBackgroundThread_Files() {
+  if (m_addFiles_backgroundThread) {
     wxBusyCursor crs;
-    if(m_addFiles_backgroundThread->joinable())
+    if (m_addFiles_backgroundThread->joinable())
       m_addFiles_backgroundThread->join();
     m_addFiles_backgroundThread.reset();
   }
 }
 
-void AutoComplete::WaitForBackgroundThreads()
-{
+void AutoComplete::WaitForBackgroundThreads() {
   WaitForBackgroundThread_Symbols();
   WaitForBackgroundThread_Files();
 }
 
-void AutoComplete::AddWorksheetWords(WordList::const_iterator const begin, WordList::const_iterator const end)
-{
+void AutoComplete::AddWorksheetWords(WordList::const_iterator const begin,
+                                     WordList::const_iterator const end) {
   WaitForBackgroundThreads();
   for (auto word = begin; word != end; std::advance(word, 1))
     m_worksheetWords[*word] = 1;
 }
 
-void AutoComplete::AddWorksheetWords(const WordList &words)
-{
+void AutoComplete::AddWorksheetWords(const WordList &words) {
   AddWorksheetWords(words.begin(), words.end());
 }
 
-AutoComplete::~AutoComplete()
-{
+AutoComplete::~AutoComplete() { WaitForBackgroundThreads(); }
+
+void AutoComplete::LoadSymbols() {
   WaitForBackgroundThreads();
+  m_addSymbols_backgroundThread = std::unique_ptr<std::thread>(
+      new std::thread(&AutoComplete::BuiltinSymbols_BackgroundTask, this));
+  m_addFiles_backgroundThread = std::unique_ptr<std::thread>(
+      new std::thread(&AutoComplete::LoadableFiles_BackgroundTask, this));
 }
 
-void AutoComplete::LoadSymbols()
-{
-  WaitForBackgroundThreads();
-  m_addSymbols_backgroundThread =
-    std::unique_ptr<std::thread>(
-      new std::thread(&AutoComplete::BuiltinSymbols_BackgroundTask, this));  
-  m_addFiles_backgroundThread =
-    std::unique_ptr<std::thread>(
-      new std::thread(&AutoComplete::LoadableFiles_BackgroundTask, this));  
-}
-
-void AutoComplete::BuiltinSymbols_BackgroundTask()
-{
+void AutoComplete::BuiltinSymbols_BackgroundTask() {
   m_wordList[command].Clear();
   m_wordList[tmplte].Clear();
   m_wordList[esccommand].Clear();
   m_wordList[unit].Clear();
-  
+
   LoadBuiltinSymbols();
-  
-  for (auto it = Configuration::EscCodesBegin(); it != Configuration::EscCodesEnd(); ++it)
+
+  for (auto it = Configuration::EscCodesBegin();
+       it != Configuration::EscCodesEnd(); ++it)
     m_wordList[esccommand].Add(it->first);
-  
+
   m_wordList[command].Sort();
   m_wordList[tmplte].Sort();
   m_wordList[unit].Sort();
   m_wordList[esccommand].Sort();
-  
+
   wxString line;
-  
+
   /// Load private symbol list (do something different on Windows).
   wxString privateList;
   privateList = Dirstructure::Get()->UserAutocompleteFile();
   wxLogMessage(wxString::Format(
-                 _("Trying to load a list of autocompletable symbols from file %s"),
-                 privateList.utf8_str()));
-  if (wxFileExists(privateList))
-  {
+      _("Trying to load a list of autocompletable symbols from file %s"),
+      privateList.utf8_str()));
+  if (wxFileExists(privateList)) {
     wxTextFile priv(privateList);
-    
+
     priv.Open();
-    
+
     wxRegEx function("^[fF][uU][nN][cC][tT][iI][oO][nN] *: *");
-    wxRegEx option  ("^[oO][pP][tT][iI][oO][nN] *: *");
-    wxRegEx templte ("^[tT][eE][mM][pP][lL][aA][tT][eE] *: *");
-    wxRegEx unt    ("^[uU][nN][iI][tT] *: *");
-    for (line = priv.GetFirstLine(); !priv.Eof(); line = priv.GetNextLine())
-    {
+    wxRegEx option("^[oO][pP][tT][iI][oO][nN] *: *");
+    wxRegEx templte("^[tT][eE][mM][pP][lL][aA][tT][eE] *: *");
+    wxRegEx unt("^[uU][nN][iI][tT] *: *");
+    for (line = priv.GetFirstLine(); !priv.Eof(); line = priv.GetNextLine()) {
       line.Trim(true);
       line.Trim(false);
-      if(!line.StartsWith("#"))
-      {
+      if (!line.StartsWith("#")) {
         if (function.Replace(&line, ""))
           m_wordList[command].Add(line);
         else if (option.Replace(&line, ""))
@@ -237,17 +205,15 @@ void AutoComplete::BuiltinSymbols_BackgroundTask()
           m_wordList[unit].Add(line);
         else
           wxLogMessage(privateList +
-                       wxString::Format(_(": Can't interpret line: %s")), line.utf8_str());
+                           wxString::Format(_(": Can't interpret line: %s")),
+                       line.utf8_str());
       }
     }
     priv.Close();
-  }
-  else
-  {
+  } else {
     SuppressErrorDialogs logNull;
     wxFileOutputStream output(privateList);
-    if(output.IsOk())
-    {
+    if (output.IsOk()) {
       wxTextOutputStream text(output);
       text << "# This file allows users to add their own symbols\n";
       text << "# to wxMaxima's autocompletion feature.\n";
@@ -265,86 +231,68 @@ void AutoComplete::BuiltinSymbols_BackgroundTask()
   }
 }
 
-
-void AutoComplete::LoadableFiles_BackgroundTask()
-{
+void AutoComplete::LoadableFiles_BackgroundTask() {
   // Error dialogues need to be created by the foreground thread.
   SuppressErrorDialogs suppressor;
-    
+
   // Prepare a list of all built-in loadable files of maxima.
   {
-    GetMacFiles_includingSubdirs maximaLispIterator (m_builtInLoadFiles);
+    GetMacFiles_includingSubdirs maximaLispIterator(m_builtInLoadFiles);
     wxString sharedir = m_configuration->MaximaShareDir();
     sharedir.Replace("\n", "");
     sharedir.Replace("\r", "");
-    if(sharedir.IsEmpty())
-      wxLogMessage(_("Seems like the package with the maxima share files isn't installed."));
-    else
-    {
+    if (sharedir.IsEmpty())
+      wxLogMessage(_("Seems like the package with the maxima share files isn't "
+                     "installed."));
+    else {
       wxFileName shareDir(sharedir + "/");
       shareDir.MakeAbsolute();
-      wxLogMessage(
-        wxString::Format(
+      wxLogMessage(wxString::Format(
           _("Autocompletion: Scanning %s recursively for loadable lisp files."),
           shareDir.GetFullPath().utf8_str()));
       wxDir maximadir(shareDir.GetFullPath());
-      if(maximadir.IsOpened())
+      if (maximadir.IsOpened())
         maximadir.Traverse(maximaLispIterator); // todo
     }
-    GetMacFiles userLispIterator (m_builtInLoadFiles);
+    GetMacFiles userLispIterator(m_builtInLoadFiles);
     wxFileName userDir(Dirstructure::Get()->UserConfDir() + "/");
     userDir.MakeAbsolute();
     wxDir maximauserfilesdir(userDir.GetFullPath());
-    wxLogMessage(
-      wxString::Format(
+    wxLogMessage(wxString::Format(
         _("Autocompletion: Scanning %s for loadable lisp files."),
         userDir.GetFullPath().utf8_str()));
-    if(maximauserfilesdir.IsOpened())
+    if (maximauserfilesdir.IsOpened())
       maximauserfilesdir.Traverse(userLispIterator);
     int num = m_builtInLoadFiles.GetCount();
-    wxLogMessage(
-      wxString::Format(
-        _("Found %i loadable files."),
-        num
-        )
-      );
+    wxLogMessage(wxString::Format(_("Found %i loadable files."), num));
   }
-  
 
   // Prepare a list of all built-in demos of maxima.
   {
     wxFileName demoDir(m_configuration->MaximaShareDir() + "/");
     demoDir.MakeAbsolute();
     demoDir.RemoveLastDir();
-    GetDemoFiles_includingSubdirs maximaLispIterator (m_builtInDemoFiles);
-    wxLogMessage(
-      wxString::Format(
+    GetDemoFiles_includingSubdirs maximaLispIterator(m_builtInDemoFiles);
+    wxLogMessage(wxString::Format(
         _("Autocompletion: Scanning %s for loadable demo files."),
         demoDir.GetFullPath().utf8_str()));
 
     wxDir maximadir(demoDir.GetFullPath());
-    if(maximadir.IsOpened())
+    if (maximadir.IsOpened())
       maximadir.Traverse(maximaLispIterator);
     int num = m_builtInDemoFiles.GetCount();
-    wxLogMessage(
-      wxString::Format(
-        _("Found %i demo files."),
-        num
-        )
-      );
+    wxLogMessage(wxString::Format(_("Found %i demo files."), num));
   }
   m_builtInLoadFiles.Sort();
   m_builtInDemoFiles.Sort();
 }
 
-
-void AutoComplete::UpdateDemoFiles(wxString partial, wxString maximaDir)
-{
+void AutoComplete::UpdateDemoFiles(wxString partial, wxString maximaDir) {
   WaitForBackgroundThread_Files();
   // Remove the opening quote from the partial.
-  if(partial[0] == wxT('\"'))
-    partial = partial.Right(partial.Length()-1);
-  
+  if (partial[0] == wxT('\"'))
+    partial = partial.Right(partial.Length() - 1);
+
   partial.Replace(wxFileName::GetPathSeparator(), "/");
   int pos;
   if ((pos = partial.Find(wxT('/'), true)) == wxNOT_FOUND)
@@ -352,38 +300,36 @@ void AutoComplete::UpdateDemoFiles(wxString partial, wxString maximaDir)
   else
     partial = partial.Left(pos);
   wxString prefix = partial + wxT("/");
-  
-  // Determine if we need to add the path to maxima's current dir to the path in partial
-  if(!wxFileName(partial).IsAbsolute())
-  {
+
+  // Determine if we need to add the path to maxima's current dir to the path in
+  // partial
+  if (!wxFileName(partial).IsAbsolute()) {
     partial = maximaDir + wxFileName::GetPathSeparator() + partial;
     partial.Replace(wxFileName::GetPathSeparator(), "/");
   }
-  
+
   // Determine the name of the directory
-  if((partial != wxEmptyString) && wxDirExists(partial))
+  if ((partial != wxEmptyString) && wxDirExists(partial))
     partial += "/";
 
   // Remove all files from the maxima directory from the demo file list
   ClearDemofileList();
 
   // Add all files from the maxima directory to the demo file list
-  if(partial != wxT("//"))
-  {
+  if (partial != wxT("//")) {
     GetDemoFiles userLispIterator(m_wordList[demofile], prefix);
     wxDir demofilesdir(partial);
-    if(demofilesdir.IsOpened())
+    if (demofilesdir.IsOpened())
       demofilesdir.Traverse(userLispIterator);
   }
 }
 
-void AutoComplete::UpdateGeneralFiles(wxString partial, wxString maximaDir)
-{
+void AutoComplete::UpdateGeneralFiles(wxString partial, wxString maximaDir) {
   WaitForBackgroundThread_Files();
   // Remove the opening quote from the partial.
-  if(partial[0] == wxT('\"'))
-    partial = partial.Right(partial.Length()-1);
-  
+  if (partial[0] == wxT('\"'))
+    partial = partial.Right(partial.Length() - 1);
+
   partial.Replace(wxFileName::GetPathSeparator(), "/");
   int pos;
   if ((pos = partial.Find(wxT('/'), true)) == wxNOT_FOUND)
@@ -391,36 +337,35 @@ void AutoComplete::UpdateGeneralFiles(wxString partial, wxString maximaDir)
   else
     partial = partial.Left(pos);
   wxString prefix = partial + wxT("/");
-  
-  // Determine if we need to add the path to maxima's current dir to the path in partial
-  if(!wxFileName(partial).IsAbsolute())
-  {
+
+  // Determine if we need to add the path to maxima's current dir to the path in
+  // partial
+  if (!wxFileName(partial).IsAbsolute()) {
     partial = maximaDir + wxFileName::GetPathSeparator() + partial;
     partial.Replace(wxFileName::GetPathSeparator(), "/");
   }
-  
+
   // Determine the name of the directory
-  if((partial != wxEmptyString) && wxDirExists(partial))
+  if ((partial != wxEmptyString) && wxDirExists(partial))
     partial += "/";
-  
+
   // Add all files from the maxima directory to the demo file list
-  if(partial != wxT("//"))
-  {
+  if (partial != wxT("//")) {
     GetGeneralFiles fileIterator(m_wordList[generalfile], prefix);
     wxDir generalfilesdir(partial);
-    if(generalfilesdir.IsOpened())
+    if (generalfilesdir.IsOpened())
       generalfilesdir.Traverse(fileIterator);
   }
 }
 
-void AutoComplete::UpdateLoadFiles(wxString partial, wxString maximaDir)
-{
-  wxLogMessage(_("Scheduling a background task that scans for autocompletable file names."));
+void AutoComplete::UpdateLoadFiles(wxString partial, wxString maximaDir) {
+  wxLogMessage(_("Scheduling a background task that scans for autocompletable "
+                 "file names."));
   WaitForBackgroundThread_Files();
   // Remove the opening quote from the partial.
-  if(partial[0] == wxT('\"'))
-    partial = partial.Right(partial.Length()-1);
-  
+  if (partial[0] == wxT('\"'))
+    partial = partial.Right(partial.Length() - 1);
+
   partial.Replace(wxFileName::GetPathSeparator(), "/");
   int pos;
   if ((pos = partial.Find(wxT('/'), true)) == wxNOT_FOUND)
@@ -428,62 +373,54 @@ void AutoComplete::UpdateLoadFiles(wxString partial, wxString maximaDir)
   else
     partial = partial.Left(pos);
   wxString prefix = partial + wxT("/");
-  
-  // Determine if we need to add the path to maxima's current dir to the path in partial
-  if(!wxFileName(partial).IsAbsolute())
-  {
+
+  // Determine if we need to add the path to maxima's current dir to the path in
+  // partial
+  if (!wxFileName(partial).IsAbsolute()) {
     partial = maximaDir + wxFileName::GetPathSeparator() + partial;
     partial.Replace(wxFileName::GetPathSeparator(), "/");
   }
-  
+
   // Determine the name of the directory
-  if((partial != wxEmptyString) && wxDirExists(partial))
+  if ((partial != wxEmptyString) && wxDirExists(partial))
     partial += "/";
 
   // Remove all files from the maxima directory from the load file list
   m_wordList[loadfile] = m_builtInLoadFiles;
 
   // Add all files from the maxima directory to the load file list
-  if(partial != wxT("//"))
-  {
+  if (partial != wxT("//")) {
     GetMacFiles userLispIterator(m_wordList[loadfile], prefix);
     wxDir loadfilesdir(partial);
-    if(loadfilesdir.IsOpened())
+    if (loadfilesdir.IsOpened())
       loadfilesdir.Traverse(userLispIterator);
   }
 }
 
 /// Returns a string array with functions which start with partial.
-wxArrayString AutoComplete::CompleteSymbol(wxString partial, autoCompletionType type)
-{
+wxArrayString AutoComplete::CompleteSymbol(wxString partial,
+                                           autoCompletionType type) {
   wxArrayString completions;
   wxArrayString perfectCompletions;
 
   WaitForBackgroundThreads();
-  if(
-    ((type == AutoComplete::demofile) || (type == AutoComplete::loadfile)) &&
-    (partial.EndsWith("\""))
-    )
+  if (((type == AutoComplete::demofile) || (type == AutoComplete::loadfile)) &&
+      (partial.EndsWith("\"")))
     partial = partial.Left(partial.Length() - 1);
-  
-  wxASSERT_MSG((type >= command) && (type <= unit), _("Bug: Autocompletion requested for unknown type of item."));
-  
-  if (type != tmplte)
-  {
-    for (size_t i = 0; i < m_wordList[type].GetCount(); i++)
-    {
+
+  wxASSERT_MSG((type >= command) && (type <= unit),
+               _("Bug: Autocompletion requested for unknown type of item."));
+
+  if (type != tmplte) {
+    for (size_t i = 0; i < m_wordList[type].GetCount(); i++) {
       if (m_wordList[type][i].StartsWith(partial) &&
           completions.Index(m_wordList[type][i]) == wxNOT_FOUND)
         completions.Add(m_wordList[type][i]);
     }
-  }
-  else
-  {
-    for (size_t i = 0; i < m_wordList[type].GetCount(); i++)
-    {
+  } else {
+    for (size_t i = 0; i < m_wordList[type].GetCount(); i++) {
       wxString templ = m_wordList[type][i];
-      if (templ.StartsWith(partial))
-      {
+      if (templ.StartsWith(partial)) {
         if (completions.Index(templ) == wxNOT_FOUND)
           completions.Add(templ);
         if (templ.SubString(0, templ.Find(wxT("(")) - 1) == partial &&
@@ -495,15 +432,11 @@ wxArrayString AutoComplete::CompleteSymbol(wxString partial, autoCompletionType 
 
   // Add a list of words that were defined on the work sheet but that aren't
   // defined as maxima commands or functions.
-  if (type == command)
-  {
+  if (type == command) {
     WorksheetWords::const_iterator it;
-    for (it = m_worksheetWords.begin(); it != m_worksheetWords.end(); ++it)
-    {
-      if (it->first.StartsWith(partial))
-      {
-        if (completions.Index(it->first) == wxNOT_FOUND)
-        {
+    for (it = m_worksheetWords.begin(); it != m_worksheetWords.end(); ++it) {
+      if (it->first.StartsWith(partial)) {
+        if (completions.Index(it->first) == wxNOT_FOUND) {
           completions.Add(it->first);
         }
       }
@@ -516,45 +449,37 @@ wxArrayString AutoComplete::CompleteSymbol(wxString partial, autoCompletionType 
   return completions;
 }
 
-void AutoComplete::AddSymbol(wxString fun, autoCompletionType type)
-{
+void AutoComplete::AddSymbol(wxString fun, autoCompletionType type) {
   WaitForBackgroundThread_Symbols();
   AddSymbol_nowait(fun, type);
 }
 
-void AutoComplete::AddSymbol_nowait(wxString fun, autoCompletionType type)
-{
+void AutoComplete::AddSymbol_nowait(wxString fun, autoCompletionType type) {
   /// Check for function of template
-  if (fun.StartsWith(wxT("FUNCTION: ")))
-  {
+  if (fun.StartsWith(wxT("FUNCTION: "))) {
     fun = fun.Mid(10);
     type = command;
-  }
-  else if (fun.StartsWith(wxT("TEMPLATE: ")))
-  {
+  } else if (fun.StartsWith(wxT("TEMPLATE: "))) {
     fun = fun.Mid(10);
     type = tmplte;
-  }
-  else if (fun.StartsWith(wxT("UNIT: ")))
-  {
+  } else if (fun.StartsWith(wxT("UNIT: "))) {
     fun = fun.Mid(6);
     type = unit;
   }
 
   /// Add symbols
-  if ((type != tmplte) && m_wordList[type].Index(fun, true, true) == wxNOT_FOUND)
+  if ((type != tmplte) &&
+      m_wordList[type].Index(fun, true, true) == wxNOT_FOUND)
     m_wordList[type].Add(fun);
 
   /// Add templates - for given function and given argument count we
   /// only add one template. We count the arguments by counting '<'
-  if (type == tmplte)
-  {
+  if (type == tmplte) {
     fun = FixTemplate(fun);
     wxString funName = fun.SubString(0, fun.Find(wxT("(")));
     long count = fun.Freq('<');
     size_t i = 0;
-    for (i = 0; i < m_wordList[type].GetCount(); i++)
-    {
+    for (i = 0; i < m_wordList[type].GetCount(); i++) {
       wxString t = m_wordList[type][i];
       if (t.StartsWith(funName) && (t.Freq('<') == count))
         break;
@@ -564,9 +489,7 @@ void AutoComplete::AddSymbol_nowait(wxString fun, autoCompletionType type)
   }
 }
 
-
-wxString AutoComplete::FixTemplate(wxString templ)
-{
+wxString AutoComplete::FixTemplate(wxString templ) {
   templ.Replace(wxT(" "), wxEmptyString);
   templ.Replace(wxT(",..."), wxEmptyString);
 

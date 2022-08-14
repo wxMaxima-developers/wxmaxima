@@ -1,4 +1,5 @@
-// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode:
+// nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2014-2018 Gunter Königsmann <wxMaxima@physikbuch.de>
@@ -31,10 +32,9 @@
 
 #define SIGN_FONT_SCALE 2.0
 
-SqrtCell::SqrtCell(GroupCell *group, Configuration *config, std::unique_ptr<Cell> &&inner) :
-    Cell(group, config),
-    m_innerCell(std::move(inner))
-{
+SqrtCell::SqrtCell(GroupCell *group, Configuration *config,
+                   std::unique_ptr<Cell> &&inner)
+    : Cell(group, config), m_innerCell(std::move(inner)) {
   InitBitFields();
   SetStyle(TS_VARIABLE);
 }
@@ -46,68 +46,57 @@ SqrtCell::SqrtCell(GroupCell *group, Configuration *config, std::unique_ptr<Cell
 // cppcheck-suppress uninitMemberVar symbolName=SqrtCell::m_signTop
 // cppcheck-suppress uninitMemberVar symbolName=SqrtCell::m_signType
 // cppcheck-suppress uninitMemberVar symbolName=SqrtCell::m_signFontScale
-SqrtCell::SqrtCell(GroupCell *group, const SqrtCell &cell):
-    SqrtCell(group, cell.m_configuration, CopyList(group, cell.m_innerCell.get()))
-{
+SqrtCell::SqrtCell(GroupCell *group, const SqrtCell &cell)
+    : SqrtCell(group, cell.m_configuration,
+               CopyList(group, cell.m_innerCell.get())) {
   CopyCommonData(cell);
 }
 
 DEFINE_CELL(SqrtCell)
 
-void SqrtCell::MakeBreakUpCells()
-{
-  if (m_open) return;
+void SqrtCell::MakeBreakUpCells() {
+  if (m_open)
+    return;
   m_open = std::make_unique<TextCell>(m_group, m_configuration, "sqrt(");
   m_open->SetStyle(TS_FUNCTION);
-  static_cast<TextCell&>(*m_open).DontEscapeOpeningParenthesis();
+  static_cast<TextCell &>(*m_open).DontEscapeOpeningParenthesis();
   m_close = std::make_unique<TextCell>(m_group, m_configuration, ")");
 }
 
-void SqrtCell::Recalculate(AFontSize fontsize)
-{
+void SqrtCell::Recalculate(AFontSize fontsize) {
   m_innerCell->RecalculateList(fontsize);
 
-  if (m_configuration->CheckTeXFonts())
-  {
+  if (m_configuration->CheckTeXFonts()) {
     wxDC *dc = m_configuration->GetDC();
 
     m_signFontScale = 1.0;
-    auto fontsize1 = AFontSize(Scale_Px(SIGN_FONT_SCALE * fontsize * m_signFontScale));
+    auto fontsize1 =
+        AFontSize(Scale_Px(SIGN_FONT_SCALE * fontsize * m_signFontScale));
     wxASSERT(fontsize1.IsValid());
 
-    auto style = Style(fontsize1)
-                   .FontName(m_configuration->GetTeXCMEX());
+    auto style = Style(fontsize1).FontName(m_configuration->GetTeXCMEX());
 
     dc->SetFont(style.GetFont());
     dc->GetTextExtent(wxT("s"), &m_signWidth, &m_signSize);
     m_signTop = m_signSize / 5;
     // The Scale_Px(2) leaves space for the serif at the root.
     m_width = m_innerCell->GetFullWidth() + m_signWidth + Scale_Px(2);
-    
+
     int size = m_innerCell->GetHeightList();
 
-    if (size <= (m_signSize) / 5)
-    {
+    if (size <= (m_signSize) / 5) {
       m_signType = 1;
       m_signFontScale = (5.0 * size) / (1.5 * m_signSize);
-    }
-    else if (size <= (2 * m_signSize) / 5)
-    {
+    } else if (size <= (2 * m_signSize) / 5) {
       m_signType = 2;
       m_signFontScale = (5.0 * size) / (2.2 * m_signSize);
-    }
-    else if (size <= (3 * m_signSize) / 5)
-    {
+    } else if (size <= (3 * m_signSize) / 5) {
       m_signType = 3;
       m_signFontScale = (5.0 * size) / (3.0 * m_signSize);
-    }
-    else if (size <= (4 * m_signSize) / 5)
-    {
+    } else if (size <= (4 * m_signSize) / 5) {
       m_signType = 4;
       m_signFontScale = (5.0 * size) / (3.8 * m_signSize);
-    }
-    else
-    {
+    } else {
       m_signType = 5;
       m_signFontScale = 1.0;
     }
@@ -115,25 +104,20 @@ void SqrtCell::Recalculate(AFontSize fontsize)
     fontsize1.Set(Scale_Px(SIGN_FONT_SCALE * fontsize * m_signFontScale));
     wxASSERT(fontsize1.IsValid());
 
-    style = Style(fontsize1)
-              .FontName(m_configuration->GetTeXCMEX());
+    style = Style(fontsize1).FontName(m_configuration->GetTeXCMEX());
 
     dc->SetFont(style.GetFont());
     dc->GetTextExtent(wxT("s"), &m_signWidth, &m_signSize);
     m_signTop = m_signSize / 5;
     m_width = m_innerCell->GetFullWidth() + m_signWidth;
-  }
-  else
+  } else
     m_width = m_innerCell->GetFullWidth() + Scale_Px(13) + 1;
-  if (!IsBrokenIntoLines())
-  {
+  if (!IsBrokenIntoLines()) {
     auto openHeight = 0; // m_open->GetHeightList();
     auto openCenter = 0; // m_open->GetCenterList();
     m_height = wxMax(m_innerCell->GetHeightList(), openHeight) + Scale_Px(3);
     m_center = wxMax(m_innerCell->GetCenterList(), openCenter) + Scale_Px(3);
-  }
-  else
-  {
+  } else {
     m_height = m_center = m_width = 0;
     m_open->Recalculate(fontsize);
     m_close->Recalculate(fontsize);
@@ -141,94 +125,78 @@ void SqrtCell::Recalculate(AFontSize fontsize)
   Cell::Recalculate(fontsize);
 }
 
-void SqrtCell::Draw(wxPoint point)
-{
+void SqrtCell::Draw(wxPoint point) {
   Cell::Draw(point);
-  if (DrawThisCell(point))
-  {
+  if (DrawThisCell(point)) {
     wxDC *dc = m_configuration->GetDC();
 
     wxPoint in(point);
 
-    if (m_configuration->CheckTeXFonts())
-    {
+    if (m_configuration->CheckTeXFonts()) {
       SetPen();
 
       in.x += m_signWidth;
 
-      auto fontsize1 = AFontSize(SIGN_FONT_SCALE * m_fontSize_Scaled * m_signFontScale);
+      auto fontsize1 =
+          AFontSize(SIGN_FONT_SCALE * m_fontSize_Scaled * m_signFontScale);
       wxASSERT(fontsize1.IsValid());
 
-      auto style = Style(fontsize1)
-                     .FontName(m_configuration->GetTeXCMEX());
+      auto style = Style(fontsize1).FontName(m_configuration->GetTeXCMEX());
 
       dc->SetFont(style.GetFont());
       SetForeground();
-      if (m_signType < 4)
-      {
-        dc->DrawText(
-                m_signType == 1 ? wxT("p") :
-                m_signType == 2 ? wxT("q") :
-                m_signType == 3 ? wxT("r") : wxT("s"),
-                point.x,
-                point.y - m_innerCell->GetCenterList() - m_signTop);
-      }
-      else
-      {
+      if (m_signType < 4) {
+        dc->DrawText(m_signType == 1   ? wxT("p")
+                     : m_signType == 2 ? wxT("q")
+                     : m_signType == 3 ? wxT("r")
+                                       : wxT("s"),
+                     point.x,
+                     point.y - m_innerCell->GetCenterList() - m_signTop);
+      } else {
         int yBottom = point.y + m_innerCell->GetMaxDrop() - 3.2 * m_signTop;
         int yTop = point.y - m_innerCell->GetCenterList() - m_signTop;
         int dy = m_signSize / 10;
-        wxASSERT_MSG((yTop != 0) || (yBottom != 0), _("Font issue? The contents of a sqrt() has the size 0."));
-        wxASSERT_MSG(dy > 0,
-                     _("Font issue: The sqrt() sign has the size 0!"));
+        wxASSERT_MSG((yTop != 0) || (yBottom != 0),
+                     _("Font issue? The contents of a sqrt() has the size 0."));
+        wxASSERT_MSG(dy > 0, _("Font issue: The sqrt() sign has the size 0!"));
         if (dy <= 0)
           dy = 1;
-        dc->DrawText(wxT("t"),
-                    point.x,
-                    yBottom);
-        dc->DrawText(wxT("v"),
-                    point.x,
-                    yTop);
-        while (yTop < yBottom)
-        {
+        dc->DrawText(wxT("t"), point.x, yBottom);
+        dc->DrawText(wxT("v"), point.x, yTop);
+        while (yTop < yBottom) {
           yTop += dy;
-          dc->DrawText(wxT("u"),
-                      point.x,
-                      yTop);
+          dc->DrawText(wxT("u"), point.x, yTop);
         }
       }
 
       wxDC *adc = m_configuration->GetAntialiassingDC();
       adc->DrawLine(point.x + m_signWidth,
-                  point.y - m_innerCell->GetCenterList(),
-                  point.x + m_signWidth + m_innerCell->GetFullWidth(),
-                  point.y - m_innerCell->GetCenterList());
+                    point.y - m_innerCell->GetCenterList(),
+                    point.x + m_signWidth + m_innerCell->GetFullWidth(),
+                    point.y - m_innerCell->GetCenterList());
 
-    }
-    else
-    {
+    } else {
       wxDC *adc = m_configuration->GetAntialiassingDC();
       in.x += Scale_Px(11) + 1;
       SetPen(1.2);
 
       const wxPoint points[12] = {
-        {0, 0},
-        {Scale_Px(3),           -Scale_Px(1)},
-        //  A wider line
-        {Scale_Px(3),           -Scale_Px(1)},
-        {Scale_Px(7),            m_height - m_center - Scale_Px(4)},
-        {Scale_Px(7.5),          m_height - m_center - Scale_Px(4)},
-        {Scale_Px(3.5),         -Scale_Px(1)},
-        {Scale_Px(3.5),         -Scale_Px(1)},
-        {Scale_Px(3),           -Scale_Px(1)},
-        {Scale_Px(8),            m_height - m_center - Scale_Px(4)},
-        // The upwards line
-        {Scale_Px(10),          -m_center + Scale_Px(2)},
-        // The horizontal line
-        {m_width - Scale_Px(1), -m_center + Scale_Px(2)},
-        // The serif at the end of the root
-        {m_width - Scale_Px(1), -m_center + Scale_Px(6)}
-      };
+          {0, 0},
+          {Scale_Px(3), -Scale_Px(1)},
+          //  A wider line
+          {Scale_Px(3), -Scale_Px(1)},
+          {Scale_Px(7), m_height - m_center - Scale_Px(4)},
+          {Scale_Px(7.5), m_height - m_center - Scale_Px(4)},
+          {Scale_Px(3.5), -Scale_Px(1)},
+          {Scale_Px(3.5), -Scale_Px(1)},
+          {Scale_Px(3), -Scale_Px(1)},
+          {Scale_Px(8), m_height - m_center - Scale_Px(4)},
+          // The upwards line
+          {Scale_Px(10), -m_center + Scale_Px(2)},
+          // The horizontal line
+          {m_width - Scale_Px(1), -m_center + Scale_Px(2)},
+          // The serif at the end of the root
+          {m_width - Scale_Px(1), -m_center + Scale_Px(6)}};
       adc->DrawLines(12, points, point.x, point.y);
     }
 
@@ -236,45 +204,39 @@ void SqrtCell::Draw(wxPoint point)
   }
 }
 
-wxString SqrtCell::ToString() const
-{
+wxString SqrtCell::ToString() const {
   if (IsBrokenIntoLines())
     return wxEmptyString;
   else
     return wxT("sqrt(") + m_innerCell->ListToString() + wxT(")");
 }
 
-wxString SqrtCell::ToMatlab() const
-{
+wxString SqrtCell::ToMatlab() const {
   if (IsBrokenIntoLines())
-	return wxEmptyString;
+    return wxEmptyString;
   else
-	return wxT("sqrt(") + m_innerCell->ListToMatlab() + wxT(")");
+    return wxT("sqrt(") + m_innerCell->ListToMatlab() + wxT(")");
 }
 
-wxString SqrtCell::ToTeX() const
-{
+wxString SqrtCell::ToTeX() const {
   if (IsBrokenIntoLines())
     return wxEmptyString;
   else
     return wxT("\\sqrt{") + m_innerCell->ListToTeX() + wxT("}");
 }
 
-wxString SqrtCell::ToMathML() const
-{
+wxString SqrtCell::ToMathML() const {
   return wxT("<msqrt>") + m_innerCell->ListToMathML() + wxT("</msqrt>\n");
 }
 
-wxString SqrtCell::ToOMML() const
-{
-  return wxT("<m:rad><m:radPr m:degHide=\"1\"></m:radPr><m:deg></m:deg><m:e>") + m_innerCell->ListToOMML() +
-         wxT("</m:e></m:rad>\n");
+wxString SqrtCell::ToOMML() const {
+  return wxT("<m:rad><m:radPr m:degHide=\"1\"></m:radPr><m:deg></m:deg><m:e>") +
+         m_innerCell->ListToOMML() + wxT("</m:e></m:rad>\n");
 }
 
-wxString SqrtCell::ToXML() const
-{
-//  if (IsBrokenIntoLines())
-//    return wxEmptyString;
+wxString SqrtCell::ToXML() const {
+  //  if (IsBrokenIntoLines())
+  //    return wxEmptyString;
   wxString flags;
   if (HasHardLineBreak())
     flags += wxT(" breakline=\"true\"");
@@ -282,8 +244,7 @@ wxString SqrtCell::ToXML() const
   return wxT("<q") + flags + wxT(">") + m_innerCell->ListToXML() + wxT("</q>");
 }
 
-bool SqrtCell::BreakUp()
-{
+bool SqrtCell::BreakUp() {
   if (IsBrokenIntoLines())
     return false;
 
@@ -300,9 +261,8 @@ bool SqrtCell::BreakUp()
   return true;
 }
 
-void SqrtCell::SetNextToDraw(Cell *next)
-{
-  if(IsBrokenIntoLines())
+void SqrtCell::SetNextToDraw(Cell *next) {
+  if (IsBrokenIntoLines())
     m_close->SetNextToDraw(next);
   else
     m_nextToDraw = next;

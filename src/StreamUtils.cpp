@@ -1,4 +1,5 @@
-// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode:
+// nil -*-
 //
 //  Copyright (C) 2020 Kuba Ober <kuba@mareimbrium.org>
 //
@@ -58,10 +59,8 @@
 using utf8 = ww898::utf::utf8;
 using utfwx = ww898::utf::utf_selector_t<wxStringCharType>;
 
-UTF8Decoder::DecodeResult UTF8Decoder::State::Decode(wxInputStream &in,
-                                                     size_t maxRead,
-                                                     size_t maxWrite)
-{
+UTF8Decoder::DecodeResult
+UTF8Decoder::State::Decode(wxInputStream &in, size_t maxRead, size_t maxWrite) {
   if (!maxRead || !maxWrite)
     return {};
 
@@ -69,8 +68,7 @@ UTF8Decoder::DecodeResult UTF8Decoder::State::Decode(wxInputStream &in,
   if (m_inBuf.size() < maxRead)
     m_inBuf.resize(maxRead);
 
-  if (maxRead > m_inBufCount)
-  {
+  if (maxRead > m_inBufCount) {
     in.Read(m_inBuf.data() + m_inBufCount, maxRead - m_inBufCount);
     m_inBufCount += in.LastRead();
   }
@@ -84,12 +82,14 @@ UTF8Decoder::DecodeResult UTF8Decoder::State::Decode(wxInputStream &in,
   auto *outPtr = m_outBuf.data();
 
   size_t const inLengthBeforeCheckpoint =
-    (m_inBufCount >= utf8::max_supported_symbol_size) ?
-    m_inBufCount - (utf8::max_supported_symbol_size - 1): 0;
+      (m_inBufCount >= utf8::max_supported_symbol_size)
+          ? m_inBufCount - (utf8::max_supported_symbol_size - 1)
+          : 0;
 
   size_t const outLengthBeforeCheckpoint =
-    (maxWrite >= utfwx::max_supported_symbol_size) ?
-    maxWrite - (utfwx::max_supported_symbol_size - 1): 0;
+      (maxWrite >= utfwx::max_supported_symbol_size)
+          ? maxWrite - (utfwx::max_supported_symbol_size - 1)
+          : 0;
 
   auto const *const inCheckpoint = inPtr + inLengthBeforeCheckpoint;
   auto const *const inEnd = inPtr + m_inBufCount;
@@ -102,12 +102,12 @@ UTF8Decoder::DecodeResult UTF8Decoder::State::Decode(wxInputStream &in,
     if (inPtr >= inCheckpoint) {
       if (inPtr == inEnd)
         break;
-      auto const size = utf8::char_size([=]{ return *inPtr; });
+      auto const size = utf8::char_size([=] { return *inPtr; });
       if (ptrdiff_t(size) > (inEnd - inPtr))
         break;
     }
     auto const *const prevInPtr = inPtr;
-    auto const cp = utf8::read([&]{ return *inPtr++; });
+    auto const cp = utf8::read([&] { return *inPtr++; });
     if (cp == utf8::invalid_code_point) {
       hadError = true;
       continue;
@@ -115,13 +115,13 @@ UTF8Decoder::DecodeResult UTF8Decoder::State::Decode(wxInputStream &in,
 
     // Encode based on wxStringCharType
     if (outPtr >= outCheckpoint) {
-      auto const size = utfwx::char_size([=]{ return cp; });
+      auto const size = utfwx::char_size([=] { return cp; });
       if (ptrdiff_t(size) > (outEnd - outPtr)) { // we've ran out of write space
         inPtr = prevInPtr; // un-read the input data so we won't lose it
         break;
       }
     }
-    utfwx::write(cp, [&](auto ch){ *outPtr++ = ch; });
+    utfwx::write(cp, [&](auto ch) { *outPtr++ = ch; });
   }
 
   auto const outBufCount = outPtr - m_outBuf.data();

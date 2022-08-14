@@ -1,4 +1,5 @@
-// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode:
+// nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //                2011-2011 cw.ahbong <cw.ahbong@gmail.com>
@@ -24,26 +25,25 @@
 
 PlotFormatWiz::PlotFormatWiz(wxWindow *parent, int id,
                              Configuration *WXUNUSED(cfg),
-                             const wxString &title,
-                             const wxPoint &pos, const wxSize &size, long style) :
-        wxDialog(parent, id, title, pos, size, style)
-{
+                             const wxString &title, const wxPoint &pos,
+                             const wxSize &size, long style)
+    : wxDialog(parent, id, title, pos, size, style) {
   label_1 = new wxStaticText(this, -1, _("Choose new plot format:"));
-  const wxString combo_box_1_choices[] =
-          {
-                  wxT("gnuplot"),
+  const wxString combo_box_1_choices[] = {
+    wxT("gnuplot"),
 #if !defined(__WXMSW__)
-                  /* gnuplot_pipes is not available on Windows, geomview requires Motif, which is not available on Windows */
-                  wxT("gnuplot_pipes"),
-                  wxT("geomview"),
+    /* gnuplot_pipes is not available on Windows, geomview requires Motif, which
+       is not available on Windows */
+    wxT("gnuplot_pipes"),
+    wxT("geomview"),
 #endif
-                  wxT("xmaxima"),
-                  wxT("mgnuplot")
-          };
-  combo_box_1 = new wxComboBox(this, -1, combo_box_1_choices[0], wxDefaultPosition,
-                               wxSize(140, -1), sizeof(combo_box_1_choices) / sizeof(combo_box_1_choices[0]),
-                               combo_box_1_choices,
-                               wxCB_DROPDOWN);
+    wxT("xmaxima"),
+    wxT("mgnuplot")
+  };
+  combo_box_1 = new wxComboBox(
+      this, -1, combo_box_1_choices[0], wxDefaultPosition, wxSize(140, -1),
+      sizeof(combo_box_1_choices) / sizeof(combo_box_1_choices[0]),
+      combo_box_1_choices, wxCB_DROPDOWN);
   static_line_1 = new wxStaticLine(this, -1);
 #if defined __WXMSW__
   button_1 = new wxButton(this, wxID_OK, _("OK"));
@@ -57,9 +57,7 @@ PlotFormatWiz::PlotFormatWiz(wxWindow *parent, int id,
   do_layout();
 }
 
-
-void PlotFormatWiz::set_properties()
-{
+void PlotFormatWiz::set_properties() {
 #if defined __WXMSW__
   button_1->SetDefault();
 #else
@@ -67,9 +65,7 @@ void PlotFormatWiz::set_properties()
 #endif
 }
 
-
-void PlotFormatWiz::do_layout()
-{
+void PlotFormatWiz::do_layout() {
   wxFlexGridSizer *grid_sizer_1 = new wxFlexGridSizer(4, 1, 0, 0);
   wxBoxSizer *sizer_1 = new wxBoxSizer(wxHORIZONTAL);
   grid_sizer_1->Add(label_1, 0, wxALIGN_CENTER | wxALL, 5);
@@ -85,12 +81,10 @@ void PlotFormatWiz::do_layout()
   Layout();
 }
 
-wxString PlotFormatWiz::GetValue()
-{
+wxString PlotFormatWiz::GetValue() {
   wxString s;
   s = wxT("set_plot_option(['plot_format, '");
   s += combo_box_1->GetValue();
   s += wxT("])$");
   return s;
 }
-

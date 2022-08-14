@@ -1,4 +1,5 @@
-// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode:
+// nil -*-
 //
 //  Copyright (C) 2019      Gunter Königsmann <wxMaxima@physikbuch.de>
 //
@@ -20,17 +21,15 @@
 //  SPDX-License-Identifier: GPL-2.0+
 
 /*! \file
-  This file contains the logic needed in order to build a (hopefully) flicker-free main menu bar.
+  This file contains the logic needed in order to build a (hopefully)
+  flicker-free main menu bar.
  */
 
 #include "MainMenuBar.h"
 
-MainMenuBar::MainMenuBar() : wxMenuBar()
-{
-}
+MainMenuBar::MainMenuBar() : wxMenuBar() {}
 
-void MainMenuBar::EnableItem(int id, bool enable)
-{
-  if(IsEnabled(id) != enable)
-    wxMenuBar::Enable(id,enable);
+void MainMenuBar::EnableItem(int id, bool enable) {
+  if (IsEnabled(id) != enable)
+    wxMenuBar::Enable(id, enable);
 }

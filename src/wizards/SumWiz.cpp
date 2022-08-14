@@ -1,4 +1,5 @@
-// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode:
+// nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //
@@ -21,10 +22,10 @@
 
 #include "SumWiz.h"
 
-SumWiz::SumWiz(wxWindow *parent, int id, Configuration *cfg, const wxString &title,
-               const wxPoint &pos, const wxSize &size, long style) :
-        wxDialog(parent, id, title, pos, size, style)
-{
+SumWiz::SumWiz(wxWindow *parent, int id, Configuration *cfg,
+               const wxString &title, const wxPoint &pos, const wxSize &size,
+               long style)
+    : wxDialog(parent, id, title, pos, size, style) {
   Connect(use_nusum_id, wxEVT_CHECKBOX,
           wxCommandEventHandler(SumWiz::OnCheckbox), NULL, this);
 
@@ -56,9 +57,7 @@ SumWiz::SumWiz(wxWindow *parent, int id, Configuration *cfg, const wxString &tit
   do_layout();
 }
 
-
-void SumWiz::set_properties()
-{
+void SumWiz::set_properties() {
   SetTitle(_("Sum"));
   checkbox_1->SetValue(true);
 #if defined __WXMSW__
@@ -73,20 +72,22 @@ void SumWiz::set_properties()
   text_ctrl_1->SetFocus();
 }
 
-
-void SumWiz::do_layout()
-{
+void SumWiz::do_layout() {
   wxFlexGridSizer *grid_sizer_1 = new wxFlexGridSizer(4, 1, 0, 0);
   wxBoxSizer *sizer_1 = new wxBoxSizer(wxHORIZONTAL);
   wxBoxSizer *sizer_2 = new wxBoxSizer(wxHORIZONTAL);
   wxFlexGridSizer *grid_sizer_2 = new wxFlexGridSizer(6, 2, 0, 0);
-  grid_sizer_2->Add(label_2, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
+  grid_sizer_2->Add(label_2, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL,
+                    5);
   grid_sizer_2->Add(text_ctrl_1, 0, wxALL, 5);
-  grid_sizer_2->Add(label_3, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
+  grid_sizer_2->Add(label_3, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL,
+                    5);
   grid_sizer_2->Add(text_ctrl_2, 0, wxALL, 5);
-  grid_sizer_2->Add(label_4, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
+  grid_sizer_2->Add(label_4, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL,
+                    5);
   grid_sizer_2->Add(text_ctrl_3, 0, wxALL, 5);
-  grid_sizer_2->Add(label_5, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
+  grid_sizer_2->Add(label_5, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL,
+                    5);
   grid_sizer_2->Add(text_ctrl_4, 0, wxALL, 5);
   sizer_2->Add(checkbox_1, 0, wxALL, 5);
   sizer_2->Add(checkbox_2, 0, wxALL, 5);
@@ -104,8 +105,7 @@ void SumWiz::do_layout()
   Layout();
 }
 
-wxString SumWiz::GetValue()
-{
+wxString SumWiz::GetValue() {
   wxString s;
   if (checkbox_2->IsChecked())
     s = wxT("nusum(");
@@ -127,7 +127,6 @@ wxString SumWiz::GetValue()
   return s;
 }
 
-void SumWiz::OnCheckbox(wxCommandEvent& WXUNUSED(event))
-{
+void SumWiz::OnCheckbox(wxCommandEvent &WXUNUSED(event)) {
   checkbox_1->Enable(!checkbox_2->GetValue());
 }

@@ -1,4 +1,5 @@
-// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode:
+// nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //  Copyright (C) 2017-2018 Gunter Königsmann <wxMaxima@physikbuch.de>
@@ -25,67 +26,54 @@
 #include <wx/msgdlg.h>
 #include <wx/notebook.h>
 
-GenWizPanel::GenWizPanel(wxWindow *parent, Configuration *cfg, MaximaManual *manual,
-                         const wxString &description, const wxString &description_tooltip,
-                         const wxString &commandRule,
-                         wxString label1, wxString defaultval1, wxString tooltip1,
-                         wxString label2, wxString defaultval2, wxString tooltip2,
-                         wxString label3, wxString defaultval3, wxString tooltip3,
-                         wxString label4, wxString defaultval4, wxString tooltip4,
-                         wxString label5, wxString defaultval5, wxString tooltip5,
-                         wxString label6, wxString defaultval6, wxString tooltip6,
-                         wxString label7, wxString defaultval7, wxString tooltip7,
-                         wxString label8, wxString defaultval8, wxString tooltip8,
-                         wxString label9, wxString defaultval9, wxString tooltip9) :
-  GenWizPanel(parent, cfg, manual,
-              description, description_tooltip,
-              commandRule, false,
-              label1, defaultval1, tooltip1,
-              label2, defaultval2, tooltip2,
-              label3, defaultval3, tooltip3,
-              label4, defaultval4, tooltip4,
-              label5, defaultval5, tooltip5,
-              label6, defaultval6, tooltip6,
-              label7, defaultval7, tooltip7,
-              label8, defaultval8, tooltip8,
-              label9, defaultval9, tooltip9)
-{}
-  
-GenWizPanel::GenWizPanel(wxWindow *parent, Configuration *cfg, MaximaManual *manual,
-                         const wxString &description, const wxString &description_tooltip,
-                         const wxString &commandRule, bool dockable,
-                         wxString label1, wxString defaultval1, wxString tooltip1,
-                         wxString label2, wxString defaultval2, wxString tooltip2,
-                         wxString label3, wxString defaultval3, wxString tooltip3,
-                         wxString label4, wxString defaultval4, wxString tooltip4,
-                         wxString label5, wxString defaultval5, wxString tooltip5,
-                         wxString label6, wxString defaultval6, wxString tooltip6,
-                         wxString label7, wxString defaultval7, wxString tooltip7,
-                         wxString label8, wxString defaultval8, wxString tooltip8,
-                         wxString label9, wxString defaultval9, wxString tooltip9) :
-  wxPanel(parent, wxID_ANY),
-  m_commandRule(commandRule),
-  m_description(description),
-  m_descriptionToolTip(description_tooltip),
-  m_configuration(cfg),
-  m_maximaManual(manual)
-{
-  wxBoxSizer *vbox =
-    new wxBoxSizer(wxVERTICAL);
-  for(int i= 0; i< 9; i++)
- {
+GenWizPanel::GenWizPanel(
+    wxWindow *parent, Configuration *cfg, MaximaManual *manual,
+    const wxString &description, const wxString &description_tooltip,
+    const wxString &commandRule, wxString label1, wxString defaultval1,
+    wxString tooltip1, wxString label2, wxString defaultval2, wxString tooltip2,
+    wxString label3, wxString defaultval3, wxString tooltip3, wxString label4,
+    wxString defaultval4, wxString tooltip4, wxString label5,
+    wxString defaultval5, wxString tooltip5, wxString label6,
+    wxString defaultval6, wxString tooltip6, wxString label7,
+    wxString defaultval7, wxString tooltip7, wxString label8,
+    wxString defaultval8, wxString tooltip8, wxString label9,
+    wxString defaultval9, wxString tooltip9)
+    : GenWizPanel(parent, cfg, manual, description, description_tooltip,
+                  commandRule, false, label1, defaultval1, tooltip1, label2,
+                  defaultval2, tooltip2, label3, defaultval3, tooltip3, label4,
+                  defaultval4, tooltip4, label5, defaultval5, tooltip5, label6,
+                  defaultval6, tooltip6, label7, defaultval7, tooltip7, label8,
+                  defaultval8, tooltip8, label9, defaultval9, tooltip9) {}
+
+GenWizPanel::GenWizPanel(
+    wxWindow *parent, Configuration *cfg, MaximaManual *manual,
+    const wxString &description, const wxString &description_tooltip,
+    const wxString &commandRule, bool dockable, wxString label1,
+    wxString defaultval1, wxString tooltip1, wxString label2,
+    wxString defaultval2, wxString tooltip2, wxString label3,
+    wxString defaultval3, wxString tooltip3, wxString label4,
+    wxString defaultval4, wxString tooltip4, wxString label5,
+    wxString defaultval5, wxString tooltip5, wxString label6,
+    wxString defaultval6, wxString tooltip6, wxString label7,
+    wxString defaultval7, wxString tooltip7, wxString label8,
+    wxString defaultval8, wxString tooltip8, wxString label9,
+    wxString defaultval9, wxString tooltip9)
+    : wxPanel(parent, wxID_ANY), m_commandRule(commandRule),
+      m_description(description), m_descriptionToolTip(description_tooltip),
+      m_configuration(cfg), m_maximaManual(manual) {
+  wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
+  for (int i = 0; i < 9; i++) {
     m_label.push_back(new wxStaticText(this, -1, wxEmptyString));
-    m_textctrl.push_back(new BTextCtrl(this, -1, cfg, wxEmptyString, wxDefaultPosition,
-                                       wxSize(50*GetContentScaleFactor(), -1), wxTE_PROCESS_ENTER));
+    m_textctrl.push_back(new BTextCtrl(
+        this, -1, cfg, wxEmptyString, wxDefaultPosition,
+        wxSize(50 * GetContentScaleFactor(), -1), wxTE_PROCESS_ENTER));
   }
-    
+
   m_textctrl[0]->SetFocus();
-  wxFlexGridSizer *grid_sizer =
-    new wxFlexGridSizer(2,
-                        wxSize(5*GetContentScaleFactor(), 5*GetContentScaleFactor()));
+  wxFlexGridSizer *grid_sizer = new wxFlexGridSizer(
+      2, wxSize(5 * GetContentScaleFactor(), 5 * GetContentScaleFactor()));
   grid_sizer->AddGrowableCol(1);
-  for(int i = 0; i<9; i++)
-  {
+  for (int i = 0; i < 9; i++) {
     grid_sizer->Add(m_label[i], 0, wxALIGN_CENTER_VERTICAL, 0);
     m_textctrl[i]->Connect(wxEVT_TEXT,
                            wxCommandEventHandler(GenWizPanel::OnParamChange),
@@ -95,20 +83,23 @@ GenWizPanel::GenWizPanel(wxWindow *parent, Configuration *cfg, MaximaManual *man
                            NULL, this);
     grid_sizer->Add(m_textctrl[i], wxSizerFlags(0).Expand());
   }
-    
-  vbox->Add(grid_sizer, wxSizerFlags(0).Expand().Border(wxALL, 5*GetContentScaleFactor()));
-  
-//  if(m_warning != NULL)
-//    grid_sizer->Add(m_warning, 0, wxALL, 5);  
-  m_notebook  = new wxNotebook(this, wxID_ANY);
-  vbox->Add(m_notebook, wxSizerFlags(1).Border(wxALL, 5*GetContentScaleFactor()).Expand());
+
+  vbox->Add(grid_sizer, wxSizerFlags(0).Expand().Border(
+                            wxALL, 5 * GetContentScaleFactor()));
+
+  //  if(m_warning != NULL)
+  //    grid_sizer->Add(m_warning, 0, wxALL, 5);
+  m_notebook = new wxNotebook(this, wxID_ANY);
+  vbox->Add(
+      m_notebook,
+      wxSizerFlags(1).Border(wxALL, 5 * GetContentScaleFactor()).Expand());
 
   wxBoxSizer *buttonSizer = new wxBoxSizer(wxHORIZONTAL);
   m_insertButton = new wxButton(this, wxID_ANY, _("Insert"));
-  
+
 #if defined __WXMSW__
   button_1 = new wxButton(this, wxID_OK, _("OK"));
-  if(dockable)
+  if (dockable)
     m_insertButton->SetDefault();
   else
     button_1->SetDefault();
@@ -116,126 +107,115 @@ GenWizPanel::GenWizPanel(wxWindow *parent, Configuration *cfg, MaximaManual *man
 #else
   button_1 = new wxButton(this, wxID_CANCEL, _("Cancel"));
   button_2 = new wxButton(this, wxID_OK, _("OK"));
-  if(dockable)
+  if (dockable)
     m_insertButton->SetDefault();
   else
     button_2->SetDefault();
 #endif
-  buttonSizer->Add(button_1, wxSizerFlags(0).Border(wxALL, 5*GetContentScaleFactor()));
+  buttonSizer->Add(button_1,
+                   wxSizerFlags(0).Border(wxALL, 5 * GetContentScaleFactor()));
   m_insertButton->Show(dockable);
-  buttonSizer->Add(m_insertButton, wxSizerFlags(0).Border(wxALL, 5*GetContentScaleFactor()));
+  buttonSizer->Add(m_insertButton,
+                   wxSizerFlags(0).Border(wxALL, 5 * GetContentScaleFactor()));
   m_insertButton->Show(dockable);
-  buttonSizer->Add(button_2, wxSizerFlags(0).Border(wxALL, 5*GetContentScaleFactor()));
+  buttonSizer->Add(button_2,
+                   wxSizerFlags(0).Border(wxALL, 5 * GetContentScaleFactor()));
 
-  vbox->Add(buttonSizer, wxSizerFlags(0).Border(wxALL, 5*GetContentScaleFactor()));
-  NewWizard(description, description_tooltip,
-            commandRule,
-            label1, defaultval1, tooltip1,
-            label2, defaultval2, tooltip2,
-            label3, defaultval3, tooltip3,
-            label4, defaultval4, tooltip4,
-            label5, defaultval5, tooltip5,
-            label6, defaultval6, tooltip6,
-            label7, defaultval7, tooltip7,
-            label8, defaultval8, tooltip8,
-            label9, defaultval9, tooltip9
-    );
+  vbox->Add(buttonSizer,
+            wxSizerFlags(0).Border(wxALL, 5 * GetContentScaleFactor()));
+  NewWizard(description, description_tooltip, commandRule, label1, defaultval1,
+            tooltip1, label2, defaultval2, tooltip2, label3, defaultval3,
+            tooltip3, label4, defaultval4, tooltip4, label5, defaultval5,
+            tooltip5, label6, defaultval6, tooltip6, label7, defaultval7,
+            tooltip7, label8, defaultval8, tooltip8, label9, defaultval9,
+            tooltip9);
   SetSizer(vbox);
-  Connect(wxEVT_SIZE, wxSizeEventHandler(GenWizPanel::OnSize),
-          NULL, this);
+  Connect(wxEVT_SIZE, wxSizeEventHandler(GenWizPanel::OnSize), NULL, this);
   m_notebook->Connect(wxEVT_NOTEBOOK_PAGE_CHANGED,
-                      wxBookCtrlEventHandler(GenWizPanel::OnNotebookPageChange), NULL, this);
+                      wxBookCtrlEventHandler(GenWizPanel::OnNotebookPageChange),
+                      NULL, this);
   FitInside();
 }
 
-void GenWizPanel::OnSize(wxSizeEvent &event)
-{
-  event.Skip();
-}
+void GenWizPanel::OnSize(wxSizeEvent &event) { event.Skip(); }
 
-GenWizPanel::~GenWizPanel()
-{
-}
+GenWizPanel::~GenWizPanel() {}
 
-void GenWizPanel::NewWizard(wxString description, const wxString &description_tooltip,
-                            const wxString &commandRule,
-                            wxString label1, wxString defaultval1, wxString tooltip1,
-                            wxString label2, wxString defaultval2, wxString tooltip2,
-                            wxString label3, wxString defaultval3, wxString tooltip3,
-                            wxString label4, wxString defaultval4, wxString tooltip4,
-                            wxString label5, wxString defaultval5, wxString tooltip5,
-                            wxString label6, wxString defaultval6, wxString tooltip6,
-                            wxString label7, wxString defaultval7, wxString tooltip7,
-                            wxString label8, wxString defaultval8, wxString tooltip8,
-                            wxString label9, wxString defaultval9, wxString tooltip9)
-{
+void GenWizPanel::NewWizard(
+    wxString description, const wxString &description_tooltip,
+    const wxString &commandRule, wxString label1, wxString defaultval1,
+    wxString tooltip1, wxString label2, wxString defaultval2, wxString tooltip2,
+    wxString label3, wxString defaultval3, wxString tooltip3, wxString label4,
+    wxString defaultval4, wxString tooltip4, wxString label5,
+    wxString defaultval5, wxString tooltip5, wxString label6,
+    wxString defaultval6, wxString tooltip6, wxString label7,
+    wxString defaultval7, wxString tooltip7, wxString label8,
+    wxString defaultval8, wxString tooltip8, wxString label9,
+    wxString defaultval9, wxString tooltip9) {
   wxString::const_iterator it = commandRule.begin();
 
   m_manualKeywords.clear();
-  while(it < commandRule.end())
-  {
-    while((it < commandRule.end()) && (!wxIsalpha(*it)) && (!(*it == '_')))
+  while (it < commandRule.end()) {
+    while ((it < commandRule.end()) && (!wxIsalpha(*it)) && (!(*it == '_')))
       it++;
     wxString word;
-    while(((it < commandRule.end()) && (wxIsalpha(*it))) || ((*it == '_')))
-    {
+    while (((it < commandRule.end()) && (wxIsalpha(*it))) || ((*it == '_'))) {
       word += *it;
       it++;
     }
-    if(!m_maximaManual->GetHelpfileAnchorName(word).IsEmpty())
-      m_manualKeywords[word]=1;
+    if (!m_maximaManual->GetHelpfileAnchorName(word).IsEmpty())
+      m_manualKeywords[word] = 1;
   }
-  if(commandRule.Contains(wxT("''")))
+  if (commandRule.Contains(wxT("''")))
     m_manualKeywords[wxT("''")] = 1;
-  if(commandRule.Contains(wxT("'")))
+  if (commandRule.Contains(wxT("'")))
     m_manualKeywords[wxT("'")] = 1;
-  if(commandRule.Contains(wxT("!")))
+  if (commandRule.Contains(wxT("!")))
     m_manualKeywords[wxT("!")] = 1;
-  if(commandRule.Contains(wxT(";")))
+  if (commandRule.Contains(wxT(";")))
     m_manualKeywords[wxT(";")] = 1;
-  if(commandRule.Contains(wxT("$")))
+  if (commandRule.Contains(wxT("$")))
     m_manualKeywords[wxT("$")] = 1;
-  if(commandRule.Contains(wxT("\\")))
+  if (commandRule.Contains(wxT("\\")))
     m_manualKeywords[wxT("\\")] = 1;
   wxString hashFinder = commandRule;
-  hashFinder.Replace(wxT("#1#"),wxEmptyString);
-  hashFinder.Replace(wxT("#2#"),wxEmptyString);
-  hashFinder.Replace(wxT("#3#"),wxEmptyString);
-  hashFinder.Replace(wxT("#4#"),wxEmptyString);
-  hashFinder.Replace(wxT("#5#"),wxEmptyString);
-  hashFinder.Replace(wxT("#6#"),wxEmptyString);
-  hashFinder.Replace(wxT("#7#"),wxEmptyString);
-  hashFinder.Replace(wxT("#8#"),wxEmptyString);
-  hashFinder.Replace(wxT("#9#"),wxEmptyString);
-  if(hashFinder.Contains(wxT("#")))
+  hashFinder.Replace(wxT("#1#"), wxEmptyString);
+  hashFinder.Replace(wxT("#2#"), wxEmptyString);
+  hashFinder.Replace(wxT("#3#"), wxEmptyString);
+  hashFinder.Replace(wxT("#4#"), wxEmptyString);
+  hashFinder.Replace(wxT("#5#"), wxEmptyString);
+  hashFinder.Replace(wxT("#6#"), wxEmptyString);
+  hashFinder.Replace(wxT("#7#"), wxEmptyString);
+  hashFinder.Replace(wxT("#8#"), wxEmptyString);
+  hashFinder.Replace(wxT("#9#"), wxEmptyString);
+  if (hashFinder.Contains(wxT("#")))
     m_manualKeywords[wxT("#")] = 1;
   m_ignorePageChange = true;
   long page = m_configuration->WizardTab();
-  if(page < 0)
+  if (page < 0)
     page = 0;
-  if(page > 1)
+  if (page > 1)
     page = 1;
-  
+
   m_commandRule = commandRule;
-  if((!commandRule.IsEmpty()) || (!description.IsEmpty()) || (!m_manualKeywords.empty()))
-  {
+  if ((!commandRule.IsEmpty()) || (!description.IsEmpty()) ||
+      (!m_manualKeywords.empty())) {
     m_notebook->DeleteAllPages();
     m_output = NULL;
     m_notebook->Show();
-  }
-  else
-  {
+  } else {
     m_notebook->Hide();
   }
 
-  if(!commandRule.IsEmpty())
-  {
+  if (!commandRule.IsEmpty()) {
     wxSizer *pageSizer = new wxBoxSizer(wxVERTICAL);
     wxPanel *outputpane = new wxPanel(m_notebook, wxID_ANY);
-    m_output = new wxTextCtrl(outputpane, wxID_ANY, wxEmptyString, wxDefaultPosition,
-                            wxDefaultSize,
-                              wxTE_READONLY|wxTE_MULTILINE|wxTE_CHARWRAP|wxTE_NO_VSCROLL);
-    pageSizer->Add(m_output, wxSizerFlags(1).Border(wxALL, 0*GetContentScaleFactor()).Expand());
+    m_output = new wxTextCtrl(
+        outputpane, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize,
+        wxTE_READONLY | wxTE_MULTILINE | wxTE_CHARWRAP | wxTE_NO_VSCROLL);
+    pageSizer->Add(
+        m_output,
+        wxSizerFlags(1).Border(wxALL, 0 * GetContentScaleFactor()).Expand());
     outputpane->SetSizer(pageSizer);
     outputpane->FitInside();
     m_notebook->AddPage(outputpane, _("Command"));
@@ -243,33 +223,32 @@ void GenWizPanel::NewWizard(wxString description, const wxString &description_to
 
   UpdateOutput();
   m_description = description;
-  if((!description.IsEmpty()) || (!m_manualKeywords.empty()))
-  {
+  if ((!description.IsEmpty()) || (!m_manualKeywords.empty())) {
     wxSizer *pageSizer = new wxBoxSizer(wxVERTICAL);
     wxPanel *descriptionpane = new wxPanel(m_notebook, wxID_ANY);
-    if(!description.IsEmpty())
-    {
-      wxTextCtrl *desc = new wxTextCtrl(descriptionpane, wxID_ANY, description, wxDefaultPosition,
-                                        wxDefaultSize,
-                                        wxTE_READONLY|wxTE_MULTILINE|wxTE_BESTWRAP|wxTE_NO_VSCROLL);
-      pageSizer->Add(desc, wxSizerFlags(1).Border(wxALL, 0*GetContentScaleFactor()).Expand());
+    if (!description.IsEmpty()) {
+      wxTextCtrl *desc = new wxTextCtrl(descriptionpane, wxID_ANY, description,
+                                        wxDefaultPosition, wxDefaultSize,
+                                        wxTE_READONLY | wxTE_MULTILINE |
+                                            wxTE_BESTWRAP | wxTE_NO_VSCROLL);
+      pageSizer->Add(
+          desc,
+          wxSizerFlags(1).Border(wxALL, 0 * GetContentScaleFactor()).Expand());
     }
-    int id = wxID_HIGHEST+5000;
+    int id = wxID_HIGHEST + 5000;
     int buttonNum = 0;
-    for(auto i:m_manualKeywords)
-    {
-      wxButton *button = new wxButton(descriptionpane, id,
-                                      wxString::Format(_("Help on %s"),
-                                                       i.first));
+    for (auto i : m_manualKeywords) {
+      wxButton *button = new wxButton(
+          descriptionpane, id, wxString::Format(_("Help on %s"), i.first));
       pageSizer->Add(button, wxSizerFlags(0).Expand());
-      buttonNum ++;
+      buttonNum++;
       id++;
     }
     descriptionpane->SetSizer(pageSizer);
     descriptionpane->FitInside();
     m_notebook->AddPage(descriptionpane, _("Description"));
   }
-  if((!commandRule.IsEmpty()) && (!description.IsEmpty()))
+  if ((!commandRule.IsEmpty()) && (!description.IsEmpty()))
     m_notebook->ChangeSelection(page);
 
   m_descriptionToolTip = description_tooltip;
@@ -277,7 +256,7 @@ void GenWizPanel::NewWizard(wxString description, const wxString &description_to
   m_label[0]->SetLabel(label1);
   m_textctrl[0]->SetToolTip(tooltip1);
   m_textctrl[0]->SetFocus();
-  
+
   m_textctrl[1]->SetValue(defaultval2);
   m_label[1]->SetLabel(label2);
   m_label[1]->Show(!label2.IsEmpty());
@@ -329,53 +308,45 @@ void GenWizPanel::NewWizard(wxString description, const wxString &description_to
   m_ignorePageChange = false;
 }
 
-wxString GenWizPanel::GetHelpKeyword(unsigned int ID)
-{
-  if(ID < wxID_HIGHEST + 5000)
+wxString GenWizPanel::GetHelpKeyword(unsigned int ID) {
+  if (ID < wxID_HIGHEST + 5000)
     return wxEmptyString;
   ID -= wxID_HIGHEST + 5000;
-  if(ID >= m_manualKeywords.size())
+  if (ID >= m_manualKeywords.size())
     return wxEmptyString;
-  for(auto i:m_manualKeywords)
-  {
-    if(ID-- == 0)
+  for (auto i : m_manualKeywords) {
+    if (ID-- == 0)
       return i.first;
   }
   return wxEmptyString;
 }
 
-void GenWizPanel::OnTextEnter(wxCommandEvent& event)
-{
-  if(m_insertButton)
-  {
+void GenWizPanel::OnTextEnter(wxCommandEvent &event) {
+  if (m_insertButton) {
     wxCommandEvent *bttnprss = new wxCommandEvent(wxEVT_BUTTON, wxID_OK);
     m_insertButton->GetEventHandler()->QueueEvent(bttnprss);
   }
   event.Skip();
 }
 
-void GenWizPanel::UpdateOutput()
-{
-  if(m_commandRule.IsEmpty())
+void GenWizPanel::UpdateOutput() {
+  if (m_commandRule.IsEmpty())
     return;
-  
+
   wxString output(m_commandRule);
-  for(unsigned int i=0;i<m_textctrl.size();i++)
-    output.Replace(wxString::Format("#%i#",i+1), m_textctrl[i]->GetValue());
-  if(m_output)
+  for (unsigned int i = 0; i < m_textctrl.size(); i++)
+    output.Replace(wxString::Format("#%i#", i + 1), m_textctrl[i]->GetValue());
+  if (m_output)
     m_output->SetValue(output);
 }
 
-void GenWizPanel::OnNotebookPageChange(wxBookCtrlEvent& event)
-{
+void GenWizPanel::OnNotebookPageChange(wxBookCtrlEvent &event) {
   event.Skip();
-  if(m_ignorePageChange)
+  if (m_ignorePageChange)
     return;
   m_configuration->WizardTab(event.GetSelection());
 }
 
-void GenWizPanel::OnParamChange(wxCommandEvent& WXUNUSED(event))
-{
+void GenWizPanel::OnParamChange(wxCommandEvent &WXUNUSED(event)) {
   UpdateOutput();
 }
-

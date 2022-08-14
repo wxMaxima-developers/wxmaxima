@@ -1,4 +1,5 @@
-// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode:
+// nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2014-2018 Gunter Königsmann <wxMaxima@physikbuch.de>
@@ -10,8 +11,8 @@
 //
 //  This program is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHGroupCell *groupANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//  GNU General Public License for more details.
+//  MERCHGroupCell *groupANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See
+//  the GNU General Public License for more details.
 //
 //
 //  You should have received a copy of the GNU General Public License
@@ -23,7 +24,8 @@
 /*! \file
   This file defines the class DiffCell
 
-  DiffCell is the Cell type that represents the field that represents the diff() command.
+  DiffCell is the Cell type that represents the field that represents the diff()
+  command.
  */
 
 #include "DiffCell.h"
@@ -32,10 +34,10 @@
 #include "TextCell.h"
 #include <wx/config.h>
 
-DiffCell::DiffCell(GroupCell *group, Configuration *config, std::unique_ptr<Cell> &&base, std::unique_ptr<Cell> &&diff) :
-  Cell(group, config),
-  m_baseCell(std::move(base)),
-  m_diffCell(std::move(diff))
+DiffCell::DiffCell(GroupCell *group, Configuration *config,
+                   std::unique_ptr<Cell> &&base, std::unique_ptr<Cell> &&diff)
+    : Cell(group, config), m_baseCell(std::move(base)),
+      m_diffCell(std::move(diff))
 
 {
   InitBitFields();
@@ -46,33 +48,29 @@ DiffCell::DiffCell(GroupCell *group, Configuration *config, std::unique_ptr<Cell
 DiffCell::DiffCell(GroupCell *group, const DiffCell &cell)
     : DiffCell(group, cell.m_configuration,
                CopyList(group, cell.m_baseCell.get()),
-               CopyList(group, cell.m_diffCell.get()))
-{
+               CopyList(group, cell.m_diffCell.get())) {
   CopyCommonData(cell);
 }
 
 DEFINE_CELL(DiffCell)
 
-void DiffCell::MakeBreakupCells()
-{
-  if (m_open) return;
+void DiffCell::MakeBreakupCells() {
+  if (m_open)
+    return;
   m_open = std::make_unique<TextCell>(m_group, m_configuration, "diff(");
   m_comma = std::make_unique<TextCell>(m_group, m_configuration, ",");
   m_close = std::make_unique<TextCell>(m_group, m_configuration, ")");
 }
 
-void DiffCell::Recalculate(AFontSize fontsize)
-{
+void DiffCell::Recalculate(AFontSize fontsize) {
   m_baseCell->RecalculateList(fontsize);
   m_diffCell->RecalculateList(fontsize);
-  if(!IsBrokenIntoLines())
-  {
+  if (!IsBrokenIntoLines()) {
     m_width = m_baseCell->GetFullWidth() + m_diffCell->GetFullWidth();
     m_center = wxMax(m_diffCell->GetCenterList(), m_baseCell->GetCenterList());
-    m_height = m_center + wxMax(m_diffCell->GetMaxDrop(), m_baseCell->GetMaxDrop());
-  }
-  else
-  {
+    m_height =
+        m_center + wxMax(m_diffCell->GetMaxDrop(), m_baseCell->GetMaxDrop());
+  } else {
     m_width = m_center = m_height = 0;
     m_open->RecalculateList(fontsize);
     m_comma->RecalculateList(fontsize);
@@ -81,11 +79,9 @@ void DiffCell::Recalculate(AFontSize fontsize)
   Cell::Recalculate(fontsize);
 }
 
-void DiffCell::Draw(wxPoint point)
-{
+void DiffCell::Draw(wxPoint point) {
   Cell::Draw(point);
-  if (DrawThisCell(point) && InUpdateRegion())
-  { 
+  if (DrawThisCell(point) && InUpdateRegion()) {
     wxPoint bs, df;
     df.x = point.x;
     df.y = point.y;
@@ -97,8 +93,7 @@ void DiffCell::Draw(wxPoint point)
   }
 }
 
-wxString DiffCell::ToString() const
-{
+wxString DiffCell::ToString() const {
   if (IsBrokenIntoLines())
     return wxEmptyString;
   Cell *tmp = m_baseCell->GetNext();
@@ -110,21 +105,19 @@ wxString DiffCell::ToString() const
   return s;
 }
 
-wxString DiffCell::ToMatlab() const
-{
+wxString DiffCell::ToMatlab() const {
   if (IsBrokenIntoLines())
-	return wxEmptyString;
+    return wxEmptyString;
   Cell *tmp = m_baseCell->GetNext();
   wxString s = wxT("'diff(");
   if (tmp != NULL)
-	s += tmp->ListToMatlab();
+    s += tmp->ListToMatlab();
   s += m_diffCell->ListToMatlab();
   s += wxT(")");
   return s;
 }
 
-wxString DiffCell::ToTeX() const
-{
+wxString DiffCell::ToTeX() const {
   if (IsBrokenIntoLines())
     return wxEmptyString;
   wxString diff = m_diffCell->ListToTeX();
@@ -137,23 +130,21 @@ wxString DiffCell::ToTeX() const
   return s;
 }
 
-wxString DiffCell::ToMathML() const
-{
+wxString DiffCell::ToMathML() const {
   wxString retval;
 
   retval = wxT("<mrow>") + m_diffCell->ListToMathML();
   if (m_baseCell)
     retval += m_baseCell->ListToMathML();
   retval += wxT("</mrow>\n");
-  // retval = wxT("<apply><diff/><ci>") + m_diffCell->ListToMathML() + wxT("</ci>");
-  // if(m_baseCell)
+  // retval = wxT("<apply><diff/><ci>") + m_diffCell->ListToMathML() +
+  // wxT("</ci>"); if(m_baseCell)
   //   retval += wxT("<ci>") + m_baseCell->ListToMathML() + wxT("</ci>") ;
   // retval += wxT("</apply>");
   return retval;
 }
 
-wxString DiffCell::ToOMML() const
-{
+wxString DiffCell::ToOMML() const {
   wxString retval;
 
   retval = m_diffCell->ListToOMML();
@@ -163,17 +154,16 @@ wxString DiffCell::ToOMML() const
   return retval;
 }
 
-wxString DiffCell::ToXML() const
-{
+wxString DiffCell::ToXML() const {
   wxString flags;
   if (HasHardLineBreak())
     flags += wxT(" breakline=\"true\"");
 
-  return wxT("<d") + flags + wxT(">") + m_diffCell->ListToXML() + m_baseCell->ListToXML() + _T("</d>");
+  return wxT("<d") + flags + wxT(">") + m_diffCell->ListToXML() +
+         m_baseCell->ListToXML() + _T("</d>");
 }
 
-bool DiffCell::BreakUp()
-{
+bool DiffCell::BreakUp() {
   if (IsBrokenIntoLines())
     return false;
 
@@ -192,8 +182,7 @@ bool DiffCell::BreakUp()
   return true;
 }
 
-void DiffCell::SetNextToDraw(Cell *next)
-{
+void DiffCell::SetNextToDraw(Cell *next) {
   if (IsBrokenIntoLines())
     m_close->SetNextToDraw(next);
   else

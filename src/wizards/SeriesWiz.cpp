@@ -1,4 +1,5 @@
-// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode:
+// nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //
@@ -19,21 +20,14 @@
 //
 //  SPDX-License-Identifier: GPL-2.0+
 
-enum
-{
-  powerseries_id,
-  special_id
-};
-
+enum { powerseries_id, special_id };
 
 #include "SeriesWiz.h"
 
-SeriesWiz::SeriesWiz(wxWindow *parent, int id,
-                     Configuration *cfg,
-                     const wxString &title,
-                     const wxPoint &pos, const wxSize &size, long style) :
-        wxDialog(parent, id, title, pos, size, style)
-{
+SeriesWiz::SeriesWiz(wxWindow *parent, int id, Configuration *cfg,
+                     const wxString &title, const wxPoint &pos,
+                     const wxSize &size, long style)
+    : wxDialog(parent, id, title, pos, size, style) {
   label_2 = new wxStaticText(this, -1, _("Expression:"));
   text_ctrl_1 = new BTextCtrl(this, -1, cfg, wxEmptyString, wxDefaultPosition,
                               wxSize(230, -1));
@@ -45,7 +39,8 @@ SeriesWiz::SeriesWiz(wxWindow *parent, int id,
                               wxSize(110, -1));
   button_3 = new wxButton(this, special_id, _("Special"));
   label_5 = new wxStaticText(this, -1, _("Depth:"));
-  spin_ctrl_1 = new wxSpinCtrl(this, -1, wxT("8"), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 100, 8);
+  spin_ctrl_1 = new wxSpinCtrl(this, -1, wxT("8"), wxDefaultPosition,
+                               wxDefaultSize, wxSP_ARROW_KEYS, 0, 100, 8);
   checkbox_1 = new wxCheckBox(this, powerseries_id, _("&Power series"));
   static_line_1 = new wxStaticLine(this, -1);
 #if defined __WXMSW__
@@ -60,9 +55,7 @@ SeriesWiz::SeriesWiz(wxWindow *parent, int id,
   do_layout();
 }
 
-
-void SeriesWiz::set_properties()
-{
+void SeriesWiz::set_properties() {
   SetTitle(_("Series"));
 #if defined __WXMSW__
   button_1->SetDefault();
@@ -73,22 +66,24 @@ void SeriesWiz::set_properties()
   text_ctrl_1->SetFocus();
 }
 
-
-void SeriesWiz::do_layout()
-{
+void SeriesWiz::do_layout() {
   wxFlexGridSizer *grid_sizer_1 = new wxFlexGridSizer(4, 1, 0, 0);
   wxBoxSizer *sizer_1 = new wxBoxSizer(wxHORIZONTAL);
   wxFlexGridSizer *grid_sizer_2 = new wxFlexGridSizer(5, 2, 0, 0);
   wxBoxSizer *sizer_2 = new wxBoxSizer(wxHORIZONTAL);
-  grid_sizer_2->Add(label_2, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
+  grid_sizer_2->Add(label_2, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL,
+                    5);
   grid_sizer_2->Add(text_ctrl_1, 0, wxALL, 5);
-  grid_sizer_2->Add(label_3, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
+  grid_sizer_2->Add(label_3, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL,
+                    5);
   grid_sizer_2->Add(text_ctrl_2, 0, wxALL, 5);
-  grid_sizer_2->Add(label_4, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
+  grid_sizer_2->Add(label_4, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL,
+                    5);
   sizer_2->Add(text_ctrl_3, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   sizer_2->Add(button_3, 0, wxALL, 5);
   grid_sizer_2->Add(sizer_2, 1, wxEXPAND, 0);
-  grid_sizer_2->Add(label_5, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
+  grid_sizer_2->Add(label_5, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL,
+                    5);
   grid_sizer_2->Add(spin_ctrl_1, 0, wxALL, 5);
   grid_sizer_2->Add(20, 20, 0, 0, 0);
   grid_sizer_2->Add(checkbox_1, 0, 0, 0);
@@ -104,16 +99,11 @@ void SeriesWiz::do_layout()
   Layout();
 }
 
-void SeriesWiz::OnButton(wxCommandEvent &WXUNUSED(event))
-{
-  wxString choices[] =
-          {
-                  wxT("Pi"), wxT("E")
-          };
-  wxString choice = wxGetSingleChoice(_("Select a constant"),
-                                      _("Constant"), 2, choices, this);
-  if (choice.Length())
-  {
+void SeriesWiz::OnButton(wxCommandEvent &WXUNUSED(event)) {
+  wxString choices[] = {wxT("Pi"), wxT("E")};
+  wxString choice = wxGetSingleChoice(_("Select a constant"), _("Constant"), 2,
+                                      choices, this);
+  if (choice.Length()) {
     if (choice == wxT("Pi"))
       text_ctrl_3->SetValue(wxT("%pi"));
     else if (choice == wxT("E"))
@@ -121,8 +111,7 @@ void SeriesWiz::OnButton(wxCommandEvent &WXUNUSED(event))
   }
 }
 
-wxString SeriesWiz::GetValue()
-{
+wxString SeriesWiz::GetValue() {
   wxString s;
   if (checkbox_1->IsChecked())
     s = wxT("niceindices(powerseries(");
@@ -133,24 +122,20 @@ wxString SeriesWiz::GetValue()
   s += text_ctrl_2->GetValue();
   s += wxT(", ");
   s += text_ctrl_3->GetValue();
-  if (!checkbox_1->IsChecked())
-  {
+  if (!checkbox_1->IsChecked()) {
     s += wxT(", ");
     s += wxString::Format(wxT("%d"), spin_ctrl_1->GetValue());
     s += wxT(");");
-  }
-  else
+  } else
     s += wxT("));");
 
   return s;
 }
 
-void SeriesWiz::OnCheckbox(wxCommandEvent &WXUNUSED(event))
-{
+void SeriesWiz::OnCheckbox(wxCommandEvent &WXUNUSED(event)) {
   spin_ctrl_1->Enable(!checkbox_1->GetValue());
 }
 
 wxBEGIN_EVENT_TABLE(SeriesWiz, wxDialog)
-                EVT_BUTTON(special_id, SeriesWiz::OnButton)
-                EVT_CHECKBOX(powerseries_id, SeriesWiz::OnCheckbox)
-wxEND_EVENT_TABLE()
+    EVT_BUTTON(special_id, SeriesWiz::OnButton)
+        EVT_CHECKBOX(powerseries_id, SeriesWiz::OnCheckbox) wxEND_EVENT_TABLE()

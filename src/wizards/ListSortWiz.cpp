@@ -1,4 +1,5 @@
-// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode:
+// nil -*-
 //
 //  Copyright (C) 2017-2018      Gunter Königsmann <wxMaxima@physikbuch.de>
 //
@@ -21,54 +22,56 @@
 
 #include "ListSortWiz.h"
 
-ListSortWiz::ListSortWiz(Configuration *WXUNUSED(cfg),
-                         wxWindow *parent, int id, const wxString &title,
-                         wxString list,
-                         bool WXUNUSED(eq),
-                         const wxPoint &pos,
-                         const wxSize &size,
-                         long style) :
-  wxDialog(parent, id, title, pos, size, style)
-{
+ListSortWiz::ListSortWiz(Configuration *WXUNUSED(cfg), wxWindow *parent, int id,
+                         const wxString &title, wxString list,
+                         bool WXUNUSED(eq), const wxPoint &pos,
+                         const wxSize &size, long style)
+    : wxDialog(parent, id, title, pos, size, style) {
   wxBoxSizer *vsizer = new wxBoxSizer(wxVERTICAL);
-  wxPanel *choicePanel  = new wxPanel(this,-1);
+  wxPanel *choicePanel = new wxPanel(this, -1);
   wxFlexGridSizer *grid = new wxFlexGridSizer(5, 2, 0, 0);
 
-  wxStaticText *listText = new wxStaticText(choicePanel,-1,_("List name:"));
-  grid->Add(listText, wxSizerFlags().Border(wxTOP|wxLEFT, 10));
-  m_list = new wxTextCtrl(choicePanel,-1,list,wxDefaultPosition,wxSize(300,wxDefaultSize.y));
-  grid->Add(m_list, wxSizerFlags().Border(wxBOTTOM|wxLEFT, 10));
+  wxStaticText *listText = new wxStaticText(choicePanel, -1, _("List name:"));
+  grid->Add(listText, wxSizerFlags().Border(wxTOP | wxLEFT, 10));
+  m_list = new wxTextCtrl(choicePanel, -1, list, wxDefaultPosition,
+                          wxSize(300, wxDefaultSize.y));
+  grid->Add(m_list, wxSizerFlags().Border(wxBOTTOM | wxLEFT, 10));
 
-  wxStaticText *criterionText = new wxStaticText(choicePanel,-1,_("Sort Criterion:"));
-  grid->Add(criterionText, wxSizerFlags().Border(wxTOP|wxLEFT, 10));
-  grid->Add(10,10);
+  wxStaticText *criterionText =
+      new wxStaticText(choicePanel, -1, _("Sort Criterion:"));
+  grid->Add(criterionText, wxSizerFlags().Border(wxTOP | wxLEFT, 10));
+  grid->Add(10, 10);
 
-  m_sortTraditional = new wxRadioButton(choicePanel,-1,_("a>b"),
-                                        wxDefaultPosition, wxDefaultSize, wxRB_GROUP);
-  grid->Add(m_sortTraditional, wxSizerFlags().Border(wxTOP|wxLEFT, 10));
-  grid->Add(10,10);
+  m_sortTraditional = new wxRadioButton(
+      choicePanel, -1, _("a>b"), wxDefaultPosition, wxDefaultSize, wxRB_GROUP);
+  grid->Add(m_sortTraditional, wxSizerFlags().Border(wxTOP | wxLEFT, 10));
+  grid->Add(10, 10);
   m_sortTraditional->SetValue(true);
-  
-  m_sortFunction    = new wxRadioButton(choicePanel,-1,_("A function f(a,b), named"));
-  grid->Add(m_sortFunction, wxSizerFlags().Border(wxTOP|wxLEFT, 10));
-  m_CriterionFunc = new wxTextCtrl(choicePanel,-1,wxEmptyString,wxDefaultPosition,wxSize(300,wxDefaultSize.y));
+
+  m_sortFunction =
+      new wxRadioButton(choicePanel, -1, _("A function f(a,b), named"));
+  grid->Add(m_sortFunction, wxSizerFlags().Border(wxTOP | wxLEFT, 10));
+  m_CriterionFunc =
+      new wxTextCtrl(choicePanel, -1, wxEmptyString, wxDefaultPosition,
+                     wxSize(300, wxDefaultSize.y));
   m_CriterionFunc->Connect(wxEVT_TEXT,
                            wxGridEventHandler(ListSortWiz::OnFunctionChange),
                            NULL, this);
-  grid->Add(m_CriterionFunc, wxSizerFlags().Border(wxTOP|wxLEFT, 10));
+  grid->Add(m_CriterionFunc, wxSizerFlags().Border(wxTOP | wxLEFT, 10));
 
-  m_sortLambda      = new wxRadioButton(choicePanel,-1,_("Create f(a,b) on-the-fly, contents:"));
-  grid->Add(m_sortLambda, wxSizerFlags().Border(wxTOP|wxLEFT, 10));
-  m_Criterion = new wxTextCtrl(choicePanel,-1,wxEmptyString,wxDefaultPosition,wxSize(300,wxDefaultSize.y));
+  m_sortLambda = new wxRadioButton(choicePanel, -1,
+                                   _("Create f(a,b) on-the-fly, contents:"));
+  grid->Add(m_sortLambda, wxSizerFlags().Border(wxTOP | wxLEFT, 10));
+  m_Criterion = new wxTextCtrl(choicePanel, -1, wxEmptyString,
+                               wxDefaultPosition, wxSize(300, wxDefaultSize.y));
   m_Criterion->SetValue(wxT("a<b"));
-  m_Criterion->Connect(wxEVT_TEXT,
-                       wxGridEventHandler(ListSortWiz::OnLambdaChange),
-                       NULL, this);
-  grid->Add(m_Criterion, wxSizerFlags().Border(wxTOP|wxLEFT, 10));
+  m_Criterion->Connect(
+      wxEVT_TEXT, wxGridEventHandler(ListSortWiz::OnLambdaChange), NULL, this);
+  grid->Add(m_Criterion, wxSizerFlags().Border(wxTOP | wxLEFT, 10));
   choicePanel->SetSizerAndFit(grid);
   vsizer->Add(choicePanel, wxSizerFlags().Expand().Border(wxALL, 0));
-  
-  wxPanel *buttonPanel = new wxPanel(this,-1);
+
+  wxPanel *buttonPanel = new wxPanel(this, -1);
 #if defined __WXMSW__
   button_1 = new wxButton(buttonPanel, wxID_OK, _("OK"));
   button_2 = new wxButton(buttonPanel, wxID_CANCEL, _("Cancel"));
@@ -88,8 +91,7 @@ ListSortWiz::ListSortWiz(Configuration *WXUNUSED(cfg),
   Layout();
 }
 
-void ListSortWiz::set_properties()
-{
+void ListSortWiz::set_properties() {
 #if defined __WXMSW__
   button_1->SetDefault();
 #else
@@ -97,13 +99,12 @@ void ListSortWiz::set_properties()
 #endif
 }
 
-wxString ListSortWiz::GetValue()
-{
-  wxString retval = wxT("sort(")+m_list->GetValue();
-  if(m_sortFunction->GetValue())
+wxString ListSortWiz::GetValue() {
+  wxString retval = wxT("sort(") + m_list->GetValue();
+  if (m_sortFunction->GetValue())
     retval += wxT(",") + m_CriterionFunc->GetValue();
-  if(m_sortLambda->GetValue())
-    retval += wxT(",lambda([a,b],") + m_Criterion->GetValue()+ wxT(")");
+  if (m_sortLambda->GetValue())
+    retval += wxT(",lambda([a,b],") + m_Criterion->GetValue() + wxT(")");
   retval += wxT(")");
   return retval;
 }

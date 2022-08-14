@@ -1,4 +1,5 @@
-// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode:
+// nil -*-
 //
 //  Copyright (C) 2014-2018 Gunter Königsmann <wxMaxima@physikbuch.de>
 //
@@ -22,17 +23,16 @@
 /*! \file
   This file defines the class ConjugateCell
 
-  ConjugateCell is the Cell type that represents the field that represents the 
+  ConjugateCell is the Cell type that represents the field that represents the
   conjugate() command.
  */
 
 #include "ConjugateCell.h"
 #include "CellImpl.h"
 
-ConjugateCell::ConjugateCell(GroupCell *group, Configuration *config, std::unique_ptr<Cell> &&inner) :
-    Cell(group, config),
-    m_innerCell(std::move(inner))
-{
+ConjugateCell::ConjugateCell(GroupCell *group, Configuration *config,
+                             std::unique_ptr<Cell> &&inner)
+    : Cell(group, config), m_innerCell(std::move(inner)) {
   InitBitFields();
   SetStyle(TS_VARIABLE);
 }
@@ -40,35 +40,32 @@ ConjugateCell::ConjugateCell(GroupCell *group, Configuration *config, std::uniqu
 // Old cppcheck bugs:
 // cppcheck-suppress uninitMemberVar symbolName=ConjugateCell::m_open
 // cppcheck-suppress uninitMemberVar symbolName=ConjugateCell::m_close
-ConjugateCell::ConjugateCell(GroupCell *group, const ConjugateCell &cell) :
-  ConjugateCell(group, cell.m_configuration, CopyList(group, cell.m_innerCell.get()))
-{
+ConjugateCell::ConjugateCell(GroupCell *group, const ConjugateCell &cell)
+    : ConjugateCell(group, cell.m_configuration,
+                    CopyList(group, cell.m_innerCell.get())) {
   CopyCommonData(cell);
 }
 
 DEFINE_CELL(ConjugateCell)
 
-void ConjugateCell::MakeBreakupCells()
-{
-  if (m_open) return;
-  m_open = std::make_unique<TextCell>(m_group, m_configuration, wxT("conjugate("));
-  static_cast<TextCell&>(*m_open).DontEscapeOpeningParenthesis();
+void ConjugateCell::MakeBreakupCells() {
+  if (m_open)
+    return;
+  m_open =
+      std::make_unique<TextCell>(m_group, m_configuration, wxT("conjugate("));
+  static_cast<TextCell &>(*m_open).DontEscapeOpeningParenthesis();
   m_open->SetStyle(TS_FUNCTION);
   m_close = std::make_unique<TextCell>(m_group, m_configuration, wxT(")"));
 }
 
-void ConjugateCell::Recalculate(AFontSize fontsize)
-{
+void ConjugateCell::Recalculate(AFontSize fontsize) {
   m_innerCell->RecalculateList(fontsize);
 
-  if(!IsBrokenIntoLines())
-  {
+  if (!IsBrokenIntoLines()) {
     m_width = m_innerCell->GetFullWidth() + Scale_Px(8);
     m_height = m_innerCell->GetHeightList() + Scale_Px(6);
     m_center = m_innerCell->GetCenterList() + Scale_Px(6);
-  }
-  else
-  {
+  } else {
     // The ConjugateCell itself isn't displayed if it is broken into lines.
     // instead m_open, m_innerCell and m_close are => We can set our size to 0
     // in this case.
@@ -81,11 +78,9 @@ void ConjugateCell::Recalculate(AFontSize fontsize)
   Cell::Recalculate(fontsize);
 }
 
-void ConjugateCell::Draw(wxPoint point)
-{
+void ConjugateCell::Draw(wxPoint point) {
   Cell::Draw(point);
-  if (DrawThisCell(point))
-  {    
+  if (DrawThisCell(point)) {
     wxDC *dc = m_configuration->GetDC();
     SetPen();
     wxPoint in;
@@ -93,63 +88,56 @@ void ConjugateCell::Draw(wxPoint point)
     in.y = point.y;
     m_innerCell->DrawList(in);
 
-    dc->DrawLine(point.x + Scale_Px(2),
-                 point.y - m_center + Scale_Px(6),
+    dc->DrawLine(point.x + Scale_Px(2), point.y - m_center + Scale_Px(6),
                  point.x + m_width - Scale_Px(2) - 1,
-                 point.y - m_center + Scale_Px(6)
-      );
+                 point.y - m_center + Scale_Px(6));
     //                point.y - m_center + m_height - Scale_Px(2));
   }
 }
 
-wxString ConjugateCell::ToString() const
-{
+wxString ConjugateCell::ToString() const {
   if (IsBrokenIntoLines())
     return wxEmptyString;
   else
     return wxT("conjugate(") + m_innerCell->ListToString() + wxT(")");
 }
 
-wxString ConjugateCell::ToMatlab() const
-{
+wxString ConjugateCell::ToMatlab() const {
   if (IsBrokenIntoLines())
-	return wxEmptyString;
+    return wxEmptyString;
   else
-	return wxT("conjugate(") + m_innerCell->ListToMatlab() + wxT(")");
+    return wxT("conjugate(") + m_innerCell->ListToMatlab() + wxT(")");
 }
 
-wxString ConjugateCell::ToTeX() const
-{
+wxString ConjugateCell::ToTeX() const {
   if (IsBrokenIntoLines())
     return wxEmptyString;
   else
     return wxT("\\overline{") + m_innerCell->ListToTeX() + wxT("}");
 }
 
-wxString ConjugateCell::ToMathML() const
-{
-//  return wxT("<apply><conjugate/><ci>") + m_innerCell->ListToMathML() + wxT("</ci></apply>");
+wxString ConjugateCell::ToMathML() const {
+  //  return wxT("<apply><conjugate/><ci>") + m_innerCell->ListToMathML() +
+  //  wxT("</ci></apply>");
   return wxT("<mover accent=\"true\">") + m_innerCell->ListToMathML() +
          wxT("<mo>&#xaf;</mo></mover>\n");
 }
 
-wxString ConjugateCell::ToOMML() const
-{
+wxString ConjugateCell::ToOMML() const {
   return wxT("<m:bar><m:barPr><m:pos m:val=\"top\"/> </m:barPr><m:e>") +
          m_innerCell->ListToOMML() + wxT("</m:e></m:bar>");
 }
 
-wxString ConjugateCell::ToXML() const
-{
+wxString ConjugateCell::ToXML() const {
   wxString flags;
   if (HasHardLineBreak())
     flags += wxT(" breakline=\"true\"");
 
-  return wxT("<cj") + flags + wxT(">") + m_innerCell->ListToXML() + wxT("</cj>");
+  return wxT("<cj") + flags + wxT(">") + m_innerCell->ListToXML() +
+         wxT("</cj>");
 }
 
-bool ConjugateCell::BreakUp()
-{
+bool ConjugateCell::BreakUp() {
   if (IsBrokenIntoLines())
     return false;
 
@@ -165,9 +153,8 @@ bool ConjugateCell::BreakUp()
   return true;
 }
 
-void ConjugateCell::SetNextToDraw(Cell *next)
-{
-  if(IsBrokenIntoLines())
+void ConjugateCell::SetNextToDraw(Cell *next) {
+  if (IsBrokenIntoLines())
     m_close->SetNextToDraw(next);
   else
     m_nextToDraw = next;

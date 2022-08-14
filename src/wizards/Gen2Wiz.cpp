@@ -1,4 +1,5 @@
-// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode:
+// nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //  Copyright (C) 2017-2018 Gunter Königsmann <wxMaxima@physikbuch.de>
@@ -23,27 +24,23 @@
 #include "Gen2Wiz.h"
 #include <wx/persist/toplevel.h>
 
-Gen2Wiz::Gen2Wiz(wxString lab1, wxString lab2,
-                 wxString val1, wxString val2,
-                 Configuration *cfg,
-                 wxWindow *parent, int id, const wxString &title,
-                 bool eq,
-                 const wxString &warning,
-                 const wxString &warningToolTip,
-                 const wxPoint &pos, const wxSize &size, long style) :
-        wxDialog(parent, id, title, pos, size, style), equal(eq)
-{
+Gen2Wiz::Gen2Wiz(wxString lab1, wxString lab2, wxString val1, wxString val2,
+                 Configuration *cfg, wxWindow *parent, int id,
+                 const wxString &title, bool eq, const wxString &warning,
+                 const wxString &warningToolTip, const wxPoint &pos,
+                 const wxSize &size, long style)
+    : wxDialog(parent, id, title, pos, size, style), equal(eq) {
   SetName(title);
   label_2 = new wxStaticText(this, -1, lab1);
-  text_ctrl_1 = new BTextCtrl(this, -1, cfg, val1, wxDefaultPosition,
-                              wxSize(230, -1));
+  text_ctrl_1 =
+      new BTextCtrl(this, -1, cfg, val1, wxDefaultPosition, wxSize(230, -1));
   label_3 = new wxStaticText(this, -1, lab2);
   if (equal)
-    text_ctrl_2 = new BTextCtrl(this, -1, cfg, val2, wxDefaultPosition,
-                                wxSize(230, -1));
+    text_ctrl_2 =
+        new BTextCtrl(this, -1, cfg, val2, wxDefaultPosition, wxSize(230, -1));
   else
-    text_ctrl_2 = new BTextCtrl(this, -1, cfg, val2, wxDefaultPosition,
-                                wxSize(110, -1));
+    text_ctrl_2 =
+        new BTextCtrl(this, -1, cfg, val2, wxDefaultPosition, wxSize(110, -1));
   static_line_1 = new wxStaticLine(this, -1);
 #if defined __WXMSW__
   button_1 = new wxButton(this, wxID_OK, _("OK"));
@@ -52,25 +49,21 @@ Gen2Wiz::Gen2Wiz(wxString lab1, wxString lab2,
   button_1 = new wxButton(this, wxID_CANCEL, _("Cancel"));
   button_2 = new wxButton(this, wxID_OK, _("OK"));
 #endif
-  
-  if(warning != wxEmptyString)    
-  {
+
+  if (warning != wxEmptyString) {
     m_warningText = warning;
     m_warning = new wxStaticText(this, -1, wxEmptyString);
     m_warning->SetToolTip(warningToolTip);
-  }
-  else
+  } else
     m_warning = NULL;
-  
+
   set_properties();
   SetName(title);
   wxPersistenceManager::Get().RegisterAndRestore(this);
   do_layout();
 }
 
-
-void Gen2Wiz::set_properties()
-{
+void Gen2Wiz::set_properties() {
 #if defined __WXMSW__
   button_1->SetDefault();
 #else
@@ -80,16 +73,17 @@ void Gen2Wiz::set_properties()
   text_ctrl_1->SetFocus();
 }
 
-void Gen2Wiz::do_layout()
-{
+void Gen2Wiz::do_layout() {
   wxFlexGridSizer *grid_sizer_1 = new wxFlexGridSizer(5, 1, 0, 0);
   wxBoxSizer *sizer_1 = new wxBoxSizer(wxHORIZONTAL);
   wxFlexGridSizer *grid_sizer_2 = new wxFlexGridSizer(2, 2, 0, 0);
-  grid_sizer_2->Add(label_2, 0, wxALL | wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL, 5);
+  grid_sizer_2->Add(label_2, 0, wxALL | wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL,
+                    5);
   grid_sizer_2->Add(text_ctrl_1, 0, wxALL, 5);
-  grid_sizer_2->Add(label_3, 0, wxALL | wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL, 5);
+  grid_sizer_2->Add(label_3, 0, wxALL | wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL,
+                    5);
   grid_sizer_2->Add(text_ctrl_2, 0, wxALL, 5);
-  if(m_warning != NULL)
+  if (m_warning != NULL)
     grid_sizer_1->Add(m_warning, 0, wxALL, 5);
   grid_sizer_1->Add(grid_sizer_2, 1, wxEXPAND, 0);
   grid_sizer_1->Add(static_line_1, 0, wxEXPAND | wxLEFT | wxRIGHT, 2);
@@ -101,8 +95,7 @@ void Gen2Wiz::do_layout()
   grid_sizer_1->Fit(this);
   grid_sizer_1->SetSizeHints(this);
   Layout();
-  if(m_warning != NULL)
-  {
+  if (m_warning != NULL) {
     m_warning->SetLabel(m_warningText);
     m_warning->Wrap(GetClientSize().GetWidth());
     Fit();

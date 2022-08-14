@@ -1,4 +1,5 @@
-// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode:
+// nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2014-2018 Gunter Königsmann <wxMaxima@physikbuch.de>
@@ -34,8 +35,7 @@
 SubCell::SubCell(GroupCell *group, Configuration *config,
                  std::unique_ptr<Cell> &&base, std::unique_ptr<Cell> &&index)
     : Cell(group, config), m_baseCell(std::move(base)),
-      m_indexCell(std::move(index))
-{
+      m_indexCell(std::move(index)) {
   InitBitFields();
   SetStyle(TS_VARIABLE);
 }
@@ -43,31 +43,27 @@ SubCell::SubCell(GroupCell *group, Configuration *config,
 SubCell::SubCell(GroupCell *group, const SubCell &cell)
     : SubCell(group, cell.m_configuration,
               CopyList(group, cell.m_baseCell.get()),
-              CopyList(group, cell.m_indexCell.get()))
-{
+              CopyList(group, cell.m_indexCell.get())) {
   CopyCommonData(cell);
   m_altCopyText = cell.m_altCopyText;
 }
 
 DEFINE_CELL(SubCell)
 
-void SubCell::Recalculate(AFontSize fontsize)
-{
+void SubCell::Recalculate(AFontSize fontsize) {
   m_baseCell->RecalculateList(fontsize);
-  m_indexCell->RecalculateList({ MC_MIN_SIZE, fontsize - SUB_DEC });
-  m_width = m_baseCell->GetFullWidth() + m_indexCell->GetFullWidth() -
-            Scale_Px(2);
+  m_indexCell->RecalculateList({MC_MIN_SIZE, fontsize - SUB_DEC});
+  m_width =
+      m_baseCell->GetFullWidth() + m_indexCell->GetFullWidth() - Scale_Px(2);
   m_height = m_baseCell->GetHeightList() + m_indexCell->GetHeightList() -
              Scale_Px(.8 * fontsize + MC_EXP_INDENT);
   m_center = m_baseCell->GetCenter();
   Cell::Recalculate(fontsize);
 }
 
-void SubCell::Draw(wxPoint point)
-{
+void SubCell::Draw(wxPoint point) {
   Cell::Draw(point);
-  if (DrawThisCell(point))
-  {
+  if (DrawThisCell(point)) {
     wxPoint bs, in;
 
     bs.x = point.x;
@@ -75,15 +71,13 @@ void SubCell::Draw(wxPoint point)
     m_baseCell->DrawList(bs);
 
     in.x = point.x + m_baseCell->GetFullWidth() - Scale_Px(2);
-    in.y = point.y + m_baseCell->GetMaxDrop() +
-           m_indexCell->GetCenterList() -
+    in.y = point.y + m_baseCell->GetMaxDrop() + m_indexCell->GetCenterList() -
            .8 * m_fontSize_Scaled + MC_EXP_INDENT;
     m_indexCell->DrawList(in);
   }
 }
 
-wxString SubCell::ToString() const
-{
+wxString SubCell::ToString() const {
   if (m_altCopyText != wxEmptyString)
     return m_altCopyText;
 
@@ -96,24 +90,21 @@ wxString SubCell::ToString() const
   return s;
 }
 
-wxString SubCell::ToMatlab() const
-{
-  if (m_altCopyText != wxEmptyString)
-  {
-	return m_altCopyText;
+wxString SubCell::ToMatlab() const {
+  if (m_altCopyText != wxEmptyString) {
+    return m_altCopyText;
   }
 
   wxString s;
   if (m_baseCell->IsCompound())
-	s += wxT("(") + m_baseCell->ListToMatlab() + wxT(")");
+    s += wxT("(") + m_baseCell->ListToMatlab() + wxT(")");
   else
-	s += m_baseCell->ListToMatlab();
+    s += m_baseCell->ListToMatlab();
   s += wxT("[") + m_indexCell->ListToMatlab() + wxT("]");
   return s;
 }
 
-wxString SubCell::ToTeX() const
-{
+wxString SubCell::ToTeX() const {
   wxString s;
   wxString base = m_baseCell->ListToTeX();
   wxString index = m_indexCell->ListToTeX();
@@ -128,29 +119,25 @@ wxString SubCell::ToTeX() const
   return s;
 }
 
-wxString SubCell::ToMathML() const
-{
-  return wxT("<msub>") +
-         m_baseCell->ListToMathML() +
-         m_indexCell->ListToMathML() +
-         wxT("</msub>\n");
+wxString SubCell::ToMathML() const {
+  return wxT("<msub>") + m_baseCell->ListToMathML() +
+         m_indexCell->ListToMathML() + wxT("</msub>\n");
 }
 
-wxString SubCell::ToOMML() const
-{
-  return wxT("<m:sSub><m:e>") + m_baseCell->ListToOMML() + wxT("</m:e><m:sub>") +
-         m_indexCell->ListToOMML() + wxT("</m:sub></m:sSub>\n");
+wxString SubCell::ToOMML() const {
+  return wxT("<m:sSub><m:e>") + m_baseCell->ListToOMML() +
+         wxT("</m:e><m:sub>") + m_indexCell->ListToOMML() +
+         wxT("</m:sub></m:sSub>\n");
 }
 
-wxString SubCell::ToXML() const
-{
+wxString SubCell::ToXML() const {
   wxString flags;
   if (HasHardLineBreak())
     flags += wxT(" breakline=\"true\"");
 
   if (m_altCopyText != wxEmptyString)
     flags += wxT(" altCopy=\"") + XMLescape(m_altCopyText) + wxT("\"");
-  
-  return wxT("<i") + flags + wxT("><r>") + m_baseCell->ListToXML() + wxT("</r><r>") +
-           m_indexCell->ListToXML() + wxT("</r></i>");
+
+  return wxT("<i") + flags + wxT("><r>") + m_baseCell->ListToXML() +
+         wxT("</r><r>") + m_indexCell->ListToXML() + wxT("</r></i>");
 }

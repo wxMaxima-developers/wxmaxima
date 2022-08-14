@@ -1,4 +1,5 @@
-// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode:
+// nil -*-
 //
 //  Copyright (C) 2009-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2014-2016 Gunter Königsmann <wxMaxima@physikbuch.de>
@@ -23,43 +24,37 @@
 /*! \file
   This file defines the class CharacterButton
 
-  This file contains the definition of the class CharacterButton that allows to 
+  This file contains the definition of the class CharacterButton that allows to
   select arbitrary unicode symbols.
  */
 
 #include "ButtonWrapSizer.h"
 #include "UnicodeSidebar.h"
-#include <wx/sizer.h>
 #include <wx/settings.h>
-Buttonwrapsizer::Buttonwrapsizer(int orient) :
-  wxWrapSizer(orient)
-{
-}
+#include <wx/sizer.h>
+Buttonwrapsizer::Buttonwrapsizer(int orient) : wxWrapSizer(orient) {}
 
-void Buttonwrapsizer::RecalcSizes()
-{
+void Buttonwrapsizer::RecalcSizes() {
   wxSizerItemList children = GetChildren();
   long width = -1;
   long height = 20;
-  for (auto node = children.GetFirst(); node; node = node->GetNext())
-  {
-    wxSizerItem* current =  node->GetData();
+  for (auto node = children.GetFirst(); node; node = node->GetNext()) {
+    wxSizerItem *current = node->GetData();
     wxWindow *item = current->GetWindow();
     item->SendSizeEvent();
     width = wxMax(width, item->GetBestSize().x);
     height = wxMax(height, item->GetBestSize().y);
   }
 
-  if(width < 50)
+  if (width < 50)
     return;
-  
-//  if(width < m_availSize)
-//    width = m_availSize / (m_availSize / width);
-     
+
+  //  if(width < m_availSize)
+  //    width = m_availSize / (m_availSize / width);
+
   wxSize bestSize(width, height);
-  for (auto node = children.GetFirst(); node; node = node->GetNext())
-  {
-    wxSizerItem* current =  node->GetData();
+  for (auto node = children.GetFirst(); node; node = node->GetNext()) {
+    wxSizerItem *current = node->GetData();
     wxWindow *item = current->GetWindow();
     item->SetInitialSize(bestSize);
     item->SetMinSize(bestSize);
@@ -68,4 +63,3 @@ void Buttonwrapsizer::RecalcSizes()
   }
   wxWrapSizer::RecalcSizes();
 }
-

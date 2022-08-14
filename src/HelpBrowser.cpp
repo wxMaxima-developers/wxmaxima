@@ -1,4 +1,5 @@
-// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode:
+// nil -*-
 //
 //  Copyright (C) 2009-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //  Copyright (C) 2015-2019 Gunter Königsmann     <wxMaxima@physikbuch.de>
@@ -28,21 +29,18 @@
 
 #include "HelpBrowser.h"
 #include "WrappingStaticText.h"
+#include <wx/button.h>
 #include <wx/sizer.h>
 #include <wx/textctrl.h>
-#include <wx/button.h>
 #include <wx/wupdlock.h>
 #ifdef __WXMSW__
 #include <wx/msw/webview_ie.h>
 #endif
 
 HelpBrowser::HelpBrowser(wxWindow *parent, Configuration *configuration,
-                         MaximaManual *manual, wxString url):
-  wxPanel(parent, wxID_ANY),
-  m_maximaManual(manual),
-  m_configuration(configuration),
-  m_startUrl(url)
-{
+                         MaximaManual *manual, wxString url)
+    : wxPanel(parent, wxID_ANY), m_maximaManual(manual),
+      m_configuration(configuration), m_startUrl(url) {
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
   m_vbox = new wxBoxSizer(wxVERTICAL);
   m_browserPanel = new wxPanel(this, wxID_ANY);
@@ -55,122 +53,118 @@ HelpBrowser::HelpBrowser(wxWindow *parent, Configuration *configuration,
   vbox->Add(m_topicPanel, wxSizerFlags(1).Expand());
 
   SetSizer(vbox);
-  Connect(wxEVT_ACTIVATE, wxActivateEventHandler(HelpBrowser::OnActivate),NULL, this);
+  Connect(wxEVT_ACTIVATE, wxActivateEventHandler(HelpBrowser::OnActivate), NULL,
+          this);
   FitInside();
 }
 
-wxString HelpBrowser::GetKeyword(unsigned int id)
-{
-  if(id < wxID_HIGHEST + 8000)
+wxString HelpBrowser::GetKeyword(unsigned int id) {
+  if (id < wxID_HIGHEST + 8000)
     return wxEmptyString;
   id -= wxID_HIGHEST + 8000;
-  if(id > m_keywords.GetCount())
+  if (id > m_keywords.GetCount())
     return wxEmptyString;
   return m_keywords[id];
 }
 
-void HelpBrowser::OnActivate(wxActivateEvent &WXUNUSED(event))
-{
+void HelpBrowser::OnActivate(wxActivateEvent &WXUNUSED(event)) {
   CreateIfNeeded();
 }
 
-void HelpBrowser::OnTopicButton(wxCommandEvent& event)
-{
+void HelpBrowser::OnTopicButton(wxCommandEvent &event) {
   wxString keyword = GetKeyword(event.GetId());
-  if(!keyword.IsEmpty())
+  if (!keyword.IsEmpty())
     JumpToKeyword(keyword);
   else
     event.Skip();
 }
 
-void HelpBrowser::CreateIfNeeded()
-{
-  if(m_webView == NULL)
-  {
+void HelpBrowser::CreateIfNeeded() {
+  if (m_webView == NULL) {
     wxLogMessage(_("Instantiating the HTML manual browser"));
-    #ifdef __WXMSW__
+#ifdef __WXMSW__
     // Tell MSW not to emulate all bugs of Internet Explorer 7
     // (which hinder MathJaX from working)
     wxWebViewIE::MSWSetEmulationLevel();
-    #endif
+#endif
     m_webView = wxWebView::New(m_browserPanel, wxID_ANY, m_startUrl);
     m_webView->Connect(wxEVT_KEY_DOWN,
-                       wxCharEventHandler(HelpBrowser::OnWebviewKeyDown), NULL, m_browserPanel);
+                       wxCharEventHandler(HelpBrowser::OnWebviewKeyDown), NULL,
+                       m_browserPanel);
 
-    m_webView->SetMinSize(wxSize(GetContentScaleFactor()*100,GetContentScaleFactor()*100));
-    #ifdef __WXMSW__
-    // Don't emulate bugs in IE7
-    #endif
-    
+    m_webView->SetMinSize(
+        wxSize(GetContentScaleFactor() * 100, GetContentScaleFactor() * 100));
+#ifdef __WXMSW__
+// Don't emulate bugs in IE7
+#endif
+
     m_vbox->Add(m_webView, wxSizerFlags(1).Expand());
 
     auto *searchbox = new wxBoxSizer(wxHORIZONTAL);
-    m_searchText = new wxTextCtrl(m_browserPanel, wxID_ANY, wxEmptyString, wxDefaultPosition,
-                                  wxDefaultSize, wxTE_PROCESS_ENTER);
+    m_searchText =
+        new wxTextCtrl(m_browserPanel, wxID_ANY, wxEmptyString,
+                       wxDefaultPosition, wxDefaultSize, wxTE_PROCESS_ENTER);
     searchbox->Add(m_searchText, wxSizerFlags(1).Expand());
     m_webView->Connect(wxEVT_KEY_DOWN,
-                       wxCharEventHandler(HelpBrowser::OnSearchboxKeyDown), NULL, this);
+                       wxCharEventHandler(HelpBrowser::OnSearchboxKeyDown),
+                       NULL, this);
 
     m_searchText->Connect(wxEVT_TEXT_ENTER,
-                          wxCommandEventHandler(HelpBrowser::OnTextEnter),
-                          NULL, this);
+                          wxCommandEventHandler(HelpBrowser::OnTextEnter), NULL,
+                          this);
     Connect(wxID_FIND, wxEVT_MENU,
             wxCommandEventHandler(HelpBrowser::OnTextEnter), NULL, this);
-    Connect(wxEVT_BUTTON,
-            wxCommandEventHandler(HelpBrowser::OnTopicButton), NULL, this);
+    Connect(wxEVT_BUTTON, wxCommandEventHandler(HelpBrowser::OnTopicButton),
+            NULL, this);
     m_webView->Connect(wxID_FIND, wxEVT_MENU,
-            wxCommandEventHandler(HelpBrowser::OnTextEnter), NULL, this);
-    
+                       wxCommandEventHandler(HelpBrowser::OnTextEnter), NULL,
+                       this);
+
     wxButton *upbutton = new wxButton(m_browserPanel, wxID_UP);
-    upbutton->Connect(
-      wxEVT_BUTTON, wxCommandEventHandler(HelpBrowser::OnSearchUp), NULL, this);
+    upbutton->Connect(wxEVT_BUTTON,
+                      wxCommandEventHandler(HelpBrowser::OnSearchUp), NULL,
+                      this);
     searchbox->Add(upbutton, wxSizerFlags());
     wxButton *downbutton = new wxButton(m_browserPanel, wxID_DOWN);
-    downbutton->Connect(
-      wxEVT_BUTTON, wxCommandEventHandler(HelpBrowser::OnSearchDown), NULL, this);
+    downbutton->Connect(wxEVT_BUTTON,
+                        wxCommandEventHandler(HelpBrowser::OnSearchDown), NULL,
+                        this);
     searchbox->Add(downbutton, wxSizerFlags());
     m_vbox->Add(searchbox, wxSizerFlags().Expand());
   }
 }
 
-void HelpBrowser::OnSearchboxKeyDown(wxKeyEvent &event)
-{
-  if(event.ControlDown() && (event.GetUnicodeKey() == wxT('F')))
-  {
+void HelpBrowser::OnSearchboxKeyDown(wxKeyEvent &event) {
+  if (event.ControlDown() && (event.GetUnicodeKey() == wxT('F'))) {
     wxCommandEvent dummy;
     OnTextEnter(dummy);
-  }
-  else
+  } else
     event.Skip();
 }
 
-void HelpBrowser::OnWebviewKeyDown(wxKeyEvent &event)
-{
-  if(event.ControlDown() && (event.GetUnicodeKey() == wxT('F')))
+void HelpBrowser::OnWebviewKeyDown(wxKeyEvent &event) {
+  if (event.ControlDown() && (event.GetUnicodeKey() == wxT('F')))
     m_searchText->SetFocus();
   else
     event.Skip();
 }
 
-bool HelpBrowser::AllowOnlineManualP()
-{
-  if(m_configuration->AllowNetworkHelp())
+bool HelpBrowser::AllowOnlineManualP() {
+  if (m_configuration->AllowNetworkHelp())
     return true;
-  
+
   LoggingMessageDialog dialog(this,
                               _("Allow to access a online manual for maxima?"),
                               "Manual", wxCENTER | wxYES_NO | wxCANCEL);
-  
+
   dialog.SetExtendedMessage(_("Didn't find an installed offline manual."));
-  
+
   int result = dialog.ShowModal();
 
-  if(result == wxID_CANCEL)
+  if (result == wxID_CANCEL)
     return false;
 
- 
-  if(result == wxID_YES)
-  {
+  if (result == wxID_YES) {
     m_configuration->AllowNetworkHelp(true);
     return true;
   }
@@ -179,87 +173,78 @@ bool HelpBrowser::AllowOnlineManualP()
   return false;
 }
 
-void HelpBrowser::JumpToKeyword(wxString keyword)
-{
+void HelpBrowser::JumpToKeyword(wxString keyword) {
   wxWindowUpdateLocker speedUp(this);
   wxString maximaHelpURL = m_maximaManual->GetHelpfileURL(keyword);
   m_topicPanel->Show(false);
-  
+
   wxBusyCursor crs;
-  if(!maximaHelpURL.IsEmpty())
-  {
-    wxLogMessage(wxString::Format(_("Opening help file %s"),maximaHelpURL.utf8_str()));
+  if (!maximaHelpURL.IsEmpty()) {
+    wxLogMessage(
+        wxString::Format(_("Opening help file %s"), maximaHelpURL.utf8_str()));
     SetURL(maximaHelpURL);
-  }
-  else
-  {
-    if(AllowOnlineManualP())
-    {
-      wxLogMessage(_(wxT("No offline manual found => Redirecting to the Maxima homepage")));
-      SetURL("https://maxima.sourceforge.io/docs/manual/maxima_singlepage.html#"+keyword);
+  } else {
+    if (AllowOnlineManualP()) {
+      wxLogMessage(_(wxT(
+          "No offline manual found => Redirecting to the Maxima homepage")));
+      SetURL(
+          "https://maxima.sourceforge.io/docs/manual/maxima_singlepage.html#" +
+          keyword);
     }
   }
   m_browserPanel->Show(true);
   Layout();
 }
 
-void HelpBrowser::SelectKeywords(wxArrayString keywords)
-{
+void HelpBrowser::SelectKeywords(wxArrayString keywords) {
   wxWindowUpdateLocker speedUp(this);
-  if(keywords.GetCount() == 0)
+  if (keywords.GetCount() == 0)
     return;
 
-  if(keywords.GetCount() == 1)
-  {
+  if (keywords.GetCount() == 1) {
     JumpToKeyword(keywords[0]);
     return;
   }
-  
+
   m_browserPanel->Show(false);
   m_topicPanel->DestroyChildren();
   m_topicSizer->Add(
-    new WrappingStaticText(m_topicPanel, wxID_ANY,
-                           _("Choose between the following help topics:")),
-    wxSizerFlags());
+      new WrappingStaticText(m_topicPanel, wxID_ANY,
+                             _("Choose between the following help topics:")),
+      wxSizerFlags());
   int id = 6000 + wxID_HIGHEST;
 
-  
   m_keywords = keywords;
-  for(auto i:keywords)
-  {
-    m_topicSizer->Add(
-      new wxButton(m_topicPanel, id++, i),
-    wxSizerFlags().Expand());
+  for (auto i : keywords) {
+    m_topicSizer->Add(new wxButton(m_topicPanel, id++, i),
+                      wxSizerFlags().Expand());
   }
   m_topicPanel->Show(true);
   Layout();
 }
 
-void HelpBrowser::SetURL(wxString url)
-{
+void HelpBrowser::SetURL(wxString url) {
   CreateIfNeeded();
   m_browserPanel->Show(true);
   m_topicPanel->Show(false);
   m_webView->LoadURL(url);
 }
 
-void HelpBrowser::OnTextEnter(wxCommandEvent& event)
-{
+void HelpBrowser::OnTextEnter(wxCommandEvent &event) {
   wxWebViewFindFlags flags = wxWEBVIEW_FIND_DEFAULT;
-  if(!m_findDown)
+  if (!m_findDown)
     flags = wxWEBVIEW_FIND_BACKWARDS;
   wxString searchString = m_searchText->GetValue();
   m_webView->Find(searchString, flags);
   event.Skip();
 }
 
-void HelpBrowser::OnSearchUp(wxCommandEvent& WXUNUSED(event))
-{
+void HelpBrowser::OnSearchUp(wxCommandEvent &WXUNUSED(event)) {
   m_findDown = false;
-  m_webView->Find(m_searchText->GetValue(), wxWEBVIEW_FIND_DEFAULT| wxWEBVIEW_FIND_BACKWARDS);
+  m_webView->Find(m_searchText->GetValue(),
+                  wxWEBVIEW_FIND_DEFAULT | wxWEBVIEW_FIND_BACKWARDS);
 }
-void HelpBrowser::OnSearchDown(wxCommandEvent& WXUNUSED(event))
-{
+void HelpBrowser::OnSearchDown(wxCommandEvent &WXUNUSED(event)) {
   m_findDown = true;
   m_webView->Find(m_searchText->GetValue(), wxWEBVIEW_FIND_DEFAULT);
 }

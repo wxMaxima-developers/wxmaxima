@@ -1,4 +1,5 @@
-// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode:
+// nil -*-
 //
 //  Copyright (C) 2020      Kuba Ober <kuba@bertec.com>
 //
@@ -22,25 +23,22 @@
 #include "CellList.h"
 #include "GroupCell.h"
 
-void CellListBuilderBase::base_Append(std::unique_ptr<Cell> &&cells)
-{
+void CellListBuilderBase::base_Append(std::unique_ptr<Cell> &&cells) {
   m_lastAppended = cells.get();
   if (!cells)
     return;
 
-  if (!m_head)
-  {
+  if (!m_head) {
     m_head = std::move(cells);
     m_tail = m_head.get();
-  }
-  else
+  } else
     CellList::AppendCell(m_tail, std::move(cells));
 
   m_tail = m_tail->last();
 }
 
-Cell *CellListBuilderBase::base_DynamicAppend(std::unique_ptr<Cell> &&cells, Cell *(*caster)(Cell *))
-{
+Cell *CellListBuilderBase::base_DynamicAppend(std::unique_ptr<Cell> &&cells,
+                                              Cell *(*caster)(Cell *)) {
   for (Cell &cell : OnList(cells.get()))
     if (!caster(&cell))
       return {};
@@ -52,15 +50,16 @@ Cell *CellListBuilderBase::base_DynamicAppend(std::unique_ptr<Cell> &&cells, Cel
 
 //
 
-void CellList::Check(const Cell *c)
-{
-  if (!c) return;
-  wxASSERT_MSG(!c->m_next || c->m_next->m_previous == c, "Bug: The successor cell's predecessor is invalid.");
-  wxASSERT_MSG(!c->m_previous || c->m_previous->m_next.get() == c, "Bug: The predecessor cell's successor is invalid.");
+void CellList::Check(const Cell *c) {
+  if (!c)
+    return;
+  wxASSERT_MSG(!c->m_next || c->m_next->m_previous == c,
+               "Bug: The successor cell's predecessor is invalid.");
+  wxASSERT_MSG(!c->m_previous || c->m_previous->m_next.get() == c,
+               "Bug: The predecessor cell's successor is invalid.");
 }
 
-std::unique_ptr<Cell> CellList::SetNext(Cell *c, std::unique_ptr<Cell> &&next)
-{
+std::unique_ptr<Cell> CellList::SetNext(Cell *c, std::unique_ptr<Cell> &&next) {
   using std::swap;
   if (next)
     Check(next.get());
@@ -83,17 +82,15 @@ std::unique_ptr<Cell> CellList::SetNext(Cell *c, std::unique_ptr<Cell> &&next)
   return std::move(next);
 }
 
-void CellList::DeleteList(Cell *afterMe)
-{
-  for (auto next = std::move(afterMe->m_next); next; next = std::move(next->m_next))
-  {
+void CellList::DeleteList(Cell *afterMe) {
+  for (auto next = std::move(afterMe->m_next); next;
+       next = std::move(next->m_next)) {
     next->m_previous = nullptr;
     // next's destructor will run next, and it will see correct, null m_previous
   }
 }
 
-void CellList::AppendCell(Cell *c, std::unique_ptr<Cell> &&head)
-{
+void CellList::AppendCell(Cell *c, std::unique_ptr<Cell> &&head) {
   Check(c);
   if (!head)
     return;
@@ -121,8 +118,8 @@ void CellList::AppendCell(Cell *c, std::unique_ptr<Cell> &&head)
     lastToDraw->SetNextToDraw(next);
 }
 
-CellList::SplicedIn CellList::SpliceInAfter(Cell *where, std::unique_ptr<Cell> &&head, Cell *last)
-{
+CellList::SplicedIn
+CellList::SpliceInAfter(Cell *where, std::unique_ptr<Cell> &&head, Cell *last) {
   if (!where)
     return {};
   Check(where);
@@ -137,7 +134,8 @@ CellList::SplicedIn CellList::SpliceInAfter(Cell *where, std::unique_ptr<Cell> &
   if (!last)
     last = head->last();
   wxASSERT(last);
-  wxASSERT_MSG(!last->m_next, "Bug: SpliceIn::last has a successor, it will be deleted.");
+  wxASSERT_MSG(!last->m_next,
+               "Bug: SpliceIn::last has a successor, it will be deleted.");
 
   // We're explicitly splicing into the draw list as well
   // - preserve the draw list.
@@ -155,9 +153,9 @@ CellList::SplicedIn CellList::SpliceInAfter(Cell *where, std::unique_ptr<Cell> &
   return {last};
 }
 
-CellList::TornOut CellList::TearOut(Cell *first, Cell *last)
-{
-  if (!first || !last) return {};
+CellList::TornOut CellList::TearOut(Cell *first, Cell *last) {
+  if (!first || !last)
+    return {};
 
   Check(first);
   Check(last);
@@ -166,13 +164,10 @@ CellList::TornOut CellList::TearOut(Cell *first, Cell *last)
   retval.cell = first;
 
   auto *const previous = first->m_previous;
-  if (previous)
-  {
+  if (previous) {
     retval.cellOwner = SetNext(previous, SetNext(last, nullptr));
     Check(previous);
-  }
-  else
-  {
+  } else {
     retval.tailOwner = SetNext(last, nullptr);
     Check(retval.tailOwner.get());
   }

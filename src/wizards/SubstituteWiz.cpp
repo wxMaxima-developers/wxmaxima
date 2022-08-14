@@ -1,4 +1,5 @@
-// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode:
+// nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //
@@ -21,13 +22,10 @@
 
 #include "SubstituteWiz.h"
 
-
-SubstituteWiz::SubstituteWiz(wxWindow *parent, int id,
-                             Configuration *cfg,
-                             const wxString &title,
-                             const wxPoint &pos, const wxSize &size, long style) :
-        wxDialog(parent, id, title, pos, size, style)
-{
+SubstituteWiz::SubstituteWiz(wxWindow *parent, int id, Configuration *cfg,
+                             const wxString &title, const wxPoint &pos,
+                             const wxSize &size, long style)
+    : wxDialog(parent, id, title, pos, size, style) {
   label_2 = new wxStaticText(this, -1, _("Expression:"));
   text_ctrl_1 = new BTextCtrl(this, -1, cfg, wxT("%"), wxDefaultPosition,
                               wxSize(230, -1));
@@ -51,9 +49,7 @@ SubstituteWiz::SubstituteWiz(wxWindow *parent, int id,
   do_layout();
 }
 
-
-void SubstituteWiz::set_properties()
-{
+void SubstituteWiz::set_properties() {
   SetTitle(_("Substitute"));
 #if defined __WXMSW__
   button_1->SetDefault();
@@ -64,17 +60,18 @@ void SubstituteWiz::set_properties()
   text_ctrl_1->SetFocus();
 }
 
-
-void SubstituteWiz::do_layout()
-{
+void SubstituteWiz::do_layout() {
   wxFlexGridSizer *grid_sizer_1 = new wxFlexGridSizer(3, 1, 0, 0);
   wxBoxSizer *sizer_1 = new wxBoxSizer(wxHORIZONTAL);
   wxFlexGridSizer *grid_sizer_2 = new wxFlexGridSizer(4, 2, 0, 0);
-  grid_sizer_2->Add(label_2, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
+  grid_sizer_2->Add(label_2, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL,
+                    5);
   grid_sizer_2->Add(text_ctrl_1, 0, wxALL | wxEXPAND, 5);
-  grid_sizer_2->Add(label_3, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
+  grid_sizer_2->Add(label_3, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL,
+                    5);
   grid_sizer_2->Add(text_ctrl_2, 0, wxALL | wxEXPAND, 5);
-  grid_sizer_2->Add(label_4, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
+  grid_sizer_2->Add(label_4, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL,
+                    5);
   grid_sizer_2->Add(text_ctrl_3, 0, wxALL | wxEXPAND, 5);
   grid_sizer_2->Add(20, 20, 0, 0);
   grid_sizer_2->Add(checkbox_1, 0, wxALL, 5);
@@ -92,8 +89,7 @@ void SubstituteWiz::do_layout()
   Layout();
 }
 
-wxString SubstituteWiz::GetValue()
-{
+wxString SubstituteWiz::GetValue() {
   wxString val;
   if (checkbox_1->IsChecked())
     val = wxT("ratsubst(");

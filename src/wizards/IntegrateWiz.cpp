@@ -1,4 +1,5 @@
-// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode:
+// nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //
@@ -23,12 +24,10 @@
 
 #include <wx/config.h>
 
-IntegrateWiz::IntegrateWiz(wxWindow *parent, int id,
-                           Configuration *cfg,
+IntegrateWiz::IntegrateWiz(wxWindow *parent, int id, Configuration *cfg,
                            const wxString &title, const wxPoint &pos,
-                           const wxSize &size, long style) :
-        wxDialog(parent, id, title, pos, size, style)
-{
+                           const wxSize &size, long style)
+    : wxDialog(parent, id, title, pos, size, style) {
   label_2 = new wxStaticText(this, -1, _("Expression:"));
   text_ctrl_1 = new BTextCtrl(this, -1, cfg, wxEmptyString, wxDefaultPosition,
                               wxSize(230, -1));
@@ -47,8 +46,8 @@ IntegrateWiz::IntegrateWiz(wxWindow *parent, int id,
   checkbox_2 = new wxCheckBox(this, numeric_id, _("&Numerical integration"));
   label_6 = new wxStaticText(this, -1, _("Method:"));
   wxString numeric_methods[] = {wxT("quadpack"), wxT("romberg")};
-  choice_1 = new wxChoice(this, -1, wxDefaultPosition, wxDefaultSize,
-                          2, numeric_methods);
+  choice_1 = new wxChoice(this, -1, wxDefaultPosition, wxDefaultSize, 2,
+                          numeric_methods);
   static_line_1 = new wxStaticLine(this, -1);
 #if defined __WXMSW__
   button_1 = new wxButton(this, wxID_OK, _("OK"));
@@ -62,9 +61,7 @@ IntegrateWiz::IntegrateWiz(wxWindow *parent, int id,
   do_layout();
 }
 
-
-void IntegrateWiz::set_properties()
-{
+void IntegrateWiz::set_properties() {
   SetTitle(_("Integrate"));
 #if defined __WXMSW__
   button_1->SetDefault();
@@ -86,33 +83,36 @@ void IntegrateWiz::set_properties()
   text_ctrl_1->SetFocus();
 }
 
-
-void IntegrateWiz::do_layout()
-{
+void IntegrateWiz::do_layout() {
   wxFlexGridSizer *grid_sizer_3 = new wxFlexGridSizer(3, 1, 0, 0);
   wxBoxSizer *sizer_3 = new wxBoxSizer(wxHORIZONTAL);
   wxFlexGridSizer *grid_sizer_4 = new wxFlexGridSizer(7, 2, 0, 0);
   wxFlexGridSizer *grid_sizer_6 = new wxFlexGridSizer(1, 2, 0, 0);
   wxFlexGridSizer *grid_sizer_5 = new wxFlexGridSizer(1, 2, 0, 0);
-  grid_sizer_4->Add(label_2, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
+  grid_sizer_4->Add(label_2, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL,
+                    5);
   grid_sizer_4->Add(text_ctrl_1, 0, wxALL, 5);
-  grid_sizer_4->Add(label_3, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
+  grid_sizer_4->Add(label_3, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL,
+                    5);
   grid_sizer_4->Add(text_ctrl_2, 0, wxALL, 5);
   grid_sizer_4->Add(20, 20, 0, 0);
   grid_sizer_4->Add(checkbox_1, 0, wxALL, 5);
-  grid_sizer_4->Add(label_4, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
+  grid_sizer_4->Add(label_4, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL,
+                    5);
   grid_sizer_5->Add(text_ctrl_3, 0, wxALL | wxEXPAND, 5);
   grid_sizer_5->Add(button_3, 0, wxALL, 5);
   grid_sizer_5->AddGrowableCol(0);
   grid_sizer_4->Add(grid_sizer_5, 1, 0, 0);
-  grid_sizer_4->Add(label_5, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
+  grid_sizer_4->Add(label_5, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL,
+                    5);
   grid_sizer_6->Add(text_ctrl_4, 0, wxALL | wxEXPAND, 5);
   grid_sizer_6->Add(button_4, 0, wxALL, 5);
   grid_sizer_6->AddGrowableCol(0);
   grid_sizer_4->Add(grid_sizer_6, 1, 0, 0);
   grid_sizer_4->Add(20, 20, 0, 0);
   grid_sizer_4->Add(checkbox_2, 0, wxALL, 5);
-  grid_sizer_4->Add(label_6, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
+  grid_sizer_4->Add(label_6, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL,
+                    5);
   grid_sizer_4->Add(choice_1, 0, wxALL, 5);
   grid_sizer_3->Add(grid_sizer_4, 1, wxEXPAND, 0);
   grid_sizer_3->Add(static_line_1, 0, wxEXPAND | wxLEFT | wxRIGHT, 2);
@@ -126,61 +126,37 @@ void IntegrateWiz::do_layout()
   Layout();
 }
 
-wxString IntegrateWiz::GetValue()
-{
+wxString IntegrateWiz::GetValue() {
   wxString s;
-  if (checkbox_2->GetValue())
-  {
-    if (choice_1->GetSelection() == 1)
-    {
+  if (checkbox_2->GetValue()) {
+    if (choice_1->GetSelection() == 1) {
       wxConfig::Get()->Write(wxT("Wiz/Int/numericSelection"), 1);
-      s = wxT("romberg(") +
-          text_ctrl_1->GetValue() +
-          wxT(", ") +
-          text_ctrl_2->GetValue() +
-          wxT(", ") +
-          text_ctrl_3->GetValue() +
-          wxT(", ") +
-          text_ctrl_4->GetValue() +
-          wxT(");");
-    }
-    else
-    {
+      s = wxT("romberg(") + text_ctrl_1->GetValue() + wxT(", ") +
+          text_ctrl_2->GetValue() + wxT(", ") + text_ctrl_3->GetValue() +
+          wxT(", ") + text_ctrl_4->GetValue() + wxT(");");
+    } else {
       wxConfig::Get()->Write(wxT("Wiz/Int/numericSelection"), 0);
       wxString from = text_ctrl_3->GetValue();
       wxString to = text_ctrl_4->GetValue();
       if (from == wxT("minf") && to == wxT("inf"))
-        s = wxT("quad_qagi(") +
-            text_ctrl_1->GetValue() + wxT(", ") +
+        s = wxT("quad_qagi(") + text_ctrl_1->GetValue() + wxT(", ") +
             text_ctrl_2->GetValue() + wxT(", 0, 'both);");
       else if (from == wxT("minf"))
-        s = wxT("quad_qagi(") +
-            text_ctrl_1->GetValue() + wxT(", ") +
-            text_ctrl_2->GetValue() + wxT(", ") +
-            to + wxT(", minf);");
+        s = wxT("quad_qagi(") + text_ctrl_1->GetValue() + wxT(", ") +
+            text_ctrl_2->GetValue() + wxT(", ") + to + wxT(", minf);");
       else if (to == wxT("inf"))
-        s = wxT("quad_qagi(") +
-            text_ctrl_1->GetValue() + wxT(", ") +
-            text_ctrl_2->GetValue() + wxT(", ") +
-            from + wxT(", inf);");
+        s = wxT("quad_qagi(") + text_ctrl_1->GetValue() + wxT(", ") +
+            text_ctrl_2->GetValue() + wxT(", ") + from + wxT(", inf);");
       else
-        s = wxT("quad_qags(") +
-            text_ctrl_1->GetValue() + wxT(", ") +
-            text_ctrl_2->GetValue() + wxT(", ") +
-            from + wxT(", ") + to + wxT(");");
+        s = wxT("quad_qags(") + text_ctrl_1->GetValue() + wxT(", ") +
+            text_ctrl_2->GetValue() + wxT(", ") + from + wxT(", ") + to +
+            wxT(");");
     }
-  }
-  else
-  {
-    s = wxT("integrate(") +
-        text_ctrl_1->GetValue() +
-        wxT(", ") +
+  } else {
+    s = wxT("integrate(") + text_ctrl_1->GetValue() + wxT(", ") +
         text_ctrl_2->GetValue();
-    if (checkbox_1->GetValue())
-    {
-      s += wxT(", ") +
-           text_ctrl_3->GetValue() +
-           wxT(", ") +
+    if (checkbox_1->GetValue()) {
+      s += wxT(", ") + text_ctrl_3->GetValue() + wxT(", ") +
            text_ctrl_4->GetValue();
     }
     s += wxT(");");
@@ -189,8 +165,7 @@ wxString IntegrateWiz::GetValue()
   return s;
 }
 
-void IntegrateWiz::OnCheckbox(wxCommandEvent &WXUNUSED(event))
-{
+void IntegrateWiz::OnCheckbox(wxCommandEvent &WXUNUSED(event)) {
   bool enable = checkbox_1->GetValue();
 
   text_ctrl_3->Enable(enable);
@@ -203,54 +178,44 @@ void IntegrateWiz::OnCheckbox(wxCommandEvent &WXUNUSED(event))
   choice_1->Enable(enable);
 }
 
-void IntegrateWiz::OnButton(wxCommandEvent &event)
-{
-  switch (event.GetId())
-  {
-    case special_from:
-    {
-      wxString choices[] = {wxT("Pi"), wxT("E"), _("Infinity"),
-                            _("- Infinity")};
-      wxString choice = wxGetSingleChoice(_("Select a constant"),
-                                          _("Constant"), 4, choices, this);
-      if (choice.Length())
-      {
-        if (choice == wxT("Pi"))
-          text_ctrl_3->SetValue(wxT("%pi"));
-        else if (choice == wxT("E"))
-          text_ctrl_3->SetValue(wxT("%e"));
-        else if (choice == _("Infinity"))
-          text_ctrl_3->SetValue(wxT("inf"));
-        else if (choice == _("- Infinity"))
-          text_ctrl_3->SetValue(wxT("minf"));
-      }
+void IntegrateWiz::OnButton(wxCommandEvent &event) {
+  switch (event.GetId()) {
+  case special_from: {
+    wxString choices[] = {wxT("Pi"), wxT("E"), _("Infinity"), _("- Infinity")};
+    wxString choice = wxGetSingleChoice(_("Select a constant"), _("Constant"),
+                                        4, choices, this);
+    if (choice.Length()) {
+      if (choice == wxT("Pi"))
+        text_ctrl_3->SetValue(wxT("%pi"));
+      else if (choice == wxT("E"))
+        text_ctrl_3->SetValue(wxT("%e"));
+      else if (choice == _("Infinity"))
+        text_ctrl_3->SetValue(wxT("inf"));
+      else if (choice == _("- Infinity"))
+        text_ctrl_3->SetValue(wxT("minf"));
     }
-      break;
-    case special_to:
-    {
-      wxString choices[] = {wxT("Pi"), wxT("E"), _("Infinity"),
-                            _("- Infinity")};
-      wxString choice = wxGetSingleChoice(_("Select a constant"),
-                                          _("Constant"), 4, choices, this);
-      if (choice.Length())
-      {
-        if (choice == wxT("Pi"))
-          text_ctrl_4->SetValue(wxT("%pi"));
-        else if (choice == wxT("E"))
-          text_ctrl_4->SetValue(wxT("%e"));
-        else if (choice == _("Infinity"))
-          text_ctrl_4->SetValue(wxT("inf"));
-        else if (choice == _("- Infinity"))
-          text_ctrl_4->SetValue(wxT("minf"));
-      }
+  } break;
+  case special_to: {
+    wxString choices[] = {wxT("Pi"), wxT("E"), _("Infinity"), _("- Infinity")};
+    wxString choice = wxGetSingleChoice(_("Select a constant"), _("Constant"),
+                                        4, choices, this);
+    if (choice.Length()) {
+      if (choice == wxT("Pi"))
+        text_ctrl_4->SetValue(wxT("%pi"));
+      else if (choice == wxT("E"))
+        text_ctrl_4->SetValue(wxT("%e"));
+      else if (choice == _("Infinity"))
+        text_ctrl_4->SetValue(wxT("inf"));
+      else if (choice == _("- Infinity"))
+        text_ctrl_4->SetValue(wxT("minf"));
     }
-      break;
+  } break;
   }
 }
 
 wxBEGIN_EVENT_TABLE(IntegrateWiz, wxDialog)
-                EVT_BUTTON(special_from, IntegrateWiz::OnButton)
-                EVT_BUTTON(special_to, IntegrateWiz::OnButton)
-                EVT_CHECKBOX(definite_id, IntegrateWiz::OnCheckbox)
+    EVT_BUTTON(special_from, IntegrateWiz::OnButton)
+        EVT_BUTTON(special_to, IntegrateWiz::OnButton)
+            EVT_CHECKBOX(definite_id, IntegrateWiz::OnCheckbox)
                 EVT_CHECKBOX(numeric_id, IntegrateWiz::OnCheckbox)
-wxEND_EVENT_TABLE()
+                    wxEND_EVENT_TABLE()
