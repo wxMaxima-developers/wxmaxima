@@ -33,6 +33,8 @@
 #include "GroupCell.h"
 #include "TextCell.h"
 #include <wx/config.h>
+#include <utility>
+#include <memory>
 
 DiffCell::DiffCell(GroupCell *group, Configuration *config,
                    std::unique_ptr<Cell> &&base, std::unique_ptr<Cell> &&diff)

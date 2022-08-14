@@ -24,6 +24,7 @@
 #define DIFFCELL_H
 
 #include "Cell.h"
+#include <memory>
 
 class DiffCell final : public Cell
 {

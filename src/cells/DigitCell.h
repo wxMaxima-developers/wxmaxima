@@ -26,6 +26,7 @@
 
 #include <wx/regex.h>
 #include "TextCell.h"
+#include <memory>
 
 /*! A Text cell that display a digit of a more-than-one-line-wide number
  */

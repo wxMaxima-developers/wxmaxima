@@ -146,7 +146,6 @@ void EditorCell::AddDrawParameter(wxString param) {
 
 void EditorCell::SearchStartedHere(int index) const {
   m_cellPointers->m_cellSearchStartedIn = const_cast<EditorCell *>(this);
-  ;
   m_cellPointers->m_indexSearchStartedAt = index;
 }
 
@@ -201,7 +200,6 @@ wxString EditorCell::GetFullCommandUnderCursor() {
 
 wxString EditorCell::PrependNBSP(wxString input) {
   bool firstSpace = true;
-  ;
   wxString retval;
 
   input.Replace(wxT("\r"), wxT(" "));
@@ -312,12 +310,11 @@ wxString EditorCell::ToRTF() const {
     for (std::vector<StyledText>::const_iterator textSnippet =
 	   m_styledText.begin();
          textSnippet != m_styledText.end(); ++textSnippet) {
-
       wxString text = RTFescape(textSnippet->GetText());
 
       if (textSnippet->IsStyleSet()) {
         retval +=
-	  wxString::Format(wxT("\\cf%i "), (int)textSnippet->GetStyle());
+	  wxString::Format(wxT("\\cf%i "), static_cast<int>(textSnippet->GetStyle()));
         retval += RTFescape(textSnippet->GetText());
       } else {
         retval += wxString::Format(wxT("\\cf%i "), (int)TS_DEFAULT);

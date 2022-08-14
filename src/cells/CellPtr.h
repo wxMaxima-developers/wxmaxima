@@ -48,6 +48,7 @@
 
 #include <wx/debug.h>
 #include <wx/log.h>
+#include <utility>
 #include <cstddef>
 #include <cstdint>
 #include <cinttypes>
@@ -110,14 +111,14 @@ class Observed
     explicit ControlBlock(Observed *object) : m_object(object)
       {
 #if CELLPTR_COUNT_INSTANCES
-        ++ m_instanceCount;
+        ++m_instanceCount;
 #endif
         LogConstruct(object);
         wxASSERT(object);
       }
     ~ControlBlock() {
 #if CELLPTR_COUNT_INSTANCES
-      -- m_instanceCount;
+      --m_instanceCount;
 #endif
       LogDestruct();
     }
@@ -234,7 +235,7 @@ class Observed
 protected:
   Observed() noexcept
 #if CELLPTR_COUNT_INSTANCES
-    { ++ m_instanceCount; }
+    { ++m_instanceCount; }
 #else
   = default;
 #endif
@@ -242,7 +243,7 @@ protected:
     {
       if (m_ptr) OnEndOfLife();
 #if CELLPTR_COUNT_INSTANCES
-      -- m_instanceCount;
+      --m_instanceCount;
 #endif
     }
 
@@ -510,8 +511,8 @@ public:
   void reset() noexcept { base_reset(); }
   explicit CellPtr(decltype(nullptr)) noexcept {}
   CellPtr &operator=(decltype(nullptr)) noexcept { base_reset(); return *this; }
-  bool operator==(decltype(nullptr)) const noexcept { return !bool(*this); }
-  bool operator!=(decltype(nullptr)) const noexcept { return bool(*this); }
+  bool operator==(decltype(nullptr)) const noexcept { return !static_cast<bool>(*this); }
+  bool operator!=(decltype(nullptr)) const noexcept { return static_cast<bool>(*this); }
 
   // Operations with convertible-to-pointer types
   //

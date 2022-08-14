@@ -27,6 +27,8 @@
   conjugate() command.
 */
 
+#include <utility>
+#include <memory>
 #include "ConjugateCell.h"
 #include "CellImpl.h"
 

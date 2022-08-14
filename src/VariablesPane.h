@@ -111,7 +111,7 @@ private:
   //! The row that was right-clicked at
   int m_rightClickRow;
   //! Compares two integers.
-  static int CompareInt(int *int1, int *int2){return (*int1<*int2);}
+  static int CompareInt(int *int1, int *int2){return (*int1 < *int2);}
 };
 
 #endif // VARIABLESPANE_H

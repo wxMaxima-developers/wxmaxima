@@ -3942,7 +3942,9 @@ void Worksheet::OnCharNoActive(wxKeyEvent &event) {
           GroupCell *tmp = m_hCaretPosition;
           if (tmp->GetNext()) {
             do
-              tmp = tmp->GetNext();
+	      {
+		tmp = tmp->GetNext();
+	      }
             while (tmp->GetNext() &&
                    ((tmp->GetGroupType() != GC_TYPE_TITLE) &&
                     (tmp->GetGroupType() != GC_TYPE_SECTION) &&
