@@ -38,7 +38,7 @@
   This file declares the class Maximatokenizer.
 
   Maximatokenizer breaks down maxima input to individual commands.
- */
+*/
 
 /*! Maximatokenizer breaks down maxima input to individual commands.
  */
@@ -110,7 +110,7 @@ protected:
     an opening parenthesis as a function. But a few things like "then"
     are very similar to functions except that they don't require an
     argument. These fake functions are kept in this hash.
-   */
+  */
   static StringHash m_hardcodedFunctions;
 };
 

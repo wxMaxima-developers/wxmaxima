@@ -42,7 +42,7 @@ public:
 
   void Add(wxDataObject *object, bool preferred = false);
   wxDataObject *GetObject(const wxDataFormat& format,
-                                wxDataObjectBase::Direction dir = Get) const;
+                          wxDataObjectBase::Direction dir = Get) const;
   wxDataFormat GetPreferredFormat(Direction dir = Get) const override;
   void SetPreferredFormat(const wxDataFormat &format);
 
@@ -64,7 +64,7 @@ private:
     wxDataFormat format;
     std::shared_ptr<wxDataObject> object;
     Entry(const wxDataFormat &format, std::shared_ptr<wxDataObject> object) :
-        format(format), object(object) {}
+      format(format), object(object) {}
   };
   std::vector<Entry> m_entries;
   wxDataFormat m_preferredFormat;

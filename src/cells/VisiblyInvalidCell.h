@@ -28,7 +28,7 @@
 /*! A visibly invalid cell
 
   A placeholder that, if everything works as it should, is overridden, before it is displayed.
- */
+*/
 class VisiblyInvalidCell final : public TextCell
 {
 public:
@@ -45,9 +45,9 @@ private:
 //** Bitfield objects (0 bytes)
 //**
   void InitBitFields()
-  { // Keep the initialization order below same as the order
-    // of bit fields in this class!
-  }
+    { // Keep the initialization order below same as the order
+      // of bit fields in this class!
+    }
 };
 
 #endif // VISIBLYINVALIDCELL_H

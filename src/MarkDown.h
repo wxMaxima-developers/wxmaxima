@@ -54,10 +54,10 @@ protected:
     RegexReplacer(wxString from, const wxString &to) :
       wxRegEx(from),
       replaceBy(to)
-    {}
+      {}
 
     void DoReplace(wxString &line) const
-    { Replace(&line, replaceBy); }
+      { Replace(&line, replaceBy); }
 
   private:
     wxString replaceBy; //!< The thing we replace it with
@@ -93,28 +93,28 @@ public:
 
 private:
   virtual wxString quoteBegin() override
-  { return wxT("\\begin{quote}\n"); }
+    { return wxT("\\begin{quote}\n"); }
 
   virtual wxString quoteEnd() override
-  { return wxT("\\end{quote}\n"); }
+    { return wxT("\\end{quote}\n"); }
 
   virtual wxString quoteChar() override
-  { return wxT("\\ensuremath{>}"); }
+    { return wxT("\\ensuremath{>}"); }
 
   virtual wxString itemizeBegin() override
-  { return wxT("\\begin{itemize}\n"); }
+    { return wxT("\\begin{itemize}\n"); }
 
   virtual wxString itemizeEnd() override
-  { return wxT("\\end{itemize}\n"); }
+    { return wxT("\\end{itemize}\n"); }
 
   virtual wxString itemizeItem() override
-  { return wxT("\\item "); }
+    { return wxT("\\item "); }
 
   virtual wxString itemizeEndItem() override
-  { return wxEmptyString; }
+    { return wxEmptyString; }
 
   virtual wxString NewLine() override
-  { return wxT("\n\n"); }
+    { return wxT("\n\n"); }
 };
 
 //! A markdown parser for HTML
@@ -125,28 +125,28 @@ public:
 
 private:
   virtual wxString quoteChar() override
-  { return wxT("&gt;"); }
+    { return wxT("&gt;"); }
 
   virtual wxString quoteBegin() override
-  { return wxT("<blockquote>\n"); }
+    { return wxT("<blockquote>\n"); }
 
   virtual wxString quoteEnd() override
-  { return wxT("</blockquote>\n"); }
+    { return wxT("</blockquote>\n"); }
 
   virtual wxString itemizeBegin() override
-  { return wxT("<ul>\n"); }
+    { return wxT("<ul>\n"); }
 
   virtual wxString itemizeEnd() override
-  { return wxT("</ul>\n"); }
+    { return wxT("</ul>\n"); }
 
   virtual wxString itemizeItem() override
-  { return wxT("<li>"); }
+    { return wxT("<li>"); }
 
   virtual wxString itemizeEndItem() override
-  { return wxT("</li>\n"); }
+    { return wxT("</li>\n"); }
 
   virtual wxString NewLine() override
-  { return wxT("<br/>"); }
+    { return wxT("<br/>"); }
 };
 
 #endif // MARKDOWN_H

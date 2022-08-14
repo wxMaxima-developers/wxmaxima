@@ -1,7 +1,7 @@
 // -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode:
 // nil -*-
 //
-//            (C) 2015-2016 Gunter Königsmann <wxMaxima@physikbuch.de>
+//  Copyright (C) 2015-2016 Gunter Königsmann <wxMaxima@physikbuch.de>
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -25,7 +25,7 @@
 
   XmlInspector is a sidebar allows to view the communication between maxima
   and wxMaxima.
- */
+*/
 
 #include "XmlInspector.h"
 
@@ -33,10 +33,10 @@
 #include <wx/sizer.h>
 
 XmlInspector::XmlInspector(wxWindow *parent, int id)
-    : wxRichTextCtrl(parent, id, wxEmptyString, wxDefaultPosition,
-                     wxSize(wxSystemSettings::GetMetric(wxSYS_SCREEN_X) / 10,
-                            wxSystemSettings::GetMetric(wxSYS_SCREEN_Y) / 10),
-                     wxTE_READONLY | wxTE_RICH | wxHSCROLL | wxTE_MULTILINE) {
+  : wxRichTextCtrl(parent, id, wxEmptyString, wxDefaultPosition,
+		   wxSize(wxSystemSettings::GetMetric(wxSYS_SCREEN_X) / 10,
+			  wxSystemSettings::GetMetric(wxSYS_SCREEN_Y) / 10),
+		   wxTE_READONLY | wxTE_RICH | wxHSCROLL | wxTE_MULTILINE) {
   m_state = clear;
   m_indentLevel = 0;
   BeginSuppressUndo();
@@ -145,7 +145,7 @@ void XmlInspector::UpdateContents() {
     // so.
     if (length > 100000)
       wxLogMessage(wxString::Format(
-          _("Added much text (%li chars) to the XML inspector."), length));
+				    _("Added much text (%li chars) to the XML inspector."), length));
   }
 }
 

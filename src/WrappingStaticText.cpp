@@ -22,14 +22,14 @@
 
 /*! \file
   This file contains code to create a wxPanel containing image data.
- */
+*/
 
 #include "WrappingStaticText.h"
 #include <wx/sizer.h>
 #include <wx/wupdlock.h>
 
 WrappingStaticText::WrappingStaticText(wxWindow *parent, int id, wxString text)
-    : wxPanel(parent, -1), m_label(text) {
+  : wxPanel(parent, -1), m_label(text) {
   wxWindowUpdateLocker SpeedUp(this);
   m_textCtrl = new wxStaticText(this, id, text);
   m_textCtrl->Wrap(GetContentScaleFactor() * 50);
@@ -50,6 +50,6 @@ void WrappingStaticText::SetLabel(wxString const &value) {
 void WrappingStaticText::OnSize(wxSizeEvent &event) {
   m_textCtrl->SetLabel(m_label);
   m_textCtrl->Wrap(
-      wxMax(event.GetSize().GetWidth(), 50 * GetContentScaleFactor()));
+		   wxMax(event.GetSize().GetWidth(), 50 * GetContentScaleFactor()));
   event.Skip();
 }

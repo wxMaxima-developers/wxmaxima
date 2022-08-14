@@ -27,18 +27,18 @@
 
 /*! Renders portions of the work sheet (including 2D maths) as bitmap.
 
-   This is used for exporting HTML with embedded maths as bitmap
-   and for putting bitmaps for the clipboard
- */
+  This is used for exporting HTML with embedded maths as bitmap
+  and for putting bitmaps for the clipboard
+*/
 class BitmapOut final
 {
 public:
   /*! The constructor.
 
     \param scale By which factor the resolution should be increased in respect
-           to the default 755 DPI?
+    to the default 755 DPI?
     \param configuration A pointer to the pointer to this worksheet's configuration
-           storage
+    storage
   */
   explicit BitmapOut(Configuration **configuration, double scale = 1);
   //! Constructs and renders the bitmap, setting the IsOK() status accordingly.
@@ -49,10 +49,10 @@ public:
     
     \param tree The list of cells that is to be rendered
     \param maxSize maxSize tells the maximum size [in square pixels] that will be rendered. 
-           -1 means: No limit.
+    -1 means: No limit.
 
     \return true, if the bitmap could be created.
-   */
+  */
   bool Render(std::unique_ptr<Cell> &&tree, long int maxSize = -1);
 
   //! Returns whether the tree rendering succeeded.
@@ -61,7 +61,7 @@ public:
   /*! Exports this bitmap to a file
 
     \return The size of the bitmap in millimeters. Sizes <0 indicate that the export has failed.
-   */
+  */
   wxSize ToFile(const wxString &file);
 
   //! Returns the bitmap representation of the list of cells that was passed to SetData()

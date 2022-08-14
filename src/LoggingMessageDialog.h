@@ -21,7 +21,7 @@
 
 /*! \file
   This file declares a message dialog that sends its contents to the log message sink.
- */
+*/
 
 #ifndef LOGGINGMESSAGEDIALOG_H
 #define LOGGINGMESSAGEDIALOG_H
@@ -36,11 +36,11 @@
  */
 class LoggingMessageDialog : public wxMessageDialog
 {
- public:
- LoggingMessageDialog(wxWindow *parent, const wxString &message,
-                      const wxString &caption = wxMessageBoxCaptionStr,
-                      long style = wxOK|wxCENTRE, const wxPoint &pos = wxDefaultPosition):
-  wxMessageDialog (parent, message, caption, style, pos)
+public:
+  LoggingMessageDialog(wxWindow *parent, const wxString &message,
+                       const wxString &caption = wxMessageBoxCaptionStr,
+                       long style = wxOK|wxCENTRE, const wxPoint &pos = wxDefaultPosition):
+    wxMessageDialog (parent, message, caption, style, pos)
     {
       wxLogMessage(message);
     }
@@ -52,6 +52,6 @@ extern int LoggingMessageBox(   const wxString &        message,
                                 wxWindow *      parent = NULL,
                                 int     x = wxDefaultCoord,
                                 int     y = wxDefaultCoord 
-                                );
+  );
 
 #endif // LOGGINGMESSAGEDIALOG_H

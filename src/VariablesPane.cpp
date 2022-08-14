@@ -24,7 +24,7 @@
 #include <memory>
 
 Variablespane::Variablespane(wxWindow *parent, wxWindowID id)
-    : wxPanel(parent, id) {
+  : wxPanel(parent, id) {
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
   m_grid = new wxGrid(this, -1);
   m_grid->BeginBatch();
@@ -74,7 +74,6 @@ void Variablespane::OnChar(wxKeyEvent &event) {
 
 void Variablespane::OnKey(wxKeyEvent &event) {
   switch (event.GetKeyCode()) {
-
   case WXK_DELETE:
   case WXK_NUMPAD_DELETE: {
     if (m_grid->GetNumberRows() > 1) {

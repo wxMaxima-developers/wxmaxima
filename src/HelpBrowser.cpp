@@ -39,8 +39,8 @@
 
 HelpBrowser::HelpBrowser(wxWindow *parent, Configuration *configuration,
                          MaximaManual *manual, wxString url)
-    : wxPanel(parent, wxID_ANY), m_maximaManual(manual),
-      m_configuration(configuration), m_startUrl(url) {
+  : wxPanel(parent, wxID_ANY), m_maximaManual(manual),
+    m_configuration(configuration), m_startUrl(url) {
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
   m_vbox = new wxBoxSizer(wxVERTICAL);
   m_browserPanel = new wxPanel(this, wxID_ANY);
@@ -93,17 +93,17 @@ void HelpBrowser::CreateIfNeeded() {
                        m_browserPanel);
 
     m_webView->SetMinSize(
-        wxSize(GetContentScaleFactor() * 100, GetContentScaleFactor() * 100));
+			  wxSize(GetContentScaleFactor() * 100, GetContentScaleFactor() * 100));
 #ifdef __WXMSW__
-// Don't emulate bugs in IE7
+    // Don't emulate bugs in IE7
 #endif
 
     m_vbox->Add(m_webView, wxSizerFlags(1).Expand());
 
     auto *searchbox = new wxBoxSizer(wxHORIZONTAL);
     m_searchText =
-        new wxTextCtrl(m_browserPanel, wxID_ANY, wxEmptyString,
-                       wxDefaultPosition, wxDefaultSize, wxTE_PROCESS_ENTER);
+      new wxTextCtrl(m_browserPanel, wxID_ANY, wxEmptyString,
+		     wxDefaultPosition, wxDefaultSize, wxTE_PROCESS_ENTER);
     searchbox->Add(m_searchText, wxSizerFlags(1).Expand());
     m_webView->Connect(wxEVT_KEY_DOWN,
                        wxCharEventHandler(HelpBrowser::OnSearchboxKeyDown),
@@ -181,15 +181,15 @@ void HelpBrowser::JumpToKeyword(wxString keyword) {
   wxBusyCursor crs;
   if (!maximaHelpURL.IsEmpty()) {
     wxLogMessage(
-        wxString::Format(_("Opening help file %s"), maximaHelpURL.utf8_str()));
+		 wxString::Format(_("Opening help file %s"), maximaHelpURL.utf8_str()));
     SetURL(maximaHelpURL);
   } else {
     if (AllowOnlineManualP()) {
       wxLogMessage(_(wxT(
-          "No offline manual found => Redirecting to the Maxima homepage")));
+			 "No offline manual found => Redirecting to the Maxima homepage")));
       SetURL(
-          "https://maxima.sourceforge.io/docs/manual/maxima_singlepage.html#" +
-          keyword);
+	     "https://maxima.sourceforge.io/docs/manual/maxima_singlepage.html#" +
+	     keyword);
     }
   }
   m_browserPanel->Show(true);
@@ -209,9 +209,9 @@ void HelpBrowser::SelectKeywords(wxArrayString keywords) {
   m_browserPanel->Show(false);
   m_topicPanel->DestroyChildren();
   m_topicSizer->Add(
-      new WrappingStaticText(m_topicPanel, wxID_ANY,
-                             _("Choose between the following help topics:")),
-      wxSizerFlags());
+		    new WrappingStaticText(m_topicPanel, wxID_ANY,
+					   _("Choose between the following help topics:")),
+		    wxSizerFlags());
   int id = 6000 + wxID_HIGHEST;
 
   m_keywords = keywords;

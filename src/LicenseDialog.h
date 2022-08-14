@@ -22,7 +22,7 @@
 
 /*! \file
   This file declares all the wizards the draw sidepane needs.
- */
+*/
 
 #ifndef LICENSEDIALOG_H
 #define LICENSEDIALOG_H

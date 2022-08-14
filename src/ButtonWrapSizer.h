@@ -29,7 +29,7 @@
 
   This file contains the definition of the class Buttonwrapsizer that allows to 
   select arbitrary unicode symbols.
- */
+*/
 #include "precomp.h"
 #include <wx/wrapsizer.h>
 

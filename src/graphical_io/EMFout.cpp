@@ -23,7 +23,7 @@
 
 /*! \file
   This file defines the class Emfout that renders math as scalable emf graphics.
- */
+*/
 
 #include "EMFout.h"
 #include "Cell.h"
@@ -31,8 +31,8 @@
 #if wxUSE_ENH_METAFILE
 
 Emfout::Emfout(Configuration **configuration, const wxString &filename)
-    : m_cmn(configuration, filename, 500, 1.0),
-      m_recalculationDc(m_cmn.GetTempFilename(), 3000, 50000) {
+  : m_cmn(configuration, filename, 500, 1.0),
+    m_recalculationDc(m_cmn.GetTempFilename(), 3000, 50000) {
   m_cmn.SetRecalculationContext(m_recalculationDc);
   auto &config = m_cmn.GetConfiguration();
   config.SetContext(m_recalculationDc);
@@ -41,7 +41,7 @@ Emfout::Emfout(Configuration **configuration, const wxString &filename)
 
 Emfout::Emfout(Configuration **configuration, std::unique_ptr<Cell> &&tree,
                const wxString &filename)
-    : Emfout(configuration, filename) {
+  : Emfout(configuration, filename) {
   Render(std::move(tree));
 }
 
@@ -66,7 +66,7 @@ bool Emfout::Layout() {
   config.SetContext(dc);
   m_cmn.Draw(m_tree.get());
   m_metaFile.reset(
-      dc.Close()); // Closing the DC triggers the output of the file.
+		   dc.Close()); // Closing the DC triggers the output of the file.
   config.UnsetContext();
 
   return true;
@@ -74,7 +74,7 @@ bool Emfout::Layout() {
 
 std::unique_ptr<wxEnhMetaFileDataObject> Emfout::GetDataObject() const {
   return m_metaFile ? std::make_unique<wxEnhMetaFileDataObject>(*m_metaFile)
-                    : nullptr;
+    : nullptr;
 }
 
 bool Emfout::ToClipboard() { return m_metaFile && m_metaFile->SetClipboard(); }

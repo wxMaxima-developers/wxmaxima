@@ -79,7 +79,7 @@ class Cell;
   similar: Configuration::Get() will always return the last Configuration that was 
   created and therefore as long as the new configuration object exist will return
   a pointer to this object if configuration is needed.
- */
+*/
 class Configuration
 {
 public:
@@ -125,7 +125,7 @@ public:
 
   WX_DECLARE_STRING_HASH_MAP(int, StringHash);
   /*! All maxima operator names we know
-  */
+   */
   StringHash m_maximaOperators;
 
   const wxEnvVariableHashMap& MaximaEnvVars(){return m_maximaEnvVars;}
@@ -136,27 +136,27 @@ public:
 
   //! Set maxima's working directory
   void SetWorkingDirectory(wxString dir)
-  { m_workingdir = dir; }
+    { m_workingdir = dir; }
 
   wxString GetWorkingDirectory() const
-  { return m_workingdir; }
+    { return m_workingdir; }
 
   void ReadConfig();
 
   /*! The constructor
     
     \param dc The drawing context that is to be used for drawing objects
-   */
+  */
   explicit Configuration(wxDC *dc = {}, InitOpt options = {});
 
   void ResetAllToDefaults(InitOpt options = {});
 
   //! Set the drawing context that is currently active
   void SetContext(wxDC &dc)
-  {
-    m_dc = &dc;
-    m_antialiassingDC = NULL;
-  }
+    {
+      m_dc = &dc;
+      m_antialiassingDC = NULL;
+    }
   void UnsetContext() {m_dc = NULL;}
 
   void SetBackgroundBrush(wxBrush brush);
@@ -185,40 +185,40 @@ public:
   static EscCodeIterator EscCodesEnd();
 
   static double GetMinZoomFactor()
-  { return 0.1; }
+    { return 0.1; }
 
   static double GetMaxZoomFactor()
-  { return 32.0; }
+    { return 32.0; }
 
   /*! Extra space to leave between two equations in output cells.
 
     Extra space between equations is useful if we don't display labels that show
     which line begins a new equation and which line merely continues a multi-line
     equation.
-   */
+  */
   double GetInterEquationSkip() const 
-  {
-    if (ShowAutomaticLabels())
-      return 0;
-    else
-      return GetZoomFactor() * m_styles[TS_MATH].GetFontSize() / 2;
-  }
+    {
+      if (ShowAutomaticLabels())
+        return 0;
+      else
+        return GetZoomFactor() * m_styles[TS_MATH].GetFontSize() / 2;
+    }
 
   long GetCellBracketWidth() const
-  {
-    return static_cast<int>(GetZoomFactor() * 16);
-  }
+    {
+      return static_cast<int>(GetZoomFactor() * 16);
+    }
 
   //! Hide brackets that are not under the pointer?
   bool HideBrackets() const
-  { return m_hideBrackets; }
+    { return m_hideBrackets; }
 
   //! Define if we want to hide brackets that are not under the pointer.
   void HideBrackets(bool hide){m_hideBrackets = hide;}
 
   //! Hide brackets that are not under the pointer?
   double PrintScale() const
-  { return m_printScale; }
+    { return m_printScale; }
 
   //! Define if we want to hide brackets that are not under the pointer.
   void PrintScale(double scale){m_printScale = scale;}
@@ -234,17 +234,17 @@ public:
   /*! Scales a distance [in pixels] according to the zoom factor
 
     Is used for displaying/printing/exporting of text/maths.
-   */
+  */
   long Scale_Px(double px) const;
   AFontSize Scale_Px(AFontSize size) const;
 
   //! Determines the zoom factor the worksheet is displayed at
   double GetZoomFactor() const
-  { return m_zoomFactor; }
+    { return m_zoomFactor; }
 
   //! Get a drawing context suitable for size calculations
   wxDC *GetDC()
-  { return m_dc; }
+    { return m_dc; }
 
   //! Get a drawing context suitable for size calculations
   wxDC *GetAntialiassingDC()
@@ -268,7 +268,7 @@ public:
   bool IsUnderlined(long st) const {return m_styles[st].IsUnderlined();}
 
   long GetLabelWidth() const
-  { return m_labelWidth * 14; }
+    { return m_labelWidth * 14; }
 
   long LabelWidth() const
     { return m_labelWidth; }
@@ -277,12 +277,12 @@ public:
   
   //! Get the indentation of GroupCells.
   long GetIndent() const
-  {
-    if (m_indent < 0)
-      return 3 * GetCellBracketWidth() / 2;
-    else
-      return m_indent;
-  }
+    {
+      if (m_indent < 0)
+        return 3 * GetCellBracketWidth() / 2;
+      else
+        return m_indent;
+    }
 
   void SetPPI(wxSize ppi){m_ppi = ppi;}
   /*! Get the resolution 
@@ -296,52 +296,52 @@ public:
 
   //! How much vertical space is to be left between two group cells?
   long GetCursorWidth() const
-  {
-    long ppi;
+    {
+      long ppi;
 
-    if(!m_printing)
-      ppi = GetPPI().x;
-    else
-      ppi = 96;
+      if(!m_printing)
+        ppi = GetPPI().x;
+      else
+        ppi = 96;
 
-    if (ppi / 45 < 1)
-      return 1;
-    else
-      return ppi / 45;
-  }
+      if (ppi / 45 < 1)
+        return 1;
+      else
+        return ppi / 45;
+    }
   
   //! The y position the worksheet starts at
   long GetBaseIndent() const
-  {
-    if (GetCursorWidth() < 12)
-      return 12;
-    else
-      return 4 + GetCursorWidth();
-  }
+    {
+      if (GetCursorWidth() < 12)
+        return 12;
+      else
+        return 4 + GetCursorWidth();
+    }
 
   //! The vertical space between GroupCells
   long GetGroupSkip() const
-  {
-    if (GetCursorWidth() < 10)
-      return 20;
-    else
-      return 10 + GetCursorWidth();
-  }
+    {
+      if (GetCursorWidth() < 10)
+        return 20;
+      else
+        return 10 + GetCursorWidth();
+    }
 
   /*! Set the indentation of GroupCells
 
     Normally this parameter is automatically calculated
-   */
+  */
   void SetIndent(long indent)
-  {
-    m_indent = indent;
-  }
+    {
+      m_indent = indent;
+    }
 
   //! Set the width of the visible window for GetClientWidth()
   void SetClientWidth(long width)
-  {
-    m_clientWidth = width;
-  }
+    {
+      m_clientWidth = width;
+    }
 
   bool IncrementalSearch() const {return m_incrementalSearch;}
 
@@ -363,40 +363,40 @@ public:
   
   //! Set the height of the visible window for GetClientHeight()
   void SetClientHeight(long height)
-  { m_clientHeight = height; }
+    { m_clientHeight = height; }
 
   //! Returns the width of the visible portion of the worksheet
   long GetClientWidth() const
-  { return m_clientWidth; }
+    { return m_clientWidth; }
 
   //! Returns the height of the visible portion of the worksheet
   long GetClientHeight() const
-  { return m_clientHeight; }
+    { return m_clientHeight; }
 
   //! Calculates the default line width for the worksheet
   double GetDefaultLineWidth() const
-  {
-    if (GetZoomFactor() < 1.0)
-      return 1.0;
-    else
-      return GetZoomFactor();
-  }
+    {
+      if (GetZoomFactor() < 1.0)
+        return 1.0;
+      else
+        return GetZoomFactor();
+    }
 
   //! The minimum sensible line width in widths of a letter.
   long LineWidth_em() const 
-  {
-    if(!m_printing)
-      return m_lineWidth_em;
-    else
-      return 10000;
-  }
+    {
+      if(!m_printing)
+        return m_lineWidth_em;
+      else
+        return 10000;
+    }
 
   bool AutoSaveAsTempFile() const {return m_autoSaveAsTempFile;}
   void AutoSaveAsTempFile(bool asTempFile){m_autoSaveAsTempFile = asTempFile;}
 
   //! Set the minimum sensible line width in widths of a letter.
   void LineWidth_em(long width)
-  { m_lineWidth_em = width; }
+    { m_lineWidth_em = width; }
 
   //! Returns the maximum sensible width for a text line [in characters]:
   // On big 16:9 screens text tends to get \b very wide before it hits the right margin.
@@ -417,24 +417,24 @@ public:
 
   //! Do we want to have automatic line breaks for text cells?
   bool GetAutoWrap() const
-  { return m_autoWrap > 0; }
+    { return m_autoWrap > 0; }
 
   // cppcheck-suppress functionStatic
   //! Do we want to have automatic line breaks for code cells?
   bool GetAutoWrapCode() const
-  { return false; }
+    { return false; }
 
   /*! Sets the auto wrap mode
     \param autoWrap 
-     - 0: No automatic line breaks
-     - 1: Automatic line breaks only for text cells
-     - 2: Automatic line breaks for text and code cells.
+    - 0: No automatic line breaks
+    - 1: Automatic line breaks only for text cells
+    - 2: Automatic line breaks for text and code cells.
   */
   void SetAutoWrap(long autoWrap){m_autoWrap = autoWrap;}
 
   //! Do we want automatic indentation?
   bool GetAutoIndent() const
-  { return m_autoIndent; }
+    { return m_autoIndent; }
 
   void SetAutoIndent(bool autoIndent){m_autoIndent = autoIndent;}
 
@@ -442,11 +442,11 @@ public:
   bool IndentMaths() const {return m_indentMaths;}
   void IndentMaths(bool indent){m_indentMaths = indent;}
   AFontSize GetFontSize(TextStyle st) const
-  {
-    if (st == TS_TEXT || st == TS_HEADING5 || st == TS_HEADING6 || st == TS_SUBSUBSECTION || st == TS_SUBSECTION || st == TS_SECTION || st == TS_TITLE)
-      return m_styles[st].GetFontSize();
-    return {};
-  }
+    {
+      if (st == TS_TEXT || st == TS_HEADING5 || st == TS_HEADING6 || st == TS_SUBSUBSECTION || st == TS_SUBSECTION || st == TS_SECTION || st == TS_TITLE)
+        return m_styles[st].GetFontSize();
+      return {};
+    }
 
   const wxString &GetStyleName(TextStyle textStyle) const;
 
@@ -466,37 +466,37 @@ public:
   void WriteSettings(const wxString &file = {});
   
   void Outdated(bool outdated)
-  { m_outdated = outdated; }
+    { m_outdated = outdated; }
 
   bool CheckTeXFonts() const
-  { return m_TeXFonts; }
+    { return m_TeXFonts; }
 
   void CheckTeXFonts(bool check)
-  { m_TeXFonts = check; }
+    { m_TeXFonts = check; }
 
   bool CheckKeepPercent() const
-  { return m_keepPercent; }
+    { return m_keepPercent; }
 
   void SetKeepPercent(bool keepPercent)
     { m_keepPercent = keepPercent; }
 
   AFontName GetTeXCMRI() const
-  { return m_fontCMRI; }
+    { return m_fontCMRI; }
 
   AFontName GetTeXCMSY() const
-  { return m_fontCMSY; }
+    { return m_fontCMSY; }
 
   AFontName GetTeXCMEX() const
-  { return m_fontCMEX; }
+    { return m_fontCMEX; }
 
   AFontName GetTeXCMMI() const
-  { return m_fontCMMI; }
+    { return m_fontCMMI; }
 
   AFontName GetTeXCMTI() const
-  { return m_fontCMTI; }
+    { return m_fontCMTI; }
 
   bool ShowCodeCells() const
-  { return m_showCodeCells; }
+    { return m_showCodeCells; }
 
   void ShowCodeCells(bool show);
 
@@ -807,7 +807,7 @@ public:
   
   wxString Documentclass() const {return m_documentclass;}
   void Documentclass(wxString clss){m_documentclass = clss;}
-wxString DocumentclassOptions() const {return m_documentclassOptions;}
+  wxString DocumentclassOptions() const {return m_documentclassOptions;}
   void DocumentclassOptions(wxString classOptions){m_documentclassOptions = classOptions;}
 
   

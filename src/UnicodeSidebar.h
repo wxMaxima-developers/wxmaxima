@@ -24,7 +24,7 @@
 
   This file contains the definition of the class Unicodesidebar that allows to 
   select arbitrary unicode symbols.
- */
+*/
 #include "precomp.h"
 #include "RegexCtrl.h"
 #include <wx/wx.h>
@@ -84,22 +84,22 @@ private:
 class SidebarKeyEvent: public wxCommandEvent
 {
 public:
-	explicit SidebarKeyEvent(int id = 0)
-        		:  wxCommandEvent(id) { }
+  explicit SidebarKeyEvent(int id = 0)
+    :  wxCommandEvent(id) { }
  
-	explicit SidebarKeyEvent(const SidebarKeyEvent& event)
-          :  wxCommandEvent(event) {}
+  explicit SidebarKeyEvent(const SidebarKeyEvent& event)
+    :  wxCommandEvent(event) {}
 };
 
 //! An event that can be issued by UnicodeSidebar and tells the symbols sidebar to add a symbol
 class SymboladdEvent: public wxCommandEvent
 {
 public:
-	explicit SymboladdEvent(int id = 0)
-        		:  wxCommandEvent(id) { }
+  explicit SymboladdEvent(int id = 0)
+    :  wxCommandEvent(id) { }
  
-	explicit SymboladdEvent(const SymboladdEvent& event)
-          :  wxCommandEvent(event) {}
+  explicit SymboladdEvent(const SymboladdEvent& event)
+    :  wxCommandEvent(event) {}
 };
 
 wxDECLARE_EVENT(SIDEBARKEYEVENT, SidebarKeyEvent);

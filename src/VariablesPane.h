@@ -29,14 +29,14 @@
 #include <wx/arrstr.h>
 
 /*! \file 
-The file that contains the "variables" sidepane
+  The file that contains the "variables" sidepane
 
-This file contains the class Variablespane.
+  This file contains the class Variablespane.
 */
 
 /*! A "variables" sidepane
 
-*/
+ */
 class Variablespane : public wxPanel
 {
 public:
@@ -111,7 +111,7 @@ private:
   //! The row that was right-clicked at
   int m_rightClickRow;
   //! Compares two integers.
-  static int CompareInt(int *int1, int *int2){return *int1<*int2;}
+  static int CompareInt(int *int1, int *int2){return (*int1<*int2);}
 };
 
 #endif // VARIABLESPANE_H

@@ -25,7 +25,7 @@
   This file defines the class SqrtCell
 
   SqrtCell is the Cell type that represents a square root.
- */
+*/
 
 #include "SqrtCell.h"
 #include "CellImpl.h"
@@ -34,7 +34,7 @@
 
 SqrtCell::SqrtCell(GroupCell *group, Configuration *config,
                    std::unique_ptr<Cell> &&inner)
-    : Cell(group, config), m_innerCell(std::move(inner)) {
+  : Cell(group, config), m_innerCell(std::move(inner)) {
   InitBitFields();
   SetStyle(TS_VARIABLE);
 }
@@ -47,8 +47,8 @@ SqrtCell::SqrtCell(GroupCell *group, Configuration *config,
 // cppcheck-suppress uninitMemberVar symbolName=SqrtCell::m_signType
 // cppcheck-suppress uninitMemberVar symbolName=SqrtCell::m_signFontScale
 SqrtCell::SqrtCell(GroupCell *group, const SqrtCell &cell)
-    : SqrtCell(group, cell.m_configuration,
-               CopyList(group, cell.m_innerCell.get())) {
+  : SqrtCell(group, cell.m_configuration,
+	     CopyList(group, cell.m_innerCell.get())) {
   CopyCommonData(cell);
 }
 
@@ -71,7 +71,7 @@ void SqrtCell::Recalculate(AFontSize fontsize) {
 
     m_signFontScale = 1.0;
     auto fontsize1 =
-        AFontSize(Scale_Px(SIGN_FONT_SCALE * fontsize * m_signFontScale));
+      AFontSize(Scale_Px(SIGN_FONT_SCALE * fontsize * m_signFontScale));
     wxASSERT(fontsize1.IsValid());
 
     auto style = Style(fontsize1).FontName(m_configuration->GetTeXCMEX());
@@ -138,7 +138,7 @@ void SqrtCell::Draw(wxPoint point) {
       in.x += m_signWidth;
 
       auto fontsize1 =
-          AFontSize(SIGN_FONT_SCALE * m_fontSize_Scaled * m_signFontScale);
+	AFontSize(SIGN_FONT_SCALE * m_fontSize_Scaled * m_signFontScale);
       wxASSERT(fontsize1.IsValid());
 
       auto style = Style(fontsize1).FontName(m_configuration->GetTeXCMEX());
@@ -149,7 +149,7 @@ void SqrtCell::Draw(wxPoint point) {
         dc->DrawText(m_signType == 1   ? wxT("p")
                      : m_signType == 2 ? wxT("q")
                      : m_signType == 3 ? wxT("r")
-                                       : wxT("s"),
+		     : wxT("s"),
                      point.x,
                      point.y - m_innerCell->GetCenterList() - m_signTop);
       } else {
@@ -181,22 +181,22 @@ void SqrtCell::Draw(wxPoint point) {
       SetPen(1.2);
 
       const wxPoint points[12] = {
-          {0, 0},
-          {Scale_Px(3), -Scale_Px(1)},
-          //  A wider line
-          {Scale_Px(3), -Scale_Px(1)},
-          {Scale_Px(7), m_height - m_center - Scale_Px(4)},
-          {Scale_Px(7.5), m_height - m_center - Scale_Px(4)},
-          {Scale_Px(3.5), -Scale_Px(1)},
-          {Scale_Px(3.5), -Scale_Px(1)},
-          {Scale_Px(3), -Scale_Px(1)},
-          {Scale_Px(8), m_height - m_center - Scale_Px(4)},
-          // The upwards line
-          {Scale_Px(10), -m_center + Scale_Px(2)},
-          // The horizontal line
-          {m_width - Scale_Px(1), -m_center + Scale_Px(2)},
-          // The serif at the end of the root
-          {m_width - Scale_Px(1), -m_center + Scale_Px(6)}};
+	{0, 0},
+	{Scale_Px(3), -Scale_Px(1)},
+	//  A wider line
+	{Scale_Px(3), -Scale_Px(1)},
+	{Scale_Px(7), m_height - m_center - Scale_Px(4)},
+	{Scale_Px(7.5), m_height - m_center - Scale_Px(4)},
+	{Scale_Px(3.5), -Scale_Px(1)},
+	{Scale_Px(3.5), -Scale_Px(1)},
+	{Scale_Px(3), -Scale_Px(1)},
+	{Scale_Px(8), m_height - m_center - Scale_Px(4)},
+	// The upwards line
+	{Scale_Px(10), -m_center + Scale_Px(2)},
+	// The horizontal line
+	{m_width - Scale_Px(1), -m_center + Scale_Px(2)},
+	// The serif at the end of the root
+	{m_width - Scale_Px(1), -m_center + Scale_Px(6)}};
       adc->DrawLines(12, points, point.x, point.y);
     }
 
@@ -231,7 +231,7 @@ wxString SqrtCell::ToMathML() const {
 
 wxString SqrtCell::ToOMML() const {
   return wxT("<m:rad><m:radPr m:degHide=\"1\"></m:radPr><m:deg></m:deg><m:e>") +
-         m_innerCell->ListToOMML() + wxT("</m:e></m:rad>\n");
+    m_innerCell->ListToOMML() + wxT("</m:e></m:rad>\n");
 }
 
 wxString SqrtCell::ToXML() const {

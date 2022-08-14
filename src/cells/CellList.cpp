@@ -22,7 +22,7 @@
 
 #include "CellList.h"
 #include "GroupCell.h"
-
+#include <utility>
 void CellListBuilderBase::base_Append(std::unique_ptr<Cell> &&cells) {
   m_lastAppended = cells.get();
   if (!cells)

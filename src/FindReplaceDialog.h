@@ -25,7 +25,7 @@
   This file defines the class FindReplaceDialog
 
   This dialog represents the "find" and "replace" dialogue.
- */
+*/
 
 #ifndef FINDREPLACEDIALOG_H
 #define FINDREPLACEDIALOG_H
@@ -45,11 +45,11 @@ public:
 
   //! Returns the standard wxFindReplaceData data structure
   wxFindReplaceData *GetData()
-  { return m_contents->GetData(); }
+    { return m_contents->GetData(); }
 
   //! Set the string we are currently searching for
-  void SetFindString(wxString string)
-  { m_contents->SetFindString(string); }
+  void SetFindString(wxString strng)
+    { m_contents->SetFindString(strng); }
 
 protected:
   //! Is called if this element looses or gets the focus
@@ -69,14 +69,14 @@ protected:
 
     The contents is split into a separate panel so we can easily make it dockable
     once dockable dialogues aren't this ugly any more.
-   */
+  */
   FindReplacePane *m_contents;
 
 private:
   /*! Allows to remember how wide the window was the last time it was used.
 
     I don't think it makes sense to keep this between sessions.
-   */
+  */
   static wxSize m_windowSize;
   /*! Allows to remember how wide the window was the last time it was used.
 
@@ -84,7 +84,7 @@ private:
     the screen (and therefore the screen resolution) between sessions. And
     putting a window off screen (where it is hard to grab and to move it)
     is possible at least on MSW.
-   */
+  */
 
   static wxPoint m_windowPos;
 };

@@ -28,7 +28,7 @@
 /*! A cell containing a long number
 
   A specialised TextCell, that can display a long number, or shorten it using an ellipsis.
- */
+*/
 class LongNumberCell final : public TextCell
 {
 public:
@@ -74,9 +74,9 @@ private:
   //** Bitfield objects (0 bytes)
   //**
   void InitBitFields()
-  { // Keep the initialization order below same as the order
-    // of bit fields in this class!
-  }
+    { // Keep the initialization order below same as the order
+      // of bit fields in this class!
+    }
 };
 
 #endif // LONGNUMBERCELL_H

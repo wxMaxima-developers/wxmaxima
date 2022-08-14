@@ -26,7 +26,7 @@
 
   This file contains the definition of the class CharacterButton that allows to
   select arbitrary unicode symbols.
- */
+*/
 
 #include "CharButton.h"
 #include "UnicodeSidebar.h"
@@ -115,8 +115,8 @@ void CharButton::OnSize(wxSizeEvent &event) {
 CharButton::CharButton(wxWindow *parent, wxWindow *worksheet,
                        Configuration *config, const Definition &def,
                        bool forceShow)
-    : wxPanel(parent, wxID_ANY), m_char(def.symbol), m_configuration(config),
-      m_description(def.description), m_worksheet(worksheet) {
+  : wxPanel(parent, wxID_ANY), m_char(def.symbol), m_configuration(config),
+    m_description(def.description), m_worksheet(worksheet) {
   Connect(wxEVT_SIZE, wxSizeEventHandler(CharButton::OnSize));
   wxBoxSizer *sizer = new wxBoxSizer(wxHORIZONTAL);
   m_buttonText = new wxStaticText(this, -1, wxString(m_char));
@@ -152,9 +152,9 @@ CharButton::CharButton(wxWindow *parent, wxWindow *worksheet,
   }
 
   wxFont mathFont =
-      m_configuration->GetStyle(TS_INPUT, AFontSize(10.0)).GetFont();
+    m_configuration->GetStyle(TS_INPUT, AFontSize(10.0)).GetFont();
   wxFont textFont =
-      m_configuration->GetStyle(TS_DEFAULT, AFontSize(10.0)).GetFont();
+    m_configuration->GetStyle(TS_DEFAULT, AFontSize(10.0)).GetFont();
   if (((!mathFont.IsOk()) ||
        m_configuration->FontRendersChar(m_char, mathFont)) ||
       ((!textFont.IsOk()) ||

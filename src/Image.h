@@ -46,26 +46,26 @@
 /*! Manages an auto-scaling image
 
   This class keeps two versions of an image:
-    - The image in its original compressed format. This way the image can losslessly
-      be exported later on
-    - A bitmap version of the image that is scaled down to a size that makes sense 
-      with the current viewport.
+  - The image in its original compressed format. This way the image can losslessly
+  be exported later on
+  - A bitmap version of the image that is scaled down to a size that makes sense 
+  with the current viewport.
 
   Storing images this way has many advantages:
-    - It allows us to restrict scaling operations to only once on actually drawing 
-      the image after a resize of the wxMaxima window.
-    - We can keep (and therefore export and save) jpeg photos in their original 
-      format instead of using the .png compression that is superior for line art - 
-      but not for depicting real-live images.
-    - We save time on saving the .wxmx file since image compression, if done good, 
-      might need a good deal of time and this class never needs to compress images
-      itself.
-    - It allows images to keep their metadata, if needed
-    - and if we have big images (big plots or for example photographs) we don't need
-      to store them in their uncompressed form.
-    - One could even delete the cached scaled images for all cells that currently 
-      are off-screen in order to save memory.
- */
+  - It allows us to restrict scaling operations to only once on actually drawing 
+  the image after a resize of the wxMaxima window.
+  - We can keep (and therefore export and save) jpeg photos in their original 
+  format instead of using the .png compression that is superior for line art - 
+  but not for depicting real-live images.
+  - We save time on saving the .wxmx file since image compression, if done good, 
+  might need a good deal of time and this class never needs to compress images
+  itself.
+  - It allows images to keep their metadata, if needed
+  - and if we have big images (big plots or for example photographs) we don't need
+  to store them in their uncompressed form.
+  - One could even delete the cached scaled images for all cells that currently 
+  are off-screen in order to save memory.
+*/
 class Image final
 {
 public:
@@ -79,7 +79,7 @@ public:
 
     This constructor actually has to do some compression since we got
     the bitmap in an uncompressed form.
-   */
+  */
   Image(Configuration *config, const wxBitmap &bitmap);
 
   /*! A constructor that loads an image
@@ -88,7 +88,7 @@ public:
     \param image The name of the file
     \param filesystem The filesystem to load it from
     \param remove true = Delete the file after loading it
-   */
+  */
   Image(Configuration *config, wxString image, std::shared_ptr<wxFileSystem> filesystem, bool remove = true);
 
   Image(Configuration *config, const Image &image);
@@ -110,7 +110,7 @@ public:
     Causes the files to be cached if they are not way too long; As the files
     are text-only they profit from being compressed and are stored in the 
     memory in their compressed form.
-   */
+  */
   void GnuplotSource(wxString gnuplotFilename, wxString dataFilename, std::shared_ptr<wxFileSystem> filesystem);
 
   //! Load the gnuplot source file from the system's filesystem
@@ -121,13 +121,13 @@ public:
 
 /*! Returns the gnuplot source file name of this image
 
-    If maxima has deleted the temporary file in the meantime or if it comes from 
-    a .wxmx file and has never been created from maxima the file is created by this 
-    function.
+  If maxima has deleted the temporary file in the meantime or if it comes from 
+  a .wxmx file and has never been created from maxima the file is created by this 
+  function.
 
-    If the file cannot be created (for example if no gnuplot source exists/ 
-    is known) this function returns wxEmptyString.
-   */
+  If the file cannot be created (for example if no gnuplot source exists/ 
+  is known) this function returns wxEmptyString.
+*/
   wxString GnuplotSource();
   /*! Returns the gnuplot data file name of this image
 
@@ -137,7 +137,7 @@ public:
 
     If the file cannot be created (for example if no gnuplot source exists/ 
     is known) this function returns wxEmptyString.
-   */
+  */
   wxString GnuplotData();
 
   //! Returns the gnuplot source of this image
@@ -148,7 +148,7 @@ public:
   /*! Temporarily forget the scaled image in order to save memory
 
     Will recreate the scaled image as soon as needed.
-   */
+  */
   void ClearCache()
     {
       if ((m_scaledBitmap.GetWidth() > 1) || (m_scaledBitmap.GetHeight() > 1))
@@ -238,7 +238,7 @@ private:
   /*! The upper width limit for displaying this image
 
     \todo: Why is this a float and not an integer value?
-   */
+  */
   double m_maxWidth;
   //! The upper height limit for displaying this image
   double m_maxHeight;

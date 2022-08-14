@@ -36,6 +36,7 @@
 #include "ImgCell.h"
 #include "StringUtils.h"
 
+#include <memory>
 #include <wx/anidecod.h>
 #include <wx/clipbrd.h>
 #include <wx/config.h>
@@ -55,10 +56,10 @@
 AnimationCell::AnimationCell(GroupCell *group, Configuration *config,
                              std::shared_ptr<wxFileSystem> filesystem,
                              int framerate)
-    : ImgCellBase(group, config),
-      m_timer(m_cellPointers->GetWorksheet(), wxNewId()),
-      m_fileSystem(filesystem), m_framerate(framerate), m_displayed(0),
-      m_imageBorderWidth(Scale_Px(1)) {
+  : ImgCellBase(group, config),
+    m_timer(m_cellPointers->GetWorksheet(), wxNewId()),
+    m_fileSystem(filesystem), m_framerate(framerate), m_displayed(0),
+    m_imageBorderWidth(Scale_Px(1)) {
   InitBitFields();
   m_type = MC_TYPE_SLIDE;
   ReloadTimer();
@@ -66,9 +67,9 @@ AnimationCell::AnimationCell(GroupCell *group, Configuration *config,
 
 AnimationCell::AnimationCell(GroupCell *group, Configuration *config,
                              int framerate)
-    : ImgCellBase(group, config),
-      m_timer(m_cellPointers->GetWorksheet(), wxNewId()),
-      m_framerate(framerate), m_displayed(0), m_imageBorderWidth(Scale_Px(1)) {
+  : ImgCellBase(group, config),
+    m_timer(m_cellPointers->GetWorksheet(), wxNewId()),
+    m_framerate(framerate), m_displayed(0), m_imageBorderWidth(Scale_Px(1)) {
   InitBitFields();
   m_type = MC_TYPE_SLIDE;
   ReloadTimer();
@@ -77,25 +78,25 @@ AnimationCell::AnimationCell(GroupCell *group, Configuration *config,
 AnimationCell::AnimationCell(GroupCell *group, Configuration *config,
                              const wxMemoryBuffer &image,
                              const wxString &WXUNUSED(type))
-    : AnimationCell(group, config) {
+  : AnimationCell(group, config) {
   LoadImages(image);
 }
 
 AnimationCell::AnimationCell(GroupCell *group, Configuration *config,
                              const wxString &image, bool remove)
-    : AnimationCell(group, config) {
+  : AnimationCell(group, config) {
   LoadImages(image);
   if (remove)
     wxRemoveFile(image);
 }
 
 AnimationCell::AnimationCell(GroupCell *group, const AnimationCell &cell)
-    : AnimationCell(group, cell.m_configuration) {
+  : AnimationCell(group, cell.m_configuration) {
   CopyCommonData(cell);
 
   m_images.reserve(cell.Length());
   for (std::vector<std::shared_ptr<Image>>::const_iterator i =
-           cell.m_images.begin();
+	 cell.m_images.begin();
        i != cell.m_images.end(); ++i)
     m_images.push_back(std::make_shared<Image>(cell.m_configuration, **i));
 
@@ -125,7 +126,6 @@ int AnimationCell::GetFrameRate() const {
   if (m_framerate > -1)
     framerate = m_framerate;
   else {
-
     framerate = m_configuration->DefaultFramerate();
   }
   if (framerate > 30)
@@ -157,7 +157,6 @@ void AnimationCell::AnimationRunning(bool run) {
 }
 
 int AnimationCell::SetFrameRate(int Freq) {
-
   m_framerate = Freq;
 
   if (Freq < 0)
@@ -182,7 +181,7 @@ void AnimationCell::LoadImages(wxMemoryBuffer imageData) {
     wxImage image;
     image.LoadFile(istream2, wxBITMAP_TYPE_ANY, i);
     m_images.push_back(
-        std::make_shared<Image>(m_configuration, wxBitmap(image)));
+		       std::make_shared<Image>(m_configuration, wxBitmap(image)));
   }
 }
 
@@ -194,7 +193,7 @@ void AnimationCell::LoadImages(wxString imageFile) {
     wxImage image;
     image.LoadFile(imageFile, wxBITMAP_TYPE_ANY, i);
     m_images.push_back(
-        std::make_shared<Image>(m_configuration, wxBitmap(image)));
+		       std::make_shared<Image>(m_configuration, wxBitmap(image)));
   }
 }
 
@@ -319,24 +318,24 @@ void AnimationCell::Draw(wxPoint point) {
     // Slide show cells have a red border except if they are selected
     if (m_drawBoundingBox)
       dc->SetPen(*(wxThePenList->FindOrCreatePen(
-          m_configuration->GetColor(TS_SELECTION))));
+						 m_configuration->GetColor(TS_SELECTION))));
     else
       dc->SetPen(*wxRED_PEN);
 
     dc->DrawRectangle(wxRect(point.x, point.y - m_center, m_width, m_height));
 
     wxBitmap bitmap =
-        (m_configuration->GetPrinting()
-             ? m_images[m_displayed]->GetBitmap(
-                   m_configuration->GetZoomFactor() * PRINT_SIZE_MULTIPLIER)
-             : m_images[m_displayed]->GetBitmap());
+      (m_configuration->GetPrinting()
+       ? m_images[m_displayed]->GetBitmap(
+					  m_configuration->GetZoomFactor() * PRINT_SIZE_MULTIPLIER)
+       : m_images[m_displayed]->GetBitmap());
     bitmapDC.SelectObject(bitmap);
 
     int imageBorderWidth = m_imageBorderWidth;
     if (m_drawBoundingBox) {
       imageBorderWidth = Scale_Px(3);
       dc->SetBrush(*(wxTheBrushList->FindOrCreateBrush(
-          m_configuration->GetColor(TS_SELECTION))));
+						       m_configuration->GetColor(TS_SELECTION))));
       dc->DrawRectangle(wxRect(point.x, point.y - m_center, m_width, m_height));
     }
 
@@ -344,7 +343,6 @@ void AnimationCell::Draw(wxPoint point) {
              m_width - 2 * imageBorderWidth, m_height - 2 * imageBorderWidth,
              &bitmapDC, imageBorderWidth - m_imageBorderWidth,
              imageBorderWidth - m_imageBorderWidth);
-
   } else
     // The cell isn't drawn => No need to keep it's image cache for now.
     ClearCache();
@@ -403,9 +401,9 @@ wxString AnimationCell::ToXML() const {
 
       if (m_images[i]->GetCompressedImage())
         wxMemoryFSHandler::AddFile(
-            basename + m_images[i]->GetExtension(),
-            m_images[i]->GetCompressedImage().GetData(),
-            m_images[i]->GetCompressedImage().GetDataLen());
+				   basename + m_images[i]->GetExtension(),
+				   m_images[i]->GetCompressedImage().GetData(),
+				   m_images[i]->GetCompressedImage().GetDataLen());
     }
 
     images += basename + m_images[i]->GetExtension() + wxT(";");
@@ -465,7 +463,7 @@ wxString AnimationCell::ToRTF() const {
     // file.
     image = wxT("\\pngblip\n");
     wxImage imagedata =
-        m_images[m_displayed]->GetUnscaledBitmap().ConvertToImage();
+      m_images[m_displayed]->GetUnscaledBitmap().ConvertToImage();
     wxMemoryOutputStream stream;
     imagedata.SaveFile(stream, wxBITMAP_TYPE_PNG);
     imgdata.AppendData(stream.GetOutputStreamBuffer()->GetBufferStart(),
@@ -473,9 +471,9 @@ wxString AnimationCell::ToRTF() const {
   }
 
   image += wxString::Format(
-      wxT("\\picw%lu\\pich%lu "),
-      (unsigned long)m_images[m_displayed]->GetOriginalWidth(),
-      (unsigned long)m_images[m_displayed]->GetOriginalHeight());
+			    wxT("\\picw%lu\\pich%lu "),
+			    (unsigned long)m_images[m_displayed]->GetOriginalWidth(),
+			    (unsigned long)m_images[m_displayed]->GetOriginalHeight());
 
   // Convert the data into a hexadecimal string
   for (size_t i = 0; i <= imgdata.GetDataLen(); i++)
@@ -536,7 +534,7 @@ void AnimationCell::ClearCache() {
 }
 
 AnimationCell::GifDataObject::GifDataObject(const wxMemoryOutputStream &str)
-    : wxCustomDataObject(m_gifFormat) {
+  : wxCustomDataObject(m_gifFormat) {
   SetData(str.GetOutputStreamBuffer()->GetBufferSize(),
           str.GetOutputStreamBuffer()->GetBufferStart());
 }
@@ -548,7 +546,7 @@ bool AnimationCell::CopyToClipboard() const {
                _("Bug: The clipboard is already opened"));
   if (wxTheClipboard->Open()) {
     bool res = wxTheClipboard->SetData(
-        new wxBitmapDataObject(m_images[m_displayed]->GetUnscaledBitmap()));
+				       new wxBitmapDataObject(m_images[m_displayed]->GetUnscaledBitmap()));
     wxTheClipboard->Close();
     return res;
   }

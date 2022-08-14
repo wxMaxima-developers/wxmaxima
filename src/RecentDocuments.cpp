@@ -24,7 +24,7 @@
 #include <wx/filename.h>
 
 RecentDocuments::RecentDocuments(wxString documentType)
-    : m_documentType(documentType) {
+  : m_documentType(documentType) {
   Load();
 }
 

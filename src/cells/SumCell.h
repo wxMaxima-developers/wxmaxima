@@ -111,10 +111,10 @@ private:
 //** Bitfield objects (1 bytes)
 //**
   void InitBitFields()
-  { // Keep the initialization order below same as the order
-    // of bit fields in this class!
-    m_displayParen = true;
-  }
+    { // Keep the initialization order below same as the order
+      // of bit fields in this class!
+      m_displayParen = true;
+    }
 
   //! Display m_paren if true, or Base() if false
   bool m_displayParen : 1 /* InitBitFields */;

@@ -43,18 +43,18 @@ bool AutoComplete::LoadBuiltinSymbols() {
   m_wordList[tmplte].Add("grobner_basis([<expr_1>, ..., <expr_m>])"); // OPTION
   m_wordList[command].Add("set_up_dot_simplifications"); // FUNCTION
   m_wordList[tmplte].Add(
-      "set_up_dot_simplifications(<eqns>, <check_through_degree>)"); // OPTION
+			 "set_up_dot_simplifications(<eqns>, <check_through_degree>)"); // OPTION
   m_wordList[tmplte].Add("set_up_dot_simplifications(<eqns>)");      // OPTION
   m_wordList[command].Add("declare_weights");                        // FUNCTION
   m_wordList[tmplte].Add(
-      "declare_weights(<x_1>, <w_1>, ..., <x_n>, <w_n>)"); // OPTION
+			 "declare_weights(<x_1>, <w_1>, ..., <x_n>, <w_n>)"); // OPTION
   m_wordList[command].Add("nc_degree");                    // FUNCTION
   m_wordList[tmplte].Add("nc_degree(<p>)");                // OPTION
   m_wordList[command].Add("dotsimp");                      // FUNCTION
   m_wordList[tmplte].Add("dotsimp(<f>)");                  // OPTION
   m_wordList[command].Add("fast_central_elements");        // FUNCTION
   m_wordList[tmplte].Add(
-      "fast_central_elements([<x_1>, ..., <x_n>], <n>)");        // OPTION
+			 "fast_central_elements([<x_1>, ..., <x_n>], <n>)");        // OPTION
   m_wordList[command].Add("check_overlaps");                     // FUNCTION
   m_wordList[tmplte].Add("check_overlaps(<n>, <add_to_simps>)"); // OPTION
   m_wordList[command].Add("mono");                               // FUNCTION
@@ -71,9 +71,9 @@ bool AutoComplete::LoadBuiltinSymbols() {
   m_wordList[command].Add("array");                                 // FUNCTION
   m_wordList[tmplte].Add("array(<name>, <dim_1>, ..., <dim_n>)");   // OPTION
   m_wordList[tmplte].Add(
-      "array(<name>, <type>, <dim_1>, ..., <dim_n>)"); // OPTION
+			 "array(<name>, <type>, <dim_1>, ..., <dim_n>)"); // OPTION
   m_wordList[tmplte].Add(
-      "array([<name_1>, ..., <name_m>], <dim_1>, ..., <dim_n>)"); // OPTION
+			 "array([<name_1>, ..., <name_m>], <dim_1>, ..., <dim_n>)"); // OPTION
   m_wordList[command].Add("arrayapply");                          // FUNCTION
   m_wordList[tmplte].Add("arrayapply(<A>, [<i_1>, ..., <i_n>])"); // OPTION
   m_wordList[command].Add("with_default_2d_display");             // FUNCTION
@@ -117,7 +117,7 @@ bool AutoComplete::LoadBuiltinSymbols() {
   m_wordList[tmplte].Add("abasep(<v>)");                          // OPTION
   m_wordList[command].Add("augmented_lagrangian_method");         // FUNCTION
   m_wordList[tmplte].Add(
-      "augmented_lagrangian_method(<FOM>, <xx>, <C>, <yy>)"); // OPTION
+			 "augmented_lagrangian_method(<FOM>, <xx>, <C>, <yy>)"); // OPTION
   m_wordList[tmplte].Add("augmented_lagrangian_method(<FOM>, <xx>, <C>, <yy>, "
                          "optional_args)"); // OPTION
   m_wordList[tmplte].Add("augmented_lagrangian_method([<FOM>, <grad>], <xx>, "
@@ -126,10 +126,10 @@ bool AutoComplete::LoadBuiltinSymbols() {
                          "<C>, <yy>, optional_args)"); // OPTION
   m_wordList[command].Add("bode_gain");                // FUNCTION
   m_wordList[tmplte].Add(
-      "bode_gain(<H>, <range>, ...<plot_opts>...)"); // OPTION
+			 "bode_gain(<H>, <range>, ...<plot_opts>...)"); // OPTION
   m_wordList[command].Add("bode_phase");             // FUNCTION
   m_wordList[tmplte].Add(
-      "bode_phase(<H>, <range>, ...<plot_opts>...)");   // OPTION
+			 "bode_phase(<H>, <range>, ...<plot_opts>...)");   // OPTION
   m_wordList[command].Add("run_testsuite");             // FUNCTION
   m_wordList[tmplte].Add("run_testsuite([<options>])"); // OPTION
   m_wordList[command].Add("testsuite_files");           // OPTION
@@ -228,7 +228,7 @@ bool AutoComplete::LoadBuiltinSymbols() {
   m_wordList[tmplte].Add("forget(<L>)");                     // OPTION
   m_wordList[command].Add("killcontext");                    // FUNCTION
   m_wordList[tmplte].Add(
-      "killcontext(<context_1>, ..., <context_n>)");       // OPTION
+			 "killcontext(<context_1>, ..., <context_n>)");       // OPTION
   m_wordList[command].Add("newcontext");                   // FUNCTION
   m_wordList[tmplte].Add("newcontext(<name>)");            // OPTION
   m_wordList[command].Add("supcontext");                   // FUNCTION
@@ -267,7 +267,7 @@ bool AutoComplete::LoadBuiltinSymbols() {
   m_wordList[tmplte].Add("cmetric()");                     // OPTION
   m_wordList[command].Add("ct_coordsys");                  // FUNCTION
   m_wordList[tmplte].Add(
-      "ct_coordsys(<coordinate_system>, <extra_arg>)");              // OPTION
+			 "ct_coordsys(<coordinate_system>, <extra_arg>)");              // OPTION
   m_wordList[tmplte].Add("ct_coordsys(<coordinate_system>)");        // OPTION
   m_wordList[command].Add("init_ctensor");                           // FUNCTION
   m_wordList[tmplte].Add("init_ctensor()");                          // OPTION
@@ -395,7 +395,7 @@ bool AutoComplete::LoadBuiltinSymbols() {
   m_wordList[tmplte].Add("trace()");                                 // OPTION
   m_wordList[command].Add("trace_options");                          // FUNCTION
   m_wordList[tmplte].Add(
-      "trace_options(<f>, <option_1>, ..., <option_n>)"); // OPTION
+			 "trace_options(<f>, <option_1>, ..., <option_n>)"); // OPTION
   m_wordList[tmplte].Add("trace_options(<f>)");           // OPTION
   m_wordList[command].Add("untrace");                     // FUNCTION
   m_wordList[tmplte].Add("untrace(<f_1>, ..., <f_n>)");   // OPTION
@@ -441,7 +441,7 @@ bool AutoComplete::LoadBuiltinSymbols() {
   m_wordList[tmplte].Add("discrete_freq(<list>)");        // OPTION
   m_wordList[command].Add("subsample");                   // FUNCTION
   m_wordList[tmplte].Add(
-      "subsample(<data_matrix>, <predicate_function>)"); // OPTION
+			 "subsample(<data_matrix>, <predicate_function>)"); // OPTION
   m_wordList[tmplte].Add("subsample(<data_matrix>, <predicate_function>, "
                          "<col_num1>, <col_num2>, ...)");     // OPTION
   m_wordList[command].Add("mean");                            // FUNCTION
@@ -517,48 +517,48 @@ bool AutoComplete::LoadBuiltinSymbols() {
   m_wordList[command].Add("global_variances");                // FUNCTION
   m_wordList[tmplte].Add("global_variances(<matrix>)");       // OPTION
   m_wordList[tmplte].Add(
-      "global_variances(<matrix>, <logical_value>)");       // OPTION
+			 "global_variances(<matrix>, <logical_value>)");       // OPTION
   m_wordList[command].Add("cor");                           // FUNCTION
   m_wordList[tmplte].Add("cor(<matrix>)");                  // OPTION
   m_wordList[tmplte].Add("cor(<matrix>, <logical_value>)"); // OPTION
   m_wordList[command].Add("list_correlations");             // FUNCTION
   m_wordList[tmplte].Add("list_correlations(<matrix>)");    // OPTION
   m_wordList[tmplte].Add(
-      "list_correlations(<matrix>, <logical_value>)"); // OPTION
+			 "list_correlations(<matrix>, <logical_value>)"); // OPTION
   m_wordList[command].Add("histogram");                // FUNCTION
   m_wordList[tmplte].Add("histogram(<list>)");         // OPTION
   m_wordList[tmplte].Add(
-      "histogram(<list>, <option_1>, <option_2>, ...)");    // OPTION
+			 "histogram(<list>, <option_1>, <option_2>, ...)");    // OPTION
   m_wordList[tmplte].Add("histogram(<one_column_matrix>)"); // OPTION
   m_wordList[tmplte].Add(
-      "histogram(<one_column_matrix>, <option_1>, <option_2>, ...)"); // OPTION
+			 "histogram(<one_column_matrix>, <option_1>, <option_2>, ...)"); // OPTION
   m_wordList[tmplte].Add("histogram(<one_row_matrix>)");              // OPTION
   m_wordList[tmplte].Add(
-      "histogram(<one_row_matrix>, <option_1>, <option_2>, ...)"); // OPTION
+			 "histogram(<one_row_matrix>, <option_1>, <option_2>, ...)"); // OPTION
   m_wordList[command].Add("scatterplot");                          // FUNCTION
   m_wordList[tmplte].Add("scatterplot(<list>)");                   // OPTION
   m_wordList[tmplte].Add(
-      "scatterplot(<list>, <option_1>, <option_2>, ...)"); // OPTION
+			 "scatterplot(<list>, <option_1>, <option_2>, ...)"); // OPTION
   m_wordList[tmplte].Add("scatterplot(<matrix>)");         // OPTION
   m_wordList[tmplte].Add(
-      "scatterplot(<matrix>, <option_1>, <option_2>, ...)"); // OPTION
+			 "scatterplot(<matrix>, <option_1>, <option_2>, ...)"); // OPTION
   m_wordList[command].Add("barsplot");                       // FUNCTION
   m_wordList[tmplte].Add(
-      "barsplot(<data1>, <data2>, ..., <option_1>, <option_2>, ...)"); // OPTION
+			 "barsplot(<data1>, <data2>, ..., <option_1>, <option_2>, ...)"); // OPTION
   m_wordList[command].Add("piechart");        // FUNCTION
   m_wordList[tmplte].Add("piechart(<list>)"); // OPTION
   m_wordList[tmplte].Add(
-      "piechart(<list>, <option_1>, <option_2>, ...)");    // OPTION
+			 "piechart(<list>, <option_1>, <option_2>, ...)");    // OPTION
   m_wordList[tmplte].Add("piechart(<one_column_matrix>)"); // OPTION
   m_wordList[tmplte].Add(
-      "piechart(<one_column_matrix>, <option_1>, <option_2>, ...)"); // OPTION
+			 "piechart(<one_column_matrix>, <option_1>, <option_2>, ...)"); // OPTION
   m_wordList[tmplte].Add("piechart(<one_row_matrix>)");              // OPTION
   m_wordList[tmplte].Add(
-      "piechart(<one_row_matrix>, <option_1>, <option_2>, ...)"); // OPTION
+			 "piechart(<one_row_matrix>, <option_1>, <option_2>, ...)"); // OPTION
   m_wordList[command].Add("boxplot");                             // FUNCTION
   m_wordList[tmplte].Add("boxplot(<data>)");                      // OPTION
   m_wordList[tmplte].Add(
-      "boxplot(<data>, <option_1>, <option_2>, ...)"); // OPTION
+			 "boxplot(<data>, <option_1>, <option_2>, ...)"); // OPTION
   m_wordList[command].Add("diag");                     // FUNCTION
   m_wordList[tmplte].Add("diag(<lm>)");                // OPTION
   m_wordList[command].Add("JF");                       // FUNCTION
@@ -575,11 +575,11 @@ bool AutoComplete::LoadBuiltinSymbols() {
   m_wordList[tmplte].Add("mat_function(<f>,<mat>)");   // OPTION
   m_wordList[command].Add("bc2");                      // FUNCTION
   m_wordList[tmplte].Add(
-      "bc2(<solution>, <xval1>, <yval1>, <xval2>, <yval2>)"); // OPTION
+			 "bc2(<solution>, <xval1>, <yval1>, <xval2>, <yval2>)"); // OPTION
   m_wordList[command].Add("desolve");                         // FUNCTION
   m_wordList[tmplte].Add("desolve(<eqn>, <x>)");              // OPTION
   m_wordList[tmplte].Add(
-      "desolve([<eqn_1>, ..., <eqn_n>], [<x_1>, ..., <x_n>])");      // OPTION
+			 "desolve([<eqn_1>, ..., <eqn_n>], [<x_1>, ..., <x_n>])");      // OPTION
   m_wordList[command].Add("ic1");                                    // FUNCTION
   m_wordList[tmplte].Add("ic1(<solution>, <xval>, <yval>)");         // OPTION
   m_wordList[command].Add("ic2");                                    // FUNCTION
@@ -593,7 +593,7 @@ bool AutoComplete::LoadBuiltinSymbols() {
   m_wordList[command].Add("atomgrad");                               // OPTION
   m_wordList[command].Add("atvalue");                                // FUNCTION
   m_wordList[tmplte].Add(
-      "atvalue(<expr>, [<x_1> = <a_1>, ..., <x_m> = <a_m>], <c>)"); // OPTION
+			 "atvalue(<expr>, [<x_1> = <a_1>, ..., <x_m> = <a_m>], <c>)"); // OPTION
   m_wordList[tmplte].Add("atvalue(<expr>, <x_1> = <a_1>, <c>)");    // OPTION
   m_wordList[command].Add("cartan");                                // FUNCTION
   m_wordList[tmplte].Add("cartan-");                                // OPTION
@@ -612,7 +612,7 @@ bool AutoComplete::LoadBuiltinSymbols() {
   m_wordList[command].Add("derivsubst");                      // OPTION
   m_wordList[command].Add("diff");                            // FUNCTION
   m_wordList[tmplte].Add(
-      "diff(<expr>, <x_1>, <n_1>, ..., <x_m>, <n_m>)"); // OPTION
+			 "diff(<expr>, <x_1>, <n_1>, ..., <x_m>, <n_m>)"); // OPTION
   m_wordList[tmplte].Add("diff(<expr>, <x>, <n>)");     // OPTION
   m_wordList[tmplte].Add("diff(<expr>, <x>)");          // OPTION
   m_wordList[tmplte].Add("diff(<expr>)");               // OPTION
@@ -623,7 +623,7 @@ bool AutoComplete::LoadBuiltinSymbols() {
   m_wordList[tmplte].Add("express(<expr>)");            // OPTION
   m_wordList[command].Add("gradef");                    // FUNCTION
   m_wordList[tmplte].Add(
-      "gradef(<f>(<x_1>, ..., <x_n>), <g_1>, ..., <g_m>)");          // OPTION
+			 "gradef(<f>(<x_1>, ..., <x_n>), <g_1>, ..., <g_m>)");          // OPTION
   m_wordList[tmplte].Add("gradef(<a>, <x>, <expr>)");                // OPTION
   m_wordList[command].Add("gradefs");                                // OPTION
   m_wordList[command].Add("laplace");                                // FUNCTION
@@ -672,7 +672,7 @@ bool AutoComplete::LoadBuiltinSymbols() {
   m_wordList[tmplte].Add("cdf_noncentral_student_t(<x>,<n>,<ncp>)"); // OPTION
   m_wordList[command].Add("quantile_noncentral_student_t");          // FUNCTION
   m_wordList[tmplte].Add(
-      "quantile_noncentral_student_t(<q>,<n>,<ncp>)");            // OPTION
+			 "quantile_noncentral_student_t(<q>,<n>,<ncp>)");            // OPTION
   m_wordList[command].Add("mean_noncentral_student_t");           // FUNCTION
   m_wordList[tmplte].Add("mean_noncentral_student_t(<n>,<ncp>)"); // OPTION
   m_wordList[command].Add("var_noncentral_student_t");            // FUNCTION
@@ -686,7 +686,7 @@ bool AutoComplete::LoadBuiltinSymbols() {
   m_wordList[command].Add("random_noncentral_student_t");           // FUNCTION
   m_wordList[tmplte].Add("random_noncentral_student_t(<n>,<ncp>)"); // OPTION
   m_wordList[tmplte].Add(
-      "random_noncentral_student_t(<n>,<ncp>,<m>)");                 // OPTION
+			 "random_noncentral_student_t(<n>,<ncp>,<m>)");                 // OPTION
   m_wordList[command].Add("pdf_chi2");                               // FUNCTION
   m_wordList[tmplte].Add("pdf_chi2(<x>,<n>)");                       // OPTION
   m_wordList[command].Add("cdf_chi2");                               // FUNCTION
@@ -1063,7 +1063,7 @@ bool AutoComplete::LoadBuiltinSymbols() {
   m_wordList[tmplte].Add("cdf_hypergeometric(<x>,<n1>,<n2>,<n>)");  // OPTION
   m_wordList[command].Add("quantile_hypergeometric");               // FUNCTION
   m_wordList[tmplte].Add(
-      "quantile_hypergeometric(<q>,<n1>,<n2>,<n>)");                // OPTION
+			 "quantile_hypergeometric(<q>,<n1>,<n2>,<n>)");                // OPTION
   m_wordList[command].Add("mean_hypergeometric");                   // FUNCTION
   m_wordList[tmplte].Add("mean_hypergeometric(<n1>,<n2>,<n>)");     // OPTION
   m_wordList[command].Add("var_hypergeometric");                    // FUNCTION
@@ -1100,21 +1100,21 @@ bool AutoComplete::LoadBuiltinSymbols() {
   m_wordList[tmplte].Add("get_index_properties(<var>)");             // OPTION
   m_wordList[command].Add("declare_index_properties");               // FUNCTION
   m_wordList[tmplte].Add(
-      "declare_index_properties(<var>, [<prop1>, <...>])"); // OPTION
+			 "declare_index_properties(<var>, [<prop1>, <...>])"); // OPTION
   m_wordList[command].Add("presuperscript");                // OPTION
   m_wordList[command].Add("postsuperscript");               // OPTION
   m_wordList[command].Add("presubscript");                  // OPTION
   m_wordList[command].Add("postsubscript");                 // OPTION
   m_wordList[command].Add("draw");                          // FUNCTION
   m_wordList[tmplte].Add(
-      "draw(<gr2d>, ..., <gr3d>, ..., <options>, ...)");             // OPTION
+			 "draw(<gr2d>, ..., <gr3d>, ..., <options>, ...)");             // OPTION
   m_wordList[command].Add("draw2d");                                 // FUNCTION
   m_wordList[tmplte].Add("draw2d(<option>, <graphic_object>, ...)"); // OPTION
   m_wordList[command].Add("draw3d");                                 // FUNCTION
   m_wordList[tmplte].Add("draw3d(<option>, <graphic_object>, ...)"); // OPTION
   m_wordList[command].Add("draw_file");                              // FUNCTION
   m_wordList[tmplte].Add(
-      "draw_file(<graphic option>, ..., <graphic object>, ...)"); // OPTION
+			 "draw_file(<graphic option>, ..., <graphic object>, ...)"); // OPTION
   m_wordList[command].Add("multiplot_mode");                      // FUNCTION
   m_wordList[tmplte].Add("multiplot_mode(<term>)");               // OPTION
   m_wordList[command].Add("set_draw_defaults");                   // FUNCTION
@@ -1235,15 +1235,15 @@ bool AutoComplete::LoadBuiltinSymbols() {
   m_wordList[command].Add("ztics_axis");             // OPTION
   m_wordList[command].Add("ztics_rotate");           // OPTION
   m_wordList[tmplte].Add(
-      "make_level_picture(<data>,<width>,<height>)"); // OPTION
+			 "make_level_picture(<data>,<width>,<height>)"); // OPTION
   m_wordList[command].Add("boundaries_array");        // OPTION
   m_wordList[command].Add("chaosgame");               // FUNCTION
   m_wordList[tmplte].Add(
-      "chaosgame(<[[><x1>, <y1><]>...<[><xm>, <ym><]]>, <[><x0>, <y0><]>, <b>, "
-      "<n>, ..., options, ...);");      // OPTION
+			 "chaosgame(<[[><x1>, <y1><]>...<[><xm>, <ym><]]>, <[><x0>, <y0><]>, <b>, "
+			 "<n>, ..., options, ...);");      // OPTION
   m_wordList[command].Add("evolution"); // FUNCTION
   m_wordList[tmplte].Add(
-      "evolution(<F>, <y0>, <n>, ..., options, ...);"); // OPTION
+			 "evolution(<F>, <y0>, <n>, ..., options, ...);"); // OPTION
   m_wordList[command].Add("evolution2d");               // FUNCTION
   m_wordList[tmplte].Add("evolution2d(<[><F>, <G><]>, <[><u>, <v><]>, <[><u0>, "
                          "<y0><]>, <n>, ..., options, ...);"); // OPTION
@@ -1328,9 +1328,9 @@ bool AutoComplete::LoadBuiltinSymbols() {
   m_wordList[command].Add("algexact");                    // OPTION
   m_wordList[command].Add("algsys");                      // FUNCTION
   m_wordList[tmplte].Add(
-      "algsys([<expr_1>, ..., <expr_m>], [<x_1>, ..., <x_n>])"); // OPTION
+			 "algsys([<expr_1>, ..., <expr_m>], [<x_1>, ..., <x_n>])"); // OPTION
   m_wordList[tmplte].Add(
-      "algsys([<eqn_1>, ..., <eqn_m>], [<x_1>, ..., <x_n>])");       // OPTION
+			 "algsys([<eqn_1>, ..., <eqn_m>], [<x_1>, ..., <x_n>])");       // OPTION
   m_wordList[command].Add("allroots");                               // FUNCTION
   m_wordList[tmplte].Add("allroots(<expr>)");                        // OPTION
   m_wordList[tmplte].Add("allroots(<eqn>)");                         // OPTION
@@ -1353,7 +1353,7 @@ bool AutoComplete::LoadBuiltinSymbols() {
   m_wordList[tmplte].Add("lhs(<expr>)");                             // OPTION
   m_wordList[command].Add("linsolve");                               // FUNCTION
   m_wordList[tmplte].Add(
-      "linsolve([<expr_1>, ..., <expr_m>], [<x_1>, ..., <x_n>])"); // OPTION
+			 "linsolve([<expr_1>, ..., <expr_m>], [<x_1>, ..., <x_n>])"); // OPTION
   m_wordList[command].Add("linsolvewarn");                         // OPTION
   m_wordList[command].Add("linsolve_params");                      // OPTION
   m_wordList[command].Add("multiplicities");                       // OPTION
@@ -1379,7 +1379,7 @@ bool AutoComplete::LoadBuiltinSymbols() {
   m_wordList[tmplte].Add("solve(<expr>, <x>)");                    // OPTION
   m_wordList[tmplte].Add("solve(<expr>)");                         // OPTION
   m_wordList[tmplte].Add(
-      "solve([<eqn_1>, ..., <eqn_n>], [<x_1>, ..., <x_n>])");    // OPTION
+			 "solve([<eqn_1>, ..., <eqn_n>], [<x_1>, ..., <x_n>])");    // OPTION
   m_wordList[command].Add("solvedecomposes");                    // OPTION
   m_wordList[command].Add("solveexplicit");                      // OPTION
   m_wordList[command].Add("solvefactors");                       // OPTION
@@ -1424,7 +1424,7 @@ bool AutoComplete::LoadBuiltinSymbols() {
   m_wordList[tmplte].Add("infix(<op>)");                         // OPTION
   m_wordList[tmplte].Add("infix(<op>, <lbp>, <rbp>)");           // OPTION
   m_wordList[tmplte].Add(
-      "infix(<op>, <lbp>, <rbp>, <lpos>, <rpos>, <pos>)");     // OPTION
+			 "infix(<op>, <lbp>, <rbp>, <lpos>, <rpos>, <pos>)");     // OPTION
   m_wordList[command].Add("inflag");                           // OPTION
   m_wordList[command].Add("inpart");                           // FUNCTION
   m_wordList[tmplte].Add("inpart(<expr>, <n_1>, ..., <n_k>)"); // OPTION
@@ -1507,18 +1507,18 @@ bool AutoComplete::LoadBuiltinSymbols() {
   m_wordList[tmplte].Add("declare_unit_conversion(<u> = <v>, ...)"); // OPTION
   m_wordList[command].Add("declare_dimensions");                     // FUNCTION
   m_wordList[tmplte].Add(
-      "declare_dimensions(<a_1>, <d_1>, ..., <a_n>, <d_n>)");     // OPTION
+			 "declare_dimensions(<a_1>, <d_1>, ..., <a_n>, <d_n>)");     // OPTION
   m_wordList[tmplte].Add("remove_dimensions(<a_1>, ..., <a_n>)"); // OPTION
   m_wordList[command].Add("declare_fundamental_dimensions");      // FUNCTION
   m_wordList[tmplte].Add(
-      "declare_fundamental_dimensions(<d_1>, <d_2>, <d_3>, ...)"); // OPTION
+			 "declare_fundamental_dimensions(<d_1>, <d_2>, <d_3>, ...)"); // OPTION
   m_wordList[tmplte].Add(
-      "remove_fundamental_dimensions(<d_1>, <d_2>, <d_3>, ...)"); // OPTION
+			 "remove_fundamental_dimensions(<d_1>, <d_2>, <d_3>, ...)"); // OPTION
   m_wordList[command].Add("declare_fundamental_units");           // FUNCTION
   m_wordList[tmplte].Add(
-      "declare_fundamental_units(<u_1>, <d_1>, ..., <u_n>, <d_n>)"); // OPTION
+			 "declare_fundamental_units(<u_1>, <d_1>, ..., <u_n>, <d_n>)"); // OPTION
   m_wordList[tmplte].Add(
-      "remove_fundamental_units(<u_1>, ..., <u_n>)"); // OPTION
+			 "remove_fundamental_units(<u_1>, ..., <u_n>)"); // OPTION
   m_wordList[command].Add("dimensions");              // FUNCTION
   m_wordList[tmplte].Add("dimensions(<x>)");          // OPTION
   m_wordList[tmplte].Add("dimensions_as_list(<x>)");  // OPTION
@@ -1566,7 +1566,7 @@ bool AutoComplete::LoadBuiltinSymbols() {
   m_wordList[tmplte].Add("apply(<F>, [<x_1>, ..., <x_n>])"); // OPTION
   m_wordList[command].Add("block");                          // FUNCTION
   m_wordList[tmplte].Add(
-      "block([<v_1>, ..., <v_m>], <expr_1>, ..., <expr_n>)");        // OPTION
+			 "block([<v_1>, ..., <v_m>], <expr_1>, ..., <expr_n>)");        // OPTION
   m_wordList[tmplte].Add("block(<expr_1>, ..., <expr_n>)");          // OPTION
   m_wordList[command].Add("break");                                  // FUNCTION
   m_wordList[tmplte].Add("break(<expr_1>, ..., <expr_n>)");          // OPTION
@@ -1584,13 +1584,13 @@ bool AutoComplete::LoadBuiltinSymbols() {
   m_wordList[tmplte].Add("define(<f>(<x_1>, ..., <x_n>), <expr>)");  // OPTION
   m_wordList[tmplte].Add("define(<f>[<x_1>, ..., <x_n>], <expr>)");  // OPTION
   m_wordList[tmplte].Add(
-      "define(funmake (<f>, [<x_1>, ..., <x_n>]), <expr>)"); // OPTION
+			 "define(funmake (<f>, [<x_1>, ..., <x_n>]), <expr>)"); // OPTION
   m_wordList[tmplte].Add(
-      "define(arraymake (<f>, [<x_1>, ..., <x_n>]), <expr>)"); // OPTION
+			 "define(arraymake (<f>, [<x_1>, ..., <x_n>]), <expr>)"); // OPTION
   m_wordList[tmplte].Add("define(ev (<expr_1>), <expr_2>)");   // OPTION
   m_wordList[command].Add("define_variable");                  // FUNCTION
   m_wordList[tmplte].Add(
-      "define_variable(<name>, <default_value>, <mode>)");         // OPTION
+			 "define_variable(<name>, <default_value>, <mode>)");         // OPTION
   m_wordList[command].Add("dispfun");                              // FUNCTION
   m_wordList[tmplte].Add("dispfun(<f_1>, ..., <f_n>)");            // OPTION
   m_wordList[tmplte].Add("dispfun(all)");                          // OPTION
@@ -1601,10 +1601,10 @@ bool AutoComplete::LoadBuiltinSymbols() {
   m_wordList[tmplte].Add("funmake(<F>, [<arg_1>, ..., <arg_n>])"); // OPTION
   m_wordList[command].Add("lambda");                               // FUNCTION
   m_wordList[tmplte].Add(
-      "lambda([<x_1>, ..., <x_m>], <expr_1>, ..., <expr_n>)");        // OPTION
+			 "lambda([<x_1>, ..., <x_m>], <expr_1>, ..., <expr_n>)");        // OPTION
   m_wordList[tmplte].Add("lambda([[<L>]], <expr_1>, ..., <expr_n>)"); // OPTION
   m_wordList[tmplte].Add(
-      "lambda([<x_1>, ..., <x_m>, [<L>]], <expr_1>, ..., <expr_n>)"); // OPTION
+			 "lambda([<x_1>, ..., <x_m>, [<L>]], <expr_1>, ..., <expr_n>)"); // OPTION
   m_wordList[command].Add("local");                   // FUNCTION
   m_wordList[tmplte].Add("local(<v_1>, ..., <v_n>)"); // OPTION
   m_wordList[command].Add("macroexpansion");          // OPTION
@@ -1613,7 +1613,7 @@ bool AutoComplete::LoadBuiltinSymbols() {
   m_wordList[command].Add("mode_check_warnp");        // OPTION
   m_wordList[command].Add("mode_declare");            // FUNCTION
   m_wordList[tmplte].Add(
-      "mode_declare(<y_1>, <mode_1>, ..., <y_n>, <mode_n>)");  // OPTION
+			 "mode_declare(<y_1>, <mode_1>, ..., <y_n>, <mode_n>)");  // OPTION
   m_wordList[command].Add("mode_identity");                    // FUNCTION
   m_wordList[tmplte].Add("mode_identity(<arg_1>, <arg_2>)");   // OPTION
   m_wordList[command].Add("transcompile");                     // OPTION
@@ -1624,7 +1624,7 @@ bool AutoComplete::LoadBuiltinSymbols() {
   m_wordList[command].Add("translate_file");                   // FUNCTION
   m_wordList[tmplte].Add("translate_file(<maxima_filename>)"); // OPTION
   m_wordList[tmplte].Add(
-      "translate_file(<maxima_filename>, <lisp_filename>)"); // OPTION
+			 "translate_file(<maxima_filename>, <lisp_filename>)"); // OPTION
   m_wordList[command].Add("transrun");                       // OPTION
   m_wordList[command].Add("tr_array_as_ref");                // OPTION
   m_wordList[command].Add("tr_bound_function_applyp");       // OPTION
@@ -1647,7 +1647,7 @@ bool AutoComplete::LoadBuiltinSymbols() {
   m_wordList[command].Add("compile_file");                   // FUNCTION
   m_wordList[tmplte].Add("compile_file(<filename>)");        // OPTION
   m_wordList[tmplte].Add(
-      "compile_file(<filename>, <compiled_filename>)"); // OPTION
+			 "compile_file(<filename>, <compiled_filename>)"); // OPTION
   m_wordList[tmplte].Add("compile_file(<filename>, <compiled_filename>, "
                          "<lisp_filename>)");                      // OPTION
   m_wordList[command].Add("declare_translated");                   // FUNCTION
@@ -1660,7 +1660,7 @@ bool AutoComplete::LoadBuiltinSymbols() {
   m_wordList[tmplte].Add("create_graph(<v_list>, <e_list>)");      // OPTION
   m_wordList[tmplte].Add("create_graph(<n>, <e_list>)");           // OPTION
   m_wordList[tmplte].Add(
-      "create_graph(<v_list>, <e_list>, <directed>)");              // OPTION
+			 "create_graph(<v_list>, <e_list>, <directed>)");              // OPTION
   m_wordList[command].Add("copy_graph");                            // FUNCTION
   m_wordList[tmplte].Add("copy_graph(<g>)");                        // OPTION
   m_wordList[command].Add("circulant_graph");                       // FUNCTION
@@ -1919,7 +1919,7 @@ bool AutoComplete::LoadBuiltinSymbols() {
   m_wordList[tmplte].Add("add_vertices(<v_list>, <gr>)");           // OPTION
   m_wordList[command].Add("connect_vertices");                      // FUNCTION
   m_wordList[tmplte].Add(
-      "connect_vertices(<v_list>, <u_list>, <gr>)");   // OPTION
+			 "connect_vertices(<v_list>, <u_list>, <gr>)");   // OPTION
   m_wordList[command].Add("contract_edge");            // FUNCTION
   m_wordList[tmplte].Add("contract_edge(<e>, <gr>)");  // OPTION
   m_wordList[command].Add("remove_edge");              // FUNCTION
@@ -1929,7 +1929,7 @@ bool AutoComplete::LoadBuiltinSymbols() {
   m_wordList[command].Add("dimacs_export");            // FUNCTION
   m_wordList[tmplte].Add("dimacs_export(<gr>, <fl>)"); // OPTION
   m_wordList[tmplte].Add(
-      "dimacs_export(<gr>, <fl>, <comment1>, ..., <commentn>)"); // OPTION
+			 "dimacs_export(<gr>, <fl>, <comment1>, ..., <commentn>)"); // OPTION
   m_wordList[command].Add("dimacs_import");                      // FUNCTION
   m_wordList[tmplte].Add("dimacs_import(<fl>)");                 // OPTION
   m_wordList[command].Add("graph6_decode");                      // FUNCTION
@@ -1951,7 +1951,7 @@ bool AutoComplete::LoadBuiltinSymbols() {
   m_wordList[command].Add("draw_graph");                         // FUNCTION
   m_wordList[tmplte].Add("draw_graph(<graph>)");                 // OPTION
   m_wordList[tmplte].Add(
-      "draw_graph(<graph>, <option1>, ..., <optionk>)");           // OPTION
+			 "draw_graph(<graph>, <option1>, ..., <optionk>)");           // OPTION
   m_wordList[command].Add("draw_graph_program");                   // OPTION
   m_wordList[command].Add("show_id");                              // OPTION
   m_wordList[command].Add("show_label");                           // OPTION
@@ -2000,13 +2000,13 @@ bool AutoComplete::LoadBuiltinSymbols() {
   m_wordList[tmplte].Add("poly_add(<poly1>, <poly2>, <varlist>)"); // OPTION
   m_wordList[command].Add("poly_subtract");                        // FUNCTION
   m_wordList[tmplte].Add(
-      "poly_subtract(<poly1>, <poly2>, <varlist>)"); // OPTION
+			 "poly_subtract(<poly1>, <poly2>, <varlist>)"); // OPTION
   m_wordList[command].Add("poly_multiply");          // FUNCTION
   m_wordList[tmplte].Add(
-      "poly_multiply(<poly1>, <poly2>, <varlist>)"); // OPTION
+			 "poly_multiply(<poly1>, <poly2>, <varlist>)"); // OPTION
   m_wordList[command].Add("poly_s_polynomial");      // FUNCTION
   m_wordList[tmplte].Add(
-      "poly_s_polynomial(<poly1>, <poly2>, <varlist>)");             // OPTION
+			 "poly_s_polynomial(<poly1>, <poly2>, <varlist>)");             // OPTION
   m_wordList[command].Add("poly_primitive_part");                    // FUNCTION
   m_wordList[tmplte].Add("poly_primitive_part(<poly1>, <varlist>)"); // OPTION
   m_wordList[command].Add("poly_normalize");                         // FUNCTION
@@ -2019,16 +2019,16 @@ bool AutoComplete::LoadBuiltinSymbols() {
   m_wordList[tmplte].Add("poly_content(<poly>. <varlist>)");         // OPTION
   m_wordList[command].Add("poly_pseudo_divide");                     // FUNCTION
   m_wordList[tmplte].Add(
-      "poly_pseudo_divide(<poly>, <polylist>, <varlist>)"); // OPTION
+			 "poly_pseudo_divide(<poly>, <polylist>, <varlist>)"); // OPTION
   m_wordList[command].Add("poly_exact_divide");             // FUNCTION
   m_wordList[tmplte].Add(
-      "poly_exact_divide(<poly1>, <poly2>, <varlist>)"); // OPTION
+			 "poly_exact_divide(<poly1>, <poly2>, <varlist>)"); // OPTION
   m_wordList[command].Add("poly_normal_form");           // FUNCTION
   m_wordList[tmplte].Add(
-      "poly_normal_form(<poly>, <polylist>, <varlist>)"); // OPTION
+			 "poly_normal_form(<poly>, <polylist>, <varlist>)"); // OPTION
   m_wordList[command].Add("poly_buchberger_criterion");   // FUNCTION
   m_wordList[tmplte].Add(
-      "poly_buchberger_criterion(<polylist>, <varlist>)"); // OPTION
+			 "poly_buchberger_criterion(<polylist>, <varlist>)"); // OPTION
   m_wordList[command].Add("poly_buchberger");              // FUNCTION
   m_wordList[tmplte].Add("poly_buchberger(<polylist_fl>, <varlist>)"); // OPTION
   m_wordList[command].Add("poly_reduction");                       // FUNCTION
@@ -2037,42 +2037,42 @@ bool AutoComplete::LoadBuiltinSymbols() {
   m_wordList[tmplte].Add("poly_minimization(<polylist>, <varlist>)"); // OPTION
   m_wordList[command].Add("poly_normalize_list"); // FUNCTION
   m_wordList[tmplte].Add(
-      "poly_normalize_list(<polylist>, <varlist>)");             // OPTION
+			 "poly_normalize_list(<polylist>, <varlist>)");             // OPTION
   m_wordList[command].Add("poly_grobner");                       // FUNCTION
   m_wordList[tmplte].Add("poly_grobner(<polylist>, <varlist>)"); // OPTION
   m_wordList[command].Add("poly_reduced_grobner");               // FUNCTION
   m_wordList[tmplte].Add(
-      "poly_reduced_grobner(<polylist>, <varlist>)"); // OPTION
+			 "poly_reduced_grobner(<polylist>, <varlist>)"); // OPTION
   m_wordList[command].Add("poly_depends_p");          // FUNCTION
   m_wordList[tmplte].Add("poly_depends_p(<poly>, <var>, <varlist>)"); // OPTION
   m_wordList[command].Add("poly_elimination_ideal"); // FUNCTION
   m_wordList[tmplte].Add(
-      "poly_elimination_ideal(<polylist>, <number>, <varlist>)"); // OPTION
+			 "poly_elimination_ideal(<polylist>, <number>, <varlist>)"); // OPTION
   m_wordList[command].Add("poly_colon_ideal");                    // FUNCTION
   m_wordList[tmplte].Add(
-      "poly_colon_ideal(<polylist1>, <polylist2>, <varlist>)"); // OPTION
+			 "poly_colon_ideal(<polylist1>, <polylist2>, <varlist>)"); // OPTION
   m_wordList[command].Add("poly_ideal_intersection");           // FUNCTION
   m_wordList[tmplte].Add(
-      "poly_ideal_intersection(<polylist1>, <polylist2>, <varlist>)"); // OPTION
+			 "poly_ideal_intersection(<polylist1>, <polylist2>, <varlist>)"); // OPTION
   m_wordList[command].Add("poly_lcm");                             // FUNCTION
   m_wordList[tmplte].Add("poly_lcm(<poly1>, <poly2>, <varlist>)"); // OPTION
   m_wordList[command].Add("poly_gcd");                             // FUNCTION
   m_wordList[tmplte].Add("poly_gcd(<poly1>, <poly2>, <varlist>)"); // OPTION
   m_wordList[command].Add("poly_grobner_equal");                   // FUNCTION
   m_wordList[tmplte].Add(
-      "poly_grobner_equal(<polylist1>, <polylist2>, <varlist>)"); // OPTION
+			 "poly_grobner_equal(<polylist1>, <polylist2>, <varlist>)"); // OPTION
   m_wordList[command].Add("poly_grobner_subsetp");                // FUNCTION
   m_wordList[tmplte].Add(
-      "poly_grobner_subsetp(<polylist1>, <polylist2>, <varlist>)"); // OPTION
+			 "poly_grobner_subsetp(<polylist1>, <polylist2>, <varlist>)"); // OPTION
   m_wordList[command].Add("poly_grobner_member");                   // FUNCTION
   m_wordList[tmplte].Add(
-      "poly_grobner_member(<poly>, <polylist>, <varlist>)"); // OPTION
+			 "poly_grobner_member(<poly>, <polylist>, <varlist>)"); // OPTION
   m_wordList[command].Add("poly_ideal_saturation1");         // FUNCTION
   m_wordList[tmplte].Add(
-      "poly_ideal_saturation1(<polylist>, <poly>, <varlist>)"); // OPTION
+			 "poly_ideal_saturation1(<polylist>, <poly>, <varlist>)"); // OPTION
   m_wordList[command].Add("poly_ideal_saturation");             // FUNCTION
   m_wordList[tmplte].Add(
-      "poly_ideal_saturation(<polylist1>, <polylist2>, <varlist>)"); // OPTION
+			 "poly_ideal_saturation(<polylist1>, <polylist2>, <varlist>)"); // OPTION
   m_wordList[command].Add("poly_ideal_polysaturation1");             // FUNCTION
   m_wordList[tmplte].Add("poly_ideal_polysaturation1(<polylist1>, <polylist2>, "
                          "<varlist>)");                 // OPTION
@@ -2106,10 +2106,10 @@ bool AutoComplete::LoadBuiltinSymbols() {
   m_wordList[command].Add("manual_demo");                          // OPTION
   m_wordList[command].Add("implicit_derivative");                  // FUNCTION
   m_wordList[tmplte].Add(
-      "implicit_derivative(<f>,<indvarlist>,<orderlist>,<depvar>)"); // OPTION
+			 "implicit_derivative(<f>,<indvarlist>,<orderlist>,<depvar>)"); // OPTION
   m_wordList[command].Add("implicit_plot");                          // FUNCTION
   m_wordList[tmplte].Add(
-      "implicit_plot(<expr>, <x_range>, <y_range>)"); // OPTION
+			 "implicit_plot(<expr>, <x_range>, <y_range>)"); // OPTION
   m_wordList[tmplte].Add("implicit_plot([<expr_1>, ..., <expr_n>], <x_range>, "
                          "<y_range>)");                           // OPTION
   m_wordList[command].Add("__");                                  // OPTION
@@ -2196,7 +2196,7 @@ bool AutoComplete::LoadBuiltinSymbols() {
   m_wordList[tmplte].Add("tcl_output(<list>, <i0>, <skip>)");     // OPTION
   m_wordList[tmplte].Add("tcl_output(<list>, <i0>)");             // OPTION
   m_wordList[tmplte].Add(
-      "tcl_output([<list_1>, ..., <list_n>], <i>)");           // OPTION
+			 "tcl_output([<list_1>, ..., <list_n>], <i>)");           // OPTION
   m_wordList[command].Add("read");                             // FUNCTION
   m_wordList[tmplte].Add("read(<expr_1>, ..., <expr_n>)");     // OPTION
   m_wordList[command].Add("readonly");                         // FUNCTION
@@ -2206,14 +2206,14 @@ bool AutoComplete::LoadBuiltinSymbols() {
   m_wordList[command].Add("rmxchar");                          // OPTION
   m_wordList[command].Add("save");                             // FUNCTION
   m_wordList[tmplte].Add(
-      "save(<filename>, <name_1>, <name_2>, <name_3>, ...)"); // OPTION
+			 "save(<filename>, <name_1>, <name_2>, <name_3>, ...)"); // OPTION
   m_wordList[tmplte].Add(
-      "save(<filename>, values, functions, labels, ...)");            // OPTION
+			 "save(<filename>, values, functions, labels, ...)");            // OPTION
   m_wordList[tmplte].Add("save(<filename>, [<m>, <n>])");             // OPTION
   m_wordList[tmplte].Add("save(<filename>, <name_1>=<expr_1>, ...)"); // OPTION
   m_wordList[tmplte].Add("save(<filename>, all)");                    // OPTION
   m_wordList[tmplte].Add(
-      "save(<filename>, <name_1>=<expr_1>, <name_2>=<expr_2>, ...)"); // OPTION
+			 "save(<filename>, <name_1>=<expr_1>, <name_2>=<expr_2>, ...)"); // OPTION
   m_wordList[command].Add("savedef");                                 // OPTION
   m_wordList[command].Add("show");               // FUNCTION
   m_wordList[tmplte].Add("show(<expr>)");        // OPTION
@@ -2225,7 +2225,7 @@ bool AutoComplete::LoadBuiltinSymbols() {
   m_wordList[command].Add("stringdisp");         // OPTION
   m_wordList[command].Add("stringout");          // FUNCTION
   m_wordList[tmplte].Add(
-      "stringout(<filename>, <expr_1>, <expr_2>, <expr_3>, ...)"); // OPTION
+			 "stringout(<filename>, <expr_1>, <expr_2>, <expr_3>, ...)"); // OPTION
   m_wordList[tmplte].Add("stringout(<filename>, [<m>, <n>])");     // OPTION
   m_wordList[tmplte].Add("stringout(<filename>, input)");          // OPTION
   m_wordList[tmplte].Add("stringout(<filename>, functions)");      // OPTION
@@ -2245,23 +2245,23 @@ bool AutoComplete::LoadBuiltinSymbols() {
   m_wordList[tmplte].Add("texput(<a>, <s>, <operator_type>)");     // OPTION
   m_wordList[tmplte].Add("texput(<a>, [<s_1>, <s_2>], matchfix)"); // OPTION
   m_wordList[tmplte].Add(
-      "texput(<a>, [<s_1>, <s_2>, <s_3>], matchfix)"); // OPTION
+			 "texput(<a>, [<s_1>, <s_2>, <s_3>], matchfix)"); // OPTION
   m_wordList[command].Add("get_tex_environment");      // FUNCTION
   m_wordList[tmplte].Add("get_tex_environment(<op>)"); // OPTION
   m_wordList[tmplte].Add(
-      "set_tex_environment(<op>, <before>, <after>)");     // OPTION
+			 "set_tex_environment(<op>, <before>, <after>)");     // OPTION
   m_wordList[command].Add("get_tex_environment_default");  // FUNCTION
   m_wordList[tmplte].Add("get_tex_environment_default()"); // OPTION
   m_wordList[tmplte].Add(
-      "set_tex_environment_default(<before>, <after>)"); // OPTION
+			 "set_tex_environment_default(<before>, <after>)"); // OPTION
   m_wordList[command].Add("system");                     // FUNCTION
   m_wordList[tmplte].Add("system(<command>)");           // OPTION
   m_wordList[command].Add("ttyoff");                     // OPTION
   m_wordList[command].Add("with_stdout");                // FUNCTION
   m_wordList[tmplte].Add(
-      "with_stdout(<f>, <expr_1>, <expr_2>, <expr_3>, ...)"); // OPTION
+			 "with_stdout(<f>, <expr_1>, <expr_2>, <expr_3>, ...)"); // OPTION
   m_wordList[tmplte].Add(
-      "with_stdout(<s>, <expr_1>, <expr_2>, <expr_3>, ...)");      // OPTION
+			 "with_stdout(<s>, <expr_1>, <expr_2>, <expr_3>, ...)");      // OPTION
   m_wordList[command].Add("writefile");                            // FUNCTION
   m_wordList[tmplte].Add("writefile(<filename>)");                 // OPTION
   m_wordList[command].Add("changevar");                            // FUNCTION
@@ -2299,12 +2299,12 @@ bool AutoComplete::LoadBuiltinSymbols() {
   m_wordList[tmplte].Add("quad_qags(<f(x)>, <x>, <a>, <b>, [<epsrel>, "
                          "<epsabs>, <limit>])"); // OPTION
   m_wordList[tmplte].Add(
-      "quad_qags(<f>, <x>, <a>, <b>, [<epsrel>, <epsabs>, <limit>])"); // OPTION
+			 "quad_qags(<f>, <x>, <a>, <b>, [<epsrel>, <epsabs>, <limit>])"); // OPTION
   m_wordList[command].Add("quad_qagi"); // FUNCTION
   m_wordList[tmplte].Add("quad_qagi(<f(x)>, <x>, <a>, <b>, [<epsrel>, "
                          "<epsabs>, <limit>])"); // OPTION
   m_wordList[tmplte].Add(
-      "quad_qagi(<f>, <x>, <a>, <b>, [<epsrel>, <epsabs>, <limit>])"); // OPTION
+			 "quad_qagi(<f>, <x>, <a>, <b>, [<epsrel>, <epsabs>, <limit>])"); // OPTION
   m_wordList[command].Add("quad_qawc"); // FUNCTION
   m_wordList[tmplte].Add("quad_qawc(<f(x)>, <x>, <c>, <a>, <b>, [<epsrel>, "
                          "<epsabs>, <limit>])"); // OPTION
@@ -2317,11 +2317,11 @@ bool AutoComplete::LoadBuiltinSymbols() {
                          "<limit>, <maxp1>, <limlst>])"); // OPTION
   m_wordList[command].Add("quad_qawo");                   // FUNCTION
   m_wordList[tmplte].Add(
-      "quad_qawo(<f(x)>, <x>, <a>, <b>, <omega>, <trig>, [<epsrel>, <epsabs>, "
-      "<limit>, <maxp1>, <limlst>])"); // OPTION
+			 "quad_qawo(<f(x)>, <x>, <a>, <b>, <omega>, <trig>, [<epsrel>, <epsabs>, "
+			 "<limit>, <maxp1>, <limlst>])"); // OPTION
   m_wordList[tmplte].Add(
-      "quad_qawo(<f>, <x>, <a>, <b>, <omega>, <trig>, [<epsrel>, <epsabs>, "
-      "<limit>, <maxp1>, <limlst>])");  // OPTION
+			 "quad_qawo(<f>, <x>, <a>, <b>, <omega>, <trig>, [<epsrel>, <epsabs>, "
+			 "<limit>, <maxp1>, <limlst>])");  // OPTION
   m_wordList[command].Add("quad_qaws"); // FUNCTION
   m_wordList[tmplte].Add("quad_qaws(<f(x)>, <x>, <a>, <b>, <alpha>, <beta>, "
                          "<wfun>, [<epsrel>, <epsabs>, <limit>])"); // OPTION
@@ -2338,11 +2338,11 @@ bool AutoComplete::LoadBuiltinSymbols() {
   m_wordList[command].Add("cspline");                               // FUNCTION
   m_wordList[tmplte].Add("cspline(<points>)");                      // OPTION
   m_wordList[tmplte].Add(
-      "cspline(<points>, <option1>, <option2>, ...)");       // OPTION
+			 "cspline(<points>, <option1>, <option2>, ...)");       // OPTION
   m_wordList[command].Add("ratinterpol");                    // FUNCTION
   m_wordList[tmplte].Add("ratinterpol(<points>, <numdeg>)"); // OPTION
   m_wordList[tmplte].Add(
-      "ratinterpol(<points>, <numdeg>, <option1>, <option2>, ...)"); // OPTION
+			 "ratinterpol(<points>, <numdeg>, <option1>, <option2>, ...)"); // OPTION
   m_wordList[command].Add("entertensor");                            // FUNCTION
   m_wordList[tmplte].Add("entertensor(<name>)");                     // OPTION
   m_wordList[command].Add("changename");                             // FUNCTION
@@ -2358,7 +2358,7 @@ bool AutoComplete::LoadBuiltinSymbols() {
   m_wordList[command].Add("defcon");                                 // FUNCTION
   m_wordList[tmplte].Add("defcon(<tensor_1>)");                      // OPTION
   m_wordList[tmplte].Add(
-      "defcon(<tensor_1>, <tensor_2>, <tensor_3>)");             // OPTION
+			 "defcon(<tensor_1>, <tensor_2>, <tensor_3>)");             // OPTION
   m_wordList[command].Add("remcon");                             // FUNCTION
   m_wordList[tmplte].Add("remcon(<tensor_1>, ..., <tensor_n>)"); // OPTION
   m_wordList[tmplte].Add("remcon(all)");                         // OPTION
@@ -2399,10 +2399,10 @@ bool AutoComplete::LoadBuiltinSymbols() {
   m_wordList[tmplte].Add("canform(<expr>, <rename>)");    // OPTION
   m_wordList[command].Add("diff");                        // FUNCTION
   m_wordList[tmplte].Add(
-      "diff(<expr>, <v_1>, [<n_1>, [<v_2>, <n_2>] ...])"); // OPTION
+			 "diff(<expr>, <v_1>, [<n_1>, [<v_2>, <n_2>] ...])"); // OPTION
   m_wordList[command].Add("idiff");                        // FUNCTION
   m_wordList[tmplte].Add(
-      "idiff(<expr>, <v_1>, [<n_1>, [<v_2>, <n_2>] ...])"); // OPTION
+			 "idiff(<expr>, <v_1>, [<n_1>, [<v_2>, <n_2>] ...])"); // OPTION
   m_wordList[command].Add("liediff");                       // FUNCTION
   m_wordList[tmplte].Add("liediff(<v>, <ten>)");            // OPTION
   m_wordList[command].Add("rediff");                        // FUNCTION
@@ -2413,10 +2413,10 @@ bool AutoComplete::LoadBuiltinSymbols() {
   m_wordList[tmplte].Add("evundiff(<expr>)");               // OPTION
   m_wordList[command].Add("flush");                         // FUNCTION
   m_wordList[tmplte].Add(
-      "flush(<expr>, <tensor_1>, <tensor_2>, ...)"); // OPTION
+			 "flush(<expr>, <tensor_1>, <tensor_2>, ...)"); // OPTION
   m_wordList[command].Add("flushd");                 // FUNCTION
   m_wordList[tmplte].Add(
-      "flushd(<expr>, <tensor_1>, <tensor_2>, ...)");              // OPTION
+			 "flushd(<expr>, <tensor_1>, <tensor_2>, ...)");              // OPTION
   m_wordList[command].Add("flushnd");                              // FUNCTION
   m_wordList[tmplte].Add("flushnd(<expr>, <tensor>, <n>)");        // OPTION
   m_wordList[command].Add("coord");                                // FUNCTION
@@ -2489,9 +2489,9 @@ bool AutoComplete::LoadBuiltinSymbols() {
   m_wordList[tmplte].Add("zlange(<norm>, <A>)");                   // OPTION
   m_wordList[command].Add("lbfgs");                                // FUNCTION
   m_wordList[tmplte].Add(
-      "lbfgs(<FOM>, <X>, <X0>, <epsilon>, <iprint>)"); // OPTION
+			 "lbfgs(<FOM>, <X>, <X0>, <epsilon>, <iprint>)"); // OPTION
   m_wordList[tmplte].Add(
-      "lbfgs([<FOM>, <grad>] <X>, <X0>, <epsilon>, <iprint>)");     // OPTION
+			 "lbfgs([<FOM>, <grad>] <X>, <X0>, <epsilon>, <iprint>)");     // OPTION
   m_wordList[command].Add("lbfgs_nfeval_max");                      // OPTION
   m_wordList[command].Add("lbfgs_ncorrections");                    // OPTION
   m_wordList[command].Add("lhospitallim");                          // OPTION
@@ -2624,7 +2624,7 @@ bool AutoComplete::LoadBuiltinSymbols() {
   m_wordList[tmplte].Add("copylist(<list>)");                        // OPTION
   m_wordList[command].Add("create_list");                            // FUNCTION
   m_wordList[tmplte].Add(
-      "create_list(<form>, <x_1>, <list_1>, ..., <x_n>, <list_n>)"); // OPTION
+			 "create_list(<form>, <x_1>, <list_1>, ..., <x_n>, <list_n>)"); // OPTION
   m_wordList[command].Add("delete");                                 // FUNCTION
   m_wordList[tmplte].Add("delete(<expr_1>, <expr_2>)");              // OPTION
   m_wordList[tmplte].Add("delete(<expr_1>, <expr_2>, <n>)");         // OPTION
@@ -2718,9 +2718,9 @@ bool AutoComplete::LoadBuiltinSymbols() {
   m_wordList[command].Add("plsquares");                           // FUNCTION
   m_wordList[tmplte].Add("plsquares(<Mat>,<VarList>,<depvars>)"); // OPTION
   m_wordList[tmplte].Add(
-      "plsquares(<Mat>,<VarList>,<depvars>,<maxexpon>)"); // OPTION
+			 "plsquares(<Mat>,<VarList>,<depvars>,<maxexpon>)"); // OPTION
   m_wordList[tmplte].Add(
-      "plsquares(<Mat>,<VarList>,<depvars>,<maxexpon>,<maxdegree>)"); // OPTION
+			 "plsquares(<Mat>,<VarList>,<depvars>,<maxexpon>,<maxdegree>)"); // OPTION
   m_wordList[command].Add("makeOrders");                          // FUNCTION
   m_wordList[tmplte].Add("makeOrders(<indvarlist>,<orderlist>)"); // OPTION
   m_wordList[command].Add("addcol");                              // FUNCTION
@@ -2731,12 +2731,12 @@ bool AutoComplete::LoadBuiltinSymbols() {
   m_wordList[tmplte].Add("adjoint(<M>)");                         // OPTION
   m_wordList[command].Add("augcoefmatrix");                       // FUNCTION
   m_wordList[tmplte].Add(
-      "augcoefmatrix([<eqn_1>, ..., <eqn_m>], [<x_1>, ..., <x_n>])"); // OPTION
+			 "augcoefmatrix([<eqn_1>, ..., <eqn_m>], [<x_1>, ..., <x_n>])"); // OPTION
   m_wordList[command].Add("charpoly");          // FUNCTION
   m_wordList[tmplte].Add("charpoly(<M>, <x>)"); // OPTION
   m_wordList[command].Add("coefmatrix");        // FUNCTION
   m_wordList[tmplte].Add(
-      "coefmatrix([<eqn_1>, ..., <eqn_m>], [<x_1>, ..., <x_n>])"); // OPTION
+			 "coefmatrix([<eqn_1>, ..., <eqn_m>], [<x_1>, ..., <x_n>])"); // OPTION
   m_wordList[command].Add("col");                                  // FUNCTION
   m_wordList[tmplte].Add("col(<M>, <i>)");                         // OPTION
   m_wordList[command].Add("columnvector");                         // FUNCTION
@@ -2781,7 +2781,7 @@ bool AutoComplete::LoadBuiltinSymbols() {
   m_wordList[tmplte].Add("entermatrix(<m>, <n>)");                 // OPTION
   m_wordList[command].Add("genmatrix");                            // FUNCTION
   m_wordList[tmplte].Add(
-      "genmatrix(<a>, <i_2>, <j_2>, <i_1>, <j_1>)");             // OPTION
+			 "genmatrix(<a>, <i_2>, <j_2>, <i_1>, <j_1>)");             // OPTION
   m_wordList[tmplte].Add("genmatrix(<a>, <i_2>, <j_2>, <i_1>)"); // OPTION
   m_wordList[tmplte].Add("genmatrix(<a>, <i_2>, <j_2>)");        // OPTION
   m_wordList[command].Add("gramschmidt");                        // FUNCTION
@@ -2836,7 +2836,7 @@ bool AutoComplete::LoadBuiltinSymbols() {
   m_wordList[command].Add("sparse");                             // OPTION
   m_wordList[command].Add("submatrix");                          // FUNCTION
   m_wordList[tmplte].Add(
-      "submatrix(<i_1>, ..., <i_m>, <M>, <j_1>, ..., <j_n>)"); // OPTION
+			 "submatrix(<i_1>, ..., <i_m>, <M>, <j_1>, ..., <j_n>)"); // OPTION
   m_wordList[tmplte].Add("submatrix(<i_1>, ..., <i_m>, <M>)"); // OPTION
   m_wordList[tmplte].Add("submatrix(<M>, <j_1>, ..., <j_n>)"); // OPTION
   m_wordList[command].Add("transpose");                        // FUNCTION
@@ -2887,7 +2887,7 @@ bool AutoComplete::LoadBuiltinSymbols() {
   m_wordList[command].Add("remove");                                 // FUNCTION
   m_wordList[tmplte].Add("remove(<a_1>, <p_1>, ..., <a_n>, <p_n>)"); // OPTION
   m_wordList[tmplte].Add(
-      "remove([<a_1>, ..., <a_m>], [<p_1>, ..., <p_n>], ...)"); // OPTION
+			 "remove([<a_1>, ..., <a_m>], [<p_1>, ..., <p_n>], ...)"); // OPTION
   m_wordList[tmplte].Add("remove(\"<a>\", operator)");          // OPTION
   m_wordList[tmplte].Add("remove(<a>, transfun)");              // OPTION
   m_wordList[tmplte].Add("remove(all, <p>)");                   // OPTION
@@ -2900,7 +2900,7 @@ bool AutoComplete::LoadBuiltinSymbols() {
   m_wordList[tmplte].Add("scalarp(<expr>)");                    // OPTION
   m_wordList[command].Add("setup_autoload");                    // FUNCTION
   m_wordList[tmplte].Add(
-      "setup_autoload(<filename>, <function_1>, ..., <function_n>)"); // OPTION
+			 "setup_autoload(<filename>, <function_1>, ..., <function_n>)"); // OPTION
   m_wordList[command].Add("newtonepsilon");                           // OPTION
   m_wordList[command].Add("newtonmaxiter");                           // OPTION
   m_wordList[command].Add("mnewton"); // FUNCTION
@@ -2915,7 +2915,7 @@ bool AutoComplete::LoadBuiltinSymbols() {
   m_wordList[tmplte].Add("cartesian_product(<b_1>, ... , <b_n>)"); // OPTION
   m_wordList[command].Add("cartesian_product_list");               // FUNCTION
   m_wordList[tmplte].Add(
-      "cartesian_product_list(<l_1>, ... , <l_n>)");                 // OPTION
+			 "cartesian_product_list(<l_1>, ... , <l_n>)");                 // OPTION
   m_wordList[command].Add("disjoin");                                // FUNCTION
   m_wordList[tmplte].Add("disjoin(<x>, <a>)");                       // OPTION
   m_wordList[command].Add("disjointp");                              // FUNCTION
@@ -3145,7 +3145,7 @@ bool AutoComplete::LoadBuiltinSymbols() {
   m_wordList[command].Add("read_hashed_array");                      // FUNCTION
   m_wordList[tmplte].Add("read_hashed_array(<S>, <A>)");             // OPTION
   m_wordList[tmplte].Add(
-      "read_hashed_array(<S>, <A>, <separator_flag>)");              // OPTION
+			 "read_hashed_array(<S>, <A>, <separator_flag>)");              // OPTION
   m_wordList[command].Add("read_nested_list");                       // FUNCTION
   m_wordList[tmplte].Add("read_nested_list(<S>)");                   // OPTION
   m_wordList[tmplte].Add("read_nested_list(<S>, <separator_flag>)"); // OPTION
@@ -3159,7 +3159,7 @@ bool AutoComplete::LoadBuiltinSymbols() {
   m_wordList[tmplte].Add("write_data(<X>, <D>, <separator_flag>)");  // OPTION
   m_wordList[command].Add("assume_external_byte_order");             // FUNCTION
   m_wordList[tmplte].Add(
-      "assume_external_byte_order(<byte_order_flag>)");             // OPTION
+			 "assume_external_byte_order(<byte_order_flag>)");             // OPTION
   m_wordList[command].Add("openr_binary");                          // FUNCTION
   m_wordList[tmplte].Add("openr_binary(<file_name>)");              // OPTION
   m_wordList[command].Add("openw_binary");                          // FUNCTION
@@ -3275,7 +3275,7 @@ bool AutoComplete::LoadBuiltinSymbols() {
   m_wordList[tmplte].Add("opsubst(<f>,<g>,<e>)");                   // OPTION
   m_wordList[tmplte].Add("opsubst(<g>=<f>,<e>)");                   // OPTION
   m_wordList[tmplte].Add(
-      "opsubst([<g1>=<f1>,<g2>=<f2>,<gn>=<fn>],<e>)");              // OPTION
+			 "opsubst([<g1>=<f1>,<g2>=<f2>,<gn>=<fn>],<e>)");              // OPTION
   m_wordList[command].Add("assoc_legendre_p");                      // FUNCTION
   m_wordList[tmplte].Add("assoc_legendre_p(<n>, <m>, <x>)");        // OPTION
   m_wordList[command].Add("assoc_legendre_q");                      // FUNCTION
@@ -3325,23 +3325,23 @@ bool AutoComplete::LoadBuiltinSymbols() {
   m_wordList[tmplte].Add("plotdf(<dvdu>, [<u>,<v>], <options>)");   // OPTION
   m_wordList[tmplte].Add("plotdf([<dxdt>,<dydt>], <options>)");     // OPTION
   m_wordList[tmplte].Add(
-      "plotdf([<dudt>,<dvdt>], [<u>,<v>], <options>)"); // OPTION
+			 "plotdf([<dudt>,<dvdt>], [<u>,<v>], <options>)"); // OPTION
   m_wordList[command].Add("contour_plot");              // FUNCTION
   m_wordList[tmplte].Add(
-      "contour_plot(<expr>, <x_range>, <y_range>, <options>)");  // OPTION
+			 "contour_plot(<expr>, <x_range>, <y_range>, <options>)");  // OPTION
   m_wordList[command].Add("get_plot_option");                    // FUNCTION
   m_wordList[tmplte].Add("get_plot_option(<keyword>, <index>)"); // OPTION
   m_wordList[command].Add("make_transform");                     // FUNCTION
   m_wordList[tmplte].Add(
-      "make_transform([<var1>, <var2>, <var3>], <fx>, <fy>, <fz>)"); // OPTION
+			 "make_transform([<var1>, <var2>, <var3>], <fx>, <fy>, <fz>)"); // OPTION
   m_wordList[command].Add("plot2d");                                 // FUNCTION
   m_wordList[tmplte].Add("plot2d(<plot>, <x_range>, <[options]>)");  // OPTION
   m_wordList[tmplte].Add("plot2d([<plot_1>, <plot_n>], <options>)"); // OPTION
   m_wordList[tmplte].Add(
-      "plot2d([<plot_1>, <plot_n>], <x_range>, <[options]>)"); // OPTION
+			 "plot2d([<plot_1>, <plot_n>], <x_range>, <[options]>)"); // OPTION
   m_wordList[command].Add("plot3d");                           // FUNCTION
   m_wordList[tmplte].Add(
-      "plot3d(<expr>, <x_range>, <y_range>, <[options]>)"); // OPTION
+			 "plot3d(<expr>, <x_range>, <y_range>, <[options]>)"); // OPTION
   m_wordList[tmplte].Add("plot3d([<expr_1>, <...>, <expr_n>], <x_range>, "
                          "<y_range>, <[options]>)");             // OPTION
   m_wordList[command].Add("plot_options");                       // OPTION
@@ -3414,7 +3414,7 @@ bool AutoComplete::LoadBuiltinSymbols() {
   m_wordList[tmplte].Add("divide(<p_1>, <p_2>, <x_1>, <...>, <x_n>)"); // OPTION
   m_wordList[command].Add("eliminate"); // FUNCTION
   m_wordList[tmplte].Add(
-      "eliminate([<eqn_1>, <...>, <eqn_n>], [<x_1>, <...>, <x_k>])"); // OPTION
+			 "eliminate([<eqn_1>, <...>, <eqn_n>], [<x_1>, <...>, <x_k>])"); // OPTION
   m_wordList[command].Add("ezgcd");                                 // FUNCTION
   m_wordList[tmplte].Add("ezgcd(<p_1>, <p_2>, <p_3>, ...)");        // OPTION
   m_wordList[command].Add("facexpand");                             // OPTION
@@ -3459,7 +3459,7 @@ bool AutoComplete::LoadBuiltinSymbols() {
   m_wordList[command].Add("quotient");                              // FUNCTION
   m_wordList[tmplte].Add("quotient(<p_1>, <p_2>)");                 // OPTION
   m_wordList[tmplte].Add(
-      "quotient(<p_1>, <p_2>, <x_1>, <...>, <x_n>)");             // OPTION
+			 "quotient(<p_1>, <p_2>, <x_1>, <...>, <x_n>)");             // OPTION
   m_wordList[command].Add("rat");                                 // FUNCTION
   m_wordList[tmplte].Add("rat(<expr>)");                          // OPTION
   m_wordList[tmplte].Add("rat(<expr>, <x_1>, <...>, <x_n>)");     // OPTION
@@ -3499,14 +3499,14 @@ bool AutoComplete::LoadBuiltinSymbols() {
   m_wordList[tmplte].Add("ratvars()");                            // OPTION
   m_wordList[command].Add("ratweight");                           // FUNCTION
   m_wordList[tmplte].Add(
-      "ratweight(<x_1>, <w_1>, <...>, <x_n>, <w_n>)"); // OPTION
+			 "ratweight(<x_1>, <w_1>, <...>, <x_n>, <w_n>)"); // OPTION
   m_wordList[tmplte].Add("ratweight()");               // OPTION
   m_wordList[command].Add("ratweights");               // OPTION
   m_wordList[command].Add("ratwtlvl");                 // OPTION
   m_wordList[command].Add("remainder");                // FUNCTION
   m_wordList[tmplte].Add("remainder(<p_1>, <p_2>)");   // OPTION
   m_wordList[tmplte].Add(
-      "remainder(<p_1>, <p_2>, <x_1>, <...>, <x_n>)");               // OPTION
+			 "remainder(<p_1>, <p_2>, <x_1>, <...>, <x_n>)");               // OPTION
   m_wordList[command].Add("resultant");                              // FUNCTION
   m_wordList[tmplte].Add("resultant(<p_1>, <p_2>, <x>)");            // OPTION
   m_wordList[command].Add("savefactors");                            // OPTION
@@ -3562,23 +3562,23 @@ bool AutoComplete::LoadBuiltinSymbols() {
   m_wordList[tmplte].Add("apply2(<expr>, <rule_1>, <...>, <rule_n>)"); // OPTION
   m_wordList[command].Add("applyb1"); // FUNCTION
   m_wordList[tmplte].Add(
-      "applyb1(<expr>, <rule_1>, <...>, <rule_n>)");   // OPTION
+			 "applyb1(<expr>, <rule_1>, <...>, <rule_n>)");   // OPTION
   m_wordList[command].Add("current_let_rule_package"); // OPTION
   m_wordList[command].Add("default_let_rule_package"); // OPTION
   m_wordList[command].Add("defmatch");                 // FUNCTION
   m_wordList[tmplte].Add(
-      "defmatch(<progname>, <pattern>, <x_1>, <...>, <x_n>)"); // OPTION
+			 "defmatch(<progname>, <pattern>, <x_1>, <...>, <x_n>)"); // OPTION
   m_wordList[tmplte].Add("defmatch(<progname>, <pattern>)");   // OPTION
   m_wordList[command].Add("defrule");                          // FUNCTION
   m_wordList[tmplte].Add(
-      "defrule(<rulename>, <pattern>, <replacement>)"); // OPTION
+			 "defrule(<rulename>, <pattern>, <replacement>)"); // OPTION
   m_wordList[command].Add("disprule");                  // FUNCTION
   m_wordList[tmplte].Add(
-      "disprule(<rulename_1>, <...>, <rulename_2>)"); // OPTION
+			 "disprule(<rulename_1>, <...>, <rulename_2>)"); // OPTION
   m_wordList[tmplte].Add("disprule(all)");            // OPTION
   m_wordList[command].Add("let");                     // FUNCTION
   m_wordList[tmplte].Add(
-      "let(<prod>, <repl>, <predname>, <arg_1>, <...>, <arg_n>)"); // OPTION
+			 "let(<prod>, <repl>, <predname>, <arg_1>, <...>, <arg_n>)"); // OPTION
   m_wordList[tmplte].Add("let([<prod>, <repl>, <predname>, <arg_1>, <...>, "
                          "<arg_n>], <package_name>)");       // OPTION
   m_wordList[command].Add("letrat");                         // OPTION
@@ -3589,15 +3589,15 @@ bool AutoComplete::LoadBuiltinSymbols() {
   m_wordList[tmplte].Add("letsimp(<expr>)");                 // OPTION
   m_wordList[tmplte].Add("letsimp(<expr>, <package_name>)"); // OPTION
   m_wordList[tmplte].Add(
-      "letsimp(<expr>, <package_name_1>, <...>, <package_name_n>)"); // OPTION
+			 "letsimp(<expr>, <package_name_1>, <...>, <package_name_n>)"); // OPTION
   m_wordList[command].Add("let_rule_packages");                      // OPTION
   m_wordList[command].Add("matchdeclare");                           // FUNCTION
   m_wordList[tmplte].Add(
-      "matchdeclare(<a_1>, <pred_1>, <...>, <a_n>, <pred_n>)");   // OPTION
+			 "matchdeclare(<a_1>, <pred_1>, <...>, <a_n>, <pred_n>)");   // OPTION
   m_wordList[command].Add("matchfix");                            // FUNCTION
   m_wordList[tmplte].Add("matchfix(<ldelimiter>, <rdelimiter>)"); // OPTION
   m_wordList[tmplte].Add(
-      "matchfix(<ldelimiter>, <rdelimiter>, <arg_pos>, <pos>)");     // OPTION
+			 "matchfix(<ldelimiter>, <rdelimiter>, <arg_pos>, <pos>)");     // OPTION
   m_wordList[command].Add("remlet");                                 // FUNCTION
   m_wordList[tmplte].Add("remlet(<prod>, <name>)");                  // OPTION
   m_wordList[tmplte].Add("remlet()");                                // OPTION
@@ -3653,7 +3653,7 @@ bool AutoComplete::LoadBuiltinSymbols() {
   m_wordList[tmplte].Add("nusum(<expr>, <x>, <i_0>, <i_1>)"); // OPTION
   m_wordList[command].Add("pade");                            // FUNCTION
   m_wordList[tmplte].Add(
-      "pade(<taylor_series>, <numer_deg_bound>, <denom_deg_bound>)"); // OPTION
+			 "pade(<taylor_series>, <numer_deg_bound>, <denom_deg_bound>)"); // OPTION
   m_wordList[command].Add("powerdisp");                               // OPTION
   m_wordList[command].Add("powerseries");                  // FUNCTION
   m_wordList[tmplte].Add("powerseries(<expr>, <x>, <a>)"); // OPTION
@@ -3664,7 +3664,7 @@ bool AutoComplete::LoadBuiltinSymbols() {
   m_wordList[command].Add("taylor");                       // FUNCTION
   m_wordList[tmplte].Add("taylor(<expr>, <x>, <a>, <n>)"); // OPTION
   m_wordList[tmplte].Add(
-      "taylor(<expr>, [<x_1>, <x_2>, <...>], <a>, <n>)");            // OPTION
+			 "taylor(<expr>, [<x_1>, <x_2>, <...>], <a>, <n>)");            // OPTION
   m_wordList[tmplte].Add("taylor(<expr>, [<x>, <a>, <n>, 'asymp])"); // OPTION
   m_wordList[tmplte].Add("taylor(<expr>, [<x_1>, <x_2>, <...>], [<a_1>, <a_2>, "
                          "<...>], [<n_1>, <n_2>, <...>])"); // OPTION
@@ -3741,7 +3741,7 @@ bool AutoComplete::LoadBuiltinSymbols() {
   m_wordList[command].Add("expandwrt_denom");                       // OPTION
   m_wordList[command].Add("expandwrt_factored");                    // FUNCTION
   m_wordList[tmplte].Add(
-      "expandwrt_factored(<expr>, <x_1>, <...>, <x_n>)"); // OPTION
+			 "expandwrt_factored(<expr>, <x_1>, <...>, <x_n>)"); // OPTION
   m_wordList[command].Add("expon");                       // OPTION
   m_wordList[command].Add("exponentialize");              // FUNCTION
   m_wordList[tmplte].Add("exponentialize(<expr>)");       // OPTION
@@ -3766,7 +3766,7 @@ bool AutoComplete::LoadBuiltinSymbols() {
   m_wordList[command].Add("numer");                       // OPTION
   m_wordList[command].Add("numerval");                    // FUNCTION
   m_wordList[tmplte].Add(
-      "numerval(<x_1>, <expr_1>, <...>, <var_n>, <expr_n>)"); // OPTION
+			 "numerval(<x_1>, <expr_1>, <...>, <var_n>, <expr_n>)"); // OPTION
   m_wordList[command].Add("opproperties");                    // OPTION
   m_wordList[command].Add("opsubst");                         // OPTION
   m_wordList[command].Add("outative");                        // OPTION
@@ -3794,10 +3794,10 @@ bool AutoComplete::LoadBuiltinSymbols() {
   m_wordList[command].Add("facsum_combine");                         // OPTION
   m_wordList[command].Add("factorfacsum");                           // FUNCTION
   m_wordList[tmplte].Add(
-      "factorfacsum(<expr>, <arg_1>, <...>, <arg_n>)"); // OPTION
+			 "factorfacsum(<expr>, <arg_1>, <...>, <arg_n>)"); // OPTION
   m_wordList[command].Add("collectterms");              // FUNCTION
   m_wordList[tmplte].Add(
-      "collectterms(<expr>, <arg_1>, <...>, <arg_n>)");            // OPTION
+			 "collectterms(<expr>, <arg_1>, <...>, <arg_n>)");            // OPTION
   m_wordList[command].Add("rempart");                              // FUNCTION
   m_wordList[tmplte].Add("rempart(<expr>, <n>)");                  // OPTION
   m_wordList[command].Add("wronskian");                            // FUNCTION
@@ -3865,7 +3865,7 @@ bool AutoComplete::LoadBuiltinSymbols() {
   m_wordList[command].Add("summand_to_rec");                       // FUNCTION
   m_wordList[tmplte].Add("summand_to_rec(<summand>, <k>, <n>)");   // OPTION
   m_wordList[tmplte].Add(
-      "summand_to_rec(<summand>, [<k>, <lo>, <hi>], <n>)");        // OPTION
+			 "summand_to_rec(<summand>, [<k>, <lo>, <hi>], <n>)");        // OPTION
   m_wordList[command].Add("bessel_j");                             // FUNCTION
   m_wordList[tmplte].Add("bessel_j(<v>, <z>)");                    // OPTION
   m_wordList[command].Add("bessel_y");                             // FUNCTION
@@ -3905,7 +3905,7 @@ bool AutoComplete::LoadBuiltinSymbols() {
   m_wordList[tmplte].Add("gamma_incomplete_regularized(<a>,<z>)"); // OPTION
   m_wordList[command].Add("gamma_incomplete_generalized");         // FUNCTION
   m_wordList[tmplte].Add(
-      "gamma_incomplete_generalized(<a>,<z1>,<z1> )");      // OPTION
+			 "gamma_incomplete_generalized(<a>,<z1>,<z1> )");      // OPTION
   m_wordList[command].Add("gammalim");                      // OPTION
   m_wordList[command].Add("makegamma");                     // FUNCTION
   m_wordList[tmplte].Add("makegamma(<expr>)");              // OPTION
@@ -3915,10 +3915,10 @@ bool AutoComplete::LoadBuiltinSymbols() {
   m_wordList[tmplte].Add("beta_incomplete(<a>, <b>, <z>)"); // OPTION
   m_wordList[command].Add("beta_incomplete_regularized");   // FUNCTION
   m_wordList[tmplte].Add(
-      "beta_incomplete_regularized(<a>, <b>, <z>)");      // OPTION
+			 "beta_incomplete_regularized(<a>, <b>, <z>)");      // OPTION
   m_wordList[command].Add("beta_incomplete_generalized"); // FUNCTION
   m_wordList[tmplte].Add(
-      "beta_incomplete_generalized(<a>, <b>, <z1>, <z2>)"); // OPTION
+			 "beta_incomplete_generalized(<a>, <b>, <z1>, <z2>)"); // OPTION
   m_wordList[command].Add("beta_expand");                   // OPTION
   m_wordList[command].Add("beta_args_sum_to_integer");      // OPTION
   m_wordList[command].Add("psi");                           // FUNCTION
@@ -3976,7 +3976,7 @@ bool AutoComplete::LoadBuiltinSymbols() {
   m_wordList[tmplte].Add("%f[<p>,<q>] (<[a],[b],z>) ");     // OPTION
   m_wordList[command].Add("hypergeometric");                // FUNCTION
   m_wordList[tmplte].Add(
-      "hypergeometric([<a1>, <...>, <ap>],[<b1>, <...> ,<bq>], x)"); // OPTION
+			 "hypergeometric([<a1>, <...>, <ap>],[<b1>, <...> ,<bq>], x)"); // OPTION
   m_wordList[command].Add("parabolic_cylinder_d");                   // FUNCTION
   m_wordList[tmplte].Add("parabolic_cylinder_d(<v>, <z>) ");         // OPTION
   m_wordList[command].Add("specint");                                // FUNCTION
@@ -3993,7 +3993,7 @@ bool AutoComplete::LoadBuiltinSymbols() {
   m_wordList[tmplte].Add("nzetai(<z>)");                             // OPTION
   m_wordList[command].Add("inference_result");                       // FUNCTION
   m_wordList[tmplte].Add(
-      "inference_result(<title>, <values>, <numbers>)");       // OPTION
+			 "inference_result(<title>, <values>, <numbers>)");       // OPTION
   m_wordList[command].Add("inferencep");                       // FUNCTION
   m_wordList[tmplte].Add("inferencep(<obj>)");                 // OPTION
   m_wordList[command].Add("items_inference");                  // FUNCTION
@@ -4009,21 +4009,21 @@ bool AutoComplete::LoadBuiltinSymbols() {
   m_wordList[command].Add("test_means_difference");            // FUNCTION
   m_wordList[tmplte].Add("test_means_difference(<x1>, <x2>)"); // OPTION
   m_wordList[tmplte].Add(
-      "test_means_difference(<x1>, <x2>, <options>, <...>)");     // OPTION
+			 "test_means_difference(<x1>, <x2>, <options>, <...>)");     // OPTION
   m_wordList[command].Add("test_variance");                       // FUNCTION
   m_wordList[tmplte].Add("test_variance(<x>)");                   // OPTION
   m_wordList[tmplte].Add("test_variance(<x>, <options>, <...>)"); // OPTION
   m_wordList[command].Add("test_variance_ratio");                 // FUNCTION
   m_wordList[tmplte].Add("test_variance_ratio(<x1>, <x2>)");      // OPTION
   m_wordList[tmplte].Add(
-      "test_variance_ratio(<x1>, <x2>, <options>, <...>)"); // OPTION
+			 "test_variance_ratio(<x1>, <x2>, <options>, <...>)"); // OPTION
   m_wordList[command].Add("test_proportion");               // FUNCTION
   m_wordList[tmplte].Add("test_proportion(<x>, <n>)");      // OPTION
   m_wordList[tmplte].Add(
-      "test_proportion(<x>, <n>, <options>, <...>)");     // OPTION
+			 "test_proportion(<x>, <n>, <options>, <...>)");     // OPTION
   m_wordList[command].Add("test_proportions_difference"); // FUNCTION
   m_wordList[tmplte].Add(
-      "test_proportions_difference(<x1>, <n1>, <x2>, <n2>)"); // OPTION
+			 "test_proportions_difference(<x1>, <n1>, <x2>, <n2>)"); // OPTION
   m_wordList[tmplte].Add("test_proportions_difference(<x1>, <n1>, <x2>, <n2>, "
                          "<options>, <...>)");                       // OPTION
   m_wordList[command].Add("test_sign");                              // FUNCTION
@@ -4075,7 +4075,7 @@ bool AutoComplete::LoadBuiltinSymbols() {
   m_wordList[command].Add("printf");                  // FUNCTION
   m_wordList[tmplte].Add("printf(<dest>, <string>)"); // OPTION
   m_wordList[tmplte].Add(
-      "printf(<dest>, <string>, <expr_1>, <...>, <expr_n>)");        // OPTION
+			 "printf(<dest>, <string>, <expr_1>, <...>, <expr_n>)");        // OPTION
   m_wordList[command].Add("readline");                               // FUNCTION
   m_wordList[tmplte].Add("readline(<stream>) ");                     // OPTION
   m_wordList[command].Add("sprint");                                 // FUNCTION
@@ -4157,7 +4157,7 @@ bool AutoComplete::LoadBuiltinSymbols() {
   m_wordList[command].Add("smismatch");                              // FUNCTION
   m_wordList[tmplte].Add("smismatch(<string_1>, <string_2>) ");      // OPTION
   m_wordList[tmplte].Add(
-      "smismatch(<string_1>, <string_2>, <test>) ");                // OPTION
+			 "smismatch(<string_1>, <string_2>, <test>) ");                // OPTION
   m_wordList[command].Add("split");                                 // FUNCTION
   m_wordList[tmplte].Add("split(<string>)  ");                      // OPTION
   m_wordList[tmplte].Add("split(<string>, <delim>)  ");             // OPTION
@@ -4168,25 +4168,25 @@ bool AutoComplete::LoadBuiltinSymbols() {
   m_wordList[tmplte].Add("sremove(<seq>, <string>)  ");             // OPTION
   m_wordList[tmplte].Add("sremove(<seq>, <string>, <test>)  ");     // OPTION
   m_wordList[tmplte].Add(
-      "sremove(<seq>, <string>, <test>, <start>)  "); // OPTION
+			 "sremove(<seq>, <string>, <test>, <start>)  "); // OPTION
   m_wordList[tmplte].Add(
-      "sremove(<seq>, <string>, <test>, <start>, <end>)  ");         // OPTION
+			 "sremove(<seq>, <string>, <test>, <start>, <end>)  ");         // OPTION
   m_wordList[command].Add("sremovefirst");                           // FUNCTION
   m_wordList[tmplte].Add("sremovefirst(<seq>, <string>)  ");         // OPTION
   m_wordList[tmplte].Add("sremovefirst(<seq>, <string>, <test>)  "); // OPTION
   m_wordList[tmplte].Add(
-      "sremovefirst(<seq>, <string>, <test>, <start>)  "); // OPTION
+			 "sremovefirst(<seq>, <string>, <test>, <start>)  "); // OPTION
   m_wordList[tmplte].Add(
-      "sremovefirst(<seq>, <string>, <test>, <start>, <end>)  "); // OPTION
+			 "sremovefirst(<seq>, <string>, <test>, <start>, <end>)  "); // OPTION
   m_wordList[command].Add("sreverse");                            // FUNCTION
   m_wordList[tmplte].Add("sreverse(<string>) ");                  // OPTION
   m_wordList[command].Add("ssearch");                             // FUNCTION
   m_wordList[tmplte].Add("ssearch(<seq>, <string>)  ");           // OPTION
   m_wordList[tmplte].Add("ssearch(<seq>, <string>, <test>)  ");   // OPTION
   m_wordList[tmplte].Add(
-      "ssearch(<seq>, <string>, <test>, <start>)  "); // OPTION
+			 "ssearch(<seq>, <string>, <test>, <start>)  "); // OPTION
   m_wordList[tmplte].Add(
-      "ssearch(<seq>, <string>, <test>, <start>, <end>)");           // OPTION
+			 "ssearch(<seq>, <string>, <test>, <start>, <end>)");           // OPTION
   m_wordList[command].Add("ssort");                                  // FUNCTION
   m_wordList[tmplte].Add("ssort(<string>) ");                        // OPTION
   m_wordList[tmplte].Add("ssort(<string>, <test>) ");                // OPTION
@@ -4194,17 +4194,17 @@ bool AutoComplete::LoadBuiltinSymbols() {
   m_wordList[tmplte].Add("ssubst(<new>, <old>, <string>) ");         // OPTION
   m_wordList[tmplte].Add("ssubst(<new>, <old>, <string>, <test>) "); // OPTION
   m_wordList[tmplte].Add(
-      "ssubst(<new>, <old>, <string>, <test>, <start>) "); // OPTION
+			 "ssubst(<new>, <old>, <string>, <test>, <start>) "); // OPTION
   m_wordList[tmplte].Add(
-      "ssubst(<new>, <old>, <string>, <test>, <start>, <end>) "); // OPTION
+			 "ssubst(<new>, <old>, <string>, <test>, <start>, <end>) "); // OPTION
   m_wordList[command].Add("ssubstfirst");                         // FUNCTION
   m_wordList[tmplte].Add("ssubstfirst(<new>, <old>, <string>) "); // OPTION
   m_wordList[tmplte].Add(
-      "ssubstfirst(<new>, <old>, <string>, <test>) "); // OPTION
+			 "ssubstfirst(<new>, <old>, <string>, <test>) "); // OPTION
   m_wordList[tmplte].Add(
-      "ssubstfirst(<new>, <old>, <string>, <test>, <start>) "); // OPTION
+			 "ssubstfirst(<new>, <old>, <string>, <test>, <start>) "); // OPTION
   m_wordList[tmplte].Add(
-      "ssubstfirst(<new>, <old>, <string>, <test>, <start>, <end>) "); // OPTION
+			 "ssubstfirst(<new>, <old>, <string>, <test>, <start>, <end>) "); // OPTION
   m_wordList[command].Add("strim");                               // FUNCTION
   m_wordList[tmplte].Add("strim(<seq>,<string>) ");               // OPTION
   m_wordList[command].Add("striml");                              // FUNCTION
@@ -4264,7 +4264,7 @@ bool AutoComplete::LoadBuiltinSymbols() {
   m_wordList[tmplte].Add("directory(<pattern>)"); // OPTION
   m_wordList[command].Add("multi_orbit");         // FUNCTION
   m_wordList[tmplte].Add(
-      "multi_orbit(<P>, [<lvar_1>, <lvar_2>,<...>, <lvar_p>])"); // OPTION
+			 "multi_orbit(<P>, [<lvar_1>, <lvar_2>,<...>, <lvar_p>])"); // OPTION
   m_wordList[command].Add("multsym");                            // FUNCTION
   m_wordList[tmplte].Add("multsym(<ppart_1>, <ppart_2>, <n>)");  // OPTION
   m_wordList[command].Add("orbit");                              // FUNCTION
@@ -4294,7 +4294,7 @@ bool AutoComplete::LoadBuiltinSymbols() {
   m_wordList[tmplte].Add("somrac(<L>, <k>)");              // OPTION
   m_wordList[command].Add("resolvante");                   // FUNCTION
   m_wordList[tmplte].Add(
-      "resolvante(<P>, <x>, <f>, [<x_1>,<...>, <x_d>]) ");       // OPTION
+			 "resolvante(<P>, <x>, <f>, [<x_1>,<...>, <x_d>]) ");       // OPTION
   m_wordList[command].Add("resolvante_alternee1");               // FUNCTION
   m_wordList[tmplte].Add("resolvante_alternee1(<P>, <x>)");      // OPTION
   m_wordList[command].Add("resolvante_bipartite");               // FUNCTION
@@ -4422,7 +4422,7 @@ bool AutoComplete::LoadBuiltinSymbols() {
   m_wordList[command].Add("mod_threshold");                      // OPTION
   m_wordList[command].Add("days360");                            // FUNCTION
   m_wordList[tmplte].Add(
-      "days360(<year1>,<month1>,<day1>,<year2>,<month2>,<day2>)"); // OPTION
+			 "days360(<year1>,<month1>,<day1>,<year2>,<month2>,<day2>)"); // OPTION
   m_wordList[command].Add("fv");                                   // FUNCTION
   m_wordList[tmplte].Add("fv(<rate>,<PV>,<num>)");                 // OPTION
   m_wordList[command].Add("pv");                                   // FUNCTION
@@ -4435,18 +4435,18 @@ bool AutoComplete::LoadBuiltinSymbols() {
   m_wordList[tmplte].Add("annuity_fv(<rate>,<FV>,<num>)");         // OPTION
   m_wordList[command].Add("geo_annuity_pv");                       // FUNCTION
   m_wordList[tmplte].Add(
-      "geo_annuity_pv(<rate>,<growing_rate>,<PV>,<num>)"); // OPTION
+			 "geo_annuity_pv(<rate>,<growing_rate>,<PV>,<num>)"); // OPTION
   m_wordList[command].Add("geo_annuity_fv");               // FUNCTION
   m_wordList[tmplte].Add(
-      "geo_annuity_fv(<rate>,<growing_rate>,<FV>,<num>)");       // OPTION
+			 "geo_annuity_fv(<rate>,<growing_rate>,<FV>,<num>)");       // OPTION
   m_wordList[command].Add("amortization");                       // FUNCTION
   m_wordList[tmplte].Add("amortization(<rate>,<amount>,<num>)"); // OPTION
   m_wordList[command].Add("arit_amortization");                  // FUNCTION
   m_wordList[tmplte].Add(
-      "arit_amortization(<rate>,<increment>,<amount>,<num>)"); // OPTION
+			 "arit_amortization(<rate>,<increment>,<amount>,<num>)"); // OPTION
   m_wordList[command].Add("geo_amortization");                 // FUNCTION
   m_wordList[tmplte].Add(
-      "geo_amortization(<rate>,<growing_rate>,<amount>,<num>)");   // OPTION
+			 "geo_amortization(<rate>,<growing_rate>,<amount>,<num>)");   // OPTION
   m_wordList[command].Add("saving");                               // FUNCTION
   m_wordList[tmplte].Add("saving(<rate>,<amount>,<num>)");         // OPTION
   m_wordList[command].Add("npv");                                  // FUNCTION
@@ -4496,7 +4496,7 @@ bool AutoComplete::LoadBuiltinSymbols() {
   m_wordList[tmplte].Add("eliminate_using(<l>, <e>, <x>)");        // OPTION
   m_wordList[command].Add("fourier_elim");                         // FUNCTION
   m_wordList[tmplte].Add(
-      "fourier_elim([<eq1>, <eq2>, <...>], [<var1>, <var>, <...>])"); // OPTION
+			 "fourier_elim([<eq1>, <eq2>, <...>], [<var1>, <var>, <...>])"); // OPTION
   m_wordList[command].Add("isreal_p");                            // FUNCTION
   m_wordList[tmplte].Add("isreal_p(<e>)");                        // OPTION
   m_wordList[command].Add("new_variable");                        // FUNCTION
@@ -4826,7 +4826,7 @@ bool AutoComplete::LoadBuiltinSymbols() {
   m_wordList[tmplte].Add(wxT("wxdeclare_subscript(<subscript>,<[false]>)"));
   m_wordList[command].Add(wxT("wxanimate_from_imgfiles"));
   m_wordList[tmplte].Add(
-      wxT("wxanimate_from_imgfiles(<filename>,<[filename,...]>)"));
+			 wxT("wxanimate_from_imgfiles(<filename>,<[filename,...]>)"));
   m_wordList[command].Add(wxT("wxstatusbar"));
   m_wordList[tmplte].Add(wxT("wxstatusbar(<string>)"));
   m_wordList[command].Add(wxT("wxmaximaversion"));

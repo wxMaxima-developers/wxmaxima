@@ -39,10 +39,10 @@ public:
          long style = wxDEFAULT_DIALOG_STYLE);
 
   void SetValue(wxString s)
-  {
-    text_ctrl_1->SetValue(s);
-    text_ctrl_1->SetSelection(-1, -1);
-  }
+    {
+      text_ctrl_1->SetValue(s);
+      text_ctrl_1->SetSelection(-1, -1);
+    }
 
   wxString GetValue();
 

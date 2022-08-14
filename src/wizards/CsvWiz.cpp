@@ -23,7 +23,7 @@
 
 /*! \file
   This file contains all the wizards the draw sidepane needs.
- */
+*/
 
 #include "CsvWiz.h"
 #include <wx/arrstr.h>
@@ -31,9 +31,9 @@
 #include <wx/persist/toplevel.h>
 
 CsvImportWiz::CsvImportWiz(wxWindow *parent, Configuration *config)
-    : wxDialog(parent, -1, _("CSV import"), wxDefaultPosition, wxDefaultSize,
-               wxMINIMIZE_BOX | wxMAXIMIZE_BOX | wxRESIZE_BORDER | wxCAPTION |
-                   wxCLOSE_BOX | wxCLIP_CHILDREN) {
+  : wxDialog(parent, -1, _("CSV import"), wxDefaultPosition, wxDefaultSize,
+	     wxMINIMIZE_BOX | wxMAXIMIZE_BOX | wxRESIZE_BORDER | wxCAPTION |
+	     wxCLOSE_BOX | wxCLIP_CHILDREN) {
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
   vbox->Add(new wxStaticText(this, -1, _("Field Separator")), wxSizerFlags());
   wxArrayString choices;
@@ -41,7 +41,7 @@ CsvImportWiz::CsvImportWiz(wxWindow *parent, Configuration *config)
   choices.Add(_("Comma"));
   choices.Add(_("Tab"));
   m_separator =
-      new wxChoice(this, -1, wxDefaultPosition, wxDefaultSize, choices);
+    new wxChoice(this, -1, wxDefaultPosition, wxDefaultSize, choices);
   long choice = 0;
   wxConfig::Get()->Read(wxT("csvSeparator"), choice);
   if (choice < 0)
@@ -56,7 +56,7 @@ CsvImportWiz::CsvImportWiz(wxWindow *parent, Configuration *config)
   hbox->Add(m_filename, wxSizerFlags(20));
   m_browseButton = new wxButton(this, -1, _("Browse"));
   m_browseButton->Connect(
-      wxEVT_BUTTON, wxCommandEventHandler(CsvImportWiz::OnBrowse), NULL, this);
+			  wxEVT_BUTTON, wxCommandEventHandler(CsvImportWiz::OnBrowse), NULL, this);
   hbox->Add(m_browseButton, wxSizerFlags());
   vbox->Add(hbox, wxSizerFlags(20).Expand());
 
@@ -90,8 +90,8 @@ wxString CsvImportWiz::GetSeparator() {
 
 void CsvImportWiz::OnBrowse(wxCommandEvent &WXUNUSED(event)) {
   auto file = wxFileSelector(
-      _("Select csv file to read"), {}, {}, {},
-      _("Csv files (*.csv)|*.csv|Text files (*.txt)|*.txt|All|*"), wxFD_OPEN);
+			     _("Select csv file to read"), {}, {}, {},
+			     _("Csv files (*.csv)|*.csv|Text files (*.txt)|*.txt|All|*"), wxFD_OPEN);
 
   if (!file.empty())
     m_filename->SetValue(file);
@@ -103,9 +103,9 @@ CsvImportWiz::~CsvImportWiz() {
 
 CsvExportWiz::CsvExportWiz(wxWindow *parent, Configuration *config,
                            wxString objectType)
-    : wxDialog(parent, -1, _("CSV export"), wxDefaultPosition, wxDefaultSize,
-               wxMINIMIZE_BOX | wxMAXIMIZE_BOX | wxRESIZE_BORDER | wxCAPTION |
-                   wxCLOSE_BOX | wxCLIP_CHILDREN) {
+  : wxDialog(parent, -1, _("CSV export"), wxDefaultPosition, wxDefaultSize,
+	     wxMINIMIZE_BOX | wxMAXIMIZE_BOX | wxRESIZE_BORDER | wxCAPTION |
+	     wxCLOSE_BOX | wxCLIP_CHILDREN) {
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
   vbox->Add(new wxStaticText(this, -1, _("Field Separator")), wxSizerFlags());
   wxArrayString choices;
@@ -113,7 +113,7 @@ CsvExportWiz::CsvExportWiz(wxWindow *parent, Configuration *config,
   choices.Add(_("Comma"));
   choices.Add(_("Tab"));
   m_separator =
-      new wxChoice(this, -1, wxDefaultPosition, wxDefaultSize, choices);
+    new wxChoice(this, -1, wxDefaultPosition, wxDefaultSize, choices);
   long choice = 0;
   wxConfig::Get()->Read(wxT("csvSeparator"), choice);
   if (choice < 0)
@@ -131,7 +131,7 @@ CsvExportWiz::CsvExportWiz(wxWindow *parent, Configuration *config,
   hbox->Add(m_filename, wxSizerFlags(20));
   m_browseButton = new wxButton(this, -1, _("Browse"));
   m_browseButton->Connect(
-      wxEVT_BUTTON, wxCommandEventHandler(CsvExportWiz::OnBrowse), NULL, this);
+			  wxEVT_BUTTON, wxCommandEventHandler(CsvExportWiz::OnBrowse), NULL, this);
   hbox->Add(m_browseButton, wxSizerFlags());
   vbox->Add(hbox, wxSizerFlags(20).Expand());
 
@@ -165,8 +165,8 @@ wxString CsvExportWiz::GetSeparator() {
 
 void CsvExportWiz::OnBrowse(wxCommandEvent &WXUNUSED(event)) {
   auto file = wxFileSelector(
-      _("Select csv file to read"), {}, {}, {},
-      _("Csv files (*.csv)|*.csv|Text files (*.txt)|*.txt|All|*"), wxFD_SAVE);
+			     _("Select csv file to read"), {}, {}, {},
+			     _("Csv files (*.csv)|*.csv|Text files (*.txt)|*.txt|All|*"), wxFD_SAVE);
 
   if (!file.empty())
     m_filename->SetValue(file);

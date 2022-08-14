@@ -76,19 +76,19 @@ public:
          long style = wxDEFAULT_DIALOG_STYLE);
 
   wxString GetValue1()
-  {
-    return text_ctrl_1->GetValue();
-  }
+    {
+      return text_ctrl_1->GetValue();
+    }
 
   wxString GetValue2()
-  {
-    return text_ctrl_2->GetValue();
-  }
+    {
+      return text_ctrl_2->GetValue();
+    }
 
   wxString GetValue0()
-  {
-    return text_ctrl_0->GetValue();
-  }
+    {
+      return text_ctrl_0->GetValue();
+    }
 
   int GetMatrixType();
 

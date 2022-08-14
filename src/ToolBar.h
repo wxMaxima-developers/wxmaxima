@@ -24,12 +24,13 @@
 
 /*! \file
   This file declares the class ToolBar that represents wxMaxima's main tool bar.
- */
+*/
 
-#include "precomp.h"
+#include <memory>
 #include <wx/wx.h>
 #include <wx/aui/aui.h>
 #include <wx/choice.h>
+#include "precomp.h"
 #include "AnimationCell.h"
 #include "GroupCell.h"
 
@@ -69,23 +70,23 @@ public:
 
   //! Show that user input is needed for maxima to continue
   void ShowUserInputBitmap()
-  {
-    if (!m_needsInformation)
     {
-      SetToolBitmap(tb_follow, m_needsInformationIcon);
-      m_needsInformation = true;
+      if (!m_needsInformation)
+      {
+        SetToolBitmap(tb_follow, m_needsInformationIcon);
+        m_needsInformation = true;
+      }
     }
-  }
 
   //! Stop showing that user input is needed for maxima to continue
   void ShowFollowBitmap()
-  {
-    if (m_needsInformation)
     {
-      SetToolBitmap(tb_follow, m_followIcon);
-      m_needsInformation = false;
+      if (m_needsInformation)
+      {
+        SetToolBitmap(tb_follow, m_followIcon);
+        m_needsInformation = false;
+      }
     }
-  }
 
   void AnimationButtonState(AnimationStartStopState state);
 
@@ -119,68 +120,68 @@ public:
   wxBitmap  m_StopButton;
   
   void CanUndo(bool value)
-  {
-    if (value != m_canUndo_old)
     {
-      EnableTool(wxID_UNDO, value);
-      m_canUndo_old = value;
+      if (value != m_canUndo_old)
+      {
+        EnableTool(wxID_UNDO, value);
+        m_canUndo_old = value;
+      }
     }
-  }
 
   void CanRedo(bool value)
-  {
-    if (value != m_canRedo_old)
     {
-      EnableTool(wxID_UNDO, value);
-      m_canRedo_old = value;
+      if (value != m_canRedo_old)
+      {
+        EnableTool(wxID_UNDO, value);
+        m_canRedo_old = value;
+      }
     }
-  }
 
   void CanCopy(bool value)
-  {
-    if (value != m_canCopy_old)
     {
-      EnableTool(wxID_COPY, value);
-      m_canCopy_old = value;
+      if (value != m_canCopy_old)
+      {
+        EnableTool(wxID_COPY, value);
+        m_canCopy_old = value;
+      }
     }
-  }
 
   void CanCut(bool value)
-  {
-    if (value != m_canCut_old)
     {
-      EnableTool(wxID_CUT, value);
-      m_canCut_old = value;
+      if (value != m_canCut_old)
+      {
+        EnableTool(wxID_CUT, value);
+        m_canCut_old = value;
+      }
     }
-  }
 
   void CanSave(bool value)
-  {
-    if (value != m_canSave_old)
     {
-      EnableTool(wxID_SAVE, value);
-      m_canSave_old = value;
+      if (value != m_canSave_old)
+      {
+        EnableTool(wxID_SAVE, value);
+        m_canSave_old = value;
+      }
     }
-  }
 
   void CanPrint(bool value)
-  {
-    if (value != m_canPrint_old)
     {
-      EnableTool(wxID_PRINT, value);
-      m_canPrint_old = value;
+      if (value != m_canPrint_old)
+      {
+        EnableTool(wxID_PRINT, value);
+        m_canPrint_old = value;
+      }
     }
-  }
 
   void CanEvalTillHere(bool value)
     {
-    if (value != m_canEvalTillHere_old)
-    {
-      EnableTool(tb_evaltillhere, value);
-      EnableTool(tb_evaluate_rest, value);
-      m_canEvalTillHere_old = value;
+      if (value != m_canEvalTillHere_old)
+      {
+        EnableTool(tb_evaltillhere, value);
+        EnableTool(tb_evaluate_rest, value);
+        m_canEvalTillHere_old = value;
+      }
     }
-  }
 
   void CanEvalThisCell(bool value)
     {
@@ -249,35 +250,35 @@ public:
     return show;}
   void ShowUndoRedo(bool show){wxConfig::Get()->Write("Toolbar/showUndoRedo", show);}
 
-  bool ShowCopyPaste(){bool show = true; wxConfig::Get()->Read("Toolbar/showCopyPaste",&show);
+  bool ShowCopyPaste(){bool show = true; wxConfig::Get()->Read("Toolbar/showCopyPaste", &show);
     return show;}
   void ShowCopyPaste(bool show){wxConfig::Get()->Write("Toolbar/showCopyPaste", show);}
 
-  bool ShowOpenSave(){bool show = true; wxConfig::Get()->Read("Toolbar/showOpenSave",&show);
+  bool ShowOpenSave(){bool show = true; wxConfig::Get()->Read("Toolbar/showOpenSave", &show);
     return show;}
   void ShowOpenSave(bool show){wxConfig::Get()->Write("Toolbar/showOpenSave", show);}
   
-  bool ShowNew(){bool show = true; wxConfig::Get()->Read("Toolbar/showNew",&show);
+  bool ShowNew(){bool show = true; wxConfig::Get()->Read("Toolbar/showNew", &show);
     return show;}
   void ShowNew(bool show){wxConfig::Get()->Write("Toolbar/showNew", show);}
 
-  bool ShowSearch(){bool show = true; wxConfig::Get()->Read("Toolbar/showSearch",&show);
+  bool ShowSearch(){bool show = true; wxConfig::Get()->Read("Toolbar/showSearch", &show);
     return show;}
   void ShowSearch(bool show){wxConfig::Get()->Write("Toolbar/showSearch", show);}
 
-  bool ShowHelp(){bool show = true; wxConfig::Get()->Read("Toolbar/showHelp",&show);
+  bool ShowHelp(){bool show = true; wxConfig::Get()->Read("Toolbar/showHelp", &show);
     return show;}
   void ShowHelp(bool show){wxConfig::Get()->Write("Toolbar/showHelp", show);}
 
-  bool ShowPrint(){bool show = true; wxConfig::Get()->Read("Toolbar/showPrint",&show);
+  bool ShowPrint(){bool show = true; wxConfig::Get()->Read("Toolbar/showPrint", &show);
     return show;}
   void ShowPrint(bool show){wxConfig::Get()->Write("Toolbar/showPrint", show);}
 
-  bool ShowOptions(){bool show = true; wxConfig::Get()->Read("Toolbar/showOptions",&show);
+  bool ShowOptions(){bool show = true; wxConfig::Get()->Read("Toolbar/showOptions", &show);
     return show;}
   void ShowOptions(bool show){wxConfig::Get()->Write("Toolbar/showOptions", show);}
 
-  bool ShowSelectAll(){bool show = true; wxConfig::Get()->Read("Toolbar/showSelectAll",&show);
+  bool ShowSelectAll(){bool show = true; wxConfig::Get()->Read("Toolbar/showSelectAll", &show);
     return show;}
   void ShowSelectAll(bool show){wxConfig::Get()->Write("Toolbar/showSelectAll", show);}
 

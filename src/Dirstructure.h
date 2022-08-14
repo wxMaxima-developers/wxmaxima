@@ -48,11 +48,11 @@
 /*! An object that represents the directory structure wxMaxima is installed in
 
   wxMaxima finds its data in different places on different operating systems:
- - wxStandardPaths::GetExecutablePath() on windows
- - PREFIX+"/share/wxMaxima/" on Linux
- - wxStandardPaths::GetExecutablePath()+"/wxMaxima.app/Contents/Resources" on mac.
+  - wxStandardPaths::GetExecutablePath() on windows
+  - PREFIX+"/share/wxMaxima/" on Linux
+  - wxStandardPaths::GetExecutablePath()+"/wxMaxima.app/Contents/Resources" on mac.
 
-   - on linux in 
+  - on linux in 
 */
 class Dirstructure
 {
@@ -73,7 +73,7 @@ public:
   //! The directory general data is stored in
   wxString DataDir() const;
 
-    //! The directory our private fonts are stored in
+  //! The directory our private fonts are stored in
   wxString FontDir() const {return DataDir()+wxT("/../fonts");}
 
   //! The directory the help file is stored in
@@ -88,20 +88,20 @@ public:
 
   //! The path to wxMaxima's own AutoComplete file
   wxString AutocompleteFile() const
-  { return DataDir() + wxT("/autocomplete.txt"); }
+    { return DataDir() + wxT("/autocomplete.txt"); }
 
   /*! The directory the locale data is to be found in
 
     Is only used on MSW and MAC
-   */
+  */
   wxString LocaleDir() const
-  { return ResourcesDir() + wxT("/locale"); }
+    { return ResourcesDir() + wxT("/locale"); }
 
   //! The executable file path to the maxima executable (or .bat on Windows)
   static wxString MaximaDefaultLocation();
 
   static wxString
-    AnchorsCacheFile()
+  AnchorsCacheFile()
     {
       return UserConfDir() + "/manual_anchors.xml";
     }

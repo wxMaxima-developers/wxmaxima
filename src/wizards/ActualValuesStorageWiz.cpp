@@ -28,20 +28,20 @@ ActualValuesStorageWiz::ActualValuesStorageWiz(Configuration *WXUNUSED(cfg),
                                                bool WXUNUSED(eq),
                                                const wxPoint &pos,
                                                const wxSize &size, long style)
-    : wxDialog(parent, id, title, pos, size, style) {
+  : wxDialog(parent, id, title, pos, size, style) {
   wxBoxSizer *vsizer = new wxBoxSizer(wxVERTICAL);
   wxStaticText *txt1 = new wxStaticText(
-      this, -1, _("Maxima's power lies in symbolic operations."));
+					this, -1, _("Maxima's power lies in symbolic operations."));
   vsizer->Add(txt1, wxSizerFlags().Expand().Border(wxTOP, 10));
   wxStaticText *txt2 =
-      new wxStaticText(this, -1,
-                       _("It therefore makes sense to apply the known values "
-                         "for variables as late as possible."));
+    new wxStaticText(this, -1,
+		     _("It therefore makes sense to apply the known values "
+		       "for variables as late as possible."));
   vsizer->Add(txt2, wxSizerFlags().Expand().Border(wxALL, 0));
   wxStaticText *txt3 =
-      new wxStaticText(this, -1,
-                       _("Until then the actual values for all variables can "
-                         "be kept in a list."));
+    new wxStaticText(this, -1,
+		     _("Until then the actual values for all variables can "
+		       "be kept in a list."));
   vsizer->Add(txt3, wxSizerFlags().Expand().Border(wxBOTTOM, 10));
   m_grid = new wxGrid(this, -1);
   m_grid->CreateGrid(1, 2);
@@ -116,7 +116,7 @@ wxString ActualValuesStorageWiz::GetValue() {
       else
         retval += wxT("\n");
       retval += wxT("    ") + m_grid->GetCellValue(i, 0) + wxT("=") +
-                m_grid->GetCellValue(i, 1);
+	m_grid->GetCellValue(i, 1);
       firstline = false;
     }
   }

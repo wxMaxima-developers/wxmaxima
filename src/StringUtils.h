@@ -66,7 +66,7 @@ namespace wxm {
  * The code `const wxString &fun() { return wxEmptyString; }` is undefined
  * behavior, as a temporary wxString instance is returned.
  */
-extern const wxString emptyString;
+  extern const wxString emptyString;
 
 /*! Provides a static instance of a string - it will only be constructed once.
  *
@@ -83,23 +83,23 @@ extern const wxString emptyString;
 // String Comparisons
 
 //! Whether a string begins with a given character
-bool StartsWithChar(const wxString &str, wxUniChar ch);
+  bool StartsWithChar(const wxString &str, wxUniChar ch);
 //! Whether a string begins with a given character
-bool StartsWithChar(const wxString &str, wxStringCharType ch);
+  bool StartsWithChar(const wxString &str, wxStringCharType ch);
 //! Whether a string begins with a given character
-bool StartsWithChar(const wxString &str, char ch);
+  bool StartsWithChar(const wxString &str, char ch);
 
 //! Whether a string ends with a given character
-bool EndsWithChar(const wxString &str, wxUniChar ch);
+  bool EndsWithChar(const wxString &str, wxUniChar ch);
 //! Whether a string begins with a given character
-bool EndsWithChar(const wxString &str, wxStringCharType ch);
+  bool EndsWithChar(const wxString &str, wxStringCharType ch);
 //! Whether a string begins with a given character
-bool EndsWithChar(const wxString &str, char ch);
+  bool EndsWithChar(const wxString &str, char ch);
 
 // String normalization
 
 //! Removes all NULs from the string, converts "\r\n" to "\n", and lone "\r" to "\n".
-void NormalizeEOLsRemoveNULs(wxString &str);
+  void NormalizeEOLsRemoveNULs(wxString &str);
 
 } // namespace wxm
 

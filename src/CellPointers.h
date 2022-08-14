@@ -123,18 +123,18 @@ public:
 
   //! Forget where the search was started
   void ResetSearchStart()
-  {
-    m_cellSearchStartedIn = {};
-    m_indexSearchStartedAt = -1;
-  }
+    {
+      m_cellSearchStartedIn = {};
+      m_indexSearchStartedAt = -1;
+    }
 
   //! Forget where the mouse selection was started
   void ResetMouseSelectionStart()
-  { m_cellMouseSelectionStartedIn = {}; }
+    { m_cellMouseSelectionStartedIn = {}; }
 
   //! Forget where the keyboard selection was started
   void ResetKeyboardSelectionStart()
-  { m_cellKeyboardSelectionStartedIn = {}; }
+    { m_cellKeyboardSelectionStartedIn = {}; }
 
   /*! The first cell of the currently selected range of Cells.
 

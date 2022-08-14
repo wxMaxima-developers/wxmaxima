@@ -26,7 +26,7 @@
 
   SubSubCell is the Cell type that represents a math element with subscript and
   superscript.
- */
+*/
 
 #include "SubSupCell.h"
 #include "CellImpl.h"
@@ -37,13 +37,13 @@
 
 SubSupCell::SubSupCell(GroupCell *group, Configuration *config,
                        std::unique_ptr<Cell> &&base)
-    : Cell(group, config), m_baseCell(std::move(base)) {
+  : Cell(group, config), m_baseCell(std::move(base)) {
   InitBitFields();
 }
 
 SubSupCell::SubSupCell(GroupCell *group, const SubSupCell &cell)
-    : SubSupCell(group, cell.m_configuration,
-                 CopyList(group, cell.m_baseCell.get())) {
+  : SubSupCell(group, cell.m_configuration,
+	       CopyList(group, cell.m_baseCell.get())) {
   CopyCommonData(cell);
   m_altCopyText = cell.m_altCopyText;
   SetIndex(CopyList(group, cell.m_postSubCell.get()));
@@ -138,10 +138,10 @@ void SubSupCell::Recalculate(AFontSize const fontsize) {
   m_width = preWidth + m_baseCell->GetFullWidth() + postWidth;
 
   m_height = m_baseCell->GetHeightList() + subHeight + supHeight -
-             2 * Scale_Px(.8 * fontsize + MC_EXP_INDENT);
+    2 * Scale_Px(.8 * fontsize + MC_EXP_INDENT);
 
   m_center = supHeight + m_baseCell->GetCenterList() -
-             Scale_Px(.8 * fontsize + MC_EXP_INDENT);
+    Scale_Px(.8 * fontsize + MC_EXP_INDENT);
   Cell::Recalculate(fontsize);
 }
 
@@ -161,7 +161,7 @@ void SubSupCell::Draw(wxPoint point) {
       wxPoint presub = point;
       presub.x += preWidth - m_preSubCell->GetFullWidth();
       presub.y += m_baseCell->GetMaxDrop() + m_preSubCell->GetCenterList() -
-                  .8 * m_fontSize_Scaled + MC_EXP_INDENT;
+	.8 * m_fontSize_Scaled + MC_EXP_INDENT;
       m_preSubCell->DrawList(presub);
     }
 
@@ -169,8 +169,8 @@ void SubSupCell::Draw(wxPoint point) {
       wxPoint presup = point;
       presup.x += preWidth - m_preSupCell->GetFullWidth();
       presup.y -= m_baseCell->GetCenterList() + m_preSupCell->GetHeightList() -
-                  m_preSupCell->GetCenterList() - .8 * m_fontSize_Scaled +
-                  MC_EXP_INDENT;
+	m_preSupCell->GetCenterList() - .8 * m_fontSize_Scaled +
+	MC_EXP_INDENT;
       m_preSupCell->DrawList(presup);
     }
 
@@ -180,14 +180,14 @@ void SubSupCell::Draw(wxPoint point) {
     in.x = point.x + m_baseCell->GetFullWidth() - Scale_Px(2);
     if (m_postSubCell) {
       in.y = point.y + m_baseCell->GetMaxDrop() +
-             m_postSubCell->GetCenterList() - .8 * m_fontSize_Scaled +
-             MC_EXP_INDENT;
+	m_postSubCell->GetCenterList() - .8 * m_fontSize_Scaled +
+	MC_EXP_INDENT;
       m_postSubCell->DrawList(in);
     }
     if (m_postSupCell) {
       in.y = point.y - m_baseCell->GetCenterList() -
-             m_postSupCell->GetHeightList() + m_postSupCell->GetCenterList() +
-             .8 * m_fontSize_Scaled + MC_EXP_INDENT;
+	m_postSupCell->GetHeightList() + m_postSupCell->GetCenterList() +
+	.8 * m_fontSize_Scaled + MC_EXP_INDENT;
       m_postSupCell->DrawList(in);
     }
   }

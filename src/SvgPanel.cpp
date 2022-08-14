@@ -22,12 +22,12 @@
 
 /*! \file
   This file contains code to create a wxPanel containing image data.
- */
+*/
 
 #include "SvgPanel.h"
 
 SvgPanel::SvgPanel(wxWindow *parent, unsigned char *data, size_t len)
-    : wxPanel(parent), m_bitmap(this, data, len) {
+  : wxPanel(parent), m_bitmap(this, data, len) {
   int ppi;
 #if wxCHECK_VERSION(3, 1, 1)
   wxDisplay display;

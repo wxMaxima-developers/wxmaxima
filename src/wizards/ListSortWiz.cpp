@@ -26,7 +26,7 @@ ListSortWiz::ListSortWiz(Configuration *WXUNUSED(cfg), wxWindow *parent, int id,
                          const wxString &title, wxString list,
                          bool WXUNUSED(eq), const wxPoint &pos,
                          const wxSize &size, long style)
-    : wxDialog(parent, id, title, pos, size, style) {
+  : wxDialog(parent, id, title, pos, size, style) {
   wxBoxSizer *vsizer = new wxBoxSizer(wxVERTICAL);
   wxPanel *choicePanel = new wxPanel(this, -1);
   wxFlexGridSizer *grid = new wxFlexGridSizer(5, 2, 0, 0);
@@ -38,22 +38,22 @@ ListSortWiz::ListSortWiz(Configuration *WXUNUSED(cfg), wxWindow *parent, int id,
   grid->Add(m_list, wxSizerFlags().Border(wxBOTTOM | wxLEFT, 10));
 
   wxStaticText *criterionText =
-      new wxStaticText(choicePanel, -1, _("Sort Criterion:"));
+    new wxStaticText(choicePanel, -1, _("Sort Criterion:"));
   grid->Add(criterionText, wxSizerFlags().Border(wxTOP | wxLEFT, 10));
   grid->Add(10, 10);
 
   m_sortTraditional = new wxRadioButton(
-      choicePanel, -1, _("a>b"), wxDefaultPosition, wxDefaultSize, wxRB_GROUP);
+					choicePanel, -1, _("a>b"), wxDefaultPosition, wxDefaultSize, wxRB_GROUP);
   grid->Add(m_sortTraditional, wxSizerFlags().Border(wxTOP | wxLEFT, 10));
   grid->Add(10, 10);
   m_sortTraditional->SetValue(true);
 
   m_sortFunction =
-      new wxRadioButton(choicePanel, -1, _("A function f(a,b), named"));
+    new wxRadioButton(choicePanel, -1, _("A function f(a,b), named"));
   grid->Add(m_sortFunction, wxSizerFlags().Border(wxTOP | wxLEFT, 10));
   m_CriterionFunc =
-      new wxTextCtrl(choicePanel, -1, wxEmptyString, wxDefaultPosition,
-                     wxSize(300, wxDefaultSize.y));
+    new wxTextCtrl(choicePanel, -1, wxEmptyString, wxDefaultPosition,
+		   wxSize(300, wxDefaultSize.y));
   m_CriterionFunc->Connect(wxEVT_TEXT,
                            wxGridEventHandler(ListSortWiz::OnFunctionChange),
                            NULL, this);
@@ -66,7 +66,7 @@ ListSortWiz::ListSortWiz(Configuration *WXUNUSED(cfg), wxWindow *parent, int id,
                                wxDefaultPosition, wxSize(300, wxDefaultSize.y));
   m_Criterion->SetValue(wxT("a<b"));
   m_Criterion->Connect(
-      wxEVT_TEXT, wxGridEventHandler(ListSortWiz::OnLambdaChange), NULL, this);
+		       wxEVT_TEXT, wxGridEventHandler(ListSortWiz::OnLambdaChange), NULL, this);
   grid->Add(m_Criterion, wxSizerFlags().Border(wxTOP | wxLEFT, 10));
   choicePanel->SetSizerAndFit(grid);
   vsizer->Add(choicePanel, wxSizerFlags().Expand().Border(wxALL, 0));

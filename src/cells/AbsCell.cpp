@@ -32,10 +32,12 @@
 #include "AbsCell.h"
 #include "CellImpl.h"
 #include "TextCell.h"
+#include <utility>
+#include <memory>
 
 AbsCell::AbsCell(GroupCell *group, Configuration *config,
                  std::unique_ptr<Cell> &&inner)
-    : Cell(group, config), m_innerCell(std::move(inner)) {
+  : Cell(group, config), m_innerCell(std::move(inner)) {
   InitBitFields();
   SetStyle(TS_VARIABLE);
 }
@@ -44,8 +46,8 @@ AbsCell::AbsCell(GroupCell *group, Configuration *config,
 // cppcheck-suppress uninitMemberVar symbolName=AbsCell::m_open
 // cppcheck-suppress uninitMemberVar symbolName=AbsCell::m_close
 AbsCell::AbsCell(GroupCell *group, const AbsCell &cell)
-    : AbsCell(group, cell.m_configuration,
-              CopyList(group, cell.m_innerCell.get())) {
+  : AbsCell(group, cell.m_configuration,
+	    CopyList(group, cell.m_innerCell.get())) {
   CopyCommonData(cell);
 }
 
@@ -70,7 +72,7 @@ void AbsCell::Recalculate(AFontSize fontsize) {
     m_close->RecalculateList(fontsize);
   } else {
     m_width = m_innerCell->GetFullWidth() + Scale_Px(8) +
-              2 * m_configuration->GetDefaultLineWidth();
+      2 * m_configuration->GetDefaultLineWidth();
     m_height = m_innerCell->GetHeightList() + Scale_Px(4);
     m_center = m_innerCell->GetCenterList() + Scale_Px(2);
   }
@@ -88,15 +90,15 @@ void AbsCell::Draw(wxPoint point) {
     m_innerCell->DrawList(in);
 
     dc->DrawLine(
-        point.x + Scale_Px(2) + m_configuration->GetDefaultLineWidth() / 2,
-        point.y - m_center + Scale_Px(2),
-        point.x + Scale_Px(2) + m_configuration->GetDefaultLineWidth() / 2,
-        point.y - m_center + m_height - Scale_Px(2));
+		 point.x + Scale_Px(2) + m_configuration->GetDefaultLineWidth() / 2,
+		 point.y - m_center + Scale_Px(2),
+		 point.x + Scale_Px(2) + m_configuration->GetDefaultLineWidth() / 2,
+		 point.y - m_center + m_height - Scale_Px(2));
     dc->DrawLine(point.x + m_width - Scale_Px(2) - 1 -
-                     m_configuration->GetDefaultLineWidth() / 2,
+		 m_configuration->GetDefaultLineWidth() / 2,
                  point.y - m_center + Scale_Px(2),
                  point.x + m_width - Scale_Px(2) - 1 -
-                     m_configuration->GetDefaultLineWidth() / 2,
+		 m_configuration->GetDefaultLineWidth() / 2,
                  point.y - m_center + m_height - Scale_Px(2));
   }
 }
@@ -125,14 +127,14 @@ wxString AbsCell::ToTeX() const {
 
 wxString AbsCell::ToMathML() const {
   return wxT("<row><mo>|</mo>") + m_innerCell->ListToMathML() +
-         wxT("<mo>|</mo></row>\n");
+    wxT("<mo>|</mo></row>\n");
   //  return wxT("<apply><abs/><ci>") + m_innerCell->ListToMathML() +
   //  wxT("</ci></apply>");
 }
 
 wxString AbsCell::ToOMML() const {
   return wxT("<m:d><m:dPr m:begChr=\"|\" m:endChr=\"|\"></m:dPr><m:e>") +
-         m_innerCell->ListToOMML() + wxT("</m:e></m:d>");
+    m_innerCell->ListToOMML() + wxT("</m:e></m:d>");
 }
 
 wxString AbsCell::ToXML() const {

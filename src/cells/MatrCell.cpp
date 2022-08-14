@@ -32,12 +32,12 @@
 #include "CellImpl.h"
 
 MatrCell::MatrCell(GroupCell *group, Configuration *config)
-    : Cell(group, config) {
+  : Cell(group, config) {
   InitBitFields();
 }
 
 MatrCell::MatrCell(GroupCell *group, const MatrCell &cell)
-    : MatrCell(group, cell.m_configuration) {
+  : MatrCell(group, cell.m_configuration) {
   CopyCommonData(cell);
   m_specialMatrix = cell.m_specialMatrix;
   m_inferenceMatrix = cell.m_inferenceMatrix;
@@ -112,8 +112,8 @@ void MatrCell::Draw(wxPoint point) {
           mp.y += m_dropCenters[j].center;
           wxPoint mp1(mp);
           mp1.x =
-              mp.x +
-              (m_widths[i] - m_cells[j * m_matWidth + i]->GetFullWidth()) / 2;
+	    mp.x +
+	    (m_widths[i] - m_cells[j * m_matWidth + i]->GetFullWidth()) / 2;
           m_cells[j * m_matWidth + i]->DrawList(mp1);
           mp.y += (m_dropCenters[j].drop + Scale_Px(10));
         }
@@ -133,10 +133,10 @@ void MatrCell::Draw(wxPoint point) {
                        point.y + m_center - Scale_Px(2));
         if (m_colNames)
           dc->DrawLine(
-              point.x + Scale_Px(1),
-              point.y - m_center + m_dropCenters[0].Sum() + 2 * Scale_Px(5),
-              point.x + Scale_Px(1) + m_width,
-              point.y - m_center + m_dropCenters[0].Sum() + 2 * Scale_Px(5));
+		       point.x + Scale_Px(1),
+		       point.y - m_center + m_dropCenters[0].Sum() + 2 * Scale_Px(5),
+		       point.x + Scale_Px(1) + m_width,
+		       point.y - m_center + m_dropCenters[0].Sum() + 2 * Scale_Px(5));
       }
     } else {
       wxDC &adc = *m_configuration->GetAntialiassingDC();
@@ -149,26 +149,26 @@ void MatrCell::Draw(wxPoint point) {
 
         // Left bracket
         wxPoint pointsL[5] = {
-            {point.x + Scale_Px(1) + signWidth, point.y - m_center},
-            {point.x + Scale_Px(1) + signWidth / 2,
-             point.y - m_center + signWidth / 2},
-            {point.x + Scale_Px(1), point.y},
-            {point.x + Scale_Px(1) + signWidth / 2,
-             point.y + m_center - signWidth / 2},
-            {point.x + Scale_Px(1) + signWidth, point.y + m_center}};
+	  {point.x + Scale_Px(1) + signWidth, point.y - m_center},
+	  {point.x + Scale_Px(1) + signWidth / 2,
+	   point.y - m_center + signWidth / 2},
+	  {point.x + Scale_Px(1), point.y},
+	  {point.x + Scale_Px(1) + signWidth / 2,
+	   point.y + m_center - signWidth / 2},
+	  {point.x + Scale_Px(1) + signWidth, point.y + m_center}};
         adc.DrawSpline(5, pointsL);
         pointsL[2] = {point.x + Scale_Px(1.5), point.y};
         adc.DrawSpline(5, pointsL);
 
         // Right bracket
         wxPoint pointsR[5] = {
-            {point.x + m_width - Scale_Px(1) - signWidth, point.y - m_center},
-            {point.x + m_width - Scale_Px(1) - signWidth / 2,
-             point.y - m_center + signWidth / 2},
-            {point.x + m_width - Scale_Px(1.5), point.y},
-            {point.x + m_width - Scale_Px(1) - signWidth / 2,
-             point.y + m_center - signWidth / 2},
-            {point.x + m_width - Scale_Px(1) - signWidth, point.y + m_center}};
+	  {point.x + m_width - Scale_Px(1) - signWidth, point.y - m_center},
+	  {point.x + m_width - Scale_Px(1) - signWidth / 2,
+	   point.y - m_center + signWidth / 2},
+	  {point.x + m_width - Scale_Px(1.5), point.y},
+	  {point.x + m_width - Scale_Px(1) - signWidth / 2,
+	   point.y + m_center - signWidth / 2},
+	  {point.x + m_width - Scale_Px(1) - signWidth, point.y + m_center}};
         adc.DrawSpline(5, pointsR);
         pointsR[2] = {point.x + m_width - Scale_Px(1), point.y};
         adc.DrawSpline(5, pointsR);
@@ -182,16 +182,16 @@ void MatrCell::Draw(wxPoint point) {
 
         // Left bracket
         wxPoint pointsL[3] = {
-            {point.x + Scale_Px(1) + signWidth, point.y - m_center},
-            {point.x + Scale_Px(1), point.y},
-            {point.x + Scale_Px(1) + signWidth, point.y + m_center}};
+	  {point.x + Scale_Px(1) + signWidth, point.y - m_center},
+	  {point.x + Scale_Px(1), point.y},
+	  {point.x + Scale_Px(1) + signWidth, point.y + m_center}};
         adc.DrawLines(3, pointsL);
 
         // Right bracket
         wxPoint pointsR[3] = {
-            {point.x + m_width - Scale_Px(1) - signWidth, point.y - m_center},
-            {point.x + m_width - Scale_Px(1.5), point.y},
-            {point.x + m_width - Scale_Px(1) - signWidth, point.y + m_center}};
+	  {point.x + m_width - Scale_Px(1) - signWidth, point.y - m_center},
+	  {point.x + m_width - Scale_Px(1.5), point.y},
+	  {point.x + m_width - Scale_Px(1) - signWidth, point.y + m_center}};
         adc.DrawLines(3, pointsR);
         break;
       }
@@ -203,13 +203,13 @@ void MatrCell::Draw(wxPoint point) {
 
         // Left bracket
         wxPoint pointsL[2] = {
-            {point.x + Scale_Px(1) + signWidth / 2, point.y - m_center},
-            {point.x + Scale_Px(1) + signWidth / 2, point.y + m_center}};
+	  {point.x + Scale_Px(1) + signWidth / 2, point.y - m_center},
+	  {point.x + Scale_Px(1) + signWidth / 2, point.y + m_center}};
         adc.DrawLines(2, pointsL);
 
         // Right bracket
         wxPoint pointsR[2] = {{point.x + m_width - Scale_Px(1) - signWidth / 2,
-                               point.y - m_center},
+	    point.y - m_center},
                               {point.x + m_width - Scale_Px(1) - signWidth / 2,
                                point.y + m_center}};
         adc.DrawLines(2, pointsR);
@@ -335,7 +335,7 @@ wxString MatrCell::ToMathML() const {
     retval += wxT("<mtr>");
     for (unsigned int j = 0; j < m_matWidth; j++)
       retval += wxT("<mtd>") + m_cells[i * m_matWidth + j]->ListToMathML() +
-                wxT("</mtd>");
+	wxT("</mtd>");
     retval += wxT("</mtr>");
   }
   retval += wxT("</mtable>\n");
@@ -375,7 +375,7 @@ wxString MatrCell::ToOMML() const {
     retval += wxT("<m:mr>");
     for (unsigned int j = 0; j < m_matWidth; j++)
       retval += wxT("<m:e>") + m_cells[i * m_matWidth + j]->ListToOMML() +
-                wxT("</m:e>");
+	wxT("</m:e>");
     retval += wxT("</m:mr>");
   }
 
@@ -406,8 +406,8 @@ wxString MatrCell::ToXML() const {
   wxString s = wxEmptyString;
   if (m_specialMatrix)
     s = wxString::Format(wxT("<tb") + flags +
-                             wxT(" special=\"true\" inference=\"%s\" "
-                                 "rownames=\"%s\" colnames=\"%s\">"),
+			 wxT(" special=\"true\" inference=\"%s\" "
+			     "rownames=\"%s\" colnames=\"%s\">"),
                          m_inferenceMatrix ? "true" : "false",
                          m_rowNames ? "true" : "false",
                          m_colNames ? "true" : "false");
@@ -418,7 +418,7 @@ wxString MatrCell::ToXML() const {
     s += wxT("<mtr>");
     for (unsigned int j = 0; j < m_matWidth; j++)
       s += wxT("<mtd>") + m_cells[i * m_matWidth + j]->ListToXML() +
-           wxT("</mtd>");
+	wxT("</mtd>");
     s += wxT("</mtr>");
   }
   s += wxT("</tb>");

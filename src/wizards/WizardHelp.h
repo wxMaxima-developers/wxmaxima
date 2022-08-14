@@ -33,9 +33,9 @@ class Wizardhelp : public wxDialog
 {
 public:
   Wizardhelp(wxWindow *parent, int id,
-          const wxString &title,
-          const wxString &message,
-          const wxString &tooltip = wxEmptyString);
+             const wxString &title,
+             const wxString &message,
+             const wxString &tooltip = wxEmptyString);
 
 private:
   WrappingStaticText *m_message;

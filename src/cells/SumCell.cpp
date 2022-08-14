@@ -36,10 +36,10 @@
 SumCell::SumCell(GroupCell *group, Configuration *config, sumStyle style,
                  std::unique_ptr<Cell> &&under, std::unique_ptr<Cell> &&over,
                  std::unique_ptr<Cell> &&base)
-    : Cell(group, config),
-      m_paren(std::make_unique<ParenCell>(group, config, std::move(base))),
-      m_var(under->Copy(group)), m_start(MakeStart(under.get())),
-      m_over(std::move(over)), m_under(std::move(under)), m_sumStyle(style) {
+  : Cell(group, config),
+    m_paren(std::make_unique<ParenCell>(group, config, std::move(base))),
+    m_var(under->Copy(group)), m_start(MakeStart(under.get())),
+    m_over(std::move(over)), m_under(std::move(under)), m_sumStyle(style) {
   InitBitFields();
   if (!m_over)
     m_over = std::make_unique<TextCell>(group, config);
@@ -50,10 +50,10 @@ SumCell::SumCell(GroupCell *group, Configuration *config, sumStyle style,
 // cppcheck-suppress uninitMemberVar symbolName=SumCell::m_signWidth
 // cppcheck-suppress uninitMemberVar symbolName=SumCell::m_signWCenter
 SumCell::SumCell(GroupCell *group, const SumCell &cell)
-    : SumCell(group, cell.m_configuration, cell.m_sumStyle,
-              CopyList(group, cell.m_under.get()),
-              CopyList(group, cell.m_over.get()),
-              CopyList(group, cell.Base())) {
+  : SumCell(group, cell.m_configuration, cell.m_sumStyle,
+	    CopyList(group, cell.m_under.get()),
+	    CopyList(group, cell.m_over.get()),
+	    CopyList(group, cell.Base())) {
   CopyCommonData(cell);
   m_altCopyText = cell.m_altCopyText;
 }
@@ -66,11 +66,11 @@ void SumCell::MakeBreakUpCells() {
 
   bool overStringEmpty = m_over->ToString().empty();
   const wxString &openText = (m_sumStyle == SM_SUM && overStringEmpty)
-                                 ? S_("lsum(")
-                             : (m_sumStyle == SM_SUM && !overStringEmpty)
-                                 ? S_("sum(")
-                                 :
-                                 /* (m_sumstyle == SM_PROD) */ S_("prod(");
+    ? S_("lsum(")
+    : (m_sumStyle == SM_SUM && !overStringEmpty)
+    ? S_("sum(")
+    :
+    /* (m_sumstyle == SM_PROD) */ S_("prod(");
 
   m_comma1 = std::make_unique<TextCell>(m_group, m_configuration, wxT(","));
   m_comma2 = std::make_unique<TextCell>(m_group, m_configuration, wxT(","));
@@ -110,7 +110,7 @@ std::unique_ptr<Cell> SumCell::MakeStart(Cell *under) const {
   }
 
   return newStart ? std::move(newStart)
-                  : std::make_unique<TextCell>(m_group, m_configuration);
+    : std::make_unique<TextCell>(m_group, m_configuration);
 }
 
 void SumCell::Recalculate(AFontSize fontsize) {
@@ -145,8 +145,8 @@ void SumCell::Recalculate(AFontSize fontsize) {
   m_center = wxMax(m_over->GetHeightList() + Scale_Px(2) + m_signHeight / 2,
                    DisplayedBase()->GetCenterList());
   m_height = m_center +
-             wxMax(m_under->GetHeightList() + Scale_Px(4) + m_signHeight / 2,
-                   DisplayedBase()->GetMaxDrop());
+    wxMax(m_under->GetHeightList() + Scale_Px(4) + m_signHeight / 2,
+	  DisplayedBase()->GetMaxDrop());
   m_signHeight = DisplayedBase()->GetHeightList();
   Cell::Recalculate(fontsize);
 }
@@ -161,7 +161,7 @@ void SumCell::Draw(wxPoint point) {
 
     under.x += m_signWCenter - m_under->GetFullWidth() / 2;
     under.y =
-        point.y + m_signHeight / 2 + m_under->GetCenterList() + Scale_Px(2);
+      point.y + m_signHeight / 2 + m_under->GetCenterList() + Scale_Px(2);
     m_under->DrawList(under);
 
     over.x += m_signWCenter - m_over->GetFullWidth() / 2;
@@ -174,11 +174,11 @@ void SumCell::Draw(wxPoint point) {
       // DRAW SUM SIGN
       //  Upper part
       const wxPoint points[5] = {
-          {m_signWCenter + int(m_signWidth / 2), -(m_signHeight / 2)},
-          {m_signWCenter - int(m_signWidth / 2), -(m_signHeight / 2)},
-          {m_signWCenter + int(m_signWidth / 5), 0},
-          {m_signWCenter - int(m_signWidth / 2), (m_signHeight / 2)},
-          {m_signWCenter + int(m_signWidth / 2), (m_signHeight / 2)}};
+	{m_signWCenter + int(m_signWidth / 2), -(m_signHeight / 2)},
+	{m_signWCenter - int(m_signWidth / 2), -(m_signHeight / 2)},
+	{m_signWCenter + int(m_signWidth / 5), 0},
+	{m_signWCenter - int(m_signWidth / 2), (m_signHeight / 2)},
+	{m_signWCenter + int(m_signWidth / 2), (m_signHeight / 2)}};
       adc->DrawLines(5, points, point.x, point.y);
     } else {
       // DRAW PRODUCT SIGN
@@ -323,8 +323,8 @@ wxString SumCell::ToXML() const {
     flags += wxT(" breakline=\"true\"");
 
   return wxT("<sm type=\"") + flags + type + wxT("\"><r>") +
-         m_under->ListToXML() + _T("</r><r>") + m_over->ListToXML() +
-         _T("</r><r>") + Base()->ListToXML() + _T("</r></sm>");
+    m_under->ListToXML() + _T("</r><r>") + m_over->ListToXML() +
+    _T("</r><r>") + Base()->ListToXML() + _T("</r></sm>");
 }
 
 wxString SumCell::ToMathML() const {
@@ -347,10 +347,10 @@ wxString SumCell::ToMathML() const {
       retval = wxT("<mover><mo>&#x2211;</mo>") + to + wxT("</mover>") + base;
     if (!from.IsEmpty() && to.IsEmpty())
       retval =
-          wxT("<munder><mo>&#x2211;</mo>") + from + wxT("</munder>") + base;
+	wxT("<munder><mo>&#x2211;</mo>") + from + wxT("</munder>") + base;
     if (!from.IsEmpty() && !to.IsEmpty())
       retval = wxT("<munderover><mo>&#x2211;</mo>") + from + to +
-               wxT("</munderover>") + base;
+	wxT("</munderover>") + base;
   } else {
     // A product
     if (from.IsEmpty() && to.IsEmpty())
@@ -359,10 +359,10 @@ wxString SumCell::ToMathML() const {
       retval = wxT("<mover><mo>&#x220F;</mo>") + to + wxT("</mover>") + base;
     if (!from.IsEmpty() && to.IsEmpty())
       retval =
-          wxT("<munder><mo>&#x220F;</mo>") + from + wxT("</munder>") + base;
+	wxT("<munder><mo>&#x220F;</mo>") + from + wxT("</munder>") + base;
     if (!from.IsEmpty() && !to.IsEmpty())
       retval = wxT("<munderover><mo>&#x220F;</mo>") + from + to +
-               wxT("</munderover>") + base;
+	wxT("</munderover>") + base;
   }
   return (wxT("<mrow>") + retval + wxT("</mrow>"));
 }

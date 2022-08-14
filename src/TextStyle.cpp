@@ -295,7 +295,7 @@ did_change Style::SetColor(wxSystemColour sysColour) {
 
 did_change Style::ResolveToFont() {
   Style fromFont = HasFontCached() ? Style().FromFontNoCache(*m.font)
-                                   : FontCache::GetAStyleFont(*this).first;
+    : FontCache::GetAStyleFont(*this).first;
   return SetFontFrom(fromFont);
 }
 
@@ -305,10 +305,10 @@ did_change Style::SetFromFont(const wxFont &font) {
 
 did_change Style::SetFontFrom(const Style &o) {
   bool changed = SetFontFaceAndSizeFrom(o) |       //-V792
-                 SetFontStyle(o.GetFontStyle()) |  //-V792
-                 SetWeight(o.GetWeight()) |        //-V792
-                 SetUnderlined(o.IsUnderlined()) | //-V792
-                 SetStrikethrough(o.IsStrikethrough());
+    SetFontStyle(o.GetFontStyle()) |  //-V792
+    SetWeight(o.GetWeight()) |        //-V792
+    SetUnderlined(o.IsUnderlined()) | //-V792
+    SetStrikethrough(o.IsStrikethrough());
   if (GetFontHash() == o.GetFontHash())
     m.font = o.m.font;
   return changed;
@@ -316,8 +316,8 @@ did_change Style::SetFontFrom(const Style &o) {
 
 did_change Style::SetFontFaceFrom(const Style &o) {
   return SetFontName(o.GetFontName()) | //-V792
-         SetEncoding(o.GetEncoding()) | //-V792
-         SetFamily(o.GetFamily());
+    SetEncoding(o.GetEncoding()) | //-V792
+    SetFamily(o.GetFamily());
 }
 
 did_change Style::SetFontFaceAndSizeFrom(const Style &o) {
@@ -332,7 +332,7 @@ size_t Style::GetFontHash() const {
     hash_ = MixHash(hash_, m.weight);
     hash_ = MixHash(hash_, m.fontStyle);
     hash_ = MixHash(hash_, (m.underlined << 1) | (m.strikethrough << 3) |
-                               (m.isNotOK << 5));
+		    (m.isNotOK << 5));
     hash_ = MixHash(hash_, m.fontName);
     hash_ = MixHash(hash_, m.fontSize);
     if (!hash_)
@@ -348,11 +348,11 @@ bool Style::IsFontEqualTo(const Style &o_) const {
   if (m.font && m.font == o.font)
     return true;
   return (!m.fontHash || !o.fontHash || m.fontHash == o.fontHash) &&
-         m.fontSize == o.fontSize && m.family == o.family &&
-         m.encoding == o.encoding && m.weight == o.weight &&
-         m.fontStyle == o.fontStyle && m.fontName == o.fontName &&
-         m.underlined == o.underlined && m.strikethrough == o.strikethrough &&
-         m.isNotOK == o.isNotOK;
+    m.fontSize == o.fontSize && m.family == o.family &&
+    m.encoding == o.encoding && m.weight == o.weight &&
+    m.fontStyle == o.fontStyle && m.fontName == o.fontName &&
+    m.underlined == o.underlined && m.strikethrough == o.strikethrough &&
+    m.isNotOK == o.isNotOK;
 }
 
 bool Style::IsStyleEqualTo(const Style &o) const {
@@ -408,10 +408,10 @@ wxFontInfo Style::GetAsFontInfo() const {
   wxFontInfo result(GetFontSize().GetForWX());
 
   result.Family(GetFamily())
-      .FaceName(GetFontName())
-      .Underlined(IsUnderlined())
-      .Strikethrough(IsStrikethrough())
-      .Encoding(GetEncoding());
+    .FaceName(GetFontName())
+    .Underlined(IsUnderlined())
+    .Strikethrough(IsStrikethrough())
+    .Encoding(GetEncoding());
 
   // This pattern is used to ensure that the legacy variant
   // still compiles (doesn't bitrot).
@@ -419,9 +419,9 @@ wxFontInfo Style::GetAsFontInfo() const {
   return result.Style(GetFontStyle()).Weight(GetWeight());
 #endif
   return result.Slant(IsSlant())
-      .Italic(IsItalic())
-      .Bold(IsBold())
-      .Light(IsLight());
+    .Italic(IsItalic())
+    .Bold(IsBold())
+    .Light(IsLight());
 }
 
 AFontName Style::Default_FontName() {
@@ -513,7 +513,7 @@ void Style::Write(wxConfigBase *config, const wxString &where) const {
 
 const Style &Style::FromFont(const wxFont &font) {
   wxASSERT_MSG(&font != wxITALIC_FONT && &font != wxNORMAL_FONT &&
-                   &font != wxSMALL_FONT && &font != wxSWISS_FONT,
+	       &font != wxSMALL_FONT && &font != wxSWISS_FONT,
                "Use Style::FromStockFont to get stock fonts!");
 
   return FontCache::AddAFont(font);
@@ -556,10 +556,10 @@ wxString Style::GetDump() const {
                           GetFontSize().Get(), m.isNotOK ? '!' : ' ',
                           IsBold()    ? 'B'
                           : IsLight() ? 'L'
-                                      : '-',
+			  : '-',
                           IsItalic()  ? 'I'
                           : IsSlant() ? 'S'
-                                      : '-',
+			  : '-',
                           IsUnderlined() ? 'U' : '-',
                           IsStrikethrough() ? 'T' : '-', GetNameStr(),
                           GetFamily(), GetEncoding());

@@ -23,7 +23,7 @@
 
 /*! \file
   A dialog that shows the program's license.
- */
+*/
 
 #include "LicenseDialog.h"
 #include "wxm_license.h"
@@ -33,9 +33,9 @@
 #include <wx/txtstrm.h>
 
 LicenseDialog::LicenseDialog(wxWindow *parent)
-    : wxDialog(parent, -1, _("License"), wxDefaultPosition, wxDefaultSize,
-               wxRESIZE_BORDER | wxCLOSE_BOX | wxMAXIMIZE_BOX |
-                   wxMINIMIZE_BOX) {
+  : wxDialog(parent, -1, _("License"), wxDefaultPosition, wxDefaultSize,
+	     wxRESIZE_BORDER | wxCLOSE_BOX | wxMAXIMIZE_BOX |
+	     wxMINIMIZE_BOX) {
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
   wxMemoryInputStream istream(WXM_LICENSE, WXM_LICENSE_SIZE);
   wxTextInputStream textIn(istream);
@@ -44,8 +44,8 @@ LicenseDialog::LicenseDialog(wxWindow *parent)
   wxString licenseText;
 
   m_license = new wxTextCtrl(
-      this, -1, wxEmptyString, wxDefaultPosition, wxDefaultSize,
-      wxTE_MULTILINE | wxHSCROLL | wxTE_READONLY | wxTE_AUTO_URL);
+			     this, -1, wxEmptyString, wxDefaultPosition, wxDefaultSize,
+			     wxTE_MULTILINE | wxHSCROLL | wxTE_READONLY | wxTE_AUTO_URL);
 
   wxFont fnt = m_license->GetFont();
   wxClientDC dc(this);
@@ -113,7 +113,7 @@ void LicenseDialog::OnTextURLEvent(wxTextUrlEvent &event) {
   if (event.GetMouseEvent().LeftUp()) {
     wxTextCtrl *pTextCtrl = static_cast<wxTextCtrl *>(event.GetEventObject());
     wxLaunchDefaultBrowser(
-        pTextCtrl->GetRange(event.GetURLStart(), event.GetURLEnd()));
+			   pTextCtrl->GetRange(event.GetURLStart(), event.GetURLEnd()));
   }
 }
 

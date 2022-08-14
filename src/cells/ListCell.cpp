@@ -25,17 +25,17 @@
   This file defines the class ListCell
 
   ListCell is the Cell type that represents a list of math elements.
- */
+*/
 
 #include "ListCell.h"
 #include "CellImpl.h"
 
 ListCell::ListCell(GroupCell *group, Configuration *config,
                    std::unique_ptr<Cell> &&inner)
-    : Cell(group, config),
-      m_open(std::make_unique<TextCell>(group, config, wxT("["))),
-      m_innerCell(std::move(inner)),
-      m_close(std::make_unique<TextCell>(group, config, wxT("]"))) {
+  : Cell(group, config),
+    m_open(std::make_unique<TextCell>(group, config, wxT("["))),
+    m_innerCell(std::move(inner)),
+    m_close(std::make_unique<TextCell>(group, config, wxT("]"))) {
   InitBitFields();
   SetStyle(TS_VARIABLE);
 
@@ -64,8 +64,8 @@ ListCell::ListCell(GroupCell *group, Configuration *config,
 // cppcheck-suppress uninitMemberVar symbolName=ListCell::m_signBotHeight
 // cppcheck-suppress uninitMemberVar symbolName=ListCell::m_extendHeight
 ListCell::ListCell(GroupCell *group, const ListCell &cell)
-    : ListCell(group, cell.m_configuration,
-               CopyList(group, cell.m_innerCell.get())) {
+  : ListCell(group, cell.m_configuration,
+	     CopyList(group, cell.m_innerCell.get())) {
   CopyCommonData(cell);
 }
 
@@ -109,11 +109,11 @@ void ListCell::Draw(wxPoint point) {
       innerCellPos.x += m_open->GetWidth();
       m_open->DrawList(point);
       m_close->DrawList(wxPoint(
-          point.x + m_open->GetWidth() + m_innerCell->GetFullWidth(), point.y));
+				point.x + m_open->GetWidth() + m_innerCell->GetFullWidth(), point.y));
     } else {
       wxDC *adc = m_configuration->GetAntialiassingDC();
       innerCellPos.y +=
-          (m_innerCell->GetCenterList() - m_innerCell->GetHeightList() / 2);
+	(m_innerCell->GetCenterList() - m_innerCell->GetHeightList() / 2);
       SetPen(1.5);
 
       int signWidth = m_signWidth - Scale_Px(2);
@@ -121,21 +121,21 @@ void ListCell::Draw(wxPoint point) {
 
       // Left bracket
       const wxPoint pointsL[4] = {
-          {point.x - Scale_Px(1) + signWidth, point.y - m_center + Scale_Px(4)},
-          {point.x + Scale_Px(1), point.y - m_center + Scale_Px(4)},
-          {point.x + Scale_Px(1), point.y + m_center - Scale_Px(4)},
-          {point.x - Scale_Px(1) + signWidth,
-           point.y + m_center - Scale_Px(4)}};
+	{point.x - Scale_Px(1) + signWidth, point.y - m_center + Scale_Px(4)},
+	{point.x + Scale_Px(1), point.y - m_center + Scale_Px(4)},
+	{point.x + Scale_Px(1), point.y + m_center - Scale_Px(4)},
+	{point.x - Scale_Px(1) + signWidth,
+	 point.y + m_center - Scale_Px(4)}};
       adc->DrawLines(4, pointsL);
 
       // Right bracket
       const wxPoint pointsR[4] = {
-          {point.x + m_width + Scale_Px(1) - signWidth,
-           point.y - m_center + Scale_Px(4)},
-          {point.x + m_width - Scale_Px(1), point.y - m_center + Scale_Px(4)},
-          {point.x + m_width - Scale_Px(1), point.y + m_center - Scale_Px(4)},
-          {point.x + m_width + Scale_Px(1) - signWidth,
-           point.y + m_center - Scale_Px(4)}};
+	{point.x + m_width + Scale_Px(1) - signWidth,
+	 point.y - m_center + Scale_Px(4)},
+	{point.x + m_width - Scale_Px(1), point.y - m_center + Scale_Px(4)},
+	{point.x + m_width - Scale_Px(1), point.y + m_center - Scale_Px(4)},
+	{point.x + m_width + Scale_Px(1) - signWidth,
+	 point.y + m_center - Scale_Px(4)}};
       adc->DrawLines(4, pointsR);
     }
 
@@ -184,9 +184,9 @@ wxString ListCell::ToTeX() const {
 
 wxString ListCell::ToOMML() const {
   return wxT("<m:d><m:dPr m:begChr=\"") + XMLescape(m_open->ToString()) +
-         wxT("\" m:endChr=\"") + XMLescape(m_close->ToString()) +
-         wxT("\" m:grow=\"1\"></m:dPr><m:e>") + m_innerCell->ListToOMML() +
-         wxT("</m:e></m:d>");
+    wxT("\" m:endChr=\"") + XMLescape(m_close->ToString()) +
+    wxT("\" m:grow=\"1\"></m:dPr><m:e>") + m_innerCell->ListToOMML() +
+    wxT("</m:e></m:d>");
 }
 
 wxString ListCell::ToMathML() const {

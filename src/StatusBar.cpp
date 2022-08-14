@@ -38,7 +38,7 @@
 #include <wx/zstream.h>
 
 StatusBar::StatusBar(wxWindow *parent, int id)
-    : wxStatusBar(parent, id), m_ppi(wxSize(-1, -1)) {
+  : wxStatusBar(parent, id), m_ppi(wxSize(-1, -1)) {
   m_svgRast.reset(nsvgCreateRasterizer());
   int widths[] = {-1, 300, GetSize().GetHeight()};
   m_maximaPercentage = -1;
@@ -47,31 +47,31 @@ StatusBar::StatusBar(wxWindow *parent, int id)
   int styles[] = {wxSB_NORMAL, wxSB_NORMAL, wxSB_FLAT};
   SetStatusStyles(3, styles);
   m_stdToolTip =
-      _("Maxima, the program that does the actual mathematics is started as a "
-        "separate process. This has the advantage that an eventual crash of "
-        "maxima cannot harm wxMaxima, which displays the worksheet.\nThis icon "
-        "indicates if data is transferred between maxima and wxMaxima.");
+    _("Maxima, the program that does the actual mathematics is started as a "
+      "separate process. This has the advantage that an eventual crash of "
+      "maxima cannot harm wxMaxima, which displays the worksheet.\nThis icon "
+      "indicates if data is transferred between maxima and wxMaxima.");
   m_networkErrToolTip =
-      _("Maxima, the program that does the actual mathematics and wxMaxima, "
-        "which displays the worksheet are kept in separate processes. This "
-        "means that even if maxima crashes wxMaxima (and therefore the "
-        "worksheet) stays intact. Both programs communicate over a local "
-        "network socket. This time this socket could not be created which "
-        "might be caused by a firewall that it setup to not only intercepts "
-        "connections from the outside, but also to intercept connections "
-        "between two programs that run on the same computer.");
+    _("Maxima, the program that does the actual mathematics and wxMaxima, "
+      "which displays the worksheet are kept in separate processes. This "
+      "means that even if maxima crashes wxMaxima (and therefore the "
+      "worksheet) stays intact. Both programs communicate over a local "
+      "network socket. This time this socket could not be created which "
+      "might be caused by a firewall that it setup to not only intercepts "
+      "connections from the outside, but also to intercept connections "
+      "between two programs that run on the same computer.");
   m_noConnectionToolTip =
-      _("Maxima, the program that does the actual mathematics and wxMaxima, "
-        "which displays the worksheet are kept in separate processes. This "
-        "means that even if maxima crashes wxMaxima (and therefore the "
-        "worksheet) stays intact. Currently the two programs aren't connected "
-        "to each other which might mean that maxima is still starting up or "
-        "couldn't be started. Alternatively it can be caused by a firewall "
-        "that it setup to not only intercepts connections from the outside, "
-        "but also to intercept connections between two programs that run on "
-        "the same computer. Another reason for maxima not starting up might be "
-        "that maxima cannot be found (see wxMaxima's Configuration dialogue "
-        "for a way to specify maxima's location) or isn't in a working order.");
+    _("Maxima, the program that does the actual mathematics and wxMaxima, "
+      "which displays the worksheet are kept in separate processes. This "
+      "means that even if maxima crashes wxMaxima (and therefore the "
+      "worksheet) stays intact. Currently the two programs aren't connected "
+      "to each other which might mean that maxima is still starting up or "
+      "couldn't be started. Alternatively it can be caused by a firewall "
+      "that it setup to not only intercepts connections from the outside, "
+      "but also to intercept connections between two programs that run on "
+      "the same computer. Another reason for maxima not starting up might be "
+      "that maxima cannot be found (see wxMaxima's Configuration dialogue "
+      "for a way to specify maxima's location) or isn't in a working order.");
   UpdateBitmaps();
   m_networkStatus = new wxStaticBitmap(this, wxID_ANY, m_network_offline);
   m_networkStatus->SetToolTip(m_stdToolTip);
@@ -116,14 +116,14 @@ void StatusBar::UpdateBitmaps() {
     m_network_transmit = GetImage("network-transmit", NETWORK_TRANSMIT_SVG_GZ,
                                   NETWORK_TRANSMIT_SVG_GZ_SIZE);
     m_network_idle =
-        GetImage("network-idle", NETWORK_IDLE_SVG_GZ, NETWORK_IDLE_SVG_GZ_SIZE);
+      GetImage("network-idle", NETWORK_IDLE_SVG_GZ, NETWORK_IDLE_SVG_GZ_SIZE);
     m_network_idle_inactive =
-        wxBitmap(m_network_idle.ConvertToImage().ConvertToDisabled());
+      wxBitmap(m_network_idle.ConvertToImage().ConvertToDisabled());
     m_network_receive = GetImage("network-receive", NETWORK_RECEIVE_SVG_GZ,
                                  NETWORK_RECEIVE_SVG_GZ_SIZE);
     m_network_transmit_receive =
-        GetImage("network-transmit-receive", NETWORK_TRANSMIT_RECEIVE_SVG_GZ,
-                 NETWORK_TRANSMIT_RECEIVE_SVG_GZ_SIZE);
+      GetImage("network-transmit-receive", NETWORK_TRANSMIT_RECEIVE_SVG_GZ,
+	       NETWORK_TRANSMIT_RECEIVE_SVG_GZ_SIZE);
   }
 }
 
@@ -192,8 +192,8 @@ void StatusBar::NetworkStatus(networkState status) {
       wxString toolTip = m_stdToolTip;
       if (m_maximaPercentage >= 0)
         toolTip += wxString::Format(
-            _("\n\nMaxima is currently using %3.3f%% of all available CPUs."),
-            m_maximaPercentage);
+				    _("\n\nMaxima is currently using %3.3f%% of all available CPUs."),
+				    m_maximaPercentage);
       m_networkStatus->SetToolTip(toolTip);
     } break;
     case error:
@@ -258,9 +258,9 @@ wxBitmap StatusBar::GetImage(wxString name, unsigned char *data, size_t len) {
     ppi.y = 72;
 #endif
   int targetWidth = static_cast<double>(GetSize().GetHeight()) / ppi.y * ppi.x *
-                    GetContentScaleFactor();
+    GetContentScaleFactor();
   int targetHeight =
-      static_cast<double>(GetSize().GetHeight()) * GetContentScaleFactor();
+    static_cast<double>(GetSize().GetHeight()) * GetContentScaleFactor();
 
   if (targetWidth < 16)
     targetWidth = 16;

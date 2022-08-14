@@ -25,7 +25,7 @@
   This file defines the class ExptCell
 
   ExptCell is the Cell type that represents exponents.
- */
+*/
 
 #include "ExptCell.h"
 #include "CellImpl.h"
@@ -34,16 +34,16 @@
 
 ExptCell::ExptCell(GroupCell *parent, Configuration *config,
                    std::unique_ptr<Cell> &&base, std::unique_ptr<Cell> &&expt)
-    : Cell(parent, config), m_baseCell(std::move(base)),
-      m_exptCell(std::move(expt)) {
+  : Cell(parent, config), m_baseCell(std::move(base)),
+    m_exptCell(std::move(expt)) {
   InitBitFields();
   SetStyle(TS_VARIABLE);
 }
 
 ExptCell::ExptCell(GroupCell *group, const ExptCell &cell)
-    : ExptCell(group, cell.m_configuration,
-               CopyList(group, cell.m_baseCell.get()),
-               CopyList(group, cell.m_exptCell.get())) {
+  : ExptCell(group, cell.m_configuration,
+	     CopyList(group, cell.m_baseCell.get()),
+	     CopyList(group, cell.m_exptCell.get())) {
   CopyCommonData(cell);
   m_altCopyText = cell.m_altCopyText;
 }
@@ -95,7 +95,7 @@ void ExptCell::Recalculate(AFontSize fontsize) {
     m_close->RecalculateList(fontsize);
   } else {
     m_width = m_baseCell->GetFullWidth() + m_exptCell->GetFullWidth() -
-              MC_TEXT_PADDING;
+      MC_TEXT_PADDING;
     m_expt_yoffset = m_exptCell->GetMaxDrop() + PowRise();
 
     m_height = m_baseCell->GetHeightList();
@@ -103,7 +103,7 @@ void ExptCell::Recalculate(AFontSize fontsize) {
 
     int baseHeight = m_baseCell->GetHeightList() - m_baseCell->GetMaxDrop();
     int exptHeight =
-        m_exptCell->GetHeightList() - m_exptCell->GetMaxDrop() + m_expt_yoffset;
+      m_exptCell->GetHeightList() - m_exptCell->GetMaxDrop() + m_expt_yoffset;
 
     if (baseHeight < exptHeight) {
       m_height += exptHeight - baseHeight;
@@ -148,7 +148,7 @@ wxString ExptCell::ToTeX() const {
   if (IsBrokenIntoLines())
     return wxEmptyString;
   wxString s = wxT("{{") + m_baseCell->ListToTeX() + wxT("}^{") +
-               m_exptCell->ListToTeX() + wxT("}}");
+    m_exptCell->ListToTeX() + wxT("}}");
   return s;
 }
 
@@ -164,15 +164,15 @@ wxString ExptCell::GetDiffPart() const {
 
 wxString ExptCell::ToMathML() const {
   return wxT("<msup>") + m_baseCell->ListToMathML() +
-         m_exptCell->ListToMathML() + wxT("</msup>\n");
+    m_exptCell->ListToMathML() + wxT("</msup>\n");
   //  return wxT("<apply><power/>") + m_baseCell->ListToMathML() +
   //  m_exptCell->ListToMathML() + wxT("</apply>");
 }
 
 wxString ExptCell::ToOMML() const {
   return wxT("<m:sSup><m:e>") + m_baseCell->ListToOMML() +
-         wxT("</m:e><m:sup>") + m_exptCell->ListToOMML() +
-         wxT("</m:sup></m:sSup>\n");
+    wxT("</m:e><m:sup>") + m_exptCell->ListToOMML() +
+    wxT("</m:sup></m:sSup>\n");
 }
 
 wxString ExptCell::ToXML() const {
@@ -183,7 +183,7 @@ wxString ExptCell::ToXML() const {
     flags += wxT(" breakline=\"true\"");
 
   return wxT("<e") + flags + wxT("><r>") + m_baseCell->ListToXML() +
-         _T("</r><r>") + m_exptCell->ListToXML() + _T("</r></e>");
+    _T("</r><r>") + m_exptCell->ListToXML() + _T("</r></e>");
 }
 
 bool ExptCell::BreakUp() {

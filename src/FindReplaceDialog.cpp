@@ -24,15 +24,15 @@
   This file defines the class FindReplaceDialog
 
   FindReplaceDialog is the find/replace dialog
- */
+*/
 
 #include "FindReplaceDialog.h"
 #include "EditorCell.h"
 
 FindReplaceDialog::FindReplaceDialog(wxWindow *parent, wxFindReplaceData *data,
                                      const wxString &title, int style)
-    : wxDialog(parent, wxID_ANY, title, wxDefaultPosition, wxDefaultSize,
-               style) {
+  : wxDialog(parent, wxID_ANY, title, wxDefaultPosition, wxDefaultSize,
+	     style) {
   m_contents = new FindReplacePane(this, data);
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
   vbox->Add(m_contents, wxSizerFlags().Expand());

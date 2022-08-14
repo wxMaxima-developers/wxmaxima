@@ -23,7 +23,7 @@ wxString wxMathML::GetCmd() {
   if (m_maximaCMD.IsEmpty()) {
     if (!m_configuration->WxMathML_UseFile()) {
       wxLogMessage(_(
-          "Reading the Lisp part of wxMaxima from the included header file."));
+		     "Reading the Lisp part of wxMaxima from the included header file."));
       wxMemoryInputStream istream(WXMATHML_LISP, WXMATHML_LISP_SIZE);
       wxTextInputStream textIn(istream);
       wxString line;
@@ -36,8 +36,8 @@ wxString wxMathML::GetCmd() {
                    _("Compiler-Bug? wxMathml.lisp is shorter than expected!"));
     } else {
       wxLogMessage(wxString::Format(
-          _("Reading the Lisp part of wxMaxima from the file %s"),
-          m_configuration->WxMathML_Filename().c_str()));
+				    _("Reading the Lisp part of wxMaxima from the file %s"),
+				    m_configuration->WxMathML_Filename().c_str()));
       wxFileInputStream input(m_configuration->WxMathML_Filename());
       wxTextInputStream textIn(input);
       wxString line;

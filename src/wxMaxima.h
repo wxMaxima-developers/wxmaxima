@@ -25,7 +25,7 @@
 
   The worksheet is defined in the class MathCtrl instead and
   everything surrounding it in wxMaximaFrame.
- */
+*/
 
 
 #ifndef WXMAXIMA_H
@@ -54,18 +54,18 @@
 /*! The part of the .wxmx format version number that appears after the dot.
 
   - Updated to version 1.1 after user selectable animation-speeds were introduced:
-    Old wxMaxima versions play them back in the default speed instead but still
-    open the file.
+  Old wxMaxima versions play them back in the default speed instead but still
+  open the file.
   - Bumped to version 1.2 after saving highlighting was introduced: Older versions
-    of wxMaxima will ignore the highlighting on opening .wxmx files.
+  of wxMaxima will ignore the highlighting on opening .wxmx files.
   - Bumped to version 1.3 after sub-subsections were introduced:
-    Old wxMaxima versions interpret them as subsections but still open the file.
+  Old wxMaxima versions interpret them as subsections but still open the file.
   - Bumped to version 1.4 when we started allowing to embed .jpg images in a .wxmx
-    file. wxMaxima versions between 13.04 and 15.08 replace these images by a
-    "image cannot be loaded" marker but will correctly display the rest of the file.
+  file. wxMaxima versions between 13.04 and 15.08 replace these images by a
+  "image cannot be loaded" marker but will correctly display the rest of the file.
   - Bumped to version 1.5 when GroupCells were added an attribute that allows them to
-    be used as an answer to questions.
- */
+  be used as an answer to questions.
+*/
 #define DOCUMENT_VERSION_MINOR 5
 
 //! How many milliseconds should we wait between polling for stdout+cpu power?
@@ -97,11 +97,11 @@ public:
   enum TimerIDs
   {
     //! The keyboard was inactive long enough that we can attempt an auto-save.
-            KEYBOARD_INACTIVITY_TIMER_ID,
+    KEYBOARD_INACTIVITY_TIMER_ID,
     //! The time between two auto-saves has elapsed.
-            AUTO_SAVE_TIMER_ID,
+    AUTO_SAVE_TIMER_ID,
     //! We look if we got new data from maxima's stdout.
-            MAXIMA_STDOUT_POLL_ID
+    MAXIMA_STDOUT_POLL_ID
   };
 
 #ifdef wxHAS_POWER_EVENTS 
@@ -145,11 +145,11 @@ public:
 
   //! Does this document need saving?
   bool DocumentSaved()
-  { return m_fileSaved; }
+    { return m_fileSaved; }
 
   //! Load an image from a file into the worksheet.
   void LoadImage(wxString file)
-  { m_worksheet->OpenHCaret(file, GC_TYPE_IMAGE); }
+    { m_worksheet->OpenHCaret(file, GC_TYPE_IMAGE); }
 
   //! Query the value of a new maxima variable
   bool QueryVariableValue();
@@ -214,7 +214,7 @@ private:
     Each prompt is deemed as but one hint for a working maxima while each crash counts twice
     which hinders us from endlessly restarting in case maxima crashes, outputs something
     seemingly sensible and crashes again.
-   */
+  */
   int m_unsuccessfulConnectionAttempts;
   //! The current working directory maxima's file I/O is relative to.
   wxString m_CWD;
@@ -243,7 +243,7 @@ protected:
                   wxString label3 = {}, wxString defaultval3 = {}, wxString tooltip3 = {},
                   wxString label4 = {}, wxString defaultval4 = {}, wxString tooltip4 = {},
                   wxString label5 = {}, wxString defaultval5 = {}, wxString tooltip5 = {},
-                          wxString label6 = {}, wxString defaultval6 = {}, wxString tooltip6 = {},
+                  wxString label6 = {}, wxString defaultval6 = {}, wxString tooltip6 = {},
                   wxString label7 = {}, wxString defaultval7 = {}, wxString tooltip7 = {},
                   wxString label8 = {}, wxString defaultval8 = {}, wxString tooltip8 = {},
                   wxString label9 = {}, wxString defaultval9 = {}, wxString tooltip9 = {}
@@ -326,9 +326,9 @@ protected:
     We don't interpret this data directly in the idle event since if we
     block somewhere in the idle event we block gnome.
     \return
-      - true, if there was new data
-      - false, if there wasn't any new data.
-   */
+    - true, if there was new data
+    - false, if there wasn't any new data.
+  */
   bool InterpretDataFromMaxima(const wxString &newData);
   bool m_dataFromMaximaIs;
 
@@ -354,7 +354,7 @@ protected:
   void UpdateSlider();       //!< Updates the slider to show the right frame
   /*! Toggle the visibility of a pane
     \param event The event that triggered calling this function.
-   */
+  */
   void ShowPane(wxCommandEvent &event);            //<! Makes a sidebar visible
   void OnProcessEvent(wxProcessEvent &event);      //
   void OnGnuplotClose(wxProcessEvent &event);      //
@@ -390,16 +390,16 @@ protected:
 
     \param cmd The parameter to  add to the draw command
     \param dimensionsOfNewDrawCommand The number of dimensions the new draw command needs to
-                                      have if we need to create one..
-   */
+    have if we need to create one..
+  */
   void AddDrawParameter(wxString cmd, int dimensionsOfNewDrawCommand = 2);
 
   /* Append something to the console. Might be Text or XML maths.
 
-    \return A pointer to the last line of Unicode text that was appended or
-    NULL, if there is no such line (for example if the appended object is
-    maths instead).
-   */
+     \return A pointer to the last line of Unicode text that was appended or
+     NULL, if there is no such line (for example if the appended object is
+     maths instead).
+  */
   TextCell *ConsoleAppend(wxString s, CellType type, const wxString &userLabel = {});        //!< append maxima output to console
 
   enum AppendOpt { NewLine = 1, BigSkip = 2, PromptToolTip = 4, DefaultOpt = NewLine|BigSkip };
@@ -409,7 +409,7 @@ protected:
   /*!Append one or more lines of ordinary unicode text to the console
 
     \return A pointer to the last line that was appended or NULL, if there is no such line
-   */
+  */
   TextCell *DoRawConsoleAppend(wxString s, CellType  type, AppendOpt opts = {});
 
   /*! Spawn the "configure" menu.
@@ -456,11 +456,11 @@ protected:
   /*! starts maxima (uses getCommand) or restarts it if needed
 
     Normally a restart is only needed if
-      - maxima isn't currently in the process of starting up or
-      - maxima is running and has never evaluated any program
-        so a restart won't change anything
+    - maxima isn't currently in the process of starting up or
+    - maxima is running and has never evaluated any program
+    so a restart won't change anything
     \param force true means to restart maxima unconditionally.
-   */
+  */
   bool StartMaxima(bool force = false);
 
   void OnClose(wxCloseEvent &event);               //!< close wxMaxima window
@@ -473,13 +473,13 @@ protected:
   /*! Determines the process id of maxima from its initial output
 
     This function does several things:
-     - it sets m_pid to the process id of maxima
-     - it discards all data until this point
-     - and it prepares the worksheet for editing.
+    - it sets m_pid to the process id of maxima
+    - it discards all data until this point
+    - and it prepares the worksheet for editing.
 
-     \param data The string ReadFirstPrompt() does read its data from.
-                  After leaving this function data is empty again.
-   */
+    \param data The string ReadFirstPrompt() does read its data from.
+    After leaving this function data is empty again.
+  */
   void ReadFirstPrompt(wxString &data);
 
   /*! Reads an XML tag or a piece of status text from maxima's output
@@ -487,7 +487,7 @@ protected:
     \todo Is there any way to handle the (perhaps, thanks to the flush commands in maxima)
     theoretical case that maxima might stop sending data in the middle of an XML tag
     and then resume sending data with the next XML packet?
-   */
+  */
   bool ParseNextChunkFromMaxima(wxString &data);
 
   //! Find the end of a tag in wxMaxima's output.
@@ -495,42 +495,42 @@ protected:
 
   /*! Reads text that isn't enclosed between xml tags.
 
-     Some commands provide status messages before the math output or the command has finished.
-     This function makes wxMaxima output them directly as they arrive.
+    Some commands provide status messages before the math output or the command has finished.
+    This function makes wxMaxima output them directly as they arrive.
 
-     After processing the lines not enclosed in xml tags they are removed from data.
-   */
+    After processing the lines not enclosed in xml tags they are removed from data.
+  */
   void ReadMiscText(const wxString &data);
 
   /*! Reads the input prompt from Maxima.
 
-     After processing the input prompt it is removed from data.
-   */
+    After processing the input prompt it is removed from data.
+  */
   void ReadPrompt(wxString &data);
 
   /*! Reads the output of wxstatusbar() commands
 
     wxstatusbar allows the user to give and update visual feedback from long-running
     commands and makes sure this feedback is deleted once the command is finished.
-   */
+  */
   void ReadStatusBar(wxString &data);
   //! Read a manual topic name so we can jump to the right documentation page
   void ReadManualTopicNames(wxString &data);
 
   /*! Reads the math cell's contents from Maxima.
 
-     Math cells are enclosed between the tags \<mth\> and \</mth\>.
-     This function removes the from data after appending them
-     to the console.
+    Math cells are enclosed between the tags \<mth\> and \</mth\>.
+    This function removes the from data after appending them
+    to the console.
 
-     After processing the status bar marker is removed from data.
-   */
+    After processing the status bar marker is removed from data.
+  */
   void ReadMath(wxString &data);
 
   /*! Reads autocompletion templates we get on definition of a function or variable
 
     After processing the templates they are removed from data.
-   */
+  */
 
   void ReadMaximaIPC(wxString &data){m_ipc.ReadInputData(data);}
   void ReadLoadSymbols(wxString &data);
@@ -584,20 +584,20 @@ protected:
   /*! How much CPU time has been used by the system until now? Used by GetMaximaCPUPercentage.
 
     \return The CPU time elapsed in the same unit as GetMaximaCpuTime(); -1 means: Unable to determine this value.
-   */
+  */
   long long GetTotalCpuTime();
 
   /*! How much CPU time has maxima used till now? Used by GetMaximaCPUPercentage.
 
     \return The CPU time maxima has used in the same unit as GetTotalCpuTime(); -1 means: Unable to determine this value.
 
-   */
+  */
   long long GetMaximaCpuTime();
 
   /*! How much CPU horsepower is maxima using currently?
 
     \return The percentage of the CPU horsepower maxima is using or -1, if this value is unknown.
-   */
+  */
   double GetMaximaCPUPercentage();
 
   //! Does this file contain anything worth saving?
@@ -610,7 +610,7 @@ protected:
 
     \todo Set pngcairo to be the default terminal as soon as the mac platform
     supports it.
- */
+  */
   void SetupVariables();
 
   void KillMaxima(bool logMessage = true);                 //!< kills the maxima process
@@ -620,13 +620,13 @@ protected:
     changed or force is true.
     \param saved The new "saved" status
     \param force Force update if the "saved" status hasn't changed.
-   */
+  */
   void ResetTitle(bool saved, bool force = false);
 
   /*! Makes this window the debug log target of all windows from this maxima process
 
     Only necessary on the mac where the same process creates loads of windows.
-   */
+  */
   void BecomeLogTarget();
 
   void FirstOutput();
@@ -653,7 +653,7 @@ protected:
   /*! Saves the current file
 
     \param forceSave true means: Always ask for a file name before saving.
-   */
+  */
   bool SaveFile(bool forceSave = false);
 
   //! Try to save the file before closing it - or return false
@@ -661,7 +661,7 @@ protected:
   /*! Save the project in a temp file.
 
     Returns false if a save was necessary, but not possible.
-   */
+  */
   bool AutoSave();
 
   int SaveDocumentP();
@@ -671,29 +671,29 @@ protected:
 
   //! Get the current working directory file I/O from maxima is relative to.
   wxString GetCWD()
-  {
-    return m_CWD;
-  }
+    {
+      return m_CWD;
+    }
 
   std::unique_ptr<Maxima> m_client;
   /*! The Right Way to delete a wxSocketServer
 
     The destructor might delete the server before all pending server events have been
     processed which leads to a crash.
-   */
+  */
   struct ServerDeleter {
-  void operator()(wxSocketServer* server) const {
-    server->Close();
-    wxLogMessage(_("Closing the socket maxima could connect to!"));
-    server->Destroy();
-  }
-};
+    void operator()(wxSocketServer* server) const {
+      server->Close();
+      wxLogMessage(_("Closing the socket maxima could connect to!"));
+      server->Destroy();
+    }
+  };
   /*! The server maxima connects to as client
 
-     The destructor of the server causes 
-     crashes if there are still pending events.
-     Instead we need to call destroy.
- */
+    The destructor of the server causes 
+    crashes if there are still pending events.
+    Instead we need to call destroy.
+  */
   std::unique_ptr<wxSocketServer,  ServerDeleter> m_server;
 
   wxProcess *m_process;
@@ -709,7 +709,7 @@ protected:
 
     wxEmptyString means that the current output isn't long enough to make
     creating this string worthwhile.
-   */
+  */
   wxString m_currentOutputEnd;
   //! All from maxima's current output we still haven't interpreted
   wxString m_currentOutput;
@@ -772,7 +772,7 @@ protected:
   /*! Did we tell maxima to close?
 
     If we didn't we respan an unexpectedly-closing maxima.
-   */
+  */
   bool m_closing;
   wxString m_openFile;
   //! The directory with maxima's temp files
@@ -828,14 +828,14 @@ private:
     This timer is used in one-shot mode so in the unlikely case that saving needs more
     time than this timer to expire the user still got a chance to do something against
     it between two expirys.
-   */
+  */
   wxTimer m_autoSaveTimer;
 
   /* A timer that delays redraws while maxima evaluates
 
      If we always start a redraw when maxima has nearly finished a command that slows
      down evaluating many simple commands in a row.
-   */
+  */
   wxTimer m_fastResponseTimer;
 
   //! Starts a single-shot of m_autoSaveTimer.
@@ -851,7 +851,7 @@ class MyDropTarget : public wxFileDropTarget
 {
 public:
   explicit MyDropTarget(wxMaxima *wxmax)
-  { m_wxmax = wxmax; }
+    { m_wxmax = wxmax; }
 
   bool OnDropFiles(wxCoord x, wxCoord y, const wxArrayString &files);
 

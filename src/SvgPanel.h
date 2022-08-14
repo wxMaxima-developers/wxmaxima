@@ -22,7 +22,7 @@
 
 /*! \file
   This file declares all the wizards the draw sidepane needs.
- */
+*/
 
 #ifndef SVGPANEL_H
 #define SVGPANEL_H
@@ -35,16 +35,16 @@
 /*! A panel that shows an example image
 
   From https://forums.wxwidgets.org/viewtopic.php?t=21664 with a few modifications.
- */
+*/
 class SvgPanel : public wxPanel
 { 
 public:
-    SvgPanel(wxWindow* parent, unsigned char *data, size_t len);
-    void Load(unsigned char *data, size_t len);
+  SvgPanel(wxWindow* parent, unsigned char *data, size_t len);
+  void Load(unsigned char *data, size_t len);
  
-    void paintEvent(wxPaintEvent & evt);
-    void paintNow();
-    void OnSize(wxSizeEvent& event);
+  void paintEvent(wxPaintEvent & evt);
+  void paintNow();
+  void OnSize(wxSizeEvent& event);
 private:
   SvgBitmap m_bitmap;
 };

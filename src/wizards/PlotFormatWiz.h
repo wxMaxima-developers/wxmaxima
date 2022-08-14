@@ -32,12 +32,12 @@ class PlotFormatWiz : public wxDialog
 {
 public:
   PlotFormatWiz(
-          wxWindow *parent, int id,
-          Configuration *cfg,
-          const wxString &title,
-          const wxPoint &pos = wxDefaultPosition,
-          const wxSize &size = wxDefaultSize,
-          long style = wxDEFAULT_DIALOG_STYLE);
+    wxWindow *parent, int id,
+    Configuration *cfg,
+    const wxString &title,
+    const wxPoint &pos = wxDefaultPosition,
+    const wxSize &size = wxDefaultSize,
+    long style = wxDEFAULT_DIALOG_STYLE);
 
   void SetValue(wxString s);
 

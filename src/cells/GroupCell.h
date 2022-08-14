@@ -24,7 +24,7 @@
 /*! \file
 
   This file defines the class GroupCell that bundles input and output in the worksheet.
- */
+*/
 
 
 #ifndef GROUPCELL_H
@@ -52,19 +52,19 @@ enum GroupType : int8_t
 
 /*! A cell grouping input (and, if there is one, also the output) cell to a foldable item
 
-Items where a list of groupcells can be folded include
- - sections
- - chapters
- - The prompt (if maxima outputs one) with the input cell, the output label maxima might
-   generate and the output cell (if there is any output)
- - A combination of image and title
- - A combination of image and input cell
+  Items where a list of groupcells can be folded include
+  - sections
+  - chapters
+  - The prompt (if maxima outputs one) with the input cell, the output label maxima might
+  generate and the output cell (if there is any output)
+  - A combination of image and title
+  - A combination of image and input cell
 
- This GroupCell stores the currently hidden cells in the GroupCell m_hiddenTree. This tree
- has the parent m_hiddenTreeParent.
+  This GroupCell stores the currently hidden cells in the GroupCell m_hiddenTree. This tree
+  has the parent m_hiddenTreeParent.
 
- 232 bytes
- */
+  232 bytes
+*/
 class GroupCell final : public Cell
 {
 public:
@@ -99,20 +99,20 @@ public:
 
     Must be kept in GroupCell as on deletion a GroupCell will unlink itself from
     this pointer.
-   */
+  */
   GroupCell *GetLastWorkingGroup() const;
 
   /*! Marks the cell that is under the mouse pointer.
 
     Is kept in GroupCell so every GroupCell can decide it is no more under the pointer
     once it has been deleted from the worksheet.
-   */
+  */
   void CellUnderPointer(GroupCell *cell);
 
   /*! Returns the tooltip for the element at the position point.
 
     wxEmptyString means: No toolTip.
-   */
+  */
   const wxString &GetToolTip(wxPoint point) const override;
 
   // general methods
@@ -154,7 +154,7 @@ public:
     image filenames we have already generated. NULL means: This TeX export
     doesn't contain other GroupCells that can export images and therefore
     need to enumerate them.
-   */
+  */
   wxString ToTeX(wxString imgDir, wxString filename, int *imgCounter) const;
 
   wxString ToRTF() const override;
@@ -190,7 +190,7 @@ public:
   Cell *GetPrompt() const { return m_inputLabel.get(); }
 
   EditorCell *GetEditable() const
-  { return m_inputLabel ? dynamic_cast<EditorCell *>(m_inputLabel->GetNext()) : nullptr; }
+    { return m_inputLabel ? dynamic_cast<EditorCell *>(m_inputLabel->GetNext()) : nullptr; }
 
   /*! Returns the list of cells the output consists of, starting with the label.
 
@@ -203,7 +203,7 @@ public:
     See also GetLabel()
   */
   Cell *GetOutput() const
-  { return m_output ? m_output->GetNext() : nullptr; }
+    { return m_output ? m_output->GetNext() : nullptr; }
 
   //! Determine which rectangle is occupied by this GroupCell
   wxRect GetOutputRect() const { return m_outputRect; }
@@ -213,7 +213,7 @@ public:
     This command will also assign the GroupCell a y coordinate it is plotted at.
     The y coordinate of all output cells of this GroupCell is assigned during
     GroupCell::Draw() by providing Cell::Draw() with the cell's coordinates.
-   */
+  */
   void Recalculate(AFontSize WXUNUSED(fontsize)) override {Recalculate();}
   void Recalculate();
   wxPoint CalculateInputPosition();
@@ -225,13 +225,13 @@ public:
 
     \attention Needs to be in sync with the height calculation done during Draw() and
     during RecalculateAppended.
-   */
+  */
   void RecalculateOutput();
 
   /*! Attempt to split math objects that are wider than the screen into multiple lines.
     
     \retval true, if this action has changed the height of cells.
-   */
+  */
   bool BreakUpCells(Cell *cell);
 
   //! Undo a BreakUpCells
@@ -244,7 +244,7 @@ public:
 
     Won't do nothing if the cell isn't a code cell and therefore isn't equipped
     with an input label.
-   */
+  */
   void ResetInputLabel();
 
   //! Call ResetInputLabel() on all cells in the list of cells this GroupCell starts with.
@@ -273,7 +273,7 @@ public:
     \return
     - false, if the cell already was visible on calling this function
     - true, if cells were unfolded by this function call
-   */
+  */
   bool RevealHidden();
 
   //! Set the parent cell of hidden cells
@@ -306,7 +306,7 @@ public:
 
     For example ordinary text cells can be part of a chapter and sections can be
     part of a chapter, too.
-   */
+  */
   bool IsLesserGCType(GroupType comparedTo) const;
 
   //! @}
@@ -325,7 +325,7 @@ public:
 
   /*! Draw this GroupCell
 
-     Also assigns all output cells contained in this GroupCell a y coordinate.
+    Also assigns all output cells contained in this GroupCell a y coordinate.
 
     \attention The height the output has needs to be in sync with the height
     calculation done during RecalculateAppended() and during
@@ -333,7 +333,7 @@ public:
     \attention The y position used here must be in sync with the one calculated
     by RecalculateOutput().
 
-   */
+  */
   void Draw(wxPoint point) override;
 
   bool AddEnding() override;
@@ -432,15 +432,15 @@ protected:
 //** Bitfield objects (1 bytes)
 //**
   void InitBitFields()
-  { // Keep the initialization order below same as the order
-    // of bit fields in this class!
-    m_autoAnswer = false;
-    m_inEvaluationQueue = false;
-    m_lastInEvaluationQueue = false;
-    m_updateConfusableCharWarnings = true;
-    m_suppressTooltipMarker = false;
-    m_cellsAppended = false;
-  }
+    { // Keep the initialization order below same as the order
+      // of bit fields in this class!
+      m_autoAnswer = false;
+      m_inEvaluationQueue = false;
+      m_lastInEvaluationQueue = false;
+      m_updateConfusableCharWarnings = true;
+      m_suppressTooltipMarker = false;
+      m_cellsAppended = false;
+    }
 
   //! Does this GroupCell automatically fill in the answer to questions?
   bool m_autoAnswer : 1 /* InitBitFields */;

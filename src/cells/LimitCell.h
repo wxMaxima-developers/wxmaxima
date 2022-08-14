@@ -36,7 +36,7 @@
 
    \todo If the limit text is very short we should add more space
    between the "lim" and the following text.
- */
+*/
 class LimitCell final : public Cell
 {
 public:
@@ -83,9 +83,9 @@ private:
 //** Bitfield objects (0 bytes)
 //**
   void InitBitFields()
-  { // Keep the initialization order below same as the order
-    // of bit fields in this class!
-  }
+    { // Keep the initialization order below same as the order
+      // of bit fields in this class!
+    }
 };
 
 #endif // LIMITCELL_H

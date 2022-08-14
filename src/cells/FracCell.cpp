@@ -34,18 +34,18 @@
 
 FracCell::FracCell(GroupCell *group, Configuration *config,
                    std::unique_ptr<Cell> &&num, std::unique_ptr<Cell> &&denom)
-    : Cell(group, config), m_numParenthesis(std::make_unique<ParenCell>(
-                               group, m_configuration, std::move(num))),
-      m_denomParenthesis(std::make_unique<ParenCell>(group, m_configuration,
-                                                     std::move(denom))) {
+  : Cell(group, config), m_numParenthesis(std::make_unique<ParenCell>(
+								      group, m_configuration, std::move(num))),
+    m_denomParenthesis(std::make_unique<ParenCell>(group, m_configuration,
+						   std::move(denom))) {
   InitBitFields();
   SetStyle(TS_VARIABLE);
   SetupBreakUps();
 }
 
 FracCell::FracCell(GroupCell *group, const FracCell &cell)
-    : FracCell(group, cell.m_configuration, CopyList(group, cell.Num()),
-               CopyList(group, cell.Denom())) {
+  : FracCell(group, cell.m_configuration, CopyList(group, cell.Num()),
+	     CopyList(group, cell.Denom())) {
   CopyCommonData(cell);
   m_fracStyle = cell.m_fracStyle;
   SetupBreakUps();
@@ -82,9 +82,9 @@ void FracCell::Recalculate(AFontSize fontsize) {
       m_protrusion = m_horizontalGapLeft = m_horizontalGapRight = 0;
       m_width = Num()->GetWidth() + Denom()->GetWidth() + m_divide->GetWidth();
       m_height = wxMax(Num()->GetHeightList(), Denom()->GetHeightList()) +
-                 Scale_Px(6.5);
+	Scale_Px(6.5);
       m_center =
-          wxMax(Num()->GetCenterList(), Denom()->GetCenterList()) + Scale_Px(3);
+	wxMax(Num()->GetCenterList(), Denom()->GetCenterList()) + Scale_Px(3);
     } else {
       m_protrusion = Scale_Px(m_configuration->GetMathFontSize() / 2);
 
@@ -103,9 +103,9 @@ void FracCell::Recalculate(AFontSize fontsize) {
 
       m_width = wxMax(m_displayedNum->GetFullWidth(),
                       m_displayedDenom->GetFullWidth()) +
-                2 * m_protrusion + m_horizontalGapLeft + m_horizontalGapRight;
+	2 * m_protrusion + m_horizontalGapLeft + m_horizontalGapRight;
       m_height =
-          Num()->GetHeightList() + Denom()->GetHeightList() + Scale_Px(6.5);
+	Num()->GetHeightList() + Denom()->GetHeightList() + Scale_Px(6.5);
       m_center = Num()->GetHeightList() + Scale_Px(3);
     }
   }
@@ -134,26 +134,26 @@ void FracCell::Draw(wxPoint point) {
       m_displayedDenom->DrawList(denom);
     } else {
       num.x = point.x + m_horizontalGapLeft +
-              (m_width - m_horizontalGapLeft - m_horizontalGapRight -
-               m_displayedNum->GetFullWidth()) /
-                  2;
+	(m_width - m_horizontalGapLeft - m_horizontalGapRight -
+	 m_displayedNum->GetFullWidth()) /
+	2;
       num.y = point.y - m_displayedNum->GetHeightList() +
-              m_displayedNum->GetCenterList();
+	m_displayedNum->GetCenterList();
       m_displayedNum->DrawList(num);
 
       denom.x = point.x + m_horizontalGapLeft +
-                (m_width - m_horizontalGapLeft - m_horizontalGapRight -
-                 m_displayedDenom->GetFullWidth()) /
-                    2;
+	(m_width - m_horizontalGapLeft - m_horizontalGapRight -
+	 m_displayedDenom->GetFullWidth()) /
+	2;
       denom.y = point.y + m_displayedDenom->GetCenterList() + Scale_Px(4);
       m_displayedDenom->DrawList(denom);
       SetPen(1.2);
       if (m_fracStyle != FC_CHOOSE)
         dc->DrawLine(point.x + m_horizontalGapLeft +
-                         m_configuration->GetDefaultLineWidth() / 2,
+		     m_configuration->GetDefaultLineWidth() / 2,
                      point.y + Scale_Px(2),
                      point.x + m_width - m_horizontalGapRight -
-                         m_configuration->GetDefaultLineWidth() / 2,
+		     m_configuration->GetDefaultLineWidth() / 2,
                      point.y + Scale_Px(2));
     }
   }
@@ -173,7 +173,7 @@ wxString FracCell::ToString() const {
         s += Denom()->ListToString();
     } else if (m_fracStyle == FC_CHOOSE) {
       s = wxT("binomial(") + Num()->ListToString() + wxT(",") +
-          Denom()->ListToString() + wxT(")");
+	Denom()->ListToString() + wxT(")");
     } else {
       Cell *tmp = Denom();
       while (tmp != NULL) {
@@ -208,7 +208,7 @@ wxString FracCell::ToMatlab() const {
         s += Denom()->ListToMatlab();
     } else if (m_fracStyle == FC_CHOOSE) {
       s = wxT("binomial(") + Num()->ListToMatlab() + wxT(",") +
-          Denom()->ListToMatlab() + wxT(")");
+	Denom()->ListToMatlab() + wxT(")");
     } else {
       for (Cell *tmp = Denom(); tmp; tmp = tmp->GetNext()) {
         tmp = tmp->GetNext(); // Skip the d
@@ -232,10 +232,10 @@ wxString FracCell::ToTeX() const {
   if (!IsBrokenIntoLines()) {
     if (m_fracStyle == FC_CHOOSE) {
       s = wxT("\\begin{pmatrix}") + Num()->ListToTeX() + wxT("\\\\\n") +
-          Denom()->ListToTeX() + wxT("\\end{pmatrix}");
+	Denom()->ListToTeX() + wxT("\\end{pmatrix}");
     } else {
       s = wxT("\\frac{") + Num()->ListToTeX() + wxT("}{") +
-          Denom()->ListToTeX() + wxT("}");
+	Denom()->ListToTeX() + wxT("}");
     }
   }
   return s;
@@ -243,18 +243,18 @@ wxString FracCell::ToTeX() const {
 
 wxString FracCell::ToMathML() const {
   return wxT("<mfrac>") + Num()->ListToMathML() + Denom()->ListToMathML() +
-         wxT("</mfrac>\n");
+    wxT("</mfrac>\n");
 }
 
 wxString FracCell::ToOMML() const {
   return wxT("<m:f><m:num>") + Num()->ListToOMML() + wxT("</m:num><m:den>") +
-         Denom()->ListToOMML() + wxT("</m:den></m:f>\n");
+    Denom()->ListToOMML() + wxT("</m:den></m:f>\n");
 }
 
 wxString FracCell::ToXML() const {
   wxString s = (m_fracStyle == FC_NORMAL || m_fracStyle == FC_DIFF)
-                   ? _T("f")
-                   : _T("f line = \"no\"");
+    ? _T("f")
+    : _T("f line = \"no\"");
   wxString diffStyle;
   if (m_fracStyle == FC_DIFF)
     diffStyle = wxT(" diffstyle=\"yes\"");
@@ -262,7 +262,7 @@ wxString FracCell::ToXML() const {
     diffStyle += wxT(" breakline=\"true\"");
 
   return _T("<") + s + diffStyle + _T("><r>") + Num()->ListToXML() +
-         _T("</r><r>") + Denom()->ListToXML() + _T("</r></f>");
+    _T("</r><r>") + Denom()->ListToXML() + _T("</r></f>");
 }
 
 void FracCell::SetExponentFlag() {

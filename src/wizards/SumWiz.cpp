@@ -25,7 +25,7 @@
 SumWiz::SumWiz(wxWindow *parent, int id, Configuration *cfg,
                const wxString &title, const wxPoint &pos, const wxSize &size,
                long style)
-    : wxDialog(parent, id, title, pos, size, style) {
+  : wxDialog(parent, id, title, pos, size, style) {
   Connect(use_nusum_id, wxEVT_CHECKBOX,
           wxCommandEventHandler(SumWiz::OnCheckbox), NULL, this);
 

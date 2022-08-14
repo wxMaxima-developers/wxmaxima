@@ -174,7 +174,7 @@ void AutocompletePopup::OnKeyDown(wxKeyEvent &event) {
   case WXK_PAGEDOWN:
   case WXK_NUMPAD_PAGEDOWN: {
     unsigned int selection =
-        GetNextItem(0, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
+      GetNextItem(0, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
     selection += 8;
     if (selection >= m_completions.GetCount())
       selection = m_completions.GetCount() - 1;
@@ -225,7 +225,7 @@ void AutocompletePopup::OnKeyDown(wxKeyEvent &event) {
 bool AutocompletePopup::Create(wxWindow *parent) {
   bool retval = wxListView::Create(parent, 1, m_position, wxDefaultSize,
                                    wxLC_ALIGN_LEFT | wxLC_REPORT |
-                                       wxLC_NO_HEADER | wxLC_SINGLE_SEL);
+				   wxLC_NO_HEADER | wxLC_SINGLE_SEL);
   wxWindowUpdateLocker lock(this);
   InsertColumn(0, wxEmptyString);
   UpdateResults();
@@ -277,8 +277,8 @@ AutocompletePopup::AutocompletePopup(wxWindow *parent, EditorCell *editor,
                                      AutoComplete *autocomplete,
                                      AutoComplete::autoCompletionType type,
                                      AutocompletePopup **doneptr)
-    : m_parent(parent), m_doneptr{*doneptr}, m_autocomplete(autocomplete),
-      m_editor(editor), m_type(type) {
+  : m_parent(parent), m_doneptr{*doneptr}, m_autocomplete(autocomplete),
+    m_editor(editor), m_type(type) {
   wxASSERT_MSG(!*doneptr,
                "Attempted to create coexistent autocomplete popups.");
 

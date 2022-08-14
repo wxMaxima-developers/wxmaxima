@@ -26,7 +26,7 @@
 
   This file contains the definition of the class CharacterButton that allows to
   select arbitrary unicode symbols.
- */
+*/
 
 #include "ButtonWrapSizer.h"
 #include "UnicodeSidebar.h"

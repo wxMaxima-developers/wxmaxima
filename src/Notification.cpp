@@ -27,7 +27,7 @@
   This file defines the class Notification
 
   It represents a non-disturbing message to the user.
- */
+*/
 
 #include "Notification.h"
 Notification::Notification() : wxNotificationMessage() {
@@ -44,7 +44,7 @@ Notification::Notification() : wxNotificationMessage() {
 
 Notification::Notification(const wxString &title, const wxString &message,
                            wxWindow *parent, int flags)
-    : wxNotificationMessage(title, message, parent, flags) {
+  : wxNotificationMessage(title, message, parent, flags) {
   m_errorNotificationCell = NULL;
   m_parent = parent;
 #if wxCHECK_VERSION(3, 1, 0)

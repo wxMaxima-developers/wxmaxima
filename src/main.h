@@ -25,7 +25,7 @@
 
   The worksheet is defined in the class MathCtrl instead and
   everything surrounding it in wxMaximaFrame.
- */
+*/
 
 
 #ifndef MAIN_H
@@ -76,7 +76,7 @@ public:
     \param exitAfterEval Do we want to close the window after the file has been evaluated?
     \param wxmData A .wxm file containing the initial worksheet contents
     \param wxmLen  The length of wxmData
-   */
+  */
   void NewWindow(const wxString &file = {}, bool evalOnStartup = false, bool exitAfterEval = false, unsigned char *wxmData = NULL, size_t wxmLen = 0);
 
   void OnFileMenu(wxCommandEvent &ev);
@@ -91,11 +91,11 @@ private:
   //! The name of the config file. Empty = Use the default one.
   wxString m_configFileName;
   Dirstructure m_dirstruct;
-  #if defined __WXOSX__
+#if defined __WXOSX__
   bool m_allWindowsInOneProcess = true;
-  #else
+#else
   bool m_allWindowsInOneProcess = false;
-  #endif
+#endif
 };
 
 

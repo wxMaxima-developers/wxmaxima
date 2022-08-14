@@ -44,25 +44,25 @@ public:
           long style = wxMINIMIZE_BOX | wxMAXIMIZE_BOX | wxRESIZE_BORDER | wxCAPTION | wxCLOSE_BOX | wxCLIP_CHILDREN);
 
   void SetValue(const wxString &s)
-  {
-    text_ctrl_1->SetValue(s);
-    text_ctrl_1->SetSelection(-1, -1);
-  }
+    {
+      text_ctrl_1->SetValue(s);
+      text_ctrl_1->SetSelection(-1, -1);
+    }
 
   wxString GetValue1()
-  {
-    return text_ctrl_1->GetValue();
-  };
+    {
+      return text_ctrl_1->GetValue();
+    };
 
   wxString GetValue2()
-  {
-    return text_ctrl_2->GetValue();
-  };
+    {
+      return text_ctrl_2->GetValue();
+    };
 
   wxString GetValue3()
-  {
-    return text_ctrl_3->GetValue();
-  };
+    {
+      return text_ctrl_3->GetValue();
+    };
   void SetLabel1ToolTip(wxString toolTip){label_2->SetToolTip(toolTip);}
   void SetLabel2ToolTip(wxString toolTip){label_3->SetToolTip(toolTip);}
   void SetLabel3ToolTip(wxString toolTip){label_4->SetToolTip(toolTip);}

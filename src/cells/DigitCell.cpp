@@ -27,7 +27,7 @@
 
   DigitCells display one digit each of a number that is too long to fit into one
   line.
- */
+*/
 
 #include "DigitCell.h"
 #include "CellImpl.h"
@@ -36,10 +36,10 @@
 
 DigitCell::DigitCell(GroupCell *group, Configuration *config,
                      const wxString &text, TextStyle style)
-    : TextCell(group, config, text, style) {}
+  : TextCell(group, config, text, style) {}
 
 DigitCell::DigitCell(GroupCell *group, const DigitCell &cell)
-    : DigitCell(group, cell.m_configuration, cell.m_text, cell.GetStyle()) {}
+  : DigitCell(group, cell.m_configuration, cell.m_text, cell.GetStyle()) {}
 
 DEFINE_CELL(DigitCell)
 
@@ -48,7 +48,7 @@ void DigitCell::Recalculate(AFontSize fontsize) {
     Cell::Recalculate(fontsize);
     SetFont(m_fontSize_Scaled);
     wxSize sz =
-        CalculateTextSize(m_configuration->GetDC(), m_displayedText, cellText);
+      CalculateTextSize(m_configuration->GetDC(), m_displayedText, cellText);
     m_width = sz.GetWidth();
     m_height = sz.GetHeight();
     m_height += 2 * MC_TEXT_PADDING;

@@ -24,12 +24,13 @@
 #define ATCELL_H
 
 #include "Cell.h"
+#include <memory>
 
 class AtCell final : public Cell
 {
 public:
   AtCell(GroupCell *group, Configuration *config,
-    std::unique_ptr<Cell> &&base, std::unique_ptr<Cell> &&index);
+         std::unique_ptr<Cell> &&base, std::unique_ptr<Cell> &&index);
   AtCell(GroupCell *group, const AtCell &cell);
   std::unique_ptr<Cell> Copy(GroupCell *group) const override;
   const CellTypeInfo &GetInfo() override;
@@ -60,9 +61,9 @@ private:
 //** Bitfield objects (0 bytes)
 //**
   void InitBitFields()
-  { // Keep the initialization order below same as the order
-    // of bit fields in this class!
-  }
+    { // Keep the initialization order below same as the order
+      // of bit fields in this class!
+    }
 };
 
 #endif // ATCELL_H

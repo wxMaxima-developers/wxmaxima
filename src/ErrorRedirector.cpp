@@ -28,7 +28,7 @@
   dialogue
 
   It is a customized copy of a portion of wxWidget's log.cpp.
- */
+*/
 
 #include "ErrorRedirector.h"
 #include <cassert>
@@ -37,8 +37,8 @@
 #include <wx/datetime.h>
 
 ErrorRedirector::ErrorRedirector(std::unique_ptr<wxLog> &&newLog)
-    : m_logNew(newLog.get()), m_logOld(wxLog::GetActiveTarget()),
-      m_logOwned(std::move(newLog)) {
+  : m_logNew(newLog.get()), m_logOld(wxLog::GetActiveTarget()),
+    m_logOwned(std::move(newLog)) {
   // Notice that we used GetActiveTarget() here instead of directly calling
   // SetActiveTarget() to trigger wxLog auto-creation: if we're created as
   // the first logger, we should still chain with the standard, implicit and

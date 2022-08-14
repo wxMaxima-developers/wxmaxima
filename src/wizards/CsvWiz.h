@@ -22,7 +22,7 @@
 
 /*! \file
   This file declares all the wizards the draw sidepane needs.
- */
+*/
 
 #ifndef CSVWIZ_H
 #define CSVWIZ_H

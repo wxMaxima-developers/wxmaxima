@@ -31,7 +31,7 @@
 
 /*! A BTextCtrl that allows to input a regex
 
-*/
+ */
 class RegexCtrl : public BTextCtrl
 {
   class wxLogBuffer_noStdErrFlush : public wxLogBuffer

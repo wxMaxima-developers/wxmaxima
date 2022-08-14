@@ -69,11 +69,11 @@ Dirstructure::Dirstructure() {
   if (!wxDirExists(m_userConfDir)) {
     if (!wxMkdir(m_userConfDir, wxS_DIR_DEFAULT))
       wxLogMessage(wxString::Format(
-          _("Warning: Cannot create %s, the directory maxima keeps "
-            "configuration, user packages and caches in.\n"
-            "Make sure that your system's home directory "
-            "is set up correctly"),
-          m_userConfDir.utf8_str()));
+				    _("Warning: Cannot create %s, the directory maxima keeps "
+				      "configuration, user packages and caches in.\n"
+				      "Make sure that your system's home directory "
+				      "is set up correctly"),
+				    m_userConfDir.utf8_str()));
   }
   m_userConfDir += "/";
 }
@@ -204,7 +204,7 @@ wxString Dirstructure::MaximaDefaultLocation() {
   if (wxFileExists(maximaLocation))
     return maximaLocation;
 
-    // The Macports path (if it is preferred over homebrew)
+  // The Macports path (if it is preferred over homebrew)
 #if OSX_MACPORTS_PREFER
   wxLogMessage(wxString::Format(notFound, maximaLocation.utf8_str()));
   maximaLocation = OSX_MACPORTS_PREFIX "/bin/maxima";
@@ -218,7 +218,7 @@ wxString Dirstructure::MaximaDefaultLocation() {
   if (wxFileExists(maximaLocation))
     return maximaLocation;
 
-    // The Macports path (if it is not preferred over homebrew)
+  // The Macports path (if it is not preferred over homebrew)
 #if !OSX_MACPORTS_PREFER
   wxLogMessage(wxString::Format(notFound, maximaLocation.utf8_str()));
   maximaLocation = OSX_MACPORTS_PREFIX "/bin/maxima";

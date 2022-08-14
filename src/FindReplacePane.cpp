@@ -24,7 +24,7 @@
   This file defines the class FindReplacePane
 
   FindReplacePane is the contents of the find/replace dialog/sidebar
- */
+*/
 
 #include "FindReplacePane.h"
 #include "EditorCell.h"
@@ -32,7 +32,7 @@
 #include <wx/stattext.h>
 
 FindReplacePane::FindReplacePane(wxWindow *parent, wxFindReplaceData *data)
-    : wxPanel(parent, -1) {
+  : wxPanel(parent, -1) {
   m_active = true;
   m_findReplaceData = data;
   wxFlexGridSizer *grid_sizer = new wxFlexGridSizer(3, 1, 1);
@@ -46,8 +46,8 @@ FindReplacePane::FindReplacePane(wxWindow *parent, wxFindReplaceData *data)
 
   m_searchText = new wxTextCtrl(this, -1, data->GetFindString());
   m_searchText->Connect(
-      wxEVT_TEXT, wxCommandEventHandler(FindReplacePane::OnFindStringChange),
-      NULL, this);
+			wxEVT_TEXT, wxCommandEventHandler(FindReplacePane::OnFindStringChange),
+			NULL, this);
   grid_sizer->Add(m_searchText, wxSizerFlags().Expand().Border(wxALL, 5));
 
   m_searchButton = new wxButton(this, wxID_FIND);
@@ -61,8 +61,8 @@ FindReplacePane::FindReplacePane(wxWindow *parent, wxFindReplaceData *data)
 
   m_replaceText = new wxTextCtrl(this, -1, data->GetReplaceString());
   m_replaceText->Connect(
-      wxEVT_TEXT, wxCommandEventHandler(FindReplacePane::OnReplaceStringChange),
-      NULL, this);
+			 wxEVT_TEXT, wxCommandEventHandler(FindReplacePane::OnReplaceStringChange),
+			 NULL, this);
   grid_sizer->Add(m_replaceText, wxSizerFlags().Expand().Border(wxALL, 5));
 
   m_replaceButton = new wxButton(this, wxID_REPLACE);
@@ -87,16 +87,16 @@ FindReplacePane::FindReplacePane(wxWindow *parent, wxFindReplaceData *data)
                      wxCommandEventHandler(FindReplacePane::OnDirectionChange),
                      NULL, this);
   m_backwards->Connect(
-      wxEVT_RADIOBUTTON,
-      wxCommandEventHandler(FindReplacePane::OnDirectionChange), NULL, this);
+		       wxEVT_RADIOBUTTON,
+		       wxCommandEventHandler(FindReplacePane::OnDirectionChange), NULL, this);
 
   grid_sizer->Add(fbbox, wxSizerFlags().Expand());
 
   m_replaceAllButton = new wxButton(this, 1, _("Replace All"));
   grid_sizer->Add(m_replaceAllButton, wxSizerFlags().Expand().Border(wxALL, 5));
   m_replaceAllButton->Connect(
-      wxEVT_BUTTON, wxCommandEventHandler(FindReplacePane::OnReplaceAll), NULL,
-      this);
+			      wxEVT_BUTTON, wxCommandEventHandler(FindReplacePane::OnReplaceAll), NULL,
+			      this);
 
   grid_sizer->AddSpacer(0);
 
@@ -117,9 +117,9 @@ FindReplacePane::FindReplacePane(wxWindow *parent, wxFindReplaceData *data)
           this);
 }
 
-void FindReplacePane::SetFindString(wxString string) {
-  m_findReplaceData->SetFindString(string);
-  m_searchText->SetValue(string);
+void FindReplacePane::SetFindString(wxString strng) {
+  m_findReplaceData->SetFindString(strng);
+  m_searchText->SetValue(strng);
 }
 
 void FindReplacePane::OnSearch(wxCommandEvent &WXUNUSED(event)) {
@@ -153,8 +153,8 @@ void FindReplacePane::OnDirectionChange(wxCommandEvent &WXUNUSED(event)) {
 
 void FindReplacePane::OnMatchCase(wxCommandEvent &event) {
   m_findReplaceData->SetFlags(
-      (m_findReplaceData->GetFlags() & (~wxFR_MATCHCASE)) |
-      (event.IsChecked() * wxFR_MATCHCASE));
+			      (m_findReplaceData->GetFlags() & (~wxFR_MATCHCASE)) |
+			      (event.IsChecked() * wxFR_MATCHCASE));
   wxConfig::Get()->Write(wxT("findFlags"), m_findReplaceData->GetFlags());
 }
 

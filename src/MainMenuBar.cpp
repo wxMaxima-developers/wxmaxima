@@ -23,7 +23,7 @@
 /*! \file
   This file contains the logic needed in order to build a (hopefully)
   flicker-free main menu bar.
- */
+*/
 
 #include "MainMenuBar.h"
 

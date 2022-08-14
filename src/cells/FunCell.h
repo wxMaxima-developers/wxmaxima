@@ -27,24 +27,24 @@
 /*! \file
 
   This file declares the class FunCell() that represents a maxima function.
- */
+*/
 
 /*! FunCell represents a maxima function no special visual representation exists for
 
   Examples of functions with special visual representation would be:
-   - SqrtCell
-   - ExptCell
-   - AbsCell
-   - ConjugateCell
+  - SqrtCell
+  - ExptCell
+  - AbsCell
+  - ConjugateCell
 
   In the case that this cell is broken into two lines in the order of
   m_nextToDraw this cell is represented by the following individual 
   cells:
   
-   - The FunCell itself
-   - The function name"
-   - The ParenCell containing its contents
-   - The closing ")".
+  - The FunCell itself
+  - The function name"
+  - The ParenCell containing its contents
+  - The closing ")".
    
   If it isn't broken into multiple cells m_nextToDraw points to the 
   cell that follows this Cell. 
@@ -94,9 +94,9 @@ private:
 //** Bitfield objects (0 bytes)
 //**
   void InitBitFields()
-  { // Keep the initialization order below same as the order
-    // of bit fields in this class!
-  }
+    { // Keep the initialization order below same as the order
+      // of bit fields in this class!
+    }
 };
 
 #endif // FUNCELL_H

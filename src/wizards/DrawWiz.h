@@ -22,7 +22,7 @@
 
 /*! \file
   This file declares all the wizards the draw sidepane needs.
- */
+*/
 
 #ifndef DRAWWIZ_H
 #define DRAWWIZ_H

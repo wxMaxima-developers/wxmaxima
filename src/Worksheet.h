@@ -25,7 +25,7 @@
   This file defines the class Worksheet
 
   Worksheet represents the worksheet.
- */
+*/
 
 #ifndef WORKSHEET_H
 #define WORKSHEET_H
@@ -40,6 +40,9 @@
 #include <wx/fdrepdlg.h>
 #include <wx/dc.h>
 #include <thread>
+#include <vector>
+#include <utility>
+#include <memory>
 #include <list>
 #include "CellPointers.h"
 #include "VariablesPane.h"
@@ -58,31 +61,31 @@
 
 /*! The canvas that contains the spreadsheet the whole program is about.
 
-This canvas contains all the math-, title-, image- input- ("editor-")- etc.-
-cells of the current session.
+  This canvas contains all the math-, title-, image- input- ("editor-")- etc.-
+  cells of the current session.
 
-Most of the logic that handles that this canvas might be larger than the screen
-(and could even be larger than the computer's RAM would it have been handled as
-a big bitmap) is provided by wxWidgets:
- - If part of the screen needs to be drawn it calls the OnPaint() method.
- - If the canvas is scrolled wxWidgets the parts that are already decides how much
-   of the off-screen part of the canvas is cached in a backing store
- - Also if the canvas is scrolled wxWidgets is intelligent enough to only request
-   the parts of the new view that aren't available on the screen or in the backing
-   store
- - If we call the Refresh() method wxWidgets requests us to draw the entire visible
-   part of the worksheet anew and invalidates all cached areas it might have.
- - and the RefreshRect() method notifies wxWidgets that a rectangular region
-   contains changes that need to be redrawn.
+  Most of the logic that handles that this canvas might be larger than the screen
+  (and could even be larger than the computer's RAM would it have been handled as
+  a big bitmap) is provided by wxWidgets:
+  - If part of the screen needs to be drawn it calls the OnPaint() method.
+  - If the canvas is scrolled wxWidgets the parts that are already decides how much
+  of the off-screen part of the canvas is cached in a backing store
+  - Also if the canvas is scrolled wxWidgets is intelligent enough to only request
+  the parts of the new view that aren't available on the screen or in the backing
+  store
+  - If we call the Refresh() method wxWidgets requests us to draw the entire visible
+  part of the worksheet anew and invalidates all cached areas it might have.
+  - and the RefreshRect() method notifies wxWidgets that a rectangular region
+  contains changes that need to be redrawn.
 
-The worksheet isn't immediately redrawn on a key press, a mouse click or on
-maxima outputting new data. Instead all such events are processed in order until
-wxMaxima has caught up with all the events (which causes wxWidgets to send a Idle
-event to the wxMaxima object) or until we reach a timeout. If the user manages
-to type faster than wxMaxima redraws the screen this allows us to skip
-a few redraws in order to process the keypresses as fast as the user types.
-Also this keeps us responsive even if maxima outputs data faster than
-wxMaxima can display it.
+  The worksheet isn't immediately redrawn on a key press, a mouse click or on
+  maxima outputting new data. Instead all such events are processed in order until
+  wxMaxima has caught up with all the events (which causes wxWidgets to send a Idle
+  event to the wxMaxima object) or until we reach a timeout. If the user manages
+  to type faster than wxMaxima redraws the screen this allows us to skip
+  a few redraws in order to process the keypresses as fast as the user types.
+  Also this keeps us responsive even if maxima outputs data faster than
+  wxMaxima can display it.
 */
 class Worksheet : public wxScrolled<wxWindow>
 {
@@ -213,48 +216,48 @@ private:
     Each EditorCell has its own private undo buffer Additionally wxMaxima
     maintains an undo buffer for worksheet changes. It works the following way:
 
-     - Cells normally aren't deleted. They are moved into an undo buffer instead.
-     - The undo buffer is also notified when Cells that are added
-     - If the cursor enters a cell the contents of this cell is saved
-     - And if the cell is left and the contents has changed this information
-       is kept in the undo buffer, as well.
+    - Cells normally aren't deleted. They are moved into an undo buffer instead.
+    - The undo buffer is also notified when Cells that are added
+    - If the cursor enters a cell the contents of this cell is saved
+    - And if the cell is left and the contents has changed this information
+    is kept in the undo buffer, as well.
 
     The add and delete actions offer to choose which undo buffer to use since
     there are two of them:
-     - The normal undo buffer and
-     - The buffer that is used instead if a cell change has been issued by the
-       undo command so the undo action can be reverted.\n
-       This approach allows the undo functionality to use the regular add and
-       delete operations keeping the codebase small.
+    - The normal undo buffer and
+    - The buffer that is used instead if a cell change has been issued by the
+    undo command so the undo action can be reverted.\n
+    This approach allows the undo functionality to use the regular add and
+    delete operations keeping the codebase small.
     @{
   */
 
   /*! The description of one action for the undo (or redo) command.
     This object is immutable - the undo/redo buffer cannot be modified.
-   */
+  */
   class TreeUndoAction
   {
   public:
     TreeUndoAction(GroupCell *start, const wxString &oldText) :
-        m_start(start), m_oldText(oldText)
-    {
-      wxASSERT_MSG(start, _("Bug: Trying to record a cell contents change for undo without a cell."));
-    }
+      m_start(start), m_oldText(oldText)
+      {
+        wxASSERT_MSG(start, _("Bug: Trying to record a cell contents change for undo without a cell."));
+      }
     TreeUndoAction(GroupCell *start, GroupCell *end) :
-        m_start(start), m_newCellsEnd(end)
-    {
-      wxASSERT_MSG(start, _("Bug: Trying to record a cell contents change for undo without a cell."));
-    }
+      m_start(start), m_newCellsEnd(end)
+      {
+        wxASSERT_MSG(start, _("Bug: Trying to record a cell contents change for undo without a cell."));
+      }
     TreeUndoAction(GroupCell *start, GroupCell *end, GroupCell *oldCells) :
-        m_start(start), m_newCellsEnd(end), m_oldCells(oldCells)
-    {
-    }
+      m_start(start), m_newCellsEnd(end), m_oldCells(oldCells)
+      {
+      }
 
     /*! True = This undo action is only part of an atomic undo action.
 
       This is the only mutable part of this action: is is used to indicate its relation to
       other actions in the undo list.
-     */
+    */
     bool m_partOfAtomicAction = false;
 
     /*! The position this action started at.
@@ -322,7 +325,7 @@ private:
   /*! The last cell we have entered.
 
     This pointer is needed for keeping track of cell contents changes.
-   */
+  */
   GroupCell *TreeUndo_ActiveCell;
 
   //! Drop actions from the back of the undo list until itis within the undo limit.
@@ -350,11 +353,11 @@ private:
 
   //! Undo a tree operation.
   bool TreeUndo()
-  { return TreeUndo(&treeUndoActions, &treeRedoActions); }
+    { return TreeUndo(&treeUndoActions, &treeRedoActions); }
 
   //! Redo an undone tree operation.
   bool TreeRedo()
-  { return TreeUndo(&treeRedoActions, &treeUndoActions); }
+    { return TreeUndo(&treeRedoActions, &treeUndoActions); }
 
   //! Can we undo a tree operation?
   bool CanTreeUndo() const;
@@ -363,7 +366,7 @@ private:
   bool CanTreeRedo() const;
 
   /*! The cursor has entered one cell => save the value to see if it has changed.
-  */
+   */
   void TreeUndo_CellEntered();
 
   /*! The cursor is about to leave the current cell => Store the change if the value has changed.
@@ -375,8 +378,8 @@ private:
     \param start      The first cell that has been added
     \param end        The last cell that has been added
     \param undoBuffer Where to store the undo information. This normally is
-      - treeUedoActions for the normal undo buffer or
-      - treeRedoActions for the buffer that allows reverting undos
+    - treeUedoActions for the normal undo buffer or
+    - treeRedoActions for the buffer that allows reverting undos
   */
   void TreeUndo_MarkCellsAsAdded(GroupCell *start, GroupCell *end, UndoActions *undoBuffer);
 
@@ -397,7 +400,7 @@ private:
   /*! Escape all chars that aren't allowed in html.
 
     Also converts \n to <br/>
-   */
+  */
   wxString EscapeHTMLChars(wxString input);
 
   //! Allow indentation by spaces for html by replacing them by non-breakable spaces
@@ -431,8 +434,8 @@ private:
     \param start The cell to start copying at
     \param end   The cell the copy has to end with
     \param asData
-      - true:  The cells are copied in the cell list order.
-      - false: The cells are copied in the draw list order
+    - true:  The cells are copied in the cell list order.
+    - false: The cells are copied in the draw list order
   */
   std::unique_ptr<Cell> CopySelection(Cell *start, Cell *end, bool asData = false) const;
 
@@ -445,13 +448,13 @@ private:
   /*! Has the autosave interval expired?
 
     True means: A save will be issued after the user stops typing.
-   */
+  */
   bool m_autoSaveIntervalExpired;
 
-  #if wxCHECK_VERSION(3,1,1)
+#if wxCHECK_VERSION(3, 1, 1)
   //! Handle pinch-to-zoom-events using the gesture interface
   void OnZoom(wxZoomGestureEvent &event);
-  #endif
+#endif
 
   void OnMouseExit(wxMouseEvent &event);
 
@@ -461,7 +464,7 @@ private:
 
     The canonical way to schedule triggering this function is calling the Refresh()
     function of this class.
-   */
+  */
   void OnPaint(wxPaintEvent &event);
 
   void OnSize(wxSizeEvent &event);
@@ -498,11 +501,11 @@ private:
   void SelectEditable(EditorCell *editor, bool up);
 
   /*! Handle selecting text using the keyboard
- Is called when the all of the following is true:
-  - We have a wxKeyEvent with no active editor,
-  - shift is down and
-  - keycode (ccode) is WXK_UP/WXK_DOWN
- */
+    Is called when the all of the following is true:
+    - We have a wxKeyEvent with no active editor,
+    - shift is down and
+    - keycode (ccode) is WXK_UP/WXK_DOWN
+  */
   void SelectWithChar(int ccode);
 
   /*!
@@ -527,7 +530,7 @@ private:
   void AdjustSize();
 
   void OnEraseBackground(wxEraseEvent& WXUNUSED(event))
-  {}
+    {}
 
   void CheckUnixCopy();
 
@@ -547,7 +550,7 @@ private:
   /*! Is called if wxWidgets wants to erase the worksheet's background
 
     We don't want to erase the worksheet's background.
-   */
+  */
   void EraseBackground(wxEraseEvent &event);
 
   //! The position the left mouse key was pressed at.
@@ -559,24 +562,24 @@ private:
 
     See m_hCaretPosition and EditorCell::GetActiveCell() for the position of the two
     types of cursors.
-   */
+  */
   bool m_hCaretActive;
   /*! The group above the hcaret, NULL for the top of the document
     See EditorCell::GetActiveCell() for the position if the cursor that is drawn as a
     vertical line.
-   */
+  */
   GroupCell *m_hCaretPosition;
   /*! The start for the selection when selecting group with the horizontally drawn cursor
 
     This cell does define were the selection was actually started and therefore does not need
     to be above m_hCaretPositionEnd in the worksheet. See also m_cellPointers.m_selectionStart.
-   */
+  */
   GroupCell *m_hCaretPositionStart;
   /*! The end of the selection when selecting group with the horizontally drawn cursor
 
     This cell does define where the selection was actually ended and therefore does not need
     to be below m_hCaretPositionEnd in the worksheet. See also m_cellPointers.m_selectionEnd.
-   */
+  */
   GroupCell *m_hCaretPositionEnd;
   bool m_leftDown;
   //! Do we want to automatically scroll to a cell as soon as it is being evaluated?
@@ -608,7 +611,7 @@ public:
   wxString GetMaximaVersion(){return m_maximaVersion;}
   //! Is this worksheet empty?
   bool IsEmpty() const
-  { return !m_tree || (!m_tree->GetNext() && m_tree->GetEditable()->GetValue().Length()<=1); }
+    { return !m_tree || (!m_tree->GetNext() && m_tree->GetEditable()->GetValue().Length() <= 1); }
   //! Close the autocompletion pop-up if it is currently open.
   void CloseAutoCompletePopup()
     {
@@ -620,13 +623,13 @@ public:
 
     Can call OnCharInActive or OnCharNoActive, if appropriate. See OnKeyDown for
     non-printable characters like "up" or "right".
-   */
+  */
   void OnChar(wxKeyEvent &event);
 
   /*! A special key has been pressed
 
     Printable characters are handled by OnChar instead.
-   */
+  */
   void OnKeyDown(wxKeyEvent &event);
   //! Change the style of a cell
   void SetCellStyle(GroupCell *group, GroupType style);
@@ -647,7 +650,7 @@ public:
   /*! Inform the user that something happened in a non-active window
 
     This command will be ignored if the wxMaxima window is currently active
-   */
+  */
   void SetNotification(const wxString &message, int flags = wxICON_INFORMATION);
 
   //! Is called if this element looses or gets the focus
@@ -665,16 +668,16 @@ public:
 
   //! Tells us which cell the keyboard selection has started in
   EditorCell *KeyboardSelectionStart() const
-  { return m_cellPointers.m_cellKeyboardSelectionStartedIn; }
+    { return m_cellPointers.m_cellKeyboardSelectionStartedIn; }
 
   EditorCell *MouseSelectionStart() const
-  { return m_cellPointers.m_cellMouseSelectionStartedIn; }
+    { return m_cellPointers.m_cellMouseSelectionStartedIn; }
 
   EditorCell *SearchStart() const
-  { return m_cellPointers.m_cellSearchStartedIn; }
+    { return m_cellPointers.m_cellSearchStartedIn; }
 
   int IndexSearchStartedAt()
-  { return m_cellPointers.m_indexSearchStartedAt; }
+    { return m_cellPointers.m_indexSearchStartedAt; }
 
   CellPointers &GetCellPointers() { return m_cellPointers; }
 
@@ -690,7 +693,7 @@ public:
 
     This function actually only schedules the update of the table-of-contents-tab.
     The actual update is done when wxMaxima is idle.
-   */
+  */
   void UpdateTableOfContents() { m_scheduleUpdateToc = true; }
 
   /*! Handle redrawing the worksheet or of parts of it
@@ -710,15 +713,15 @@ public:
   */
   //! Request the worksheet to be redrawn
   void MarkRefreshAsDone()
-  {
-    m_redrawStart = NULL;
-    m_redrawRequested = false;
-  }
+    {
+      m_redrawStart = NULL;
+      m_redrawRequested = false;
+    }
 
   /*! Redraw the worksheet if RequestRedraw() has been called.
 
     Also handles setting tooltips and redrawing the brackets on mouse movements.
-   */
+  */
   bool RedrawIfRequested();
 
   /*! Request the worksheet to be redrawn
@@ -732,7 +735,7 @@ public:
     real time.
 
     \return true, if we did redraw a workscreet portion.
-   */
+  */
   void RequestRedraw(GroupCell *start = NULL);
   /*! Request a part of the worksheet to be redrawn
 
@@ -742,15 +745,15 @@ public:
     The actual redraw is done in the idle loop which means that as many redraw
     actions are merged as is necessary to allow wxMaxima to process things in
     real time.
-   */
+  */
   void RequestRedraw(wxRect rect);
 
   //! Redraw the window now and mark any pending redraw request as "handled".
   void ForceRedraw()
-  {
-    RequestRedraw();
-    RedrawIfRequested();
-  }
+    {
+      RequestRedraw();
+      RedrawIfRequested();
+    }
 
   //! Is a Redraw requested?
   bool RedrawRequested() const
@@ -768,7 +771,7 @@ public:
   /*! Make a few unicode characters interpretable by maxima.
 
     Does convert the not equal sign to a '#' and similar.
-   */
+  */
   wxString UnicodeToMaxima(wxString s);
 
   //! Scroll to the start of the worksheet.
@@ -793,7 +796,7 @@ public:
 
     \todo Does it make sense to make to allow the text of sections and image cells
     with math cells?
-   */
+  */
   bool CanMergeSelection() const;
 
   bool CanUndo() const { return CanTreeUndo() || CanUndoInsideCell(); }
@@ -807,17 +810,17 @@ public:
   /*! Clear the undo and the redo buffer
 
     \addtogroup UndoBufferFill
-   */
+  */
   void TreeUndo_ClearBuffers();
 
   /*! The ids for all popup menu items.
-  */
+   */
   enum PopIds
   {
     /*!
       This first item of the enum and is assigned a high enough number
       that it won't collide with the numbers to be found in wxFrame::Event
-     */
+    */
     popid_comment_selection = wxID_HIGHEST + 500,
     popid_divide_cell,
     popid_copy_image,
@@ -962,13 +965,13 @@ public:
 
     \param cells The list of cells that has to be inserted
     \param where The cell the cells have to be inserted after. NULL means:
-           Insert the cells at the beginning of the worksheet.
+    Insert the cells at the beginning of the worksheet.
     \param undoBuffer The buffer the undo information for this action has
-           to be kept in. Might be
-            - treeUndoActions for normal deletes,
-            - treeRedoActions for deletions while executing an undo or
-            - NULL for: Don't keep any copy of the cells.
-   */
+    to be kept in. Might be
+    - treeUndoActions for normal deletes,
+    - treeRedoActions for deletions while executing an undo or
+    - NULL for: Don't keep any copy of the cells.
+  */
   GroupCell *InsertGroupCells(std::unique_ptr<GroupCell> &&cells, GroupCell *where,
                               UndoActions *undoBuffer);
 
@@ -1009,20 +1012,20 @@ public:
   void ResetInputPrompts();
 
   bool CanCopy(bool fromActive = false)
-  {
-    return m_cellPointers.m_selectionStart ||
-           (fromActive && m_cellPointers.m_activeCell &&
-            m_cellPointers.m_activeCell->CanCopy());
-  }
+    {
+      return m_cellPointers.m_selectionStart ||
+        (fromActive && m_cellPointers.m_activeCell &&
+         m_cellPointers.m_activeCell->CanCopy());
+    }
 
   bool CanPaste()
-  { return m_cellPointers.m_activeCell || m_hCaretActive; }
+    { return m_cellPointers.m_activeCell || m_hCaretActive; }
 
   bool CanCut()
-  {
-    return (m_cellPointers.m_activeCell && m_cellPointers.m_activeCell->CanCopy()) ||
-           (m_cellPointers.m_selectionStart && m_cellPointers.m_selectionStart->GetType() == MC_TYPE_GROUP);
-  }
+    {
+      return (m_cellPointers.m_activeCell && m_cellPointers.m_activeCell->CanCopy()) ||
+        (m_cellPointers.m_selectionStart && m_cellPointers.m_selectionStart->GetType() == MC_TYPE_GROUP);
+    }
 
   //! Select the whole document
   void SelectAll();
@@ -1035,16 +1038,16 @@ public:
     \param start The first cell to delete
     \param end The last cell to delete
     \param undoBuffer The buffer the undo information has to be kept in. Might be
-      - treeUndoActions for normal deletes,
-      - treeRedoActions for deletions while executing an undo or
-      - NULL for: Don't keep any copy of the cells.
+    - treeUndoActions for normal deletes,
+    - treeRedoActions for deletions while executing an undo or
+    - NULL for: Don't keep any copy of the cells.
     \addtogroup UndoBufferFill
   */
   void DeleteRegion(
-          GroupCell *start,
-          GroupCell *end,
-          UndoActions *undoBuffer
-  );
+    GroupCell *start,
+    GroupCell *end,
+    UndoActions *undoBuffer
+    );
 
   /*! Move a range of cells from the document to the undo buffer
 
@@ -1053,9 +1056,9 @@ public:
     \addtogroup UndoBufferFill
   */
   void DeleteRegion(
-          GroupCell *start,
-          GroupCell *end
-  );
+    GroupCell *start,
+    GroupCell *end
+    );
 
   /*! Delete the currently selected cells
 
@@ -1075,21 +1078,21 @@ public:
   /*! Delete the currently active cell - or the cell above this one.
 
     Used for the "delete current cell" shortcut.
-   */
+  */
   void DeleteCurrentCell();
 
   //! Does it make sense to enable the "Play" button and the slider now?
   bool CanAnimate()
-  {
-    return m_cellPointers.m_selectionStart && m_cellPointers.m_selectionStart == m_cellPointers.m_selectionEnd &&
-           m_cellPointers.m_selectionStart->GetType() == MC_TYPE_SLIDE;
-  }
+    {
+      return m_cellPointers.m_selectionStart && m_cellPointers.m_selectionStart == m_cellPointers.m_selectionEnd &&
+        m_cellPointers.m_selectionStart->GetType() == MC_TYPE_SLIDE;
+    }
 
   /*! Animate the current slide show
 
     \param run
-      - false: Stop the animation
-      - true: Run the animation
+    - false: Stop the animation
+    - true: Run the animation
   */
   void Animate(bool run = true);
 
@@ -1108,9 +1111,9 @@ public:
   /*! Copy the current selection to the clipboard
 
     \param astext
-     - true:  Copy the current selection as text
-     - false: Copy the current selection as they would appear in a .wxm file
-   */
+    - true:  Copy the current selection as text
+    - false: Copy the current selection as they would appear in a .wxm file
+  */
   bool Copy(bool astext = false);
 
   //! Copy the selection to the clipboard as it would appear in a .wxm file
@@ -1140,7 +1143,7 @@ public:
   //! Copy the current animation to the clipboard
   bool CopyAnimation();
 
-    //! Copy a svg of the current selection to the clipboard
+  //! Copy a svg of the current selection to the clipboard
   bool CopySVG();
 
 #if wxUSE_ENH_METAFILE
@@ -1160,13 +1163,13 @@ public:
   /*! Export the file to an html document
 
     \todo Worksheet and text cell background work fine, but their names might be interchanged.
-   */
+  */
   bool ExportToHTML(const wxString &file);
 
   /*! Export a region of the file to a .wxm or .mac file maxima's load command can read
 
     \todo Slow: Iterates through a string using [] instead of using an iterator.
-   */
+  */
   void
   ExportToMAC(wxTextFile &output, GroupCell *tree, bool wxm, const std::vector<int> &cellMap, bool fixReorderedIndices);
 
@@ -1176,7 +1179,7 @@ public:
   /*! export to xml compatible file
     \param file The file name
     \param markAsSaved false means that this action doesn't clear the
-                             worksheet's "modified" status.
+    worksheet's "modified" status.
   */
   bool ExportToWXMX(const wxString &file, bool markAsSaved = true);
 
@@ -1191,9 +1194,9 @@ public:
 
   /*! Convert the current selection to a string
     \param lb
-     - true:  Include linebreaks
-     - false: Remove linebreaks from the converted string
-   */
+    - true:  Include linebreaks
+    - false: Remove linebreaks from the converted string
+  */
   wxString GetString(bool lb = false);
 
   GroupCell *GetTree() const { return m_tree.get(); }
@@ -1204,14 +1207,14 @@ public:
     NULL means: No cell is selected.
   */
   Cell *GetSelectionStart() const
-  { return m_cellPointers.m_selectionStart; }
+    { return m_cellPointers.m_selectionStart; }
 
   /*! Return the last of the currently selected cells.
 
     NULL means: No cell is selected.
   */
   Cell *GetSelectionEnd() const
-  { return m_cellPointers.m_selectionEnd; }
+    { return m_cellPointers.m_selectionEnd; }
 
   //! Clear the selection - make it empty, i.e. no selection
   void ClearSelection() { SetSelection(nullptr, nullptr); }
@@ -1252,17 +1255,17 @@ private:
   wxString m_statusText_old;
   bool m_statusTextHas = false;
   bool m_statusTextHas_old = false;
-  void StatusText(wxString text){m_statusText = text;m_statusTextHas = true;}
+  void StatusText(wxString text){m_statusText = text; m_statusTextHas = true;}
   void UnsetStatusText(){m_statusTextHas = false;}
   bool ActivateInput(int direction);
 
 public:
   //! Request to scroll to the cursor as soon as wxMaxima is idle
   void ScrollToCaret()
-  {
-    m_cellPointers.m_scrollToCell = false;
-    m_scrollToCaret = true;
-  }
+    {
+      m_cellPointers.m_scrollToCell = false;
+      m_scrollToCaret = true;
+    }
 
   //! Scrolls to the cursor, if requested.
   bool ScrollToCaretIfNeeded();
@@ -1296,12 +1299,12 @@ public:
     out why it is triggered.
 
     Test case:
-      - Create a code cell
-      - Press the "hide all code cells" button.
-      - click between 2 worksheet cells which makes the cursor appear as a horizontal
-        line
-      - press any letter.
-   */
+    - Create a code cell
+    - Press the "hide all code cells" button.
+    - click between 2 worksheet cells which makes the cursor appear as a horizontal
+    line
+    - press any letter.
+  */
   void ShowPoint(wxPoint point);
 
   //! What to do if the worksheet is in the input focus
@@ -1316,20 +1319,20 @@ public:
   /*! Set the slide of the currently selected animation or advance it by one step
 
     \param change
-      - >=0: The slide the animation has to be set to
-      - <0:  Advance the animation by one step.
-   */
+    - >=0: The slide the animation has to be set to
+    - <0:  Advance the animation by one step.
+  */
   void StepAnimation(int change = 1);
 
   //! Is the editor active in the last cell of the worksheet?
   bool IsActiveInLast()
-  { return m_cellPointers.m_activeCell && m_cellPointers.m_activeCell->GetGroup() == m_last; }
+    { return m_cellPointers.m_activeCell && m_cellPointers.m_activeCell->GetGroup() == m_last; }
 
   //! Returns the last cell of the worksheet
   GroupCell *GetLastCell()
-  {
-    return m_last;
-  }
+    {
+      return m_last;
+    }
 
   //! Is the selection in the current working group?
   bool IsSelectionInWorkingGroup();
@@ -1338,7 +1341,7 @@ public:
 
 /*!
   Set the HCaret to its default location, at the end of the document.
- */
+*/
   void SetDefaultHCaret();
 
   /*! Set the HCaret at the location of the given Cell.
@@ -1367,7 +1370,7 @@ public:
   /*! Is it possible to issue an undo in the currently selected cell?
 
     \return false if no cell is selected or there is no further undo information
-   */
+  */
   bool CanUndoInsideCell() const;
 
   void UndoInsideCell();
@@ -1375,7 +1378,7 @@ public:
   /*! Is it possible to issue an undo in the currently selected cell?
 
     \return false if no cell is selected or no redo can be executed.
-   */
+  */
   bool CanRedoInsideCell() const;
 
   void RedoInsideCell();
@@ -1388,30 +1391,30 @@ public:
     cell being evaluated and now clearly wants the cursor to stay where
     it is) can be achieved by FollowEvaluation(true) or
     FollowEvaluation(false).
-   */
+  */
   void FollowEvaluation(bool followEvaluation);
 
   //! Query if we want to automatically scroll to the cell that is currently evaluated
   bool FollowEvaluation() const
-  { return m_followEvaluation; }
+    { return m_followEvaluation; }
 
   /*! Set or get the "Scrolled away from evaluation" status
 
     Sets FollowEvaluation() to false and enables the toolbar button to follow the
     evaluation process again.
-   */
+  */
   void ScrolledAwayFromEvaluation(bool ScrolledAway);
 
   bool ScrolledAwayFromEvaluation()
-  { return m_scrolledAwayFromEvaluation; }
+    { return m_scrolledAwayFromEvaluation; }
 
   void SaveValue();
 
   bool IsSaved()
-  { return m_saved; }
+    { return m_saved; }
 
   void SetSaved(bool saved)
-    { if(m_saved != saved) m_updateControls = true;m_saved = saved;}
+    { if(m_saved != saved) m_updateControls = true; m_saved = saved;}
 
   void OutputChanged()
     {
@@ -1428,7 +1431,7 @@ public:
 
     Internally this function simulates a click on the "Cell/Evaluate Cell(s)"
     button.
-   */
+  */
   void Evaluate();
 
   //! Adds a group cell to the evaluation queue marking its contents as "outdated".
@@ -1482,7 +1485,7 @@ public:
   /*! Called if the user is using the scrollbar for scrolling through the document
 
     See also OnThumbtrack and OnMouseWheel
-   */
+  */
   void OnScrollChanged(wxScrollEvent &ev);
   /*! Called if the user uses the touchpad for scrolling
 
@@ -1503,32 +1506,32 @@ public:
   /*! Called if the mouse wheel sents events
 
     The virtual mouse wheel touchpads provide are handled by OnThumbtrack instead.
-   */
+  */
   void OnMouseWheel(wxMouseEvent &event);
 
   /*! Do an incremental search from the cursor or the point the last search started at
 
     Used by the find dialog.
     \todo Keep a list of positions the last few letters were found at?
-   */
+  */
   bool FindIncremental(const wxString &str, bool down, bool ignoreCase);
 
   /*! Find the next occurrence of a string
 
     Used by the find dialog.
-   */
+  */
   bool FindNext(const wxString &str, bool down, bool ignoreCase, bool warn = true);
 
   /*! Replace the current occurrence of a string
 
     Used by the find dialog.
-   */
+  */
   void Replace(const wxString &oldString, const wxString &newString, bool ignoreCase);
 
   /*! Replace all occurrences of a string
 
     Used by the find dialog.
-   */
+  */
   int ReplaceAll(const wxString &oldString, const wxString &newString, bool ignoreCase);
 
   wxString GetInputAboveCaret();
@@ -1542,11 +1545,11 @@ public:
 
   //! Add a symbol to the autocompletion list
   void AddSymbol(const wxString &fun, AutoComplete::autoCompletionType type = AutoComplete::command)
-  { m_autocomplete.AddSymbol(fun, type); }
+    { m_autocomplete.AddSymbol(fun, type); }
 
   //! Add a xml-encoded list of symbols to the autocompletion list
   void AddSymbols(wxString xml)
-  { m_autocomplete.AddSymbols(xml); }
+    { m_autocomplete.AddSymbols(xml); }
 
   void SetActiveCellText(const wxString &text);
 
@@ -1567,7 +1570,7 @@ public:
   void SelectGroupCell(GroupCell *cell);
 
   /*! Handling questions from and answers for maxima
-  @{
+    @{
   */
   //! Remember the answer to the LastQuestion().
   void SetAnswer(const wxString &answer);
@@ -1582,14 +1585,14 @@ public:
     \retval true = maxima waits for the answer of a question.
   */
   bool QuestionPending()
-  { return m_questionPrompt; }
+    { return m_questionPrompt; }
   //!@}
 
   /*! Does maxima wait for the answer of a question?
 
-*/
+   */
   void QuestionPending(bool pending)
-  { m_questionPrompt = pending; }
+    { m_questionPrompt = pending; }
 
   void SetMaximaDocDir(wxString dir)
     {
@@ -1646,7 +1649,7 @@ public:
     /*! reference to input string (must be a reference, so it can be modified)
 
       \todo: It is const, so it cannot be modified!?!
-     */
+    */
     const wxString &input;
   };
 
@@ -1661,10 +1664,10 @@ public:
     wxAccStatus GetParent (wxAccessible ** parent);
 //    wxAccStatus GetFocus (int *childId, wxAccessible **child);
     wxAccStatus GetLocation (wxRect &rect, int elementId);
-    wxAccStatus HitTest 	(const wxPoint &pt,
-	                         int *childId, wxAccessible **childObject);
+    wxAccStatus HitTest         (const wxPoint &pt,
+                                 int *childId, wxAccessible **childObject);
     wxAccStatus GetDescription(int childId, wxString *description);
-   private:
+  private:
     wxWindow *m_parent;
     Worksheet *m_worksheet;
   };

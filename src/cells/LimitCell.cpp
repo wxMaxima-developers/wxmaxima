@@ -38,8 +38,8 @@ LimitCell::LimitCell(GroupCell *group, Configuration *config,
                      std::unique_ptr<Cell> &&base,
                      std::unique_ptr<Cell> &&under,
                      std::unique_ptr<Cell> &&name)
-    : Cell(group, config), m_name(std::move(name)), m_base(std::move(base)),
-      m_under(std::move(under)) {
+  : Cell(group, config), m_name(std::move(name)), m_base(std::move(base)),
+    m_under(std::move(under)) {
   InitBitFields();
   SetStyle(TS_VARIABLE);
 }
@@ -48,9 +48,9 @@ LimitCell::LimitCell(GroupCell *group, Configuration *config,
 // cppcheck-suppress uninitMemberVar symbolName=LimitCell::m_comma
 // cppcheck-suppress uninitMemberVar symbolName=LimitCell::m_close
 LimitCell::LimitCell(GroupCell *group, const LimitCell &cell)
-    : LimitCell(group, cell.m_configuration, CopyList(group, cell.m_base.get()),
-                CopyList(group, cell.m_under.get()),
-                CopyList(group, cell.m_name.get())) {
+  : LimitCell(group, cell.m_configuration, CopyList(group, cell.m_base.get()),
+	      CopyList(group, cell.m_under.get()),
+	      CopyList(group, cell.m_name.get())) {
   CopyCommonData(cell);
 }
 
@@ -70,11 +70,11 @@ void LimitCell::MakeBreakUpCells() {
 void LimitCell::Recalculate(AFontSize fontsize) {
   m_base->RecalculateList(fontsize);
   m_under->RecalculateList(
-      {MIN_LIMIT_FONT_SIZE, fontsize - LIMIT_FONT_SIZE_DECREASE});
+			   {MIN_LIMIT_FONT_SIZE, fontsize - LIMIT_FONT_SIZE_DECREASE});
   m_name->RecalculateList(fontsize);
   if (!IsBrokenIntoLines()) {
     m_width = wxMax(m_name->GetFullWidth(), m_under->GetFullWidth()) +
-              m_base->GetFullWidth();
+      m_base->GetFullWidth();
     m_center = wxMax(m_base->GetCenterList(), m_name->GetCenterList());
     m_height = m_center + wxMax(m_name->GetMaxDrop() + m_under->GetHeightList(),
                                 m_base->GetMaxDrop());
@@ -94,13 +94,13 @@ void LimitCell::Draw(wxPoint point) {
     wxPoint base(point), under(point), name(point);
 
     name.x = point.x +
-             wxMax(m_name->GetFullWidth(), m_under->GetFullWidth()) / 2 -
-             m_name->GetFullWidth() / 2;
+      wxMax(m_name->GetFullWidth(), m_under->GetFullWidth()) / 2 -
+      m_name->GetFullWidth() / 2;
     m_name->DrawList(name);
 
     under.x = point.x +
-              wxMax(m_name->GetFullWidth(), m_under->GetFullWidth()) / 2 -
-              m_under->GetFullWidth() / 2;
+      wxMax(m_name->GetFullWidth(), m_under->GetFullWidth()) / 2 -
+      m_under->GetFullWidth() / 2;
 
     under.y = point.y + m_name->GetMaxDrop() + m_under->GetCenterList();
     m_under->DrawList(under);
@@ -159,7 +159,7 @@ wxString LimitCell::ToTeX() const {
   wxString var = under.SubString(0, varEnd);
   wxString to = under.SubString(toStart, under.Length() - 1);
   wxString s =
-      wxT("\\lim_{") + var + wxT("\\to ") + to + wxT("}{") + base + wxT("}");
+    wxT("\\lim_{") + var + wxT("\\to ") + to + wxT("}{") + base + wxT("}");
   return s;
 }
 
@@ -184,8 +184,8 @@ wxString LimitCell::ToXML() const {
     flags += wxT(" breakline=\"true\"");
 
   return _T("<lm") + flags + wxT("><r>") + m_name->ListToXML() + _T("</r><r>") +
-         m_under->ListToXML() + _T("</r><r>") + m_base->ListToXML() +
-         _T("</r></lm>");
+    m_under->ListToXML() + _T("</r><r>") + m_base->ListToXML() +
+    _T("</r></lm>");
 }
 
 wxString LimitCell::ToOMML() const {
@@ -193,8 +193,8 @@ wxString LimitCell::ToOMML() const {
   under.Replace(wxT("->"), wxT("\u2192"));
 
   return _T("<m:func><m:fName><m:limLow><m:e><m:r>lim</m:r></m:e><m:lim>") +
-         under + _T("</m:lim></m:limLow></m:fName><m:e>") +
-         m_base->ListToOMML() + _T("</m:e></m:func>");
+    under + _T("</m:lim></m:limLow></m:fName><m:e>") +
+    m_base->ListToOMML() + _T("</m:e></m:func>");
 }
 
 bool LimitCell::BreakUp() {

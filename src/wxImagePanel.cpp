@@ -22,14 +22,14 @@
 
 /*! \file
   This file contains code to create a wxPanel containing image data.
- */
+*/
 
 #include "wxImagePanel.h"
 #include <wx/display.h>
 #include <wx/mstream.h>
 
 wxImagePanel::wxImagePanel(wxWindow *parent, unsigned char *data, size_t len)
-    : wxPanel(parent) {
+  : wxPanel(parent) {
   Load(data, len);
   int ppi;
 #if wxCHECK_VERSION(3, 1, 1)
@@ -46,7 +46,7 @@ wxImagePanel::wxImagePanel(wxWindow *parent, unsigned char *data, size_t len)
   ppi = wxMax(ppi, 75);
 
   SetMinSize(
-      wxSize(ppi * 4, m_image.GetHeight() * ppi * 4 / m_image.GetWidth()));
+	     wxSize(ppi * 4, m_image.GetHeight() * ppi * 4 / m_image.GetWidth()));
 
   Connect(wxEVT_PAINT, wxPaintEventHandler(wxImagePanel::paintEvent), NULL,
           this);

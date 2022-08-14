@@ -42,17 +42,17 @@ static constexpr AFontSize INTEGRAL_FONT_SIZE{12.0f};
 IntCell::IntCell(GroupCell *group, Configuration *config,
                  std::unique_ptr<Cell> &&base, std::unique_ptr<Cell> &&under,
                  std::unique_ptr<Cell> &&over, std::unique_ptr<Cell> &&var)
-    : Cell(group, config), m_base(std::move(base)), m_var(std::move(var)),
-      m_under(std::move(under)), m_over(std::move(over)) {
+  : Cell(group, config), m_base(std::move(base)), m_var(std::move(var)),
+    m_under(std::move(under)), m_over(std::move(over)) {
   InitBitFields();
   SetStyle(TS_VARIABLE);
 }
 
 IntCell::IntCell(GroupCell *group, Configuration *config,
                  std::unique_ptr<Cell> &&base, std::unique_ptr<Cell> &&var)
-    : IntCell(group, config, std::move(base),
-              std::make_unique<TextCell>(group, config),
-              std::make_unique<TextCell>(group, config), std::move(var)) {}
+  : IntCell(group, config, std::move(base),
+	    std::make_unique<TextCell>(group, config),
+	    std::make_unique<TextCell>(group, config), std::move(var)) {}
 
 // Old cppcheck bugs:
 // cppcheck-suppress uninitMemberVar symbolName=IntCell::m_signHeight
@@ -61,10 +61,10 @@ IntCell::IntCell(GroupCell *group, Configuration *config,
 // cppcheck-suppress uninitMemberVar symbolName=IntCell::m_charHeight
 // cppcheck-suppress uninitMemberVar symbolName=IntCell::m_charWidth
 IntCell::IntCell(GroupCell *group, const IntCell &cell)
-    : IntCell(group, cell.m_configuration, CopyList(group, cell.m_base.get()),
-              CopyList(group, cell.m_under.get()),
-              CopyList(group, cell.m_over.get()),
-              CopyList(group, cell.m_var.get())) {
+  : IntCell(group, cell.m_configuration, CopyList(group, cell.m_base.get()),
+	    CopyList(group, cell.m_under.get()),
+	    CopyList(group, cell.m_over.get()),
+	    CopyList(group, cell.m_var.get())) {
   CopyCommonData(cell);
   m_intStyle = cell.m_intStyle;
 }
@@ -130,9 +130,9 @@ void IntCell::Recalculate(AFontSize fontsize) {
       m_signHeight = (85 * m_signHeight) / 100;
 
       m_width =
-          m_signWidth +
-          wxMax(m_over->GetFullWidth() + m_signWidth, m_under->GetFullWidth()) +
-          m_base->GetFullWidth() + m_var->GetFullWidth() + Scale_Px(4);
+	m_signWidth +
+	wxMax(m_over->GetFullWidth() + m_signWidth, m_under->GetFullWidth()) +
+	m_base->GetFullWidth() + m_var->GetFullWidth() + Scale_Px(4);
     } else {
 #if defined __WXMSW__
       wxDC *dc = m_configuration->GetDC();
@@ -140,7 +140,7 @@ void IntCell::Recalculate(AFontSize fontsize) {
       wxASSERT(fontsize1.IsValid());
 
       Style style =
-          Style(fontsize1).FontName(m_configuration->GetSymbolFontName());
+	Style(fontsize1).FontName(m_configuration->GetSymbolFontName());
 
       if (!style.IsFontOk()) {
         style = Style::FromStockFont(wxStockGDI::FONT_NORMAL);
@@ -151,12 +151,12 @@ void IntCell::Recalculate(AFontSize fontsize) {
       dc->GetTextExtent(INTEGRAL_TOP, &m_charWidth, &m_charHeight);
 
       m_width = m_signWidth + m_base->GetFullWidth() +
-                wxMax(m_over->GetFullWidth(), m_under->GetFullWidth()) +
-                m_var->GetFullWidth() + Scale_Px(4);
+	wxMax(m_over->GetFullWidth(), m_under->GetFullWidth()) +
+	m_var->GetFullWidth() + Scale_Px(4);
 #else
       m_width = m_signWidth + m_base->GetFullWidth() +
-                wxMax(m_over->GetFullWidth(), m_under->GetFullWidth()) +
-                m_var->GetFullWidth() + Scale_Px(4);
+	wxMax(m_over->GetFullWidth(), m_under->GetFullWidth()) +
+	m_var->GetFullWidth() + Scale_Px(4);
       if (m_signHeight < Scale_Px(35))
         m_signHeight = Scale_Px(35);
 #endif
@@ -164,10 +164,10 @@ void IntCell::Recalculate(AFontSize fontsize) {
 
     if (m_intStyle == INT_DEF) {
       m_center = wxMax(m_over->GetHeightList() + Scale_Px(4) +
-                           m_signHeight / 2 - m_signHeight / 3,
+		       m_signHeight / 2 - m_signHeight / 3,
                        m_base->GetCenterList());
       m_height = m_center + wxMax(m_under->GetHeightList() + Scale_Px(4) +
-                                      m_signHeight / 2 - m_signHeight / 3,
+				  m_signHeight / 2 - m_signHeight / 3,
                                   m_base->GetMaxDrop());
     } else {
       m_center = wxMax(m_signHeight / 2, m_base->GetCenterList());
@@ -185,43 +185,43 @@ void IntCell::Draw(wxPoint point) {
     // top decoration
     int m_signWCenter = m_signWidth / 2;
     wxPoint points[7] = {
-        {sign.x + m_signWCenter + 2 * (m_signWidth / 4),
-         sign.y - (m_signHeight - Scale_Px(1)) / 2 + m_signWidth / 4},
-        {sign.x + m_signWCenter + m_signWidth / 4,
-         sign.y - (m_signHeight - Scale_Px(1)) / 2},
-        {sign.x + m_signWCenter, sign.y - (m_signHeight - Scale_Px(1)) / 2 +
-                                     2 * (m_signWidth / 4) + Scale_Px(.35)},
+      {sign.x + m_signWCenter + 2 * (m_signWidth / 4),
+       sign.y - (m_signHeight - Scale_Px(1)) / 2 + m_signWidth / 4},
+      {sign.x + m_signWCenter + m_signWidth / 4,
+       sign.y - (m_signHeight - Scale_Px(1)) / 2},
+      {sign.x + m_signWCenter, sign.y - (m_signHeight - Scale_Px(1)) / 2 +
+       2 * (m_signWidth / 4) + Scale_Px(.35)},
 
-        // The line
-        {sign.x + m_signWCenter + Scale_Px(.5), sign.y},
+      // The line
+      {sign.x + m_signWCenter + Scale_Px(.5), sign.y},
 
-        // Bottom Decoration
-        {sign.x + m_signWCenter, sign.y + (m_signHeight - Scale_Px(1)) / 2 -
-                                     2 * (m_signWidth / 4) + Scale_Px(.35)},
-        {sign.x + m_signWCenter - m_signWidth / 4,
-         sign.y + (m_signHeight - Scale_Px(1)) / 2},
-        {sign.x + m_signWCenter - 2 * (m_signWidth / 4),
-         sign.y + (m_signHeight - Scale_Px(1)) / 2 - m_signWidth / 4}};
+      // Bottom Decoration
+      {sign.x + m_signWCenter, sign.y + (m_signHeight - Scale_Px(1)) / 2 -
+       2 * (m_signWidth / 4) + Scale_Px(.35)},
+      {sign.x + m_signWCenter - m_signWidth / 4,
+       sign.y + (m_signHeight - Scale_Px(1)) / 2},
+      {sign.x + m_signWCenter - 2 * (m_signWidth / 4),
+       sign.y + (m_signHeight - Scale_Px(1)) / 2 - m_signWidth / 4}};
 
     m_configuration->GetAntialiassingDC()->DrawSpline(7, points);
     points[1] = {sign.x + m_signWCenter + m_signWidth / 4,
-                 sign.y - (m_signHeight - Scale_Px(1.25)) / 2};
+      sign.y - (m_signHeight - Scale_Px(1.25)) / 2};
     points[2] = {sign.x + m_signWCenter,
-                 sign.y - (m_signHeight - Scale_Px(1)) / 2 +
-                     2 * (m_signWidth / 4) - Scale_Px(.35)};
+      sign.y - (m_signHeight - Scale_Px(1)) / 2 +
+      2 * (m_signWidth / 4) - Scale_Px(.35)};
     points[3] = {sign.x + m_signWCenter - Scale_Px(.5), sign.y};
     points[4] = {sign.x + m_signWCenter,
-                 sign.y + (m_signHeight - Scale_Px(1)) / 2 -
-                     2 * (m_signWidth / 4) + Scale_Px(.35)};
+      sign.y + (m_signHeight - Scale_Px(1)) / 2 -
+      2 * (m_signWidth / 4) + Scale_Px(.35)};
     points[5] = {sign.x + m_signWCenter - m_signWidth / 4,
-                 sign.y + (m_signHeight - Scale_Px(1.25)) / 2};
+      sign.y + (m_signHeight - Scale_Px(1.25)) / 2};
     m_configuration->GetAntialiassingDC()->DrawSpline(7, points);
     // line
 
     if (m_intStyle == INT_DEF) {
       under.x += m_signWidth;
       under.y = point.y + m_signHeight / 2 + m_under->GetCenterList() +
-                Scale_Px(2) - m_signHeight / 3;
+	Scale_Px(2) - m_signHeight / 3;
       m_under->DrawList(under);
 
       if (m_configuration->CheckTeXFonts())
@@ -230,7 +230,7 @@ void IntCell::Draw(wxPoint point) {
         over.x += m_signWidth;
 
       over.y = point.y - m_signHeight / 2 - m_over->GetMaxDrop() - Scale_Px(2) +
-               m_signHeight / 3;
+	m_signHeight / 3;
       m_over->DrawList(over);
 
       if (m_configuration->CheckTeXFonts()) {
@@ -238,7 +238,7 @@ void IntCell::Draw(wxPoint point) {
                                       m_under->GetFullWidth());
       } else
         base.x += m_signWidth +
-                  wxMax(m_over->GetFullWidth(), m_under->GetFullWidth());
+	  wxMax(m_over->GetFullWidth(), m_under->GetFullWidth());
     }
 
     else if (m_configuration->CheckTeXFonts())
@@ -341,7 +341,7 @@ wxString IntCell::ToMathML() const {
     retval = wxT("<munder><mo>&#x222B;</mo>") + from + wxT("</munder>") + base;
   if (!from.IsEmpty() && !to.IsEmpty())
     retval = wxT("<munderover><mo>&#x222B;</mo>") + from + to +
-             wxT("</munderover>\n") + base;
+      wxT("</munderover>\n") + base;
   if (!var.IsEmpty())
     retval = retval + var;
 
@@ -405,7 +405,7 @@ wxString IntCell::ToXML() const {
     return wxT("<in") + flags + wxT(">") + base + var + wxT("</in>");
   } else
     return wxT("<in") + flags + wxT(">") + from + to + base + var +
-           wxT("</in>");
+      wxT("</in>");
 }
 
 bool IntCell::BreakUp() {

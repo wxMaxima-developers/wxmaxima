@@ -25,7 +25,7 @@
 
 /*! \file
   This file defines the class ToolBar that represents wxMaxima's main tool bar.
- */
+*/
 
 #include "ToolBar.h"
 #include "Image.h"
@@ -67,7 +67,7 @@ wxBitmap ToolBar::GetBitmap(wxString name, unsigned char *data, size_t len,
 
 #if defined __WXOSX__
     int targetSize =
-        wxMax(m_ppi.x, 75) * TOOLBAR_ICON_SCALE * GetContentScaleFactor();
+      wxMax(m_ppi.x, 75) * TOOLBAR_ICON_SCALE * GetContentScaleFactor();
 #else
     int targetSize = wxMax(m_ppi.x, 75) * TOOLBAR_ICON_SCALE;
 #endif
@@ -118,15 +118,15 @@ void ToolBar::UpdateSlider(AnimationCell *cell) {
       m_plotSlider->SetRange(0, cell->Length() - 1);
       m_plotSlider->SetValue(cell->GetDisplayedIndex());
       m_plotSlider->SetToolTip(wxString::Format(
-          _("Frame %i of %i"), cell->GetDisplayedIndex() + 1, cell->Length()));
+						_("Frame %i of %i"), cell->GetDisplayedIndex() + 1, cell->Length()));
     }
   }
 }
 
 ToolBar::ToolBar(wxWindow *parent)
-    : wxAuiToolBar(parent, -1, wxDefaultPosition, wxDefaultSize,
-                   wxAUI_TB_OVERFLOW | wxAUI_TB_PLAIN_BACKGROUND |
-                       wxAUI_TB_HORIZONTAL) {
+  : wxAuiToolBar(parent, -1, wxDefaultPosition, wxDefaultSize,
+		 wxAUI_TB_OVERFLOW | wxAUI_TB_PLAIN_BACKGROUND |
+		 wxAUI_TB_HORIZONTAL) {
   m_defaultCellStyle = GC_TYPE_CODE;
   m_canEvalThisCell_old = true;
   m_worksheetEmpty_old = false;
@@ -220,8 +220,8 @@ void ToolBar::AddTools() {
   m_followIcon = GetBitmap(wxT("arrow_up_square"), ARROW_UP_SQUARE_SVG_GZ,
                            ARROW_UP_SQUARE_SVG_GZ_SIZE);
   m_needsInformationIcon =
-      GetBitmap(wxT("software-update-urgent"), SOFTWARE_UPDATE_URGENT_SVG_GZ,
-                SOFTWARE_UPDATE_URGENT_SVG_GZ_SIZE);
+    GetBitmap(wxT("software-update-urgent"), SOFTWARE_UPDATE_URGENT_SVG_GZ,
+	      SOFTWARE_UPDATE_URGENT_SVG_GZ_SIZE);
   AddTool(tb_follow, _("Follow"), m_followIcon,
           _("Return to the cell that is currently being evaluated"));
   EnableTool(tb_follow, false);
@@ -237,8 +237,8 @@ void ToolBar::AddTools() {
           _("Send all cells to maxima"));
 
   AddTool(
-      tb_evaltillhere, _("Evaluate to point"), GetEvalTillHereBitmap(),
-      _("Evaluate the file from its beginning to the cell above the cursor"));
+	  tb_evaltillhere, _("Evaluate to point"), GetEvalTillHereBitmap(),
+	  _("Evaluate the file from its beginning to the cell above the cursor"));
 
   AddTool(tb_evaluate_rest, _("Evaluate the rest"), GetEvalRestBitmap(),
           _("Evaluate the file from the cursor to its end"));
@@ -267,24 +267,24 @@ void ToolBar::AddTools() {
   m_textStyle = new wxChoice(this, tb_changeStyle, wxDefaultPosition,
                              wxDefaultSize, textStyle);
   m_textStyle->SetToolTip(
-      _("For faster creation of cells the following shortcuts exist:\n\n"
-        "   Ctrl+0: Math cell\n"
-        "   Ctrl+1: Text cell\n"
-        "   Ctrl+2: Title cell\n"
-        "   Ctrl+3: Section cell\n"
-        "   Ctrl+4: Subsection cell\n"
-        "   Ctrl+5: Sub-Subsection cell\n"
-        "   Ctrl+6: Heading5 cell\n"
-        "   Ctrl+7: Heading6 cell\n"));
+			  _("For faster creation of cells the following shortcuts exist:\n\n"
+			    "   Ctrl+0: Math cell\n"
+			    "   Ctrl+1: Text cell\n"
+			    "   Ctrl+2: Title cell\n"
+			    "   Ctrl+3: Section cell\n"
+			    "   Ctrl+4: Subsection cell\n"
+			    "   Ctrl+5: Sub-Subsection cell\n"
+			    "   Ctrl+6: Heading5 cell\n"
+			    "   Ctrl+7: Heading6 cell\n"));
   m_textStyle->SetSelection(textStyleSelection);
   AddControl(m_textStyle);
 
   m_PlayButton =
-      GetBitmap(wxT("media-playback-start"), MEDIA_PLAYBACK_START_SVG_GZ,
-                MEDIA_PLAYBACK_START_SVG_GZ_SIZE);
+    GetBitmap(wxT("media-playback-start"), MEDIA_PLAYBACK_START_SVG_GZ,
+	      MEDIA_PLAYBACK_START_SVG_GZ_SIZE);
   m_StopButton =
-      GetBitmap(wxT("media-playback-stop"), MEDIA_PLAYBACK_STOP_SVG_GZ,
-                MEDIA_PLAYBACK_STOP_SVG_GZ_SIZE);
+    GetBitmap(wxT("media-playback-stop"), MEDIA_PLAYBACK_STOP_SVG_GZ,
+	      MEDIA_PLAYBACK_STOP_SVG_GZ_SIZE);
 
   // It felt like a good idea to combine the play and the stop button.
   AddTool(tb_animation_startStop, _("Start or Stop animation"), m_PlayButton,
@@ -317,8 +317,8 @@ void ToolBar::AddTools() {
   m_plotSlider = new wxSlider(this, plot_slider_id, 0, 0, 10, wxDefaultPosition,
                               wxSize(sliderWidth, -1), wxSL_HORIZONTAL);
   m_plotSlider->SetToolTip(
-      _("After clicking on animations created with with_slider_draw() or "
-        "similar this slider allows to change the current frame."));
+			   _("After clicking on animations created with with_slider_draw() or "
+			     "similar this slider allows to change the current frame."));
   m_plotSlider->Enable(false);
   m_animationMaxIndex = -1;
   m_animationDisplayedIndex = -1;
@@ -354,8 +354,8 @@ void ToolBar::UpdateBitmaps() {
     return;
 
   wxLogMessage(wxString::Format(
-      _("Display resolution according to wxWidgets: %i x %i ppi"), ppi.x,
-      ppi.y));
+				_("Display resolution according to wxWidgets: %i x %i ppi"), ppi.x,
+				ppi.y));
 
   if (ppi.x == 0)
     return;
@@ -381,18 +381,18 @@ void ToolBar::UpdateBitmaps() {
   m_followIcon = GetBitmap(wxT("arrow_up_square"), ARROW_UP_SQUARE_SVG_GZ,
                            ARROW_UP_SQUARE_SVG_GZ_SIZE);
   m_needsInformationIcon =
-      GetBitmap(wxT("software-update-urgent"), SOFTWARE_UPDATE_URGENT_SVG_GZ,
-                SOFTWARE_UPDATE_URGENT_SVG_GZ_SIZE);
+    GetBitmap(wxT("software-update-urgent"), SOFTWARE_UPDATE_URGENT_SVG_GZ,
+	      SOFTWARE_UPDATE_URGENT_SVG_GZ_SIZE);
   SetToolBitmap(tb_follow, m_followIcon);
   SetToolBitmap(tb_evaltillhere, GetEvalTillHereBitmap());
   SetToolBitmap(tb_evaluate_rest, GetEvalRestBitmap());
   SetToolBitmap(tb_hideCode, GetHideCodeBitmap());
   m_PlayButton =
-      GetBitmap(wxT("media-playback-start"), MEDIA_PLAYBACK_START_SVG_GZ,
-                MEDIA_PLAYBACK_START_SVG_GZ_SIZE);
+    GetBitmap(wxT("media-playback-start"), MEDIA_PLAYBACK_START_SVG_GZ,
+	      MEDIA_PLAYBACK_START_SVG_GZ_SIZE);
   m_StopButton =
-      GetBitmap(wxT("media-playback-stop"), MEDIA_PLAYBACK_STOP_SVG_GZ,
-                MEDIA_PLAYBACK_STOP_SVG_GZ_SIZE);
+    GetBitmap(wxT("media-playback-stop"), MEDIA_PLAYBACK_STOP_SVG_GZ,
+	      MEDIA_PLAYBACK_STOP_SVG_GZ_SIZE);
   SetToolBitmap(tb_animation_startStop, m_PlayButton);
   SetToolBitmap(wxID_HELP, GetHelpBitmap());
   Realize();
@@ -589,8 +589,8 @@ void ToolBar::AnimationButtonState(AnimationStartStopState state) {
       EnableTool(tb_animation_startStop, false);
       m_plotSlider->Enable(false);
       m_plotSlider->SetToolTip(
-          _("After clicking on animations created with with_slider_draw() or "
-            "similar this slider allows to change the current frame."));
+			       _("After clicking on animations created with with_slider_draw() or "
+				 "similar this slider allows to change the current frame."));
       m_animationMaxIndex = -1;
       m_animationDisplayedIndex = -1;
 

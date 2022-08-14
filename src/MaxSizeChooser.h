@@ -32,20 +32,20 @@ class MaxSizeChooser : public wxDialog
 {
 public:
   MaxSizeChooser(wxWindow *parent, int id,
-          const int &width,
-          const int &height,
-          const wxPoint &pos = wxDefaultPosition,
-          const wxSize &size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE);
+                 const int &width,
+                 const int &height,
+                 const wxPoint &pos = wxDefaultPosition,
+                 const wxSize &size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE);
 
   double GetMaxWidth()
-  {
-    return m_width->GetValue();
-  }
+    {
+      return m_width->GetValue();
+    }
 
   double GetHeightList()
-  {
-    return m_height->GetValue();
-  }
+    {
+      return m_height->GetValue();
+    }
 
 
 private:

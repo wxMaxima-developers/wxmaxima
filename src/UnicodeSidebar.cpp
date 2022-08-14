@@ -26,7 +26,7 @@
 
   This file contains the definition of the class Unicodesidebar that allows to
   select arbitrary unicode symbols.
- */
+*/
 
 #include "../data/UnicodeData.h"
 #include <memory>
@@ -45,7 +45,7 @@ wxDEFINE_EVENT(SYMBOLADDEVENT, SymboladdEvent);
 
 UnicodeSidebar::UnicodeSidebar(wxWindow *parent, wxWindow *worksheet,
                                Configuration *cfg)
-    : wxPanel(parent), m_worksheet(worksheet) {
+  : wxPanel(parent), m_worksheet(worksheet) {
   wxWindowUpdateLocker speedUp(this);
   wxBoxSizer *box = new wxBoxSizer(wxVERTICAL);
   m_initialized = false;
@@ -105,7 +105,7 @@ void UnicodeSidebar::OnMenu(wxCommandEvent &event) {
     while (toplevel->GetParent() != NULL)
       toplevel = toplevel->GetParent();
     wxCommandEvent *ev =
-        new wxCommandEvent(SYMBOLADDEVENT, m_charRightClickedOn);
+      new wxCommandEvent(SYMBOLADDEVENT, m_charRightClickedOn);
     toplevel->GetEventHandler()->QueueEvent(ev);
 
     break;
@@ -128,7 +128,7 @@ void UnicodeSidebar::UpdateDisplay() {
 
 void UnicodeSidebar::OnSize(wxSizeEvent &event) {
   int width =
-      GetClientSize().x - m_grid->GetColSize(0) - m_grid->GetColSize(1) - 10;
+    GetClientSize().x - m_grid->GetColSize(0) - m_grid->GetColSize(1) - 10;
   if (width < 0)
     width = 0;
   m_grid->SetColSize(2, width);

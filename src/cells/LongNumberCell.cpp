@@ -26,7 +26,7 @@
 
   LongNumberCell is the Cell that is used as a placeholder for items that
   should be overridden, before they are displayed.
- */
+*/
 
 #include "LongNumberCell.h"
 #include "CellImpl.h"
@@ -36,7 +36,7 @@
 
 LongNumberCell::LongNumberCell(GroupCell *group, Configuration *config,
                                const wxString &number)
-    : TextCell(group, config, number, TS_NUMBER) {
+  : TextCell(group, config, number, TS_NUMBER) {
   InitBitFields();
 }
 
@@ -44,7 +44,7 @@ LongNumberCell::LongNumberCell(GroupCell *group, Configuration *config,
 // cppcheck-suppress uninitMemberVar symbolName=LongNumberCell::m_altJs
 // cppcheck-suppress uninitMemberVar symbolName=LongNumberCell::m_initialToolTip
 LongNumberCell::LongNumberCell(GroupCell *group, const LongNumberCell &cell)
-    : LongNumberCell(group, cell.m_configuration, cell.m_text) {}
+  : LongNumberCell(group, cell.m_configuration, cell.m_text) {}
 
 DEFINE_CELL(LongNumberCell)
 
@@ -71,10 +71,10 @@ void LongNumberCell::UpdateDisplayedText() {
 
 bool LongNumberCell::NeedsRecalculation(AFontSize fontSize) const {
   return TextCell::NeedsRecalculation(fontSize) ||
-         (m_displayedDigits_old != m_configuration->GetDisplayedDigits()) ||
-         (m_showAllDigits_old != m_configuration->ShowAllDigits()) ||
-         (m_linebreaksInLongLines_old !=
-          m_configuration->LineBreaksInLongNums());
+    (m_displayedDigits_old != m_configuration->GetDisplayedDigits()) ||
+    (m_showAllDigits_old != m_configuration->ShowAllDigits()) ||
+    (m_linebreaksInLongLines_old !=
+     m_configuration->LineBreaksInLongNums());
 }
 
 void LongNumberCell::SetStyle(TextStyle style) {
@@ -115,8 +115,8 @@ void LongNumberCell::Recalculate(AFontSize fontsize) {
         m_ellipsisWidth = ellipsisSize.GetWidth();
         m_width = m_numStartWidth + m_ellipsisWidth + numEndSize.GetWidth();
         m_height =
-            wxMax(wxMax(numStartSize.GetHeight(), ellipsisSize.GetHeight()),
-                  numEndSize.GetHeight());
+	  wxMax(wxMax(numStartSize.GetHeight(), ellipsisSize.GetHeight()),
+		numEndSize.GetHeight());
         m_center = m_height / 2;
       }
     }
@@ -143,14 +143,14 @@ void LongNumberCell::Draw(wxPoint point) {
                    point.y - m_center + MC_TEXT_PADDING);
       dc->DrawText(m_numEnd,
                    point.x + MC_TEXT_PADDING + m_numStartWidth +
-                       m_ellipsisWidth,
+		   m_ellipsisWidth,
                    point.y - m_center + MC_TEXT_PADDING);
       wxColor textColor = dc->GetTextForeground();
       wxColor backgroundColor = dc->GetTextBackground();
       dc->SetTextForeground(
-          wxColor((textColor.Red() + backgroundColor.Red()) / 2,
-                  (textColor.Green() + backgroundColor.Green()) / 2,
-                  (textColor.Blue() + backgroundColor.Blue()) / 2));
+			    wxColor((textColor.Red() + backgroundColor.Red()) / 2,
+				    (textColor.Green() + backgroundColor.Green()) / 2,
+				    (textColor.Blue() + backgroundColor.Blue()) / 2));
       dc->DrawText(m_ellipsis, point.x + MC_TEXT_PADDING + m_numStartWidth,
                    point.y - m_center + MC_TEXT_PADDING);
     }

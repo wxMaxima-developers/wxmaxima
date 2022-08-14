@@ -21,12 +21,12 @@
 //  SPDX-License-Identifier: GPL-2.0+
 
 /*!
-\file
-The configuration dialog.
+  \file
+  The configuration dialog.
 
-This file contains the code for ConfigDialogue, the class that handles the preferences
-dialog. The preferences themself will be read directly using
-<code> config->Read </code>, instead, where needed or from Configuration.
+  This file contains the code for ConfigDialogue, the class that handles the preferences
+  dialog. The preferences themself will be read directly using
+  <code> config->Read </code>, instead, where needed or from Configuration.
 */
 
 extern unsigned int view_refresh_svg_gz_len;
@@ -70,11 +70,11 @@ enum
 
 /*! The configuration dialog
 
-This class draws and handles the configuration dialog.
+  This class draws and handles the configuration dialog.
 
-Code that needs to know the value of the preferences that are set here reads
-them directly using <code> config->Read </code>, instead.
- */
+  Code that needs to know the value of the preferences that are set here reads
+  them directly using <code> config->Read </code>, instead.
+*/
 class ConfigDialogue : public wxPropertySheetDialog
 {
 public:
@@ -145,15 +145,15 @@ private:
   public:
     //! The constructor
     ExamplePanel(wxWindow *parent, int id, wxPoint pos, wxSize size) : wxPanel(parent, id, pos, size)
-    { Connect(wxEVT_PAINT, wxPaintEventHandler(ConfigDialogue::ExamplePanel::OnPaint)); };
+      { Connect(wxEVT_PAINT, wxPaintEventHandler(ConfigDialogue::ExamplePanel::OnPaint)); };
 
     //! Sets the text style of the example
     void SetStyle(const Style &style)
-    {
-      if (m_style.IsStyleEqualTo(style)) return;
-      m_style = style;
-      Refresh();
-    }
+      {
+        if (m_style.IsStyleEqualTo(style)) return;
+        m_style = style;
+        Refresh();
+      }
 
   private:
     /*! Actually updates the formatting example
@@ -169,7 +169,7 @@ private:
   /*! A rectangle showing the color of an item
 
     If the color contains transparency the rectangle is checkered accordingly.
-   */
+  */
   class ColorPanel : public wxPanel
   {
   public:
@@ -194,7 +194,7 @@ private:
   /*! begin wxGlade: ConfigDialogue::methods
 
     This method sets the window title, the tool tips etc.
-   */
+  */
   void SetCheckboxValues();
 
   //! Calculates the size of the images for a configuration tab
@@ -202,7 +202,7 @@ private:
 
   //! Loads the image for a configuration tab
   wxBitmap GetImage(wxString name,
-                   unsigned char *data, size_t len);
+                    unsigned char *data, size_t len);
 
   //! The panel that allows to choose which formats to put on the clipboard
   wxWindow *CreateClipboardPanel();
@@ -211,9 +211,9 @@ private:
   wxWindow *CreateRevertToDefaultsPanel();
 
   wxCheckBox *m_copyBitmap, *m_copyMathML, *m_copyMathMLHTML, *m_copyRTF, *m_copySVG;
-  #if wxUSE_ENH_METAFILE
+#if wxUSE_ENH_METAFILE
   wxCheckBox *m_copyEMF;
-  #endif
+#endif
 
   //! The panel that allows to set the editing options
   wxWindow *CreateWorksheetPanel();

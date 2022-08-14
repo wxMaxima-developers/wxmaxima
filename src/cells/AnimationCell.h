@@ -32,6 +32,7 @@
 #include "Cell.h"
 #include "Image.h"
 #include "ImgCellBase.h"
+#include <memory>
 #include <wx/image.h>
 #include <wx/timer.h>
 
@@ -51,11 +52,11 @@ public:
     If the default frame rate from the config is to be used instead this parameter 
     has to be set to -1.
     \param config A pointer to the pointer to the configuration storage of the 
-                  worksheet this cell belongs to.
+    worksheet this cell belongs to.
     \param filesystem The filesystem the contents of this animation can be found in.
-                      NULL = the operating system's filesystem
+    NULL = the operating system's filesystem
     \param group     The parent GroupCell this cell belongs to.
-   */
+  */
   AnimationCell(GroupCell *group, Configuration *config, std::shared_ptr<wxFileSystem> filesystem, int framerate = -1);
   AnimationCell(GroupCell *group, Configuration *config, int framerate = -1);
   AnimationCell(GroupCell *group, const AnimationCell &cell);
@@ -67,9 +68,11 @@ public:
   AnimationCell(const AnimationCell&) = delete;
 
   void SetConfiguration(Configuration *config) override;
-  int GetPPI() const override {if(IsOk()) return m_images[m_displayed]->GetPPI();else return 0;}
-  size_t GetOriginalWidth() const override {if(IsOk())return m_images[m_displayed]->GetOriginalWidth();else return 0;}
-  size_t GetOriginalHeight() const override {if(IsOk())return m_images[m_displayed]->GetOriginalHeight();else return 0;}
+  int GetPPI() const override {if(IsOk()) return m_images[m_displayed]->GetPPI(); else return 0;}
+  size_t GetOriginalWidth() const override {
+    if(IsOk())return m_images[m_displayed]->GetOriginalWidth(); else return 0;}
+  size_t GetOriginalHeight() const override {
+    if(IsOk())return m_images[m_displayed]->GetOriginalHeight(); else return 0;}
   wxString GetExtension() const override
     { if (IsOk())return m_images[m_displayed]->GetExtension(); else return wxEmptyString; }
 
@@ -106,7 +109,7 @@ public:
 
     To be called when the animation is outside of the displayed portion 
     of the screen; The bitmaps will be re-generated when needed.
-   */
+  */
   void ClearCache() override;
 
   void LoadImages(wxArrayString images, bool deleteRead);
@@ -114,7 +117,7 @@ public:
   int GetDisplayedIndex() const { return m_displayed; }
 
   wxImage GetBitmap(int n) const
-  { return m_images[n]->GetUnscaledBitmap().ConvertToImage(); }
+    { return m_images[n]->GetUnscaledBitmap().ConvertToImage(); }
 
   void SetDisplayedIndex(int ind);
 
@@ -133,43 +136,43 @@ public:
 
     Returns either the frame rate set for this slide show cell individually or 
     the default frame rate chosen in the config.
-   */
+  */
   int GetFrameRate() const;
 
   /*! Reload the animation timer starting and instantiating and registering it if necessary.
 
     If the timer is already running, the request to reload it is ignored.
-   */
+  */
   void ReloadTimer();
 
   /*! Stops the timer
     
     Also deletes the timer as on MSW there aren't many timers available.
-   */
+  */
   void StopTimer();
 
   /*! Set the frame rate of this AnimationCell [in Hz].
     
     \param Freq The requested frequency [in Hz] or -1 for: Use the default value.
     \return The frame rate that was actually set.
-   */
+  */
   int SetFrameRate(int Freq);
 
   bool AnimationRunning() const { return m_animationRunning; }
   void AnimationRunning(bool run);
   bool CanPopOut() const override
-  { return (!m_images[m_displayed]->GnuplotSource().empty()); }
+    { return (!m_images[m_displayed]->GnuplotSource().empty()); }
 
   void GnuplotSource(int image, wxString gnuplotFilename, wxString dataFilename, std::shared_ptr<wxFileSystem> filesystem)
-  { m_images[image]->GnuplotSource(gnuplotFilename, dataFilename, filesystem); }
+    { m_images[image]->GnuplotSource(gnuplotFilename, dataFilename, filesystem); }
 
   wxString GnuplotSource() const override
-  {
-    if (!m_images[m_displayed])
-      return wxEmptyString;
-    else
-      return m_images[m_displayed]->GnuplotSource();
-  }
+    {
+      if (!m_images[m_displayed])
+        return wxEmptyString;
+      else
+        return m_images[m_displayed]->GnuplotSource();
+    }
 
 private:
   CellPointers *const m_cellPointers = GetCellPointers(); // must come before m_timer (!)
@@ -188,11 +191,11 @@ private:
 //** Bitfield objects (1 bytes)
 //**
   void InitBitFields()
-  { // Keep the initialization order below same as the order
-    // of bit fields in this class!
-    m_animationRunning = true;
-    m_drawBoundingBox = false;
-  }
+    { // Keep the initialization order below same as the order
+      // of bit fields in this class!
+      m_animationRunning = true;
+      m_drawBoundingBox = false;
+    }
 
   bool m_animationRunning : 1 /* InitBitFields */;
   bool m_drawBoundingBox : 1 /* InitBitFields */;
@@ -216,7 +219,7 @@ private:
   void SetMaxHeight(double height) override;
   
   void DrawBoundingBox(wxDC &WXUNUSED(dc), bool WXUNUSED(all) = false)  override
-  { m_drawBoundingBox = true; }
+    { m_drawBoundingBox = true; }
 };
 
 #endif // ANIMATIONCELL_H

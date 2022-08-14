@@ -49,11 +49,11 @@ public:
 
   //! Tell the image which gnuplot files it was made from
   void GnuplotSource(wxString sourcefile, wxString datafile, std::shared_ptr<wxFileSystem> filesystem)
-  { if (m_image) m_image->GnuplotSource(sourcefile,datafile, filesystem); }
+    { if (m_image) m_image->GnuplotSource(sourcefile,datafile, filesystem); }
 
   //! The name of the file with gnuplot commands that created this file
   wxString GnuplotSource() const override
-  { return m_image ? m_image->GnuplotSource() : wxString(); }
+    { return m_image ? m_image->GnuplotSource() : wxString(); }
 
   void LoadImage(wxString image, bool remove = true);
 
@@ -77,14 +77,14 @@ public:
     a losslessly compressed png version of the bitmap.
 
     See also GetExtension().
-   */
+  */
   wxSize ToImageFile(wxString filename) override;
 
   /*! Removes the cached scaled image from memory
 
     The scaled version of the image will be recreated automatically once it is 
     needed.
-   */
+  */
   void ClearCache() override { if (m_image) m_image->ClearCache(); }
 
   const wxString &GetToolTip(wxPoint point) const override;
@@ -99,15 +99,15 @@ public:
 
   //! Returns the file name extension that matches the image type
   wxString GetExtension() const override
-  { if (m_image)return m_image->GetExtension(); else return wxEmptyString; }
+    { if (m_image)return m_image->GetExtension(); else return wxEmptyString; }
 
   //! Returns the name of the file the image was originally created from
   wxString GetOrigImageFile() const
-  { return m_origImageFile; }
+    { return m_origImageFile; }
   
   //! Sets the name of the file the image was originally created from
   void SetOrigImageFile(wxString file)
-  { m_origImageFile = file; }
+    { m_origImageFile = file; }
 
   //! Returns the original compressed version of the image
   wxMemoryBuffer GetCompressedImage() const { return m_image->m_compressedImage; }
@@ -143,11 +143,11 @@ private:
 //** Bitfield objects (1 bytes)
 //**
   void InitBitFields()
-  { // Keep the initialization order below same as the order
-    // of bit fields in this class!
-    m_drawRectangle = true;
-    m_drawBoundingBox = false;
-  }
+    { // Keep the initialization order below same as the order
+      // of bit fields in this class!
+      m_drawRectangle = true;
+      m_drawBoundingBox = false;
+    }
   bool m_drawRectangle : 1 /* InitBitFields */;
   bool m_drawBoundingBox : 1 /* InitBitFields */;
 

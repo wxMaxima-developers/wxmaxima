@@ -25,7 +25,7 @@
 
   This file contains the definition of the class History that handles the recently 
   issued commands for the history pane.
- */
+*/
 
 #ifndef HISTORY_H
 #define HISTORY_H

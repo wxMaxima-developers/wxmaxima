@@ -24,7 +24,7 @@
   
   The definition of the class RecentDocuments that provides a recent files 
   mechanism that is extensible to multiple file types.
- */
+*/
 
 #ifndef RECENTDOCUMENTS_H
 #define RECENTDOCUMENTS_H
@@ -48,10 +48,10 @@ public:
 
     We cannot use wxWidget's recent documents class as we handle several types of recent
     documents:
-     * Documents, 
-     * temporary save files for unsaved files and 
-     * maxima packages
-   */
+    * Documents, 
+    * temporary save files for unsaved files and 
+    * maxima packages
+    */
   explicit RecentDocuments(wxString documentType);
   //! Add a new recent document.
   void AddDocument(wxString name);
@@ -65,11 +65,11 @@ public:
 
     \note This function traverses the list of recent documents. Therefore it is
     slower than an iterator if one needs to access each element in turn.
-   */
+  */
   wxString Get(int num) const;
   //! Make sure that we save the list of recent documents on closing the program
   ~RecentDocuments(){Save();}
- private:
+private:
   //! The list of recent documents.
   std::list<wxString> m_listOfFiles;
   //! The name of the type of document this instance of this class deals with

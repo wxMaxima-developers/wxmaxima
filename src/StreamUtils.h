@@ -88,9 +88,9 @@ public:
 
   static DecodeResult Decode(State &state, wxInputStream &in, size_t maxRead,
                              size_t maxWrite)
-  {
-    return state.Decode(in, maxRead, maxWrite);
-  }
+    {
+      return state.Decode(in, maxRead, maxWrite);
+    }
 };
 
 #endif

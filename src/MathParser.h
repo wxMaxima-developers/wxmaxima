@@ -23,8 +23,8 @@
 
 /*! \file
 
-The header file for the xml cell parser
- */
+  The header file for the xml cell parser
+*/
 
 #ifndef MATHPARSER_H
 #define MATHPARSER_H
@@ -45,17 +45,17 @@ The header file for the xml cell parser
 
 /*! This class handles parsing the xml representation of a cell tree.
 
-The xml representation of a cell tree can be found in the file contents.xml
-inside a wxmx file
- */
+  The xml representation of a cell tree can be found in the file contents.xml
+  inside a wxmx file
+*/
 class MathParser
 {
 public:
   /*! The constructor
 
-     \todo I guess we could increase the performance further by putting the
-     most-frequently-used tags to the front of the list.
-   */
+    \todo I guess we could increase the performance further by putting the
+    most-frequently-used tags to the front of the list.
+  */
   explicit MathParser(Configuration *cfg, const wxString &zipfile = {});
   //! This class doesn't have a copy constructor
   MathParser(const MathParser&) = delete;
@@ -97,7 +97,7 @@ private:
   static void ParseCommonAttrs(wxXmlNode *node, Cell *cell);
   template <typename T>
   static void ParseCommonAttrs(wxXmlNode *node, const std::unique_ptr<T> &cell)
-  { ParseCommonAttrs(node, cell.get()); }
+    { ParseCommonAttrs(node, cell.get()); }
 
   //! Parses attributes that apply to nearly all types of cells
   static void ParseCommonGroupCellAttrs(wxXmlNode *node, const std::unique_ptr<GroupCell> &group);
@@ -108,15 +108,15 @@ private:
   /*! Get the next xml tag
 
     wxXmlNode can operate in two modes:
-     - One mode skips all whitespace between the beginning of the line and the first
-       character if that character was escaped by a & for including it into the XML
-       stream. This obviously is a bad idea in our case.
-     - And the other mode inserts bogus whitespace text nodes if there is whitespace
-       between XML tags. This one is more helpful - but only if we provide a function
-       that skips these whitespace text nodes.
+    - One mode skips all whitespace between the beginning of the line and the first
+    character if that character was escaped by a & for including it into the XML
+    stream. This obviously is a bad idea in our case.
+    - And the other mode inserts bogus whitespace text nodes if there is whitespace
+    between XML tags. This one is more helpful - but only if we provide a function
+    that skips these whitespace text nodes.
     If we encounter a non-whitespace text node where we shouldn't we raise an
     assertion that informs the user that we might want a bug report about this.
-   */
+  */
   wxXmlNode *GetNextTag(wxXmlNode *node);
 
   /*! Counts the number of non-whitespace children of a node */
@@ -126,7 +126,7 @@ private:
 
     If we encounter a non-whitespace text node where we shouldn't we raise an
     assertion that informs the user that we might want a bug report about this.
-   */
+  */
   wxXmlNode *SkipWhitespaceNode(wxXmlNode *node);
 
   /*! \defgroup GroupCellParsing Methods that generate GroupCells from XML
@@ -193,7 +193,7 @@ private:
   /*! Parse a math-in-maths tag to a Cell.
 
     \todo Does such a thing actually exist?
-   */
+  */
   std::unique_ptr<Cell> ParseMthTag(wxXmlNode *node);
   //! Parse an output label tag to a Cell.
   std::unique_ptr<Cell> ParseOutputLabelTag(wxXmlNode *node);

@@ -64,7 +64,7 @@ void AutoComplete::AddSymbols(wxString xml) {
                  "of autocompletable maxima commands."));
 
   m_addSymbols_backgroundThread = std::unique_ptr<std::thread>(
-      new std::thread(&AutoComplete::AddSymbols_Backgroundtask, this, xml));
+							       new std::thread(&AutoComplete::AddSymbols_Backgroundtask, this, xml));
 }
 
 void AutoComplete::AddSymbols_Backgroundtask(wxString xml) {
@@ -152,9 +152,9 @@ AutoComplete::~AutoComplete() { WaitForBackgroundThreads(); }
 void AutoComplete::LoadSymbols() {
   WaitForBackgroundThreads();
   m_addSymbols_backgroundThread = std::unique_ptr<std::thread>(
-      new std::thread(&AutoComplete::BuiltinSymbols_BackgroundTask, this));
+							       new std::thread(&AutoComplete::BuiltinSymbols_BackgroundTask, this));
   m_addFiles_backgroundThread = std::unique_ptr<std::thread>(
-      new std::thread(&AutoComplete::LoadableFiles_BackgroundTask, this));
+							     new std::thread(&AutoComplete::LoadableFiles_BackgroundTask, this));
 }
 
 void AutoComplete::BuiltinSymbols_BackgroundTask() {
@@ -180,8 +180,8 @@ void AutoComplete::BuiltinSymbols_BackgroundTask() {
   wxString privateList;
   privateList = Dirstructure::Get()->UserAutocompleteFile();
   wxLogMessage(wxString::Format(
-      _("Trying to load a list of autocompletable symbols from file %s"),
-      privateList.utf8_str()));
+				_("Trying to load a list of autocompletable symbols from file %s"),
+				privateList.utf8_str()));
   if (wxFileExists(privateList)) {
     wxTextFile priv(privateList);
 
@@ -205,7 +205,7 @@ void AutoComplete::BuiltinSymbols_BackgroundTask() {
           m_wordList[unit].Add(line);
         else
           wxLogMessage(privateList +
-                           wxString::Format(_(": Can't interpret line: %s")),
+		       wxString::Format(_(": Can't interpret line: %s")),
                        line.utf8_str());
       }
     }
@@ -248,8 +248,8 @@ void AutoComplete::LoadableFiles_BackgroundTask() {
       wxFileName shareDir(sharedir + "/");
       shareDir.MakeAbsolute();
       wxLogMessage(wxString::Format(
-          _("Autocompletion: Scanning %s recursively for loadable lisp files."),
-          shareDir.GetFullPath().utf8_str()));
+				    _("Autocompletion: Scanning %s recursively for loadable lisp files."),
+				    shareDir.GetFullPath().utf8_str()));
       wxDir maximadir(shareDir.GetFullPath());
       if (maximadir.IsOpened())
         maximadir.Traverse(maximaLispIterator); // todo
@@ -259,8 +259,8 @@ void AutoComplete::LoadableFiles_BackgroundTask() {
     userDir.MakeAbsolute();
     wxDir maximauserfilesdir(userDir.GetFullPath());
     wxLogMessage(wxString::Format(
-        _("Autocompletion: Scanning %s for loadable lisp files."),
-        userDir.GetFullPath().utf8_str()));
+				  _("Autocompletion: Scanning %s for loadable lisp files."),
+				  userDir.GetFullPath().utf8_str()));
     if (maximauserfilesdir.IsOpened())
       maximauserfilesdir.Traverse(userLispIterator);
     int num = m_builtInLoadFiles.GetCount();
@@ -274,8 +274,8 @@ void AutoComplete::LoadableFiles_BackgroundTask() {
     demoDir.RemoveLastDir();
     GetDemoFiles_includingSubdirs maximaLispIterator(m_builtInDemoFiles);
     wxLogMessage(wxString::Format(
-        _("Autocompletion: Scanning %s for loadable demo files."),
-        demoDir.GetFullPath().utf8_str()));
+				  _("Autocompletion: Scanning %s for loadable demo files."),
+				  demoDir.GetFullPath().utf8_str()));
 
     wxDir maximadir(demoDir.GetFullPath());
     if (maximadir.IsOpened())

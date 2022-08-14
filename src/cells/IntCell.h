@@ -35,7 +35,7 @@
 /*! This class represents an integral
 
   This class represents an integral including the integral sign and its contents.
- */
+*/
 class IntCell final : public Cell
 {
 public:
@@ -43,7 +43,7 @@ public:
           std::unique_ptr<Cell> &&base, std::unique_ptr<Cell> &&under,
           std::unique_ptr<Cell> &&over, std::unique_ptr<Cell> &&var);
   IntCell(GroupCell *group, Configuration *config,
-        std::unique_ptr<Cell> &&base, std::unique_ptr<Cell> &&var);
+          std::unique_ptr<Cell> &&base, std::unique_ptr<Cell> &&var);
   IntCell(GroupCell *group, const IntCell &cell);
   std::unique_ptr<Cell> Copy(GroupCell *group) const override;
   const CellTypeInfo &GetInfo() override;
@@ -115,9 +115,9 @@ private:
 //** Bitfield objects (0 bytes)
 //**
   void InitBitFields()
-  { // Keep the initialization order below same as the order
-    // of bit fields in this class!
-  }
+    { // Keep the initialization order below same as the order
+      // of bit fields in this class!
+    }
 };
 
 #endif  // INTCELL_H

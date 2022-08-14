@@ -22,7 +22,7 @@
 
 /*! \file
   This file declares all the wizards the draw sidepane needs.
- */
+*/
 
 #ifndef IMAGEPANEL_H
 #define IMAGEPANEL_H
@@ -35,20 +35,20 @@
 /*! A panel that shows an example image
 
   From https://forums.wxwidgets.org/viewtopic.php?t=21664 with a few modifications.
- */
+*/
 class wxImagePanel : public wxPanel
 {
-    wxImage m_image;
-    wxBitmap m_resized;
-    int m_w, m_h;
+  wxImage m_image;
+  wxBitmap m_resized;
+  int m_w, m_h;
  
 public:
-    wxImagePanel(wxWindow* parent, unsigned char *data, size_t len);
-    void Load(unsigned char *data, size_t len);
+  wxImagePanel(wxWindow* parent, unsigned char *data, size_t len);
+  void Load(unsigned char *data, size_t len);
  
-    void paintEvent(wxPaintEvent & evt);
-    void paintNow();
-    void OnSize(wxSizeEvent& event); 
+  void paintEvent(wxPaintEvent & evt);
+  void paintNow();
+  void OnSize(wxSizeEvent& event); 
 };
 
 #endif // IMAGEPANEL_H

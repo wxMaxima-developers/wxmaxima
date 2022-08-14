@@ -28,7 +28,7 @@
 
 /*! A wxTextCtrl with parenthesis matching 
 
-*/
+ */
 class BTextCtrl : public wxTextCtrl
 {
 public:
@@ -43,9 +43,9 @@ public:
   ~BTextCtrl();
 
   void SetSkipTab(bool skip)
-  {
-    m_skipTab = skip;
-  }
+    {
+      m_skipTab = skip;
+    }
 
 private:
   bool m_skipTab;

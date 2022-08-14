@@ -26,7 +26,7 @@
 BTextCtrl::BTextCtrl(wxWindow *parent, wxWindowID id, Configuration *cfg,
                      const wxString &value, const wxPoint &pos,
                      const wxSize &size, long style)
-    : wxTextCtrl(parent, id, value, pos, size, style) {
+  : wxTextCtrl(parent, id, value, pos, size, style) {
 #ifdef __WXOSX__
 #if wxCHECK_VERSION(3, 1, 1)
   OSXDisableAllSmartSubstitutions();
@@ -124,28 +124,28 @@ void BTextCtrl::CloseParenthesis(wxString open, wxString close, bool fromOpen) {
   GetSelection(&from, &to);
 
   if (from == to) // nothing selected
-  {
-    wxString text = GetValue();
-    wxString charHere = wxT(" "); // text.GetChar((size_t)GetInsertionPoint());
-    size_t insp = GetInsertionPoint();
+    {
+      wxString text = GetValue();
+      wxString charHere = wxT(" "); // text.GetChar((size_t)GetInsertionPoint());
+      size_t insp = GetInsertionPoint();
 
-    if (!fromOpen && charHere == close)
-      SetInsertionPoint(insp + 1);
-    else {
-      wxString newtext = (insp > 0 ? text.SubString(0, insp - 1) : wxT("")) +
-                         (fromOpen ? open : wxT("")) + close +
-                         text.SubString(insp, text.length());
+      if (!fromOpen && charHere == close)
+	SetInsertionPoint(insp + 1);
+      else {
+	wxString newtext = (insp > 0 ? text.SubString(0, insp - 1) : wxT("")) +
+	  (fromOpen ? open : wxT("")) + close +
+	  text.SubString(insp, text.length());
 
-      ChangeValue(newtext);
+	ChangeValue(newtext);
 
-      SetInsertionPoint(insp + 1);
-    }
-  } else {
+	SetInsertionPoint(insp + 1);
+      }
+    } else {
     wxString text = GetValue();
 
     wxString newtext = (from > 0 ? text.SubString(0, from - 1) : wxT("")) +
-                       open + text.SubString(from, to - 1) + close +
-                       text.SubString(to, text.length());
+      open + text.SubString(from, to - 1) + close +
+      text.SubString(to, text.length());
 
     ChangeValue(newtext);
 

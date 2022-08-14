@@ -23,7 +23,7 @@
 
 /*!\file
   The file that defines the starting point of the program
- */
+*/
 
 #include "main.h"
 #include "Dirstructure.h"
@@ -112,7 +112,7 @@ bool MyApp::OnInit() {
   // is a window that can display it on the GUI instead.
   wxLogBuffer noStdErr;
   {
-// If supported: Generate symbolic backtraces on crashes.
+    // If supported: Generate symbolic backtraces on crashes.
 #if wxUSE_ON_FATAL_EXCEPTION
     wxHandleFatalExceptions(true);
 #endif
@@ -128,19 +128,19 @@ bool MyApp::OnInit() {
     // No spell checking in our dialog's input portions on the mac.
     wxSystemOptions::SetOption("mac.textcontrol-use-spell-checker", "0");
 
-// Migrate an eventual old config file to the location XDG wants it to be.
+    // Migrate an eventual old config file to the location XDG wants it to be.
 #ifndef __WXMSW__
 #if wxCHECK_VERSION(3, 1, 1)
     wxStandardPaths::Get().SetFileLayout(wxStandardPaths::FileLayout_Classic);
     wxString configFileOld =
-        wxStandardPaths::Get().GetUserConfigDir() + wxT("/") +
-        wxStandardPaths::Get().MakeConfigFileName(
-            wxString(wxT("wxMaxima")), wxStandardPaths::ConfigFileConv_Dot);
+      wxStandardPaths::Get().GetUserConfigDir() + wxT("/") +
+      wxStandardPaths::Get().MakeConfigFileName(
+						wxString(wxT("wxMaxima")), wxStandardPaths::ConfigFileConv_Dot);
     wxStandardPaths::Get().SetFileLayout(wxStandardPaths::FileLayout_XDG);
     wxString configFileXDG =
-        wxStandardPaths::Get().GetUserConfigDir() + wxT("/") +
-        wxStandardPaths::Get().MakeConfigFileName(
-            wxString(wxT("wxMaxima")), wxStandardPaths::ConfigFileConv_Ext);
+      wxStandardPaths::Get().GetUserConfigDir() + wxT("/") +
+      wxStandardPaths::Get().MakeConfigFileName(
+						wxString(wxT("wxMaxima")), wxStandardPaths::ConfigFileConv_Ext);
 
     if (!wxFileExists(configFileXDG)) {
       wxFileName xdgDir(configFileXDG);
@@ -169,7 +169,7 @@ bool MyApp::OnInit() {
     m_locale.AddCatalogLookupPathPrefix(wxT("/usr/local/share/locale"));
     long lang = wxLocale::GetSystemLanguage();
     wxConfig(wxT("wxMaxima"), wxEmptyString, m_configFileName)
-        .Read(wxT("language"), &lang);
+      .Read(wxT("language"), &lang);
     if (lang == wxLANGUAGE_UNKNOWN)
       lang = wxLANGUAGE_DEFAULT;
     m_locale.Init(lang);
@@ -196,7 +196,7 @@ bool MyApp::OnInit() {
      * https://github.com/wxWidgets/wxWidgets/commit/ded4da5 */
     /* so try to load a catalog with this suffix */
     m_locale.AddCatalog(
-        "wxstd-" wxSTRINGIZE(wxMAJOR_VERSION) "." wxSTRINGIZE(wxMINOR_VERSION));
+			"wxstd-" wxSTRINGIZE(wxMAJOR_VERSION) "." wxSTRINGIZE(wxMINOR_VERSION));
     m_locale.AddCatalog(wxT("wxstd"));
   }
 
@@ -205,50 +205,50 @@ bool MyApp::OnInit() {
   wxCmdLineParser cmdLineParser(argc, argv);
 
   static const wxCmdLineEntryDesc cmdLineDesc[] = {
-      {wxCMD_LINE_SWITCH, "v", "version", "Output the version info",
-       wxCMD_LINE_VAL_NONE, 0},
-      /* Usually wxCMD_LINE_OPTION_HELP is used with the following option, but
-       * that displays a message using its own window and we want the message on
-       * the command line.  If a user enters a command line option, he expects
-       * probably an answer just on the command line... */
-      {wxCMD_LINE_SWITCH, "h", "help", "show this help message",
-       wxCMD_LINE_VAL_NONE, 0},
-      {wxCMD_LINE_OPTION, "o", "open", "open a file", wxCMD_LINE_VAL_STRING, 0},
-      {wxCMD_LINE_SWITCH, "e", "eval", "evaluate the file after opening it.",
-       wxCMD_LINE_VAL_NONE, 0},
-      {wxCMD_LINE_SWITCH, "", "single_process",
-       "Open all files from within the same process.", wxCMD_LINE_VAL_NONE, 0},
-      {wxCMD_LINE_SWITCH, "b", "batch",
-       "run the file and exit afterwards. Halts on questions and stops on "
-       "errors.",
-       wxCMD_LINE_VAL_NONE, 0},
-      {wxCMD_LINE_SWITCH, "", "logtostderr",
-       "Log all \"debug messages\" sidebar messages to stderr, too.",
-       wxCMD_LINE_VAL_NONE, 0},
-      {wxCMD_LINE_SWITCH, "", "pipe", "Pipe messages from Maxima to stdout.",
-       wxCMD_LINE_VAL_NONE, 0},
-      {wxCMD_LINE_SWITCH, "", "exit-on-error",
-       "Close the program on any Maxima error.", wxCMD_LINE_VAL_NONE, 0},
-      {wxCMD_LINE_OPTION, "f", "ini",
-       "allows to specify a file to store the configuration in",
-       wxCMD_LINE_VAL_STRING, 0},
-      {wxCMD_LINE_OPTION, "u", "use-version", "Use Maxima version <str>.",
-       wxCMD_LINE_VAL_STRING, 0},
-      {wxCMD_LINE_OPTION, "l", "lisp",
-       "Use a Maxima compiled with lisp compiler <str>.", wxCMD_LINE_VAL_STRING,
-       0},
-      {wxCMD_LINE_OPTION, "X", "extra-args",
-       "Allows to specify extra Maxima arguments", wxCMD_LINE_VAL_STRING, 0},
-      {wxCMD_LINE_OPTION, "m", "maxima",
-       "allows to specify the location of the Maxima binary",
-       wxCMD_LINE_VAL_STRING, 0},
-      {wxCMD_LINE_SWITCH, "", "enableipc",
-       "Lets Maxima control wxMaxima via interprocess communications. Use this "
-       "option with care.",
-       wxCMD_LINE_VAL_NONE, 0},
-      {wxCMD_LINE_PARAM, NULL, NULL, "input file", wxCMD_LINE_VAL_STRING,
-       wxCMD_LINE_PARAM_OPTIONAL | wxCMD_LINE_PARAM_MULTIPLE},
-      {wxCMD_LINE_NONE, "", "", "", wxCMD_LINE_VAL_NONE, 0}};
+    {wxCMD_LINE_SWITCH, "v", "version", "Output the version info",
+     wxCMD_LINE_VAL_NONE, 0},
+    /* Usually wxCMD_LINE_OPTION_HELP is used with the following option, but
+     * that displays a message using its own window and we want the message on
+     * the command line.  If a user enters a command line option, he expects
+     * probably an answer just on the command line... */
+    {wxCMD_LINE_SWITCH, "h", "help", "show this help message",
+     wxCMD_LINE_VAL_NONE, 0},
+    {wxCMD_LINE_OPTION, "o", "open", "open a file", wxCMD_LINE_VAL_STRING, 0},
+    {wxCMD_LINE_SWITCH, "e", "eval", "evaluate the file after opening it.",
+     wxCMD_LINE_VAL_NONE, 0},
+    {wxCMD_LINE_SWITCH, "", "single_process",
+     "Open all files from within the same process.", wxCMD_LINE_VAL_NONE, 0},
+    {wxCMD_LINE_SWITCH, "b", "batch",
+     "run the file and exit afterwards. Halts on questions and stops on "
+     "errors.",
+     wxCMD_LINE_VAL_NONE, 0},
+    {wxCMD_LINE_SWITCH, "", "logtostderr",
+     "Log all \"debug messages\" sidebar messages to stderr, too.",
+     wxCMD_LINE_VAL_NONE, 0},
+    {wxCMD_LINE_SWITCH, "", "pipe", "Pipe messages from Maxima to stdout.",
+     wxCMD_LINE_VAL_NONE, 0},
+    {wxCMD_LINE_SWITCH, "", "exit-on-error",
+     "Close the program on any Maxima error.", wxCMD_LINE_VAL_NONE, 0},
+    {wxCMD_LINE_OPTION, "f", "ini",
+     "allows to specify a file to store the configuration in",
+     wxCMD_LINE_VAL_STRING, 0},
+    {wxCMD_LINE_OPTION, "u", "use-version", "Use Maxima version <str>.",
+     wxCMD_LINE_VAL_STRING, 0},
+    {wxCMD_LINE_OPTION, "l", "lisp",
+     "Use a Maxima compiled with lisp compiler <str>.", wxCMD_LINE_VAL_STRING,
+     0},
+    {wxCMD_LINE_OPTION, "X", "extra-args",
+     "Allows to specify extra Maxima arguments", wxCMD_LINE_VAL_STRING, 0},
+    {wxCMD_LINE_OPTION, "m", "maxima",
+     "allows to specify the location of the Maxima binary",
+     wxCMD_LINE_VAL_STRING, 0},
+    {wxCMD_LINE_SWITCH, "", "enableipc",
+     "Lets Maxima control wxMaxima via interprocess communications. Use this "
+     "option with care.",
+     wxCMD_LINE_VAL_NONE, 0},
+    {wxCMD_LINE_PARAM, NULL, NULL, "input file", wxCMD_LINE_VAL_STRING,
+     wxCMD_LINE_PARAM_OPTIONAL | wxCMD_LINE_PARAM_MULTIPLE},
+    {wxCMD_LINE_NONE, "", "", "", wxCMD_LINE_VAL_NONE, 0}};
 
   cmdLineParser.SetDesc(cmdLineDesc);
   int cmdLineError = cmdLineParser.Parse();
@@ -258,7 +258,7 @@ bool MyApp::OnInit() {
 
   if (cmdLineParser.Found(wxT("h"))) {
     std::cout << "A feature-rich graphical user interface for the computer "
-                 "algebra system Maxima\n";
+      "algebra system Maxima\n";
     std::cout << cmdLineParser.GetUsageString();
     exit(0);
   }
@@ -274,8 +274,8 @@ bool MyApp::OnInit() {
     configFile.MakeAbsolute();
     Configuration::m_configfileLocation_override = configFile.GetFullPath();
     wxConfig::Set(
-        new wxFileConfig(wxT("wxMaxima"), wxEmptyString,
-                         Configuration::m_configfileLocation_override));
+		  new wxFileConfig(wxT("wxMaxima"), wxEmptyString,
+				   Configuration::m_configfileLocation_override));
   } else
     wxConfig::Set(new wxConfig(wxT("wxMaxima")));
 
@@ -321,7 +321,7 @@ bool MyApp::OnInit() {
     wxString dir = wxPathOnly(wxStandardPaths::Get().GetExecutablePath());
     if (dir != wxEmptyString)
       wxSetWorkingDirectory(
-          wxPathOnly(wxStandardPaths::Get().GetExecutablePath()));
+			    wxPathOnly(wxStandardPaths::Get().GetExecutablePath()));
   }
 #if wxCHECK_VERSION(3, 1, 1)
   wxString fontPrefix = m_dirstruct.FontDir() + wxT("/");
@@ -524,14 +524,14 @@ void MyApp::OnFileMenu(wxCommandEvent &ev) {
     wxString lastPath;
     wxConfig::Get()->Read(wxT("lastPath"), &lastPath);
     wxString file =
-        wxFileSelector(_("Open"), wxEmptyString, wxEmptyString, wxEmptyString,
-                       _("All openable types (*.wxm, *.wxmx, *.mac, *.out, "
-                         "*.xml)|*.wxm;*.wxmx;*.mac;*.out;*.xml|"
-                         "wxMaxima document (*.wxm, *.wxmx)|*.wxm;*.wxmx|"
-                         "Maxima session (*.mac)|*.mac|"
-                         "Xmaxima session (*.out)|*.out|"
-                         "xml from broken .wxmx (*.xml)|*.xml"),
-                       wxFD_OPEN);
+      wxFileSelector(_("Open"), wxEmptyString, wxEmptyString, wxEmptyString,
+		     _("All openable types (*.wxm, *.wxmx, *.mac, *.out, "
+		       "*.xml)|*.wxm;*.wxmx;*.mac;*.out;*.xml|"
+		       "wxMaxima document (*.wxm, *.wxmx)|*.wxm;*.wxmx|"
+		       "Maxima session (*.mac)|*.mac|"
+		       "Xmaxima session (*.out)|*.out|"
+		       "xml from broken .wxmx (*.xml)|*.xml"),
+		     wxFD_OPEN);
 
     if (!file.empty()) {
       // On the mac the "File/New" menu item by default opens a new window

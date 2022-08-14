@@ -33,10 +33,10 @@
 bool MaximaIPC::m_enabled;
 
 MaximaIPC::MaximaIPC(wxMaxima *wxm)
-    : m_wxMaxima(wxm), m_eventTargets{
-                           {"wxMaxima", m_wxMaxima},
-                           {"Worksheet", m_wxMaxima->m_worksheet},
-                       } {}
+  : m_wxMaxima(wxm), m_eventTargets{
+      {"wxMaxima", m_wxMaxima},
+      {"Worksheet", m_wxMaxima->m_worksheet},
+    } {}
 
 static wxString const ipcPrefix = "<ipc>";
 static wxString const ipcSuffix = "</ipc>";
@@ -50,33 +50,33 @@ static wxString const attr_extralong = "el"; // wxCommandEvent::ExtraLong
 static wxString const attr_string = "str";   // wxCommandEvent::String
 static wxString const attr_keycode = "key";  // wxKeyCode::keyCode
 
-#define ID_(id)                                                                \
+#define ID_(id)					\
   { #id, wxEVT_##id }
-#define ID2_(id, name)                                                         \
+#define ID2_(id, name)				\
   { name, wxEVT_##id }
 static const std::unordered_map<wxString, wxEventType, wxStringHash>
-    EVENT_TYPE_NAMES = {
-        ID_(MENU),
-        ID_(KEY_DOWN),
-        ID2_(KEY_DOWN, "KEY"),
+EVENT_TYPE_NAMES = {
+  ID_(MENU),
+  ID_(KEY_DOWN),
+  ID2_(KEY_DOWN, "KEY"),
 };
 #undef ID_
 #undef ID2_
 
-#define ID_(id)                                                                \
+#define ID_(id)					\
   { #id, wxID_##id }
 static const std::unordered_map<wxString, int, wxStringHash> EVENT_ID_NAMES = {
-    ID_(CUT),
-    ID_(COPY),
-    ID_(PASTE),
-    ID_(SELECTALL),
+  ID_(CUT),
+  ID_(COPY),
+  ID_(PASTE),
+  ID_(SELECTALL),
 };
 #undef ID_
 
-#define ID_(id)                                                                \
+#define ID_(id)					\
   { #id, WXK_##id }
 static const std::unordered_map<wxString, wxKeyCode, wxStringHash> KEY_NAMES = {
-    ID_(HOME),
+  ID_(HOME),
 };
 #undef ID_
 

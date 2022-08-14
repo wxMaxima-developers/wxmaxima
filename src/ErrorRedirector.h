@@ -24,7 +24,7 @@
   This file defines the class ErrorRedirector that redirects wx Errors to a dialogue
 
   It is a customized copy of a portion of wxWidget's log.cpp.
- */
+*/
 
 #ifndef ERRORREDIRECTOR_H
 #define ERRORREDIRECTOR_H
@@ -40,7 +40,7 @@ public:
   /*! A variable used by the SuppressErrorDialogs class
 
     >=0 means: Messages should appear in the log pane only.
-   */
+  */
   static int m_messages_logPaneOnly;
   /**
      Sets the specified @c logger (which may be NULL) as the default log

@@ -109,7 +109,7 @@ void Maxima::SocketEvent(wxSocketEvent &event) {
   case wxSOCKET_OUTPUT:
     if (Write(nullptr, 0)) {
       MaximaEvent *discEvent =
-          new MaximaEvent(MaximaEvent::WRITE_PENDING, this);
+	new MaximaEvent(MaximaEvent::WRITE_PENDING, this);
       QueueEvent(discEvent);
     }
     break;
@@ -177,12 +177,12 @@ void Maxima::ReadSocket() {
 
 MaximaEvent::MaximaEvent(MaximaEvent::Cause cause, Maxima *source,
                          wxString &&data)
-    : wxEvent(0, EVT_MAXIMA), m_cause(cause), m_source(source) {
+  : wxEvent(0, EVT_MAXIMA), m_cause(cause), m_source(source) {
   m_data.swap(data);
 }
 
 MaximaEvent::MaximaEvent(MaximaEvent::Cause cause, Maxima *source)
-    : wxEvent(0, EVT_MAXIMA), m_cause(cause), m_source(source) {}
+  : wxEvent(0, EVT_MAXIMA), m_cause(cause), m_source(source) {}
 
 wxEvent *MaximaEvent::Clone() const {
   auto event = std::make_unique<MaximaEvent>(GetCause(), GetSource());

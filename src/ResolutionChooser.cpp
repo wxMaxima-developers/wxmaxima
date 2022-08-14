@@ -26,10 +26,10 @@
 ResolutionChooser::ResolutionChooser(wxWindow *parent, int id,
                                      const int &resolution, const wxPoint &pos,
                                      const wxSize &size, long style)
-    : wxDialog(parent, id, _("Set image resolution [in ppi]"), pos, size,
-               style) {
+  : wxDialog(parent, id, _("Set image resolution [in ppi]"), pos, size,
+	     style) {
   wxStaticText *resolutionText =
-      new wxStaticText(this, -1, wxT("Image resolution [in ppi]:"));
+    new wxStaticText(this, -1, wxT("Image resolution [in ppi]:"));
 
   m_resolution = new wxSpinCtrl(this, -1, wxEmptyString, wxDefaultPosition,
                                 wxSize(100, -1), wxSP_VERTICAL, 72, 9600);

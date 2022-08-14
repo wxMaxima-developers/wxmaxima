@@ -30,32 +30,32 @@ Gen4Wiz::Gen4Wiz(wxString lab1, wxString lab2, wxString lab3, wxString lab4,
                  const wxString &title, bool eq, const wxString &warning,
                  const wxString &warningToolTip, const wxPoint &pos,
                  const wxSize &size, long style)
-    : wxDialog(parent, id, title, pos, size, style) {
+  : wxDialog(parent, id, title, pos, size, style) {
   SetName(title);
   label_2 = new wxStaticText(this, -1, lab1);
   text_ctrl_1 =
-      new BTextCtrl(this, -1, cfg, val1, wxDefaultPosition, wxSize(230, -1));
+    new BTextCtrl(this, -1, cfg, val1, wxDefaultPosition, wxSize(230, -1));
   label_3 = new wxStaticText(this, -1, lab2);
   if (eq)
     text_ctrl_2 =
-        new BTextCtrl(this, -1, cfg, val2, wxDefaultPosition, wxSize(230, -1));
+      new BTextCtrl(this, -1, cfg, val2, wxDefaultPosition, wxSize(230, -1));
   else
     text_ctrl_2 =
-        new BTextCtrl(this, -1, cfg, val2, wxDefaultPosition, wxSize(110, -1));
+      new BTextCtrl(this, -1, cfg, val2, wxDefaultPosition, wxSize(110, -1));
   label_4 = new wxStaticText(this, -1, lab3);
   if (eq)
     text_ctrl_3 =
-        new BTextCtrl(this, -1, cfg, val3, wxDefaultPosition, wxSize(230, -1));
+      new BTextCtrl(this, -1, cfg, val3, wxDefaultPosition, wxSize(230, -1));
   else
     text_ctrl_3 =
-        new BTextCtrl(this, -1, cfg, val3, wxDefaultPosition, wxSize(110, -1));
+      new BTextCtrl(this, -1, cfg, val3, wxDefaultPosition, wxSize(110, -1));
   label_5 = new wxStaticText(this, -1, lab4);
   if (eq)
     text_ctrl_4 =
-        new BTextCtrl(this, -1, cfg, val4, wxDefaultPosition, wxSize(230, -1));
+      new BTextCtrl(this, -1, cfg, val4, wxDefaultPosition, wxSize(230, -1));
   else
     text_ctrl_4 =
-        new BTextCtrl(this, -1, cfg, val4, wxDefaultPosition, wxSize(110, -1));
+      new BTextCtrl(this, -1, cfg, val4, wxDefaultPosition, wxSize(110, -1));
   static_line_1 = new wxStaticLine(this, -1);
 #if defined __WXMSW__
   button_1 = new wxButton(this, wxID_OK, _("OK"));

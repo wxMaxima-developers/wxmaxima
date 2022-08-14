@@ -21,7 +21,7 @@
 
 /*! \file
   This file declares a (hopefully) flicker-free main menu bar.
- */
+*/
 
 #ifndef MAINMENUBAR_H
 #define MAINMENUBAR_H
@@ -35,7 +35,7 @@
  */
 class MainMenuBar : public wxMenuBar
 {
- public:
+public:
   MainMenuBar();
   //! Enable or disable an item - but only if the item needs enabling or disabling
   void EnableItem(int id, bool enable);

@@ -44,7 +44,7 @@ extern unsigned int  media_playback_start_reverse_svg_gz_len;
   has no means of finding out it needs closing).
 
   For details see https://trac.wxwidgets.org/ticket/17974.
- */
+*/
 class TipOfTheDay : public wxDialog
 {
 public:

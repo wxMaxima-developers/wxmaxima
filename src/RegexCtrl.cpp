@@ -28,7 +28,7 @@
 #include <wx/txtstrm.h>
 
 RegexCtrl::RegexCtrl(wxWindow *parent, wxWindowID id, Configuration *cfg)
-    : BTextCtrl(parent, id, cfg) {
+  : BTextCtrl(parent, id, cfg) {
   SetToolTip(RegexTooltip_norm);
   Connect(wxEVT_TEXT, wxCommandEventHandler(RegexCtrl::OnTextChange), NULL,
           this);
@@ -77,18 +77,18 @@ void RegexCtrl::OnTextChange(wxCommandEvent &WXUNUSED(ev)) {
       if (m_regexInputState != newInputState) {
         m_regexInputState = newInputState;
         const wxColor colors[3] = {
-            wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOW), /* empty regexx field  */ 
-            {255, 165, 0}, /* invalid is orange. Red seems too 'dangerous'.
-                                          */
-            {0, 255, 0}    /* valid is green: Input okay. */
+	  wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOW), /* empty regexx field  */ 
+	  {255, 165, 0}, /* invalid is orange. Red seems too 'dangerous'.
+			  */
+	  {0, 255, 0}    /* valid is green: Input okay. */
         };
         if (errMsg.IsEmpty())
           errMsg = RegexTooltip_error;
         else
           wxLogMessage(errMsg);
         const wxString tooltips[3] = {/* empty */ RegexTooltip_norm,
-                                      /* invalid */ errMsg,
-                                      /* valid */ RegexTooltip_norm};
+	  /* invalid */ errMsg,
+	  /* valid */ RegexTooltip_norm};
         // One could also set the background color, with
         // SetBackgroundColour(...); Be careful, not only set the foreground
         // color to black or white the background color may be the same (or have

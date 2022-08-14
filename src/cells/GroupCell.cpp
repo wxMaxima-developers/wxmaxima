@@ -107,7 +107,7 @@ private:
 
 GroupCell::GroupCell(Configuration *config, GroupType groupType,
                      const wxString &initString)
-    : Cell(this, config), m_groupType(groupType) {
+  : Cell(this, config), m_groupType(groupType) {
   InitBitFields();
   m_mathFontSize = m_configuration->GetMathFontSize();
   ForceBreakLine();
@@ -117,7 +117,7 @@ GroupCell::GroupCell(Configuration *config, GroupType groupType,
   if (groupType != GC_TYPE_PAGEBREAK) {
     if (groupType == GC_TYPE_CODE)
       m_inputLabel =
-          std::make_unique<LabelCell>(this, m_configuration, EMPTY_INPUT_LABEL);
+	std::make_unique<LabelCell>(this, m_configuration, EMPTY_INPUT_LABEL);
     else
       m_inputLabel = std::make_unique<TextCell>(this, m_configuration, wxT(""));
 
@@ -125,7 +125,7 @@ GroupCell::GroupCell(Configuration *config, GroupType groupType,
   }
 
   std::unique_ptr<EditorCell> editor =
-      std::make_unique<EditorCell>(this, m_configuration);
+    std::make_unique<EditorCell>(this, m_configuration);
 
   if (editor && !initString.empty())
     editor->SetValue(initString);
@@ -140,8 +140,8 @@ GroupCell::GroupCell(Configuration *config, GroupType groupType,
     std::unique_ptr<Cell> ic;
     if (wxImage::GetImageCount(initString) < 2) {
       ic = std::make_unique<ImgCell>(
-          this, m_configuration, initString,
-          std::shared_ptr<wxFileSystem>{} /* system fs */, false);
+				     this, m_configuration, initString,
+				     std::shared_ptr<wxFileSystem>{} /* system fs */, false);
 
       // Since this is the (only?) place where an ImgCell is constructed when
       // the user manually inserts an image file (not loaded from zip or gnuplot
@@ -156,10 +156,10 @@ GroupCell::GroupCell(Configuration *config, GroupType groupType,
 }
 
 GroupCell::GroupCell(GroupCell *WXUNUSED(group), GroupCell const &cell)
-    : GroupCell::GroupCell(cell) {}
+  : GroupCell::GroupCell(cell) {}
 
 GroupCell::GroupCell(GroupCell const &cell)
-    : GroupCell(cell.m_configuration, cell.m_groupType) {
+  : GroupCell(cell.m_configuration, cell.m_groupType) {
   CopyCommonData(cell);
   if (cell.m_inputLabel)
     SetInput(cell.m_inputLabel->CopyList(this));
@@ -223,10 +223,10 @@ std::unique_ptr<GroupCell> GroupCell::CopyList() const {
 
 bool GroupCell::Empty() const {
   return (
-      // No next cell
-      (!GetNext()) &&
-      // This cell at maximum contains a prompt.
-      (ToString().Length() < 6));
+	  // No next cell
+	  (!GetNext()) &&
+	  // This cell at maximum contains a prompt.
+	  (ToString().Length() < 6));
 }
 
 void GroupCell::ResetInputLabel() {
@@ -270,7 +270,7 @@ const wxString &GroupCell::GetAnswer(const wxString &question) const {
 
   auto it = m_knownAnswers.find(question);
   return (it != m_knownAnswers.end()) ? it->second
-                                      : GetAnswer(++m_numberedAnswersCount);
+    : GetAnswer(++m_numberedAnswersCount);
 }
 
 void GroupCell::SetAutoAnswer(bool autoAnswer) {
@@ -400,8 +400,8 @@ void GroupCell::UpdateConfusableCharWarnings() {
 
   if (GetEditable())
     for (auto const &tok :
-         MaximaTokenizer(output, m_configuration, GetEditable()->GetTokens())
-             .PopTokens())
+	   MaximaTokenizer(output, m_configuration, GetEditable()->GetTokens())
+	   .PopTokens())
       if ((tok.GetStyle() == TS_CODE_VARIABLE) ||
           (tok.GetStyle() == TS_CODE_FUNCTION))
         cmdsAndVariables[tok.GetText()] = 1;
@@ -574,7 +574,7 @@ void GroupCell::RecalculateOutput() {
   // Recalculate size of all output cells
   for (Cell &tmp : OnList(m_output.get())) {
     tmp.Recalculate(tmp.IsMath() ? m_configuration->GetMathFontSize()
-                                 : m_configuration->GetDefaultFontSize());
+		    : m_configuration->GetDefaultFontSize());
   }
 
   // Breakup cells and break lines
@@ -584,7 +584,7 @@ void GroupCell::RecalculateOutput() {
   // breaking lines
   for (Cell &tmp : OnList(m_output.get())) {
     tmp.Recalculate(tmp.IsMath() ? m_configuration->GetMathFontSize()
-                                 : m_configuration->GetDefaultFontSize());
+		    : m_configuration->GetDefaultFontSize());
   }
 
   // Calculate the height of the output
@@ -608,10 +608,10 @@ void GroupCell::RecalculateOutput() {
 
 bool GroupCell::NeedsRecalculation(AFontSize fontSize) const {
   return Cell::NeedsRecalculation(fontSize) ||
-         //    (GetEditable() &&
-         //    GetEditable()->NeedsRecalculation(EditorFontSize())) ||
-         (m_clientWidth_old != m_configuration->GetClientWidth()) ||
-         m_cellsAppended;
+    //    (GetEditable() &&
+    //    GetEditable()->NeedsRecalculation(EditorFontSize())) ||
+    (m_clientWidth_old != m_configuration->GetClientWidth()) ||
+    m_cellsAppended;
 }
 
 void GroupCell::UpdateYPositionList() {
@@ -651,7 +651,7 @@ int GroupCell::GetInputIndent() {
   if (m_inputLabel != NULL) {
     if (m_inputLabel->GetWidth() >= 0)
       labelWidth =
-          wxMax(m_inputLabel->GetWidth() + MC_TEXT_PADDING, labelWidth);
+	wxMax(m_inputLabel->GetWidth() + MC_TEXT_PADDING, labelWidth);
     else
       labelWidth = wxMax(m_labelWidth_cached, labelWidth);
   }
@@ -691,7 +691,7 @@ void GroupCell::Draw(wxPoint const point) {
   Cell::Draw(point);
   if (NeedsRecalculation(m_configuration->GetDefaultFontSize()))
     wxLogMessage(
-        wxString::Format(_("Not recalculated: \"%s\""), ToString().utf8_str()));
+		 wxString::Format(_("Not recalculated: \"%s\""), ToString().utf8_str()));
   if (m_configuration->ShowBrackets())
     DrawBracket();
 
@@ -813,24 +813,24 @@ void GroupCell::DrawBracket() {
   if (m_cellPointers->m_selectionStart &&
       (m_cellPointers->m_selectionStart->GetType() == MC_TYPE_GROUP))
     selectionStart_px = m_cellPointers->m_selectionStart.CastAs<GroupCell *>()
-                            ->m_currentPoint.y;
+      ->m_currentPoint.y;
 
   int selectionEnd_px = -1;
   if (m_cellPointers->m_selectionEnd &&
       (m_cellPointers->m_selectionEnd->GetType() == MC_TYPE_GROUP))
     selectionEnd_px =
-        m_cellPointers->m_selectionEnd.CastAs<GroupCell *>()->m_currentPoint.y;
+      m_cellPointers->m_selectionEnd.CastAs<GroupCell *>()->m_currentPoint.y;
 
   // Mark this GroupCell as selected if it is selected. Else clear the space we
   // will add brackets in
   if ((m_currentPoint.y >= selectionStart_px) &&
       (m_currentPoint.y <= selectionEnd_px)) {
     dc->SetPen(*(wxThePenList->FindOrCreatePen(
-        m_configuration->GetColor(TS_SELECTION),
-        m_configuration->GetDefaultLineWidth(), wxPENSTYLE_SOLID)));
+					       m_configuration->GetColor(TS_SELECTION),
+					       m_configuration->GetDefaultLineWidth(), wxPENSTYLE_SOLID)));
     // window linux, set a pen
     dc->SetBrush(*(wxTheBrushList->FindOrCreateBrush(
-        m_configuration->GetColor(TS_SELECTION))));
+						     m_configuration->GetColor(TS_SELECTION))));
     drawBracket = true;
   } else if (m_cellPointers->m_errorList.Contains(this)) {
     dc->SetPen(*wxRED_PEN);
@@ -845,13 +845,13 @@ void GroupCell::DrawBracket() {
     } else {
       dc->SetBrush(m_configuration->GetBackgroundBrush());
       dc->SetPen(*(wxThePenList->FindOrCreatePen(
-          m_configuration->DefaultBackgroundColor(),
-          m_configuration->GetDefaultLineWidth(), wxPENSTYLE_SOLID)));
+						 m_configuration->DefaultBackgroundColor(),
+						 m_configuration->GetDefaultLineWidth(), wxPENSTYLE_SOLID)));
     }
   }
   wxRect rect = GetRect();
   rect = wxRect(m_configuration->GetIndent() -
-                    m_configuration->GetCellBracketWidth(),
+		m_configuration->GetCellBracketWidth(),
                 rect.GetTop() - 2, m_configuration->GetCellBracketWidth(),
                 rect.GetHeight() + 5);
   if (m_configuration->InUpdateRegion(rect))
@@ -865,17 +865,17 @@ void GroupCell::DrawBracket() {
     dc->SetBrush(*wxTRANSPARENT_BRUSH);
     if (m_lastInEvaluationQueue)
       dc->SetPen(*(wxThePenList->FindOrCreatePen(
-          m_configuration->GetColor(TS_CELL_BRACKET),
-          2 * m_configuration->GetDefaultLineWidth(), wxPENSTYLE_SOLID)));
+						 m_configuration->GetColor(TS_CELL_BRACKET),
+						 2 * m_configuration->GetDefaultLineWidth(), wxPENSTYLE_SOLID)));
     else
       dc->SetPen(*(wxThePenList->FindOrCreatePen(
-          m_configuration->GetColor(TS_CELL_BRACKET),
-          m_configuration->GetDefaultLineWidth(), wxPENSTYLE_SOLID)));
+						 m_configuration->GetColor(TS_CELL_BRACKET),
+						 m_configuration->GetDefaultLineWidth(), wxPENSTYLE_SOLID)));
 
     wxRect bracketRect = wxRect(
-        m_configuration->GetIndent() - m_configuration->GetCellBracketWidth(),
-        rect.GetTop() - 2, m_configuration->GetCellBracketWidth(),
-        rect.GetHeight() + 5);
+				m_configuration->GetIndent() - m_configuration->GetCellBracketWidth(),
+				rect.GetTop() - 2, m_configuration->GetCellBracketWidth(),
+				rect.GetHeight() + 5);
     if (m_configuration->InUpdateRegion(bracketRect))
       dc->DrawRectangle(bracketRect);
   }
@@ -884,18 +884,18 @@ void GroupCell::DrawBracket() {
   if (editable != NULL && editable->IsActive()) {
     drawBracket = true;
     adc->SetPen(*(wxThePenList->FindOrCreatePen(
-        m_configuration->GetColor(TS_ACTIVE_CELL_BRACKET),
-        2 * m_configuration->GetDefaultLineWidth(),
-        wxPENSTYLE_SOLID))); // window linux, set a pen
+						m_configuration->GetColor(TS_ACTIVE_CELL_BRACKET),
+						2 * m_configuration->GetDefaultLineWidth(),
+						wxPENSTYLE_SOLID))); // window linux, set a pen
     dc->SetBrush(*(wxTheBrushList->FindOrCreateBrush(
-        m_configuration->GetColor(TS_ACTIVE_CELL_BRACKET)))); // highlight c.
+						     m_configuration->GetColor(TS_ACTIVE_CELL_BRACKET)))); // highlight c.
   } else {
     adc->SetPen(*(wxThePenList->FindOrCreatePen(
-        m_configuration->GetColor(TS_CELL_BRACKET),
-        m_configuration->GetDefaultLineWidth(),
-        wxPENSTYLE_SOLID))); // window linux, set a pen
+						m_configuration->GetColor(TS_CELL_BRACKET),
+						m_configuration->GetDefaultLineWidth(),
+						wxPENSTYLE_SOLID))); // window linux, set a pen
     dc->SetBrush(*(wxTheBrushList->FindOrCreateBrush(
-        m_configuration->GetColor(TS_CELL_BRACKET)))); // highlight c.
+						     m_configuration->GetColor(TS_CELL_BRACKET)))); // highlight c.
   }
 
   if ((!IsHidden()) && (!m_hiddenTree)) {
@@ -906,7 +906,7 @@ void GroupCell::DrawBracket() {
     adc->SetBrush(dc->GetBrush());
     SetPen(1.5);
     int bracketWidth = m_configuration->GetCellBracketWidth() -
-                       m_configuration->GetDefaultLineWidth();
+      m_configuration->GetDefaultLineWidth();
     int lineWidth = m_configuration->GetDefaultLineWidth();
     int lineWidth_2 = m_configuration->GetDefaultLineWidth() / 2.0;
     if (IsFoldable()) { // draw the square that allows hiding and unhiding the
@@ -929,11 +929,11 @@ void GroupCell::DrawBracket() {
       if (m_configuration->ShowCodeCells() && m_groupType == GC_TYPE_CODE &&
           m_output && !IsHidden()) {
         points[n++] = {-bracketWidth + lineWidth_2,
-                       m_inputLabel->GetHeightList()};
+	  m_inputLabel->GetHeightList()};
         points[n++] = {-bracketWidth / 2 + lineWidth_2,
-                       m_inputLabel->GetHeightList()};
+	  m_inputLabel->GetHeightList()};
         points[n++] = {-bracketWidth + lineWidth_2,
-                       m_inputLabel->GetHeightList()};
+	  m_inputLabel->GetHeightList()};
       }
 
       // The remaining part of the vertical line at the back
@@ -951,13 +951,13 @@ void GroupCell::DrawBracket() {
 
 wxRect GroupCell::HideRect() {
   return wxRect(m_currentPoint.x - m_configuration->GetCellBracketWidth() -
-                    m_configuration->GetDefaultLineWidth() / 2,
+		m_configuration->GetDefaultLineWidth() / 2,
                 m_currentPoint.y - m_center -
-                    m_configuration->GetDefaultLineWidth() / 2,
+		m_configuration->GetDefaultLineWidth() / 2,
                 m_configuration->GetCellBracketWidth() +
-                    m_configuration->GetDefaultLineWidth(),
+		m_configuration->GetDefaultLineWidth(),
                 m_configuration->GetCellBracketWidth() +
-                    m_configuration->GetDefaultLineWidth());
+		m_configuration->GetDefaultLineWidth());
 }
 
 wxString GroupCell::ToString() const {
@@ -999,7 +999,7 @@ wxString GroupCell::ToRTF() const {
     if (m_inputLabel && m_configuration->ShowCodeCells()) {
       if (GetPrevious())
         retval =
-            wxT("\\par}{\\pard\\s22\\li1105\\lin1105\\fi-1105\\f0\\fs24 \n");
+	  wxT("\\par}{\\pard\\s22\\li1105\\lin1105\\fi-1105\\f0\\fs24 \n");
       else
         retval += wxT("\\pard\\s22\\li1105\\lin1105\\fi-1105\\f0\\fs24 ");
       retval += RTFescape(m_inputLabel->ToString());
@@ -1042,7 +1042,7 @@ wxString GroupCell::ToTeX(wxString imgDir, wxString filename,
       (*imgCounter)++;
       wxString image = filename + wxString::Format(wxT("_%d"), *imgCounter);
       wxString file =
-          imgDir + wxT("/") + image + wxT(".") + imgCopy->GetExtension();
+	imgDir + wxT("/") + image + wxT(".") + imgCopy->GetExtension();
 
       if (!wxDirExists(imgDir))
         wxMkdir(imgDir);
@@ -1116,19 +1116,19 @@ wxString GroupCell::ToTeXCodeCell(wxString imgDir, wxString filename,
     // For LaTeX export we must use a dot as decimal separator
     // Save LC_NUMERIC, set it to "C", print out the float and then restore it.
     const std::string saved_lc_numeric{
-        setlocale(LC_NUMERIC, NULL)}; // get current LC_NUMERIC locale
+      setlocale(LC_NUMERIC, NULL)}; // get current LC_NUMERIC locale
     setlocale(LC_NUMERIC, "C");
     str += wxString::Format(
-               "\n\n\\noindent\n%%%%%%%%%%%%%%%%\n%%%% "
-               "INPUT:\n\\begin{minipage}[t]{%fem}\\color{red}\\bfseries\n",
-               (double)m_configuration->GetLabelWidth() / 14) +
-           m_inputLabel->ToTeX() + wxString("\n\\end{minipage}");
+			    "\n\n\\noindent\n%%%%%%%%%%%%%%%%\n%%%% "
+			    "INPUT:\n\\begin{minipage}[t]{%fem}\\color{red}\\bfseries\n",
+			    (double)m_configuration->GetLabelWidth() / 14) +
+      m_inputLabel->ToTeX() + wxString("\n\\end{minipage}");
     setlocale(LC_NUMERIC, saved_lc_numeric.c_str());
 
     if (m_inputLabel->GetNext()) {
 
       str += wxT("\n\\begin{minipage}[t]{\\textwidth}\\color{blue}\n") +
-             m_inputLabel->GetNext()->ToTeX() + "\n\\end{minipage}";
+	m_inputLabel->GetNext()->ToTeX() + "\n\\end{minipage}";
     }
   }
 
@@ -1207,11 +1207,11 @@ wxString GroupCell::ToTeXImage(Cell *tmp, wxString imgDir, wxString filename,
         return wxEmptyString;
 
     wxString file =
-        imgDir + wxT("/") + image + wxT(".") + imgCopy->GetExtension();
+      imgDir + wxT("/") + image + wxT(".") + imgCopy->GetExtension();
     if (imgCopy->ToImageFile(file).x >= 0)
       str += wxT("\\includegraphics[width=.95\\linewidth,height=."
                  "80\\textheight,keepaspectratio]{") +
-             filename + wxT("_img/") + image + wxT("}");
+	filename + wxT("_img/") + image + wxT("}");
     else
       str << wxT("\n\\verb|<<GRAPHICS>>|\n");
   }
@@ -1537,14 +1537,14 @@ bool GroupCell::BreakUpCells(Cell *cell) {
   }
 
   int clientWidth =
-      .8 * m_configuration->GetClientWidth() - m_configuration->GetIndent();
+    .8 * m_configuration->GetClientWidth() - m_configuration->GetIndent();
   if (clientWidth < Scale_Px(50))
     clientWidth = Scale_Px(50);
 
   // Reduce the number of steps involved in layouting big equations
   if (m_cellsInGroup > showLength) {
     wxLogMessage(
-        _("Resolving to 1D layout for one cell in order to save time"));
+		 _("Resolving to 1D layout for one cell in order to save time"));
     return false;
   } else {
     bool lineHeightsChanged = false;
@@ -1581,7 +1581,7 @@ bool GroupCell::UnBreakUpCells(Cell *cell) {
   // Reduce the number of steps involved in layouting big equations
   if (m_cellsInGroup > showLength) {
     wxLogMessage(
-        _("Resolving to linear layout for one big cell in order to save time"));
+		 _("Resolving to linear layout for one big cell in order to save time"));
     return true;
   }
 
@@ -1699,7 +1699,7 @@ GroupCell *GroupCell::Fold() {
   auto tornOut = CellList::TearOut(GetNext(), end);
   wxASSERT(tornOut.cellOwner);
   m_hiddenTree =
-      static_unique_ptr_cast<GroupCell>(std::move(tornOut.cellOwner));
+    static_unique_ptr_cast<GroupCell>(std::move(tornOut.cellOwner));
   m_hiddenTree->SetHiddenTreeParent(this);
   m_cellsAppended = true;
   return this;
@@ -1752,21 +1752,21 @@ bool GroupCell::IsLesserGCType(GroupType comparedTo) const {
   case GC_TYPE_PAGEBREAK:
   case GC_TYPE_IMAGE:
     return (comparedTo == GC_TYPE_TITLE) || (comparedTo == GC_TYPE_SECTION) ||
-           (comparedTo == GC_TYPE_SUBSECTION) ||
-           (comparedTo == GC_TYPE_SUBSUBSECTION) ||
-           (comparedTo == GC_TYPE_HEADING5) || (comparedTo == GC_TYPE_HEADING6);
+      (comparedTo == GC_TYPE_SUBSECTION) ||
+      (comparedTo == GC_TYPE_SUBSUBSECTION) ||
+      (comparedTo == GC_TYPE_HEADING5) || (comparedTo == GC_TYPE_HEADING6);
   case GC_TYPE_HEADING6:
     return (comparedTo == GC_TYPE_TITLE) || (comparedTo == GC_TYPE_SECTION) ||
-           (comparedTo == GC_TYPE_SUBSECTION) ||
-           (comparedTo == GC_TYPE_SUBSUBSECTION) ||
-           (comparedTo == GC_TYPE_HEADING5);
+      (comparedTo == GC_TYPE_SUBSECTION) ||
+      (comparedTo == GC_TYPE_SUBSUBSECTION) ||
+      (comparedTo == GC_TYPE_HEADING5);
   case GC_TYPE_HEADING5:
     return (comparedTo == GC_TYPE_TITLE) || (comparedTo == GC_TYPE_SECTION) ||
-           (comparedTo == GC_TYPE_SUBSECTION) ||
-           (comparedTo == GC_TYPE_SUBSUBSECTION);
+      (comparedTo == GC_TYPE_SUBSECTION) ||
+      (comparedTo == GC_TYPE_SUBSUBSECTION);
   case GC_TYPE_SUBSUBSECTION:
     return (comparedTo == GC_TYPE_TITLE) || (comparedTo == GC_TYPE_SECTION) ||
-           (comparedTo == GC_TYPE_SUBSECTION);
+      (comparedTo == GC_TYPE_SUBSECTION);
   case GC_TYPE_SUBSECTION:
     return (comparedTo == GC_TYPE_TITLE) || (comparedTo == GC_TYPE_SECTION);
   case GC_TYPE_SECTION:
@@ -1916,9 +1916,9 @@ wxAccStatus GroupCell::GetDescription(int childId,
 wxAccStatus GroupCell::GetLocation(wxRect &rect, int elementId) {
   if (elementId == 0) {
     rect = wxRect(GetRect().GetTopLeft() +
-                      m_configuration->GetVisibleRegion().GetTopLeft(),
+		  m_configuration->GetVisibleRegion().GetTopLeft(),
                   GetRect().GetBottomRight() +
-                      m_configuration->GetVisibleRegion().GetTopLeft());
+		  m_configuration->GetVisibleRegion().GetTopLeft());
 
     // Our GroupCell handles the hcaret below the cell, as well as its contents
     rect.SetBottom(rect.GetBottom() + m_configuration->GetGroupSkip());
@@ -1937,8 +1937,8 @@ wxAccStatus GroupCell::GetLocation(wxRect &rect, int elementId) {
     if (rect.GetRight() > m_configuration->GetVisibleRegion().GetHeight())
       rect.SetRight(m_configuration->GetVisibleRegion().GetHeight());
     rect =
-        wxRect(rect.GetTopLeft() + m_configuration->GetWorksheetPosition(),
-               rect.GetBottomRight() + m_configuration->GetWorksheetPosition());
+      wxRect(rect.GetTopLeft() + m_configuration->GetWorksheetPosition(),
+	     rect.GetBottomRight() + m_configuration->GetWorksheetPosition());
     return wxACC_OK;
   } else {
     Cell *childCell = nullptr;
@@ -1961,43 +1961,43 @@ void CellList::Check(const GroupCell *c) {
 }
 
 wxString GroupCell::m_lookalikeChars(
-    wxT("µ") wxT("\u03bc") wxT("\u2126") wxT("\u03a9") wxT("C") wxT(
-        "\u03F2") wxT("C") wxT("\u0421") wxT("\u03F2") wxT("\u0421") wxT("A")
-        wxT("\u0391") wxT("A") wxT("\u0410") wxT("\u0391") wxT("\u0410") wxT(
-            "M") wxT("\u0392") wxT("E") wxT("\u0395") wxT("E") wxT("\u0415")
-            wxT("\u0415") wxT("\u0395") wxT("Z") wxT("\u0396") wxT("H") wxT(
-                "\u0397") wxT("H") wxT("\u041D") wxT("\u0397") wxT("\u041D")
-                wxT("I") wxT("\u0399") wxT("I") wxT("\u0406") wxT("l") wxT(
-                    "\u0406") wxT("K") wxT("\u039A")
-                    wxT("K") wxT("\u041A") wxT("\u039A") wxT("\u041A") wxT("\u212a") wxT(
-                        "\u041A") wxT("K") wxT("\u212A") wxT("M") wxT("\u041c") wxT("\u039C")
-                        wxT("\u041c") wxT("M") wxT("\u039C") wxT("N") wxT("\u039D") wxT("O") wxT(
-                            "\u039F") wxT("O") wxT("\u041E") wxT("\u039F") wxT("\u041E") wxT("\u039F")
-                            wxT("\u041E") wxT("P") wxT("\u03A1") wxT("X") wxT("\u0425") wxT("e") wxT(
-                                "\u0435") wxT("p") wxT("\u0440") wxT("x") wxT("\u0445") wxT("y")
-                                wxT("\u0443") wxT("P") wxT("\u0420") wxT("\u03A1") wxT(
-                                    "\u0420") wxT("T") wxT("\u03A4") wxT("T") wxT("\u0422") wxT("\u03A4")
-                                    wxT("\u0422") wxT("Y") wxT("\u03A5") wxT("\u212a") wxT(
-                                        "\u039A") wxT("l") wxT("I") wxT("B")
-                                        wxT("\u0392") wxT("S") wxT("\u0405") wxT("\u0392") wxT(
-                                            "\u0412") wxT("B") wxT("\u0412") wxT("J")
-                                            wxT("\u0408") wxT("a") wxT("\u0430") wxT(
-                                                "o") wxT("\u03bf") wxT("\u03a3") wxT("\u2211")
-                                                wxT("o") wxT("\u043e") wxT("\u03bf") wxT(
-                                                    "\u043e") wxT("c") wxT("\u0441") wxT("s")
-                                                    wxT("\u0455") wxT("t") wxT("\u03c4") wxT(
-                                                        "u") wxT("\u03c5") wxT("x") wxT("\u03c7")
-                                                        wxT("ü") wxT("\u03cb") wxT("\u0460") wxT(
-                                                            "\u03c9") wxT("\u0472") wxT("\u0398")
-                                                            wxT("У") wxT("Y") wxT("У") wxT(
-                                                                "y") wxT("ѡ") wxT("ω")
-                                                                wxT("Ѳ") wxT("Θ") wxT(
-                                                                    "θ") wxT("ѳ") wxT("ø")
-                                                                    wxT("⌀") wxT("∅") wxT(
-                                                                        "⊘") wxT("∅")
-                                                                        wxT("⌀") wxT(
-                                                                            "ø") wxT("⊘")
-                                                                            wxT("ø") wxT(
-                                                                                "∅")
-                                                                                wxT("⌀") wxT(
-                                                                                    "⊘"));
+				     wxT("µ") wxT("\u03bc") wxT("\u2126") wxT("\u03a9") wxT("C") wxT(
+												     "\u03F2") wxT("C") wxT("\u0421") wxT("\u03F2") wxT("\u0421") wxT("A")
+				     wxT("\u0391") wxT("A") wxT("\u0410") wxT("\u0391") wxT("\u0410") wxT(
+													  "M") wxT("\u0392") wxT("E") wxT("\u0395") wxT("E") wxT("\u0415")
+				     wxT("\u0415") wxT("\u0395") wxT("Z") wxT("\u0396") wxT("H") wxT(
+												     "\u0397") wxT("H") wxT("\u041D") wxT("\u0397") wxT("\u041D")
+				     wxT("I") wxT("\u0399") wxT("I") wxT("\u0406") wxT("l") wxT(
+												"\u0406") wxT("K") wxT("\u039A")
+				     wxT("K") wxT("\u041A") wxT("\u039A") wxT("\u041A") wxT("\u212a") wxT(
+													  "\u041A") wxT("K") wxT("\u212A") wxT("M") wxT("\u041c") wxT("\u039C")
+				     wxT("\u041c") wxT("M") wxT("\u039C") wxT("N") wxT("\u039D") wxT("O") wxT(
+													      "\u039F") wxT("O") wxT("\u041E") wxT("\u039F") wxT("\u041E") wxT("\u039F")
+				     wxT("\u041E") wxT("P") wxT("\u03A1") wxT("X") wxT("\u0425") wxT("e") wxT(
+													      "\u0435") wxT("p") wxT("\u0440") wxT("x") wxT("\u0445") wxT("y")
+				     wxT("\u0443") wxT("P") wxT("\u0420") wxT("\u03A1") wxT(
+											    "\u0420") wxT("T") wxT("\u03A4") wxT("T") wxT("\u0422") wxT("\u03A4")
+				     wxT("\u0422") wxT("Y") wxT("\u03A5") wxT("\u212a") wxT(
+											    "\u039A") wxT("l") wxT("I") wxT("B")
+				     wxT("\u0392") wxT("S") wxT("\u0405") wxT("\u0392") wxT(
+											    "\u0412") wxT("B") wxT("\u0412") wxT("J")
+				     wxT("\u0408") wxT("a") wxT("\u0430") wxT(
+									      "o") wxT("\u03bf") wxT("\u03a3") wxT("\u2211")
+				     wxT("o") wxT("\u043e") wxT("\u03bf") wxT(
+									      "\u043e") wxT("c") wxT("\u0441") wxT("s")
+				     wxT("\u0455") wxT("t") wxT("\u03c4") wxT(
+									      "u") wxT("\u03c5") wxT("x") wxT("\u03c7")
+				     wxT("ü") wxT("\u03cb") wxT("\u0460") wxT(
+									      "\u03c9") wxT("\u0472") wxT("\u0398")
+				     wxT("У") wxT("Y") wxT("У") wxT(
+								    "y") wxT("ѡ") wxT("ω")
+				     wxT("Ѳ") wxT("Θ") wxT(
+							   "θ") wxT("ѳ") wxT("ø")
+				     wxT("⌀") wxT("∅") wxT(
+							   "⊘") wxT("∅")
+				     wxT("⌀") wxT(
+						  "ø") wxT("⊘")
+				     wxT("ø") wxT(
+						  "∅")
+				     wxT("⌀") wxT(
+						  "⊘"));

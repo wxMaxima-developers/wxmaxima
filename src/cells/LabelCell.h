@@ -29,7 +29,7 @@
 
   Labels are TextCells that scale down automatically if they need more space 
   than we got.
- */
+*/
 class LabelCell final : public TextCell
 {
 public:
@@ -71,9 +71,9 @@ private:
 //** Bitfield objects (0 bytes)
 //**
   void InitBitFields()
-  { // Keep the initialization order below same as the order
-    // of bit fields in this class!
-  }
+    { // Keep the initialization order below same as the order
+      // of bit fields in this class!
+    }
 
   TextIndex GetLabelIndex() const;
 };

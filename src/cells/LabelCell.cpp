@@ -26,7 +26,7 @@
 
   Labels are TextCells that scale down automatically if they need more space
   than we got.
- */
+*/
 
 #include "LabelCell.h"
 #include "CellImpl.h"
@@ -34,8 +34,8 @@
 
 LabelCell::LabelCell(GroupCell *group, Configuration *config,
                      wxString automaticLabel, TextStyle style)
-    : TextCell(group, config, automaticLabel, style),
-      m_labelChoice_Last(config->GetLabelChoice()) {
+  : TextCell(group, config, automaticLabel, style),
+    m_labelChoice_Last(config->GetLabelChoice()) {
   InitBitFields();
   m_width = Scale_Px(m_configuration->GetLabelWidth());
 }
@@ -44,8 +44,8 @@ LabelCell::LabelCell(GroupCell *group, Configuration *config,
 // cppcheck-suppress uninitMemberVar symbolName=LabelCell::m_altJs
 // cppcheck-suppress uninitMemberVar symbolName=LabelCell::m_initialToolTip
 LabelCell::LabelCell(GroupCell *group, const LabelCell &cell)
-    : TextCell(group, cell.m_configuration),
-      m_userDefinedLabel(cell.m_userDefinedLabel) {}
+  : TextCell(group, cell.m_configuration),
+    m_userDefinedLabel(cell.m_userDefinedLabel) {}
 
 DEFINE_CELL(LabelCell)
 
@@ -60,7 +60,7 @@ void LabelCell::Draw(wxPoint point) {
     auto const index = GetLabelIndex();
     if (index != noText) {
       auto const style = m_configuration->GetStyle(
-          m_textStyle, Scale_Px(m_fontSize_scaledToFit));
+						   m_textStyle, Scale_Px(m_fontSize_scaledToFit));
       dc->SetFont(style.GetFont());
       SetToolTip(&m_userDefinedLabel);
       if (m_textStyle == TS_USERLABEL) {
@@ -89,11 +89,11 @@ void LabelCell::SetUserDefinedLabel(const wxString &userDefinedLabel) {
 
 bool LabelCell::NeedsRecalculation(AFontSize fontSize) const {
   return TextCell::NeedsRecalculation(fontSize) ||
-         ((m_textStyle == TS_USERLABEL) &&
-          (!m_configuration->UseUserLabels())) ||
-         ((m_textStyle == TS_LABEL) && (m_configuration->UseUserLabels()) &&
-          (!m_userDefinedLabel.empty())) ||
-         (m_configuration->GetLabelChoice() != m_labelChoice_Last);
+    ((m_textStyle == TS_USERLABEL) &&
+     (!m_configuration->UseUserLabels())) ||
+    ((m_textStyle == TS_LABEL) && (m_configuration->UseUserLabels()) &&
+     (!m_userDefinedLabel.empty())) ||
+    (m_configuration->GetLabelChoice() != m_labelChoice_Last);
 }
 
 void LabelCell::UpdateDisplayedText() {
@@ -168,7 +168,7 @@ wxString LabelCell::ToXML() const {
   // convert it, so that the XML configuration doesn't fail
 
   return wxT("<") + tag + GetXMLFlags() + wxT(">") + xmlstring + wxT("</") +
-         tag + wxT(">");
+    tag + wxT(">");
 }
 
 void LabelCell::SetStyle(TextStyle style) {
@@ -184,7 +184,7 @@ wxString LabelCell::GetXMLFlags() const {
   wxString flags = TextCell::GetXMLFlags();
   if (!m_userDefinedLabel.empty())
     flags +=
-        wxT(" userdefinedlabel=\"") + XMLescape(m_userDefinedLabel) + wxT("\"");
+      wxT(" userdefinedlabel=\"") + XMLescape(m_userDefinedLabel) + wxT("\"");
   return flags;
 }
 
@@ -217,13 +217,13 @@ void LabelCell::Recalculate(AFontSize fontsize) {
     auto const index = GetLabelIndex();
     if (index != noText) {
       Style style = m_configuration->GetStyle(
-          m_textStyle, m_configuration->GetDefaultFontSize());
+					      m_textStyle, m_configuration->GetDefaultFontSize());
       wxDC *dc = m_configuration->GetDC();
       style.SetFontSize(Scale_Px(fontsize));
       dc->SetFont(style.GetFont());
 
       wxSize labelSize =
-          CalculateTextSize(m_configuration->GetDC(), m_displayedText, index);
+	CalculateTextSize(m_configuration->GetDC(), m_displayedText, index);
       m_height = labelSize.GetHeight();
       m_center = m_height / 2;
 
@@ -235,22 +235,22 @@ void LabelCell::Recalculate(AFontSize fontsize) {
              (!m_fontSize_scaledToFit.IsMinimal())) {
 #if wxCHECK_VERSION(3, 1, 2)
         m_fontSize_scaledToFit -= .3 + 3 * (m_width - labelSize.GetWidth()) /
-                                           labelSize.GetWidth() / 4;
+	  labelSize.GetWidth() / 4;
 #else
         m_fontSize_scaledToFit -=
-            1 + 3 * (m_width - labelSize.GetWidth()) / labelSize.GetWidth() / 4;
+	  1 + 3 * (m_width - labelSize.GetWidth()) / labelSize.GetWidth() / 4;
 #endif
         style.SetFontSize(Scale_Px(m_fontSize_scaledToFit));
         dc->SetFont(style.GetFont());
         labelSize =
-            CalculateTextSize(m_configuration->GetDC(), m_displayedText, index);
+	  CalculateTextSize(m_configuration->GetDC(), m_displayedText, index);
       }
       m_width = labelSize.GetWidth() + Scale_Px(2);
     } else {
       m_width = m_height = m_center = 0;
     }
     m_width = wxMax(m_width, Scale_Px(m_configuration->GetLabelWidth())) +
-              MC_TEXT_PADDING;
+      MC_TEXT_PADDING;
   }
 }
 

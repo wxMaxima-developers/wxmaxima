@@ -23,16 +23,16 @@
 #include "LogPane.h"
 #include <memory>
 LogPane::LogPane(wxWindow *parent, wxWindowID id, bool becomeLogTarget)
-    : wxPanel(parent, id) {
+  : wxPanel(parent, id) {
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
 
   m_textCtrl =
-      new wxTextCtrl(this, -1, wxEmptyString, wxDefaultPosition, wxDefaultSize,
-                     wxTE_MULTILINE | wxTE_READONLY | wxHSCROLL | wxVSCROLL);
+    new wxTextCtrl(this, -1, wxEmptyString, wxDefaultPosition, wxDefaultSize,
+		   wxTE_MULTILINE | wxTE_READONLY | wxHSCROLL | wxVSCROLL);
 
   m_textCtrl->SetMinSize(
-      wxSize(wxSystemSettings::GetMetric(wxSYS_SCREEN_X) / 10,
-             wxSystemSettings::GetMetric(wxSYS_SCREEN_Y) / 10));
+			 wxSize(wxSystemSettings::GetMetric(wxSYS_SCREEN_X) / 10,
+				wxSystemSettings::GetMetric(wxSYS_SCREEN_Y) / 10));
   vbox->Add(m_textCtrl, wxSizerFlags().Expand().Proportion(1));
 
   if (becomeLogTarget)

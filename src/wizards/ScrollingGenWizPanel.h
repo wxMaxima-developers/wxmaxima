@@ -71,7 +71,7 @@ public:
                          label7, defaultval7, tooltip7,
                          label8, defaultval8, tooltip8,
                          label9, defaultval9, tooltip9
-         );
+        );
     }
 
   wxButton *GetOKButton() const {return m_panel->GetOKButton();}
@@ -79,7 +79,7 @@ public:
   wxButton *GetInsertButton() const{return m_panel->GetInsertButton();}
   wxString GetHelpKeyword(int ID){return m_panel->GetHelpKeyword(ID);}
 
-  protected:
+protected:
   GenWizPanel *m_panel;
   void OnSize(wxSizeEvent &event);
 };

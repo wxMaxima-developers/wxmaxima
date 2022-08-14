@@ -24,7 +24,7 @@
   This file declares the class SetCell
 
   SetCell is the Cell type that represents a set
- */
+*/
 
 #ifndef SETCELL_H
 #define SETCELL_H
@@ -39,14 +39,14 @@
   m_nextToDraw this cell is represented by the following individual 
   cells:
   
-   - The SetCell itself
-   - The opening "["
-   - The contents
-   - The closing "]".
+  - The SetCell itself
+  - The opening "["
+  - The contents
+  - The closing "]".
    
   If it isn't broken into multiple cells m_nextToDraw points to the 
   cell that follows this Cell.
- */
+*/
 class SetCell final : public ListCell
 {
 public:

@@ -68,15 +68,15 @@ public:
   bool operator<(const AFontName &o) const { return m_fontName < o.m_fontName; }
   bool empty() const { return !m_fontName || m_fontName->empty(); }
   AFontName &operator=(const AFontName &o)
-  {
-    m_fontName = o.m_fontName;
-    return *this;
-  }
+    {
+      m_fontName = o.m_fontName;
+      return *this;
+    }
   AFontName &Set(const wxString &str)
-  {
-    m_fontName = Intern(str);
-    return *this;
-  }
+    {
+      m_fontName = Intern(str);
+      return *this;
+    }
   const wxString& GetAsString() const { return m_fontName ? *m_fontName : *GetInternedEmpty(); }
 
   // All constant font names should be collected here, to avoid needless duplication and
@@ -104,13 +104,13 @@ private:
 };
 
 namespace std {
-template <> struct hash<AFontName> final
-{
-  size_t operator()(AFontName name) const
+  template <> struct hash<AFontName> final
   {
-    return hash<const void*>()(name.m_fontName);
-  }
-};
+    size_t operator()(AFontName name) const
+      {
+        return hash<const void*>()(name.m_fontName);
+      }
+  };
 }
 
 //! Returns a r,g,b components packed into a 32-bit 00bbggrr triple.

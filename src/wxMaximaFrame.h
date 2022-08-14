@@ -22,10 +22,10 @@
 //  SPDX-License-Identifier: GPL-2.0+
 
 /*!\file 
-This file declares the class wxMaximaFrame
+  This file declares the class wxMaximaFrame
 
-wxMaximaFrame draws everything which can be seen
-surrounding the worksheet.
+  wxMaximaFrame draws everything which can be seen
+  surrounding the worksheet.
 */
 #ifndef WXMAXIMAFRAME_H
 #define WXMAXIMAFRAME_H
@@ -67,14 +67,14 @@ public:
                 long style = wxDEFAULT_FRAME_STYLE | wxSYSTEM_MENU | wxCAPTION, bool becomeLogTarget = true);
 
   /*! The destructor
-  */
+   */
   virtual ~wxMaximaFrame();
 
   /*! Shows or hides the toolbar
     \param show
     - true:  Show the toolbar
     - false: Hide the toolbar
-   */
+  */
   void ShowToolBar(bool show);
 
   /*! A list of all events the maxima frame can receive
@@ -723,28 +723,28 @@ public:
 
     Copies the string array containing the list of recent documents to the
     recent documents menu.
-   */
+  */
   void UpdateRecentDocuments();
   
   /*! true, if a Pane is currently enabled
 
     \param id The event that toggles the visibility of the pane that is
     to be queried
-   */
+  */
   bool IsPaneDisplayed(Event id);
 
   /*! Show or hide a sidebar
     
     \param id The type of the sidebar to show/hide
     \param show 
-     - true: show the sidebar
-     - false: hide it
-   */
+    - true: show the sidebar
+    - false: hide it
+  */
   void ShowPane(Event id, bool show = true);
 
   //! Adds a command to the list  of recently used maxima commands
   void AddToHistory(const wxString &cmd)
-  { m_history->AddToHistory(cmd); }
+    { m_history->AddToHistory(cmd); }
 
   enum ToolbarStatus
   {
@@ -767,9 +767,9 @@ public:
   /*! Set the status according to if maxima is calculating 
 
     \param status
-      - true:  Maxima is calculating
-      - false: Maxima is waiting for input
-   */
+    - true:  Maxima is calculating
+    - false: Maxima is waiting for input
+  */
   void StatusMaximaBusy(ToolbarStatus status){m_StatusMaximaBusy_next = status;}
   void UpdateStatusMaximaBusy();
 
@@ -865,7 +865,7 @@ protected:
    
     A last resort if https://trac.wxwidgets.org/ticket/18815 hinders one from 
     re-docking windows.
-   */
+  */
   void DockAllSidebars(wxCommandEvent &ev);
 
   wxString wxMaximaManualLocation();
@@ -894,38 +894,38 @@ private:
   
   //! The class for the sidebar with the draw commands
   class DrawPane: public wxScrolled<wxPanel>
-    {
-    public:
-      explicit DrawPane(wxWindow *parent, int id = wxID_ANY);
-      /*! Tell the sidebar if we currently are inside a 2D or a 3D plot command
+  {
+  public:
+    explicit DrawPane(wxWindow *parent, int id = wxID_ANY);
+    /*! Tell the sidebar if we currently are inside a 2D or a 3D plot command
         
-        \param dimensions
-               - 0 = We aren't inside a plot
-               - 2 = We are inside a 2D plot
-               - 3 = We are inside a 3D plot
-      */
-      void SetDimensions(int dimensions);
-      int  GetDimensions() { return m_dimensions; }
-    protected:
-      void OnSize(wxSizeEvent &event);
-    private:
-      Buttonwrapsizer *m_grid;
-      wxButton *m_draw_setup2d;
-      wxButton *m_draw_setup3d;
-      wxButton *m_draw_explicit;
-      wxButton *m_draw_implicit;
-      wxButton *m_draw_parametric;
-      wxButton *m_draw_points;
-      wxButton *m_draw_fgcolor;
-      wxButton *m_draw_fillcolor;
-      wxButton *m_draw_title;
-      wxButton *m_draw_key;
-      wxButton *m_draw_grid;
-      wxButton *m_draw_axis;
-      wxButton *m_draw_contour;
-      wxButton *m_draw_accuracy;
-      int m_dimensions;
-    };
+      \param dimensions
+      - 0 = We aren't inside a plot
+      - 2 = We are inside a 2D plot
+      - 3 = We are inside a 3D plot
+    */
+    void SetDimensions(int dimensions);
+    int  GetDimensions() { return m_dimensions; }
+  protected:
+    void OnSize(wxSizeEvent &event);
+  private:
+    Buttonwrapsizer *m_grid;
+    wxButton *m_draw_setup2d;
+    wxButton *m_draw_setup3d;
+    wxButton *m_draw_explicit;
+    wxButton *m_draw_implicit;
+    wxButton *m_draw_parametric;
+    wxButton *m_draw_points;
+    wxButton *m_draw_fgcolor;
+    wxButton *m_draw_fillcolor;
+    wxButton *m_draw_title;
+    wxButton *m_draw_key;
+    wxButton *m_draw_grid;
+    wxButton *m_draw_axis;
+    wxButton *m_draw_contour;
+    wxButton *m_draw_accuracy;
+    int m_dimensions;
+  };
 public:
   void LeftStatusText(const wxString &text, bool saveInLog = true)
     {m_newLeftStatusText = true; m_leftStatusText = text; if(saveInLog)wxLogMessage(text);}

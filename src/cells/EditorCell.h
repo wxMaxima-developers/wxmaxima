@@ -33,13 +33,13 @@
 /*! \file
 
   This file contains the definition of the class EditorCell
- */
+*/
 
 /*! This class defines what the user sees as input cell
   
   This class handles input cells including:
-    - The per-cell undo buffer
-    - The handling of key presses when this cell is active
+  - The per-cell undo buffer
+  - The handling of key presses when this cell is active
   
   Since Unicode doesn't provide us with a "soft linebreak" letter we 
   use <code>\\r</code> as a marker that this line has to be broken here if we
@@ -53,17 +53,17 @@
   having to determine the address of every single char independently.
 
   \todo Draw only tokens that are in the redraw region.
- */
+*/
 class EditorCell final : public Cell
 {
 private:
-  #if wxUSE_ACCESSIBILITY
+#if wxUSE_ACCESSIBILITY
   wxAccStatus GetDescription(int childId, wxString *description) const override;
   wxAccStatus GetFocus (int *childId, Cell **child) const override;
   wxAccStatus GetDefaultAction(int childId, wxString *actionName) const override;
   wxAccStatus GetValue (int childId, wxString *strValue) const override;
   wxAccStatus GetRole (int childId, wxAccRole *role) const override;
-  #endif
+#endif
 
 public:
   //! The constructor
@@ -154,13 +154,13 @@ public:
   /*! Sets the text that is to be displayed.
     
     Automatically calls StyleText().
-   */
+  */
   void SetValue(const wxString &text) override;
 
   /*! Returns the text contained in this cell
 
     Naturally all soft line breaks are converted back to spaces beforehand.
-   */
+  */
   const wxString &GetValue() const override { return m_text; }
 
   /*! Converts m_text to a list of styled text snippets that will later be displayed by draw().
@@ -170,7 +170,7 @@ public:
 
     For cells containing text instead of code this function adds a <code>\\r</code> as a marker
     that this line is to be broken here until the window's width changes.
-   */
+  */
   void StyleText();
   /*! Is Called by StyleText() if this is a code cell */
   void StyleTextCode();
@@ -185,7 +185,7 @@ public:
     
     Automatically calls DeactivateCursor on an eventual cell the cursor currently is in.
     Normally Mathctrl::SetActiveCell() is used in order to get this function called.
-   */
+  */
   void ActivateCursor();
 
   //! Deactivate the blinking cursor in the EditorCell it is in.
@@ -230,41 +230,41 @@ public:
 
   //! Get the character position the selection has been started with
   int GetSelectionStart() const
-  { return m_selectionStart; }
+    { return m_selectionStart; }
 
   //! Get the character position the selection has been ended with
   int GetSelectionEnd() const
-  { return m_selectionEnd; }
+    { return m_selectionEnd; }
 
   //! Select the whole text contained in this Cell
   void SelectAll() override
-  {
-    m_selectionStart = 0;
-    m_selectionEnd = m_positionOfCaret = m_text.Length();
-  }
+    {
+      m_selectionStart = 0;
+      m_selectionEnd = m_positionOfCaret = m_text.Length();
+    }
 
   //! Does the selection currently span the whole cell?
   bool AllSelected() const
-  {
-    return (m_selectionStart == 0) && (m_selectionEnd == (long) m_text.Length());
-  }
+    {
+      return (m_selectionStart == 0) && (m_selectionEnd == (long) m_text.Length());
+    }
 
   //! Unselect everything.
   void SelectNone()
-  {
-    m_selectionStart = m_selectionEnd = 0;
-  }
+    {
+      m_selectionStart = m_selectionEnd = 0;
+    }
 
   //! Is there any text selected right now?
   bool SelectionActive() const
-  {
-    return (m_selectionStart >= 0) && (m_selectionEnd >= 0);
-  }
+    {
+      return (m_selectionStart >= 0) && (m_selectionEnd >= 0);
+    }
 
   bool CanCopy() const override
-  {
-    return m_selectionStart != -1;
-  }
+    {
+      return m_selectionStart != -1;
+    }
 
   bool FindMatchingQuotes();
 
@@ -274,44 +274,44 @@ public:
 
   //! true, if this cell's width has to be recalculated.
   bool IsDirty() const override
-  {
-    return m_isDirty;
-  }
+    {
+      return m_isDirty;
+    }
 
   //! Toggles the visibility of the cursor which is used to make it blink.
   void SwitchCaretDisplay() override
-  {
-    m_displayCaret = !m_displayCaret;
-  }
+    {
+      m_displayCaret = !m_displayCaret;
+    }
 
   void SetFocus(bool focus) override
-  {
-    m_hasFocus = focus;
-  }
+    {
+      m_hasFocus = focus;
+    }
 
   void SetFirstLineOnly(bool show = true)
-  {
-    if (m_firstLineOnly != show)
     {
-      m_width = m_height = -1;
-      m_firstLineOnly = show;
+      if (m_firstLineOnly != show)
+      {
+        m_width = m_height = -1;
+        m_firstLineOnly = show;
+      }
+      // Style the text anew.
+      StyleText();
     }
-    // Style the text anew.
-    StyleText();
-  }
 
   bool IsActive() const override;
 
   //! Is the cursor at the start of this cell?
   bool CaretAtStart() const
-  { return m_positionOfCaret == 0; }
+    { return m_positionOfCaret == 0; }
 
   //! Move the cursor to the start of this cell
   void CaretToStart();
 
   //! Is the cursor at the end of this cell?
   bool CaretAtEnd() const
-  { return m_positionOfCaret == (long) m_text.Length(); }
+    { return m_positionOfCaret == (long) m_text.Length(); }
 
   //! Move the cursor to the end of this cell
   void CaretToEnd();
@@ -348,11 +348,11 @@ public:
 
   //! Query if this cell needs to be re-evaluated by maxima
   bool ContainsChanges() const
-  { return m_containsChanges; }
+    { return m_containsChanges; }
 
   //! Set the information if this cell needs to be re-evaluated by maxima
   void ContainsChanges(bool changes)
-  { m_containsChanges = m_containsChangesCheck = changes; }
+    { m_containsChanges = m_containsChangesCheck = changes; }
 
   bool CheckChanges();
 
@@ -364,12 +364,12 @@ public:
 
     \param str The string to search for
     \param down 
-     - true: search downwards
-     - false: search upwards
+    - true: search downwards
+    - false: search upwards
     \param ignoreCase
-     - true: Case-insensitive search
-     - false: Case-sensitive search
-   */
+    - true: Case-insensitive search
+    - false: Case-sensitive search
+  */
   bool FindNext(wxString str, const bool &down, const bool &ignoreCase);
 
   bool IsSelectionChanged() const { return m_selectionChanged; }
@@ -377,23 +377,23 @@ public:
   void SetSelection(int start, int end);
 
   void GetSelection(int *start, int *end) const
-  {
-    *start = m_selectionStart;
-    *end = m_selectionEnd;
-  }
+    {
+      *start = m_selectionStart;
+      *end = m_selectionEnd;
+    }
 
   /*! Replace the current selection with a string
 
     \param oldStr The old string in the selection. If this string doesn't match
-                  the selection this function doesn't replace it.
+    the selection this function doesn't replace it.
     \param newString The new string oldStr has to be replaced by
     \param keepSelected 
-      - true = we want the new string to be selected afterwards
-      - false = the selection is cleared after replacing the string
-        and moving the cursor to its end.
+    - true = we want the new string to be selected afterwards
+    - false = the selection is cleared after replacing the string
+    and moving the cursor to its end.
     \param ignoreCase true = ignore the case of the string to replace
     \param replaceMaximaString true = replace strings including the double quotes.
-   */
+  */
   bool ReplaceSelection(const wxString &oldStr, const wxString &newString,
                         bool keepSelected = false, bool ignoreCase = false,
                         bool replaceMaximaString = false);
@@ -425,7 +425,7 @@ public:
 
   //! Get the cursor's current position inside the cell.
   int GetCaretPosition() const
-  { return m_positionOfCaret; }
+    { return m_positionOfCaret; }
 
   //! Convert a number to unicode chars.
   void ConvertNumToUNicodeChar();
@@ -444,15 +444,15 @@ public:
   void InsertText(wxString text);
 
   wxString TextInFrontOfSelection() const
-  {
-    return GetValue().Mid(1, m_selectionStart);
-  }
+    {
+      return GetValue().Mid(1, m_selectionStart);
+    }
 
   //! Return to the selection after the cell has been left upwards
   void ReturnToSelectionFromTop()
-  {
-    SetSelection(m_lastSelectionStart, 0);
-  }
+    {
+      SetSelection(m_lastSelectionStart, 0);
+    }
 
   void SetType(CellType type) override;
   void SetStyle(TextStyle style) override;
@@ -461,9 +461,9 @@ public:
 
   //! Return to the selection after the cell has been left downwards
   void ReturnToSelectionFromBot()
-  {
-    SetSelection(m_lastSelectionStart, m_text.Length());
-  }
+    {
+      SetSelection(m_lastSelectionStart, m_text.Length());
+    }
 
   //! Get the list of commands, parenthesis, strings and whitespaces in a code cell
   const MaximaTokenizer::TokenList &GetTokens();
@@ -478,13 +478,13 @@ private:
   /*! A piece of styled text for syntax highlighting
 
     A piece of styled text may be
-     - a text line
-     - a command, parenthesis, number, line ending
-     - '\n'
-     - whitespace
-     - '\\r' indicating a soft line break optionally equipped with indentation
-       and a character that marks a continued quote or similar 
-   */
+    - a text line
+    - a command, parenthesis, number, line ending
+    - '\n'
+    - whitespace
+    - '\\r' indicating a soft line break optionally equipped with indentation
+    and a character that marks a continued quote or similar 
+  */
   class StyledText
   {
   private:
@@ -503,12 +503,12 @@ private:
   public:
     //! Defines a piece of styled text
     StyledText(TextStyle style, const wxString &text)
-        : m_text(text), m_style(style), m_styleThisText(true) {}
+      : m_text(text), m_style(style), m_styleThisText(true) {}
 
     //! Defines a piece of text with the default style that possibly is indented
     explicit StyledText(const wxString &text, int indentPixels = 0,
                         const wxString &indentChar = {})
-        : m_text(text), m_indentChar(indentChar), m_indentPixels(indentPixels)  {}
+      : m_text(text), m_indentChar(indentChar), m_indentPixels(indentPixels)  {}
 
     void SetWidth(int width){m_width = width;}
     void ResetSize(){SetWidth(-1);}
@@ -520,10 +520,10 @@ private:
     void SetText(const wxString &text) { m_text = text; }
     //! Changes the indentation level of this token
     void SetIndentation(int indentPixels, const wxString &indentString = {})
-    {
-      m_indentPixels = indentPixels;
-      m_indentChar = indentString;
-    }
+      {
+        m_indentPixels = indentPixels;
+        m_indentChar = indentString;
+      }
     //! By how many pixels do we need to indent this line due to a bullet list or similar?
     int GetIndentPixels() const { return m_indentPixels; }
     const wxString &GetIndentChar() const { return m_indentChar; }
@@ -541,18 +541,18 @@ private:
   bool HandleOrdinaryKey(wxKeyEvent &event);
 
   void FontsChanged() override
-  {
-    ResetSize();
-    ResetData();
-    m_widths.clear();
-  }
+    {
+      ResetSize();
+      ResetData();
+      m_widths.clear();
+    }
 
   /*! Adds soft line breaks to code cells, if needed.
 
     \todo: We could do an incremental indentation calculation that starts at the last word: 
     The current behavior is O(n^2) (scanning the text needs linear time and for each word 
     the indentation algorithm scans the text again) which is unfortunate.
-   */
+  */
   void HandleSoftLineBreaks_Code(StyledText *&lastSpace, int &lineWidth, const wxString &token, unsigned int charInCell,
                                  wxString &text, const size_t &lastSpacePos, int &indentationPixels);
 
@@ -560,7 +560,7 @@ private:
 
     \todo We should provide an alternative function that allows to resume the calculation
     for the next word/line - which would provide an additional speedup.
-   */
+  */
   int GetIndentDepth(wxString text, int positionOfCaret);
 
   /*! Handle ESC shortcuts for special characters
@@ -568,7 +568,7 @@ private:
     These characters can be thought to LaTeX and the html browser if necessary in
     TextCell::ToTeX and EditorCell::ToTeX. They can also be
     converted to maxima strings in wxMaxima::SendMaxima.
-   */
+  */
   wxString InterpretEscapeString(const wxString &txt) const;
 
   //! Draw a box that marks the current selection
@@ -623,19 +623,19 @@ private:
 
   /*! The start of the current selection.
 
-     - >0: the position of the cursors in characters from start
-     - -1: Currently no selection is active
+    - >0: the position of the cursors in characters from start
+    - -1: Currently no selection is active
 
-     If the selection has been done from right to left m_selectionStart>m_selectionEnd.
-   */
+    If the selection has been done from right to left m_selectionStart>m_selectionEnd.
+  */
   long m_selectionStart = -1;
   /*! The end of the current selection.
 
-     - >0: the position of the cursors in characters from start
-     - -1: Currently no selection is active
+    - >0: the position of the cursors in characters from start
+    - -1: Currently no selection is active
 
-     If the selection has been done from right to left m_selectionStart>m_selectionEnd.
-   */
+    If the selection has been done from right to left m_selectionStart>m_selectionEnd.
+  */
   long m_selectionEnd = -1;
   long m_oldSelectionStart = -1;
   long m_oldSelectionEnd = -1;
@@ -658,19 +658,19 @@ private:
 //** Bitfield objects (2 bytes)
 //**
   void InitBitFields()
-  { // Keep the initialization order below same as the order
-    // of bit fields in this class!
-    m_autoAnswer = false;
-    m_containsChanges = false;
-    m_containsChangesCheck = false;
-    m_displayCaret = false;
-    m_firstLineOnly = false;
-    m_hasFocus = false;
-    m_isDirty = false;
-    m_saveValue = false;
-    m_selectionChanged = false;
-    m_underlined = false;
-  }
+    { // Keep the initialization order below same as the order
+      // of bit fields in this class!
+      m_autoAnswer = false;
+      m_containsChanges = false;
+      m_containsChangesCheck = false;
+      m_displayCaret = false;
+      m_firstLineOnly = false;
+      m_hasFocus = false;
+      m_isDirty = false;
+      m_saveValue = false;
+      m_selectionChanged = false;
+      m_underlined = false;
+    }
 
   //! Mark this cell as "Automatically answer questions".
   bool m_autoAnswer : 1 /* InitBitFields */;

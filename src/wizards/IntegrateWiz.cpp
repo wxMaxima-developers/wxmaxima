@@ -27,7 +27,7 @@
 IntegrateWiz::IntegrateWiz(wxWindow *parent, int id, Configuration *cfg,
                            const wxString &title, const wxPoint &pos,
                            const wxSize &size, long style)
-    : wxDialog(parent, id, title, pos, size, style) {
+  : wxDialog(parent, id, title, pos, size, style) {
   label_2 = new wxStaticText(this, -1, _("Expression:"));
   text_ctrl_1 = new BTextCtrl(this, -1, cfg, wxEmptyString, wxDefaultPosition,
                               wxSize(230, -1));
@@ -132,32 +132,32 @@ wxString IntegrateWiz::GetValue() {
     if (choice_1->GetSelection() == 1) {
       wxConfig::Get()->Write(wxT("Wiz/Int/numericSelection"), 1);
       s = wxT("romberg(") + text_ctrl_1->GetValue() + wxT(", ") +
-          text_ctrl_2->GetValue() + wxT(", ") + text_ctrl_3->GetValue() +
-          wxT(", ") + text_ctrl_4->GetValue() + wxT(");");
+	text_ctrl_2->GetValue() + wxT(", ") + text_ctrl_3->GetValue() +
+	wxT(", ") + text_ctrl_4->GetValue() + wxT(");");
     } else {
       wxConfig::Get()->Write(wxT("Wiz/Int/numericSelection"), 0);
       wxString from = text_ctrl_3->GetValue();
       wxString to = text_ctrl_4->GetValue();
       if (from == wxT("minf") && to == wxT("inf"))
         s = wxT("quad_qagi(") + text_ctrl_1->GetValue() + wxT(", ") +
-            text_ctrl_2->GetValue() + wxT(", 0, 'both);");
+	  text_ctrl_2->GetValue() + wxT(", 0, 'both);");
       else if (from == wxT("minf"))
         s = wxT("quad_qagi(") + text_ctrl_1->GetValue() + wxT(", ") +
-            text_ctrl_2->GetValue() + wxT(", ") + to + wxT(", minf);");
+	  text_ctrl_2->GetValue() + wxT(", ") + to + wxT(", minf);");
       else if (to == wxT("inf"))
         s = wxT("quad_qagi(") + text_ctrl_1->GetValue() + wxT(", ") +
-            text_ctrl_2->GetValue() + wxT(", ") + from + wxT(", inf);");
+	  text_ctrl_2->GetValue() + wxT(", ") + from + wxT(", inf);");
       else
         s = wxT("quad_qags(") + text_ctrl_1->GetValue() + wxT(", ") +
-            text_ctrl_2->GetValue() + wxT(", ") + from + wxT(", ") + to +
-            wxT(");");
+	  text_ctrl_2->GetValue() + wxT(", ") + from + wxT(", ") + to +
+	  wxT(");");
     }
   } else {
     s = wxT("integrate(") + text_ctrl_1->GetValue() + wxT(", ") +
-        text_ctrl_2->GetValue();
+      text_ctrl_2->GetValue();
     if (checkbox_1->GetValue()) {
       s += wxT(", ") + text_ctrl_3->GetValue() + wxT(", ") +
-           text_ctrl_4->GetValue();
+	text_ctrl_4->GetValue();
     }
     s += wxT(");");
   }
@@ -214,8 +214,8 @@ void IntegrateWiz::OnButton(wxCommandEvent &event) {
 }
 
 wxBEGIN_EVENT_TABLE(IntegrateWiz, wxDialog)
-    EVT_BUTTON(special_from, IntegrateWiz::OnButton)
-        EVT_BUTTON(special_to, IntegrateWiz::OnButton)
-            EVT_CHECKBOX(definite_id, IntegrateWiz::OnCheckbox)
-                EVT_CHECKBOX(numeric_id, IntegrateWiz::OnCheckbox)
-                    wxEND_EVENT_TABLE()
+EVT_BUTTON(special_from, IntegrateWiz::OnButton)
+EVT_BUTTON(special_to, IntegrateWiz::OnButton)
+EVT_CHECKBOX(definite_id, IntegrateWiz::OnCheckbox)
+EVT_CHECKBOX(numeric_id, IntegrateWiz::OnCheckbox)
+wxEND_EVENT_TABLE()

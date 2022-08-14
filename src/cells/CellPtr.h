@@ -94,31 +94,31 @@ class Observed
     //! The global number of instances of ControlBlock
     static size_t m_instanceCount;
 
-  #if CELLPTR_LOG_REFS
+#if CELLPTR_LOG_REFS
     void LogConstruct(const Observed *) const;
     void LogRef(const CellPtrBase *) const;
     void LogDeref(const CellPtrBase *) const;
     void LogDestruct() const;
-  #else
+#else
     void LogConstruct(const Observed *) const {}
     void LogRef(const CellPtrBase *) const {}
     void LogDeref(const CellPtrBase *) const {}
     void LogDestruct() const {}
-  #endif
+#endif
 
   public:
     explicit ControlBlock(Observed *object) : m_object(object)
-    {
-    #if CELLPTR_COUNT_INSTANCES
-      ++ m_instanceCount;
-    #endif
-      LogConstruct(object);
-      wxASSERT(object);
-    }
+      {
+#if CELLPTR_COUNT_INSTANCES
+        ++ m_instanceCount;
+#endif
+        LogConstruct(object);
+        wxASSERT(object);
+      }
     ~ControlBlock() {
-    #if CELLPTR_COUNT_INSTANCES
+#if CELLPTR_COUNT_INSTANCES
       -- m_instanceCount;
-    #endif
+#endif
       LogDestruct();
     }
     ControlBlock(const ControlBlock &) = delete;
@@ -129,20 +129,20 @@ class Observed
 
     //! References the control block, and returns the pointer to the control block.
     ControlBlock *Ref(const CellPtrBase *cellptr)
-    {
-      LogRef(cellptr);
-      ++m_refCount;
-      return this;
-    }
+      {
+        LogRef(cellptr);
+        ++m_refCount;
+        return this;
+      }
 
     //! Dereferences the control block and returns true if the block should be retained,
     //! otherwise false.
     bool Deref(const CellPtrBase *cellptr)
-    {
-      LogDeref(cellptr);
-      wxASSERT(m_refCount >= 1);
-      return --m_refCount;
-    }
+      {
+        LogDeref(cellptr);
+        wxASSERT(m_refCount >= 1);
+        return --m_refCount;
+      }
 
     static size_t GetLiveInstanceCount() { return m_instanceCount; }
   };
@@ -166,12 +166,12 @@ class Observed
       to_MASK = 3,
       to_MASK_OUT = uintptr_t(-intptr_t(to_MASK + 1)),
     };
-  static uintptr_t ReprFor(Observed *ptr) noexcept
-    { return reinterpret_cast<uintptr_t>(ptr) | to_Observed; }
-  static uintptr_t ReprFor(ControlBlock *ptr) noexcept
-    { return reinterpret_cast<uintptr_t>(ptr) | to_ControlBlock; }
-  static uintptr_t ReprFor(CellPtrBase *ptr) noexcept
-    { return reinterpret_cast<uintptr_t>(ptr) | to_CellPtrBase; }
+    static uintptr_t ReprFor(Observed *ptr) noexcept
+      { return reinterpret_cast<uintptr_t>(ptr) | to_Observed; }
+    static uintptr_t ReprFor(ControlBlock *ptr) noexcept
+      { return reinterpret_cast<uintptr_t>(ptr) | to_ControlBlock; }
+    static uintptr_t ReprFor(CellPtrBase *ptr) noexcept
+      { return reinterpret_cast<uintptr_t>(ptr) | to_CellPtrBase; }
   public:
     constexpr CellPtrImplPointer() noexcept {}
     constexpr CellPtrImplPointer(const CellPtrImplPointer &) noexcept = default;
@@ -195,7 +195,7 @@ class Observed
     constexpr inline bool HasControlBlock() const noexcept { return (m_ptr & to_MASK) == to_ControlBlock; }
     constexpr inline bool HasCellPtrBase() const noexcept  { return (m_ptr & to_MASK) == to_CellPtrBase; }
     constexpr inline auto GetObserved() const noexcept     { static_assert((to_Observed & to_MASK_OUT) == 0, "");
-                                                             return HasObserved()     ? reinterpret_cast<Observed *>    (m_ptr) : nullptr;               }
+      return HasObserved()     ? reinterpret_cast<Observed *>    (m_ptr) : nullptr;               }
     constexpr inline auto GetControlBlock() const noexcept { return HasControlBlock() ? reinterpret_cast<ControlBlock *>(m_ptr & to_MASK_OUT) : nullptr; }
     constexpr inline auto GetCellPtrBase() const noexcept  { return HasCellPtrBase()  ? reinterpret_cast<CellPtrBase *> (m_ptr & to_MASK_OUT) : nullptr; }
 
@@ -234,17 +234,17 @@ class Observed
 protected:
   Observed() noexcept
 #if CELLPTR_COUNT_INSTANCES
-  { ++ m_instanceCount; }
+    { ++ m_instanceCount; }
 #else
   = default;
 #endif
   ~Observed()
-  {
-    if (m_ptr) OnEndOfLife();
-  #if CELLPTR_COUNT_INSTANCES
-    -- m_instanceCount;
-  #endif
-  }
+    {
+      if (m_ptr) OnEndOfLife();
+#if CELLPTR_COUNT_INSTANCES
+      -- m_instanceCount;
+#endif
+    }
 
 public:
   static size_t GetLiveInstanceCount() { return m_instanceCount; }
@@ -309,106 +309,106 @@ class CellPtrBase
 
 protected:
   explicit CellPtrBase(Observed *obj = nullptr) noexcept
-  {
-  #if CELLPTR_COUNT_INSTANCES
-    ++m_instanceCount;
-  #endif
-    if (obj) Ref(obj);
-    LogConstruction(obj);
-  }
+    {
+#if CELLPTR_COUNT_INSTANCES
+      ++m_instanceCount;
+#endif
+      if (obj) Ref(obj);
+      LogConstruction(obj);
+    }
 
   CellPtrBase(const CellPtrBase &o) noexcept : CellPtrBase(o.base_get()) {}
 
   CellPtrBase(CellPtrBase &&o) noexcept
-  {
-  #if CELLPTR_COUNT_INSTANCES
-    ++m_instanceCount;
-  #endif
-    LogMove(o);
-    using namespace std;
-
-    auto *thisObserved = m_ptr.GetObserved();
-    if (thisObserved)
     {
-      wxASSERT(thisObserved->m_ptr.GetCellPtrBase() == this);
-      thisObserved->LogDeref(this);
-      thisObserved->LogRef(&o);
-      thisObserved->m_ptr = &o;
-    }
+#if CELLPTR_COUNT_INSTANCES
+      ++m_instanceCount;
+#endif
+      LogMove(o);
+      using namespace std;
 
-    auto *otherObserved = o.m_ptr.GetObserved();
-    if (otherObserved)
-    {
-      wxASSERT(otherObserved->m_ptr.GetCellPtrBase() == &o);
-      otherObserved->LogDeref(&o);
-      otherObserved->LogRef(this);
-      otherObserved->m_ptr = this;
-    }
+      auto *thisObserved = m_ptr.GetObserved();
+      if (thisObserved)
+      {
+        wxASSERT(thisObserved->m_ptr.GetCellPtrBase() == this);
+        thisObserved->LogDeref(this);
+        thisObserved->LogRef(&o);
+        thisObserved->m_ptr = &o;
+      }
 
-    swap(m_ptr, o.m_ptr);
-  }
+      auto *otherObserved = o.m_ptr.GetObserved();
+      if (otherObserved)
+      {
+        wxASSERT(otherObserved->m_ptr.GetCellPtrBase() == &o);
+        otherObserved->LogDeref(&o);
+        otherObserved->LogRef(this);
+        otherObserved->m_ptr = this;
+      }
+
+      swap(m_ptr, o.m_ptr);
+    }
 
   ~CellPtrBase() noexcept
-  {
-  #if CELLPTR_COUNT_INSTANCES
-    --m_instanceCount;
-  #endif
-    LogDestruction();
-    Deref();
-  }
+    {
+#if CELLPTR_COUNT_INSTANCES
+      --m_instanceCount;
+#endif
+      LogDestruction();
+      Deref();
+    }
 
   CellPtrBase &operator=(const CellPtrBase &o) noexcept
-  {
-    base_reset(o.base_get());
-    return *this;
-  }
+    {
+      base_reset(o.base_get());
+      return *this;
+    }
 
   CellPtrBase &operator=(CellPtrBase &&o) noexcept
-  {
-    LogAssignment(o);
-    using namespace std;
-    swap(m_ptr, o.m_ptr);
-    return *this;
-  }
+    {
+      LogAssignment(o);
+      using namespace std;
+      swap(m_ptr, o.m_ptr);
+      return *this;
+    }
 
   inline Observed *base_get() const noexcept
-  {
-    // Warning: This function is CRITICAL to the performance of wxMaxima
-    // as a whole!
-    //
-    // The common hot path that iterates cells via the m_nextToDraw uses
-    // this function and is intimately tied to its performance. Small
-    // changes here can cause performance regressions - or small performance
-    // improvements.
-    //
-    // If you change anything, do before- and after- measurements to verify
-    // that whatever improvement you sought is in fact achieved. Changes that
-    // don't measurably improve performance are discouraged.
+    {
+      // Warning: This function is CRITICAL to the performance of wxMaxima
+      // as a whole!
+      //
+      // The common hot path that iterates cells via the m_nextToDraw uses
+      // this function and is intimately tied to its performance. Small
+      // changes here can cause performance regressions - or small performance
+      // improvements.
+      //
+      // If you change anything, do before- and after- measurements to verify
+      // that whatever improvement you sought is in fact achieved. Changes that
+      // don't measurably improve performance are discouraged.
 
-    // The common path, meant to be hot: if we point directly at the observed object,
-    // just return that. This is also where null is returned if the pointer is null.
-    // `HasObserved()` is a simple bitmask test, and `CastAsObserved` is a binary
-    // NO-OP.
+      // The common path, meant to be hot: if we point directly at the observed object,
+      // just return that. This is also where null is returned if the pointer is null.
+      // `HasObserved()` is a simple bitmask test, and `CastAsObserved` is a binary
+      // NO-OP.
 
-    if (m_ptr.HasObserved())
-      return m_ptr.CastAsObserved();
+      if (m_ptr.HasObserved())
+        return m_ptr.CastAsObserved();
 
-    // Otherwise, we must be pointing to a control block: get the pointed-to
-    // observed from the control block. Since such use case is meant to be
-    // rare, the overhead of pointer chasing (one extra layer of indirection)
-    // is acceptable.
+      // Otherwise, we must be pointing to a control block: get the pointed-to
+      // observed from the control block. Since such use case is meant to be
+      // rare, the overhead of pointer chasing (one extra layer of indirection)
+      // is acceptable.
 
-    auto *const observed = m_ptr.CastAsControlBlock()->Get();
-    if (observed)
-      return observed;
+      auto *const observed = m_ptr.CastAsControlBlock()->Get();
+      if (observed)
+        return observed;
 
-    // We have a control block, but the observed object is gone: we dereference
-    // the zombie control block, to deallocate it as soon as possible, and we
-    // reset ourselves to null. This happens only once per observed object, and
-    // subsequent calls will go via the common path.
+      // We have a control block, but the observed object is gone: we dereference
+      // the zombie control block, to deallocate it as soon as possible, and we
+      // reset ourselves to null. This happens only once per observed object, and
+      // subsequent calls will go via the common path.
 
-    return DerefControlBlock(); // returns null - allows a tail call optimization
-  }
+      return DerefControlBlock(); // returns null - allows a tail call optimization
+    }
 
   void base_reset(Observed *obj = nullptr) noexcept;
 
@@ -416,7 +416,7 @@ public:
   template <typename U>
   static bool constexpr is_pointer() {
     return std::is_same<U, decltype(nullptr)>::value
-           || (std::is_pointer<U>::value && std::is_convertible<U, Observed*>::value);
+      || (std::is_pointer<U>::value && std::is_convertible<U, Observed*>::value);
   }
 
   explicit operator bool() const noexcept { return base_get(); }
@@ -477,7 +477,7 @@ class CellPtr final : public CellPtrBase
   template <typename U>
   static bool constexpr is_pointer() {
     return std::is_same<U, decltype(nullptr)>::value
-           || (std::is_pointer<U>::value && std::is_convertible<U, pointer>::value);
+      || (std::is_pointer<U>::value && std::is_convertible<U, pointer>::value);
   }
 public:
   using value_type = T;
@@ -520,14 +520,14 @@ public:
 
   template <typename U, typename std::enable_if<is_pointer<U>(), bool>::type = true>
   CellPtr &operator=(U obj) noexcept
-  {
-    base_reset(obj);
-    return *this;
-  }
+    {
+      base_reset(obj);
+      return *this;
+    }
 
   template <typename U, typename std::enable_if<is_pointer<U>(), bool>::type = true>
   void reset(U obj) noexcept
-  { base_reset(obj); }
+    { base_reset(obj); }
   // Operations with compatible CellPtrs
   //
   CellPtr(CellPtr &o) noexcept : CellPtrBase(o) {}
@@ -536,39 +536,39 @@ public:
   CellPtr &operator=(CellPtr &&o) noexcept { CellPtrBase::operator=(std::move(o)); return *this; }
 
   template <typename U,
-           typename std::enable_if<std::is_convertible<typename std::add_pointer<U>::type, pointer>::value, bool>::type = true>
+            typename std::enable_if<std::is_convertible<typename std::add_pointer<U>::type, pointer>::value, bool>::type = true>
   // cppcheck-suppress noExplicitConstructor
   CellPtr(CellPtr<U> &&o) noexcept : CellPtrBase(o) {}
 
   template <typename U,
-           typename std::enable_if<std::is_convertible<typename std::add_pointer<U>::type, pointer>::value, bool>::type = true>
+            typename std::enable_if<std::is_convertible<typename std::add_pointer<U>::type, pointer>::value, bool>::type = true>
   // cppcheck-suppress noExplicitConstructor
   CellPtr(const CellPtr<U> &o) noexcept : CellPtrBase(o.get()) {}
 
   template <typename U,
-           typename std::enable_if<std::is_convertible<typename std::add_pointer<U>::type, pointer>::value, bool>::type = true>
+            typename std::enable_if<std::is_convertible<typename std::add_pointer<U>::type, pointer>::value, bool>::type = true>
   CellPtr &operator=(CellPtr<U> &&o) noexcept
-  {
-    CellPtrBase::operator=(o);
-    return *this;
-  }
+    {
+      CellPtrBase::operator=(o);
+      return *this;
+    }
   template <typename U,
-           typename std::enable_if<std::is_convertible<typename std::add_pointer<U>::type, pointer>::value, bool>::type = true>
+            typename std::enable_if<std::is_convertible<typename std::add_pointer<U>::type, pointer>::value, bool>::type = true>
   CellPtr &operator=(const CellPtr<U> &o) noexcept
-  {
-    CellPtrBase::operator=(o);
-    return *this;
-  }
+    {
+      CellPtrBase::operator=(o);
+      return *this;
+    }
 
 #if !CELLPTR_CAST_TO_PTR
   template <typename U,
-           typename std::enable_if<std::is_convertible<typename std::add_pointer<U>::type, pointer>::value, bool>::type = true>
+            typename std::enable_if<std::is_convertible<typename std::add_pointer<U>::type, pointer>::value, bool>::type = true>
   bool operator==(const CellPtr<U> &ptr) const noexcept { return cmpControlBlocks(ptr) == 0; }
   template <typename U,
-           typename std::enable_if<std::is_convertible<typename std::add_pointer<U>::type, pointer>::value, bool>::type = true>
+            typename std::enable_if<std::is_convertible<typename std::add_pointer<U>::type, pointer>::value, bool>::type = true>
   bool operator!=(const CellPtr<U> &ptr) const noexcept { return cmpControlBlocks(ptr) != 0; }
   template <typename U,
-           typename std::enable_if<std::is_convertible<typename std::add_pointer<U>::type, pointer>::value, bool>::type = true>
+            typename std::enable_if<std::is_convertible<typename std::add_pointer<U>::type, pointer>::value, bool>::type = true>
   bool operator<(const CellPtr<U> &ptr) const noexcept { return cmpObjects(ptr) < 0; }
 #endif
 
@@ -578,16 +578,16 @@ public:
   explicit CellPtr(std::unique_ptr<U, Del> &&) = delete;
 
   template <typename U, typename Del,
-           typename std::enable_if<std::is_convertible<typename std::add_pointer<U>::type, pointer>::value, bool>::type = true>
+            typename std::enable_if<std::is_convertible<typename std::add_pointer<U>::type, pointer>::value, bool>::type = true>
   explicit CellPtr(const std::unique_ptr<U, Del> &ptr) noexcept : CellPtrBase(ptr.get()) {}
 
   template <typename U, typename Del>
   CellPtr &operator=(std::unique_ptr<U, Del> &&) = delete;
 
   template <typename U, typename Del,
-           typename std::enable_if<std::is_convertible<typename std::add_pointer<U>::type, pointer>::value, bool>::type = true>
+            typename std::enable_if<std::is_convertible<typename std::add_pointer<U>::type, pointer>::value, bool>::type = true>
   CellPtr &operator=(const std::unique_ptr<U, Del> &o) noexcept
-  { return *this = o.get(); }
+    { return *this = o.get(); }
 };
 
 //
@@ -597,7 +597,7 @@ CellPtr<T>::pointer CellPtr<T>::get() const noexcept { return static_cast<pointe
 
 /*! Declaration of a specialization for GroupCell. 
 
-This allows use of CellPtr<GroupCell> when the GroupCell class is not fully defined yet.
+  This allows use of CellPtr<GroupCell> when the GroupCell class is not fully defined yet.
 */
 template <>
 CellPtr<GroupCell>::pointer CellPtr<GroupCell>::get() const noexcept;
@@ -609,12 +609,12 @@ bool operator==(const CellPtr<T> &left, const CellPtr<U> &right) noexcept { retu
 
 #if !CELLPTR_CAST_TO_PTR
 template <typename T, typename U,
-         typename std::enable_if<CellPtrBase::is_pointer<U>(), bool>::type = true>
+          typename std::enable_if<CellPtrBase::is_pointer<U>(), bool>::type = true>
 bool operator==(U left, const CellPtr<T> &right) noexcept { return right.cmpObjects(left) == 0; }
 #endif
 
 template <typename T, typename U,
-         typename std::enable_if<CellPtrBase::is_pointer<U>(), bool>::type = true>
+          typename std::enable_if<CellPtrBase::is_pointer<U>(), bool>::type = true>
 bool operator==(const CellPtr<T> &left, U right) noexcept { return left.cmpObjects(right) == 0; }
 
 template <typename T, typename U>
@@ -622,12 +622,12 @@ bool operator!=(const CellPtr<T> &left, const CellPtr<U> &right) noexcept { retu
 
 #if !CELLPTR_CAST_TO_PTR
 template <typename T, typename U,
-         typename std::enable_if<CellPtrBase::is_pointer<U>(), bool>::type = true>
+          typename std::enable_if<CellPtrBase::is_pointer<U>(), bool>::type = true>
 bool operator!=(U left, const CellPtr<T> &right) noexcept { return right.cmpObjects(left) != 0; }
 #endif
 
 template <typename T, typename U,
-         typename std::enable_if<CellPtrBase::is_pointer<U>(), bool>::type = true>
+          typename std::enable_if<CellPtrBase::is_pointer<U>(), bool>::type = true>
 bool operator!=(const CellPtr<T> &left, U right) noexcept { return left.cmpObjects(right) != 0; }
 
 template <typename T, typename U>
@@ -635,12 +635,12 @@ bool operator<(const CellPtr<T> &left, const CellPtr<U> &right) noexcept { retur
 
 #if !CELLPTR_CAST_TO_PTR
 template <typename T, typename U,
-         typename std::enable_if<CellPtrBase::is_pointer<U>(), bool>::type = true>
+          typename std::enable_if<CellPtrBase::is_pointer<U>(), bool>::type = true>
 bool operator<(U left, const CellPtr<T> &right) noexcept { return right.cmpObjects(left) > 0; }
 #endif
 
 template <typename T, typename U,
-         typename std::enable_if<CellPtrBase::is_pointer<U>(), bool>::type = true>
+          typename std::enable_if<CellPtrBase::is_pointer<U>(), bool>::type = true>
 bool operator<(const CellPtr<T> &left, U right) noexcept { return left.cmpObjects(right) < 0; }
 
 //

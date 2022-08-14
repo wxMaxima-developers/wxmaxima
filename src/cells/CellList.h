@@ -32,6 +32,7 @@
 
 #include "CellPtr.h"
 #include <memory>
+#include <utility>
 
 class CellListBuilderBase
 {
@@ -62,7 +63,7 @@ public:
   using CellListBuilderBase::ClearLastAppended;
 
   //! Returns true if the tree is non-empty
-  explicit operator bool() const { return bool(m_head); }
+  explicit operator bool() const { return static_cast<bool>(m_head); }
 
   //! Passes on the ownership of the list head
   operator std::unique_ptr<T>() && { return TakeHead(); }
@@ -75,29 +76,29 @@ public:
    * is done.
    */
   T *ReleaseHead()
-  {
-    T *ptr = dynamic_cast<T *>(m_head.get());
-    if (ptr) {
-      m_head.release();
-      m_tail = {};
-      m_lastAppended = {};
-    } else
-      m_head.reset();
+    {
+      T *ptr = dynamic_cast<T *>(m_head.get());
+      if (ptr) {
+        m_head.release();
+        m_tail = {};
+        m_lastAppended = {};
+      } else
+        m_head.reset();
 
-    wxASSERT(!m_head && !m_tail && !m_lastAppended); //-V614
-    return ptr;
-  }
+      wxASSERT(!m_head && !m_tail && !m_lastAppended); //-V614
+      return ptr;
+    }
 
   //! Passes on the ownership of the list head.
   std::unique_ptr<T> TakeHead()
-  {
-    m_tail = {};
-    m_lastAppended = {};
-    auto retval = dynamic_unique_ptr_cast<T>(std::move(m_head));
+    {
+      m_tail = {};
+      m_lastAppended = {};
+      auto retval = dynamic_unique_ptr_cast<T>(std::move(m_head));
 
-    wxASSERT(!m_head && !m_tail && !m_lastAppended);
-    return retval;
-  }
+      wxASSERT(!m_head && !m_tail && !m_lastAppended);
+      return retval;
+    }
 
   //! Provides the last cell in the list (if any).
   T *GetTail() const { return dynamic_cast<T*>(m_tail); }
@@ -108,41 +109,40 @@ public:
   //! Appends one or more cells
   // cppcheck-suppress deallocret
   T *Append(T *cells)
-  {
-    base_Append(std::unique_ptr<Cell>(cells));
-    return cells;
-  }
+    {
+      base_Append(std::unique_ptr<Cell>(cells));
+      return cells;
+    }
 
   //! Appends one or more cells if they are all of the correct type, otherwise
   //! deletes them. \returns the appended cells, or null if they weren't
   //! appended.
   T *DynamicAppend(Cell *cells)
-  {
-    return static_cast<T *>(
+    {
+      return static_cast<T *>(
         base_DynamicAppend(std::unique_ptr<Cell>(cells), DynamicCast));
-  }
+    }
 
   //! Appends one or more cells if they are all of the correct type, otherwise
   //! deletes them. \returns the appended cells, or null if they weren't
   //! appended.
   T *DynamicAppend(std::unique_ptr<Cell> &&cells)
-  {
-    return static_cast<T *>(base_DynamicAppend(std::move(cells), DynamicCast));
-  }
+    {
+      return static_cast<T *>(base_DynamicAppend(std::move(cells), DynamicCast));
+    }
 
   //! Appends one or more cells
   T *Append(std::unique_ptr<T> &&cells)
-  {
-    auto *const retval = cells.get();
-    base_Append(std::move(cells));
-    return retval;
-  }
+    {
+      auto *const retval = cells.get();
+      base_Append(std::move(cells));
+      return retval;
+    }
 };
 
 class CellList
 {
 public:
-
   //! Checks the integrity of the list pointers of the given cell in relation to
   //! its neighbors.
   static void Check(const Cell *cell);
@@ -171,7 +171,7 @@ public:
 
   template <typename T>
   static void AppendCell(const std::unique_ptr<T> &cell, std::unique_ptr<Cell> &&tail)
-  { AppendCell(cell.get(), std::move(tail)); }
+    { AppendCell(cell.get(), std::move(tail)); }
 
   struct SplicedIn
   {

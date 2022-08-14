@@ -97,14 +97,14 @@ private:
 //** Bitfield objects (1 bytes)
 //**
   void InitBitFields()
-  { // Keep the initialization order below same as the order
-    // of bit fields in this class!
-    m_parenType = paren_rounded;
-    m_specialMatrix = false;
-    m_inferenceMatrix = false;
-    m_rowNames = false;
-    m_colNames = false;
-  }
+    { // Keep the initialization order below same as the order
+      // of bit fields in this class!
+      m_parenType = paren_rounded;
+      m_specialMatrix = false;
+      m_inferenceMatrix = false;
+      m_rowNames = false;
+      m_colNames = false;
+    }
   uint8_t m_parenType : 2 /* InitBitFields */;
   bool m_specialMatrix : 1 /* InitBitFields */;
   bool m_inferenceMatrix : 1 /* InitBitFields */;

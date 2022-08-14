@@ -25,7 +25,7 @@
 
   ParenCell is the Cell type that represents a math element that is kept
   between parenthesis.
- */
+*/
 
 #ifndef PARENCELL_H
 #define PARENCELL_H
@@ -38,14 +38,14 @@
   m_nextToDraw this cell is represented by the following individual 
   cells:
   
-   - The ParenCell itself
-   - The opening "("
-   - The contents
-   - The closing ")".
+  - The ParenCell itself
+  - The opening "("
+  - The contents
+  - The closing ")".
    
   If it isn't broken into multiple cells m_nextToDraw points to the 
   cell that follows this Cell.
- */
+*/
 class ParenCell final : public Cell
 {
 public:
@@ -100,10 +100,10 @@ private:
 //** Bitfield objects (1 bytes)
 //**
   void InitBitFields()
-  { // Keep the initialization order below same as the order
-    // of bit fields in this class!
-    m_print = true;
-  }
+    { // Keep the initialization order below same as the order
+      // of bit fields in this class!
+      m_print = true;
+    }
   bool m_print : 1 /* InitBitFields */;
 };
 

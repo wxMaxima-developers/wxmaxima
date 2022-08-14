@@ -65,7 +65,7 @@
 /*! Calls a member function from a function pointer
 
   \todo Replace this by a C++17 construct when we switch to C++17
- */
+*/
 #define CALL_MEMBER_FN(object, ptrToMember) ((object).*(ptrToMember))
 
 wxXmlNode *MathParser::SkipWhitespaceNode(wxXmlNode *node) {
@@ -154,7 +154,7 @@ MathParser::MathParser(Configuration *cfg, const wxString &zipfile) {
     m_groupTags[wxT("section")] = &MathParser::GroupCellFromSectionTag;
     m_groupTags[wxT("subsection")] = &MathParser::GroupCellFromSubsectionTag;
     m_groupTags[wxT("subsubsection")] =
-        &MathParser::GroupCellFromSubsubsectionTag;
+      &MathParser::GroupCellFromSubsubsectionTag;
     m_groupTags[wxT("heading5")] = &MathParser::GroupCellHeading5Tag;
     m_groupTags[wxT("heading6")] = &MathParser::GroupCellHeading6Tag;
   }
@@ -204,7 +204,7 @@ std::unique_ptr<Cell> MathParser::ParseRowTag(wxXmlNode *node) {
     // case.
     auto inner = ParseTag(child, true);
     auto cell =
-        std::make_unique<ListCell>(m_group, m_configuration, std::move(inner));
+      std::make_unique<ListCell>(m_group, m_configuration, std::move(inner));
     cell->SetType(m_ParserStyle);
     cell->SetHighlight(m_highlight);
     ParseCommonAttrs(node, cell);
@@ -216,7 +216,7 @@ std::unique_ptr<Cell> MathParser::ParseRowTag(wxXmlNode *node) {
     // case.
     auto inner = ParseTag(child, true);
     auto cell =
-        std::make_unique<SetCell>(m_group, m_configuration, std::move(inner));
+      std::make_unique<SetCell>(m_group, m_configuration, std::move(inner));
     cell->SetType(m_ParserStyle);
     cell->SetHighlight(m_highlight);
     ParseCommonAttrs(node, cell);
@@ -258,7 +258,7 @@ std::unique_ptr<Cell> MathParser::ParseAnimationTag(wxXmlNode *node) {
   node->GetAttribute(wxT("gnuplotSources"), &gnuplotSources);
   node->GetAttribute(wxT("gnuplotData"), &gnuplotData);
   auto animation =
-      std::make_unique<AnimationCell>(m_group, m_configuration, m_fileSystem);
+    std::make_unique<AnimationCell>(m_group, m_configuration, m_fileSystem);
   auto const &str = node->GetChildren()->GetContent();
   wxArrayString images;
   wxString framerate;
@@ -308,17 +308,17 @@ std::unique_ptr<Cell> MathParser::ParseImageTag(wxXmlNode *node) {
   wxString filename(node->GetChildren()->GetContent());
 
   if (m_fileSystem) // loading from zip
-  {
-    imageCell = std::make_unique<ImgCell>(m_group, m_configuration, filename,
-                                          m_fileSystem, false);
+    {
+      imageCell = std::make_unique<ImgCell>(m_group, m_configuration, filename,
+					    m_fileSystem, false);
 
-    wxString origImageFile =
+      wxString origImageFile =
         node->GetAttribute(wxT("origImageFile"), wxEmptyString);
 
-    if (!origImageFile.empty()) {
-      imageCell->SetOrigImageFile(origImageFile);
-    }
-  } else {
+      if (!origImageFile.empty()) {
+	imageCell->SetOrigImageFile(origImageFile);
+      }
+    } else {
     std::shared_ptr<wxFileSystem> system_fs = {};
     if (node->GetAttribute(wxT("del"), wxT("yes")) != wxT("no")) {
       if (wxImage::GetImageCount(filename) < 2)
@@ -349,7 +349,7 @@ std::unique_ptr<Cell> MathParser::ParseImageTag(wxXmlNode *node) {
     imageCell->SetPPI(ppi_num);
 
   wxString gnuplotSource =
-      node->GetAttribute(wxT("gnuplotsource"), wxEmptyString);
+    node->GetAttribute(wxT("gnuplotsource"), wxEmptyString);
   wxString gnuplotData = node->GetAttribute(wxT("gnuplotdata"), wxEmptyString);
 
   if (!gnuplotSource.empty())
@@ -377,7 +377,7 @@ std::unique_ptr<Cell> MathParser::ParseImageTag(wxXmlNode *node) {
 std::unique_ptr<Cell> MathParser::ParseOutputLabelTag(wxXmlNode *node) {
   std::unique_ptr<Cell> tmp;
   wxString user_lbl =
-      node->GetAttribute(wxT("userdefinedlabel"), m_userDefinedLabel);
+    node->GetAttribute(wxT("userdefinedlabel"), m_userDefinedLabel);
   wxString userdefined = node->GetAttribute(wxT("userdefined"), wxT("no"));
 
   if (userdefined != wxT("yes")) {
@@ -425,8 +425,8 @@ std::unique_ptr<Cell> MathParser::ParseCellTag(wxXmlNode *node) {
 
   // read hide status
   bool hide = (node->GetAttribute(wxT("hide"), wxT("false")) == wxT("true"))
-                  ? true
-                  : false;
+    ? true
+    : false;
   // read (group)cell type
   wxString type = node->GetAttribute(wxT("type"), wxT("text"));
 
@@ -476,7 +476,7 @@ std::unique_ptr<Cell> MathParser::ParseCellTag(wxXmlNode *node) {
 std::unique_ptr<GroupCell>
 MathParser::GroupCellFromSubsectionTag(wxXmlNode *node) {
   wxString sectioning_level =
-      node->GetAttribute(wxT("sectioning_level"), wxT("0"));
+    node->GetAttribute(wxT("sectioning_level"), wxT("0"));
   std::unique_ptr<GroupCell> group;
   // We save subsubsections as subsections with a higher sectioning level:
   // This makes them backwards-compatible in the way that they are displayed
@@ -490,7 +490,7 @@ MathParser::GroupCellFromSubsectionTag(wxXmlNode *node) {
                                         GC_TYPE_SUBSUBSECTION); //-V773
   if (sectioning_level == wxT("5"))
     group =
-        std::make_unique<GroupCell>(m_configuration, GC_TYPE_HEADING5); //-V773
+      std::make_unique<GroupCell>(m_configuration, GC_TYPE_HEADING5); //-V773
   if (group == NULL)
     group = std::make_unique<GroupCell>(m_configuration, GC_TYPE_HEADING6);
   ParseCommonGroupCellAttrs(node, group);
@@ -563,10 +563,10 @@ MathParser::HandleNullPointer(std::unique_ptr<Cell> &&cell) {
   if (!tmp) {
     tmp = std::make_unique<VisiblyInvalidCell>(m_group, m_configuration);
     tmp->SetToolTip(
-        &T_("The xml data from maxima or from the .wxmx file was missing data "
-            "here.\n"
-            "If you find a way how to reproduce this problem please file a bug "
-            "report against wxMaxima."));
+		    &T_("The xml data from maxima or from the .wxmx file was missing data "
+			"here.\n"
+			"If you find a way how to reproduce this problem please file a bug "
+			"report against wxMaxima."));
     tmp->SetStyle(TS_ERROR);
   }
   return tmp;
@@ -648,9 +648,9 @@ std::unique_ptr<Cell> MathParser::ParseDiffTag(wxXmlNode *node) {
     diff->SetType(m_ParserStyle);
   } else {
     diff = std::make_unique<DiffCell>(
-        m_group, m_configuration,
-        Cell::MakeVisiblyInvalidCell(m_group, m_configuration),
-        Cell::MakeVisiblyInvalidCell(m_group, m_configuration));
+				      m_group, m_configuration,
+				      Cell::MakeVisiblyInvalidCell(m_group, m_configuration),
+				      Cell::MakeVisiblyInvalidCell(m_group, m_configuration));
   }
   ParseCommonAttrs(node, diff);
   return diff;
@@ -688,7 +688,7 @@ std::unique_ptr<Cell> MathParser::ParseSubSupTag(wxXmlNode *node) {
   child = GetNextTag(child);
 
   auto subsup =
-      std::make_unique<SubSupCell>(m_group, m_configuration, std::move(base));
+    std::make_unique<SubSupCell>(m_group, m_configuration, std::move(base));
   wxString pos;
   if ((child != NULL) &&
       (child->GetAttribute("pos", wxEmptyString) != wxEmptyString)) {
@@ -730,7 +730,7 @@ std::unique_ptr<Cell> MathParser::ParseMmultiscriptsTag(wxXmlNode *node) {
   child = GetNextTag(child);
 
   auto subsup =
-      std::make_unique<SubSupCell>(m_group, m_configuration, std::move(base));
+    std::make_unique<SubSupCell>(m_group, m_configuration, std::move(base));
   while (child != NULL) {
     if (child->GetName() == "mprescripts") {
       pre = true;
@@ -805,7 +805,7 @@ std::unique_ptr<Cell> MathParser::ParseFunTag(wxXmlNode *node) {
         auto end = HandleNullPointer(ParseTag(child, false));
 
         auto interval = std::make_unique<IntervalCell>(
-            m_group, m_configuration, std::move(start), std::move(end));
+						       m_group, m_configuration, std::move(start), std::move(end));
         ParseCommonAttrs(node, interval);
         return interval;
       }
@@ -843,17 +843,17 @@ std::unique_ptr<Cell> MathParser::ParseText(wxXmlNode *node, TextStyle style) {
       if (style == TS_NUMBER) {
         if (value.Length() >= 20)
           cell =
-              std::make_unique<LongNumberCell>(m_group, m_configuration, value);
+	    std::make_unique<LongNumberCell>(m_group, m_configuration, value);
         else
           cell = std::make_unique<TextCell>(m_group, m_configuration, value,
                                             style);
       } else if ((style == TS_LABEL) || (style == TS_USERLABEL) ||
                  (style == TS_MAIN_PROMPT) || (style == TS_OTHER_PROMPT))
         cell =
-            std::make_unique<LabelCell>(m_group, m_configuration, value, style);
+	  std::make_unique<LabelCell>(m_group, m_configuration, value, style);
       else
         cell =
-            std::make_unique<TextCell>(m_group, m_configuration, value, style);
+	  std::make_unique<TextCell>(m_group, m_configuration, value, style);
 
       switch (style) {
       case TS_ERROR:
@@ -906,7 +906,7 @@ void MathParser::ParseCommonAttrs(wxXmlNode *node, Cell *cell) {
 }
 
 void MathParser::ParseCommonGroupCellAttrs(
-    wxXmlNode *node, const std::unique_ptr<GroupCell> &group) {
+					   wxXmlNode *node, const std::unique_ptr<GroupCell> &group) {
   if (!group || !node)
     return;
 
@@ -936,7 +936,7 @@ std::unique_ptr<Cell> MathParser::ParseSqrtTag(wxXmlNode *node) {
 
   auto inner = HandleNullPointer(ParseTag(child, true));
   auto cell =
-      std::make_unique<SqrtCell>(m_group, m_configuration, std::move(inner));
+    std::make_unique<SqrtCell>(m_group, m_configuration, std::move(inner));
   cell->SetType(m_ParserStyle);
   cell->SetHighlight(m_highlight);
   ParseCommonAttrs(node, cell);
@@ -949,7 +949,7 @@ std::unique_ptr<Cell> MathParser::ParseAbsTag(wxXmlNode *node) {
   auto inner = HandleNullPointer(ParseTag(child, true));
 
   auto cell =
-      std::make_unique<AbsCell>(m_group, m_configuration, std::move(inner));
+    std::make_unique<AbsCell>(m_group, m_configuration, std::move(inner));
   cell->SetType(m_ParserStyle);
   cell->SetHighlight(m_highlight);
   ParseCommonAttrs(node, cell);
@@ -976,7 +976,7 @@ std::unique_ptr<Cell> MathParser::ParseParenTag(wxXmlNode *node) {
   // case.
   auto inner = ParseTag(child, true);
   auto cell =
-      std::make_unique<ParenCell>(m_group, m_configuration, std::move(inner));
+    std::make_unique<ParenCell>(m_group, m_configuration, std::move(inner));
   cell->SetType(m_ParserStyle);
   cell->SetHighlight(m_highlight);
   cell->SetStyle(TS_VARIABLE);
@@ -996,8 +996,8 @@ std::unique_ptr<Cell> MathParser::ParseLimitTag(wxXmlNode *node) {
   auto base = HandleNullPointer(ParseTag(child, false));
 
   auto limit =
-      std::make_unique<LimitCell>(m_group, m_configuration, std::move(base),
-                                  std::move(under), std::move(name));
+    std::make_unique<LimitCell>(m_group, m_configuration, std::move(base),
+				std::move(under), std::move(name));
   limit->SetType(m_ParserStyle);
   ParseCommonAttrs(node, limit);
   return limit;
@@ -1008,7 +1008,7 @@ std::unique_ptr<Cell> MathParser::ParseSumTag(wxXmlNode *node) {
   child = SkipWhitespaceNode(child);
   wxString type = node->GetAttribute(wxT("type"), wxT("sum"));
   sumStyle style =
-      ((type == wxT("prod")) || (type == wxT("lprod"))) ? SM_PROD : SM_SUM;
+    ((type == wxT("prod")) || (type == wxT("lprod"))) ? SM_PROD : SM_SUM;
   auto highlight = m_highlight;
 
   auto under = HandleNullPointer(ParseTag(child, false));
@@ -1132,8 +1132,8 @@ std::unique_ptr<Cell> MathParser::ParseTag(wxXmlNode *node, bool all) {
       if (!tree.GetLastAppended() &&
           (node->GetAttribute(wxT("listdelim")) != wxT("true"))) {
         auto tmp = std::make_unique<VisiblyInvalidCell>(
-            m_group, m_configuration,
-            wxString::Format(m_unknownXMLTagToolTip, tagName));
+							m_group, m_configuration,
+							wxString::Format(m_unknownXMLTagToolTip, tagName));
         tree.Append(std::move(tmp));
         gotInvalid = true;
       }
@@ -1212,12 +1212,12 @@ std::unique_ptr<Cell> MathParser::ParseLine(wxString s, CellType style) {
       cell = ParseTag(doc->GetChildren());
   } else {
     cell = std::make_unique<TextCell>(
-        m_group, m_configuration,
-        T_("(Expression longer than allowed by the configuration setting)"),
-        TS_WARNING);
+				      m_group, m_configuration,
+				      T_("(Expression longer than allowed by the configuration setting)"),
+				      TS_WARNING);
     cell->SetToolTip(&T_(
-        "The maximum size of the expressions wxMaxima is allowed to display "
-        "can be changed in the configuration dialogue."));
+			 "The maximum size of the expressions wxMaxima is allowed to display "
+			 "can be changed in the configuration dialogue."));
     cell->ForceBreakLine(true);
   }
   return cell;

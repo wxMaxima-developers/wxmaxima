@@ -37,11 +37,11 @@ static wxString MakeTempFilename() {
 
 OutCommon::OutCommon(Configuration **configuration, const wxString &filename,
                      int fullWidth, double scale)
-    : m_tempFilename(MakeTempFilename()),
-      m_filename(filename.empty()
-                     ? wxFileName::CreateTempFileName(wxT("wxmaxima_"))
-                     : filename),
-      m_configuration(configuration), m_scale(scale), m_fullWidth(fullWidth) {
+  : m_tempFilename(MakeTempFilename()),
+    m_filename(filename.empty()
+	       ? wxFileName::CreateTempFileName(wxT("wxmaxima_"))
+	       : filename),
+    m_configuration(configuration), m_scale(scale), m_fullWidth(fullWidth) {
   m_thisconfig.ShowCodeCells(m_oldconfig->ShowCodeCells());
   m_thisconfig.SetWorkSheet((*configuration)->GetWorkSheet());
 
@@ -58,7 +58,7 @@ OutCommon::OutCommon(Configuration **configuration, const wxString &filename,
 }
 
 OutCommon::OutCommon(Configuration **configuration, int fullWidth, double scale)
-    : OutCommon(configuration, {}, fullWidth, scale) {}
+  : OutCommon(configuration, {}, fullWidth, scale) {}
 
 OutCommon::~OutCommon() {
   if (wxFileExists(m_tempFilename)) {
@@ -260,9 +260,9 @@ OutCommon::GetDataObject(const wxDataFormat &format) {
 
 OutCommon::DataObject::DataObject(const wxDataFormat &format,
                                   const wxMemoryBuffer &data)
-    : wxCustomDataObject(format), m_databuf(0)
-// We can't point m_databuf to data here, since TakeData calls Free() and will
-// ruin it!
+  : wxCustomDataObject(format), m_databuf(0)
+    // We can't point m_databuf to data here, since TakeData calls Free() and will
+    // ruin it!
 {
   // cppcheck-suppress useInitializationList
   m_databuf = data;

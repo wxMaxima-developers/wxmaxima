@@ -21,7 +21,7 @@
 
 /*! \file
   This file declares all the wizards the draw sidepane needs.
- */
+*/
 
 #ifndef WRAPPINGSTATICTEXT_H
 #define WRAPPINGSTATICTEXT_H
@@ -33,7 +33,7 @@
 /*! A wxStaticText variant that auto-wraps, if necessary
 
   The idea to this class was taken from https://forums.wxwidgets.org/viewtopic.php?t=27850
- */
+*/
 class WrappingStaticText : public wxPanel
 {
 public:

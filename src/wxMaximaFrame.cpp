@@ -29,7 +29,7 @@
   wxMaximaFrame is responsible for everything that is displayed around the
   actual worksheet - which is displayed by Worksheet and whose logic partially
   is defined in wxMaxima.
- */
+*/
 #include "wxMaximaFrame.h"
 #include "Dirstructure.h"
 
@@ -52,11 +52,11 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, wxLocale *locale,
                              const wxString &title, const wxPoint &pos,
                              const wxSize &size, long style,
                              bool becomeLogTarget)
-    : wxFrame(parent, id, title, pos, size, style),
-      m_manager(this, wxAUI_MGR_ALLOW_FLOATING | wxAUI_MGR_ALLOW_ACTIVE_PANE |
-                          wxAUI_MGR_TRANSPARENT_HINT | wxAUI_MGR_HINT_FADE),
-      m_recentDocuments(wxT("document")), m_unsavedDocuments(wxT("unsaved")),
-      m_recentPackages(wxT("packages")) {
+  : wxFrame(parent, id, title, pos, size, style),
+    m_manager(this, wxAUI_MGR_ALLOW_FLOATING | wxAUI_MGR_ALLOW_ACTIVE_PANE |
+	      wxAUI_MGR_TRANSPARENT_HINT | wxAUI_MGR_HINT_FADE),
+    m_recentDocuments(wxT("document")), m_unsavedDocuments(wxT("unsaved")),
+    m_recentPackages(wxT("packages")) {
   m_locale = locale;
   //  wxLogMessage(_("Selected language: ") + m_locale->GetCanonicalName() +
   //               " (" + wxString::Format("%i", m_locale->GetLanguage()) +
@@ -148,8 +148,8 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, wxLocale *locale,
 
   if (Configuration::m_configfileLocation_override != wxEmptyString)
     wxLogMessage(wxString::Format(
-        _("Reading the config from %s."),
-        Configuration::m_configfileLocation_override.utf8_str()));
+				  _("Reading the config from %s."),
+				  Configuration::m_configfileLocation_override.utf8_str()));
   else
     wxLogMessage(_("Reading the config from the default location."));
 
@@ -192,7 +192,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, wxLocale *locale,
 
   // The table of contents
   m_worksheet->m_tableOfContents = new TableOfContents(
-      this, -1, &m_configuration, m_worksheet->GetTreeAddress());
+						       this, -1, &m_configuration, m_worksheet->GetTreeAddress());
 
   m_xmlInspector = new XmlInspector(this, -1);
   wxWindowUpdateLocker xmlInspectorBlocker(m_xmlInspector);
@@ -220,251 +220,251 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, wxLocale *locale,
 #endif
 #ifndef __WXOSX__
   SetTitle(
-      wxString::Format(_("wxMaxima %s (%s) "), wxT(GITVERSION),
-                       wxPlatformInfo::Get().GetOperatingSystemDescription()) +
-      _("[ unsaved ]"));
+	   wxString::Format(_("wxMaxima %s (%s) "), wxT(GITVERSION),
+			    wxPlatformInfo::Get().GetOperatingSystemDescription()) +
+	   _("[ unsaved ]"));
 #else
   SetTitle(_("untitled"));
 #endif
 
   m_manager.AddPane(m_history, wxAuiPaneInfo()
-                                   .Name(wxT("history"))
-                                   .CloseButton(true)
-                                   .PinButton(false)
-                                   .TopDockable(true)
-                                   .BottomDockable(true)
-                                   .LeftDockable(true)
-                                   .RightDockable(true)
-                                   .PaneBorder(true)
-                                   .Right());
+		    .Name(wxT("history"))
+		    .CloseButton(true)
+		    .PinButton(false)
+		    .TopDockable(true)
+		    .BottomDockable(true)
+		    .LeftDockable(true)
+		    .RightDockable(true)
+		    .PaneBorder(true)
+		    .Right());
 
   m_manager.AddPane(m_worksheet->m_tableOfContents, wxAuiPaneInfo()
-                                                        .Name(wxT("structure"))
-                                                        .CloseButton(true)
-                                                        .PinButton(false)
-                                                        .TopDockable(true)
-                                                        .BottomDockable(true)
-                                                        .LeftDockable(true)
-                                                        .RightDockable(true)
-                                                        .PaneBorder(true)
-                                                        .Right());
+		    .Name(wxT("structure"))
+		    .CloseButton(true)
+		    .PinButton(false)
+		    .TopDockable(true)
+		    .BottomDockable(true)
+		    .LeftDockable(true)
+		    .RightDockable(true)
+		    .PaneBorder(true)
+		    .Right());
 
   m_manager.AddPane(m_xmlInspector, wxAuiPaneInfo()
-                                        .Name("XmlInspector")
-                                        .CloseButton(true)
-                                        .PinButton(false)
-                                        .TopDockable(true)
-                                        .BottomDockable(true)
-                                        .LeftDockable(true)
-                                        .RightDockable(true)
-                                        .PaneBorder(true)
-                                        .Right());
+		    .Name("XmlInspector")
+		    .CloseButton(true)
+		    .PinButton(false)
+		    .TopDockable(true)
+		    .BottomDockable(true)
+		    .LeftDockable(true)
+		    .RightDockable(true)
+		    .PaneBorder(true)
+		    .Right());
 
   wxWindow *statPane;
   m_manager.AddPane(statPane = CreateStatPane(), wxAuiPaneInfo()
-                                                     .Name(wxT("stats"))
-                                                     .CloseButton(true)
-                                                     .PinButton(false)
-                                                     .TopDockable(true)
-                                                     .BottomDockable(true)
-                                                     .LeftDockable(true)
-                                                     .RightDockable(true)
-                                                     .PaneBorder(true)
-                                                     .Left());
+		    .Name(wxT("stats"))
+		    .CloseButton(true)
+		    .PinButton(false)
+		    .TopDockable(true)
+		    .BottomDockable(true)
+		    .LeftDockable(true)
+		    .RightDockable(true)
+		    .PaneBorder(true)
+		    .Left());
   wxWindowUpdateLocker statBlocker(statPane);
 
   wxPanel *greekPane = new GreekPane(this, &m_configuration, m_worksheet);
   wxWindowUpdateLocker greekBlocker(greekPane);
   m_manager.AddPane(greekPane,
                     wxAuiPaneInfo()
-                        .Name(wxT("greek"))
-                        .CloseButton(true)
-                        .PinButton(false)
-                        .DockFixed(false)
-                        .Gripper(false)
-                        .PinButton(false)
-                        .TopDockable(true)
-                        .BottomDockable(true)
-                        .LeftDockable(true)
-                        .RightDockable(true)
-                        .PaneBorder(true)
-                        .FloatingSize(greekPane->GetEffectiveMinSize())
-                        .Left());
+		    .Name(wxT("greek"))
+		    .CloseButton(true)
+		    .PinButton(false)
+		    .DockFixed(false)
+		    .Gripper(false)
+		    .PinButton(false)
+		    .TopDockable(true)
+		    .BottomDockable(true)
+		    .LeftDockable(true)
+		    .RightDockable(true)
+		    .PaneBorder(true)
+		    .FloatingSize(greekPane->GetEffectiveMinSize())
+		    .Left());
 
   wxPanel *unicodePane =
-      new UnicodeSidebar(this, m_worksheet, &m_configuration);
+    new UnicodeSidebar(this, m_worksheet, &m_configuration);
   wxWindowUpdateLocker unicodeBlocker(unicodePane);
   m_manager.AddPane(unicodePane,
                     wxAuiPaneInfo()
-                        .Name(wxT("unicode"))
-                        .CloseButton(true)
-                        .PinButton(false)
-                        .DockFixed(false)
-                        .Gripper(false)
-                        .TopDockable(true)
-                        .BottomDockable(true)
-                        .LeftDockable(true)
-                        .RightDockable(true)
-                        .PaneBorder(true)
-                        .FloatingSize(greekPane->GetEffectiveMinSize())
-                        .Left());
+		    .Name(wxT("unicode"))
+		    .CloseButton(true)
+		    .PinButton(false)
+		    .DockFixed(false)
+		    .Gripper(false)
+		    .TopDockable(true)
+		    .BottomDockable(true)
+		    .LeftDockable(true)
+		    .RightDockable(true)
+		    .PaneBorder(true)
+		    .FloatingSize(greekPane->GetEffectiveMinSize())
+		    .Left());
 
   m_manager.AddPane(
-      m_logPane,
-      wxAuiPaneInfo()
-          .Name("log")
-          .CloseButton(true)
-          .PinButton(false)
-          .Gripper(false)
-          .TopDockable(true)
-          .BottomDockable(true)
-          .LeftDockable(true)
-          .RightDockable(true)
-          .PaneBorder(true)
-          .
-      //                    MinSize(m_logPane->GetEffectiveMinSize()).
-      //                    BestSize(m_logPane->GetEffectiveMinSize()).
-      FloatingSize(m_logPane->GetEffectiveMinSize())
-          .Left());
+		    m_logPane,
+		    wxAuiPaneInfo()
+		    .Name("log")
+		    .CloseButton(true)
+		    .PinButton(false)
+		    .Gripper(false)
+		    .TopDockable(true)
+		    .BottomDockable(true)
+		    .LeftDockable(true)
+		    .RightDockable(true)
+		    .PaneBorder(true)
+		    .
+		    //                    MinSize(m_logPane->GetEffectiveMinSize()).
+		    //                    BestSize(m_logPane->GetEffectiveMinSize()).
+		    FloatingSize(m_logPane->GetEffectiveMinSize())
+		    .Left());
 
   m_worksheet->m_variablesPane = new Variablespane(this, wxID_ANY);
   wxWindowUpdateLocker variablesBlocker(m_worksheet->m_variablesPane);
   m_manager.AddPane(
-      m_worksheet->m_variablesPane,
-      wxAuiPaneInfo()
-          .Name(wxT("variables"))
-          .CloseButton(true)
-          .DockFixed(false)
-          .Gripper(false)
-          .TopDockable(true)
-          .BottomDockable(true)
-          .LeftDockable(true)
-          .RightDockable(true)
-          .PaneBorder(true)
-          .FloatingSize(m_worksheet->m_variablesPane->GetEffectiveMinSize())
-          .Bottom());
+		    m_worksheet->m_variablesPane,
+		    wxAuiPaneInfo()
+		    .Name(wxT("variables"))
+		    .CloseButton(true)
+		    .DockFixed(false)
+		    .Gripper(false)
+		    .TopDockable(true)
+		    .BottomDockable(true)
+		    .LeftDockable(true)
+		    .RightDockable(true)
+		    .PaneBorder(true)
+		    .FloatingSize(m_worksheet->m_variablesPane->GetEffectiveMinSize())
+		    .Bottom());
 
   m_symbolsPane = new SymbolsPane(this, &m_configuration, m_worksheet);
   wxWindowUpdateLocker symbolsBlocker(m_symbolsPane);
   m_manager.AddPane(m_symbolsPane,
                     wxAuiPaneInfo()
-                        .Name(wxT("symbols"))
-                        .DockFixed(false)
-                        .CloseButton(true)
-                        .Gripper(false)
-                        .TopDockable(true)
-                        .BottomDockable(true)
-                        .LeftDockable(true)
-                        .RightDockable(true)
-                        .PaneBorder(true)
-                        .FloatingSize(m_symbolsPane->GetEffectiveMinSize())
-                        .Left());
+		    .Name(wxT("symbols"))
+		    .DockFixed(false)
+		    .CloseButton(true)
+		    .Gripper(false)
+		    .TopDockable(true)
+		    .BottomDockable(true)
+		    .LeftDockable(true)
+		    .RightDockable(true)
+		    .PaneBorder(true)
+		    .FloatingSize(m_symbolsPane->GetEffectiveMinSize())
+		    .Left());
   m_manager.AddPane(CreateMathPane(), wxAuiPaneInfo()
-                                          .Name(wxT("math"))
-                                          .CloseButton(true)
-                                          .TopDockable(true)
-                                          .BottomDockable(true)
-                                          .LeftDockable(true)
-                                          .RightDockable(true)
-                                          .PaneBorder(true)
-                                          .Left());
+		    .Name(wxT("math"))
+		    .CloseButton(true)
+		    .TopDockable(true)
+		    .BottomDockable(true)
+		    .LeftDockable(true)
+		    .RightDockable(true)
+		    .PaneBorder(true)
+		    .Left());
 
   wxAuiPaneInfo()
-      .Name(wxT("math"))
-      .CloseButton(true)
-      .TopDockable(true)
-      .BottomDockable(true)
-      .LeftDockable(true)
-      .RightDockable(true)
-      .PaneBorder(true)
-      .Left();
+    .Name(wxT("math"))
+    .CloseButton(true)
+    .TopDockable(true)
+    .BottomDockable(true)
+    .LeftDockable(true)
+    .RightDockable(true)
+    .PaneBorder(true)
+    .Left();
 
   m_manager.AddPane(m_wizard = new ScrollingGenWizPanel(
-                        this, &m_configuration, m_worksheet->GetMaximaManual()),
+							this, &m_configuration, m_worksheet->GetMaximaManual()),
                     wxAuiPaneInfo()
-                        .Name(wxT("wizard"))
-                        .CloseButton(true)
-                        .TopDockable(true)
-                        .MinSize(wxSize(200 * GetContentScaleFactor(),
-                                        200 * GetContentScaleFactor()))
-                        .FloatingSize(wxSize(300 * GetContentScaleFactor(),
-                                             500 * GetContentScaleFactor()))
-                        .BottomDockable(true)
-                        .LeftDockable(true)
-                        .RightDockable(true)
-                        .PaneBorder(true)
-                        .Resizable(true)
-                        .Movable(true)
-                        .CaptionVisible(true)
-                        .Show(true)
-                        .Caption(wxT("Example Wizard")));
+		    .Name(wxT("wizard"))
+		    .CloseButton(true)
+		    .TopDockable(true)
+		    .MinSize(wxSize(200 * GetContentScaleFactor(),
+				    200 * GetContentScaleFactor()))
+		    .FloatingSize(wxSize(300 * GetContentScaleFactor(),
+					 500 * GetContentScaleFactor()))
+		    .BottomDockable(true)
+		    .LeftDockable(true)
+		    .RightDockable(true)
+		    .PaneBorder(true)
+		    .Resizable(true)
+		    .Movable(true)
+		    .CaptionVisible(true)
+		    .Show(true)
+		    .Caption(wxT("Example Wizard")));
 
   m_manager.AddPane(CreateFormatPane(), wxAuiPaneInfo()
-                                            .Name(wxT("format"))
-                                            .CloseButton(true)
-                                            .TopDockable(true)
-                                            .BottomDockable(true)
-                                            .LeftDockable(true)
-                                            .RightDockable(true)
-                                            .PaneBorder(true)
-                                            .Left());
+		    .Name(wxT("format"))
+		    .CloseButton(true)
+		    .TopDockable(true)
+		    .BottomDockable(true)
+		    .LeftDockable(true)
+		    .RightDockable(true)
+		    .PaneBorder(true)
+		    .Left());
 
   m_manager.AddPane(m_drawPane = new DrawPane(this, -1),
                     wxAuiPaneInfo()
-                        .Name(wxT("draw"))
-                        .CloseButton(true)
-                        .TopDockable(true)
-                        .BottomDockable(true)
-                        .LeftDockable(true)
-                        .RightDockable(true)
-                        .PaneBorder(true)
-                        .Left());
+		    .Name(wxT("draw"))
+		    .CloseButton(true)
+		    .TopDockable(true)
+		    .BottomDockable(true)
+		    .LeftDockable(true)
+		    .RightDockable(true)
+		    .PaneBorder(true)
+		    .Left());
   wxWindowUpdateLocker drawBlocker(m_drawPane);
 
   m_manager.AddPane(m_helpPane = new HelpBrowser(
-                        this, &m_configuration, m_worksheet->GetMaximaManual(),
-                        wxT("file://") + wxMaximaManualLocation()),
+						 this, &m_configuration, m_worksheet->GetMaximaManual(),
+						 wxT("file://") + wxMaximaManualLocation()),
                     wxAuiPaneInfo()
-                        .Name(wxT("help"))
-                        .CloseButton(true)
-                        .TopDockable(true)
-                        .BottomDockable(true)
-                        .LeftDockable(true)
-                        .RightDockable(true)
-                        .PaneBorder(true)
-                        .Right());
+		    .Name(wxT("help"))
+		    .CloseButton(true)
+		    .TopDockable(true)
+		    .BottomDockable(true)
+		    .LeftDockable(true)
+		    .RightDockable(true)
+		    .PaneBorder(true)
+		    .Right());
 
   m_worksheet->m_mainToolBar = new ToolBar(this);
 
   m_manager.AddPane(m_worksheet->m_mainToolBar,
                     wxAuiPaneInfo()
-                        .Name(wxT("toolbar"))
-                        .Top()
-                        .TopDockable(true)
-                        .BottomDockable(true)
-                        . // ToolbarPane().
+		    .Name(wxT("toolbar"))
+		    .Top()
+		    .TopDockable(true)
+		    .BottomDockable(true)
+		    . // ToolbarPane().
                     CaptionVisible(false)
-                        .CloseButton(false)
-                        .LeftDockable(false)
-                        .DockFixed()
-                        .RightDockable(false)
-                        .Gripper(false)
-                        .Row(1));
+		    .CloseButton(false)
+		    .LeftDockable(false)
+		    .DockFixed()
+		    .RightDockable(false)
+		    .Gripper(false)
+		    .Row(1));
 
   m_manager.AddPane(m_worksheet,
                     wxAuiPaneInfo()
-                        .Name(wxT("console"))
-                        .Center()
-                        .CloseButton(false)
-                        .CaptionVisible(false)
-                        .TopDockable(true)
-                        .BottomDockable(true)
-                        .LeftDockable(true)
-                        .RightDockable(true)
-                        .MinSize(wxSize(100 * GetContentScaleFactor(),
-                                        100 * GetContentScaleFactor()))
-                        .PaneBorder(false)
-                        .Row(2));
+		    .Name(wxT("console"))
+		    .Center()
+		    .CloseButton(false)
+		    .CaptionVisible(false)
+		    .TopDockable(true)
+		    .BottomDockable(true)
+		    .LeftDockable(true)
+		    .RightDockable(true)
+		    .MinSize(wxSize(100 * GetContentScaleFactor(),
+				    100 * GetContentScaleFactor()))
+		    .PaneBorder(false)
+		    .Row(2));
 
   SetupMenu();
   {
@@ -476,60 +476,60 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, wxLocale *locale,
   }
 
   m_manager.GetPane("XmlInspector") = m_manager.GetPane("XmlInspector")
-                                          .PinButton(false)
-                                          .Show(false)
-                                          .Movable(true);
+    .PinButton(false)
+    .Show(false)
+    .Movable(true);
   m_manager.GetPane("stats") =
-      m_manager.GetPane("stats").PinButton(false).Show(false).Movable(true);
+    m_manager.GetPane("stats").PinButton(false).Show(false).Movable(true);
   m_manager.GetPane("greek") =
-      m_manager.GetPane("greek").PinButton(false).Show(false).Movable(true);
+    m_manager.GetPane("greek").PinButton(false).Show(false).Movable(true);
   m_manager.GetPane("variables") =
-      m_manager.GetPane("variables").PinButton(false).Show(false).Movable(true);
+    m_manager.GetPane("variables").PinButton(false).Show(false).Movable(true);
   m_manager.GetPane("math") =
-      m_manager.GetPane("math").PinButton(false).Show(false).Movable(true);
+    m_manager.GetPane("math").PinButton(false).Show(false).Movable(true);
   m_manager.GetPane("format") =
-      m_manager.GetPane("format").PinButton(false).Show(false).Movable(true);
+    m_manager.GetPane("format").PinButton(false).Show(false).Movable(true);
   m_manager.GetPane("log") =
-      m_manager.GetPane("log").PinButton(false).Show(false).Movable(true);
+    m_manager.GetPane("log").PinButton(false).Show(false).Movable(true);
 
   m_manager.GetPane("unicode") = m_manager.GetPane("unicode")
-                                     .Show(false)
-                                     .Gripper(false)
-                                     .CloseButton(true)
-                                     .PinButton(false)
-                                     .Movable(true);
+    .Show(false)
+    .Gripper(false)
+    .CloseButton(true)
+    .PinButton(false)
+    .Movable(true);
 
   m_manager.GetPane("variables") = m_manager.GetPane("variables")
-                                       .PinButton(false)
-                                       .Gripper(false)
-                                       .CloseButton(true)
-                                       .PinButton(false);
+    .PinButton(false)
+    .Gripper(false)
+    .CloseButton(true)
+    .PinButton(false);
   m_manager.GetPane("log") = m_manager.GetPane("log")
-                                 .PinButton(false)
-                                 .Gripper(false)
-                                 .CloseButton(true)
-                                 .PinButton(false)
-                                 .Movable(true);
+    .PinButton(false)
+    .Gripper(false)
+    .CloseButton(true)
+    .PinButton(false)
+    .Movable(true);
 
   m_manager.GetPane("symbols") = m_manager.GetPane("symbols")
-                                     .Show(true)
-                                     .Gripper(false)
-                                     .CloseButton(true)
-                                     .PinButton(false)
-                                     .Movable(true);
+    .Show(true)
+    .Gripper(false)
+    .CloseButton(true)
+    .PinButton(false)
+    .Movable(true);
   m_manager.GetPane("greek") = m_manager.GetPane("greek")
-                                   .Show(true)
-                                   .Gripper(false)
-                                   .CloseButton(true)
-                                   .PinButton(false)
-                                   .Movable(true);
+    .Show(true)
+    .Gripper(false)
+    .CloseButton(true)
+    .PinButton(false)
+    .Movable(true);
 
   m_manager.GetPane("draw") = m_manager.GetPane("draw")
-                                  .Show(true)
-                                  .CloseButton(true)
-                                  .Gripper(false)
-                                  .PinButton(false)
-                                  .Movable(true);
+    .Show(true)
+    .CloseButton(true)
+    .Gripper(false)
+    .PinButton(false)
+    .Movable(true);
 
   // Read the perspektive (the sidebar state and positions).
   wxConfigBase *config = wxConfig::Get();
@@ -552,112 +552,112 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, wxLocale *locale,
   m_manager.GetPane("wizard").Show(false).Float();
 
   m_manager.GetPane("console") = m_manager.GetPane("console")
-                                     .Center()
-                                     .CloseButton(false)
-                                     .CaptionVisible(false)
-                                     .TopDockable(true)
-                                     .BottomDockable(true)
-                                     .LeftDockable(true)
-                                     .RightDockable(true)
-                                     .MinSize(wxSize(100, 100))
-                                     .PaneBorder(false)
-                                     .Row(2);
+    .Center()
+    .CloseButton(false)
+    .CaptionVisible(false)
+    .TopDockable(true)
+    .BottomDockable(true)
+    .LeftDockable(true)
+    .RightDockable(true)
+    .MinSize(wxSize(100, 100))
+    .PaneBorder(false)
+    .Row(2);
 
   // LoadPerspective overwrites the pane names with the saved ones -which can
   // belong to a translation different to the one selected currently =>
   // let's overwrite the names here.
   m_manager.GetPane(wxT("symbols")) = m_manager.GetPane(wxT("symbols"))
-                                          .Caption(_("Mathematical Symbols"))
-                                          .CloseButton(true)
-                                          .Resizable()
-                                          .Gripper(false)
-                                          .PaneBorder(true)
-                                          .Movable(true);
+    .Caption(_("Mathematical Symbols"))
+    .CloseButton(true)
+    .Resizable()
+    .Gripper(false)
+    .PaneBorder(true)
+    .Movable(true);
   m_manager.GetPane(wxT("format")) = m_manager.GetPane(wxT("format"))
-                                         .Caption(_("Insert"))
-                                         .CloseButton(true)
-                                         .Resizable()
-                                         .PaneBorder(true)
-                                         .Movable(true);
+    .Caption(_("Insert"))
+    .CloseButton(true)
+    .Resizable()
+    .PaneBorder(true)
+    .Movable(true);
   m_manager.GetPane(wxT("draw")) = m_manager.GetPane(wxT("draw"))
-                                       .Caption(_("Plot using Draw"))
-                                       .CloseButton(true)
-                                       .Resizable()
-                                       .PaneBorder(true)
-                                       .Movable(true);
+    .Caption(_("Plot using Draw"))
+    .CloseButton(true)
+    .Resizable()
+    .PaneBorder(true)
+    .Movable(true);
   m_manager.GetPane(wxT("help")) = m_manager.GetPane(wxT("help"))
-                                       .Caption(_("Help"))
-                                       .CloseButton(true)
-                                       .Resizable()
-                                       .PaneBorder(true)
-                                       .Movable(true);
+    .Caption(_("Help"))
+    .CloseButton(true)
+    .Resizable()
+    .PaneBorder(true)
+    .Movable(true);
   m_manager.GetPane(wxT("greek")) = m_manager.GetPane(wxT("greek"))
-                                        .Caption(_("Greek Letters"))
-                                        .CloseButton(true)
-                                        .Resizable()
-                                        .Gripper(false)
-                                        .PaneBorder(true)
-                                        .Movable(true)
-                                        .Gripper(false)
-                                        .CloseButton(true);
+    .Caption(_("Greek Letters"))
+    .CloseButton(true)
+    .Resizable()
+    .Gripper(false)
+    .PaneBorder(true)
+    .Movable(true)
+    .Gripper(false)
+    .CloseButton(true);
 
   m_manager.GetPane(wxT("log")) = m_manager.GetPane(wxT("log"))
-                                      .Caption(_("Debug messages"))
-                                      .CloseButton(true)
-                                      .Resizable()
-                                      .Gripper(false)
-                                      .PaneBorder(true)
-                                      .Movable(true);
+    .Caption(_("Debug messages"))
+    .CloseButton(true)
+    .Resizable()
+    .Gripper(false)
+    .PaneBorder(true)
+    .Movable(true);
   m_manager.GetPane(wxT("variables")) = m_manager.GetPane(wxT("variables"))
-                                            .Caption(_("Variables"))
-                                            .CloseButton(true)
-                                            .Resizable()
-                                            .Gripper(false)
-                                            .PaneBorder(true)
-                                            .Movable(true);
+    .Caption(_("Variables"))
+    .CloseButton(true)
+    .Resizable()
+    .Gripper(false)
+    .PaneBorder(true)
+    .Movable(true);
   m_manager.GetPane(wxT("math")) = m_manager.GetPane(wxT("math"))
-                                       .Caption(_("General Math"))
-                                       .CloseButton(true)
-                                       .Resizable()
-                                       .PaneBorder(true)
-                                       .Movable(true);
+    .Caption(_("General Math"))
+    .CloseButton(true)
+    .Resizable()
+    .PaneBorder(true)
+    .Movable(true);
   m_manager.GetPane(wxT("stats")) = m_manager.GetPane(wxT("stats"))
-                                        .Caption(_("Statistics"))
-                                        .CloseButton(true)
-                                        .Resizable()
-                                        .PaneBorder(true)
-                                        .Movable(true);
+    .Caption(_("Statistics"))
+    .CloseButton(true)
+    .Resizable()
+    .PaneBorder(true)
+    .Movable(true);
   m_manager.GetPane(wxT("XmlInspector")) =
-      m_manager.GetPane(wxT("XmlInspector"))
-          .Caption(_("Raw XML monitor"))
-          .CloseButton(true)
-          .Resizable()
-          .PaneBorder(true)
-          .Movable(true);
+    m_manager.GetPane(wxT("XmlInspector"))
+    .Caption(_("Raw XML monitor"))
+    .CloseButton(true)
+    .Resizable()
+    .PaneBorder(true)
+    .Movable(true);
   // The XML inspector scares many users and displaying long XML responses there
   // slows down wxMaxima => disable the XML inspector on startup.
   m_manager.GetPane(wxT("XmlInspector"))
-      .Show(false)
-      .PaneBorder(true)
-      .Movable(true);
+    .Show(false)
+    .PaneBorder(true)
+    .Movable(true);
   m_manager.GetPane(wxT("unicode")) = m_manager.GetPane(wxT("unicode"))
-                                          .Caption(_("Unicode characters"))
-                                          .Show(false)
-                                          .PaneBorder(true)
-                                          .Movable(true);
+    .Caption(_("Unicode characters"))
+    .Show(false)
+    .PaneBorder(true)
+    .Movable(true);
 
   m_manager.GetPane(wxT("structure")) = m_manager.GetPane(wxT("structure"))
-                                            .Caption(_("Table of Contents"))
-                                            .CloseButton(true)
-                                            .Resizable()
-                                            .PaneBorder(true)
-                                            .Movable(true);
+    .Caption(_("Table of Contents"))
+    .CloseButton(true)
+    .Resizable()
+    .PaneBorder(true)
+    .Movable(true);
   m_manager.GetPane(wxT("history")) = m_manager.GetPane(wxT("history"))
-                                          .Caption(_("History"))
-                                          .CloseButton(true)
-                                          .Resizable()
-                                          .PaneBorder(true)
-                                          .Movable(true);
+    .Caption(_("History"))
+    .CloseButton(true)
+    .Resizable()
+    .PaneBorder(true)
+    .Movable(true);
   m_manager.Update();
   Connect(menu_pane_dockAll, wxEVT_MENU,
           wxCommandEventHandler(wxMaximaFrame::DockAllSidebars), NULL, this);
@@ -738,9 +738,9 @@ void wxMaximaFrame::UpdateStatusMaximaBusy() {
           RightStatusText(_("Reading Maxima output"), false);
         else
           RightStatusText(
-              wxString::Format(_("Reading Maxima output: %li bytes"),
-                               m_bytesFromMaxima),
-              false);
+			  wxString::Format(_("Reading Maxima output: %li bytes"),
+					   m_bytesFromMaxima),
+			  false);
         break;
       case parsing:
         m_bytesFromMaxima_last = 0;
@@ -817,12 +817,12 @@ void wxMaximaFrame::SetupMenu() {
   SuppressErrorDialogs iconWarningBlocker;
 
   m_MenuBar = new MainMenuBar();
-// Enables the window list on MacOs.
+  // Enables the window list on MacOs.
 #ifdef __WXMAC__
   m_MenuBar->SetAutoWindowMenu(true);
 #endif
 
-#define APPEND_MENU_ITEM(menu, id, label, help, stock)                         \
+#define APPEND_MENU_ITEM(menu, id, label, help, stock)	\
   (menu)->Append((id), (label), (help), wxITEM_NORMAL);
 
   // File menu
@@ -879,8 +879,8 @@ void wxMaximaFrame::SetupMenu() {
                      _("Copy as Text\tCtrl+Shift+C"),
                      _("Copy selection from document as text"), wxITEM_NORMAL);
   m_EditMenu->Append(
-      menu_copy_matlab_from_worksheet, _("Copy for Octave/Matlab"),
-      _("Copy selection from document in Matlab format"), wxITEM_NORMAL);
+		     menu_copy_matlab_from_worksheet, _("Copy for Octave/Matlab"),
+		     _("Copy selection from document in Matlab format"), wxITEM_NORMAL);
   m_EditMenu->Append(menu_copy_tex_from_worksheet, _("Copy as LaTeX"),
                      _("Copy selection from document in LaTeX format"),
                      wxITEM_NORMAL);
@@ -916,8 +916,8 @@ void wxMaximaFrame::SetupMenu() {
                      wxITEM_NORMAL);
   m_EditMenu->AppendSeparator();
   m_EditMenu->Append(
-      Worksheet::popid_comment_selection, _("Comment selection\tCtrl+/"),
-      _("Comment out the currently selected text"), wxITEM_NORMAL);
+		     Worksheet::popid_comment_selection, _("Comment selection\tCtrl+/"),
+		     _("Comment out the currently selected text"), wxITEM_NORMAL);
   m_EditMenu->AppendSeparator();
 #if defined __WXOSX__
   APPEND_MENU_ITEM(m_EditMenu, wxID_PREFERENCES, _("Preferences...\tCtrl+,"),
@@ -972,8 +972,8 @@ void wxMaximaFrame::SetupMenu() {
   // equation display type submenu
   m_equationTypeMenuMenu = new wxMenu;
   m_equationTypeMenuMenu->AppendRadioItem(
-      menu_math_as_1D_ASCII, _("as 1D ASCII"),
-      _("Show equations in their linear form"));
+					  menu_math_as_1D_ASCII, _("as 1D ASCII"),
+					  _("Show equations in their linear form"));
   m_equationTypeMenuMenu->AppendRadioItem(menu_math_as_2D_ASCII,
                                           _("as ASCII Art"),
                                           _("2D equations using ASCII Art"));
@@ -986,14 +986,14 @@ void wxMaximaFrame::SetupMenu() {
 
   m_autoSubscriptMenu = new wxMenu;
   m_autoSubscriptMenu->AppendRadioItem(
-      menu_alwaysAutosubscript, _("Always after underscores"),
-      _("Always autosubscript after an underscore"));
+				       menu_alwaysAutosubscript, _("Always after underscores"),
+				       _("Always autosubscript after an underscore"));
   m_autoSubscriptMenu->AppendRadioItem(
-      menu_defaultAutosubscript, _("Only Integers and single letters"),
-      _("Autosubscript numbers and text following single letters"));
+				       menu_defaultAutosubscript, _("Only Integers and single letters"),
+				       _("Autosubscript numbers and text following single letters"));
   m_autoSubscriptMenu->AppendRadioItem(
-      menu_noAutosubscript, _("Never"),
-      _("Don't autosubscript after an underscore"));
+				       menu_noAutosubscript, _("Never"),
+				       _("Don't autosubscript after an underscore"));
   m_autoSubscriptMenu->Check(menu_defaultAutosubscript, true);
   m_autoSubscriptMenu->AppendSeparator();
   m_autoSubscriptMenu->Append(menu_autosubscriptIndividual,
@@ -1001,26 +1001,26 @@ void wxMaximaFrame::SetupMenu() {
   m_autoSubscriptMenu->Append(menu_noAutosubscriptIndividual,
                               _("Never display this variable with subscript"));
   m_autoSubscriptMenu->Append(
-      menu_declareAutosubscript,
-      _("Declare Text to always be displayed as subscript"));
+			      menu_declareAutosubscript,
+			      _("Declare Text to always be displayed as subscript"));
 
   m_viewMenu->Append(wxNewId(), _("Autosubscript"), m_autoSubscriptMenu,
                      _("Autosubscript chars after an underscore"));
   m_roundedMatrixParensMenu = new wxMenu;
   m_roundedMatrixParensMenu->AppendRadioItem(
-      menu_roundedMatrixParens, _("Rounded"),
-      _("Use rounded parenthesis for matrices"));
+					     menu_roundedMatrixParens, _("Rounded"),
+					     _("Use rounded parenthesis for matrices"));
   m_roundedMatrixParensMenu->AppendRadioItem(
-      menu_squareMatrixParens, _("Square"),
-      _("Use square parenthesis for matrices"));
+					     menu_squareMatrixParens, _("Square"),
+					     _("Use square parenthesis for matrices"));
   m_roundedMatrixParensMenu->AppendRadioItem(
-      menu_angledMatrixParens, _("Angles"),
-      _("Use \"<\" and \">\" as parenthesis for matrices"));
+					     menu_angledMatrixParens, _("Angles"),
+					     _("Use \"<\" and \">\" as parenthesis for matrices"));
   m_roundedMatrixParensMenu->AppendRadioItem(
-      menu_straightMatrixParens, _("Straight lines"),
-      _("Use vertical lines instead of parenthesis for matrices"));
+					     menu_straightMatrixParens, _("Straight lines"),
+					     _("Use vertical lines instead of parenthesis for matrices"));
   m_roundedMatrixParensMenu->AppendRadioItem(
-      menu_noMatrixParens, _("None"), _("Don't use parenthesis for matrices"));
+					     menu_noMatrixParens, _("None"), _("Don't use parenthesis for matrices"));
   m_viewMenu->Append(wxNewId(), _("Matrix parenthesis"),
                      m_roundedMatrixParensMenu,
                      _("Choose the parenthesis type for Matrices"));
@@ -1067,40 +1067,40 @@ void wxMaximaFrame::SetupMenu() {
   m_CellMenu = new wxMenu;
   {
     wxMenuItem *it =
-        new wxMenuItem(m_CellMenu, menu_evaluate, _("Evaluate Cell(s)"),
-                       _("Evaluate active or selected cell(s)"), wxITEM_NORMAL);
+      new wxMenuItem(m_CellMenu, menu_evaluate, _("Evaluate Cell(s)"),
+		     _("Evaluate active or selected cell(s)"), wxITEM_NORMAL);
     it->SetBitmap(m_worksheet->m_mainToolBar->GetEvalBitmap(
-        wxRendererNative::Get().GetCheckBoxSize(this)));
+							    wxRendererNative::Get().GetCheckBoxSize(this)));
     m_CellMenu->Append(it);
   }
   m_CellMenu->Append(
-      menu_evaluate_all_visible, _("Evaluate All Visible Cells\tCtrl+R"),
-      _("Evaluate all visible cells in the document"), wxITEM_NORMAL);
+		     menu_evaluate_all_visible, _("Evaluate All Visible Cells\tCtrl+R"),
+		     _("Evaluate all visible cells in the document"), wxITEM_NORMAL);
   {
     wxMenuItem *it = new wxMenuItem(
-        m_CellMenu, menu_evaluate_all, _("Evaluate All Cells\tCtrl+Shift+R"),
-        _("Evaluate all cells in the document"), wxITEM_NORMAL);
+				    m_CellMenu, menu_evaluate_all, _("Evaluate All Cells\tCtrl+Shift+R"),
+				    _("Evaluate all cells in the document"), wxITEM_NORMAL);
     it->SetBitmap(m_worksheet->m_mainToolBar->GetEvalAllBitmap(
-        wxRendererNative::Get().GetCheckBoxSize(this)));
+							       wxRendererNative::Get().GetCheckBoxSize(this)));
     m_CellMenu->Append(it);
   }
   {
     wxMenuItem *it = new wxMenuItem(
-        m_CellMenu, ToolBar::tb_evaltillhere,
-        _("Evaluate Cells Above\tCtrl+Shift+P"),
-        _("Re-evaluate all cells above the one the cursor is in"),
-        wxITEM_NORMAL);
+				    m_CellMenu, ToolBar::tb_evaltillhere,
+				    _("Evaluate Cells Above\tCtrl+Shift+P"),
+				    _("Re-evaluate all cells above the one the cursor is in"),
+				    wxITEM_NORMAL);
     it->SetBitmap(m_worksheet->m_mainToolBar->GetEvalTillHereBitmap(
-        wxRendererNative::Get().GetCheckBoxSize(this)));
+								    wxRendererNative::Get().GetCheckBoxSize(this)));
     m_CellMenu->Append(it);
   }
   {
     wxMenuItem *it = new wxMenuItem(
-        m_CellMenu, ToolBar::tb_evaluate_rest, _("Evaluate Cells Below"),
-        _("Re-evaluate all cells below the one the cursor is in"),
-        wxITEM_NORMAL);
+				    m_CellMenu, ToolBar::tb_evaluate_rest, _("Evaluate Cells Below"),
+				    _("Re-evaluate all cells below the one the cursor is in"),
+				    wxITEM_NORMAL);
     it->SetBitmap(m_worksheet->m_mainToolBar->GetEvalRestBitmap(
-        wxRendererNative::Get().GetCheckBoxSize(this)));
+								wxRendererNative::Get().GetCheckBoxSize(this)));
     m_CellMenu->Append(it);
   }
   m_CellMenu->Append(menu_remove_output, _("Remove All Output"),
@@ -1110,8 +1110,8 @@ void wxMaximaFrame::SetupMenu() {
                      _("Copy Previous Input\tCtrl+I"),
                      _("Create a new cell with previous input"), wxITEM_NORMAL);
   m_CellMenu->Append(
-      menu_insert_previous_output, _("Copy Previous Output\tCtrl+U"),
-      _("Create a new cell with previous output"), wxITEM_NORMAL);
+		     menu_insert_previous_output, _("Copy Previous Output\tCtrl+U"),
+		     _("Create a new cell with previous output"), wxITEM_NORMAL);
   m_CellMenu->Append(menu_autocomplete, _("Complete Word\tCtrl+Space"),
                      _("Complete word"), wxITEM_NORMAL);
   m_CellMenu->Append(menu_autocomplete_templates,
@@ -1159,8 +1159,8 @@ void wxMaximaFrame::SetupMenu() {
                      _("Divide this input cell into two cells"), wxITEM_NORMAL);
   m_CellMenu->AppendSeparator();
   m_CellMenu->AppendCheckItem(
-      Worksheet::popid_auto_answer, _("Automatically answer questions"),
-      _("Automatically fill in answers known from the last run"));
+			      Worksheet::popid_auto_answer, _("Automatically answer questions"),
+			      _("Automatically fill in answers known from the last run"));
 
   m_MenuBar->Append(m_CellMenu, _("Ce&ll"));
 
@@ -1169,10 +1169,10 @@ void wxMaximaFrame::SetupMenu() {
 
   {
     wxMenuItem *it =
-        new wxMenuItem(m_MaximaMenu, menu_interrupt_id, _("&Interrupt\tCtrl+G"),
-                       _("Interrupt current computation"), wxITEM_NORMAL);
+      new wxMenuItem(m_MaximaMenu, menu_interrupt_id, _("&Interrupt\tCtrl+G"),
+		     _("Interrupt current computation"), wxITEM_NORMAL);
     it->SetBitmap(m_worksheet->m_mainToolBar->GetInterruptBitmap(
-        wxRendererNative::Get().GetCheckBoxSize(this)));
+								 wxRendererNative::Get().GetCheckBoxSize(this)));
     m_MaximaMenu->Append(it);
   }
 
@@ -1181,7 +1181,7 @@ void wxMaximaFrame::SetupMenu() {
                                     _("&Restart Maxima"), _("Restart Maxima"),
                                     wxITEM_NORMAL);
     it->SetBitmap(m_worksheet->m_mainToolBar->GetRestartBitmap(
-        wxRendererNative::Get().GetCheckBoxSize(this)));
+							       wxRendererNative::Get().GetCheckBoxSize(this)));
     m_MaximaMenu->Append(it);
   }
   m_MaximaMenu->Append(menu_soft_restart, _("&Clear Memory"),
@@ -1219,9 +1219,9 @@ void wxMaximaFrame::SetupMenu() {
   m_MaximaMenu->AppendCheckItem(menu_time, _("&Time Display"),
                                 _("Display time used for evaluation"));
   m_MaximaMenu->Append(
-      menu_display, _("Change &2d Display"),
-      _("Change the 2d display algorithm used to display math output"),
-      wxITEM_NORMAL);
+		       menu_display, _("Change &2d Display"),
+		       _("Change the 2d display algorithm used to display math output"),
+		       wxITEM_NORMAL);
   m_MaximaMenu->Append(menu_texform, _("Display Te&X Form"),
                        _("Display last result in TeX form"), wxITEM_NORMAL);
   m_MaximaMenu->Append(menu_grind, _("Maxima input"),
@@ -1229,9 +1229,9 @@ void wxMaximaFrame::SetupMenu() {
 
   m_MaximaMenu->AppendSeparator();
   m_MaximaMenu->Append(
-      menu_jumptoerror, _("Jump to first error"),
-      _("Jump to the first cell Maxima has reported an error in."),
-      wxITEM_NORMAL);
+		       menu_jumptoerror, _("Jump to first error"),
+		       _("Jump to the first cell Maxima has reported an error in."),
+		       wxITEM_NORMAL);
   // debugger type submenu
   m_debugTypeMenu = new wxMenu;
   m_debugTypeMenu->AppendRadioItem(menu_debugmode_off, _("Never"));
@@ -1435,14 +1435,14 @@ void wxMaximaFrame::SetupMenu() {
                         _("Find a root of an equation on an interval"),
                         wxITEM_NORMAL);
   solveNum1_sub->Append(
-      menu_realroots, _("Dito, but as fraction (real only)..."),
-      _("Find fractions that real roots of a polynomial and "), wxITEM_NORMAL);
+			menu_realroots, _("Dito, but as fraction (real only)..."),
+			_("Find fractions that real roots of a polynomial and "), wxITEM_NORMAL);
   solveNum1_sub->Append(menu_allroots,
                         _("Numerical solutions of polynomial..."),
                         _("Find all roots of a polynomial"), wxITEM_NORMAL);
   solveNum1_sub->Append(
-      menu_bfallroots, _("Numerical solutions of polynomial..."),
-      _("Find all roots of a polynomial (bfloat)"), wxITEM_NORMAL);
+			menu_bfallroots, _("Numerical solutions of polynomial..."),
+			_("Find all roots of a polynomial (bfloat)"), wxITEM_NORMAL);
   m_EquationsMenu->Append(wxNewId(), _("Solve numerical, 1 Variable"),
                           solveNum1_sub);
   m_EquationsMenu->AppendSeparator();
@@ -1477,13 +1477,13 @@ void wxMaximaFrame::SetupMenu() {
                           wxITEM_NORMAL);
   m_EquationsMenu->AppendSeparator();
   m_EquationsMenu->Append(
-      menu_lhs, _("Left side to the \"=\""),
-      _("The half of the equation that is to the left of the \"=\""),
-      wxITEM_NORMAL);
+			  menu_lhs, _("Left side to the \"=\""),
+			  _("The half of the equation that is to the left of the \"=\""),
+			  wxITEM_NORMAL);
   m_EquationsMenu->Append(
-      menu_rhs, _("Right side to the \"=\""),
-      _("The half of the equation that is to the right of the \"=\""),
-      wxITEM_NORMAL);
+			  menu_rhs, _("Right side to the \"=\""),
+			  _("The half of the equation that is to the right of the \"=\""),
+			  wxITEM_NORMAL);
   m_EquationsMenu->AppendSeparator();
   m_EquationsMenu->Append(menu_construct_fraction, _("Construct fraction..."));
   m_MenuBar->Append(m_EquationsMenu, _("E&quations"));
@@ -1495,8 +1495,8 @@ void wxMaximaFrame::SetupMenu() {
                           _("Extract a matrix from a 2-dimensional array"),
                           wxITEM_NORMAL);
   gen_matrix_menu->Append(
-      menu_gen_mat_lambda, _("Generate Matrix from Expression..."),
-      _("Generate a matrix from a lambda expression"), wxITEM_NORMAL);
+			  menu_gen_mat_lambda, _("Generate Matrix from Expression..."),
+			  _("Generate a matrix from a lambda expression"), wxITEM_NORMAL);
   gen_matrix_menu->Append(menu_enter_mat, _("&Enter Matrix..."),
                           _("Enter a matrix"), wxITEM_NORMAL);
   gen_matrix_menu->Append(menu_list_list2matrix, _("Nested list to Matrix"),
@@ -1524,11 +1524,11 @@ void wxMaximaFrame::SetupMenu() {
                            _("Element-by-element multiplication"),
                            wxITEM_NORMAL);
   matrix_basic_sub->Append(
-      menu_matrix_hadamard_exponent, _("Hadamard exponent..."),
-      _("Repetitive element-by-element multiplication"), wxITEM_NORMAL);
+			   menu_matrix_hadamard_exponent, _("Hadamard exponent..."),
+			   _("Repetitive element-by-element multiplication"), wxITEM_NORMAL);
   matrix_basic_sub->Append(
-      menu_copymatrix, _("Create copy, not clone..."),
-      _("Creates an independent matrix with the same contents"), wxITEM_NORMAL);
+			   menu_copymatrix, _("Create copy, not clone..."),
+			   _("Creates an independent matrix with the same contents"), wxITEM_NORMAL);
   m_matrix_menu->Append(wxNewId(), _("Basic matrix operations"),
                         matrix_basic_sub,
                         _("Multiplication, exponent and similar"));
@@ -1553,12 +1553,12 @@ void wxMaximaFrame::SetupMenu() {
   matrix_classicOP_menu->Append(menu_adjoint_mat, _("Ad&joint Matrix"),
                                 _("Compute the adjoint matrix"), wxITEM_NORMAL);
   matrix_classicOP_menu->Append(
-      menu_rank, _("Rank"), _("Compute the rank of a matrix"), wxITEM_NORMAL);
+				menu_rank, _("Rank"), _("Compute the rank of a matrix"), wxITEM_NORMAL);
   matrix_classicOP_menu->Append(menu_transpose, _("&Transpose Matrix"),
                                 _("Transpose a matrix"), wxITEM_NORMAL);
   m_matrix_menu->Append(
-      wxNewId(), _("Classic matrix operations"), matrix_classicOP_menu,
-      _("The classic operations one typically uses matrices for"));
+			wxNewId(), _("Classic matrix operations"), matrix_classicOP_menu,
+			_("The classic operations one typically uses matrices for"));
   wxMenu *lapack_menu = new wxMenu;
   lapack_menu->Append(menu_matrix_loadLapack, _("Load lapack"),
                       _("Load lapack"), wxITEM_NORMAL);
@@ -1569,8 +1569,8 @@ void wxMaximaFrame::SetupMenu() {
                       _("Eigenvalues (complex)"),
                       _("Compile eigenvalues using zgeev"), wxITEM_NORMAL);
   lapack_menu->Append(
-      menu_matrix_dgeev, _("Eigenvalues, left+right eigenvectors (real)"),
-      _("Compile eigenvalues+eigenvectors using dgeev"), wxITEM_NORMAL);
+		      menu_matrix_dgeev, _("Eigenvalues, left+right eigenvectors (real)"),
+		      _("Compile eigenvalues+eigenvectors using dgeev"), wxITEM_NORMAL);
   lapack_menu->Append(menu_matrix_zgeev,
                       _("Eigenvalues, left+right eigenvectors (complex)"),
                       _("Compile eigenvalues+eigenvectors using zgeev"));
@@ -1596,8 +1596,8 @@ void wxMaximaFrame::SetupMenu() {
   // TODO: What is menu_matrix_zheev (means: lapack's function zheev) for?
 
   m_matrix_menu->Append(
-      wxNewId(), _("Numerical operations (lapack)"), lapack_menu,
-      _("Fast fortran routines that perform numerical tasks"));
+			wxNewId(), _("Numerical operations (lapack)"), lapack_menu,
+			_("Fast fortran routines that perform numerical tasks"));
   m_matrix_menu->AppendSeparator();
   wxMenu *matrix_rowOp_sub = new wxMenu;
   matrix_rowOp_sub->Append(menu_matrix_row, _("Extract Row..."),
@@ -1609,13 +1609,13 @@ void wxMaximaFrame::SetupMenu() {
                            _("Remove rows and/or columns from the matrix"),
                            wxITEM_NORMAL);
   matrix_rowOp_sub->Append(
-      menu_matrix_row_list, _("Convert Row to list..."),
-      _("Extract a row from the matrix and convert it to a list"),
-      wxITEM_NORMAL);
+			   menu_matrix_row_list, _("Convert Row to list..."),
+			   _("Extract a row from the matrix and convert it to a list"),
+			   wxITEM_NORMAL);
   matrix_rowOp_sub->Append(
-      menu_matrix_col_list, _("Convert Column to list..."),
-      _("Extract a column from the matrix and convert it to a list"),
-      wxITEM_NORMAL);
+			   menu_matrix_col_list, _("Convert Column to list..."),
+			   _("Extract a column from the matrix and convert it to a list"),
+			   wxITEM_NORMAL);
   m_matrix_menu->Append(wxNewId(), _("Row and column operations"),
                         matrix_rowOp_sub,
                         _("Extract, append or delete rows or columns"));
@@ -1624,9 +1624,9 @@ void wxMaximaFrame::SetupMenu() {
                         _("A&pply function to each Matrix element..."),
                         _("Map function to a matrix"), wxITEM_NORMAL);
   m_matrix_menu->Append(
-      menu_map, _("Dito, but affect all clones of the Matrix..."),
-      _("Map function to a matrix, affecting all of its clones"),
-      wxITEM_NORMAL);
+			menu_map, _("Dito, but affect all clones of the Matrix..."),
+			_("Map function to a matrix, affecting all of its clones"),
+			wxITEM_NORMAL);
   m_MenuBar->Append(m_matrix_menu, _("M&atrix"));
 
   // Calculus menu
@@ -1640,9 +1640,9 @@ void wxMaximaFrame::SetupMenu() {
                          _("Change variable in integral or sum"),
                          wxITEM_NORMAL);
   m_CalculusMenu->Append(
-      menu_change_var_evaluate, _("Dito, and evaluate the result..."),
-      _("Change variable in integral or sum and evaluate the result"),
-      wxITEM_NORMAL);
+			 menu_change_var_evaluate, _("Dito, and evaluate the result..."),
+			 _("Change variable in integral or sum and evaluate the result"),
+			 wxITEM_NORMAL);
   m_CalculusMenu->AppendSeparator();
   m_CalculusMenu->Append(menu_diff, _("&Differentiate..."),
                          _("Differentiate expression"), wxITEM_NORMAL);
@@ -1666,8 +1666,8 @@ void wxMaximaFrame::SetupMenu() {
                          _("Get Laplace transformation of an expression"),
                          wxITEM_NORMAL);
   m_CalculusMenu->Append(
-      menu_ilt, _("Inverse Laplace T&ransform..."),
-      _("Get inverse Laplace transformation of an expression"), wxITEM_NORMAL);
+			 menu_ilt, _("Inverse Laplace T&ransform..."),
+			 _("Get inverse Laplace transformation of an expression"), wxITEM_NORMAL);
   m_CalculusMenu->Append(menu_gcd, _("&Greatest Common Divisor..."),
                          _("Compute the greatest common divisor"),
                          wxITEM_NORMAL);
@@ -1720,8 +1720,8 @@ void wxMaximaFrame::SetupMenu() {
   m_SimplifyMenu->Append(wxNewId(), _("Simplify equations"), simplify_sub);
   m_logexpand_Sub = new wxMenu;
   m_logexpand_Sub->Append(
-      menu_logcontract, _("Contract Logarithms"),
-      _("Convert sum of logarithms to logarithm of product"), wxITEM_NORMAL);
+			  menu_logcontract, _("Contract Logarithms"),
+			  _("Convert sum of logarithms to logarithm of product"), wxITEM_NORMAL);
   m_logexpand_Sub->Append(menu_logexpand,
                           _("Expand log in previous expression"),
                           _("Warning: No test if the argument of the log is "
@@ -1736,37 +1736,37 @@ void wxMaximaFrame::SetupMenu() {
   if (!m_configuration.FontRendersChar(wxT('\u26A0'), *wxNORMAL_FONT))
     warningSign = _("Warning:");
   m_logexpand_Sub->AppendRadioItem(
-      menu_logexpand_true,
-      wxT("log(a^b)=b*log(a) ") + warningSign + _(" Wrong, if a is complex"),
-      _("Set Maxima option variable logexpand:true"));
+				   menu_logexpand_true,
+				   wxT("log(a^b)=b*log(a) ") + warningSign + _(" Wrong, if a is complex"),
+				   _("Set Maxima option variable logexpand:true"));
   m_logexpand_Sub->AppendRadioItem(
-      menu_logexpand_all, _("Additionally: log(a*b)=log(a)+log(b)"),
-      _("Set Maxima option variable logexpand:all"));
+				   menu_logexpand_all, _("Additionally: log(a*b)=log(a)+log(b)"),
+				   _("Set Maxima option variable logexpand:all"));
   m_logexpand_Sub->AppendRadioItem(
-      menu_logexpand_super,
-      _("Additionally: log(a/b)=log(a)-log(b), a and b positive integers"),
-      _("Set Maxima option variable logexpand:super"));
+				   menu_logexpand_super,
+				   _("Additionally: log(a/b)=log(a)-log(b), a and b positive integers"),
+				   _("Set Maxima option variable logexpand:super"));
   m_SimplifyMenu->Append(wxNewId(), _("Simplify Logarithms"), m_logexpand_Sub);
   m_SimplifyMenu->AppendSeparator();
   // Factorials and gamma
   m_Simplify_Gamma_Sub = new wxMenu;
   m_Simplify_Gamma_Sub->Append(
-      menu_to_fact, _("Convert to &Factorials"),
-      _("Convert binomials, beta and gamma function to factorials"),
-      wxITEM_NORMAL);
+			       menu_to_fact, _("Convert to &Factorials"),
+			       _("Convert binomials, beta and gamma function to factorials"),
+			       wxITEM_NORMAL);
   m_Simplify_Gamma_Sub->Append(
-      menu_to_gamma, _("Convert to &Gamma"),
-      _("Convert binomials, factorials and beta function to gamma function"),
-      wxITEM_NORMAL);
+			       menu_to_gamma, _("Convert to &Gamma"),
+			       _("Convert binomials, factorials and beta function to gamma function"),
+			       wxITEM_NORMAL);
   m_Simplify_Gamma_Sub->Append(
-      menu_factsimp, _("&Simplify Factorials"),
-      _("Simplify an expression containing factorials"), wxITEM_NORMAL);
+			       menu_factsimp, _("&Simplify Factorials"),
+			       _("Simplify an expression containing factorials"), wxITEM_NORMAL);
   m_Simplify_Gamma_Sub->Append(menu_factcomb, _("&Combine Factorials"),
                                _("Combine factorials in an expression"),
                                wxITEM_NORMAL);
   m_SimplifyMenu->Append(
-      wxNewId(), _("Factorials and &Gamma"), m_Simplify_Gamma_Sub,
-      _("Functions for simplifying factorials and gamma function"));
+			 wxNewId(), _("Factorials and &Gamma"), m_Simplify_Gamma_Sub,
+			 _("Functions for simplifying factorials and gamma function"));
   // Trigonometric submenu
   m_Simplify_Trig_Sub = new wxMenu;
   m_Simplify_Trig_Sub->Append(menu_trigsimp, _("&Simplify Trigonometric"),
@@ -1779,12 +1779,12 @@ void wxMaximaFrame::SetupMenu() {
                               _("Expand trigonometric expression"),
                               wxITEM_NORMAL);
   m_Simplify_Trig_Sub->Append(
-      menu_trigrat, _("&Canonical Form"),
-      _("Convert trigonometric expression to canonical quasilinear form"),
-      wxITEM_NORMAL);
+			      menu_trigrat, _("&Canonical Form"),
+			      _("Convert trigonometric expression to canonical quasilinear form"),
+			      wxITEM_NORMAL);
   m_SimplifyMenu->Append(
-      wxNewId(), _("&Trigonometric Simplification"), m_Simplify_Trig_Sub,
-      _("Functions for simplifying trigonometric expressions"));
+			 wxNewId(), _("&Trigonometric Simplification"), m_Simplify_Trig_Sub,
+			 _("Functions for simplifying trigonometric expressions"));
   // Complex submenu
   m_Simplify_Complex_Sub = new wxMenu;
   m_Simplify_Complex_Sub->Append(menu_rectform, _("Convert to &Rectform"),
@@ -1797,15 +1797,15 @@ void wxMaximaFrame::SetupMenu() {
                                  _("Get the real part of complex expression"),
                                  wxITEM_NORMAL);
   m_Simplify_Complex_Sub->Append(
-      menu_imagpart, _("Get &Imaginary Part"),
-      _("Get the imaginary part of complex expression"), wxITEM_NORMAL);
+				 menu_imagpart, _("Get &Imaginary Part"),
+				 _("Get the imaginary part of complex expression"), wxITEM_NORMAL);
   m_Simplify_Complex_Sub->Append(menu_demoivre, _("&Demoivre"),
                                  _("Convert exponential function of imaginary "
                                    "argument to trigonometric form"),
                                  wxITEM_NORMAL);
   m_Simplify_Complex_Sub->Append(
-      menu_exponentialize, _("&Exponentialize"),
-      _("Convert trigonometric functions to exponential form"), wxITEM_NORMAL);
+				 menu_exponentialize, _("&Exponentialize"),
+				 _("Convert trigonometric functions to exponential form"), wxITEM_NORMAL);
   m_SimplifyMenu->Append(wxNewId(), _("&Complex Simplification"),
                          m_Simplify_Complex_Sub,
                          _("Functions for complex simplification"));
@@ -1846,8 +1846,8 @@ void wxMaximaFrame::SetupMenu() {
   m_listMenu = new wxMenu;
   wxMenu *listcreateSub = new wxMenu;
   listcreateSub->Append(
-      menu_list_create_from_elements, _("from individual elements"),
-      _("Create a list from comma-separated elements"), wxITEM_NORMAL);
+			menu_list_create_from_elements, _("from individual elements"),
+			_("Create a list from comma-separated elements"), wxITEM_NORMAL);
   listcreateSub->Append(menu_list_create_from_rule, _("from a rule"),
                         _("Generate list elements using a rule"),
                         wxITEM_NORMAL);
@@ -1862,23 +1862,23 @@ void wxMaximaFrame::SetupMenu() {
                           "introduced into equations at any time"),
                         wxITEM_NORMAL);
   listcreateSub->Append(
-      menu_list_create_from_args, _("from function arguments"),
-      _("Extract the argument list from a function call"), wxITEM_NORMAL);
+			menu_list_create_from_args, _("from function arguments"),
+			_("Extract the argument list from a function call"), wxITEM_NORMAL);
   m_listMenu->Append(wxNewId(), _("Create list"), listcreateSub,
                      _("Create a list"));
   wxMenu *listuseSub = new wxMenu;
   listuseSub->Append(menu_list_map, _("apply function to each element"),
                      _("Runs each element through a function"), wxITEM_NORMAL);
   listuseSub->Append(
-      menu_map_lambda, _("Run each element through an expression"),
-      _("Runs each element through an expression"), wxITEM_NORMAL);
+		     menu_map_lambda, _("Run each element through an expression"),
+		     _("Runs each element through an expression"), wxITEM_NORMAL);
   listuseSub->Append(
-      menu_list_use_actual_values, _("use the actual values stored"),
-      _("Introduce the actual values for variables stored in the list"),
-      wxITEM_NORMAL);
+		     menu_list_use_actual_values, _("use the actual values stored"),
+		     _("Introduce the actual values for variables stored in the list"),
+		     wxITEM_NORMAL);
   listuseSub->Append(
-      menu_list_as_function_arguments, _("use as function arguments"),
-      _("Use list as the arguments of a function"), wxITEM_NORMAL);
+		     menu_list_as_function_arguments, _("use as function arguments"),
+		     _("Use list as the arguments of a function"), wxITEM_NORMAL);
   listuseSub->Append(menu_list_do_for_each_element, _("do for each element"),
                      _("Execute a command for each element of the list"),
                      wxITEM_NORMAL);
@@ -1900,9 +1900,9 @@ void wxMaximaFrame::SetupMenu() {
   listextractmenu->Append(menu_list_lastn, _("Last n"),
                           _("Returns the last n items of the list"));
   listextractmenu->Append(
-      menu_list_extract_value, _("Extract an actual value for a variable"),
-      _("Extract the value for one variable assigned in a list"),
-      wxITEM_NORMAL);
+			  menu_list_extract_value, _("Extract an actual value for a variable"),
+			  _("Extract the value for one variable assigned in a list"),
+			  wxITEM_NORMAL);
   m_listMenu->Append(wxNewId(), _("Extract Elements"), listextractmenu,
                      _("Extract list Elements"));
   wxMenu *listappendSub = new wxMenu;
@@ -1910,8 +1910,8 @@ void wxMaximaFrame::SetupMenu() {
                         _("Append an element to the end of an existing list"),
                         wxITEM_NORMAL);
   listappendSub->Append(
-      menu_list_append_item_start, _("Prepend an element"),
-      _("Append an element to the beginning an existing list"), wxITEM_NORMAL);
+			menu_list_append_item_start, _("Prepend an element"),
+			_("Append an element to the beginning an existing list"), wxITEM_NORMAL);
   listappendSub->Append(menu_list_append_list, _("Append a list"),
                         _("Append a list to an existing list"), wxITEM_NORMAL);
   listappendSub->Append(menu_list_interleave, _("Interleave"),
@@ -1936,8 +1936,8 @@ void wxMaximaFrame::SetupMenu() {
                        "the list. Useful for creating stacks."));
   m_listMenu->AppendSeparator();
   m_listMenu->Append(
-      menu_list_list2matrix, _("Nested list to Matrix"),
-      _("Converts a nested list like [[1,2],[3,4]] to a matrix"));
+		     menu_list_list2matrix, _("Nested list to Matrix"),
+		     _("Converts a nested list like [[1,2],[3,4]] to a matrix"));
   m_listMenu->Append(menu_list_matrix2list, _("Matrix to nested List"),
                      _("Converts a matrix to a list of lists"));
   m_MenuBar->Append(m_listMenu, _("&List"));
@@ -1962,8 +1962,8 @@ void wxMaximaFrame::SetupMenu() {
   m_NumericMenu->AppendCheckItem(menu_num_out, _("&Numeric Output"),
                                  _("Numeric output"));
   m_NumericMenu->AppendCheckItem(
-      menu_num_domain, _("Expect numbers harder to be complex"),
-      _("Expect variables to contain complex numbers"));
+				 menu_num_domain, _("Expect numbers harder to be complex"),
+				 _("Expect variables to contain complex numbers"));
   m_NumericMenu->Check(menu_num_domain, false);
   m_NumericMenu->Append(menu_to_float, _("To &Float"),
                         _("Calculate float value of the last result"),
@@ -1977,36 +1977,36 @@ void wxMaximaFrame::SetupMenu() {
 
   wxMenu *floatToExactSub = new wxMenu;
   floatToExactSub->Append(
-      menu_rationalize, _("To exact fraction"),
-      _("Find a fraction that represents this float exactly"), wxITEM_NORMAL);
+			  menu_rationalize, _("To exact fraction"),
+			  _("Find a fraction that represents this float exactly"), wxITEM_NORMAL);
   floatToExactSub->Append(
-      menu_rat, _("Approximate by nice fraction"),
-      _("Find a nice fraction that is similar to this float"), wxITEM_NORMAL);
+			  menu_rat, _("Approximate by nice fraction"),
+			  _("Find a nice fraction that is similar to this float"), wxITEM_NORMAL);
   floatToExactSub->Append(
-      menu_guess_exact_value, _("Advanced guess (PSLQ algorithm)"),
-      _("Approximate by a fraction using log(), sqrt() and %pi, when needed. "
-        "Only available in maxima > 5.46.0"),
-      wxITEM_NORMAL);
+			  menu_guess_exact_value, _("Advanced guess (PSLQ algorithm)"),
+			  _("Approximate by a fraction using log(), sqrt() and %pi, when needed. "
+			    "Only available in maxima > 5.46.0"),
+			  wxITEM_NORMAL);
   m_NumericMenu->Append(
-      wxNewId(), _("To exact number"), floatToExactSub,
-      _("Guess an exact number that could be meant by this float"));
+			wxNewId(), _("To exact number"), floatToExactSub,
+			_("Guess an exact number that could be meant by this float"));
 
   m_NumericMenu->AppendSeparator();
   m_NumericMenu->Append(
-      menu_set_precision, _("Set bigfloat &Precision..."),
-      _("Set the precision for numbers that are defined as bigfloat. Such "
-        "numbers can be generated by entering 1.5b12 or as bfloat(1.234)"),
-      wxITEM_NORMAL);
+			menu_set_precision, _("Set bigfloat &Precision..."),
+			_("Set the precision for numbers that are defined as bigfloat. Such "
+			  "numbers can be generated by entering 1.5b12 or as bfloat(1.234)"),
+			wxITEM_NORMAL);
   m_NumericMenu->Append(
-      menu_set_displayprecision, _("Set &displayed Precision..."),
-      _("Shows how many digits of a numbers are displayed"), wxITEM_NORMAL);
+			menu_set_displayprecision, _("Set &displayed Precision..."),
+			_("Shows how many digits of a numbers are displayed"), wxITEM_NORMAL);
   m_NumericMenu->AppendSeparator();
   m_NumericMenu->AppendCheckItem(
-      menu_engineeringFormat, _("Engineering format (12.1e6 etc.)"),
-      _("Print floating-point numbers with exponents dividable by 3"));
+				 menu_engineeringFormat, _("Engineering format (12.1e6 etc.)"),
+				 _("Print floating-point numbers with exponents dividable by 3"));
   m_NumericMenu->Append(
-      menu_engineeringFormatSetup, _("Setup the engineering format..."),
-      _("Fine-tune the display of engineering-format numbers"), wxITEM_NORMAL);
+			menu_engineeringFormatSetup, _("Setup the engineering format..."),
+			_("Fine-tune the display of engineering-format numbers"), wxITEM_NORMAL);
 
   wxMenu *quadpack_sub = new wxMenu;
   wxString integralSign = wxT("\u222B");
@@ -2032,16 +2032,16 @@ void wxMaximaFrame::SetupMenu() {
                        integralSign + wxT("(f(x)*(x-a)^α(b-x)^β,x,a,b)"));
   quadpack_sub->Append(menu_quad_qaws2,
                        integralSign +
-                           wxT("(f(x)*(x-a)^α(b-x)^β·log(x-a),x,a,b)"));
+		       wxT("(f(x)*(x-a)^α(b-x)^β·log(x-a),x,a,b)"));
   quadpack_sub->Append(menu_quad_qaws3,
                        integralSign +
-                           wxT("(f(x)*(x-a)^α(b-x)^β·log(b-x),x,a,b)"));
+		       wxT("(f(x)*(x-a)^α(b-x)^β·log(b-x),x,a,b)"));
   quadpack_sub->Append(
-      menu_quad_qaws4,
-      integralSign + wxT("(f(x)*(x-a)^α(b-x)^β·log(x-a)·log(b-x),x,a,b)"));
+		       menu_quad_qaws4,
+		       integralSign + wxT("(f(x)*(x-a)^α(b-x)^β·log(x-a)·log(b-x),x,a,b)"));
   quadpack_sub->Append(menu_quad_qagp,
                        integralSign +
-                           _("(f(x),x,y) with singularities+discontinuities"));
+		       _("(f(x),x,y) with singularities+discontinuities"));
 
   m_NumericMenu->Append(wxNewId(), _("Integrate numerically"), quadpack_sub);
   m_MenuBar->Append(m_NumericMenu, _("&Numeric"));
@@ -2135,16 +2135,16 @@ void wxMaximaFrame::SetupMenu() {
 wxString wxMaximaFrame::wxMaximaManualLocation() {
   wxString helpfile;
   wxString lang_long =
-      m_locale->GetCanonicalName(); /* two- or five-letter string in xx or xx_YY
-                                       format. Examples: "en", "en_GB", "en_US"
-                                       or "fr_FR" */
+    m_locale->GetCanonicalName(); /* two- or five-letter string in xx or xx_YY
+				     format. Examples: "en", "en_GB", "en_US"
+				     or "fr_FR" */
   wxString lang_short = lang_long.Left(lang_long.Find('_'));
 
   helpfile =
-      Dirstructure::Get()->HelpDir() + wxT("/wxmaxima.") + lang_long + ".html";
+    Dirstructure::Get()->HelpDir() + wxT("/wxmaxima.") + lang_long + ".html";
   if (!wxFileExists(helpfile))
     helpfile = Dirstructure::Get()->HelpDir() + wxT("/wxmaxima.") + lang_short +
-               ".html";
+      ".html";
   if (!wxFileExists(helpfile))
     helpfile = Dirstructure::Get()->HelpDir() + wxT("/wxmaxima.html");
 
@@ -2170,7 +2170,7 @@ void wxMaximaFrame::UpdateRecentDocuments() {
     m_recentDocumentsMenu = new wxMenu();
   while (m_recentDocumentsMenu->GetMenuItemCount() > 0)
     m_recentDocumentsMenu->Destroy(
-        m_recentDocumentsMenu->FindItemByPosition(0));
+				   m_recentDocumentsMenu->FindItemByPosition(0));
 
   if (m_recentPackagesMenu == NULL)
     m_recentPackagesMenu = new wxMenu();
@@ -2219,7 +2219,7 @@ void wxMaximaFrame::UpdateRecentDocuments() {
       wxStat(filename, &stat);
       wxDateTime modified(stat.st_mtime);
       wxString label = filename + wxT(" (") + modified.FormatDate() + wxT(" ") +
-                       modified.FormatTime() + wxT(")");
+	modified.FormatTime() + wxT(")");
 
       if (!separatorAdded)
         m_recentDocumentsMenu->Append(menu_recent_document_separator,
@@ -2250,33 +2250,33 @@ void wxMaximaFrame::UpdateRecentDocuments() {
 }
 
 void wxMaximaFrame::ReReadConfig() {
-// On wxMac re-reading the config isn't necessary as all windows share the
-// same process and the same configuration.
+  // On wxMac re-reading the config isn't necessary as all windows share the
+  // same process and the same configuration.
 #ifndef __WXMAC__
-// On MSW re-reading the config is only necessary if the config is read from
-// the registry
+  // On MSW re-reading the config is only necessary if the config is read from
+  // the registry
 #ifdef __WXMSW__
   if (Configuration::m_configfileLocation_override != wxEmptyString)
 #endif
-  {
-    // Delete the old config
-    wxConfigBase *config = wxConfig::Get();
-    config->Flush();
-    wxDELETE(config);
-    config = NULL;
+    {
+      // Delete the old config
+      wxConfigBase *config = wxConfig::Get();
+      config->Flush();
+      wxDELETE(config);
+      config = NULL;
 
-    if (Configuration::m_configfileLocation_override == wxEmptyString) {
-      wxLogMessage(_("Re-Reading the config from the default location."));
-      wxConfig::Set(new wxConfig(wxT("wxMaxima")));
-    } else {
-      wxLogMessage(wxString::Format(
-          _("Re-Reading the config from %s."),
-          Configuration::m_configfileLocation_override.utf8_str()));
-      wxConfig::Set(
-          new wxFileConfig(wxT("wxMaxima"), wxEmptyString,
-                           Configuration::m_configfileLocation_override));
+      if (Configuration::m_configfileLocation_override == wxEmptyString) {
+	wxLogMessage(_("Re-Reading the config from the default location."));
+	wxConfig::Set(new wxConfig(wxT("wxMaxima")));
+      } else {
+	wxLogMessage(wxString::Format(
+				      _("Re-Reading the config from %s."),
+				      Configuration::m_configfileLocation_override.utf8_str()));
+	wxConfig::Set(
+		      new wxFileConfig(wxT("wxMaxima"), wxEmptyString,
+				       Configuration::m_configfileLocation_override));
+      }
     }
-  }
 #endif
 }
 
@@ -2401,7 +2401,7 @@ void wxMaximaFrame::ShowPane(Event id, bool show) {
   case menu_pane_structure:
     m_manager.GetPane(wxT("structure")).Show(show);
     m_worksheet->m_tableOfContents->UpdateTableOfContents(
-        m_worksheet->GetHCaret());
+							  m_worksheet->GetHCaret());
     break;
   case menu_pane_xmlInspector:
     m_manager.GetPane(wxT("XmlInspector")).Show(show);
@@ -2596,9 +2596,9 @@ wxWindow *wxMaximaFrame::CreateStatPane() {
 wxMaximaFrame::GreekPane::GreekPane(wxWindow *parent,
                                     Configuration *configuration,
                                     Worksheet *worksheet, int ID)
-    : wxScrolled<wxPanel>(parent, ID), m_configuration(configuration),
-      m_lowercaseSizer(new wxWrapSizer(wxHORIZONTAL)),
-      m_uppercaseSizer(new wxWrapSizer(wxHORIZONTAL)), m_worksheet(worksheet) {
+  : wxScrolled<wxPanel>(parent, ID), m_configuration(configuration),
+    m_lowercaseSizer(new wxWrapSizer(wxHORIZONTAL)),
+    m_uppercaseSizer(new wxWrapSizer(wxHORIZONTAL)), m_worksheet(worksheet) {
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
   ShowScrollbars(wxSHOW_SB_NEVER, wxSHOW_SB_DEFAULT);
   EnableScrolling(false, true);
@@ -2640,13 +2640,13 @@ void wxMaximaFrame::GreekPane::OnMenu(wxCommandEvent &event) {
   switch (event.GetId()) {
   case menu_showLatinGreekLookalikes:
     m_configuration->GreekSidebar_ShowLatinLookalikes(
-        !m_configuration->GreekSidebar_ShowLatinLookalikes());
+						      !m_configuration->GreekSidebar_ShowLatinLookalikes());
     UpdateSymbols();
     Layout();
     break;
   case menu_showGreekMu:
     m_configuration->GreekSidebar_Show_mu(
-        !m_configuration->GreekSidebar_Show_mu());
+					  !m_configuration->GreekSidebar_Show_mu());
     UpdateSymbols();
     Layout();
     break;
@@ -2660,68 +2660,68 @@ void wxMaximaFrame::GreekPane::UpdateSymbols() {
     Cond condition;
     EnabledDefinition(wchar_t sym, const wxString &descr,
                       Cond cond = Cond::None)
-        : CharButton::Definition{sym, descr}, condition(cond) {}
+      : CharButton::Definition{sym, descr}, condition(cond) {}
     explicit EnabledDefinition(wchar_t sym)
-        : EnabledDefinition(sym, wxm::emptyString) {}
+      : EnabledDefinition(sym, wxm::emptyString) {}
   };
 
   static const EnabledDefinition lowerCaseDefs[] = {
-      {L'\u03B1', _("alpha")},
-      {L'\u03B2', _("beta")},
-      {L'\u03B3', _("gamma")},
-      {L'\u03B4', _("delta")},
-      {L'\u03B5', _("epsilon")},
-      {L'\u03B6', _("zeta")},
-      {L'\u03B7', _("eta")},
-      {L'\u03B8', _("theta")},
-      {L'\u03B9', _("iota")},
-      {L'\u03BA', _("kappa")},
-      {L'\u03BB', _("lambda")},
-      {L'\u03BC', _("mu"), Cond::Show_mu},
-      {L'\u03BD', _("nu")},
-      {L'\u03BE', _("xi")},
-      {L'\u03BF', _("omicron"), Cond::ShowLatinLookalikes},
-      {L'\u03C0', _("pi")},
-      {L'\u03C1', _("rho")},
-      {L'\u03C3', _("sigma")},
-      {L'\u03C4', _("tau")},
-      {L'\u03C5', _("upsilon")},
-      {L'\u03C6', _("phi")},
-      {L'\u03C7', _("chi")},
-      {L'\u03C8', _("psi")},
-      {L'\u03C9', _("omega")},
+    {L'\u03B1', _("alpha")},
+    {L'\u03B2', _("beta")},
+    {L'\u03B3', _("gamma")},
+    {L'\u03B4', _("delta")},
+    {L'\u03B5', _("epsilon")},
+    {L'\u03B6', _("zeta")},
+    {L'\u03B7', _("eta")},
+    {L'\u03B8', _("theta")},
+    {L'\u03B9', _("iota")},
+    {L'\u03BA', _("kappa")},
+    {L'\u03BB', _("lambda")},
+    {L'\u03BC', _("mu"), Cond::Show_mu},
+    {L'\u03BD', _("nu")},
+    {L'\u03BE', _("xi")},
+    {L'\u03BF', _("omicron"), Cond::ShowLatinLookalikes},
+    {L'\u03C0', _("pi")},
+    {L'\u03C1', _("rho")},
+    {L'\u03C3', _("sigma")},
+    {L'\u03C4', _("tau")},
+    {L'\u03C5', _("upsilon")},
+    {L'\u03C6', _("phi")},
+    {L'\u03C7', _("chi")},
+    {L'\u03C8', _("psi")},
+    {L'\u03C9', _("omega")},
   };
 
   static const EnabledDefinition upperCaseDefs[] = {
-      {L'\u0391', ("Alpha"), Cond::ShowLatinLookalikes},
-      {L'\u0392', _("Beta"), Cond::ShowLatinLookalikes},
-      {L'\u0393', _("Gamma")},
-      {L'\u0394', _("Delta")},
-      {L'\u0395', _("Epsilon"), Cond::ShowLatinLookalikes},
-      {L'\u0396', _("Zeta"), Cond::ShowLatinLookalikes},
-      {L'\u0397', _("Eta"), Cond::ShowLatinLookalikes},
-      {L'\u0398', _("Theta")},
-      {L'\u0399', _("Iota"), Cond::ShowLatinLookalikes},
-      {L'\u039A', _("Kappa"), Cond::ShowLatinLookalikes},
-      {L'\u039B', _("Lambda")},
-      {L'\u039C', _("Mu"), Cond::ShowLatinLookalikes},
-      {L'\u039D', _("Nu"), Cond::ShowLatinLookalikes},
-      {L'\u039E', _("Xi")},
-      {L'\u039F', _("Omicron"), Cond::ShowLatinLookalikes},
-      {L'\u03A0', _("Pi")},
-      {L'\u03A1', _("Rho"), Cond::ShowLatinLookalikes},
-      {L'\u03A3', _("Sigma")},
-      {L'\u03A4', _("Tau"), Cond::ShowLatinLookalikes},
-      {L'\u03A5', _("Upsilon"), Cond::ShowLatinLookalikes},
-      {L'\u03A6', _("Phi")},
-      {L'\u03A7', _("Chi"), Cond::ShowLatinLookalikes},
-      {L'\u03A8', _("Psi")},
-      {L'\u03A9', _("Omega")},
+    {L'\u0391', ("Alpha"), Cond::ShowLatinLookalikes},
+    {L'\u0392', _("Beta"), Cond::ShowLatinLookalikes},
+    {L'\u0393', _("Gamma")},
+    {L'\u0394', _("Delta")},
+    {L'\u0395', _("Epsilon"), Cond::ShowLatinLookalikes},
+    {L'\u0396', _("Zeta"), Cond::ShowLatinLookalikes},
+    {L'\u0397', _("Eta"), Cond::ShowLatinLookalikes},
+    {L'\u0398', _("Theta")},
+    {L'\u0399', _("Iota"), Cond::ShowLatinLookalikes},
+    {L'\u039A', _("Kappa"), Cond::ShowLatinLookalikes},
+    {L'\u039B', _("Lambda")},
+    {L'\u039C', _("Mu"), Cond::ShowLatinLookalikes},
+    {L'\u039D', _("Nu"), Cond::ShowLatinLookalikes},
+    {L'\u039E', _("Xi")},
+    {L'\u039F', _("Omicron"), Cond::ShowLatinLookalikes},
+    {L'\u03A0', _("Pi")},
+    {L'\u03A1', _("Rho"), Cond::ShowLatinLookalikes},
+    {L'\u03A3', _("Sigma")},
+    {L'\u03A4', _("Tau"), Cond::ShowLatinLookalikes},
+    {L'\u03A5', _("Upsilon"), Cond::ShowLatinLookalikes},
+    {L'\u03A6', _("Phi")},
+    {L'\u03A7', _("Chi"), Cond::ShowLatinLookalikes},
+    {L'\u03A8', _("Psi")},
+    {L'\u03A9', _("Omega")},
   };
 
   bool const Show_mu = m_configuration->GreekSidebar_Show_mu();
   bool const ShowLatinLookalikes =
-      m_configuration->GreekSidebar_ShowLatinLookalikes();
+    m_configuration->GreekSidebar_ShowLatinLookalikes();
 
   m_lowercaseSizer->Clear(true);
   for (auto &def : lowerCaseDefs)
@@ -2729,8 +2729,8 @@ void wxMaximaFrame::GreekPane::UpdateSymbols() {
         (def.condition == Cond::Show_mu && Show_mu) ||
         (def.condition == Cond::ShowLatinLookalikes && ShowLatinLookalikes))
       m_lowercaseSizer->Add(
-          new CharButton(this, m_worksheet, m_configuration, def, true),
-          wxSizerFlags().Expand());
+			    new CharButton(this, m_worksheet, m_configuration, def, true),
+			    wxSizerFlags().Expand());
 
   m_uppercaseSizer->Clear(true);
   for (auto &def : upperCaseDefs)
@@ -2738,8 +2738,8 @@ void wxMaximaFrame::GreekPane::UpdateSymbols() {
         (def.condition == Cond::Show_mu && Show_mu) ||
         (def.condition == Cond::ShowLatinLookalikes && ShowLatinLookalikes))
       m_uppercaseSizer->Add(
-          new CharButton(this, m_worksheet, m_configuration, def, true),
-          wxSizerFlags().Expand());
+			    new CharButton(this, m_worksheet, m_configuration, def, true),
+			    wxSizerFlags().Expand());
 }
 
 void wxMaximaFrame::GreekPane::OnMouseRightDown(wxMouseEvent &WXUNUSED(event)) {
@@ -2757,65 +2757,65 @@ void wxMaximaFrame::GreekPane::OnMouseRightDown(wxMouseEvent &WXUNUSED(event)) {
 wxMaximaFrame::SymbolsPane::SymbolsPane(wxWindow *parent,
                                         Configuration *configuration,
                                         Worksheet *worksheet, int ID)
-    : wxScrolled<wxPanel>(parent, ID), m_configuration(configuration),
-      m_worksheet(worksheet) {
+  : wxScrolled<wxPanel>(parent, ID), m_configuration(configuration),
+    m_worksheet(worksheet) {
   ShowScrollbars(wxSHOW_SB_NEVER, wxSHOW_SB_DEFAULT);
   EnableScrolling(false, true);
   SetScrollRate(5 * GetContentScaleFactor(), 5 * GetContentScaleFactor());
   const CharButton::Definition symbolButtonDefinitions[] = {
-      {L'\u00BD', _("1/2"), true},
-      {L'\u00B2', _("to the power of 2"), true},
-      {L'\u00B3', _("to the power of 3"), true},
-      {L'\u221A',
-       _("sqrt (needs parenthesis for its argument to work as a Maxima "
-         "command)"),
-       true},
-      {L'\u2148'},
-      {L'\u2147'},
-      {L'\u210F'},
-      {L'\u2208', _("in")},
-      {L'\u2203', _("exists")},
-      {L'\u2204', _("there is no")},
-      {L'\u21D2', _("\"implies\" symbol"), true},
-      {L'\u221E', _("Infinity"), true},
-      {L'\u2205', _("empty")},
-      {L'\u25b6'},
-      {L'\u25b8'},
-      {L'\u22C0', _("and"), true},
-      {L'\u22C1', _("or"), true},
-      {L'\u22BB', _("xor"), true},
-      {L'\u22BC', _("nand"), true},
-      {L'\u22BD', _("nor"), true},
-      {L'\u21D4', _("equivalent"), true},
-      {L'\u00b1', _("plus or minus")},
-      {L'\u00AC', _("not"), true},
-      {L'\u22C3', _("union")},
-      {L'\u22C2', _("intersection")},
-      {L'\u2286', _("subset or equal")},
-      {L'\u2282', _("subset")},
-      {L'\u2288', _("not subset or equal")},
-      {L'\u2284', _("not subset")},
-      {L'\u0127'},
-      {L'\u0126'},
-      {L'\u2202', _("partial sign")},
-      {L'\u2207', _("nabla sign")},
-      {L'\u222b', _("Integral sign")},
-      {L'\u2245'},
-      {L'\u221d', _("proportional to")},
-      {L'\u2260', _("not bytewise identical"), true},
-      {L'\u2264', _("less or equal"), true},
-      {L'\u2265', _("greater than or equal"), true},
-      {L'\u226A', _("much less than")},
-      {L'\u226B', _("much greater than")},
-      {L'\u2263', _("Identical to")},
-      {L'\u2211', _("Sum sign")},
-      {L'\u220F', _("Product sign")},
-      {L'\u2225', _("Parallel to")},
-      {L'\u27C2', _("Perpendicular to")},
-      {L'\u219D', _("Leads to")},
-      {L'\u2192', _("Right arrow")},
-      {L'\u27F6', _("Long Right arrow")},
-      {L'\u220e', _("End of proof")},
+    {L'\u00BD', _("1/2"), true},
+    {L'\u00B2', _("to the power of 2"), true},
+    {L'\u00B3', _("to the power of 3"), true},
+    {L'\u221A',
+     _("sqrt (needs parenthesis for its argument to work as a Maxima "
+       "command)"),
+     true},
+    {L'\u2148'},
+    {L'\u2147'},
+    {L'\u210F'},
+    {L'\u2208', _("in")},
+    {L'\u2203', _("exists")},
+    {L'\u2204', _("there is no")},
+    {L'\u21D2', _("\"implies\" symbol"), true},
+    {L'\u221E', _("Infinity"), true},
+    {L'\u2205', _("empty")},
+    {L'\u25b6'},
+    {L'\u25b8'},
+    {L'\u22C0', _("and"), true},
+    {L'\u22C1', _("or"), true},
+    {L'\u22BB', _("xor"), true},
+    {L'\u22BC', _("nand"), true},
+    {L'\u22BD', _("nor"), true},
+    {L'\u21D4', _("equivalent"), true},
+    {L'\u00b1', _("plus or minus")},
+    {L'\u00AC', _("not"), true},
+    {L'\u22C3', _("union")},
+    {L'\u22C2', _("intersection")},
+    {L'\u2286', _("subset or equal")},
+    {L'\u2282', _("subset")},
+    {L'\u2288', _("not subset or equal")},
+    {L'\u2284', _("not subset")},
+    {L'\u0127'},
+    {L'\u0126'},
+    {L'\u2202', _("partial sign")},
+    {L'\u2207', _("nabla sign")},
+    {L'\u222b', _("Integral sign")},
+    {L'\u2245'},
+    {L'\u221d', _("proportional to")},
+    {L'\u2260', _("not bytewise identical"), true},
+    {L'\u2264', _("less or equal"), true},
+    {L'\u2265', _("greater than or equal"), true},
+    {L'\u226A', _("much less than")},
+    {L'\u226B', _("much greater than")},
+    {L'\u2263', _("Identical to")},
+    {L'\u2211', _("Sum sign")},
+    {L'\u220F', _("Product sign")},
+    {L'\u2225', _("Parallel to")},
+    {L'\u27C2', _("Perpendicular to")},
+    {L'\u219D', _("Leads to")},
+    {L'\u2192', _("Right arrow")},
+    {L'\u27F6', _("Long Right arrow")},
+    {L'\u220e', _("End of proof")},
   };
 
   m_userSymbols = NULL;
@@ -2825,8 +2825,8 @@ wxMaximaFrame::SymbolsPane::SymbolsPane(wxWindow *parent,
   wxPanel *builtInSymbols = new wxPanel(this);
   for (auto &def : symbolButtonDefinitions)
     builtInSymbolsSizer->Add(
-        new CharButton(builtInSymbols, m_worksheet, m_configuration, def),
-        wxSizerFlags().Expand());
+			     new CharButton(builtInSymbols, m_worksheet, m_configuration, def),
+			     wxSizerFlags().Expand());
   builtInSymbols->SetSizer(builtInSymbolsSizer);
   vbox->Add(builtInSymbols, wxSizerFlags().Expand());
 
@@ -2846,21 +2846,21 @@ wxMaximaFrame::SymbolsPane::SymbolsPane(wxWindow *parent,
   Connect(wxEVT_RIGHT_DOWN,
           wxMouseEventHandler(wxMaximaFrame::SymbolsPane::OnMouseRightDown));
   builtInSymbols->Connect(
-      wxEVT_RIGHT_DOWN,
-      wxMouseEventHandler(wxMaximaFrame::SymbolsPane::OnMouseRightDown));
+			  wxEVT_RIGHT_DOWN,
+			  wxMouseEventHandler(wxMaximaFrame::SymbolsPane::OnMouseRightDown));
   m_userSymbols->Connect(
-      wxEVT_RIGHT_DOWN,
-      wxMouseEventHandler(wxMaximaFrame::SymbolsPane::OnMouseRightDown));
+			 wxEVT_RIGHT_DOWN,
+			 wxMouseEventHandler(wxMaximaFrame::SymbolsPane::OnMouseRightDown));
 }
 
 void wxMaximaFrame::SymbolsPane::OnMenu(wxCommandEvent &event) {
   switch (event.GetId()) {
   case menu_additionalSymbols:
     Gen1Wiz *wiz = new Gen1Wiz(
-        this, -1, m_configuration, _("Non-builtin symbols"),
-        _("Unicode symbols:"), m_configuration->SymbolPaneAdditionalChars(),
-        _("Allows to specify which not-builtin unicode symbols should be "
-          "displayed in the symbols sidebar along with the built-in symbols."));
+			       this, -1, m_configuration, _("Non-builtin symbols"),
+			       _("Unicode symbols:"), m_configuration->SymbolPaneAdditionalChars(),
+			       _("Allows to specify which not-builtin unicode symbols should be "
+				 "displayed in the symbols sidebar along with the built-in symbols."));
     // wiz->Centre(wxBOTH);
     wiz->SetLabel1ToolTip(_("Drag-and-drop unicode symbols here"));
     if (wiz->ShowModal() == wxID_OK)
@@ -2872,7 +2872,7 @@ void wxMaximaFrame::SymbolsPane::OnMenu(wxCommandEvent &event) {
 }
 
 void wxMaximaFrame::SymbolsPane::OnMouseRightDown(
-    wxMouseEvent &WXUNUSED(event)) {
+						  wxMouseEvent &WXUNUSED(event)) {
   std::unique_ptr<wxMenu> popupMenu(new wxMenu());
   popupMenu->Append(menu_additionalSymbols, _("Add more symbols"),
                     wxEmptyString, wxITEM_NORMAL);
@@ -2897,8 +2897,8 @@ void wxMaximaFrame::SymbolsPane::UpdateUserSymbols() {
   // Populate the pane with a button per user symbol
   for (auto ch : m_configuration->SymbolPaneAdditionalChars()) {
     wxWindow *button = new CharButton(
-        m_userSymbols, m_worksheet, m_configuration,
-        {ch, _("A symbol from the configuration dialogue")}, true);
+				      m_userSymbols, m_worksheet, m_configuration,
+				      {ch, _("A symbol from the configuration dialogue")}, true);
     m_userSymbolButtons.push_back(button);
     m_userSymbolsSizer->Add(button, wxSizerFlags().Expand());
   }
@@ -2997,7 +2997,7 @@ void wxMaximaFrame::DrawPane::OnSize(wxSizeEvent &event) {
 }
 
 wxMaximaFrame::DrawPane::DrawPane(wxWindow *parent, int id)
-    : wxScrolled<wxPanel>(parent, id) {
+  : wxScrolled<wxPanel>(parent, id) {
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
   SetScrollRate(5, 5);
   m_grid = new Buttonwrapsizer(wxHORIZONTAL);
@@ -3014,25 +3014,25 @@ wxMaximaFrame::DrawPane::DrawPane(wxWindow *parent, int id)
               0, style, border);
   m_draw_setup3d->SetToolTip(_("Setup a 3D plot"));
   m_grid->Add(m_draw_explicit =
-                  new wxButton(this, menu_draw_explicit, _("Expression"),
-                               wxDefaultPosition, wxDefaultSize),
+	      new wxButton(this, menu_draw_explicit, _("Expression"),
+			   wxDefaultPosition, wxDefaultSize),
               0, style, border);
   m_draw_explicit->SetToolTip(
-      _("The standard plot command: Plot an equation as a curve"));
+			      _("The standard plot command: Plot an equation as a curve"));
   m_grid->Add(m_draw_implicit =
-                  new wxButton(this, menu_draw_implicit, _("Implicit Plot"),
-                               wxDefaultPosition, wxDefaultSize),
+	      new wxButton(this, menu_draw_implicit, _("Implicit Plot"),
+			   wxDefaultPosition, wxDefaultSize),
               0, style, border);
   m_grid->Add(m_draw_parametric =
-                  new wxButton(this, menu_draw_parametric, _("Parametric Plot"),
-                               wxDefaultPosition, wxDefaultSize),
+	      new wxButton(this, menu_draw_parametric, _("Parametric Plot"),
+			   wxDefaultPosition, wxDefaultSize),
               0, style, border);
   m_grid->Add(m_draw_points = new wxButton(this, menu_draw_points, _("Points"),
                                            wxDefaultPosition, wxDefaultSize),
               0, style, border);
   m_grid->Add(m_draw_title =
-                  new wxButton(this, menu_draw_title, _("Diagram title"),
-                               wxDefaultPosition, wxDefaultSize),
+	      new wxButton(this, menu_draw_title, _("Diagram title"),
+			   wxDefaultPosition, wxDefaultSize),
               0, style, border);
   m_draw_title->SetToolTip(_("The diagram title"));
   m_grid->Add(m_draw_axis = new wxButton(this, menu_draw_axis, _("Axis"),
@@ -3040,21 +3040,21 @@ wxMaximaFrame::DrawPane::DrawPane(wxWindow *parent, int id)
               0, style, border);
   m_draw_axis->SetToolTip(_("Setup the axis"));
   m_grid->Add(m_draw_contour =
-                  new wxButton(this, menu_draw_contour, _("Contour"),
-                               wxDefaultPosition, wxDefaultSize),
+	      new wxButton(this, menu_draw_contour, _("Contour"),
+			   wxDefaultPosition, wxDefaultSize),
               0, style, border);
   m_grid->Add(m_draw_key = new wxButton(this, menu_draw_key, _("Plot name"),
                                         wxDefaultPosition, wxDefaultSize),
               0, style, border);
   m_draw_key->SetToolTip(_("The next plot's title"));
   m_grid->Add(m_draw_fgcolor =
-                  new wxButton(this, menu_draw_fgcolor, _("Line color"),
-                               wxDefaultPosition, wxDefaultSize),
+	      new wxButton(this, menu_draw_fgcolor, _("Line color"),
+			   wxDefaultPosition, wxDefaultSize),
               0, style, border);
   m_draw_fgcolor->SetToolTip(_("The color of the next line to draw"));
   m_grid->Add(m_draw_fillcolor =
-                  new wxButton(this, menu_draw_fillcolor, _("Fill color"),
-                               wxDefaultPosition, wxDefaultSize),
+	      new wxButton(this, menu_draw_fillcolor, _("Fill color"),
+			   wxDefaultPosition, wxDefaultSize),
               0, style, border);
   m_draw_fillcolor->SetToolTip(_("The fill color for the next objects"));
   m_grid->Add(m_draw_grid = new wxButton(this, menu_draw_grid, _("Grid"),
@@ -3063,8 +3063,8 @@ wxMaximaFrame::DrawPane::DrawPane(wxWindow *parent, int id)
   m_draw_grid->SetToolTip(_("The grid in the background of the diagram"));
   m_draw_contour->SetToolTip(_("Contour lines for 3d plots"));
   m_grid->Add(m_draw_accuracy =
-                  new wxButton(this, menu_draw_accuracy, _("Accuracy"),
-                               wxDefaultPosition, wxDefaultSize),
+	      new wxButton(this, menu_draw_accuracy, _("Accuracy"),
+			   wxDefaultPosition, wxDefaultSize),
               0, style, border);
   m_draw_accuracy->SetToolTip(_("The accuracy versus speed tradeoff"));
   Connect(wxEVT_SIZE, wxSizeEventHandler(wxMaximaFrame::DrawPane::OnSize), NULL,

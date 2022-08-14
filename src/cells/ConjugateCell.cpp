@@ -25,14 +25,14 @@
 
   ConjugateCell is the Cell type that represents the field that represents the
   conjugate() command.
- */
+*/
 
 #include "ConjugateCell.h"
 #include "CellImpl.h"
 
 ConjugateCell::ConjugateCell(GroupCell *group, Configuration *config,
                              std::unique_ptr<Cell> &&inner)
-    : Cell(group, config), m_innerCell(std::move(inner)) {
+  : Cell(group, config), m_innerCell(std::move(inner)) {
   InitBitFields();
   SetStyle(TS_VARIABLE);
 }
@@ -41,8 +41,8 @@ ConjugateCell::ConjugateCell(GroupCell *group, Configuration *config,
 // cppcheck-suppress uninitMemberVar symbolName=ConjugateCell::m_open
 // cppcheck-suppress uninitMemberVar symbolName=ConjugateCell::m_close
 ConjugateCell::ConjugateCell(GroupCell *group, const ConjugateCell &cell)
-    : ConjugateCell(group, cell.m_configuration,
-                    CopyList(group, cell.m_innerCell.get())) {
+  : ConjugateCell(group, cell.m_configuration,
+		  CopyList(group, cell.m_innerCell.get())) {
   CopyCommonData(cell);
 }
 
@@ -52,7 +52,7 @@ void ConjugateCell::MakeBreakupCells() {
   if (m_open)
     return;
   m_open =
-      std::make_unique<TextCell>(m_group, m_configuration, wxT("conjugate("));
+    std::make_unique<TextCell>(m_group, m_configuration, wxT("conjugate("));
   static_cast<TextCell &>(*m_open).DontEscapeOpeningParenthesis();
   m_open->SetStyle(TS_FUNCTION);
   m_close = std::make_unique<TextCell>(m_group, m_configuration, wxT(")"));
@@ -120,12 +120,12 @@ wxString ConjugateCell::ToMathML() const {
   //  return wxT("<apply><conjugate/><ci>") + m_innerCell->ListToMathML() +
   //  wxT("</ci></apply>");
   return wxT("<mover accent=\"true\">") + m_innerCell->ListToMathML() +
-         wxT("<mo>&#xaf;</mo></mover>\n");
+    wxT("<mo>&#xaf;</mo></mover>\n");
 }
 
 wxString ConjugateCell::ToOMML() const {
   return wxT("<m:bar><m:barPr><m:pos m:val=\"top\"/> </m:barPr><m:e>") +
-         m_innerCell->ListToOMML() + wxT("</m:e></m:bar>");
+    m_innerCell->ListToOMML() + wxT("</m:e></m:bar>");
 }
 
 wxString ConjugateCell::ToXML() const {
@@ -134,7 +134,7 @@ wxString ConjugateCell::ToXML() const {
     flags += wxT(" breakline=\"true\"");
 
   return wxT("<cj") + flags + wxT(">") + m_innerCell->ListToXML() +
-         wxT("</cj>");
+    wxT("</cj>");
 }
 
 bool ConjugateCell::BreakUp() {

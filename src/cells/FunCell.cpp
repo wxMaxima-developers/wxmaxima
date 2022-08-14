@@ -26,7 +26,7 @@
 
   FunCell is the Cell type that represents functions that don't require special
   handling.
- */
+*/
 
 #include "FunCell.h"
 #include "CellImpl.h"
@@ -34,17 +34,17 @@
 
 FunCell::FunCell(GroupCell *group, Configuration *config,
                  std::unique_ptr<Cell> &&name, std::unique_ptr<Cell> &&arg)
-    : Cell(group, config), m_nameCell(std::move(name)),
-      m_argCell(std::move(arg)) {
+  : Cell(group, config), m_nameCell(std::move(name)),
+    m_argCell(std::move(arg)) {
   InitBitFields();
   SetStyle(TS_FUNCTION);
   m_nameCell->SetStyle(TS_FUNCTION);
 }
 
 FunCell::FunCell(GroupCell *group, const FunCell &cell)
-    : FunCell(group, cell.m_configuration,
-              CopyList(group, cell.m_nameCell.get()),
-              CopyList(group, cell.m_argCell.get())) {
+  : FunCell(group, cell.m_configuration,
+	    CopyList(group, cell.m_nameCell.get()),
+	    CopyList(group, cell.m_argCell.get())) {
   CopyCommonData(cell);
   m_altCopyText = cell.m_altCopyText;
 }
@@ -59,10 +59,10 @@ void FunCell::Recalculate(AFontSize fontsize) {
     m_width = m_center = m_height = 0;
   } else {
     m_width =
-        m_nameCell->GetFullWidth() + m_argCell->GetFullWidth() - Scale_Px(1);
+      m_nameCell->GetFullWidth() + m_argCell->GetFullWidth() - Scale_Px(1);
     m_center = wxMax(m_nameCell->GetCenterList(), m_argCell->GetCenterList());
     m_height =
-        m_center + wxMax(m_nameCell->GetMaxDrop(), m_argCell->GetMaxDrop());
+      m_center + wxMax(m_nameCell->GetMaxDrop(), m_argCell->GetMaxDrop());
   }
   Cell::Recalculate(fontsize);
 }
@@ -112,7 +112,7 @@ wxString FunCell::ToTeX() const {
       (m_nameCell->ToString() == wxT("csc")) ||
       (m_nameCell->ToString() == wxT("tan")))
     s = wxT("\\") + m_nameCell->ToString() + wxT("{") + m_argCell->ListToTeX() +
-        wxT("}");
+      wxT("}");
   else
     s = m_nameCell->ListToTeX() + m_argCell->ListToTeX();
 
@@ -126,14 +126,14 @@ wxString FunCell::ToXML() const {
   if (HasHardLineBreak())
     flags += wxT(" breakline=\"true\"");
   return wxT("<fn") + flags + wxT("><r>") + m_nameCell->ListToXML() +
-         wxT("</r>") + m_argCell->ListToXML() + wxT("</fn>");
+    wxT("</r>") + m_argCell->ListToXML() + wxT("</fn>");
 }
 
 wxString FunCell::ToMathML() const {
   //  if (IsBrokenIntoLines())
   //    return wxEmptyString;
   return wxT("<mrow>") + m_nameCell->ListToMathML() + wxT("<mo>&#x2061;</mo>") +
-         m_argCell->ListToMathML() + wxT("</mrow>\n");
+    m_argCell->ListToMathML() + wxT("</mrow>\n");
 }
 
 wxString FunCell::ToOMML() const {

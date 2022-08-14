@@ -24,7 +24,7 @@
 
   This file contains the definition of the class TableOfContents that handles the 
   table of contents pane.
- */
+*/
 #include <memory>
 #include <wx/wx.h>
 #include <wx/timer.h>
@@ -84,9 +84,9 @@ public:
 
     Since this function traverses the tree and we don't want it 
     to impact the performance too much
-      - we call it only on creation of a cell and on leaving it again
-      - and we only traverse the tree if the pane is actually shown.
-   */
+    - we call it only on creation of a cell and on leaving it again
+    - and we only traverse the tree if the pane is actually shown.
+  */
   void UpdateTableOfContents(GroupCell *pos);
 
   //! Get the nth Cell in the table of contents.
@@ -94,7 +94,7 @@ public:
 
   //! Returns the cell that was last right-clicked on.
   GroupCell *RightClickedOn()
-  { return m_cellRightClickedOn; }
+    { return m_cellRightClickedOn; }
 
   GroupCell *DNDStart() {return m_dndStartCell;}
   GroupCell *DNDEnd() {return m_dndEndCell;}

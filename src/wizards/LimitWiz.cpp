@@ -25,7 +25,7 @@
 LimitWiz::LimitWiz(wxWindow *parent, int id, Configuration *cfg,
                    const wxString &title, const wxPoint &pos,
                    const wxSize &size, long style)
-    : wxDialog(parent, id, title, pos, size, style) {
+  : wxDialog(parent, id, title, pos, size, style) {
   label_2 = new wxStaticText(this, -1, _("Expression:"));
   text_ctrl_1 = new BTextCtrl(this, -1, cfg, wxEmptyString, wxDefaultPosition,
                               wxSize(230, -1));
@@ -153,4 +153,4 @@ void LimitWiz::OnIdle(wxIdleEvent &WXUNUSED(ev)) {
 }
 
 wxBEGIN_EVENT_TABLE(LimitWiz, wxDialog) EVT_BUTTON(special, LimitWiz::OnButton)
-    EVT_IDLE(LimitWiz::OnIdle) wxEND_EVENT_TABLE()
+EVT_IDLE(LimitWiz::OnIdle) wxEND_EVENT_TABLE()

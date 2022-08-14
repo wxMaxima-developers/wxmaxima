@@ -32,12 +32,12 @@
 
    This is used for exporting HTML with embedded maths as a scalable vector
    graphics and for them on the clipboard
- */
+*/
 class Svgout final
 {
 public:
   /*! The constructor.
-  */
+   */
   explicit Svgout(Configuration **configuration, const wxString &filename = {}, double scale = 1.0);
   explicit Svgout(Configuration **configuration, std::unique_ptr<Cell> &&tree,
                   const wxString &filename = {}, double scale = 1.0);
@@ -47,7 +47,7 @@ public:
     
     \param tree The list of cells that is to be rendered
     \return true, if the svgout could be created.
-   */
+  */
   wxSize Render(std::unique_ptr<Cell> &&tree);
 
   wxSize GetSize() const { return m_size; }
@@ -71,7 +71,7 @@ private:
     wxWidgets tends to place bitmaps it links to svg files in its current working
     directory, not in the dir of the .svg file so we temporarily switch the working
     directory.
-   */
+  */
   wxString m_CWD;
 
   bool Layout();

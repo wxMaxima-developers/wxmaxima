@@ -23,7 +23,7 @@
 
 /*! \file
   This file contains all the wizards the draw sidepane needs.
- */
+*/
 
 #include "DrawWiz.h"
 #include "wxm_draw_images.h"
@@ -35,16 +35,16 @@
 
 ExplicitWiz::ExplicitWiz(wxWindow *parent, Configuration *config,
                          wxString expression, int dimensions)
-    : wxDialog(parent, -1, _("Plot an explicit expression"), wxDefaultPosition,
-               wxDefaultSize,
-               wxMINIMIZE_BOX | wxMAXIMIZE_BOX | wxRESIZE_BORDER | wxCAPTION |
-                   wxCLOSE_BOX | wxCLIP_CHILDREN) {
+  : wxDialog(parent, -1, _("Plot an explicit expression"), wxDefaultPosition,
+	     wxDefaultSize,
+	     wxMINIMIZE_BOX | wxMAXIMIZE_BOX | wxRESIZE_BORDER | wxCAPTION |
+	     wxCLOSE_BOX | wxCLIP_CHILDREN) {
   m_dimensions = dimensions;
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
   vbox->Add(
-      new wxStaticText(this, -1,
-                       _("Plot an expression, for example sin(x) or (x+1)^2.")),
-      wxSizerFlags().Expand().Border(wxBOTTOM, 16));
+	    new wxStaticText(this, -1,
+			     _("Plot an expression, for example sin(x) or (x+1)^2.")),
+	    wxSizerFlags().Expand().Border(wxBOTTOM, 16));
 
   vbox->Add(new wxStaticText(this, -1, _("Expression to plot")),
             wxSizerFlags());
@@ -85,10 +85,10 @@ ExplicitWiz::ExplicitWiz(wxWindow *parent, Configuration *config,
   } else {
     SetName("DrawExplicitWiz2D");
     vbox->Add(
-        new wxStaticText(
-            this, -1,
-            _("Optional: A 2nd expression that defines a region to fill")),
-        wxSizerFlags());
+	      new wxStaticText(
+			       this, -1,
+			       _("Optional: A 2nd expression that defines a region to fill")),
+	      wxSizerFlags());
     m_filledfunc = new BTextCtrl(this, -1, config, "");
     vbox->Add(m_filledfunc, wxSizerFlags().Expand());
   }
@@ -122,12 +122,12 @@ wxString ExplicitWiz::GetValue() {
     retval = "filled_func=" + m_filledfunc->GetValue() + ",\n    ";
 
   retval +=
-      wxT("explicit(\n        ") + m_expression->GetValue() + ",\n        ";
+    wxT("explicit(\n        ") + m_expression->GetValue() + ",\n        ";
   retval +=
-      m_x->GetValue() + "," + m_xStart->GetValue() + "," + m_xEnd->GetValue();
+    m_x->GetValue() + "," + m_xStart->GetValue() + "," + m_xEnd->GetValue();
   if (m_dimensions > 2)
     retval += ",\n        " + m_y->GetValue() + "," + m_yStart->GetValue() +
-              "," + m_yEnd->GetValue();
+      "," + m_yEnd->GetValue();
   retval += "\n    )";
 
   if ((m_dimensions < 3) && (m_filledfunc->GetValue() != wxEmptyString))
@@ -138,18 +138,18 @@ wxString ExplicitWiz::GetValue() {
 
 ImplicitWiz::ImplicitWiz(wxWindow *parent, Configuration *config,
                          wxString expression, int dimensions)
-    : wxDialog(parent, -1, _("Plot an explicit expression"), wxDefaultPosition,
-               wxDefaultSize,
-               wxMINIMIZE_BOX | wxMAXIMIZE_BOX | wxRESIZE_BORDER | wxCAPTION |
-                   wxCLOSE_BOX | wxCLIP_CHILDREN) {
+  : wxDialog(parent, -1, _("Plot an explicit expression"), wxDefaultPosition,
+	     wxDefaultSize,
+	     wxMINIMIZE_BOX | wxMAXIMIZE_BOX | wxRESIZE_BORDER | wxCAPTION |
+	     wxCLOSE_BOX | wxCLIP_CHILDREN) {
   m_dimensions = dimensions;
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
   vbox->Add(new wxStaticText(this, -1,
                              _("Draw all points where an equation is true.")),
             wxSizerFlags().Expand().Border(wxBOTTOM, 16));
   vbox->Add(
-      new wxStaticText(this, -1, _("See also the speed <-> accuracy button.")),
-      wxSizerFlags().Expand().Border(wxBOTTOM, 16));
+	    new wxStaticText(this, -1, _("See also the speed <-> accuracy button.")),
+	    wxSizerFlags().Expand().Border(wxBOTTOM, 16));
 
   vbox->Add(new wxStaticText(this, -1, _("Equation")), wxSizerFlags());
   m_expression = new BTextCtrl(this, -1, config, expression);
@@ -231,30 +231,30 @@ wxString ImplicitWiz::GetValue() {
   wxString retval;
 
   retval +=
-      wxT("implicit(\n        ") + m_expression->GetValue() + ",\n        ";
+    wxT("implicit(\n        ") + m_expression->GetValue() + ",\n        ";
   retval +=
-      m_x->GetValue() + "," + m_xStart->GetValue() + "," + m_xEnd->GetValue();
+    m_x->GetValue() + "," + m_xStart->GetValue() + "," + m_xEnd->GetValue();
   retval += ",\n        " + m_y->GetValue() + "," + m_yStart->GetValue() + "," +
-            m_yEnd->GetValue();
+    m_yEnd->GetValue();
   if (m_dimensions > 2)
     retval += ",\n        " + m_z->GetValue() + "," + m_zStart->GetValue() +
-              "," + m_zEnd->GetValue();
+      "," + m_zEnd->GetValue();
   retval += "\n    )";
 
   return retval;
 }
 
 AxisWiz::AxisWiz(wxWindow *parent, Configuration *config, int dimensions)
-    : wxDialog(parent, -1, _("Plot an explicit expression"), wxDefaultPosition,
-               wxDefaultSize,
-               wxMINIMIZE_BOX | wxMAXIMIZE_BOX | wxRESIZE_BORDER | wxCAPTION |
-                   wxCLOSE_BOX | wxCLIP_CHILDREN) {
+  : wxDialog(parent, -1, _("Plot an explicit expression"), wxDefaultPosition,
+	     wxDefaultSize,
+	     wxMINIMIZE_BOX | wxMAXIMIZE_BOX | wxRESIZE_BORDER | wxCAPTION |
+	     wxCLOSE_BOX | wxCLIP_CHILDREN) {
   m_dimensions = dimensions;
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
 
   vbox->Add(
-      new wxStaticText(this, -1, _("Setup the axis for the current plot.")),
-      wxSizerFlags().Expand().Border(wxBOTTOM, 16));
+	    new wxStaticText(this, -1, _("Setup the axis for the current plot.")),
+	    wxSizerFlags().Expand().Border(wxBOTTOM, 16));
 
   vbox->Add(new wxStaticText(this, -1, _("x axis label")), wxSizerFlags());
   m_xLabel = new BTextCtrl(this, -1, config, "");
@@ -288,8 +288,8 @@ AxisWiz::AxisWiz(wxWindow *parent, Configuration *config, int dimensions)
     m_zLabel = new BTextCtrl(this, -1, config, "");
     vbox->Add(m_zLabel, wxSizerFlags().Expand());
     vbox->Add(
-        new wxStaticText(this, -1, _("z range (automatic if incomplete)")),
-        wxSizerFlags());
+	      new wxStaticText(this, -1, _("z range (automatic if incomplete)")),
+	      wxSizerFlags());
     wxBoxSizer *zrangeBox = new wxBoxSizer(wxHORIZONTAL);
     m_zStart = new BTextCtrl(this, -1, config, "");
     zrangeBox->Add(m_zStart, wxSizerFlags().Expand());
@@ -331,14 +331,14 @@ AxisWiz::AxisWiz(wxWindow *parent, Configuration *config, int dimensions)
   vbox->Add(y2rangeBox, wxSizerFlags().Expand());
 
   m_useSecondaryX =
-      new wxCheckBox(this, -1, _("Following plots use secondary x axis"),
-                     wxDefaultPosition, wxDefaultSize, wxCHK_3STATE);
+    new wxCheckBox(this, -1, _("Following plots use secondary x axis"),
+		   wxDefaultPosition, wxDefaultSize, wxCHK_3STATE);
   m_useSecondaryX->Set3StateValue(wxCHK_UNDETERMINED);
   vbox->Add(m_useSecondaryX, wxSizerFlags().Expand());
 
   m_useSecondaryY =
-      new wxCheckBox(this, -1, _("Following plots use secondary y axis"),
-                     wxDefaultPosition, wxDefaultSize, wxCHK_3STATE);
+    new wxCheckBox(this, -1, _("Following plots use secondary y axis"),
+		   wxDefaultPosition, wxDefaultSize, wxCHK_3STATE);
   m_useSecondaryY->Set3StateValue(wxCHK_UNDETERMINED);
   vbox->Add(m_useSecondaryY, wxSizerFlags().Expand());
 
@@ -390,21 +390,21 @@ wxString AxisWiz::GetValue() {
     if (retval != wxEmptyString)
       retval += ",\n";
     retval +=
-        "xrange=[" + m_xStart->GetValue() + "," + m_xEnd->GetValue() + "]";
+      "xrange=[" + m_xStart->GetValue() + "," + m_xEnd->GetValue() + "]";
   }
   if ((m_yStart->GetValue() != wxEmptyString) &&
       (m_yEnd->GetValue() != wxEmptyString)) {
     if (retval != wxEmptyString)
       retval += ",\n";
     retval +=
-        "yrange=[" + m_yStart->GetValue() + "," + m_yEnd->GetValue() + "]";
+      "yrange=[" + m_yStart->GetValue() + "," + m_yEnd->GetValue() + "]";
   }
   if ((m_dimensions == 3) && (m_zStart->GetValue() != wxEmptyString) &&
       (m_zEnd->GetValue() != wxEmptyString)) {
     if (retval != wxEmptyString)
       retval += ",\n";
     retval +=
-        "zrange=[" + m_zStart->GetValue() + "," + m_zEnd->GetValue() + "]";
+      "zrange=[" + m_zStart->GetValue() + "," + m_zEnd->GetValue() + "]";
   }
 
   if ((m_x2Start->GetValue() != wxEmptyString) &&
@@ -412,14 +412,14 @@ wxString AxisWiz::GetValue() {
     if (retval != wxEmptyString)
       retval += ",\n";
     retval += "xrange_secondary=[" + m_x2Start->GetValue() + "," +
-              m_x2End->GetValue() + "]";
+      m_x2End->GetValue() + "]";
   }
   if ((m_y2Start->GetValue() != wxEmptyString) &&
       (m_y2End->GetValue() != wxEmptyString)) {
     if (retval != wxEmptyString)
       retval += ",\n";
     retval += "yrange_secondary=[" + m_y2Start->GetValue() + "," +
-              m_y2End->GetValue() + "]";
+      m_y2End->GetValue() + "]";
   }
 
   if (m_useSecondaryX->Get3StateValue() == wxCHK_CHECKED) {
@@ -452,29 +452,29 @@ void DrawWiz::OnParametricFocus(wxFocusEvent &WXUNUSED(event)) {
 }
 
 DrawWiz::DrawWiz(wxWindow *parent, Configuration *config, int dimensions)
-    : wxDialog(parent, -1, wxString::Format(_("Setup a %iD scene"), dimensions),
-               wxDefaultPosition, wxDefaultSize,
-               wxMINIMIZE_BOX | wxMAXIMIZE_BOX | wxRESIZE_BORDER | wxCAPTION |
-                   wxCLOSE_BOX | wxCLIP_CHILDREN) {
+  : wxDialog(parent, -1, wxString::Format(_("Setup a %iD scene"), dimensions),
+	     wxDefaultPosition, wxDefaultSize,
+	     wxMINIMIZE_BOX | wxMAXIMIZE_BOX | wxRESIZE_BORDER | wxCAPTION |
+	     wxCLOSE_BOX | wxCLIP_CHILDREN) {
   m_dimensions = dimensions;
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
 
   vbox->Add(new wxStaticText(
-      this, -1,
-      wxString::Format(_("This wizard setups a %iD scene."), dimensions)));
+			     this, -1,
+			     wxString::Format(_("This wizard setups a %iD scene."), dimensions)));
 
   vbox->Add(new wxStaticText(
-                this, -1,
-                wxString::Format(_(
-                    "It needs to be filled with objects to draw afterwards."))),
+			     this, -1,
+			     wxString::Format(_(
+						"It needs to be filled with objects to draw afterwards."))),
             wxSizerFlags().Border(wxBOTTOM, 16));
   m_singleFrame =
-      new wxRadioButton(this, -1, _("A static plot"), wxDefaultPosition,
-                        wxDefaultSize, wxRB_GROUP);
+    new wxRadioButton(this, -1, _("A static plot"), wxDefaultPosition,
+		      wxDefaultSize, wxRB_GROUP);
   vbox->Add(m_singleFrame, wxSizerFlags().Expand().Border(wxALL, 5));
 
   m_multipleFrames =
-      new wxRadioButton(this, -1, _("An animation with multiple frames"));
+    new wxRadioButton(this, -1, _("An animation with multiple frames"));
   vbox->Add(m_multipleFrames, wxSizerFlags().Expand().Border(wxALL, 5));
   wxPanel *animPanel = new wxPanel(this, -1);
   wxBoxSizer *animPanelVbox = new wxBoxSizer(wxVERTICAL);
@@ -527,25 +527,25 @@ wxString DrawWiz::GetValue() {
       return wxT("wxdraw2d(\n)$");
     else {
       return wxString("with_slider_draw(\n") + m_frameVar->GetValue() +
-             ",makelist(i,i," + m_varStart->GetValue() + "," +
-             m_varEnd->GetValue() + ")\n)$";
+	",makelist(i,i," + m_varStart->GetValue() + "," +
+	m_varEnd->GetValue() + ")\n)$";
     }
   } else {
     if (m_singleFrame->GetValue())
       return wxT("wxdraw3d(\n)$");
     else {
       return wxString("with_slider_draw3d(\n") + m_frameVar->GetValue() +
-             ",makelist(i,i," + m_varStart->GetValue() + "," +
-             m_varEnd->GetValue() + ")\n)$";
+	",makelist(i,i," + m_varStart->GetValue() + "," +
+	m_varEnd->GetValue() + ")\n)$";
     }
   }
 }
 
 Wiz3D::Wiz3D(wxWindow *parent, Configuration *WXUNUSED(config))
-    : wxDialog(parent, -1, _("Settings for the following 3d plots"),
-               wxDefaultPosition, wxDefaultSize,
-               wxMINIMIZE_BOX | wxMAXIMIZE_BOX | wxRESIZE_BORDER | wxCAPTION |
-                   wxCLOSE_BOX | wxCLIP_CHILDREN) {
+  : wxDialog(parent, -1, _("Settings for the following 3d plots"),
+	     wxDefaultPosition, wxDefaultSize,
+	     wxMINIMIZE_BOX | wxMAXIMIZE_BOX | wxRESIZE_BORDER | wxCAPTION |
+	     wxCLOSE_BOX | wxCLIP_CHILDREN) {
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
 
   vbox->Add(new wxStaticText(this, -1, _("Enhanced 3D settings:")),
@@ -557,8 +557,8 @@ Wiz3D::Wiz3D(wxWindow *parent, Configuration *WXUNUSED(config))
   vbox->Add(m_hidden3d, wxSizerFlags().Expand());
 
   m_enhanced3d =
-      new wxCheckBox(this, -1, _("Take surface color from steepness"),
-                     wxDefaultPosition, wxDefaultSize, wxCHK_3STATE);
+    new wxCheckBox(this, -1, _("Take surface color from steepness"),
+		   wxDefaultPosition, wxDefaultSize, wxCHK_3STATE);
   m_enhanced3d->Set3StateValue(wxCHK_UNDETERMINED);
   vbox->Add(m_enhanced3d, wxSizerFlags().Expand());
 
@@ -624,22 +624,22 @@ void WizContour::OnRadioButton(wxCommandEvent &WXUNUSED(dummy)) {
 }
 
 WizContour::WizContour(wxWindow *parent, Configuration *WXUNUSED(config))
-    : wxDialog(parent, -1,
-               _("Contour lines settings for the following 3d plots"),
-               wxDefaultPosition, wxDefaultSize,
-               wxMINIMIZE_BOX | wxMAXIMIZE_BOX | wxRESIZE_BORDER | wxCAPTION |
-                   wxCLOSE_BOX | wxCLIP_CHILDREN) {
+  : wxDialog(parent, -1,
+	     _("Contour lines settings for the following 3d plots"),
+	     wxDefaultPosition, wxDefaultSize,
+	     wxMINIMIZE_BOX | wxMAXIMIZE_BOX | wxRESIZE_BORDER | wxCAPTION |
+	     wxCLOSE_BOX | wxCLIP_CHILDREN) {
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
 
   m_contourNone =
-      new wxRadioButton(this, -1, _("No contour lines"), wxDefaultPosition,
-                        wxDefaultSize, wxRB_GROUP);
+    new wxRadioButton(this, -1, _("No contour lines"), wxDefaultPosition,
+		      wxDefaultSize, wxRB_GROUP);
   m_contourNone->Connect(wxEVT_RADIOBUTTON,
                          wxCommandEventHandler(WizContour::OnRadioButton), NULL,
                          this);
   vbox->Add(m_contourNone, wxSizerFlags().Expand());
   m_contourSurface =
-      new wxRadioButton(this, -1, _("Contour lines on the Surface"));
+    new wxRadioButton(this, -1, _("Contour lines on the Surface"));
   m_contourSurface->Connect(wxEVT_RADIOBUTTON,
                             wxCommandEventHandler(WizContour::OnRadioButton),
                             NULL, this);
@@ -650,7 +650,7 @@ WizContour::WizContour(wxWindow *parent, Configuration *WXUNUSED(config))
                          this);
   vbox->Add(m_contourBase, wxSizerFlags().Expand());
   m_contourBoth =
-      new wxRadioButton(this, -1, _("Contour lines on surface and Bottom"));
+    new wxRadioButton(this, -1, _("Contour lines on surface and Bottom"));
   m_contourBoth->Connect(wxEVT_RADIOBUTTON,
                          wxCommandEventHandler(WizContour::OnRadioButton), NULL,
                          this);
@@ -719,39 +719,39 @@ wxString WizContour::GetValue() {
 
 ParametricWiz::ParametricWiz(wxWindow *parent, Configuration *config,
                              int dimensions)
-    : wxDialog(parent, -1, _("Plot a parametric curve"), wxDefaultPosition,
-               wxDefaultSize,
-               wxMINIMIZE_BOX | wxMAXIMIZE_BOX | wxRESIZE_BORDER | wxCAPTION |
-                   wxCLOSE_BOX | wxCLIP_CHILDREN) {
+  : wxDialog(parent, -1, _("Plot a parametric curve"), wxDefaultPosition,
+	     wxDefaultSize,
+	     wxMINIMIZE_BOX | wxMAXIMIZE_BOX | wxRESIZE_BORDER | wxCAPTION |
+	     wxCLOSE_BOX | wxCLIP_CHILDREN) {
   m_dimensions = dimensions;
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
 
   vbox->Add(new wxStaticText(
-                this, -1,
-                _("Allows to provide separate expressions for calculating")),
+			     this, -1,
+			     _("Allows to provide separate expressions for calculating")),
             wxSizerFlags().Expand());
   if (dimensions < 3)
     vbox->Add(new wxStaticText(this, -1, _("the x and the y coordinate.")),
               wxSizerFlags().Expand().Border(wxBOTTOM, 16));
   else
     vbox->Add(
-        new wxStaticText(this, -1, _("the x, the y and the z coordinate.")),
-        wxSizerFlags().Expand().Border(wxBOTTOM, 16));
+	      new wxStaticText(this, -1, _("the x, the y and the z coordinate.")),
+	      wxSizerFlags().Expand().Border(wxBOTTOM, 16));
 
   vbox->Add(
-      new wxStaticText(this, -1, _("Expression that calculates the x value")),
-      wxSizerFlags());
+	    new wxStaticText(this, -1, _("Expression that calculates the x value")),
+	    wxSizerFlags());
   m_expression_x = new BTextCtrl(this, -1, config, "");
   vbox->Add(m_expression_x, wxSizerFlags().Expand());
   vbox->Add(
-      new wxStaticText(this, -1, _("Expression that calculates the y value")),
-      wxSizerFlags());
+	    new wxStaticText(this, -1, _("Expression that calculates the y value")),
+	    wxSizerFlags());
   m_expression_y = new BTextCtrl(this, -1, config, "");
   vbox->Add(m_expression_y, wxSizerFlags().Expand());
   if (dimensions > 2) {
     vbox->Add(
-        new wxStaticText(this, -1, _("Expression that calculates the z value")),
-        wxSizerFlags());
+	      new wxStaticText(this, -1, _("Expression that calculates the z value")),
+	      wxSizerFlags());
     m_expression_z = new BTextCtrl(this, -1, config, "");
     vbox->Add(m_expression_z, wxSizerFlags().Expand());
   }
@@ -773,8 +773,8 @@ ParametricWiz::ParametricWiz(wxWindow *parent, Configuration *config,
 
   wxBoxSizer *hbox = new wxBoxSizer(wxHORIZONTAL);
   hbox->Add(
-      new SvgPanel(this, DRAW_PARAMETRIC_SVG_GZ, DRAW_PARAMETRIC_SVG_GZ_SIZE),
-      wxSizerFlags(20).Border(wxALL, 5).Center());
+	    new SvgPanel(this, DRAW_PARAMETRIC_SVG_GZ, DRAW_PARAMETRIC_SVG_GZ_SIZE),
+	    wxSizerFlags(20).Border(wxALL, 5).Center());
   vbox->Add(hbox, wxSizerFlags(20).Expand());
 
   wxBoxSizer *buttonSizer = new wxBoxSizer(wxHORIZONTAL);
@@ -808,9 +808,9 @@ wxString ParametricWiz::GetValue() {
 
 WizPoints::WizPoints(wxWindow *parent, Configuration *config, int dimensions,
                      wxString expr)
-    : wxDialog(parent, -1, _("Draw points"), wxDefaultPosition, wxDefaultSize,
-               wxMINIMIZE_BOX | wxMAXIMIZE_BOX | wxRESIZE_BORDER | wxCAPTION |
-                   wxCLOSE_BOX | wxCLIP_CHILDREN) {
+  : wxDialog(parent, -1, _("Draw points"), wxDefaultPosition, wxDefaultSize,
+	     wxMINIMIZE_BOX | wxMAXIMIZE_BOX | wxRESIZE_BORDER | wxCAPTION |
+	     wxCLOSE_BOX | wxCLIP_CHILDREN) {
   m_dimensions = dimensions;
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
   vbox->Add(m_data = new BTextCtrl(this, -1, config, expr),
@@ -819,24 +819,24 @@ WizPoints::WizPoints(wxWindow *parent, Configuration *config, int dimensions,
   wxStaticBox *formatBox = new wxStaticBox(this, -1, _("Data format"));
   wxStaticBoxSizer *formatSizer = new wxStaticBoxSizer(formatBox, wxVERTICAL);
   m_formatStd =
-      new wxRadioButton(formatBox, -1,
-                        _("[x_1, x_2,...] or [x_1, x_2,...],[y_1, y_2,...] or "
-                          "matrix([x_1,y_1],[x_2,y_2],...)"),
-                        wxDefaultPosition, wxDefaultSize, wxRB_GROUP);
+    new wxRadioButton(formatBox, -1,
+		      _("[x_1, x_2,...] or [x_1, x_2,...],[y_1, y_2,...] or "
+			"matrix([x_1,y_1],[x_2,y_2],...)"),
+		      wxDefaultPosition, wxDefaultSize, wxRB_GROUP);
   formatSizer->Add(m_formatStd, wxSizerFlags().Expand());
   m_formatListOfLists =
-      new wxRadioButton(formatBox, -1, _("[[x_1,x_2,...],[y_1,y_2,...]]"));
+    new wxRadioButton(formatBox, -1, _("[[x_1,x_2,...],[y_1,y_2,...]]"));
   formatSizer->Add(m_formatListOfLists, wxSizerFlags().Expand());
   m_transposedMatrix = new wxRadioButton(
-      formatBox, -1, _("matrix([x_1,x_2,...],[y_1,y_2,...])"));
+					 formatBox, -1, _("matrix([x_1,x_2,...],[y_1,y_2,...])"));
   formatSizer->Add(m_transposedMatrix, wxSizerFlags().Expand());
   m_transposedListOfLists =
-      new wxRadioButton(formatBox, -1, _("[[x_1,x_2,...],[y_1,y_2,...]]"));
+    new wxRadioButton(formatBox, -1, _("[[x_1,x_2,...],[y_1,y_2,...]]"));
   formatSizer->Add(m_transposedListOfLists, wxSizerFlags().Expand());
   vbox->Add(formatSizer, wxSizerFlags().Expand());
   m_pointsJoined =
-      new wxCheckBox(this, -1, _("Connect the dots"), wxDefaultPosition,
-                     wxDefaultSize, wxCHK_3STATE);
+    new wxCheckBox(this, -1, _("Connect the dots"), wxDefaultPosition,
+		   wxDefaultSize, wxCHK_3STATE);
   m_pointsJoined->Set3StateValue(wxCHK_UNDETERMINED);
   vbox->Add(m_pointsJoined, wxSizerFlags().Expand());
 
@@ -847,7 +847,7 @@ WizPoints::WizPoints(wxWindow *parent, Configuration *config, int dimensions,
   for (int i = 0; i < 15; i++)
     pointTypes.Add(wxString::Format("%i", i));
   m_pointStyle =
-      new wxChoice(this, -1, wxDefaultPosition, wxDefaultSize, pointTypes);
+    new wxChoice(this, -1, wxDefaultPosition, wxDefaultSize, pointTypes);
   pointTypeSizer->Add(new wxStaticText(this, -1, _("Point type:")),
                       wxSizerFlags().Expand());
   pointTypeSizer->Add(m_pointStyle, wxSizerFlags().Expand());
@@ -924,10 +924,10 @@ wxString WizPoints::GetValue() {
 //! A wizard that sets the draw accuracy
 WizDrawAccuracy::WizDrawAccuracy(wxWindow *parent, Configuration *config,
                                  int dimensions)
-    : wxDialog(parent, -1, _("Speed versus accuracy"), wxDefaultPosition,
-               wxDefaultSize,
-               wxMINIMIZE_BOX | wxMAXIMIZE_BOX | wxRESIZE_BORDER | wxCAPTION |
-                   wxCLOSE_BOX | wxCLIP_CHILDREN) {
+  : wxDialog(parent, -1, _("Speed versus accuracy"), wxDefaultPosition,
+	     wxDefaultSize,
+	     wxMINIMIZE_BOX | wxMAXIMIZE_BOX | wxRESIZE_BORDER | wxCAPTION |
+	     wxCLOSE_BOX | wxCLIP_CHILDREN) {
   m_dimensions = dimensions;
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
   vbox->Add(new wxStaticText(this, -1, _("Samples on a line:")),
@@ -1029,14 +1029,14 @@ wxString WizDrawAccuracy::GetValue() {
       if (retval != wxEmptyString)
         retval += ",\n";
       retval += "ip_grid=[" + m_ip_grid_x->GetValue() + "," +
-                m_ip_grid_y->GetValue() + "]";
+	m_ip_grid_y->GetValue() + "]";
     }
     if ((!m_ip_grid_in_x->GetValue().IsEmpty()) &&
         (!m_ip_grid_in_y->GetValue().IsEmpty())) {
       if (!retval.IsEmpty())
         retval += ",\n";
       retval += "ip_grid_in=[" + m_ip_grid_in_x->GetValue() + "," +
-                m_ip_grid_in_y->GetValue() + "]";
+	m_ip_grid_in_y->GetValue() + "]";
     }
   } else {
     if (m_xu_grid->GetValue() != wxEmptyString) {

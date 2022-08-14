@@ -25,7 +25,7 @@
   This file defines the class ImgCellBase.
 
   Pointers to this class can both point to images or to animations.
- */
+*/
 
 #include "ImgCellBase.h"
 #include "CellImpl.h"
@@ -39,6 +39,6 @@
 #include <wx/mstream.h>
 
 ImgCellBase::ImgCellBase(GroupCell *group, Configuration *config)
-    : Cell(group, config) {}
+  : Cell(group, config) {}
 
 ImgCellBase::~ImgCellBase() {}

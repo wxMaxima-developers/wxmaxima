@@ -39,7 +39,7 @@ FontCache::GetStyleFontUncached(const Style &style, const wxFont &withFont) {
 
   wxFont font = withFont.IsOk() ? withFont : style.GetAsFontInfo();
   m_temporaryFonts.emplace_back(
-      font.IsOk() ? Style().FromFontNoCache(font) : style, font);
+				font.IsOk() ? Style().FromFontNoCache(font) : style, font);
   auto &entry = m_temporaryFonts.back();
   ++m_misses;
   entry.first.GetFontHash();

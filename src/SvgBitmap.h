@@ -58,7 +58,7 @@ public:
   const SvgBitmap& SetSize(wxSize siz){return SetSize(siz.x, siz.y);}
   //! Gets the original size of the svg image
   wxSize GetOriginalSize() const
-  { return m_svgImage ? wxSize(m_svgImage->width, m_svgImage->height) : wxDefaultSize; }
+    { return m_svgImage ? wxSize(m_svgImage->width, m_svgImage->height) : wxDefaultSize; }
   /*! An "invalid bitmap" sign */
   wxBitmap GetInvalidBitmap(int targetSize);
 private:

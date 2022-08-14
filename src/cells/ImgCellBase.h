@@ -32,11 +32,11 @@
 
 /* ! The base class of ImgCell and Animation
 
-Images and animation share most of the functionality with each other => we 
-can generate a class ImgCellBase that allows us to create pointers that both
-can point to an ImgCell and an Animation and that can use the methods common
-to both  
- */
+   Images and animation share most of the functionality with each other => we 
+   can generate a class ImgCellBase that allows us to create pointers that both
+   can point to an ImgCell and an Animation and that can use the methods common
+   to both  
+*/
 class ImgCellBase : public Cell
 {
 public:
@@ -70,14 +70,14 @@ public:
     a losslessly compressed png version of the bitmap.
 
     See also GetExtension().
-   */
+  */
   virtual wxSize ToImageFile(wxString filename)  = 0;
 
   /*! Removes the cached scaled image from memory
 
     The scaled version of the image will be recreated automatically once it is 
     needed.
-   */
+  */
   virtual void ClearCache() override = 0;
 
   virtual const wxString &GetToolTip(wxPoint point) const override = 0;

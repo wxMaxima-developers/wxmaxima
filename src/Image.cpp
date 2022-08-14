@@ -75,26 +75,26 @@
 /*! Manages an auto-scaling image
 
   This class keeps two versions of an image:
-    - The image in its original compressed format. This way the image can losslessly
-      be exported later on
-    - A bitmap version of the image that is scaled down to a size that makes sense 
-      with the current viewport.
+  - The image in its original compressed format. This way the image can losslessly
+  be exported later on
+  - A bitmap version of the image that is scaled down to a size that makes sense 
+  with the current viewport.
 
   Storing images this way has many advantages:
-    - It allows us to restrict scaling operations to only once on actually drawing 
-      the image after a resize of the wxMaxima window.
-    - We can keep (and therefore export and save) jpeg photos in their original 
-      format instead of using the .png compression that is superior for line art - 
-      but not for depicting real-live images.
-    - We save time on saving the .wxmx file since image compression, if done good, 
-      might need a good deal of time and this class never needs to compress images
-      itself.
-    - It allows images to keep their metadata, if needed
-    - and if we have big images (big plots or for example photographs) we don't need
-      to store them in their uncompressed form.
-    - One could even delete the cached scaled images for all cells that currently 
-      are off-screen in order to save memory.
- */
+  - It allows us to restrict scaling operations to only once on actually drawing 
+  the image after a resize of the wxMaxima window.
+  - We can keep (and therefore export and save) jpeg photos in their original 
+  format instead of using the .png compression that is superior for line art - 
+  but not for depicting real-live images.
+  - We save time on saving the .wxmx file since image compression, if done good, 
+  might need a good deal of time and this class never needs to compress images
+  itself.
+  - It allows images to keep their metadata, if needed
+  - and if we have big images (big plots or for example photographs) we don't need
+  to store them in their uncompressed form.
+  - One could even delete the cached scaled images for all cells that currently 
+  are off-screen in order to save memory.
+*/
 class Image final
 {
 public:
@@ -108,7 +108,7 @@ public:
 
     This constructor actually has to do some compression since we got
     the bitmap in an uncompressed form.
-   */
+  */
   Image(Configuration *config, const wxBitmap &bitmap);
 
   /*! A constructor that loads an image
@@ -117,7 +117,7 @@ public:
     \param image The name of the file
     \param filesystem The filesystem to load it from
     \param remove true = Delete the file after loading it
-   */
+  */
   Image(Configuration *config, wxString image, std::shared_ptr<wxFileSystem> filesystem, bool remove = true);
 
   Image(Configuration *config, const Image &image);
@@ -139,16 +139,16 @@ public:
     Causes the files to be cached if they are not way too long; As the files
     are text-only they profit from being compressed and are stored in the 
     memory in their compressed form.
-   */
+  */
   void GnuplotSource(wxString gnuplotFilename, wxString dataFilename, std::shared_ptr<wxFileSystem> filesystem);
 
   //! Load the gnuplot source file from the system's filesystem
   void GnuplotSource(wxString gnuplotFilename, wxString dataFilename)
-    {
-      GnuplotSource(gnuplotFilename, dataFilename, {} /* system fs */);
-    }
+  {
+    GnuplotSource(gnuplotFilename, dataFilename, {} /* system fs */);
+  }
 
-/*! Returns the gnuplot source file name of this image
+  /*! Returns the gnuplot source file name of this image
 
     If maxima has deleted the temporary file in the meantime or if it comes from 
     a .wxmx file and has never been created from maxima the file is created by this 
@@ -156,7 +156,7 @@ public:
 
     If the file cannot be created (for example if no gnuplot source exists/ 
     is known) this function returns wxEmptyString.
-   */
+  */
   wxString GnuplotSource();
   /*! Returns the gnuplot data file name of this image
 
@@ -166,7 +166,7 @@ public:
 
     If the file cannot be created (for example if no gnuplot source exists/ 
     is known) this function returns wxEmptyString.
-   */
+  */
   wxString GnuplotData();
 
   //! Returns the gnuplot source of this image
@@ -177,12 +177,12 @@ public:
   /*! Temporarily forget the scaled image in order to save memory
 
     Will recreate the scaled image as soon as needed.
-   */
+  */
   void ClearCache()
-    {
-      if ((m_scaledBitmap.GetWidth() > 1) || (m_scaledBitmap.GetHeight() > 1))
-        m_scaledBitmap.Create(1, 1);
-    }
+  {
+    if ((m_scaledBitmap.GetWidth() > 1) || (m_scaledBitmap.GetHeight() > 1))
+      m_scaledBitmap.Create(1, 1);
+  }
   
   //! Returns the file name extension of the current image
   wxString GetExtension();
@@ -267,7 +267,7 @@ private:
   /*! The upper width limit for displaying this image
 
     \todo: Why is this a float and not an integer value?
-   */
+  */
   double m_maxWidth;
   //! The upper height limit for displaying this image
   double m_maxHeight;
@@ -298,7 +298,7 @@ private:
    probably not correct (a FIXME), but I have no idea, why Linux still requires
    that NANOSVG_IMPLEMENTATION/NANOSVGRAST_IMPLEMENTATION is defined.
 
- */
+*/
 #if (wxCHECK_VERSION(3, 1, 6)) && defined(__WINDOWS__)
 #else
 #define NANOSVG_IMPLEMENTATION
@@ -371,7 +371,7 @@ Image::Image(Configuration *config, const wxBitmap &bitmap) {
 // cppcheck-suppress performance symbolName=filesystem
 Image::Image(Configuration *config, wxString image,
              std::shared_ptr<wxFileSystem> filesystem, bool remove)
-    : m_fs_keepalive_imagedata(filesystem) {
+  : m_fs_keepalive_imagedata(filesystem) {
   m_svgImage = NULL;
   m_configuration = config;
   m_scaledBitmap.Create(1, 1);
@@ -483,8 +483,8 @@ void Image::GnuplotSource(wxString gnuplotFilename, wxString dataFilename,
 }
 
 void Image::LoadGnuplotSource_Backgroundtask(
-    wxString gnuplotFilename, wxString dataFilename,
-    std::shared_ptr<wxFileSystem> filesystem) {
+					     wxString gnuplotFilename, wxString dataFilename,
+					     std::shared_ptr<wxFileSystem> filesystem) {
   // Error dialogues need to be created by the foreground thread.
   SuppressErrorDialogs suppressor;
 
@@ -499,7 +499,7 @@ void Image::LoadGnuplotSource_Backgroundtask(
       if (strucStat.st_size >
           m_configuration->MaxGnuplotMegabytes() * 1000 * 1000) {
         wxLogMessage(
-            _("Too much gnuplot data => Not storing it in the worksheet"));
+		     _("Too much gnuplot data => Not storing it in the worksheet"));
         m_gnuplotData_Compressed.Clear();
         return;
       }
@@ -542,8 +542,8 @@ void Image::LoadGnuplotSource_Backgroundtask(
 
           m_gnuplotSource_Compressed.Clear();
           m_gnuplotSource_Compressed.AppendData(
-              mstream.GetOutputStreamBuffer()->GetBufferStart(),
-              mstream.GetOutputStreamBuffer()->GetBufferSize());
+						mstream.GetOutputStreamBuffer()->GetBufferStart(),
+						mstream.GetOutputStreamBuffer()->GetBufferSize());
         }
 
         {
@@ -572,8 +572,8 @@ void Image::LoadGnuplotSource_Backgroundtask(
 
             m_gnuplotData_Compressed.Clear();
             m_gnuplotData_Compressed.AppendData(
-                mstream.GetOutputStreamBuffer()->GetBufferStart(),
-                mstream.GetOutputStreamBuffer()->GetBufferSize());
+						mstream.GetOutputStreamBuffer()->GetBufferStart(),
+						mstream.GetOutputStreamBuffer()->GetBufferSize());
           }
         }
       }
@@ -620,8 +620,8 @@ void Image::LoadGnuplotSource_Backgroundtask(
               zstream.Close();
               m_gnuplotSource_Compressed.Clear();
               m_gnuplotSource_Compressed.AppendData(
-                  mstream.GetOutputStreamBuffer()->GetBufferStart(),
-                  mstream.GetOutputStreamBuffer()->GetBufferSize());
+						    mstream.GetOutputStreamBuffer()->GetBufferStart(),
+						    mstream.GetOutputStreamBuffer()->GetBufferSize());
             }
           }
         }
@@ -658,8 +658,8 @@ void Image::LoadGnuplotSource_Backgroundtask(
 
               m_gnuplotData_Compressed.Clear();
               m_gnuplotData_Compressed.AppendData(
-                  mstream.GetOutputStreamBuffer()->GetBufferStart(),
-                  mstream.GetOutputStreamBuffer()->GetBufferSize());
+						  mstream.GetOutputStreamBuffer()->GetBufferStart(),
+						  mstream.GetOutputStreamBuffer()->GetBufferSize());
             }
           }
         }
@@ -729,10 +729,10 @@ wxString Image::GnuplotData() {
     // Move the gnuplot data and data file into our temp directory
     wxFileName gnuplotSourceFile(m_gnuplotSource);
     m_gnuplotSource = wxStandardPaths::Get().GetTempDir() + "/" +
-                      gnuplotSourceFile.GetFullName();
+      gnuplotSourceFile.GetFullName();
     wxFileName gnuplotDataFile(m_gnuplotData);
     m_gnuplotData = wxStandardPaths::Get().GetTempDir() + "/" +
-                    gnuplotDataFile.GetFullName();
+      gnuplotDataFile.GetFullName();
 
     wxFileOutputStream output(m_gnuplotData);
     wxTextOutputStream textOut(output);
@@ -762,10 +762,10 @@ wxString Image::GnuplotSource() {
     // Move the gnuplot source and data file into our temp directory
     wxFileName gnuplotSourceFile(m_gnuplotSource);
     m_gnuplotSource = wxStandardPaths::Get().GetTempDir() + "/" +
-                      gnuplotSourceFile.GetFullName();
+      gnuplotSourceFile.GetFullName();
     wxFileName gnuplotDataFile(m_gnuplotData);
     m_gnuplotData = wxStandardPaths::Get().GetTempDir() + "/" +
-                    gnuplotDataFile.GetFullName();
+      gnuplotDataFile.GetFullName();
 
     wxFileOutputStream output(m_gnuplotSource);
     wxTextOutputStream textOut(output);
@@ -887,7 +887,7 @@ wxBitmap Image::GetBitmap(double scale) {
                   imgdata.data(),
                   m_width, m_height, m_width * 4);
     return m_scaledBitmap =
-               SvgBitmap::RGBA2wxBitmap(imgdata.data(), m_width, m_height);
+      SvgBitmap::RGBA2wxBitmap(imgdata.data(), m_width, m_height);
   } else {
     wxImage img;
     if (m_compressedImage.GetDataLen() > 0) {
@@ -930,7 +930,7 @@ void Image::InvalidBitmap() {
   wxString error;
   if (m_imageName != wxEmptyString)
     error =
-        wxString::Format(_("Error: Cannot render %s."), m_imageName.utf8_str());
+      wxString::Format(_("Error: Cannot render %s."), m_imageName.utf8_str());
   else
     error = wxString::Format(_("Error: Cannot render the image."));
 
@@ -1043,8 +1043,8 @@ void Image::LoadImage_Backgroundtask(wxString image,
         zstream.Close();
         m_compressedImage.Clear();
         m_compressedImage.AppendData(
-            mstream.GetOutputStreamBuffer()->GetBufferStart(),
-            mstream.GetOutputStreamBuffer()->GetBufferSize());
+				     mstream.GetOutputStreamBuffer()->GetBufferStart(),
+				     mstream.GetOutputStreamBuffer()->GetBufferSize());
         m_extension += "z";
         m_imageName += "z";
       } else {
@@ -1180,10 +1180,10 @@ void Image::Recalculate(double scale) {
 const wxString &Image::GetBadImageToolTip() {
   // cppcheck-suppress returnTempReference
   return T_(
-      "The image could not be displayed. It may be broken, in a wrong format "
-      "or "
-      "be the result of gnuplot not being able to write the image or not being "
-      "able to understand what maxima wanted to plot.\n"
-      "One example of the latter would be: Gnuplot refuses to plot entirely "
-      "empty images");
+	    "The image could not be displayed. It may be broken, in a wrong format "
+	    "or "
+	    "be the result of gnuplot not being able to write the image or not being "
+	    "able to understand what maxima wanted to plot.\n"
+	    "One example of the latter would be: Gnuplot refuses to plot entirely "
+	    "empty images");
 }

@@ -38,7 +38,7 @@ template <typename Cell> class CellListIterator final {
 public:
   constexpr CellListIterator() = default;
   constexpr explicit CellListIterator(const std::unique_ptr<Cell> &p)
-      : m_ptr(p.get()) {}
+    : m_ptr(p.get()) {}
   constexpr explicit CellListIterator(Cell *p) : m_ptr(p) {}
   constexpr CellListIterator(const CellListIterator &o) = default;
   constexpr CellListIterator &operator=(const CellListIterator &o) = default;
@@ -98,19 +98,19 @@ public:
   }
   // constexpr fails if wxASSERT contains assembler code, which is true on MinGW
   CellDrawListIterator &operator++()
-  {
-    if (m_ptr)
     {
-      auto *const prev = m_ptr;
-      m_ptr = m_ptr->GetNextToDraw();
-      wxASSERT(prev != m_ptr);
+      if (m_ptr)
+      {
+        auto *const prev = m_ptr;
+        m_ptr = m_ptr->GetNextToDraw();
+        wxASSERT(prev != m_ptr);
+      }
+      return *this;
     }
-    return *this;
-  }
   constexpr bool operator==(const CellDrawListIterator &o) const
-  { return m_ptr == o.m_ptr; }
+    { return m_ptr == o.m_ptr; }
   constexpr bool operator!=(const CellDrawListIterator &o) const
-  { return m_ptr != o.m_ptr; }
+    { return m_ptr != o.m_ptr; }
   constexpr operator bool() const { return m_ptr; }
   constexpr operator Cell*() const { return m_ptr; }
   constexpr Cell *operator->() const { return m_ptr; }
@@ -149,26 +149,26 @@ public:
   explicit InnerCellIterator(Cell *parentCell) :
     m_parentCell(parentCell),
     m_endIndex(parentCell ? GetInnerCellCount(parentCell) : 0)
-  {
-    FindFirstInnerCell();
-  }
+    {
+      FindFirstInnerCell();
+    }
   InnerCellIterator(const InnerCellIterator &o) = default;
   InnerCellIterator &operator=(const InnerCellIterator &o) = default;
   InnerCellIterator operator++(int)
-  {
-    auto ret = *this;
-    return operator++(), ret;
-  }
+    {
+      auto ret = *this;
+      return operator++(), ret;
+    }
   InnerCellIterator &operator++()
-  {
-    if (m_parentCell)
-      AdvanceLoop(Advance::Always);
-    return *this;
-  }
+    {
+      if (m_parentCell)
+        AdvanceLoop(Advance::Always);
+      return *this;
+    }
   bool operator==(const InnerCellIterator &o) const
-  { return m_innerCell == o.m_innerCell; }
+    { return m_innerCell == o.m_innerCell; }
   bool operator!=(const InnerCellIterator &o) const
-  { return m_innerCell != o.m_innerCell; }
+    { return m_innerCell != o.m_innerCell; }
   operator bool() const { return m_innerCell; }
   operator Cell*() const { return m_innerCell; }
   Cell *operator->() const { return m_innerCell; }
@@ -194,7 +194,7 @@ inline void InnerCellIterator::AdvanceLoop(Advance mode)
     return;
   for (;;)
   {
-    ++ m_index;
+    ++m_index;
     if (m_index == m_endIndex)
     {
       m_innerCell = nullptr;

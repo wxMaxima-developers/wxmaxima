@@ -25,7 +25,7 @@
 MatWiz::MatWiz(wxWindow *parent, int id, Configuration *cfg,
                const wxString &title, int type, int h, int w,
                const wxPoint &pos, const wxSize &size, long style)
-    : wxDialog(parent, id, title, pos, size, style) {
+  : wxDialog(parent, id, title, pos, size, style) {
   m_height = h;
   m_width = w;
   m_matrixType = type;
@@ -83,7 +83,7 @@ void MatWiz::set_properties() {
 void MatWiz::do_layout() {
   wxFlexGridSizer *grid_sizer_1 = new wxFlexGridSizer(4, 1, 0, 0);
   wxFlexGridSizer *grid_sizer_2 =
-      new wxFlexGridSizer(m_height + 1, m_width + 1, 2, 2);
+    new wxFlexGridSizer(m_height + 1, m_width + 1, 2, 2);
   wxBoxSizer *sizer_1 = new wxBoxSizer(wxHORIZONTAL);
   wxStaticText *text;
   grid_sizer_2->Add(20, 20, 0, 0);
@@ -149,7 +149,7 @@ wxString MatWiz::GetValue() {
 MatDim::MatDim(wxWindow *parent, int id, Configuration *cfg,
                const wxString &title, const wxPoint &pos, const wxSize &size,
                long style)
-    : wxDialog(parent, id, title, pos, size, style) {
+  : wxDialog(parent, id, title, pos, size, style) {
   label_2 = new wxStaticText(this, -1, _("Rows:"));
   text_ctrl_1 = new BTextCtrl(this, -1, cfg, wxT("3"), wxDefaultPosition,
                               wxSize(150, -1));
@@ -158,7 +158,7 @@ MatDim::MatDim(wxWindow *parent, int id, Configuration *cfg,
                               wxSize(150, -1));
   label_4 = new wxStaticText(this, -1, _("Type:"));
   const wxString choice_1_choices[] = {_("general"), _("diagonal"),
-                                       _("symmetric"), _("antisymmetric")};
+    _("symmetric"), _("antisymmetric")};
   choice_1 = new wxChoice(this, -1, wxDefaultPosition, wxSize(150, -1), 4,
                           choice_1_choices);
   label_0 = new wxStaticText(this, -1, _("Name:"));

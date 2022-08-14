@@ -55,15 +55,15 @@ public:
   constexpr void Invalidate() { m_value = invalid; }
   operator T() const { return Get(); }
   T Get() const
-  {
-    wxASSERT_MSG(m_value != invalid, "Attempted to use an invalid cached value");
-    return (m_value != invalid) ? m_value : T{};
-  }
+    {
+      wxASSERT_MSG(m_value != invalid, "Attempted to use an invalid cached value");
+      return (m_value != invalid) ? m_value : T{};
+    }
   void SetCached(T newValue) const
-  {
-    wxASSERT_MSG(newValue != invalid, "Attempted to set an out-of-range cached value.");
-    m_value = newValue;
-  }
+    {
+      wxASSERT_MSG(newValue != invalid, "Attempted to set an out-of-range cached value.");
+      m_value = newValue;
+    }
 };
 
 #endif

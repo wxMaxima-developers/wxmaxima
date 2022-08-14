@@ -23,7 +23,7 @@
 
 /*! \file
   This file defines the class BitMap that renders math as bitmap.
- */
+*/
 
 #include "BitmapOut.h"
 #include "Cell.h"
@@ -32,7 +32,7 @@
 #define BM_FULL_WIDTH 1000
 
 BitmapOut::BitmapOut(Configuration **configuration, double scale)
-    : m_cmn(configuration, BM_FULL_WIDTH, scale) {
+  : m_cmn(configuration, BM_FULL_WIDTH, scale) {
   m_cmn.SetSize({10, 10});
   m_bmp.CreateScaled(10, 10, 24, scale);
   m_dc.SelectObject(m_bmp);
@@ -48,7 +48,7 @@ BitmapOut::BitmapOut(Configuration **configuration, double scale)
 
 BitmapOut::BitmapOut(Configuration **configuration,
                      std::unique_ptr<Cell> &&tree, double scale, long maxSize)
-    : BitmapOut(configuration, scale) {
+  : BitmapOut(configuration, scale) {
   Render(std::move(tree), maxSize);
 }
 
@@ -91,7 +91,7 @@ bool BitmapOut::Layout(long int maxSize) {
   Draw();
   return true;
 
-failed:
+ failed:
   m_bmp = wxNullBitmap;
   return false;
 }
@@ -102,7 +102,7 @@ void BitmapOut::Draw() {
 
   auto bgColor = config.m_styles[TS_TEXT_BACKGROUND].GetColor();
   m_dc.SetBackground(
-      *(wxTheBrushList->FindOrCreateBrush(bgColor, wxBRUSHSTYLE_SOLID)));
+		     *(wxTheBrushList->FindOrCreateBrush(bgColor, wxBRUSHSTYLE_SOLID)));
   m_dc.Clear();
 
   m_cmn.Draw(m_tree.get());

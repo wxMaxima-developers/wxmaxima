@@ -26,12 +26,12 @@
 MaxSizeChooser::MaxSizeChooser(wxWindow *parent, int id, const int &width,
                                const int &height, const wxPoint &pos,
                                const wxSize &size, long style)
-    : wxDialog(parent, id, _("Set maximum image size [in mm]"), pos, size,
-               style) {
+  : wxDialog(parent, id, _("Set maximum image size [in mm]"), pos, size,
+	     style) {
   wxStaticText *widthText =
-      new wxStaticText(this, -1, wxT("Max width [in cm]:"));
+    new wxStaticText(this, -1, wxT("Max width [in cm]:"));
   wxStaticText *heightText =
-      new wxStaticText(this, -1, wxT("Max height [in cm]:"));
+    new wxStaticText(this, -1, wxT("Max height [in cm]:"));
 
   m_width = new wxSpinCtrl(this, -1, wxEmptyString, wxDefaultPosition,
                            wxSize(100, -1), wxSP_VERTICAL, -1, 1000);
@@ -54,10 +54,10 @@ MaxSizeChooser::MaxSizeChooser(wxWindow *parent, int id, const int &width,
   wxFlexGridSizer *grid_sizer_1 = new wxFlexGridSizer(4, 2, 0, 0);
   wxBoxSizer *sizer_1 = new wxBoxSizer(wxHORIZONTAL);
   vsizer->Add(
-      new wxStaticText(
-          this, -1,
-          _("The maximum size for this image. Values <= 0 mean: Unspecified.")),
-      0, wxALL | wxALIGN_CENTER_HORIZONTAL, 5);
+	      new wxStaticText(
+			       this, -1,
+			       _("The maximum size for this image. Values <= 0 mean: Unspecified.")),
+	      0, wxALL | wxALIGN_CENTER_HORIZONTAL, 5);
   grid_sizer_1->Add(widthText, 0, wxALL | wxEXPAND, 5);
   grid_sizer_1->Add(m_width, 0, wxEXPAND | wxLEFT | wxRIGHT, 2);
   grid_sizer_1->Add(heightText, 0, wxALL | wxEXPAND, 5);

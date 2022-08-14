@@ -47,11 +47,11 @@
 
    The wordlists for autocompletion for keywords come from several sources:
 
-     - wxMaxima::ReadLoadSymbols receive the contents of maxima's variables
-       "values" and "functions" after a package is loaded.
-     - all words that appear in the worksheet
-     - and a list of maxima's builtin commands.
- */
+   - wxMaxima::ReadLoadSymbols receive the contents of maxima's variables
+   "values" and "functions" after a package is loaded.
+   - all words that appear in the worksheet
+   - and a list of maxima's builtin commands.
+*/
 class MaximaManual
 {
 public:
@@ -81,7 +81,7 @@ private:
   void WaitForBackgroundProcess();
   //! Add our aliasses to a list of anchors
   void AnchorAliasses(HelpFileAnchors &anchors);
-    //! Scans the maxima directory for a list of loadable files
+  //! Scans the maxima directory for a list of loadable files
   class GetHTMLFiles : public wxDirTraverser
   {
   public:

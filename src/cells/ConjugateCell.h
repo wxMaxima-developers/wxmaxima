@@ -29,7 +29,7 @@
 /*! \file
 
   This file defines the class for the cell type that represents a conjugate(x) block.
- */
+*/
 
 /*! A cell that represents a conjugate(x) block
 
@@ -37,14 +37,14 @@
   m_nextToDraw this cell is represented by the following individual 
   cells:
   
-   - The ConjugateCell itself
-   - The opening "conjugate("
-   - The contents
-   - The closing ")".
+  - The ConjugateCell itself
+  - The opening "conjugate("
+  - The contents
+  - The closing ")".
    
   If it isn't broken into multiple cells m_nextToDraw points to the 
   cell that follows this Cell.
- */
+*/
 class ConjugateCell final : public Cell
 {
 public:
@@ -75,9 +75,9 @@ private:
 //** Bitfield objects (0 bytes)
 //**
   void InitBitFields()
-  { // Keep the initialization order below same as the order
-    // of bit fields in this class!
-  }
+    { // Keep the initialization order below same as the order
+      // of bit fields in this class!
+    }
 
   void Recalculate(AFontSize fontsize) override;
 

@@ -25,7 +25,7 @@
 SysWiz::SysWiz(wxWindow *parent, int id, Configuration *cfg,
                const wxString &title, int numEq, const wxPoint &pos,
                const wxSize &sz, long style)
-    : wxDialog(parent, id, title, pos, sz, style) {
+  : wxDialog(parent, id, title, pos, sz, style) {
   m_size = numEq;
   for (int i = 0; i < m_size; i++) {
     m_inputs.push_back(new BTextCtrl(this, -1, cfg, wxT("0"), wxDefaultPosition,

@@ -36,10 +36,10 @@
 /* This class represents fractions.
 
    Fractions can be drawn in 2 ways:
-     - As a 2D fraction (\f$ \frac{a}{b} \f$) if the fraction is narrow enough to fit
-       on the screen, or
-     - as a linear division (\f$ a/b \f$) if it doesn't. 
- */
+   - As a 2D fraction (\f$ \frac{a}{b} \f$) if the fraction is narrow enough to fit
+   on the screen, or
+   - as a linear division (\f$ a/b \f$) if it doesn't. 
+*/
 class FracCell final : public Cell
 {
 public:
@@ -137,10 +137,10 @@ private:
 //** Bitfield objects (1 bytes)
 //**
   void InitBitFields()
-  { // Keep the initialization order below same as the order
-    // of bit fields in this class!
-    m_inExponent = false;
-  }
+    { // Keep the initialization order below same as the order
+      // of bit fields in this class!
+      m_inExponent = false;
+    }
   //! Fractions in exponents are shown in their linear form.
   bool m_inExponent : 1 /* InitBitFields */;
 };

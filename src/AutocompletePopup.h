@@ -24,7 +24,7 @@
 
   If we want to add additional elements to a pop-up this is the
   lowest ID that is guaranteed to be free for this purpose.
- */
+*/
 #define popid_complete_00 (wxID_HIGHEST + 1000)
 
 /*! \file
@@ -52,14 +52,14 @@ class AutocompletePopup final : public wxListView, public wxComboPopup
 
   // Translate string into a list selection
   void SetStringValue(const wxString& s) override
-  {
-    int n = wxListView::FindItem(-1, s);
-    if (n >= 0 && n < wxListView::GetItemCount() )
-      wxListView::Select(n);
-  }
+    {
+      int n = wxListView::FindItem(-1, s);
+      if (n >= 0 && n < wxListView::GetItemCount() )
+        wxListView::Select(n);
+    }
   // Get list selection as a string
   wxString GetStringValue() const override
-  { return (m_value >= 0) ? wxListView::GetItemText(m_value) : wxString(); }
+    { return (m_value >= 0) ? wxListView::GetItemText(m_value) : wxString(); }
 
 private:
   struct DonePtr { AutocompletePopup*& observer; ~DonePtr() { observer = nullptr; } };

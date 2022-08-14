@@ -28,7 +28,7 @@
   This file defines the class Worksheet
 
   Worksheet represents the worksheet.
- */
+*/
 
 #include "Worksheet.h"
 #include "AnimationCell.h"
@@ -48,6 +48,8 @@
 #include "wxMaxima.h"
 #include "wxMaximaFrame.h"
 #include <memory>
+#include <vector>
+#include <utility>
 #include <stdlib.h>
 #include <wx/caret.h>
 #include <wx/clipbrd.h>
@@ -77,15 +79,15 @@
 //! window.
 Worksheet::Worksheet(wxWindow *parent, int id, Worksheet *&observer,
                      Configuration *config, wxPoint pos, wxSize size)
-    : wxScrolled<wxWindow>(parent, id, pos, size,
-                           wxVSCROLL | wxHSCROLL | wxWANTS_CHARS
+  : wxScrolled<wxWindow>(parent, id, pos, size,
+			 wxVSCROLL | wxHSCROLL | wxWANTS_CHARS
 #if defined __WXMSW__
-                               | wxSUNKEN_BORDER
+			 | wxSUNKEN_BORDER
 #endif
-                           ),
-      m_cellPointers(this), m_dc(this), m_configuration(config),
-      m_autocomplete(config), m_observer(observer),
-      m_maximaManual(m_configuration) {
+			 ),
+    m_cellPointers(this), m_dc(this), m_configuration(config),
+    m_autocomplete(config), m_observer(observer),
+    m_maximaManual(m_configuration) {
   m_dontSkipScrollEvent = false;
   m_scrollToCaret = false;
   m_newxPosition = -1;
@@ -125,7 +127,7 @@ Worksheet::Worksheet(wxWindow *parent, int id, Worksheet *&observer,
   m_configuration->ReadConfig();
   SetBackgroundColour(m_configuration->DefaultBackgroundColor());
   m_configuration->SetBackgroundBrush(*(wxTheBrushList->FindOrCreateBrush(
-      m_configuration->DefaultBackgroundColor(), wxBRUSHSTYLE_SOLID)));
+									  m_configuration->DefaultBackgroundColor(), wxBRUSHSTYLE_SOLID)));
   m_redrawStart = NULL;
   m_redrawRequested = false;
   m_autocompletePopup = NULL;
@@ -270,7 +272,7 @@ bool Worksheet::RedrawIfRequested() {
         (m_pointer_y >
          m_cellPointers.m_groupCellUnderPointer->GetRect().GetBottom())) {
       GroupCell *oldGroupCellUnderPointer =
-          m_cellPointers.m_groupCellUnderPointer;
+	m_cellPointers.m_groupCellUnderPointer;
 
       // find out which group cell lies under the pointer
       for (auto &tmp : OnList(GetTree())) {
@@ -286,15 +288,15 @@ bool Worksheet::RedrawIfRequested() {
            m_cellPointers.m_groupCellUnderPointer)) {
         if (oldGroupCellUnderPointer) {
           RequestRedraw(
-              wxRect(0, oldGroupCellUnderPointer->GetRect().GetTop(),
-                     m_configuration->GetIndent() - 1,
-                     oldGroupCellUnderPointer->GetRect().GetBottom()));
+			wxRect(0, oldGroupCellUnderPointer->GetRect().GetTop(),
+			       m_configuration->GetIndent() - 1,
+			       oldGroupCellUnderPointer->GetRect().GetBottom()));
         }
         if (m_cellPointers.m_groupCellUnderPointer) {
           RequestRedraw(wxRect(
-              0, m_cellPointers.m_groupCellUnderPointer->GetRect().GetTop(),
-              m_configuration->GetIndent() - 1,
-              m_cellPointers.m_groupCellUnderPointer->GetRect().GetBottom()));
+			       0, m_cellPointers.m_groupCellUnderPointer->GetRect().GetTop(),
+			       m_configuration->GetIndent() - 1,
+			       m_cellPointers.m_groupCellUnderPointer->GetRect().GetBottom()));
         }
       }
     }
@@ -305,10 +307,10 @@ bool Worksheet::RedrawIfRequested() {
       // set the worksheet's tooltip to the appropriate one for the worksheet
       // element the pointer points to.
       if (m_cellPointers.m_groupCellUnderPointer->GetOutputRect().Contains(
-              wxPoint(m_pointer_x, m_pointer_y))) {
+									   wxPoint(m_pointer_x, m_pointer_y))) {
         m_cellPointers.m_cellUnderPointer = nullptr;
         wxString toolTip = m_cellPointers.m_groupCellUnderPointer->GetToolTip(
-            wxPoint(m_pointer_x, m_pointer_y));
+									      wxPoint(m_pointer_x, m_pointer_y));
 
         if (!toolTip.empty()) {
           if (!GetToolTipText().empty()) {
@@ -328,11 +330,11 @@ bool Worksheet::RedrawIfRequested() {
           if ((m_cellPointers.m_cellUnderPointer->GetType() == MC_TYPE_IMAGE) ||
               (m_cellPointers.m_cellUnderPointer->GetType() == MC_TYPE_SLIDE)) {
             ImgCellBase *image = dynamic_cast<ImgCellBase *>(
-                m_cellPointers.m_cellUnderPointer.get());
+							     m_cellPointers.m_cellUnderPointer.get());
             StatusText(wxString::Format(
-                _("%s image, %li×%li, %li ppi"), image->GetExtension().c_str(),
-                (long)image->GetOriginalWidth(),
-                (long)image->GetOriginalWidth(), (long)image->GetPPI()));
+					_("%s image, %li×%li, %li ppi"), image->GetExtension().c_str(),
+					(long)image->GetOriginalWidth(),
+					(long)image->GetOriginalWidth(), (long)image->GetPPI()));
           }
         }
       } else
@@ -351,7 +353,6 @@ bool Worksheet::RedrawIfRequested() {
     redrawIssued = true;
     m_rectToRefresh.Clear();
   } else {
-
     wxRegionIterator region(m_rectToRefresh);
     while (region) {
       wxRect rect = region.GetRect();
@@ -438,12 +439,12 @@ Worksheet::~Worksheet() {
 void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event)) {
   m_configuration->ClearAndEnableRedrawTracing();
   m_configuration->SetBackgroundBrush(*(wxTheBrushList->FindOrCreateBrush(
-      m_configuration->DefaultBackgroundColor(), wxBRUSHSTYLE_SOLID)));
+									  m_configuration->DefaultBackgroundColor(), wxBRUSHSTYLE_SOLID)));
   wxAutoBufferedPaintDC dc(this);
   if (!dc.IsOk())
     return;
 
-// Some drawing contents
+  // Some drawing contents
 #ifndef DC_ALREADY_SCROLLED
   PrepareDC(dc);
 #endif
@@ -482,12 +483,12 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event)) {
 #ifdef __WXMAC__
   if ((!m_memory.IsOk()) || (m_memory.GetSize() != sz))
     m_memory =
-        wxBitmap(sz * wxWindow::GetContentScaleFactor(), wxBITMAP_SCREEN_DEPTH,
-                 wxWindow::GetContentScaleFactor());
+      wxBitmap(sz * wxWindow::GetContentScaleFactor(), wxBITMAP_SCREEN_DEPTH,
+	       wxWindow::GetContentScaleFactor());
 #else
   if ((!m_memory.IsOk()) || (m_memory.GetSize() != sz))
     m_memory =
-        wxBitmap(sz * wxWindow::GetContentScaleFactor(), wxBITMAP_SCREEN_DEPTH);
+      wxBitmap(sz * wxWindow::GetContentScaleFactor(), wxBITMAP_SCREEN_DEPTH);
 #endif
   if (!m_memory.IsOk()) {
     m_configuration->SetContext(m_dc);
@@ -529,7 +530,7 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event)) {
     SetBackgroundColour(m_configuration->DefaultBackgroundColor());
     m_configuration->GetDC()->SetBackgroundMode(wxTRANSPARENT);
     m_configuration->GetDC()->SetBackground(
-        m_configuration->GetBackgroundBrush());
+					    m_configuration->GetBackgroundBrush());
     m_configuration->GetDC()->SetBrush(m_configuration->GetBackgroundBrush());
     m_configuration->GetDC()->SetPen(*wxTRANSPARENT_PEN);
     m_configuration->GetDC()->SetLogicalFunction(wxCOPY);
@@ -554,9 +555,9 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event)) {
     if (HasCellsSelected() &&
         m_cellPointers.m_selectionStart->GetType() != MC_TYPE_GROUP) {
       m_configuration->GetDC()->SetPen(*(wxThePenList->FindOrCreatePen(
-          m_configuration->GetColor(TS_SELECTION), 1, wxPENSTYLE_SOLID)));
+								       m_configuration->GetColor(TS_SELECTION), 1, wxPENSTYLE_SOLID)));
       m_configuration->GetDC()->SetBrush(*(wxTheBrushList->FindOrCreateBrush(
-          m_configuration->GetColor(TS_SELECTION))));
+									     m_configuration->GetColor(TS_SELECTION))));
 
       // Draw the marker that tells us which output cells are selected -
       // if output cells are selected, that is.
@@ -579,9 +580,9 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event)) {
 
       // Draw tree
       m_configuration->GetDC()->SetPen(*(wxThePenList->FindOrCreatePen(
-          m_configuration->GetColor(TS_DEFAULT), 1, wxPENSTYLE_SOLID)));
+								       m_configuration->GetColor(TS_DEFAULT), 1, wxPENSTYLE_SOLID)));
       m_configuration->GetDC()->SetBrush(*(wxTheBrushList->FindOrCreateBrush(
-          m_configuration->GetColor(TS_DEFAULT))));
+									     m_configuration->GetColor(TS_DEFAULT))));
 
       bool atStart = true;
       for (auto &tmp : OnList(GetTree())) {
@@ -601,8 +602,8 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event)) {
         CalcScrolledPosition(0, 0, &upperLeftScreenCorner.x,
                              &upperLeftScreenCorner.y);
         m_configuration->SetVisibleRegion(
-            wxRect(upperLeftScreenCorner,
-                   upperLeftScreenCorner + wxPoint(width, height)));
+					  wxRect(upperLeftScreenCorner,
+						 upperLeftScreenCorner + wxPoint(width, height)));
         m_configuration->SetWorksheetPosition(GetPosition());
         // Clear the image cache of all cells above or below the viewport.
         if (cellRect.GetTop() >= bottom || cellRect.GetBottom() <= top) {
@@ -637,40 +638,40 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event)) {
     if ((m_hCaretActive) && (m_hCaretPositionStart == NULL) &&
         (m_hCaretBlinkVisible) && (m_hasFocus) && (m_hCaretPosition != NULL)) {
       m_configuration->GetDC()->SetPen(*(wxThePenList->FindOrCreatePen(
-          m_configuration->GetColor(TS_CURSOR), 1, wxPENSTYLE_SOLID)));
+								       m_configuration->GetColor(TS_CURSOR), 1, wxPENSTYLE_SOLID)));
       m_configuration->GetDC()->SetBrush(*(wxTheBrushList->FindOrCreateBrush(
-          m_configuration->GetColor(TS_CURSOR), wxBRUSHSTYLE_SOLID)));
+									     m_configuration->GetColor(TS_CURSOR), wxBRUSHSTYLE_SOLID)));
 
       wxRect currentGCRect = m_hCaretPosition->GetRect();
-      int caretY = ((int)m_configuration->GetGroupSkip()) / 2 +
-                   currentGCRect.GetBottom() + 1;
+      int caretY = (static_cast<int>(m_configuration->GetGroupSkip())) / 2 +
+	currentGCRect.GetBottom() + 1;
       m_configuration->GetDC()->DrawRectangle(
-          xstart + m_configuration->GetBaseIndent(),
-          caretY - m_configuration->GetCursorWidth() / 2, MC_HCARET_WIDTH,
-          m_configuration->GetCursorWidth());
+					      xstart + m_configuration->GetBaseIndent(),
+					      caretY - m_configuration->GetCursorWidth() / 2, MC_HCARET_WIDTH,
+					      m_configuration->GetCursorWidth());
     }
 
     if ((m_hCaretActive) && (m_hCaretPositionStart == NULL) && (m_hasFocus) &&
         (m_hCaretPosition == NULL)) {
       if (!m_hCaretBlinkVisible) {
         m_configuration->GetDC()->SetBrush(
-            m_configuration->GetBackgroundBrush());
+					   m_configuration->GetBackgroundBrush());
         m_configuration->GetDC()->SetPen(*wxThePenList->FindOrCreatePen(
-            GetBackgroundColour(), m_configuration->Scale_Px(1)));
+									GetBackgroundColour(), m_configuration->Scale_Px(1)));
       } else {
         m_configuration->GetDC()->SetPen(*(wxThePenList->FindOrCreatePen(
-            m_configuration->GetColor(TS_CURSOR), m_configuration->Scale_Px(1),
-            wxPENSTYLE_SOLID)));
+									 m_configuration->GetColor(TS_CURSOR), m_configuration->Scale_Px(1),
+									 wxPENSTYLE_SOLID)));
         m_configuration->GetDC()->SetBrush(*(wxTheBrushList->FindOrCreateBrush(
-            m_configuration->GetColor(TS_CURSOR), wxBRUSHSTYLE_SOLID)));
+									       m_configuration->GetColor(TS_CURSOR), wxBRUSHSTYLE_SOLID)));
       }
 
       wxRect cursor =
-          wxRect(xstart + m_configuration->GetCellBracketWidth(),
-                 (m_configuration->GetBaseIndent() -
-                  m_configuration->GetCursorWidth()) /
-                     2,
-                 MC_HCARET_WIDTH, m_configuration->GetCursorWidth());
+	wxRect(xstart + m_configuration->GetCellBracketWidth(),
+	       (m_configuration->GetBaseIndent() -
+		m_configuration->GetCursorWidth()) /
+	       2,
+	       MC_HCARET_WIDTH, m_configuration->GetCursorWidth());
       m_configuration->GetDC()->DrawRectangle(cursor);
     }
 
@@ -935,7 +936,7 @@ bool Worksheet::RecalculateIfNeeded() {
   CalcScrolledPosition(0, 0, &upperLeftScreenCorner.x,
                        &upperLeftScreenCorner.y);
   m_configuration->SetVisibleRegion(wxRect(
-      upperLeftScreenCorner, upperLeftScreenCorner + wxPoint(width, height)));
+					   upperLeftScreenCorner, upperLeftScreenCorner + wxPoint(width, height)));
   m_configuration->SetWorksheetPosition(GetPosition());
 
   for (auto &tmp : OnList(m_recalculateStart)) {
@@ -1024,12 +1025,12 @@ void Worksheet::OnSize(wxSizeEvent &WXUNUSED(event)) {
     if (!prev)
       tmp.SetCurrentPoint(m_configuration->GetIndent(),
                           m_configuration->GetBaseIndent() +
-                              tmp.GetCenterList());
+			  tmp.GetCenterList());
     else
       tmp.SetCurrentPoint(m_configuration->GetIndent(),
                           prev->GetCurrentPoint().y + prev->GetMaxDrop() +
-                              tmp.GetCenterList() +
-                              m_configuration->GetGroupSkip());
+			  tmp.GetCenterList() +
+			  m_configuration->GetGroupSkip());
     prev = &tmp;
   }
 
@@ -1184,7 +1185,7 @@ GroupCell *Worksheet::ToggleFoldAll(GroupCell *which) {
     return {};
 
   GroupCell *result =
-      which->GetHiddenTree() ? which->UnfoldAll() : which->FoldAll();
+    which->GetHiddenTree() ? which->UnfoldAll() : which->FoldAll();
 
   if (result) // something has folded/unfolded
     FoldOccurred();
@@ -1295,21 +1296,21 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event) {
                            wxEmptyString, wxITEM_NORMAL);
 
           Cell *cell = m_cellPointers.m_selectionStart->GetGroup()
-                           ->GetGroup()
-                           ->GetLabel();
+	    ->GetGroup()
+	    ->GetLabel();
           wxString imgFile = dynamic_cast<ImgCell *>(cell)->GetOrigImageFile();
 
           // Disable the reload menu item if the original file name is unknown.
           if (imgFile.Length() == 0) {
             wxMenuItem *reloadItem =
-                popupMenu.Append(popid_reloadimage, _("Reload Image"),
-                                 wxEmptyString, wxITEM_NORMAL);
+	      popupMenu.Append(popid_reloadimage, _("Reload Image"),
+			       wxEmptyString, wxITEM_NORMAL);
             reloadItem->Enable(false);
           } else {
             popupMenu.Append(
-                popid_reloadimage,
-                wxString::Format(_("Reload Image \"%s\""), imgFile),
-                wxEmptyString, wxITEM_NORMAL);
+			     popid_reloadimage,
+			     wxString::Format(_("Reload Image \"%s\""), imgFile),
+			     wxEmptyString, wxITEM_NORMAL);
           }
 
           popupMenu.Append(popid_change_image, _("Change Image..."),
@@ -1333,7 +1334,6 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event) {
         }
       }
       if (m_cellPointers.m_selectionStart->GetType() == MC_TYPE_GROUP) {
-
         if (CanCopy()) {
           popupMenu.Append(wxID_COPY, _("Copy"), wxEmptyString, wxITEM_NORMAL);
           popupMenu.Append(popid_copy_matlab, _("Copy for Octave/Matlab"),
@@ -1424,14 +1424,14 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event) {
             (GCContainsCurrentQuestion(group))) {
           popupMenu.AppendSeparator();
           popupMenu.AppendCheckItem(
-              popid_auto_answer, _("Automatically send known answers"),
-              _("wxMaxima remembers answers from the last run and is able to "
-                "automatically send them to maxima, if requested"));
+				    popid_auto_answer, _("Automatically send known answers"),
+				    _("wxMaxima remembers answers from the last run and is able to "
+				      "automatically send them to maxima, if requested"));
           popupMenu.Check(popid_auto_answer, group->AutoAnswer());
           popupMenu.AppendCheckItem(
-              popid_never_autoanswer, _("Never offer known answers"),
-              _("wxMaxima remembers answers from the last run and is able to "
-                "offer them as the default answer"));
+				    popid_never_autoanswer, _("Never offer known answers"),
+				    _("wxMaxima remembers answers from the last run and is able to "
+				      "offer them as the default answer"));
           popupMenu.Check(popid_never_autoanswer,
                           !m_configuration->OfferKnownAnswers());
         }
@@ -1505,7 +1505,7 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event) {
           if (popupMenu.GetMenuItemCount() > 0)
             popupMenu.AppendSeparator();
           popupMenu.AppendCheckItem(
-              popid_hideasterisk, _("Hide multiplication dots"), wxEmptyString);
+				    popid_hideasterisk, _("Hide multiplication dots"), wxEmptyString);
           popupMenu.Check(popid_hideasterisk,
                           m_configuration->HidemultiplicationSign());
           popupMenu.AppendCheckItem(popid_changeasterisk,
@@ -1574,16 +1574,16 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event) {
         popupMenu.AppendRadioItem(popid_labels_disable, _("Don't show labels"));
         popupMenu.Check(popid_labels_autogenerated,
                         m_configuration->GetLabelChoice() ==
-                            Configuration::labels_automatic);
+			Configuration::labels_automatic);
         popupMenu.Check(popid_labels_user,
                         m_configuration->GetLabelChoice() ==
-                            Configuration::labels_prefer_user);
+			Configuration::labels_prefer_user);
         popupMenu.Check(popid_labels_useronly,
                         m_configuration->GetLabelChoice() ==
-                            Configuration::labels_useronly);
+			Configuration::labels_useronly);
         popupMenu.Check(popid_labels_disable,
                         m_configuration->GetLabelChoice() ==
-                            Configuration::labels_none);
+			Configuration::labels_none);
         wxMenu *labelWidthMenu = new wxMenu();
         labelWidthMenu->AppendRadioItem(popid_labelwidth3, wxT("3 em"));
         labelWidthMenu->AppendRadioItem(popid_labelwidth4, wxT("4 em"));
@@ -1594,7 +1594,7 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event) {
         labelWidthMenu->AppendRadioItem(popid_labelwidth9, wxT("9 em"));
         labelWidthMenu->AppendRadioItem(popid_labelwidth10, wxT("10 em"));
         labelWidthMenu->Check(
-            popid_labelwidth3 + m_configuration->LabelWidth() - 3, true);
+			      popid_labelwidth3 + m_configuration->LabelWidth() - 3, true);
         popupMenu.Append(popid_labelwidth, _("Label width"), labelWidthMenu);
       }
     }
@@ -1707,14 +1707,14 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event) {
           wxArrayString dst[4];
           wxArrayString sameBeginning;
           wxString anchor =
-              m_maximaManual.GetHelpfileAnchorName(wordUnderCursor);
+	    m_maximaManual.GetHelpfileAnchorName(wordUnderCursor);
           if (!anchor.IsEmpty())
             popupMenu.Append(wxID_HELP, wxString::Format(_("Help on \"%s\""),
                                                          wordUnderCursor));
 
           MaximaManual::HelpFileAnchors::const_iterator it;
           MaximaManual::HelpFileAnchors helpFileAnchors =
-              m_maximaManual.GetHelpfileAnchors();
+	    m_maximaManual.GetHelpfileAnchors();
 
           for (it = helpFileAnchors.begin(); it != helpFileAnchors.end();
                ++it) {
@@ -1761,14 +1761,14 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event) {
             (GCContainsCurrentQuestion(group))) {
           popupMenu.AppendSeparator();
           popupMenu.AppendCheckItem(
-              popid_auto_answer, _("Automatically send known answers"),
-              _("wxMaxima remembers answers from the last run and is able to "
-                "automatically send them to maxima, if requested"));
+				    popid_auto_answer, _("Automatically send known answers"),
+				    _("wxMaxima remembers answers from the last run and is able to "
+				      "automatically send them to maxima, if requested"));
           popupMenu.Check(popid_auto_answer, group->AutoAnswer());
           popupMenu.AppendCheckItem(
-              popid_never_autoanswer, _("Never offer known answers"),
-              _("wxMaxima remembers answers from the last run and is able to "
-                "offer them as the default answer"));
+				    popid_never_autoanswer, _("Never offer known answers"),
+				    _("wxMaxima remembers answers from the last run and is able to "
+				      "offer them as the default answer"));
           popupMenu.Check(popid_never_autoanswer,
                           !m_configuration->OfferKnownAnswers());
         }
@@ -1852,15 +1852,15 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event) {
         if (popupMenu.GetMenuItemCount() > 0)
           popupMenu.AppendSeparator();
         popupMenu.AppendCheckItem(
-            popid_hide_tooltipMarker,
-            _("Hide yellow tooltip marker for this cell"),
-            _("Don't mark cells that contain tooltips in yellow"));
+				  popid_hide_tooltipMarker,
+				  _("Hide yellow tooltip marker for this cell"),
+				  _("Don't mark cells that contain tooltips in yellow"));
         popupMenu.Check(popid_hide_tooltipMarker,
                         group->GetSuppressTooltipMarker());
         popupMenu.AppendCheckItem(
-            popid_hide_tooltipMarkerForThisMessage,
-            _("Hide yellow tooltip marker for this message type"),
-            _("Don't mark this message text in yellow"));
+				  popid_hide_tooltipMarkerForThisMessage,
+				  _("Hide yellow tooltip marker for this message type"),
+				  _("Don't mark this message text in yellow"));
         popupMenu.Check(popid_hide_tooltipMarkerForThisMessage,
                         m_configuration->HideMarkerForThisMessage(toolTip));
       }
@@ -1874,8 +1874,8 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event) {
           facts_sub->Append(popid_property_real, _("Is a real variable"),
                             _("This symbol has no imaginary part"));
           facts_sub->Append(
-              popid_property_complex, _("Is a complex variable"),
-              _("This symbol might have both real and imaginary part"));
+			    popid_property_complex, _("Is a complex variable"),
+			    _("This symbol might have both real and imaginary part"));
           facts_sub->Append(popid_property_imaginary,
                             _("Is an imaginary variable"),
                             _("This symbol has no real part"));
@@ -1909,9 +1909,9 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event) {
         if ((selectionStyle == TS_CODE_VARIABLE) ||
             (selectionStyle == TS_FUNCTION)) {
           facts_sub->Append(
-              popid_property_atvalue, _("Value at a specific point"),
-              _("Inform maxima about the value of the function at a specific "
-                "point, e.G. for declaring initial conditions"));
+			    popid_property_atvalue, _("Value at a specific point"),
+			    _("Inform maxima about the value of the function at a specific "
+			      "point, e.G. for declaring initial conditions"));
           facts_sub->AppendSeparator();
           facts_sub->Append(popid_property_evenfun, _("Is an even function"),
                             _("This function will return even integers"));
@@ -1946,8 +1946,8 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event) {
                             _("outative: f(2*x) = 2*f(x)"));
           facts_sub->AppendSeparator();
           facts_sub->Append(
-              popid_property_noun, _("noun: Not evaluated by default"),
-              _("f(x) stays f(x) even if the value of f(x) is computable"));
+			    popid_property_noun, _("noun: Not evaluated by default"),
+			    _("f(x) stays f(x) even if the value of f(x) is computable"));
           facts_sub->Append(popid_property_evfun,
                             _("ev() shall evaluate this automatically"),
                             _("Make an eventual ev() evaluate this"));
@@ -1957,17 +1957,16 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event) {
         }
         if ((selectionStyle == TS_CODE_VARIABLE) ||
             (selectionStyle == TS_STRING)) {
-
           if (facts_sub->GetMenuItemCount() > 0)
             facts_sub->AppendSeparator();
           facts_sub->Append(popid_property_alphabetic,
                             _("Declare these chars as ordinary letters"));
         }
         popupMenu.Append(
-            wxNewId(),
-            wxString::Format(_("Declare facts about %s"),
-                             selectionString.c_str()),
-            facts_sub, _("Inform maxima about facts you know for this symbol"));
+			 wxNewId(),
+			 wxString::Format(_("Declare facts about %s"),
+					  selectionString.c_str()),
+			 facts_sub, _("Inform maxima about facts you know for this symbol"));
       }
     }
   }
@@ -1982,15 +1981,15 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event) {
       if (popupMenu.GetMenuItemCount() > 0)
         popupMenu.AppendSeparator();
       popupMenu.AppendCheckItem(
-          popid_hide_tooltipMarker,
-          _("Hide yellow tooltip marker for this cell"),
-          _("Don't mark cells that contain tooltips in yellow"));
+				popid_hide_tooltipMarker,
+				_("Hide yellow tooltip marker for this cell"),
+				_("Don't mark cells that contain tooltips in yellow"));
       popupMenu.Check(popid_hide_tooltipMarker,
                       group->GetSuppressTooltipMarker());
       popupMenu.AppendCheckItem(
-          popid_hide_tooltipMarkerForThisMessage,
-          _("Hide yellow tooltip marker for this message type"),
-          _("Don't mark this message text in yellow"));
+				popid_hide_tooltipMarkerForThisMessage,
+				_("Hide yellow tooltip marker for this message type"),
+				_("Don't mark this message text in yellow"));
       popupMenu.Check(popid_hide_tooltipMarkerForThisMessage,
                       m_configuration->HideMarkerForThisMessage(toolTip));
     }
@@ -2009,21 +2008,21 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event) {
 void Worksheet::OnMouseLeftInGcLeft(wxMouseEvent &event,
                                     GroupCell *clickedInGC) {
   if ((clickedInGC->HideRect())
-          .Contains(m_down)) // did we hit the hide rectancle
-  {
-    if (clickedInGC->IsFoldable()) {
-      if (event.ShiftDown())
-        ToggleFoldAll(clickedInGC);
-      else
-        ToggleFold(clickedInGC);
-      Recalculate(clickedInGC);
+      .Contains(m_down)) // did we hit the hide rectancle
+    {
+      if (clickedInGC->IsFoldable()) {
+	if (event.ShiftDown())
+	  ToggleFoldAll(clickedInGC);
+	else
+	  ToggleFold(clickedInGC);
+	Recalculate(clickedInGC);
+      } else {
+	clickedInGC->SwitchHide();
+	clickedInGC->ResetSize();
+	Recalculate(clickedInGC);
+	m_clickType = CLICK_TYPE_NONE; // ignore drag-select
+      }
     } else {
-      clickedInGC->SwitchHide();
-      clickedInGC->ResetSize();
-      Recalculate(clickedInGC);
-      m_clickType = CLICK_TYPE_NONE; // ignore drag-select
-    }
-  } else {
     m_clickType = CLICK_TYPE_GROUP_SELECTION;
     SetSelection(clickedInGC);
   }
@@ -2045,7 +2044,7 @@ void Worksheet::OnMouseLeftInGcCell(wxMouseEvent &WXUNUSED(event),
   if ((clickedInGC->GetPrompt()) &&
       (clickedInGC->GetPrompt()->GetRect()).Contains(m_down)) {
     m_cellPointers.m_selectionStart = m_cellPointers.m_selectionEnd =
-        clickedInGC->GetPrompt();
+      clickedInGC->GetPrompt();
     m_clickType = CLICK_TYPE_INPUT_LABEL_SELECTION;
   }
 
@@ -2152,7 +2151,6 @@ void Worksheet::OnMouseLeftDown(wxMouseEvent &event) {
 
   // Handle a shift-click when the text editor is active.
   if (GetActiveCell() && event.ShiftDown()) {
-
     // We were within an input cell when the selection has started.
     m_clickType = CLICK_TYPE_INPUT_SELECTION;
 
@@ -2260,13 +2258,13 @@ void Worksheet::OnMouseLeftUp(wxMouseEvent &event) {
       m_leftDownPosition == wxPoint(event.GetX(), event.GetY()) &&
       GetSelectionStart()->GetType() == MC_TYPE_SLIDE)
     dynamic_cast<AnimationCell *>(GetSelectionStart())
-        ->AnimationRunning(!dynamic_cast<AnimationCell *>(GetSelectionStart())
-                                ->AnimationRunning());
+      ->AnimationRunning(!dynamic_cast<AnimationCell *>(GetSelectionStart())
+			 ->AnimationRunning());
 
   m_leftDown = false;
   m_mouseDrag = false;
   m_clickInGC =
-      NULL; // pointer to NULL to prevent crashes if the cell is deleted
+    NULL; // pointer to NULL to prevent crashes if the cell is deleted
   m_clickType = CLICK_TYPE_NONE;
   CheckUnixCopy();
   SetFocus();
@@ -2281,7 +2279,7 @@ void Worksheet::OnMouseWheel(wxMouseEvent &event) {
     wxCommandEvent *zoomEvent = new wxCommandEvent;
     zoomEvent->SetEventType(wxEVT_MENU);
     zoomEvent->SetId((event.GetWheelRotation() > 0) ? wxID_ZOOM_IN
-                                                    : wxID_ZOOM_OUT);
+		     : wxID_ZOOM_OUT);
     GetParent()->GetEventHandler()->QueueEvent(zoomEvent);
     return;
   }
@@ -2295,7 +2293,7 @@ void Worksheet::OnMouseWheel(wxMouseEvent &event) {
   int rot = event.GetWheelRotation();
 
   AnimationCell *tmp =
-      m_cellPointers.m_selectionStart.CastAs<AnimationCell *>();
+    m_cellPointers.m_selectionStart.CastAs<AnimationCell *>();
   tmp->AnimationRunning(false);
 
   if (rot > 0)
@@ -2387,7 +2385,7 @@ void Worksheet::SelectGroupCells(wxPoint down, wxPoint up) {
 
   if (down.y > up.y) {
     m_hCaretPositionStart =
-        m_cellPointers.m_selectionStart.CastAs<GroupCell *>();
+      m_cellPointers.m_selectionStart.CastAs<GroupCell *>();
     m_hCaretPositionEnd = m_cellPointers.m_selectionEnd.CastAs<GroupCell *>();
   } else {
     m_hCaretPositionStart = m_cellPointers.m_selectionEnd.CastAs<GroupCell *>();
@@ -2398,7 +2396,7 @@ void Worksheet::SelectGroupCells(wxPoint down, wxPoint up) {
 
 void Worksheet::ClickNDrag(wxPoint down, wxPoint up) {
   Cell *selectionStartOld = m_cellPointers.m_selectionStart,
-       *selectionEndOld = m_cellPointers.m_selectionEnd;
+    *selectionEndOld = m_cellPointers.m_selectionEnd;
   wxRect rect;
 
   int ytop = wxMin(down.y, up.y);
@@ -2406,9 +2404,9 @@ void Worksheet::ClickNDrag(wxPoint down, wxPoint up) {
 
   if ((m_cellPointers.m_cellMouseSelectionStartedIn) &&
       (!m_cellPointers.m_cellMouseSelectionStartedIn->GetRect()
-            .Inflate(m_configuration->GetGroupSkip(),
-                     m_configuration->GetGroupSkip())
-            .Contains(up))) {
+       .Inflate(m_configuration->GetGroupSkip(),
+		m_configuration->GetGroupSkip())
+       .Contains(up))) {
     SelectGroupCells(up, down);
     if (GetActiveCell()) {
       GetActiveCell()->SelectNone();
@@ -2603,10 +2601,10 @@ wxString Worksheet::ConvertSelectionToMathML() {
                                           m_cellPointers.m_selectionEnd, true));
 
   s = wxString(wxT("<math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n")) +
-      wxT("<semantics>") + tmp->ListToMathML(true) +
-      wxT("<annotation encoding=\"application/x-maxima\">") +
-      Cell::XMLescape(tmp->ListToString()) + wxT("</annotation>") +
-      wxT("</semantics>") + wxT("</math>");
+    wxT("<semantics>") + tmp->ListToMathML(true) +
+    wxT("<annotation encoding=\"application/x-maxima\">") +
+    Cell::XMLescape(tmp->ListToString()) + wxT("</annotation>") +
+    wxT("</semantics>") + wxT("</math>");
 
   // We might add indentation as additional eye candy to all but extremely long
   // xml data chunks.
@@ -2629,8 +2627,8 @@ wxString Worksheet::ConvertSelectionToMathML() {
       wxMemoryOutputStream ostream;
       doc.Save(ostream);
       s = wxString::FromUTF8(
-          (char *)ostream.GetOutputStreamBuffer()->GetBufferStart(),
-          ostream.GetOutputStreamBuffer()->GetBufferSize());
+			     reinterpret_cast<char *>(ostream.GetOutputStreamBuffer()->GetBufferStart()),
+			     ostream.GetOutputStreamBuffer()->GetBufferSize());
 
       // Now the string has a header we want to get rid of again.
       s = s.SubString(s.Find("\n") + 1, s.Length());
@@ -3027,7 +3025,7 @@ void Worksheet::DeleteRegion(GroupCell *start, GroupCell *end,
   if (undoBuffer) {
     // We have an undo buffer => add the deleted cells there
     auto cells =
-        static_unique_ptr_cast<GroupCell>(std::move(tornOut.cellOwner));
+      static_unique_ptr_cast<GroupCell>(std::move(tornOut.cellOwner));
     undoBuffer->emplace_front(cellBeforeStart, nullptr, cells.release());
     TreeUndo_LimitUndoBuffer();
   }
@@ -3089,7 +3087,7 @@ void Worksheet::OpenQuestionCaret(const wxString &txt) {
     // event here.
     if (autoEvaluate) {
       wxMenuEvent *EvaluateEvent =
-          new wxMenuEvent(wxEVT_MENU, wxMaximaFrame::menu_evaluate);
+	new wxMenuEvent(wxEVT_MENU, wxMaximaFrame::menu_evaluate);
       GetParent()->GetEventHandler()->QueueEvent(EvaluateEvent);
     }
   }
@@ -3163,7 +3161,7 @@ void Worksheet::OpenHCaret(const wxString &txt, GroupType type) {
 
 void Worksheet::Evaluate() {
   wxMenuEvent *EvaluateEvent =
-      new wxMenuEvent(wxEVT_MENU, wxMaximaFrame::menu_evaluate);
+    new wxMenuEvent(wxEVT_MENU, wxMaximaFrame::menu_evaluate);
   GetParent()->GetEventHandler()->QueueEvent(EvaluateEvent);
 }
 
@@ -3205,7 +3203,6 @@ void Worksheet::OnKeyDown(wxKeyEvent &event) {
 
   // Handling of the keys this class has to handle
   switch (event.GetKeyCode()) {
-
   case WXK_DELETE:
   case WXK_NUMPAD_DELETE:
     if (event.ShiftDown()) {
@@ -3362,7 +3359,7 @@ void Worksheet::OnCharInActive(wxKeyEvent &event) {
 #ifdef WXK_NUMPAD_PRIOR
        || (event.GetKeyCode() != WXK_NUMPAD_PRIOR)
 #endif
-           ) &&
+       ) &&
       GetActiveCell()->CaretAtStart()) {
     // Get the first previous cell that isn't hidden
     GroupCell *previous = GetActiveCell()->GetGroup()->GetPrevious();
@@ -3373,9 +3370,9 @@ void Worksheet::OnCharInActive(wxKeyEvent &event) {
       SetSelection(previous, GetActiveCell()->GetGroup());
       m_hCaretPosition = m_cellPointers.m_selectionStart.CastAs<GroupCell *>();
       m_hCaretPositionEnd =
-          m_cellPointers.m_selectionStart.CastAs<GroupCell *>();
+	m_cellPointers.m_selectionStart.CastAs<GroupCell *>();
       m_hCaretPositionStart =
-          m_cellPointers.m_selectionEnd.CastAs<GroupCell *>();
+	m_cellPointers.m_selectionEnd.CastAs<GroupCell *>();
 
       GetActiveCell()->KeyboardSelectionStartedHere();
       GetActiveCell()->SelectNone();
@@ -3409,7 +3406,7 @@ void Worksheet::OnCharInActive(wxKeyEvent &event) {
 #ifdef WXK_NUMPAD_NEXT
        || (event.GetKeyCode() != WXK_NUMPAD_NEXT)
 #endif
-           ) &&
+       ) &&
       GetActiveCell()->CaretAtEnd()) {
     // Get the first next cell that isn't hidden
     GroupCell *start = GetActiveCell()->GetGroup();
@@ -3521,9 +3518,9 @@ void Worksheet::OnCharInActive(wxKeyEvent &event) {
 
     if (height != GetActiveCell()->GetHeight() ||
         GetActiveCell()->GetWidth() + GetActiveCell()->GetCurrentPoint().x >=
-            GetClientSize().GetWidth() -
-                m_configuration->GetCellBracketWidth() -
-                m_configuration->GetBaseIndent())
+	GetClientSize().GetWidth() -
+	m_configuration->GetCellBracketWidth() -
+	m_configuration->GetBaseIndent())
       needRecalculate = true;
   }
 
@@ -3585,17 +3582,17 @@ void Worksheet::SelectWithChar(int ccode) {
     if (ccode == WXK_DOWN && m_hCaretPosition &&
         m_hCaretPositionStart->GetNext()) {
       m_hCaretPositionStart = m_hCaretPositionEnd =
-          m_hCaretPositionStart->GetNext();
+	m_hCaretPositionStart->GetNext();
       while (m_hCaretPositionStart &&
              m_hCaretPositionStart->GetMaxDrop() == 0 &&
              m_hCaretPositionStart->GetNext())
         m_hCaretPositionStart = m_hCaretPositionEnd =
-            m_hCaretPositionStart->GetNext();
+	  m_hCaretPositionStart->GetNext();
     }
   } else if (ccode == WXK_UP) {
     if (KeyboardSelectionStart() &&
         m_hCaretPositionEnd ==
-            KeyboardSelectionStart()->GetGroup()->GetNext()) {
+	KeyboardSelectionStart()->GetGroup()->GetNext()) {
       // We are in the cell the selection started in
       SetActiveCell(KeyboardSelectionStart());
       ClearSelection();
@@ -3621,7 +3618,7 @@ void Worksheet::SelectWithChar(int ccode) {
     // We arrive here on WXK_DOWN.
     if (KeyboardSelectionStart() &&
         m_hCaretPositionEnd ==
-            KeyboardSelectionStart()->GetGroup()->GetPrevious()) {
+	KeyboardSelectionStart()->GetGroup()->GetPrevious()) {
       // We are in the cell the selection started in
       SetActiveCell(KeyboardSelectionStart());
       ClearSelection();
@@ -3703,8 +3700,8 @@ void Worksheet::OnCharNoActive(wxKeyEvent &event) {
       m_cellPointers.m_selectionStart->GetType() == MC_TYPE_SLIDE &&
       ccode == WXK_SPACE) {
     m_cellPointers.m_selectionStart.CastAs<AnimationCell *>()->AnimationRunning(
-        !m_cellPointers.m_selectionStart.CastAs<AnimationCell *>()
-             ->AnimationRunning());
+										!m_cellPointers.m_selectionStart.CastAs<AnimationCell *>()
+										->AnimationRunning());
     return;
   }
 
@@ -3719,32 +3716,32 @@ void Worksheet::OnCharNoActive(wxKeyEvent &event) {
 #ifdef WXK_NUMPAD_PRIOR
   case WXK_NUMPAD_PRIOR:
 #endif
-  {
-    wxPoint topleft;
-    int width;
-    int height;
-    CalcUnscrolledPosition(0, 0, &topleft.x, &topleft.y);
-    GroupCell *CellToScrollTo = m_last;
+    {
+      wxPoint topleft;
+      int width;
+      int height;
+      CalcUnscrolledPosition(0, 0, &topleft.x, &topleft.y);
+      GroupCell *CellToScrollTo = m_last;
 
-    GetClientSize(&width, &height);
+      GetClientSize(&width, &height);
 
-    // Scroll as many cells as are needed to make sure that
-    // the new cell is the upmost cell that begins on the new page.
-    while (CellToScrollTo) {
-      CellToScrollTo = CellToScrollTo->GetPrevious();
+      // Scroll as many cells as are needed to make sure that
+      // the new cell is the upmost cell that begins on the new page.
+      while (CellToScrollTo) {
+	CellToScrollTo = CellToScrollTo->GetPrevious();
 
-      if (CellToScrollTo &&
-          CellToScrollTo->GetRect().GetTop() < (topleft.y - height))
-        break;
+	if (CellToScrollTo &&
+	    CellToScrollTo->GetRect().GetTop() < (topleft.y - height))
+	  break;
+      }
+      // We want to put the cursor in the space above the cell we found.
+      if (CellToScrollTo)
+	CellToScrollTo = CellToScrollTo->GetPrevious();
+
+      ScrolledAwayFromEvaluation();
+      SetHCaret(CellToScrollTo);
+      break;
     }
-    // We want to put the cursor in the space above the cell we found.
-    if (CellToScrollTo)
-      CellToScrollTo = CellToScrollTo->GetPrevious();
-
-    ScrolledAwayFromEvaluation();
-    SetHCaret(CellToScrollTo);
-    break;
-  }
 #ifdef WXK_NEXT // Is on some systems a replacement for WXK_PAGEDOWN
   case WXK_NEXT:
 #endif
@@ -3854,7 +3851,7 @@ void Worksheet::OnCharNoActive(wxKeyEvent &event) {
   case WXK_LEFT:
     if (CanAnimate()) {
       AnimationCell *animation =
-          dynamic_cast<AnimationCell *>(GetSelectionStart());
+	dynamic_cast<AnimationCell *>(GetSelectionStart());
       animation->AnimationRunning(false);
       StepAnimation(-1);
       break;
@@ -3865,16 +3862,16 @@ void Worksheet::OnCharNoActive(wxKeyEvent &event) {
       if (m_cellPointers.m_selectionStart) {
         if (event.CmdDown()) {
           GroupCell *tmp =
-              m_cellPointers.m_selectionStart.CastAs<GroupCell *>();
+	    m_cellPointers.m_selectionStart.CastAs<GroupCell *>();
           if (tmp->GetPrevious()) {
             do
               tmp = tmp->GetPrevious();
             while ((tmp->GetPrevious()) &&
                    ((tmp->GetGroupType() != GC_TYPE_TITLE) &&
                     (tmp->GetGroupType() != GC_TYPE_SECTION) &&
-                    (tmp->GetGroupType() != GC_TYPE_SUBSECTION)));
-            if (tmp->GetEditable())
-              SetHCaret(tmp);
+                    (tmp->GetGroupType() != GC_TYPE_SUBSECTION)))
+	      if (tmp->GetEditable())
+		SetHCaret(tmp);
           } else {
             if (m_hCaretPosition && m_hCaretPosition->GetEditable())
               SelectEditable(tmp->GetEditable(), false);
@@ -3914,7 +3911,7 @@ void Worksheet::OnCharNoActive(wxKeyEvent &event) {
   case WXK_RIGHT:
     if (CanAnimate()) {
       AnimationCell *animation =
-          dynamic_cast<AnimationCell *>(GetSelectionStart());
+	dynamic_cast<AnimationCell *>(GetSelectionStart());
       animation->AnimationRunning(false);
       StepAnimation(1);
       break;
@@ -4109,11 +4106,11 @@ void Worksheet::GetMaxPoint(int *width, int *height) {
     currentHeight += tmp.GetHeightList();
     currentHeight += m_configuration->GetGroupSkip();
     int currentWidth =
-        m_configuration->Scale_Px(m_configuration->GetIndent() +
-                                  m_configuration->GetDefaultFontSize()) +
-        tmp.GetWidth() +
-        m_configuration->Scale_Px(m_configuration->GetIndent() +
-                                  m_configuration->GetDefaultFontSize());
+      m_configuration->Scale_Px(m_configuration->GetIndent() +
+				m_configuration->GetDefaultFontSize()) +
+      tmp.GetWidth() +
+      m_configuration->Scale_Px(m_configuration->GetIndent() +
+				m_configuration->GetDefaultFontSize());
     *width = wxMax(currentWidth, *width);
   }
   *height = currentHeight;
@@ -4197,7 +4194,7 @@ void Worksheet::StepAnimation(int change) {
   if (GetSelectionStart() && GetSelectionStart() == GetSelectionEnd() &&
       GetSelectionStart()->GetType() == MC_TYPE_SLIDE) {
     AnimationCell *tmp =
-        m_cellPointers.m_selectionStart.CastAs<AnimationCell *>();
+      m_cellPointers.m_selectionStart.CastAs<AnimationCell *>();
     int pos = tmp->GetDisplayedIndex() + change;
 
     if (change != 0) {
@@ -4260,7 +4257,7 @@ void Worksheet::OnTimer(wxTimerEvent &event) {
         } else {
           rect = m_hCaretPosition->GetRect();
           int caretY =
-              ((int)m_configuration->GetGroupSkip()) / 2 + rect.GetBottom() + 1;
+	    static_cast<int>(m_configuration->GetGroupSkip()) / 2 + rect.GetBottom() + 1;
           rect.SetTop(caretY - m_configuration->GetCursorWidth() / 2);
           rect.SetBottom(caretY + (m_configuration->GetCursorWidth() + 1) / 2);
         }
@@ -4341,7 +4338,7 @@ bool Worksheet::CopyAnimation() {
   if (GetSelectionStart() && GetSelectionStart() == GetSelectionEnd() &&
       GetSelectionStart()->GetType() == MC_TYPE_SLIDE)
     return dynamic_cast<AnimationCell *>(GetSelectionStart())
-        ->CopyAnimationToClipboard();
+      ->CopyAnimationToClipboard();
   else
     return false;
 }
@@ -4393,13 +4390,12 @@ bool Worksheet::CopyRTF() {
 }
 
 wxSize Worksheet::CopyToFile(const wxString &file) {
-
   if (m_cellPointers.m_selectionStart &&
       m_cellPointers.m_selectionStart == m_cellPointers.m_selectionEnd &&
       (m_cellPointers.m_selectionStart->GetType() == MC_TYPE_IMAGE ||
        m_cellPointers.m_selectionStart->GetType() == MC_TYPE_SLIDE)) {
     return m_cellPointers.m_selectionStart.CastAs<ImgCellBase *>()->ToImageFile(
-        file);
+										file);
   } else {
     BitmapOut output(&m_configuration, CopySelection());
     wxSize retval = output.ToFile(file);
@@ -4431,9 +4427,9 @@ void Worksheet::TOCdnd() {
   while ((m_cellPointers.m_selectionEnd) &&
          ((m_cellPointers.m_selectionEnd->GetNext() != NULL) &&
           (dynamic_cast<GroupCell *>(m_cellPointers.m_selectionEnd->GetNext())
-               ->IsLesserGCType(dynamic_cast<GroupCell *>(
-                                    m_cellPointers.m_selectionEnd.get())
-                                    ->GetGroupType()))))
+	   ->IsLesserGCType(dynamic_cast<GroupCell *>(
+						      m_cellPointers.m_selectionEnd.get())
+			    ->GetGroupType()))))
     m_cellPointers.m_selectionEnd = m_cellPointers.m_selectionEnd->GetNext();
 
   // Copy the region we want to move
@@ -4451,7 +4447,7 @@ void Worksheet::TOCdnd() {
 
   std::unique_ptr<Cell> copiedCells = std::move(copy);
   std::unique_ptr<GroupCell> copiedGroupCells =
-      std::move(unique_cast<Cell, GroupCell>(std::move(copiedCells)));
+    std::move(unique_cast<Cell, GroupCell>(std::move(copiedCells)));
   InsertGroupCells(std::move(copiedGroupCells), m_tableOfContents->DNDEnd());
   RecalculateForce();
   RequestRedraw();
@@ -4505,8 +4501,8 @@ int Worksheet::GetCellIndex(Cell *cell) const {
 }
 
 Worksheet::SimpleMathConfigurationIterator::SimpleMathConfigurationIterator(
-    const wxString &ainput)
-    : pos(0), input(ainput) {
+									    const wxString &ainput)
+  : pos(0), input(ainput) {
   if (isValid() && (input[0] == '"' || (input[0] == '/' && input.length() > 1 &&
                                         input[1] == '*'))) {
     // skip strings or comments at string start
@@ -4564,7 +4560,7 @@ void Worksheet::CalculateReorderedCellIndices(GroupCell *tree, int &cellIndex,
 
         long promptIndex = GetCellIndex(prompt);
         long outputIndex =
-            GetCellIndex(tmp.GetLabel()) - initialHiddenExpressions;
+	  GetCellIndex(tmp.GetLabel()) - initialHiddenExpressions;
         long index = promptIndex;
         if (promptIndex < 0)
           index = outputIndex; // no input index => use output index
@@ -4627,7 +4623,7 @@ bool Worksheet::ExportToHTML(const wxString &file) {
 
   wxURI filename_uri(filename);
   wxString filename_encoded =
-      filename_uri.BuildURI(); /* handle HTML entities like " " => "%20" */
+    filename_uri.BuildURI(); /* handle HTML entities like " " => "%20" */
 
   wxTextOutputStream css(cssfile);
 
@@ -4658,7 +4654,7 @@ bool Worksheet::ExportToHTML(const wxString &file) {
     output << wxT("  })\n");
     output << wxT("</script>\n");
     output << wxT("<script id=\"MathJax-script\" async src=\"") +
-                  m_configuration->MathJaXURL() + wxT("\">\n");
+      m_configuration->MathJaXURL() + wxT("\">\n");
     // prevent optimizing <script src="..."><script> to <script src=..."/>
     output << wxT("  // A comment that hinders wxWidgets from optimizing this "
                   "tag too much.\n");
@@ -4666,13 +4662,13 @@ bool Worksheet::ExportToHTML(const wxString &file) {
   }
 
   wxString font, fontTitle, fontSection, fontSubsection, fontSubsubsection,
-      fontHeading5, fontHeading6, fontText;
+    fontHeading5, fontHeading6, fontText;
   wxString colorInput(wxT("blue"));
   wxString colorPrompt(wxT("red"));
   wxString colorText(wxT("black")), colorTitle(wxT("black")),
-      colorSection(wxT("black")), colorSubSec(wxT("black")),
-      colorSubsubSec(wxT("black")), colorHeading5(wxT("black")),
-      colorHeading6(wxT("black"));
+    colorSection(wxT("black")), colorSubSec(wxT("black")),
+    colorSubsubSec(wxT("black")), colorHeading5(wxT("black")),
+    colorHeading6(wxT("black"));
   wxString colorCodeVariable = wxT("rgb(0,128,0)");
   wxString colorCodeFunction = wxT("rgb(128,0,0)");
   wxString colorCodeComment = wxT("rgb(64,64,64)");
@@ -4779,9 +4775,9 @@ bool Worksheet::ExportToHTML(const wxString &file) {
 
   wxURI css_url(cssfileName_rel);
   wxString encoded_css_url =
-      css_url.BuildURI(); /* handle HTML entities like " " => "%20" */
+    css_url.BuildURI(); /* handle HTML entities like " " => "%20" */
   output << wxT("  <link rel=\"stylesheet\" type=\"text/css\" href=\"") +
-                encoded_css_url + wxT("\"/>\n");
+    encoded_css_url + wxT("\"/>\n");
 
   wxString version(wxT(GITVERSION));
 
@@ -4803,9 +4799,9 @@ bool Worksheet::ExportToHTML(const wxString &file) {
   if (colorBg.Length()) {
     wxColour color(colorBg);
     css << wxT("  background-color: ") +
-               wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(),
-                                color.Green(), color.Blue()) +
-               wxT(";\n");
+      wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(),
+		       color.Green(), color.Blue()) +
+      wxT(";\n");
   }
   css << wxT("}\n");
 
@@ -4814,9 +4810,9 @@ bool Worksheet::ExportToHTML(const wxString &file) {
   if (colorInput.Length()) {
     wxColour color(colorInput);
     css << wxT("  color: \n") +
-               wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(),
-                                color.Green(), color.Blue()) +
-               wxT(";\n");
+      wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(),
+		       color.Green(), color.Blue()) +
+      wxT(";\n");
   }
   if (boldInput)
     css << wxT("  font-weight: bold;\n");
@@ -4833,17 +4829,16 @@ bool Worksheet::ExportToHTML(const wxString &file) {
   if (colorText.Length()) {
     wxColour color(colorText);
     css << wxT("  color: ") +
-               wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(),
-                                color.Green(), color.Blue()) +
-               wxT(";\n");
+      wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(),
+		       color.Green(), color.Blue()) +
+      wxT(";\n");
   }
   if (colorTextBg.Length()) {
     wxColour color(colorTextBg);
     css << wxT("  background-color: ") +
-               wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(),
-                                color.Green(), color.Blue()) +
-               wxT(";\n");
-    ;
+      wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(),
+		       color.Green(), color.Blue()) +
+      wxT(";\n");
   }
   css << wxT("  padding: 2mm;\n");
   css << wxT("}\n");
@@ -4853,9 +4848,9 @@ bool Worksheet::ExportToHTML(const wxString &file) {
     wxColour color(colorCodeVariable);
     css << wxT(".code_variable {\n");
     css << wxT("  color: \n") +
-               wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(),
-                                color.Green(), color.Blue()) +
-               wxT(";\n");
+      wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(),
+		       color.Green(), color.Blue()) +
+      wxT(";\n");
     css << wxT("}\n");
   }
 
@@ -4868,9 +4863,9 @@ bool Worksheet::ExportToHTML(const wxString &file) {
     wxColour color(colorCodeFunction);
     css << wxT(".code_function {\n\n");
     css << wxT("  color: ") +
-               wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(),
-                                color.Green(), color.Blue()) +
-               wxT(";\n");
+      wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(),
+		       color.Green(), color.Blue()) +
+      wxT(";\n");
     css << wxT("}\n");
   }
 
@@ -4878,9 +4873,9 @@ bool Worksheet::ExportToHTML(const wxString &file) {
     wxColour color(colorCodeComment);
     css << wxT(".code_comment {\n");
     css << wxT("  color: ") +
-               wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(),
-                                color.Green(), color.Blue()) +
-               wxT(";\n");
+      wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(),
+		       color.Green(), color.Blue()) +
+      wxT(";\n");
     css << wxT("}\n");
   }
 
@@ -4888,9 +4883,9 @@ bool Worksheet::ExportToHTML(const wxString &file) {
     wxColour color(colorCodeNumber);
     css << wxT(".code_number {\n");
     css << wxT("  color: ") +
-               wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(),
-                                color.Green(), color.Blue()) +
-               wxT(";\n");
+      wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(),
+		       color.Green(), color.Blue()) +
+      wxT(";\n");
     css << wxT("}\n");
   }
 
@@ -4898,9 +4893,9 @@ bool Worksheet::ExportToHTML(const wxString &file) {
     wxColour color(colorCodeString);
     css << wxT(".code_string {\n");
     css << wxT("  color: ") +
-               wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(),
-                                color.Green(), color.Blue()) +
-               wxT(";\n");
+      wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(),
+		       color.Green(), color.Blue()) +
+      wxT(";\n");
     css << wxT("}\n");
   }
 
@@ -4908,9 +4903,9 @@ bool Worksheet::ExportToHTML(const wxString &file) {
     wxColour color(colorCodeOperator);
     css << wxT(".code_operator {\n");
     css << wxT("  color: ") +
-               wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(),
-                                color.Green(), color.Blue()) +
-               wxT(";\n");
+      wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(),
+		       color.Green(), color.Blue()) +
+      wxT(";\n");
     css << wxT("}\n");
   }
 
@@ -4918,9 +4913,9 @@ bool Worksheet::ExportToHTML(const wxString &file) {
     wxColour color(colorCodeLisp);
     css << wxT(".code_lisp {\n");
     css << wxT("  color: ") +
-               wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(),
-                                color.Green(), color.Blue()) +
-               wxT(";\n");
+      wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(),
+		       color.Green(), color.Blue()) +
+      wxT(";\n");
     css << wxT("}\n");
   }
 
@@ -4928,9 +4923,9 @@ bool Worksheet::ExportToHTML(const wxString &file) {
     wxColour color(colorCodeEndOfLine);
     css << wxT(".code_endofline {\n");
     css << wxT("  color: ") +
-               wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(),
-                                color.Green(), color.Blue()) +
-               wxT(";");
+      wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(),
+		       color.Green(), color.Blue()) +
+      wxT(";");
     css << wxT("}\n");
   }
 
@@ -4947,9 +4942,9 @@ bool Worksheet::ExportToHTML(const wxString &file) {
   if (colorText.Length()) {
     wxColour color(colorText);
     css << wxT("  color: ") +
-               wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(),
-                                color.Green(), color.Blue()) +
-               wxT(";\n");
+      wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(),
+		       color.Green(), color.Blue()) +
+      wxT(";\n");
   }
   css << wxT("  padding: 2mm;\n");
   css << wxT("}\n");
@@ -4962,9 +4957,9 @@ bool Worksheet::ExportToHTML(const wxString &file) {
   if (colorSection.Length()) {
     wxColour color(colorSection);
     css << wxT("  color: ") +
-               wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(),
-                                color.Green(), color.Blue()) +
-               wxT(";\n");
+      wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(),
+		       color.Green(), color.Blue()) +
+      wxT(";\n");
   }
   if (boldSection)
     css << wxT("  font-weight: bold;\n");
@@ -4984,9 +4979,9 @@ bool Worksheet::ExportToHTML(const wxString &file) {
   if (colorSubSec.Length()) {
     wxColour color(colorSubSec);
     css << wxT("  color: ") +
-               wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(),
-                                color.Green(), color.Blue()) +
-               wxT(";\n");
+      wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(),
+		       color.Green(), color.Blue()) +
+      wxT(";\n");
   }
   if (boldSubsection)
     css << wxT("  font-weight: bold;\n");
@@ -5006,9 +5001,9 @@ bool Worksheet::ExportToHTML(const wxString &file) {
   if (colorSubsubSec.Length()) {
     wxColour color(colorSubsubSec);
     css << wxT("  color: ") +
-               wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(),
-                                color.Green(), color.Blue()) +
-               wxT(";\n");
+      wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(),
+		       color.Green(), color.Blue()) +
+      wxT(";\n");
   }
   if (boldSubsubsection)
     css << wxT("  font-weight: bold;\n");
@@ -5028,9 +5023,9 @@ bool Worksheet::ExportToHTML(const wxString &file) {
   if (colorHeading5.Length()) {
     wxColour color(colorHeading5);
     css << wxT("  color: ") +
-               wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(),
-                                color.Green(), color.Blue()) +
-               wxT(";\n");
+      wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(),
+		       color.Green(), color.Blue()) +
+      wxT(";\n");
   }
   if (boldHeading5)
     css << wxT("  font-weight: bold;\n");
@@ -5050,9 +5045,9 @@ bool Worksheet::ExportToHTML(const wxString &file) {
   if (colorHeading6.Length()) {
     wxColour color(colorHeading6);
     css << wxT("  color: ") +
-               wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(),
-                                color.Green(), color.Blue()) +
-               wxT(";\n");
+      wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(),
+		       color.Green(), color.Blue()) +
+      wxT(";\n");
   }
   if (boldHeading6)
     css << wxT("  font-weight: bold;\n");
@@ -5072,9 +5067,9 @@ bool Worksheet::ExportToHTML(const wxString &file) {
   if (colorTitle.Length()) {
     wxColour color(colorTitle);
     css << wxT("  color: ") +
-               wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(),
-                                color.Green(), color.Blue()) +
-               wxT(";\n");
+      wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(),
+		       color.Green(), color.Blue()) +
+      wxT(";\n");
   }
   if (boldTitle)
     css << wxT("  font-weight: bold;\n");
@@ -5091,9 +5086,9 @@ bool Worksheet::ExportToHTML(const wxString &file) {
   if (colorPrompt.Length()) {
     wxColour color(colorPrompt);
     css << wxT("  color: ") +
-               wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(),
-                                color.Green(), color.Blue()) +
-               wxT(";\n");
+      wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(),
+		       color.Green(), color.Blue()) +
+      wxT(";\n");
   }
   if (boldPrompt)
     css << wxT("  font-weight: bold;\n");
@@ -5142,7 +5137,6 @@ bool Worksheet::ExportToHTML(const wxString &file) {
   for (auto &tmp : OnList(GetTree())) {
     // Handle a code cell
     if (tmp.GetGroupType() == GC_TYPE_CODE) {
-
       // Handle the label
       Cell *out = tmp.GetLabel();
 
@@ -5171,7 +5165,6 @@ bool Worksheet::ExportToHTML(const wxString &file) {
         // No output to export.x
         output << wxT("\n");
       } else {
-
         // We got output.
         // Output is a list that can consist of equations, images and
         // animations. We need to handle each of these item types separately =>
@@ -5199,15 +5192,15 @@ bool Worksheet::ExportToHTML(const wxString &file) {
 
           if (chunk->GetType() == MC_TYPE_SLIDE) {
             dynamic_cast<AnimationCell *>(&(*chunk))->ToGif(
-                imgDir + wxT("/") + filename +
-                wxString::Format(wxT("_%d.gif"), count));
+							    imgDir + wxT("/") + filename +
+							    wxString::Format(wxT("_%d.gif"), count));
             output
-                << wxT("  <img src=\"") + filename_encoded + wxT("_htmlimg/") +
-                       filename_encoded +
-                       wxString::Format(
-                           _("_%d.gif\"  alt=\"Animated Diagram\" "
-                             "loading=\"lazy\" style=\"max-width:90%%;\" />\n"),
-                           count);
+	      << wxT("  <img src=\"") + filename_encoded + wxT("_htmlimg/") +
+	      filename_encoded +
+	      wxString::Format(
+			       _("_%d.gif\"  alt=\"Animated Diagram\" "
+				 "loading=\"lazy\" style=\"max-width:90%%;\" />\n"),
+			       count);
           } else if (chunk->GetType() != MC_TYPE_IMAGE) {
             switch (m_configuration->HTMLequationFormat()) {
             case Configuration::mathJaX_TeX: {
@@ -5234,19 +5227,19 @@ bool Worksheet::ExportToHTML(const wxString &file) {
 
             case Configuration::svg: {
               auto const alttext =
-                  EditorCell::EscapeHTMLChars(chunk->ListToString());
+		EditorCell::EscapeHTMLChars(chunk->ListToString());
               auto const filepath = wxString::Format(wxT("%s/%s_%d.svg"),
                                                      imgDir, filename, count);
               Svgout svgout(&m_configuration, std::move(chunk), filepath);
 
               wxString line =
-                  wxT("  <img src=\"") + filename_encoded + wxT("_htmlimg/") +
-                  filename_encoded +
-                  wxString::Format(
-                      wxT("_%d.svg\" width=\"%i\" style=\"max-width:90%%;\" "
-                          "loading=\"lazy\" alt=\""),
-                      count, svgout.GetSize().x) +
-                  alttext + wxT("\" /><br/>\n");
+		wxT("  <img src=\"") + filename_encoded + wxT("_htmlimg/") +
+		filename_encoded +
+		wxString::Format(
+				 wxT("_%d.svg\" width=\"%i\" style=\"max-width:90%%;\" "
+				     "loading=\"lazy\" alt=\""),
+				 count, svgout.GetSize().x) +
+		alttext + wxT("\" /><br/>\n");
 
               output << line + "\n";
               break;
@@ -5255,24 +5248,24 @@ bool Worksheet::ExportToHTML(const wxString &file) {
             case Configuration::bitmap: {
               wxSize size;
               size = CopyToFile(imgDir + wxT("/") + filename +
-                                    wxString::Format(wxT("_%d.png"), count),
+				wxString::Format(wxT("_%d.png"), count),
                                 &(*chunk), NULL, true,
                                 m_configuration->BitmapScale());
               int borderwidth = 0;
               wxString alttext =
-                  EditorCell::EscapeHTMLChars(chunk->ListToString());
+		EditorCell::EscapeHTMLChars(chunk->ListToString());
               borderwidth = chunk->GetImageBorderWidth();
 
               wxString line =
-                  wxT("  <img src=\"") + filename_encoded + wxT("_htmlimg/") +
-                  filename_encoded +
-                  wxString::Format(
-                      wxT("_%d%s\" width=\"%i\" style=\"max-width:90%%;\" "
-                          "loading=\"lazy\" alt=\" "),
-                      count, ext.utf8_str(),
-                      size.x / m_configuration->BitmapScale() -
-                          2 * borderwidth) +
-                  alttext + wxT("\" /><br/>\n");
+		wxT("  <img src=\"") + filename_encoded + wxT("_htmlimg/") +
+		filename_encoded +
+		wxString::Format(
+				 wxT("_%d%s\" width=\"%i\" style=\"max-width:90%%;\" "
+				     "loading=\"lazy\" alt=\" "),
+				 count, ext.utf8_str(),
+				 size.x / m_configuration->BitmapScale() -
+				 2 * borderwidth) +
+		alttext + wxT("\" /><br/>\n");
 
               output << line + "\n";
               break;
@@ -5281,31 +5274,31 @@ bool Worksheet::ExportToHTML(const wxString &file) {
             default: {
               wxString line = chunk->ListToMathML();
               output
-                  << wxT("<math xmlns=\"http://www.w3.org/1998/Math/MathML\" "
-                         "display=\"block\">")
-                  << line << wxT("</math>\n");
+		<< wxT("<math xmlns=\"http://www.w3.org/1998/Math/MathML\" "
+		       "display=\"block\">")
+		<< line << wxT("</math>\n");
             }
             }
           } else {
             wxSize size;
             ext = wxT(".") +
-                  dynamic_cast<ImgCellBase *>(&(*chunk))->GetExtension();
+	      dynamic_cast<ImgCellBase *>(&(*chunk))->GetExtension();
             size = dynamic_cast<ImgCellBase *>(&(*chunk))->ToImageFile(
-                imgDir + wxT("/") + filename +
-                wxString::Format(wxT("_%d"), count) + ext);
+								       imgDir + wxT("/") + filename +
+								       wxString::Format(wxT("_%d"), count) + ext);
             int borderwidth = 0;
             wxString alttext =
-                EditorCell::EscapeHTMLChars(chunk->ListToString());
+	      EditorCell::EscapeHTMLChars(chunk->ListToString());
             borderwidth = chunk->GetImageBorderWidth();
 
             wxString line =
-                wxT("  <img src=\"") + filename_encoded + wxT("_htmlimg/") +
-                filename_encoded +
-                wxString::Format(
-                    wxT("_%d%s\" width=\"%i\" style=\"max-width:90%%;\" "
-                        "loading=\"lazy\" alt=\""),
-                    count, ext.utf8_str(), size.x - 2 * borderwidth) +
-                alttext + wxT("\" /><br/>\n");
+	      wxT("  <img src=\"") + filename_encoded + wxT("_htmlimg/") +
+	      filename_encoded +
+	      wxString::Format(
+			       wxT("_%d%s\" width=\"%i\" style=\"max-width:90%%;\" "
+				   "loading=\"lazy\" alt=\""),
+			       count, ext.utf8_str(), size.x - 2 * borderwidth) +
+	      alttext + wxT("\" /><br/>\n");
 
             output << line + "\n";
           }
@@ -5315,124 +5308,124 @@ bool Worksheet::ExportToHTML(const wxString &file) {
         }
       }
     } else // No code cell
-    {
-      switch (tmp.GetGroupType()) {
-      case GC_TYPE_TEXT:
-        output << wxT("\n\n<!-- Text cell -->\n\n\n");
-        output << wxT("<div class=\"comment\">\n");
-        // A text cell can include block-level HTML elements, e.g. <ul> ...
-        // </ul> (converted from Markdown) Therefore do not output <p> ... </p>
-        // elements, that would result in invalid HTML.
-        output << MarkDown.MarkDown(EditorCell::EscapeHTMLChars(
-                      tmp.GetEditable()->ToString())) +
-                      "\n";
-        output << wxT("</div>\n");
-        break;
-      case GC_TYPE_SECTION:
-        output << wxT("\n\n<!-- Section cell -->\n\n\n");
-        output << wxT("<div class=\"section\">\n");
-        output << wxT("<p>\n");
-        output << EditorCell::EscapeHTMLChars(tmp.GetPrompt()->ToString() +
-                                              tmp.GetEditable()->ToString()) +
-                      "\n";
-        output << wxT("</p>\n");
-        output << wxT("</div>\n");
-        break;
-      case GC_TYPE_SUBSECTION:
-        output << wxT("\n\n<!-- Subsection cell -->\n\n\n");
-        output << wxT("<div class=\"subsect\">\n");
-        output << wxT("<p>\n");
-        output << EditorCell::EscapeHTMLChars(tmp.GetPrompt()->ToString() +
-                                              tmp.GetEditable()->ToString()) +
-                      "\n";
-        output << wxT("</p>\n");
-        output << wxT("</div>\n");
-        break;
-      case GC_TYPE_SUBSUBSECTION:
-        output << wxT("\n\n<!-- Subsubsection cell -->\n\n\n");
-        output << wxT("<div class=\"subsubsect\">\n");
-        output << wxT("<p>\n");
-        output << EditorCell::EscapeHTMLChars(tmp.GetPrompt()->ToString() +
-                                              tmp.GetEditable()->ToString()) +
-                      "\n";
-        output << wxT("</p>\n");
-        output << wxT("</div>\n");
-        break;
-      case GC_TYPE_HEADING5:
-        output << wxT("\n\n<!-- Heading5 cell -->\n\n\n");
-        output << wxT("<div class=\"heading5\">\n");
-        output << wxT("<p>\n");
-        output << EditorCell::EscapeHTMLChars(tmp.GetPrompt()->ToString() +
-                                              tmp.GetEditable()->ToString()) +
-                      "\n";
-        output << wxT("</p>\n");
-        output << wxT("</div>\n");
-        break;
-      case GC_TYPE_HEADING6:
-        output << wxT("\n\n<!-- Heading6 cell -->\n\n\n");
-        output << wxT("<div class=\"heading6\">\n");
-        output << wxT("<p>\n");
-        output << EditorCell::EscapeHTMLChars(tmp.GetPrompt()->ToString() +
-                                              tmp.GetEditable()->ToString()) +
-                      "\n";
-        output << wxT("</p>\n");
-        output << wxT("</div>\n");
-        break;
-      case GC_TYPE_TITLE:
-        output << wxT("\n\n<!-- Title cell -->\n\n\n");
-        output << wxT("<div class=\"title\">\n");
-        output << wxT("<p>\n");
-        output << EditorCell::EscapeHTMLChars(tmp.GetEditable()->ToString()) +
-                      "\n";
-        output << wxT("</p>\n");
-        output << wxT("</div>\n");
-        break;
-      case GC_TYPE_PAGEBREAK:
-        output << wxT("\n\n<!-- Page break cell -->\n\n\n");
-        output << wxT("<div class=\"comment\">\n");
-        output << wxT("<hr/>\n");
-        output << wxT("</div>\n");
-        break;
-      case GC_TYPE_IMAGE: {
-        output << wxT("\n\n<!-- Image cell -->\n\n\n");
-        Cell *out = tmp.GetLabel();
-        output << wxT("<div class=\"image\">\n");
-        output << EditorCell::EscapeHTMLChars(tmp.GetPrompt()->ToString() +
-                                              tmp.GetEditable()->ToString())
-               << wxT("\n");
-        output << wxT("<br/>\n");
-        if (tmp.GetLabel()->GetType() == MC_TYPE_SLIDE) {
-          dynamic_cast<AnimationCell *>(tmp.GetOutput())
+      {
+	switch (tmp.GetGroupType()) {
+	case GC_TYPE_TEXT:
+	  output << wxT("\n\n<!-- Text cell -->\n\n\n");
+	  output << wxT("<div class=\"comment\">\n");
+	  // A text cell can include block-level HTML elements, e.g. <ul> ...
+	  // </ul> (converted from Markdown) Therefore do not output <p> ... </p>
+	  // elements, that would result in invalid HTML.
+	  output << MarkDown.MarkDown(EditorCell::EscapeHTMLChars(
+								  tmp.GetEditable()->ToString())) +
+	    "\n";
+	  output << wxT("</div>\n");
+	  break;
+	case GC_TYPE_SECTION:
+	  output << wxT("\n\n<!-- Section cell -->\n\n\n");
+	  output << wxT("<div class=\"section\">\n");
+	  output << wxT("<p>\n");
+	  output << EditorCell::EscapeHTMLChars(tmp.GetPrompt()->ToString() +
+						tmp.GetEditable()->ToString()) +
+	    "\n";
+	  output << wxT("</p>\n");
+	  output << wxT("</div>\n");
+	  break;
+	case GC_TYPE_SUBSECTION:
+	  output << wxT("\n\n<!-- Subsection cell -->\n\n\n");
+	  output << wxT("<div class=\"subsect\">\n");
+	  output << wxT("<p>\n");
+	  output << EditorCell::EscapeHTMLChars(tmp.GetPrompt()->ToString() +
+						tmp.GetEditable()->ToString()) +
+	    "\n";
+	  output << wxT("</p>\n");
+	  output << wxT("</div>\n");
+	  break;
+	case GC_TYPE_SUBSUBSECTION:
+	  output << wxT("\n\n<!-- Subsubsection cell -->\n\n\n");
+	  output << wxT("<div class=\"subsubsect\">\n");
+	  output << wxT("<p>\n");
+	  output << EditorCell::EscapeHTMLChars(tmp.GetPrompt()->ToString() +
+						tmp.GetEditable()->ToString()) +
+	    "\n";
+	  output << wxT("</p>\n");
+	  output << wxT("</div>\n");
+	  break;
+	case GC_TYPE_HEADING5:
+	  output << wxT("\n\n<!-- Heading5 cell -->\n\n\n");
+	  output << wxT("<div class=\"heading5\">\n");
+	  output << wxT("<p>\n");
+	  output << EditorCell::EscapeHTMLChars(tmp.GetPrompt()->ToString() +
+						tmp.GetEditable()->ToString()) +
+	    "\n";
+	  output << wxT("</p>\n");
+	  output << wxT("</div>\n");
+	  break;
+	case GC_TYPE_HEADING6:
+	  output << wxT("\n\n<!-- Heading6 cell -->\n\n\n");
+	  output << wxT("<div class=\"heading6\">\n");
+	  output << wxT("<p>\n");
+	  output << EditorCell::EscapeHTMLChars(tmp.GetPrompt()->ToString() +
+						tmp.GetEditable()->ToString()) +
+	    "\n";
+	  output << wxT("</p>\n");
+	  output << wxT("</div>\n");
+	  break;
+	case GC_TYPE_TITLE:
+	  output << wxT("\n\n<!-- Title cell -->\n\n\n");
+	  output << wxT("<div class=\"title\">\n");
+	  output << wxT("<p>\n");
+	  output << EditorCell::EscapeHTMLChars(tmp.GetEditable()->ToString()) +
+	    "\n";
+	  output << wxT("</p>\n");
+	  output << wxT("</div>\n");
+	  break;
+	case GC_TYPE_PAGEBREAK:
+	  output << wxT("\n\n<!-- Page break cell -->\n\n\n");
+	  output << wxT("<div class=\"comment\">\n");
+	  output << wxT("<hr/>\n");
+	  output << wxT("</div>\n");
+	  break;
+	case GC_TYPE_IMAGE: {
+	  output << wxT("\n\n<!-- Image cell -->\n\n\n");
+	  Cell *out = tmp.GetLabel();
+	  output << wxT("<div class=\"image\">\n");
+	  output << EditorCell::EscapeHTMLChars(tmp.GetPrompt()->ToString() +
+						tmp.GetEditable()->ToString())
+		 << wxT("\n");
+	  output << wxT("<br/>\n");
+	  if (tmp.GetLabel()->GetType() == MC_TYPE_SLIDE) {
+	    dynamic_cast<AnimationCell *>(tmp.GetOutput())
               ->ToGif(imgDir + wxT("/") + filename +
                       wxString::Format(wxT("_%d.gif"), count));
-          output << wxT("  <img src=\"") + filename_encoded + wxT("_htmlimg/") +
-                        filename_encoded +
-                        wxString::Format(
-                            _("_%d.gif\" alt=\"Animated Diagram\" "
-                              "style=\"max-width:90%%;\" loading=\"lazy\" />"),
-                            count)
-                 << wxT("\n");
-        } else {
-          ImgCellBase *imgCell = dynamic_cast<ImgCellBase *>(out);
-          imgCell->ToImageFile(imgDir + wxT("/") + filename +
-                               wxString::Format(wxT("_%d."), count) +
-                               imgCell->GetExtension());
-          output
+	    output << wxT("  <img src=\"") + filename_encoded + wxT("_htmlimg/") +
+	      filename_encoded +
+	      wxString::Format(
+			       _("_%d.gif\" alt=\"Animated Diagram\" "
+				 "style=\"max-width:90%%;\" loading=\"lazy\" />"),
+			       count)
+		   << wxT("\n");
+	  } else {
+	    ImgCellBase *imgCell = dynamic_cast<ImgCellBase *>(out);
+	    imgCell->ToImageFile(imgDir + wxT("/") + filename +
+				 wxString::Format(wxT("_%d."), count) +
+				 imgCell->GetExtension());
+	    output
               << wxT("  <img src=\"") + filename_encoded + wxT("_htmlimg/") +
-                     filename_encoded +
-                     wxString::Format(
-                         wxT("_%d.%s\" alt=\"Diagram\" "
-                             "style=\"max-width:90%%;\" loading=\"lazy\" />"),
-                         count, imgCell->GetExtension().utf8_str());
-        }
-        output << wxT("</div>\n");
-        count++;
-      } break;
-      case GC_TYPE_CODE:
-      case GC_TYPE_INVALID:
-        break;
+	      filename_encoded +
+	      wxString::Format(
+			       wxT("_%d.%s\" alt=\"Diagram\" "
+				   "style=\"max-width:90%%;\" loading=\"lazy\" />"),
+			       count, imgCell->GetExtension().utf8_str());
+	  }
+	  output << wxT("</div>\n");
+	  count++;
+	} break;
+	case GC_TYPE_CODE:
+	case GC_TYPE_INVALID:
+	  break;
+	}
       }
-    }
   }
 
   //////////////////////////////////////////////
@@ -5451,9 +5444,9 @@ bool Worksheet::ExportToHTML(const wxString &file) {
     wxString wxmxfileName = path + wxT("/") + wxmxfileName_rel;
     ExportToWXMX(wxmxfileName, false);
     output
-        << wxT(" <small> The source of this Maxima session can be downloaded "
-               "<a href=\"") +
-               wxmxfileName_rel + wxT("\">here</a>.</small>\n");
+      << wxT(" <small> The source of this Maxima session can be downloaded "
+	     "<a href=\"") +
+      wxmxfileName_rel + wxT("\">here</a>.</small>\n");
   }
 
   //
@@ -5480,8 +5473,8 @@ bool Worksheet::ExportToHTML(const wxString &file) {
     wxMemoryOutputStream ostream;
     doc.Save(ostream);
     output = wxString::FromUTF8(
-        (char *)ostream.GetOutputStreamBuffer()->GetBufferStart(),
-        ostream.GetOutputStreamBuffer()->GetBufferSize());
+				reinterpret_cast<char *>(ostream.GetOutputStreamBuffer()->GetBufferStart()),
+				ostream.GetOutputStreamBuffer()->GetBufferSize());
 
     // Now the string has a header we want to drop again.
     output = output.SubString(output.Find("\n") + 1, output.Length());
@@ -5543,7 +5536,7 @@ bool Worksheet::ExportToTeX(const wxString &file) {
     output << "\\documentclass{" + m_configuration->Documentclass() + "}\n\n";
   else
     output << "\\documentclass[" + m_configuration->DocumentclassOptions() +
-                  "]{" + m_configuration->Documentclass() + "}\n\n";
+      "]{" + m_configuration->Documentclass() + "}\n\n";
   output << wxT("%% Created with wxMaxima " GITVERSION "\n\n");
   output << wxT("\\setlength{\\parskip}{\\medskipamount}\n");
   output << wxT("\\setlength{\\parindent}{0pt}\n");
@@ -5576,11 +5569,11 @@ bool Worksheet::ExportToTeX(const wxString &file) {
   output << wxT("\\newcommand{\\includeimage}[1]{\n");
   output << wxT("    \\savebox{\\picturebox}{\\includegraphics{#1}}\n");
   output << wxT(
-      "    \\settoheight{\\pictureboxheight}{\\usebox{\\picturebox}}\n");
+		"    \\settoheight{\\pictureboxheight}{\\usebox{\\picturebox}}\n");
   output << wxT(
-      "    \\settowidth{\\pictureboxwidth}{\\usebox{\\picturebox}}\n");
+		"    \\settowidth{\\pictureboxwidth}{\\usebox{\\picturebox}}\n");
   output << wxT(
-      "    \\ifthenelse{\\lengthtest{\\pictureboxwidth > .95\\linewidth}}\n");
+		"    \\ifthenelse{\\lengthtest{\\pictureboxwidth > .95\\linewidth}}\n");
   output << wxT("    {\n");
   output << wxT("        "
                 "\\includegraphics[width=.95\\linewidth,height=.80\\textheight,"
@@ -5588,8 +5581,8 @@ bool Worksheet::ExportToTeX(const wxString &file) {
   output << wxT("    }\n");
   output << wxT("    {\n");
   output << wxT(
-      "        "
-      "\\ifthenelse{\\lengthtest{\\pictureboxheight>.80\\textheight}}\n");
+		"        "
+		"\\ifthenelse{\\lengthtest{\\pictureboxheight>.80\\textheight}}\n");
   output << wxT("        {\n");
   output << wxT("            "
                 "\\includegraphics[width=.95\\linewidth,height=.80\\textheight,"
@@ -5765,7 +5758,7 @@ void Worksheet::ExportToMAC(wxTextFile &output, GroupCell *tree, bool wxm,
         wxString input = txt->ToString(true);
 
         for (SimpleMathConfigurationIterator it =
-                 SimpleMathConfigurationIterator(input);
+	       SimpleMathConfigurationIterator(input);
              it.pos + 1 < it.input.length(); ++it)
           if (*it == '%' &&
               (input[it.pos + 1] == 'i' || input[it.pos + 1] == 'o') &&
@@ -5815,7 +5808,7 @@ bool Worksheet::ExportToMAC(const wxString &file) {
     AddLineToFile(backupfile, Format::WXMFirstLine);
     wxString version(wxT(GITVERSION));
     AddLineToFile(backupfile, wxT("/* [ Created with wxMaxima version ") +
-                                  version + wxT(" ] */"));
+		  version + wxT(" ] */"));
   }
 
   bool fixReorderedIndices = m_configuration->FixReorderedIndices();
@@ -5932,47 +5925,47 @@ bool Worksheet::ExportToWXMX(const wxString &file, bool markAsSaved) {
         zip.CloseEntry();
         zip.PutNextEntry(wxT("format.txt"));
         output << wxT(
-            "\n\nThis file contains a wxMaxima session in the .wxmx format.\n"
-            ".wxmx files are .xml-based files contained in a .zip container "
-            "like .odt\n"
-            "or .docx files. After changing their name to end in .zip the .xml "
-            "and\n"
-            "eventual bitmap files inside them can be extracted using any .zip "
-            "file\n"
-            "viewer.\n"
-            "The reason why part of a .wxmx file still might still seem to "
-            "make sense in a\n"
-            "ordinary text viewer is that the text portion of .wxmx by "
-            "default\n"
-            "isn't compressed: The text is typically small and compressing it "
-            "would\n"
-            "mean that changing a single character would (with a high "
-            "probability) change\n"
-            "big parts of the  whole contents of the compressed .zip archive.\n"
-            "Even if version control tools like git and svn that remember all "
-            "changes\n"
-            "that were ever made to a file can handle binary files compression "
-            "would\n"
-            "make the changed part of the file bigger and therefore seriously "
-            "reduce\n"
-            "the efficiency of version control\n\n"
-            "wxMaxima can be downloaded from "
-            "https://github.com/wxMaxima-developers/wxmaxima.\n"
-            "It also is part of the windows installer for maxima\n"
-            "(https://wxmaxima-developers.github.io/wxmaxima/).\n\n"
-            "If a .wxmx file is broken but the content.xml portion of the file "
-            "can still be\n"
-            "viewed using a text editor just save the xml's text as "
-            "\"content.xml\"\n"
-            "and try to open it using a recent version of wxMaxima.\n"
-            "If it is valid XML (the XML header is intact, all opened tags are "
-            "closed again,\n"
-            "the text is saved with the text encoding \"UTF8 without BOM\" and "
-            "the few\n"
-            "special characters XML requires this for are properly escaped)\n"
-            "chances are high that wxMaxima will be able to recover all code "
-            "and text\n"
-            "from the XML file.\n\n");
+		      "\n\nThis file contains a wxMaxima session in the .wxmx format.\n"
+		      ".wxmx files are .xml-based files contained in a .zip container "
+		      "like .odt\n"
+		      "or .docx files. After changing their name to end in .zip the .xml "
+		      "and\n"
+		      "eventual bitmap files inside them can be extracted using any .zip "
+		      "file\n"
+		      "viewer.\n"
+		      "The reason why part of a .wxmx file still might still seem to "
+		      "make sense in a\n"
+		      "ordinary text viewer is that the text portion of .wxmx by "
+		      "default\n"
+		      "isn't compressed: The text is typically small and compressing it "
+		      "would\n"
+		      "mean that changing a single character would (with a high "
+		      "probability) change\n"
+		      "big parts of the  whole contents of the compressed .zip archive.\n"
+		      "Even if version control tools like git and svn that remember all "
+		      "changes\n"
+		      "that were ever made to a file can handle binary files compression "
+		      "would\n"
+		      "make the changed part of the file bigger and therefore seriously "
+		      "reduce\n"
+		      "the efficiency of version control\n\n"
+		      "wxMaxima can be downloaded from "
+		      "https://github.com/wxMaxima-developers/wxmaxima.\n"
+		      "It also is part of the windows installer for maxima\n"
+		      "(https://wxmaxima-developers.github.io/wxmaxima/).\n\n"
+		      "If a .wxmx file is broken but the content.xml portion of the file "
+		      "can still be\n"
+		      "viewed using a text editor just save the xml's text as "
+		      "\"content.xml\"\n"
+		      "and try to open it using a recent version of wxMaxima.\n"
+		      "If it is valid XML (the XML header is intact, all opened tags are "
+		      "closed again,\n"
+		      "the text is saved with the text encoding \"UTF8 without BOM\" and "
+		      "the few\n"
+		      "special characters XML requires this for are properly escaped)\n"
+		      "chances are high that wxMaxima will be able to recover all code "
+		      "and text\n"
+		      "from the XML file.\n\n");
         zip.CloseEntry();
 
         // next zip entry is "content.xml", xml of GetTree()
@@ -5984,7 +5977,7 @@ bool Worksheet::ExportToWXMX(const wxString &file, bool markAsSaved) {
         xmlText << wxT("\n<!--   Created using wxMaxima ") << wxT(GITVERSION)
                 << wxT("   -->");
         xmlText << wxT(
-            "\n<!--https://wxMaxima-developers.github.io/wxmaxima/-->\n");
+		       "\n<!--https://wxMaxima-developers.github.io/wxmaxima/-->\n");
 
         // write document
         xmlText << wxT("\n<wxMaximaDocument version=\"");
@@ -6044,8 +6037,8 @@ bool Worksheet::ExportToWXMX(const wxString &file, bool markAsSaved) {
           xmlText += wxString::Format(" variables_num=\"%li\"", varcount);
           for (unsigned long i = 0; i < variables.GetCount(); i++)
             xmlText +=
-                wxString::Format(" variables_%li=\"%s\"", i,
-                                 Cell::XMLescape(variables[i]).utf8_str());
+	      wxString::Format(" variables_%li=\"%s\"", i,
+			       Cell::XMLescape(variables[i]).utf8_str());
         }
 
         xmlText << ">\n";
@@ -6063,7 +6056,7 @@ bool Worksheet::ExportToWXMX(const wxString &file, bool markAsSaved) {
              ++it) {
           wxChar c = *it;
           if ((c < wxT('\t')) || ((c > wxT('\n')) && (c < wxT(' '))) ||
-              (c == wxChar((char)0x7F))) {
+              (c == wxChar(static_cast<char>(0x7F)))) {
             // *it = wxT(' ');
           }
         }
@@ -6104,9 +6097,9 @@ bool Worksheet::ExportToWXMX(const wxString &file, bool markAsSaved) {
                 data->Add(new wxTextDataObject(xmlText));
                 wxTheClipboard->SetData(data);
                 wxLogMessage(
-                    _("Produced invalid XML. The erroneous XML data has "
-                      "therefore not been saved but has been put on the "
-                      "clipboard in order to allow to debug it."));
+			     _("Produced invalid XML. The erroneous XML data has "
+			       "therefore not been saved but has been put on the "
+			       "clipboard in order to allow to debug it."));
                 wxTheClipboard->Close();
               }
 
@@ -6278,8 +6271,8 @@ void Worksheet::OnDoubleClick(wxMouseEvent &WXUNUSED(event)) {
 
 bool Worksheet::ActivateInput(int direction) {
   auto const advance =
-      (direction >= 0) ? +[](GroupCell *cell) { return cell->GetNext(); }
-                       : +[](GroupCell *cell) { return cell->GetPrevious(); };
+    (direction >= 0) ? +[](GroupCell *cell) { return cell->GetNext(); }
+    : +[](GroupCell *cell) { return cell->GetPrevious(); };
 
   GroupCell *tmp = {};
   if (m_cellPointers.m_selectionStart)
@@ -6384,8 +6377,8 @@ void Worksheet::AddRestToEvaluationQueue() {
 
 void Worksheet::AddSelectionToEvaluationQueue() {
   AddSelectionToEvaluationQueue(
-      m_cellPointers.m_selectionStart.CastAs<GroupCell *>(),
-      m_cellPointers.m_selectionEnd.CastAs<GroupCell *>());
+				m_cellPointers.m_selectionStart.CastAs<GroupCell *>(),
+				m_cellPointers.m_selectionEnd.CastAs<GroupCell *>());
 }
 
 void Worksheet::AddSelectionToEvaluationQueue(GroupCell *start,
@@ -6500,7 +6493,6 @@ void Worksheet::ScrollToCellIfNeeded() {
   int cellBottom = cellY + cellDrop;
 
   if (m_scrollToTopOfCell) {
-
     // Scroll upwards if the top of the thing we want to scroll to is less than
     // 1/2 scroll unit away from the top of the page
     if (cellTop - m_scrollUnit < view_y)
@@ -6651,7 +6643,6 @@ bool Worksheet::TreeUndoTextChange(UndoActions *sourcelist,
   }
 
   if (action.m_start) {
-
     // If this action actually does do nothing - we have not done anything
     // and want to make another attempt on undoing things.
     if ((action.m_oldText == action.m_start->GetEditable()->GetValue()) ||
@@ -6663,7 +6654,7 @@ bool Worksheet::TreeUndoTextChange(UndoActions *sourcelist,
 
     // Document the old state of this cell so the next action can be undone.
     undoForThisOperation->emplace_front(
-        action.m_start, action.m_start->GetEditable()->GetValue());
+					action.m_start, action.m_start->GetEditable()->GetValue());
 
     // Revert the old cell state
     action.m_start->GetEditable()->SetValue(action.m_oldText);
@@ -6726,7 +6717,7 @@ bool Worksheet::TreeUndo(UndoActions *sourcelist,
     TreeUndo_AppendAction(undoForThisOperation);
     sourcelist->pop_front();
     actionContinues =
-        !sourcelist->empty() && sourcelist->front().m_partOfAtomicAction;
+      !sourcelist->empty() && sourcelist->front().m_partOfAtomicAction;
   } while (actionContinues);
   if (!undoForThisOperation->empty())
     undoForThisOperation->front().m_partOfAtomicAction = false;
@@ -6809,7 +6800,7 @@ void Worksheet::SetSelection(Cell *start, Cell *end) {
         m_mainToolBar->UnsetCellStyle();
       else
         m_mainToolBar->SetCellStyle(
-            dynamic_cast<GroupCell *>(start)->GetGroupType());
+				    dynamic_cast<GroupCell *>(start)->GetGroupType());
     }
   }
 }
@@ -6860,7 +6851,7 @@ void Worksheet::ShowPoint(wxPoint point) {
 
   Configuration *configuration = m_configuration;
   int fontsize_px =
-      configuration->GetZoomFactor() * configuration->GetDefaultFontSize();
+    configuration->GetZoomFactor() * configuration->GetDefaultFontSize();
   if ((point.y - fontsize_px < view_y) ||
       (point.y + fontsize_px > view_y + height - 20)) {
     sc = true;
@@ -6935,7 +6926,7 @@ void Worksheet::PasteFromClipboard() {
       if (wxTheClipboard->IsSupported(m_wxmFormat)) {
         wxmDataObject data;
         wxTheClipboard->GetData(data);
-        inputs = wxString::FromUTF8((char *)data.GetData(), data.GetDataSize());
+        inputs = wxString::FromUTF8(reinterpret_cast<char *>(data.GetData()), data.GetDataSize());
         if (!inputs.StartsWith(wxT("/* [wxMaxima: ")))
           wxLogMessage(_(".wxm clipboard data with unusual header"));
         else
@@ -6948,7 +6939,6 @@ void Worksheet::PasteFromClipboard() {
     }
 
     if (inputs.StartsWith(wxT("/* [wxMaxima: "))) {
-
       // Convert the text from the clipboard into an array of lines
       wxStringTokenizer lines(inputs, wxT("\n"), wxTOKEN_RET_EMPTY);
       wxArrayString lines_array;
@@ -6973,10 +6963,10 @@ void Worksheet::PasteFromClipboard() {
           m_last = end;
         } else {
           bool hasHSelection =
-              m_cellPointers.m_selectionStart &&
-              (m_cellPointers.m_selectionStart->GetType() == MC_TYPE_GROUP);
+	    m_cellPointers.m_selectionStart &&
+	    (m_cellPointers.m_selectionStart->GetType() == MC_TYPE_GROUP);
           auto *target =
-              GetActiveCell() ? GetActiveCell()->GetGroup() : nullptr;
+	    GetActiveCell() ? GetActiveCell()->GetGroup() : nullptr;
           if (!target)
             target = GetHCaret();
           if (hasHSelection) {
@@ -7001,7 +6991,7 @@ void Worksheet::PasteFromClipboard() {
       wxBitmapDataObject bitmap;
       wxTheClipboard->GetData(bitmap);
       auto ic =
-          std::make_unique<ImgCell>(group, m_configuration, bitmap.GetBitmap());
+	std::make_unique<ImgCell>(group, m_configuration, bitmap.GetBitmap());
       group->AppendOutput(std::move(ic));
       Recalculate(group);
     }
@@ -7089,7 +7079,7 @@ void Worksheet::MergeCells() {
   wxString newcell;
 
   for (auto &tmp :
-       OnList(m_cellPointers.m_selectionStart.CastAs<GroupCell *>())) {
+	 OnList(m_cellPointers.m_selectionStart.CastAs<GroupCell *>())) {
     if (newcell.Length() > 0)
       newcell += wxT("\n");
     newcell += tmp.GetEditable()->GetValue();
@@ -7154,9 +7144,9 @@ void Worksheet::CheckUnixCopy() {
 //! Is this cell selected?
 bool Worksheet::IsSelected(CellType type) {
   return m_cellPointers.m_selectionStart &&
-         m_cellPointers.m_selectionStart->GetType() == type &&
-         ((type != MC_TYPE_IMAGE && type != MC_TYPE_SLIDE) ||
-          m_cellPointers.m_selectionStart == m_cellPointers.m_selectionEnd);
+    m_cellPointers.m_selectionStart->GetType() == type &&
+    ((type != MC_TYPE_IMAGE && type != MC_TYPE_SLIDE) ||
+     m_cellPointers.m_selectionStart == m_cellPointers.m_selectionEnd);
 }
 
 //! Starts playing the animation of a cell generated with the with_slider_*
@@ -7164,14 +7154,14 @@ bool Worksheet::IsSelected(CellType type) {
 void Worksheet::Animate(bool run) {
   if (CanAnimate()) {
     AnimationCell *animation =
-        dynamic_cast<AnimationCell *>(GetSelectionStart());
+      dynamic_cast<AnimationCell *>(GetSelectionStart());
     animation->AnimationRunning(run);
   }
 }
 
 bool Worksheet::IsSelectionInWorkingGroup() {
   return m_cellPointers.m_selectionStart && GetWorkingGroup() &&
-         m_cellPointers.m_selectionStart->GetGroup() == GetWorkingGroup();
+    m_cellPointers.m_selectionStart->GetGroup() == GetWorkingGroup();
 }
 
 GroupCell *Worksheet::GetHCaret() {
@@ -7448,8 +7438,8 @@ bool Worksheet::FindNext(const wxString &str, bool down, bool ignoreCase,
     pos = GetActiveCell()->GetGroup();
   else if (m_hCaretActive) {
     pos = (down && m_hCaretPosition && m_hCaretPosition->GetNext())
-              ? m_hCaretPosition->GetNext()
-              : m_hCaretPosition;
+      ? m_hCaretPosition->GetNext()
+      : m_hCaretPosition;
   }
 
   // If we still don't have a place to start searching we have definitively
@@ -7619,7 +7609,6 @@ bool Worksheet::Autocomplete(AutoComplete::autoCompletionType type) {
   }
 
   if (type == AutoComplete::command) {
-
     // Let's look if we want to complete a unit instead of a command.
     bool inEzUnit = true;
     wxString frontOfSelection = editor->TextInFrontOfSelection();
@@ -7687,15 +7676,15 @@ bool Worksheet::Autocomplete(AutoComplete::autoCompletionType type) {
 
       if (type == AutoComplete::demofile)
         m_autocomplete.UpdateDemoFiles(
-            partial, wxFileName(m_currentFile).GetPath(wxPATH_GET_VOLUME));
+				       partial, wxFileName(m_currentFile).GetPath(wxPATH_GET_VOLUME));
 
       if (type == AutoComplete::loadfile)
         m_autocomplete.UpdateLoadFiles(
-            partial, wxFileName(m_currentFile).GetPath(wxPATH_GET_VOLUME));
+				       partial, wxFileName(m_currentFile).GetPath(wxPATH_GET_VOLUME));
 
       if (type == AutoComplete::generalfile)
         m_autocomplete.UpdateGeneralFiles(
-            partial, wxFileName(m_currentFile).GetPath(wxPATH_GET_VOLUME));
+					  partial, wxFileName(m_currentFile).GetPath(wxPATH_GET_VOLUME));
     }
   }
 
@@ -7721,7 +7710,7 @@ bool Worksheet::Autocomplete(AutoComplete::autoCompletionType type) {
             // cursor is directly followed by the next command without a space
             // or similar inbetween)
             auto partialAt =
-                std::find(wordList.begin(), wordList.end(), partial);
+	      std::find(wordList.begin(), wordList.end(), partial);
             m_autocomplete.AddWorksheetWords(wordList.begin(), partialAt);
             if (partialAt != wordList.end())
               m_autocomplete.AddWorksheetWords(std::next(partialAt),
@@ -7765,7 +7754,6 @@ bool Worksheet::Autocomplete(AutoComplete::autoCompletionType type) {
 
   /// If there are more than one completions, popup a menu
   else {
-
     // Find the position for the popup menu
     RecalculateIfNeeded();
     wxPoint pos = editor->PositionToPoint();
@@ -7776,7 +7764,7 @@ bool Worksheet::Autocomplete(AutoComplete::autoCompletionType type) {
     CalcScrolledPosition(pos.x, pos.y, &pos.x, &pos.y);
     // The popup menu appears half a character too high.
     pos.y +=
-        m_configuration->Scale_Px(m_configuration->GetFontSize(TS_TEXT)).Get();
+      m_configuration->Scale_Px(m_configuration->GetFontSize(TS_TEXT)).Get();
     wxASSERT(!m_autocompletePopup);
     m_autocompletePopup = new AutocompletePopup(this, editor, &m_autocomplete,
                                                 type, &m_autocompletePopup);
@@ -7830,8 +7818,8 @@ void Worksheet::OnComplete(wxCommandEvent &event) {
     editor->CaretToPosition(caret);
     if (!editor->FindNextTemplate())
       editor->CaretToPosition(
-          sel_start +
-          m_completions[event.GetId() - popid_complete_00].Length());
+			      sel_start +
+			      m_completions[event.GetId() - popid_complete_00].Length());
   }
 
   editor->ResetSize();
@@ -8004,10 +7992,10 @@ void Worksheet::OnFollow() {
 }
 
 Worksheet::MathMLDataObject::MathMLDataObject()
-    : wxCustomDataObject(m_mathmlFormat) {}
+  : wxCustomDataObject(m_mathmlFormat) {}
 
 Worksheet::MathMLDataObject::MathMLDataObject(const wxString &data)
-    : wxCustomDataObject(m_mathmlFormat), m_databuf(data.utf8_str())
+  : wxCustomDataObject(m_mathmlFormat), m_databuf(data.utf8_str())
 
 {
   SetData(m_databuf.length(), m_databuf.data());
@@ -8016,16 +8004,16 @@ Worksheet::MathMLDataObject::MathMLDataObject(const wxString &data)
 Worksheet::wxmDataObject::wxmDataObject() : wxCustomDataObject(m_wxmFormat) {}
 
 Worksheet::wxmDataObject::wxmDataObject(wxString data)
-    : wxCustomDataObject(m_wxmFormat) {
+  : wxCustomDataObject(m_wxmFormat) {
   m_databuf = data.utf8_str();
   SetData(m_databuf.length(), m_databuf.data());
 }
 
 Worksheet::MathMLDataObject2::MathMLDataObject2()
-    : wxCustomDataObject(m_mathmlFormat2) {}
+  : wxCustomDataObject(m_mathmlFormat2) {}
 
 Worksheet::MathMLDataObject2::MathMLDataObject2(wxString data)
-    : wxCustomDataObject(m_mathmlFormat2) {
+  : wxCustomDataObject(m_mathmlFormat2) {
   data += wxT('\0');
   m_databuf = data.utf8_str();
   SetData(m_databuf.length(), m_databuf.data());
@@ -8034,17 +8022,17 @@ Worksheet::MathMLDataObject2::MathMLDataObject2(wxString data)
 Worksheet::RtfDataObject::RtfDataObject() : wxCustomDataObject(m_rtfFormat) {}
 
 Worksheet::RtfDataObject::RtfDataObject(wxString data)
-    : wxCustomDataObject(m_rtfFormat) {
+  : wxCustomDataObject(m_rtfFormat) {
   data += wxT('\0');
   m_databuf = data.utf8_str();
   SetData(m_databuf.length(), m_databuf.data());
 }
 
 Worksheet::RtfDataObject2::RtfDataObject2()
-    : wxCustomDataObject(m_rtfFormat2) {}
+  : wxCustomDataObject(m_rtfFormat2) {}
 
 Worksheet::RtfDataObject2::RtfDataObject2(wxString data)
-    : wxCustomDataObject(m_rtfFormat2) {
+  : wxCustomDataObject(m_rtfFormat2) {
   data += wxT('\0');
   m_databuf = data.utf8_str();
   SetData(m_databuf.length(), m_databuf.data());
@@ -8071,13 +8059,13 @@ wxString Worksheet::RTFStart() const {
 
   /* Our style sheet:
      Style  Meaning
-       0    Ordinary text
-       1    Chapter Cell
-       2    Section Cell
-       3    Subsection Cell
-       16   Title Cell
-       21   Math Cell
-       22   Math Cell with Label
+     0    Ordinary text
+     1    Chapter Cell
+     2    Section Cell
+     3    Subsection Cell
+     16   Title Cell
+     21   Math Cell
+     22   Math Cell with Label
   */
   document += wxT("{\\stylesheet\n");
   document += wxT("{\\s0\\snext0\\widctlpar\\hyphpar0\\kerning1\\li0\\ri0\\lin0"
@@ -8113,7 +8101,7 @@ void Worksheet::OnMouseCaptureLost(wxMouseCaptureLostEvent &WXUNUSED(event)) {
 #if wxUSE_ACCESSIBILITY
 Worksheet::AccessibilityInfo::AccessibilityInfo(wxWindow *parent,
                                                 Worksheet *worksheet)
-    : wxAccessible(worksheet->GetTargetWindow()) {
+  : wxAccessible(worksheet->GetTargetWindow()) {
   m_worksheet = worksheet;
   m_parent = parent;
 }

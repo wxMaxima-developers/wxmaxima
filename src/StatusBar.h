@@ -24,7 +24,7 @@
 
   This file contains the definition of the class History that handles the recently 
   issued commands for the history pane.
- */
+*/
 #include "precomp.h"
 #include <wx/wx.h>
 #include <wx/bitmap.h>
@@ -61,7 +61,7 @@ public:
   void NetworkStatus(networkState status);
 
   wxStaticBitmap *GetNetworkStatusElement()
-  { return m_networkStatus; }
+    { return m_networkStatus; }
 
   //! Inform the status bar how many percents of the available CPU power maxima uses
   void SetMaximaCPUPercentage(float percentage)
@@ -82,12 +82,12 @@ private:
   /*! How many percents of the available CPU power does maxima use?
 
     See m_maximaPercentage and SetMaximaCPUPercentage()
-   */
+  */
   float m_maximaPercentage;
   /*! How many percents of the available CPU power did maxima use when updating the network icon last?
 
     See m_maximaPercentage and SetMaximaCPUPercentage()
-   */
+  */
   float m_oldmaximaPercentage;
   networkState m_oldNetworkState;
   wxString m_stdToolTip;

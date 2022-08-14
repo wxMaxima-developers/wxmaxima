@@ -26,7 +26,7 @@
   This file defines the class History
 
   History is a side bar that shows all recently issued maxima commands.
- */
+*/
 
 #include "History.h"
 
@@ -42,13 +42,13 @@
 #include <wx/wupdlock.h>
 
 History::History(wxWindow *parent, int id, Configuration *cfg)
-    : wxPanel(parent, id) {
+  : wxPanel(parent, id) {
   wxConfig::Get()->Read(m_showCurrentSessionOnlyKey, &m_showCurrentSessionOnly);
   // wxLB_MULTIPLE and wxLB_EXTENDED are mutually exclusive and will assert on
   // Windows
   m_history =
-      new wxListBox(this, history_ctrl_id, wxDefaultPosition, wxDefaultSize, 0,
-                    NULL, wxLB_EXTENDED | wxLB_HSCROLL | wxLB_NEEDED_SB);
+    new wxListBox(this, history_ctrl_id, wxDefaultPosition, wxDefaultSize, 0,
+		  NULL, wxLB_EXTENDED | wxLB_HSCROLL | wxLB_NEEDED_SB);
   m_regex = new RegexCtrl(this, wxID_ANY, cfg);
   wxBoxSizer *box = new wxBoxSizer(wxVERTICAL);
 
@@ -76,8 +76,8 @@ void History::OnMouseRightDown(wxMouseEvent &WXUNUSED(event)) {
   if (m_commands.size() > 0) {
     popupMenu.Append(export_all, _("Export all history to a .mac file"));
     popupMenu.Append(
-        export_session,
-        _("Export commands from the current maxima session to a .mac file"));
+		     export_session,
+		     _("Export commands from the current maxima session to a .mac file"));
     if (hasSelections)
       popupMenu.Append(export_selected,
                        _("Export selected commands to a .mac file"));
@@ -272,4 +272,4 @@ void History::SetCurrent(long current) {
 }
 
 wxString
-    History::m_showCurrentSessionOnlyKey(wxT("history/ShowCurrentSessionOnly"));
+History::m_showCurrentSessionOnlyKey(wxT("history/ShowCurrentSessionOnly"));

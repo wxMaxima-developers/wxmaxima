@@ -43,15 +43,15 @@ public:
           const wxSize &size = wxDefaultSize, long style = wxMINIMIZE_BOX | wxMAXIMIZE_BOX | wxRESIZE_BORDER | wxCAPTION | wxCLOSE_BOX | wxCLIP_CHILDREN);
 
   wxString GetValue()
-  {
-    return text_ctrl_1->GetValue();
-  }
+    {
+      return text_ctrl_1->GetValue();
+    }
 
   void SetValue(const wxString &v)
-  {
-    text_ctrl_1->SetValue(v);
-    text_ctrl_1->SetSelection(-1, -1);
-  }
+    {
+      text_ctrl_1->SetValue(v);
+      text_ctrl_1->SetSelection(-1, -1);
+    }
 
   void SetLabel1ToolTip(wxString toolTip){label_2->SetToolTip(toolTip);}
 private:

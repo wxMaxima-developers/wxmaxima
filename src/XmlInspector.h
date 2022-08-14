@@ -1,6 +1,6 @@
 // -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
-//            (C) 2015 Gunter Königsmann <wxMaxima@physikbuch.de>
+//  Copyright (C) 2015 Gunter Königsmann <wxMaxima@physikbuch.de>
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@
 
   This file contains the definition of the class XmlInspector that handles the 
   table of contents pane.
- */
+*/
 #include "precomp.h"
 #include <wx/wx.h>
 #include <wx/richtext/richtextctrl.h>
@@ -35,7 +35,7 @@
 /*! This class generates a pane displaying the communication between maxima and wxMaxima.
   
   The display of this data is only actually updated on calling XmlInspector::Update().
- */
+*/
 class XmlInspector : public wxRichTextCtrl
 {
 public:

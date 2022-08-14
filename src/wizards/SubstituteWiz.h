@@ -41,9 +41,9 @@ public:
   wxString GetValue();
 
   void SetValue(wxString s)
-  {
-    text_ctrl_1->SetValue(s);
-  }
+    {
+      text_ctrl_1->SetValue(s);
+    }
 
 private:
   void set_properties();

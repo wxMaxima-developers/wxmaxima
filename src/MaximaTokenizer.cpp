@@ -25,7 +25,7 @@
   This file defines the class ExptCell
 
   ExptCell is the Cell type that represents exponents.
- */
+*/
 
 #include "MaximaTokenizer.h"
 #include <vector>
@@ -34,7 +34,7 @@
 
 MaximaTokenizer::MaximaTokenizer(wxString commands,
                                  Configuration *configuration)
-    : m_configuration(configuration) {
+  : m_configuration(configuration) {
   if (m_hardcodedFunctions.empty()) {
     m_hardcodedFunctions["for"] = 1;
     m_hardcodedFunctions["in"] = 1;
@@ -227,14 +227,14 @@ MaximaTokenizer::MaximaTokenizer(wxString commands,
       wxString token;
       wxChar lastChar = *it;
       while (
-          (it < commands.end()) &&
-          ((IsNum(*it) || ((*it >= 'a') && (*it <= 'z')) ||
-            ((*it >= 'A') && (*it <= 'Z'))) ||
-           (((lastChar == 'e') || (lastChar == 'E') || (lastChar == 'f') ||
-             (lastChar == 'F') || (lastChar == 'g') || (lastChar == 'G') ||
-             (lastChar == 'h') || (lastChar == 'H') || (lastChar == 'l') ||
-             (lastChar == 'L')) &&
-            ((m_plusSigns.Contains(*it)) || (m_minusSigns.Contains(*it)))))) {
+	     (it < commands.end()) &&
+	     ((IsNum(*it) || ((*it >= 'a') && (*it <= 'z')) ||
+	       ((*it >= 'A') && (*it <= 'Z'))) ||
+	      (((lastChar == 'e') || (lastChar == 'E') || (lastChar == 'f') ||
+		(lastChar == 'F') || (lastChar == 'g') || (lastChar == 'G') ||
+		(lastChar == 'h') || (lastChar == 'H') || (lastChar == 'l') ||
+		(lastChar == 'L')) &&
+	       ((m_plusSigns.Contains(*it)) || (m_minusSigns.Contains(*it)))))) {
         wxChar ch = *it;
         for (wxString::const_iterator it3 = m_plusSigns.begin();
              it3 != m_plusSigns.end(); ++it3)
@@ -307,8 +307,8 @@ MaximaTokenizer::MaximaTokenizer(wxString commands,
       }
       if (token == ("to_lisp")) {
         while (
-            (it < commands.end()) && ((!token.EndsWith("(to-maxima)"))) &&
-            ((!token.EndsWith(wxString("(to") + wxT("\u2212") + "maxima)")))) {
+	       (it < commands.end()) && ((!token.EndsWith("(to-maxima)"))) &&
+	       ((!token.EndsWith(wxString("(to") + wxT("\u2212") + "maxima)")))) {
           token += wxString(*it);
           ++it;
         }
@@ -355,7 +355,7 @@ MaximaTokenizer::MaximaTokenizer(wxString commands,
 MaximaTokenizer::MaximaTokenizer(wxString commands,
                                  Configuration *configuration,
                                  const TokenList &initialTokens)
-    : MaximaTokenizer(commands, configuration) {
+  : MaximaTokenizer(commands, configuration) {
   // cppcheck-suppress useInitializationList
   m_tokens = initialTokens;
 }
@@ -388,39 +388,39 @@ bool MaximaTokenizer::IsAlphaNum(wxChar ch) { return IsAlpha(ch) || IsNum(ch); }
 
 const wxString MaximaTokenizer::m_additional_alphas = wxT("\\_%µ");
 const wxString MaximaTokenizer::m_not_alphas =
-    wxT("\u00B7\u2212\u2260\u2264\u2265\u2265\u2212\u00B2\u00B3\u00BD\u221E"
-        "\u22C0\u22C1\u22BB\u22BC\u22BD\u00AC\u2264\u2265\u2212") wxT("\uFE62")
-        wxT("\uFF0B") wxT("\uFB29") wxT("\u2795") wxT("\u2064") wxT("\u2796")
-            wxT("\uFE63") wxT("\uFF0D");
+  wxT("\u00B7\u2212\u2260\u2264\u2265\u2265\u2212\u00B2\u00B3\u00BD\u221E"
+      "\u22C0\u22C1\u22BB\u22BC\u22BD\u00AC\u2264\u2265\u2212") wxT("\uFE62")
+  wxT("\uFF0B") wxT("\uFB29") wxT("\u2795") wxT("\u2064") wxT("\u2796")
+  wxT("\uFE63") wxT("\uFF0D");
 const wxString MaximaTokenizer::m_spaces =
-    wxT(" ") wxT("\u00A0") // A non-breakable space
-    wxT("\xDCB6")          // A non-breakable space (alternate version)
-    wxT("\u1680")          // Ogham space mark
-    wxT("\u2000")          // en quad
-    wxT("\u2001")          // em quad
-    wxT("\u2002")          // en space
-    wxT("\u2003")          // em space
-    wxT("\u2004")          // 1/3 em space
-    wxT("\u2005")          // 1/4 em space
-    wxT("\u2006")          // 1/6 em space
-    wxT("\u2007")          // figure space
-    wxT("\u2008")          // punctuation space
-    wxT("\t") wxT("\r");   // A soft linebreak
+  wxT(" ") wxT("\u00A0") // A non-breakable space
+  wxT("\xDCB6")          // A non-breakable space (alternate version)
+  wxT("\u1680")          // Ogham space mark
+  wxT("\u2000")          // en quad
+  wxT("\u2001")          // em quad
+  wxT("\u2002")          // en space
+  wxT("\u2003")          // em space
+  wxT("\u2004")          // 1/3 em space
+  wxT("\u2005")          // 1/4 em space
+  wxT("\u2006")          // 1/6 em space
+  wxT("\u2007")          // figure space
+  wxT("\u2008")          // punctuation space
+  wxT("\t") wxT("\r");   // A soft linebreak
 
 const wxString MaximaTokenizer::m_linebreaks =
-    wxT("\n") wxT("\u2028") wxT("\u2029");
+  wxT("\n") wxT("\u2028") wxT("\u2029");
 
 const wxString MaximaTokenizer::m_plusSigns =
-    "+" wxT("\uFE62") wxT("\uFF0B") wxT("\uFB29") wxT("\u2795") wxT("\u2064");
+  "+" wxT("\uFE62") wxT("\uFF0B") wxT("\uFB29") wxT("\u2795") wxT("\u2064");
 
 const wxString MaximaTokenizer::m_minusSigns =
-    "-" wxT("\u2796") wxT("\uFE63") wxT("\uFF0D");
+  "-" wxT("\u2796") wxT("\uFE63") wxT("\uFF0D");
 
 const wxString MaximaTokenizer::m_unicodeNumbers =
-    wxT("\u00BD\u00B2\u00B3\u221E");
+  wxT("\u00BD\u00B2\u00B3\u221E");
 
 const wxString MaximaTokenizer::m_operators =
-    wxT("\u221A\u22C0\u22C1\u22BB\u22BC\u22BD\u00AC\u222b\u2264\u2265\u2211"
-        "\u2260+-*/^:=#'!()[]{}");
+  wxT("\u221A\u22C0\u22C1\u22BB\u22BC\u22BD\u00AC\u222b\u2264\u2265\u2211"
+      "\u2260+-*/^:=#'!()[]{}");
 
 MaximaTokenizer::StringHash MaximaTokenizer::m_hardcodedFunctions;

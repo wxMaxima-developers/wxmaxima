@@ -26,7 +26,7 @@
 
   DiffCell is the Cell type that represents the field that represents the diff()
   command.
- */
+*/
 
 #include "DiffCell.h"
 #include "CellImpl.h"
@@ -36,8 +36,8 @@
 
 DiffCell::DiffCell(GroupCell *group, Configuration *config,
                    std::unique_ptr<Cell> &&base, std::unique_ptr<Cell> &&diff)
-    : Cell(group, config), m_baseCell(std::move(base)),
-      m_diffCell(std::move(diff))
+  : Cell(group, config), m_baseCell(std::move(base)),
+    m_diffCell(std::move(diff))
 
 {
   InitBitFields();
@@ -46,9 +46,9 @@ DiffCell::DiffCell(GroupCell *group, Configuration *config,
 }
 
 DiffCell::DiffCell(GroupCell *group, const DiffCell &cell)
-    : DiffCell(group, cell.m_configuration,
-               CopyList(group, cell.m_baseCell.get()),
-               CopyList(group, cell.m_diffCell.get())) {
+  : DiffCell(group, cell.m_configuration,
+	     CopyList(group, cell.m_baseCell.get()),
+	     CopyList(group, cell.m_diffCell.get())) {
   CopyCommonData(cell);
 }
 
@@ -69,7 +69,7 @@ void DiffCell::Recalculate(AFontSize fontsize) {
     m_width = m_baseCell->GetFullWidth() + m_diffCell->GetFullWidth();
     m_center = wxMax(m_diffCell->GetCenterList(), m_baseCell->GetCenterList());
     m_height =
-        m_center + wxMax(m_diffCell->GetMaxDrop(), m_baseCell->GetMaxDrop());
+      m_center + wxMax(m_diffCell->GetMaxDrop(), m_baseCell->GetMaxDrop());
   } else {
     m_width = m_center = m_height = 0;
     m_open->RecalculateList(fontsize);
@@ -160,7 +160,7 @@ wxString DiffCell::ToXML() const {
     flags += wxT(" breakline=\"true\"");
 
   return wxT("<d") + flags + wxT(">") + m_diffCell->ListToXML() +
-         m_baseCell->ListToXML() + _T("</d>");
+    m_baseCell->ListToXML() + _T("</d>");
 }
 
 bool DiffCell::BreakUp() {

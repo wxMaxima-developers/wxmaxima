@@ -29,7 +29,7 @@
 
   This file contains the definition of the class Charbutton that allows to 
   select arbitrary unicode symbols.
- */
+*/
 #include "precomp.h"
 #include "StringUtils.h"
 #include "Configuration.h"

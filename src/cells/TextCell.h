@@ -31,7 +31,7 @@
 
   Everything on the worksheet that is composed of characters with the exception
   of input cells: Input cells are handled by EditorCell instead.
- */
+*/
 // 304 bytes <- 744 bytes
 class TextCell : public Cell
 {
@@ -57,7 +57,7 @@ public:
   /*! Calling this function signals that the "(" this cell ends in isn't part of the function name
 
     The "(" is the opening parenthesis of a function instead.
-   */
+  */
   void DontEscapeOpeningParenthesis() { m_dontEscapeOpeningParenthesis = true; }
 
   wxString ToMatlab() const override;
@@ -99,11 +99,11 @@ protected:
   const wxString &GetAltCopyText() const override { return m_altCopyText; }
 
   void FontsChanged() override
-  {
-    ResetSize();
-    ResetData();
-    m_sizeCache.clear();
-  }
+    {
+      ResetSize();
+      ResetData();
+      m_sizeCache.clear();
+    }
 
   virtual bool NeedsRecalculation(AFontSize fontSize) const override;
 
@@ -145,12 +145,12 @@ protected:
 //** Bitfield objects (1 bytes)
 //**
   void InitBitFields()
-  { // Keep the initialization order below same as the order
-    // of bit fields in this class!
-    m_dontEscapeOpeningParenthesis = false;
-    m_promptTooltip = false;
-    m_keepPercent_last = m_configuration->CheckKeepPercent();
-  }
+    { // Keep the initialization order below same as the order
+      // of bit fields in this class!
+      m_dontEscapeOpeningParenthesis = false;
+      m_promptTooltip = false;
+      m_keepPercent_last = m_configuration->CheckKeepPercent();
+    }
 
   //! Is an ending "(" of a function name the opening parenthesis of the function?
   bool m_dontEscapeOpeningParenthesis : 1 /* InitBitFields */;

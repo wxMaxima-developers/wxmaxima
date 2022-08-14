@@ -22,7 +22,7 @@
 
 /*! \file
   This file declares all the wizards the draw sidepane needs.
- */
+*/
 
 #ifndef WXMATHML_H
 #define WXMATHML_H
@@ -35,10 +35,10 @@
 
 class wxMathML
 {
- public:
+public:
   wxMathML(Configuration *config);
   wxString GetCmd();
- private:
+private:
   wxString m_wxMathML;
   bool m_wxMathML_UseFile;
   Configuration *m_configuration;

@@ -26,12 +26,13 @@
 
   AbsCell is the Cell type that represents the field that represents the 
   <code>abs()</code> and <code>cabs()</code> commands.
- */
+*/
 
 #ifndef ABSCELL_H
 #define ABSCELL_H
 
 #include "Cell.h"
+#include <memory>
 
 /*! \file
   
@@ -43,14 +44,14 @@
   In the case that this cell is broken into multiple lines, it is
   represented by the following cells in the draw order:
   
-   - The AbsCell itself
-   - The opening "abs("
-   - The contents
-   - The closing ")".
+  - The AbsCell itself
+  - The opening "abs("
+  - The contents
+  - The closing ")".
    
   If it isn't broken into multiple cells, then m_nextToDraw points to the
   cell that follows this AbsCell.  
- */
+*/
 class AbsCell final : public Cell
 {
 public:
@@ -95,9 +96,9 @@ private:
 //** Bitfield objects (0 bytes)
 //**
   void InitBitFields()
-  { // Keep the initialization order below same as the order
-    // of bit fields in this class!
-  }
+    { // Keep the initialization order below same as the order
+      // of bit fields in this class!
+    }
 };
 
 #endif // ABSCELL_H

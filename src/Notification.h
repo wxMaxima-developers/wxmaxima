@@ -26,7 +26,7 @@
 
   Notification is a notification message which the operating system
   claims to be non-disturbing.
- */
+*/
 
 #ifndef NOTIFICATION_H
 #define NOTIFICATION_H
@@ -47,7 +47,7 @@
   We use this notification sparingly, which means: Only if the wxMaxima window has lost
   focus between the user action that caused maxima to run a command and the moment the 
   command has finished or has caused an error.
- */
+*/
 class Notification final: public wxNotificationMessage
 {
 public:

@@ -27,7 +27,7 @@ PlotFormatWiz::PlotFormatWiz(wxWindow *parent, int id,
                              Configuration *WXUNUSED(cfg),
                              const wxString &title, const wxPoint &pos,
                              const wxSize &size, long style)
-    : wxDialog(parent, id, title, pos, size, style) {
+  : wxDialog(parent, id, title, pos, size, style) {
   label_1 = new wxStaticText(this, -1, _("Choose new plot format:"));
   const wxString combo_box_1_choices[] = {
     wxT("gnuplot"),
@@ -41,9 +41,9 @@ PlotFormatWiz::PlotFormatWiz(wxWindow *parent, int id,
     wxT("mgnuplot")
   };
   combo_box_1 = new wxComboBox(
-      this, -1, combo_box_1_choices[0], wxDefaultPosition, wxSize(140, -1),
-      sizeof(combo_box_1_choices) / sizeof(combo_box_1_choices[0]),
-      combo_box_1_choices, wxCB_DROPDOWN);
+			       this, -1, combo_box_1_choices[0], wxDefaultPosition, wxSize(140, -1),
+			       sizeof(combo_box_1_choices) / sizeof(combo_box_1_choices[0]),
+			       combo_box_1_choices, wxCB_DROPDOWN);
   static_line_1 = new wxStaticLine(this, -1);
 #if defined __WXMSW__
   button_1 = new wxButton(this, wxID_OK, _("OK"));

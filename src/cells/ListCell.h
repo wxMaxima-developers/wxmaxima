@@ -24,7 +24,7 @@
   This file declares the class ListCell
 
   ListCell is the Cell type that represents a list
- */
+*/
 
 #ifndef LISTCELL_H
 #define LISTCELL_H
@@ -38,14 +38,14 @@
   m_nextToDraw this cell is represented by the following individual 
   cells:
   
-   - The ListCell itself
-   - The opening "["
-   - The contents
-   - The closing "]".
+  - The ListCell itself
+  - The opening "["
+  - The contents
+  - The closing "]".
    
   If it isn't broken into multiple cells m_nextToDraw points to the 
   cell that follows this Cell.
- */
+*/
 class ListCell : public Cell
 {
 public:
@@ -87,10 +87,10 @@ protected:
 //** Bitfield objects (1 bytes)
 //**
   void InitBitFields()
-  { // Keep the initialization order below same as the order
-    // of bit fields in this class!
-    m_drawAsAscii = true;
-  }
+    { // Keep the initialization order below same as the order
+      // of bit fields in this class!
+      m_drawAsAscii = true;
+    }
   //! How to create a big parenthesis sign?
   bool m_drawAsAscii : 1 /* InitBitFields */;
 };

@@ -22,11 +22,11 @@
 //  SPDX-License-Identifier: GPL-2.0+
 
 /*! \file 
-The evaluation queue
+  The evaluation queue
 
-The class EvaluationQueue that is declared here handles the queue of commands 
-that still have to be sent to maxima.
- */
+  The class EvaluationQueue that is declared here handles the queue of commands 
+  that still have to be sent to maxima.
+*/
 
 
 #ifndef EVALUATIONQUEUE_H
@@ -44,21 +44,21 @@ class EvaluationQueue
 private:
   class Command{
   public:
-    Command(const wxString &string, int index) : m_indexStart(index), m_command(string) {}
+    Command(const wxString &strng, int index) : m_indexStart(index), m_command(strng) {}
     Command(Command &&o) : m_indexStart(o.m_indexStart), m_command(std::move(o.m_command)) {}
     Command(const Command &o) : m_indexStart(o.m_indexStart), m_command(o.m_command) {}
     Command &operator=(Command &&o)
-    {
-      m_indexStart = o.m_indexStart;
-      m_command = std::move(o.m_command);
-      return *this;
-    }
+      {
+        m_indexStart = o.m_indexStart;
+        m_command = std::move(o.m_command);
+        return *this;
+      }
     Command &operator=(const Command &o)
-    {
-      m_indexStart = o.m_indexStart;
-      m_command = o.m_command;
-      return *this;
-    }
+      {
+        m_indexStart = o.m_indexStart;
+        m_command = o.m_command;
+        return *this;
+      }
 
     const wxString &GetString() const { return m_command; }
     void AddEnding() { m_command += ";"; }
@@ -72,8 +72,8 @@ private:
     
     We need to track each single command:
     - If we send more than one command at once maxima will interpret the command
-       as an answer to an eventual question and
-       - we need to know when to switch to the next cell
+    as an answer to an eventual question and
+    - we need to know when to switch to the next cell
   */
   std::vector<EvaluationQueue::Command> m_commands;
   int m_size;
@@ -97,7 +97,7 @@ public:
     it as a label at all) we return wxEmptyString.
   */
   wxString GetUserLabel() const
-  { return m_userLabel; }
+    { return m_userLabel; }
 
   int GetIndex() const
     {
@@ -118,13 +118,13 @@ public:
     }
   
   ~EvaluationQueue()
-  {};
+    {};
 
   //! Is GroupCell gr part of the evaluation queue?
   bool IsLastInQueue(GroupCell const *gr)
-  {
-    return !m_queue.empty() && (gr == m_queue.front());
-  }
+    {
+      return !m_queue.empty() && (gr == m_queue.front());
+    }
 
   //! Is GroupCell gr part of the evaluation queue?
   bool IsInQueue(GroupCell *gr) const;
@@ -144,7 +144,7 @@ public:
   /*! Gets the cell the next command in the queue belongs to
 
     The command itself can be read out by issuing GetCommand();
-   */
+  */
   GroupCell *GetCell();
 
   //! Is the queue empty?

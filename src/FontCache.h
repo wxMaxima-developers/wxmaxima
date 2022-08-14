@@ -58,18 +58,18 @@ public:
   int GetMisses() const { return m_misses; }
   void Clear();
   static FontCache &Get()
-  {
+    {
 #ifdef _WIN32
-    static thread_local FontCache globalCache;
-    // Windows allows font access from multiple threads, as long as each font
-    // is built separately.
+      static thread_local FontCache globalCache;
+      // Windows allows font access from multiple threads, as long as each font
+      // is built separately.
 #else
-    static FontCache globalCache;
+      static FontCache globalCache;
 #endif // _WIN32
-    return globalCache;
-  }
+      return globalCache;
+    }
   static const std::pair<const Style, wxFont> &GetAStyleFont(const Style &style)
-  { return Get().GetStyleFont(style); }
+    { return Get().GetStyleFont(style); }
   static const wxFont &GetAFont(const Style &style) { return Get().GetFont(style); }
   static const Style &AddAFont(const wxFont &font) { return Get().AddFont(font); }
 };

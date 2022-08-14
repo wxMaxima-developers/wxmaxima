@@ -29,7 +29,7 @@ Gen1Wiz::Gen1Wiz(wxWindow *parent, int id, Configuration *cfg,
                  const wxString &val, const wxString &warning,
                  const wxString &warningToolTip, const wxPoint &pos,
                  const wxSize &size, long style)
-    : wxDialog(parent, id, title, pos, size, style) {
+  : wxDialog(parent, id, title, pos, size, style) {
   SetName(title);
   label_2 = new wxStaticText(this, -1, label);
   text_ctrl_1 = new BTextCtrl(this, -1, cfg, wxEmptyString, wxDefaultPosition,

@@ -26,7 +26,7 @@
 
   ImgCell is the Cell type that represents still images in maxima's output
   or in user-provided images.
- */
+*/
 
 // 72 points per inch / 96 pixels per inch
 #define PRINT_SIZE_MULTIPLIER (72.0 / 96.0)
@@ -44,23 +44,23 @@
 #include <wx/mstream.h>
 
 ImgCell::ImgCell(GroupCell *group, Configuration *config)
-    : ImgCellBase(group, config), m_imageBorderWidth(1) {
+  : ImgCellBase(group, config), m_imageBorderWidth(1) {
   InitBitFields();
   m_type = MC_TYPE_IMAGE;
 }
 
 ImgCell::ImgCell(GroupCell *group, Configuration *config,
                  const wxMemoryBuffer &image, const wxString &type)
-    : ImgCellBase(group, config),
-      m_image(new Image(m_configuration, image, type)), m_imageBorderWidth(1) {
+  : ImgCellBase(group, config),
+    m_image(new Image(m_configuration, image, type)), m_imageBorderWidth(1) {
   InitBitFields();
   m_type = MC_TYPE_IMAGE;
 }
 
 ImgCell::ImgCell(GroupCell *group, Configuration *config,
                  const wxBitmap &bitmap)
-    : ImgCellBase(group, config), m_image(new Image(m_configuration, bitmap)),
-      m_imageBorderWidth(1) {
+  : ImgCellBase(group, config), m_image(new Image(m_configuration, bitmap)),
+    m_imageBorderWidth(1) {
   InitBitFields();
   m_type = MC_TYPE_IMAGE;
 }
@@ -70,12 +70,12 @@ int ImgCell::s_counter = 0;
 // constructor which load image
 ImgCell::ImgCell(GroupCell *group, Configuration *config, const wxString &image,
                  std::shared_ptr<wxFileSystem> filesystem, bool remove)
-    : ImgCellBase(group, config), m_imageBorderWidth(1) {
+  : ImgCellBase(group, config), m_imageBorderWidth(1) {
   InitBitFields();
   m_type = MC_TYPE_IMAGE;
   if (image != wxEmptyString) {
     m_image =
-        std::make_shared<Image>(m_configuration, image, filesystem, remove);
+      std::make_shared<Image>(m_configuration, image, filesystem, remove);
   } else
     m_image = std::make_shared<Image>(m_configuration);
   m_drawBoundingBox = false;
@@ -87,7 +87,7 @@ void ImgCell::SetConfiguration(Configuration *config) {
 }
 
 ImgCell::ImgCell(GroupCell *group, const ImgCell &cell)
-    : ImgCellBase(group, cell.m_configuration), m_imageBorderWidth(1) {
+  : ImgCellBase(group, cell.m_configuration), m_imageBorderWidth(1) {
   InitBitFields();
   m_type = MC_TYPE_IMAGE;
   m_image = std::make_shared<Image>(cell.m_configuration, *cell.m_image);
@@ -178,7 +178,7 @@ void ImgCell::Draw(wxPoint point) {
 
     if (m_drawBoundingBox)
       dc->SetBrush(*(wxTheBrushList->FindOrCreateBrush(
-          m_configuration->GetColor(TS_SELECTION))));
+						       m_configuration->GetColor(TS_SELECTION))));
     else
       SetPen();
 
@@ -186,8 +186,8 @@ void ImgCell::Draw(wxPoint point) {
       dc->DrawRectangle(wxRect(point.x, point.y - m_center, m_width, m_height));
 
     wxBitmap bitmap =
-        (m_configuration->GetPrinting() ? m_image->GetUnscaledBitmap()
-                                        : m_image->GetBitmap());
+      (m_configuration->GetPrinting() ? m_image->GetUnscaledBitmap()
+       : m_image->GetBitmap());
     bitmapDC.SelectObject(bitmap);
 
     int xDst = point.x + m_imageBorderWidth;
@@ -311,7 +311,7 @@ wxString ImgCell::ToXML() const {
 
   if (m_image->GetHeightList() > 0)
     flags +=
-        wxString::Format(wxT(" maxHeight=\"%f\""), m_image->GetHeightList());
+      wxString::Format(wxT(" maxHeight=\"%f\""), m_image->GetHeightList());
 
   if (m_origImageFile != wxEmptyString) {
     if (m_configuration->SaveImgFileName()) {
@@ -365,7 +365,7 @@ bool ImgCell::CopyToClipboard() const {
                _("Bug: The clipboard is already opened"));
   if (wxTheClipboard->Open()) {
     bool res = wxTheClipboard->SetData(
-        new wxBitmapDataObject(m_image->GetUnscaledBitmap()));
+				       new wxBitmapDataObject(m_image->GetUnscaledBitmap()));
     wxTheClipboard->Close();
     return res;
   }

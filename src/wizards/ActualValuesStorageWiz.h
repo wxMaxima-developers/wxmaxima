@@ -33,12 +33,12 @@ class ActualValuesStorageWiz : public wxDialog
 {
 public:
   ActualValuesStorageWiz(
-          Configuration *cfg,
-          wxWindow *parent, int id, const wxString &title,
-          bool eq = false,
-          const wxPoint &pos = wxDefaultPosition,
-          const wxSize &size = wxDefaultSize,
-          long style = wxDEFAULT_DIALOG_STYLE);
+    Configuration *cfg,
+    wxWindow *parent, int id, const wxString &title,
+    bool eq = false,
+    const wxPoint &pos = wxDefaultPosition,
+    const wxSize &size = wxDefaultSize,
+    long style = wxDEFAULT_DIALOG_STYLE);
 
   wxString GetValue();
 

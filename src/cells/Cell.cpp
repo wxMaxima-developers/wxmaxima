@@ -34,6 +34,7 @@
 #include "TextCell.h"
 #include "VisiblyInvalidCell.h"
 #include "stx/unique_cast.hpp"
+#include <utility>
 #include <wx/regex.h>
 #include <wx/sstream.h>
 #include <wx/xml/xml.h>
@@ -55,8 +56,8 @@ const wxString &Cell::GetToolTip(const wxPoint point) const {
 }
 
 Cell::Cell(GroupCell *group, Configuration *config)
-    : m_group(group), m_configuration(config), m_toolTip(&wxm::emptyString),
-      m_fontSize_Scaled(-1) {
+  : m_group(group), m_configuration(config), m_toolTip(&wxm::emptyString),
+    m_fontSize_Scaled(-1) {
   wxASSERT(group && (group->GetType() == MC_TYPE_GROUP || group == this));
   InitBitFields();
   ResetSize();
@@ -191,8 +192,8 @@ void Cell::FontsChangedList() {
 GroupCell *Cell::GetGroup() const {
   GroupCell *group = m_group;
   wxASSERT_MSG(
-      group,
-      _("Bug: Math Cell that claims to have no group Cell it belongs to"));
+	       group,
+	       _("Bug: Math Cell that claims to have no group Cell it belongs to"));
   return group;
 }
 
@@ -266,9 +267,9 @@ int Cell::GetLineWidth() const {
 
 /*! Draw this cell to dc
 
- To make this work each derived class must draw the content of the cell
- and then call MathCall::Draw(...).
- */
+  To make this work each derived class must draw the content of the cell
+  and then call MathCall::Draw(...).
+*/
 void Cell::Draw(wxPoint point) {
   m_configuration->NotifyOfCellRedraw(this);
 
@@ -338,9 +339,9 @@ void Cell::AddToolTip(const wxString &tip) {
 
 void Cell::SetAltCopyText(const wxString &text) {
   wxASSERT_MSG(
-      text.empty(),
-      wxString::Format(_("Bug: AltCopyTexts not implemented for %s cell"),
-                       GetInfo().GetName()));
+	       text.empty(),
+	       wxString::Format(_("Bug: AltCopyTexts not implemented for %s cell"),
+				GetInfo().GetName()));
 }
 
 void Cell::DrawList(wxPoint point) {
@@ -580,7 +581,7 @@ wxString Cell::ListToMathML(bool startofline) const {
     // Handle linebreaks
     if ((&tmp != this) && (tmp.HasHardLineBreak()))
       retval +=
-          wxT("</mtd></mlabeledtr>\n<mlabeledtr columnalign=\"left\"><mtd>");
+	wxT("</mtd></mlabeledtr>\n<mlabeledtr columnalign=\"left\"><mtd>");
 
     // If a linebreak isn't followed by a label we need to introduce an empty
     // one.
@@ -610,7 +611,7 @@ wxString Cell::ListToMathML(bool startofline) const {
   // If we put the region we exported into a table we need to end this table now
   if (needsTable)
     retval = wxT("<mtable>\n<mlabeledtr columnalign=\"left\"><mtd>") + retval +
-             wxT("</mtd></mlabeledtr>\n</mtable>");
+      wxT("</mtd></mlabeledtr>\n</mtable>");
   return retval;
 }
 
@@ -627,7 +628,7 @@ wxString Cell::OMML2RTF(wxXmlNode *node) {
       while (attributes != NULL) {
         wxString ommlatt = attributes->GetName();
         result += wxT("{\\m") + ommlatt.Right(ommlatt.Length() - 2) + wxT(" ") +
-                  attributes->GetValue() + wxT("}");
+	  attributes->GetValue() + wxT("}");
         attributes = attributes->GetNext();
       }
 
@@ -698,9 +699,9 @@ wxString Cell::RTFescape(wxString input, bool MarkDown) {
         output += ch;
       } else {
         if (ch < 32768) {
-          output += wxString::Format("\\u%i?", int(ch));
+          output += wxString::Format("\\u%i?", static_cast<int>(ch));
         } else {
-          output += wxString::Format("\\u%i?", int(ch) - 65536);
+          output += wxString::Format("\\u%i?", static_cast<int>(ch) - 65536);
         }
       }
     }
@@ -747,13 +748,13 @@ wxString Cell::ListToRTF(bool startofline) const {
     if (!rtf.empty()) {
       if ((GetStyle() == TS_LABEL) || ((GetStyle() == TS_USERLABEL))) {
         retval +=
-            wxT("\\par}\n{\\pard\\s22\\li1105\\lin1105\\fi-1105\\f0\\fs24 ") +
-            rtf + wxT("\\tab");
+	  wxT("\\par}\n{\\pard\\s22\\li1105\\lin1105\\fi-1105\\f0\\fs24 ") +
+	  rtf + wxT("\\tab");
         startofline = false;
       } else {
         if (startofline)
           retval += wxT("\\par}\n{\\pard\\s21\\li1105\\lin1105\\f0\\fs24 ") +
-                    rtf + wxT("\\n");
+	    rtf + wxT("\\n");
         startofline = true;
       }
       tmp = tmp->GetNext();
@@ -875,12 +876,12 @@ bool Cell::ContainsRect(const wxRect &sm, bool all) const {
 }
 
 /*! Resets remembered size and position info for this cell and all cells inside
- it
+  it
 
- Resets cached data like width and the height of the current cell
- as well as the vertical position of the center. Then repeats this
- with
- */
+  Resets cached data like width and the height of the current cell
+  as well as the vertical position of the center. Then repeats this
+  with
+*/
 void Cell::ResetData() {
   ResetSize();
   for (Cell &cell : OnInner(this))
@@ -991,8 +992,8 @@ void Cell::SetPen(double lineWidth) const {
   wxDC *dc = m_configuration->GetDC();
 
   wxPen pen = *(wxThePenList->FindOrCreatePen(
-      GetForegroundColor(), lineWidth * m_configuration->GetDefaultLineWidth(),
-      wxPENSTYLE_SOLID));
+					      GetForegroundColor(), lineWidth * m_configuration->GetDefaultLineWidth(),
+					      wxPENSTYLE_SOLID));
   dc->SetPen(pen);
 
   if (m_configuration->GetAntialiassingDC() != dc)
@@ -1079,11 +1080,11 @@ wxAccStatus CellAccessible::GetParent(wxAccessible **parent) {
   if (rc == wxACC_OK) {
     if (!parentCell && m_cell->GetConfiguration()->GetWorkSheet())
       return (*parent =
-                  m_cell->GetConfiguration()->GetWorkSheet()->GetAccessible()),
-             wxACC_OK;
+	      m_cell->GetConfiguration()->GetWorkSheet()->GetAccessible()),
+	wxACC_OK;
 
     return parentCell ? (*parent = parentCell->GetAccessible()),
-           wxACC_OK   : wxACC_FAIL;
+      wxACC_OK   : wxACC_FAIL;
   }
   return rc;
 }
@@ -1145,7 +1146,7 @@ wxAccStatus Cell::HitTest(const wxPoint &pt, int *childId, Cell **child) {
   // If this cell doesn't contain the point none of the sub-cells does.
   if (!rect.Contains(pt))
     return (childId && (*childId = 0)), (child && (*child = NULL)), //-V560
-           wxACC_FAIL;
+      wxACC_FAIL;
 
   int id = 0; // Child #0 is this very cell
   for (Cell &cell : OnInner(this)) {
@@ -1158,10 +1159,10 @@ wxAccStatus Cell::HitTest(const wxPoint &pt, int *childId, Cell **child) {
     cell.GetLocation(rect, 0);
     if (rect.Contains(pt))
       return (childId && (*childId = id)), (child && (*child = &cell)),
-             wxACC_OK;
+	wxACC_OK;
   }
   return (childId && (*childId = 0)), (child && (*child = this)), //-V560
-         wxACC_OK;
+    wxACC_OK;
 }
 
 wxAccStatus CellAccessible::GetChild(int childId, wxAccessible **child) {
@@ -1199,11 +1200,11 @@ wxAccStatus Cell::GetFocus(int *childId, Cell **child) const {
     int dummy;
     if (cell.GetFocus(&dummy, child) == wxACC_OK)
       return (childId && (*childId = id)), (child && (*child = &cell)),
-             wxACC_OK;
+	wxACC_OK;
   }
 
   return (childId && (*childId = 0)), (child && (*child = nullptr)), //-V560
-         wxACC_FAIL;
+    wxACC_FAIL;
 }
 
 wxAccStatus CellAccessible::GetDefaultAction(int childId,
@@ -1233,9 +1234,9 @@ wxAccStatus CellAccessible::GetLocation(wxRect &rect, int elementId) {
 wxAccStatus Cell::GetLocation(wxRect &rect, int elementId) {
   if (elementId == 0) {
     rect = wxRect(GetRect().GetTopLeft() +
-                      m_configuration->GetVisibleRegion().GetTopLeft(),
+		  m_configuration->GetVisibleRegion().GetTopLeft(),
                   GetRect().GetBottomRight() +
-                      m_configuration->GetVisibleRegion().GetTopLeft());
+		  m_configuration->GetVisibleRegion().GetTopLeft());
     if (rect.GetTop() < 0)
       rect.SetTop(0);
     if (rect.GetLeft() < 0)
@@ -1245,8 +1246,8 @@ wxAccStatus Cell::GetLocation(wxRect &rect, int elementId) {
     if (rect.GetRight() > m_configuration->GetVisibleRegion().GetHeight())
       rect.SetRight(m_configuration->GetVisibleRegion().GetHeight());
     rect =
-        wxRect(rect.GetTopLeft() + m_configuration->GetWorksheetPosition(),
-               rect.GetBottomRight() + m_configuration->GetWorksheetPosition());
+      wxRect(rect.GetTopLeft() + m_configuration->GetWorksheetPosition(),
+	     rect.GetBottomRight() + m_configuration->GetWorksheetPosition());
     return wxACC_OK;
   }
 

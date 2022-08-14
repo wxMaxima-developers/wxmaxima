@@ -82,14 +82,14 @@ UTF8Decoder::State::Decode(wxInputStream &in, size_t maxRead, size_t maxWrite) {
   auto *outPtr = m_outBuf.data();
 
   size_t const inLengthBeforeCheckpoint =
-      (m_inBufCount >= utf8::max_supported_symbol_size)
-          ? m_inBufCount - (utf8::max_supported_symbol_size - 1)
-          : 0;
+    (m_inBufCount >= utf8::max_supported_symbol_size)
+    ? m_inBufCount - (utf8::max_supported_symbol_size - 1)
+    : 0;
 
   size_t const outLengthBeforeCheckpoint =
-      (maxWrite >= utfwx::max_supported_symbol_size)
-          ? maxWrite - (utfwx::max_supported_symbol_size - 1)
-          : 0;
+    (maxWrite >= utfwx::max_supported_symbol_size)
+    ? maxWrite - (utfwx::max_supported_symbol_size - 1)
+    : 0;
 
   auto const *const inCheckpoint = inPtr + inLengthBeforeCheckpoint;
   auto const *const inEnd = inPtr + m_inBufCount;

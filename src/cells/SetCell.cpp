@@ -25,21 +25,21 @@
   This file defines the class SetCell
 
   SetCell is the Cell type that represents a list of math elements.
- */
+*/
 
 #include "SetCell.h"
 #include "CellImpl.h"
 
 SetCell::SetCell(GroupCell *parent, Configuration *config,
                  std::unique_ptr<Cell> &&inner)
-    : ListCell(parent, config, std::move(inner)) {
+  : ListCell(parent, config, std::move(inner)) {
   m_open = std::make_unique<TextCell>(parent, config, wxT("{"));
   m_close = std::make_unique<TextCell>(parent, config, wxT("}"));
 }
 
 SetCell::SetCell(GroupCell *group, const SetCell &cell)
-    : SetCell(group, cell.m_configuration,
-              CopyList(group, cell.m_innerCell.get())) {
+  : SetCell(group, cell.m_configuration,
+	    CopyList(group, cell.m_innerCell.get())) {
   CopyCommonData(cell);
 }
 
@@ -54,11 +54,11 @@ void SetCell::Draw(wxPoint point) {
       innerCellPos.x += m_open->GetWidth();
       m_open->DrawList(point);
       m_close->DrawList(wxPoint(
-          point.x + m_open->GetWidth() + m_innerCell->GetFullWidth(), point.y));
+				point.x + m_open->GetWidth() + m_innerCell->GetFullWidth(), point.y));
     } else {
       wxDC *adc = m_configuration->GetAntialiassingDC();
       innerCellPos.y +=
-          (m_innerCell->GetCenterList() - m_innerCell->GetHeightList() / 2);
+	(m_innerCell->GetCenterList() - m_innerCell->GetHeightList() / 2);
       SetPen(1.5);
 
       int signWidth = m_signWidth - Scale_Px(2);
@@ -66,30 +66,30 @@ void SetCell::Draw(wxPoint point) {
 
       // Left curly brace
       const wxPoint pointsL[8] = {
-          {point.x + signWidth, point.y - m_center + Scale_Px(4)},
-          {point.x + signWidth / 2,
-           point.y - m_center + Scale_Px(4) + signWidth / 2},
-          {point.x + signWidth / 2, point.y - signWidth / 2},
-          {point.x, point.y},
-          {point.x, point.y},
-          {point.x + signWidth / 2, point.y + signWidth / 2},
-          {point.x + signWidth / 2,
-           point.y + m_center - Scale_Px(4) - signWidth / 2},
-          {point.x + signWidth, point.y + m_center - Scale_Px(4)}};
+	{point.x + signWidth, point.y - m_center + Scale_Px(4)},
+	{point.x + signWidth / 2,
+	 point.y - m_center + Scale_Px(4) + signWidth / 2},
+	{point.x + signWidth / 2, point.y - signWidth / 2},
+	{point.x, point.y},
+	{point.x, point.y},
+	{point.x + signWidth / 2, point.y + signWidth / 2},
+	{point.x + signWidth / 2,
+	 point.y + m_center - Scale_Px(4) - signWidth / 2},
+	{point.x + signWidth, point.y + m_center - Scale_Px(4)}};
       adc->DrawSpline(8, pointsL);
 
       // Right curly brace
       const wxPoint pointsR[8] = {
-          {point.x + m_width - signWidth, point.y - m_center + Scale_Px(4)},
-          {point.x - signWidth / 2 + m_width,
-           point.y - m_center + Scale_Px(4) + signWidth / 2},
-          {point.x - signWidth / 2 + m_width, point.y - signWidth / 2},
-          {point.x + m_width, point.y},
-          {point.x + m_width, point.y},
-          {point.x - signWidth / 2 + m_width, point.y + signWidth / 2},
-          {point.x - signWidth / 2 + m_width,
-           point.y + m_center - Scale_Px(4) - signWidth / 2},
-          {point.x + m_width - signWidth, point.y + m_center - Scale_Px(4)}};
+	{point.x + m_width - signWidth, point.y - m_center + Scale_Px(4)},
+	{point.x - signWidth / 2 + m_width,
+	 point.y - m_center + Scale_Px(4) + signWidth / 2},
+	{point.x - signWidth / 2 + m_width, point.y - signWidth / 2},
+	{point.x + m_width, point.y},
+	{point.x + m_width, point.y},
+	{point.x - signWidth / 2 + m_width, point.y + signWidth / 2},
+	{point.x - signWidth / 2 + m_width,
+	 point.y + m_center - Scale_Px(4) - signWidth / 2},
+	{point.x + m_width - signWidth, point.y + m_center - Scale_Px(4)}};
       adc->DrawSpline(8, pointsR);
     }
 

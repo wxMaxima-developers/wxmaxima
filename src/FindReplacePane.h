@@ -25,7 +25,7 @@
   This file defines the class FindReplacePane
 
   This dialog represents the insides of the "find" and "replace" sidebar/dialog.
- */
+*/
 
 #ifndef FINDREPLACEPANE_H
 #define FINDREPLACEPANE_H
@@ -60,12 +60,12 @@ public:
   FindReplacePane(wxWindow *parent, wxFindReplaceData *data);
 
   wxString GetFindString()
-  { return m_findReplaceData->GetFindString(); }
+    { return m_findReplaceData->GetFindString(); }
 
-  void SetFindString(wxString string);
+  void SetFindString(wxString strng);
 
   wxFindReplaceData *GetData()
-  { return m_findReplaceData; }
+    { return m_findReplaceData; }
 
 protected:
   void OnActivate(wxActivateEvent &event);

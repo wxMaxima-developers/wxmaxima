@@ -26,7 +26,7 @@
 
   VisiblyInvalidCell is the Cell that is used as a placeholder for items that
   should be overridden, before they are displayed.
- */
+*/
 
 #include "VisiblyInvalidCell.h"
 #include "CellImpl.h"
@@ -35,7 +35,7 @@
 static wxString cellContents(wxT("?"));
 
 VisiblyInvalidCell::VisiblyInvalidCell(GroupCell *group, Configuration *config)
-    : TextCell(group, config, cellContents, TS_ERROR) {
+  : TextCell(group, config, cellContents, TS_ERROR) {
   InitBitFields();
   // We cannot do this at the startup of the program as we first need to wait
   // for the language selection to take place.
@@ -46,21 +46,21 @@ VisiblyInvalidCell::VisiblyInvalidCell(GroupCell *group, Configuration *config)
 
 VisiblyInvalidCell::VisiblyInvalidCell(GroupCell *group, Configuration *config,
                                        wxString &&toolTip)
-    : TextCell(group, config, cellContents, TS_ERROR) {
+  : TextCell(group, config, cellContents, TS_ERROR) {
   InitBitFields();
   SetToolTip(std::move(toolTip));
 }
 
 VisiblyInvalidCell::VisiblyInvalidCell(GroupCell *group, Configuration *config,
                                        const wxString *toolTip)
-    : TextCell(group, config, cellContents, TS_ERROR) {
+  : TextCell(group, config, cellContents, TS_ERROR) {
   InitBitFields();
   SetToolTip(toolTip);
 }
 
 VisiblyInvalidCell::VisiblyInvalidCell(GroupCell *group,
                                        const VisiblyInvalidCell &cell)
-    : VisiblyInvalidCell(group, cell.m_configuration) {}
+  : VisiblyInvalidCell(group, cell.m_configuration) {}
 
 DEFINE_CELL_TYPEINFO(VisiblyInvalidCell)
 

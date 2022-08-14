@@ -25,7 +25,7 @@
   This file defines the class IntervalCell
 
   IntervalCell is the Cell type that represents a list of math elements.
- */
+*/
 
 #include "IntervalCell.h"
 #include "CellImpl.h"
@@ -33,19 +33,19 @@
 IntervalCell::IntervalCell(GroupCell *group, Configuration *config,
                            std::unique_ptr<Cell> &&start,
                            std::unique_ptr<Cell> &&end)
-    : Cell(group, config),
-      m_leftBracketOpensLeft(start->ListToString() == wxT("-inf")),
-      m_rightBracketOpensRight(end->ListToString() == wxT("inf")),
-      m_open(std::make_unique<TextCell>(group, config, wxT("interval("))),
-      m_openBracket(std::make_unique<TextCell>(
-          group, config, m_leftBracketOpensLeft ? wxT("]") : wxT("["))),
-      m_start(std::move(start)),
-      m_comma(std::make_unique<TextCell>(group, config, wxT(","))),
-      m_ellipsis(std::make_unique<TextCell>(group, config, wxT("\u2026"))),
-      m_stop(std::move(end)),
-      m_closeBracket(std::make_unique<TextCell>(
-          group, config, m_rightBracketOpensRight ? wxT("[") : wxT("]"))),
-      m_close(std::make_unique<TextCell>(group, config, wxT(")"))) {
+  : Cell(group, config),
+    m_leftBracketOpensLeft(start->ListToString() == wxT("-inf")),
+    m_rightBracketOpensRight(end->ListToString() == wxT("inf")),
+    m_open(std::make_unique<TextCell>(group, config, wxT("interval("))),
+    m_openBracket(std::make_unique<TextCell>(
+					     group, config, m_leftBracketOpensLeft ? wxT("]") : wxT("["))),
+    m_start(std::move(start)),
+    m_comma(std::make_unique<TextCell>(group, config, wxT(","))),
+    m_ellipsis(std::make_unique<TextCell>(group, config, wxT("\u2026"))),
+    m_stop(std::move(end)),
+    m_closeBracket(std::make_unique<TextCell>(
+					      group, config, m_rightBracketOpensRight ? wxT("[") : wxT("]"))),
+    m_close(std::make_unique<TextCell>(group, config, wxT(")"))) {
   InitBitFields();
   SetStyle(TS_VARIABLE);
 
@@ -72,9 +72,9 @@ IntervalCell::IntervalCell(GroupCell *group, Configuration *config,
 // uninitMemberVar symbolName=IntervalCell::m_signBotHeight cppcheck-suppress
 // uninitMemberVar symbolName=IntervalCell::m_extendHeight
 IntervalCell::IntervalCell(GroupCell *group, const IntervalCell &cell)
-    : IntervalCell(group, cell.m_configuration,
-                   CopyList(group, cell.m_start.get()),
-                   CopyList(group, cell.m_stop.get())) {
+  : IntervalCell(group, cell.m_configuration,
+		 CopyList(group, cell.m_start.get()),
+		 CopyList(group, cell.m_stop.get())) {
   CopyCommonData(cell);
 }
 
@@ -103,9 +103,9 @@ void IntervalCell::Recalculate(AFontSize fontsize) {
   } else {
     m_drawAsAscii = false;
     m_signHeight =
-        wxMax(wxMax(wxMax(m_start->GetHeightList(), m_stop->GetHeightList()),
-                    m_open->GetHeight()),
-              m_ellipsis->GetHeight());
+      wxMax(wxMax(wxMax(m_start->GetHeightList(), m_stop->GetHeightList()),
+		  m_open->GetHeight()),
+	    m_ellipsis->GetHeight());
   }
 
   if (IsBrokenIntoLines()) {
@@ -114,11 +114,11 @@ void IntervalCell::Recalculate(AFontSize fontsize) {
     m_center = 0;
   } else {
     m_width = m_signWidth + m_start->GetFullWidth() + m_ellipsis->GetWidth() +
-              m_stop->GetFullWidth() + m_signWidth;
+      m_stop->GetFullWidth() + m_signWidth;
 
     m_height = wxMax(wxMax(m_signHeight, m_start->GetHeightList()),
                      m_stop->GetHeightList()) +
-               Scale_Px(4);
+      Scale_Px(4);
     m_center = m_height / 2;
   }
   Cell::Recalculate(fontsize);
@@ -161,7 +161,7 @@ void IntervalCell::Draw(wxPoint point) {
 
       wxPoint startCellPos(innerCellPos);
       startCellPos.y +=
-          (m_start->GetCenterList() - m_start->GetHeightList() / 2);
+	(m_start->GetCenterList() - m_start->GetHeightList() / 2);
       m_start->DrawList(startCellPos);
       innerCellPos.x += m_start->GetFullWidth();
       m_ellipsis->DrawList(innerCellPos);
@@ -175,18 +175,18 @@ void IntervalCell::Draw(wxPoint point) {
 
 void IntervalCell::DrawBigLeftOpenBracket(wxDC *dc, wxPoint point) {
   const wxPoint pointsL[4] = {
-      {point.x - Scale_Px(1) + m_signWidth, point.y - m_center + Scale_Px(4)},
-      {point.x + Scale_Px(1), point.y - m_center + Scale_Px(4)},
-      {point.x + Scale_Px(1), point.y + m_center - Scale_Px(4)},
-      {point.x - Scale_Px(1) + m_signWidth, point.y + m_center - Scale_Px(4)}};
+    {point.x - Scale_Px(1) + m_signWidth, point.y - m_center + Scale_Px(4)},
+    {point.x + Scale_Px(1), point.y - m_center + Scale_Px(4)},
+    {point.x + Scale_Px(1), point.y + m_center - Scale_Px(4)},
+    {point.x - Scale_Px(1) + m_signWidth, point.y + m_center - Scale_Px(4)}};
   dc->DrawLines(4, pointsL);
 }
 void IntervalCell::DrawBigRightOpenBracket(wxDC *dc, wxPoint point) {
   const wxPoint pointsR[4] = {
-      {point.x + Scale_Px(1), point.y - m_center + Scale_Px(4)},
-      {point.x + Scale_Px(1) + m_signWidth, point.y - m_center + Scale_Px(4)},
-      {point.x + Scale_Px(1) + m_signWidth, point.y + m_center - Scale_Px(4)},
-      {point.x + Scale_Px(1), point.y + m_center - Scale_Px(4)}};
+    {point.x + Scale_Px(1), point.y - m_center + Scale_Px(4)},
+    {point.x + Scale_Px(1) + m_signWidth, point.y - m_center + Scale_Px(4)},
+    {point.x + Scale_Px(1) + m_signWidth, point.y + m_center - Scale_Px(4)},
+    {point.x + Scale_Px(1), point.y + m_center - Scale_Px(4)}};
   dc->DrawLines(4, pointsR);
 }
 
@@ -195,7 +195,7 @@ wxString IntervalCell::ToString() const {
 
   if (!IsBrokenIntoLines())
     s = wxT("interval(") + m_start->ListToString() + wxT(",") +
-        m_stop->ListToString() + wxT(")");
+      m_stop->ListToString() + wxT(")");
   return s;
 }
 
@@ -203,7 +203,7 @@ wxString IntervalCell::ToMatlab() const {
   wxString s;
   if (!IsBrokenIntoLines())
     s = wxT("interval(") + m_start->ListToMatlab() + wxT(",") +
-        m_stop->ListToMatlab() + wxT(")");
+      m_stop->ListToMatlab() + wxT(")");
   return s;
 }
 
@@ -211,7 +211,7 @@ wxString IntervalCell::ToTeX() const {
   wxString s;
   if (!IsBrokenIntoLines()) {
     s = wxT("\\left[ ") + m_start->ListToTeX() + "\\ldots " +
-        m_stop->ListToTeX() + wxT("\\right] ");
+      m_stop->ListToTeX() + wxT("\\right] ");
   }
   return s;
 }
@@ -220,10 +220,10 @@ wxString IntervalCell::ToOMML() const {
   wxString open = m_openBracket->ToString();
   wxString close = m_closeBracket->ToString();
   wxString retval = wxString(wxT("<m:d>")) + wxT("<m:dPr m:begChr=\"") + open +
-                    wxT("\" m:endChr=\"") + close +
-                    wxT("]\" m:grow=\"1\"></m:dPr>") + wxT("<m:e>") +
-                    m_start->ListToOMML() + wxT("\u2026") +
-                    m_stop->ListToOMML() + wxT("</m:e>") + wxT("</m:d>");
+    wxT("\" m:endChr=\"") + close +
+    wxT("]\" m:grow=\"1\"></m:dPr>") + wxT("<m:e>") +
+    m_start->ListToOMML() + wxT("\u2026") +
+    m_stop->ListToOMML() + wxT("</m:e>") + wxT("</m:d>");
   return retval;
 }
 
@@ -231,9 +231,9 @@ wxString IntervalCell::ToMathML() const {
   wxString open = m_openBracket->ToString();
   wxString close = m_closeBracket->ToString();
   wxString retval = wxString(wxT("<mrow>")) + wxT("<mo>") + open +
-                    wxT("</mo>") + m_start->ListToMathML() + wxT(",") +
-                    m_stop->ListToMathML() + wxT("<mo>") + close +
-                    wxT("</mo>") + wxT("</mrow>\n");
+    wxT("</mo>") + m_start->ListToMathML() + wxT(",") +
+    m_stop->ListToMathML() + wxT("<mo>") + close +
+    wxT("</mo>") + wxT("</mrow>\n");
 
   return (retval);
 }
@@ -252,8 +252,8 @@ wxString IntervalCell::ToXML() const {
     flags += wxT(" rightBracketOpensRight=\"false\"");
 
   return wxT("<fn") + flags + wxT("><fnm>interval</fnm>") + wxT("<r><p><r>") +
-         m_start->ListToMathML() + wxT("</r><r>,</r><r>") +
-         m_stop->ListToMathML() + wxT("</r></p></r>") + wxT("</fn>");
+    m_start->ListToMathML() + wxT("</r><r>,</r><r>") +
+    m_stop->ListToMathML() + wxT("</r></p></r>") + wxT("</fn>");
 }
 
 bool IntervalCell::BreakUp() {

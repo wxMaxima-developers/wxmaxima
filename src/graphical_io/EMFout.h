@@ -42,7 +42,7 @@ public:
 
     \param tree The list of cells that is to be rendered
     \return true, if the emfout could be created.
-   */
+  */
   wxSize Render(std::unique_ptr<Cell> &&tree);
 
   wxSize GetSize() const { return m_size; }
