@@ -33,6 +33,11 @@
 #include <memory>
 #include <unordered_map>
 #include <vector>
+#include <wx/wupdlock.h>
+#include <wx/webview.h>
+#ifdef __WXMSW__
+#include <wx/msw/webview_ie.h>
+#endif
 
 #define MC_LINE_SKIP Scale_Px(2)
 #define MC_TEXT_PADDING Scale_Px(1)
