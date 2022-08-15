@@ -1366,7 +1366,7 @@ bool Configuration::CharVisiblyDifferent(wxChar ch, wxChar otherChar,
 
 bool Configuration::OfferInternalHelpBrowser() const {
 #ifdef __WINDOWS__
-#if wxCHECK_VERSION(3, 1, 1)
+#if wxCHECK_VERSION(3, 1, 5)
   return wxWebView::IsBackendAvailable(wxWebViewBackendEdge);
 #else
   return false;
