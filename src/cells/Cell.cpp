@@ -150,7 +150,7 @@ std::unique_ptr<Cell> Cell::CopyList(GroupCell *group) const {
   CellListBuilder<> copy;
   for (auto &src : OnList(this))
     copy.Append(src.Copy(group));
-  return copy;
+  return std::move(copy);
 }
 
 std::unique_ptr<Cell> Cell::CopyList(GroupCell *group, const Cell *cell) {
