@@ -64,7 +64,7 @@ Printout::Printout(wxString title, GroupCell *tree, double scaleFactor)
 Printout::~Printout() { DestroyTree(); }
 
 bool Printout::HasPage(int num) {
-  if (num > 0 && num <= m_pages.size())
+  if ((num >= 0) && (static_cast<unsigned int>(num) <= m_pages.size()))
     return true;
   return false;
 }
