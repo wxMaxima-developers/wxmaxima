@@ -331,7 +331,7 @@ namespace Format {
 
       tree.Append(std::move(cell));
     }
-    return tree;
+    return std::move(tree);
   }
 
   std::unique_ptr<GroupCell> ParseWXMFile(wxTextBuffer &text,
@@ -494,7 +494,7 @@ namespace Format {
     if (!line.empty())
       tree.Append(std::make_unique<GroupCell>(config, GC_TYPE_CODE, line));
 
-    return tree;
+    return std::move(tree);
   }
 
   std::unique_ptr<GroupCell> ParseMACFile(wxTextBuffer &text, bool xMaximaFile,
