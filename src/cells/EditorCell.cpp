@@ -3664,7 +3664,7 @@ TextStyle EditorCell::GetSelectionStyle() const {
          textSnippet != m_styledText.end(); ++textSnippet) {
       wxString text = textSnippet->GetText();
       if ((wxMin(m_selectionStart, m_selectionEnd) <= pos) &&
-          (pos + text.Length() < wxMax(m_selectionStart, m_selectionEnd)) &&
+          (pos + text.Length() < static_cast<unsigned long>(wxMax(m_selectionStart, m_selectionEnd))) &&
           (wxMax(m_selectionStart, m_selectionEnd) >= 0)) {
         if (textSnippet->IsStyleSet())
           return textSnippet->GetStyle();
@@ -3678,8 +3678,9 @@ TextStyle EditorCell::GetSelectionStyle() const {
 	   m_styledText.begin();
          textSnippet != m_styledText.end(); ++textSnippet) {
       wxString text = textSnippet->GetText();
-      if ((m_positionOfCaret >= pos) &&
-          (m_positionOfCaret < pos + text.Length())) {
+      if ((static_cast<unsigned long>(m_positionOfCaret) >= pos) &&
+          (static_cast<unsigned long>(m_positionOfCaret) < pos + text.Length()) &&
+	  (m_positionOfCaret >= 0)) {
         if (textSnippet->IsStyleSet())
           return textSnippet->GetStyle();
       }

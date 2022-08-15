@@ -314,7 +314,7 @@ void TableOfContents::UpdateDisplay() {
     std::list<GroupCell *> m_draggedCells;
     std::list<GroupCell *> m_otherCells;
     for (unsigned long i = 0; i < m_structure.size(); i++) {
-      if ((i >= m_dragStart) && (i < m_dragStart + m_numberOfCaptionsDragged))
+      if ((i >= static_cast<unsigned long>(m_dragStart)) && (i < static_cast<unsigned long>(m_dragStart) + m_numberOfCaptionsDragged))
         m_draggedCells.push_back(m_displayedGroupCells[i]);
       else
         m_otherCells.push_back(m_displayedGroupCells[i]);
@@ -323,7 +323,8 @@ void TableOfContents::UpdateDisplay() {
     m_dndEndCell = NULL;
 
     for (unsigned long index = 0; index < m_structure.size(); index++) {
-      if (index >= m_dragCurrentPos) {
+      if ((index >= static_cast<unsigned long>(m_dragCurrentPos)) &&
+	  (m_dragCurrentPos >= 0)) {
         m_dndEndCell = m_tree->get();
         if (m_otherCells.empty()) {
           while (m_dndEndCell->GetNext() != NULL)
