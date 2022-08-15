@@ -108,8 +108,9 @@ void TableOfContents::OnMouseMotion(wxMouseEvent &event) {
     int flags;
     m_dragCurrentPos =
       m_displayedItems->HitTest(event.GetPosition(), flags, NULL);
-    if (m_dragCurrentPos >=
-        m_displayedItems->GetItemCount() - m_numberOfCaptionsDragged)
+    if ((m_dragCurrentPos >= 0) &&
+	(static_cast<unsigned long>(m_dragCurrentPos) >=
+	 m_displayedItems->GetItemCount() - m_numberOfCaptionsDragged))
       m_dragCurrentPos = m_numberOfCaptionsDragged - 1;
     if (m_dragFeedback_Last != m_dragCurrentPos) {
       m_dragImage->Hide();
@@ -191,8 +192,9 @@ void TableOfContents::OnMouseUp(wxMouseEvent &evt) {
   }
   int flags;
   m_dragStop = m_displayedItems->HitTest(evt.GetPosition(), flags, NULL);
-  if (m_dragStop >=
-      m_displayedItems->GetItemCount() - m_numberOfCaptionsDragged)
+  if ((m_dragStop >= 0) &&
+      (static_cast<unsigned long>(m_dragStop) >=
+       m_displayedItems->GetItemCount() - m_numberOfCaptionsDragged))
     m_dragStop = m_numberOfCaptionsDragged - 1;
   if ((m_dragStart >= 0) && (m_dragStop >= 0) && (m_dragStart != m_dragStop)) {
     wxWindow *mainWin = this;
