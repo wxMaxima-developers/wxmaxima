@@ -281,7 +281,7 @@
 	       ;; sub-int is the part of x after the "_" converted to integer
 	       (sub-int (ignore-errors
 			  (parse-integer sub))))
-	  (when (and (> (length sub-var) 0)
+	  (when (and (and (> (length sub-var) 0) (> (length sub) 0) )
 		     (or
 		      ($get x '$wxxml_subscripted)
 		      (and
