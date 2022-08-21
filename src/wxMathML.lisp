@@ -262,11 +262,14 @@
     (dolist (s (cdr x))
       ($put s opt '$wxxml_subscripted))
     opt)
-
+  
   (defun subscriptp (x)
     (unless (symbolp x)
       (return-from subscriptp x))
-    (let* ((name (subseq (maybe-invert-string-case (symbol-name x)) 1))
+    (let* ((name (format nil "~A" (wxxml-fix-string
+				   (stripdollar
+				    (maybe-invert-string-case
+				     (format nil "~A" x))))))
 	   (pos (search "_" name :from-end t))
 	   #-gcl (*readtable* (copy-readtable nil)))
       #-gcl (setf (readtable-case *readtable*) :invert)
