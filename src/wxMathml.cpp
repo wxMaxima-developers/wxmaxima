@@ -49,10 +49,7 @@ wxString wxMathML::GetCmd() {
   if ((m_maximaCMD.IsEmpty() || (m_configuration->WxMathML_UseFile()))) {
     if (m_configuration->WxMathML_UseFile()) {
       wxLogMessage(_(
-		     "Reading the Lisp part of wxMaxima from an external file."));
-    } else {
-      wxLogMessage(_(
-		     "Using the built-in Lisp part of wxMaxima."));
+		     "Reading the Lisp part of wxMaxima from the included header file."));
       wxMemoryInputStream istream(WXMATHML_LISP, WXMATHML_LISP_SIZE);
       wxTextInputStream textIn(istream);
       wxString line;
