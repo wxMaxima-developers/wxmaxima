@@ -44,6 +44,7 @@
 #include "TextCell.h"
 #include "stx/unique_cast.hpp"
 #include <wx/clipbrd.h>
+#include <wx/log.h>
 #include <wx/config.h>
 
 #ifdef __WINDOWS__
@@ -963,6 +964,8 @@ wxRect GroupCell::HideRect() {
 }
 
 wxString GroupCell::ToString() const {
+  // We don't want illegal strings to pop up assert dialogues
+  wxLogNull logNull;
   wxString str;
 
   if (m_inputLabel != NULL) {
