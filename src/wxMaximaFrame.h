@@ -414,6 +414,7 @@ public:
     menu_draw_accuracy,
     menu_draw_contour,
     menu_license,
+    menu_changelog,
     button_factor_id,
     button_solve,
     button_solve_ode,

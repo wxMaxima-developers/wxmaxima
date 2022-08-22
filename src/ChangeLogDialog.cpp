@@ -2,7 +2,7 @@
 // nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
-//  Copyright (C) 2017-2018 Gunter Königsmann <wxMaxima@physikbuch.de>
+//  Copyright (C) 2017-2022 Gunter Königsmann <wxMaxima@physikbuch.de>
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -25,19 +25,19 @@
   A dialog that shows the program's license.
 */
 
-#include "LicenseDialog.h"
-#include "wxm_license.h"
+#include "ChangeLogDialog.h"
+#include "news_md.h"
 #include <wx/mstream.h>
 #include <wx/string.h>
 #include <wx/textctrl.h>
 #include <wx/txtstrm.h>
 
-LicenseDialog::LicenseDialog(wxWindow *parent)
-  : wxDialog(parent, -1, _("License"), wxDefaultPosition, wxDefaultSize,
+ChangeLogDialog::ChangeLogDialog(wxWindow *parent)
+  : wxDialog(parent, -1, _("ChangeLog"), wxDefaultPosition, wxDefaultSize,
 	     wxRESIZE_BORDER | wxCLOSE_BOX | wxMAXIMIZE_BOX |
 	     wxMINIMIZE_BOX) {
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
-  wxMemoryInputStream istream(WXM_LICENSE, WXM_LICENSE_SIZE);
+  wxMemoryInputStream istream(NEWS_MD, NEWS_MD_SIZE);
   wxTextInputStream textIn(istream);
   m_movedToStart = false;
   wxString line;
@@ -72,13 +72,13 @@ LicenseDialog::LicenseDialog(wxWindow *parent)
   okButton->SetDefault();
   vbox->Add(buttonSizer, wxSizerFlags(0).Right());
 
-  SetName("License");
+  SetName("ChangeLog");
   wxPersistenceManager::Get().RegisterAndRestore(this);
-  Connect(wxEVT_SIZE, wxSizeEventHandler(LicenseDialog::OnSize));
+  Connect(wxEVT_SIZE, wxSizeEventHandler(ChangeLogDialog::OnSize));
   SetSizerAndFit(vbox);
 }
 
-void LicenseDialog::OnSize(wxSizeEvent &event) {
+void ChangeLogDialog::OnSize(wxSizeEvent &event) {
   wxFont fnt = m_license->GetFont();
   wxClientDC dc(this);
   double pointSize = 8;
@@ -109,7 +109,7 @@ void LicenseDialog::OnSize(wxSizeEvent &event) {
   }
 }
 
-void LicenseDialog::OnTextURLEvent(wxTextUrlEvent &event) {
+void ChangeLogDialog::OnTextURLEvent(wxTextUrlEvent &event) {
   if (event.GetMouseEvent().LeftUp()) {
     wxTextCtrl *pTextCtrl = static_cast<wxTextCtrl *>(event.GetEventObject());
     wxLaunchDefaultBrowser(
@@ -117,6 +117,6 @@ void LicenseDialog::OnTextURLEvent(wxTextUrlEvent &event) {
   }
 }
 
-BEGIN_EVENT_TABLE(LicenseDialog, wxDialog)
-EVT_TEXT_URL(wxID_ANY, LicenseDialog::OnTextURLEvent)
+BEGIN_EVENT_TABLE(ChangeLogDialog, wxDialog)
+EVT_TEXT_URL(wxID_ANY, ChangeLogDialog::OnTextURLEvent)
 END_EVENT_TABLE()

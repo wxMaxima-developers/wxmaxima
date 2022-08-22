@@ -58,6 +58,7 @@
 #include "IntegrateWiz.h"
 #include "LabelCell.h"
 #include "LicenseDialog.h"
+#include "ChangeLogDialog.h"
 #include "LimitWiz.h"
 #include "ListSortWiz.h"
 #include "LoggingMessageDialog.h"
@@ -543,6 +544,8 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale,
   Connect(wxID_ABOUT, wxEVT_MENU, wxCommandEventHandler(wxMaxima::HelpMenu),
           NULL, this);
   Connect(menu_license, wxEVT_MENU, wxCommandEventHandler(wxMaxima::HelpMenu),
+          NULL, this);
+  Connect(menu_changelog, wxEVT_MENU, wxCommandEventHandler(wxMaxima::HelpMenu),
           NULL, this);
   Connect(wxID_SAVE, wxEVT_MENU, wxCommandEventHandler(wxMaxima::FileMenu),
           NULL, this);
@@ -9033,6 +9036,11 @@ void wxMaxima::HelpMenu(wxCommandEvent &event) {
 
   case menu_license: {
     LicenseDialog *dlg = new LicenseDialog(this);
+    dlg->Show();
+  } break;
+
+  case menu_changelog: {
+    ChangeLogDialog *dlg = new ChangeLogDialog(this);
     dlg->Show();
   } break;
 

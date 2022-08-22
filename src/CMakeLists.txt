@@ -99,6 +99,7 @@ set(SOURCE_FILES
     ButtonWrapSizer.cpp
     BTextCtrl.cpp
     CellPointers.cpp
+    ChangeLogDialog.cpp
     CharButton.cpp
     CompositeDataObject.cpp
     ConfigDialogue.cpp
@@ -157,7 +158,6 @@ if(NOT CYGWIN)
 endif()
 list(APPEND SOURCE_FILES ${CMAKE_CURRENT_BINARY_DIR}/wxmaxima.manifest)
 
-
 message(STATUS "Embedding wxMathML.lisp into header file wxMathML_lisp.h")
 file(WRITE "${CMAKE_BINARY_DIR}/wxMathML_lisp.h"
   "/** \\file wxMathML_lisp.h\n"
@@ -169,6 +169,18 @@ file(WRITE "${CMAKE_BINARY_DIR}/wxMathML_lisp.h"
   )
 bin2h(SOURCE_FILE "wxMathML.lisp" HEADER_FILE "${CMAKE_BINARY_DIR}/wxMathML_lisp.h" VARIABLE_NAME "wxMathML_lisp" APPEND NULL_TERMINATE)
 file(APPEND "${CMAKE_BINARY_DIR}/wxMathML_lisp.h" "#endif // WXMATHML_LISP_H\n")
+
+message(STATUS "Embedding NEWS.md into header file news_md.h")
+file(WRITE "${CMAKE_BINARY_DIR}/news_md.h"
+  "/** \\file NEWS_md\n"
+  " * This header file was generated from NEWS.md.\n"
+  " */\n"
+  "#ifndef NEWS_MD_H\n"
+  "#define NEWS_MD_H\n"
+  " #include <cstddef>\n"
+  )
+bin2h(SOURCE_FILE "../NEWS.md" HEADER_FILE "${CMAKE_BINARY_DIR}/news_md.h" VARIABLE_NAME "news_md" APPEND NULL_TERMINATE)
+file(APPEND "${CMAKE_BINARY_DIR}/news_md.h" "#endif // NEWS_MD_H\n")
 
 list(APPEND SOURCE_FILES
   ${CELL_SOURCE_FILES}

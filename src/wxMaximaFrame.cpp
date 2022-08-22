@@ -2115,6 +2115,8 @@ void wxMaximaFrame::SetupMenu() {
                      wxITEM_NORMAL);
   m_HelpMenu->Append(menu_license, _("&License"), _("wxMaxima's license"),
                      wxITEM_NORMAL);
+  m_HelpMenu->Append(menu_changelog, _("Change Log"), _("wxMaxima's ChangeLog"),
+                     wxITEM_NORMAL);
   m_HelpMenu->AppendSeparator();
   m_HelpMenu->Append(menu_check_updates, _("Check for Updates"),
                      _("Check if a newer version of wxMaxima is available."),
