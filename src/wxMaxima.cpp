@@ -2237,7 +2237,14 @@ bool wxMaxima::StartServer() {
 bool wxMaxima::StartMaxima(bool force) {
   if (!StartServer())
     return false;
-
+  
+  if ((m_process != NULL) || (m_pid >= 0) || (m_client))
+    {
+      m_unsuccessfulConnectionAttempts = 0;
+      KillMaxima();
+      return true;
+    }
+  
   wxString dirname;
   {
     wxString filename = m_worksheet->m_currentFile;
@@ -2280,19 +2287,12 @@ bool wxMaxima::StartMaxima(bool force) {
                                       dirname.utf8_str()));
       }
     }
-    if ((m_process != NULL) || (m_pid >= 0) || (m_client))
-      KillMaxima();
 
     m_maximaStdoutPollTimer.StartOnce(MAXIMAPOLLMSECS);
 
     wxString command = GetCommand();
     if (!command.IsEmpty()) {
       command.Append(wxString::Format(wxT(" -s %d "), m_port));
-
-      // TODO: Is this still necessary?
-#if defined __WXOSX__
-      wxSetEnv(wxT("DISPLAY"), wxT(":0.0"));
-#endif
 
       m_process = new wxProcess(this, maxima_process_id);
       m_process->Redirect();
@@ -2309,6 +2309,10 @@ bool wxMaxima::StartMaxima(bool force) {
       // signal Strictly necessary only on MS Windows where we don'r have a
       // kill() command.
       environment["MAXIMA_SIGNALS_THREAD"] = "1";
+      // TODO: Is this still necessary for gnuplot on MacOs?
+#if defined __WXOSX__
+      environment["DISPLAY"] = ":0.0";
+#endif
       m_maximaAuthenticated = false;
       m_discardAllData = false;
       std::random_device rd;
