@@ -60,7 +60,7 @@ public:
 
   bool IsConnected() const { return m_socket->IsConnected(); }
 
-  void SetPipeToStdOut(bool pipe) { m_pipeToStdout = pipe; }
+  void SetPipeToStdOut(bool pipe) { m_pipeToStderr = pipe; }
 
   /*! Write more data to be sent to maxima.
    *
@@ -97,7 +97,7 @@ private:
   wxMemoryBuffer m_socketOutputData;
 
   bool m_first = true;
-  bool m_pipeToStdout = false;
+  bool m_pipeToStderr = false;
 
   wxTimer m_stringEndTimer{this};
   wxTimer m_readIdleTimer{this};

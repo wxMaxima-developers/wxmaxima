@@ -37,8 +37,10 @@
 #if defined __WXMSW__
 //#include <wchar.h>
 #endif
+#include <random>
 #include <utility>
 #include <vector>
+#include <time.h>
 #include "ActualValuesStorageWiz.h"
 #include "AnimationCell.h"
 #include "BC2Wiz.h"
@@ -83,6 +85,8 @@
 #include "wxMaximaIcon.h"
 #include <wx/aboutdlg.h>
 #include <wx/app.h>
+#include <wx/base64.h>
+#include <wx/buffer.h>
 #include <wx/artprov.h>
 #include <wx/clipbrd.h>
 #include <wx/colordlg.h>
@@ -2165,7 +2169,7 @@ void wxMaxima::OnMaximaConnect() {
   m_client = std::make_unique<Maxima>(m_server->Accept(false));
   if (m_client) {
     m_client->Bind(EVT_MAXIMA, &wxMaxima::MaximaEvent, this);
-    m_client->SetPipeToStdOut(m_pipeToStdout);
+    m_client->SetPipeToStdOut(m_pipeToStderr);
     SetupVariables();
   } else {
     wxLogMessage(_("Connection attempt, but connection failed."));
@@ -2290,10 +2294,6 @@ bool wxMaxima::StartMaxima(bool force) {
       wxSetEnv(wxT("DISPLAY"), wxT(":0.0"));
 #endif
 
-      // Tell maxima we want to be able to kill it on Ctrl+G by sending it a
-      // signal Strictly necessary only on MS Windows where we don'r have a
-      // kill() command.
-      wxSetEnv(wxT("MAXIMA_SIGNALS_THREAD"), wxT("1"));
       m_process = new wxProcess(this, maxima_process_id);
       m_process->Redirect();
       //      m_process->SetPriority(wxPRIORITY_MAX);
@@ -2305,8 +2305,22 @@ bool wxMaxima::StartMaxima(bool force) {
       wxEnvVariableHashMap environment;
       environment = m_configuration.MaximaEnvVars();
       wxGetEnvMap(&environment);
-
+      // Tell maxima we want to be able to kill it on Ctrl+G by sending it a
+      // signal Strictly necessary only on MS Windows where we don'r have a
+      // kill() command.
+      environment["MAXIMA_SIGNALS_THREAD"] = "1";
+      m_maximaAuthenticated = false;
+      m_discardAllData = false;
+      std::random_device rd;
+      std::default_random_engine eng{rd()}; // static_cast<long unsigned int>(time(0)), 
+      std::uniform_real_distribution<double> urd(0.0, 256.0);
       wxExecuteEnv *env = new wxExecuteEnv;
+      wxMemoryBuffer membuf(512);
+      for(auto i = 0 ; i < 512; i++)
+	membuf.AppendByte(static_cast<char>(urd(eng)));
+      m_maximaAuthString = wxBase64Encode(membuf);
+      environment["MAXIMA_AUTH_CODE"] = m_maximaAuthString;
+      
       env->env = environment;
       if (wxExecute(command, wxEXEC_ASYNC | wxEXEC_MAKE_GROUP_LEADER, m_process,
                     env) <= 0) {
@@ -2802,13 +2816,19 @@ bool wxMaxima::ParseNextChunkFromMaxima(wxString &data) {
     data = rest;
   }
   if (tagFound) {
-    retval = true;
-    CALL_MEMBER_FN(*this, tagIndex->second)(data);
+    if((m_maximaAuthenticated) || (tagIndex->second == &wxMaxima::ReadSuppressedOutput))
+      {
+	retval = true;
+	CALL_MEMBER_FN(*this, tagIndex->second)(data);
+      }
   }
   return retval;
 }
 
 void wxMaxima::ReadMiscText(const wxString &data) {
+  if(!m_maximaAuthenticated)
+    return;
+  
   auto style = MC_TYPE_TEXT;
 
   if (data.StartsWith(wxT("(%")))
@@ -3002,9 +3022,38 @@ void wxMaxima::ReadMath(wxString &data) {
 void wxMaxima::ReadSuppressedOutput(wxString &data) {
   if (!data.StartsWith(m_suppressOutputPrefix))
     return;
+
+  if(!m_maximaAuthenticated)
+    {
+      if(data.Find("</wxxml-key>") != wxNOT_FOUND) {
+	if(data.Find("<wxxml-key>" + m_maximaAuthString + "</wxxml-key>")){
+	  wxLogMessage(_("Maxima has authenticated!"));
+	  m_maximaAuthenticated = true;
+	} else {
+	  wxLogMessage(_("Cannot authenticate Maxima!"));
+	  LoggingMessageBox(
+			    _("Could not make sure that we talk to the maxima we started => "
+			      "discarding all data it sends."),
+			    _("Warning"), wxOK | wxICON_EXCLAMATION);	    
+	  m_discardAllData = true;
+	}
+      }
+    }
+
   int end = FindTagEnd(data, m_suppressOutputSuffix);
+
   if (end != wxNOT_FOUND) {
     data = data.Right(data.Length() - end - m_suppressOutputSuffix.Length());
+    if(!m_maximaAuthenticated)
+      {
+	wxLogMessage(_("Maxima didn't attempt to authenticate!"));
+	LoggingMessageBox(
+			  _("Could not make sure that we talk to the maxima we started => "
+			    "discarding all data it sends."),
+			  _("Warning"), wxOK | wxICON_EXCLAMATION);	    
+	m_discardAllData = true;
+      }
+
   }
 }
 
@@ -4589,6 +4638,10 @@ void wxMaxima::ShowMaximaHelp(wxString keyword) {
 }
 
 bool wxMaxima::InterpretDataFromMaxima(const wxString &newData) {
+  if(m_discardAllData)
+      return false;
+  wxString miscText;
+
   if (newData.empty())
     return false;
 
@@ -4610,7 +4663,15 @@ bool wxMaxima::InterpretDataFromMaxima(const wxString &newData) {
 
   if (!m_dispReadOut && (m_currentOutput != wxT("\n")) &&
       (m_currentOutput != m_emptywxxmlSymbols)) {
-    StatusMaximaBusy(transferring);
+    if(!m_first)
+      {
+	  StatusMaximaBusy(waitingForPrompt);
+      } else {
+	if(!m_maximaAuthenticated)
+	  StatusMaximaBusy(waitingForAuth);
+	else
+	  StatusMaximaBusy(transferring);
+      }
     m_dispReadOut = true;
   }
 
@@ -5035,6 +5096,8 @@ void wxMaxima::UpdateToolBar() {
     m_worksheet->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, true);
     m_worksheet->m_mainToolBar->EnableTool(ToolBar::tb_follow, true);
     break;
+  case waitingForAuth:
+  case waitingForPrompt:
   case waiting:
   case sending:
     m_worksheet->m_mainToolBar->ShowFollowBitmap();
@@ -5389,7 +5452,7 @@ void wxMaxima::ReadStdErr() {
     if ((o_trimmed != wxEmptyString) &&
         (!o.StartsWith("Connecting Maxima to server on port")) && (!m_first)) {
       DoRawConsoleAppend(o, MC_TYPE_DEFAULT);
-      if (m_pipeToStdout)
+      if (m_pipeToStderr)
         std::cout << o;
     }
   }
@@ -5418,7 +5481,7 @@ void wxMaxima::ReadStdErr() {
       TriggerEvaluation();
       m_worksheet->GetErrorList().Add(m_worksheet->GetWorkingGroup(true));
 
-      if (m_pipeToStdout)
+      if (m_pipeToStderr)
         std::cout << o;
     } else
       DoRawConsoleAppend(o, MC_TYPE_DEFAULT);
@@ -10871,7 +10934,7 @@ void wxMaxima::ChangeCellStyle(wxCommandEvent &WXUNUSED(event)) {
   m_worksheet->SetFocus();
 }
 
-bool wxMaxima::m_pipeToStdout = false;
+bool wxMaxima::m_pipeToStderr = false;
 bool wxMaxima::m_exitOnError = false;
 wxString wxMaxima::m_extraMaximaArgs;
 int wxMaxima::m_exitCode = 0;

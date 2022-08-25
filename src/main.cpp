@@ -225,7 +225,7 @@ bool MyApp::OnInit() {
     {wxCMD_LINE_SWITCH, "", "logtostderr",
      "Log all \"debug messages\" sidebar messages to stderr, too.",
      wxCMD_LINE_VAL_NONE, 0},
-    {wxCMD_LINE_SWITCH, "", "pipe", "Pipe messages from Maxima to stdout.",
+    {wxCMD_LINE_SWITCH, "", "pipe", "Pipe messages from Maxima to stderr.",
      wxCMD_LINE_VAL_NONE, 0},
     {wxCMD_LINE_SWITCH, "", "exit-on-error",
      "Close the program on any Maxima error.", wxCMD_LINE_VAL_NONE, 0},

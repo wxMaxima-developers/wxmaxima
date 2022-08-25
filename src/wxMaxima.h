@@ -88,7 +88,7 @@ public:
   virtual ~wxMaxima();
 
   //! Pipe maxima's output to stdout
-  static void PipeToStdout(){m_pipeToStdout = true;}
+  static void PipeToStdout(){m_pipeToStderr = true;}
   static void ExitOnError(){m_exitOnError = true;}
   static void EnableIPC(){ MaximaIPC::EnableIPC(); }
   static void ExtraMaximaArgs(const wxString &args){m_extraMaximaArgs = args;}
@@ -171,10 +171,13 @@ public:
   };
 
 private:
+  bool m_maximaAuthenticated = false;
+  bool m_discardAllData = false;
+  wxString m_maximaAuthString;
   MaximaIPC m_ipc{this};
   //! wxm data the worksheet is populated from
   wxString m_initialWorkSheetContents;
-  static bool m_pipeToStdout;
+  static bool m_pipeToStderr;
   static bool m_exitOnError;
   static wxString m_extraMaximaArgs;
   wxLocale *m_locale;

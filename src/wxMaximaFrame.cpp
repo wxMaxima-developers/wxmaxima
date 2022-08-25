@@ -751,13 +751,23 @@ void wxMaximaFrame::UpdateStatusMaximaBusy() {
         break;
       case disconnected:
         m_bytesFromMaxima_last = 0;
-        m_MenuBar->EnableItem(menu_remove_output, false);
+        m_MenuBar->EnableItem(menu_remove_output, true);
         RightStatusText(_("Not connected to Maxima"));
         break;
       case wait_for_start:
         m_bytesFromMaxima_last = 0;
-        m_MenuBar->EnableItem(menu_remove_output, false);
+        m_MenuBar->EnableItem(menu_remove_output, true);
         RightStatusText(_("Maxima started. Waiting for connection..."));
+        break;
+      case waitingForAuth:
+        m_bytesFromMaxima_last = 0;
+        m_MenuBar->EnableItem(menu_remove_output, true);
+        RightStatusText(_("Maxima started. Waiting for authentication..."));
+        break;
+      case waitingForPrompt:
+        m_bytesFromMaxima_last = 0;
+        m_MenuBar->EnableItem(menu_remove_output, true);
+        RightStatusText(_("Maxima started. Waiting for initial prompt..."));
         break;
       }
     }
@@ -774,7 +784,11 @@ void wxMaximaFrame::StatusSaveStart() {
 void wxMaximaFrame::StatusSaveFinished() {
   m_forceStatusbarUpdate = true;
   m_StatusSaving = false;
-  if (m_StatusMaximaBusy != waiting)
+  if (
+      (m_StatusMaximaBusy != waiting) &&
+      (m_StatusMaximaBusy != waitingForPrompt) &&
+      (m_StatusMaximaBusy != waitingForAuth)
+      )
     StatusMaximaBusy(m_StatusMaximaBusy);
   else
     RightStatusText(_("Saving successful."));

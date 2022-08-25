@@ -752,6 +752,8 @@ public:
     process_wont_start,
     sending,
     waiting,
+    waitingForPrompt,
+    waitingForAuth,
     calculating,
     parsing,
     transferring,

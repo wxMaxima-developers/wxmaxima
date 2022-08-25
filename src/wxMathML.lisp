@@ -1,4 +1,4 @@
-(format t "<suppressOutput>")
+(format t "<suppressOutput>~%")
 ;; wxMaxima xml format (based on David Drysdale MathML printing)
 ;; Andrej Vodopivec,  2004-2014
 ;; Gunter Königsmann, 2014-2020
@@ -35,6 +35,7 @@
 ;(format t "<wxxml-start/>")
 
 (progn
+  (format t "<wxxml-key>~A</wxxml-key>~%" (maxima-getenv "MAXIMA_AUTH_CODE"))
   ;; This is necessary to make file and directory names that contain special characters
   ;; work under windows.
   #+sbcl (setf sb-impl::*default-external-format* :UTF-8)
