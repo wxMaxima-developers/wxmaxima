@@ -2519,10 +2519,6 @@ void wxMaxima::KillMaxima(bool logMessage) {
   m_CWD = wxEmptyString;
   m_worksheet->QuestionAnswered();
   m_currentOutput = wxEmptyString;
-  // If we did close maxima by hand we already might have a new process
-  // and therefore invalidate the wrong process in this step
-  if (m_process)
-    m_process->Detach();
   m_process = NULL;
   m_maximaStdout = NULL;
   m_maximaStderr = NULL;
@@ -2537,6 +2533,7 @@ void wxMaxima::KillMaxima(bool logMessage) {
     else
       SendMaxima(wxT("quit();"));
 
+    m_client->Socket()->Close();
     // The following command should close maxima, as well.
     m_client = nullptr;
   }
@@ -2630,6 +2627,8 @@ void wxMaxima::OnGnuplotClose(wxProcessEvent &event) {
 }
 
 void wxMaxima::OnProcessEvent(wxProcessEvent &event) {
+  m_process = NULL;
+  m_pid = -1;
   wxLogMessage(_("Maxima process (pid %i) has terminated with exit code %i."),
                event.GetPid(), event.GetExitCode());
   if (m_maximaStdout) {
@@ -2688,6 +2687,9 @@ void wxMaxima::OnProcessEvent(wxProcessEvent &event) {
     }
     m_worksheet->m_evaluationQueue.Clear();
   }
+  else
+    StartMaxima(true);
+  
   StatusMaximaBusy(disconnected);
   UpdateToolBar();
   UpdateMenus();

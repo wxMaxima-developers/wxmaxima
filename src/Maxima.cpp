@@ -161,7 +161,6 @@ void Maxima::ReadSocket() {
   }
 
   wxm::NormalizeEOLsRemoveNULs(m_socketInputData);
-  std::cerr<<m_pipeToStderr;
   if ((m_pipeToStderr) && (!m_socketInputData.IsEmpty()))
     {
       std::cerr << m_socketInputData;
