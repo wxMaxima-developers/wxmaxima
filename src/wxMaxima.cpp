@@ -9361,20 +9361,21 @@ bool wxMaxima::SaveOnClose() {
       }
     }
   }
-  if(m_process)
-    m_process->Detach();
   return true;
 }
 
 void wxMaxima::OnClose(wxCloseEvent &event) {
-  if (event.GetEventType() == wxEVT_END_SESSION)
-    KillMaxima();
-
   if (!SaveOnClose()) {
     event.Veto();
     return;
   }
 
+  if (event.GetEventType() == wxEVT_END_SESSION) {
+    KillMaxima();
+    if(m_process)
+      m_process->Detach();
+  }
+  
   // Stop log events from appearing on the log panel
   wxLogStderr blocker;
 
@@ -9385,7 +9386,6 @@ void wxMaxima::OnClose(wxCloseEvent &event) {
   wxConfigBase *config = wxConfig::Get();
   if (m_lastPath.Length() > 0)
     config->Write(wxT("lastPath"), m_lastPath);
-  KillMaxima();
   m_maximaStdout = NULL;
   m_maximaStderr = NULL;
   // Allow the operating system to keep the clipboard's contents even after we
@@ -9397,7 +9397,6 @@ void wxMaxima::OnClose(wxCloseEvent &event) {
   event.Skip();
   if (m_fileSaved)
     RemoveTempAutosavefile();
-  KillMaxima();
   DelistTopLevelWindow(this);
 }
 
