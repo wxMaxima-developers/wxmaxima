@@ -659,6 +659,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, wxLocale *locale,
     .CloseButton(true)
     .Resizable()
     .PaneBorder(true)
+    .Show(false)
     .Movable(true);
   m_manager.Update();
   Connect(menu_pane_dockAll, wxEVT_MENU,
