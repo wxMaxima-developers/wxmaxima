@@ -311,6 +311,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale,
   m_ready = false;
   m_first = true;
   m_dispReadOut = false;
+  m_gnuplot_process_id = wxNewId();
   m_maxima_process_id = wxNewId();
   config->Read(wxT("lastPath"), &m_lastPath);
   m_lastPrompt = wxEmptyString;
@@ -1265,7 +1266,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale,
           wxProcessEventHandler(wxMaxima::OnProcessEvent), NULL, this);
   Connect(gnuplot_query_terminals_id, wxEVT_END_PROCESS,
           wxProcessEventHandler(wxMaxima::OnGnuplotQueryTerminals), NULL, this);
-  Connect(gnuplot_process_id, wxEVT_END_PROCESS,
+  Connect(m_gnuplot_process_id, wxEVT_END_PROCESS,
           wxProcessEventHandler(wxMaxima::OnGnuplotClose), NULL, this);
   Connect(Worksheet::popid_edit, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::EditInputMenu), NULL, this);
@@ -6053,7 +6054,7 @@ void wxMaxima::EditMenu(wxCommandEvent &event) {
       m_gnuplotcommand + wxT(" " + gnuplotSource + wxT(".popout"));
     wxLogMessage(_("Running gnuplot as: " + cmdline));
 
-    m_gnuplotProcess = new wxProcess(this, gnuplot_process_id);
+    m_gnuplotProcess = new wxProcess(this, m_gnuplot_process_id);
     if (wxExecute(cmdline, wxEXEC_ASYNC | wxEXEC_SHOW_CONSOLE,
                   m_gnuplotProcess) < 0)
       wxLogMessage(_("Cannot start gnuplot"));
