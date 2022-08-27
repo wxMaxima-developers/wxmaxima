@@ -769,6 +769,7 @@ protected:
   //! An empty wxxml symbols section
   static wxString m_emptywxxmlSymbols;
   bool m_dispReadOut;               //!< what is displayed in statusbar
+  int m_maxima_process_id;
   wxString m_lastPrompt;
   wxString m_lastPath;
   std::unique_ptr<wxPrintData> m_printData;

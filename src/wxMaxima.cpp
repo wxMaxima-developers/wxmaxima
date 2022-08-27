@@ -311,7 +311,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale,
   m_ready = false;
   m_first = true;
   m_dispReadOut = false;
-
+  m_maxima_process_id = wxNewId();
   config->Read(wxT("lastPath"), &m_lastPath);
   m_lastPrompt = wxEmptyString;
 
@@ -1261,7 +1261,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale,
           this);
   Connect(wxEVT_END_SESSION, wxCloseEventHandler(wxMaxima::OnClose), NULL,
           this);
-  Connect(maxima_process_id, wxEVT_END_PROCESS,
+  Connect(m_maxima_process_id, wxEVT_END_PROCESS,
           wxProcessEventHandler(wxMaxima::OnProcessEvent), NULL, this);
   Connect(gnuplot_query_terminals_id, wxEVT_END_PROCESS,
           wxProcessEventHandler(wxMaxima::OnGnuplotQueryTerminals), NULL, this);
@@ -2294,7 +2294,7 @@ bool wxMaxima::StartMaxima(bool force) {
     if (!command.IsEmpty()) {
       command.Append(wxString::Format(wxT(" -s %d "), m_port));
 
-      m_process = new wxProcess(this, maxima_process_id);
+      m_process = new wxProcess(this, m_maxima_process_id);
       m_process->Redirect();
       //      m_process->SetPriority(wxPRIORITY_MAX);
       m_first = true;
