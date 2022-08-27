@@ -9361,6 +9361,8 @@ bool wxMaxima::SaveOnClose() {
       }
     }
   }
+  if(m_process)
+    m_process->Detach();
   return true;
 }
 
