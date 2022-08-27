@@ -72,6 +72,7 @@ void MaximaManual::WaitForBackgroundProcess() {
     wxLogNull suppressRecursiveYieldWarning;
     while (!m_helpFileAnchorsThreadActive.try_lock()) {
       wxMilliSleep(100);
+      (void)nestedWaits;
 #if wxCHECK_VERSION(3, 1, 5)
       if (nestedWaits == 0)
 	wxTheApp->SafeYield(NULL, false);
