@@ -111,7 +111,6 @@ private:
 
   //! The thread the help file anchors are compiled in
   std::unique_ptr<std::thread> m_helpfileanchorsThread;
-  std::mutex m_helpFileAnchorsThreadActive;
   //! The configuration storage
   Configuration *m_configuration;
   //! All anchors for keywords maxima's helpfile contains (singlepage version)
@@ -122,7 +121,6 @@ private:
   HelpFileAnchors m_helpFileAnchors;
   wxString m_maximaHtmlDir;
   wxString m_maximaVersion;
-  unsigned long m_nestedBackgroundProcessWaits = 0;
 };
 
 #endif // MAXIMAMANUAL_H

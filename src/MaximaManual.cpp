@@ -62,29 +62,11 @@ wxString MaximaManual::GetHelpfileAnchorName(wxString keyword) {
     return anchor->second;
 }
 void MaximaManual::WaitForBackgroundProcess() {
-  unsigned long nestedWaits = m_nestedBackgroundProcessWaits;
-  m_nestedBackgroundProcessWaits++;
-
-  if (!m_helpFileAnchorsThreadActive.try_lock()) {
+  if (m_helpfileanchorsThread != NULL) {
     wxBusyCursor crs;
-    wxWindowDisabler disableAll;
-    wxBusyInfo wait(_("Please wait while wxMaxima parses the maxima manual"));
-    wxLogNull suppressRecursiveYieldWarning;
-    while (!m_helpFileAnchorsThreadActive.try_lock()) {
-      wxMilliSleep(100);
-      (void)nestedWaits;
-#if wxCHECK_VERSION(3, 1, 5)
-      if (nestedWaits == 0)
-	wxTheApp->SafeYield(NULL, false);
-#endif
-    }
-  }
-  if (m_helpfileanchorsThread) {
     m_helpfileanchorsThread->join();
     m_helpfileanchorsThread.reset();
   }
-  m_nestedBackgroundProcessWaits--;
-  m_helpFileAnchorsThreadActive.unlock();
 }
 
 wxString MaximaManual::GetHelpfileUrl_Singlepage(wxString keyword) {
@@ -268,7 +250,6 @@ void MaximaManual::CompileHelpFileAnchors() {
     else
       LoadBuiltInManualAnchors();
   }
-  m_helpFileAnchorsThreadActive.unlock();
 }
 
 wxDirTraverseResult
@@ -515,9 +496,10 @@ void MaximaManual::LoadHelpFileAnchors(wxString docdir,
           wxBusyCursor crs;
           WaitForBackgroundProcess();
         }
-        m_helpFileAnchorsThreadActive.lock();
-        m_helpfileanchorsThread = std::unique_ptr<std::thread>(
-							       new std::thread(&MaximaManual::CompileHelpFileAnchors, this));
+        m_helpfileanchorsThread =
+	  std::unique_ptr<std::thread>(
+				       new std::thread(&MaximaManual::CompileHelpFileAnchors,
+						       this));
       } else {
         wxLogMessage(_("Maxima help file not found!"));
         LoadBuiltInManualAnchors();
