@@ -75,10 +75,10 @@ public:
   bool LoadBuiltInManualAnchors();
   //! Save the list of help file anchors to the cache.
   void SaveManualAnchorsToCache();
+  void WaitForBackgroundProcess();
 
   ~MaximaManual();
 private:
-  void WaitForBackgroundProcess();
   //! Add our aliasses to a list of anchors
   void AnchorAliasses(HelpFileAnchors &anchors);
   //! Scans the maxima directory for a list of loadable files

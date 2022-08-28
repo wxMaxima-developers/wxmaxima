@@ -297,16 +297,16 @@ private:
   int m_animationDisplayedIndex;
   //! The length of the current animation at the last call of UpdateSlider()
   int m_animationMaxIndex;
-  bool m_canRedo_old;
-  bool m_canUndo_old;
-  bool m_canCopy_old;
-  bool m_canCut_old;
-  bool m_canSave_old;
-  bool m_canPrint_old;
-  bool m_canEvalTillHere_old;
-  bool m_canEvalThisCell_old;
+  bool m_canRedo_old = true;
+  bool m_canUndo_old = true;
+  bool m_canCopy_old = true;
+  bool m_canCut_old  = true;
+  bool m_canSave_old = true;
+  bool m_canPrint_old = true;
+  bool m_canEvalTillHere_old = true;
+  bool m_canEvalThisCell_old = true;
   std::unique_ptr<struct NSVGrasterizer, decltype(std::free)*> m_svgRast{nullptr, std::free};
-  bool m_worksheetEmpty_old;
+  bool m_worksheetEmpty_old  = false ;
   AnimationStartStopState m_AnimationStartStopState;
   //! True if we show the "needs information" button.
   bool m_needsInformation;

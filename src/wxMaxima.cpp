@@ -9369,7 +9369,7 @@ void wxMaxima::OnClose(wxCloseEvent &event) {
     event.Veto();
     return;
   }
-
+  m_worksheet->GetMaximaManual()->WaitForBackgroundProcess();
   if (event.GetEventType() == wxEVT_END_SESSION) {
     KillMaxima();
     if(m_process)

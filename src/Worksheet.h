@@ -601,7 +601,7 @@ private:
   //! The cursor blink rate. Also the timeout for redrawing the worksheet
   wxTimer m_caretTimer;
   //! True if no changes have to be saved.
-  bool m_saved;
+  bool m_saved = true;
   wxArrayString m_completions;
   bool m_autocompleteTemplates;
   AutocompletePopup *m_autocompletePopup;
