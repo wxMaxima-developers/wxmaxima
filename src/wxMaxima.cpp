@@ -9403,6 +9403,8 @@ void wxMaxima::OnClose(wxCloseEvent &event) {
 void wxMaxima::DelistTopLevelWindow(wxMaxima *window) {
   auto pos =
     std::find(m_topLevelWindows.begin(), m_topLevelWindows.end(), window);
+
+  // Paranoia: Only erase this window from the list if it was part of the list
   if (pos != m_topLevelWindows.end())
     m_topLevelWindows.erase(pos);
 }
