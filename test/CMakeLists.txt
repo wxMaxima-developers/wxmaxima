@@ -560,13 +560,15 @@ add_test(
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
     COMMAND wxmaxima --logtostderr --pipe --single_process --batch unicode.wxm unicode.wxm)
 
-add_test(
-    NAME multithreadtest
-    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --logtostderr --pipe --single_process --batch threadtest.wxm threadtest2.wxm)
 # Maxima sometimes fails if this test is run in parallel,
 # see https://sourceforge.net/p/maxima/bugs/3699/
-set_tests_properties(multithreadtest PROPERTIES RUN_SERIAL true)
+#add_test(
+#    NAME multithreadtest
+#    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+#    COMMAND wxmaxima --logtostderr --pipe --single_process --batch threadtest.wxm threadtest2.wxm)
+# Maxima sometimes fails if this test is run in parallel,
+# see https://sourceforge.net/p/maxima/bugs/3699/
+#set_tests_properties(multithreadtest PROPERTIES RUN_SERIAL true)
 
 add_test(
     NAME ipc_copypaste1
