@@ -1,24 +1,33 @@
-# Current:
+# 22.09.0
+ * Support for wxWidgets 3.1.7
  * The description field for wizards no more is a MouseOverToolTip
- * More work on the wizards
+ * Wizards now accept chars from the unicode buttons
+ * Wizards now can balance parenthesis
+ * Wizards for operatingsystem, basic programming and string operations
+ * More miscellaneous work on the wizards
  * The watchlist was broken
  * In MacOs the config dialogue crashed
  * Better scalability of the config dialogue
  * Folded multiline code cells are now sent to Maxima correctly (#1674)
  * The output of the "?" command contained spurious "<" (#1688)
- * Wizards now accept chars from the unicode buttons
- * Wizards for operatingsystem, basic programming and string operations.
- * Support for wxWidgets 3.1.7
- * Now we find Maxima manual entries that have no explicit anchor
- * Search harder for the Maxima manual
- * Search harder for Maxima manual entries
  * ?, ?? and describe() now use a browser window, by default
    (an up-to-date Maxima is required for that feature)
- * wxMaxima can now compiled if wxWidgets does not support the private fonts
-   especially without the function AddPrivateFont(), when wxWidgets was configured
-   using the option "--enable-privatefonts=no".
+ * Search harder for the Maxima manual
+ * Search harder for Maxima manual entries
+ * Now we find Maxima manual entries that have no explicit anchor
+ * On Linux, MacOs and, if wxWidgets was compiled with edge support
+   the help browser can be obened in a dockable window
+ * wxMaxima can now compiled, even if wxWidgets was configured with
+   the option "--enable-privatefonts=no".
    Use the option -DWXM_INCLUDE_FONTS=NO when compiling wxMaxima.
  * Names that end in an underscore are now printed correctly (#1706)
+ * Made the tests work on more platforms (#1709)
+ * Resolved some asserts (#1574)
+ * Working MathJaX (#1702)
+ * A primitive integrated ChangeLog viewer
+ * Better documentation (#1693)
+ * Better unicode handling (#1691)
+ * Many additional bugfixes
 
 # 22.05.0:
  * Updated the Ukrainian translation
