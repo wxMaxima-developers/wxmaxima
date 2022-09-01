@@ -555,18 +555,20 @@ add_test(
     COMMAND wxmaxima --gibberish --batch --single_process unicode.wxm boxes.wxm)
 set_tests_properties(multiple_batch_files2 PROPERTIES WILL_FAIL true)
 
-add_test(
-    NAME multiwindow
-    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --logtostderr --pipe --single_process --batch unicode.wxm unicode.wxm)
+#add_test(
+#    NAME multiwindow
+#    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+#    COMMAND wxmaxima --logtostderr --pipe --single_process --batch unicode.wxm boxes.wxm)
 
-add_test(
-    NAME multithreadtest
-    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --logtostderr --pipe --single_process --batch threadtest.wxm threadtest2.wxm)
 # Maxima sometimes fails if this test is run in parallel,
 # see https://sourceforge.net/p/maxima/bugs/3699/
-set_tests_properties(multithreadtest PROPERTIES RUN_SERIAL true)
+#add_test(
+#    NAME multithreadtest
+#    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+#    COMMAND wxmaxima --logtostderr --pipe --single_process --batch threadtest.wxm threadtest2.wxm)
+# Maxima sometimes fails if this test is run in parallel,
+# see https://sourceforge.net/p/maxima/bugs/3699/
+#set_tests_properties(multithreadtest PROPERTIES RUN_SERIAL true)
 
 add_test(
     NAME ipc_copypaste1

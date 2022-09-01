@@ -9,8 +9,8 @@ permissions:
   contents: read
 
 jobs:
-  compile_2204:
-    runs-on: ubuntu-22.04
+  compile_latest:
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout_git
@@ -22,7 +22,7 @@ jobs:
       - name: install_packages
         run: |
              sudo apt update
-             sudo apt-get install appstream-util cmake desktop-file-utils doxygen gettext gnuplot gnuplot-x11 graphviz libwxgtk3.0-gtk3-dev libwxgtk-webview3.0-gtk3-dev maxima maxima-share netcat-openbsd ninja-build pandoc xvfb at-spi2-core
+             sudo apt-get install appstream-util cmake desktop-file-utils doxygen gettext gnuplot gnuplot-x11 graphviz libwxgtk3.0-gtk3-dev libwxgtk-webview3.0-gtk3-dev maxima maxima-share maxima-doc netcat-openbsd ninja-build pandoc xvfb at-spi2-core
       - name: configure
         run: |
              export CXXFLAGS="-Wall -Wextra -ansi -std=c++11"
@@ -47,95 +47,5 @@ jobs:
              cd build
              export HOME=`pwd`
              export CTEST_OUTPUT_ON_FAILURE=1
-             export LD_PRELOAD=$(gcc -print-file-name=libSegFault.so)
              xvfb-run -a ctest
              cd ..
-
-  compile_2004:
-    runs-on: ubuntu-20.04
-
-    steps:
-      - name: Checkout_git
-        uses: actions/checkout@v3
-        with:
-          # We must fetch at least the immediate parents so that if this is
-          # a pull request then we can checkout the head.
-          fetch-depth: 15
-      - name: install_packages
-        run: |
-             sudo apt update
-             sudo apt-get install appstream-util cmake desktop-file-utils doxygen gettext gnuplot gnuplot-x11 graphviz libwxgtk3.0-gtk3-dev libwxgtk-webview3.0-gtk3-dev maxima maxima-share netcat-openbsd ninja-build pandoc xvfb at-spi2-core
-      - name: configure
-        run: |
-             export CXXFLAGS="-Wall -Wextra -ansi -std=c++11"
-             export LANG=en_US.UTF-8
-             mkdir build
-             touch build build/build.ninja
-             cd build
-             cmake -G "Ninja" -DCMAKE_UNITY_BUILD=YES -DCMAKE_BUILD_TYPE=debug -DCMAKE_UNITY_BUILD_BATCH_SIZE=8 -DWXM_UNIT_TESTS=YES ..
-             cd ..
-      - name: compile
-        run: |
-             cd build
-             cmake --build .
-             cd ..
-      - name: update-locale
-        run: |
-             cd build
-             cmake --build . --target update-locale
-             cd ..
-      - name: run_tests
-        run: |
-             cd build
-             export HOME=`pwd`
-             export CTEST_OUTPUT_ON_FAILURE=1
-             export LD_PRELOAD=$(gcc -print-file-name=libSegFault.so)
-             xvfb-run -a ctest
-             cd ..
-
-  compile_1804:
-    runs-on: ubuntu-18.04
-
-    steps:
-      - name: Checkout_git
-        uses: actions/checkout@v3
-        with:
-          # We must fetch at least the immediate parents so that if this is
-          # a pull request then we can checkout the head.
-          fetch-depth: 15
-      - name: install_packages
-        run: |
-             sudo apt-get update
-             sudo apt-get install appstream-util cmake desktop-file-utils gnuplot gnuplot-x11 graphviz libwxgtk3.0-gtk3-dev libwxgtk-webview3.0-gtk3-dev maxima maxima-share netcat-openbsd ninja-build pandoc xvfb g++-5 gcc-5 at-spi2-core
-      - name: configure
-        run: |
-             export CC=gcc-5
-             export CXX=g++-5
-             export CXXFLAGS="-Wall -Wextra -ansi -std=c++11"
-             export LANG=en_US.UTF-8
-             mkdir build
-             touch build build/build.ninja
-             cd build
-             cmake -G "Ninja" -DCMAKE_UNITY_BUILD=YES -DCMAKE_BUILD_TYPE=debug -DCMAKE_UNITY_BUILD_BATCH_SIZE=8 -DWXM_UNIT_TESTS=YES ..
-             cd ..
-      - name: compile
-        run: |
-             cd build
-             cmake --build .
-             cd ..
-      - name: update-locale
-        run: |
-             cd build
-             cmake --build . --target update-locale
-             cd ..
-
-      # On this ubuntu version maxima is unable to load the draw() package => we need to skip all
-      # tests that include draw()
-      - name: run_tests
-        run: |
-           cd build
-           export HOME=`pwd`
-           export CTEST_OUTPUT_ON_FAILURE=1
-           export LD_PRELOAD=$(gcc -print-file-name=libSegFault.so)
-           xvfb-run -a ctest
-           cd ..
