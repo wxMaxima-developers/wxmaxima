@@ -11,7 +11,7 @@ Rules-Requires-Root: no
 
 Package: wxmaxima
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, maxima
+Depends: ${shlibs:Depends}, ${misc:Depends}, maxima, maxima-doc, maxima-share
 Recommends: maxima-doc
 Suggests: fonts-jsmath, texlive-latex-extra, ibus-gtk3
 Description: GUI for the computer algebra system Maxima
