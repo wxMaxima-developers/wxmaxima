@@ -61,6 +61,37 @@
      <description>
        <p>
 	 Help integration, work on the wizards and many bug fixes.
+<ul dir="auto">
+<li>Support for wxWidgets 3.1.7</li>
+<li>The description field for wizards no more is a MouseOverToolTip</li>
+<li>Wizards now accept chars from the unicode buttons</li>
+<li>Wizards now can balance parenthesis</li>
+<li>Wizards for operatingsystem, basic programming and string operations</li>
+<li>More miscellaneous work on the wizards</li>
+<li>The watchlist was broken</li>
+<li>In MacOs the config dialogue crashed</li>
+<li>Better scalability of the config dialogue</li>
+<li>Folded multiline code cells are now sent to Maxima correctly (#1674)</li>
+<li>The output of the "?" command contained spurious "&lt;" (#1688)</li>
+<li>?, ?? and describe() now use a browser window, by default
+(an up-to-date Maxima is required for that feature)</li>
+<li>Search harder for the Maxima manual</li>
+<li>Search harder for Maxima manual entries</li>
+<li>Now we find Maxima manual entries that have no explicit anchor</li>
+<li>On Linux, MacOs and, if wxWidgets was compiled with edge support
+the help browser can be obened in a dockable window</li>
+<li>wxMaxima can now compiled, even if wxWidgets was configured with
+the option "--enable-privatefonts=no".
+Use the option -DWXM_INCLUDE_FONTS=NO when compiling wxMaxima.</li>
+<li>Names that end in an underscore are now printed correctly (#1706)</li>
+<li>Made the tests work on more platforms (#1709)</li>
+<li>Resolved some asserts (#1574)</li>
+<li>Working MathJaX (#1702)</li>
+<li>A primitive integrated ChangeLog viewer</li>
+<li>Better documentation (#1693)</li>
+<li>Better unicode handling (#1691)</li>
+<li>Many additional bugfixes</li>
+</ul>
        </p>
      </description>
     </release>
