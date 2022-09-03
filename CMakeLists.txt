@@ -109,9 +109,8 @@ endif()
 get_filename_component(srcdir "${CMAKE_SOURCE_DIR}" REALPATH)
 get_filename_component(bindir "${CMAKE_BINARY_DIR}" REALPATH)
 if("${srcdir}" STREQUAL "${bindir}")
-    message(FATAL_ERROR
-        "In-source builds not allowed. They are unsupportable in practice, they spill "
-        "their guts into .gitignore, and they turn buildsystem bugs into damage to sources. "
+    message(WARNING
+        "In-source builds are strongly deprecated. "
         "Instead, build the project out-of source: Create a "
         "separate directory for the build *outside of the source folder*, and run "
         "cmake <path to the source dir> and build from there.")
