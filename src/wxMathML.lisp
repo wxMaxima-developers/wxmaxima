@@ -268,9 +268,7 @@
     (unless (symbolp x)
       (return-from subscriptp x))
     (let* ((name (format nil "~A" (wxxml-fix-string
-				   (stripdollar
-				    (maybe-invert-string-case
-				     (format nil "~A" x))))))
+				   ($concat x))))
 	   (pos (search "_" name :from-end t))
 	   #-gcl (*readtable* (copy-readtable nil)))
       #-gcl (setf (readtable-case *readtable*) :invert)
@@ -279,7 +277,7 @@
 	       ;; sub is the part of x after the "_"
 	       (sub (subseq name (+ pos 1)))
 	       ;; sub-var is the part of x in front of the "_"
-	       (sub-var (subseq name 0 pos))
+	       (sub-var (subseq name 1 pos))
 	       (sub-var-symb (read-from-string (concatenate 'string "$" sub-var)))
 	       (sub-symb (read-from-string (concatenate 'string "$" sub)))
 	       ;; sub-int is the part of x after the "_" converted to integer
@@ -307,8 +305,8 @@
 		   )
 	      (format nil  "<munder altCopy=\"~{~a~}\"><mrow>~a</mrow><mrow>~a</mrow></munder>"
 		      (wxxml-fix-string name-string)
-		      (format nil "<mi>~a</mi>" (wxxml-fix-string sub-var-string))
-		      (format nil "<mi>~a</mi>" (wxxml-fix-string sub-string)))))))))
+		      (format nil "<mi>~a</mi>" (maybe-invert-string-case sub-var))
+		      (format nil "<mi>~a</mi>" (maybe-invert-string-case sub)))))))))
   
   (defun wxxmlescapenum (atom)
     (wxxml-fix-string
