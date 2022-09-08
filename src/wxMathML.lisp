@@ -295,14 +295,7 @@
 			   )
 		       (ignore-errors (not
 			 (member '$WXXML_SUBSCRIPTED (cadr (properties x))))))))
-	    (let* ((name-string (mstring x))
-		   (pos-string (search "_" name-string :from-end t))
-		   ;; sub-string is the part of x after the "_"
-		   (sub-string (coerce (subseq name-string (+ pos-string 1)) 'string))
-		   ;; sub-var-string is the part of x in front of the "_"
-		   ;; sub-var lacks the 1st letter in :trace commands
-		   (sub-var-string (coerce (subseq name-string 0 pos-string) 'string))
-		   )
+	    (let* ((name-string (mstring x)))
 	      (format nil  "<munder altCopy=\"~{~a~}\"><mrow>~a</mrow><mrow>~a</mrow></munder>"
 		      (wxxml-fix-string name-string)
 		      (format nil "<mi>~a</mi>" (maybe-invert-string-case sub-var))
