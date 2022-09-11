@@ -26,6 +26,7 @@
 #include "precomp.h"
 #include <wx/wx.h>
 #include <wx/statline.h>
+#include <functional>
 
 #include "BTextCtrl.h"
 
@@ -69,7 +70,7 @@ private:
   wxString m_warningText;
 };
 
-wxString GetTextFromUser(wxString label, wxString title, Configuration *cfg, wxString value,
-                         wxWindow *parent);
+void GetTextFromUser(wxString label, wxString title, Configuration *cfg, wxString value,
+                     wxWindow *parent, std::function<void (wxString)> callback);
 
 #endif // GEN1WIZ_H

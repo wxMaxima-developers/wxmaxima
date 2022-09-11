@@ -23,6 +23,7 @@
 
 #include "Gen1Wiz.h"
 #include <wx/persist/toplevel.h>
+#include <wx/windowptr.h>
 
 Gen1Wiz::Gen1Wiz(wxWindow *parent, int id, Configuration *cfg,
                  const wxString &title, const wxString &label,
@@ -88,17 +89,17 @@ void Gen1Wiz::do_layout() {
   Layout();
 }
 
-wxString GetTextFromUser(wxString label, wxString title, Configuration *cfg,
-                         wxString value, wxWindow *parent) {
-  Gen1Wiz *wiz = new Gen1Wiz(parent, -1, cfg, title, label);
+void GetTextFromUser(wxString label, wxString title, Configuration *cfg,
+                     wxString value, wxWindow *parent, std::function<void (wxString)> callback) {
+  wxWindowPtr<Gen1Wiz> wiz(new Gen1Wiz(parent, -1, cfg, title, label));
   wiz->SetValue(value);
-  wxString val;
   wiz->Centre(wxBOTH);
-  if (wiz->ShowModal() == wxID_OK) {
-    val = wiz->GetValue();
-    val.Trim();
-    val.Trim(false);
-  }
-  wiz->Destroy();
-  return val;
+  wiz->ShowWindowModalThenDo([wiz,callback](int retcode) {
+    if (retcode == wxID_OK) {
+      wxString val = wiz->GetValue();
+      val.Trim();
+      val.Trim(false);
+      callback(val);
+    }
+  });
 }

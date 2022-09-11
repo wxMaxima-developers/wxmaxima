@@ -7445,49 +7445,49 @@ void wxMaxima::EquationsMenu(wxCommandEvent &event) {
                wxT("eliminate([#1#],[#2#]);"), _("Equation(s):"), expr,
                wxEmptyString, _("Variable(s):"), wxEmptyString, wxEmptyString);
     break;
-  case menu_solve_algsys: {
-    wxString sz =
-      GetTextFromUser(_("Number of equations:"), _("Solve algebraic system"),
-		      &m_configuration, wxT("3"), this);
-    if (sz.Length() == 0)
-      return;
-    long isz;
-    if (!sz.ToLong(&isz) || isz <= 0) {
-      LoggingMessageBox(_("Not a valid number of equations!"), _("Error!"),
-                        wxOK | wxICON_ERROR);
-      return;
-    }
-    wxWindowPtr<SysWiz> wiz(new SysWiz(this, -1, &m_configuration,
-                                       _("Solve algebraic system"), isz));
-    // wiz->Centre(wxBOTH);
-    wiz->ShowWindowModalThenDo([this,wiz](int retcode) {
-      if (retcode == wxID_OK) {
-        wxString cmd = wxT("algsys") + wiz->GetValue();
-        MenuCommand(cmd);
-      }
-    });
-  } break;
-  case menu_solve_lin: {
-    wxString sz =
-      GetTextFromUser(_("Number of equations:"), _("Solve linear system"),
-		      &m_configuration, wxT("3"), this);
-    if (sz.Length() == 0)
-      return;
-    long isz;
-    if (!sz.ToLong(&isz) || isz <= 0) {
-      LoggingMessageBox(_("Not a valid number of equations!"), _("Error!"),
-                        wxOK | wxICON_ERROR);
-      return;
-    }
-    wxWindowPtr<SysWiz> wiz(new SysWiz(this, -1, &m_configuration, _("Solve linear system"), isz));
-    // wiz->Centre(wxBOTH);
-    wiz->ShowWindowModalThenDo([this,wiz](int retcode) {
-      if (retcode == wxID_OK) {
-        wxString cmd = wxT("linsolve") + wiz->GetValue();
-        MenuCommand(cmd);
-      }
-    });
-  } break;
+  case menu_solve_algsys:
+    GetTextFromUser(_("Number of equations:"), _("Solve algebraic system"),
+                    &m_configuration, wxT("3"), this, [this](wxString sz) {
+                      if (sz.Length() == 0)
+                        return;
+                      long isz;
+                      if (!sz.ToLong(&isz) || isz <= 0) {
+                        LoggingMessageBox(_("Not a valid number of equations!"), _("Error!"),
+                                          wxOK | wxICON_ERROR);
+                        return;
+                      }
+                      wxWindowPtr<SysWiz> wiz(new SysWiz(this, -1, &m_configuration,
+                                                         _("Solve algebraic system"), isz));
+                      // wiz->Centre(wxBOTH);
+                      wiz->ShowWindowModalThenDo([this,wiz](int retcode) {
+                        if (retcode == wxID_OK) {
+                          wxString cmd = wxT("algsys") + wiz->GetValue();
+                          MenuCommand(cmd);
+                        }
+                      });
+                    });
+    break;
+  case menu_solve_lin:
+    GetTextFromUser(_("Number of equations:"), _("Solve linear system"),
+                    &m_configuration, wxT("3"), this, [this](wxString sz) {
+                      if (sz.Length() == 0)
+                        return;
+                      long isz;
+                      if (!sz.ToLong(&isz) || isz <= 0) {
+                        LoggingMessageBox(_("Not a valid number of equations!"), _("Error!"),
+                                          wxOK | wxICON_ERROR);
+                        return;
+                      }
+                      wxWindowPtr<SysWiz> wiz(new SysWiz(this, -1, &m_configuration, _("Solve linear system"), isz));
+                      // wiz->Centre(wxBOTH);
+                      wiz->ShowWindowModalThenDo([this,wiz](int retcode) {
+                        if (retcode == wxID_OK) {
+                          wxString cmd = wxT("linsolve") + wiz->GetValue();
+                          MenuCommand(cmd);
+                        }
+                      });
+                    });
+    break;
   case menu_solve_de:
     CommandWiz(_("Solve differential equations using laplace()"),
                _("The solution variable needs to be in the form\n"
