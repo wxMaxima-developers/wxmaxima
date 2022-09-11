@@ -103,6 +103,7 @@
 #include <wx/uri.h>
 #include <wx/utils.h>
 #include <wx/wupdlock.h>
+#include <wx/windowptr.h>
 
 #include <wx/fs_mem.h>
 #include <wx/persist/toplevel.h>
@@ -7285,15 +7286,15 @@ void wxMaxima::MaximaMenu(wxCommandEvent &event) {
                wxEmptyString);
     break;
   case button_subst: {
-    SubstituteWiz *wiz =
-      new SubstituteWiz(this, -1, &m_configuration, _("Substitute"));
+    wxWindowPtr<SubstituteWiz> wiz(new SubstituteWiz(this, -1, &m_configuration, _("Substitute")));
     wiz->SetValue(expr);
     // wiz->Centre(wxBOTH);
-    if (wiz->ShowModal() == wxID_OK) {
-      wxString val = wiz->GetValue();
-      MenuCommand(val);
-    }
-    wiz->Destroy();
+    wiz->ShowWindowModalThenDo([this,wiz](int retcode) {
+      if (retcode == wxID_OK) {
+        wxString val = wiz->GetValue();
+        MenuCommand(val);
+      }
+    });
   } break;
   default:
     break;
@@ -7456,14 +7457,15 @@ void wxMaxima::EquationsMenu(wxCommandEvent &event) {
                         wxOK | wxICON_ERROR);
       return;
     }
-    SysWiz *wiz = new SysWiz(this, -1, &m_configuration,
-                             _("Solve algebraic system"), isz);
+    wxWindowPtr<SysWiz> wiz(new SysWiz(this, -1, &m_configuration,
+                                       _("Solve algebraic system"), isz));
     // wiz->Centre(wxBOTH);
-    if (wiz->ShowModal() == wxID_OK) {
-      wxString cmd = wxT("algsys") + wiz->GetValue();
-      MenuCommand(cmd);
-    }
-    wiz->Destroy();
+    wiz->ShowWindowModalThenDo([this,wiz](int retcode) {
+      if (retcode == wxID_OK) {
+        wxString cmd = wxT("algsys") + wiz->GetValue();
+        MenuCommand(cmd);
+      }
+    });
   } break;
   case menu_solve_lin: {
     wxString sz =
@@ -7477,14 +7479,14 @@ void wxMaxima::EquationsMenu(wxCommandEvent &event) {
                         wxOK | wxICON_ERROR);
       return;
     }
-    SysWiz *wiz =
-      new SysWiz(this, -1, &m_configuration, _("Solve linear system"), isz);
+    wxWindowPtr<SysWiz> wiz(new SysWiz(this, -1, &m_configuration, _("Solve linear system"), isz));
     // wiz->Centre(wxBOTH);
-    if (wiz->ShowModal() == wxID_OK) {
-      wxString cmd = wxT("linsolve") + wiz->GetValue();
-      MenuCommand(cmd);
-    }
-    wiz->Destroy();
+    wiz->ShowWindowModalThenDo([this,wiz](int retcode) {
+      if (retcode == wxID_OK) {
+        wxString cmd = wxT("linsolve") + wiz->GetValue();
+        MenuCommand(cmd);
+      }
+    });
   } break;
   case menu_solve_de:
     CommandWiz(_("Solve differential equations using laplace()"),
@@ -7530,23 +7532,25 @@ void wxMaxima::MatrixMenu(wxCommandEvent &event) {
   wxString expr = GetDefaultEntry();
   switch (event.GetId()) {
   case menu_csv2mat: {
-    CsvImportWiz *wiz = new CsvImportWiz(this, &m_configuration);
-    if (wiz->ShowModal() == wxID_OK) {
-      wxString cmd = wxT("read_matrix(\"") + wiz->GetFilename() + wxT("\", ") +
-	wiz->GetSeparator() + wxT(");");
-      MenuCommand(cmd);
-    }
-    wiz->Destroy();
+    wxWindowPtr<CsvImportWiz> wiz(new CsvImportWiz(this, &m_configuration));
+    wiz->ShowWindowModalThenDo([this,wiz](int retcode) {
+      if (retcode == wxID_OK) {
+        wxString cmd = wxT("read_matrix(\"") + wiz->GetFilename() + wxT("\", ") +
+          wiz->GetSeparator() + wxT(");");
+        MenuCommand(cmd);
+      }
+    });
     break;
   }
   case menu_mat2csv: {
-    CsvExportWiz *wiz = new CsvExportWiz(this, &m_configuration, _("Matrix"));
-    if (wiz->ShowModal() == wxID_OK) {
-      wxString cmd = wxT("write_data(") + wiz->GetMatrix() + wxT(", \"") +
-	wiz->GetFilename() + wxT("\", ") + wiz->GetSeparator() + wxT(");");
-      MenuCommand(cmd);
-    }
-    wiz->Destroy();
+    wxWindowPtr<CsvExportWiz> wiz(new CsvExportWiz(this, &m_configuration, _("Matrix")));
+    wiz->ShowWindowModalThenDo([this,wiz](int retcode) {
+      if (retcode == wxID_OK) {
+        wxString cmd = wxT("write_data(") + wiz->GetMatrix() + wxT(", \"") +
+          wiz->GetFilename() + wxT("\", ") + wiz->GetSeparator() + wxT(");");
+        MenuCommand(cmd);
+      }
+    });
     break;
   }
   case menu_matrix_row:
@@ -7730,49 +7734,49 @@ void wxMaxima::MatrixMenu(wxCommandEvent &event) {
     MenuCommand(cmd);
   } break;
   case menu_map_mat: {
-    Gen3Wiz *wiz =
-      new Gen3Wiz(_("Resulting Matrix name (may be empty):"), _("Function:"),
-		  _("Matrix:"), wxEmptyString, wxEmptyString, expr,
-		  &m_configuration, this, -1, _("Matrix map"));
+    wxWindowPtr<Gen3Wiz> wiz(new Gen3Wiz(_("Resulting Matrix name (may be empty):"), _("Function:"),
+                                         _("Matrix:"), wxEmptyString, wxEmptyString, expr,
+                                         &m_configuration, this, -1, _("Matrix map")));
     // wiz->Centre(wxBOTH);
-    if (wiz->ShowModal() == wxID_OK) {
-      wxString cmd = wxEmptyString;
-      if (wiz->GetValue1().IsEmpty())
-        cmd = wiz->GetValue1() + wxT(":");
-      cmd += wxT("matrixmap(") + wiz->GetValue2() + wxT(", ") +
-	wiz->GetValue3() + wxT(");");
-      MenuCommand(cmd);
-    }
-    wiz->Destroy();
+    wiz->ShowWindowModalThenDo([this,wiz](int retcode) {
+      if (retcode == wxID_OK) {
+        wxString cmd = wxEmptyString;
+        if (wiz->GetValue1().IsEmpty())
+          cmd = wiz->GetValue1() + wxT(":");
+        cmd += wxT("matrixmap(") + wiz->GetValue2() + wxT(", ") +
+          wiz->GetValue3() + wxT(");");
+        MenuCommand(cmd);
+      }
+    });
   } break;
   case menu_enter_mat:
   case menu_stats_enterm: {
-    MatDim *wiz = new MatDim(this, -1, &m_configuration, _("Matrix"));
+    wxWindowPtr<MatDim> wiz(new MatDim(this, -1, &m_configuration, _("Matrix")));
     // wiz->Centre(wxBOTH);
-    if (wiz->ShowModal() == wxID_OK) {
-      wxString cmd;
-      if (wiz->GetValue0() != wxEmptyString)
-        cmd = wiz->GetValue0() + wxT(": ");
-      long w, h;
-      int type = wiz->GetMatrixType();
-      if (!(wiz->GetValue2()).ToLong(&h) || !(wiz->GetValue1()).ToLong(&w) ||
-          w <= 0 || h <= 0) {
-        LoggingMessageBox(_("Not a valid matrix dimension!"), _("Error!"),
-                          wxOK | wxICON_ERROR);
-        return; //-V773
+    wiz->ShowWindowModalThenDo([this,wiz](int retcode) {
+      if (retcode == wxID_OK) {
+        wxString cmd;
+        if (wiz->GetValue0() != wxEmptyString)
+          cmd = wiz->GetValue0() + wxT(": ");
+        long w, h;
+        int type = wiz->GetMatrixType();
+        if (!(wiz->GetValue2()).ToLong(&h) || !(wiz->GetValue1()).ToLong(&w) ||
+            w <= 0 || h <= 0) {
+          LoggingMessageBox(_("Not a valid matrix dimension!"), _("Error!"),
+                            wxOK | wxICON_ERROR);
+          return; //-V773
+        }
+        if (w != h)
+          type = MatWiz::MATRIX_GENERAL;
+        wxWindowPtr<MatWiz> mwiz(new MatWiz(this, -1, &m_configuration, _("Enter matrix"), type, w, h));
+        // wiz->Centre(wxBOTH);
+        wiz->ShowWindowModalThenDo([this,mwiz,cmd](int retcode) {
+          if (retcode == wxID_OK) {
+            MenuCommand(cmd + mwiz->GetValue());
+          }
+        });
       }
-      if (w != h)
-        type = MatWiz::MATRIX_GENERAL;
-      MatWiz *mwiz =
-	new MatWiz(this, -1, &m_configuration, _("Enter matrix"), type, w, h);
-      // wiz->Centre(wxBOTH);
-      if (mwiz->ShowModal() == wxID_OK) {
-        cmd += mwiz->GetValue();
-        MenuCommand(cmd);
-      }
-      mwiz->Destroy();
-    }
-    wiz->Destroy();
+    });
   } break;
   case menu_cpoly:
     CommandWiz(_("Characteristic polynom"), wxEmptyString, wxEmptyString,
@@ -7866,37 +7870,40 @@ void wxMaxima::DrawMenu(wxCommandEvent &event) {
 
   switch (event.GetId()) {
   case menu_draw_2d: {
-    DrawWiz *wiz = new DrawWiz(this, &m_configuration, 2);
+    wxWindowPtr<DrawWiz> wiz(new DrawWiz(this, &m_configuration, 2));
     // wiz->Centre(wxBOTH);
-    if (wiz->ShowModal() == wxID_OK) {
-      m_worksheet->SetFocus();
-
-      m_worksheet->OpenHCaret(wiz->GetValue());
-      m_worksheet->GetActiveCell()->SetCaretPosition(
-						     m_worksheet->GetActiveCell()->GetCaretPosition() - 3);
-    }
-    wiz->Destroy();
-    break;
-  }
-  case menu_draw_3d:
-    if (dimensions < 2) {
-      DrawWiz *wiz = new DrawWiz(this, &m_configuration, 3);
-      // wiz->Centre(wxBOTH);
-      if (wiz->ShowModal() == wxID_OK) {
+    wiz->ShowWindowModalThenDo([this,wiz](int retcode) {
+      if (retcode == wxID_OK) {
         m_worksheet->SetFocus();
 
         m_worksheet->OpenHCaret(wiz->GetValue());
         m_worksheet->GetActiveCell()->SetCaretPosition(
-						       m_worksheet->GetActiveCell()->GetCaretPosition() - 3);
+                                                       m_worksheet->GetActiveCell()->GetCaretPosition() - 3);
       }
-      wiz->Destroy();
+    });
+    break;
+  }
+  case menu_draw_3d:
+    if (dimensions < 2) {
+      wxWindowPtr<DrawWiz> wiz(new DrawWiz(this, &m_configuration, 3));
+      // wiz->Centre(wxBOTH);
+      wiz->ShowWindowModalThenDo([this,wiz](int retcode) {
+        if (retcode == wxID_OK) {
+          m_worksheet->SetFocus();
+
+          m_worksheet->OpenHCaret(wiz->GetValue());
+          m_worksheet->GetActiveCell()->SetCaretPosition(
+                                                         m_worksheet->GetActiveCell()->GetCaretPosition() - 3);
+        }
+      });
       break;
     } else {
-      Wiz3D *wiz = new Wiz3D(this, &m_configuration);
+      wxWindowPtr<Wiz3D> wiz(new Wiz3D(this, &m_configuration));
       // wiz->Centre(wxBOTH);
-      if (wiz->ShowModal() == wxID_OK)
-        AddDrawParameter(wiz->GetValue());
-      wiz->Destroy();
+      wiz->ShowWindowModalThenDo([this,wiz](int retcode) {
+        if (retcode == wxID_OK)
+          AddDrawParameter(wiz->GetValue());
+      });
       break;
     }
   case menu_draw_fgcolor: {
@@ -7914,109 +7921,116 @@ void wxMaxima::DrawMenu(wxCommandEvent &event) {
     break;
   }
   case menu_draw_title: {
-    Gen1Wiz *wiz = new Gen1Wiz(
-			       this, -1, &m_configuration, _("Set the diagram title"),
-			       _("Title (Sub- and superscripts as x_{10} or x^{10})"), expr);
+    wxWindowPtr<Gen1Wiz> wiz(new Gen1Wiz(
+                                         this, -1, &m_configuration, _("Set the diagram title"),
+                                         _("Title (Sub- and superscripts as x_{10} or x^{10})"), expr));
     // wiz->Centre(wxBOTH);
-    if (wiz->ShowModal() == wxID_OK) {
-      wxString cmd = wxT("title=\"") + wiz->GetValue() + wxT("\"");
-      AddDrawParameter(cmd);
-    }
-    wiz->Destroy();
+    wiz->ShowWindowModalThenDo([this,wiz](int retcode) {
+      if (retcode == wxID_OK) {
+        wxString cmd = wxT("title=\"") + wiz->GetValue() + wxT("\"");
+        AddDrawParameter(cmd);
+      }
+    });
     break;
   }
   case menu_draw_key: {
-    Gen1Wiz *wiz = new Gen1Wiz(
-			       this, -1, &m_configuration,
-			       _("Set the next plot's title. Empty = no title."),
-			       _("Title (Sub- and superscripts as x_{10} or x^{10})"), expr);
+    wxWindowPtr<Gen1Wiz> wiz(new Gen1Wiz(
+                                         this, -1, &m_configuration,
+                                         _("Set the next plot's title. Empty = no title."),
+                                         _("Title (Sub- and superscripts as x_{10} or x^{10})"), expr));
     // wiz->Centre(wxBOTH);
-    if (wiz->ShowModal() == wxID_OK) {
-      wxString cmd = wxT("key=\"") + wiz->GetValue() + wxT("\"");
-      AddDrawParameter(cmd);
-    }
-    wiz->Destroy();
+    wiz->ShowWindowModalThenDo([this,wiz](int retcode) {
+      if (retcode == wxID_OK) {
+        wxString cmd = wxT("key=\"") + wiz->GetValue() + wxT("\"");
+        AddDrawParameter(cmd);
+      }
+    });
     break;
   }
   case menu_draw_explicit: {
-    ExplicitWiz *wiz =
-      new ExplicitWiz(this, &m_configuration, expr, dimensions);
+    wxWindowPtr<ExplicitWiz> wiz(new ExplicitWiz(this, &m_configuration, expr, dimensions));
     // wiz->Centre(wxBOTH);
-    if (wiz->ShowModal() == wxID_OK)
-      AddDrawParameter(wiz->GetValue());
-    wiz->Destroy();
+    wiz->ShowWindowModalThenDo([this,wiz](int retcode) {
+      if (retcode == wxID_OK)
+        AddDrawParameter(wiz->GetValue());
+    });
     break;
   }
 
   case menu_draw_implicit: {
-    ImplicitWiz *wiz =
-      new ImplicitWiz(this, &m_configuration, expr, dimensions);
+    wxWindowPtr<ImplicitWiz> wiz(new ImplicitWiz(this, &m_configuration, expr, dimensions));
     // wiz->Centre(wxBOTH);
-    if (wiz->ShowModal() == wxID_OK)
-      AddDrawParameter(wiz->GetValue());
-    wiz->Destroy();
+    wiz->ShowWindowModalThenDo([this,wiz](int retcode) {
+      if (retcode == wxID_OK)
+        AddDrawParameter(wiz->GetValue());
+    });
     break;
   }
 
   case menu_draw_parametric: {
-    ParametricWiz *wiz = new ParametricWiz(this, &m_configuration, dimensions);
+    wxWindowPtr<ParametricWiz> wiz(new ParametricWiz(this, &m_configuration, dimensions));
     // wiz->Centre(wxBOTH);
-    if (wiz->ShowModal() == wxID_OK)
-      AddDrawParameter(wiz->GetValue());
-    wiz->Destroy();
+    wiz->ShowWindowModalThenDo([this,wiz](int retcode) {
+      if (retcode == wxID_OK)
+        AddDrawParameter(wiz->GetValue());
+    });
     break;
   }
 
   case menu_draw_points: {
-    WizPoints *wiz = new WizPoints(this, &m_configuration, dimensions, expr);
+    wxWindowPtr<WizPoints> wiz(new WizPoints(this, &m_configuration, dimensions, expr));
     // wiz->Centre(wxBOTH);
-    if (wiz->ShowModal() == wxID_OK)
-      AddDrawParameter(wiz->GetValue());
-    wiz->Destroy();
+    wiz->ShowWindowModalThenDo([this,wiz](int retcode) {
+      if (retcode == wxID_OK)
+        AddDrawParameter(wiz->GetValue());
+    });
     break;
   }
 
   case menu_draw_grid: {
-    Gen2Wiz *wiz = new Gen2Wiz(
-			       _("x direction [in multiples of the tick frequency]"),
-			       _("y direction [in multiples of the tick frequency]"), "1", "1",
-			       &m_configuration, this, -1, _("Set the grid density."));
+    wxWindowPtr<Gen2Wiz> wiz(new Gen2Wiz(
+                                         _("x direction [in multiples of the tick frequency]"),
+                                         _("y direction [in multiples of the tick frequency]"), "1", "1",
+                                         &m_configuration, this, -1, _("Set the grid density.")));
     // wiz->Centre(wxBOTH);
-    if (wiz->ShowModal() == wxID_OK) {
-      wxString cmd =
-	wxT("grid=[") + wiz->GetValue1() + "," + wiz->GetValue2() + wxT("]");
-      AddDrawParameter(cmd);
-    }
-    wiz->Destroy();
+    wiz->ShowWindowModalThenDo([this,wiz](int retcode) {
+      if (retcode == wxID_OK) {
+        wxString cmd =
+          wxT("grid=[") + wiz->GetValue1() + "," + wiz->GetValue2() + wxT("]");
+        AddDrawParameter(cmd);
+      }
+    });
     break;
   }
 
   case menu_draw_axis: {
-    AxisWiz *wiz = new AxisWiz(this, &m_configuration, dimensions);
+    wxWindowPtr<AxisWiz> wiz(new AxisWiz(this, &m_configuration, dimensions));
     // wiz->Centre(wxBOTH);
-    if (wiz->ShowModal() == wxID_OK) {
-      AddDrawParameter(wiz->GetValue());
-    }
-    wiz->Destroy();
+    wiz->ShowWindowModalThenDo([this,wiz](int retcode) {
+      if (retcode == wxID_OK) {
+        AddDrawParameter(wiz->GetValue());
+      }
+    });
     break;
   }
 
   case menu_draw_contour: {
-    WizContour *wiz = new WizContour(this, &m_configuration);
+    wxWindowPtr<WizContour> wiz(new WizContour(this, &m_configuration));
     // wiz->Centre(wxBOTH);
-    if (wiz->ShowModal() == wxID_OK)
-      AddDrawParameter(wiz->GetValue(), 3);
-    wiz->Destroy();
+    wiz->ShowWindowModalThenDo([this,wiz](int retcode) {
+      if (retcode == wxID_OK)
+        AddDrawParameter(wiz->GetValue(), 3);
+    });
     break;
   }
 
   case menu_draw_accuracy: {
-    WizDrawAccuracy *wiz =
-      new WizDrawAccuracy(this, &m_configuration, dimensions);
+    wxWindowPtr<WizDrawAccuracy> wiz(new WizDrawAccuracy(this, &m_configuration, dimensions));
     // wiz->Centre(wxBOTH);
-    if (wiz->ShowModal() == wxID_OK)
-      AddDrawParameter(wiz->GetValue(), dimensions);
-    wiz->Destroy();
+    wiz->ShowWindowModalThenDo([this,wiz,dimensions](int retcode) {
+      if (retcode == wxID_OK)
+        AddDrawParameter(wiz->GetValue(), dimensions);
+    });
     break;
   }
   }
@@ -8029,23 +8043,25 @@ void wxMaxima::ListMenu(wxCommandEvent &event) {
   wxString expr = GetDefaultEntry();
   switch (event.GetId()) {
   case menu_csv2list: {
-    CsvImportWiz *wiz = new CsvImportWiz(this, &m_configuration);
-    if (wiz->ShowModal() == wxID_OK) {
-      wxString cmd = wxT("read_nested_list(\"") + wiz->GetFilename() + wxT("\", ") +
-	wiz->GetSeparator() + wxT(");");
-      MenuCommand(cmd);
-    }
-    wiz->Destroy();
+    wxWindowPtr<CsvImportWiz> wiz(new CsvImportWiz(this, &m_configuration));
+    wiz->ShowWindowModalThenDo([this,wiz](int retcode) {
+      if (retcode == wxID_OK) {
+        wxString cmd = wxT("read_nested_list(\"") + wiz->GetFilename() + wxT("\", ") +
+          wiz->GetSeparator() + wxT(");");
+        MenuCommand(cmd);
+      }
+    });
     break;
   }
   case menu_list2csv: {
-    CsvExportWiz *wiz = new CsvExportWiz(this, &m_configuration, _("List"));
-    if (wiz->ShowModal() == wxID_OK) {
-      wxString cmd = wxT("write_data(") + wiz->GetMatrix() + wxT(", \"") +
-	wiz->GetFilename() + wxT("\", ") + wiz->GetSeparator() + wxT(");");
-      MenuCommand(cmd);
-    }
-    wiz->Destroy();
+    wxWindowPtr<CsvExportWiz> wiz(new CsvExportWiz(this, &m_configuration, _("List")));
+    wiz->ShowWindowModalThenDo([this,wiz](int retcode) {
+      if (retcode == wxID_OK) {
+        wxString cmd = wxT("write_data(") + wiz->GetMatrix() + wxT(", \"") +
+          wiz->GetFilename() + wxT("\", ") + wiz->GetSeparator() + wxT(");");
+        MenuCommand(cmd);
+      }
+    });
     break;
   }
   case menu_list_create_from_args:
@@ -8089,23 +8105,24 @@ void wxMaxima::ListMenu(wxCommandEvent &event) {
 	       _("Source list:"), wxT("[1,8,32]"), wxEmptyString);
     break;
   case menu_list_actual_values_storage: {
-    ActualValuesStorageWiz *wiz = new ActualValuesStorageWiz(
-							     &m_configuration, this, -1,
-							     _("Create a list as a storage for the values of variables"));
+    wxWindowPtr<ActualValuesStorageWiz> wiz(new ActualValuesStorageWiz(
+                                                                       &m_configuration, this, -1,
+                                                                       _("Create a list as a storage for the values of variables")));
     // wiz->Centre(wxBOTH);
-    if (wiz->ShowModal() == wxID_OK) {
-      MenuCommand(wiz->GetValue());
-    }
-    wiz->Destroy();
+    wiz->ShowWindowModalThenDo([this,wiz](int retcode) {
+      if (retcode == wxID_OK) {
+        MenuCommand(wiz->GetValue());
+      }
+    });
   } break;
   case menu_list_sort: {
-    ListSortWiz *wiz =
-      new ListSortWiz(&m_configuration, this, -1, _("Sort a list"), expr);
+    wxWindowPtr<ListSortWiz> wiz(new ListSortWiz(&m_configuration, this, -1, _("Sort a list"), expr));
     // wiz->Centre(wxBOTH);
-    if (wiz->ShowModal() == wxID_OK) {
-      MenuCommand(wiz->GetValue());
-    }
-    wiz->Destroy();
+    wiz->ShowWindowModalThenDo([this,wiz](int retcode) {
+      if (retcode == wxID_OK) {
+        MenuCommand(wiz->GetValue());
+      }
+    });
   } break;
   case menu_list_length:
     MenuCommand(wxT("length(") + expr + wxT(")"));
@@ -8593,15 +8610,15 @@ void wxMaxima::CalculusMenu(wxCommandEvent &event) {
     break;
   case button_integrate:
   case menu_integrate: {
-    IntegrateWiz *wiz =
-      new IntegrateWiz(this, -1, &m_configuration, _("Integrate"));
+    wxWindowPtr<IntegrateWiz> wiz(new IntegrateWiz(this, -1, &m_configuration, _("Integrate")));
     wiz->SetValue(expr);
     // wiz->Centre(wxBOTH);
-    if (wiz->ShowModal() == wxID_OK) {
-      wxString val = wiz->GetValue();
-      MenuCommand(val);
-    }
-    wiz->Destroy();
+    wiz->ShowWindowModalThenDo([this,wiz](int retcode) {
+      if (retcode == wxID_OK) {
+        wxString val = wiz->GetValue();
+        MenuCommand(val);
+      }
+    });
   } break;
   case menu_laplace:
     CommandWiz(_("Laplace"), wxEmptyString, wxEmptyString,
@@ -8623,25 +8640,27 @@ void wxMaxima::CalculusMenu(wxCommandEvent &event) {
                _("Times:"), wxT("1"), wxEmptyString);
     break;
   case button_taylor: {
-    SeriesWiz *wiz = new SeriesWiz(this, -1, &m_configuration, _("Series"));
+    wxWindowPtr<SeriesWiz> wiz(new SeriesWiz(this, -1, &m_configuration, _("Series")));
     wiz->SetValue(expr);
     // wiz->Centre(wxBOTH);
-    if (wiz->ShowModal() == wxID_OK) {
-      wxString val = wiz->GetValue();
-      MenuCommand(val);
-    }
-    wiz->Destroy();
+    wiz->ShowWindowModalThenDo([this,wiz](int retcode) {
+      if (retcode == wxID_OK) {
+        wxString val = wiz->GetValue();
+        MenuCommand(val);
+      }
+    });
   } break;
   case button_limit:
   case menu_limit: {
-    LimitWiz *wiz = new LimitWiz(this, -1, &m_configuration, _("Limit"));
+    wxWindowPtr<LimitWiz> wiz(new LimitWiz(this, -1, &m_configuration, _("Limit")));
     wiz->SetValue(expr);
     // wiz->Centre(wxBOTH);
-    if (wiz->ShowModal() == wxID_OK) {
-      wxString val = wiz->GetValue();
-      MenuCommand(val);
-    }
-    wiz->Destroy();
+    wiz->ShowWindowModalThenDo([this,wiz](int retcode) {
+      if (retcode == wxID_OK) {
+        wxString val = wiz->GetValue();
+        MenuCommand(val);
+      }
+    });
   } break;
   case menu_lbfgs:
     CommandWiz(_("Find minimum"),
@@ -8654,14 +8673,15 @@ void wxMaxima::CalculusMenu(wxCommandEvent &event) {
     break;
   case button_sum:
   case menu_sum: {
-    SumWiz *wiz = new SumWiz(this, -1, &m_configuration, _("Sum"));
+    wxWindowPtr<SumWiz> wiz(new SumWiz(this, -1, &m_configuration, _("Sum")));
     wiz->SetValue(expr);
     // wiz->Centre(wxBOTH);
-    if (wiz->ShowModal() == wxID_OK) {
-      wxString val = wiz->GetValue();
-      MenuCommand(val);
-    }
-    wiz->Destroy();
+    wiz->ShowWindowModalThenDo([this,wiz](int retcode) {
+      if (retcode == wxID_OK) {
+        wxString val = wiz->GetValue();
+        MenuCommand(val);
+      }
+    });
   } break;
   case button_product:
   case menu_product:
@@ -8684,14 +8704,15 @@ void wxMaxima::PlotMenu(wxCommandEvent &event) {
   switch (event.GetId()) {
   case button_plot3:
   case gp_plot3: {
-    Plot3DWiz *wiz = new Plot3DWiz(this, -1, &m_configuration, _("Plot 3D"));
+    wxWindowPtr<Plot3DWiz> wiz(new Plot3DWiz(this, -1, &m_configuration, _("Plot 3D")));
     wiz->SetValue(expr);
     // wiz->Centre(wxBOTH);
-    if (wiz->ShowModal() == wxID_OK) {
-      wxString val = wiz->GetValue();
-      MenuCommand(val);
-    }
-    wiz->Destroy();
+    wiz->ShowWindowModalThenDo([this,wiz](int retcode) {
+      if (retcode == wxID_OK) {
+        wxString val = wiz->GetValue();
+        MenuCommand(val);
+      }
+    });
   } break;
   case menu_animationautostart:
     if (event.IsChecked())
@@ -8707,23 +8728,24 @@ void wxMaxima::PlotMenu(wxCommandEvent &event) {
   } break;
   case button_plot2:
   case gp_plot2: {
-    Plot2DWiz *wiz = new Plot2DWiz(this, -1, &m_configuration, _("Plot 2D"));
+    wxWindowPtr<Plot2DWiz> wiz(new Plot2DWiz(this, -1, &m_configuration, _("Plot 2D")));
     wiz->SetValue(expr);
     // wiz->Centre(wxBOTH);
-    if (wiz->ShowModal() == wxID_OK) {
-      wxString val = wiz->GetValue();
-      MenuCommand(val);
-    }
-    wiz->Destroy();
+    wiz->ShowWindowModalThenDo([this,wiz](int retcode) {
+      if (retcode == wxID_OK) {
+        wxString val = wiz->GetValue();
+        MenuCommand(val);
+      }
+    });
   } break;
   case menu_plot_format: {
-    PlotFormatWiz *wiz =
-      new PlotFormatWiz(this, -1, &m_configuration, _("Plot format"));
+    wxWindowPtr<PlotFormatWiz> wiz(new PlotFormatWiz(this, -1, &m_configuration, _("Plot format")));
     wiz->Center(wxBOTH);
-    if (wiz->ShowModal() == wxID_OK) {
-      MenuCommand(wiz->GetValue());
-    }
-    wiz->Destroy();
+    wiz->ShowWindowModalThenDo([this,wiz](int retcode) {
+      if (retcode == wxID_OK) {
+        MenuCommand(wiz->GetValue());
+      }
+    });
     /*wxString format = GetTextFromUser(_("Enter new plot format:"),
       _("Plot format"),
       m_configuration,
@@ -9052,16 +9074,16 @@ void wxMaxima::HelpMenu(wxCommandEvent &event) {
 
   switch (event.GetId()) {
   case menu_goto_url: {
-    GenWiz *wiz =
-      new GenWiz(this, &m_configuration, m_worksheet->GetMaximaManual(),
-		 _("Go to URL"), wxEmptyString, wxEmptyString, wxEmptyString,
-		 _("URL"), wxEmptyString, wxEmptyString);
+    wxWindowPtr<GenWiz> wiz(new GenWiz(this, &m_configuration, m_worksheet->GetMaximaManual(),
+                                       _("Go to URL"), wxEmptyString, wxEmptyString, wxEmptyString,
+                                       _("URL"), wxEmptyString, wxEmptyString));
     // wiz->Centre(wxBOTH);
-    if (wiz->ShowModal() == wxID_OK) {
-      m_helpPane->SetURL((*wiz)[0]);
-      wxMaximaFrame::ShowPane(menu_pane_help);
-    }
-    wiz->Destroy();
+    wiz->ShowWindowModalThenDo([this,wiz](int retcode) {
+      if (retcode == wxID_OK) {
+        m_helpPane->SetURL((*wiz)[0]);
+        wxMaximaFrame::ShowPane(menu_pane_help);
+      }
+    });
   } break;
   case wxID_ABOUT: {
     wxAboutDialogInfo info;
@@ -9282,34 +9304,35 @@ void wxMaxima::StatsMenu(wxCommandEvent &event) {
     }
   } break;
   case menu_stats_subsample: {
-    Gen4Wiz *wiz = new Gen4Wiz(
-			       _("Data Matrix:"), _("Condition:"), _("Include columns:"),
-			       _("Matrix name:"), expr, wxT("col[1]#'NA"), wxEmptyString,
-			       wxEmptyString, &m_configuration, this, -1, _("Select Subsample"), true);
+    wxWindowPtr<Gen4Wiz> wiz(new Gen4Wiz(
+                                         _("Data Matrix:"), _("Condition:"), _("Include columns:"),
+                                         _("Matrix name:"), expr, wxT("col[1]#'NA"), wxEmptyString,
+                                         wxEmptyString, &m_configuration, this, -1, _("Select Subsample"), true));
     // wiz->Centre(wxBOTH);
-    if (wiz->ShowModal() == wxID_OK) {
-      wxString name = wiz->GetValue4();
+    wiz->ShowWindowModalThenDo([this,wiz](int retcode) {
+      if (retcode == wxID_OK) {
+        wxString name = wiz->GetValue4();
 
-      wxString cmd;
+        wxString cmd;
 
-      if (name != wxEmptyString)
-        cmd << name << wxT(": ");
+        if (name != wxEmptyString)
+          cmd << name << wxT(": ");
 
-      cmd += wxT("subsample(\n   ") + wiz->GetValue1() + wxT(",\n   ") +
-	wxT("lambda([col], is( ");
+        cmd += wxT("subsample(\n   ") + wiz->GetValue1() + wxT(",\n   ") +
+          wxT("lambda([col], is( ");
 
-      if (wiz->GetValue2() != wxEmptyString)
-        cmd += wiz->GetValue2() + wxT(" ))");
-      else
-        cmd += wxT("true ))");
+        if (wiz->GetValue2() != wxEmptyString)
+          cmd += wiz->GetValue2() + wxT(" ))");
+        else
+          cmd += wxT("true ))");
 
-      if (wiz->GetValue3() != wxEmptyString)
-        cmd += wxT(",\n   ") + wiz->GetValue3();
+        if (wiz->GetValue3() != wxEmptyString)
+          cmd += wxT(",\n   ") + wiz->GetValue3();
 
-      cmd += wxT(");");
-      MenuCommand(cmd);
-    }
-    wiz->Destroy();
+        cmd += wxT(");");
+        MenuCommand(cmd);
+      }
+    });
   } break;
   }
 }
@@ -9765,15 +9788,15 @@ void wxMaxima::PopupMenu(wxCommandEvent &event) {
                wxEmptyString, _("Upper bound:"), wxT("1"), wxEmptyString);
     break;
   case Worksheet::popid_integrate: {
-    IntegrateWiz *wiz =
-      new IntegrateWiz(this, -1, &m_configuration, _("Integrate"));
+    wxWindowPtr<IntegrateWiz> wiz(new IntegrateWiz(this, -1, &m_configuration, _("Integrate")));
     wiz->SetValue(selection);
     // wiz->Centre(wxBOTH);
-    if (wiz->ShowModal() == wxID_OK) {
-      wxString val = wiz->GetValue();
-      MenuCommand(val);
-    }
-    wiz->Destroy();
+    wiz->ShowWindowModalThenDo([this,wiz](int retcode) {
+      if (retcode == wxID_OK) {
+        wxString val = wiz->GetValue();
+        MenuCommand(val);
+      }
+    });
   } break;
   case Worksheet::popid_diff:
     CommandWiz(_("Differentiate"), _("Differentiates the expression n times"),
@@ -9789,24 +9812,26 @@ void wxMaxima::PopupMenu(wxCommandEvent &event) {
                _("Expression"), selection, wxEmptyString);
     break;
   case Worksheet::popid_plot2d: {
-    Plot2DWiz *wiz = new Plot2DWiz(this, -1, &m_configuration, _("Plot 2D"));
+    wxWindowPtr<Plot2DWiz> wiz(new Plot2DWiz(this, -1, &m_configuration, _("Plot 2D")));
     wiz->SetValue(selection);
     // wiz->Centre(wxBOTH);
-    if (wiz->ShowModal() == wxID_OK) {
-      wxString val = wiz->GetValue();
-      MenuCommand(val);
-    }
-    wiz->Destroy();
+    wiz->ShowWindowModalThenDo([this,wiz](int retcode) {
+      if (retcode == wxID_OK) {
+        wxString val = wiz->GetValue();
+        MenuCommand(val);
+      }
+    });
   } break;
   case Worksheet::popid_plot3d: {
-    Plot3DWiz *wiz = new Plot3DWiz(this, -1, &m_configuration, _("Plot 3D"));
+    wxWindowPtr<Plot3DWiz> wiz(new Plot3DWiz(this, -1, &m_configuration, _("Plot 3D")));
     wiz->SetValue(selection);
     // wiz->Centre(wxBOTH);
-    if (wiz->ShowModal() == wxID_OK) {
-      wxString val = wiz->GetValue();
-      MenuCommand(val);
-    }
-    wiz->Destroy();
+    wiz->ShowWindowModalThenDo([this,wiz](int retcode) {
+      if (retcode == wxID_OK) {
+        wxString val = wiz->GetValue();
+        MenuCommand(val);
+      }
+    });
   } break;
   case Worksheet::popid_float:
     MenuCommand(wxT("float(") + selection + wxT("), numer;"));

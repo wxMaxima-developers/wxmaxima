@@ -24,6 +24,7 @@
 
 #include <wx/artprov.h>
 #include <wx/config.h>
+#include <wx/windowptr.h>
 
 Plot2DWiz::Plot2DWiz(wxWindow *parent, int id, Configuration *cfg,
                      const wxString &title, const wxPoint &pos,
@@ -403,28 +404,31 @@ void Plot2DWiz::OnButton(wxCommandEvent &WXUNUSED(event)) {
 void Plot2DWiz::OnPopupMenu(wxCommandEvent &event) {
   switch (event.GetId()) {
   case parametric_plot: {
-    Plot2DPar *wiz = new Plot2DPar(this, -1, m_configuration, _("Plot 2D"));
+    wxWindowPtr<Plot2DPar> wiz(new Plot2DPar(this, -1, m_configuration, _("Plot 2D")));
     wiz->Centre(wxBOTH);
-    if (wiz->ShowModal() == wxID_OK) {
-      if (text_ctrl_1->GetValue() == wxT("%"))
-        text_ctrl_1->SetValue(wxEmptyString);
-      if (((text_ctrl_1->GetValue()).Strip()).Length())
-        text_ctrl_1->AppendText(wxT(", "));
-      text_ctrl_1->AppendText(wiz->GetValue());
-    }
+    wiz->ShowWindowModalThenDo([this,wiz](int retcode) {
+      if (retcode == wxID_OK) {
+        if (text_ctrl_1->GetValue() == wxT("%"))
+          text_ctrl_1->SetValue(wxEmptyString);
+        if (((text_ctrl_1->GetValue()).Strip()).Length())
+          text_ctrl_1->AppendText(wxT(", "));
+        text_ctrl_1->AppendText(wiz->GetValue());
+      }
+    });
   } //-V773
     break;
   case discrete_plot: {
-    Plot2DDiscrete *wiz =
-      new Plot2DDiscrete(this, -1, m_configuration, _("Plot 2D"));
+    wxWindowPtr<Plot2DDiscrete> wiz(new Plot2DDiscrete(this, -1, m_configuration, _("Plot 2D")));
     wiz->Centre(wxBOTH);
-    if (wiz->ShowModal() == wxID_OK) {
-      if (text_ctrl_1->GetValue() == wxT("%"))
-        text_ctrl_1->SetValue(wxEmptyString);
-      if (((text_ctrl_1->GetValue()).Strip()).Length())
-        text_ctrl_1->AppendText(wxT(", "));
-      text_ctrl_1->AppendText(wiz->GetValue());
-    }
+    wiz->ShowWindowModalThenDo([this,wiz](int retcode) {
+      if (retcode == wxID_OK) {
+        if (text_ctrl_1->GetValue() == wxT("%"))
+          text_ctrl_1->SetValue(wxEmptyString);
+        if (((text_ctrl_1->GetValue()).Strip()).Length())
+          text_ctrl_1->AppendText(wxT(", "));
+        text_ctrl_1->AppendText(wiz->GetValue());
+      }
+    });
   } //-V773
     break;
   }
