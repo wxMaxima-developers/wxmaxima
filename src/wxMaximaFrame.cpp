@@ -49,6 +49,7 @@
 #include <wx/stdpaths.h>
 #include <wx/sysopt.h>
 #include <wx/wupdlock.h>
+#include <wx/windowptr.h>
 
 wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, wxLocale *locale,
                              const wxString &title, const wxPoint &pos,
@@ -2875,17 +2876,18 @@ wxMaximaFrame::SymbolsPane::SymbolsPane(wxWindow *parent,
 void wxMaximaFrame::SymbolsPane::OnMenu(wxCommandEvent &event) {
   switch (event.GetId()) {
   case menu_additionalSymbols:
-    Gen1Wiz *wiz = new Gen1Wiz(
-			       this, -1, m_configuration, _("Non-builtin symbols"),
-			       _("Unicode symbols:"), m_configuration->SymbolPaneAdditionalChars(),
-			       _("Allows to specify which not-builtin unicode symbols should be "
-				 "displayed in the symbols sidebar along with the built-in symbols."));
+    wxWindowPtr<Gen1Wiz> wiz(new Gen1Wiz(
+                                         this, -1, m_configuration, _("Non-builtin symbols"),
+                                         _("Unicode symbols:"), m_configuration->SymbolPaneAdditionalChars(),
+                                         _("Allows to specify which not-builtin unicode symbols should be "
+                                           "displayed in the symbols sidebar along with the built-in symbols.")));
     // wiz->Centre(wxBOTH);
     wiz->SetLabel1ToolTip(_("Drag-and-drop unicode symbols here"));
-    if (wiz->ShowModal() == wxID_OK)
-      m_configuration->SymbolPaneAdditionalChars(wiz->GetValue());
-    wiz->Destroy();
-    UpdateUserSymbols();
+    wiz->ShowWindowModalThenDo([this,wiz](int retcode) {
+      if (retcode == wxID_OK)
+        m_configuration->SymbolPaneAdditionalChars(wiz->GetValue());
+      UpdateUserSymbols();
+    });
     break;
   }
 }
