@@ -5724,7 +5724,6 @@ void wxMaxima::FileMenu(wxCommandEvent &event) {
     m_worksheet->CloseAutoCompletePopup();
 
   wxString expr = GetDefaultEntry();
-  wxString cmd;
   bool forceSave = false;
 #if defined __WXMSW__
   wxString b = wxT("\\");
@@ -6501,7 +6500,6 @@ void wxMaxima::MaximaMenu(wxCommandEvent &event) {
     m_worksheet->CloseAutoCompletePopup();
 
   wxString expr = GetDefaultEntry();
-  wxString cmd;
   wxString b = wxT("\\");
   wxString f = wxT("/");
   switch (event.GetId()) {
@@ -6569,37 +6567,38 @@ void wxMaxima::MaximaMenu(wxCommandEvent &event) {
       wxGetSingleChoice(_("Select math display algorithm"),
 			_("Display algorithm"), 3, choices, this);
     if (choice.Length()) {
-      cmd = wxT("set_display('") + choice + wxT(")$");
+      wxString cmd = wxT("set_display('") + choice + wxT(")$");
       MenuCommand(cmd);
     }
   } break;
-  case menu_texform:
-    cmd = wxT("tex(") + expr + wxT(")$");
+  case menu_texform: {
+    wxString cmd = wxT("tex(") + expr + wxT(")$");
     MenuCommand(cmd);
-    break;
-  case menu_grind:
-    cmd = wxT("grind(") + expr + wxT(")$");
+  } break;
+  case menu_grind: {
+    wxString cmd = wxT("grind(") + expr + wxT(")$");
     MenuCommand(cmd);
-    break;
-  case menu_debugmode_lisp:
-    cmd = wxT("debugmode: lisp$");
+  } break;
+  case menu_debugmode_lisp: {
+    wxString cmd = wxT("debugmode: lisp$");
     MenuCommand(cmd);
-    break;
-  case menu_debugmode_all:
-    cmd = wxT("debugmode: true$");
+  } break;
+  case menu_debugmode_all: {
+    wxString cmd = wxT("debugmode: true$");
     MenuCommand(cmd);
-    break;
-  case menu_debugmode_off:
-    cmd = wxT("debugmode: false$");
+  } break;
+  case menu_debugmode_off: {
+    wxString cmd = wxT("debugmode: false$");
     MenuCommand(cmd);
-    break;
-  case menu_time:
+  } break;
+  case menu_time: {
+    wxString cmd;
     if (event.IsChecked())
       cmd = wxT("showtime:all$");
     else
       cmd = wxT("showtime:false$");
     MenuCommand(cmd);
-    break;
+  } break;
   case gentran_lang_c:
     MenuCommand(wxT("gentranlang:c;"));
     break;
@@ -7229,7 +7228,7 @@ void wxMaxima::MaximaMenu(wxCommandEvent &event) {
 #if defined(__WXMSW__)
       dir.Replace(wxT("\\"), wxT("/"));
 #endif
-      cmd = wxT("file_search_maxima : cons(sconcat(\"") + dir +
+      wxString cmd = wxT("file_search_maxima : cons(sconcat(\"") + dir +
 	wxT("/###.{lisp,mac,mc}\"), file_search_maxima)$");
       MenuCommand(cmd);
     }
@@ -7306,7 +7305,6 @@ void wxMaxima::EquationsMenu(wxCommandEvent &event) {
     m_worksheet->CloseAutoCompletePopup();
 
   wxString expr = GetDefaultEntry();
-  wxString cmd;
   switch (event.GetId()) {
   case menu_allroots:
     CommandWiz(
@@ -7462,7 +7460,7 @@ void wxMaxima::EquationsMenu(wxCommandEvent &event) {
                              _("Solve algebraic system"), isz);
     // wiz->Centre(wxBOTH);
     if (wiz->ShowModal() == wxID_OK) {
-      cmd = wxT("algsys") + wiz->GetValue();
+      wxString cmd = wxT("algsys") + wiz->GetValue();
       MenuCommand(cmd);
     }
     wiz->Destroy();
@@ -7483,7 +7481,7 @@ void wxMaxima::EquationsMenu(wxCommandEvent &event) {
       new SysWiz(this, -1, &m_configuration, _("Solve linear system"), isz);
     // wiz->Centre(wxBOTH);
     if (wiz->ShowModal() == wxID_OK) {
-      cmd = wxT("linsolve") + wiz->GetValue();
+      wxString cmd = wxT("linsolve") + wiz->GetValue();
       MenuCommand(cmd);
     }
     wiz->Destroy();
@@ -7506,14 +7504,14 @@ void wxMaxima::EquationsMenu(wxCommandEvent &event) {
                wxEmptyString, _("Point:"), wxT("x=0"), wxEmptyString,
                _("Value:"), wxT("0"), wxEmptyString);
     break;
-  case menu_lhs:
-    cmd = wxT("lhs(") + expr + wxT(");");
+  case menu_lhs: {
+    wxString cmd = wxT("lhs(") + expr + wxT(");");
     MenuCommand(cmd);
-    break;
-  case menu_rhs:
-    cmd = wxT("rhs(") + expr + wxT(");");
+  } break;
+  case menu_rhs: {
+    wxString cmd = wxT("rhs(") + expr + wxT(");");
     MenuCommand(cmd);
-    break;
+  } break;
   case menu_construct_fraction:
     CommandWiz(_("Construct a fraction"), wxEmptyString, wxEmptyString,
                wxT("(#1#)/(#2#)"), _("Enumerator:"), expr, wxEmptyString,
@@ -7530,12 +7528,11 @@ void wxMaxima::MatrixMenu(wxCommandEvent &event) {
     m_worksheet->CloseAutoCompletePopup();
 
   wxString expr = GetDefaultEntry();
-  wxString cmd;
   switch (event.GetId()) {
   case menu_csv2mat: {
     CsvImportWiz *wiz = new CsvImportWiz(this, &m_configuration);
     if (wiz->ShowModal() == wxID_OK) {
-      cmd = wxT("read_matrix(\"") + wiz->GetFilename() + wxT("\", ") +
+      wxString cmd = wxT("read_matrix(\"") + wiz->GetFilename() + wxT("\", ") +
 	wiz->GetSeparator() + wxT(");");
       MenuCommand(cmd);
     }
@@ -7545,7 +7542,7 @@ void wxMaxima::MatrixMenu(wxCommandEvent &event) {
   case menu_mat2csv: {
     CsvExportWiz *wiz = new CsvExportWiz(this, &m_configuration, _("Matrix"));
     if (wiz->ShowModal() == wxID_OK) {
-      cmd = wxT("write_data(") + wiz->GetMatrix() + wxT(", \"") +
+      wxString cmd = wxT("write_data(") + wiz->GetMatrix() + wxT(", \"") +
 	wiz->GetFilename() + wxT("\", ") + wiz->GetSeparator() + wxT(");");
       MenuCommand(cmd);
     }
@@ -7704,34 +7701,34 @@ void wxMaxima::MatrixMenu(wxCommandEvent &event) {
   case menu_matrix_zheev:
     break;
 
-  case menu_invert_mat:
-    cmd = wxT("invert(") + expr + wxT(");");
+  case menu_invert_mat: {
+    wxString cmd = wxT("invert(") + expr + wxT(");");
     MenuCommand(cmd);
-    break;
-  case menu_determinant:
-    cmd = wxT("determinant(") + expr + wxT(");");
+  } break;
+  case menu_determinant: {
+    wxString cmd = wxT("determinant(") + expr + wxT(");");
     MenuCommand(cmd);
-    break;
-  case menu_rank:
-    cmd = wxT("rank(") + expr + wxT(");");
+  } break;
+  case menu_rank: {
+    wxString cmd = wxT("rank(") + expr + wxT(");");
     MenuCommand(cmd);
-    break;
-  case menu_eigen:
-    cmd = wxT("eigenvalues(") + expr + wxT(");");
+  } break;
+  case menu_eigen: {
+    wxString cmd = wxT("eigenvalues(") + expr + wxT(");");
     MenuCommand(cmd);
-    break;
-  case menu_eigvect:
-    cmd = wxT("eigenvectors(") + expr + wxT(");");
+  } break;
+  case menu_eigvect: {
+    wxString cmd = wxT("eigenvectors(") + expr + wxT(");");
     MenuCommand(cmd);
-    break;
-  case menu_adjoint_mat:
-    cmd = wxT("adjoint(") + expr + wxT(");");
+  } break;
+  case menu_adjoint_mat: {
+    wxString cmd = wxT("adjoint(") + expr + wxT(");");
     MenuCommand(cmd);
-    break;
-  case menu_transpose:
-    cmd = wxT("transpose(") + expr + wxT(");");
+  } break;
+  case menu_transpose: {
+    wxString cmd = wxT("transpose(") + expr + wxT(");");
     MenuCommand(cmd);
-    break;
+  } break;
   case menu_map_mat: {
     Gen3Wiz *wiz =
       new Gen3Wiz(_("Resulting Matrix name (may be empty):"), _("Function:"),
@@ -7739,7 +7736,7 @@ void wxMaxima::MatrixMenu(wxCommandEvent &event) {
 		  &m_configuration, this, -1, _("Matrix map"));
     // wiz->Centre(wxBOTH);
     if (wiz->ShowModal() == wxID_OK) {
-      cmd = wxEmptyString;
+      wxString cmd = wxEmptyString;
       if (wiz->GetValue1().IsEmpty())
         cmd = wiz->GetValue1() + wxT(":");
       cmd += wxT("matrixmap(") + wiz->GetValue2() + wxT(", ") +
@@ -7753,6 +7750,7 @@ void wxMaxima::MatrixMenu(wxCommandEvent &event) {
     MatDim *wiz = new MatDim(this, -1, &m_configuration, _("Matrix"));
     // wiz->Centre(wxBOTH);
     if (wiz->ShowModal() == wxID_OK) {
+      wxString cmd;
       if (wiz->GetValue0() != wxEmptyString)
         cmd = wiz->GetValue0() + wxT(": ");
       long w, h;
@@ -7866,7 +7864,6 @@ void wxMaxima::DrawMenu(wxCommandEvent &event) {
   else
     expr = "%";
 
-  wxString cmd;
   switch (event.GetId()) {
   case menu_draw_2d: {
     DrawWiz *wiz = new DrawWiz(this, &m_configuration, 2);
@@ -7922,7 +7919,7 @@ void wxMaxima::DrawMenu(wxCommandEvent &event) {
 			       _("Title (Sub- and superscripts as x_{10} or x^{10})"), expr);
     // wiz->Centre(wxBOTH);
     if (wiz->ShowModal() == wxID_OK) {
-      cmd = wxT("title=\"") + wiz->GetValue() + wxT("\"");
+      wxString cmd = wxT("title=\"") + wiz->GetValue() + wxT("\"");
       AddDrawParameter(cmd);
     }
     wiz->Destroy();
@@ -7935,7 +7932,7 @@ void wxMaxima::DrawMenu(wxCommandEvent &event) {
 			       _("Title (Sub- and superscripts as x_{10} or x^{10})"), expr);
     // wiz->Centre(wxBOTH);
     if (wiz->ShowModal() == wxID_OK) {
-      cmd = wxT("key=\"") + wiz->GetValue() + wxT("\"");
+      wxString cmd = wxT("key=\"") + wiz->GetValue() + wxT("\"");
       AddDrawParameter(cmd);
     }
     wiz->Destroy();
@@ -7986,7 +7983,7 @@ void wxMaxima::DrawMenu(wxCommandEvent &event) {
 			       &m_configuration, this, -1, _("Set the grid density."));
     // wiz->Centre(wxBOTH);
     if (wiz->ShowModal() == wxID_OK) {
-      cmd =
+      wxString cmd =
 	wxT("grid=[") + wiz->GetValue1() + "," + wiz->GetValue2() + wxT("]");
       AddDrawParameter(cmd);
     }
@@ -8030,12 +8027,11 @@ void wxMaxima::ListMenu(wxCommandEvent &event) {
     m_worksheet->CloseAutoCompletePopup();
 
   wxString expr = GetDefaultEntry();
-  wxString cmd;
   switch (event.GetId()) {
   case menu_csv2list: {
     CsvImportWiz *wiz = new CsvImportWiz(this, &m_configuration);
     if (wiz->ShowModal() == wxID_OK) {
-      cmd = wxT("read_nested_list(\"") + wiz->GetFilename() + wxT("\", ") +
+      wxString cmd = wxT("read_nested_list(\"") + wiz->GetFilename() + wxT("\", ") +
 	wiz->GetSeparator() + wxT(");");
       MenuCommand(cmd);
     }
@@ -8045,7 +8041,7 @@ void wxMaxima::ListMenu(wxCommandEvent &event) {
   case menu_list2csv: {
     CsvExportWiz *wiz = new CsvExportWiz(this, &m_configuration, _("List"));
     if (wiz->ShowModal() == wxID_OK) {
-      cmd = wxT("write_data(") + wiz->GetMatrix() + wxT(", \"") +
+      wxString cmd = wxT("write_data(") + wiz->GetMatrix() + wxT(", \"") +
 	wiz->GetFilename() + wxT("\", ") + wiz->GetSeparator() + wxT(");");
       MenuCommand(cmd);
     }
@@ -8231,7 +8227,6 @@ void wxMaxima::SimplifyMenu(wxCommandEvent &event) {
     m_worksheet->CloseAutoCompletePopup();
 
   wxString expr = GetDefaultEntry();
-  wxString cmd;
   switch (event.GetId()) {
   case menu_nouns:
     CommandWiz(
@@ -8251,10 +8246,10 @@ void wxMaxima::SimplifyMenu(wxCommandEvent &event) {
                wxEmptyString);
     break;
   case button_ratsimp:
-  case menu_ratsimp:
-    cmd = wxT("ratsimp(") + expr + wxT(");");
+  case menu_ratsimp: {
+    wxString cmd = wxT("ratsimp(") + expr + wxT(");");
     MenuCommand(cmd);
-    break;
+  } break;
   case button_radcan:
   case menu_radsimp:
     CommandWiz(
@@ -8270,30 +8265,30 @@ void wxMaxima::SimplifyMenu(wxCommandEvent &event) {
 	       wxEmptyString, wxT("radcan(#1#);"), _("Expression"), expr,
 	       wxEmptyString);
     break;
-  case menu_to_fact:
-    cmd = wxT("makefact(") + expr + wxT(");");
+  case menu_to_fact: {
+    wxString cmd = wxT("makefact(") + expr + wxT(");");
     MenuCommand(cmd);
-    break;
-  case menu_to_gamma:
-    cmd = wxT("makegamma(") + expr + wxT(");");
+  } break;
+  case menu_to_gamma: {
+    wxString cmd = wxT("makegamma(") + expr + wxT(");");
     MenuCommand(cmd);
-    break;
-  case menu_factcomb:
-    cmd = wxT("factcomb(") + expr + wxT(");");
+  } break;
+  case menu_factcomb: {
+    wxString cmd = wxT("factcomb(") + expr + wxT(");");
     MenuCommand(cmd);
-    break;
-  case menu_factsimp:
-    cmd = wxT("minfactorial(") + expr + wxT(");");
+  } break;
+  case menu_factsimp: {
+    wxString cmd = wxT("minfactorial(") + expr + wxT(");");
     MenuCommand(cmd);
-    break;
-  case menu_logcontract:
-    cmd = wxT("logcontract(") + expr + wxT(");");
+  } break;
+  case menu_logcontract: {
+    wxString cmd = wxT("logcontract(") + expr + wxT(");");
     MenuCommand(cmd);
-    break;
-  case menu_logexpand:
-    cmd = expr + wxT(", logexpand=super;");
+  } break;
+  case menu_logexpand: {
+    wxString cmd = expr + wxT(", logexpand=super;");
     MenuCommand(cmd);
-    break;
+  } break;
   case menu_logexpand_false:
     MenuCommand(wxT("logexpand:false$"));
     break;
@@ -8307,23 +8302,23 @@ void wxMaxima::SimplifyMenu(wxCommandEvent &event) {
     MenuCommand(wxT("logexpand:super$"));
     break;
   case button_expand:
-  case menu_expand:
-    cmd = wxT("expand(") + expr + wxT(");");
+  case menu_expand: {
+    wxString cmd = wxT("expand(") + expr + wxT(");");
     MenuCommand(cmd);
-    break;
-  case menu_scsimp:
-    cmd = wxT("scsimp(") + expr + wxT(");");
+  } break;
+  case menu_scsimp: {
+    wxString cmd = wxT("scsimp(") + expr + wxT(");");
     MenuCommand(cmd);
-    break;
-  case menu_xthru:
-    cmd = wxT("xthru(") + expr + wxT(");");
+  } break;
+  case menu_xthru: {
+    wxString cmd = wxT("xthru(") + expr + wxT(");");
     MenuCommand(cmd);
-    break;
+  } break;
   case button_factor:
-  case menu_factor:
-    cmd = wxT("factor(") + expr + wxT(");");
+  case menu_factor: {
+    wxString cmd = wxT("factor(") + expr + wxT(");");
     MenuCommand(cmd);
-    break;
+  } break;
   case menu_expandwrt:
     CommandWiz(_("Expand for variable(s):"), wxEmptyString, wxEmptyString,
                wxT("expandwrt(#1#,#2#);"), wxT("Expression"), wxT("%"),
@@ -8381,13 +8376,14 @@ void wxMaxima::SimplifyMenu(wxCommandEvent &event) {
                wxT("Term numbers"), wxT("x^2=u,u=x^2"),
                _("Comma-separated numbers of the terms to substitute in"));
     break;
-  case menu_opsubst:
+  case menu_opsubst: {
+    wxString cmd;
     if (event.IsChecked())
       cmd = wxT("opsubst:true$");
     else
       cmd = wxT("opsubst:false$");
     MenuCommand(cmd);
-    break;
+  } break;
   case menu_expandwrt_denom:
     CommandWiz(_("Expand for variable(s) including denominator:"),
                wxEmptyString, wxEmptyString,
@@ -8395,83 +8391,84 @@ void wxMaxima::SimplifyMenu(wxCommandEvent &event) {
                wxT("Expression"), wxT("%"), wxEmptyString, wxT("Variable(s)"),
                wxT("x"), _("Comma-separated variables"));
     break;
-  case menu_horner:
-    cmd = wxT("horner(") + expr + wxT(");");
+  case menu_horner: {
+    wxString cmd = wxT("horner(") + expr + wxT(");");
     MenuCommand(cmd);
-    break;
-  case menu_collapse:
-    cmd = wxT("collapse(") + expr + wxT(");");
+  } break;
+  case menu_collapse: {
+    wxString cmd = wxT("collapse(") + expr + wxT(");");
     MenuCommand(cmd);
-    break;
-  case menu_optimize:
-    cmd = wxT("optimize(") + expr + wxT(");");
+  } break;
+  case menu_optimize: {
+    wxString cmd = wxT("optimize(") + expr + wxT(");");
     MenuCommand(cmd);
-    break;
+  } break;
   case menu_mainvar:
     CommandWiz(_("Declare main variable:"), wxEmptyString, wxEmptyString,
                wxT("declare(#1#,mainvar);"), wxT("Variable"), wxT("%"),
                wxEmptyString);
     break;
-  case menu_scanmapfactor:
-    cmd = wxT("scanmap('factor,") + expr + wxT(");");
+  case menu_scanmapfactor: {
+    wxString cmd = wxT("scanmap('factor,") + expr + wxT(");");
     MenuCommand(cmd);
-    break;
-  case menu_gfactor:
-    cmd = wxT("gfactor(") + expr + wxT(");");
+  } break;
+  case menu_gfactor: {
+    wxString cmd = wxT("gfactor(") + expr + wxT(");");
     MenuCommand(cmd);
-    break;
+  } break;
   case button_trigreduce:
-  case menu_trigreduce:
-    cmd = wxT("trigreduce(") + expr + wxT(");");
+  case menu_trigreduce: {
+    wxString cmd = wxT("trigreduce(") + expr + wxT(");");
     MenuCommand(cmd);
-    break;
+  } break;
   case button_trigsimp:
-  case menu_trigsimp:
-    cmd = wxT("trigsimp(") + expr + wxT(");");
+  case menu_trigsimp: {
+    wxString cmd = wxT("trigsimp(") + expr + wxT(");");
     MenuCommand(cmd);
-    break;
+  } break;
   case button_trigexpand:
-  case menu_trigexpand:
-    cmd = wxT("trigexpand(") + expr + wxT(");");
+  case menu_trigexpand: {
+    wxString cmd = wxT("trigexpand(") + expr + wxT(");");
     MenuCommand(cmd);
-    break;
+  } break;
   case menu_trigrat:
-  case button_trigrat:
-    cmd = wxT("trigrat(") + expr + wxT(");");
+  case button_trigrat: {
+    wxString cmd = wxT("trigrat(") + expr + wxT(");");
     MenuCommand(cmd);
-    break;
+  } break;
   case button_rectform:
-  case menu_rectform:
-    cmd = wxT("rectform(") + expr + wxT(");");
+  case menu_rectform: {
+    wxString cmd = wxT("rectform(") + expr + wxT(");");
     MenuCommand(cmd);
-    break;
-  case menu_polarform:
-    cmd = wxT("polarform(") + expr + wxT(");");
+  } break;
+  case menu_polarform: {
+    wxString cmd = wxT("polarform(") + expr + wxT(");");
     MenuCommand(cmd);
-    break;
-  case menu_demoivre:
-    cmd = wxT("demoivre(") + expr + wxT(");");
+  } break;
+  case menu_demoivre: {
+    wxString cmd = wxT("demoivre(") + expr + wxT(");");
     MenuCommand(cmd);
-    break;
-  case menu_exponentialize:
-    cmd = wxT("exponentialize(") + expr + wxT(");");
+  } break;
+  case menu_exponentialize: {
+    wxString cmd = wxT("exponentialize(") + expr + wxT(");");
     MenuCommand(cmd);
-    break;
-  case menu_realpart:
-    cmd = wxT("realpart(") + expr + wxT(");");
+  } break;
+  case menu_realpart: {
+    wxString cmd = wxT("realpart(") + expr + wxT(");");
     MenuCommand(cmd);
-    break;
-  case menu_imagpart:
-    cmd = wxT("imagpart(") + expr + wxT(");");
+  } break;
+  case menu_imagpart: {
+    wxString cmd = wxT("imagpart(") + expr + wxT(");");
     MenuCommand(cmd);
-    break;
-  case menu_talg:
+  } break;
+  case menu_talg: {
+    wxString cmd;
     if (event.IsChecked())
       cmd = wxT("algebraic:true$");
     else
       cmd = wxT("algebraic:false$");
     MenuCommand(cmd);
-    break;
+  } break;
   case menu_tellrat:
     CommandWiz(_("Enter an equation for rational simplification:"),
                wxEmptyString, wxEmptyString, wxT("tellrat(#1#);"),
@@ -8491,7 +8488,6 @@ void wxMaxima::CalculusMenu(wxCommandEvent &event) {
     m_worksheet->CloseAutoCompletePopup();
 
   wxString expr = GetDefaultEntry();
-  wxString cmd;
   switch (event.GetId()) {
   case menu_change_var:
     CommandWiz(
@@ -8566,10 +8562,10 @@ void wxMaxima::CalculusMenu(wxCommandEvent &event) {
                wxEmptyString, _("Range radius:"), wxT("2"), wxEmptyString);
     break;
   }
-  case menu_continued_fraction:
-    cmd += wxT("cfdisrep(cf(") + expr + wxT("));");
+  case menu_continued_fraction: {
+    wxString cmd = wxT("cfdisrep(cf(") + expr + wxT("));");
     MenuCommand(cmd);
-    break;
+  } break;
   case menu_lcm:
     CommandWiz(_("LCM"), wxEmptyString, wxEmptyString, wxT("lcm(#1#,#2#);"),
                _("Polynomial 1:"), expr, wxEmptyString, _("Polynomial 2:"),
@@ -8685,7 +8681,6 @@ void wxMaxima::PlotMenu(wxCommandEvent &event) {
     m_worksheet->CloseAutoCompletePopup();
 
   wxString expr = GetDefaultEntry();
-  wxString cmd;
   switch (event.GetId()) {
   case button_plot3:
   case gp_plot3: {
@@ -8749,7 +8744,6 @@ void wxMaxima::NumericalMenu(wxCommandEvent &event) {
     m_worksheet->CloseAutoCompletePopup();
 
   wxString expr = GetDefaultEntry();
-  wxString cmd;
   wxString integralSign = wxT("∫");
   if (!m_configuration.FontRendersChar(wxT('∫'), *wxNORMAL_FONT))
     integralSign = wxT("integrate");
@@ -8772,51 +8766,54 @@ void wxMaxima::NumericalMenu(wxCommandEvent &event) {
     m_worksheet->RequestRedraw();
     break;
   }
-  case menu_num_domain:
+  case menu_num_domain: {
+    wxString cmd;
     if (event.IsChecked())
       cmd = wxT("domain:'complex$");
     else
       cmd = wxT("domain:'real$");
     MenuCommand(cmd);
-    break;
-  case menu_to_float:
-    cmd = wxT("float(") + expr + wxT("), numer;");
+  } break;
+  case menu_to_float: {
+    wxString cmd = wxT("float(") + expr + wxT("), numer;");
     MenuCommand(cmd);
-    break;
-  case menu_to_bfloat:
-    cmd = wxT("bfloat(") + expr + wxT(");");
+  } break;
+  case menu_to_bfloat: {
+    wxString cmd = wxT("bfloat(") + expr + wxT(");");
     MenuCommand(cmd);
-    break;
-  case menu_to_numer:
-    cmd = expr + wxT(",numer;");
+  } break;
+  case menu_to_numer: {
+    wxString cmd = expr + wxT(",numer;");
     MenuCommand(cmd);
-    break;
-  case menu_rat:
-    cmd = wxT("rat(") + expr + wxT(");");
+  } break;
+  case menu_rat: {
+    wxString cmd = wxT("rat(") + expr + wxT(");");
     MenuCommand(cmd);
-    break;
-  case menu_rationalize:
-    cmd = wxT("rationalize(") + expr + wxT(");");
+  } break;
+  case menu_rationalize: {
+    wxString cmd = wxT("rationalize(") + expr + wxT(");");
     MenuCommand(cmd);
-    break;
-  case menu_guess_exact_value:
-    cmd = wxT("guess_exact_value(") + expr + wxT(");");
+  } break;
+  case menu_guess_exact_value: {
+    wxString cmd = wxT("guess_exact_value(") + expr + wxT(");");
     MenuCommand(cmd);
-    break;
-  case menu_num_out:
+  } break;
+  case menu_num_out: {
+    wxString cmd;
     if (!event.IsChecked())
       cmd = wxT("numer:false$");
     else
       cmd = wxT("numer:true$");
     MenuCommand(cmd);
-    break;
-  case menu_stringdisp:
+  } break;
+  case menu_stringdisp: {
+    wxString cmd;
     if (!event.IsChecked())
       cmd = wxT("stringdisp:false$");
     else
       cmd = wxT("stringdisp:true$");
     MenuCommand(cmd);
-    break;
+  } break;
   case menu_set_precision:
     CommandWiz(_("Enter new precision for bigfloats:"), wxEmptyString,
                wxEmptyString, wxT("fpprec : #1#$"), _("Precision"), wxT("%"),
@@ -9052,7 +9049,6 @@ void wxMaxima::HelpMenu(wxCommandEvent &event) {
     m_worksheet->CloseAutoCompletePopup();
 
   wxString expr = GetDefaultEntry();
-  wxString cmd;
 
   switch (event.GetId()) {
   case menu_goto_url: {
