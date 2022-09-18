@@ -2244,7 +2244,7 @@ bool wxMaxima::StartMaxima(bool force) {
     {
       m_unsuccessfulConnectionAttempts = 0;
       KillMaxima();
-      return true;
+      m_process->Detach();
     }
   
   wxString dirname;
