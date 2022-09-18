@@ -2629,6 +2629,8 @@ void wxMaxima::OnGnuplotClose(wxProcessEvent &event) {
 }
 
 void wxMaxima::OnProcessEvent(wxProcessEvent &event) {
+  if(event.GetPid() != m_pid)
+    return;
   m_process = NULL;
   m_pid = -1;
   wxLogMessage(_("Maxima process (pid %i) has terminated with exit code %i."),
