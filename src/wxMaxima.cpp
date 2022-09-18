@@ -2244,7 +2244,8 @@ bool wxMaxima::StartMaxima(bool force) {
     {
       m_unsuccessfulConnectionAttempts = 0;
       KillMaxima();
-      m_process->Detach();
+      if(m_process != NULL)
+	m_process->Detach();
     }
   
   wxString dirname;
@@ -2521,6 +2522,8 @@ void wxMaxima::KillMaxima(bool logMessage) {
   m_CWD = wxEmptyString;
   m_worksheet->QuestionAnswered();
   m_currentOutput = wxEmptyString;
+  if(m_process)
+    m_process->Detach();
   m_process = NULL;
   m_maximaStdout = NULL;
   m_maximaStderr = NULL;
