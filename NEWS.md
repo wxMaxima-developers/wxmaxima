@@ -1,3 +1,7 @@
+# Current
+ * Faster restart of maxima (#1715)
+ * Make various dialogs window-modal (#1712)
+
 # 22.09.0
  * Support for wxWidgets 3.1.7
  * The description field for wizards no more is a MouseOverToolTip
