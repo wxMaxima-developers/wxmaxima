@@ -2198,14 +2198,19 @@ bool wxMaxima::StartServer() {
 		 wxString::Format(_("Trying to start the socket a maxima on the local "
 				    "machine can connect to on port %i"),
 				  m_port));
-    wxIPV4address addr;
-    if (!addr.AnyAddress())
+  #if wxUSE_IPV6wxUSE_IPV6
+  wxIPV6address addr;
+  #else
+  wxIPV4address addr;
+  #endif
+    if (!addr.LocalHost())
       wxLogMessage(_("Cannot set the communication address to localhost."));
     if (!addr.Service(m_port))
       wxLogMessage(wxString::Format(
 				    _("Cannot set the communication port to %i."), m_port));
-    m_server = std::unique_ptr<wxSocketServer, ServerDeleter>(
-							      new wxSocketServer(addr));
+    m_server = std::unique_ptr<wxSocketServer,
+			       ServerDeleter>(
+					      new wxSocketServer(addr, wxSOCKET_WAITALL_WRITE));
     if (!m_server->IsOk()) {
       m_port++;
       m_server.reset();
