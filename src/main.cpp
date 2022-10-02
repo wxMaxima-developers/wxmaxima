@@ -202,7 +202,11 @@ bool MyApp::OnInit() {
 
   bool exitAfterEval = false;
   bool evalOnStartup = false;
+#ifdef __WXMSW__
+  wxCmdLineParser cmdLineParser(lpCmdLine);
+#else
   wxCmdLineParser cmdLineParser(argc, argv);
+#endif
 
   static const wxCmdLineEntryDesc cmdLineDesc[] = {
     {wxCMD_LINE_SWITCH, "v", "version", "Output the version info",
