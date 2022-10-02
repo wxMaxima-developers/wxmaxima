@@ -90,6 +90,7 @@ int main(int argc, char *argv[]) {
   return CommonMain();
 }
 #else
+LPSTR lpCmdLine;
 int WINAPI WinMain(HINSTANCE hI, HINSTANCE hPrevI, LPSTR lpCmdLine,
                    int nCmdShow) {
   // // Only needed if we don't manage to ship the right manifest
