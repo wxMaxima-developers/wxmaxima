@@ -83,14 +83,62 @@ int CommonMain() {
                Observed::GetLiveControlBlockInstanceCount());
   return 0;
 }
+wxCmdLineParser cmdLineParser;
+static const wxCmdLineEntryDesc cmdLineDesc[] = {
+    {wxCMD_LINE_SWITCH, "v", "version", "Output the version info",
+     wxCMD_LINE_VAL_NONE, 0},
+    /* Usually wxCMD_LINE_OPTION_HELP is used with the following option, but
+     * that displays a message using its own window and we want the message on
+     * the command line.  If a user enters a command line option, he expects
+     * probably an answer just on the command line... */
+    {wxCMD_LINE_SWITCH, "h", "help", "show this help message",
+     wxCMD_LINE_VAL_NONE, 0},
+    {wxCMD_LINE_OPTION, "o", "open", "open a file", wxCMD_LINE_VAL_STRING, 0},
+    {wxCMD_LINE_SWITCH, "e", "eval", "evaluate the file after opening it.",
+     wxCMD_LINE_VAL_NONE, 0},
+    {wxCMD_LINE_SWITCH, "", "single_process",
+     "Open all files from within the same process.", wxCMD_LINE_VAL_NONE, 0},
+    {wxCMD_LINE_SWITCH, "b", "batch",
+     "run the file and exit afterwards. Halts on questions and stops on "
+     "errors.",
+     wxCMD_LINE_VAL_NONE, 0},
+    {wxCMD_LINE_SWITCH, "", "logtostderr",
+     "Log all \"debug messages\" sidebar messages to stderr, too.",
+     wxCMD_LINE_VAL_NONE, 0},
+    {wxCMD_LINE_SWITCH, "", "pipe", "Pipe messages from Maxima to stderr.",
+     wxCMD_LINE_VAL_NONE, 0},
+    {wxCMD_LINE_SWITCH, "", "exit-on-error",
+     "Close the program on any Maxima error.", wxCMD_LINE_VAL_NONE, 0},
+    {wxCMD_LINE_OPTION, "f", "ini",
+     "allows to specify a file to store the configuration in",
+     wxCMD_LINE_VAL_STRING, 0},
+    {wxCMD_LINE_OPTION, "u", "use-version", "Use Maxima version <str>.",
+     wxCMD_LINE_VAL_STRING, 0},
+    {wxCMD_LINE_OPTION, "l", "lisp",
+     "Use a Maxima compiled with lisp compiler <str>.", wxCMD_LINE_VAL_STRING,
+     0},
+    {wxCMD_LINE_OPTION, "X", "extra-args",
+     "Allows to specify extra Maxima arguments", wxCMD_LINE_VAL_STRING, 0},
+    {wxCMD_LINE_OPTION, "m", "maxima",
+     "allows to specify the location of the Maxima binary",
+     wxCMD_LINE_VAL_STRING, 0},
+    {wxCMD_LINE_SWITCH, "", "enableipc",
+     "Lets Maxima control wxMaxima via interprocess communications. Use this "
+     "option with care.",
+     wxCMD_LINE_VAL_NONE, 0},
+    {wxCMD_LINE_PARAM, NULL, NULL, "input file", wxCMD_LINE_VAL_STRING,
+     wxCMD_LINE_PARAM_OPTIONAL | wxCMD_LINE_PARAM_MULTIPLE},
+     wxCMD_LINE_DESC_END};
+
 
 #ifndef __WXMSW__
 int main(int argc, char *argv[]) {
   wxEntryStart(argc, argv);
+  cmdLineParser.SetCmdLine(argc, argv);
+  cmdLineParser.SetDesc(cmdLineDesc);
   return CommonMain();
 }
 #else
-LPSTR lpCmdLine;
 int WINAPI WinMain(HINSTANCE hI, HINSTANCE hPrevI, LPSTR lpCmdLine,
                    int nCmdShow) {
   // // Only needed if we don't manage to ship the right manifest
@@ -102,6 +150,8 @@ int WINAPI WinMain(HINSTANCE hI, HINSTANCE hPrevI, LPSTR lpCmdLine,
   //   #endif
   // #endif
   wxEntryStart(hI, hPrevI, lpCmdLine, nCmdShow);
+  cmdLineParser.SetCmdLine(lpCmdLine);
+  cmdLineParser.SetDesc(cmdLineDesc);
   return CommonMain();
 }
 #endif
@@ -202,59 +252,7 @@ bool MyApp::OnInit() {
 
   bool exitAfterEval = false;
   bool evalOnStartup = false;
-#ifdef __WXMSW__
-  wxCmdLineParser cmdLineParser(lpCmdLine);
-#else
-  wxCmdLineParser cmdLineParser(argc, argv);
-#endif
 
-  static const wxCmdLineEntryDesc cmdLineDesc[] = {
-    {wxCMD_LINE_SWITCH, "v", "version", "Output the version info",
-     wxCMD_LINE_VAL_NONE, 0},
-    /* Usually wxCMD_LINE_OPTION_HELP is used with the following option, but
-     * that displays a message using its own window and we want the message on
-     * the command line.  If a user enters a command line option, he expects
-     * probably an answer just on the command line... */
-    {wxCMD_LINE_SWITCH, "h", "help", "show this help message",
-     wxCMD_LINE_VAL_NONE, 0},
-    {wxCMD_LINE_OPTION, "o", "open", "open a file", wxCMD_LINE_VAL_STRING, 0},
-    {wxCMD_LINE_SWITCH, "e", "eval", "evaluate the file after opening it.",
-     wxCMD_LINE_VAL_NONE, 0},
-    {wxCMD_LINE_SWITCH, "", "single_process",
-     "Open all files from within the same process.", wxCMD_LINE_VAL_NONE, 0},
-    {wxCMD_LINE_SWITCH, "b", "batch",
-     "run the file and exit afterwards. Halts on questions and stops on "
-     "errors.",
-     wxCMD_LINE_VAL_NONE, 0},
-    {wxCMD_LINE_SWITCH, "", "logtostderr",
-     "Log all \"debug messages\" sidebar messages to stderr, too.",
-     wxCMD_LINE_VAL_NONE, 0},
-    {wxCMD_LINE_SWITCH, "", "pipe", "Pipe messages from Maxima to stderr.",
-     wxCMD_LINE_VAL_NONE, 0},
-    {wxCMD_LINE_SWITCH, "", "exit-on-error",
-     "Close the program on any Maxima error.", wxCMD_LINE_VAL_NONE, 0},
-    {wxCMD_LINE_OPTION, "f", "ini",
-     "allows to specify a file to store the configuration in",
-     wxCMD_LINE_VAL_STRING, 0},
-    {wxCMD_LINE_OPTION, "u", "use-version", "Use Maxima version <str>.",
-     wxCMD_LINE_VAL_STRING, 0},
-    {wxCMD_LINE_OPTION, "l", "lisp",
-     "Use a Maxima compiled with lisp compiler <str>.", wxCMD_LINE_VAL_STRING,
-     0},
-    {wxCMD_LINE_OPTION, "X", "extra-args",
-     "Allows to specify extra Maxima arguments", wxCMD_LINE_VAL_STRING, 0},
-    {wxCMD_LINE_OPTION, "m", "maxima",
-     "allows to specify the location of the Maxima binary",
-     wxCMD_LINE_VAL_STRING, 0},
-    {wxCMD_LINE_SWITCH, "", "enableipc",
-     "Lets Maxima control wxMaxima via interprocess communications. Use this "
-     "option with care.",
-     wxCMD_LINE_VAL_NONE, 0},
-    {wxCMD_LINE_PARAM, NULL, NULL, "input file", wxCMD_LINE_VAL_STRING,
-     wxCMD_LINE_PARAM_OPTIONAL | wxCMD_LINE_PARAM_MULTIPLE},
-    {wxCMD_LINE_NONE, "", "", "", wxCMD_LINE_VAL_NONE, 0}};
-
-  cmdLineParser.SetDesc(cmdLineDesc);
   int cmdLineError = cmdLineParser.Parse();
 
   if (cmdLineParser.Found(wxT("single_process")))
