@@ -39,8 +39,7 @@
 #include <wx/utils.h>
 #include <wx/wx.h>
 #ifdef __WXMSW__
-#include <windef.h>
-#include <winuser.h>
+#include <windows.h>
 #endif
 
 #include "ConfigDialogue.h"
