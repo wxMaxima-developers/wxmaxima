@@ -6669,7 +6669,7 @@ void wxMaxima::MaximaMenu(wxCommandEvent &event) {
   case menu_block_noLocal:
     CommandWiz(
 	       _("Program (no local variables)"),
-	       _("If a program doesn't need local variables maxima allows"
+	       _("If a program doesn't need local variables maxima allows "
 		 "to put the commands between parenthesis. The result of the last "
 		 "operation is the return value of the program."),
 	       wxEmptyString, wxT("(#1#);"), wxT("What to do:"), wxT("i:i+1,disp(i)"),
@@ -6699,14 +6699,14 @@ void wxMaxima::MaximaMenu(wxCommandEvent &event) {
     CommandWiz(
 	       _("Lambda"),
 	       _("Lambda generates a function, but doesn't give it a name.\n"
-		 "This is useful if you want to use a function only once, perhaps"
+		 "This is useful if you want to use a function only once, perhaps "
 		 "as a parameter to another function and don't need it to be named.\n"
 		 "Also you can fill a variable with a lambda() construct, effectively "
 		 "generating a function pointer: A variable that can be used "
 		 "as a function, and filled with a different function, if needed."),
 	       wxEmptyString, wxT("lambda([#1#],#2#);"),
 	       wxT("Names for the parameters:"), expr,
-	       _("Comma-separated names the parameters will referenced by later."),
+	       _("Comma-separated names the parameters will be referenced by later."),
 	       wxT("Contents:"), expr, _("Comma-separated expressions."));
     break;
   case menu_quotequote:
@@ -6725,7 +6725,7 @@ void wxMaxima::MaximaMenu(wxCommandEvent &event) {
     break;
   case menu_quote:
     CommandWiz(_("Don't evaluate one command"),
-               _("Maxima automatically simplifys expressions it gets as input "
+               _("Maxima automatically simplifies expressions it gets as input "
                  "and then tries to evaluate their value. The ' operator "
                  "tells maxima that we want a command to be in noun form, "
                  "which means: "
@@ -6786,7 +6786,7 @@ void wxMaxima::MaximaMenu(wxCommandEvent &event) {
                  "array, boolean, integer, fixnum (machine-length integer), "
                  "float (machine-size floating-point numbers), "
                  "real or any (which is useful for declaring arrays of any)"),
-               wxEmptyString, wxT("mode_declare(#1#);"), _("Parametername:"),
+               wxEmptyString, wxT("mode_declare(#1#);"), _("Parameter name:"),
                expr, wxEmptyString, _("Type:"), wxT("boolean"), wxEmptyString);
     break;
   case menu_structdef:
@@ -7292,7 +7292,7 @@ void wxMaxima::MaximaMenu(wxCommandEvent &event) {
     break;
   case menu_clear_fun:
     CommandWiz(_("Delete function(s)"), wxEmptyString, wxEmptyString,
-               wxT("remfunction(#1#);"), _("Runction name:"), wxT("all"),
+               wxT("remfunction(#1#);"), _("Function name:"), wxT("all"),
                wxEmptyString);
     break;
   case button_subst: {
@@ -8259,7 +8259,7 @@ void wxMaxima::SimplifyMenu(wxCommandEvent &event) {
     CommandWiz(
 	       _("Evaluate Nouns"),
 	       _("Maxima allows to make functions \"nouns\", which means that they "
-		 "aren't auntomatically evaluated as soon as maxima encounters them.\n"
+		 "aren't automatically evaluated as soon as maxima encounters them.\n"
 		 "Ways make a function a noun include declaring it a noun, preceding "
 		 "it with a  \' or putting it between the parenthesis of \'().\n\n"
 		 "This command tells maxima that the nouns in this expression "

@@ -1391,8 +1391,8 @@ void wxMaximaFrame::SetupMenu() {
   regexMenu->Append(menu_sregex_regex_match_pos, _("Position of a match"));
   regexMenu->Append(menu_sregex_regex_match, _("Return a match"));
   regexMenu->Append(menu_sregex_regex_split, _("Split on match"));
-  regexMenu->Append(menu_sregex_subst_first, _("Substitite first match"));
-  regexMenu->Append(menu_sregex_regex_subst, _("Substitite all matches"));
+  regexMenu->Append(menu_sregex_subst_first, _("Substitute first match"));
+  regexMenu->Append(menu_sregex_regex_subst, _("Substitute all matches"));
   regexMenu->Append(menu_sregex_string_to_regex,
                     _("Regex that matches a string"));
   stringMenu->Append(wxNewId(), _("RegEx"), regexMenu);
@@ -1481,7 +1481,7 @@ void wxMaximaFrame::SetupMenu() {
                             "degree ODE"),
                           wxITEM_NORMAL);
   m_EquationsMenu->Append(menu_rk, _("Numerical solution..."),
-                          _("Find a numerical solution for a fist "
+                          _("Find a numerical solution for a first "
                             "degree ODE"),
                           wxITEM_NORMAL);
   m_EquationsMenu->AppendSeparator();
