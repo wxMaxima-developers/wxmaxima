@@ -1,3 +1,4 @@
-# The program doesn't contain prebuilt doxygen docu. It just contains a .png
-# image the docu can use.
-wxmaxima source: source-contains-prebuilt-doxygen-documentation
+# lintian doesn't know that the sources of these files are
+# locales/manual/*.po and info/wxmaxima.md, so it complains
+# about missing sources
+source-is-missing [info/*.html]
