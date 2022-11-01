@@ -1,0 +1,4 @@
+# lintian doesn't know that the sources of these files are
+# locales/manual/*.po and info/wxmaxima.md, so it complains
+# about missing sources
+source-is-missing [info/*.html]
