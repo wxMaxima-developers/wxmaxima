@@ -13,7 +13,7 @@ file(GLOB TRANSLATION_FILES *.po)
 file(GLOB POT_SOURCE_FILES_REL LIST_DIRECTORIES false RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_SOURCE_DIR}/src/*.cpp ${CMAKE_SOURCE_DIR}/src/*.h ${CMAKE_SOURCE_DIR}/examples/examples_gettext.list)
 file(GLOB POT_SOURCE_FILES ${CMAKE_SOURCE_DIR}/src/*.cpp ${CMAKE_SOURCE_DIR}/src/*.h ${CMAKE_SOURCE_DIR}/examples/examples_gettext.h)
 
-if(GETTEXT_FOUND)
+if(GETTEXT_FOUND AND GETTEXT_MSGFMT_EXECUTABLE AND GETTEXT_MSGMERGE_EXECUTABLE)
     find_program(XGETTEXT xgettext)
     # generate a wxMaxima.pot in the build dir - don't touch the existing source (for now)
     # if that is okay, one may copy it to the source dir.
