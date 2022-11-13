@@ -55,6 +55,9 @@ MaximaManual::HelpFileAnchors MaximaManual::GetHelpfileAnchors() {
 wxString MaximaManual::GetHelpfileAnchorName(wxString keyword) {
   WaitForBackgroundProcess();
 
+  if(m_helpFileAnchors.size() < 100)
+    LoadBuiltInManualAnchors();
+  
   auto anchor = m_helpFileAnchors.find(keyword);
   if (anchor == m_helpFileAnchors.end())
     return wxEmptyString;
