@@ -7780,7 +7780,7 @@ void wxMaxima::MatrixMenu(wxCommandEvent &event) {
           type = MatWiz::MATRIX_GENERAL;
         wxWindowPtr<MatWiz> mwiz(new MatWiz(this, -1, &m_configuration, _("Enter matrix"), type, w, h));
         // wiz->Centre(wxBOTH);
-        wiz->ShowWindowModalThenDo([this,mwiz,cmd](int retcode) {
+        mwiz->ShowWindowModalThenDo([this,mwiz,cmd](int retcode) {
           if (retcode == wxID_OK) {
             MenuCommand(cmd + mwiz->GetValue());
           }
