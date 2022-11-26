@@ -107,6 +107,7 @@ set(SOURCE_FILES
     Dirstructure.cpp
     ErrorRedirector.cpp
     EvaluationQueue.cpp
+    EventIDs.cpp
     FindReplaceDialog.cpp
     FindReplacePane.cpp
     FontAttribs.cpp

@@ -478,51 +478,44 @@ void MyApp::NewWindow(const wxString &file, bool evalOnStartup,
 }
 
 void MyApp::OnFileMenu(wxCommandEvent &ev) {
-  switch (ev.GetId()) {
-  case wxMaxima::menu_help_numberformats:
-    NewWindow(wxEmptyString, false, false, NUMBERFORMATS_WXM,
-              NUMBERFORMATS_WXM_SIZE);
-    break;
-  case wxMaxima::menu_help_3d:
-    NewWindow(wxEmptyString, false, false, DISPLAYING3DCURVES_WXM,
-              DISPLAYING3DCURVES_WXM_SIZE);
-    break;
-
-  case wxMaxima::menu_help_varnames:
+  if(ev.GetId() == EventIDs::menu_help_numberformats)
+    {
+      NewWindow(wxEmptyString, false, false, NUMBERFORMATS_WXM,
+		NUMBERFORMATS_WXM_SIZE);
+    }
+  else if(ev.GetId() == EventIDs::menu_help_3d)
+    {
+      NewWindow(wxEmptyString, false, false, DISPLAYING3DCURVES_WXM,
+		DISPLAYING3DCURVES_WXM_SIZE);
+    }
+  else if(ev.GetId() == EventIDs::menu_help_varnames) {
     NewWindow(wxEmptyString, false, false, VARIABLENAMES_WXM,
               VARIABLENAMES_WXM_SIZE);
-    break;
-
-  case wxMaxima::menu_help_listaccess:
+  }
+  else if(ev.GetId() == EventIDs::menu_help_listaccess) {
     NewWindow(wxEmptyString, false, false, FASTLISTACCESS_WXM,
               FASTLISTACCESS_WXM_SIZE);
-    break;
-
-  case wxMaxima::menu_help_fittingData:
+  }
+  else if(ev.GetId() == EventIDs::menu_help_fittingData) {
     NewWindow(wxEmptyString, false, false, FITTINGEQUATIONS_WXM,
               FITTINGEQUATIONS_WXM_SIZE);
-    break;
-
-  case wxMaxima::menu_help_solving:
+  }
+  else if(ev.GetId() == EventIDs::menu_help_solving) {
     NewWindow(wxEmptyString, false, false, SOLVINGEQUATIONS_WXM,
               SOLVINGEQUATIONS_WXM_SIZE);
-    break;
-
-  case wxMaxima::menu_help_diffequations:
+  }
+  else if(ev.GetId() == EventIDs::menu_help_diffequations) {
     NewWindow(wxEmptyString, false, false, DIFFEQUATIONS_WXM,
               DIFFEQUATIONS_WXM_SIZE);
-    break;
-
-  case wxMaxima::menu_help_tolerances:
+    }
+  else if(ev.GetId() == EventIDs::menu_help_tolerances) {
     NewWindow(wxEmptyString, false, false, TOLERANCECALCULATIONS_WXM,
               TOLERANCECALCULATIONS_WXM_SIZE);
-    break;
-
-  case wxMaxima::menu_help_memoizing:
+  }
+  else if(ev.GetId() == EventIDs::menu_help_memoizing) {
     NewWindow(wxEmptyString, false, false, MEMOIZING_WXM, MEMOIZING_WXM_SIZE);
-    break;
-
-  case wxID_OPEN: {
+  }
+  else if(ev.GetId() == wxID_OPEN) {
     wxString lastPath;
     wxConfig::Get()->Read(wxT("lastPath"), &lastPath);
     wxString file =
@@ -534,46 +527,41 @@ void MyApp::OnFileMenu(wxCommandEvent &ev) {
 		       "Xmaxima session (*.out)|*.out|"
 		       "xml from broken .wxmx (*.xml)|*.xml"),
 		     wxFD_OPEN);
-
     if (!file.empty()) {
       // On the mac the "File/New" menu item by default opens a new window
       // instead of reusing the old one.
       NewWindow(file);
-    }
-
-    break;
+    } 
   }
-  case wxID_NEW: {
-    // Mac computers insist that all instances of a new application need to
-    // share the same process. On all other OSes we create a separate process
-    // for each window: This way if one instance of wxMaxima crashes all the
-    // other instances are still alive.
+  else if(ev.GetId() == wxID_NEW) {
+      // Mac computers insist that all instances of a new application need to
+      // share the same process. On all other OSes we create a separate process
+      // for each window: This way if one instance of wxMaxima crashes all the
+      // other instances are still alive.
     if (m_allWindowsInOneProcess)
       NewWindow();
     else {
       wxString args;
       if (Configuration::m_configfileLocation_override != wxEmptyString)
-        args += " -f \"" + Configuration::m_configfileLocation_override + "\"";
+	args += " -f \"" + Configuration::m_configfileLocation_override + "\"";
       if (Configuration::m_maximaLocation_override != wxEmptyString)
-        args += " -m \"" + Configuration::m_maximaLocation_override + "\"";
-
+	args += " -m \"" + Configuration::m_maximaLocation_override + "\"";
+      
       wxExecute(wxT("\"") + wxStandardPaths::Get().GetExecutablePath() +
-                wxT("\"") + args);
+		wxT("\"") + args);
     }
-    break;
   }
-  case wxID_PREFERENCES: {
+  else if(ev.GetId() == wxID_PREFERENCES) {
     Configuration config;
     ConfigDialogue *configW = new ConfigDialogue(NULL, &config);
     configW->Centre(wxBOTH);
     if (configW->ShowModal() == wxID_OK)
       configW->WriteSettings();
-
+    
     configW->Destroy();
     wxConfig::Get()->Flush();
-    break;
   }
-  case wxID_EXIT: {
+  else if(ev.GetId() ==  wxID_EXIT) {
     for (wxMaxima *win : wxMaxima::m_topLevelWindows) {
       wxASSERT(win);
       wxCloseEvent *event = new wxCloseEvent(wxEVT_CLOSE_WINDOW);
@@ -583,7 +571,6 @@ void MyApp::OnFileMenu(wxCommandEvent &ev) {
     }
     if (wxMaxima::m_topLevelWindows.empty())
       wxExit();
-  } break;
   }
 }
 
