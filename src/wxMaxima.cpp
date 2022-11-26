@@ -7125,7 +7125,7 @@ void wxMaxima::MaximaMenu(wxCommandEvent &event) {
                wxT("regex_match(#1#,#2#);"), wxT("Regex:"), expr, wxEmptyString,
                wxT("String:"), expr, wxEmptyString);
   }
-  else if(event.GetId() == EventIDs::menu_sregex_regex_split){
+  if(event.GetId() == EventIDs::menu_sregex_regex_split){
     CommandWiz(_("Split on regex match"), wxEmptyString, wxEmptyString,
                wxT("regex_split(#1#,#2#);"), wxT("Regex:"), expr, wxEmptyString,
                wxT("String:"), expr, wxEmptyString);
