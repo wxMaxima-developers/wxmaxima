@@ -570,15 +570,15 @@ set_tests_properties(multiple_batch_files2 PROPERTIES WILL_FAIL true)
 # see https://sourceforge.net/p/maxima/bugs/3699/
 #set_tests_properties(multithreadtest PROPERTIES RUN_SERIAL true)
 
-add_test(
-    NAME ipc_copypaste1
-    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --enableipc --batch ipc_copypaste1.wxm)
+#add_test(
+#    NAME ipc_copypaste1
+#    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+#    COMMAND wxmaxima --enableipc --batch ipc_copypaste1.wxm)
 
-add_test(
-    NAME ipc_copypaste_all-celltypes
-    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --enableipc --batch ipc_copypaste_all-celltypes.wxm)
+#add_test(
+#    NAME ipc_copypaste_all-celltypes
+#    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+#    COMMAND wxmaxima --enableipc --batch ipc_copypaste_all-celltypes.wxm)
 
 find_program(DESKTOP_FILE_VALIDATE desktop-file-validate)
 if(DESKTOP_FILE_VALIDATE)
