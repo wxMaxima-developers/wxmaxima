@@ -273,6 +273,8 @@ void AutoComplete::LoadableFiles_BackgroundTask(wxString sharedir) {
 
   // Prepare a list of all built-in demos of maxima.
   {
+    wxFileName shareDir(sharedir + "/");
+    shareDir.MakeAbsolute();
     wxFileName demoDir(shareDir.GetFullPath() + "/");
     demoDir.MakeAbsolute();
     demoDir.RemoveLastDir();
