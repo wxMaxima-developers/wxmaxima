@@ -1,6 +1,14 @@
 # Current
+ * Resolved an ID collision (#1726)
  * Faster restart of maxima (#1715)
  * Make various dialogs window-modal (#1712)
+ * Proper handling of unicode in selection (#1726)
+ * An unicode conversion error (#1727)
+ * Repaired the "enter matrix" dialogue
+ * Jump to the correct anchor even if using online help
+ * Translation updates
+ * Many windows build improvements
+ * Resolved a crash on restarting maxima
 
 # 22.09.0
  * Support for wxWidgets 3.1.7
