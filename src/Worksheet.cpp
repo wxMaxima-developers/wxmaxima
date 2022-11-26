@@ -7135,7 +7135,7 @@ void Worksheet::CheckUnixCopy() {
       if (wxTheClipboard->Open()) {
         wxString data = GetString();
         wxLogMessage("%s", wxString::Format(_("Middle-click clipboard data: %s"),
-                                      data.c_str()));
+                                      static_cast<const char*>(data.mb_str())));
         wxTheClipboard->SetData(new wxTextDataObject(data));
         wxTheClipboard->Close();
       }
