@@ -90,7 +90,7 @@ public:
   //! Interprets the XML autocompletable symbol list maxima can send us
   void AddSymbols(wxString xml);
   //! The real work of AddSymbols is made here and in the background
-  void AddSymbols_Backgroundtask(wxString xml);
+  void AddSymbols_Backgroundtask(wxString xml, wxString sharedir);
 
   //! Replace the list of files in the directory the worksheet file is in to the demo files list
   void UpdateDemoFiles(wxString partial, wxString maximaDir);
@@ -119,7 +119,7 @@ private:
   //! The configuration storage
   Configuration *m_configuration;
   //! Loads the list of loadable files and can be run in a background task
-  void LoadableFiles_BackgroundTask();
+  void LoadableFiles_BackgroundTask(wxString sharedir);
   //! Prepares the list of built-in symbols and can be run in a background task
   void BuiltinSymbols_BackgroundTask();
 

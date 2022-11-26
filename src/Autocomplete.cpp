@@ -63,11 +63,15 @@ void AutoComplete::AddSymbols(wxString xml) {
   wxLogMessage(_("Scheduling a background task that compiles a new list "
                  "of autocompletable maxima commands."));
 
+  wxString sharedir = m_configuration->MaximaShareDir();
+  sharedir.Replace("\n", "");
+  sharedir.Replace("\r", "");
+  
   m_addSymbols_backgroundThread = std::unique_ptr<std::thread>(
-							       new std::thread(&AutoComplete::AddSymbols_Backgroundtask, this, xml));
+							       new std::thread(&AutoComplete::AddSymbols_Backgroundtask, this, xml, sharedir));
 }
 
-void AutoComplete::AddSymbols_Backgroundtask(wxString xml) {
+void AutoComplete::AddSymbols_Backgroundtask(wxString xml, wxString sharedir) {
   wxXmlDocument xmldoc;
   wxStringInputStream xmlStream(xml);
   xmldoc.Load(xmlStream, wxT("UTF-8"));
@@ -151,10 +155,13 @@ AutoComplete::~AutoComplete() { WaitForBackgroundThreads(); }
 
 void AutoComplete::LoadSymbols() {
   WaitForBackgroundThreads();
+  wxString sharedir = m_configuration->MaximaShareDir();
+  sharedir.Replace("\n", "");
+  sharedir.Replace("\r", "");
   m_addSymbols_backgroundThread = std::unique_ptr<std::thread>(
 							       new std::thread(&AutoComplete::BuiltinSymbols_BackgroundTask, this));
   m_addFiles_backgroundThread = std::unique_ptr<std::thread>(
-							     new std::thread(&AutoComplete::LoadableFiles_BackgroundTask, this));
+							     new std::thread(&AutoComplete::LoadableFiles_BackgroundTask, this, sharedir));
 }
 
 void AutoComplete::BuiltinSymbols_BackgroundTask() {
@@ -231,16 +238,13 @@ void AutoComplete::BuiltinSymbols_BackgroundTask() {
   }
 }
 
-void AutoComplete::LoadableFiles_BackgroundTask() {
+void AutoComplete::LoadableFiles_BackgroundTask(wxString sharedir) {
   // Error dialogues need to be created by the foreground thread.
   SuppressErrorDialogs suppressor;
 
   // Prepare a list of all built-in loadable files of maxima.
   {
     GetMacFiles_includingSubdirs maximaLispIterator(m_builtInLoadFiles);
-    wxString sharedir = m_configuration->MaximaShareDir();
-    sharedir.Replace("\n", "");
-    sharedir.Replace("\r", "");
     if (sharedir.IsEmpty())
       wxLogMessage(_("Seems like the package with the maxima share files isn't "
                      "installed."));
