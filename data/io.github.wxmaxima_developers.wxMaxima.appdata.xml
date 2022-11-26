@@ -57,7 +57,27 @@
     <content_attribute id="social-info">mild</content_attribute>
   </content_rating>
   <releases>
-    <release version="22.09.0" date="2022-09-01T20:37:00Z">
+<release version="22.11.0" date="2022-11-26T19:21:00Z">
+  <description>
+    <p>
+      A bug fix release.
+      <ul dir="auto">
+	<li> Resolved an ID collision (#1726)</li>
+	<li> Faster restart of maxima (#1715)</li>
+	<li> Make various dialogs window-modal (#1712)</li>
+	<li> Proper handling of unicode in selection (#1726)</li>
+	<li> An unicode conversion error (#1727)</li>
+	<li> Repaired the "enter matrix" dialogue</li>
+	<li> Jump to the correct anchor even if using online help</li>
+	<li> Translation updates</li>
+	<li> Many windows build improvements</li>
+	<li> Resolved a crash on restarting maxima</li>
+      </ul>
+    </p>
+  </description>
+</release>
+
+ <release version="22.09.0" date="2022-09-01T20:37:00Z">
      <description>
        <p>
 	 Help integration, work on the wizards and many bug fixes.
