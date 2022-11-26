@@ -63,7 +63,7 @@ wxString wxMathML::GetCmd() {
     } else {
       wxLogMessage(wxString::Format(
 				    _("Reading the Lisp part of wxMaxima from the file %s"),
-				    m_configuration->WxMathML_Filename().c_str()));
+				    m_configuration->WxMathML_Filename().ToUTF8().data()));
       wxFileInputStream input(m_configuration->WxMathML_Filename());
       wxTextInputStream textIn(input);
       wxString line;

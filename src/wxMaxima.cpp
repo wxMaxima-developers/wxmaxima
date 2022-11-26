@@ -2987,7 +2987,7 @@ void wxMaxima::ReadManualTopicNames(wxString &data) {
         wxXmlNode *topic = entry->GetChildren();
         if (topic) {
           wxLogMessage(wxString::Format(_("Received manual topic request: %s"),
-                                        topic->GetContent().c_str()));
+                                        topic->GetContent().ToUTF8().data()));
           topics.Add(topic->GetContent());
         }
         if (topics.IsEmpty())

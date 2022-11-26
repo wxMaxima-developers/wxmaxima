@@ -209,7 +209,7 @@ void MaximaManual::CompileHelpFileAnchors() {
 #endif
 
       wxLogMessage(wxString::Format(_("Scanning help file %s for anchors"),
-                                    file.c_str()));
+                                    file.ToUTF8().data()));
 
       wxRegEx idExtractor(".*<span id=\\\"([a-zAZ0-9_-]*)\\\"");
       wxRegEx idExtractor2("<dt id=\\\"(index-[a-zAZ0-9_-]*)\\\"");
@@ -498,7 +498,7 @@ void MaximaManual::FindMaximaHtmlDir(wxString docDir) {
     m_maximaHtmlDir = helpfile_cleanup.GetPath();
     wxLogMessage(
 		 wxString::Format(_("Found the maxima HTML manual in the folder %s."),
-				  m_maximaHtmlDir.c_str()));
+				  m_maximaHtmlDir.ToUTF8().data()));
   } else {
     m_maximaHtmlDir.clear();
     wxLogMessage(_("Didn't find the maxima HTML manual."));

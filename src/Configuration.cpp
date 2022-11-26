@@ -1316,7 +1316,7 @@ bool Configuration::FontDisplaysChar(wxChar ch, const wxFont &font) {
         return true;
     }
   wxLogMessage(wxString::Format(wxT("Char '%s' seems not to be displayed."),
-                                wxString(ch).c_str()));
+                                wxString(ch).ToUTF8().data()));
 
   // characterImage.SaveFile(wxString(m_char)+".png");
 
@@ -1359,8 +1359,8 @@ bool Configuration::CharVisiblyDifferent(wxChar ch, wxChar otherChar,
         return true;
     }
   wxLogMessage(wxString::Format(wxT("Char '%s' looks identical to '%s'."),
-                                wxString(ch).c_str(),
-                                wxString(otherChar).c_str()));
+                                wxString(ch).ToUTF8().data(),
+                                wxString(otherChar).ToUTF8().data()));
   return false;
 }
 

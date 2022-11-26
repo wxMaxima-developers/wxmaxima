@@ -332,7 +332,7 @@ bool Worksheet::RedrawIfRequested() {
             ImgCellBase *image = dynamic_cast<ImgCellBase *>(
 							     m_cellPointers.m_cellUnderPointer.get());
             StatusText(wxString::Format(
-					_("%s image, %li×%li, %li ppi"), image->GetExtension().c_str(),
+					_("%s image, %li×%li, %li ppi"), image->GetExtension().ToUTF8().data(),
 					(long)image->GetOriginalWidth(),
 					(long)image->GetOriginalWidth(), (long)image->GetPPI()));
           }
@@ -1965,7 +1965,7 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event) {
         popupMenu.Append(
 			 wxNewId(),
 			 wxString::Format(_("Declare facts about %s"),
-					  selectionString.c_str()),
+					  selectionString.ToUTF8().data()),
 			 facts_sub, _("Inform maxima about facts you know for this symbol"));
       }
     }
