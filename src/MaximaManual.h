@@ -66,7 +66,9 @@ public:
   //! Search maxima's help file for command and variable names
   void LoadHelpFileAnchors(wxString directory, wxString maximaVersion);
   //! Collect all keyword anchors in the help file
-  void CompileHelpFileAnchors();
+  void CompileHelpFileAnchors(wxString maximaHtmlDir,
+                                wxString maximaVersion,
+                                wxString saveName);
   //! Load the result from the last CompileHelpFileAnchors from the disk cache
   bool LoadManualAnchorsFromCache();
   //! Load the help file anchors from an wxXmlDocument
@@ -74,7 +76,9 @@ public:
   //! Load the help file anchors from the built-in list
   bool LoadBuiltInManualAnchors();
   //! Save the list of help file anchors to the cache.
-  void SaveManualAnchorsToCache();
+  void SaveManualAnchorsToCache(wxString maximaHtmlDir,
+                                wxString maximaVersion,
+                                wxString saveName);
   void WaitForBackgroundProcess();
 
   ~MaximaManual();

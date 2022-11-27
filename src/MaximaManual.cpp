@@ -171,7 +171,9 @@ void MaximaManual::AnchorAliasses(HelpFileAnchors &anchors) {
   }
 }
 
-void MaximaManual::CompileHelpFileAnchors() {
+void MaximaManual::CompileHelpFileAnchors(wxString maximaHtmlDir,
+					  wxString maximaVersion,
+					  wxString saveName) {
   SuppressErrorDialogs suppressor;
 
   int foundAnchorsTotal = 0;
@@ -267,7 +269,7 @@ void MaximaManual::CompileHelpFileAnchors() {
                                     foundAnchors, foundAnchorsTotal));
     }
     if (foundAnchorsTotal > 100)
-      SaveManualAnchorsToCache();
+      SaveManualAnchorsToCache(maximaHtmlDir, maximaVersion, saveName);
     else
       LoadBuiltInManualAnchors();
   }
@@ -306,7 +308,9 @@ MaximaManual::GetHTMLFiles_Recursive::OnDir(const wxString &WXUNUSED(dirname)) {
   return wxDIR_CONTINUE;
 }
 
-void MaximaManual::SaveManualAnchorsToCache() {
+void MaximaManual::SaveManualAnchorsToCache(wxString maximaHtmlDir,
+					    wxString maximaVersion,
+					    wxString saveName) {
   long num = m_helpFileURLs_singlePage.size();
   if (num <= 50) {
     wxLogMessage(wxString::Format(_("Found only %li keywords in maxima's "
@@ -315,16 +319,16 @@ void MaximaManual::SaveManualAnchorsToCache() {
     return;
   }
   wxXmlAttribute *htmlDir =
-    new wxXmlAttribute(wxT("html_dir"), m_maximaHtmlDir);
+    new wxXmlAttribute(wxT("html_dir"), maximaHtmlDir);
 
-  wxXmlAttribute *maximaVersion =
-    new wxXmlAttribute(wxT("maxima_version"), m_maximaVersion, htmlDir);
+  wxXmlAttribute *maximaVersionNode =
+    new wxXmlAttribute(wxT("maxima_version"), maximaVersion, htmlDir);
 
   wxXmlNode *topNode =
     new wxXmlNode(NULL, wxXML_DOCUMENT_NODE, wxEmptyString, wxEmptyString);
   wxXmlNode *headNode =
     new wxXmlNode(topNode, wxXML_ELEMENT_NODE, wxT("maxima_toc"),
-		  wxEmptyString, maximaVersion);
+		  wxEmptyString, maximaVersionNode);
 
   MaximaManual::HelpFileAnchors::const_iterator it;
   for (it = m_helpFileAnchors.begin(); it != m_helpFileAnchors.end(); ++it) {
@@ -365,8 +369,6 @@ void MaximaManual::SaveManualAnchorsToCache() {
 					   "overwritten if maxima's version changes or the file cannot be read"));
 
   xmlDoc.AppendToProlog(commentNode);
-
-  wxString saveName = Dirstructure::AnchorsCacheFile();
   wxLogMessage(wxString::Format(_("Trying to cache the list of subjects the "
                                   "manual contains in the file %s."),
                                 saveName.utf8_str()));
@@ -519,8 +521,14 @@ void MaximaManual::LoadHelpFileAnchors(wxString docdir,
           WaitForBackgroundProcess();
         }
         m_helpFileAnchorsThreadActive.lock();
-        m_helpfileanchorsThread = std::unique_ptr<std::thread>(
-							       new std::thread(&MaximaManual::CompileHelpFileAnchors, this));
+        m_helpfileanchorsThread =
+	  std::unique_ptr<std::thread>(
+				       new std::thread(&MaximaManual::CompileHelpFileAnchors,
+						       this,
+						       m_maximaHtmlDir,
+						       m_maximaVersion,
+						       Dirstructure::AnchorsCacheFile()
+						       ));
       } else {
         wxLogMessage(_("Maxima help file not found!"));
         LoadBuiltInManualAnchors();
