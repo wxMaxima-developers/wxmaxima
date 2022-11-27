@@ -6175,158 +6175,158 @@ void wxMaxima::EditMenu(wxCommandEvent &event) {
       m_worksheet->RequestRedraw();
       return;
     }
-    else if(event.GetId() == wxID_ZOOM_IN) {
-      m_worksheet->SetZoomFactor(m_configuration.GetZoomFactor() + 0.1);
-    }
-    else if(event.GetId() == wxID_ZOOM_OUT) {
-      m_worksheet->SetZoomFactor(m_configuration.GetZoomFactor() - 0.1);
-    }
-    else if(event.GetId() == EventIDs::menu_zoom_80) {
-      m_worksheet->SetZoomFactor(0.8);
-    }
-    else if(event.GetId() == wxID_ZOOM_100) {
-      m_worksheet->SetZoomFactor(1.0);
-    }
-    else if(event.GetId() == EventIDs::menu_zoom_120) {
-      m_worksheet->SetZoomFactor(1.2);
-    }
-    else if(event.GetId() == EventIDs::menu_zoom_150) {
-      m_worksheet->SetZoomFactor(1.5);
-    }
-    else if(event.GetId() == EventIDs::menu_zoom_200) {
-      m_worksheet->SetZoomFactor(2.0);
-    }
-    else if(event.GetId() == EventIDs::menu_zoom_300) {
-      m_worksheet->SetZoomFactor(3.0);
-    }
-    else if(event.GetId() == EventIDs::menu_math_as_1D_ASCII) {
-      MenuCommand(wxT("set_display('none)$"));
-    }
-    else if(event.GetId() == EventIDs::menu_math_as_2D_ASCII) {
-      MenuCommand(wxT("set_display('ascii)$"));
-    }
-    else if(event.GetId() == EventIDs::menu_math_as_graphics) {
-      MenuCommand(wxT("set_display('xml)$"));
-    }
-    else if(event.GetId() == EventIDs::menu_noAutosubscript) {
-      MenuCommand(wxT("wxsubscripts: false$"));
-    }
-    else if(event.GetId() == EventIDs::menu_defaultAutosubscript) {
-      MenuCommand(wxT("wxsubscripts: true$"));
-    }
-    else if(event.GetId() == EventIDs::menu_alwaysAutosubscript) {
-      MenuCommand(wxT("wxsubscripts: 'all$"));
-    }
-    else if(event.GetId() == EventIDs::menu_autosubscriptIndividual) {
-      CommandWiz(_("Autosubscript this variable"), wxEmptyString, wxEmptyString,
-		 wxT("wxdeclare_subscripted(#1#)$"), _("Variable name"), expr,
-		 wxEmptyString);
-    }
-    else if(event.GetId() == EventIDs::menu_noAutosubscriptIndividual) {
-      CommandWiz(_("Never autosubscript this variable"), wxEmptyString,
-		 wxEmptyString, wxT("wxdeclare_subscripted(#1#,false)$"),
-		 _("Variable name"), expr, wxEmptyString);
-    }
-    else if(event.GetId() == EventIDs::menu_declareAutosubscript) {
-      CommandWiz(_("Declare a text snippet to always be displayed as subscript"),
-		 wxEmptyString, wxEmptyString, wxT("wxdeclare_subscript(#1#)$"),
-		 _("Text snippet"), expr, wxEmptyString);
-    }
-    else if(event.GetId() == EventIDs::menu_roundedMatrixParens) {
-      MenuCommand(wxT("lmxchar:\"(\"$rmxchar:\")\"$"));
-    }
-    else if(event.GetId() == EventIDs::menu_straightMatrixParens) {
-      MenuCommand(wxT("lmxchar:\"|\"$rmxchar:\"|\"$"));
-    }
-    else if(event.GetId() == EventIDs::menu_angledMatrixParens) {
-      MenuCommand(wxT("lmxchar:\"<\"$rmxchar:\">\"$"));
-    }
-    else if(event.GetId() == EventIDs::menu_squareMatrixParens) {
-      MenuCommand(wxT("lmxchar:\"[\"$rmxchar:\"]\"$"));
-    }
-    else if(event.GetId() == EventIDs::menu_noMatrixParens) {
-      MenuCommand(wxT("lmxchar:\" \"$rmxchar:\" \"$"));
-    }
-    else if(event.GetId() == EventIDs::menu_fullscreen) {
-      ShowFullScreen(!IsFullScreen());
-    }
-    else if(event.GetId() == EventIDs::menu_invertWorksheetBackground) {
-      m_configuration.InvertBackground(!m_configuration.InvertBackground());
-      m_viewMenu->Check(EventIDs::menu_invertWorksheetBackground,
-			m_configuration.InvertBackground());
-      m_worksheet->RequestRedraw();
-    }
-    else if(event.GetId() == ToolBar::tb_hideCode) {
-      m_configuration.ShowCodeCells(!m_configuration.ShowCodeCells());
-      m_worksheet->CodeCellVisibilityChanged();
-    }
-    else if(event.GetId() == EventIDs::menu_remove_output) {
-      m_worksheet->RemoveAllOutput();
-    }
-    else if(event.GetId() == EventIDs::menu_show_toolbar) {
-      ShowToolBar(!ToolbarIsShown());
-    }
-    else if(event.GetId() == wxID_FIND) {
-      if (m_worksheet->m_findDialog == NULL)
-	m_worksheet->m_findDialog =
-	  new FindReplaceDialog(this, &m_findData, _("Find and Replace"));
+  }
+  else if(event.GetId() == wxID_ZOOM_IN) {
+    m_worksheet->SetZoomFactor(m_configuration.GetZoomFactor() + 0.1);
+  }
+  else if(event.GetId() == wxID_ZOOM_OUT) {
+    m_worksheet->SetZoomFactor(m_configuration.GetZoomFactor() - 0.1);
+  }
+  else if(event.GetId() == EventIDs::menu_zoom_80) {
+    m_worksheet->SetZoomFactor(0.8);
+  }
+  else if(event.GetId() == wxID_ZOOM_100) {
+    m_worksheet->SetZoomFactor(1.0);
+  }
+  else if(event.GetId() == EventIDs::menu_zoom_120) {
+    m_worksheet->SetZoomFactor(1.2);
+  }
+  else if(event.GetId() == EventIDs::menu_zoom_150) {
+    m_worksheet->SetZoomFactor(1.5);
+  }
+  else if(event.GetId() == EventIDs::menu_zoom_200) {
+    m_worksheet->SetZoomFactor(2.0);
+  }
+  else if(event.GetId() == EventIDs::menu_zoom_300) {
+    m_worksheet->SetZoomFactor(3.0);
+  }
+  else if(event.GetId() == EventIDs::menu_math_as_1D_ASCII) {
+    MenuCommand(wxT("set_display('none)$"));
+  }
+  else if(event.GetId() == EventIDs::menu_math_as_2D_ASCII) {
+    MenuCommand(wxT("set_display('ascii)$"));
+  }
+  else if(event.GetId() == EventIDs::menu_math_as_graphics) {
+    MenuCommand(wxT("set_display('xml)$"));
+  }
+  else if(event.GetId() == EventIDs::menu_noAutosubscript) {
+    MenuCommand(wxT("wxsubscripts: false$"));
+  }
+  else if(event.GetId() == EventIDs::menu_defaultAutosubscript) {
+    MenuCommand(wxT("wxsubscripts: true$"));
+  }
+  else if(event.GetId() == EventIDs::menu_alwaysAutosubscript) {
+    MenuCommand(wxT("wxsubscripts: 'all$"));
+  }
+  else if(event.GetId() == EventIDs::menu_autosubscriptIndividual) {
+    CommandWiz(_("Autosubscript this variable"), wxEmptyString, wxEmptyString,
+	       wxT("wxdeclare_subscripted(#1#)$"), _("Variable name"), expr,
+	       wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_noAutosubscriptIndividual) {
+    CommandWiz(_("Never autosubscript this variable"), wxEmptyString,
+	       wxEmptyString, wxT("wxdeclare_subscripted(#1#,false)$"),
+	       _("Variable name"), expr, wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_declareAutosubscript) {
+    CommandWiz(_("Declare a text snippet to always be displayed as subscript"),
+	       wxEmptyString, wxEmptyString, wxT("wxdeclare_subscript(#1#)$"),
+	       _("Text snippet"), expr, wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_roundedMatrixParens) {
+    MenuCommand(wxT("lmxchar:\"(\"$rmxchar:\")\"$"));
+  }
+  else if(event.GetId() == EventIDs::menu_straightMatrixParens) {
+    MenuCommand(wxT("lmxchar:\"|\"$rmxchar:\"|\"$"));
+  }
+  else if(event.GetId() == EventIDs::menu_angledMatrixParens) {
+    MenuCommand(wxT("lmxchar:\"<\"$rmxchar:\">\"$"));
+  }
+  else if(event.GetId() == EventIDs::menu_squareMatrixParens) {
+    MenuCommand(wxT("lmxchar:\"[\"$rmxchar:\"]\"$"));
+  }
+  else if(event.GetId() == EventIDs::menu_noMatrixParens) {
+    MenuCommand(wxT("lmxchar:\" \"$rmxchar:\" \"$"));
+  }
+  else if(event.GetId() == EventIDs::menu_fullscreen) {
+    ShowFullScreen(!IsFullScreen());
+  }
+  else if(event.GetId() == EventIDs::menu_invertWorksheetBackground) {
+    m_configuration.InvertBackground(!m_configuration.InvertBackground());
+    m_viewMenu->Check(EventIDs::menu_invertWorksheetBackground,
+		      m_configuration.InvertBackground());
+    m_worksheet->RequestRedraw();
+  }
+  else if(event.GetId() == ToolBar::tb_hideCode) {
+    m_configuration.ShowCodeCells(!m_configuration.ShowCodeCells());
+    m_worksheet->CodeCellVisibilityChanged();
+  }
+  else if(event.GetId() == EventIDs::menu_remove_output) {
+    m_worksheet->RemoveAllOutput();
+  }
+  else if(event.GetId() == EventIDs::menu_show_toolbar) {
+    ShowToolBar(!ToolbarIsShown());
+  }
+  else if(event.GetId() == wxID_FIND) {
+    if (m_worksheet->m_findDialog == NULL)
+      m_worksheet->m_findDialog =
+	new FindReplaceDialog(this, &m_findData, _("Find and Replace"));
 
-      if (m_worksheet->GetActiveCell() != NULL) {
-	// Start incremental search and highlighting of search results again.
-	m_oldFindString = wxEmptyString;
+    if (m_worksheet->GetActiveCell() != NULL) {
+      // Start incremental search and highlighting of search results again.
+      m_oldFindString = wxEmptyString;
 
-	wxString selected = m_worksheet->GetActiveCell()->GetSelectionString();
-	if (selected.Length() > 0)
-	  m_worksheet->m_findDialog->SetFindString(selected);
-      }
+      wxString selected = m_worksheet->GetActiveCell()->GetSelectionString();
+      if (selected.Length() > 0)
+	m_worksheet->m_findDialog->SetFindString(selected);
+    }
 
-      m_worksheet->m_findDialog->Show(true);
-      m_worksheet->m_findDialog->SetFocus();
-      m_worksheet->m_findDialog->Raise();
-    }
-    else if(event.GetId() == EventIDs::menu_history_next) {
-      m_history->UpdateDeferred();
-      wxString command = m_history->GetCommand(true);
-      if (command != wxEmptyString)
-	m_worksheet->SetActiveCellText(command);
-    }
-    else if(event.GetId() == EventIDs::menu_history_previous) {
-      m_history->UpdateDeferred();
-      wxString command = m_history->GetCommand(false);
-      if (command != wxEmptyString)
-	m_worksheet->SetActiveCellText(command);
-    }
-    else if(event.GetId() == EventIDs::EventIDs::popid_hide_tooltipMarkerForThisMessage) {
-      if (m_worksheet->GetSelectionStart() == NULL)
-	return;
-      Cell *cell = m_worksheet->GetSelectionStart();
-      if (!cell)
-	return;
-      wxString toolTip = cell->GetLocalToolTip();
-      if (toolTip.IsEmpty())
-	toolTip = cell->GetGroup()->GetLocalToolTip();
-      if (toolTip.IsEmpty())
-	return;
-      bool suppress = m_configuration.HideMarkerForThisMessage(toolTip);
-      m_configuration.HideMarkerForThisMessage(toolTip, !suppress);
-      m_worksheet->OutputChanged();
-    }
-    else if(event.GetId() == EventIDs::popid_hide_tooltipMarker) {
-      if (m_worksheet->GetSelectionStart() == NULL)
-	return;
-      GroupCell *cell = m_worksheet->GetSelectionStart()->GetGroup();
-      GroupCell *end = NULL;
-      if (m_worksheet->GetSelectionEnd() != NULL)
-	end = m_worksheet->GetSelectionEnd()->GetGroup();
-      bool marked = !cell->GetSuppressTooltipMarker();
+    m_worksheet->m_findDialog->Show(true);
+    m_worksheet->m_findDialog->SetFocus();
+    m_worksheet->m_findDialog->Raise();
+  }
+  else if(event.GetId() == EventIDs::menu_history_next) {
+    m_history->UpdateDeferred();
+    wxString command = m_history->GetCommand(true);
+    if (command != wxEmptyString)
+      m_worksheet->SetActiveCellText(command);
+  }
+  else if(event.GetId() == EventIDs::menu_history_previous) {
+    m_history->UpdateDeferred();
+    wxString command = m_history->GetCommand(false);
+    if (command != wxEmptyString)
+      m_worksheet->SetActiveCellText(command);
+  }
+  else if(event.GetId() == EventIDs::EventIDs::popid_hide_tooltipMarkerForThisMessage) {
+    if (m_worksheet->GetSelectionStart() == NULL)
+      return;
+    Cell *cell = m_worksheet->GetSelectionStart();
+    if (!cell)
+      return;
+    wxString toolTip = cell->GetLocalToolTip();
+    if (toolTip.IsEmpty())
+      toolTip = cell->GetGroup()->GetLocalToolTip();
+    if (toolTip.IsEmpty())
+      return;
+    bool suppress = m_configuration.HideMarkerForThisMessage(toolTip);
+    m_configuration.HideMarkerForThisMessage(toolTip, !suppress);
+    m_worksheet->OutputChanged();
+  }
+  else if(event.GetId() == EventIDs::popid_hide_tooltipMarker) {
+    if (m_worksheet->GetSelectionStart() == NULL)
+      return;
+    GroupCell *cell = m_worksheet->GetSelectionStart()->GetGroup();
+    GroupCell *end = NULL;
+    if (m_worksheet->GetSelectionEnd() != NULL)
+      end = m_worksheet->GetSelectionEnd()->GetGroup();
+    bool marked = !cell->GetSuppressTooltipMarker();
 
-      for (auto &tmp : OnList(cell)) {
-	tmp.SetSuppressTooltipMarker(marked);
-	if (&tmp == end)
-	  break;
-      }
-      m_worksheet->OutputChanged();
+    for (auto &tmp : OnList(cell)) {
+      tmp.SetSuppressTooltipMarker(marked);
+      if (&tmp == end)
+	break;
     }
+    m_worksheet->OutputChanged();
   }
   m_worksheet->RequestRedraw();
 }
