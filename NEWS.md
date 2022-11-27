@@ -1,4 +1,7 @@
 # 22.11.0
+ * Repaired zooming the worksheet
+
+# 22.11.0
  * Resolved an ID collision (#1726)
  * Faster restart of maxima (#1715)
  * Make various dialogs window-modal (#1712)
