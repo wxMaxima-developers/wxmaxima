@@ -208,8 +208,8 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, wxLocale *locale,
   // If we need to set the status manually for the first time using
   // StatusMaximaBusy we first have to manually set the last state to something
   // else.
-  m_StatusMaximaBusy = calculating;
-  StatusMaximaBusy(waiting);
+  m_StatusMaximaBusy = StatusBar::MaximaStatus::calculating;
+  StatusMaximaBusy(StatusBar::MaximaStatus::waiting);
 
 #if defined(__WXMSW__)
   // On Windows the taskbar icon needs to reside in the Resources file the
@@ -700,26 +700,24 @@ void wxMaximaFrame::UpdateStatusMaximaBusy() {
       (m_forceStatusbarUpdate) ||
       (!m_bytesReadDisplayTimer.IsRunning() &&
        (m_bytesFromMaxima != m_bytesFromMaxima_last) &&
-       (m_StatusMaximaBusy_next == transferring))) {
+       (m_StatusMaximaBusy_next == StatusBar::MaximaStatus::transferring))) {
     m_StatusMaximaBusy = m_StatusMaximaBusy_next;
+    m_statusBar->UpdateStatusMaximaBusy(m_StatusMaximaBusy, m_bytesFromMaxima);
     if (!m_StatusSaving) {
       switch (m_StatusMaximaBusy) {
-      case process_wont_start:
+      case StatusBar::MaximaStatus::process_wont_start:
         m_bytesFromMaxima_last = 0;
-        RightStatusText(_("Cannot start the maxima binary"));
         break;
-      case userinput:
+      case StatusBar::MaximaStatus::userinput:
         m_bytesFromMaxima_last = 0;
         m_MenuBar->EnableItem(EventIDs::menu_remove_output, false);
-        RightStatusText(_("Maxima asks a question"));
         break;
-      case sending:
+      case StatusBar::MaximaStatus::sending:
         m_bytesFromMaxima_last = 0;
         m_MenuBar->EnableItem(EventIDs::menu_remove_output, true);
-        RightStatusText(_("Sending a command to Maxima"));
         // We don't evaluate any cell right now.
         break;
-      case waiting:
+      case StatusBar::MaximaStatus::waiting:
         m_bytesFromMaxima_last = 0;
         m_worksheet->SetWorkingGroup(NULL);
         // If we evaluated a cell that produces no output we still want the
@@ -728,50 +726,36 @@ void wxMaximaFrame::UpdateStatusMaximaBusy() {
           m_worksheet->ClearSelection();
 
         m_MenuBar->EnableItem(EventIDs::menu_remove_output, true);
-        RightStatusText(_("Ready for user input"));
         // We don't evaluate any cell right now.
         break;
-      case calculating:
+      case StatusBar::MaximaStatus::calculating:
         m_bytesFromMaxima_last = 0;
         m_MenuBar->EnableItem(EventIDs::menu_remove_output, false);
-        RightStatusText(_("Maxima is calculating"), false);
         break;
-      case transferring:
+      case StatusBar::MaximaStatus::transferring:
         m_MenuBar->EnableItem(EventIDs::menu_remove_output, false);
         m_bytesFromMaxima_last = m_bytesFromMaxima;
         m_bytesReadDisplayTimer.StartOnce(300);
-        if (m_bytesFromMaxima == 0)
-          RightStatusText(_("Reading Maxima output"), false);
-        else
-          RightStatusText(
-			  wxString::Format(_("Reading Maxima output: %li bytes"),
-					   m_bytesFromMaxima),
-			  false);
         break;
-      case parsing:
+      case StatusBar::MaximaStatus::parsing:
         m_bytesFromMaxima_last = 0;
         m_MenuBar->EnableItem(EventIDs::menu_remove_output, false);
-        RightStatusText(_("Parsing output"), false);
         break;
-      case disconnected:
+      case StatusBar::MaximaStatus::disconnected:
         m_bytesFromMaxima_last = 0;
         m_MenuBar->EnableItem(EventIDs::menu_remove_output, true);
-        RightStatusText(_("Not connected to Maxima"));
         break;
-      case wait_for_start:
+      case StatusBar::MaximaStatus::wait_for_start:
         m_bytesFromMaxima_last = 0;
         m_MenuBar->EnableItem(EventIDs::menu_remove_output, true);
-        RightStatusText(_("Maxima started. Waiting for connection..."));
         break;
-      case waitingForAuth:
+      case StatusBar::MaximaStatus::waitingForAuth:
         m_bytesFromMaxima_last = 0;
         m_MenuBar->EnableItem(EventIDs::menu_remove_output, true);
-        RightStatusText(_("Maxima started. Waiting for authentication..."));
         break;
-      case waitingForPrompt:
+      case StatusBar::MaximaStatus::waitingForPrompt:
         m_bytesFromMaxima_last = 0;
         m_MenuBar->EnableItem(EventIDs::menu_remove_output, true);
-        RightStatusText(_("Maxima started. Waiting for initial prompt..."));
         break;
       }
     }
@@ -782,47 +766,36 @@ void wxMaximaFrame::UpdateStatusMaximaBusy() {
 void wxMaximaFrame::StatusSaveStart() {
   m_forceStatusbarUpdate = true;
   m_StatusSaving = true;
-  RightStatusText(_("Saving..."));
+  StatusText(_("Saving..."));
 }
 
 void wxMaximaFrame::StatusSaveFinished() {
   m_forceStatusbarUpdate = true;
-  m_StatusSaving = false;
-  if (
-      (m_StatusMaximaBusy != waiting) &&
-      (m_StatusMaximaBusy != waitingForPrompt) &&
-      (m_StatusMaximaBusy != waitingForAuth)
-      )
-    StatusMaximaBusy(m_StatusMaximaBusy);
-  else
-    RightStatusText(_("Saving successful."));
+  StatusText(_("Saving successful."));
 }
 
 void wxMaximaFrame::StatusExportStart() {
   m_forceStatusbarUpdate = true;
   m_StatusSaving = true;
-  RightStatusText(_("Exporting..."));
+  StatusText(_("Exporting..."));
 }
 
 void wxMaximaFrame::StatusExportFinished() {
   m_forceStatusbarUpdate = true;
   m_StatusSaving = false;
-  if (m_StatusMaximaBusy != waiting)
-    StatusMaximaBusy(m_StatusMaximaBusy);
-  else
-    RightStatusText(_("Export successful."));
+  StatusText(_("Export successful."));
 }
 
 void wxMaximaFrame::StatusSaveFailed() {
   m_forceStatusbarUpdate = true;
   m_StatusSaving = false;
-  RightStatusText(_("Saving failed."));
+  StatusText(_("Saving failed."));
 }
 
 void wxMaximaFrame::StatusExportFailed() {
   m_forceStatusbarUpdate = true;
   m_StatusSaving = false;
-  RightStatusText(_("Export failed."));
+  StatusText(_("Export failed."));
 }
 
 wxMaximaFrame::~wxMaximaFrame() {

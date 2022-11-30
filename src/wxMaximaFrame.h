@@ -104,21 +104,6 @@ public:
   void AddToHistory(const wxString &cmd)
     { m_history->AddToHistory(cmd); }
 
-  enum ToolbarStatus
-  {
-    wait_for_start,
-    process_wont_start,
-    sending,
-    waiting,
-    waitingForPrompt,
-    waitingForAuth,
-    calculating,
-    parsing,
-    transferring,
-    userinput,
-    disconnected
-  };
-
   /*! Inform the user about the length of the evaluation queue.
 
    */
@@ -130,13 +115,13 @@ public:
     - true:  Maxima is calculating
     - false: Maxima is waiting for input
   */
-  void StatusMaximaBusy(ToolbarStatus status){m_StatusMaximaBusy_next = status;}
+  void StatusMaximaBusy(StatusBar::MaximaStatus status){m_StatusMaximaBusy_next = status;}
   void UpdateStatusMaximaBusy();
 
   //! True=Maxima is currently busy.
-  ToolbarStatus m_StatusMaximaBusy;
+  StatusBar::MaximaStatus m_StatusMaximaBusy;
 
-  ToolbarStatus m_StatusMaximaBusy_next;
+  StatusBar::MaximaStatus m_StatusMaximaBusy_next;
 
   //! Set the status to "Maxima is saving"
   void StatusSaveStart();
@@ -287,18 +272,14 @@ private:
     int m_dimensions;
   };
 public:
-  void LeftStatusText(const wxString &text, bool saveInLog = true)
-    {m_newLeftStatusText = true; m_leftStatusText = text; if(saveInLog)wxLogMessage(text);}
-  void RightStatusText(const wxString &text, bool saveInLog = true)
-    {m_newRightStatusText = true; m_rightStatusText = text; if(saveInLog)wxLogMessage(text);}
+  void StatusText(const wxString &text, bool saveInLog = true)
+    {m_newStatusText = true; m_leftStatusText = text; if(saveInLog)wxLogMessage(text);}
 protected:
   ScrollingGenWizPanel *m_wizard = NULL;
   //! Are we inside a 2d or 3d draw command?
   long m_drawDimensions_last;
-  //! Do we have new text to output in the Right half of the Status Bar?
-  bool m_newRightStatusText;
-  //! Do we have new text to output in the Left half of the Status Bar?
-  bool m_newLeftStatusText;
+  //! Do we have new text to output in the Status Bar?
+  bool m_newStatusText;
   //! The text for the Right half of the Status Bar
   wxString m_rightStatusText;
   //! The text for the Left half of the Status Bar

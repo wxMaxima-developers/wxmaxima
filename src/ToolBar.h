@@ -281,7 +281,7 @@ public:
   bool ShowSelectAll(){bool show = true; wxConfig::Get()->Read("Toolbar/showSelectAll", &show);
     return show;}
   void ShowSelectAll(bool show){wxConfig::Get()->Write("Toolbar/showSelectAll", show);}
-
+  
 protected:
   void OnSize(wxSizeEvent &event);
   void OnMouseRightDown(wxMouseEvent &event);

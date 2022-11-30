@@ -40,7 +40,7 @@
 StatusBar::StatusBar(wxWindow *parent, int id)
   : wxStatusBar(parent, id), m_ppi(wxSize(-1, -1)) {
   m_svgRast.reset(nsvgCreateRasterizer());
-  int widths[] = {-1, 300, GetSize().GetHeight()};
+  int widths[] = {-1, GetSize().GetHeight(), GetSize().GetHeight()};
   m_maximaPercentage = -1;
   m_oldmaximaPercentage = -1;
   SetFieldsCount(3, widths);
@@ -73,6 +73,7 @@ StatusBar::StatusBar(wxWindow *parent, int id)
       "that maxima cannot be found (see wxMaxima's Configuration dialogue "
       "for a way to specify maxima's location) or isn't in a working order.");
   UpdateBitmaps();
+  m_maximaStatus = new wxStaticBitmap(this, wxID_ANY, m_network_offline);
   m_networkStatus = new wxStaticBitmap(this, wxID_ANY, m_network_offline);
   m_networkStatus->SetToolTip(m_stdToolTip);
   ReceiveTimer.SetOwner(this, wxID_ANY);
@@ -124,7 +125,99 @@ void StatusBar::UpdateBitmaps() {
     m_network_transmit_receive =
       GetImage("network-transmit-receive", NETWORK_TRANSMIT_RECEIVE_SVG_GZ,
 	       NETWORK_TRANSMIT_RECEIVE_SVG_GZ_SIZE);
+
+    
+    m_bitmap_waitForStart =
+      GetImage("image-loading", IMAGE_LOADING_SVG_GZ,
+	       IMAGE_LOADING_SVG_GZ_SIZE);
+    m_bitmap_process_wont_start =
+      GetImage("network-error", NETWORK_ERROR_SVG_GZ,
+	       NETWORK_ERROR_SVG_GZ_SIZE);
+    m_bitmap_sending =
+      GetImage("go-next", GO_NEXT_SVG_GZ,
+	       GO_NEXT_SVG_GZ_SIZE);
+    m_bitmap_waiting =
+      GetImage("dialog-accept", DIALOG_ACCEPT_SVG_GZ,
+	       DIALOG_ACCEPT_SVG_GZ_SIZE);
+    m_bitmap_waitingForPrompt =
+      GetImage("image-loading", IMAGE_LOADING_SVG_GZ,
+	       IMAGE_LOADING_SVG_GZ_SIZE);
+    m_bitmap_waitingForAuth = 
+      GetImage("lock", SYSTEM_LOCK_SCREEN_SVG_GZ,
+	       SYSTEM_LOCK_SCREEN_SVG_GZ_SIZE);
+    m_bitmap_calculating = 
+      GetImage("calc", EMBLEM_EQUAL_DEFINED_SVG_GZ,
+	       EMBLEM_EQUAL_DEFINED_SVG_GZ_SIZE);
+    m_bitmap_parsing = 
+      GetImage("go-up", GO_UP_SVG_GZ,
+	       GO_UP_SVG_GZ_SIZE);
+    m_bitmap_transferring =
+      GetImage("go-previous", GO_PREVIOUS_SVG_GZ,
+	       GO_PREVIOUS_SVG_GZ_SIZE);
+    m_bitmap_userinput =
+      GetImage("important", EMBLEM_IMPORTANT_SVG_GZ,
+	       EMBLEM_IMPORTANT_SVG_GZ_SIZE);
+    m_bitmap_disconnected =
+      GetImage("network-offline", NETWORK_OFFLINE_SVG_GZ,
+	       NETWORK_OFFLINE_SVG_GZ_SIZE);
   }
+}
+
+void StatusBar::UpdateStatusMaximaBusy(MaximaStatus status, long bytesFromMaxima)
+{
+  switch(status)
+    {
+    case wait_for_start:
+      m_maximaStatus->SetBitmap(m_bitmap_waitForStart);
+      m_maximaStatus->SetToolTip(_("Maxima started. Waiting for connection..."));
+      break;
+    case process_wont_start:
+      m_maximaStatus->SetBitmap(m_bitmap_process_wont_start);
+      m_maximaStatus->SetToolTip(_("Cannot start the maxima binary"));
+      break;
+    case sending:
+      m_maximaStatus->SetBitmap(m_bitmap_sending);
+      m_maximaStatus->SetToolTip(_("Sending a command to Maxima"));
+      break;
+    case waiting:
+      m_maximaStatus->SetBitmap(m_bitmap_waiting);
+      m_maximaStatus->SetToolTip(_("Ready for user input"));
+      break;
+    case waitingForPrompt:
+      m_maximaStatus->SetBitmap(m_bitmap_waitingForPrompt);
+      m_maximaStatus->SetToolTip(_("Maxima started. Waiting for initial prompt..."));
+      break;
+    case waitingForAuth:
+      m_maximaStatus->SetBitmap(m_bitmap_waitingForAuth);
+      m_maximaStatus->SetToolTip(_("Maxima started. Waiting for authentication..."));
+      break;
+    case calculating:
+      m_maximaStatus->SetBitmap(m_bitmap_calculating);
+      m_maximaStatus->SetToolTip(_("Maxima is calculating"));
+      break;
+    case parsing:
+      m_maximaStatus->SetBitmap(m_bitmap_parsing);
+      m_maximaStatus->SetToolTip(_("Parsing output"));
+      break;
+    case transferring:
+      m_maximaStatus->SetBitmap(m_bitmap_transferring);
+      if (bytesFromMaxima == 0)
+	m_maximaStatus->SetToolTip(_("Reading Maxima output"));
+      else
+	m_maximaStatus->SetToolTip(wxString::Format(_("Reading Maxima output: %li bytes"),
+					      bytesFromMaxima));
+      break;
+    case userinput:
+      m_maximaStatus->SetBitmap(m_bitmap_userinput);
+      m_maximaStatus->SetToolTip(_("Maxima asks a question"));
+      break;
+    case disconnected:
+      m_maximaStatus->SetBitmap(m_bitmap_disconnected);
+      m_maximaStatus->SetToolTip(_("Not connected to Maxima"));
+      break;
+    default:
+      wxASSERT(false);
+    }
 }
 
 void StatusBar::HandleTimerEvent() {
@@ -235,7 +328,9 @@ void StatusBar::OnSize(wxSizeEvent &event) {
 
   m_networkStatus->Move(rect.x + (rect.width - size.x) / 2,
                         rect.y + (rect.height - size.y) / 2);
-
+  GetFieldRect(1, rect);
+  m_maximaStatus->Move(rect.x + (rect.width - size.x) / 2,
+		       rect.y + (rect.height - size.y) / 2);
   event.Skip();
 }
 

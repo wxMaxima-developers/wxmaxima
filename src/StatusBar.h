@@ -34,6 +34,9 @@
 #include <wx/statusbr.h>
 #include <memory>
 
+extern unsigned char GO_NEXT_SVG_GZ[];
+extern unsigned int  GO_NEXT_SVG_GZ_SIZE;
+
 #ifndef STATUSBAR_H
 #define STATUSBAR_H
 
@@ -69,6 +72,24 @@ public:
       m_maximaPercentage = percentage;
       NetworkStatus(m_oldNetworkState);
     }
+
+  enum MaximaStatus
+  {
+    wait_for_start,
+    process_wont_start,
+    sending,
+    waiting,
+    waitingForPrompt,
+    waitingForAuth,
+    calculating,
+    parsing,
+    transferring,
+    userinput,
+    disconnected
+  };
+
+  void UpdateStatusMaximaBusy(MaximaStatus status, long bytesFromMaxima);
+ 
 protected:
   void OnSize(wxSizeEvent &event);
   void OnTimerEvent(wxTimerEvent &event);
@@ -106,6 +127,8 @@ private:
   
   //! The currently shown network status bitmap
   wxStaticBitmap *m_networkStatus;
+  //! The currently shown network status bitmap
+  wxStaticBitmap *m_maximaStatus;
   //! The bitmap shown on network errors
   wxBitmap m_network_error;
   //! The bitmap shown while not connected to the network
@@ -124,6 +147,18 @@ private:
   wxTimer SendTimer;
   //! The timer that prolongs the showing of the "receiving" bitmap a bit.
   wxTimer ReceiveTimer;
+  
+  wxBitmap m_bitmap_waitForStart;
+  wxBitmap m_bitmap_process_wont_start;
+  wxBitmap m_bitmap_sending;
+  wxBitmap m_bitmap_waiting;
+  wxBitmap m_bitmap_waitingForPrompt;
+  wxBitmap m_bitmap_waitingForAuth;
+  wxBitmap m_bitmap_calculating;
+  wxBitmap m_bitmap_parsing;
+  wxBitmap m_bitmap_transferring;
+  wxBitmap m_bitmap_userinput;
+  wxBitmap m_bitmap_disconnected;
 };
 
 #endif

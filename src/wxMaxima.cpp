@@ -360,14 +360,14 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale,
   m_worksheet->SetDropTarget(new MyDropTarget(this));
 #endif
 
-  StatusMaximaBusy(disconnected);
+  StatusMaximaBusy(StatusBar::MaximaStatus::disconnected);
 
   m_statusBar->GetNetworkStatusElement()->Connect(
 						  wxEVT_LEFT_DCLICK, wxCommandEventHandler(wxMaxima::NetworkDClick), NULL,
 						  this);
   if (m_openFile.IsEmpty()) {
     if (!StartMaxima())
-      LeftStatusText(_("Starting Maxima process failed"));
+      StatusText(_("Starting Maxima process failed"));
   }
   Connect(wxEVT_SCROLL_CHANGED, wxScrollEventHandler(wxMaxima::SliderEvent),
           NULL, this);
@@ -1814,7 +1814,7 @@ TextCell *wxMaxima::ConsoleAppend(wxString s, CellType type,
   }
 
   if ((type != MC_TYPE_ERROR) && (type != MC_TYPE_WARNING))
-    StatusMaximaBusy(parsing);
+    StatusMaximaBusy(StatusBar::MaximaStatus::parsing);
 
   if (type == MC_TYPE_DEFAULT) {
     // Show a busy cursor whilst interpreting and layouting potentially long
@@ -1954,7 +1954,7 @@ TextCell *wxMaxima::DoRawConsoleAppend(wxString s, CellType type,
       if (m_sbclCompilationRegEx.Matches(token)) {
         wxString fileName = token;
         m_sbclCompilationRegEx.Replace(&fileName, wxT("\\1"));
-        LeftStatusText(
+        StatusText(
 		       wxString::Format(_("Compiling %s"), fileName.utf8_str()));
       } else {
         auto owned = std::make_unique<TextCell>(m_worksheet->GetTree(),
@@ -2079,9 +2079,9 @@ void wxMaxima::SendMaxima(wxString s, bool addToHistory) {
       // we are trying to change maxima's settings from the background and might
       // never get an answer that changes the status again.
       if (m_worksheet->GetWorkingGroup())
-        StatusMaximaBusy(calculating);
+        StatusMaximaBusy(StatusBar::MaximaStatus::calculating);
       else
-        StatusMaximaBusy(waiting);
+        StatusMaximaBusy(StatusBar::MaximaStatus::waiting);
 
       wxScopedCharBuffer const data_raw = s.utf8_str();
       m_client->Write(data_raw.data(), data_raw.length());
@@ -2219,7 +2219,7 @@ bool wxMaxima::StartServer() {
             (m_port < 65535) && (!m_server)));
 
   if (!m_server) {
-    RightStatusText(_("Starting server failed"));
+    StatusText(_("Starting server failed"));
     m_statusBar->NetworkStatus(StatusBar::error);
     LoggingMessageBox(_("wxMaxima could not start a server.\n\n"
                         "Please check you have network support\n"
@@ -2232,7 +2232,7 @@ bool wxMaxima::StartServer() {
     m_server->Notify(true);
     m_server->SetNotify(wxSOCKET_CONNECTION_FLAG);
     m_server->SetTimeout(30);
-    RightStatusText(_("Server started"));
+    StatusText(_("Server started"));
     return true;
   }
 }
@@ -2336,8 +2336,8 @@ bool wxMaxima::StartMaxima(bool force) {
       env->env = environment;
       if (wxExecute(command, wxEXEC_ASYNC | wxEXEC_MAKE_GROUP_LEADER, m_process,
                     env) <= 0) {
-        StatusMaximaBusy(process_wont_start);
-        RightStatusText(_("Cannot start the maxima binary"));
+        StatusMaximaBusy(StatusBar::MaximaStatus::process_wont_start);
+        StatusText(_("Cannot start the maxima binary"));
         m_process = NULL;
         m_maximaStdout = NULL;
         m_maximaStderr = NULL;
@@ -2353,7 +2353,7 @@ bool wxMaxima::StartMaxima(bool force) {
       m_maximaStdout = m_process->GetInputStream();
       m_maximaStderr = m_process->GetErrorStream();
       m_lastPrompt = wxT("(%i1) ");
-      StatusMaximaBusy(wait_for_start);
+      StatusMaximaBusy(StatusBar::MaximaStatus::wait_for_start);
     } else {
       m_statusBar->NetworkStatus(StatusBar::offline);
       wxLogMessage(_("Cannot find a maxima binary and no binary chosen in the "
@@ -2452,7 +2452,7 @@ void wxMaxima::Interrupt(wxCommandEvent &WXUNUSED(event)) {
           LocalFree(errorText);
         }
 
-        LeftStatusText(errorMessage);
+        StatusText(errorMessage);
         wxLogMessage(errorMessage);
         return;
       }
@@ -2671,7 +2671,7 @@ void wxMaxima::OnProcessEvent(wxProcessEvent &event) {
   }
   m_statusBar->NetworkStatus(StatusBar::offline);
   if (!m_closing) {
-    RightStatusText(_("Maxima process terminated unexpectedly."));
+    StatusText(_("Maxima process terminated unexpectedly."));
 
     if (m_first) {
       LoggingMessageBox(
@@ -2702,7 +2702,7 @@ void wxMaxima::OnProcessEvent(wxProcessEvent &event) {
   else
     StartMaxima(true);
   
-  StatusMaximaBusy(disconnected);
+  StatusMaximaBusy(StatusBar::MaximaStatus::disconnected);
   UpdateToolBar();
   UpdateMenus();
   event.Skip();
@@ -2740,7 +2740,7 @@ void wxMaxima::ReadFirstPrompt(wxString &data) {
 
   m_client->ClearFirstPrompt();
   m_first = false;
-  StatusMaximaBusy(waiting);
+  StatusMaximaBusy(StatusBar::MaximaStatus::waiting);
   m_closing = false; // when restarting maxima this is temporarily true
 
   wxString prompt_compact = data.Left(start + end + m_firstPrompt.Length() - 1);
@@ -2957,7 +2957,7 @@ void wxMaxima::ReadStatusBar(wxString &data) {
     if (node != NULL) {
       wxXmlNode *contents = node->GetChildren();
       if (contents)
-        LeftStatusText(contents->GetContent(), false);
+        StatusText(contents->GetContent(), false);
     }
     // Remove the status bar info from the data string
     data = data.Right(data.Length() - end - m_statusbarSuffix.Length());
@@ -3691,7 +3691,7 @@ void wxMaxima::ReadPrompt(wxString &data) {
     m_outputCellsFromCurrentCommand = 0;
     if (m_worksheet->m_evaluationQueue.Empty()) { // queue empty.
       m_exitOnError = false;
-      StatusMaximaBusy(waiting);
+      StatusMaximaBusy(StatusBar::MaximaStatus::waiting);
       // If we have selected a cell in order to show we are evaluating it
       // we should now remove this marker.
       if (m_worksheet->FollowEvaluation()) {
@@ -3715,7 +3715,7 @@ void wxMaxima::ReadPrompt(wxString &data) {
       m_ready = false;
       m_worksheet->RequestRedraw();
       m_worksheet->SetWorkingGroup(nullptr);
-      StatusMaximaBusy(sending);
+      StatusMaximaBusy(StatusBar::MaximaStatus::sending);
       TriggerEvaluation();
     }
 
@@ -3755,7 +3755,7 @@ void wxMaxima::ReadPrompt(wxString &data) {
         m_worksheet->m_mainToolBar->EnableTool(ToolBar::tb_follow, true);
     } else
       m_worksheet->OpenQuestionCaret();
-    StatusMaximaBusy(userinput);
+    StatusMaximaBusy(StatusBar::MaximaStatus::userinput);
   }
   label.Trim(false);
   if (label.StartsWith(wxT("MAXIMA>")) || label.StartsWith("(dbm:")) {
@@ -3814,7 +3814,7 @@ void wxMaxima::SetCWD(wxString file) {
       wxT(":lisp-quiet (wx-cd \"") + filenamestring + wxT("\")\n");
     if (m_ready) {
       if (m_worksheet->m_evaluationQueue.Empty())
-        StatusMaximaBusy(waiting);
+        StatusMaximaBusy(StatusBar::MaximaStatus::waiting);
     }
     m_CWD = workingDirectory;
   }
@@ -3825,7 +3825,7 @@ bool wxMaxima::OpenMACFile(const wxString &file, Worksheet *document,
   // Show a busy cursor while we open the file.
   wxBusyCursor crs;
 
-  RightStatusText(_("Opening file"));
+  StatusText(_("Opening file"));
   wxWindowUpdateLocker noUpdates(document);
 
   bool xMaximaFile = file.Lower().EndsWith(wxT(".out"));
@@ -3836,8 +3836,8 @@ bool wxMaxima::OpenMACFile(const wxString &file, Worksheet *document,
   if (!inputFile.Open()) {
     LoggingMessageBox(_("wxMaxima encountered an error loading ") + file,
                       _("Error"), wxOK | wxICON_EXCLAMATION);
-    StatusMaximaBusy(waiting);
-    RightStatusText(_("File could not be opened"));
+    StatusMaximaBusy(StatusBar::MaximaStatus::waiting);
+    StatusText(_("File could not be opened"));
     return false;
   }
 
@@ -3865,7 +3865,7 @@ bool wxMaxima::OpenMACFile(const wxString &file, Worksheet *document,
 
   SetCWD(file);
 
-  StatusMaximaBusy(waiting);
+  StatusMaximaBusy(StatusBar::MaximaStatus::waiting);
 
   m_worksheet->SetHCaret(NULL);
   m_worksheet->ScrollToCaret();
@@ -3879,7 +3879,7 @@ bool wxMaxima::OpenWXMFile(const wxString &file, Worksheet *document,
   // Show a busy cursor while we open the file.
   wxBusyCursor crs;
 
-  RightStatusText(_("Opening file"));
+  StatusText(_("Opening file"));
   wxWindowUpdateLocker noUpdates(document);
 
   // open wxm file
@@ -3888,8 +3888,8 @@ bool wxMaxima::OpenWXMFile(const wxString &file, Worksheet *document,
   if (!inputFile.Open()) {
     LoggingMessageBox(_("wxMaxima encountered an error loading ") + file,
                       _("Error"), wxOK | wxICON_EXCLAMATION);
-    StatusMaximaBusy(waiting);
-    RightStatusText(_("File could not be opened"));
+    StatusMaximaBusy(StatusBar::MaximaStatus::waiting);
+    StatusText(_("File could not be opened"));
     return false;
   }
 
@@ -3926,7 +3926,7 @@ bool wxMaxima::OpenWXMFile(const wxString &file, Worksheet *document,
 
   SetCWD(file);
 
-  StatusMaximaBusy(waiting);
+  StatusMaximaBusy(StatusBar::MaximaStatus::waiting);
 
   m_worksheet->SetHCaret(NULL);
   m_worksheet->ScrollToCaret();
@@ -3973,7 +3973,7 @@ bool wxMaxima::OpenWXMXFile(const wxString &file, Worksheet *document,
   // Show a busy cursor while we open a file.
   wxBusyCursor crs;
 
-  RightStatusText(_("Opening file"));
+  StatusText(_("Opening file"));
 
   wxWindowUpdateLocker noUpdates(document);
 
@@ -4151,8 +4151,8 @@ bool wxMaxima::OpenWXMXFile(const wxString &file, Worksheet *document,
   if (!xmldoc.IsOk()) {
     LoggingMessageBox(_("wxMaxima cannot read the xml contents of ") + file,
                       _("Error"), wxOK | wxICON_EXCLAMATION);
-    StatusMaximaBusy(waiting);
-    RightStatusText(_("File could not be opened"));
+    StatusMaximaBusy(StatusBar::MaximaStatus::waiting);
+    StatusText(_("File could not be opened"));
     return false;
   }
 
@@ -4162,8 +4162,8 @@ bool wxMaxima::OpenWXMXFile(const wxString &file, Worksheet *document,
 		      _("xml contained in the file claims not to be a wxMaxima worksheet. ") +
 		      file,
 		      _("Error"), wxOK | wxICON_EXCLAMATION);
-    StatusMaximaBusy(waiting);
-    RightStatusText(_("File could not be opened"));
+    StatusMaximaBusy(StatusBar::MaximaStatus::waiting);
+    StatusText(_("File could not be opened"));
     return false;
   }
 
@@ -4171,7 +4171,7 @@ bool wxMaxima::OpenWXMXFile(const wxString &file, Worksheet *document,
   wxString docversion =
     xmldoc.GetRoot()->GetAttribute(wxT("version"), wxT("1.0"));
   if (!CheckWXMXVersion(docversion)) {
-    StatusMaximaBusy(waiting);
+    StatusMaximaBusy(StatusBar::MaximaStatus::waiting);
     return false;
   }
 
@@ -4242,7 +4242,7 @@ bool wxMaxima::OpenWXMXFile(const wxString &file, Worksheet *document,
     if (pos)
       m_worksheet->SetHCaret(pos);
   }
-  StatusMaximaBusy(waiting);
+  StatusMaximaBusy(StatusBar::MaximaStatus::waiting);
 
   m_worksheet->Recalculate();
 
@@ -4259,7 +4259,7 @@ bool wxMaxima::CheckWXMXVersion(const wxString &docversion) {
       LoggingMessageBox(_("Document was saved using a newer version of "
                           "wxMaxima. Please update your wxMaxima."),
                         _("Error"), wxOK | wxICON_EXCLAMATION);
-      RightStatusText(_("File could not be opened"));
+      StatusText(_("File could not be opened"));
       return false;
     }
     if (version_minor > DOCUMENT_VERSION_MINOR)
@@ -4275,7 +4275,7 @@ bool wxMaxima::OpenXML(const wxString &file, Worksheet *document) {
   // Show a busy cursor as long as we open a file.
   wxBusyCursor crs;
 
-  RightStatusText(_("Opening file"));
+  StatusText(_("Opening file"));
 
   wxWindowUpdateLocker noUpdates(document);
 
@@ -4288,8 +4288,8 @@ bool wxMaxima::OpenXML(const wxString &file, Worksheet *document) {
     LoggingMessageBox(_("The .xml file doesn't seem to be valid xml or isn't a "
                         "content.xml extracted from a .wxmx zip archive"),
                       _("Error"), wxOK | wxICON_EXCLAMATION);
-    StatusMaximaBusy(waiting);
-    RightStatusText(_("File could not be opened"));
+    StatusMaximaBusy(StatusBar::MaximaStatus::waiting);
+    StatusText(_("File could not be opened"));
     return false;
   }
 
@@ -4299,8 +4299,8 @@ bool wxMaxima::OpenXML(const wxString &file, Worksheet *document) {
 		      _("xml contained in the file claims not to be a wxMaxima worksheet. ") +
 		      file,
 		      _("Error"), wxOK | wxICON_EXCLAMATION);
-    StatusMaximaBusy(waiting);
-    RightStatusText(_("File could not be opened"));
+    StatusMaximaBusy(StatusBar::MaximaStatus::waiting);
+    StatusText(_("File could not be opened"));
     return false;
   }
 
@@ -4308,7 +4308,7 @@ bool wxMaxima::OpenXML(const wxString &file, Worksheet *document) {
   wxString docversion =
     xmldoc.GetRoot()->GetAttribute(wxT("version"), wxT("1.0"));
   if (!CheckWXMXVersion(docversion)) {
-    StatusMaximaBusy(waiting);
+    StatusMaximaBusy(StatusBar::MaximaStatus::waiting);
     return false;
   }
 
@@ -4327,7 +4327,7 @@ bool wxMaxima::OpenXML(const wxString &file, Worksheet *document) {
   m_worksheet->SetFocus();
   SetCWD(file);
 
-  StatusMaximaBusy(waiting);
+  StatusMaximaBusy(StatusBar::MaximaStatus::waiting);
   return true;
 }
 
@@ -4468,7 +4468,7 @@ wxString wxMaxima::GetCommand(bool params) {
 			  "https://maxima.sourceforge.io) or in wxMaxima's config dialogue "
 			  "the setting for Maxima's location is wrong."),
 			_("Warning"), wxOK | wxICON_EXCLAMATION);
-      LeftStatusText(_("Please configure wxMaxima with 'Edit->Configure'."));
+      StatusText(_("Please configure wxMaxima with 'Edit->Configure'."));
     }
   }
   if (params) {
@@ -4683,12 +4683,12 @@ bool wxMaxima::InterpretDataFromMaxima(const wxString &newData) {
       (m_currentOutput != m_emptywxxmlSymbols)) {
     if(!m_first)
       {
-	StatusMaximaBusy(waitingForPrompt);
+	StatusMaximaBusy(StatusBar::MaximaStatus::waitingForPrompt);
       } else {
       if(!m_maximaAuthenticated)
-	StatusMaximaBusy(waitingForAuth);
+	StatusMaximaBusy(StatusBar::MaximaStatus::waitingForAuth);
       else
-	StatusMaximaBusy(transferring);
+	StatusMaximaBusy(StatusBar::MaximaStatus::transferring);
     }
     m_dispReadOut = true;
   }
@@ -4750,16 +4750,16 @@ void wxMaxima::OnIdle(wxIdleEvent &event) {
         statusLine +=
 	  wxString::Format(_("; %i commands left in the current cell"),
 			   m_commandsLeftInCurrentCell - 1);
-      LeftStatusText(statusLine, false);
+      StatusText(statusLine, false);
     } else {
       if (m_first) {
         if (!m_openInitialFileError)
-          LeftStatusText(_("Welcome to wxMaxima"));
+          StatusText(_("Welcome to wxMaxima"));
       } else {
         if (m_configuration.InLispMode())
-          LeftStatusText(_("Lisp mode."));
+          StatusText(_("Lisp mode."));
         else
-          LeftStatusText(_("Maxima is ready for input."));
+          StatusText(_("Maxima is ready for input."));
       }
       m_openInitialFileError = false;
     }
@@ -4822,19 +4822,14 @@ void wxMaxima::OnIdle(wxIdleEvent &event) {
       SetStatusText(m_worksheet->GetStatusText(), 1);
       event.RequestMore();
       return;
-    } else
-      m_newRightStatusText = true;
+    }
   }
 
-  if ((m_newLeftStatusText) || (m_newRightStatusText)) {
-    if (m_newRightStatusText)
-      SetStatusText(m_rightStatusText, 1);
-
-    if (m_newLeftStatusText)
+  if (m_newStatusText) {
+    if (m_newStatusText)
       SetStatusText(m_leftStatusText, 0);
 
-    m_newRightStatusText = false;
-    m_newLeftStatusText = false;
+    m_newStatusText = false;
 
     event.RequestMore();
     return;
@@ -5109,31 +5104,31 @@ void wxMaxima::UpdateToolBar() {
 
   bool follow = m_worksheet->ScrolledAwayFromEvaluation();
   switch (m_StatusMaximaBusy) {
-  case userinput:
+  case StatusBar::MaximaStatus::userinput:
     m_worksheet->m_mainToolBar->ShowUserInputBitmap();
     m_worksheet->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, true);
     m_worksheet->m_mainToolBar->EnableTool(ToolBar::tb_follow, true);
     break;
-  case waitingForAuth:
-  case waitingForPrompt:
-  case waiting:
-  case sending:
+  case StatusBar::MaximaStatus::waitingForAuth:
+  case StatusBar::MaximaStatus::waitingForPrompt:
+  case StatusBar::MaximaStatus::waiting:
+  case StatusBar::MaximaStatus::sending:
     m_worksheet->m_mainToolBar->ShowFollowBitmap();
     if (m_worksheet->GetWorkingGroup() == NULL) {
       m_worksheet->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, false);
       m_worksheet->m_mainToolBar->EnableTool(ToolBar::tb_follow, false);
     }
     break;
-  case calculating:
-  case transferring:
-  case parsing:
+  case StatusBar::MaximaStatus::calculating:
+  case StatusBar::MaximaStatus::transferring:
+  case StatusBar::MaximaStatus::parsing:
     m_worksheet->m_mainToolBar->ShowFollowBitmap();
     m_worksheet->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, true);
     m_worksheet->m_mainToolBar->EnableTool(ToolBar::tb_follow, follow);
     break;
-  case wait_for_start:
-  case disconnected:
-  case process_wont_start:
+  case StatusBar::MaximaStatus::wait_for_start:
+  case StatusBar::MaximaStatus::disconnected:
+  case StatusBar::MaximaStatus::process_wont_start:
     m_worksheet->m_mainToolBar->ShowFollowBitmap();
     m_worksheet->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, false);
     m_worksheet->m_mainToolBar->EnableTool(ToolBar::tb_follow, false);
@@ -5321,12 +5316,12 @@ bool wxMaxima::OpenFile(const wxString &file, const wxString &command) {
   }
 
   if (!retval)
-    LeftStatusText(wxString::Format("Errors trying to open the file %s.",
+    StatusText(wxString::Format("Errors trying to open the file %s.",
                                     file.utf8_str()));
 
   if (retval) {
     m_worksheet->RequestRedraw();
-    RightStatusText(_("File opened"));
+    StatusText(_("File opened"));
     if (m_evalOnStartup && m_ready) {
       wxLogMessage(_("Starting evaluation of the document"));
       m_evalOnStartup = false;
@@ -5336,7 +5331,7 @@ bool wxMaxima::OpenFile(const wxString &file, const wxString &command) {
       TriggerEvaluation();
     }
   } else
-    RightStatusText(_("File could not be opened"));
+    StatusText(_("File could not be opened"));
 
   m_worksheet->RecalculateForce();
   UpdateMenus();
@@ -10070,7 +10065,7 @@ void wxMaxima::EvaluateEvent(wxCommandEvent &WXUNUSED(event)) {
 	// that is stored within it.
 	cell->SetAnswer(m_worksheet->GetLastQuestion(), answer);
 	SendMaxima(answer, true);
-	StatusMaximaBusy(calculating);
+	StatusMaximaBusy(StatusBar::MaximaStatus::calculating);
 	m_worksheet->SetHCaret(cell);
 	m_worksheet->ScrollToCaret();
       } else { // normally just add to queue (and mark the cell as no more
@@ -10201,7 +10196,7 @@ void wxMaxima::TriggerEvaluation() {
   GroupCell *const tmp = m_worksheet->m_evaluationQueue.GetCell();
   if (!tmp) {
     // Maxima is no more busy.
-    StatusMaximaBusy(waiting);
+    StatusMaximaBusy(StatusBar::MaximaStatus::waiting);
     // Inform the user that the evaluation queue length now is 0.
     EvaluationQueueLength(0);
     // Now we want to start to display things immediately again
@@ -10300,7 +10295,7 @@ void wxMaxima::TriggerEvaluation() {
       text.Trim(false);
       if (!m_hasEvaluatedCells) {
         if (text.StartsWith(wxT(":lisp")))
-          LeftStatusText(_("A \":lisp\" as the first command might fail to "
+          StatusText(_("A \":lisp\" as the first command might fail to "
                            "send a \"finished\" signal."));
       }
 
