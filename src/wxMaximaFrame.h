@@ -31,6 +31,7 @@
 #define WXMAXIMAFRAME_H
 
 #include "precomp.h"
+#include <array>
 #include <wx/wx.h>
 #include "EventIDs.h"
 #include <wx/dirctrl.h>
@@ -272,8 +273,7 @@ private:
     int m_dimensions;
   };
 public:
-  void StatusText(const wxString &text, bool saveInLog = true)
-    {m_newStatusText = true; m_leftStatusText = text; if(saveInLog)wxLogMessage(text);}
+  void StatusText(const wxString &text, bool saveInLog = true);
 protected:
   ScrollingGenWizPanel *m_wizard = NULL;
   //! Are we inside a 2d or 3d draw command?
@@ -329,6 +329,8 @@ private:
   wxPanel *CreateSymbolsPane();
 
 protected:
+  std::array<wxString,10> m_statusTextHistory;
+  void OnMenuStatusText(wxMenuEvent &event);
   bool m_historyVisible;
   bool m_xmlMonitorVisible;
   SymbolsPane *m_symbolsPane;

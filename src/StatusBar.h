@@ -32,6 +32,7 @@
 #include <wx/timer.h>
 #include <wx/statbmp.h>
 #include <wx/statusbr.h>
+#include <wx/stattext.h>
 #include <memory>
 
 extern unsigned char GO_NEXT_SVG_GZ[];
@@ -63,8 +64,14 @@ public:
   //! Informs the status bar about networking events.
   void NetworkStatus(networkState status);
 
-  wxStaticBitmap *GetNetworkStatusElement()
+  wxWindow *GetNetworkStatusElement()
     { return m_networkStatus; }
+
+  wxWindow *GetStatusTextElement()
+    { return m_statusTextPanel; }
+
+  wxWindow *GetMaximaStatusElement()
+    { return m_maximaStatus; }
 
   //! Inform the status bar how many percents of the available CPU power maxima uses
   void SetMaximaCPUPercentage(float percentage)
@@ -89,8 +96,9 @@ public:
   };
 
   void UpdateStatusMaximaBusy(MaximaStatus status, long bytesFromMaxima);
- 
+  void SetStatusText(wxString statusText){m_statusText->SetLabel(statusText);}
 protected:
+  void StatusMsgDClick(wxCommandEvent &ev);
   void OnSize(wxSizeEvent &event);
   void OnTimerEvent(wxTimerEvent &event);
 
@@ -124,7 +132,11 @@ private:
   wxBitmap GetImage(wxString name,
                     unsigned char *data_128, size_t len_128
     );
-  
+
+  //! The background for m_statusText;
+  wxPanel *m_statusTextPanel;
+  //! The currently shown network status bitmap
+  wxStaticText *m_statusText;
   //! The currently shown network status bitmap
   wxStaticBitmap *m_networkStatus;
   //! The currently shown network status bitmap

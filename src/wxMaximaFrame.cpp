@@ -665,6 +665,9 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, wxLocale *locale,
     .Show(false)
     .Movable(true);
   m_manager.Update();
+
+  m_MenuBar->Connect(wxEVT_MENU_HIGHLIGHT,
+		     wxMenuEventHandler(wxMaximaFrame::OnMenuStatusText), NULL, this);
   Connect(EventIDs::menu_pane_dockAll, wxEVT_MENU,
           wxCommandEventHandler(wxMaximaFrame::DockAllSidebars), NULL, this);
   m_historyVisible = m_manager.GetPane(wxT("history")).IsShown();
@@ -2351,7 +2354,13 @@ bool wxMaximaFrame::IsPaneDisplayed(int id) {
 
   return displayed;
 }
-
+void wxMaximaFrame::OnMenuStatusText(wxMenuEvent &event)
+{
+  if(event.GetId() <= 0)
+    StatusText(wxEmptyString, false);
+  else
+    StatusText(m_MenuBar->GetHelpString(event.GetId()), false);
+}
 void wxMaximaFrame::DockAllSidebars(wxCommandEvent &WXUNUSED(ev)) {
   m_manager.GetPane(wxT("math")).Dock();
   m_manager.GetPane(wxT("history")).Dock();
@@ -2368,6 +2377,19 @@ void wxMaximaFrame::DockAllSidebars(wxCommandEvent &WXUNUSED(ev)) {
   m_manager.GetPane(wxT("draw")).Dock();
   m_manager.GetPane(wxT("help")).Dock();
   m_manager.Update();
+}
+
+void  wxMaximaFrame::StatusText(const wxString &text, bool saveInLog)
+{
+  m_newStatusText = true;
+  m_leftStatusText = text;
+  if(saveInLog)
+    {
+      wxLogMessage(text);
+      for(auto i = m_statusTextHistory.size() - 1; i > 0; i--)
+	m_statusTextHistory[i] = m_statusTextHistory[i-1];
+      m_statusTextHistory[0] = text;
+    }
 }
 
 void wxMaximaFrame::ShowPane(int id, bool show) {

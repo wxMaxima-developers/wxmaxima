@@ -432,6 +432,10 @@ protected:
 
   //! Issued on double click on the network status
   void NetworkDClick(wxCommandEvent &ev);
+  //! Issued on double click on the Maxima status icon
+  void MaximaDClick(wxCommandEvent &ev);
+  //! Issued on double click on the status message in the status bar
+  void StatusMsgDClick(wxCommandEvent &ev);
 
   //! Issued on double click on a history item
   void HistoryDClick(wxCommandEvent &event);
