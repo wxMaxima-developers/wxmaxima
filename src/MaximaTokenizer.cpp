@@ -1,4 +1,4 @@
-// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode:
+﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode:
 // nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
