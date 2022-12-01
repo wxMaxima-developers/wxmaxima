@@ -12,7 +12,7 @@ jobs:
     runs-on: windows-latest
     steps:
       - name: setup_cygwin
-        uses: cygwin/cygwin-install-action@v2
+        uses: cygwin/cygwin-install-action@v3
         with:
           packages: cmake git libwx_baseu3.1-devel libwx_gtk3u3.1-devel gcc-core gcc-g++ make gettext-devel
       - name: Checkout_git
