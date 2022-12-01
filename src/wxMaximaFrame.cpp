@@ -666,8 +666,8 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, wxLocale *locale,
     .Movable(true);
   m_manager.Update();
 
-  m_MenuBar->Connect(wxEVT_MENU_HIGHLIGHT,
-		     wxMenuEventHandler(wxMaximaFrame::OnMenuStatusText), NULL, this);
+  Connect(wxEVT_MENU_HIGHLIGHT,
+	  wxMenuEventHandler(wxMaximaFrame::OnMenuStatusText), NULL, this);
   Connect(EventIDs::menu_pane_dockAll, wxEVT_MENU,
           wxCommandEventHandler(wxMaximaFrame::DockAllSidebars), NULL, this);
   m_historyVisible = m_manager.GetPane(wxT("history")).IsShown();
