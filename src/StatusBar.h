@@ -36,7 +36,7 @@
 #include <memory>
 
 extern unsigned char GO_NEXT_SVG_GZ[];
-extern unsigned int  GO_NEXT_SVG_GZ_SIZE;
+extern size_t GO_NEXT_SVG_GZ_SIZE;
 
 #ifndef STATUSBAR_H
 #define STATUSBAR_H
