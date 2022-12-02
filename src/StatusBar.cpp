@@ -153,8 +153,8 @@ void StatusBar::UpdateBitmaps() {
       GetImage("dialog-accept", DIALOG_ACCEPT_SVG_GZ,
 	       DIALOG_ACCEPT_SVG_GZ_SIZE);
     m_bitmap_waitingForPrompt =
-      GetImage("image-loading", WAITING_SVG_GZ,
-	       WAITING_SVG_GZ_SIZE);
+      GetImage("calc", EMBLEM_EQUAL_DEFINED_SVG_GZ,
+	       EMBLEM_EQUAL_DEFINED_SVG_GZ_SIZE);
     m_bitmap_waitingForAuth = 
       GetImage("lock", SYSTEM_LOCK_SCREEN_SVG_GZ,
 	       SYSTEM_LOCK_SCREEN_SVG_GZ_SIZE);
