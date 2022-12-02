@@ -7,8 +7,22 @@ file(WRITE "${HEADER_FILE}"
     "#ifndef WXM_STATUSBAR_IMAGES_H\n"
     "#define WXM_STATUSBAR_IMAGES_H\n")
 
-file(GLOB WXM_FILES *.svg.gz)
-foreach(file ${WXM_FILES})
+set(IMAGE_FILES
+  network-idle.svg.gz
+  Dialog-accept.svg.gz
+  network-offline.svg.gz
+  Emblem-equal-defined.svg.gz
+  network-receive.svg.gz
+  Emblem-important.svg.gz
+  network-transmit-receive.svg.gz
+  Go-previous.svg.gz
+  network-transmit.svg.gz
+  Go-up.svg.gz
+  System-lock-screen.svg.gz
+  network-error.svg.gz
+  Waiting.svg.gz)
+
+foreach(file ${IMAGE_FILES})
     message(STATUS "   Processing: ${file}")
     get_filename_component(variableName ${file} NAME)
     file(APPEND "${HEADER_FILE}" "/* Data for the file: ${variableName} */\n")
