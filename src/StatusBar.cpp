@@ -141,8 +141,8 @@ void StatusBar::UpdateBitmaps() {
 
     
     m_bitmap_waitForStart =
-      GetImage("image-loading", IMAGE_LOADING_SVG_GZ,
-	       IMAGE_LOADING_SVG_GZ_SIZE);
+      GetImage("image-loading", WAITING_SVG_GZ,
+	       WAITING_SVG_GZ_SIZE);
     m_bitmap_process_wont_start =
       GetImage("network-error", NETWORK_ERROR_SVG_GZ,
 	       NETWORK_ERROR_SVG_GZ_SIZE);
