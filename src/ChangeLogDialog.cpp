@@ -42,6 +42,8 @@ ChangeLogDialog::ChangeLogDialog(wxWindow *parent)
   m_movedToStart = false;
   wxString line;
   wxString licenseText;
+  Connect(wxEVT_TEXT_URL, wxTextUrlEventHandler(ChangeLogDialog::OnTextURLEvent),
+	  NULL, this);
 
   m_license = new wxTextCtrl(
 			     this, -1, wxEmptyString, wxDefaultPosition, wxDefaultSize,
@@ -117,6 +119,3 @@ void ChangeLogDialog::OnTextURLEvent(wxTextUrlEvent &event) {
   }
 }
 
-BEGIN_EVENT_TABLE(ChangeLogDialog, wxDialog)
-EVT_TEXT_URL(wxID_ANY, ChangeLogDialog::OnTextURLEvent)
-END_EVENT_TABLE()

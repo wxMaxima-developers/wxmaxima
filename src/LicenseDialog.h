@@ -45,7 +45,6 @@ private:
   wxString m_longestLine;
   wxTextCtrl *m_license;
   bool m_movedToStart;
-  DECLARE_EVENT_TABLE()
   void OnTextURLEvent(wxTextUrlEvent& event);
 };
 

@@ -40,6 +40,8 @@ LicenseDialog::LicenseDialog(wxWindow *parent)
   wxMemoryInputStream istream(WXM_LICENSE, WXM_LICENSE_SIZE);
   wxTextInputStream textIn(istream);
   m_movedToStart = false;
+  Connect(wxEVT_TEXT_URL, wxTextUrlEventHandler(LicenseDialog::OnTextURLEvent),
+	  NULL, this);
   wxString line;
   wxString licenseText;
 
@@ -117,6 +119,3 @@ void LicenseDialog::OnTextURLEvent(wxTextUrlEvent &event) {
   }
 }
 
-BEGIN_EVENT_TABLE(LicenseDialog, wxDialog)
-EVT_TEXT_URL(wxID_ANY, LicenseDialog::OnTextURLEvent)
-END_EVENT_TABLE()

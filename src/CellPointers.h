@@ -176,7 +176,7 @@ public:
 
 private:
   struct CellTimerId {
-    Cell *cell;
+    Cell *cell = NULL;
     int timerId;
     CellTimerId() = default;
     CellTimerId(Cell *cell, int timerId) : cell(cell), timerId(timerId) {}

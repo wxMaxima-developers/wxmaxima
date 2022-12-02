@@ -4843,7 +4843,7 @@ void wxMaxima::OnIdle(wxIdleEvent &event) {
     m_newStatusText = false;
 
     wxString toolTip;
-    for(auto i = 0; i < m_statusTextHistory.size();i++)
+    for(size_t i = 0; i < m_statusTextHistory.size();i++)
       if(!m_statusTextHistory[i].IsEmpty()) toolTip +=
 					      m_statusTextHistory[i] + "\n";
 
