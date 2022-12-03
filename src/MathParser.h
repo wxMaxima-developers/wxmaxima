@@ -117,7 +117,7 @@ private:
     If we encounter a non-whitespace text node where we shouldn't we raise an
     assertion that informs the user that we might want a bug report about this.
   */
-  wxXmlNode *GetNextTag(wxXmlNode *node);
+  static wxXmlNode *GetNextTag(wxXmlNode *node);
 
   /*! Counts the number of non-whitespace children of a node */
   int CountChildren(wxXmlNode *node);

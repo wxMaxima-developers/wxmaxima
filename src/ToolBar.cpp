@@ -126,15 +126,16 @@ void ToolBar::UpdateSlider(AnimationCell *cell) {
 ToolBar::ToolBar(wxWindow *parent)
   : wxAuiToolBar(parent, -1, wxDefaultPosition, wxDefaultSize,
 		 wxAUI_TB_OVERFLOW | wxAUI_TB_PLAIN_BACKGROUND |
-		 wxAUI_TB_HORIZONTAL) {
-  m_defaultCellStyle = GC_TYPE_CODE;
-  m_canEvalThisCell_old = true;
-  m_worksheetEmpty_old = false;
-  m_canCopy_old = true;
-  m_canCut_old = true;
-  m_canSave_old = true;
-  m_canPrint_old = true;
-  m_canEvalTillHere_old = true;
+		 wxAUI_TB_HORIZONTAL),
+    m_defaultCellStyle(GC_TYPE_CODE),
+    m_canCopy_old(true),
+    m_canCut_old(true),
+    m_canSave_old(true),
+    m_canPrint_old(true),
+    m_canEvalTillHere_old(true),
+    m_canEvalThisCell_old(true),
+    m_worksheetEmpty_old(false)
+{
   m_svgRast.reset(nsvgCreateRasterizer());
 
   m_needsInformation = false;

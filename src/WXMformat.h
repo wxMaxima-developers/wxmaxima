@@ -74,7 +74,7 @@ namespace Format
  * concatenates the results.
  * \returns the tree, or nullptr on failure.
  */
-  std::unique_ptr<GroupCell> ParseWXMFile(wxTextBuffer &buf, Configuration *config);
+  std::unique_ptr<GroupCell> ParseWXMFile(wxTextBuffer &text, Configuration *config);
 
 /*! Parses the contents of a preloaded .mac file into individual cells.
  *
@@ -87,7 +87,7 @@ namespace Format
  * Invokes ParseMACContents on pre-processed data.
  * \returns the cell tree, or nullptr on failure.
  */
-  std::unique_ptr<GroupCell> ParseMACFile(wxTextBuffer &buf, bool xMaximaFile, Configuration *config);
+  std::unique_ptr<GroupCell> ParseMACFile(wxTextBuffer &text, bool xMaximaFile, Configuration *config);
 
 //! First line of the WXM files - used by both loading and saving code.
   extern const wxString WXMFirstLine;

@@ -130,7 +130,7 @@ private:
   bool m_icon_shows_transmit;
 
   wxBitmap GetImage(wxString name,
-                    unsigned char *data_128, size_t len_128
+                    unsigned char *data, size_t len
     );
 
   //! The background for m_statusText;

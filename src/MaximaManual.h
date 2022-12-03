@@ -64,7 +64,7 @@ public:
   wxString GetHelpfileUrl_FilePerChapter(wxString keyword);
   wxString GetHelpfileURL(wxString keyword);
   //! Search maxima's help file for command and variable names
-  void LoadHelpFileAnchors(wxString directory, wxString maximaVersion);
+  void LoadHelpFileAnchors(wxString docdir, wxString maximaVersion);
   //! Collect all keyword anchors in the help file
   void CompileHelpFileAnchors(wxString maximaHtmlDir,
                                 wxString maximaVersion,
@@ -84,7 +84,7 @@ public:
   ~MaximaManual();
 private:
   //! Add our aliasses to a list of anchors
-  void AnchorAliasses(HelpFileAnchors &anchors);
+  static void AnchorAliasses(HelpFileAnchors &anchors);
   //! Scans the maxima directory for a list of loadable files
   class GetHTMLFiles : public wxDirTraverser
   {

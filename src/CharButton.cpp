@@ -34,17 +34,17 @@
 #include <wx/dcbuffer.h>
 #include <wx/settings.h>
 
-void CharButton::MouseOverTextIs(bool mouseover) {
-  if (m_mouseOverText != mouseover) {
-    m_mouseOverText = mouseover;
+void CharButton::MouseOverTextIs(bool mouseOver) {
+  if (m_mouseOverText != mouseOver) {
+    m_mouseOverText = mouseOver;
     m_backgroundColorChangeNeeded = true;
     Connect(wxEVT_IDLE, wxIdleEventHandler(CharButton::OnIdle), NULL, this);
   }
 }
 
-void CharButton::MouseOverPanelIs(bool mouseover) {
-  if (m_mouseOverPanel != mouseover) {
-    m_mouseOverPanel = mouseover;
+void CharButton::MouseOverPanelIs(bool mouseOver) {
+  if (m_mouseOverPanel != mouseOver) {
+    m_mouseOverPanel = mouseOver;
     m_backgroundColorChangeNeeded = true;
     Connect(wxEVT_IDLE, wxIdleEventHandler(CharButton::OnIdle), NULL, this);
   }

@@ -94,7 +94,7 @@ void CompositeDataObject::GetAllFormats(wxDataFormat *formats,
   if (!(dir & wxDataObject::Get))
     return;
 
-  for (auto &entry : m_entries)
+  for (auto const &entry : m_entries)
     *formats++ = entry.format;
 }
 

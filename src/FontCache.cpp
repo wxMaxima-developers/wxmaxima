@@ -55,7 +55,7 @@ FontCache::GetStyleFont(const Style &style, const wxFont &withFont) {
     return badStyle;
   }
   // cppcheck-suppress knownConditionTrueFalse
-  if (!m_enabled)
+   if (!m_enabled)
     return GetStyleFontUncached(style, withFont);
 
   auto it = m_cache.find(style);

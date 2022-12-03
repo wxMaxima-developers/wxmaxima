@@ -89,7 +89,7 @@ public:
   const T *Intern(const T *value) {
     if (!value)
       return nullptr;
-    return &Intern(*value);
+    return std::move(&Intern(*value));
   }
   const T *Intern(const T &value) {
     // pointer equality: is the value within one of the slices?
@@ -128,14 +128,14 @@ public:
   ~InternerUser() { mutex.Unlock(); }
 
 public:
-  Interner<wxString> &Get() const;
+  static Interner<wxString> &Get();
   InternerUser(const InternerUser &) = delete;
   void operator=(const InternerUser &) = delete;
 };
 
 wxMutex InternerUser::mutex;
 
-Interner<wxString> &InternerUser::Get() const {
+Interner<wxString> &InternerUser::Get() {
   static Interner<wxString> interner;
   return interner;
 }
@@ -214,10 +214,10 @@ did_change Style::SetEncoding(wxFontEncoding encoding) {
   return true;
 }
 
-did_change Style::SetFontStyle(wxFontStyle fontStyle) {
-  if (m.fontStyle == fontStyle)
+did_change Style::SetFontStyle(wxFontStyle style) {
+  if (m.fontStyle == style)
     return false;
-  m.fontStyle = fontStyle;
+  m.fontStyle = style;
   m.fontHash = 0;
   return true;
 }
@@ -262,10 +262,10 @@ did_change Style::SetStrikethrough(bool strikethrough) {
   return true;
 }
 
-did_change Style::SetFontName(AFontName faceName) {
-  if (m.fontName == faceName)
+did_change Style::SetFontName(AFontName fontName) {
+  if (m.fontName == fontName)
     return false;
-  m.fontName = faceName;
+  m.fontName = fontName;
   m.fontHash = 0;
   return true;
 }

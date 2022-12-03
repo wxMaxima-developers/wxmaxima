@@ -3605,13 +3605,13 @@ void Worksheet::SelectWithChar(int ccode) {
         prev = prev->GetPrevious();
 
       if (prev) {
-        if (m_hCaretPosition &&
+        if ((m_hCaretPosition != NULL) &&
             m_hCaretPosition->GetNext() == m_hCaretPositionEnd)
           m_hCaretPositionStart = prev;
-        if (m_hCaretPositionEnd)
+        if (m_hCaretPositionEnd != NULL)
           m_hCaretPositionEnd = prev;
       }
-      if (m_hCaretPositionEnd)
+      if (m_hCaretPositionEnd != NULL)
         ScheduleScrollToCell(m_hCaretPositionEnd, false);
     }
   } else {
@@ -5645,7 +5645,7 @@ wxString Worksheet::UnicodeToMaxima(wxString s) {
   wxString retval;
 
   for (auto const &tok : MaximaTokenizer(s, m_configuration).PopTokens()) {
-    auto &tokenString = tok.GetText();
+    auto const &tokenString = tok.GetText();
     switch (tok.GetStyle()) {
     case TS_DEFAULT:
     case TS_CODE_OPERATOR:
@@ -7119,7 +7119,6 @@ void Worksheet::OnSetFocus(wxFocusEvent &event) {
 }
 
 void Worksheet::OnKillFocus(wxFocusEvent &event) {
-  return;
   m_hasFocus = false;
   if (GetActiveCell())
     GetActiveCell()->SetFocus(false);

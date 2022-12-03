@@ -891,6 +891,7 @@ long Configuration::GetLineWidth() const {
 
 Configuration::drawMode Configuration::GetParenthesisDrawMode() {
   if (m_parenthesisDrawMode == unknown) {
+    
     static const wxString parens{(wxT(PAREN_OPEN_TOP_UNICODE) wxT(
 								  PAREN_OPEN_EXTEND_UNICODE) wxT(PAREN_OPEN_BOTTOM_UNICODE))};
 
