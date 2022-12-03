@@ -219,11 +219,13 @@ void LabelCell::Recalculate(AFontSize fontsize) {
       Style style = m_configuration->GetStyle(
 					      m_textStyle, m_configuration->GetDefaultFontSize());
       wxDC *dc = m_configuration->GetDC();
-      style.SetFontSize(Scale_Px(fontsize));
       dc->SetFont(style.GetFont());
 
-      wxSize labelSize =
+      style.SetFontSize(Scale_Px(fontsize));
+      wxSize labelSize_unscaled =
 	CalculateTextSize(m_configuration->GetDC(), m_displayedText, index);
+      style.SetFontSize(Scale_Px(m_fontSize_scaledToFit));
+      wxSize labelSize = labelSize_unscaled;
       m_height = labelSize.GetHeight();
       m_center = m_height / 2;
 
@@ -246,6 +248,7 @@ void LabelCell::Recalculate(AFontSize fontsize) {
 	  CalculateTextSize(m_configuration->GetDC(), m_displayedText, index);
       }
       m_width = labelSize.GetWidth() + Scale_Px(2);
+      m_center = (labelSize.GetHeight()) / 2.0;
     } else {
       m_width = m_height = m_center = 0;
     }
