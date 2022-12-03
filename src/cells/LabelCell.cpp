@@ -230,7 +230,7 @@ void LabelCell::Recalculate(AFontSize fontsize) {
       wxASSERT_MSG((labelSize.GetWidth() > 0) || (m_displayedText.IsEmpty()),
                    _("Seems like something is broken with the maths font."));
 
-      while ((labelSize.GetWidth() + Scale_Px(2) >=
+      while ((labelSize.GetWidth() + Scale_Px(fontsize) >=
               Scale_Px(m_configuration->GetLabelWidth())) &&
              (!m_fontSize_scaledToFit.IsMinimal())) {
 #if wxCHECK_VERSION(3, 1, 2)
