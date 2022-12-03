@@ -120,7 +120,7 @@ protected:
   struct SizeEntry {
     wxSize textSize;
     AFontSize fontSize;
-    TextIndex index;
+    TextIndex index = cellText;
     SizeEntry(wxSize textSize, AFontSize fontSize, TextIndex index) :
       textSize(textSize), fontSize(fontSize), index(index) {}
     SizeEntry() = default;

@@ -120,7 +120,7 @@ private:
   static wxXmlNode *GetNextTag(wxXmlNode *node);
 
   /*! Counts the number of non-whitespace children of a node */
-  int CountChildren(wxXmlNode *node);
+  static int CountChildren(wxXmlNode *node);
 
   /*! Returns node - or (if node is a whitespace-only text node) the next one.
 

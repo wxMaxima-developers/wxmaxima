@@ -89,7 +89,7 @@ public:
   const T *Intern(const T *value) {
     if (!value)
       return nullptr;
-    return std::move(&Intern(*value));
+    return &Intern(*value);
   }
   const T *Intern(const T &value) {
     // pointer equality: is the value within one of the slices?

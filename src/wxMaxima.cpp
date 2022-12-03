@@ -1926,7 +1926,7 @@ TextCell *wxMaxima::DoRawConsoleAppend(wxString s, CellType type,
     m_worksheet->InsertLine(std::move(owned), true);
   } else {
     std::unique_ptr<LabelCell> ownedCell;
-    TextCell *incompleteTextCell = {};
+    TextCell *incompleteTextCell = nullptr;
 
     if (type == MC_TYPE_PROMPT) {
       ownedCell =
@@ -2814,14 +2814,11 @@ bool wxMaxima::ParseNextChunkFromMaxima(wxString &data) {
             if (!tagFound) {
               miscText += wxT("<") + tagName + wxT(">");
               tagName = wxEmptyString;
-              it = it2;
             }
             break;
           } else {
             miscText += wxT("<") + tagName;
             tagName = wxEmptyString;
-
-            it = it2;
             break;
           }
         }
@@ -2996,19 +2993,22 @@ void wxMaxima::ReadManualTopicNames(wxString &data) {
       wxLogMessage(_("No topics found in topic tag"));
     } else {
       wxXmlNode *entry = node->GetChildren();
-      if (entry->GetName() == wxT("keyword")) {
-        wxXmlNode *topic = entry->GetChildren();
-        if (topic) {
-          wxLogMessage(wxString::Format(_("Received manual topic request: %s"),
-                                        topic->GetContent().ToUTF8().data()));
-          topics.Add(topic->GetContent());
-        }
-        if (topics.IsEmpty())
-          wxLogMessage(_("No topics found in topic flag"));
-        else
-          m_helpPane->SelectKeywords(topics);
-      }
-      entry = entry->GetNext();
+      while(entry != NULL)
+	{
+	  if (entry->GetName() == wxT("keyword")) {
+	    wxXmlNode *topic = entry->GetChildren();
+	    if (topic) {
+	      wxLogMessage(wxString::Format(_("Received manual topic request: %s"),
+					    topic->GetContent().ToUTF8().data()));
+	      topics.Add(topic->GetContent());
+	    }
+	    if (topics.IsEmpty())
+	      wxLogMessage(_("No topics found in topic flag"));
+	    else
+	      m_helpPane->SelectKeywords(topics);
+	  }
+	  entry = entry->GetNext();
+	}
     }
     // Remove the status bar info from the data string
     data = data.Right(data.Length() - end - m_jumpManualPrefix.Length());
@@ -3559,9 +3559,9 @@ void wxMaxima::VariableActionOperators(const wxString &value) {
     wxXmlNode *contents = node->GetChildren();
     while (contents) {
       if (contents->GetName() == wxT("operator")) {
-        wxXmlNode *node = contents->GetChildren();
+        wxXmlNode *innernode = contents->GetChildren();
         if (node) {
-          wxString content = node->GetContent();
+          wxString content = innernode->GetContent();
           if ((!content.IsEmpty()) &&
               (m_configuration.m_maximaOperators.find(content) ==
                m_configuration.m_maximaOperators.end())) {
@@ -4781,8 +4781,10 @@ void wxMaxima::OnIdle(wxIdleEvent &event) {
     return;
   }
 
-  if (m_worksheet != NULL)
-    m_worksheet->UpdateScrollPos();
+  if (m_worksheet == NULL)
+    return;
+  
+  m_worksheet->UpdateScrollPos();
 
   // Incremental search is done from the idle task. This means that we don't
   // forcefully need to do a new search on every character that is entered into
@@ -4837,8 +4839,7 @@ void wxMaxima::OnIdle(wxIdleEvent &event) {
   }
 
   if (m_newStatusText) {
-    if (m_newStatusText)
-      m_statusBar->SetStatusText(m_leftStatusText);
+    m_statusBar->SetStatusText(m_leftStatusText);
     
     m_newStatusText = false;
 
