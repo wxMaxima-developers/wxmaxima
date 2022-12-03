@@ -676,9 +676,9 @@ void Configuration::ReadConfig() {
   config->Read(wxT("singlePageManual"), &m_singlePageManual);
   config->Read("helpBrowser", &m_helpBrowserUserLocation);
   {
-    int tmp;
+    int tmp = static_cast<int>(m_htmlEquationFormat);
     config->Read("HTMLequationFormat", &tmp);
-    m_htmlEquationFormat = (Configuration::htmlExportFormat)tmp;
+    m_htmlEquationFormat = static_cast<Configuration::htmlExportFormat>(tmp);
   }
 
   config->Read(wxT("TOCshowsSectionNumbers"), &m_TOCshowsSectionNumbers);
@@ -715,7 +715,7 @@ void Configuration::ReadConfig() {
 
   config->Read(wxT("autoIndent"), &m_autoIndent);
 
-  int showLabelChoice = 0;
+  long showLabelChoice = static_cast<long>(m_showLabelChoice);
   config->Read(wxT("showLabelChoice"), &showLabelChoice);
   m_showLabelChoice = (showLabels)showLabelChoice;
 
