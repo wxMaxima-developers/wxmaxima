@@ -84,7 +84,7 @@ public:
   /*! The file private accelerator key information is stored in
 
    */
-  wxString UserAutocompleteFile();
+  static wxString UserAutocompleteFile();
 
   //! The path to wxMaxima's own AutoComplete file
   wxString AutocompleteFile() const

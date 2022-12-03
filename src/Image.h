@@ -156,7 +156,7 @@ public:
     }
   
   //! Returns the file name extension of the current image
-  wxString GetExtension();
+  wxString GetExtension() const;
   //! The maximum width this image shall be displayed with
   double GetMaxWidth() const {return m_maxWidth;}
   //! The maximum height this image shall be displayed with
@@ -176,7 +176,7 @@ public:
   wxBitmap GetBitmap(double scale = 1.0);
 
   //! Does the image show an actual image or an "broken image" symbol?
-  bool IsOk();
+  bool IsOk() const;
   
   //! Returns the image in its unscaled form
   wxBitmap GetUnscaledBitmap();
@@ -190,13 +190,13 @@ public:
   long m_height;
 
   //! Returns the original image in its compressed form
-  wxMemoryBuffer GetCompressedImage();
+  wxMemoryBuffer GetCompressedImage() const;
 
   //! Returns the original width
-  size_t GetOriginalWidth();
+  size_t GetOriginalWidth() const;
 
   //! Returns the original height
-  size_t GetOriginalHeight();
+  size_t GetOriginalHeight() const;
 
 
   

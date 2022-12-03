@@ -66,7 +66,7 @@ Cell *CellPointers::GetCellForTimerId(int const timerId) const {
   return nullptr;
 }
 
-void CellPointers::RemoveTimerIdForCell(Cell *const cell) {
+void CellPointers::RemoveTimerIdForCell(const Cell *const cell) {
   auto it = m_timerIds.begin();
   while (it != m_timerIds.end() && it->cell != cell)
     std::advance(it, 1);

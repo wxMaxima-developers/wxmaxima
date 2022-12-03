@@ -133,11 +133,11 @@ public:
    */
   StringHash m_maximaOperators;
 
-  const wxEnvVariableHashMap& MaximaEnvVars(){return m_maximaEnvVars;}
+  const wxEnvVariableHashMap& MaximaEnvVars() const {return m_maximaEnvVars;}
   wxEnvVariableHashMap m_maximaEnvVars;
 
-  mathDisplayMode DisplayMode(){return m_displayMode;}
-  void DisplayMode(mathDisplayMode mode ){m_displayMode = mode;}
+  mathDisplayMode DisplayMode() const {return m_displayMode;}
+  void DisplayMode(mathDisplayMode mode ) {m_displayMode = mode;}
 
   //! Set maxima's working directory
   void SetWorkingDirectory(wxString dir)
@@ -165,8 +165,8 @@ public:
   void UnsetContext() {m_dc = NULL;}
 
   void SetBackgroundBrush(wxBrush brush);
-  bool FixedFontInTextControls(){return m_fixedFontTC;}
-  void FixedFontInTextControls(bool fixed){m_fixedFontTC = fixed;}
+  bool FixedFontInTextControls() const {return m_fixedFontTC;}
+  void FixedFontInTextControls(bool fixed) {m_fixedFontTC = fixed;}
   wxBrush GetBackgroundBrush() const {return m_BackgroundBrush;}
   wxBrush GetTooltipBrush() const {return m_tooltipBrush;}
   void SetAntialiassingDC(wxDC &antialiassingDC)
@@ -296,7 +296,7 @@ public:
     so we need to do some additional tricks here.
   */
   wxSize GetPPI() const;
-  int AutosaveMinutes(){return m_autoSaveMinutes;}
+  int AutosaveMinutes() const {return m_autoSaveMinutes;}
   void AutosaveMinutes(int minutes){m_autoSaveMinutes = minutes;}
 
   //! How much vertical space is to be left between two group cells?
@@ -408,16 +408,16 @@ public:
   // But text blocks that are 1 meter wide and 2 cm high feel - weird.
   long GetLineWidth() const;
 
-  bool SaveUntitled(){ return m_saveUntitled;}
-  void SaveUntitled(bool save){m_saveUntitled = save;}
+  bool SaveUntitled() const { return m_saveUntitled;}
+  void SaveUntitled(bool save) {m_saveUntitled = save;}
 
-  bool CursorJump(){ return m_cursorJump;}
+  bool CursorJump() const { return m_cursorJump;}
   void CursorJump(bool save){m_cursorJump = save;}
 
-  bool NumpadEnterEvaluates(){ return m_numpadEnterEvaluates;}
+  bool NumpadEnterEvaluates() const { return m_numpadEnterEvaluates;}
   void NumpadEnterEvaluates(bool eval){m_numpadEnterEvaluates = eval;}
 
-  bool SaveImgFileName() { return m_saveImgFileName;}
+  bool SaveImgFileName() const { return m_saveImgFileName;}
   void SaveImgFileName(bool save) { m_saveImgFileName = save;}
 
   //! Do we want to have automatic line breaks for text cells?
@@ -426,7 +426,7 @@ public:
 
   // cppcheck-suppress functionStatic
   //! Do we want to have automatic line breaks for code cells?
-  bool GetAutoWrapCode() const
+  static bool GetAutoWrapCode()
     { return false; }
 
   /*! Sets the auto wrap mode
@@ -628,7 +628,7 @@ public:
   showLabels GetLabelChoice() const
     { return m_showLabelChoice; }
 
-  bool InvertBackground(){return m_invertBackground;}
+  bool InvertBackground() const {return m_invertBackground;}
   void InvertBackground(bool invert){ m_invertBackground = invert; }
 
   long UndoLimit(){return wxMax(m_undoLimit, 0);}
@@ -757,7 +757,7 @@ public:
   void CopySVG(bool copySVG) { m_copySVG = copySVG; }
   bool CopyEMF() const {return m_copyEMF;}
   void CopyEMF(bool copyEMF) { m_copyEMF = copyEMF; }
-  bool UseSVG(){return m_useSVG;}
+  bool UseSVG() const {return m_useSVG;}
   void UseSVG(bool useSVG) { m_useSVG = useSVG ;}
   void ShowLength(long length) { m_showLength = length; }
   long ShowLength() const {return m_showLength;}

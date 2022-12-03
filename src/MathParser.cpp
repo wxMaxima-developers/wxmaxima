@@ -184,6 +184,8 @@ std::unique_ptr<Cell> MathParser::ParseMtdTag(wxXmlNode *node) {
 }
 
 int MathParser::CountChildren(wxXmlNode *node) {
+  if(node == NULL)
+    return 0;
   wxXmlNode *children = node->GetChildren();
   int num = 0;
   if (children)
@@ -197,6 +199,9 @@ int MathParser::CountChildren(wxXmlNode *node) {
 }
 
 std::unique_ptr<Cell> MathParser::ParseRowTag(wxXmlNode *node) {
+  if(node == NULL)
+    return nullptr;
+  
   if (node->GetAttribute(wxT("list")) == wxT("true")) {
     wxXmlNode *child = node->GetChildren();
     child = SkipWhitespaceNode(child);
@@ -222,7 +227,7 @@ std::unique_ptr<Cell> MathParser::ParseRowTag(wxXmlNode *node) {
     ParseCommonAttrs(node, cell);
     return cell;
   } else {
-    if (node && node->GetChildren())
+    if (node->GetChildren())
       return ParseTag(node->GetChildren(), true);
     return nullptr;
   }

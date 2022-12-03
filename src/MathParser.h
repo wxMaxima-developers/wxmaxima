@@ -127,7 +127,7 @@ private:
     If we encounter a non-whitespace text node where we shouldn't we raise an
     assertion that informs the user that we might want a bug report about this.
   */
-  wxXmlNode *SkipWhitespaceNode(wxXmlNode *node);
+  static wxXmlNode *SkipWhitespaceNode(wxXmlNode *node);
 
   /*! \defgroup GroupCellParsing Methods that generate GroupCells from XML
     @{

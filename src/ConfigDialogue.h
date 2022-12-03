@@ -415,7 +415,7 @@ protected:
   TextStyle GetSelectedStyle() const;
 
   //! Sets the label for the font setting button given by the style (either TS_DEFAULT or TS_MATH)
-  void UpdateButton(TextStyle style);
+  void UpdateButton(TextStyle st);
 
   //! The size of the text font
   int m_fontSize;

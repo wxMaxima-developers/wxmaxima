@@ -170,14 +170,14 @@ public:
   void SetTimerIdForCell(Cell *cell, int timerId);
   int GetTimerIdForCell(Cell *cell) const;
   Cell *GetCellForTimerId(int timerId) const;
-  void RemoveTimerIdForCell(Cell *cell);
+  void RemoveTimerIdForCell(const Cell *const cell);
 
   wxScrolledCanvas *GetWorksheet() { return m_worksheet; }
 
 private:
   struct CellTimerId {
     Cell *cell = NULL;
-    int timerId;
+    int timerId = -1;
     CellTimerId() = default;
     CellTimerId(Cell *cell, int timerId) : cell(cell), timerId(timerId) {}
   };

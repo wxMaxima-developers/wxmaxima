@@ -465,13 +465,13 @@ wxBitmap Image::GetUnscaledBitmap() {
   }
 }
 
-wxMemoryBuffer Image::GetCompressedImage() { return m_compressedImage; }
+wxMemoryBuffer Image::GetCompressedImage() const { return m_compressedImage; }
 
-size_t Image::GetOriginalWidth() { return m_originalWidth; }
+size_t Image::GetOriginalWidth() const { return m_originalWidth; }
 
-size_t Image::GetOriginalHeight() { return m_originalHeight; }
+size_t Image::GetOriginalHeight() const { return m_originalHeight; }
 
-bool Image::IsOk() { return m_isOk; }
+bool Image::IsOk() const { return m_isOk; }
 
 // filesystem cannot be passed by const reference as we want to keep the
 // pointer to the file system alive in a background task
@@ -966,7 +966,7 @@ void Image::LoadImage(const wxBitmap &bitmap) {
   m_height = 1;
 }
 
-wxString Image::GetExtension() { return m_extension; }
+wxString Image::GetExtension() const { return m_extension; }
 
 // filesystem cannot be passed by const reference as we want to keep the
 // pointer to the file system alive in a background task

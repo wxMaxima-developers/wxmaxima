@@ -180,7 +180,6 @@ private:
   static bool m_pipeToStderr;
   static bool m_exitOnError;
   static wxString m_extraMaximaArgs;
-  wxLocale *m_locale;
   //! The variable names to query for the variables pane and for internal reasons
   wxArrayString m_varNamesToQuery;
 
