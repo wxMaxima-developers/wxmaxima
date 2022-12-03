@@ -1,3 +1,7 @@
+#Current
+ * A cleaner status bar with double-click actions
+ * Better display of labels
+
 # 22.11.0
  * Repaired zooming the worksheet
 
