@@ -2356,10 +2356,14 @@ bool wxMaximaFrame::IsPaneDisplayed(int id) {
 }
 void wxMaximaFrame::OnMenuStatusText(wxMenuEvent &event)
 {
-  if(event.GetId() <= 0)
+  if(event.GetId() <= 0)    
     StatusText(wxEmptyString, false);
   else
-    StatusText(m_MenuBar->GetHelpString(event.GetId()), false);
+    {
+      wxMenu *menu = event.GetMenu();
+      if(menu != NULL)
+	StatusText(menu->GetHelpString(event.GetId()), false);
+    }
 }
 void wxMaximaFrame::DockAllSidebars(wxCommandEvent &WXUNUSED(ev)) {
   m_manager.GetPane(wxT("math")).Dock();
