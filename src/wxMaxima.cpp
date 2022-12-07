@@ -97,6 +97,7 @@
 #include <wx/filedlg.h>
 #include <wx/filefn.h>
 #include <wx/filename.h>
+#include <wx/log.h>
 #include <wx/mimetype.h>
 #include <wx/msgdlg.h>
 #include <wx/mstream.h>
