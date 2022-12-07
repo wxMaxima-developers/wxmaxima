@@ -25,7 +25,6 @@
   If we want to add additional elements to a pop-up this is the
   lowest ID that is guaranteed to be free for this purpose.
 */
-#define popid_complete_00 (wxID_HIGHEST + 1000)
 
 /*! \file
   This file declares the class ContentAssistantPopup.
@@ -42,8 +41,6 @@
 #include "EditorCell.h"
 #include <wx/combo.h>
 #include <wx/listctrl.h>
-//! The maximum number of popup menu entries we show at the same time
-#define AC_MENU_LENGTH 25
 
 class AutocompletePopup final : public wxListView, public wxComboPopup
 {  

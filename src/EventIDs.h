@@ -28,10 +28,13 @@
 #ifndef EVENTIDS_H
 #define EVENTIDS_H
 
+#include <array>
+
 //! The class that contains all event IDs wxMaxima needs
 class EventIDs
 {
 public:
+  EventIDs();
   using EventId = int;
 /*! @{
   This list serves several purposes:
@@ -805,8 +808,11 @@ public:
   static const EventId popid_tocdnd;
   static const EventId popid_tocMoveIn;
   static const EventId popid_tocMoveOut;
+  static std::array<EventId,25> popid_autocomplete_keyword;
 
-
+private:
+  //! Do we still need to initialize our dynamic arrays?
+  static bool m_staticInitNeeded;
 /*! @}
    */
 };
