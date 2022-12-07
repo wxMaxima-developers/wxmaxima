@@ -51,24 +51,6 @@ enum
 class TableOfContents : public wxPanel
 {
 public:
-  enum PopIds
-  {
-    popid_Fold = wxID_HIGHEST + 1500,
-    popid_Unfold,
-    popid_SelectTocChapter,
-    popid_EvalTocChapter,
-    popid_ToggleTOCshowsSectionNumbers,
-    popid_tocLevel1,
-    popid_tocLevel2,
-    popid_tocLevel3,
-    popid_tocLevel4,
-    popid_tocLevel5,
-    popid_tocLevel6,
-    popid_tocdnd,
-    popid_tocMoveIn,
-    popid_tocMoveOut
-  };
-
   TableOfContents(wxWindow *parent, int id, Configuration *config, std::unique_ptr<GroupCell> *tree);
 
   /* The destructor

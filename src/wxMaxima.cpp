@@ -1366,35 +1366,35 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale,
           wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
   Connect(EventIDs::popid_change_image, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
-  Connect(TableOfContents::popid_Fold, wxEVT_MENU,
+  Connect(EventIDs::popid_Fold, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
-  Connect(TableOfContents::popid_Unfold, wxEVT_MENU,
+  Connect(EventIDs::popid_Unfold, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
-  Connect(TableOfContents::popid_SelectTocChapter, wxEVT_MENU,
+  Connect(EventIDs::popid_SelectTocChapter, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
-  Connect(TableOfContents::popid_EvalTocChapter, wxEVT_MENU,
+  Connect(EventIDs::popid_EvalTocChapter, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
   Connect(EventIDs::EventIDs::popid_evaluate_section, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
-  Connect(TableOfContents::popid_ToggleTOCshowsSectionNumbers, wxEVT_MENU,
+  Connect(EventIDs::popid_ToggleTOCshowsSectionNumbers, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
-  Connect(TableOfContents::popid_tocLevel1, wxEVT_MENU,
+  Connect(EventIDs::popid_tocLevel1, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
-  Connect(TableOfContents::popid_tocLevel2, wxEVT_MENU,
+  Connect(EventIDs::popid_tocLevel2, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
-  Connect(TableOfContents::popid_tocLevel3, wxEVT_MENU,
+  Connect(EventIDs::popid_tocLevel3, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
-  Connect(TableOfContents::popid_tocLevel4, wxEVT_MENU,
+  Connect(EventIDs::popid_tocLevel4, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
-  Connect(TableOfContents::popid_tocLevel5, wxEVT_MENU,
+  Connect(EventIDs::popid_tocLevel5, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
-  Connect(TableOfContents::popid_tocLevel6, wxEVT_MENU,
+  Connect(EventIDs::popid_tocLevel6, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
-  Connect(TableOfContents::popid_tocMoveIn, wxEVT_MENU,
+  Connect(EventIDs::popid_tocMoveIn, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
-  Connect(TableOfContents::popid_tocMoveOut, wxEVT_MENU,
+  Connect(EventIDs::popid_tocMoveOut, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
-  Connect(TableOfContents::popid_tocdnd, wxEVT_MENU,
+  Connect(EventIDs::popid_tocdnd, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
   Connect(EventIDs::popid_fold, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
@@ -9528,7 +9528,7 @@ void wxMaxima::PopupMenu(wxCommandEvent &event) {
       m_worksheet->UpdateTableOfContents();
     }
   }
-  else if(event.GetId() == TableOfContents::popid_Fold){
+  else if(event.GetId() == EventIDs::popid_Fold){
     if (m_worksheet->m_tableOfContents != NULL) {
       // We only update the table of contents when there is time => no guarantee
       // that the cell that was clicked at actually still is part of the tree.
@@ -9542,7 +9542,7 @@ void wxMaxima::PopupMenu(wxCommandEvent &event) {
       }
     }
   }
-  else if(event.GetId() == TableOfContents::popid_Unfold){
+  else if(event.GetId() == EventIDs::popid_Unfold){
     if (m_worksheet->m_tableOfContents != NULL) {
       // We only update the table of contents when there is time => no guarantee
       // that the cell that was clicked at actually still is part of the tree.
@@ -9556,7 +9556,7 @@ void wxMaxima::PopupMenu(wxCommandEvent &event) {
       }
     }
   }
-  else if(event.GetId() == TableOfContents::popid_SelectTocChapter){
+  else if(event.GetId() == EventIDs::popid_SelectTocChapter){
     if (m_worksheet->m_tableOfContents != NULL) {
       if (m_worksheet->m_tableOfContents->RightClickedOn()) {
         GroupCell *SelectionStart =
@@ -9580,7 +9580,7 @@ void wxMaxima::PopupMenu(wxCommandEvent &event) {
       }
     }
   }
-  else if(event.GetId() == TableOfContents::popid_EvalTocChapter){ {
+  else if(event.GetId() == EventIDs::popid_EvalTocChapter){ {
       GroupCell *SelectionStart =
 	m_worksheet->m_tableOfContents->RightClickedOn();
       // We only update the table of contents when there is time => no guarantee
@@ -9593,53 +9593,53 @@ void wxMaxima::PopupMenu(wxCommandEvent &event) {
       }
     }
   }
-  else if(event.GetId() == TableOfContents::popid_ToggleTOCshowsSectionNumbers){ {
+  else if(event.GetId() == EventIDs::popid_ToggleTOCshowsSectionNumbers){ {
       m_configuration.TocShowsSectionNumbers(event.IsChecked());
       m_worksheet->UpdateTableOfContents();
     }
   }
-  else if(event.GetId() == TableOfContents::popid_tocLevel1){ {
+  else if(event.GetId() == EventIDs::popid_tocLevel1){ {
       m_configuration.TocDepth(1);
       m_worksheet->UpdateTableOfContents();
     }
   }
-  else if(event.GetId() == TableOfContents::popid_tocLevel2){ {
+  else if(event.GetId() == EventIDs::popid_tocLevel2){ {
       m_configuration.TocDepth(2);
       m_worksheet->UpdateTableOfContents();
     }
   }
-  else if(event.GetId() == TableOfContents::popid_tocLevel3){ {
+  else if(event.GetId() == EventIDs::popid_tocLevel3){ {
       m_configuration.TocDepth(3);
       m_worksheet->UpdateTableOfContents();
     }
   }
-  else if(event.GetId() == TableOfContents::popid_tocLevel4){ {
+  else if(event.GetId() == EventIDs::popid_tocLevel4){ {
       m_configuration.TocDepth(4);
       m_worksheet->UpdateTableOfContents();
     }
   }
-  else if(event.GetId() == TableOfContents::popid_tocLevel5){ {
+  else if(event.GetId() == EventIDs::popid_tocLevel5){ {
       m_configuration.TocDepth(5);
       m_worksheet->UpdateTableOfContents();
     }
   }
-  else if(event.GetId() == TableOfContents::popid_tocLevel6){ {
+  else if(event.GetId() == EventIDs::popid_tocLevel6){ {
       m_configuration.TocDepth(255);
       m_worksheet->UpdateTableOfContents();
     }
   }
-  else if(event.GetId() == TableOfContents::popid_tocdnd){ {
+  else if(event.GetId() == EventIDs::popid_tocdnd){ {
       m_worksheet->TOCdnd();
     }
   }
-  else if(event.GetId() == TableOfContents::popid_tocMoveIn){
+  else if(event.GetId() == EventIDs::popid_tocMoveIn){
     m_worksheet->SectioningMoveIn();
     m_worksheet->NumberSections();
     m_worksheet->Recalculate();
     m_worksheet->RequestRedraw();
     m_worksheet->UpdateTableOfContents();
   }
-  else if(event.GetId() == TableOfContents::popid_tocMoveOut){
+  else if(event.GetId() == EventIDs::popid_tocMoveOut){
     m_worksheet->SectioningMoveOut();
     m_worksheet->NumberSections();
     m_worksheet->Recalculate();

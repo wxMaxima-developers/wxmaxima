@@ -31,6 +31,7 @@
 #include <memory>
 #include <wx/sizer.h>
 #include "TableOfContents.h"
+#include "EventIDs.h"
 
 TableOfContents::TableOfContents(wxWindow *parent, int id,
                                  Configuration *config,
@@ -202,7 +203,7 @@ void TableOfContents::OnMouseUp(wxMouseEvent &evt) {
       mainWin = mainWin->GetParent();
     wxCommandEvent *tocEv = new wxCommandEvent;
     tocEv->SetEventType(wxEVT_MENU);
-    tocEv->SetId(popid_tocdnd);
+    tocEv->SetId(EventIDs::popid_tocdnd);
     mainWin->GetEventHandler()->QueueEvent(tocEv);
   }
   UpdateDisplay();
@@ -451,13 +452,13 @@ void TableOfContents::OnMouseRightDown(wxListEvent &event) {
 
   if (m_cellRightClickedOn != NULL) {
     if (m_cellRightClickedOn->GetHiddenTree())
-      popupMenu->Append(popid_Unfold, _("Unhide"), wxEmptyString,
+      popupMenu->Append(EventIDs::popid_Unfold, _("Unhide"), wxEmptyString,
                         wxITEM_NORMAL);
     else {
-      popupMenu->Append(popid_Fold, _("Hide"), wxEmptyString, wxITEM_NORMAL);
-      popupMenu->Append(popid_SelectTocChapter, _("Select"), wxEmptyString,
+      popupMenu->Append(EventIDs::popid_Fold, _("Hide"), wxEmptyString, wxITEM_NORMAL);
+      popupMenu->Append(EventIDs::popid_SelectTocChapter, _("Select"), wxEmptyString,
                         wxITEM_NORMAL);
-      popupMenu->Append(popid_EvalTocChapter, _("Evaluate"), wxEmptyString,
+      popupMenu->Append(EventIDs::popid_EvalTocChapter, _("Evaluate"), wxEmptyString,
                         wxITEM_NORMAL);
       if (m_cellRightClickedOn->SectioningCanMoveIn()) {
         wxString message;
@@ -480,7 +481,7 @@ void TableOfContents::OnMouseRightDown(wxListEvent &event) {
         default: {
         }
         }
-        popupMenu->Append(popid_tocMoveIn, message, wxEmptyString,
+        popupMenu->Append(EventIDs::popid_tocMoveIn, message, wxEmptyString,
                           wxITEM_NORMAL);
       }
       if (m_cellRightClickedOn->SectioningCanMoveOut()) {
@@ -504,31 +505,31 @@ void TableOfContents::OnMouseRightDown(wxListEvent &event) {
         default: {
         }
         }
-        popupMenu->Append(popid_tocMoveOut, message, wxEmptyString,
+        popupMenu->Append(EventIDs::popid_tocMoveOut, message, wxEmptyString,
                           wxITEM_NORMAL);
       }
     }
   }
 
   wxMenu *tocLevelMenu = new wxMenu();
-  tocLevelMenu->AppendRadioItem(popid_tocLevel1, _("1 Level"));
-  tocLevelMenu->AppendRadioItem(popid_tocLevel2, _("2 Levels"));
-  tocLevelMenu->AppendRadioItem(popid_tocLevel3, _("3 Levels"));
-  tocLevelMenu->AppendRadioItem(popid_tocLevel4, _("4 Levels"));
-  tocLevelMenu->AppendRadioItem(popid_tocLevel5, _("5 Levels"));
-  tocLevelMenu->AppendRadioItem(popid_tocLevel6, _("All Levels"));
+  tocLevelMenu->AppendRadioItem(EventIDs::popid_tocLevel1, _("1 Level"));
+  tocLevelMenu->AppendRadioItem(EventIDs::popid_tocLevel2, _("2 Levels"));
+  tocLevelMenu->AppendRadioItem(EventIDs::popid_tocLevel3, _("3 Levels"));
+  tocLevelMenu->AppendRadioItem(EventIDs::popid_tocLevel4, _("4 Levels"));
+  tocLevelMenu->AppendRadioItem(EventIDs::popid_tocLevel5, _("5 Levels"));
+  tocLevelMenu->AppendRadioItem(EventIDs::popid_tocLevel6, _("All Levels"));
   if (m_configuration->TocDepth() < 6)
-    tocLevelMenu->Check(popid_tocLevel1 + m_configuration->TocDepth() - 1,
+    tocLevelMenu->Check(EventIDs::popid_tocLevel1 + m_configuration->TocDepth() - 1,
                         true);
   else
-    tocLevelMenu->Check(popid_tocLevel6, true);
+    tocLevelMenu->Check(EventIDs::popid_tocLevel6, true);
   popupMenu->Append(wxID_ANY, _("Toc levels shown here"), tocLevelMenu);
 
   if (popupMenu->GetMenuItemCount() > 0)
     popupMenu->AppendSeparator();
-  popupMenu->AppendCheckItem(popid_ToggleTOCshowsSectionNumbers,
+  popupMenu->AppendCheckItem(EventIDs::popid_ToggleTOCshowsSectionNumbers,
                              _("Show section numbers"));
-  popupMenu->Check(popid_ToggleTOCshowsSectionNumbers,
+  popupMenu->Check(EventIDs::popid_ToggleTOCshowsSectionNumbers,
                    m_configuration->TocShowsSectionNumbers());
 
   // create menu if we have any items

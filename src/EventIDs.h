@@ -791,7 +791,23 @@ public:
   static const EventId popid_property_evfun;
   static const EventId popid_property_evflag;
   static const EventId popid_property_atvalue;
-  /*! @}
+  static const EventId popid_Fold;
+  static const EventId popid_Unfold;
+  static const EventId popid_SelectTocChapter;
+  static const EventId popid_EvalTocChapter;
+  static const EventId popid_ToggleTOCshowsSectionNumbers;
+  static const EventId popid_tocLevel1;
+  static const EventId popid_tocLevel2;
+  static const EventId popid_tocLevel3;
+  static const EventId popid_tocLevel4;
+  static const EventId popid_tocLevel5;
+  static const EventId popid_tocLevel6;
+  static const EventId popid_tocdnd;
+  static const EventId popid_tocMoveIn;
+  static const EventId popid_tocMoveOut;
+
+
+/*! @}
    */
 };
 
