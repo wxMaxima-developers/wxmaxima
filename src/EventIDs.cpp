@@ -742,3 +742,14 @@ const EventIDs::EventId EventIDs:: popid_tocLevel6(wxNewId());
 const EventIDs::EventId EventIDs:: popid_tocdnd(wxNewId());
 const EventIDs::EventId EventIDs:: popid_tocMoveIn(wxNewId());
 const EventIDs::EventId EventIDs:: popid_tocMoveOut(wxNewId());
+bool EventIDs::m_staticInitNeeded(true);
+std::array<EventIDs::EventId,25> EventIDs::popid_autocomplete_keyword;
+EventIDs::EventIDs()
+{
+  if(m_staticInitNeeded)
+    {
+      for(size_t i = 0; i < popid_autocomplete_keyword.size(); i++)
+	popid_autocomplete_keyword[i]=wxNewId();
+    }
+  m_staticInitNeeded = false;
+}

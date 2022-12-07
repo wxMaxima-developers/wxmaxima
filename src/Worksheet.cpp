@@ -188,8 +188,9 @@ Worksheet::Worksheet(wxWindow *parent, int id, Worksheet *&observer,
           this);
   Connect(wxEVT_ERASE_BACKGROUND,
           wxEraseEventHandler(Worksheet::EraseBackground));
-  Connect(popid_complete_00, popid_complete_00 + AC_MENU_LENGTH, wxEVT_MENU,
-          wxCommandEventHandler(Worksheet::OnComplete));
+  for(auto i: EventIDs::GetAutocompleteKeywordIDs())
+      Connect(i, wxEVT_MENU,
+	      wxCommandEventHandler(Worksheet::OnComplete));
   Connect(wxEVT_SIZE, wxSizeEventHandler(Worksheet::OnSize));
   Connect(wxEVT_PAINT, wxPaintEventHandler(Worksheet::OnPaint));
   Connect(wxEVT_MOUSE_CAPTURE_LOST,
@@ -7805,12 +7806,20 @@ void Worksheet::OnComplete(wxCommandEvent &event) {
   EditorCell *editor = GetActiveCell();
   int caret = editor->GetCaretPosition();
 
+  int item = 0;
+  for(auto i: EventIDs::GetAutocompleteKeywordIDs())
+    {
+      if (i == event.GetId())
+	break;
+      item++;
+    }
+  
   if (!editor->GetSelectionString().empty())
     editor->ReplaceSelection(editor->GetSelectionString(),
-                             m_completions[event.GetId() - popid_complete_00],
+                             m_completions[item],
                              true, false, true);
   else
-    editor->InsertText(m_completions[event.GetId() - popid_complete_00]);
+    editor->InsertText(m_completions[item]);
 
   if (m_autocompleteTemplates) {
     int sel_start, sel_end;
@@ -7821,7 +7830,7 @@ void Worksheet::OnComplete(wxCommandEvent &event) {
     if (!editor->FindNextTemplate())
       editor->CaretToPosition(
 			      sel_start +
-			      m_completions[event.GetId() - popid_complete_00].Length());
+			      m_completions[item].Length());
   }
 
   editor->ResetSize();
