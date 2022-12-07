@@ -808,9 +808,13 @@ public:
   static const EventId popid_tocdnd;
   static const EventId popid_tocMoveIn;
   static const EventId popid_tocMoveOut;
-  static std::array<EventId,25> popid_autocomplete_keyword;
-
+  static const std::array<EventId,25> GetAutocompleteKeywordIDs()
+    {
+      return popid_autocomplete_keyword;
+    }
+  
 private:
+  static std::array<EventId,25> popid_autocomplete_keyword;
   //! Do we still need to initialize our dynamic arrays?
   static bool m_staticInitNeeded;
 /*! @}

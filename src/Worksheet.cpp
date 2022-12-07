@@ -188,11 +188,9 @@ Worksheet::Worksheet(wxWindow *parent, int id, Worksheet *&observer,
           this);
   Connect(wxEVT_ERASE_BACKGROUND,
           wxEraseEventHandler(Worksheet::EraseBackground));
-  for(auto i: EventIDs::popid_autocomplete_keyword)
-    {
+  for(auto i: EventIDs::GetAutocompleteKeywordIDs())
       Connect(i, wxEVT_MENU,
 	      wxCommandEventHandler(Worksheet::OnComplete));
-    }
   Connect(wxEVT_SIZE, wxSizeEventHandler(Worksheet::OnSize));
   Connect(wxEVT_PAINT, wxPaintEventHandler(Worksheet::OnPaint));
   Connect(wxEVT_MOUSE_CAPTURE_LOST,
@@ -7809,7 +7807,7 @@ void Worksheet::OnComplete(wxCommandEvent &event) {
   int caret = editor->GetCaretPosition();
 
   int item = 0;
-  for(auto i: EventIDs::popid_autocomplete_keyword)
+  for(auto i: EventIDs::GetAutocompleteKeywordIDs())
     {
       if (i == event.GetId())
 	break;
