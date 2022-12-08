@@ -9381,8 +9381,12 @@ void wxMaxima::OnClose(wxCloseEvent &event) {
       m_process->Detach();
   }
   
-  // Stop log events from appearing on the log panel that we are about to destroy
-  wxLog::SetActiveTarget(*new wxLogNull);
+#ifndef __CYGWIN__
+      // Cygwin on 20221208 didn't provide that function
+      wxLogStderr blocker;
+#else
+      wxLogNull blocker;
+#endif
 
   // We have saved the file and will close now => No need to have the
   // timer around any longer.
