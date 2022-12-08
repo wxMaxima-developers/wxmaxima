@@ -1722,8 +1722,20 @@ wxMaxima::~wxMaxima() {
   else {
     if (m_isLogTarget) {
       m_logPane->DropLogTarget();
-      m_topLevelWindows.back()->BecomeLogTarget();
+      if(m_topLevelWindows.size() > 0)
+	m_topLevelWindows.back()->BecomeLogTarget();
     }
+  }
+
+  // If there is no window that can take over the log any more the program
+  // is about to close and cannot instantiate new gui loggers.
+  if(m_topLevelWindows.size() < 1) {
+    #ifdef __CYGWIN__
+    // On 20221208 wx/log.h on cygwin contained wxLogStderr, but the wxWidgets libs didn't.
+    wxLog::EnableLogging(false);
+    #else
+    wxLog::SetActiveTarget(new wxLogStderr);
+    #endif
   }
   wxSocketBase::Shutdown();
 }
