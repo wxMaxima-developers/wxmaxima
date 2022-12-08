@@ -87,6 +87,7 @@
 #include "wxMaximaIcon.h"
 #include <wx/aboutdlg.h>
 #include <wx/app.h>
+#include <wx/apptrait.h>
 #include <wx/base64.h>
 #include <wx/buffer.h>
 #include <wx/artprov.h>
@@ -9375,8 +9376,8 @@ void wxMaxima::OnClose(wxCloseEvent &event) {
       m_process->Detach();
   }
   
-  // Stop log events from appearing on the log panel
-  wxLogStderr blocker(NULL);
+  // Stop log events from appearing on the log panel that we are about to destroy
+  wxLog::SetActiveTarget(wxTheApp->GetTraits()->CreateLogTarget());
 
   // We have saved the file and will close now => No need to have the
   // timer around any longer.
