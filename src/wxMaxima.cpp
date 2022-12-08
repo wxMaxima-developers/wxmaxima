@@ -9377,7 +9377,7 @@ void wxMaxima::OnClose(wxCloseEvent &event) {
   }
   
   // Stop log events from appearing on the log panel that we are about to destroy
-  wxLog::SetActiveTarget(wxTheApp->GetTraits()->CreateLogTarget());
+  wxLog::SetActiveTarget(NULL);
 
   // We have saved the file and will close now => No need to have the
   // timer around any longer.
