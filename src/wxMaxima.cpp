@@ -2199,13 +2199,12 @@ void wxMaxima::OnMaximaConnect() {
 }
 
 bool wxMaxima::StartServer() {
-  if ((m_server) && (m_server->IsOk()))
-    return true;
-
-  if (m_server)
+  if (m_server) {
+    if(m_server->IsOk())
+      m_server->Close();
     m_server.reset();
-
-  m_port = m_configuration.DefaultPort();
+  }
+  m_port = m_configuration.DefaultPort() + m_unsuccessfulConnectionAttempts;
 
   do {
     wxLogMessage(
@@ -2655,7 +2654,7 @@ void wxMaxima::OnProcessEvent(wxProcessEvent &event) {
     return;
   m_process = NULL;
   m_pid = -1;
-  wxLogMessage(_("Maxima process (pid %i) has terminated with exit code %i."),
+  wxLogMessage(_("Maxima process (pid %i) has terminated with exit code %i.\n"),
                event.GetPid(), event.GetExitCode());
   if (m_maximaStdout) {
     wxTextInputStream istrm(*m_maximaStdout, wxT('\t'),
