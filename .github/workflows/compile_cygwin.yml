@@ -26,5 +26,5 @@ jobs:
       - name: compile
         run: |
              cd build
-             make VERBOSE=1
+             make VERBOSE=1 -j 4
              cd ..
