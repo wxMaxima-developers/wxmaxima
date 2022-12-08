@@ -9343,7 +9343,12 @@ bool wxMaxima::SaveOnClose() {
   } else {
     bool saved;
     {
-      SuppressErrorDialogs blocker;
+#ifndef __CYGWIN__
+      // Cygwin on 20221208 didn't provide that function
+      wxLogStderr blocker;
+#else
+      wxLogNull blocker;
+#endif
       saved = SaveFile();
     }
     if (!saved) {
@@ -9377,7 +9382,7 @@ void wxMaxima::OnClose(wxCloseEvent &event) {
   }
   
   // Stop log events from appearing on the log panel that we are about to destroy
-  wxLog::SetActiveTarget(NULL);
+  wxLog::SetActiveTarget(*new wxLogNull);
 
   // We have saved the file and will close now => No need to have the
   // timer around any longer.
