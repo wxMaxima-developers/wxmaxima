@@ -9342,7 +9342,7 @@ bool wxMaxima::SaveOnClose() {
   } else {
     bool saved;
     {
-      wxLogStderr blocker;
+      SuppressErrorDialogs blocker;
       saved = SaveFile();
     }
     if (!saved) {
@@ -9376,7 +9376,7 @@ void wxMaxima::OnClose(wxCloseEvent &event) {
   }
   
   // Stop log events from appearing on the log panel
-  wxLogStderr blocker;
+  wxLogStderr blocker(NULL);
 
   // We have saved the file and will close now => No need to have the
   // timer around any longer.
