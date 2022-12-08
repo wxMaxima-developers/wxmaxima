@@ -10104,12 +10104,14 @@ void wxMaxima::EvaluateEvent(wxCommandEvent &WXUNUSED(event)) {
 }
 
 wxString wxMaxima::GetUnmatchedParenthesisState(wxString text, int &index) {
-  text.Trim(true);
   text.Trim(false);
-  if (text.IsEmpty())
-    return (wxEmptyString);
   if (text.EndsWith(wxT("\\")))
     return (_("Cell ends in a backslash"));
+  text.Trim(true);
+  if (text.IsEmpty())
+    return (wxEmptyString);
+  if (text.EndsWith(wxT("?")))
+    return (_("Last non-whitespace is a question mark"));
 
   index = 0;
   bool endingNeeded = true;
