@@ -514,9 +514,6 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event)) {
   // one for drawing text as on MS Windows it doesn't support all fonts
   m_configuration->GetDC()->SetMapMode(wxMM_TEXT);
 
-  if (antiAliassingDC.IsOk())
-    m_configuration->SetAntialiassingDC(antiAliassingDC);
-
   // Now iterate over all single parts of the region we need to redraw and
   // redraw the worksheet
   wxRegionIterator region(GetUpdateRegion());
@@ -533,8 +530,17 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event)) {
     m_configuration->GetDC()->SetBackground(
 					    m_configuration->GetBackgroundBrush());
     m_configuration->GetDC()->SetBrush(m_configuration->GetBackgroundBrush());
-    m_configuration->GetDC()->SetPen(*wxTRANSPARENT_PEN);
+    m_configuration->GetDC()->SetPen(*wxWHITE_PEN);
     m_configuration->GetDC()->SetLogicalFunction(wxCOPY);
+
+    if (antiAliassingDC.IsOk()) {
+	antiAliassingDC.SetMapMode(wxMM_TEXT);
+	antiAliassingDC.SetBackgroundMode(wxTRANSPARENT);
+	antiAliassingDC.SetBrush(m_configuration->GetBackgroundBrush());
+	antiAliassingDC.SetPen(*wxWHITE_PEN);
+        antiAliassingDC.SetLogicalFunction(wxCOPY);
+	m_configuration->SetAntialiassingDC(antiAliassingDC);
+      }
 
     // Tell the configuration where to crop in this region
     int xstart, xend, top, bottom;
@@ -569,6 +575,8 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event)) {
         if (&tmp == m_cellPointers.m_selectionEnd)
           break;
       }
+      m_configuration->GetDC()->SetBrush(m_configuration->GetBackgroundBrush());
+      m_configuration->GetDC()->SetPen(*wxWHITE_PEN);
     }
 
     //
