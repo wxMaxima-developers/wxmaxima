@@ -1,0 +1,30 @@
+/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
+/* [ Created with wxMaxima version 22.09.0-DevelopmentSnapshot ] */
+/* [wxMaxima: input   start ] */
+x(n):=sum(x[i],i,1,n)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+box(x(1));
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+box(x(10));
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+box(x(100));
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+box(a/b)
+/* [wxMaxima: input   end   ] */
+
+
+
+/* Old versions of Maxima abort on loading files that end in a comment. */
+"Created with wxMaxima 22.09.0-DevelopmentSnapshot"$

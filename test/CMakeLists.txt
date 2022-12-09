@@ -121,6 +121,16 @@ add_test(
     COMMAND wxmaxima --logtostderr --pipe --batch absCells.wxm)
 
 add_test(
+    NAME boxCells_cmdline
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+    COMMAND ${MAXIMA} --batch boxCells.wxm)
+
+add_test(
+    NAME boxCells
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+    COMMAND wxmaxima --logtostderr --pipe --batch boxCells.wxm)
+
+add_test(
     NAME diffCells_cmdline
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
     COMMAND ${MAXIMA} --batch diffCells.wxm)

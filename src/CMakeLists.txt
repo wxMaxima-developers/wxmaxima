@@ -23,6 +23,7 @@ find_package(Threads REQUIRED)
 set(CELL_SOURCE_FILES
     AbsCell.cpp
     AtCell.cpp
+    BoxCell.cpp
     Cell.cpp
     CellList.cpp
     CellPtr.cpp
