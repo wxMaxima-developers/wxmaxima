@@ -567,9 +567,16 @@
   (wx-defprop mlabbox 10. wxxml-lbp)
 
   (defun wxxml-mbox (x l r)
-    (setq l (wxxml (cadr x) (append l '("<mrow><hl>")) nil 'mparen 'mparen)
-	  r (append '("</hl></mrow>") r))
-    (append l r))
+    (let ((boxname (caddr x)))
+      (if boxname
+	  (setq l (wxxml (cadr x) (append l '("<mrow><hl>")) nil 'mparen 'mparen)
+		r (append '("</hl></mrow>") r))
+	(append l r))
+      (setq l (wxxml (cadr x) (append l '("<mrow><hl>")) nil 'mparen 'mparen)
+	    r (append '("</hl></mrow>") r))
+      (append l r))
+    )
+  ;; (caddr x) should return the oütional argument
 
   (wx-defprop mqapply wxxml-mqapply wxxml)
 

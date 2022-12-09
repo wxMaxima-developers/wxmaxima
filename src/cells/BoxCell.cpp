@@ -98,19 +98,19 @@ void BoxCell::Draw(wxPoint point) {
 		 );
     dc->DrawLine(
 		 point.x + Scale_Px(2),
-		 point.y + m_center - Scale_Px(2),
+		 point.y - m_center - Scale_Px(2),
                  point.x + m_width - Scale_Px(2) - 1,
-                 point.y + m_center - Scale_Px(2)
+                 point.y - m_center - Scale_Px(2)
 		 );
     dc->DrawLine(
 		 point.x + Scale_Px(2),
 		 point.y - m_center + m_height + Scale_Px(2),
 		 point.x + Scale_Px(2),
-                 point.y + m_center - Scale_Px(2)
+                 point.y - m_center - Scale_Px(2)
 		 );
     dc->DrawLine(
                  point.x + m_width - Scale_Px(2) - 1,
-		 point.y + m_center - Scale_Px(2),
+		 point.y - m_center - Scale_Px(2),
                  point.x + m_width - Scale_Px(2) - 1,
                  point.y - m_center + m_height + Scale_Px(2)
 		 );
