@@ -568,11 +568,13 @@
 
   (defun wxxml-mbox (x l r)
     (let ((boxname (caddr x)))
-      (if boxname
-	  (setq l (wxxml (cadr x) (append l '("<mrow><hl>")) nil 'mparen 'mparen)
-		r (append '("</hl></mrow>") r))
-	(append l r))
-      (setq l (wxxml (cadr x) (append l '("<mrow><hl>")) nil 'mparen 'mparen)
+      (setq l (wxxml (cadr x) (append l
+				      (if boxname
+					  (list (format nil "<mrow><hl boxname=\"~a\">"
+							(wxxml-fix-string
+							 (format nil "~a" boxname))))
+					'("<mrow><hl>"))
+				      ) nil 'mparen 'mparen)
 	    r (append '("</hl></mrow>") r))
       (append l r))
     )
