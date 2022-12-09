@@ -25,6 +25,38 @@ box(a/b)
 /* [wxMaxima: input   end   ] */
 
 
+/* [wxMaxima: input   start ] */
+box(x(1),1);
+box(x(10),10);
+box(x(100),100);
+box(a/b,3);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+box(x(1),"1");
+box(x(10),"10");
+box(x(100),"100");
+box(a/b,"3");
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+box(x(1),a);
+box(x(10),b);
+box(x(100),c);
+box(a/b,d);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+box(x(1),aaaaaaaaaaaaaaaaaaaaaaaaaa);
+box(x(10),bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb);
+box(x(100),cccccccccccccccccccccccc);
+box(a/b,dddddddddddddddddddddddd);
+/* [wxMaxima: input   end   ] */
+
+
 
 /* Old versions of Maxima abort on loading files that end in a comment. */
 "Created with wxMaxima 22.09.0-DevelopmentSnapshot"$
