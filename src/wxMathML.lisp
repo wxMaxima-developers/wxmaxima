@@ -571,8 +571,7 @@
       (setq l (wxxml (cadr x) (append l
 				      (if boxname
 					  (list (format nil "<mrow><hl boxname=\"~a\">"
-							(wxxml-fix-string
-							 (format nil "~a" boxname))))
+							(wxxml-fix-string (stripdollar (maybe-invert-string-case (symbol-name boxname))))))
 					'("<mrow><hl>"))
 				      ) nil 'mparen 'mparen)
 	    r (append '("</hl></mrow>") r))

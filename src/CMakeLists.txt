@@ -24,6 +24,7 @@ set(CELL_SOURCE_FILES
     AbsCell.cpp
     AtCell.cpp
     BoxCell.cpp
+    NamedBoxCell.cpp
     Cell.cpp
     CellList.cpp
     CellPtr.cpp

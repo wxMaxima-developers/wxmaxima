@@ -40,6 +40,7 @@
 #include "AnimationCell.h"
 #include "AtCell.h"
 #include "BoxCell.h"
+#include "NamedBoxCell.h"
 #include "CellList.h"
 #include "ConjugateCell.h"
 #include "DiffCell.h"
@@ -236,8 +237,13 @@ std::unique_ptr<Cell> MathParser::ParseHighlightTag(wxXmlNode *node) {
   child = SkipWhitespaceNode(child);
   auto inner = HandleNullPointer(ParseTag(child, true));
 
-  auto cell =
-    std::make_unique<BoxCell>(m_group, m_configuration, std::move(inner));
+  wxString boxName = wxT("boxname");
+  std::unique_ptr<Cell> cell;
+  if(!node->HasAttribute(boxName))
+    cell = std::make_unique<BoxCell>(m_group, m_configuration, std::move(inner));
+  else
+    cell = std::make_unique<NamedBoxCell>(m_group, m_configuration, std::move(inner),
+					  node->GetAttribute(boxName));
   cell->SetType(m_ParserStyle);
   ParseCommonAttrs(node, cell);
   return cell;
