@@ -48,7 +48,8 @@ NamedBoxCell::NamedBoxCell(GroupCell *group, Configuration *config,
 // cppcheck-suppress uninitMemberVar symbolName=NamedBoxCell::m_close
 NamedBoxCell::NamedBoxCell(GroupCell *group, const NamedBoxCell &cell)
   : NamedBoxCell(group, cell.m_configuration,
-		 CopyList(group, cell.m_innerCell.get()), m_boxname->GetValue()) {
+		 CopyList(group, cell.m_innerCell.get()),
+		 cell.m_boxname->GetValue()) {
   CopyCommonData(cell);
 }
 
@@ -184,7 +185,7 @@ wxString NamedBoxCell::ToMathML() const {
 
 wxString NamedBoxCell::ToOMML() const {
   return _T("<m:func><m:fName><m:r>box</m:r></m:fName><m:e>") +
-    m_innerCell->ListToOMML() + wxT("<m:e><m:e>") + 
+    m_innerCell->ListToOMML() + wxT("</m:e><m:e>") + 
     m_boxname->ListToOMML() +
     _T("</m:e></m:func>");
 }
