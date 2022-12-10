@@ -2372,7 +2372,10 @@ bool wxMaxima::StartMaxima(bool force) {
 			  _("Can not start Maxima. The most probable cause is that Maxima "
 			    "isn't installed (it can be downloaded from "
 			    "https://maxima.sourceforge.io) or in wxMaxima's config dialogue "
-			    "the setting for Maxima's location is wrong."),
+			    "the setting for Maxima's location is wrong. Another cause "
+			    "might be that something hinders maxima and wxMaxima to "
+			    "communicate through a local network connection in the port "
+			    "range they are setup to try to find a port in."),
 			  _("Error"), wxOK | wxICON_ERROR);
         return false;
       }
