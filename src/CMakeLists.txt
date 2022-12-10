@@ -243,6 +243,7 @@ if(APPLE)
       ${CMAKE_SOURCE_DIR}/locales/wxwin/*.mo
       ${CMAKE_SOURCE_DIR}/data/fonts/*.otf
       ${CMAKE_SOURCE_DIR}/data/fonts/*.ttf
+      ${CMAKE_BINARY_DIR}/locale/*.mo
       )
 endif()
 
