@@ -702,7 +702,8 @@ _WxMaxima_ provides a few functions that gather bug reporting information about 
 
 ## Marking output being drawn in red
 
-_Maxima_'s `box()` command causes _wxMaxima_ to print its argument with a red foreground.
+_Maxima_'s `box()` command causes _wxMaxima_ to print its argument with a red foreground, if
+the second argument to the command is the text `highlight`.
 
 * * *
 

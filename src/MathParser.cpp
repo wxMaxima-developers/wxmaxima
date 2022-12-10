@@ -160,6 +160,7 @@ MathParser::MathParser(Configuration *cfg, const wxString &zipfile) {
     m_groupTags[wxT("heading5")] = &MathParser::GroupCellHeading5Tag;
     m_groupTags[wxT("heading6")] = &MathParser::GroupCellHeading6Tag;
   }
+  m_highlight = false;
   if (zipfile.Length() > 0) {
     m_fileSystem = std::unique_ptr<wxFileSystem>(new wxFileSystem());
     m_fileSystem->ChangePathTo(zipfile + wxT("#zip:/"), true);
@@ -212,6 +213,7 @@ std::unique_ptr<Cell> MathParser::ParseRowTag(wxXmlNode *node) {
     auto cell =
       std::make_unique<ListCell>(m_group, m_configuration, std::move(inner));
     cell->SetType(m_ParserStyle);
+    cell->SetHighlight(m_highlight);
     ParseCommonAttrs(node, cell);
     return cell;
   } else if (node->GetAttribute(wxT("set")) == wxT("true")) {
@@ -223,6 +225,7 @@ std::unique_ptr<Cell> MathParser::ParseRowTag(wxXmlNode *node) {
     auto cell =
       std::make_unique<SetCell>(m_group, m_configuration, std::move(inner));
     cell->SetType(m_ParserStyle);
+    cell->SetHighlight(m_highlight);
     ParseCommonAttrs(node, cell);
     return cell;
   } else {
@@ -242,8 +245,20 @@ std::unique_ptr<Cell> MathParser::ParseHighlightTag(wxXmlNode *node) {
   if(!node->HasAttribute(boxName))
     cell = std::make_unique<BoxCell>(m_group, m_configuration, std::move(inner));
   else
-    cell = std::make_unique<NamedBoxCell>(m_group, m_configuration, std::move(inner),
-					  node->GetAttribute(boxName));
+    {
+      wxString name = node->GetAttribute(boxName);
+      if(name == wxT("highlight"))
+	{
+	  bool highlight = m_highlight;
+	  m_highlight = true;
+	  auto tmp = ParseTag(node->GetChildren());
+	  m_highlight = highlight;
+	  return tmp;
+	}
+      else
+	cell = std::make_unique<NamedBoxCell>(m_group, m_configuration, std::move(inner),
+					      name);
+    }
   cell->SetType(m_ParserStyle);
   ParseCommonAttrs(node, cell);
   return cell;
@@ -621,6 +636,7 @@ std::unique_ptr<Cell> MathParser::ParseEditorTag(wxXmlNode *node) {
 
 std::unique_ptr<Cell> MathParser::ParseFracTag(wxXmlNode *node) {
   auto fracStyle = m_FracStyle;
+  auto highlight = m_highlight;
 
   wxXmlNode *child = node->GetChildren();
   child = SkipWhitespaceNode(child);
@@ -631,6 +647,7 @@ std::unique_ptr<Cell> MathParser::ParseFracTag(wxXmlNode *node) {
   auto frac = std::make_unique<FracCell>(m_group, m_configuration,
                                          std::move(num), std::move(denom));
   frac->SetFracStyle(fracStyle);
+  frac->SetHighlight(highlight);
   if (node->GetAttribute(wxT("line")) == wxT("no"))
     frac->SetFracStyle(FracCell::FC_CHOOSE);
   if (node->GetAttribute(wxT("diffstyle")) == wxT("yes"))
@@ -786,11 +803,13 @@ std::unique_ptr<Cell> MathParser::ParseAtTag(wxXmlNode *node) {
   wxXmlNode *child = node->GetChildren();
   child = SkipWhitespaceNode(child);
   auto base = HandleNullPointer(ParseTag(child, false));
+  auto highlight = m_highlight;
   child = GetNextTag(child);
   auto index = HandleNullPointer(ParseTag(child, false));
 
   auto at = std::make_unique<AtCell>(m_group, m_configuration, std::move(base),
                                      std::move(index));
+  at->SetHighlight(highlight);
   at->SetType(m_ParserStyle);
   ParseCommonAttrs(node, at);
   return at;
@@ -882,6 +901,7 @@ std::unique_ptr<Cell> MathParser::ParseText(wxXmlNode *node, TextStyle style) {
         cell->SetType(m_ParserStyle);
       }
       cell->SetStyle(style);
+      cell->SetHighlight(m_highlight);
       if (tree)
         cell->ForceBreakLine(true);
       tree.Append(std::move(cell));
@@ -932,6 +952,7 @@ std::unique_ptr<Cell> MathParser::ParseCharCode(wxXmlNode *node) {
     cell->SetValue(str);
     cell->SetType(m_ParserStyle);
     cell->SetStyle(TS_DEFAULT);
+    cell->SetHighlight(m_highlight);
   }
   ParseCommonAttrs(node, cell);
   return cell;
@@ -945,6 +966,7 @@ std::unique_ptr<Cell> MathParser::ParseSqrtTag(wxXmlNode *node) {
   auto cell =
     std::make_unique<SqrtCell>(m_group, m_configuration, std::move(inner));
   cell->SetType(m_ParserStyle);
+  cell->SetHighlight(m_highlight);
   ParseCommonAttrs(node, cell);
   return cell;
 }
@@ -957,6 +979,7 @@ std::unique_ptr<Cell> MathParser::ParseAbsTag(wxXmlNode *node) {
   auto cell =
     std::make_unique<AbsCell>(m_group, m_configuration, std::move(inner));
   cell->SetType(m_ParserStyle);
+  cell->SetHighlight(m_highlight);
   ParseCommonAttrs(node, cell);
   return cell;
 }
@@ -969,6 +992,7 @@ std::unique_ptr<Cell> MathParser::ParseConjugateTag(wxXmlNode *node) {
   auto cell = std::make_unique<ConjugateCell>(m_group, m_configuration,
                                               std::move(inner));
   cell->SetType(m_ParserStyle);
+  cell->SetHighlight(m_highlight);
   ParseCommonAttrs(node, cell);
   return cell;
 }
@@ -982,6 +1006,7 @@ std::unique_ptr<Cell> MathParser::ParseParenTag(wxXmlNode *node) {
   auto cell =
     std::make_unique<ParenCell>(m_group, m_configuration, std::move(inner));
   cell->SetType(m_ParserStyle);
+  cell->SetHighlight(m_highlight);
   cell->SetStyle(TS_VARIABLE);
   if (node->GetAttributes() != NULL)
     cell->SetPrint(false);
@@ -1012,6 +1037,7 @@ std::unique_ptr<Cell> MathParser::ParseSumTag(wxXmlNode *node) {
   wxString type = node->GetAttribute(wxT("type"), wxT("sum"));
   sumStyle style =
     ((type == wxT("prod")) || (type == wxT("lprod"))) ? SM_PROD : SM_SUM;
+  auto highlight = m_highlight;
 
   auto under = HandleNullPointer(ParseTag(child, false));
   child = GetNextTag(child);
@@ -1024,6 +1050,7 @@ std::unique_ptr<Cell> MathParser::ParseSumTag(wxXmlNode *node) {
   auto sum = std::make_unique<SumCell>(m_group, m_configuration, style,
                                        std::move(under), std::move(over),
                                        std::move(base));
+  sum->SetHighlight(highlight);
   sum->SetType(m_ParserStyle);
   sum->SetStyle(TS_VARIABLE);
   ParseCommonAttrs(node, sum);
@@ -1034,6 +1061,7 @@ std::unique_ptr<Cell> MathParser::ParseIntTag(wxXmlNode *node) {
   std::unique_ptr<IntCell> in;
   wxXmlNode *child = node->GetChildren();
   child = SkipWhitespaceNode(child);
+  auto highlight = m_highlight;
 
   wxString definiteAtt = node->GetAttribute(wxT("def"), wxT("true"));
   if (definiteAtt != wxT("true")) {
@@ -1059,12 +1087,14 @@ std::unique_ptr<Cell> MathParser::ParseIntTag(wxXmlNode *node) {
     in->SetIntStyle(IntCell::INT_DEF);
   }
   in->SetType(m_ParserStyle);
+  in->SetHighlight(highlight);
   ParseCommonAttrs(node, in);
   return in;
 }
 
 std::unique_ptr<Cell> MathParser::ParseTableTag(wxXmlNode *node) {
   auto matrix = std::make_unique<MatrCell>(m_group, m_configuration);
+  matrix->SetHighlight(m_highlight);
 
   if (node->GetAttribute(wxT("special"), wxT("false")) == wxT("true"))
     matrix->SetSpecialFlag(true);
@@ -1173,6 +1203,7 @@ std::unique_ptr<Cell> MathParser::ParseTag(wxXmlNode *node, bool all) {
 std::unique_ptr<Cell> MathParser::ParseLine(wxString s, CellType style) {
   m_ParserStyle = style;
   m_FracStyle = FracCell::FC_NORMAL;
+  m_highlight = false;
   std::unique_ptr<Cell> cell;
 
   int showLength;

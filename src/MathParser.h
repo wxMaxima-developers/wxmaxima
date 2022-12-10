@@ -255,6 +255,7 @@ private:
   FracCell::FracType m_FracStyle;
   CellPtr<GroupCell> m_group;
   Configuration *m_configuration;
+  bool m_highlight;
   std::shared_ptr<wxFileSystem> m_fileSystem; // used for loading pictures in <img> and <slide>
   static wxString m_unknownXMLTagToolTip;
 };

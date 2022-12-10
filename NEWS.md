@@ -1,7 +1,8 @@
 # Current
  * A cleaner status bar with double-click actions
  * Better display of labels
- * Better display of boxes
+ * box() now is displayed as a box, as the maxima manual states
+ * box(expr, "highlight") display expr in red, instead
  * Resolved a few display glitches
  * Resolved OS-dependant wrong actions on gui events
  * A few system and compiler specific fixes
