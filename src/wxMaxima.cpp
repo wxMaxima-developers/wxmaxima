@@ -2873,7 +2873,7 @@ void wxMaxima::ReadMiscText(const wxString &data) {
   if(!m_maximaAuthenticated)
     return;
   
-  auto style = MC_TYPE_TEXT;
+  auto style = MC_TYPE_ASCIIMATHS;
 
   if (data.StartsWith(wxT("(%")))
     style = MC_TYPE_ASCIIMATHS;

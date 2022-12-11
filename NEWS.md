@@ -8,6 +8,7 @@
  * A few system and compiler specific fixes
  * Resolved a few compilation warnings
  * Try harder to connect maxima if one communication port is blocked (#1717)
+ * Better display of help text in the console
 
 # 22.11.0
  * Repaired zooming the worksheet
