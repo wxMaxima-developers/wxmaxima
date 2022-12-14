@@ -798,7 +798,7 @@ wxString Cell::ListToXML() const {
 
   for (const Cell &tmp : OnList(this)) {
     if ((tmp.GetHighlight()) && (!highlight)) {
-      retval += wxT("<hl>\n");
+      retval += wxT("<hl boxname=\"highlight\">\n");
       highlight = true;
     }
 
