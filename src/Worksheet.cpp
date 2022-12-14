@@ -129,7 +129,7 @@ Worksheet::Worksheet(wxWindow *parent, int id, Worksheet *&observer,
   m_configuration->SetBackgroundBrush(*(wxTheBrushList->FindOrCreateBrush(
 									  m_configuration->DefaultBackgroundColor(), wxBRUSHSTYLE_SOLID)));
   m_redrawStart = NULL;
-  m_redrawRequested = false;
+  m_fullRedrawRequested = false;
   m_autocompletePopup = NULL;
   m_wxmFormat = wxDataFormat(wxT("text/x-wxmaxima-batch"));
   m_mathmlFormat = wxDataFormat(wxT("MathML"));
@@ -347,13 +347,19 @@ bool Worksheet::RedrawIfRequested() {
     m_mouseMotionWas = false;
     redrawIssued = true;
   }
-  if (m_redrawRequested) {
+  if (m_fullRedrawRequested) {
+    // A redraw of the whole worksheet beginning with a specific cell was requested
+
+    // TODO: Only redraw the region that actually needs refreshing: Currently we
+    // refresh the whole screen even if m_redrawStart is set.
     Refresh();
-    m_redrawRequested = false;
+    m_fullRedrawRequested = false;
     m_redrawStart = NULL;
     redrawIssued = true;
     m_rectToRefresh.Clear();
+    m_rectToRefresh.Clear();
   } else {
+    // A redraw of a worksheet region was requested
     wxRegionIterator region(m_rectToRefresh);
     while (region) {
       wxRect rect = region.GetRect();
@@ -373,7 +379,7 @@ bool Worksheet::RedrawIfRequested() {
 }
 
 void Worksheet::RequestRedraw(GroupCell *start) {
-  m_redrawRequested = true;
+  m_fullRedrawRequested = true;
 
   if (start == 0)
     m_redrawStart = GetTree();
@@ -454,15 +460,7 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event)) {
   if (m_accessibilityInfo != NULL)
     m_accessibilityInfo->NotifyEvent(0, this, wxOBJID_CLIENT, wxOBJID_CLIENT);
 #endif
-  // Don't attempt to refresh the screen while we are trying to output the
-  // worksheet on paper, on a bitmap or similar.
-  if ((!m_configuration->ClipToDrawRegion()) ||
-      (m_configuration->GetPrinting())) {
-    wxLogMessage(_("Suppressing a redraw during printing/export"));
-    RequestRedraw();
-    return;
-  }
-
+  
   // Don't attempt to draw in a window of the size 0.
   if ((GetClientSize().x < 1) || (GetClientSize().y < 1))
     return;
@@ -2239,7 +2237,7 @@ void Worksheet::OnMouseLeftDown(wxMouseEvent &event) {
     ScrolledAwayFromEvaluation(true);
   }
   m_clickType_selectionStart = m_clickType;
-  RequestRedraw();
+  RequestRedraw(clickedInGC);
   // Re-calculate the table of contents
   UpdateTableOfContents();
 }
@@ -2278,9 +2276,6 @@ void Worksheet::OnMouseLeftUp(wxMouseEvent &event) {
   CheckUnixCopy();
   SetFocus();
   m_cellPointers.ResetMouseSelectionStart();
-  // Here we actually only want the toolbars and menus to redrawn (and therefore
-  // the "copy") hotkey to be enabled: The rest already is in place.
-  RequestRedraw();
 }
 
 void Worksheet::OnMouseWheel(wxMouseEvent &event) {
@@ -6761,7 +6756,7 @@ void Worksheet::SetActiveCell(EditorCell *cell, bool callRefresh) {
     m_cellPointers.m_selectionStart = nullptr;
     m_cellPointers.m_selectionEnd = nullptr;
     cell->ActivateCursor();
-    if (!m_redrawRequested)
+    if (!m_fullRedrawRequested)
       m_caretTimer.Stop();
   } else if (GetActiveCell())
     GetActiveCell()->DeactivateCursor();
@@ -7946,7 +7941,7 @@ void Worksheet::SetActiveCellText(const wxString &text) {
       parent->ResetData();
       parent->ResetInputLabel();
       Recalculate(parent);
-      RequestRedraw();
+      RequestRedraw(parent);
     }
   } else
     OpenHCaret(text);

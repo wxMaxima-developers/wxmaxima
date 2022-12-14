@@ -748,7 +748,6 @@ void GroupCell::Draw(wxPoint const point) {
 	      in.y += drop + tmp.GetCenterList();
 	      drop = tmp.GetMaxDrop();
 	    }
-	    
 	    tmp.Draw(in);
 	    in.x += tmp.GetWidth();
 	    first = false;

@@ -761,7 +761,7 @@ public:
   //! Tells this cell where it is placed on the worksheet
   virtual void SetCurrentPoint(wxPoint point) { m_currentPoint = point; }
   //! Tells this cell where it is placed on the worksheet
-  void SetCurrentPoint(int x, int y) { m_currentPoint = {x, y}; }
+  void SetCurrentPoint(int x, int y) { SetCurrentPoint({x, y}); }
   //! Where is this cell placed on the worksheet?
   wxPoint GetCurrentPoint() const {return m_currentPoint;}
 

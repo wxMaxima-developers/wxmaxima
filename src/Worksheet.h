@@ -132,7 +132,7 @@ private:
   //! Where do we need to start the repainting of the worksheet?
   GroupCell *m_redrawStart;
   //! Do we need to redraw the worksheet?
-  bool m_redrawRequested;
+  bool m_fullRedrawRequested;
   //! The clipboard format "mathML"
 
   //! A class that publishes wxm data to the clipboard
@@ -716,7 +716,7 @@ public:
   void MarkRefreshAsDone()
     {
       m_redrawStart = NULL;
-      m_redrawRequested = false;
+      m_fullRedrawRequested = false;
     }
 
   /*! Redraw the worksheet if RequestRedraw() has been called.
@@ -755,10 +755,6 @@ public:
       RequestRedraw();
       RedrawIfRequested();
     }
-
-  //! Is a Redraw requested?
-  bool RedrawRequested() const
-    { return m_redrawRequested || m_mouseMotionWas || m_rectToRefresh.IsEmpty(); }
 
   //! To be called after enabling or disabling the visibility of code cells
   void CodeCellVisibilityChanged();
