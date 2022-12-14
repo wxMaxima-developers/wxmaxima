@@ -867,7 +867,7 @@ void Configuration::SetPrinting(bool printing) {
   else
     wxConfig::Get()->Read("invertBackground", m_invertBackground);
   if (printing)
-    ClipToDrawRegion(false);
+    ClipToDrawRegion(!printing);
 }
 
 wxColour Configuration::InvertColour(wxColour col) {

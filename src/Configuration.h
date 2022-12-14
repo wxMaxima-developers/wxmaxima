@@ -1004,7 +1004,7 @@ private:
   wxDC *m_antialiassingDC;
   wxString m_maximaShareDir;
   bool m_forceUpdate;
-  bool m_clipToDrawRegion;
+  bool m_clipToDrawRegion = true;
   bool m_outdated;
   wxString m_maximaParameters;
   bool m_TeXFonts;
@@ -1087,12 +1087,10 @@ public:
     {
       m_configuration = configuration;
       m_configuration->SetPrinting(true);
-      m_configuration->ClipToDrawRegion(false);
     }
   ~Printing()
     {
       m_configuration->SetPrinting(false);
-      m_configuration->ClipToDrawRegion(true);
     }
 private:
   Configuration * m_configuration;
