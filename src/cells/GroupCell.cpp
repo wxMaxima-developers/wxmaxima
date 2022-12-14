@@ -733,30 +733,35 @@ void GroupCell::Draw(wxPoint const point) {
 
       m_outputRect.SetPosition(in);
 
-      bool first = true;
-      int drop = 0;
-      for (Cell &tmp : OnDrawList(m_output.get())) {
-        if (first || tmp.BreakLineHere()) {
-          if (!first && tmp.HasBigSkip())
-            in.y += MC_LINE_SKIP;
-
-          in.x = point.x + GetLineIndent(&tmp);
-          in.y += drop + tmp.GetCenterList();
-          drop = tmp.GetMaxDrop();
-        }
-
-        tmp.Draw(in);
-        in.x += tmp.GetWidth();
-        first = false;
-      }
+      if((!m_configuration->ClipToDrawRegion()) ||
+	 (m_configuration->GetUpdateRegion().Intersects(m_outputRect)) ||
+	 (m_configuration->GetUpdateRegion().Contains(m_outputRect)))
+	{
+	  bool first = true;
+	  int drop = 0;
+	  for (Cell &tmp : OnDrawList(m_output.get())) {
+	    if (first || tmp.BreakLineHere()) {
+	      if (!first && tmp.HasBigSkip())
+		in.y += MC_LINE_SKIP;
+	      
+	      in.x = point.x + GetLineIndent(&tmp);
+	      in.y += drop + tmp.GetCenterList();
+	      drop = tmp.GetMaxDrop();
+	    }
+	    
+	    tmp.Draw(in);
+	    in.x += tmp.GetWidth();
+	    first = false;
+	  }
+	}
     }
     if ((m_configuration->ShowCodeCells()) || (m_groupType != GC_TYPE_CODE)) {
       m_configuration->Outdated(false);
-
+      
       EditorCell *input = GetEditable();
       if (input)
         input->Draw(CalculateInputPosition());
-
+      
       if (GetPrompt())
         GetPrompt()->Draw(point);
 
