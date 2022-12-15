@@ -519,7 +519,7 @@ msgid ""
 "\"wx\". \"draw\" can be replaced by \"wxdraw\", plot by \"wxplot\" etc."
 msgstr ""
 "Diagramme können eingebettet werden, indem an den Beginn des Namens des "
-"Zeichenbefehls ein \"wx\" angehängt wird.\n"
+"Zeichenbefehls ein \"wx\" vorangestellt wird.\n"
 "\"draw\" wird so zu \"wxdraw\", plot zu \"wxplot\" etc."
 
 #: ../../src/Worksheet.cpp:1897
@@ -4548,14 +4548,14 @@ msgstr ""
 "einem Ort abgelegt, auf den ein Link vom HTML-Export zeigt."
 
 #: ../../src/TipOfTheDay.cpp:245
-#, fuzzy
 msgid ""
 "If you have ideas, how to improve the design or functionality of wxMaxima, "
 "please share your ideas at the issue list or discussion forum at https://"
 "github.com/wxMaxima-developers/wxmaxima/."
 msgstr ""
-"Sie haben eine Idee für eine Verbesserung von wxMaxima? Super! Bitte geben "
-"Sie ihre Idee auf https://github.com/wxMaxima-developers/wxmaxima/issues ein."
+"Sie haben eine Idee für eine Verbesserung von wxMaxima? Super! Bitte tragen "
+"Sie ihre Idee auf https://github.com/wxMaxima-developers/wxmaxima/ als Verbesserungsvorschlag (Issue) ein "
+"oder nutzen Sie das Diskussionsforum."
 
 #: ../../src/TipOfTheDay.cpp:74
 msgid ""
@@ -4929,9 +4929,8 @@ msgid "Integrate expression with Risch algorithm"
 msgstr "Ausdruck mit Risch-Algorithmus integrieren"
 
 #: ../../src/wxMaximaFrame.cpp:2042
-#, fuzzy
 msgid "Integrate numerically"
-msgstr "Integrieren nach Risch"
+msgstr "Numerisch Integrieren"
 
 #: ../../src/Worksheet.cpp:1554 ../../src/wxMaximaFrame.cpp:2522
 msgid "Integrate..."
@@ -6183,7 +6182,7 @@ msgstr ""
 "die konkreten Werte von Variablen in einer Liste zu speichern und nur in das "
 "Ergebnis einzusetzen, wo Zahlenwerte benötigt werden:\n"
 "\n"
-"    /* We keep the actual values in a list so we can use them later on */\n"
+"/* Wir speichern die aktuellen Werte in einer Liste, damit sie später verwendet werden können. */\n"
 "    Values:[a=10,c=100];\n"
 "    Pyth:a^2+b^2=c^2;\n"
 "    solve(%,b);\n"
@@ -7682,7 +7681,7 @@ msgstr "Gerundet"
 
 #: ../../src/wxMaximaFrame.cpp:1615
 msgid "Row and column operations"
-msgstr ""
+msgstr "Zeilen- und Spaltenoperationen"
 
 #: ../../src/wxMaxima.cpp:7580 ../../src/wxMaxima.cpp:7590
 #: ../../src/wxMaxima.cpp:7595
@@ -9332,7 +9331,7 @@ msgid ""
 "The load() command of Maxima versions >5.38 is able to load .wxm files as "
 "library of Maxima's commands."
 msgstr ""
-"In Maxima >5.38 akzeptiert die load()-Funktion .wxm-Dateien als Bibliotheken "
+"Seit Maxima >5.38 akzeptiert die load()-Funktion .wxm-Dateien als Bibliotheken "
 "mit Maxima-Befehlen."
 
 #: ../../src/wxMaximaFrame.cpp:2057
@@ -10343,14 +10342,12 @@ msgstr ""
 "Datei und Kommandozeilenparametern konfiguriert."
 
 #: ../../src/TipOfTheDay.cpp:241
-#, fuzzy
 msgid ""
 "While wxMaxima is programmed mostly in C++, it also uses some Lisp code. You "
 "can help to improve wxMaxima, if you have knowledge of Common Lisp."
 msgstr ""
-"wxMaxima ist in C++ programmiert und verwendet das wxWidgets Tooklkit und "
-"CMake als Build-System. Sie können zu wxMaxima beitragen, wenn Sie "
-"Kenntnisse damit haben."
+"wxMaxima ist hauptsächlich in C++ programmiert, verwendet aber auch die Programmiersprache Lisp. "
+"Sie können mithelfen, wxMaxima zu verbessern, wenn Sie Common Lisp beherrschen."
 
 #: ../../src/wxMaxima.cpp:5399
 msgid ""
