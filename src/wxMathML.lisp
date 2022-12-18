@@ -2222,10 +2222,7 @@
 
   (putprop '$table_form t 'evfun)
 
-  ;; Load the initial functions (from mac-init.mac)
-  (let ((*print-circle* nil))
-    (format t "<wxxml-symbols>~{~a~^$~}</wxxml-symbols>~%"
-	    (mapcar #'$print_function (cdr ($append $functions $macros)))))
+  (wxPrint_autocompletesymbols)
 
   (no-warning
    (defun mredef-check (fnname)
