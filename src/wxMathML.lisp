@@ -2018,8 +2018,8 @@
     (format t "<wxxml-symbols>")
     ;; Function names and rules
     (format t "~{~a~^$~}"
-	    (append (mapcar #'$print_function (cdr ($append $functions $macros)))
-		    (mapcar #'print_value (cdr ($append $values $rules)))))
+	    (append (mapcar #'$print_function (cdr ($append (eval '$functions) (eval '$macros))))
+		    (mapcar #'print_value (cdr ($append (eval '$values) (eval '$rules))))))
     ;; Idea from Robert Dodier:
     ;; Variables defined with mdef don't appear in $values nor do they in $myoptions
     ;; but they appear in *variable-initial-values*
