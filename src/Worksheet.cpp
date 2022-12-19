@@ -994,7 +994,8 @@ void Worksheet::Recalculate(Cell *start) {
 /***
  * Resize the control
  */
-void Worksheet::OnSize(wxSizeEvent &WXUNUSED(event)) {
+void Worksheet::OnSize(wxSizeEvent &event) {
+  event.Skip();
   // Inform all cells how wide our display is now
   m_configuration->SetCanvasSize(GetClientSize());
 
@@ -1224,6 +1225,7 @@ void Worksheet::UnfoldAll() {
  * Right mouse - popup-menu
  */
 void Worksheet::OnMouseRightDown(wxMouseEvent &event) {
+  event.Skip();
   m_configuration->LastActiveTextCtrl(NULL);
   m_updateControls = true;
   RecalculateIfNeeded();
@@ -2121,6 +2123,7 @@ void Worksheet::OnMouseLeftInGc(wxMouseEvent &event, GroupCell *clickedInGC) {
  * output)
  */
 void Worksheet::OnMouseLeftDown(wxMouseEvent &event) {
+  event.Skip();
   m_configuration->LastActiveTextCtrl(NULL);
   m_updateControls = true;
   RecalculateIfNeeded();
@@ -2256,6 +2259,7 @@ GroupCell *Worksheet::FirstVisibleGC() {
 }
 
 void Worksheet::OnMouseLeftUp(wxMouseEvent &event) {
+  event.Skip();
   m_cellPointers.ResetSearchStart();
   // No more track the mouse when it is outside the worksheet
   if (HasCapture())
@@ -2329,6 +2333,7 @@ void Worksheet::OnMouseWheel(wxMouseEvent &event) {
 }
 
 void Worksheet::OnMouseMotion(wxMouseEvent &event) {
+  event.Skip();
   CalcUnscrolledPosition(event.GetX(), event.GetY(), &m_pointer_x,
                          &m_pointer_y);
   m_mouseMotionWas = true;
@@ -4166,6 +4171,7 @@ void Worksheet::AdjustSize() {
  * Support for selecting cells outside display
  */
 void Worksheet::OnMouseExit(wxMouseEvent &event) {
+  event.Skip();
   m_mouseOutside = true;
   if (m_leftDown) {
     m_mousePoint.x = event.GetX();
@@ -6253,7 +6259,8 @@ bool Worksheet::CanEdit() {
   return true;
 }
 
-void Worksheet::OnDoubleClick(wxMouseEvent &WXUNUSED(event)) {
+void Worksheet::OnDoubleClick(wxMouseEvent &event) {
+  event.Skip();
   m_configuration->LastActiveTextCtrl(NULL);
   m_updateControls = true;
   // No more track the mouse when it is outside the worksheet
@@ -7194,6 +7201,7 @@ void Worksheet::OnActivate(wxActivateEvent &event) {
   RequestRedraw();
   if (event.GetActive())
     wxLogMessage(_("Worksheet got activated"));
+  event.Skip();
 }
 
 void Worksheet::SetHCaret(GroupCell *where) {
@@ -7325,6 +7333,7 @@ void Worksheet::OnMouseMiddleUp(wxMouseEvent &event) {
       ReleaseMouse();
     wxTheClipboard->UsePrimarySelection(false);
   }
+  event.Skip();
 }
 
 void Worksheet::CommentSelection() {
@@ -7337,7 +7346,7 @@ void Worksheet::CommentSelection() {
   }
 }
 
-void Worksheet::OnScrollChanged(wxScrollEvent &WXUNUSED(ev)) {
+void Worksheet::OnScrollChanged(wxScrollEvent &ev) {
   // Did we scroll away from the cell that is being currently evaluated?
   // If yes we want to no more follow the evaluation with the scroll and
   // want to enable the button that brings us back.
@@ -7346,6 +7355,7 @@ void Worksheet::OnScrollChanged(wxScrollEvent &WXUNUSED(ev)) {
   // We don't want to start the autosave while the user is scrolling through
   // the document since this will shortly halt the scroll
   m_keyboardInactiveTimer.StartOnce(10000);
+  ev.Skip();
 }
 
 void Worksheet::OnThumbtrack(wxScrollWinEvent &ev) {
@@ -8108,8 +8118,9 @@ wxString Worksheet::RTFEnd() const {
   return wxT("}\n}");
 }
 
-void Worksheet::OnMouseCaptureLost(wxMouseCaptureLostEvent &WXUNUSED(event)) {
+void Worksheet::OnMouseCaptureLost(wxMouseCaptureLostEvent &event) {
   m_leftDown = false;
+  event.Skip();
 }
 
 #if wxUSE_ACCESSIBILITY

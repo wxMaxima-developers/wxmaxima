@@ -400,19 +400,22 @@ bool MaximaManual::LoadManualAnchorsFromXML(wxXmlDocument xmlDocument,
     if (cacheMaximaVersion != m_maximaVersion)
       wxLogMessage(_("The cache for the subjects the manual contains is from a "
                      "different Maxima version."));
-    else if (htmlDir != m_maximaHtmlDir)
+    if (htmlDir != m_maximaHtmlDir)
       wxLogMessage(
 		   _("The help dir from the cache differs from the current one."));
-    else
-      wxLogMessage(_("Ignoring the cache version."));
     return false;
   }
+  if(!checkManualVersion)
+    wxLogMessage(_("Ignoring the cache version for the manual anchors."));
   wxXmlNode *entry = headNode->GetChildren();
   if (entry == NULL) {
     wxLogMessage(
 		 _("No entries in the caches for the subjects the manual contains."));
     return false;
   }
+  long anchors = 0;
+  long urls_FilePerChapter = 0;
+  long urls_SinglePage = 0;
   while (entry) {
     if (entry->GetName() == wxT("entry")) {
       wxString key;
@@ -433,14 +436,28 @@ bool MaximaManual::LoadManualAnchorsFromXML(wxXmlDocument xmlDocument,
         node = node->GetNext();
       }
       if ((!key.IsEmpty()) && (!anchor.IsEmpty()))
-        m_helpFileAnchors[key] = anchor;
+	{
+	  anchors++;
+	  m_helpFileAnchors[key] = anchor;
+	}
       if ((!key.IsEmpty()) && (!url_filePerChapter.IsEmpty()))
-        m_helpFileURLs_filePerChapter[key] = url_filePerChapter;
+	{
+	  urls_FilePerChapter++;
+	  m_helpFileURLs_filePerChapter[key] = url_filePerChapter;
+	}
       if ((!key.IsEmpty()) && (!url_singlepage.IsEmpty()))
-        m_helpFileURLs_singlePage[key] = url_singlepage;
+	{
+	  urls_SinglePage++;
+	  m_helpFileURLs_singlePage[key] = url_singlepage;
+	}
     }
     entry = entry->GetNext();
   }
+  wxLogMessage(wxString::Format(
+				_("Found %li anchors, URLs (individual files): %li, URLs (singlepage): %li"),
+                                anchors,
+                                urls_FilePerChapter,
+				urls_SinglePage));
   return !m_helpFileURLs_singlePage.empty();
 }
 
