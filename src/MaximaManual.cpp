@@ -215,6 +215,7 @@ void MaximaManual::CompileHelpFileAnchors(wxString maximaHtmlDir,
 
       wxRegEx idExtractor(".*<span id=\\\"([a-zAZ0-9_-]*)\\\"");
       wxRegEx idExtractor2("<dt id=\\\"(index-[a-zAZ0-9_-]*)\\\"");
+      wxRegEx idExtractor3("<dt [^>]* id=\\\"(index-[a-zAZ0-9_-]*)\\\"");
       wxRegEx idExtractor_oldManual(".*<a name=\\\"([a-zAZ0-9_-]*)\\\"");
       wxString escapeChars = "`\"^()<=>[]`%?;\\$%&+-*/.!\'@#:^_";
       wxFileInputStream input(file);
@@ -233,10 +234,15 @@ void MaximaManual::CompileHelpFileAnchors(wxString maximaHtmlDir,
             else {
               if (idExtractor2.Replace(&token, "\\1") > 0)
                 id = token;
-              else {
-                if (idExtractor_oldManual.Replace(&token, "\\1") > 0)
-                  id = token;
-              }
+	      else
+		{
+		  if (idExtractor3.Replace(&token, "\\1") > 0)
+		    id = token;
+		  else {
+		    if (idExtractor_oldManual.Replace(&token, "\\1") > 0)
+		      id = token;
+		  }
+		}
             }
             if (!id.IsEmpty()) {
               // anchorless tokens begin with "index-"
