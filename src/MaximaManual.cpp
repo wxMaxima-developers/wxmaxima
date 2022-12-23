@@ -277,7 +277,11 @@ void MaximaManual::CompileHelpFileAnchors(wxString maximaHtmlDir,
     if (foundAnchorsTotal > 100)
       SaveManualAnchorsToCache(maximaHtmlDir, maximaVersion, saveName);
     else
-      LoadBuiltInManualAnchors();
+      {
+	wxLogMessage(wxString::Format(_("Have only %li keyword anchors at the end of parsing the maxima manual => "
+					"Not caching the result of using the built-in keyword list"), foundAnchorsTotal));
+	LoadBuiltInManualAnchors();
+      }
   }
   m_helpFileAnchorsThreadActive.unlock();
 }
