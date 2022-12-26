@@ -1249,6 +1249,18 @@ wxColor Configuration::MakeColorDifferFromBackground(wxColor color) {
   }
 }
 
+Configuration::FileToSave Configuration::PopFileToSave()
+{
+  FileToSave retval(m_filesToSave.back());
+  m_filesToSave.pop_back();
+  return retval;
+}
+
+void Configuration::PushFileToSave(const wxString &filename, const wxMemoryBuffer &data)
+{
+  m_filesToSave.emplace_front(FileToSave(filename, data));
+}
+
 bool Configuration::InUpdateRegion(wxRect const rect) const {
   if (!ClipToDrawRegion())
     return true;

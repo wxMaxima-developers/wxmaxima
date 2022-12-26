@@ -32,6 +32,7 @@
 #include "TextStyle.h"
 #include <memory>
 #include <unordered_map>
+#include <list>
 #include <vector>
 #include <wx/wupdlock.h>
 #include <wx/webview.h>
@@ -583,8 +584,28 @@ public:
       wxASSERT_MSG(displayedDigits >= 0, _("Bug: Maximum number of digits that is to be displayed is too low!"));
       m_displayedDigits = displayedDigits;
     }
-  
+
+  //! Stores the information about a file we need to write during the save process
+  class FileToSave
+  {
+  public:
+    FileToSave(const wxString &filename, const wxMemoryBuffer &data):
+      m_data(data),
+      m_filename(filename)
+      {        
+      }
+    const wxString FileName() const{return m_filename;}
+    const wxMemoryBuffer Data() const{return m_data;}
+  private:
+    const wxMemoryBuffer m_data;
+    const wxString m_filename;
+  };
+    
+  std::list<FileToSave> m_filesToSave;
+  FileToSave PopFileToSave();
+  void PushFileToSave(const wxString &filename, const wxMemoryBuffer &data);
   wxRect GetUpdateRegion() const {return m_updateRegion;}
+  const std::list<FileToSave> GetFilesToSave(){return m_filesToSave;}
   void SetUpdateRegion(wxRect rect){m_updateRegion = rect;}
 
   //! Whether any part of the given rectangle is within the current update region,

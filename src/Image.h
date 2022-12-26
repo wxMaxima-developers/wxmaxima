@@ -141,9 +141,9 @@ public:
   wxString GnuplotData();
 
   //! Returns the gnuplot source of this image
-  wxMemoryBuffer GetGnuplotSource();
+  const wxMemoryBuffer GetGnuplotSource() const;
   //! Returns the gnuplot data of this image
-  wxMemoryBuffer GetGnuplotData();
+  const wxMemoryBuffer GetGnuplotData() const;
   
   /*! Temporarily forget the scaled image in order to save memory
 
@@ -190,7 +190,7 @@ public:
   long m_height;
 
   //! Returns the original image in its compressed form
-  wxMemoryBuffer GetCompressedImage() const;
+  const wxMemoryBuffer GetCompressedImage() const;
 
   //! Returns the original width
   size_t GetOriginalWidth() const;

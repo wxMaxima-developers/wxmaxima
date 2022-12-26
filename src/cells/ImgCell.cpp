@@ -292,10 +292,8 @@ wxString ImgCell::ToXML() const {
 
   // add the file to memory
   if (m_image) {
-    if (m_image->GetCompressedImage())
-      wxMemoryFSHandler::AddFile(basename + m_image->GetExtension(),
-                                 m_image->GetCompressedImage().GetData(),
-                                 m_image->GetCompressedImage().GetDataLen());
+    m_configuration->PushFileToSave(basename + m_image->GetExtension(),
+				    m_image->GetCompressedImage());
   }
 
   wxString flags;
@@ -327,29 +325,15 @@ wxString ImgCell::ToXML() const {
     wxString gnuplotData;
     if (m_image->GnuplotData() != wxEmptyString) {
       wxFileName gnuplotDataFile(m_image->GnuplotData());
-      gnuplotData = gnuplotDataFile.GetFullName();
+      m_configuration->PushFileToSave(gnuplotDataFile.GetFullName(),
+				      m_image->GetGnuplotData());
+      flags += " gnuplotdata=\"" + gnuplotData + "\"";
     }
     if (m_image->GnuplotSource() != wxEmptyString) {
       wxFileName gnuplotSourceFile(m_image->GnuplotSource());
-      gnuplotSource = gnuplotSourceFile.GetFullName();
-    }
-
-    // Save the gnuplot source, if necessary.
-    if (gnuplotSource != wxEmptyString) {
+      m_configuration->PushFileToSave(gnuplotSourceFile.GetFullName(),
+				      m_image->GetGnuplotSource());
       flags += " gnuplotsource=\"" + gnuplotSource + "\"";
-      wxMemoryBuffer data = m_image->GetGnuplotSource();
-      if (data.GetDataLen() > 0) {
-        wxMemoryFSHandler::AddFile(gnuplotSource, data.GetData(),
-                                   data.GetDataLen());
-      }
-    }
-    if (gnuplotData != wxEmptyString) {
-      flags += " gnuplotdata=\"" + gnuplotData + "\"";
-      wxMemoryBuffer data = m_image->GetGnuplotData();
-      if (data.GetDataLen() > 0) {
-        wxMemoryFSHandler::AddFile(gnuplotData, data.GetData(),
-                                   data.GetDataLen());
-      }
     }
   }
 

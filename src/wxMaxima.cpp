@@ -324,8 +324,6 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale,
   m_closing = false;
   m_fileSaved = true;
 
-  wxFileSystem::AddHandler(new wxMemoryFSHandler); // for saving wxmx
-
   UpdateRecentDocuments();
 
   m_worksheet->m_findDialog = NULL;

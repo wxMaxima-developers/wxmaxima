@@ -384,26 +384,20 @@ wxString AnimationCell::ToXML() const {
       // Save the gnuplot source, if necessary.
       if (gnuplotSource != wxEmptyString) {
         gnuplotSourceFiles += gnuplotSource + ";";
-        wxMemoryBuffer data = m_images[i]->GetGnuplotSource();
-        if (data.GetDataLen() > 0) {
-          wxMemoryFSHandler::AddFile(gnuplotSource, data.GetData(),
-                                     data.GetDataLen());
-        }
+        const wxMemoryBuffer data = m_images[i]->GetGnuplotSource();
+        if (data.GetDataLen() > 0)
+	  m_configuration->PushFileToSave(gnuplotSource, data);
       }
       if (gnuplotData != wxEmptyString) {
         gnuplotDataFiles += gnuplotData + ";";
-        wxMemoryBuffer data = m_images[i]->GetGnuplotData();
-        if (data.GetDataLen() > 0) {
-          wxMemoryFSHandler::AddFile(gnuplotData, data.GetData(),
-                                     data.GetDataLen());
-        }
+        const wxMemoryBuffer data = m_images[i]->GetGnuplotData();
+        if (data.GetDataLen() > 0)
+	  m_configuration->PushFileToSave(gnuplotData, data);
       }
 
       if (m_images[i]->GetCompressedImage())
-        wxMemoryFSHandler::AddFile(
-				   basename + m_images[i]->GetExtension(),
-				   m_images[i]->GetCompressedImage().GetData(),
-				   m_images[i]->GetCompressedImage().GetDataLen());
+	m_configuration->PushFileToSave(basename + m_images[i]->GetExtension(),
+					m_images[i]->GetCompressedImage());
     }
 
     images += basename + m_images[i]->GetExtension() + wxT(";");
