@@ -176,7 +176,7 @@ void MaximaManual::CompileHelpFileAnchors(wxString maximaHtmlDir,
 					  wxString saveName) {
   SuppressErrorDialogs suppressor;
 
-  int foundAnchorsTotal = 0;
+  long foundAnchorsTotal = 0;
   if (m_helpFileURLs_singlePage.empty() && (!(m_maximaHtmlDir.IsEmpty()))) {
     wxArrayString helpFiles;
     {
@@ -192,7 +192,7 @@ void MaximaManual::CompileHelpFileAnchors(wxString maximaHtmlDir,
     }
 
     for (auto file : helpFiles) {
-      int foundAnchors = 0;
+      long foundAnchors = 0;
       wxString fileURI = wxURI(wxT("file://") + file).BuildURI();
       // wxWidgets cannot automatically replace a # as it doesn't know if it is
       // a anchor separator
@@ -271,18 +271,16 @@ void MaximaManual::CompileHelpFileAnchors(wxString maximaHtmlDir,
       AnchorAliasses(m_helpFileAnchors);
       AnchorAliasses(m_helpFileURLs_filePerChapter);
       AnchorAliasses(m_helpFileURLs_singlePage);
-      wxLogMessage(wxString::Format(_("Found %i anchors, %i anchors total."),
+      wxLogMessage(wxString::Format(_("Found %li anchors, %li anchors total."),
                                     foundAnchors, foundAnchorsTotal));
     }
-    long anchors = wxMax(m_helpFileURLs_filePerChapter.size(),
-			 m_helpFileURLs_singlePage.size());
-    if (anchors > 100)
+    if (foundAnchorsTotal > 100)
       SaveManualAnchorsToCache(maximaHtmlDir, maximaVersion, saveName);
     else
       {
 	wxLogMessage(wxString::Format(_("Have only %li keyword anchors at the end of parsing the maxima manual => "
 					"Not caching the result of using the built-in keyword list"),
-				      anchors));
+				      foundAnchorsTotal));
 	LoadBuiltInManualAnchors();
       }
   }
