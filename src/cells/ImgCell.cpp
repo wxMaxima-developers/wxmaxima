@@ -321,19 +321,19 @@ wxString ImgCell::ToXML() const {
 
   if (m_image) {
     // Anonymize the name of our temp directory for saving
-    wxString gnuplotSource;
-    wxString gnuplotData;
     if (m_image->GnuplotData() != wxEmptyString) {
       wxFileName gnuplotDataFile(m_image->GnuplotData());
-      m_configuration->PushFileToSave(gnuplotDataFile.GetFullName(),
-				      m_image->GetGnuplotData());
-      flags += " gnuplotdata=\"" + gnuplotData + "\"";
+      wxString gnuplotData = gnuplotDataFile.GetFullName() + wxT(".gz");
+      m_configuration->PushFileToSave(gnuplotData,
+				      m_image->GetCompressedGnuplotData());
+      flags += " gnuplotdata_gz=\"" + gnuplotData + "\"";
     }
     if (m_image->GnuplotSource() != wxEmptyString) {
       wxFileName gnuplotSourceFile(m_image->GnuplotSource());
-      m_configuration->PushFileToSave(gnuplotSourceFile.GetFullName(),
-				      m_image->GetGnuplotSource());
-      flags += " gnuplotsource=\"" + gnuplotSource + "\"";
+      wxString gnuplotSource = gnuplotSourceFile.GetFullName() + wxT(".gz");
+      m_configuration->PushFileToSave(gnuplotSource,
+				      m_image->GetCompressedGnuplotSource());
+      flags += " gnuplotsource_gz=\"" + gnuplotSource + "\"";
     }
   }
 

@@ -603,7 +603,9 @@ public:
     
   std::list<FileToSave> m_filesToSave;
   FileToSave PopFileToSave();
-  void PushFileToSave(const wxString &filename, const wxMemoryBuffer &data);
+  void PushFileToSave(const wxString &filename, const wxMemoryBuffer &data)
+    { m_filesToSave.emplace_front(FileToSave(filename, data)); }
+
   wxRect GetUpdateRegion() const {return m_updateRegion;}
   const std::list<FileToSave> GetFilesToSave(){return m_filesToSave;}
   void SetUpdateRegion(wxRect rect){m_updateRegion = rect;}

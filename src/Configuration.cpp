@@ -1256,11 +1256,6 @@ Configuration::FileToSave Configuration::PopFileToSave()
   return retval;
 }
 
-void Configuration::PushFileToSave(const wxString &filename, const wxMemoryBuffer &data)
-{
-  m_filesToSave.emplace_front(FileToSave(filename, data));
-}
-
 bool Configuration::InUpdateRegion(wxRect const rect) const {
   if (!ClipToDrawRegion())
     return true;

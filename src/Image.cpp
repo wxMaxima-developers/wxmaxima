@@ -235,6 +235,12 @@ void Image::GnuplotSource(wxString gnuplotFilename, wxString dataFilename,
   LoadGnuplotSource_Backgroundtask(gnuplotFilename, dataFilename, filesystem);
 }
 
+void Image::CompressedGnuplotSource(wxString gnuplotFilename, wxString dataFilename,
+                                    std::shared_ptr<wxFileSystem> filesystem) {
+  m_fs_keepalive_gnuplotdata = filesystem;
+  LoadCompressedGnuplotSource_Backgroundtask(gnuplotFilename, dataFilename, filesystem);
+}
+
 void Image::LoadGnuplotSource_Backgroundtask(
 					     wxString gnuplotFilename, wxString dataFilename,
 					     std::shared_ptr<wxFileSystem> filesystem) {
@@ -422,6 +428,55 @@ void Image::LoadGnuplotSource_Backgroundtask(
   m_fs_keepalive_gnuplotdata.reset();
 }
 
+void Image::LoadCompressedGnuplotSource_Backgroundtask(
+  wxString gnuplotFilename, wxString dataFilename,
+  std::shared_ptr<wxFileSystem> filesystem) {
+  // Error dialogues need to be created by the foreground thread.
+  SuppressErrorDialogs suppressor;
+
+  // Store the filenames without the ".gz".
+  m_gnuplotSource = gnuplotFilename;
+  m_gnuplotData = dataFilename;
+  if(m_gnuplotSource.EndsWith(".gz"))
+    m_gnuplotSource = m_gnuplotSource.Left(m_gnuplotSource.Length()-3);
+  if(m_gnuplotData.EndsWith(".gz"))
+    m_gnuplotData = m_gnuplotData.Left(m_gnuplotData.Length()-3);
+
+  // Read the gnuplot source
+  {
+    wxFSFile *fsfile;
+    fsfile = filesystem->OpenFile(gnuplotFilename);
+    if (fsfile) { // open successful
+      std::unique_ptr<wxInputStream> input(fsfile->GetStream());
+      if (input->IsOk()) {
+        m_gnuplotSource_Compressed.Clear();
+        wxMemoryOutputStream mstream;
+        input->Read(mstream);
+        m_gnuplotSource_Compressed.AppendData(
+          mstream.GetOutputStreamBuffer()->GetBufferStart(),
+          mstream.GetOutputStreamBuffer()->GetBufferSize());
+      }
+    }
+  }
+  // Read the gnuplot data
+  {
+    wxFSFile *fsfile;
+    fsfile = filesystem->OpenFile(dataFilename);
+    if (fsfile) { // open successful
+      std::unique_ptr<wxInputStream> input(fsfile->GetStream());
+      if (input->IsOk()) {
+        m_gnuplotData_Compressed.Clear();
+        wxMemoryOutputStream mstream;
+        input->Read(mstream);
+        m_gnuplotData_Compressed.AppendData(
+          mstream.GetOutputStreamBuffer()->GetBufferStart(),
+          mstream.GetOutputStreamBuffer()->GetBufferSize());
+      }
+    }
+  }
+  m_fs_keepalive_gnuplotdata.reset();
+}
+
 const wxMemoryBuffer Image::GetGnuplotSource() const {
   wxMemoryBuffer retval;
   if ((m_gnuplotSource_Compressed.GetDataLen() < 2) ||
@@ -448,6 +503,16 @@ const wxMemoryBuffer Image::GetGnuplotSource() const {
   }
 
   return retval;
+}
+
+const wxMemoryBuffer Image::GetCompressedGnuplotSource() const
+{
+  return m_gnuplotSource_Compressed;
+}
+
+const wxMemoryBuffer Image::GetCompressedGnuplotData() const
+{
+  return m_gnuplotData_Compressed;
 }
 
 const wxMemoryBuffer Image::GetGnuplotData() const {

@@ -383,16 +383,16 @@ wxString AnimationCell::ToXML() const {
 
       // Save the gnuplot source, if necessary.
       if (gnuplotSource != wxEmptyString) {
-        gnuplotSourceFiles += gnuplotSource + ";";
-        const wxMemoryBuffer data = m_images[i]->GetGnuplotSource();
+        gnuplotSourceFiles += gnuplotSource + ".gz;";
+        const wxMemoryBuffer data = m_images[i]->GetCompressedGnuplotSource();
         if (data.GetDataLen() > 0)
-	  m_configuration->PushFileToSave(gnuplotSource, data);
+	  m_configuration->PushFileToSave(gnuplotSource + ".gz", data);
       }
       if (gnuplotData != wxEmptyString) {
-        gnuplotDataFiles += gnuplotData + ";";
-        const wxMemoryBuffer data = m_images[i]->GetGnuplotData();
+        gnuplotDataFiles += gnuplotData + ".gz;";
+        const wxMemoryBuffer data = m_images[i]->GetCompressedGnuplotData();
         if (data.GetDataLen() > 0)
-	  m_configuration->PushFileToSave(gnuplotData, data);
+	  m_configuration->PushFileToSave(gnuplotData + ".gz", data);
       }
 
       if (m_images[i]->GetCompressedImage())
@@ -404,8 +404,8 @@ wxString AnimationCell::ToXML() const {
   }
 
   wxString flags;
-  flags = " gnuplotSources=\"" + gnuplotSourceFiles + "\"";
-  flags += " gnuplotData=\"" + gnuplotDataFiles + "\"";
+  flags = " gnuplotSources_gz=\"" + gnuplotSourceFiles + "\"";
+  flags += " gnuplotData_gz=\"" + gnuplotDataFiles + "\"";
   if (Length() > 0)
     flags += wxString::Format(wxT(" ppi=\"%i\""), m_images[1]->GetPPI());
   if (HasHardLineBreak())
