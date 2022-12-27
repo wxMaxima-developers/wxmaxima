@@ -90,7 +90,7 @@ public:
   //! Interprets the XML autocompletable symbol list maxima can send us
   void AddSymbols(wxString xml);
   //! The real work of AddSymbols is made here and in the background
-  void AddSymbols_Backgroundtask(wxString xml, wxString sharedir);
+  void AddSymbols_Backgroundtask(wxString xml);
 
   //! Replace the list of files in the directory the worksheet file is in to the demo files list
   void UpdateDemoFiles(wxString partial, wxString maximaDir);

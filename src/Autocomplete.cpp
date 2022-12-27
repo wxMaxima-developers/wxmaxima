@@ -68,10 +68,10 @@ void AutoComplete::AddSymbols(wxString xml) {
   sharedir.Replace("\r", "");
   
   m_addSymbols_backgroundThread = std::unique_ptr<std::thread>(
-							       new std::thread(&AutoComplete::AddSymbols_Backgroundtask, this, xml, sharedir));
+							       new std::thread(&AutoComplete::AddSymbols_Backgroundtask, this, xml));
 }
 
-void AutoComplete::AddSymbols_Backgroundtask(wxString xml, wxString sharedir) {
+void AutoComplete::AddSymbols_Backgroundtask(wxString xml) {
   wxXmlDocument xmldoc;
   wxStringInputStream xmlStream(xml);
   xmldoc.Load(xmlStream, wxT("UTF-8"));
