@@ -11,7 +11,7 @@
  * Better display of help text in the console
  * Faster saving of .wxmx files
 
-# 22.11.0
+# 22.11.1
  * Repaired zooming the worksheet
 
 # 22.11.0
