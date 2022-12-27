@@ -300,9 +300,6 @@ void ToolBar::AddTools() {
             "created with the with_slider class of commands"));
   EnableTool(tb_animation_startStop, false);
 
-#if wxCHECK_VERSION(3, 1, 1)
-  wxDisplay display;
-
   m_ppi = GetPPI();
 
   int sliderWidth = wxMax(m_ppi.x, 75) * 200 / 72;
@@ -337,7 +334,6 @@ wxSize ToolBar::GetPPI()
     ppi = wxSize(72, 72);
   else
     ppi = wxDisplay(display_idx).GetPPI();
-#endif
   
   if ((ppi.x <= 10) || (ppi.y <= 10))
     ppi = wxGetDisplayPPI();
