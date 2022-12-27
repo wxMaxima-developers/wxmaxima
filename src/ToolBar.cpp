@@ -328,13 +328,16 @@ void ToolBar::AddTools() {
 
 wxSize ToolBar::GetPPI()
 {
+#if wxCHECK_VERSION(3, 1, 1)
   wxSize ppi(-1, -1);
   int display_idx = wxDisplay::GetFromWindow(GetParent());
   if (display_idx < 0)
     ppi = wxSize(72, 72);
   else
     ppi = wxDisplay(display_idx).GetPPI();
-  
+#else
+    m_ppi = wxGetDisplayPPI();
+#endif  
   if ((ppi.x <= 10) || (ppi.y <= 10))
     ppi = wxGetDisplayPPI();
   

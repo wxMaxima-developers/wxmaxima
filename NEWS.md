@@ -10,6 +10,7 @@
  * Try harder to connect maxima if one communication port is blocked (#1717)
  * Better display of help text in the console
  * Faster saving of .wxmx files
+ * Better toolbar bitmap handling
 
 # 22.11.1
  * Repaired zooming the worksheet
