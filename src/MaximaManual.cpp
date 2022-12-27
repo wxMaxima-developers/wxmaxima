@@ -192,6 +192,7 @@ void MaximaManual::CompileHelpFileAnchors(wxString maximaHtmlDir,
     }
 
     for (auto file : helpFiles) {
+      bool is_Singlepage = file.Contains("_singlepage.");
       long foundAnchors = 0;
       wxString fileURI = wxURI(wxT("file://") + file).BuildURI();
       // wxWidgets cannot automatically replace a # as it doesn't know if it is
@@ -257,7 +258,7 @@ void MaximaManual::CompileHelpFileAnchors(wxString maximaHtmlDir,
               // What the g_t means I don't know. But we don't need it
               if (token.StartsWith("g_t"))
                 token = token.Right(token.Length() - 3);
-              if (!file.EndsWith(wxT("_singlepage.html")))
+              if (is_Singlepage)
                 m_helpFileURLs_singlePage[token] = fileURI + "#" + id;
               else
                 m_helpFileURLs_filePerChapter[token] = fileURI + "#" + id;
@@ -274,14 +275,16 @@ void MaximaManual::CompileHelpFileAnchors(wxString maximaHtmlDir,
       wxLogMessage(wxString::Format(_("Found %li anchors, %li anchors total."),
                                     foundAnchors, foundAnchorsTotal));
     }
-    if (foundAnchorsTotal > 100)
-      SaveManualAnchorsToCache(maximaHtmlDir, maximaVersion, saveName);
-    else
+    if(foundAnchorsTotal < 100)
       {
 	wxLogMessage(wxString::Format(_("Have only %li keyword anchors at the end of parsing the maxima manual => "
 					"Not caching the result of using the built-in keyword list"),
 				      foundAnchorsTotal));
 	LoadBuiltInManualAnchors();
+      }
+    else
+      {
+	SaveManualAnchorsToCache(maximaHtmlDir, maximaVersion, saveName);
       }
   }
   m_helpFileAnchorsThreadActive.unlock();
