@@ -246,6 +246,8 @@ public:
   wxBitmap GetEvalRestBitmap(wxSize siz = wxSize(-1, -1));
   wxBitmap GetHideCodeBitmap(wxSize siz = wxSize(-1, -1));
 
+  wxSize GetOptimalBitmapSize();
+  wxSize GetPPI();
   bool ShowUndoRedo(){bool show = false; wxConfig::Get()->Read("Toolbar/showUndoRedo", &show);
     return show;}
   void ShowUndoRedo(bool show){wxConfig::Get()->Write("Toolbar/showUndoRedo", show);}

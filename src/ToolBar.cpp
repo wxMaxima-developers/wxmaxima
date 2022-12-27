@@ -48,45 +48,9 @@
 
 wxBitmap ToolBar::GetBitmap(wxString name, unsigned char *data, size_t len,
                             wxSize siz) {
-  if (siz.x <= 0) {
-#if wxCHECK_VERSION(3, 1, 1)
-    wxDisplay display;
-    int display_idx = wxDisplay::GetFromWindow(GetParent());
-    if (display_idx < 0)
-      m_ppi = wxSize(72, 72);
-    else
-      m_ppi = wxDisplay(display_idx).GetPPI();
-#else
-    m_ppi = wxGetDisplayPPI();
-#endif
-    if ((m_ppi.x <= 10) || (m_ppi.y <= 10))
-      m_ppi = wxGetDisplayPPI();
+  if (siz.x <= 0)
+    siz = GetOptimalBitmapSize();
 
-    if ((m_ppi.x <= 10) || (m_ppi.y <= 10))
-      m_ppi = wxSize(72, 72);
-
-#if defined __WXOSX__
-    int targetSize =
-      wxMax(m_ppi.x, 75) * TOOLBAR_ICON_SCALE * GetContentScaleFactor();
-#else
-    int targetSize = wxMax(m_ppi.x, 75) * TOOLBAR_ICON_SCALE;
-#endif
-    int sizeA = 128 << 4;
-    while (sizeA * 3 / 2 > targetSize && sizeA >= 32) {
-      sizeA >>= 1;
-    };
-
-    int sizeB = 192 << 4;
-    while (sizeB * 4 / 3 > targetSize && sizeB >= 32) {
-      sizeB >>= 1;
-    }
-
-    if (std::abs(targetSize - sizeA) < std::abs(targetSize - sizeB))
-      targetSize = sizeA;
-    else
-      targetSize = sizeB;
-    siz = wxSize(targetSize, targetSize);
-  }
   wxBitmap bmp = wxArtProvider::GetBitmap(name, wxART_TOOLBAR, siz);
   wxImage img;
   if (bmp.IsOk())
@@ -100,6 +64,49 @@ wxBitmap ToolBar::GetBitmap(wxString name, unsigned char *data, size_t len,
 #else
   return wxBitmap(img, wxBITMAP_SCREEN_DEPTH);
 #endif
+}
+
+wxSize ToolBar::GetOptimalBitmapSize()
+{
+  wxSize siz;
+#if wxCHECK_VERSION(3, 1, 1)
+  wxDisplay display;
+  int display_idx = wxDisplay::GetFromWindow(GetParent());
+  if (display_idx < 0)
+    m_ppi = wxSize(72, 72);
+  else
+    m_ppi = wxDisplay(display_idx).GetPPI();
+#else
+  m_ppi = wxGetDisplayPPI();
+#endif
+  if ((m_ppi.x <= 10) || (m_ppi.y <= 10))
+    m_ppi = wxGetDisplayPPI();
+
+  if ((m_ppi.x <= 10) || (m_ppi.y <= 10))
+    m_ppi = wxSize(72, 72);
+
+#if defined __WXOSX__
+  int targetSize =
+    wxMax(m_ppi.x, 75) * TOOLBAR_ICON_SCALE * GetContentScaleFactor();
+#else
+  int targetSize = wxMax(m_ppi.x, 75) * TOOLBAR_ICON_SCALE;
+#endif
+  int sizeA = 128 << 4;
+  while (sizeA * 3 / 2 > targetSize && sizeA >= 32) {
+    sizeA >>= 1;
+  };
+
+  int sizeB = 192 << 4;
+  while (sizeB * 4 / 3 > targetSize && sizeB >= 32) {
+    sizeB >>= 1;
+  }
+
+  if (std::abs(targetSize - sizeA) < std::abs(targetSize - sizeB))
+    targetSize = sizeA;
+  else
+    targetSize = sizeB;
+  siz = wxSize(targetSize, targetSize);
+  return siz;
 }
 
 ToolBar::~ToolBar() { m_plotSlider = NULL; }
@@ -141,10 +148,10 @@ ToolBar::ToolBar(wxWindow *parent)
   m_needsInformation = false;
   m_AnimationStartStopState = Inactive;
 
-  SetToolBitmapSize(wxSize(24, 24));
   SetGripperVisible(false);
   m_plotSlider = NULL;
   m_textStyle = NULL;
+  SetToolBitmapSize(GetOptimalBitmapSize());
   AddTools();
 
   // For some reason overflow and re-sizing don't play together in some cases if
@@ -296,18 +303,7 @@ void ToolBar::AddTools() {
 #if wxCHECK_VERSION(3, 1, 1)
   wxDisplay display;
 
-  int display_idx = wxDisplay::GetFromWindow(GetParent());
-  if (display_idx < 0)
-    m_ppi = wxSize(72, 72);
-  else
-    m_ppi = wxDisplay(display_idx).GetPPI();
-#else
-  m_ppi = wxGetDisplayPPI();
-#endif
-  if ((m_ppi.x <= 10) || (m_ppi.y <= 10))
-    m_ppi = wxGetDisplayPPI();
-  if ((m_ppi.x <= 10) || (m_ppi.y <= 10))
-    m_ppi = wxSize(72, 72);
+  m_ppi = GetPPI();
 
   int sliderWidth = wxMax(m_ppi.x, 75) * 200 / 72;
   int width, height;
@@ -333,34 +329,34 @@ void ToolBar::AddTools() {
   Realize();
 }
 
-void ToolBar::UpdateBitmaps() {
+wxSize ToolBar::GetPPI()
+{
   wxSize ppi(-1, -1);
-#if wxCHECK_VERSION(3, 1, 1)
-  wxDisplay display;
-
   int display_idx = wxDisplay::GetFromWindow(GetParent());
   if (display_idx < 0)
     ppi = wxSize(72, 72);
   else
     ppi = wxDisplay(display_idx).GetPPI();
 #endif
-
+  
   if ((ppi.x <= 10) || (ppi.y <= 10))
     ppi = wxGetDisplayPPI();
-
+  
   if ((ppi.x <= 10) || (ppi.y <= 10))
     ppi = wxSize(72, 72);
+  return ppi;
+}  
 
+void ToolBar::UpdateBitmaps() {
+  SetToolBitmapSize(GetOptimalBitmapSize());
+
+  wxSize ppi = GetPPI();
   if ((ppi.x == m_ppi.x) && (ppi.y == m_ppi.y))
     return;
-
   wxLogMessage(wxString::Format(
 				_("Display resolution according to wxWidgets: %i x %i ppi"), ppi.x,
 				ppi.y));
-
-  if (ppi.x == 0)
-    return;
-
+  
   m_ppi = ppi;
 
   SetToolBitmap(tb_eval, GetEvalBitmap());
