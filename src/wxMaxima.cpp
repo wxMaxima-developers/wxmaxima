@@ -4848,7 +4848,7 @@ void wxMaxima::OnIdle(wxIdleEvent &event) {
 
   if (m_worksheet->StatusTextChangedHas()) {
     if (m_worksheet->StatusTextHas()) {
-      SetStatusText(m_worksheet->GetStatusText());
+      StatusText(m_worksheet->GetStatusText());
     }
   }
 
