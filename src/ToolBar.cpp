@@ -51,7 +51,7 @@ wxBitmap ToolBar::GetBitmap(wxString name, unsigned char *data, size_t len,
   if (siz.x <= 0)
     siz = GetOptimalBitmapSize();
 
-  wxBitmap bmp = wxArtProvider::GetBitmap(name, wxART_TOOLBAR);
+  wxBitmap bmp = wxArtProvider::GetBitmap(name, wxART_TOOLBAR, wxSize(siz.x*4, siz.y*4));
   wxImage img;
   if (bmp.IsOk())
     img = bmp.ConvertToImage();
