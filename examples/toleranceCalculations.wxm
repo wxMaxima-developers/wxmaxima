@@ -72,7 +72,11 @@ Let's assume that R_1 is a 100Ω with 10 percents of tolerance. R_2 is a 1000Ω 
 
 
 /* [wxMaxima: input   start ] */
-%
+vals1:[
+    R_1=100*(1+.1*tol[1]),
+    R_2=1000*(1+.01*tol[2])
+];
+wc_inputvalueranges(%);
 /* [wxMaxima: input   end   ] */
 
 
@@ -82,7 +86,11 @@ We can propose another set of values: Two resistors that have a high tolerance, 
 
 
 /* [wxMaxima: input   start ] */
-%
+vals2:[
+    R_1=100*(1+.1*tol[1]),
+    R_2=1000*(1+.1*tol[1])
+];
+wc_inputvalueranges(%);
 /* [wxMaxima: input   end   ] */
 
 
@@ -173,7 +181,12 @@ Now we want to tell maxima that the voltage source provides a voltage between 4V
 
 
 /* [wxMaxima: input   start ] */
-%
+vals3:[
+    R_1=100*(1+.1*tol[1]),
+    R_2=1000*(1+.1*tol[1]),
+    U_In=wc_mintypmax2tol(tol[3],4,4.5,6)    
+];
+wc_inputvalueranges(%);
 /* [wxMaxima: input   end   ] */
 
 
@@ -277,7 +290,8 @@ hole3:(x-x_3)^2+(y-y_3)^2=r^2;
 
 
 /* [wxMaxima: input   start ] */
-%
+solve([hole1,hole2,hole3],[x,y,r])$
+sol1:%[2];
 /* [wxMaxima: input   end   ] */
 
 
