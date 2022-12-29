@@ -8,6 +8,16 @@ file(WRITE "${HEADER_FILE}"
     "#define WXM_EXAMPLES_H\n")
 
 file(GLOB WXM_FILES *.wxm)
+
+# Copy the .wxm files to the binary dir so they can be used as test case without
+# being afraid that we change the test cases somehow.
+file(
+    COPY
+    ${WXM_FILES}
+    DESTINATION ${CMAKE_CURRENT_BINARY_DIR}
+    FILE_PERMISSIONS OWNER_WRITE OWNER_READ
+    )
+
 foreach(file ${WXM_FILES})
     message(STATUS "   Processing: ${file}")
 
