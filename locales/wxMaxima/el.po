@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Greek translation of wxMaxima GUI\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-10 14:24+0100\n"
+"POT-Creation-Date: 2022-12-29 16:50+0100\n"
 "PO-Revision-Date: 2010-06-04 19:46+0200\n"
 "Last-Translator: aga <akritas@uth.gr>\n"
 "Language-Team: uth <aakritas@uth.gr>\n"
@@ -26,7 +26,7 @@ msgid ""
 "Maxima is currently using %3.3f%% of all available CPUs."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:9103
+#: ../../src/wxMaxima.cpp:9101
 #, c-format
 msgid ""
 "\n"
@@ -39,13 +39,13 @@ msgstr ""
 "wxWidgets: %d.%d.%d\n"
 "υποστήριξη Unicode: %s"
 
-#: ../../src/wxMaxima.cpp:9112
+#: ../../src/wxMaxima.cpp:9110
 msgid ""
 "\n"
 "Maxima compiled using: "
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:9107
+#: ../../src/wxMaxima.cpp:9105
 msgid ""
 "\n"
 "Maxima version: "
@@ -53,7 +53,7 @@ msgstr ""
 "\n"
 "Έκδοση  Maxima:"
 
-#: ../../src/wxMaxima.cpp:9110
+#: ../../src/wxMaxima.cpp:9108
 msgid ""
 "\n"
 "Not connected."
@@ -89,14 +89,14 @@ msgstr ""
 msgid " Wrong, if a is complex"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:7234
+#: ../../src/wxMaxima.cpp:7232
 msgid ""
 "\".\" = \"The current directory\"\n"
 "\"..\" = \"One directory up\""
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:7190 ../../src/wxMaxima.cpp:7196
-#: ../../src/wxMaxima.cpp:7201
+#: ../../src/wxMaxima.cpp:7188 ../../src/wxMaxima.cpp:7194
+#: ../../src/wxMaxima.cpp:7199
 msgid "\"..\" means \"one directory up\"."
 msgstr ""
 
@@ -113,7 +113,7 @@ msgstr "Το Enter υπολογίζει τα κελιά"
 msgid "\"implies\" symbol"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:4776
+#: ../../src/wxMaxima.cpp:4774
 #, c-format
 msgid "%i cells in evaluation queue"
 msgstr ""
@@ -369,15 +369,15 @@ msgstr ""
 msgid "(Use default language)"
 msgstr "(Χρήση Προεπιλεγμένης Γλώσσας)"
 
-#: ../../src/wxMaxima.cpp:8892
+#: ../../src/wxMaxima.cpp:8890
 msgid "(f(x),x,a,b)), Epsilon algorithm"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:8878
+#: ../../src/wxMaxima.cpp:8876
 msgid "(f(x),x,a,b)), Strategy of Aind"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:8903
+#: ../../src/wxMaxima.cpp:8901
 msgid "(f(x),x,a,b), (semi-) infinite interval"
 msgstr ""
 
@@ -393,17 +393,17 @@ msgstr ""
 msgid "(f(x),x,a,b), strategy of Aind"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:9016 ../../src/wxMaximaFrame.cpp:2040
+#: ../../src/wxMaxima.cpp:9014 ../../src/wxMaximaFrame.cpp:2040
 msgid "(f(x),x,y) with singularities+discontinuities"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:1829
+#: ../../src/wxMaxima.cpp:1827
 msgid ""
-"... [suppressed additional lines since the output is longer than allowed in "
-"the configuration] "
+"... [suppressed additional lines as the output is longer than allowed in the "
+"wxMaxima configuration] "
 msgstr ""
 
-#: ../../src/Worksheet.cpp:6943
+#: ../../src/Worksheet.cpp:6907
 msgid ".wxm clipboard data with unusual header"
 msgstr ""
 
@@ -415,7 +415,7 @@ msgstr ""
 msgid "1/2"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:7670
+#: ../../src/wxMaxima.cpp:7668
 #, fuzzy
 msgid "1×n Matrix b:"
 msgstr "Πίνακας:"
@@ -458,12 +458,12 @@ msgstr ""
 msgid ": Can't interpret line: %s"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:4780
+#: ../../src/wxMaxima.cpp:4778
 #, c-format
 msgid "; %i commands left in the current cell"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:10346
+#: ../../src/wxMaxima.cpp:10344
 msgid ""
 "A \":lisp\" as the first command might fail to send a \"finished\" signal."
 msgstr ""
@@ -504,7 +504,7 @@ msgstr ""
 msgid "A linear function"
 msgstr "Διαγραφή μίας συνάρτησης"
 
-#: ../../src/wxMaxima.cpp:9265
+#: ../../src/wxMaxima.cpp:9263
 msgid "A matrix in which each row is a set of variables"
 msgstr ""
 
@@ -567,7 +567,7 @@ msgstr "Εφαρμογή συνάρτησης σε μία λίστα"
 msgid "A&t Value..."
 msgstr "Ορισμός οριακών τιμών..."
 
-#: ../../src/Configuration.cpp:1537
+#: ../../src/Configuration.cpp:1544
 msgid "ASCII maths"
 msgstr ""
 
@@ -584,15 +584,15 @@ msgstr "Πληροφορίες για το wxMaxima"
 msgid "About wxMaxima"
 msgstr "Πληροφορίες για το wxMaxima"
 
-#: ../../src/wxMaxima.cpp:7461
+#: ../../src/wxMaxima.cpp:7459
 msgid "Accepts one expression or a list in the format [ode1,ode2,...]"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:7465
+#: ../../src/wxMaxima.cpp:7463
 msgid "Accepts one variable or a list in the format [1,4,...]"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:7463
+#: ../../src/wxMaxima.cpp:7461
 msgid "Accepts one variable or a list in the format [var1,var2,...]"
 msgstr ""
 
@@ -600,7 +600,7 @@ msgstr ""
 msgid "Accuracy"
 msgstr ""
 
-#: ../../src/Configuration.cpp:1548
+#: ../../src/Configuration.cpp:1555
 msgid "Active cell bracket"
 msgstr "Άγκιστρο ενεργού κελιού"
 
@@ -625,17 +625,17 @@ msgstr ""
 msgid "Add all"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:8240
+#: ../../src/wxMaxima.cpp:8238
 #, fuzzy
 msgid "Add an element to the end of a list"
 msgstr "Άνοιγμα ενός εγγράφου"
 
-#: ../../src/wxMaxima.cpp:8235
+#: ../../src/wxMaxima.cpp:8233
 #, fuzzy
 msgid "Add an element to the start of a list"
 msgstr "Άνοιγμα ενός εγγράφου"
 
-#: ../../src/wxMaxima.cpp:7258
+#: ../../src/wxMaxima.cpp:7256
 msgid "Add dir to path:"
 msgstr "Προσθήκη καταλόγου στο μονοπάτι:"
 
@@ -715,7 +715,7 @@ msgstr ""
 msgid "Advanced variable names"
 msgstr ""
 
-#: ../../src/ToolBar.cpp:321 ../../src/ToolBar.cpp:593
+#: ../../src/ToolBar.cpp:314 ../../src/ToolBar.cpp:588
 msgid ""
 "After clicking on animations created with with_slider_draw() or similar this "
 "slider allows to change the current frame."
@@ -739,7 +739,7 @@ msgstr "Εφαρμογή συνάρτησης σε μία λίστα"
 msgid "All but the last n elements"
 msgstr "Εφαρμογή συνάρτησης σε μία λίστα"
 
-#: ../../src/main.cpp:523 ../../src/wxMaxima.cpp:5794
+#: ../../src/main.cpp:523 ../../src/wxMaxima.cpp:5792
 msgid ""
 "All openable types (*.wxm, *.wxmx, *.mac, *.out, *.xml)|*.wxm;*.wxmx;*.mac;*."
 "out;*.xml|wxMaxima document (*.wxm, *.wxmx)|*.wxm;*.wxmx|Maxima session (*."
@@ -770,7 +770,7 @@ msgid ""
 "the symbols sidebar along with the built-in symbols."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:8678
+#: ../../src/wxMaxima.cpp:8676
 msgid ""
 "Allows to vary the parameters of a function until it fits experimental data."
 msgstr ""
@@ -795,13 +795,13 @@ msgstr ""
 msgid "Always show all digits"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:8884
+#: ../../src/wxMaxima.cpp:8882
 msgid ""
 "An integer between 1..6; Higher numbers work better for oscillating "
 "integrands"
 msgstr ""
 
-#: ../../src/MaximaManual.cpp:390
+#: ../../src/MaximaManual.cpp:404
 msgid "Anchors file has no top node."
 msgstr ""
 
@@ -839,7 +839,7 @@ msgstr ""
 msgid "Append a list to an existing list"
 msgstr "Εύρεση ορίου μιας παράστασης"
 
-#: ../../src/wxMaxima.cpp:8245
+#: ../../src/wxMaxima.cpp:8243
 #, fuzzy
 msgid "Append a list to another list"
 msgstr "Εύρεση ορίου μιας παράστασης"
@@ -859,7 +859,7 @@ msgstr "Εύρεση ορίου μιας παράστασης"
 msgid "Append an element to the end of an existing list"
 msgstr "Εύρεση ορίου μιας παράστασης"
 
-#: ../../src/wxMaxima.cpp:8190
+#: ../../src/wxMaxima.cpp:8188
 #, fuzzy
 msgid "Apply a function to each list element"
 msgstr "Εφαρμογή συνάρτησης σε μία λίστα"
@@ -875,42 +875,42 @@ msgstr ""
 msgid "Approximate by nice fraction"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:8568
+#: ../../src/wxMaxima.cpp:8566
 msgid ""
 "Approximates a expression around a point as a polynom\n"
 "The trailing \"...\" can be removed by using ratdisrep()"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:8576
+#: ../../src/wxMaxima.cpp:8574
 msgid "Approximates a expression as a polynom"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:9154
+#: ../../src/wxMaxima.cpp:9152
 msgid "Apropos"
 msgstr "Σχετικά"
 
-#: ../../src/wxMaxima.cpp:6950
+#: ../../src/wxMaxima.cpp:6948
 msgid "Are the chars equal, if case is ignored?"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:6945
+#: ../../src/wxMaxima.cpp:6943
 #, fuzzy
 msgid "Are the chars equal?"
 msgstr "Κελί υποενότητας"
 
-#: ../../src/wxMaxima.cpp:6982
+#: ../../src/wxMaxima.cpp:6980
 msgid "Are these strings equal if case is ignored?"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:6977
+#: ../../src/wxMaxima.cpp:6975
 msgid "Are these strings equal?"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:6892
+#: ../../src/wxMaxima.cpp:6890
 msgid "Arguments:"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:7812
+#: ../../src/wxMaxima.cpp:7810
 #, fuzzy
 msgid "Array"
 msgstr "Πίνακας:"
@@ -920,7 +920,7 @@ msgstr "Πίνακας:"
 msgid "Arrays"
 msgstr "Πίνακας:"
 
-#: ../../src/wxMaxima.cpp:6941 ../../src/wxMaxima.cpp:6987
+#: ../../src/wxMaxima.cpp:6939 ../../src/wxMaxima.cpp:6985
 msgid "Ascii code to char"
 msgstr ""
 
@@ -932,19 +932,19 @@ msgstr ""
 msgid "Ask to save untitled documents"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:9814
+#: ../../src/wxMaxima.cpp:9812
 msgid "Assignment(s):"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:9815
+#: ../../src/wxMaxima.cpp:9813
 msgid "Assignments of the format a=10,b=20"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:6529
+#: ../../src/wxMaxima.cpp:6527
 msgid "Assume a value range for a variable"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:8183
+#: ../../src/wxMaxima.cpp:8181
 msgid ""
 "Attention: Extracting a random list element isn't efficient for long lists."
 "Iterating over lists using makelist() or for loops is way faster."
@@ -1009,12 +1009,12 @@ msgstr ""
 msgid "Automatically send known answers"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:5737
+#: ../../src/wxMaxima.cpp:5735
 #, c-format
 msgid "Autosaving as temp file %s"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:5752
+#: ../../src/wxMaxima.cpp:5750
 #, c-format
 msgid "Autosaving the .wxmx file as %s"
 msgstr ""
@@ -1031,7 +1031,7 @@ msgstr ""
 msgid "Autosubscript numbers and text following single letters"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:6254
+#: ../../src/wxMaxima.cpp:6252
 msgid "Autosubscript this variable"
 msgstr ""
 
@@ -1061,7 +1061,7 @@ msgstr "Αρχεία Bat  (*.bat)|*.bat|All|*"
 msgid "Bat files (*.bat)|*.bat|Exe files (*.exe)||All|*"
 msgstr "Αρχεία Bat  (*.bat)|*.bat|All|*"
 
-#: ../../src/wxMaxima.cpp:5929
+#: ../../src/wxMaxima.cpp:5927
 msgid "Batch File"
 msgstr "Αρχείο Batch"
 
@@ -1094,15 +1094,15 @@ msgstr ""
 msgid "Bold"
 msgstr "Έντονα"
 
-#: ../../src/wxMaxima.cpp:5050
+#: ../../src/wxMaxima.cpp:5048
 msgid "Both horizontal and vertical cursor active at the same time"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:7814
+#: ../../src/wxMaxima.cpp:7812
 msgid "Bottom end"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:7441
+#: ../../src/wxMaxima.cpp:7439
 #, fuzzy
 msgid "Boundary value problem"
 msgstr "Πρόβλημα οριακών τιμών..."
@@ -1125,16 +1125,16 @@ msgstr ""
 msgid "Bug: Cell left but not entered."
 msgstr ""
 
-#: ../../src/Worksheet.cpp:6488
+#: ../../src/Worksheet.cpp:6452
 msgid "Bug: Cell with negative y position!"
 msgstr ""
 
-#: ../../src/Worksheet.cpp:7885
+#: ../../src/Worksheet.cpp:7852
 msgid ""
 "Bug: Encountered a heading I don't know how to move in one sectioning unit"
 msgstr ""
 
-#: ../../src/Worksheet.cpp:7928
+#: ../../src/Worksheet.cpp:7895
 msgid ""
 "Bug: Encountered a heading I don't know how to move out one sectioning unit"
 msgstr ""
@@ -1143,48 +1143,48 @@ msgstr ""
 msgid "Bug: Got a question but no cell to answer it in"
 msgstr ""
 
-#: ../../src/Worksheet.cpp:6648
+#: ../../src/Worksheet.cpp:6612
 msgid ""
 "Bug: Got a request to change the contents of the cell above the beginning of "
 "the worksheet."
 msgstr ""
 
-#: ../../src/Worksheet.cpp:6621
+#: ../../src/Worksheet.cpp:6585
 msgid ""
 "Bug: Got a request to delete the cell above the beginning of the worksheet."
 msgstr ""
 
-#: ../../src/Worksheet.cpp:6685
+#: ../../src/Worksheet.cpp:6649
 msgid ""
 "Bug: Got a request to first change the contents of a cell and to then "
 "undelete it."
 msgstr ""
 
-#: ../../src/Worksheet.cpp:5494
+#: ../../src/Worksheet.cpp:5495
 msgid "Bug: HTML output is no valid XML"
 msgstr ""
 
-#: ../../src/Configuration.h:583
+#: ../../src/Configuration.h:584
 msgid "Bug: Maximum number of digits that is to be displayed is too low!"
 msgstr ""
 
-#: ../../src/MathParser.cpp:489
+#: ../../src/MathParser.cpp:510
 msgid "Bug: Missing contents"
 msgstr ""
 
 #: ../../src/Worksheet.cpp:2538 ../../src/Worksheet.cpp:2654
 #: ../../src/Worksheet.cpp:2697 ../../src/Worksheet.cpp:2731
 #: ../../src/Worksheet.cpp:2760 ../../src/Worksheet.cpp:2772
-#: ../../src/Worksheet.cpp:4379 ../../src/Worksheet.cpp:6923
-#: ../../src/Worksheet.cpp:7142
+#: ../../src/Worksheet.cpp:4380 ../../src/Worksheet.cpp:6887
+#: ../../src/Worksheet.cpp:7106
 msgid "Bug: The clipboard is already opened"
 msgstr ""
 
-#: ../../src/Worksheet.cpp:7925
+#: ../../src/Worksheet.cpp:7892
 msgid "Bug: Trying to move a title out by one sectioning unit"
 msgstr ""
 
-#: ../../src/Worksheet.cpp:7214
+#: ../../src/Worksheet.cpp:7179
 msgid ""
 "Bug: Trying to move the horizontally-drawn cursor to a place inside a "
 "GroupCell."
@@ -1198,11 +1198,11 @@ msgstr ""
 msgid "Bug: Trying to select inside a cell without having a current cell"
 msgstr ""
 
-#: ../../src/Worksheet.cpp:6687
+#: ../../src/Worksheet.cpp:6651
 msgid "Bug: Undo action with both cell contents change and cell addition."
 msgstr ""
 
-#: ../../src/Worksheet.cpp:6653
+#: ../../src/Worksheet.cpp:6617
 msgid "Bug: Undo request for cell outside worksheet."
 msgstr ""
 
@@ -1228,7 +1228,7 @@ msgstr ""
 "υπολογίζει τα κελιά'. Αυτό εναλλάσει  τη λειτουργικότητα των δύο "
 "προαναφερθέντων εντολών του πληκτρολογίου."
 
-#: ../../src/wxMaxima.cpp:6908
+#: ../../src/wxMaxima.cpp:6906
 msgid "Byte:"
 msgstr ""
 
@@ -1245,11 +1245,11 @@ msgstr "Ρυθμίσεις"
 msgid "Calculate &Product..."
 msgstr "Υπολογισμός γινομένου..."
 
-#: ../../src/wxMaxima.cpp:7680
+#: ../../src/wxMaxima.cpp:7678
 msgid "Calculate Singular Value Decomposition of a matrix numerically"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:7673
+#: ../../src/wxMaxima.cpp:7671
 msgid ""
 "Calculate Singular Value Decomposition, left and right singular vectors "
 "numerically"
@@ -1267,17 +1267,17 @@ msgstr "Υπολογισμός της τιμής του τελευταίου α�
 msgid "Calculate float value of the last result"
 msgstr "Υπολογισμός της τιμής του τελευταίου αποτέλεσματος προσεγγιστικά"
 
-#: ../../src/wxMaxima.cpp:9225
+#: ../../src/wxMaxima.cpp:9223
 #, fuzzy
 msgid "Calculate mean value"
 msgstr "Υπολογισμοί  modulo ακέραιο:"
 
-#: ../../src/wxMaxima.cpp:9229
+#: ../../src/wxMaxima.cpp:9227
 #, fuzzy
 msgid "Calculate median value"
 msgstr "Υπολογισμοί  modulo ακέραιο:"
 
-#: ../../src/wxMaxima.cpp:8508
+#: ../../src/wxMaxima.cpp:8506
 msgid "Calculate modulus:"
 msgstr "Υπολογισμοί  modulo ακέραιο:"
 
@@ -1290,7 +1290,7 @@ msgstr "Υπολογισμός της τιμής του τελευταίου α�
 msgid "Calculate products"
 msgstr "Υπολογισμός γινομένων"
 
-#: ../../src/wxMaxima.cpp:9237
+#: ../../src/wxMaxima.cpp:9235
 msgid "Calculate standard deviation"
 msgstr ""
 
@@ -1298,25 +1298,25 @@ msgstr ""
 msgid "Calculate sums"
 msgstr "Υπολογισμος αθροισμάτων"
 
-#: ../../src/wxMaxima.cpp:7648 ../../src/wxMaxima.cpp:7658
+#: ../../src/wxMaxima.cpp:7646 ../../src/wxMaxima.cpp:7656
 msgid "Calculate the eigenvalues and eigenvectors numerically"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:7643 ../../src/wxMaxima.cpp:7653
+#: ../../src/wxMaxima.cpp:7641 ../../src/wxMaxima.cpp:7651
 #, fuzzy
 msgid "Calculate the eigenvalues of a matrix numerically"
 msgstr "Υπολογισμός αντιστρόφου πίνακα"
 
-#: ../../src/wxMaxima.cpp:7701 ../../src/wxMaxima.cpp:7722
+#: ../../src/wxMaxima.cpp:7699 ../../src/wxMaxima.cpp:7720
 msgid "Calculate the root of the sum of squares of matrix entries"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:9233
+#: ../../src/wxMaxima.cpp:9231
 #, fuzzy
 msgid "Calculate variation"
 msgstr "Υπολογισμός γινομένων"
 
-#: ../../src/wxMaxima.cpp:8586
+#: ../../src/wxMaxima.cpp:8584
 msgid "Calculates the fourier coefficients for the expression from -p to p"
 msgstr ""
 
@@ -1328,22 +1328,22 @@ msgstr ""
 msgid "Can be specified as flag in ev(exp, flag)"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:10843
+#: ../../src/wxMaxima.cpp:10841
 msgid "Can not connect to the web server."
 msgstr "Η σύνδεση με τον web server δεν ήταν εφικτή."
 
-#: ../../src/wxMaxima.cpp:10886
+#: ../../src/wxMaxima.cpp:10884
 msgid "Can not download version info."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:2707 ../../src/wxMaxima.cpp:4495
+#: ../../src/wxMaxima.cpp:2705 ../../src/wxMaxima.cpp:4493
 msgid ""
 "Can not start Maxima. The most probable cause is that Maxima isn't installed "
 "(it can be downloaded from https://maxima.sourceforge.io) or in wxMaxima's "
 "config dialogue the setting for Maxima's location is wrong."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:2372
+#: ../../src/wxMaxima.cpp:2370
 msgid ""
 "Can not start Maxima. The most probable cause is that Maxima isn't installed "
 "(it can be downloaded from https://maxima.sourceforge.io) or in wxMaxima's "
@@ -1355,34 +1355,34 @@ msgstr ""
 
 #: ../../src/MaxSizeChooser.cpp:46 ../../src/MaxSizeChooser.cpp:48
 #: ../../src/ResolutionChooser.cpp:41 ../../src/ResolutionChooser.cpp:43
-#: ../../src/wxMaxima.cpp:10923
+#: ../../src/wxMaxima.cpp:10921
 msgid "Cancel"
 msgstr "Ακύρωση"
 
-#: ../../src/wxMaxima.cpp:3080
+#: ../../src/wxMaxima.cpp:3078
 msgid "Cannot authenticate Maxima!"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:2388
+#: ../../src/wxMaxima.cpp:2386
 msgid ""
 "Cannot find a maxima binary and no binary chosen in the config dialogue."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:2233
+#: ../../src/wxMaxima.cpp:2231
 msgid "Cannot set the communication address to localhost."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:2236
+#: ../../src/wxMaxima.cpp:2234
 #, c-format
 msgid "Cannot set the communication port to %i."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:3387 ../../src/wxMaxima.cpp:6104
+#: ../../src/wxMaxima.cpp:3385 ../../src/wxMaxima.cpp:6102
 #, fuzzy
 msgid "Cannot start gnuplot"
 msgstr "Παραμετρικό γράφημα"
 
-#: ../../src/StatusBar.cpp:189 ../../src/wxMaxima.cpp:2366
+#: ../../src/StatusBar.cpp:189 ../../src/wxMaxima.cpp:2364
 msgid "Cannot start the maxima binary"
 msgstr ""
 
@@ -1395,7 +1395,7 @@ msgstr "Κανονική μορφή (τρ)"
 msgid "Catalan"
 msgstr "Ιταλικά"
 
-#: ../../src/wxMaxima.cpp:8914
+#: ../../src/wxMaxima.cpp:8912
 msgid "Cauchy principal value of f(x)/(x-c), finite interval"
 msgstr ""
 
@@ -1407,11 +1407,11 @@ msgstr ""
 msgid "Ce&ll"
 msgstr ""
 
-#: ../../src/Configuration.cpp:1547
+#: ../../src/Configuration.cpp:1554
 msgid "Cell bracket"
 msgstr "Άγκιστρο κελιού"
 
-#: ../../src/wxMaxima.cpp:10134
+#: ../../src/wxMaxima.cpp:10132
 msgid "Cell ends in a backslash"
 msgstr ""
 
@@ -1419,7 +1419,7 @@ msgstr ""
 msgid "Change &2d Display"
 msgstr "Αλλαγή 2-Δ προβολής μαθηματικών"
 
-#: ../../src/wxMaxima.cpp:9896
+#: ../../src/wxMaxima.cpp:9894
 #, fuzzy
 msgid "Change Image"
 msgstr "Αλλαγή μεταβλητής"
@@ -1434,7 +1434,7 @@ msgstr "Αποθήκευση εικόνας..."
 msgid "Change Log"
 msgstr "Αλλαγή μεταβλητής"
 
-#: ../../src/wxMaxima.cpp:7188
+#: ../../src/wxMaxima.cpp:7186
 msgid "Change directory"
 msgstr ""
 
@@ -1458,11 +1458,11 @@ msgid ""
 "Change the text \"alpha\" and \"beta\" to the corresponding greek letter?"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:8522
+#: ../../src/wxMaxima.cpp:8520
 msgid "Change variable"
 msgstr "Αλλαγή μεταβλητής"
 
-#: ../../src/wxMaxima.cpp:8542
+#: ../../src/wxMaxima.cpp:8540
 #, fuzzy
 msgid "Change variable and evaluate"
 msgstr "Αλλαγή μεταβλητής στο ολοκλήρωμα ή στο άθροισμα "
@@ -1486,20 +1486,20 @@ msgstr "Αλλαγή μεταβλητής"
 msgid "Changed option variables"
 msgstr "Αλλαγή μεταβλητής"
 
-#: ../../src/wxMaxima.cpp:9921
+#: ../../src/wxMaxima.cpp:9919
 #, c-format
 msgid "Changing image originally loaded from file %s to %s."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:6946 ../../src/wxMaxima.cpp:6951
-#: ../../src/wxMaxima.cpp:6956 ../../src/wxMaxima.cpp:6962
-#: ../../src/wxMaxima.cpp:6967 ../../src/wxMaxima.cpp:6973
+#: ../../src/wxMaxima.cpp:6944 ../../src/wxMaxima.cpp:6949
+#: ../../src/wxMaxima.cpp:6954 ../../src/wxMaxima.cpp:6960
+#: ../../src/wxMaxima.cpp:6965 ../../src/wxMaxima.cpp:6971
 msgid "Char #1:"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:6947 ../../src/wxMaxima.cpp:6952
-#: ../../src/wxMaxima.cpp:6957 ../../src/wxMaxima.cpp:6962
-#: ../../src/wxMaxima.cpp:6968 ../../src/wxMaxima.cpp:6973
+#: ../../src/wxMaxima.cpp:6945 ../../src/wxMaxima.cpp:6950
+#: ../../src/wxMaxima.cpp:6955 ../../src/wxMaxima.cpp:6960
+#: ../../src/wxMaxima.cpp:6966 ../../src/wxMaxima.cpp:6971
 #, fuzzy
 msgid "Char #2:"
 msgstr "Πίνακας:"
@@ -1508,15 +1508,15 @@ msgstr "Πίνακας:"
 msgid "Char to Unicode code point..."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:6991 ../../src/wxMaxima.cpp:6995
+#: ../../src/wxMaxima.cpp:6989 ../../src/wxMaxima.cpp:6993
 msgid "Char to unicode code point"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:6918 ../../src/wxMaxima.cpp:6922
-#: ../../src/wxMaxima.cpp:6926 ../../src/wxMaxima.cpp:6930
-#: ../../src/wxMaxima.cpp:6934 ../../src/wxMaxima.cpp:6938
-#: ../../src/wxMaxima.cpp:6992 ../../src/wxMaxima.cpp:6996
-#: ../../src/wxMaxima.cpp:7068
+#: ../../src/wxMaxima.cpp:6916 ../../src/wxMaxima.cpp:6920
+#: ../../src/wxMaxima.cpp:6924 ../../src/wxMaxima.cpp:6928
+#: ../../src/wxMaxima.cpp:6932 ../../src/wxMaxima.cpp:6936
+#: ../../src/wxMaxima.cpp:6990 ../../src/wxMaxima.cpp:6994
+#: ../../src/wxMaxima.cpp:7066
 msgid "Char:"
 msgstr ""
 
@@ -1524,12 +1524,12 @@ msgstr ""
 msgid "Character Tests"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:7804
+#: ../../src/wxMaxima.cpp:7802
 #, fuzzy
 msgid "Characteristic polynom"
 msgstr "Χαρακτηριστικό πολυώνυμο..."
 
-#: ../../src/wxMaxima.cpp:6913
+#: ../../src/wxMaxima.cpp:6911
 msgid "Chars are strings that are one character long"
 msgstr ""
 
@@ -1572,7 +1572,7 @@ msgstr "Επιλογή γραμματοσειράς"
 msgid "Choose the parenthesis type for Matrices"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:9205 ../../src/wxMaxima.cpp:9210
+#: ../../src/wxMaxima.cpp:9203 ../../src/wxMaxima.cpp:9208
 msgid "Classes:"
 msgstr "Τάξεις:"
 
@@ -1599,7 +1599,7 @@ msgstr ""
 msgid "Close\tCtrl+W"
 msgstr "Αντιγραφή\tCtrl+C"
 
-#: ../../src/wxMaxima.cpp:6868
+#: ../../src/wxMaxima.cpp:6866
 msgid "Close Stream"
 msgstr ""
 
@@ -1616,58 +1616,58 @@ msgstr "Επίλυση..."
 msgid "Closing the socket maxima could connect to!"
 msgstr ""
 
-#: ../../src/Configuration.cpp:1555
+#: ../../src/Configuration.cpp:1562
 msgid "Code highlighting: Comments"
 msgstr ""
 
-#: ../../src/Configuration.cpp:1560
+#: ../../src/Configuration.cpp:1567
 msgid "Code highlighting: End of line"
 msgstr ""
 
-#: ../../src/Configuration.cpp:1554
+#: ../../src/Configuration.cpp:1561
 msgid "Code highlighting: Functions"
 msgstr ""
 
-#: ../../src/Configuration.cpp:1559
+#: ../../src/Configuration.cpp:1566
 msgid "Code highlighting: Lisp"
 msgstr ""
 
-#: ../../src/Configuration.cpp:1556
+#: ../../src/Configuration.cpp:1563
 msgid "Code highlighting: Numbers"
 msgstr ""
 
-#: ../../src/Configuration.cpp:1558
+#: ../../src/Configuration.cpp:1565
 msgid "Code highlighting: Operators"
 msgstr ""
 
-#: ../../src/Configuration.cpp:1557
+#: ../../src/Configuration.cpp:1564
 msgid "Code highlighting: Strings"
 msgstr ""
 
-#: ../../src/Configuration.cpp:1553
+#: ../../src/Configuration.cpp:1560
 msgid "Code highlighting: Variables"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:6942 ../../src/wxMaxima.cpp:6988
+#: ../../src/wxMaxima.cpp:6940 ../../src/wxMaxima.cpp:6986
 #, fuzzy
 msgid "Code number:"
 msgstr "Στήλες:"
 
-#: ../../src/wxMaxima.cpp:7000 ../../src/wxMaxima.cpp:7006
+#: ../../src/wxMaxima.cpp:6998 ../../src/wxMaxima.cpp:7004
 #, fuzzy
 msgid "Codepoint number:"
 msgstr "Στήλες:"
 
-#: ../../src/wxMaxima.cpp:9265
+#: ../../src/wxMaxima.cpp:9263
 msgid "Col. names:"
 msgstr "Oνόματα στηλών:"
 
-#: ../../src/wxMaxima.cpp:7585
+#: ../../src/wxMaxima.cpp:7583
 #, fuzzy
 msgid "Column number:"
 msgstr "Στήλες:"
 
-#: ../../src/wxMaxima.cpp:7601
+#: ../../src/wxMaxima.cpp:7599
 #, fuzzy
 msgid "Column numbers:"
 msgstr "Στήλες:"
@@ -1676,98 +1676,98 @@ msgstr "Στήλες:"
 msgid "Combine factorials in an expression"
 msgstr "Συνδυασμός παραγοντικών σε μια παράσταση"
 
-#: ../../src/wxMaxima.cpp:10193
+#: ../../src/wxMaxima.cpp:10191
 msgid "Comma directly followed by a closing parenthesis"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:6892
+#: ../../src/wxMaxima.cpp:6890
 #, fuzzy
 msgid "Comma-separated arguments"
 msgstr "Συντεταγμένες του x χωρισμένες με κόμμα"
 
-#: ../../src/wxMaxima.cpp:6689 ../../src/wxMaxima.cpp:6698
+#: ../../src/wxMaxima.cpp:6687 ../../src/wxMaxima.cpp:6696
 #, fuzzy
 msgid "Comma-separated commands"
 msgstr "Συντεταγμένες του x χωρισμένες με κόμμα"
 
-#: ../../src/wxMaxima.cpp:8096
+#: ../../src/wxMaxima.cpp:8094
 #, fuzzy
 msgid "Comma-separated elements"
 msgstr "Συντεταγμένες του x χωρισμένες με κόμμα"
 
-#: ../../src/wxMaxima.cpp:7384 ../../src/wxMaxima.cpp:7398
-#: ../../src/wxMaxima.cpp:9782
+#: ../../src/wxMaxima.cpp:7382 ../../src/wxMaxima.cpp:7396
+#: ../../src/wxMaxima.cpp:9780
 #, fuzzy
 msgid "Comma-separated equations"
 msgstr "Συντεταγμένες του x χωρισμένες με κόμμα"
 
-#: ../../src/wxMaxima.cpp:8364 ../../src/wxMaxima.cpp:8372
-#: ../../src/wxMaxima.cpp:8380 ../../src/wxMaxima.cpp:8388
-#: ../../src/wxMaxima.cpp:8397 ../../src/wxMaxima.cpp:8405
+#: ../../src/wxMaxima.cpp:8362 ../../src/wxMaxima.cpp:8370
+#: ../../src/wxMaxima.cpp:8378 ../../src/wxMaxima.cpp:8386
+#: ../../src/wxMaxima.cpp:8395 ../../src/wxMaxima.cpp:8403
 #, fuzzy
 msgid "Comma-separated expressions"
 msgstr "Συντεταγμένες του x χωρισμένες με κόμμα"
 
-#: ../../src/wxMaxima.cpp:6847
+#: ../../src/wxMaxima.cpp:6845
 #, fuzzy
 msgid "Comma-separated expressions that shall be converted to a string"
 msgstr "Συντεταγμένες του x χωρισμένες με κόμμα"
 
-#: ../../src/wxMaxima.cpp:6732 ../../src/wxMaxima.cpp:6746
+#: ../../src/wxMaxima.cpp:6730 ../../src/wxMaxima.cpp:6744
 #, fuzzy
 msgid "Comma-separated expressions."
 msgstr "Συντεταγμένες του x χωρισμένες με κόμμα"
 
-#: ../../src/wxMaxima.cpp:6705 ../../src/wxMaxima.cpp:6800
+#: ../../src/wxMaxima.cpp:6703 ../../src/wxMaxima.cpp:6798
 #, fuzzy
 msgid "Comma-separated function names"
 msgstr "Συντεταγμένες του x χωρισμένες με κόμμα"
 
-#: ../../src/wxMaxima.cpp:6718
+#: ../../src/wxMaxima.cpp:6716
 #, fuzzy
 msgid "Comma-separated function names."
 msgstr "Συντεταγμένες του x χωρισμένες με κόμμα"
 
-#: ../../src/wxMaxima.cpp:8198 ../../src/wxMaxima.cpp:8205
-#: ../../src/wxMaxima.cpp:8211 ../../src/wxMaxima.cpp:8218
+#: ../../src/wxMaxima.cpp:8196 ../../src/wxMaxima.cpp:8203
+#: ../../src/wxMaxima.cpp:8209 ../../src/wxMaxima.cpp:8216
 msgid "Comma-separated list entry in the format val1=1,val2=2"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:6837
+#: ../../src/wxMaxima.cpp:6835
 msgid "Comma-separated names of the elements that shall be written"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:6731
+#: ../../src/wxMaxima.cpp:6729
 msgid "Comma-separated names the parameters will be referenced by later."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:7121 ../../src/wxMaxima.cpp:7126
+#: ../../src/wxMaxima.cpp:7119 ../../src/wxMaxima.cpp:7124
 #, fuzzy
 msgid "Comma-separated numbers from 0 to 255"
 msgstr "Συντεταγμένες του x χωρισμένες με κόμμα"
 
-#: ../../src/wxMaxima.cpp:8407
+#: ../../src/wxMaxima.cpp:8405
 msgid "Comma-separated numbers of the terms to substitute in"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:6769 ../../src/wxMaxima.cpp:6782
+#: ../../src/wxMaxima.cpp:6767 ../../src/wxMaxima.cpp:6780
 msgid ""
 "Comma-separated parameter names. A parameter in square brackets [] will be "
 "filled with the list of any additional arguments the function gets."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:6686
+#: ../../src/wxMaxima.cpp:6684
 msgid ""
 "Comma-separated variable names, can be initialized by the \":\" operator."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:7385 ../../src/wxMaxima.cpp:7399
-#: ../../src/wxMaxima.cpp:8356 ../../src/wxMaxima.cpp:8422
-#: ../../src/wxMaxima.cpp:9783
+#: ../../src/wxMaxima.cpp:7383 ../../src/wxMaxima.cpp:7397
+#: ../../src/wxMaxima.cpp:8354 ../../src/wxMaxima.cpp:8420
+#: ../../src/wxMaxima.cpp:9781
 msgid "Comma-separated variables"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:9149
+#: ../../src/wxMaxima.cpp:9147
 msgid "Command:"
 msgstr ""
 
@@ -1796,7 +1796,7 @@ msgstr ""
 msgid "Compile a QR decomposition using dgeqrf"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:6794
+#: ../../src/wxMaxima.cpp:6792
 #, fuzzy
 msgid "Compile a function"
 msgstr "Διαγραφή μίας συνάρτησης"
@@ -1827,7 +1827,7 @@ msgstr ""
 msgid "Compile function..."
 msgstr "Διαγραφή συνάρτησης..."
 
-#: ../../src/wxMaxima.cpp:7144
+#: ../../src/wxMaxima.cpp:7142
 #, fuzzy
 msgid "Compile regex"
 msgstr "Συμπλήρωση λέξης"
@@ -1836,12 +1836,12 @@ msgstr "Συμπλήρωση λέξης"
 msgid "Compiler-Bug? wxMathml.lisp is shorter than expected!"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:1985
+#: ../../src/wxMaxima.cpp:1983
 #, c-format
 msgid "Compiling %s"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:6795
+#: ../../src/wxMaxima.cpp:6793
 msgid ""
 "Compiling a function can generate a considerable speed boost if the types of "
 "the function parameters are made known to the function before it is "
@@ -1857,7 +1857,7 @@ msgstr "Συμπλήρωση Λέξης\tCtrl+K"
 msgid "Complete word"
 msgstr "Συμπλήρωση λέξης"
 
-#: ../../src/ToolBar.cpp:217
+#: ../../src/ToolBar.cpp:224
 msgid "Completely stop maxima and restart it"
 msgstr ""
 
@@ -1896,7 +1896,7 @@ msgstr ""
 msgid "Compute the rank of a matrix"
 msgstr "Υπολογισμός ορίζουσας πίνακα"
 
-#: ../../src/wxMaxima.cpp:9304
+#: ../../src/wxMaxima.cpp:9302
 msgid "Condition:"
 msgstr "Συνθήκη:"
 
@@ -1914,20 +1914,20 @@ msgstr ""
 msgid "Configuration warning"
 msgstr ""
 
-#: ../../src/ToolBar.cpp:187 ../../src/wxMaximaFrame.cpp:920
+#: ../../src/ToolBar.cpp:194 ../../src/wxMaximaFrame.cpp:920
 #: ../../src/wxMaximaFrame.cpp:923
 msgid "Configure wxMaxima"
 msgstr "Ρυθμίσεις του wxMaxima"
 
-#: ../../src/wxMaxima.cpp:2204
+#: ../../src/wxMaxima.cpp:2202
 msgid "Connection attempt, but connection failed."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:2161
+#: ../../src/wxMaxima.cpp:2159
 msgid "Connection to Maxima lost."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:7545
+#: ../../src/wxMaxima.cpp:7543
 #, fuzzy
 msgid "Construct a fraction"
 msgstr "Συνεχή κλάσματα"
@@ -1941,7 +1941,7 @@ msgstr "Συνεχή κλάσματα"
 msgid "Contents"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:6790
+#: ../../src/wxMaxima.cpp:6788
 #, fuzzy
 msgid "Contents:"
 msgstr "Ελληνικές σταθερές"
@@ -2023,12 +2023,12 @@ msgstr ""
 "Μετατροπή της εκθετικής συνάρτησης φανταστικής μεταβλητής σε τριγωνομετρική "
 "μορφή"
 
-#: ../../src/wxMaxima.cpp:7044
+#: ../../src/wxMaxima.cpp:7042
 #, fuzzy
 msgid "Convert string to lowercase"
 msgstr "Μετατροπή σε παραγοντικά"
 
-#: ../../src/wxMaxima.cpp:7176
+#: ../../src/wxMaxima.cpp:7174
 #, fuzzy
 msgid "Convert string to matching regex"
 msgstr "Μετατροπή σε Γάμμα"
@@ -2088,12 +2088,12 @@ msgstr "Μετατροπή σε παραγοντικά"
 msgid "Convert to downcase..."
 msgstr "Μετατροπή σε παραγοντικά"
 
-#: ../../src/wxMaxima.cpp:6648
+#: ../../src/wxMaxima.cpp:6646
 #, fuzzy
 msgid "Convert to programming language"
 msgstr "Μετατροπή σε Γάμμα"
 
-#: ../../src/wxMaxima.cpp:6654
+#: ../../src/wxMaxima.cpp:6652
 msgid "Convert to programming language file"
 msgstr ""
 
@@ -2114,7 +2114,7 @@ msgstr ""
 msgid "Converts a nested list like [[1,2],[3,4]] to a matrix"
 msgstr ""
 
-#: ../../src/ConfigDialogue.cpp:263 ../../src/ToolBar.cpp:196
+#: ../../src/ConfigDialogue.cpp:263 ../../src/ToolBar.cpp:203
 #: ../../src/Worksheet.cpp:1288 ../../src/Worksheet.cpp:1347
 #: ../../src/Worksheet.cpp:1462 ../../src/Worksheet.cpp:1642
 msgid "Copy"
@@ -2135,7 +2135,7 @@ msgstr "Αντιγραφή προηγούμενης εισαγωγής\tCtrl+I"
 msgid "Copy Previous Output\tCtrl+U"
 msgstr "Αντιγραφή προηγούμενης εισαγωγής\tCtrl+I"
 
-#: ../../src/wxMaxima.cpp:7615
+#: ../../src/wxMaxima.cpp:7613
 #, fuzzy
 msgid "Copy a matrix"
 msgstr "Αντιγραφή ως εικόνα"
@@ -2185,7 +2185,7 @@ msgstr "Αντιγραφή ως κείμενο\tCtrl+Shift+C"
 msgid "Copy as plain text"
 msgstr "Αντιγραφή ως εικόνα"
 
-#: ../../src/wxMaxima.cpp:7209
+#: ../../src/wxMaxima.cpp:7207
 #, fuzzy
 msgid "Copy file"
 msgstr "Αντιγραφή"
@@ -2200,7 +2200,7 @@ msgstr "Επίλυση..."
 msgid "Copy for Octave/Matlab"
 msgstr ""
 
-#: ../../src/ToolBar.cpp:196 ../../src/wxMaximaFrame.cpp:873
+#: ../../src/ToolBar.cpp:203 ../../src/wxMaximaFrame.cpp:873
 msgid "Copy selection"
 msgstr "Αντιγραφή επιλογής"
 
@@ -2241,7 +2241,7 @@ msgid ""
 "display as 2d equation"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:7036
+#: ../../src/wxMaxima.cpp:7034
 #, fuzzy
 msgid "Copy string"
 msgstr "Αντιγραφή επιλογής"
@@ -2251,7 +2251,7 @@ msgstr "Αντιγραφή επιλογής"
 msgid "Copy string..."
 msgstr "Εισαγωγή πίνακα..."
 
-#: ../../src/ToolBar.cpp:627
+#: ../../src/ToolBar.cpp:622
 msgid "Copy, Cut and Paste button"
 msgstr ""
 
@@ -2275,19 +2275,19 @@ msgstr ""
 msgid "Copying config string \"%s\""
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:3082 ../../src/wxMaxima.cpp:3098
+#: ../../src/wxMaxima.cpp:3080 ../../src/wxMaxima.cpp:3096
 msgid ""
 "Could not make sure that we talk to the maxima we started => discarding all "
 "data it sends."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:2497
+#: ../../src/wxMaxima.cpp:2495
 msgid ""
 "Could not map view of the file needed in order to send an interrupt signal "
 "to maxima."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:2477 ../../src/wxMaxima.cpp:2518
+#: ../../src/wxMaxima.cpp:2475 ../../src/wxMaxima.cpp:2516
 msgid "Could not send an interrupt signal to maxima."
 msgstr ""
 
@@ -2301,11 +2301,11 @@ msgstr "Δημιουργία πίνακα"
 msgid "Create a list"
 msgstr "Δημιουργία λίστας"
 
-#: ../../src/wxMaxima.cpp:8125
+#: ../../src/wxMaxima.cpp:8123
 msgid "Create a list as a storage for the values of variables"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:8101 ../../src/wxMaxima.cpp:8114
+#: ../../src/wxMaxima.cpp:8099 ../../src/wxMaxima.cpp:8112
 #, fuzzy
 msgid "Create a list from a rule"
 msgstr "Δημιουργία λίστας από παράσταση"
@@ -2327,7 +2327,7 @@ msgstr "Δημιουργία κελιού με την τελευταία εισ�
 msgid "Create copy, not clone..."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:7194
+#: ../../src/wxMaxima.cpp:7192
 #, fuzzy
 msgid "Create directory"
 msgstr "Δημιουργία λίστας"
@@ -2337,7 +2337,7 @@ msgstr "Δημιουργία λίστας"
 msgid "Create directory..."
 msgstr "Δημιουργία λίστας"
 
-#: ../../src/wxMaxima.cpp:7052
+#: ../../src/wxMaxima.cpp:7050
 #, fuzzy
 msgid "Create empty string"
 msgstr "Δημιουργία πίνακα"
@@ -2352,7 +2352,7 @@ msgstr "Δημιουργία λίστας"
 msgid "Create list"
 msgstr "Δημιουργία λίστας"
 
-#: ../../src/wxMaxima.cpp:8095
+#: ../../src/wxMaxima.cpp:8093
 msgid "Create list from comma-separated elements"
 msgstr ""
 
@@ -2369,11 +2369,11 @@ msgstr "Δημιουργία λίστας"
 msgid "Creates an independent matrix with the same contents"
 msgstr ""
 
-#: ../../src/Configuration.cpp:1549
+#: ../../src/Configuration.cpp:1556
 msgid "Cursor"
 msgstr "Κέρσορας"
 
-#: ../../src/ToolBar.cpp:195 ../../src/Worksheet.cpp:1641
+#: ../../src/ToolBar.cpp:202 ../../src/Worksheet.cpp:1641
 msgid "Cut"
 msgstr "Αποκοπή"
 
@@ -2381,7 +2381,7 @@ msgstr "Αποκοπή"
 msgid "Cut\tCtrl+X"
 msgstr "Αποκοπή\tCtrl+X"
 
-#: ../../src/ToolBar.cpp:195 ../../src/wxMaximaFrame.cpp:870
+#: ../../src/ToolBar.cpp:202 ../../src/wxMaximaFrame.cpp:870
 msgid "Cut selection"
 msgstr "Αποκοπή επιλογής"
 
@@ -2393,20 +2393,20 @@ msgstr "Τσεχικά"
 msgid "Danish"
 msgstr "Δανικά"
 
-#: ../../src/wxMaxima.cpp:9264 ../../src/wxMaxima.cpp:9304
+#: ../../src/wxMaxima.cpp:9262 ../../src/wxMaxima.cpp:9302
 msgid "Data Matrix:"
 msgstr "Πίνακας Δεδομένων:"
 
-#: ../../src/wxMaxima.cpp:9274
+#: ../../src/wxMaxima.cpp:9272
 msgid "Data file (*.csv, *.tab, *.txt)|*.csv;*.tab;*.txt"
 msgstr "Αρχείο δεδομένων (*.csv, *.tab, *.txt)|*.csv;*.tab;*.txt"
 
-#: ../../src/wxMaxima.cpp:9204 ../../src/wxMaxima.cpp:9209
-#: ../../src/wxMaxima.cpp:9214 ../../src/wxMaxima.cpp:9218
-#: ../../src/wxMaxima.cpp:9222 ../../src/wxMaxima.cpp:9226
-#: ../../src/wxMaxima.cpp:9230 ../../src/wxMaxima.cpp:9234
-#: ../../src/wxMaxima.cpp:9238 ../../src/wxMaxima.cpp:9252
-#: ../../src/wxMaxima.cpp:9257 ../../src/wxMaxima.cpp:9781
+#: ../../src/wxMaxima.cpp:9202 ../../src/wxMaxima.cpp:9207
+#: ../../src/wxMaxima.cpp:9212 ../../src/wxMaxima.cpp:9216
+#: ../../src/wxMaxima.cpp:9220 ../../src/wxMaxima.cpp:9224
+#: ../../src/wxMaxima.cpp:9228 ../../src/wxMaxima.cpp:9232
+#: ../../src/wxMaxima.cpp:9236 ../../src/wxMaxima.cpp:9250
+#: ../../src/wxMaxima.cpp:9255 ../../src/wxMaxima.cpp:9779
 msgid "Data:"
 msgstr "Δεδομένα:"
 
@@ -2422,11 +2422,11 @@ msgstr ""
 msgid "Declare Text to always be displayed as subscript"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:6701
+#: ../../src/wxMaxima.cpp:6699
 msgid "Declare a function local to a Program"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:6264
+#: ../../src/wxMaxima.cpp:6262
 msgid "Declare a text snippet to always be displayed as subscript"
 msgstr ""
 
@@ -2435,12 +2435,12 @@ msgstr ""
 msgid "Declare facts about %s"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:8437
+#: ../../src/wxMaxima.cpp:8435
 #, fuzzy
 msgid "Declare main variable:"
 msgstr "Διαγραφή μίας μεταβλητής"
 
-#: ../../src/wxMaxima.cpp:6803
+#: ../../src/wxMaxima.cpp:6801
 msgid "Declare the type of a function parameter"
 msgstr ""
 
@@ -2457,7 +2457,7 @@ msgstr "Ανάλυση ρητής συνάρτησης σε μερικά κλά�
 msgid "Decreasing function f(x)<x"
 msgstr "Διαγραφή συνάρτησης(-σεων)"
 
-#: ../../src/Configuration.cpp:1522
+#: ../../src/Configuration.cpp:1529
 msgid "Default"
 msgstr "Προεπιλεγμένος"
 
@@ -2476,24 +2476,24 @@ msgstr ""
 "Η προεπιλεγμένη θύρα που χρησιμοποιείται για την επικοινωνία μεταξύ του "
 "Maxima και του wxMaxima"
 
-#: ../../src/wxMaxima.cpp:6766
+#: ../../src/wxMaxima.cpp:6764
 #, fuzzy
 msgid "Define a function"
 msgstr "Διαγραφή μίας συνάρτησης"
 
-#: ../../src/wxMaxima.cpp:6779
+#: ../../src/wxMaxima.cpp:6777
 msgid "Define a macro"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:6821
+#: ../../src/wxMaxima.cpp:6819
 msgid "Define a structure"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:6815
+#: ../../src/wxMaxima.cpp:6813
 msgid "Define a structure type"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:6788
+#: ../../src/wxMaxima.cpp:6786
 #, fuzzy
 msgid "Define a variable"
 msgstr "Διαγραφή μίας μεταβλητής"
@@ -2531,7 +2531,7 @@ msgid ""
 "Defines if an animation is automatically started or only by clicking on it."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:8572
+#: ../../src/wxMaxima.cpp:8570
 msgid "Degree:"
 msgstr ""
 
@@ -2563,7 +2563,7 @@ msgstr ""
 msgid "Delete all values from memory"
 msgstr "Διαγραφή όλων των τιμών από τη μνήμη"
 
-#: ../../src/wxMaxima.cpp:7221
+#: ../../src/wxMaxima.cpp:7219
 #, fuzzy
 msgid "Delete file"
 msgstr "Διαγραφή μίας μεταβλητής"
@@ -2573,12 +2573,12 @@ msgstr "Διαγραφή μίας μεταβλητής"
 msgid "Delete file..."
 msgstr "Διαγραφή μεταβλητής..."
 
-#: ../../src/wxMaxima.cpp:7316
+#: ../../src/wxMaxima.cpp:7314
 #, fuzzy
 msgid "Delete function(s)"
 msgstr "Διαγραφή συνάρτησης(-σεων)"
 
-#: ../../src/wxMaxima.cpp:7312
+#: ../../src/wxMaxima.cpp:7310
 #, fuzzy
 msgid "Delete named object(s)"
 msgstr "Διαγραφή συνάρτησης(-σεων)"
@@ -2588,12 +2588,12 @@ msgstr "Διαγραφή συνάρτησης(-σεων)"
 msgid "Delete named object..."
 msgstr "Διαγραφή συνάρτησης..."
 
-#: ../../src/wxMaxima.cpp:7307
+#: ../../src/wxMaxima.cpp:7305
 #, fuzzy
 msgid "Delete variable(s)"
 msgstr "Διαγραφή μεταβλητής(-ών):"
 
-#: ../../src/wxMaxima.cpp:7063
+#: ../../src/wxMaxima.cpp:7061
 #, fuzzy
 msgid "Deliminiter:"
 msgstr "Απαλειφή"
@@ -2602,11 +2602,11 @@ msgstr "Απαλειφή"
 msgid "Delta"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:8564
+#: ../../src/wxMaxima.cpp:8562
 msgid "Denom. deg:"
 msgstr "Βαθμός Παρανομαστή:"
 
-#: ../../src/wxMaxima.cpp:7547
+#: ../../src/wxMaxima.cpp:7545
 msgid "Denominator:"
 msgstr ""
 
@@ -2614,7 +2614,7 @@ msgstr ""
 msgid "Dependencies"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:7437
+#: ../../src/wxMaxima.cpp:7435
 msgid "Derivate of y at that point:"
 msgstr ""
 
@@ -2643,7 +2643,7 @@ msgstr ""
 msgid "Didn't find an installed offline manual."
 msgstr ""
 
-#: ../../src/MaximaManual.cpp:506
+#: ../../src/MaximaManual.cpp:537
 msgid "Didn't find the maxima HTML manual."
 msgstr ""
 
@@ -2651,7 +2651,7 @@ msgstr ""
 msgid "Diff..."
 msgstr "Παραγώγιση..."
 
-#: ../../src/wxMaxima.cpp:8648 ../../src/wxMaxima.cpp:9806
+#: ../../src/wxMaxima.cpp:8646 ../../src/wxMaxima.cpp:9804
 msgid "Differentiate"
 msgstr "Παραγώγιση"
 
@@ -2663,12 +2663,12 @@ msgstr "Παραγώγιση παράστασης"
 msgid "Differentiate..."
 msgstr "Παραγώγιση..."
 
-#: ../../src/wxMaxima.cpp:8648
+#: ../../src/wxMaxima.cpp:8646
 #, fuzzy
 msgid "Differentiates an expression n times"
 msgstr "Παραγώγιση παράστασης"
 
-#: ../../src/wxMaxima.cpp:9806
+#: ../../src/wxMaxima.cpp:9804
 #, fuzzy
 msgid "Differentiates the expression n times"
 msgstr "Παραγώγιση παράστασης"
@@ -2691,7 +2691,7 @@ msgstr "Εναλλαγή εμφάνισης της ώρας"
 msgid "Display Te&X Form"
 msgstr "Εμφάνιση σε μορφή TeX"
 
-#: ../../src/wxMaxima.cpp:6604
+#: ../../src/wxMaxima.cpp:6602
 msgid "Display algorithm"
 msgstr "Αλγόριθμος προβολής μαθηματικών"
 
@@ -2717,7 +2717,7 @@ msgstr "Εμφάνιση τελευταίου αποτελέσματος σε μ
 msgid "Display of long numbers"
 msgstr ""
 
-#: ../../src/ToolBar.cpp:358
+#: ../../src/ToolBar.cpp:356
 #, c-format
 msgid "Display resolution according to wxWidgets: %i x %i ppi"
 msgstr ""
@@ -2731,7 +2731,7 @@ msgstr "Επίλυση εξίσωσης(-εων)"
 msgid "Display time used for evaluation"
 msgstr "Εμφάνιση του χρόνου που απαιτήθηκε για τον υπολογισμό"
 
-#: ../../src/wxMaxima.cpp:8849
+#: ../../src/wxMaxima.cpp:8847
 #, fuzzy
 msgid "Displayed Precision"
 msgstr "Επίλυση εξίσωσης(-εων)"
@@ -2774,12 +2774,12 @@ msgstr "Διαίρεση αριθμών ή πολυωνύμων"
 msgid "Divide this input cell into two cells"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:8216
+#: ../../src/wxMaxima.cpp:8214
 #, fuzzy
 msgid "Do for each list element"
 msgstr "Εφαρμογή συνάρτησης σε μία λίστα"
 
-#: ../../src/wxMaxima.cpp:10917
+#: ../../src/wxMaxima.cpp:10915
 #, c-format
 msgid "Do you want to save the changes you made in the document \"%s\"?"
 msgstr ""
@@ -2788,11 +2788,11 @@ msgstr ""
 msgid "Dock all Sidebars"
 msgstr ""
 
-#: ../../src/Configuration.cpp:1546
+#: ../../src/Configuration.cpp:1553
 msgid "Document background"
 msgstr "Φόντο εγγράφου"
 
-#: ../../src/wxMaxima.cpp:4296
+#: ../../src/wxMaxima.cpp:4294
 #, fuzzy
 msgid ""
 "Document was saved using a newer version of wxMaxima so it may not load "
@@ -2801,7 +2801,7 @@ msgstr ""
 "είχε αποθηκευθεί χρησιμοποιώντας μια νεότερη έκδοση του wxMaxima. Έτσι "
 "μπορεί να μην φορτωθεί σωστά.Παρακαλώ ενημερώστε το wxMaxima σας."
 
-#: ../../src/wxMaxima.cpp:4288
+#: ../../src/wxMaxima.cpp:4286
 #, fuzzy
 msgid ""
 "Document was saved using a newer version of wxMaxima. Please update your "
@@ -2831,12 +2831,12 @@ msgstr ""
 msgid "Don't evaluate Expression..."
 msgstr "Ολοκλήρωση παράστασης"
 
-#: ../../src/wxMaxima.cpp:6749
+#: ../../src/wxMaxima.cpp:6747
 #, fuzzy
 msgid "Don't evaluate one command"
 msgstr "Εμφάνιση ενός παραδείγματος για την εντολή:"
 
-#: ../../src/wxMaxima.cpp:6761
+#: ../../src/wxMaxima.cpp:6759
 #, fuzzy
 msgid "Don't evaluate one whole expression"
 msgstr "Υπολογισμός πραγματικού μέρους μιας μιγαδικής παράστασης"
@@ -2849,7 +2849,7 @@ msgstr ""
 msgid "Don't mark this message text in yellow"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:10923
+#: ../../src/wxMaxima.cpp:10921
 msgid "Don't save"
 msgstr ""
 
@@ -2873,12 +2873,12 @@ msgstr ""
 msgid "Drag-and-drop unicode symbols here"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:8163
+#: ../../src/wxMaxima.cpp:8161
 #, fuzzy
 msgid "Drop the first n list elements"
 msgstr "Εφαρμογή συνάρτησης σε μία λίστα"
 
-#: ../../src/wxMaxima.cpp:8169 ../../src/wxMaxima.cpp:8175
+#: ../../src/wxMaxima.cpp:8167 ../../src/wxMaxima.cpp:8173
 #, fuzzy
 msgid "Drop the last n list elements"
 msgstr "Εφαρμογή συνάρτησης σε μία λίστα"
@@ -2917,27 +2917,27 @@ msgstr ""
 msgid "Eigenvalues, left+right eigenvectors (real)"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:8222
+#: ../../src/wxMaxima.cpp:8220
 msgid ""
 "Either a single expression or a comma-separated list of expressions between "
 "parenthesis. In the latter case the result of the last expression in the "
 "parenthesis is used."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:8231
+#: ../../src/wxMaxima.cpp:8229
 msgid "Element"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:8187
+#: ../../src/wxMaxima.cpp:8185
 msgid "Element number"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:7628
+#: ../../src/wxMaxima.cpp:7626
 msgid ""
 "Element-by-element Product of matrices of the same size (Hadamard product)"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:7635
+#: ../../src/wxMaxima.cpp:7633
 msgid "Element-by-element exponentiation of two matrices"
 msgstr ""
 
@@ -2945,15 +2945,15 @@ msgstr ""
 msgid "Element-by-element multiplication"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:8148
+#: ../../src/wxMaxima.cpp:8146
 msgid "Element:"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:6836
+#: ../../src/wxMaxima.cpp:6834
 msgid "Elements:"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:7471
+#: ../../src/wxMaxima.cpp:7469
 #, fuzzy
 msgid "Eliminate a variable"
 msgstr "Απαλοιφή μεταβλητής..."
@@ -2962,7 +2962,7 @@ msgstr "Απαλοιφή μεταβλητής..."
 msgid "Eliminate a variable from a system of equations"
 msgstr "Απαλειφή μεταβλητής από σύστημα εξισώσεων"
 
-#: ../../src/wxMaxima.cpp:8868
+#: ../../src/wxMaxima.cpp:8866
 #, fuzzy
 msgid "Enable:"
 msgstr "Μεταβλητή:"
@@ -2972,7 +2972,7 @@ msgstr "Μεταβλητή:"
 msgid "Encountered an unknown XML tag: <%s>"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:2178
+#: ../../src/wxMaxima.cpp:2176
 msgid "Encountered an unknown socket event."
 msgstr ""
 
@@ -2980,11 +2980,11 @@ msgstr ""
 msgid "End of proof"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:7467
+#: ../../src/wxMaxima.cpp:7465
 msgid "End of t:"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:3801
+#: ../../src/wxMaxima.cpp:3799
 msgid "Ended lisp mode after receiving a maxima prompt!"
 msgstr ""
 
@@ -3013,7 +3013,7 @@ msgstr "Εισαγωγή πίνακα"
 msgid "Enter adds newlines, Ctrl+Enter evaluates cells"
 msgstr "Το Enter υπολογίζει τα κελιά"
 
-#: ../../src/wxMaxima.cpp:8503
+#: ../../src/wxMaxima.cpp:8501
 msgid "Enter an equation for rational simplification:"
 msgstr "Εισαγωγή εξίσωσης για ρητή απλοποίηση:"
 
@@ -3022,15 +3022,15 @@ msgstr "Εισαγωγή εξίσωσης για ρητή απλοποίηση:"
 msgid "Enter evaluates cells, Ctrl+Enter adds newlines"
 msgstr "Το Enter υπολογίζει τα κελιά"
 
-#: ../../src/wxMaxima.cpp:7792
+#: ../../src/wxMaxima.cpp:7790
 msgid "Enter matrix"
 msgstr "Εισαγωγή πίνακα"
 
-#: ../../src/wxMaxima.cpp:8732
+#: ../../src/wxMaxima.cpp:8730
 msgid "Enter new animation frame rate [Hz, integer]:"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:8844
+#: ../../src/wxMaxima.cpp:8842
 #, fuzzy
 msgid "Enter new precision for bigfloats:"
 msgstr "Εισαγωγή νέας τιμής ακρίβειας:"
@@ -3039,7 +3039,7 @@ msgstr "Εισαγωγή νέας τιμής ακρίβειας:"
 msgid "Enter the path to the Maxima executable."
 msgstr "Εισαγωγή της διαδρομής στο εκτελέσιμο αρχείο του maxima."
 
-#: ../../src/wxMaxima.cpp:7546
+#: ../../src/wxMaxima.cpp:7544
 msgid "Enumerator:"
 msgstr ""
 
@@ -3058,7 +3058,7 @@ msgstr "Επιπρόσθετοι παράμετροι:"
 msgid "Epsilon"
 msgstr "Έψιλον:"
 
-#: ../../src/wxMaxima.cpp:8683
+#: ../../src/wxMaxima.cpp:8681
 msgid "Epsilon:"
 msgstr "Έψιλον:"
 
@@ -3070,23 +3070,23 @@ msgstr ""
 msgid "Equal?..."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:8199
+#: ../../src/wxMaxima.cpp:8197
 #, fuzzy
 msgid "Equation"
 msgstr "Εξίσωση:"
 
-#: ../../src/wxMaxima.cpp:7383 ../../src/wxMaxima.cpp:7397
+#: ../../src/wxMaxima.cpp:7381 ../../src/wxMaxima.cpp:7395
 #, fuzzy
 msgid "Equation(s)"
 msgstr "Εξίσωση(-εις):"
 
-#: ../../src/wxMaxima.cpp:7472 ../../src/wxMaxima.cpp:7524
+#: ../../src/wxMaxima.cpp:7470 ../../src/wxMaxima.cpp:7522
 msgid "Equation(s):"
 msgstr "Εξίσωση(-εις):"
 
-#: ../../src/wxMaxima.cpp:7412 ../../src/wxMaxima.cpp:8536
-#: ../../src/wxMaxima.cpp:8556 ../../src/wxMaxima.cpp:9267
-#: ../../src/wxMaxima.cpp:9790
+#: ../../src/wxMaxima.cpp:7410 ../../src/wxMaxima.cpp:8534
+#: ../../src/wxMaxima.cpp:8554 ../../src/wxMaxima.cpp:9265
+#: ../../src/wxMaxima.cpp:9788
 msgid "Equation:"
 msgstr "Εξίσωση:"
 
@@ -3097,37 +3097,37 @@ msgid ""
 "be introduced one into another. Also they are always printed out as 2D maths."
 msgstr ""
 
-#: ../../src/ConfigDialogue.cpp:2336 ../../src/wxMaxima.cpp:2379
-#: ../../src/wxMaxima.cpp:2711 ../../src/wxMaxima.cpp:3867
-#: ../../src/wxMaxima.cpp:3919 ../../src/wxMaxima.cpp:3928
-#: ../../src/wxMaxima.cpp:4182 ../../src/wxMaxima.cpp:4193
-#: ../../src/wxMaxima.cpp:4290 ../../src/wxMaxima.cpp:4319
-#: ../../src/wxMaxima.cpp:4330 ../../src/wxMaxima.cpp:10843
-#: ../../src/wxMaxima.cpp:10886
+#: ../../src/ConfigDialogue.cpp:2336 ../../src/wxMaxima.cpp:2377
+#: ../../src/wxMaxima.cpp:2709 ../../src/wxMaxima.cpp:3865
+#: ../../src/wxMaxima.cpp:3917 ../../src/wxMaxima.cpp:3926
+#: ../../src/wxMaxima.cpp:4180 ../../src/wxMaxima.cpp:4191
+#: ../../src/wxMaxima.cpp:4288 ../../src/wxMaxima.cpp:4317
+#: ../../src/wxMaxima.cpp:4328 ../../src/wxMaxima.cpp:10841
+#: ../../src/wxMaxima.cpp:10884
 msgid "Error"
 msgstr "Σφάλμα"
 
-#: ../../src/wxMaxima.cpp:2158
+#: ../../src/wxMaxima.cpp:2156
 msgid "Error writing to Maxima"
 msgstr ""
 
-#: ../../src/History.cpp:203 ../../src/wxMaxima.cpp:5883
-#: ../../src/wxMaxima.cpp:5895 ../../src/wxMaxima.cpp:5906
-#: ../../src/wxMaxima.cpp:7482 ../../src/wxMaxima.cpp:7504
-#: ../../src/wxMaxima.cpp:7786
+#: ../../src/History.cpp:203 ../../src/wxMaxima.cpp:5881
+#: ../../src/wxMaxima.cpp:5893 ../../src/wxMaxima.cpp:5904
+#: ../../src/wxMaxima.cpp:7480 ../../src/wxMaxima.cpp:7502
+#: ../../src/wxMaxima.cpp:7784
 msgid "Error!"
 msgstr "Σφάλμα!"
 
-#: ../../src/Image.cpp:933
+#: ../../src/Image.cpp:752
 #, c-format
 msgid "Error: Cannot render %s."
 msgstr ""
 
-#: ../../src/Image.cpp:935
+#: ../../src/Image.cpp:754
 msgid "Error: Cannot render the image."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:7177
+#: ../../src/wxMaxima.cpp:7175
 msgid ""
 "Escapes all special characters in a string. The result is a regex that "
 "matches this string exactly."
@@ -3187,7 +3187,7 @@ msgstr ""
 msgid "Evaluate Heading 6\tShift+Ctrl+Enter"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:8263
+#: ../../src/wxMaxima.cpp:8261
 #, fuzzy
 msgid "Evaluate Nouns"
 msgstr "Υπολογισμός ονοματικών μορφών"
@@ -3214,7 +3214,7 @@ msgstr ""
 msgid "Evaluate active or selected cell(s)"
 msgstr "Υπολογισμός ενεργού(-ών) ή επιλεγμένου(-ων) κελιού(-ών)"
 
-#: ../../src/ToolBar.cpp:237
+#: ../../src/ToolBar.cpp:244
 msgid "Evaluate all"
 msgstr ""
 
@@ -3231,11 +3231,11 @@ msgstr "Υπολογισμός όλων των ονοματικών μορφών
 msgid "Evaluate all visible cells in the document"
 msgstr "Υπολογισμός όλων των κελιών στο έγγραφο"
 
-#: ../../src/ToolBar.cpp:234
+#: ../../src/ToolBar.cpp:241
 msgid "Evaluate current cell"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:7028
+#: ../../src/wxMaxima.cpp:7026
 #, fuzzy
 msgid "Evaluate string"
 msgstr "Υπολογισμός ονοματικών μορφών"
@@ -3245,21 +3245,21 @@ msgstr "Υπολογισμός ονοματικών μορφών"
 msgid "Evaluate string..."
 msgstr "Υπολογισμός ονοματικών μορφών"
 
-#: ../../src/ToolBar.cpp:242
+#: ../../src/ToolBar.cpp:249
 msgid "Evaluate the file from its beginning to the cell above the cursor"
 msgstr ""
 
-#: ../../src/ToolBar.cpp:245
+#: ../../src/ToolBar.cpp:252
 #, fuzzy
 msgid "Evaluate the file from the cursor to its end"
 msgstr "Υπολογισμός όλων των κελιών στο έγγραφο"
 
-#: ../../src/ToolBar.cpp:244
+#: ../../src/ToolBar.cpp:251
 #, fuzzy
 msgid "Evaluate the rest"
 msgstr "Υπολογισμός ονοματικών μορφών"
 
-#: ../../src/ToolBar.cpp:241
+#: ../../src/ToolBar.cpp:248
 #, fuzzy
 msgid "Evaluate to point"
 msgstr "Υπολογισμός ονοματικών μορφών"
@@ -3309,11 +3309,11 @@ msgstr "Ανάπτυξη μία παράστασης"
 msgid "Expand for given variables"
 msgstr "Αλλαγή μεταβλητής"
 
-#: ../../src/wxMaxima.cpp:8418
+#: ../../src/wxMaxima.cpp:8416
 msgid "Expand for variable(s) including denominator:"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:8353
+#: ../../src/wxMaxima.cpp:8351
 #, fuzzy
 msgid "Expand for variable(s):"
 msgstr "Νέα μεταβλητή:"
@@ -3335,7 +3335,7 @@ msgstr ""
 msgid "Expect variables to contain complex numbers"
 msgstr ""
 
-#: ../../src/ConfigDialogue.cpp:261 ../../src/wxMaxima.cpp:5840
+#: ../../src/ConfigDialogue.cpp:261 ../../src/wxMaxima.cpp:5838
 msgid "Export"
 msgstr "Εξαγωγή"
 
@@ -3409,15 +3409,15 @@ msgstr ""
 msgid "Exporting to .mac file failed!"
 msgstr "Η εξαγωγή σε TeX απέτυχε"
 
-#: ../../src/wxMaxima.cpp:5906
+#: ../../src/wxMaxima.cpp:5904
 msgid "Exporting to HTML failed!"
 msgstr "Η εξαγωγή σε HTML απέτυχε!"
 
-#: ../../src/wxMaxima.cpp:5883
+#: ../../src/wxMaxima.cpp:5881
 msgid "Exporting to TeX failed!"
 msgstr "Η εξαγωγή σε TeX απέτυχε"
 
-#: ../../src/wxMaxima.cpp:5894
+#: ../../src/wxMaxima.cpp:5892
 #, fuzzy
 msgid "Exporting to maxima batch file failed!"
 msgstr "Η εξαγωγή σε TeX απέτυχε"
@@ -3427,13 +3427,13 @@ msgstr "Η εξαγωγή σε TeX απέτυχε"
 msgid "Exporting..."
 msgstr "Εξαγωγή..."
 
-#: ../../src/wxMaxima.cpp:7842 ../../src/wxMaxima.cpp:8270
-#: ../../src/wxMaxima.cpp:8275 ../../src/wxMaxima.cpp:8295
-#: ../../src/wxMaxima.cpp:9816 ../../src/wxMaximaFrame.cpp:3062
+#: ../../src/wxMaxima.cpp:7840 ../../src/wxMaxima.cpp:8268
+#: ../../src/wxMaxima.cpp:8273 ../../src/wxMaxima.cpp:8293
+#: ../../src/wxMaxima.cpp:9814 ../../src/wxMaximaFrame.cpp:3062
 msgid "Expression"
 msgstr "Παράσταση:"
 
-#: ../../src/wxMaxima.cpp:6651 ../../src/wxMaxima.cpp:6657
+#: ../../src/wxMaxima.cpp:6649 ../../src/wxMaxima.cpp:6655
 #, fuzzy
 msgid "Expression or a list of comma-separated expressions"
 msgstr "Συντεταγμένες του x χωρισμένες με κόμμα"
@@ -3443,20 +3443,20 @@ msgstr "Συντεταγμένες του x χωρισμένες με κόμμα
 msgid "Expression to string..."
 msgstr "Παράσταση:"
 
-#: ../../src/wxMaxima.cpp:6745
+#: ../../src/wxMaxima.cpp:6743
 msgid "Expression whose output is to be used as maxima's input."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:6846
+#: ../../src/wxMaxima.cpp:6844
 msgid "Expression(s):"
 msgstr "Παράσταση(-εις):"
 
-#: ../../src/wxMaxima.cpp:8570 ../../src/wxMaxima.cpp:8578
-#: ../../src/wxMaxima.cpp:8589 ../../src/wxMaxima.cpp:8614
-#: ../../src/wxMaxima.cpp:8619 ../../src/wxMaxima.cpp:8636
-#: ../../src/wxMaxima.cpp:8642 ../../src/wxMaxima.cpp:8649
-#: ../../src/wxMaxima.cpp:8681 ../../src/wxMaxima.cpp:8700
-#: ../../src/wxMaxima.cpp:9807
+#: ../../src/wxMaxima.cpp:8568 ../../src/wxMaxima.cpp:8576
+#: ../../src/wxMaxima.cpp:8587 ../../src/wxMaxima.cpp:8612
+#: ../../src/wxMaxima.cpp:8617 ../../src/wxMaxima.cpp:8634
+#: ../../src/wxMaxima.cpp:8640 ../../src/wxMaxima.cpp:8647
+#: ../../src/wxMaxima.cpp:8679 ../../src/wxMaxima.cpp:8698
+#: ../../src/wxMaxima.cpp:9805
 msgid "Expression:"
 msgstr "Παράσταση:"
 
@@ -3482,12 +3482,12 @@ msgstr ""
 msgid "Extract a column from the matrix and convert it to a list"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:7583
+#: ../../src/wxMaxima.cpp:7581
 #, fuzzy
 msgid "Extract a matrix column"
 msgstr "Εισαγωγή πίνακα"
 
-#: ../../src/wxMaxima.cpp:7593
+#: ../../src/wxMaxima.cpp:7591
 #, fuzzy
 msgid "Extract a matrix column as a list"
 msgstr "Εισαγωγή πίνακα"
@@ -3497,12 +3497,12 @@ msgstr "Εισαγωγή πίνακα"
 msgid "Extract a matrix from a 2-dimensional array"
 msgstr "Δημιουργία πίνακα από 2-Δ πίνακα"
 
-#: ../../src/wxMaxima.cpp:7578
+#: ../../src/wxMaxima.cpp:7576
 #, fuzzy
 msgid "Extract a matrix row"
 msgstr "Εισαγωγή πίνακα"
 
-#: ../../src/wxMaxima.cpp:7588
+#: ../../src/wxMaxima.cpp:7586
 #, fuzzy
 msgid "Extract a matrix row as a list"
 msgstr "Εισαγωγή πίνακα"
@@ -3516,7 +3516,7 @@ msgstr ""
 msgid "Extract a row from the matrix and convert it to a list"
 msgstr "Δημιουργία λίστας από παράσταση"
 
-#: ../../src/wxMaxima.cpp:8202
+#: ../../src/wxMaxima.cpp:8200
 msgid "Extract a variable's value from a list of variable values"
 msgstr ""
 
@@ -3534,12 +3534,12 @@ msgstr "Δημιουργία λίστας από παράσταση"
 msgid "Extract dir from path..."
 msgstr "Δημιουργία λίστας από παράσταση"
 
-#: ../../src/wxMaxima.cpp:7238
+#: ../../src/wxMaxima.cpp:7236
 #, fuzzy
 msgid "Extract directory part"
 msgstr "Ονόματα συναρτήσεων"
 
-#: ../../src/wxMaxima.cpp:7250
+#: ../../src/wxMaxima.cpp:7248
 #, fuzzy
 msgid "Extract file type extension"
 msgstr "Δημιουργία λίστας από παράσταση"
@@ -3548,7 +3548,7 @@ msgstr "Δημιουργία λίστας από παράσταση"
 msgid "Extract filename from path..."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:7244
+#: ../../src/wxMaxima.cpp:7242
 #, fuzzy
 msgid "Extract filename part"
 msgstr "Δημιουργία λίστας από παράσταση"
@@ -3557,7 +3557,7 @@ msgstr "Δημιουργία λίστας από παράσταση"
 msgid "Extract filetype from path..."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:8083
+#: ../../src/wxMaxima.cpp:8081
 #, fuzzy
 msgid "Extract function arguments"
 msgstr "Ονόματα συναρτήσεων"
@@ -3567,7 +3567,7 @@ msgstr "Ονόματα συναρτήσεων"
 msgid "Extract list Elements"
 msgstr "Δημιουργία λίστας από παράσταση"
 
-#: ../../src/wxMaxima.cpp:7810
+#: ../../src/wxMaxima.cpp:7808
 #, fuzzy
 msgid "Extract matrix from 2D array"
 msgstr "Εισαγωγή πίνακα"
@@ -3577,17 +3577,17 @@ msgstr "Εισαγωγή πίνακα"
 msgid "Extract the argument list from a function call"
 msgstr "Δημιουργία λίστας από παράσταση"
 
-#: ../../src/wxMaxima.cpp:8176
+#: ../../src/wxMaxima.cpp:8174
 #, fuzzy
 msgid "Extract the last n elements from a list"
 msgstr "Δημιουργία λίστας από παράσταση"
 
-#: ../../src/wxMaxima.cpp:7009
+#: ../../src/wxMaxima.cpp:7007
 #, fuzzy
 msgid "Extract the nth char of a string"
 msgstr "Δημιουργία λίστας από παράσταση"
 
-#: ../../src/wxMaxima.cpp:8182
+#: ../../src/wxMaxima.cpp:8180
 #, fuzzy
 msgid "Extract the nth list elements"
 msgstr "Δημιουργία λίστας από παράσταση"
@@ -3600,7 +3600,7 @@ msgstr ""
 msgid "Extract, append or delete rows or columns"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:7811
+#: ../../src/wxMaxima.cpp:7809
 #, fuzzy
 msgid "Extracts a rectangle from a 2D array and converts it to a matrix"
 msgstr "Δημιουργία λίστας από παράσταση"
@@ -3642,21 +3642,21 @@ msgstr ""
 msgid "Fast list access"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:2253
+#: ../../src/wxMaxima.cpp:2251
 msgid "Fatal error"
 msgstr "Ολέθριο σφάλμα"
 
-#: ../../src/wxMaxima.cpp:6823
+#: ../../src/wxMaxima.cpp:6821
 #, fuzzy
 msgid "Field contents:"
 msgstr "Ελληνικές σταθερές"
 
-#: ../../src/wxMaxima.cpp:6830
+#: ../../src/wxMaxima.cpp:6828
 #, fuzzy
 msgid "Field name:"
 msgstr "Παλιά μεταβλητή:"
 
-#: ../../src/wxMaxima.cpp:6817
+#: ../../src/wxMaxima.cpp:6815
 msgid "Fields:"
 msgstr ""
 
@@ -3669,25 +3669,25 @@ msgstr "Αρχείο"
 msgid "File I/O"
 msgstr "Αρχείο"
 
-#: ../../src/wxMaxima.cpp:3869 ../../src/wxMaxima.cpp:3921
-#: ../../src/wxMaxima.cpp:4184 ../../src/wxMaxima.cpp:4195
-#: ../../src/wxMaxima.cpp:4291 ../../src/wxMaxima.cpp:4321
-#: ../../src/wxMaxima.cpp:4332 ../../src/wxMaxima.cpp:5371
+#: ../../src/wxMaxima.cpp:3867 ../../src/wxMaxima.cpp:3919
+#: ../../src/wxMaxima.cpp:4182 ../../src/wxMaxima.cpp:4193
+#: ../../src/wxMaxima.cpp:4289 ../../src/wxMaxima.cpp:4319
+#: ../../src/wxMaxima.cpp:4330 ../../src/wxMaxima.cpp:5369
 #, fuzzy
 msgid "File could not be opened"
 msgstr "Το αρχείο δεν βρέθηκε"
 
-#: ../../src/wxMaxima.cpp:6874 ../../src/wxMaxima.cpp:6879
-#: ../../src/wxMaxima.cpp:6884
+#: ../../src/wxMaxima.cpp:6872 ../../src/wxMaxima.cpp:6877
+#: ../../src/wxMaxima.cpp:6882
 #, fuzzy
 msgid "File name:"
 msgstr "Παλιά μεταβλητή:"
 
-#: ../../src/wxMaxima.cpp:9974 ../../src/wxMaxima.cpp:10019
+#: ../../src/wxMaxima.cpp:9972 ../../src/wxMaxima.cpp:10017
 msgid "File not found"
 msgstr "Το αρχείο δεν βρέθηκε"
 
-#: ../../src/wxMaxima.cpp:5361
+#: ../../src/wxMaxima.cpp:5359
 #, fuzzy
 msgid "File opened"
 msgstr "Το αρχείο δεν βρέθηκε"
@@ -3697,11 +3697,11 @@ msgstr "Το αρχείο δεν βρέθηκε"
 msgid "File operations"
 msgstr "Το αρχείο δεν βρέθηκε"
 
-#: ../../src/wxMaxima.cpp:9973 ../../src/wxMaxima.cpp:10018
+#: ../../src/wxMaxima.cpp:9971 ../../src/wxMaxima.cpp:10016
 msgid "File you tried to open does not exist."
 msgstr "Το αρχείο που προσπαθήσατε να ανοίξετε δεν υπάρχει"
 
-#: ../../src/wxMaxima.cpp:6659
+#: ../../src/wxMaxima.cpp:6657
 msgid "Filename or a list of comma-separated file names"
 msgstr ""
 
@@ -3709,7 +3709,7 @@ msgstr ""
 msgid "Fill color"
 msgstr ""
 
-#: ../../src/ToolBar.cpp:209
+#: ../../src/ToolBar.cpp:216
 msgid "Find"
 msgstr "Εύρεση "
 
@@ -3762,15 +3762,15 @@ msgstr "Εύρεση όλων των ριζών ενός πολυωνύμου"
 msgid "Find all roots of a polynomial (bfloat)"
 msgstr "Εύρεση όλων των ριζών ενός πολυωνύμου(bfloat)"
 
-#: ../../src/wxMaxima.cpp:6305
+#: ../../src/wxMaxima.cpp:6303
 msgid "Find and Replace"
 msgstr "Εύρεση και Αντικατάσταση"
 
-#: ../../src/ToolBar.cpp:209 ../../src/wxMaximaFrame.cpp:905
+#: ../../src/ToolBar.cpp:216 ../../src/wxMaximaFrame.cpp:905
 msgid "Find and replace"
 msgstr "Εύρεση και αντικατάσταση"
 
-#: ../../src/wxMaxima.cpp:7067
+#: ../../src/wxMaxima.cpp:7065
 msgid "Find char in string"
 msgstr ""
 
@@ -3790,7 +3790,7 @@ msgstr "Εύρεση ιδιοτιμών πίνακα"
 msgid "Find eigenvectors of a matrix"
 msgstr "Εύρεση ιδιοδιανυσμάτων πίνακα"
 
-#: ../../src/wxMaxima.cpp:7057
+#: ../../src/wxMaxima.cpp:7055
 msgid "Find first difference"
 msgstr ""
 
@@ -3803,7 +3803,7 @@ msgstr ""
 msgid "Find fractions that real roots of a polynomial and "
 msgstr "Εύρεση πραγματικών ριζών πολυωνύμου"
 
-#: ../../src/wxMaxima.cpp:8677
+#: ../../src/wxMaxima.cpp:8675
 msgid "Find minimum"
 msgstr "Εύρεση ελαχίστου"
 
@@ -3811,20 +3811,20 @@ msgstr "Εύρεση ελαχίστου"
 msgid "Find numerical solution..."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:9786
+#: ../../src/wxMaxima.cpp:9784
 msgid "Find root (solve numerically)"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:7685 ../../src/wxMaxima.cpp:7706
+#: ../../src/wxMaxima.cpp:7683 ../../src/wxMaxima.cpp:7704
 #, fuzzy
 msgid "Find the maximum absolute value of a matrix entry"
 msgstr "Εύρεση ιδιοτιμών πίνακα"
 
-#: ../../src/wxMaxima.cpp:7691 ../../src/wxMaxima.cpp:7712
+#: ../../src/wxMaxima.cpp:7689 ../../src/wxMaxima.cpp:7710
 msgid "Find the maximum sum of the absolute values of a matrix column"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:7696 ../../src/wxMaxima.cpp:7717
+#: ../../src/wxMaxima.cpp:7694 ../../src/wxMaxima.cpp:7715
 msgid "Find the maximum sum of the absolute values of a matrix row"
 msgstr ""
 
@@ -3859,7 +3859,7 @@ msgstr ""
 msgid "Fixed font in text controls"
 msgstr "Σταθερή γραμματοσειρά στον έλεγχο κειμένου"
 
-#: ../../src/wxMaxima.cpp:6860
+#: ../../src/wxMaxima.cpp:6858
 msgid "Flush stream"
 msgstr ""
 
@@ -3876,7 +3876,7 @@ msgstr "Επιλογή Όλων\tCtrl+A"
 msgid "Fold all sections"
 msgstr ""
 
-#: ../../src/ToolBar.cpp:226
+#: ../../src/ToolBar.cpp:233
 msgid "Follow"
 msgstr ""
 
@@ -3901,7 +3901,7 @@ msgid ""
 "tells if this bracket is to be printed, as well."
 msgstr ""
 
-#: ../../src/ToolBar.cpp:271
+#: ../../src/ToolBar.cpp:278
 msgid ""
 "For faster creation of cells the following shortcuts exist:\n"
 "\n"
@@ -3915,7 +3915,7 @@ msgid ""
 "   Ctrl+7: Heading6 cell\n"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:6670
+#: ../../src/wxMaxima.cpp:6668
 msgid "For loop"
 msgstr ""
 
@@ -3923,17 +3923,12 @@ msgstr ""
 msgid "For loop..."
 msgstr ""
 
-#: ../../src/Worksheet.cpp:245 ../../src/wxMaxima.cpp:10937
+#: ../../src/Worksheet.cpp:245 ../../src/wxMaxima.cpp:10935
 msgid "Forwarding the keyboard focus to a text control"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:10940
+#: ../../src/wxMaxima.cpp:10938
 msgid "Forwarding the keyboard focus to the worksheet"
-msgstr ""
-
-#: ../../src/MaximaManual.cpp:268
-#, c-format
-msgid "Found %i anchors, %i anchors total."
 msgstr ""
 
 #: ../../src/Autocomplete.cpp:290
@@ -3946,17 +3941,27 @@ msgstr ""
 msgid "Found %i loadable files."
 msgstr ""
 
-#: ../../src/MaximaManual.cpp:316
+#: ../../src/MaximaManual.cpp:275
+#, c-format
+msgid "Found %li anchors, %li anchors total."
+msgstr ""
+
+#: ../../src/MaximaManual.cpp:471
+#, c-format
+msgid "Found %li anchors, URLs (individual files): %li, URLs (singlepage): %li"
+msgstr ""
+
+#: ../../src/MaximaManual.cpp:330
 #, c-format
 msgid "Found only %li keywords in maxima's manual. Not caching them to disc."
 msgstr ""
 
-#: ../../src/MaximaManual.cpp:502
+#: ../../src/MaximaManual.cpp:533
 #, c-format
 msgid "Found the maxima HTML manual in the folder %s."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:8585
+#: ../../src/wxMaxima.cpp:8583
 msgid "Fourier coefficients"
 msgstr ""
 
@@ -3964,12 +3969,12 @@ msgstr ""
 msgid "Fourier coefficients..."
 msgstr ""
 
-#: ../../src/ToolBar.cpp:121
+#: ../../src/ToolBar.cpp:128
 #, c-format
 msgid "Frame %i of %i"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:8734
+#: ../../src/wxMaxima.cpp:8732
 msgid "Frame rate"
 msgstr ""
 
@@ -3985,7 +3990,7 @@ msgstr ""
 msgid "Frobenius Norm sqrt(sum((A(i,j))^2)) (real)"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:8702
+#: ../../src/wxMaxima.cpp:8700
 msgid "From:"
 msgstr "Από:"
 
@@ -3997,36 +4002,36 @@ msgstr ""
 msgid "Full Screen\tF11"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:6772
+#: ../../src/wxMaxima.cpp:6770
 #, fuzzy
 msgid "Function contents:"
 msgstr "Ονόματα συναρτήσεων"
 
-#: ../../src/wxMaxima.cpp:7532
+#: ../../src/wxMaxima.cpp:7530
 #, fuzzy
 msgid "Function f(x):"
 msgstr "Συνάρτηση(-εις):"
 
-#: ../../src/wxMaxima.cpp:8210
+#: ../../src/wxMaxima.cpp:8208
 #, fuzzy
 msgid "Function name"
 msgstr "Ονόματα συναρτήσεων"
 
-#: ../../src/wxMaxima.cpp:6799
+#: ../../src/wxMaxima.cpp:6797
 #, fuzzy
 msgid "Function name(s):"
 msgstr "Ονόματα συναρτήσεων"
 
-#: ../../src/wxMaxima.cpp:6767 ../../src/wxMaxima.cpp:7317
+#: ../../src/wxMaxima.cpp:6765 ../../src/wxMaxima.cpp:7315
 #, fuzzy
 msgid "Function name:"
 msgstr "Ονόματα συναρτήσεων"
 
-#: ../../src/Configuration.cpp:1525
+#: ../../src/Configuration.cpp:1532
 msgid "Function names"
 msgstr "Ονόματα συναρτήσεων"
 
-#: ../../src/wxMaxima.cpp:7758
+#: ../../src/wxMaxima.cpp:7756
 msgid "Function:"
 msgstr "Συνάρτηση:"
 
@@ -4042,11 +4047,11 @@ msgstr "Συναρτήσεις για απλοποίηση παραγοντικ�
 msgid "Functions for simplifying trigonometric expressions"
 msgstr "Συναρτήσεις για απλοποίηση τριγωνομετρικών παραστάσεων"
 
-#: ../../src/wxMaxima.cpp:8603 ../../src/wxMaxima.cpp:8608
+#: ../../src/wxMaxima.cpp:8601 ../../src/wxMaxima.cpp:8606
 msgid "GCD"
 msgstr "ΜΚΔ"
 
-#: ../../src/wxMaxima.cpp:9937
+#: ../../src/wxMaxima.cpp:9935
 msgid "GIF image (*.gif)|*.gif"
 msgstr "Εικόνα GIF (*.gif)|*.gif"
 
@@ -4095,7 +4100,7 @@ msgstr ""
 msgid "Generate list elements using a rule"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:7819
+#: ../../src/wxMaxima.cpp:7817
 #, fuzzy
 msgid "Generate matrix from a rule"
 msgstr "Δημιουργία λίστας από παράσταση"
@@ -4104,7 +4109,7 @@ msgstr "Δημιουργία λίστας από παράσταση"
 msgid "Generate unused symbol name"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:7820
+#: ../../src/wxMaxima.cpp:7818
 msgid ""
 "Generates a rectangular matrix and fills each element with the result of the "
 "expression \"Rule\"."
@@ -4134,7 +4139,7 @@ msgstr ""
 msgid "Get inverse Laplace transformation of an expression"
 msgstr "Υπολογισμός του αντίστροφου μετασχηματισμού Laplace μιας παράστασης\""
 
-#: ../../src/wxMaxima.cpp:6856
+#: ../../src/wxMaxima.cpp:6854
 msgid "Get position in stream"
 msgstr ""
 
@@ -4151,27 +4156,27 @@ msgstr "Υπολογισμός φανταστικού μέρους μιας μι
 msgid "Get the real part of complex expression"
 msgstr "Υπολογισμός πραγματικού μέρους μιας μιγαδικής παράστασης"
 
-#: ../../src/Image.cpp:614
+#: ../../src/Image.cpp:373
 msgid "Gnuplot Data File Name: "
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:3361
+#: ../../src/wxMaxima.cpp:3359
 msgid "Gnuplot found at: "
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:2664
+#: ../../src/wxMaxima.cpp:2662
 msgid "Gnuplot has closed."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:3358
+#: ../../src/wxMaxima.cpp:3356
 msgid "Gnuplot not found, using the default: "
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:9078 ../../src/wxMaximaFrame.cpp:2079
+#: ../../src/wxMaxima.cpp:9076 ../../src/wxMaximaFrame.cpp:2079
 msgid "Go to URL"
 msgstr ""
 
-#: ../../src/Worksheet.cpp:6629
+#: ../../src/Worksheet.cpp:6593
 msgid ""
 "Got a request to undo an action that involves a delete which isn't possible "
 "at this moment."
@@ -4194,7 +4199,7 @@ msgstr ""
 msgid "Greek"
 msgstr "Ελληνικά"
 
-#: ../../src/Configuration.cpp:1527
+#: ../../src/Configuration.cpp:1534
 msgid "Greek Constants"
 msgstr ""
 
@@ -4221,7 +4226,7 @@ msgstr ""
 msgid "HTML"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:5842
+#: ../../src/wxMaxima.cpp:5840
 #, fuzzy
 msgid ""
 "HTML file (*.html)|*.html|maxima batch file (*.mac)|*.mac|LaTeX file (*.tex)|"
@@ -4232,12 +4237,12 @@ msgstr "Αρχείο HTML (*.html)|*.html|pdfLaTeX file (*.tex)|*.tex|All|*"
 msgid "Hadamard (element-by-element) product..."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:7627
+#: ../../src/wxMaxima.cpp:7625
 #, fuzzy
 msgid "Hadamard Product"
 msgstr "Γινόμενο"
 
-#: ../../src/wxMaxima.cpp:7634
+#: ../../src/wxMaxima.cpp:7632
 msgid "Hadamard exponent"
 msgstr ""
 
@@ -4246,17 +4251,24 @@ msgstr ""
 msgid "Hadamard exponent..."
 msgstr "Όνομα πίνακα:"
 
-#: ../../src/Configuration.cpp:1540 ../../src/ToolBar.cpp:262
+#: ../../src/MaximaManual.cpp:280
+#, c-format
+msgid ""
+"Have only %li keyword anchors at the end of parsing the maxima manual => Not "
+"caching the result of using the built-in keyword list"
+msgstr ""
+
+#: ../../src/Configuration.cpp:1547 ../../src/ToolBar.cpp:269
 #: ../../src/wxMaximaFrame.cpp:2976
 msgid "Heading 5"
 msgstr ""
 
-#: ../../src/Configuration.cpp:1539 ../../src/ToolBar.cpp:263
+#: ../../src/Configuration.cpp:1546 ../../src/ToolBar.cpp:270
 #: ../../src/wxMaximaFrame.cpp:2979
 msgid "Heading 6"
 msgstr ""
 
-#: ../../src/ToolBar.cpp:329 ../../src/wxMaximaFrame.cpp:594
+#: ../../src/ToolBar.cpp:322 ../../src/wxMaximaFrame.cpp:594
 msgid "Help"
 msgstr "Βοήθεια"
 
@@ -4264,7 +4276,7 @@ msgstr "Βοήθεια"
 msgid "Help browser:"
 msgstr ""
 
-#: ../../src/ToolBar.cpp:639
+#: ../../src/ToolBar.cpp:634
 msgid "Help button"
 msgstr ""
 
@@ -4283,7 +4295,7 @@ msgstr "Διαίρεση κελιού"
 msgid "Hide All Toolbars\tAlt+Shift+-"
 msgstr "Απόκρυψη Όλων\tAlt+Shift+-"
 
-#: ../../src/ToolBar.cpp:250
+#: ../../src/ToolBar.cpp:257
 #, fuzzy
 msgid "Hide Code"
 msgstr "Διαίρεση κελιού"
@@ -4359,7 +4371,7 @@ msgstr ""
 msgid "Hide yellow tooltip marker for this message type"
 msgstr ""
 
-#: ../../src/Configuration.cpp:1534
+#: ../../src/Configuration.cpp:1541
 msgid "Highlight (dpart)"
 msgstr "Επισήμανση (dpart)"
 
@@ -4374,7 +4386,7 @@ msgid ""
 "is at."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:9203
+#: ../../src/wxMaxima.cpp:9201
 msgid "Histogram"
 msgstr "Ιστόγραμμα"
 
@@ -4411,7 +4423,7 @@ msgstr ""
 msgid "Hotkeys for sending commands to maxima"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:8850
+#: ../../src/wxMaxima.cpp:8848
 msgid "How many digits to show:"
 msgstr ""
 
@@ -4431,7 +4443,7 @@ msgstr ""
 msgid "Identical to"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:6694
+#: ../../src/wxMaxima.cpp:6692
 msgid ""
 "If a program doesn't need local variables maxima allows to put the commands "
 "between parenthesis. The result of the last operation is the return value of "
@@ -4508,7 +4520,7 @@ msgid ""
 "are needed for maths display."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:6804
+#: ../../src/wxMaxima.cpp:6802
 msgid ""
 "If the type of a function parameter is known when compiling a function the "
 "code can vastly be optimized.\n"
@@ -4581,15 +4593,15 @@ msgstr ""
 "Αν ο υπολογισμός σας καθυστερεί πολύ, μπορείτε να δοκιμάσετε τις εντολές του "
 "μενού 'Maxima->Διακοπή' ή 'Maxima->Επανεκκίνηση Maxima'."
 
-#: ../../src/MaximaManual.cpp:407
-msgid "Ignoring the cache version."
+#: ../../src/MaximaManual.cpp:423
+msgid "Ignoring the cache version for the manual anchors."
 msgstr ""
 
 #: ../../src/wxMaximaFrame.cpp:2982
 msgid "Image"
 msgstr "Εικόνα"
 
-#: ../../src/wxMaxima.cpp:9897 ../../src/wxMaxima.cpp:10584
+#: ../../src/wxMaxima.cpp:9895 ../../src/wxMaxima.cpp:10582
 msgid ""
 "Image files (*.png, *.jpg, *.bmp, *.xpm, *.gif, *.svg, *.svgz)|*.png;*.jpg;*."
 "bmp;*.xpm;*.gif;*.svg;*.svgz"
@@ -4608,7 +4620,15 @@ msgstr ""
 msgid "Import+Export"
 msgstr "Εξαγωγή"
 
-#: ../../src/wxMaxima.cpp:7616
+#: ../../src/MathParser.cpp:336
+msgid "Importing compressed gnuplot sources for an animation"
+msgstr ""
+
+#: ../../src/MathParser.cpp:323
+msgid "Importing uncompressed gnuplot sources for an animation"
+msgstr ""
+
+#: ../../src/wxMaxima.cpp:7614
 msgid ""
 "In order to save memory the \":\" operator does clone the matrix, not copy "
 "it:\n"
@@ -4617,7 +4637,7 @@ msgid ""
 "matrix that, if changed in any way, won't change the original."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:7037
+#: ../../src/wxMaxima.cpp:7035
 msgid ""
 "In order to save memory the : operator doesn't create an individual copy of "
 "the string, but a clone that changes when the original string changes."
@@ -4654,7 +4674,7 @@ msgid ""
 "above it. Might increase readability for some fonts and short subscripts."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:9304
+#: ../../src/wxMaxima.cpp:9302
 msgid "Include columns:"
 msgstr "Συμπεριέλαβε τις στήλες:"
 
@@ -4676,19 +4696,19 @@ msgid ""
 "the label."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:8108
+#: ../../src/wxMaxima.cpp:8106
 msgid "Index End:"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:8108
+#: ../../src/wxMaxima.cpp:8106
 msgid "Index Start:"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:8109
+#: ../../src/wxMaxima.cpp:8107
 msgid "Index Step:"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:8105 ../../src/wxMaxima.cpp:8118
+#: ../../src/wxMaxima.cpp:8103 ../../src/wxMaxima.cpp:8116
 #, fuzzy
 msgid "Index variable:"
 msgstr "Νέα μεταβλητή:"
@@ -4711,7 +4731,7 @@ msgid ""
 "declaring initial conditions"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:7417 ../../src/wxMaxima.cpp:7428
+#: ../../src/wxMaxima.cpp:7415 ../../src/wxMaxima.cpp:7426
 #, fuzzy
 msgid "Initial Condition"
 msgstr "Συνθήκη:"
@@ -4724,12 +4744,12 @@ msgstr "Πρόβλημα αρχικών τιμών (&1)..."
 msgid "Initial Value Problem (&2)..."
 msgstr "Πρόβλημα αρχικών τιμών (&2)..."
 
-#: ../../src/wxMaxima.cpp:8682
+#: ../../src/wxMaxima.cpp:8680
 #, fuzzy
 msgid "Initial estimates:"
 msgstr "Αρχικές Εκτιμήσεις:"
 
-#: ../../src/wxMaxima.cpp:7464
+#: ../../src/wxMaxima.cpp:7462
 #, fuzzy
 msgid "Initial x:"
 msgstr "Αρχικές Εκτιμήσεις:"
@@ -4738,7 +4758,7 @@ msgstr "Αρχικές Εκτιμήσεις:"
 msgid "Input a RegEx here to filter the results"
 msgstr ""
 
-#: ../../src/Configuration.cpp:1530
+#: ../../src/Configuration.cpp:1537
 msgid "Input labels"
 msgstr "Ετικέτες εισαγωγής"
 
@@ -4772,7 +4792,7 @@ msgstr ""
 msgid "Insert Heading6 Cell"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:10583
+#: ../../src/wxMaxima.cpp:10581
 msgid "Insert Image"
 msgstr "Προσθήκη εικόνας"
 
@@ -4902,15 +4922,15 @@ msgstr ""
 msgid "Integral sign"
 msgstr "Ολοκλήρωση παράστασης"
 
-#: ../../src/wxMaxima.cpp:8535 ../../src/wxMaxima.cpp:8556
+#: ../../src/wxMaxima.cpp:8533 ../../src/wxMaxima.cpp:8554
 msgid "Integral/Sum:"
 msgstr "Ολοκλήρωμα/Άθροισμα:"
 
-#: ../../src/wxMaxima.cpp:8624 ../../src/wxMaxima.cpp:9795
+#: ../../src/wxMaxima.cpp:8622 ../../src/wxMaxima.cpp:9793
 msgid "Integrate"
 msgstr "Ολοκλήρωση"
 
-#: ../../src/wxMaxima.cpp:8618
+#: ../../src/wxMaxima.cpp:8616
 msgid "Integrate (risch)"
 msgstr "Ολοκλήρωση (risch)"
 
@@ -4955,7 +4975,7 @@ msgstr "Ολοκλήρωση"
 msgid "Interleave the values of two lists"
 msgstr "Ολοκλήρωση"
 
-#: ../../src/wxMaxima.cpp:8250
+#: ../../src/wxMaxima.cpp:8248
 #, fuzzy
 msgid "Interleave two lists"
 msgstr "Ολοκλήρωση"
@@ -4969,11 +4989,11 @@ msgstr "Ολοκλήρωση"
 msgid "Interpret like input..."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:6736
+#: ../../src/wxMaxima.cpp:6734
 msgid "Interpret maxima's output as input"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:7135
+#: ../../src/wxMaxima.cpp:7133
 msgid "Interpret string as maxima code"
 msgstr ""
 
@@ -4982,7 +5002,7 @@ msgstr ""
 msgid "Interpret string..."
 msgstr "Εισαγωγή πίνακα..."
 
-#: ../../src/ToolBar.cpp:218
+#: ../../src/ToolBar.cpp:225
 msgid "Interrupt"
 msgstr "Διακοπή"
 
@@ -4990,18 +5010,18 @@ msgstr "Διακοπή"
 msgid "Interrupt current computation"
 msgstr "Διακοπή τρέχοντος υπολογισμού"
 
-#: ../../src/ToolBar.cpp:219
+#: ../../src/ToolBar.cpp:226
 msgid ""
 "Interrupt current computation. To completely restart maxima press the button "
 "left to this one."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:2480
+#: ../../src/wxMaxima.cpp:2478
 #, c-format
 msgid "Interrupting maxima: %s"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:8195
+#: ../../src/wxMaxima.cpp:8193
 msgid "Introduce a list of actual values into an equation"
 msgstr ""
 
@@ -5009,7 +5029,7 @@ msgstr ""
 msgid "Introduce the actual values for variables stored in the list"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:9813
+#: ../../src/wxMaxima.cpp:9811
 msgid "Introduces one or more assignments into an expression"
 msgstr ""
 
@@ -5027,7 +5047,7 @@ msgstr ""
 " \n"
 "Παρακαλώ δώστε ξανά την διαδρομη για το πρόγραμμα maxima ."
 
-#: ../../src/wxMaxima.cpp:8641
+#: ../../src/wxMaxima.cpp:8639
 msgid "Inverse Laplace"
 msgstr "Αντίστροφος Laplace"
 
@@ -5043,24 +5063,24 @@ msgstr ""
 msgid "Iota"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:6971
+#: ../../src/wxMaxima.cpp:6969
 msgid "Is Char 1 greater than Char2, if case is ignored?"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:6966
+#: ../../src/wxMaxima.cpp:6964
 #, fuzzy
 msgid "Is Char 1 greater than Char2?"
 msgstr "Κελί υποενότητας"
 
-#: ../../src/wxMaxima.cpp:6960
+#: ../../src/wxMaxima.cpp:6958
 msgid "Is Char 1 less than Char2, if case is ignored?"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:6955
+#: ../../src/wxMaxima.cpp:6953
 msgid "Is Char 1 less than Char2?"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:6913
+#: ../../src/wxMaxima.cpp:6911
 msgid "Is a char?"
 msgstr ""
 
@@ -5073,7 +5093,7 @@ msgstr ""
 msgid "Is a complex variable"
 msgstr "Νέα μεταβλητή:"
 
-#: ../../src/wxMaxima.cpp:6925
+#: ../../src/wxMaxima.cpp:6923
 #, fuzzy
 msgid "Is a digit?"
 msgstr "Αλγόριθμος προβολής μαθηματικών"
@@ -5082,11 +5102,11 @@ msgstr "Αλγόριθμος προβολής μαθηματικών"
 msgid "Is a digit?..."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:6937
+#: ../../src/wxMaxima.cpp:6935
 msgid "Is a lowercase char?"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:6929
+#: ../../src/wxMaxima.cpp:6927
 msgid "Is a printable char?"
 msgstr ""
 
@@ -5095,7 +5115,7 @@ msgstr ""
 msgid "Is a real variable"
 msgstr "Αλλαγή μεταβλητής"
 
-#: ../../src/wxMaxima.cpp:6933
+#: ../../src/wxMaxima.cpp:6931
 msgid "Is a uppercase char?"
 msgstr ""
 
@@ -5107,11 +5127,11 @@ msgstr ""
 msgid "Is alphanumeric?..."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:6917
+#: ../../src/wxMaxima.cpp:6915
 msgid "Is an alphabetic char?"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:6921
+#: ../../src/wxMaxima.cpp:6919
 msgid "Is an alphanumeric char?"
 msgstr ""
 
@@ -5195,11 +5215,11 @@ msgstr "Ιταλικά"
 msgid "Italic"
 msgstr "Πλάγια γραφή"
 
-#: ../../src/wxMaxima.cpp:8236 ../../src/wxMaxima.cpp:8242
+#: ../../src/wxMaxima.cpp:8234 ../../src/wxMaxima.cpp:8240
 msgid "Item"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:8219
+#: ../../src/wxMaxima.cpp:8217
 #, fuzzy
 msgid "Iterator name:"
 msgstr "Όνομα πίνακα:"
@@ -5229,12 +5249,12 @@ msgstr ""
 msgid "Keep percent sign with special symbols: %e, %i, etc."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:2538
+#: ../../src/wxMaxima.cpp:2536
 #, fuzzy
 msgid "Killing Maxima."
 msgstr "Εκκίνηση Maxima..."
 
-#: ../../src/wxMaxima.cpp:8598
+#: ../../src/wxMaxima.cpp:8596
 msgid "LCM"
 msgstr "ΕΚΠ"
 
@@ -5279,11 +5299,11 @@ msgstr ""
 msgid "Labels"
 msgstr "Ετικέτες εισαγωγής"
 
-#: ../../src/wxMaxima.cpp:6722 ../../src/wxMaximaFrame.cpp:2743
+#: ../../src/wxMaxima.cpp:6720 ../../src/wxMaximaFrame.cpp:2743
 msgid "Lambda"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:6723
+#: ../../src/wxMaxima.cpp:6721
 msgid ""
 "Lambda generates a function, but doesn't give it a name.\n"
 "This is useful if you want to use a function only once, perhaps as a "
@@ -5301,7 +5321,7 @@ msgstr "Γλώσσα που χρησιμοποιείται για το GUI το�
 msgid "Language:"
 msgstr "Γλώσσα:"
 
-#: ../../src/wxMaxima.cpp:8635
+#: ../../src/wxMaxima.cpp:8633
 msgid "Laplace"
 msgstr "Laplace"
 
@@ -5313,12 +5333,12 @@ msgstr "Μετασχηματισμός Laplace..."
 msgid "Last"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:2699
+#: ../../src/wxMaxima.cpp:2697
 #, c-format
 msgid "Last message from maxima's stderr: %s"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:2686
+#: ../../src/wxMaxima.cpp:2684
 #, c-format
 msgid "Last message from maxima's stdout: %s"
 msgstr ""
@@ -5328,11 +5348,11 @@ msgstr ""
 msgid "Last n"
 msgstr "Λίστα:"
 
-#: ../../src/wxMaxima.cpp:10139
+#: ../../src/wxMaxima.cpp:10137
 msgid "Last non-whitespace is a question mark"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:4555
+#: ../../src/wxMaxima.cpp:4553
 #, c-format
 msgid ""
 "Launching the system's default help browser failed. Trying to execute %s "
@@ -5347,7 +5367,7 @@ msgstr ""
 msgid "Least Common Multiple..."
 msgstr "Ελάχιστο Κοινό Πολλαπλάσιο..."
 
-#: ../../src/wxMaxima.cpp:9262
+#: ../../src/wxMaxima.cpp:9260
 msgid "Least Squares Fit"
 msgstr "Παρεμβολή ελαχίστων τετραγώνων"
 
@@ -5355,13 +5375,13 @@ msgstr "Παρεμβολή ελαχίστων τετραγώνων"
 msgid "Least Squares Fit..."
 msgstr "Παρεμβολή ελαχίστων τετραγώνων..."
 
-#: ../../src/wxMaxima.cpp:7605 ../../src/wxMaxima.cpp:7610
-#: ../../src/wxMaxima.cpp:7630 ../../src/wxMaxima.cpp:7636
+#: ../../src/wxMaxima.cpp:7603 ../../src/wxMaxima.cpp:7608
+#: ../../src/wxMaxima.cpp:7628 ../../src/wxMaxima.cpp:7634
 #, fuzzy
 msgid "Left Matrix:"
 msgstr "Άνοιγμα πίνακα"
 
-#: ../../src/wxMaxima.cpp:7814
+#: ../../src/wxMaxima.cpp:7812
 msgid "Left end"
 msgstr ""
 
@@ -5377,7 +5397,7 @@ msgstr ""
 msgid "Length..."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:7054
+#: ../../src/wxMaxima.cpp:7052
 msgid "Length:"
 msgstr ""
 
@@ -5401,7 +5421,7 @@ msgstr ""
 msgid "Likely to be the main variable"
 msgstr "Διαγραφή μίας μεταβλητής"
 
-#: ../../src/wxMaxima.cpp:8666
+#: ../../src/wxMaxima.cpp:8664
 msgid "Limit"
 msgstr "Όριο"
 
@@ -5423,38 +5443,38 @@ msgstr "Γραμμική παλινδρόμηση"
 msgid "Lisp files (*.lisp)|*.lisp|All|*"
 msgstr "Αρχείο Postscript (*.eps)|*.eps|All|*"
 
-#: ../../src/wxMaxima.cpp:6889
+#: ../../src/wxMaxima.cpp:6887
 #, fuzzy
 msgid "Lisp format string:"
 msgstr "Ερωτήσεις για το Maxima"
 
-#: ../../src/wxMaxima.cpp:6891
+#: ../../src/wxMaxima.cpp:6889
 msgid "Lisp format strings are more powerful than c++ format strings"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:4789
+#: ../../src/wxMaxima.cpp:4787
 msgid "Lisp mode."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:3418
+#: ../../src/wxMaxima.cpp:3416
 #, c-format
 msgid "Lisp version: %s"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:8072 ../../src/wxMaxima.cpp:8177
-#: ../../src/wxMaxima.cpp:8186 ../../src/wxMaxima.cpp:8203
-#: ../../src/wxMaxima.cpp:8212 ../../src/wxMaxima.cpp:8232
-#: ../../src/wxMaxima.cpp:8237 ../../src/wxMaxima.cpp:8241
+#: ../../src/wxMaxima.cpp:8070 ../../src/wxMaxima.cpp:8175
+#: ../../src/wxMaxima.cpp:8184 ../../src/wxMaxima.cpp:8201
+#: ../../src/wxMaxima.cpp:8210 ../../src/wxMaxima.cpp:8230
+#: ../../src/wxMaxima.cpp:8235 ../../src/wxMaxima.cpp:8239
 #, fuzzy
 msgid "List"
 msgstr "Λίστα:"
 
-#: ../../src/wxMaxima.cpp:8246 ../../src/wxMaxima.cpp:8251
+#: ../../src/wxMaxima.cpp:8244 ../../src/wxMaxima.cpp:8249
 #, fuzzy
 msgid "List #1"
 msgstr "Λίστα:"
 
-#: ../../src/wxMaxima.cpp:8247 ../../src/wxMaxima.cpp:8252
+#: ../../src/wxMaxima.cpp:8245 ../../src/wxMaxima.cpp:8250
 #, fuzzy
 msgid "List #2"
 msgstr "Λίστα:"
@@ -5475,7 +5495,7 @@ msgstr ""
 msgid "List of changed options"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:7018 ../../src/wxMaxima.cpp:7022
+#: ../../src/wxMaxima.cpp:7016 ../../src/wxMaxima.cpp:7020
 msgid "List of char to String"
 msgstr ""
 
@@ -5484,7 +5504,7 @@ msgstr ""
 msgid "List of chars to string..."
 msgstr "Παράσταση:"
 
-#: ../../src/wxMaxima.cpp:7019
+#: ../../src/wxMaxima.cpp:7017
 #, fuzzy
 msgid "List of chars:"
 msgstr "Ετικέτες εισαγωγής"
@@ -5534,12 +5554,12 @@ msgstr ""
 msgid "List of user-defined properties"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:8197
+#: ../../src/wxMaxima.cpp:8195
 msgid "List with values"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:8147 ../../src/wxMaxima.cpp:8165
-#: ../../src/wxMaxima.cpp:8171 ../../src/wxMaxima.cpp:8217
+#: ../../src/wxMaxima.cpp:8145 ../../src/wxMaxima.cpp:8163
+#: ../../src/wxMaxima.cpp:8169 ../../src/wxMaxima.cpp:8215
 msgid "List:"
 msgstr "Λίστα:"
 
@@ -5547,7 +5567,7 @@ msgstr "Λίστα:"
 msgid "Load"
 msgstr "Φόρτωση"
 
-#: ../../src/wxMaxima.cpp:5919
+#: ../../src/wxMaxima.cpp:5917
 msgid "Load Package"
 msgstr "Φόρτωση πακέτου"
 
@@ -5579,7 +5599,7 @@ msgstr "Φόρτωση αρχείου πακέτου Maxima"
 msgid "Load lapack"
 msgstr "Φόρτωση πακέτου"
 
-#: ../../src/wxMaxima.cpp:6840
+#: ../../src/wxMaxima.cpp:6838
 #, fuzzy
 msgid "Load lisp code"
 msgstr "Φόρτωση πακέτου"
@@ -5609,12 +5629,12 @@ msgstr ""
 msgid "Long Right arrow"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:7843
+#: ../../src/wxMaxima.cpp:7841
 #, fuzzy
 msgid "Loop variable"
 msgstr "Νέα μεταβλητή:"
 
-#: ../../src/wxMaxima.cpp:9791
+#: ../../src/wxMaxima.cpp:9789
 msgid "Lower bound:"
 msgstr "Κάτω φράγμα:"
 
@@ -5631,12 +5651,12 @@ msgstr "Πίνακας"
 msgid "MAXIMA RESPONSE:"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:6785
+#: ../../src/wxMaxima.cpp:6783
 #, fuzzy
 msgid "Macro contents:"
 msgstr "Ελληνικές σταθερές"
 
-#: ../../src/wxMaxima.cpp:6780
+#: ../../src/wxMaxima.cpp:6778
 #, fuzzy
 msgid "Macro name:"
 msgstr "Όνομα πίνακα:"
@@ -5650,7 +5670,7 @@ msgstr ""
 msgid "Main Toolbar\tAlt+Shift+B"
 msgstr "Γραμμή εργαλείων\tAlt+Shift+T"
 
-#: ../../src/wxMaxima.cpp:7530
+#: ../../src/wxMaxima.cpp:7528
 msgid "Make a function value at a specific point known"
 msgstr ""
 
@@ -5663,11 +5683,11 @@ msgstr ""
 msgid "Make function local..."
 msgstr "Εφαρμογή συνάρτησης στα μέλη λίστας"
 
-#: ../../src/wxMaxima.cpp:7831
+#: ../../src/wxMaxima.cpp:7829
 msgid "Map"
 msgstr "Απεικόνιση"
 
-#: ../../src/wxMaxima.cpp:7839
+#: ../../src/wxMaxima.cpp:7837
 #, fuzzy
 msgid "Map an expression"
 msgstr "Ανάπτυξη μία παράστασης"
@@ -5686,7 +5706,7 @@ msgstr "Εφαρμογή συνάρτησης στα μέλη πίνακα"
 msgid "Match Case"
 msgstr "Αρχείο Batch"
 
-#: ../../src/Configuration.cpp:1561
+#: ../../src/Configuration.cpp:1568
 #, fuzzy
 msgid "Math Default"
 msgstr "Προεπιλεγμένος"
@@ -5725,23 +5745,23 @@ msgstr ""
 msgid "Mathematical Symbols"
 msgstr ""
 
-#: ../../src/ToolBar.cpp:256
+#: ../../src/ToolBar.cpp:263
 msgid "Maths"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:7568 ../../src/wxMaxima.cpp:7645
-#: ../../src/wxMaxima.cpp:7650 ../../src/wxMaxima.cpp:7655
-#: ../../src/wxMaxima.cpp:7660 ../../src/wxMaxima.cpp:7664
-#: ../../src/wxMaxima.cpp:7676 ../../src/wxMaxima.cpp:7682
-#: ../../src/wxMaxima.cpp:7687 ../../src/wxMaxima.cpp:7692
-#: ../../src/wxMaxima.cpp:7698 ../../src/wxMaxima.cpp:7703
-#: ../../src/wxMaxima.cpp:7708 ../../src/wxMaxima.cpp:7713
-#: ../../src/wxMaxima.cpp:7719 ../../src/wxMaxima.cpp:7724
-#: ../../src/wxMaxima.cpp:7775 ../../src/wxMaxima.cpp:7805
+#: ../../src/wxMaxima.cpp:7566 ../../src/wxMaxima.cpp:7643
+#: ../../src/wxMaxima.cpp:7648 ../../src/wxMaxima.cpp:7653
+#: ../../src/wxMaxima.cpp:7658 ../../src/wxMaxima.cpp:7662
+#: ../../src/wxMaxima.cpp:7674 ../../src/wxMaxima.cpp:7680
+#: ../../src/wxMaxima.cpp:7685 ../../src/wxMaxima.cpp:7690
+#: ../../src/wxMaxima.cpp:7696 ../../src/wxMaxima.cpp:7701
+#: ../../src/wxMaxima.cpp:7706 ../../src/wxMaxima.cpp:7711
+#: ../../src/wxMaxima.cpp:7717 ../../src/wxMaxima.cpp:7722
+#: ../../src/wxMaxima.cpp:7773 ../../src/wxMaxima.cpp:7803
 msgid "Matrix"
 msgstr "Πίνακας"
 
-#: ../../src/wxMaxima.cpp:7609
+#: ../../src/wxMaxima.cpp:7607
 #, fuzzy
 msgid "Matrix Exponent"
 msgstr "Όνομα πίνακα:"
@@ -5761,16 +5781,16 @@ msgstr "Φόρτωση στυλ από αρχείο"
 msgid "Matrix from csv file..."
 msgstr "Φόρτωση στυλ από αρχείο"
 
-#: ../../src/wxMaxima.cpp:7827
+#: ../../src/wxMaxima.cpp:7825
 #, fuzzy
 msgid "Matrix height"
 msgstr "Αντιστοίχιση παρενθέσεων σε έλεγχο κειμένου"
 
-#: ../../src/wxMaxima.cpp:7760
+#: ../../src/wxMaxima.cpp:7758
 msgid "Matrix map"
 msgstr "Απεικόνιση πίνακα"
 
-#: ../../src/wxMaxima.cpp:9305
+#: ../../src/wxMaxima.cpp:9303
 msgid "Matrix name:"
 msgstr "Όνομα πίνακα:"
 
@@ -5792,15 +5812,15 @@ msgstr ""
 msgid "Matrix to nested List"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:7826
+#: ../../src/wxMaxima.cpp:7824
 #, fuzzy
 msgid "Matrix width"
 msgstr "Γινόμενο"
 
-#: ../../src/wxMaxima.cpp:7579 ../../src/wxMaxima.cpp:7584
-#: ../../src/wxMaxima.cpp:7589 ../../src/wxMaxima.cpp:7594
-#: ../../src/wxMaxima.cpp:7599 ../../src/wxMaxima.cpp:7623
-#: ../../src/wxMaxima.cpp:7759
+#: ../../src/wxMaxima.cpp:7577 ../../src/wxMaxima.cpp:7582
+#: ../../src/wxMaxima.cpp:7587 ../../src/wxMaxima.cpp:7592
+#: ../../src/wxMaxima.cpp:7597 ../../src/wxMaxima.cpp:7621
+#: ../../src/wxMaxima.cpp:7757
 msgid "Matrix:"
 msgstr "Πίνακας:"
 
@@ -5813,7 +5833,7 @@ msgstr ""
 msgid "Maxima Location"
 msgstr "Ερωτήσεις για το Maxima"
 
-#: ../../src/wxMaxima.cpp:8264
+#: ../../src/wxMaxima.cpp:8262
 msgid ""
 "Maxima allows to make functions \"nouns\", which means that they aren't "
 "automatically evaluated as soon as maxima encounters them.\n"
@@ -5824,7 +5844,7 @@ msgid ""
 "evaluated, too."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:3277
+#: ../../src/wxMaxima.cpp:3275
 #, c-format
 msgid "Maxima architecture: %s"
 msgstr ""
@@ -5834,7 +5854,7 @@ msgstr ""
 msgid "Maxima asks a question"
 msgstr "Ερωτήσεις για το Maxima"
 
-#: ../../src/wxMaxima.cpp:3769
+#: ../../src/wxMaxima.cpp:3767
 #, fuzzy
 msgid "Maxima asks a question!"
 msgstr "Ερωτήσεις για το Maxima"
@@ -5853,7 +5873,7 @@ msgid ""
 "continues the one from the last line."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:6750
+#: ../../src/wxMaxima.cpp:6748
 msgid ""
 "Maxima automatically simplifies expressions it gets as input and then tries "
 "to evaluate their value. The ' operator tells maxima that we want a command "
@@ -5874,44 +5894,44 @@ msgstr ""
 msgid "Maxima configuration"
 msgstr "Ρυθμίσεις του wxMaxima"
 
-#: ../../src/wxMaxima.cpp:3096
+#: ../../src/wxMaxima.cpp:3094
 msgid "Maxima didn't attempt to authenticate!"
 msgstr ""
 
-#: ../../src/Configuration.cpp:1536
+#: ../../src/Configuration.cpp:1543
 msgid "Maxima errors"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:3077
+#: ../../src/wxMaxima.cpp:3075
 #, fuzzy
 msgid "Maxima has authenticated!"
 msgstr "Η διαδικασία Maxima τερμάτισε."
 
-#: ../../src/wxMaxima.cpp:10260
+#: ../../src/wxMaxima.cpp:10258
 #, fuzzy
 msgid "Maxima has finished calculating."
 msgstr "Το Maxima κάνει υπολογισμούς"
 
-#: ../../src/wxMaxima.cpp:5551
+#: ../../src/wxMaxima.cpp:5549
 #, fuzzy
 msgid "Maxima has issued an error!"
 msgstr "Ερωτήσεις για το Maxima"
 
-#: ../../src/wxMaxima.cpp:3424
+#: ../../src/wxMaxima.cpp:3422
 #, c-format
 msgid "Maxima has loaded the file %s."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:3188
+#: ../../src/wxMaxima.cpp:3186
 msgid "Maxima has sent a new variable value."
 msgstr ""
 
-#: ../../src/MaximaManual.cpp:533
+#: ../../src/MaximaManual.cpp:564
 #, fuzzy
 msgid "Maxima help file not found!"
 msgstr "Το αρχείο δεν βρέθηκε"
 
-#: ../../src/Configuration.cpp:1529 ../../src/wxMaximaFrame.cpp:1223
+#: ../../src/Configuration.cpp:1536 ../../src/wxMaximaFrame.cpp:1223
 msgid "Maxima input"
 msgstr "Είσοδος Maxima"
 
@@ -5919,7 +5939,7 @@ msgstr "Είσοδος Maxima"
 msgid "Maxima is calculating"
 msgstr "Το Maxima κάνει υπολογισμούς"
 
-#: ../../src/wxMaxima.cpp:4791
+#: ../../src/wxMaxima.cpp:4789
 #, fuzzy
 msgid "Maxima is ready for input."
 msgstr "Είσοδος Maxima"
@@ -5929,20 +5949,20 @@ msgstr "Είσοδος Maxima"
 msgid "Maxima not found as %s"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:5930
+#: ../../src/wxMaxima.cpp:5928
 msgid "Maxima package (*.mac)|*.mac"
 msgstr "Πακέτο Maxima (*.mac)|*.mac"
 
-#: ../../src/wxMaxima.cpp:5921
+#: ../../src/wxMaxima.cpp:5919
 msgid "Maxima package (*.mac)|*.mac|Lisp package (*.lisp)|*.lisp|All|*"
 msgstr "Πακέτο Maxima(*.mac)|*.mac|πακέτο Lisp (*.lisp)|*.lisp|All|*"
 
-#: ../../src/wxMaxima.cpp:2673
+#: ../../src/wxMaxima.cpp:2671
 #, fuzzy, c-format
 msgid "Maxima process (pid %i) has terminated with exit code %i.\n"
 msgstr "Η διαδικασία Maxima τερμάτισε."
 
-#: ../../src/wxMaxima.cpp:2703
+#: ../../src/wxMaxima.cpp:2701
 msgid "Maxima process terminated unexpectedly."
 msgstr ""
 
@@ -5958,15 +5978,15 @@ msgid ""
 "a little bit of time this switch allows to disable this behavior."
 msgstr ""
 
-#: ../../src/Configuration.cpp:1531
+#: ../../src/Configuration.cpp:1538
 msgid "Maxima questions"
 msgstr "Ερωτήσεις για το Maxima"
 
-#: ../../src/wxMaxima.cpp:3186
+#: ../../src/wxMaxima.cpp:3184
 msgid "Maxima sends a new set of auto-completable symbols."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:3611
+#: ../../src/wxMaxima.cpp:3609
 msgid "Maxima sends us a new set of variables for the watch list."
 msgstr ""
 
@@ -6019,7 +6039,7 @@ msgid ""
 "3602879701896397/36028797018963968 for 0.1."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:6845
+#: ../../src/wxMaxima.cpp:6843
 #, fuzzy
 msgid "Maxima to string"
 msgstr "Ερωτήσεις για το Maxima"
@@ -6029,7 +6049,7 @@ msgstr "Ερωτήσεις για το Maxima"
 msgid "Maxima usage"
 msgstr "Εικοίδιο wxMaxima"
 
-#: ../../src/wxMaxima.cpp:3206
+#: ../../src/wxMaxima.cpp:3204
 #, c-format
 msgid "Maxima user configuration lies in directory %s"
 msgstr ""
@@ -6054,27 +6074,27 @@ msgstr ""
 "Το Maxima χρησιμοποιεί το ‘:’ για απόδοση τιμών σε μεταβλητές ('a : 3;') και "
 "το ‘:=’ για ορισμό συναρτήσεων ('f(x) := x^2;')."
 
-#: ../../src/wxMaxima.cpp:3246
+#: ../../src/wxMaxima.cpp:3244
 #, c-format
 msgid "Maxima uses temp directory %s"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:3272
+#: ../../src/wxMaxima.cpp:3270
 #, c-format
 msgid "Maxima version: %s"
 msgstr ""
 
-#: ../../src/MaximaManual.cpp:395
+#: ../../src/MaximaManual.cpp:409
 #, c-format
 msgid "Maxima version: %s, Anchors cache version"
 msgstr ""
 
-#: ../../src/Configuration.cpp:1535
+#: ../../src/Configuration.cpp:1542
 #, fuzzy
 msgid "Maxima warnings"
 msgstr "Επιλογές του Maxima"
 
-#: ../../src/wxMaxima.cpp:3414
+#: ../../src/wxMaxima.cpp:3412
 #, c-format
 msgid "Maxima was compiled using %s"
 msgstr ""
@@ -6091,22 +6111,22 @@ msgid ""
 "    result_b:b=at(b,%);"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:3291
+#: ../../src/wxMaxima.cpp:3289
 #, c-format
 msgid "Maxima's HTML manuals are in directory %s"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:2781
+#: ../../src/wxMaxima.cpp:2779
 #, c-format
 msgid "Maxima's PID is %li"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:3282
+#: ../../src/wxMaxima.cpp:3280
 #, c-format
 msgid "Maxima's manual lies in directory %s"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:3405
+#: ../../src/wxMaxima.cpp:3403
 #, c-format
 msgid "Maxima's share files lie in directory %s"
 msgstr ""
@@ -6161,7 +6181,7 @@ msgid ""
 "This icon indicates if data is transferred between maxima and wxMaxima."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:8871
+#: ../../src/wxMaxima.cpp:8869
 msgid "Maximum absolute value printed without exponent"
 msgstr ""
 
@@ -6169,7 +6189,7 @@ msgstr ""
 msgid "Maximum bitmap size on clipboard [Mb]:"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:8873
+#: ../../src/wxMaxima.cpp:8871
 msgid "Maximum number of digits to be displayed:"
 msgstr ""
 
@@ -6190,7 +6210,7 @@ msgstr "Τεστ μέσης τιμής..."
 msgid "Mean..."
 msgstr "Απεικόνιση..."
 
-#: ../../src/wxMaxima.cpp:9243
+#: ../../src/wxMaxima.cpp:9241
 msgid "Mean:"
 msgstr "Μέση τιμή:"
 
@@ -6216,7 +6236,7 @@ msgstr "Συγχώνευση κελιών"
 msgid "Merge the text from two input cells into one"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:5501
+#: ../../src/wxMaxima.cpp:5499
 msgid "Message from the stdout of Maxima: "
 msgstr ""
 
@@ -6224,12 +6244,12 @@ msgstr ""
 msgid "Methods of generating a matrix"
 msgstr ""
 
-#: ../../src/Worksheet.cpp:7145
+#: ../../src/Worksheet.cpp:7109
 #, c-format
 msgid "Middle-click clipboard data: %s"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:8869
+#: ../../src/wxMaxima.cpp:8867
 msgid "Minimum absolute value printed without exponent:"
 msgstr ""
 
@@ -6237,7 +6257,7 @@ msgstr ""
 msgid "Misc"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:10188 ../../src/wxMaxima.cpp:10190
+#: ../../src/wxMaxima.cpp:10186 ../../src/wxMaxima.cpp:10188
 #, fuzzy
 msgid "Mismatched parenthesis"
 msgstr "Αντιστοίχιση παρενθέσεων σε έλεγχο κειμένου"
@@ -6258,21 +6278,21 @@ msgstr ""
 msgid "Multiply matrices..."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:7604
+#: ../../src/wxMaxima.cpp:7602
 msgid "Multiply two matrices"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:9256
+#: ../../src/wxMaxima.cpp:9254
 #, fuzzy
 msgid "Multivariate linear regression"
 msgstr "Γραμμική παλινδρόμηση"
 
-#: ../../src/wxMaxima.cpp:7466
+#: ../../src/wxMaxima.cpp:7464
 #, fuzzy
 msgid "Name of t:"
 msgstr "Όνομα:"
 
-#: ../../src/wxMaxima.cpp:7462
+#: ../../src/wxMaxima.cpp:7460
 #, fuzzy
 msgid "Name of x:"
 msgstr "Όνομα:"
@@ -6286,7 +6306,7 @@ msgstr ""
 msgid "Never"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:6259
+#: ../../src/wxMaxima.cpp:6257
 msgid "Never autosubscript this variable"
 msgstr ""
 
@@ -6298,7 +6318,7 @@ msgstr ""
 msgid "Never offer known answers"
 msgstr ""
 
-#: ../../src/ToolBar.cpp:161
+#: ../../src/ToolBar.cpp:168
 msgid "New"
 msgstr ""
 
@@ -6307,19 +6327,19 @@ msgstr ""
 msgid "New\tCtrl+N"
 msgstr "Νέο\tCtrl+N"
 
-#: ../../src/ToolBar.cpp:615
+#: ../../src/ToolBar.cpp:610
 msgid "New button"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:2185
+#: ../../src/wxMaxima.cpp:2183
 msgid "New connection attempt whilst already connected."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:2190
+#: ../../src/wxMaxima.cpp:2188
 msgid "New connection attempt, but no currently running maxima process."
 msgstr ""
 
-#: ../../src/ToolBar.cpp:161
+#: ../../src/ToolBar.cpp:168
 #, fuzzy
 msgid "New document"
 msgstr "Άνοιγμα εγγράφου"
@@ -6328,18 +6348,18 @@ msgstr "Άνοιγμα εγγράφου"
 msgid "New lines: Jump to text"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:3596
+#: ../../src/wxMaxima.cpp:3594
 #, c-format
 msgid "New maxima Operators detected: %s"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:7023
+#: ../../src/wxMaxima.cpp:7021
 #, fuzzy
 msgid "New part:"
 msgstr "Νέα μεταβλητή:"
 
-#: ../../src/wxMaxima.cpp:8537 ../../src/wxMaxima.cpp:8557
-#: ../../src/wxMaxima.cpp:8638 ../../src/wxMaxima.cpp:8643
+#: ../../src/wxMaxima.cpp:8535 ../../src/wxMaxima.cpp:8555
+#: ../../src/wxMaxima.cpp:8636 ../../src/wxMaxima.cpp:8641
 msgid "New variable:"
 msgstr "Νέα μεταβλητή:"
 
@@ -6366,11 +6386,11 @@ msgstr "Πίνακας:"
 msgid "No Scalar"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:10221
+#: ../../src/wxMaxima.cpp:10219
 msgid "No dollar ($) or semicolon (;) at the end of command"
 msgstr ""
 
-#: ../../src/MaximaManual.cpp:413
+#: ../../src/MaximaManual.cpp:427
 msgid "No entries in the caches for the subjects the manual contains."
 msgstr ""
 
@@ -6379,27 +6399,27 @@ msgid ""
 "No file with the subjects the manual contained in the last wxMaxima run."
 msgstr ""
 
-#: ../../src/Image.cpp:741
+#: ../../src/Image.cpp:560
 msgid "No gnuplot data!"
 msgstr ""
 
-#: ../../src/Image.cpp:774
+#: ../../src/Image.cpp:593
 msgid "No gnuplot source!"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:6370 ../../src/wxMaxima.cpp:6390
+#: ../../src/wxMaxima.cpp:6368 ../../src/wxMaxima.cpp:6388
 msgid "No matches found!"
 msgstr "Καμμία αντιστοίχιση δεν βρέθηκε"
 
-#: ../../src/wxMaxima.cpp:9338
+#: ../../src/wxMaxima.cpp:9336
 msgid "No saving on close necessary."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:3022
+#: ../../src/wxMaxima.cpp:3020
 msgid "No topics found in topic flag"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:3009
+#: ../../src/wxMaxima.cpp:3007
 msgid "No topics found in topic tag"
 msgstr ""
 
@@ -6428,11 +6448,11 @@ msgstr ""
 msgid "Norwegian"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:7786
+#: ../../src/wxMaxima.cpp:7784
 msgid "Not a valid matrix dimension!"
 msgstr "Μη έγκυρη διάσταση πίνακα!"
 
-#: ../../src/wxMaxima.cpp:7482 ../../src/wxMaxima.cpp:7504
+#: ../../src/wxMaxima.cpp:7480 ../../src/wxMaxima.cpp:7502
 msgid "Not a valid number of equations!"
 msgstr "Μη έγκυρος αριθμός εξισώσεων!"
 
@@ -6444,20 +6464,20 @@ msgstr ""
 msgid "Nu"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:8563
+#: ../../src/wxMaxima.cpp:8561
 msgid "Num. deg:"
 msgstr "Βαθμός Αριθμητή:"
 
-#: ../../src/wxMaxima.cpp:8178
+#: ../../src/wxMaxima.cpp:8176
 #, fuzzy
 msgid "Number of elements"
 msgstr "Αριθμός εξισώσεων:"
 
-#: ../../src/wxMaxima.cpp:7476 ../../src/wxMaxima.cpp:7498
+#: ../../src/wxMaxima.cpp:7474 ../../src/wxMaxima.cpp:7496
 msgid "Number of equations:"
 msgstr "Αριθμός εξισώσεων:"
 
-#: ../../src/wxMaxima.cpp:7114
+#: ../../src/wxMaxima.cpp:7112
 #, fuzzy
 msgid "Number to octets"
 msgstr "Αριθμός εξισώσεων:"
@@ -6471,12 +6491,12 @@ msgstr "Αριθμός εξισώσεων:"
 msgid "Number types"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:7115
+#: ../../src/wxMaxima.cpp:7113
 #, fuzzy
 msgid "Number:"
 msgstr "Αριθμοί"
 
-#: ../../src/Configuration.cpp:1524
+#: ../../src/Configuration.cpp:1531
 msgid "Numbers"
 msgstr "Αριθμοί"
 
@@ -6485,7 +6505,7 @@ msgstr "Αριθμοί"
 msgid "Numeric output"
 msgstr "Εναλλαγή αριθμητικού αποτελέσματος"
 
-#: ../../src/wxMaxima.cpp:7663
+#: ../../src/wxMaxima.cpp:7661
 msgid "Numerical QR decomposition of a matrix"
 msgstr ""
 
@@ -6494,7 +6514,7 @@ msgstr ""
 msgid "Numerical operations (lapack)"
 msgstr "Αριθμητική Ολοκλήρωση"
 
-#: ../../src/wxMaxima.cpp:7455
+#: ../../src/wxMaxima.cpp:7453
 #, fuzzy
 msgid "Numerical solution for 1st degree ODE"
 msgstr "Επίλυση προβλήματος αρχικών τιμών για πρωτοβάθμια ΣΔΕ"
@@ -6512,8 +6532,8 @@ msgstr "Εύρεση όλων των ριζών ενός πολυωνύμου"
 #: ../../src/ChangeLogDialog.cpp:72 ../../src/LicenseDialog.cpp:72
 #: ../../src/MaxSizeChooser.cpp:44 ../../src/MaxSizeChooser.cpp:49
 #: ../../src/ResolutionChooser.cpp:39 ../../src/ResolutionChooser.cpp:44
-#: ../../src/TipOfTheDay.cpp:300 ../../src/wxMaxima.cpp:9527
-#: ../../src/wxMaxima.cpp:9911
+#: ../../src/TipOfTheDay.cpp:300 ../../src/wxMaxima.cpp:9525
+#: ../../src/wxMaxima.cpp:9909
 msgid "OK"
 msgstr "Εντάξει"
 
@@ -6522,26 +6542,26 @@ msgstr "Εντάξει"
 msgid "OS: %s Version %i.%i"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:7835 ../../src/wxMaxima.cpp:7845
+#: ../../src/wxMaxima.cpp:7833 ../../src/wxMaxima.cpp:7843
 #, fuzzy
 msgid "Object composed of elements"
 msgstr "Αριθμός εξισώσεων:"
 
-#: ../../src/wxMaxima.cpp:7313
+#: ../../src/wxMaxima.cpp:7311
 #, fuzzy
 msgid "Object name:"
 msgstr "Λίστα:"
 
-#: ../../src/wxMaxima.cpp:6914
+#: ../../src/wxMaxima.cpp:6912
 #, fuzzy
 msgid "Object:"
 msgstr "Λίστα:"
 
-#: ../../src/wxMaxima.cpp:7119
+#: ../../src/wxMaxima.cpp:7117
 msgid "Octets to Number"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:7124
+#: ../../src/wxMaxima.cpp:7122
 msgid "Octets to String"
 msgstr ""
 
@@ -6554,7 +6574,7 @@ msgstr ""
 msgid "Octets to string..."
 msgstr "Παράσταση:"
 
-#: ../../src/wxMaxima.cpp:7120 ../../src/wxMaxima.cpp:7125
+#: ../../src/wxMaxima.cpp:7118 ../../src/wxMaxima.cpp:7123
 msgid "Octets:"
 msgstr ""
 
@@ -6566,8 +6586,8 @@ msgstr ""
 msgid "Offer answers for questions known from previous runs"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:8537 ../../src/wxMaxima.cpp:8558
-#: ../../src/wxMaxima.cpp:8637 ../../src/wxMaxima.cpp:8643
+#: ../../src/wxMaxima.cpp:8535 ../../src/wxMaxima.cpp:8556
+#: ../../src/wxMaxima.cpp:8635 ../../src/wxMaxima.cpp:8641
 msgid "Old variable:"
 msgstr "Παλιά μεταβλητή:"
 
@@ -6588,7 +6608,7 @@ msgstr "Ολέθριο σφάλμα"
 msgid "On lisp errors"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:9241
+#: ../../src/wxMaxima.cpp:9239
 msgid "One sample t-test"
 msgstr "t-τεστ ενός δείγματος"
 
@@ -6605,8 +6625,8 @@ msgid "Only user-defined labels"
 msgstr ""
 
 #: ../../src/ConfigDialogue.cpp:1423 ../../src/ConfigDialogue.cpp:1484
-#: ../../src/ConfigDialogue.cpp:1527 ../../src/ToolBar.cpp:163
-#: ../../src/main.cpp:522 ../../src/wxMaxima.cpp:5793
+#: ../../src/ConfigDialogue.cpp:1527 ../../src/ToolBar.cpp:170
+#: ../../src/main.cpp:522 ../../src/wxMaxima.cpp:5791
 msgid "Open"
 msgstr "Άνοιγμα"
 
@@ -6626,15 +6646,15 @@ msgstr "Άνοιγμα ενός εγγράφου"
 msgid "Open a new window"
 msgstr "Άνοιγμα νέου παραθύρου"
 
-#: ../../src/ToolBar.cpp:621
+#: ../../src/ToolBar.cpp:616
 msgid "Open and save button"
 msgstr ""
 
-#: ../../src/ToolBar.cpp:163
+#: ../../src/ToolBar.cpp:170
 msgid "Open document"
 msgstr "Άνοιγμα εγγράφου"
 
-#: ../../src/wxMaxima.cpp:6872
+#: ../../src/wxMaxima.cpp:6870
 msgid "Open for appending"
 msgstr ""
 
@@ -6642,7 +6662,7 @@ msgstr ""
 msgid "Open for appending..."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:6877
+#: ../../src/wxMaxima.cpp:6875
 msgid "Open for reading"
 msgstr ""
 
@@ -6651,7 +6671,7 @@ msgstr ""
 msgid "Open for reading..."
 msgstr "Παράσταση:"
 
-#: ../../src/wxMaxima.cpp:6882
+#: ../../src/wxMaxima.cpp:6880
 msgid "Open for writing"
 msgstr ""
 
@@ -6660,20 +6680,20 @@ msgstr ""
 msgid "Open for writing..."
 msgstr "Εξαγωγή..."
 
-#: ../../src/wxMaxima.cpp:9273
+#: ../../src/wxMaxima.cpp:9271
 msgid "Open matrix"
 msgstr "Άνοιγμα πίνακα"
 
-#: ../../src/wxMaxima.cpp:4001
+#: ../../src/wxMaxima.cpp:3999
 msgid "Opening a wxmx file"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:3857 ../../src/wxMaxima.cpp:3911
-#: ../../src/wxMaxima.cpp:4005 ../../src/wxMaxima.cpp:4307
+#: ../../src/wxMaxima.cpp:3855 ../../src/wxMaxima.cpp:3909
+#: ../../src/wxMaxima.cpp:4003 ../../src/wxMaxima.cpp:4305
 msgid "Opening file"
 msgstr "Άνοιγμα αρχείου"
 
-#: ../../src/HelpBrowser.cpp:184 ../../src/wxMaxima.cpp:4674
+#: ../../src/HelpBrowser.cpp:184 ../../src/wxMaxima.cpp:4672
 #, c-format
 msgid "Opening help file %s"
 msgstr ""
@@ -6686,11 +6706,11 @@ msgstr ""
 msgid "Optimize for memory"
 msgstr ""
 
-#: ../../src/ConfigDialogue.cpp:262 ../../src/ToolBar.cpp:186
+#: ../../src/ConfigDialogue.cpp:262 ../../src/ToolBar.cpp:193
 msgid "Options"
 msgstr "Επιλογές"
 
-#: ../../src/Configuration.cpp:1552
+#: ../../src/Configuration.cpp:1559
 msgid "Outdated cells"
 msgstr "Μη ενημερωμένα κελιά"
 
@@ -6707,11 +6727,11 @@ msgstr ""
 msgid "Output Rational Fortran"
 msgstr ""
 
-#: ../../src/Configuration.cpp:1532
+#: ../../src/Configuration.cpp:1539
 msgid "Output labels"
 msgstr "Ετικέτες εξόδου"
 
-#: ../../src/wxMaxima.cpp:6189
+#: ../../src/wxMaxima.cpp:6187
 msgid ""
 "PNG image (*.png)|*.png|JPEG image (*.jpg)|*.jpg|GIF image (*.gif)|*.gif|"
 "Scaleable vector graphics (*.svg)|*.svg|Windows bitmap (*.bmp)|*.bmp|"
@@ -6719,7 +6739,7 @@ msgid ""
 "pixmap (*.xpm)|*.xpm"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:9868
+#: ../../src/wxMaxima.cpp:9866
 msgid ""
 "PNG image (*.png)|*.png|JPEG image (*.jpg)|*.jpg|Windows bitmap (*.bmp)|*."
 "bmp|GIF image (*.gif)|*.gif|Portable anymap (*.pnm)|*.pnm|Tagged image file "
@@ -6731,7 +6751,7 @@ msgid ""
 "PNG images can be read by old wxMaxima versions - but aren't really scalable."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:8561
+#: ../../src/wxMaxima.cpp:8559
 msgid "Pade approximation"
 msgstr "Προσέγγιση Pade..."
 
@@ -6748,7 +6768,7 @@ msgstr "Αλλαγή σελίδας"
 msgid "Parallel Substitute..."
 msgstr "Αντικατάσταση..."
 
-#: ../../src/wxMaxima.cpp:8375
+#: ../../src/wxMaxima.cpp:8373
 msgid "Parallel substitution"
 msgstr ""
 
@@ -6756,12 +6776,12 @@ msgstr ""
 msgid "Parallel to"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:6811
+#: ../../src/wxMaxima.cpp:6809
 #, fuzzy
 msgid "Parameter name:"
 msgstr "Όνομα πίνακα:"
 
-#: ../../src/wxMaxima.cpp:6768 ../../src/wxMaxima.cpp:6781
+#: ../../src/wxMaxima.cpp:6766 ../../src/wxMaxima.cpp:6779
 #, fuzzy
 msgid "Parameter(s):"
 msgstr "Μεταβλητή(-ές):"
@@ -6771,7 +6791,7 @@ msgstr "Μεταβλητή(-ές):"
 msgid "Parametric Plot"
 msgstr "Παραμετρικό γράφημα"
 
-#: ../../src/wxMaxima.cpp:7032
+#: ../../src/wxMaxima.cpp:7030
 msgid "Parse string"
 msgstr ""
 
@@ -6784,7 +6804,7 @@ msgstr "Εισαγωγή πίνακα..."
 msgid "Parsing output"
 msgstr "Συντακτική ανάλυση αποτελέσματος"
 
-#: ../../src/wxMaxima.cpp:7097
+#: ../../src/wxMaxima.cpp:7095
 msgid "Part:"
 msgstr ""
 
@@ -6792,16 +6812,16 @@ msgstr ""
 msgid "Partial &Fractions..."
 msgstr "Μερικά κλάσματα..."
 
-#: ../../src/wxMaxima.cpp:8613
+#: ../../src/wxMaxima.cpp:8611
 #, fuzzy
 msgid "Partial Fractions"
 msgstr "Μερικά κλάσματα"
 
-#: ../../src/wxMaxima.cpp:4383
+#: ../../src/wxMaxima.cpp:4381
 msgid "Parts of the document will not be loaded correctly!"
 msgstr "Μέρη του εγγράφου δεν θα φορτωθούν σωστά"
 
-#: ../../src/ToolBar.cpp:197 ../../src/Worksheet.cpp:1612
+#: ../../src/ToolBar.cpp:204 ../../src/Worksheet.cpp:1612
 #: ../../src/Worksheet.cpp:1643
 msgid "Paste"
 msgstr "Επικόλληση"
@@ -6810,7 +6830,7 @@ msgstr "Επικόλληση"
 msgid "Paste\tCtrl+V"
 msgstr "Επικόλληση\tCtrl+V"
 
-#: ../../src/ToolBar.cpp:198
+#: ../../src/ToolBar.cpp:205
 msgid "Paste from clipboard"
 msgstr "Επικόλληση κειμένου από το πρόχειρο"
 
@@ -6835,7 +6855,7 @@ msgstr ""
 msgid "Piechart..."
 msgstr "Κυκλικό διάγραμμα (πίτας)"
 
-#: ../../src/wxMaxima.cpp:4500
+#: ../../src/wxMaxima.cpp:4498
 msgid "Please configure wxMaxima with 'Edit->Configure'."
 msgstr ""
 "Παρακαλώ ρυθμίστε το wxMaxima μεσα απο το μενου 'Επεξεργασία->Ρυθμίσεις'."
@@ -6861,7 +6881,7 @@ msgstr "3-Δ γράφημα..."
 msgid "Plot &Format..."
 msgstr "Μορφή γραφήματος..."
 
-#: ../../src/wxMaxima.cpp:8738 ../../src/wxMaxima.cpp:9819
+#: ../../src/wxMaxima.cpp:8736 ../../src/wxMaxima.cpp:9817
 msgid "Plot 2D"
 msgstr "2-Δ γράφημα"
 
@@ -6869,7 +6889,7 @@ msgstr "2-Δ γράφημα"
 msgid "Plot 2D..."
 msgstr "2-Δ γράφημα..."
 
-#: ../../src/wxMaxima.cpp:8715 ../../src/wxMaxima.cpp:9830
+#: ../../src/wxMaxima.cpp:8713 ../../src/wxMaxima.cpp:9828
 msgid "Plot 3D"
 msgstr "3-Δ γράφημα"
 
@@ -6877,19 +6897,19 @@ msgstr "3-Δ γράφημα"
 msgid "Plot 3D..."
 msgstr "3-Δ γράφημα..."
 
-#: ../../src/wxMaxima.cpp:9213
+#: ../../src/wxMaxima.cpp:9211
 msgid "Plot as bars"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:9217
+#: ../../src/wxMaxima.cpp:9215
 msgid "Plot as error bars"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:9221
+#: ../../src/wxMaxima.cpp:9219
 msgid "Plot as pie chart"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:8749
+#: ../../src/wxMaxima.cpp:8747
 msgid "Plot format"
 msgstr "Μορφή γραφήματος"
 
@@ -6910,19 +6930,19 @@ msgstr "Λίστα:"
 msgid "Plot using Draw"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:7448
+#: ../../src/wxMaxima.cpp:7446
 msgid "Point #1 with known value:"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:7450
+#: ../../src/wxMaxima.cpp:7448
 msgid "Point #2 with known value:"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:7424 ../../src/wxMaxima.cpp:7435
+#: ../../src/wxMaxima.cpp:7422 ../../src/wxMaxima.cpp:7433
 msgid "Point the value is known at:"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:7533 ../../src/wxMaxima.cpp:8572
+#: ../../src/wxMaxima.cpp:7531 ../../src/wxMaxima.cpp:8570
 msgid "Point:"
 msgstr "Σημείο:"
 
@@ -6935,18 +6955,18 @@ msgstr "Σημείο:"
 msgid "Polish"
 msgstr "Πολωνικά"
 
-#: ../../src/wxMaxima.cpp:8599 ../../src/wxMaxima.cpp:8604
-#: ../../src/wxMaxima.cpp:8609
+#: ../../src/wxMaxima.cpp:8597 ../../src/wxMaxima.cpp:8602
+#: ../../src/wxMaxima.cpp:8607
 msgid "Polynomial 1:"
 msgstr "Πολυώνυμο 1:"
 
-#: ../../src/wxMaxima.cpp:8599 ../../src/wxMaxima.cpp:8604
-#: ../../src/wxMaxima.cpp:8609
+#: ../../src/wxMaxima.cpp:8597 ../../src/wxMaxima.cpp:8602
+#: ../../src/wxMaxima.cpp:8607
 msgid "Polynomial 2:"
 msgstr "Πολυώνυμο 2:"
 
-#: ../../src/wxMaxima.cpp:7345 ../../src/wxMaxima.cpp:7356
-#: ../../src/wxMaxima.cpp:7371
+#: ../../src/wxMaxima.cpp:7343 ../../src/wxMaxima.cpp:7354
+#: ../../src/wxMaxima.cpp:7369
 #, fuzzy
 msgid "Polynomial:"
 msgstr "Πολυώνυμο 1:"
@@ -6967,12 +6987,12 @@ msgstr "Πορτογαλλικά(Βραζιλίας)"
 msgid "Position of a match"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:6853 ../../src/wxMaxima.cpp:7024
+#: ../../src/wxMaxima.cpp:6851 ../../src/wxMaxima.cpp:7022
 #, fuzzy
 msgid "Position:"
 msgstr "Συνθήκη:"
 
-#: ../../src/wxMaxima.cpp:8576
+#: ../../src/wxMaxima.cpp:8574
 #, fuzzy
 msgid "Power series"
 msgstr "Δυναμοσειρές"
@@ -6982,7 +7002,7 @@ msgstr "Δυναμοσειρές"
 msgid "Power series..."
 msgstr "Δυναμοσειρές"
 
-#: ../../src/wxMaxima.cpp:8845
+#: ../../src/wxMaxima.cpp:8843
 msgid "Precision"
 msgstr "Ακρίβεια"
 
@@ -6998,7 +7018,7 @@ msgstr ""
 msgid "Preferences"
 msgstr ""
 
-#: ../../src/ToolBar.cpp:630
+#: ../../src/ToolBar.cpp:625
 msgid "Preferences button"
 msgstr ""
 
@@ -7024,15 +7044,15 @@ msgstr ""
 msgid "Previous Command\tAlt+Up"
 msgstr "Προηγούμενη εντολή\tAlt+Up"
 
-#: ../../src/ToolBar.cpp:171
+#: ../../src/ToolBar.cpp:178
 msgid "Print"
 msgstr "Εκτύπωση"
 
-#: ../../src/ToolBar.cpp:624
+#: ../../src/ToolBar.cpp:619
 msgid "Print button"
 msgstr ""
 
-#: ../../src/ToolBar.cpp:171 ../../src/wxMaximaFrame.cpp:857
+#: ../../src/ToolBar.cpp:178 ../../src/wxMaximaFrame.cpp:857
 msgid "Print document"
 msgstr "Εκτύπωση εγγράφου"
 
@@ -7059,13 +7079,13 @@ msgstr "Εκτύπωση"
 msgid "Privacy settings"
 msgstr "Η εξαγωγή σε TeX απέτυχε"
 
-#: ../../src/Worksheet.cpp:6112
+#: ../../src/Worksheet.cpp:6101
 msgid ""
 "Produced invalid XML. The erroneous XML data has therefore not been saved "
 "but has been put on the clipboard in order to allow to debug it."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:8699
+#: ../../src/wxMaxima.cpp:8697
 msgid "Product"
 msgstr "Γινόμενο"
 
@@ -7079,12 +7099,12 @@ msgstr "Γινόμενο"
 msgid "Program"
 msgstr "Ιστόγραμμα"
 
-#: ../../src/wxMaxima.cpp:6693
+#: ../../src/wxMaxima.cpp:6691
 #, fuzzy
 msgid "Program (no local variables)"
 msgstr "Αλλαγή μεταβλητής"
 
-#: ../../src/wxMaxima.cpp:6684
+#: ../../src/wxMaxima.cpp:6682
 msgid "Program block"
 msgstr ""
 
@@ -7104,7 +7124,7 @@ msgstr ""
 msgid "Push"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:8146
+#: ../../src/wxMaxima.cpp:8144
 #, fuzzy
 msgid "Push an element to a list"
 msgstr "Δημιουργία λίστας από παράσταση"
@@ -7113,7 +7133,7 @@ msgstr "Δημιουργία λίστας από παράσταση"
 msgid "QR decomposition"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:3372
+#: ../../src/wxMaxima.cpp:3370
 msgid "Querying gnuplot which graphics drivers it supports."
 msgstr ""
 
@@ -7121,7 +7141,7 @@ msgstr ""
 msgid "RTF with OMML maths"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:8590
+#: ../../src/wxMaxima.cpp:8588
 msgid "Range radius:"
 msgstr ""
 
@@ -7152,18 +7172,18 @@ msgstr "Υπολογισμός όλων των κελιών στο έγγραφ�
 msgid "Re-evaluate all cells below the one the cursor is in"
 msgstr "Υπολογισμός όλων των κελιών στο έγγραφο"
 
-#: ../../src/wxMaxima.cpp:7145
+#: ../../src/wxMaxima.cpp:7143
 msgid ""
 "Re-using a compiled regex is faster that using the same regex string "
 "multiple times."
 msgstr ""
 
-#: ../../src/Worksheet.cpp:6945
+#: ../../src/Worksheet.cpp:6909
 #, fuzzy
 msgid "Read .wxm data from clipboard"
 msgstr "Επικόλληση κειμένου από το πρόχειρο"
 
-#: ../../src/wxMaxima.cpp:7232
+#: ../../src/wxMaxima.cpp:7230
 msgid "Read Directory"
 msgstr ""
 
@@ -7176,15 +7196,15 @@ msgstr "Φόρτωση στυλ από αρχείο"
 msgid "Read Matrix..."
 msgstr "Aνάγνωση πίνακα..."
 
-#: ../../src/wxMaxima.cpp:6828
+#: ../../src/wxMaxima.cpp:6826
 msgid "Read a structure field"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:6903 ../../src/wxMaxima.cpp:6907
+#: ../../src/wxMaxima.cpp:6901 ../../src/wxMaxima.cpp:6905
 msgid "Read byte"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:6899
+#: ../../src/wxMaxima.cpp:6897
 #, fuzzy
 msgid "Read char"
 msgstr "Aνάγνωση πίνακα..."
@@ -7194,7 +7214,7 @@ msgstr "Aνάγνωση πίνακα..."
 msgid "Read config to file"
 msgstr "Αποθήκευση επιλογής σε αρχείο"
 
-#: ../../src/wxMaxima.cpp:7226
+#: ../../src/wxMaxima.cpp:7224
 #, fuzzy
 msgid "Read environment variable"
 msgstr "Επιπρόσθετοι παράμετροι:"
@@ -7204,7 +7224,7 @@ msgstr "Επιπρόσθετοι παράμετροι:"
 msgid "Read environment variable..."
 msgstr "Διαγραφή μίας μεταβλητής"
 
-#: ../../src/wxMaxima.cpp:6895
+#: ../../src/wxMaxima.cpp:6893
 msgid "Read line"
 msgstr ""
 
@@ -7252,12 +7272,12 @@ msgstr "Επανάκληση επόμενης εντολής από το ιστ�
 msgid "Recall previous command from history"
 msgstr "Επανάκληση προηγούμενης εντολής από το ιστορικό "
 
-#: ../../src/wxMaxima.cpp:3017
+#: ../../src/wxMaxima.cpp:3015
 #, c-format
 msgid "Received manual topic request: %s"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:2778
+#: ../../src/wxMaxima.cpp:2776
 #, c-format
 msgid "Received maxima's first prompt: %s"
 msgstr ""
@@ -7275,11 +7295,11 @@ msgstr "Καρτεσιανή μορφή"
 msgid "Recursive Substitute..."
 msgstr "Αντικατάσταση..."
 
-#: ../../src/wxMaxima.cpp:8383
+#: ../../src/wxMaxima.cpp:8381
 msgid "Recursive substitution"
 msgstr ""
 
-#: ../../src/ToolBar.cpp:179
+#: ../../src/ToolBar.cpp:186
 msgid "Redo"
 msgstr ""
 
@@ -7301,7 +7321,7 @@ msgstr "Αναγωγή (τρ)"
 msgid "Reduce trigonometric expression"
 msgstr "Αναγωγή τριγωνομετρικής παράστασης"
 
-#: ../../src/wxMaxima.cpp:2118 ../../src/wxMaxima.cpp:10360
+#: ../../src/wxMaxima.cpp:2116 ../../src/wxMaxima.cpp:10358
 msgid "Refusing to send cell to maxima: "
 msgstr ""
 
@@ -7309,11 +7329,11 @@ msgstr ""
 msgid "RegEx"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:7156
+#: ../../src/wxMaxima.cpp:7154
 msgid "Regex match"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:7151
+#: ../../src/wxMaxima.cpp:7149
 msgid "Regex match position"
 msgstr ""
 
@@ -7339,7 +7359,7 @@ msgstr ""
 msgid "Reload the style settings from disc"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:9534
+#: ../../src/wxMaxima.cpp:9532
 #, c-format
 msgid "Reloading image file %s."
 msgstr ""
@@ -7379,16 +7399,16 @@ msgstr ""
 msgid "Remove all occurrences of a word..."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:7072
+#: ../../src/wxMaxima.cpp:7070
 msgid "Remove all occurrences of part"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:8230
+#: ../../src/wxMaxima.cpp:8228
 #, fuzzy
 msgid "Remove an element from a list"
 msgstr "Δημιουργία λίστας από παράσταση"
 
-#: ../../src/wxMaxima.cpp:7199
+#: ../../src/wxMaxima.cpp:7197
 msgid "Remove directory"
 msgstr ""
 
@@ -7404,7 +7424,7 @@ msgstr ""
 msgid "Remove first occurrence of a word..."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:7077
+#: ../../src/wxMaxima.cpp:7075
 msgid "Remove first occurrence of part"
 msgstr ""
 
@@ -7412,7 +7432,7 @@ msgstr ""
 msgid "Remove output from input cells"
 msgstr "Αφαίρεση αποτελεσμάτων από τα κελιά εντολών"
 
-#: ../../src/wxMaxima.cpp:7598
+#: ../../src/wxMaxima.cpp:7596
 msgid "Remove rows and/or columns"
 msgstr ""
 
@@ -7420,7 +7440,7 @@ msgstr ""
 msgid "Remove rows and/or columns from the matrix"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:7215
+#: ../../src/wxMaxima.cpp:7213
 #, fuzzy
 msgid "Rename file"
 msgstr "Άνοιγμα αρχείου"
@@ -7444,15 +7464,15 @@ msgstr ""
 msgid "Replace All"
 msgstr "Επιλογή όλων"
 
-#: ../../src/wxMaxima.cpp:7171
+#: ../../src/wxMaxima.cpp:7169
 msgid "Replace all regex matches"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:7166
+#: ../../src/wxMaxima.cpp:7164
 msgid "Replace first regex match"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:7096
+#: ../../src/wxMaxima.cpp:7094
 #, fuzzy
 msgid "Replace the first occurrence of Part"
 msgstr "Αντικατεστημένες %d εμφανίσεις"
@@ -7462,7 +7482,7 @@ msgstr "Αντικατεστημένες %d εμφανίσεις"
 msgid "Replace..."
 msgstr "Επιλογή όλων"
 
-#: ../../src/wxMaxima.cpp:6401
+#: ../../src/wxMaxima.cpp:6399
 #, c-format
 msgid "Replaced %d occurrences."
 msgstr "Αντικατεστημένες %d εμφανίσεις"
@@ -7487,7 +7507,7 @@ msgstr ""
 msgid "Resetting all configuration settings"
 msgstr ""
 
-#: ../../src/ToolBar.cpp:216 ../../src/wxMaximaFrame.cpp:1177
+#: ../../src/ToolBar.cpp:223 ../../src/wxMaximaFrame.cpp:1177
 msgid "Restart Maxima"
 msgstr "Επανεκίνηση του Maxima"
 
@@ -7496,12 +7516,12 @@ msgstr "Επανεκίνηση του Maxima"
 msgid "Restrict Maximum size"
 msgstr "Επανεκίνηση του Maxima"
 
-#: ../../src/wxMaxima.cpp:9782
+#: ../../src/wxMaxima.cpp:9780
 #, fuzzy
 msgid "Result variables:"
 msgstr "Διαγραφή μεταβλητής(-ών):"
 
-#: ../../src/wxMaxima.cpp:7758
+#: ../../src/wxMaxima.cpp:7756
 msgid "Resulting Matrix name (may be empty):"
 msgstr ""
 
@@ -7509,7 +7529,7 @@ msgstr ""
 msgid "Return a match"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:6709
+#: ../../src/wxMaxima.cpp:6707
 msgid "Return from a block or loop"
 msgstr ""
 
@@ -7523,15 +7543,15 @@ msgid ""
 "creating stacks."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:8164
+#: ../../src/wxMaxima.cpp:8162
 msgid "Return the list without its first n elements"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:8170
+#: ../../src/wxMaxima.cpp:8168
 msgid "Return the list without its last n elements"
 msgstr ""
 
-#: ../../src/ToolBar.cpp:227
+#: ../../src/ToolBar.cpp:234
 msgid "Return to the cell that is currently being evaluated"
 msgstr ""
 
@@ -7584,8 +7604,8 @@ msgstr "Αναίρεση τελευταίας αλλαγής"
 msgid "Rho"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:7606 ../../src/wxMaxima.cpp:7611
-#: ../../src/wxMaxima.cpp:7631 ../../src/wxMaxima.cpp:7637
+#: ../../src/wxMaxima.cpp:7604 ../../src/wxMaxima.cpp:7609
+#: ../../src/wxMaxima.cpp:7629 ../../src/wxMaxima.cpp:7635
 #, fuzzy
 msgid "Right Matrix:"
 msgstr "Εισαγωγή πίνακα"
@@ -7594,7 +7614,7 @@ msgstr "Εισαγωγή πίνακα"
 msgid "Right arrow"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:7813
+#: ../../src/wxMaxima.cpp:7811
 msgid "Right end"
 msgstr ""
 
@@ -7614,21 +7634,21 @@ msgstr ""
 msgid "Row and column operations"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:7580 ../../src/wxMaxima.cpp:7590
-#: ../../src/wxMaxima.cpp:7595
+#: ../../src/wxMaxima.cpp:7578 ../../src/wxMaxima.cpp:7588
+#: ../../src/wxMaxima.cpp:7593
 msgid "Row number:"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:7600
+#: ../../src/wxMaxima.cpp:7598
 #, fuzzy
 msgid "Row numbers:"
 msgstr "Αριθμοί"
 
-#: ../../src/wxMaxima.cpp:7825
+#: ../../src/wxMaxima.cpp:7823
 msgid "Rule"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:8102 ../../src/wxMaxima.cpp:8115
+#: ../../src/wxMaxima.cpp:8100 ../../src/wxMaxima.cpp:8113
 msgid "Rule:"
 msgstr ""
 
@@ -7641,11 +7661,11 @@ msgstr ""
 msgid "Run each element through an expression"
 msgstr "Εύρεση ορίου μιας παράστασης"
 
-#: ../../src/wxMaxima.cpp:6099
+#: ../../src/wxMaxima.cpp:6097
 msgid "Running gnuplot as: "
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:2337
+#: ../../src/wxMaxima.cpp:2335
 #, c-format
 msgid "Running maxima as: %s"
 msgstr ""
@@ -7674,13 +7694,13 @@ msgstr ""
 msgid "Running on the universal wxWidgets port"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:7832
+#: ../../src/wxMaxima.cpp:7830
 msgid ""
 "Runs each element of an object (list, matrix, equation,...) through a "
 "function individually"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:7840
+#: ../../src/wxMaxima.cpp:7838
 msgid ""
 "Runs each element of an object (list, matrix, equation,...) through an "
 "expression individually"
@@ -7707,20 +7727,20 @@ msgstr ""
 msgid "SVG graphics"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:9247
+#: ../../src/wxMaxima.cpp:9245
 msgid "Sample 1:"
 msgstr "Δείγμα 1:"
 
-#: ../../src/wxMaxima.cpp:9248
+#: ../../src/wxMaxima.cpp:9246
 msgid "Sample 2:"
 msgstr "Δείγμα 2:"
 
-#: ../../src/wxMaxima.cpp:9242
+#: ../../src/wxMaxima.cpp:9240
 msgid "Sample:"
 msgstr "Δείγμα:"
 
-#: ../../src/ConfigDialogue.cpp:2104 ../../src/ToolBar.cpp:164
-#: ../../src/wxMaxima.cpp:10923
+#: ../../src/ConfigDialogue.cpp:2104 ../../src/ToolBar.cpp:171
+#: ../../src/wxMaxima.cpp:10921
 msgid "Save"
 msgstr "Αποθήκευση"
 
@@ -7728,7 +7748,7 @@ msgstr "Αποθήκευση"
 msgid "Save Animation..."
 msgstr "Αποθήκευση εφε κίνησης ..."
 
-#: ../../src/wxMaxima.cpp:5398
+#: ../../src/wxMaxima.cpp:5396
 msgid "Save As"
 msgstr "Αποθήκευση ως"
 
@@ -7740,7 +7760,7 @@ msgstr "Αποθήκευση ως...\tShift+Ctrl+S"
 msgid "Save Image..."
 msgstr "Αποθήκευση εικόνας..."
 
-#: ../../src/wxMaxima.cpp:6187
+#: ../../src/wxMaxima.cpp:6185
 msgid "Save Selection to Image"
 msgstr "Αποθήκευση επιλογής σε εικόνα"
 
@@ -7748,11 +7768,11 @@ msgstr "Αποθήκευση επιλογής σε εικόνα"
 msgid "Save Selection to Image..."
 msgstr "Αποθήκευση επιλογής σε εικόνα..."
 
-#: ../../src/wxMaxima.cpp:9935
+#: ../../src/wxMaxima.cpp:9933
 msgid "Save animation to file"
 msgstr "Αποθήκευση εφε κίνησης σε αρχείο"
 
-#: ../../src/wxMaxima.cpp:6835
+#: ../../src/wxMaxima.cpp:6833
 msgid "Save as lisp code"
 msgstr ""
 
@@ -7766,7 +7786,7 @@ msgstr "Φόρτωση πακέτου"
 msgid "Save config to file"
 msgstr "Αποθήκευση επιλογής σε αρχείο"
 
-#: ../../src/ToolBar.cpp:164 ../../src/wxMaximaFrame.cpp:841
+#: ../../src/ToolBar.cpp:171 ../../src/wxMaximaFrame.cpp:841
 msgid "Save document"
 msgstr "Αποθήκευση εγγράφου"
 
@@ -7784,7 +7804,7 @@ msgstr ""
 msgid "Save selection from document to an image file"
 msgstr "Αποθήκευση επιλογής από το έγγραφο σε ένα αρχείο εικόνας"
 
-#: ../../src/wxMaxima.cpp:9876
+#: ../../src/wxMaxima.cpp:9874
 msgid "Save selection to file"
 msgstr "Αποθήκευση επιλογής σε αρχείο"
 
@@ -7813,7 +7833,7 @@ msgstr ""
 msgid "Scalable Vector Graphics (svg)"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:9858
+#: ../../src/wxMaxima.cpp:9856
 msgid ""
 "Scalable Vector image (*.svg)|*.svg|Compressed Scalable Vector Image (*."
 "svgz)|*.svgz|PNG image (*.png)|*.png|JPEG image (*.jpg)|*.jpg|GIF image (*."
@@ -7821,12 +7841,12 @@ msgid ""
 "image file format (*.tif)|*.tif|X pixmap (*.xpm)|*.xpm"
 msgstr ""
 
-#: ../../src/MaximaManual.cpp:213
+#: ../../src/MaximaManual.cpp:214
 #, c-format
 msgid "Scanning help file %s for anchors"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:9208
+#: ../../src/wxMaxima.cpp:9206
 msgid "Scatterplot"
 msgstr "Διάγραμμα διασποράς"
 
@@ -7844,11 +7864,11 @@ msgstr ""
 msgid "Scheduling a background task that scans for autocompletable file names."
 msgstr ""
 
-#: ../../src/ToolBar.cpp:636
+#: ../../src/ToolBar.cpp:631
 msgid "Search button"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:7087
+#: ../../src/wxMaxima.cpp:7085
 msgid "Search first occurrence of part"
 msgstr ""
 
@@ -7856,15 +7876,15 @@ msgstr ""
 msgid "Search..."
 msgstr ""
 
-#: ../../src/ToolBar.cpp:259 ../../src/wxMaximaFrame.cpp:2967
+#: ../../src/ToolBar.cpp:266 ../../src/wxMaximaFrame.cpp:2967
 msgid "Section"
 msgstr "Ενότητα"
 
-#: ../../src/Configuration.cpp:1543
+#: ../../src/Configuration.cpp:1550
 msgid "Section cell (Heading 2)"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:6851
+#: ../../src/wxMaxima.cpp:6849
 #, fuzzy
 msgid "Seek to position"
 msgstr "Προσέγγιση Pade..."
@@ -7890,7 +7910,7 @@ msgstr "Επιλογή όλων"
 msgid "Select All\tCtrl+A"
 msgstr "Επιλογή Όλων\tCtrl+A"
 
-#: ../../src/ToolBar.cpp:633
+#: ../../src/ToolBar.cpp:628
 msgid "Select All button"
 msgstr ""
 
@@ -7898,11 +7918,11 @@ msgstr ""
 msgid "Select Maxima program"
 msgstr "Επιλογή προγράμματος Maxima"
 
-#: ../../src/wxMaxima.cpp:9306
+#: ../../src/wxMaxima.cpp:9304
 msgid "Select Subsample"
 msgstr "Επιλογή υποδείγματος"
 
-#: ../../src/ToolBar.cpp:201 ../../src/ToolBar.cpp:202
+#: ../../src/ToolBar.cpp:208 ../../src/ToolBar.cpp:209
 #: ../../src/wxMaximaFrame.cpp:908
 msgid "Select all"
 msgstr "Επιλογή όλων"
@@ -7911,7 +7931,7 @@ msgstr "Επιλογή όλων"
 msgid "Select help browser"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:6603
+#: ../../src/wxMaxima.cpp:6601
 msgid "Select math display algorithm"
 msgstr "Επιλογή αλγορίθμου προβολής μαθηματικών"
 
@@ -7929,19 +7949,19 @@ msgstr ""
 "επιλογή προκύπτει ένα μενού με κατάλληλες συναρτήσεις οι οποίες μπορούν να "
 "εφαρμοστούν στην επιλογή."
 
-#: ../../src/Configuration.cpp:1550
+#: ../../src/Configuration.cpp:1557
 msgid "Selection"
 msgstr "Επιλογή"
 
-#: ../../src/ToolBar.cpp:238
+#: ../../src/ToolBar.cpp:245
 msgid "Send all cells to maxima"
 msgstr ""
 
-#: ../../src/ToolBar.cpp:235
+#: ../../src/ToolBar.cpp:242
 msgid "Send the current cell to maxima"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:2526
+#: ../../src/wxMaxima.cpp:2524
 msgid "Sending Maxima a SIGINT signal."
 msgstr ""
 
@@ -7949,15 +7969,15 @@ msgstr ""
 msgid "Sending a command to Maxima"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:2586
+#: ../../src/wxMaxima.cpp:2584
 msgid "Sending a wxSIGKILL to maxima has failed"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:2522
+#: ../../src/wxMaxima.cpp:2520
 msgid "Sending an interactive Interrupt signal (Ctrl+C) to Maxima."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:2506
+#: ../../src/wxMaxima.cpp:2504
 msgid "Sending an interrupt signal to Maxima."
 msgstr ""
 
@@ -7965,11 +7985,11 @@ msgstr ""
 msgid "Sending configuration data to maxima."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:4399
+#: ../../src/wxMaxima.cpp:4397
 msgid "Sending maxima the info how to express 2d maths as XML"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:2589
+#: ../../src/wxMaxima.cpp:2587
 msgid "Sent wxSIGKILL to maxima, but not to its child processes"
 msgstr ""
 
@@ -7978,7 +7998,7 @@ msgstr ""
 msgid "Sequential Comparative Simplification"
 msgstr "Μιγαδική απλοποίηση"
 
-#: ../../src/wxMaxima.cpp:8654
+#: ../../src/wxMaxima.cpp:8652
 msgid "Series"
 msgstr "Σειρές"
 
@@ -7987,7 +8007,7 @@ msgstr "Σειρές"
 msgid "Series approximation"
 msgstr "Προσέγγιση Pade..."
 
-#: ../../src/wxMaxima.cpp:2261
+#: ../../src/wxMaxima.cpp:2259
 msgid "Server started"
 msgstr "Ο εξυπηρετητής ξεκίνησε"
 
@@ -8052,7 +8072,7 @@ msgstr "Αποθήκευση εφε κίνησης ..."
 msgid "Set the \"algebraic\" flag"
 msgstr "Εναλλαγή αλγεβρικής σημαίας"
 
-#: ../../src/wxMaxima.cpp:7942
+#: ../../src/wxMaxima.cpp:7940
 msgid "Set the diagram title"
 msgstr ""
 
@@ -8061,11 +8081,11 @@ msgstr ""
 msgid "Set the frame rate for animations."
 msgstr "Εκκίνηση εφέ κίνησης"
 
-#: ../../src/wxMaxima.cpp:8011
+#: ../../src/wxMaxima.cpp:8009
 msgid "Set the grid density."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:7956
+#: ../../src/wxMaxima.cpp:7954
 msgid "Set the next plot's title. Empty = no title."
 msgstr ""
 
@@ -8104,12 +8124,12 @@ msgid ""
 "Sets the language, line ending type and charset encoding programs will use"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:4412
+#: ../../src/wxMaxima.cpp:4410
 #, c-format
 msgid "Setting gnuplot_binary to %s"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:4468
+#: ../../src/wxMaxima.cpp:4466
 #, fuzzy
 msgid "Setting prompt and help format"
 msgstr "Ορισμός μορφής γραφήματος"
@@ -8141,7 +8161,7 @@ msgstr "Εγκατάσταση υπολογισμών modulo"
 msgid "Setup the axis"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:8863
+#: ../../src/wxMaxima.cpp:8861
 msgid "Setup the engineering format"
 msgstr ""
 
@@ -8149,7 +8169,7 @@ msgstr ""
 msgid "Setup the engineering format..."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:9251
+#: ../../src/wxMaxima.cpp:9249
 msgid "Shapiro-Wilk test for normality"
 msgstr ""
 
@@ -8179,7 +8199,7 @@ msgstr "Εμφάνιση μιας συμβουλής"
 msgid "Show all + allow linebreaks in long numbers"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:9155
+#: ../../src/wxMaxima.cpp:9153
 msgid "Show all commands similar to:"
 msgstr "Εμφάνιση ολων των εντολών που είναι παρόμοιες με:"
 
@@ -8187,7 +8207,7 @@ msgstr "Εμφάνιση ολων των εντολών που είναι παρ
 msgid "Show all unicode symbols"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:9148
+#: ../../src/wxMaxima.cpp:9146
 msgid "Show an example for the command:"
 msgstr "Εμφάνιση ενός παραδείγματος για την εντολή:"
 
@@ -8259,44 +8279,44 @@ msgstr ""
 msgid "Show section numbers"
 msgstr "Εμφάνιση συναρτήσεων"
 
-#: ../../src/ToolBar.cpp:616
+#: ../../src/ToolBar.cpp:611
 msgid "Show the \"New\" button?"
 msgstr ""
 
-#: ../../src/ToolBar.cpp:640
+#: ../../src/ToolBar.cpp:635
 msgid "Show the \"help\" button?"
 msgstr ""
 
-#: ../../src/ToolBar.cpp:637
+#: ../../src/ToolBar.cpp:632
 msgid "Show the \"search\" button?"
 msgstr ""
 
-#: ../../src/ToolBar.cpp:634
+#: ../../src/ToolBar.cpp:629
 msgid "Show the \"select all\" button?"
 msgstr ""
 
-#: ../../src/ToolBar.cpp:628
+#: ../../src/ToolBar.cpp:623
 msgid "Show the Copy, Cut and the Paste button?"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:6665
+#: ../../src/wxMaxima.cpp:6663
 #, fuzzy
 msgid "Show the function's definition"
 msgstr "Εμφάνιση ορισμού συνάρτησης:"
 
-#: ../../src/ToolBar.cpp:622
+#: ../../src/ToolBar.cpp:617
 msgid "Show the open and the save button?"
 msgstr ""
 
-#: ../../src/ToolBar.cpp:631
+#: ../../src/ToolBar.cpp:626
 msgid "Show the preferences button?"
 msgstr ""
 
-#: ../../src/ToolBar.cpp:625
+#: ../../src/ToolBar.cpp:620
 msgid "Show the print button?"
 msgstr ""
 
-#: ../../src/ToolBar.cpp:619
+#: ../../src/ToolBar.cpp:614
 #, fuzzy
 msgid "Show the undo and redo button?"
 msgstr "Εμφάνιση ορισμού συνάρτησης:"
@@ -8310,7 +8330,7 @@ msgstr ""
 msgid "Show user definitions"
 msgstr "Εμφάνιση ορισμού συνάρτησης:"
 
-#: ../../src/ToolBar.cpp:329 ../../src/wxMaximaFrame.cpp:2049
+#: ../../src/ToolBar.cpp:322 ../../src/wxMaximaFrame.cpp:2049
 #: ../../src/wxMaximaFrame.cpp:2052
 #, fuzzy
 msgid "Show wxMaxima help"
@@ -8367,7 +8387,7 @@ msgstr "Επίλυση εξίσωσης(-εων)"
 msgid "Simplify expression containing radicals"
 msgstr "Απλοποίηση παράστασης που περιέχει ριζικά"
 
-#: ../../src/wxMaxima.cpp:8286
+#: ../../src/wxMaxima.cpp:8284
 #, fuzzy
 msgid "Simplify radicals"
 msgstr "Απλοποίηση ριζικών"
@@ -8380,7 +8400,7 @@ msgstr "Απλοποίηση ρητής παράστασης"
 msgid "Simplify sum() commands..."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:8273
+#: ../../src/wxMaxima.cpp:8271
 #, fuzzy
 msgid "Simplify sums"
 msgstr "Απλοποίηση"
@@ -8417,18 +8437,18 @@ msgstr ""
 msgid "Smart Substitute..."
 msgstr "Αντικατάσταση..."
 
-#: ../../src/wxMaxima.cpp:8367
+#: ../../src/wxMaxima.cpp:8365
 #, fuzzy
 msgid "Smart substitution"
 msgstr "Αντικατάσταση"
 
-#: ../../src/wxMaxima.cpp:7423 ../../src/wxMaxima.cpp:7434
-#: ../../src/wxMaxima.cpp:7447
+#: ../../src/wxMaxima.cpp:7421 ../../src/wxMaxima.cpp:7432
+#: ../../src/wxMaxima.cpp:7445
 #, fuzzy
 msgid "Solution of the ODE:"
 msgstr "Λύση:"
 
-#: ../../src/wxMaxima.cpp:9768
+#: ../../src/wxMaxima.cpp:9766
 msgid "Solve"
 msgstr "Επίλυση"
 
@@ -8448,7 +8468,7 @@ msgstr "Επίλυση ΣΔΕ..."
 msgid "Solve (to_poly)..."
 msgstr "Επίλυση (to_poly)..."
 
-#: ../../src/wxMaxima.cpp:7668
+#: ../../src/wxMaxima.cpp:7666
 msgid "Solve A*x=b numerically"
 msgstr ""
 
@@ -8457,7 +8477,7 @@ msgstr ""
 msgid "Solve Ax=b"
 msgstr "Επίλυση"
 
-#: ../../src/wxMaxima.cpp:7407
+#: ../../src/wxMaxima.cpp:7405
 msgid "Solve ODE"
 msgstr "Επίλυση ΣΔΕ"
 
@@ -8474,7 +8494,7 @@ msgstr "Επίλυση ΣΔΕ..."
 msgid "Solve a linear equation system using dgesv"
 msgstr "Επίλυση γραμμικού συστήματος εξισώσεων"
 
-#: ../../src/wxMaxima.cpp:7476 ../../src/wxMaxima.cpp:7487
+#: ../../src/wxMaxima.cpp:7474 ../../src/wxMaxima.cpp:7485
 msgid "Solve algebraic system"
 msgstr "Επίλυση αλγεβρικού συστήματος"
 
@@ -8486,12 +8506,12 @@ msgstr "Επίλυση αλγεβρικού συστήματος εξισώσε�
 msgid "Solve boundary value problem for second degree ODE"
 msgstr "Επίλυση προβλήματος οριακών τιμών για δευτεροβάθμια ΣΔΕ"
 
-#: ../../src/wxMaxima.cpp:7519
+#: ../../src/wxMaxima.cpp:7517
 #, fuzzy
 msgid "Solve differential equations using laplace()"
 msgstr "Επίλυση συνήθους διαφορικής εξίσωσης με μετασχηματισμό Laplace"
 
-#: ../../src/wxMaxima.cpp:7376 ../../src/wxMaximaFrame.cpp:1417
+#: ../../src/wxMaxima.cpp:7374 ../../src/wxMaximaFrame.cpp:1417
 msgid "Solve equation(s)"
 msgstr "Επίλυση εξίσωσης(-εων)"
 
@@ -8499,7 +8519,7 @@ msgstr "Επίλυση εξίσωσης(-εων)"
 msgid "Solve equation(s) with to_poly_solve"
 msgstr "Επίλυση εξίσωσης(-εων) με to_poly_solve"
 
-#: ../../src/wxMaxima.cpp:7389
+#: ../../src/wxMaxima.cpp:7387
 #, fuzzy
 msgid "Solve equations to polynom"
 msgstr "Επίλυση εξίσωσης(-εων) με to_poly_solve"
@@ -8512,7 +8532,7 @@ msgstr "Επίλυση προβλήματος αρχικών τιμών για �
 msgid "Solve initial value problem for second degree ODE"
 msgstr "Επίλυση προβλήματος αρχικών τιμών για δευτεροβάθμια ΣΔΕ"
 
-#: ../../src/wxMaxima.cpp:7498 ../../src/wxMaxima.cpp:7508
+#: ../../src/wxMaxima.cpp:7496 ../../src/wxMaxima.cpp:7506
 msgid "Solve linear system"
 msgstr "Επίλυση γραμμικού συστήματος"
 
@@ -8532,17 +8552,17 @@ msgstr "Επίλυση συνήθους διαφορικής εξίσωσης μ
 msgid "Solve ordinary differential equations with Laplace transformation"
 msgstr "Επίλυση συνήθους διαφορικής εξίσωσης με μετασχηματισμό Laplace"
 
-#: ../../src/wxMaxima.cpp:7340
+#: ../../src/wxMaxima.cpp:7338
 #, fuzzy
 msgid "Solve polynomials numerically"
 msgstr "Επίλυση εξίσωσης(-εων)"
 
-#: ../../src/wxMaxima.cpp:7350
+#: ../../src/wxMaxima.cpp:7348
 #, fuzzy
 msgid "Solve polynomials numerically (bfloats)"
 msgstr "Επίλυση εξίσωσης(-εων)"
 
-#: ../../src/wxMaxima.cpp:7361
+#: ../../src/wxMaxima.cpp:7359
 #, fuzzy
 msgid "Solve polynomials numerically (real roots)"
 msgstr "Επίλυση εξίσωσης(-εων)"
@@ -8564,7 +8584,7 @@ msgstr ""
 msgid "Solving equations with Maxima"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:6737
+#: ../../src/wxMaxima.cpp:6735
 #, c-format
 msgid ""
 "Sometimes one wants maxima to loose the information that a function name was "
@@ -8578,12 +8598,12 @@ msgstr ""
 msgid "Sort"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:8134
+#: ../../src/wxMaxima.cpp:8132
 #, fuzzy
 msgid "Sort a list"
 msgstr "Δημιουργία λίστας"
 
-#: ../../src/wxMaxima.cpp:7092
+#: ../../src/wxMaxima.cpp:7090
 msgid "Sort all characters in string"
 msgstr ""
 
@@ -8592,7 +8612,7 @@ msgstr ""
 msgid "Sort the characters..."
 msgstr "Ελληνικές σταθερές"
 
-#: ../../src/wxMaxima.cpp:8120
+#: ../../src/wxMaxima.cpp:8118
 #, fuzzy
 msgid "Source list:"
 msgstr "Δημιουργία λίστας"
@@ -8601,11 +8621,11 @@ msgstr "Δημιουργία λίστας"
 msgid "Spanish"
 msgstr "Ισπανικά"
 
-#: ../../src/Configuration.cpp:1526
+#: ../../src/Configuration.cpp:1533
 msgid "Special constants"
 msgstr "Ειδικές μεταβλητές"
 
-#: ../../src/wxMaxima.cpp:7062
+#: ../../src/wxMaxima.cpp:7060
 msgid "Split"
 msgstr ""
 
@@ -8613,11 +8633,11 @@ msgstr ""
 msgid "Split on match"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:7161
+#: ../../src/wxMaxima.cpp:7159
 msgid "Split on regex match"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:7082
+#: ../../src/wxMaxima.cpp:7080
 msgid "Split string into tokens"
 msgstr ""
 
@@ -8643,16 +8663,16 @@ msgstr "Εκκίνηση εφέ κίνησης"
 msgid "Start a new maxima for each re-evaluation"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:7466
+#: ../../src/wxMaxima.cpp:7464
 msgid "Start of t:"
 msgstr ""
 
-#: ../../src/ToolBar.cpp:291
+#: ../../src/ToolBar.cpp:298
 #, fuzzy
 msgid "Start or Stop animation"
 msgstr "Εκκίνηση εφέ κίνησης"
 
-#: ../../src/ToolBar.cpp:292
+#: ../../src/ToolBar.cpp:299
 msgid ""
 "Start or stop the currently selected animation that has been created with "
 "the with_slider class of commands"
@@ -8662,19 +8682,19 @@ msgstr ""
 msgid "Start searching while the phrase to search for is still being typed."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:385
+#: ../../src/wxMaxima.cpp:383
 msgid "Starting Maxima process failed"
 msgstr "Η εκκίνηση της διεργασίας Maxima απέτυχε"
 
-#: ../../src/wxMaxima.cpp:2789 ../../src/wxMaxima.cpp:5363
+#: ../../src/wxMaxima.cpp:2787 ../../src/wxMaxima.cpp:5361
 msgid "Starting evaluation of the document"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:2248
+#: ../../src/wxMaxima.cpp:2246
 msgid "Starting server failed"
 msgstr "Η εκκίνηση του εξυπηρετητή απέτυχε"
 
-#: ../../src/Worksheet.cpp:5887
+#: ../../src/Worksheet.cpp:5888
 msgid "Starting to save the worksheet as .wxmx"
 msgstr ""
 
@@ -8690,7 +8710,7 @@ msgstr "Στατιστική"
 msgid "Statistics\tAlt+Shift+S"
 msgstr "Στατιστική\tAlt+Shift+S"
 
-#: ../../src/wxMaxima.cpp:7468
+#: ../../src/wxMaxima.cpp:7466
 #, fuzzy
 msgid "Step width:"
 msgstr "Γινόμενο"
@@ -8709,17 +8729,17 @@ msgstr ""
 msgid "Stream"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:6864
+#: ../../src/wxMaxima.cpp:6862
 msgid "Stream length"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:6852 ../../src/wxMaxima.cpp:6857
-#: ../../src/wxMaxima.cpp:6861 ../../src/wxMaxima.cpp:6865
-#: ../../src/wxMaxima.cpp:6869 ../../src/wxMaxima.cpp:6873
-#: ../../src/wxMaxima.cpp:6878 ../../src/wxMaxima.cpp:6883
-#: ../../src/wxMaxima.cpp:6889 ../../src/wxMaxima.cpp:6896
-#: ../../src/wxMaxima.cpp:6900 ../../src/wxMaxima.cpp:6904
-#: ../../src/wxMaxima.cpp:6909
+#: ../../src/wxMaxima.cpp:6850 ../../src/wxMaxima.cpp:6855
+#: ../../src/wxMaxima.cpp:6859 ../../src/wxMaxima.cpp:6863
+#: ../../src/wxMaxima.cpp:6867 ../../src/wxMaxima.cpp:6871
+#: ../../src/wxMaxima.cpp:6876 ../../src/wxMaxima.cpp:6881
+#: ../../src/wxMaxima.cpp:6887 ../../src/wxMaxima.cpp:6894
+#: ../../src/wxMaxima.cpp:6898 ../../src/wxMaxima.cpp:6902
+#: ../../src/wxMaxima.cpp:6907
 msgid "Stream:"
 msgstr ""
 
@@ -8728,14 +8748,14 @@ msgstr ""
 msgid "String"
 msgstr "Συμβολοσειρές"
 
-#: ../../src/wxMaxima.cpp:6978 ../../src/wxMaxima.cpp:6983
-#: ../../src/wxMaxima.cpp:7058
+#: ../../src/wxMaxima.cpp:6976 ../../src/wxMaxima.cpp:6981
+#: ../../src/wxMaxima.cpp:7056
 #, fuzzy
 msgid "String #1:"
 msgstr "Συμβολοσειρές"
 
-#: ../../src/wxMaxima.cpp:6979 ../../src/wxMaxima.cpp:6984
-#: ../../src/wxMaxima.cpp:7059
+#: ../../src/wxMaxima.cpp:6977 ../../src/wxMaxima.cpp:6982
+#: ../../src/wxMaxima.cpp:7057
 #, fuzzy
 msgid "String #2:"
 msgstr "Συμβολοσειρές"
@@ -8745,16 +8765,16 @@ msgstr "Συμβολοσειρές"
 msgid "String Tests"
 msgstr "Συμβολοσειρές"
 
-#: ../../src/wxMaxima.cpp:2152
+#: ../../src/wxMaxima.cpp:2150
 msgid "String from maxima apparently didn't end in a newline"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:7048
+#: ../../src/wxMaxima.cpp:7046
 #, fuzzy
 msgid "String length"
 msgstr "Συμβολοσειρές"
 
-#: ../../src/wxMaxima.cpp:7014
+#: ../../src/wxMaxima.cpp:7012
 msgid "String to list of char"
 msgstr ""
 
@@ -8762,7 +8782,7 @@ msgstr ""
 msgid "String to list of chars..."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:7129
+#: ../../src/wxMaxima.cpp:7127
 #, fuzzy
 msgid "String to octets"
 msgstr "Συμβολοσειρές"
@@ -8771,30 +8791,30 @@ msgstr "Συμβολοσειρές"
 msgid "String to octets..."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:7010 ../../src/wxMaxima.cpp:7015
-#: ../../src/wxMaxima.cpp:7024 ../../src/wxMaxima.cpp:7029
-#: ../../src/wxMaxima.cpp:7033 ../../src/wxMaxima.cpp:7040
-#: ../../src/wxMaxima.cpp:7045 ../../src/wxMaxima.cpp:7049
-#: ../../src/wxMaxima.cpp:7053 ../../src/wxMaxima.cpp:7063
-#: ../../src/wxMaxima.cpp:7069 ../../src/wxMaxima.cpp:7074
-#: ../../src/wxMaxima.cpp:7079 ../../src/wxMaxima.cpp:7083
-#: ../../src/wxMaxima.cpp:7089 ../../src/wxMaxima.cpp:7093
-#: ../../src/wxMaxima.cpp:7098 ../../src/wxMaxima.cpp:7103
-#: ../../src/wxMaxima.cpp:7107 ../../src/wxMaxima.cpp:7111
-#: ../../src/wxMaxima.cpp:7130
+#: ../../src/wxMaxima.cpp:7008 ../../src/wxMaxima.cpp:7013
+#: ../../src/wxMaxima.cpp:7022 ../../src/wxMaxima.cpp:7027
+#: ../../src/wxMaxima.cpp:7031 ../../src/wxMaxima.cpp:7038
+#: ../../src/wxMaxima.cpp:7043 ../../src/wxMaxima.cpp:7047
+#: ../../src/wxMaxima.cpp:7051 ../../src/wxMaxima.cpp:7061
+#: ../../src/wxMaxima.cpp:7067 ../../src/wxMaxima.cpp:7072
+#: ../../src/wxMaxima.cpp:7077 ../../src/wxMaxima.cpp:7081
+#: ../../src/wxMaxima.cpp:7087 ../../src/wxMaxima.cpp:7091
+#: ../../src/wxMaxima.cpp:7096 ../../src/wxMaxima.cpp:7101
+#: ../../src/wxMaxima.cpp:7105 ../../src/wxMaxima.cpp:7109
+#: ../../src/wxMaxima.cpp:7128
 #, fuzzy
 msgid "String:"
 msgstr "Συμβολοσειρές"
 
-#: ../../src/Configuration.cpp:1528
+#: ../../src/Configuration.cpp:1535
 msgid "Strings"
 msgstr "Συμβολοσειρές"
 
-#: ../../src/wxMaxima.cpp:6829
+#: ../../src/wxMaxima.cpp:6827
 msgid "Struct :"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:6816 ../../src/wxMaxima.cpp:6822
+#: ../../src/wxMaxima.cpp:6814 ../../src/wxMaxima.cpp:6820
 msgid "Struct type name:"
 msgstr ""
 
@@ -8814,11 +8834,11 @@ msgstr "Στυλ"
 msgid "Subsample..."
 msgstr "Υποδείγμα..."
 
-#: ../../src/ToolBar.cpp:260 ../../src/wxMaximaFrame.cpp:2970
+#: ../../src/ToolBar.cpp:267 ../../src/wxMaximaFrame.cpp:2970
 msgid "Subsection"
 msgstr "Υποενότητα"
 
-#: ../../src/Configuration.cpp:1542
+#: ../../src/Configuration.cpp:1549
 msgid "Subsection cell (Heading 3)"
 msgstr ""
 
@@ -8826,7 +8846,7 @@ msgstr ""
 msgid "Subst constant t into eq with diff(x,t)..."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:8361
+#: ../../src/wxMaxima.cpp:8359
 msgid "Subst is a better string-search-and-replace for expressions."
 msgstr ""
 
@@ -8834,8 +8854,8 @@ msgstr ""
 msgid "Subst..."
 msgstr "Αντικατάσταση..."
 
-#: ../../src/wxMaxima.cpp:7321 ../../src/wxMaxima.cpp:8360
-#: ../../src/wxMaxima.cpp:9812 ../../src/wxMaximaFrame.cpp:1828
+#: ../../src/wxMaxima.cpp:7319 ../../src/wxMaxima.cpp:8358
+#: ../../src/wxMaxima.cpp:9810 ../../src/wxMaximaFrame.cpp:1828
 msgid "Substitute"
 msgstr "Αντικατάσταση"
 
@@ -8853,7 +8873,7 @@ msgstr ""
 msgid "Substitute only in parts..."
 msgstr "Αντικατάσταση..."
 
-#: ../../src/wxMaxima.cpp:8400
+#: ../../src/wxMaxima.cpp:8398
 msgid "Substitute only in specific parts"
 msgstr ""
 
@@ -8869,20 +8889,20 @@ msgstr "Αντικατάσταση..."
 msgid "Substitutes until the equation no more changes"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:8384
+#: ../../src/wxMaxima.cpp:8382
 msgid ""
 "Substitutes up to lrats_max_iter times, or until the expression stops "
 "changing when substituting."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:8393
+#: ../../src/wxMaxima.cpp:8391
 #, c-format
 msgid ""
 "Substitutes, but makes sure that if substituting t=0 in diff(x,t) the result "
 "isn't 0 (as t no more changes), but %at(diff(x,t),t=0)."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:8376
+#: ../../src/wxMaxima.cpp:8374
 msgid ""
 "Substitutes, but makes sure that nothing is substituted into the other "
 "substituents."
@@ -8892,17 +8912,17 @@ msgstr ""
 msgid "Substitutes, but not in the other substituents"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:8401
+#: ../../src/wxMaxima.cpp:8399
 msgid ""
 "Substitutes, but only in the n_1th, n_2th and so on term of the equation."
 msgstr ""
 
-#: ../../src/ToolBar.cpp:261 ../../src/wxMaximaFrame.cpp:2973
+#: ../../src/ToolBar.cpp:268 ../../src/wxMaximaFrame.cpp:2973
 #, fuzzy
 msgid "Subsubsection"
 msgstr "Υποενότητα"
 
-#: ../../src/Configuration.cpp:1541
+#: ../../src/Configuration.cpp:1548
 msgid "Subsubsection cell (Heading 4)"
 msgstr ""
 
@@ -8910,16 +8930,12 @@ msgstr ""
 msgid "Suitable as flag for ev()"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:8687
+#: ../../src/wxMaxima.cpp:8685
 msgid "Sum"
 msgstr "Άθροισμα"
 
 #: ../../src/wxMaximaFrame.cpp:2848
 msgid "Sum sign"
-msgstr ""
-
-#: ../../src/Worksheet.cpp:461
-msgid "Suppressing a redraw during printing/export"
 msgstr ""
 
 #: ../../src/wxMaximaFrame.cpp:1728
@@ -8928,11 +8944,11 @@ msgid ""
 "false"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:3794
+#: ../../src/wxMaxima.cpp:3792
 msgid "Switched to lisp mode after receiving a lisp debug prompt!"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:3796
+#: ../../src/wxMaxima.cpp:3794
 msgid "Switched to lisp mode after receiving a lisp prompt!"
 msgstr ""
 
@@ -8969,7 +8985,7 @@ msgstr "Γραμμή εργαλείων\tAlt+Shift+T"
 msgid "Tau"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:8567
+#: ../../src/wxMaxima.cpp:8565
 #, fuzzy
 msgid "Taylor series"
 msgstr "Σειρές Taylor:"
@@ -8979,7 +8995,7 @@ msgstr "Σειρές Taylor:"
 msgid "Taylor series..."
 msgstr "Σειρές Taylor:"
 
-#: ../../src/wxMaxima.cpp:8562
+#: ../../src/wxMaxima.cpp:8560
 msgid "Taylor series:"
 msgstr "Σειρές Taylor:"
 
@@ -8987,11 +9003,11 @@ msgstr "Σειρές Taylor:"
 msgid "TeX, interpreted by MathJaX"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:3836
+#: ../../src/wxMaxima.cpp:3834
 msgid "Telling maxima about the new working directory."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:7531
+#: ../../src/wxMaxima.cpp:7529
 msgid "Tells maxima for an f(x), that f(x=t)=a"
 msgstr ""
 
@@ -9014,7 +9030,7 @@ msgstr ""
 msgid "Tells maxima where to store the result of compiling libraries"
 msgstr ""
 
-#: ../../src/ToolBar.cpp:257 ../../src/wxMaximaFrame.cpp:2961
+#: ../../src/ToolBar.cpp:264 ../../src/wxMaximaFrame.cpp:2961
 msgid "Text"
 msgstr "Κείμενο"
 
@@ -9023,11 +9039,11 @@ msgstr "Κείμενο"
 msgid "Text Only"
 msgstr "Κελί κειμένου"
 
-#: ../../src/Configuration.cpp:1538
+#: ../../src/Configuration.cpp:1545
 msgid "Text cell"
 msgstr "Κελί κειμένου"
 
-#: ../../src/Configuration.cpp:1545
+#: ../../src/Configuration.cpp:1552
 msgid "Text cell background"
 msgstr "Φόντο κελιού κειμένου"
 
@@ -9038,12 +9054,12 @@ msgid ""
 "indentation level, as it does with bullet lists."
 msgstr ""
 
-#: ../../src/Configuration.cpp:1551
+#: ../../src/Configuration.cpp:1558
 #, fuzzy
 msgid "Text equal to selection"
 msgstr "Αποκοπή επιλογής"
 
-#: ../../src/wxMaxima.cpp:6266
+#: ../../src/wxMaxima.cpp:6264
 msgid "Text snippet"
 msgstr ""
 
@@ -9056,13 +9072,13 @@ msgid ""
 "    result:at(ohm,r_parallel);"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:4317
+#: ../../src/wxMaxima.cpp:4315
 msgid ""
 "The .xml file doesn't seem to be valid xml or isn't a content.xml extracted "
 "from a .wxmx zip archive"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:2448
+#: ../../src/wxMaxima.cpp:2446
 msgid ""
 "The Maxima process doesn't offer a shared memory segment we can send an "
 "interrupt signal to."
@@ -9086,11 +9102,11 @@ msgstr ""
 msgid "The cache for the subjects the manual contains cannot be read."
 msgstr ""
 
-#: ../../src/MaximaManual.cpp:383
+#: ../../src/MaximaManual.cpp:397
 msgid "The cache for the subjects the manual contains has no head node."
 msgstr ""
 
-#: ../../src/MaximaManual.cpp:401
+#: ../../src/MaximaManual.cpp:415
 msgid ""
 "The cache for the subjects the manual contains is from a different Maxima "
 "version."
@@ -9104,16 +9120,16 @@ msgstr ""
 msgid "The color of the next line to draw"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:6825
+#: ../../src/wxMaxima.cpp:6823
 msgid "The comma-separated contents of the struct fields"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:6818
+#: ../../src/wxMaxima.cpp:6816
 #, fuzzy
 msgid "The comma-separated names of the struct fields"
 msgstr "Εισαγωγή λίστας μεταβλητών χωρισμένες με κόμμα"
 
-#: ../../src/wxMaxima.cpp:6702
+#: ../../src/wxMaxima.cpp:6700
 msgid ""
 "The command local() allows to tell maxima which functions to make local to "
 "the current program when defined."
@@ -9177,7 +9193,7 @@ msgstr ""
 msgid "The document class LaTeX is instructed to use for our documents."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:9267
+#: ../../src/wxMaxima.cpp:9265
 msgid "The equation to fit the data to"
 msgstr ""
 
@@ -9185,7 +9201,7 @@ msgstr ""
 msgid "The fill color for the next objects"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:8085
+#: ../../src/wxMaxima.cpp:8083
 msgid "The function call whose arguments to extract"
 msgstr ""
 
@@ -9201,11 +9217,11 @@ msgstr ""
 msgid "The half of the equation that is to the right of the \"=\""
 msgstr ""
 
-#: ../../src/MaximaManual.cpp:405
+#: ../../src/MaximaManual.cpp:419
 msgid "The help dir from the cache differs from the current one."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:9524 ../../src/wxMaxima.cpp:9908
+#: ../../src/wxMaxima.cpp:9522 ../../src/wxMaxima.cpp:9906
 #, c-format
 msgid "The image file \"%s\" cannot be found."
 msgstr ""
@@ -9222,7 +9238,7 @@ msgstr ""
 msgid "The list of directories the operating system looks for programs in"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:9266
+#: ../../src/wxMaxima.cpp:9264
 msgid "The list of variables contained in each matrix row"
 msgstr ""
 
@@ -9245,31 +9261,31 @@ msgstr "Καλωσορίσατε στο wxMaxima"
 msgid "The maximum size for this image. Values <= 0 mean: Unspecified."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:6757
+#: ../../src/wxMaxima.cpp:6755
 msgid "The name of a function we don't want to be evaluated here"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:6763
+#: ../../src/wxMaxima.cpp:6761
 msgid "The name of an expression that we don't want to be evaluated."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:6831
+#: ../../src/wxMaxima.cpp:6829
 msgid "The name of the field to read"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:6817
+#: ../../src/wxMaxima.cpp:6815
 msgid "The name of the new struct type"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:6830
+#: ../../src/wxMaxima.cpp:6828
 msgid "The name of the struct"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:6823
+#: ../../src/wxMaxima.cpp:6821
 msgid "The name of the struct type"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:7844
+#: ../../src/wxMaxima.cpp:7842
 msgid "The name of the variable that shall contain the current element"
 msgstr ""
 
@@ -9281,7 +9297,7 @@ msgstr ""
 msgid "The number of recently opened files that is to be remembered."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:8106
+#: ../../src/wxMaxima.cpp:8104
 msgid ""
 "The number of the item which is stepped from \"Index Start\" to \"Index "
 "End\"."
@@ -9320,34 +9336,34 @@ msgid ""
 "    W_mech:rhs(%);"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:8103 ../../src/wxMaxima.cpp:8116
+#: ../../src/wxMaxima.cpp:8101 ../../src/wxMaxima.cpp:8114
 msgid ""
 "The rule that explains how to generate the value of a list item.\n"
 "Might be something like \"i\", \"i^2\" or \"sin(i)\""
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:7409
+#: ../../src/wxMaxima.cpp:7407
 msgid ""
 "The solution of an ODE describes the general shape of the resulting curve. "
 "The actual height of that curve is defined by the initial condition or "
 "boundary values, later on."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:7442
+#: ../../src/wxMaxima.cpp:7440
 msgid ""
 "The solution of an ODE tells the shape, but not the height of the solution.\n"
 "If the ODE's result is known at two points this function fills in the "
 "correct values for the  constants"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:7418 ../../src/wxMaxima.cpp:7429
+#: ../../src/wxMaxima.cpp:7416 ../../src/wxMaxima.cpp:7427
 msgid ""
 "The solution of an ODE tells the shape, but not the height of the solution.\n"
 "If the ODE's state is known at a point this function fills in the correct "
 "values for the constants"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:7520
+#: ../../src/wxMaxima.cpp:7518
 msgid ""
 "The solution variable needs to be in the form\n"
 "   U(t)=1/2*U(t)+3*diff(U(t),t)\n"
@@ -9358,15 +9374,15 @@ msgstr ""
 msgid "The standard plot command: Plot an equation as a curve"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:8119 ../../src/wxMaxima.cpp:8220
+#: ../../src/wxMaxima.cpp:8117 ../../src/wxMaxima.cpp:8218
 msgid "The variable the value of the current source item is stored in."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:9269
+#: ../../src/wxMaxima.cpp:9267
 msgid "The variables to search the optimum solution for"
 msgstr ""
 
-#: ../../src/Worksheet.cpp:8276
+#: ../../src/Worksheet.cpp:8244
 msgid "The worksheet containing maxima's input and output"
 msgstr ""
 
@@ -9385,7 +9401,7 @@ msgid ""
 "their questions, if you know an answer."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:1906
+#: ../../src/wxMaxima.cpp:1904
 msgid ""
 "There was an error in generated XML!\n"
 "\n"
@@ -9397,7 +9413,7 @@ msgstr ""
 msgid "Theta"
 msgstr ""
 
-#: ../../src/MaximaManual.cpp:366
+#: ../../src/MaximaManual.cpp:380
 msgid ""
 "This file is generated by wxMaxima\n"
 "It caches the list of subjects maxima's manual offers and is automatically\n"
@@ -9439,7 +9455,7 @@ msgstr ""
 msgid "Time [in Minutes] between autosaves"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:8651 ../../src/wxMaxima.cpp:9809
+#: ../../src/wxMaxima.cpp:8649 ../../src/wxMaxima.cpp:9807
 msgid "Times:"
 msgstr "Φορές:"
 
@@ -9447,15 +9463,15 @@ msgstr "Φορές:"
 msgid "Tip of the day"
 msgstr ""
 
-#: ../../src/ToolBar.cpp:258 ../../src/wxMaximaFrame.cpp:2964
+#: ../../src/ToolBar.cpp:265 ../../src/wxMaximaFrame.cpp:2964
 msgid "Title"
 msgstr "Τίτλος"
 
-#: ../../src/wxMaxima.cpp:7943 ../../src/wxMaxima.cpp:7957
+#: ../../src/wxMaxima.cpp:7941 ../../src/wxMaxima.cpp:7955
 msgid "Title (Sub- and superscripts as x_{10} or x^{10})"
 msgstr ""
 
-#: ../../src/Configuration.cpp:1544
+#: ../../src/Configuration.cpp:1551
 msgid "Title cell (Heading 1)"
 msgstr ""
 
@@ -9534,7 +9550,7 @@ msgstr ""
 "θέλετε. Ένα κελί εντολών θα εμφανιστεί. Μετά πατήστε Shift+Enter για να "
 "εκτελεσθεί η εντολή σας."
 
-#: ../../src/wxMaxima.cpp:8702
+#: ../../src/wxMaxima.cpp:8700
 msgid "To:"
 msgstr "Μέχρι:"
 
@@ -9546,7 +9562,7 @@ msgstr ""
 msgid "Toggle full screen editing"
 msgstr "Εναλλαγή επεξεργασίας πλήρης οθόνης"
 
-#: ../../src/ToolBar.cpp:251
+#: ../../src/ToolBar.cpp:258
 msgid "Toggle the visibility of code cells"
 msgstr ""
 
@@ -9558,11 +9574,11 @@ msgstr ""
 msgid "Tolerance calculations with Maxima"
 msgstr ""
 
-#: ../../src/Image.cpp:502
+#: ../../src/Image.cpp:261
 msgid "Too much gnuplot data => Not storing it in the worksheet"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:7815
+#: ../../src/wxMaxima.cpp:7813
 msgid "Top end"
 msgstr ""
 
@@ -9571,7 +9587,7 @@ msgstr ""
 msgid "Trace a function..."
 msgstr "Διαγραφή μίας συνάρτησης"
 
-#: ../../src/wxMaxima.cpp:6716
+#: ../../src/wxMaxima.cpp:6714
 #, fuzzy
 msgid "Trace function(s)"
 msgstr "Διαγραφή συνάρτησης(-σεων)"
@@ -9590,18 +9606,18 @@ msgstr ""
 msgid "Transpose a matrix"
 msgstr "Αναστροφή πίνακα"
 
-#: ../../src/wxMaxima.cpp:7456
+#: ../../src/wxMaxima.cpp:7454
 msgid ""
 "Tries to find a numerical solution for a 1st order ODE (or in other words: a "
 "equation of the format depends(x,t);diff(x,t)=(something containing x and t)"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:9787
+#: ../../src/wxMaxima.cpp:9785
 msgid ""
 "Tries to find a solution of the equation that lies between the two bounds."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:7351
+#: ../../src/wxMaxima.cpp:7349
 msgid ""
 "Tries to find all solutions of a polynomial numerically using bfloats.\n"
 "Might be able to detect solutions in non-polynomials, as well, if the "
@@ -9610,7 +9626,7 @@ msgid ""
 "    bfallroots(ratdisrep(taylor(expression,0,30)));"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:7341
+#: ../../src/wxMaxima.cpp:7339
 msgid ""
 "Tries to find all solutions of a polynomial numerically.\n"
 "Might be able to detect solutions in non-polynomials, as well, if the "
@@ -9619,7 +9635,7 @@ msgid ""
 "    allroots(ratdisrep(taylor(expression,0,30)));"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:7362
+#: ../../src/wxMaxima.cpp:7360
 #, c-format
 msgid ""
 "Tries to find exact fractions that match the numerical solutions of a "
@@ -9648,15 +9664,15 @@ msgstr "Όριο..."
 msgid "Trim right..."
 msgstr "Όριο..."
 
-#: ../../src/wxMaxima.cpp:7106
+#: ../../src/wxMaxima.cpp:7104
 msgid "Trim string left"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:7102
+#: ../../src/wxMaxima.cpp:7100
 msgid "Trim string on both ends"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:7110
+#: ../../src/wxMaxima.cpp:7108
 msgid "Trim string right"
 msgstr ""
 
@@ -9670,26 +9686,26 @@ msgstr ""
 msgid "Try to guess which form is &simple"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:8274
+#: ../../src/wxMaxima.cpp:8272
 msgid "Try to simplify sums that result from sum() commands."
 msgstr ""
 
-#: ../../src/MaximaManual.cpp:372
+#: ../../src/MaximaManual.cpp:386
 #, c-format
 msgid ""
 "Trying to cache the list of subjects the manual contains in the file %s."
 msgstr ""
 
-#: ../../src/Image.cpp:409 ../../src/Image.cpp:414 ../../src/Image.cpp:422
+#: ../../src/Image.cpp:162 ../../src/Image.cpp:167 ../../src/Image.cpp:175
 #, c-format
 msgid "Trying to delete gnuplot file %s"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:4122
+#: ../../src/wxMaxima.cpp:4120
 msgid "Trying to discard all output."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:4083
+#: ../../src/wxMaxima.cpp:4081
 msgid "Trying to extract contents.xml out of a broken .zip file."
 msgstr ""
 
@@ -9698,33 +9714,33 @@ msgstr ""
 msgid "Trying to load a list of autocompletable symbols from file %s"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:5249
+#: ../../src/wxMaxima.cpp:5247
 msgid "Trying to open a file with an empty name!"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:5253
+#: ../../src/wxMaxima.cpp:5251
 #, c-format
 msgid "Trying to open the non-existing file %s"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:4152
+#: ../../src/wxMaxima.cpp:4150
 msgid "Trying to reconstruct the xml closing markers."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:4078
+#: ../../src/wxMaxima.cpp:4076
 msgid "Trying to recover a broken .wxmx file."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:5744
+#: ../../src/wxMaxima.cpp:5742
 #, c-format
 msgid "Trying to remove the old temp file %s"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:2207
+#: ../../src/wxMaxima.cpp:2205
 msgid "Trying to restart maxima."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:2224
+#: ../../src/wxMaxima.cpp:2222
 #, c-format
 msgid ""
 "Trying to start the socket a maxima on the local machine can connect to on "
@@ -9739,20 +9755,20 @@ msgstr ""
 msgid "Tutorials"
 msgstr "Διδακτικές παρουσιάσεις"
 
-#: ../../src/wxMaxima.cpp:9246
+#: ../../src/wxMaxima.cpp:9244
 msgid "Two sample t-test"
 msgstr "t-τεστ δυο δειγμάτων"
 
-#: ../../src/Worksheet.cpp:8167
+#: ../../src/Worksheet.cpp:8135
 #, fuzzy
 msgid "Type"
 msgstr "Τύπος:"
 
-#: ../../src/wxMaxima.cpp:6812
+#: ../../src/wxMaxima.cpp:6810
 msgid "Type:"
 msgstr "Τύπος:"
 
-#: ../../src/wxMaxima.cpp:9079
+#: ../../src/wxMaxima.cpp:9077
 msgid "URL"
 msgstr ""
 
@@ -9768,15 +9784,15 @@ msgstr ""
 msgid "Ukrainian"
 msgstr "Ουκρανικά"
 
-#: ../../src/wxMaxima.cpp:10218
+#: ../../src/wxMaxima.cpp:10216
 msgid "Un-closed parenthesis"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:10206
+#: ../../src/wxMaxima.cpp:10204
 msgid "Un-closed parenthesis on encountering ; or $"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:10880
+#: ../../src/wxMaxima.cpp:10878
 msgid ""
 "Unable to interpret the version info I got from http://wxMaxima-developers."
 "github.io/wxmaxima/version.txt: "
@@ -9794,7 +9810,7 @@ msgstr "Υπογραμμισμένος"
 msgid "Underscore converts to subscripts:"
 msgstr ""
 
-#: ../../src/ToolBar.cpp:178
+#: ../../src/ToolBar.cpp:185
 msgid "Undo"
 msgstr ""
 
@@ -9802,7 +9818,7 @@ msgstr ""
 msgid "Undo\tCtrl+Z"
 msgstr "Αναίρεση\tCtrl+Z"
 
-#: ../../src/ToolBar.cpp:618
+#: ../../src/ToolBar.cpp:613
 msgid "Undo and redo button"
 msgstr ""
 
@@ -9872,7 +9888,7 @@ msgstr ""
 msgid "Unicode code point to UTF8..."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:6999
+#: ../../src/wxMaxima.cpp:6997
 msgid "Unicode code point to char"
 msgstr ""
 
@@ -9880,7 +9896,7 @@ msgstr ""
 msgid "Unicode code point to char..."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:7004
+#: ../../src/wxMaxima.cpp:7002
 msgid "Unicode code point to utf8 numbers"
 msgstr ""
 
@@ -9888,17 +9904,17 @@ msgstr ""
 msgid "Unicode symbols:"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:6710
+#: ../../src/wxMaxima.cpp:6708
 msgid ""
 "Unlike in other programming language return() only exits from the current "
 "loop or block(), not from the whole function."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:10157
+#: ../../src/wxMaxima.cpp:10155
 msgid "Unterminated comment."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:10200
+#: ../../src/wxMaxima.cpp:10198
 msgid "Unterminated string."
 msgstr ""
 
@@ -9906,16 +9922,16 @@ msgstr ""
 msgid "Up"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:4450
+#: ../../src/wxMaxima.cpp:4448
 msgid "Updating maxima's configuration"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:10870 ../../src/wxMaxima.cpp:10877
-#: ../../src/wxMaxima.cpp:10883
+#: ../../src/wxMaxima.cpp:10868 ../../src/wxMaxima.cpp:10875
+#: ../../src/wxMaxima.cpp:10881
 msgid "Upgrade"
 msgstr "Αναβάθμιση"
 
-#: ../../src/wxMaxima.cpp:9792
+#: ../../src/wxMaxima.cpp:9790
 msgid "Upper bound:"
 msgstr "Άνω φράγμα:"
 
@@ -9933,7 +9949,7 @@ msgstr ""
 msgid "Use a list"
 msgstr "Δημιουργία λίστας"
 
-#: ../../src/wxMaxima.cpp:8209
+#: ../../src/wxMaxima.cpp:8207
 msgid "Use a list as parameter list for a function"
 msgstr ""
 
@@ -9990,7 +10006,7 @@ msgstr ""
 msgid "User specified"
 msgstr ""
 
-#: ../../src/Configuration.cpp:1533
+#: ../../src/Configuration.cpp:1540
 msgid "User-defined labels"
 msgstr ""
 
@@ -10002,17 +10018,17 @@ msgstr ""
 msgid "User-specified file:"
 msgstr ""
 
-#: ../../src/MaximaManual.cpp:471
+#: ../../src/MaximaManual.cpp:502
 msgid "Using Maxima help file from wxMaxima configuration file (helpFile=...))"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:2651
+#: ../../src/wxMaxima.cpp:2649
 msgid ""
 "Using gnuplot's antialiassing-less png driver for embedded plots as pngcairo "
 "could not be found"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:2646
+#: ../../src/wxMaxima.cpp:2644
 msgid "Using gnuplot's pngcairo driver for embedded plots"
 msgstr ""
 
@@ -10025,7 +10041,7 @@ msgstr ""
 msgid "Value"
 msgstr "Τιμή:"
 
-#: ../../src/wxMaxima.cpp:8392
+#: ../../src/wxMaxima.cpp:8390
 #, fuzzy
 msgid "Value at a given point"
 msgstr "Υπολογισμός ονοματικών μορφών"
@@ -10034,36 +10050,36 @@ msgstr "Υπολογισμός ονοματικών μορφών"
 msgid "Value at a specific point"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:7425
+#: ../../src/wxMaxima.cpp:7423
 #, fuzzy
 msgid "Value at that point:"
 msgstr "Υπολογισμός ονοματικών μορφών"
 
-#: ../../src/wxMaxima.cpp:7436 ../../src/wxMaxima.cpp:7449
-#: ../../src/wxMaxima.cpp:7451
+#: ../../src/wxMaxima.cpp:7434 ../../src/wxMaxima.cpp:7447
+#: ../../src/wxMaxima.cpp:7449
 #, fuzzy
 msgid "Value y at that point:"
 msgstr "Υπολογισμός ονοματικών μορφών"
 
-#: ../../src/wxMaxima.cpp:7534
+#: ../../src/wxMaxima.cpp:7532
 msgid "Value:"
 msgstr "Τιμή:"
 
-#: ../../src/wxMaxima.cpp:7825
+#: ../../src/wxMaxima.cpp:7823
 msgid "Var #1"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:7826
+#: ../../src/wxMaxima.cpp:7824
 msgid "Var #2"
 msgstr ""
 
 #: ../../src/ConfigDialogue.cpp:523 ../../src/VariablesPane.cpp:36
-#: ../../src/wxMaxima.cpp:6530 ../../src/wxMaxima.cpp:7806
+#: ../../src/wxMaxima.cpp:6528 ../../src/wxMaxima.cpp:7804
 msgid "Variable"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:6255 ../../src/wxMaxima.cpp:6261
-#: ../../src/wxMaxima.cpp:8206
+#: ../../src/wxMaxima.cpp:6253 ../../src/wxMaxima.cpp:6259
+#: ../../src/wxMaxima.cpp:8204
 #, fuzzy
 msgid "Variable name"
 msgstr "Παλιά μεταβλητή:"
@@ -10073,35 +10089,35 @@ msgstr "Παλιά μεταβλητή:"
 msgid "Variable name, not contents..."
 msgstr "Παλιά μεταβλητή:"
 
-#: ../../src/wxMaxima.cpp:6789 ../../src/wxMaxima.cpp:7308
+#: ../../src/wxMaxima.cpp:6787 ../../src/wxMaxima.cpp:7306
 #, fuzzy
 msgid "Variable name:"
 msgstr "Παλιά μεταβλητή:"
 
-#: ../../src/wxMaxima.cpp:7384 ../../src/wxMaxima.cpp:7398
+#: ../../src/wxMaxima.cpp:7382 ../../src/wxMaxima.cpp:7396
 #, fuzzy
 msgid "Variable(s)"
 msgstr "Μεταβλητή(-ές):"
 
-#: ../../src/wxMaxima.cpp:7473 ../../src/wxMaxima.cpp:7525
-#: ../../src/wxMaxima.cpp:8650 ../../src/wxMaxima.cpp:9808
+#: ../../src/wxMaxima.cpp:7471 ../../src/wxMaxima.cpp:7523
+#: ../../src/wxMaxima.cpp:8648 ../../src/wxMaxima.cpp:9806
 msgid "Variable(s):"
 msgstr "Μεταβλητή(-ές):"
 
-#: ../../src/wxMaxima.cpp:7346 ../../src/wxMaxima.cpp:7357
-#: ../../src/wxMaxima.cpp:8571 ../../src/wxMaxima.cpp:8578
-#: ../../src/wxMaxima.cpp:8589 ../../src/wxMaxima.cpp:8615
-#: ../../src/wxMaxima.cpp:8620 ../../src/wxMaxima.cpp:8701
-#: ../../src/wxMaxima.cpp:9790
+#: ../../src/wxMaxima.cpp:7344 ../../src/wxMaxima.cpp:7355
+#: ../../src/wxMaxima.cpp:8569 ../../src/wxMaxima.cpp:8576
+#: ../../src/wxMaxima.cpp:8587 ../../src/wxMaxima.cpp:8613
+#: ../../src/wxMaxima.cpp:8618 ../../src/wxMaxima.cpp:8699
+#: ../../src/wxMaxima.cpp:9788
 msgid "Variable:"
 msgstr "Μεταβλητή:"
 
-#: ../../src/Configuration.cpp:1523 ../../src/wxMaximaFrame.cpp:617
+#: ../../src/Configuration.cpp:1530 ../../src/wxMaximaFrame.cpp:617
 #: ../../src/wxMaximaFrame.cpp:952
 msgid "Variables"
 msgstr "Μεταβλητές"
 
-#: ../../src/wxMaxima.cpp:8681 ../../src/wxMaxima.cpp:9268
+#: ../../src/wxMaxima.cpp:8679 ../../src/wxMaxima.cpp:9266
 msgid "Variables:"
 msgstr "Μεταβλητές:"
 
@@ -10114,7 +10130,7 @@ msgstr "Διακύμανση"
 msgid "View"
 msgstr ""
 
-#: ../../src/MaximaManual.cpp:542
+#: ../../src/MaximaManual.cpp:573
 msgid "Waiting for the thread that parses the maxima manual to finish"
 msgstr ""
 
@@ -10122,9 +10138,9 @@ msgstr ""
 msgid "Warn if an inactive window is idle"
 msgstr ""
 
-#: ../../src/MathParser.cpp:1191 ../../src/wxMaxima.cpp:3084
-#: ../../src/wxMaxima.cpp:3100 ../../src/wxMaxima.cpp:4298
-#: ../../src/wxMaxima.cpp:4384 ../../src/wxMaxima.cpp:4499
+#: ../../src/MathParser.cpp:1212 ../../src/wxMaxima.cpp:3082
+#: ../../src/wxMaxima.cpp:3098 ../../src/wxMaxima.cpp:4296
+#: ../../src/wxMaxima.cpp:4382 ../../src/wxMaxima.cpp:4497
 msgid "Warning"
 msgstr "Προειδοποίηση"
 
@@ -10146,11 +10162,11 @@ msgid ""
 "Warning: No test if the argument of the log is complex, positive or negative"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:4786
+#: ../../src/wxMaxima.cpp:4784
 msgid "Welcome to wxMaxima"
 msgstr "Καλωσορίσατε στο wxMaxima"
 
-#: ../../src/wxMaxima.cpp:8221
+#: ../../src/wxMaxima.cpp:8219
 msgid "What to do:"
 msgstr ""
 
@@ -10169,7 +10185,7 @@ msgstr ""
 msgid "When to invoke the lisp compiler's debugger"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:6678
+#: ../../src/wxMaxima.cpp:6676
 msgid "While loop"
 msgstr ""
 
@@ -10191,7 +10207,7 @@ msgid ""
 "can help to improve wxMaxima, if you have knowledge of Common Lisp."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:5399
+#: ../../src/wxMaxima.cpp:5397
 msgid ""
 "Whole document (*.wxmx)|*.wxmx|The input, readable by load() (maxima > 5.38) "
 "(*.wxm)|*.wxm|All Files (*.*)|*"
@@ -10201,11 +10217,11 @@ msgstr ""
 msgid "Worksheet"
 msgstr ""
 
-#: ../../src/Worksheet.cpp:7201
+#: ../../src/Worksheet.cpp:7165
 msgid "Worksheet got activated"
 msgstr ""
 
-#: ../../src/Worksheet.cpp:7119
+#: ../../src/Worksheet.cpp:7083
 msgid "Worksheet got the mouse focus"
 msgstr ""
 
@@ -10215,7 +10231,7 @@ msgid ""
 "as equation markers"
 msgstr ""
 
-#: ../../src/Worksheet.cpp:7482
+#: ../../src/Worksheet.cpp:7449
 msgid "Wrapped search"
 msgstr ""
 
@@ -10314,7 +10330,7 @@ msgid ""
 "idea at https://github.com/wxMaxima-developers/wxmaxima/issues. "
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:10867
+#: ../../src/wxMaxima.cpp:10865
 #, c-format
 msgid ""
 "You have version %s. Current version is %s.\n"
@@ -10325,11 +10341,11 @@ msgstr ""
 "\n"
 "Επιλέξτε ΟΚ ώστε να μεταβείτε στην ιστοσελίδα του wxMaxima."
 
-#: ../../src/wxMaxima.cpp:10922
+#: ../../src/wxMaxima.cpp:10920
 msgid "Your changes will be lost if you don't save them."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:10876
+#: ../../src/wxMaxima.cpp:10874
 msgid "Your version of wxMaxima is up to date."
 msgstr "Η έκδοση του wxMaxima που διαθέτετε ειναι η πιο πρόσφατη."
 
@@ -10355,22 +10371,22 @@ msgstr "Μεγέθυνση κατά 10%"
 msgid "Zoom out 10%"
 msgstr "Σμίκρυνση κατά 10%"
 
-#: ../../src/wxMaxima.cpp:10644 ../../src/wxMaximaFrame.cpp:230
+#: ../../src/wxMaxima.cpp:10642 ../../src/wxMaximaFrame.cpp:230
 msgid "[ unsaved ]"
 msgstr "[ δεν έχει αποθηκευθεί ]"
 
-#: ../../src/wxMaxima.cpp:10649
+#: ../../src/wxMaxima.cpp:10647
 msgid "[ unsaved* ]"
 msgstr "[ δεν έχει αποθηκευθεί* ]"
 
-#: ../../src/Worksheet.cpp:5213
+#: ../../src/Worksheet.cpp:5214
 #, c-format
 msgid ""
 "_%d.gif\"  alt=\"Animated Diagram\" loading=\"lazy\" style=\"max-width:90%%;"
 "\" />\n"
 msgstr ""
 
-#: ../../src/Worksheet.cpp:5416
+#: ../../src/Worksheet.cpp:5417
 #, c-format
 msgid ""
 "_%d.gif\" alt=\"Animated Diagram\" style=\"max-width:90%%;\" "
@@ -10427,7 +10443,7 @@ msgstr ""
 msgid "delta"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:7460
+#: ../../src/wxMaxima.cpp:7458
 msgid "diff(x,t)="
 msgstr ""
 
@@ -10460,7 +10476,7 @@ msgstr ""
 msgid "exists"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:6762
+#: ../../src/wxMaxima.cpp:6760
 #, fuzzy
 msgid "expression:"
 msgstr "Παράσταση:"
@@ -10477,7 +10493,7 @@ msgid ""
 "all=_ marks subscripts."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:6836 ../../src/wxMaxima.cpp:6841
+#: ../../src/wxMaxima.cpp:6834 ../../src/wxMaxima.cpp:6839
 #, fuzzy
 msgid "filename:"
 msgstr "Παλιά μεταβλητή:"
@@ -10500,7 +10516,7 @@ msgstr "Ονόματα συναρτήσεων"
 msgid "from individual elements"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:7834 ../../src/wxMaxima.cpp:8191
+#: ../../src/wxMaxima.cpp:7832 ../../src/wxMaxima.cpp:8189
 #, fuzzy
 msgid "function"
 msgstr "Συνάρτηση"
@@ -10545,7 +10561,7 @@ msgstr ""
 msgid "less or equal"
 msgstr "Κελί υποενότητας"
 
-#: ../../src/wxMaxima.cpp:8192
+#: ../../src/wxMaxima.cpp:8190
 #, fuzzy
 msgid "list"
 msgstr "Δημιουργία λίστας"
@@ -10580,13 +10596,13 @@ msgstr "Κελί υποενότητας"
 msgid "much less than"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:7669
+#: ../../src/wxMaxima.cpp:7667
 #, fuzzy
 msgid "m×n Matrix A:"
 msgstr "Πίνακας:"
 
-#: ../../src/wxMaxima.cpp:7011 ../../src/wxMaxima.cpp:8165
-#: ../../src/wxMaxima.cpp:8171
+#: ../../src/wxMaxima.cpp:7009 ../../src/wxMaxima.cpp:8163
+#: ../../src/wxMaxima.cpp:8169
 #, fuzzy
 msgid "n:"
 msgstr "Εύρεση "
@@ -10654,8 +10670,8 @@ msgstr ""
 msgid "outative: f(2*x) = 2*f(x)"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:7073 ../../src/wxMaxima.cpp:7078
-#: ../../src/wxMaxima.cpp:7088
+#: ../../src/wxMaxima.cpp:7071 ../../src/wxMaxima.cpp:7076
+#: ../../src/wxMaxima.cpp:7086
 msgid "part:"
 msgstr ""
 
@@ -10676,17 +10692,17 @@ msgstr ""
 msgid "plus or minus"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:8579
+#: ../../src/wxMaxima.cpp:8577
 #, fuzzy
 msgid "point:"
 msgstr "Σημείο:"
 
-#: ../../src/wxMaxima.cpp:7372
+#: ../../src/wxMaxima.cpp:7370
 #, fuzzy
 msgid "precision:"
 msgstr "Ακρίβεια"
 
-#: ../../src/wxMaxima.cpp:6888
+#: ../../src/wxMaxima.cpp:6886
 #, fuzzy
 msgid "printf"
 msgstr "Εκτύπωση"
@@ -10704,7 +10720,7 @@ msgstr ""
 msgid "psi"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:8287
+#: ../../src/wxMaxima.cpp:8285
 msgid ""
 "radcan() is a powerful tools for simplification trigonometric functions but "
 "needs to be taken with care: If a function has more than one branch radcan "
@@ -10744,7 +10760,7 @@ msgstr ""
 msgid "sigma"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:9769
+#: ../../src/wxMaxima.cpp:9767
 msgid ""
 "solve() will solve a list of equations only if for n independent equations "
 "there are n variables to solve to.\n"
@@ -10756,7 +10772,7 @@ msgid ""
 "choose which of the solutions solve() found matches the current problem."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:7377
+#: ../../src/wxMaxima.cpp:7375
 msgid ""
 "solve() will solve a list of equations only if for n independent equations "
 "there are n variables to solve to.\n"
@@ -10765,7 +10781,7 @@ msgid ""
 "eliminate in the solution for the interesting variable."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:7408
+#: ../../src/wxMaxima.cpp:7406
 msgid ""
 "solves an equation of the form\n"
 "    'diff(y,t) = -y;"
@@ -10785,7 +10801,7 @@ msgstr "Υποενότητα"
 msgid "subset or equal"
 msgstr "Κελί υποενότητας"
 
-#: ../../src/wxMaxima.cpp:7413
+#: ../../src/wxMaxima.cpp:7411
 msgid "t:"
 msgstr ""
 
@@ -10817,12 +10833,12 @@ msgstr ""
 msgid "unnamed function (lambda)..."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:10902
+#: ../../src/wxMaxima.cpp:10900
 #, fuzzy
 msgid "unsaved"
 msgstr "[ δεν έχει αποθηκευθεί ]"
 
-#: ../../src/wxMaxima.cpp:5393 ../../src/wxMaxima.cpp:5833
+#: ../../src/wxMaxima.cpp:5391 ../../src/wxMaxima.cpp:5831
 #: ../../src/wxMaximaFrame.cpp:232
 msgid "untitled"
 msgstr "ανώνυμο"
@@ -10856,7 +10872,7 @@ msgid ""
 "to recompile wxMaxima wxMaxima allows to use an external file, instead."
 msgstr ""
 
-#: ../../src/main.cpp:443 ../../src/wxMaxima.cpp:9117
+#: ../../src/main.cpp:443 ../../src/wxMaxima.cpp:9115
 msgid "wxMaxima"
 msgstr ""
 
@@ -10865,8 +10881,8 @@ msgstr ""
 msgid "wxMaxima %d"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:10642 ../../src/wxMaxima.cpp:10647
-#: ../../src/wxMaxima.cpp:10658 ../../src/wxMaxima.cpp:10663
+#: ../../src/wxMaxima.cpp:10640 ../../src/wxMaxima.cpp:10645
+#: ../../src/wxMaxima.cpp:10656 ../../src/wxMaxima.cpp:10661
 #: ../../src/wxMaximaFrame.cpp:228
 #, fuzzy, c-format
 msgid "wxMaxima %s (%s) "
@@ -10879,7 +10895,7 @@ msgid ""
 "directory can be found by typing maxima_userdir;"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:4181
+#: ../../src/wxMaxima.cpp:4179
 msgid "wxMaxima cannot read the xml contents of "
 msgstr ""
 
@@ -10887,7 +10903,7 @@ msgstr ""
 msgid "wxMaxima configuration"
 msgstr "Ρυθμίσεις του wxMaxima"
 
-#: ../../src/wxMaxima.cpp:2250
+#: ../../src/wxMaxima.cpp:2248
 #, fuzzy
 msgid ""
 "wxMaxima could not start a server.\n"
@@ -10910,12 +10926,12 @@ msgstr ""
 "γραμμές εντολών μία από τις οποίες είναι το '%'. Αν έχετε κάνει μια επιλογή "
 "στο έγγραφό σας, η επιλογή αυτή θα χρησιμοποιηθεί στη θέση του '%'."
 
-#: ../../src/wxMaxima.cpp:5017
+#: ../../src/wxMaxima.cpp:5015
 msgid "wxMaxima document"
 msgstr "έγγραφο wxMaxima"
 
-#: ../../src/wxMaxima.cpp:3866 ../../src/wxMaxima.cpp:3918
-#: ../../src/wxMaxima.cpp:3927
+#: ../../src/wxMaxima.cpp:3864 ../../src/wxMaxima.cpp:3916
+#: ../../src/wxMaxima.cpp:3925
 msgid "wxMaxima encountered an error loading "
 msgstr "Το wxMaxima αντιμετώπισε ένα πρόβλημα κατά την φόρτωση"
 
@@ -10923,7 +10939,7 @@ msgstr "Το wxMaxima αντιμετώπισε ένα πρόβλημα κατά 
 msgid "wxMaxima help"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:9093
+#: ../../src/wxMaxima.cpp:9091
 msgid ""
 "wxMaxima is a cross-platform graphical user interface for the computer "
 "algebra system Maxima based on wxWidgets.\n"
@@ -11014,7 +11030,7 @@ msgstr ""
 msgid "wxWidgets is using GTK 3"
 msgstr ""
 
-#: ../../src/Worksheet.cpp:6238
+#: ../../src/Worksheet.cpp:6201
 msgid "wxmx file saved"
 msgstr ""
 
@@ -11022,7 +11038,7 @@ msgstr ""
 msgid "x"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:8009
+#: ../../src/wxMaxima.cpp:8007
 msgid "x direction [in multiples of the tick frequency]"
 msgstr ""
 
@@ -11030,7 +11046,7 @@ msgstr ""
 msgid "xi"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:4191 ../../src/wxMaxima.cpp:4328
+#: ../../src/wxMaxima.cpp:4189 ../../src/wxMaxima.cpp:4326
 msgid "xml contained in the file claims not to be a wxMaxima worksheet. "
 msgstr ""
 
@@ -11039,15 +11055,15 @@ msgstr ""
 msgid "xor"
 msgstr "Εξαγωγή"
 
-#: ../../src/wxMaxima.cpp:8010
+#: ../../src/wxMaxima.cpp:8008
 msgid "y direction [in multiples of the tick frequency]"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:7413
+#: ../../src/wxMaxima.cpp:7411
 msgid "y:"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:9104
+#: ../../src/wxMaxima.cpp:9102
 msgid "yes"
 msgstr "Ναι"
 
@@ -11055,7 +11071,7 @@ msgstr "Ναι"
 msgid "zeta"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:8368
+#: ../../src/wxMaxima.cpp:8366
 msgid "ŕatsubst works like subst, but it knows some basic maths, if needed."
 msgstr ""
 
