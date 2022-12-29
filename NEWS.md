@@ -1,4 +1,4 @@
-# Current
+# 22.12.0
  * A cleaner status bar with double-click actions
  * Better display of labels
  * box() now is displayed as a box, as the maxima manual states
