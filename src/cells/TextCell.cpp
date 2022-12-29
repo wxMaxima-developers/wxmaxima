@@ -502,8 +502,8 @@ void TextCell::Draw(wxPoint point) {
   }
 }
 
-void TextCell::SetFont(AFontSize fontsize) {
-  wxDC *dc = m_configuration->GetDC();
+Style TextCell::GetFont(AFontSize fontsize) {
+    wxDC *dc = m_configuration->GetDC();
   auto style = m_configuration->GetStyle(m_textStyle, fontsize);
   // Mark special variables that are printed as ordinary letters as being
   // special.
@@ -517,8 +517,10 @@ void TextCell::SetFont(AFontSize fontsize) {
 
   wxASSERT(m_fontSize_Scaled.IsValid());
   style.SetFontSize(m_fontSize_Scaled);
+}
 
-  dc->SetFont(style.GetFont());
+void TextCell::SetFont(AFontSize fontsize) {
+  dc->SetFont(GetFont(fontsize));
 }
 
 bool TextCell::IsOperator() const {
