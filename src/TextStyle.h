@@ -135,7 +135,7 @@ public:
   explicit Style(AFontSize fontSize) { m.fontSize = fontSize; }
 
   Style &operator=(const Style &);
-  bool operator==(const Style &o) const = delete;
+  bool operator==(const Style &o) const;
 
   /*! Read this style from a config source.
    * Only touches the attributes that were successfully read. Remaining attributes
@@ -241,6 +241,7 @@ public:
   static void SetFontSize(wxFont &, AFontSize fontSize);
 
   wxString GetDump() const;
+  size_t GetFontHash() const;
 
 private:
   friend struct StyleFontHasher;
@@ -275,12 +276,23 @@ private:
   static_assert(sizeof(Data) <= 40,
                 "Style::Data is misaligned and grew too big.");
 
-  size_t GetFontHash() const;
-
   const wxFont& LookupFont() const;
   // cppcheck-suppress noExplicitConstructor
   Style(Data::NotOK_t) : m(Data::NotOK) {}
 };
+
+
+// Tell std::hash how to use Style as a key for std::unordered_map.
+namespace std {
+  template <>
+  struct hash<Style>
+  {
+    std::size_t operator()(const Style& k) const {
+      return k.GetFontHash();
+    }
+  };
+}
+
 
 //! Hash functor of the font size and attributes of the style
 struct StyleFontHasher final

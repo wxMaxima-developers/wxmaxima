@@ -517,10 +517,12 @@ Style TextCell::GetFont(AFontSize fontsize) {
 
   wxASSERT(m_fontSize_Scaled.IsValid());
   style.SetFontSize(m_fontSize_Scaled);
+  return style;
 }
 
 void TextCell::SetFont(AFontSize fontsize) {
-  dc->SetFont(GetFont(fontsize));
+  wxDC *dc = m_configuration->GetDC();
+  dc->SetFont(GetFont(fontsize).GetFont());
 }
 
 bool TextCell::IsOperator() const {

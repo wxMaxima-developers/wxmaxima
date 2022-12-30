@@ -50,6 +50,11 @@ template <typename T> static size_t MixHash(size_t seed, const T &value) {
 //! Comparator for wxString*
 static bool operator<(const wxString *l, const wxString &r) { return *l < r; }
 
+bool Style::operator==(const Style &o) const
+{
+  return o.GetFontHash() == GetFontHash();
+}
+
 /*
  * Interner (internal)
  */

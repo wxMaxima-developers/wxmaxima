@@ -1256,6 +1256,12 @@ Configuration::FileToSave Configuration::PopFileToSave()
   return retval;
 }
 
+void Configuration::AddTextSnippetToDraw(const wxPoint &pos, const Style &style,
+					 const wxString &text, const wxColor color)
+{
+  m_textSnippetsToDraw[style].push_back(TextsnippetToDraw(pos, text, color));
+}
+
 bool Configuration::InUpdateRegion(wxRect const rect) const {
   if (!ClipToDrawRegion())
     return true;
