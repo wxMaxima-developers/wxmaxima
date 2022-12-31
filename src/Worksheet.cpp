@@ -686,14 +686,12 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event)) {
       m_configuration->SetContext(m_dc);
       return;
     }
-
-    m_configuration->SetContext(m_dc);
-    m_configuration->UnsetAntialiassingDC();
     m_lastTop = top;
     m_lastBottom = bottom;
-
     region++;
   }
+  m_configuration->SetContext(m_dc);
+  m_configuration->UnsetAntialiassingDC();
 
   m_configuration->ReportMultipleRedraws();
 }
