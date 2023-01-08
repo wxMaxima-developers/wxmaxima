@@ -4557,8 +4557,13 @@ void wxMaxima::LaunchHelpBrowser(wxString uri) {
       }
     } else {
       wxString command;
-      command = m_configuration.HelpBrowserUserLocation() + wxT(" ") + uri;
-      wxExecute(command);
+      char *argv[3];
+      wxCharBuffer commandnamebuffer = m_configuration.HelpBrowserUserLocation().mb_str();
+      wxCharBuffer urlbuffer= uri.mb_str();
+      argv[0] = commandnamebuffer.data();
+      argv[1] = urlbuffer.data();
+      argv[2] = NULL;
+      wxExecute(argv);
     }
   }
 }
@@ -6092,12 +6097,21 @@ void wxMaxima::EditMenu(wxCommandEvent &event) {
     }
 
     // Execute gnuplot
-    wxString cmdline =
-      m_gnuplotcommand + wxT(" " + gnuplotSource + wxT(".popout"));
-    wxLogMessage(_("Running gnuplot as: " + cmdline));
+    char *argv[3];
+    wxCharBuffer commandnamebuffer = m_gnuplotcommand.mb_str();
+    wxString uri = gnuplotSource + wxT(".popout");
+    wxCharBuffer urlbuffer = uri.mb_str();
+    argv[0] = commandnamebuffer.data();
+    argv[1] = urlbuffer.data();
+    argv[2] = NULL;
+    
+    wxLogMessage(wxString::Format(_("Running %s on the file %s: "),
+				  (const char*)m_gnuplotcommand.mb_str(),
+				  (const char*)uri.mb_str()
+				  ));
 
     m_gnuplotProcess = new wxProcess(this, m_gnuplot_process_id);
-    if (wxExecute(cmdline, wxEXEC_ASYNC | wxEXEC_SHOW_CONSOLE,
+    if (wxExecute(argv, wxEXEC_ASYNC | wxEXEC_SHOW_CONSOLE,
                   m_gnuplotProcess) < 0)
       wxLogMessage(_("Cannot start gnuplot"));
   }
