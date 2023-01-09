@@ -7,13 +7,13 @@
 # Copyright (c) Olesya Gerasimenko <gammaray@basealt.ru>, 2019.
 #
 # This file is distributed under the same license as the wxMaxima package.
-# Olesya Gerasimenko <gammaray@basealt.ru>, 2019, 2020, 2021, 2022.
+# Olesya Gerasimenko <gammaray@basealt.ru>, 2019, 2020, 2021, 2022, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: wxMaxima\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-29 16:50+0100\n"
-"PO-Revision-Date: 2022-10-19 17:13+0300\n"
+"PO-Revision-Date: 2023-01-09 14:24+0300\n"
 "Last-Translator: Olesya Gerasimenko <translation-team@basealt.ru>\n"
 "Language-Team: Basealt Translation Team\n"
 "Language: ru_RU\n"
@@ -401,13 +401,12 @@ msgid "(f(x),x,y) with singularities+discontinuities"
 msgstr "(f(x),x,y) с сингулярностями и разрывами"
 
 #: ../../src/wxMaxima.cpp:1827
-#, fuzzy
 msgid ""
 "... [suppressed additional lines as the output is longer than allowed in the "
 "wxMaxima configuration] "
 msgstr ""
 "... [дополнительные строки скрыты, так как длина вывода превышает "
-"разрешённую конфигурацией] "
+"разрешённую конфигурацией wxMaxima] "
 
 #: ../../src/Worksheet.cpp:6907
 msgid ".wxm clipboard data with unusual header"
@@ -1382,7 +1381,6 @@ msgstr ""
 "или в диалоге настройки указано неверное расположение её исполняемого файла."
 
 #: ../../src/wxMaxima.cpp:2370
-#, fuzzy
 msgid ""
 "Can not start Maxima. The most probable cause is that Maxima isn't installed "
 "(it can be downloaded from https://maxima.sourceforge.io) or in wxMaxima's "
@@ -1393,7 +1391,10 @@ msgid ""
 msgstr ""
 "Не удалось запустить Maxima. Наиболее вероятная причина: программа Maxima не "
 "установлена (её можно загрузить с веб-сайта https://maxima.sourceforge.io) "
-"или в диалоге настройки указано неверное расположение её исполняемого файла."
+"или в диалоге настройки wxMaxima указано неверное расположение исполняемого"
+" файла Maxima. Другая возможная причина: что-то мешает Maxima и wxMaxima"
+" обмениваться данными по локальной сети в том диапазоне портов, на который"
+" они настроены."
 
 #: ../../src/MaxSizeChooser.cpp:46 ../../src/MaxSizeChooser.cpp:48
 #: ../../src/ResolutionChooser.cpp:41 ../../src/ResolutionChooser.cpp:43
@@ -3851,14 +3852,16 @@ msgid "Found %i loadable files."
 msgstr "Найдено доступных для загрузки файлов: %i."
 
 #: ../../src/MaximaManual.cpp:275
-#, fuzzy, c-format
+#, c-format
 msgid "Found %li anchors, %li anchors total."
-msgstr "Найдено привязок: %i. Всего привязок: %i."
+msgstr "Найдено привязок: %li. Всего привязок: %li."
 
 #: ../../src/MaximaManual.cpp:471
 #, c-format
 msgid "Found %li anchors, URLs (individual files): %li, URLs (singlepage): %li"
 msgstr ""
+"Найдено привязок: %li, URL-адресов (отдельные файлы): %li, URL-адресов (одна"
+" страница): %li"
 
 #: ../../src/MaximaManual.cpp:330
 #, c-format
@@ -4166,6 +4169,9 @@ msgid ""
 "Have only %li keyword anchors at the end of parsing the maxima manual => Not "
 "caching the result of using the built-in keyword list"
 msgstr ""
+"Всего привязок ключевых слов по окончанию анализа руководства пользователя"
+" Maxima: %li => Не кэшируется результат использования встроенного списка"
+" ключевых слов"
 
 #: ../../src/Configuration.cpp:1547 ../../src/ToolBar.cpp:269
 #: ../../src/wxMaximaFrame.cpp:2976
@@ -4561,9 +4567,8 @@ msgstr ""
 ">Прервать» или «Maxima->Перезапустить»."
 
 #: ../../src/MaximaManual.cpp:423
-#, fuzzy
 msgid "Ignoring the cache version for the manual anchors."
-msgstr "Игнорируется версия кэша."
+msgstr "Игнорируется версия кэша для ключевых слов руководства пользователя."
 
 #: ../../src/wxMaximaFrame.cpp:2982
 msgid "Image"
@@ -4591,11 +4596,11 @@ msgstr "Импорт и экспорт"
 
 #: ../../src/MathParser.cpp:336
 msgid "Importing compressed gnuplot sources for an animation"
-msgstr ""
+msgstr "Импорт сжатых исходников Gnuplot для анимации"
 
 #: ../../src/MathParser.cpp:323
 msgid "Importing uncompressed gnuplot sources for an animation"
-msgstr ""
+msgstr "Импорт несжатых исходников Gnuplot для анимации"
 
 #: ../../src/wxMaxima.cpp:7614
 msgid ""
@@ -5329,7 +5334,7 @@ msgstr "Последние n"
 
 #: ../../src/wxMaxima.cpp:10137
 msgid "Last non-whitespace is a question mark"
-msgstr ""
+msgstr "Последний символ, отличный от пробела, является знаком вопроса"
 
 #: ../../src/wxMaxima.cpp:4553
 #, c-format
@@ -5797,7 +5802,6 @@ msgid "Maxima Location"
 msgstr "Расположение Maxima"
 
 #: ../../src/wxMaxima.cpp:8262
-#, fuzzy
 msgid ""
 "Maxima allows to make functions \"nouns\", which means that they aren't "
 "automatically evaluated as soon as maxima encounters them.\n"
@@ -5937,9 +5941,9 @@ msgid "Maxima package (*.mac)|*.mac|Lisp package (*.lisp)|*.lisp|All|*"
 msgstr "Пакет Maxima (*.mac)|*.mac|Пакет Lisp (*.lisp)|*.lisp|Все|*"
 
 #: ../../src/wxMaxima.cpp:2671
-#, fuzzy, c-format
+#, c-format
 msgid "Maxima process (pid %i) has terminated with exit code %i.\n"
-msgstr "Процесс Maxima (pid %i) завершился с кодом выхода %i."
+msgstr "Процесс Maxima (pid %i) завершился с кодом выхода %i.\n"
 
 #: ../../src/wxMaxima.cpp:2701
 msgid "Maxima process terminated unexpectedly."
