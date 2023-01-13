@@ -4539,21 +4539,24 @@ void wxMaxima::LaunchHelpBrowser(wxString uri) {
     wxMaximaFrame::ShowPane(EventIDs::menu_pane_help);
   } else {
     if (m_configuration.AutodetectHelpBrowser()) {
-      bool helpBrowserLaunched;
+      // see https://docs.wxwidgets.org/3.0/classwx_mime_types_manager.html
+      auto *manager = wxTheMimeTypesManager;
+      wxFileType *filetype = manager->GetFileTypeFromExtension("html");
+      
+      wxString command = filetype->GetOpenCommand(uri);
+      if(!command.IsEmpty())
+	{
+	  wxLogMessage(_("Launching the system's default help browser as %s failed."),
+		       command.mb_str());
+	  wxExecute(command);
+	}
+      else
       {
         SuppressErrorDialogs suppressor;
-        helpBrowserLaunched = wxLaunchDefaultBrowser(uri);
-      }
-      if (!helpBrowserLaunched) {
-        // see https://docs.wxwidgets.org/3.0/classwx_mime_types_manager.html
-        auto *manager = wxTheMimeTypesManager;
-        wxFileType *filetype = manager->GetFileTypeFromExtension("html");
-        wxString command = filetype->GetOpenCommand(uri);
-        wxLogMessage(
-		     wxString::Format(_("Launching the system's default help browser "
-					"failed. Trying to execute %s instead."),
-				      command.utf8_str()));
-        wxExecute(command);
+        if(wxLaunchDefaultBrowser(uri))
+	  wxLogMessage(_("Didn't get a help browser launch program, but can request the system's default help browser."));
+	else
+	  wxLogMessage(_("Launching the system's default help browser failed."));
       }
     } else {
       wxString command;
@@ -6109,7 +6112,7 @@ void wxMaxima::EditMenu(wxCommandEvent &event) {
 				  (const char*)m_gnuplotcommand.mb_str(),
 				  (const char*)uri.mb_str()
 				  ));
-
+    
     m_gnuplotProcess = new wxProcess(this, m_gnuplot_process_id);
     if (wxExecute(argv, wxEXEC_ASYNC | wxEXEC_SHOW_CONSOLE,
                   m_gnuplotProcess) < 0)
