@@ -4546,7 +4546,7 @@ void wxMaxima::LaunchHelpBrowser(wxString uri) {
       wxString command = filetype->GetOpenCommand(uri);
       if(!command.IsEmpty())
 	{
-	  wxLogMessage(_("Launching the system's default help browser as %s failed."),
+	  wxLogMessage(_("Launching the system's default help browser as %s."),
 		       command.mb_str());
 	  wxExecute(command);
 	}
@@ -4554,7 +4554,7 @@ void wxMaxima::LaunchHelpBrowser(wxString uri) {
       {
         SuppressErrorDialogs suppressor;
         if(wxLaunchDefaultBrowser(uri))
-	  wxLogMessage(_("Didn't get a help browser launch program, but can request the system's default help browser."));
+	  wxLogMessage(_("Didn't get a help browser launch program command line, but can request the system's default help browser."));
 	else
 	  wxLogMessage(_("Launching the system's default help browser failed."));
       }
