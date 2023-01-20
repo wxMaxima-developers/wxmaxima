@@ -622,7 +622,7 @@
   (wx-defprop $%kappa "<g>%kappa</g>" wxxmlword)
   (wx-defprop $kappa "<g>kappa</g>" wxxmlword)
   (wx-defprop $%lambda "<g>%lambda</g>" wxxmlword)
-  (wx-defprop $lambda "<g>lambda</g>" wxxmlword)
+  (wx-defprop lambda "<g>lambda</g>" wxxmlword) ; No preceeding "$" required, see https://sourceforge.net/p/maxima/mailman/message/37764771/
   (wx-defprop $%mu "<g>%mu</g>" wxxmlword)
   (wx-defprop $mu "<g>mu</g>" wxxmlword)
   (wx-defprop $%nu "<g>%nu</g>" wxxmlword)
