@@ -3,21 +3,21 @@
 # This file is distributed under the same license as the wxMaxima package.
 #
 # Sergey Semerikov <cc@kpi.dp.ua>, 2007.
-# Yuri Chornoivan <yurchor@ukr.net>, 2013, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022.
+# Yuri Chornoivan <yurchor@ukr.net>, 2013, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: wxMaxima\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-29 16:50+0100\n"
-"PO-Revision-Date: 2022-10-21 22:47+0300\n"
+"PO-Revision-Date: 2023-01-20 15:06+0200\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
-"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Generator: Lokalize 20.12.0\n"
 
 #: ../../src/StatusBar.cpp:301
@@ -399,13 +399,12 @@ msgid "(f(x),x,y) with singularities+discontinuities"
 msgstr "(f(x),x,y) із сингулярностями і розривами"
 
 #: ../../src/wxMaxima.cpp:1827
-#, fuzzy
 msgid ""
 "... [suppressed additional lines as the output is longer than allowed in the "
 "wxMaxima configuration] "
 msgstr ""
 "... [придушено додаткові рядки, оскільки обсяг виведених даних перевищує "
-"дозволений у налаштуваннях] "
+"дозволений у налаштуваннях wxMaxima] "
 
 #: ../../src/Worksheet.cpp:6907
 msgid ".wxm clipboard data with unusual header"
@@ -672,12 +671,14 @@ msgstr "У інспектор XML додано забагато тексту (%l
 
 #: ../../src/ConfigDialogue.cpp:1902
 msgid "Additional clipboard formats to put on the clipboard on ordinary copy"
-msgstr "Додаткові формат буфера для вставляння даних при звичайному копіюванні"
+msgstr ""
+"Додаткові формат буфера для вставляння даних при звичайному копіюванні"
 
 #: ../../src/ConfigDialogue.cpp:377
 msgid ""
 "Additional commands to be added to the preamble of LaTeX output for pdftex."
-msgstr "Додаткові команди, які слід додати до преамбули коду LaTeX для pdftex."
+msgstr ""
+"Додаткові команди, які слід додати до преамбули коду LaTeX для pdftex."
 
 #: ../../src/ConfigDialogue.cpp:1148
 msgid "Additional lines for the TeX preamble:"
@@ -1130,7 +1131,8 @@ msgstr ""
 
 #: ../../src/Autocomplete.cpp:418
 msgid "Bug: Autocompletion requested for unknown type of item."
-msgstr "Вада: надіслано запит щодо автодоповнення для невідомого типу записів."
+msgstr ""
+"Вада: надіслано запит щодо автодоповнення для невідомого типу записів."
 
 #: ../../src/Worksheet.cpp:2937
 msgid "Bug: Cell left but not entered."
@@ -1362,7 +1364,6 @@ msgstr ""
 "розташування Maxima."
 
 #: ../../src/wxMaxima.cpp:2370
-#, fuzzy
 msgid ""
 "Can not start Maxima. The most probable cause is that Maxima isn't installed "
 "(it can be downloaded from https://maxima.sourceforge.io) or in wxMaxima's "
@@ -1374,7 +1375,9 @@ msgstr ""
 "Не вдалося запустити Maxima. Найімовірнішою причиною є те, що Maxima не "
 "встановлено (отримати пакунки можна з сайта https://maxima.sourceforge.io) "
 "або у вікні налаштовування wxMaxima встановлено помилковий каталог "
-"розташування Maxima."
+"розташування Maxima. Ще однією причиною може бути те, що щось заважає maxima"
+" і wxMaxima обмінюватися даними локальним зв'язком на діапазоні портів, в"
+" якому відбувається пошук портів для з'єднання."
 
 #: ../../src/MaxSizeChooser.cpp:46 ../../src/MaxSizeChooser.cpp:48
 #: ../../src/ResolutionChooser.cpp:41 ../../src/ResolutionChooser.cpp:43
@@ -2762,7 +2765,8 @@ msgstr "Параметри класу документів:"
 
 #: ../../src/wxMaximaFrame.cpp:992
 msgid "Don't autosubscript after an underscore"
-msgstr "Не переводити автоматично у нижній індекс символи після підкреслювання"
+msgstr ""
+"Не переводити автоматично у нижній індекс символи після підкреслювання"
 
 #: ../../src/wxMaximaFrame.cpp:1266
 msgid "Don't evaluate Expression..."
@@ -3819,14 +3823,16 @@ msgid "Found %i loadable files."
 msgstr "Знайдено %i придатних до завантаження файлів."
 
 #: ../../src/MaximaManual.cpp:275
-#, fuzzy, c-format
+#, c-format
 msgid "Found %li anchors, %li anchors total."
-msgstr "Виявлено %i прив'язок, загалом %i прив'язок."
+msgstr "Виявлено %li прив'язок, загалом %li прив'язок."
 
 #: ../../src/MaximaManual.cpp:471
 #, c-format
-msgid "Found %li anchors, URLs (individual files): %li, URLs (singlepage): %li"
+msgid ""
+"Found %li anchors, URLs (individual files): %li, URLs (singlepage): %li"
 msgstr ""
+"Знайдено %li прив'язок, адрес (окремих файлів): %li, адрес (singlepage): %li"
 
 #: ../../src/MaximaManual.cpp:330
 #, c-format
@@ -4133,6 +4139,8 @@ msgid ""
 "Have only %li keyword anchors at the end of parsing the maxima manual => Not "
 "caching the result of using the built-in keyword list"
 msgstr ""
+"Маємо лише %li прив'язок ключових слів наприкінці обробки підручника з"
+" maxima => не кешуємо результат використання вбудованого списку ключових слів"
 
 #: ../../src/Configuration.cpp:1547 ../../src/ToolBar.cpp:269
 #: ../../src/wxMaximaFrame.cpp:2976
@@ -4533,9 +4541,8 @@ msgstr ""
 "Maxima»."
 
 #: ../../src/MaximaManual.cpp:423
-#, fuzzy
 msgid "Ignoring the cache version for the manual anchors."
-msgstr "Версія із ігноруванням кешу."
+msgstr "Ігноруємо версію кешу для прив'язок у підручнику."
 
 #: ../../src/wxMaximaFrame.cpp:2982
 msgid "Image"
@@ -4563,11 +4570,11 @@ msgstr "Імпорт+Експорт"
 
 #: ../../src/MathParser.cpp:336
 msgid "Importing compressed gnuplot sources for an animation"
-msgstr ""
+msgstr "Імпортуємо стиснений початковий код gnuplot для анімації"
 
 #: ../../src/MathParser.cpp:323
 msgid "Importing uncompressed gnuplot sources for an animation"
-msgstr ""
+msgstr "Імпортуємо розпакований початковий код gnuplot для анімації"
 
 #: ../../src/wxMaxima.cpp:7614
 msgid ""
@@ -5300,7 +5307,7 @@ msgstr "Останні n"
 
 #: ../../src/wxMaxima.cpp:10137
 msgid "Last non-whitespace is a question mark"
-msgstr ""
+msgstr "Останнім непробільним символом є знак питання"
 
 #: ../../src/wxMaxima.cpp:4553
 #, c-format
@@ -5768,7 +5775,6 @@ msgid "Maxima Location"
 msgstr "Розташування Maxima"
 
 #: ../../src/wxMaxima.cpp:8262
-#, fuzzy
 msgid ""
 "Maxima allows to make functions \"nouns\", which means that they aren't "
 "automatically evaluated as soon as maxima encounters them.\n"
@@ -5911,9 +5917,9 @@ msgid "Maxima package (*.mac)|*.mac|Lisp package (*.lisp)|*.lisp|All|*"
 msgstr "пакунок Maxima (*.mac)|*.mac|пакунок Lisp (*.lisp)|*.lisp|усі файли|*"
 
 #: ../../src/wxMaxima.cpp:2671
-#, fuzzy, c-format
+#, c-format
 msgid "Maxima process (pid %i) has terminated with exit code %i.\n"
-msgstr "Процес Maxima (ідентифікатор %i) перервано із кодом виходу %i."
+msgstr "Процес Maxima (ідентифікатор %i) перервано із кодом виходу %i.\n"
 
 #: ../../src/wxMaxima.cpp:2701
 msgid "Maxima process terminated unexpectedly."
@@ -7118,7 +7124,8 @@ msgstr "QR-розклад"
 
 #: ../../src/wxMaxima.cpp:3370
 msgid "Querying gnuplot which graphics drivers it supports."
-msgstr "Опитуємо gnuplot щодо графічних драйверів, підтримку яких передбачено."
+msgstr ""
+"Опитуємо gnuplot щодо графічних драйверів, підтримку яких передбачено."
 
 #: ../../src/ConfigDialogue.cpp:1916
 msgid "RTF with OMML maths"
@@ -7833,7 +7840,8 @@ msgstr ""
 "для команд maxima."
 
 #: ../../src/Autocomplete.cpp:368
-msgid "Scheduling a background task that scans for autocompletable file names."
+msgid ""
+"Scheduling a background task that scans for autocompletable file names."
 msgstr ""
 "Плануємо фонове завдання сканування назв файлів для автоматичного доповнення."
 
@@ -8528,7 +8536,7 @@ msgid "Solving equations with Maxima"
 msgstr "Розв'язування рівнянь з Maxima"
 
 #: ../../src/wxMaxima.cpp:6735
-#, c-format
+#, no-c-format
 msgid ""
 "Sometimes one wants maxima to loose the information that a function name was "
 "used with the ' operator in order to make maxima not evaluate it. In other "
@@ -8538,7 +8546,7 @@ msgid ""
 msgstr ""
 "Іноді потрібно, щоб maxima втратила відомості про те, що назву функції було "
 "використано з оператором «'», щоб maxima не виконувала її обчислення. В "
-"інших місцях може виникнути потреба, щоб «%» означало (останній вираз на "
+"інших місцях може виникнути потреба, щоб «%» означало «останній вираз на "
 "момент, коли цю функцію було створено», а не «останній вираз зараз».\n"
 "В обох випадках оператор «''» виконає відповідне завдання."
 
@@ -9042,7 +9050,8 @@ msgstr ""
 
 #: ../../src/ConfigDialogue.cpp:376
 msgid "The URL MathJaX.js should be downloaded from by our HTML export."
-msgstr "Адреса, з якої слід отримати MathJaX.js під час експортування до HTML."
+msgstr ""
+"Адреса, з якої слід отримати MathJaX.js під час експортування до HTML."
 
 #: ../../src/wxMaximaFrame.cpp:3114
 msgid "The accuracy versus speed tradeoff"
@@ -9158,7 +9167,8 @@ msgstr "Каталог, у якому розташовано домашній к
 
 #: ../../src/ConfigDialogue.cpp:460
 msgid "The document class LaTeX is instructed to use for our documents."
-msgstr "Клас документів LaTeX, який слід використовувати для наших документів."
+msgstr ""
+"Клас документів LaTeX, який слід використовувати для наших документів."
 
 #: ../../src/wxMaxima.cpp:9265
 msgid "The equation to fit the data to"
@@ -9663,7 +9673,7 @@ msgstr ""
 "    bfallroots(ratdisrep(taylor(вираз,0,30)));"
 
 #: ../../src/wxMaxima.cpp:7360
-#, c-format
+#, no-c-format
 msgid ""
 "Tries to find exact fractions that match the numerical solutions of a "
 "polynomial.\n"
@@ -10056,7 +10066,8 @@ msgid "User-specified file:"
 msgstr "Вказаний користувачем файл:"
 
 #: ../../src/MaximaManual.cpp:502
-msgid "Using Maxima help file from wxMaxima configuration file (helpFile=...))"
+msgid ""
+"Using Maxima help file from wxMaxima configuration file (helpFile=...))"
 msgstr ""
 "Використання файл довідки Maxima з файла налаштувань wxMaxima (helpFile=...))"
 
