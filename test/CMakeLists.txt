@@ -24,6 +24,9 @@ file(
 # performance bugs that cause such behavior.
 
 find_program(MAXIMA maxima)
+execute_process(COMMAND ${MAXIMA} --version
+                OUTPUT_VARIABLE MAXIMA_VERSION_TEXT OUTPUT_STRIP_TRAILING_WHITESPACE)
+message(STATUS "Found maxima: ${MAXIMA} (found version \"${MAXIMA_VERSION_TEXT}\")")
 
 set(CTEST_TEST_TIMEOUT 120)
 
