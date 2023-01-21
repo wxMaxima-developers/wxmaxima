@@ -46,6 +46,12 @@ add_test(
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
     COMMAND echo 'quit() ;' | nc -l 40000 & sleep 10 ; ${MAXIMA} -s 40000)
 
+# A (very simple) test, if wxMathML.lisp file works (creates the expected XML output).
+add_test(
+    NAME check-wxMathML.lisp_1
+    COMMAND "${CMAKE_SOURCE_DIR}/test/check-wxMathML.sh" "${MAXIMA}" "${CMAKE_SOURCE_DIR}/src/wxMathML.lisp" "1+1;" "(%i1) <math><lbl>(%o1) </lbl><mn>2</mn></math>"
+)
+
 add_test(
     NAME wxmaxima_batch_emptyFile
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
