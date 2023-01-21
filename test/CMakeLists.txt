@@ -38,13 +38,13 @@ endif()
 add_test(
     NAME runMaxima
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND echo "quit();" | maxima)
+    COMMAND echo "quit();" | ${MAXIMA})
 
 # Test if maxima is able to communicate with a backend
 add_test(
     NAME runMaxima-over-network
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND echo 'quit() ;' | nc -l 40000 & sleep 10 ; ${MAXIMA}-s 40000)
+    COMMAND echo 'quit() ;' | nc -l 40000 & sleep 10 ; ${MAXIMA} -s 40000)
 
 add_test(
     NAME wxmaxima_batch_emptyFile
