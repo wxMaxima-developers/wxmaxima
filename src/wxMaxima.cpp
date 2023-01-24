@@ -1256,8 +1256,6 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale,
           wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
   Connect(EventIDs::menu_copy_to_file, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
-  Connect(EventIDs::menu_subst, wxEVT_MENU, wxCommandEventHandler(wxMaxima::MaximaMenu),
-          NULL, this);
   Connect(ToolBar::tb_interrupt, wxEVT_TOOL,
           wxCommandEventHandler(wxMaxima::Interrupt), NULL, this);
   Connect(ToolBar::tb_animation_startStop, wxEVT_TOOL,

@@ -1820,7 +1820,7 @@ void wxMaximaFrame::SetupMenu() {
   m_subst_Sub->Append(EventIDs::menu_at, _("Subst constant t into eq with diff(x,t)..."),
                       _("Substitutes until the equation no more changes"),
                       wxITEM_NORMAL);
-  m_subst_Sub->Append(EventIDs::menu_subst, _("Substitute only in parts..."),
+  m_subst_Sub->Append(EventIDs::menu_substinpart, _("Substitute only in parts..."),
                       _("Substitute only in the elements n_1, n_2,..."),
                       wxITEM_NORMAL);
   m_subst_Sub->AppendCheckItem(EventIDs::menu_opsubst,
