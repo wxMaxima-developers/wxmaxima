@@ -57,6 +57,9 @@ repositories and not only the binary packages) by the simpler
 
     sudo apt-get build-dep wxmaxima
 
+You must use the apt-get install command when the version you are building has dependencies
+which are not listed as dependencies in your distro's repository version of wxmaxima.
+
 #### CentOS and Redhat build prerequisites
 
 CentOS / Redhat have rather old versions of CMake and wxWidgets installed,
