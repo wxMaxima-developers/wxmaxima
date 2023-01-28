@@ -89,7 +89,7 @@ jobs:
       - name: Install macports
         run: |
              wget https://github.com/macports/macports-base/releases/download/v2.8.0/MacPorts-2.8.0-12-Monterey.pkg
-             sudo installer -pkg ./MacPorts-2.8.0-12-Monterey.pkg -verbose -pkginfo -volinfo -target /
+             sudo installer -pkg ./MacPorts-2.8.0-12-Monterey.pkg -verbose -target /
       - name: Install the dependencies
         run: |
              set -e
