@@ -174,7 +174,7 @@ bool HelpBrowser::AllowOnlineManualP() {
 }
 
 void HelpBrowser::JumpToKeyword(wxString keyword) {
-  wxWindowUpdateLocker speedUp(this);
+  //  wxWindowUpdateLocker speedUp(this);
   wxString maximaHelpURL = m_maximaManual->GetHelpfileURL(keyword);
   m_topicPanel->Show(false);
 
@@ -197,7 +197,7 @@ void HelpBrowser::JumpToKeyword(wxString keyword) {
 }
 
 void HelpBrowser::SelectKeywords(wxArrayString keywords) {
-  wxWindowUpdateLocker speedUp(this);
+  //  wxWindowUpdateLocker speedUp(this);
   if (keywords.GetCount() == 0)
     return;
 

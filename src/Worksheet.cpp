@@ -4604,7 +4604,7 @@ bool Worksheet::ExportToHTML(const wxString &file) {
   wxBusyCursor crs;
 
   // Don't update the worksheet whilst exporting
-  wxWindowUpdateLocker noUpdates(this);
+  //  wxWindowUpdateLocker noUpdates(this);
 
   // The path to the image directory as seen from the html directory
   wxString imgDir_rel;
@@ -5528,7 +5528,7 @@ bool Worksheet::ExportToTeX(const wxString &file) {
   wxBusyCursor crs;
 
   // Don't update the worksheet whilst exporting
-  wxWindowUpdateLocker noUpdates(this);
+  //  wxWindowUpdateLocker noUpdates(this);
 
   wxString imgDir;
   wxString path, filename, ext;
@@ -5755,7 +5755,7 @@ void Worksheet::ExportToMAC(wxTextFile &output, GroupCell *tree, bool wxm,
   wxBusyCursor crs;
 
   // Don't update the worksheet whilst exporting
-  wxWindowUpdateLocker noUpdates(this);
+  //  wxWindowUpdateLocker noUpdates(this);
 
   //
   // Write contents
@@ -5798,7 +5798,7 @@ bool Worksheet::ExportToMAC(const wxString &file) {
   // Show a busy cursor as long as we export or save.
   wxBusyCursor crs;
   // Don't update the worksheet whilst exporting
-  wxWindowUpdateLocker noUpdates(this);
+  //  wxWindowUpdateLocker noUpdates(this);
 
   bool wxm;
 
@@ -5882,7 +5882,7 @@ bool Worksheet::ExportToWXMX(const wxString &file, bool markAsSaved) {
   // Show a busy cursor as long as we export a file.
   wxBusyCursor crs;
   // Don't update the worksheet whilst exporting
-  wxWindowUpdateLocker noUpdates(this);
+  //  wxWindowUpdateLocker noUpdates(this);
   wxLogMessage(_("Starting to save the worksheet as .wxmx"));
   // delete temp file if it already exists
   wxString backupfile = file + wxT("~");

@@ -46,7 +46,7 @@ wxDEFINE_EVENT(SYMBOLADDEVENT, SymboladdEvent);
 UnicodeSidebar::UnicodeSidebar(wxWindow *parent, wxWindow *worksheet,
                                Configuration *cfg)
   : wxPanel(parent), m_worksheet(worksheet) {
-  wxWindowUpdateLocker speedUp(this);
+  //  wxWindowUpdateLocker speedUp(this);
   wxBoxSizer *box = new wxBoxSizer(wxVERTICAL);
   m_initialized = false;
   m_regex = new RegexCtrl(this, wxID_ANY, cfg);

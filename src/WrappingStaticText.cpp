@@ -30,7 +30,7 @@
 
 WrappingStaticText::WrappingStaticText(wxWindow *parent, int id, wxString text)
   : wxPanel(parent, -1), m_label(text) {
-  wxWindowUpdateLocker SpeedUp(this);
+  //  wxWindowUpdateLocker SpeedUp(this);
   m_textCtrl = new wxStaticText(this, id, text);
   m_textCtrl->Wrap(GetContentScaleFactor() * 50);
   //  m_textCtrl->SetMinSize(wxSize(50,10));

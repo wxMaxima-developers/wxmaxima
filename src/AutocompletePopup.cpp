@@ -226,7 +226,7 @@ bool AutocompletePopup::Create(wxWindow *parent) {
   bool retval = wxListView::Create(parent, 1, m_position, wxDefaultSize,
                                    wxLC_ALIGN_LEFT | wxLC_REPORT |
 				   wxLC_NO_HEADER | wxLC_SINGLE_SEL);
-  wxWindowUpdateLocker lock(this);
+  //  wxWindowUpdateLocker lock(this);
   InsertColumn(0, wxEmptyString);
   UpdateResults();
   SetColumnWidth(0, wxLIST_AUTOSIZE);

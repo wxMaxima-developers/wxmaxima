@@ -291,7 +291,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale,
   // Suppress window updates until this window has fully been created.
   // Not redrawing the window whilst constructing it hopefully speeds up
   // everything.
-  wxWindowUpdateLocker noUpdates(this);
+  //  wxWindowUpdateLocker noUpdates(this);
   m_maximaBusy = true;
   m_evalOnStartup = false;
   m_dataFromMaximaIs = false;
@@ -3855,7 +3855,7 @@ bool wxMaxima::OpenMACFile(const wxString &file, Worksheet *document,
   wxBusyCursor crs;
 
   StatusText(_("Opening file"));
-  wxWindowUpdateLocker noUpdates(document);
+  //  wxWindowUpdateLocker noUpdates(document);
 
   bool xMaximaFile = file.Lower().EndsWith(wxT(".out"));
 
@@ -3909,7 +3909,7 @@ bool wxMaxima::OpenWXMFile(const wxString &file, Worksheet *document,
   wxBusyCursor crs;
 
   StatusText(_("Opening file"));
-  wxWindowUpdateLocker noUpdates(document);
+  //  wxWindowUpdateLocker noUpdates(document);
 
   // open wxm file
   wxTextFile inputFile(file);
@@ -4004,7 +4004,7 @@ bool wxMaxima::OpenWXMXFile(const wxString &file, Worksheet *document,
 
   StatusText(_("Opening file"));
 
-  wxWindowUpdateLocker noUpdates(document);
+  //  wxWindowUpdateLocker noUpdates(document);
 
   // If the file is empty we don't want to generate an error, but just
   // open an empty file.
@@ -4306,7 +4306,7 @@ bool wxMaxima::OpenXML(const wxString &file, Worksheet *document) {
 
   StatusText(_("Opening file"));
 
-  wxWindowUpdateLocker noUpdates(document);
+  //  wxWindowUpdateLocker noUpdates(document);
 
   wxXmlDocument xmldoc;
 
@@ -5034,7 +5034,7 @@ void wxMaxima::PrintMenu(wxCommandEvent &event) {
     {
       // Redraws during printing might end up on paper => temporarily block all
       // redraw events for the console
-      wxWindowUpdateLocker noUpdates(m_worksheet);
+      //      wxWindowUpdateLocker noUpdates(m_worksheet);
       wxEventBlocker blocker(m_worksheet);
       Printout printout(title, m_worksheet->GetTree(), GetContentScaleFactor());
       wxBusyCursor crs;
@@ -5268,7 +5268,7 @@ bool wxMaxima::OpenFile(const wxString &file, const wxString &command) {
   unixFilename.Replace(wxT("\\"), wxT("/"));
 #endif
 
-  wxWindowUpdateLocker dontUpdateTheWorksheet(m_worksheet);
+  //  wxWindowUpdateLocker dontUpdateTheWorksheet(m_worksheet);
 
   if (command.Length() > 0) {
     MenuCommand(command + wxT("(\"") + unixFilename + wxT("\")$"));

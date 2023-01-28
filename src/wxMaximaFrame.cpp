@@ -72,7 +72,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, wxLocale *locale,
   // Suppress window updates until this window has fully been created.
   // Not redrawing the window whilst constructing it hopefully speeds up
   // everything.
-  wxWindowUpdateLocker noUpdates(this);
+  //  wxWindowUpdateLocker noUpdates(this);
   // Add some shortcuts that aren't automatically set by menu entries.
   wxAcceleratorEntry entries[18];
   entries[0].Set(wxACCEL_CTRL, wxT('K'), EventIDs::menu_autocomplete);
@@ -110,7 +110,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, wxLocale *locale,
   // Redirect all debug messages to a dockable panel and output some info
   // about this program.
   m_logPane = new LogPane(this, -1, becomeLogTarget);
-  wxWindowUpdateLocker logBlocker(m_logPane);
+  //  wxWindowUpdateLocker logBlocker(m_logPane);
 
   wxLogMessage(wxString::Format(_("wxMaxima version %s"), GITVERSION));
 #ifdef __WXMSW__
@@ -188,7 +188,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, wxLocale *locale,
 
   // console
   new Worksheet(this, -1, m_worksheet, &m_configuration);
-  wxWindowUpdateLocker worksheetBlocker(m_worksheet);
+  //  wxWindowUpdateLocker worksheetBlocker(m_worksheet);
 
   // We need to create one pane which doesn't do a lot before the log pane
   // Otherwise the log pane will be displayed in a very strange way
@@ -200,9 +200,9 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, wxLocale *locale,
 						       this, -1, &m_configuration, m_worksheet->GetTreeAddress());
 
   m_xmlInspector = new XmlInspector(this, -1);
-  wxWindowUpdateLocker xmlInspectorBlocker(m_xmlInspector);
+  //  wxWindowUpdateLocker xmlInspectorBlocker(m_xmlInspector);
   m_statusBar = new StatusBar(this, -1);
-  wxWindowUpdateLocker statusbarBlocker(m_statusBar);
+  //  wxWindowUpdateLocker statusbarBlocker(m_statusBar);
   SetStatusBar(m_statusBar);
   m_StatusSaving = false;
   // If we need to set the status manually for the first time using
@@ -276,10 +276,10 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, wxLocale *locale,
 		    .RightDockable(true)
 		    .PaneBorder(true)
 		    .Left());
-  wxWindowUpdateLocker statBlocker(statPane);
+  //  wxWindowUpdateLocker statBlocker(statPane);
 
   wxPanel *greekPane = new GreekPane(this, &m_configuration, m_worksheet);
-  wxWindowUpdateLocker greekBlocker(greekPane);
+  //  wxWindowUpdateLocker greekBlocker(greekPane);
   m_manager.AddPane(greekPane,
                     wxAuiPaneInfo()
 		    .Name(wxT("greek"))
@@ -298,7 +298,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, wxLocale *locale,
 
   wxPanel *unicodePane =
     new UnicodeSidebar(this, m_worksheet, &m_configuration);
-  wxWindowUpdateLocker unicodeBlocker(unicodePane);
+  //  wxWindowUpdateLocker unicodeBlocker(unicodePane);
   m_manager.AddPane(unicodePane,
                     wxAuiPaneInfo()
 		    .Name(wxT("unicode"))
@@ -333,7 +333,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, wxLocale *locale,
 		    .Left());
 
   m_worksheet->m_variablesPane = new Variablespane(this, wxID_ANY);
-  wxWindowUpdateLocker variablesBlocker(m_worksheet->m_variablesPane);
+  //  wxWindowUpdateLocker variablesBlocker(m_worksheet->m_variablesPane);
   m_manager.AddPane(
 		    m_worksheet->m_variablesPane,
 		    wxAuiPaneInfo()
@@ -350,7 +350,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, wxLocale *locale,
 		    .Bottom());
 
   m_symbolsPane = new SymbolsPane(this, &m_configuration, m_worksheet);
-  wxWindowUpdateLocker symbolsBlocker(m_symbolsPane);
+  //  wxWindowUpdateLocker symbolsBlocker(m_symbolsPane);
   m_manager.AddPane(m_symbolsPane,
                     wxAuiPaneInfo()
 		    .Name(wxT("symbols"))
@@ -424,7 +424,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, wxLocale *locale,
 		    .RightDockable(true)
 		    .PaneBorder(true)
 		    .Left());
-  wxWindowUpdateLocker drawBlocker(m_drawPane);
+  //  wxWindowUpdateLocker drawBlocker(m_drawPane);
 
   m_manager.AddPane(m_helpPane = new HelpBrowser(
 						 this, &m_configuration, m_worksheet->GetMaximaManual(),
@@ -2691,7 +2691,7 @@ void wxMaximaFrame::GreekPane::OnMenu(wxCommandEvent &event) {
 }
 
 void wxMaximaFrame::GreekPane::UpdateSymbols() {
-  wxWindowUpdateLocker drawBlocker(this);
+  //  wxWindowUpdateLocker drawBlocker(this);
   enum class Cond { None, Show_mu, ShowLatinLookalikes };
   struct EnabledDefinition : CharButton::Definition {
     Cond condition;
@@ -2928,7 +2928,7 @@ void wxMaximaFrame::SymbolsPane::OnMouseRightDown(
 
 void wxMaximaFrame::SymbolsPane::UpdateUserSymbols() {
   wxLogNull blocker;
-  wxWindowUpdateLocker drawBlocker(this);
+  //  wxWindowUpdateLocker drawBlocker(this);
   while (!m_userSymbolButtons.empty()) {
     m_userSymbolButtons.front()->Destroy();
     m_userSymbolButtons.pop_front();
