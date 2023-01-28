@@ -87,9 +87,9 @@ jobs:
           # a pull request then we can checkout the head.
           fetch-depth: 15
       - name: Install macports
-          wget https://github.com/macports/macports-base/releases/download/v2.8.0/MacPorts-2.8.0-10-Monterey.pkg
-          sudo installer -pkg ./MacPorts-2.8.0-10-Monterey.pkg -target /
-
+        run: |
+             wget https://github.com/macports/macports-base/releases/download/v2.8.0/MacPorts-2.8.0-10-Monterey.pkg
+             sudo installer -pkg ./MacPorts-2.8.0-10-Monterey.pkg -target /
       - name: Install the dependencies
         run: |
              set -e
