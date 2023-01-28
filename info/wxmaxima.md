@@ -100,7 +100,7 @@ The worksheet is organized in cells. WxMaxima knows the following cell types:
 
 The default behavior of _wxMaxima_ when text is entered is to automatically create a math cell. Cells of other types can be created using the Cell menu,  using the hot keys shown in the menu or using the drop-down list in the toolbar. Once the non-math cell is created, whatever is typed into the file is interpreted as text.
 
-A (C-style) comment text can be part of a math cell as follows: `/* This comment will be ignored by Maxima */`
+A (C-style) [comment text](https://maxima.sourceforge.io/docs/manual/maxima_singlepage.html#Comments) can be part of a math cell as follows: `/* This comment will be ignored by Maxima */`
 
 "`/*`" marks the start of the comment, "`*/`" the end.
 
@@ -242,12 +242,12 @@ and select the next higher or lower heading type.
 
 ### MathML output
 
-Several word processors and similar programs either recognize MathML input and automatically insert it as an editable 2D equation - or (like LibreOffice 5.1) have an equation editor that offers an “import MathML from clipboard” feature. Others support RTF maths. _WxMaxima_, therefore, offers several entries in the right-click menu.
+Several word processors and similar programs either recognize [MathML](https://www.w3.org/Math/) input and automatically insert it as an editable 2D equation - or (like LibreOffice 5.1) have an equation editor that offers an “import MathML from clipboard” feature. Others support RTF maths. _WxMaxima_, therefore, offers several entries in the right-click menu.
 
 
 ### Markdown support
 
-_WxMaxima_ offers a set of standard markdown conventions that don't collide with mathematical notation. One of these elements is bullet lists.
+_WxMaxima_ offers a set of standard [Markdown](https://en.wikipedia.org/wiki/Markdown) conventions that don't collide with mathematical notation. One of these elements is bullet lists.
 
 ~~~
 Ordinary text
@@ -860,7 +860,7 @@ FAQ
 
 ## Is there a way to make more text fit on a LaTeX page?
 
-Yes. Use the LaTeX package "geometry" to specify the size of the borders.
+Yes. Use the [LaTeX package "geometry"](https://ctan.org/pkg/geometry) to specify the size of the borders.
 
 You can add the following line to the LaTeX preamble (for example by using the respective field in the config dialogue ("Export"->"Additional lines for the TeX preamble"), to set borders of 1cm):
 
