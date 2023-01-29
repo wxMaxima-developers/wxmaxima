@@ -87,11 +87,10 @@ jobs:
           # a pull request then we can checkout the head.
           fetch-depth: 15
       - name: Install macports
-        run: |
-             wget https://github.com/macports/macports-base/releases/download/v2.8.0/MacPorts-2.8.0-12-Monterey.pkg
-             sudo installer -pkg ./MacPorts-2.8.0-12-Monterey.pkg -verbose -target /
+        uses: melusina-org/gha-install-macports@v1.0.0
       - name: Install the dependencies
         run: |
+             export PATH=$PATH:/usr/local/opt/bin
              set -e
              port install gettext ninja pandoc wxwidgets
              set +e
