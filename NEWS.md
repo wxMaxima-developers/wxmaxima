@@ -1,3 +1,6 @@
+# Current
+ * Fix XML generation for wxmx document (#1556)
+
 # 22.12.0
  * A cleaner status bar with double-click actions
  * Better display of labels
