@@ -222,8 +222,12 @@ bool MyApp::OnInit() {
       .Read(wxT("language"), &lang);
     if (lang == wxLANGUAGE_UNKNOWN)
       lang = wxLANGUAGE_DEFAULT;
-    m_locale.Init(lang);
 
+    {
+      wxLogNull suppressErrorMessages;
+	m_locale.Init(lang);
+    }
+    
     // Do we reckong we improve something if we set maxima's language, as well?
     if ((wxLocale::IsAvailable(lang)) && (lang != wxLANGUAGE_DEFAULT)) {
       // Set maxima's language, as well.
