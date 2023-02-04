@@ -1585,8 +1585,7 @@ bool GroupCell::UnBreakUpCells(Cell *cell) {
 
   // Reduce the number of steps involved in layouting big equations
   if (m_cellsInGroup > showLength) {
-    wxLogMessage(
-		 _("Resolving to linear layout for one big cell in order to save time"));
+    wxLogMessage(_("Resolving to linear layout for one big cell in order to save time"));
     return true;
   }
 

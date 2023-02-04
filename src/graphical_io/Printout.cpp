@@ -180,22 +180,21 @@ void Printout::BreakPages() {
         if ((group.GetOutput()) &&
             (group.GetOutput()->GetRect(true).GetTop() - pageStart <
              maxContentHeight)) {
-          wxLogMessage(wxString::Format("Page %li: Adding a partial GroupCell!",
-                                        (long)m_pages.size()));
+          wxLogMessage("Page %li: Adding a partial GroupCell!",
+		       (long)m_pages.size());
           {
             Cell *out = group.GetOutput();
             if (out->GetRect(true).GetBottom() - pageStart > maxContentHeight) {
-              wxLogMessage(wxString::Format("Page %li: Page break after input.",
-                                            (long)m_pages.size()));
+              wxLogMessage("Page %li: Page break after input.",
+			   (long)m_pages.size());
               m_pages.push_back(group.GetOutput());
             }
             while (out) {
               pageStart = m_pages[m_pages.size() - 1]->GetRect(true).GetTop();
               if (out->GetRect(true).GetBottom() - pageStart >
                   maxContentHeight) {
-                wxLogMessage(
-			     wxString::Format("Page %li: Page break in the output",
-					      (long)m_pages.size()));
+                wxLogMessage("Page %li: Page break in the output",
+					      (long)m_pages.size());
                 m_pages.push_back(out);
               }
               out = out->GetNextToDraw();

@@ -110,8 +110,7 @@ TextCell::TextCell(GroupCell *group, Configuration *config,
     m_type = MC_TYPE_TITLE;
     break;
   default:
-    wxLogMessage(
-		 wxString::Format(_("Unexpected text style %i for TextCell"), style));
+    wxLogMessage(_("Unexpected text style %i for TextCell"), style);
     m_type = MC_TYPE_TITLE;
   }
   TextCell::SetValue(text);

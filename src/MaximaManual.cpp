@@ -129,16 +129,14 @@ bool MaximaManual::LoadManualAnchorsFromCache() {
   }
   wxXmlDocument xmlDocument(anchorsFile);
   if (!xmlDocument.IsOk()) {
-    wxLogMessage(
-		 _("The cache for the subjects the manual contains cannot be read."));
+    wxLogMessage(_("The cache for the subjects the manual contains cannot be read."));
     wxRemoveFile(anchorsFile);
     return false;
   }
 
   if (LoadManualAnchorsFromXML(xmlDocument)) {
-    wxLogMessage(
-		 wxString::Format(_("Read the entries the maxima manual offers from %s"),
-				  Dirstructure::Get()->AnchorsCacheFile().utf8_str()));
+    wxLogMessage(_("Read the entries the maxima manual offers from %s"),
+		 Dirstructure::Get()->AnchorsCacheFile().utf8_str());
     return true;
   }
   return !m_helpFileURLs_singlePage.empty();
@@ -211,9 +209,9 @@ void MaximaManual::CompileHelpFileAnchors(wxString maximaHtmlDir,
       uriCorector2.ReplaceFirst(&fileURI, wxT("file:///\\1:"));
 #endif
 
-      wxLogMessage(wxString::Format(_("Scanning help file %s for anchors"),
-                                    file.ToUTF8().data()));
-
+      wxLogMessage(_("Scanning help file %s for anchors"),
+		   file.ToUTF8().data());
+    
       wxRegEx idExtractor(".*<span id=\\\"([a-zAZ0-9_-]*)\\\"");
       wxRegEx idExtractor2("<dt id=\\\"(index-[a-zAZ0-9_-]*)\\\"");
       wxRegEx idExtractor3("<dt [^>]* id=\\\"(index-[a-zAZ0-9_-]*)\\\"");
@@ -272,14 +270,14 @@ void MaximaManual::CompileHelpFileAnchors(wxString maximaHtmlDir,
       AnchorAliasses(m_helpFileAnchors);
       AnchorAliasses(m_helpFileURLs_filePerChapter);
       AnchorAliasses(m_helpFileURLs_singlePage);
-      wxLogMessage(wxString::Format(_("Found %li anchors, %li anchors total."),
-                                    foundAnchors, foundAnchorsTotal));
+      wxLogMessage(_("Found %li anchors, %li anchors total."),
+		   foundAnchors, foundAnchorsTotal);
     }
     if(foundAnchorsTotal < 100)
       {
-	wxLogMessage(wxString::Format(_("Have only %li keyword anchors at the end of parsing the maxima manual => "
-					"Not caching the result of using the built-in keyword list"),
-				      foundAnchorsTotal));
+	wxLogMessage(_("Have only %li keyword anchors at the end of parsing the maxima manual => "
+		       "Not caching the result of using the built-in keyword list"),
+		     foundAnchorsTotal);
 	LoadBuiltInManualAnchors();
       }
     else
@@ -327,9 +325,9 @@ void MaximaManual::SaveManualAnchorsToCache(wxString maximaHtmlDir,
 					    wxString saveName) {
   long num = m_helpFileURLs_singlePage.size();
   if (num <= 50) {
-    wxLogMessage(wxString::Format(_("Found only %li keywords in maxima's "
-                                    "manual. Not caching them to disc."),
-                                  num));
+    wxLogMessage(_("Found only %li keywords in maxima's "
+		   "manual. Not caching them to disc."),
+		 num);
     return;
   }
   wxXmlAttribute *htmlDir =
@@ -383,9 +381,9 @@ void MaximaManual::SaveManualAnchorsToCache(wxString maximaHtmlDir,
 					   "overwritten if maxima's version changes or the file cannot be read"));
 
   xmlDoc.AppendToProlog(commentNode);
-  wxLogMessage(wxString::Format(_("Trying to cache the list of subjects the "
-                                  "manual contains in the file %s."),
-                                saveName.utf8_str()));
+  wxLogMessage(_("Trying to cache the list of subjects the "
+		 "manual contains in the file %s."),
+	       saveName.utf8_str());
   xmlDoc.Save(saveName);
 }
 
@@ -393,8 +391,7 @@ bool MaximaManual::LoadManualAnchorsFromXML(wxXmlDocument xmlDocument,
                                             bool checkManualVersion) {
   wxXmlNode *headNode = xmlDocument.GetDocumentNode();
   if (!headNode) {
-    wxLogMessage(
-		 _("The cache for the subjects the manual contains has no head node."));
+    wxLogMessage(_("The cache for the subjects the manual contains has no head node."));
     return false;
   }
   headNode = headNode->GetChildren();
@@ -406,25 +403,23 @@ bool MaximaManual::LoadManualAnchorsFromXML(wxXmlDocument xmlDocument,
   }
   wxString htmlDir = headNode->GetAttribute(wxT("html_dir"));
   wxString cacheMaximaVersion = headNode->GetAttribute(wxT("maxima_version"));
-  wxLogMessage(wxString::Format(_("Maxima version: %s, Anchors cache version"),
-                                m_maximaVersion.utf8_str(),
-                                cacheMaximaVersion.utf8_str()));
+  wxLogMessage(_("Maxima version: %s, Anchors cache version"),
+	       m_maximaVersion.utf8_str(),
+	       cacheMaximaVersion.utf8_str());
   if (checkManualVersion && ((cacheMaximaVersion != m_maximaVersion) ||
                              (htmlDir != m_maximaHtmlDir))) {
     if (cacheMaximaVersion != m_maximaVersion)
       wxLogMessage(_("The cache for the subjects the manual contains is from a "
                      "different Maxima version."));
     if (htmlDir != m_maximaHtmlDir)
-      wxLogMessage(
-		   _("The help dir from the cache differs from the current one."));
+      wxLogMessage(_("The help dir from the cache differs from the current one."));
     return false;
   }
   if(!checkManualVersion)
     wxLogMessage(_("Ignoring the cache version for the manual anchors."));
   wxXmlNode *entry = headNode->GetChildren();
   if (entry == NULL) {
-    wxLogMessage(
-		 _("No entries in the caches for the subjects the manual contains."));
+    wxLogMessage(_("No entries in the caches for the subjects the manual contains."));
     return false;
   }
   long anchors = 0;
@@ -467,11 +462,10 @@ bool MaximaManual::LoadManualAnchorsFromXML(wxXmlDocument xmlDocument,
     }
     entry = entry->GetNext();
   }
-  wxLogMessage(wxString::Format(
-				_("Found %li anchors, URLs (individual files): %li, URLs (singlepage): %li"),
+  wxLogMessage(_("Found %li anchors, URLs (individual files): %li, URLs (singlepage): %li"),
                                 anchors,
                                 urls_FilePerChapter,
-				urls_SinglePage));
+				urls_SinglePage);
   return !m_helpFileURLs_singlePage.empty();
 }
 
@@ -529,9 +523,8 @@ void MaximaManual::FindMaximaHtmlDir(wxString docDir) {
 
   if (helpfile_cleanup.IsFileReadable()) {
     m_maximaHtmlDir = helpfile_cleanup.GetPath();
-    wxLogMessage(
-		 wxString::Format(_("Found the maxima HTML manual in the folder %s."),
-				  m_maximaHtmlDir.ToUTF8().data()));
+    wxLogMessage(_("Found the maxima HTML manual in the folder %s."),
+				  m_maximaHtmlDir.ToUTF8().data());
   } else {
     m_maximaHtmlDir.clear();
     wxLogMessage(_("Didn't find the maxima HTML manual."));
@@ -569,7 +562,6 @@ void MaximaManual::LoadHelpFileAnchors(wxString docdir,
 }
 
 MaximaManual::~MaximaManual() {
-  wxLogMessage(
-	       _("Waiting for the thread that parses the maxima manual to finish"));
+  wxLogMessage(_("Waiting for the thread that parses the maxima manual to finish"));
   WaitForBackgroundProcess();
 }

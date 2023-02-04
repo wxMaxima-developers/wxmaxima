@@ -2276,10 +2276,9 @@ void ConfigDialogue::WriteSettings() {
     startupFile.MakeAbsolute();
     wxString startupDir = startupFile.GetPath();
     if (!wxDirExists(startupDir)) {
-      wxLogMessage(
-		   wxString::Format(_("The directory %s with maxima's startup file "
+      wxLogMessage(_("The directory %s with maxima's startup file "
 				      "doesn't exist. Trying to create it..."),
-				    startupDir.utf8_str()));
+				    startupDir.mb_str());
       wxMkdir(startupDir);
     }
 
@@ -2471,29 +2470,29 @@ void ConfigDialogue::CopyConfig(wxConfigBase *src, wxConfigBase *dst,
   while (bCont) {
     switch (src->GetEntryType(str)) {
     case wxConfigBase::EntryType::Type_String:
-      wxLogMessage(wxString::Format(_("Copying config string \"%s\""),
-                                    src->GetPath() + wxT("/") + str));
+      wxLogMessage(_("Copying config string \"%s\""),
+		   wxString(src->GetPath() + wxT("/") + str).mb_str());
       dst->Write(str, src->ReadBool(str, wxEmptyString));
       break;
     case wxConfigBase::EntryType::Type_Boolean:
-      wxLogMessage(wxString::Format(_("Copying config bool \"%s\""),
-                                    src->GetPath() + wxT("/") + str));
+      wxLogMessage(_("Copying config bool \"%s\""),
+		   wxString(src->GetPath() + wxT("/") + str).mb_str());
       dst->Write(str, src->ReadBool(str, false));
       break;
     case wxConfigBase::EntryType::Type_Integer:
-      wxLogMessage(wxString::Format(_("Copying config int \"%s\""),
-                                    src->GetPath() + wxT("/") + str));
+      wxLogMessage(_("Copying config int \"%s\""),
+		   wxString(src->GetPath() + wxT("/") + str).mb_str());
       dst->Write(str, src->ReadLong(str, 0));
       break;
     case wxConfigBase::EntryType::Type_Float:
-      wxLogMessage(wxString::Format(_("Copying config float \"%s\""),
-                                    src->GetPath() + wxT("/") + str));
+      wxLogMessage(_("Copying config float \"%s\""),
+		   wxString(src->GetPath() + wxT("/") + str).mb_str());
       dst->Write(str, src->ReadDouble(str, 0.0));
       break;
     default:
       wxLogMessage(
-		   wxString::Format(_("Config item \"%s\" was of an unknown type"),
-				    src->GetPath() + wxT("/") + str));
+		   _("Config item \"%s\" was of an unknown type"),
+		   wxString(src->GetPath() + wxT("/") + str).mb_str());
     }
     bCont = src->GetNextEntry(str, dummy);
   }

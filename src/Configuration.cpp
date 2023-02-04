@@ -852,7 +852,7 @@ void Configuration::ReportMultipleRedraws() {
       if (counter > 1)
         wxLogMessage(
 		     "Bug: %i redraws in one screen refresh for a cell reading \"%s\"",
-		     counter, prev->ToString());
+		     counter, prev->ToString().mb_str());
       prev = cell;
       counter = 1;
     } else
@@ -1329,8 +1329,7 @@ bool Configuration::FontDisplaysChar(wxChar ch, const wxFont &font) {
       if (characterImage.GetBlue(x, y) != referenceImage.GetBlue(x, y))
         return true;
     }
-  wxLogMessage(wxString::Format(wxT("Char '%s' seems not to be displayed."),
-                                wxString(ch).ToUTF8().data()));
+  wxLogMessage(wxT("Char '%s' seems not to be displayed."), wxString(ch).mb_str());
 
   // characterImage.SaveFile(wxString(m_char)+".png");
 
@@ -1372,9 +1371,9 @@ bool Configuration::CharVisiblyDifferent(wxChar ch, wxChar otherChar,
       if (characterImage.GetBlue(x, y) != referenceImage.GetBlue(x, y))
         return true;
     }
-  wxLogMessage(wxString::Format(wxT("Char '%s' looks identical to '%s'."),
-                                wxString(ch).ToUTF8().data(),
-                                wxString(otherChar).ToUTF8().data()));
+  wxLogMessage(wxT("Char '%s' looks identical to '%s'."),
+	       wxString(ch).mb_str(),
+	       wxString(otherChar).mb_str());
   return false;
 }
 

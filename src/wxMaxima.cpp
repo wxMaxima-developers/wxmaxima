@@ -286,7 +286,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale,
   m_exitOnError = false;
   wxString lang;
   if (wxGetEnv("LANG", &lang))
-    wxLogMessage("LANG=" + lang);
+    wxLogMessage("LANG=%S", lang.mb_str());
   m_isLogTarget = m_topLevelWindows.empty();
   // Suppress window updates until this window has fully been created.
   // Not redrawing the window whilst constructing it hopefully speeds up
@@ -2186,8 +2186,7 @@ void wxMaxima::OnMaximaConnect() {
     return;
   }
   if (m_process == NULL) {
-    wxLogMessage(
-		 _("New connection attempt, but no currently running maxima process."));
+    wxLogMessage(_("New connection attempt, but no currently running maxima process."));
     return;
   }
 
@@ -2220,10 +2219,9 @@ bool wxMaxima::StartServer() {
   m_port = m_configuration.DefaultPort() + m_unsuccessfulConnectionAttempts;
 
   do {
-    wxLogMessage(
-		 wxString::Format(_("Trying to start the socket a maxima on the local "
-				    "machine can connect to on port %i"),
-				  m_port));
+    wxLogMessage(_("Trying to start the socket a maxima on the local "
+		   "machine can connect to on port %i"),
+		 m_port);
 #if wxUSE_IPV6wxUSE_IPV6
     wxIPV6address addr;
 #else
@@ -2232,8 +2230,7 @@ bool wxMaxima::StartServer() {
     if (!addr.LocalHost())
       wxLogMessage(_("Cannot set the communication address to localhost."));
     if (!addr.Service(m_port))
-      wxLogMessage(wxString::Format(
-				    _("Cannot set the communication port to %i."), m_port));
+      wxLogMessage(_("Cannot set the communication port to %i."), m_port);
     m_server = std::unique_ptr<wxSocketServer,
 			       ServerDeleter>(
 					      new wxSocketServer(addr, wxSOCKET_WAITALL_WRITE));
@@ -2333,8 +2330,7 @@ bool wxMaxima::StartMaxima(bool force) {
       //      m_process->SetPriority(wxPRIORITY_MAX);
       m_first = true;
       m_pid = -1;
-      wxLogMessage(
-		   wxString::Format(_("Running maxima as: %s"), command.utf8_str()));
+      wxLogMessage(_("Running maxima as: %s"), command.utf8_str());
 
       wxEnvVariableHashMap environment;
       environment = m_configuration.MaximaEnvVars();
@@ -2482,7 +2478,7 @@ void wxMaxima::Interrupt(wxCommandEvent &WXUNUSED(event)) {
         }
 
         StatusText(errorMessage);
-        wxLogMessage(errorMessage);
+        wxLogMessage("%s", errorMessage.mb_str());
         return;
       }
     } else {
@@ -2585,8 +2581,7 @@ void wxMaxima::KillMaxima(bool logMessage) {
       if (wxProcess::Kill(m_pid, wxSIGKILL) != wxKILL_OK)
         wxLogMessage(_("Sending a wxSIGKILL to maxima has failed"));
       else
-        wxLogMessage(
-		     _("Sent wxSIGKILL to maxima, but not to its child processes"));
+        wxLogMessage(_("Sent wxSIGKILL to maxima, but not to its child processes"));
     }
   }
   m_configuration.InLispMode(false);
@@ -2641,7 +2636,7 @@ void wxMaxima::OnGnuplotQueryTerminals(wxProcessEvent &event) {
   }
   gnuplotMessage.Trim(true);
   gnuplotMessage.Trim(false);
-  wxLogMessage("Terminals supported by gnuplot: " + gnuplotMessage);
+  wxLogMessage("Terminals supported by gnuplot: %s", gnuplotMessage.mb_str());
   if (gnuplotMessage.Contains(wxT("pngcairo"))) {
     wxLogMessage(_("Using gnuplot's pngcairo driver for embedded plots"));
     if (!m_configuration.UsePngCairo())
@@ -2670,8 +2665,8 @@ void wxMaxima::OnProcessEvent(wxProcessEvent &event) {
     return;
   m_process = NULL;
   m_pid = -1;
-  wxLogMessage(_("Maxima process (pid %i) has terminated with exit code %i.\n"),
-               event.GetPid(), event.GetExitCode());
+  wxLogMessage(_("Maxima process (pid %li) has terminated with exit code %li.\n"),
+               (long)event.GetPid(), (long)event.GetExitCode());
   if (m_maximaStdout) {
     wxTextInputStream istrm(*m_maximaStdout, wxT('\t'),
                             wxConvAuto(wxFONTENCODING_UTF8));
@@ -2775,10 +2770,9 @@ void wxMaxima::ReadFirstPrompt(wxString &data) {
   wxString prompt_compact = data.Left(start + end + m_firstPrompt.Length() - 1);
   prompt_compact.Replace(wxT("\n"), wxT("\u21b2"));
 
-  wxLogMessage(wxString::Format(_("Received maxima's first prompt: %s"),
-                                prompt_compact.utf8_str()));
+  wxLogMessage(_("Received maxima's first prompt: %s"), prompt_compact.utf8_str());
 
-  wxLogMessage(wxString::Format(_("Maxima's PID is %li"), (long)m_pid));
+  wxLogMessage(_("Maxima's PID is %li"), (long)m_pid);
   // Remove the first prompt from Maxima's answer.
   data = data.Right(data.Length() - end - m_firstPrompt.Length());
 
@@ -3014,8 +3008,8 @@ void wxMaxima::ReadManualTopicNames(wxString &data) {
 	  if (entry->GetName() == wxT("keyword")) {
 	    wxXmlNode *topic = entry->GetChildren();
 	    if (topic) {
-	      wxLogMessage(wxString::Format(_("Received manual topic request: %s"),
-					    topic->GetContent().ToUTF8().data()));
+	      wxLogMessage(_("Received manual topic request: %s"),
+			   topic->GetContent().ToUTF8().data());
 	      topics.Add(topic->GetContent());
 	    }
 	    if (topics.IsEmpty())
@@ -3202,8 +3196,7 @@ void wxMaxima::VariableActionSinnpiflagUndefined() { m_fourierLoaded = false; }
 
 void wxMaxima::VariableActionUserDir(const wxString &value) {
   Dirstructure::Get()->UserConfDir(value);
-  wxLogMessage(wxString::Format(
-				_("Maxima user configuration lies in directory %s"), value.utf8_str()));
+  wxLogMessage(_("Maxima user configuration lies in directory %s"), value.utf8_str());
 }
 
 void wxMaxima::VariableActionGentranlang(const wxString &value) {
@@ -3242,8 +3235,7 @@ void wxMaxima::VariableActionLogexpand(const wxString &value) {
 
 void wxMaxima::VariableActionTempDir(const wxString &value) {
   m_maximaTempDir = value;
-  wxLogMessage(
-	       wxString::Format(_("Maxima uses temp directory %s"), value.utf8_str()));
+  wxLogMessage(_("Maxima uses temp directory %s"), value.utf8_str());
   {
     // Sometimes people delete their temp dir
     // and gnuplot won't create a new one for them.
@@ -3269,18 +3261,17 @@ void wxMaxima::VariableActionDebugmode(const wxString &value) {
 
 void wxMaxima::VariableActionAutoconfVersion(const wxString &value) {
   m_worksheet->SetMaximaVersion(value);
-  wxLogMessage(wxString::Format(_("Maxima version: %s"), value.utf8_str()));
+  wxLogMessage(_("Maxima version: %s"), value.utf8_str());
 }
 void wxMaxima::VariableActionAutoconfHost(const wxString &value) {
   m_maximaArch = value;
-  wxLogMessage(
-	       wxString::Format(_("Maxima architecture: %s"), value.utf8_str()));
+  wxLogMessage(_("Maxima architecture: %s"), value.utf8_str());
 }
 void wxMaxima::VariableActionMaximaInfodir(const wxString &value) {
   // Make sure that we get out all ".." and "~" of the path as they seem to
   // confuse the help browser logic
-  wxLogMessage(wxString::Format(_("Maxima's manual lies in directory %s"),
-                                value.utf8_str()));
+  wxLogMessage(_("Maxima's manual lies in directory %s"),
+	       value.utf8_str());
 }
 
 void wxMaxima::VariableActionMaximaHtmldir(const wxString &value) {
@@ -3288,8 +3279,8 @@ void wxMaxima::VariableActionMaximaHtmldir(const wxString &value) {
   wxFileName dir(value);
   dir.MakeAbsolute();
   wxString dir_canonical = dir.GetPath();
-  wxLogMessage(wxString::Format(_("Maxima's HTML manuals are in directory %s"),
-                                dir_canonical.utf8_str()));
+  wxLogMessage(_("Maxima's HTML manuals are in directory %s"),
+	       dir_canonical.utf8_str());
   m_worksheet->SetMaximaDocDir(dir_canonical);
   m_worksheet->LoadHelpFileAnchors(dir_canonical,
                                    m_worksheet->GetMaximaVersion());
@@ -3355,10 +3346,10 @@ void wxMaxima::GnuplotCommandName(wxString gnuplot) {
     // If not successful, use the original command (better than empty for error
     // messages)
     if (m_gnuplotcommand == wxEmptyString) {
-      wxLogMessage(_("Gnuplot not found, using the default: ") + gnuplot);
+      wxLogMessage(_("Gnuplot not found, using the default: %s"), gnuplot.mb_str());
       m_gnuplotcommand = gnuplot;
     } else {
-      wxLogMessage(_("Gnuplot found at: ") + m_gnuplotcommand);
+      wxLogMessage(_("Gnuplot found at: %s"), m_gnuplotcommand.mb_str());
     }
   }
   if (m_gnuplotcommand.Contains(" ") && (!m_gnuplotcommand.StartsWith("\"")) &&
@@ -3402,26 +3393,24 @@ void wxMaxima::VariableActionMaximaSharedir(const wxString &value) {
   wxString dir = value;
   dir.Trim(true);
   m_configuration.MaximaShareDir(dir);
-  wxLogMessage(wxString::Format(_("Maxima's share files lie in directory %s"),
-                                dir.utf8_str()));
+  wxLogMessage(_("Maxima's share files lie in directory %s"),
+	       dir.utf8_str());
   /// READ FUNCTIONS FOR AUTOCOMPLETION
   m_worksheet->LoadSymbols();
 }
 
 void wxMaxima::VariableActionLispName(const wxString &value) {
   m_configuration.LispType(value);
-  wxLogMessage(
-	       wxString::Format(_("Maxima was compiled using %s"), value.utf8_str()));
+  wxLogMessage(_("Maxima was compiled using %s"), value.utf8_str());
 }
 void wxMaxima::VariableActionLispVersion(const wxString &value) {
   m_lispVersion = value;
-  wxLogMessage(wxString::Format(_("Lisp version: %s"), value.utf8_str()));
+  wxLogMessage(_("Lisp version: %s"), value.utf8_str());
 }
 void wxMaxima::VariableActionWxLoadFileName(const wxString &value) {
   m_recentPackages.AddDocument(value);
   UpdateRecentDocuments();
-  wxLogMessage(
-	       wxString::Format(_("Maxima has loaded the file %s."), value.utf8_str()));
+  wxLogMessage(_("Maxima has loaded the file %s."), value.utf8_str());
 }
 
 void wxMaxima::VariableActionWxSubscripts(const wxString &value) {
@@ -3593,8 +3582,8 @@ void wxMaxima::VariableActionOperators(const wxString &value) {
       contents = contents->GetNext();
     }
     if (!newOperators.IsEmpty()) {
-      wxLogMessage(wxString::Format(_("New maxima Operators detected: %s"),
-                                    newOperators.utf8_str()));
+      wxLogMessage(_("New maxima Operators detected: %s"),
+		   newOperators.utf8_str());
       m_worksheet->Recalculate();
     }
   }
@@ -3607,8 +3596,7 @@ void wxMaxima::ReadAddVariables(wxString &data) {
   int end = FindTagEnd(data, m_addVariablesSuffix);
 
   if (end != wxNOT_FOUND) {
-    wxLogMessage(
-		 _("Maxima sends us a new set of variables for the watch list."));
+    wxLogMessage(_("Maxima sends us a new set of variables for the watch list."));
     wxXmlDocument xmldoc;
     wxString xml = data.Left(end + m_addVariablesSuffix.Length());
     wxStringInputStream xmlStream(xml);
@@ -3790,8 +3778,7 @@ void wxMaxima::ReadPrompt(wxString &data) {
   if (label.StartsWith(wxT("MAXIMA>")) || label.StartsWith("(dbm:")) {
     if (!m_configuration.InLispMode()) {
       if (label.StartsWith("(dbm:"))
-        wxLogMessage(
-		     _("Switched to lisp mode after receiving a lisp debug prompt!"));
+        wxLogMessage(_("Switched to lisp mode after receiving a lisp debug prompt!"));
       else
         wxLogMessage(_("Switched to lisp mode after receiving a lisp prompt!"));
     }
@@ -4079,8 +4066,7 @@ bool wxMaxima::OpenWXMXFile(const wxString &file, Worksheet *document,
       // Let's try to recover the uncompressed text from a truncated .zip file
       wxFileInputStream input(file);
       if (input.IsOk()) {
-        wxLogMessage(
-		     _("Trying to extract contents.xml out of a broken .zip file."));
+        wxLogMessage(_("Trying to extract contents.xml out of a broken .zip file."));
         wxTextInputStream text(input, wxT('\t'),
                                wxConvAuto(wxFONTENCODING_UTF8));
         while (input.IsOk() && !input.Eof()) {
@@ -4409,8 +4395,8 @@ void wxMaxima::SetupVariables() {
   if (wxFileExists(m_gnuplotcommand))
     cmd += wxT("\n:lisp-quiet (setf $gnuplot_command \"") + m_gnuplotcommand +
       wxT("\")\n");
-  wxLogMessage(wxString::Format(_("Setting gnuplot_binary to %s"),
-                                m_gnuplotcommand.utf8_str()));
+  wxLogMessage(_("Setting gnuplot_binary to %s"),
+	       m_gnuplotcommand.utf8_str());
 #endif
   cmd.Replace(wxT("\\"), wxT("/"));
   SendMaxima(cmd);
@@ -4580,8 +4566,7 @@ void wxMaxima::ShowWxMaximaHelp() {
     if (!m_helpPane->AllowOnlineManualP())
       return;
 
-    wxLogMessage(_(wxT(
-		       "No offline manual found => Redirecting to the wxMaxima homepage")));
+    wxLogMessage(_(wxT("No offline manual found => Redirecting to the wxMaxima homepage")));
     helpfile =
       wxString("https://htmlpreview.github.io/?https://github.com/"
 	       "wxMaxima-developers/wxmaxima/blob/main/info/wxmaxima.html");
@@ -4621,15 +4606,12 @@ void wxMaxima::ShowMaximaHelpWithoutAnchor() {
   // m_locale->GetCanonicalName(); /* two- or five-letter string in xx or xx_YY
   // format. Examples: "en", "en_GB", "en_US" or "fr_FR" */ wxString lang_short
   // = lang_long.Left(lang_long.Find('_'));
-  wxLogMessage(m_maximaHtmlDir);
   helpfile = m_maximaHtmlDir.Trim() + wxString("/maxima_singlepage.html");
-  wxLogMessage(helpfile);
   if (!wxFileExists(helpfile)) {
     if (!m_helpPane->AllowOnlineManualP())
       return;
 
-    wxLogMessage(_(
-		   wxT("No offline manual found => Redirecting to the Maxima homepage")));
+    wxLogMessage(_(wxT("No offline manual found => Redirecting to the Maxima homepage")));
     helpfile = wxString(
 			"https://maxima.sourceforge.io/docs/manual/maxima_singlepage.html");
   } else {
@@ -4678,13 +4660,11 @@ void wxMaxima::ShowMaximaHelp(wxString keyword) {
 
   wxBusyCursor crs;
   if (!maximaHelpURL.IsEmpty()) {
-    wxLogMessage(
-		 wxString::Format(_("Opening help file %s"), maximaHelpURL.utf8_str()));
+    wxLogMessage(_("Opening help file %s"), maximaHelpURL.utf8_str());
     LaunchHelpBrowser(maximaHelpURL);
   } else {
     if (m_helpPane->AllowOnlineManualP()) {
-      wxLogMessage(_(wxT(
-			 "No offline manual found => Redirecting to the Maxima homepage")));
+      wxLogMessage(_(wxT("No offline manual found => Redirecting to the Maxima homepage")));
       LaunchHelpBrowser(
 			"https://maxima.sourceforge.io/docs/manual/maxima_singlepage.html#" +
 			keyword);
@@ -5742,23 +5722,19 @@ bool wxMaxima::AutoSave() {
       m_worksheet->m_currentFile.IsEmpty()) {
     bool saved = m_worksheet->ExportToWXMX(m_tempfileName);
 
-    wxLogMessage(wxString::Format(_("Autosaving as temp file %s"),
-                                  m_tempfileName.utf8_str()));
+    wxLogMessage(_("Autosaving as temp file %s"), m_tempfileName.utf8_str());
     if ((m_tempfileName != oldTempFile) && saved) {
       if (!oldTempFile.IsEmpty()) {
         if (wxFileExists(oldTempFile)) {
           SuppressErrorDialogs blocker;
-          wxLogMessage(
-		       wxString::Format(_("Trying to remove the old temp file %s"),
-					oldTempFile.utf8_str()));
+          wxLogMessage(_("Trying to remove the old temp file %s"), oldTempFile.utf8_str());
           wxRemoveFile(oldTempFile);
         }
       }
     }
     RegisterAutoSaveFile();
   } else {
-    wxLogMessage(wxString::Format(_("Autosaving the .wxmx file as %s"),
-                                  m_worksheet->m_currentFile.utf8_str()));
+    wxLogMessage(_("Autosaving the .wxmx file as %s"), m_worksheet->m_currentFile.utf8_str());
     savedWas = SaveFile(false);
   }
 
@@ -6110,10 +6086,10 @@ void wxMaxima::EditMenu(wxCommandEvent &event) {
     argv[1] = urlbuffer.data();
     argv[2] = NULL;
     
-    wxLogMessage(wxString::Format(_("Running %s on the file %s: "),
-				  (const char*)m_gnuplotcommand.mb_str(),
-				  (const char*)uri.mb_str()
-				  ));
+    wxLogMessage(_("Running %s on the file %s: "),
+		 (const char*)m_gnuplotcommand.mb_str(),
+		 (const char*)uri.mb_str()
+		 );
     
     m_gnuplotProcess = new wxProcess(this, m_gnuplot_process_id);
     if (wxExecute(argv, wxEXEC_ASYNC | wxEXEC_SHOW_CONSOLE,
@@ -9548,7 +9524,7 @@ void wxMaxima::PopupMenu(wxCommandEvent &event) {
         return;
       }
 
-      wxLogMessage(wxString::Format(_("Reloading image file %s."), imgFile));
+      wxLogMessage(_("Reloading image file %s."), imgFile);
       dynamic_cast<ImgCell *>(output)->ReloadImage(
 						   imgFile, std::shared_ptr<wxFileSystem>{} /* system fs */);
 
@@ -9934,9 +9910,8 @@ void wxMaxima::PopupMenu(wxCommandEvent &event) {
 
       ImgCell *ic = dynamic_cast<ImgCell *>(cell);
 
-      wxLogMessage(wxString::Format(
-				    _("Changing image originally loaded from file %s to %s."),
-				    ic->GetOrigImageFile(), newImg));
+      wxLogMessage(_("Changing image originally loaded from file %s to %s."),
+		   ic->GetOrigImageFile(), newImg);
       ic->ReloadImage(newImg, std::shared_ptr<wxFileSystem>{} /* system fs */);
       ic->SetOrigImageFile(newImg);
 

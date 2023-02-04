@@ -428,7 +428,7 @@ bool MyApp::OnInit() {
   // std::cerr confusing the mac.
   wxString logMessagesSoFar = noStdErr.GetBuffer();
   if (!logMessagesSoFar.IsEmpty())
-    wxLogMessage("Log messages during early startup: " + logMessagesSoFar);
+    wxLogMessage("Log messages during early startup: %s", logMessagesSoFar.mb_str());
   return true;
 }
 

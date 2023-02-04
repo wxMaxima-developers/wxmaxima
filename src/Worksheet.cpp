@@ -6095,8 +6095,7 @@ bool Worksheet::ExportToWXMX(const wxString &file, bool markAsSaved) {
                 wxDataObjectComposite *data = new wxDataObjectComposite;
                 data->Add(new wxTextDataObject(xmlText));
                 wxTheClipboard->SetData(data);
-                wxLogMessage(
-			     _("Produced invalid XML. The erroneous XML data has "
+                wxLogMessage(_("Produced invalid XML. The erroneous XML data has "
 			       "therefore not been saved but has been put on the "
 			       "clipboard in order to allow to debug it."));
                 wxTheClipboard->Close();
@@ -7104,8 +7103,8 @@ void Worksheet::CheckUnixCopy() {
                    _("Bug: The clipboard is already opened"));
       if (wxTheClipboard->Open()) {
         wxString data = GetString();
-        wxLogMessage("%s", wxString::Format(_("Middle-click clipboard data: %s"),
-                                      static_cast<const char*>(data.mb_str())));
+        wxLogMessage(_("Middle-click clipboard data: %s"),
+		     static_cast<const char*>(data.mb_str()));
         wxTheClipboard->SetData(new wxTextDataObject(data));
         wxTheClipboard->Close();
       }
