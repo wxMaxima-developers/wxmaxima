@@ -655,7 +655,7 @@ void ConfigDialogue::SetCheckboxValues() {
   m_copyEMF->SetValue(m_configuration->CopyEMF());
 #endif
 
-  UpdateButton(TS_DEFAULT);
+  UpdateButton(TS_CODE_DEFAULT);
   UpdateButton(TS_MATH);
   m_useUnicodeMaths->SetValue(m_configuration->UseUnicodeMaths());
 }
@@ -1953,14 +1953,14 @@ wxWindow *ConfigDialogue::CreateClipboardPanel() {
 
 TextStyle ConfigDialogue::StyleForListIndex(int index) {
   if (index == 0)
-    return TS_DEFAULT;
+    return TS_CODE_DEFAULT;
   if (index == 1)
     return TS_MATH;
   return TextStyle(index - 1);
 }
 
 int ConfigDialogue::StyleListIndexForStyle(TextStyle style) {
-  if (style == TS_DEFAULT)
+  if (style == TS_CODE_DEFAULT)
     return 0;
   if (style == TS_MATH)
     return 1;
@@ -1974,13 +1974,13 @@ TextStyle ConfigDialogue::GetSelectedStyle() const {
 void ConfigDialogue::UpdateButton(TextStyle const st) {
   Style const style = m_configuration->m_styles[st];
   wxButton *fontButton = {};
-  if (st == TS_DEFAULT)
+  if (st == TS_CODE_DEFAULT)
     fontButton = m_getDefaultFont;
   else if (st == TS_MATH)
     fontButton = m_getMathFont;
   if (fontButton)
     fontButton->SetLabel(wxString::Format(wxT("%s (%g)"),
-                                          style.GetFontName().GetAsString(),
+                                          style.GetFontName(),
                                           style.GetFontSize().Get()));
 }
 
@@ -2358,7 +2358,7 @@ void ConfigDialogue::OnFontButton(wxCommandEvent &event) {
   TextStyle const prevSt = GetSelectedStyle();
   TextStyle curSt = {};
   if (event.GetId() == button_defaultFont)
-    curSt = TS_DEFAULT;
+    curSt = TS_CODE_DEFAULT;
   else if (event.GetId() == button_mathFont)
     curSt = TS_MATH;
 
@@ -2370,7 +2370,6 @@ void ConfigDialogue::OnFontButton(wxCommandEvent &event) {
 void ConfigDialogue::OnChangeFontFamily(wxCommandEvent &WXUNUSED(event)) {
   TextStyle const st = GetSelectedStyle();
   Style style = m_configuration->m_styles[st];
-  style.ResolveToFont();
 
   if (!style.IsFontOk())
     style = Style::FromStockFont(wxStockGDI::FONT_NORMAL);

@@ -30,10 +30,6 @@
 #include <stx/optional.hpp>
 #include <array>
 
-AFontSize Style::GetFontSize() const { return {}; }
-AFontName Style::Default_FontName() { return {}; }
-constexpr const AFontSize Style::Default_FontSize;
-
 class TestCell : public Observed {};
 
 SCENARIO("Observed lifetimes are tracked") {

@@ -37,81 +37,7 @@
 #include <cstdint>
 #include <functional>
 #include "FontAttribs.h"
-
-/*! An interned font face name, very quick to compare and hash.
- *
- * Any given face name is only stored in memory once, and further comparisons and
- * hashing are based on the pointer to the underlying unique string.
- * There is no reference counting: the interned strings persist until the application
- * exits. This is acceptable, since there is a limited number of fonts available in
- * any system, and the size of the interned face name table will not grow without bounds.
- * The interning mechanism, however, does not have a fixed upper limit to the number of
- * interned strings.
- *
- * This class is thread-safe with respect to its access to the shared instance of the
- * interner.
- */
-class AFontName final
-{
-  using AFN = AFontName;
-public:
-  AFontName() = default;
-  /*! Constructs a font name by interning the name string
-   * The constructor is explicit because this requires a string lookup in the intern
-   * table. The font names should be constructed once for any given name, and then used
-   * instead of the string.
-   */
-  explicit AFontName(const wxString &fontName) : m_fontName(Intern(fontName)) {}
-  AFontName(const AFontName &o) : m_fontName(o.m_fontName) {}
-  operator const wxString &() const { return GetAsString(); }
-  bool operator==(const AFontName &o) const { return m_fontName == o.m_fontName; }
-  bool operator<(const AFontName &o) const { return m_fontName < o.m_fontName; }
-  bool empty() const { return !m_fontName || m_fontName->empty(); }
-  AFontName &operator=(const AFontName &o)
-    {
-      m_fontName = o.m_fontName;
-      return *this;
-    }
-  AFontName &Set(const wxString &str)
-    {
-      m_fontName = Intern(str);
-      return *this;
-    }
-  const wxString& GetAsString() const { return m_fontName ? *m_fontName : *GetInternedEmpty(); }
-
-  // All constant font names should be collected here, to avoid needless duplication and
-  // lookups.
-  static AFontName Linux_Libertine_O() { static auto n = AFN(wxT("Linux Libertine O")); return n; }
-  static AFontName Linux_Libertine_G() { static auto n = AFN(wxT("Linux Libertine G")); return n; }
-  static AFontName Linux_Libertine()  { static auto n = AFN(wxT("Linux Libertine")); return n; }
-  static AFontName Times_New_Roman()  { static auto n = AFN(wxT("Times New Roman")); return n; }
-  static AFontName Monaco()          { static auto n = AFN(wxT("Monaco")); return n; }
-  static AFontName Arial()           { static auto n = AFN(wxT("Arial")); return n; }
-  static AFontName Symbol()          { static auto n = AFN(wxT("Symbol")); return n; }
-  static AFontName CMEX10()          { static auto n = AFN(wxT("jsMath-cmex10")); return n; }
-  static AFontName CMSY10()          { static auto n = AFN(wxT("jsMath-cmsy10")); return n; }
-  static AFontName CMR10()           { static auto n = AFN(wxT("jsMath-cmr10")); return n; }
-  static AFontName CMMI10()          { static auto n = AFN(wxT("jsMath-cmmi10")); return n; }
-  static AFontName CMTI10()          { static auto n = AFN(wxT("jsMath-cmti10")); return n; }
-
-private:
-  friend class FontCache;
-  friend struct std::hash<AFontName>;
-  const wxString *m_fontName = {};
-
-  static const wxString *Intern(const wxString &str);
-  static const wxString *GetInternedEmpty();
-};
-
-namespace std {
-  template <> struct hash<AFontName> final
-  {
-    size_t operator()(AFontName name) const
-      {
-        return hash<const void*>()(name.m_fontName);
-      }
-  };
-}
+#include "FontVariantCache.h"
 
 //! Returns a r,g,b components packed into a 32-bit 00bbggrr triple.
 static constexpr uint32_t MAKE_RGB(uint32_t r, uint32_t g, uint32_t b)
@@ -130,9 +56,9 @@ static constexpr uint32_t MAKE_RGB(uint32_t r, uint32_t g, uint32_t b)
 class Style final
 {
 public:
-  Style() = default;
+  Style();
+  explicit Style(AFontSize fontSize);
   Style(const Style &);
-  explicit Style(AFontSize fontSize) { m.fontSize = fontSize; }
 
   Style &operator=(const Style &);
   bool operator==(const Style &o) const;
@@ -158,7 +84,7 @@ public:
   constexpr static bool Default_Strikethrough{false};
   constexpr static AFontSize Default_FontSize{10.0f};
   constexpr static uint32_t Default_ColorRGB{MAKE_RGB(0, 0, 0)};
-  static AFontName Default_FontName();
+  static wxString Default_FontName();
   static const wxColor &Default_Color();
 
   wxFontFamily GetFamily() const;
@@ -171,7 +97,7 @@ public:
   bool IsSlant() const { return GetFontStyle() == wxFONTSTYLE_SLANT; }
   bool IsUnderlined() const;
   bool IsStrikethrough() const;
-  AFontName GetFontName() const;
+  wxString GetFontName() const;
   const wxString &GetNameStr() const;
   AFontSize GetFontSize() const;
   uint32_t GetRGBColor() const;
@@ -188,14 +114,11 @@ public:
   did_change SetSlant(bool slant = true);
   did_change SetUnderlined(bool underlined = true);
   did_change SetStrikethrough(bool strikethrough = true);
-  did_change SetFontName(AFontName fontName);
+  did_change SetFontName(wxString fontName);
   did_change SetFontSize(AFontSize fontSize);
   did_change SetRGBColor(uint32_t rgb);
   did_change SetColor(const wxColor &color);
   did_change SetColor(wxSystemColour sysColour);
-
-  //! Resolves the style to the parameters of the font it represents
-  did_change ResolveToFont();
 
   Style& Family(wxFontFamily family) { return SetFamily(family), *this; }
   Style& Encoding(wxFontEncoding encoding) { return SetEncoding(encoding), *this; }
@@ -207,7 +130,7 @@ public:
   Style& Slant(bool slant = true) { return SetSlant(slant), *this; }
   Style& Underlined(bool underlined = true) { return SetUnderlined(underlined), *this; }
   Style& Strikethrough(bool strikethrough = true) { return SetStrikethrough(strikethrough), *this; }
-  Style& FontName(class AFontName fontName) { return SetFontName(fontName), *this; }
+  Style& FontName(class wxString fontName) { return SetFontName(fontName), *this; }
   Style& FontSize(float size) { return SetFontSize(AFontSize(size)), *this; }
   Style& FontSize(AFontSize fontSize) { return SetFontSize(fontSize), *this; }
   Style& RGBColor(uint32_t rgb) { return SetRGBColor(rgb), *this; }
@@ -218,13 +141,11 @@ public:
 
   wxFontInfo GetAsFontInfo() const;
 
-  bool IsFontLessThan(const Style &o) const { return GetFontHash() < o.GetFontHash(); }
   bool IsFontEqualTo(const Style &) const;
   bool IsStyleEqualTo(const Style &o) const;
 
-  bool IsFontOk() const;
-  bool HasFontCached() const { return m.fontHash && m.font; }
-  const wxFont& GetFont() const { return HasFontCached() ? *m.font : LookupFont(); }
+  bool IsFontOk();
+  wxFont GetFont() const;
 
   //! Sets all font-related properties based on another font
   did_change SetFromFont(const wxFont&);
@@ -240,11 +161,15 @@ public:
   static AFontSize GetFontSize(const wxFont &);
   static void SetFontSize(wxFont &, AFontSize fontSize);
 
-  wxString GetDump() const;
-  size_t GetFontHash() const;
-
+  std::shared_ptr<FontVariantCache> GetFontCache(){return m_fontCache;}
 private:
-  friend struct StyleFontHasher;
+  mutable std::shared_ptr<FontVariantCache> m_fontCache;
+
+  WX_DECLARE_STRING_HASH_MAP( std::shared_ptr<FontVariantCache>,     // type of the values
+                              FontVariantCachesMap); // name of the class
+
+
+  static FontVariantCachesMap m_fontCaches;
   friend class FontCache;
   Style &FromFontNoCache(const wxFont &);
   void SetFromFontNoCache(const wxFont &);
@@ -252,9 +177,8 @@ private:
   struct Data // POD, 40 bytes on 64-bit platforms
   {
     // 8/4-byte members
-    AFontName fontName = Default_FontName();
+    wxString fontName = Default_FontName();
     mutable const wxFont *font = nullptr;
-    mutable size_t fontHash = 0;
     // 4-byte members
     uint32_t rgbColor = Default_ColorRGB;
     // 2-byte members
@@ -273,37 +197,10 @@ private:
     // cppcheck-suppress noExplicitConstructor
     explicit Data(NotOK_t) : underlined(false), strikethrough(false), isNotOK(true) {}
   } m;
-  static_assert(sizeof(Data) <= 40,
-                "Style::Data is misaligned and grew too big.");
 
   const wxFont& LookupFont() const;
   // cppcheck-suppress noExplicitConstructor
   Style(Data::NotOK_t) : m(Data::NotOK) {}
-};
-
-
-// Tell std::hash how to use Style as a key for std::unordered_map.
-namespace std {
-  template <>
-  struct hash<Style>
-  {
-    std::size_t operator()(const Style& k) const {
-      return k.GetFontHash();
-    }
-  };
-}
-
-
-//! Hash functor of the font size and attributes of the style
-struct StyleFontHasher final
-{
-  size_t operator()(const Style &style) const { return style.GetFontHash(); }
-};
-
-//! Less-than-comparator of the font size and attributes of the style
-struct StyleFontLess final
-{
-  bool operator()(const Style &l, const Style &r) const { return l.IsFontLessThan(r); }
 };
 
 //! Equals-comparator of the font size and attributes of the style
@@ -319,7 +216,7 @@ struct StyleFontEquals final
  */
 enum TextStyle : int8_t
 {
-  TS_DEFAULT             = 0,
+  TS_CODE_DEFAULT        = 0,
   TS_VARIABLE            = 1,
   TS_NUMBER              = 2,
   TS_FUNCTION            = 3,

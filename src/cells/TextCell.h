@@ -51,7 +51,7 @@ public:
   virtual void Recalculate(AFontSize fontsize) override;
 
   void Draw(wxPoint point) override;
-  Style GetFont(AFontSize fontsize);
+  std::shared_ptr<wxFont> GetFont(AFontSize fontsize);
   void SetFont(AFontSize fontsize);
 
   /*! Calling this function signals that the "(" this cell ends in isn't part of the function name

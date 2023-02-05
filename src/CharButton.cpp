@@ -152,9 +152,9 @@ CharButton::CharButton(wxWindow *parent, wxWindow *worksheet,
   }
 
   wxFont mathFont =
-    m_configuration->GetStyle(TS_INPUT, AFontSize(10.0)).GetFont();
+    m_configuration->GetStyle(TS_MATH).GetFont();
   wxFont textFont =
-    m_configuration->GetStyle(TS_DEFAULT, AFontSize(10.0)).GetFont();
+    m_configuration->GetStyle(TS_CODE_DEFAULT).GetFont();
   if (((!mathFont.IsOk()) ||
        m_configuration->FontRendersChar(m_char, mathFont)) ||
       ((!textFont.IsOk()) ||

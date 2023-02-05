@@ -120,7 +120,7 @@ void Cell::SetType(CellType type) {
     m_textStyle = TS_TITLE;
     break;
   default:
-    m_textStyle = TS_DEFAULT;
+    m_textStyle = TS_MATH;
     break;
   }
   ResetSize();
@@ -974,7 +974,7 @@ wxColour Cell::GetForegroundColor() const {
   else if (m_type == MC_TYPE_INPUT)
     color = m_configuration->GetColor(TS_INPUT);
   else
-    color = m_configuration->GetColor(TS_DEFAULT);
+    color = m_configuration->GetColor(TS_MATH);
 
   return color;
 }

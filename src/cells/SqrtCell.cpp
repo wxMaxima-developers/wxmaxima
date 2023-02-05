@@ -66,52 +66,7 @@ void SqrtCell::MakeBreakUpCells() {
 void SqrtCell::Recalculate(AFontSize fontsize) {
   m_innerCell->RecalculateList(fontsize);
 
-  if (m_configuration->CheckTeXFonts()) {
-    wxDC *dc = m_configuration->GetDC();
-
-    m_signFontScale = 1.0;
-    auto fontsize1 =
-      AFontSize(Scale_Px(SIGN_FONT_SCALE * fontsize * m_signFontScale));
-    wxASSERT(fontsize1.IsValid());
-
-    auto style = Style(fontsize1).FontName(m_configuration->GetTeXCMEX());
-
-    dc->SetFont(style.GetFont());
-    dc->GetTextExtent(wxT("s"), &m_signWidth, &m_signSize);
-    m_signTop = m_signSize / 5;
-    // The Scale_Px(2) leaves space for the serif at the root.
-    m_width = m_innerCell->GetFullWidth() + m_signWidth + Scale_Px(2);
-
-    int size = m_innerCell->GetHeightList();
-
-    if (size <= (m_signSize) / 5) {
-      m_signType = 1;
-      m_signFontScale = (5.0 * size) / (1.5 * m_signSize);
-    } else if (size <= (2 * m_signSize) / 5) {
-      m_signType = 2;
-      m_signFontScale = (5.0 * size) / (2.2 * m_signSize);
-    } else if (size <= (3 * m_signSize) / 5) {
-      m_signType = 3;
-      m_signFontScale = (5.0 * size) / (3.0 * m_signSize);
-    } else if (size <= (4 * m_signSize) / 5) {
-      m_signType = 4;
-      m_signFontScale = (5.0 * size) / (3.8 * m_signSize);
-    } else {
-      m_signType = 5;
-      m_signFontScale = 1.0;
-    }
-
-    fontsize1.Set(Scale_Px(SIGN_FONT_SCALE * fontsize * m_signFontScale));
-    wxASSERT(fontsize1.IsValid());
-
-    style = Style(fontsize1).FontName(m_configuration->GetTeXCMEX());
-
-    dc->SetFont(style.GetFont());
-    dc->GetTextExtent(wxT("s"), &m_signWidth, &m_signSize);
-    m_signTop = m_signSize / 5;
-    m_width = m_innerCell->GetFullWidth() + m_signWidth;
-  } else
-    m_width = m_innerCell->GetFullWidth() + Scale_Px(13) + 1;
+  m_width = m_innerCell->GetFullWidth() + Scale_Px(13) + 1;
   if (!IsBrokenIntoLines()) {
     auto openHeight = 0; // m_open->GetHeightList();
     auto openCenter = 0; // m_open->GetCenterList();
@@ -132,50 +87,8 @@ void SqrtCell::Draw(wxPoint point) {
 
     wxPoint in(point);
 
-    if (m_configuration->CheckTeXFonts()) {
-      SetPen();
 
-      in.x += m_signWidth;
-
-      auto fontsize1 =
-	AFontSize(SIGN_FONT_SCALE * m_fontSize_Scaled * m_signFontScale);
-      wxASSERT(fontsize1.IsValid());
-
-      auto style = Style(fontsize1).FontName(m_configuration->GetTeXCMEX());
-
-      dc->SetFont(style.GetFont());
-      SetForeground();
-      if (m_signType < 4) {
-        dc->DrawText(m_signType == 1   ? wxT("p")
-                     : m_signType == 2 ? wxT("q")
-                     : m_signType == 3 ? wxT("r")
-		     : wxT("s"),
-                     point.x,
-                     point.y - m_innerCell->GetCenterList() - m_signTop);
-      } else {
-        int yBottom = point.y + m_innerCell->GetMaxDrop() - 3.2 * m_signTop;
-        int yTop = point.y - m_innerCell->GetCenterList() - m_signTop;
-        int dy = m_signSize / 10;
-        wxASSERT_MSG((yTop != 0) || (yBottom != 0),
-                     _("Font issue? The contents of a sqrt() has the size 0."));
-        wxASSERT_MSG(dy > 0, _("Font issue: The sqrt() sign has the size 0!"));
-        if (dy <= 0)
-          dy = 1;
-        dc->DrawText(wxT("t"), point.x, yBottom);
-        dc->DrawText(wxT("v"), point.x, yTop);
-        while (yTop < yBottom) {
-          yTop += dy;
-          dc->DrawText(wxT("u"), point.x, yTop);
-        }
-      }
-
-      wxDC *adc = m_configuration->GetAntialiassingDC();
-      adc->DrawLine(point.x + m_signWidth,
-                    point.y - m_innerCell->GetCenterList(),
-                    point.x + m_signWidth + m_innerCell->GetFullWidth(),
-                    point.y - m_innerCell->GetCenterList());
-
-    } else {
+    {
       wxDC *adc = m_configuration->GetAntialiassingDC();
       in.x += Scale_Px(11) + 1;
       SetPen(1.2);

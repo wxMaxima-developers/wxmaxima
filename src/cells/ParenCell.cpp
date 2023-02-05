@@ -84,10 +84,9 @@ void ParenCell::SetFont(AFontSize fontsize) {
 
   Style style;
   if (m_bigParenType == Configuration::ascii)
-    style = m_configuration->GetStyle(TS_FUNCTION, fontsize);
+    style = m_configuration->GetStyle(TS_FUNCTION);
   else
-    style = m_configuration->GetStyle(TS_FUNCTION,
-                                      m_configuration->GetMathFontSize());
+    style = m_configuration->GetStyle(TS_FUNCTION);
 
   wxASSERT(style.GetFontSize().IsValid());
 
@@ -97,11 +96,11 @@ void ParenCell::SetFont(AFontSize fontsize) {
     break;
 
   case Configuration::assembled_unicode_fallbackfont:
-    style.SetFontName(AFontName::Linux_Libertine());
+    style.SetFontName(wxT("Linux_Libertine"));
     break;
 
   case Configuration::assembled_unicode_fallbackfont2:
-    style.SetFontName(AFontName::Linux_Libertine_O());
+    style.SetFontName(wxT("Linux_Libertine_O"));
     break;
 
   default:

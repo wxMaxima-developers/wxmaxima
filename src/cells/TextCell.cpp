@@ -40,7 +40,7 @@ TextCell::TextCell(GroupCell *group, Configuration *config,
   InitBitFields();
   m_textStyle = style;
   switch (style) {
-  case TS_DEFAULT:
+  case TS_MATH:
     m_type = MC_TYPE_TEXT;
     break;
   case TS_VARIABLE:
@@ -123,6 +123,7 @@ TextCell::TextCell(GroupCell *group, const TextCell &cell)
   : Cell(group, cell.m_configuration), m_text(cell.m_text),
     m_displayedText(cell.m_displayedText) {
   InitBitFields();
+  m_type = cell.m_type;
   CopyCommonData(cell);
   SetBigSkip(cell.HasBigSkip());
   SetHighlight(cell.GetHighlight());
@@ -434,7 +435,7 @@ void TextCell::UpdateDisplayedText() {
       m_displayedText = wxT("\u03A8");
   }
 
-  if ((GetStyle() == TS_DEFAULT) && m_text.StartsWith("\""))
+  if ((GetStyle() == TS_MATH) && m_text.StartsWith("\""))
     return;
 
   if ((GetStyle() == TS_GREEK_CONSTANT) && m_configuration->Latin2Greek())
@@ -501,27 +502,28 @@ void TextCell::Draw(wxPoint point) {
   }
 }
 
-Style TextCell::GetFont(AFontSize fontsize) {
-    wxDC *dc = m_configuration->GetDC();
-  auto style = m_configuration->GetStyle(m_textStyle, fontsize);
+std::shared_ptr<wxFont> TextCell::GetFont(AFontSize fontsize) {
+  auto style = m_configuration->GetStyle(m_textStyle);
+
+  auto fontCache = style.GetFontCache();
+  bool isItalic = style.IsItalic(); 
   // Mark special variables that are printed as ordinary letters as being
   // special.
-  if ((!m_configuration->CheckKeepPercent()) &&
-      ((m_text == wxT("%e")) || (m_text == wxT("%i")))) {
-    if (m_configuration->IsItalic(TS_VARIABLE) != wxFONTSTYLE_NORMAL)
-      style.SetItalic(false);
-    else
-      style.SetItalic(true);
-  }
+  if(m_textStyle == TS_VARIABLE)
+    {
+      if ((!m_configuration->CheckKeepPercent()) &&
+	  ((m_text == wxT("%e")) || (m_text == wxT("%i"))))
+	isItalic = !isItalic;
+    }
 
+  
   wxASSERT(m_fontSize_Scaled.IsValid());
-  style.SetFontSize(m_fontSize_Scaled);
-  return style;
+  return fontCache->GetFont(fontsize.Get(), isItalic, style.IsBold(), style.IsUnderlined());
 }
 
 void TextCell::SetFont(AFontSize fontsize) {
   wxDC *dc = m_configuration->GetDC();
-  dc->SetFont(GetFont(fontsize).GetFont());
+  dc->SetFont(*GetFont(fontsize));
 }
 
 bool TextCell::IsOperator() const {
@@ -1021,7 +1023,7 @@ wxString TextCell::ToTeX() const {
     } else if ((GetStyle() == TS_ERROR) || (GetStyle() == TS_WARNING)) {
       if (text.Length() > 1)
         text = wxT("\\mbox{%error\n") + text + wxT("}");
-    } else if (GetStyle() == TS_DEFAULT) {
+    } else if (GetStyle() == TS_MATH) {
       if ((text.Length() > 2) && (text != wxT("\\,")) && (text != wxT("\\, ")))
         text = wxT("\\mbox{%default\n") + text + wxT("}");
     }
@@ -1032,12 +1034,12 @@ wxString TextCell::ToTeX() const {
       (GetStyle() != TS_GREEK_CONSTANT) && (GetStyle() != TS_SPECIAL_CONSTANT))
     text.Replace(wxT("^"), wxT("\\textasciicircum"));
 
-  if ((GetStyle() == TS_DEFAULT) || (GetStyle() == TS_STRING)) {
+  if ((GetStyle() == TS_MATH) || (GetStyle() == TS_STRING)) {
     if (text.Length() > 1) {
       if (BreakLineHere())
         // text=wxT("\\ifhmode\\\\fi\n")+text;
         text = wxT("\\mbox{}\\\\") + text;
-      /*      if(GetStyle() != TS_DEFAULT)
+      /*      if(GetStyle() != TS_MATH)
               text.Replace(wxT(" "), wxT("\\, "));*/
     }
   }

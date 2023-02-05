@@ -29,6 +29,7 @@
 #include "Configuration.h"
 
 #include "Cell.h"
+#include "TextStyle.h"
 #include "Dirstructure.h"
 #include "ErrorRedirector.h"
 #include "StringUtils.h"
@@ -195,7 +196,6 @@ void Configuration::ResetAllToDefaults(InitOpt options) {
   m_latin2greek = false;
   m_enterEvaluates = false;
   m_printScale = 1.0;
-  m_TeXFonts = false;
   m_notifyIfIdle = true;
   m_fixReorderedIndices = true;
   m_showBrackets = true;
@@ -247,7 +247,6 @@ void Configuration::ResetAllToDefaults(InitOpt options) {
   m_openHCaret = false;
   m_labelWidth = 4;
   m_zoomFactor = 1.0;
-  m_TeXFonts = false;
   m_keepPercent = true;
   InitStyles();
 }
@@ -379,27 +378,11 @@ void Configuration::InitStyles() {
 
   Style defaultStyle;
 
-#ifdef __WINDOWS__
-  // Font defaulting for Windows
-  m_styles[TS_DEFAULT].FontName(AFontName::Arial());
-
-  for (auto fontName :
-	 {AFontName::Linux_Libertine_G(), AFontName::Linux_Libertine_O(),
-	  AFontName::Linux_Libertine(), AFontName::Times_New_Roman()}) {
-    auto style = Style().FontName(fontName);
-    style.ResolveToFont();
-    if (style.IsFontOk() && style.GetFontName() == fontName) {
-      m_styles[TS_MATH].FontName(style.GetFontName());
-      break;
-    }
-  }
-#endif
-
   // TODO It's a fat chance that this font actually will be monospace.
   wxFont monospace(10, wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL,
                    wxFONTWEIGHT_NORMAL);
-  m_styles[TS_ASCIIMATHS].SetFontName(AFontName(monospace.GetFaceName()));
-  m_styles[TS_DEFAULT].Bold().Italic().FontSize(12);
+  m_styles[TS_ASCIIMATHS].SetFontName(monospace.GetFaceName());
+  m_styles[TS_CODE_DEFAULT].Bold().Italic().FontSize(12);
   m_styles[TS_MATH].FontSize(12.0);
 
   m_styles[TS_TEXT].FontSize(12);
@@ -743,21 +726,6 @@ void Configuration::ReadConfig() {
   config->Read(wxT("printBrackets"), &m_printBrackets);
 
   config->Read(wxT("ZoomFactor"), &m_zoomFactor);
-
-  if (wxFontEnumerator::IsValidFacename(
-					(m_fontCMEX = AFontName::CMEX10()).GetAsString()) &&
-      wxFontEnumerator::IsValidFacename(
-					(m_fontCMSY = AFontName::CMSY10()).GetAsString()) &&
-      wxFontEnumerator::IsValidFacename(
-					(m_fontCMRI = AFontName::CMR10()).GetAsString()) &&
-      wxFontEnumerator::IsValidFacename(
-					(m_fontCMMI = AFontName::CMMI10()).GetAsString()) &&
-      wxFontEnumerator::IsValidFacename(
-					(m_fontCMTI = AFontName::CMTI10()).GetAsString())) {
-    m_TeXFonts = true;
-    config->Read(wxT("usejsmath"), &m_TeXFonts);
-  }
-
   config->Read(wxT("keepPercent"), &m_keepPercent);
   config->Read(wxT("saveUntitled"), &m_saveUntitled);
   config->Read(wxT("cursorJump"), &m_cursorJump);
@@ -777,36 +745,56 @@ bool Configuration::HideMarkerForThisMessage(wxString message) {
     return it->second;
 }
 
-Style Configuration::GetStyle(TextStyle ts, AFontSize fontSize) const {
-  Style style = m_styles[ts];
+//TODO: Don't underline the section number of titles
+void Configuration::MakeStylesConsistent()
+{
+  std::vector<TextStyle> specialCodeStyles;
+  specialCodeStyles.push_back(TS_CODE_VARIABLE);
+  specialCodeStyles.push_back(TS_CODE_COMMENT);
+  specialCodeStyles.push_back(TS_CODE_NUMBER);
+  specialCodeStyles.push_back(TS_CODE_STRING);
+  specialCodeStyles.push_back(TS_CODE_OPERATOR);
+  specialCodeStyles.push_back(TS_CODE_LISP);
+  specialCodeStyles.push_back(TS_CODE_ENDOFLINE);
+  specialCodeStyles.push_back(TS_CURSOR);
+  specialCodeStyles.push_back(TS_SELECTION);
+  specialCodeStyles.push_back(TS_EQUALSSELECTION);
+  for(auto style : specialCodeStyles)
+    {
+      m_styles[style].SetFamily(GetStyle(TS_CODE_DEFAULT).GetFamily());
+      m_styles[style].SetEncoding(GetStyle(TS_CODE_DEFAULT).GetEncoding());
+      m_styles[style].SetFontSize(GetStyle(TS_CODE_DEFAULT).GetFontSize());
+      m_styles[style].SetFontName(GetStyle(TS_CODE_DEFAULT).GetFontName());
+    }
 
-  if ((ts == TS_TITLE) || (ts == TS_SECTION) || (ts == TS_SUBSECTION) ||
-      (ts == TS_SUBSUBSECTION) || (ts == TS_HEADING5) || (ts == TS_HEADING6)) {
-    // While titles and section names may be underlined the section number
-    // isn't. Else the space between section number and section title
-    // would look weird.
-    style.SetUnderlined(false);
-
-    // Besides that these items have a fixed font size.
-  } else
-    style.SetFontSize(fontSize);
-
-  style.SetFontName(GetFontName(ts));
-
-  if (!style.IsFontOk())
-    style.SetFontName({});
-
-  // cppcheck-suppress duplicateCondition
-  if (!style.IsFontOk()) {
-    auto size = style.GetFontSize();
-    style = Style::FromStockFont(wxStockGDI::FONT_NORMAL);
-    style.SetFontSize(size);
-  }
-
-  wxASSERT_MSG(style.IsFontOk(),
-               _("Seems like something is broken with a font."));
-
-  return style;
+  std::vector<TextStyle> specialMathStyles;
+  specialMathStyles.push_back(TS_VARIABLE);
+  specialMathStyles.push_back(TS_NUMBER);
+  specialMathStyles.push_back(TS_FUNCTION);
+  specialMathStyles.push_back(TS_SPECIAL_CONSTANT);
+  specialMathStyles.push_back(TS_GREEK_CONSTANT);
+  specialMathStyles.push_back(TS_STRING);
+  specialMathStyles.push_back(TS_INPUT);
+  specialMathStyles.push_back(TS_MAIN_PROMPT);
+  specialMathStyles.push_back(TS_OTHER_PROMPT);
+  specialMathStyles.push_back(TS_LABEL);
+  specialMathStyles.push_back(TS_USERLABEL);
+  specialMathStyles.push_back(TS_HIGHLIGHT);
+  specialMathStyles.push_back(TS_WARNING);
+  specialMathStyles.push_back(TS_ERROR);
+  specialMathStyles.push_back(TS_ASCIIMATHS);
+  specialMathStyles.push_back(TS_TEXT);
+  specialMathStyles.push_back(TS_OUTDATED);
+  for(auto style : specialCodeStyles)
+    {
+      m_styles[style].SetFontSize(GetStyle(TS_MATH).GetFontSize());
+      if(style != TS_ASCIIMATHS)
+	{
+	  m_styles[style].SetFamily(GetStyle(TS_MATH).GetFamily());
+	  m_styles[style].SetEncoding(GetStyle(TS_MATH).GetEncoding());
+	  m_styles[style].SetFontName(GetStyle(TS_MATH).GetFontName());
+	}
+    }
 }
 
 wxColor Configuration::DefaultBackgroundColor() {
@@ -896,20 +884,10 @@ Configuration::drawMode Configuration::GetParenthesisDrawMode() {
 								  PAREN_OPEN_EXTEND_UNICODE) wxT(PAREN_OPEN_BOTTOM_UNICODE))};
 
     m_parenthesisDrawMode = handdrawn;
-    auto style = GetStyle(TS_FUNCTION, AFontSize(20.0f));
+    auto style = GetStyle(TS_FUNCTION);
 
     if (CharsExistInFont(style.GetFont(), parens)) {
       m_parenthesisDrawMode = assembled_unicode;
-      return m_parenthesisDrawMode;
-    }
-    style.SetFontName(AFontName::Linux_Libertine());
-    if (CharsExistInFont(style.GetFont(), parens)) {
-      m_parenthesisDrawMode = assembled_unicode_fallbackfont;
-      return m_parenthesisDrawMode;
-    }
-    style.SetFontName(AFontName::Linux_Libertine_O());
-    if (CharsExistInFont(style.GetFont(), parens)) {
-      m_parenthesisDrawMode = assembled_unicode_fallbackfont2;
       return m_parenthesisDrawMode;
     }
   }
@@ -1009,8 +987,8 @@ bool Configuration::CharsExistInFont(const wxFont &font,
   return cache(true);
 }
 
-AFontName Configuration::GetFontName(TextStyle const ts) const {
-  AFontName retval;
+wxString Configuration::GetFontName(TextStyle const ts) const {
+  wxString retval;
 
   if (ts == TS_TITLE || ts == TS_SUBSECTION || ts == TS_SUBSUBSECTION ||
       ts == TS_HEADING5 || ts == TS_HEADING6 || ts == TS_SECTION ||
@@ -1022,7 +1000,7 @@ AFontName Configuration::GetFontName(TextStyle const ts) const {
     retval = m_styles[TS_MATH].GetFontName();
 
   if (retval.empty())
-    retval = m_styles[TS_DEFAULT].GetFontName();
+    retval = m_styles[TS_CODE_DEFAULT].GetFontName();
 
   return retval;
 }
@@ -1047,7 +1025,7 @@ void Configuration::ReadStyles(const wxString &file) {
     config = new wxFileConfig(str);
   }
 
-  m_styles[TS_DEFAULT].Read(config, "Style/Default/");
+  m_styles[TS_CODE_DEFAULT].Read(config, "Style/Default/");
 
   // Read legacy defaults for the math font name and size
   long tmpLong;
@@ -1056,7 +1034,7 @@ void Configuration::ReadStyles(const wxString &file) {
   wxString tmpString;
   if (config->Read(wxT("Style/Math/fontname"), &tmpString) &&
       tmpString.size() > 1)
-    m_styles[TS_MATH].SetFontName(AFontName(tmpString));
+    m_styles[TS_MATH].SetFontName(tmpString);
 
   m_styles[TS_MATH].Read(config, "Style/Math/");
   m_styles[TS_TEXT].Read(config, "Style/Text/");
@@ -1100,6 +1078,7 @@ void Configuration::ReadStyles(const wxString &file) {
   m_styles[TS_OUTDATED].Read(config, wxT("Style/Outdated/"));
   m_BackgroundBrush = *wxTheBrushList->FindOrCreateBrush(
 							 m_styles[TS_DOCUMENT_BACKGROUND].GetColor(), wxBRUSHSTYLE_SOLID);
+  MakeStylesConsistent();
 }
 
 //! Saves the settings to a file.
@@ -1208,12 +1187,8 @@ wxFontStyle Configuration::IsItalic(long st) const {
   return wxFONTSTYLE_NORMAL;
 }
 
-class AFontName Configuration::GetSymbolFontName() const {
-#ifdef __WINDOWS__
-  return AFontName::Symbol();
-#else
-  return m_styles[TS_DEFAULT].GetFontName();
-#endif
+wxString Configuration::GetSymbolFontName() const {
+  return m_styles[TS_CODE_DEFAULT].GetFontName();
 }
 
 wxColour Configuration::GetColor(TextStyle style) {
@@ -1254,12 +1229,6 @@ Configuration::FileToSave Configuration::PopFileToSave()
   FileToSave retval(m_filesToSave.back());
   m_filesToSave.pop_back();
   return retval;
-}
-
-void Configuration::AddTextSnippetToDraw(const wxPoint &pos, const Style &style,
-					 const wxString &text, const wxColor color)
-{
-  m_textSnippetsToDraw[style].push_back(TextsnippetToDraw(pos, text, color));
 }
 
 bool Configuration::InUpdateRegion(wxRect const rect) const {
@@ -1471,7 +1440,7 @@ void Configuration::WriteStyles(wxConfigBase *config) {
   config->Write("autosubscript", m_autoSubscript);
   config->Write(wxT("ZoomFactor"), m_zoomFactor);
   // Fonts
-  m_styles[TS_DEFAULT].Write(config, "Style/Default/");
+  m_styles[TS_CODE_DEFAULT].Write(config, "Style/Default/");
   m_styles[TS_MATH].Write(config, "Style/Math/");
   m_styles[TS_TEXT].Write(config, "Style/Text/");
   m_styles[TS_CODE_VARIABLE].Write(config, "Style/CodeHighlighting/Variable/");
@@ -1517,6 +1486,7 @@ void Configuration::WriteStyles(wxConfigBase *config) {
 
 //! Saves the style settings to a file.
 void Configuration::WriteStyles(const wxString &file) {
+  MakeStylesConsistent();
   wxConfigBase *config = NULL;
   if (file == wxEmptyString)
     config = wxConfig::Get();

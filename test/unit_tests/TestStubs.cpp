@@ -1,8 +1,11 @@
 #include "Cell.cpp"
 #include "CellImpl.h"
+#include "FontVariantCache.h"
 #include "CellIterators.h"
 #include "CellList.cpp"
 #include "CellPtr.cpp"
+#include "TextStyle.cpp"
+#include "FontVariantCache.cpp"
 
 #if !DISABLE_CELLPOINTER_STUBS
 #include "CellPointers.cpp"
@@ -25,11 +28,31 @@ wxFontStyle Configuration::IsItalic(long) const { return {}; }
 wxColour Configuration::GetColor(TextStyle) { return {}; }
 bool Configuration::HideMarkerForThisMessage(wxString) { return false; }
 void Configuration::NotifyOfCellRedraw(const Cell *) {}
-Style Configuration::GetStyle(TextStyle, AFontSize) const
-{
-  return Style(AFontSize(10.0));
-}
 
+//Style::Style(){}
+//Style::Style(Style const &){}
+//bool Style::IsBold() const {return true;}
+//wxFontWeight Style::GetWeight() const {return wxFONTWEIGHT_BOLD;}
+//bool Style::IsItalic() const {return true;}
+//wxFontStyle  Style::GetFontStyle() const {return wxFONTSTYLE_ITALIC;}
+
+//Style::did_change Style::SetFontName(wxString name){return true;}
+// // std::shared_ptr<wxFont> FontVariantCache::GetFont (double size,
+// // 						   bool isItalic,
+// // 						   bool isBold,
+// // 						   bool isUnderlined){
+// //   return std::shared_ptr<wxFont>(new wxFont(*wxNORMAL_FONT));
+// // }
+
+// //std::shared_ptr<FontVariantCache> FontVariantCache(wxString fontName){
+//   //  return std::shared_ptr<FontVariantCache>(new FontVariantCache(wxT("")));
+// //}
+
+// // Style Configuration::GetStyle(TextStyle, AFontSize) const
+// // {
+// //   Style style;  
+// //   return style;  
+// }
 GroupCell::GroupCell(Configuration *config, GroupType groupType, const wxString &) :
   Cell(this, config), m_groupType(groupType)
 {

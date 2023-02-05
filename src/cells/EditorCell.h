@@ -145,6 +145,8 @@ public:
   //! Convert the current cell to XML code for inclusion in a .wxmx file.
   wxString ToXML() const override;
 
+  //! Get the font that matches this cell's formatting
+  std::shared_ptr<wxFont> GetFont(AFontSize fontsize);
   //! Set the currently used font to the one that matches this cell's formatting
   void SetFont();
 
@@ -497,7 +499,7 @@ private:
     //! By How many pixels we want to indent this line?
     int m_indentPixels = 0;
     //! The color of this text portion
-    TextStyle m_style = TS_DEFAULT;
+    TextStyle m_style = TS_CODE_DEFAULT;
     //! Do we really want to style this text portion different than the default?
     bool m_styleThisText = false;
   public:
@@ -611,7 +613,6 @@ private:
 
 //** 8/4 bytes
 //**
-  AFontName m_fontName;
   CellPointers *const m_cellPointers = GetCellPointers();
 
 //** 4 bytes

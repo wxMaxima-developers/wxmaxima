@@ -587,9 +587,9 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event)) {
 
       // Draw tree
       m_configuration->GetDC()->SetPen(*(wxThePenList->FindOrCreatePen(
-								       m_configuration->GetColor(TS_DEFAULT), 1, wxPENSTYLE_SOLID)));
+								       m_configuration->GetColor(TS_MATH), 1, wxPENSTYLE_SOLID)));
       m_configuration->GetDC()->SetBrush(*(wxTheBrushList->FindOrCreateBrush(
-									     m_configuration->GetColor(TS_DEFAULT))));
+									     m_configuration->GetColor(TS_MATH))));
 
       bool atStart = true;
       for (auto &tmp : OnList(GetTree())) {
@@ -5655,7 +5655,7 @@ wxString Worksheet::UnicodeToMaxima(wxString s) {
   for (auto const &tok : MaximaTokenizer(s, m_configuration).PopTokens()) {
     auto const &tokenString = tok.GetText();
     switch (tok.GetStyle()) {
-    case TS_DEFAULT:
+    case TS_CODE_DEFAULT:
     case TS_CODE_OPERATOR:
     case TS_CODE_VARIABLE:
     case TS_CODE_FUNCTION:

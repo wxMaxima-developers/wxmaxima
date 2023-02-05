@@ -171,7 +171,7 @@ private:
   //! Parse an frac XML tag to a Cell.
   std::unique_ptr<Cell> ParseFracTag(wxXmlNode *node);
   //! Parse a text XML tag to a Cell.
-  std::unique_ptr<Cell> ParseText(wxXmlNode *node, TextStyle style = TS_DEFAULT);
+  std::unique_ptr<Cell> ParseText(wxXmlNode *node, TextStyle style = TS_MATH);
   //! Parse a Variable name tag t a Cell.
   std::unique_ptr<Cell> ParseVariableNameTag(wxXmlNode *node){return ParseText(node->GetChildren(), TS_VARIABLE);}
   //! Parse an Operator name tag to a Cell.

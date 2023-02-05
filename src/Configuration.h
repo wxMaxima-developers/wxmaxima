@@ -261,11 +261,11 @@ public:
         return m_dc;
     }
   
-  AFontName GetFontName(TextStyle ts = TS_DEFAULT) const;
+  wxString GetFontName(TextStyle ts = TS_CODE_DEFAULT) const;
 
   // cppcheck-suppress functionStatic
   // cppcheck-suppress functionConst
-  AFontName GetSymbolFontName() const;
+  wxString GetSymbolFontName() const;
 
   wxFontWeight IsBold(long st) const;
 
@@ -470,15 +470,9 @@ public:
   void WriteStyles(const wxString &file = {});
   void WriteStyles(wxConfigBase *config);
   void WriteSettings(const wxString &file = {});
-  
+  void MakeStylesConsistent();
   void Outdated(bool outdated)
     { m_outdated = outdated; }
-
-  bool CheckTeXFonts() const
-    { return m_TeXFonts; }
-
-  void CheckTeXFonts(bool check)
-    { m_TeXFonts = check; }
 
   bool CheckKeepPercent() const
     { return m_keepPercent; }
@@ -486,19 +480,19 @@ public:
   void SetKeepPercent(bool keepPercent)
     { m_keepPercent = keepPercent; }
 
-  AFontName GetTeXCMRI() const
+  wxString GetTeXCMRI() const
     { return m_fontCMRI; }
 
-  AFontName GetTeXCMSY() const
+  wxString GetTeXCMSY() const
     { return m_fontCMSY; }
 
-  AFontName GetTeXCMEX() const
+  wxString GetTeXCMEX() const
     { return m_fontCMEX; }
 
-  AFontName GetTeXCMMI() const
+  wxString GetTeXCMMI() const
     { return m_fontCMMI; }
 
-  AFontName GetTeXCMTI() const
+  wxString GetTeXCMTI() const
     { return m_fontCMTI; }
 
   bool ShowCodeCells() const
@@ -619,12 +613,6 @@ public:
     const wxString m_text;
     const wxColor  m_color;
   };
-
-  using TextList = std::unordered_map<Style, std::vector<TextsnippetToDraw>>;
-  void AddTextSnippetToDraw(const wxPoint &pos, const Style &style,
-                            const wxString &text, const wxColor color);
-  void ClearTextSnippetsToDraw(){m_textSnippetsToDraw.clear();}
-  TextList GetTextSnippetsToDraw() const {return m_textSnippetsToDraw;}
 
   FileToSave PopFileToSave();
   void PushFileToSave(const wxString &filename, const wxMemoryBuffer &data)
@@ -833,8 +821,8 @@ public:
     \param fontSize Only relevant for math cells: Super- and subscripts can have different
     font styles than the rest.
   */
-  Style GetStyle(TextStyle textStyle, AFontSize fontSize) const;
-  
+  const Style &GetStyle(TextStyle textStyle) const { return m_styles[textStyle]; }
+
   //! Get the worksheet this configuration storage is valid for
   wxWindow *GetWorkSheet() const {return m_workSheet;}
   //! Set the worksheet this configuration storage is valid for
@@ -867,7 +855,7 @@ public:
   void HTMLequationFormat(htmlExportFormat HTMLequationFormat)
     {m_htmlEquationFormat = HTMLequationFormat;}
 
-  AFontSize GetDefaultFontSize() const        { return m_styles[TS_DEFAULT].GetFontSize(); }
+  AFontSize GetDefaultFontSize() const        { return m_styles[TS_CODE_DEFAULT].GetFontSize(); }
   AFontSize GetMathFontSize() const           { return m_styles[TS_MATH].GetFontSize(); }
 
   //! Get the worksheet this configuration storage is valid for
@@ -948,7 +936,6 @@ public:
   wxTextCtrl *LastActiveTextCtrl() const { return m_lastActiveTextCtrl; }
   void LastActiveTextCtrl(wxTextCtrl *last);
 private:
-  TextList m_textSnippetsToDraw;
   std::list<FileToSave> m_filesToSave;
   WX_DECLARE_STRING_HASH_MAP(wxString, RenderablecharsHash);
   RenderablecharsHash m_renderableChars;
@@ -1056,10 +1043,9 @@ private:
   bool m_clipToDrawRegion = true;
   bool m_outdated;
   wxString m_maximaParameters;
-  bool m_TeXFonts;
   bool m_keepPercent;
   bool m_restartOnReEvaluation;
-  AFontName m_fontCMRI, m_fontCMSY, m_fontCMEX, m_fontCMMI, m_fontCMTI;
+  wxString m_fontCMRI, m_fontCMSY, m_fontCMEX, m_fontCMMI, m_fontCMTI;
   long m_clientWidth;
   long m_clientHeight;
   bool m_printing;

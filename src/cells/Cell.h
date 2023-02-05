@@ -889,7 +889,7 @@ protected:
 //** 1-byte objects (2 bytes)
 //**
   CellType m_type = MC_TYPE_DEFAULT;
-  TextStyle m_textStyle = TS_DEFAULT;
+  TextStyle m_textStyle = TS_MATH;
 
 private:
 //** Bitfield objects (2 bytes)
