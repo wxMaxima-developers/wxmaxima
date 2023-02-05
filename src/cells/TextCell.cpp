@@ -502,6 +502,7 @@ void TextCell::Draw(wxPoint point) {
   }
 }
 
+// TODO: KeepPercent should cause a separate font style to be set
 std::shared_ptr<wxFont> TextCell::GetFont(AFontSize fontsize) {
   auto style = m_configuration->GetStyle(m_textStyle);
 
