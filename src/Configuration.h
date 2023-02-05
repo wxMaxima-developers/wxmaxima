@@ -806,8 +806,6 @@ public:
     { m_useUnicodeMaths = useunicodemaths; }
   bool UseUnicodeMaths() const {return m_useUnicodeMaths;}
   
-  drawMode GetParenthesisDrawMode();
-
   WX_DECLARE_STRING_HASH_MAP(bool, StringBoolHash);
   StringBoolHash m_hideMarkerForThisMessage;
 
