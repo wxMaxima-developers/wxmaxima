@@ -84,42 +84,9 @@ void ParenCell::SetFont(AFontSize fontsize) {
 
   const Style style = m_configuration->GetStyle(TS_FUNCTION);
 
-  wxASSERT(style.GetFontSize().IsValid());
-
-  switch (m_bigParenType) {
-  case Configuration::ascii:
-  case Configuration::assembled_unicode:
-    break;
-
-  case Configuration::assembled_unicode_fallbackfont:
-    style.SetFontName(wxT("Linux_Libertine"));
-    break;
-
-  case Configuration::assembled_unicode_fallbackfont2:
-    style.SetFontName(wxT("Linux_Libertine_O"));
-    break;
-
-  default:
-    break;
-  }
-
-  style.Italic(false).Underlined(false);
-
-  if (!style.IsFontOk()) {
-    style.SetFamily(wxFONTFAMILY_MODERN);
-    style.SetFontName({});
-  }
-
-  if (!style.IsFontOk())
-    style = Style::FromStockFont(wxStockGDI::FONT_NORMAL);
-
-  // A fallback if we have been completely unable to set a working font
-  if (!dc->GetFont().IsOk())
-    m_bigParenType = Configuration::handdrawn;
-
   if (m_bigParenType != Configuration::handdrawn)
     dc->SetFont(style.GetFont());
-
+  
   SetForeground();
 }
 
@@ -139,41 +106,10 @@ void ParenCell::Recalculate(AFontSize fontsize) {
     m_signHeight = m_open->GetHeightList();
     m_signWidth = m_open->GetWidth();
   } else {
-    m_bigParenType = m_configuration->GetParenthesisDrawMode();
-    if (m_bigParenType != Configuration::handdrawn) {
-      SetFont(fontsize);
-      int signWidth1, signWidth2, signWidth3, descent, leading;
-      dc->GetTextExtent(wxT(PAREN_OPEN_TOP_UNICODE), &signWidth1,
-                        &m_signTopHeight, &descent, &leading);
-      m_signTopHeight -= 2 * descent + Scale_Px(1);
-      dc->GetTextExtent(wxT(PAREN_OPEN_EXTEND_UNICODE), &signWidth2,
-                        &m_extendHeight, &descent, &leading);
-      m_extendHeight -= 2 * descent + Scale_Px(1);
-      dc->GetTextExtent(wxT(PAREN_OPEN_BOTTOM_UNICODE), &signWidth3,
-                        &m_signBotHeight, &descent, &leading);
-      m_signBotHeight -= descent + Scale_Px(1);
-
-      m_signWidth = signWidth1;
-      if (m_signWidth < signWidth2)
-        m_signWidth = signWidth2;
-      if (m_signWidth < signWidth3)
-        m_signWidth = signWidth3;
-
-      if (m_extendHeight < 1)
-        m_extendHeight = 1;
-
-      m_numberOfExtensions =
-	((size - m_signTopHeight - m_signBotHeight + m_extendHeight / 2 - 1) /
-	 m_extendHeight);
-      if (m_numberOfExtensions < 0)
-        m_numberOfExtensions = 0;
-      m_signHeight = m_signTopHeight + m_signBotHeight +
-	m_extendHeight * m_numberOfExtensions;
-    } else {
-      m_signWidth = Scale_Px(6) + m_configuration->GetDefaultLineWidth();
-      if (m_signWidth < size / 15)
-        m_signWidth = size / 15;
-    }
+    m_bigParenType = m_configuration->GetParenthesisDrawMode();    
+    m_signWidth = Scale_Px(6) + m_configuration->GetDefaultLineWidth();
+    if (m_signWidth < size / 15)
+      m_signWidth = size / 15;
   }
   m_width = m_innerCell->GetFullWidth() + m_signWidth * 2;
   if (IsBrokenIntoLines())
@@ -194,12 +130,6 @@ void ParenCell::Recalculate(AFontSize fontsize) {
       switch (m_bigParenType) {
       case Configuration::ascii:
         m_signHeight = m_charHeight1;
-        break;
-      case Configuration::assembled_unicode:
-      case Configuration::assembled_unicode_fallbackfont:
-      case Configuration::assembled_unicode_fallbackfont2:
-        // Center the contents of the parenthesis vertically.
-        //  m_innerCell->m_currentPoint.y += m_center - m_signHeight / 2;
         break;
       default: {
       }
@@ -240,31 +170,6 @@ void ParenCell::Draw(wxPoint point) {
       m_close->DrawList(wxPoint(
 				point.x + m_open->GetWidth() + m_innerCell->GetFullWidth(), point.y));
       break;
-    case Configuration::assembled_unicode:
-    case Configuration::assembled_unicode_fallbackfont:
-    case Configuration::assembled_unicode_fallbackfont2: {
-      innerCellPos.x += m_signWidth;
-      // Center the contents of the parenthesis vertically.
-      innerCellPos.y +=
-	(m_innerCell->GetCenterList() - m_innerCell->GetHeightList() / 2);
-
-      int top = point.y - m_center + Scale_Px(1);
-      int bottom = top + m_signHeight - m_signBotHeight - Scale_Px(2);
-      dc->DrawText(wxT(PAREN_OPEN_TOP_UNICODE), point.x, top);
-      dc->DrawText(wxT(PAREN_CLOSE_TOP_UNICODE),
-                   point.x + m_signWidth + m_innerCell->GetFullWidth(), top);
-      dc->DrawText(wxT(PAREN_OPEN_BOTTOM_UNICODE), point.x, bottom);
-      dc->DrawText(wxT(PAREN_CLOSE_BOTTOM_UNICODE),
-                   point.x + m_signWidth + m_innerCell->GetFullWidth(), bottom);
-
-      for (int i = 0; i < m_numberOfExtensions; i++) {
-        dc->DrawText(wxT(PAREN_OPEN_EXTEND_UNICODE), point.x,
-                     top + m_signTopHeight + i * m_extendHeight);
-        dc->DrawText(wxT(PAREN_CLOSE_EXTEND_UNICODE),
-                     point.x + m_signWidth + m_innerCell->GetFullWidth(),
-                     top + m_signTopHeight + i * m_extendHeight);
-      }
-    } break;
     default: {
       wxDC *adc = m_configuration->GetAntialiassingDC();
       innerCellPos.y +=

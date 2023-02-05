@@ -92,10 +92,8 @@ private:
 
   //! How to create a big parenthesis sign?
   Configuration::drawMode m_bigParenType = Configuration::ascii;
-  int m_numberOfExtensions = 0;
   int m_charWidth1 = 12, m_charHeight1 = 12;
   int m_signWidth = 12, m_signHeight = 50;
-  int  m_signTopHeight = 12, m_signBotHeight = 12, m_extendHeight = 12;
 
 //** Bitfield objects (1 bytes)
 //**

@@ -110,7 +110,7 @@ TextCell::TextCell(GroupCell *group, Configuration *config,
     m_type = MC_TYPE_TITLE;
     break;
   default:
-    wxLogMessage(_("Unexpected text style %i for TextCell"), style.mb_str());
+    wxLogMessage(_("Unexpected text style %li for TextCell"), (long)style);
     m_type = MC_TYPE_TITLE;
   }
   TextCell::SetValue(text);
@@ -504,7 +504,7 @@ void TextCell::Draw(wxPoint point) {
 
 // TODO: KeepPercent should cause a separate font style to be set
 std::shared_ptr<wxFont> TextCell::GetFont(AFontSize fontsize) {
-  auto style = m_configuration->GetStyle(m_textStyle);
+  auto const style = m_configuration->GetStyle(m_textStyle);
 
   auto fontCache = style.GetFontCache();
   bool isItalic = style.IsItalic(); 

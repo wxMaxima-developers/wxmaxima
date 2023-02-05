@@ -65,7 +65,7 @@ std::shared_ptr<wxFont> FontVariantCache::GetFont (double size,
     font->SetPointSize(size);
 #endif
     m_fontCaches[index][size] = font;
-    wxLogMessage(_("Caching font variant: %s"), font->GetNativeFontInfoDesc());
+    wxLogMessage(_("Caching font variant: %s"), font->GetNativeFontInfoDesc().mb_str());
     return font;
   }
   return cachedFont->second;

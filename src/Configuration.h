@@ -109,11 +109,7 @@ public:
   enum drawMode
   {
     ascii,              //!< Use ascii characters only
-    assembled_unicode_fallbackfont,  //!< Unicode, fallbackfont 1
-    assembled_unicode,  //!< Unicode, current font
-    assembled_unicode_fallbackfont2,  //!< Unicode, fallbackfont 2
-    handdrawn,           //!< A  parenthesis sign that was created using draw commands
-    unknown
+    handdrawn           //!< A  parenthesis sign that was created using draw commands
   };
 
   enum InitOpt

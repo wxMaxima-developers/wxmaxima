@@ -189,7 +189,7 @@ void Configuration::ResetAllToDefaults(InitOpt options) {
   m_invertBackground = false;
   m_undoLimit = 0;
   m_recentItems = 10;
-  m_parenthesisDrawMode = unknown;
+  m_parenthesisDrawMode = ascii;
   m_zoomFactor = 1.0; // affects returned fontsizes
   m_useSVG = false;
   m_changeAsterisk = true;
@@ -236,7 +236,7 @@ void Configuration::ResetAllToDefaults(InitOpt options) {
   m_showLength = 2;
   m_useUnicodeMaths = true;
   m_offerKnownAnswers = true;
-  m_parenthesisDrawMode = unknown;
+  m_parenthesisDrawMode = ascii;
   m_autoWrap = 3;
   m_displayedDigits = 100;
   m_autoIndent = true;
@@ -875,23 +875,6 @@ long Configuration::GetLineWidth() const {
       (!m_printing))
     lineWidth = Scale_Px(GetDefaultFontSize()) * LineWidth_em();
   return lineWidth;
-}
-
-Configuration::drawMode Configuration::GetParenthesisDrawMode() {
-  if (m_parenthesisDrawMode == unknown) {
-    
-    static const wxString parens{(wxT(PAREN_OPEN_TOP_UNICODE) wxT(
-								  PAREN_OPEN_EXTEND_UNICODE) wxT(PAREN_OPEN_BOTTOM_UNICODE))};
-
-    m_parenthesisDrawMode = handdrawn;
-    auto style = GetStyle(TS_FUNCTION);
-
-    if (CharsExistInFont(style.GetFont(), parens)) {
-      m_parenthesisDrawMode = assembled_unicode;
-      return m_parenthesisDrawMode;
-    }
-  }
-  return m_parenthesisDrawMode;
 }
 
 //! A comparison operator for wxImage

@@ -161,7 +161,7 @@ public:
   static AFontSize GetFontSize(const wxFont &);
   static void SetFontSize(wxFont &, AFontSize fontSize);
 
-  std::shared_ptr<FontVariantCache> GetFontCache(){return m_fontCache;}
+  std::shared_ptr<FontVariantCache> GetFontCache() const {return m_fontCache;}
 private:
   mutable std::shared_ptr<FontVariantCache> m_fontCache;
 
