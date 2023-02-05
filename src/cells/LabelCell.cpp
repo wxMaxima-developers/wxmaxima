@@ -182,8 +182,8 @@ wxString LabelCell::GetXMLFlags() const {
 
 void LabelCell::Recalculate(AFontSize fontsize) {
   TextCell::Recalculate(fontsize);
-  m_width = wxMax(m_width, Scale_Px(m_configuration->GetLabelWidth())) +
-    MC_TEXT_PADDING;
+  m_width = wxMax(m_width, Scale_Px(m_configuration->GetLabelWidth())  +
+    MC_TEXT_PADDING);
 }
 
 const wxString &LabelCell::GetAltCopyText() const {
