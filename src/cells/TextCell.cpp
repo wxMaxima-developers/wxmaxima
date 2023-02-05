@@ -146,11 +146,7 @@ void TextCell::SetStyle(TextStyle style) {
 }
 
 void TextCell::SetType(CellType type) {
-  if (type == MC_TYPE_DEFAULT)
-    return;
   m_sizeCache.clear();
-  ResetSize();
-  ResetData();
   Cell::SetType(type);
 }
 
