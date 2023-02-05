@@ -4838,11 +4838,13 @@ void wxMaxima::OnIdle(wxIdleEvent &event) {
 
   if (m_worksheet->StatusTextChangedHas()) {
     if (m_worksheet->StatusTextHas()) {
-      StatusText(m_worksheet->GetStatusText());
+	m_statusBar->SetStatusText(m_worksheet->GetStatusText());
     }
+    else
+	m_statusBar->SetStatusText(m_leftStatusText);
   }
 
-  if (m_newStatusText) {
+  if ((m_newStatusText) && (!m_worksheet->StatusTextHas())) {
     m_statusBar->SetStatusText(m_leftStatusText);
     
     m_newStatusText = false;

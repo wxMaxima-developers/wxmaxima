@@ -174,12 +174,12 @@ bool LongNumberCell::BreakUp() {
          ++it) {
       if (!last) {
         m_innerCell = std::make_unique<DigitCell>(GetGroup(), m_configuration,
-                                                  wxString(*it));
+                                                  wxString(*it), TS_NUMBER);
         last = m_innerCell.get();
       } else {
         CellList::AppendCell(last, std::make_unique<DigitCell>(GetGroup(),
                                                                m_configuration,
-                                                               wxString(*it)));
+                                                               wxString(*it), TS_NUMBER));
         last = last->GetNext();
       }
     }

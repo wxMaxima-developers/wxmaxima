@@ -336,7 +336,11 @@ bool Worksheet::RedrawIfRequested() {
 					_("%s image, %li×%li, %li ppi"), image->GetExtension().ToUTF8().data(),
 					(long)image->GetOriginalWidth(),
 					(long)image->GetOriginalWidth(), (long)image->GetPPI()));
-          }
+          } else {
+            StatusText(wxString::Format(
+					_("%s"),
+					m_configuration->GetStyleName(m_cellPointers.m_cellUnderPointer.get()->GetStyle())).mb_str());
+	  }
         }
       } else
         UnsetToolTip();
