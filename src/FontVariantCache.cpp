@@ -20,6 +20,8 @@
 //  SPDX-License-Identifier: GPL-2.0+
 
 #include <FontVariantCache.h>
+#include <wx/intl.h>
+#include <wx/log.h>
 
 FontVariantCache::FontVariantCache(wxString fontName):
   m_fontName(fontName)
@@ -63,6 +65,7 @@ std::shared_ptr<wxFont> FontVariantCache::GetFont (double size,
     font->SetPointSize(size);
 #endif
     m_fontCaches[index][size] = font;
+    wxLogMessage(_("Caching font variant: %s"), font->GetNativeFontInfoDesc());
     return font;
   }
   return cachedFont->second;

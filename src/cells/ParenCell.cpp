@@ -82,11 +82,7 @@ void ParenCell::SetFont(AFontSize fontsize) {
 
   wxDC *dc = m_configuration->GetDC();
 
-  Style style;
-  if (m_bigParenType == Configuration::ascii)
-    style = m_configuration->GetStyle(TS_FUNCTION);
-  else
-    style = m_configuration->GetStyle(TS_FUNCTION);
+  const Style style = m_configuration->GetStyle(TS_FUNCTION);
 
   wxASSERT(style.GetFontSize().IsValid());
 
