@@ -80,8 +80,6 @@ public:
   void SetNextToDraw(Cell *next) override;
 
 private:
-  void SetFont(AFontSize fontsize);
-
   // The pointers below point to inner cells and must be kept contiguous.
   // ** This is the draw list order. All pointers must be the same:
   // ** either Cell * or std::unique_ptr<Cell>. NO OTHER TYPES are allowed.

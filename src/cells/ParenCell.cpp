@@ -77,19 +77,6 @@ void ParenCell::SetInner(std::unique_ptr<Cell> inner, CellType type) {
   ResetSize();
 }
 
-void ParenCell::SetFont(AFontSize fontsize) {
-  wxASSERT(fontsize.IsValid());
-
-  wxDC *dc = m_configuration->GetDC();
-
-  const Style style = m_configuration->GetStyle(TS_FUNCTION);
-
-  if (m_bigParenType != Configuration::handdrawn)
-    dc->SetFont(style.GetFont());
-  
-  SetForeground();
-}
-
 void ParenCell::Recalculate(AFontSize fontsize) {
   m_innerCell->RecalculateList(fontsize);
   m_open->RecalculateList(fontsize);
@@ -159,8 +146,6 @@ void ParenCell::Draw(wxPoint point) {
   if (DrawThisCell(point)) {
     wxDC *dc = m_configuration->GetDC();
     wxPoint innerCellPos(point);
-
-    SetFont(m_configuration->GetMathFontSize());
 
     switch (m_bigParenType) {
     case Configuration::ascii:

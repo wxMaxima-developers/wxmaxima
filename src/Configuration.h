@@ -158,6 +158,7 @@ public:
     {
       m_dc = &dc;
       m_antialiassingDC = NULL;
+      ResetLastFontUsed();
     }
   void UnsetContext() {m_dc = NULL;}
 
@@ -170,7 +171,7 @@ public:
     {m_antialiassingDC = &antialiassingDC;}
 
   void UnsetAntialiassingDC()
-    {m_antialiassingDC = NULL;}
+    {m_antialiassingDC = NULL; ResetLastFontUsed();}
 
   ~Configuration();
 
@@ -929,6 +930,29 @@ public:
   bool FontRendersChar(wxChar ch, const wxFont &font = *wxNORMAL_FONT);
   wxTextCtrl *LastActiveTextCtrl() const { return m_lastActiveTextCtrl; }
   void LastActiveTextCtrl(wxTextCtrl *last);
+
+  /*! Clear the memory which font this DC was last used with.
+
+    Used for avoiding setting a font if the Right Font already is in use.
+   */
+  void ResetLastFontUsed(){m_lastFontUsed = NULL;}
+  /*! A pointer to the last font we used on this DC. Needs not to be a valid wxFont!
+
+    Used for avoiding setting a font if the Right Font already is in use.
+   */
+  wxFont *GetLastFontUsed(){return m_lastFontUsed;}
+  /*! Set a pointer to the last font we used on this DC.
+
+    Used for avoiding setting a font if the Right Font already is in use.
+   */
+  void SetLastFontUsed(wxFont *font){m_lastFontUsed = font;}
+  /*! Set a pointer to the last font we used on this DC.
+
+    Used for avoiding setting a font if the Right Font already is in use.
+   */
+  void SetLastFontUsed(std::shared_ptr <wxFont> font){m_lastFontUsed = font.get();}
+  wxFont *m_lastFontUsed = NULL;
+
 private:
   std::list<FileToSave> m_filesToSave;
   WX_DECLARE_STRING_HASH_MAP(wxString, RenderablecharsHash);
@@ -1106,6 +1130,7 @@ private:
   wxString m_wxMathML_Filename;
   bool m_wxMathML_UseFile;
   wxTextCtrl *m_lastActiveTextCtrl = NULL;
+  wxFont *lastFontUsed = NULL;
 };
 
 //! Sets the configuration's "printing" flag until this class is left.

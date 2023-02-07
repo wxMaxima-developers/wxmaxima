@@ -76,11 +76,6 @@ bool LongNumberCell::NeedsRecalculation(AFontSize fontSize) const {
      m_configuration->LineBreaksInLongNums());
 }
 
-void LongNumberCell::SetStyle(TextStyle style) {
-  wxASSERT(style == TS_NUMBER);
-  TextCell::SetStyle(TS_NUMBER);
-}
-
 void LongNumberCell::Recalculate(AFontSize fontsize) {
   // If the config settings about how many digits to display has changed we
   // need to regenerate the info which number to show.

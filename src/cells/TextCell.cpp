@@ -521,7 +521,12 @@ std::shared_ptr<wxFont> TextCell::GetFont(AFontSize fontsize) {
 
 void TextCell::SetFont(AFontSize fontsize) {
   wxDC *dc = m_configuration->GetDC();
-  dc->SetFont(*GetFont(fontsize));
+  auto font = GetFont(fontsize);
+  if(m_configuration->GetLastFontUsed() != font.get())
+    {
+      m_configuration->SetLastFontUsed(font);
+      dc->SetFont(*font);
+    }
 }
 
 bool TextCell::IsOperator() const {

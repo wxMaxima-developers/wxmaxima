@@ -946,7 +946,12 @@ std::shared_ptr<wxFont> EditorCell::GetFont(AFontSize fontsize) {
 void EditorCell::SetFont() {
   wxDC *dc = m_configuration->GetDC();
   wxASSERT(m_fontSize_Scaled.IsValid());
-  dc->SetFont(*GetFont(m_fontSize_Scaled));
+  auto font = GetFont(m_fontSize_Scaled);
+  if(m_configuration->GetLastFontUsed() != font.get())
+    {
+      m_configuration->SetLastFontUsed(font);
+      dc->SetFont(*font);
+    }
 }
 
 wxSize EditorCell::GetTextSize(wxString const &text) {
