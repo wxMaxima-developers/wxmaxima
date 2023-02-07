@@ -470,6 +470,8 @@ public:
 
   const TextStyle &GetStyle() const
     { return m_textStyle; }
+  const TextStyle &GetTextStyle() const
+    { return m_textStyle; }
 
   //! Sets the drawing pen to the cell's default foreground color 
   // cppcheck-suppress functionStatic

@@ -68,7 +68,7 @@ void LabelCell::Draw(wxPoint point) {
 }
 
 TextCell::TextIndex LabelCell::GetLabelIndex() const {
-  if (m_textStyle == TS_USERLABEL)
+  if (GetTextStyle() == TS_USERLABEL)
     return userLabelText;
   else
     return cellText;
@@ -81,9 +81,9 @@ void LabelCell::SetUserDefinedLabel(const wxString &userDefinedLabel) {
 
 bool LabelCell::NeedsRecalculation(AFontSize fontSize) const {
   return TextCell::NeedsRecalculation(fontSize) ||
-    ((m_textStyle == TS_USERLABEL) &&
+    ((GetTextStyle() == TS_USERLABEL) &&
      (!m_configuration->UseUserLabels())) ||
-    ((m_textStyle == TS_LABEL) && (m_configuration->UseUserLabels()) &&
+    ((GetTextStyle() == TS_LABEL) && (m_configuration->UseUserLabels()) &&
      (!m_userDefinedLabel.empty())) ||
     (m_configuration->GetLabelChoice() != m_labelChoice_Last);
 }
@@ -91,7 +91,7 @@ bool LabelCell::NeedsRecalculation(AFontSize fontSize) const {
 void LabelCell::UpdateDisplayedText() {
   m_displayedText = m_text;
 
-  if ((m_textStyle == TS_USERLABEL) || (m_textStyle == TS_LABEL)) {
+  if ((GetTextStyle() == TS_USERLABEL) || (GetTextStyle() == TS_LABEL)) {
     if (!m_configuration->ShowLabels())
       m_displayedText = wxEmptyString;
     else {
@@ -164,8 +164,8 @@ wxString LabelCell::ToXML() const {
 }
 
 void LabelCell::SetStyle(TextStyle style) {
-  wxASSERT((m_textStyle == TS_LABEL) || (m_textStyle == TS_USERLABEL) ||
-           (m_textStyle == TS_MAIN_PROMPT));
+  wxASSERT((GetTextStyle() == TS_LABEL) || (GetTextStyle() == TS_USERLABEL) ||
+           (GetTextStyle() == TS_MAIN_PROMPT));
 
   TextCell::SetStyle(style);
 }

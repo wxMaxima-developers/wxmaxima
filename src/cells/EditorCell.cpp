@@ -932,7 +932,7 @@ void EditorCell::SetStyle(TextStyle style) {
 }
 
 std::shared_ptr<wxFont> EditorCell::GetFont(AFontSize fontsize) {
-  auto style = m_configuration->GetStyle(m_textStyle);
+  auto style = m_configuration->GetStyle(GetTextStyle());
   auto fontCache = style.GetFontCache();
 
   bool isItalic = style.IsItalic();
@@ -965,7 +965,7 @@ wxSize EditorCell::GetTextSize(wxString const &text) {
 
 void EditorCell::SetForeground() {
   wxDC *dc = m_configuration->GetDC();
-  dc->SetTextForeground(m_configuration->GetColor(m_textStyle));
+  dc->SetTextForeground(m_configuration->GetColor(GetTextStyle()));
 }
 
 wxString EditorCell::GetCurrentCommand() {

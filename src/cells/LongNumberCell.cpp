@@ -66,7 +66,6 @@ void LongNumberCell::UpdateDisplayedText() {
   }
   m_sizeCache.clear();
   m_displayedDigits_old = m_configuration->GetDisplayedDigits();
-  m_textStyle = TS_NUMBER;
 }
 
 bool LongNumberCell::NeedsRecalculation(AFontSize fontSize) const {

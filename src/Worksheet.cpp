@@ -284,6 +284,7 @@ bool Worksheet::RedrawIfRequested() {
         }
       }
 
+      // Make the right brackets autohide
       if ((m_configuration->HideBrackets()) &&
           (oldGroupCellUnderPointer !=
            m_cellPointers.m_groupCellUnderPointer)) {
@@ -317,7 +318,9 @@ bool Worksheet::RedrawIfRequested() {
           if (!GetToolTipText().empty()) {
             if (toolTip != GetToolTipText()) {
               // Disabling and re-enabling tooltips resets the tooltip poput
-              // delay timer.
+              // delay timer. We need to do that since we don't have a individual
+	      // per-cell popout delay timer in the cell the cursor currently is in,
+	      // but only the per-worksheet one.
               wxToolTip::Enable(false);
               wxToolTip::Enable(true);
               SetToolTip(toolTip);
