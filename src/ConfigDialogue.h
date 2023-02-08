@@ -132,8 +132,6 @@ private:
   std::unique_ptr<struct NSVGrasterizer, decltype(std::free)*> m_svgRast{nullptr, std::free};
   //! The configuration storage
   Configuration *m_configuration;
-
-  bool StyleAffectsCode();
   
   WX_DECLARE_STRING_HASH_MAP(wxString, StringHash);
   WX_DECLARE_STRING_HASH_MAP(long, Languages);

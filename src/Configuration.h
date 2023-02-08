@@ -960,6 +960,9 @@ public:
   std::vector<TextStyle> GetMathStylesList(){return m_2dMathStyles;}
   //! Which styles affect only colors?
   std::vector<TextStyle> GetColorOnlyStylesList(){return m_colorOnlyStyles;}
+  bool StyleAffectsCode(TextStyle style);
+  bool StyleAffectsMathOut(TextStyle style);
+  bool StyleAffectsColorOnly(TextStyle style);
 
 private:
   //! Which styles affect how code is displayed?

@@ -2551,7 +2551,7 @@ void ConfigDialogue::UpdateExample() {
 
   m_examplePanel->SetStyle(*style);
 
-  if (st == TS_TEXT_BACKGROUND || st == TS_TEXT) {
+  if (m_configuration->StyleAffectsCode(st)) {
     m_examplePanel->SetBackgroundColour(
 					m_configuration->m_styles[TS_TEXT_BACKGROUND].GetColor());
   } else {

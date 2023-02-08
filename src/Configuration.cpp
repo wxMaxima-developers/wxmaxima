@@ -827,6 +827,33 @@ void Configuration::MakeStylesConsistent()
     }
 }
 
+bool Configuration::StyleAffectsCode(TextStyle style)
+{
+  bool retval = false;
+  for(auto i : GetCodeStylesList())
+    if(style == i)
+      retval = true;
+  return retval;
+}
+
+bool Configuration::StyleAffectsMathOut(TextStyle style)
+{
+  bool retval = false;
+  for(auto i : GetMathStylesList())
+    if(style == i)
+      retval = true;
+  return retval;
+}
+
+bool Configuration::StyleAffectsColorOnly(TextStyle style)
+{
+  bool retval = false;
+  for(auto i : GetColorOnlyStylesList())
+    if(style == i)
+      retval = true;
+  return retval;
+}
+
 std::vector<TextStyle> m_codeStyles;
 std::vector<TextStyle> m_2dMathStyles;
 std::vector<TextStyle> m_colorOnlyStyles;
