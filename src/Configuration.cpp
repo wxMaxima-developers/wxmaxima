@@ -765,6 +765,8 @@ void Configuration::MakeStylesConsistent()
       m_styles[style].SetEncoding(GetStyle(TS_CODE_DEFAULT)->GetEncoding());
       m_styles[style].SetFontSize(GetStyle(TS_CODE_DEFAULT)->GetFontSize());
       m_styles[style].SetFontName(GetStyle(TS_CODE_DEFAULT)->GetFontName());
+      m_styles[style].CantChangeFontName(true);
+      m_styles[style].CantChangeFontVariant(true);
     }
 
   std::vector<TextStyle> specialMathStyles;
@@ -793,7 +795,23 @@ void Configuration::MakeStylesConsistent()
 	  m_styles[style].SetFamily(GetStyle(TS_MATH)->GetFamily());
 	  m_styles[style].SetEncoding(GetStyle(TS_MATH)->GetEncoding());
 	  m_styles[style].SetFontName(GetStyle(TS_MATH)->GetFontName());
+	  m_styles[style].CantChangeFontName(true);
 	}
+    }
+
+  std::vector<TextStyle> colorOnlyStyles;
+  colorOnlyStyles.push_back(TS_TEXT_BACKGROUND);
+  colorOnlyStyles.push_back(TS_DOCUMENT_BACKGROUND);
+  colorOnlyStyles.push_back(TS_CELL_BRACKET);
+  colorOnlyStyles.push_back(TS_ACTIVE_CELL_BRACKET);
+  colorOnlyStyles.push_back(TS_CURSOR);
+  colorOnlyStyles.push_back(TS_SELECTION);
+  colorOnlyStyles.push_back(TS_EQUALSSELECTION);
+  colorOnlyStyles.push_back(TS_OUTDATED);
+  for(auto style : colorOnlyStyles)
+    {
+      m_styles[style].CantChangeFontName(true);
+      m_styles[style].CantChangeFontVariant(true);
     }
 }
 

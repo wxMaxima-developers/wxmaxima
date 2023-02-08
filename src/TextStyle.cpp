@@ -224,7 +224,7 @@ did_change Style::SetFontFaceAndSizeFrom(const Style &o) {
   return SetFontFaceFrom(o) | SetFontSize(o.m.fontSize); //-V792
 }
 
-bool Style::IsFontOk() { return m.isNotOK ? false : GetFont().IsOk(); }
+bool Style::IsFontOk() { GetFont().IsOk(); }
 
 did_change Style::SetFromFont(const wxFont &font) {
   if (font.IsOk()) {
@@ -239,7 +239,6 @@ did_change Style::SetFromFont(const wxFont &font) {
   } else
     {
       SetFontName(wxNORMAL_FONT->GetFaceName());
-      m.isNotOK = true;
     }
   return this;
 }

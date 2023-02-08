@@ -134,6 +134,10 @@ public:
   Style& Color(wxSystemColour sysColour) { return SetColor(sysColour), *this; }
   Style& ChangeLightness(int alpha) { return SetColor(GetColor().ChangeLightness(alpha)), *this; }
 
+  bool CantChangeFontName() const {return m.cantChangeFontName;}
+  bool CantChangeFontVariant() const {return m.cantChangeFontVariant;}
+  void CantChangeFontName(bool changeForbidden) {m.cantChangeFontName = changeForbidden;}
+  void CantChangeFontVariant(bool changeForbidden) {m.cantChangeFontVariant = changeForbidden;}
   wxFontInfo GetAsFontInfo() const;
 
 
@@ -181,16 +185,14 @@ private:
     // 1-byte members
     bool underlined : 1;
     bool strikethrough : 1;
-    bool isNotOK : 1;
+    bool cantChangeFontName    : 1; // !< Allow to change only color, underline etc.
+    bool cantChangeFontVariant : 1; // !< Allow to change only color
 
-    Data() : underlined(false), strikethrough(false), isNotOK(false) {}
-    static constexpr enum class NotOK_t {} NotOK = {};
-    // cppcheck-suppress noExplicitConstructor
-    explicit Data(NotOK_t) : underlined(false), strikethrough(false), isNotOK(true) {}
+    Data() : underlined(false), strikethrough(false), cantChangeFontName(false),
+             cantChangeFontVariant(false) {}
   } m;
 
   // cppcheck-suppress noExplicitConstructor
-  //Style(Data::NotOK_t) : m(Data::NotOK) {}
 };
 
 
