@@ -52,19 +52,18 @@ constexpr uint32_t Style::Default_ColorRGB;
 Style::Style()
 {
   SetFontName(wxNORMAL_FONT->GetFaceName());
-  wxASSERT(m_fontCache != NULL);
+  wxASSERT(m.fontCache != NULL);
 }
 
 Style::Style(AFontSize fontSize)
 {
   SetFontSize(fontSize);
   SetFontName(wxNORMAL_FONT->GetFaceName());
-  wxASSERT(m_fontCache != NULL);
+  wxASSERT(m.fontCache != NULL);
 }
 
 Style::Style(const Style &o) : m(o.m) {
-  SetFontName(wxNORMAL_FONT->GetFaceName());
-  wxASSERT(m_fontCache != NULL);
+  wxASSERT(m.fontCache != NULL);
 }
 
 Style &Style::operator=(const Style &o) {
@@ -73,7 +72,7 @@ Style &Style::operator=(const Style &o) {
       m = o.m;
       SetFontName(o.GetFontName());
     }
-  wxASSERT(m_fontCache != NULL);
+  wxASSERT(m.fontCache != NULL);
 
   return *this;
 }
@@ -90,9 +89,12 @@ bool Style::IsUnderlined() const { return m.underlined; }
 
 bool Style::IsStrikethrough() const { return m.strikethrough; }
 
-wxString Style::GetFontName() const { return m.fontName; }
-
-const wxString &Style::GetNameStr() const { return m.fontName; }
+const wxString &Style::GetFontName() const {
+  if(m.fontCache)
+    return m.fontCache->GetFaceName();
+  else
+    return m_emptyString;
+}
 
 //! The size of this style's font, asserted to be valid.
 AFontSize Style::GetFontSize() const {
@@ -163,19 +165,22 @@ did_change Style::SetStrikethrough(bool strikethrough) {
 }
 
 did_change Style::SetFontName(wxString fontName) {
-  if ((m.fontName == fontName) && (m_fontCache != NULL))
-    return false;
-  m.fontName = fontName;
+  if ((m.fontCache != NULL) && (GetFontName() == fontName))
+    {
+      return false;
+    }
   auto fontCache = m_fontCaches.find(fontName);
   if(fontCache == m_fontCaches.end())
     {
       auto newfontCache = std::shared_ptr<FontVariantCache>(new FontVariantCache(fontName));
       m_fontCaches[fontName] = newfontCache;
-      m_fontCache = newfontCache;
+      m.fontCache = newfontCache;
     }
   else
-    m_fontCache = fontCache->second;
-  wxASSERT(m_fontCache != NULL);
+    m.fontCache = fontCache->second;
+  wxASSERT(m.fontCache != NULL);
+
+  wxLogMessage("Font variant cache %s:",m.fontCache->GetFaceName().mb_str());
   return true;
 }
 
@@ -218,22 +223,6 @@ did_change Style::SetFontFaceFrom(const Style &o) {
 
 did_change Style::SetFontFaceAndSizeFrom(const Style &o) {
   return SetFontFaceFrom(o) | SetFontSize(o.m.fontSize); //-V792
-}
-
-bool Style::IsFontEqualTo(const Style &o_) const {
-  const Data &o = o_.m;
-  if (m.font && m.font == o.font)
-    return true;
-  return 
-    m.fontSize == o.fontSize && m.family == o.family &&
-    m.encoding == o.encoding && m.weight == o.weight &&
-    m.fontStyle == o.fontStyle && m.fontName == o.fontName &&
-    m.underlined == o.underlined && m.strikethrough == o.strikethrough &&
-    m.isNotOK == o.isNotOK;
-}
-
-bool Style::IsStyleEqualTo(const Style &o) const {
-  return this->IsFontEqualTo(o) && m.rgbColor == o.m.rgbColor;
 }
 
 bool Style::IsFontOk() { return m.isNotOK ? false : GetFont().IsOk(); }
@@ -288,15 +277,6 @@ wxFontInfo Style::GetAsFontInfo() const {
     .Italic(IsItalic())
     .Bold(IsBold())
     .Light(IsLight());
-}
-
-wxString Style::Default_FontName() {
-#if defined(__WXOSX_MAC__)
-  static auto fontName = wxT("Monaco");
-#else
-  static auto fontName = wxT("Arial");
-#endif
-  return fontName;
 }
 
 const wxColor &Style::Default_Color() {
@@ -359,7 +339,7 @@ void Style::Write(wxConfigBase *config, const wxString &where) const {
   config->Write(wxString::Format(k_italic, where), IsItalic());
   config->Write(wxString::Format(k_underlined, where), IsUnderlined());
   config->Write(wxString::Format(k_fontsize_float, where), GetFontSize().Get());
-  config->Write(wxString::Format(k_fontname, where), GetNameStr());
+  config->Write(wxString::Format(k_fontname, where), GetFontName());
 
   // We don't write the slant, light nor strikethrough attributes so as not to
   // grow the configuration compared to the previous releases. The slant and
@@ -378,7 +358,7 @@ void Style::Write(wxConfigBase *config, const wxString &where) const {
 }
 
 wxFont Style::GetFont() const {
-  return *(m_fontCache->GetFont(GetFontSize().Get(), IsItalic(), IsBold(), IsUnderlined()));
+  return *(m.fontCache->GetFont(GetFontSize().Get(), IsItalic(), IsBold(), IsUnderlined()));
 }
 
 const Style &Style::FromStockFont(wxStockGDI::Item font) {
@@ -408,3 +388,4 @@ const Style &Style::FromStockFont(wxStockGDI::Item font) {
 }
 
 Style::FontVariantCachesMap Style::m_fontCaches;
+wxString Style::m_emptyString = wxEmptyString;

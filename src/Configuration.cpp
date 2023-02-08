@@ -761,10 +761,10 @@ void Configuration::MakeStylesConsistent()
   specialCodeStyles.push_back(TS_EQUALSSELECTION);
   for(auto style : specialCodeStyles)
     {
-      m_styles[style].SetFamily(GetStyle(TS_CODE_DEFAULT).GetFamily());
-      m_styles[style].SetEncoding(GetStyle(TS_CODE_DEFAULT).GetEncoding());
-      m_styles[style].SetFontSize(GetStyle(TS_CODE_DEFAULT).GetFontSize());
-      m_styles[style].SetFontName(GetStyle(TS_CODE_DEFAULT).GetFontName());
+      m_styles[style].SetFamily(GetStyle(TS_CODE_DEFAULT)->GetFamily());
+      m_styles[style].SetEncoding(GetStyle(TS_CODE_DEFAULT)->GetEncoding());
+      m_styles[style].SetFontSize(GetStyle(TS_CODE_DEFAULT)->GetFontSize());
+      m_styles[style].SetFontName(GetStyle(TS_CODE_DEFAULT)->GetFontName());
     }
 
   std::vector<TextStyle> specialMathStyles;
@@ -787,12 +787,12 @@ void Configuration::MakeStylesConsistent()
   specialMathStyles.push_back(TS_OUTDATED);
   for(auto style : specialCodeStyles)
     {
-      m_styles[style].SetFontSize(GetStyle(TS_MATH).GetFontSize());
+      m_styles[style].SetFontSize(GetStyle(TS_MATH)->GetFontSize());
       if(style != TS_ASCIIMATHS)
 	{
-	  m_styles[style].SetFamily(GetStyle(TS_MATH).GetFamily());
-	  m_styles[style].SetEncoding(GetStyle(TS_MATH).GetEncoding());
-	  m_styles[style].SetFontName(GetStyle(TS_MATH).GetFontName());
+	  m_styles[style].SetFamily(GetStyle(TS_MATH)->GetFamily());
+	  m_styles[style].SetEncoding(GetStyle(TS_MATH)->GetEncoding());
+	  m_styles[style].SetFontName(GetStyle(TS_MATH)->GetFontName());
 	}
     }
 }

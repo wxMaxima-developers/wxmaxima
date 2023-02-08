@@ -483,6 +483,7 @@ void TextCell::Recalculate(AFontSize fontsize) {
 
 void TextCell::Draw(wxPoint point) {
   Cell::Draw(point);
+
   if (DrawThisCell(point) &&
       !(IsHidden() ||
         (GetHidableMultSign() && m_configuration->HidemultiplicationSign()))) {
@@ -503,8 +504,8 @@ void TextCell::Draw(wxPoint point) {
 std::shared_ptr<wxFont> TextCell::GetFont(AFontSize fontsize) {
   auto const style = m_configuration->GetStyle(GetTextStyle());
 
-  auto fontCache = style.GetFontCache();
-  bool isItalic = style.IsItalic(); 
+  auto fontCache = style->GetFontCache();
+  bool isItalic = style->IsItalic(); 
   // Mark special variables that are printed as ordinary letters as being
   // special.
   if(GetTextStyle() == TS_VARIABLE)
@@ -516,13 +517,13 @@ std::shared_ptr<wxFont> TextCell::GetFont(AFontSize fontsize) {
 
   
   wxASSERT(m_fontSize_Scaled.IsValid());
-  return fontCache->GetFont(fontsize.Get(), isItalic, style.IsBold(), style.IsUnderlined());
+  return fontCache->GetFont(fontsize.Get(), isItalic, style->IsBold(), style->IsUnderlined());
 }
 
 void TextCell::SetFont(AFontSize fontsize) {
   wxDC *dc = m_configuration->GetDC();
   auto font = GetFont(fontsize);
-  if(m_configuration->GetLastFontUsed() != font.get())
+//  if(m_configuration->GetLastFontUsed() != font.get())
     {
       m_configuration->SetLastFontUsed(font);
       dc->SetFont(*font);

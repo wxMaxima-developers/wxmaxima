@@ -26,6 +26,7 @@
 FontVariantCache::FontVariantCache(wxString fontName):
   m_fontName(fontName)
 {
+  std::cerr<<m_fontName<<"\n";
 }
 
 std::shared_ptr<wxFont> FontVariantCache::GetFont (double size,
@@ -58,7 +59,10 @@ std::shared_ptr<wxFont> FontVariantCache::GetFont (double size,
         weight, isUnderlined,
         m_fontName));
     if(!font->IsOk())
+    {
+      wxLogMessage(_("Cannot create a font based on %s. Falling back to a default font."), m_fontName.mb_str());
       font = std::shared_ptr<wxFont>(new wxFont(*wxNORMAL_FONT));
+    }
 #if wxCHECK_VERSION(3, 1, 2)
     font->SetFractionalPointSize(size);
 #else

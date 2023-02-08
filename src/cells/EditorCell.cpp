@@ -933,14 +933,14 @@ void EditorCell::SetStyle(TextStyle style) {
 
 std::shared_ptr<wxFont> EditorCell::GetFont(AFontSize fontsize) {
   auto style = m_configuration->GetStyle(GetTextStyle());
-  auto fontCache = style.GetFontCache();
+  auto fontCache = style->GetFontCache();
 
-  bool isItalic = style.IsItalic();
+  bool isItalic = style->IsItalic();
   if (m_autoAnswer)
     isItalic = !isItalic;
   
   wxASSERT(m_fontSize_Scaled.IsValid());
-  return fontCache->GetFont(fontsize.Get(), isItalic, style.IsBold(), style.IsUnderlined());
+  return fontCache->GetFont(fontsize.Get(), isItalic, style->IsBold(), style->IsUnderlined());
 }
 
 void EditorCell::SetFont() {

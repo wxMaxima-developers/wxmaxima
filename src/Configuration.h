@@ -816,7 +816,7 @@ public:
     \param fontSize Only relevant for math cells: Super- and subscripts can have different
     font styles than the rest.
   */
-  const Style &GetStyle(TextStyle textStyle) const { return m_styles[textStyle]; }
+  const Style *GetStyle(TextStyle textStyle) const { return &m_styles[textStyle]; }
 
   //! Get the worksheet this configuration storage is valid for
   wxWindow *GetWorkSheet() const {return m_workSheet;}

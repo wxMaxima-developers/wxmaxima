@@ -45,6 +45,7 @@ public:
                                    bool isItalic,
                                    bool isBold,
                                    bool isUnderlined);
+  const wxString& GetFaceName() const {return m_fontName;}
 private:
   int GetIndex (
     bool isItalic,

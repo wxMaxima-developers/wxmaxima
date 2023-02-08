@@ -150,7 +150,6 @@ private:
     //! Sets the text style of the example
     void SetStyle(const Style &style)
       {
-        if (m_style.IsStyleEqualTo(style)) return;
         m_style = style;
         Refresh();
       }

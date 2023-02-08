@@ -48,9 +48,7 @@ static constexpr uint32_t MAKE_RGB(uint32_t r, uint32_t g, uint32_t b)
  * It is a well-performing replacement for wxFontInfo, with additional
  * color attribute.
  *
- * The text styles are also used as keys into the FontCache. They are
- * designed to be small, quick to compare for equality and order (less-than),
- * and quick to copy.
+ * The text styles are also used as keys into the FontCache. 
  *
  */
 class Style final
@@ -84,7 +82,6 @@ public:
   constexpr static bool Default_Strikethrough{false};
   constexpr static AFontSize Default_FontSize{10.0f};
   constexpr static uint32_t Default_ColorRGB{MAKE_RGB(0, 0, 0)};
-  static wxString Default_FontName();
   static const wxColor &Default_Color();
 
   wxFontFamily GetFamily() const;
@@ -97,8 +94,7 @@ public:
   bool IsSlant() const { return GetFontStyle() == wxFONTSTYLE_SLANT; }
   bool IsUnderlined() const;
   bool IsStrikethrough() const;
-  wxString GetFontName() const;
-  const wxString &GetNameStr() const;
+  const wxString &GetFontName() const;
   AFontSize GetFontSize() const;
   uint32_t GetRGBColor() const;
   wxColor GetColor() const { return wxColor(GetRGBColor()); }
@@ -130,7 +126,6 @@ public:
   Style& Slant(bool slant = true) { return SetSlant(slant), *this; }
   Style& Underlined(bool underlined = true) { return SetUnderlined(underlined), *this; }
   Style& Strikethrough(bool strikethrough = true) { return SetStrikethrough(strikethrough), *this; }
-  Style& FontName(class wxString fontName) { return SetFontName(fontName), *this; }
   Style& FontSize(float size) { return SetFontSize(AFontSize(size)), *this; }
   Style& FontSize(AFontSize fontSize) { return SetFontSize(fontSize), *this; }
   Style& RGBColor(uint32_t rgb) { return SetRGBColor(rgb), *this; }
@@ -141,8 +136,6 @@ public:
 
   wxFontInfo GetAsFontInfo() const;
 
-  bool IsFontEqualTo(const Style &) const;
-  bool IsStyleEqualTo(const Style &o) const;
 
   bool IsFontOk();
   wxFont GetFont() const;
@@ -161,24 +154,18 @@ public:
   static AFontSize GetFontSize(const wxFont &);
   static void SetFontSize(wxFont &, AFontSize fontSize);
 
-  std::shared_ptr<FontVariantCache> GetFontCache() const {return m_fontCache;}
+  std::shared_ptr<FontVariantCache> GetFontCache() const {return m.fontCache;}
 private:
-  mutable std::shared_ptr<FontVariantCache> m_fontCache;
-
   WX_DECLARE_STRING_HASH_MAP( std::shared_ptr<FontVariantCache>,     // type of the values
                               FontVariantCachesMap); // name of the class
 
-
+  static wxString m_emptyString;
   static FontVariantCachesMap m_fontCaches;
-  friend class FontCache;
-  Style &FromFontNoCache(const wxFont &);
-  void SetFromFontNoCache(const wxFont &);
 
-  struct Data // POD, 40 bytes on 64-bit platforms
+  struct Data
   {
     // 8/4-byte members
-    wxString fontName = Default_FontName();
-    mutable const wxFont *font = nullptr;
+    mutable std::shared_ptr<FontVariantCache> fontCache;
     // 4-byte members
     uint32_t rgbColor = Default_ColorRGB;
     // 2-byte members
@@ -198,16 +185,10 @@ private:
     explicit Data(NotOK_t) : underlined(false), strikethrough(false), isNotOK(true) {}
   } m;
 
-  const wxFont& LookupFont() const;
   // cppcheck-suppress noExplicitConstructor
-  Style(Data::NotOK_t) : m(Data::NotOK) {}
+  //Style(Data::NotOK_t) : m(Data::NotOK) {}
 };
 
-//! Equals-comparator of the font size and attributes of the style
-struct StyleFontEquals final
-{
-  bool operator()(const Style &l, const Style &r) const { return l.IsFontEqualTo(r); }
-};
 
 /*! All text styles known to wxMaxima
  *

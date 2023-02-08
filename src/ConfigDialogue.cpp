@@ -2382,7 +2382,7 @@ void ConfigDialogue::OnChangeFontFamily(wxCommandEvent &WXUNUSED(event)) {
     return;
 
   style.SetFromFont(userFont);
-  m_configuration->m_styles[st].FontName(style.GetFontName());
+  m_configuration->m_styles[st].SetFontName(style.GetFontName());
   m_configuration->m_styles[st].FontSize(style.GetFontSize());
 
   UpdateButton(st);
