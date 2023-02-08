@@ -598,8 +598,7 @@ void ConfigDialogue::SetCheckboxValues() {
   }
   m_symbolPaneAdditionalChars->SetValue(
 					configuration->SymbolPaneAdditionalChars());
-  m_getStyleFont->Enable(GetSelectedStyle() >= TS_ASCIIMATHS &&
-                         GetSelectedStyle() <= TS_TITLE);
+  m_getStyleFont->Enable(!configuration->GetStyle(GetSelectedStyle())->CantChangeFontName());
   m_showUserDefinedLabels->SetSelection(configuration->GetLabelChoice());
   unsigned int i = 0;
   // First set the language to "default".
@@ -1972,7 +1971,7 @@ TextStyle ConfigDialogue::GetSelectedStyle() const {
 }
 
 void ConfigDialogue::UpdateButton(TextStyle const st) {
-  Style const style = m_configuration->m_styles[st];
+  auto style = m_configuration->GetStyle(st);
   wxButton *fontButton = {};
   if (st == TS_CODE_DEFAULT)
     fontButton = m_getDefaultFont;
@@ -1980,8 +1979,8 @@ void ConfigDialogue::UpdateButton(TextStyle const st) {
     fontButton = m_getMathFont;
   if (fontButton)
     fontButton->SetLabel(wxString::Format(wxT("%s (%g)"),
-                                          style.GetFontName(),
-                                          style.GetFontSize().Get()));
+                                          style->GetFontName(),
+                                          style->GetFontSize().Get()));
 }
 
 wxWindow *ConfigDialogue::CreateStylePanel() {
@@ -2369,21 +2368,18 @@ void ConfigDialogue::OnFontButton(wxCommandEvent &event) {
 
 void ConfigDialogue::OnChangeFontFamily(wxCommandEvent &WXUNUSED(event)) {
   TextStyle const st = GetSelectedStyle();
-  Style style = m_configuration->m_styles[st];
-
-  if (!style.IsFontOk())
-    style = Style::FromStockFont(wxStockGDI::FONT_NORMAL);
+  auto style = m_configuration->GetWritableStyle(st);
 
   auto userFont =
-    wxGetFontFromUser(this, style.GetFont(),
+    wxGetFontFromUser(this, style->GetFont(),
 		      wxString::Format(_("Choose the %s Font"),
 				       m_configuration->GetStyleName(st)));
   if (!userFont.IsOk())
     return;
 
-  style.SetFromFont(userFont);
-  m_configuration->m_styles[st].SetFontName(style.GetFontName());
-  m_configuration->m_styles[st].FontSize(style.GetFontSize());
+  style->SetFromFont(userFont);
+  m_configuration->GetWritableStyle(st)->SetFontName(style->GetFontName());
+  m_configuration->GetWritableStyle(st)->FontSize(style->GetFontSize());
 
   UpdateButton(st);
   UpdateExample();
@@ -2392,38 +2388,31 @@ void ConfigDialogue::OnChangeFontFamily(wxCommandEvent &WXUNUSED(event)) {
 void ConfigDialogue::OnChangeColor() {
   TextStyle const st = GetSelectedStyle();
   wxColour col =
-    wxGetColourFromUser(this, m_configuration->m_styles[st].GetColor());
+    wxGetColourFromUser(this, m_configuration->GetStyle(st)->GetColor());
   if (col.IsOk())
-    m_configuration->m_styles[st].SetColor(col);
+    m_configuration->GetWritableStyle(st)->SetColor(col);
   UpdateExample();
 }
 
 void ConfigDialogue::OnChangeStyle(wxCommandEvent &WXUNUSED(event)) {
   auto const st = GetSelectedStyle();
-  m_styleColor->SetColor(m_configuration->m_styles[st].GetColor());
+  m_styleColor->SetColor(m_configuration->GetStyle(st)->GetColor());
 
+  bool canChangeFontName    =   !m_configuration->GetStyle(st)->CantChangeFontName();
+  bool canChangeFontVariant =   !m_configuration->GetStyle(st)->CantChangeFontVariant();
+  
   // MAGIC NUMBERS:
   // the positions of TEXT and TITLE style in the list.
-  m_getStyleFont->Enable(st >= TS_ASCIIMATHS && st <= TS_TITLE);
-
-  if (st <= TS_TITLE || st == TS_MATH) {
-    // Text styles with adjustable bold/italic/underline
-    m_boldCB->Enable(true);
-    m_italicCB->Enable(true);
-    m_underlinedCB->Enable(true);
-    m_boldCB->SetValue(m_configuration->m_styles[st].IsBold());
-    m_italicCB->SetValue(m_configuration->m_styles[st].IsItalic());
-    m_underlinedCB->SetValue(m_configuration->m_styles[st].IsUnderlined());
-  } else {
-    // Background color only
-    m_boldCB->Enable(false);
-    m_italicCB->Enable(false);
-    m_underlinedCB->Enable(false);
-    m_boldCB->SetValue(false);
-    m_italicCB->SetValue(false);
-    m_underlinedCB->SetValue(false);
-  }
-
+  m_getStyleFont->Enable(canChangeFontName);
+  
+  // Text styles with adjustable bold/italic/underline
+  m_boldCB->Enable(canChangeFontVariant);
+  m_italicCB->Enable(canChangeFontVariant);
+  m_underlinedCB->Enable(canChangeFontVariant);
+  m_boldCB->SetValue(m_configuration->GetStyle(st)->IsBold());
+  m_italicCB->SetValue(m_configuration->GetStyle(st)->IsItalic());
+  m_underlinedCB->SetValue(m_configuration->GetStyle(st)->IsUnderlined());
+  
   UpdateExample();
 }
 
@@ -2541,9 +2530,9 @@ void ConfigDialogue::OnReloadStyles(wxCommandEvent &WXUNUSED(event)) {
 
 void ConfigDialogue::OnCheckbox(wxCommandEvent &WXUNUSED(event)) {
   TextStyle const st = GetSelectedStyle();
-  m_configuration->m_styles[st].SetBold(m_boldCB->GetValue());
-  m_configuration->m_styles[st].SetItalic(m_italicCB->GetValue());
-  m_configuration->m_styles[st].SetUnderlined(m_underlinedCB->GetValue());
+  m_configuration->GetWritableStyle(st)->SetBold(m_boldCB->GetValue());
+  m_configuration->GetWritableStyle(st)->SetItalic(m_italicCB->GetValue());
+  m_configuration->GetWritableStyle(st)->SetUnderlined(m_underlinedCB->GetValue());
   UpdateExample();
 }
 
@@ -2554,17 +2543,13 @@ void ConfigDialogue::OnChangeWarning(wxCommandEvent &WXUNUSED(event)) {
 }
 
 void ConfigDialogue::UpdateExample() {
+  m_configuration->MakeStylesConsistent();
   TextStyle const st = GetSelectedStyle();
-  auto style = m_configuration->m_styles[st];
+  auto style = m_configuration->GetStyle(st);
 
-  m_styleColor->SetColor(style.GetColor());
-  if (st == TS_VARIABLE || st == TS_NUMBER || st == TS_FUNCTION ||
-      st == TS_SPECIAL_CONSTANT)
-    style.SetFontSize(m_configuration->GetMathFontSize());
-  else if (m_configuration->GetFontSize(st).IsNull())
-    style.SetFontSize(m_configuration->GetDefaultFontSize());
+  m_styleColor->SetColor(style->GetColor());
 
-  m_examplePanel->SetStyle(style);
+  m_examplePanel->SetStyle(*style);
 
   if (st == TS_TEXT_BACKGROUND || st == TS_TEXT) {
     m_examplePanel->SetBackgroundColour(

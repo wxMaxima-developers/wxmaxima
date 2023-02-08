@@ -50,6 +50,51 @@
 #endif
 
 Configuration::Configuration(wxDC *dc, InitOpt options) : m_dc(dc) {
+  if(m_codeStyles.empty())
+    {
+      m_codeStyles.push_back(TS_CODE_VARIABLE);
+      m_codeStyles.push_back(TS_CODE_FUNCTION);
+      m_codeStyles.push_back(TS_CODE_COMMENT);
+      m_codeStyles.push_back(TS_CODE_NUMBER);
+      m_codeStyles.push_back(TS_CODE_STRING);
+      m_codeStyles.push_back(TS_CODE_OPERATOR);
+      m_codeStyles.push_back(TS_CODE_LISP);
+      m_codeStyles.push_back(TS_CODE_ENDOFLINE);
+      m_codeStyles.push_back(TS_CURSOR);
+      m_codeStyles.push_back(TS_SELECTION);
+      m_codeStyles.push_back(TS_EQUALSSELECTION);
+    }
+  if(m_2dMathStyles.empty())
+    {
+      m_2dMathStyles.push_back(TS_VARIABLE);
+      m_2dMathStyles.push_back(TS_NUMBER);
+      m_2dMathStyles.push_back(TS_FUNCTION);
+      m_2dMathStyles.push_back(TS_SPECIAL_CONSTANT);
+      m_2dMathStyles.push_back(TS_GREEK_CONSTANT);
+      m_2dMathStyles.push_back(TS_STRING);
+      m_2dMathStyles.push_back(TS_INPUT);
+      m_2dMathStyles.push_back(TS_MAIN_PROMPT);
+      m_2dMathStyles.push_back(TS_OTHER_PROMPT);
+      m_2dMathStyles.push_back(TS_LABEL);
+      m_2dMathStyles.push_back(TS_USERLABEL);
+      m_2dMathStyles.push_back(TS_HIGHLIGHT);
+      m_2dMathStyles.push_back(TS_WARNING);
+      m_2dMathStyles.push_back(TS_ERROR);
+      m_2dMathStyles.push_back(TS_ASCIIMATHS);
+      m_2dMathStyles.push_back(TS_TEXT);
+      m_2dMathStyles.push_back(TS_OUTDATED);
+    }
+  if(m_colorOnlyStyles.empty())
+    {
+      m_colorOnlyStyles.push_back(TS_TEXT_BACKGROUND);
+      m_colorOnlyStyles.push_back(TS_DOCUMENT_BACKGROUND);
+      m_colorOnlyStyles.push_back(TS_CELL_BRACKET);
+      m_colorOnlyStyles.push_back(TS_ACTIVE_CELL_BRACKET);
+      m_colorOnlyStyles.push_back(TS_CURSOR);
+      m_colorOnlyStyles.push_back(TS_SELECTION);
+      m_colorOnlyStyles.push_back(TS_EQUALSSELECTION);
+      m_colorOnlyStyles.push_back(TS_OUTDATED);
+    }
   m_maximaOperators["("] = 1;
   m_maximaOperators["/"] = 1;
   m_maximaOperators["{"] = 1;
@@ -748,18 +793,7 @@ bool Configuration::HideMarkerForThisMessage(wxString message) {
 //TODO: Don't underline the section number of titles
 void Configuration::MakeStylesConsistent()
 {
-  std::vector<TextStyle> specialCodeStyles;
-  specialCodeStyles.push_back(TS_CODE_VARIABLE);
-  specialCodeStyles.push_back(TS_CODE_COMMENT);
-  specialCodeStyles.push_back(TS_CODE_NUMBER);
-  specialCodeStyles.push_back(TS_CODE_STRING);
-  specialCodeStyles.push_back(TS_CODE_OPERATOR);
-  specialCodeStyles.push_back(TS_CODE_LISP);
-  specialCodeStyles.push_back(TS_CODE_ENDOFLINE);
-  specialCodeStyles.push_back(TS_CURSOR);
-  specialCodeStyles.push_back(TS_SELECTION);
-  specialCodeStyles.push_back(TS_EQUALSSELECTION);
-  for(auto style : specialCodeStyles)
+  for(auto style : GetCodeStylesList())
     {
       m_styles[style].SetFamily(GetStyle(TS_CODE_DEFAULT)->GetFamily());
       m_styles[style].SetEncoding(GetStyle(TS_CODE_DEFAULT)->GetEncoding());
@@ -769,25 +803,7 @@ void Configuration::MakeStylesConsistent()
       m_styles[style].CantChangeFontVariant(true);
     }
 
-  std::vector<TextStyle> specialMathStyles;
-  specialMathStyles.push_back(TS_VARIABLE);
-  specialMathStyles.push_back(TS_NUMBER);
-  specialMathStyles.push_back(TS_FUNCTION);
-  specialMathStyles.push_back(TS_SPECIAL_CONSTANT);
-  specialMathStyles.push_back(TS_GREEK_CONSTANT);
-  specialMathStyles.push_back(TS_STRING);
-  specialMathStyles.push_back(TS_INPUT);
-  specialMathStyles.push_back(TS_MAIN_PROMPT);
-  specialMathStyles.push_back(TS_OTHER_PROMPT);
-  specialMathStyles.push_back(TS_LABEL);
-  specialMathStyles.push_back(TS_USERLABEL);
-  specialMathStyles.push_back(TS_HIGHLIGHT);
-  specialMathStyles.push_back(TS_WARNING);
-  specialMathStyles.push_back(TS_ERROR);
-  specialMathStyles.push_back(TS_ASCIIMATHS);
-  specialMathStyles.push_back(TS_TEXT);
-  specialMathStyles.push_back(TS_OUTDATED);
-  for(auto style : specialCodeStyles)
+  for(auto style : GetMathStylesList())
     {
       if(style != TS_ASCIIMATHS)
 	{
@@ -799,21 +815,21 @@ void Configuration::MakeStylesConsistent()
 	}
     }
 
-  std::vector<TextStyle> colorOnlyStyles;
-  colorOnlyStyles.push_back(TS_TEXT_BACKGROUND);
-  colorOnlyStyles.push_back(TS_DOCUMENT_BACKGROUND);
-  colorOnlyStyles.push_back(TS_CELL_BRACKET);
-  colorOnlyStyles.push_back(TS_ACTIVE_CELL_BRACKET);
-  colorOnlyStyles.push_back(TS_CURSOR);
-  colorOnlyStyles.push_back(TS_SELECTION);
-  colorOnlyStyles.push_back(TS_EQUALSSELECTION);
-  colorOnlyStyles.push_back(TS_OUTDATED);
-  for(auto style : colorOnlyStyles)
+  std::vector<TextStyle> m_colorOnlyStyles;
+  for(auto style : GetColorOnlyStylesList())
     {
+      m_styles[style].SetFamily(GetStyle(TS_CODE_DEFAULT)->GetFamily());
+      m_styles[style].SetEncoding(GetStyle(TS_CODE_DEFAULT)->GetEncoding());
+      m_styles[style].SetFontSize(GetStyle(TS_CODE_DEFAULT)->GetFontSize());
+      m_styles[style].SetFontName(GetStyle(TS_CODE_DEFAULT)->GetFontName());
       m_styles[style].CantChangeFontName(true);
       m_styles[style].CantChangeFontVariant(true);
     }
 }
+
+std::vector<TextStyle> m_codeStyles;
+std::vector<TextStyle> m_2dMathStyles;
+std::vector<TextStyle> m_colorOnlyStyles;
 
 wxColor Configuration::DefaultBackgroundColor() {
   if (InvertBackground())

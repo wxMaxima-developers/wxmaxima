@@ -805,13 +805,19 @@ public:
   WX_DECLARE_STRING_HASH_MAP(bool, StringBoolHash);
   StringBoolHash m_hideMarkerForThisMessage;
 
-  /*! Get the resolved text Style for a given text style identifier.
+  /*! Get the text Style for a given text style identifier.
 
     \param textStyle The text style to resolve the style for.
-    \param fontSize Only relevant for math cells: Super- and subscripts can have different
-    font styles than the rest.
   */
   const Style *GetStyle(TextStyle textStyle) const { return &m_styles[textStyle]; }
+  /*! Get the text Style for a given text style identifier.
+
+    Theoretically GetStyle and GetWritableStyle wouldn't collide if they had the
+    same name. But I am afraid if all developers know how to deal with the situation
+    that performance degrades if a const is missing while the rest works fine.
+    \param textStyle The text style to resolve the style for.
+  */
+  Style *GetWritableStyle(TextStyle textStyle) { return &m_styles[textStyle]; }
 
   //! Get the worksheet this configuration storage is valid for
   wxWindow *GetWorkSheet() const {return m_workSheet;}
@@ -948,7 +954,20 @@ public:
   void SetLastFontUsed(std::shared_ptr <wxFont> font){m_lastFontUsed = font.get();}
   wxFont *m_lastFontUsed = NULL;
 
+  //! Which styles affect how code is displayed?
+  std::vector<TextStyle> GetCodeStylesList(){return m_codeStyles;}
+  //! Which styles affect how math output is displayed?
+  std::vector<TextStyle> GetMathStylesList(){return m_2dMathStyles;}
+  //! Which styles affect only colors?
+  std::vector<TextStyle> GetColorOnlyStylesList(){return m_colorOnlyStyles;}
+
 private:
+  //! Which styles affect how code is displayed?
+  std::vector<TextStyle> m_codeStyles;
+  //! Which styles affect how math output is displayed?
+  std::vector<TextStyle> m_2dMathStyles;
+  //! Which styles affect only colors?
+  std::vector<TextStyle> m_colorOnlyStyles;
   std::list<FileToSave> m_filesToSave;
   WX_DECLARE_STRING_HASH_MAP(wxString, RenderablecharsHash);
   RenderablecharsHash m_renderableChars;
