@@ -2337,7 +2337,6 @@ void ConfigDialogue::OnChangeColor() {
 void ConfigDialogue::OnChangeStyle(wxCommandEvent &WXUNUSED(event)) {
   auto const st = GetSelectedStyle();
   m_styleColor->SetColor(m_configuration->GetStyle(st)->GetColor());
-  m_getStyleFont->SetLabel(m_configuration->GetStyle(st)->GetFont().GetNativeFontInfoDesc());
   
   bool canChangeFontName    =   !m_configuration->GetStyle(st)->CantChangeFontName();
   bool canChangeFontVariant =   !m_configuration->GetStyle(st)->CantChangeFontVariant();
@@ -2487,6 +2486,7 @@ void ConfigDialogue::UpdateExample() {
   m_configuration->MakeStylesConsistent();
   TextStyle const st = GetSelectedStyle();
   auto style = m_configuration->GetStyle(st);
+  m_getStyleFont->SetLabel(style->GetFont().GetNativeFontInfoDesc());
 
   m_styleColor->SetColor(style->GetColor());
 
