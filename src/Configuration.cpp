@@ -60,8 +60,6 @@ Configuration::Configuration(wxDC *dc, InitOpt options) : m_dc(dc) {
       m_codeStyles.push_back(TS_CODE_OPERATOR);
       m_codeStyles.push_back(TS_CODE_LISP);
       m_codeStyles.push_back(TS_CODE_ENDOFLINE);
-      m_codeStyles.push_back(TS_CURSOR);
-      m_codeStyles.push_back(TS_SELECTION);
       m_codeStyles.push_back(TS_EQUALSSELECTION);
     }
   if(m_2dMathStyles.empty())
@@ -82,7 +80,6 @@ Configuration::Configuration(wxDC *dc, InitOpt options) : m_dc(dc) {
       m_2dMathStyles.push_back(TS_ERROR);
       m_2dMathStyles.push_back(TS_ASCIIMATHS);
       m_2dMathStyles.push_back(TS_TEXT);
-      m_2dMathStyles.push_back(TS_OUTDATED);
     }
   if(m_colorOnlyStyles.empty())
     {
