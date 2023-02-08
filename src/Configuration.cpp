@@ -1585,7 +1585,7 @@ const wxString &Configuration::GetStyleName(TextStyle style) const {
     &_("Code highlighting: Strings"),
     &_("Code highlighting: Operators"),
     &_("Code highlighting: Lisp"),
-    &_("Code highlighting: End of line"),
+    &_("Code highlighting: End of line markers"),
     &_("Math Default"),
   };
   if (style >= 0 && style < NUMBEROFSTYLES)
