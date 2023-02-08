@@ -1,5 +1,7 @@
 # Current
- * Fix XML generation for wxmx document (#1556)
+ * Fix XML generation of wxmx documents (#1556)
+ * A faster font cache
+ * More consistent text style handling
 
 # 22.12.0
  * A cleaner status bar with double-click actions
