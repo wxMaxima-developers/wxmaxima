@@ -153,7 +153,11 @@ public:
     return wxCHECK_VERSION(3, 1, 2); } //-V686 //-V501
   static AFontSize GetFontSize(const wxFont &);
   static void SetFontSize(wxFont &, AFontSize fontSize);
-
+  void ClearCache()
+    {
+      if(m.fontCache)
+        m.fontCache->ClearCache();
+    }
   std::shared_ptr<FontVariantCache> GetFontCache() const {return m.fontCache;}
 private:
   WX_DECLARE_STRING_HASH_MAP( std::shared_ptr<FontVariantCache>,     // type of the values

@@ -890,6 +890,11 @@ static bool operator==(const wxImage &a, const wxImage &b) {
 }
 
 void Configuration::SetZoomFactor(double newzoom) {
+  if(m_zoomFactor == newzoom)
+    return;
+
+  for (auto i: m_styles)
+    i.ClearCache();
   if (newzoom > GetMaxZoomFactor())
     newzoom = GetMaxZoomFactor();
   if (newzoom < GetMinZoomFactor())
