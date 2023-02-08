@@ -789,9 +789,9 @@ void Configuration::MakeStylesConsistent()
   specialMathStyles.push_back(TS_OUTDATED);
   for(auto style : specialCodeStyles)
     {
-      m_styles[style].SetFontSize(GetStyle(TS_MATH)->GetFontSize());
       if(style != TS_ASCIIMATHS)
 	{
+	  m_styles[style].SetFontSize(GetStyle(TS_MATH)->GetFontSize());
 	  m_styles[style].SetFamily(GetStyle(TS_MATH)->GetFamily());
 	  m_styles[style].SetEncoding(GetStyle(TS_MATH)->GetEncoding());
 	  m_styles[style].SetFontName(GetStyle(TS_MATH)->GetFontName());
@@ -1507,19 +1507,19 @@ void Configuration::WriteStyles(const wxString &file) {
 }
 const wxString &Configuration::GetStyleName(TextStyle style) const {
   static const wxString *names[NUMBEROFSTYLES] = {
-    &_("Default"),
-    &_("Variables"),
-    &_("Numbers"),
-    &_("Function names"),
-    &_("Special constants"),
-    &_("Greek Constants"),
-    &_("Strings"),
+    &_("Code Default"),
+    &_("Output: Variables"),
+    &_("Output: Numbers"),
+    &_("Output: Function names"),
+    &_("Output: Special constants"),
+    &_("Output: Greek Constants"),
+    &_("Output: Strings"),
     &_("Maxima input"),
     &_("Input labels"),
-    &_("Maxima questions"),
+    &_("Maxima question labels"),
     &_("Output labels"),
     &_("User-defined labels"),
-    &_("Highlight (dpart)"),
+    &_("Highlight (box)"),
     &_("Maxima warnings"),
     &_("Maxima errors"),
     &_("ASCII maths"),
@@ -1532,12 +1532,12 @@ const wxString &Configuration::GetStyleName(TextStyle style) const {
     &_("Title cell (Heading 1)"),
     &_("Text cell background"),
     &_("Document background"),
-    &_("Cell bracket"),
+    &_("Inactive Cell bracket"),
     &_("Active cell bracket"),
-    &_("Cursor"),
-    &_("Selection"),
-    &_("Text equal to selection"),
-    &_("Outdated cells"),
+    &_("Cursor color"),
+    &_("Selection color"),
+    &_("Color of text equal to selection"),
+    &_("Color of Outdated cells"),
     &_("Code highlighting: Variables"),
     &_("Code highlighting: Functions"),
     &_("Code highlighting: Comments"),

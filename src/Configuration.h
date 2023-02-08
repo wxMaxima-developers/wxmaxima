@@ -444,12 +444,7 @@ public:
   //! Do we want to indent all maths?
   bool IndentMaths() const {return m_indentMaths;}
   void IndentMaths(bool indent){m_indentMaths = indent;}
-  AFontSize GetFontSize(TextStyle st) const
-    {
-      if (st == TS_TEXT || st == TS_HEADING5 || st == TS_HEADING6 || st == TS_SUBSUBSECTION || st == TS_SUBSECTION || st == TS_SECTION || st == TS_TITLE)
-        return m_styles[st].GetFontSize();
-      return {};
-    }
+  AFontSize GetFontSize(TextStyle st) const { return m_styles[st].GetFontSize(); }
 
   const wxString &GetStyleName(TextStyle textStyle) const;
 
