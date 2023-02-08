@@ -343,8 +343,6 @@ protected:
   wxCheckBox *m_incrementalSearch;
   wxCheckBox *m_notifyIfIdle;
   wxChoice *m_showUserDefinedLabels;
-  wxButton *m_getDefaultFont;
-  wxButton *m_getMathFont;
   wxButton *m_getStyleFont;
   wxListBox *m_styleFor;
   //! An example rectangle with the font color
@@ -385,9 +383,6 @@ protected:
 
   void OnIdle(wxIdleEvent &event);
 
-  //! Starts the font selector dialog triggered by the math or default font buttons
-  void OnFontButton(wxCommandEvent &event);
-
   //! Called if a new item type that is to be styled is selected
   void OnChangeStyle(wxCommandEvent &event);
 
@@ -412,9 +407,6 @@ protected:
   static int StyleListIndexForStyle(TextStyle style);
   //! Get the style currently selected in the m_styleFor control
   TextStyle GetSelectedStyle() const;
-
-  //! Sets the label for the font setting button given by the style (either TS_DEFAULT or TS_MATH)
-  void UpdateButton(TextStyle st);
 
   //! The size of the text font
   int m_fontSize;

@@ -288,10 +288,6 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent, Configuration *cfg)
 
   Connect(wxEVT_CLOSE_WINDOW, wxCloseEventHandler(ConfigDialogue::OnClose),
           NULL, this);
-  Connect(button_defaultFont, wxEVT_BUTTON,
-          wxCommandEventHandler(ConfigDialogue::OnFontButton), NULL, this);
-  Connect(button_mathFont, wxEVT_BUTTON,
-          wxCommandEventHandler(ConfigDialogue::OnFontButton), NULL, this);
   Connect(listbox_styleFor, wxEVT_LISTBOX,
           wxCommandEventHandler(ConfigDialogue::OnChangeStyle), NULL, this);
   Connect(language_id, wxEVT_COMBOBOX,
@@ -466,9 +462,6 @@ void ConfigDialogue::SetCheckboxValues() {
 				  _("wxMaxima remembers the answers to maxima's questions. If this "
 				    "checkbox is set it automatically offers to enter the last answer to "
 				    "this question the user has input."));
-  m_getDefaultFont->SetToolTip(_("Font used for display in document."));
-  m_getMathFont->SetToolTip(
-			    _("Font used for displaying math characters in document."));
   m_changeAsterisk->SetToolTip(
 			       _("Use centered dot and Minus, not Star and Hyphen"));
   m_hidemultiplicationSign->SetToolTip(
@@ -654,8 +647,6 @@ void ConfigDialogue::SetCheckboxValues() {
   m_copyEMF->SetValue(m_configuration->CopyEMF());
 #endif
 
-  UpdateButton(TS_CODE_DEFAULT);
-  UpdateButton(TS_MATH);
   m_useUnicodeMaths->SetValue(m_configuration->UseUnicodeMaths());
 }
 
@@ -1970,19 +1961,6 @@ TextStyle ConfigDialogue::GetSelectedStyle() const {
   return StyleForListIndex(m_styleFor->GetSelection());
 }
 
-void ConfigDialogue::UpdateButton(TextStyle const st) {
-  auto style = m_configuration->GetStyle(st);
-  wxButton *fontButton = {};
-  if (st == TS_CODE_DEFAULT)
-    fontButton = m_getDefaultFont;
-  else if (st == TS_MATH)
-    fontButton = m_getMathFont;
-  if (fontButton)
-    fontButton->SetLabel(wxString::Format(wxT("%s (%g)"),
-                                          style->GetFontName(),
-                                          style->GetFontSize().Get()));
-}
-
 wxWindow *ConfigDialogue::CreateStylePanel() {
   wxScrolled<wxPanel> *panel = new wxScrolled<wxPanel>(m_notebook, -1);
   panel->SetScrollRate(5 * GetContentScaleFactor(),
@@ -1996,29 +1974,6 @@ wxWindow *ConfigDialogue::CreateStylePanel() {
   wxStaticBox *fonts = new wxStaticBox(panel, -1, _("Fonts"));
   wxStaticBoxSizer *fontsSizer = new wxStaticBoxSizer(fonts, wxVERTICAL);
   wxFlexGridSizer *grid_sizer_1 = new wxFlexGridSizer(4, 2, 2, 2);
-
-  auto *defaultFontLabel = new wxStaticText(fontsSizer->GetStaticBox(), -1,
-                                            _("Documentation+Code font:"));
-  grid_sizer_1->Add(defaultFontLabel,
-                    wxSizerFlags().Border(wxALL, 5 * GetContentScaleFactor()));
-  m_getDefaultFont = new wxButton(
-				  fontsSizer->GetStaticBox(), button_defaultFont, _("Choose font"),
-				  wxDefaultPosition, wxSize(250 * GetContentScaleFactor(), -1));
-  grid_sizer_1->Add(
-		    m_getDefaultFont,
-		    wxSizerFlags().Border(wxALL, 5 * GetContentScaleFactor()).Expand());
-
-  auto *mathFontLabel =
-    new wxStaticText(fontsSizer->GetStaticBox(), -1, _("Math font:"));
-  grid_sizer_1->Add(mathFontLabel,
-                    wxSizerFlags().Border(wxALL, 5 * GetContentScaleFactor()));
-  m_getMathFont = new wxButton(fontsSizer->GetStaticBox(), button_mathFont,
-                               _("Choose font"), wxDefaultPosition,
-                               wxSize(250 * GetContentScaleFactor(), -1));
-  grid_sizer_1->Add(
-		    m_getMathFont,
-		    wxSizerFlags().Border(wxALL, 5 * GetContentScaleFactor()).Expand());
-  grid_sizer_1->Add(10 * GetContentScaleFactor(), 10 * GetContentScaleFactor());
   m_useUnicodeMaths =
     new wxCheckBox(fontsSizer->GetStaticBox(), -1,
 		   _("Use unicode Math Symbols, if available"));
@@ -2027,8 +1982,7 @@ wxWindow *ConfigDialogue::CreateStylePanel() {
 		    wxSizerFlags().Border(wxUP | wxDOWN, 5 * GetContentScaleFactor()));
 
   fontsSizer->Add(grid_sizer_1, wxSizerFlags(1).Expand());
-  vsizer->Add(fontsSizer, wxSizerFlags().Expand().Border(
-							 wxALL, 5 * GetContentScaleFactor()));
+  vsizer->Add(fontsSizer, wxSizerFlags().Expand().Border(wxALL, 5 * GetContentScaleFactor()));
 
   // The styles box
   wxStaticBox *styles = new wxStaticBox(panel, -1, _("Styles"));
@@ -2052,10 +2006,10 @@ wxWindow *ConfigDialogue::CreateStylePanel() {
 
   m_getStyleFont = new wxButton(stylesSizer->GetStaticBox(), style_font_family,
                                 _("Choose font"), wxDefaultPosition,
-                                wxSize(150 * GetContentScaleFactor(), -1));
+                                wxSize(350 * GetContentScaleFactor(), -1));
   m_styleColor = new ColorPanel(this, stylesSizer->GetStaticBox(), color_id,
                                 wxDefaultPosition,
-                                wxSize(150 * GetContentScaleFactor(), 30),
+                                wxSize(350 * GetContentScaleFactor(), 30),
                                 wxSUNKEN_BORDER | wxFULL_REPAINT_ON_RESIZE);
   m_boldCB =
     new wxCheckBox(stylesSizer->GetStaticBox(), checkbox_bold, _("Bold"));
@@ -2353,19 +2307,6 @@ void ConfigDialogue::OnHelpBrowserBrowse(wxCommandEvent &WXUNUSED(event)) {
     m_helpBrowserUserLocation->SetValue(file);
 }
 
-void ConfigDialogue::OnFontButton(wxCommandEvent &event) {
-  TextStyle const prevSt = GetSelectedStyle();
-  TextStyle curSt = {};
-  if (event.GetId() == button_defaultFont)
-    curSt = TS_CODE_DEFAULT;
-  else if (event.GetId() == button_mathFont)
-    curSt = TS_MATH;
-
-  m_styleFor->SetSelection(StyleListIndexForStyle(curSt));
-  OnChangeFontFamily(event);
-  m_styleFor->SetSelection(StyleListIndexForStyle(prevSt));
-}
-
 void ConfigDialogue::OnChangeFontFamily(wxCommandEvent &WXUNUSED(event)) {
   TextStyle const st = GetSelectedStyle();
   auto style = m_configuration->GetWritableStyle(st);
@@ -2381,7 +2322,6 @@ void ConfigDialogue::OnChangeFontFamily(wxCommandEvent &WXUNUSED(event)) {
   m_configuration->GetWritableStyle(st)->SetFontName(style->GetFontName());
   m_configuration->GetWritableStyle(st)->FontSize(style->GetFontSize());
 
-  UpdateButton(st);
   UpdateExample();
 }
 
@@ -2397,7 +2337,8 @@ void ConfigDialogue::OnChangeColor() {
 void ConfigDialogue::OnChangeStyle(wxCommandEvent &WXUNUSED(event)) {
   auto const st = GetSelectedStyle();
   m_styleColor->SetColor(m_configuration->GetStyle(st)->GetColor());
-
+  m_getStyleFont->SetLabel(m_configuration->GetStyle(st)->GetFont().GetNativeFontInfoDesc());
+  
   bool canChangeFontName    =   !m_configuration->GetStyle(st)->CantChangeFontName();
   bool canChangeFontVariant =   !m_configuration->GetStyle(st)->CantChangeFontVariant();
   
