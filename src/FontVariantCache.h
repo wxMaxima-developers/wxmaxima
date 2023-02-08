@@ -41,6 +41,7 @@ class FontVariantCache final
 public:
   FontVariantCache(wxString fontName);
   ~FontVariantCache(){}
+  void ClearCache();
   std::shared_ptr<wxFont> GetFont (double size,
                                    bool isItalic,
                                    bool isBold,

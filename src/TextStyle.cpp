@@ -180,7 +180,6 @@ did_change Style::SetFontName(wxString fontName) {
     m.fontCache = fontCache->second;
   wxASSERT(m.fontCache != NULL);
 
-  wxLogMessage("Font variant cache %s:",m.fontCache->GetFaceName().mb_str());
   return true;
 }
 

@@ -26,7 +26,20 @@
 FontVariantCache::FontVariantCache(wxString fontName):
   m_fontName(fontName)
 {
-  std::cerr<<m_fontName<<"\n";
+}
+
+
+void FontVariantCache::ClearCache(){
+  bool cleared = false;
+  for (auto i: m_fontCaches)
+  {
+    if(!i.empty())
+    {
+      cleared = true;
+      i.clear();
+    }
+  }
+  wxLogMessage(_("Cleared font cache for font %s"), m_fontName.mb_str());
 }
 
 std::shared_ptr<wxFont> FontVariantCache::GetFont (double size,
