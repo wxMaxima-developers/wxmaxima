@@ -133,7 +133,6 @@ set(SOURCE_FILES
     RegexCtrl.cpp
     ResolutionChooser.cpp
     StatusBar.cpp
-    StreamUtils.cpp
     StringUtils.cpp
     SvgBitmap.cpp
     SvgPanel.cpp

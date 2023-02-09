@@ -46,12 +46,11 @@ Maxima::Maxima(wxSocketBase *socket) : m_socket(socket) {
   wxASSERT(socket);
   Bind(wxEVT_TIMER, wxTimerEventHandler(Maxima::TimerEvent), this);
   Bind(wxEVT_SOCKET, wxSocketEventHandler(Maxima::SocketEvent), this);
-
   m_socket->SetEventHandler(*this);
   m_socket->SetNotify(wxSOCKET_INPUT_FLAG | wxSOCKET_OUTPUT_FLAG |
                       wxSOCKET_LOST_FLAG);
   m_socket->Notify(true);
-  m_socket->SetFlags(wxSOCKET_NOWAIT | wxSOCKET_REUSEADDR);
+  m_socket->SetFlags(wxSOCKET_NOWAIT_READ);
   m_socket->SetTimeout(120);
 
   // There are some hints in the code history that wxSOCKET_INPUT
@@ -96,11 +95,6 @@ bool Maxima::Write(const void *buffer, size_t length) {
   return true;
 }
 
-UTF8Decoder::DecodeResult Maxima::DecodeFromSocket(size_t maxRead) {
-  return m_decoder.Decode(m_socketDecodeState, m_socketInput, maxRead,
-                          maxRead + 16);
-}
-
 void Maxima::SocketEvent(wxSocketEvent &event) {
   switch (event.GetSocketEvent()) {
   case wxSOCKET_INPUT:
@@ -142,31 +136,31 @@ void Maxima::ReadSocket() {
   if (!m_socket->IsConnected() || !m_socket->IsData())
     return;
 
-  // Read up to 64k of data in one go
-  constexpr auto readChunkSize = 65536;
-  if (!m_socketInput.Eof()) {
-    auto const decoded = DecodeFromSocket(readChunkSize);
-    m_socketInputData.append(decoded.output, decoded.outputSize);
-    if (decoded.bytesRead >= (readChunkSize - 16)) {
-      // More data is possibly available for reading, so let's schedule another
-      // read. "Losing" the input triggers is a frequent source of bugs,
-      // so it's best to play it safe and trigger a "continuation" read anyway.
-      // The 16 byte "margin of safety" is probably unnecessary but at least
-      // it'd protect against platform-specific off-by-one errors.
-      MaximaEvent *event = new MaximaEvent(MaximaEvent::READ_PENDING, this);
-      QueueEvent(event);
-      CallAfter(&Maxima::ReadSocket);
-      return; // Don't process pending data further
-    }
+  // std::cerr<<"------ transmission start ------\n";
+  wxString line;
+  wxString newLine = wxT("\n");
+  wxChar ch;
+  do
+    {
+      ch = m_textInput.GetChar();
+      if(ch == m_ascii10)
+	ch = m_ascii13;
+      if(ch != m_nullChar)
+	m_socketInputData.append(ch);
+    }  while (m_socket->LastReadCount() > 0);
+  {
+    MaximaEvent *event = new MaximaEvent(MaximaEvent::READ_PENDING, this);
+    QueueEvent(event);
   }
+  // std::cerr<<m_socketInputData<<"\n";
+  // std::cerr<<"------ transmission end ------\n";
 
-  wxm::NormalizeEOLsRemoveNULs(m_socketInputData);
   if ((m_pipeToStderr) && (!m_socketInputData.IsEmpty()))
     {
       std::cerr << m_socketInputData;
       std::cerr.flush();
     }
-
+  
   if (m_first || wxm::EndsWithChar(m_socketInputData, '\n') ||
       m_socketInputData.EndsWith(wxMaxima::m_promptSuffix)) {
     m_stringEndTimer.Stop();
@@ -191,3 +185,7 @@ wxEvent *MaximaEvent::Clone() const {
   event->SetData(GetData());
   return event.release();
 }
+
+wxChar Maxima::m_nullChar= wxT('\0');
+wxChar Maxima::m_ascii10 = wxT('\r');
+wxChar Maxima::m_ascii13 = wxT('\n');
