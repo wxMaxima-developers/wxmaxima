@@ -1,6 +1,8 @@
 # Current
  * Fix XML generation of wxmx documents (#1556)
  * A faster font cache
+ * Faster communication between wxMaxima and maxima
+ * Dropped the dependency on an [internal] ww898
  * More consistent text style handling
 
 # 22.12.0
