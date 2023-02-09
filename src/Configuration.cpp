@@ -865,6 +865,9 @@ void Configuration::MakeStylesConsistent()
       m_styles[style].SetEncoding(GetStyle(TS_CODE_DEFAULT)->GetEncoding());
       m_styles[style].SetFontSize(GetStyle(TS_CODE_DEFAULT)->GetFontSize());
       m_styles[style].SetFontName(GetStyle(TS_CODE_DEFAULT)->GetFontName());
+      m_styles[style].SetBold(GetStyle(TS_CODE_DEFAULT)->IsBold());
+      m_styles[style].SetItalic(GetStyle(TS_CODE_DEFAULT)->IsItalic());
+      m_styles[style].SetUnderlined(GetStyle(TS_CODE_DEFAULT)->IsUnderlined());
       m_styles[style].CantChangeFontName(true);
       m_styles[style].CantChangeFontVariant(true);
     }
