@@ -50,6 +50,49 @@
 #endif
 
 Configuration::Configuration(wxDC *dc, InitOpt options) : m_dc(dc) {
+  if(m_styleNames.empty())
+    {
+      m_styleNames[TS_CODE_DEFAULT        ] = _("Code Default"); 
+      m_styleNames[TS_VARIABLE            ] = _("Output: Variables");
+      m_styleNames[TS_NUMBER              ] = _("Output: Numbers and Digits");
+      m_styleNames[TS_FUNCTION            ] = _("Output: Function names");
+      m_styleNames[TS_SPECIAL_CONSTANT    ] = _("Output: Special constants");
+      m_styleNames[TS_GREEK_CONSTANT      ] = _("Output: Greek Constants");
+      m_styleNames[TS_STRING              ] = _("Output: Strings");
+      m_styleNames[TS_INPUT               ] = _("Maxima input");
+      m_styleNames[TS_MAIN_PROMPT         ] = _("Input labels");
+      m_styleNames[TS_OTHER_PROMPT        ] = _("Maxima question labels");
+      m_styleNames[TS_LABEL               ] = _("Output labels");
+      m_styleNames[TS_USERLABEL           ] = _("User-defined labels");
+      m_styleNames[TS_HIGHLIGHT           ] = _("Highlight (box)");
+      m_styleNames[TS_WARNING             ] = _("Maxima warnings");
+      m_styleNames[TS_ERROR               ] = _("Maxima errors");
+      m_styleNames[TS_ASCIIMATHS          ] = _("ASCII maths");
+      m_styleNames[TS_TEXT                ] = _("Standard Text");
+      m_styleNames[TS_HEADING6            ] = _("Heading 6");
+      m_styleNames[TS_HEADING5            ] = _("Heading 5");
+      m_styleNames[TS_SUBSUBSECTION       ] = _("Subsubsection cell (Heading 4)");
+      m_styleNames[TS_SUBSECTION          ] = _("Subsection cell (Heading 3)");
+      m_styleNames[TS_SECTION             ] = _("Section cell (Heading 2)");
+      m_styleNames[TS_TITLE               ] = _("Title cell (Heading 1)");
+      m_styleNames[TS_TEXT_BACKGROUND     ] = _("Text cell background");
+      m_styleNames[TS_DOCUMENT_BACKGROUND ] = _("Document background");
+      m_styleNames[TS_CELL_BRACKET        ] = _("Inactive Cell bracket");
+      m_styleNames[TS_ACTIVE_CELL_BRACKET ] = _("Active cell bracket");
+      m_styleNames[TS_CURSOR              ] = _("Cursor color");
+      m_styleNames[TS_SELECTION           ] = _("Selection color");
+      m_styleNames[TS_EQUALSSELECTION     ] = _("Color of text equal to selection");
+      m_styleNames[TS_OUTDATED            ] = _("Color of Outdated cells");
+      m_styleNames[TS_CODE_VARIABLE       ] = _("Code highlighting: Variables");
+      m_styleNames[TS_CODE_FUNCTION       ] = _("Code highlighting: Functions");
+      m_styleNames[TS_CODE_COMMENT        ] = _("Code highlighting: Comments");
+      m_styleNames[TS_CODE_NUMBER         ] = _("Code highlighting: Numbers");
+      m_styleNames[TS_CODE_STRING         ] = _("Code highlighting: Strings");
+      m_styleNames[TS_CODE_OPERATOR       ] = _("Code highlighting: Operators");
+      m_styleNames[TS_CODE_LISP           ] = _("Code highlighting: Lisp");
+      m_styleNames[TS_CODE_ENDOFLINE      ] = _("Code highlighting: End of line markers");
+      m_styleNames[TS_MATH                ] = _("Math Default");
+    }
   if(m_codeStyles.empty())
     {
       m_codeStyles.push_back(TS_CODE_VARIABLE);
@@ -1538,7 +1581,7 @@ void Configuration::WriteStyles(const wxString &file) {
     config = wxConfig::Get();
   else
     config = new wxFileConfig(wxT("wxMaxima"), wxEmptyString, file);
-
+  
   WriteStyles(config);
   if (file != wxEmptyString) {
     config->Flush();
@@ -1546,53 +1589,12 @@ void Configuration::WriteStyles(const wxString &file) {
   }
 }
 const wxString &Configuration::GetStyleName(TextStyle style) const {
-  static const wxString *names[NUMBEROFSTYLES] = {
-    &_("Code Default"),
-    &_("Output: Variables"),
-    &_("Output: Numbers"),
-    &_("Output: Function names"),
-    &_("Output: Special constants"),
-    &_("Output: Greek Constants"),
-    &_("Output: Strings"),
-    &_("Maxima input"),
-    &_("Input labels"),
-    &_("Maxima question labels"),
-    &_("Output labels"),
-    &_("User-defined labels"),
-    &_("Highlight (box)"),
-    &_("Maxima warnings"),
-    &_("Maxima errors"),
-    &_("ASCII maths"),
-    &_("Text cell"),
-    &_("Heading 6"),
-    &_("Heading 5"),
-    &_("Subsubsection cell (Heading 4)"),
-    &_("Subsection cell (Heading 3)"),
-    &_("Section cell (Heading 2)"),
-    &_("Title cell (Heading 1)"),
-    &_("Text cell background"),
-    &_("Document background"),
-    &_("Inactive Cell bracket"),
-    &_("Active cell bracket"),
-    &_("Cursor color"),
-    &_("Selection color"),
-    &_("Color of text equal to selection"),
-    &_("Color of Outdated cells"),
-    &_("Code highlighting: Variables"),
-    &_("Code highlighting: Functions"),
-    &_("Code highlighting: Comments"),
-    &_("Code highlighting: Numbers"),
-    &_("Code highlighting: Strings"),
-    &_("Code highlighting: Operators"),
-    &_("Code highlighting: Lisp"),
-    &_("Code highlighting: End of line markers"),
-    &_("Math Default"),
-  };
   if (style >= 0 && style < NUMBEROFSTYLES)
-    return *names[style];
-
-  return wxm::emptyString;
+    return m_styleNames[style];
+  else
+    return wxm::emptyString;
 }
 
 wxString Configuration::m_maximaLocation_override;
 wxString Configuration::m_configfileLocation_override;
+std::unordered_map<TextStyle, wxString> Configuration::m_styleNames;

@@ -1941,24 +1941,8 @@ wxWindow *ConfigDialogue::CreateClipboardPanel() {
   return panel;
 }
 
-TextStyle ConfigDialogue::StyleForListIndex(int index) {
-  if (index == 0)
-    return TS_CODE_DEFAULT;
-  if (index == 1)
-    return TS_MATH;
-  return TextStyle(index - 1);
-}
-
-int ConfigDialogue::StyleListIndexForStyle(TextStyle style) {
-  if (style == TS_CODE_DEFAULT)
-    return 0;
-  if (style == TS_MATH)
-    return 1;
-  return style + 1;
-}
-
 TextStyle ConfigDialogue::GetSelectedStyle() const {
-  return StyleForListIndex(m_styleFor->GetSelection());
+  return static_cast<TextStyle>(m_styleFor->GetSelection());
 }
 
 wxWindow *ConfigDialogue::CreateStylePanel() {
@@ -1992,9 +1976,8 @@ wxWindow *ConfigDialogue::CreateStylePanel() {
   wxBoxSizer *vbox_sizer = new wxBoxSizer(wxVERTICAL);
 
   wxArrayString m_styleFor_choices;
-  for (int i = 0; i < NUMBEROFSTYLES; i++) {
-    auto style = StyleForListIndex(i);
-    m_styleFor_choices.Add(m_configuration->GetStyleName(style));
+  for (int style = 0; style < NUMBEROFSTYLES; style++) {
+    m_styleFor_choices.Add(m_configuration->GetStyleName(static_cast<TextStyle>(style)));
   }
   m_styleFor = new wxListBox(stylesSizer->GetStaticBox(), listbox_styleFor,
                              wxDefaultPosition,
@@ -2045,7 +2028,7 @@ wxWindow *ConfigDialogue::CreateStylePanel() {
   config->Read(wxT("StyleToEdit"), &styleToEditNum);
   if (styleToEditNum >= TextStyle::NUMBEROFSTYLES || styleToEditNum < 0)
     styleToEditNum = 0;
-  m_styleFor->SetSelection(StyleListIndexForStyle(TextStyle(styleToEditNum)));
+  m_styleFor->SetSelection(styleToEditNum);
   wxCommandEvent dummy;
   OnChangeStyle(dummy);
   vsizer->Add(stylesSizer, wxSizerFlags().Expand().Border(

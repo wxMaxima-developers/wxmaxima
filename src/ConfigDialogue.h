@@ -401,10 +401,6 @@ protected:
   //! A "export the configuration" dialog
   void LoadSave(wxCommandEvent &event);
 
-  //! Map the style list index to a style
-  static TextStyle StyleForListIndex(int index);
-  //! Map the style to the style list index
-  static int StyleListIndexForStyle(TextStyle style);
   //! Get the style currently selected in the m_styleFor control
   TextStyle GetSelectedStyle() const;
 

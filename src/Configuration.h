@@ -179,6 +179,7 @@ public:
   static wxString m_configfileLocation_override;
 
   using EscCodeContainer = std::unordered_map<wxString, wxString, wxStringHash>;
+  static std::unordered_map<TextStyle, wxString> m_styleNames;
   using EscCodeIterator = EscCodeContainer::const_iterator;
 
   //! Retrieve a symbol for the escape code typed after the Escape key.
