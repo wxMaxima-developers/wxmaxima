@@ -2324,17 +2324,15 @@ void ConfigDialogue::OnChangeStyle(wxCommandEvent &WXUNUSED(event)) {
   bool canChangeFontName    =   !m_configuration->GetStyle(st)->CantChangeFontName();
   bool canChangeFontVariant =   !m_configuration->GetStyle(st)->CantChangeFontVariant();
   
-  // MAGIC NUMBERS:
-  // the positions of TEXT and TITLE style in the list.
   m_getStyleFont->Enable(canChangeFontName);
   
   // Text styles with adjustable bold/italic/underline
-  m_boldCB->Enable(canChangeFontVariant);
-  m_italicCB->Enable(canChangeFontVariant);
-  m_underlinedCB->Enable(canChangeFontVariant);
   m_boldCB->SetValue(m_configuration->GetStyle(st)->IsBold());
   m_italicCB->SetValue(m_configuration->GetStyle(st)->IsItalic());
   m_underlinedCB->SetValue(m_configuration->GetStyle(st)->IsUnderlined());
+  m_boldCB->Enable(canChangeFontVariant);
+  m_italicCB->Enable(canChangeFontVariant);
+  m_underlinedCB->Enable(canChangeFontVariant);
   
   UpdateExample();
 }
