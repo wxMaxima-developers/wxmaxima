@@ -53,11 +53,11 @@ Configuration::Configuration(wxDC *dc, InitOpt options) : m_dc(dc) {
   if(m_styleNames.empty())
     {
       m_styleNames[TS_CODE_DEFAULT        ] = _("Code Default"); 
-      m_styleNames[TS_VARIABLE            ] = _("Output: Variables");
+      m_styleNames[TS_VARIABLE            ] = _("Output: Variable names");
       m_styleNames[TS_NUMBER              ] = _("Output: Numbers and Digits");
       m_styleNames[TS_FUNCTION            ] = _("Output: Function names");
-      m_styleNames[TS_SPECIAL_CONSTANT    ] = _("Output: Special constants");
-      m_styleNames[TS_GREEK_CONSTANT      ] = _("Output: Greek Constants");
+      m_styleNames[TS_SPECIAL_CONSTANT    ] = _("Output: Special constants (%e,%i)");
+      m_styleNames[TS_GREEK_CONSTANT      ] = _("Output: Latin names as greek symbols");
       m_styleNames[TS_STRING              ] = _("Output: Strings");
       m_styleNames[TS_INPUT               ] = _("Maxima input");
       m_styleNames[TS_MAIN_PROMPT         ] = _("Input labels");

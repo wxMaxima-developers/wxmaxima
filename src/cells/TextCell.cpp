@@ -500,24 +500,13 @@ void TextCell::Draw(wxPoint point) {
   }
 }
 
-// TODO: KeepPercent should cause a separate font style to be set
 std::shared_ptr<wxFont> TextCell::GetFont(AFontSize fontsize) {
   auto const style = m_configuration->GetStyle(GetTextStyle());
 
   auto fontCache = style->GetFontCache();
-  bool isItalic = style->IsItalic(); 
-  // Mark special variables that are printed as ordinary letters as being
-  // special.
-  if(GetTextStyle() == TS_VARIABLE)
-    {
-      if ((!m_configuration->CheckKeepPercent()) &&
-	  ((m_text == wxT("%e")) || (m_text == wxT("%i"))))
-	isItalic = !isItalic;
-    }
-
-  
   wxASSERT(m_fontSize_Scaled.IsValid());
-  return fontCache->GetFont(fontsize.Get(), isItalic, style->IsBold(), style->IsUnderlined());
+  return fontCache->GetFont(fontsize.Get(), style->IsItalic(), style->IsBold(),
+			    style->IsUnderlined());
 }
 
 void TextCell::SetFont(AFontSize fontsize) {
