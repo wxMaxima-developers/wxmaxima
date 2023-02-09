@@ -77,8 +77,8 @@ Configuration::Configuration(wxDC *dc, InitOpt options) : m_dc(dc) {
       m_styleNames[TS_TITLE               ] = _("Title cell (Heading 1)");
       m_styleNames[TS_TEXT_BACKGROUND     ] = _("Text cell background");
       m_styleNames[TS_DOCUMENT_BACKGROUND ] = _("Document background");
-      m_styleNames[TS_CELL_BRACKET        ] = _("Inactive Cell bracket");
-      m_styleNames[TS_ACTIVE_CELL_BRACKET ] = _("Active cell bracket");
+      m_styleNames[TS_CELL_BRACKET        ] = _("Cell bracket fill, Inactive");
+      m_styleNames[TS_ACTIVE_CELL_BRACKET ] = _("Cell bracket fill, Active");
       m_styleNames[TS_CURSOR              ] = _("Cursor color");
       m_styleNames[TS_SELECTION           ] = _("Selection color");
       m_styleNames[TS_EQUALSSELECTION     ] = _("Color of text equal to selection");
