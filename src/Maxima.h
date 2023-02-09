@@ -29,6 +29,7 @@
  * Declares the interface to the Maxima process.
  */
 
+#include <wx/defs.h>
 #include <wx/buffer.h>
 #include <wx/event.h>
 #include <wx/sckstrm.h>
