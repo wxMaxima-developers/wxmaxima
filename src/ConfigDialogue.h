@@ -37,6 +37,7 @@ extern unsigned char view_refresh_svg_gz[];
 #include <wx/image.h>
 #include <wx/grid.h>
 #include <wx/hashmap.h>
+#include <wx/clrpicker.h>
 #include <memory>
 #include <wx/propdlg.h>
 #include <wx/generic/propdlg.h>
@@ -93,11 +94,8 @@ public:
     svg = 3
   };
 
-  /*! Called if the color of an item has been changed
-
-    called from class ColorPanel
-  */
-  void OnChangeColor();
+  /*! Called if the color of an item has been changed */
+  void OnChangeColor(wxColourPickerEvent& event);
 
   /*! Stores the settings from the configuration dialog.
 
@@ -163,30 +161,6 @@ private:
 
     //! The text style of this example
     Style m_style;
-  };
-
-  /*! A rectangle showing the color of an item
-
-    If the color contains transparency the rectangle is checkered accordingly.
-  */
-  class ColorPanel : public wxPanel
-  {
-  public:
-    ColorPanel(ConfigDialogue *conf, wxWindow *parent,
-               int id, wxPoint pos, wxSize size, long style);
-
-    void OnPaint(wxPaintEvent &WXUNUSED(event));
-
-    void OnClick(wxMouseEvent& WXUNUSED(event));
-
-    void SetColor(wxColor color)
-      {
-        m_color = color;
-        Refresh();
-      };
-  private:
-    ConfigDialogue *m_configDialogue;
-    wxColor m_color;
   };
 
 
@@ -346,7 +320,7 @@ protected:
   wxButton *m_getStyleFont;
   wxListBox *m_styleFor;
   //! An example rectangle with the font color
-  ColorPanel *m_styleColor;
+  wxColourPickerCtrl *m_styleColor;
   wxCheckBox *m_boldCB;
   wxCheckBox *m_italicCB;
   wxCheckBox *m_underlinedCB;

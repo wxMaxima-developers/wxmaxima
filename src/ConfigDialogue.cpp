@@ -1990,10 +1990,13 @@ wxWindow *ConfigDialogue::CreateStylePanel() {
   m_getStyleFont = new wxButton(stylesSizer->GetStaticBox(), style_font_family,
                                 _("Choose font"), wxDefaultPosition,
                                 wxSize(350 * GetContentScaleFactor(), -1));
-  m_styleColor = new ColorPanel(this, stylesSizer->GetStaticBox(), color_id,
+  m_styleColor = new wxColourPickerCtrl(stylesSizer->GetStaticBox(), wxID_ANY, *wxBLACK,
                                 wxDefaultPosition,
-                                wxSize(350 * GetContentScaleFactor(), 30),
-                                wxSUNKEN_BORDER | wxFULL_REPAINT_ON_RESIZE);
+					wxSize(350 * GetContentScaleFactor(), -1 /*30 * GetContentScaleFactor()*/),
+                                wxCLRP_USE_TEXTCTRL | wxCLRP_SHOW_LABEL);
+  m_styleColor-> Connect(wxEVT_COLOURPICKER_CHANGED,
+			 wxColourPickerEventHandler(ConfigDialogue::OnChangeColor), NULL, this);
+
   m_boldCB =
     new wxCheckBox(stylesSizer->GetStaticBox(), checkbox_bold, _("Bold"));
   m_italicCB =
@@ -2308,10 +2311,9 @@ void ConfigDialogue::OnChangeFontFamily(wxCommandEvent &WXUNUSED(event)) {
   UpdateExample();
 }
 
-void ConfigDialogue::OnChangeColor() {
+void ConfigDialogue::OnChangeColor(wxColourPickerEvent& event) {
   TextStyle const st = GetSelectedStyle();
-  wxColour col =
-    wxGetColourFromUser(this, m_configuration->GetStyle(st)->GetColor());
+  wxColour col = event.GetColour();
   if (col.IsOk())
     m_configuration->GetWritableStyle(st)->SetColor(col);
   UpdateExample();
@@ -2319,7 +2321,6 @@ void ConfigDialogue::OnChangeColor() {
 
 void ConfigDialogue::OnChangeStyle(wxCommandEvent &WXUNUSED(event)) {
   auto const st = GetSelectedStyle();
-  m_styleColor->SetColor(m_configuration->GetStyle(st)->GetColor());
   
   bool canChangeFontName    =   !m_configuration->GetStyle(st)->CantChangeFontName();
   bool canChangeFontVariant =   !m_configuration->GetStyle(st)->CantChangeFontVariant();
@@ -2469,7 +2470,7 @@ void ConfigDialogue::UpdateExample() {
   auto style = m_configuration->GetStyle(st);
   m_getStyleFont->SetLabel(style->GetFont().GetNativeFontInfoDesc());
 
-  m_styleColor->SetColor(style->GetColor());
+  m_styleColor->SetColour(style->GetColor());
 
   m_examplePanel->SetStyle(*style);
 
@@ -2507,64 +2508,6 @@ void ConfigDialogue::LoadSave(wxCommandEvent &event) {
   }
 }
 
-ConfigDialogue::ColorPanel::ColorPanel(ConfigDialogue *conf, wxWindow *parent,
-                                       int id, wxPoint pos, wxSize size,
-                                       long style)
-  : wxPanel(parent, id, pos, size, style), m_color(0, 0, 0) {
-  m_configDialogue = conf;
-  SetBackgroundColour(m_color);
-  SetBackgroundStyle(wxBG_STYLE_PAINT);
-  Connect(wxEVT_LEFT_UP,
-          wxMouseEventHandler(ConfigDialogue::ColorPanel::OnClick), NULL, this);
-  Connect(wxEVT_PAINT, wxPaintEventHandler(ConfigDialogue::ColorPanel::OnPaint),
-          NULL, this);
-}
-
-void ConfigDialogue::ColorPanel::OnClick(wxMouseEvent &WXUNUSED(event)) {
-  m_configDialogue->OnChangeColor();
-}
-
-void ConfigDialogue::ColorPanel::OnPaint(wxPaintEvent &WXUNUSED(event)) {
-  wxAutoBufferedPaintDC dc(this);
-  if (!m_color.IsOk())
-    m_color = *wxWHITE;
-
-  wxColor backgroundColor(m_color.Red() * m_color.Alpha() / wxALPHA_OPAQUE,
-                          m_color.Green() * m_color.Alpha() / wxALPHA_OPAQUE,
-                          m_color.Blue() * m_color.Alpha() / wxALPHA_OPAQUE);
-  dc.SetPen(
-	    *(wxThePenList->FindOrCreatePen(backgroundColor, 1, wxPENSTYLE_SOLID)));
-  dc.SetBrush(*(wxTheBrushList->FindOrCreateBrush(backgroundColor)));
-  int width;
-  int height;
-  GetClientSize(&width, &height);
-
-  int columns = (width + 11) / 12;
-  int rows = (height + 11) / 12;
-
-  for (int x = 0; x < columns; x++)
-    for (int y = 0; y < rows; y++) {
-      if (((x + y) & 1) == 1)
-        dc.DrawRectangle(x * 12, y * 12, 12, 12);
-    }
-
-  wxColor foregroundColor(m_color.Red() * m_color.Alpha() / wxALPHA_OPAQUE +
-			  (wxALPHA_OPAQUE - m_color.Alpha()),
-                          m_color.Green() * m_color.Alpha() / wxALPHA_OPAQUE +
-			  (wxALPHA_OPAQUE - m_color.Alpha()),
-                          m_color.Blue() * m_color.Alpha() / wxALPHA_OPAQUE +
-			  (wxALPHA_OPAQUE - m_color.Alpha()));
-  dc.SetPen(
-	    *(wxThePenList->FindOrCreatePen(foregroundColor, 1, wxPENSTYLE_SOLID)));
-  dc.SetBrush(*(wxTheBrushList->FindOrCreateBrush(foregroundColor)));
-  GetClientSize(&width, &height);
-
-  for (int x = 0; x < columns; x++)
-    for (int y = 0; y < rows; y++) {
-      if (((x + y) & 1) == 0)
-        dc.DrawRectangle(x * 12, y * 12, 12, 12);
-    }
-}
 
 void ConfigDialogue::ExamplePanel::OnPaint(wxPaintEvent &WXUNUSED(event)) {
   wxString example(_("Example text"));
