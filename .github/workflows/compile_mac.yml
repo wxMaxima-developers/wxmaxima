@@ -127,7 +127,7 @@ jobs:
         run: |
              export PATH=$PATH:/usr/local/opt/bin
              set -e
-             port install gettext ninja pandoc wxWidgets-3.2 maxima gnuplot
+             port install gettext ninja pandoc wxWidgets-3.2 maxima gnuplot pkgconfig
              set +e
       - name: Configure wxMaxima
         run: |
