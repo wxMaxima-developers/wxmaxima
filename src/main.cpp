@@ -161,15 +161,6 @@ int WINAPI WinMain(HINSTANCE hI, HINSTANCE hPrevI, LPSTR lpCmdLine,
 #endif
 
 bool MyApp::OnInit() {
-  {
-#if wxCHECK_VERSION(3, 1, 6)
-    wxLogNull suppressErrorMessages;
-    wxUILocale::UseDefault();
-#else
-      m_locale = std::unique_ptr<wxLocale>(new wxLocale);
-      m_locale->Init(lang);
-#endif
-  }
   wxLogStderr noErrorDialogs;
   m_translations = std::unique_ptr<wxTranslations>(new wxTranslations());
   wxTranslations::Set(m_translations.get());
@@ -218,6 +209,26 @@ bool MyApp::OnInit() {
 #endif
 #endif
 
+    wxLanguage lang;
+    {
+      long lng = wxLocale::GetSystemLanguage();
+      wxConfig(wxT("wxMaxima"), wxEmptyString, m_configFileName)
+	.Read(wxT("language"), &lng);
+      if (lng == wxLANGUAGE_UNKNOWN)
+	lng = wxLANGUAGE_DEFAULT;
+      lang = static_cast<wxLanguage>(lng);
+    }
+
+    {
+#if wxCHECK_VERSION(3, 1, 6)
+      wxLogNull suppressErrorMessages;
+      wxUILocale::UseDefault();
+#else
+      m_locale = std::unique_ptr<wxLocale>(new wxLocale);
+      m_locale->Init(lang);
+#endif
+    }
+    
     // Create the temporary directory if it doesn't exist
     // On some platforms, the temporary directory has an application-specific
     // path element prepended doesn't exist by default in the temporary
@@ -232,15 +243,6 @@ bool MyApp::OnInit() {
 							 wxT("/wxwin"));
     wxFileTranslationsLoader::AddCatalogLookupPathPrefix(wxT("/usr/share/locale"));
     wxFileTranslationsLoader::AddCatalogLookupPathPrefix(wxT("/usr/local/share/locale"));
-    wxLanguage lang;
-    {
-      long lng = wxLocale::GetSystemLanguage();
-      wxConfig(wxT("wxMaxima"), wxEmptyString, m_configFileName)
-	.Read(wxT("language"), &lng);
-      if (lng == wxLANGUAGE_UNKNOWN)
-	lng = wxLANGUAGE_DEFAULT;
-      lang = static_cast<wxLanguage>(lng);
-    }
     
     // Do we reckon we improve something if we set maxima's language, as well?
     if ((wxLocale::IsAvailable(lang)) && (lang != wxLANGUAGE_DEFAULT)) {
