@@ -212,11 +212,11 @@ bool MyApp::OnInit() {
     if (!wxDirExists(tempDir))
       wxMkdir(tempDir, 0x700);
 
-    m_locale.AddCatalogLookupPathPrefix(m_dirstruct.LocaleDir());
-    m_locale.AddCatalogLookupPathPrefix(m_dirstruct.LocaleDir() +
-                                        wxT("/wxwin"));
-    m_locale.AddCatalogLookupPathPrefix(wxT("/usr/share/locale"));
-    m_locale.AddCatalogLookupPathPrefix(wxT("/usr/local/share/locale"));
+    wxFileTranslationsLoader::AddCatalogLookupPathPrefix(m_dirstruct.LocaleDir());
+    wxFileTranslationsLoader::AddCatalogLookupPathPrefix(m_dirstruct.LocaleDir() +
+							 wxT("/wxwin"));
+    wxFileTranslationsLoader::AddCatalogLookupPathPrefix(wxT("/usr/share/locale"));
+    wxFileTranslationsLoader::AddCatalogLookupPathPrefix(wxT("/usr/local/share/locale"));
     long lang = wxLocale::GetSystemLanguage();
     wxConfig(wxT("wxMaxima"), wxEmptyString, m_configFileName)
       .Read(wxT("language"), &lang);
@@ -228,15 +228,15 @@ bool MyApp::OnInit() {
 	m_locale.Init(lang);
     }
     
-    // Do we reckong we improve something if we set maxima's language, as well?
+    // Do we reckon we improve something if we set maxima's language, as well?
     if ((wxLocale::IsAvailable(lang)) && (lang != wxLANGUAGE_DEFAULT)) {
       // Set maxima's language, as well.
-      wxString localeName = m_locale.GetCanonicalName();
+      wxString localeName = wxLocale().GetCanonicalName();
       if (lang != wxLocale::GetSystemLanguage()) {
-        if (m_locale.GetSystemEncoding() == wxFONTENCODING_UTF16)
+        if (wxLocale().GetSystemEncoding() == wxFONTENCODING_UTF16)
           localeName += wxT(".UTF-16");
         else {
-          if (m_locale.GetSystemEncoding() == wxFONTENCODING_UTF32)
+          if (wxLocale().GetSystemEncoding() == wxFONTENCODING_UTF32)
             localeName += wxT(".UTF-32");
           else {
             localeName += wxT(".UTF-8");
@@ -245,13 +245,14 @@ bool MyApp::OnInit() {
         wxSetEnv(wxT("LANG"), localeName);
       }
     }
-    m_locale.AddCatalog(wxT("wxMaxima"));
+    wxTranslations::Get()->AddCatalog(wxT("wxMaxima"));
     /* wxWidgets introduced version suffixes to gettext catalogs, see:
      * https://github.com/wxWidgets/wxWidgets/commit/ded4da5 */
     /* so try to load a catalog with this suffix */
-    m_locale.AddCatalog(
-			"wxstd-" wxSTRINGIZE(wxMAJOR_VERSION) "." wxSTRINGIZE(wxMINOR_VERSION));
-    m_locale.AddCatalog(wxT("wxstd"));
+    wxTranslations::Get()->AddCatalog("wxstd-"
+				      wxSTRINGIZE(wxMAJOR_VERSION) "."
+				      wxSTRINGIZE(wxMINOR_VERSION));
+    wxTranslations::Get()->AddCatalog(wxT("wxstd"));
   }
 
   bool exitAfterEval = false;
