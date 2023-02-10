@@ -1205,6 +1205,9 @@ wxString TextCell::GetXMLFlags() const {
   if (GetStyle() == TS_ASCIIMATHS)
     flags += wxT(" type=\"ASCII-Art\"");
 
+    if (GetStyle() == TS_OPERATOR)
+    flags += wxT(" type=\"Operator\"");
+
   if (GetStyle() == TS_ERROR)
     flags += wxT(" type=\"error\"");
 
