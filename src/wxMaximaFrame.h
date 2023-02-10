@@ -62,7 +62,7 @@
 class wxMaximaFrame : public wxFrame
 {
 public:
-  wxMaximaFrame(wxWindow *parent, int id, wxLocale *locale, const wxString &title,
+  wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
                 const wxPoint &pos = wxDefaultPosition,
                 const wxSize &size = wxDefaultSize,
                 long style = wxDEFAULT_FRAME_STYLE | wxSYSTEM_MENU | wxCAPTION, bool becomeLogTarget = true);
@@ -214,10 +214,7 @@ protected:
   */
   void DockAllSidebars(wxCommandEvent &ev);
 
-  wxString wxMaximaManualLocation();
-protected:
-  wxLocale *m_locale;
-  
+  wxString wxMaximaManualLocation();  
 private:
   //! How many bytes did maxima send us when we updated the statusbar?
   long m_bytesFromMaxima_last;

@@ -467,6 +467,9 @@ void Configuration::InitStyles() {
   wxFont monospace(10, wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL,
                    wxFONTWEIGHT_NORMAL);
   m_styles[TS_ASCIIMATHS].SetFontName(monospace.GetFaceName());
+  m_styles[TS_ASCIIMATHS].FontSize(12.0);
+  m_styles[TS_TEXT].SetFontName(monospace.GetFaceName());
+  m_styles[TS_TEXT].FontSize(12.0);
   m_styles[TS_CODE_DEFAULT].Bold().Italic().FontSize(12);
   m_styles[TS_MATH].FontSize(12.0);
 
@@ -848,7 +851,7 @@ void Configuration::MakeStylesConsistent()
 
   for(auto style : GetMathStylesList())
     {
-      if(style != TS_ASCIIMATHS)
+      if((style != TS_ASCIIMATHS) && (style != TS_TEXT))
 	{
 	  m_styles[style].SetFontSize(GetStyle(TS_MATH)->GetFontSize());
 	  m_styles[style].SetFamily(GetStyle(TS_MATH)->GetFamily());
@@ -1084,19 +1087,7 @@ bool Configuration::CharsExistInFont(const wxFont &font,
 
 wxString Configuration::GetFontName(TextStyle const ts) const {
   wxString retval;
-
-  if (ts == TS_TITLE || ts == TS_SUBSECTION || ts == TS_SUBSUBSECTION ||
-      ts == TS_HEADING5 || ts == TS_HEADING6 || ts == TS_SECTION ||
-      ts == TS_TEXT || ts == TS_ASCIIMATHS)
-    retval = m_styles[ts].GetFontName();
-
-  else if (ts == TS_NUMBER || ts == TS_VARIABLE || ts == TS_FUNCTION ||
-           ts == TS_SPECIAL_CONSTANT || ts == TS_STRING)
-    retval = m_styles[TS_MATH].GetFontName();
-
-  if (retval.empty())
-    retval = m_styles[TS_CODE_DEFAULT].GetFontName();
-
+  retval = m_styles[ts].GetFontName();
   return retval;
 }
 

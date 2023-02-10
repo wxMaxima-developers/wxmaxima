@@ -53,7 +53,7 @@
 #include <functional>
 #include <unordered_map>
 
-wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, wxLocale *locale,
+wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, 
                              const wxString &title, const wxPoint &pos,
                              const wxSize &size, long style,
                              bool becomeLogTarget)
@@ -62,10 +62,6 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, wxLocale *locale,
 	      wxAUI_MGR_TRANSPARENT_HINT | wxAUI_MGR_HINT_FADE),
     m_recentDocuments(wxT("document")), m_unsavedDocuments(wxT("unsaved")),
     m_recentPackages(wxT("packages")) {
-  m_locale = locale;
-  //  wxLogMessage(_("Selected language: ") + m_locale->GetCanonicalName() +
-  //               " (" + wxString::Format("%i", m_locale->GetLanguage()) +
-  //               ")");
 
   m_bytesFromMaxima = 0;
   m_drawDimensions_last = -1;
@@ -147,8 +143,6 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, wxLocale *locale,
   wxLogMessage(_("wxWidgets is using GTK 2"));
 #endif
 #endif
-
-  wxLogMessage(_("Translations are read from %s."), Dirstructure::Get()->LocaleDir());
 
   if (Configuration::m_configfileLocation_override != wxEmptyString)
     wxLogMessage(_("Reading the config from %s."),
@@ -2131,9 +2125,9 @@ void wxMaximaFrame::SetupMenu() {
 wxString wxMaximaFrame::wxMaximaManualLocation() {
   wxString helpfile;
   wxString lang_long =
-    m_locale->GetCanonicalName(); /* two- or five-letter string in xx or xx_YY
-				     format. Examples: "en", "en_GB", "en_US"
-				     or "fr_FR" */
+    wxLocale::Get()->GetCanonicalName(); /* two- or five-letter string in xx or xx_YY
+					    format. Examples: "en", "en_GB", "en_US"
+					    or "fr_FR" */
   wxString lang_short = lang_long.Left(lang_long.Find('_'));
 
   helpfile =
