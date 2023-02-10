@@ -1,4 +1,6 @@
 # Current
+
+# 23.02.0
  * Fix XML generation of wxmx documents (#1556)
  * A faster font cache
  * Faster communication between wxMaxima and maxima
