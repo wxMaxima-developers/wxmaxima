@@ -57,6 +57,23 @@
     <content_attribute id="social-info">mild</content_attribute>
   </content_rating>
   <releases>
+<release version="23.02.0" date="2023-02-10T22:27:00Z">
+  <description>
+    <p>
+      Styles reorganization.
+      <ul>
+	<li> Fix XML generation of wxmx documents (#1556)</li>
+	<li> A faster font cache</li>
+	<li> Faster communication between wxMaxima and maxima</li>
+	<li> Dropped the dependency on an [internal] ww898</li>
+	<li> More consistent text style handling</li>
+	<li> A try to improve locale management on the Mac platform</li>
+	<li> A separate style for operators (#1002)</li>
+	<li> A nicer ChangeLog</li>
+      </ul>
+    </p>
+  </description>
+</release>
 <release version="22.12.0" date="2022-12-29T13:04:00Z">
   <description>
     <p>
