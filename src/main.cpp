@@ -165,6 +165,8 @@ bool MyApp::OnInit() {
   wxLogNull suppressErrorMessages;
   wxUILocale::UseDefault();
 #endif
+  m_translations = std::unique_ptr<wxTranslations>(new wxTranslations());
+  wxTranslations::Set(m_translations.get());
   // connect to wxMaxima. We therefore delay all output to the log until there
   // is a window that can display it on the GUI instead.
   wxLogBuffer noStdErr;
