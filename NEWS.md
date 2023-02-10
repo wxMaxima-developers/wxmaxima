@@ -4,6 +4,7 @@
  * Faster communication between wxMaxima and maxima
  * Dropped the dependency on an [internal] ww898
  * More consistent text style handling
+ * A try to improve locale management on the Mac platform
 
 # 22.12.0
  * A cleaner status bar with double-click actions
