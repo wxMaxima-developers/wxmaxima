@@ -115,6 +115,12 @@ jobs:
     runs-on: macos-latest
 
     steps:
+      - name: Cache MacPorts
+        id: cache-macports
+        uses: actions/cache@v2
+        with:
+          path: /opt/local/
+          key: ${{ runner.os }}-macports-${{ hashFiles('macos_build.txt') }}
       - name: Checkout wxMaxima from git
         uses: actions/checkout@v3
         with:
@@ -127,11 +133,14 @@ jobs:
         run: |
              export PATH=$PATH:/usr/local/opt/bin
              set -e
+             port selfupdate
              port install gettext ninja pandoc wxWidgets-3.2 maxima gnuplot pkgconfig
              set +e
       - name: Configure wxMaxima
         run: |
              mkdir ../build-wxm
+             export CXXFLAGS=-I/opt/local/include
+             export LDFLAGS=-I/opt/local/lib
              cmake -S . -B ../build-wxm -G Ninja -DCMAKE_INSTALL_PREFIX=. -DCMAKE_UNITY_BUILD_BATCH_SIZE=8 -DWXM_UNIT_TESTS=YES -DCMAKE_UNITY_BUILD=YES
 
       - name: Check Info.plist
@@ -147,3 +156,6 @@ jobs:
         run: |
              cd ../build-wxm
              cpack -G DragNDrop
+      - name: Cleanup
+        run: |
+             sudp port -f uninstall inactive
