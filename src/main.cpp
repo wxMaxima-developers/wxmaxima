@@ -34,6 +34,10 @@
 #include <wx/fs_zip.h>
 #include <wx/image.h>
 #include <wx/intl.h>
+#include <wx/translation.h>
+#if wxCHECK_VERSION(3, 1, 6)
+#include <wx/uilocale.h>
+#endif
 #include <wx/sysopt.h>
 #include <wx/tipdlg.h>
 #include <wx/utils.h>
@@ -157,7 +161,10 @@ int WINAPI WinMain(HINSTANCE hI, HINSTANCE hPrevI, LPSTR lpCmdLine,
 #endif
 
 bool MyApp::OnInit() {
-  // On the Mac if any of these commands outputs text to stderr maxima fails to
+#if wxCHECK_VERSION(3, 1, 6)
+  wxLogNull suppressErrorMessages;
+  wxUILocale::UseDefault();
+#endif
   // connect to wxMaxima. We therefore delay all output to the log until there
   // is a window that can display it on the GUI instead.
   wxLogBuffer noStdErr;
@@ -217,19 +224,27 @@ bool MyApp::OnInit() {
 							 wxT("/wxwin"));
     wxFileTranslationsLoader::AddCatalogLookupPathPrefix(wxT("/usr/share/locale"));
     wxFileTranslationsLoader::AddCatalogLookupPathPrefix(wxT("/usr/local/share/locale"));
-    long lang = wxLocale::GetSystemLanguage();
-    wxConfig(wxT("wxMaxima"), wxEmptyString, m_configFileName)
-      .Read(wxT("language"), &lang);
-    if (lang == wxLANGUAGE_UNKNOWN)
-      lang = wxLANGUAGE_DEFAULT;
-
+    wxLanguage lang;
+    {
+      long lng = wxLocale::GetSystemLanguage();
+      wxConfig(wxT("wxMaxima"), wxEmptyString, m_configFileName)
+	.Read(wxT("language"), &lng);
+      if (lng == wxLANGUAGE_UNKNOWN)
+	lng = wxLANGUAGE_DEFAULT;
+      lang = static_cast<wxLanguage>(lng);
+    }
     {
       wxLogNull suppressErrorMessages;
-	m_locale.Init(lang);
+#if wxCHECK_VERSION(3, 1, 6)
+#else
+      m_locale = std::unique_ptr<wxLocale>(new wxLocale);
+      m_locale->Init(lang);
+#endif
     }
     
     // Do we reckon we improve something if we set maxima's language, as well?
     if ((wxLocale::IsAvailable(lang)) && (lang != wxLANGUAGE_DEFAULT)) {
+      wxTranslations::Get()->SetLanguage(lang);
       // Set maxima's language, as well.
       wxString localeName = wxLocale().GetCanonicalName();
       if (lang != wxLocale::GetSystemLanguage()) {
