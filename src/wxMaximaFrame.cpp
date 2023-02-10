@@ -2125,9 +2125,9 @@ void wxMaximaFrame::SetupMenu() {
 wxString wxMaximaFrame::wxMaximaManualLocation() {
   wxString helpfile;
   wxString lang_long =
-    wxLocale::Get()->GetCanonicalName(); /* two- or five-letter string in xx or xx_YY
-					    format. Examples: "en", "en_GB", "en_US"
-					    or "fr_FR" */
+    wxLocale().GetCanonicalName(); /* two- or five-letter string in xx or xx_YY
+				      format. Examples: "en", "en_GB", "en_US"
+				      or "fr_FR" */
   wxString lang_short = lang_long.Left(lang_long.Find('_'));
 
   helpfile =

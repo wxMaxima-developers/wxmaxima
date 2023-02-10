@@ -451,7 +451,7 @@ void MyApp::NewWindow(const wxString &file, bool evalOnStartup,
   if (numberOfWindows > 1)
     title = wxString::Format(_("wxMaxima %d"), numberOfWindows);
 
-  wxMaxima *frame = new wxMaxima(NULL, -1, &m_locale, title, file);
+  wxMaxima *frame = new wxMaxima(NULL, -1, title, file);
   if (wxmData) {
     // Unzip the .wxm file
     wxMemoryInputStream istream(wxmData, wxmLen);
