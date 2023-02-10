@@ -161,10 +161,16 @@ int WINAPI WinMain(HINSTANCE hI, HINSTANCE hPrevI, LPSTR lpCmdLine,
 #endif
 
 bool MyApp::OnInit() {
+  {
 #if wxCHECK_VERSION(3, 1, 6)
-  wxLogNull suppressErrorMessages;
-  wxUILocale::UseDefault();
+    wxLogNull suppressErrorMessages;
+    wxUILocale::UseDefault();
+#else
+      m_locale = std::unique_ptr<wxLocale>(new wxLocale);
+      m_locale->Init(lang);
 #endif
+  }
+  wxLogStderr noErrorDialogs;
   m_translations = std::unique_ptr<wxTranslations>(new wxTranslations());
   wxTranslations::Set(m_translations.get());
   // connect to wxMaxima. We therefore delay all output to the log until there
@@ -234,14 +240,6 @@ bool MyApp::OnInit() {
       if (lng == wxLANGUAGE_UNKNOWN)
 	lng = wxLANGUAGE_DEFAULT;
       lang = static_cast<wxLanguage>(lng);
-    }
-    {
-      wxLogNull suppressErrorMessages;
-#if wxCHECK_VERSION(3, 1, 6)
-#else
-      m_locale = std::unique_ptr<wxLocale>(new wxLocale);
-      m_locale->Init(lang);
-#endif
     }
     
     // Do we reckon we improve something if we set maxima's language, as well?
@@ -453,6 +451,7 @@ bool MyApp::OnInit() {
 int MyApp::OnExit() { return 0; }
 
 int MyApp::OnRun() {
+  wxLogStderr noErrorDialogs;
   wxApp::OnRun();
   return 0;
 }
