@@ -22,14 +22,12 @@
 #define CATCH_CONFIG_RUNNER
 #include "test_ImgCell.h"
 #include "FontAttribs.cpp"
-#include "FontCache.cpp"
 #include "Image.cpp"
 #include "ImgCell.cpp"
 #include "ImgCellBase.cpp"
 #include "StringUtils.cpp"
 #include "TestStubs.cpp"
 #include "TextCell.cpp"
-#include "TextStyle.cpp"
 #include "VisiblyInvalidCell.cpp"
 #include <catch2/catch.hpp>
 
@@ -68,14 +66,15 @@ SCENARIO("RTF Output represents the image") {
   }
 }
 
-// If we don't provide our own main when compiling on MinGW
-// we currently get an error message that WinMain@16 is missing
-// (https://github.com/catchorg/Catch2/issues/1287)
-int main(int argc, char *argv[])
+class MyApp : public wxApp
 {
+public:
   wxEntryStart(argc, argv);
   wxImage::AddHandler(new wxPNGHandler);
   auto rc = Catch::Session().run(argc, argv);
   wxEntryCleanup();
   return rc;
-}
+};
+
+IMPLEMENT_APP(MyApp);
+wxDECLARE_APP(MyApp);

@@ -133,21 +133,10 @@ public:
   };
 
 private:
-  friend struct std::hash<AFontSize>;
   friend bool EqualToWithin(AFontSize, AFontSize, float);
   value_type m_uSize = {};
   constexpr static value_type ToUSize(float size);
 };
-
-// The "namespace std" ships around a g++ bug, as described in
-// https://stackoverflow.com/questions/25594644/warning-specialization-of-template-in-different-namespace/25594681#25594681
-namespace std
-{
-  template <> struct hash<AFontSize> final
-  {
-    size_t operator()(AFontSize name) const { return std::hash<int16_t>()(name.m_uSize); }
-  };
-}
 
 constexpr double operator*(double factor, AFontSize size)   { return factor * size.Get(); }
 constexpr double operator*(AFontSize size, double factor)   { return size.Get() * factor; }

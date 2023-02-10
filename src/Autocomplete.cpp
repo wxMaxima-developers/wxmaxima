@@ -186,9 +186,8 @@ void AutoComplete::BuiltinSymbols_BackgroundTask() {
   /// Load private symbol list (do something different on Windows).
   wxString privateList;
   privateList = Dirstructure::Get()->UserAutocompleteFile();
-  wxLogMessage(wxString::Format(
-				_("Trying to load a list of autocompletable symbols from file %s"),
-				privateList.utf8_str()));
+  wxLogMessage(_("Trying to load a list of autocompletable symbols from file %s"),
+	       privateList.utf8_str());
   if (wxFileExists(privateList)) {
     wxTextFile priv(privateList);
 
@@ -211,9 +210,9 @@ void AutoComplete::BuiltinSymbols_BackgroundTask() {
         else if (unt.Replace(&line, ""))
           m_wordList[unit].Add(line);
         else
-          wxLogMessage(privateList +
-		       wxString::Format(_(": Can't interpret line: %s")),
-                       line.utf8_str());
+          wxLogMessage(_("%s: Can't interpret line: %s"),
+	    privateList.mb_str(),
+	    line.mb_str());
       }
     }
     priv.Close();
@@ -251,9 +250,8 @@ void AutoComplete::LoadableFiles_BackgroundTask(wxString sharedir) {
     else {
       wxFileName shareDir(sharedir + "/");
       shareDir.MakeAbsolute();
-      wxLogMessage(wxString::Format(
-				    _("Autocompletion: Scanning %s recursively for loadable lisp files."),
-				    shareDir.GetFullPath().utf8_str()));
+      wxLogMessage(_("Autocompletion: Scanning %s recursively for loadable lisp files."),
+				    shareDir.GetFullPath().utf8_str());
       wxDir maximadir(shareDir.GetFullPath());
       if (maximadir.IsOpened())
         maximadir.Traverse(maximaLispIterator); // todo
@@ -262,13 +260,12 @@ void AutoComplete::LoadableFiles_BackgroundTask(wxString sharedir) {
     wxFileName userDir(Dirstructure::Get()->UserConfDir() + "/");
     userDir.MakeAbsolute();
     wxDir maximauserfilesdir(userDir.GetFullPath());
-    wxLogMessage(wxString::Format(
-				  _("Autocompletion: Scanning %s for loadable lisp files."),
-				  userDir.GetFullPath().utf8_str()));
+    wxLogMessage(_("Autocompletion: Scanning %s for loadable lisp files."),
+		 userDir.GetFullPath().utf8_str());
     if (maximauserfilesdir.IsOpened())
       maximauserfilesdir.Traverse(userLispIterator);
     int num = m_builtInLoadFiles.GetCount();
-    wxLogMessage(wxString::Format(_("Found %i loadable files."), num));
+    wxLogMessage(_("Found %i loadable files."), num);
   }
 
   // Prepare a list of all built-in demos of maxima.
@@ -279,15 +276,14 @@ void AutoComplete::LoadableFiles_BackgroundTask(wxString sharedir) {
     demoDir.MakeAbsolute();
     demoDir.RemoveLastDir();
     GetDemoFiles_includingSubdirs maximaLispIterator(m_builtInDemoFiles);
-    wxLogMessage(wxString::Format(
-				  _("Autocompletion: Scanning %s for loadable demo files."),
-				  demoDir.GetFullPath().utf8_str()));
+    wxLogMessage(_("Autocompletion: Scanning %s for loadable demo files."),
+		 demoDir.GetFullPath().utf8_str());
 
     wxDir maximadir(demoDir.GetFullPath());
     if (maximadir.IsOpened())
       maximadir.Traverse(maximaLispIterator);
     int num = m_builtInDemoFiles.GetCount();
-    wxLogMessage(wxString::Format(_("Found %i demo files."), num));
+    wxLogMessage(_("Found %i demo files."), num);
   }
   m_builtInLoadFiles.Sort();
   m_builtInDemoFiles.Sort();

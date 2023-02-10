@@ -113,7 +113,7 @@ set(SOURCE_FILES
     FindReplaceDialog.cpp
     FindReplacePane.cpp
     FontAttribs.cpp
-    FontCache.cpp
+    FontVariantCache.cpp
     HelpBrowser.cpp
     History.cpp
     Image.cpp
@@ -133,7 +133,6 @@ set(SOURCE_FILES
     RegexCtrl.cpp
     ResolutionChooser.cpp
     StatusBar.cpp
-    StreamUtils.cpp
     StringUtils.cpp
     SvgBitmap.cpp
     SvgPanel.cpp

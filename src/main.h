@@ -87,7 +87,8 @@ public:
   virtual void MacOpenFile(const wxString &file);
 
 private:
-  wxLocale m_locale;
+  std::unique_ptr<wxLocale> m_locale;
+  std::unique_ptr<wxTranslations> m_translations;
   //! The name of the config file. Empty = Use the default one.
   wxString m_configFileName;
   Dirstructure m_dirstruct;

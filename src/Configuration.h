@@ -109,11 +109,7 @@ public:
   enum drawMode
   {
     ascii,              //!< Use ascii characters only
-    assembled_unicode_fallbackfont,  //!< Unicode, fallbackfont 1
-    assembled_unicode,  //!< Unicode, current font
-    assembled_unicode_fallbackfont2,  //!< Unicode, fallbackfont 2
-    handdrawn,           //!< A  parenthesis sign that was created using draw commands
-    unknown
+    handdrawn           //!< A  parenthesis sign that was created using draw commands
   };
 
   enum InitOpt
@@ -162,6 +158,7 @@ public:
     {
       m_dc = &dc;
       m_antialiassingDC = NULL;
+      ResetLastFontUsed();
     }
   void UnsetContext() {m_dc = NULL;}
 
@@ -174,7 +171,7 @@ public:
     {m_antialiassingDC = &antialiassingDC;}
 
   void UnsetAntialiassingDC()
-    {m_antialiassingDC = NULL;}
+    {m_antialiassingDC = NULL; ResetLastFontUsed();}
 
   ~Configuration();
 
@@ -182,6 +179,7 @@ public:
   static wxString m_configfileLocation_override;
 
   using EscCodeContainer = std::unordered_map<wxString, wxString, wxStringHash>;
+  static std::unordered_map<TextStyle, wxString> m_styleNames;
   using EscCodeIterator = EscCodeContainer::const_iterator;
 
   //! Retrieve a symbol for the escape code typed after the Escape key.
@@ -261,11 +259,11 @@ public:
         return m_dc;
     }
   
-  AFontName GetFontName(TextStyle ts = TS_DEFAULT) const;
+  wxString GetFontName(TextStyle ts = TS_CODE_DEFAULT) const;
 
   // cppcheck-suppress functionStatic
   // cppcheck-suppress functionConst
-  AFontName GetSymbolFontName() const;
+  wxString GetSymbolFontName() const;
 
   wxFontWeight IsBold(long st) const;
 
@@ -447,12 +445,7 @@ public:
   //! Do we want to indent all maths?
   bool IndentMaths() const {return m_indentMaths;}
   void IndentMaths(bool indent){m_indentMaths = indent;}
-  AFontSize GetFontSize(TextStyle st) const
-    {
-      if (st == TS_TEXT || st == TS_HEADING5 || st == TS_HEADING6 || st == TS_SUBSUBSECTION || st == TS_SUBSECTION || st == TS_SECTION || st == TS_TITLE)
-        return m_styles[st].GetFontSize();
-      return {};
-    }
+  AFontSize GetFontSize(TextStyle st) const { return m_styles[st].GetFontSize(); }
 
   const wxString &GetStyleName(TextStyle textStyle) const;
 
@@ -470,15 +463,9 @@ public:
   void WriteStyles(const wxString &file = {});
   void WriteStyles(wxConfigBase *config);
   void WriteSettings(const wxString &file = {});
-  
+  void MakeStylesConsistent();
   void Outdated(bool outdated)
     { m_outdated = outdated; }
-
-  bool CheckTeXFonts() const
-    { return m_TeXFonts; }
-
-  void CheckTeXFonts(bool check)
-    { m_TeXFonts = check; }
 
   bool CheckKeepPercent() const
     { return m_keepPercent; }
@@ -486,19 +473,19 @@ public:
   void SetKeepPercent(bool keepPercent)
     { m_keepPercent = keepPercent; }
 
-  AFontName GetTeXCMRI() const
+  wxString GetTeXCMRI() const
     { return m_fontCMRI; }
 
-  AFontName GetTeXCMSY() const
+  wxString GetTeXCMSY() const
     { return m_fontCMSY; }
 
-  AFontName GetTeXCMEX() const
+  wxString GetTeXCMEX() const
     { return m_fontCMEX; }
 
-  AFontName GetTeXCMMI() const
+  wxString GetTeXCMMI() const
     { return m_fontCMMI; }
 
-  AFontName GetTeXCMTI() const
+  wxString GetTeXCMTI() const
     { return m_fontCMTI; }
 
   bool ShowCodeCells() const
@@ -619,12 +606,6 @@ public:
     const wxString m_text;
     const wxColor  m_color;
   };
-
-  using TextList = std::unordered_map<Style, std::vector<TextsnippetToDraw>>;
-  void AddTextSnippetToDraw(const wxPoint &pos, const Style &style,
-                            const wxString &text, const wxColor color);
-  void ClearTextSnippetsToDraw(){m_textSnippetsToDraw.clear();}
-  TextList GetTextSnippetsToDraw() const {return m_textSnippetsToDraw;}
 
   FileToSave PopFileToSave();
   void PushFileToSave(const wxString &filename, const wxMemoryBuffer &data)
@@ -822,19 +803,23 @@ public:
     { m_useUnicodeMaths = useunicodemaths; }
   bool UseUnicodeMaths() const {return m_useUnicodeMaths;}
   
-  drawMode GetParenthesisDrawMode();
-
   WX_DECLARE_STRING_HASH_MAP(bool, StringBoolHash);
   StringBoolHash m_hideMarkerForThisMessage;
 
-  /*! Get the resolved text Style for a given text style identifier.
+  /*! Get the text Style for a given text style identifier.
 
     \param textStyle The text style to resolve the style for.
-    \param fontSize Only relevant for math cells: Super- and subscripts can have different
-    font styles than the rest.
   */
-  Style GetStyle(TextStyle textStyle, AFontSize fontSize) const;
-  
+  const Style *GetStyle(TextStyle textStyle) const { return &m_styles[textStyle]; }
+  /*! Get the text Style for a given text style identifier.
+
+    Theoretically GetStyle and GetWritableStyle wouldn't collide if they had the
+    same name. But I am afraid if all developers know how to deal with the situation
+    that performance degrades if a const is missing while the rest works fine.
+    \param textStyle The text style to resolve the style for.
+  */
+  Style *GetWritableStyle(TextStyle textStyle) { return &m_styles[textStyle]; }
+
   //! Get the worksheet this configuration storage is valid for
   wxWindow *GetWorkSheet() const {return m_workSheet;}
   //! Set the worksheet this configuration storage is valid for
@@ -867,7 +852,7 @@ public:
   void HTMLequationFormat(htmlExportFormat HTMLequationFormat)
     {m_htmlEquationFormat = HTMLequationFormat;}
 
-  AFontSize GetDefaultFontSize() const        { return m_styles[TS_DEFAULT].GetFontSize(); }
+  AFontSize GetDefaultFontSize() const        { return m_styles[TS_CODE_DEFAULT].GetFontSize(); }
   AFontSize GetMathFontSize() const           { return m_styles[TS_MATH].GetFontSize(); }
 
   //! Get the worksheet this configuration storage is valid for
@@ -947,8 +932,46 @@ public:
   bool FontRendersChar(wxChar ch, const wxFont &font = *wxNORMAL_FONT);
   wxTextCtrl *LastActiveTextCtrl() const { return m_lastActiveTextCtrl; }
   void LastActiveTextCtrl(wxTextCtrl *last);
+
+  /*! Clear the memory which font this DC was last used with.
+
+    Used for avoiding setting a font if the Right Font already is in use.
+   */
+  void ResetLastFontUsed(){m_lastFontUsed = NULL;}
+  /*! A pointer to the last font we used on this DC. Needs not to be a valid wxFont!
+
+    Used for avoiding setting a font if the Right Font already is in use.
+   */
+  wxFont *GetLastFontUsed(){return m_lastFontUsed;}
+  /*! Set a pointer to the last font we used on this DC.
+
+    Used for avoiding setting a font if the Right Font already is in use.
+   */
+  void SetLastFontUsed(wxFont *font){m_lastFontUsed = font;}
+  /*! Set a pointer to the last font we used on this DC.
+
+    Used for avoiding setting a font if the Right Font already is in use.
+   */
+  void SetLastFontUsed(std::shared_ptr <wxFont> font){m_lastFontUsed = font.get();}
+  wxFont *m_lastFontUsed = NULL;
+
+  //! Which styles affect how code is displayed?
+  std::vector<TextStyle> GetCodeStylesList(){return m_codeStyles;}
+  //! Which styles affect how math output is displayed?
+  std::vector<TextStyle> GetMathStylesList(){return m_2dMathStyles;}
+  //! Which styles affect only colors?
+  std::vector<TextStyle> GetColorOnlyStylesList(){return m_colorOnlyStyles;}
+  bool StyleAffectsCode(TextStyle style);
+  bool StyleAffectsMathOut(TextStyle style);
+  bool StyleAffectsColorOnly(TextStyle style);
+
 private:
-  TextList m_textSnippetsToDraw;
+  //! Which styles affect how code is displayed?
+  std::vector<TextStyle> m_codeStyles;
+  //! Which styles affect how math output is displayed?
+  std::vector<TextStyle> m_2dMathStyles;
+  //! Which styles affect only colors?
+  std::vector<TextStyle> m_colorOnlyStyles;
   std::list<FileToSave> m_filesToSave;
   WX_DECLARE_STRING_HASH_MAP(wxString, RenderablecharsHash);
   RenderablecharsHash m_renderableChars;
@@ -1056,10 +1079,9 @@ private:
   bool m_clipToDrawRegion = true;
   bool m_outdated;
   wxString m_maximaParameters;
-  bool m_TeXFonts;
   bool m_keepPercent;
   bool m_restartOnReEvaluation;
-  AFontName m_fontCMRI, m_fontCMSY, m_fontCMEX, m_fontCMMI, m_fontCMTI;
+  wxString m_fontCMRI, m_fontCMSY, m_fontCMEX, m_fontCMMI, m_fontCMTI;
   long m_clientWidth;
   long m_clientHeight;
   bool m_printing;
@@ -1126,6 +1148,7 @@ private:
   wxString m_wxMathML_Filename;
   bool m_wxMathML_UseFile;
   wxTextCtrl *m_lastActiveTextCtrl = NULL;
+  wxFont *lastFontUsed = NULL;
 };
 
 //! Sets the configuration's "printing" flag until this class is left.

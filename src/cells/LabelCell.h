@@ -60,10 +60,6 @@ private:
   //! The user-defined label for this label cell.
   wxString m_userDefinedLabel;
 
-//** 2-byte objects (2 bytes)
-//**
-  AFontSize m_fontSize_scaledToFit = {};
-
 //** 1-byte objects (1 byte)
 //**
   Configuration::showLabels m_labelChoice_Last = {};

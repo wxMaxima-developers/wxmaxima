@@ -28,7 +28,6 @@
  */
 
 #include "TextStyle.h"
-#include "FontCache.h"
 #include <array>
 #include <list>
 #include <vector>
@@ -36,124 +35,6 @@
 #include <wx/log.h>
 #include <wx/thread.h>
 #include <wx/translation.h>
-
-/*! \brief Mixes two hashes together.
- *
- * Used to obtain hashes of composite data types, such as structures.
- */
-template <typename T> static size_t MixHash(size_t seed, const T &value) {
-  std::hash<T> const hasher;
-  seed ^= hasher(value) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
-  return seed;
-}
-
-//! Comparator for wxString*
-static bool operator<(const wxString *l, const wxString &r) { return *l < r; }
-
-bool Style::operator==(const Style &o) const
-{
-  return o.GetFontHash() == GetFontHash();
-}
-
-/*
- * Interner (internal)
- */
-
-/*! \brief An implementation of string interning arena.
- */
-template <typename T> class Interner {
-  struct Slice {
-    size_t nextIndex = 0;
-    std::array<T, 128> data;
-    T *GetNext() {
-      if (nextIndex >= data.size())
-        return nullptr;
-      return &(data[nextIndex++]);
-    }
-  };
-
-  std::list<Slice> m_storage;
-  std::vector<const T *> m_index;
-
-public:
-  bool IsInterned(const T *value) const {
-    for (auto const &slice : m_storage) {
-      auto const &data = slice.data;
-      auto const nextIndex = slice.nextIndex;
-      if (nextIndex) {
-        auto *const first = &(data[0]);
-        auto *const last = &(data[nextIndex - 1]);
-        if (value >= first && value <= last) {
-          wxLogDebug("IsInterned %p", value);
-          return true;
-        }
-      }
-    }
-    return false;
-  }
-  const T *Intern(const T *value) {
-    if (!value)
-      return nullptr;
-    return &Intern(*value);
-  }
-  const T *Intern(const T &value) {
-    // pointer equality: is the value within one of the slices?
-    if (IsInterned(&value))
-      return &value;
-    // value equality: is the value equal to one already interned?
-    auto indexPos = std::lower_bound(m_index.begin(), m_index.end(), value);
-    if (indexPos != m_index.end() && **indexPos == value)
-      return *indexPos;
-    // none of the above: we must intern
-    if (m_storage.empty())
-      m_storage.emplace_back();
-    T *loc = m_storage.back().GetNext();
-    if (!loc) {
-      m_storage.emplace_back();
-      loc = m_storage.back().GetNext();
-    }
-    *loc = value;
-    indexPos = m_index.insert(indexPos, loc);
-    wxASSERT(*indexPos && *indexPos == loc);
-    return *indexPos;
-  }
-};
-
-/*! \brief Holds the instance of the font name interner, and
- * synchronizes access to it.
- *
- * Use an an object of this class to gain exclusive access to
- * the interner. This is needed for thread safety.
- */
-class InternerUser {
-  static wxMutex mutex;
-
-public:
-  InternerUser() { mutex.Lock(); }
-  ~InternerUser() { mutex.Unlock(); }
-
-public:
-  static Interner<wxString> &Get();
-  InternerUser(const InternerUser &) = delete;
-  void operator=(const InternerUser &) = delete;
-};
-
-wxMutex InternerUser::mutex;
-
-Interner<wxString> &InternerUser::Get() {
-  static Interner<wxString> interner;
-  return interner;
-}
-
-const wxString *AFontName::Intern(const wxString &str) {
-  InternerUser user;
-  return user.Get().Intern(str);
-}
-
-const wxString *AFontName::GetInternedEmpty() {
-  static const wxString *internedEmpty = AFontName::Intern(wxEmptyString);
-  return internedEmpty;
-}
 
 /*
  * Style
@@ -168,11 +49,30 @@ constexpr bool Style::Default_Strikethrough;
 constexpr AFontSize Style::Default_FontSize;
 constexpr uint32_t Style::Default_ColorRGB;
 
-Style::Style(const Style &o) : m(o.m) {}
+Style::Style()
+{
+  SetFontName(wxNORMAL_FONT->GetFaceName());
+  wxASSERT(m.fontCache != NULL);
+}
+
+Style::Style(AFontSize fontSize)
+{
+  SetFontSize(fontSize);
+  SetFontName(wxNORMAL_FONT->GetFaceName());
+  wxASSERT(m.fontCache != NULL);
+}
+
+Style::Style(const Style &o) : m(o.m) {
+  wxASSERT(m.fontCache != NULL);
+}
 
 Style &Style::operator=(const Style &o) {
   if (&o != this)
-    m = o.m;
+    {
+      m = o.m;
+      SetFontName(o.GetFontName());
+    }
+  wxASSERT(m.fontCache != NULL);
 
   return *this;
 }
@@ -189,9 +89,12 @@ bool Style::IsUnderlined() const { return m.underlined; }
 
 bool Style::IsStrikethrough() const { return m.strikethrough; }
 
-AFontName Style::GetFontName() const { return m.fontName; }
-
-const wxString &Style::GetNameStr() const { return m.fontName.GetAsString(); }
+const wxString &Style::GetFontName() const {
+  if(m.fontCache)
+    return m.fontCache->GetFaceName();
+  else
+    return m_emptyString;
+}
 
 //! The size of this style's font, asserted to be valid.
 AFontSize Style::GetFontSize() const {
@@ -207,7 +110,6 @@ did_change Style::SetFamily(wxFontFamily family) {
   if (m.family == family)
     return false;
   m.family = family;
-  m.fontHash = 0;
   return true;
 }
 
@@ -215,7 +117,6 @@ did_change Style::SetEncoding(wxFontEncoding encoding) {
   if (m.encoding == encoding)
     return false;
   m.encoding = encoding;
-  m.fontHash = 0;
   return true;
 }
 
@@ -223,7 +124,6 @@ did_change Style::SetFontStyle(wxFontStyle style) {
   if (m.fontStyle == style)
     return false;
   m.fontStyle = style;
-  m.fontHash = 0;
   return true;
 }
 
@@ -231,7 +131,6 @@ did_change Style::SetWeight(wxFontWeight weight) {
   if (m.weight == weight)
     return false;
   m.weight = weight;
-  m.fontHash = 0;
   return true;
 }
 
@@ -255,7 +154,6 @@ did_change Style::SetUnderlined(bool underlined) {
   if (m.underlined == underlined)
     return false;
   m.underlined = underlined;
-  m.fontHash = 0;
   return true;
 }
 
@@ -263,15 +161,25 @@ did_change Style::SetStrikethrough(bool strikethrough) {
   if (m.strikethrough == strikethrough)
     return false;
   m.strikethrough = strikethrough;
-  m.fontHash = 0;
   return true;
 }
 
-did_change Style::SetFontName(AFontName fontName) {
-  if (m.fontName == fontName)
-    return false;
-  m.fontName = fontName;
-  m.fontHash = 0;
+did_change Style::SetFontName(wxString fontName) {
+  if ((m.fontCache != NULL) && (GetFontName() == fontName))
+    {
+      return false;
+    }
+  auto fontCache = m_fontCaches.find(fontName);
+  if(fontCache == m_fontCaches.end())
+    {
+      auto newfontCache = std::shared_ptr<FontVariantCache>(new FontVariantCache(fontName));
+      m_fontCaches[fontName] = newfontCache;
+      m.fontCache = newfontCache;
+    }
+  else
+    m.fontCache = fontCache->second;
+  wxASSERT(m.fontCache != NULL);
+
   return true;
 }
 
@@ -279,7 +187,6 @@ did_change Style::SetFontSize(AFontSize fontSize) {
   if (m.fontSize == fontSize)
     return false;
   m.fontSize = fontSize;
-  m.fontHash = 0;
   return true;
 }
 
@@ -298,24 +205,12 @@ did_change Style::SetColor(wxSystemColour sysColour) {
   return SetColor(wxSystemSettings::GetColour(sysColour));
 }
 
-did_change Style::ResolveToFont() {
-  Style fromFont = HasFontCached() ? Style().FromFontNoCache(*m.font)
-    : FontCache::GetAStyleFont(*this).first;
-  return SetFontFrom(fromFont);
-}
-
-did_change Style::SetFromFont(const wxFont &font) {
-  return SetFontFrom(Style::FromFont(font));
-}
-
 did_change Style::SetFontFrom(const Style &o) {
   bool changed = SetFontFaceAndSizeFrom(o) |       //-V792
     SetFontStyle(o.GetFontStyle()) |  //-V792
     SetWeight(o.GetWeight()) |        //-V792
     SetUnderlined(o.IsUnderlined()) | //-V792
     SetStrikethrough(o.IsStrikethrough());
-  if (GetFontHash() == o.GetFontHash())
-    m.font = o.m.font;
   return changed;
 }
 
@@ -329,58 +224,9 @@ did_change Style::SetFontFaceAndSizeFrom(const Style &o) {
   return SetFontFaceFrom(o) | SetFontSize(o.m.fontSize); //-V792
 }
 
-size_t Style::GetFontHash() const {
-  size_t hash_ = m.fontHash;
-  if (!hash_) {
-    hash_ = MixHash(hash_, m.family);
-    hash_ = MixHash(hash_, m.encoding);
-    hash_ = MixHash(hash_, m.weight);
-    hash_ = MixHash(hash_, m.fontStyle);
-    hash_ = MixHash(hash_, (m.underlined << 1) | (m.strikethrough << 3) |
-		    (m.isNotOK << 5));
-    hash_ = MixHash(hash_, m.fontName);
-    hash_ = MixHash(hash_, m.fontSize);
-    if (!hash_)
-      hash_++;
-    m.fontHash = hash_;
-    m.font = 0;
-  }
-  return hash_;
-}
+bool Style::IsFontOk() { return GetFont().IsOk(); }
 
-bool Style::IsFontEqualTo(const Style &o_) const {
-  const Data &o = o_.m;
-  if (m.font && m.font == o.font)
-    return true;
-  return (!m.fontHash || !o.fontHash || m.fontHash == o.fontHash) &&
-    m.fontSize == o.fontSize && m.family == o.family &&
-    m.encoding == o.encoding && m.weight == o.weight &&
-    m.fontStyle == o.fontStyle && m.fontName == o.fontName &&
-    m.underlined == o.underlined && m.strikethrough == o.strikethrough &&
-    m.isNotOK == o.isNotOK;
-}
-
-bool Style::IsStyleEqualTo(const Style &o) const {
-  return this->IsFontEqualTo(o) && m.rgbColor == o.m.rgbColor;
-}
-
-const wxFont &Style::LookupFont() const {
-  GetFontHash();
-  auto &styleFont = FontCache::GetAStyleFont(*this);
-  m.font = &styleFont.second;
-  wxASSERT(m.font);
-  return *m.font;
-}
-
-bool Style::IsFontOk() const { return m.isNotOK ? false : GetFont().IsOk(); }
-
-Style &Style::FromFontNoCache(const wxFont &font) {
-  this->SetFromFontNoCache(font);
-  return *this;
-}
-
-void Style::SetFromFontNoCache(const wxFont &font) {
-  m.fontHash = 0;
+did_change Style::SetFromFont(const wxFont &font) {
   if (font.IsOk()) {
     m.encoding = font.GetEncoding();
     m.family = font.GetFamily();
@@ -388,11 +234,13 @@ void Style::SetFromFontNoCache(const wxFont &font) {
     m.underlined = font.GetUnderlined();
     m.strikethrough = font.GetStrikethrough();
     m.weight = font.GetWeight();
-    m.fontName = AFontName(font.GetFaceName());
     m.fontSize = GetFontSize(font);
-    GetFontHash();
+    SetFontName(wxString(font.GetFaceName()));
   } else
-    m.isNotOK = true;
+    {
+      SetFontName(wxNORMAL_FONT->GetFaceName());
+    }
+  return this;
 }
 
 AFontSize Style::GetFontSize(const wxFont &font) {
@@ -427,17 +275,6 @@ wxFontInfo Style::GetAsFontInfo() const {
     .Italic(IsItalic())
     .Bold(IsBold())
     .Light(IsLight());
-}
-
-AFontName Style::Default_FontName() {
-#if defined(__WXOSX_MAC__)
-  static auto fontName = AFontName::Monaco();
-#elif defined(__WINDOWS__)
-  static auto fontName = AFontName::Linux_Libertine();
-#else
-  static auto fontName = AFontName::Arial();
-#endif
-  return fontName;
 }
 
 const wxColor &Style::Default_Color() {
@@ -486,7 +323,9 @@ Style &Style::Read(wxConfigBase *config, const wxString &where) {
     SetFontSize(AFontSize(tmpLong));
   if (config->Read(wxString::Format(k_fontname, where), &tmpStr) &&
       !tmpStr.empty())
-    SetFontName(AFontName(tmpStr));
+    SetFontName(tmpStr);
+  else
+    SetFontName(wxNORMAL_FONT->GetFaceName());
 
   // Validation is deferred to the point of first use, etc.
   return *this;
@@ -498,7 +337,7 @@ void Style::Write(wxConfigBase *config, const wxString &where) const {
   config->Write(wxString::Format(k_italic, where), IsItalic());
   config->Write(wxString::Format(k_underlined, where), IsUnderlined());
   config->Write(wxString::Format(k_fontsize_float, where), GetFontSize().Get());
-  config->Write(wxString::Format(k_fontname, where), GetNameStr());
+  config->Write(wxString::Format(k_fontname, where), GetFontName());
 
   // We don't write the slant, light nor strikethrough attributes so as not to
   // grow the configuration compared to the previous releases. The slant and
@@ -516,56 +355,35 @@ void Style::Write(wxConfigBase *config, const wxString &where) const {
   optWrite(config, k_strikethrough, where, IsStrikethrough());
 }
 
-const Style &Style::FromFont(const wxFont &font) {
-  wxASSERT_MSG(&font != wxITALIC_FONT && &font != wxNORMAL_FONT &&
-	       &font != wxSMALL_FONT && &font != wxSWISS_FONT,
-               "Use Style::FromStockFont to get stock fonts!");
-
-  return FontCache::AddAFont(font);
+wxFont Style::GetFont() const {
+  return *(m.fontCache->GetFont(GetFontSize().Get(), IsItalic(), IsBold(), IsUnderlined()));
 }
 
 const Style &Style::FromStockFont(wxStockGDI::Item font) {
-  static const auto getStyleFor = [](const wxFont *font) {
-    auto style = FontCache::AddAFont(*font);
-    style.GetFontHash();
-    style.m.font = font; // Pre-cache the stock font in the style itself
-    return style;
-  };
-
+  static Style retval;
   switch (font) {
   case wxStockGDI::FONT_ITALIC: {
-    static Style italic = getStyleFor(wxITALIC_FONT);
-    return italic;
+    retval.SetFromFont(*wxITALIC_FONT);
+    return retval;
   }
   case wxStockGDI::FONT_NORMAL: {
-    static Style normal = getStyleFor(wxNORMAL_FONT);
-    return normal;
+    retval.SetFromFont(*wxNORMAL_FONT);
+    return retval;
   }
   case wxStockGDI::FONT_SMALL: {
-    static Style small_ = getStyleFor(wxSMALL_FONT);
-    return small_;
+    retval.SetFromFont(*wxSMALL_FONT);
+    return retval;
   }
   case wxStockGDI::FONT_SWISS: {
-    static Style swiss = getStyleFor(wxSWISS_FONT);
-    return swiss;
+    retval.SetFromFont(*wxSWISS_FONT);
+    return retval;
   }
   default: {
-    static Style defaultStyle;
-    return defaultStyle;
+    retval.SetFromFont(*wxNORMAL_FONT);
+    return retval;
   }
   }
 }
 
-wxString Style::GetDump() const {
-  return wxString::Format("%5.2fpt %c%c%c%c%c \"%s\" fam:%d enc:%d",
-                          GetFontSize().Get(), m.isNotOK ? '!' : ' ',
-                          IsBold()    ? 'B'
-                          : IsLight() ? 'L'
-			  : '-',
-                          IsItalic()  ? 'I'
-                          : IsSlant() ? 'S'
-			  : '-',
-                          IsUnderlined() ? 'U' : '-',
-                          IsStrikethrough() ? 'T' : '-', GetNameStr(),
-                          GetFamily(), GetEncoding());
-}
+Style::FontVariantCachesMap Style::m_fontCaches;
+wxString Style::m_emptyString = wxEmptyString;

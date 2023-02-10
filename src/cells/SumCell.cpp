@@ -322,7 +322,7 @@ wxString SumCell::ToXML() const {
   if (HasHardLineBreak())
     flags += wxT(" breakline=\"true\"");
 
-  return wxT("<sm type=\"") + flags + type + wxT("\"><r>") +
+  return wxT("<sm type=\"") + type + "\"" + flags + wxT("><r>") +
     m_under->ListToXML() + _T("</r><r>") + m_over->ListToXML() +
     _T("</r><r>") + Base()->ListToXML() + _T("</r></sm>");
 }

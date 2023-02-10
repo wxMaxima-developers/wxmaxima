@@ -67,7 +67,7 @@ OutCommon::~OutCommon() {
     SuppressErrorDialogs messageBlocker;
 
     if (!wxRemoveFile(m_tempFilename))
-      wxLogMessage(_("Cannot remove the file %s"), m_tempFilename.utf8_str());
+      wxLogMessage(_("Cannot remove the file %s"), m_tempFilename.mb_str());
   }
   *m_configuration = m_oldconfig;
   (*m_configuration)->FontChanged();

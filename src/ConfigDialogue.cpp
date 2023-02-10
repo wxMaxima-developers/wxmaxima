@@ -288,10 +288,6 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent, Configuration *cfg)
 
   Connect(wxEVT_CLOSE_WINDOW, wxCloseEventHandler(ConfigDialogue::OnClose),
           NULL, this);
-  Connect(button_defaultFont, wxEVT_BUTTON,
-          wxCommandEventHandler(ConfigDialogue::OnFontButton), NULL, this);
-  Connect(button_mathFont, wxEVT_BUTTON,
-          wxCommandEventHandler(ConfigDialogue::OnFontButton), NULL, this);
   Connect(listbox_styleFor, wxEVT_LISTBOX,
           wxCommandEventHandler(ConfigDialogue::OnChangeStyle), NULL, this);
   Connect(language_id, wxEVT_COMBOBOX,
@@ -466,9 +462,6 @@ void ConfigDialogue::SetCheckboxValues() {
 				  _("wxMaxima remembers the answers to maxima's questions. If this "
 				    "checkbox is set it automatically offers to enter the last answer to "
 				    "this question the user has input."));
-  m_getDefaultFont->SetToolTip(_("Font used for display in document."));
-  m_getMathFont->SetToolTip(
-			    _("Font used for displaying math characters in document."));
   m_changeAsterisk->SetToolTip(
 			       _("Use centered dot and Minus, not Star and Hyphen"));
   m_hidemultiplicationSign->SetToolTip(
@@ -598,8 +591,7 @@ void ConfigDialogue::SetCheckboxValues() {
   }
   m_symbolPaneAdditionalChars->SetValue(
 					configuration->SymbolPaneAdditionalChars());
-  m_getStyleFont->Enable(GetSelectedStyle() >= TS_ASCIIMATHS &&
-                         GetSelectedStyle() <= TS_TITLE);
+  m_getStyleFont->Enable(!configuration->GetStyle(GetSelectedStyle())->CantChangeFontName());
   m_showUserDefinedLabels->SetSelection(configuration->GetLabelChoice());
   unsigned int i = 0;
   // First set the language to "default".
@@ -655,8 +647,6 @@ void ConfigDialogue::SetCheckboxValues() {
   m_copyEMF->SetValue(m_configuration->CopyEMF());
 #endif
 
-  UpdateButton(TS_DEFAULT);
-  UpdateButton(TS_MATH);
   m_useUnicodeMaths->SetValue(m_configuration->UseUnicodeMaths());
 }
 
@@ -1951,37 +1941,8 @@ wxWindow *ConfigDialogue::CreateClipboardPanel() {
   return panel;
 }
 
-TextStyle ConfigDialogue::StyleForListIndex(int index) {
-  if (index == 0)
-    return TS_DEFAULT;
-  if (index == 1)
-    return TS_MATH;
-  return TextStyle(index - 1);
-}
-
-int ConfigDialogue::StyleListIndexForStyle(TextStyle style) {
-  if (style == TS_DEFAULT)
-    return 0;
-  if (style == TS_MATH)
-    return 1;
-  return style + 1;
-}
-
 TextStyle ConfigDialogue::GetSelectedStyle() const {
-  return StyleForListIndex(m_styleFor->GetSelection());
-}
-
-void ConfigDialogue::UpdateButton(TextStyle const st) {
-  Style const style = m_configuration->m_styles[st];
-  wxButton *fontButton = {};
-  if (st == TS_DEFAULT)
-    fontButton = m_getDefaultFont;
-  else if (st == TS_MATH)
-    fontButton = m_getMathFont;
-  if (fontButton)
-    fontButton->SetLabel(wxString::Format(wxT("%s (%g)"),
-                                          style.GetFontName().GetAsString(),
-                                          style.GetFontSize().Get()));
+  return static_cast<TextStyle>(m_styleFor->GetSelection());
 }
 
 wxWindow *ConfigDialogue::CreateStylePanel() {
@@ -1997,29 +1958,6 @@ wxWindow *ConfigDialogue::CreateStylePanel() {
   wxStaticBox *fonts = new wxStaticBox(panel, -1, _("Fonts"));
   wxStaticBoxSizer *fontsSizer = new wxStaticBoxSizer(fonts, wxVERTICAL);
   wxFlexGridSizer *grid_sizer_1 = new wxFlexGridSizer(4, 2, 2, 2);
-
-  auto *defaultFontLabel = new wxStaticText(fontsSizer->GetStaticBox(), -1,
-                                            _("Documentation+Code font:"));
-  grid_sizer_1->Add(defaultFontLabel,
-                    wxSizerFlags().Border(wxALL, 5 * GetContentScaleFactor()));
-  m_getDefaultFont = new wxButton(
-				  fontsSizer->GetStaticBox(), button_defaultFont, _("Choose font"),
-				  wxDefaultPosition, wxSize(250 * GetContentScaleFactor(), -1));
-  grid_sizer_1->Add(
-		    m_getDefaultFont,
-		    wxSizerFlags().Border(wxALL, 5 * GetContentScaleFactor()).Expand());
-
-  auto *mathFontLabel =
-    new wxStaticText(fontsSizer->GetStaticBox(), -1, _("Math font:"));
-  grid_sizer_1->Add(mathFontLabel,
-                    wxSizerFlags().Border(wxALL, 5 * GetContentScaleFactor()));
-  m_getMathFont = new wxButton(fontsSizer->GetStaticBox(), button_mathFont,
-                               _("Choose font"), wxDefaultPosition,
-                               wxSize(250 * GetContentScaleFactor(), -1));
-  grid_sizer_1->Add(
-		    m_getMathFont,
-		    wxSizerFlags().Border(wxALL, 5 * GetContentScaleFactor()).Expand());
-  grid_sizer_1->Add(10 * GetContentScaleFactor(), 10 * GetContentScaleFactor());
   m_useUnicodeMaths =
     new wxCheckBox(fontsSizer->GetStaticBox(), -1,
 		   _("Use unicode Math Symbols, if available"));
@@ -2028,8 +1966,7 @@ wxWindow *ConfigDialogue::CreateStylePanel() {
 		    wxSizerFlags().Border(wxUP | wxDOWN, 5 * GetContentScaleFactor()));
 
   fontsSizer->Add(grid_sizer_1, wxSizerFlags(1).Expand());
-  vsizer->Add(fontsSizer, wxSizerFlags().Expand().Border(
-							 wxALL, 5 * GetContentScaleFactor()));
+  vsizer->Add(fontsSizer, wxSizerFlags().Expand().Border(wxALL, 5 * GetContentScaleFactor()));
 
   // The styles box
   wxStaticBox *styles = new wxStaticBox(panel, -1, _("Styles"));
@@ -2039,9 +1976,8 @@ wxWindow *ConfigDialogue::CreateStylePanel() {
   wxBoxSizer *vbox_sizer = new wxBoxSizer(wxVERTICAL);
 
   wxArrayString m_styleFor_choices;
-  for (int i = 0; i < NUMBEROFSTYLES; i++) {
-    auto style = StyleForListIndex(i);
-    m_styleFor_choices.Add(m_configuration->GetStyleName(style));
+  for (int style = 0; style < NUMBEROFSTYLES; style++) {
+    m_styleFor_choices.Add(m_configuration->GetStyleName(static_cast<TextStyle>(style)));
   }
   m_styleFor = new wxListBox(stylesSizer->GetStaticBox(), listbox_styleFor,
                              wxDefaultPosition,
@@ -2053,11 +1989,14 @@ wxWindow *ConfigDialogue::CreateStylePanel() {
 
   m_getStyleFont = new wxButton(stylesSizer->GetStaticBox(), style_font_family,
                                 _("Choose font"), wxDefaultPosition,
-                                wxSize(150 * GetContentScaleFactor(), -1));
-  m_styleColor = new ColorPanel(this, stylesSizer->GetStaticBox(), color_id,
+                                wxSize(350 * GetContentScaleFactor(), -1));
+  m_styleColor = new wxColourPickerCtrl(stylesSizer->GetStaticBox(), wxID_ANY, *wxBLACK,
                                 wxDefaultPosition,
-                                wxSize(150 * GetContentScaleFactor(), 30),
-                                wxSUNKEN_BORDER | wxFULL_REPAINT_ON_RESIZE);
+					wxSize(350 * GetContentScaleFactor(), -1 /*30 * GetContentScaleFactor()*/),
+                                wxCLRP_USE_TEXTCTRL | wxCLRP_SHOW_LABEL);
+  m_styleColor-> Connect(wxEVT_COLOURPICKER_CHANGED,
+			 wxColourPickerEventHandler(ConfigDialogue::OnChangeColor), NULL, this);
+
   m_boldCB =
     new wxCheckBox(stylesSizer->GetStaticBox(), checkbox_bold, _("Bold"));
   m_italicCB =
@@ -2092,7 +2031,7 @@ wxWindow *ConfigDialogue::CreateStylePanel() {
   config->Read(wxT("StyleToEdit"), &styleToEditNum);
   if (styleToEditNum >= TextStyle::NUMBEROFSTYLES || styleToEditNum < 0)
     styleToEditNum = 0;
-  m_styleFor->SetSelection(StyleListIndexForStyle(TextStyle(styleToEditNum)));
+  m_styleFor->SetSelection(styleToEditNum);
   wxCommandEvent dummy;
   OnChangeStyle(dummy);
   vsizer->Add(stylesSizer, wxSizerFlags().Expand().Border(
@@ -2276,10 +2215,9 @@ void ConfigDialogue::WriteSettings() {
     startupFile.MakeAbsolute();
     wxString startupDir = startupFile.GetPath();
     if (!wxDirExists(startupDir)) {
-      wxLogMessage(
-		   wxString::Format(_("The directory %s with maxima's startup file "
+      wxLogMessage(_("The directory %s with maxima's startup file "
 				      "doesn't exist. Trying to create it..."),
-				    startupDir.utf8_str()));
+				    startupDir.mb_str());
       wxMkdir(startupDir);
     }
 
@@ -2355,77 +2293,48 @@ void ConfigDialogue::OnHelpBrowserBrowse(wxCommandEvent &WXUNUSED(event)) {
     m_helpBrowserUserLocation->SetValue(file);
 }
 
-void ConfigDialogue::OnFontButton(wxCommandEvent &event) {
-  TextStyle const prevSt = GetSelectedStyle();
-  TextStyle curSt = {};
-  if (event.GetId() == button_defaultFont)
-    curSt = TS_DEFAULT;
-  else if (event.GetId() == button_mathFont)
-    curSt = TS_MATH;
-
-  m_styleFor->SetSelection(StyleListIndexForStyle(curSt));
-  OnChangeFontFamily(event);
-  m_styleFor->SetSelection(StyleListIndexForStyle(prevSt));
-}
-
 void ConfigDialogue::OnChangeFontFamily(wxCommandEvent &WXUNUSED(event)) {
   TextStyle const st = GetSelectedStyle();
-  Style style = m_configuration->m_styles[st];
-  style.ResolveToFont();
-
-  if (!style.IsFontOk())
-    style = Style::FromStockFont(wxStockGDI::FONT_NORMAL);
+  auto style = m_configuration->GetWritableStyle(st);
 
   auto userFont =
-    wxGetFontFromUser(this, style.GetFont(),
+    wxGetFontFromUser(this, style->GetFont(),
 		      wxString::Format(_("Choose the %s Font"),
 				       m_configuration->GetStyleName(st)));
   if (!userFont.IsOk())
     return;
 
-  style.SetFromFont(userFont);
-  m_configuration->m_styles[st].FontName(style.GetFontName());
-  m_configuration->m_styles[st].FontSize(style.GetFontSize());
+  style->SetFromFont(userFont);
+  m_configuration->GetWritableStyle(st)->SetFontName(style->GetFontName());
+  m_configuration->GetWritableStyle(st)->FontSize(style->GetFontSize());
 
-  UpdateButton(st);
   UpdateExample();
 }
 
-void ConfigDialogue::OnChangeColor() {
+void ConfigDialogue::OnChangeColor(wxColourPickerEvent& event) {
   TextStyle const st = GetSelectedStyle();
-  wxColour col =
-    wxGetColourFromUser(this, m_configuration->m_styles[st].GetColor());
+  wxColour col = event.GetColour();
   if (col.IsOk())
-    m_configuration->m_styles[st].SetColor(col);
+    m_configuration->GetWritableStyle(st)->SetColor(col);
   UpdateExample();
 }
 
 void ConfigDialogue::OnChangeStyle(wxCommandEvent &WXUNUSED(event)) {
   auto const st = GetSelectedStyle();
-  m_styleColor->SetColor(m_configuration->m_styles[st].GetColor());
-
-  // MAGIC NUMBERS:
-  // the positions of TEXT and TITLE style in the list.
-  m_getStyleFont->Enable(st >= TS_ASCIIMATHS && st <= TS_TITLE);
-
-  if (st <= TS_TITLE || st == TS_MATH) {
-    // Text styles with adjustable bold/italic/underline
-    m_boldCB->Enable(true);
-    m_italicCB->Enable(true);
-    m_underlinedCB->Enable(true);
-    m_boldCB->SetValue(m_configuration->m_styles[st].IsBold());
-    m_italicCB->SetValue(m_configuration->m_styles[st].IsItalic());
-    m_underlinedCB->SetValue(m_configuration->m_styles[st].IsUnderlined());
-  } else {
-    // Background color only
-    m_boldCB->Enable(false);
-    m_italicCB->Enable(false);
-    m_underlinedCB->Enable(false);
-    m_boldCB->SetValue(false);
-    m_italicCB->SetValue(false);
-    m_underlinedCB->SetValue(false);
-  }
-
+  
+  bool canChangeFontName    =   !m_configuration->GetStyle(st)->CantChangeFontName();
+  bool canChangeFontVariant =   !m_configuration->GetStyle(st)->CantChangeFontVariant();
+  
+  m_getStyleFont->Enable(canChangeFontName);
+  
+  // Text styles with adjustable bold/italic/underline
+  m_boldCB->SetValue(m_configuration->GetStyle(st)->IsBold());
+  m_italicCB->SetValue(m_configuration->GetStyle(st)->IsItalic());
+  m_underlinedCB->SetValue(m_configuration->GetStyle(st)->IsUnderlined());
+  m_boldCB->Enable(canChangeFontVariant);
+  m_italicCB->Enable(canChangeFontVariant);
+  m_underlinedCB->Enable(canChangeFontVariant);
+  
   UpdateExample();
 }
 
@@ -2471,29 +2380,29 @@ void ConfigDialogue::CopyConfig(wxConfigBase *src, wxConfigBase *dst,
   while (bCont) {
     switch (src->GetEntryType(str)) {
     case wxConfigBase::EntryType::Type_String:
-      wxLogMessage(wxString::Format(_("Copying config string \"%s\""),
-                                    src->GetPath() + wxT("/") + str));
+      wxLogMessage(_("Copying config string \"%s\""),
+		   wxString(src->GetPath() + wxT("/") + str).mb_str());
       dst->Write(str, src->ReadBool(str, wxEmptyString));
       break;
     case wxConfigBase::EntryType::Type_Boolean:
-      wxLogMessage(wxString::Format(_("Copying config bool \"%s\""),
-                                    src->GetPath() + wxT("/") + str));
+      wxLogMessage(_("Copying config bool \"%s\""),
+		   wxString(src->GetPath() + wxT("/") + str).mb_str());
       dst->Write(str, src->ReadBool(str, false));
       break;
     case wxConfigBase::EntryType::Type_Integer:
-      wxLogMessage(wxString::Format(_("Copying config int \"%s\""),
-                                    src->GetPath() + wxT("/") + str));
+      wxLogMessage(_("Copying config int \"%s\""),
+		   wxString(src->GetPath() + wxT("/") + str).mb_str());
       dst->Write(str, src->ReadLong(str, 0));
       break;
     case wxConfigBase::EntryType::Type_Float:
-      wxLogMessage(wxString::Format(_("Copying config float \"%s\""),
-                                    src->GetPath() + wxT("/") + str));
+      wxLogMessage(_("Copying config float \"%s\""),
+		   wxString(src->GetPath() + wxT("/") + str).mb_str());
       dst->Write(str, src->ReadDouble(str, 0.0));
       break;
     default:
       wxLogMessage(
-		   wxString::Format(_("Config item \"%s\" was of an unknown type"),
-				    src->GetPath() + wxT("/") + str));
+		   _("Config item \"%s\" was of an unknown type"),
+		   wxString(src->GetPath() + wxT("/") + str).mb_str());
     }
     bCont = src->GetNextEntry(str, dummy);
   }
@@ -2543,9 +2452,9 @@ void ConfigDialogue::OnReloadStyles(wxCommandEvent &WXUNUSED(event)) {
 
 void ConfigDialogue::OnCheckbox(wxCommandEvent &WXUNUSED(event)) {
   TextStyle const st = GetSelectedStyle();
-  m_configuration->m_styles[st].SetBold(m_boldCB->GetValue());
-  m_configuration->m_styles[st].SetItalic(m_italicCB->GetValue());
-  m_configuration->m_styles[st].SetUnderlined(m_underlinedCB->GetValue());
+  m_configuration->GetWritableStyle(st)->SetBold(m_boldCB->GetValue());
+  m_configuration->GetWritableStyle(st)->SetItalic(m_italicCB->GetValue());
+  m_configuration->GetWritableStyle(st)->SetUnderlined(m_underlinedCB->GetValue());
   UpdateExample();
 }
 
@@ -2556,17 +2465,14 @@ void ConfigDialogue::OnChangeWarning(wxCommandEvent &WXUNUSED(event)) {
 }
 
 void ConfigDialogue::UpdateExample() {
+  m_configuration->MakeStylesConsistent();
   TextStyle const st = GetSelectedStyle();
-  auto style = m_configuration->m_styles[st];
+  auto style = m_configuration->GetStyle(st);
+  m_getStyleFont->SetLabel(style->GetFont().GetNativeFontInfoDesc());
 
-  m_styleColor->SetColor(style.GetColor());
-  if (st == TS_VARIABLE || st == TS_NUMBER || st == TS_FUNCTION ||
-      st == TS_SPECIAL_CONSTANT)
-    style.SetFontSize(m_configuration->GetMathFontSize());
-  else if (m_configuration->GetFontSize(st).IsNull())
-    style.SetFontSize(m_configuration->GetDefaultFontSize());
+  m_styleColor->SetColour(style->GetColor());
 
-  m_examplePanel->SetStyle(style);
+  m_examplePanel->SetStyle(*style);
 
   if (st == TS_TEXT_BACKGROUND || st == TS_TEXT) {
     m_examplePanel->SetBackgroundColour(
@@ -2602,64 +2508,6 @@ void ConfigDialogue::LoadSave(wxCommandEvent &event) {
   }
 }
 
-ConfigDialogue::ColorPanel::ColorPanel(ConfigDialogue *conf, wxWindow *parent,
-                                       int id, wxPoint pos, wxSize size,
-                                       long style)
-  : wxPanel(parent, id, pos, size, style), m_color(0, 0, 0) {
-  m_configDialogue = conf;
-  SetBackgroundColour(m_color);
-  SetBackgroundStyle(wxBG_STYLE_PAINT);
-  Connect(wxEVT_LEFT_UP,
-          wxMouseEventHandler(ConfigDialogue::ColorPanel::OnClick), NULL, this);
-  Connect(wxEVT_PAINT, wxPaintEventHandler(ConfigDialogue::ColorPanel::OnPaint),
-          NULL, this);
-}
-
-void ConfigDialogue::ColorPanel::OnClick(wxMouseEvent &WXUNUSED(event)) {
-  m_configDialogue->OnChangeColor();
-}
-
-void ConfigDialogue::ColorPanel::OnPaint(wxPaintEvent &WXUNUSED(event)) {
-  wxAutoBufferedPaintDC dc(this);
-  if (!m_color.IsOk())
-    m_color = *wxWHITE;
-
-  wxColor backgroundColor(m_color.Red() * m_color.Alpha() / wxALPHA_OPAQUE,
-                          m_color.Green() * m_color.Alpha() / wxALPHA_OPAQUE,
-                          m_color.Blue() * m_color.Alpha() / wxALPHA_OPAQUE);
-  dc.SetPen(
-	    *(wxThePenList->FindOrCreatePen(backgroundColor, 1, wxPENSTYLE_SOLID)));
-  dc.SetBrush(*(wxTheBrushList->FindOrCreateBrush(backgroundColor)));
-  int width;
-  int height;
-  GetClientSize(&width, &height);
-
-  int columns = (width + 11) / 12;
-  int rows = (height + 11) / 12;
-
-  for (int x = 0; x < columns; x++)
-    for (int y = 0; y < rows; y++) {
-      if (((x + y) & 1) == 1)
-        dc.DrawRectangle(x * 12, y * 12, 12, 12);
-    }
-
-  wxColor foregroundColor(m_color.Red() * m_color.Alpha() / wxALPHA_OPAQUE +
-			  (wxALPHA_OPAQUE - m_color.Alpha()),
-                          m_color.Green() * m_color.Alpha() / wxALPHA_OPAQUE +
-			  (wxALPHA_OPAQUE - m_color.Alpha()),
-                          m_color.Blue() * m_color.Alpha() / wxALPHA_OPAQUE +
-			  (wxALPHA_OPAQUE - m_color.Alpha()));
-  dc.SetPen(
-	    *(wxThePenList->FindOrCreatePen(foregroundColor, 1, wxPENSTYLE_SOLID)));
-  dc.SetBrush(*(wxTheBrushList->FindOrCreateBrush(foregroundColor)));
-  GetClientSize(&width, &height);
-
-  for (int x = 0; x < columns; x++)
-    for (int y = 0; y < rows; y++) {
-      if (((x + y) & 1) == 0)
-        dc.DrawRectangle(x * 12, y * 12, 12, 12);
-    }
-}
 
 void ConfigDialogue::ExamplePanel::OnPaint(wxPaintEvent &WXUNUSED(event)) {
   wxString example(_("Example text"));

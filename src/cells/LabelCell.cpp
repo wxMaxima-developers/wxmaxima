@@ -51,32 +51,24 @@ DEFINE_CELL(LabelCell)
 
 void LabelCell::Draw(wxPoint point) {
   Cell::Draw(point);
-  if (!m_configuration->ShowLabels())
-    return;
-  if (InUpdateRegion()) {
-    SetForeground();
-    wxDC *dc = m_configuration->GetDC();
+  if (DrawThisCell(point) &&
+      !(IsHidden() ||
+        (GetHidableMultSign() && m_configuration->HidemultiplicationSign()))) {
 
-    auto const index = GetLabelIndex();
-    if (index != noText) {
-      auto const style = m_configuration->GetStyle(
-						   m_textStyle, Scale_Px(m_fontSize_scaledToFit));
-      dc->SetFont(style.GetFont());
-      SetToolTip(&m_userDefinedLabel);
-      if (m_textStyle == TS_USERLABEL) {
-        auto text = wxT("(") + m_userDefinedLabel + wxT(")");
-        m_unescapeRegEx.ReplaceAll(&text, wxT("\\1"));
-        dc->DrawText(text, point.x + MC_TEXT_PADDING,
-                     point.y - m_center + MC_TEXT_PADDING);
-      } else
-        dc->DrawText(m_displayedText, point.x + MC_TEXT_PADDING,
-                     point.y - m_center + MC_TEXT_PADDING);
-    }
+    wxDC *dc = m_configuration->GetDC();
+    int padding = 0;
+    if (GetStyle() != TS_ASCIIMATHS)
+      padding = MC_TEXT_PADDING;
+
+    SetForeground();
+    SetFont(m_fontSize_Scaled);
+    dc->DrawText(m_displayedText, point.x + padding,
+                 point.y - m_center + MC_TEXT_PADDING);
   }
 }
 
 TextCell::TextIndex LabelCell::GetLabelIndex() const {
-  if (m_textStyle == TS_USERLABEL)
+  if (GetTextStyle() == TS_USERLABEL)
     return userLabelText;
   else
     return cellText;
@@ -89,9 +81,9 @@ void LabelCell::SetUserDefinedLabel(const wxString &userDefinedLabel) {
 
 bool LabelCell::NeedsRecalculation(AFontSize fontSize) const {
   return TextCell::NeedsRecalculation(fontSize) ||
-    ((m_textStyle == TS_USERLABEL) &&
+    ((GetTextStyle() == TS_USERLABEL) &&
      (!m_configuration->UseUserLabels())) ||
-    ((m_textStyle == TS_LABEL) && (m_configuration->UseUserLabels()) &&
+    ((GetTextStyle() == TS_LABEL) && (m_configuration->UseUserLabels()) &&
      (!m_userDefinedLabel.empty())) ||
     (m_configuration->GetLabelChoice() != m_labelChoice_Last);
 }
@@ -99,7 +91,7 @@ bool LabelCell::NeedsRecalculation(AFontSize fontSize) const {
 void LabelCell::UpdateDisplayedText() {
   m_displayedText = m_text;
 
-  if ((m_textStyle == TS_USERLABEL) || (m_textStyle == TS_LABEL)) {
+  if ((GetTextStyle() == TS_USERLABEL) || (GetTextStyle() == TS_LABEL)) {
     if (!m_configuration->ShowLabels())
       m_displayedText = wxEmptyString;
     else {
@@ -172,8 +164,8 @@ wxString LabelCell::ToXML() const {
 }
 
 void LabelCell::SetStyle(TextStyle style) {
-  wxASSERT((m_textStyle == TS_LABEL) || (m_textStyle == TS_USERLABEL) ||
-           (m_textStyle == TS_MAIN_PROMPT));
+  wxASSERT((GetTextStyle() == TS_LABEL) || (GetTextStyle() == TS_USERLABEL) ||
+           (GetTextStyle() == TS_MAIN_PROMPT));
 
   TextCell::SetStyle(style);
 }
@@ -189,72 +181,9 @@ wxString LabelCell::GetXMLFlags() const {
 }
 
 void LabelCell::Recalculate(AFontSize fontsize) {
-  m_fontSize_scaledToFit = fontsize;
-  // If the config settings about how many digits to display has changed we
-  // need to regenerate the info which number to show.
-  if (NeedsRecalculation(fontsize)) {
-    if (GetPrevious()) {
-      ForceBreakLine(true);
-      SetBigSkip(true);
-    }
-    if (m_configuration->GetLabelChoice() != m_labelChoice_Last) {
-      m_labelChoice_Last = m_configuration->GetLabelChoice();
-      UpdateDisplayedText();
-    }
-
-    Cell::Recalculate(fontsize);
-
-    // If the setting has changed and we want to show a user-defined label
-    // instead of an automatic one or vice versa we decide that here.
-    if ((m_textStyle == TS_USERLABEL) && (!m_configuration->UseUserLabels()))
-      m_textStyle = TS_LABEL;
-    if ((m_textStyle == TS_LABEL) && (m_configuration->UseUserLabels()) &&
-        (!m_userDefinedLabel.empty()))
-      m_textStyle = TS_USERLABEL;
-
-    // Labels and prompts are fixed width - adjust font size so that
-    // they fit in
-    auto const index = GetLabelIndex();
-    if (index != noText) {
-      Style style = m_configuration->GetStyle(
-					      m_textStyle, m_configuration->GetDefaultFontSize());
-      wxDC *dc = m_configuration->GetDC();
-      dc->SetFont(style.GetFont());
-
-      style.SetFontSize(Scale_Px(fontsize));
-      wxSize labelSize_unscaled =
-	CalculateTextSize(m_configuration->GetDC(), m_displayedText, index);
-      style.SetFontSize(Scale_Px(m_fontSize_scaledToFit));
-      wxSize labelSize = labelSize_unscaled;
-      m_height = labelSize.GetHeight();
-      m_center = m_height / 2;
-
-      wxASSERT_MSG((labelSize.GetWidth() > 0) || (m_displayedText.IsEmpty()),
-                   _("Seems like something is broken with the maths font."));
-
-      while ((labelSize.GetWidth() + Scale_Px(fontsize) >=
-              Scale_Px(m_configuration->GetLabelWidth())) &&
-             (!m_fontSize_scaledToFit.IsMinimal())) {
-#if wxCHECK_VERSION(3, 1, 2)
-        m_fontSize_scaledToFit -= .3 + 3 * (m_width - labelSize.GetWidth()) /
-	  labelSize.GetWidth() / 4;
-#else
-        m_fontSize_scaledToFit -=
-	  1 + 3 * (m_width - labelSize.GetWidth()) / labelSize.GetWidth() / 4;
-#endif
-        style.SetFontSize(Scale_Px(m_fontSize_scaledToFit));
-        dc->SetFont(style.GetFont());
-        labelSize =
-	  CalculateTextSize(m_configuration->GetDC(), m_displayedText, index);
-      }
-      m_width = labelSize.GetWidth() + Scale_Px(2);
-      m_center = (labelSize.GetHeight()) / 2.0;
-    } else {
-      m_width = m_height = m_center = 0;
-    }
-    m_width = wxMax(m_width, Scale_Px(m_configuration->GetLabelWidth())) +
-      MC_TEXT_PADDING;
-  }
+  TextCell::Recalculate(fontsize);
+  m_width = wxMax(m_width, Scale_Px(m_configuration->GetLabelWidth())  +
+    MC_TEXT_PADDING);
 }
 
 const wxString &LabelCell::GetAltCopyText() const {

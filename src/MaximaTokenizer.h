@@ -65,7 +65,7 @@ public:
     operator const wxString &() const { return m_text; }
   private:
     wxString m_text;
-    TextStyle m_style = TS_DEFAULT;
+    TextStyle m_style = TS_CODE_DEFAULT;
   };
   static bool IsAlpha(wxChar ch);
   static bool IsNum(wxChar ch);

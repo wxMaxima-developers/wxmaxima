@@ -33,6 +33,7 @@
 #include <wx/intl.h>
 #include <wx/sstream.h>
 #include <wx/tokenzr.h>
+#include "ErrorRedirector.h"
 
 #include "MathParser.h"
 
@@ -268,7 +269,7 @@ std::unique_ptr<Cell> MathParser::ParseMiscTextTag(wxXmlNode *node) {
   if (node->GetAttribute(wxT("listdelim")) == wxT("true"))
     return {};
   else {
-    TextStyle style = TS_DEFAULT;
+    TextStyle style = TS_TEXT;
     if (node->GetAttribute(wxT("type")) == wxT("error"))
       style = TS_ERROR;
     if (node->GetAttribute(wxT("type")) == wxT("ASCII-Art"))
@@ -365,7 +366,8 @@ std::unique_ptr<Cell> MathParser::ParseImageTag(wxXmlNode *node) {
     } else {
     std::shared_ptr<wxFileSystem> system_fs = {};
     if (node->GetAttribute(wxT("del"), wxT("yes")) != wxT("no")) {
-      if (wxImage::GetImageCount(filename) < 2)
+      SuppressErrorDialogs suppressor;
+      if ((!wxFileExists(filename))||(wxImage::GetImageCount(filename) < 2))
         imageCell = std::make_unique<ImgCell>(m_group, m_configuration,
                                               filename, system_fs, true);
       else
@@ -972,7 +974,7 @@ std::unique_ptr<Cell> MathParser::ParseCharCode(wxXmlNode *node) {
       str = wxString::Format(wxT("%c"), code);
     cell->SetValue(str);
     cell->SetType(m_ParserStyle);
-    cell->SetStyle(TS_DEFAULT);
+    cell->SetStyle(TS_MATH);
     cell->SetHighlight(m_highlight);
   }
   ParseCommonAttrs(node, cell);

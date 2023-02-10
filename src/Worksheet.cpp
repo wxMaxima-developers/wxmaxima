@@ -284,6 +284,7 @@ bool Worksheet::RedrawIfRequested() {
         }
       }
 
+      // Make the right brackets autohide
       if ((m_configuration->HideBrackets()) &&
           (oldGroupCellUnderPointer !=
            m_cellPointers.m_groupCellUnderPointer)) {
@@ -317,7 +318,9 @@ bool Worksheet::RedrawIfRequested() {
           if (!GetToolTipText().empty()) {
             if (toolTip != GetToolTipText()) {
               // Disabling and re-enabling tooltips resets the tooltip poput
-              // delay timer.
+              // delay timer. We need to do that since we don't have a individual
+	      // per-cell popout delay timer in the cell the cursor currently is in,
+	      // but only the per-worksheet one.
               wxToolTip::Enable(false);
               wxToolTip::Enable(true);
               SetToolTip(toolTip);
@@ -587,9 +590,9 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event)) {
 
       // Draw tree
       m_configuration->GetDC()->SetPen(*(wxThePenList->FindOrCreatePen(
-								       m_configuration->GetColor(TS_DEFAULT), 1, wxPENSTYLE_SOLID)));
+								       m_configuration->GetColor(TS_MATH), 1, wxPENSTYLE_SOLID)));
       m_configuration->GetDC()->SetBrush(*(wxTheBrushList->FindOrCreateBrush(
-									     m_configuration->GetColor(TS_DEFAULT))));
+									     m_configuration->GetColor(TS_MATH))));
 
       bool atStart = true;
       for (auto &tmp : OnList(GetTree())) {
@@ -5655,7 +5658,7 @@ wxString Worksheet::UnicodeToMaxima(wxString s) {
   for (auto const &tok : MaximaTokenizer(s, m_configuration).PopTokens()) {
     auto const &tokenString = tok.GetText();
     switch (tok.GetStyle()) {
-    case TS_DEFAULT:
+    case TS_CODE_DEFAULT:
     case TS_CODE_OPERATOR:
     case TS_CODE_VARIABLE:
     case TS_CODE_FUNCTION:
@@ -6095,8 +6098,7 @@ bool Worksheet::ExportToWXMX(const wxString &file, bool markAsSaved) {
                 wxDataObjectComposite *data = new wxDataObjectComposite;
                 data->Add(new wxTextDataObject(xmlText));
                 wxTheClipboard->SetData(data);
-                wxLogMessage(
-			     _("Produced invalid XML. The erroneous XML data has "
+                wxLogMessage(_("Produced invalid XML. The erroneous XML data has "
 			       "therefore not been saved but has been put on the "
 			       "clipboard in order to allow to debug it."));
                 wxTheClipboard->Close();
@@ -7104,8 +7106,8 @@ void Worksheet::CheckUnixCopy() {
                    _("Bug: The clipboard is already opened"));
       if (wxTheClipboard->Open()) {
         wxString data = GetString();
-        wxLogMessage("%s", wxString::Format(_("Middle-click clipboard data: %s"),
-                                      static_cast<const char*>(data.mb_str())));
+        wxLogMessage(_("Middle-click clipboard data: %s"),
+		     static_cast<const char*>(data.mb_str()));
         wxTheClipboard->SetData(new wxTextDataObject(data));
         wxTheClipboard->Close();
       }

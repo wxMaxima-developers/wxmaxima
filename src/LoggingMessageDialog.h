@@ -42,6 +42,9 @@ public:
                        long style = wxOK|wxCENTRE, const wxPoint &pos = wxDefaultPosition):
     wxMessageDialog (parent, message, caption, style, pos)
     {
+      wxString logString = message;
+      logString.Replace(wxT("%"), wxT("%%"));
+      wxLogMessage(logString);
       wxLogMessage(message);
     }
 };

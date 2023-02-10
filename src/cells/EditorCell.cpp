@@ -318,14 +318,14 @@ wxString EditorCell::ToRTF() const {
 	  wxString::Format(wxT("\\cf%i "), static_cast<int>(textSnippet->GetStyle()));
         retval += RTFescape(textSnippet->GetText());
       } else {
-        retval += wxString::Format(wxT("\\cf%i "), static_cast<int>(TS_DEFAULT));
+        retval += wxString::Format(wxT("\\cf%i "), static_cast<int>(TS_CODE_DEFAULT));
         retval += wxT("{") + RTFescape(textSnippet->GetText()) + wxT("}\n");
       }
       if (textSnippet->GetText().Contains(wxT("\n"))) {
         retval += wxT("\\pard\\s21\\li1105\\lin1105\\f0\\fs24 ");
       }
     }
-    retval += wxString::Format(wxT("\\cf%i "), static_cast<int>(TS_DEFAULT));
+    retval += wxString::Format(wxT("\\cf%i "), static_cast<int>(TS_CODE_DEFAULT));
     break;
   }
   default:
@@ -931,45 +931,27 @@ void EditorCell::SetStyle(TextStyle style) {
   Cell::SetStyle(style);
 }
 
+std::shared_ptr<wxFont> EditorCell::GetFont(AFontSize fontsize) {
+  auto style = m_configuration->GetStyle(GetTextStyle());
+  auto fontCache = style->GetFontCache();
+
+  bool isItalic = style->IsItalic();
+  if (m_autoAnswer)
+    isItalic = !isItalic;
+  
+  wxASSERT(m_fontSize_Scaled.IsValid());
+  return fontCache->GetFont(fontsize.Get(), isItalic, style->IsBold(), style->IsUnderlined());
+}
+
 void EditorCell::SetFont() {
   wxDC *dc = m_configuration->GetDC();
-
-  m_fontName = m_configuration->GetFontName(m_textStyle);
-  // Cells that save answers are displayed differently to
-  // ordinary cells in order to make transparent that this cell is special.
-  if (!m_autoAnswer)
-    m_fontStyle = m_configuration->IsItalic(m_textStyle);
-  else {
-    if (m_configuration->IsItalic(m_textStyle) != wxFONTSTYLE_ITALIC)
-      m_fontStyle = wxFONTSTYLE_ITALIC;
-    else
-      m_fontStyle = wxFONTSTYLE_NORMAL;
-  }
-  m_fontWeight = m_configuration->IsBold(m_textStyle);
-  m_underlined = m_configuration->IsUnderlined(m_textStyle);
-
   wxASSERT(m_fontSize_Scaled.IsValid());
-
-  auto style =
-    Style(m_fontSize_Scaled)
-    .FontName(m_fontName)
-    .FontStyle(m_fontStyle)
-    .Bold(m_configuration->IsBold(m_textStyle) == wxFONTWEIGHT_BOLD)
-    .Underlined(m_underlined);
-
-  if (!style.IsFontOk()) {
-    wxLogMessage(_(
-		   "EditorCell Ignoring the font name as the selected font didn't work"));
-    style.SetFontName({});
-  }
-  if (!style.IsFontOk()) {
-    style = Style::FromStockFont(wxStockGDI::FONT_NORMAL);
-    style.SetFontSize(m_fontSize_Scaled);
-  }
-
-  wxASSERT_MSG(style.IsFontOk(),
-               _("Seems like something is broken with a font."));
-  dc->SetFont(style.GetFont());
+  auto font = GetFont(m_fontSize_Scaled);
+  if(m_configuration->GetLastFontUsed() != font.get())
+    {
+      m_configuration->SetLastFontUsed(font);
+      dc->SetFont(*font);
+    }
 }
 
 wxSize EditorCell::GetTextSize(wxString const &text) {
@@ -988,7 +970,7 @@ wxSize EditorCell::GetTextSize(wxString const &text) {
 
 void EditorCell::SetForeground() {
   wxDC *dc = m_configuration->GetDC();
-  dc->SetTextForeground(m_configuration->GetColor(m_textStyle));
+  dc->SetTextForeground(m_configuration->GetColor(GetTextStyle()));
 }
 
 wxString EditorCell::GetCurrentCommand() {

@@ -159,21 +159,21 @@ Image::~Image() {
   m_isOk = false;
   if (!m_gnuplotSource.IsEmpty()) {
     SuppressErrorDialogs logNull;
-    wxLogMessage(wxString::Format(_("Trying to delete gnuplot file %s"),
-                                  m_gnuplotSource.utf8_str()));
+    wxLogMessage(_("Trying to delete gnuplot file %s"),
+                 m_gnuplotSource.utf8_str());
     if (wxFileExists(m_gnuplotSource))
       wxRemoveFile(m_gnuplotSource);
     wxString popoutname = m_gnuplotSource + wxT(".popout");
-    wxLogMessage(wxString::Format(_("Trying to delete gnuplot file %s"),
-                                  popoutname.utf8_str()));
+    wxLogMessage(_("Trying to delete gnuplot file %s"),
+                 popoutname.utf8_str());
     if (wxFileExists(popoutname))
       wxRemoveFile(popoutname);
   }
 
   if (!m_gnuplotData.IsEmpty()) {
     SuppressErrorDialogs logNull;
-    wxLogMessage(wxString::Format(_("Trying to delete gnuplot file %s"),
-                                  m_gnuplotData.utf8_str()));
+    wxLogMessage(_("Trying to delete gnuplot file %s"),
+                 m_gnuplotData.utf8_str());
     if (wxFileExists(m_gnuplotData))
       wxRemoveFile(m_gnuplotData);
   }
@@ -257,8 +257,7 @@ void Image::LoadGnuplotSource_Backgroundtask(
       wxStat(dataFilename, &strucStat);
       if (strucStat.st_size >
           m_configuration->MaxGnuplotMegabytes() * 1000 * 1000) {
-        wxLogMessage(
-		     _("Too much gnuplot data => Not storing it in the worksheet"));
+        wxLogMessage(_("Too much gnuplot data => Not storing it in the worksheet"));
         m_gnuplotData_Compressed.Clear();
         return;
       }

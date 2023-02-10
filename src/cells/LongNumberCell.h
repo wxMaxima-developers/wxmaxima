@@ -41,7 +41,6 @@ public:
   void Recalculate(AFontSize fontsize) override;
   void Draw(wxPoint point) override;
   bool NeedsRecalculation(AFontSize fontSize) const override;
-  void SetStyle(TextStyle style) override;
   bool BreakUp() override;
   void SetNextToDraw(Cell *next) override;
   int GetInnerCellCount() const override { if(m_innerCell) return 1; else return 0; }

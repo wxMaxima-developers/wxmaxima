@@ -68,12 +68,11 @@ Dirstructure::Dirstructure() {
 
   if (!wxDirExists(m_userConfDir)) {
     if (!wxMkdir(m_userConfDir, wxS_DIR_DEFAULT))
-      wxLogMessage(wxString::Format(
-				    _("Warning: Cannot create %s, the directory maxima keeps "
-				      "configuration, user packages and caches in.\n"
-				      "Make sure that your system's home directory "
-				      "is set up correctly"),
-				    m_userConfDir.utf8_str()));
+      wxLogMessage(_("Warning: Cannot create %s, the directory maxima keeps "
+		     "configuration, user packages and caches in.\n"
+		     "Make sure that your system's home directory "
+		     "is set up correctly"),
+	m_userConfDir.mb_str());
   }
   m_userConfDir += "/";
 }
@@ -150,94 +149,94 @@ wxString Dirstructure::MaximaDefaultLocation() {
   if (wxFileExists(maximaLocation = maxima.GetFullPath()))
     return maximaLocation;
 
-  wxLogMessage(wxString::Format(notFound, maximaLocation.utf8_str()));
+  wxLogMessage(notFound, maximaLocation.mb_str());
   maxima = exeDir + "maxima.bat";
   maxima.MakeAbsolute();
   if (wxFileExists(maximaLocation = maxima.GetFullPath()))
     return maximaLocation;
 
-  wxLogMessage(wxString::Format(notFound, maximaLocation.utf8_str()));
+  wxLogMessage(notFound, maximaLocation.mb_str());
   maxima = exeDir + "bin/maxima.bat";
   maxima.MakeAbsolute();
   if (wxFileExists(maximaLocation = maxima.GetFullPath()))
     return maximaLocation;
 
-  wxLogMessage(wxString::Format(notFound, maximaLocation.utf8_str()));
+  wxLogMessage(notFound, maximaLocation.mb_str());
   maxima = exeDir + "../maxima.bat";
   maxima.MakeAbsolute();
   if (wxFileExists(maximaLocation = maxima.GetFullPath()))
     return maximaLocation;
 
-  wxLogMessage(wxString::Format(notFound, maximaLocation.utf8_str()));
+  wxLogMessage(notFound, maximaLocation.mb_str());
   maxima = exeDir + "maxima";
   maxima.MakeAbsolute();
   if (wxFileExists(maximaLocation = maxima.GetFullPath()))
     return maximaLocation;
 
-  wxLogMessage(wxString::Format(notFound, maximaLocation.utf8_str()));
+  wxLogMessage(notFound, maximaLocation.mb_str());
   maxima = exeDir + "bin/maxima";
   maxima.MakeAbsolute();
   if (wxFileExists(maximaLocation = maxima.GetFullPath()))
     return maximaLocation;
 
-  wxLogMessage(wxString::Format(notFound, maximaLocation.utf8_str()));
+  wxLogMessage(notFound, maximaLocation.mb_str());
   maxima = exeDir + "../maxima";
   maxima.MakeAbsolute();
   if (wxFileExists(maximaLocation = maxima.GetFullPath()))
     return maximaLocation;
 
-  wxLogMessage(wxString::Format(notFound, maximaLocation.utf8_str()));
+  wxLogMessage(notFound, maximaLocation.mb_str());
   maxima = exeDir + "../bin/maxima";
   maxima.MakeAbsolute();
   if (wxFileExists(maximaLocation = maxima.GetFullPath()))
     return maximaLocation;
 
-  wxLogMessage(wxString::Format(notFound, maximaLocation.utf8_str()));
+  wxLogMessage(notFound, maximaLocation.mb_str());
 #elif defined __WXOSX__
   wxString exeDir = exe.GetPathWithSep();
   maximaLocation = "/Applications/Maxima.app";
   if (wxFileExists(maximaLocation))
     return maximaLocation;
 
-  wxLogMessage(wxString::Format(notFound, maximaLocation.utf8_str()));
+  wxLogMessage(notFound, maximaLocation.mb_str());
   maximaLocation = "/Applications/maxima.app";
   if (wxFileExists(maximaLocation))
     return maximaLocation;
 
   // The Macports path (if it is preferred over homebrew)
 #if OSX_MACPORTS_PREFER
-  wxLogMessage(wxString::Format(notFound, maximaLocation.utf8_str()));
+  wxLogMessage(notFound, maximaLocation.mb_str());
   maximaLocation = OSX_MACPORTS_PREFIX "/bin/maxima";
   if (wxFileExists(maximaLocation))
     return maximaLocation;
 #endif
 
   // The homebrew path
-  wxLogMessage(wxString::Format(notFound, maximaLocation.utf8_str()));
+  wxLogMessage(notFound, maximaLocation.mb_str());
   maximaLocation = "/usr/local/bin/maxima";
   if (wxFileExists(maximaLocation))
     return maximaLocation;
 
   // The Macports path (if it is not preferred over homebrew)
 #if !OSX_MACPORTS_PREFER
-  wxLogMessage(wxString::Format(notFound, maximaLocation.utf8_str()));
+  wxLogMessage(notFound, maximaLocation.mb_str());
   maximaLocation = OSX_MACPORTS_PREFIX "/bin/maxima";
   if (wxFileExists(maximaLocation))
     return maximaLocation;
 #endif
 
-  wxLogMessage(wxString::Format(notFound, maximaLocation.utf8_str()));
+  wxLogMessage(notFound, maximaLocation.mb_str());
   maximaLocation = "/usr/bin/maxima";
   if (wxFileExists(maximaLocation))
     return maximaLocation;
 
-  wxLogMessage(wxString::Format(notFound, maximaLocation.utf8_str()));
+  wxLogMessage(notFound, maximaLocation.mb_str());
   maxima = exeDir + "maxima";
   maxima.MakeAbsolute();
   if (wxFileExists(maximaLocation = maxima.GetFullPath()))
     return maximaLocation;
 
-  wxLogMessage(wxString::Format(notFound, maximaLocation.utf8_str()));
+  wxLogMessage(notFound, maximaLocation.mb_str());
 #endif
   return wxT("maxima");
 }

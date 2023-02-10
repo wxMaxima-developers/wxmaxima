@@ -29,10 +29,11 @@
  * Declares the interface to the Maxima process.
  */
 
-#include "StreamUtils.h"
+#include <wx/defs.h>
 #include <wx/buffer.h>
 #include <wx/event.h>
 #include <wx/sckstrm.h>
+#include <wx/txtstrm.h>
 #include <wx/socket.h>
 #include <wx/string.h>
 #include <wx/timer.h>
@@ -81,9 +82,6 @@ public:
   void ClearFirstPrompt() { m_first = false; }
 
 private:
-  //! Decodes input data from the socket
-  UTF8Decoder::DecodeResult DecodeFromSocket(size_t maxRead);
-
   //! Handles events on the open client socket
   void SocketEvent(wxSocketEvent &event);
   //! Handles timer events
@@ -91,8 +89,8 @@ private:
 
   std::unique_ptr<wxSocketBase> m_socket;
   wxSocketInputStream m_socketInput{*m_socket};
-  UTF8Decoder m_decoder;
-  UTF8Decoder::State m_socketDecodeState;
+  wxTextInputStream m_textInput{m_socketInput};
+
   wxString m_socketInputData;
   wxMemoryBuffer m_socketOutputData;
 
@@ -101,6 +99,9 @@ private:
 
   wxTimer m_stringEndTimer{this};
   wxTimer m_readIdleTimer{this};
+  static wxChar m_nullChar;
+  static wxChar m_ascii10;
+  static wxChar m_ascii13;
 };
 
 class MaximaEvent : public wxEvent

@@ -53,7 +53,7 @@
 #include <functional>
 #include <unordered_map>
 
-wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, wxLocale *locale,
+wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, 
                              const wxString &title, const wxPoint &pos,
                              const wxSize &size, long style,
                              bool becomeLogTarget)
@@ -62,10 +62,6 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, wxLocale *locale,
 	      wxAUI_MGR_TRANSPARENT_HINT | wxAUI_MGR_HINT_FADE),
     m_recentDocuments(wxT("document")), m_unsavedDocuments(wxT("unsaved")),
     m_recentPackages(wxT("packages")) {
-  m_locale = locale;
-  //  wxLogMessage(_("Selected language: ") + m_locale->GetCanonicalName() +
-  //               " (" + wxString::Format("%i", m_locale->GetLanguage()) +
-  //               ")");
 
   m_bytesFromMaxima = 0;
   m_drawDimensions_last = -1;
@@ -123,8 +119,8 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, wxLocale *locale,
   int major = 0;
   int minor = 0;
   wxGetOsVersion(&major, &minor);
-  wxLogMessage(wxString::Format(_("OS: %s Version %i.%i"),
-                                wxGetOsDescription().utf8_str(), major, minor));
+  wxLogMessage(_("OS: %s Version %i.%i"),
+	       wxGetOsDescription().utf8_str(), major, minor);
 
 #ifdef __WXMOTIF__
   wxLogMessage(_("Running on Motif"));
@@ -138,7 +134,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, wxLocale *locale,
 #ifdef __WXOSX__
   wxLogMessage(_("Running on Mac OS"));
 #endif
-  wxLogMessage(wxVERSION_STRING);
+  wxLogMessage("%s", wxVERSION_STRING);
 
 #ifdef __WXGTK__
 #ifdef __WXGTK3__
@@ -148,13 +144,9 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, wxLocale *locale,
 #endif
 #endif
 
-  wxLogMessage(wxString::Format(_("Translations are read from %s."),
-                                Dirstructure::Get()->LocaleDir()));
-
   if (Configuration::m_configfileLocation_override != wxEmptyString)
-    wxLogMessage(wxString::Format(
-				  _("Reading the config from %s."),
-				  Configuration::m_configfileLocation_override.utf8_str()));
+    wxLogMessage(_("Reading the config from %s."),
+		 Configuration::m_configfileLocation_override.utf8_str());
   else
     wxLogMessage(_("Reading the config from the default location."));
 
@@ -2133,9 +2125,9 @@ void wxMaximaFrame::SetupMenu() {
 wxString wxMaximaFrame::wxMaximaManualLocation() {
   wxString helpfile;
   wxString lang_long =
-    m_locale->GetCanonicalName(); /* two- or five-letter string in xx or xx_YY
-				     format. Examples: "en", "en_GB", "en_US"
-				     or "fr_FR" */
+    wxLocale().GetCanonicalName(); /* two- or five-letter string in xx or xx_YY
+				      format. Examples: "en", "en_GB", "en_US"
+				      or "fr_FR" */
   wxString lang_short = lang_long.Left(lang_long.Find('_'));
 
   helpfile =
@@ -2267,9 +2259,8 @@ void wxMaximaFrame::ReReadConfig() {
 	wxLogMessage(_("Re-Reading the config from the default location."));
 	wxConfig::Set(new wxConfig(wxT("wxMaxima")));
       } else {
-	wxLogMessage(wxString::Format(
-				      _("Re-Reading the config from %s."),
-				      Configuration::m_configfileLocation_override.utf8_str()));
+	wxLogMessage(_("Re-Reading the config from %s."),
+		     Configuration::m_configfileLocation_override.utf8_str());
 	wxConfig::Set(
 		      new wxFileConfig(wxT("wxMaxima"), wxEmptyString,
 				       Configuration::m_configfileLocation_override));
@@ -2389,7 +2380,7 @@ void  wxMaximaFrame::StatusText(const wxString &text, bool saveInLog)
   m_leftStatusText = text;
   if(saveInLog)
     {
-      wxLogMessage(text);
+      wxLogMessage("%s", text.mb_str());
       for(auto i = m_statusTextHistory.size() - 1; i > 0; i--)
 	m_statusTextHistory[i] = m_statusTextHistory[i-1];
       m_statusTextHistory[0] = text;

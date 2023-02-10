@@ -352,9 +352,9 @@ void ToolBar::UpdateBitmaps() {
   wxSize ppi = GetPPI();
   if ((ppi.x == m_ppi.x) && (ppi.y == m_ppi.y))
     return;
-  wxLogMessage(wxString::Format(
-				_("Display resolution according to wxWidgets: %i x %i ppi"), ppi.x,
-				ppi.y));
+  wxLogMessage(_("Display resolution according to wxWidgets: %li x %li ppi"),
+	       (long)ppi.x,
+	       (long)ppi.y);
   
   m_ppi = ppi;
 

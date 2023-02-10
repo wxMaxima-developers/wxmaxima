@@ -76,54 +76,53 @@ void Cell::SetType(CellType type) {
 
   switch (m_type) {
   case MC_TYPE_MAIN_PROMPT:
-    m_textStyle = TS_MAIN_PROMPT;
+    SetStyle(TS_MAIN_PROMPT);
     break;
   case MC_TYPE_PROMPT:
-    m_textStyle = TS_OTHER_PROMPT;
+    SetStyle(TS_OTHER_PROMPT);
     break;
   case MC_TYPE_LABEL:
-    m_textStyle = TS_LABEL;
+    SetStyle(TS_LABEL);
     // FIXME - this code probably intended to line-break here
     // HardLineBreak();
     break;
   case MC_TYPE_INPUT:
-    m_textStyle = TS_INPUT;
+    SetStyle(TS_INPUT);
     break;
   case MC_TYPE_ERROR:
-    m_textStyle = TS_ERROR;
+    SetStyle(TS_ERROR);
     break;
   case MC_TYPE_WARNING:
-    m_textStyle = TS_WARNING;
+    SetStyle(TS_WARNING);
     break;
   case MC_TYPE_TEXT:
-    m_textStyle = TS_TEXT;
+    SetStyle(TS_TEXT);
     break;
   case MC_TYPE_ASCIIMATHS:
-    m_textStyle = TS_ASCIIMATHS;
+    SetStyle(TS_ASCIIMATHS);
     break;
   case MC_TYPE_SUBSUBSECTION:
-    m_textStyle = TS_SUBSUBSECTION;
+    SetStyle(TS_SUBSUBSECTION);
     break;
   case MC_TYPE_HEADING5:
-    m_textStyle = TS_HEADING5;
+    SetStyle(TS_HEADING5);
     break;
   case MC_TYPE_HEADING6:
-    m_textStyle = TS_HEADING6;
+    SetStyle(TS_HEADING6);
     break;
   case MC_TYPE_SUBSECTION:
-    m_textStyle = TS_SUBSECTION;
+    SetStyle(TS_SUBSECTION);
     break;
   case MC_TYPE_SECTION:
-    m_textStyle = TS_SECTION;
+    SetStyle(TS_SECTION);
     break;
   case MC_TYPE_TITLE:
-    m_textStyle = TS_TITLE;
+    SetStyle(TS_TITLE);
     break;
   default:
-    m_textStyle = TS_DEFAULT;
+    SetStyle(TS_MATH);
     break;
   }
-  ResetSize();
   if ((m_group) && (m_group != this))
     GetGroup()->ResetSize();
 }
@@ -139,7 +138,7 @@ void Cell::CopyCommonData(const Cell &cell) {
 
   m_forceBreakLine = cell.m_forceBreakLine;
   m_type = cell.m_type;
-  m_textStyle = cell.m_textStyle;
+  SetStyle(cell.GetTextStyle());
   Hide(cell.m_isHidden);
   m_isHidableMultSign = cell.m_isHidableMultSign;
   if (cell.IsBrokenIntoLines())
@@ -536,7 +535,7 @@ wxString Cell::ToTeX() const { return {}; }
 wxString Cell::ListToTeX() const {
   wxString retval;
   for (const Cell &tmp : OnList(this)) {
-    if (((!retval.IsEmpty()) && (tmp.m_textStyle == TS_LABEL)) ||
+    if (((!retval.IsEmpty()) && (tmp.GetStyle() == TS_LABEL)) ||
         (tmp.BreakLineHere()))
       retval += wxT("\\]\\[");
     retval += tmp.ToTeX();
@@ -974,7 +973,7 @@ wxColour Cell::GetForegroundColor() const {
   else if (m_type == MC_TYPE_INPUT)
     color = m_configuration->GetColor(TS_INPUT);
   else
-    color = m_configuration->GetColor(TS_DEFAULT);
+    color = m_configuration->GetColor(TS_MATH);
 
   return color;
 }
@@ -1029,7 +1028,7 @@ void Cell::SetForeground() {
       color = m_configuration->GetColor(TS_LABEL);
       break;
     default:
-      color = m_configuration->GetColor(m_textStyle);
+      color = m_configuration->GetColor(GetTextStyle());
       break;
     }
   }
@@ -1038,8 +1037,8 @@ void Cell::SetForeground() {
 }
 
 bool Cell::IsMath() const {
-  return !(m_textStyle == TS_LABEL || m_textStyle == TS_USERLABEL ||
-           m_textStyle == TS_INPUT);
+  return !(GetStyle() == TS_LABEL || GetStyle() == TS_USERLABEL ||
+           GetStyle() == TS_INPUT);
 }
 
 #if wxUSE_ACCESSIBILITY

@@ -66,7 +66,6 @@ void LongNumberCell::UpdateDisplayedText() {
   }
   m_sizeCache.clear();
   m_displayedDigits_old = m_configuration->GetDisplayedDigits();
-  m_textStyle = TS_NUMBER;
 }
 
 bool LongNumberCell::NeedsRecalculation(AFontSize fontSize) const {
@@ -75,11 +74,6 @@ bool LongNumberCell::NeedsRecalculation(AFontSize fontSize) const {
     (m_showAllDigits_old != m_configuration->ShowAllDigits()) ||
     (m_linebreaksInLongLines_old !=
      m_configuration->LineBreaksInLongNums());
-}
-
-void LongNumberCell::SetStyle(TextStyle style) {
-  wxASSERT(style == TS_NUMBER);
-  TextCell::SetStyle(TS_NUMBER);
 }
 
 void LongNumberCell::Recalculate(AFontSize fontsize) {
@@ -174,12 +168,12 @@ bool LongNumberCell::BreakUp() {
          ++it) {
       if (!last) {
         m_innerCell = std::make_unique<DigitCell>(GetGroup(), m_configuration,
-                                                  wxString(*it));
+                                                  wxString(*it), TS_NUMBER);
         last = m_innerCell.get();
       } else {
         CellList::AppendCell(last, std::make_unique<DigitCell>(GetGroup(),
                                                                m_configuration,
-                                                               wxString(*it)));
+                                                               wxString(*it), TS_NUMBER));
         last = last->GetNext();
       }
     }

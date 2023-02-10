@@ -180,13 +180,11 @@ void HelpBrowser::JumpToKeyword(wxString keyword) {
 
   wxBusyCursor crs;
   if (!maximaHelpURL.IsEmpty()) {
-    wxLogMessage(
-		 wxString::Format(_("Opening help file %s"), maximaHelpURL.utf8_str()));
+    wxLogMessage(_("Opening help file %s"), maximaHelpURL.mb_str());
     SetURL(maximaHelpURL);
   } else {
     if (AllowOnlineManualP()) {
-      wxLogMessage(_(wxT(
-			 "No offline manual found => Redirecting to the Maxima homepage")));
+      wxLogMessage(_(wxT("No offline manual found => Redirecting to the Maxima homepage")));
       SetURL(
 	     "https://maxima.sourceforge.io/docs/manual/maxima_singlepage.html#" +
 	     keyword);
