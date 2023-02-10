@@ -172,8 +172,11 @@ private:
   std::unique_ptr<Cell> ParseFracTag(wxXmlNode *node);
   //! Parse a text XML tag to a Cell.
   std::unique_ptr<Cell> ParseText(wxXmlNode *node, TextStyle style = TS_MATH);
-  //! Parse a Variable name tag t a Cell.
-  std::unique_ptr<Cell> ParseVariableNameTag(wxXmlNode *node){return ParseText(node->GetChildren(), TS_VARIABLE);}
+  /*! Parse a Variable name / operator tag to a Cell.
+
+    Operators identify themself as variable.
+   */
+  std::unique_ptr<Cell> ParseVariableNameTag(wxXmlNode *node);
   //! Parse an Operator name tag to a Cell.
   std::unique_ptr<Cell> ParseOperatorNameTag(wxXmlNode *node){return ParseText(node->GetChildren(), TS_FUNCTION);}
   //! Parse a miscellaneous text tag to a Cell.

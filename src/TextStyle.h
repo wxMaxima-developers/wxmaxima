@@ -216,6 +216,7 @@ enum TextStyle : int8_t
   TS_MATH               ,
   TS_TEXT               ,
   TS_VARIABLE           ,
+  TS_OPERATOR           ,
   TS_NUMBER             ,
   TS_FUNCTION           ,
   TS_SPECIAL_CONSTANT   ,

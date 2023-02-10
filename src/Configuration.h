@@ -129,7 +129,8 @@ public:
   /*! All maxima operator names we know
    */
   StringHash m_maximaOperators;
-
+  //! Coincides name with a operator known to maxima?
+  bool IsOperator(wxString name){return !(m_maximaOperators.find(name) == m_maximaOperators.end());}
   const wxEnvVariableHashMap& MaximaEnvVars() const {return m_maximaEnvVars;}
   wxEnvVariableHashMap m_maximaEnvVars;
 
