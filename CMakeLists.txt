@@ -141,7 +141,7 @@ message(STATUS "Looking for wxWidgets libraries in: ${wxWidgets_LIB_DIR}")
 if(WXM_DISABLE_WEBVIEW)
 	find_package(wxWidgets 3 REQUIRED richtext aui adv html core xml net base)
 else()
-	find_package(wxWidgets 3 REQUIRED richtext aui adv html core xml net base webview )
+	find_package(wxWidgets 3 REQUIRED richtext aui adv html webview core xml net base )
 endif()
 include(${wxWidgets_USE_FILE})
 
