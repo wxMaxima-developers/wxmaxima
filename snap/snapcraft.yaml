@@ -40,4 +40,8 @@ parts:
      - wx-common
      - libwxgtk-webview3.0-gtk3-0v5
      - gettext
-     - texlive
+  removestupidlink:
+    plugin: dump
+    source: .
+    organize:
+      removestupidlink.sh: bin/
