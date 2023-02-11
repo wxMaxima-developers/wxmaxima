@@ -28,7 +28,7 @@ set(MACOSX_BUNDLE_LONG_VERSION_STRING "wxMaxima ${VERSION}")
 #
 
 option(WXM_DISABLE_WEBVIEW
-    "Disable webview for https://trac.macports.org/ticket/62904")
+    "Disable webview for https://trac.macports.org/ticket/62904" OFF)
 option(WXM_ENABLE_PRECOMPILED_HEADERS
     "Enable precompiled headers to potentially speed up compilation." OFF)
 option(WXM_USE_CPPCHECK
