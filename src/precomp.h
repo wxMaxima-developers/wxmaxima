@@ -27,8 +27,10 @@
 #include <wx/panel.h>
 #include <wx/textctrl.h>
 #include <wx/checkbox.h>
+#ifdef USE_WEBVIEW
 #include <wx/webview.h>
 #ifdef __WXMSW__
 #include <wx/msw/webview_ie.h>
+#endif
 #endif
 #endif

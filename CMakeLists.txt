@@ -14,7 +14,7 @@ if(WIN32)
     enable_language(RC)
 endif()
 
-set(VERSION 22.12.0-DevelopmentSnapshot)
+set(VERSION 23.02.0-DevelopmentSnapshot)
 set(GITVERSION ${VERSION})
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -27,6 +27,8 @@ set(MACOSX_BUNDLE_LONG_VERSION_STRING "wxMaxima ${VERSION}")
 # Options
 #
 
+option(WXM_DISABLE_WEBVIEW
+    "Disable webview for https://trac.macports.org/ticket/62904")
 option(WXM_ENABLE_PRECOMPILED_HEADERS
     "Enable precompiled headers to potentially speed up compilation." OFF)
 option(WXM_USE_CPPCHECK
@@ -136,7 +138,11 @@ message(STATUS "Looking for wxWidgets libraries in: ${wxWidgets_LIB_DIR}")
 # here: https://docs.wxwidgets.org/3.0/page_libs.html#page_libs_wxrichtext
 # The root dependency (base) must come last.
 #
-find_package(wxWidgets 3 REQUIRED richtext aui adv html webview core xml net base)
+if(WXM_DISABLE_WEBVIEW)
+	find_package(wxWidgets 3 REQUIRED richtext aui adv html core xml net base)
+else()
+	find_package(wxWidgets 3 REQUIRED richtext aui adv html core xml net base webview )
+endif()
 include(${wxWidgets_USE_FILE})
 
 

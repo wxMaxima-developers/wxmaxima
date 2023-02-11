@@ -170,6 +170,19 @@ MathParser::MathParser(Configuration *cfg, const wxString &zipfile) {
 
 MathParser::~MathParser() {}
 
+std::unique_ptr<Cell> MathParser::ParseVariableNameTag(wxXmlNode *node){
+  auto children = node->GetChildren();
+  if (children != NULL)
+    {
+      if((m_configuration->IsOperator(node->GetContent())) ||
+	 (node->GetAttribute(wxT("type")) == wxT("Operator")))
+	return ParseText(children, TS_OPERATOR);
+      else
+	return ParseText(children, TS_VARIABLE);
+    }
+  return ParseText(children, TS_VARIABLE);
+}
+
 std::unique_ptr<Cell> MathParser::ParseHiddenOperatorTag(wxXmlNode *node) {
   auto retval = ParseText(node->GetChildren());
   retval->SetHidableMultSign(true);
@@ -274,6 +287,8 @@ std::unique_ptr<Cell> MathParser::ParseMiscTextTag(wxXmlNode *node) {
       style = TS_ERROR;
     if (node->GetAttribute(wxT("type")) == wxT("ASCII-Art"))
       style = TS_ASCIIMATHS;
+    if (node->GetAttribute(wxT("type")) == wxT("Operator"))
+      style = TS_OPERATOR;
     if (node->GetAttribute(wxT("type")) == wxT("warning"))
       style = TS_WARNING;
     return ParseText(node->GetChildren(), style);

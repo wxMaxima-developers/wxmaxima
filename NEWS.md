@@ -1,10 +1,14 @@
 # Current
+
+# 23.02.0
  * Fix XML generation of wxmx documents (#1556)
  * A faster font cache
  * Faster communication between wxMaxima and maxima
  * Dropped the dependency on an [internal] ww898
  * More consistent text style handling
  * A try to improve locale management on the Mac platform
+ * A separate style for operators (#1002)
+ * A nicer ChangeLog
 
 # 22.12.0
  * A cleaner status bar with double-click actions

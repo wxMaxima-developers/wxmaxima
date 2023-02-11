@@ -40,20 +40,23 @@
 #include <wx/mstream.h>
 #include <wx/string.h>
 #include <wx/txtstrm.h>
+#ifdef USE_WEBVIEW
 #include <wx/webview.h>
+#ifdef __WXMSW__
+#include <wx/msw/webview_ie.h>
+#endif
+#endif
 #include <wx/wfstream.h>
 #include <wx/wx.h>
 #include <wx/xml/xml.h>
 #include <algorithm>
-#ifdef __WXMSW__
-#include <wx/msw/webview_ie.h>
-#endif
 
 Configuration::Configuration(wxDC *dc, InitOpt options) : m_dc(dc) {
   if(m_styleNames.empty())
     {
       m_styleNames[TS_CODE_DEFAULT        ] = _("Code Default"); 
       m_styleNames[TS_VARIABLE            ] = _("Output: Variable names");
+      m_styleNames[TS_OPERATOR            ] = _("Output: Operators");
       m_styleNames[TS_NUMBER              ] = _("Output: Numbers and Digits");
       m_styleNames[TS_FUNCTION            ] = _("Output: Function names");
       m_styleNames[TS_SPECIAL_CONSTANT    ] = _("Output: Special constants (%e,%i)");
@@ -108,6 +111,7 @@ Configuration::Configuration(wxDC *dc, InitOpt options) : m_dc(dc) {
   if(m_2dMathStyles.empty())
     {
       m_2dMathStyles.push_back(TS_VARIABLE);
+      m_2dMathStyles.push_back(TS_OPERATOR);
       m_2dMathStyles.push_back(TS_NUMBER);
       m_2dMathStyles.push_back(TS_FUNCTION);
       m_2dMathStyles.push_back(TS_SPECIAL_CONSTANT);
@@ -1150,6 +1154,7 @@ void Configuration::ReadStyles(const wxString &file) {
   m_styles[TS_STRING].Read(config, "Style/String/");
   m_styles[TS_ASCIIMATHS].Read(config, "Style/ASCIImaths/");
   m_styles[TS_VARIABLE].Read(config, "Style/Variable/");
+  m_styles[TS_OPERATOR].Read(config, "Style/Operator/");
   m_styles[TS_FUNCTION].Read(config, "Style/Function/");
   m_styles[TS_HIGHLIGHT].Read(config, "Style/Highlight/");
   m_styles[TS_TEXT_BACKGROUND].Read(config, "Style/Background/");
@@ -1433,6 +1438,7 @@ bool Configuration::CharVisiblyDifferent(wxChar ch, wxChar otherChar,
 }
 
 bool Configuration::OfferInternalHelpBrowser() const {
+#ifdef USE_WEBVIEW
 #ifdef __WINDOWS__
 #if wxCHECK_VERSION(3, 1, 5)
   return wxWebView::IsBackendAvailable(wxWebViewBackendEdge);
@@ -1441,6 +1447,9 @@ bool Configuration::OfferInternalHelpBrowser() const {
 #endif
 #else
   return true;
+#endif
+#else
+  return false;
 #endif
 }
 
@@ -1556,6 +1565,7 @@ void Configuration::WriteStyles(wxConfigBase *config) {
   m_styles[TS_STRING].Write(config, "Style/String/");
   m_styles[TS_ASCIIMATHS].Write(config, "Style/ASCIImaths/");
   m_styles[TS_VARIABLE].Write(config, "Style/Variable/");
+  m_styles[TS_OPERATOR].Write(config, "Style/Operator/");
   m_styles[TS_FUNCTION].Write(config, "Style/Function/");
   m_styles[TS_HIGHLIGHT].Write(config, "Style/Highlight/");
   m_styles[TS_TEXT_BACKGROUND].Write(config, "Style/Background/");

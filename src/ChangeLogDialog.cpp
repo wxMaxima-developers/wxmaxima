@@ -31,6 +31,7 @@
 #include <wx/string.h>
 #include <wx/textctrl.h>
 #include <wx/txtstrm.h>
+#include <wx/regex.h>
 
 ChangeLogDialog::ChangeLogDialog(wxWindow *parent)
   : wxDialog(parent, -1, _("ChangeLog"), wxDefaultPosition, wxDefaultSize,
@@ -47,20 +48,25 @@ ChangeLogDialog::ChangeLogDialog(wxWindow *parent)
 
   m_license = new wxTextCtrl(
 			     this, -1, wxEmptyString, wxDefaultPosition, wxDefaultSize,
-			     wxTE_MULTILINE | wxHSCROLL | wxTE_READONLY | wxTE_AUTO_URL);
+			     wxTE_MULTILINE | wxTE_BESTWRAP | wxTE_READONLY | wxTE_AUTO_URL);
 
   wxFont fnt = m_license->GetFont();
   wxClientDC dc(this);
   dc.SetFont(fnt);
   long textWidth = 0;
+  wxRegEx issueLink("#([0-9][0-9]*)");
+  wxRegEx bullet("^ \\*");
+
   while (!istream.Eof()) {
     line = textIn.ReadLine();
-    licenseText += line + wxT("\n");
     wxSize linesize = dc.GetTextExtent(line);
     if (linesize.x > textWidth) {
       textWidth = linesize.x;
       m_longestLine = line;
     }
+    issueLink.Replace(&line,wxT("https://github.com/wxMaxima-developers/wxmaxima/issues/\\1"));
+    bullet.Replace(&line,wxT("\u00a0\u2022"));
+    licenseText += line + wxT("\n");
   }
 
   m_license->SetMinSize(wxSize(textWidth + 20 * GetContentScaleFactor(),
