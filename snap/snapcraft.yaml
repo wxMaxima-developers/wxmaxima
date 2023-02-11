@@ -40,6 +40,9 @@ parts:
      - wx-common
      - libwxgtk-webview3.0-gtk3-0v5
      - gettext
+     - libwxbase3.0-dev
+     - libwxgtk3.0-gtk3-dev
+     - libwxgtk-webview3.0-gtk3-dev
     stage:
      - -usr/share/texmf/ls-R
  
