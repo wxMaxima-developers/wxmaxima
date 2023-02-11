@@ -40,14 +40,16 @@
 #include <wx/mstream.h>
 #include <wx/string.h>
 #include <wx/txtstrm.h>
+#ifdef USE_WEBVIEW
 #include <wx/webview.h>
+#ifdef __WXMSW__
+#include <wx/msw/webview_ie.h>
+#endif
+#endif
 #include <wx/wfstream.h>
 #include <wx/wx.h>
 #include <wx/xml/xml.h>
 #include <algorithm>
-#ifdef __WXMSW__
-#include <wx/msw/webview_ie.h>
-#endif
 
 Configuration::Configuration(wxDC *dc, InitOpt options) : m_dc(dc) {
   if(m_styleNames.empty())
@@ -1436,6 +1438,7 @@ bool Configuration::CharVisiblyDifferent(wxChar ch, wxChar otherChar,
 }
 
 bool Configuration::OfferInternalHelpBrowser() const {
+#ifdef USE_WEBVIEW
 #ifdef __WINDOWS__
 #if wxCHECK_VERSION(3, 1, 5)
   return wxWebView::IsBackendAvailable(wxWebViewBackendEdge);
@@ -1444,6 +1447,9 @@ bool Configuration::OfferInternalHelpBrowser() const {
 #endif
 #else
   return true;
+#endif
+#else
+  return false;
 #endif
 }
 

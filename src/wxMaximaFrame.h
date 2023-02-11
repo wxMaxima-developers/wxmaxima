@@ -45,7 +45,9 @@
 
 #include "ScrollingGenWizPanel.h"
 #include "Worksheet.h"
+#ifdef USE_WEBVIEW
 #include "HelpBrowser.h"
+#endif
 #include "RecentDocuments.h"
 #include "Version.h"
 #include "MainMenuBar.h"

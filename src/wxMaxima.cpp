@@ -4540,11 +4540,13 @@ void wxMaxima::LaunchHelpBrowser(wxString uri) {
 	}
       else
       {
+	#ifdef USE_WEBVIEW
         SuppressErrorDialogs suppressor;
         if(wxLaunchDefaultBrowser(uri))
 	  wxLogMessage(_("Didn't get a help browser launch program command line, but can request the system's default help browser."));
 	else
 	  wxLogMessage(_("Launching the system's default help browser failed."));
+	#endif
       }
     } else {
       wxString command;
