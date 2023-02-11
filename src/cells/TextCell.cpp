@@ -32,7 +32,7 @@
 #include "TextCell.h"
 #include "CellImpl.h"
 #include "StringUtils.h"
-#include "wx/config.h"
+#include <wx/config.h>
 
 TextCell::TextCell(GroupCell *group, Configuration *config,
                    const wxString &text, TextStyle style)
