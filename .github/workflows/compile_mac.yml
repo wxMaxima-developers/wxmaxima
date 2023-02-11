@@ -141,7 +141,7 @@ jobs:
              mkdir ../build-wxm
              export CXXFLAGS=-I/opt/local/include
              export LDFLAGS=-I/opt/local/lib
-             cmake -S . -B ../build-wxm -G Ninja -DCMAKE_INSTALL_PREFIX=. -DCMAKE_UNITY_BUILD_BATCH_SIZE=8 -DWXM_UNIT_TESTS=YES -DCMAKE_UNITY_BUILD=YES
+             cmake -S . -B ../build-wxm -G Ninja -DCMAKE_INSTALL_PREFIX=. -DCMAKE_UNITY_BUILD_BATCH_SIZE=8 -DWXM_UNIT_TESTS=YES -DCMAKE_UNITY_BUILD=YES -DWXM_DISABLE_WEBVIEW=YES
 
       - name: Check Info.plist
         run: |
