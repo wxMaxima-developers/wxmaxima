@@ -7057,7 +7057,7 @@ void wxMaxima::MaximaMenu(wxCommandEvent &event) {
   }
   else if(event.GetId() == EventIDs::menu_stringproc_split){
     CommandWiz(_("Split"), wxEmptyString, wxEmptyString, wxT("split(#1#,#2#);"),
-               _("String:"), expr, wxEmptyString, _("Deliminiter:"), wxT(";"),
+               _("String:"), expr, wxEmptyString, _("Delimiter:"), wxT(";"),
                wxEmptyString);
   }
   else if(event.GetId() == EventIDs::menu_stringproc_sposition){
