@@ -95,40 +95,7 @@ int ConfigDialogue::GetImageSize() {
 
 wxBitmap ConfigDialogue::GetImage(wxString name, unsigned char *data,
                                   size_t len) {
-  int ppi;
-#if wxCHECK_VERSION(3, 1, 1)
-  wxDisplay display;
-
-  int display_idx = wxDisplay::GetFromWindow(this);
-  if (display_idx < 0)
-    ppi = 72;
-  else
-    ppi = wxDisplay(display_idx).GetPPI().x;
-#else
-  ppi = wxGetDisplayPPI().x;
-#endif
-  if (ppi <= 10)
-    ppi = wxGetDisplayPPI().x;
-  if (ppi <= 10)
-    ppi = 72;
-
-  int targetSize = wxMax(ppi, 75) * CONFIG_ICON_SCALE;
-
-  int sizeA = 128 << 4;
-  while (sizeA * 3 / 2 > targetSize && sizeA >= 32) {
-    sizeA >>= 1;
-  }
-
-  int sizeB = 192 << 4;
-  while (sizeB * 4 / 3 > targetSize && sizeB >= 32) {
-    sizeB >>= 1;
-  }
-
-  if (std::abs(targetSize - sizeA) < std::abs(targetSize - sizeB)) {
-    targetSize = sizeA;
-  } else {
-    targetSize = sizeB;
-  }
+  int targetSize = GetImageSize();
 
   wxBitmap bmp = wxArtProvider::GetBitmap(name, wxART_MENU,
                                           wxSize(targetSize, targetSize));
@@ -227,7 +194,7 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent, Configuration *cfg)
   SetName("Configuration");
 
   int imgSize = GetImageSize();
-  m_imageList = std::unique_ptr<wxImageList>(new wxImageList(imgSize, imgSize));
+  m_imageList = std::unique_ptr<wxImageList>(new wxImageList(imgSize, imgSize,false,0));
   m_imageList->Add(
 		   GetImage(wxT("editing"), EDITING_SVG_GZ, EDITING_SVG_GZ_SIZE));
   m_imageList->Add(GetImage(wxT("maxima"), MAXIMA_SVG_GZ, MAXIMA_SVG_GZ_SIZE));
@@ -244,17 +211,9 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent, Configuration *cfg)
   m_imageList->Add(GetImage(wxT("edit-undo"), VIEW_REFRESH_SVG_GZ,
                             VIEW_REFRESH_SVG_GZ_SIZE));
 
-#if defined(__WXMSW__)
-  // Must be called before pages are added, otherwise wxWidgets dumps a warning
-  // to the console:
-  // [...]\src\msw\window.cpp(594): 'SetFocus' failed with error 0x00000057 (The
-  // parameter is incorrect.).
-  CreateButtons(wxOK | wxCANCEL);
-#endif
   m_notebook = GetBookCtrl();
 
   m_notebook->SetImageList(m_imageList.get());
-
   m_notebook->AddPage(CreateWorksheetPanel(), _("Worksheet"), true, 0);
   m_notebook->AddPage(CreateMaximaPanel(), _("Maxima"), false, 1);
   m_notebook->AddPage(CreateStylePanel(), _("Style"), false, 2);
@@ -265,7 +224,7 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent, Configuration *cfg)
   m_notebook->AddPage(CreateRevertToDefaultsPanel(),
                       _("Revert all to defaults"), false, 7);
 
-#if !defined(__WXMSW__) && !defined(__WXOSX__)
+#if !defined(__WXOSX__)
   CreateButtons(wxOK | wxCANCEL);
 #endif
 
