@@ -400,17 +400,23 @@ wxBitmap StatusBar::GetImage(wxString name, unsigned char *data, size_t len) {
     sizeB >>= 1;
   }
 
-  if (!img.IsOk())
-    return SvgBitmap(this, data, len, targetWidth, targetWidth);
-
   targetWidth = static_cast<double>(GetSize().GetHeight());
   targetHeight = static_cast<double>(GetSize().GetHeight());
 
-  img.Rescale(targetWidth, targetHeight, wxIMAGE_QUALITY_HIGH);
-
+  if (img.IsOk())
+    {
+      img.Rescale(targetWidth, targetHeight, wxIMAGE_QUALITY_HIGH);
 #if defined __WXOSX__
-  return wxBitmap(img, wxBITMAP_SCREEN_DEPTH, GetContentScaleFactor());
+      bmp = wxBitmap(img, wxBITMAP_SCREEN_DEPTH, GetContentScaleFactor());
 #else
-  return wxBitmap(img, wxBITMAP_SCREEN_DEPTH);
+      bmp = wxBitmap(img, wxBITMAP_SCREEN_DEPTH);
 #endif
+    }
+  else
+    bmp = SvgBitmap(this, data, len, targetWidth, targetWidth);
+  
+  wxASSERT(bmp.IsOk());
+  if(!bmp.IsOk())
+    bmp = wxBitmap(targetWidth, targetWidth);
+  return bmp;
 }

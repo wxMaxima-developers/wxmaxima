@@ -104,12 +104,18 @@ wxBitmap ConfigDialogue::GetImage(wxString name, unsigned char *data,
   if (bmp.IsOk()) {
     img = bmp.ConvertToImage();
   }
-  if (!img.IsOk())
-    return SvgBitmap(this, data, len, targetSize, targetSize);
-  else {
-    img.Rescale(targetSize, targetSize, wxIMAGE_QUALITY_HIGH);
-    return wxBitmap(img, wxBITMAP_SCREEN_DEPTH);
-  }
+  if (img.IsOk())
+    {
+      img.Rescale(targetSize, targetSize, wxIMAGE_QUALITY_HIGH);
+      bmp = wxBitmap(img, wxBITMAP_SCREEN_DEPTH);
+    }
+  else
+    bmp = SvgBitmap(this, data, len, targetSize, targetSize);
+
+  wxASSERT(bmp.IsOk());
+  if(!bmp.IsOk())
+    bmp = wxBitmap(targetSize, targetSize);
+  return bmp;
 }
 
 ConfigDialogue::ConfigDialogue(wxWindow *parent, Configuration *cfg)
