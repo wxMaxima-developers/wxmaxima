@@ -42,7 +42,11 @@ static constexpr int INPUT_RESTART_PERIOD = -1;
 
 wxDEFINE_EVENT(EVT_MAXIMA, MaximaEvent);
 
-Maxima::Maxima(wxSocketBase *socket) : m_socket(socket) {
+Maxima::Maxima(wxSocketBase *socket) :
+  m_socket(socket),
+  m_socketInput(*m_socket),
+  m_textInput(m_socketInput, wxT("\n"), wxConvUTF8)
+{
   wxASSERT(socket);
   Bind(wxEVT_TIMER, wxTimerEventHandler(Maxima::TimerEvent), this);
   Bind(wxEVT_SOCKET, wxSocketEventHandler(Maxima::SocketEvent), this);
