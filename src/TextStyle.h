@@ -222,7 +222,6 @@ enum TextStyle : int8_t
   TS_SPECIAL_CONSTANT   ,
   TS_GREEK_CONSTANT     ,
   TS_STRING             ,
-  TS_INPUT              ,
   TS_OUTDATED           ,
   TS_MAIN_PROMPT        ,
   TS_OTHER_PROMPT       ,

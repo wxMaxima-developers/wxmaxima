@@ -1,4 +1,6 @@
 # Current
+ * Make absolute sure all bitmaps are valid (#1749)
+ * More styles consistency (#1753)
 
 # 23.02.0
  * Fix XML generation of wxmx documents (#1556)

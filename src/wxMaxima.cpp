@@ -5174,7 +5174,7 @@ void wxMaxima::UpdateToolBar() {
       editor = group->GetEditable();
   }
 
-  bool canEvaluateNext = ((editor != NULL) && (editor->GetStyle() == TS_INPUT));
+  bool canEvaluateNext = ((editor != NULL) && (editor->GetStyle() == TS_CODE_DEFAULT));
 
   if (!canEvaluateNext) {
     if (m_worksheet->HCaretActive()) {

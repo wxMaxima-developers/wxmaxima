@@ -87,7 +87,7 @@ void Cell::SetType(CellType type) {
     // HardLineBreak();
     break;
   case MC_TYPE_INPUT:
-    SetStyle(TS_INPUT);
+    SetStyle(TS_CODE_DEFAULT);
     break;
   case MC_TYPE_ERROR:
     SetStyle(TS_ERROR);
@@ -968,12 +968,8 @@ wxColour Cell::GetForegroundColor() const {
   wxColour color;
   if (m_highlight)
     color = m_configuration->GetColor(TS_HIGHLIGHT);
-  else if (m_type == MC_TYPE_PROMPT)
-    color = m_configuration->GetColor(TS_OTHER_PROMPT);
-  else if (m_type == MC_TYPE_INPUT)
-    color = m_configuration->GetColor(TS_INPUT);
-  else
-    color = m_configuration->GetColor(TS_MATH);
+  else 
+    color = m_configuration->GetColor(GetStyle());
 
   return color;
 }
@@ -1038,7 +1034,7 @@ void Cell::SetForeground() {
 
 bool Cell::IsMath() const {
   return !(GetStyle() == TS_LABEL || GetStyle() == TS_USERLABEL ||
-           GetStyle() == TS_INPUT);
+           GetStyle() == TS_CODE_DEFAULT);
 }
 
 #if wxUSE_ACCESSIBILITY

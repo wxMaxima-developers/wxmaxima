@@ -51,6 +51,7 @@ EditorCell::EditorCell(GroupCell *group, Configuration *config,
   m_height = m_charHeight + 2 * Scale_Px(2);
   m_center = m_height / 2;
   m_width = 2 * Scale_Px(2);
+  SetStyle(TS_CODE_DEFAULT);
 }
 
 wxString EditorCell::EscapeHTMLChars(wxString input) {

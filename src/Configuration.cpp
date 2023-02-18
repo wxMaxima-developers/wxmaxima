@@ -54,7 +54,6 @@
 Configuration::Configuration(wxDC *dc, InitOpt options) : m_dc(dc) {
   if(m_styleNames.empty())
     {
-      m_styleNames[TS_CODE_DEFAULT        ] = _("Code Default"); 
       m_styleNames[TS_VARIABLE            ] = _("Output: Variable names");
       m_styleNames[TS_OPERATOR            ] = _("Output: Operators");
       m_styleNames[TS_NUMBER              ] = _("Output: Numbers and Digits");
@@ -62,7 +61,7 @@ Configuration::Configuration(wxDC *dc, InitOpt options) : m_dc(dc) {
       m_styleNames[TS_SPECIAL_CONSTANT    ] = _("Output: Special constants (%e,%i)");
       m_styleNames[TS_GREEK_CONSTANT      ] = _("Output: Latin names as greek symbols");
       m_styleNames[TS_STRING              ] = _("Output: Strings");
-      m_styleNames[TS_INPUT               ] = _("Maxima input");
+      m_styleNames[TS_CODE_DEFAULT        ] = _("Code Default (Maxima input)");
       m_styleNames[TS_MAIN_PROMPT         ] = _("Input labels");
       m_styleNames[TS_OTHER_PROMPT        ] = _("Maxima question labels");
       m_styleNames[TS_LABEL               ] = _("Output labels");
@@ -117,7 +116,6 @@ Configuration::Configuration(wxDC *dc, InitOpt options) : m_dc(dc) {
       m_2dMathStyles.push_back(TS_SPECIAL_CONSTANT);
       m_2dMathStyles.push_back(TS_GREEK_CONSTANT);
       m_2dMathStyles.push_back(TS_STRING);
-      m_2dMathStyles.push_back(TS_INPUT);
       m_2dMathStyles.push_back(TS_MAIN_PROMPT);
       m_2dMathStyles.push_back(TS_OTHER_PROMPT);
       m_2dMathStyles.push_back(TS_LABEL);
@@ -474,7 +472,6 @@ void Configuration::InitStyles() {
   m_styles[TS_ASCIIMATHS].FontSize(12.0);
   m_styles[TS_TEXT].SetFontName(monospace.GetFaceName());
   m_styles[TS_TEXT].FontSize(12.0);
-  m_styles[TS_CODE_DEFAULT].Bold().Italic().FontSize(12);
   m_styles[TS_MATH].FontSize(12.0);
 
   m_styles[TS_TEXT].FontSize(12);
@@ -500,7 +497,7 @@ void Configuration::InitStyles() {
   m_styles[TS_LABEL].Color(255, 192, 128);
   m_styles[TS_USERLABEL].Color(255, 64, 0);
   // m_styles[TS_SPECIAL_CONSTANT];
-  m_styles[TS_INPUT].Color(*wxBLUE);
+  m_styles[TS_CODE_DEFAULT].Bold().Italic().FontSize(12);
   // m_styles[TS_NUMBER];
   m_styles[TS_STRING].Italic();
   // m_styles[TS_GREEK_CONSTANT];
@@ -1115,7 +1112,6 @@ void Configuration::ReadStyles(const wxString &file) {
     config = new wxFileConfig(str);
   }
 
-  m_styles[TS_CODE_DEFAULT].Read(config, "Style/Default/");
 
   // Read legacy defaults for the math font name and size
   long tmpLong;
@@ -1149,7 +1145,7 @@ void Configuration::ReadStyles(const wxString &file) {
   m_styles[TS_USERLABEL].Read(config, "Style/UserDefinedLabel/");
   m_styles[TS_SPECIAL_CONSTANT].Read(config, "Style/Special/");
   m_styles[TS_GREEK_CONSTANT].Read(config, "Style/Greek/");
-  m_styles[TS_INPUT].Read(config, "Style/Input/");
+  m_styles[TS_CODE_DEFAULT].Read(config, "Style/Input/");
   m_styles[TS_NUMBER].Read(config, "Style/Number/");
   m_styles[TS_STRING].Read(config, "Style/String/");
   m_styles[TS_ASCIIMATHS].Read(config, "Style/ASCIImaths/");
@@ -1535,7 +1531,6 @@ void Configuration::WriteStyles(wxConfigBase *config) {
   config->Write("autosubscript", m_autoSubscript);
   config->Write(wxT("ZoomFactor"), m_zoomFactor);
   // Fonts
-  m_styles[TS_CODE_DEFAULT].Write(config, "Style/Default/");
   m_styles[TS_MATH].Write(config, "Style/Math/");
   m_styles[TS_TEXT].Write(config, "Style/Text/");
   m_styles[TS_CODE_VARIABLE].Write(config, "Style/CodeHighlighting/Variable/");
@@ -1560,7 +1555,7 @@ void Configuration::WriteStyles(wxConfigBase *config) {
   m_styles[TS_USERLABEL].Write(config, "Style/UserDefinedLabel/");
   m_styles[TS_SPECIAL_CONSTANT].Write(config, "Style/Special/");
   m_styles[TS_GREEK_CONSTANT].Write(config, "Style/Greek/");
-  m_styles[TS_INPUT].Write(config, "Style/Input/");
+  m_styles[TS_CODE_DEFAULT].Write(config, "Style/Input/");
   m_styles[TS_NUMBER].Write(config, "Style/Number/");
   m_styles[TS_STRING].Write(config, "Style/String/");
   m_styles[TS_ASCIIMATHS].Write(config, "Style/ASCIImaths/");
