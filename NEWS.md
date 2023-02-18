@@ -1,6 +1,7 @@
 # Current
  * Make absolute sure all bitmaps are valid (#1749)
  * More styles consistency (#1753)
+ * The letter delta was interpreted wrongly (#1754)
 
 # 23.02.0
  * Fix XML generation of wxmx documents (#1556)
