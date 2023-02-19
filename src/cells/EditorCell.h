@@ -187,8 +187,10 @@ public:
     
     Automatically calls DeactivateCursor on an eventual cell the cursor currently is in.
     Normally Mathctrl::SetActiveCell() is used in order to get this function called.
+
+    \return true, if recalculation is needed.
   */
-  void ActivateCursor();
+  bool ActivateCursor();
 
   //! Deactivate the blinking cursor in the EditorCell it is in.
   void DeactivateCursor();

@@ -2286,7 +2286,8 @@ void EditorCell::DeactivateCursor() {
   m_cellPointers->m_activeCell = nullptr;
 }
 
-void EditorCell::ActivateCursor() {
+bool EditorCell::ActivateCursor() {
+  bool retval = false;
   if (!m_cellPointers->m_activeCell)
     DeactivateCursor();
 
@@ -2299,10 +2300,16 @@ void EditorCell::ActivateCursor() {
   m_paren1 = m_paren2 = -1;
 
   // upon activation unhide the parent groupcell
-  m_firstLineOnly = false;
+  if(m_firstLineOnly)
+    {
+      m_firstLineOnly = false;
+      StyleText();
+      retval = true;
+    }
   GetGroup()->Hide(false);
   if (GetType() == MC_TYPE_INPUT)
     FindMatchingParens();
+  return retval;
 }
 
 bool EditorCell::AddEnding() {

@@ -2068,7 +2068,7 @@ void Worksheet::OnMouseLeftInGcCell(wxMouseEvent &WXUNUSED(event),
         (m_configuration->ShowCodeCells() ||
          editor->GetType() != MC_TYPE_INPUT || !clickedInGC->GetOutput())) {
       editor->MouseSelectionStartedHere();
-      SetActiveCell(editor, false); // do not refresh as we will do so later
+      SetActiveCell(editor);
       GetActiveCell()->SelectPointText(m_down);
       m_blinkDisplayCaret = true;
       m_clickType = CLICK_TYPE_INPUT_SELECTION;
@@ -2202,7 +2202,7 @@ void Worksheet::OnMouseLeftDown(wxMouseEvent &event) {
   m_hCaretPositionStart = m_hCaretPositionEnd = NULL;
   m_hCaretPosition = NULL;
   m_hCaretActive = false;
-  SetActiveCell(NULL, false);
+  SetActiveCell(NULL);
 
   wxRect rect;
   GroupCell *previous = NULL;
@@ -6724,7 +6724,8 @@ void Worksheet::SetActiveCell(EditorCell *cell, bool callRefresh) {
   if (cell) {
     m_cellPointers.m_selectionStart = nullptr;
     m_cellPointers.m_selectionEnd = nullptr;
-    cell->ActivateCursor();
+    if(cell->ActivateCursor())
+      Recalculate(cell->GetGroup());
     if (!m_fullRedrawRequested)
       m_caretTimer.Stop();
   } else if (GetActiveCell())
