@@ -468,11 +468,11 @@ public:
     }
 
   //! Get the list of commands, parenthesis, strings and whitespaces in a code cell
-  const MaximaTokenizer::TokenList &GetTokens();
+  const MaximaTokenizer::TokenList &GetDisplayedTokens();
+  //! Get the list of commands, parenthesis, strings and whitespaces including hidden ones
+  const MaximaTokenizer::TokenList &GetAllTokens();
 
 private:
-  MaximaTokenizer::TokenList m_tokens_including_hidden;
-
   //! Did the zoom factor change since the last recalculation?
   bool IsZoomFactorChanged() const;
   //! The zoom factor we had the last time we recalculated this cell.
@@ -490,7 +490,8 @@ private:
   class StyledText
   {
   private:
-    //! The text of this text portion
+    /*! The text of this text portion
+     */
     wxString m_text;
     //! Chars that mark continued indentation
     wxString m_indentChar;
@@ -593,6 +594,7 @@ private:
   void SetState(const HistoryEntry &state);
   //! Append the editor's state to the history
   void AppendStateToHistory();
+  std::vector<StyledText> &GetStyledText();
 
 //** Large fields
 //**
@@ -604,8 +606,12 @@ private:
   std::vector<wxString> m_wordList;
 
   //! The individual commands, parenthesis, strings and whitespaces a code cell consists of
-  MaximaTokenizer::TokenList m_tokens;
+   MaximaTokenizer::TokenList m_tokens;
+  //! The individual commands, parenthesis, strings and whitespaces including hidden lines
+  MaximaTokenizer::TokenList m_tokens_including_hidden;
 
+  /*! The text this Editor contains
+   */
   wxString m_text;
   std::vector<StyledText> m_styledText;
 
@@ -655,6 +661,13 @@ private:
 //**
   AFontStyle m_fontStyle;
   AFontWeight m_fontWeight;
+
+
+  //! Does the list of tokens including hidden items need to be recalculated?
+  bool m_tokens_including_hidden_valid = false;
+  //! Does the list of displayed tokens need to be recalculated?
+  bool m_tokens_valid = false;
+
 
 //** Bitfield objects (2 bytes)
 //**

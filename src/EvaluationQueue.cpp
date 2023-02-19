@@ -116,7 +116,7 @@ void EvaluationQueue::AddTokens(GroupCell *cell) {
     return;
   wxString token;
   int index = 0;
-  for (auto const &tok : cell->GetEditable()->GetTokens()) {
+  for (auto const &tok : cell->GetEditable()->GetAllTokens()) {
     const TextStyle itemStyle = tok.GetStyle();
     wxString itemText = tok.GetText();
     itemText.Replace(wxT("\u00a0"), " ");
