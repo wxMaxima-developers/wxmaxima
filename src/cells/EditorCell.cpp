@@ -2316,7 +2316,7 @@ bool EditorCell::AddEnding() {
 
   bool endingNeeded = true;
 
-  for (auto const &tok : m_tokens) {
+  for (auto const &tok : GetAllTokens()) {
     TextStyle itemStyle = tok.GetStyle();
     if ((itemStyle == TS_CODE_ENDOFLINE) || (itemStyle == TS_CODE_LISP)) {
       endingNeeded = false;
