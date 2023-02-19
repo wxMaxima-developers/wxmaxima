@@ -3019,17 +3019,19 @@ void EditorCell::StyleTextCode() {
   int indentationPixels = 0;
   wxString textToStyle = m_text;
   SetFont();
+  wxString suppressedLinesInfo;
 
   // Handle folding of EditorCells
   if (m_firstLineOnly) {
     long newlinepos = textToStyle.Find(wxT("\n"));
     if (newlinepos != wxNOT_FOUND) {
       int lines = textToStyle.Freq(wxT('\n'));
+      textToStyle = textToStyle.Left(newlinepos);
       if (lines > 1)
-        textToStyle = textToStyle.Left(newlinepos) +
+        suppressedLinesInfo = 
 	  wxString::Format(_(" ... + %i hidden lines"), lines);
       else
-        textToStyle = textToStyle.Left(newlinepos) + _(" ... + 1 hidden line");
+        suppressedLinesInfo = _(" ... + 1 hidden line");
     }
   }
 
@@ -3096,6 +3098,8 @@ void EditorCell::StyleTextCode() {
     }
   }
   std::sort(m_wordList.begin(), m_wordList.end());
+  if(!suppressedLinesInfo.IsEmpty())
+    m_styledText.push_back(StyledText(TS_CODE_COMMENT, suppressedLinesInfo));
 }
 
 void EditorCell::StyleTextTexts() {
