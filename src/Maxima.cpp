@@ -42,6 +42,10 @@ static constexpr int INPUT_RESTART_PERIOD = -1;
 
 wxDEFINE_EVENT(EVT_MAXIMA, MaximaEvent);
 
+// Attention: 'wxT("\n"), wxConvUTF8' should be the default and one might think, one can omit these
+// parameters, but don't do it. wxWidgets (at least older versions, which are still used in Linux
+// distributions) had a bug, so that without these parameters one get wrong characters.
+// See: https://github.com/wxWidgets/wxWidgets/issues/14720#issuecomment-1010968576
 Maxima::Maxima(wxSocketBase *socket) :
   m_socket(socket),
   m_socketInput(*m_socket),
