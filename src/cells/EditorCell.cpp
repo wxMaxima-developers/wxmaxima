@@ -563,7 +563,7 @@ void EditorCell::Recalculate(AFontSize fontsize) {
   wxDC *dc = m_configuration->GetDC();
   SetFont();
 
-  // Measure the text height using characters that moight extend below or above
+  // Measure the text height using characters that might extend below or above
   // the region ordinary characters move in.
   int charWidth;
   dc->GetTextExtent(wxT("äXÄgy"), &charWidth, &m_charHeight);
