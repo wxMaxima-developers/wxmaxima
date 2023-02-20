@@ -1202,7 +1202,7 @@ public:
   //! Is the selection in the current working group?
   bool IsSelectionInWorkingGroup();
 
-  void SetActiveCell(EditorCell *cell, bool callRefresh = true);
+  void SetActiveCell(EditorCell *cell);
 
 /*!
   Set the HCaret to its default location, at the end of the document.
