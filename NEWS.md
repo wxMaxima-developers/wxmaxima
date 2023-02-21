@@ -1,5 +1,6 @@
 # Current
- * Make absolute sure all bitmaps are valid (#1749)
+ * Make absolute sure all bitmaps are valid, resolves many MacOs 
+   issues (#1749)
  * More styles consistency (#1753)
  * The letter delta was interpreted wrongly (#1754)
 

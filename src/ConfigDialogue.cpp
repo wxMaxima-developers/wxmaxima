@@ -107,7 +107,11 @@ wxBitmap ConfigDialogue::GetImage(wxString name, unsigned char *data,
   if (img.IsOk())
     {
       img.Rescale(targetSize, targetSize, wxIMAGE_QUALITY_HIGH);
+#if defined __WXOSX__
+      bmp = wxBitmap(img, wxBITMAP_SCREEN_DEPTH, GetContentScaleFactor());
+#else
       bmp = wxBitmap(img, wxBITMAP_SCREEN_DEPTH);
+#endif
     }
   else
     bmp = SvgBitmap(this, data, len, targetSize, targetSize);
