@@ -67,7 +67,7 @@ wxBitmap ToolBar::GetBitmap(wxString name, unsigned char *data, size_t len,
 #endif
     }
   else
-    bmp = SvgBitmap(this, data, len, siz, GetContentScaleFactor());
+    bmp = SvgBitmap(this, data, len, siz);
   wxASSERT(bmp.IsOk());
   if(!bmp.IsOk())
     bmp = wxBitmap(siz.x, siz.y);

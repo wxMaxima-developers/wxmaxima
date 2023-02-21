@@ -42,16 +42,15 @@ class SvgBitmap: public wxBitmap
 {
 public:
 //! A constructor that loads the data into a wxBitmap
-  SvgBitmap(wxWindow *window, const unsigned char *data, size_t len, int width = 640, int height = 480, int scaleFactor = 1);
-  SvgBitmap(wxWindow *window, const unsigned char *data, size_t len, wxSize siz, int scaleFactor = 1);
+  SvgBitmap(wxWindow *window, const unsigned char *data, size_t len, int width = 640, int height = 480);
+  SvgBitmap(wxWindow *window, const unsigned char *data, size_t len, wxSize siz);
   ~SvgBitmap() override;
   SvgBitmap(SvgBitmap &&) = delete;
   SvgBitmap &operator=(SvgBitmap &&o);
 
   //! Converts rgba data to a wxBitmap
   static wxBitmap RGBA2wxBitmap(const unsigned char imgdata[],
-                                const int &width, const int &height,
-                                const int &scaleFactor = 1);
+                                const int &width, const int &height);
   //! Sets the bitmap to a new size and renders the svg image at this size.
   const SvgBitmap& SetSize(int width, int height);
   //! Sets the bitmap to a new size and renders the svg image at this size.
@@ -62,8 +61,6 @@ public:
   /*! An "invalid bitmap" sign */
   wxBitmap GetInvalidBitmap(int targetSize);
 private:
-  //! The scale factor the bitmap is created with
-  int m_scaleFactor;
   //! No idea what nanoSVG stores here. But can be shared between images.
   static struct NSVGrasterizer* m_svgRast;
   //! The renderable svg image after we have read it in
