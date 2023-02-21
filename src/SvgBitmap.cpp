@@ -142,35 +142,4 @@ wxBitmap SvgBitmap::GetInvalidBitmap(int targetSize) {
   return retval;
 }
 
-wxBitmap SvgBitmap::RGBA2wxBitmap(const unsigned char imgdata[],
-                                  const int &width, const int &height
-				  ) {
-  wxBitmap retval;
-#if defined __WXOSX__
-  retval =
-    wxBitmap(width, height, wxBITMAP_SCREEN_DEPTH, m_window->GetContentScaleFactor());
-#else
-  retval = wxBitmap(width, height, 32);
-#endif
-  const unsigned char *rgba = imgdata;
-  if (!retval.Ok())
-    return retval;
-
-  wxAlphaPixelData bmpdata(retval);
-  wxAlphaPixelData::Iterator dst(bmpdata);
-  for (int y = 0; y < height; y++) {
-    dst.MoveTo(bmpdata, 0, y);
-    for (int x = 0; x < width; x++) {
-      unsigned char a = rgba[3];
-      dst.Red() = rgba[0] * a / 255;
-      dst.Green() = rgba[1] * a / 255;
-      dst.Blue() = rgba[2] * a / 255;
-      dst.Alpha() = a;
-      dst++;
-      rgba += 4;
-    }
-  }
-  return retval;
-}
-
 struct NSVGrasterizer *SvgBitmap::m_svgRast = NULL;

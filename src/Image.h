@@ -96,6 +96,11 @@ public:
 
   ~Image();
 
+  //! Converts rgba data to a wxBitmap
+  static wxBitmap RGBA2wxBitmap(const unsigned char imgdata[],
+                                const int &width, const int &height,
+                                const int &scaleFactor = 1);
+  
   void SetConfiguration(Configuration *config){ m_configuration = config; }
   //! Return the image's resolution
   int GetPPI() const {return m_ppi;}

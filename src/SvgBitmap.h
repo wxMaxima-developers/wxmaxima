@@ -48,9 +48,6 @@ public:
   SvgBitmap(SvgBitmap &&) = delete;
   SvgBitmap &operator=(SvgBitmap &&o);
 
-  //! Converts rgba data to a wxBitmap
-  static wxBitmap RGBA2wxBitmap(const unsigned char imgdata[],
-                                const int &width, const int &height);
   //! Sets the bitmap to a new size and renders the svg image at this size.
   const SvgBitmap& SetSize(int width, int height);
   //! Sets the bitmap to a new size and renders the svg image at this size.
