@@ -3863,7 +3863,9 @@ wxAccStatus EditorCell::GetRole(int childId, wxAccRole *role) const {
   }
 }
 
-const std::vector<StyledText> &EditorCell::GetStyledText()
+#endif
+
+/* const std::vector<EditorCell::StyledText> &EditorCell::GetStyledText()
 {
   if(!m_tokens_valid);
   {
@@ -3872,5 +3874,4 @@ const std::vector<StyledText> &EditorCell::GetStyledText()
   }
   return m_styledText;
 }
-
-#endif
+*/
