@@ -98,15 +98,15 @@ wxBitmap ConfigDialogue::GetImage(wxString name, unsigned char *data,
   int targetSize = GetImageSize();
 
   wxBitmap bmp = wxArtProvider::GetBitmap(name, wxART_MENU,
-                                          wxSize(targetSize, targetSize));
+                                          wxSize(targetSize * 4, targetSize * 4));
   wxImage img;
 
-  if (bmp.IsOk()) {
+  if (img.IsOk()) {
     img = bmp.ConvertToImage();
   }
   if (img.IsOk())
     {
-      img.Rescale(targetSize, targetSize, wxIMAGE_QUALITY_HIGH);
+      img.Rescale(targetSize, targetSize, wxIMAGE_QUALITY_BICUBIC);
 #if defined __WXOSX__
       bmp = wxBitmap(img, wxBITMAP_SCREEN_DEPTH, GetContentScaleFactor());
 #else
