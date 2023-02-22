@@ -254,7 +254,7 @@ void Configuration::ResetAllToDefaults(InitOpt options) {
   m_symbolPaneAdditionalChars = wxT("Øü§");
   m_hidemultiplicationsign = true;
   m_autodetectHelpBrowser = true;
-  m_singlePageManual = true;
+  m_singlePageManual = false;
   m_useInternalHelpBrowser = OfferInternalHelpBrowser();
 #ifdef __WXGTK__
   m_helpBrowserUserLocation = wxT("xdg-open");
