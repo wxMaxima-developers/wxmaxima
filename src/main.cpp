@@ -243,10 +243,12 @@ bool MyApp::OnInit() {
 							 wxT("/wxwin"));
     wxFileTranslationsLoader::AddCatalogLookupPathPrefix(wxT("/usr/share/locale"));
     wxFileTranslationsLoader::AddCatalogLookupPathPrefix(wxT("/usr/local/share/locale"));
+
+    if (wxLocale::IsAvailable(lang))
+      wxTranslations::Get()->SetLanguage(lang);
     
     // Do we reckon we improve something if we set maxima's language, as well?
     if ((wxLocale::IsAvailable(lang)) && (lang != wxLANGUAGE_DEFAULT)) {
-      wxTranslations::Get()->SetLanguage(lang);
       // Set maxima's language, as well.
       wxString localeName = wxLocale().GetCanonicalName();
       if (lang != wxLocale::GetSystemLanguage()) {
