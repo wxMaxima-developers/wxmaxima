@@ -57,222 +57,35 @@
     <content_attribute id="social-info">mild</content_attribute>
   </content_rating>
   <releases>
+<release version="23.02.1" date="2023-02-22T15:42:00Z">
+  <description>
+    <p>
+      MacOs fixes and bug fixes.
+    </p>
+    <ul>
+      <li> Make sure all bitmaps are valid on High-DPI MacOs (#1749)</li>
+      <li> More styles consistency (#1753)</li>
+      <li> Ensure correct interpretation of Unicode letters</li>
+      <li> Repaired the manual anchors cache</li>
+    </ul>
+  </description>
+</release>
 <release version="23.02.0" date="2023-02-10T22:27:00Z">
   <description>
     <p>
       Styles reorganization.
-      <ul>
-	<li> Fix XML generation of wxmx documents (#1556)</li>
-	<li> A faster font cache</li>
-	<li> Faster communication between wxMaxima and maxima</li>
-	<li> Dropped the dependency on an [internal] ww898</li>
-	<li> More consistent text style handling</li>
-	<li> A try to improve locale management on the Mac platform</li>
-	<li> A separate style for operators (#1002)</li>
+    </p>
+    <ul>
+      <li> Fix XML generation of wxmx documents (#1556)</li>
+      <li> A faster font cache</li>
+      <li> Faster communication between wxMaxima and maxima</li>
+      <li> Dropped the dependency on an [internal] ww898</li>
+      <li> More consistent text style handling</li>
+      <li> A try to improve locale management on the Mac platform</li>
+      <li> A separate style for operators (#1002)</li>
 	<li> A nicer ChangeLog</li>
-      </ul>
-    </p>
-  </description>
-</release>
-<release version="22.12.0" date="2022-12-29T13:04:00Z">
-  <description>
-    <p>
-      Bugfixes, stability and display improvements.
-      <ul>
-	<li> A cleaner status bar with double-click actions</li>
-	<li> Better display of labels</li>
-	<li> box() now is displayed as a box, as the maxima manual states</li>
-	<li> box(expr, "highlight") display expr in red, instead</li>
-	<li> Resolved a few display glitches</li>
-	<li> Resolved OS-dependant wrong actions on gui events</li>
-	<li> A few system and compiler specific fixes</li>
-	<li> Resolved a few compilation warnings</li>
-	<li> Try harder to connect maxima if one communication port is blocked (#1717)</li>
-	<li> Better display of help text in the console</li>
-	<li> Faster saving of .wxmx files</li>
-	<li> Better toolbar bitmap handling</li>
-      </ul>
-    </p>
-  </description>
-</release>
-
-<release version="22.11.1" date="2022-11-27T21:48:00Z">
-  <description>
-    <p>
-      Repaired the zoom functionality.
-    </p>
-  </description>
-</release>
-<release version="22.11.0" date="2022-11-26T19:21:00Z">
-  <description>
-    <p>
-      A bug fix release.
-      <ul dir="auto">
-	<li> Resolved an ID collision (#1726)</li>
-	<li> Faster restart of maxima (#1715)</li>
-	<li> Make various dialogs window-modal (#1712)</li>
-	<li> Proper handling of unicode in selection (#1726)</li>
-	<li> An unicode conversion error (#1727)</li>
-	<li> Repaired the "enter matrix" dialogue</li>
-	<li> Jump to the correct anchor even if using online help</li>
-	<li> Translation updates</li>
-	<li> Many windows build improvements</li>
-	<li> Resolved a crash on restarting maxima</li>
-      </ul>
-    </p>
-  </description>
-</release>
-
- <release version="22.09.0" date="2022-09-01T20:37:00Z">
-     <description>
-       <p>
-	 Help integration, work on the wizards and many bug fixes.
-<ul dir="auto">
-<li>Support for wxWidgets 3.1.7</li>
-<li>The description field for wizards no more is a MouseOverToolTip</li>
-<li>Wizards now accept chars from the unicode buttons</li>
-<li>Wizards now can balance parenthesis</li>
-<li>Wizards for operatingsystem, basic programming and string operations</li>
-<li>More miscellaneous work on the wizards</li>
-<li>The watchlist was broken</li>
-<li>In MacOs the config dialogue crashed</li>
-<li>Better scalability of the config dialogue</li>
-<li>Folded multiline code cells are now sent to Maxima correctly (#1674)</li>
-<li>The output of the "?" command contained spurious "&lt;" (#1688)</li>
-<li>?, ?? and describe() now use a browser window, by default
-(an up-to-date Maxima is required for that feature)</li>
-<li>Search harder for the Maxima manual</li>
-<li>Search harder for Maxima manual entries</li>
-<li>Now we find Maxima manual entries that have no explicit anchor</li>
-<li>On Linux, MacOs and, if wxWidgets was compiled with edge support
-the help browser can be obened in a dockable window</li>
-<li>wxMaxima can now compiled, even if wxWidgets was configured with
-the option "--enable-privatefonts=no".
-Use the option -DWXM_INCLUDE_FONTS=NO when compiling wxMaxima.</li>
-<li>Names that end in an underscore are now printed correctly (#1706)</li>
-<li>Made the tests work on more platforms (#1709)</li>
-<li>Resolved some asserts (#1574)</li>
-<li>Working MathJaX (#1702)</li>
-<li>A primitive integrated ChangeLog viewer</li>
-<li>Better documentation (#1693)</li>
-<li>Better unicode handling (#1691)</li>
-<li>Many additional bugfixes</li>
-</ul>
-       </p>
-     </description>
-    </release>
-    <release version="22.05.0" date="2022-05-26T22:50:00Z">
-     <description>
-       <p>
-	 Mainly Bug fixes.
-	 <ul>
- <li>Updated the Ukrainian translation</li>
- <li>Added guess_exact_value to the numeric menu</li>
- <li>Added lapack to the matrix menu</li>
- <li>Added linpack to the numeric menu</li>
- <li>Added a "declare facts" right-click menu entry to variables</li>
- <li>We no more reserve space for hidden input</li>
- <li>A better logexpand section in the numeric menu</li>
- <li>Many wizards have a more modern look and feel, now</li>
- <li>The modern-style wizards are now dockable by default</li>
- <li>Undo and redo buttons for the toolbar</li>
- <li>A "construct fraction" wizard (#1664)</li>
- <li>Printing multiple-page documents now should work again on Linux (#1671)</li>
- <li>The selection should now no more overwrite test (#1665)</li>
- <li>Hidden code cells now are correctly sent to maxime (#1674)</li>
- <li>MacOs: The toolbar icons work now on retina screens (#1657)</li>
- <li>MacOs: The config dialogue works again (#1662)</li>
- <li>Many additional MacOs fixes</li>
- <li>The Cygwin build works again</li>
- <li>Support for wxWidgets 3.1.6</li>
-	 </ul>
-       </p>
-     </description>
-  </release>
-   <release version="22.04.0" date="2022-04-09T09:36:00Z">
-     <description>
-       <p>
-	 Mainly Bug fixes.
-	 <ul>
-	   <li>A Russian translation update from Olesya Gerasimenko</li>
-	   <li>Faster startup logic</li>
-	   <li>Repaired drag-and-drop on MacOs (#1624)</li>
-	   <li>Resolved a bug in parenthesis matching (#1649)</li>
-	 </ul>
-       </p>
-     </description>
-  </release>
-   <release version="22.03.0" date="2022-03-19T22:00:00Z">
-     <description>
-	<p>
-       Many bug fixes and improvements.
-    <ul>
-<li>Add an compile option "WXM_INCLUDE_FONTS", which allows to
-specify, if additional fonts should be included.
-Current default: YES; use -DWXM_INCLUDE_FONTS=NO when calling
-CMake to disable that.
-Including fonts caused some issues on MacOS. (#1580)</li>
-<li>Rename command line option --logtostdout to --logtostderr.
-Because the option does print the log messages to STDERR, not STDOUT.</li>
-<li>A better heuristics for finding out what to style as 1D maths</li>
-<li>An updated french translation from Frédéric Chapoton</li>
-<li>Consistent image resolutions</li>
-<li>No more crashes on exporting multiple animations at once (#1616)</li>
-<li>Drag-and-Drop in the table of contents</li>
-<li>Table of contents: Convert sections to subsections and similar (#1629)</li>
-<li>Parenthesis and quote matching now uses the maxima parser.
-This means it now both knows the details of the maxima language
-and is much faster than before.</li>
-<li>A way of limiting the toc depth shown in the table of contents</li>
-<li>Now the problems after a kill(all) should be finally resolved</li>
-<li>Better support for the debugger (#1625)</li>
-<li>Machine-Float NaNs no more causes XML errors</li>
-<li>Labels with hexadecimal numbers no more cause crashes (#1633)</li>
-<li>wxMaxima no more skips chars in subscripted variables (#1632)</li>
-<li>Merging cells per keyboard shortcut works again (#1626)</li>
-<li>Symbols buttons whose symbols the GUI font lacks are now hidden</li>
     </ul>
-	</p>
-      </description>
-  </release>
-  <release version="21.11.0" date="2021-11-21T18:00:00Z">
-     <description>
-	<p>
-       Many bug fixes and improvements.
-    <ul>
-<li>Allow seeing all files in the file save dialog. (#1557)</li>
-<li>Fix an error when using Alt up arrow (show previous command) (#1566)</li>
-<li>Rewrote a config dialogue</li>
-<li>Improvements in the manual</li>
-<li>Update Spanish translation of manual</li>
-<li>Update German, Russian, Hungarian and Ukrainian translation</li>
-<li>Fix a warning, which occurred, when starting wxMaxima the first time</li>
-<li>ww898 unnecessarily limited the list of supported platforms</li>
-<li>wxMaxima's properties to Maxima symbols can now no more be killed</li>
-<li>Allow single GroupCells to be converted to LaTeX</li>
-<li>Enable reloading and changing images inserted via "Cell" -&gt; "Insert Image..." (#1597)</li>
-<li>Correctly set the document saved state when the size of an image is changed</li>
-<li>Use the AUTHORS file for the Credits page in the "About" dialogue</li>
-<li>Handle power events (#1607)</li>
-<li>Fix ugly buttons in the sidebars with recent wxWidgets</li>
-</ul>
-	</p>
-      </description>
-  </release>
-  <release version="21.05.2" date="2021-05-20T07:04:00Z">
-      <description>
-	<p>
-	  The integral signs weren't visible or were misplaced on some MS Windows
-	  installations.
-	</p>
-      </description>
-  </release>
-   <release version="21.05.1" date="2021-05-16T17:04:00Z">
-      <description>
-	<p>
-	  Fixes a crash on printing that could be triggered on some computers.
-	</p>
-      </description>
-  </release>
+  </description>
+</release>
   </releases>
 </component>
