@@ -881,7 +881,7 @@ void Image::LoadImage_Backgroundtask(wxString image,
       // Convert the data we have read to a modifiable char * containing the svg
       // file's contents.
       char *svgContents;
-      svgContents = static_cast<char *>(strdup(svgContents_string.utf8_str()));
+      wxCharBuffer svgContents = svgContents_string..ToUTF8();
 
       // Parse the svg file's contents
       int ppi;
@@ -890,9 +890,8 @@ void Image::LoadImage_Backgroundtask(wxString image,
       else
         ppi = 96;
 
-      if (svgContents) {
-        m_svgImage = nsvgParse(svgContents, "px", ppi);
-        free(svgContents);
+      if (svgContents.data()) {
+        m_svgImage = nsvgParse(svgContents.data(), "px", ppi);
       }
 
       if (m_svgImage) {
