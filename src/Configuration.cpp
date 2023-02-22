@@ -303,7 +303,12 @@ void Configuration::ResetAllToDefaults(InitOpt options) {
     if (m_maximaLocation_override != wxEmptyString)
       m_maximaUserLocation = m_maximaLocation_override;
     else
-      m_maximaUserLocation = Dirstructure::Get()->MaximaDefaultLocation();
+      {
+	// We don't want all debug messages from searching for maxima pop up
+	// as dialogues if the debug messages sidebar still doesn't exist.
+	wxLogNull suppress;
+	m_maximaUserLocation = Dirstructure::Get()->MaximaDefaultLocation();
+      }
   }
   m_indent = -1;
   m_autoSubscript = 1;
