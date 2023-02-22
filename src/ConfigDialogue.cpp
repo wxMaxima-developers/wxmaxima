@@ -116,9 +116,12 @@ wxBitmap ConfigDialogue::GetImage(wxString name, unsigned char *data,
   else
     bmp = SvgBitmap(this, data, len, targetSize, targetSize);
 
-  wxASSERT(bmp.IsOk());
   if(!bmp.IsOk())
-    bmp = wxBitmap(targetSize, targetSize);
+#if defined __WXOSX__
+    bmp = wxBitmap(targetSize, targetSize, wxBITMAP_SCREEN_DEPTH, GetContentScaleFactor());
+#else
+    bmp = wxBitmap(targetSize, targetSize, wxBITMAP_SCREEN_DEPTH);
+#endif
   return bmp;
 }
 
