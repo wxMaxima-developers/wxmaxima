@@ -46,7 +46,10 @@
 class HelpBrowser : public wxPanel
 {
 public:
+  //! Ask the user if we are allowed to access an online manual
   static bool AllowOnlineManualP(Configuration *configuration, wxWindow *parent);
+  //! Ask the user if we are allowed to access an online manual
+  bool AllowOnlineManualP(){return AllowOnlineManualP(m_configuration, this);}
   explicit HelpBrowser(wxWindow *parent, Configuration *configuration, MaximaManual *manual,
                        wxString url);
 #ifdef USE_WEBVIEW
@@ -54,8 +57,6 @@ public:
   void JumpToKeyword(wxString keyword);
   void SelectKeywords(wxArrayString keywords);
   wxString GetKeyword(unsigned int id);
-  //! Ask the user if we are allowed to access an online manual
-  bool AllowOnlineManualP(){AllowOnlineManualP(m_configuration, this);}
   
 private:
   void CreateIfNeeded();
