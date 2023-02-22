@@ -45,9 +45,7 @@
 
 #include "ScrollingGenWizPanel.h"
 #include "Worksheet.h"
-#ifdef USE_WEBVIEW
 #include "HelpBrowser.h"
-#endif
 #include "RecentDocuments.h"
 #include "Version.h"
 #include "MainMenuBar.h"
@@ -287,7 +285,9 @@ protected:
   virtual wxSize DoGetBestClientSize() const;
   //! The sidebar with the draw commands
   DrawPane *m_drawPane;
+#ifdef USE_WEBVIEW
   HelpBrowser *m_helpPane;
+#endif
 private:
   class GreekPane : public wxScrolled<wxPanel>
   {

@@ -3014,8 +3014,10 @@ void wxMaxima::ReadManualTopicNames(wxString &data) {
 	    }
 	    if (topics.IsEmpty())
 	      wxLogMessage(_("No topics found in topic flag"));
+#ifdef USE_WEBVIEW
 	    else
 	      m_helpPane->SelectKeywords(topics);
+#endif
 	  }
 	  entry = entry->GetNext();
 	}
@@ -4522,10 +4524,13 @@ void wxMaxima::ShowTip(bool force) {
 }
 
 void wxMaxima::LaunchHelpBrowser(wxString uri) {
+#ifdef USE_WEBVIEW
   if (m_configuration.InternalHelpBrowser()) {
     m_helpPane->SetURL(uri);
     wxMaximaFrame::ShowPane(EventIDs::menu_pane_help);
-  } else {
+  } else
+#endif
+    {
     if (m_configuration.AutodetectHelpBrowser()) {
       // see https://docs.wxwidgets.org/3.0/classwx_mime_types_manager.html
       auto *manager = wxTheMimeTypesManager;
@@ -4565,7 +4570,7 @@ void wxMaxima::ShowWxMaximaHelp() {
   wxString helpfile = wxMaximaManualLocation();
 
   if (!wxFileExists(helpfile)) {
-    if (!m_helpPane->AllowOnlineManualP())
+    if (!HelpBrowser::AllowOnlineManualP(&m_configuration, this))
       return;
 
     wxLogMessage(_(wxT("No offline manual found => Redirecting to the wxMaxima homepage")));
@@ -4610,7 +4615,7 @@ void wxMaxima::ShowMaximaHelpWithoutAnchor() {
   // = lang_long.Left(lang_long.Find('_'));
   helpfile = m_maximaHtmlDir.Trim() + wxString("/maxima_singlepage.html");
   if (!wxFileExists(helpfile)) {
-    if (!m_helpPane->AllowOnlineManualP())
+    if (!HelpBrowser::AllowOnlineManualP(&m_configuration, this))
       return;
 
     wxLogMessage(_(wxT("No offline manual found => Redirecting to the Maxima homepage")));
@@ -4665,7 +4670,7 @@ void wxMaxima::ShowMaximaHelp(wxString keyword) {
     wxLogMessage(_("Opening help file %s"), maximaHelpURL.utf8_str());
     LaunchHelpBrowser(maximaHelpURL);
   } else {
-    if (m_helpPane->AllowOnlineManualP()) {
+    if (HelpBrowser::AllowOnlineManualP(&m_configuration, this)) {
       wxLogMessage(_(wxT("No offline manual found => Redirecting to the Maxima homepage")));
       LaunchHelpBrowser(
 			"https://maxima.sourceforge.io/docs/manual/maxima_singlepage.html#" +
@@ -9075,12 +9080,14 @@ void wxMaxima::HelpMenu(wxCommandEvent &event) {
 					 _("Go to URL"), wxEmptyString, wxEmptyString, wxEmptyString,
 					 _("URL"), wxEmptyString, wxEmptyString));
       // wiz->Centre(wxBOTH);
+#ifdef USE_WEBVIEW
       wiz->ShowWindowModalThenDo([this,wiz](int retcode) {
 	if (retcode == wxID_OK) {
 	  m_helpPane->SetURL((*wiz)[0]);
 	  wxMaximaFrame::ShowPane(EventIDs::menu_pane_help);
 	}
       });
+#endif
     } }
   else if(event.GetId() == wxID_ABOUT){ {
       wxAboutDialogInfo info;

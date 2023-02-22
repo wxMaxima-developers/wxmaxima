@@ -418,6 +418,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
 		    .Left());
   //  wxWindowUpdateLocker drawBlocker(m_drawPane);
 
+#ifdef USE_WEBVIEW
   m_manager.AddPane(m_helpPane = new HelpBrowser(
 						 this, &m_configuration, m_worksheet->GetMaximaManual(),
 						 wxT("file://") + wxMaximaManualLocation()),
@@ -430,7 +431,8 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
 		    .RightDockable(true)
 		    .PaneBorder(true)
 		    .Right());
-
+#endif
+  
   m_worksheet->m_mainToolBar = new ToolBar(this);
 
   m_manager.AddPane(m_worksheet->m_mainToolBar,
@@ -2068,8 +2070,9 @@ void wxMaximaFrame::SetupMenu() {
                               _("Tells maxima to show the help for ?, ?? and "
                                 "describe() in a separate browser window"));
   m_HelpMenu->AppendSeparator();
+#ifdef USE_WEBVIEW
   m_HelpMenu->Append(EventIDs::menu_goto_url, _("Go to URL"));
-
+#endif
   wxMenu *tutorials_sub = new wxMenu;
   tutorials_sub->Append(EventIDs::menu_help_solving, _("Solving equations with Maxima"),
                         "", wxITEM_NORMAL);

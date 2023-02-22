@@ -33,7 +33,9 @@
 #include <wx/dir.h>
 #include "precomp.h"
 #include <wx/wx.h>
+#ifdef USE_WEBVIEW
 #include <wx/webview.h>
+#endif
 #include <wx/panel.h>
 #include <wx/sizer.h>
 #include "Configuration.h"
@@ -44,15 +46,17 @@
 class HelpBrowser : public wxPanel
 {
 public:
+  static bool AllowOnlineManualP(Configuration *configuration, wxWindow *parent);
   explicit HelpBrowser(wxWindow *parent, Configuration *configuration, MaximaManual *manual,
                        wxString url);
+#ifdef USE_WEBVIEW
   void SetURL(wxString url);
   void JumpToKeyword(wxString keyword);
   void SelectKeywords(wxArrayString keywords);
   wxString GetKeyword(unsigned int id);
   //! Ask the user if we are allowed to access an online manual
-  bool AllowOnlineManualP();
-
+  bool AllowOnlineManualP(){AllowOnlineManualP(m_configuration, this);}
+  
 private:
   void CreateIfNeeded();
   void OnTextEnter(wxCommandEvent& event);
@@ -74,6 +78,7 @@ private:
   wxPanel *m_topicPanel;
   wxBoxSizer *m_topicSizer;
   wxArrayString m_keywords;
+#endif
 };
 
 #endif // HELPBROWSER_H
