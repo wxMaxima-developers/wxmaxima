@@ -880,8 +880,7 @@ void Image::LoadImage_Backgroundtask(wxString image,
       }
       // Convert the data we have read to a modifiable char * containing the svg
       // file's contents.
-      char *svgContents;
-      wxCharBuffer svgContents = svgContents_string..ToUTF8();
+      wxCharBuffer svgContents = svgContents_string.ToUTF8();
 
       // Parse the svg file's contents
       int ppi;
