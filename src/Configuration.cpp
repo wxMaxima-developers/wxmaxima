@@ -1145,7 +1145,7 @@ void Configuration::ReadStyles(const wxString &file) {
   m_styles[TS_USERLABEL].Read(config, "Style/UserDefinedLabel/");
   m_styles[TS_SPECIAL_CONSTANT].Read(config, "Style/Special/");
   m_styles[TS_GREEK_CONSTANT].Read(config, "Style/Greek/");
-  m_styles[TS_CODE_DEFAULT].Read(config, "Style/Input/");
+  m_styles[TS_CODE_DEFAULT].Read(config, "Style/Default/");
   m_styles[TS_NUMBER].Read(config, "Style/Number/");
   m_styles[TS_STRING].Read(config, "Style/String/");
   m_styles[TS_ASCIIMATHS].Read(config, "Style/ASCIImaths/");
@@ -1555,7 +1555,7 @@ void Configuration::WriteStyles(wxConfigBase *config) {
   m_styles[TS_USERLABEL].Write(config, "Style/UserDefinedLabel/");
   m_styles[TS_SPECIAL_CONSTANT].Write(config, "Style/Special/");
   m_styles[TS_GREEK_CONSTANT].Write(config, "Style/Greek/");
-  m_styles[TS_CODE_DEFAULT].Write(config, "Style/Input/");
+  m_styles[TS_CODE_DEFAULT].Write(config, "Style/Default/");
   m_styles[TS_NUMBER].Write(config, "Style/Number/");
   m_styles[TS_STRING].Write(config, "Style/String/");
   m_styles[TS_ASCIIMATHS].Write(config, "Style/ASCIImaths/");
