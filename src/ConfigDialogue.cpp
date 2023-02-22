@@ -118,9 +118,9 @@ wxBitmap ConfigDialogue::GetImage(wxString name, unsigned char *data,
 
   if(!bmp.IsOk())
 #if defined __WXOSX__
-    bmp = wxBitmap(targetSize, targetSize, wxBITMAP_SCREEN_DEPTH, GetContentScaleFactor());
+    bmp = wxBitmap(wxSize(targetSize, targetSize), wxBITMAP_SCREEN_DEPTH, GetContentScaleFactor());
 #else
-    bmp = wxBitmap(targetSize, targetSize, wxBITMAP_SCREEN_DEPTH);
+    bmp = wxBitmap(wxSize(targetSize, targetSize), wxBITMAP_SCREEN_DEPTH);
 #endif
   return bmp;
 }
