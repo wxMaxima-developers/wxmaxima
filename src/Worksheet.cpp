@@ -438,10 +438,6 @@ Worksheet::~Worksheet() {
 #else
 #define DC_ALREADY_SCROLLED 1
 #endif
-#else
-#ifdef __WXGTK3__
-#else
-#endif
 #endif
 
 #define WORKING_AUTO_BUFFER 1
