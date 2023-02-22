@@ -1,8 +1,10 @@
 # Current
- * Make absolute sure all bitmaps are valid, resolves many MacOs 
-   issues (#1749)
+ * Make sure all bitmaps are valid on High-DPI MacOs (#1749)
  * More styles consistency (#1753)
  * The letter delta was interpreted wrongly (#1754)
+ * The manual anchors cache now saves the file-per-chapter URLs, too.
+ * cmake -DWXM_DISABLE_WEBVIEW now allows to find wxWidgets, if 
+   wxWebView wasn't compiles.
 
 # 23.02.0
  * Fix XML generation of wxmx documents (#1556)
