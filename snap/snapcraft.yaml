@@ -1,12 +1,15 @@
 name: wxmaxima
-version: 23.02.0-1
+version: 23.02.1-0
 summary: A nightly build of wxMaxima, a gui for Maxima, a full-featured CAS.
 description: wxMaxima is a quite full-featured graphical user interface for Maxima.
 confinement: strict
 grade: stable
-icon: info/wxmaxima.svg
 base: core22
 license: GPL-2.0+
+architectures:
+  - build-on: arm64
+  - build-on: armhf
+  - build-on: amd64
 
 apps:
   wxmaxima:
