@@ -1,6 +1,7 @@
 # Current
  * Make sure all bitmaps are valid on High-DPI MacOs (#1749)
  * More styles consistency (#1753)
+ * Better configuration validation
  * Depending on the wxWidgets version Unicode letters were 
    interpreted inorrectly (#1754)
  * The manual anchors cache now saves the file-per-chapter URLs, too.
