@@ -755,6 +755,10 @@ void Configuration::ReadConfig() {
   {
     int tmp = static_cast<int>(m_htmlEquationFormat);
     config->Read("HTMLequationFormat", &tmp);
+    if(tmp < 0)
+      tmp = mathJaX_TeX;
+    if(tmp > html_export_invalidChoice)
+      tmp = svg;
     m_htmlEquationFormat = static_cast<Configuration::htmlExportFormat>(tmp);
   }
 
@@ -764,12 +768,20 @@ void Configuration::ReadConfig() {
   config->Read(wxT("useUnicodeMaths"), &m_useUnicodeMaths);
   config->Read(wxT("mathJaxURL"), &m_mathJaxURL);
   config->Read(wxT("autosubscript"), &m_autoSubscript);
+  if(m_autoSubscript < 0)
+    m_autoSubscript = 0;
+  if(m_autoSubscript > 2)
+    m_autoSubscript = 2;
   config->Read(wxT("antiAliasLines"), &m_antiAliasLines);
   config->Read(wxT("indentMaths"), &m_indentMaths);
   config->Read(wxT("abortOnError"), &m_abortOnError);
   config->Read("defaultPort", &m_defaultPort);
   config->Read(wxT("fixReorderedIndices"), &m_fixReorderedIndices);
   config->Read(wxT("showLength"), &m_showLength);
+  if(m_showLength < 0)
+    m_showLength = 0;
+  if(m_showLength > 3)
+    m_showLength = 3;
   config->Read(wxT("printScale"), &m_printScale);
   config->Read(wxT("useSVG"), &m_useSVG);
   config->Read(wxT("copyBitmap"), &m_copyBitmap);
@@ -793,6 +805,10 @@ void Configuration::ReadConfig() {
   config->Read(wxT("autoIndent"), &m_autoIndent);
 
   long showLabelChoice = static_cast<long>(m_showLabelChoice);
+  if(static_cast<long>(m_showLabelChoice) < 0)
+    m_showLabelChoice = labels_automatic;
+  if(m_showLabelChoice >= labels_invalidSelection)
+    m_showLabelChoice = labels_none;
   config->Read(wxT("showLabelChoice"), &showLabelChoice);
   m_showLabelChoice = (showLabels)showLabelChoice;
 

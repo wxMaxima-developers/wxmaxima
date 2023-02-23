@@ -95,7 +95,8 @@ public:
     mathJaX_TeX = 0,
     bitmap = 1,
     mathML_mathJaX = 2,
-    svg = 3
+    svg = 3,
+    html_export_invalidChoice
   };
 
   enum showLabels : int8_t
@@ -103,7 +104,8 @@ public:
     labels_automatic = 0,
     labels_prefer_user = 1,
     labels_useronly = 2,
-    labels_none = 3
+    labels_none = 3,
+    labels_invalidSelection
   };
 
   enum drawMode
