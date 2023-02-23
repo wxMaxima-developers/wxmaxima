@@ -245,7 +245,7 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent, Configuration *cfg)
   int notebookTab = 0;
   config->Read(wxT("ConfigDialogTab"), &notebookTab);
   if ((notebookTab < 0) ||
-      ((unsigned int)notebookTab > m_notebook->GetPageCount()))
+      ((unsigned int)notebookTab >= m_notebook->GetPageCount()))
     notebookTab = 0;
   m_notebook->SetSelection(notebookTab);
 
@@ -2001,7 +2001,7 @@ wxWindow *ConfigDialogue::CreateStylePanel() {
   wxConfigBase *config = wxConfig::Get();
   int styleToEditNum = 0;
   config->Read(wxT("StyleToEdit"), &styleToEditNum);
-  if (styleToEditNum >= TextStyle::NUMBEROFSTYLES || styleToEditNum < 0)
+  if ((styleToEditNum >= TextStyle::NUMBEROFSTYLES) || (styleToEditNum < 0))
     styleToEditNum = 0;
   m_styleFor->SetSelection(styleToEditNum);
   wxCommandEvent dummy;
