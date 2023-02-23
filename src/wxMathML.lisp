@@ -165,7 +165,7 @@
 
   (defmfun $wxbug_report ()
     (format t "wxMaxima is a graphical front end for Maxima, which does the mathematics in the background.~%")
-    (format t "If you encounter a mathematical problem, it is probably a Maxima bug und should be submitted there.~%")
+    (format t "If you encounter a mathematical problem, it is probably a Maxima bug and should be submitted there.~%")
     (format t "~%The Maxima bug database is available at~%")
     (format t "    https://sourceforge.net/p/maxima/bugs~%")
     (format t "Submit bug reports by following the 'Create Ticket' link on that page.~%")
