@@ -49,7 +49,6 @@ public:
   //! Ask the user if we are allowed to access an online manual
   static bool AllowOnlineManualP(Configuration *configuration, wxWindow *parent);
   //! Ask the user if we are allowed to access an online manual
-  bool AllowOnlineManualP(){return AllowOnlineManualP(m_configuration, this);}
   explicit HelpBrowser(wxWindow *parent, Configuration *configuration, MaximaManual *manual,
                        wxString url);
 #ifdef USE_WEBVIEW
@@ -67,6 +66,7 @@ private:
   void OnWebviewKeyDown(wxKeyEvent &event);
   void OnActivate(wxActivateEvent &event);
   void OnTopicButton(wxCommandEvent& event);
+  bool AllowOnlineManualP(){return AllowOnlineManualP(m_configuration, this);}
 
   MaximaManual *m_maximaManual = NULL;
   wxWebView *m_webView = NULL;
