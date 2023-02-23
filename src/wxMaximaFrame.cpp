@@ -656,7 +656,6 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
     .CloseButton(true)
     .Resizable()
     .PaneBorder(true)
-    .Show(false)
     .Movable(true);
   m_manager.Update();
 
