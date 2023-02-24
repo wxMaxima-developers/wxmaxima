@@ -226,6 +226,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
 
   m_manager.AddPane(m_history, wxAuiPaneInfo()
 		    .Name(wxT("history"))
+		    .Show(false)
 		    .CloseButton(true)
 		    .PinButton(false)
 		    .TopDockable(true)
@@ -2377,7 +2378,9 @@ void wxMaximaFrame::DockAllSidebars(wxCommandEvent &WXUNUSED(ev)) {
   m_manager.GetPane(wxT("symbols")).Dock();
   m_manager.GetPane(wxT("format")).Dock();
   m_manager.GetPane(wxT("draw")).Dock();
+#ifdef USE_WEBVIEW
   m_manager.GetPane(wxT("help")).Dock();
+#endif
   m_manager.Update();
 }
 
@@ -2412,6 +2415,9 @@ void wxMaximaFrame::ShowPane(int id, bool show) {
       m_manager.GetPane(wxT("wizard")).Show(false);
       m_manager.GetPane(wxT("symbols")).Show(false);
       m_manager.GetPane(wxT("stats")).Show(false);
+#ifdef USE_WEBVIEW
+      m_manager.GetPane(wxT("help")).Show(false);
+#endif
       ShowToolBar(false);
     }},
     {EventIDs::menu_pane_math, [&](){
@@ -2468,8 +2474,8 @@ void wxMaximaFrame::ShowPane(int id, bool show) {
   else
     {
       varFunc->second();
-      m_manager.Update();
     }
+  m_manager.Update();
 }
 
 wxWindow *wxMaximaFrame::CreateMathPane() {
