@@ -939,8 +939,11 @@ void wxMaximaFrame::SetupMenu() {
   m_Maxima_Panes_Sub->AppendCheckItem(EventIDs::menu_pane_format,
                                       _("Insert Cell\tAlt+Shift+C"));
   m_Maxima_Panes_Sub->AppendCheckItem(EventIDs::menu_pane_draw, _("Plot using Draw"));
+  
+#ifdef USE_WEBVIEW
   m_Maxima_Panes_Sub->AppendCheckItem(EventIDs::menu_pane_help,
                                       _("The integrated help browser"));
+#endif
   m_Maxima_Panes_Sub->AppendCheckItem(EventIDs::menu_pane_log, _("Debug messages"));
   m_Maxima_Panes_Sub->AppendCheckItem(EventIDs::menu_pane_variables, _("Variables"));
   m_Maxima_Panes_Sub->AppendCheckItem(EventIDs::menu_pane_xmlInspector,
@@ -2333,9 +2336,11 @@ bool wxMaximaFrame::IsPaneDisplayed(int id) {
     {EventIDs::menu_pane_draw, [&](){
       displayed = m_manager.GetPane(wxT("draw")).IsShown();
     }},
+#ifdef USE_WEBVIEW
     {EventIDs::menu_pane_help, [&](){
       displayed = m_manager.GetPane(wxT("help")).IsShown();
     }}
+#endif
   };
   auto varFunc = m.find(id);
   if(varFunc == m.end())
@@ -2443,9 +2448,11 @@ void wxMaximaFrame::ShowPane(int id, bool show) {
     {EventIDs::menu_pane_draw, [&](){
       m_manager.GetPane(wxT("draw")).Show(show);
     }},
+#ifdef USE_WEBVIEW
     {EventIDs::menu_pane_help, [&](){
       m_manager.GetPane(wxT("help")).Show(show);
     }},
+#endif
     {EventIDs::menu_pane_symbols, [&](){
       m_manager.GetPane(wxT("symbols")).Show(show);
     }},
