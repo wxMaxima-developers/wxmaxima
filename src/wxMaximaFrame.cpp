@@ -297,7 +297,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
   m_manager.AddPane(m_symbolsPane,
                     wxAuiPaneInfo()
 		    .Name(m_sidebarNames[EventIDs::menu_pane_symbols])
-		    .Show(false)
+		    .Show(true)
 		    .Left());
 
   m_sidebarNames[EventIDs::menu_pane_math] = wxT("math");
