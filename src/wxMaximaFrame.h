@@ -216,6 +216,10 @@ protected:
 
   wxString wxMaximaManualLocation();  
 private:
+  //! The names our dockable sidebars are identified with in the config
+  std::unordered_map<int, wxString> m_sidebarNames;
+  //! The names our dockable sidebars are shown with
+  std::unordered_map<int, wxString> m_sidebarCaption;
   //! How many bytes did maxima send us when we updated the statusbar?
   long m_bytesFromMaxima_last;
   wxTimer m_bytesReadDisplayTimer; 
@@ -330,8 +334,6 @@ private:
 protected:
   std::array<wxString,10> m_statusTextHistory;
   void OnMenuStatusText(wxMenuEvent &event);
-  bool m_historyVisible;
-  bool m_xmlMonitorVisible;
   SymbolsPane *m_symbolsPane;
   //! The current length of the evaluation queue of commands we still need to send to maxima
   int m_EvaluationQueueLength;

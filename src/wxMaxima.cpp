@@ -4940,7 +4940,7 @@ void wxMaxima::OnIdle(wxIdleEvent &event) {
   UpdateSlider();
 
   // Update the history sidebar in case it is visible
-  if (m_historyVisible && m_history->UpdateDeferred()) {
+  if (IsPaneDisplayed(EventIDs::menu_pane_history) && m_history->UpdateDeferred()) {
     event.RequestMore();
     return;
   }
