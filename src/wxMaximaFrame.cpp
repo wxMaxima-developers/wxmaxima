@@ -472,7 +472,6 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
     // items in question were never shown => Let's display the frame with
     // all items visible and then hide the ones we want to.
     m_manager.Update();
-    Layout();
   }
 
   m_manager.GetPane("XmlInspector") = m_manager.GetPane("XmlInspector")
@@ -666,8 +665,6 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
           wxCommandEventHandler(wxMaximaFrame::DockAllSidebars), NULL, this);
   m_historyVisible = m_manager.GetPane(wxT("history")).IsShown();
   m_xmlMonitorVisible = m_manager.GetPane(wxT("XmlInspector")).IsShown();
-
-  Layout();
 }
 
 wxSize wxMaximaFrame::DoGetBestClientSize() const {
