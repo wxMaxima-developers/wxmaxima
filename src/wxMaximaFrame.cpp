@@ -474,56 +474,50 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
     m_manager.Update();
   }
 
-  m_manager.GetPane("XmlInspector") = m_manager.GetPane("XmlInspector")
+  m_manager.GetPane("XmlInspector")
     .PinButton(false)
     .Show(false)
     .Movable(true);
-  m_manager.GetPane("stats") =
-    m_manager.GetPane("stats").PinButton(false).Show(false).Movable(true);
-  m_manager.GetPane("greek") =
+  m_manager.GetPane("stats").PinButton(false).Show(false).Movable(true);
     m_manager.GetPane("greek").PinButton(false).Show(false).Movable(true);
-  m_manager.GetPane("variables") =
     m_manager.GetPane("variables").PinButton(false).Show(false).Movable(true);
-  m_manager.GetPane("math") =
     m_manager.GetPane("math").PinButton(false).Show(false).Movable(true);
-  m_manager.GetPane("format") =
     m_manager.GetPane("format").PinButton(false).Show(false).Movable(true);
-  m_manager.GetPane("log") =
     m_manager.GetPane("log").PinButton(false).Show(false).Movable(true);
 
-  m_manager.GetPane("unicode") = m_manager.GetPane("unicode")
+    m_manager.GetPane("unicode")
     .Show(false)
     .Gripper(false)
     .CloseButton(true)
     .PinButton(false)
     .Movable(true);
 
-  m_manager.GetPane("variables") = m_manager.GetPane("variables")
+  m_manager.GetPane("variables")
     .PinButton(false)
     .Gripper(false)
     .CloseButton(true)
     .PinButton(false);
-  m_manager.GetPane("log") = m_manager.GetPane("log")
+  m_manager.GetPane("log")
     .PinButton(false)
     .Gripper(false)
     .CloseButton(true)
     .PinButton(false)
     .Movable(true);
 
-  m_manager.GetPane("symbols") = m_manager.GetPane("symbols")
+  m_manager.GetPane("symbols")
     .Show(true)
     .Gripper(false)
     .CloseButton(true)
     .PinButton(false)
     .Movable(true);
-  m_manager.GetPane("greek") = m_manager.GetPane("greek")
+  m_manager.GetPane("greek")
     .Show(true)
     .Gripper(false)
     .CloseButton(true)
     .PinButton(false)
     .Movable(true);
 
-  m_manager.GetPane("draw") = m_manager.GetPane("draw")
+  m_manager.GetPane("draw")
     .Show(true)
     .CloseButton(true)
     .Gripper(false)
@@ -550,7 +544,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
   m_manager.GetPane("console").Show(true);
   m_manager.GetPane("wizard").Show(false).Float();
 
-  m_manager.GetPane("console") = m_manager.GetPane("console")
+  m_manager.GetPane("console")
     .Center()
     .CloseButton(false)
     .CaptionVisible(false)
@@ -565,32 +559,32 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
   // LoadPerspective overwrites the pane names with the saved ones -which can
   // belong to a translation different to the one selected currently =>
   // let's overwrite the names here.
-  m_manager.GetPane(wxT("symbols")) = m_manager.GetPane(wxT("symbols"))
+  m_manager.GetPane(wxT("symbols"))
     .Caption(_("Mathematical Symbols"))
     .CloseButton(true)
     .Resizable()
     .Gripper(false)
     .PaneBorder(true)
     .Movable(true);
-  m_manager.GetPane(wxT("format")) = m_manager.GetPane(wxT("format"))
+  m_manager.GetPane(wxT("format"))
     .Caption(_("Insert"))
     .CloseButton(true)
     .Resizable()
     .PaneBorder(true)
     .Movable(true);
-  m_manager.GetPane(wxT("draw")) = m_manager.GetPane(wxT("draw"))
+  m_manager.GetPane(wxT("draw"))
     .Caption(_("Plot using Draw"))
     .CloseButton(true)
     .Resizable()
     .PaneBorder(true)
     .Movable(true);
-  m_manager.GetPane(wxT("help")) = m_manager.GetPane(wxT("help"))
+  m_manager.GetPane(wxT("help"))
     .Caption(_("Help"))
     .CloseButton(true)
     .Resizable()
     .PaneBorder(true)
     .Movable(true);
-  m_manager.GetPane(wxT("greek")) = m_manager.GetPane(wxT("greek"))
+  m_manager.GetPane(wxT("greek"))
     .Caption(_("Greek Letters"))
     .CloseButton(true)
     .Resizable()
@@ -600,58 +594,52 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
     .Gripper(false)
     .CloseButton(true);
 
-  m_manager.GetPane(wxT("log")) = m_manager.GetPane(wxT("log"))
+  m_manager.GetPane(wxT("log"))
     .Caption(_("Debug messages"))
     .CloseButton(true)
     .Resizable()
     .Gripper(false)
     .PaneBorder(true)
     .Movable(true);
-  m_manager.GetPane(wxT("variables")) = m_manager.GetPane(wxT("variables"))
+  m_manager.GetPane(wxT("variables"))
     .Caption(_("Variables"))
     .CloseButton(true)
     .Resizable()
     .Gripper(false)
     .PaneBorder(true)
     .Movable(true);
-  m_manager.GetPane(wxT("math")) = m_manager.GetPane(wxT("math"))
+  m_manager.GetPane(wxT("math"))
     .Caption(_("General Math"))
     .CloseButton(true)
     .Resizable()
     .PaneBorder(true)
     .Movable(true);
-  m_manager.GetPane(wxT("stats")) = m_manager.GetPane(wxT("stats"))
+  m_manager.GetPane(wxT("stats"))
     .Caption(_("Statistics"))
     .CloseButton(true)
     .Resizable()
     .PaneBorder(true)
     .Movable(true);
-  m_manager.GetPane(wxT("XmlInspector")) =
-    m_manager.GetPane(wxT("XmlInspector"))
+  m_manager.GetPane(wxT("XmlInspector"))
     .Caption(_("Raw XML monitor"))
     .CloseButton(true)
     .Resizable()
     .PaneBorder(true)
-    .Movable(true);
-  // The XML inspector scares many users and displaying long XML responses there
-  // slows down wxMaxima => disable the XML inspector on startup.
-  m_manager.GetPane(wxT("XmlInspector"))
-    .Show(false)
-    .PaneBorder(true)
-    .Movable(true);
-  m_manager.GetPane(wxT("unicode")) = m_manager.GetPane(wxT("unicode"))
+    .Movable(true)
+    .Show(false);
+  m_manager.GetPane(wxT("unicode"))
     .Caption(_("Unicode characters"))
     .Show(false)
     .PaneBorder(true)
     .Movable(true);
 
-  m_manager.GetPane(wxT("structure")) = m_manager.GetPane(wxT("structure"))
+  m_manager.GetPane(wxT("structure"))
     .Caption(_("Table of Contents"))
     .CloseButton(true)
     .Resizable()
     .PaneBorder(true)
     .Movable(true);
-  m_manager.GetPane(wxT("history")) = m_manager.GetPane(wxT("history"))
+  m_manager.GetPane(wxT("history"))
     .Caption(_("History"))
     .CloseButton(true)
     .Resizable()
