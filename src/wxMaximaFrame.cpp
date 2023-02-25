@@ -412,22 +412,39 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
   // The system's language might have changed since then.
   for(auto pane: m_sidebarNames)
     {
-      if(
-	 (pane.first != EventIDs::menu_pane_console) &&
-	 (pane.first != EventIDs::menu_pane_toolbar)
-	 )
-	m_manager.GetPane(pane.second)
-	  .Caption(m_sidebarCaption[pane.first])
-	  .CloseButton(true)
-	  .PinButton(false)
-	  .DockFixed(false)
-	  .Gripper(false)
-	  .PinButton(false)
-	  .TopDockable(true)
-	  .BottomDockable(true)
-	  .LeftDockable(true)
-	  .RightDockable(true)
-	  .PaneBorder(true);
+      wxSize minSiz = wxSize(0, 0);
+      if(m_manager.GetPane(pane.second).IsOk())
+	{
+	  if(m_manager.GetPane(pane.second).window != NULL)
+	    minSiz = m_manager.GetPane(pane.second).window->GetMinClientSize();
+	  else
+	    minSiz = wxSize(300 * GetContentScaleFactor(), 300 * GetContentScaleFactor());
+
+	  if(minSiz.x < 100 * GetContentScaleFactor())
+	    minSiz.x = 100 * GetContentScaleFactor();
+	  
+	  if(minSiz.y < 100 * GetContentScaleFactor())
+	    minSiz.y = 100 * GetContentScaleFactor();
+	  if(
+	     (pane.first != EventIDs::menu_pane_console) &&
+	     (pane.first != EventIDs::menu_pane_toolbar)
+	     )
+	    m_manager.GetPane(pane.second)
+	      .Caption(m_sidebarCaption[pane.first])
+	      .CloseButton(true)
+	      .MinSize(minSiz)
+	      .BestSize(minSiz)
+	      .FloatingSize(minSiz)
+	      .PinButton(false)
+	      .DockFixed(false)
+	      .Gripper(false)
+	      .PinButton(false)
+	      .TopDockable(true)
+	      .BottomDockable(true)
+	      .LeftDockable(true)
+	      .RightDockable(true)
+	      .PaneBorder(true);
+	}
     }
 
   // We still have no wizard we can show => hide the wizard until it is invoked.
