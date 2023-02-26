@@ -139,7 +139,7 @@ message(STATUS "Looking for wxWidgets libraries in: ${wxWidgets_LIB_DIR}")
 if(WXM_DISABLE_WEBVIEW)
 	find_package(wxWidgets 3 REQUIRED richtext aui adv html core xml net base)
 else()
-	find_package(wxWidgets 3 REQUIRED richtext aui adv html webview core xml net base )
+	find_package(wxWidgets 3 REQUIRED richtext aui adv html webview core xml net base)
 endif()
 include(${wxWidgets_USE_FILE})
 
@@ -206,7 +206,9 @@ list(REMOVE_AT AUTHORSLINES 0 1) # remove main heading line.
 add_definitions(-DwxNO_UNSAFE_WXSTRING_CONV)
 
 
-add_subdirectory(Doxygen)
+if(NOT CYGWIN)
+    add_subdirectory(Doxygen)
+endif()
 add_subdirectory(data)
 add_subdirectory(info)
 add_subdirectory(locales)
