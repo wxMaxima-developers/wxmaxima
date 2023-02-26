@@ -3,6 +3,7 @@
 find_package(Doxygen)
 
 if(DOXYGEN_FOUND)
+    message(STATUS "You can create a Doxygen documentation of the source code with: cmake --build . -- Doxygen")
     file(COPY ${CMAKE_SOURCE_DIR}/Doxygen/wxMaxima.gif DESTINATION html/)
     set(DOXYGEN_PROJECT_LOGO ${CMAKE_SOURCE_DIR}/data/io.github.wxmaxima_developers.wxMaxima.png)
     file(GLOB WXM_GENERATED_FILES ${CMAKE_BINARY_DIR}/*.h)
