@@ -629,12 +629,6 @@ protected:
   */
   void ResetTitle(bool saved, bool force = false);
 
-  /*! Makes this window the debug log target of all windows from this maxima process
-
-    Only necessary on the mac where the same process creates loads of windows.
-  */
-  void BecomeLogTarget();
-
   void FirstOutput();
 
   /*! Opens a content.xml file that has been extracted from a broken .wxmx file
@@ -734,8 +728,6 @@ public:
   const static wxString m_promptSuffix;
   //! Remove the said window from the list of toplevel windows
   static void DelistTopLevelWindow(wxMaxima *);
-  //! The list of toplevel windows we currently maintain
-  static std::vector<wxMaxima *> m_topLevelWindows;
 protected:
   //! Sets gnuplot's command name and tries to determine gnuplot's path
   void GnuplotCommandName(wxString gnuplot);

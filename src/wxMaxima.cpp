@@ -2524,11 +2524,6 @@ void wxMaxima::Interrupt(wxCommandEvent &WXUNUSED(event)) {
 #endif
 }
 
-void wxMaxima::BecomeLogTarget() {
-  if (m_logPane != NULL)
-    m_logPane->BecomeLogTarget();
-}
-
 void wxMaxima::KillMaxima(bool logMessage) {
   if (logMessage && (m_closing || (m_process == NULL) || (m_pid > 0))) {
     wxLogMessage(_("Killing Maxima."));
@@ -11022,4 +11017,3 @@ wxString wxMaxima::m_firstPrompt(wxT("(%i1) "));
 wxMaxima::ParseFunctionHash wxMaxima::m_knownXMLTags;
 wxMaxima::VarReadFunctionHash wxMaxima::m_variableReadActions;
 wxMaxima::VarUndefinedFunctionHash wxMaxima::m_variableUndefinedActions;
-std::vector<wxMaxima *> wxMaxima::m_topLevelWindows;

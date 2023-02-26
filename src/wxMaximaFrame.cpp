@@ -2083,7 +2083,10 @@ void wxMaximaFrame::ReReadConfig() {
       }
     }
 #endif
-  
+  for(auto window: m_topLevelWindows)
+    {
+      window->ReadConfig();
+    }
 }
 
 void wxMaximaFrame::RegisterAutoSaveFile() {
@@ -2822,3 +2825,11 @@ void wxMaximaFrame::ShowToolBar(bool show) {
   m_manager.GetPane(wxT("toolbar")).Show(show);
   m_manager.Update();
 }
+
+void wxMaximaFrame::BecomeLogTarget() {
+  if (m_logPane != NULL)
+    m_logPane->BecomeLogTarget();
+}
+
+
+std::vector<wxMaximaFrame *> wxMaximaFrame::m_topLevelWindows;
