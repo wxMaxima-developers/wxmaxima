@@ -14,7 +14,7 @@ jobs:
       - name: setup_cygwin
         uses: cygwin/cygwin-install-action@v3
         with:
-          packages: cmake git libwx_baseu3.1-devel libwx_gtk3u3.1-devel gcc-core gcc-g++ make gettext-devel graphviz
+          packages: cmake git libwx_baseu3.1-devel libwx_gtk3u3.1-devel gcc-core gcc-g++ make gettext-devel
       - name: Checkout_git
         run: git clone --depth 20 https://github.com/wxMaxima-developers/wxmaxima.git
       - name: configure
