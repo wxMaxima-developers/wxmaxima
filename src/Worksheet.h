@@ -760,7 +760,11 @@ public:
   void CodeCellVisibilityChanged();
 
   //! Re-read the configuration
-  void UpdateConfig() { m_configuration->ReadConfig(); }
+  void UpdateConfig() {
+    m_configuration->ReadConfig();
+    Recalculate();
+    Refresh();
+  }
 
   //! The name of the currently-opened file
   wxString m_currentFile;

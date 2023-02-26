@@ -205,6 +205,8 @@ protected:
   void RemoveTempAutosavefile();
   //! Re-read the configuration.
   void ReReadConfig();  
+  //! Read the configuration from the OS's configuration storage.
+  void ReadConfig();  
   //! Remember a temporary autosave file name.
   void RegisterAutoSaveFile();
   /*! An instant single-window mode

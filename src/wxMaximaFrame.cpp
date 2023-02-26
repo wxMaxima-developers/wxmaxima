@@ -2053,6 +2053,8 @@ void wxMaximaFrame::UpdateRecentDocuments() {
   }
 }
 
+void wxMaximaFrame::ReadConfig() { m_worksheet->UpdateConfig(); }
+
 void wxMaximaFrame::ReReadConfig() {
   // On wxMac re-reading the config isn't necessary as all windows share the
   // same process and the same configuration.
@@ -2081,6 +2083,7 @@ void wxMaximaFrame::ReReadConfig() {
       }
     }
 #endif
+  
 }
 
 void wxMaximaFrame::RegisterAutoSaveFile() {
