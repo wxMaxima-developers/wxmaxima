@@ -50,8 +50,20 @@
 #include <wx/wx.h>
 #include <wx/xml/xml.h>
 #include <algorithm>
+#include <limits>
 
-Configuration::Configuration(wxDC *dc, InitOpt options) : m_dc(dc) {
+Configuration::Configuration(wxDC *dc, InitOpt options) : m_dc(dc),
+m_eng{m_rd()}{
+
+  wxConfigBase *config = wxConfig::Get();
+  std::uniform_int_distribution<long> urd(std::numeric_limits<long>::min(), std::numeric_limits<long>::max());
+  m_configId = urd(m_eng);
+  if(!config->Read(wxT("configID"), &m_configId))
+    config->Write(wxT("configID"), m_configId);
+
+  // We want to read the zoom factor, but don't want it to be updated on each ReadConfig()
+  config->Read(wxT("ZoomFactor"), &m_zoomFactor);
+
   if(m_styleNames.empty())
     {
       m_styleNames[TS_VARIABLE            ] = _("Output: Variable names");
@@ -582,6 +594,8 @@ bool Configuration::MaximaFound(wxString location) {
 
 void Configuration::ReadConfig() {
   wxConfigBase *config = wxConfig::Get();
+  
+  config->Read(wxT("configID"), &m_configId);
 
   wxString str;
   long dummy;
@@ -834,8 +848,6 @@ void Configuration::ReadConfig() {
   config->Read(wxT("labelWidth"), &m_labelWidth);
 
   config->Read(wxT("printBrackets"), &m_printBrackets);
-
-  config->Read(wxT("ZoomFactor"), &m_zoomFactor);
   config->Read(wxT("keepPercent"), &m_keepPercent);
   config->Read(wxT("saveUntitled"), &m_saveUntitled);
   config->Read(wxT("cursorJump"), &m_cursorJump);
@@ -1470,7 +1482,18 @@ bool Configuration::OfferInternalHelpBrowser() const {
 #endif
 }
 
+bool Configuration::UpdateNeeded()
+{
+  long configId;
+  wxConfig::Get()->Read(wxT("configID"), &configId);
+
+  return m_configId != configId;
+}
+  
 void Configuration::WriteStyles(wxConfigBase *config) {
+  std::uniform_int_distribution<long> urd(std::numeric_limits<long>::min(), std::numeric_limits<long>::max());
+  m_configId = urd(m_eng);
+  config->Write(wxT("configID"), m_configId);
   config->Write(wxT("wrapLatexMath"), m_wrapLatexMath);
   config->Write(wxT("allowNetworkHelp"), m_allowNetworkHelp);
   config->Write(wxT("exportContainsWXMX"), m_exportContainsWXMX);

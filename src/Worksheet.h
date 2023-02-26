@@ -93,6 +93,7 @@ class Worksheet : public wxScrolled<wxWindow>
 public:
   //! Is an update of the worksheet controls needed?
   bool UpdateControlsNeeded(){bool result = m_updateControls; m_updateControls = false; return result;}
+  void UpdateControlsNeeded(bool updateControlsNeeded){m_updateControls = updateControlsNeeded;}
 private:
   wxString m_maximaVersion;
   //! The directory with maxima's documentation

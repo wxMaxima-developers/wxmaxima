@@ -39,7 +39,6 @@
 #endif
 #include <functional>
 #include <unordered_map>
-#include <random>
 #include <utility>
 #include <vector>
 #include <time.h>
@@ -2345,13 +2344,11 @@ bool wxMaxima::StartMaxima(bool force) {
 #endif
       m_maximaAuthenticated = false;
       m_discardAllData = false;
-      std::random_device rd;
-      std::default_random_engine eng{rd()}; // static_cast<long unsigned int>(time(0)), 
       std::uniform_real_distribution<double> urd(0.0, 256.0);
       wxExecuteEnv *env = new wxExecuteEnv;
       wxMemoryBuffer membuf(512);
       for(auto i = 0 ; i < 512; i++)
-	membuf.AppendByte(static_cast<char>(urd(eng)));
+	membuf.AppendByte(static_cast<char>(urd(m_configuration.m_eng)));
       m_maximaAuthString = wxBase64Encode(membuf);
       environment["MAXIMA_AUTH_CODE"] = m_maximaAuthString;
       
@@ -4945,6 +4942,13 @@ void wxMaxima::OnIdle(wxIdleEvent &event) {
     return;
   }
 
+  if(m_configuration.UpdateNeeded())
+    {
+      wxLogMessage(_("Updating the configuration from the system's configuration memory"));
+      m_configuration.ReadConfig();
+      m_worksheet->RequestRedraw();
+      m_worksheet->UpdateControlsNeeded(true);
+    }
   // If we reach this point wxMaxima truly is idle
   // => Tell wxWidgets it can process its own idle commands, as well.
   event.Skip();

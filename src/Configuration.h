@@ -32,6 +32,7 @@
 #include "TextStyle.h"
 #include <memory>
 #include <unordered_map>
+#include <random>
 #include <list>
 #include <vector>
 #include <wx/wupdlock.h>
@@ -967,7 +968,21 @@ public:
   bool StyleAffectsCode(TextStyle style);
   bool StyleAffectsMathOut(TextStyle style);
   bool StyleAffectsColorOnly(TextStyle style);
+  //! true means: The system's config storage has changed since the configuration has been read
+  bool UpdateNeeded();
 
+private:
+  /*! The id of the current configuration
+
+    If the ID in the operating system's config storage differs from this one someone
+    has changed the configuration.
+  */
+  long m_configId;
+public:
+  //! Our random device
+  std::random_device m_rd;
+  //! Our random engine
+  std::default_random_engine m_eng;
 private:
   //! Which styles affect how code is displayed?
   std::vector<TextStyle> m_codeStyles;
