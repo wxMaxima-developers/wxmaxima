@@ -4941,10 +4941,8 @@ void wxMaxima::OnIdle(wxIdleEvent &event) {
     event.RequestMore();
     return;
   }
-  std::cerr<<"1\n";
   if(m_configuration.UpdateNeeded())
     {
-      std::cerr<<"2\n";
       wxLogMessage(_("Updating the configuration from the system's configuration memory"));
       m_configuration.ReadConfig();
       m_worksheet->RequestRedraw();
