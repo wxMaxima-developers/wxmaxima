@@ -5078,9 +5078,9 @@ void wxMaxima::UpdateMenus() {
   m_MenuBar->EnableItem(EventIDs::menu_jumptoerror, !m_worksheet->GetErrorList().Empty());
   m_MenuBar->EnableItem(wxID_SAVE, (!m_fileSaved));
 
-  for (int id = EventIDs::menu_pane_math; id <= EventIDs::menu_pane_stats; id++)
-    m_MenuBar->Check(id, IsPaneDisplayed(id));
-  m_MenuBar->Check(EventIDs::menu_show_toolbar, ToolbarIsShown());
+  for(auto pane: GetSidebarNames())
+    if(m_MenuBar->FindItem(pane.first) != NULL)
+      m_MenuBar->Check(pane.first, IsPaneDisplayed(pane.first));
 
   bool hidecode = !(m_configuration.ShowCodeCells());
   m_MenuBar->Check(ToolBar::tb_hideCode, hidecode);

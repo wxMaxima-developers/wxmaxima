@@ -227,6 +227,8 @@ public:
   */
   void BecomeLogTarget();
 
+  //! Get the list of human-readable sidebarnames and IDs
+  const std::unordered_map<int, wxString>  &GetSidebarNames() const {return m_sidebarNames;}
 private:
   //! The names our dockable sidebars are identified with in the config
   std::unordered_map<int, wxString> m_sidebarNames;
