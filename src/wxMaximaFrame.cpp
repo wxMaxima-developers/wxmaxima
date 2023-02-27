@@ -2113,12 +2113,11 @@ void wxMaximaFrame::RemoveTempAutosavefile() {
 
 bool wxMaximaFrame::IsPaneDisplayed(int id) {
   auto item = m_sidebarNames.find(id);
-  wxASSERT(item != m_sidebarNames.end());
+  //  wxASSERT(item != m_sidebarNames.end());
   if(item != m_sidebarNames.end())
     return m_manager.GetPane(item->second).IsShown();
   else
     return false;
-  bool displayed = false;
 }
 
 void wxMaximaFrame::OnMenuStatusText(wxMenuEvent &event)
@@ -2166,7 +2165,7 @@ void wxMaximaFrame::ShowPane(int id, bool show) {
       wxASSERT((id != EventIDs::menu_pane_console) || (show));
       if((id != EventIDs::menu_pane_console) || (show)) {
 	auto item = m_sidebarNames.find(id);
-	wxASSERT(item != m_sidebarNames.end());
+	//	wxASSERT(item != m_sidebarNames.end());
 	if(item != m_sidebarNames.end())
 	  m_manager.GetPane(item->second).Show(show);
       }
