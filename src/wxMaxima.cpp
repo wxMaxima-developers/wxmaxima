@@ -1532,9 +1532,10 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
           wxCommandEventHandler(wxMaxima::OnUnsavedDocument));
   Connect(EventIDs::menu_insert_image, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::InsertMenu), NULL, this);
-  Connect(EventIDs::menu_pane_hideall, EventIDs::menu_pane_stats, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::ShowPane));
-  Connect(EventIDs::menu_show_toolbar, wxEVT_MENU,
+  for(auto sidebar: GetSidebarNames())
+    Connect(sidebar.first, wxEVT_MENU,
+	    wxCommandEventHandler(wxMaxima::ShowPane));
+  Connect(EventIDs::menu_pane_toolbar, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
   Connect(EventIDs::popid_auto_answer, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::InsertMenu), NULL, this);
@@ -6296,7 +6297,7 @@ void wxMaxima::EditMenu(wxCommandEvent &event) {
   else if(event.GetId() == EventIDs::menu_remove_output) {
     m_worksheet->RemoveAllOutput();
   }
-  else if(event.GetId() == EventIDs::menu_show_toolbar) {
+  else if(event.GetId() == EventIDs::menu_pane_toolbar) {
     ShowToolBar(!ToolbarIsShown());
   }
   else if(event.GetId() == wxID_FIND) {

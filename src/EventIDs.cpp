@@ -591,7 +591,6 @@ const EventIDs::EventId EventIDs::menu_help_3d(wxNewId());
 const EventIDs::EventId EventIDs::menu_help_varnames(wxNewId());
 const EventIDs::EventId EventIDs::menu_help_fittingData(wxNewId());
 const EventIDs::EventId EventIDs::menu_help_tutorials_end(wxNewId());
-const EventIDs::EventId EventIDs::menu_show_toolbar(wxNewId());
 const EventIDs::EventId EventIDs::menu_history_previous(wxNewId());
 const EventIDs::EventId EventIDs::menu_history_next(wxNewId());
 const EventIDs::EventId EventIDs::menu_check_updates(wxNewId());

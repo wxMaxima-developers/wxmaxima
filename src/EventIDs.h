@@ -657,7 +657,6 @@ public:
   static const EventId menu_help_varnames;
   static const EventId menu_help_fittingData;
   static const EventId menu_help_tutorials_end; //! End of bundled tutorials
-  static const EventId menu_show_toolbar;
   static const EventId menu_history_previous;
   static const EventId menu_history_next;
   static const EventId menu_check_updates;

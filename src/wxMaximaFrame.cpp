@@ -729,7 +729,7 @@ void wxMaximaFrame::SetupMenu() {
   m_viewMenu = new wxMenu;
   // Sidebars
   m_Maxima_Panes_Sub = new wxMenu;
-  m_Maxima_Panes_Sub->AppendCheckItem(EventIDs::menu_show_toolbar,
+  m_Maxima_Panes_Sub->AppendCheckItem(EventIDs::menu_pane_toolbar,
                                       _("Main Toolbar\tAlt+Shift+B"));
   m_Maxima_Panes_Sub->AppendCheckItem(EventIDs::menu_pane_math,
                                       _("General Math\tAlt+Shift+M"));
