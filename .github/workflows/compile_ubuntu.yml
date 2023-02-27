@@ -63,7 +63,7 @@ jobs:
       - name: install_packages
         run: |
              sudo apt update
-             sudo apt-get install appstream-util cmake desktop-file-utils doxygen gettext gnuplot gnuplot-x11 graphviz libwxgtk3.2-dev maxima maxima-share maxima-doc netcat-openbsd ninja-build pandoc xvfb at-spi2-core
+             sudo apt-get install appstream-util cmake desktop-file-utils doxygen gettext gnuplot gnuplot-x11 graphviz libwxgtk3.0-gtk3-dev maxima maxima-share maxima-doc netcat-openbsd ninja-build pandoc xvfb at-spi2-core
       - name: configure
         run: |
              export CXXFLAGS="-Wall -Wextra -ansi -DWXM_DISABLE_WEBVIEW=ON"
