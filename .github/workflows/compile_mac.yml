@@ -135,6 +135,7 @@ jobs:
              set -e
              port selfupdate
              port install gettext ninja pandoc wxWidgets-3.2 maxima gnuplot pkgconfig
+             port select wxWidgets wxWidgets-3.2
              set +e
       - name: Configure wxMaxima
         run: |
