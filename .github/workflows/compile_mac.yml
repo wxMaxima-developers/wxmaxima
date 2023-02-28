@@ -157,6 +157,6 @@ jobs:
         run: |
              cd ../build-wxm
              cpack -G DragNDrop
-      - name: Cleanup
-        run: |
-             port -f uninstall inactive
+      # - name: Cleanup
+      #   run: |
+      #        port -f uninstall inactive
