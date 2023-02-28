@@ -165,7 +165,7 @@
 
   (defmfun $wxbug_report ()
     (format t "wxMaxima is a graphical front end for Maxima, which does the mathematics in the background.~%")
-    (format t "If you encounter a mathematical problem, it is probably a Maxima bug und should be submitted there.~%")
+    (format t "If you encounter a mathematical problem, it is probably a Maxima bug and should be submitted there.~%")
     (format t "~%The Maxima bug database is available at~%")
     (format t "    https://sourceforge.net/p/maxima/bugs~%")
     (format t "Submit bug reports by following the 'Create Ticket' link on that page.~%")
@@ -1280,7 +1280,7 @@
     (append l x))
 
   (wx-defprop text-string wxxml-matchfix-np wxxml)
-  (wx-defprop text-string (("<t>")"</t>") wxxmlsym)
+  (wx-defprop text-string (("<t>")"</t>") (wxxml-fix-string wxxmlsym))
 
   (wx-defprop mtext wxxml-matchfix-np wxxml)
   (wx-defprop mtext (("")"") wxxmlsym)

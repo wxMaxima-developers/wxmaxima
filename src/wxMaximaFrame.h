@@ -45,9 +45,7 @@
 
 #include "ScrollingGenWizPanel.h"
 #include "Worksheet.h"
-#ifdef USE_WEBVIEW
 #include "HelpBrowser.h"
-#endif
 #include "RecentDocuments.h"
 #include "Version.h"
 #include "MainMenuBar.h"
@@ -207,6 +205,8 @@ protected:
   void RemoveTempAutosavefile();
   //! Re-read the configuration.
   void ReReadConfig();  
+  //! Read the configuration from the OS's configuration storage.
+  void ReadConfig();  
   //! Remember a temporary autosave file name.
   void RegisterAutoSaveFile();
   /*! An instant single-window mode
@@ -216,8 +216,24 @@ protected:
   */
   void DockAllSidebars(wxCommandEvent &ev);
 
-  wxString wxMaximaManualLocation();  
+  wxString wxMaximaManualLocation();
+public:
+  //! The list of toplevel windows we currently maintain
+  static std::vector<wxMaximaFrame *> m_topLevelWindows;
+
+  /*! Makes this window the debug log target of all windows from this maxima process
+
+    Only necessary on the mac where the same process creates loads of windows.
+  */
+  void BecomeLogTarget();
+
+  //! Get the list of human-readable sidebarnames and IDs
+  const std::unordered_map<int, wxString>  &GetSidebarNames() const {return m_sidebarNames;}
 private:
+  //! The names our dockable sidebars are identified with in the config
+  std::unordered_map<int, wxString> m_sidebarNames;
+  //! The names our dockable sidebars are shown with
+  std::unordered_map<int, wxString> m_sidebarCaption;
   //! How many bytes did maxima send us when we updated the statusbar?
   long m_bytesFromMaxima_last;
   wxTimer m_bytesReadDisplayTimer; 
@@ -287,7 +303,9 @@ protected:
   virtual wxSize DoGetBestClientSize() const;
   //! The sidebar with the draw commands
   DrawPane *m_drawPane;
+#ifdef USE_WEBVIEW
   HelpBrowser *m_helpPane;
+#endif
 private:
   class GreekPane : public wxScrolled<wxPanel>
   {
@@ -330,8 +348,6 @@ private:
 protected:
   std::array<wxString,10> m_statusTextHistory;
   void OnMenuStatusText(wxMenuEvent &event);
-  bool m_historyVisible;
-  bool m_xmlMonitorVisible;
   SymbolsPane *m_symbolsPane;
   //! The current length of the evaluation queue of commands we still need to send to maxima
   int m_EvaluationQueueLength;

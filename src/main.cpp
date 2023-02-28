@@ -243,10 +243,12 @@ bool MyApp::OnInit() {
 							 wxT("/wxwin"));
     wxFileTranslationsLoader::AddCatalogLookupPathPrefix(wxT("/usr/share/locale"));
     wxFileTranslationsLoader::AddCatalogLookupPathPrefix(wxT("/usr/local/share/locale"));
+
+    if (wxLocale::IsAvailable(lang))
+      wxTranslations::Get()->SetLanguage(lang);
     
     // Do we reckon we improve something if we set maxima's language, as well?
     if ((wxLocale::IsAvailable(lang)) && (lang != wxLANGUAGE_DEFAULT)) {
-      wxTranslations::Get()->SetLanguage(lang);
       // Set maxima's language, as well.
       wxString localeName = wxLocale().GetCanonicalName();
       if (lang != wxLocale::GetSystemLanguage()) {
@@ -461,7 +463,7 @@ int MyApp::OnRun() {
 void MyApp::NewWindow(const wxString &file, bool evalOnStartup,
                       bool exitAfterEval, unsigned char *wxmData,
                       size_t wxmLen) {
-  int numberOfWindows = wxMaxima::m_topLevelWindows.size();
+  int numberOfWindows = wxMaximaFrame::m_topLevelWindows.size();
 
   wxString title = _("wxMaxima");
   if (file.Length() > 0)
@@ -492,7 +494,7 @@ void MyApp::NewWindow(const wxString &file, bool evalOnStartup,
   }
 
   frame->EvalOnStartup(evalOnStartup);
-  wxMaxima::m_topLevelWindows.push_back(frame);
+  wxMaximaFrame::m_topLevelWindows.push_back(frame);
   frame->ExitAfterEval(exitAfterEval);
 
   SetTopWindow(frame);
@@ -585,14 +587,14 @@ void MyApp::OnFileMenu(wxCommandEvent &ev) {
     wxConfig::Get()->Flush();
   }
   else if(ev.GetId() ==  wxID_EXIT) {
-    for (wxMaxima *win : wxMaxima::m_topLevelWindows) {
+    for (wxMaximaFrame *win : wxMaximaFrame::m_topLevelWindows) {
       wxASSERT(win);
       wxCloseEvent *event = new wxCloseEvent(wxEVT_CLOSE_WINDOW);
       event->SetCanVeto(true);
       event->SetLoggingOff(false);
       win->GetEventHandler()->QueueEvent(event);
     }
-    if (wxMaxima::m_topLevelWindows.empty())
+    if (wxMaximaFrame::m_topLevelWindows.empty())
       wxExit();
   }
 }

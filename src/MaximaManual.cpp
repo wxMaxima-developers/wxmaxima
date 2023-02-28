@@ -368,7 +368,7 @@ void MaximaManual::SaveManualAnchorsToCache(wxString maximaHtmlDir,
       wxXmlNode *keyNode =
 	new wxXmlNode(manualEntry, wxXML_ELEMENT_NODE, "url_fileperchapter");
       new wxXmlNode(keyNode, wxXML_TEXT_NODE, wxEmptyString,
-                    m_helpFileURLs_singlePage[it->first]);
+                    m_helpFileURLs_filePerChapter[it->first]);
     }
   }
   wxXmlDocument xmlDoc;

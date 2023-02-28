@@ -29,6 +29,7 @@
 #include "Cell.h"
 #include "Version.h"
 #include <wx/image.h>
+#include <wx/rawbmp.h>
 
 #include <wx/filesys.h>
 #include <wx/fs_arc.h>
@@ -205,7 +206,7 @@ wxBitmap Image::GetUnscaledBitmap() {
 
     nsvgRasterize(m_svgRast.get(), m_svgImage, 0, 0, 1, imgdata.data(),
                   m_originalWidth, m_originalHeight, m_originalWidth * 4);
-    return SvgBitmap::RGBA2wxBitmap(imgdata.data(), m_originalWidth,
+    return RGBA2wxBitmap(imgdata.data(), m_originalWidth,
                                     m_originalHeight);
   } else {
     wxMemoryInputStream istream(m_compressedImage.GetData(),
@@ -705,7 +706,7 @@ wxBitmap Image::GetBitmap(double scale) {
                   imgdata.data(),
                   m_width, m_height, m_width * 4);
     return m_scaledBitmap =
-      SvgBitmap::RGBA2wxBitmap(imgdata.data(), m_width, m_height);
+      RGBA2wxBitmap(imgdata.data(), m_width, m_height);
   } else {
     wxImage img;
     if (m_compressedImage.GetDataLen() > 0) {
@@ -879,8 +880,7 @@ void Image::LoadImage_Backgroundtask(wxString image,
       }
       // Convert the data we have read to a modifiable char * containing the svg
       // file's contents.
-      char *svgContents;
-      svgContents = static_cast<char *>(strdup(svgContents_string.utf8_str()));
+      wxCharBuffer svgContents = svgContents_string.ToUTF8();
 
       // Parse the svg file's contents
       int ppi;
@@ -889,9 +889,8 @@ void Image::LoadImage_Backgroundtask(wxString image,
       else
         ppi = 96;
 
-      if (svgContents) {
-        m_svgImage = nsvgParse(svgContents, "px", ppi);
-        free(svgContents);
+      if (svgContents.data()) {
+        m_svgImage = nsvgParse(svgContents.data(), "px", ppi);
       }
 
       if (m_svgImage) {
@@ -1004,4 +1003,39 @@ const wxString &Image::GetBadImageToolTip() {
 	    "able to understand what maxima wanted to plot.\n"
 	    "One example of the latter would be: Gnuplot refuses to plot entirely "
 	    "empty images");
+}
+
+wxBitmap Image::RGBA2wxBitmap(const unsigned char imgdata[],
+                              const int &width, const int &height,
+
+#if defined __WXOSX__
+                                  const int &scaleFactor
+#else
+                                  const int &WXUNUSED(scaleFactor)
+#endif
+				  ) {
+#if defined __WXOSX__
+  wxBitmap retval = wxBitmap(wxSize(width, height), 32, scaleFactor);
+#else
+  wxBitmap retval = wxBitmap(wxSize(width, height), 32);
+#endif
+  const unsigned char *rgba = imgdata;
+  if (!retval.Ok())
+    return retval;
+
+  wxAlphaPixelData bmpdata(retval);
+  wxAlphaPixelData::Iterator dst(bmpdata);
+  for (int y = 0; y < height; y++) {
+    dst.MoveTo(bmpdata, 0, y);
+    for (int x = 0; x < width; x++) {
+      unsigned char a = rgba[3];
+      dst.Red() = rgba[0] * a / 255;
+      dst.Green() = rgba[1] * a / 255;
+      dst.Blue() = rgba[2] * a / 255;
+      dst.Alpha() = a;
+      dst++;
+      rgba += 4;
+    }
+  }
+  return retval;
 }

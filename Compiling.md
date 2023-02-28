@@ -131,6 +131,17 @@ generated using doxygen and the `doxygen` target:
 
     cmake --build ../build-wxm -- doxygen
 
+### wxWidgets isn't found
+
+CMake has currently (Feb 2022) problems finding a wxWidgets that was 
+compiled using CMake. If that is the reason maybe wxWidgets was compiled
+without wxWebView. In that case
+
+    cmake -S . -B ../build-wxm -DWXM_DISABLE_WEBVIEW=on
+
+might allow cmake to find wxWidgets at the cost of loosing the integrated
+dockable help browser.
+
 
 Additional information for packagers
 ------------------------------------

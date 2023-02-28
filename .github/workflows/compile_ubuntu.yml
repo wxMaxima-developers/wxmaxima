@@ -49,3 +49,44 @@ jobs:
              export CTEST_OUTPUT_ON_FAILURE=1
              xvfb-run -a ctest
              cd ..
+
+  compile_without_webview:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout_git
+        uses: actions/checkout@v3
+        with:
+          # We must fetch at least the immediate parents so that if this is
+          # a pull request then we can checkout the head.
+          fetch-depth: 15
+      - name: install_packages
+        run: |
+             sudo apt update
+             sudo apt-get install appstream-util cmake desktop-file-utils doxygen gettext gnuplot gnuplot-x11 graphviz libwxgtk3.0-gtk3-dev maxima maxima-share maxima-doc netcat-openbsd ninja-build pandoc xvfb at-spi2-core
+      - name: configure
+        run: |
+             export CXXFLAGS="-Wall -Wextra -ansi"
+             export LANG=en_US.UTF-8
+             mkdir build
+             touch build build/build.ninja
+             cd build
+             cmake -G "Ninja" -DCMAKE_UNITY_BUILD=YES -DCMAKE_BUILD_TYPE=debug -DCMAKE_UNITY_BUILD_BATCH_SIZE=8 -DWXM_UNIT_TESTS=YES -DWXM_DISABLE_WEBVIEW=ON ..
+             cd ..
+      - name: compile
+        run: |
+             cd build
+             cmake --build .
+             cd ..
+      - name: update-locale
+        run: |
+             cd build
+             cmake --build . --target update-locale
+             cd ..
+      - name: run_tests
+        run: |
+             cd build
+             export HOME=`pwd`
+             export CTEST_OUTPUT_ON_FAILURE=1
+             xvfb-run -a ctest
+             cd ..

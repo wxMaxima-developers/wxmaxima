@@ -93,6 +93,7 @@ class Worksheet : public wxScrolled<wxWindow>
 public:
   //! Is an update of the worksheet controls needed?
   bool UpdateControlsNeeded(){bool result = m_updateControls; m_updateControls = false; return result;}
+  void UpdateControlsNeeded(bool updateControlsNeeded){m_updateControls = updateControlsNeeded;}
 private:
   wxString m_maximaVersion;
   //! The directory with maxima's documentation
@@ -760,7 +761,11 @@ public:
   void CodeCellVisibilityChanged();
 
   //! Re-read the configuration
-  void UpdateConfig() { m_configuration->ReadConfig(); }
+  void UpdateConfig() {
+    m_configuration->ReadConfig();
+    Recalculate();
+    Refresh();
+  }
 
   //! The name of the currently-opened file
   wxString m_currentFile;
@@ -1202,7 +1207,7 @@ public:
   //! Is the selection in the current working group?
   bool IsSelectionInWorkingGroup();
 
-  void SetActiveCell(EditorCell *cell, bool callRefresh = true);
+  void SetActiveCell(EditorCell *cell);
 
 /*!
   Set the HCaret to its default location, at the end of the document.

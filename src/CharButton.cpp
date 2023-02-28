@@ -30,7 +30,7 @@
 
 #include "CharButton.h"
 #include "UnicodeSidebar.h"
-#include "wx/sizer.h"
+#include <wx/sizer.h>
 #include <wx/dcbuffer.h>
 #include <wx/settings.h>
 

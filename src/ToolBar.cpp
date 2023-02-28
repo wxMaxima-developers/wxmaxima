@@ -54,16 +54,24 @@ wxBitmap ToolBar::GetBitmap(wxString name, unsigned char *data, size_t len,
   wxBitmap bmp = wxArtProvider::GetBitmap(name, wxART_TOOLBAR, wxSize(siz.x*4, siz.y*4));
   wxImage img;
   if (bmp.IsOk())
-    img = bmp.ConvertToImage();
-  if (!img.IsOk())
-    return SvgBitmap(this, data, len, siz, GetContentScaleFactor());
-
-  img.Rescale(siz.x, siz.y, wxIMAGE_QUALITY_BICUBIC);
+    {
+      img = bmp.ConvertToImage();
+      img.Rescale(siz.x, siz.y, wxIMAGE_QUALITY_BICUBIC);
+    }
+  if (img.IsOk())
+    {
 #if defined __WXOSX__
-  return wxBitmap(img, wxBITMAP_SCREEN_DEPTH, GetContentScaleFactor());
+      bmp = wxBitmap(img, wxBITMAP_SCREEN_DEPTH, GetContentScaleFactor());
 #else
-  return wxBitmap(img, wxBITMAP_SCREEN_DEPTH);
+      bmp = wxBitmap(img, wxBITMAP_SCREEN_DEPTH);
 #endif
+    }
+  else
+    bmp = SvgBitmap(this, data, len, siz);
+  wxASSERT(bmp.IsOk());
+  if(!bmp.IsOk())
+    bmp = wxBitmap(siz.x, siz.y);
+  return bmp;
 }
 
 wxSize ToolBar::GetOptimalBitmapSize()

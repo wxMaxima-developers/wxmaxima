@@ -32,11 +32,39 @@
 #include <wx/button.h>
 #include <wx/sizer.h>
 #include <wx/textctrl.h>
+
+#ifdef USE_WEBVIEW
 #include <wx/wupdlock.h>
 #ifdef __WXMSW__
 #include <wx/msw/webview_ie.h>
 #endif
+#endif
 
+bool HelpBrowser::AllowOnlineManualP(Configuration *configuration, wxWindow *parent) {
+  if (configuration->AllowNetworkHelp())
+    return true;
+
+  LoggingMessageDialog dialog(parent,
+                              _("Allow to access a online manual for maxima?"),
+                              "Manual", wxCENTER | wxYES_NO | wxCANCEL);
+
+  dialog.SetExtendedMessage(_("Didn't find an installed offline manual."));
+
+  int result = dialog.ShowModal();
+
+  if (result == wxID_CANCEL)
+    return false;
+
+  if (result == wxID_YES) {
+    configuration->AllowNetworkHelp(true);
+    return true;
+  }
+
+  configuration->AllowNetworkHelp(false);
+  return false;
+}
+
+#ifdef USE_WEBVIEW
 HelpBrowser::HelpBrowser(wxWindow *parent, Configuration *configuration,
                          MaximaManual *manual, wxString url)
   : wxPanel(parent, wxID_ANY), m_maximaManual(manual),
@@ -149,30 +177,6 @@ void HelpBrowser::OnWebviewKeyDown(wxKeyEvent &event) {
     event.Skip();
 }
 
-bool HelpBrowser::AllowOnlineManualP() {
-  if (m_configuration->AllowNetworkHelp())
-    return true;
-
-  LoggingMessageDialog dialog(this,
-                              _("Allow to access a online manual for maxima?"),
-                              "Manual", wxCENTER | wxYES_NO | wxCANCEL);
-
-  dialog.SetExtendedMessage(_("Didn't find an installed offline manual."));
-
-  int result = dialog.ShowModal();
-
-  if (result == wxID_CANCEL)
-    return false;
-
-  if (result == wxID_YES) {
-    m_configuration->AllowNetworkHelp(true);
-    return true;
-  }
-
-  m_configuration->AllowNetworkHelp(false);
-  return false;
-}
-
 void HelpBrowser::JumpToKeyword(wxString keyword) {
   //  wxWindowUpdateLocker speedUp(this);
   wxString maximaHelpURL = m_maximaManual->GetHelpfileURL(keyword);
@@ -246,3 +250,4 @@ void HelpBrowser::OnSearchDown(wxCommandEvent &WXUNUSED(event)) {
   m_findDown = true;
   m_webView->Find(m_searchText->GetValue(), wxWEBVIEW_FIND_DEFAULT);
 }
+#endif

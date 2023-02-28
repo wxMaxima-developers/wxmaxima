@@ -39,7 +39,6 @@
 #endif
 #include <functional>
 #include <unordered_map>
-#include <random>
 #include <utility>
 #include <vector>
 #include <time.h>
@@ -1533,9 +1532,10 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
           wxCommandEventHandler(wxMaxima::OnUnsavedDocument));
   Connect(EventIDs::menu_insert_image, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::InsertMenu), NULL, this);
-  Connect(EventIDs::menu_pane_hideall, EventIDs::menu_pane_stats, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::ShowPane));
-  Connect(EventIDs::menu_show_toolbar, wxEVT_MENU,
+  for(auto sidebar: GetSidebarNames())
+    Connect(sidebar.first, wxEVT_MENU,
+	    wxCommandEventHandler(wxMaxima::ShowPane));
+  Connect(EventIDs::menu_pane_toolbar, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
   Connect(EventIDs::popid_auto_answer, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::InsertMenu), NULL, this);
@@ -2345,13 +2345,11 @@ bool wxMaxima::StartMaxima(bool force) {
 #endif
       m_maximaAuthenticated = false;
       m_discardAllData = false;
-      std::random_device rd;
-      std::default_random_engine eng{rd()}; // static_cast<long unsigned int>(time(0)), 
       std::uniform_real_distribution<double> urd(0.0, 256.0);
       wxExecuteEnv *env = new wxExecuteEnv;
       wxMemoryBuffer membuf(512);
       for(auto i = 0 ; i < 512; i++)
-	membuf.AppendByte(static_cast<char>(urd(eng)));
+	membuf.AppendByte(static_cast<char>(urd(m_configuration.m_eng)));
       m_maximaAuthString = wxBase64Encode(membuf);
       environment["MAXIMA_AUTH_CODE"] = m_maximaAuthString;
       
@@ -2522,11 +2520,6 @@ void wxMaxima::Interrupt(wxCommandEvent &WXUNUSED(event)) {
   wxLogMessage(_("Sending Maxima a SIGINT signal."));
   wxProcess::Kill(m_pid, wxSIGINT);
 #endif
-}
-
-void wxMaxima::BecomeLogTarget() {
-  if (m_logPane != NULL)
-    m_logPane->BecomeLogTarget();
 }
 
 void wxMaxima::KillMaxima(bool logMessage) {
@@ -3014,8 +3007,10 @@ void wxMaxima::ReadManualTopicNames(wxString &data) {
 	    }
 	    if (topics.IsEmpty())
 	      wxLogMessage(_("No topics found in topic flag"));
+#ifdef USE_WEBVIEW
 	    else
 	      m_helpPane->SelectKeywords(topics);
+#endif
 	  }
 	  entry = entry->GetNext();
 	}
@@ -4522,10 +4517,13 @@ void wxMaxima::ShowTip(bool force) {
 }
 
 void wxMaxima::LaunchHelpBrowser(wxString uri) {
+#ifdef USE_WEBVIEW
   if (m_configuration.InternalHelpBrowser()) {
     m_helpPane->SetURL(uri);
     wxMaximaFrame::ShowPane(EventIDs::menu_pane_help);
-  } else {
+  } else
+#endif
+    {
     if (m_configuration.AutodetectHelpBrowser()) {
       // see https://docs.wxwidgets.org/3.0/classwx_mime_types_manager.html
       auto *manager = wxTheMimeTypesManager;
@@ -4565,7 +4563,7 @@ void wxMaxima::ShowWxMaximaHelp() {
   wxString helpfile = wxMaximaManualLocation();
 
   if (!wxFileExists(helpfile)) {
-    if (!m_helpPane->AllowOnlineManualP())
+    if (!HelpBrowser::AllowOnlineManualP(&m_configuration, this))
       return;
 
     wxLogMessage(_(wxT("No offline manual found => Redirecting to the wxMaxima homepage")));
@@ -4610,7 +4608,7 @@ void wxMaxima::ShowMaximaHelpWithoutAnchor() {
   // = lang_long.Left(lang_long.Find('_'));
   helpfile = m_maximaHtmlDir.Trim() + wxString("/maxima_singlepage.html");
   if (!wxFileExists(helpfile)) {
-    if (!m_helpPane->AllowOnlineManualP())
+    if (!HelpBrowser::AllowOnlineManualP(&m_configuration, this))
       return;
 
     wxLogMessage(_(wxT("No offline manual found => Redirecting to the Maxima homepage")));
@@ -4665,7 +4663,7 @@ void wxMaxima::ShowMaximaHelp(wxString keyword) {
     wxLogMessage(_("Opening help file %s"), maximaHelpURL.utf8_str());
     LaunchHelpBrowser(maximaHelpURL);
   } else {
-    if (m_helpPane->AllowOnlineManualP()) {
+    if (HelpBrowser::AllowOnlineManualP(&m_configuration, this)) {
       wxLogMessage(_(wxT("No offline manual found => Redirecting to the Maxima homepage")));
       LaunchHelpBrowser(
 			"https://maxima.sourceforge.io/docs/manual/maxima_singlepage.html#" +
@@ -4935,7 +4933,7 @@ void wxMaxima::OnIdle(wxIdleEvent &event) {
   UpdateSlider();
 
   // Update the history sidebar in case it is visible
-  if (m_historyVisible && m_history->UpdateDeferred()) {
+  if (IsPaneDisplayed(EventIDs::menu_pane_history) && m_history->UpdateDeferred()) {
     event.RequestMore();
     return;
   }
@@ -4944,7 +4942,13 @@ void wxMaxima::OnIdle(wxIdleEvent &event) {
     event.RequestMore();
     return;
   }
-
+  if(m_configuration.UpdateNeeded())
+    {
+      wxLogMessage(_("Updating the configuration from the system's configuration memory"));
+      m_configuration.ReadConfig();
+      m_worksheet->RequestRedraw();
+      m_worksheet->UpdateControlsNeeded(true);
+    }
   // If we reach this point wxMaxima truly is idle
   // => Tell wxWidgets it can process its own idle commands, as well.
   event.Skip();
@@ -5073,9 +5077,9 @@ void wxMaxima::UpdateMenus() {
   m_MenuBar->EnableItem(EventIDs::menu_jumptoerror, !m_worksheet->GetErrorList().Empty());
   m_MenuBar->EnableItem(wxID_SAVE, (!m_fileSaved));
 
-  for (int id = EventIDs::menu_pane_math; id <= EventIDs::menu_pane_stats; id++)
-    m_MenuBar->Check(id, IsPaneDisplayed(id));
-  m_MenuBar->Check(EventIDs::menu_show_toolbar, ToolbarIsShown());
+  for(auto pane: GetSidebarNames())
+    if(m_MenuBar->FindItem(pane.first) != NULL)
+      m_MenuBar->Check(pane.first, IsPaneDisplayed(pane.first));
 
   bool hidecode = !(m_configuration.ShowCodeCells());
   m_MenuBar->Check(ToolBar::tb_hideCode, hidecode);
@@ -5174,7 +5178,7 @@ void wxMaxima::UpdateToolBar() {
       editor = group->GetEditable();
   }
 
-  bool canEvaluateNext = ((editor != NULL) && (editor->GetStyle() == TS_INPUT));
+  bool canEvaluateNext = ((editor != NULL) && (editor->GetStyle() == TS_CODE_DEFAULT));
 
   if (!canEvaluateNext) {
     if (m_worksheet->HCaretActive()) {
@@ -6293,7 +6297,7 @@ void wxMaxima::EditMenu(wxCommandEvent &event) {
   else if(event.GetId() == EventIDs::menu_remove_output) {
     m_worksheet->RemoveAllOutput();
   }
-  else if(event.GetId() == EventIDs::menu_show_toolbar) {
+  else if(event.GetId() == EventIDs::menu_pane_toolbar) {
     ShowToolBar(!ToolbarIsShown());
   }
   else if(event.GetId() == wxID_FIND) {
@@ -7057,7 +7061,7 @@ void wxMaxima::MaximaMenu(wxCommandEvent &event) {
   }
   else if(event.GetId() == EventIDs::menu_stringproc_split){
     CommandWiz(_("Split"), wxEmptyString, wxEmptyString, wxT("split(#1#,#2#);"),
-               _("String:"), expr, wxEmptyString, _("Deliminiter:"), wxT(";"),
+               _("String:"), expr, wxEmptyString, _("Delimiter:"), wxT(";"),
                wxEmptyString);
   }
   else if(event.GetId() == EventIDs::menu_stringproc_sposition){
@@ -9075,12 +9079,14 @@ void wxMaxima::HelpMenu(wxCommandEvent &event) {
 					 _("Go to URL"), wxEmptyString, wxEmptyString, wxEmptyString,
 					 _("URL"), wxEmptyString, wxEmptyString));
       // wiz->Centre(wxBOTH);
+#ifdef USE_WEBVIEW
       wiz->ShowWindowModalThenDo([this,wiz](int retcode) {
 	if (retcode == wxID_OK) {
 	  m_helpPane->SetURL((*wiz)[0]);
 	  wxMaximaFrame::ShowPane(EventIDs::menu_pane_help);
 	}
       });
+#endif
     } }
   else if(event.GetId() == wxID_ABOUT){ {
       wxAboutDialogInfo info;
@@ -11015,4 +11021,3 @@ wxString wxMaxima::m_firstPrompt(wxT("(%i1) "));
 wxMaxima::ParseFunctionHash wxMaxima::m_knownXMLTags;
 wxMaxima::VarReadFunctionHash wxMaxima::m_variableReadActions;
 wxMaxima::VarUndefinedFunctionHash wxMaxima::m_variableUndefinedActions;
-std::vector<wxMaxima *> wxMaxima::m_topLevelWindows;

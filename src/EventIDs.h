@@ -70,6 +70,9 @@ public:
   static const EventId menu_pane_draw;      //!< Both the "toggle the draw pane" command for the "draw" pane
   static const EventId menu_pane_help;      //!< Both the "toggle the draw pane" command for the help browser
   static const EventId menu_pane_symbols;   //!< Both the "toggle the symbols pane" command for the "symbols" pane
+  static const EventId menu_pane_wizard ;   //!< Both the "toggle the wizard pane" command for the "wizard" pane
+  static const EventId menu_pane_toolbar ;   //!< Both the "toggle the toolbar" command for the "toolbar" pane
+  static const EventId menu_pane_console ;   //!< The id for the worksheet
   /*! Both used as the "toggle the stats pane" command and as the ID of the stats pane
 
     Since this enum is also used for iterating over the panes it is vital 
@@ -654,7 +657,6 @@ public:
   static const EventId menu_help_varnames;
   static const EventId menu_help_fittingData;
   static const EventId menu_help_tutorials_end; //! End of bundled tutorials
-  static const EventId menu_show_toolbar;
   static const EventId menu_history_previous;
   static const EventId menu_history_next;
   static const EventId menu_check_updates;

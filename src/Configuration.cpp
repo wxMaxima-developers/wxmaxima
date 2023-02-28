@@ -50,11 +50,22 @@
 #include <wx/wx.h>
 #include <wx/xml/xml.h>
 #include <algorithm>
+#include <limits>
 
-Configuration::Configuration(wxDC *dc, InitOpt options) : m_dc(dc) {
+Configuration::Configuration(wxDC *dc, InitOpt options) : m_dc(dc),
+m_eng{m_rd()}{
+
+  wxConfigBase *config = wxConfig::Get();
+  std::uniform_int_distribution<long> urd(std::numeric_limits<long>::min(), std::numeric_limits<long>::max());
+  m_configId = urd(m_eng);
+  if(!config->Read(wxT("configID"), &m_configId))
+    config->Write(wxT("configID"), m_configId);
+
+  // We want to read the zoom factor, but don't want it to be updated on each ReadConfig()
+  config->Read(wxT("ZoomFactor"), &m_zoomFactor);
+
   if(m_styleNames.empty())
     {
-      m_styleNames[TS_CODE_DEFAULT        ] = _("Code Default"); 
       m_styleNames[TS_VARIABLE            ] = _("Output: Variable names");
       m_styleNames[TS_OPERATOR            ] = _("Output: Operators");
       m_styleNames[TS_NUMBER              ] = _("Output: Numbers and Digits");
@@ -62,7 +73,7 @@ Configuration::Configuration(wxDC *dc, InitOpt options) : m_dc(dc) {
       m_styleNames[TS_SPECIAL_CONSTANT    ] = _("Output: Special constants (%e,%i)");
       m_styleNames[TS_GREEK_CONSTANT      ] = _("Output: Latin names as greek symbols");
       m_styleNames[TS_STRING              ] = _("Output: Strings");
-      m_styleNames[TS_INPUT               ] = _("Maxima input");
+      m_styleNames[TS_CODE_DEFAULT        ] = _("Code Default (Maxima input)");
       m_styleNames[TS_MAIN_PROMPT         ] = _("Input labels");
       m_styleNames[TS_OTHER_PROMPT        ] = _("Maxima question labels");
       m_styleNames[TS_LABEL               ] = _("Output labels");
@@ -117,7 +128,6 @@ Configuration::Configuration(wxDC *dc, InitOpt options) : m_dc(dc) {
       m_2dMathStyles.push_back(TS_SPECIAL_CONSTANT);
       m_2dMathStyles.push_back(TS_GREEK_CONSTANT);
       m_2dMathStyles.push_back(TS_STRING);
-      m_2dMathStyles.push_back(TS_INPUT);
       m_2dMathStyles.push_back(TS_MAIN_PROMPT);
       m_2dMathStyles.push_back(TS_OTHER_PROMPT);
       m_2dMathStyles.push_back(TS_LABEL);
@@ -256,7 +266,7 @@ void Configuration::ResetAllToDefaults(InitOpt options) {
   m_symbolPaneAdditionalChars = wxT("Øü§");
   m_hidemultiplicationsign = true;
   m_autodetectHelpBrowser = true;
-  m_singlePageManual = true;
+  m_singlePageManual = false;
   m_useInternalHelpBrowser = OfferInternalHelpBrowser();
 #ifdef __WXGTK__
   m_helpBrowserUserLocation = wxT("xdg-open");
@@ -305,7 +315,12 @@ void Configuration::ResetAllToDefaults(InitOpt options) {
     if (m_maximaLocation_override != wxEmptyString)
       m_maximaUserLocation = m_maximaLocation_override;
     else
-      m_maximaUserLocation = Dirstructure::Get()->MaximaDefaultLocation();
+      {
+	// We don't want all debug messages from searching for maxima pop up
+	// as dialogues if the debug messages sidebar still doesn't exist.
+	wxLogNull suppress;
+	m_maximaUserLocation = Dirstructure::Get()->MaximaDefaultLocation();
+      }
   }
   m_indent = -1;
   m_autoSubscript = 1;
@@ -474,7 +489,6 @@ void Configuration::InitStyles() {
   m_styles[TS_ASCIIMATHS].FontSize(12.0);
   m_styles[TS_TEXT].SetFontName(monospace.GetFaceName());
   m_styles[TS_TEXT].FontSize(12.0);
-  m_styles[TS_CODE_DEFAULT].Bold().Italic().FontSize(12);
   m_styles[TS_MATH].FontSize(12.0);
 
   m_styles[TS_TEXT].FontSize(12);
@@ -500,7 +514,7 @@ void Configuration::InitStyles() {
   m_styles[TS_LABEL].Color(255, 192, 128);
   m_styles[TS_USERLABEL].Color(255, 64, 0);
   // m_styles[TS_SPECIAL_CONSTANT];
-  m_styles[TS_INPUT].Color(*wxBLUE);
+  m_styles[TS_CODE_DEFAULT].Bold().Italic().FontSize(12);
   // m_styles[TS_NUMBER];
   m_styles[TS_STRING].Italic();
   // m_styles[TS_GREEK_CONSTANT];
@@ -580,6 +594,8 @@ bool Configuration::MaximaFound(wxString location) {
 
 void Configuration::ReadConfig() {
   wxConfigBase *config = wxConfig::Get();
+  
+  config->Read(wxT("configID"), &m_configId);
 
   wxString str;
   long dummy;
@@ -753,6 +769,10 @@ void Configuration::ReadConfig() {
   {
     int tmp = static_cast<int>(m_htmlEquationFormat);
     config->Read("HTMLequationFormat", &tmp);
+    if(tmp < 0)
+      tmp = mathJaX_TeX;
+    if(tmp > html_export_invalidChoice)
+      tmp = svg;
     m_htmlEquationFormat = static_cast<Configuration::htmlExportFormat>(tmp);
   }
 
@@ -762,12 +782,20 @@ void Configuration::ReadConfig() {
   config->Read(wxT("useUnicodeMaths"), &m_useUnicodeMaths);
   config->Read(wxT("mathJaxURL"), &m_mathJaxURL);
   config->Read(wxT("autosubscript"), &m_autoSubscript);
+  if(m_autoSubscript < 0)
+    m_autoSubscript = 0;
+  if(m_autoSubscript > 2)
+    m_autoSubscript = 2;
   config->Read(wxT("antiAliasLines"), &m_antiAliasLines);
   config->Read(wxT("indentMaths"), &m_indentMaths);
   config->Read(wxT("abortOnError"), &m_abortOnError);
   config->Read("defaultPort", &m_defaultPort);
   config->Read(wxT("fixReorderedIndices"), &m_fixReorderedIndices);
   config->Read(wxT("showLength"), &m_showLength);
+  if(m_showLength < 0)
+    m_showLength = 0;
+  if(m_showLength > 3)
+    m_showLength = 3;
   config->Read(wxT("printScale"), &m_printScale);
   config->Read(wxT("useSVG"), &m_useSVG);
   config->Read(wxT("copyBitmap"), &m_copyBitmap);
@@ -791,6 +819,10 @@ void Configuration::ReadConfig() {
   config->Read(wxT("autoIndent"), &m_autoIndent);
 
   long showLabelChoice = static_cast<long>(m_showLabelChoice);
+  if(static_cast<long>(m_showLabelChoice) < 0)
+    m_showLabelChoice = labels_automatic;
+  if(m_showLabelChoice >= labels_invalidSelection)
+    m_showLabelChoice = labels_none;
   config->Read(wxT("showLabelChoice"), &showLabelChoice);
   m_showLabelChoice = (showLabels)showLabelChoice;
 
@@ -816,8 +848,6 @@ void Configuration::ReadConfig() {
   config->Read(wxT("labelWidth"), &m_labelWidth);
 
   config->Read(wxT("printBrackets"), &m_printBrackets);
-
-  config->Read(wxT("ZoomFactor"), &m_zoomFactor);
   config->Read(wxT("keepPercent"), &m_keepPercent);
   config->Read(wxT("saveUntitled"), &m_saveUntitled);
   config->Read(wxT("cursorJump"), &m_cursorJump);
@@ -1115,7 +1145,6 @@ void Configuration::ReadStyles(const wxString &file) {
     config = new wxFileConfig(str);
   }
 
-  m_styles[TS_CODE_DEFAULT].Read(config, "Style/Default/");
 
   // Read legacy defaults for the math font name and size
   long tmpLong;
@@ -1149,7 +1178,7 @@ void Configuration::ReadStyles(const wxString &file) {
   m_styles[TS_USERLABEL].Read(config, "Style/UserDefinedLabel/");
   m_styles[TS_SPECIAL_CONSTANT].Read(config, "Style/Special/");
   m_styles[TS_GREEK_CONSTANT].Read(config, "Style/Greek/");
-  m_styles[TS_INPUT].Read(config, "Style/Input/");
+  m_styles[TS_CODE_DEFAULT].Read(config, "Style/Default/");
   m_styles[TS_NUMBER].Read(config, "Style/Number/");
   m_styles[TS_STRING].Read(config, "Style/String/");
   m_styles[TS_ASCIIMATHS].Read(config, "Style/ASCIImaths/");
@@ -1453,7 +1482,18 @@ bool Configuration::OfferInternalHelpBrowser() const {
 #endif
 }
 
+bool Configuration::UpdateNeeded()
+{
+  long configId;
+  wxConfig::Get()->Read(wxT("configID"), &configId);
+
+  return m_configId != configId;
+}
+  
 void Configuration::WriteStyles(wxConfigBase *config) {
+  std::uniform_int_distribution<long> urd(std::numeric_limits<long>::min(), std::numeric_limits<long>::max());
+  m_configId = urd(m_eng);
+  config->Write(wxT("configID"), m_configId);
   config->Write(wxT("wrapLatexMath"), m_wrapLatexMath);
   config->Write(wxT("allowNetworkHelp"), m_allowNetworkHelp);
   config->Write(wxT("exportContainsWXMX"), m_exportContainsWXMX);
@@ -1535,7 +1575,6 @@ void Configuration::WriteStyles(wxConfigBase *config) {
   config->Write("autosubscript", m_autoSubscript);
   config->Write(wxT("ZoomFactor"), m_zoomFactor);
   // Fonts
-  m_styles[TS_CODE_DEFAULT].Write(config, "Style/Default/");
   m_styles[TS_MATH].Write(config, "Style/Math/");
   m_styles[TS_TEXT].Write(config, "Style/Text/");
   m_styles[TS_CODE_VARIABLE].Write(config, "Style/CodeHighlighting/Variable/");
@@ -1560,7 +1599,7 @@ void Configuration::WriteStyles(wxConfigBase *config) {
   m_styles[TS_USERLABEL].Write(config, "Style/UserDefinedLabel/");
   m_styles[TS_SPECIAL_CONSTANT].Write(config, "Style/Special/");
   m_styles[TS_GREEK_CONSTANT].Write(config, "Style/Greek/");
-  m_styles[TS_INPUT].Write(config, "Style/Input/");
+  m_styles[TS_CODE_DEFAULT].Write(config, "Style/Default/");
   m_styles[TS_NUMBER].Write(config, "Style/Number/");
   m_styles[TS_STRING].Write(config, "Style/String/");
   m_styles[TS_ASCIIMATHS].Write(config, "Style/ASCIImaths/");

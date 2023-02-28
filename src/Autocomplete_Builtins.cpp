@@ -1417,6 +1417,7 @@ bool AutoComplete::LoadBuiltinSymbols() {
   m_wordList[command].Add("freeof");                             // FUNCTION
   m_wordList[tmplte].Add("freeof(<x_1>, ..., <x_n>, <expr>)");   // OPTION
   m_wordList[command].Add("genfact");                            // FUNCTION
+  m_wordList[command].Add("gentran");                            // FUNCTION
   m_wordList[tmplte].Add("genfact(<x>, <y>, <z>)");              // OPTION
   m_wordList[command].Add("imagpart");                           // FUNCTION
   m_wordList[tmplte].Add("imagpart(<expr>)");                    // OPTION

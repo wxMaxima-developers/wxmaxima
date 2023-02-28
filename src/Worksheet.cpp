@@ -438,10 +438,6 @@ Worksheet::~Worksheet() {
 #else
 #define DC_ALREADY_SCROLLED 1
 #endif
-#else
-#ifdef __WXGTK3__
-#else
-#endif
 #endif
 
 #define WORKING_AUTO_BUFFER 1
@@ -1064,7 +1060,7 @@ void Worksheet::RecalculateForce() {
 void Worksheet::ClearDocument() {
   CloseAutoCompletePopup();
   ClearSelection();
-  SetActiveCell(NULL, false);
+  SetActiveCell(NULL);
   m_clickType = CLICK_TYPE_NONE;
   m_clickInGC = NULL;
   m_hCaretActive = false;
@@ -2068,7 +2064,7 @@ void Worksheet::OnMouseLeftInGcCell(wxMouseEvent &WXUNUSED(event),
         (m_configuration->ShowCodeCells() ||
          editor->GetType() != MC_TYPE_INPUT || !clickedInGC->GetOutput())) {
       editor->MouseSelectionStartedHere();
-      SetActiveCell(editor, false); // do not refresh as we will do so later
+      SetActiveCell(editor);
       GetActiveCell()->SelectPointText(m_down);
       m_blinkDisplayCaret = true;
       m_clickType = CLICK_TYPE_INPUT_SELECTION;
@@ -2202,7 +2198,7 @@ void Worksheet::OnMouseLeftDown(wxMouseEvent &event) {
   m_hCaretPositionStart = m_hCaretPositionEnd = NULL;
   m_hCaretPosition = NULL;
   m_hCaretActive = false;
-  SetActiveCell(NULL, false);
+  SetActiveCell(NULL);
 
   wxRect rect;
   GroupCell *previous = NULL;
@@ -2973,7 +2969,7 @@ void Worksheet::SetCellStyle(GroupCell *group, GroupType style) {
   TreeUndo_AppendAction();
   auto *editable = newGroupCell->GetEditable();
   InsertGroupCells(std::move(newGroupCell), prev);
-  SetActiveCell(editable, false);
+  SetActiveCell(editable);
   SetSaved(false);
   Recalculate();
   RequestRedraw();
@@ -2997,7 +2993,7 @@ void Worksheet::DeleteRegion(GroupCell *start, GroupCell *end,
   m_hCaretPositionStart = m_hCaretPositionEnd = NULL;
 
   //! Set the cursor to a sane place
-  SetActiveCell(NULL, false);
+  SetActiveCell(NULL);
   ClearSelection();
   SetHCaret(start->GetPrevious());
 
@@ -3104,7 +3100,7 @@ void Worksheet::OpenQuestionCaret(const wxString &txt) {
   // If the user wants to be automatically scrolled to the cell evaluation takes
   // place we scroll to this cell.
   if (FollowEvaluation())
-    SetActiveCell(m_cellPointers.m_answerCell, false);
+    SetActiveCell(m_cellPointers.m_answerCell);
 
   RequestRedraw();
 }
@@ -3154,10 +3150,10 @@ void Worksheet::OpenHCaret(const wxString &txt, GroupType type) {
 
   auto *editable = group->GetEditable();
   InsertGroupCells(std::move(group), m_hCaretPosition);
+  // activate the editor
+  SetActiveCell(editable);
+  Recalculate(editable->GetGroup());
   RequestRedraw();
-
-  // activate editor
-  SetActiveCell(editable, false);
   if (GetActiveCell())
     GetActiveCell()->ClearUndo();
   // If we just have started typing inside a new cell we don't want the screen
@@ -3666,7 +3662,7 @@ void Worksheet::SelectWithChar(int ccode) {
 void Worksheet::SelectEditable(EditorCell *editor, bool up) {
   if (editor && (m_configuration->ShowCodeCells() ||
                  editor->GetType() != MC_TYPE_INPUT)) {
-    SetActiveCell(editor, false);
+    SetActiveCell(editor);
     m_hCaretActive = false;
 
     if (up)
@@ -6275,7 +6271,7 @@ bool Worksheet::ActivateInput(int direction) {
   for (; tmp; tmp = advance(tmp)) {
     auto *const input = tmp->GetEditable();
     if (input) {
-      SetActiveCell(input, false);
+      SetActiveCell(input);
       if (direction >= 0)
         GetActiveCell()->CaretToStart();
       else
@@ -6705,7 +6701,7 @@ bool Worksheet::TreeUndo(UndoActions *sourcelist,
 /*! Mark an editor cell as the active one
 
  */
-void Worksheet::SetActiveCell(EditorCell *cell, bool callRefresh) {
+void Worksheet::SetActiveCell(EditorCell *cell) {
   if (GetActiveCell() == cell)
     return;
 
@@ -6724,7 +6720,8 @@ void Worksheet::SetActiveCell(EditorCell *cell, bool callRefresh) {
   if (cell) {
     m_cellPointers.m_selectionStart = nullptr;
     m_cellPointers.m_selectionEnd = nullptr;
-    cell->ActivateCursor();
+    if(cell->ActivateCursor())
+      Recalculate(cell->GetGroup());
     if (!m_fullRedrawRequested)
       m_caretTimer.Stop();
   } else if (GetActiveCell())
@@ -6743,8 +6740,7 @@ void Worksheet::SetActiveCell(EditorCell *cell, bool callRefresh) {
     m_hCaretPosition = NULL;
   }
 
-  if (callRefresh) // = true default
-    RequestRedraw();
+  RequestRedraw();
 
   if (cell && !m_configuration->ShowCodeCells() && GetActiveCell() &&
       GetActiveCell()->GetType() == MC_TYPE_INPUT) {
@@ -7075,7 +7071,7 @@ void Worksheet::MergeCells() {
   editor->ResetSize();
   editor->GetGroup()->ResetSize();
   Recalculate(editor->GetGroup());
-  SetActiveCell(editor, true);
+  SetActiveCell(editor);
   ScrolledAwayFromEvaluation();
 }
 
@@ -7173,7 +7169,7 @@ void Worksheet::SetHCaret(GroupCell *where) {
   }
 
   m_hCaretPositionStart = m_hCaretPositionEnd = NULL;
-  SetActiveCell(NULL, false);
+  SetActiveCell(NULL);
   if (where)
     wxASSERT_MSG(where->GetType() == MC_TYPE_GROUP,
                  _("Bug: Trying to move the horizontally-drawn cursor to a "

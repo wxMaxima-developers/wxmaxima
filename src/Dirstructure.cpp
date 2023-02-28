@@ -142,6 +142,8 @@ wxString Dirstructure::MaximaDefaultLocation() {
 #if defined __WXMSW__ || defined __WXOSX__
   wxString notFound = _("Maxima not found as %s");
 #endif
+
+  // -------------------------- MS Windows only ------------------------
 #if defined __WXMSW__
   wxString exeDir = exe.GetPathWithSep();
   maxima = exeDir + "../bin/maxima.bat";
@@ -193,26 +195,18 @@ wxString Dirstructure::MaximaDefaultLocation() {
 
   wxLogMessage(notFound, maximaLocation.mb_str());
 #elif defined __WXOSX__
-  wxString exeDir = exe.GetPathWithSep();
-  maximaLocation = "/Applications/Maxima.app";
-  if (wxFileExists(maximaLocation))
-    return maximaLocation;
 
-  wxLogMessage(notFound, maximaLocation.mb_str());
-  maximaLocation = "/Applications/maxima.app";
-  if (wxFileExists(maximaLocation))
-    return maximaLocation;
+  // -------------------------- Mac OS only ------------------------
 
   // The Macports path (if it is preferred over homebrew)
 #if OSX_MACPORTS_PREFER
-  wxLogMessage(notFound, maximaLocation.mb_str());
   maximaLocation = OSX_MACPORTS_PREFIX "/bin/maxima";
   if (wxFileExists(maximaLocation))
     return maximaLocation;
+  wxLogMessage(notFound, maximaLocation.mb_str());
 #endif
 
   // The homebrew path
-  wxLogMessage(notFound, maximaLocation.mb_str());
   maximaLocation = "/usr/local/bin/maxima";
   if (wxFileExists(maximaLocation))
     return maximaLocation;
@@ -226,10 +220,21 @@ wxString Dirstructure::MaximaDefaultLocation() {
 #endif
 
   wxLogMessage(notFound, maximaLocation.mb_str());
+  maximaLocation = "/Applications/Maxima.app";
+  if (wxFileExists(maximaLocation))
+    return maximaLocation;
+
+  wxLogMessage(notFound, maximaLocation.mb_str());
+  maximaLocation = "/Applications/maxima.app";
+  if (wxFileExists(maximaLocation))
+    return maximaLocation;
+
+  wxLogMessage(notFound, maximaLocation.mb_str());
   maximaLocation = "/usr/bin/maxima";
   if (wxFileExists(maximaLocation))
     return maximaLocation;
 
+  wxString exeDir = exe.GetPathWithSep();
   wxLogMessage(notFound, maximaLocation.mb_str());
   maxima = exeDir + "maxima";
   maxima.MakeAbsolute();

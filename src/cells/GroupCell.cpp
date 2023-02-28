@@ -403,7 +403,7 @@ void GroupCell::UpdateConfusableCharWarnings() {
 
   if (GetEditable())
     for (auto const &tok :
-	   MaximaTokenizer(output, m_configuration, GetEditable()->GetTokens())
+	   MaximaTokenizer(output, m_configuration, GetEditable()->GetAllTokens())
 	   .PopTokens())
       if ((tok.GetStyle() == TS_CODE_VARIABLE) ||
           (tok.GetStyle() == TS_CODE_FUNCTION))

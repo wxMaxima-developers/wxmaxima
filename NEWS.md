@@ -1,10 +1,18 @@
 # Current
+ * Make sure all bitmaps are valid on High-DPI MacOs (#1749)
+ * More styles consistency (#1753)
+ * Better configuration validation
+ * Depending on the wxWidgets version Unicode letters were 
+   interpreted inorrectly (#1754)
+ * The manual anchors cache now saves the file-per-chapter URLs, too.
+ * cmake -DWXM_DISABLE_WEBVIEW now allows to find wxWidgets, if 
+   wxWebView wasn't compiled.
 
 # 23.02.0
  * Fix XML generation of wxmx documents (#1556)
  * A faster font cache
- * Faster communication between wxMaxima and maxima
- * Dropped the dependency on an [internal] ww898
+ * Faster communication between wxMaxima and Maxima
+ * Dropped the dependency on an [internal] ww898 library
  * More consistent text style handling
  * A try to improve locale management on the Mac platform
  * A separate style for operators (#1002)

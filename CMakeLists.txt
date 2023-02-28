@@ -14,7 +14,7 @@ if(WIN32)
     enable_language(RC)
 endif()
 
-set(VERSION 23.02.0-DevelopmentSnapshot)
+set(VERSION 23.02.1-DevelopmentSnapshot)
 set(GITVERSION ${VERSION})
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -28,7 +28,7 @@ set(MACOSX_BUNDLE_LONG_VERSION_STRING "wxMaxima ${VERSION}")
 #
 
 option(WXM_DISABLE_WEBVIEW
-    "Disable webview for https://trac.macports.org/ticket/62904")
+    "Disable webview for https://trac.macports.org/ticket/62904" OFF)
 option(WXM_ENABLE_PRECOMPILED_HEADERS
     "Enable precompiled headers to potentially speed up compilation." OFF)
 option(WXM_USE_CPPCHECK
@@ -39,8 +39,6 @@ option(WXM_INTERPROCEDURAL_OPTIMIZATION
     "Enable interprocedural optimization (IPO/LTO)." OFF)
 option(WXM_INCLUDE_FONTS
     "Include additional fonts." ON)
-option(WXM_USE_DOXYGEN
-    "Enable Doxygen for source code documentation." OFF)
 
 if(WXM_INCLUDE_FONTS)
     add_definitions("-DWXM_INCLUDE_FONTS")
@@ -141,7 +139,7 @@ message(STATUS "Looking for wxWidgets libraries in: ${wxWidgets_LIB_DIR}")
 if(WXM_DISABLE_WEBVIEW)
 	find_package(wxWidgets 3 REQUIRED richtext aui adv html core xml net base)
 else()
-	find_package(wxWidgets 3 REQUIRED richtext aui adv html core xml net base webview )
+	find_package(wxWidgets 3 REQUIRED richtext aui adv html webview core xml net base)
 endif()
 include(${wxWidgets_USE_FILE})
 
@@ -207,7 +205,8 @@ list(REMOVE_AT AUTHORSLINES 0 1) # remove main heading line.
 
 add_definitions(-DwxNO_UNSAFE_WXSTRING_CONV)
 
-if(WXM_USE_DOXYGEN)
+
+if(NOT CYGWIN)
     add_subdirectory(Doxygen)
 endif()
 add_subdirectory(data)

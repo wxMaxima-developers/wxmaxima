@@ -88,8 +88,8 @@ private:
   void TimerEvent(wxTimerEvent &event);
 
   std::unique_ptr<wxSocketBase> m_socket;
-  wxSocketInputStream m_socketInput{*m_socket};
-  wxTextInputStream m_textInput{m_socketInput};
+  wxSocketInputStream m_socketInput;
+  wxTextInputStream m_textInput;
 
   wxString m_socketInputData;
   wxMemoryBuffer m_socketOutputData;

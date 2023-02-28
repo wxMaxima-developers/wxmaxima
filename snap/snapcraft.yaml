@@ -1,11 +1,15 @@
 name: wxmaxima
-version: 23.03.0
+version: 23.02.1-0
 summary: A nightly build of wxMaxima, a gui for Maxima, a full-featured CAS.
 description: wxMaxima is a quite full-featured graphical user interface for Maxima.
 confinement: strict
 grade: stable
-icon: info/wxmaxima.svg
 base: core22
+license: GPL-2.0+
+architectures:
+  - build-on: arm64
+  - build-on: armhf
+  - build-on: amd64
 
 apps:
   wxmaxima:
@@ -30,13 +34,18 @@ parts:
      - libwxgtk3.0-gtk3-dev
      - libwxgtk-webview3.0-gtk3-dev
      - gettext
-    stage-packages:
+    stage-snaps:
      - maxima
-     - maxima-doc
-     - gnuplot
+    stage-packages:
      - libwxbase3.0-0v5
      - libglu1-mesa
      - freeglut3
      - wx-common
      - libwxgtk-webview3.0-gtk3-0v5
      - gettext
+     - libwxbase3.0-dev
+     - libwxgtk3.0-gtk3-dev
+     - libwxgtk-webview3.0-gtk3-dev
+    stage:
+     - -usr/share/texmf/ls-R
+ 

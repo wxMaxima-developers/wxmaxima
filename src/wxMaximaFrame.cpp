@@ -224,223 +224,140 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
   SetTitle(_("untitled"));
 #endif
 
+  m_sidebarNames[EventIDs::menu_pane_history] = wxT("history");
+  m_sidebarCaption[EventIDs::menu_pane_history] = _("History");
   m_manager.AddPane(m_history, wxAuiPaneInfo()
-		    .Name(wxT("history"))
-		    .CloseButton(true)
-		    .PinButton(false)
-		    .TopDockable(true)
-		    .BottomDockable(true)
-		    .LeftDockable(true)
-		    .RightDockable(true)
-		    .PaneBorder(true)
+		    .Name(m_sidebarNames[EventIDs::menu_pane_history])
+		    .Show(false)
 		    .Right());
 
+  m_sidebarNames[EventIDs::menu_pane_structure] = wxT("structure");
+  m_sidebarCaption[EventIDs::menu_pane_structure] = _("Table of Contents");
   m_manager.AddPane(m_worksheet->m_tableOfContents, wxAuiPaneInfo()
-		    .Name(wxT("structure"))
-		    .CloseButton(true)
-		    .PinButton(false)
-		    .TopDockable(true)
-		    .BottomDockable(true)
-		    .LeftDockable(true)
-		    .RightDockable(true)
-		    .PaneBorder(true)
+		    .Name(m_sidebarNames[EventIDs::menu_pane_structure])
+		    .Show(true)
 		    .Right());
 
+  m_sidebarNames[EventIDs::menu_pane_xmlInspector] = wxT("XmlInspector");
+  m_sidebarCaption[EventIDs::menu_pane_xmlInspector] = _("Raw XML monitor");
   m_manager.AddPane(m_xmlInspector, wxAuiPaneInfo()
-		    .Name("XmlInspector")
-		    .CloseButton(true)
-		    .PinButton(false)
-		    .TopDockable(true)
-		    .BottomDockable(true)
-		    .LeftDockable(true)
-		    .RightDockable(true)
-		    .PaneBorder(true)
+		    .Name(m_sidebarNames[EventIDs::menu_pane_xmlInspector])
+		    .Show(false)
 		    .Right());
 
+  m_sidebarNames[EventIDs::menu_pane_stats] = wxT("stats");
+  m_sidebarCaption[EventIDs::menu_pane_stats] = _("Statistics");
   wxWindow *statPane;
   m_manager.AddPane(statPane = CreateStatPane(), wxAuiPaneInfo()
-		    .Name(wxT("stats"))
-		    .CloseButton(true)
-		    .PinButton(false)
-		    .TopDockable(true)
-		    .BottomDockable(true)
-		    .LeftDockable(true)
-		    .RightDockable(true)
-		    .PaneBorder(true)
+		    .Name(m_sidebarNames[EventIDs::menu_pane_stats])
+		    .Show(false)
 		    .Left());
   //  wxWindowUpdateLocker statBlocker(statPane);
 
+  m_sidebarNames[EventIDs::menu_pane_greek] = wxT("greek");
+  m_sidebarCaption[EventIDs::menu_pane_greek] = _("Greek Letters");
   wxPanel *greekPane = new GreekPane(this, &m_configuration, m_worksheet);
   //  wxWindowUpdateLocker greekBlocker(greekPane);
-  m_manager.AddPane(greekPane,
-                    wxAuiPaneInfo()
-		    .Name(wxT("greek"))
-		    .CloseButton(true)
-		    .PinButton(false)
-		    .DockFixed(false)
-		    .Gripper(false)
-		    .PinButton(false)
-		    .TopDockable(true)
-		    .BottomDockable(true)
-		    .LeftDockable(true)
-		    .RightDockable(true)
-		    .PaneBorder(true)
-		    .FloatingSize(greekPane->GetEffectiveMinSize())
+  m_manager.AddPane(greekPane, wxAuiPaneInfo()
+		    .Name(m_sidebarNames[EventIDs::menu_pane_greek])
+		    .Show(true)
 		    .Left());
 
+  m_sidebarNames[EventIDs::menu_pane_unicode] = wxT("unicode");
+  m_sidebarCaption[EventIDs::menu_pane_unicode] = _("Unicode characters");
   wxPanel *unicodePane =
     new UnicodeSidebar(this, m_worksheet, &m_configuration);
   //  wxWindowUpdateLocker unicodeBlocker(unicodePane);
-  m_manager.AddPane(unicodePane,
-                    wxAuiPaneInfo()
-		    .Name(wxT("unicode"))
-		    .CloseButton(true)
-		    .PinButton(false)
-		    .DockFixed(false)
-		    .Gripper(false)
-		    .TopDockable(true)
-		    .BottomDockable(true)
-		    .LeftDockable(true)
-		    .RightDockable(true)
-		    .PaneBorder(true)
-		    .FloatingSize(greekPane->GetEffectiveMinSize())
+  m_manager.AddPane(unicodePane,wxAuiPaneInfo()
+		    .Name(m_sidebarNames[EventIDs::menu_pane_unicode])
+		    .Show(true)
 		    .Left());
 
-  m_manager.AddPane(
-		    m_logPane,
-		    wxAuiPaneInfo()
-		    .Name("log")
-		    .CloseButton(true)
-		    .PinButton(false)
-		    .Gripper(false)
-		    .TopDockable(true)
-		    .BottomDockable(true)
-		    .LeftDockable(true)
-		    .RightDockable(true)
-		    .PaneBorder(true)
-		    .
-		    //                    MinSize(m_logPane->GetEffectiveMinSize()).
-		    //                    BestSize(m_logPane->GetEffectiveMinSize()).
-		    FloatingSize(m_logPane->GetEffectiveMinSize())
+  m_sidebarNames[EventIDs::menu_pane_log] = wxT("log");
+  m_sidebarCaption[EventIDs::menu_pane_log] = _("Debug messages");
+  m_manager.AddPane(m_logPane, wxAuiPaneInfo()
+		    .Name(m_sidebarNames[EventIDs::menu_pane_log])
+		    .Show(false)
 		    .Left());
 
+  m_sidebarNames[EventIDs::menu_pane_variables] = wxT("variables");
+  m_sidebarCaption[EventIDs::menu_pane_variables] = _("Variables");
   m_worksheet->m_variablesPane = new Variablespane(this, wxID_ANY);
-  //  wxWindowUpdateLocker variablesBlocker(m_worksheet->m_variablesPane);
   m_manager.AddPane(
 		    m_worksheet->m_variablesPane,
 		    wxAuiPaneInfo()
-		    .Name(wxT("variables"))
-		    .CloseButton(true)
-		    .DockFixed(false)
-		    .Gripper(false)
-		    .TopDockable(true)
-		    .BottomDockable(true)
-		    .LeftDockable(true)
-		    .RightDockable(true)
-		    .PaneBorder(true)
-		    .FloatingSize(m_worksheet->m_variablesPane->GetEffectiveMinSize())
+		    .Name(m_sidebarNames[EventIDs::menu_pane_variables])
+		    .Show(false)
 		    .Bottom());
 
+  m_sidebarNames[EventIDs::menu_pane_symbols] = wxT("symbols");
+  m_sidebarCaption[EventIDs::menu_pane_symbols] = _("Mathematical Symbols");
   m_symbolsPane = new SymbolsPane(this, &m_configuration, m_worksheet);
   //  wxWindowUpdateLocker symbolsBlocker(m_symbolsPane);
   m_manager.AddPane(m_symbolsPane,
                     wxAuiPaneInfo()
-		    .Name(wxT("symbols"))
-		    .DockFixed(false)
-		    .CloseButton(true)
-		    .Gripper(false)
-		    .TopDockable(true)
-		    .BottomDockable(true)
-		    .LeftDockable(true)
-		    .RightDockable(true)
-		    .PaneBorder(true)
-		    .FloatingSize(m_symbolsPane->GetEffectiveMinSize())
-		    .Left());
-  m_manager.AddPane(CreateMathPane(), wxAuiPaneInfo()
-		    .Name(wxT("math"))
-		    .CloseButton(true)
-		    .TopDockable(true)
-		    .BottomDockable(true)
-		    .LeftDockable(true)
-		    .RightDockable(true)
-		    .PaneBorder(true)
-		    .Left());
-
-  wxAuiPaneInfo()
-    .Name(wxT("math"))
-    .CloseButton(true)
-    .TopDockable(true)
-    .BottomDockable(true)
-    .LeftDockable(true)
-    .RightDockable(true)
-    .PaneBorder(true)
-    .Left();
-
-  m_manager.AddPane(m_wizard = new ScrollingGenWizPanel(
-							this, &m_configuration, m_worksheet->GetMaximaManual()),
-                    wxAuiPaneInfo()
-		    .Name(wxT("wizard"))
-		    .CloseButton(true)
-		    .TopDockable(true)
-		    .MinSize(wxSize(200 * GetContentScaleFactor(),
-				    200 * GetContentScaleFactor()))
-		    .FloatingSize(wxSize(300 * GetContentScaleFactor(),
-					 500 * GetContentScaleFactor()))
-		    .BottomDockable(true)
-		    .LeftDockable(true)
-		    .RightDockable(true)
-		    .PaneBorder(true)
-		    .Resizable(true)
-		    .Movable(true)
-		    .CaptionVisible(true)
+		    .Name(m_sidebarNames[EventIDs::menu_pane_symbols])
 		    .Show(true)
+		    .Left());
+
+  m_sidebarNames[EventIDs::menu_pane_math] = wxT("math");
+  m_sidebarCaption[EventIDs::menu_pane_math] = _("General Math");
+  m_manager.AddPane(CreateMathPane(), wxAuiPaneInfo()
+		    .Name(m_sidebarNames[EventIDs::menu_pane_math])
+		    .Show(false)
+		    .Left());
+
+  m_sidebarNames[EventIDs::menu_pane_wizard] = wxT("wizard");
+  m_sidebarCaption[EventIDs::menu_pane_wizard] = _("The current Wizard");
+  m_manager.AddPane(m_wizard =
+		    new ScrollingGenWizPanel(
+					     this, &m_configuration,
+					     m_worksheet->GetMaximaManual()),
+                    wxAuiPaneInfo()
+		    .Name(m_sidebarNames[EventIDs::menu_pane_wizard])
+		    .Show(false)
 		    .Caption(wxT("Example Wizard")));
 
+  
+  m_sidebarNames[EventIDs::menu_pane_format] = wxT("format");
+  m_sidebarCaption[EventIDs::menu_pane_format] = _("Insert");
   m_manager.AddPane(CreateFormatPane(), wxAuiPaneInfo()
-		    .Name(wxT("format"))
-		    .CloseButton(true)
-		    .TopDockable(true)
-		    .BottomDockable(true)
-		    .LeftDockable(true)
-		    .RightDockable(true)
-		    .PaneBorder(true)
+		    .Name(m_sidebarNames[EventIDs::menu_pane_format])
+		    .Show(false)
 		    .Left());
 
+  m_sidebarNames[EventIDs::menu_pane_draw] = wxT("draw");
+  m_sidebarCaption[EventIDs::menu_pane_draw] = _("Plot using Draw");
   m_manager.AddPane(m_drawPane = new DrawPane(this, -1),
                     wxAuiPaneInfo()
-		    .Name(wxT("draw"))
-		    .CloseButton(true)
-		    .TopDockable(true)
-		    .BottomDockable(true)
-		    .LeftDockable(true)
-		    .RightDockable(true)
-		    .PaneBorder(true)
+		    .Name(m_sidebarNames[EventIDs::menu_pane_draw])
+		    .Show(false)
 		    .Left());
   //  wxWindowUpdateLocker drawBlocker(m_drawPane);
 
+#ifdef USE_WEBVIEW
+  m_sidebarNames[EventIDs::menu_pane_help] = wxT("help");
+  m_sidebarCaption[EventIDs::menu_pane_help] = _("Help");
   m_manager.AddPane(m_helpPane = new HelpBrowser(
 						 this, &m_configuration, m_worksheet->GetMaximaManual(),
 						 wxT("file://") + wxMaximaManualLocation()),
                     wxAuiPaneInfo()
-		    .Name(wxT("help"))
-		    .CloseButton(true)
-		    .TopDockable(true)
-		    .BottomDockable(true)
-		    .LeftDockable(true)
-		    .RightDockable(true)
-		    .PaneBorder(true)
+		    .Name(m_sidebarNames[EventIDs::menu_pane_help])
+		    .Show(false)
 		    .Right());
-
+#endif
+  
   m_worksheet->m_mainToolBar = new ToolBar(this);
-
+  m_sidebarNames[EventIDs::menu_pane_toolbar] = wxT("toolbar");
+  m_sidebarCaption[EventIDs::menu_pane_toolbar] = _("The main toolbar");
   m_manager.AddPane(m_worksheet->m_mainToolBar,
                     wxAuiPaneInfo()
-		    .Name(wxT("toolbar"))
+		    .Name(m_sidebarNames[EventIDs::menu_pane_toolbar])
 		    .Top()
 		    .TopDockable(true)
 		    .BottomDockable(true)
-		    . // ToolbarPane().
-                    CaptionVisible(false)
+		    // .ToolbarPane().
+                    .CaptionVisible(false)
 		    .CloseButton(false)
 		    .LeftDockable(false)
 		    .DockFixed()
@@ -448,9 +365,11 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
 		    .Gripper(false)
 		    .Row(1));
 
+  m_sidebarNames[EventIDs::menu_pane_console] = wxT("console");
+  m_sidebarCaption[EventIDs::menu_pane_console] = _("The worksheet");
   m_manager.AddPane(m_worksheet,
                     wxAuiPaneInfo()
-		    .Name(wxT("console"))
+		    .Name(m_sidebarNames[EventIDs::menu_pane_console])
 		    .Center()
 		    .CloseButton(false)
 		    .CaptionVisible(false)
@@ -469,87 +388,78 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
     // items in question were never shown => Let's display the frame with
     // all items visible and then hide the ones we want to.
     m_manager.Update();
-    Layout();
   }
-
-  m_manager.GetPane("XmlInspector") = m_manager.GetPane("XmlInspector")
-    .PinButton(false)
-    .Show(false)
-    .Movable(true);
-  m_manager.GetPane("stats") =
-    m_manager.GetPane("stats").PinButton(false).Show(false).Movable(true);
-  m_manager.GetPane("greek") =
-    m_manager.GetPane("greek").PinButton(false).Show(false).Movable(true);
-  m_manager.GetPane("variables") =
-    m_manager.GetPane("variables").PinButton(false).Show(false).Movable(true);
-  m_manager.GetPane("math") =
-    m_manager.GetPane("math").PinButton(false).Show(false).Movable(true);
-  m_manager.GetPane("format") =
-    m_manager.GetPane("format").PinButton(false).Show(false).Movable(true);
-  m_manager.GetPane("log") =
-    m_manager.GetPane("log").PinButton(false).Show(false).Movable(true);
-
-  m_manager.GetPane("unicode") = m_manager.GetPane("unicode")
-    .Show(false)
-    .Gripper(false)
-    .CloseButton(true)
-    .PinButton(false)
-    .Movable(true);
-
-  m_manager.GetPane("variables") = m_manager.GetPane("variables")
-    .PinButton(false)
-    .Gripper(false)
-    .CloseButton(true)
-    .PinButton(false);
-  m_manager.GetPane("log") = m_manager.GetPane("log")
-    .PinButton(false)
-    .Gripper(false)
-    .CloseButton(true)
-    .PinButton(false)
-    .Movable(true);
-
-  m_manager.GetPane("symbols") = m_manager.GetPane("symbols")
-    .Show(true)
-    .Gripper(false)
-    .CloseButton(true)
-    .PinButton(false)
-    .Movable(true);
-  m_manager.GetPane("greek") = m_manager.GetPane("greek")
-    .Show(true)
-    .Gripper(false)
-    .CloseButton(true)
-    .PinButton(false)
-    .Movable(true);
-
-  m_manager.GetPane("draw") = m_manager.GetPane("draw")
-    .Show(true)
-    .CloseButton(true)
-    .Gripper(false)
-    .PinButton(false)
-    .Movable(true);
 
   // Read the perspektive (the sidebar state and positions).
   wxConfigBase *config = wxConfig::Get();
   wxString perspective;
-  config->Read(wxT("AUI/perspective"), &perspective);
-
-  if (perspective != wxEmptyString) {
+  if(config->Read(wxT("AUI/perspective"), &perspective)) {
     // Loads the window states. We tell wxaui not to recalculate and display the
     // results of this step now as we will do so manually after
     // eventually adding the toolbar.
     m_manager.LoadPerspective(perspective, false);
   }
 
-  // Make sure that some of the settings that comprise the perspektive actually
-  // make sense.
   m_worksheet->m_mainToolBar->Realize();
+
+  // Loading the perspective rarely fails. But it might - and in this case we want
+  // to set the common properties of our sidebars after loading them: This way we
+  // overwrite wrong settings.
+  //
+  // The sidebar captions need to be set after LoadPerspective() since
+  // LoadPerspective() loads the translations of the captions that were correct
+  // when SavePerspective() was called.
+  // The system's language might have changed since then.
+  for(auto pane: m_sidebarNames)
+    {
+      wxSize minSiz = wxSize(0, 0);
+      if(m_manager.GetPane(pane.second).IsOk())
+	{
+	  if(m_manager.GetPane(pane.second).window != NULL)
+	    minSiz = m_manager.GetPane(pane.second).window->GetMinClientSize();
+	  else
+	    minSiz = wxSize(300 * GetContentScaleFactor(), 300 * GetContentScaleFactor());
+
+	  if(minSiz.x < 100 * GetContentScaleFactor())
+	    minSiz.x = 100 * GetContentScaleFactor();
+	  
+	  if(minSiz.y < 100 * GetContentScaleFactor())
+	    minSiz.y = 100 * GetContentScaleFactor();
+	  if(
+	     (pane.first != EventIDs::menu_pane_console) &&
+	     (pane.first != EventIDs::menu_pane_toolbar)
+	     )
+	    m_manager.GetPane(pane.second)
+	      .Caption(m_sidebarCaption[pane.first])
+	      .CloseButton(true)
+	      .MinSize(minSiz)
+	      .BestSize(minSiz)
+	      .FloatingSize(minSiz)
+	      .PinButton(false)
+	      .DockFixed(false)
+	      .Gripper(false)
+	      .PinButton(false)
+	      .TopDockable(true)
+	      .BottomDockable(true)
+	      .LeftDockable(true)
+	      .RightDockable(true)
+	      .PaneBorder(true);
+	}
+    }
+
+  // We still have no wizard we can show => hide the wizard until it is invoked.
+  m_manager.GetPane(m_sidebarNames[EventIDs::menu_pane_wizard]).Show(false);
+  // The xml inspector slows down everything => close it at startup
+  m_manager.GetPane(m_sidebarNames[EventIDs::menu_pane_xmlInspector]).Show(false);
+  // The unicode selector needs loads of time for starting up
+  // => close it at startup
+  m_manager.GetPane(m_sidebarNames[EventIDs::menu_pane_unicode]).Show(false);
+
   // It somehow is possible to hide the Maxima worksheet - which renders
   // wxMaxima basically useless => force it to be enabled.
-  m_manager.GetPane("console").Show(true);
-  m_manager.GetPane("wizard").Show(false).Float();
-
-  m_manager.GetPane("console") = m_manager.GetPane("console")
+  m_manager.GetPane(m_sidebarNames[EventIDs::menu_pane_console]).Show(true)
     .Center()
+    .Show(true)
     .CloseButton(false)
     .CaptionVisible(false)
     .TopDockable(true)
@@ -560,112 +470,12 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
     .PaneBorder(false)
     .Row(2);
 
-  // LoadPerspective overwrites the pane names with the saved ones -which can
-  // belong to a translation different to the one selected currently =>
-  // let's overwrite the names here.
-  m_manager.GetPane(wxT("symbols")) = m_manager.GetPane(wxT("symbols"))
-    .Caption(_("Mathematical Symbols"))
-    .CloseButton(true)
-    .Resizable()
-    .Gripper(false)
-    .PaneBorder(true)
-    .Movable(true);
-  m_manager.GetPane(wxT("format")) = m_manager.GetPane(wxT("format"))
-    .Caption(_("Insert"))
-    .CloseButton(true)
-    .Resizable()
-    .PaneBorder(true)
-    .Movable(true);
-  m_manager.GetPane(wxT("draw")) = m_manager.GetPane(wxT("draw"))
-    .Caption(_("Plot using Draw"))
-    .CloseButton(true)
-    .Resizable()
-    .PaneBorder(true)
-    .Movable(true);
-  m_manager.GetPane(wxT("help")) = m_manager.GetPane(wxT("help"))
-    .Caption(_("Help"))
-    .CloseButton(true)
-    .Resizable()
-    .PaneBorder(true)
-    .Movable(true);
-  m_manager.GetPane(wxT("greek")) = m_manager.GetPane(wxT("greek"))
-    .Caption(_("Greek Letters"))
-    .CloseButton(true)
-    .Resizable()
-    .Gripper(false)
-    .PaneBorder(true)
-    .Movable(true)
-    .Gripper(false)
-    .CloseButton(true);
-
-  m_manager.GetPane(wxT("log")) = m_manager.GetPane(wxT("log"))
-    .Caption(_("Debug messages"))
-    .CloseButton(true)
-    .Resizable()
-    .Gripper(false)
-    .PaneBorder(true)
-    .Movable(true);
-  m_manager.GetPane(wxT("variables")) = m_manager.GetPane(wxT("variables"))
-    .Caption(_("Variables"))
-    .CloseButton(true)
-    .Resizable()
-    .Gripper(false)
-    .PaneBorder(true)
-    .Movable(true);
-  m_manager.GetPane(wxT("math")) = m_manager.GetPane(wxT("math"))
-    .Caption(_("General Math"))
-    .CloseButton(true)
-    .Resizable()
-    .PaneBorder(true)
-    .Movable(true);
-  m_manager.GetPane(wxT("stats")) = m_manager.GetPane(wxT("stats"))
-    .Caption(_("Statistics"))
-    .CloseButton(true)
-    .Resizable()
-    .PaneBorder(true)
-    .Movable(true);
-  m_manager.GetPane(wxT("XmlInspector")) =
-    m_manager.GetPane(wxT("XmlInspector"))
-    .Caption(_("Raw XML monitor"))
-    .CloseButton(true)
-    .Resizable()
-    .PaneBorder(true)
-    .Movable(true);
-  // The XML inspector scares many users and displaying long XML responses there
-  // slows down wxMaxima => disable the XML inspector on startup.
-  m_manager.GetPane(wxT("XmlInspector"))
-    .Show(false)
-    .PaneBorder(true)
-    .Movable(true);
-  m_manager.GetPane(wxT("unicode")) = m_manager.GetPane(wxT("unicode"))
-    .Caption(_("Unicode characters"))
-    .Show(false)
-    .PaneBorder(true)
-    .Movable(true);
-
-  m_manager.GetPane(wxT("structure")) = m_manager.GetPane(wxT("structure"))
-    .Caption(_("Table of Contents"))
-    .CloseButton(true)
-    .Resizable()
-    .PaneBorder(true)
-    .Movable(true);
-  m_manager.GetPane(wxT("history")) = m_manager.GetPane(wxT("history"))
-    .Caption(_("History"))
-    .CloseButton(true)
-    .Resizable()
-    .PaneBorder(true)
-    .Show(false)
-    .Movable(true);
   m_manager.Update();
 
   Connect(wxEVT_MENU_HIGHLIGHT,
 	  wxMenuEventHandler(wxMaximaFrame::OnMenuStatusText), NULL, this);
   Connect(EventIDs::menu_pane_dockAll, wxEVT_MENU,
           wxCommandEventHandler(wxMaximaFrame::DockAllSidebars), NULL, this);
-  m_historyVisible = m_manager.GetPane(wxT("history")).IsShown();
-  m_xmlMonitorVisible = m_manager.GetPane(wxT("XmlInspector")).IsShown();
-
-  Layout();
 }
 
 wxSize wxMaximaFrame::DoGetBestClientSize() const {
@@ -919,7 +729,7 @@ void wxMaximaFrame::SetupMenu() {
   m_viewMenu = new wxMenu;
   // Sidebars
   m_Maxima_Panes_Sub = new wxMenu;
-  m_Maxima_Panes_Sub->AppendCheckItem(EventIDs::menu_show_toolbar,
+  m_Maxima_Panes_Sub->AppendCheckItem(EventIDs::menu_pane_toolbar,
                                       _("Main Toolbar\tAlt+Shift+B"));
   m_Maxima_Panes_Sub->AppendCheckItem(EventIDs::menu_pane_math,
                                       _("General Math\tAlt+Shift+M"));
@@ -938,8 +748,11 @@ void wxMaximaFrame::SetupMenu() {
   m_Maxima_Panes_Sub->AppendCheckItem(EventIDs::menu_pane_format,
                                       _("Insert Cell\tAlt+Shift+C"));
   m_Maxima_Panes_Sub->AppendCheckItem(EventIDs::menu_pane_draw, _("Plot using Draw"));
+  
+#ifdef USE_WEBVIEW
   m_Maxima_Panes_Sub->AppendCheckItem(EventIDs::menu_pane_help,
                                       _("The integrated help browser"));
+#endif
   m_Maxima_Panes_Sub->AppendCheckItem(EventIDs::menu_pane_log, _("Debug messages"));
   m_Maxima_Panes_Sub->AppendCheckItem(EventIDs::menu_pane_variables, _("Variables"));
   m_Maxima_Panes_Sub->AppendCheckItem(EventIDs::menu_pane_xmlInspector,
@@ -2068,8 +1881,9 @@ void wxMaximaFrame::SetupMenu() {
                               _("Tells maxima to show the help for ?, ?? and "
                                 "describe() in a separate browser window"));
   m_HelpMenu->AppendSeparator();
+#ifdef USE_WEBVIEW
   m_HelpMenu->Append(EventIDs::menu_goto_url, _("Go to URL"));
-
+#endif
   wxMenu *tutorials_sub = new wxMenu;
   tutorials_sub->Append(EventIDs::menu_help_solving, _("Solving equations with Maxima"),
                         "", wxITEM_NORMAL);
@@ -2152,7 +1966,7 @@ wxString wxMaximaFrame::wxMaximaManualLocation() {
 }
 
 bool wxMaximaFrame::ToolbarIsShown() {
-  return m_manager.GetPane(wxT("toolbar")).IsShown();
+  return IsPaneDisplayed(EventIDs::menu_pane_toolbar);
 }
 
 void wxMaximaFrame::UpdateRecentDocuments() {
@@ -2239,6 +2053,8 @@ void wxMaximaFrame::UpdateRecentDocuments() {
   }
 }
 
+void wxMaximaFrame::ReadConfig() { m_worksheet->UpdateConfig(); }
+
 void wxMaximaFrame::ReReadConfig() {
   // On wxMac re-reading the config isn't necessary as all windows share the
   // same process and the same configuration.
@@ -2267,6 +2083,10 @@ void wxMaximaFrame::ReReadConfig() {
       }
     }
 #endif
+  for(auto window: m_topLevelWindows)
+    {
+      window->ReadConfig();
+    }
 }
 
 void wxMaximaFrame::RegisterAutoSaveFile() {
@@ -2292,59 +2112,14 @@ void wxMaximaFrame::RemoveTempAutosavefile() {
 }
 
 bool wxMaximaFrame::IsPaneDisplayed(int id) {
-  bool displayed = false;
-  
-  std::unordered_map<int,std::function<void()>> m{
-    {EventIDs::menu_pane_math, [&](){
-      displayed = m_manager.GetPane(wxT("math")).IsShown();
-    }},
-    {EventIDs::menu_pane_history, [&](){
-      displayed = m_manager.GetPane(wxT("history")).IsShown();
-    }},
-    {EventIDs::menu_pane_structure, [&](){
-      displayed = m_manager.GetPane(wxT("structure")).IsShown();
-    }},
-    {EventIDs::menu_pane_xmlInspector, [&](){
-      displayed = m_manager.GetPane(wxT("XmlInspector")).IsShown();
-    }},
-    {EventIDs::menu_pane_stats, [&](){
-      displayed = m_manager.GetPane(wxT("stats")).IsShown();
-    }},
-    {EventIDs::menu_pane_greek, [&](){
-      displayed = m_manager.GetPane(wxT("greek")).IsShown();
-    }},
-    {EventIDs::menu_pane_unicode, [&](){
-      displayed = m_manager.GetPane(wxT("unicode")).IsShown();
-    }},
-    {EventIDs::menu_pane_log, [&](){
-      displayed = m_manager.GetPane(wxT("log")).IsShown();
-    }},
-    {EventIDs::menu_pane_variables, [&](){
-      displayed = m_manager.GetPane(wxT("variables")).IsShown();
-    }},
-    {EventIDs::menu_pane_symbols, [&](){
-      displayed = m_manager.GetPane(wxT("symbols")).IsShown();
-    }},
-    {EventIDs::menu_pane_format, [&](){
-      displayed = m_manager.GetPane(wxT("format")).IsShown();
-    }},
-    {EventIDs::menu_pane_draw, [&](){
-      displayed = m_manager.GetPane(wxT("draw")).IsShown();
-    }},
-    {EventIDs::menu_pane_help, [&](){
-      displayed = m_manager.GetPane(wxT("help")).IsShown();
-    }}
-  };
-  auto varFunc = m.find(id);
-  if(varFunc == m.end())
-    {
-      wxASSERT(false);
-    }
+  auto item = m_sidebarNames.find(id);
+  //  wxASSERT(item != m_sidebarNames.end());
+  if(item != m_sidebarNames.end())
+    return m_manager.GetPane(item->second).IsShown();
   else
-    varFunc->second();
-
-  return displayed;
+    return false;
 }
+
 void wxMaximaFrame::OnMenuStatusText(wxMenuEvent &event)
 {
   if(event.GetId() <= 0)    
@@ -2357,21 +2132,8 @@ void wxMaximaFrame::OnMenuStatusText(wxMenuEvent &event)
     }
 }
 void wxMaximaFrame::DockAllSidebars(wxCommandEvent &WXUNUSED(ev)) {
-  m_manager.GetPane(wxT("math")).Dock();
-  m_manager.GetPane(wxT("history")).Dock();
-  m_manager.GetPane(wxT("structure")).Dock();
-  m_manager.GetPane(wxT("XmlInspector")).Dock();
-  m_manager.GetPane(wxT("stats")).Dock();
-  m_manager.GetPane(wxT("greek")).Dock();
-  m_manager.GetPane(wxT("wizard")).Dock();
-  m_manager.GetPane(wxT("log")).Dock();
-  m_manager.GetPane(wxT("unicode")).Dock();
-  m_manager.GetPane(wxT("variables")).Dock();
-  m_manager.GetPane(wxT("symbols")).Dock();
-  m_manager.GetPane(wxT("format")).Dock();
-  m_manager.GetPane(wxT("draw")).Dock();
-  m_manager.GetPane(wxT("help")).Dock();
-  m_manager.Update();
+  for(auto pane: m_sidebarNames)
+    m_manager.GetPane(pane.second).Dock();
 }
 
 void  wxMaximaFrame::StatusText(const wxString &text, bool saveInLog)
@@ -2388,79 +2150,27 @@ void  wxMaximaFrame::StatusText(const wxString &text, bool saveInLog)
 }
 
 void wxMaximaFrame::ShowPane(int id, bool show) {
-  std::unordered_map<int,std::function<void()>> m{
-    {EventIDs::menu_pane_hideall, [&](){
-      m_manager.GetPane(wxT("math")).Show(false);
-      m_manager.GetPane(wxT("history")).Show(false);
-      m_historyVisible = false;
-      m_xmlMonitorVisible = false;
-      m_manager.GetPane(wxT("structure")).Show(false);
-      m_manager.GetPane(wxT("XmlInspector")).Show(false);
-      m_manager.GetPane(wxT("format")).Show(false);
-      m_manager.GetPane(wxT("greek")).Show(false);
-      m_manager.GetPane(wxT("unicode")).Show(false);
-      m_manager.GetPane(wxT("log")).Show(false);
-      m_manager.GetPane(wxT("variables")).Show(false);
-      m_manager.GetPane(wxT("draw")).Show(false);
-      m_manager.GetPane(wxT("wizard")).Show(false);
-      m_manager.GetPane(wxT("symbols")).Show(false);
-      m_manager.GetPane(wxT("stats")).Show(false);
-      ShowToolBar(false);
-    }},
-    {EventIDs::menu_pane_math, [&](){
-      m_manager.GetPane(wxT("math")).Show(show);
-    }},
-    {EventIDs::menu_pane_history, [&](){
-      m_manager.GetPane(wxT("history")).Show(show);
-      m_historyVisible = show;
-    }},
-    {EventIDs::menu_pane_structure, [&](){
-      m_manager.GetPane(wxT("structure")).Show(show);
-      m_worksheet->m_tableOfContents->UpdateTableOfContents(
-							    m_worksheet->GetHCaret());
-    }},
-    {EventIDs::menu_pane_xmlInspector, [&](){
-      m_manager.GetPane(wxT("XmlInspector")).Show(show);
-      m_xmlMonitorVisible = show;
-    }},
-    {EventIDs::menu_pane_format, [&](){
-      m_manager.GetPane(wxT("format")).Show(show);
-    }},
-    {EventIDs::menu_pane_greek, [&](){
-      m_manager.GetPane(wxT("greek")).Show(show);
-    }},
-    {EventIDs::menu_pane_unicode, [&](){
-      m_manager.GetPane(wxT("unicode")).Show(show);
-    }},
-    {EventIDs::menu_pane_log, [&](){
-      m_manager.GetPane(wxT("log")).Show(show);
-    }},
-    {EventIDs::menu_pane_variables, [&](){
-      m_manager.GetPane(wxT("variables")).Show(show);
-    }},
-    {EventIDs::menu_pane_draw, [&](){
-      m_manager.GetPane(wxT("draw")).Show(show);
-    }},
-    {EventIDs::menu_pane_help, [&](){
-      m_manager.GetPane(wxT("help")).Show(show);
-    }},
-    {EventIDs::menu_pane_symbols, [&](){
-      m_manager.GetPane(wxT("symbols")).Show(show);
-    }},
-    {EventIDs::menu_pane_stats, [&](){
-      m_manager.GetPane(wxT("stats")).Show(show);
-    }}
-  };
-  auto varFunc = m.find(id);
-  if(varFunc == m.end())
+  if(id == EventIDs::menu_pane_hideall)
     {
-      wxASSERT(false);
+        for(auto pane: m_sidebarNames)
+	  {
+	    if(
+	       (pane.first != EventIDs::menu_pane_console)
+	       )
+	      m_manager.GetPane(pane.second).Show(false);
+	  }
     }
   else
     {
-      varFunc->second();
-      m_manager.Update();
+      wxASSERT((id != EventIDs::menu_pane_console) || (show));
+      if((id != EventIDs::menu_pane_console) || (show)) {
+	auto item = m_sidebarNames.find(id);
+	//	wxASSERT(item != m_sidebarNames.end());
+	if(item != m_sidebarNames.end())
+	  m_manager.GetPane(item->second).Show(show);
+      }
     }
+  m_manager.Update();
 }
 
 wxWindow *wxMaximaFrame::CreateMathPane() {
@@ -3114,3 +2824,11 @@ void wxMaximaFrame::ShowToolBar(bool show) {
   m_manager.GetPane(wxT("toolbar")).Show(show);
   m_manager.Update();
 }
+
+void wxMaximaFrame::BecomeLogTarget() {
+  if (m_logPane != NULL)
+    m_logPane->BecomeLogTarget();
+}
+
+
+std::vector<wxMaximaFrame *> wxMaximaFrame::m_topLevelWindows;

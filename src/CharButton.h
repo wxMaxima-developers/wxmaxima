@@ -23,7 +23,7 @@
 #ifndef CHARBUTTON_H
 #define CHARBUTTON_H
 
-#include "wx/stattext.h"
+#include <wx/stattext.h>
 
 /*! \file
 

@@ -32,7 +32,7 @@
 #include "TextCell.h"
 #include "CellImpl.h"
 #include "StringUtils.h"
-#include "wx/config.h"
+#include <wx/config.h>
 
 TextCell::TextCell(GroupCell *group, Configuration *config,
                    const wxString &text, TextStyle style)
@@ -61,7 +61,7 @@ TextCell::TextCell(GroupCell *group, Configuration *config,
   case TS_STRING:
     m_type = MC_TYPE_TEXT;
     break;
-  case TS_INPUT:
+  case TS_CODE_DEFAULT:
     m_type = MC_TYPE_INPUT;
     break;
   case TS_MAIN_PROMPT:
