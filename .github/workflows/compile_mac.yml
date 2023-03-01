@@ -63,23 +63,41 @@ jobs:
              set +e
       - name: Configure wxMaxima
         run: |
-             mkdir ../build-wxm
-             cmake -S . -B ../build-wxm -G Ninja -DCMAKE_INSTALL_PREFIX=. -DCMAKE_UNITY_BUILD_BATCH_SIZE=8 -DWXM_UNIT_TESTS=YES -DCMAKE_UNITY_BUILD=YES
+             mkdir build-wxm
+             cmake -S . -B build-wxm -G Ninja -DCMAKE_INSTALL_PREFIX=. -DCMAKE_UNITY_BUILD_BATCH_SIZE=8 -DWXM_UNIT_TESTS=YES -DCMAKE_UNITY_BUILD=YES
 
       - name: Check Info.plist
         run: |
-             ls -l ../build-wxm/src/Info.plist
+             ls -l build-wxm/src/Info.plist
       - name: Compile wxMaxima
         run: |
-             cmake --build ../build-wxm
+             cmake --build build-wxm
       - name: Install wxMaxima
         run: |
-             cmake --install ../build-wxm
+             cmake --install build-wxm
       - name: Package wxMaxima
         run: |
-             cd ../build-wxm
+             cd build-wxm
              cpack -G DragNDrop
-
+             cd ..
+             cp build-wxm/*.dmg wxMaxima.dmg
+             cp build-wxm/*.sha512 wxMaxima.dmg.sha512
+      - name: install
+        run: |
+             cmake --install build-wxm
+             ls -lh build-wxm/src
+             ls -lh build-wxm
+      - name: Upload the dmg
+        uses: actions/upload-artifact@v3
+        with:
+          name: wxMaxima_ia64.dmg
+          path: wxMaxima.dmg
+      - name: Upload the dmg checksum
+        uses: actions/upload-artifact@v3
+        with:
+          name: wxMaxima_ia64.dmg.sha512
+          path: wxMaxima.dmg.sha512
+          
   compile_Make:
     runs-on: macos-latest
 
@@ -107,10 +125,6 @@ jobs:
       - name: compile
         run: |
              cmake --build ../build-wxm
-      - name: install
-        run: |
-             cmake --install ../build-wxm
-             ls -lh ../build-wxm/src
 
   # compile_macports:
   #   runs-on: macos-latest
