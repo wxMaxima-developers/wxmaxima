@@ -110,7 +110,7 @@ jobs:
       - name: install
         run: |
              cmake --install ../build-wxm
-             ls -lh ../build-wxm
+             ls -lh ../build-wxm/src
 
   # compile_macports:
   #   runs-on: macos-latest
