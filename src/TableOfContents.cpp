@@ -51,9 +51,6 @@ TableOfContents::TableOfContents(wxWindow *parent, int id,
   box->Add(m_displayedItems, wxSizerFlags(1).Expand());
   box->Add(m_regex, wxSizerFlags().Expand());
   m_lastSelection = -1;
-
-  SetSizer(box);
-  FitInside();
   m_regex->Connect(REGEX_EVENT,
                    wxCommandEventHandler(TableOfContents::OnRegExEvent), NULL,
                    this);
@@ -74,6 +71,8 @@ TableOfContents::TableOfContents(wxWindow *parent, int id,
 			    wxMouseCaptureLostEventHandler(TableOfContents::OnMouseCaptureLost), NULL,
 			    this);
   Connect(wxEVT_TIMER, wxTimerEventHandler(TableOfContents::OnTimer));
+  SetSizer(box);
+  FitInside();
 }
 
 void TableOfContents::OnTimer(wxTimerEvent &event) {

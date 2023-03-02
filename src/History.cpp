@@ -55,8 +55,6 @@ History::History(wxWindow *parent, int id, Configuration *cfg)
   box->Add(m_history, wxSizerFlags(1).Expand());
   box->Add(m_regex, wxSizerFlags().Expand());
 
-  SetSizer(box);
-  FitInside();
   Connect(wxEVT_RIGHT_DOWN, wxMouseEventHandler(History::OnMouseRightDown),
           NULL, this);
   m_history->Connect(wxEVT_RIGHT_DOWN,
@@ -65,6 +63,8 @@ History::History(wxWindow *parent, int id, Configuration *cfg)
   Connect(wxEVT_MENU, wxCommandEventHandler(History::OnMenu), NULL, this);
   m_regex->Connect(REGEX_EVENT, wxCommandEventHandler(History::OnRegExEvent),
                    NULL, this);
+  SetSizer(box);
+  FitInside();
 }
 
 void History::OnMouseRightDown(wxMouseEvent &WXUNUSED(event)) {

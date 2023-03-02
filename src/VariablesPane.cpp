@@ -57,9 +57,10 @@ Variablespane::Variablespane(wxWindow *parent, wxWindowID id)
   m_grid->EnableDragCell();
   m_grid->EndBatch();
   vbox->Add(m_grid, wxSizerFlags(10).Expand());
-  SetSizerAndFit(vbox);
   SetMinSize(wxSize(wxSystemSettings::GetMetric(wxSYS_SCREEN_X) / 10,
                     wxSystemSettings::GetMetric(wxSYS_SCREEN_Y) / 10));
+  SetSizer(vbox);
+  FitInside();
 }
 
 void Variablespane::OnChar(wxKeyEvent &event) {

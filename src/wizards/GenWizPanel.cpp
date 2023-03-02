@@ -129,11 +129,11 @@ GenWizPanel::GenWizPanel(
             tooltip5, label6, defaultval6, tooltip6, label7, defaultval7,
             tooltip7, label8, defaultval8, tooltip8, label9, defaultval9,
             tooltip9);
-  SetSizer(vbox);
   Connect(wxEVT_SIZE, wxSizeEventHandler(GenWizPanel::OnSize), NULL, this);
   m_notebook->Connect(wxEVT_NOTEBOOK_PAGE_CHANGED,
                       wxBookCtrlEventHandler(GenWizPanel::OnNotebookPageChange),
                       NULL, this);
+  SetSizer(vbox);
   FitInside();
 }
 

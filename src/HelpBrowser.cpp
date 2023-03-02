@@ -80,9 +80,9 @@ HelpBrowser::HelpBrowser(wxWindow *parent, Configuration *configuration,
   m_topicPanel->SetSizer(m_topicSizer);
   vbox->Add(m_topicPanel, wxSizerFlags(1).Expand());
 
-  SetSizer(vbox);
   Connect(wxEVT_ACTIVATE, wxActivateEventHandler(HelpBrowser::OnActivate), NULL,
           this);
+  SetSizer(vbox);
   FitInside();
 }
 

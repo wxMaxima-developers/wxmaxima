@@ -306,8 +306,8 @@ TipOfTheDay::TipOfTheDay(wxWindow *parent)
   vbox->Add(buttonSizer, wxSizerFlags().Expand().Proportion(1));
 
   wxPersistenceManager::Get().RegisterAndRestore(this);
-  SetSizerAndFit(vbox);
   config->Write(wxT("tipNum"), m_num + 1);
+  SetSizerAndFit(vbox);
 }
 
 TipOfTheDay::~TipOfTheDay() {
