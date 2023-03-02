@@ -369,22 +369,6 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
 		    .Row(2));
 
   SetupMenu();
-  // MacOs generates semitransparent instead of hidden items if the
-  // items in question were never shown => Let's display the frame with
-  // all items visible and then hide the ones we want to.
-  m_manager.Update();
-  for(auto pane: m_sidebarNames)
-    {
-      if (
-	  (pane.first != EventIDs::menu_pane_toolbar) &&
-	  (pane.first != EventIDs::menu_pane_console) &&
-	  (pane.first != EventIDs::menu_pane_symbols) &&
-	  (pane.first != EventIDs::menu_pane_draw) &&
-	  (pane.first != EventIDs::menu_pane_greek) &&
-	  (pane.first != EventIDs::menu_pane_structure)
-	  )
-	ShowPane(pane.first, false);
-    }
   
   // Read the perspektive (the sidebar state and positions).
   wxConfigBase *config = wxConfig::Get();
@@ -428,6 +412,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
 	    m_manager.GetPane(pane.second)
 	      .Caption(m_sidebarCaption[pane.first])
 	      .CloseButton(true)
+	      .Layer(0)
 	      .MinSize(minSiz)
 	      .BestSize(minSiz)
 	      .FloatingSize(minSiz)
@@ -439,7 +424,14 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
 	      .BottomDockable(true)
 	      .LeftDockable(true)
 	      .RightDockable(true)
-	      .PaneBorder(true);
+	      .PaneBorder(true).
+	      Show(
+		   (pane.first == EventIDs::menu_pane_toolbar) ||
+		   (pane.first == EventIDs::menu_pane_console) ||
+		   (pane.first == EventIDs::menu_pane_symbols) ||
+		   (pane.first == EventIDs::menu_pane_draw) ||
+		   (pane.first == EventIDs::menu_pane_greek) ||
+		   (pane.first == EventIDs::menu_pane_structure));
 	}
     }
 
