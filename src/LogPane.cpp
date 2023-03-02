@@ -40,7 +40,8 @@ LogPane::LogPane(wxWindow *parent, wxWindowID id, bool becomeLogTarget)
 
   // m_logPanelTarget->SetRepetitionCounting();
   // m_logPanelTarget->DisableTimestamp();
-  SetSizerAndFit(vbox);
+  SetSizer(vbox);
+  FitInside();
 }
 
 void LogPane::DropLogTarget() {
