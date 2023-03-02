@@ -7,6 +7,7 @@
  * The manual anchors cache now saves the file-per-chapter URLs, too.
  * cmake -DWXM_DISABLE_WEBVIEW now allows to find wxWidgets, if 
    wxWebView wasn't compiled.
+ * Completely rewrote the dockable-sidebars-stuff
 
 # 23.02.0
  * Fix XML generation of wxmx documents (#1556)
