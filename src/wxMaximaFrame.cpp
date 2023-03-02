@@ -174,7 +174,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
   m_forceStatusbarUpdate = false;
 
   // Better support for low-resolution netbook screens.
-  // wxDialog::EnableLayoutAdaptation(wxDIALOG_ADAPTATION_MODE_ENABLED);
+  wxDialog::EnableLayoutAdaptation(wxDIALOG_ADAPTATION_MODE_ENABLED);
 
   // Now it is time to construct the window contents.
 
@@ -223,6 +223,42 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
 #else
   SetTitle(_("untitled"));
 #endif
+
+    m_sidebarNames[EventIDs::menu_pane_console] = wxT("console");
+  m_sidebarCaption[EventIDs::menu_pane_console] = _("The worksheet");
+  m_manager.AddPane(m_worksheet,
+                    wxAuiPaneInfo()
+		    .Name(m_sidebarNames[EventIDs::menu_pane_console])
+		    .Center()
+		    .CloseButton(false)
+		    .CaptionVisible(false)
+		    .TopDockable(true)
+		    .BottomDockable(true)
+		    .LeftDockable(true)
+		    .RightDockable(true)
+		    .MinSize(wxSize(100 * GetContentScaleFactor(),
+				    100 * GetContentScaleFactor()))
+		    .PaneBorder(false)
+		    .Row(2));
+
+  m_worksheet->m_mainToolBar = new ToolBar(this);
+  m_sidebarNames[EventIDs::menu_pane_toolbar] = wxT("toolbar");
+  m_sidebarCaption[EventIDs::menu_pane_toolbar] = _("The main toolbar");
+  m_manager.AddPane(m_worksheet->m_mainToolBar,
+                    wxAuiPaneInfo()
+		    .Name(m_sidebarNames[EventIDs::menu_pane_toolbar])
+		    .Top()
+		    .TopDockable(true)
+		    .BottomDockable(true)
+		    // .ToolbarPane().
+                    .CaptionVisible(false)
+		    .CloseButton(false)
+		    .LeftDockable(false)
+		    .DockFixed()
+		    .Floatable(false)
+		    .RightDockable(false)
+		    .Gripper(false)
+		    .Row(1));
 
   m_sidebarNames[EventIDs::menu_pane_history] = wxT("history");
   m_sidebarCaption[EventIDs::menu_pane_history] = _("History");
@@ -331,42 +367,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
                     wxAuiPaneInfo()
 		    .Name(m_sidebarNames[EventIDs::menu_pane_help])
 		    .Right());
-#endif
-  
-  m_worksheet->m_mainToolBar = new ToolBar(this);
-  m_sidebarNames[EventIDs::menu_pane_toolbar] = wxT("toolbar");
-  m_sidebarCaption[EventIDs::menu_pane_toolbar] = _("The main toolbar");
-  m_manager.AddPane(m_worksheet->m_mainToolBar,
-                    wxAuiPaneInfo()
-		    .Name(m_sidebarNames[EventIDs::menu_pane_toolbar])
-		    .Top()
-		    .TopDockable(true)
-		    .BottomDockable(true)
-		    // .ToolbarPane().
-                    .CaptionVisible(false)
-		    .CloseButton(false)
-		    .LeftDockable(false)
-		    .DockFixed()
-		    .RightDockable(false)
-		    .Gripper(false)
-		    .Row(1));
-
-  m_sidebarNames[EventIDs::menu_pane_console] = wxT("console");
-  m_sidebarCaption[EventIDs::menu_pane_console] = _("The worksheet");
-  m_manager.AddPane(m_worksheet,
-                    wxAuiPaneInfo()
-		    .Name(m_sidebarNames[EventIDs::menu_pane_console])
-		    .Center()
-		    .CloseButton(false)
-		    .CaptionVisible(false)
-		    .TopDockable(true)
-		    .BottomDockable(true)
-		    .LeftDockable(true)
-		    .RightDockable(true)
-		    .MinSize(wxSize(100 * GetContentScaleFactor(),
-				    100 * GetContentScaleFactor()))
-		    .PaneBorder(false)
-		    .Row(2));
+#endif  
 
   SetupMenu();
   
