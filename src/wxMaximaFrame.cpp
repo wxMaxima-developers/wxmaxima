@@ -2335,9 +2335,9 @@ wxMaximaFrame::GreekPane::GreekPane(wxWindow *parent,
   Connect(wxEVT_RIGHT_DOWN,
           wxMouseEventHandler(wxMaximaFrame::GreekPane::OnMouseRightDown));
 
-  SetMinSize(wxSize(GetContentScaleFactor() * 50, GetMinSize().y));
   SetSizer(vbox);
   FitInside();
+  SetMinSize(wxSize(GetContentScaleFactor() * 50, GetMinSize().y));
 }
 
 void wxMaximaFrame::GreekPane::OnSize(wxSizeEvent &event) {
@@ -2560,7 +2560,6 @@ wxMaximaFrame::SymbolsPane::SymbolsPane(wxWindow *parent,
   UpdateUserSymbols();
   m_userSymbols->SetSizer(m_userSymbolsSizer);
   vbox->Add(m_userSymbols, wxSizerFlags().Expand());
-  SetMinSize(wxSize(GetContentScaleFactor() * 50, GetMinSize().y));
   Connect(wxEVT_SIZE, wxSizeEventHandler(wxMaximaFrame::SymbolsPane::OnSize),
           NULL, this);
   Connect(EventIDs::menu_additionalSymbols, wxEVT_MENU,
@@ -2576,6 +2575,7 @@ wxMaximaFrame::SymbolsPane::SymbolsPane(wxWindow *parent,
 			 wxMouseEventHandler(wxMaximaFrame::SymbolsPane::OnMouseRightDown));
   SetSizer(vbox);
   FitInside();
+  SetMinSize(wxSize(GetContentScaleFactor() * 50, GetMinSize().y));
 }
 
 void wxMaximaFrame::SymbolsPane::OnMenu(wxCommandEvent &event) {
