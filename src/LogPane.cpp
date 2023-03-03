@@ -33,7 +33,7 @@ LogPane::LogPane(wxWindow *parent, wxWindowID id, bool becomeLogTarget)
   m_textCtrl->SetMinSize(
 			 wxSize(wxSystemSettings::GetMetric(wxSYS_SCREEN_X) / 10,
 				wxSystemSettings::GetMetric(wxSYS_SCREEN_Y) / 10));
-  vbox->Add(m_textCtrl, wxSizerFlags().Expand().Proportion(1));
+  vbox->Add(m_textCtrl, wxSizerFlags(1).Expand());
 
   if (becomeLogTarget)
     BecomeLogTarget();
