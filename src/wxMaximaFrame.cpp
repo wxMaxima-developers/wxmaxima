@@ -370,6 +370,17 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
 		    .Right());
 #endif  
 
+  for(auto pane: m_sidebarNames)
+    if(m_manager.GetPane(pane.second).IsOk())
+      m_manager.GetPane(pane.second).
+	Show(
+	     (pane.first == EventIDs::menu_pane_toolbar) ||
+	     (pane.first == EventIDs::menu_pane_console) ||
+	     (pane.first == EventIDs::menu_pane_symbols) ||
+	     (pane.first == EventIDs::menu_pane_draw) ||
+	     (pane.first == EventIDs::menu_pane_greek) ||
+	     (pane.first == EventIDs::menu_pane_structure));
+
   SetupMenu();
   
   // Read the perspektive (the sidebar state and positions).
@@ -427,14 +438,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
 	      .BottomDockable(true)
 	      .LeftDockable(true)
 	      .RightDockable(true)
-	      .PaneBorder(true).
-	      Show(
-		   (pane.first == EventIDs::menu_pane_toolbar) ||
-		   (pane.first == EventIDs::menu_pane_console) ||
-		   (pane.first == EventIDs::menu_pane_symbols) ||
-		   (pane.first == EventIDs::menu_pane_draw) ||
-		   (pane.first == EventIDs::menu_pane_greek) ||
-		   (pane.first == EventIDs::menu_pane_structure));
+	      .PaneBorder(true);
 	}
     }
 
