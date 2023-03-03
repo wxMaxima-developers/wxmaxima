@@ -106,7 +106,6 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
   // Redirect all debug messages to a dockable panel and output some info
   // about this program.
   m_logPane = new LogPane(this, -1, becomeLogTarget);
-  //  wxWindowUpdateLocker logBlocker(m_logPane);
 
   wxLogMessage(wxString::Format(_("wxMaxima version %s"), GITVERSION));
 #ifdef __WXMSW__
@@ -189,7 +188,9 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
 
   // The table of contents
   m_worksheet->m_tableOfContents = new TableOfContents(
-						       this, -1, &m_configuration, m_worksheet->GetTreeAddress());
+						       this, -1,
+						       &m_configuration,
+						       m_worksheet->GetTreeAddress());
 
   m_xmlInspector = new XmlInspector(this, -1);
   //  wxWindowUpdateLocker xmlInspectorBlocker(m_xmlInspector);
@@ -224,7 +225,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
   SetTitle(_("untitled"));
 #endif
 
-    m_sidebarNames[EventIDs::menu_pane_console] = wxT("console");
+  m_sidebarNames[EventIDs::menu_pane_console] = wxT("console");
   m_sidebarCaption[EventIDs::menu_pane_console] = _("The worksheet");
   m_manager.AddPane(m_worksheet,
                     wxAuiPaneInfo()
@@ -258,7 +259,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
 		    .Floatable(false)
 		    .RightDockable(false)
 		    .Gripper(false)
-		    .Row(1));
+		    .Row(0));
 
   m_sidebarNames[EventIDs::menu_pane_history] = wxT("history");
   m_sidebarCaption[EventIDs::menu_pane_history] = _("History");
@@ -414,6 +415,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
 	      .Caption(m_sidebarCaption[pane.first])
 	      .CloseButton(true)
 	      .Layer(0)
+	      .Row(1)
 	      .MinSize(minSiz)
 	      .BestSize(minSiz)
 	      .FloatingSize(minSiz)

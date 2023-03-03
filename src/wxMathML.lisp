@@ -1280,7 +1280,7 @@
     (append l x))
 
   (wx-defprop text-string wxxml-matchfix-np wxxml)
-  (wx-defprop text-string (("<t>")"</t>") (wxxml-fix-string wxxmlsym))
+  (wx-defprop text-string (("<t>")"</t>") wxxmlsym)
 
   (wx-defprop mtext wxxml-matchfix-np wxxml)
   (wx-defprop mtext (("")"") wxxmlsym)
