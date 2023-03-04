@@ -160,18 +160,6 @@ if(NOT CYGWIN)
 endif()
 list(APPEND SOURCE_FILES ${CMAKE_CURRENT_BINARY_DIR}/wxmaxima.manifest)
 
-message(STATUS "Embedding NEWS.md into header file news_md.h")
-file(WRITE "${CMAKE_BINARY_DIR}/news_md.h"
-  "/** \\file NEWS_md\n"
-  " * This header file was generated from NEWS.md.\n"
-  " */\n"
-  "#ifndef NEWS_MD_H\n"
-  "#define NEWS_MD_H\n"
-  " #include <cstddef>\n"
-  )
-bin2h(SOURCE_FILE "../NEWS.md" HEADER_FILE "${CMAKE_BINARY_DIR}/news_md.h" VARIABLE_NAME "news_md" APPEND NULL_TERMINATE)
-file(APPEND "${CMAKE_BINARY_DIR}/news_md.h" "#endif // NEWS_MD_H\n")
-
 list(APPEND SOURCE_FILES
   ${CELL_SOURCE_FILES}
   ${GRAPHICAL_IO_SOURCE_FILES}
@@ -403,10 +391,37 @@ add_custom_command(
         -DBIN2H="${CMAKE_SOURCE_DIR}/cmake-bin2h/bin2h.cmake"
         -P "${CMAKE_CURRENT_SOURCE_DIR}/bin2h.cmake"
         COMMENT "Embedding wxMathML.lisp"
-        DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/wxMathML.lisp
+        DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/wxMathML.lisp ${CMAKE_CURRENT_SOURCE_DIR}/bin2h.cmake
 )
 add_custom_target(buildmathmlh DEPENDS ${CMAKE_BINARY_DIR}/wxMathML_lisp.h)
 add_dependencies(wxmaxima buildmathmlh)
+
+add_custom_command(
+        OUTPUT ${CMAKE_BINARY_DIR}/news_md.h
+        COMMAND ${CMAKE_COMMAND} ARGS
+        -DBIN2H_SOURCE_FILE="${CMAKE_SOURCE_DIR}/NEWS.md"
+        -DBIN2H_VARIABLE_NAME=news_md
+        -DBIN2H_HEADER_FILE="${CMAKE_BINARY_DIR}/news_md.h"
+        -DBIN2H="${CMAKE_SOURCE_DIR}/cmake-bin2h/bin2h.cmake"
+        -P "${CMAKE_CURRENT_SOURCE_DIR}/bin2h.cmake"
+        COMMENT "Embedding NEWS.md"
+        DEPENDS ${CMAKE_SOURCE_DIR}/NEWS.md ${CMAKE_CURRENT_SOURCE_DIR}/bin2h.cmake
+)
+add_custom_target(buildnewsmdh DEPENDS ${CMAKE_SOURCE_DIR}/NEWS.md)
+add_dependencies(wxmaxima buildnewsmdh)
+
+message(STATUS "Embedding NEWS.md into header file news_md.h")
+file(WRITE "${CMAKE_BINARY_DIR}/news_md.h"
+  "/** \\file NEWS_md\n"
+  " * This header file was generated from NEWS.md.\n"
+  " */\n"
+  "#ifndef NEWS_MD_H\n"
+  "#define NEWS_MD_H\n"
+  " #include <cstddef>\n"
+  )
+bin2h(SOURCE_FILE "../NEWS.md" HEADER_FILE "${CMAKE_BINARY_DIR}/news_md.h" VARIABLE_NAME "news_md" APPEND NULL_TERMINATE)
+file(APPEND "${CMAKE_BINARY_DIR}/news_md.h" "#endif // NEWS_MD_H\n")
+
 
 # Debian wants to be able to download a signature of the source package from the
 # project's download directory. If it cannot find it it will still work, but will
