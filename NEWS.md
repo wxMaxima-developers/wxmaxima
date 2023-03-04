@@ -8,6 +8,7 @@
  * cmake -DWXM_DISABLE_WEBVIEW now allows to find wxWidgets, if 
    wxWebView wasn't compiled.
  * Completely rewrote the dockable-sidebars-stuff
+ * A few build system improvements
 
 # 23.02.0
  * Fix XML generation of wxmx documents (#1556)

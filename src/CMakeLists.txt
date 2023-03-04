@@ -407,21 +407,8 @@ add_custom_command(
         COMMENT "Embedding NEWS.md"
         DEPENDS ${CMAKE_SOURCE_DIR}/NEWS.md ${CMAKE_CURRENT_SOURCE_DIR}/bin2h.cmake
 )
-add_custom_target(buildnewsmdh DEPENDS ${CMAKE_SOURCE_DIR}/NEWS.md)
+add_custom_target(buildnewsmdh DEPENDS ${CMAKE_BINARY_DIR}/news_md.h)
 add_dependencies(wxmaxima buildnewsmdh)
-
-message(STATUS "Embedding NEWS.md into header file news_md.h")
-file(WRITE "${CMAKE_BINARY_DIR}/news_md.h"
-  "/** \\file NEWS_md\n"
-  " * This header file was generated from NEWS.md.\n"
-  " */\n"
-  "#ifndef NEWS_MD_H\n"
-  "#define NEWS_MD_H\n"
-  " #include <cstddef>\n"
-  )
-bin2h(SOURCE_FILE "../NEWS.md" HEADER_FILE "${CMAKE_BINARY_DIR}/news_md.h" VARIABLE_NAME "news_md" APPEND NULL_TERMINATE)
-file(APPEND "${CMAKE_BINARY_DIR}/news_md.h" "#endif // NEWS_MD_H\n")
-
 
 # Debian wants to be able to download a signature of the source package from the
 # project's download directory. If it cannot find it it will still work, but will
