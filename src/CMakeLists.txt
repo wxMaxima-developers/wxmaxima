@@ -160,18 +160,6 @@ if(NOT CYGWIN)
 endif()
 list(APPEND SOURCE_FILES ${CMAKE_CURRENT_BINARY_DIR}/wxmaxima.manifest)
 
-message(STATUS "Embedding wxMathML.lisp into header file wxMathML_lisp.h")
-file(WRITE "${CMAKE_BINARY_DIR}/wxMathML_lisp.h"
-  "/** \\file wxMathML_lisp.h\n"
-  " * This header file was generated from wxMathML.lisp.\n"
-  " */\n"
-  "#ifndef WXMATHML_LISP_H\n"
-  "#define WXMATHML_LISP_H\n"
-  " #include <cstddef>\n"
-  )
-bin2h(SOURCE_FILE "wxMathML.lisp" HEADER_FILE "${CMAKE_BINARY_DIR}/wxMathML_lisp.h" VARIABLE_NAME "wxMathML_lisp" APPEND NULL_TERMINATE)
-file(APPEND "${CMAKE_BINARY_DIR}/wxMathML_lisp.h" "#endif // WXMATHML_LISP_H\n")
-
 message(STATUS "Embedding NEWS.md into header file news_md.h")
 file(WRITE "${CMAKE_BINARY_DIR}/news_md.h"
   "/** \\file NEWS_md\n"
@@ -279,7 +267,6 @@ else()
     add_executable(wxmaxima ${SOURCE_FILES})
 endif()
 target_compile_features(wxmaxima PUBLIC cxx_std_14)
-
 
 if(WXM_INTERPROCEDURAL_OPTIMIZATION)
     # Enable interprocedural optimization (IPO/LTO), if supported.
@@ -406,6 +393,20 @@ set(CPACK_SOURCE_IGNORE_FILES
   "wxmaxima-.*\\\\.Z$"
   "wxmaxima-.*\\\\.gz$"
   "${CPACK_SOURCE_IGNORE_FILES}")
+
+add_custom_command(
+        OUTPUT ${CMAKE_BINARY_DIR}/wxMathML_lisp.h
+        COMMAND ${CMAKE_COMMAND} ARGS
+        -DBIN2H_SOURCE_FILE="${CMAKE_CURRENT_SOURCE_DIR}/wxMathML.lisp"
+        -DBIN2H_VARIABLE_NAME=wxMathML_lisp
+        -DBIN2H_HEADER_FILE="${CMAKE_BINARY_DIR}/wxMathML_lisp.h"
+        -DBIN2H="${CMAKE_SOURCE_DIR}/cmake-bin2h/bin2h.cmake"
+        -P "${CMAKE_CURRENT_SOURCE_DIR}/bin2h.cmake"
+        COMMENT "Embedding wxMathML.lisp"
+        DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/wxMathML.lisp
+)
+add_custom_target(buildmathmlh DEPENDS ${CMAKE_BINARY_DIR}/wxMathML_lisp.h)
+add_dependencies(wxmaxima buildmathmlh)
 
 # Debian wants to be able to download a signature of the source package from the
 # project's download directory. If it cannot find it it will still work, but will
