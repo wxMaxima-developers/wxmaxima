@@ -310,6 +310,9 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
 		    .Name(m_sidebarNames[EventIDs::menu_pane_log])
 		    .Left());
 
+  // Avoid the strange non-responsive see-through log window on the mac
+  wxWindowUpdateLocker avoidMacError(m_logPane);
+  
   m_sidebarNames[EventIDs::menu_pane_variables] = wxT("variables");
   m_sidebarCaption[EventIDs::menu_pane_variables] = _("Variables");
   m_worksheet->m_variablesPane = new Variablespane(this, wxID_ANY);
