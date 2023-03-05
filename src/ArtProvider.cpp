@@ -25,7 +25,7 @@
   Generates all the bitmaps we need.
 */
 
-#include <ArtProvider.h>
+#include "ArtProvider.h"
 #include <wx/bitmap.h>
 #include <wx/image.h>
 #include <wx/artprov.h>
