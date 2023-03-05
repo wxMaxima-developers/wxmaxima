@@ -410,6 +410,34 @@ add_custom_command(
 add_custom_target(buildnewsmdh DEPENDS ${CMAKE_BINARY_DIR}/news_md.h)
 add_dependencies(wxmaxima buildnewsmdh)
 
+add_custom_command(
+        OUTPUT ${CMAKE_BINARY_DIR}/wxm_license.h
+        COMMAND ${CMAKE_COMMAND} ARGS
+        -DBIN2H_SOURCE_FILE="${CMAKE_SOURCE_DIR}/COPYING"
+        -DBIN2H_VARIABLE_NAME=wxm_license
+        -DBIN2H_HEADER_FILE="${CMAKE_BINARY_DIR}/wxm_license.h"
+        -DBIN2H="${CMAKE_SOURCE_DIR}/cmake-bin2h/bin2h.cmake"
+        -P "${CMAKE_CURRENT_SOURCE_DIR}/bin2h.cmake"
+        COMMENT "Embedding the license information"
+        DEPENDS ${CMAKE_SOURCE_DIR}/COPYING ${CMAKE_CURRENT_SOURCE_DIR}/bin2h.cmake
+)
+add_custom_target(buildlicenseh DEPENDS ${CMAKE_BINARY_DIR}/wxm_license.h)
+add_dependencies(wxmaxima buildlicenseh)
+
+add_custom_command(
+        OUTPUT ${CMAKE_BINARY_DIR}/wxm_manual_anchors_xml.h
+        COMMAND ${CMAKE_COMMAND} ARGS
+        -DBIN2H_SOURCE_FILE="${CMAKE_SOURCE_DIR}/data/manual_anchors.xml"
+        -DBIN2H_VARIABLE_NAME=manual_anchors_xml
+        -DBIN2H_HEADER_FILE="${CMAKE_BINARY_DIR}/wxm_manual_anchors_xml.h"
+        -DBIN2H="${CMAKE_SOURCE_DIR}/cmake-bin2h/bin2h.cmake"
+        -P "${CMAKE_CURRENT_SOURCE_DIR}/bin2h.cmake"
+        COMMENT "Embedding the anchors of the maxima manual"
+        DEPENDS ${CMAKE_SOURCE_DIR}/data/manual_anchors.xml ${CMAKE_CURRENT_SOURCE_DIR}/bin2h.cmake
+)
+add_custom_target(buildmanualanchorsh DEPENDS ${CMAKE_BINARY_DIR}/wxm_manual_anchors_xml.h)
+add_dependencies(wxmaxima buildmanualanchorsh)
+
 # Debian wants to be able to download a signature of the source package from the
 # project's download directory. If it cannot find it it will still work, but will
 # issue a warning. For details see
