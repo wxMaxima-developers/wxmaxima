@@ -28,6 +28,7 @@
 */
 #include "StatusBar.h"
 #include "Image.h"
+#include "ArtProvider.h"
 #include "SvgBitmap.h"
 #include "wxm_statusbar_images.h"
 #include <wx/artprov.h>
@@ -123,55 +124,55 @@ void StatusBar::UpdateBitmaps() {
 
   if (m_ppi != ppi) {
     m_ppi = ppi;
-    m_network_error = GetImage("network-error", NETWORK_ERROR_SVG_GZ,
+    m_network_error = ArtProvider::GetImage(this, "network-error", GetClientSize().GetHeight(),NETWORK_ERROR_SVG_GZ,
                                NETWORK_ERROR_SVG_GZ_SIZE);
-    m_network_offline = GetImage("network-offline", NETWORK_OFFLINE_SVG_GZ,
+    m_network_offline = ArtProvider::GetImage(this, "network-offline", GetClientSize().GetHeight(),NETWORK_OFFLINE_SVG_GZ,
                                  NETWORK_OFFLINE_SVG_GZ_SIZE);
-    m_network_transmit = GetImage("network-transmit", NETWORK_TRANSMIT_SVG_GZ,
+    m_network_transmit = ArtProvider::GetImage(this, "network-transmit", GetClientSize().GetHeight(),NETWORK_TRANSMIT_SVG_GZ,
                                   NETWORK_TRANSMIT_SVG_GZ_SIZE);
     m_network_idle =
-      GetImage("network-idle", NETWORK_IDLE_SVG_GZ, NETWORK_IDLE_SVG_GZ_SIZE);
+      ArtProvider::GetImage(this, "network-idle", GetClientSize().GetHeight(),NETWORK_IDLE_SVG_GZ, NETWORK_IDLE_SVG_GZ_SIZE);
     m_network_idle_inactive =
       wxBitmap(m_network_idle.ConvertToImage().ConvertToDisabled());
-    m_network_receive = GetImage("network-receive", NETWORK_RECEIVE_SVG_GZ,
+    m_network_receive = ArtProvider::GetImage(this, "network-receive", GetClientSize().GetHeight(),NETWORK_RECEIVE_SVG_GZ,
                                  NETWORK_RECEIVE_SVG_GZ_SIZE);
     m_network_transmit_receive =
-      GetImage("network-transmit-receive", NETWORK_TRANSMIT_RECEIVE_SVG_GZ,
+      ArtProvider::GetImage(this, "network-transmit-receive", GetClientSize().GetHeight(),NETWORK_TRANSMIT_RECEIVE_SVG_GZ,
 	       NETWORK_TRANSMIT_RECEIVE_SVG_GZ_SIZE);
 
     
     m_bitmap_waitForStart =
-      GetImage("image-loading", WAITING_SVG_GZ,
+      ArtProvider::GetImage(this, "image-loading", GetClientSize().GetHeight(),WAITING_SVG_GZ,
 	       WAITING_SVG_GZ_SIZE);
     m_bitmap_process_wont_start =
-      GetImage("network-error", NETWORK_ERROR_SVG_GZ,
+      ArtProvider::GetImage(this, "network-error", GetClientSize().GetHeight(),NETWORK_ERROR_SVG_GZ,
 	       NETWORK_ERROR_SVG_GZ_SIZE);
     m_bitmap_sending =
-      GetImage("go-next", GO_NEXT_SVG_GZ,
+      ArtProvider::GetImage(this, "go-next", GetClientSize().GetHeight(),GO_NEXT_SVG_GZ,
 	       GO_NEXT_SVG_GZ_SIZE);
     m_bitmap_waiting =
-      GetImage("dialog-accept", DIALOG_ACCEPT_SVG_GZ,
+      ArtProvider::GetImage(this, "dialog-accept", GetClientSize().GetHeight(),DIALOG_ACCEPT_SVG_GZ,
 	       DIALOG_ACCEPT_SVG_GZ_SIZE);
     m_bitmap_waitingForPrompt =
-      GetImage("calc", EMBLEM_EQUAL_DEFINED_SVG_GZ,
+      ArtProvider::GetImage(this, "calc", GetClientSize().GetHeight(),EMBLEM_EQUAL_DEFINED_SVG_GZ,
 	       EMBLEM_EQUAL_DEFINED_SVG_GZ_SIZE);
     m_bitmap_waitingForAuth = 
-      GetImage("lock", SYSTEM_LOCK_SCREEN_SVG_GZ,
+      ArtProvider::GetImage(this, "lock", GetClientSize().GetHeight(),SYSTEM_LOCK_SCREEN_SVG_GZ,
 	       SYSTEM_LOCK_SCREEN_SVG_GZ_SIZE);
     m_bitmap_calculating = 
-      GetImage("calc", EMBLEM_EQUAL_DEFINED_SVG_GZ,
+      ArtProvider::GetImage(this, "calc", GetClientSize().GetHeight(),EMBLEM_EQUAL_DEFINED_SVG_GZ,
 	       EMBLEM_EQUAL_DEFINED_SVG_GZ_SIZE);
     m_bitmap_parsing = 
-      GetImage("go-up", GO_UP_SVG_GZ,
+      ArtProvider::GetImage(this, "go-up", GetClientSize().GetHeight(),GO_UP_SVG_GZ,
 	       GO_UP_SVG_GZ_SIZE);
     m_bitmap_transferring =
-      GetImage("go-previous", GO_PREVIOUS_SVG_GZ,
+      ArtProvider::GetImage(this, "go-previous", GetClientSize().GetHeight(),GO_PREVIOUS_SVG_GZ,
 	       GO_PREVIOUS_SVG_GZ_SIZE);
     m_bitmap_userinput =
-      GetImage("important", EMBLEM_IMPORTANT_SVG_GZ,
+      ArtProvider::GetImage(this, "important", GetClientSize().GetHeight(),EMBLEM_IMPORTANT_SVG_GZ,
 	       EMBLEM_IMPORTANT_SVG_GZ_SIZE);
     m_bitmap_disconnected =
-      GetImage("network-offline", NETWORK_OFFLINE_SVG_GZ,
+      ArtProvider::GetImage(this, "network-offline", GetClientSize().GetHeight(),NETWORK_OFFLINE_SVG_GZ,
 	       NETWORK_OFFLINE_SVG_GZ_SIZE);
   }
 }
@@ -352,71 +353,4 @@ void StatusBar::OnSize(wxSizeEvent &event) {
   m_statusTextPanel->SetSize(size);
   
   event.Skip();
-}
-
-wxBitmap StatusBar::GetImage(wxString name, unsigned char *data, size_t len) {
-  wxSize ppi;
-#if wxCHECK_VERSION(3, 1, 1)
-  wxDisplay display;
-
-  int display_idx = wxDisplay::GetFromWindow(GetParent());
-  if (display_idx < 0)
-    ppi = wxSize(72, 72);
-  else
-    ppi = wxDisplay(display_idx).GetPPI();
-#else
-  ppi = wxGetDisplayPPI();
-
-  if (ppi.x < 72)
-    ppi.x = 72;
-  if (ppi.y < 72)
-    ppi.y = 72;
-#endif
-  int targetWidth = static_cast<double>(GetSize().GetHeight()) / ppi.y * ppi.x *
-    GetContentScaleFactor();
-  int targetHeight =
-    static_cast<double>(GetSize().GetHeight()) * GetContentScaleFactor();
-
-  if (targetWidth < 16)
-    targetWidth = 16;
-  if (targetHeight < 16)
-    targetHeight = 16;
-
-  wxBitmap bmp = wxArtProvider::GetBitmap(name, wxART_TOOLBAR,
-                                          wxSize(targetWidth, targetHeight));
-  wxImage img;
-
-  if (bmp.IsOk()) {
-    img = bmp.ConvertToImage();
-  }
-
-  int sizeA = 128 << 4;
-  while (sizeA * 3 / 2 > targetWidth && sizeA >= 32) {
-    sizeA >>= 1;
-  };
-
-  int sizeB = 192 << 4;
-  while (sizeB * 4 / 3 > targetWidth && sizeB >= 32) {
-    sizeB >>= 1;
-  }
-
-  targetWidth = static_cast<double>(GetSize().GetHeight());
-  targetHeight = static_cast<double>(GetSize().GetHeight());
-
-  if (img.IsOk())
-    {
-      img.Rescale(targetWidth, targetHeight, wxIMAGE_QUALITY_HIGH);
-#if defined __WXOSX__
-      bmp = wxBitmap(img, wxBITMAP_SCREEN_DEPTH, GetContentScaleFactor());
-#else
-      bmp = wxBitmap(img, wxBITMAP_SCREEN_DEPTH);
-#endif
-    }
-  else
-    bmp = SvgBitmap(this, data, len, targetWidth, targetWidth);
-  
-  wxASSERT(bmp.IsOk());
-  if(!bmp.IsOk())
-    bmp = wxBitmap(targetWidth, targetWidth);
-  return bmp;
 }

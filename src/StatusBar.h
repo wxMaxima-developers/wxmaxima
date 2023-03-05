@@ -128,11 +128,6 @@ private:
   bool m_icon_shows_receive;
   //! Does the icon show that we currently transmit data?
   bool m_icon_shows_transmit;
-
-  wxBitmap GetImage(wxString name,
-                    unsigned char *data, size_t len
-    );
-
   //! The background for m_statusText;
   wxPanel *m_statusTextPanel;
   //! The currently shown network status bitmap
