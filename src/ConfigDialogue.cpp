@@ -249,8 +249,6 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent, Configuration *cfg)
     notebookTab = 0;
   m_notebook->SetSelection(notebookTab);
 
-  // Allow the property dialogue sheets to scroll, if they don't fit on the
-  // screen. SetLayoutAdaptationMode(wxDIALOG_ADAPTATION_MODE_ENABLED);
   LayoutDialog();
 
   SetTitle(_("wxMaxima configuration"));
