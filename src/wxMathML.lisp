@@ -2058,7 +2058,7 @@
     (format t "<variable>~%<name>~a</name>" (symbol-to-xml var))
     (ignore-errors
       (let (($display2d nil))
-	    (mtell "<value>~M</value>" (wxxml-fix-string(eval var)))))
+	    (mtell "<value>~a</value>" (wxxml-fix-string(eval var)))))
     (format t "</variable>"))
   
   (defun wx-print-display2d ()
@@ -2072,7 +2072,7 @@
     (format t "<variables>~%<variable>~%<name>~a</name>" (wxxml-fix-string (maybe-invert-string-case var)))
     (ignore-errors
       (let (($display2d nil))
-	(mtell "<value>~M</value>" (wxxml-fix-string(meval (intern var))))))
+	(mtell "<value>~a</value>" (wxxml-fix-string(meval (intern var))))))
       (format t "</variable>~%</variables>~%"))
 
   (defun wx-print-variables ()
