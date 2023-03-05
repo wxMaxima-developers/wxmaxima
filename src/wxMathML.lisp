@@ -540,10 +540,10 @@
   (wx-defprop mprogn (("<mrow><p>") "</p></mrow>") wxxmlsym)
 
   (wx-defprop mlist wxxml-matchfix wxxml)
-  (wx-defprop mlist (("<mrow list=\"true\"><t listdelim=\"true\">[</t>")"<t listdelim=\"true\">]</t></mrow>") wxxmlsym)
+  (wx-defprop mlist (("<mrow list=\"true\"><t lisp=\"mlist\" listdelim=\"true\">[</t>")"<t lisp=\"mlist\" listdelim=\"true\">]</t></mrow>") wxxmlsym)
 
   (wx-defprop $set wxxml-matchfix wxxml)
-  (wx-defprop $set (("<mrow set=\"true\"><t listdelim=\"true\">{</t>")"<t listdelim=\"true\">}</t></mrow>") wxxmlsym)
+  (wx-defprop $set (("<mrow set=\"true\"><t lisp=\"set\" listdelim=\"true\">{</t>")"<t lisp=\"set\" listdelim=\"true\">}</t></mrow>") wxxmlsym)
 
   (wx-defprop mabs wxxml-matchfix wxxml)
   (wx-defprop mabs (("<mrow><a>")"</a></mrow>") wxxmlsym)
@@ -1281,7 +1281,7 @@
     (append l x))
 
   (wx-defprop text-string wxxml-matchfix-np wxxml)
-  (wx-defprop text-string (("<t>")"</t>") wxxmlsym)
+  (wx-defprop text-string (("<t lisp=\"text-string\">")"</t>") wxxmlsym)
 
   (wx-defprop mtext wxxml-matchfix-np wxxml)
   (wx-defprop mtext (("")"") wxxmlsym)
