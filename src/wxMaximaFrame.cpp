@@ -63,11 +63,6 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
     m_recentDocuments(wxT("document")), m_unsavedDocuments(wxT("unsaved")),
     m_recentPackages(wxT("packages")) {
 
-  #ifdef __WXOSX__
-  m_sidebarTogglesNeeded = 2;
-  #else
-  m_sidebarTogglesNeeded = 2;
-  #endif
   m_bytesFromMaxima = 0;
   m_drawDimensions_last = -1;
   // Suppress window updates until this window has fully been created.
@@ -153,21 +148,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
 		 Configuration::m_configfileLocation_override.utf8_str());
   else
     wxLogMessage(_("Reading the config from the default location."));
-
-  // Make wxWidgets remember the size and position of the wxMaxima window
-  SetName(title);
-  if (!wxPersistenceManager::Get().RegisterAndRestore(this)) {
-    // We don't remember the window size from a previous wxMaxima run
-    // => Make sure the window is at least half-way big enough to make sense.
-    wxSize winSize = wxSize(wxSystemSettings::GetMetric(wxSYS_SCREEN_X) * .75,
-                            wxSystemSettings::GetMetric(wxSYS_SCREEN_Y) * .75);
-    if (winSize.x < 800)
-      winSize.x = 800;
-    if (winSize.y < 600)
-      winSize.y = 600;
-    SetSize(winSize);
-  }
-
+  
   // Some default values
   m_updateEvaluationQueueLengthDisplay = true;
   m_recentDocumentsMenu = NULL;

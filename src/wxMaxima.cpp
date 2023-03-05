@@ -1694,6 +1694,21 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
           wxCommandEventHandler(wxMaxima::PropertiesMenu), NULL, this);
   Connect(EventIDs::popid_property_evflag, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::PropertiesMenu), NULL, this);
+  Layout();
+    // Make wxWidgets remember the size and position of the wxMaxima window
+  SetName(wxT("wxMaxima"));
+  if (!wxPersistenceManager::Get().RegisterAndRestore(this)) {
+    // We don't remember the window size from a previous wxMaxima run
+    // => Make sure the window is at least half-way big enough to make sense.
+    wxSize winSize = wxSize(wxSystemSettings::GetMetric(wxSYS_SCREEN_X) * .75,
+                            wxSystemSettings::GetMetric(wxSYS_SCREEN_Y) * .75);
+    if (winSize.x < 800)
+      winSize.x = 800;
+    if (winSize.y < 600)
+      winSize.y = 600;
+    SetSize(winSize);
+  }
+
   m_worksheet->SetFocus();
   StartAutoSaveTimer();
 }
@@ -4948,12 +4963,6 @@ void wxMaxima::OnIdle(wxIdleEvent &event) {
       m_configuration.ReadConfig();
       m_worksheet->RequestRedraw();
       m_worksheet->UpdateControlsNeeded(true);
-    }
-  // OSX doesn't hide the log sidebar properly initially
-  if(m_sidebarTogglesNeeded > 0)
-    {
-      m_sidebarTogglesNeeded--;
-      TogglePaneVisibility(EventIDs::menu_pane_log);
     }
   // If we reach this point wxMaxima truly is idle
   // => Tell wxWidgets it can process its own idle commands, as well.
