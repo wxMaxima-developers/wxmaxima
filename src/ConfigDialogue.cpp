@@ -32,8 +32,7 @@
 #include "BTextCtrl.h"
 #include "Cell.h"
 #include "Dirstructure.h"
-#include "Image.h"
-#include "SvgBitmap.h"
+#include "ArtProvider.h"
 #include "WrappingStaticText.h"
 #include "wxm_config_images.h"
 #include <cstdlib>
@@ -91,38 +90,6 @@ int ConfigDialogue::GetImageSize() {
   } else {
     return sizeB;
   }
-}
-
-wxBitmap ConfigDialogue::GetImage(wxString name, unsigned char *data,
-                                  size_t len) {
-  int targetSize = GetImageSize();
-
-  wxBitmap bmp = wxArtProvider::GetBitmap(name, wxART_MENU,
-                                          wxSize(targetSize * 4, targetSize * 4));
-  wxImage img;
-
-  if (bmp.IsOk()) {
-    img = bmp.ConvertToImage();
-  }
-  if (img.IsOk())
-    {
-      img.Rescale(targetSize, targetSize, wxIMAGE_QUALITY_BICUBIC);
-#if defined __WXOSX__
-      bmp = wxBitmap(img, wxBITMAP_SCREEN_DEPTH, GetContentScaleFactor());
-#else
-      bmp = wxBitmap(img, wxBITMAP_SCREEN_DEPTH);
-#endif
-    }
-  if(!bmp.IsOk())
-    bmp = SvgBitmap(this, data, len, targetSize, targetSize);
-
-  if(!bmp.IsOk())
-#if defined __WXOSX__
-    bmp = wxBitmap(wxSize(targetSize, targetSize), wxBITMAP_SCREEN_DEPTH, GetContentScaleFactor());
-#else
-    bmp = wxBitmap(wxSize(targetSize, targetSize), wxBITMAP_SCREEN_DEPTH);
-#endif
-  return bmp;
 }
 
 ConfigDialogue::ConfigDialogue(wxWindow *parent, Configuration *cfg)
@@ -208,20 +175,18 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent, Configuration *cfg)
 
   int imgSize = GetImageSize();
   m_imageList = std::unique_ptr<wxImageList>(new wxImageList(imgSize, imgSize,false,0));
-  m_imageList->Add(
-		   GetImage(wxT("editing"), EDITING_SVG_GZ, EDITING_SVG_GZ_SIZE));
-  m_imageList->Add(GetImage(wxT("maxima"), MAXIMA_SVG_GZ, MAXIMA_SVG_GZ_SIZE));
-  m_imageList->Add(GetImage(wxT("styles"), STYLES_SVG_GZ, STYLES_SVG_GZ_SIZE));
-  m_imageList->Add(GetImage(wxT("document-export"), DOCUMENT_EXPORT_SVG_GZ,
+  m_imageList->Add(ArtProvider::GetImage(this, wxT("editing"), imgSize, EDITING_SVG_GZ, EDITING_SVG_GZ_SIZE));
+  m_imageList->Add(ArtProvider::GetImage(this, wxT("maxima"), imgSize, MAXIMA_SVG_GZ, MAXIMA_SVG_GZ_SIZE));
+  m_imageList->Add(ArtProvider::GetImage(this, wxT("styles"), imgSize, STYLES_SVG_GZ, STYLES_SVG_GZ_SIZE));
+  m_imageList->Add(ArtProvider::GetImage(this, wxT("document-export"), imgSize, DOCUMENT_EXPORT_SVG_GZ,
                             DOCUMENT_EXPORT_SVG_GZ_SIZE));
-  m_imageList->Add(
-		   GetImage(wxT("options"), OPTIONS_SVG_GZ, OPTIONS_SVG_GZ_SIZE));
-  m_imageList->Add(GetImage(wxT("edit-copy"), EDIT_COPY_CONFDIALOGUE_SVG_GZ,
+  m_imageList->Add(ArtProvider::GetImage(this, wxT("options"), imgSize, OPTIONS_SVG_GZ, OPTIONS_SVG_GZ_SIZE));
+  m_imageList->Add(ArtProvider::GetImage(this, wxT("edit-copy"), imgSize, EDIT_COPY_CONFDIALOGUE_SVG_GZ,
                             EDIT_COPY_CONFDIALOGUE_SVG_GZ_SIZE));
-  m_imageList->Add(GetImage(wxT("media-playback-start"),
+  m_imageList->Add(ArtProvider::GetImage(this, wxT("media-playback-start"), imgSize,
                             MEDIA_PLAYBACK_START_CONFDIALOGUE_SVG_GZ,
                             MEDIA_PLAYBACK_START_CONFDIALOGUE_SVG_GZ_SIZE));
-  m_imageList->Add(GetImage(wxT("edit-undo"), VIEW_REFRESH_SVG_GZ,
+  m_imageList->Add(ArtProvider::GetImage(this, wxT("edit-undo"), imgSize, VIEW_REFRESH_SVG_GZ,
                             VIEW_REFRESH_SVG_GZ_SIZE));
 
   m_notebook = GetBookCtrl();

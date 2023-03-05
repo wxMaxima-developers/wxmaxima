@@ -173,10 +173,6 @@ private:
   //! Calculates the size of the images for a configuration tab
   int GetImageSize();
 
-  //! Loads the image for a configuration tab
-  wxBitmap GetImage(wxString name,
-                    unsigned char *data, size_t len);
-
   //! The panel that allows to choose which formats to put on the clipboard
   wxWindow *CreateClipboardPanel();
 
