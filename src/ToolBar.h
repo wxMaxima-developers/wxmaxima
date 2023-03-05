@@ -63,9 +63,6 @@ public:
     selectAll
   };
 
-  wxBitmap GetBitmap(wxString name,
-                     unsigned char *data, size_t len, wxSize siz = wxSize(-1, -1));
-
   virtual ~ToolBar();
 
   //! Show that user input is needed for maxima to continue
@@ -225,26 +222,26 @@ public:
   void UpdateBitmaps();
 
 
-  wxBitmap GetCopyBitmap(wxSize siz = wxSize(-1, -1));
-  wxBitmap GetPasteBitmap(wxSize siz = wxSize(-1, -1));
-  wxBitmap GetEvalAllBitmap(wxSize siz = wxSize(-1, -1));
-  wxBitmap GetEvalBitmap(wxSize siz = wxSize(-1, -1));
-  wxBitmap GetNewBitmap(wxSize siz = wxSize(-1, -1));
-  wxBitmap GetOpenBitmap(wxSize siz = wxSize(-1, -1));
-  wxBitmap GetSaveBitmap(wxSize siz = wxSize(-1, -1));
-  wxBitmap GetPrintBitmap(wxSize siz = wxSize(-1, -1));
-  wxBitmap GetPreferencesBitmap(wxSize siz = wxSize(-1, -1));
-  wxBitmap GetCutBitmap(wxSize siz = wxSize(-1, -1));
-  wxBitmap GetUndoBitmap(wxSize siz = wxSize(-1, -1));
-  wxBitmap GetRedoBitmap(wxSize siz = wxSize(-1, -1));
-  wxBitmap GetSelectAllBitmap(wxSize siz = wxSize(-1, -1));
-  wxBitmap GetFindBitmap(wxSize siz = wxSize(-1, -1));
-  wxBitmap GetRestartBitmap(wxSize siz = wxSize(-1, -1));
-  wxBitmap GetInterruptBitmap(wxSize siz = wxSize(-1, -1));
-  wxBitmap GetEvalTillHereBitmap(wxSize siz = wxSize(-1, -1));
-  wxBitmap GetHelpBitmap(wxSize siz = wxSize(-1, -1));
-  wxBitmap GetEvalRestBitmap(wxSize siz = wxSize(-1, -1));
-  wxBitmap GetHideCodeBitmap(wxSize siz = wxSize(-1, -1));
+  wxBitmap GetCopyBitmap(wxSize siz);
+  wxBitmap GetPasteBitmap(wxSize siz);
+  wxBitmap GetEvalAllBitmap(wxSize siz);
+  wxBitmap GetEvalBitmap(wxSize siz);
+  wxBitmap GetNewBitmap(wxSize siz);
+  wxBitmap GetOpenBitmap(wxSize siz);
+  wxBitmap GetSaveBitmap(wxSize siz);
+  wxBitmap GetPrintBitmap(wxSize siz);
+  wxBitmap GetPreferencesBitmap(wxSize siz);
+  wxBitmap GetCutBitmap(wxSize siz);
+  wxBitmap GetUndoBitmap(wxSize siz);
+  wxBitmap GetRedoBitmap(wxSize siz);
+  wxBitmap GetSelectAllBitmap(wxSize siz);
+  wxBitmap GetFindBitmap(wxSize siz);
+  wxBitmap GetRestartBitmap(wxSize siz);
+  wxBitmap GetInterruptBitmap(wxSize siz);
+  wxBitmap GetEvalTillHereBitmap(wxSize siz);
+  wxBitmap GetHelpBitmap(wxSize siz);
+  wxBitmap GetEvalRestBitmap(wxSize siz);
+  wxBitmap GetHideCodeBitmap(wxSize siz);
 
   wxSize GetOptimalBitmapSize();
   wxSize GetPPI();

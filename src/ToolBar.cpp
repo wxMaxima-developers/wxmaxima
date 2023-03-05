@@ -30,6 +30,7 @@
 #include "ToolBar.h"
 #include "Image.h"
 #include "SvgBitmap.h"
+#include "ArtProvider.h"
 #include "wxm_toolbar_images.h"
 #include <cstdlib>
 #include <wx/artprov.h>
@@ -45,34 +46,6 @@
 #else
 #define TOOLBAR_ICON_SCALE (0.35)
 #endif
-
-wxBitmap ToolBar::GetBitmap(wxString name, unsigned char *data, size_t len,
-                            wxSize siz) {
-  if (siz.x <= 0)
-    siz = GetOptimalBitmapSize();
-
-  wxBitmap bmp = wxArtProvider::GetBitmap(name, wxART_TOOLBAR, wxSize(siz.x*4, siz.y*4));
-  wxImage img;
-  if (bmp.IsOk())
-    {
-      img = bmp.ConvertToImage();
-      img.Rescale(siz.x, siz.y, wxIMAGE_QUALITY_BICUBIC);
-    }
-  if (img.IsOk())
-    {
-#if defined __WXOSX__
-      bmp = wxBitmap(img, wxBITMAP_SCREEN_DEPTH, GetContentScaleFactor());
-#else
-      bmp = wxBitmap(img, wxBITMAP_SCREEN_DEPTH);
-#endif
-    }
-  else
-    bmp = SvgBitmap(this, data, len, siz);
-  wxASSERT(bmp.IsOk());
-  if(!bmp.IsOk())
-    bmp = wxBitmap(siz.x, siz.y);
-  return bmp;
-}
 
 wxSize ToolBar::GetOptimalBitmapSize()
 {
@@ -170,35 +143,36 @@ ToolBar::ToolBar(wxWindow *parent)
 }
 
 void ToolBar::AddTools() {
+  wxSize bitmapSize = GetOptimalBitmapSize();
   Clear();
   m_ppi = wxSize(-1, -1);
   if (ShowNew())
-    AddTool(wxID_NEW, _("New"), GetNewBitmap(), _("New document"));
+    AddTool(wxID_NEW, _("New"), GetNewBitmap(bitmapSize), _("New document"));
   if (ShowOpenSave()) {
-    AddTool(wxID_OPEN, _("Open"), GetOpenBitmap(), _("Open document"));
-    AddTool(wxID_SAVE, _("Save"), GetSaveBitmap(), _("Save document"));
+    AddTool(wxID_OPEN, _("Open"), GetOpenBitmap(bitmapSize), _("Open document"));
+    AddTool(wxID_SAVE, _("Save"), GetSaveBitmap(bitmapSize), _("Save document"));
   }
   if (ShowPrint()) {
 #ifndef __WXOSX__
     if (ShowOpenSave() || ShowNew())
       AddSeparator();
 #endif
-    AddTool(wxID_PRINT, _("Print"), GetPrintBitmap(), _("Print document"));
+    AddTool(wxID_PRINT, _("Print"), GetPrintBitmap(bitmapSize), _("Print document"));
   }
   if (ShowUndoRedo()) {
 #ifndef __WXOSX__
     if (ShowOpenSave() || ShowNew())
       AddSeparator();
 #endif
-    AddTool(wxID_UNDO, _("Undo"), GetUndoBitmap());
-    AddTool(wxID_REDO, _("Redo"), GetRedoBitmap());
+    AddTool(wxID_UNDO, _("Undo"), GetUndoBitmap(bitmapSize));
+    AddTool(wxID_REDO, _("Redo"), GetRedoBitmap(bitmapSize));
   }
   if (ShowOptions()) {
 #ifndef __WXOSX__
     if (ShowOpenSave() || ShowNew() || ShowUndoRedo())
       AddSeparator();
 #endif
-    AddTool(wxID_PREFERENCES, _("Options"), GetPreferencesBitmap(),
+    AddTool(wxID_PREFERENCES, _("Options"), GetPreferencesBitmap(bitmapSize),
             _("Configure wxMaxima"));
   }
   if (ShowCopyPaste()) {
@@ -207,13 +181,13 @@ void ToolBar::AddTools() {
         ShowUndoRedo())
       AddSeparator();
 #endif
-    AddTool(wxID_CUT, _("Cut"), GetCutBitmap(), _("Cut selection"));
-    AddTool(wxID_COPY, _("Copy"), GetCopyBitmap(), _("Copy selection"));
-    AddTool(wxID_PASTE, _("Paste"), GetPasteBitmap(),
+    AddTool(wxID_CUT, _("Cut"), GetCutBitmap(bitmapSize), _("Cut selection"));
+    AddTool(wxID_COPY, _("Copy"), GetCopyBitmap(bitmapSize), _("Copy selection"));
+    AddTool(wxID_PASTE, _("Paste"), GetPasteBitmap(bitmapSize),
             _("Paste from clipboard"));
   }
   if (ShowSelectAll())
-    AddTool(wxID_SELECTALL, _("Select all"), GetSelectAllBitmap(),
+    AddTool(wxID_SELECTALL, _("Select all"), GetSelectAllBitmap(bitmapSize),
             _("Select all"));
   if (ShowSearch()) {
 #ifndef __WXOSX__
@@ -221,22 +195,23 @@ void ToolBar::AddTools() {
         ShowUndoRedo() || ShowCopyPaste())
       AddSeparator();
 #endif
-    AddTool(wxID_FIND, _("Find"), GetFindBitmap(), _("Find and replace"));
+    AddTool(wxID_FIND, _("Find"), GetFindBitmap(bitmapSize), _("Find and replace"));
   }
 #ifndef __WXOSX__
   if (ShowSelectAll() || ShowOpenSave() || ShowNew() || ShowPrint() ||
       ShowOptions() || ShowUndoRedo() || ShowSearch())
     AddSeparator();
 #endif
-  AddTool(menu_restart_id, _("Restart Maxima"), GetRestartBitmap(),
+  AddTool(menu_restart_id, _("Restart Maxima"), GetRestartBitmap(bitmapSize),
           _("Completely stop maxima and restart it"));
-  AddTool(tb_interrupt, _("Interrupt"), GetInterruptBitmap(),
+  AddTool(tb_interrupt, _("Interrupt"), GetInterruptBitmap(bitmapSize),
           _("Interrupt current computation. To completely restart maxima press "
             "the button left to this one."));
-  m_followIcon = GetBitmap(wxT("arrow_up_square"), ARROW_UP_SQUARE_SVG_GZ,
-                           ARROW_UP_SQUARE_SVG_GZ_SIZE);
+  int bitmapWidth = GetOptimalBitmapSize().x;
+  m_followIcon = ArtProvider::GetImage(this, wxT("arrow_up_square"), bitmapWidth, ARROW_UP_SQUARE_SVG_GZ,
+				       ARROW_UP_SQUARE_SVG_GZ_SIZE);
   m_needsInformationIcon =
-    GetBitmap(wxT("software-update-urgent"), SOFTWARE_UPDATE_URGENT_SVG_GZ,
+    ArtProvider::GetImage(this, wxT("software-update-urgent"), bitmapWidth, SOFTWARE_UPDATE_URGENT_SVG_GZ,
 	      SOFTWARE_UPDATE_URGENT_SVG_GZ_SIZE);
   AddTool(tb_follow, _("Follow"), m_followIcon,
           _("Return to the cell that is currently being evaluated"));
@@ -246,23 +221,23 @@ void ToolBar::AddTools() {
   AddSeparator();
 #endif
 
-  AddTool(tb_eval, _("Evaluate current cell"), GetEvalBitmap(),
+  AddTool(tb_eval, _("Evaluate current cell"), GetEvalBitmap(bitmapSize),
           _("Send the current cell to maxima"));
 
-  AddTool(tb_eval_all, _("Evaluate all"), GetEvalAllBitmap(),
+  AddTool(tb_eval_all, _("Evaluate all"), GetEvalAllBitmap(bitmapSize),
           _("Send all cells to maxima"));
 
   AddTool(
-	  tb_evaltillhere, _("Evaluate to point"), GetEvalTillHereBitmap(),
+	  tb_evaltillhere, _("Evaluate to point"), GetEvalTillHereBitmap(bitmapSize),
 	  _("Evaluate the file from its beginning to the cell above the cursor"));
 
-  AddTool(tb_evaluate_rest, _("Evaluate the rest"), GetEvalRestBitmap(),
+  AddTool(tb_evaluate_rest, _("Evaluate the rest"), GetEvalRestBitmap(bitmapSize),
           _("Evaluate the file from the cursor to its end"));
 
 #ifndef __WXOSX__
   AddSeparator();
 #endif
-  AddTool(tb_hideCode, _("Hide Code"), GetHideCodeBitmap(),
+  AddTool(tb_hideCode, _("Hide Code"), GetHideCodeBitmap(bitmapSize),
           _("Toggle the visibility of code cells"));
 #ifndef __WXOSX__
   AddSeparator();
@@ -296,10 +271,10 @@ void ToolBar::AddTools() {
   AddControl(m_textStyle);
 
   m_PlayButton =
-    GetBitmap(wxT("media-playback-start"), MEDIA_PLAYBACK_START_SVG_GZ,
+    ArtProvider::GetImage(this, wxT("media-playback-start"), bitmapWidth, MEDIA_PLAYBACK_START_SVG_GZ,
 	      MEDIA_PLAYBACK_START_SVG_GZ_SIZE);
   m_StopButton =
-    GetBitmap(wxT("media-playback-stop"), MEDIA_PLAYBACK_STOP_SVG_GZ,
+    ArtProvider::GetImage(this, wxT("media-playback-stop"), bitmapWidth, MEDIA_PLAYBACK_STOP_SVG_GZ,
 	      MEDIA_PLAYBACK_STOP_SVG_GZ_SIZE);
 
   // It felt like a good idea to combine the play and the stop button.
@@ -327,7 +302,7 @@ void ToolBar::AddTools() {
   AddControl(m_plotSlider);
   AddStretchSpacer(100);
   if (ShowHelp())
-    AddTool(wxID_HELP, _("Help"), GetHelpBitmap(), _("Show wxMaxima help"));
+    AddTool(wxID_HELP, _("Help"), GetHelpBitmap(bitmapSize), _("Show wxMaxima help"));
   Connect(wxEVT_SIZE, wxSizeEventHandler(ToolBar::OnSize), NULL, this);
   Connect(wxEVT_RIGHT_DOWN, wxMouseEventHandler(ToolBar::OnMouseRightDown),
           NULL, this);
@@ -355,7 +330,9 @@ wxSize ToolBar::GetPPI()
 }  
 
 void ToolBar::UpdateBitmaps() {
-  SetToolBitmapSize(GetOptimalBitmapSize());
+  wxSize bitmapSize = GetOptimalBitmapSize(); 
+  SetToolBitmapSize(bitmapSize);
+  int bitmapWidth = bitmapSize.x;
 
   wxSize ppi = GetPPI();
   if ((ppi.x == m_ppi.x) && (ppi.y == m_ppi.y))
@@ -366,109 +343,105 @@ void ToolBar::UpdateBitmaps() {
   
   m_ppi = ppi;
 
-  SetToolBitmap(tb_eval, GetEvalBitmap());
-  SetToolBitmap(tb_eval_all, GetEvalAllBitmap());
-  SetToolBitmap(wxID_NEW, GetNewBitmap());
-  SetToolBitmap(wxID_OPEN, GetOpenBitmap());
-  SetToolBitmap(wxID_SAVE, GetSaveBitmap());
-  SetToolBitmap(wxID_UNDO, GetUndoBitmap());
-  SetToolBitmap(wxID_REDO, GetRedoBitmap());
-  SetToolBitmap(wxID_PRINT, GetPrintBitmap());
-  SetToolBitmap(wxID_PREFERENCES, GetPreferencesBitmap());
-  SetToolBitmap(wxID_CUT, GetCutBitmap());
-  SetToolBitmap(wxID_COPY, GetCopyBitmap());
-  SetToolBitmap(wxID_PASTE, GetPasteBitmap());
-  SetToolBitmap(wxID_SELECTALL, GetSelectAllBitmap());
-  SetToolBitmap(wxID_FIND, GetFindBitmap());
-  SetToolBitmap(menu_restart_id, GetRestartBitmap());
-  SetToolBitmap(tb_interrupt, GetInterruptBitmap());
-  m_followIcon = GetBitmap(wxT("arrow_up_square"), ARROW_UP_SQUARE_SVG_GZ,
+  SetToolBitmap(tb_eval, GetEvalBitmap(bitmapSize));
+  SetToolBitmap(tb_eval_all, GetEvalAllBitmap(bitmapSize));
+  SetToolBitmap(wxID_NEW, GetNewBitmap(bitmapSize));
+  SetToolBitmap(wxID_OPEN, GetOpenBitmap(bitmapSize));
+  SetToolBitmap(wxID_SAVE, GetSaveBitmap(bitmapSize));
+  SetToolBitmap(wxID_UNDO, GetUndoBitmap(bitmapSize));
+  SetToolBitmap(wxID_REDO, GetRedoBitmap(bitmapSize));
+  SetToolBitmap(wxID_PRINT, GetPrintBitmap(bitmapSize));
+  SetToolBitmap(wxID_PREFERENCES, GetPreferencesBitmap(bitmapSize));
+  SetToolBitmap(wxID_CUT, GetCutBitmap(bitmapSize));
+  SetToolBitmap(wxID_COPY, GetCopyBitmap(bitmapSize));
+  SetToolBitmap(wxID_PASTE, GetPasteBitmap(bitmapSize));
+  SetToolBitmap(wxID_SELECTALL, GetSelectAllBitmap(bitmapSize));
+  SetToolBitmap(wxID_FIND, GetFindBitmap(bitmapSize));
+  SetToolBitmap(menu_restart_id, GetRestartBitmap(bitmapSize));
+  SetToolBitmap(tb_interrupt, GetInterruptBitmap(bitmapSize));
+  m_followIcon = ArtProvider::GetImage(this, wxT("arrow_up_square"), bitmapWidth, ARROW_UP_SQUARE_SVG_GZ, 
                            ARROW_UP_SQUARE_SVG_GZ_SIZE);
   m_needsInformationIcon =
-    GetBitmap(wxT("software-update-urgent"), SOFTWARE_UPDATE_URGENT_SVG_GZ,
+    ArtProvider::GetImage(this, wxT("software-update-urgent"), bitmapWidth, SOFTWARE_UPDATE_URGENT_SVG_GZ,
 	      SOFTWARE_UPDATE_URGENT_SVG_GZ_SIZE);
   SetToolBitmap(tb_follow, m_followIcon);
-  SetToolBitmap(tb_evaltillhere, GetEvalTillHereBitmap());
-  SetToolBitmap(tb_evaluate_rest, GetEvalRestBitmap());
-  SetToolBitmap(tb_hideCode, GetHideCodeBitmap());
+  SetToolBitmap(tb_evaltillhere, GetEvalTillHereBitmap(bitmapSize));
+  SetToolBitmap(tb_evaluate_rest, GetEvalRestBitmap(bitmapSize));
+  SetToolBitmap(tb_hideCode, GetHideCodeBitmap(bitmapSize));
   m_PlayButton =
-    GetBitmap(wxT("media-playback-start"), MEDIA_PLAYBACK_START_SVG_GZ,
+    ArtProvider::GetImage(this, wxT("media-playback-start"), bitmapWidth, MEDIA_PLAYBACK_START_SVG_GZ,
 	      MEDIA_PLAYBACK_START_SVG_GZ_SIZE);
   m_StopButton =
-    GetBitmap(wxT("media-playback-stop"), MEDIA_PLAYBACK_STOP_SVG_GZ,
+    ArtProvider::GetImage(this, wxT("media-playback-stop"), bitmapWidth, MEDIA_PLAYBACK_STOP_SVG_GZ,
 	      MEDIA_PLAYBACK_STOP_SVG_GZ_SIZE);
   SetToolBitmap(tb_animation_startStop, m_PlayButton);
-  SetToolBitmap(wxID_HELP, GetHelpBitmap());
+  SetToolBitmap(wxID_HELP, GetHelpBitmap(bitmapSize));
   Realize();
 }
 
 wxBitmap ToolBar::GetEvalAllBitmap(wxSize siz) {
-  return GetBitmap(wxT("go-next"), GO_JUMP_SVG_GZ, GO_JUMP_SVG_GZ_SIZE, siz);
+  return ArtProvider::GetImage(this, wxT("go-next"), siz.x, GO_JUMP_SVG_GZ, GO_JUMP_SVG_GZ_SIZE);
 }
 wxBitmap ToolBar::GetEvalBitmap(wxSize siz) {
-  return GetBitmap(wxT("go-next"), GO_NEXT_SVG_GZ, GO_NEXT_SVG_GZ_SIZE, siz);
+  return ArtProvider::GetImage(this, wxT("go-next"), siz.x, GO_NEXT_SVG_GZ, GO_NEXT_SVG_GZ_SIZE);
 }
 wxBitmap ToolBar::GetNewBitmap(wxSize siz) {
-  return GetBitmap(wxT("gtk-new"), GTK_NEW_SVG_GZ, GTK_NEW_SVG_GZ_SIZE, siz);
+  return ArtProvider::GetImage(this, wxT("gtk-new"), siz.x, GTK_NEW_SVG_GZ, GTK_NEW_SVG_GZ_SIZE);
 }
 
 wxBitmap ToolBar::GetPrintBitmap(wxSize siz) {
-  return GetBitmap(wxT("gtk-print"), GTK_PRINT_SVG_GZ, GTK_PRINT_SVG_GZ_SIZE,
-                   siz);
+  return ArtProvider::GetImage(this, wxT("gtk-print"), siz.x, GTK_PRINT_SVG_GZ, GTK_PRINT_SVG_GZ_SIZE);
 }
 wxBitmap ToolBar::GetOpenBitmap(wxSize siz) {
-  return GetBitmap(wxT("gtk-open"), GTK_OPEN_SVG_GZ, GTK_OPEN_SVG_GZ_SIZE, siz);
+  return ArtProvider::GetImage(this, wxT("gtk-open"), siz.x, GTK_OPEN_SVG_GZ, GTK_OPEN_SVG_GZ_SIZE);
 }
 wxBitmap ToolBar::GetSaveBitmap(wxSize siz) {
-  return GetBitmap(wxT("gtk-save"), GTK_SAVE_SVG_GZ, GTK_SAVE_SVG_GZ_SIZE, siz);
+  return ArtProvider::GetImage(this, wxT("gtk-save"), siz.x, GTK_SAVE_SVG_GZ, GTK_SAVE_SVG_GZ_SIZE);
 }
 wxBitmap ToolBar::GetUndoBitmap(wxSize siz) {
-  return GetBitmap(wxT("gtk-undo"), GTK_UNDO_SVG_GZ, GTK_UNDO_SVG_GZ_SIZE, siz);
+  return ArtProvider::GetImage(this, wxT("gtk-undo"), siz.x, GTK_UNDO_SVG_GZ, GTK_UNDO_SVG_GZ_SIZE);
 }
 wxBitmap ToolBar::GetRedoBitmap(wxSize siz) {
-  return GetBitmap(wxT("gtk-redo"), GTK_REDO_SVG_GZ, GTK_REDO_SVG_GZ_SIZE, siz);
+  return ArtProvider::GetImage(this, wxT("gtk-redo"), siz.x, GTK_REDO_SVG_GZ, GTK_REDO_SVG_GZ_SIZE);
 }
 wxBitmap ToolBar::GetPreferencesBitmap(wxSize siz) {
-  return GetBitmap(wxT("gtk-preferences"), GTK_PREFERENCES_SVG_GZ,
-                   GTK_PREFERENCES_SVG_GZ_SIZE, siz);
+  return ArtProvider::GetImage(this, wxT("gtk-preferences"), siz.x, GTK_PREFERENCES_SVG_GZ,
+                   GTK_PREFERENCES_SVG_GZ_SIZE);
 }
 wxBitmap ToolBar::GetCutBitmap(wxSize siz) {
-  return GetBitmap(wxT("gtk-cut"), GTK_CUT_SVG_GZ, GTK_CUT_SVG_GZ_SIZE, siz);
+  return ArtProvider::GetImage(this, wxT("gtk-cut"), siz.x, GTK_CUT_SVG_GZ, GTK_CUT_SVG_GZ_SIZE);
 }
 wxBitmap ToolBar::GetCopyBitmap(wxSize siz) {
-  return GetBitmap(wxT("gtk-copy"), GTK_COPY_SVG_GZ, GTK_COPY_SVG_GZ_SIZE, siz);
+  return ArtProvider::GetImage(this, wxT("gtk-copy"), siz.x, GTK_COPY_SVG_GZ, GTK_COPY_SVG_GZ_SIZE);
 }
 wxBitmap ToolBar::GetPasteBitmap(wxSize siz) {
-  return GetBitmap(wxT("gtk-paste"), GTK_PASTE_SVG_GZ, GTK_PASTE_SVG_GZ_SIZE,
-                   siz);
+  return ArtProvider::GetImage(this, wxT("gtk-paste"), siz.x, GTK_PASTE_SVG_GZ, GTK_PASTE_SVG_GZ_SIZE);
 }
 wxBitmap ToolBar::GetSelectAllBitmap(wxSize siz) {
-  return GetBitmap(wxT("gtk-select-all"), GTK_SELECT_ALL_SVG_GZ,
-                   GTK_SELECT_ALL_SVG_GZ_SIZE, siz);
+  return ArtProvider::GetImage(this, wxT("gtk-select-all"), siz.x, GTK_SELECT_ALL_SVG_GZ,
+                   GTK_SELECT_ALL_SVG_GZ_SIZE);
 }
 wxBitmap ToolBar::GetFindBitmap(wxSize siz) {
-  return GetBitmap(wxT("gtk-find"), GTK_FIND_SVG_GZ, GTK_FIND_SVG_GZ_SIZE, siz);
+  return ArtProvider::GetImage(this, wxT("gtk-find"), siz.x, GTK_FIND_SVG_GZ, GTK_FIND_SVG_GZ_SIZE);
 }
 wxBitmap ToolBar::GetRestartBitmap(wxSize siz) {
-  return GetBitmap(wxT("view-refresh"), VIEW_REFRESH1_SVG_GZ,
-                   VIEW_REFRESH1_SVG_GZ_SIZE, siz);
+  return ArtProvider::GetImage(this, wxT("view-refresh"), siz.x, VIEW_REFRESH1_SVG_GZ,
+                   VIEW_REFRESH1_SVG_GZ_SIZE);
 }
 wxBitmap ToolBar::GetInterruptBitmap(wxSize siz) {
-  return GetBitmap(wxT("gtk-stop"), GTK_STOP_SVG_GZ, GTK_STOP_SVG_GZ_SIZE, siz);
+  return ArtProvider::GetImage(this, wxT("gtk-stop"), siz.x, GTK_STOP_SVG_GZ, GTK_STOP_SVG_GZ_SIZE);
 }
 wxBitmap ToolBar::GetEvalTillHereBitmap(wxSize siz) {
-  return GetBitmap(wxT("go-bottom"), GO_BOTTOM_SVG_GZ, GO_BOTTOM_SVG_GZ_SIZE,
-                   siz);
+  return ArtProvider::GetImage(this, wxT("go-bottom"), siz.x, GO_BOTTOM_SVG_GZ, GO_BOTTOM_SVG_GZ_SIZE);
 }
 wxBitmap ToolBar::GetHelpBitmap(wxSize siz) {
-  return GetBitmap(wxT("gtk-help"), GTK_HELP_SVG_GZ, GTK_HELP_SVG_GZ_SIZE, siz);
+  return ArtProvider::GetImage(this, wxT("gtk-help"), siz.x, GTK_HELP_SVG_GZ, GTK_HELP_SVG_GZ_SIZE);
 }
 wxBitmap ToolBar::GetEvalRestBitmap(wxSize siz) {
-  return GetBitmap(wxT("go-last"), GO_LAST_SVG_GZ, GO_LAST_SVG_GZ_SIZE, siz);
+  return ArtProvider::GetImage(this, wxT("go-last"), siz.x, GO_LAST_SVG_GZ, GO_LAST_SVG_GZ_SIZE);
 }
 wxBitmap ToolBar::GetHideCodeBitmap(wxSize siz) {
-  return GetBitmap(wxT("eye-slash"), EYE_SLASH_SVG_GZ, EYE_SLASH_SVG_GZ_SIZE,
-                   siz);
+  return ArtProvider::GetImage(this, wxT("eye-slash"), siz.x, EYE_SLASH_SVG_GZ, EYE_SLASH_SVG_GZ_SIZE);
 }
 
 void ToolBar::SetDefaultCellStyle() {
