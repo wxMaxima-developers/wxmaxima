@@ -63,7 +63,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
     m_recentDocuments(wxT("document")), m_unsavedDocuments(wxT("unsaved")),
     m_recentPackages(wxT("packages")) {
 
-  #ifdef ifdef __WXOSX__
+  #ifdef __WXOSX__
   m_sidebarTogglesNeeded = 2;
   #else
   m_sidebarTogglesNeeded = 2;
