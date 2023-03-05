@@ -95,6 +95,7 @@ set(GRAPHICAL_IO_SOURCE_FILES
 list_transform_prepend(GRAPHICAL_IO_SOURCE_FILES graphical_io/)
 
 set(SOURCE_FILES
+    ArtProvider.cpp
     Autocomplete.cpp
     AutocompletePopup.cpp
     Autocomplete_Builtins.cpp
