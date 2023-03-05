@@ -230,9 +230,10 @@ public:
 
   //! Get the list of human-readable sidebarnames and IDs
   const std::unordered_map<int, wxString>  &GetSidebarNames() const {return m_sidebarNames;}
-private:
+protected:
   //! How many toggles of the log sidebar we need for working around a osx bug?
   int m_sidebarTogglesNeeded = 0;
+private:
   //! The names our dockable sidebars are identified with in the config
   std::unordered_map<int, wxString> m_sidebarNames;
   //! The names our dockable sidebars are shown with
