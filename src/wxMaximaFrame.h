@@ -100,6 +100,7 @@ public:
     - false: hide it
   */
   void ShowPane(int id, bool show = true);
+  void TogglePaneVisibility(int id);
 
   //! Adds a command to the list  of recently used maxima commands
   void AddToHistory(const wxString &cmd)
@@ -230,6 +231,8 @@ public:
   //! Get the list of human-readable sidebarnames and IDs
   const std::unordered_map<int, wxString>  &GetSidebarNames() const {return m_sidebarNames;}
 private:
+  //! How many toggles of the log sidebar we need for working around a osx bug?
+  int m_sidebarTogglesNeeded = 0;
   //! The names our dockable sidebars are identified with in the config
   std::unordered_map<int, wxString> m_sidebarNames;
   //! The names our dockable sidebars are shown with

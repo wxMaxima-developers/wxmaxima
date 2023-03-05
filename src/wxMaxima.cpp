@@ -4949,6 +4949,12 @@ void wxMaxima::OnIdle(wxIdleEvent &event) {
       m_worksheet->RequestRedraw();
       m_worksheet->UpdateControlsNeeded(true);
     }
+  // OSX doesn't hide the log sidebar properly initially
+  if(m_sidebarTogglesNeeded > 0)
+    {
+      m_sidebarTogglesNeeded--;
+      TogglePaneVisibility(EventIDs::menu_pane_log);
+    }
   // If we reach this point wxMaxima truly is idle
   // => Tell wxWidgets it can process its own idle commands, as well.
   event.Skip();
@@ -10728,8 +10734,7 @@ void wxMaxima::ShowPane(wxCommandEvent &event) {
   if (id == EventIDs::menu_pane_hideall)
     wxMaximaFrame::ShowPane(static_cast<EventIDs::EventId>(id), true);
   else {
-    wxMaximaFrame::ShowPane(static_cast<EventIDs::EventId>(id),
-                            !IsPaneDisplayed(static_cast<EventIDs::EventId>(id)));
+    TogglePaneVisibility(static_cast<EventIDs::EventId>(id));
 
     if ((id == EventIDs::menu_pane_structure) &&
         (IsPaneDisplayed(static_cast<EventIDs::EventId>(id))))

@@ -63,6 +63,11 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
     m_recentDocuments(wxT("document")), m_unsavedDocuments(wxT("unsaved")),
     m_recentPackages(wxT("packages")) {
 
+  #ifdef ifdef __WXOSX__
+  m_sidebarTogglesNeeded = 2;
+  #else
+  m_sidebarTogglesNeeded = 2;
+  #endif
   m_bytesFromMaxima = 0;
   m_drawDimensions_last = -1;
   // Suppress window updates until this window has fully been created.
@@ -2142,6 +2147,15 @@ void  wxMaximaFrame::StatusText(const wxString &text, bool saveInLog)
 	m_statusTextHistory[i] = m_statusTextHistory[i-1];
       m_statusTextHistory[0] = text;
     }
+}
+
+void wxMaximaFrame::TogglePaneVisibility(int id)
+{
+  wxASSERT(id != EventIDs::menu_pane_hideall);
+  if(id == EventIDs::menu_pane_hideall)
+    return;
+  
+  ShowPane(id, !IsPaneDisplayed(id)); 
 }
 
 void wxMaximaFrame::ShowPane(int id, bool show) {
