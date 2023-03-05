@@ -1271,6 +1271,7 @@
 	   (list (make-tag "do" "fnm") (eighth x))))
 
 
+  ;; TODO: Here we should somehow call wxxml-fix-string, I believe.
   (defun wxxml-matchfix-np (x l r)
     (setq l (append l (car (wxxmlsym (caar x))))
 	  ;; car of wxxmlsym of a matchfix operator is the lead op
@@ -1280,15 +1281,7 @@
     (append l x))
 
   (wx-defprop text-string wxxml-matchfix-np wxxml)
-  (wx-defprop text-string (("<t>")"</t>") 
-	      (cond
-	       ((stringp wxxmlsym)
-		(wxxml-fix-string wxxmlsym))
-	       (t
-		;; todo: Do we want an "a\,b" to be displayed as "a,b" or as "a\,b" here?
-		;; And if the first of these options: do we want to copy that text as
-		;; "a\,b" instead?
-		(wxxml-fix-string (format nil "~a" wxxmlsym)))))
+  (wx-defprop text-string (("<t>")"</t>") wxxmlsym)
 
   (wx-defprop mtext wxxml-matchfix-np wxxml)
   (wx-defprop mtext (("")"") wxxmlsym)
@@ -2058,7 +2051,7 @@
     (format t "<variable>~%<name>~a</name>" (symbol-to-xml var))
     (ignore-errors
       (let (($display2d nil))
-	    (mtell "<value>~a</value>" (wxxml-fix-string(eval var)))))
+	    (mtell "<value>~M</value>" (wxxml-fix-string(eval var)))))
     (format t "</variable>"))
   
   (defun wx-print-display2d ()
@@ -2072,7 +2065,7 @@
     (format t "<variables>~%<variable>~%<name>~a</name>" (wxxml-fix-string (maybe-invert-string-case var)))
     (ignore-errors
       (let (($display2d nil))
-	(mtell "<value>~a</value>" (wxxml-fix-string(meval (intern var))))))
+	(mtell "<value>~M</value>" (wxxml-fix-string(meval (intern var))))))
       (format t "</variable>~%</variables>~%"))
 
   (defun wx-print-variables ()
