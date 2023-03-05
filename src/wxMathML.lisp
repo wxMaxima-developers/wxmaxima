@@ -1285,7 +1285,10 @@
 	       ((stringp wxxmlsym)
 		(wxxml-fix-string wxxmlsym))
 	       (t
-		wxxmlsym)))
+		;; todo: Do we want an "a\,b" to be displayed as "a,b" or as "a\,b" here?
+		;; And if the first of these options: do we want to copy that text as
+		;; "a\,b" instead?
+		(wxxml-fix-string (format nil "~a" wxxmlsym)))))
 
   (wx-defprop mtext wxxml-matchfix-np wxxml)
   (wx-defprop mtext (("")"") wxxmlsym)
