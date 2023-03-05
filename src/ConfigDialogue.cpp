@@ -133,7 +133,6 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent, Configuration *cfg)
     _("If maxima was compiled by GCL: Share the allocated memory between gcl "
       "processes. Allows more than one gcl-compiled maxima to run at the "
       "same time, but might provoke crashes.");
-  m_svgRast.reset(nsvgCreateRasterizer());
   m_languages[_("(Use default language)")] = wxLANGUAGE_DEFAULT;
   m_languages[_("Catalan")] = wxLANGUAGE_CATALAN;
   m_languages[_("Chinese (Simplified)")] = wxLANGUAGE_CHINESE_SIMPLIFIED;
