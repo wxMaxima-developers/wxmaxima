@@ -141,7 +141,7 @@
   #+(and clisp win32) (setf (stream-external-format *socket-connection*) charset:utf-8)
   #+(and clisp win32) (setf custom:*default-file-encoding* charset:utf-8)
 
-;;; Muffle compiler-notes globally
+;;; Muffle compiler-notes globally: Else we drown in debug messages
   #+sbcl (declaim (sb-ext:muffle-conditions sb-ext:compiler-note))
   (defmacro no-warning (form)
     #+sbcl `(handler-bind
