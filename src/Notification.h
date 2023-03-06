@@ -36,12 +36,6 @@
 #include <wx/notifmsg.h>
 #include <wx/wx.h>
 
-#ifdef __WXOSX__
-#define NOTIFI_OVERRIDE override
-#else
-#define NOTIFI_OVERRIDE
-#endif
-
 /*! A user notification the operating system claims to be non-disturbing
 
   We use this notification sparingly, which means: Only if the wxMaxima window has lost
@@ -59,7 +53,7 @@ public:
                         wxWindow *parent = NULL,
                         int flags = wxICON_INFORMATION);
   //! A destructor that also closes the notification
-  ~Notification() override { Notification::Close(); }
+  ~Notification() { Notification::Close(); }
   //! Informs the notification which the main window is it notified for.
   void SetGroup(wxWindow *parent);
   //! Returns a pointer to the main window or NULL, if no main window is set.
@@ -73,7 +67,5 @@ protected:
   //! Called on clicking at the notification, if the OS supports that.
   void OnClick(wxCommandEvent &event);
 };
-
-#undef NOTIFI_OVERRIDE
 
 #endif
