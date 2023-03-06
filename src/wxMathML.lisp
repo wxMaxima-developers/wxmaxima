@@ -106,9 +106,9 @@
   
   ;; Escapes all chars that need escaping in XML
   ;;
-  ;; This makes it pissible to make maxima's output on the screen contain strings
+  ;; This makes it possible to make maxima's output on the screen contain strings
   ;; that look like XML tags: The string "<variable name>" is, if run through
-  ;; wxxml-fix-string, transferred as "&lt;variable name&rt;", which clearly is
+  ;; wxxml-fix-string, transferred as "&lt;variable name&gt;", which clearly is
   ;; not an XML tag name
   (defun wxxml-fix-string (x)
     (if (stringp x)
