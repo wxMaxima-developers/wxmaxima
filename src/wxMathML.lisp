@@ -38,9 +38,6 @@
 ;; in one single :lisp command 
 (progn
   (format t "<wxxml-key>~A</wxxml-key>~%" (maxima-getenv "MAXIMA_AUTH_CODE"))
-  ;; This is necessary to make file and directory names that contain special characters
-  ;; work under windows.
-  #+sbcl (setf sb-impl::*default-external-format* :UTF-8)
 
   (in-package :maxima)
 
