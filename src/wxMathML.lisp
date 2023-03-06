@@ -46,8 +46,11 @@
    (*expr wxxml-lbp wxxml-rbp))
 
   ;; Use rounded parenthesis for matrices by default
+  ;; Other possible values would be #\| or #\[
+  ;;
+  ;; TODO: Why don't we use maxima's default value here, but assign our own?
   (setq $lmxchar #\()
-  (setq $rmxchar #\()
+  (setq $rmxchar #\))
 
   ;; Permanently assign a property to a symbol
   ;;
