@@ -50,12 +50,20 @@
   (setq $lmxchar #\()
   (setq $rmxchar #\()
 
+  ;; Permanently assign a property to a symbol
+  ;;
+  ;; Properties can, for example, tell the formatter how to express this
+  ;; function in xml.
+  ;;
+  ;; To make these assignments survive a kill() even if the symbol was assigned
+  ;; a value the new symbol value has to be appended to *builtin-symbol-props*
+  ;; but according to #1754 that doesn't work correctly
   (defmacro wx-defprop (sym val indic)
     `(let ((existing-props (gethash ',sym *builtin-symbol-props*)))
        (setf (gethash ',sym *builtin-symbol-props*) (append (list ',indic ',val) existing-props)))
     `(defprop ,sym ,val ,indic)
-    )  
-
+    )
+  
   ;; A few variables whose value can be configured from wxMaxima
   (defvar *wx-plot-num* 0 "The serial number of the current plot")
   (defvar $wxfilename "" "The filename of the current wxMaxima worksheet")
