@@ -1,7 +1,7 @@
 (format t "<suppressOutput>~%")
 ;; wxMaxima xml format (based on David Drysdale MathML printing)
 ;; Andrej Vodopivec,  2004-2014
-;; Gunter Königsmann, 2014-2020
+;; Gunter Königsmann, 2014-2023
 ;; Robert Dodier,     2019-2020
 ;;  SPDX-License-Identifier: GPL-2.0+
 
@@ -34,6 +34,8 @@
 
 ;(format t "<wxxml-start/>")
 
+;; we need this "progn" so we can send the whole program to maxima
+;; in one single :lisp command 
 (progn
   (format t "<wxxml-key>~A</wxxml-key>~%" (maxima-getenv "MAXIMA_AUTH_CODE"))
   ;; This is necessary to make file and directory names that contain special characters
