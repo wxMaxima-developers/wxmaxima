@@ -85,6 +85,7 @@
   (defvar $wxplot_pngcairo nil "Use gnuplot's pngcairo terminal for new plots?")
   (defmvar $wxplot_old_gnuplot nil)
 
+  ;; A string replace function
   (defun wxxml-string-substitute (newstring oldchar x &aux matchpos)
     (setq matchpos (position oldchar x))
     (if (null matchpos) x
@@ -103,7 +104,12 @@
     (format t "</html-manual-keywords>~%")
     )
   
-  ;; Escape all chars that need escaping in XML
+  ;; Escapes all chars that need escaping in XML
+  ;;
+  ;; This makes it pissible to make maxima's output on the screen contain strings
+  ;; that look like XML tags: The string "<variable name>" is, if run through
+  ;; wxxml-fix-string, transferred as "&lt;variable name&rt;", which clearly is
+  ;; not an XML tag name
   (defun wxxml-fix-string (x)
     (if (stringp x)
 	(let* ((tmp-x (wxxml-string-substitute "&amp;" #\& x))
