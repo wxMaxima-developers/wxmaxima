@@ -338,6 +338,13 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   m_maximaStdoutPollTimer.SetOwner(this, MAXIMA_STDOUT_POLL_ID);
 
   m_autoSaveTimer.SetOwner(this, AUTO_SAVE_TIMER_ID);
+  Connect(wxEVT_SIZE, wxSizeEventHandler(wxMaxima::OnSize),
+          NULL, this);
+  Connect(wxEVT_MOVE, wxMoveEventHandler(wxMaxima::OnMove),
+          NULL, this);
+  Connect(wxEVT_MAXIMIZE, wxCommandEventHandler(wxMaxima::OnMaximize),
+          NULL, this);
+
   Connect(wxEVT_TIMER, wxTimerEventHandler(wxMaxima::OnTimerEvent), NULL, this);
 
   m_wizard->GetOKButton()->Connect(
@@ -1719,6 +1726,26 @@ void wxMaxima::OnPowerEvent(wxPowerEvent &event) {
   event.Skip();
 }
 #endif
+
+void wxMaxima::OnSize(wxSizeEvent &event){
+  wxConfig::Get()->Write("MainWindowPos/width", event.GetSize().GetWidth());
+  wxConfig::Get()->Write("MainWindowPos/height", event.GetSize().GetHeight());
+  bool maximized = false;
+  wxConfig::Get()->Write("MainWindowPos/maximized", maximized);
+  event.Skip();
+}
+void wxMaxima::OnMove(wxMoveEvent &event){
+  wxConfig::Get()->Write("MainWindowPos/x", event.GetPosition().x);
+  wxConfig::Get()->Write("MainWindowPos/y", event.GetPosition().y);
+  bool maximized = false;
+  wxConfig::Get()->Write("MainWindowPos/maximized", maximized);
+  event.Skip();
+}
+void wxMaxima::OnMaximize(wxCommandEvent &event){
+  bool maximized = true;
+  wxConfig::Get()->Write("MainWindowPos/maximized", maximized);
+  event.Skip();
+}
 
 void wxMaxima::StartAutoSaveTimer() {
   m_autoSaveTimer.StartOnce(60000 * m_configuration.AutosaveMinutes());

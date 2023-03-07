@@ -729,6 +729,10 @@ public:
   //! Remove the said window from the list of toplevel windows
   static void DelistTopLevelWindow(wxMaxima *);
 protected:
+  void OnSize(wxSizeEvent &event);
+  void OnMove(wxMoveEvent &event);
+  void OnMaximize(wxCommandEvent &event);
+
   //! Sets gnuplot's command name and tries to determine gnuplot's path
   void GnuplotCommandName(wxString gnuplot);
   //! The marker for the start of a variables section
