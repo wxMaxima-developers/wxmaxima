@@ -152,7 +152,7 @@
     #-(or sbcl clisp) `(progn ,form))
 
 ;;; Is somehow used for setting the $wxmaxima variable from wxMaxima.cpp
-(defun read-wxmaxima-version (v)
+  (defun read-wxmaxima-version (v)
     (let* ((d1 (position #\. v))
 	   (year (subseq v 0 d1))
 	   (d2 (position #\. v :start (1+ d1)))
