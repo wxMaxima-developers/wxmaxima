@@ -208,10 +208,19 @@
     ($wxbuild_info)
     (format t "-------------------------------------------------------------~%"))
 
+
+  ;; The tag that is put around something that might be a variable or function name
+  ;;
+  ;; My guess is that since in maxima functions and variables can have the same name
+  ;; and lazy evaluation means that often it is only later decided which one is used
+  ;; this variable informs the code that prints out the symbol's name if we know that
+  ;; this time the symbol names a function.
   (defvar *var-tag* '("<mi>" "</mi>"))
 
-  (defun wxxml-get (x p)
-    (if (symbolp x) (get x p)))
+  ;; Returns the value of the property prop, if is x is a symbol that has this
+  ;; property. In all other cases nil is returned.
+  (defun wxxml-get (x prop)
+    (if (symbolp x) (get x prob)))
 
   ;; Adapted from DIMENSION-ARRAY and DIMENSION-INDICES in Maxima src/displa.lisp.
   (defun wxxml-array (x l r &aux base-symbol)
