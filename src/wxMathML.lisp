@@ -151,6 +151,15 @@
     #+clisp `(let ((custom:*suppress-check-redefinition* t)) ,form)
     #-(or sbcl clisp) `(progn ,form))
 
+;;; Is somehow used for setting the $wxmaxima variable from wxMaxima.cpp
+(defun read-wxmaxima-version (v)
+    (let* ((d1 (position #\. v))
+	   (year (subseq v 0 d1))
+	   (d2 (position #\. v :start (1+ d1)))
+	   (month (subseq v (1+ d1) d2))
+	   (rest (subseq v (1+ d2))))
+      (list '(mlist simp) (parse-integer year) (parse-integer month) rest)))
+
   ;;; Any half-way new maxima will define these variables that add
   ;;; info about the front-end to the build_info(). If we encounter
   ;;; an old maxima that is no problem since we can create them
@@ -1306,7 +1315,7 @@
   ;; mtext's arguments are strings that we equip with a <st> tag, already.
   ;; => No need to equip them with their own tag.
   (wx-defprop mtext wxxml-matchfix-np wxxml)
-  (wx-defprop mtext (("")"") wxxmlsym)
+  (wx-defprop mtext (("<mrow lisp=\"mtext\">")"</mrow>") wxxmlsym)
 
   (defvar *wxxml-mratp* nil)
 
