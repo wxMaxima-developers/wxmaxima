@@ -1,10 +1,16 @@
 /* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
-/* [ Created with wxMaxima version 20.07.0 ] */
+/* [ Created with wxMaxima version 23.02.1-DevelopmentSnapshot ] */
 /* [wxMaxima: input   start ] */
 askinteger(y);
 askinteger(n);
 kill(y)$kill(n)$
 /* [wxMaxima: input   end   ] */
+/* [wxMaxima: question  start ] */
+<math><mrow lisp="mtext"><mrow lisp="mtext"><st>Is </st><mi>y</mi><st> an </st><mi>integer</mi><st>?</st></mrow></mrow></math>
+/* [wxMaxima: question  end   ] */
+/* [wxMaxima: answer  start ] */
+y;
+/* [wxMaxima: answer  end   ] */
 /* [wxMaxima: question  start ] */
 <math><st>Is </st><mi>y</mi><st> an </st><mi>integer</mi><st>?</st></math>
 /* [wxMaxima: question  end   ] */
@@ -36,6 +42,12 @@ y;
 n;
 /* [wxMaxima: answer  end   ] */
 /* [wxMaxima: question  start ] */
+<math><mrow lisp="mtext"><mrow lisp="mtext"><st>Is </st><mi>n</mi><st> an </st><mi>integer</mi><st>?</st></mrow></mrow></math>
+/* [wxMaxima: question  end   ] */
+/* [wxMaxima: answer  start ] */
+n;
+/* [wxMaxima: answer  end   ] */
+/* [wxMaxima: question  start ] */
 <mth><st>Is </st><v>n</v><st> an </st><v>integer</v><st>?</st></mth>
 /* [wxMaxima: question  end   ] */
 /* [wxMaxima: answer  start ] */
@@ -45,4 +57,4 @@ n;
 
 
 /* Old versions of Maxima abort on loading files that end in a comment. */
-"Created with wxMaxima 20.07.0"$
+"Created with wxMaxima 23.02.1-DevelopmentSnapshot"$
