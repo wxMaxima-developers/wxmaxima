@@ -220,7 +220,7 @@
   ;; Returns the value of the property prop, if is x is a symbol that has this
   ;; property. In all other cases nil is returned.
   (defun wxxml-get (x prop)
-    (if (symbolp x) (get x prob)))
+    (if (symbolp x) (get x prop)))
 
   ;; Adapted from DIMENSION-ARRAY and DIMENSION-INDICES in Maxima src/displa.lisp.
   (defun wxxml-array (x l r &aux base-symbol)
