@@ -14,9 +14,8 @@ wxMaxima (additional) steps:
 - Update the version numbers in the 'docker-wxmaxima' repository (update_versions.sh)
 - Update NEWS.md in order to announce the new version on https://freshcode.club/
 - Update data/io.github.wxmaxima_developers.wxMaxima.appdata.xml with the information
-  about the new release. The HTML sourcecode of
-  https://github.com/wxMaxima-developers/wxmaxima/blob/main/NEWS.md
-  might be useful to convert the recent NEWS.md entries to HTML.
+  about the new release. Most html tags are forbidden by flatpack or appImage 
+  builders.
 - Validate the appdata file with:
   appstream-util validate data/io.github.wxmaxima_developers.wxMaxima.appdata.xml
 - Update snap/snapcraft.yaml

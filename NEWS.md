@@ -1,4 +1,4 @@
-# Current
+# 23.03.0
  * Make sure all bitmaps are valid on High-DPI MacOs (#1749)
  * More styles consistency (#1753)
  * Better configuration validation
