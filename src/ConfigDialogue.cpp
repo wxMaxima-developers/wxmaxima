@@ -160,11 +160,7 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent, Configuration *cfg)
   m_languages[_("Ukrainian")] = wxLANGUAGE_UKRAINIAN;
 
   m_configuration = cfg;
-#if defined __WXOSX__
-  SetSheetStyle(wxPROPSHEET_BUTTONTOOLBOOK | wxPROPSHEET_SHRINKTOFIT);
-#else
   SetSheetStyle(wxPROPSHEET_LISTBOOK);
-#endif
   SetSheetInnerBorder(3);
   SetSheetOuterBorder(3);
 
