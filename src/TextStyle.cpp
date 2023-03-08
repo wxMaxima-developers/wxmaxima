@@ -30,6 +30,7 @@
 #include "TextStyle.h"
 #include <array>
 #include <list>
+#include <iostream>
 #include <vector>
 #include <wx/fontenum.h>
 #include <wx/log.h>
@@ -283,16 +284,16 @@ const wxColor &Style::Default_Color() {
   return color;
 }
 
-static const wxString k_color = wxT("%s/color");
-static const wxString k_bold = wxT("%s/bold");
-static const wxString k_light = wxT("%s/light");
-static const wxString k_italic = wxT("%s/italic");
-static const wxString k_slant = wxT("%s/slant");
-static const wxString k_underlined = wxT("%s/underlined");
-static const wxString k_strikethrough = wxT("%s/strikethrough");
-static const wxString k_fontsize_float = wxT("%s/Style/Text/fontsize_float");
-static const wxString k_fontsize_legacy = wxT("%s/Style/Text/fontsize");
-static const wxString k_fontname = wxT("%s/Style/Text/fontname");
+static const wxString k_color = wxT("/color");
+static const wxString k_bold = wxT("/bold");
+static const wxString k_light = wxT("/light");
+static const wxString k_italic = wxT("/italic");
+static const wxString k_slant = wxT("/slant");
+static const wxString k_underlined = wxT("/underlined");
+static const wxString k_strikethrough = wxT("/strikethrough");
+static const wxString k_fontsize_float = wxT("/Style/Text/fontsize_float");
+static const wxString k_fontsize_legacy = wxT("/Style/Text/fontsize");
+static const wxString k_fontname = wxT("/Style/Text/fontname");
 
 Style &Style::Read(wxConfigBase *config, const wxString &where) {
   wxString tmpStr;
@@ -305,23 +306,23 @@ Style &Style::Read(wxConfigBase *config, const wxString &where) {
     if (color.IsOk())
       SetColor(color);
   }
-  if (config->Read(wxString::Format(k_bold, where), &tmpBool) && tmpBool)
-    SetBold(true);
-  else if (config->Read(wxString::Format(k_light, where), &tmpBool) && tmpBool)
-    SetLight(true);
-  if (config->Read(wxString::Format(k_italic, where), &tmpBool) && tmpBool)
-    SetItalic(true);
-  else if (config->Read(wxString::Format(k_slant, where), &tmpBool) && tmpBool)
-    SetSlant(true);
-  if (config->Read(wxString::Format(k_underlined, where), &tmpBool))
+  if (config->Read(where + k_bold, &tmpBool))
+    SetBold(tmpBool);
+  else if (config->Read( where + k_light, &tmpBool))
+    SetLight(tmpBool);
+  if (config->Read(where + k_italic, &tmpBool))
+    SetItalic(tmpBool);
+  else if (config->Read(where + k_slant, &tmpBool))
+    SetSlant(tmpBool);
+  if (config->Read(where + k_underlined, &tmpBool))
     SetUnderlined(tmpBool);
-  if (config->Read(wxString::Format(k_strikethrough, where), &tmpBool))
+  if (config->Read(where + k_strikethrough, &tmpBool))
     SetStrikethrough(tmpBool);
-  if (config->Read(wxString::Format(k_fontsize_float, where), &tmpDouble))
+  if (config->Read(where + k_fontsize_float, &tmpDouble))
     SetFontSize(AFontSize(tmpDouble));
-  else if (config->Read(wxString::Format(k_fontsize_legacy, where), &tmpLong))
+  else if (config->Read(where + k_fontsize_legacy, &tmpLong))
     SetFontSize(AFontSize(tmpLong));
-  if (config->Read(wxString::Format(k_fontname, where), &tmpStr) &&
+  if (config->Read(where + k_fontname, &tmpStr) &&
       !tmpStr.empty())
     SetFontName(tmpStr);
   else
@@ -332,27 +333,15 @@ Style &Style::Read(wxConfigBase *config, const wxString &where) {
 }
 
 void Style::Write(wxConfigBase *config, const wxString &where) const {
-  config->Write(wxString::Format(k_color, where), GetColor().GetAsString());
-  config->Write(wxString::Format(k_bold, where), IsBold());
-  config->Write(wxString::Format(k_italic, where), IsItalic());
-  config->Write(wxString::Format(k_underlined, where), IsUnderlined());
-  config->Write(wxString::Format(k_fontsize_float, where), GetFontSize().Get());
-  config->Write(wxString::Format(k_fontname, where), GetFontName());
-
-  // We don't write the slant, light nor strikethrough attributes so as not to
-  // grow the configuration compared to the previous releases. The slant and
-  // strikethrough are only emitted when set or when previously set.
-  auto const optWrite = [](wxConfigBase *config, const wxString &keyFormat,
-                           const wxString &where, auto condition) {
-    decltype(condition) tempVal;
-    auto path = wxString::Format(keyFormat, where);
-    if (condition != decltype(condition){} || config->Read(path, &tempVal))
-      config->Write(path, condition);
-  };
-
-  optWrite(config, k_slant, where, IsSlant());
-  optWrite(config, k_light, where, IsLight());
-  optWrite(config, k_strikethrough, where, IsStrikethrough());
+  config->Write(where + k_color, GetColor().GetAsString());
+  config->Write(where + k_bold, IsBold());
+  config->Write(where + k_italic, IsItalic());
+  config->Write(where + k_slant, IsSlant());
+  config->Write(where + k_light, IsLight());
+  config->Write(where + k_strikethrough, IsStrikethrough());
+  config->Write(where + k_underlined, IsUnderlined());
+  config->Write(where + k_fontsize_float, GetFontSize().Get());
+  config->Write(where + k_fontname, GetFontName());
 }
 
 wxFont Style::GetFont() const {
