@@ -45,13 +45,19 @@ public:
   std::shared_ptr<wxFont> GetFont (double size,
                                    bool isItalic,
                                    bool isBold,
-                                   bool isUnderlined);
+                                   bool isUnderlined,
+                                   bool isSlanted,
+                                   bool isStrikeThrough
+    );
   const wxString& GetFaceName() const {return m_fontName;}
 private:
   int GetIndex (
     bool isItalic,
     bool isBold,
-    bool isUnderlined) const
+    bool isUnderlined,
+    bool isSlanted,
+    bool isStrikeThrough
+    ) const
     {
       int result =0;
       if(isItalic)
@@ -60,10 +66,14 @@ private:
         result += 2;
       if(isUnderlined)
         result +=4;
+      if(isSlanted)
+        result +=8;
+      if(isStrikeThrough)
+        result +=16;
       return result;
     }
 
-  mutable std::unordered_map<double, std::shared_ptr<wxFont>> m_fontCaches[8];
+  mutable std::unordered_map<double, std::shared_ptr<wxFont>> m_fontCaches[32];
   wxString m_fontName;
 };
 

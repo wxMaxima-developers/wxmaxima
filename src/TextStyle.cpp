@@ -345,7 +345,8 @@ void Style::Write(wxConfigBase *config, const wxString &where) const {
 }
 
 wxFont Style::GetFont() const {
-  return *(m.fontCache->GetFont(GetFontSize().Get(), IsItalic(), IsBold(), IsUnderlined()));
+  return *(m.fontCache->GetFont(GetFontSize().Get(), IsItalic(), IsBold(), IsUnderlined(),
+				IsSlant(), IsStrikethrough()));
 }
 
 const Style &Style::FromStockFont(wxStockGDI::Item font) {

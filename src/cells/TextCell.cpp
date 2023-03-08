@@ -506,7 +506,8 @@ std::shared_ptr<wxFont> TextCell::GetFont(AFontSize fontsize) {
   auto fontCache = style->GetFontCache();
   wxASSERT(m_fontSize_Scaled.IsValid());
   return fontCache->GetFont(fontsize.Get(), style->IsItalic(), style->IsBold(),
-			    style->IsUnderlined());
+			    style->IsUnderlined(), style->IsSlant(),
+			    style->IsStrikethrough());
 }
 
 void TextCell::SetFont(AFontSize fontsize) {

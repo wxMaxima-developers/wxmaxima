@@ -937,7 +937,8 @@ std::shared_ptr<wxFont> EditorCell::GetFont(AFontSize fontsize) {
     isItalic = !isItalic;
   
   wxASSERT(m_fontSize_Scaled.IsValid());
-  return fontCache->GetFont(fontsize.Get(), isItalic, style->IsBold(), style->IsUnderlined());
+  return fontCache->GetFont(fontsize.Get(), isItalic, style->IsBold(), style->IsUnderlined(),
+			    style->IsSlant(), style->IsStrikethrough());
 }
 
 void EditorCell::SetFont() {

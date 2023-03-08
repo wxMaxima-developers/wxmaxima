@@ -46,19 +46,25 @@ void FontVariantCache::ClearCache(){
 std::shared_ptr<wxFont> FontVariantCache::GetFont (double size,
                                                    bool isItalic,
                                                    bool isBold,
-                                                   bool isUnderlined)
+                                                   bool isUnderlined,
+                                                   bool isSlanted,
+                                                   bool isStrikeThrough
+  )
 {
   int index = GetIndex(isItalic,
                        isBold,
-                       isUnderlined);
+                       isUnderlined,
+                       isSlanted,
+                       isStrikeThrough);
   auto cachedFont = m_fontCaches[index].find(size);
   if(cachedFont == m_fontCaches[index].end())
   {
     wxFontStyle style;
-    if(isItalic)
-      style = wxFONTSTYLE_SLANT;
-    else
       style = wxFONTSTYLE_NORMAL;
+    if(isItalic)
+      style = wxFONTSTYLE_ITALIC;
+    if(isSlanted)
+      style = wxFONTSTYLE_SLANT;
     wxFontWeight weight;
     if(isBold)
       weight = wxFONTWEIGHT_BOLD;
@@ -77,6 +83,8 @@ std::shared_ptr<wxFont> FontVariantCache::GetFont (double size,
       wxLogMessage(_("Cannot create a font based on %s. Falling back to a default font."), m_fontName.mb_str());
       font = std::shared_ptr<wxFont>(new wxFont(*wxNORMAL_FONT));
     }
+    if(isStrikeThrough)
+      font->MakeStrikethrough();
 #if wxCHECK_VERSION(3, 1, 2)
     font->SetFractionalPointSize(size);
 #else
