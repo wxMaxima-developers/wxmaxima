@@ -61,6 +61,8 @@ enum
   checkbox_bold,
   checkbox_italic,
   checkbox_underlined,
+  checkbox_slanted,
+  checkbox_strikethrough,
   button_defaultFont,
   button_mathFont,
   style_font_family,
@@ -319,6 +321,8 @@ protected:
   wxColourPickerCtrl *m_styleColor;
   wxCheckBox *m_boldCB;
   wxCheckBox *m_italicCB;
+  wxCheckBox *m_slantedCB;
+  wxCheckBox *m_strikethroughCB;
   wxCheckBox *m_underlinedCB;
   wxCheckBox *m_fixedFontInTC;
   wxCheckBox *m_unixCopy;

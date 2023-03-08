@@ -230,6 +230,10 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent, Configuration *cfg)
           wxCommandEventHandler(ConfigDialogue::OnCheckbox), NULL, this);
   Connect(checkbox_italic, wxEVT_CHECKBOX,
           wxCommandEventHandler(ConfigDialogue::OnCheckbox), NULL, this);
+  Connect(checkbox_slanted, wxEVT_CHECKBOX,
+          wxCommandEventHandler(ConfigDialogue::OnCheckbox), NULL, this);
+  Connect(checkbox_strikethrough, wxEVT_CHECKBOX,
+          wxCommandEventHandler(ConfigDialogue::OnCheckbox), NULL, this);
   Connect(checkbox_underlined, wxEVT_CHECKBOX,
           wxCommandEventHandler(ConfigDialogue::OnCheckbox), NULL, this);
   Connect(save_id, wxEVT_BUTTON,
@@ -1905,7 +1909,7 @@ wxWindow *ConfigDialogue::CreateStylePanel() {
   // The styles box
   wxStaticBox *styles = new wxStaticBox(panel, -1, _("Styles"));
   wxStaticBoxSizer *stylesSizer = new wxStaticBoxSizer(styles, wxVERTICAL);
-  wxBoxSizer *hbox_sizer_1 = new wxBoxSizer(wxHORIZONTAL);
+  wxBoxSizer *hbox_sizer_1 = new wxBoxSizer(wxVERTICAL);
   wxBoxSizer *hbox_sizer_2 = new wxBoxSizer(wxHORIZONTAL);
   wxBoxSizer *vbox_sizer = new wxBoxSizer(wxVERTICAL);
 
@@ -1935,8 +1939,12 @@ wxWindow *ConfigDialogue::CreateStylePanel() {
     new wxCheckBox(stylesSizer->GetStaticBox(), checkbox_bold, _("Bold"));
   m_italicCB =
     new wxCheckBox(stylesSizer->GetStaticBox(), checkbox_italic, _("Italic"));
+  m_slantedCB =
+    new wxCheckBox(stylesSizer->GetStaticBox(), checkbox_slanted, _("Slanted"));
   m_underlinedCB = new wxCheckBox(stylesSizer->GetStaticBox(),
                                   checkbox_underlined, _("Underlined"));
+  m_strikethroughCB = new wxCheckBox(stylesSizer->GetStaticBox(),
+				     checkbox_strikethrough, _("Strike Through"));
   m_examplePanel =
     new ExamplePanel(stylesSizer->GetStaticBox(), -1, wxDefaultPosition,
 		     wxSize(250 * GetContentScaleFactor(), 60));
@@ -1951,7 +1959,13 @@ wxWindow *ConfigDialogue::CreateStylePanel() {
 		    m_italicCB,
 		    wxSizerFlags().Border(wxUP | wxDOWN, 5 * GetContentScaleFactor()));
   hbox_sizer_1->Add(
+		    m_slantedCB,
+		    wxSizerFlags().Border(wxUP | wxDOWN, 5 * GetContentScaleFactor()));
+  hbox_sizer_1->Add(
 		    m_underlinedCB,
+		    wxSizerFlags().Border(wxUP | wxDOWN, 5 * GetContentScaleFactor()));
+  hbox_sizer_1->Add(
+		    m_strikethroughCB,
 		    wxSizerFlags().Border(wxUP | wxDOWN, 5 * GetContentScaleFactor()));
   vbox_sizer->Add(hbox_sizer_1, 1, wxUP | wxDOWN | wxEXPAND, 0);
   vbox_sizer->Add(m_examplePanel, wxSizerFlags().Expand().Border(
@@ -2264,10 +2278,15 @@ void ConfigDialogue::OnChangeStyle(wxCommandEvent &WXUNUSED(event)) {
   // Text styles with adjustable bold/italic/underline
   m_boldCB->SetValue(m_configuration->GetStyle(st)->IsBold());
   m_italicCB->SetValue(m_configuration->GetStyle(st)->IsItalic());
+  m_slantedCB->SetValue(m_configuration->GetStyle(st)->IsSlant());
+  m_underlinedCB->SetValue(m_configuration->GetStyle(st)->IsUnderlined());
+  m_strikethroughCB->SetValue(m_configuration->GetStyle(st)->IsStrikethrough());
   m_underlinedCB->SetValue(m_configuration->GetStyle(st)->IsUnderlined());
   m_boldCB->Enable(canChangeFontVariant);
   m_italicCB->Enable(canChangeFontVariant);
+  m_slantedCB->Enable(canChangeFontVariant);
   m_underlinedCB->Enable(canChangeFontVariant);
+  m_strikethroughCB->Enable(canChangeFontVariant);
   
   UpdateExample();
 }
@@ -2384,11 +2403,20 @@ void ConfigDialogue::OnReloadStyles(wxCommandEvent &WXUNUSED(event)) {
   OnChangeStyle(dummy);
 }
 
-void ConfigDialogue::OnCheckbox(wxCommandEvent &WXUNUSED(event)) {
+void ConfigDialogue::OnCheckbox(wxCommandEvent &event) {
+  // Slanted italic doesn't make sense
+  if((event.GetId() == checkbox_italic) && (m_italicCB->GetValue()))
+    m_slantedCB->SetValue(false);
+  if((event.GetId() == checkbox_slanted) && (m_slantedCB->GetValue()))
+    m_italicCB->SetValue(false);
   TextStyle const st = GetSelectedStyle();
   m_configuration->GetWritableStyle(st)->SetBold(m_boldCB->GetValue());
-  m_configuration->GetWritableStyle(st)->SetItalic(m_italicCB->GetValue());
+  if(m_italicCB->GetValue())
+    m_configuration->GetWritableStyle(st)->SetItalic(m_italicCB->GetValue());
+  else
+    m_configuration->GetWritableStyle(st)->SetSlant(m_slantedCB->GetValue());
   m_configuration->GetWritableStyle(st)->SetUnderlined(m_underlinedCB->GetValue());
+  m_configuration->GetWritableStyle(st)->SetStrikethrough(m_strikethroughCB->GetValue());
   UpdateExample();
 }
 
