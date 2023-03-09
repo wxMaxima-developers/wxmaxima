@@ -46,7 +46,13 @@ wxBitmap ArtProvider::GetImage(wxWindow *win, wxString name, int width,
     {
       img.Rescale(width, width, wxIMAGE_QUALITY_BICUBIC);
 #if defined __WXOSX__
-      bmp = wxBitmap(img, wxBITMAP_SCREEN_DEPTH, win->GetContentScaleFactor());
+      int scaleFactor = win->GetContentScaleFactor();
+      if(scaleFactor < 1)
+	scaleFactor = 1;
+      if(scaleFactor > 16)
+	scaleFactor = 16;
+      
+      bmp = wxBitmap(img, wxBITMAP_SCREEN_DEPTH, scaleFactor);
 #else
       bmp = wxBitmap(img, wxBITMAP_SCREEN_DEPTH);
 #endif
@@ -56,7 +62,13 @@ wxBitmap ArtProvider::GetImage(wxWindow *win, wxString name, int width,
 
   if(!bmp.IsOk())
 #if defined __WXOSX__
-    bmp = wxBitmap(wxSize(width, width), wxBITMAP_SCREEN_DEPTH, win->GetContentScaleFactor());
+      int scaleFactor = win->GetContentScaleFactor();
+      if(scaleFactor < 1)
+	scaleFactor = 1;
+      if(scaleFactor > 16)
+	scaleFactor = 16;
+      
+    bmp = wxBitmap(wxSize(width, width), wxBITMAP_SCREEN_DEPTH, scaleFactor);
 #else
     bmp = wxBitmap(wxSize(width, width), wxBITMAP_SCREEN_DEPTH);
 #endif
