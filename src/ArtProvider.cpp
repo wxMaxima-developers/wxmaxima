@@ -60,13 +60,16 @@ wxBitmap ArtProvider::GetImage(wxWindow *win, wxString name, int width,
   if(!bmp.IsOk())
     bmp = SvgBitmap(win, data, dataLen, width, width);
 
-  if(!bmp.IsOk())
 #if defined __WXOSX__
-      int scaleFactor = win->GetContentScaleFactor();
-      if(scaleFactor < 1)
+  int scaleFactor = win->GetContentScaleFactor();
+  if(scaleFactor < 1)
 	scaleFactor = 1;
       if(scaleFactor > 16)
 	scaleFactor = 16;
+#endif
+
+  if(!bmp.IsOk())
+#if defined __WXOSX__
       
     bmp = wxBitmap(wxSize(width, width), wxBITMAP_SCREEN_DEPTH, scaleFactor);
 #else

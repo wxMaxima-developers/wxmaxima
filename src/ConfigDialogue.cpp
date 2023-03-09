@@ -94,7 +94,9 @@ int ConfigDialogue::GetImageSize() {
 
 ConfigDialogue::ConfigDialogue(wxWindow *parent, Configuration *cfg)
   : wxPropertySheetDialog() {
-  Create(parent, wxID_ANY, _("wxMaxima configuration"), wxDefaultPosition,
+  Create(parent, wxID_ANY, _("wx  Create(parent, wxID_ANY, _("wxMaxima configuration"), wxDefaultPosition,
+         wxDefaultSize, wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER);
+Maxima configuration"), wxDefaultPosition,
          wxDefaultSize, wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER);
   m_maximaEnvDoc["MAXIMA_DEFAULT_LISP"] =
     _("If maxima versions compiled with different lisps are installed: The "
