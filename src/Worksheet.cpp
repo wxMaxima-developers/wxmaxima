@@ -7332,6 +7332,7 @@ void Worksheet::OnThumbtrack(wxScrollWinEvent &ev) {
 
     wxRect rect = m_cellPointers.m_selectionStart->GetRect();
     RequestRedraw(rect);
+    //    ev.Veto();
   } else {
     ScrolledAwayFromEvaluation();
 
