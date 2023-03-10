@@ -74,6 +74,7 @@
 #include <wx/wupdlock.h>
 #include <wx/xml/xml.h>
 #include <wx/zipstrm.h>
+#include <cmath>
 
 //! This class represents the worksheet shown in the middle of the wxMaxima
 //! window.
@@ -4192,7 +4193,7 @@ void Worksheet::OnZoom(wxZoomGestureEvent &event) {
   if (event.IsGestureStart())
     m_zoomAtGestureStart = m_configuration->GetZoomFactor();
 
-  SetZoomFactor(m_zoomAtGestureStart * event.GetZoomFactor());
+  SetZoomFactor(m_zoomAtGestureStart * pow(event.GetZoomFactor(), .2));
 }
 #endif
 
