@@ -41,6 +41,8 @@
 
   (in-package :maxima)
 
+  ;; This makes the variables lop, rop and inchar use dynamic scope.
+  ;; What it does to wxxml-lbp and wxxml-rbp I don't know, though.
   (declare-top
    (special lop rop $inchar)
    (*expr wxxml-lbp wxxml-rbp))
@@ -52,7 +54,7 @@
   (setq $lmxchar #\()
   (setq $rmxchar #\))
 
-  ;; Permanently assign a property to a symbol
+  ;; Permanently assign a property named indic with the value val to the symbol sym
   ;;
   ;; Properties can, for example, tell the formatter how to express this
   ;; function in xml.
@@ -279,9 +281,11 @@
 			       (list "</mrow></munder>") "<mi>,</mi>") r))
     (nconc l r))
 
+  ;; (maketag value,tagname) produces the text <tagname>value</tagname>.
   (defmacro make-tag (val tag)
     ``((wxxmltag simp) ,,val ,,tag))
 
+  ;; wxxmltag(value,tagname) produces the text <tagname>value</tagname>.
   (defun $wxxmltag (val tag)
     (make-tag ($sconcat val) ($sconcat tag)))
 
@@ -1203,6 +1207,7 @@
 		  l_ords (cdr l_ords)))
       (reverse sub)))
 
+  ;; pretty-prints diff(f(x),x) without displaying it as diff(f(x),x,1).
   (defun wxxml-d-abbrev (x)
     (let*
 	((difflist (cddr x))
@@ -1215,6 +1220,7 @@
 	      (mstring (cadr x))'(",") (mstring (car vars)) '(",") ords '(")\"><mrow>") fun '("</mrow>")
 	      '("<mrow>") (wxxml-d-abbrev-subscript vars ords) '("</mrow></munder>"))))
 
+  ;; pretty prints diff() commands
   (defun wxxml-d (x)
     ;; format the macsyma derivative form so it looks
     ;; sort of like a quotient times the deriva-dand.
@@ -1236,6 +1242,7 @@
 	((mquotient) ,(simplifya numer nil) ,denom)
 	,arg)))
 
+  ;; Print if clauses in a nice way.
   (defun wxxml-mcond (x l r)
     (let ((res ()))
       (setq res (wxxml (cadr x) '("<fnm>if</fnm><mspace/>")
@@ -1320,6 +1327,7 @@
 	  x (wxxml-list (cdr x) nil r ""))
     (append l x))
 
+  ;; Text that is output by maxima. Strings are handled elsewhere, it seems
   (wx-defprop text-string wxxml-matchfix-np wxxml)
   (wx-defprop text-string (("<t lisp=\"text-string\">")"</t>") wxxmlsym)
 
