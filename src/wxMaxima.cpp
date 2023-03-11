@@ -4794,7 +4794,7 @@ bool wxMaxima::InterpretDataFromMaxima() {
   wxStopWatch stopWatch;
   long startlength = m_currentOutput.Length();
     
-  while ((length_old != m_currentOutput.Length()) && (stopWatch.Time() < 500)) {
+  while ((length_old != m_currentOutput.Length()) && (stopWatch.Time() < 250)) {
     if (m_currentOutput.StartsWith("\n<"))
       m_currentOutput = m_currentOutput.Right(m_currentOutput.Length() - 1);
 
