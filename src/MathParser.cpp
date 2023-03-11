@@ -1270,8 +1270,11 @@ std::unique_ptr<Cell> MathParser::ParseLine(wxString s, CellType style) {
 
     wxStringInputStream xmlStream(s);
 
-    xml.Load(xmlStream, wxT("UTF-8"), wxXMLDOC_KEEP_WHITESPACE_NODES);
-
+    {
+      wxLogNull suppressErrorMessages;
+      xml.Load(xmlStream, wxT("UTF-8"), wxXMLDOC_KEEP_WHITESPACE_NODES);
+    }
+    
     wxXmlNode *doc = xml.GetRoot();
 
     if (doc != NULL)

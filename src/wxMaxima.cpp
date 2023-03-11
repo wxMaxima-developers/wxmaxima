@@ -1950,6 +1950,7 @@ void wxMaxima::DoConsoleAppend(wxString s, CellType type, AppendOpt opts,
       DoRawConsoleAppend(_("There was an error in the XML maxima has generated.\n"
 			   "Please report this as a bug to the wxMaxima project."),
 			 MC_TYPE_ERROR);
+      AbortOnError();
       return;
     }
 
