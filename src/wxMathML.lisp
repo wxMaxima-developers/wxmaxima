@@ -287,7 +287,7 @@
 
   ;; wxxmltag(value,tagname) produces the text <tagname>value</tagname>.
   (defun $wxxmltag (val tag)
-    (make-tag ($sconcat val) ($sconcat tag)))
+    (make-tag (wxxml-fix-string ($sconcat val)) ($sconcat tag)))
 
   ;; Declare one or more textsnippets to be always subscripted by the
   ;; autosubscript feature
