@@ -4783,9 +4783,18 @@ bool wxMaxima::InterpretDataFromMaxima(const wxString &newData) {
     m_dispReadOut = true;
   }
 
+  InterpretDataFromMaxima();
+  return true;
+}
+
+bool wxMaxima::InterpretDataFromMaxima() {
   size_t length_old = 0;
 
-  while (length_old != m_currentOutput.Length()) {
+  wxTimer maxGuiFreezeTime;
+  wxStopWatch stopWatch;
+  long startlength = m_currentOutput.Length();
+    
+  while ((length_old != m_currentOutput.Length()) && (stopWatch.Time() < 500)) {
     if (m_currentOutput.StartsWith("\n<"))
       m_currentOutput = m_currentOutput.Right(m_currentOutput.Length() - 1);
 
@@ -4818,7 +4827,7 @@ bool wxMaxima::InterpretDataFromMaxima(const wxString &newData) {
     if (newActiveCell != oldActiveCell)
       m_worksheet->SetWorkingGroup(newActiveCell);
   }
-  return true;
+  return startlength != m_currentOutput.Length();
 }
 
 ///--------------------------------------------------------------------------------
@@ -4858,11 +4867,17 @@ void wxMaxima::OnIdle(wxIdleEvent &event) {
 
     event.RequestMore();
     return;
-  }
+  }    
 
   if (m_worksheet == NULL)
     return;
-  
+
+    if(InterpretDataFromMaxima())
+    {
+      event.RequestMore();
+      return;
+    }
+
   m_worksheet->UpdateScrollPos();
 
   // Incremental search is done from the idle task. This means that we don't

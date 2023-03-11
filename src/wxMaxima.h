@@ -332,6 +332,7 @@ protected:
     - false, if there wasn't any new data.
   */
   bool InterpretDataFromMaxima(const wxString &newData);
+  bool InterpretDataFromMaxima();
   bool m_dataFromMaximaIs;
 
   void MenuCommand(const wxString &cmd);           //!< Inserts command cmd into the worksheet
