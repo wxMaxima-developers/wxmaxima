@@ -1945,10 +1945,13 @@ void wxMaxima::DoConsoleAppend(wxString s, CellType type, AppendOpt opts,
   std::unique_ptr<Cell> cell(m_parser.ParseLine(s, type));
   m_parser.SetGroup(nullptr);
 
-  wxASSERT_MSG(cell, _("There was an error in generated XML!\n\n"
-                       "Please report this as a bug."));
   if (!cell)
-    return;
+    {
+      DoRawConsoleAppend(_("There was an error in the XML maxima has generated.\n"
+			   "Please report this as a bug to the wxMaxima project."),
+			 MC_TYPE_ERROR);
+      return;
+    }
 
   cell->SetBigSkip(opts & AppendOpt::BigSkip);
   auto *textCell = dynamic_cast<TextCell *>(cell.get());
