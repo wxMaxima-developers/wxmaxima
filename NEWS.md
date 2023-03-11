@@ -1,3 +1,7 @@
+# Current
+ * Made the GUI more responsive for functions with much output.
+ * Handle errors in the XML from maxima more gracefully.
+
 # 23.03.0
  * Make sure all bitmaps are valid on High-DPI MacOs (#1749)
  * More styles consistency (#1753)
