@@ -3011,13 +3011,26 @@ void wxMaxima::ReadStatusBar(wxString &data) {
     wxXmlDocument xmldoc;
     wxString xml = data.Left(end + m_statusbarSuffix.Length());
     wxStringInputStream xmlStream(xml);
-    xmldoc.Load(xmlStream, wxT("UTF-8"));
-    wxXmlNode *node = xmldoc.GetRoot();
-    if (node != NULL) {
-      wxXmlNode *contents = node->GetChildren();
-      if (contents)
-        StatusText(contents->GetContent(), false);
+    {
+      wxLogNull suppressErrorDialogs;
+      xmldoc.Load(xmlStream, wxT("UTF-8"));
     }
+    if(!xmldoc.IsOk())
+      {
+	DoRawConsoleAppend(_("There was an error in the XML that should describe the status bar message.\n"
+			     "Please report this as a bug to the wxMaxima project."),
+			   MC_TYPE_ERROR);
+	AbortOnError();
+      }
+    else
+      {
+	wxXmlNode *node = xmldoc.GetRoot();
+	if (node != NULL) {
+	  wxXmlNode *contents = node->GetChildren();
+	  if (contents)
+	    StatusText(contents->GetContent(), false);
+	}
+      }
     // Remove the status bar info from the data string
     data = data.Right(data.Length() - end - m_statusbarSuffix.Length());
   }
@@ -3033,34 +3046,48 @@ void wxMaxima::ReadManualTopicNames(wxString &data) {
     wxXmlDocument xmldoc;
     wxString xml = data.Left(end + m_jumpManualSuffix.Length());
     wxStringInputStream xmlStream(xml);
-    xmldoc.Load(xmlStream, wxT("UTF-8"));
-    wxXmlNode *node = xmldoc.GetRoot();
-    while ((node) && (node->GetName() != wxT("html-manual-keywords")))
-      node = node->GetNext();
-
-    if (node == NULL) {
-      wxLogMessage(_("No topics found in topic tag"));
-    } else {
-      wxXmlNode *entry = node->GetChildren();
-      while(entry != NULL)
-	{
-	  if (entry->GetName() == wxT("keyword")) {
-	    wxXmlNode *topic = entry->GetChildren();
-	    if (topic) {
-	      wxLogMessage(_("Received manual topic request: %s"),
-			   topic->GetContent().ToUTF8().data());
-	      topics.Add(topic->GetContent());
-	    }
-	    if (topics.IsEmpty())
-	      wxLogMessage(_("No topics found in topic flag"));
-#ifdef USE_WEBVIEW
-	    else
-	      m_helpPane->SelectKeywords(topics);
-#endif
-	  }
-	  entry = entry->GetNext();
-	}
+    {
+      wxLogNull suppressErrorDialogs;
+      xmldoc.Load(xmlStream, wxT("UTF-8"));
     }
+    if(xmldoc.IsOk())
+      {
+	wxXmlNode *node = xmldoc.GetRoot();
+	while ((node) && (node->GetName() != wxT("html-manual-keywords")))
+	  node = node->GetNext();
+	
+	if (node == NULL) {
+	  wxLogMessage(_("No topics found in topic tag"));
+	} else {
+	  wxXmlNode *entry = node->GetChildren();
+	  while(entry != NULL)
+	    {
+	      if (entry->GetName() == wxT("keyword")) {
+		wxXmlNode *topic = entry->GetChildren();
+		if (topic) {
+		  wxLogMessage(_("Received manual topic request: %s"),
+			       topic->GetContent().ToUTF8().data());
+		  topics.Add(topic->GetContent());
+		}
+		if (topics.IsEmpty())
+		  wxLogMessage(_("No topics found in topic flag"));
+#ifdef USE_WEBVIEW
+		else
+		  m_helpPane->SelectKeywords(topics);
+#endif
+	      }
+	      entry = entry->GetNext();
+	    }
+	}
+      }
+    else
+      {
+	DoRawConsoleAppend(_("There was an error in the XML that should describe the manual topics.\n"
+			     "Please report this as a bug to the wxMaxima project."),
+			   MC_TYPE_ERROR);
+	AbortOnError();
+      }
+
     // Remove the status bar info from the data string
     data = data.Right(data.Length() - end - m_jumpManualPrefix.Length());
   }
@@ -4799,7 +4826,9 @@ bool wxMaxima::InterpretDataFromMaxima(const wxString &newData) {
 ///--------------------------------------------------------------------------------
 
 void wxMaxima::OnIdle(wxIdleEvent &event) {
+  // Make sure everybody else who wants to process idle events gets this one.
   event.Skip();
+  
   // Update the info what maxima is currently doing
   UpdateStatusMaximaBusy();
 
@@ -4859,17 +4888,20 @@ void wxMaxima::OnIdle(wxIdleEvent &event) {
     }
   }
 
-  if ((m_worksheet != NULL) && (!m_fastResponseTimer.IsRunning())) {
+  if (!m_fastResponseTimer.IsRunning()) {
     bool requestMore = m_worksheet->RecalculateIfNeeded();
     m_worksheet->ScrollToCellIfNeeded();
     m_worksheet->ScrollToCaretIfNeeded();
-
-    if (m_worksheet->RedrawIfRequested())
-      requestMore = true;
     if (requestMore) {
       event.RequestMore();
       return;
     }
+    
+    if (m_worksheet->RedrawIfRequested())
+      {
+	event.RequestMore();
+	return;
+      }
   }
 
   // If nothing which is visible has changed nothing that would cause us to need

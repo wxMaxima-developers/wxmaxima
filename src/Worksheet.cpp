@@ -160,6 +160,8 @@ Worksheet::Worksheet(wxWindow *parent, int id, Worksheet *&observer,
   m_blinkDisplayCaret = true;
   m_timer.SetOwner(this, TIMER_ID);
   m_caretTimer.SetOwner(this, CARET_TIMER_ID);
+  m_displayTimeoutTimer.SetOwner(this, DISPLAY_TIMEOUT_ID);
+
   SetSaved(false);
   AdjustSize();
   m_autocompleteTemplates = false;
@@ -263,6 +265,7 @@ wxSize Worksheet::DoGetBestClientSize() const {
 }
 
 bool Worksheet::RedrawIfRequested() {
+  m_displayTimeoutTimer.Start(1000);
   bool redrawIssued = false;
   RecalculateIfNeeded();
 
@@ -3309,6 +3312,7 @@ void Worksheet::UpdateScrollPos() {
   m_newyPosition = -1;
   m_newxPosition = -1;
 }
+
 GroupCell *Worksheet::StartOfSectioningUnit(GroupCell *start) {
   wxASSERT(start);
   // If the current cell is a sectioning cell we return this cell
@@ -4229,6 +4233,10 @@ void Worksheet::StepAnimation(int change) {
 
 void Worksheet::OnTimer(wxTimerEvent &event) {
   switch (event.GetId()) {
+  case DISPLAY_TIMEOUT_ID: {
+    RedrawIfRequested();
+    break;
+  }
   case TIMER_ID: {
     if (!m_leftDown || !m_mouseOutside)
       return;

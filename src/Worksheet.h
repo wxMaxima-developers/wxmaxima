@@ -422,7 +422,8 @@ private:
   enum TimerIDs
   {
     TIMER_ID,
-    CARET_TIMER_ID
+    CARET_TIMER_ID,
+    DISPLAY_TIMEOUT_ID
   };
 
   //! Add a line to a file.
@@ -1111,6 +1112,19 @@ public:
   }
   bool StatusTextHas(){return m_statusTextHas;}
 private:
+    /* ! A timer that tells us to urgently update the display
+
+     Normally we priorize tasks: If there are GUI actions to process we do so.
+     If not we look if there is data from maxima to process. If not we 
+     If not we recalculate the worksheet element sizes and positions and if
+     there still is no pressing task we update the display. This way we
+     respond quickly to the most important inputs.
+
+     This timer, if expired, tells us that if we don't update the screen now
+     maxima feels like not being responsive.
+   */
+  wxTimer m_displayTimeoutTimer;
+
   template <class T_SRC, class T_DEST>
   inline std::unique_ptr<T_DEST> unique_cast(std::unique_ptr<T_SRC> &&src)
     {
