@@ -512,10 +512,11 @@
 	  (t (wxxml-function x l r))))
 
   ;; Handle converting parenthesis to xml
-  ;; x is the expression of interest; l is the list of strings to its
-  ;; left, r to its right.
+  ;; x is the contents of the parenthesis, l and r are the opening and closing tag
+  ;; we want to put around the parenthesis tag.
   (defun wxxml-paren (x l r)
-    (wxxml x (append l '("<mrow><p>")) (cons "</p></mrow>" r) 'mparen 'mparen))
+    (wxxml x (append l '("<mrow lisp=\"wxxml-paren\"><p lisp=\"wxxml-paren\">"))
+	   (cons "</p></mrow>" r) 'mparen 'mparen))
 
   ;; set up a list , separated by symbols (, * ...)  and then tack on the
   ;; ending item (e.g. "]" or perhaps ")"
