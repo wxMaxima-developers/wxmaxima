@@ -423,12 +423,14 @@
 			(t (wxxml-stripdollar x))))
 	    r))
 
+  ;; Handles converting functions to xml
+  ;;
   ;; we could patch this so sin x rather than sin(x), but instead we made
   ;; sin a prefix operator
   (defun wxxml-function (x l r)
     (setq l
-	  (let ((*var-tag* '("<fnm>" "</fnm>")))
-	    (wxxml (caar x) (append l '("<fn>"))
+	  (let ((*var-tag* '("<fnm lisp=\"wxxml-function\">" "</fnm>")))
+	    (wxxml (caar x) (append l '("<fn lisp=\"wxxml-function\">"))
 		   nil 'mparen 'mparen))
 	  r (wxxml (cons '(mprogn) (cdr x)) nil (append '("</fn>") r)
 		   'mparen 'mparen))
@@ -502,6 +504,9 @@
 	   (wxxml-defstruct x l r))
 	  (t (wxxml-function x l r))))
 
+  ;; Handle converting parenthesis to xml
+  ;; x is the expression of interest; l is the list of strings to its
+  ;; left, r to its right.
   (defun wxxml-paren (x l r)
     (wxxml x (append l '("<mrow><p>")) (cons "</p></mrow>" r) 'mparen 'mparen))
 
