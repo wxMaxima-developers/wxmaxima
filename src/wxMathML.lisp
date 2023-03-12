@@ -530,8 +530,7 @@
 		x (cdr x)
 		l nil))))
 
-    ;; set up a list , separated by symbols (, * ...)  and then tack on the
-  ;; ending item (e.g. "]" or perhaps ")"
+  ;; Like wxxml-list, but wrap each item in itemstart and itemend.
   (defun wxxml-list-wrapitem (x l r sym itemstart itemend)
     (if (null x) r
       (do ((nl))
@@ -572,6 +571,8 @@
     (concatenate 'string "<mi>" pname "</mi>"))
 
   ;; Converts a symbol to a <mi> tag, if necessary escaping its name for XML.
+  ;;
+  ;; TODO: Does (list(stripdollar x)) need a wxxml-fix-string around stripdollar?
   (defun wxxmlsym (x)
     (or (get x 'wxxmlsym)
 	(get x 'strsym)
