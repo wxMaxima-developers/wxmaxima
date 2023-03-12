@@ -220,13 +220,13 @@ MarkDownTeX::MarkDownTeX(Configuration *cfg) : MarkDownParser(cfg) {
 }
 
 MarkDownHTML::MarkDownHTML(Configuration *cfg) : MarkDownParser(cfg) {
-  regexReplaceList.emplace_back(wxT("\\&lt);=\\&gt;"), wxT("\u21d4"));
-  regexReplaceList.emplace_back(wxT("=\\&gt);"), wxT("\u21d2"));
-  regexReplaceList.emplace_back(wxT("&lt);-\\&gt;"), wxT("\u2194"));
-  regexReplaceList.emplace_back(wxT("-\\&gt);"), wxT("\u2192"));
-  regexReplaceList.emplace_back(wxT("\\&lt);-"), wxT("\u2190"));
-  regexReplaceList.emplace_back(wxT("\\&lt);="), wxT("\u2264"));
-  regexReplaceList.emplace_back(wxT("\\&gt);="), wxT("\u2265"));
+  regexReplaceList.emplace_back(wxT("\\&lt\\);=\\&gt;"), wxT("\u21d4"));
+  regexReplaceList.emplace_back(wxT("=\\&gt\\);"), wxT("\u21d2"));
+  regexReplaceList.emplace_back(wxT("&lt\\);-\\&gt;"), wxT("\u2194"));
+  regexReplaceList.emplace_back(wxT("-\\&gt\\);"), wxT("\u2192"));
+  regexReplaceList.emplace_back(wxT("\\&lt\\);-"), wxT("\u2190"));
+  regexReplaceList.emplace_back(wxT("\\&lt\\);="), wxT("\u2264"));
+  regexReplaceList.emplace_back(wxT("\\&gt\\);="), wxT("\u2265"));
   regexReplaceList.emplace_back(wxT("\\+/-"), wxT("\u00B1"));
   regexReplaceList.emplace_back(wxT("\u00A0"), wxT("\u00A0"));
 }
