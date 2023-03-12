@@ -3195,60 +3195,72 @@ void wxMaxima::ReadVariables(wxString &data) {
     wxXmlDocument xmldoc;
     wxString xml = data.Left(end + m_variablesSuffix.Length());
     wxStringInputStream xmlStream(xml);
-    xmldoc.Load(xmlStream, wxT("UTF-8"));
-    wxXmlNode *node = xmldoc.GetRoot();
-    if (node != NULL) {
-      wxXmlNode *vars = node->GetChildren();
-      while (vars != NULL) {
-        wxXmlNode *var = vars->GetChildren();
-
-        wxString name;
-        wxString value;
-        bool bound = false;
-        while (var != NULL) {
-          if (var->GetName() == wxT("name")) {
-            num++;
-            wxXmlNode *namenode = var->GetChildren();
-            if (namenode)
-              name = namenode->GetContent();
-          }
-          if (var->GetName() == wxT("value")) {
-            wxXmlNode *valnode = var->GetChildren();
-            if (valnode) {
-              bound = true;
-              value = valnode->GetContent();
-            }
-          }
-
-          if (bound) {
-            m_worksheet->m_variablesPane->VariableValue(name, value);
-
-            // Undo an eventual stringdisp:true adding quoting marks to strings
-            if (value.StartsWith("\"") && value.EndsWith("\""))
-              value = value.SubString(1, value.Length() - 2);
-
-            auto varFunc = m_variableReadActions.find(name);
-            if (varFunc != m_variableReadActions.end())
-              CALL_MEMBER_FN(*this, varFunc->second)(value);
-          } else {
-            m_worksheet->m_variablesPane->VariableUndefined(name);
-            auto varFunc = m_variableUndefinedActions.find(name);
-            if (varFunc != m_variableUndefinedActions.end())
-              CALL_MEMBER_FN(*this, varFunc->second)();
-          }
-
-          var = var->GetNext();
-        }
-
-        vars = vars->GetNext();
-      }
+    {
+      wxLogNull noErrorDialog;
+      xmldoc.Load(xmlStream, wxT("UTF-8"));
     }
-
-    if (num > 1)
-      wxLogMessage(_("Maxima sends a new set of auto-completable symbols."));
+    if(!xmldoc.IsOk())
+      {
+	DoRawConsoleAppend(_("There was an error in the XML that should describe the contents of some variables.\n"
+			     "Please report this as a bug to the wxMaxima project."),
+			   MC_TYPE_ERROR);
+	AbortOnError();
+      }
     else
-      wxLogMessage(_("Maxima has sent a new variable value."));
+      {
+	wxXmlNode *node = xmldoc.GetRoot();
+	if (node != NULL) {
+	  wxXmlNode *vars = node->GetChildren();
+	  while (vars != NULL) {
+	    wxXmlNode *var = vars->GetChildren();
+	    
+	    wxString name;
+	    wxString value;
+	    bool bound = false;
+	    while (var != NULL) {
+	      if (var->GetName() == wxT("name")) {
+		num++;
+		wxXmlNode *namenode = var->GetChildren();
+		if (namenode)
+		  name = namenode->GetContent();
+	      }
+	      if (var->GetName() == wxT("value")) {
+		wxXmlNode *valnode = var->GetChildren();
+		if (valnode) {
+		  bound = true;
+		  value = valnode->GetContent();
+		}
+	      }
 
+	      if (bound) {
+		m_worksheet->m_variablesPane->VariableValue(name, value);
+
+		// Undo an eventual stringdisp:true adding quoting marks to strings
+		if (value.StartsWith("\"") && value.EndsWith("\""))
+		  value = value.SubString(1, value.Length() - 2);
+
+		auto varFunc = m_variableReadActions.find(name);
+		if (varFunc != m_variableReadActions.end())
+		  CALL_MEMBER_FN(*this, varFunc->second)(value);
+	      } else {
+		m_worksheet->m_variablesPane->VariableUndefined(name);
+		auto varFunc = m_variableUndefinedActions.find(name);
+		if (varFunc != m_variableUndefinedActions.end())
+		  CALL_MEMBER_FN(*this, varFunc->second)();
+	      }
+
+	      var = var->GetNext();
+	    }
+
+	    vars = vars->GetNext();
+	  }
+	}
+
+	if (num > 1)
+	  wxLogMessage(_("Maxima sends a new set of auto-completable symbols."));
+	else
+	  wxLogMessage(_("Maxima has sent a new variable value."));
+      }
     // Remove the symbols from the data string
     data = data.Right(data.Length() - end - m_variablesSuffix.Length());
     TriggerEvaluation();
@@ -3626,35 +3638,48 @@ void wxMaxima::VariableActionOperators(const wxString &value) {
   wxXmlDocument xmldoc;
   wxString newOperators;
   wxStringInputStream xmlStream(value);
-  xmldoc.Load(xmlStream, wxT("UTF-8"));
-  wxXmlNode *node = xmldoc.GetRoot();
-  if (node != NULL) {
-    wxXmlNode *contents = node->GetChildren();
-    while (contents) {
-      if (contents->GetName() == wxT("operator")) {
-        wxXmlNode *innernode = contents->GetChildren();
-        if (node) {
-          wxString content = innernode->GetContent();
-          if ((!content.IsEmpty()) &&
-              (m_configuration.m_maximaOperators.find(content) ==
-               m_configuration.m_maximaOperators.end())) {
-            if ((content[0] > '9') || (content[0] < '0')) {
-              m_configuration.m_maximaOperators[content] = 1;
-              if (!newOperators.IsEmpty())
-                newOperators += wxT(", ");
-              newOperators += content;
-            }
-          }
-        }
-      }
-      contents = contents->GetNext();
-    }
-    if (!newOperators.IsEmpty()) {
-      wxLogMessage(_("New maxima Operators detected: %s"),
-		   newOperators.utf8_str());
-      m_worksheet->Recalculate();
-    }
+  {
+    wxLogNull noErrorDialog;
+    xmldoc.Load(xmlStream, wxT("UTF-8"));
   }
+  if(!xmldoc.IsOk())
+    {
+      DoRawConsoleAppend(_("There was an error in the XML that should contain the list of operators.\n"
+			   "Please report this as a bug to the wxMaxima project."),
+			 MC_TYPE_ERROR);
+      AbortOnError();
+    }
+  else
+    {
+      wxXmlNode *node = xmldoc.GetRoot();
+      if (node != NULL) {
+	wxXmlNode *contents = node->GetChildren();
+	while (contents) {
+	  if (contents->GetName() == wxT("operator")) {
+	    wxXmlNode *innernode = contents->GetChildren();
+	    if (node) {
+	      wxString content = innernode->GetContent();
+	      if ((!content.IsEmpty()) &&
+		  (m_configuration.m_maximaOperators.find(content) ==
+		   m_configuration.m_maximaOperators.end())) {
+		if ((content[0] > '9') || (content[0] < '0')) {
+		  m_configuration.m_maximaOperators[content] = 1;
+		  if (!newOperators.IsEmpty())
+		    newOperators += wxT(", ");
+		  newOperators += content;
+		}
+	      }
+	    }
+	  }
+	  contents = contents->GetNext();
+	}
+	if (!newOperators.IsEmpty()) {
+	  wxLogMessage(_("New maxima Operators detected: %s"),
+		       newOperators.utf8_str());
+	  m_worksheet->Recalculate();
+	}
+      }
+    }
 }
 
 void wxMaxima::ReadAddVariables(wxString &data) {
@@ -3668,23 +3693,36 @@ void wxMaxima::ReadAddVariables(wxString &data) {
     wxXmlDocument xmldoc;
     wxString xml = data.Left(end + m_addVariablesSuffix.Length());
     wxStringInputStream xmlStream(xml);
-    xmldoc.Load(xmlStream, wxT("UTF-8"));
-    wxXmlNode *node = xmldoc.GetRoot();
-    if (node != NULL) {
-      wxXmlNode *var = node->GetChildren();
-      while (var != NULL) {
-        wxString name;
-        {
-          if (var->GetName() == wxT("variable")) {
-            wxXmlNode *valnode = var->GetChildren();
-            if (valnode)
-              m_worksheet->m_variablesPane->AddWatch(valnode->GetContent());
-          }
-        }
-        var = var->GetNext();
-      }
+    {
+      wxLogNull noErrorMessage;
+      xmldoc.Load(xmlStream, wxT("UTF-8"));
     }
-    data = data.Right(data.Length() - end - m_addVariablesSuffix.Length());
+    if(!xmldoc.IsOk())
+      {
+	DoRawConsoleAppend(_("There was an error in the XML that should contain a list of watch variables.\n"
+			     "Please report this as a bug to the wxMaxima project."),
+			   MC_TYPE_ERROR);
+	AbortOnError();
+      }
+    else
+      {
+	wxXmlNode *node = xmldoc.GetRoot();
+	if (node != NULL) {
+	  wxXmlNode *var = node->GetChildren();
+	  while (var != NULL) {
+	    wxString name;
+	    {
+	      if (var->GetName() == wxT("variable")) {
+		wxXmlNode *valnode = var->GetChildren();
+		if (valnode)
+		  m_worksheet->m_variablesPane->AddWatch(valnode->GetContent());
+	      }
+	    }
+	    var = var->GetNext();
+	  }
+	}
+	data = data.Right(data.Length() - end - m_addVariablesSuffix.Length());
+      }
   }
 }
 
