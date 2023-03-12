@@ -476,11 +476,18 @@
 			 y (cdr y)
 			 l nil))))))
 
+  ;; Converts the item x to XML - and should be able to handle all types of x.
+  ;;
+  ;; This function automatically determinines which types the elements
+  ;; are of and if parenthesis must be inserted around the element.
+  ;;
+  ;;  * l is the string (xml tag) to put to its left,
+  ;;  * r is the string (xml tag) to put to its right.
+  ;;  * lop is the operator on the left, and used to determine if we must
+  ;;    put parents around the contents
+  ;;  * rop is the operator on the right, and used to determine if we must
+  ;;    put parents around the contents
   (defun wxxml (x l r lop rop)
-    ;; x is the expression of interest; l is the list of strings to its
-    ;; left, r to its right. lop and rop are the operators on the left
-    ;; and right of x in the tree, and will determine if parens must
-    ;; be inserted
     (setq x (nformat x))
     (cond ((atom x) (wxxml-atom x l r))
 	  ((not (listp (car x)))
@@ -558,12 +565,12 @@
 	  x (wxxml-list-wrapitem (cdr x) nil r "<mo>,</mo>" "<mrow>" "</mrow>"))
     (append l x))
 
-
   (defun wxxml-dissym-to-string (lst &aux pname)
     (setq pname
 	  (wxxml-fix-string (format nil "~{~a~}" lst)))
     (concatenate 'string "<mi>" pname "</mi>"))
 
+  ;; Converts a symbol to a <mi> tag, if necessary escaping its name for XML.
   (defun wxxmlsym (x)
     (or (get x 'wxxmlsym)
 	(get x 'strsym)
