@@ -373,7 +373,7 @@
   (defun wxxml-stripdollar (sym &aux pname)
     (or (symbolp sym)
 	(return-from wxxml-stripdollar
-		     (wxxml-fix-string (format nil "~a" sym))))
+		     (wxxml-fix-string (stripdollar sym))))
     (setq pname (maybe-invert-string-case (symbol-name sym)))
     (setq pname (cond ((and (> (length pname) 0)
 			    (member (elt pname 0) '(#\$ #\&) :test #'eq))
@@ -406,9 +406,8 @@
 				 (array-dimensions x)))
 			((functionp x)
 			 (format nil "<mi>~a</mi>"
-				 (wxxml-fix-string
-				  (stripdollar
-				   (maybe-invert-string-case (format nil "~A" x))))))
+				 (wxxml-stripdollar
+				   (maybe-invert-string-case (format nil "~A" x)))))
 			((streamp x)
 			 (format nil "<mi>#{Stream [~A]</mi>}"
 				 (stream-element-type x)))
@@ -571,18 +570,16 @@
     (concatenate 'string "<mi>" pname "</mi>"))
 
   ;; Converts a symbol to a <mi> tag, if necessary escaping its name for XML.
-  ;;
-  ;; TODO: Does (list(stripdollar x)) need a wxxml-fix-string around stripdollar?
   (defun wxxmlsym (x)
     (or (get x 'wxxmlsym)
 	(get x 'strsym)
 	(and (get x 'dissym)
 	     (list (wxxml-dissym-to-string (get x 'dissym))))
-	(list (stripdollar x))))
+	(list (wxxml-stripdollar x))))
 
   (defun wxxmlword (x)
     (or (get x 'wxxmlword)
-	(stripdollar x)))
+	(wxxml-stripdollar x)))
 
   (wx-defprop bigfloat wxxml-bigfloat wxxml)
 
@@ -632,10 +629,9 @@
 							(if (symbolp boxname)
 							    (if (boundp boxname)
 								(wxxml-fix-string(eval var))
-							      (wxxml-fix-string
-							       (stripdollar
+							       (wxxml-stripdollar
 								(maybe-invert-string-case
-								 (symbol-name boxname)))))
+								 (symbol-name boxname))))
 							  (wxxml-fix-string
 							   (format nil "~a" boxname)))))
 					'("<mrow><hl>"))
@@ -1541,7 +1537,7 @@
 	  ((and $pdiff_uses_named_subscripts_for_derivatives
 		(< (apply #'+ (cddr x)) $pdiff_prime_limit))
 	   (let ((n (cddr x))
-		 (v (mapcar #'stripdollar (cdr $pdiff_diff_var_names)))
+		 (v (mapcar #'wxxml-stripdollar (cdr $pdiff_diff_var_names)))
 		 (p))
 	     (cond ((> (length n) (length v))
 		    (return-from wxxml-pderivop (wxxml-function x l r))))

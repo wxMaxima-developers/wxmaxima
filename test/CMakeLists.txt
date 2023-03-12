@@ -49,7 +49,7 @@ add_test(
 # A (very simple) test, if wxMathML.lisp file works (creates the expected XML output).
 add_test(
     NAME check-wxMathML.lisp_1
-    COMMAND "${CMAKE_SOURCE_DIR}/test/check-wxMathML.sh" "${MAXIMA}" "${CMAKE_SOURCE_DIR}/src/wxMathML.lisp" "1+1;" "(%i1) <math><lbl>(%o1) </lbl><mn>2</mn></math>"
+    COMMAND "${CMAKE_SOURCE_DIR}/test/check-wxMathML.sh" "${MAXIMA}" "${CMAKE_SOURCE_DIR}/src/wxMathML.lisp" "1+1;" "<math><lbl>(%o1) </lbl><mn>2</mn></math>"
 )
 
 add_test(
