@@ -4650,7 +4650,7 @@ bool Worksheet::ExportToHTML(const wxString &file) {
 
   m_configuration->ClipToDrawRegion(false);
   output << wxT("<!DOCTYPE html>\n");
-  output << wxT("<html lang=\"\">\n"); // We do not know the language of the
+  output << wxT("<html>\n"); // We do not know the language of the
                                        // exported document.
   output << wxT(" <head>\n");
   output << wxT("  <title>") + filename + wxT("</title>\n");
@@ -4672,7 +4672,7 @@ bool Worksheet::ExportToHTML(const wxString &file) {
     output << wxT("    TeX: {TagSide: \"left\"}\n");
     output << wxT("  })\n");
     output << wxT("</script>\n");
-    output << wxT("<script id=\"MathJax-script\" async src=\"") +
+    output << wxT("<script id=\"MathJax-script\" type=\"application/javascript\" async=\"true\" src=\"") +
       m_configuration->MathJaXURL() + wxT("\">\n");
     // prevent optimizing <script src="..."><script> to <script src=..."/>
     output << wxT("  // A comment that hinders wxWidgets from optimizing this "
