@@ -39,9 +39,10 @@ ParenCell::ParenCell(GroupCell *group, Configuration *config,
     m_innerCell(std::move(inner)),
     m_close(std::make_unique<TextCell>(group, config, wxT(")"))) {
   InitBitFields();
-  if (!m_innerCell)
-    m_innerCell = std::make_unique<VisiblyInvalidCell>(group, config);
-  m_innerCell->SetSuppressMultiplicationDot(true);
+  // If there is a contents it doesn't need to start with a multiplication
+  // dot.
+  if(m_innerCell)
+    m_innerCell->SetSuppressMultiplicationDot(true);
   m_open->SetStyle(TS_FUNCTION);
   m_close->SetStyle(TS_FUNCTION);
 }
@@ -78,13 +79,16 @@ void ParenCell::SetInner(std::unique_ptr<Cell> inner, CellType type) {
 }
 
 void ParenCell::Recalculate(AFontSize fontsize) {
-  m_innerCell->RecalculateList(fontsize);
+  if(m_innerCell)
+    m_innerCell->RecalculateList(fontsize);
   m_open->RecalculateList(fontsize);
   m_close->RecalculateList(fontsize);
 
   wxDC *dc = m_configuration->GetDC();
-  int size = m_innerCell->GetHeightList();
   auto fontsize1 = Scale_Px(fontsize);
+  int size = 0;
+  if(m_innerCell)
+    size = m_innerCell->GetHeightList();
   // If our font provides all the unicode chars we need we don't need
   // to bother which exotic method we need to use for drawing nice parenthesis.
   if (fontsize1 * 3 > size) {
@@ -97,11 +101,17 @@ void ParenCell::Recalculate(AFontSize fontsize) {
     if (m_signWidth < size / 15)
       m_signWidth = size / 15;
   }
-  m_width = m_innerCell->GetFullWidth() + m_signWidth * 2;
+  int innerCellWidth = 0;
+  if(m_innerCell)
+    innerCellWidth = m_innerCell->GetFullWidth();
+  m_width = innerCellWidth + m_signWidth * 2;
   if (IsBrokenIntoLines())
     m_width = 0;
 
-  m_height = wxMax(m_signHeight, m_innerCell->GetHeightList()) + Scale_Px(2);
+  int innerCellHeight = 0;
+  if(m_innerCell)
+    innerCellHeight = m_innerCell->GetHeightList();
+  m_height = wxMax(m_signHeight, innerCellHeight) + Scale_Px(2);
   m_center = m_height / 2;
 
   dc->GetTextExtent(wxT("("), &m_charWidth1, &m_charHeight1);
@@ -109,8 +119,11 @@ void ParenCell::Recalculate(AFontSize fontsize) {
     m_charHeight1 = 2;
 
   if (IsBrokenIntoLines()) {
-    m_height = wxMax(m_innerCell->GetHeightList(), m_open->GetHeightList());
-    m_center = wxMax(m_innerCell->GetCenterList(), m_open->GetCenterList());
+    int innerCellCenter = 0;
+    if(m_innerCell)
+      innerCellCenter = m_innerCell->GetCenterList();
+    m_height = wxMax(innerCellHeight, m_open->GetHeightList());
+    m_center = wxMax(innerCellCenter, m_open->GetCenterList());
   } else {
     if (m_innerCell) {
       switch (m_bigParenType) {
@@ -149,15 +162,24 @@ void ParenCell::Draw(wxPoint point) {
 
     switch (m_bigParenType) {
     case Configuration::ascii:
-      innerCellPos.x += m_open->GetWidth();
-      m_open->DrawList(point);
-      m_close->DrawList(wxPoint(
-				point.x + m_open->GetWidth() + m_innerCell->GetFullWidth(), point.y));
-      break;
+      {
+	innerCellPos.x += m_open->GetWidth();
+	m_open->DrawList(point);
+	int innerCellWidth = 0;
+	if(m_innerCell)
+	  innerCellWidth = m_innerCell->GetFullWidth();
+	
+	m_close->DrawList(wxPoint(
+				  point.x + m_open->GetWidth() + innerCellWidth, point.y));
+	break;
+      }
     default: {
       wxDC *adc = m_configuration->GetAntialiassingDC();
-      innerCellPos.y +=
-	(m_innerCell->GetCenterList() - m_innerCell->GetHeightList() / 2);
+      if(m_innerCell)
+	{
+	  innerCellPos.y +=
+	    (m_innerCell->GetCenterList() - m_innerCell->GetHeightList() / 2);
+	}
       SetPen(1.0);
       SetBrush();
 
@@ -230,6 +252,8 @@ wxString ParenCell::ToString() const {
 }
 
 wxString ParenCell::ToMatlab() const {
+  if (!m_innerCell)
+    return "()";
   wxString s;
   if (!IsBrokenIntoLines()) {
     if (m_print)
@@ -241,6 +265,8 @@ wxString ParenCell::ToMatlab() const {
 }
 
 wxString ParenCell::ToTeX() const {
+  if (!m_innerCell)
+    return "()";
   wxString s;
   if (!IsBrokenIntoLines()) {
     wxString innerCell = m_innerCell->ListToTeX();
@@ -266,10 +292,16 @@ wxString ParenCell::ToTeX() const {
 }
 
 wxString ParenCell::ToOMML() const {
-  return wxT("<m:d><m:dPr m:begChr=\"") + XMLescape(m_open->ToString()) +
-    wxT("\" m:endChr=\"") + XMLescape(m_close->ToString()) +
-    wxT("\" m:grow=\"1\"></m:dPr><m:e>") + m_innerCell->ListToOMML() +
-    wxT("</m:e></m:d>");
+  if(m_innerCell)
+    return wxT("<m:d><m:dPr m:begChr=\"") + XMLescape(m_open->ToString()) +
+      wxT("\" m:endChr=\"") + XMLescape(m_close->ToString()) +
+      wxT("\" m:grow=\"1\"></m:dPr><m:e>") + m_innerCell->ListToOMML() +
+      wxT("</m:e></m:d>");
+  else
+    return wxT("<m:d><m:dPr m:begChr=\"") + XMLescape(m_open->ToString()) +
+      wxT("\" m:endChr=\"") + XMLescape(m_close->ToString()) +
+      wxT("\" m:grow=\"1\"></m:dPr><m:e>") +
+      wxT("</m:e></m:d>");
 }
 
 wxString ParenCell::ToMathML() const {
@@ -278,15 +310,21 @@ wxString ParenCell::ToMathML() const {
 
   wxString open = m_open->ToString();
   wxString close = m_close->ToString();
+  wxString innerCellContents;
+  if(m_innerCell)
+    innerCellContents = m_innerCell->ListToMathML();
+  
   return (wxT("<mrow><mo>") + XMLescape(open) + wxT("</mo>") +
-          m_innerCell->ListToMathML() + wxT("<mo>") + XMLescape(close) +
+          innerCellContents + wxT("<mo>") + XMLescape(close) +
           wxT("</mo></mrow>\n"));
 }
 
 wxString ParenCell::ToXML() const {
   //  if(IsBrokenIntoLines())
   //    return wxEmptyString;
-  wxString s = m_innerCell->ListToXML();
+  wxString s;
+  if(m_innerCell)
+    s = m_innerCell->ListToXML();
   wxString flags;
   if (HasHardLineBreak())
     flags += wxT(" breakline=\"true\"");
@@ -298,8 +336,13 @@ bool ParenCell::BreakUp() {
     return false;
 
   Cell::BreakUpAndMark();
-  m_open->SetNextToDraw(m_innerCell);
-  m_innerCell->last()->SetNextToDraw(m_close);
+  if(m_innerCell)
+    {
+      m_open->SetNextToDraw(m_innerCell);
+      m_innerCell->last()->SetNextToDraw(m_close);
+    }					 
+  else
+    m_open->SetNextToDraw(m_close);
   m_close->SetNextToDraw(m_nextToDraw);
   m_nextToDraw = m_open;
 

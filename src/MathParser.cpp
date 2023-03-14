@@ -1038,8 +1038,8 @@ std::unique_ptr<Cell> MathParser::ParseConjugateTag(wxXmlNode *node) {
 std::unique_ptr<Cell> MathParser::ParseParenTag(wxXmlNode *node) {
   wxXmlNode *child = node->GetChildren();
   child = SkipWhitespaceNode(child);
-  // No special Handling for NULL args here: They are completely legal in this
-  // case.
+  // No special Handling for NULL args here: They are completely legal
+  // here as they just indicate an empty parenthesis.
   auto inner = ParseTag(child, true);
   auto cell =
     std::make_unique<ParenCell>(m_group, m_configuration, std::move(inner));
