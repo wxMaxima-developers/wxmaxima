@@ -396,6 +396,8 @@
   ;;  * l is the opening xml tag to put before it
   ;;  * r is the opening xml tag to put before it
   ;;  * tmp-x isn't a parameter, but a temporary variable
+  ;;
+  ;; Automatically quotes special characters for XML
   (defun wxxml-atom (x l r &aux tmp-x)
     (append l
 	    (list (cond ((numberp x) (wxxmlnumformat x))
@@ -421,17 +423,20 @@
 			 (format nil "<mi lisp=\"wxxml-atom\">~a</mi>" x))
 			((typep x 'structure-object)
 			 (let ((tmp-string (format nil "~s" x)))
-			   (format nil "<st lisp=\"wxxml-atom\">~a</st>" (wxxml-fix-string tmp-string))))
+			   (format nil "<st lisp=\"wxxml-atom\">~a</st>"
+				   (wxxml-fix-string tmp-string))))
 			((hash-table-p x)
 			 (format nil "<mi lisp=\"wxxml-atom\">#{HashTable}</mi>"))
-			((and $wxsubscripts (wxautosubscriptp x)))
+			((and $wxsubscripts (subscriptp x)))
 			(t (wxxml-stripdollar x))))
 	    r))
 
-  ;; Handles converting functions to xml
+  ;; Converts the function x to xml
   ;;
   ;; we could patch this so sin x rather than sin(x), but instead we made
   ;; sin a prefix operator
+  ;;
+  ;; l and r are the additional XML tags we should put around the function.
   (defun wxxml-function (x l r)
     (setq l
 	  (let ((*var-tag* '("<fnm lisp=\"wxxml-function\">" "</fnm>")))
@@ -441,6 +446,9 @@
 		   'mparen 'mparen))
     (append l r))
 
+  ;; Converts the defstruct x to xml
+  ;;
+  ;; l and r are the additional XML tags we should put around the defstruct.
   (defun wxxml-defstruct (x l r)
     (let ((L1 (cdr (get (caar x) 'defstruct-template)))
 	  (L2 (cdr x)))
@@ -565,6 +573,7 @@
 	  x (wxxml-list-wrapitem (cdr x) nil r "<mo>,</mo>" "<mrow>" "</mrow>"))
     (append l x))
 
+  ;; pname is not a parameter, but a temporary variable name
   (defun wxxml-dissym-to-string (lst &aux pname)
     (setq pname
 	  (wxxml-fix-string (format nil "~{~a~}" lst)))
