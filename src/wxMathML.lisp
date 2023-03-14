@@ -255,7 +255,7 @@
        (post-subscripts-xml (if post-subscripts (wxxml-list post-subscripts (list "<mrow>") mrow-terminate separator-xml) (list "<none/>")))
        (post-superscripts-xml (if post-superscripts (wxxml-list post-superscripts (list "<mrow>") mrow-terminate separator-xml) (list "<none/>")))
        (mmultiscripts-xml       
-	(append l (list (format nil "<mmultiscripts altCopy=\"~A\">" (wxxml-alt-copy-text x)))
+	(append l (list (format nil "<mmultiscripts lisp=\"wxxml-array-with-display-properties\" altCopy=\"~A\">" (wxxml-alt-copy-text x)))
 			(wxxml base-symbol nil nil 'mparen 'mparen)
 			post-subscripts-xml post-superscripts-xml
 			(list (concatenate
@@ -272,13 +272,14 @@
     (if (eq 'mqapply (caar x))
 	(setq f (cadr x)
 	      x (cdr x)
-	      l (wxxml f (append l (list "<munder><p>")) (list "</p>")
+	      l (wxxml f (append l (list "<munder lisp=\"wxxml-array-no-display-properties\"><p>")) (list "</p>")
 		       'mparen 'mparen))
       (setq f (caar x)
-	    l (wxxml f (append l '("<munder><mrow>"))
+	    l (wxxml f (append l '("<munder lisp=\"wxxml-array-no-display-properties\"><mrow>"))
 		     (list "</mrow>") lop 'mfunction)))
     (setq r (nconc (wxxml-list (cdr x) (list "<mrow>")
-			       (list "</mrow></munder>") "<mi>,</mi>") r))
+			       (list "</mrow></munder>") "<mi>,</mi>")
+		   r))
     (nconc l r))
 
   ;; (maketag value,tagname) produces the text <tagname>value</tagname>.
@@ -475,18 +476,7 @@
 			 y (cdr y)
 			 l nil))))))
 
-  ;; Converts the item x to XML - and should be able to handle all types of x.
-  ;;
-  ;; This function automatically determinines which types the elements
-  ;; are of and if parenthesis must be inserted around the element.
-  ;;
-  ;;  * l is the string (xml tag) to put to its left,
-  ;;  * r is the string (xml tag) to put to its right.
-  ;;  * lop is the operator on the left, and used to determine if we must
-  ;;    put parents around the contents
-  ;;  * rop is the operator on the right, and used to determine if we must
-  ;;    put parents around the contents
-  (defun wxxml (x l r lop rop)
+    (defun wxxml (x l r lop rop)
     (setq x (nformat x))
     (cond ((atom x) (wxxml-atom x l r))
 	  ((not (listp (car x)))
@@ -496,7 +486,8 @@
 	   (wxxml-paren x l r))
 	  ;; special check needed because macsyma notates arrays peculiarly
 	  ((member 'array (cdar x) :test #'eq) (wxxml-array x l r))
-	  ;; dispatch for object-oriented wxxml-ifiying
+	  ;; If the object has a property named "wxxml" cal the function
+	  ;; the propertie's value tells us to call
 	  ((wxxml-get (caar x) 'wxxml) (funcall (get (caar x) 'wxxml) x l r))
 	  ((equal (wxxml-get (caar x) 'dimension) 'dimension-infix)
 	   (wxxml-infix x l r))
@@ -519,6 +510,11 @@
 
   ;; set up a list , separated by symbols (, * ...)  and then tack on the
   ;; ending item (e.g. "]" or perhaps ")"
+  ;; TODO: For the case of
+  ;;
+  ;; errcatch(desolve('diff(f(x),x),x));
+  ;;
+  ;; a wxxml-fix-string is missing here.
   (defun wxxml-list (x l r sym)
     (if (null x) r
       (do ((nl))
@@ -587,9 +583,9 @@
   (defun wxxml-bigfloat (x l r)
     (append l '("<mn>") (fpformat x) '("</mn>") r))
 
-  (wx-defprop mprog  "<fnm>block</fnm>" wxxmlword)
-  (wx-defprop $true  "<t>true</t>"  wxxmlword)
-  (wx-defprop $false "<t>false</t>" wxxmlword)
+  (wx-defprop mprog  "<fnm lisp=\"mprog\">block</fnm>" wxxmlword)
+  (wx-defprop $true  "<t lisp=\"true\">true</t>"  wxxmlword)
+  (wx-defprop $false "<t lisp=\"false\">false</t>" wxxmlword)
 
   (wx-defprop mprogn wxxml-matchfix wxxml)
   (wx-defprop mprogn (("<mrow><p>") "</p></mrow>") wxxmlsym)
@@ -1327,8 +1323,6 @@
 		 (t (list (make-tag "unless" "fnm") (seventh x))))
 	   (list (make-tag "do" "fnm") (eighth x))))
 
-
-  ;; TODO: Here we should somehow call wxxml-fix-string, I believe.
   (defun wxxml-matchfix-np (x l r)
     (setq l (append l (car (wxxmlsym (caar x))))
 	  ;; car of wxxmlsym of a matchfix operator is the lead op
