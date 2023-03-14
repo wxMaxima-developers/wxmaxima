@@ -410,6 +410,11 @@
 			     (setq tmp-x (format nil "\"~a\"" tmp-x)))
 			 (concatenate 'string "<st>" tmp-x "</st>"))
 			((arrayp x)
+			 ;; Of arrays we print the dimensions, not the contents:
+			 ;; arrays are all about fast handling of big amounts of
+			 ;; data. Displaying that data would be slow and most
+			 ;; probably generate more screenfuls of contents than
+			 ;; anybody would be willing to read
 			 (format nil "<mi>#{Lisp array [~{~a~^,~}]}</mi>"
 				 (array-dimensions x)))
 			((functionp x)
