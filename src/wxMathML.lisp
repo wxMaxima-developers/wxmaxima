@@ -401,24 +401,24 @@
 			 (setq tmp-x (wxxml-fix-string x))
 			 (if (and (boundp '$stringdisp) $stringdisp)
 			     (setq tmp-x (format nil "\"~a\"" tmp-x)))
-			 (concatenate 'string "<st>" tmp-x "</st>"))
+			 (concatenate 'string "<st lisp=\"wxxml-atom\">" tmp-x "</st>"))
 			((arrayp x)
-			 (format nil "<mi>#{Lisp array [~{~a~^,~}]}</mi>"
+			 (format nil "<mi lisp=\"wxxml-atom\">#{Lisp array [~{~a~^,~}]}</mi>"
 				 (array-dimensions x)))
 			((functionp x)
-			 (format nil "<mi>~a</mi>"
+			 (format nil "<mi lisp=\"wxxml-atom\">~a</mi>"
 				 (wxxml-stripdollar
 				   (maybe-invert-string-case (format nil "~A" x)))))
 			((streamp x)
-			 (format nil "<mi>#{Stream [~A]</mi>}"
+			 (format nil "<mi lisp=\"wxxml-atom\">#{Stream [~A]</mi>}"
 				 (stream-element-type x)))
 			((member (type-of x) '(GRAPH DIGRAPH))
-			 (format nil "<mi>~a</mi>" x))
+			 (format nil "<mi lisp=\"wxxml-atom\">~a</mi>" x))
 			((typep x 'structure-object)
 			 (let ((tmp-string (format nil "~s" x)))
-			   (format nil "<st>~a</st>" (wxxml-fix-string tmp-string))))
+			   (format nil "<st lisp=\"wxxml-atom\">~a</st>" (wxxml-fix-string tmp-string))))
 			((hash-table-p x)
-			 (format nil "<mi>#{HashTable}</mi>"))
+			 (format nil "<mi lisp=\"wxxml-atom\">#{HashTable}</mi>"))
 			((and $wxsubscripts (subscriptp x)))
 			(t (wxxml-stripdollar x))))
 	    r))
