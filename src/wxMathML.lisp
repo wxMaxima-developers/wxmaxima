@@ -309,9 +309,9 @@
 
   ;; Returns either nil (no autosubscript needed) or the result#
   ;; of the autosubscript process 
-  (defun wxautosubscriptp (x)
+  (defun subscriptp (x)
     (unless (symbolp x)
-      (return-from wxautosubscriptp x))
+      (return-from subscriptp x))
     (let* ((name ($sconcat x))
 	   (pos (search "_" name :from-end t)))
       (when pos
@@ -408,25 +408,24 @@
 			 (setq tmp-x (wxxml-fix-string x))
 			 (if (and (boundp '$stringdisp) $stringdisp)
 			     (setq tmp-x (format nil "\"~a\"" tmp-x)))
-			 (concatenate 'string "<st lisp=\"wxxml-atom\">" tmp-x "</st>"))
+			 (concatenate 'string "<st>" tmp-x "</st>"))
 			((arrayp x)
-			 (format nil "<mi lisp=\"wxxml-atom\">#{Lisp array [~{~a~^,~}]}</mi>"
+			 (format nil "<mi>#{Lisp array [~{~a~^,~}]}</mi>"
 				 (array-dimensions x)))
 			((functionp x)
-			 (format nil "<mi lisp=\"wxxml-atom\">~a</mi>"
+			 (format nil "<mi>~a</mi>"
 				 (wxxml-stripdollar
 				   (maybe-invert-string-case (format nil "~A" x)))))
 			((streamp x)
-			 (format nil "<mi lisp=\"wxxml-atom\">#{Stream [~A]</mi>}"
+			 (format nil "<mi>#{Stream [~A]</mi>}"
 				 (stream-element-type x)))
 			((member (type-of x) '(GRAPH DIGRAPH))
-			 (format nil "<mi lisp=\"wxxml-atom\">~a</mi>" x))
+			 (format nil "<mi>~a</mi>" x))
 			((typep x 'structure-object)
 			 (let ((tmp-string (format nil "~s" x)))
-			   (format nil "<st lisp=\"wxxml-atom\">~a</st>"
-				   (wxxml-fix-string tmp-string))))
+			   (format nil "<st>~a</st>" (wxxml-fix-string tmp-string))))
 			((hash-table-p x)
-			 (format nil "<mi lisp=\"wxxml-atom\">#{HashTable}</mi>"))
+			 (format nil "<mi>#{HashTable}</mi>"))
 			((and $wxsubscripts (subscriptp x)))
 			(t (wxxml-stripdollar x))))
 	    r))
