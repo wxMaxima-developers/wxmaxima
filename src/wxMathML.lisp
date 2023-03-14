@@ -309,9 +309,9 @@
 
   ;; Returns either nil (no autosubscript needed) or the result#
   ;; of the autosubscript process 
-  (defun subscriptp (x)
+  (defun wxautosubscriptp (x)
     (unless (symbolp x)
-      (return-from subscriptp x))
+      (return-from wxautosubscriptp x))
     (let* ((name ($sconcat x))
 	   (pos (search "_" name :from-end t)))
       (when pos
@@ -391,6 +391,11 @@
     (setq pname (wxxml-fix-string pname))
     (concatenate 'string (car *var-tag*) pname (cadr *var-tag*)))
 
+  ;; Convert the atom x to XML
+  ;;
+  ;;  * l is the opening xml tag to put before it
+  ;;  * r is the opening xml tag to put before it
+  ;;  * tmp-x isn't a parameter, but a temporary variable
   (defun wxxml-atom (x l r &aux tmp-x)
     (append l
 	    (list (cond ((numberp x) (wxxmlnumformat x))
@@ -419,7 +424,7 @@
 			   (format nil "<st lisp=\"wxxml-atom\">~a</st>" (wxxml-fix-string tmp-string))))
 			((hash-table-p x)
 			 (format nil "<mi lisp=\"wxxml-atom\">#{HashTable}</mi>"))
-			((and $wxsubscripts (subscriptp x)))
+			((and $wxsubscripts (wxautosubscriptp x)))
 			(t (wxxml-stripdollar x))))
 	    r))
 
