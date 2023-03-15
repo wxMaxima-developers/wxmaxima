@@ -2,7 +2,7 @@
 
 INPUT="$1"
 EXPECTED_OUTPUT="$2"
-MAXIMA_OUTPUT=$(echo "$INPUT" | tr "\n" " " | "@MAXIMA@" --quiet --init-lisp="@CMAKE_SOURCE_DIR@/src/wxMathML.lisp")
+MAXIMA_OUTPUT=$(echo "$INPUT" | "@MAXIMA@" --quiet --init-lisp="@CMAKE_SOURCE_DIR@/src/wxMathML.lisp" | tr "\n" " ")
 if echo "$MAXIMA_OUTPUT" |grep "$EXPECTED_OUTPUT"; then
     echo "Success!"
     exit 0
