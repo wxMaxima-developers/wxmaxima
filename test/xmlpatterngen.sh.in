@@ -1,0 +1,5 @@
+#!/bin/sh
+#
+# Tells us what maxima currently outputs for a given input.
+#
+echo $1 | @MAXIMA@ --init-lisp="@CMAKE_SOURCE_DIR@/src/wxMathML.lisp" | tr "\n" " "

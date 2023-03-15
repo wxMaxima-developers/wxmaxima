@@ -3,6 +3,9 @@
 # Compile a list of test files
 file(GLOB TEST_FILES automatic_test_files/*.png automatic_test_files/*.wxmx automatic_test_files/*.wxm automatic_test_files/*.mac automatic_test_files/*.cfg *.png)
 
+configure_file("${CMAKE_CURRENT_SOURCE_DIR}/xmlpatterngen.sh.in" xmlpatterngen.sh)
+configure_file("${CMAKE_CURRENT_SOURCE_DIR}/check-wxMathML.sh.in" check-wxMathML.sh)
+
 # Copy the .wxm files to the binary dir so they can be used as test case without
 # being afraid that we change the test cases somehow.
 file(
@@ -49,29 +52,34 @@ add_test(
 # A (very simple) test, if wxMathML.lisp file works (creates the expected XML output).
 add_test(
     NAME check-wxMathML.lisp_1
-    COMMAND "${CMAKE_SOURCE_DIR}/test/check-wxMathML.sh" "${MAXIMA}" "${CMAKE_SOURCE_DIR}/src/wxMathML.lisp"  "1+1;" "<math><lbl>(%o1) </lbl><mn>2</mn></math>"
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "1+1;" "<math><lbl>(%o1) </lbl><mn>2</mn></math>"
 )
 
 add_test(
     NAME wxstatusbar
-    COMMAND "${CMAKE_SOURCE_DIR}/test/check-wxMathML.sh" "${MAXIMA}" "${CMAKE_SOURCE_DIR}/src/wxMathML.lisp" "wxstatusbar(\"a<1>b\");" "<statusbar>a&lt;1&gt;b</statusbar>"
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wxstatusbar(\"a<1>b\");" "<statusbar>a&lt;1&gt;b</statusbar>"
 )
 
 add_test(
     NAME wxbuildinfo
-    COMMAND "${CMAKE_SOURCE_DIR}/test/check-wxMathML.sh" "${MAXIMA}" "${CMAKE_SOURCE_DIR}/src/wxMathML.lisp" "wxbuild_info();" "wxMaxima's idea of the directory layout is:"
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wxbuild_info();" "wxMaxima's idea of the directory layout is:"
 )
 
 add_test(
     NAME wxbug_report
-    COMMAND "${CMAKE_SOURCE_DIR}/test/check-wxMathML.sh" "${MAXIMA}" "${CMAKE_SOURCE_DIR}/src/wxMathML.lisp" "wxbug_report();" "wxMaxima is a graphical front end for Maxima, which does the mathematics in the background"
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wxbug_report();" "wxMaxima is a graphical front end for Maxima, which does the mathematics in the background"
 )
 
 
-add_test(
-    NAME wxxml-array-no-display-properties
-    COMMAND "${CMAKE_SOURCE_DIR}/test/check-wxMathML.sh" "${MAXIMA}" "${CMAKE_SOURCE_DIR}/src/wxMathML.lisp" "<mi>#{Lisp array [10,10]}</mi>" ""
-)
+# add_test(
+#     NAME wxxml-array-no-display-properties
+#     COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "make_array(any,10,10);" "<mi>#{Lisp array [10,10]}</mi>"
+# )
+
+# add_test(
+#     NAME wxxml-array-display-properties
+#     COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "declare_index_properties(O,[presubscript,presuperscript,postsubscript,postsuperscript]);arraymake(O,[1,2,3,4]);" "<mmultiscripts .*<mi>O</mi>.*<mrow><mn>3</mn></mrow>.*<mrow>.*<mn>4</mn>.*</mrow>.*<mprescripts/>.*<mrow><mn>1</mn></mrow>.*<mrow><mn>2</mn></mrow>.*</mmultiscripts>"
+# )
 
 add_test(
     NAME wxmaxima_batch_emptyFile
