@@ -70,7 +70,6 @@ add_test(
     COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wxbug_report();" "wxMaxima is a graphical front end for Maxima, which does the mathematics in the background"
 )
 
-
 add_test(
     NAME wxxml-array-no-display-properties
     COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "make_array(any,10,10);" "<mi lisp=.*>#{Lisp array \[10,10\]}</mi>"
