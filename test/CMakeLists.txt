@@ -73,7 +73,7 @@ add_test(
 
 add_test(
     NAME wxxml-array-no-display-properties
-    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "make_array(any,10,10);" "<mi>#{Lisp array \[10,10\]}</mi>"
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "make_array(any,10,10);" "<mi lisp=.*>#{Lisp array \[10,10\]}</mi>"
 )
 
 # add_test(

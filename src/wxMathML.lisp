@@ -416,7 +416,7 @@
 			 ;; data. Displaying that data would be slow and most
 			 ;; probably generate more screenfuls of contents than
 			 ;; anybody would be willing to read
-			 (format nil "<mi>#{Lisp array [~{~a~^,~}]}</mi>"
+			 (format nil "<mi lisp=\"wxxml-atom\">#{Lisp array [~{~a~^,~}]}</mi>"
 				 (array-dimensions x)))
 			((functionp x)
 			 (format nil "<mi>~a</mi>"
