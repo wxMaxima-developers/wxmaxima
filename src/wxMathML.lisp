@@ -135,6 +135,7 @@
     (format t "<statusbar>~a</statusbar>~%" (wxxml-fix-string
 					     (apply '$sconcat status)))
     (finish-output)
+    t
     )
 
 
