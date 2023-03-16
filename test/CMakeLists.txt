@@ -3,6 +3,11 @@
 # Compile a list of test files
 file(GLOB TEST_FILES automatic_test_files/*.png automatic_test_files/*.wxmx automatic_test_files/*.wxm automatic_test_files/*.mac automatic_test_files/*.cfg *.png)
 
+find_program(MAXIMA maxima)
+execute_process(COMMAND ${MAXIMA} --version
+                OUTPUT_VARIABLE MAXIMA_VERSION_TEXT OUTPUT_STRIP_TRAILING_WHITESPACE)
+message(STATUS "Found maxima: ${MAXIMA} (found version \"${MAXIMA_VERSION_TEXT}\")")
+
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/xmlpatterngen.sh.in" xmlpatterngen.sh)
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/check-wxMathML.sh.in" check-wxMathML.sh)
 
@@ -26,10 +31,6 @@ file(
 # acceptable. In other words: never extend test timeouts. Fix the
 # performance bugs that cause such behavior.
 
-find_program(MAXIMA maxima)
-execute_process(COMMAND ${MAXIMA} --version
-                OUTPUT_VARIABLE MAXIMA_VERSION_TEXT OUTPUT_STRIP_TRAILING_WHITESPACE)
-message(STATUS "Found maxima: ${MAXIMA} (found version \"${MAXIMA_VERSION_TEXT}\")")
 
 set(CTEST_TEST_TIMEOUT 120)
 
