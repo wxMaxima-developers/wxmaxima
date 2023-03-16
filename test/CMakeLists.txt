@@ -53,32 +53,32 @@ add_test(
 # A (very simple) test, if wxMathML.lisp file works (creates the expected XML output).
 add_test(
     NAME check-wxMathML.lisp_1
-    COMMAND "sh ${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "1+1;" "<math><lbl>(%o1) </lbl><mn>2</mn></math>"
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "1+1;" "<math><lbl>(%o1) </lbl><mn>2</mn></math>"
 )
 
 add_test(
     NAME wxstatusbar
-    COMMAND "sh ${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wxstatusbar(\"a<1>b\");" "<statusbar>a&lt;1&gt;b</statusbar>"
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wxstatusbar(\"a<1>b\");" "<statusbar>a&lt;1&gt;b</statusbar>"
 )
 
 add_test(
     NAME wxbuildinfo
-    COMMAND "sh ${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wxbuild_info();" "wxMaxima's idea of the directory layout is:"
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wxbuild_info();" "wxMaxima's idea of the directory layout is:"
 )
 
 add_test(
     NAME wxbug_report
-    COMMAND "sh ${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wxbug_report();" "wxMaxima is a graphical front end for Maxima, which does the mathematics in the background"
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wxbug_report();" "wxMaxima is a graphical front end for Maxima, which does the mathematics in the background"
 )
 
 add_test(
     NAME wxxml-array-no-display-properties
-    COMMAND "sh ${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "make_array(any,10,10);" "<mi lisp=.*>#{Lisp array \[10,10\]}</mi>"
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "make_array(any,10,10);" "<mi lisp=.*>#{Lisp array \[10,10\]}</mi>"
 )
 
 # add_test(
 #     NAME wxxml-array-display-properties
-#     COMMAND "sh ${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "declare_index_properties(O,[presubscript,presuperscript,postsubscript,postsuperscript]);arraymake(O,[1,2,3,4]);" "<mmultiscripts .*<mi>O</mi>.*<mrow><mn>3</mn></mrow>.*<mrow>.*<mn>4</mn>.*</mrow>.*<mprescripts/>.*<mrow><mn>1</mn></mrow>.*<mrow><mn>2</mn></mrow>.*</mmultiscripts>"
+#     COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "declare_index_properties(O,[presubscript,presuperscript,postsubscript,postsuperscript]);arraymake(O,[1,2,3,4]);" "<mmultiscripts .*<mi>O</mi>.*<mrow><mn>3</mn></mrow>.*<mrow>.*<mn>4</mn>.*</mrow>.*<mprescripts/>.*<mrow><mn>1</mn></mrow>.*<mrow><mn>2</mn></mrow>.*</mmultiscripts>"
 # )
 
 add_test(
