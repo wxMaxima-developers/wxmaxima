@@ -1591,8 +1591,8 @@
 	  (tag (caddr x))
 	  (prop (cadddr x)))
       (if prop
-	  (append l (list (format nil "<~a ~a>~a</~a>" tag prop name tag)) r)
-	(append l (list (format nil "<~a>~a</~a>" tag name tag)) r))))
+	  (append l (list (format nil "<~a ~a lisp=\"wxxml-tag\">~a</~a>" tag prop name tag)) r)
+	(append l (list (format nil "<~a lisp=\"wxxml-tag\>~a</~a>" tag name tag)) r))))
 
 
   (defvar *image-counter* 0)
