@@ -76,10 +76,10 @@ add_test(
     COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "make_array(any,10,10);" "<mi lisp=.*>#{Lisp array .10,10.}</mi>"
 )
 
-# add_test(
-#     NAME wxxml-array-display-properties
-#     COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "declare_index_properties(O,[presubscript,presuperscript,postsubscript,postsuperscript]);arraymake(O,[1,2,3,4]);" "<mmultiscripts .*<mi>O</mi>.*<mrow><mn>3</mn></mrow>.*<mrow>.*<mn>4</mn>.*</mrow>.*<mprescripts/>.*<mrow><mn>1</mn></mrow>.*<mrow><mn>2</mn></mrow>.*</mmultiscripts>"
-# )
+add_test(
+    NAME wxxml-array-display-properties
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "declare_index_properties(O,[presubscript,presuperscript,postsubscript,postsuperscript]);arraymake(O,[1,2,3,4]);" "<mmultiscripts .* altCopy=.*><mi>O</mi><mrow><mn>3</mn></mrow> <mrow><mn>4</mn></mrow> <mprescripts/> <mrow><mn>1</mn></mrow> <mrow><mn>2</mn></mrow> </mmultiscripts>"
+)
 
 add_test(
     NAME wxmaxima_batch_emptyFile
