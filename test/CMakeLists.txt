@@ -82,6 +82,16 @@ add_test(
 )
 
 add_test(
+    NAME wxxmltag
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wxxmltag(a\\\<,b);" "<b>a\&lt;</b>"
+)
+
+# add_test(
+#     NAME wxxmltag2
+#     COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wxxmltag(\"a<\",b);" "<b>a\&lt;</b>"
+# )
+
+add_test(
     NAME wxmaxima_batch_emptyFile
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
     COMMAND wxmaxima --logtostderr --pipe --batch empty_file.wxm)

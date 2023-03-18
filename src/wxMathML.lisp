@@ -225,6 +225,12 @@
   (defun wxxml-get (x prop)
     (if (symbolp x) (get x prop)))
 
+  ;; Display all kinds of arrays.
+  ;;
+  ;; As arrays are most likely either meant for efficiently handling big amounts of
+  ;; data or as a vehicle for pre- and post-subscripts we only output info about the
+  ;; array, not the contents thereof.
+  ;;
   ;; Adapted from DIMENSION-ARRAY and DIMENSION-INDICES in Maxima src/displa.lisp.
   (defun wxxml-array (x l r &aux base-symbol)
     (if (eq (caar x) 'mqapply)
@@ -246,6 +252,8 @@
             (wxxml-array-with-display-properties x base-symbol l r pre-subscripts pre-superscripts post-subscripts post-superscripts))
           (wxxml-array-no-display-properties x l r)))))
 
+
+  ;; Display an array with pre- or post- super- or subscripts.
   (defun wxxml-array-with-display-properties (x base-symbol l r pre-subscripts pre-superscripts post-subscripts post-superscripts &aux f)
     (let*
       ((separator (let ((x (safe-$get base-symbol '$display_index_separator))) (if (or (null x) (stringp x)) x (coerce (mstring x) 'string))))
@@ -269,6 +277,11 @@
 			r)))
        mmultiscripts-xml))
     
+  ;; Display arrays without pre- or post- super- or subscripts..
+  ;;
+  ;; As this kind of arrays are most likely either meant for efficiently handling
+  ;; big amounts of data we only output info about the array, not the contents
+  ;; thereof.
   (defun wxxml-array-no-display-properties (x l r &aux f)
     (if (eq 'mqapply (caar x))
 	(setq f (cadr x)
