@@ -1615,13 +1615,11 @@
 				(getpid) *image-counter*)
 		      (format nil "maxout_~d_~d" (getpid) *image-counter*))))
 
-  ;; The "solid" has to be changed to "dashed" as soon as plot() starts
-  ;; supporting other line styles than "solid" or "dots".
   (defun $wxplot_preamble ()
     (let ((frmt
 	   (cond
 	    ($wxplot_old_gnuplot "set terminal png picsize ~d ~d; set zeroaxis;")
-	    ((and (not $wxplot_usesvg) $wxplot_pngcairo) "set terminal pngcairo solid background \"white\" enhanced font \"arial,10\" fontscale 1.0 size ~d,~d; set zeroaxis;")
+	    ((and (not $wxplot_usesvg) $wxplot_pngcairo) "set terminal pngcairo dashed background \"white\" enhanced font \"arial,10\" fontscale 1.0 size ~d,~d; set zeroaxis;")
 	    ((and (not $wxplot_usesvg) (not $wxplot_pngcairo)) "set terminal png size ~d,~d; set zeroaxis;")
 	    (t "set terminal svg size ~d,~d; set zeroaxis;"))))
       (format nil frmt
