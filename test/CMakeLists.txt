@@ -92,6 +92,11 @@ add_test(
 )
 
 add_test(
+     NAME show_image
+     COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "show_image(\"test<2.png\");" "<img del=\"no\" lisp=.*>test&lt;2.png</img>"
+)
+
+add_test(
     NAME wxmaxima_batch_emptyFile
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
     COMMAND wxmaxima --logtostderr --pipe --batch empty_file.wxm)
