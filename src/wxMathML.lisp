@@ -405,7 +405,7 @@
     (setq pname (wxxml-fix-string pname))
     (concatenate 'string (car *var-tag*) pname (cadr *var-tag*)))
 
-  ;; Convert the atom x to XML
+  ;; Convert the atom (a sexp element without parameters) x to XML
   ;;
   ;;  * l is the opening xml tag to put before it
   ;;  * r is the opening xml tag to put before it
@@ -510,7 +510,7 @@
     (defun wxxml (x l r lop rop)
     (setq x (nformat x))
     (cond ((atom x) (wxxml-atom x l r))
-	  ((not (listp (car x)))
+  ((not (listp (car x)))
 	   (wxxml (cons '(mlist simp) x) l r lop rop))
 	  ((or (<= (wxxml-lbp (caar x)) (wxxml-rbp lop))
 	       (> (wxxml-lbp rop) (wxxml-rbp (caar x))))
@@ -1947,7 +1947,7 @@
   ;;
   ;; Port of Barton Willis's texput function.
   ;;
-
+  ;; Converts maximal internal representation of maths as a sexp to xml.
   (defun $wxxmlput (e s &optional tx lbp rbp)
 
     (when (stringp e)
