@@ -1700,8 +1700,6 @@
   (defmspec $wxanimate (scene)
     (wxanimate scene))
 
-  (defvar *windows-OS* (string= *autoconf-win32* "true"))
-
   (defun get-file-name-opt (scene)
     (let (opts filename)
       (loop for opt in scene do
@@ -1725,7 +1723,6 @@
     (multiple-value-bind (scene file-name) (get-file-name-opt (cdr scenes))
 			 (let* ((a (meval (car scene)))
 				(a-range (meval (cadr scene)))
-				(*windows-OS* t)
 				(args (cddr scene))
 				(frameno 1)
 				(images ()))
@@ -1864,7 +1861,6 @@
 	   (gnuplotfilename (wxplot-gnuplotfilename))
 	   (datafilename (wxplot-datafilename))
 	   (filename (or file_name_spec (wxplot-filename nil)))
-	   (*windows-OS* t)
 	   res)
       (setq res ($apply '$draw
 			(append
