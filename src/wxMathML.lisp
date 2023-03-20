@@ -1384,7 +1384,8 @@
 	   (append l
 		   (if (cadr x)
 		       (list
-			(format nil "<lbl>(~A)~A </lbl>"
+			(format nil "<lbl altCopy=\"~A\">(~A)~A </lbl>"
+				(wxxml-alt-copy-text (cadr x))
 				(wxxml-fix-string (stripdollar (maybe-invert-string-case (symbol-name (cadr x)))))
 				*wxxml-mratp*))
 		     nil))
