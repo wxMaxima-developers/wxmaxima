@@ -1376,13 +1376,17 @@
 
   (defvar *wxxml-mratp* nil)
 
+  ;; TODO: outchar isn't properly escaped in xml
+
+  
+  ;; Converts an input prompt to XML
   (defun wxxml-mlable (x l r)
     (wxxml (caddr x)
 	   (append l
 		   (if (cadr x)
 		       (list
 			(format nil "<lbl>(~A)~A </lbl>"
-				(stripdollar (maybe-invert-string-case (symbol-name (cadr x))))
+				(wxxml-fix-string (stripdollar (maybe-invert-string-case (symbol-name (cadr x)))))
 				*wxxml-mratp*))
 		     nil))
 	   r 'mparen 'mparen))
@@ -2059,6 +2063,15 @@
   ;; used for autocompletion.
   ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun symbols-to-xml-escaped-input 
+  (s) (maybe-invert-string-case (symbol-name (cadr s))))
+
+  ;; Convert a symbol to a properly xml-escaped string.
+  ;;
+  ;; The name "a\<b" is converted to "a\&lt;b". 
+  ;; If s is a list of symbols in the result between them 
+  ;; there are spaces
   (defun symbol-to-xml (s)
     (wxxml-fix-string (format nil "~a" (maybe-invert-string-case (symbol-name (stripdollar s))))))
 
