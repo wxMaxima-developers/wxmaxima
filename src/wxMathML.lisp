@@ -405,7 +405,7 @@
     (setq pname (wxxml-fix-string pname))
     (concatenate 'string (car *var-tag*) pname (cadr *var-tag*)))
 
-  ;; Convert the atom x to XML
+  ;; Convert the atom (a sexp element without parameters) x to XML
   ;;
   ;;  * l is the opening xml tag to put before it
   ;;  * r is the opening xml tag to put before it
@@ -510,7 +510,7 @@
     (defun wxxml (x l r lop rop)
     (setq x (nformat x))
     (cond ((atom x) (wxxml-atom x l r))
-	  ((not (listp (car x)))
+  ((not (listp (car x)))
 	   (wxxml (cons '(mlist simp) x) l r lop rop))
 	  ((or (<= (wxxml-lbp (caar x)) (wxxml-rbp lop))
 	       (> (wxxml-lbp rop) (wxxml-rbp (caar x))))
@@ -1376,13 +1376,17 @@
 
   (defvar *wxxml-mratp* nil)
 
+  ;; TODO: outchar isn't properly escaped in xml  
+  
+  ;; Converts an input prompt to XML
   (defun wxxml-mlable (x l r)
     (wxxml (caddr x)
 	   (append l
 		   (if (cadr x)
 		       (list
-			(format nil "<lbl>(~A)~A </lbl>"
-				(stripdollar (maybe-invert-string-case (symbol-name (cadr x))))
+			(format nil "<lbl altCopy=\"~A\">(~A)~A </lbl>"
+				(wxxml-alt-copy-text (cadr x))
+				(wxxml-fix-string (stripdollar (maybe-invert-string-case (symbol-name (cadr x)))))
 				*wxxml-mratp*))
 		     nil))
 	   r 'mparen 'mparen))
@@ -1700,8 +1704,6 @@
   (defmspec $wxanimate (scene)
     (wxanimate scene))
 
-  (defvar *windows-OS* (string= *autoconf-win32* "true"))
-
   (defun get-file-name-opt (scene)
     (let (opts filename)
       (loop for opt in scene do
@@ -1725,7 +1727,6 @@
     (multiple-value-bind (scene file-name) (get-file-name-opt (cdr scenes))
 			 (let* ((a (meval (car scene)))
 				(a-range (meval (cadr scene)))
-				(*windows-OS* t)
 				(args (cddr scene))
 				(frameno 1)
 				(images ()))
@@ -1864,7 +1865,6 @@
 	   (gnuplotfilename (wxplot-gnuplotfilename))
 	   (datafilename (wxplot-datafilename))
 	   (filename (or file_name_spec (wxplot-filename nil)))
-	   (*windows-OS* t)
 	   res)
       (setq res ($apply '$draw
 			(append
@@ -1951,7 +1951,7 @@
   ;;
   ;; Port of Barton Willis's texput function.
   ;;
-
+  ;; Converts maximal internal representation of maths as a sexp to xml.
   (defun $wxxmlput (e s &optional tx lbp rbp)
 
     (when (stringp e)
@@ -2063,6 +2063,12 @@
   ;; used for autocompletion.
   ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+  ;; Convert a symbol to a properly xml-escaped string.
+  ;;
+  ;; The name "a\<b" is converted to "a\&lt;b". 
+  ;; If s is a list of symbols in the result between them 
+  ;; there are spaces
   (defun symbol-to-xml (s)
     (wxxml-fix-string (format nil "~a" (maybe-invert-string-case (symbol-name (stripdollar s))))))
 
