@@ -53,7 +53,7 @@ add_test(
 # A (very simple) test, if wxMathML.lisp file works (creates the expected XML output).
 add_test(
     NAME check-wxMathML.lisp_1
-    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "1+1;" "<math><lbl>(%o1) </lbl><mn>2</mn></math>"
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "1+1;" "<math><lbl altCopy=\"%o1\">(%o1) </lbl><mn>2</mn></math>"
 )
 
 add_test(
@@ -103,7 +103,7 @@ add_test(
 
 add_test(
      NAME wxxml-mlable2
-     COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "outchar:\">\";" "<lbl altCopy="\&gt;1">(>1) </lbl><st>&gt;</st></math>"
+     COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "outchar:\">\";" "<lbl altCopy=\"\&gt;1\">(>1) </lbl><st>&gt;</st></math>"
 )
 
 add_test(
