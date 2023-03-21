@@ -97,6 +97,16 @@ add_test(
 )
 
 add_test(
+     NAME wxxml-mlable
+     COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "test;" "<lbl altCopy=\"%o1\">(%o1)"
+)
+
+add_test(
+     NAME wxxml-mlable2
+     COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "outchar:\">\";" "<lbl altCopy="\&gt;1">(>1) </lbl><st>&gt;</st></math>"
+)
+
+add_test(
     NAME wxmaxima_batch_emptyFile
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
     COMMAND wxmaxima --logtostderr --pipe --batch empty_file.wxm)
