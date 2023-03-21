@@ -107,6 +107,11 @@ add_test(
 )
 
 add_test(
+     NAME wxxml-spaceout
+     COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "f(x):=sin(x);trace(f);f(x);" "<math> <mn>1</mn><st> Enter </st>"
+)
+
+add_test(
     NAME wxmaxima_batch_emptyFile
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
     COMMAND wxmaxima --logtostderr --pipe --batch empty_file.wxm)

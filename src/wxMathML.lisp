@@ -1394,6 +1394,10 @@
   (wx-defprop mlable wxxml-mlable wxxml)
   (wx-defprop mlabel wxxml-mlable wxxml)
 
+  ;; Basically seems to represent the indentations spaces
+  ;; in front of the trace level number when using the trace() command.
+  ;;
+  ;; Seems to never contain a real x.
   (defun wxxml-spaceout (x l r)
     (append l (list " " (make-string (cadr x) :initial-element #\.) "") r))
 
