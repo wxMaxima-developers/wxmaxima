@@ -747,7 +747,7 @@ void wxMaximaFrame::SetupMenu() {
                              _("Hide All Toolbars\tAlt+Shift+-"),
                              _("Hide all panes"), wxITEM_NORMAL);
 
-  m_viewMenu->Append(wxNewId(), _("Sidebars"), m_Maxima_Panes_Sub,
+  m_viewMenu->Append(wxWindow::NewControlId(), _("Sidebars"), m_Maxima_Panes_Sub,
                      _("All visible sidebars"));
   m_viewMenu->AppendSeparator();
 
@@ -763,7 +763,7 @@ void wxMaximaFrame::SetupMenu() {
                                           _("Nice Graphical Equations"));
   m_equationTypeMenuMenu->Check(EventIDs::menu_math_as_graphics, true);
 
-  m_viewMenu->Append(wxNewId(), _("Display equations"), m_equationTypeMenuMenu,
+  m_viewMenu->Append(wxWindow::NewControlId(), _("Display equations"), m_equationTypeMenuMenu,
                      _("How to display new equations"));
 
   m_autoSubscriptMenu = new wxMenu;
@@ -786,7 +786,7 @@ void wxMaximaFrame::SetupMenu() {
 			      EventIDs::menu_declareAutosubscript,
 			      _("Declare Text to always be displayed as subscript"));
 
-  m_viewMenu->Append(wxNewId(), _("Autosubscript"), m_autoSubscriptMenu,
+  m_viewMenu->Append(wxWindow::NewControlId(), _("Autosubscript"), m_autoSubscriptMenu,
                      _("Autosubscript chars after an underscore"));
   m_roundedMatrixParensMenu = new wxMenu;
   m_roundedMatrixParensMenu->AppendRadioItem(
@@ -803,7 +803,7 @@ void wxMaximaFrame::SetupMenu() {
 					     _("Use vertical lines instead of parenthesis for matrices"));
   m_roundedMatrixParensMenu->AppendRadioItem(
 					     EventIDs::menu_noMatrixParens, _("None"), _("Don't use parenthesis for matrices"));
-  m_viewMenu->Append(wxNewId(), _("Matrix parenthesis"),
+  m_viewMenu->Append(wxWindow::NewControlId(), _("Matrix parenthesis"),
                      m_roundedMatrixParensMenu,
                      _("Choose the parenthesis type for Matrices"));
   m_viewMenu->AppendCheckItem(EventIDs::menu_stringdisp,
@@ -829,7 +829,7 @@ void wxMaximaFrame::SetupMenu() {
   m_Edit_Zoom_Sub->Append(EventIDs::menu_zoom_300, wxT("300%"), _("Set zoom to 300%"),
                           wxITEM_NORMAL);
 
-  m_viewMenu->Append(wxNewId(), _("Set Zoom"), m_Edit_Zoom_Sub, _("Set Zoom"));
+  m_viewMenu->Append(wxWindow::NewControlId(), _("Set Zoom"), m_Edit_Zoom_Sub, _("Set Zoom"));
 #ifdef __UNIX__
   m_viewMenu->Append(EventIDs::menu_fullscreen, _("Full Screen\tF11"),
                      _("Toggle full screen editing"), wxITEM_NORMAL);
@@ -920,7 +920,7 @@ void wxMaximaFrame::SetupMenu() {
                      _("Insert a new heading6 cell"));
   insert_sub->Append(EventIDs::menu_add_pagebreak, _("Insert Page Break"),
                      _("Insert a page break"));
-  m_CellMenu->Append(wxNewId(), _("Insert textbased cell"), insert_sub);
+  m_CellMenu->Append(wxWindow::NewControlId(), _("Insert textbased cell"), insert_sub);
   m_CellMenu->Append(EventIDs::menu_insert_image, _("Insert Image..."), _("Insert image"),
                      wxITEM_NORMAL);
   m_CellMenu->AppendSeparator();
@@ -987,7 +987,7 @@ void wxMaximaFrame::SetupMenu() {
   infolists_sub->Append(EventIDs::menu_dependencies, _("Dependencies"));
   infolists_sub->Append(EventIDs::menu_gradefs, _("Gradefs"));
   infolists_sub->Append(EventIDs::menu_let_rule_packages, _("Letrules"));
-  m_MaximaMenu->Append(wxNewId(), _("Show user definitions"), infolists_sub);
+  m_MaximaMenu->Append(wxWindow::NewControlId(), _("Show user definitions"), infolists_sub);
 
   m_MaximaMenu->Append(EventIDs::menu_clear_fun, _("Delete F&unction..."),
                        _("Delete a function"), wxITEM_NORMAL);
@@ -1058,7 +1058,7 @@ void wxMaximaFrame::SetupMenu() {
   programMenu->Append(EventIDs::menu_loadLisp, _("Load lisp..."));
   programMenu->AppendSeparator();
   programMenu->Append(EventIDs::menu_gensym, _("Generate unused symbol name"));
-  m_MaximaMenu->Append(wxNewId(), _("Program"), programMenu);
+  m_MaximaMenu->Append(wxWindow::NewControlId(), _("Program"), programMenu);
   wxMenu *stringMenu = new wxMenu;
   wxMenu *streamMenu = new wxMenu;
   streamMenu->Append(EventIDs::menu_stringproc_openr, _("Open for reading..."));
@@ -1069,14 +1069,14 @@ void wxMaximaFrame::SetupMenu() {
   streamMenu->Append(EventIDs::menu_stringproc_flush_output, _("Flush..."));
   streamMenu->Append(EventIDs::menu_stringproc_flength, _("Length..."));
   streamMenu->Append(EventIDs::menu_stringproc_close, _("Close..."));
-  stringMenu->Append(wxNewId(), _("Stream"), streamMenu);
+  stringMenu->Append(wxWindow::NewControlId(), _("Stream"), streamMenu);
   wxMenu *ioMenu = new wxMenu;
   ioMenu->Append(EventIDs::menu_stringproc_printf, _("printf..."));
   ioMenu->Append(EventIDs::menu_stringproc_readline, _("readline..."));
   ioMenu->Append(EventIDs::menu_stringproc_readchar, _("readchar..."));
   ioMenu->Append(EventIDs::menu_stringproc_readbyte, _("readbyte..."));
   ioMenu->Append(EventIDs::menu_stringproc_writebyte, _("writebyte..."));
-  stringMenu->Append(wxNewId(), _("I/O"), ioMenu);
+  stringMenu->Append(wxWindow::NewControlId(), _("I/O"), ioMenu);
   wxMenu *charTestMenu = new wxMenu;
   charTestMenu->Append(EventIDs::menu_stringproc_charp, _("Is a char?..."));
   charTestMenu->Append(EventIDs::menu_stringproc_alphacharp, _("Is alphabetic?..."));
@@ -1094,12 +1094,12 @@ void wxMaximaFrame::SetupMenu() {
   charTestMenu->Append(EventIDs::menu_stringproc_cgreaterp, _("Is greater?..."));
   charTestMenu->Append(EventIDs::menu_stringproc_cgreaterpignore,
                        _("Greater, ignoring case?..."));
-  stringMenu->Append(wxNewId(), _("Character Tests"), charTestMenu);
+  stringMenu->Append(wxWindow::NewControlId(), _("Character Tests"), charTestMenu);
   wxMenu *stringtestMenu = new wxMenu;
   stringtestMenu->Append(EventIDs::menu_stringproc_sequal, _("Equal?..."));
   stringtestMenu->Append(EventIDs::menu_stringproc_sequalignore,
                          _("Equal, ignoring case?..."));
-  stringMenu->Append(wxNewId(), _("String Tests"), stringtestMenu);
+  stringMenu->Append(wxWindow::NewControlId(), _("String Tests"), stringtestMenu);
   wxMenu *convertMenu = new wxMenu;
   convertMenu->Append(EventIDs::menu_stringproc_create_ascii, _("Ascii code to char..."));
   convertMenu->Append(EventIDs::menu_stringproc_ascii, _("char to Ascii code..."));
@@ -1124,7 +1124,7 @@ void wxMaximaFrame::SetupMenu() {
                       _("Octets to string..."));
   convertMenu->Append(EventIDs::menu_stringproc_string_to_octets,
                       _("String to octets..."));
-  stringMenu->Append(wxNewId(), _("Conversions"), convertMenu);
+  stringMenu->Append(wxWindow::NewControlId(), _("Conversions"), convertMenu);
   wxMenu *transformMenu = new wxMenu;
   transformMenu->Append(EventIDs::menu_stringproc_charat, _("Extract char..."));
   transformMenu->Append(EventIDs::menu_stringproc_sinsert, _("Insert char..."));
@@ -1147,8 +1147,8 @@ void wxMaximaFrame::SetupMenu() {
   transformMenu->Append(EventIDs::menu_stringproc_strim, _("Trim both ends..."));
   transformMenu->Append(EventIDs::menu_stringproc_striml, _("Trim left..."));
   transformMenu->Append(EventIDs::menu_stringproc_strimr, _("Trim right..."));
-  stringMenu->Append(wxNewId(), _("Transformations"), transformMenu);
-  m_MaximaMenu->Append(wxNewId(), _("String"), stringMenu);
+  stringMenu->Append(wxWindow::NewControlId(), _("Transformations"), transformMenu);
+  m_MaximaMenu->Append(wxWindow::NewControlId(), _("String"), stringMenu);
   wxMenu *regexMenu = new wxMenu;
   regexMenu->Append(EventIDs::menu_sregex_load, _("Load the regex processor"));
   regexMenu->Append(EventIDs::menu_sregex_regex_compile, _("Compile a regex"));
@@ -1159,7 +1159,7 @@ void wxMaximaFrame::SetupMenu() {
   regexMenu->Append(EventIDs::menu_sregex_regex_subst, _("Substitute all matches"));
   regexMenu->Append(EventIDs::menu_sregex_string_to_regex,
                     _("Regex that matches a string"));
-  stringMenu->Append(wxNewId(), _("RegEx"), regexMenu);
+  stringMenu->Append(wxWindow::NewControlId(), _("RegEx"), regexMenu);
   wxMenu *operatingSystemMenu = new wxMenu;
   regexMenu->Append(EventIDs::menu_opsyst_load, _("Load the file/dir operations"));
   wxMenu *dirMenu = new wxMenu;
@@ -1175,16 +1175,16 @@ void wxMaximaFrame::SetupMenu() {
                   _("Extract filename from path..."));
   dirMenu->Append(EventIDs::menu_opsyst_pathname_type,
                   _("Extract filetype from path..."));
-  operatingSystemMenu->Append(wxNewId(), _("Directory operations"), dirMenu);
+  operatingSystemMenu->Append(wxWindow::NewControlId(), _("Directory operations"), dirMenu);
   wxMenu *fileMenu = new wxMenu;
   fileMenu->Append(EventIDs::menu_opsyst_copy_file, _("Copy file..."));
   fileMenu->Append(EventIDs::menu_opsyst_rename_file, _("Rename file..."));
   fileMenu->Append(EventIDs::menu_opsyst_delete_file, _("Delete file..."));
-  operatingSystemMenu->Append(wxNewId(), _("File operations"), fileMenu);
+  operatingSystemMenu->Append(wxWindow::NewControlId(), _("File operations"), fileMenu);
   wxMenu *envMenu = new wxMenu;
   envMenu->Append(EventIDs::menu_opsyst_getenv, _("Read environment variable..."));
-  operatingSystemMenu->Append(wxNewId(), _("Environment variables"), envMenu);
-  m_MaximaMenu->Append(wxNewId(), _("mkdir,..."), operatingSystemMenu);
+  operatingSystemMenu->Append(wxWindow::NewControlId(), _("Environment variables"), envMenu);
+  m_MaximaMenu->Append(wxWindow::NewControlId(), _("mkdir,..."), operatingSystemMenu);
 
   m_gentranMenu = new wxMenu;
   m_gentranMenu->Append(EventIDs::gentran_load, _("Load the translation generator"));
@@ -1194,7 +1194,7 @@ void wxMaximaFrame::SetupMenu() {
                                  _("Output Rational Fortran"));
   m_gentranMenu->Append(EventIDs::gentran_to_stdout, _("Convert"));
   m_gentranMenu->Append(EventIDs::gentran_to_file, _("Convert + Write to file"));
-  m_MaximaMenu->Append(wxNewId(), _("maxima to other language"), m_gentranMenu);
+  m_MaximaMenu->Append(wxWindow::NewControlId(), _("maxima to other language"), m_gentranMenu);
   m_MenuBar->Append(m_MaximaMenu, _("&Maxima"));
 
   // Equations menu
@@ -1211,7 +1211,7 @@ void wxMaximaFrame::SetupMenu() {
   solve_sub->Append(EventIDs::menu_eliminate, _("&Eliminate Variable..."),
                     _("Eliminate a variable from a system "
                       "of equations"));
-  m_EquationsMenu->Append(wxNewId(), _("Solve symbolically"), solve_sub);
+  m_EquationsMenu->Append(wxWindow::NewControlId(), _("Solve symbolically"), solve_sub);
   wxMenu *solveNum1_sub = new wxMenu;
   solveNum1_sub->Append(EventIDs::menu_solve_num, _("Find numerical solution..."),
                         _("Find a root of an equation on an interval"),
@@ -1225,7 +1225,7 @@ void wxMaximaFrame::SetupMenu() {
   solveNum1_sub->Append(
 			EventIDs::menu_bfallroots, _("Numerical solutions of polynomial..."),
 			_("Find all roots of a polynomial (bfloat)"), wxITEM_NORMAL);
-  m_EquationsMenu->Append(wxNewId(), _("Solve numerical, 1 Variable"),
+  m_EquationsMenu->Append(wxWindow::NewControlId(), _("Solve numerical, 1 Variable"),
                           solveNum1_sub);
   m_EquationsMenu->AppendSeparator();
   m_EquationsMenu->Append(EventIDs::menu_solve_ode, _("Solve &ODE..."),
@@ -1286,7 +1286,7 @@ void wxMaximaFrame::SetupMenu() {
                           wxITEM_NORMAL);
   gen_matrix_menu->Append(EventIDs::menu_csv2mat, _("Matrix from csv file..."),
                           _("Load a matrix from a csv file"), wxITEM_NORMAL);
-  m_matrix_menu->Append(wxNewId(), _("Create Matrix"), gen_matrix_menu,
+  m_matrix_menu->Append(wxWindow::NewControlId(), _("Create Matrix"), gen_matrix_menu,
                         _("Methods of generating a matrix"));
 
   wxMenu *fileio_menu = new wxMenu;
@@ -1294,7 +1294,7 @@ void wxMaximaFrame::SetupMenu() {
                       _("Load a matrix from a csv file"), wxITEM_NORMAL);
   fileio_menu->Append(EventIDs::menu_mat2csv, _("Matrix to csv file"),
                       _("Export a matrix to a csv file"), wxITEM_NORMAL);
-  m_matrix_menu->Append(wxNewId(), _("File I/O"), fileio_menu,
+  m_matrix_menu->Append(wxWindow::NewControlId(), _("File I/O"), fileio_menu,
                         _("Matrix to file or Matrix from file"));
   m_matrix_menu->AppendSeparator();
 
@@ -1311,7 +1311,7 @@ void wxMaximaFrame::SetupMenu() {
   matrix_basic_sub->Append(
 			   EventIDs::menu_copymatrix, _("Create copy, not clone..."),
 			   _("Creates an independent matrix with the same contents"), wxITEM_NORMAL);
-  m_matrix_menu->Append(wxNewId(), _("Basic matrix operations"),
+  m_matrix_menu->Append(wxWindow::NewControlId(), _("Basic matrix operations"),
                         matrix_basic_sub,
                         _("Multiplication, exponent and similar"));
 
@@ -1339,7 +1339,7 @@ void wxMaximaFrame::SetupMenu() {
   matrix_classicOP_menu->Append(EventIDs::menu_transpose, _("&Transpose Matrix"),
                                 _("Transpose a matrix"), wxITEM_NORMAL);
   m_matrix_menu->Append(
-			wxNewId(), _("Classic matrix operations"), matrix_classicOP_menu,
+			wxWindow::NewControlId(), _("Classic matrix operations"), matrix_classicOP_menu,
 			_("The classic operations one typically uses matrices for"));
   wxMenu *lapack_menu = new wxMenu;
   lapack_menu->Append(EventIDs::menu_matrix_loadLapack, _("Load lapack"),
@@ -1378,7 +1378,7 @@ void wxMaximaFrame::SetupMenu() {
   // TODO: What is EventIDs::menu_matrix_zheev (means: lapack's function zheev) for?
 
   m_matrix_menu->Append(
-			wxNewId(), _("Numerical operations (lapack)"), lapack_menu,
+			wxWindow::NewControlId(), _("Numerical operations (lapack)"), lapack_menu,
 			_("Fast fortran routines that perform numerical tasks"));
   m_matrix_menu->AppendSeparator();
   wxMenu *matrix_rowOp_sub = new wxMenu;
@@ -1398,7 +1398,7 @@ void wxMaximaFrame::SetupMenu() {
 			   EventIDs::menu_matrix_col_list, _("Convert Column to list..."),
 			   _("Extract a column from the matrix and convert it to a list"),
 			   wxITEM_NORMAL);
-  m_matrix_menu->Append(wxNewId(), _("Row and column operations"),
+  m_matrix_menu->Append(wxWindow::NewControlId(), _("Row and column operations"),
                         matrix_rowOp_sub,
                         _("Extract, append or delete rows or columns"));
   m_matrix_menu->AppendSeparator();
@@ -1439,7 +1439,7 @@ void wxMaximaFrame::SetupMenu() {
   series_sub->Append(EventIDs::menu_fourier, _("Fourier coefficients..."));
   series_sub->Append(EventIDs::menu_pade, _(wxT("P&ad\u00E9 Approximation...")),
                      _("Pade approximation of a Taylor series"));
-  m_CalculusMenu->Append(wxNewId(), _("Series approximation"), series_sub);
+  m_CalculusMenu->Append(wxWindow::NewControlId(), _("Series approximation"), series_sub);
   m_CalculusMenu->Append(EventIDs::menu_sum, _("Calculate Su&m..."), _("Calculate sums"),
                          wxITEM_NORMAL);
   m_CalculusMenu->Append(EventIDs::menu_product, _("Calculate &Product..."),
@@ -1499,7 +1499,7 @@ void wxMaximaFrame::SetupMenu() {
                        _("Decompose rational function to partial fractions"),
                        wxITEM_NORMAL);
   simplify_sub->Append(EventIDs::menu_simpsum, _("Simplify sum() commands..."));
-  m_SimplifyMenu->Append(wxNewId(), _("Simplify equations"), simplify_sub);
+  m_SimplifyMenu->Append(wxWindow::NewControlId(), _("Simplify equations"), simplify_sub);
   m_logexpand_Sub = new wxMenu;
   m_logexpand_Sub->Append(
 			  EventIDs::menu_logcontract, _("Contract Logarithms"),
@@ -1528,7 +1528,7 @@ void wxMaximaFrame::SetupMenu() {
 				   EventIDs::menu_logexpand_super,
 				   _("Additionally: log(a/b)=log(a)-log(b), a and b positive integers"),
 				   _("Set Maxima option variable logexpand:super"));
-  m_SimplifyMenu->Append(wxNewId(), _("Simplify Logarithms"), m_logexpand_Sub);
+  m_SimplifyMenu->Append(wxWindow::NewControlId(), _("Simplify Logarithms"), m_logexpand_Sub);
   m_SimplifyMenu->AppendSeparator();
   // Factorials and gamma
   m_Simplify_Gamma_Sub = new wxMenu;
@@ -1547,7 +1547,7 @@ void wxMaximaFrame::SetupMenu() {
                                _("Combine factorials in an expression"),
                                wxITEM_NORMAL);
   m_SimplifyMenu->Append(
-			 wxNewId(), _("Factorials and &Gamma"), m_Simplify_Gamma_Sub,
+			 wxWindow::NewControlId(), _("Factorials and &Gamma"), m_Simplify_Gamma_Sub,
 			 _("Functions for simplifying factorials and gamma function"));
   // Trigonometric submenu
   m_Simplify_Trig_Sub = new wxMenu;
@@ -1565,7 +1565,7 @@ void wxMaximaFrame::SetupMenu() {
 			      _("Convert trigonometric expression to canonical quasilinear form"),
 			      wxITEM_NORMAL);
   m_SimplifyMenu->Append(
-			 wxNewId(), _("&Trigonometric Simplification"), m_Simplify_Trig_Sub,
+			 wxWindow::NewControlId(), _("&Trigonometric Simplification"), m_Simplify_Trig_Sub,
 			 _("Functions for simplifying trigonometric expressions"));
   // Complex submenu
   m_Simplify_Complex_Sub = new wxMenu;
@@ -1588,7 +1588,7 @@ void wxMaximaFrame::SetupMenu() {
   m_Simplify_Complex_Sub->Append(
 				 EventIDs::menu_exponentialize, _("&Exponentialize"),
 				 _("Convert trigonometric functions to exponential form"), wxITEM_NORMAL);
-  m_SimplifyMenu->Append(wxNewId(), _("&Complex Simplification"),
+  m_SimplifyMenu->Append(wxWindow::NewControlId(), _("&Complex Simplification"),
                          m_Simplify_Complex_Sub,
                          _("Functions for complex simplification"));
   m_SimplifyMenu->AppendSeparator();
@@ -1611,7 +1611,7 @@ void wxMaximaFrame::SetupMenu() {
                       wxITEM_NORMAL);
   m_subst_Sub->AppendCheckItem(EventIDs::menu_opsubst,
                                _("Allow to substitute operators"));
-  m_SimplifyMenu->Append(wxNewId(), _("Substitute"), m_subst_Sub);
+  m_SimplifyMenu->Append(wxWindow::NewControlId(), _("Substitute"), m_subst_Sub);
   m_SimplifyMenu->Append(EventIDs::menu_nouns, _("Evaluate &Noun Forms..."),
                          _("Evaluate all noun forms in expression"),
                          wxITEM_NORMAL);
@@ -1646,7 +1646,7 @@ void wxMaximaFrame::SetupMenu() {
   listcreateSub->Append(
 			EventIDs::menu_list_create_from_args, _("from function arguments"),
 			_("Extract the argument list from a function call"), wxITEM_NORMAL);
-  m_listMenu->Append(wxNewId(), _("Create list"), listcreateSub,
+  m_listMenu->Append(wxWindow::NewControlId(), _("Create list"), listcreateSub,
                      _("Create a list"));
   wxMenu *listuseSub = new wxMenu;
   listuseSub->Append(EventIDs::menu_list_map, _("apply function to each element"),
@@ -1667,7 +1667,7 @@ void wxMaximaFrame::SetupMenu() {
   listuseSub->Append(EventIDs::menu_list2csv, _("Export List to csv file..."),
                      _("Export a list to a csv file"), wxITEM_NORMAL);
 
-  m_listMenu->Append(wxNewId(), _("Use list"), listuseSub, _("Use a list"));
+  m_listMenu->Append(wxWindow::NewControlId(), _("Use list"), listuseSub, _("Use a list"));
   wxMenu *listextractmenu = new wxMenu;
   listextractmenu->Append(EventIDs::menu_list_nth, _("nth"),
                           _("Returns an arbitrary list item"));
@@ -1685,7 +1685,7 @@ void wxMaximaFrame::SetupMenu() {
 			  EventIDs::menu_list_extract_value, _("Extract an actual value for a variable"),
 			  _("Extract the value for one variable assigned in a list"),
 			  wxITEM_NORMAL);
-  m_listMenu->Append(wxNewId(), _("Extract Elements"), listextractmenu,
+  m_listMenu->Append(wxWindow::NewControlId(), _("Extract Elements"), listextractmenu,
                      _("Extract list Elements"));
   wxMenu *listappendSub = new wxMenu;
   listappendSub->Append(EventIDs::menu_list_append_item_end, _("Append an element"),
@@ -1698,7 +1698,7 @@ void wxMaximaFrame::SetupMenu() {
                         _("Append a list to an existing list"), wxITEM_NORMAL);
   listappendSub->Append(EventIDs::menu_list_interleave, _("Interleave"),
                         _("Interleave the values of two lists"), wxITEM_NORMAL);
-  m_listMenu->Append(wxNewId(), _("Append"), listappendSub, _("Use a list"));
+  m_listMenu->Append(wxWindow::NewControlId(), _("Append"), listappendSub, _("Use a list"));
 
   m_listMenu->Append(EventIDs::menu_list_length, _("Length"),
                      _("Returns the length of the list"));
@@ -1770,7 +1770,7 @@ void wxMaximaFrame::SetupMenu() {
 			    "Only available in maxima > 5.46.0"),
 			  wxITEM_NORMAL);
   m_NumericMenu->Append(
-			wxNewId(), _("To exact number"), floatToExactSub,
+			wxWindow::NewControlId(), _("To exact number"), floatToExactSub,
 			_("Guess an exact number that could be meant by this float"));
 
   m_NumericMenu->AppendSeparator();
@@ -1825,7 +1825,7 @@ void wxMaximaFrame::SetupMenu() {
                        integralSign +
 		       _("(f(x),x,y) with singularities+discontinuities"));
 
-  m_NumericMenu->Append(wxNewId(), _("Integrate numerically"), quadpack_sub);
+  m_NumericMenu->Append(wxWindow::NewControlId(), _("Integrate numerically"), quadpack_sub);
   m_MenuBar->Append(m_NumericMenu, _("&Numeric"));
 
   // Help menu
@@ -1887,7 +1887,7 @@ void wxMaximaFrame::SetupMenu() {
   tutorials_sub->Append(EventIDs::menu_help_memoizing, _("Memoizing"), "", wxITEM_NORMAL);
   tutorials_sub->Append(EventIDs::menu_help_tutorials, _(wxT("↗Tutorials on the web")),
                         _("Online tutorials"), wxITEM_NORMAL);
-  m_HelpMenu->Append(wxNewId(), _("Tutorials"), tutorials_sub);
+  m_HelpMenu->Append(wxWindow::NewControlId(), _("Tutorials"), tutorials_sub);
 
   m_HelpMenu->AppendSeparator();
   m_HelpMenu->Append(EventIDs::menu_build_info, _("Build &Info"),

@@ -2,7 +2,7 @@
 // nil -*-
 //
 //  Copyright (C) 2007-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
-//            (C) 2014-2018 Gunter Königsmann <wxMaxima@physikbuch.de>
+//            (C) 2014-2023 Gunter Königsmann <wxMaxima@physikbuch.de>
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -49,6 +49,7 @@
 #include <wx/quantize.h>
 #include <wx/utils.h>
 #include <wx/wfstream.h>
+#include <wx/window.h>
 
 // filesystem cannot be passed by const reference as we want to keep the
 // pointer to the file system alive in a background task
@@ -57,7 +58,7 @@ AnimationCell::AnimationCell(GroupCell *group, Configuration *config,
                              std::shared_ptr<wxFileSystem> filesystem,
                              int framerate)
   : ImgCellBase(group, config),
-    m_timer(m_cellPointers->GetWorksheet(), wxNewId()),
+    m_timer(m_cellPointers->GetWorksheet(), wxWindow::NewControlId()),
     m_fileSystem(filesystem), m_framerate(framerate), m_displayed(0),
     m_imageBorderWidth(Scale_Px(1)) {
   InitBitFields();
@@ -68,7 +69,7 @@ AnimationCell::AnimationCell(GroupCell *group, Configuration *config,
 AnimationCell::AnimationCell(GroupCell *group, Configuration *config,
                              int framerate)
   : ImgCellBase(group, config),
-    m_timer(m_cellPointers->GetWorksheet(), wxNewId()),
+    m_timer(m_cellPointers->GetWorksheet(), wxWindow::NewControlId()),
     m_framerate(framerate), m_displayed(0), m_imageBorderWidth(Scale_Px(1)) {
   InitBitFields();
   m_type = MC_TYPE_SLIDE;

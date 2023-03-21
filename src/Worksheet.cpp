@@ -1973,7 +1973,7 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event) {
                             _("Declare these chars as ordinary letters"));
         }
         popupMenu.Append(
-			 wxNewId(),
+			 wxWindow::NewControlId(),
 			 wxString::Format(_("Declare facts about %s"),
 					  selectionString.ToUTF8().data()),
 			 facts_sub, _("Inform maxima about facts you know for this symbol"));

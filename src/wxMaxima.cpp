@@ -315,8 +315,8 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   m_ready = false;
   m_first = true;
   m_dispReadOut = false;
-  m_gnuplot_process_id = wxNewId();
-  m_maxima_process_id = wxNewId();
+  m_gnuplot_process_id = wxWindow::NewControlId();
+  m_maxima_process_id = wxWindow::NewControlId();
   config->Read(wxT("lastPath"), &m_lastPath);
   m_lastPrompt = wxEmptyString;
 
