@@ -85,10 +85,6 @@ private:
   //! Adds all commands in commandString as separate tokens to the queue.
   void AddTokens(GroupCell *cell);
 
-  //! A list of answers provided by the user
-  wxArrayString m_knownAnswers;
-  wxArrayString m_knownQuestions;
-
 public:
   /*! Query for the label the user has assigned to the current command.  
 

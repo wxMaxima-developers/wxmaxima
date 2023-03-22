@@ -78,7 +78,7 @@ add_test(
 
 add_test(
     NAME wxxml-array-display-properties
-    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "declare_index_properties(O,[presubscript,presuperscript,postsubscript,postsuperscript]);arraymake(O,[1,2,3,4]);" "<mmultiscripts .* altCopy=.*><mi>O</mi><mrow><mn>3</mn></mrow> <mrow><mn>4</mn></mrow> <mprescripts/> <mrow><mn>1</mn></mrow> <mrow><mn>2</mn></mrow> </mmultiscripts>"
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "declare_index_properties(O,[presubscript,presuperscript,postsubscript,postsuperscript]);arraymake(O,[1,2,3,4]);" "<mmultiscripts .* altCopy=.*><mi .*>O</mi><mrow><mn>3</mn></mrow> <mrow><mn>4</mn></mrow> <mprescripts/> <mrow><mn>1</mn></mrow> <mrow><mn>2</mn></mrow> </mmultiscripts>"
 )
 
 add_test(

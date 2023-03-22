@@ -1,5 +1,5 @@
 /* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
-/* [ Created with wxMaxima version 23.02.1-DevelopmentSnapshot ] */
+/* [ Created with wxMaxima version 23.03.0-DevelopmentSnapshot ] */
 /* [wxMaxima: title   start ]
 Solving differential equations
    [wxMaxima: title   end   ] */
@@ -63,6 +63,12 @@ If we did everything right maxima now can determine the equation that defines th
 /* [wxMaxima: input   start ] */
 desolve([eq1,eq2,eq3],[U_In(t),I_Cable(t),I_C(t)]);
 /* [wxMaxima: input   end   ] */
+/* [wxMaxima: question  start ] */
+<math><st>Is </st><munder altCopy=""><mrow><mi>L</mi></mrow><mrow><mi>Cable</mi></mrow></munder><h>*</h><mrow lisp="wxxml-paren"><p lisp="wxxml-paren"><mn>4</mn><h>*</h><munder altCopy=""><mrow><mi>C</mi></mrow><mrow><mi>In</mi></mrow></munder><h>*</h><msup><mrow><munder altCopy=""><mrow><mi>R</mi></mrow><mrow><mi>Load</mi></mrow></munder></mrow><mn>2</mn></msup><mi>-</mi><munder altCopy=""><mrow><mi>L</mi></mrow><mrow><mi>Cable</mi></mrow></munder></p></mrow><st> positive, negative or zero?</st></math>
+/* [wxMaxima: question  end   ] */
+/* [wxMaxima: answer  start ] */
+p;
+/* [wxMaxima: answer  end   ] */
 /* [wxMaxima: question  start ] */
 <math><mrow lisp="mtext"><mrow lisp="mtext"><st>Is </st><munder altCopy="L_Cable"><mrow><mi>L</mi></mrow><mrow><mi>Cable</mi></mrow></munder><h>*</h><mrow><p><mn>4</mn><h>*</h><munder altCopy="C_In"><mrow><mi>C</mi></mrow><mrow><mi>In</mi></mrow></munder><h>*</h><msup><mrow><munder altCopy="R_Load"><mrow><mi>R</mi></mrow><mrow><mi>Load</mi></mrow></munder></mrow><mn>2</mn></msup><mi>-</mi><munder altCopy="L_Cable"><mrow><mi>L</mi></mrow><mrow><mi>Cable</mi></mrow></munder></p></mrow><st> positive, negative or zero?</st></mrow></mrow></math>
 /* [wxMaxima: question  end   ] */
@@ -171,4 +177,4 @@ with_slider_draw(
 
 
 /* Old versions of Maxima abort on loading files that end in a comment. */
-"Created with wxMaxima 23.02.1-DevelopmentSnapshot"$
+"Created with wxMaxima 23.03.0-DevelopmentSnapshot"$
