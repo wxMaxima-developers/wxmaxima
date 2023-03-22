@@ -122,7 +122,7 @@
 	       (tmp-x (wxxml-string-substitute "&#13;" #\Newline tmp-x))
 	       (tmp-x (wxxml-string-substitute "&quot;" #\" tmp-x)))
 	  tmp-x)
-      x))
+      nil))
 
   ;; Generates an alt-copy-text from a command
   (defun wxxml-alt-copy-text (x)
