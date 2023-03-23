@@ -111,6 +111,7 @@
 ;; that look like XML tags: The string "<variable name>" is, if run through
 ;; wxxml-fix-string, transferred as "&lt;variable name&gt;", which clearly is
 ;; not an XML tag name
+(declaim (ftype (function (string) string) wxxml-fix-string))
 (defun wxxml-fix-string (x)
   (if (stringp x)
       (let* ((tmp-x (wxxml-string-substitute "&amp;" #\& x))
