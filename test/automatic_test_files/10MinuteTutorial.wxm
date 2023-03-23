@@ -1,5 +1,5 @@
 /* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
-/* [ Created with wxMaxima version 23.02.1-DevelopmentSnapshot ] */
+/* [ Created with wxMaxima version 23.03.0-DevelopmentSnapshot ] */
 /* [wxMaxima: title   start ]
 10 minute (wx)Maxima tutorial
    [wxMaxima: title   end   ] */
@@ -143,6 +143,12 @@ integrate( 1 / (x^2 + a), x);
 p;
 /* [wxMaxima: answer  end   ] */
 /* [wxMaxima: question  start ] */
+<math><st>Is </st><mi lisp="*var-tag*">a</mi><st> positive or negative?</st></math>
+/* [wxMaxima: question  end   ] */
+/* [wxMaxima: answer  start ] */
+p;
+/* [wxMaxima: answer  end   ] */
+/* [wxMaxima: question  start ] */
 <math><st>Is </st><mi>a</mi><st> positive or negative?</st></math>
 /* [wxMaxima: question  end   ] */
 /* [wxMaxima: answer  start ] */
@@ -254,4 +260,4 @@ Enjoy using Maxima and wxMaxima!
 
 
 /* Old versions of Maxima abort on loading files that end in a comment. */
-"Created with wxMaxima 23.02.1-DevelopmentSnapshot"$
+"Created with wxMaxima 23.03.0-DevelopmentSnapshot"$

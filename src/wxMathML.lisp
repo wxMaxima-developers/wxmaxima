@@ -122,7 +122,7 @@
 	       (tmp-x (wxxml-string-substitute "&#13;" #\Newline tmp-x))
 	       (tmp-x (wxxml-string-substitute "&quot;" #\" tmp-x)))
 	  tmp-x)
-      x))
+      nil))
 
   ;; Generates an alt-copy-text from a command
   (defun wxxml-alt-copy-text (x)
@@ -218,7 +218,7 @@
   ;; and lazy evaluation means that often it is only later decided which one is used
   ;; this variable informs the code that prints out the symbol's name if we know that
   ;; this time the symbol names a function.
-  (defvar *var-tag* '("<mi>" "</mi>"))
+  (defvar *var-tag* '("<mi lisp=\"*var-tag*\">" "</mi>"))
 
   ;; Returns the value of the property prop, if is x is a symbol that has this
   ;; property. In all other cases nil is returned.
@@ -402,7 +402,7 @@
 		      ($lispdisp
 		       (concatenate 'string "?" pname))
 		      (t pname)))
-    (setq pname (wxxml-fix-string pname))
+    (setq pname (wxxml-fix-string (format nil "~A" pname)))
     (concatenate 'string (car *var-tag*) pname (cadr *var-tag*)))
 
   ;; Convert the atom (a sexp element without parameters) x to XML
@@ -429,22 +429,26 @@
 			 ;; data. Displaying that data would be slow and most
 			 ;; probably generate more screenfuls of contents than
 			 ;; anybody would be willing to read
-			 (format nil "<mi lisp=\"wxxml-atom\">#{Lisp array [~{~a~^,~}]}</mi>"
+			 (format nil "<mi lisp=\"wxxml-atom arrayp\">#{Lisp array [~{~a~^,~}]}</mi>"
 				 (array-dimensions x)))
 			((functionp x)
-			 (format nil "<mi>~a</mi>"
-				 (wxxml-stripdollar
-				   (maybe-invert-string-case (format nil "~A" x)))))
+			 (format nil "<mi lisp=\"wxxml-atom functionp\" altCopy=\"~A\">~A</mi>"
+				 (wxxml-alt-copy-text x)
+				 (wxxml-fix-string
+				  (format nil "~A"
+					  (stripdollar
+					   (maybe-invert-string-case
+					    (symbol-name x)))))))
 			((streamp x)
 			 (format nil "<mi>#{Stream [~A]</mi>}"
 				 (stream-element-type x)))
 			((member (type-of x) '(GRAPH DIGRAPH))
-			 (format nil "<mi>~a</mi>" x))
+			 (format nil "<mi lisp=\"wxxml-atom graph digraph\">~a</mi>" x))
 			((typep x 'structure-object)
 			 (let ((tmp-string (format nil "~s" x)))
 			   (format nil "<st>~a</st>" (wxxml-fix-string tmp-string))))
 			((hash-table-p x)
-			 (format nil "<mi>#{HashTable}</mi>"))
+			 (format nil "<mi lisp=\"wxxml-atom hashtable\">#{HashTable}</mi>"))
 			((and $wxsubscripts (subscriptp x)))
 			(t (wxxml-stripdollar x))))
 	    r))
