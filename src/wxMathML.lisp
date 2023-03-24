@@ -660,7 +660,8 @@
 							  (wxxml-fix-string
 							   (format nil "~a" boxname)))))
 					'("<mrow><hl>"))
-				    ) nil 'mparen 'mparen)
+				    )
+		   nil 'mparen 'mparen)
 	  r (append '("</hl></mrow>") r))
     (append l r))
   )
