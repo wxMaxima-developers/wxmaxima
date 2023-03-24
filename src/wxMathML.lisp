@@ -111,6 +111,7 @@
 ;; that look like XML tags: The string "<variable name>" is, if run through
 ;; wxxml-fix-string, transferred as "&lt;variable name&gt;", which clearly is
 ;; not an XML tag name
+(declaim (ftype (function (string) string) wxxml-fix-string))
 (defun wxxml-fix-string (x)
   (if (stringp x)
       (let* ((tmp-x (wxxml-string-substitute "&amp;" #\& x))
@@ -123,7 +124,14 @@
 	tmp-x)
       nil))
 
+
+;; Converts x to a string using mstring and then escapes all special chars for XML
+;; (declaim (ftype (function (any) string) wxxml-mstring))
+(defun wxxml-mstring (x)
+  (coerce (mstring x) 'string))
+
 ;; Generates an alt-copy-text from a command
+;; (declaim (ftype (function (list) string) wxxml-alt-copy-text))
 (defun wxxml-alt-copy-text (x)
   (wxxml-fix-string (format nil "~{~a~}" (mstring x))))
 
@@ -248,7 +256,7 @@
 ;; Display an array with pre- or post- super- or subscripts.
 (defun wxxml-array-with-display-properties (x base-symbol l r pre-subscripts pre-superscripts post-subscripts post-superscripts &aux f)
   (let*
-      ((separator (let ((x (safe-$get base-symbol '$display_index_separator))) (if (or (null x) (stringp x)) x (coerce (mstring x) 'string))))
+      ((separator (let ((x (safe-$get base-symbol '$display_index_separator))) (if (or (null x) (stringp x)) x (wxxml-mstring  x))))
        (separator-xml (if (and separator (string= separator "")) "" (concatenate 'string "<mi>" (or separator ",") "</mi>")))
        (mrow-terminate (list (concatenate 'string "</mrow>" (coerce (list #\Newline) 'string))))
        (pre-subscripts-xml (if pre-subscripts (wxxml-list pre-subscripts (list "<mrow>") mrow-terminate separator-xml) (list "<none/>")))
@@ -343,11 +351,11 @@
 			 )
 		     (ignore-errors (not
 				     (member '$WXXML_SUBSCRIPTED (cadr (properties x))))))))
-	  (let* ((name-string (mstring x)))
-	    (format nil  "<munder altCopy=\"~{~a~}\"><mrow>~a</mrow><mrow>~a</mrow></munder>"
-		    (wxxml-fix-string name-string)
-		    (format nil "<mi>~a</mi>" (wxxml-fix-string sub-var))
-		    (format nil "<mi>~a</mi>" (wxxml-fix-string sub)))))))))
+	  (let* ((name-string (coerce (mstring x) 'string)))
+	    (format nil  "<munder altCopy=\"~A\"><mrow>~a</mrow><mrow>~a</mrow></munder>"
+		    (wxxml-alt-copy-text x)
+		    (format nil "<mi>~a</mi>" (wxxml-fix-string (format nil "~A" sub-var)))
+		    (format nil "<mi>~a</mi>" (wxxml-fix-string (format nil "~A" sub))))))))))
 
 (defun wxxmlescapenum (atom)
   (wxxml-fix-string
@@ -650,16 +658,11 @@
     (setq l (wxxml (cadr x) (append l
 				    (if boxname
 					(list (format nil "<mrow><hl boxname=\"~a\">"
-						      (if (symbolp boxname)
-							  (if (boundp boxname)
-							      (wxxml-fix-string(eval var))
-							      (wxxml-stripdollar
-							       (maybe-invert-string-case
-								(symbol-name boxname))))
-							  (wxxml-fix-string
-							   (format nil "~a" boxname)))))
+						      (wxxml-fix-string
+						       (wxxml-mstring boxname))))
 					'("<mrow><hl>"))
-				    ) nil 'mparen 'mparen)
+				    )
+		   nil 'mparen 'mparen)
 	  r (append '("</hl></mrow>") r))
     (append l r))
   )
@@ -2213,7 +2216,7 @@
   (do-symbols
       (s :maxima)
     (if (get s 'op)
-	(format t "&lt;operator&gt;~a&lt;/operator&gt;~%" (wxxml-fix-string( wxxml-fix-string (get s 'op))))))
+	(format t "&lt;operator&gt;~a&lt;/operator&gt;~%" (wxxml-fix-string( wxxml-fix-string (format nil "~A" (get s 'op)))))))
   (format t "&lt;/operators&gt;</value></variable>")
   (format t "</variables>~%")
   (finish-output)
