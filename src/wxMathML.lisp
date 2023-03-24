@@ -126,7 +126,7 @@
 
 
 ;; Converts x to a string using mstring and then escapes all special chars for XML
-(declaim (ftype (function (any) string) wxxml-mstring))
+;; (declaim (ftype (function (any) string) wxxml-mstring))
 (defun wxxml-mstring (x)
   (coerce (mstring x) 'string))
 
@@ -256,7 +256,7 @@
 ;; Display an array with pre- or post- super- or subscripts.
 (defun wxxml-array-with-display-properties (x base-symbol l r pre-subscripts pre-superscripts post-subscripts post-superscripts &aux f)
   (let*
-      ((separator (let ((x (safe-$get base-symbol '$display_index_separator))) (if (or (null x) (stringp x)) x (coerce (mstring x) 'string))))
+      ((separator (let ((x (safe-$get base-symbol '$display_index_separator))) (if (or (null x) (stringp x)) x (wxxml-mstring  x))))
        (separator-xml (if (and separator (string= separator "")) "" (concatenate 'string "<mi>" (or separator ",") "</mi>")))
        (mrow-terminate (list (concatenate 'string "</mrow>" (coerce (list #\Newline) 'string))))
        (pre-subscripts-xml (if pre-subscripts (wxxml-list pre-subscripts (list "<mrow>") mrow-terminate separator-xml) (list "<none/>")))
@@ -351,7 +351,7 @@
 			 )
 		     (ignore-errors (not
 				     (member '$WXXML_SUBSCRIPTED (cadr (properties x))))))))
-	  (let* ((name-string (mstring x)))
+	  (let* ((name-string (coerce (mstring x) 'string)))
 	    (format nil  "<munder altCopy=\"~A\"><mrow>~a</mrow><mrow>~a</mrow></munder>"
 		    (wxxml-alt-copy-text x)
 		    (format nil "<mi>~a</mi>" (wxxml-fix-string (format nil "~A" sub-var)))
@@ -659,7 +659,7 @@
 				    (if boxname
 					(list (format nil "<mrow><hl boxname=\"~a\">"
 						      (wxxml-fix-string
-						       (format nil "~A" (mstring boxname)))))
+						       (wxxml-mstring boxname))))
 					'("<mrow><hl>"))
 				    )
 		   nil 'mparen 'mparen)
