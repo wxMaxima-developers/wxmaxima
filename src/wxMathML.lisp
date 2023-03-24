@@ -124,7 +124,14 @@
 	tmp-x)
       nil))
 
+
+;; Converts x to a string using mstring and then escapes all special chars for XML
+(declaim (ftype (function (any) string) wxxml-mstring))
+(defun wxxml-mstring (x)
+  (coerce (mstring x) 'string))
+
 ;; Generates an alt-copy-text from a command
+;; (declaim (ftype (function (list) string) wxxml-alt-copy-text))
 (defun wxxml-alt-copy-text (x)
   (wxxml-fix-string (format nil "~{~a~}" (mstring x))))
 
