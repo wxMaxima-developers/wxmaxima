@@ -41,7 +41,7 @@
 (in-package :maxima)
 
 ;; For debugging only
-(declaim (optimize (speed 0) (space 0) (safety 3) (debug 3)))
+;;(declaim (optimize (speed 0) (space 0) (safety 3) (debug 3)))
 
 ;; This makes the variables lop, rop and inchar use dynamic scope.
 ;; What it does to wxxml-lbp and wxxml-rbp I don't know, though.
