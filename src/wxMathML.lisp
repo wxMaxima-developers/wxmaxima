@@ -177,7 +177,10 @@
 ;; using a :lisp command from the C++ program, instead.
 (setf (symbol-value '$maxima_frontend) "wxMaxima")
 (setf (symbol-value '$maxima_frontend_bugreportinfo)
-(format nil "~a" "A problem in the graphical user interface is probably a wxMaxima bug.~%The wxMaxima bug database is available at~%    https://github.com/wxMaxima-developers/wxmaxima/issues~%Submit bug reports by following the 'New issue' link on that page.~%~%"))
+      (format nil "A problem in the graphical user interface is probably a wxMaxima bug.~%
+The wxMaxima bug database is available at~%
+    https://github.com/wxMaxima-developers/wxmaxima/issues~%
+Submit bug reports by following the 'New issue' link on that page."))
 
 ;; Was useful when maxima's build_info() didn't contain all that info,
 ;; still. Now we punt it to the maxima version of the command.
@@ -185,8 +188,8 @@
   ($build_info))
 
 ;; Tell the user where to report bugs.
-;; TODO: Make maxima's bug_report() extendible so we can add info about reporting
-;; frontend bugs here.
+;; TODO: Make this to maxima's bug_report() when everybody uses a maxima that shows
+;; our extensions to that command.
 (defmfun $wxbug_report ()
   (format t "wxMaxima is a graphical front end for Maxima, which does the mathematics in the background.~%")
   (format t "If you encounter a mathematical problem, it is probably a Maxima bug and should be submitted there.~%")
