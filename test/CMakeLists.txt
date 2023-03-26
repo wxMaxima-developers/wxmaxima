@@ -63,7 +63,7 @@ add_test(
 
 add_test(
     NAME wxbuildinfo
-    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wxbuild_info();" "wxMaxima's idea of the directory layout is:"
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wxbuild_info();" "maxima_frontend_version"
 )
 
 add_test(
