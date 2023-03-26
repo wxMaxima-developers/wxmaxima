@@ -1357,7 +1357,7 @@
 ;; in wxxmlsym. If one makes wxxmlsym output a piece of static text the
 ;; error still occurs.
 (defun wxxml-text-string (x l r)
-  (append l (list (wxxml-fix-string (format nil "~a" (cdr x)))) r))
+  (append l (list (wxxml-fix-string (format nil "~{~a~}" (cdr x)))) r))
 ;;(trace wxxml-text-string :methods t)
 
 (wx-defprop text-string wxxml-text-string wxxml)
