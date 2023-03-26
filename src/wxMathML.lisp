@@ -172,10 +172,12 @@
   ;;; ourselves.
 (defvar $maxima_frontend nil)
 (defvar $maxima_frontend_version nil)
+(defvar $maxima_frontend_bugreportinfo nil)
 ;; The frontend name we know already. The frontend version is assigned
 ;; using a :lisp command from the C++ program, instead.
 (setf (symbol-value '$maxima_frontend) "wxMaxima")
-
+(setf (symbol-value '$maxima_frontend_bugreportinfo)
+(format nil "~a" "A problem in the graphical user interface is probably a wxMaxima bug.~%The wxMaxima bug database is available at~%    https://github.com/wxMaxima-developers/wxmaxima/issues~%Submit bug reports by following the 'New issue' link on that page.~%~%"))
 
 ;; Was useful when maxima's build_info() didn't contain all that info,
 ;; still. Now we punt it to the maxima version of the command.
