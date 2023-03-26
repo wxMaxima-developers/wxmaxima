@@ -1349,13 +1349,6 @@
   (append l x))
 
 ;; Text that is output by maxima. Strings are handled elsewhere, it seems
-;; TODO: For the case of
-;;
-;; errcatch(desolve('diff(f(x),x),x));
-;;
-;; a wxxml-fix-string is missing here. The problem seems not to reside
-;; in wxxmlsym. If one makes wxxmlsym output a piece of static text the
-;; error still occurs.
 (defun wxxml-text-string (x l r)
   (append l (list (wxxml-fix-string (format nil "~{~a~}" (cdr x)))) r))
 ;;(trace wxxml-text-string :methods t)
