@@ -41,7 +41,7 @@
 (in-package :maxima)
 
 ;; For debugging only
-;;(declaim (optimize (speed 0) (space 0) (safety 3) (debug 3)))
+(declaim (optimize (speed 0) (space 0) (safety 3) (debug 3)))
 
 ;; This makes the variables lop, rop and inchar use dynamic scope.
 ;; What it does to wxxml-lbp and wxxml-rbp I don't know, though.
@@ -1474,7 +1474,7 @@ Submit bug reports by following the 'New issue' link on that page."))
 	 (disp-name (get fun-name 'wxxml-orthopoly-disp))
 	 (args (cdr x)))
     (append l
-	    (list (format nil "<fn altCopy=\"~{~a~}\">" (wxxml-alt-copy-text x)))
+	    (list (format nil "<fn altCopy=\"~a\">" (wxxml-alt-copy-text x)))
 	    (if (nth 2 disp-name)
 		(list (format nil "<ie><fnm>~a</fnm><mrow>" (car disp-name)))
 		(list (format nil "<munder><fnm>~a</fnm><mrow>" (car disp-name))))
