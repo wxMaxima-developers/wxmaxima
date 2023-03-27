@@ -1460,7 +1460,7 @@ Submit bug reports by following the 'New issue' link on that page."))
   (let ((n (cadr x))
 	(k (caddr x)))
     (append l
-	    (list (format nil "<munder altCopy=\"~{~a~}\"><p>" (wxxml-alt-copy-text x)))
+	    (list (format nil "<munder altCopy=\"~a\"><p>" (wxxml-alt-copy-text x)))
 	    (wxxml n nil nil 'mparen 'mparen)
 	    (list "</p><mrow>")
 	    (wxxml k nil nil 'mparen 'mparen)
