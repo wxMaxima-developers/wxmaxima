@@ -34,14 +34,14 @@
 
 ;(format t "<wxxml-start/>")
 
-;; we need this "progn" so we can send the whole program to maxima
-;; in one single :lisp command 
+;; TODO: outchar isn't properly escaped in xml  
+
 (format t "<wxxml-key>~A</wxxml-key>~%" (maxima-getenv "MAXIMA_AUTH_CODE"))
 
 (in-package :maxima)
 
 ;; For debugging only
-(declaim (optimize (speed 0) (space 0) (safety 3) (debug 3)))
+;;(declaim (optimize (speed 0) (space 0) (safety 3) (debug 3)))
 
 ;; This makes the variables lop, rop and inchar use dynamic scope.
 ;; What it does to wxxml-lbp and wxxml-rbp I don't know, though.
@@ -70,7 +70,7 @@
   `(defprop ,sym ,val ,indic)
   )
 
-;; A few variables whose value can be configured from wxMaxima
+;; Define a few variables whose value will be set by wxMaxima
 (defvar *wx-plot-num* 0 "The serial number of the current plot")
 (defvar $wxfilename "" "The filename of the current wxMaxima worksheet")
 (defvar $wxdirname "" "The directory the current wxMaxima worksheet lies in")
@@ -89,7 +89,7 @@
 (defvar $wxplot_pngcairo nil "Use gnuplot's pngcairo terminal for new plots?")
 (defmvar $wxplot_old_gnuplot nil)
 
-;; A string replace function
+;; A string replace function that we later use excessively
 (defun wxxml-string-substitute (newstring oldchar x &aux matchpos)
   (setq matchpos (position oldchar x))
   (if (null matchpos) x
@@ -133,7 +133,7 @@
 (defun wxxml-mstring (x)
   (coerce (mstring x) 'string))
 
-;; Generates an alt-copy-text from a command
+;; Generates an alt-copy-text from maths in sexp form
 ;; (declaim (ftype (function (list) string) wxxml-alt-copy-text))
 (defun wxxml-alt-copy-text (x)
   (wxxml-fix-string (format nil "~{~a~}" (mstring x))))
@@ -148,7 +148,7 @@
   t
   )
 
-;;; Muffle compiler-notes globally: Else we drown in debug messages
+;; Muffles compiler-notes where we don't wnat to drown in debug messages.
 (defmacro no-warning (form)
   #+sbcl `(handler-bind
 	      ((style-warning #'muffle-warning)
@@ -173,6 +173,7 @@
 (defvar $maxima_frontend nil)
 (defvar $maxima_frontend_version nil)
 (defvar $maxima_frontend_bugreportinfo nil)
+
 ;; The frontend name we know already. The frontend version is assigned
 ;; using a :lisp command from the C++ program, instead.
 (setf (symbol-value '$maxima_frontend) "wxMaxima")
@@ -292,11 +293,11 @@ Submit bug reports by following the 'New issue' link on that page."))
 		 r))
   (nconc l r))
 
-;; (maketag value,tagname) produces the text <tagname>value</tagname>.
+;; (maketag value tagname) produces the text <tagname>value</tagname>.
 (defmacro make-tag (val tag)
   ``((wxxmltag simp) ,,val ,,tag))
 
-;; wxxmltag(value,tagname) produces the text <tagname>value</tagname>.
+;; wxxmltag(value tagname) produces the text <tagname>value</tagname>.
 (defun $wxxmltag (val tag)
   (make-tag (wxxml-fix-string ($sconcat val)) ($sconcat tag)))
 
@@ -355,6 +356,7 @@ Submit bug reports by following the 'New issue' link on that page."))
   (wxxml-fix-string
    (format nil "~{~c~}" atom)))
 
+;; Converts numbers to XML
 (defun wxxmlnumformat (atom)
   (let (r firstpart exponent)
     (cond ((integerp atom)
@@ -379,6 +381,7 @@ Submit bug reports by following the 'New issue' link on that page."))
 				     "<mrow><mn>~a</mn><h>*</h><msup><mn>10</mn><mn>~a</mn></msup></mrow>"
 				     (wxxmlescapenum firstpart) (wxxmlescapenum exponent))))))))))
 
+;; Converts a symbol name to a XML-escaped string.
 (defun wxxml-stripdollar (sym &aux pname)
   (or (symbolp sym)
       (return-from wxxml-stripdollar
@@ -505,6 +508,10 @@ Submit bug reports by following the 'New issue' link on that page."))
 		     y (cdr y)
 		     l nil))))))
 
+;; Converts a sexp element to XML
+;;
+;; Most objects are assigned properties to, that tell this function how to
+;; deal with it. But there are many special cases...
 (defun wxxml (x l r lop rop)
   (setq x (nformat x))
   (cond ((atom x) (wxxml-atom x l r))
@@ -561,7 +568,6 @@ Submit bug reports by following the 'New issue' link on that page."))
 	      l nil))))
 
 ;;; Now we have functions which are called via property lists
-
 (defun wxxml-prefix (x l r)
   (wxxml (cadr x) (append l (wxxmlsym (caar x))) r (caar x) rop))
 
@@ -604,11 +610,11 @@ Submit bug reports by following the 'New issue' link on that page."))
   (or (get x 'wxxmlword)
       (wxxml-stripdollar x)))
 
-(wx-defprop bigfloat wxxml-bigfloat wxxml)
-
 ;;(defun mathml-bigfloat (x l r) (declare (ignore l r)) (fpformat x))
 (defun wxxml-bigfloat (x l r)
   (append l '("<mn>") (fpformat x) '("</mn>") r))
+
+(wx-defprop bigfloat wxxml-bigfloat wxxml)
 
 (wx-defprop mprog  "<fnm lisp=\"mprog\">block</fnm>" wxxmlword)
 (wx-defprop $true  "<t lisp=\"true\">true</t>"  wxxmlword)
@@ -644,6 +650,7 @@ Submit bug reports by following the 'New issue' link on that page."))
 (wx-defprop mlabbox 10. wxxml-rbp)
 (wx-defprop mlabbox 10. wxxml-lbp)
 
+;; Creates the XML output for box() commands.
 (defun wxxml-mbox (x l r)
   (let ((boxname (caddr x)))
     (setq l (wxxml (cadr x) (append l
@@ -659,14 +666,13 @@ Submit bug reports by following the 'New issue' link on that page."))
   )
 ;; (caddr x) should return the oütional argument
 
-(wx-defprop mqapply wxxml-mqapply wxxml)
-
 (defun wxxml-mqapply (x l r)
   (setq l (wxxml (cadr x) (append l '("<fn>"))
 		 (list "<p>" ) lop 'mfunction)
 	r (wxxml-list (cddr x) nil (cons "</p></fn>" r) "<mo>,</mo>"))
   (append l r))
 
+(wx-defprop mqapply wxxml-mqapply wxxml)
 
 (wx-defprop $zeta "<g>zeta</g>" wxxmlword)
 (wx-defprop %zeta "<g>zeta</g>" wxxmlword)
@@ -907,16 +913,12 @@ Submit bug reports by following the 'New issue' link on that page."))
 
 (wx-defprop %sqrt wxxml-sqrt wxxml)
 
+;; Creates the XML tags for sqrt()
 (defun wxxml-sqrt (x l r)
   (wxxml (cadr x) (append l  '("<q>"))
 	 (append '("</q>") r) 'mparen 'mparen))
 
-(wx-defprop mquotient wxxml-mquotient wxxml)
-(wx-defprop mquotient ("<mo>/</mo>") wxxmlsym)
-(wx-defprop mquotient "<mo>/</mo>" wxxmlword)
-(wx-defprop mquotient 122. wxxml-lbp) ;;dunno about this
-(wx-defprop mquotient 123. wxxml-rbp)
-
+;; Creates the XML tags for quotients
 (defun wxxml-mquotient (x l r)
   (if (or (null (cddr x)) (cdddr x)) (return-from wxxml-mquotient (wxxml-function x l r)))
   (setq l (wxxml (cadr x) (append l '("<mfrac><mrow>")) nil 'mparen 'mparen)
@@ -924,13 +926,23 @@ Submit bug reports by following the 'New issue' link on that page."))
 		 (append '("</mrow></mfrac>")r) 'mparen 'mparen))
   (append l r))
 
-(wx-defprop $matrix wxxml-matrix-test wxxml)
+(wx-defprop mquotient wxxml-mquotient wxxml)
+(wx-defprop mquotient ("<mo>/</mo>") wxxmlsym)
+(wx-defprop mquotient "<mo>/</mo>" wxxmlword)
+(wx-defprop mquotient 122. wxxml-lbp) ;;dunno about this
+(wx-defprop mquotient 123. wxxml-rbp)
 
+;; Tests if a matrix() command contains a square list of lists
+;;
+;; If not the matrix is displayed as function call, not as a matrix
 (defun wxxml-matrix-test (x l r)
   (if (every #'$listp (cdr x))
       (wxxml-matrix x l r)
       (wxxml-function x l r)))
 
+(wx-defprop $matrix wxxml-matrix-test wxxml)
+
+;; Generates the XML for matrices
 (defun wxxml-matrix(x l r) ;;matrix looks like ((mmatrix)((mlist) a b) ...)
   (cond ((null (cdr x))
 	 (append l `("<fn><fnm>matrix</fnm><p/></fn>") r))
@@ -1369,8 +1381,6 @@ Submit bug reports by following the 'New issue' link on that page."))
 
 (defvar *wxxml-mratp* nil)
 
-;; TODO: outchar isn't properly escaped in xml  
-
 ;; Converts an input prompt to XML
 (defun wxxml-mlable (x l r)
   (wxxml (caddr x)
@@ -1387,11 +1397,17 @@ Submit bug reports by following the 'New issue' link on that page."))
 (wx-defprop mlable wxxml-mlable wxxml)
 (wx-defprop mlabel wxxml-mlable wxxml)
 
+;; Seems to be only used for indenting results function cally by the trace()
+;; command.
 (defun wxxml-spaceout (x l r)
   (append l (list " " (make-string (cadr x) :initial-element #\.) "") r))
 
 (wx-defprop spaceout wxxml-spaceout wxxml)
 
+;; the actual function that converts equations from maxima's sexp to XML
+;;
+;; with all the other functions in this file this one has grown
+;; surprisingly small.
 (defun mydispla (x)
   (finish-output)
   (let ((*print-circle* nil)
@@ -1401,8 +1417,10 @@ Submit bug reports by following the 'New issue' link on that page."))
   (finish-output)
   )
 
+;; Default to use wxMaxima's 2d XML display
 (setf *alt-display2d* 'mydispla)
 
+;; Allow the user to switch between display schemes.
 (defun $set_display (tp)
   (cond
     ((eq tp '$none)
@@ -1422,7 +1440,6 @@ Submit bug reports by following the 'New issue' link on that page."))
 ;;
 ;; inference_result from the stats package
 ;;
-
 (defun wxxml-inference (x l r)
   (let ((name (cadr x))
 	(values (caddr x))
