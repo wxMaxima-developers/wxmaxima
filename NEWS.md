@@ -1,6 +1,11 @@
 # Current
- * Made the GUI more responsive for functions with much output.
- * Handle errors in the XML from maxima more gracefully.
+ * Made the GUI more responsive for functions with much output
+ * Handle errors in the XML from maxima more gracefully
+ * Rewrote parts of the lisp part of wxMaxima
+ * Resolved a few lisp warnings
+ * Resolved a few XML errors caused by not escaping special chars
+ * Automatic XML generation tests
+ * More small MacOs fixes
 
 # 23.03.0
  * Make sure all bitmaps are valid on High-DPI MacOs (#1749)
