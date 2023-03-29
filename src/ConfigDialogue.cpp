@@ -94,6 +94,11 @@ int ConfigDialogue::GetImageSize() {
 
 ConfigDialogue::ConfigDialogue(wxWindow *parent, Configuration *cfg)
   : wxPropertySheetDialog() {
+#if defined __WXOSX__
+  SetSheetStyle(wxPROPSHEET_CHOICEBOOK);
+#else
+  SetSheetStyle(wxPROPSHEET_LISTBOOK);
+#endif
   Create(parent, wxID_ANY, _("wxMaxima configuration"), wxDefaultPosition,
          wxDefaultSize, wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER);
   m_maximaEnvDoc["MAXIMA_DEFAULT_LISP"] =
@@ -162,11 +167,6 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent, Configuration *cfg)
   m_languages[_("Ukrainian")] = wxLANGUAGE_UKRAINIAN;
 
   m_configuration = cfg;
-#if defined __WXOSX__
-  SetSheetStyle(wxPROPSHEET_CHOICEBOOK);
-#else
-  SetSheetStyle(wxPROPSHEET_LISTBOOK);
-#endif
   SetSheetInnerBorder(3);
   SetSheetOuterBorder(3);
 
