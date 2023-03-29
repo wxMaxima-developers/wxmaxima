@@ -162,7 +162,11 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent, Configuration *cfg)
   m_languages[_("Ukrainian")] = wxLANGUAGE_UKRAINIAN;
 
   m_configuration = cfg;
+#if defined __WXOSX__
+  SetSheetStyle(wxPROPSHEET_CHOICEBOOK);
+#else
   SetSheetStyle(wxPROPSHEET_LISTBOOK);
+#endif
   SetSheetInnerBorder(3);
   SetSheetOuterBorder(3);
 
@@ -186,7 +190,10 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent, Configuration *cfg)
 
   m_notebook = GetBookCtrl();
 
+#if defined __WXOSX__
+#else
   m_notebook->SetImageList(m_imageList.get());
+#endif
   m_notebook->AddPage(CreateWorksheetPanel(), _("Worksheet"), true, 0);
   m_notebook->AddPage(CreateMaximaPanel(), _("Maxima"), false, 1);
   m_notebook->AddPage(CreateStylePanel(), _("Style"), false, 2);
