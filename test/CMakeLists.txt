@@ -122,6 +122,16 @@ add_test(
 )
 
 add_test(
+     NAME mminus
+     COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "-x-1;" "<mi>-</mi><mi lisp=.*>x</mi><mi>-</mi><mn>1</mn>"
+)
+
+add_test(
+     NAME mfactorial
+     COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "(n\!)\!;" "<mi lisp=.*>n</mi><mo>\!</mo></p></mrow><mo>\!</mo>"
+)
+
+add_test(
     NAME wxmaxima_batch_emptyFile
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
     COMMAND wxmaxima --logtostderr --pipe --batch empty_file.wxm)
