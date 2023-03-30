@@ -323,7 +323,7 @@ void Configuration::ResetAllToDefaults(InitOpt options) {
       }
   }
   m_indent = -1;
-  m_autoSubscript = 1;
+  m_autoSubscript = 2;
   m_antiAliasLines = true;
   m_showCodeCells = true;
   m_greekSidebar_ShowLatinLookalikes = false;
