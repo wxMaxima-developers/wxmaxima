@@ -1138,7 +1138,7 @@ Submit bug reports by following the 'New issue' link on that page."))
 (wx-defprop mminus wxxml-prefix wxxml)
 (wx-defprop mminus ("<mi>-</mi>") wxxmlsym)
 (wx-defprop mminus "<mi>-</mi>" wxxmlword)
-(wx-defprop mminus 101. wxxml-rbp)
+(wx-defprop mminus 134. wxxml-rbp)
 (wx-defprop mminus 101. wxxml-lbp)
 
 (wx-defprop $~ wxxml-infix wxxml)
