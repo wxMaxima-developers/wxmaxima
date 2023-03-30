@@ -822,6 +822,7 @@ Submit bug reports by following the 'New issue' link on that page."))
 (wx-defprop mfactorial ("<mo>!</mo>") wxxmlsym)
 (wx-defprop mfactorial "<mo>!</mo>" wxxmlword)
 (wx-defprop mfactorial 160. wxxml-lbp)
+(wx-defprop mfactorial 159. wxxml-rbp)
 
 (wx-defprop mexpt wxxml-mexpt wxxml)
 (wx-defprop mexpt 140. wxxml-lbp)
