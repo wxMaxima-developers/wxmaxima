@@ -571,17 +571,32 @@ Submit bug reports by following the 'New issue' link on that page."))
 (defun wxxml-prefix (x l r)
   (wxxml (cadr x) (append l (wxxmlsym (caar x))) r (caar x) rop))
 
+;; Convert infix operators to XML
+;;
+;; Infix operators are operators that stand between the two operands,
+;; like a "+" or a "-".
 (defun wxxml-infix (x l r)
   ;; check for 2 args
   (if (or (null (cddr x)) (cdddr x)) (return-from wxxml-infix (wxxml-function x l r)))
   (setq l (wxxml (cadr x) l nil lop (caar x)))
   (wxxml (caddr x) (append l (wxxmlsym (caar x))) r (caar x) rop))
 
+;; Convert postfix operators to XML
+;;
+;; Postfix operators like the "!" operator apply to the operand in front of them
 (defun wxxml-postfix (x l r)
   (wxxml (cadr x) l (append (wxxmlsym (caar x)) r) lop (caar x)))
 
+
+;; Convert nofix operators to XML
+;;
+;; Nofix operators have no arguments
 (defun wxxml-nofix (x l r) (wxxml (caar x) l r (caar x) rop))
 
+;; Convert matchfix operators to XML
+;;
+;; Matchfix operators consist of two parts: A lead operator and a trailing op.
+;; The operands are then in between them.
 (defun wxxml-matchfix (x l r)
   (setq l (append l (car (wxxmlsym (caar x))))
 	;; car of wxxmlsym of a matchfix operator is the lead op
