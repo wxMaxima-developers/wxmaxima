@@ -182,6 +182,26 @@ add_test(
 )
 
 add_test(
+     NAME block
+     COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "f(x):=block([a:x],x);" "<fn lisp=.*><fnm lisp=.*>f</fnm><mrow><p><mrow><mi lisp=.*>x</mi></mrow></p></mrow></fn><mo>:=</mo><fn lisp=.*><fnm lisp=.*>block</fnm><mrow><p><mrow><mrow list=\"true\"><t lisp=.* listdelim=\"true\">\\[</t><mrow><mi lisp=.*>a</mi><mo>:</mo><mi lisp=.*>x</mi></mrow><t lisp=.* listdelim=\"true\">\\]</t></mrow></mrow><mo>,</mo><mrow><mi lisp=.*>x</mi></mrow></p></mrow></fn>"
+)
+
+add_test(
+     NAME mlist
+     COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "[&,b];" "<t lisp=.* listdelim=\"true\">\\[</t><mrow><mi lisp=.*>&amp;</mi></mrow><mo>,</mo><mrow><mi lisp=.*>b</mi></mrow><t lisp=.* listdelim=\"true\">\\]</t></mrow>"
+)
+
+add_test(
+     NAME true
+     COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "true;" "<t lisp=.*>true</t>"
+)
+
+add_test(
+     NAME false
+     COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "true;" "<t lisp=.*>true</t>"
+)
+
+add_test(
      NAME mfrac
      COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "a/(1/2+b);" "<mfrac><mrow><mi lisp=.*>a</mi></mrow><mrow><mi lisp=.*>b</mi><mi>+</mi><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn></mrow></mfrac></mrow></mfrac>"
 )
