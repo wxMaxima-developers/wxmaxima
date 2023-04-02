@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/svg+xml" href="wxmaxima.svg" />
+  <title>wxMaxima - develop</title>
+<link rel="stylesheet" href="bootstrap.min.css">
+<script src="bootstrap.bundle.min.js"></script>
+
+
+  <link rel="stylesheet" href="style.css">
+
+
+  <style>#forkongithub a{background:#777;color:#fff;text-decoration:none;font-family:arial,sans-serif;text-align:center;font-weight:bold;padding:5px 00px;font-size:1rem;line-height:2rem;position:relative;transition:0.5s;}#forkongithub a:hover{background:#c11;color:#fff;}#forkongithub a::before,#forkongithub a::after{content:"";width:100%;display:block;position:absolute;top:1px;left:0;height:1px;background:#fff;}#forkongithub a::after{bottom:1px;top:auto;}@media screen and (min-width:800px){#forkongithub{position:absolute;display:block;top:0;right:0;width:200px;overflow:hidden;height:200px;z-index:9999;}#forkongithub a{width:200px;position:absolute;top:30px;right:-60px;transform:rotate(45deg);-webkit-transform:rotate(45deg);-ms-transform:rotate(45deg);-moz-transform:rotate(45deg);-o-transform:rotate(45deg);box-shadow:4px 4px 10px rgba(0,0,0,0.8);}}</style>
+</head>
+
+<body>
+
+<span id="forkongithub"><a href="https://github.com/wxMaxima-developers/wxmaxima">Fork me on GitHub</a></span>
+
+  <div class="container">
+  
+  
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="index.html"><img src="wxmaxima.svg" alt="" width="30" height="30">&nbsp;wxMaxima</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+          <li class="nav-item"><a class="nav-link" href="screenshots.html">Screenshots</a></li>
+          <li class="nav-item"><a class="nav-link" href="download.html">Download</a></li>
+          <li class="nav-item"><a class="nav-link" href="help.html">Documentation</a></li>
+          <li class="nav-item"><a class="nav-link active" aria-current="page" href="develop.html">Develop</a></li>
+          <li class="nav-item"><a class="nav-link" href="Example.html">Example 1</a></li>
+          <li class="nav-item"><a class="nav-link" href="Example2.html">Example 2</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+  
+
+  
+    <div class="page-header">
+      <h1>Develop</h1>
+    </div>    
+    <p>
+      AppVeyor: <a href="https://ci.appveyor.com/project/gunterkoenigsmann/wxmaxima/">
+	<img alt="AppVeyor Build Status (Windows Build)"
+	     src="https://ci.appveyor.com/api/projects/status/sqg2s20vwlv7o623?svg=true"/></a>
+      Github Actions: <a href="https://github.com/wxmaxima-developers/wxmaxima/actions?query=workflow%3Acompile_ubuntu">
+	<img alt="Github Actions Ubuntu 20.04 Build"
+	     src="https://github.com/wxmaxima-developers/wxmaxima/workflows/compile_ubuntu/badge.svg"/></a>
+      Github Actions: <a href="https://github.com/wxmaxima-developers/wxmaxima/actions?query=workflow%3Acompile_mac">
+	<img alt="Github Actions macOS build"
+	     src="https://github.com/wxmaxima-developers/wxmaxima/workflows/compile_mac/badge.svg"/></a>
+      Github Actions: <a href="https://github.com/wxmaxima-developers/wxmaxima/actions?query=workflow%3Acompile_cygwin">
+        <img alt="Github Actions Cygwin build"
+             src="https://github.com/wxmaxima-developers/wxmaxima/workflows/compile_cygwin/badge.svg"/></a>
+      Github Actions: <a href="https://github.com/wxmaxima-developers/wxmaxima/actions?query=workflow%3Acompile_windows">
+        <img alt="Github Actions Windows build"
+             src="https://github.com/wxmaxima-developers/wxmaxima/workflows/compile_windows/badge.svg"/></a>
+
+
+    </p>
+
+    <p class="lead">
+      wxMaxima is written is C++ and uses <a href="https://wxwidgets.org/">wxWidgets</a>.
+      The sources are in git repository hosted at <a href="https://github.com/wxMaxima-developers/wxmaxima">Github</a>.
+    </p>
+    <h2>Trackers</h2>
+  
+    <p>
+      Use <a href="https://github.com/wxMaxima-developers/wxmaxima/issues">Github issues page</a>
+      to submit bug reports or feature requests.
+    </p>
+
+    <h2>Git</h2>
+
+    <p>
+      Current wxMaxima <a href="https://github.com/wxMaxima-developers/wxmaxima/tarball/main">source code</a>
+      is available in git repositories at
+      <a href="https://github.com/wxMaxima-developers/wxmaxima">github</a>. Clone the repository with</p>
+      <code>git clone https://github.com/wxMaxima-developers/wxmaxima</code>
+      <p>
+      Build instructions can be found at
+      <a href="https://github.com/wxMaxima-developers/wxmaxima/blob/main/Compiling.md">
+	https://github.com/wxMaxima-developers/wxmaxima/blob/main/Compiling.md</a>.
+      On some Linux systems the <kbd>F1</kbd>, <kbd>Tab</kbd> and <kbd>Delete</kbd>
+      keys will be suppressed until the package <code>ibus-gtk3</code> is installed.
+    </p>
+    
+    <h2>Code documentation</h2>
+        <p>
+          The documentation of the code can be viewed
+	  <a href="Doxygen/index.html">here</a>.
+        </p>
+
+    <h2>Nightly Builds</h2>
+    <h3>Install a Nightly Build of wxMaxima </h3>
+    <h4 id="WindowsNightly">Windows</h4>
+    <p>
+      <a href="https://wolfgang.dautermann.at/maxima/nightlybuild/">Wolfgang Dautermann's
+	site</a> always contains a recent build of Maxima and wxMaxima. Additionally
+      <a href="https://ci.appveyor.com/project/gunterkoenigsmann/wxmaxima/build/artifacts/">appveyor</a>
+      tries to create a wxMaxima-only installer immediately after
+      wxMaxima's sourcecode has been changed. This build is only
+      available if there was no code change in the last about 10
+      minutes and if the code actually compiled for windows.  As this
+      build is compiled using Microsoft Visual C++ it is considerably
+      slower than Wolfgang's nightly build, though, which is made
+      using the gnu toolchain.</p>
+    <h4>Linux</h4>
+    A nightly build of wxMaxima can be downloaded from
+    <a href="https://code.launchpad.net/~peterpall/+archive/ubuntu/wxmaxima-nightlies">
+      Launchpad</a>.
+    This page also contains information on how to make debian-based
+    system automatically keep updating to the latest build. For a
+    one-time install downloading the <code>.deb</code> file and double-clicking on
+    it should suffice on most systems. Alternatively the file can be
+    installed from the console, on debian-based systems by
+    typing:<br/> <code>sudo dpkg -i filename.deb</code><br/>
+    The build logs can be accessed
+    using <a href="https://code.launchpad.net/~peterpall/+recipe/wxmaxima-daily">
+      this page</a>.
+    <h4>macOS</h4>
+    <p> A nightly build of wxMaxima (without maxima) can be downloaded from <a href="https://www.peterpall.de/wxMaxima/nightly/wxMaxima.dmg"> www.peterpall.de/wxMaxima/nightly/wxMaxima.dmg</a>
+    <h4>macOS+Linux</h4>
+    The result from trying to compile the latest version from the repository can be
+    viewed at <a href="https://travis-ci.org/wxMaxima-developers/wxmaxima">https://travis-ci.org/wxMaxima-developers/wxmaxima</a>. A new compile is triggered at every commit to the wxMaxima repository.
+    <h3>Updating Maxima to the last version, as well</h3>
+    <p>
+      On Linux updating Maxima to the current git head should be
+      straightforward. On Windows you can either use the nightly build, which 
+      is a ready-to-use installer (untested!) of the current development version of Maxima and wxMaxima (32 and 64 bit).<br/>
+      If you want to compile it by yourself, David Scherfgen  
+      <a href="https://sourceforge.net/p/maxima/mailman/message/33481264/">
+	posted</a> the following procedure that allows to update the
+      current Maxima installation to the git head on Windows, too, without
+      having to install any traditional build tools.
+      <ol>
+	<li>
+	  Install the latest &quot;stable&quot; Maxima build for
+	  Windows from
+	  <a href="https://sourceforge.net/projects/maxima/files/Maxima-Windows/">
+	    sourceforge.net</a>. We will use the wxMaxima version that
+	  comes with this build and just replace Maxima itself.
+	</li>
+	<li>
+	  If you don't have one, install a Git client for Windows
+	  from <a href="https://git-scm.com/download/win">https://git-scm.com</a>
+	  or <a href="https://tortoisegit.org/">https://tortoisegit.org/</a>.
+ 	</li>
+	<li>
+	  Clone the Maxima Git repository into some directory. In this
+	  guide, I will assume that this is <code>C:\Maxima-Git</code>. The
+	  repository's URL is: <code>git://git.code.sf.net/p/maxima/code</code>
+	</li>
+	<li>
+	  If you don't have it already, install Steel Bank Common Lisp
+	  (SBCL) for Windows
+	  from <a href="http://www.sbcl.org/platform-table.html">http://www.sbcl.org</a>. Since
+	  I'm on a 64-bit Windows, I chose the 64-bit version, and it
+	  worked fine. 
+	</li>
+	<li>
+	  Now we will build Maxima using SBCL only. For that,
+	  precisely follow the instructions found in the <code>INSTALL.lisp</code>
+	  file in <code>C:\Maxima-Git</code>:
+	<ol>
+	  <li>
+	    Open a command prompt and CD to <code>C:\Maxima-Git</code>.
+	  </li>
+	  <li>
+	    Start SBCL by entering: <code>sbcl</code>
+	  </li>
+	  <li>
+	    Now we configure Maxima by entering <code>(load
+	    &quot;configure.lisp&quot;)</code>,
+	    then <code>(configure)</code>, and finally <code>(quit)</code>
+	  </li>
+	  <li>
+	    Navigate to the <code>C:\Maxima-Git\src</code>
+	    directory by typing: <code>cd src</code>
+	  </li>
+	  <li>
+	    Start SBCL again: <code>sbcl</code>
+	  </li>
+	  <li>
+	    Now we compile Maxima by entering <code>(load
+	    &quot;maxima-build.lisp&quot;)</code>,
+	    then <code>(maxima-compile)</code>, and finally <code>(quit)</code>
+	  </li>
+	  <li>
+	    Start SBCL again: <code>sbcl</code>
+	  </li>
+	  <li>
+	    Now we load the compiled Maxima program by
+	    entering <code>(load &quot;maxima-build.lisp&quot;)</code> again,
+	    then <code>(maxima-load)</code>
+	  </li>
+	  <li>
+	    Finally, we dump an image by entering <code>(maxima-dump)</code>
+	  </li>
+	</ol>
+	</li>
+	<li>
+	  After these steps, you should have a compiled version of the
+	  latest Maxima. Verify that everything worked by running the
+	  maxima.bat file that you should find in
+	  <code>C:\Maxima-Git\src</code>. The Maxima
+	  command prompt should show up.
+	</li>
+	<li>
+	  Now we will make wxMaxima use our self-compiled Maxima
+	  version:
+	<ol>
+	  <li>
+	    Open an Explorer window and go to the <code>bin</code> subdirectory of
+	    your latest "stable" Maxima version. For me, this
+	    is <code>C:\Program Files (x86)\Maxima-sbcl-5.35.1.2\bin</code>.
+	  </li>
+	  <li>
+	    Rename the <code>maxima.bat</code> file
+	    to <code>maxima.bat.bak</code>.
+	  </li>
+	  <li>
+	    Rename the <code>sbcl.exe</code> file
+	    to <code>sbcl.exe.bak</code>. You need to do
+	    this because the supplied version of SBCL seems to be
+	    outdated, and that would result in troubles. By renaming
+	    the file, the SBCL version you earlier installed on your
+	    machine will be used instead. 
+	  </li>
+	  <li>
+	    Copy <code>C:\Maxima-Git\src\maxima.bat</code>
+	    to the current directory.
+	  </li>
+	</ol>
+	</li>
+	<li>
+	  Verify that everything worked by starting wxMaxima and
+	  entering <code>build_info();</code> - pay
+	  attention to the timestamp field, which should reflect the
+	  date and time when you compiled Maxima earlier. 
+	</li>
+	<li>
+	  That's it! From time to time, you should pull new commits
+	  from the repository and rebuild Maxima by following step 5
+	  again. Copying the files again (step 7) should not be
+	  necessary. 
+	</li>
+	<li>
+	  If you want to undo the changes, delete
+	  the <code>maxima.bat</code> file and
+	  rename <code>maxima.bat.bak</code> back
+	  to <code>maxima.bat</code>
+	  and <code>sbcl.exe.bak</code> back
+	  to <code>sbcl.exe</code>.
+	</li>
+      </ol>
+  </div>
+
+
+</body>
+</html>

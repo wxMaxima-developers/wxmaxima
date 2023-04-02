@@ -1,7 +1,0 @@
-var searchData=
-[
-  ['wxmaxima_3122',['wxMaxima',['../index.html',1,'']]],
-  ['wxmaxima_3123',['WxMaxima',['../md_README.html',1,'']]],
-  ['wxmaxima_20release_20checklist_3124',['wxMaxima Release Checklist',['../md_ReleaseChecklist.html',1,'']]],
-  ['wxmaxima_27s_20translations_3125',['wxMaxima&apos;s Translations',['../md_locales_README.html',1,'']]]
-];
