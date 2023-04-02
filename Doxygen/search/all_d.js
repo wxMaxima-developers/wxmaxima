@@ -1,0 +1,28 @@
+var searchData=
+[
+  ['nameandtags_940',['NameAndTags',['../structCatch_1_1NameAndTags.html',1,'Catch']]],
+  ['needsrecalculation_941',['NeedsRecalculation',['../classCell.html#aa0cc4910d52a26419062952d95d294bf',1,'Cell::NeedsRecalculation()'],['../classEditorCell.html#a27361d11dfbf4383dcdfa11cb227e5ed',1,'EditorCell::NeedsRecalculation()'],['../classGroupCell.html#a2b1a8fb21cbb4f11e3a4c17726645a44',1,'GroupCell::NeedsRecalculation()'],['../classLabelCell.html#aa7ca4a32d00f5a436294ff821390708d',1,'LabelCell::NeedsRecalculation()'],['../classLongNumberCell.html#a6debd178f36283a7d028c060631968f2',1,'LongNumberCell::NeedsRecalculation()'],['../classTextCell.html#a3c071677deceedf953ea6e5a82cd8080',1,'TextCell::NeedsRecalculation()']]],
+  ['networkdclick_942',['NetworkDClick',['../classwxMaxima.html#a557dc63c643231d0705b64676c00ce35',1,'wxMaxima']]],
+  ['networkstate_943',['networkState',['../classStatusBar.html#a3de8a6b955f99bb7a534c6ddfb47f9d8',1,'StatusBar']]],
+  ['networkstatus_944',['NetworkStatus',['../classStatusBar.html#addf51766d62198da4dd162f7f2a05c6f',1,'StatusBar']]],
+  ['newwindow_945',['NewWindow',['../classMyApp.html#a1f6e5cf2600da99f0e3fc6356f36dfc7',1,'MyApp']]],
+  ['next_5fstrategy_946',['next_strategy',['../structww898_1_1utf_1_1detail_1_1next__strategy.html',1,'ww898::utf::detail']]],
+  ['next_5fstrategy_3c_20it_2c_20iterator_5fimpl_3a_3arandom_5faccess_20_3e_947',['next_strategy&lt; It, iterator_impl::random_access &gt;',['../structww898_1_1utf_1_1detail_1_1next__strategy_3_01It_00_01iterator__impl_1_1random__access_01_4.html',1,'ww898::utf::detail']]],
+  ['nocliptodrawregion_948',['NoClipToDrawRegion',['../classNoClipToDrawRegion.html',1,'']]],
+  ['noncopyable_949',['NonCopyable',['../classCatch_1_1NonCopyable.html',1,'Catch']]],
+  ['notification_950',['Notification',['../classNotification.html',1,'Notification'],['../classNotification.html#a1d2014b23265060cebccfb542a60e75a',1,'Notification::Notification()'],['../classNotification.html#a318b399339a243424905d071abc553c8',1,'Notification::Notification(const wxString &amp;title, const wxString &amp;message={}, wxWindow *parent=NULL, int flags=wxICON_INFORMATION)']]],
+  ['notification_2ecpp_951',['Notification.cpp',['../Notification_8cpp.html',1,'']]],
+  ['notification_2eh_952',['Notification.h',['../Notification_8h.html',1,'']]],
+  ['notifyifidle_953',['NotifyIfIdle',['../classConfiguration.html#a35914468c50b5421c93c802f72b5ce9e',1,'Configuration']]],
+  ['nsvggradient_954',['NSVGgradient',['../structNSVGgradient.html',1,'']]],
+  ['nsvggradientstop_955',['NSVGgradientStop',['../structNSVGgradientStop.html',1,'']]],
+  ['nsvgimage_956',['NSVGimage',['../structNSVGimage.html',1,'']]],
+  ['nsvgpaint_957',['NSVGpaint',['../structNSVGpaint.html',1,'']]],
+  ['nsvgpath_958',['NSVGpath',['../structNSVGpath.html',1,'']]],
+  ['nsvgshape_959',['NSVGshape',['../structNSVGshape.html',1,'']]],
+  ['nullopt_5ft_960',['nullopt_t',['../structSTX__NAMESPACE__NAME_1_1nullopt__t.html',1,'STX_NAMESPACE_NAME']]],
+  ['number_961',['Number',['../classGroupCell.html#a1bc7ca9e1bf5923dbdd5e2e8735da8cd',1,'GroupCell']]],
+  ['numberofstyles_962',['NUMBEROFSTYLES',['../TextStyle_8h.html#a68ac52da6129614b3fa14e7c828c1993a4ff5d935a79c3cd0c1e5d3a188645046',1,'TextStyle.h']]],
+  ['numbersections_963',['NumberSections',['../classWorksheet.html#aaae87decc0964b306316e5341b92f3d8',1,'Worksheet']]],
+  ['numericalmenu_964',['NumericalMenu',['../classwxMaxima.html#a9c1ad69ebd56bb77c7f403d967f2ced2',1,'wxMaxima']]]
+];

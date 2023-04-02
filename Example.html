@@ -1,0 +1,884 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/svg+xml" href="wxmaxima.svg" />
+  <link rel="stylesheet" href="bootstrap.min.css">
+  <script src="bootstrap.bundle.min.js"></script>
+
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <title>wxMaxima</title>
+  <link rel="stylesheet" type="text/css" href="Example_htmlimg/Example.css"/>
+</head>
+
+<body>
+  <div class="container">
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="index.html"><img src="wxmaxima.svg" alt="" width="30" height="30">&nbsp;wxMaxima</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+          <li class="nav-item"><a class="nav-link" href="screenshots.html">Screenshots</a></li>
+          <li class="nav-item"><a class="nav-link" href="download.html">Download</a></li>
+          <li class="nav-item"><a class="nav-link" href="help.html">Documentation</a></li>
+          <li class="nav-item"><a class="nav-link" href="develop.html">Develop</a></li>
+          <li class="nav-item"><a class="nav-link active" aria-current="page" href="Example.html">Example 1</a></li>
+          <li class="nav-item"><a class="nav-link" href="Example2.html">Example 2</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- ***************************************************** -->
+<!--          Created with wxMaxima version 15.06.0         -->
+<!-- ***************************************************** -->
+
+
+<!-- Title cell -->
+
+
+<P CLASS="title">
+Does damping change the frequency of an oscillator?
+</P>
+
+
+<!-- Section cell -->
+
+
+<P CLASS="section">
+Preface
+</P>
+
+
+<!-- Text cell -->
+
+
+<P CLASS="comment">
+Most computers programs try to find numbers or curves that solve problems.
+A Computer Algebra System like Maxima is specialised in finding the formula
+that provides the solution instead:
+
+</P>
+
+
+<!-- Code cell -->
+
+
+<TABLE><TR><TD>
+  <SPAN CLASS="prompt">
+
+  </SPAN></TD>
+  <TD><SPAN CLASS="input">
+<span class="code_variable">x</span><span class="code_operator">=</span><span class="code_number">1</span><span class="code_operator">/</span><span class="code_number">10</span><span class="code_operator">*</span><span class="code_variable">y</span><span class="code_operator">+</span><span class="code_number">5</span><span class="code_operator">*</span><span class="code_variable">y</span><span class="code_operator">^</span><span class="code_number">2</span><span class="code_operator">-</span><span class="code_number">3</span><span class="code_endofline">;</span><span class="code_operator"></span>  </SPAN></TD>
+</TR></TABLE>
+  <img src="Example_htmlimg/Example_0.png" width="198" style="max-width:90%;" alt="^/" >
+
+
+<!-- Code cell -->
+
+
+<TABLE><TR><TD>
+  <SPAN CLASS="prompt">
+
+  </SPAN></TD>
+  <TD><SPAN CLASS="input">
+<span class="code_function">solve</span>(<span class="code_variable">%</span>,<span class="code_variable">y</span>)<span class="code_endofline">;</span><span class="code_operator"></span>  </SPAN></TD>
+</TR></TABLE>
+  <img src="Example_htmlimg/Example_1.png" width="460" style="max-width:90%;" alt="(sqrt())/(sqrt())/" >
+
+
+<!-- Text cell -->
+
+
+<P CLASS="comment">
+Most of the times a formula can speak for itself. It can for example describe
+the mechanism that causes a phenomenon or it can tell in which way a problem
+can be optimized.
+<BR>But it can obviously be used to generate numbers instead. Maxima might be better
+suited for doing this than many programs that claim to have been written for
+numerical work:
+<UL>
+<LI>It supports simple floating-point numbers like 1.25e-7 or 0.3.</LI>
+<LI>But if they aren't precise enough it offers bigfloats (example: 1.25b-7)with a user-selectable number of digits.
+</LI>
+<LI>If a numbers is specified as a fraction of integers it will be treated asan exact integer and will only be rounded on explicit request.
+</LI>
+<LI>And if converting from float to exact fractions involves a rounding errormaxima will warn the user:
+</UL>
+
+</P>
+
+
+<!-- Code cell -->
+
+
+<TABLE><TR><TD>
+  <SPAN CLASS="prompt">
+
+  </SPAN></TD>
+  <TD><SPAN CLASS="input">
+<span class="code_variable">x</span><span class="code_operator">=</span>.<span class="code_number">1</span><span class="code_operator">*</span><span class="code_variable">y</span><span class="code_endofline">;</span><span class="code_operator"></span>  </SPAN></TD>
+</TR></TABLE>
+  <img src="Example_htmlimg/Example_2.png" width="143" style="max-width:90%;" alt="" >
+
+
+<!-- Code cell -->
+
+
+<TABLE><TR><TD>
+  <SPAN CLASS="prompt">
+
+  </SPAN></TD>
+  <TD><SPAN CLASS="input">
+<span class="code_function">solve</span>(<span class="code_variable">%</span>,<span class="code_variable">y</span>)<span class="code_endofline">;</span><span class="code_operator"></span>  </SPAN></TD>
+</TR></TABLE>
+  <img src="Example_htmlimg/Example_3.png" width="342" style="max-width:90%;" alt="" >
+
+
+<!-- Text cell -->
+
+
+<P CLASS="comment">
+Note that computers use binary numbers and therefore cannot express an exact 0.1
+as a floating-point number. The error the computer will introduce to approximate
+1/10 as floating number is extremely small:
+
+</P>
+
+
+<!-- Code cell -->
+
+
+<TABLE><TR><TD>
+  <SPAN CLASS="prompt">
+
+  </SPAN></TD>
+  <TD><SPAN CLASS="input">
+<span class="code_function">rationalize</span>(.<span class="code_number">1</span>)<span class="code_endofline">;</span><span class="code_operator"></span>  </SPAN></TD>
+</TR></TABLE>
+  <img src="Example_htmlimg/Example_4.png" width="237" style="max-width:90%;" alt="/" >
+
+
+<!-- Text cell -->
+
+
+<P CLASS="comment">
+But sometimes simple tasks like finding the root of a polygon are extremely
+suspectible to small errors. Other times one step in solving an equation
+incorporates something like:
+
+</P>
+
+
+<!-- Code cell -->
+
+
+<TABLE><TR><TD>
+  <SPAN CLASS="prompt">
+
+  </SPAN></TD>
+  <TD><SPAN CLASS="input">
+(<span class="code_variable">Something</span>[<span class="code_variable">Big</span>]<span class="code_operator">+</span><span class="code_variable">Something</span>[<span class="code_variable">Very_small</span>])<span class="code_operator">/</span><span class="code_variable">Something</span>[<span class="code_variable">Big</span>]<span class="code_operator">-</span><span class="code_number">1</span><span class="code_endofline">;</span><span class="code_operator"></span>  </SPAN></TD>
+</TR></TABLE>
+  <img src="Example_htmlimg/Example_5.png" width="374" style="max-width:90%;" alt="([][])/[]" >
+
+
+<!-- Text cell -->
+
+
+<P CLASS="comment">
+Never trust a program that automatically decides the following:
+
+</P>
+
+
+<!-- Code cell -->
+
+
+<TABLE><TR><TD>
+  <SPAN CLASS="prompt">
+
+  </SPAN></TD>
+  <TD><SPAN CLASS="input">
+(<span class="code_variable">Something</span>[<span class="code_variable">Big</span>]<span class="code_operator">+</span><span class="code_variable">Something</span>[<span class="code_variable">Very_small</span>])<span class="code_operator">/</span><span class="code_variable">Something</span>[<span class="code_variable">Big</span>]<span class="code_operator">-</span><span class="code_number">1</span><span class="code_operator">=</span><span class="code_number">0</span><span class="code_endofline">;</span><span class="code_operator"></span>  </SPAN></TD>
+</TR></TABLE>
+  <img src="Example_htmlimg/Example_6.png" width="398" style="max-width:90%;" alt="([][])/[]" >
+
+
+<!-- Text cell -->
+
+
+<P CLASS="comment">
+There are many such programs around.
+
+</P>
+
+
+<!-- Section cell -->
+
+
+<P CLASS="section">
+Description of a complicated circuit
+</P>
+
+
+<!-- Text cell -->
+
+
+<P CLASS="comment">
+There are many good tutorials on Maxima. This document was just created
+instead to show it in action. We therefore grab a ridiculously complicated
+problem and see what the program can do:
+
+</P>
+
+
+<!-- Image cell -->
+
+
+<P CLASS="image">
+ The schematic of the circuit
+<BR>
+  <IMG src="Example_htmlimg/Example_7.png" alt="Diagram" style="max-width:90%;" >
+
+<!-- Code cell -->
+
+
+<TABLE><TR><TD>
+  <SPAN CLASS="prompt">
+
+  </SPAN></TD>
+  <TD><SPAN CLASS="input">
+<span class="code_variable">g1</span><span class="code_operator">:</span><span class="code_function">U_R</span>(<span class="code_variable">t</span>)<span class="code_operator">=</span><span class="code_operator">-</span><span class="code_variable">R</span><span class="code_operator">*</span><span class="code_function">I_C</span>(<span class="code_variable">t</span>)<span class="code_endofline">;</span><BR>
+<span class="code_variable">g2</span><span class="code_operator">:</span><span class="code_function">U_L</span>(<span class="code_variable">t</span>)<span class="code_operator">=</span><span class="code_operator">-</span><span class="code_variable">L</span><span class="code_operator">*</span><span class="code_function">diff</span>(<span class="code_function">I_C</span>(<span class="code_variable">t</span>),<span class="code_variable">t</span>)<span class="code_endofline">;</span><BR>
+<span class="code_variable">g3</span><span class="code_operator">:</span><span class="code_function">I_C</span>(<span class="code_variable">t</span>)<span class="code_operator">=</span><span class="code_variable">C</span><span class="code_operator">*</span><span class="code_function">diff</span>(<span class="code_function">U_C</span>(<span class="code_variable">t</span>),<span class="code_variable">t</span>)<span class="code_endofline">;</span><BR>
+<span class="code_variable">g4</span><span class="code_operator">:</span><span class="code_function">U_L</span>(<span class="code_variable">t</span>)<span class="code_operator">+</span><span class="code_function">U_R</span>(<span class="code_variable">t</span>)<span class="code_operator">=</span><span class="code_function">U_C</span>(<span class="code_variable">t</span>)<span class="code_endofline">;</span><span class="code_operator"></span>  </SPAN></TD>
+</TR></TABLE>
+  <img src="Example_htmlimg/Example_8.png" width="270" style="max-width:90%;" alt="()()<BR>
+()('diff((),t,1))<BR>
+()('diff((),t,1))<BR>
+()()()" >
+
+
+<!-- Text cell -->
+
+
+<P CLASS="comment">
+Maxima can solve equation systems automatically:
+
+</P>
+
+
+<!-- Code cell -->
+
+
+<TABLE><TR><TD>
+  <SPAN CLASS="prompt">
+
+  </SPAN></TD>
+  <TD><SPAN CLASS="input">
+[<BR>
+ &nbsp;&nbsp;&nbsp;<span class="code_variable">x</span><span class="code_operator">+</span><span class="code_variable">y</span><span class="code_operator">=</span><span class="code_number">5</span>,<BR>
+ &nbsp;&nbsp;&nbsp;<span class="code_variable">y</span><span class="code_operator">+</span><span class="code_variable">z</span><span class="code_operator">=</span><span class="code_number">3</span><BR>
+]<span class="code_endofline">;</span><BR>
+<span class="code_function">solve</span>(<span class="code_variable">%</span>,[<span class="code_variable">x</span>,<span class="code_variable">y</span>,<span class="code_variable">z</span>])<span class="code_endofline">;</span><span class="code_operator"></span>  </SPAN></TD>
+</TR></TABLE>
+  <img src="Example_htmlimg/Example_9.png" width="360" style="max-width:90%;" alt="<BR>
+" >
+
+
+<!-- Text cell -->
+
+
+<P CLASS="comment">
+It even introduces additional variables like %r1 to show there is more than
+one solution.
+<BR>But it can of course shorten equation systems by introducing one equation into
+another like we will do with the equations we have previously named g4 and g1:
+
+</P>
+
+
+<!-- Code cell -->
+
+
+<TABLE><TR><TD>
+  <SPAN CLASS="prompt">
+
+  </SPAN></TD>
+  <TD><SPAN CLASS="input">
+<span class="code_variable">g4</span><span class="code_endofline">;</span><BR>
+<span class="code_function">solve</span>(<span class="code_variable">g4</span>,<span class="code_function">U_R</span>(<span class="code_variable">t</span>))<span class="code_endofline">;</span><BR>
+<span class="code_variable">g5</span><span class="code_operator">:</span><span class="code_function">ev</span>(<span class="code_variable">g1</span>,<span class="code_variable">%</span>)<span class="code_endofline">;</span><span class="code_operator"></span>  </SPAN></TD>
+</TR></TABLE>
+  <img src="Example_htmlimg/Example_10.png" width="288" style="max-width:90%;" alt="()()()<BR>
+()()()<BR>
+()()()" >
+
+
+<!-- Text cell -->
+
+
+<P CLASS="comment">
+One could do this on step on paper, too. But when doing a long list of
+calculations the paper-approach is too prone to errors for this to be
+practical. So let us evaluate g2 and g3 with the knowledge we have from
+the last step:
+
+</P>
+
+
+<!-- Code cell -->
+
+
+<TABLE><TR><TD>
+  <SPAN CLASS="prompt">
+
+  </SPAN></TD>
+  <TD><SPAN CLASS="input">
+<span class="code_function">solve</span>(<span class="code_variable">g5</span>,<span class="code_function">U_L</span>(<span class="code_variable">t</span>))<span class="code_endofline">;</span><BR>
+<span class="code_variable">g6</span><span class="code_operator">:</span><span class="code_function">ev</span>(<span class="code_variable">g2</span>,<span class="code_variable">%</span>)<span class="code_endofline">;</span><BR>
+<span class="code_variable">g7</span><span class="code_operator">:</span><span class="code_function">ev</span>(<span class="code_variable">g3</span>,<span class="code_variable">%</span>)<span class="code_endofline">;</span><span class="code_operator"></span>  </SPAN></TD>
+</TR></TABLE>
+  <img src="Example_htmlimg/Example_11.png" width="352" style="max-width:90%;" alt="()()()<BR>
+()()('diff((),t,1))<BR>
+()('diff((),t,1))" >
+
+
+<!-- Text cell -->
+
+
+<P CLASS="comment">
+Combining the last two results we get a one-line description of the problem:
+
+</P>
+
+
+<!-- Code cell -->
+
+
+<TABLE><TR><TD>
+  <SPAN CLASS="prompt">
+
+  </SPAN></TD>
+  <TD><SPAN CLASS="input">
+<span class="code_variable">dgl</span><span class="code_operator">:</span><span class="code_function">ev</span>(<span class="code_variable">g6</span>,<span class="code_variable">g7</span>)<span class="code_endofline">;</span><span class="code_operator"></span>  </SPAN></TD>
+</TR></TABLE>
+  <img src="Example_htmlimg/Example_12.png" width="492" style="max-width:90%;" alt="('diff((),t,1))()('diff((('diff((),t,1))),t,1))" >
+
+
+<!-- Text cell -->
+
+
+<P CLASS="comment">
+Perhaps things look nicer if we combine the right- and the left hand side of this
+equation:
+
+</P>
+
+
+<!-- Code cell -->
+
+
+<TABLE><TR><TD>
+  <SPAN CLASS="prompt">
+
+  </SPAN></TD>
+  <TD><SPAN CLASS="input">
+<span class="code_function">lhs</span>(<span class="code_variable">dgl</span>)<span class="code_operator">-</span><span class="code_function">rhs</span>(<span class="code_variable">dgl</span>)<span class="code_operator">=</span><span class="code_number">0</span><span class="code_endofline">;</span><span class="code_operator"></span>  </SPAN></TD>
+</TR></TABLE>
+  <img src="Example_htmlimg/Example_13.png" width="504" style="max-width:90%;" alt="('diff((),t,1))('diff((('diff((),t,1))),t,1))()" >
+
+
+<!-- Section cell -->
+
+
+<P CLASS="section">
+Solving the differential equation
+</P>
+
+
+<!-- Subsection cell -->
+
+
+<P CLASS="subsect">
+The naïve approach
+</P>
+
+
+<!-- Text cell -->
+
+
+<P CLASS="comment">
+Maxima will try to find a formula that solves differential equations if they are
+in the &quot;one time-dependent variable per equation&quot; form - which the
+differential equation is in by now.
+<BR>Since a differential equation describes all potential shapes a curve can assume
+but doesn't describe the actual height nor which of these possibilities are actually
+used in reality the result looks quite monstrous in this case:
+
+</P>
+
+
+<!-- Code cell -->
+
+
+<TABLE><TR><TD>
+  <SPAN CLASS="prompt">
+
+  </SPAN></TD>
+  <TD><SPAN CLASS="input">
+<span class="code_variable">solution1</span><span class="code_operator">:</span><span class="code_function">desolve</span>(<span class="code_variable">dgl</span>,<span class="code_function">U_C</span>(<span class="code_variable">t</span>))<span class="code_endofline">;</span><span class="code_operator"></span>  </SPAN></TD>
+</TR></TABLE>
+  <img src="Example_htmlimg/Example_14.png" width="874" style="max-width:90%;" alt="(^)p;<BR>
+()(^(()/())((((()(at('diff((),t,1),)))()^)((sqrt((^)))/()))/sqrt((^))()((sqrt((^)))/())))/()" >
+
+
+<!-- Text cell -->
+
+
+<P CLASS="comment">
+If we answer the question differently the form the answer is presented in does change:
+
+</P>
+
+
+<!-- Code cell -->
+
+
+<TABLE><TR><TD>
+  <SPAN CLASS="prompt">
+
+  </SPAN></TD>
+  <TD><SPAN CLASS="input">
+<span class="code_variable">solution2</span><span class="code_operator">:</span><span class="code_function">desolve</span>(<span class="code_variable">dgl</span>,<span class="code_function">U_C</span>(<span class="code_variable">t</span>))<span class="code_endofline">;</span><span class="code_operator"></span>  </SPAN></TD>
+</TR></TABLE>
+  <img src="Example_htmlimg/Example_15.png" width="876" style="max-width:90%;" alt="(^)n;<BR>
+()(^(()/())((((()(at('diff((),t,1),)))()^)((sqrt((^)))/()))/sqrt((^))()((sqrt((^)))/())))/()" >
+
+
+<!-- Text cell -->
+
+
+<P CLASS="comment">
+This time the question maxima has asked doesn't actually change the shape of the curve
+that solves the differential equation, though. It just determines if the program combines
+the exp() functions that solve the problem to sinusses.
+
+</P>
+
+
+<!-- Subsection cell -->
+
+
+<P CLASS="subsect">
+A starting value
+</P>
+
+
+<!-- Text cell -->
+
+
+<P CLASS="comment">
+Maxima maintains a database of known facts. We can use this database to tell the program
+about the starting values of the curve it is about to generate. The first of these values
+is easy to acquire: We want to start with a discharged capacitor:
+
+</P>
+
+
+<!-- Code cell -->
+
+
+<TABLE><TR><TD>
+  <SPAN CLASS="prompt">
+
+  </SPAN></TD>
+  <TD><SPAN CLASS="input">
+<span class="code_function">atvalue</span>(<span class="code_function">U_C</span>(<span class="code_variable">t</span>),<span class="code_variable">t</span><span class="code_operator">=</span><span class="code_number">0</span>,<span class="code_variable">U_0</span>)<span class="code_endofline">$</span><span class="code_operator"></span>  </SPAN></TD>
+</TR></TABLE>
+
+
+
+<!-- Text cell -->
+
+
+<P CLASS="comment">
+The second condition could be calculated using our initial equation system and knowledge
+about the current through the inductor. Or we can tell maxim we want to know a condition
+that makes the sinus go away:
+
+</P>
+
+
+<!-- Code cell -->
+
+
+<TABLE><TR><TD>
+  <SPAN CLASS="prompt">
+
+  </SPAN></TD>
+  <TD><SPAN CLASS="input">
+(<span class="code_number">2</span><span class="code_operator">*</span><span class="code_variable">C</span><span class="code_operator">*</span><span class="code_variable">L</span><span class="code_operator">*</span>(<span class="code_function">U_C</span>(<span class="code_number">0</span>)<span class="code_operator">*</span><span class="code_variable">C</span><span class="code_operator">*</span><span class="code_variable">R</span><span class="code_operator">+</span>(<span class="code_function">at</span>(<span class="code_operator">'</span><span class="code_function">diff</span>(<span class="code_function">U_C</span>(<span class="code_variable">t</span>),<span class="code_variable">t</span>,<span class="code_number">1</span>),<span class="code_variable">t</span><span class="code_operator">=</span><span class="code_number">0</span>))<span class="code_operator">*</span><span class="code_variable">C</span><span class="code_operator">*</span><span class="code_variable">L</span>)<span class="code_operator">-</span><span class="code_function">U_C</span>(<span class="code_number">0</span>)<span class="code_operator">*</span><span class="code_variable">C</span><span class="code_operator">^</span><span class="code_number">2</span><span class="code_operator">*</span><span class="code_variable">L</span><span class="code_operator">*</span><span class="code_variable">R</span>)<span class="code_operator">=</span><span class="code_number">0</span><span class="code_endofline">;</span><BR>
+<span class="code_variable">InitialCondition1</span><span class="code_operator">:</span><span class="code_function">solve</span>(<span class="code_variable">%</span>,<span class="code_operator">'</span><span class="code_function">diff</span>(<span class="code_function">U_C</span>(<span class="code_variable">t</span>),<span class="code_variable">t</span>))<span class="code_endofline">;</span><span class="code_operator"></span>  </SPAN></TD>
+</TR></TABLE>
+  <img src="Example_htmlimg/Example_16.png" width="487" style="max-width:90%;" alt="((at('diff((),t,1),)))^<BR>
+'diff((),t,1)()/()" >
+
+
+<!-- Text cell -->
+
+
+<P CLASS="comment">
+Let's assign 'diff(U_C(t),t) the right-hand-side of the first element in this equation list for
+the case that t=0.
+
+</P>
+
+
+<!-- Code cell -->
+
+
+<TABLE><TR><TD>
+  <SPAN CLASS="prompt">
+
+  </SPAN></TD>
+  <TD><SPAN CLASS="input">
+<span class="code_function">atvalue</span>(<span class="code_operator">'</span><span class="code_function">diff</span>(<span class="code_function">U_C</span>(<span class="code_variable">t</span>),<span class="code_variable">t</span>),<span class="code_variable">t</span><span class="code_operator">=</span><span class="code_number">0</span>,<span class="code_function">rhs</span>(<span class="code_variable">InitialCondition1</span>[<span class="code_number">1</span>]))<span class="code_endofline">$</span><span class="code_operator"></span>  </SPAN></TD>
+</TR></TABLE>
+
+
+
+<!-- Text cell -->
+
+
+<P CLASS="comment">
+We also can inform maxima about enough facts about the problem it does need to ask the same
+question again:
+
+</P>
+
+
+<!-- Code cell -->
+
+
+<TABLE><TR><TD>
+  <SPAN CLASS="prompt">
+
+  </SPAN></TD>
+  <TD><SPAN CLASS="input">
+<span class="code_function">assume</span>(<span class="code_variable">C</span>&gt;<span class="code_number">0</span>,<span class="code_variable">R</span>&gt;<span class="code_number">0</span>,<span class="code_variable">L</span>&gt;<span class="code_number">0</span>,<span class="code_variable">C</span><span class="code_operator">*</span><span class="code_variable">R</span><span class="code_operator">^</span><span class="code_number">2</span>&lt;<span class="code_number">4</span><span class="code_operator">*</span><span class="code_variable">L</span>)<span class="code_endofline">;</span><span class="code_operator"></span>  </SPAN></TD>
+</TR></TABLE>
+  <img src="Example_htmlimg/Example_17.png" width="315" style="max-width:90%;" alt="^" >
+
+
+<!-- Text cell -->
+
+
+<P CLASS="comment">
+Now that the solution does no more need to be this general it does look much cleaner:
+
+</P>
+
+
+<!-- Code cell -->
+
+
+<TABLE><TR><TD>
+  <SPAN CLASS="prompt">
+
+  </SPAN></TD>
+  <TD><SPAN CLASS="input">
+<span class="code_variable">solution2</span><span class="code_operator">:</span><span class="code_function">desolve</span>(<span class="code_variable">dgl</span>,<span class="code_function">U_C</span>(<span class="code_variable">t</span>))<span class="code_endofline">;</span><span class="code_operator"></span>  </SPAN></TD>
+</TR></TABLE>
+  <img src="Example_htmlimg/Example_18.png" width="373" style="max-width:90%;" alt="()^(()/())((sqrt(^))/(sqrt()))" >
+
+
+<!-- Subsection cell -->
+
+
+<P CLASS="subsect">
+The actual result
+</P>
+
+
+<!-- Text cell -->
+
+
+<P CLASS="comment">
+From the last equation one can easily see that the resonance frequency is in fact dependent
+on the damping:
+
+</P>
+
+
+<!-- Code cell -->
+
+
+<TABLE><TR><TD>
+  <SPAN CLASS="prompt">
+
+  </SPAN></TD>
+  <TD><SPAN CLASS="input">
+<span class="code_variable">Frequency</span><span class="code_operator">:</span><span class="code_variable">f</span><span class="code_operator">=</span>(<span class="code_function">sqrt</span>(<span class="code_number">4</span><span class="code_operator">*</span><span class="code_variable">L</span><span class="code_operator">-</span><span class="code_variable">C</span><span class="code_operator">*</span><span class="code_variable">R</span><span class="code_operator">^</span><span class="code_number">2</span>))<span class="code_operator">/</span>(<span class="code_number">2</span><span class="code_operator">*</span><span class="code_function">sqrt</span>(<span class="code_variable">C</span>)<span class="code_operator">*</span><span class="code_variable">L</span>)<span class="code_operator">/</span>(<span class="code_number">2</span><span class="code_operator">*</span><span class="code_variable">%pi</span>)<span class="code_endofline">;</span><span class="code_operator"></span>  </SPAN></TD>
+</TR></TABLE>
+  <img src="Example_htmlimg/Example_19.png" width="187" style="max-width:90%;" alt="sqrt(^)/(sqrt())" >
+
+
+<!-- Section cell -->
+
+
+<P CLASS="section">
+Visualization of the result
+</P>
+
+
+<!-- Subsection cell -->
+
+
+<P CLASS="subsect">
+Real circuit element values
+</P>
+
+
+<!-- Text cell -->
+
+
+<P CLASS="comment">
+We wnt to variate R, but the actual values of L and C don't really matter so we can set
+them for example to 1:
+
+</P>
+
+
+<!-- Code cell -->
+
+
+<TABLE><TR><TD>
+  <SPAN CLASS="prompt">
+
+  </SPAN></TD>
+  <TD><SPAN CLASS="input">
+<span class="code_variable">ElementValues</span><span class="code_operator">:</span><BR>
+[<BR>
+ &nbsp;&nbsp;&nbsp;<span class="code_variable">L</span><span class="code_operator">=</span><span class="code_number">1</span>,<BR>
+ &nbsp;&nbsp;&nbsp;<span class="code_variable">C</span><span class="code_operator">=</span><span class="code_number">1</span>,<BR>
+ &nbsp;&nbsp;&nbsp;<span class="code_variable">U_0</span><span class="code_operator">=</span><span class="code_number">1</span><BR>
+]<span class="code_endofline">;</span><span class="code_operator"></span>  </SPAN></TD>
+</TR></TABLE>
+  <img src="Example_htmlimg/Example_20.png" width="248" style="max-width:90%;" alt="" >
+
+
+<!-- Text cell -->
+
+
+<P CLASS="comment">
+It is always good to keep real numbers separate from the actual formula so one can switch
+between displaying tha formula and the result:
+
+</P>
+
+
+<!-- Code cell -->
+
+
+<TABLE><TR><TD>
+  <SPAN CLASS="prompt">
+
+  </SPAN></TD>
+  <TD><SPAN CLASS="input">
+<span class="code_variable">Frequency</span><span class="code_endofline">;</span><span class="code_operator"></span>  </SPAN></TD>
+</TR></TABLE>
+  <img src="Example_htmlimg/Example_21.png" width="187" style="max-width:90%;" alt="sqrt(^)/(sqrt())" >
+
+
+<!-- Code cell -->
+
+
+<TABLE><TR><TD>
+  <SPAN CLASS="prompt">
+
+  </SPAN></TD>
+  <TD><SPAN CLASS="input">
+<span class="code_function">at</span>(<span class="code_variable">Frequency</span>,<span class="code_variable">ElementValues</span>)<span class="code_endofline">;</span><span class="code_operator"></span>  </SPAN></TD>
+</TR></TABLE>
+  <img src="Example_htmlimg/Example_22.png" width="161" style="max-width:90%;" alt="sqrt(^)/()" >
+
+
+<!-- Text cell -->
+
+
+<P CLASS="comment">
+To make the command for plotting shorter we should assign the right-hand-value of the
+solution of the differential equation with the applied element values in a macro, though:
+
+</P>
+
+
+<!-- Code cell -->
+
+
+<TABLE><TR><TD>
+  <SPAN CLASS="prompt">
+
+  </SPAN></TD>
+  <TD><SPAN CLASS="input">
+<span class="code_function">Voltage</span>(<span class="code_variable">R</span>,<span class="code_variable">t</span>)<span class="code_operator">:</span><span class="code_operator">=</span><span class="code_function">ev</span>(<span class="code_function">rhs</span>(<span class="code_variable">solution2</span>),<span class="code_variable">ElementValues</span>)<span class="code_endofline">;</span><span class="code_operator"></span>  </SPAN></TD>
+</TR></TABLE>
+  <img src="Example_htmlimg/Example_23.png" width="525" style="max-width:90%;" alt="()(())" >
+
+
+<!-- Text cell -->
+
+
+<P CLASS="comment">
+Maxima will keep all variables it doesn't currently know the value of as symbols.
+So looking if defining the functions work is easy:
+
+</P>
+
+
+<!-- Code cell -->
+
+
+<TABLE><TR><TD>
+  <SPAN CLASS="prompt">
+
+  </SPAN></TD>
+  <TD><SPAN CLASS="input">
+<span class="code_function">Voltage</span>(<span class="code_variable">R</span>,<span class="code_variable">t</span>)<span class="code_endofline">;</span><span class="code_operator"></span>  </SPAN></TD>
+</TR></TABLE>
+  <img src="Example_htmlimg/Example_24.png" width="245" style="max-width:90%;" alt="^(()/)((sqrt(^))/)" >
+
+
+<!-- Code cell -->
+
+
+<TABLE><TR><TD>
+  <SPAN CLASS="prompt">
+
+  </SPAN></TD>
+  <TD><SPAN CLASS="input">
+<span class="code_variable">Resistors</span><span class="code_operator">:</span><span class="code_function">makelist</span>(<span class="code_variable">i</span><span class="code_operator">/</span><span class="code_number">20</span>,<span class="code_variable">i</span>,<span class="code_number">0</span>,<span class="code_number">20</span>)<span class="code_endofline">;</span><span class="code_operator"></span>  </SPAN></TD>
+</TR></TABLE>
+  <img src="Example_htmlimg/Example_25.png" width="867" style="max-width:90%;" alt="///////////////////" >
+
+
+<!-- Code cell -->
+
+
+<TABLE><TR><TD>
+  <SPAN CLASS="prompt">
+
+  </SPAN></TD>
+  <TD><SPAN CLASS="input">
+<span class="code_function">float</span>(<span class="code_variable">Resistors</span>)<span class="code_endofline">;</span><span class="code_operator"></span>  </SPAN></TD>
+</TR></TABLE>
+  <img src="Example_htmlimg/Example_26.png" width="998" style="max-width:90%;" alt="" >
+
+
+<!-- Text cell -->
+
+
+<P CLASS="comment">
+The following animation now demonstrates how little damping actually affects the frequency:
+
+</P>
+
+
+<!-- Code cell -->
+
+
+<TABLE><TR><TD>
+  <SPAN CLASS="prompt">
+
+  </SPAN></TD>
+  <TD><SPAN CLASS="input">
+<span class="code_function">load</span>(<span class="code_string">&quot;</span><span class="code_string">draw</span><span class="code_string">&quot;</span>)<span class="code_endofline">;</span><span class="code_operator"></span>  </SPAN></TD>
+</TR></TABLE>
+  <img src="Example_htmlimg/Example_27.png" width="754" style="max-width:90%;" alt="" >
+
+
+<!-- Code cell -->
+
+
+<TABLE><TR><TD>
+  <SPAN CLASS="prompt">
+
+  </SPAN></TD>
+  <TD><SPAN CLASS="input">
+<span class="code_variable">wxplot_size</span><span class="code_operator">:</span>[<span class="code_number">1024</span>,<span class="code_number">768</span>]<span class="code_endofline">$</span><BR>
+<span class="code_variable">wxanimate_framerate</span><span class="code_operator">:</span><span class="code_number">2</span><span class="code_endofline">$</span><BR>
+<span class="code_function">with_slider_draw</span>(<BR>
+ &nbsp;&nbsp;&nbsp;<span class="code_comment">/*</span><span class="code_comment"> </span><span class="code_comment">The</span><span class="code_comment"> </span><span class="code_comment">parameter</span><span class="code_comment"> </span><span class="code_comment">we</span><span class="code_comment"> </span><span class="code_comment">want</span><span class="code_comment"> </span><span class="code_comment">to</span><span class="code_comment"> </span><span class="code_comment">assign</span><span class="code_comment"> </span><span class="code_comment">to</span><span class="code_comment"> </span><span class="code_comment">the</span><span class="code_comment"> </span><span class="code_comment">slider</span><span class="code_comment"> </span><span class="code_comment">and</span><span class="code_comment"> </span><span class="code_comment">all</span><span class="code_comment"> </span><span class="code_comment">values</span><span class="code_comment"> </span><span class="code_comment">it</span><span class="code_comment"> </span><span class="code_comment">can</span><span class="code_comment"> </span><span class="code_comment">assume</span><span class="code_comment"> </span><span class="code_comment">*/</span><BR>
+ &nbsp;&nbsp;&nbsp;<span class="code_variable">R</span>,<span class="code_variable">Resistors</span>,<BR>
+<BR>
+ &nbsp;&nbsp;&nbsp;<span class="code_comment">/*</span><span class="code_comment"> </span><span class="code_comment">The</span><span class="code_comment"> </span><span class="code_comment">thing</span><span class="code_comment"> </span><span class="code_comment">we</span><span class="code_comment"> </span><span class="code_comment">actually</span><span class="code_comment"> </span><span class="code_comment">want</span><span class="code_comment"> </span><span class="code_comment">to</span><span class="code_comment"> </span><span class="code_comment">draw</span><span class="code_comment"> </span><span class="code_comment">*/</span><BR>
+ &nbsp;&nbsp;&nbsp;<span class="code_variable">key</span><span class="code_operator">=</span><span class="code_function">concat</span>(<span class="code_string">&quot;</span><span class="code_string">R</span><span class="code_string">=</span><span class="code_string">&quot;</span>,<span class="code_function">float</span>(<span class="code_variable">R</span>),<span class="code_string">&quot;</span><span class="code_string"> </span><span class="code_string">Ohm</span><span class="code_string">&quot;</span>),<BR>
+ &nbsp;&nbsp;&nbsp;<span class="code_function">explicit</span>(<BR>
+ &nbsp;&nbsp;&nbsp;&nbsp;<span class="code_function">ev</span>(<span class="code_function">Voltage</span>(<span class="code_variable">R</span>,<span class="code_variable">t</span>)),<BR>
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code_variable">t</span>,<span class="code_number">0</span>,<span class="code_number">20</span><BR>
+ &nbsp;&nbsp;&nbsp;),<span class="code_variable">line_type</span><span class="code_operator">=</span><span class="code_variable">dots</span>,<span class="code_variable">color</span><span class="code_operator">=</span><span class="code_variable">black</span>,<BR>
+ &nbsp;&nbsp;&nbsp;<span class="code_variable">key</span><span class="code_operator">=</span><span class="code_function">concat</span>(<span class="code_string">&quot;</span><span class="code_string">R</span><span class="code_string">=</span><span class="code_string">0</span><span class="code_string">.</span><span class="code_string">0</span><span class="code_string"> </span><span class="code_string">Ohm</span><span class="code_string">&quot;</span>),<BR>
+ &nbsp;&nbsp;&nbsp;<span class="code_function">explicit</span>(<BR>
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code_function">ev</span>(<span class="code_function">Voltage</span>(<span class="code_number">0</span>,<span class="code_variable">t</span>)),<BR>
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code_variable">t</span>,<span class="code_number">0</span>,<span class="code_number">20</span><BR>
+ &nbsp;&nbsp;&nbsp;),<BR>
+ &nbsp;&nbsp;&nbsp;<span class="code_variable">yrange</span><span class="code_operator">=</span>[<span class="code_number">-</span><span class="code_number">1</span>,<span class="code_number">1</span>],<BR>
+ &nbsp;&nbsp;&nbsp;<span class="code_variable">grid</span><span class="code_operator">=</span>true<BR>
+)<span class="code_endofline">$</span><span class="code_operator"></span>  </SPAN></TD>
+</TR></TABLE>
+  <img src="Example_htmlimg/Example_28.gif"  alt="Animated Diagram" style="max-width:90%;" >
+
+
+<!-- Text cell -->
+
+
+<P CLASS="comment">
+Normally animated 2D plots are easier to read than 3D ones. But just to show that
+we can produce an especially shiny one, we do this, too:
+
+</P>
+
+
+<!-- Code cell -->
+
+
+<TABLE><TR><TD>
+  <SPAN CLASS="prompt">
+
+  </SPAN></TD>
+  <TD><SPAN CLASS="input">
+<span class="code_function">wxdraw3d</span>(<BR>
+ &nbsp;&nbsp;&nbsp;<span class="code_variable">grid</span><span class="code_operator">=</span>true,<span class="code_variable">enhanced3d</span><span class="code_operator">=</span>true,<BR>
+ &nbsp;&nbsp;&nbsp;<span class="code_variable">wired_surface</span><span class="code_operator">=</span>true,<BR>
+ &nbsp;&nbsp;&nbsp;<span class="code_variable">nticks</span><span class="code_operator">=</span><span class="code_number">200</span>,<span class="code_variable">contour</span><span class="code_operator">=</span><span class="code_variable">base</span>,<BR>
+ &nbsp;&nbsp;&nbsp;<span class="code_function">explicit</span>(<BR>
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code_function">ev</span>(<span class="code_function">Voltage</span>(<span class="code_variable">R</span>,<span class="code_variable">t</span>)),<BR>
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code_variable">t</span>,<span class="code_number">0</span>,<span class="code_number">10</span>,<BR>
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code_variable">R</span>,<span class="code_number">0</span>,<span class="code_number">1</span><BR>
+ &nbsp;&nbsp;&nbsp;),<span class="code_variable">colorbox</span><span class="code_operator">=</span><span class="code_string">&quot;</span><span class="code_string">Magnitude</span><span class="code_string">&quot;</span><BR>
+)<span class="code_endofline">$</span><span class="code_operator"></span>  </SPAN></TD>
+</TR></TABLE>
+  <img src="Example_htmlimg/Example_29.png" width="1026" style="max-width:90%;" alt=" (Graphics) " >
+
+
+<!-- Text cell -->
+
+
+<P CLASS="comment">
+This example has been created by the HTML export-feature of a post-15.04 wxMaxima.
+
+</P>
+
+ <HR>
+ <SMALL> Created with <A HREF="https://wxmaxima-developers.github.io/wxmaxima/">wxMaxima</A>.</SMALL>
+ <SMALL> The source of this maxima session can be downloaded <A HREF="Example_htmlimg/Example.wxmx">here</A>.</SMALL>
+</div>
+</body>
+</html>
