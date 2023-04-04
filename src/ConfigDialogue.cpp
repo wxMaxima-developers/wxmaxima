@@ -2000,7 +2000,6 @@ wxWindow *ConfigDialogue::CreateStylePanel() {
   m_sampleWorksheet = new Worksheet(panel, wxID_ANY, m_configuration,
 				    wxDefaultPosition, wxDefaultSize, false);
 
-  m_configuration->SetZoomFactor(0.5);
   // Load the sample worksheet's contents
   {
     wxMemoryInputStream istream(SAMPLEWORKSHEET_WXMX, SAMPLEWORKSHEET_WXMX_SIZE);
@@ -2010,21 +2009,16 @@ wxWindow *ConfigDialogue::CreateStylePanel() {
       {
 	entry = zipstream.GetNextEntry();
       } while((entry != NULL) && (entry->GetName() != "content.xml"));
-    wxString xmlText;
-    std::cerr<<"xmltext\n";
-    if(entry != NULL)
-      {
-	wxTextInputStream textIn(zipstream);
-	wxString line;
-	while (!zipstream.Eof()) {
-	  line = textIn.ReadLine();
-	  xmlText += line + wxT("\n");
-	  std::cerr<<"line="<<line<<"\n";
-	}
-      }
+    //    wxTextInputStream textIn(zipstream);
+    wxXmlDocument xmlText;
+    xmlText.Load(zipstream);
+    wxXmlNode *xmlcells = xmlText.GetRoot();
+    if (xmlcells)
+      xmlcells = xmlcells->GetChildren();
+
     MathParser mp(m_configuration);
     CellListBuilder<GroupCell> tree;
-    tree.DynamicAppend(mp.ParseLine(xmlText));
+    tree.DynamicAppend(mp.ParseTag(xmlcells));
     m_sampleWorksheet->InsertGroupCells(std::move(tree));
   }
   vsizer->Add(m_sampleWorksheet, wxSizerFlags(1).Expand().
