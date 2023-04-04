@@ -29,6 +29,7 @@
 */
 
 #include "ConfigDialogue.h"
+#include "WXMformat.h"
 #include "BTextCtrl.h"
 #include "Cell.h"
 #include "Dirstructure.h"
@@ -2003,7 +2004,7 @@ wxWindow *ConfigDialogue::CreateStylePanel() {
       wxmText += line + wxT("\n");
     }
     
-    auto tree = Format::ParseMACContents(wxmText, &m_configuration);
+    auto tree = Format::ParseMACContents(wxmText, m_configuration);
     m_sampleWorksheet->InsertGroupCells(std::move(tree), nullptr);
   }
   
@@ -2493,6 +2494,7 @@ void ConfigDialogue::LoadSave(wxCommandEvent &event) {
       OnChangeStyle(dummy);
     }
   }
+  m_sampleWorksheet->Refresh();
 }
 
 
