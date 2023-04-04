@@ -2000,6 +2000,8 @@ wxWindow *ConfigDialogue::CreateStylePanel() {
   m_sampleWorksheet = new Worksheet(panel, wxID_ANY, m_configuration,
 				    wxDefaultPosition, wxDefaultSize, false);
 
+  m_configuration->SetZoomFactor(1.0);
+  
   // Load the sample worksheet's contents
   {
     wxMemoryInputStream istream(SAMPLEWORKSHEET_WXMX, SAMPLEWORKSHEET_WXMX_SIZE);
