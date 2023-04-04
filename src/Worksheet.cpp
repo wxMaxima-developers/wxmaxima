@@ -205,10 +205,10 @@ Worksheet::Worksheet(wxWindow *parent, int id,
       Connect(wxEVT_RIGHT_DOWN, wxMouseEventHandler(Worksheet::OnMouseRightDown));
       Connect(wxEVT_LEFT_DCLICK, wxMouseEventHandler(Worksheet::OnDoubleClick));
       Connect(wxEVT_MIDDLE_UP, wxMouseEventHandler(Worksheet::OnMouseMiddleUp));
-      Connect(wxEVT_MOTION, wxMouseEventHandler(Worksheet::OnMouseMotion));
       Connect(wxEVT_KEY_DOWN, wxKeyEventHandler(Worksheet::OnKeyDown));
       Connect(wxEVT_CHAR, wxKeyEventHandler(Worksheet::OnChar));
     }
+  Connect(wxEVT_MOTION, wxMouseEventHandler(Worksheet::OnMouseMotion));
   Connect(wxEVT_ENTER_WINDOW, wxMouseEventHandler(Worksheet::OnMouseEnter));
   Connect(wxEVT_LEAVE_WINDOW, wxMouseEventHandler(Worksheet::OnMouseExit));
   Connect(wxEVT_MOUSEWHEEL, wxMouseEventHandler(Worksheet::OnMouseWheel));

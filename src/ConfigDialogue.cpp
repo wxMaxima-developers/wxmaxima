@@ -36,8 +36,11 @@
 #include "ArtProvider.h"
 #include "WrappingStaticText.h"
 #include "wxm_config_images.h"
+#include "MathParser.h"
+#include "CellList.h"
 #include <cstdlib>
 #include <wx/colordlg.h>
+#include <wx/memtext.h>
 #include <wx/config.h>
 #include <wx/dcbuffer.h>
 #include <wx/dirdlg.h>
@@ -52,6 +55,7 @@
 #include <wx/settings.h>
 #include <wx/sstream.h>
 #include <wx/txtstrm.h>
+#include <wx/zipstrm.h>
 #include <wx/wfstream.h>
 #include "sampleWorksheet.h"
 
@@ -1914,8 +1918,9 @@ wxWindow *ConfigDialogue::CreateStylePanel() {
   // The styles box
   wxStaticBox *styles = new wxStaticBox(panel, -1, _("Styles"));
   wxStaticBoxSizer *stylesSizer = new wxStaticBoxSizer(styles, wxVERTICAL);
-  wxBoxSizer *hbox_sizer_1 = new wxBoxSizer(wxVERTICAL);
+  wxBoxSizer *fontoptionsizer = new wxBoxSizer(wxVERTICAL);
   wxBoxSizer *hbox_sizer_2 = new wxBoxSizer(wxHORIZONTAL);
+  wxBoxSizer *hbox3 = new wxBoxSizer(wxHORIZONTAL);
   wxBoxSizer *vbox_sizer = new wxBoxSizer(wxVERTICAL);
 
   wxArrayString m_styleFor_choices;
@@ -1958,23 +1963,25 @@ wxWindow *ConfigDialogue::CreateStylePanel() {
                   5 * GetContentScaleFactor());
   vbox_sizer->Add(m_getStyleFont, 0, wxUP | wxDOWN | wxALIGN_CENTER,
                   5 * GetContentScaleFactor());
-  hbox_sizer_1->Add(m_boldCB, wxSizerFlags().Border(
+  fontoptionsizer->Add(m_boldCB, wxSizerFlags().Border(
 						    wxUP | wxDOWN, 5 * GetContentScaleFactor()));
-  hbox_sizer_1->Add(
+  fontoptionsizer->Add(
 		    m_italicCB,
 		    wxSizerFlags().Border(wxUP | wxDOWN, 5 * GetContentScaleFactor()));
-  hbox_sizer_1->Add(
+  fontoptionsizer->Add(
 		    m_slantedCB,
 		    wxSizerFlags().Border(wxUP | wxDOWN, 5 * GetContentScaleFactor()));
-  hbox_sizer_1->Add(
+  fontoptionsizer->Add(
 		    m_underlinedCB,
 		    wxSizerFlags().Border(wxUP | wxDOWN, 5 * GetContentScaleFactor()));
-  hbox_sizer_1->Add(
+  fontoptionsizer->Add(
 		    m_strikethroughCB,
 		    wxSizerFlags().Border(wxUP | wxDOWN, 5 * GetContentScaleFactor()));
-  vbox_sizer->Add(hbox_sizer_1, 1, wxUP | wxDOWN | wxEXPAND, 0);
-  vbox_sizer->Add(m_examplePanel, wxSizerFlags().Expand().Border(
+  hbox3->Add(fontoptionsizer, wxSizerFlags().Expand());
+  
+  hbox3->Add(m_examplePanel, wxSizerFlags().Expand().Border(
 								 wxALL, 5 * GetContentScaleFactor()));
+  vbox_sizer->Add(hbox3, 1, wxUP | wxDOWN | wxEXPAND, 0);
   hbox_sizer_2->Add(m_styleFor,
                     wxSizerFlags().Border(wxALL, 5 * GetContentScaleFactor()));
   hbox_sizer_2->Add(vbox_sizer, 1, wxUP | wxDOWN | wxEXPAND, 0);
@@ -1993,23 +2000,35 @@ wxWindow *ConfigDialogue::CreateStylePanel() {
   m_sampleWorksheet = new Worksheet(panel, wxID_ANY, m_configuration,
 				    wxDefaultPosition, wxDefaultSize, false);
 
+  m_configuration->SetZoomFactor(0.5);
   // Load the sample worksheet's contents
   {
-    wxMemoryInputStream istream(SAMPLEWORKSHEET_WXM, SAMPLEWORKSHEET_WXM_SIZE);
-    wxTextInputStream textIn(istream);
-    wxString line;
-    wxString wxmText;
-    while (!istream.Eof()) {
-      line = textIn.ReadLine();
-      wxmText += line + wxT("\n");
-    }
-    
-    auto tree = Format::ParseMACContents(wxmText, m_configuration);
-    m_sampleWorksheet->InsertGroupCells(std::move(tree), nullptr);
+    wxMemoryInputStream istream(SAMPLEWORKSHEET_WXMX, SAMPLEWORKSHEET_WXMX_SIZE);
+    wxZipInputStream zipstream(istream);
+    wxZipEntry *entry;
+    do
+      {
+	entry = zipstream.GetNextEntry();
+      } while((entry != NULL) && (entry->GetName() != "content.xml"));
+    wxString xmlText;
+    std::cerr<<"xmltext\n";
+    if(entry != NULL)
+      {
+	wxTextInputStream textIn(zipstream);
+	wxString line;
+	while (!zipstream.Eof()) {
+	  line = textIn.ReadLine();
+	  xmlText += line + wxT("\n");
+	  std::cerr<<"line="<<line<<"\n";
+	}
+      }
+    MathParser mp(m_configuration);
+    CellListBuilder<GroupCell> tree;
+    tree.DynamicAppend(mp.ParseLine(xmlText));
+    m_sampleWorksheet->InsertGroupCells(std::move(tree));
   }
-  
-  vsizer->Add(m_sampleWorksheet, wxSizerFlags().Expand().Border(
-							  wxALL, 5 * GetContentScaleFactor()));
+  vsizer->Add(m_sampleWorksheet, wxSizerFlags(1).Expand().
+	      Border(wxALL, 5 * GetContentScaleFactor()));
   
   // load+save buttons
   wxBoxSizer *loadSavesizer = new wxBoxSizer(wxHORIZONTAL);
