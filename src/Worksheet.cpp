@@ -78,8 +78,8 @@
 
 //! This class represents the worksheet shown in the middle of the wxMaxima
 //! window.
-Worksheet::Worksheet(wxWindow *parent, int id, Worksheet *&observer,
-                     Configuration *config, wxPoint pos, wxSize size)
+Worksheet::Worksheet(wxWindow *parent, int id,
+                     Configuration *config, wxPoint pos, wxSize size, bool reactToEvents)
   : wxScrolled<wxWindow>(parent, id, pos, size,
 			 wxVSCROLL | wxHSCROLL | wxWANTS_CHARS
 #if defined __WXMSW__
@@ -87,7 +87,7 @@ Worksheet::Worksheet(wxWindow *parent, int id, Worksheet *&observer,
 #endif
 			 ),
     m_cellPointers(this), m_dc(this), m_configuration(config),
-    m_autocomplete(config), m_observer(observer),
+    m_autocomplete(config),
     m_maximaManual(m_configuration) {
   m_dontSkipScrollEvent = false;
   m_scrollToCaret = false;
@@ -198,18 +198,21 @@ Worksheet::Worksheet(wxWindow *parent, int id, Worksheet *&observer,
   Connect(wxEVT_PAINT, wxPaintEventHandler(Worksheet::OnPaint));
   Connect(wxEVT_MOUSE_CAPTURE_LOST,
           wxMouseCaptureLostEventHandler(Worksheet::OnMouseCaptureLost));
-  Connect(wxEVT_LEFT_UP, wxMouseEventHandler(Worksheet::OnMouseLeftUp));
-  Connect(wxEVT_LEFT_DOWN, wxMouseEventHandler(Worksheet::OnMouseLeftDown));
-  Connect(wxEVT_RIGHT_DOWN, wxMouseEventHandler(Worksheet::OnMouseRightDown));
-  Connect(wxEVT_LEFT_DCLICK, wxMouseEventHandler(Worksheet::OnDoubleClick));
-  Connect(wxEVT_MIDDLE_UP, wxMouseEventHandler(Worksheet::OnMouseMiddleUp));
-  Connect(wxEVT_MOTION, wxMouseEventHandler(Worksheet::OnMouseMotion));
+  if(reactToEvents)
+    {
+      Connect(wxEVT_LEFT_UP, wxMouseEventHandler(Worksheet::OnMouseLeftUp));
+      Connect(wxEVT_LEFT_DOWN, wxMouseEventHandler(Worksheet::OnMouseLeftDown));
+      Connect(wxEVT_RIGHT_DOWN, wxMouseEventHandler(Worksheet::OnMouseRightDown));
+      Connect(wxEVT_LEFT_DCLICK, wxMouseEventHandler(Worksheet::OnDoubleClick));
+      Connect(wxEVT_MIDDLE_UP, wxMouseEventHandler(Worksheet::OnMouseMiddleUp));
+      Connect(wxEVT_MOTION, wxMouseEventHandler(Worksheet::OnMouseMotion));
+      Connect(wxEVT_KEY_DOWN, wxKeyEventHandler(Worksheet::OnKeyDown));
+      Connect(wxEVT_CHAR, wxKeyEventHandler(Worksheet::OnChar));
+    }
   Connect(wxEVT_ENTER_WINDOW, wxMouseEventHandler(Worksheet::OnMouseEnter));
   Connect(wxEVT_LEAVE_WINDOW, wxMouseEventHandler(Worksheet::OnMouseExit));
   Connect(wxEVT_MOUSEWHEEL, wxMouseEventHandler(Worksheet::OnMouseWheel));
   Connect(wxEVT_TIMER, wxTimerEventHandler(Worksheet::OnTimer));
-  Connect(wxEVT_KEY_DOWN, wxKeyEventHandler(Worksheet::OnKeyDown));
-  Connect(wxEVT_CHAR, wxKeyEventHandler(Worksheet::OnChar));
   Connect(wxEVT_ERASE_BACKGROUND,
           wxEraseEventHandler(Worksheet::OnEraseBackground));
   Connect(wxEVT_KILL_FOCUS, wxFocusEventHandler(Worksheet::OnKillFocus));
@@ -218,7 +221,6 @@ Worksheet::Worksheet(wxWindow *parent, int id, Worksheet *&observer,
           wxScrollEventHandler(Worksheet::OnScrollChanged));
   Connect(wxEVT_SCROLLWIN_THUMBTRACK,
           wxScrollWinEventHandler(Worksheet::OnThumbtrack));
-  observer = this;
 }
 
 void Worksheet::OnSidebarKey(wxCommandEvent &event) {
@@ -426,7 +428,6 @@ Worksheet::~Worksheet() {
 
   ClearDocument();
   m_configuration = NULL;
-  m_observer = nullptr;
 }
 
 #if wxCHECK_VERSION(3, 1, 2)

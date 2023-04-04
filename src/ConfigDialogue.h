@@ -52,6 +52,7 @@ extern unsigned char view_refresh_svg_gz[];
 #define CONFIGDIALOGUE_H
 
 #include "TextStyle.h"
+#include "Worksheet.h"
 #include "Configuration.h"
 
 enum
@@ -205,6 +206,7 @@ private:
   wxWindow *CreateStartupPanel();
   
 protected:
+  Worksheet *m_sampleWorksheet;
   wxGrid *m_maximaEnvVariables;
   void OnImport(wxCommandEvent& event);
   static void CopyConfig(wxConfigBase *src, wxConfigBase *dst, wxString dir = wxT("/"));

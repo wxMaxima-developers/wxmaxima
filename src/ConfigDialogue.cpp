@@ -35,6 +35,7 @@
 #include "ArtProvider.h"
 #include "WrappingStaticText.h"
 #include "wxm_config_images.h"
+#include "sampleWorksheet.h"
 #include <cstdlib>
 #include <wx/colordlg.h>
 #include <wx/config.h>
@@ -1988,6 +1989,27 @@ wxWindow *ConfigDialogue::CreateStylePanel() {
   vsizer->Add(stylesSizer, wxSizerFlags().Expand().Border(
 							  wxALL, 5 * GetContentScaleFactor()));
 
+  m_sampleWorksheet = new Worksheet(panel, wxID_ANY, m_configuration,
+				    wxDefaultPosition, wxDefaultSize, false);
+
+  // Load the sample worksheet's contents
+  {
+    wxMemoryInputStream istream(SAMPLEWORKSHEET_WXM, SAMPLEWORKSHEET_WXM_SIZE);
+    wxTextInputStream textIn(istream);
+    wxString line;
+    wxString wxmText;
+    while (!istream.Eof()) {
+      line = textIn.ReadLine();
+      wxmText += line + wxT("\n");
+    }
+    
+    auto tree = Format::ParseMACContents(wxmText, &m_configuration);
+    m_sampleWorksheet->InsertGroupCells(std::move(tree), nullptr);
+  }
+  
+  vsizer->Add(m_sampleWorksheet, wxSizerFlags().Expand().Border(
+							  wxALL, 5 * GetContentScaleFactor()));
+  
   // load+save buttons
   wxBoxSizer *loadSavesizer = new wxBoxSizer(wxHORIZONTAL);
   m_loadStyle = new wxButton(panel, load_id, _("Load"));
