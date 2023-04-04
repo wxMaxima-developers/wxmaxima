@@ -161,7 +161,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
   // Now it is time to construct the window contents.
 
   // console
-  new Worksheet(this, -1, m_worksheet, &m_configuration);
+  m_worksheet = new Worksheet(this, wxID_ANY, &m_configuration);
   //  wxWindowUpdateLocker worksheetBlocker(m_worksheet);
 
   // We need to create one pane which doesn't do a lot before the log pane

@@ -6,6 +6,7 @@
  * Resolved a few XML errors caused by not escaping special chars
  * Automatic XML generation tests
  * More small MacOs fixes
+ * A better style sample for the config dialogue
 
 # 23.03.0
  * Make sure all bitmaps are valid on High-DPI MacOs (#1749)

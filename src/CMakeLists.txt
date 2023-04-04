@@ -384,6 +384,20 @@ set(CPACK_SOURCE_IGNORE_FILES
   "${CPACK_SOURCE_IGNORE_FILES}")
 
 add_custom_command(
+        OUTPUT ${CMAKE_BINARY_DIR}/sampleWorksheet.h
+        COMMAND ${CMAKE_COMMAND} ARGS
+        -DBIN2H_SOURCE_FILE="${CMAKE_SOURCE_DIR}/data/sampleWorksheet.wxmx"
+        -DBIN2H_VARIABLE_NAME=sampleWorksheet_wxmx
+        -DBIN2H_HEADER_FILE="${CMAKE_BINARY_DIR}/sampleWorksheet.h"
+        -DBIN2H="${CMAKE_SOURCE_DIR}/cmake-bin2h/bin2h.cmake"
+        -P "${CMAKE_CURRENT_SOURCE_DIR}/bin2h.cmake"
+        COMMENT "Embedding the example worksheet for the config dialogue"
+        DEPENDS ${CMAKE_SOURCE_DIR}/data/sampleWorksheet.wxmx ${CMAKE_CURRENT_SOURCE_DIR}/bin2h.cmake
+)
+add_custom_target(buildsampleworksheet DEPENDS ${CMAKE_BINARY_DIR}/sampleWorksheet.h)
+add_dependencies(wxmaxima buildsampleworksheet)
+
+add_custom_command(
         OUTPUT ${CMAKE_BINARY_DIR}/wxMathML_lisp.h
         COMMAND ${CMAKE_COMMAND} ARGS
         -DBIN2H_SOURCE_FILE="${CMAKE_CURRENT_SOURCE_DIR}/wxMathML.lisp"

@@ -689,9 +689,6 @@ public:
   void SetCurrentTextCell(TextCell *cell) { m_cellPointers.m_currentTextCell = cell; }
   void SetWorkingGroup(GroupCell *group) { m_cellPointers.SetWorkingGroup(group); }
 
-  //! The reference to a pointer that observes this object's lifetime
-  Worksheet* &m_observer;
-
   /*! Update the table of contents
 
     This function actually only schedules the update of the table-of-contents-tab.
@@ -816,9 +813,18 @@ public:
   */
   void TreeUndo_ClearBuffers();
 
-  //! The constructor
-  Worksheet(wxWindow *parent, int id, Worksheet *&observer, Configuration *config,
-            wxPoint pos = wxDefaultPosition, wxSize size = wxDefaultSize);
+  /*! The constructor
+
+    \param parent The parent window
+    \param id The window ID. Often wxID_ANY
+    \param The worksheet's initial location
+    \param The worksheet's initial size
+    \param reactToEvents Can be set to false for creating an example panel, for example
+           for the config dialogue.
+  */
+  Worksheet(wxWindow *parent, int id, Configuration *config,
+            wxPoint pos = wxDefaultPosition, wxSize size = wxDefaultSize,
+            bool reactToEvents = true);
 
   //! The destructor
   ~Worksheet();
