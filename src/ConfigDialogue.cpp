@@ -36,7 +36,6 @@
 #include "ArtProvider.h"
 #include "WrappingStaticText.h"
 #include "wxm_config_images.h"
-#include "sampleWorksheet.h"
 #include <cstdlib>
 #include <wx/colordlg.h>
 #include <wx/config.h>
@@ -54,6 +53,7 @@
 #include <wx/sstream.h>
 #include <wx/txtstrm.h>
 #include <wx/wfstream.h>
+#include "sampleWorksheet.h"
 
 #define CONFIG_ICON_SCALE (1.0)
 

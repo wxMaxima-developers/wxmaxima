@@ -386,7 +386,7 @@ set(CPACK_SOURCE_IGNORE_FILES
 add_custom_command(
         OUTPUT ${CMAKE_BINARY_DIR}/sampleWorksheet.h
         COMMAND ${CMAKE_COMMAND} ARGS
-        -DBIN2H_SOURCE_FILE="${CMAKE_SOURCE_DIR}/examples/sampleWorksheet.wxm"
+        -DBIN2H_SOURCE_FILE="${CMAKE_SOURCE_DIR}/data/sampleWorksheet.wxm"
         -DBIN2H_VARIABLE_NAME=sampleWorksheet_wxm
         -DBIN2H_HEADER_FILE="${CMAKE_BINARY_DIR}/sampleWorksheet.h"
         -DBIN2H="${CMAKE_SOURCE_DIR}/cmake-bin2h/bin2h.cmake"
