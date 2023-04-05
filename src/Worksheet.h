@@ -108,8 +108,6 @@ private:
   int m_newxPosition;
   // The y position to scroll to
   int m_newyPosition;
-  // false = collect scroll events without redrawing for every single one
-  bool m_dontSkipScrollEvent;
   //! Which zoom level were we at when we started the zoom gesture?
   double m_zoomAtGestureStart;
   //! If m_cellPointers.m_scrollToCell = true: Do we want to scroll to the top of this cell?

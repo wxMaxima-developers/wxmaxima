@@ -89,7 +89,6 @@ Worksheet::Worksheet(wxWindow *parent, int id,
     m_cellPointers(this), m_dc(this), m_configuration(config),
     m_autocomplete(config),
     m_maximaManual(m_configuration) {
-  m_dontSkipScrollEvent = false;
   m_scrollToCaret = false;
   m_newxPosition = -1;
   m_newyPosition = -1;
@@ -3303,11 +3302,9 @@ void Worksheet::QuestionAnswered() {
 
 void Worksheet::UpdateScrollPos() {
   if (m_newxPosition > 0) {
-    m_dontSkipScrollEvent = true;
     SetScrollPos(wxHORIZONTAL, m_newxPosition);
   }
   if (m_newyPosition > 0) {
-    m_dontSkipScrollEvent = true;
     SetScrollPos(wxVERTICAL, m_newyPosition);
   }
   m_newyPosition = -1;
@@ -7352,10 +7349,8 @@ void Worksheet::OnThumbtrack(wxScrollWinEvent &ev) {
     else
       m_newyPosition = ev.GetPosition();
 
-    if (m_dontSkipScrollEvent) {
-      RequestRedraw();
-      ev.Skip();
-    }
+    RequestRedraw();
+    ev.Skip();
   }
 }
 
