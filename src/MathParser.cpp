@@ -174,7 +174,7 @@ std::unique_ptr<Cell> MathParser::ParseVariableNameTag(wxXmlNode *node){
   auto children = node->GetChildren();
   if (children != NULL)
     {
-      if((m_configuration->IsOperator(node->GetContent())) ||
+      if((m_configuration->IsOperator(children->GetContent())) ||
 	 (node->GetAttribute(wxT("type")) == wxT("Operator")))
 	return ParseText(children, TS_OPERATOR);
       else
