@@ -5906,6 +5906,7 @@ bool Worksheet::ExportToWXMX(const wxString &file, bool markAsSaved) {
       if (!zip.IsOk())
         return false;
       {
+	wxLogMessage(_("Created a .zip archive (the .wxmx file technically is a .zip file)"));
         wxTextOutputStream output(zip);
 
         /* The first zip entry is a file named "mimetype": This makes sure that
@@ -5941,6 +5942,7 @@ bool Worksheet::ExportToWXMX(const wxString &file, bool markAsSaved) {
         zip.PutNextEntry(wxT("mimetype"));
         output << wxT("text/x-wxmathml");
         zip.CloseEntry();
+	wxLogMessage(_("Wrote the mimetype info"));
         zip.PutNextEntry(wxT("format.txt"));
         output << wxT(
 		      "\n\nThis file contains a wxMaxima session in the .wxmx format.\n"
@@ -6080,6 +6082,7 @@ bool Worksheet::ExportToWXMX(const wxString &file, bool markAsSaved) {
         }
 
         xmlText += wxT("\n</wxMaximaDocument>");
+	wxLogMessage(_("Generated the XML representation of the document"));
 	
         {
           // Let wxWidgets test if the document can be read again by the XML
@@ -6091,6 +6094,7 @@ bool Worksheet::ExportToWXMX(const wxString &file, bool markAsSaved) {
               wxTextOutputStream txtstrm(ostream);
               txtstrm.WriteString(xmlText);
               wxMemoryInputStream istream(ostream);
+	      wxLogNull suppressErrorMessages;
               doc.Load(istream);
             }
 	    
@@ -6102,21 +6106,25 @@ bool Worksheet::ExportToWXMX(const wxString &file, bool markAsSaved) {
                 wxDataObjectComposite *data = new wxDataObjectComposite;
                 data->Add(new wxTextDataObject(xmlText));
                 wxTheClipboard->SetData(data);
-                wxLogMessage(_("Produced invalid XML. The erroneous XML data has "
-			       "therefore not been saved but has been put on the "
-			       "clipboard in order to allow to debug it."));
+		LoggingMessageDialog dialog(this, _("Produced invalid XML. The erroneous XML data has "
+						    "therefore not been saved but has been put on the "
+						    "clipboard in order to allow to debug it."),
+					    _("Error"), wxCENTER | wxOK);
+	        dialog.ShowModal();
                 wxTheClipboard->Close();
               }
 
               return false;
             }
           }
-
+	  wxLogMessage(_("Validated that the XML representation of the document actually is valid XML"));
+	  
           // wxWidgets could pretty-print the XML document now. But as no-one
           // will look at it, anyway, there might be no good reason to do so.
           if (GetTree() != NULL)
             output << xmlText;
 	  zip.CloseEntry();
+	  wxLogMessage(_("Wrote the XML representation of the document to the zip archive"));
 	  
           // Move all files we have stored in memory during saving to zip file
 	  zip.SetLevel(0);
@@ -6126,14 +6134,26 @@ bool Worksheet::ExportToWXMX(const wxString &file, bool markAsSaved) {
 	      zip.Write(fil.Data().GetData(), fil.Data().GetDataLen());
 	      zip.CloseEntry();
 	    }
+	  wxLogMessage(_("Wrote all image and gnuplot files to the zip archive"));
 	}
       }
       if (!zip.Close())
-        return false;
+	{
+	  LoggingMessageDialog dialog(this, _("Could not write the file's contents during saving => aborting."),
+				      _("Error"), wxCENTER | wxOK);
+	  dialog.ShowModal();
+	  return false;
+	}
     }
     if (!out.Close())
-      return false;
+      {
+	LoggingMessageDialog dialog(this, _("Could not create the backup file during saving => aborting."),
+				    _("Error"), wxCENTER | wxOK);
+	dialog.ShowModal();	
+	return false;
+      }
   }
+  wxLogMessage(_("Closed the zip archive"));
   // If all data is saved now we can overwrite the actual save file.
   // We will try to do so a few times if we suspect a MSW virus scanner or
   // similar temporarily hindering us from doing so.
@@ -6141,7 +6161,12 @@ bool Worksheet::ExportToWXMX(const wxString &file, bool markAsSaved) {
   // The following line is paranoia as closing (and thus writing) the file has
   // succeeded.
   if (!wxFileExists(backupfile))
-    return false;
+    {
+      LoggingMessageDialog dialog(this, _("Saving succeeded, but the resulting files has disappeared ?!?."),
+				  _("Error"), wxCENTER | wxOK);
+      dialog.ShowModal();
+      return false;
+    }
 
   // Now we try to open the file in order to see if saving hasn't failed
   // without returning an error - which can apparently happen on MSW.
@@ -6167,12 +6192,15 @@ bool Worksheet::ExportToWXMX(const wxString &file, bool markAsSaved) {
 
     // Did we succeed in opening the file?
     if (!fsfile) {
-      wxLogMessage(_(wxT("Saving succeeded, but the file could not be read "
-                         "again \u21D2 Not replacing the old saved file.")));
+      LoggingMessageDialog dialog(this, _(wxT("Saving succeeded, but the file could not be read "
+					"again \u21D2 Not replacing the old saved file.")),
+				  _("Error"), wxCENTER | wxOK);
+      dialog.ShowModal();
       return false;
     }
     wxDELETE(fsfile);
   }
+  wxLogMessage(_("Verified that we are able to read the whole .zip archive we produced."));
 
   {
     bool done;
@@ -6197,7 +6225,12 @@ bool Worksheet::ExportToWXMX(const wxString &file, bool markAsSaved) {
     if (!done) {
       wxSleep(1);
       if (!wxRenameFile(backupfile, file, true))
-        return false;
+	{
+	  LoggingMessageDialog dialog(this, _(wxT("Creating a backup file succeeded, but could not move the .wxmx file to the intended location.")),
+				      _("Error"), wxCENTER | wxOK);
+	  dialog.ShowModal();
+	  return false;
+	}
     }
     if (markAsSaved)
       SetSaved(true);
