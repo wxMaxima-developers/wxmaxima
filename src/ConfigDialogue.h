@@ -206,7 +206,7 @@ private:
   wxWindow *CreateStartupPanel();
   
 protected:
-  Worksheet *m_sampleWorksheet;
+  Worksheet *m_sampleWorksheet = NULL;
   wxGrid *m_maximaEnvVariables;
   void OnImport(wxCommandEvent& event);
   static void CopyConfig(wxConfigBase *src, wxConfigBase *dst, wxString dir = wxT("/"));
