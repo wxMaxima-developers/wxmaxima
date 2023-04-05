@@ -191,7 +191,7 @@ wxString NamedBoxCell::ToOMML() const {
 }
 
 wxString NamedBoxCell::ToXML() const {
-  wxString flags = " boxname =\"" + m_boxname->GetValue() + "\"";
+  wxString flags = " boxname =\"" + XMLescape(m_boxname->GetValue()) + "\"";
   if (HasHardLineBreak())
     flags += wxT(" breakline=\"true\"");
 
