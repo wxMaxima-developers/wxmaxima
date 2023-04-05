@@ -756,6 +756,11 @@ add_test(
 #    COMMAND wxmaxima --enableipc --batch ipc_copypaste_all-celltypes.wxm)
 
 add_test(
+    NAME config_dialogue_sample
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/../data
+    COMMAND wxmaxima --logtostderr --pipe  --batch sampleWorksheet.wxmx)
+
+add_test(
     NAME tutorial_fastListAccess
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/../examples
     COMMAND wxmaxima --logtostderr --pipe  --batch fastListAccess.wxm)

@@ -46,3 +46,13 @@ install(FILES ${DATAFILES} DESTINATION share/wxMaxima)
 if(UNIX)
     file(COPY ${DATAFILES} DESTINATION .)
 endif()
+
+# Copy the sample worksheet file to the binary dir so it can be used as test case without
+# being afraid that we change the test cases somehow.
+file(
+    COPY
+    sampleWorksheet.wxmx
+    DESTINATION ${CMAKE_CURRENT_BINARY_DIR}
+    FILE_PERMISSIONS OWNER_WRITE OWNER_READ
+)
+
