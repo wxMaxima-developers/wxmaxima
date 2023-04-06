@@ -35,7 +35,6 @@
 ;(format t "<wxxml-start/>")
 
 ;; TODO: outchar isn't properly escaped in xml  
-;; TODO: tell wxMaxima when something is an operator
 
 (format t "<wxxml-key>~A</wxxml-key>~%" (maxima-getenv "MAXIMA_AUTH_CODE"))
 
@@ -606,11 +605,17 @@ Submit bug reports by following the 'New issue' link on that page."))
 	x (wxxml-list-wrapitem (cdr x) nil r "<mo>,</mo>" "<mrow>" "</mrow>"))
   (append l x))
 
+;; Converts the sexp representation of a generic symbol
+;; [variable name, operator or similar] to xml
+;;
 ;; pname is not a parameter, but a temporary variable name
 (defun wxxml-dissym-to-string (lst &aux pname)
   (setq pname
 	(wxxml-fix-string (format nil "~{~a~}" lst)))
-  (concatenate 'string "<mi>" pname "</mi>"))
+  (if (wxxml-get lst 'op)
+      (concatenate 'string "<mo>" pname "</mo>")
+      (concatenate 'string "<mi>" pname "</mi>")))
+
 
 ;; Converts a symbol to a <mi> tag, if necessary escaping its name for XML.
 ;;
@@ -1083,12 +1088,14 @@ Submit bug reports by following the 'New issue' link on that page."))
   (let ((s1 (wxxml (second x) nil nil 'mparen rop));; limitfunction
 	(subfun ;; the thing underneath "limit"
 	 (wxxml `((mrarr simp) ,(third x)
-		  ,(fourth x)) nil nil 'mparen 'mparen)))
+		  ,(fourth x))
+		nil nil 'mparen 'mparen)))
     (case (fifth x)
       ($plus
        (append l `("<lm><fnm>lim</fnm><mrow>"
-		   ,@subfun "<mi>+</mi></mrow><mrow>"
-		   ,@s1 "</mrow></lm>") r))
+		   ,@subfun "<mo>+</mo></mrow><mrow>"
+		   ,@s1 "</mrow></lm>")
+	       r))
       ($minus
        (append l `("<lm><fnm>lim</fnm><mrow>"
 		   ,@subfun "<mo>-</mo></mrow><mrow>"
@@ -1132,7 +1139,7 @@ Submit bug reports by following the 'New issue' link on that page."))
 
 (defun wxxml-mplus (x l r)
   (cond ((member 'trunc (car x) :test #'eq)
-	 (setq r (cons "<mi>+</mi><mo>...</mo>" r))))
+	 (setq r (cons "<mo>+</mo><mo>...</mo>" r))))
   (cond ((null (cddr x))
 	 (if (null (cdr x))
 	     (wxxml-function x l r)
@@ -1142,19 +1149,19 @@ Submit bug reports by following the 'New issue' link on that page."))
 	   (do ((nl l)  (dissym))
 	       ((null (cdr x))
 		(if (mmminusp (car x)) (setq l (cadar x) dissym
-					     (list "<mi>-</mi>"))
-		    (setq l (car x) dissym (list "<mi>+</mi>")))
+					     (list "<mo>-</mo>"))
+		    (setq l (car x) dissym (list "<mo>+</mo>")))
 		(setq r (wxxml l dissym r 'mplus rop))
 		(append nl r))
 	     (if (mmminusp (car x)) (setq l (cadar x) dissym
-					  (list "<mi>-</mi>"))
-		 (setq l (car x) dissym (list "<mi>+</mi>")))
+					  (list "<mo>-</mo>"))
+		 (setq l (car x) dissym (list "<mo>+</mo>")))
 	     (setq nl (append nl (wxxml l dissym nil 'mplus 'mplus))
 		   x (cdr x))))))
 
 (wx-defprop mminus wxxml-prefix wxxml)
-(wx-defprop mminus ("<mi>-</mi>") wxxmlsym)
-(wx-defprop mminus "<mi>-</mi>" wxxmlword)
+(wx-defprop mminus ("<mo>-</mo>") wxxmlsym)
+(wx-defprop mminus "<mo>-</mo>" wxxmlword)
 (wx-defprop mminus 134. wxxml-rbp)
 (wx-defprop mminus 101. wxxml-lbp)
 
@@ -1171,8 +1178,8 @@ Submit bug reports by following the 'New issue' link on that page."))
 (wx-defprop min 80. wxxml-rbp)
 
 (wx-defprop mequal wxxml-infix wxxml)
-(wx-defprop mequal ("<mi>=</mi>") wxxmlsym)
-(wx-defprop mequal "<mi>=</mi>" wxxmlword)
+(wx-defprop mequal ("<mo>=</mo>") wxxmlsym)
+(wx-defprop mequal "<mo>=</mo>" wxxmlword)
 (wx-defprop mequal 80. wxxml-lbp)
 (wx-defprop mequal 80. wxxml-rbp)
 
@@ -1206,8 +1213,8 @@ Submit bug reports by following the 'New issue' link on that page."))
 (wx-defprop mleqp 80. wxxml-rbp)
 
 (wx-defprop mnot wxxml-prefix wxxml)
-(wx-defprop mnot ("<fnm altCopy=\"not \">not</fnm>") wxxmlsym)
-(wx-defprop mnot "<fnm>not</fnm>" wxxmlword)
+(wx-defprop mnot ("<mo altCopy=\"not \">not</mo>") wxxmlsym)
+(wx-defprop mnot "<mo>not</mo>" wxxmlword)
 (wx-defprop mnot 70. wxxml-rbp)
 
 (wx-defprop mand wxxml-nary wxxml)
@@ -1217,8 +1224,8 @@ Submit bug reports by following the 'New issue' link on that page."))
 (wx-defprop mand 60. wxxml-rbp)
 
 (wx-defprop mor wxxml-nary wxxml)
-(wx-defprop mor "<mspace/><fnm>or</fnm><mspace/>" wxxmlsym)
-(wx-defprop mor "<fnm>or</fnm>" wxxmlword)
+(wx-defprop mor "<mspace/><mo>or</mo><mspace/>" wxxmlsym)
+(wx-defprop mor "<mo>or</mo>" wxxmlword)
 (wx-defprop mor 50. wxxml-lbp)
 (wx-defprop mor 50. wxxml-rbp)
 
@@ -2243,7 +2250,7 @@ Submit bug reports by following the 'New issue' link on that page."))
   (format t "<variable><name>*maxima-operators*</name><value>&lt;operators&gt;")
   (do-symbols
       (s :maxima)
-    (if (get s 'op)
+    (if (wxxml-get s 'op)
 	(format t "&lt;operator&gt;~a&lt;/operator&gt;~%" (wxxml-fix-string( wxxml-fix-string (format nil "~A" (get s 'op)))))))
   (format t "&lt;/operators&gt;</value></variable>")
   (format t "</variables>~%")

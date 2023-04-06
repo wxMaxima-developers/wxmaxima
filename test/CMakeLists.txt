@@ -108,7 +108,7 @@ add_test(
 
 add_test(
      NAME wxxml-orthopoly
-     COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "legendre_p (n - 1, x);" "<fn altCopy=\"legendre_p(n-1,x)\"><munder><fnm>P</fnm><mrow><mi lisp=.*>n</mi><mi>-</mi><mn>1</mn></mrow></munder><p><mi lisp=.*>x</mi></p></fn>"
+     COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "legendre_p (n - 1, x);" "<fn altCopy=\"legendre_p(n-1,x)\"><munder><fnm>P</fnm><mrow><mi lisp=.*>n</mi><mo>-</mo><mn>1</mn></mrow></munder><p><mi lisp=.*>x</mi></p></fn>"
 )
 
 add_test(
@@ -123,7 +123,7 @@ add_test(
 
 add_test(
      NAME mminus
-     COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "-x-1;" "<mi>-</mi><mi lisp=.*>x</mi><mi>-</mi><mn>1</mn>"
+     COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "-x-1;" "<mo>-</mo><mi lisp=.*>x</mi><mo>-</mo><mn>1</mn>"
 )
 
 add_test(
@@ -203,7 +203,7 @@ add_test(
 
 add_test(
      NAME mfrac
-     COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "a/(1/2+b);" "<mfrac><mrow><mi lisp=.*>a</mi></mrow><mrow><mi lisp=.*>b</mi><mi>+</mi><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn></mrow></mfrac></mrow></mfrac>"
+     COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "a/(1/2+b);" "<mfrac><mrow><mi lisp=.*>a</mi></mrow><mrow><mi lisp=.*>b</mi><mo>+</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn></mrow></mfrac></mrow></mfrac>"
 )
 
 add_test(

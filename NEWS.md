@@ -5,7 +5,8 @@
  * Resolved a few lisp warnings
  * Resolved a few XML errors caused by not escaping special chars
  * Automatic XML generation tests
- * More small MacOs fixes
+ * More MacOs fixes
+ * Correct display of operators
  * A better style sample for the config dialogue
 
 # 23.03.0
