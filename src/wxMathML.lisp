@@ -35,6 +35,7 @@
 ;(format t "<wxxml-start/>")
 
 ;; TODO: outchar isn't properly escaped in xml  
+;; TODO: tell wxMaxima when something is an operator
 
 (format t "<wxxml-key>~A</wxxml-key>~%" (maxima-getenv "MAXIMA_AUTH_CODE"))
 
