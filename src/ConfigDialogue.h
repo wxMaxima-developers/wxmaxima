@@ -108,8 +108,8 @@ public:
   void WriteSettings();
 
 private:
-  const int mMinPanelWidth = 640;
-  const int mMinPanelHeight = 720;
+  const int mMinPanelWidth = 500;
+  const int mMinPanelHeight = 500;
 
 private:
   enum newVariables

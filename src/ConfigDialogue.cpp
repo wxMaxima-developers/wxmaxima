@@ -847,21 +847,20 @@ wxWindow *ConfigDialogue::CreateWorksheetPanel() {
 }
 
 wxWindow *ConfigDialogue::CreateRevertToDefaultsPanel() {
-  wxScrolled<wxPanel> *panel = new wxScrolled<wxPanel>(m_notebook, -1);
-  panel->SetScrollRate(5 * GetContentScaleFactor(),
-                       5 * GetContentScaleFactor());
-  panel->SetMinSize(wxSize(GetContentScaleFactor() * mMinPanelWidth,
-                           GetContentScaleFactor() * mMinPanelHeight));
+  wxPanel *panel = new wxPanel(m_notebook, -1);
+  // panel->SetScrollRate(5 * GetContentScaleFactor(),
+  //                      5 * GetContentScaleFactor());
+  // panel->SetMinSize(wxSize(GetContentScaleFactor() * mMinPanelWidth,
+  //                          GetContentScaleFactor() * mMinPanelHeight));
 
   wxBoxSizer *vsizer = new wxBoxSizer(wxVERTICAL);
-  panel->SetSizer(vsizer);
-  WrappingStaticText *helpText1 = new WrappingStaticText(
-							 panel, -1,
-							 _("The buttons in this category reset wxMaxima's settings "
-							   "immediately, once they are pressed."));
-  vsizer->Add(helpText1, wxSizerFlags()
-	      .Border(wxUP | wxDOWN, 5 * GetContentScaleFactor())
-	      .Expand());
+  // WrappingStaticText *helpText1 = new WrappingStaticText(
+  // 							 panel, -1,
+  // 							 _("The buttons in this category reset wxMaxima's settings "
+  // 							   "immediately, once they are pressed."));
+  // vsizer->Add(helpText1, wxSizerFlags()
+  // 	      .Border(wxUP | wxDOWN, 5 * GetContentScaleFactor())
+  // 	      .Expand());
 
   wxStaticBoxSizer *revertSizer =
     new wxStaticBoxSizer(wxVERTICAL, panel, _("Revert changes"));
@@ -933,17 +932,18 @@ wxWindow *ConfigDialogue::CreateRevertToDefaultsPanel() {
 
   vsizer->Add(exportSizer, wxSizerFlags().Expand().Border(
 							  wxALL, 5 * GetContentScaleFactor()));
-  WrappingStaticText *helpText2 = new WrappingStaticText(
-							 panel, -1,
-							 _("While wxMaxima is controlled by the settings here "
-							   "Maxima as a command-line program isn't controlled by "
-							   "settings, except of the few wxMaxima settings that set "
-							   "the value of variables within Maxima: Instead Maxima "
-							   "is configured using environment variables, the Startup "
-							   "File and command-line switches."));
-  vsizer->Add(helpText2, wxSizerFlags()
-	      .Border(wxUP | wxDOWN, 5 * GetContentScaleFactor())
-	      .Expand());
+  // WrappingStaticText *helpText2 = new WrappingStaticText(
+  // 							 panel, -1,
+  // 							 _("While wxMaxima is controlled by the settings here "
+  // 							   "Maxima as a command-line program isn't controlled by "
+  // 							   "settings, except of the few wxMaxima settings that set "
+  // 							   "the value of variables within Maxima: Instead Maxima "
+  // 							   "is configured using environment variables, the Startup "
+  // 							   "File and command-line switches."));
+  // vsizer->Add(helpText2, wxSizerFlags()
+  // 	      .Border(wxUP | wxDOWN, 5 * GetContentScaleFactor())
+  // 	      .Expand());
+  panel->SetSizer(vsizer);
   panel->FitInside();
   return panel;
 }
@@ -1202,7 +1202,6 @@ wxWindow *ConfigDialogue::CreateExportPanel() {
 							  wxALL, 5 * GetContentScaleFactor()));
 
   panel->FitInside();
-
   return panel;
 }
 
@@ -1374,7 +1373,6 @@ wxWindow *ConfigDialogue::CreateOptionsPanel() {
 							      wxALL, 5 * GetContentScaleFactor()));
   }
   panel->FitInside();
-
   return panel;
 }
 
@@ -1996,6 +1994,19 @@ wxWindow *ConfigDialogue::CreateStylePanel() {
   OnChangeStyle(dummy);
   vsizer->Add(stylesSizer, wxSizerFlags().Expand().Border(
 							  wxALL, 5 * GetContentScaleFactor()));
+  
+  // load+save buttons
+  wxBoxSizer *loadSavesizer = new wxBoxSizer(wxHORIZONTAL);
+  m_loadStyle = new wxButton(panel, load_id, _("Load"));
+  m_saveStyle = new wxButton(panel, save_id, _("Save"));
+  loadSavesizer->Add(
+		     m_loadStyle,
+		     wxSizerFlags().Border(wxUP | wxDOWN, 5 * GetContentScaleFactor()));
+  loadSavesizer->Add(
+		     m_saveStyle,
+		     wxSizerFlags().Border(wxUP | wxDOWN, 5 * GetContentScaleFactor()));
+  vsizer->Add(loadSavesizer, 0, wxALIGN_RIGHT | wxALL,
+              5 * GetContentScaleFactor());
 
   m_sampleWorksheet = new Worksheet(panel, wxID_ANY, m_configuration,
 				    wxDefaultPosition, wxDefaultSize, false);
@@ -2025,19 +2036,6 @@ wxWindow *ConfigDialogue::CreateStylePanel() {
   vsizer->Add(m_sampleWorksheet, wxSizerFlags(1).Expand().
 	      Border(wxALL, 5 * GetContentScaleFactor()));
   
-  // load+save buttons
-  wxBoxSizer *loadSavesizer = new wxBoxSizer(wxHORIZONTAL);
-  m_loadStyle = new wxButton(panel, load_id, _("Load"));
-  m_saveStyle = new wxButton(panel, save_id, _("Save"));
-  loadSavesizer->Add(
-		     m_loadStyle,
-		     wxSizerFlags().Border(wxUP | wxDOWN, 5 * GetContentScaleFactor()));
-  loadSavesizer->Add(
-		     m_saveStyle,
-		     wxSizerFlags().Border(wxUP | wxDOWN, 5 * GetContentScaleFactor()));
-  vsizer->Add(loadSavesizer, 0, wxALIGN_RIGHT | wxALL,
-              5 * GetContentScaleFactor());
-
   panel->FitInside();
   return panel;
 }
