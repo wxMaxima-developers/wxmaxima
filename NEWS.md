@@ -1,3 +1,6 @@
+# current
+ * More config dialogue tweaks
+
 # 23.04.0
  * Made the GUI more responsive for functions with much output
  * Handle errors in the XML from maxima more gracefully
