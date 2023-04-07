@@ -9674,7 +9674,7 @@ void wxMaxima::StatsMenu(wxCommandEvent &event) {
 
 bool wxMaxima::SaveOnClose() {
   if (!SaveNecessary()) {
-    wxLogMessage(_("No saving on close necessary."));
+    wxLogMessage(_("No saving necessary on closing the window."));
     return true;
   }
 
@@ -9685,37 +9685,32 @@ bool wxMaxima::SaveOnClose() {
 
     if (close == wxID_CANCEL)
       return false;
+    if (close == wxID_NO)
+      return true;
     else {
       if (close == wxID_YES) {
-        if (!SaveFile()) {
-          if (!SaveFile(true))
-            return false;
+        if (!SaveFile(true)) {
+	  return false;
         }
       }
       return true;
     }
   } else {
-    bool saved;
     {
-#ifndef __CYGWIN__
-      // Cygwin on 20221208 didn't provide that function
-      wxLogStderr blocker;
-#else
-      wxLogNull blocker;
-#endif
-      saved = SaveFile();
+std::cerr<<"test\n";
+      SuppressErrorDialogs blocker;
+      if(SaveFile())
+	return true;
     }
-    if (!saved) {
-      int close = SaveDocumentP();
-
-      if (close == wxID_CANCEL)
-        return false;
-      else {
-        if (close == wxID_YES) {
-          if (!SaveFile()) {
-            if (!SaveFile(true))
-              return false;
-          }
+    int close = SaveDocumentP();
+    
+    if (close == wxID_CANCEL)
+      return false;
+    else {
+      if (close == wxID_YES) {
+	if (!SaveFile()) {
+	  if (!SaveFile(true))
+	    return false;
         }
       }
     }
@@ -9735,13 +9730,7 @@ void wxMaxima::OnClose(wxCloseEvent &event) {
       m_process->Detach();
   }
   
-#ifndef __CYGWIN__
-      // Cygwin on 20221208 didn't provide that function
-      wxLogStderr blocker;
-#else
-      wxLogNull blocker;
-#endif
-
+  SuppressErrorDialogs blocker;
   // We have saved the file and will close now => No need to have the
   // timer around any longer.
   m_autoSaveTimer.Stop();
@@ -11232,22 +11221,22 @@ int wxMaxima::SaveDocumentP() {
     // Check if we want to save modified untitled documents on exit
     if (!m_configuration.SaveUntitled())
       return wxID_NO;
-
+  }
+  else {
+    if (!m_configuration.AutoSaveAsTempFile())
+    {
+      if (SaveFile())
+        return wxID_NO;
+    }
+  }
+  
 #if defined __WXOSX__
     file = GetTitle();
 #else
     file = _("unsaved");
 #endif
-  } else {
-    if (!m_configuration.AutoSaveAsTempFile()) {
-      if (SaveFile())
-        return wxID_NO;
-    }
-
-    wxFileName::SplitPath(m_worksheet->m_currentFile, NULL, NULL, &file, &ext);
-    file += wxT(".") + ext;
-  }
-
+  wxFileName::SplitPath(m_worksheet->m_currentFile, NULL, NULL, &file, &ext);
+  file += wxT(".") + ext;
   LoggingMessageDialog dialog(
 			      this,
 			      wxString::Format(

@@ -736,7 +736,7 @@ void Configuration::ReadConfig() {
   config->Read(wxT("usepngCairo"), &m_usepngCairo);
 
   if (!config->Read(wxT("AutoSaveAsTempFile"), &m_autoSaveAsTempFile)) {
-    long autoSaveMinutes = 0;
+    long autoSaveMinutes = 3;
     config->Read(wxT("autoSaveMinutes"), &autoSaveMinutes);
     m_autoSaveAsTempFile = (autoSaveMinutes == 0);
   }

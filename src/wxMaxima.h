@@ -654,6 +654,7 @@ protected:
   /*! Saves the current file
 
     \param forceSave true means: Always ask for a file name before saving.
+    \return true, if the file was saved - or didn't need to
   */
   bool SaveFile(bool forceSave = false);
 
@@ -665,6 +666,13 @@ protected:
   */
   bool AutoSave();
 
+  /*! Tries or offers to save the document
+
+      If auto-save is on the document is automatically saved.
+
+      \return
+      * wxID_NO: No saving is necessary, currently
+  */
   int SaveDocumentP();
 
   //! Set the current working directory file I/O from maxima is relative to.

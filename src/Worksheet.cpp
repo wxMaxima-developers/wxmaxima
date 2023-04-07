@@ -2069,7 +2069,7 @@ void Worksheet::OnMouseLeftInGcCell(wxMouseEvent &WXUNUSED(event),
          editor->GetType() != MC_TYPE_INPUT || !clickedInGC->GetOutput())) {
       editor->MouseSelectionStartedHere();
       SetActiveCell(editor);
-      GetActiveCell()->SelectPointText(m_down);
+      editor->SelectPointText(m_down);
       m_blinkDisplayCaret = true;
       m_clickType = CLICK_TYPE_INPUT_SELECTION;
       if (editor->GetWidth() == -1)
@@ -2428,9 +2428,6 @@ void Worksheet::ClickNDrag(wxPoint down, wxPoint up) {
       return;
 
     case CLICK_TYPE_INPUT_SELECTION:
-      wxASSERT_MSG(m_cellPointers.m_cellMouseSelectionStartedIn,
-                   _("Bug: Trying to select inside a cell without having a "
-                     "current cell"));
       if (!m_cellPointers.m_cellMouseSelectionStartedIn)
         return;
 
