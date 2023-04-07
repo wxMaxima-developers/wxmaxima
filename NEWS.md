@@ -1,4 +1,4 @@
-# Current
+# 23.04.0
  * Made the GUI more responsive for functions with much output
  * Handle errors in the XML from maxima more gracefully
  * Rewrote parts of the lisp part of wxMaxima
@@ -8,6 +8,8 @@
  * More MacOs fixes
  * Correct display of operators
  * A better style sample for the config dialogue
+ * Resolved several asserts
+ * Resolved a few small bugs in the autosave logic
 
 # 23.03.0
  * Make sure all bitmaps are valid on High-DPI MacOs (#1749)
