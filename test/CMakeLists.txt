@@ -66,6 +66,61 @@ add_test(
     COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wxbuild_info();" "maxima_frontend_version"
 )
 
+set(DEMO_FILES
+  "itensor1.dem"
+#  "itensor2.dem"
+  "itensor3.dem"
+#  "itensor4.dem"
+  "itensor5.dem"
+  "itensor6.dem"
+  "ex_calc.dem"
+  "itensor8.dem"
+  "itensor9.dem"
+  "ctensor1.dem"
+  "ctensor2.dem"
+  "ctensor3.dem"
+  "ctensor4.dem"
+  "ctensor5.dem"
+  "ctensor6.dem"
+  "ctensor7.dem"
+  "ctensor8.dem"
+#  "atensor.dem"
+  "bianchi.dem"
+  "car_iden.dem"
+#  "kaluza.dem"
+#  "ademo.dem"
+  "helicity.dem"
+  "plasma.dem"
+  "spinor.dem"
+#  "maxwell.dem"
+#  "hodge.dem"
+#  "weyl.dem"
+#  "rainich.dem"
+#  "einhil.dem"
+#  "bradic.dem"
+#  "laplacian.dem"
+#  "schwarz.dem"
+  "reissner.dem"
+  "petrov.dem"
+  "adsitter.dem"
+  "godel.dem"
+  "taubnut.dem"
+  "allnutt.dem"
+#  "tetrad.dem"
+  "friedmann.dem"
+  "papapetrou.dem"
+  "kruskal.dem"
+  "hydro.dem"
+  "killing.dem"
+  )
+
+foreach(f ${DEMO_FILES})
+	  configure_file(${CMAKE_CURRENT_SOURCE_DIR}/automatic_test_files/run_demo_commands.wxm.in ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files/${f}.wxm)
+	  add_test(
+	      NAME ${f}
+    	      COMMAND wxmaxima --logtostderr --pipe --batch automatic_test_files/${f}.wxm)
+endforeach()
+
 add_test(
     NAME wxbug_report
     COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wxbug_report();" "wxMaxima is a graphical front end for Maxima, which does the mathematics in the background"
