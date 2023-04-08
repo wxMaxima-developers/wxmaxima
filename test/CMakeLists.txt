@@ -66,6 +66,12 @@ add_test(
     COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wxbuild_info();" "maxima_frontend_version"
 )
 
+# Tests that use "%" to reference past lines cannot be executed using "load()".
+# But running a few demos just to see if there is bit rot might be a good idea.
+#
+# It would also be nice to do a run_testsuite(display_all=true), as well. But
+# doing that in the CI after every commit uses up way too much CPU power,
+# perhaps...
 set(DEMO_FILES
   "itensor1.dem"
 #  "itensor2.dem"
