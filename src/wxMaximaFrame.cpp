@@ -1982,7 +1982,6 @@ void wxMaximaFrame::UpdateRecentDocuments() {
       wxString path(filename.GetPath()), fullname(filename.GetFullName());
       wxString label(fullname + wxT("   [ ") + path + wxT(" ]"));
       recentDocuments.pop_front();
-
       m_recentDocumentsMenu->Append(i, label);
       if (wxFileExists(filename.GetFullPath()))
         m_recentDocumentsMenu->Enable(i, true);
