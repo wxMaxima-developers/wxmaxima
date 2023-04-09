@@ -512,16 +512,15 @@ void TableOfContents::OnMouseRightDown(wxListEvent &event) {
 
   wxMenu *tocLevelMenu = new wxMenu();
   tocLevelMenu->AppendRadioItem(EventIDs::popid_tocLevel1, _("1 Level"));
-  tocLevelMenu->AppendRadioItem(EventIDs::popid_tocLevel2, _("2 Levels"));
-  tocLevelMenu->AppendRadioItem(EventIDs::popid_tocLevel3, _("3 Levels"));
-  tocLevelMenu->AppendRadioItem(EventIDs::popid_tocLevel4, _("4 Levels"));
-  tocLevelMenu->AppendRadioItem(EventIDs::popid_tocLevel5, _("5 Levels"));
-  tocLevelMenu->AppendRadioItem(EventIDs::popid_tocLevel6, _("All Levels"));
-  if (m_configuration->TocDepth() < 6)
+  for(int i = 2; i < EventIDs::NumberOfTocLevels() - 1; i++)
+    tocLevelMenu->AppendRadioItem(EventIDs::popid_tocLevel1 + i - 1, wxString::Format(_("%li Levels"), (long) i));
+  tocLevelMenu->AppendRadioItem(EventIDs::popid_tocLevel1 + EventIDs::NumberOfTocLevels() - 1, _("All Levels"));
+
+  if (m_configuration->TocDepth() < EventIDs::NumberOfTocLevels())
     tocLevelMenu->Check(EventIDs::popid_tocLevel1 + m_configuration->TocDepth() - 1,
                         true);
   else
-    tocLevelMenu->Check(EventIDs::popid_tocLevel6, true);
+    tocLevelMenu->Check(EventIDs::popid_tocLevel1 + EventIDs::NumberOfTocLevels() - 1, true);
   popupMenu->Append(wxID_ANY, _("Toc levels shown here"), tocLevelMenu);
 
   if (popupMenu->GetMenuItemCount() > 0)

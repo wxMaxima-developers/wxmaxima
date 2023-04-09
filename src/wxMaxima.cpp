@@ -1198,21 +1198,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
           NULL, this);
   Connect(EventIDs::menu_zoom_300, wxEVT_MENU, wxCommandEventHandler(wxMaxima::EditMenu),
           NULL, this);
-  Connect(EventIDs::popid_labelwidth3,
-          wxEVT_MENU, wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
-  Connect(EventIDs::popid_labelwidth4,
-          wxEVT_MENU, wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
-  Connect(EventIDs::popid_labelwidth5,
-          wxEVT_MENU, wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
-  Connect(EventIDs::popid_labelwidth6,
-          wxEVT_MENU, wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
-  Connect(EventIDs::popid_labelwidth7,
-          wxEVT_MENU, wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
-  Connect(EventIDs::popid_labelwidth8,
-          wxEVT_MENU, wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
-  Connect(EventIDs::popid_labelwidth9,
-          wxEVT_MENU, wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
-  Connect(EventIDs::popid_labelwidth10,
+  Connect(EventIDs::popid_labelwidth1, EventIDs::popid_labelwidth1 + EventIDs::NumberOfLabelWidths() - 1,
           wxEVT_MENU, wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
   Connect(EventIDs::popid_digits_all, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
@@ -1396,17 +1382,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
           wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
   Connect(EventIDs::popid_ToggleTOCshowsSectionNumbers, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
-  Connect(EventIDs::popid_tocLevel1, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
-  Connect(EventIDs::popid_tocLevel2, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
-  Connect(EventIDs::popid_tocLevel3, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
-  Connect(EventIDs::popid_tocLevel4, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
-  Connect(EventIDs::popid_tocLevel5, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
-  Connect(EventIDs::popid_tocLevel6, wxEVT_MENU,
+  Connect(EventIDs::popid_tocLevel1, EventIDs::popid_tocLevel1 + EventIDs::NumberOfTocLevels(), wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
   Connect(EventIDs::popid_tocMoveIn, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
@@ -1545,185 +1521,12 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
           wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
   Connect(EventIDs::popid_hide_tooltipMarkerForThisMessage, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
-  Connect(EventIDs::menu_recent_document_0, wxEVT_MENU,
+  Connect(EventIDs::menu_recent_document_0, EventIDs::menu_recent_document_0 + EventIDs::NumberOfRecentFiles() - 1,
+	  wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::OnRecentDocument), NULL, this);
-  Connect(EventIDs::menu_recent_document_1, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::OnRecentDocument), NULL, this);
-  Connect(EventIDs::menu_recent_document_2, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::OnRecentDocument), NULL, this);
-  Connect(EventIDs::menu_recent_document_3, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::OnRecentDocument), NULL, this);
-  Connect(EventIDs::menu_recent_document_4, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::OnRecentDocument), NULL, this);
-  Connect(EventIDs::menu_recent_document_5, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::OnRecentDocument), NULL, this);
-  Connect(EventIDs::menu_recent_document_6, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::OnRecentDocument), NULL, this);
-  Connect(EventIDs::menu_recent_document_7, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::OnRecentDocument), NULL, this);
-  Connect(EventIDs::menu_recent_document_8, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::OnRecentDocument), NULL, this);
-  Connect(EventIDs::menu_recent_document_9, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::OnRecentDocument), NULL, this);
-  Connect(EventIDs::menu_recent_document_10, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::OnRecentDocument), NULL, this);
-  Connect(EventIDs::menu_recent_document_11, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::OnRecentDocument), NULL, this);
-  Connect(EventIDs::menu_recent_document_12, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::OnRecentDocument), NULL, this);
-  Connect(EventIDs::menu_recent_document_13, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::OnRecentDocument), NULL, this);
-  Connect(EventIDs::menu_recent_document_14, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::OnRecentDocument), NULL, this);
-  Connect(EventIDs::menu_recent_document_15, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::OnRecentDocument), NULL, this);
-  Connect(EventIDs::menu_recent_document_16, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::OnRecentDocument), NULL, this);
-  Connect(EventIDs::menu_recent_document_17, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::OnRecentDocument), NULL, this);
-  Connect(EventIDs::menu_recent_document_18, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::OnRecentDocument), NULL, this);
-  Connect(EventIDs::menu_recent_document_19, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::OnRecentDocument), NULL, this);
-  Connect(EventIDs::menu_recent_document_20, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::OnRecentDocument), NULL, this);
-  Connect(EventIDs::menu_recent_document_21, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::OnRecentDocument), NULL, this);
-  Connect(EventIDs::menu_recent_document_22, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::OnRecentDocument), NULL, this);
-  Connect(EventIDs::menu_recent_document_22, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::OnRecentDocument), NULL, this);
-  Connect(EventIDs::menu_recent_document_23, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::OnRecentDocument), NULL, this);
-  Connect(EventIDs::menu_recent_document_24, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::OnRecentDocument), NULL, this);
-  Connect(EventIDs::menu_recent_document_25, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::OnRecentDocument), NULL, this);
-  Connect(EventIDs::menu_recent_document_26, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::OnRecentDocument), NULL, this);
-  Connect(EventIDs::menu_recent_document_27, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::OnRecentDocument), NULL, this);
-  Connect(EventIDs::menu_recent_document_28, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::OnRecentDocument), NULL, this);
-  Connect(EventIDs::menu_recent_package_0, wxEVT_MENU,
+  Connect(EventIDs::menu_recent_package_0, EventIDs::menu_recent_package_0 + EventIDs::NumberOfRecentFiles() - 1, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::OnRecentPackage));
-  Connect(EventIDs::menu_recent_package_1, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::OnRecentPackage));
-  Connect(EventIDs::menu_recent_package_2, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::OnRecentPackage));
-  Connect(EventIDs::menu_recent_package_3, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::OnRecentPackage));
-  Connect(EventIDs::menu_recent_package_4, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::OnRecentPackage));
-  Connect(EventIDs::menu_recent_package_5, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::OnRecentPackage));
-  Connect(EventIDs::menu_recent_package_6, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::OnRecentPackage));
-  Connect(EventIDs::menu_recent_package_7, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::OnRecentPackage));
-  Connect(EventIDs::menu_recent_package_8, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::OnRecentPackage));
-  Connect(EventIDs::menu_recent_package_9, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::OnRecentPackage));
-  Connect(EventIDs::menu_recent_package_10, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::OnRecentPackage));
-  Connect(EventIDs::menu_recent_package_11, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::OnRecentPackage));
-  Connect(EventIDs::menu_recent_package_12, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::OnRecentPackage));
-  Connect(EventIDs::menu_recent_package_13, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::OnRecentPackage));
-  Connect(EventIDs::menu_recent_package_14, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::OnRecentPackage));
-  Connect(EventIDs::menu_recent_package_15, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::OnRecentPackage));
-  Connect(EventIDs::menu_recent_package_16, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::OnRecentPackage));
-  Connect(EventIDs::menu_recent_package_17, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::OnRecentPackage));
-  Connect(EventIDs::menu_recent_package_18, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::OnRecentPackage));
-  Connect(EventIDs::menu_recent_package_19, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::OnRecentPackage));
-  Connect(EventIDs::menu_recent_package_20, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::OnRecentPackage));
-  Connect(EventIDs::menu_recent_package_21, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::OnRecentPackage));
-  Connect(EventIDs::menu_recent_package_22, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::OnRecentPackage));
-  Connect(EventIDs::menu_recent_package_23, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::OnRecentPackage));
-  Connect(EventIDs::menu_recent_package_24, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::OnRecentPackage));
-  Connect(EventIDs::menu_recent_package_25, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::OnRecentPackage));
-  Connect(EventIDs::menu_recent_package_26, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::OnRecentPackage));
-  Connect(EventIDs::menu_recent_package_27, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::OnRecentPackage));
-  Connect(EventIDs::menu_recent_package_28, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::OnRecentPackage));
-  Connect(EventIDs::menu_recent_package_29, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::OnRecentPackage));
-  Connect(EventIDs::menu_unsaved_document_0, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::OnUnsavedDocument));
-  Connect(EventIDs::menu_unsaved_document_1, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::OnUnsavedDocument));
-  Connect(EventIDs::menu_unsaved_document_2, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::OnUnsavedDocument));
-  Connect(EventIDs::menu_unsaved_document_3, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::OnUnsavedDocument));
-  Connect(EventIDs::menu_unsaved_document_4, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::OnUnsavedDocument));
-  Connect(EventIDs::menu_unsaved_document_5, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::OnUnsavedDocument));
-  Connect(EventIDs::menu_unsaved_document_6, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::OnUnsavedDocument));
-  Connect(EventIDs::menu_unsaved_document_7, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::OnUnsavedDocument));
-  Connect(EventIDs::menu_unsaved_document_8, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::OnUnsavedDocument));
-  Connect(EventIDs::menu_unsaved_document_9, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::OnUnsavedDocument));
-  Connect(EventIDs::menu_unsaved_document_10, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::OnUnsavedDocument));
-  Connect(EventIDs::menu_unsaved_document_11, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::OnUnsavedDocument));
-  Connect(EventIDs::menu_unsaved_document_12, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::OnUnsavedDocument));
-  Connect(EventIDs::menu_unsaved_document_13, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::OnUnsavedDocument));
-  Connect(EventIDs::menu_unsaved_document_14, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::OnUnsavedDocument));
-  Connect(EventIDs::menu_unsaved_document_15, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::OnUnsavedDocument));
-  Connect(EventIDs::menu_unsaved_document_16, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::OnUnsavedDocument));
-  Connect(EventIDs::menu_unsaved_document_17, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::OnUnsavedDocument));
-  Connect(EventIDs::menu_unsaved_document_18, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::OnUnsavedDocument));
-  Connect(EventIDs::menu_unsaved_document_19, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::OnUnsavedDocument));
-  Connect(EventIDs::menu_unsaved_document_20, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::OnUnsavedDocument));
-  Connect(EventIDs::menu_unsaved_document_21, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::OnUnsavedDocument));
-  Connect(EventIDs::menu_unsaved_document_22, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::OnUnsavedDocument));
-  Connect(EventIDs::menu_unsaved_document_23, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::OnUnsavedDocument));
-  Connect(EventIDs::menu_unsaved_document_24, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::OnUnsavedDocument));
-  Connect(EventIDs::menu_unsaved_document_25, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::OnUnsavedDocument));
-  Connect(EventIDs::menu_unsaved_document_26, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::OnUnsavedDocument));
-  Connect(EventIDs::menu_unsaved_document_27, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::OnUnsavedDocument));
-  Connect(EventIDs::menu_unsaved_document_28, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::OnUnsavedDocument));
-  Connect(EventIDs::menu_unsaved_document_29, wxEVT_MENU,
+  Connect(EventIDs::menu_unsaved_document_0, EventIDs::menu_unsaved_document_0 + EventIDs::NumberOfRecentFiles() - 1, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::OnUnsavedDocument));
   Connect(EventIDs::menu_insert_image, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::InsertMenu), NULL, this);
@@ -1812,25 +1615,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
           this);
   Connect(SYMBOLADDEVENT, wxCommandEventHandler(wxMaxima::OnSymbolAdd), NULL,
           this);
-  Connect(EventIDs::popid_suggestion1, wxEVT_MENU,
-	  wxCommandEventHandler(wxMaxima::ReplaceSuggestion), NULL, this);
-  Connect(EventIDs::popid_suggestion2, wxEVT_MENU,
-	  wxCommandEventHandler(wxMaxima::ReplaceSuggestion), NULL, this);
-  Connect(EventIDs::popid_suggestion3, wxEVT_MENU,
-	  wxCommandEventHandler(wxMaxima::ReplaceSuggestion), NULL, this);
-  Connect(EventIDs::popid_suggestion4, wxEVT_MENU,
-	  wxCommandEventHandler(wxMaxima::ReplaceSuggestion), NULL, this);
-  Connect(EventIDs::popid_suggestion5, wxEVT_MENU,
-	  wxCommandEventHandler(wxMaxima::ReplaceSuggestion), NULL, this);
-  Connect(EventIDs::popid_suggestion6, wxEVT_MENU,
-	  wxCommandEventHandler(wxMaxima::ReplaceSuggestion), NULL, this);
-  Connect(EventIDs::popid_suggestion7, wxEVT_MENU,
-	  wxCommandEventHandler(wxMaxima::ReplaceSuggestion), NULL, this);
-  Connect(EventIDs::popid_suggestion8, wxEVT_MENU,
-	  wxCommandEventHandler(wxMaxima::ReplaceSuggestion), NULL, this);
-  Connect(EventIDs::popid_suggestion9, wxEVT_MENU,
-	  wxCommandEventHandler(wxMaxima::ReplaceSuggestion), NULL, this);
-  Connect(EventIDs::popid_suggestion10, wxEVT_MENU,
+  Connect(EventIDs::popid_suggestion1, EventIDs::popid_suggestion1 + EventIDs::NumberOfSuggestions() - 1, wxEVT_MENU,
 	  wxCommandEventHandler(wxMaxima::ReplaceSuggestion), NULL, this);
   Connect(EventIDs::popid_property_real, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::PropertiesMenu), NULL, this);
@@ -6289,43 +6074,9 @@ void wxMaxima::EditMenu(wxCommandEvent &event) {
   // }
 
   wxString expr = GetDefaultEntry();
-  if((event.GetId()) == EventIDs::popid_labelwidth3) {
-    m_configuration.LabelWidth(3);
-    m_worksheet->RecalculateForce();
-    m_worksheet->RequestRedraw();
-  }
-  else if((event.GetId()) == EventIDs::popid_labelwidth4) {
-    m_configuration.LabelWidth(4);
-    m_worksheet->RecalculateForce();
-    m_worksheet->RequestRedraw();
-  }
-  else if((event.GetId()) == EventIDs::popid_labelwidth5) {
-    m_configuration.LabelWidth(5);
-    m_worksheet->RecalculateForce();
-    m_worksheet->RequestRedraw();
-  }
-  else if((event.GetId()) == EventIDs::popid_labelwidth6) {
-    m_configuration.LabelWidth(6);
-    m_worksheet->RecalculateForce();
-    m_worksheet->RequestRedraw();
-  }
-  else if((event.GetId()) == EventIDs::popid_labelwidth7) {
-    m_configuration.LabelWidth(7);
-    m_worksheet->RecalculateForce();
-    m_worksheet->RequestRedraw();
-  }
-  else if((event.GetId()) == EventIDs::popid_labelwidth8) {
-    m_configuration.LabelWidth(8);
-    m_worksheet->RecalculateForce();
-    m_worksheet->RequestRedraw();
-  }
-  else if((event.GetId()) == EventIDs::popid_labelwidth9) {
-    m_configuration.LabelWidth(9);
-    m_worksheet->RecalculateForce();
-    m_worksheet->RequestRedraw();
-  }
-  else if((event.GetId()) == EventIDs::popid_labelwidth10) {
-    m_configuration.LabelWidth(10);
+  if(((event.GetId()) >= EventIDs::popid_labelwidth1) &&
+     ((event.GetId()) < EventIDs::popid_labelwidth1 + EventIDs::NumberOfLabelWidths())){
+    m_configuration.LabelWidth(EventIDs::popid_labelwidth1 + 1 - event.GetId());
     m_worksheet->RecalculateForce();
     m_worksheet->RequestRedraw();
   }
@@ -9951,32 +9702,11 @@ void wxMaxima::PopupMenu(wxCommandEvent &event) {
       m_worksheet->UpdateTableOfContents();
     }
   }
-  else if(event.GetId() == EventIDs::popid_tocLevel1){ {
-      m_configuration.TocDepth(1);
-      m_worksheet->UpdateTableOfContents();
-    }
+  else if((event.GetId() >= EventIDs::popid_tocLevel1) && (event.GetId() < EventIDs::popid_tocLevel1 + EventIDs::NumberOfTocLevels() - 2)) {
+    m_configuration.TocDepth(event.GetId() - EventIDs::popid_tocLevel1 + 1 );
+    m_worksheet->UpdateTableOfContents();
   }
-  else if(event.GetId() == EventIDs::popid_tocLevel2){ {
-      m_configuration.TocDepth(2);
-      m_worksheet->UpdateTableOfContents();
-    }
-  }
-  else if(event.GetId() == EventIDs::popid_tocLevel3){ {
-      m_configuration.TocDepth(3);
-      m_worksheet->UpdateTableOfContents();
-    }
-  }
-  else if(event.GetId() == EventIDs::popid_tocLevel4){ {
-      m_configuration.TocDepth(4);
-      m_worksheet->UpdateTableOfContents();
-    }
-  }
-  else if(event.GetId() == EventIDs::popid_tocLevel5){ {
-      m_configuration.TocDepth(5);
-      m_worksheet->UpdateTableOfContents();
-    }
-  }
-  else if(event.GetId() == EventIDs::popid_tocLevel6){ {
+  else if(event.GetId() == EventIDs::popid_tocLevel1 + EventIDs::NumberOfTocLevels() -1){ {
       m_configuration.TocDepth(255);
       m_worksheet->UpdateTableOfContents();
     }

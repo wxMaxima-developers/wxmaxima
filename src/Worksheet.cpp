@@ -190,9 +190,9 @@ Worksheet::Worksheet(wxWindow *parent, int id,
           this);
   Connect(wxEVT_ERASE_BACKGROUND,
           wxEraseEventHandler(Worksheet::EraseBackground));
-  for(auto i: EventIDs::GetAutocompleteKeywordIDs())
-      Connect(i, wxEVT_MENU,
-	      wxCommandEventHandler(Worksheet::OnComplete));
+  Connect(EventIDs::popid_autocomplete_keyword1, EventIDs::popid_autocomplete_keyword1 + EventIDs::NumberOfAutocompleteKeywords() - 1,
+	  wxEVT_MENU,
+	  wxCommandEventHandler(Worksheet::OnComplete));
   Connect(wxEVT_SIZE, wxSizeEventHandler(Worksheet::OnSize));
   Connect(wxEVT_PAINT, wxPaintEventHandler(Worksheet::OnPaint));
   Connect(wxEVT_MOUSE_CAPTURE_LOST,
@@ -1350,7 +1350,7 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event) {
                            wxEmptyString, wxITEM_NORMAL);
           popupMenu.Append(EventIDs::popid_copy_tex, _("Copy as LaTeX"), wxEmptyString,
                            wxITEM_NORMAL);
-          popupMenu.Append(EventIDs::EventIDs::popid_copy_text, _("Copy as plain text"),
+          popupMenu.Append(EventIDs::popid_copy_text, _("Copy as plain text"),
                            wxEmptyString, wxITEM_NORMAL);
           if (m_cellPointers.m_selectionStart == m_cellPointers.m_selectionEnd)
             popupMenu.Append(EventIDs::popid_copy_mathml,
@@ -1394,39 +1394,39 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event) {
           group = m_cellPointers.m_selectionStart.CastAs<GroupCell *>();
         if (StartOfSectioningUnit(group)->GetGroupType() == GC_TYPE_TITLE) {
           popupMenu.AppendSeparator();
-          popupMenu.Append(EventIDs::EventIDs::popid_evaluate_section,
+          popupMenu.Append(EventIDs::popid_evaluate_section,
                            _("Evaluate Part\tShift+Ctrl+Enter"), wxEmptyString,
                            wxITEM_NORMAL);
         }
         if (StartOfSectioningUnit(group)->GetGroupType() == GC_TYPE_SECTION) {
           popupMenu.AppendSeparator();
-          popupMenu.Append(EventIDs::EventIDs::popid_evaluate_section,
+          popupMenu.Append(EventIDs::popid_evaluate_section,
                            _("Evaluate Section\tShift+Ctrl+Enter"),
                            wxEmptyString, wxITEM_NORMAL);
         }
         if (StartOfSectioningUnit(group)->GetGroupType() ==
             GC_TYPE_SUBSECTION) {
           popupMenu.AppendSeparator();
-          popupMenu.Append(EventIDs::EventIDs::popid_evaluate_section,
+          popupMenu.Append(EventIDs::popid_evaluate_section,
                            _("Evaluate Subsection\tShift+Ctrl+Enter"),
                            wxEmptyString, wxITEM_NORMAL);
         }
         if (StartOfSectioningUnit(group)->GetGroupType() ==
             GC_TYPE_SUBSUBSECTION) {
           popupMenu.AppendSeparator();
-          popupMenu.Append(EventIDs::EventIDs::popid_evaluate_section,
+          popupMenu.Append(EventIDs::popid_evaluate_section,
                            _("Evaluate Sub-Subsection\tShift+Ctrl+Enter"),
                            wxEmptyString, wxITEM_NORMAL);
         }
         if (StartOfSectioningUnit(group)->GetGroupType() == GC_TYPE_HEADING5) {
           popupMenu.AppendSeparator();
-          popupMenu.Append(EventIDs::EventIDs::popid_evaluate_section,
+          popupMenu.Append(EventIDs::popid_evaluate_section,
                            _("Evaluate Heading 5\tShift+Ctrl+Enter"),
                            wxEmptyString, wxITEM_NORMAL);
         }
         if (StartOfSectioningUnit(group)->GetGroupType() == GC_TYPE_HEADING6) {
           popupMenu.AppendSeparator();
-          popupMenu.Append(EventIDs::EventIDs::popid_evaluate_section,
+          popupMenu.Append(EventIDs::popid_evaluate_section,
                            _("Evaluate Heading 6\tShift+Ctrl+Enter"),
                            wxEmptyString, wxITEM_NORMAL);
         }
@@ -1465,7 +1465,7 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event) {
                            wxEmptyString, wxITEM_NORMAL);
           popupMenu.Append(EventIDs::popid_copy_tex, _("Copy as LaTeX"), wxEmptyString,
                            wxITEM_NORMAL);
-          popupMenu.Append(EventIDs::EventIDs::popid_copy_text, _("Copy as plain text"),
+          popupMenu.Append(EventIDs::popid_copy_text, _("Copy as plain text"),
                            wxEmptyString, wxITEM_NORMAL);
           popupMenu.Append(EventIDs::popid_copy_mathml,
                            _("Copy as MathML (e.g. to word processor)"),
@@ -1493,7 +1493,7 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event) {
         if (IsSelected(MC_TYPE_LABEL)) {
           if (popupMenu.GetMenuItemCount() > 0)
             popupMenu.AppendSeparator();
-          popupMenu.Append(EventIDs::EventIDs::popid_add_watch_label, _("Add to watchlist"),
+          popupMenu.Append(EventIDs::popid_add_watch_label, _("Add to watchlist"),
                            wxEmptyString, wxITEM_NORMAL);
         }
 
@@ -1540,7 +1540,7 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event) {
           popupMenu.AppendSeparator();
           popupMenu.Append(EventIDs::popid_solve, _("Solve..."), wxEmptyString,
                            wxITEM_NORMAL);
-          popupMenu.Append(EventIDs::EventIDs::popid_solve_num, _("Find Root..."), wxEmptyString,
+          popupMenu.Append(EventIDs::popid_solve_num, _("Find Root..."), wxEmptyString,
                            wxITEM_NORMAL);
           popupMenu.AppendSeparator();
           popupMenu.Append(EventIDs::popid_simplify, _("Simplify Expression"),
@@ -1570,7 +1570,7 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event) {
         popupMenu.Append(EventIDs::popid_digits_50, _("Show max. 50 digits"));
         popupMenu.Append(EventIDs::popid_digits_100, _("Show max. 100 digits"));
         popupMenu.Append(EventIDs::popid_digits_all, _("Always show all digits"));
-        popupMenu.Append(EventIDs::EventIDs::popid_digits_all_linebreak,
+        popupMenu.Append(EventIDs::popid_digits_all_linebreak,
                          _("Show all + allow linebreaks in long numbers"));
       }
 
@@ -1580,7 +1580,7 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event) {
         popupMenu.AppendRadioItem(EventIDs::popid_labels_user, _("Prefer user labels"));
         popupMenu.AppendRadioItem(EventIDs::popid_labels_autogenerated,
                                   _("Automatic labels"));
-        popupMenu.AppendRadioItem(EventIDs::EventIDs::popid_labels_useronly, _("User labels only"));
+        popupMenu.AppendRadioItem(EventIDs::popid_labels_useronly, _("User labels only"));
         popupMenu.AppendRadioItem(EventIDs::popid_labels_disable, _("Don't show labels"));
         popupMenu.Check(EventIDs::popid_labels_autogenerated,
                         m_configuration->GetLabelChoice() ==
@@ -1588,23 +1588,20 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event) {
         popupMenu.Check(EventIDs::popid_labels_user,
                         m_configuration->GetLabelChoice() ==
 			Configuration::labels_prefer_user);
-        popupMenu.Check(EventIDs::EventIDs::popid_labels_useronly,
+        popupMenu.Check(EventIDs::popid_labels_useronly,
                         m_configuration->GetLabelChoice() ==
 			Configuration::labels_useronly);
         popupMenu.Check(EventIDs::popid_labels_disable,
                         m_configuration->GetLabelChoice() ==
 			Configuration::labels_none);
         wxMenu *labelWidthMenu = new wxMenu();
-        labelWidthMenu->AppendRadioItem(EventIDs::EventIDs::popid_labelwidth3, wxT("3 em"));
-        labelWidthMenu->AppendRadioItem(EventIDs::EventIDs::popid_labelwidth4, wxT("4 em"));
-        labelWidthMenu->AppendRadioItem(EventIDs::EventIDs::popid_labelwidth5, wxT("5 em"));
-        labelWidthMenu->AppendRadioItem(EventIDs::EventIDs::popid_labelwidth6, wxT("6 em"));
-        labelWidthMenu->AppendRadioItem(EventIDs::EventIDs::popid_labelwidth7, wxT("7 em"));
-        labelWidthMenu->AppendRadioItem(EventIDs::EventIDs::popid_labelwidth8, wxT("8 em"));
-        labelWidthMenu->AppendRadioItem(EventIDs::EventIDs::popid_labelwidth9, wxT("9 em"));
-        labelWidthMenu->AppendRadioItem(EventIDs::EventIDs::popid_labelwidth10, wxT("10 em"));
-        labelWidthMenu->Check(
-			      EventIDs::EventIDs::popid_labelwidth3 + m_configuration->LabelWidth() - 3, true);
+	for(int i = 3; i < EventIDs::NumberOfLabelWidths(); i++)
+	  {
+	    labelWidthMenu->AppendRadioItem(EventIDs::popid_labelwidth1 + i, wxString::Format(wxT("%li em"), (long) i));
+	    if(i == m_configuration->LabelWidth())
+	      labelWidthMenu->Check(EventIDs::popid_labelwidth1 + i, true);
+	      
+	  }
         popupMenu.Append(EventIDs::popid_labelwidth, _("Label width"), labelWidthMenu);
       }
     }
@@ -1677,32 +1674,32 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event) {
       popupMenu.AppendSeparator();
       switch (StartOfSectioningUnit(group)->GetGroupType()) {
       case GC_TYPE_TITLE:
-        popupMenu.Append(EventIDs::EventIDs::popid_evaluate_section,
+        popupMenu.Append(EventIDs::popid_evaluate_section,
                          _("Evaluate Part\tShift+Ctrl+Enter"), wxEmptyString,
                          wxITEM_NORMAL);
         break;
       case GC_TYPE_SECTION:
-        popupMenu.Append(EventIDs::EventIDs::popid_evaluate_section,
+        popupMenu.Append(EventIDs::popid_evaluate_section,
                          _("Evaluate Section\tShift+Ctrl+Enter"), wxEmptyString,
                          wxITEM_NORMAL);
         break;
       case GC_TYPE_SUBSECTION:
-        popupMenu.Append(EventIDs::EventIDs::popid_evaluate_section,
+        popupMenu.Append(EventIDs::popid_evaluate_section,
                          _("Evaluate Subsection\tShift+Ctrl+Enter"),
                          wxEmptyString, wxITEM_NORMAL);
         break;
       case GC_TYPE_SUBSUBSECTION:
-        popupMenu.Append(EventIDs::EventIDs::popid_evaluate_section,
+        popupMenu.Append(EventIDs::popid_evaluate_section,
                          _("Evaluate Sub-Subsection\tShift+Ctrl+Enter"),
                          wxEmptyString, wxITEM_NORMAL);
         break;
       case GC_TYPE_HEADING5:
-        popupMenu.Append(EventIDs::EventIDs::popid_evaluate_section,
+        popupMenu.Append(EventIDs::popid_evaluate_section,
                          _("Evaluate Heading 5\tShift+Ctrl+Enter"),
                          wxEmptyString, wxITEM_NORMAL);
         break;
       case GC_TYPE_HEADING6:
-        popupMenu.Append(EventIDs::EventIDs::popid_evaluate_section,
+        popupMenu.Append(EventIDs::popid_evaluate_section,
                          _("Evaluate Heading 6\tShift+Ctrl+Enter"),
                          wxEmptyString, wxITEM_NORMAL);
         break;
@@ -1800,7 +1797,7 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event) {
                            wxITEM_NORMAL);
         break;
       case GC_TYPE_SUBSECTION:
-        popupMenu.Append(EventIDs::EventIDs::popid_evaluate_section,
+        popupMenu.Append(EventIDs::popid_evaluate_section,
                          _("Evaluate Subsection\tShift+Ctrl+Enter"),
                          wxEmptyString, wxITEM_NORMAL);
         if (group->GetHiddenTree() != NULL)
@@ -1811,7 +1808,7 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event) {
                            wxITEM_NORMAL);
         break;
       case GC_TYPE_SUBSUBSECTION:
-        popupMenu.Append(EventIDs::EventIDs::popid_evaluate_section,
+        popupMenu.Append(EventIDs::popid_evaluate_section,
                          _("Evaluate Sub-Subsection\tShift+Ctrl+Enter"),
                          wxEmptyString, wxITEM_NORMAL);
         if (group->GetHiddenTree() != NULL)
@@ -1822,7 +1819,7 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event) {
                            wxITEM_NORMAL);
         break;
       case GC_TYPE_HEADING5:
-        popupMenu.Append(EventIDs::EventIDs::popid_evaluate_section,
+        popupMenu.Append(EventIDs::popid_evaluate_section,
                          _("Evaluate Heading 5\tShift+Ctrl+Enter"),
                          wxEmptyString, wxITEM_NORMAL);
         if (group->GetHiddenTree() != NULL)
@@ -1833,7 +1830,7 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event) {
                            wxITEM_NORMAL);
         break;
       case GC_TYPE_HEADING6:
-        popupMenu.Append(EventIDs::EventIDs::popid_evaluate_section,
+        popupMenu.Append(EventIDs::popid_evaluate_section,
                          _("Evaluate Heading 6\tShift+Ctrl+Enter"),
                          wxEmptyString, wxITEM_NORMAL);
         if (group->GetHiddenTree() != NULL)
@@ -1868,10 +1865,10 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event) {
         popupMenu.Check(EventIDs::popid_hide_tooltipMarker,
                         group->GetSuppressTooltipMarker());
         popupMenu.AppendCheckItem(
-				  EventIDs::EventIDs::popid_hide_tooltipMarkerForThisMessage,
+				  EventIDs::popid_hide_tooltipMarkerForThisMessage,
 				  _("Hide yellow tooltip marker for this message type"),
 				  _("Don't mark this message text in yellow"));
-        popupMenu.Check(EventIDs::EventIDs::popid_hide_tooltipMarkerForThisMessage,
+        popupMenu.Check(EventIDs::popid_hide_tooltipMarkerForThisMessage,
                         m_configuration->HideMarkerForThisMessage(toolTip));
       }
       TextStyle selectionStyle = GetActiveCell()->GetSelectionStyle();
@@ -1923,9 +1920,9 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event) {
 			    _("Inform maxima about the value of the function at a specific "
 			      "point, e.G. for declaring initial conditions"));
           facts_sub->AppendSeparator();
-          facts_sub->Append(EventIDs::EventIDs::popid_property_evenfun, _("Is an even function"),
+          facts_sub->Append(EventIDs::popid_property_evenfun, _("Is an even function"),
                             _("This function will return even integers"));
-          facts_sub->Append(EventIDs::EventIDs::popid_property_oddfun, _("Is an odd function"),
+          facts_sub->Append(EventIDs::popid_property_oddfun, _("Is an odd function"),
                             _("This function will return odd integers"));
           facts_sub->Append(EventIDs::popid_property_additive,
                             _("Additive function: f(a+b)=f(a)+f(b)"));
@@ -1943,7 +1940,7 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event) {
                             _("Increasing function f(x)>x"));
           facts_sub->Append(EventIDs::popid_property_decreasing,
                             _("Decreasing function f(x)<x"));
-          facts_sub->Append(EventIDs::EventIDs::popid_property_integervalued,
+          facts_sub->Append(EventIDs::popid_property_integervalued,
                             _("A function returning integers"));
           facts_sub->Append(EventIDs::popid_property_posfun,
                             _("A function returning positive numbers"));
@@ -1997,10 +1994,10 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event) {
       popupMenu.Check(EventIDs::popid_hide_tooltipMarker,
                       group->GetSuppressTooltipMarker());
       popupMenu.AppendCheckItem(
-				EventIDs::EventIDs::popid_hide_tooltipMarkerForThisMessage,
+				EventIDs::popid_hide_tooltipMarkerForThisMessage,
 				_("Hide yellow tooltip marker for this message type"),
 				_("Don't mark this message text in yellow"));
-      popupMenu.Check(EventIDs::EventIDs::popid_hide_tooltipMarkerForThisMessage,
+      popupMenu.Check(EventIDs::popid_hide_tooltipMarkerForThisMessage,
                       m_configuration->HideMarkerForThisMessage(toolTip));
     }
   }
@@ -3257,7 +3254,7 @@ void Worksheet::OnKeyDown(wxKeyEvent &event) {
       // Queue an evaluate event for the window containing this worksheet.
       wxCommandEvent *evaluateEvent = new wxCommandEvent;
       evaluateEvent->SetEventType(wxEVT_MENU);
-      evaluateEvent->SetId(EventIDs::EventIDs::popid_evaluate_section);
+      evaluateEvent->SetId(EventIDs::popid_evaluate_section);
       GetParent()->GetEventHandler()->QueueEvent(evaluateEvent);
     } else {
       bool enterEvaluates = false;
@@ -7814,14 +7811,10 @@ void Worksheet::OnComplete(wxCommandEvent &event) {
   EditorCell *editor = GetActiveCell();
   int caret = editor->GetCaretPosition();
 
-  int item = 0;
-  for(auto i: EventIDs::GetAutocompleteKeywordIDs())
-    {
-      if (i == event.GetId())
-	break;
-      item++;
-    }
-  
+  int item = event.GetId() - EventIDs::popid_autocomplete_keyword1;
+  wxASSERT(item >= 0);
+  wxASSERT(item < EventIDs::NumberOfAutocompleteKeywords());
+    
   if (!editor->GetSelectionString().empty())
     editor->ReplaceSelection(editor->GetSelectionString(),
                              m_completions[item],
