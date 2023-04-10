@@ -148,123 +148,123 @@ add_test(
 )
 
 add_test(
-     NAME wxxmltag2
-     COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wxxmltag(\"a<\",b);" "<b.*>a&lt;</b>"
+    NAME wxxmltag2
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wxxmltag(\"a<\",b);" "<b.*>a&lt;</b>"
 )
 
 add_test(
-     NAME show_image
-     COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "show_image(\"test<2.png\");" "<img del=\"no\" lisp=.*>test&lt;2.png</img>"
+    NAME show_image
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "show_image(\"test<2.png\");" "<img del=\"no\" lisp=.*>test&lt;2.png</img>"
 )
 
 add_test(
-     NAME wxxml-mlable
-     COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "test;" "<lbl altCopy=\"%o1\">(%o1)"
+    NAME wxxml-mlable
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "test;" "<lbl altCopy=\"%o1\">(%o1)"
 )
 
 add_test(
-     NAME wxxml-mlable2
-     COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "outchar:\">\";" "<math><lbl altCopy=\"\\\\&gt;1\">(&gt;1) </lbl><st>&gt;</st></math>"
+    NAME wxxml-mlable2
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "outchar:\">\";" "<math><lbl altCopy=\"\\\\&gt;1\">(&gt;1) </lbl><st>&gt;</st></math>"
 )
 
 add_test(
-     NAME wxxml-orthopoly
-     COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "legendre_p (n - 1, x);" "<fn altCopy=\"legendre_p(n-1,x)\"><munder><fnm>P</fnm><mrow><mi lisp=.*>n</mi><mo>-</mo><mn>1</mn></mrow></munder><p><mi lisp=.*>x</mi></p></fn>"
+    NAME wxxml-orthopoly
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "legendre_p (n - 1, x);" "<fn altCopy=\"legendre_p(n-1,x)\"><munder><fnm>P</fnm><mrow><mi lisp=.*>n</mi><mo>-</mo><mn>1</mn></mrow></munder><p><mi lisp=.*>x</mi></p></fn>"
 )
 
 add_test(
-     NAME wxxml-pochhammer
-     COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "pochhammer (\"<\", \">\");" "<munder altCopy=\"pochhammer(&quot;&lt;&quot;,&quot;&gt;&quot;)\"><p><st>&lt;</st></p><mrow><st>&gt;</st></mrow></munder>"
+    NAME wxxml-pochhammer
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "pochhammer (\"<\", \">\");" "<munder altCopy=\"pochhammer(&quot;&lt;&quot;,&quot;&gt;&quot;)\"><p><st>&lt;</st></p><mrow><st>&gt;</st></mrow></munder>"
 )
 
 add_test(
-     NAME wxxml-pderivop
-     COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "diff(f(y),y);" "<d><mfrac><mrow><s lisp=.*>d</s></mrow><mrow><s lisp=.*>d</s><h>.</h><mi lisp=.*>y</mi></mrow></mfrac><h>.</h><fn lisp=.*><fnm lisp=.*>f</fnm><mrow><p><mrow><mi lisp=.*>y</mi></mrow></p></mrow></fn></d>"
+    NAME wxxml-pderivop
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "diff(f(y),y);" "<d><mfrac><mrow><s lisp=.*>d</s></mrow><mrow><s lisp=.*>d</s><h>.</h><mi lisp=.*>y</mi></mrow></mfrac><h>.</h><fn lisp=.*><fnm lisp=.*>f</fnm><mrow><p><mrow><mi lisp=.*>y</mi></mrow></p></mrow></fn></d>"
 )
 
 add_test(
-     NAME mminus
-     COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "-x-1;" "<mo>-</mo><mi lisp=.*>x</mi><mo>-</mo><mn>1</mn>"
+    NAME mminus
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "-x-1;" "<mo>-</mo><mi lisp=.*>x</mi><mo>-</mo><mn>1</mn>"
 )
 
 add_test(
-     NAME mfactorial
-     COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "(n\!)\!;" "<mi lisp=.*>n</mi><mo>\!</mo></p></mrow><mo>\!</mo>"
+    NAME mfactorial
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "(n\!)\!;" "<mi lisp=.*>n</mi><mo>\!</mo></p></mrow><mo>\!</mo>"
 )
 
 add_test(
-     NAME subscriptp_1
-     COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wxsubscripts:true\$eeee_133;" "<munder altCopy=\"eeee_133\"><mrow><mi>eeee</mi></mrow><mrow><mi>133</mi></mrow></munder>"
+    NAME subscriptp_1
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wxsubscripts:true\$eeee_133;" "<munder altCopy=\"eeee_133\"><mrow><mi>eeee</mi></mrow><mrow><mi>133</mi></mrow></munder>"
 )
 
 add_test(
-     NAME subscriptp_2
-     COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wxsubscripts:true\$wxdeclare_subscripted(eeee_aaa)\$eeee_aaa;" "<munder altCopy=\"eeee_aaa\"><mrow><mi>eeee</mi></mrow><mrow><mi>aaa</mi></mrow></munder>"
+    NAME subscriptp_2
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wxsubscripts:true\$wxdeclare_subscripted(eeee_aaa)\$eeee_aaa;" "<munder altCopy=\"eeee_aaa\"><mrow><mi>eeee</mi></mrow><mrow><mi>aaa</mi></mrow></munder>"
 )
 
 add_test(
-     NAME subscriptp_3
-     COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wxsubscripts:true\$wxdeclare_subscripted(eeee_aaa)\$eeee_aaae;" "<mi lisp=.*>eeee_aaae</mi>"
+    NAME subscriptp_3
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wxsubscripts:true\$wxdeclare_subscripted(eeee_aaa)\$eeee_aaae;" "<mi lisp=.*>eeee_aaae</mi>"
 )
 
 add_test(
-     NAME subscriptp_4
-     COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wxsubscripts:true\$eeee_133;" "<munder altCopy=\"eeee_133\"><mrow><mi>eeee</mi></mrow><mrow><mi>133</mi></mrow></munder>"
+    NAME subscriptp_4
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wxsubscripts:true\$eeee_133;" "<munder altCopy=\"eeee_133\"><mrow><mi>eeee</mi></mrow><mrow><mi>133</mi></mrow></munder>"
 )
 
 add_test(
-     NAME subscriptp_5
-     COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wxsubscripts:true\$wxdeclare_subscript(bbb)\$eeee_bbb;" "<munder altCopy=\"eeee_bbb\"><mrow><mi>eeee</mi></mrow><mrow><mi>bbb</mi></mrow></munder>"
+    NAME subscriptp_5
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wxsubscripts:true\$wxdeclare_subscript(bbb)\$eeee_bbb;" "<munder altCopy=\"eeee_bbb\"><mrow><mi>eeee</mi></mrow><mrow><mi>bbb</mi></mrow></munder>"
 )
 
 add_test(
-     NAME subscriptp_6
-     COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wxsubscripts:true\$wxdeclare_subscript(bbb)\$eeee_bbb;" "<munder altCopy=\"eeee_bbb\"><mrow><mi>eeee</mi></mrow><mrow><mi>bbb</mi></mrow></munder>"
+    NAME subscriptp_6
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wxsubscripts:true\$wxdeclare_subscript(bbb)\$eeee_bbb;" "<munder altCopy=\"eeee_bbb\"><mrow><mi>eeee</mi></mrow><mrow><mi>bbb</mi></mrow></munder>"
 )
 
 add_test(
-     NAME subscriptp_7
-     COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wxsubscripts: 'all\$eree_ssss;" "<munder altCopy=\"eree_ssss\"><mrow><mi>eree</mi></mrow><mrow><mi>ssss</mi></mrow></munder>"
+    NAME subscriptp_7
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wxsubscripts: 'all\$eree_ssss;" "<munder altCopy=\"eree_ssss\"><mrow><mi>eree</mi></mrow><mrow><mi>ssss</mi></mrow></munder>"
 )
 
 add_test(
-     NAME subscriptp_8
-     COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wxsubscripts: false\$a_b;" "<mi lisp=.*>a_b</mi>"
+    NAME subscriptp_8
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wxsubscripts: false\$a_b;" "<mi lisp=.*>a_b</mi>"
 )
 
 add_test(
-     NAME subscriptp_9
-     COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wxsubscripts: false\$a_1;" "<mi lisp=.*>a_1</mi>"
+    NAME subscriptp_9
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wxsubscripts: false\$a_1;" "<mi lisp=.*>a_1</mi>"
 )
 
 add_test(
-     NAME mprod
-     COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "a*2*b;" "<mn>2</mn><h>[*]</h><mi lisp=.*>a</mi><h>[*]</h><mi lisp=.*>b</mi>"
+    NAME mprod
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "a*2*b;" "<mn>2</mn><h>[*]</h><mi lisp=.*>a</mi><h>[*]</h><mi lisp=.*>b</mi>"
 )
 
 add_test(
-     NAME block
-     COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "f(x):=block([a:x],x);" "<fn lisp=.*><fnm lisp=.*>f</fnm><mrow><p><mrow><mi lisp=.*>x</mi></mrow></p></mrow></fn><mo>:=</mo><fn lisp=.*><fnm lisp=.*>block</fnm><mrow><p><mrow><mrow list=\"true\"><t lisp=.* listdelim=\"true\">\\[</t><mrow><mi lisp=.*>a</mi><mo>:</mo><mi lisp=.*>x</mi></mrow><t lisp=.* listdelim=\"true\">\\]</t></mrow></mrow><mo>,</mo><mrow><mi lisp=.*>x</mi></mrow></p></mrow></fn>"
+    NAME block
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "f(x):=block([a:x],x);" "<fn lisp=.*><fnm lisp=.*>f</fnm><mrow><p><mrow><mi lisp=.*>x</mi></mrow></p></mrow></fn><mo>:=</mo><fn lisp=.*><fnm lisp=.*>block</fnm><mrow><p><mrow><mrow list=\"true\"><t lisp=.* listdelim=\"true\">\\[</t><mrow><mi lisp=.*>a</mi><mo>:</mo><mi lisp=.*>x</mi></mrow><t lisp=.* listdelim=\"true\">\\]</t></mrow></mrow><mo>,</mo><mrow><mi lisp=.*>x</mi></mrow></p></mrow></fn>"
 )
 
 add_test(
-     NAME mlist
-     COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "[&,b];" "<t lisp=.* listdelim=\"true\">\\[</t><mrow><mi lisp=.*>&amp;</mi></mrow><mo>,</mo><mrow><mi lisp=.*>b</mi></mrow><t lisp=.* listdelim=\"true\">\\]</t></mrow>"
+    NAME mlist
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "[&,b];" "<t lisp=.* listdelim=\"true\">\\[</t><mrow><mi lisp=.*>&amp;</mi></mrow><mo>,</mo><mrow><mi lisp=.*>b</mi></mrow><t lisp=.* listdelim=\"true\">\\]</t></mrow>"
 )
 
 add_test(
-     NAME true
-     COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "true;" "<t lisp=.*>true</t>"
+    NAME true
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "true;" "<t lisp=.*>true</t>"
 )
 
 add_test(
-     NAME false
-     COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "true;" "<t lisp=.*>true</t>"
+    NAME false
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "true;" "<t lisp=.*>true</t>"
 )
 
 add_test(
-     NAME mfrac
-     COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "a/(1/2+b);" "<mfrac><mrow><mi lisp=.*>a</mi></mrow><mrow><mi lisp=.*>b</mi><mo>+</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn></mrow></mfrac></mrow></mfrac>"
+    NAME mfrac
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "a/(1/2+b);" "<mfrac><mrow><mi lisp=.*>a</mi></mrow><mrow><mi lisp=.*>b</mi><mo>+</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn></mrow></mfrac></mrow></mfrac>"
 )
 
 add_test(
