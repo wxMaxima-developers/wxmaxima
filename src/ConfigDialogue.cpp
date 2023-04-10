@@ -177,7 +177,10 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent, Configuration *cfg)
   SetSheetOuterBorder(3);
 
   SetName("Configuration");
+  m_notebook = GetBookCtrl();
 
+#if defined __WXOSX__
+#else
   int imgSize = GetImageSize();
   m_imageList = std::unique_ptr<wxImageList>(new wxImageList(imgSize, imgSize,false,0));
   m_imageList->Add(ArtProvider::GetImage(this, wxT("editing"), imgSize, EDITING_SVG_GZ, EDITING_SVG_GZ_SIZE));
@@ -193,11 +196,6 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent, Configuration *cfg)
 					 MEDIA_PLAYBACK_START_CONFDIALOGUE_SVG_GZ_SIZE));
   m_imageList->Add(ArtProvider::GetImage(this, wxT("edit-undo"), imgSize, VIEW_REFRESH_SVG_GZ,
 					 VIEW_REFRESH_SVG_GZ_SIZE));
-
-  m_notebook = GetBookCtrl();
-
-#if defined __WXOSX__
-#else
   m_notebook->SetImageList(m_imageList.get());
 #endif
   m_notebook->AddPage(CreateWorksheetPanel(), _("Worksheet"), true, 0);
