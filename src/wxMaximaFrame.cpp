@@ -152,6 +152,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
   // Some default values
   m_updateEvaluationQueueLengthDisplay = true;
   m_recentDocumentsMenu = NULL;
+  m_unsavedDocuments = NULL;
   m_recentPackagesMenu = NULL;
   m_drawPane = NULL;
   m_EvaluationQueueLength = 0;
@@ -615,8 +616,11 @@ void wxMaximaFrame::SetupMenu() {
   APPEND_MENU_ITEM(m_FileMenu, wxID_OPEN, _("&Open...\tCtrl+O"),
                    _("Open a document"), wxT("gtk-open"));
   m_recentDocumentsMenu = new wxMenu();
-  m_FileMenu->Append(EventIDs::menu_recent_documents, _("Open Recent"),
+  m_FileMenu->Append(EventIDs::menu_recent_documents, _("Open recent"),
                      m_recentDocumentsMenu);
+  m_unsavedDocumentsMenu = new wxMenu();
+  m_FileMenu->Append(EventIDs::menu_unsaved_documents, _("Recover unsaved"),
+                     m_unsavedDocumentsMenu);
   m_FileMenu->AppendSeparator();
   m_FileMenu->Append(wxID_CLOSE, _("Close\tCtrl+W"), _("Close window"),
                      wxITEM_NORMAL);
@@ -1950,6 +1954,43 @@ bool wxMaximaFrame::ToolbarIsShown() {
   return IsPaneDisplayed(EventIDs::menu_pane_toolbar);
 }
 
+void wxMaximaFrame::PopulateRecentDocumentsMenu(wxMenu *menu, int firstEntry,
+						const std::list<wxString> &items)
+{
+  int id = firstEntry;
+  for(const auto name:items)
+    {
+      wxFileName filename(name);
+      wxString path(filename.GetPath()), fullname(filename.GetFullName());
+      wxString label(fullname + wxT("   [ ") + path + wxT(" ]"));
+      if(menu->FindItem(id))
+	  menu->SetLabel(id, label);
+      else
+	menu->Append(id, label);
+      menu->Enable(id, wxFileExists(name));
+
+      id++;
+      if(id >= firstEntry + EventIDs::NumberOfRecentFiles())
+	return;
+    }
+}
+
+void wxMaximaFrame::PopulateRecentPackagesMenu(wxMenu *menu, int firstEntry,
+					       const std::list<wxString> &items)
+{
+  int id = firstEntry;
+  for(const auto name:items)
+    {
+      if(menu->FindItem(id))
+	menu->SetLabel(id, name);
+      else
+	menu->Append(id, name);
+      id++;
+      if(id >= firstEntry + EventIDs::NumberOfRecentFiles())
+	return;
+    }
+}
+
 void wxMaximaFrame::UpdateRecentDocuments() {
   if (m_recentDocumentsMenu == NULL)
     m_recentDocumentsMenu = new wxMenu();
@@ -1970,67 +2011,14 @@ void wxMaximaFrame::UpdateRecentDocuments() {
   if (recentItems > 30)
     recentItems = 30;
 
-  std::list<wxString> recentDocuments = m_recentDocuments.Get();
-  std::list<wxString> unsavedDocuments = m_unsavedDocuments.Get();
-  std::list<wxString> recentPackages = m_recentPackages.Get();
+  PopulateRecentDocumentsMenu(m_recentDocumentsMenu, EventIDs::menu_recent_document_0,
+			      m_recentDocuments.Get());
 
-  // Populate the recent documents menu
-  for (int i = EventIDs::menu_recent_document_0;
-       i <= EventIDs::menu_recent_document_0 + recentItems; i++) {
-    if (!recentDocuments.empty()) {
-      wxFileName filename(recentDocuments.front());
-      wxString path(filename.GetPath()), fullname(filename.GetFullName());
-      wxString label(fullname + wxT("   [ ") + path + wxT(" ]"));
-      recentDocuments.pop_front();
-      m_recentDocumentsMenu->Append(i, label);
-      if (wxFileExists(filename.GetFullPath()))
-        m_recentDocumentsMenu->Enable(i, true);
-      else
-        m_recentDocumentsMenu->Enable(i, false);
-    }
-  }
-
-  bool separatorAdded = false;
-
-  // Populate the unsaved documents menu
-  for (int i = EventIDs::menu_unsaved_document_0;
-       i <= EventIDs::menu_unsaved_document_0 + recentItems; i++) {
-    if (!unsavedDocuments.empty()) {
-      wxString filename = unsavedDocuments.front();
-      if (!wxFileExists(filename))
-        continue;
-      wxStructStat stat;
-      wxStat(filename, &stat);
-      wxDateTime modified(stat.st_mtime);
-      wxString label = filename + wxT(" (") + modified.FormatDate() + wxT(" ") +
-	modified.FormatTime() + wxT(")");
-
-      if (!separatorAdded)
-        m_recentDocumentsMenu->Append(EventIDs::menu_recent_document_separator,
-                                      wxEmptyString, wxEmptyString,
-                                      wxITEM_SEPARATOR);
-      separatorAdded = true;
-      m_recentDocumentsMenu->Append(i, label);
-      unsavedDocuments.pop_front();
-    }
-  }
-
-  // Populate the recent packages menu
-  for (int i = EventIDs::menu_recent_package_0; i <= EventIDs::menu_recent_package_0 + recentItems;
-       i++) {
-    if (!recentPackages.empty()) {
-      wxFileName filename = recentPackages.front();
-      wxString path(filename.GetPath()), fullname(filename.GetFullName());
-      wxString label;
-      if (path != wxEmptyString)
-        label = fullname + wxT("   [ ") + path + wxT(" ]");
-      else
-        label = fullname;
-      recentPackages.pop_front();
-
-      m_recentPackagesMenu->Append(i, label);
-    }
-  }
+  PopulateRecentDocumentsMenu(m_unsavedDocuments, EventIDs::menu_unsaved_document_0,
+			      m_unsavedDocuments.Get());
+  
+  PopulateRecentPackagesMenu(m_recentPackagesMenu, EventIDs::menu_recent_package_0,
+			     m_recentPackages.Get());
 }
 
 void wxMaximaFrame::ReadConfig() { m_worksheet->UpdateConfig(); }

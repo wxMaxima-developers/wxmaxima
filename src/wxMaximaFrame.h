@@ -84,7 +84,12 @@ public:
     recent documents menu.
   */
   void UpdateRecentDocuments();
-  
+
+  //! Used by UpdateRecentDocuments for populating a menu
+  void PopulateRecentDocumentsMenu(wxMenu *menu, int firstEntry, const std::list<wxString> &items);
+  //! Used by UpdateRecentPackages for populating a menu
+  void PopulateRecentPackagesMenu(wxMenu *menu, int firstEntry, const std::list<wxString> &items);
+
   /*! true, if a Pane is currently enabled
 
     \param id The event that toggles the visibility of the pane that is
