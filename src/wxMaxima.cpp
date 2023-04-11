@@ -1781,7 +1781,8 @@ bool MyDropTarget::OnDropFiles(wxCoord WXUNUSED(x), wxCoord WXUNUSED(y),
   }
 
   if (files[0].Lower().EndsWith(wxT(".wxm")) ||
-      files[0].Lower().EndsWith(wxT(".wxmx"))) {
+      files[0].Lower().EndsWith(wxT(".wxmx"))
+      files[0].Lower().EndsWith(wxT(".wxmx~"))) {
     if (m_wxmax->m_worksheet->GetTree() != NULL && !m_wxmax->DocumentSaved()) {
       int close = m_wxmax->SaveDocumentP();
 
@@ -5415,7 +5416,7 @@ bool wxMaxima::OpenFile(const wxString &file, const wxString &command) {
     }
   }
 
-  else if (file.Right(5).Lower() == wxT(".wxmx")) {
+  else if (file.EndsWith(wxT(".wxmx")) || file.EndsWith(wxT(".wxmx~")) ) {
     retval = OpenWXMXFile(file, m_worksheet);
     if (retval) {
       ReReadConfig();
