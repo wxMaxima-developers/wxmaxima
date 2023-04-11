@@ -2014,7 +2014,7 @@ void wxMaximaFrame::UpdateRecentDocuments() {
   PopulateRecentDocumentsMenu(m_recentDocumentsMenu, EventIDs::menu_recent_document_0,
 			      m_recentDocuments.Get());
 
-  PopulateRecentDocumentsMenu(m_unsavedDocuments, EventIDs::menu_unsaved_document_0,
+  PopulateRecentDocumentsMenu(m_unsavedDocumentsMenu, EventIDs::menu_unsaved_document_0,
 			      m_unsavedDocuments.Get());
   
   PopulateRecentPackagesMenu(m_recentPackagesMenu, EventIDs::menu_recent_package_0,
