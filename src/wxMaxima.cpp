@@ -9270,7 +9270,7 @@ void wxMaxima::HelpMenu(wxCommandEvent &event) {
   }
 
   else if(event.GetId() == EventIDs::menu_bug_report){
-    MenuCommand(wxT("wxbug_report()$"));
+    MenuCommand(wxT("wxbug_report();"));
   }
 
   else if(event.GetId() == EventIDs::menu_help_tutorials){
