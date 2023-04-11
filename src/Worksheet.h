@@ -34,6 +34,7 @@
 #include "precomp.h"
 #include "MaximaManual.h"
 #include "EventIDs.h"
+#include "RecentDocuments.h"
 #include <wx/wx.h>
 #include <wx/xml/xml.h>
 #include <wx/aui/aui.h>
@@ -91,6 +92,7 @@
 class Worksheet : public wxScrolled<wxWindow>
 {
 public:
+  RecentDocuments m_unsavedDocuments;
   //! Is an update of the worksheet controls needed?
   bool UpdateControlsNeeded(){bool result = m_updateControls; m_updateControls = false; return result;}
   void UpdateControlsNeeded(bool updateControlsNeeded){m_updateControls = updateControlsNeeded;}

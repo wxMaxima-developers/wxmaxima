@@ -1781,7 +1781,7 @@ bool MyDropTarget::OnDropFiles(wxCoord WXUNUSED(x), wxCoord WXUNUSED(y),
   }
 
   if (files[0].Lower().EndsWith(wxT(".wxm")) ||
-      files[0].Lower().EndsWith(wxT(".wxmx"))
+      files[0].Lower().EndsWith(wxT(".wxmx")) ||
       files[0].Lower().EndsWith(wxT(".wxmx~"))) {
     if (m_wxmax->m_worksheet->GetTree() != NULL && !m_wxmax->DocumentSaved()) {
       int close = m_wxmax->SaveDocumentP();
@@ -10049,7 +10049,7 @@ void wxMaxima::OnUnsavedDocument(wxCommandEvent &event) {
     m_worksheet->CloseAutoCompletePopup();
 
   wxString file =
-    m_unsavedDocuments.Get(event.GetId() - EventIDs::menu_unsaved_document_0);
+    m_worksheet->m_unsavedDocuments.Get(event.GetId() - EventIDs::menu_unsaved_document_0);
 
   if (file.IsEmpty())
     return;

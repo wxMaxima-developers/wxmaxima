@@ -60,7 +60,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
   : wxFrame(parent, id, title, pos, size, style),
     m_manager(this, wxAUI_MGR_ALLOW_FLOATING | wxAUI_MGR_ALLOW_ACTIVE_PANE |
 	      wxAUI_MGR_TRANSPARENT_HINT | wxAUI_MGR_HINT_FADE),
-    m_recentDocuments(wxT("document")), m_unsavedDocuments(wxT("unsaved")),
+    m_recentDocuments(wxT("document")),
     m_recentPackages(wxT("packages")) {
 
   m_bytesFromMaxima = 0;
@@ -68,7 +68,8 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
   // Suppress window updates until this window has fully been created.
   // Not redrawing the window whilst constructing it hopefully speeds up
   // everything.
-  //  wxWindowUpdateLocker noUpdates(this);
+  //  wxWindowUpdateLocker noUpdates(this);    m_worksheet->m_unsavedDocuments(wxT("unsaved")),
+
   // Add some shortcuts that aren't automatically set by menu entries.
   wxAcceleratorEntry entries[18];
   entries[0].Set(wxACCEL_CTRL, wxT('K'), EventIDs::menu_autocomplete);
@@ -2015,7 +2016,7 @@ void wxMaximaFrame::UpdateRecentDocuments() {
 			      m_recentDocuments.Get());
 
   PopulateRecentDocumentsMenu(m_unsavedDocumentsMenu, EventIDs::menu_unsaved_document_0,
-			      m_unsavedDocuments.Get());
+			      m_worksheet->m_unsavedDocuments.Get());
   
   PopulateRecentPackagesMenu(m_recentPackagesMenu, EventIDs::menu_recent_package_0,
 			     m_recentPackages.Get());
@@ -2062,7 +2063,7 @@ void wxMaximaFrame::RegisterAutoSaveFile() {
   ReReadConfig();
   wxConfigBase *config = wxConfig::Get();
   config->Read("AutoSaveFiles", &autoSaveFiles);
-  m_unsavedDocuments.AddDocument(m_tempfileName);
+  m_worksheet->m_unsavedDocuments.AddDocument(m_tempfileName);
   ReReadConfig();
 }
 

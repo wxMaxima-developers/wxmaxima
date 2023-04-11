@@ -379,7 +379,6 @@ protected:
   //! The history pane
   History *m_history;
   RecentDocuments m_recentDocuments;
-  RecentDocuments m_unsavedDocuments;
   RecentDocuments m_recentPackages;
   wxMenu *m_recentDocumentsMenu;
   wxMenu *m_unsavedDocumentsMenu;

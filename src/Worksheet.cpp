@@ -86,7 +86,8 @@ Worksheet::Worksheet(wxWindow *parent, int id,
 			 | wxSUNKEN_BORDER
 #endif
 			 ),
-    m_cellPointers(this), m_dc(this), m_configuration(config),
+  m_unsavedDocuments(wxT("unsaved")),
+  m_cellPointers(this), m_dc(this), m_configuration(config),
     m_autocomplete(config),
     m_maximaManual(m_configuration) {
   m_scrollToCaret = false;
@@ -5861,9 +5862,12 @@ bool Worksheet::ExportToMAC(const wxString &file) {
   if (!done) {
     wxSleep(1);
     if (!wxRenameFile(file + wxT("~"), file, true))
-      return false;
+      {
+	m_unsavedDocuments.AddDocument(file + wxT("~"));
+	return false;
+      }
   }
-
+ 
   if (wxm)
     SetSaved(true);
   else
