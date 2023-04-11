@@ -382,6 +382,7 @@ protected:
   RecentDocuments m_unsavedDocuments;
   RecentDocuments m_recentPackages;
   wxMenu *m_recentDocumentsMenu;
+  wxMenu *m_unsavedDocumentsMenu;
   wxMenu *m_recentPackagesMenu;
   wxMenu *m_autoSubscriptMenu;
   wxMenu *m_equationTypeMenuMenu;

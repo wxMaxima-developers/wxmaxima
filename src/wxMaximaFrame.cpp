@@ -152,7 +152,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
   // Some default values
   m_updateEvaluationQueueLengthDisplay = true;
   m_recentDocumentsMenu = NULL;
-  m_unsavedDocuments = NULL;
+  m_unsavedDocumentsMenu = NULL;
   m_recentPackagesMenu = NULL;
   m_drawPane = NULL;
   m_EvaluationQueueLength = 0;
