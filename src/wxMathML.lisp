@@ -206,9 +206,7 @@ Submit bug reports by following the 'New issue' link on that page."))
   (format t "Please include the following information with your bug report:~%")
   (format t "-------------------------------------------------------------~%")
   ($wxbuild_info)
-  ;;(format t "-------------------------------------------------------------~%")
-  ;; last line over writes wxbuild_info
-  )
+  (format t "-------------------------------------------------------------~%"))
 
 
 ;; The tag that is put around something that might be a variable or function name
