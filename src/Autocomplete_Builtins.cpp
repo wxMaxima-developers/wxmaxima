@@ -2095,7 +2095,7 @@ bool AutoComplete::LoadBuiltinSymbols() {
   m_wordList[tmplte].Add("demo(<filename>)");                      // OPTION
   m_wordList[command].Add("describe");                             // FUNCTION
   m_wordList[command].Add("output_format_for_help");                // OPTION
-  m_wordList[command.Add("browser");                               // OPTION
+  m_wordList[command].Add("browser");                               // OPTION
   m_wordList[command].Add("browser_options");                       // OPTION
   m_wordList[command].Add("url_base");                              // OPTION
   m_wordList[tmplte].Add("describe(<string>)");                    // OPTION

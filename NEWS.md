@@ -3,7 +3,9 @@
  * MacOs: No more create config icons that aren't needed
  * Recent file list: Don't try to re-use no-more-used wxWidgets IDs
  * Make sure that the help sidebar is shown when opening a help topic
- 
+ * If maxima wants us to open a help browser and wxMaxima was compiled
+   without one it now opens an external help browser
+
 # 23.04.0
  * Made the GUI more responsive for functions with much output
  * Handle errors in the XML from maxima more gracefully

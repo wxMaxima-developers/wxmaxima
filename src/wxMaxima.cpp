@@ -3068,6 +3068,8 @@ void wxMaxima::ReadManualTopicNames(wxString &data) {
 		    m_helpPane->SelectKeywords(topics);
 		    wxMaximaFrame::ShowPane(EventIDs::menu_pane_help);
 		  }
+#else
+		ShowMaximaHelp(topics[1]);
 #endif
 	      }
 	      entry = entry->GetNext();
