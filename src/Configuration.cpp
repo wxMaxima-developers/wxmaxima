@@ -213,8 +213,6 @@ wxSize Configuration::GetPPI() const {
 #else
     ppi = wxGetDisplayPPI();
 #endif
-    if ((ppi.x < 10) || (ppi.y < 10))
-      ppi = wxGetDisplayPPI();
     if ((ppi.x <= 10) || (ppi.y < 10))
       ppi = wxSize(72, 72);
 

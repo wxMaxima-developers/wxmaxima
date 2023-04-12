@@ -61,9 +61,6 @@ wxSize ToolBar::GetOptimalBitmapSize()
   m_ppi = wxGetDisplayPPI();
 #endif
   if ((m_ppi.x <= 10) || (m_ppi.y <= 10))
-    m_ppi = wxGetDisplayPPI();
-
-  if ((m_ppi.x <= 10) || (m_ppi.y <= 10))
     m_ppi = wxSize(72, 72);
 
 #if defined __WXOSX__
@@ -321,9 +318,6 @@ wxSize ToolBar::GetPPI()
 #else
     m_ppi = wxGetDisplayPPI();
 #endif  
-  if ((ppi.x <= 10) || (ppi.y <= 10))
-    ppi = wxGetDisplayPPI();
-  
   if ((ppi.x <= 10) || (ppi.y <= 10))
     ppi = wxSize(72, 72);
   return ppi;

@@ -75,8 +75,6 @@ int ConfigDialogue::GetImageSize() {
   ppi = wxGetDisplayPPI().x;
 #endif
   if (ppi < 10)
-    ppi = wxGetDisplayPPI().x;
-  if (ppi <= 10)
     ppi = 72;
 
   double targetSize = wxMax(ppi, 75) * CONFIG_ICON_SCALE;

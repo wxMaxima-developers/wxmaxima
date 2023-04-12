@@ -329,8 +329,6 @@ wxImage TipOfTheDay::GetImage(unsigned char *data, size_t len) {
 #else
   ppi = wxGetDisplayPPI().x;
 #endif
-  if (ppi < 10)
-    ppi = wxGetDisplayPPI().x;
   if (ppi <= 10)
     ppi = 72;
 
