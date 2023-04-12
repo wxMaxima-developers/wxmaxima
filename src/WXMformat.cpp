@@ -193,7 +193,10 @@ namespace Format {
       if (wxm)
 	retval << Headers.GetStart(WXM_FOLD) << '\n';
       for (auto &tmp : OnList(tree))
-	retval << TreeToWXM(retval, &tmp, wxm);
+	{
+	  wxString tmp2;
+	  retval << TreeToWXM(tmp2, &tmp, wxm);
+	}
       if (wxm)
 	retval << Headers.GetEnd(WXM_FOLD) << '\n';
     }
