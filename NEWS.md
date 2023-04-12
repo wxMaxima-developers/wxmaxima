@@ -1,6 +1,9 @@
-# current
+# Current
  * More config dialogue tweaks
-
+ * MacOs: No more create config icons that aren't needed
+ * Recent file list: Don't try to re-use no-more-used wxWidgets IDs
+ * Make sure that the help sidebar is shown when opening a help topic
+ 
 # 23.04.0
  * Made the GUI more responsive for functions with much output
  * Handle errors in the XML from maxima more gracefully

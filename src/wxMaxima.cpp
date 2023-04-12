@@ -3064,7 +3064,10 @@ void wxMaxima::ReadManualTopicNames(wxString &data) {
 		  wxLogMessage(_("No topics found in topic flag"));
 #ifdef USE_WEBVIEW
 		else
-		  m_helpPane->SelectKeywords(topics);
+		  {
+		    m_helpPane->SelectKeywords(topics);
+		    wxMaximaFrame::ShowPane(EventIDs::menu_pane_help);
+		  }
 #endif
 	      }
 	      entry = entry->GetNext();
