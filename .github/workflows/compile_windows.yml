@@ -58,7 +58,7 @@ jobs:
                cd wxWidgets-${{env.WXVERSION}}
                cd build
                cmake -G Ninja -DwxUSE_WEBVIEW_EDGE=true ..
-               cmake --build ..
+               cmake --build .
                cd ..
                cd ..
             }
