@@ -1998,7 +1998,7 @@ void wxMaximaFrame::UpdateRecentDocuments() {
 
   if (recentItems < 5)
     recentItems = 5;
-  if (recentItems > NumberOfRecentFiles())
+  if (recentItems > EventIDs::NumberOfRecentFiles())
     recentItems = 30;
 
   PopulateRecentDocumentsMenu(m_recentDocumentsMenu, EventIDs::menu_recent_document_0,
