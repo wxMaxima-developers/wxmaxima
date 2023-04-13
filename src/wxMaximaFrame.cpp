@@ -1993,23 +1993,12 @@ void wxMaximaFrame::PopulateRecentPackagesMenu(wxMenu *menu, int firstEntry,
 }
 
 void wxMaximaFrame::UpdateRecentDocuments() {
-  if (m_recentDocumentsMenu == NULL)
-    m_recentDocumentsMenu = new wxMenu();
-  while (m_recentDocumentsMenu->GetMenuItemCount() > 0)
-    m_recentDocumentsMenu->Destroy(
-				   m_recentDocumentsMenu->FindItemByPosition(0));
-
-  if (m_recentPackagesMenu == NULL)
-    m_recentPackagesMenu = new wxMenu();
-  while (m_recentPackagesMenu->GetMenuItemCount() > 0)
-    m_recentPackagesMenu->Destroy(m_recentPackagesMenu->FindItemByPosition(0));
-
   long recentItems = 10;
   wxConfig::Get()->Read(wxT("recentItems"), &recentItems);
 
   if (recentItems < 5)
     recentItems = 5;
-  if (recentItems > 30)
+  if (recentItems > NumberOfRecentFiles())
     recentItems = 30;
 
   PopulateRecentDocumentsMenu(m_recentDocumentsMenu, EventIDs::menu_recent_document_0,
