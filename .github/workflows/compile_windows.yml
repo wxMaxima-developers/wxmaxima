@@ -57,8 +57,8 @@ jobs:
                Expand-Archive -LiteralPath wxWidgets-${{env.WXVERSION}}.zip -DestinationPath wxWidgets-${{env.WXVERSION}}
                cd wxWidgets-${{env.WXVERSION}}
                cd build
-               cmake ..
-               cmake --build
+               cmake -G Ninja -DwxUSE_WEBVIEW_EDGE=true ..
+               cmake --build ..
                cd ..
                cd ..
             }
@@ -76,7 +76,7 @@ jobs:
         run: |
             cd wxMaxima
             cd build
-            cmake --build .
+            cmake --build
             cd ..
             cd ..
       - name: Package wxMaxima
