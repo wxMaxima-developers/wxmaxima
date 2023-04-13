@@ -46,7 +46,7 @@ jobs:
           cache-name: cache-wxWidgets
         with:
           path: wxWidgets-${{env.WXVERSION}}
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-2
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-3
 
       # multi-job compilation is broken in wxWidgets, see https://trac.wxwidgets.org/ticket/19029
       # compiling wxWidgets via cmake works, but the result isn't detected by cmake any more.
@@ -57,9 +57,8 @@ jobs:
                Expand-Archive -LiteralPath wxWidgets-${{env.WXVERSION}}.zip -DestinationPath wxWidgets-${{env.WXVERSION}}
                cd wxWidgets-${{env.WXVERSION}}
                cd build
-               cd msw
-               mingw32-make -f makefile.gcc SHELL=cmd.exe SHARED=0 BUILD=release
-               cd ..
+               cmake ..
+               cmake --build
                cd ..
                cd ..
             }
