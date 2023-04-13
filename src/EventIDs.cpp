@@ -460,10 +460,9 @@ const EventIDs::EventId EventIDs::menu_list_append_list(wxWindow::NewControlId()
 const EventIDs::EventId EventIDs::menu_list_interleave(wxWindow::NewControlId());
 const EventIDs::EventId EventIDs::menu_recent_packages(wxWindow::NewControlId());
 const EventIDs::EventId EventIDs::menu_recent_package_0(wxWindow::NewControlId(NumberOfRecentFiles()));
-const EventIDs::EventId EventIDs::menu_recent_documents(wxWindow::NewControlId());
 const EventIDs::EventId EventIDs::menu_unsaved_documents(wxWindow::NewControlId());
 const EventIDs::EventId EventIDs::menu_recent_document_0(wxWindow::NewControlId(NumberOfRecentFiles()));
-const EventIDs::EventId EventIDs::menu_recent_document_separator(wxWindow::NewControlId());
+const EventIDs::EventId EventIDs::menu_recent_documents(wxWindow::NewControlId());
 const EventIDs::EventId EventIDs::menu_unsaved_document_0(wxWindow::NewControlId(NumberOfRecentFiles()));
 const EventIDs::EventId EventIDs::menu_construct_fraction(wxWindow::NewControlId());
 const EventIDs::EventId EventIDs::menu_insert_image(wxWindow::NewControlId());
