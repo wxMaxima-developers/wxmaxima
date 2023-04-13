@@ -57,7 +57,7 @@ jobs:
                Expand-Archive -LiteralPath wxWidgets-${{env.WXVERSION}}.zip -DestinationPath wxWidgets-${{env.WXVERSION}}
                cd wxWidgets-${{env.WXVERSION}}
                cd build
-               cmake -G Ninja -DwxUSE_WEBVIEW_EDGE=true ..
+               cmake -G Ninja ..
                cmake --build .
                cd ..
                cd ..
