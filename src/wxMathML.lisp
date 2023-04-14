@@ -207,7 +207,9 @@ Submit bug reports by following the 'New issue' link on that page."))
   (format t "Please check before submitting, if your bug was already reported.~%~%")
   (format t "Please include the following information with your bug report:~%")
   (format t "-------------------------------------------------------------~%")
-  ($wxbuild_info)
+   ; Display the 2D-formatted build information
+  (let (($display2d t))
+    (displa ($build_info)))
   (format t "-------------------------------------------------------------~%"))
 
 
