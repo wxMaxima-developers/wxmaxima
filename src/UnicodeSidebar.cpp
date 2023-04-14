@@ -29,6 +29,7 @@
 */
 
 #include "../data/UnicodeData.h"
+#include "EventIDs.h"
 #include <memory>
 #include <wx/mstream.h>
 #include <wx/sizer.h>
@@ -91,25 +92,23 @@ void UnicodeSidebar::OnRightClick(wxGridEvent &event) {
   number = m_grid->GetCellValue(event.GetRow(), 0);
   if (number.ToLong(&m_charRightClickedOn, 16)) {
     std::unique_ptr<wxMenu> popupMenu(new wxMenu());
-    popupMenu->Append(popid_addToSymbols, _("Add to symbols Sidebar"));
-    Connect(popid_addToSymbols, wxEVT_MENU,
+    popupMenu->Append(EventIDs::popid_addToSymbols, _("Add to symbols Sidebar"));
+    Connect(EventIDs::popid_addToSymbols, wxEVT_MENU,
             wxCommandEventHandler(UnicodeSidebar::OnMenu), NULL, this);
     PopupMenu(&*popupMenu);
   }
 }
 
 void UnicodeSidebar::OnMenu(wxCommandEvent &event) {
-  switch (event.GetId()) {
-  case popid_addToSymbols:
+  if (event.GetId() == EventIDs::popid_addToSymbols) {
     wxWindow *toplevel = this;
     while (toplevel->GetParent() != NULL)
       toplevel = toplevel->GetParent();
     wxCommandEvent *ev =
       new wxCommandEvent(SYMBOLADDEVENT, m_charRightClickedOn);
     toplevel->GetEventHandler()->QueueEvent(ev);
-
-    break;
   }
+  event.Skip();
 }
 
 void UnicodeSidebar::OnChangeAttempt(wxGridEvent &event) { event.Veto(); }

@@ -47,12 +47,6 @@ public:
    */
   ~UnicodeSidebar();
 
-  //! The popup menu IDs this sidebar uses
-  enum PopIds
-  {
-    popid_addToSymbols = wxID_HIGHEST + 3500,
-  };
-
   //! Is called if the RegEx changes
   void OnRegExEvent(wxCommandEvent &ev);
   //! Update the display after the regex has changed

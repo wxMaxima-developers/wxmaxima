@@ -640,6 +640,7 @@ const wxWindowIDRef EventIDs:: popid_tocMoveIn(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs:: popid_tocMoveOut(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs:: popid_var_newVar(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs:: popid_var_addAll(wxWindow::NewControlId());
+const wxWindowIDRef EventIDs:: popid_addToSymbols(wxWindow::NewControlId());
 
 EventIDs::EventIDs()
 {
