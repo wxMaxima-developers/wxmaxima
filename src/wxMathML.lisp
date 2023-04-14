@@ -2426,6 +2426,7 @@ Submit bug reports by following the 'New issue' link on that page."))
 ;;;
 
 (defvar *wxmaxima-nested-loads* 0 "How many load commands are nested, currently?")
+;(declare (special *wxmaxima-nested-loads*))
 (setf (symbol-function 'load_original_wxmaxima) (symbol-function '$load))
 
 (no-warning
@@ -2436,7 +2437,7 @@ Submit bug reports by following the 'New issue' link on that page."))
        (progn
 	 (format t "<variables>")
 	 (format t "<variable><name>*wx-load-file-name*</name><value>~a</value></variable>"
-		 (wxxml-fix-string filename))
+		 (wxxml-mstring filename))
 	 (format t "</variables>~%")))
    (incf *wxmaxima-nested-loads*)
    ;; Load the file
