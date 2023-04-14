@@ -87,9 +87,9 @@ HelpBrowser::HelpBrowser(wxWindow *parent, Configuration *configuration,
 }
 
 wxString HelpBrowser::GetKeyword(unsigned int id) {
-  if (id < wxID_HIGHEST + 8000)
+  if (id < m_topicButtonID0)
     return wxEmptyString;
-  id -= wxID_HIGHEST + 8000;
+  id -= m_topicButtonID0;
   if (id > m_keywords.GetCount())
     return wxEmptyString;
   return m_keywords[id];
@@ -210,14 +210,17 @@ void HelpBrowser::SelectKeywords(wxArrayString keywords) {
 
   m_browserPanel->Show(false);
   m_topicPanel->DestroyChildren();
+  m_topicButtonIDs.clear();
   m_topicSizer->Add(
 		    new WrappingStaticText(m_topicPanel, wxID_ANY,
 					   _("Choose between the following help topics:")),
 		    wxSizerFlags());
-  int id = 6000 + wxID_HIGHEST;
 
   m_keywords = keywords;
+  m_topicButtonID0 = wxWindow::NewControlId(keywords.GetCount());
+  int id = m_topicButtonID0;
   for (auto i : keywords) {
+    m_topicButtonIDs.push_back(id);
     m_topicSizer->Add(new wxButton(m_topicPanel, id++, i),
                       wxSizerFlags().Expand());
   }
