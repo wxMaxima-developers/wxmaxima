@@ -10787,12 +10787,12 @@ void wxMaxima::ShowPane(wxCommandEvent &event) {
   int id = event.GetId();
 
   if (id == EventIDs::menu_pane_hideall)
-    wxMaximaFrame::ShowPane(static_cast<EventIDs::EventId>(id), true);
+    wxMaximaFrame::ShowPane(id, true);
   else {
-    TogglePaneVisibility(static_cast<EventIDs::EventId>(id));
+    TogglePaneVisibility(id);
 
     if ((id == EventIDs::menu_pane_structure) &&
-        (IsPaneDisplayed(static_cast<EventIDs::EventId>(id))))
+        (IsPaneDisplayed(id)))
       m_worksheet->UpdateTableOfContents();
   }
 }
