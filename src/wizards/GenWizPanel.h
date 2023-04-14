@@ -113,6 +113,8 @@ protected:
   Configuration *m_configuration;
   MaximaManual *m_maximaManual;
 private:
+  int m_topicButtonID0;
+  std::vector<wxWindowIDRef> m_topicButtonIDs;
   bool m_ignorePageChange = true;
   keywordHash m_manualKeywords;
 };

@@ -5,6 +5,7 @@
  * Make sure that the help sidebar is shown when opening a help topic
  * If maxima wants us to open a help browser and wxMaxima was compiled
    without one it now opens an external help browser
+ * Be aware that the MSW port recycles unused window IDs  
 
 # 23.04.0
  * Made the GUI more responsive for functions with much output

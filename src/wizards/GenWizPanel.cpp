@@ -235,13 +235,14 @@ void GenWizPanel::NewWizard(
 		     desc,
 		     wxSizerFlags(1).Border(wxALL, 0 * GetContentScaleFactor()).Expand());
     }
-    int id = wxID_HIGHEST + 5000;
-    int buttonNum = 0;
+    
+    m_topicButtonID0 = wxWindow::NewControlId(m_manualKeywords.size());
+    int id = m_topicButtonID0;
     for (auto i : m_manualKeywords) {
       wxButton *button = new wxButton(
 				      descriptionpane, id, wxString::Format(_("Help on %s"), i.first));
       pageSizer->Add(button, wxSizerFlags(0).Expand());
-      buttonNum++;
+      m_topicButtonIDs.push_back(id);
       id++;
     }
     descriptionpane->SetSizer(pageSizer);
@@ -309,9 +310,9 @@ void GenWizPanel::NewWizard(
 }
 
 wxString GenWizPanel::GetHelpKeyword(unsigned int ID) {
-  if (ID < wxID_HIGHEST + 5000)
+  if (ID < m_topicButtonID0)
     return wxEmptyString;
-  ID -= wxID_HIGHEST + 5000;
+  ID -= m_topicButtonID0;
   if (ID >= m_manualKeywords.size())
     return wxEmptyString;
   for (auto i : m_manualKeywords) {
