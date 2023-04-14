@@ -23,6 +23,7 @@
 #define VARIABLESPANE_H
 
 #include "precomp.h"
+#include "EventIDs.h"
 #include <wx/wx.h>
 #include <wx/grid.h>
 #include <wx/panel.h>
@@ -40,27 +41,21 @@
 class Variablespane : public wxPanel
 {
 public:
-  enum VarIds
-  {
-    varID_newVar = wxID_HIGHEST + 3000,
-    varID_values,
-    varID_functions,
-    varID_arrays,
-    varID_macros,
-    varID_labels,
-    varID_myoptions,
-    varID_rules,
-    varID_aliases,
-    varID_structs,
-    varID_dependencies,
-    varID_gradefs,
-    varID_prop,
-    varID_let_rule_packages,
-    varID_add_all,
-    varID_delete_row,
-    varID_clear
-  };
-
+  wxWindowIDRef m_varID_values;
+  wxWindowIDRef m_varID_functions;
+  wxWindowIDRef m_varID_arrays;
+  wxWindowIDRef m_varID_macros;
+  wxWindowIDRef m_varID_labels;
+  wxWindowIDRef m_varID_myoptions;
+  wxWindowIDRef m_varID_rules;
+  wxWindowIDRef m_varID_aliases;
+  wxWindowIDRef m_varID_structs;
+  wxWindowIDRef m_varID_dependencies;
+  wxWindowIDRef m_varID_gradefs;
+  wxWindowIDRef m_varID_prop;
+  wxWindowIDRef m_varID_let_rule_packages;
+  wxWindowIDRef m_varID_delete_row;
+  wxWindowIDRef m_varID_clear;
   //! The constructor
   explicit Variablespane(wxWindow *parent, wxWindowID id = wxID_ANY);
   //! Called when a variable name was changed

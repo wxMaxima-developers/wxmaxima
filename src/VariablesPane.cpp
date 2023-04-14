@@ -30,6 +30,22 @@ Variablespane::Variablespane(wxWindow *parent, wxWindowID id)
   m_grid->BeginBatch();
   m_grid->CreateGrid(1, 2);
   m_grid->SetUseNativeColLabels();
+  m_varID_values = wxWindow::NewControlId();
+  m_varID_functions = wxWindow::NewControlId();
+  m_varID_arrays = wxWindow::NewControlId();
+  m_varID_macros = wxWindow::NewControlId();
+  m_varID_labels = wxWindow::NewControlId();
+  m_varID_myoptions = wxWindow::NewControlId();
+  m_varID_rules = wxWindow::NewControlId();
+  m_varID_aliases = wxWindow::NewControlId();
+  m_varID_structs = wxWindow::NewControlId();
+  m_varID_dependencies = wxWindow::NewControlId();
+  m_varID_gradefs = wxWindow::NewControlId();
+  m_varID_prop = wxWindow::NewControlId();
+  m_varID_let_rule_packages = wxWindow::NewControlId();
+  m_varID_delete_row = wxWindow::NewControlId();
+  m_varID_clear = wxWindow::NewControlId();
+
   wxGridCellAttr *attr0, *attr1;
   attr0 = new wxGridCellAttr;
   m_grid->SetColAttr(0, attr0);
@@ -106,70 +122,54 @@ void Variablespane::OnKey(wxKeyEvent &event) {
 
 void Variablespane::InsertMenu(wxCommandEvent &event) {
   wxString varname;
-  switch (event.GetId()) {
-  case varID_values:
+  if(event.GetId() == m_varID_values)
     varname = "values";
-    break;
-  case varID_functions:
+  else if(event.GetId() == m_varID_functions)
     varname = "functions";
-    break;
-  case varID_arrays:
+  else if(event.GetId() == m_varID_arrays)
     varname = "arrays";
-    break;
-  case varID_myoptions:
+  else if(event.GetId() == m_varID_myoptions)
     varname = "myoptions";
-    break;
-  case varID_rules:
+  else if(event.GetId() == m_varID_rules)
     varname = "rules";
-    break;
-  case varID_aliases:
+  else if(event.GetId() == m_varID_aliases)
     varname = "aliases";
-    break;
-  case varID_structs:
+  else if(event.GetId() == m_varID_structs)
     varname = "structures";
-    break;
-  case varID_labels:
+  else if(event.GetId() == m_varID_labels)
     varname = "labels";
-    break;
-  case varID_dependencies:
+  else if(event.GetId() == m_varID_dependencies)
     varname = "dependencies";
-    break;
-  case varID_gradefs:
+  else if(event.GetId() == m_varID_gradefs)
     varname = "gradefs";
-    break;
-  case varID_prop:
+  else if(event.GetId() == m_varID_prop)
     varname = "props";
-    break;
-  case varID_macros:
+  else if(event.GetId() == m_varID_macros)
     varname = "macros";
-    break;
-  case varID_let_rule_packages:
+  else if(event.GetId() == m_varID_let_rule_packages)
     varname = "let_rule_packages";
-    break;
-  case varID_clear:
+  else if(event.GetId() == m_varID_clear)
     Clear();
-    break;
-  case varID_add_all: {
-    wxMenuEvent *VarAddEvent = new wxMenuEvent(wxEVT_MENU, varID_add_all);
+  else if(event.GetId() == EventIDs::popid_var_addAll) {
+    wxMenuEvent *VarAddEvent = new wxMenuEvent(wxEVT_MENU, EventIDs::popid_var_addAll);
     wxWindow *top = this;
     while (top->GetParent())
       top = top->GetParent();
     top->GetEventHandler()->QueueEvent(VarAddEvent);
-    break;
   }
-  case varID_delete_row:
+  else if(event.GetId() == m_varID_delete_row) {
     if ((m_rightClickRow >= 0) && (m_rightClickRow < m_grid->GetNumberRows())) {
       m_grid->DeleteRows(m_rightClickRow);
       wxGridEvent evt(wxID_ANY, wxEVT_GRID_CELL_CHANGED, this, m_rightClickRow,
-                      0);
+		      0);
       OnTextChange(evt);
     }
-    break;
   }
   m_grid->SetCellValue(m_grid->GetNumberRows() - 1, 0, varname);
   wxGridEvent evt(wxID_ANY, wxEVT_GRID_CELL_CHANGED, this,
                   m_grid->GetNumberRows() - 1, 0);
   OnTextChange(evt);
+  event.Skip();
 }
 
 void Variablespane::OnRightClick(wxGridEvent &event) {
@@ -180,56 +180,56 @@ void Variablespane::OnRightClick(wxGridEvent &event) {
 
   std::unique_ptr<wxMenu> popupMenu(new wxMenu);
   if (m_vars["dependencies"] != 1)
-    popupMenu->Append(varID_dependencies, _("List of functional dependencies"),
+    popupMenu->Append(m_varID_dependencies, _("List of functional dependencies"),
                       wxEmptyString, wxITEM_NORMAL);
   if (m_vars["values"] != 1)
-    popupMenu->Append(varID_values, _("List of user variables"), wxEmptyString,
+    popupMenu->Append(m_varID_values, _("List of user variables"), wxEmptyString,
                       wxITEM_NORMAL);
   if (m_vars["functions"] != 1)
-    popupMenu->Append(varID_functions, _("List of user functions"),
+    popupMenu->Append(m_varID_functions, _("List of user functions"),
                       wxEmptyString, wxITEM_NORMAL);
   if (m_vars["arrays"] != 1)
-    popupMenu->Append(varID_arrays, _("List of arrays"), wxEmptyString,
+    popupMenu->Append(m_varID_arrays, _("List of arrays"), wxEmptyString,
                       wxITEM_NORMAL);
   if (m_vars["myoptions"] != 1)
-    popupMenu->Append(varID_myoptions, _("List of changed options"),
+    popupMenu->Append(m_varID_myoptions, _("List of changed options"),
                       wxEmptyString, wxITEM_NORMAL);
   if (m_vars["rules"] != 1)
-    popupMenu->Append(varID_rules, _("List of user rules"), wxEmptyString,
+    popupMenu->Append(m_varID_rules, _("List of user rules"), wxEmptyString,
                       wxITEM_NORMAL);
   if (m_vars["aliases"] != 1)
-    popupMenu->Append(varID_aliases, _("List of user aliases"), wxEmptyString,
+    popupMenu->Append(m_varID_aliases, _("List of user aliases"), wxEmptyString,
                       wxITEM_NORMAL);
   if (m_vars["structures"] != 1)
-    popupMenu->Append(varID_structs, _("List of structs"), wxEmptyString,
+    popupMenu->Append(m_varID_structs, _("List of structs"), wxEmptyString,
                       wxITEM_NORMAL);
   if (m_vars["labels"] != 1)
-    popupMenu->Append(varID_structs, _("List of labels"), wxEmptyString,
+    popupMenu->Append(m_varID_structs, _("List of labels"), wxEmptyString,
                       wxITEM_NORMAL);
   if (m_vars["gradefs"] != 1)
-    popupMenu->Append(varID_gradefs, _("List of user-defined derivatives"),
+    popupMenu->Append(m_varID_gradefs, _("List of user-defined derivatives"),
                       wxEmptyString, wxITEM_NORMAL);
   if (m_vars["props"] != 1)
-    popupMenu->Append(varID_prop, _("List of user-defined properties"),
+    popupMenu->Append(m_varID_prop, _("List of user-defined properties"),
                       wxEmptyString, wxITEM_NORMAL);
   if (m_vars["macros"] != 1)
-    popupMenu->Append(varID_macros, _("List of user-defined macros"),
+    popupMenu->Append(m_varID_macros, _("List of user-defined macros"),
                       wxEmptyString, wxITEM_NORMAL);
   if (m_vars["let_rule_packages"] != 1)
-    popupMenu->Append(varID_let_rule_packages,
+    popupMenu->Append(m_varID_let_rule_packages,
                       _("List of user-defined let rule packages"),
                       wxEmptyString, wxITEM_NORMAL);
   popupMenu->AppendSeparator();
   if (m_grid->GetGridCursorRow() >= 0) {
-    popupMenu->Append(varID_delete_row, _("Remove"), wxEmptyString,
+    popupMenu->Append(m_varID_delete_row, _("Remove"), wxEmptyString,
                       wxITEM_NORMAL);
   }
 
   if (m_grid->GetNumberRows() > 2) {
-    popupMenu->Append(varID_clear, _("Remove all"), wxEmptyString,
+    popupMenu->Append(m_varID_clear, _("Remove all"), wxEmptyString,
                       wxITEM_NORMAL);
   }
-  popupMenu->Append(varID_add_all, _("Add all"), wxEmptyString, wxITEM_NORMAL);
+  popupMenu->Append(EventIDs::popid_var_addAll, _("Add all"), wxEmptyString, wxITEM_NORMAL);
 
   if (popupMenu->GetMenuItemCount() > 0)
     PopupMenu(popupMenu.get());
@@ -268,7 +268,7 @@ void Variablespane::OnTextChange(wxGridEvent &event) {
     for (int i = 0; i < m_grid->GetNumberRows() - 1; i++)
       if (m_grid->GetCellValue(i, 0) == wxEmptyString)
         m_grid->DeleteRows(i);
-  wxMenuEvent *VarReadEvent = new wxMenuEvent(wxEVT_MENU, varID_newVar);
+  wxMenuEvent *VarReadEvent = new wxMenuEvent(wxEVT_MENU, EventIDs::popid_var_newVar);
   wxWindow *top = this;
   while (top->GetParent())
     top = top->GetParent();

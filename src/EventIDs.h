@@ -717,6 +717,8 @@ public:
   static const wxWindowIDRef popid_tocdnd;
   static const wxWindowIDRef popid_tocMoveIn;
   static const wxWindowIDRef popid_tocMoveOut;
+  static const wxWindowIDRef popid_var_newVar;
+  static const wxWindowIDRef popid_var_addAll;
   
 private:
 /*! @}

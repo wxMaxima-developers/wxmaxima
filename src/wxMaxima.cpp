@@ -1290,9 +1290,9 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
           wxCommandEventHandler(wxMaxima::EditInputMenu), NULL, this);
   Connect(EventIDs::menu_evaluate, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::EvaluateEvent), NULL, this);
-  Connect(Variablespane::varID_newVar, wxEVT_MENU,
+  Connect(EventIDs::popid_var_newVar, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::VarReadEvent), NULL, this);
-  Connect(Variablespane::varID_add_all, wxEVT_MENU,
+  Connect(EventIDs::popid_var_addAll, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::VarAddAllEvent), NULL, this);
   Connect(EventIDs::menu_add_comment, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::InsertMenu), NULL, this);

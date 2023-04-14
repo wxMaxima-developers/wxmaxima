@@ -638,6 +638,9 @@ const wxWindowIDRef EventIDs:: popid_tocLevel1(wxWindow::NewControlId(NumberOfTo
 const wxWindowIDRef EventIDs:: popid_tocdnd(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs:: popid_tocMoveIn(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs:: popid_tocMoveOut(wxWindow::NewControlId());
+const wxWindowIDRef EventIDs:: popid_var_newVar(wxWindow::NewControlId());
+const wxWindowIDRef EventIDs:: popid_var_addAll(wxWindow::NewControlId());
+
 EventIDs::EventIDs()
 {
 }
