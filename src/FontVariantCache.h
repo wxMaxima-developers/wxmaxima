@@ -32,16 +32,26 @@
 
 /*! \file
  * This file implements the wxFont cache system.
- */
 
+ This system is necessary since creating a wxFont object costs loads of
+ CPU cycles costs.
+
+ Each font gets its own FontVariantCache that caches all sizes of each
+ style of that font that we ever generated a wxFont object for.
+ */
 class FontVariantCache final
 {
   FontVariantCache(const FontVariantCache &) = delete;
   FontVariantCache &operator=(const FontVariantCache &) = delete;
 public:
+  //! Creates a font variant cache for the font named fontName.
   FontVariantCache(wxString fontName);
   ~FontVariantCache(){}
+  //! Clear this font variant cache
   void ClearCache();
+  /*! Returns a font with the requested attributes
+    
+    This font can be either cached or newly created.*/
   std::shared_ptr<wxFont> GetFont (double size,
                                    bool isItalic,
                                    bool isBold,
@@ -49,8 +59,10 @@ public:
                                    bool isSlanted,
                                    bool isStrikeThrough
     );
+  //! Get the name of the fonts this font variant cache is responsible for
   const wxString& GetFaceName() const {return m_fontName;}
 private:
+  //! Get the number of the internal cache hashmap
   int GetIndex (
     bool isItalic,
     bool isBold,
@@ -73,7 +85,9 @@ private:
       return result;
     }
 
+  //! One hashmap for each value GetIndex() can return.
   mutable std::unordered_map<double, std::shared_ptr<wxFont>> m_fontCaches[32];
+  //! The name our font cache 
   wxString m_fontName;
 };
 

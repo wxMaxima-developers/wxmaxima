@@ -1,0 +1,16 @@
+/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
+/* [ Created with wxMaxima version 23.04.0-DevelopmentSnapshot ] */
+/* [wxMaxima: input   start ] */
+load("engineering-format");
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+if engineering_format_floats ≠ true then
+    error("engineering-format was not correctly loaded")$
+/* [wxMaxima: input   end   ] */
+
+
+
+/* Old versions of Maxima abort on loading files that end in a comment. */
+"Created with wxMaxima 23.04.0-DevelopmentSnapshot"$

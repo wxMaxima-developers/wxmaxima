@@ -2437,7 +2437,7 @@ Submit bug reports by following the 'New issue' link on that page."))
        (progn
 	 (format t "<variables>")
 	 (format t "<variable><name>*wx-load-file-name*</name><value>~a</value></variable>"
-		 (wxxml-mstring filename))
+		 (wxxml-fix-string ($sconcat filename)))
 	 (format t "</variables>~%")))
    (incf *wxmaxima-nested-loads*)
    ;; Load the file

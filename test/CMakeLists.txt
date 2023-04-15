@@ -268,6 +268,10 @@ add_test(
 )
 
 add_test(
+    NAME load_symbol
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "load(engineering-format);" "argument must be a string, symbol, or pathname")
+
+add_test(
     NAME wxmaxima_batch_emptyFile
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
     COMMAND wxmaxima --logtostderr --pipe --batch empty_file.wxm)
@@ -286,6 +290,11 @@ add_test(
     NAME wxmaxima_batch_foreign_characters
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
     COMMAND wxmaxima --logtostderr --pipe --batch foreign-characters.wxm)
+
+add_test(
+    NAME wxmaxima_load_symbol
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+    COMMAND wxmaxima --logtostderr --pipe --batch load_string.wxm)
 
 add_test(
     NAME wxmaxima_version_string
