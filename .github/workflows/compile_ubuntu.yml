@@ -104,15 +104,14 @@ jobs:
       - name: install_packages
         run: |
              sudo apt update
-             sudo apt-get install appstream-util cmake desktop-file-utils doxygen gettext gnuplot gnuplot-x11 graphviz libwxgtk3.0-gtk3-dev libwxgtk-webview3.0-gtk3-dev maxima maxima-share netcat-openbsd ninja-build pandoc xvfb at-spi2-core
+             sudo apt-get install appstream-util cmake desktop-file-utils doxygen gettext gnuplot gnuplot-x11 graphviz libwxgtk3.0-gtk3-dev libwxgtk-webview3.0-gtk3-dev maxima maxima-share netcat-openbsd pandoc xvfb at-spi2-core make
       - name: configure
         run: |
-             export CXXFLAGS="-Wall -Wextra -ansi -std=c++11"
+             export CXXFLAGS="-Wall -Wextra"
              export LANG=en_US.UTF-8
              mkdir build
-             touch build build/build.ninja
              cd build
-             cmake -G "Ninja" -DCMAKE_UNITY_BUILD=YES -DCMAKE_BUILD_TYPE=debug -DCMAKE_UNITY_BUILD_BATCH_SIZE=8 -DWXM_UNIT_TESTS=YES ..
+             cmake ..
              cd ..
       - name: compile
         run: |
