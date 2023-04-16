@@ -87,7 +87,7 @@ private:
 
   //! One hashmap for each value GetIndex() can return.
   mutable std::unordered_map<double, std::shared_ptr<wxFont>> m_fontCaches[32];
-  //! The name our font cache 
+  //! The name our font cache
   wxString m_fontName;
 };
 

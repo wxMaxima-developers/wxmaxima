@@ -21,13 +21,13 @@
 
 /*!\file
   
-  This file defines the class EventIDs that contains unique IDs for many events 
+  This file defines the class EventIDs that contains unique IDs for many events
   wxMaxima needs.
 
   EventIDs have proven to be a weird thing since
    - everything has an ID (-1 or wxID_ANY tells wxWidgets to pick a new ID,
      automatically)
-   - Windows allows only for 16-bit-IDS
+   - Windows allows only for 16-bit-IDs
    - and since dynamic contents can consist of thousands of items and
      sub-items at a time it is highly probable that IDs need to be re-used
      frequently.
@@ -49,13 +49,13 @@ class EventIDs
 {
 public:
   EventIDs();
-  //! How many IDs we have reserverd for autocompletion keywords?
+  //! How many IDs we have reserved for autocompletion keywords?
   static constexpr int NumberOfAutocompleteKeywords() {return 25;}
-  //! How many IDs we have reserverd for recent files/packages?
+  //! How many IDs we have reserved for recent files/packages?
   static constexpr int NumberOfRecentFiles()  {return 30;}
-  //! How many IDs we have reserverd for suggestions of similar command names?
+  //! How many IDs we have reserved for suggestions of similar command names?
   static constexpr int NumberOfSuggestions()  {return 10;}
-  //! How many IDs we have reserverd for label width choices?
+  //! How many IDs we have reserved for label width choices?
   static constexpr int NumberOfLabelWidths()  {return 10;}
   //! How many IDs have we reserved for table of contents depths
   static constexpr int NumberOfTocLevels()  {return 6;}
