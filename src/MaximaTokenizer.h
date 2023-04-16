@@ -41,13 +41,22 @@
 */
 
 /*! Maximatokenizer breaks down maxima input to individual commands.
- */
 
+  Effectively this is a maxima parser minus the fact that maxima is
+  extensible and we cannot know in what directions the user or a
+  loaded package has extended it.
+ */
 class MaximaTokenizer
 {
 public:
+  /*! The constructor
+
+     \param commands The maxima commands to tokenize
+     \param configuration A pointer to the configuration object
+  */
   MaximaTokenizer(wxString commands, Configuration *configuration);
 
+  //! A maxima code snippet from this tokenizer
   class Token
   {
   public:
