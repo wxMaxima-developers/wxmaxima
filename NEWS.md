@@ -1,4 +1,4 @@
-# Current
+# 23.04.1
  * More config dialogue tweaks
  * MacOs: No more create config icons that aren't needed
  * Recent file list: Don't try to re-use no-more-used wxWidgets IDs
@@ -6,6 +6,7 @@
  * If maxima wants us to open a help browser and wxMaxima was compiled
    without one it now opens an external help browser
  * Be aware that the MSW port recycles unused window IDs.
+ * The load() command now again works with symbols as package names.
 
 # 23.04.0
  * Made the GUI more responsive for functions with much output
