@@ -33,6 +33,11 @@
 #include "MaximaManual.h"
 #include <wx/hashmap.h>
 
+
+/*! A dockable, embeddable generic wizard
+
+  The generic wizard dialogue we use almost everywhere where a wizard is needed.
+ */
 class GenWizPanel : public wxPanel
 {
 public:
@@ -61,7 +66,8 @@ public:
               wxString label7 = {}, wxString defaultval7 = {}, wxString tooltip7 = {},
               wxString label8 = {}, wxString defaultval8 = {}, wxString tooltip8 = {},
               wxString label9 = {}, wxString defaultval9 = {}, wxString tooltip9 = {});
-  
+
+  //! Replace the contents of this panel with a new wizard
   void NewWizard(wxString description, const wxString &description_tooltip,
                  const wxString &commandRule,
                  wxString label1, wxString defaultval1, wxString tooltip1,
@@ -73,9 +79,11 @@ public:
                  wxString label7, wxString defaultval7, wxString tooltip7,
                  wxString label8, wxString defaultval8, wxString tooltip8,
                  wxString label9, wxString defaultval9, wxString tooltip9);
-  
+
+  //! Returns the contents of the nth field. 
   wxString operator[](int i) const { return m_textctrl[i]->GetValue(); }
 
+  //! Returns the command the wizard has generated, if commandRule wasn't empty
   wxString GetOutput() const {return m_output->GetValue();}
 
 #if defined __WXMSW__

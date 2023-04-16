@@ -26,6 +26,11 @@
 #include "precomp.h"
 #include "GenWizPanel.h"
 
+/*! A generic wizard dialogue
+
+  The generic wizard dialogue we use almost everywhere, if the user has chosen
+  not to use dockable dialogues. Else we use a GenWizPanel.
+ */
 class GenWiz : public wxDialog
 {
 public:
@@ -43,12 +48,15 @@ public:
          wxString label8 = {}, wxString defaultval8 = {}, wxString tooltip8 = {},
          wxString label9 = {}, wxString defaultval9 = {}, wxString tooltip9 = {});
 
+  //! Returns the contents of the nth field. 
   wxString operator[](int i) const { return m_panel->operator[](i); }
-
+  //! Returns the command the wizard has generated, if commandRule wasn't empty
   wxString GetOutput() const {return m_panel->GetOutput();}
+  //! If we generate a help keyword event this function tells what keyword it was for
   wxString GetHelpKeyword(int ID){return m_panel->GetHelpKeyword(ID);}
   
 protected:
+  //! The contents of the dialogue
   GenWizPanel *m_panel;
 };
 
