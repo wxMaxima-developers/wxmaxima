@@ -81,6 +81,12 @@ public:
     Since this enum is also used for iterating over the panes it is vital 
     that this entry stays that of the first pane in this enum.
   */
+  static const wxWindowIDRef wizard_parametric_plot;
+  static const wxWindowIDRef wizard_discrete_plot;
+  static const wxWindowIDRef wizard_special_from;
+  static const wxWindowIDRef wizard_special_to;
+  static const wxWindowIDRef wizard_definite_id;
+  static const wxWindowIDRef wizard_numeric_id;
   static const wxWindowIDRef menu_pane_math;
   static const wxWindowIDRef menu_pane_history;      //!< Both the "toggle the history pane" command and the history pane
   static const wxWindowIDRef menu_pane_structure;    //!< Both the "toggle the structure pane" command and the structure

@@ -45,14 +45,14 @@ Printout::Printout(wxString title, GroupCell *tree, double scaleFactor)
     m_configPointer(&m_configuration) {
   m_configuration.LineWidth_em(10000);
 
-  m_configuration.ShowCodeCells(tree->GetConfiguration()->ShowCodeCells());
-  m_configuration.ShowBrackets(tree->GetConfiguration()->PrintBrackets());
   // Don't take the ppi rate from the worksheet
   m_configuration.SetWorkSheet(NULL);
 
   m_configuration.ClipToDrawRegion(false);
 
   if (tree) {
+    m_configuration.ShowCodeCells(tree->GetConfiguration()->ShowCodeCells());
+    m_configuration.ShowBrackets(tree->GetConfiguration()->PrintBrackets());
     auto copy = tree->CopyList();
     m_tree = std::move(copy);
     m_tree->SetConfigurationList(m_configPointer);

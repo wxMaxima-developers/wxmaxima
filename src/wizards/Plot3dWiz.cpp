@@ -72,15 +72,18 @@ Plot3DWiz::Plot3DWiz(wxWindow *parent, int id, Configuration *cfg,
     wxT("set mapping spherical"),
     wxT("set mapping cylindrical")};
   combo_box_2 =
-    new wxComboBox(this, combobox, wxEmptyString, wxDefaultPosition,
+    new wxComboBox(this, wxID_ANY, wxEmptyString, wxDefaultPosition,
 		   wxSize(250, -1), 6, combo_box_2_choices, wxCB_DROPDOWN);
+  combo_box_2->Connect(wxEVT_COMBOBOX, wxCommandEventHandler(Plot3DWiz::OnCombobox), NULL, this);
+
   check_box_1 = new wxCheckBox(this, -1, _("&pm3d"));
   label_13 = new wxStaticText(this, -1, _("Plot to file:"));
   text_ctrl_10 = new BTextCtrl(this, -1, cfg, wxEmptyString, wxDefaultPosition,
                                wxSize(250, -1));
   button_3 = new wxBitmapButton(
-				this, file_browse_3d,
+				this, wxID_ANY,
 				wxArtProvider::GetBitmap(wxART_FILE_OPEN, wxART_HELP_BROWSER));
+  button_3->Connect(wxEVT_BUTTON, wxCommandEventHandler(Plot3DWiz::OnFileBrowse), NULL, this);
   static_line_1 = new wxStaticLine(this, -1);
 #if defined __WXMSW__
   button_1 = new wxButton(this, wxID_OK, _("OK"));
@@ -377,7 +380,7 @@ wxString Plot3DWiz::GetValue() {
   return s;
 }
 
-void Plot3DWiz::OnCombobox(wxCommandEvent &WXUNUSED(event)) {
+void Plot3DWiz::OnCombobox(wxCommandEvent &event) {
   wxString selection = combo_box_2->GetStringSelection();
   if (selection.StartsWith(wxT("set mapping cylindrical"))) {
     text_ctrl_2->SetValue(wxT("ph"));
@@ -397,17 +400,15 @@ void Plot3DWiz::OnCombobox(wxCommandEvent &WXUNUSED(event)) {
     type = spherical;
   } else
     type = cartesian;
+  event.Skip();
 }
 
-void Plot3DWiz::OnFileBrowse(wxCommandEvent &WXUNUSED(event)) {
+void Plot3DWiz::OnFileBrowse(wxCommandEvent &event) {
   wxString file =
     wxFileSelector(_("Save plot to file"), wxEmptyString, wxT("plot3d.eps"),
 		   wxT("eps"), _("Postscript file (*.eps)|*.eps|All|*"),
 		   wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
   if (file.Length() > 0)
     text_ctrl_10->SetValue(file);
+  event.Skip();
 }
-
-wxBEGIN_EVENT_TABLE(Plot3DWiz, wxDialog)
-EVT_COMBOBOX(combobox, Plot3DWiz::OnCombobox)
-EVT_BUTTON(file_browse_3d, Plot3DWiz::OnFileBrowse) wxEND_EVENT_TABLE()

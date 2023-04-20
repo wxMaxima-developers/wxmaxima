@@ -35,7 +35,9 @@ LimitWiz::LimitWiz(wxWindow *parent, int id, Configuration *cfg,
   label_4 = new wxStaticText(this, -1, _("Point:"));
   text_ctrl_3 = new BTextCtrl(this, -1, cfg, wxT("0"), wxDefaultPosition,
                               wxSize(110, -1));
-  button_1 = new wxButton(this, special, _("Special"));
+  button_1 = new wxButton(this, wxID_ANY, _("Special"));
+  button_1->Connect(wxEVT_BUTTON, wxCommandEventHandler(LimitWiz::OnButton), NULL, this);
+
   label_5 = new wxStaticText(this, -1, _("Direction:"));
   const wxString choice_1_choices[] = {_("both sides"), _("left"), _("right")};
   choice_1 = new wxChoice(this, -1, wxDefaultPosition, wxSize(130, -1), 3,
@@ -52,9 +54,10 @@ LimitWiz::LimitWiz(wxWindow *parent, int id, Configuration *cfg,
 #endif
 
   button_2->SetDefault();
+  Connect(wxEVT_IDLE, wxIdleEventHandler(LimitWiz::OnIdle), NULL, this);
 
   set_properties();
-  do_layout();
+  do_layout();	
 }
 
 void LimitWiz::set_properties() {
@@ -151,6 +154,3 @@ void LimitWiz::OnIdle(wxIdleEvent &WXUNUSED(ev)) {
     choice_1->Enable(true);
   }
 }
-
-wxBEGIN_EVENT_TABLE(LimitWiz, wxDialog) EVT_BUTTON(special, LimitWiz::OnButton)
-EVT_IDLE(LimitWiz::OnIdle) wxEND_EVENT_TABLE()

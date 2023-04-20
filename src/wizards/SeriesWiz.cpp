@@ -20,29 +20,31 @@
 //
 //  SPDX-License-Identifier: GPL-2.0+
 
-enum { powerseries_id, special_id };
-
 #include "SeriesWiz.h"
 
 SeriesWiz::SeriesWiz(wxWindow *parent, int id, Configuration *cfg,
                      const wxString &title, const wxPoint &pos,
                      const wxSize &size, long style)
   : wxDialog(parent, id, title, pos, size, style) {
-  label_2 = new wxStaticText(this, -1, _("Expression:"));
-  text_ctrl_1 = new BTextCtrl(this, -1, cfg, wxEmptyString, wxDefaultPosition,
-                              wxSize(230, -1));
-  label_3 = new wxStaticText(this, -1, _("Variable:"));
-  text_ctrl_2 = new BTextCtrl(this, -1, cfg, wxT("x"), wxDefaultPosition,
+  
+  label_2 = new wxStaticText(this, wxID_ANY, _("Expression:"));
+  text_ctrl_1 = new BTextCtrl(this, wxID_ANY, cfg, wxEmptyString, wxDefaultPosition,
+                              wxSize(230, wxID_ANY));
+  label_3 = new wxStaticText(this, wxID_ANY, _("Variable:"));
+  text_ctrl_2 = new BTextCtrl(this, wxID_ANY, cfg, wxT("x"), wxDefaultPosition,
                               wxSize(110, -1));
-  label_4 = new wxStaticText(this, -1, _("Point:"));
-  text_ctrl_3 = new BTextCtrl(this, -1, cfg, wxT("0"), wxDefaultPosition,
+  label_4 = new wxStaticText(this, wxID_ANY, _("Point:"));
+  text_ctrl_3 = new BTextCtrl(this, wxID_ANY, cfg, wxT("0"), wxDefaultPosition,
                               wxSize(110, -1));
-  button_3 = new wxButton(this, special_id, _("Special"));
-  label_5 = new wxStaticText(this, -1, _("Depth:"));
-  spin_ctrl_1 = new wxSpinCtrl(this, -1, wxT("8"), wxDefaultPosition,
+  button_3 = new wxButton(this, wxID_ANY, _("Special"));
+  button_3->Connect(wxEVT_BUTTON, wxCommandEventHandler(SeriesWiz::OnButton), NULL, this);
+
+  label_5 = new wxStaticText(this, wxID_ANY, _("Depth:"));
+  spin_ctrl_1 = new wxSpinCtrl(this, wxID_ANY, wxT("8"), wxDefaultPosition,
                                wxDefaultSize, wxSP_ARROW_KEYS, 0, 100, 8);
-  checkbox_1 = new wxCheckBox(this, powerseries_id, _("&Power series"));
-  static_line_1 = new wxStaticLine(this, -1);
+  checkbox_1 = new wxCheckBox(this, wxID_ANY, _("&Power series"));
+  checkbox_1->Connect(wxEVT_CHECKBOX, wxCommandEventHandler(SeriesWiz::OnCheckbox), NULL, this);
+  static_line_1 = new wxStaticLine(this, wxID_ANY);
 #if defined __WXMSW__
   button_1 = new wxButton(this, wxID_OK, _("OK"));
   button_2 = new wxButton(this, wxID_CANCEL, _("Cancel"));
@@ -50,7 +52,6 @@ SeriesWiz::SeriesWiz(wxWindow *parent, int id, Configuration *cfg,
   button_1 = new wxButton(this, wxID_CANCEL, _("Cancel"));
   button_2 = new wxButton(this, wxID_OK, _("OK"));
 #endif
-
   set_properties();
   do_layout();
 }
@@ -136,6 +137,3 @@ void SeriesWiz::OnCheckbox(wxCommandEvent &WXUNUSED(event)) {
   spin_ctrl_1->Enable(!checkbox_1->GetValue());
 }
 
-wxBEGIN_EVENT_TABLE(SeriesWiz, wxDialog)
-EVT_BUTTON(special_id, SeriesWiz::OnButton)
-EVT_CHECKBOX(powerseries_id, SeriesWiz::OnCheckbox) wxEND_EVENT_TABLE()

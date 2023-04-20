@@ -3637,8 +3637,7 @@ void Worksheet::SelectWithChar(int ccode) {
       if (nxt) {
         if (m_hCaretPosition == m_hCaretPositionEnd)
           m_hCaretPositionStart = nxt;
-        if (m_hCaretPositionEnd)
-          m_hCaretPositionEnd = nxt;
+	m_hCaretPositionEnd = nxt;
       }
       if (m_hCaretPositionEnd)
         ScheduleScrollToCell(m_hCaretPositionEnd, false);
@@ -4574,20 +4573,19 @@ void Worksheet::CalculateReorderedCellIndices(GroupCell *tree, int &cellIndex,
         long outputIndex =
 	  GetCellIndex(tmp.GetLabel()) - initialHiddenExpressions;
         long index = promptIndex;
-        if (promptIndex < 0)
-          index = outputIndex; // no input index => use output index
-        else {
-          if (outputIndex < 0 && initialHiddenExpressions < outputExpressions) {
-            // input index, but no output index means the expression was
-            // evaluated, but produced no result
-            //  => it is invalid and should be ignored
-            outputExpressions = 0;
-          } else if (index + outputExpressions > (long)cellMap.size())
-            cellMap.resize(index + outputExpressions);
-          for (int i = 0; i < outputExpressions; i++)
-            cellMap[index + i] = cellIndex + i;
-        }
-
+        if (promptIndex >= 0)
+	  {
+	    if (outputIndex < 0 && initialHiddenExpressions < outputExpressions) {
+	      // input index, but no output index means the expression was
+	      // evaluated, but produced no result
+	      //  => it is invalid and should be ignored
+	      outputExpressions = 0;
+	    } else if (index + outputExpressions > (long)cellMap.size())
+	      cellMap.resize(index + outputExpressions);
+	    for (int i = 0; i < outputExpressions; i++)
+	      cellMap[index + i] = cellIndex + i;
+	  }
+	
         cellIndex += outputExpressions; // new cell index
       }
     }
@@ -6703,9 +6701,6 @@ bool Worksheet::TreeUndo(UndoActions *sourcelist,
   if (GetActiveCell())
     TreeUndo_CellLeft();
 
-  if (sourcelist->empty())
-    return false;
-
   const TreeUndoAction &action = sourcelist->front();
 
   if (action.m_start) {
@@ -8019,9 +8014,9 @@ Worksheet::MathMLDataObject::MathMLDataObject(const wxString &data)
 
 Worksheet::wxmDataObject::wxmDataObject() : wxCustomDataObject(m_wxmFormat) {}
 
-Worksheet::wxmDataObject::wxmDataObject(wxString data)
-  : wxCustomDataObject(m_wxmFormat) {
-  m_databuf = data.utf8_str();
+Worksheet::wxmDataObject::wxmDataObject(wxString data) :
+  wxCustomDataObject(m_wxmFormat),
+  m_databuf(data.utf8_str()){
   SetData(m_databuf.length(), m_databuf.data());
 }
 
@@ -8128,7 +8123,7 @@ wxAccStatus Worksheet::AccessibilityInfo::GetChildCount(int *childCount) {
     return wxACC_FAIL;
 
   *childCount = 0;
-  for (auto &cell : OnList(m_worksheet->GetTree()))
+  for (const auto &cell : OnList(m_worksheet->GetTree()))
     (*childCount)++;
 
   return wxACC_OK;
@@ -8151,8 +8146,13 @@ wxAccStatus Worksheet::AccessibilityInfo::GetChild(int childId,
     cell = cell->GetNext();
   }
 
-  *child = cell->GetAccessible();
-  return child ? wxACC_OK : wxACC_FAIL;
+  if(cell)
+    {
+      *child = cell->GetAccessible();
+      return wxACC_OK;
+    }
+  else
+    return wxACC_FAIL;
 }
 
 wxAccStatus

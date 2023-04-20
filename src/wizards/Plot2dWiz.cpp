@@ -21,6 +21,7 @@
 //  SPDX-License-Identifier: GPL-2.0+
 
 #include "Plot2dWiz.h"
+#include "../EventIDs.h"
 
 #include <wx/artprov.h>
 #include <wx/config.h>
@@ -31,10 +32,18 @@ Plot2DWiz::Plot2DWiz(wxWindow *parent, int id, Configuration *cfg,
                      const wxSize &size, long style)
   : wxDialog(parent, id, title, pos, size, style) {
   m_configuration = cfg;
+
+  Connect(wxEVT_MENU, EventIDs::wizard_parametric_plot,
+	  wxCommandEventHandler(Plot2DWiz::OnPopupMenu), NULL, this);
+  Connect(wxEVT_MENU, EventIDs::wizard_discrete_plot,
+	  wxCommandEventHandler(Plot2DWiz::OnPopupMenu), NULL, this);
+
   label_2 = new wxStaticText(this, -1, _("Expression(s):"));
   text_ctrl_1 = new BTextCtrl(this, -1, cfg, wxEmptyString, wxDefaultPosition,
                               wxSize(300, -1));
-  button_3 = new wxButton(this, special, _("&Special"));
+  button_3 = new wxButton(this, wxID_ANY, _("&Special"));
+  button_3->Connect(wxEVT_BUTTON, wxCommandEventHandler(Plot2DWiz::OnButton), NULL, this);
+
   label_3 = new wxStaticText(this, -1, _("Variable:"));
   text_ctrl_2 =
     new BTextCtrl(this, -1, cfg, wxT("x"), wxDefaultPosition, wxSize(40, -1));
@@ -70,14 +79,18 @@ Plot2DWiz::Plot2DWiz(wxWindow *parent, int id, Configuration *cfg,
     wxT("set zeroaxis;"), wxT("set size ratio 1; set zeroaxis;"),
     wxT("set grid;"), wxT("set polar; set zeroaxis;")};
   combo_box_2 =
-    new wxComboBox(this, combobox, wxEmptyString, wxDefaultPosition,
+    new wxComboBox(this, wxID_ANY, wxEmptyString, wxDefaultPosition,
 		   wxSize(280, -1), 4, combo_box_2_choices, wxCB_DROPDOWN);
+  combo_box_2->Connect(wxEVT_COMBOBOX, wxCommandEventHandler(Plot2DWiz::OnCombobox), NULL, this);
+
   label_12 = new wxStaticText(this, -1, _("File:"));
   text_ctrl_9 = new BTextCtrl(this, -1, cfg, wxEmptyString, wxDefaultPosition,
                               wxSize(280, -1));
   button_4 = new wxBitmapButton(
-				this, file_browse_2d,
+				this, wxID_ANY,
 				wxArtProvider::GetBitmap(wxART_FILE_OPEN, wxART_HELP_BROWSER));
+  button_4->Connect(wxEVT_BUTTON, wxCommandEventHandler(Plot2DWiz::OnFileBrowse), NULL, this);
+
   static_line_1 = new wxStaticLine(this, -1);
 #if defined __WXMSW__
   button_1 = new wxButton(this, wxID_OK, _("OK"));
@@ -392,8 +405,8 @@ wxString Plot2DWiz::GetValue() {
 void Plot2DWiz::OnButton(wxCommandEvent &WXUNUSED(event)) {
   wxMenu *popupMenu = new wxMenu();
 
-  popupMenu->Append(parametric_plot, _("Parametric plot"));
-  popupMenu->Append(discrete_plot, _("Discrete plot"));
+  popupMenu->Append(EventIDs::wizard_parametric_plot, _("Parametric plot"));
+  popupMenu->Append(EventIDs::wizard_discrete_plot, _("Discrete plot"));
 
   wxPoint pos = button_3->GetPosition();
   pos.y += button_3->GetRect().height;
@@ -402,8 +415,7 @@ void Plot2DWiz::OnButton(wxCommandEvent &WXUNUSED(event)) {
 }
 
 void Plot2DWiz::OnPopupMenu(wxCommandEvent &event) {
-  switch (event.GetId()) {
-  case parametric_plot: {
+  if(event.GetId() == EventIDs::wizard_parametric_plot) {
     wxWindowPtr<Plot2DPar> wiz(new Plot2DPar(this, -1, m_configuration, _("Plot 2D")));
     wiz->Centre(wxBOTH);
     wiz->ShowWindowModalThenDo([this,wiz](int retcode) {
@@ -416,8 +428,7 @@ void Plot2DWiz::OnPopupMenu(wxCommandEvent &event) {
       }
     });
   } //-V773
-    break;
-  case discrete_plot: {
+  if(event.GetId() == EventIDs::wizard_discrete_plot) {
     wxWindowPtr<Plot2DDiscrete> wiz(new Plot2DDiscrete(this, -1, m_configuration, _("Plot 2D")));
     wiz->Centre(wxBOTH);
     wiz->ShowWindowModalThenDo([this,wiz](int retcode) {
@@ -429,8 +440,6 @@ void Plot2DWiz::OnPopupMenu(wxCommandEvent &event) {
         text_ctrl_1->AppendText(wiz->GetValue());
       }
     });
-  } //-V773
-    break;
   }
 }
 
@@ -458,14 +467,6 @@ void Plot2DWiz::OnFileBrowse(wxCommandEvent &WXUNUSED(event)) {
   if (file.Length() > 0)
     text_ctrl_9->SetValue(file);
 }
-
-wxBEGIN_EVENT_TABLE(Plot2DWiz, wxDialog)
-EVT_COMBOBOX(combobox, Plot2DWiz::OnCombobox)
-EVT_BUTTON(special, Plot2DWiz::OnButton)
-EVT_BUTTON(file_browse_2d, Plot2DWiz::OnFileBrowse)
-EVT_MENU(parametric_plot, Plot2DWiz::OnPopupMenu)
-EVT_MENU(discrete_plot, Plot2DWiz::OnPopupMenu)
-wxEND_EVENT_TABLE()
 
 ///////////////////////
 //

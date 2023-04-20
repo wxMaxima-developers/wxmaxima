@@ -141,7 +141,7 @@ public:
   wxFontInfo GetAsFontInfo() const;
 
 
-  bool IsFontOk();
+  bool IsFontOk() const;
   wxFont GetFont() const;
 
   //! Sets all font-related properties based on another font
