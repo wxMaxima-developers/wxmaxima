@@ -348,7 +348,7 @@ msgid ""
 "the worksheet itself has a global undo buffer that can undo cell edits, adds "
 "and deletes."
 msgstr ""
-"Außer Code-Zellen kennt wxMaxima auch Testzellen und solche mit Bildern oder "
+"Außer Code-Zellen kennt wxMaxima auch Textzellen und solche mit Bildern oder "
 "Überschriften. Jede Zelle hat ihren eigenen Speicher für das "
 "Rückgängigmachen von Aktionen, was sich oft als hilfreich erwiesen hat. "
 "Zudem besitzt, wie in fast allen Applikationen, das Arbeitsblatt einen "
@@ -361,14 +361,14 @@ msgid ""
 "subsection cells, text cells, input/output cells and image cells)."
 msgstr ""
 "Die nun folgende Abbildung zeigt verschiedene Zelltypen (Titelzellen, "
-"Untertitelzellen, Textzellen, Eingabe/Ausgabezellen und eine Grafikzelle)."
+"Untertitelzellen, Textzellen, Eingabe/Ausgabezellen und eine Bildzelle)."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:88
 msgid ""
 "![Example of different wxMaxima cells](./cell-example.png){ id=img_cell-"
 "example }"
-msgstr "![Ein Beispiel verschiedener Zelltypen](./cell-example.png)"
+msgstr "![Ein Beispiel verschiedener wxMaxima Zelltypen](./cell-example.png)"
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:90
@@ -399,7 +399,7 @@ msgstr "Ausgaben oder Fragen von _Maxima_."
 #. type: Bullet: '* '
 #: ../../info/wxmaxima.md:100
 msgid "Image cells."
-msgstr ""
+msgstr "Bild-Zellen."
 
 #. type: Bullet: '* '
 #: ../../info/wxmaxima.md:100
@@ -412,12 +412,12 @@ msgstr ""
 msgid ""
 "A title, section or a subsection. 6 levels of different headings are "
 "possible."
-msgstr ""
+msgstr "Ein Titel, Überschrift oder Unterüberschrift. 6 unterschiedliche Überschriftenebenen sind möglich."
 
 #. type: Bullet: '* '
 #: ../../info/wxmaxima.md:100
 msgid "Page breaks."
-msgstr ""
+msgstr "Seitenumbrüche."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:102
@@ -447,7 +447,7 @@ msgstr ""
 #. type: Plain text
 #: ../../info/wxmaxima.md:106
 msgid "\"`/*`\" marks the start of the comment, \"`*/`\" the end."
-msgstr ""
+msgstr "\"`/*`\" markiert den Beginn des Kommentars,, \"`*/`\" das Ende."
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:107
@@ -476,7 +476,8 @@ msgid ""
 "automatically when needed:"
 msgstr ""
 "Was ungewöhnlich erscheinen kann ist, dass _wxMaxima_ alternativ einen "
-"vertikalen oder einen horizontalen Cursor darstellen kann:"
+"vertikalen oder einen horizontalen Cursor darstellen kann. _wxMaxima_ wechselt "
+"zwischen ihnen nach Bedarf:"
 
 #. type: Bullet: '* '
 #: ../../info/wxmaxima.md:115
@@ -507,6 +508,8 @@ msgid ""
 "![(blinking) horizontal cursor after wxMaxima start](./horizontal-cursor-"
 "only.png){ id=img_horizontal_cursor_only }"
 msgstr ""
+"![(Blinkender) Horizontaler Cursor nachdem wxMaxima gestartet wurde](./horizontal-cursor-"
+"only.png){ id=img_horizontal_cursor_only }"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:123
@@ -515,6 +518,9 @@ msgid ""
 "a title cell or text cell, which describes, what will be done, when you "
 "start creating your worksheet."
 msgstr ""
+"Möglicherweise wollen Sie einen anderen Zelltyp erzeugen (im \"Zellen\" Menü), vielleicht "
+"eine Titelzelle oder Textzelle, die beschreibt, was das Arbeitsblatt machen wird, wenn Sie beginnen, "
+"ein Arbeitsblatt zu erstellen."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:125
@@ -524,6 +530,9 @@ msgid ""
 "worksheet (either a math cell, by just start typing your formula - or "
 "another cell type using the menu)."
 msgstr ""
+"Wenn Sie zwischen den Zellen navigieren, sehen Sie den (blinkenden) horizontalen Cursor. "
+"An dieser Stelle können Sie eine Zelle einfügen - entweder eine mathematische Eingabezelle, "
+"indem einfach der Maxima-code eingegeben wird), oder eine andere Zelle (unter Verwendung des Zellen-Menüs)."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:127
@@ -531,6 +540,8 @@ msgid ""
 "![(blinking) horizontal cursor between cells](./horizontal-cursor-between-"
 "cells.png){ id=img_horizontal_cursor_between_cells }"
 msgstr ""
+"![(Blinkender) Horizontaler Cursor zwischen den Zellen](./horizontal-cursor-between-"
+"cells.png){ id=img_horizontal_cursor_between_cells }"
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:128
@@ -760,7 +771,9 @@ msgstr ""
 msgid ""
 "It may be the case, that e.g. greek characters or mathematical symbols are not included in the selected font, then they can not be displayed.\n"
 "To solve that problem, select other fonts (using: Edit -> Configure -> Style).\n"
-msgstr ""
+msgstr "Es kann passieren, dass z.B. griechische Buchstaben oder mathematische Symbole in der ausgewählten Schriftart "
+"nicht vorhanden sind, dann können sie nicht dargestellt werden.\n"
+"Um das Problem zu lösen, bitte eine andere Schriftart wählen (Bearbeiten -> Einstellungen -> Stil).\n"
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:232
@@ -1227,7 +1240,7 @@ msgstr "Dateien werden beim Schließen automatisch gespeichert"
 #. type: Bullet: '* '
 #: ../../info/wxmaxima.md:361
 msgid "And the file will automatically be saved every 3 minutes."
-msgstr "und sie werden alle n Minuten zwischengespeichert."
+msgstr "Und die Datei wird automatisch alle 3 Minuten gespeichert."
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:362
@@ -2153,7 +2166,7 @@ msgid ""
 "better to tell the file to load the image on evaluation:"
 msgstr ""
 "Das `.wxmx`-Dateiformat erlaubt es, Bilder per Drag-And-Drop einzubetten. "
-"Manchmal (z.B. wenn die Bildinhlate sich später während einer Sitzung ändern "
+"Manchmal (z.B. wenn die Bildinhalte sich später während einer Sitzung ändern "
 "könnten) ist es besser, die Bilddatei während der Auswertung zu laden:"
 
 #. type: Fenced code block (maxima)
@@ -2236,16 +2249,12 @@ msgstr ""
 
 #. type: Bullet: '* '
 #: ../../info/wxmaxima.md:663
-#, fuzzy
-#| msgid ""
-#| "`wxfilename`: This variable contains the name of the file currently "
-#| "opened in _wxMaxima_."
 msgid ""
 "`wxdirname`: This variable contains the name the directory, in which the "
 "file currently opened in _wxMaxima_ is."
 msgstr ""
-"`wxfilename`: Diese Variable sagt, welchen Dateinamen das Arbeitsblatt laut "
-"_wxMaxima_ besitzt."
+"`wxdirname`: Diese Variable enthält den Namen des Verzeichnisses, in welchem "
+"die aktuelle Datei geöffnet wurde."
 
 #. type: Bullet: '* '
 #: ../../info/wxmaxima.md:663
@@ -2468,11 +2477,6 @@ msgstr "Wie repariere ich kaputte .wxmx-Dateien?"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:712
-#, fuzzy
-#| msgid ""
-#| "Internally most modern XML-based formats are ordinary zip-files. "
-#| "_wxMaxima_ doesn't turn on compression, so the contents of .wxmx files "
-#| "can be viewed in any text editor."
 msgid ""
 "Internally most modern XML-based formats are ordinary zip-files. _wxMaxima_ "
 "doesn't turn on compression, so the contents of `.wxmx` files can be viewed "
