@@ -268,9 +268,12 @@ add_test(
     COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "a/(1/2+b);" "<mfrac><mrow><mi lisp=.*>a</mi></mrow><mrow><mi lisp=.*>b</mi><mo>+</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn></mrow></mfrac></mrow></mfrac>"
 )
 
-add_test(
-    NAME load_symbol
-    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "load(engineering-format);" "argument must be a string, symbol, or pathname")
+# The test for the argument of load() was added in Maxima 5.46.0
+if (MAXIMA_VERSION VERSION_GREATER_EQUAL "5.46.0")
+    add_test(
+        NAME load_symbol
+        COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "load(engineering-format);" "argument must be a string, symbol, or pathname")
+endif()
 
 add_test(
     NAME wxmaxima_batch_emptyFile
