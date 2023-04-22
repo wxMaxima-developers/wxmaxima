@@ -313,7 +313,7 @@ wxString GenWizPanel::GetHelpKeyword(wxWindowID ID) {
   if (ID < m_topicButtonID0)
     return wxEmptyString;
   ID -= m_topicButtonID0;
-  if (ID >= m_manualKeywords.size())
+  if (static_cast<unsigned>(ID) >= m_manualKeywords.size())
     return wxEmptyString;
   for (auto i : m_manualKeywords) {
     if (ID-- == 0)
