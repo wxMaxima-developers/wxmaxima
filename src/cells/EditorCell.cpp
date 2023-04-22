@@ -577,7 +577,7 @@ void EditorCell::Recalculate(AFontSize fontsize) {
 
   std::vector<StyledText>::const_iterator textSnippet;
 
-  for (const auto textSnippet : m_styledText) {
+  for (const auto &textSnippet : m_styledText) {
     if ((textSnippet.GetText().StartsWith(wxT('\n')) ||
          (textSnippet.GetText().StartsWith(wxT('\r'))))) {
       m_numberOfLines++;
