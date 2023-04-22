@@ -503,7 +503,7 @@ void TextCell::Draw(wxPoint point) {
 std::shared_ptr<wxFont> TextCell::GetFont(AFontSize fontsize) {
   auto const style = m_configuration->GetStyle(GetTextStyle());
 
-  auto fontCache = style->GetFontCache();
+  const auto &fontCache = style->GetFontCache();
   wxASSERT(m_fontSize_Scaled.IsValid());
   return fontCache->GetFont(fontsize.Get(), style->IsItalic(), style->IsBold(),
 			    style->IsUnderlined(), style->IsSlant(),

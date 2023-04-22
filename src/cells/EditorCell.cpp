@@ -929,8 +929,8 @@ void EditorCell::SetStyle(TextStyle style) {
 }
 
 std::shared_ptr<wxFont> EditorCell::GetFont(AFontSize fontsize) {
-  auto style = m_configuration->GetStyle(GetTextStyle());
-  auto fontCache = style->GetFontCache();
+  const auto &style = m_configuration->GetStyle(GetTextStyle());
+  const auto &fontCache = style->GetFontCache();
 
   bool isItalic = style->IsItalic();
   if (m_autoAnswer)

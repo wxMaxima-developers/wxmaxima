@@ -917,7 +917,7 @@ void Configuration::MakeStylesConsistent()
 bool Configuration::StyleAffectsCode(TextStyle style) const
 {
   bool retval = false;
-  for(auto i : GetCodeStylesList())
+  for(const auto &i : GetCodeStylesList())
     if(style == i)
       retval = true;
   return retval;
@@ -926,7 +926,7 @@ bool Configuration::StyleAffectsCode(TextStyle style) const
 bool Configuration::StyleAffectsMathOut(TextStyle style) const
 {
   bool retval = false;
-  for(auto i : GetMathStylesList())
+  for(const auto &i : GetMathStylesList())
     if(style == i)
       retval = true;
   return retval;
@@ -935,7 +935,7 @@ bool Configuration::StyleAffectsMathOut(TextStyle style) const
 bool Configuration::StyleAffectsColorOnly(TextStyle style) const
 {
   bool retval = false;
-  for(auto i : GetColorOnlyStylesList())
+  for(const auto &i : GetColorOnlyStylesList())
     if(style == i)
       retval = true;
   return retval;

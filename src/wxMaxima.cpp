@@ -5203,7 +5203,7 @@ void wxMaxima::UpdateMenus() {
   m_MenuBar->EnableItem(EventIDs::menu_jumptoerror, !m_worksheet->GetErrorList().Empty());
   m_MenuBar->EnableItem(wxID_SAVE, (!m_fileSaved));
 
-  for(auto pane: GetSidebarNames())
+  for(const auto &pane: GetSidebarNames())
     if(m_MenuBar->FindItem(pane.first) != NULL)
       m_MenuBar->Check(pane.first, IsPaneDisplayed(pane.first));
 

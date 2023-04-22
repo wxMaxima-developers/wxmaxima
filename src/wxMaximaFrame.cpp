@@ -358,7 +358,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
 		    .Right());
 #endif  
 
-  for(auto pane: m_sidebarNames)
+  for(const auto &pane: m_sidebarNames)
     if(m_manager.GetPane(pane.second).IsOk())
       m_manager.GetPane(pane.second).
 	Show(
@@ -391,7 +391,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
   // LoadPerspective() loads the translations of the captions that were correct
   // when SavePerspective() was called.
   // The system's language might have changed since then.
-  for(auto pane: m_sidebarNames)
+  for(const auto &pane: m_sidebarNames)
     {
       wxSize minSiz = wxSize(0, 0);
       if(m_manager.GetPane(pane.second).IsOk())
@@ -2090,7 +2090,7 @@ void wxMaximaFrame::OnMenuStatusText(wxMenuEvent &event)
     }
 }
 void wxMaximaFrame::DockAllSidebars(wxCommandEvent &WXUNUSED(ev)) {
-  for(auto pane: m_sidebarNames)
+  for(const auto &pane: m_sidebarNames)
     m_manager.GetPane(pane.second).Dock();
 }
 
@@ -2119,7 +2119,7 @@ void wxMaximaFrame::TogglePaneVisibility(int id)
 void wxMaximaFrame::ShowPane(int id, bool show) {
   if(id == EventIDs::menu_pane_hideall)
     {
-        for(auto pane: m_sidebarNames)
+        for(const auto &pane: m_sidebarNames)
 	  {
 	    if(
 	       (pane.first != EventIDs::menu_pane_console)

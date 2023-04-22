@@ -389,6 +389,7 @@ bool MaximaTokenizer::IsAlphaNum(wxChar ch) { return IsAlpha(ch) || IsNum(ch); }
 
 const wxString MaximaTokenizer::m_additional_alphas = wxT("\\_%µ");
 const wxString MaximaTokenizer::m_not_alphas =
+// cppcheck-suppress unknownMacro
   wxT("\u00B7\u2212\u2260\u2264\u2265\u2265\u2212\u00B2\u00B3\u00BD\u221E"
       "\u22C0\u22C1\u22BB\u22BC\u22BD\u00AC\u2264\u2265\u2212") wxT("\uFE62")
   wxT("\uFF0B") wxT("\uFB29") wxT("\u2795") wxT("\u2064") wxT("\u2796")
