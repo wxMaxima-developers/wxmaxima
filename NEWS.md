@@ -1,3 +1,7 @@
+# Current
+ * Got rid of some compiler and cppcheck warnings
+ * Efficiency improvements
+
 # 23.04.1
  * More config dialogue tweaks
  * MacOs: No more create config icons that aren't needed
