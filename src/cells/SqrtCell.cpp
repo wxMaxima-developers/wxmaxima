@@ -83,10 +83,7 @@ void SqrtCell::Recalculate(AFontSize fontsize) {
 void SqrtCell::Draw(wxPoint point) {
   Cell::Draw(point);
   if (DrawThisCell(point)) {
-    wxDC *dc = m_configuration->GetDC();
-
     wxPoint in(point);
-
 
     {
       wxDC *adc = m_configuration->GetAntialiassingDC();

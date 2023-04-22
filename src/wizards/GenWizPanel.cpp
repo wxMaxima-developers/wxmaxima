@@ -309,7 +309,7 @@ void GenWizPanel::NewWizard(
   m_ignorePageChange = false;
 }
 
-wxString GenWizPanel::GetHelpKeyword(unsigned int ID) {
+wxString GenWizPanel::GetHelpKeyword(wxWindowID ID) {
   if (ID < m_topicButtonID0)
     return wxEmptyString;
   ID -= m_topicButtonID0;

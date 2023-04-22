@@ -241,7 +241,7 @@ did_change Style::SetFromFont(const wxFont &font) {
     {
       SetFontName(wxNORMAL_FONT->GetFaceName());
     }
-  return this;
+  return true;
 }
 
 AFontSize Style::GetFontSize(const wxFont &font) {

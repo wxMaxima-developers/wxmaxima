@@ -157,7 +157,6 @@ void ParenCell::Recalculate(AFontSize fontsize) {
 void ParenCell::Draw(wxPoint point) {
   Cell::Draw(point);
   if (DrawThisCell(point)) {
-    wxDC *dc = m_configuration->GetDC();
     wxPoint innerCellPos(point);
 
     switch (m_bigParenType) {

@@ -4860,7 +4860,7 @@ bool wxMaxima::InterpretDataFromMaxima() {
     if (newActiveCell != oldActiveCell)
       m_worksheet->SetWorkingGroup(newActiveCell);
   }
-  return startlength != m_currentOutput.Length();
+  return startlength != static_cast<signed>(m_currentOutput.Length());
 }
 
 ///--------------------------------------------------------------------------------
@@ -4901,11 +4901,11 @@ void wxMaxima::OnIdle(wxIdleEvent &event) {
     event.RequestMore();
     return;
   }    
-
+  
   if (m_worksheet == NULL)
     return;
-
-    if(InterpretDataFromMaxima())
+  
+  if(InterpretDataFromMaxima())
     {
       event.RequestMore();
       return;
