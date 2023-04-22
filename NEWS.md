@@ -1,6 +1,6 @@
 # Current
  * Got rid of some compiler and cppcheck warnings
- * Efficiency improvements
+ * Big performance improvements
 
 # 23.04.1
  * More config dialogue tweaks
