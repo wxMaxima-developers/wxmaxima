@@ -62,15 +62,6 @@ private:
 
   enum
   {
-    special,
-    combobox,
-    file_browse_2d,
-    parametric_plot,
-    discrete_plot
-  };
-
-  enum
-  {
     cartesian,
     polar
   };
@@ -106,7 +97,6 @@ protected:
   wxStaticLine *static_line_1;
   wxButton *button_1;
   wxButton *button_2;
-  wxDECLARE_EVENT_TABLE();
 };
 
 class Plot2DPar : public wxDialog

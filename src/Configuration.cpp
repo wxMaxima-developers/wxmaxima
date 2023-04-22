@@ -52,8 +52,10 @@
 #include <algorithm>
 #include <limits>
 
-Configuration::Configuration(wxDC *dc, InitOpt options) : m_dc(dc),
-m_eng{m_rd()}{
+Configuration::Configuration(wxDC *dc, InitOpt options) :
+  m_eng{m_rd()},
+  m_dc(dc)
+{
 
   wxConfigBase *config = wxConfig::Get();
   std::uniform_int_distribution<long> urd(std::numeric_limits<long>::min(), std::numeric_limits<long>::max());
@@ -631,7 +633,6 @@ void Configuration::ReadConfig() {
                  &m_maximaUsesWxmaximaBrowser);
     config->Read(wxT("texPreamble"), &m_texPreamble);
     {
-      wxLogNull suppressor;
       config->Read(wxT("suppressYellowMarkerMessages"),
                    &hideMessagesConfigString);
       // Write the string into a memory buffer
@@ -649,21 +650,23 @@ void Configuration::ReadConfig() {
           headNode = headNode->GetChildren();
           while ((headNode) && (headNode->GetName() != wxT("markers")))
             headNode = headNode->GetNext();
-          wxXmlNode *entry = headNode->GetChildren();
-          while (entry) {
-            if (entry->GetName() == wxT("hide")) {
-              wxXmlNode *node = entry->GetChildren();
-              if (node) {
-                HideMarkerForThisMessage(node->GetContent(), true);
-              }
-            }
-            entry = entry->GetNext();
-          }
+	  if(headNode)
+	    {
+	      wxXmlNode *entry = headNode->GetChildren();
+	      while (entry) {
+		if (entry->GetName() == wxT("hide")) {
+		  wxXmlNode *node = entry->GetChildren();
+		  if (node) {
+		    HideMarkerForThisMessage(node->GetContent(), true);
+		  }
+		}
+		entry = entry->GetNext();
+	      }
+	    }
         }
       }
     }
     {
-      wxLogNull suppressor;
       wxString maximaEnvironmentString;
       config->Read(wxT("maximaEnvironment"), &maximaEnvironmentString);
       // Write the string into a memory buffer
@@ -895,7 +898,6 @@ void Configuration::MakeStylesConsistent()
 	}
     }
 
-  std::vector<TextStyle> m_colorOnlyStyles;
   for(auto style : GetColorOnlyStylesList())
     {
       m_styles[style].SetFamily(GetStyle(TS_CODE_DEFAULT)->GetFamily());
@@ -912,7 +914,7 @@ void Configuration::MakeStylesConsistent()
     }
 }
 
-bool Configuration::StyleAffectsCode(TextStyle style)
+bool Configuration::StyleAffectsCode(TextStyle style) const
 {
   bool retval = false;
   for(auto i : GetCodeStylesList())
@@ -921,7 +923,7 @@ bool Configuration::StyleAffectsCode(TextStyle style)
   return retval;
 }
 
-bool Configuration::StyleAffectsMathOut(TextStyle style)
+bool Configuration::StyleAffectsMathOut(TextStyle style) const
 {
   bool retval = false;
   for(auto i : GetMathStylesList())
@@ -930,7 +932,7 @@ bool Configuration::StyleAffectsMathOut(TextStyle style)
   return retval;
 }
 
-bool Configuration::StyleAffectsColorOnly(TextStyle style)
+bool Configuration::StyleAffectsColorOnly(TextStyle style) const
 {
   bool retval = false;
   for(auto i : GetColorOnlyStylesList())
@@ -938,10 +940,6 @@ bool Configuration::StyleAffectsColorOnly(TextStyle style)
       retval = true;
   return retval;
 }
-
-std::vector<TextStyle> m_codeStyles;
-std::vector<TextStyle> m_2dMathStyles;
-std::vector<TextStyle> m_colorOnlyStyles;
 
 wxColor Configuration::DefaultBackgroundColor() {
   if (InvertBackground())
@@ -1636,9 +1634,9 @@ void Configuration::WriteStyles(const wxString &file) {
     delete config;
   }
 }
-const wxString &Configuration::GetStyleName(TextStyle style) const {
-  if (style >= 0 && style < NUMBEROFSTYLES)
-    return m_styleNames[style];
+const wxString &Configuration::GetStyleName(TextStyle textStyle) {
+  if (textStyle >= 0 && textStyle < NUMBEROFSTYLES)
+    return m_styleNames[textStyle];
   else
     return wxm::emptyString;
 }

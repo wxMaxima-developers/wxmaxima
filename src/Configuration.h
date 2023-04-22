@@ -451,7 +451,7 @@ public:
   void IndentMaths(bool indent){m_indentMaths = indent;}
   AFontSize GetFontSize(TextStyle st) const { return m_styles[st].GetFontSize(); }
 
-  const wxString &GetStyleName(TextStyle textStyle) const;
+  static const wxString &GetStyleName(TextStyle textStyle);
 
   /*! Reads the style settings 
 
@@ -518,7 +518,7 @@ public:
   wxColour GetColor(TextStyle style);
   
   //! Inverts a color: In 2020 wxColor still lacks this functionality
-  wxColour InvertColour(wxColour col);
+  static wxColour InvertColour(wxColour col);
   
   /*! Make this color differ from the background by a noticeable amount
     
@@ -616,7 +616,7 @@ public:
     { m_filesToSave.emplace_front(FileToSave(filename, data)); }
 
   wxRect GetUpdateRegion() const {return m_updateRegion;}
-  const std::list<FileToSave> GetFilesToSave(){return m_filesToSave;}
+  const std::list<FileToSave> GetFilesToSave() const {return m_filesToSave;}
   void SetUpdateRegion(wxRect rect){m_updateRegion = rect;}
 
   //! Whether any part of the given rectangle is within the current update region,
@@ -960,14 +960,14 @@ public:
   wxFont *m_lastFontUsed = NULL;
 
   //! Which styles affect how code is displayed?
-  std::vector<TextStyle> GetCodeStylesList(){return m_codeStyles;}
+  std::vector<TextStyle> GetCodeStylesList() const {return m_codeStyles;}
   //! Which styles affect how math output is displayed?
-  std::vector<TextStyle> GetMathStylesList(){return m_2dMathStyles;}
+  std::vector<TextStyle> GetMathStylesList() const {return m_2dMathStyles;}
   //! Which styles affect only colors?
-  std::vector<TextStyle> GetColorOnlyStylesList(){return m_colorOnlyStyles;}
-  bool StyleAffectsCode(TextStyle style);
-  bool StyleAffectsMathOut(TextStyle style);
-  bool StyleAffectsColorOnly(TextStyle style);
+  std::vector<TextStyle> GetColorOnlyStylesList() const {return m_colorOnlyStyles;}
+  bool StyleAffectsCode(TextStyle style) const;
+  bool StyleAffectsMathOut(TextStyle style) const;
+  bool StyleAffectsColorOnly(TextStyle style) const;
   //! true means: The system's config storage has changed since the configuration has been read
   bool UpdateNeeded();
 
@@ -995,9 +995,9 @@ private:
   RenderablecharsHash m_renderableChars;
   RenderablecharsHash m_nonRenderableChars;
   //! True if drawing the char this button displays alters at least one pixel
-  bool FontDisplaysChar(wxChar ch, const wxFont &font = *wxNORMAL_FONT);
+  static bool FontDisplaysChar(wxChar ch, const wxFont &font = *wxNORMAL_FONT);
   //! True if drawing the char this button displays differs visibly from otherChar
-  bool CharVisiblyDifferent(wxChar ch, wxChar otherChar, const wxFont &font = *wxNORMAL_FONT);
+  static bool CharVisiblyDifferent(wxChar ch, wxChar otherChar, const wxFont &font = *wxNORMAL_FONT);
   //! The ppi rate if we don't have a worksheet that provides a current ppi rate
   wxSize m_ppi = wxSize(-1, -1);
   mathDisplayMode m_displayMode = display_2d;

@@ -45,7 +45,7 @@ class FontVariantCache final
   FontVariantCache &operator=(const FontVariantCache &) = delete;
 public:
   //! Creates a font variant cache for the font named fontName.
-  FontVariantCache(wxString fontName);
+  explicit FontVariantCache(wxString fontName);
   ~FontVariantCache(){}
   //! Clear this font variant cache
   void ClearCache();
@@ -63,13 +63,13 @@ public:
   const wxString& GetFaceName() const {return m_fontName;}
 private:
   //! Get the number of the internal cache hashmap
-  int GetIndex (
+  static int GetIndex (
     bool isItalic,
     bool isBold,
     bool isUnderlined,
     bool isSlanted,
     bool isStrikeThrough
-    ) const
+    )
     {
       int result =0;
       if(isItalic)

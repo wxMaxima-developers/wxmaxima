@@ -1202,13 +1202,13 @@ wxString TextCell::GetXMLFlags() const {
   if (HasHardLineBreak() && (GetStyle() != TS_LABEL) &&
       (GetStyle() != TS_USERLABEL))
     flags += wxT(" breakline=\"true\"");
-
+  
   if (GetStyle() == TS_ASCIIMATHS)
     flags += wxT(" type=\"ASCII-Art\"");
-
-    if (GetStyle() == TS_OPERATOR)
+  
+  if (GetStyle() == TS_OPERATOR)
     flags += wxT(" type=\"Operator\"");
-
+  
   if (GetStyle() == TS_ERROR)
     flags += wxT(" type=\"error\"");
 

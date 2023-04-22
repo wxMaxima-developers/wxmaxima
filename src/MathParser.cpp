@@ -964,11 +964,11 @@ void MathParser::ParseCommonAttrs(wxXmlNode *node, Cell *cell) {
     cell->ForceBreakLine(true);
 
   wxString val;
+  if (node->GetAttribute(wxT("altCopy"), &val))
+    cell->SetAltCopyText(val);
   if (node->GetAttribute(wxT("tooltip"), &val))
     if (!val.empty())
       cell->SetToolTip(std::move(val));
-  if (node->GetAttribute(wxT("altCopy"), &val))
-    cell->SetAltCopyText(val);
 }
 
 void MathParser::ParseCommonGroupCellAttrs(

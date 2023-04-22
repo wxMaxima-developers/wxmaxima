@@ -21,6 +21,7 @@
 //  SPDX-License-Identifier: GPL-2.0+
 
 #include "IntegrateWiz.h"
+#include "../EventIDs.h"
 
 #include <wx/config.h>
 
@@ -28,22 +29,29 @@ IntegrateWiz::IntegrateWiz(wxWindow *parent, int id, Configuration *cfg,
                            const wxString &title, const wxPoint &pos,
                            const wxSize &size, long style)
   : wxDialog(parent, id, title, pos, size, style) {
+    
   label_2 = new wxStaticText(this, -1, _("Expression:"));
   text_ctrl_1 = new BTextCtrl(this, -1, cfg, wxEmptyString, wxDefaultPosition,
                               wxSize(230, -1));
   label_3 = new wxStaticText(this, -1, _("Variable:"));
   text_ctrl_2 = new BTextCtrl(this, -1, cfg, wxT("x"), wxDefaultPosition,
                               wxSize(110, -1));
-  checkbox_1 = new wxCheckBox(this, definite_id, _("&Definite integration"));
+  checkbox_1 = new wxCheckBox(this, EventIDs::wizard_definite_id, _("&Definite integration"));
+  checkbox_1->Connect(wxEVT_CHECKBOX, wxCommandEventHandler(IntegrateWiz::OnCheckbox), NULL, this);
   label_4 = new wxStaticText(this, -1, _("From:"));
   text_ctrl_3 = new BTextCtrl(this, -1, cfg, wxT("0"), wxDefaultPosition,
                               wxSize(110, -1));
-  button_3 = new wxButton(this, special_from, _("Special"));
+  button_3 = new wxButton(this, EventIDs::wizard_special_from, _("Special"));
+  button_3->Connect(wxEVT_BUTTON, wxCommandEventHandler(IntegrateWiz::OnButton), NULL, this);
+
   label_5 = new wxStaticText(this, -1, _("To:"));
   text_ctrl_4 = new BTextCtrl(this, -1, cfg, wxT("1"), wxDefaultPosition,
                               wxSize(110, -1));
   button_4 = new wxButton(this, special_to, _("Special"));
-  checkbox_2 = new wxCheckBox(this, numeric_id, _("&Numerical integration"));
+  button_4->Connect(wxEVT_BUTTON, wxCommandEventHandler(IntegrateWiz::OnButton), NULL, this);
+  checkbox_2 = new wxCheckBox(this, EventIDs::wizard_numeric_id, _("&Numerical integration"));
+  checkbox_2->Connect(wxEVT_CHECKBOX, wxCommandEventHandler(IntegrateWiz::OnCheckbox), NULL, this);
+
   label_6 = new wxStaticText(this, -1, _("Method:"));
   wxString numeric_methods[] = {wxT("quadpack"), wxT("romberg")};
   choice_1 = new wxChoice(this, -1, wxDefaultPosition, wxDefaultSize, 2,
@@ -165,7 +173,7 @@ wxString IntegrateWiz::GetValue() {
   return s;
 }
 
-void IntegrateWiz::OnCheckbox(wxCommandEvent &WXUNUSED(event)) {
+void IntegrateWiz::OnCheckbox(wxCommandEvent &event) {
   bool enable = checkbox_1->GetValue();
 
   text_ctrl_3->Enable(enable);
@@ -176,11 +184,11 @@ void IntegrateWiz::OnCheckbox(wxCommandEvent &WXUNUSED(event)) {
 
   enable = enable && checkbox_2->GetValue();
   choice_1->Enable(enable);
+  event.Skip();
 }
 
 void IntegrateWiz::OnButton(wxCommandEvent &event) {
-  switch (event.GetId()) {
-  case special_from: {
+  if (event.GetId() == EventIDs::wizard_special_from) {
     wxString choices[] = {wxT("Pi"), wxT("E"), _("Infinity"), _("- Infinity")};
     wxString choice = wxGetSingleChoice(_("Select a constant"), _("Constant"),
                                         4, choices, this);
@@ -194,8 +202,8 @@ void IntegrateWiz::OnButton(wxCommandEvent &event) {
       else if (choice == _("- Infinity"))
         text_ctrl_3->SetValue(wxT("minf"));
     }
-  } break;
-  case special_to: {
+  }
+  if (event.GetId() == EventIDs::wizard_special_to) {
     wxString choices[] = {wxT("Pi"), wxT("E"), _("Infinity"), _("- Infinity")};
     wxString choice = wxGetSingleChoice(_("Select a constant"), _("Constant"),
                                         4, choices, this);
@@ -209,13 +217,5 @@ void IntegrateWiz::OnButton(wxCommandEvent &event) {
       else if (choice == _("- Infinity"))
         text_ctrl_4->SetValue(wxT("minf"));
     }
-  } break;
   }
 }
-
-wxBEGIN_EVENT_TABLE(IntegrateWiz, wxDialog)
-EVT_BUTTON(special_from, IntegrateWiz::OnButton)
-EVT_BUTTON(special_to, IntegrateWiz::OnButton)
-EVT_CHECKBOX(definite_id, IntegrateWiz::OnCheckbox)
-EVT_CHECKBOX(numeric_id, IntegrateWiz::OnCheckbox)
-wxEND_EVENT_TABLE()

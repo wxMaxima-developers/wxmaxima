@@ -308,7 +308,7 @@ wxString EditorCell::ToRTF() const {
     break;
   case MC_TYPE_INPUT: {
     retval += wxT(" ");
-    for (const auto textSnippet : m_styledText) {
+    for (const auto &textSnippet : m_styledText) {
       wxString text = RTFescape(textSnippet.GetText());
 
       if (textSnippet.IsStyleSet()) {
@@ -3652,7 +3652,7 @@ TextStyle EditorCell::GetSelectionStyle() const {
   long pos = 0;
 
   if (SelectionActive()) {
-    for (const auto textSnippet: m_styledText) {
+    for (const auto &textSnippet: m_styledText) {
       wxString text = textSnippet.GetText();
       if ((wxMin(m_selectionStart, m_selectionEnd) <= pos) &&
           (pos + text.Length() < static_cast<unsigned long>(wxMax(m_selectionStart, m_selectionEnd))) &&
@@ -3665,12 +3665,12 @@ TextStyle EditorCell::GetSelectionStyle() const {
       pos += text.Length();
     }
   } else {
-    for (const auto textSnippet: m_styledText) {
+    for (const auto &textSnippet: m_styledText) {
       wxString text = textSnippet.GetText();
       if ((m_positionOfCaret >= pos) &&
 	  (static_cast<unsigned long>(m_positionOfCaret) < pos + text.Length()) &&
 	  (m_positionOfCaret >= 0) &&
-	  (pos + text.Length() >= 0)) {
+	  (pos + static_cast<signed>(text.Length()) >= 0)) {
         if (textSnippet.IsStyleSet())
           return textSnippet.GetStyle();
       }

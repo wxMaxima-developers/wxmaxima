@@ -1959,7 +1959,7 @@ void wxMaximaFrame::PopulateRecentDocumentsMenu(wxMenu *menu, int firstEntry,
 						const std::list<wxString> &items)
 {
   int id = firstEntry;
-  for(const auto name:items)
+  for(const auto &name:items)
     {
       wxFileName filename(name);
       wxString path(filename.GetPath()), fullname(filename.GetFullName());
@@ -1980,7 +1980,7 @@ void wxMaximaFrame::PopulateRecentPackagesMenu(wxMenu *menu, int firstEntry,
 					       const std::list<wxString> &items)
 {
   int id = firstEntry;
-  for(const auto name:items)
+  for(const auto &name:items)
     {
       if(menu->FindItem(id))
 	menu->SetLabel(id, name);

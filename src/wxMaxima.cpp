@@ -1854,14 +1854,13 @@ TextCell *wxMaxima::ConsoleAppend(wxString s, CellType type,
   if (m_maxOutputCellsPerCommand > 0) {
     // If we already have output more lines than we are allowed, we inform the
     // user about this and return.
-    if (m_outputCellsFromCurrentCommand > m_maxOutputCellsPerCommand) {
-      if (m_outputCellsFromCurrentCommand == m_maxOutputCellsPerCommand)
-	{
-	  DoRawConsoleAppend(_("... [suppressed additional lines as the output "
-			       "is longer than allowed in the wxMaxima configuration] "),
-			     MC_TYPE_ERROR);
-	  m_outputCellsFromCurrentCommand++;
-	}
+    if (m_outputCellsFromCurrentCommand == m_maxOutputCellsPerCommand) {
+      {
+	DoRawConsoleAppend(_("... [suppressed additional lines as the output "
+			     "is longer than allowed in the wxMaxima configuration] "),
+			   MC_TYPE_ERROR);
+	m_outputCellsFromCurrentCommand++;
+      }
       return NULL;
     } else {
       m_outputCellsFromCurrentCommand++;
@@ -2005,7 +2004,7 @@ TextCell *wxMaxima::DoRawConsoleAppend(wxString s, CellType type,
       if (s.IsEmpty()) {
         incompleteTextCell->GetGroup()->ResetSize();
         incompleteTextCell->GetGroup()->Recalculate();
-        return incompleteTextCell;
+        return std::move(incompleteTextCell);
       }
     }
 
@@ -2232,7 +2231,7 @@ void wxMaxima::OnMaximaConnect() {
   m_currentOutput = wxEmptyString;
 
   m_client = std::make_unique<Maxima>(m_server->Accept(false));
-  if (m_client) {
+  if (m_client->IsConnected()) {
     m_client->Bind(EVT_MAXIMA, &wxMaxima::MaximaEvent, this);
     m_client->SetPipeToStdOut(m_pipeToStderr);
     SetupVariables();
@@ -3187,7 +3186,6 @@ void wxMaxima::ReadVariables(wxString &data) {
   int end = FindTagEnd(data, m_variablesSuffix);
 
   if (end != wxNOT_FOUND) {
-    int num = 0;
     wxXmlDocument xmldoc;
     wxString xml = data.Left(end + m_variablesSuffix.Length());
     wxStringInputStream xmlStream(xml);
@@ -3204,6 +3202,7 @@ void wxMaxima::ReadVariables(wxString &data) {
       }
     else
       {
+	int num = 0;
 	wxXmlNode *node = xmldoc.GetRoot();
 	if (node != NULL) {
 	  wxXmlNode *vars = node->GetChildren();
@@ -3653,7 +3652,7 @@ void wxMaxima::VariableActionOperators(const wxString &value) {
 	while (contents) {
 	  if (contents->GetName() == wxT("operator")) {
 	    wxXmlNode *innernode = contents->GetChildren();
-	    if (node) {
+	    if (innernode) {
 	      wxString content = innernode->GetContent();
 	      if ((!content.IsEmpty()) &&
 		  (m_configuration.m_maximaOperators.find(content) ==
@@ -4861,7 +4860,7 @@ bool wxMaxima::InterpretDataFromMaxima() {
     if (newActiveCell != oldActiveCell)
       m_worksheet->SetWorkingGroup(newActiveCell);
   }
-  return startlength != m_currentOutput.Length();
+  return startlength != static_cast<signed>(m_currentOutput.Length());
 }
 
 ///--------------------------------------------------------------------------------
@@ -4902,11 +4901,11 @@ void wxMaxima::OnIdle(wxIdleEvent &event) {
     event.RequestMore();
     return;
   }    
-
+  
   if (m_worksheet == NULL)
     return;
-
-    if(InterpretDataFromMaxima())
+  
+  if(InterpretDataFromMaxima())
     {
       event.RequestMore();
       return;
@@ -6187,11 +6186,7 @@ void wxMaxima::EditMenu(wxCommandEvent &event) {
     argv[1] = urlbuffer.data();
     argv[2] = NULL;
     
-    wxLogMessage(_("Running %s on the file %s: "),
-		 (const char*)m_gnuplotcommand.mb_str(),
-		 (const char*)uri.mb_str()
-		 );
-    
+    wxLogMessage(_("Running %s on the file %s: "), commandnamebuffer, urlbuffer);    
     m_gnuplotProcess = new wxProcess(this, m_gnuplot_process_id);
     if (wxExecute(argv, wxEXEC_ASYNC | wxEXEC_SHOW_CONSOLE,
                   m_gnuplotProcess) < 0)
@@ -6424,10 +6419,8 @@ void wxMaxima::EditMenu(wxCommandEvent &event) {
       m_worksheet->SetActiveCellText(command);
   }
   else if(event.GetId() == EventIDs::popid_hide_tooltipMarkerForThisMessage) {
-    if (m_worksheet->GetSelectionStart() == NULL)
-      return;
     Cell *cell = m_worksheet->GetSelectionStart();
-    if (!cell)
+    if (cell == NULL)
       return;
     wxString toolTip = cell->GetLocalToolTip();
     if (toolTip.IsEmpty())
@@ -10050,8 +10043,8 @@ void wxMaxima::OnRecentPackage(wxCommandEvent &event) {
 }
 
 void wxMaxima::OnUnsavedDocument(wxCommandEvent &event) {
-  if (m_worksheet != NULL)
-    m_worksheet->CloseAutoCompletePopup();
+  wxASSERT(m_worksheet != NULL);
+  m_worksheet->CloseAutoCompletePopup();
 
   wxString file =
     m_worksheet->m_unsavedDocuments.Get(event.GetId() - EventIDs::menu_unsaved_document_0);

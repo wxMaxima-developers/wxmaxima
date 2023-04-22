@@ -325,8 +325,7 @@ void TableOfContents::UpdateDisplay() {
     m_dndEndCell = NULL;
 
     for (unsigned long index = 0; index < m_structure.size(); index++) {
-      if ((index >= static_cast<unsigned long>(m_dragCurrentPos)) &&
-	  (m_dragCurrentPos >= 0)) {
+      if (index >= static_cast<unsigned long>(m_dragCurrentPos)) {
         m_dndEndCell = m_tree->get();
         if (m_otherCells.empty()) {
           while (m_dndEndCell->GetNext() != NULL)
