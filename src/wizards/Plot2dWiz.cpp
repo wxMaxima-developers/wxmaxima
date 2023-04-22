@@ -474,24 +474,24 @@ void Plot2DWiz::OnFileBrowse(wxCommandEvent &WXUNUSED(event)) {
 //
 ///////////////////////
 
-Plot2DPar::Plot2DPar(wxWindow *parent, int id, Configuration *cfg,
+Plot2DPar::Plot2DPar(wxWindow *parent, int id, Configuration *configuration,
 		     const wxString &title, const wxPoint &pos,
 		     const wxSize &size, long style)
 : wxDialog(parent, id, title, pos, size, style) {
   label_2 = new wxStaticText(this, -1, wxT("x = "));
-  text_ctrl_1 = new BTextCtrl(this, -1, cfg, wxEmptyString, wxDefaultPosition,
+  text_ctrl_1 = new BTextCtrl(this, -1, configuration, wxEmptyString, wxDefaultPosition,
                               wxSize(230, -1));
   label_3 = new wxStaticText(this, -1, wxT("y = "));
-  text_ctrl_2 = new BTextCtrl(this, -1, cfg, wxEmptyString, wxDefaultPosition,
+  text_ctrl_2 = new BTextCtrl(this, -1, configuration, wxEmptyString, wxDefaultPosition,
                               wxSize(230, -1));
   label_4 = new wxStaticText(this, -1, _("Variable:"));
   text_ctrl_3 =
-    new BTextCtrl(this, -1, cfg, wxT("t"), wxDefaultPosition, wxSize(40, -1));
+    new BTextCtrl(this, -1, configuration, wxT("t"), wxDefaultPosition, wxSize(40, -1));
   label_5 = new wxStaticText(this, -1, _("From:"));
-  text_ctrl_4 = new BTextCtrl(this, -1, cfg, wxEmptyString, wxDefaultPosition,
+  text_ctrl_4 = new BTextCtrl(this, -1, configuration, wxEmptyString, wxDefaultPosition,
                               wxSize(70, -1));
   label_6 = new wxStaticText(this, -1, _("To:"));
-  text_ctrl_5 = new BTextCtrl(this, -1, cfg, wxEmptyString, wxDefaultPosition,
+  text_ctrl_5 = new BTextCtrl(this, -1, configuration, wxEmptyString, wxDefaultPosition,
                               wxSize(70, -1));
   label_7 = new wxStaticText(this, -1, _("Ticks:"));
   spin_ctrl_1 = new wxSpinCtrl(this, -1, wxEmptyString, wxDefaultPosition,

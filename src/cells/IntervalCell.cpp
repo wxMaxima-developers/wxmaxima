@@ -173,7 +173,7 @@ void IntervalCell::Draw(wxPoint point) {
   }
 }
 
-void IntervalCell::DrawBigLeftOpenBracket(wxDC *dc, wxPoint point) {
+void IntervalCell::DrawBigLeftOpenBracket(wxDC *dc, wxPoint point) const {
   const wxPoint pointsL[4] = {
     {point.x - Scale_Px(1) + m_signWidth, point.y - m_center + Scale_Px(4)},
     {point.x + Scale_Px(1), point.y - m_center + Scale_Px(4)},
@@ -181,7 +181,7 @@ void IntervalCell::DrawBigLeftOpenBracket(wxDC *dc, wxPoint point) {
     {point.x - Scale_Px(1) + m_signWidth, point.y + m_center - Scale_Px(4)}};
   dc->DrawLines(4, pointsL);
 }
-void IntervalCell::DrawBigRightOpenBracket(wxDC *dc, wxPoint point) {
+void IntervalCell::DrawBigRightOpenBracket(wxDC *dc, wxPoint point) const {
   const wxPoint pointsR[4] = {
     {point.x + Scale_Px(1), point.y - m_center + Scale_Px(4)},
     {point.x + Scale_Px(1) + m_signWidth, point.y - m_center + Scale_Px(4)},

@@ -30,11 +30,11 @@
 #include "SetCell.h"
 #include "CellImpl.h"
 
-SetCell::SetCell(GroupCell *parent, Configuration *config,
+SetCell::SetCell(GroupCell *group, Configuration *config,
                  std::unique_ptr<Cell> &&inner)
-  : ListCell(parent, config, std::move(inner)) {
-  m_open = std::make_unique<TextCell>(parent, config, wxT("{"));
-  m_close = std::make_unique<TextCell>(parent, config, wxT("}"));
+  : ListCell(group, config, std::move(inner)) {
+  m_open = std::make_unique<TextCell>(group, config, wxT("{"));
+  m_close = std::make_unique<TextCell>(group, config, wxT("}"));
 }
 
 SetCell::SetCell(GroupCell *group, const SetCell &cell)

@@ -335,9 +335,12 @@ wxString ImgCell::ToXML() const {
 				      m_image->GetCompressedGnuplotSource());
       flags += " gnuplotsource_gz=\"" + gnuplotSource + "\"";
     }
-  }
 
-  return (wxT("<img") + flags + wxT(">") + basename + m_image->GetExtension() +
+    return (wxT("<img") + flags + wxT(">") + basename + m_image->GetExtension() +
+	    wxT("</img>"));
+  }
+  else
+    return  (wxT("<img") + flags + wxT(">") +
           wxT("</img>"));
 }
 

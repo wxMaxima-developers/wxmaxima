@@ -28,6 +28,7 @@
 */
 
 #include "MaximaTokenizer.h"
+#include "precomp.h"
 #include <vector>
 #include <wx/string.h>
 #include <wx/wx.h>

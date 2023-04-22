@@ -34,9 +34,9 @@
 
 #define EXPT_DEC 2
 
-ExptCell::ExptCell(GroupCell *parent, Configuration *config,
+ExptCell::ExptCell(GroupCell *group, Configuration *config,
                    std::unique_ptr<Cell> &&base, std::unique_ptr<Cell> &&expt)
-  : Cell(parent, config), m_baseCell(std::move(base)),
+  : Cell(group, config), m_baseCell(std::move(base)),
     m_exptCell(std::move(expt)) {
   InitBitFields();
   SetStyle(TS_VARIABLE);

@@ -75,8 +75,8 @@ public:
   void SetNextToDraw(Cell *next) override;
 
 protected:
-  void DrawBigLeftOpenBracket(wxDC *dc, wxPoint point);
-  void DrawBigRightOpenBracket(wxDC *dc, wxPoint point);
+  void DrawBigLeftOpenBracket(wxDC *dc, wxPoint point) const;
+  void DrawBigRightOpenBracket(wxDC *dc, wxPoint point) const;
   bool m_leftBracketOpensLeft;
   bool m_rightBracketOpensRight;
   // The pointers below point to inner cells and must be kept contiguous.

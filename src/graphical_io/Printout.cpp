@@ -158,36 +158,36 @@ void Printout::BreakPages() {
   m_pages.push_back(group);
 
   // Now see where the next pages should start
-  for (GroupCell &group : OnList(m_tree.get())) {
+  for (GroupCell &gr : OnList(m_tree.get())) {
     wxCoord pageStart = m_pages[m_pages.size() - 1]->GetRect(true).GetTop();
     // Handle pagebreak cells
-    if ((group.GetGroupType() == GC_TYPE_PAGEBREAK) && (group.GetNext())) {
-      m_pages.push_back(group.GetNext());
+    if ((gr.GetGroupType() == GC_TYPE_PAGEBREAK) && (gr.GetNext())) {
+      m_pages.push_back(gr.GetNext());
       continue;
     }
 
     // Add complete GroupCells as long as they fit on the page
-    if (((group.GetRect(true).GetBottom() - pageStart > maxContentHeight)) ||
-        (&group == m_pages[m_pages.size() - 1])) {
-      if (!group.GetOutput()) {
-        if (((group.GetRect(true).GetBottom() - pageStart > maxContentHeight)))
-          m_pages.push_back(&group);
+    if (((gr.GetRect(true).GetBottom() - pageStart > maxContentHeight)) ||
+        (&gr == m_pages[m_pages.size() - 1])) {
+      if (!gr.GetOutput()) {
+        if (((gr.GetRect(true).GetBottom() - pageStart > maxContentHeight)))
+          m_pages.push_back(&gr);
       } else {
         // Drawing a cell assigns its output positions
-        group.Recalculate();
-        group.Draw(group.GetCurrentPoint());
+        gr.Recalculate();
+        gr.Draw(gr.GetCurrentPoint());
 
-        if ((group.GetOutput()) &&
-            (group.GetOutput()->GetRect(true).GetTop() - pageStart <
+        if ((gr.GetOutput()) &&
+            (gr.GetOutput()->GetRect(true).GetTop() - pageStart <
              maxContentHeight)) {
           wxLogMessage("Page %li: Adding a partial GroupCell!",
 		       (long)m_pages.size());
           {
-            Cell *out = group.GetOutput();
+            Cell *out = gr.GetOutput();
             if (out->GetRect(true).GetBottom() - pageStart > maxContentHeight) {
               wxLogMessage("Page %li: Page break after input.",
 			   (long)m_pages.size());
-              m_pages.push_back(group.GetOutput());
+              m_pages.push_back(gr.GetOutput());
             }
             while (out) {
               pageStart = m_pages[m_pages.size() - 1]->GetRect(true).GetTop();
@@ -203,7 +203,7 @@ void Printout::BreakPages() {
             }
           }
         } else
-          m_pages.push_back(&group);
+          m_pages.push_back(&gr);
       }
     }
   }

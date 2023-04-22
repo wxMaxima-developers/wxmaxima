@@ -67,13 +67,6 @@ void LabelCell::Draw(wxPoint point) {
   }
 }
 
-TextCell::TextIndex LabelCell::GetLabelIndex() const {
-  if (GetTextStyle() == TS_USERLABEL)
-    return userLabelText;
-  else
-    return cellText;
-}
-
 void LabelCell::SetUserDefinedLabel(const wxString &userDefinedLabel) {
   m_userDefinedLabel = userDefinedLabel;
   UpdateDisplayedText();

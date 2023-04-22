@@ -50,33 +50,33 @@ Cell *CellListBuilderBase::base_DynamicAppend(std::unique_ptr<Cell> &&cells,
 
 //
 
-void CellList::Check(const Cell *c) {
-  if (!c)
+void CellList::Check(const Cell *cell) {
+  if (!cell)
     return;
-  wxASSERT_MSG(!c->m_next || c->m_next->m_previous == c,
+  wxASSERT_MSG(!cell->m_next || cell->m_next->m_previous == cell,
                "Bug: The successor cell's predecessor is invalid.");
-  wxASSERT_MSG(!c->m_previous || c->m_previous->m_next.get() == c,
+  wxASSERT_MSG(!cell->m_previous || cell->m_previous->m_next.get() == cell,
                "Bug: The predecessor cell's successor is invalid.");
 }
 
-std::unique_ptr<Cell> CellList::SetNext(Cell *c, std::unique_ptr<Cell> &&next) {
+std::unique_ptr<Cell> CellList::SetNext(Cell *cell, std::unique_ptr<Cell> &&next) {
   using std::swap;
   if (next)
     Check(next.get());
 
   // Reset the previous pointers so they have no chance of dangling
-  if (c->m_next)
-    c->m_next->m_previous = nullptr;
+  if (cell->m_next)
+    cell->m_next->m_previous = nullptr;
   if (next)
     next->m_previous = nullptr;
   // Set the next pointers
-  swap(c->m_next, next);
+  swap(cell->m_next, next);
   // Set the previous pointer for our successor
-  if (c->m_next)
-    c->m_next->m_previous = c;
-  c->SetNextToDraw(c->m_next);
+  if (cell->m_next)
+    cell->m_next->m_previous = cell;
+  cell->SetNextToDraw(cell->m_next);
 
-  Check(c);
+  Check(cell);
   Check(next.get());
 
   return std::move(next);
@@ -90,18 +90,18 @@ void CellList::DeleteList(Cell *afterMe) {
   }
 }
 
-void CellList::AppendCell(Cell *c, std::unique_ptr<Cell> &&head) {
-  Check(c);
-  if (!head)
+void CellList::AppendCell(Cell *cell, std::unique_ptr<Cell> &&tail) {
+  Check(cell);
+  if (!tail)
     return;
-  if (c->m_group)
+  if (cell->m_group)
     // Note: The above cannot be m_group or an assert will trigger!
     // We do not *expect* all cells here to have groups, so GetGroup()
     // above would be inappropriate.
-    c->GetGroup()->ResetData();
+    cell->GetGroup()->ResetData();
 
-  auto *const next = head.get();
-  auto *const last = c->last();
+  auto *const next = tail.get();
+  auto *const last = cell->last();
 
   // We want to append to the draw list as well
   // Get the end of the draw list
@@ -111,7 +111,7 @@ void CellList::AppendCell(Cell *c, std::unique_ptr<Cell> &&head) {
       lastToDraw = lastToDraw->GetNextToDraw();
 
   // Append the cell
-  SetNext(last, std::move(head));
+  SetNext(last, std::move(tail));
 
   // Restore the draw list, and append the cell to it
   if (lastToDraw)

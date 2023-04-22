@@ -211,7 +211,7 @@ wxString SubSupCell::ToString() const {
     if (m_postSupCell->IsCompound())
       s += ")";
   } else {
-    for (auto &cell : m_scriptCells)
+    for (auto const &cell : m_scriptCells)
       s += "[" + cell->ListToString() + "]";
   }
   return s;

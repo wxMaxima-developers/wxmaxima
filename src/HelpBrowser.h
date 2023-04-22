@@ -55,7 +55,7 @@ public:
   void SetURL(wxString url);
   void JumpToKeyword(wxString keyword);
   void SelectKeywords(wxArrayString keywords);
-  wxString GetKeyword(unsigned int id);
+  wxString GetKeyword(wxWindowID id);
   
 private:
   void CreateIfNeeded();

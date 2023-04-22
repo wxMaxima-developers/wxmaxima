@@ -43,7 +43,7 @@ public:
 
   AFontSize GetScaledTextSize() const;
   
-  virtual void SetStyle(TextStyle style) override;
+  void SetStyle(TextStyle style) override;
   
   //! Set the text contained in this cell
   void SetValue(const wxString &text) override;

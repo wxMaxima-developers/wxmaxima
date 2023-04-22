@@ -2004,7 +2004,7 @@ TextCell *wxMaxima::DoRawConsoleAppend(wxString s, CellType type,
       if (s.IsEmpty()) {
         incompleteTextCell->GetGroup()->ResetSize();
         incompleteTextCell->GetGroup()->Recalculate();
-        return std::move(incompleteTextCell);
+        return incompleteTextCell;
       }
     }
 

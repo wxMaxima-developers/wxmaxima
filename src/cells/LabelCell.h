@@ -70,8 +70,6 @@ private:
     { // Keep the initialization order below same as the order
       // of bit fields in this class!
     }
-
-  TextIndex GetLabelIndex() const;
 };
 
 #endif // LABELCELL_H

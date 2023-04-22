@@ -30,6 +30,7 @@
   output from maxima that belongs to it.
 */
 
+#include "../precomp.h"
 #include <string>
 #include <memory>
 #include <utility>
@@ -45,6 +46,7 @@
 #include "stx/unique_cast.hpp"
 #include <wx/clipbrd.h>
 #include <wx/log.h>
+#include <wx/string.h>
 #include <wx/config.h>
 
 #ifdef __WINDOWS__

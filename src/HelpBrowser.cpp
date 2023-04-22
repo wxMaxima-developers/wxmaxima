@@ -86,11 +86,11 @@ HelpBrowser::HelpBrowser(wxWindow *parent, Configuration *configuration,
   FitInside();
 }
 
-wxString HelpBrowser::GetKeyword(unsigned int id) {
+wxString HelpBrowser::GetKeyword(wxWindowID id) {
   if (id < m_topicButtonID0)
     return wxEmptyString;
   id -= m_topicButtonID0;
-  if (id > m_keywords.GetCount())
+  if (static_cast<unsigned>(id) > m_keywords.GetCount())
     return wxEmptyString;
   return m_keywords[id];
 }
