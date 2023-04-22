@@ -1235,7 +1235,7 @@ std::unique_ptr<Cell> MathParser::ParseTag(wxXmlNode *node, bool all) {
       break;
   }
 
-  return std::move(tree);
+  return tree;
 }
 
 std::unique_ptr<Cell> MathParser::ParseLine(wxString s, CellType style) {
