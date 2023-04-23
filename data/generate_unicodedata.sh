@@ -2,11 +2,13 @@
 
 # convert Unicodedata.txt to C Sourcecode (using xxd -i)
 
+UNICODEURL="https://www.unicode.org/Public/15.0.0/ucd/UnicodeData.txt"
+
 cat >UnicodeData.h <<END
 /* Automatically generated file using generate_unicodedata.sh                           */
 /* This file is part of wxMaxima.                                                       */
 
-/* Copyright (C) 2022 wxMaxima Team (https://wxMaxima-developers.github.io/wxmaxima/)   */
+/* Copyright (C) 2023 wxMaxima Team (https://wxMaxima-developers.github.io/wxmaxima/)   */
 
 /* This program is free software; you can redistribute it and/or modify                 */
 /* it under the terms of the GNU General Public License as published by                 */
@@ -22,15 +24,17 @@ cat >UnicodeData.h <<END
 /* along with this program; if not, write to the Free Software                          */
 /* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA         */
 
-/* The license of UnicodeData.txt can be found at: https://www.unicode.org/license.html */
-/* and is included in here as unicode-license.html                                      */
+/* The license of UnicodeData.txt can be found at: https://www.unicode.org/license.txt  */
+/* and is included in here as unicode-license.txt                                       */
 /* UnicodeData.txt was downloaded from:                                                 */
-/* https://www.unicode.org/Public/14.0.0/ucd/UnicodeData.txt                            */
+/* $UNICODEURL                            */
 
 END
 
+echo "Fetching UnicodeData.txt from: $UNICODEURL"
+curl $UNICODEURL >UnicodeData.txt
 echo "Converting UnicodeData.txt to embeddable C code UnicodeData.h"
 cut -d ";" -f 1-2 <UnicodeData.txt | gzip -c -n >UnicodeData.txt.gz
 xxd -i "UnicodeData.txt.gz" >>UnicodeData.h
-rm -f UnicodeData.txt.gz
+rm -f UnicodeData.txt.gz UnicodeData.txt
 
