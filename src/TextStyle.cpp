@@ -344,8 +344,8 @@ void Style::Write(wxConfigBase *config, const wxString &where) const {
   config->Write(where + k_fontname, GetFontName());
 }
 
-const wxFont &Style::GetFont() const {
-  return *(m.fontCache->GetFont(GetFontSize().Get(), IsItalic(), IsBold(), IsUnderlined(),
+const wxFont &Style::GetFont(AFontSize fontSize) const {
+  return *(m.fontCache->GetFont(fontSize.Get(), IsItalic(), IsBold(), IsUnderlined(),
 				IsSlant(), IsStrikethrough()));
 }
 
@@ -376,4 +376,4 @@ const Style &Style::FromStockFont(wxStockGDI::Item font) {
 }
 
 Style::FontVariantCachesMap Style::m_fontCaches;
-wxString Style::m_emptyString = wxEmptyString;
+wxString Style::m_emptyString;

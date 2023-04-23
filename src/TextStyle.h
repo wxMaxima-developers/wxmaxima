@@ -59,6 +59,7 @@ public:
   Style(const Style &);
 
   Style &operator=(const Style &);
+  //! Compares 
   bool operator==(const Style &o) const;
 
   /*! Read this style from a config source.
@@ -142,7 +143,12 @@ public:
 
 
   bool IsFontOk() const;
-  const wxFont &GetFont() const;
+  //! Returns the font associated with this style, but with the size fontSize
+  const wxFont &GetFont(AFontSize fontSize) const;
+  //! Returns the font associated with this style
+  const wxFont &GetFont() const {
+    return GetFont(GetFontSize());
+  }
 
   //! Sets all font-related properties based on another font
   did_change SetFromFont(const wxFont&);
@@ -167,12 +173,19 @@ private:
   WX_DECLARE_STRING_HASH_MAP( std::shared_ptr<FontVariantCache>,     // type of the values
                               FontVariantCachesMap); // name of the class
 
+  //! An empty string we can return a reference to
   static wxString m_emptyString;
   static FontVariantCachesMap m_fontCaches;
 
+  //! The data that defines this text style 
   struct Data
   {
     // 8/4-byte members
+    /*! The font cache this font is stored in.
+
+      The font cache is declared as "mutual", which means: It is allowed to change
+      in read-only objects.
+     */
     mutable std::shared_ptr<FontVariantCache> fontCache;
     // 4-byte members
     uint32_t rgbColor = Default_ColorRGB;

@@ -928,27 +928,13 @@ void EditorCell::SetStyle(TextStyle style) {
   Cell::SetStyle(style);
 }
 
-std::shared_ptr<wxFont> EditorCell::GetFont(AFontSize fontsize) {
-  const auto &style = m_configuration->GetStyle(GetTextStyle());
-  const auto &fontCache = style->GetFontCache();
-
-  bool isItalic = style->IsItalic();
-  if (m_autoAnswer)
-    isItalic = !isItalic;
-  
-  wxASSERT(m_fontSize_Scaled.IsValid());
-  return fontCache->GetFont(fontsize.Get(), isItalic, style->IsBold(), style->IsUnderlined(),
-			    style->IsSlant(), style->IsStrikethrough());
-}
-
 void EditorCell::SetFont() {
   wxDC *dc = m_configuration->GetDC();
-  wxASSERT(m_fontSize_Scaled.IsValid());
-  const auto &font = GetFont(m_fontSize_Scaled);
-  if(m_configuration->GetLastFontUsed() != font.get())
+  const wxFont &font = GetFont();
+  if(m_configuration->GetLastFontUsed() != &font)
     {
-      m_configuration->SetLastFontUsed(font);
-      dc->SetFont(*font);
+      m_configuration->SetLastFontUsed(&font);
+      dc->SetFont(font);
     }
 }
 

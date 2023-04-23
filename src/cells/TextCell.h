@@ -52,7 +52,7 @@ public:
 
   void Draw(wxPoint point) override;
   const wxFont &GetFont(AFontSize fontsize) const {
-    return m_configuration->GetStyle(GetTextStyle())->GetFont();
+    return m_configuration->GetStyle(GetTextStyle())->GetFont(fontsize);
   }
   void SetFont(AFontSize fontsize);
 

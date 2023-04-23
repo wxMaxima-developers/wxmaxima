@@ -146,7 +146,9 @@ public:
   wxString ToXML() const override;
 
   //! Get the font that matches this cell's formatting
-  std::shared_ptr<wxFont> GetFont(AFontSize fontsize);
+  const wxFont &GetFont() const {
+    return m_configuration->GetStyle(GetTextStyle())->GetFont(m_fontSize_Scaled);
+  }
   //! Set the currently used font to the one that matches this cell's formatting
   void SetFont();
 
