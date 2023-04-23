@@ -500,23 +500,13 @@ void TextCell::Draw(wxPoint point) {
   }
 }
 
-std::shared_ptr<wxFont> TextCell::GetFont(AFontSize fontsize) {
-  auto const style = m_configuration->GetStyle(GetTextStyle());
-
-  const auto &fontCache = style->GetFontCache();
-  wxASSERT(m_fontSize_Scaled.IsValid());
-  return fontCache->GetFont(fontsize.Get(), style->IsItalic(), style->IsBold(),
-			    style->IsUnderlined(), style->IsSlant(),
-			    style->IsStrikethrough());
-}
-
 void TextCell::SetFont(AFontSize fontsize) {
   wxDC *dc = m_configuration->GetDC();
-  const auto &font = GetFont(fontsize);
-  if(m_configuration->GetLastFontUsed() != font.get())
+  const wxFont &font = GetFont(fontsize);
+  if(m_configuration->GetLastFontUsed() != &font)
     {
-      m_configuration->SetLastFontUsed(font);
-      dc->SetFont(*font);
+      m_configuration->SetLastFontUsed(&font);
+      dc->SetFont(font);
     }
 }
 

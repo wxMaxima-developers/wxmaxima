@@ -142,7 +142,7 @@ public:
 
 
   bool IsFontOk() const;
-  wxFont GetFont() const;
+  const wxFont &GetFont() const;
 
   //! Sets all font-related properties based on another font
   did_change SetFromFont(const wxFont&);

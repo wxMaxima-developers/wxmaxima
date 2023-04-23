@@ -946,18 +946,18 @@ public:
 
     Used for avoiding setting a font if the Right Font already is in use.
    */
-  wxFont *GetLastFontUsed(){return m_lastFontUsed;}
+  const wxFont *GetLastFontUsed(){return m_lastFontUsed;}
   /*! Set a pointer to the last font we used on this DC.
 
     Used for avoiding setting a font if the Right Font already is in use.
    */
-  void SetLastFontUsed(wxFont *font){m_lastFontUsed = font;}
+  void SetLastFontUsed(const wxFont *font){m_lastFontUsed = font;}
   /*! Set a pointer to the last font we used on this DC.
 
     Used for avoiding setting a font if the Right Font already is in use.
    */
   void SetLastFontUsed(std::shared_ptr <wxFont> font){m_lastFontUsed = font.get();}
-  wxFont *m_lastFontUsed = NULL;
+  const wxFont *m_lastFontUsed = NULL;
 
   //! Which styles affect how code is displayed?
   const std::vector<TextStyle> &GetCodeStylesList() const {return m_codeStyles;}

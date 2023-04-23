@@ -344,7 +344,7 @@ void Style::Write(wxConfigBase *config, const wxString &where) const {
   config->Write(where + k_fontname, GetFontName());
 }
 
-wxFont Style::GetFont() const {
+const wxFont &Style::GetFont() const {
   return *(m.fontCache->GetFont(GetFontSize().Get(), IsItalic(), IsBold(), IsUnderlined(),
 				IsSlant(), IsStrikethrough()));
 }
