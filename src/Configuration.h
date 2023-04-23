@@ -946,7 +946,7 @@ public:
 
     Used for avoiding setting a font if the Right Font already is in use.
    */
-  const wxFont *GetLastFontUsed(){return m_lastFontUsed;}
+  const wxFont *GetLastFontUsed() const {return m_lastFontUsed;}
   /*! Set a pointer to the last font we used on this DC.
 
     Used for avoiding setting a font if the Right Font already is in use.

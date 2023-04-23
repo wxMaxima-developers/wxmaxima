@@ -3612,8 +3612,7 @@ void Worksheet::SelectWithChar(int ccode) {
         if ((m_hCaretPosition != NULL) &&
             m_hCaretPosition->GetNext() == m_hCaretPositionEnd)
           m_hCaretPositionStart = prev;
-        if (m_hCaretPositionEnd != NULL)
-          m_hCaretPositionEnd = prev;
+	m_hCaretPositionEnd = prev;
       }
       if (m_hCaretPositionEnd != NULL)
         ScheduleScrollToCell(m_hCaretPositionEnd, false);

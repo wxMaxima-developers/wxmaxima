@@ -1999,8 +1999,7 @@ TextCell *wxMaxima::DoRawConsoleAppend(wxString s, CellType type,
       }
 
       incompleteTextCell->SetValue(newVal);
-      if (ownedCell)
-        m_worksheet->InsertLine(std::move(ownedCell));
+      m_worksheet->InsertLine(std::move(ownedCell));
       if (s.IsEmpty()) {
         incompleteTextCell->GetGroup()->ResetSize();
         incompleteTextCell->GetGroup()->Recalculate();
@@ -9447,7 +9446,6 @@ bool wxMaxima::SaveOnClose() {
     }
   } else {
     {
-std::cerr<<"test\n";
       SuppressErrorDialogs blocker;
       if(SaveFile())
 	return true;
