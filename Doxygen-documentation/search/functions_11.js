@@ -64,7 +64,7 @@ var searchData=
   ['setindent_2708',['SetIndent',['../classConfiguration.html#aa93cf22c39034da4adcf23f6f533e6b0',1,'Configuration']]],
   ['setintstyle_2709',['SetIntStyle',['../classIntCell.html#a845493fd24b5de3aa9faf17343b1db4c',1,'IntCell']]],
   ['setlabelchoice_2710',['SetLabelChoice',['../classConfiguration.html#a4d06368fbb671b0523cc0bac9e68ad56',1,'Configuration']]],
-  ['setlastfontused_2711',['SetLastFontUsed',['../classConfiguration.html#abc7d6fb587d8b7b512142751c2d41547',1,'Configuration::SetLastFontUsed(wxFont *font)'],['../classConfiguration.html#aeb1d6cf5b8936b5855601303594f5cfc',1,'Configuration::SetLastFontUsed(std::shared_ptr&lt; wxFont &gt; font)']]],
+  ['setlastfontused_2711',['SetLastFontUsed',['../classConfiguration.html#aa9475a0af3492329d0e6b5f9cfecc640',1,'Configuration::SetLastFontUsed(const wxFont *font)'],['../classConfiguration.html#aeb1d6cf5b8936b5855601303594f5cfc',1,'Configuration::SetLastFontUsed(std::shared_ptr&lt; wxFont &gt; font)']]],
   ['setlog_2712',['SetLog',['../classErrorRedirector.html#a0c84105e35c48122064f8e45e2fe7351',1,'ErrorRedirector']]],
   ['setlogthis_2713',['SetLogThis',['../classErrorRedirector.html#a7c3b449a3717d39899efb71fbd96062b',1,'ErrorRedirector']]],
   ['setmaxheight_2714',['SetMaxHeight',['../classImage.html#aca41489b28cfd2034b1e8f62df10a925',1,'Image']]],

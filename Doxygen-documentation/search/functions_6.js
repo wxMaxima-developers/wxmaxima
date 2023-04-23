@@ -76,7 +76,7 @@ var searchData=
   ['getlabel_2339',['GetLabel',['../classGroupCell.html#a3030307d1486a00da5f02460a236e3bf',1,'GroupCell']]],
   ['getlastappended_2340',['GetLastAppended',['../classCellListBuilder.html#a358d86da930dd2aed3a7257d1ac8faed',1,'CellListBuilder']]],
   ['getlastcell_2341',['GetLastCell',['../classWorksheet.html#a8a56dc46cd6fd07ccbec9d62e5927aaa',1,'Worksheet']]],
-  ['getlastfontused_2342',['GetLastFontUsed',['../classConfiguration.html#a0993a79e34e1834b56e9dff108b12242',1,'Configuration']]],
+  ['getlastfontused_2342',['GetLastFontUsed',['../classConfiguration.html#ae165b1c4e3b5c6756118e74f90f42b72',1,'Configuration']]],
   ['getlastworkinggroup_2343',['GetLastWorkingGroup',['../classGroupCell.html#abbe66d229cbaf616a7a1a24bc21c0d0b',1,'GroupCell']]],
   ['getlinewidth_2344',['GetLineWidth',['../classCell.html#aa4c30056412188aac10dd2dc97df4020',1,'Cell::GetLineWidth()'],['../classConfiguration.html#aab8b2c0eadfec6687bf7f473d182788e',1,'Configuration::GetLineWidth()']]],
   ['getlistcellsinrect_2345',['GetListCellsInRect',['../classCell.html#a7a2d7a0dba12e8e53516f7c41e393b33',1,'Cell']]],
