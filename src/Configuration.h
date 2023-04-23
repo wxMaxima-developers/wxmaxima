@@ -624,7 +624,7 @@ public:
   bool InUpdateRegion(wxRect rect) const;
 
   bool GetInsertAns() const
-    { return m_insertAns; }
+    { return m_insertAns; } 
 
   void SetInsertAns(bool insertAns){ m_insertAns = insertAns; }
 

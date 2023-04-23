@@ -6124,7 +6124,7 @@ bool Worksheet::ExportToWXMX(const wxString &file, bool markAsSaved) {
 	  
           // Move all files we have stored in memory during saving to zip file
 	  zip.SetLevel(0);
-	  for (auto fil: m_configuration->GetFilesToSave())
+	  for (const auto &fil: m_configuration->GetFilesToSave())
 	    {	      
 	      zip.PutNextEntry(fil.FileName());
 	      zip.Write(fil.Data().GetData(), fil.Data().GetDataLen());
