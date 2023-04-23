@@ -219,7 +219,7 @@ void History::AddToHistory(const wxString &cmd) {
 void History::RebuildDisplay() {
   //  wxWindowUpdateLocker speedUp(this);
   wxArrayString display;
-  std::vector<wxString>::reverse_iterator sessionEnd;
+  std::vector<wxString>::const_reverse_iterator sessionEnd;
   if (m_showCurrentSessionOnly)
     sessionEnd = m_commands.rbegin() + m_sessionCommands;
   else
