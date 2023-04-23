@@ -160,23 +160,31 @@ Image::~Image() {
   m_isOk = false;
   if (!m_gnuplotSource.IsEmpty()) {
     SuppressErrorDialogs logNull;
-    wxLogMessage(_("Trying to delete gnuplot file %s"),
-                 m_gnuplotSource.utf8_str());
     if (wxFileExists(m_gnuplotSource))
-      wxRemoveFile(m_gnuplotSource);
+    {
+      if(!wxRemoveFile(m_gnuplotSource))
+        wxLogMessage(_("Failed to delete gnuplot file %s"),
+                     m_gnuplotSource.utf8_str());
+    }
     wxString popoutname = m_gnuplotSource + wxT(".popout");
-    wxLogMessage(_("Trying to delete gnuplot file %s"),
-                 popoutname.utf8_str());
     if (wxFileExists(popoutname))
-      wxRemoveFile(popoutname);
+    {
+      if(!wxRemoveFile(popoutname))
+        wxLogMessage(_("Failed to delete gnuplot file %s"),
+                     popoutname.utf8_str());
+
+    }
   }
 
   if (!m_gnuplotData.IsEmpty()) {
     SuppressErrorDialogs logNull;
-    wxLogMessage(_("Trying to delete gnuplot file %s"),
-                 m_gnuplotData.utf8_str());
     if (wxFileExists(m_gnuplotData))
-      wxRemoveFile(m_gnuplotData);
+    {
+      if(!wxRemoveFile(m_gnuplotData))
+        wxLogMessage(_("Failed to delete gnuplot data file %s"),
+                     m_gnuplotData.utf8_str());
+
+    }
   }
   if (m_svgImage)
     free(m_svgImage);

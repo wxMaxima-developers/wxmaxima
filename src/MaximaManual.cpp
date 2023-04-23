@@ -562,6 +562,9 @@ void MaximaManual::LoadHelpFileAnchors(wxString docdir,
 }
 
 MaximaManual::~MaximaManual() {
-  wxLogMessage(_("Waiting for the thread that parses the maxima manual to finish"));
+  if (!m_helpFileAnchorsThreadActive.try_lock())
+    wxLogMessage(_("Waiting for the thread that parses the maxima manual to finish"));
+  else
+    m_helpFileAnchorsThreadActive.unlock();
   WaitForBackgroundProcess();
 }
