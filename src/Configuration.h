@@ -616,7 +616,7 @@ public:
     { m_filesToSave.emplace_front(FileToSave(filename, data)); }
 
   wxRect GetUpdateRegion() const {return m_updateRegion;}
-  const std::list<FileToSave> GetFilesToSave() const {return m_filesToSave;}
+  const std::list<FileToSave> &GetFilesToSave() const {return m_filesToSave;}
   void SetUpdateRegion(wxRect rect){m_updateRegion = rect;}
 
   //! Whether any part of the given rectangle is within the current update region,
@@ -960,11 +960,11 @@ public:
   wxFont *m_lastFontUsed = NULL;
 
   //! Which styles affect how code is displayed?
-  std::vector<TextStyle> GetCodeStylesList() const {return m_codeStyles;}
+  const std::vector<TextStyle> &GetCodeStylesList() const {return m_codeStyles;}
   //! Which styles affect how math output is displayed?
-  std::vector<TextStyle> GetMathStylesList() const {return m_2dMathStyles;}
+  const std::vector<TextStyle> &GetMathStylesList() const {return m_2dMathStyles;}
   //! Which styles affect only colors?
-  std::vector<TextStyle> GetColorOnlyStylesList() const {return m_colorOnlyStyles;}
+  const std::vector<TextStyle> &GetColorOnlyStylesList() const {return m_colorOnlyStyles;}
   bool StyleAffectsCode(TextStyle style) const;
   bool StyleAffectsMathOut(TextStyle style) const;
   bool StyleAffectsColorOnly(TextStyle style) const;
