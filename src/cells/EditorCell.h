@@ -113,7 +113,7 @@ public:
     \param posInLine The number of characters that come before the input in the same line
     \todo Implement the actual TAB expansion
   */
-  static wxString TabExpand(const wxString &input, long posInLine);
+  static wxString TabExpand(const wxString &input_, long posInLine);
 
   //! Escape all chars that cannot be used in HTML otherwise
   static wxString EscapeHTMLChars(wxString input);

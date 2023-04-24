@@ -114,7 +114,7 @@ TextCell::TextCell(GroupCell *group, Configuration *config,
     m_type = MC_TYPE_TITLE;
   }
   TextCell::SetValue(text);
-  SetStyle(style);
+  TextCell::SetStyle(style);
 }
 
 // cppcheck-suppress uninitMemberVar symbolName=TextCell::m_alt

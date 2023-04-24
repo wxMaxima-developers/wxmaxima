@@ -96,7 +96,7 @@ public:
       m_lastAppended = {};
       auto retval = dynamic_unique_ptr_cast<T>(std::move(m_head));
 
-      wxASSERT(!m_head && !m_tail && !m_lastAppended);
+      wxASSERT(!m_tail && !m_lastAppended);
       return retval;
     }
 
