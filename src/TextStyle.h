@@ -48,7 +48,10 @@ static constexpr uint32_t MAKE_RGB(uint32_t r, uint32_t g, uint32_t b)
  * It is a well-performing replacement for wxFontInfo, with additional
  * color attribute.
  *
- * The text styles are also used as keys into the FontCache. 
+ * Since we only use a few handful text styles in a handful of sizes
+ * and since creating a wxFont object from a style definition is slow we
+ * employ a separate FontVariantCache that caches the wxFont objects we need
+ * for fonts with this font name.
  *
  */
 class Style final
@@ -63,6 +66,7 @@ public:
   bool operator==(const Style &o) const;
 
   /*! Read this style from a config source.
+   *
    * Only touches the attributes that were successfully read. Remaining attributes
    * are unchanged.
    */
@@ -158,11 +162,14 @@ public:
   did_change SetFontFaceFrom(const Style&);
   //! Sets font-face and size only properties based on another style (not attributes like bold, etc.)
   did_change SetFontFaceAndSizeFrom(const Style&);
-
+  //! Old wxWidgets versions only support integers as font sizes
   constexpr static bool IsFractionalFontSizeSupported() {
     return wxCHECK_VERSION(3, 1, 2); } //-V686 //-V501
+  //! Returns the font size that this style has when not zoomed or being used as subscript/...
   static AFontSize GetFontSize(const wxFont &);
+  //! Sets the font size that this style has when not zoomed or being used as subscript/...  
   static void SetFontSize(wxFont &, AFontSize fontSize);
+  //! Empties the font variant cache.
   void ClearCache()
     {
       if(m.fontCache)
@@ -175,6 +182,7 @@ private:
 
   //! An empty string we can return a reference to
   static wxString m_emptyString;
+  //! A hashmap that tells us which font cache caches the font this textstyle uses
   static FontVariantCachesMap m_fontCaches;
 
   //! The data that defines this text style 
@@ -211,8 +219,8 @@ private:
 
 /*! All text styles known to wxMaxima
  *
- * \attention If this list is changed, the config dialogue
- * sometimes needs additional tweaking after that.
+ * \attention If this list is changed, Configuration::Configuration needs
+ * to be informed what type of style which style is.
  */
 enum TextStyle : int8_t
 {
