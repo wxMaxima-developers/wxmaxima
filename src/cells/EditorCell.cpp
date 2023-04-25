@@ -2184,7 +2184,7 @@ bool EditorCell::FindMatchingQuotes() {
 
 void EditorCell::FindMatchingParens() {
   m_paren1 = m_paren2 = -1;
-  if (m_positionOfCaret < 0)
+  if (m_positionOfCaret < 0 || m_positionOfCaret >= m_text.Length())
     return;
 
   wxChar charUnderCursor = m_text.GetChar(m_positionOfCaret);
