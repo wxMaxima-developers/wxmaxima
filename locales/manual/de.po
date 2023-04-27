@@ -553,7 +553,7 @@ msgstr "Eingabezellen an _Maxima_ schicken"
 #: ../../info/wxmaxima.md:131
 #, no-wrap
 msgid "The command in a code cell are executed once <kbd>CTRL</kbd>+<kbd>ENTER</kbd>, <kbd>SHIFT</kbd>+<kbd>ENTER</kbd> or the <kbd>ENTER</kbd> key on the keypad is pressed. The _wxMaxima_ default is to enter commands when either <kbd>CTRL+ENTER</kbd> or <kbd>SHIFT+ENTER</kbd> is entered, but _wxMaxima_ can be configured to execute commands in response to <kbd>ENTER</kbd>.\n"
-msgstr "Die Befehle in einer Codezelle werden ausgeführt, sobald <kbd>CTRL</kbd>+<kbd>ENTER</kbd>, <kbd>SHIFT</kbd>+<kbd>ENTER</kbd> oder <kbd>ENTER</kbd> key im Nummernblock gedrückt wird. _wxMaxima_ nimmt Befehle mit <kbd>CTRL+ENTER</kbd> oder <kbd>SHIFT+ENTER</kbd> entgegen, aber _wxMaxima_ kann auch konfiguriert werden, dass Befehle nach <kbd>ENTER</kbd> ausgeführt weren..\n"
+msgstr "Die Befehle in einer Codezelle werden ausgeführt, sobald die <kbd>CTRL</kbd>+<kbd>ENTER</kbd>, <kbd>SHIFT</kbd>+<kbd>ENTER</kbd> oder <kbd>ENTER</kbd> Taste im Nummernblock gedrückt wird. _wxMaxima_ nimmt Befehle mit <kbd>CTRL+ENTER</kbd> oder <kbd>SHIFT+ENTER</kbd> entgegen, aber _wxMaxima_ kann auch konfiguriert werden, dass Befehle nach <kbd>ENTER</kbd> ausgeführt werden..\n"
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:132
@@ -1255,7 +1255,7 @@ msgid ""
 "If you are using Unix/Linux, the configuration information will be saved in a file `.wxMaxima` in your home directory (if you are using wxWidgets < 3.1.1), or `.config/wxMaxima.conf` ((XDG-Standard) if wxWidgets >= 3.1.1 is used). You can retrieve the wxWidgets version from the command `wxbuild_info();` or by using the menu option Help->About. [wxWidgets](https://www.wxwidgets.org/) is the cross-platform GUI library, which is the base for _wxMaxima_ (therefore the `wx` in the name).\n"
 "(Since the filename starts with a dot, `.wxMaxima` or `.config` will be hidden).\n"
 msgstr ""
-"Auf Linux/Unix-Rechern wird die Konfiguration im Home-Verzeichnis in der Datei `.wxMaxima` gespeichert, oder (für wxWidgets >3.1.1) in `.config/wxMaxima.conf` (XDG-Standard). Die wxWidgets-Version kann über `wxbuild_info()` oder über das Hilfe->Über-Menü abgerufen werden. [wxWidgets](https://www.wxwidgets.org/) ist eine Bibliothek für graphische Benutzeroberflächen, die auf verschiedensten Betriebssystemen läuft und für das `wx` im Namen von wxMaxima verantwortlich ist.\n"
+"Auf Linux/Unix-Rechnern wird die Konfiguration im Home-Verzeichnis in der Datei `.wxMaxima` gespeichert, oder (für wxWidgets >3.1.1) in `.config/wxMaxima.conf` (XDG-Standard). Die wxWidgets-Version kann über `wxbuild_info()` oder über das Hilfe->Über-Menü abgerufen werden. [wxWidgets](https://www.wxwidgets.org/) ist eine Bibliothek für graphische Benutzeroberflächen, die auf verschiedensten Betriebssystemen läuft und für das `wx` im Namen von wxMaxima verantwortlich ist.\n"
 "(Da der Dateiname mit einem Punkt beginnt, ist `.wxMaxima` oder `.config` eine versteckte Datei).\n"
 
 #. type: Plain text
@@ -2028,7 +2028,7 @@ msgid ""
 msgstr ""
 "Zeichnet eine Reihe von Punkten, die optional miteinander verbunden werden. "
 "Die Koordinaten der Punkte können aus einer Liste von Listen, einem 2-"
-"dimensionalen Array oder einer Liste oder einem Array pro Axe entnommen "
+"dimensionalen Array oder einer Liste oder einem Array pro Achse entnommen "
 "werden."
 
 #. type: Title ####
@@ -2107,7 +2107,7 @@ msgid ""
 "Sets the line colour for the following plots the current draw command "
 "contains."
 msgstr ""
-"Setzt die Linienfarbe für die die nun folgenden Plots des aktuellen draw-"
+"Setzt die Linienfarbe für die nun folgenden Plots des aktuellen draw-"
 "Befehls."
 
 #. type: Title ####
@@ -2656,7 +2656,7 @@ msgstr ""
 #: ../../info/wxmaxima.md:748
 #, no-wrap
 msgid "I lost a cell contents and undo doesn’t remember"
-msgstr "Undo erinnert sich nicht an das, was ich brauche"
+msgstr "Rückgängig-machen erinnert sich nicht an das, was ich brauche"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:751
@@ -2678,6 +2678,8 @@ msgid ""
 msgstr ""
 "Ein Rückgängigmach-Speicher für die aktuell ausgewählte Zelle und einer für "
 "das gesamte Arbeitsblatt, der aktiv ist, wenn keine Zelle ausgewählt ist."
+"Es lohnt sich, beide Rückgängigmach-Optionen zu probieren, um zu sehen, ob ein "
+"alter Wert wiederhergestellt werden kann."
 
 #. type: Bullet: '* '
 #: ../../info/wxmaxima.md:756
