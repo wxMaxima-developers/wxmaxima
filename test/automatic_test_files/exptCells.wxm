@@ -1,5 +1,5 @@
 /* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
-/* [ Created with wxMaxima version 20.07.0 ] */
+/* [ Created with wxMaxima version 23.04.1_DevelopmentSnapshot ] */
 /* [wxMaxima: input   start ] */
 x(n):=sum(x[i],i,1,n)$
 /* [wxMaxima: input   end   ] */
@@ -20,6 +20,11 @@ exp(sum(x[i],i,1,100));
 /* [wxMaxima: input   end   ] */
 
 
+/* [wxMaxima: input   start ] */
+%e^(1/3);%e^(-1/3);
+/* [wxMaxima: input   end   ] */
+
+
 
 /* Old versions of Maxima abort on loading files that end in a comment. */
-"Created with wxMaxima 20.07.0"$
+"Created with wxMaxima 23.04.1_DevelopmentSnapshot"$

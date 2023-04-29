@@ -492,6 +492,9 @@ public:
   /*! Tell this cell to be an exponent
 
     Fractions in exponents are displayed as 1D maths
+    \todo Does it make sense that we don't set the flag for sub-cells
+    of the current cell? What if the exponent contains a parenthesis
+    with a fraction inside?
   */
   virtual void SetIsExponent()
     {}
