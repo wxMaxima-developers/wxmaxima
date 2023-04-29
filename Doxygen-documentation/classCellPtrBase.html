@@ -70,18 +70,21 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
+<p>An implementation detail for the type-specific templated cell pointers.  
+ <a href="classCellPtrBase.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="CellPtr_8h_source.html">CellPtr.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for CellPtrBase:</div>
 <div class="dyncontent">
 <div class="center"><img src="classCellPtrBase__inherit__graph.png" border="0" usemap="#aCellPtrBase_inherit__map" alt="Inheritance graph"/></div>
 <map name="aCellPtrBase_inherit__map" id="aCellPtrBase_inherit__map">
-<area shape="rect" title=" " alt="" coords="5,107,103,133"/>
+<area shape="rect" title="An implementation detail for the type&#45;specific templated cell pointers." alt="" coords="5,107,103,133"/>
 <area shape="rect" href="classCellPtr.html" title=" " alt="" coords="170,5,290,32"/>
 <area shape="rect" href="classCellPtr.html" title=" " alt="" coords="151,56,309,83"/>
 <area shape="rect" href="classCellPtr.html" title=" " alt="" coords="151,107,309,133"/>
 <area shape="rect" href="classCellPtr.html" title=" " alt="" coords="157,157,303,184"/>
-<area shape="rect" href="classCellPtr.html" title=" " alt="" coords="179,208,281,235"/>
+<area shape="rect" href="classCellPtr.html" title="A weak non&#45;owning pointer that becomes null whenever the observed object is destroyed." alt="" coords="179,208,281,235"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -149,10 +152,10 @@ Protected Member Functions</h2></td></tr>
 <tr class="separator:a8caf3e9b626fc9e72681c67a127246d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>An implementation detail for the type-specific templated cell pointers.</p>
-<p>A <a class="el" href="classCellPtrBase.html">CellPtrBase</a> (and thus the derived <a class="el" href="classCellPtr.html">CellPtr</a>) can be in one of 3 states:</p><ol type="1">
+<div class="textblock"><p>An implementation detail for the type-specific templated cell pointers. </p>
+<p>A <a class="el" href="classCellPtrBase.html" title="An implementation detail for the type-specific templated cell pointers.">CellPtrBase</a> (and thus the derived <a class="el" href="classCellPtr.html" title="A weak non-owning pointer that becomes null whenever the observed object is destroyed.">CellPtr</a>) can be in one of 3 states:</p><ol type="1">
 <li>Pointing to no object: its m_ptr is null.</li>
-<li>A sole pointer to an object: its m_ptr points to the <a class="el" href="classObserved.html">Observed</a>, and observed's m_ptr points <em>back</em> at this pointer.</li>
+<li>A sole pointer to an object: its m_ptr points to the <a class="el" href="classObserved.html" title="Objects deriving from this class can be observed by the CellPtr.">Observed</a>, and observed's m_ptr points <em>back</em> at this pointer.</li>
 <li>One of many pointers to the object: its m_ptr points to the Observed::ControlBlock, and the observed's m_ptr <em>also</em> points to the control block. </li>
 </ol>
 </div><h2 class="groupheader">Member Function Documentation</h2>

@@ -68,6 +68,9 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
+<p>A cached integer value.  
+ <a href="classCachedInteger.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="CachedValue_8h_source.html">CachedValue.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
@@ -101,7 +104,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>SetCached</b> (T newV
 <div class="textblock"><h3>template&lt;typename T, typename std::enable_if&lt; std::is_integral&lt; T &gt;::value, bool &gt;::type = true&gt;<br />
 class CachedInteger&lt; T, type &gt;</h3>
 
-<p>A cached integer value</p>
+<p>A cached integer value. </p>
 <p>The value can be used in contexts where the integer could be used, but is "mostly" read-only: it can not be assigned to, but can be SetCached(). This is to enforce a protocol where a dedicated method updates the cached value, but elsewhere the value is only read from. Attempting to access an invalid value is checked for. </p>
 </div><hr/>The documentation for this class was generated from the following file:<ul>
 <li>src/utils/<a class="el" href="CachedValue_8h_source.html">CachedValue.h</a></li>

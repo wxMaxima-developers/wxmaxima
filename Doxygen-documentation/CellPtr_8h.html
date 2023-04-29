@@ -73,6 +73,9 @@ $(function() {
 <div class="title">CellPtr.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Implementation of an observing weak <a class="el" href="classCell.html" title="The base class all cell types the worksheet can consist of are derived from.">Cell</a> pointer.  
+<a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;wx/debug.h&gt;</code><br />
 <code>#include &lt;wx/log.h&gt;</code><br />
 <code>#include &lt;utility&gt;</code><br />
@@ -86,7 +89,7 @@ Include dependency graph for CellPtr.h:</div>
 <div class="dyncontent">
 <div class="center"><img src="CellPtr_8h__incl.png" border="0" usemap="#asrc_2cells_2CellPtr_8h" alt=""/></div>
 <map name="asrc_2cells_2CellPtr_8h" id="asrc_2cells_2CellPtr_8h">
-<area shape="rect" title=" " alt="" coords="329,5,462,32"/>
+<area shape="rect" title="Implementation of an observing weak Cell pointer." alt="" coords="329,5,462,32"/>
 <area shape="rect" title=" " alt="" coords="5,80,103,107"/>
 <area shape="rect" title=" " alt="" coords="127,80,205,107"/>
 <area shape="rect" title=" " alt="" coords="229,80,289,107"/>
@@ -102,56 +105,56 @@ This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
 <div class="center"><img src="CellPtr_8h__dep__incl.png" border="0" usemap="#asrc_2cells_2CellPtr_8hdep" alt=""/></div>
 <map name="asrc_2cells_2CellPtr_8hdep" id="asrc_2cells_2CellPtr_8hdep">
-<area shape="rect" title=" " alt="" coords="3280,5,3413,32"/>
-<area shape="rect" href="Cell_8h.html" title=" " alt="" coords="2347,80,2463,107"/>
-<area shape="rect" href="CellList_8h.html" title=" " alt="" coords="4268,229,4407,256"/>
+<area shape="rect" title="Implementation of an observing weak Cell pointer." alt="" coords="3280,5,3413,32"/>
+<area shape="rect" href="Cell_8h.html" title="The definition of the base class of all cells the worksheet consists of." alt="" coords="2347,80,2463,107"/>
+<area shape="rect" href="CellList_8h.html" title="Declares the cell list management functionality." alt="" coords="4268,229,4407,256"/>
 <area shape="rect" href="CellPointers_8h_source.html" title=" " alt="" coords="3231,229,3366,256"/>
-<area shape="rect" href="Worksheet_8h.html" title=" " alt="" coords="3351,304,3478,331"/>
-<area shape="rect" href="AbsCell_8h.html" title=" " alt="" coords="119,304,259,331"/>
-<area shape="rect" href="AnimationCell_8h.html" title=" " alt="" coords="3931,304,4114,331"/>
+<area shape="rect" href="Worksheet_8h.html" title="This file defines the class Worksheet." alt="" coords="3351,304,3478,331"/>
+<area shape="rect" href="AbsCell_8h.html" title="This file declares the class AbsCell." alt="" coords="119,304,259,331"/>
+<area shape="rect" href="AnimationCell_8h.html" title="This file declares the class AnimationCell." alt="" coords="3931,304,4114,331"/>
 <area shape="rect" href="AtCell_8h_source.html" title=" " alt="" coords="459,304,589,331"/>
-<area shape="rect" href="BoxCell_8h.html" title=" " alt="" coords="1308,229,1449,256"/>
-<area shape="rect" href="Cell_8cpp.html" title=" " alt="" coords="2799,304,2929,331"/>
-<area shape="rect" href="ConjugateCell_8h.html" title=" " alt="" coords="1691,229,1874,256"/>
+<area shape="rect" href="BoxCell_8h.html" title="This file defines the class for the cell type that represents a box(x) block." alt="" coords="1308,229,1449,256"/>
+<area shape="rect" href="Cell_8cpp.html" title="This file defines the class Cell." alt="" coords="2799,304,2929,331"/>
+<area shape="rect" href="ConjugateCell_8h.html" title="This file defines the class for the cell type that represents a conjugate(x) block." alt="" coords="1691,229,1874,256"/>
 <area shape="rect" href="DiffCell_8h_source.html" title=" " alt="" coords="613,304,752,331"/>
-<area shape="rect" href="EditorCell_8h.html" title=" " alt="" coords="2879,155,3033,181"/>
-<area shape="rect" href="GroupCell_8h.html" title=" " alt="" coords="3001,229,3156,256"/>
-<area shape="rect" href="MathParser_8h.html" title=" " alt="" coords="2034,304,2163,331"/>
-<area shape="rect" href="ExptCell_8h.html" title=" " alt="" coords="1898,229,2043,256"/>
-<area shape="rect" href="FracCell_8h.html" title=" " alt="" coords="1525,229,1667,256"/>
-<area shape="rect" href="FunCell_8h.html" title=" " alt="" coords="913,155,1052,181"/>
+<area shape="rect" href="EditorCell_8h.html" title="This file contains the definition of the class EditorCell." alt="" coords="2879,155,3033,181"/>
+<area shape="rect" href="GroupCell_8h.html" title="This file defines the class GroupCell that bundles input and output in the worksheet." alt="" coords="3001,229,3156,256"/>
+<area shape="rect" href="MathParser_8h.html" title="The header file for the xml cell parser." alt="" coords="2034,304,2163,331"/>
+<area shape="rect" href="ExptCell_8h.html" title="This file declares the class ExptCell which represents a exp() or e^x&#45;construct." alt="" coords="1898,229,2043,256"/>
+<area shape="rect" href="FracCell_8h.html" title="This file declares the class FracCell." alt="" coords="1525,229,1667,256"/>
+<area shape="rect" href="FunCell_8h.html" title="This file declares the class FunCell() that represents a maxima function." alt="" coords="913,155,1052,181"/>
 <area shape="rect" href="ImgCell_8h_source.html" title=" " alt="" coords="3765,304,3907,331"/>
 <area shape="rect" href="ImgCellBase_8h_source.html" title=" " alt="" coords="3729,229,3903,256"/>
-<area shape="rect" href="IntCell_8h.html" title=" " alt="" coords="1152,155,1285,181"/>
-<area shape="rect" href="IntervalCell_8h.html" title=" " alt="" coords="2170,229,2337,256"/>
-<area shape="rect" href="LimitCell_8h.html" title=" " alt="" coords="2361,229,2511,256"/>
-<area shape="rect" href="ListCell_8h.html" title=" " alt="" coords="2535,229,2673,256"/>
-<area shape="rect" href="SetCell_8h.html" title=" " alt="" coords="2561,304,2698,331"/>
+<area shape="rect" href="IntCell_8h.html" title="This file declares the class IntCell." alt="" coords="1152,155,1285,181"/>
+<area shape="rect" href="IntervalCell_8h.html" title="This file declares the class IntervalCell." alt="" coords="2170,229,2337,256"/>
+<area shape="rect" href="LimitCell_8h.html" title="This file declares the class LimitCell." alt="" coords="2361,229,2511,256"/>
+<area shape="rect" href="ListCell_8h.html" title="This file declares the class ListCell." alt="" coords="2535,229,2673,256"/>
+<area shape="rect" href="SetCell_8h.html" title="This file declares the class SetCell." alt="" coords="2561,304,2698,331"/>
 <area shape="rect" href="MatrCell_8h_source.html" title=" " alt="" coords="5,155,152,181"/>
-<area shape="rect" href="NamedBoxCell_8h.html" title=" " alt="" coords="929,229,1117,256"/>
-<area shape="rect" href="ParenCell_8h.html" title=" " alt="" coords="1489,155,1641,181"/>
-<area shape="rect" href="SumCell_8h.html" title=" " alt="" coords="657,229,802,256"/>
-<area shape="rect" href="SqrtCell_8h.html" title=" " alt="" coords="1141,229,1283,256"/>
+<area shape="rect" href="NamedBoxCell_8h.html" title="This file defines the class for the cell type that represents a box(x) block with two arguments." alt="" coords="929,229,1117,256"/>
+<area shape="rect" href="ParenCell_8h.html" title="This file declares the class ParenCell." alt="" coords="1489,155,1641,181"/>
+<area shape="rect" href="SumCell_8h.html" title="This file declares the class SumCell." alt="" coords="657,229,802,256"/>
+<area shape="rect" href="SqrtCell_8h.html" title="This file defines the class for the cell type that represents a square root." alt="" coords="1141,229,1283,256"/>
 <area shape="rect" href="SubCell_8h_source.html" title=" " alt="" coords="227,155,367,181"/>
 <area shape="rect" href="SubSupCell_8h_source.html" title=" " alt="" coords="391,155,555,181"/>
 <area shape="rect" href="TextCell_8h_source.html" title=" " alt="" coords="2182,155,2325,181"/>
-<area shape="rect" href="Configuration_8cpp.html" title=" " alt="" coords="3159,155,3318,181"/>
-<area shape="rect" href="BitmapOut_8cpp.html" title=" " alt="" coords="3342,155,3567,181"/>
-<area shape="rect" href="EMFout_8cpp.html" title=" " alt="" coords="3592,155,3795,181"/>
-<area shape="rect" href="Image_8cpp.html" title=" " alt="" coords="4130,229,4243,256"/>
-<area shape="rect" href="Image_8h.html" title=" " alt="" coords="3920,155,4019,181"/>
-<area shape="rect" href="SvgBitmap_8h.html" title=" " alt="" coords="4172,155,4300,181"/>
-<area shape="rect" href="wxMaximaIcon_8h.html" title=" " alt="" coords="4769,304,4925,331"/>
-<area shape="rect" href="AnimationCell_8cpp.html" title=" " alt="" coords="3711,379,3910,405"/>
-<area shape="rect" href="EditorCell_8cpp.html" title=" " alt="" coords="3005,304,3174,331"/>
-<area shape="rect" href="GroupCell_8cpp.html" title=" " alt="" coords="3425,379,3596,405"/>
-<area shape="rect" href="ImgCell_8cpp.html" title=" " alt="" coords="3179,379,3335,405"/>
-<area shape="rect" href="ImgCellBase_8cpp.html" title=" " alt="" coords="3502,304,3690,331"/>
-<area shape="rect" href="Worksheet_8cpp.html" title=" " alt="" coords="3933,379,4075,405"/>
-<area shape="rect" href="MathParser_8cpp.html" title=" " alt="" coords="1307,379,1451,405"/>
-<area shape="rect" href="wxMaxima_8cpp.html" title=" " alt="" coords="4099,379,4243,405"/>
-<area shape="rect" href="DigitCell_8cpp.html" title=" " alt="" coords="4291,304,4453,331"/>
-<area shape="rect" href="LongNumberCell_8cpp.html" title=" " alt="" coords="4478,304,4693,331"/>
+<area shape="rect" href="Configuration_8cpp.html" title="This file defines the class Configuration which serves as a fast configuration storage." alt="" coords="3159,155,3318,181"/>
+<area shape="rect" href="BitmapOut_8cpp.html" title="This file defines the class BitMap that renders math as bitmap." alt="" coords="3342,155,3567,181"/>
+<area shape="rect" href="EMFout_8cpp.html" title="This file defines the class Emfout that renders math as scalable emf graphics." alt="" coords="3592,155,3795,181"/>
+<area shape="rect" href="Image_8cpp.html" title="This file declares the class Image." alt="" coords="4130,229,4243,256"/>
+<area shape="rect" href="Image_8h.html" title="This file declares the class Image." alt="" coords="3920,155,4019,181"/>
+<area shape="rect" href="SvgBitmap_8h.html" title="This file declares the class Image." alt="" coords="4172,155,4300,181"/>
+<area shape="rect" href="wxMaximaIcon_8h.html" title="This file declares the function that returns the wxMaxima icon." alt="" coords="4769,304,4925,331"/>
+<area shape="rect" href="AnimationCell_8cpp.html" title="This file defines the class AnimationCell." alt="" coords="3711,379,3910,405"/>
+<area shape="rect" href="EditorCell_8cpp.html" title="This file defines the class EditorCell." alt="" coords="3005,304,3174,331"/>
+<area shape="rect" href="GroupCell_8cpp.html" title="This file defines the class GroupCell." alt="" coords="3425,379,3596,405"/>
+<area shape="rect" href="ImgCell_8cpp.html" title="This file defines the class ImgCell." alt="" coords="3179,379,3335,405"/>
+<area shape="rect" href="ImgCellBase_8cpp.html" title="This file defines the class ImgCellBase." alt="" coords="3502,304,3690,331"/>
+<area shape="rect" href="Worksheet_8cpp.html" title="This file defines the class Worksheet." alt="" coords="3933,379,4075,405"/>
+<area shape="rect" href="MathParser_8cpp.html" title="This file defines the class MathParser that reads wxmx data and math from Maxima." alt="" coords="1307,379,1451,405"/>
+<area shape="rect" href="wxMaxima_8cpp.html" title="This file defines the contents of the class wxMaxima that contains most of the program&#39;s logic." alt="" coords="4099,379,4243,405"/>
+<area shape="rect" href="DigitCell_8cpp.html" title="This file defines the class DigitCell." alt="" coords="4291,304,4453,331"/>
+<area shape="rect" href="LongNumberCell_8cpp.html" title="This file defines the class LongNumberCell." alt="" coords="4478,304,4693,331"/>
 </map>
 </div>
 </div>
@@ -160,33 +163,36 @@ This graph shows which files directly or indirectly include this file:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Data Structures</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classObserved.html">Observed</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Objects deriving from this class can be observed by the <a class="el" href="classCellPtr.html" title="A weak non-owning pointer that becomes null whenever the observed object is destroyed.">CellPtr</a>.  <a href="classObserved.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCellPtrBase.html">CellPtrBase</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">An implementation detail for the type-specific templated cell pointers.  <a href="classCellPtrBase.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCellPtr.html">CellPtr&lt; T &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A weak non-owning pointer that becomes null whenever the observed object is destroyed.  <a href="classCellPtr.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
 <tr class="memitem:abaf1f6f330358d321f576536daa5d72d"><td class="memItemLeft" align="right" valign="top"><a id="abaf1f6f330358d321f576536daa5d72d"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="CellPtr_8h.html#abaf1f6f330358d321f576536daa5d72d">CELLPTR_CAST_TO_PTR</a>&#160;&#160;&#160;1</td></tr>
-<tr class="memdesc:abaf1f6f330358d321f576536daa5d72d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set to 1 to enable casting from <a class="el" href="classCellPtr.html">CellPtr</a>&lt;U&gt; to U*. <br /></td></tr>
+<tr class="memdesc:abaf1f6f330358d321f576536daa5d72d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set to 1 to enable casting from <a class="el" href="classCellPtr.html" title="A weak non-owning pointer that becomes null whenever the observed object is destroyed.">CellPtr</a>&lt;U&gt; to U*. <br /></td></tr>
 <tr class="separator:abaf1f6f330358d321f576536daa5d72d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8f518d03e825a1e2325d5adc49b3368b"><td class="memItemLeft" align="right" valign="top"><a id="a8f518d03e825a1e2325d5adc49b3368b"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="CellPtr_8h.html#a8f518d03e825a1e2325d5adc49b3368b">CELLPTR_COUNT_INSTANCES</a>&#160;&#160;&#160;0</td></tr>
-<tr class="memdesc:a8f518d03e825a1e2325d5adc49b3368b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set to 1 to count <a class="el" href="classCellPtr.html">CellPtr</a>, <a class="el" href="classObserved.html">Observed</a> (<a class="el" href="classCell.html">Cell</a>) and Observed::ControlBlock instances. <br /></td></tr>
+<tr class="memdesc:a8f518d03e825a1e2325d5adc49b3368b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set to 1 to count <a class="el" href="classCellPtr.html" title="A weak non-owning pointer that becomes null whenever the observed object is destroyed.">CellPtr</a>, <a class="el" href="classObserved.html" title="Objects deriving from this class can be observed by the CellPtr.">Observed</a> (<a class="el" href="classCell.html" title="The base class all cell types the worksheet can consist of are derived from.">Cell</a>) and Observed::ControlBlock instances. <br /></td></tr>
 <tr class="separator:a8f518d03e825a1e2325d5adc49b3368b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afd4b81fe3c987bede1e8d45f121fcddc"><td class="memItemLeft" align="right" valign="top"><a id="afd4b81fe3c987bede1e8d45f121fcddc"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="CellPtr_8h.html#afd4b81fe3c987bede1e8d45f121fcddc">CELLPTR_LOG_REFS</a>&#160;&#160;&#160;0</td></tr>
-<tr class="memdesc:afd4b81fe3c987bede1e8d45f121fcddc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set to 1 to enable <a class="el" href="classCellPtr.html">CellPtr</a> control block reference count logs. <br /></td></tr>
+<tr class="memdesc:afd4b81fe3c987bede1e8d45f121fcddc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set to 1 to enable <a class="el" href="classCellPtr.html" title="A weak non-owning pointer that becomes null whenever the observed object is destroyed.">CellPtr</a> control block reference count logs. <br /></td></tr>
 <tr class="separator:afd4b81fe3c987bede1e8d45f121fcddc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a449798e6357da4d06752a02a0e33f970"><td class="memItemLeft" align="right" valign="top"><a id="a449798e6357da4d06752a02a0e33f970"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="CellPtr_8h.html#a449798e6357da4d06752a02a0e33f970">CELLPTR_LOG_INSTANCES</a>&#160;&#160;&#160;0</td></tr>
-<tr class="memdesc:a449798e6357da4d06752a02a0e33f970"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set to 1 to enable <a class="el" href="classCellPtr.html">CellPtr</a> lifetime logging. <br /></td></tr>
+<tr class="memdesc:a449798e6357da4d06752a02a0e33f970"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set to 1 to enable <a class="el" href="classCellPtr.html" title="A weak non-owning pointer that becomes null whenever the observed object is destroyed.">CellPtr</a> lifetime logging. <br /></td></tr>
 <tr class="separator:a449798e6357da4d06752a02a0e33f970"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaa6993ecc680d67f9e0ee559619435aa"><td class="memItemLeft" align="right" valign="top"><a id="aaa6993ecc680d67f9e0ee559619435aa"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="CellPtr_8h.html#aaa6993ecc680d67f9e0ee559619435aa">CELLPTR_LOG_METHOD</a>&#160;&#160;&#160;wxLogDebug</td></tr>
-<tr class="memdesc:aaa6993ecc680d67f9e0ee559619435aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set to the type of logging you wish for <a class="el" href="classCellPtr.html">CellPtr</a> (can be e.g. wxLogDebug or wxLogMessage) <br /></td></tr>
+<tr class="memdesc:aaa6993ecc680d67f9e0ee559619435aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set to the type of logging you wish for <a class="el" href="classCellPtr.html" title="A weak non-owning pointer that becomes null whenever the observed object is destroyed.">CellPtr</a> (can be e.g. wxLogDebug or wxLogMessage) <br /></td></tr>
 <tr class="separator:aaa6993ecc680d67f9e0ee559619435aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
@@ -230,9 +236,9 @@ template&lt;typename Derived , typename Base &gt; </td></tr>
 <tr class="separator:ab671e37a19353791368fe1bd77f12361"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Implementation of an observing weak <a class="el" href="classCell.html">Cell</a> pointer.</p>
+<div class="textblock"><p>Implementation of an observing weak <a class="el" href="classCell.html" title="The base class all cell types the worksheet can consist of are derived from.">Cell</a> pointer. </p>
 <p>It doesn't have the overhead of atomic reference counting, as would be imposed by shared_ptr. The latter has high likelihood of misuse, and suffers from the locking boilerplate needed to use the <code>weak_ptr</code>. But - above all - <a class="el" href="classwxMaxima.html">wxMaxima</a>'s data model does not use shared ownership. All cells are have a single owner - either a cell list rooted in a unique_ptr, or are owned by internal cell pointers.</p>
-<p>Author's Note: I'm not particularly happy with this code, since it could be factored much better. Observe that all three classes that implement this system are the same: they are a pointer. An <code><a class="el" href="classObserved.html">Observed</a></code> is a pointer, a <code><a class="el" href="classCellPtrBase.html">CellPtrBase</a></code> is a pointer, an an <code>Observed::ControlBlock</code> is a pointer. The currently "dumb" <code>CellPtrImplPointer</code> class could be at the heart of all three without any special-casing, and could better handle the reference counting in one spot. But observe the potential performance impact of subtle mistakes in any such refactoring: it takes lots of time to get it right. At the moment, we're at a point where small improvements can gain about 0.5% time reduction in the hs(17) benchmark, listed below. 0.5% time reduction is observed as 1s+ speed-up over runtime of about 180s. </p><pre class="fragment">hs(n):=ratsimp(ratexpand(product(x-a[i],i,1,n)));
+<p>Author's Note: I'm not particularly happy with this code, since it could be factored much better. Observe that all three classes that implement this system are the same: they are a pointer. An <code><a class="el" href="classObserved.html" title="Objects deriving from this class can be observed by the CellPtr.">Observed</a></code> is a pointer, a <code><a class="el" href="classCellPtrBase.html" title="An implementation detail for the type-specific templated cell pointers.">CellPtrBase</a></code> is a pointer, an an <code>Observed::ControlBlock</code> is a pointer. The currently "dumb" <code>CellPtrImplPointer</code> class could be at the heart of all three without any special-casing, and could better handle the reference counting in one spot. But observe the potential performance impact of subtle mistakes in any such refactoring: it takes lots of time to get it right. At the moment, we're at a point where small improvements can gain about 0.5% time reduction in the hs(17) benchmark, listed below. 0.5% time reduction is observed as 1s+ speed-up over runtime of about 180s. </p><pre class="fragment">hs(n):=ratsimp(ratexpand(product(x-a[i],i,1,n)));
 hs(17);
 </pre> </div></div><!-- contents -->
 <!-- start footer part -->

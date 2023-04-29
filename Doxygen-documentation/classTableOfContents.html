@@ -69,13 +69,16 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
+<p>This class generates a pane containing the table of contents.  
+ <a href="classTableOfContents.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="TableOfContents_8h_source.html">TableOfContents.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for TableOfContents:</div>
 <div class="dyncontent">
 <div class="center"><img src="classTableOfContents__inherit__graph.png" border="0" usemap="#aTableOfContents_inherit__map" alt="Inheritance graph"/></div>
 <map name="aTableOfContents_inherit__map" id="aTableOfContents_inherit__map">
-<area shape="rect" title=" " alt="" coords="5,80,135,107"/>
+<area shape="rect" title="This class generates a pane containing the table of contents." alt="" coords="5,80,135,107"/>
 <area shape="rect" title=" " alt="" coords="32,5,108,32"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
@@ -84,7 +87,7 @@ Collaboration diagram for TableOfContents:</div>
 <div class="dyncontent">
 <div class="center"><img src="classTableOfContents__coll__graph.png" border="0" usemap="#aTableOfContents_coll__map" alt="Collaboration graph"/></div>
 <map name="aTableOfContents_coll__map" id="aTableOfContents_coll__map">
-<area shape="rect" title=" " alt="" coords="5,80,135,107"/>
+<area shape="rect" title="This class generates a pane containing the table of contents." alt="" coords="5,80,135,107"/>
 <area shape="rect" title=" " alt="" coords="32,5,108,32"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
@@ -102,10 +105,11 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memdesc:a30c1fca1e34b370fdaf099d0f5509ec3"><td class="mdescLeft">&#160;</td><td class="mdescRight">What happens if someone changes the search box contents. <br /></td></tr>
 <tr class="separator:a30c1fca1e34b370fdaf099d0f5509ec3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a63819f993f35d4b2a813911406c24202"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTableOfContents.html#a63819f993f35d4b2a813911406c24202">UpdateTableOfContents</a> (<a class="el" href="classGroupCell.html">GroupCell</a> *pos)</td></tr>
+<tr class="memdesc:a63819f993f35d4b2a813911406c24202"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update the structure information from the tree.  <a href="classTableOfContents.html#a63819f993f35d4b2a813911406c24202">More...</a><br /></td></tr>
 <tr class="separator:a63819f993f35d4b2a813911406c24202"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a97e431eb23e73185abfbfdec665e379c"><td class="memItemLeft" align="right" valign="top"><a id="a97e431eb23e73185abfbfdec665e379c"></a>
 <a class="el" href="classGroupCell.html">GroupCell</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTableOfContents.html#a97e431eb23e73185abfbfdec665e379c">GetCell</a> (long index)</td></tr>
-<tr class="memdesc:a97e431eb23e73185abfbfdec665e379c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the nth <a class="el" href="classCell.html">Cell</a> in the table of contents. <br /></td></tr>
+<tr class="memdesc:a97e431eb23e73185abfbfdec665e379c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the nth <a class="el" href="classCell.html" title="The base class all cell types the worksheet can consist of are derived from.">Cell</a> in the table of contents. <br /></td></tr>
 <tr class="separator:a97e431eb23e73185abfbfdec665e379c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a62b8b1854549b574a37aea4e429081c5"><td class="memItemLeft" align="right" valign="top"><a id="a62b8b1854549b574a37aea4e429081c5"></a>
 <a class="el" href="classGroupCell.html">GroupCell</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTableOfContents.html#a62b8b1854549b574a37aea4e429081c5">RightClickedOn</a> ()</td></tr>
@@ -160,7 +164,8 @@ wxString&#160;</td><td class="memItemRight" valign="bottom"><b>TocEntryString</b
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Update the structure information from the tree</p>
+
+<p>Update the structure information from the tree. </p>
 <p>Since this function traverses the tree and we don't want it to impact the performance too much</p><ul>
 <li>we call it only on creation of a cell and on leaving it again</li>
 <li>and we only traverse the tree if the pane is actually shown. </li>

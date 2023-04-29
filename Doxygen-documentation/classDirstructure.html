@@ -69,6 +69,9 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
+<p>An object that represents the directory structure <a class="el" href="classwxMaxima.html">wxMaxima</a> is installed in.  
+ <a href="classDirstructure.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="Dirstructure_8h_source.html">Dirstructure.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
@@ -98,6 +101,7 @@ wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 <tr class="memdesc:a97c4733132048586d7142b55d194e41e"><td class="mdescLeft">&#160;</td><td class="mdescRight">The path to <a class="el" href="classwxMaxima.html">wxMaxima</a>'s own <a class="el" href="classAutoComplete.html">AutoComplete</a> file. <br /></td></tr>
 <tr class="separator:a97c4733132048586d7142b55d194e41e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a854184b4fd40416aab4f26021f895544"><td class="memItemLeft" align="right" valign="top">wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDirstructure.html#a854184b4fd40416aab4f26021f895544">LocaleDir</a> () const</td></tr>
+<tr class="memdesc:a854184b4fd40416aab4f26021f895544"><td class="mdescLeft">&#160;</td><td class="mdescRight">The directory the locale data is to be found in.  <a href="classDirstructure.html#a854184b4fd40416aab4f26021f895544">More...</a><br /></td></tr>
 <tr class="separator:a854184b4fd40416aab4f26021f895544"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
@@ -110,7 +114,9 @@ static wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el"
 static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDirstructure.html#af1f29e662949f33bdd49b3e087d1290b">UserConfDir</a> (wxString userConfDir)</td></tr>
 <tr class="memdesc:af1f29e662949f33bdd49b3e087d1290b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the directory the user stores its data in. <br /></td></tr>
 <tr class="separator:af1f29e662949f33bdd49b3e087d1290b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9983e2d05056f5e55105a9d5c6cb63b9"><td class="memItemLeft" align="right" valign="top">static wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDirstructure.html#a9983e2d05056f5e55105a9d5c6cb63b9">UserAutocompleteFile</a> ()</td></tr>
+<tr class="memitem:a9983e2d05056f5e55105a9d5c6cb63b9"><td class="memItemLeft" align="right" valign="top"><a id="a9983e2d05056f5e55105a9d5c6cb63b9"></a>
+static wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDirstructure.html#a9983e2d05056f5e55105a9d5c6cb63b9">UserAutocompleteFile</a> ()</td></tr>
+<tr class="memdesc:a9983e2d05056f5e55105a9d5c6cb63b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">The file private accelerator key information is stored in. <br /></td></tr>
 <tr class="separator:a9983e2d05056f5e55105a9d5c6cb63b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a280d3ee7cd41633a0c3a79d4a19d04ee"><td class="memItemLeft" align="right" valign="top"><a id="a280d3ee7cd41633a0c3a79d4a19d04ee"></a>
 static wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDirstructure.html#a280d3ee7cd41633a0c3a79d4a19d04ee">MaximaDefaultLocation</a> ()</td></tr>
@@ -124,7 +130,7 @@ static <a class="el" href="classDirstructure.html">Dirstructure</a> *&#160;</td>
 <tr class="separator:a7cbbeddf6b8683781e6b02bc19f430a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>An object that represents the directory structure <a class="el" href="classwxMaxima.html">wxMaxima</a> is installed in</p>
+<div class="textblock"><p>An object that represents the directory structure <a class="el" href="classwxMaxima.html">wxMaxima</a> is installed in. </p>
 <p><a class="el" href="classwxMaxima.html">wxMaxima</a> finds its data in different places on different operating systems:</p><ul>
 <li>wxStandardPaths::GetExecutablePath() on windows</li>
 <li>PREFIX+"/share/wxMaxima/" on Linux</li>
@@ -154,34 +160,9 @@ static <a class="el" href="classDirstructure.html">Dirstructure</a> *&#160;</td>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>The directory the locale data is to be found in</p>
+
+<p>The directory the locale data is to be found in. </p>
 <p>Is only used on MSW and MAC </p>
-
-</div>
-</div>
-<a id="a9983e2d05056f5e55105a9d5c6cb63b9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9983e2d05056f5e55105a9d5c6cb63b9">&#9670;&nbsp;</a></span>UserAutocompleteFile()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">wxString Dirstructure::UserAutocompleteFile </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>The file private accelerator key information is stored in </p>
 
 </div>
 </div>

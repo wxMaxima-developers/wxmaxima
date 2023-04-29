@@ -69,7 +69,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p>A collection of common code used in rendering the cells to a non-default output, e.g.  
+<p>A collection of common code used in rendering the cells to a non-default output, e.g. a graphics file.  
  <a href="classOutCommon.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="OutCommon_8h_source.html">OutCommon.h</a>&gt;</code></p>
@@ -82,10 +82,12 @@ Data Structures</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a0fa8417b359963813a4bb2947d9391ef"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="classOutCommon_1_1DataObject.html">DataObject</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOutCommon.html#a0fa8417b359963813a4bb2947d9391ef">GetDataObject</a> (const wxDataFormat &amp;format)</td></tr>
-<tr class="memdesc:a0fa8417b359963813a4bb2947d9391ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the representation that can be placed on the clipboard.  <a href="classOutCommon.html#a0fa8417b359963813a4bb2947d9391ef">More...</a><br /></td></tr>
+<tr class="memitem:a0fa8417b359963813a4bb2947d9391ef"><td class="memItemLeft" align="right" valign="top"><a id="a0fa8417b359963813a4bb2947d9391ef"></a>
+std::unique_ptr&lt; <a class="el" href="classOutCommon_1_1DataObject.html">DataObject</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOutCommon.html#a0fa8417b359963813a4bb2947d9391ef">GetDataObject</a> (const wxDataFormat &amp;format)</td></tr>
+<tr class="memdesc:a0fa8417b359963813a4bb2947d9391ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the representation that can be placed on the clipboard. Removes the file the data was saved in. <br /></td></tr>
 <tr class="separator:a0fa8417b359963813a4bb2947d9391ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0f705f904ed76d79e06e1f4d72b444b5"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOutCommon.html#a0f705f904ed76d79e06e1f4d72b444b5">OutCommon</a> (<a class="el" href="classConfiguration.html">Configuration</a> **configuration, const wxString &amp;filename, int fullWidth, double scale)</td></tr>
+<tr class="memdesc:a0f705f904ed76d79e06e1f4d72b444b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs the instance of the helper, temporarily overriding the configuration.  <a href="classOutCommon.html#a0f705f904ed76d79e06e1f4d72b444b5">More...</a><br /></td></tr>
 <tr class="separator:a0f705f904ed76d79e06e1f4d72b444b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5afd36a4ce117aff48b5c2a666edb615"><td class="memItemLeft" align="right" valign="top"><a id="a5afd36a4ce117aff48b5c2a666edb615"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>OutCommon</b> (<a class="el" href="classConfiguration.html">Configuration</a> **configuration, int fullWidth, double scale)</td></tr>
@@ -153,8 +155,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="separator:a59e1f732d956f7b3caa6773e3bb11936"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>A collection of common code used in rendering the cells to a non-default output, e.g. </p>
-<p>a graphics file. </p>
+<div class="textblock"><p>A collection of common code used in rendering the cells to a non-default output, e.g. a graphics file. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a0f705f904ed76d79e06e1f4d72b444b5"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0f705f904ed76d79e06e1f4d72b444b5">&#9670;&nbsp;</a></span>OutCommon()</h2>
@@ -201,7 +202,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Constructs the instance of the helper, temporarily overriding the configuration.</p>
+
+<p>Constructs the instance of the helper, temporarily overriding the configuration. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">fullWidth</td><td>multiplied by scale is only used as maximum width during line breaking. </td></tr>
@@ -211,28 +213,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
   </table>
   </dd>
 </dl>
-
-</div>
-</div>
-<h2 class="groupheader">Member Function Documentation</h2>
-<a id="a0fa8417b359963813a4bb2947d9391ef"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0fa8417b359963813a4bb2947d9391ef">&#9670;&nbsp;</a></span>GetDataObject()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::unique_ptr&lt; <a class="el" href="classOutCommon_1_1DataObject.html">OutCommon::DataObject</a> &gt; OutCommon::GetDataObject </td>
-          <td>(</td>
-          <td class="paramtype">const wxDataFormat &amp;&#160;</td>
-          <td class="paramname"><em>format</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Returns the representation that can be placed on the clipboard. </p>
-<p>Removes the file the data was saved in. </p>
 
 </div>
 </div>

@@ -67,8 +67,16 @@ $(function() {
 <div class="title">Undo methods for cell additions/deletions:</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Each <a class="el" href="classEditorCell.html" title="This class defines what the user sees as input cell.">EditorCell</a> has its own private undo buffer Additionally <a class="el" href="classwxMaxima.html">wxMaxima</a> maintains an undo buffer for worksheet changes.  
+<a href="#details">More...</a></p>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<p>Each <a class="el" href="classEditorCell.html">EditorCell</a> has its own private undo buffer Additionally <a class="el" href="classwxMaxima.html">wxMaxima</a> maintains an undo buffer for worksheet changes. It works the following way:</p>
+<p>Each <a class="el" href="classEditorCell.html" title="This class defines what the user sees as input cell.">EditorCell</a> has its own private undo buffer Additionally <a class="el" href="classwxMaxima.html">wxMaxima</a> maintains an undo buffer for worksheet changes. </p>
+<p>Delete the currently selected cells.</p>
+<p>Move a range of cells from the document to the undo buffer.</p>
+<p>Delete a range of cells.</p>
+<p>Clear the undo and the redo buffer.</p>
+<p>It works the following way:</p>
 <ul>
 <li>Cells normally aren't deleted. They are moved into an undo buffer instead.</li>
 <li>The undo buffer is also notified when Cells that are added</li>
@@ -80,8 +88,6 @@ $(function() {
 <li>The buffer that is used instead if a cell change has been issued by the undo command so the undo action can be reverted.<br  />
 This approach allows the undo functionality to use the regular add and delete operations keeping the codebase small.</li>
 </ul>
-<p>Clear the undo and the redo buffer</p>
-<p>Delete a range of cells</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">start</td><td>The first cell to delete </td></tr>
@@ -92,18 +98,11 @@ This approach allows the undo functionality to use the regular add and delete op
 <li>NULL for: Don't keep any copy of the cells.</li>
 </ul>
 </td></tr>
-  </table>
-  </dd>
-</dl>
-<p>Move a range of cells from the document to the undo buffer</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
     <tr><td class="paramname">start</td><td>The first cell to delete </td></tr>
     <tr><td class="paramname">end</td><td>The last cell to delete</td></tr>
   </table>
   </dd>
 </dl>
-<p>Delete the currently selected cells</p>
 <p>Actually moves them to the undo buffer so this action can be undone. </p>
 </div><!-- contents -->
 <!-- start footer part -->

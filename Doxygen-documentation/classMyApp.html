@@ -99,6 +99,7 @@ virtual int&#160;</td><td class="memItemRight" valign="bottom"><b>OnRun</b> ()</
 virtual int&#160;</td><td class="memItemRight" valign="bottom"><b>OnExit</b> ()</td></tr>
 <tr class="separator:ac89908f7a347ca2cc44611a4179b35ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1f6e5cf2600da99f0e3fc6356f36dfc7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMyApp.html#a1f6e5cf2600da99f0e3fc6356f36dfc7">NewWindow</a> (const wxString &amp;file={}, bool evalOnStartup=false, bool exitAfterEval=false, unsigned char *wxmData=NULL, size_t wxmLen=0)</td></tr>
+<tr class="memdesc:a1f6e5cf2600da99f0e3fc6356f36dfc7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a new window.  <a href="classMyApp.html#a1f6e5cf2600da99f0e3fc6356f36dfc7">More...</a><br /></td></tr>
 <tr class="separator:a1f6e5cf2600da99f0e3fc6356f36dfc7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a95b78db6965a23c10a17e15cea359689"><td class="memItemLeft" align="right" valign="top"><a id="a95b78db6965a23c10a17e15cea359689"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>OnFileMenu</b> (wxCommandEvent &amp;ev)</td></tr>
@@ -181,8 +182,9 @@ Catch::Session&#160;</td><td class="memItemRight" valign="bottom"><b>catchSessio
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Create a new window</p>
-<p>The mac platform insists in making all windows of an application share the same process. On the other platforms we create a separate process for every <a class="el" href="classwxMaxima.html">wxMaxima</a> session instead which means that each process uses the <a class="el" href="classMyApp.html#a1f6e5cf2600da99f0e3fc6356f36dfc7">NewWindow()</a> function only once.</p>
+
+<p>Create a new window. </p>
+<p>The mac platform insists in making all windows of an application share the same process. On the other platforms we create a separate process for every <a class="el" href="classwxMaxima.html">wxMaxima</a> session instead which means that each process uses the <a class="el" href="classMyApp.html#a1f6e5cf2600da99f0e3fc6356f36dfc7" title="Create a new window.">NewWindow()</a> function only once.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">file</td><td>The file name </td></tr>

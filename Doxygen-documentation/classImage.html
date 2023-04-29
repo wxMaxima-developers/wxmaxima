@@ -71,13 +71,16 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
+<p>Manages an auto-scaling image.  
+ <a href="classImage.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="Image_8h_source.html">Image.h</a>&gt;</code></p>
 <div class="dynheader">
 Collaboration diagram for Image:</div>
 <div class="dyncontent">
 <div class="center"><img src="classImage__coll__graph.png" border="0" usemap="#aImage_coll__map" alt="Collaboration graph"/></div>
 <map name="aImage_coll__map" id="aImage_coll__map">
-<area shape="rect" title=" " alt="" coords="5,109,68,136"/>
+<area shape="rect" title="Manages an auto&#45;scaling image." alt="" coords="5,109,68,136"/>
 <area shape="rect" title=" " alt="" coords="11,5,62,32"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
@@ -93,8 +96,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:aaa1a1ecd05aa79a052c3eb61cb1e764a"><td class="mdescLeft">&#160;</td><td class="mdescRight">A constructor that loads the compressed file from a wxMemoryBuffer. <br /></td></tr>
 <tr class="separator:aaa1a1ecd05aa79a052c3eb61cb1e764a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5914663cd2c7958ef99bad1c8d0b4a7c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classImage.html#a5914663cd2c7958ef99bad1c8d0b4a7c">Image</a> (<a class="el" href="classConfiguration.html">Configuration</a> *config, const wxBitmap &amp;bitmap)</td></tr>
+<tr class="memdesc:a5914663cd2c7958ef99bad1c8d0b4a7c"><td class="mdescLeft">&#160;</td><td class="mdescRight">A constructor that loads a bitmap.  <a href="classImage.html#a5914663cd2c7958ef99bad1c8d0b4a7c">More...</a><br /></td></tr>
 <tr class="separator:a5914663cd2c7958ef99bad1c8d0b4a7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1846504a6a94d8a3f27a337176a82a71"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classImage.html#a1846504a6a94d8a3f27a337176a82a71">Image</a> (<a class="el" href="classConfiguration.html">Configuration</a> *config, wxString image, std::shared_ptr&lt; wxFileSystem &gt; filesystem, bool remove=true)</td></tr>
+<tr class="memdesc:a1846504a6a94d8a3f27a337176a82a71"><td class="mdescLeft">&#160;</td><td class="mdescRight">A constructor that loads an image.  <a href="classImage.html#a1846504a6a94d8a3f27a337176a82a71">More...</a><br /></td></tr>
 <tr class="separator:a1846504a6a94d8a3f27a337176a82a71"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8fe4e9afe10f38133b5ba743a8b4ddb1"><td class="memItemLeft" align="right" valign="top"><a id="a8fe4e9afe10f38133b5ba743a8b4ddb1"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>Image</b> (<a class="el" href="classConfiguration.html">Configuration</a> *config, const <a class="el" href="classImage.html">Image</a> &amp;image)</td></tr>
@@ -118,16 +123,21 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memdesc:a7fd957f945374a5335edf9bf76333500"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a bitmap showing an error message. <br /></td></tr>
 <tr class="separator:a7fd957f945374a5335edf9bf76333500"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afd34ee0cda8e195bc3e022fff868f0da"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classImage.html#afd34ee0cda8e195bc3e022fff868f0da">GnuplotSource</a> (wxString gnuplotFilename, wxString dataFilename, std::shared_ptr&lt; wxFileSystem &gt; filesystem)</td></tr>
+<tr class="memdesc:afd34ee0cda8e195bc3e022fff868f0da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the name of the gnuplot source and data file of this image.  <a href="classImage.html#afd34ee0cda8e195bc3e022fff868f0da">More...</a><br /></td></tr>
 <tr class="separator:afd34ee0cda8e195bc3e022fff868f0da"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad7d01d1f2706c9f3a402abc143b33fb8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classImage.html#ad7d01d1f2706c9f3a402abc143b33fb8">CompressedGnuplotSource</a> (wxString gnuplotFilename, wxString dataFilename, std::shared_ptr&lt; wxFileSystem &gt; filesystem)</td></tr>
+<tr class="memitem:ad7d01d1f2706c9f3a402abc143b33fb8"><td class="memItemLeft" align="right" valign="top"><a id="ad7d01d1f2706c9f3a402abc143b33fb8"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classImage.html#ad7d01d1f2706c9f3a402abc143b33fb8">CompressedGnuplotSource</a> (wxString gnuplotFilename, wxString dataFilename, std::shared_ptr&lt; wxFileSystem &gt; filesystem)</td></tr>
+<tr class="memdesc:ad7d01d1f2706c9f3a402abc143b33fb8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads the compressed gnuplot source and data file for this image. <br /></td></tr>
 <tr class="separator:ad7d01d1f2706c9f3a402abc143b33fb8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a75cda87121d287b697cd91539706095d"><td class="memItemLeft" align="right" valign="top"><a id="a75cda87121d287b697cd91539706095d"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classImage.html#a75cda87121d287b697cd91539706095d">GnuplotSource</a> (wxString gnuplotFilename, wxString dataFilename)</td></tr>
 <tr class="memdesc:a75cda87121d287b697cd91539706095d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load the gnuplot source file from the system's filesystem. <br /></td></tr>
 <tr class="separator:a75cda87121d287b697cd91539706095d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a299156259e50c7a78733a252e1ed36bc"><td class="memItemLeft" align="right" valign="top">wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classImage.html#a299156259e50c7a78733a252e1ed36bc">GnuplotSource</a> ()</td></tr>
+<tr class="memdesc:a299156259e50c7a78733a252e1ed36bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the gnuplot source file name of this image.  <a href="classImage.html#a299156259e50c7a78733a252e1ed36bc">More...</a><br /></td></tr>
 <tr class="separator:a299156259e50c7a78733a252e1ed36bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae215879f7fdb14b9277fd9ca69227b98"><td class="memItemLeft" align="right" valign="top">wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classImage.html#ae215879f7fdb14b9277fd9ca69227b98">GnuplotData</a> ()</td></tr>
+<tr class="memdesc:ae215879f7fdb14b9277fd9ca69227b98"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the gnuplot data file name of this image.  <a href="classImage.html#ae215879f7fdb14b9277fd9ca69227b98">More...</a><br /></td></tr>
 <tr class="separator:ae215879f7fdb14b9277fd9ca69227b98"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abb8b255ae351004872659ddb3764a64f"><td class="memItemLeft" align="right" valign="top"><a id="abb8b255ae351004872659ddb3764a64f"></a>
 const wxMemoryBuffer&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classImage.html#abb8b255ae351004872659ddb3764a64f">GetGnuplotSource</a> () const</td></tr>
@@ -144,6 +154,7 @@ const wxMemoryBuffer&#160;</td><td class="memItemRight" valign="bottom"><a class
 const wxMemoryBuffer&#160;</td><td class="memItemRight" valign="bottom"><b>GetCompressedGnuplotData</b> () const</td></tr>
 <tr class="separator:a47d937fde8174d5956a19f6e7b8c1616"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae792e58c167f0210ba8dd3289f46eff4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classImage.html#ae792e58c167f0210ba8dd3289f46eff4">ClearCache</a> ()</td></tr>
+<tr class="memdesc:ae792e58c167f0210ba8dd3289f46eff4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Temporarily forget the scaled image in order to save memory.  <a href="classImage.html#ae792e58c167f0210ba8dd3289f46eff4">More...</a><br /></td></tr>
 <tr class="separator:ae792e58c167f0210ba8dd3289f46eff4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6582ffbd6da1b300a79e002aceac11f6"><td class="memItemLeft" align="right" valign="top"><a id="a6582ffbd6da1b300a79e002aceac11f6"></a>
 wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classImage.html#a6582ffbd6da1b300a79e002aceac11f6">GetExtension</a> () const</td></tr>
@@ -233,7 +244,7 @@ wxMemoryBuffer&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
 <tr class="separator:ab8cad9e339ba1917923f7a639ac6daa0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Manages an auto-scaling image</p>
+<div class="textblock"><p>Manages an auto-scaling image. </p>
 <p>This class keeps two versions of an image:</p><ul>
 <li>The image in its original compressed format. This way the image can losslessly be exported later on</li>
 <li>A bitmap version of the image that is scaled down to a size that makes sense with the current viewport.</li>
@@ -272,7 +283,8 @@ wxMemoryBuffer&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
         </tr>
       </table>
 </div><div class="memdoc">
-<p>A constructor that loads a bitmap</p>
+
+<p>A constructor that loads a bitmap. </p>
 <p>This constructor actually has to do some compression since we got the bitmap in an uncompressed form. </p>
 
 </div>
@@ -314,7 +326,8 @@ wxMemoryBuffer&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
         </tr>
       </table>
 </div><div class="memdoc">
-<p>A constructor that loads an image</p>
+
+<p>A constructor that loads an image. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">config</td><td>The pointer to the current configuration storage for the worksheet </td></tr>
@@ -350,43 +363,9 @@ wxMemoryBuffer&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Temporarily forget the scaled image in order to save memory</p>
+
+<p>Temporarily forget the scaled image in order to save memory. </p>
 <p>Will recreate the scaled image as soon as needed. </p>
-
-</div>
-</div>
-<a id="ad7d01d1f2706c9f3a402abc143b33fb8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad7d01d1f2706c9f3a402abc143b33fb8">&#9670;&nbsp;</a></span>CompressedGnuplotSource()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Image::CompressedGnuplotSource </td>
-          <td>(</td>
-          <td class="paramtype">wxString&#160;</td>
-          <td class="paramname"><em>gnuplotFilename</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">wxString&#160;</td>
-          <td class="paramname"><em>dataFilename</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::shared_ptr&lt; wxFileSystem &gt;&#160;</td>
-          <td class="paramname"><em>filesystem</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Loads the compressed gnuplot source and data file for this image </p>
 
 </div>
 </div>
@@ -404,7 +383,8 @@ wxMemoryBuffer&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Returns the gnuplot data file name of this image</p>
+
+<p>Returns the gnuplot data file name of this image. </p>
 <p>If maxima has deleted the temporary file in the meantime or if it comes from a .wxmx file and has never been created from maxima the file is created by this function.</p>
 <p>If the file cannot be created (for example if no gnuplot source exists/ is known) this function returns wxEmptyString. </p>
 
@@ -424,7 +404,8 @@ wxMemoryBuffer&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Returns the gnuplot source file name of this image</p>
+
+<p>Returns the gnuplot source file name of this image. </p>
 <p>If maxima has deleted the temporary file in the meantime or if it comes from a .wxmx file and has never been created from maxima the file is created by this function.</p>
 <p>If the file cannot be created (for example if no gnuplot source exists/ is known) this function returns wxEmptyString. </p>
 
@@ -461,7 +442,8 @@ wxMemoryBuffer&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Sets the name of the gnuplot source and data file of this image</p>
+
+<p>Sets the name of the gnuplot source and data file of this image. </p>
 <p>Causes the files to be cached if they are not way too long; As the files are text-only they profit from being compressed and are stored in the memory in their compressed form. </p>
 
 </div>

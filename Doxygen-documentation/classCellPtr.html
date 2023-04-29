@@ -71,14 +71,17 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
+<p>A weak non-owning pointer that becomes null whenever the observed object is destroyed.  
+ <a href="classCellPtr.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="CellPtr_8h_source.html">CellPtr.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for CellPtr&lt; T &gt;:</div>
 <div class="dyncontent">
 <div class="center"><img src="classCellPtr__inherit__graph.png" border="0" usemap="#aCellPtr_3_01T_01_4_inherit__map" alt="Inheritance graph"/></div>
 <map name="aCellPtr_3_01T_01_4_inherit__map" id="aCellPtr_3_01T_01_4_inherit__map">
-<area shape="rect" title=" " alt="" coords="5,80,108,107"/>
-<area shape="rect" href="classCellPtrBase.html" title=" " alt="" coords="8,5,105,32"/>
+<area shape="rect" title="A weak non&#45;owning pointer that becomes null whenever the observed object is destroyed." alt="" coords="5,80,108,107"/>
+<area shape="rect" href="classCellPtrBase.html" title="An implementation detail for the type&#45;specific templated cell pointers." alt="" coords="8,5,105,32"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
@@ -86,8 +89,8 @@ Collaboration diagram for CellPtr&lt; T &gt;:</div>
 <div class="dyncontent">
 <div class="center"><img src="classCellPtr__coll__graph.png" border="0" usemap="#aCellPtr_3_01T_01_4_coll__map" alt="Collaboration graph"/></div>
 <map name="aCellPtr_3_01T_01_4_coll__map" id="aCellPtr_3_01T_01_4_coll__map">
-<area shape="rect" title=" " alt="" coords="5,80,108,107"/>
-<area shape="rect" href="classCellPtrBase.html" title=" " alt="" coords="8,5,105,32"/>
+<area shape="rect" title="A weak non&#45;owning pointer that becomes null whenever the observed object is destroyed." alt="" coords="5,80,108,107"/>
+<area shape="rect" href="classCellPtrBase.html" title="An implementation detail for the type&#45;specific templated cell pointers." alt="" coords="8,5,105,32"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -244,13 +247,13 @@ Protected Member Functions</h2></td></tr>
 <div class="textblock"><h3>template&lt;typename T&gt;<br />
 class CellPtr&lt; T &gt;</h3>
 
-<p>A weak non-owning pointer that becomes null whenever the observed object is destroyed.</p>
+<p>A weak non-owning pointer that becomes null whenever the observed object is destroyed. </p>
 <p><b>The use of this pointer type has performance implications. It is not a "free" abstraction!</b></p>
-<p><b>Warning:</b> To maintain performance, most cells should have at most one <a class="el" href="classCellPtr.html">CellPtr</a> pointing at them. Currently, this is the m_nextToDraw - it uses up our "CellPtr
-budget". The remaining CellPtrs are in <a class="el" href="classCellPointers.html">CellPointers</a>, and there is very few cells at any given time that are pointed-to by those pointers, and thus the performance impact is minimal.</p>
-<p>In the common case of being null, or of being the only <a class="el" href="classCellPtr.html">CellPtr</a> to a given cell, the performance is similar to a raw pointer: it stores the cell pointer directly. The pointed-to cell points back to this sole pointer, so that it can reset it to null when it gets destroyed. A <a class="el" href="classCellPtr.html">CellPtr</a> is exactly the size of an <code><a class="el" href="classObserved.html">Observed</a> *</code>.</p>
-<p>When the second <a class="el" href="classCellPtr.html">CellPtr</a> is made to point to a cell, a shared control block is allocated on behalf of the cell, and both the <a class="el" href="classCellPtr.html">CellPtr</a> and the cell point to it. The control block is greedily dereferenced whenever the <a class="el" href="classCellPtr.html">CellPtr</a> notices that the cell it pointed to has vanished. But, once a cell has a ControlBlock, it doesn't get rid of it until no pointers point to it. So, if there are two+ pointers pointing to a cell, then only one is left, there still is a control block, and the pointers still "pointer chase" through that control block. Getting rid of the control block in this case is a low-priority TODO at the moment, since there's no performance impact seen from this.</p>
-<p>The observed type must be derived from <a class="el" href="classObserved.html">Observed</a>, and this fact is checked at the point of instantiation. The pointer's instance can be declared with forward-defined classes. </p>
+<p><b>Warning:</b> To maintain performance, most cells should have at most one <a class="el" href="classCellPtr.html" title="A weak non-owning pointer that becomes null whenever the observed object is destroyed.">CellPtr</a> pointing at them. Currently, this is the m_nextToDraw - it uses up our "CellPtr
+budget". The remaining CellPtrs are in <a class="el" href="classCellPointers.html" title="The storage for pointers to cells.">CellPointers</a>, and there is very few cells at any given time that are pointed-to by those pointers, and thus the performance impact is minimal.</p>
+<p>In the common case of being null, or of being the only <a class="el" href="classCellPtr.html" title="A weak non-owning pointer that becomes null whenever the observed object is destroyed.">CellPtr</a> to a given cell, the performance is similar to a raw pointer: it stores the cell pointer directly. The pointed-to cell points back to this sole pointer, so that it can reset it to null when it gets destroyed. A <a class="el" href="classCellPtr.html" title="A weak non-owning pointer that becomes null whenever the observed object is destroyed.">CellPtr</a> is exactly the size of an <code><a class="el" href="classObserved.html" title="Objects deriving from this class can be observed by the CellPtr.">Observed</a> *</code>.</p>
+<p>When the second <a class="el" href="classCellPtr.html" title="A weak non-owning pointer that becomes null whenever the observed object is destroyed.">CellPtr</a> is made to point to a cell, a shared control block is allocated on behalf of the cell, and both the <a class="el" href="classCellPtr.html" title="A weak non-owning pointer that becomes null whenever the observed object is destroyed.">CellPtr</a> and the cell point to it. The control block is greedily dereferenced whenever the <a class="el" href="classCellPtr.html" title="A weak non-owning pointer that becomes null whenever the observed object is destroyed.">CellPtr</a> notices that the cell it pointed to has vanished. But, once a cell has a ControlBlock, it doesn't get rid of it until no pointers point to it. So, if there are two+ pointers pointing to a cell, then only one is left, there still is a control block, and the pointers still "pointer chase" through that control block. Getting rid of the control block in this case is a low-priority TODO at the moment, since there's no performance impact seen from this.</p>
+<p>The observed type must be derived from <a class="el" href="classObserved.html" title="Objects deriving from this class can be observed by the CellPtr.">Observed</a>, and this fact is checked at the point of instantiation. The pointer's instance can be declared with forward-defined classes. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a8caf3e9b626fc9e72681c67a127246d1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8caf3e9b626fc9e72681c67a127246d1">&#9670;&nbsp;</a></span>base_reset()</h2>

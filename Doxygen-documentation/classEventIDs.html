@@ -100,8 +100,10 @@ static constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class
 Static Public Attributes</h2></td></tr>
 <tr><td colspan="2"><div class="groupHeader"></div></td></tr>
 <tr class="memitem:a5f3662a75c216142fd3ddec2117483d4"><td class="memItemLeft" align="right" valign="top">static const wxWindowIDRef&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEventIDs.html#a5f3662a75c216142fd3ddec2117483d4">menu_pane_hideall</a></td></tr>
+<tr class="memdesc:a5f3662a75c216142fd3ddec2117483d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Hide all panes.  <a href="classEventIDs.html#a5f3662a75c216142fd3ddec2117483d4">More...</a><br /></td></tr>
 <tr class="separator:a5f3662a75c216142fd3ddec2117483d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a95017fc059b222493b76c640a4aab03e"><td class="memItemLeft" align="right" valign="top">static const wxWindowIDRef&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEventIDs.html#a95017fc059b222493b76c640a4aab03e">wizard_parametric_plot</a></td></tr>
+<tr class="memdesc:a95017fc059b222493b76c640a4aab03e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Both used as the "toggle the math pane" command and as the ID of the math pane.  <a href="classEventIDs.html#a95017fc059b222493b76c640a4aab03e">More...</a><br /></td></tr>
 <tr class="separator:a95017fc059b222493b76c640a4aab03e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a55353123df6a833c6f06e1e68862d963"><td class="memItemLeft" align="right" valign="top"><a id="a55353123df6a833c6f06e1e68862d963"></a>
 static const wxWindowIDRef&#160;</td><td class="memItemRight" valign="bottom"><b>wizard_discrete_plot</b></td></tr>
@@ -178,6 +180,7 @@ static const wxWindowIDRef&#160;</td><td class="memItemRight" valign="bottom"><a
 <tr class="memdesc:a6135cb62109b1af9f4995d050e517be2"><td class="mdescLeft">&#160;</td><td class="mdescRight">The id for the worksheet. <br /></td></tr>
 <tr class="separator:a6135cb62109b1af9f4995d050e517be2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a93e6705c26c84820de0b8f8008a2edb5"><td class="memItemLeft" align="right" valign="top">static const wxWindowIDRef&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEventIDs.html#a93e6705c26c84820de0b8f8008a2edb5">menu_pane_stats</a></td></tr>
+<tr class="memdesc:a93e6705c26c84820de0b8f8008a2edb5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Both used as the "toggle the stats pane" command and as the ID of the stats pane.  <a href="classEventIDs.html#a93e6705c26c84820de0b8f8008a2edb5">More...</a><br /></td></tr>
 <tr class="separator:a93e6705c26c84820de0b8f8008a2edb5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8738666d256df5b79cd3b7e471dae262"><td class="memItemLeft" align="right" valign="top"><a id="a8738666d256df5b79cd3b7e471dae262"></a>
 static const wxWindowIDRef&#160;</td><td class="memItemRight" valign="bottom"><b>menu_pane_dockAll</b></td></tr>
@@ -2100,13 +2103,14 @@ static const wxWindowIDRef&#160;</td><td class="memItemRight" valign="bottom"><b
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Hide all panes. </p>
 <p>This list serves several purposes:</p><ul>
 <li>wxwidgets uses this list to tell us what kind of events it has to inform us about.</li>
 <li>we use these events for inter process communication.<br  />
 For example the "evaluate this cell" menu is clicked by the enter (or the shift+enter, depending on what option is set in the configuration).</li>
 <li>Thirdly his enum is used for assigning panels an ID that matches the ID of the event that toggles them which makes the handling of these IDs easier.</li>
 </ul>
-<p>Hide all panes</p>
 <p>This event is assigned an ID higher than the highest ID wxWidgets assigns to its internal events in order to avoid ID clashes. </p>
 
 </div>
@@ -2130,7 +2134,8 @@ For example the "evaluate this cell" menu is clicked by the enter (or the shift+
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Both used as the "toggle the stats pane" command and as the ID of the stats pane</p>
+
+<p>Both used as the "toggle the stats pane" command and as the ID of the stats pane. </p>
 <p>Since this enum is also used for iterating over the panes it is vital that this entry stays that of the last pane in this enum. </p>
 
 </div>
@@ -2154,7 +2159,8 @@ For example the "evaluate this cell" menu is clicked by the enter (or the shift+
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Both used as the "toggle the math pane" command and as the ID of the math pane</p>
+
+<p>Both used as the "toggle the math pane" command and as the ID of the math pane. </p>
 <p>Since this enum is also used for iterating over the panes it is vital that this entry stays that of the first pane in this enum. </p>
 
 </div>

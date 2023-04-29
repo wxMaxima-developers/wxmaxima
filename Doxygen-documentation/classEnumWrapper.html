@@ -68,6 +68,9 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
+<p>A wrapper for legacy enumerated types that can be stored in a type smaller than an int.  
+ <a href="classEnumWrapper.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="EnumWrapper_8h_source.html">EnumWrapper.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
@@ -104,7 +107,7 @@ constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator!=<
 <div class="textblock"><h3>template&lt;typename Enum, typename Storage, Enum defaultValue = Enum{}, typename std::enable_if&lt; std::is_enum&lt; Enum &gt;::value &amp;&amp;std::is_integral&lt; Storage &gt;::value, bool &gt;::type = true&gt;<br />
 class EnumWrapper&lt; Enum, Storage, defaultValue, type &gt;</h3>
 
-<p>A wrapper for legacy enumerated types that can be stored in a type smaller than an int.</p>
+<p>A wrapper for legacy enumerated types that can be stored in a type smaller than an int. </p>
 <p>This wrapper is meant for storage as a class member.</p>
 <ol type="1">
 <li><em>Uses outside of class members are unnecessary and a bug.</em></li>

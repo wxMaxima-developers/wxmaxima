@@ -72,6 +72,9 @@ $(function() {
 <div class="title">wxMaxima.cpp File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>This file defines the contents of the class <a class="el" href="classwxMaxima.html">wxMaxima</a> that contains most of the program's logic.  
+<a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;<a class="el" href="MaximaTokenizer_8h_source.html">MaximaTokenizer.h</a>&quot;</code><br />
 <code>#include &lt;wx/notifmsg.h&gt;</code><br />
 <code>#include &lt;functional&gt;</code><br />
@@ -160,6 +163,7 @@ $(function() {
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
 <tr class="memitem:a9c75e3ed4f289dca9f75ac0cd3b8ac7e"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="wxMaxima_8cpp.html#a9c75e3ed4f289dca9f75ac0cd3b8ac7e">CALL_MEMBER_FN</a>(object,  ptrToMember)&#160;&#160;&#160;((object).*(ptrToMember))</td></tr>
+<tr class="memdesc:a9c75e3ed4f289dca9f75ac0cd3b8ac7e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls a member function from a function pointer.  <a href="wxMaxima_8cpp.html#a9c75e3ed4f289dca9f75ac0cd3b8ac7e">More...</a><br /></td></tr>
 <tr class="separator:a9c75e3ed4f289dca9f75ac0cd3b8ac7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
@@ -175,8 +179,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator&gt;</b> (con
 <tr class="separator:a4a11d97303088e7674d1f241d9d1c232"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>This file defines the contents of the class <a class="el" href="classwxMaxima.html">wxMaxima</a> that contains most of the program's logic.</p>
-<p>The worksheet is defined in the class <a class="el" href="classWorksheet.html">Worksheet</a> instead and everything surrounding it in <a class="el" href="classwxMaximaFrame.html">wxMaximaFrame</a>. </p>
+<div class="textblock"><p>This file defines the contents of the class <a class="el" href="classwxMaxima.html">wxMaxima</a> that contains most of the program's logic. </p>
+<p>The worksheet is defined in the class <a class="el" href="classWorksheet.html" title="The canvas that contains the spreadsheet the whole program is about.">Worksheet</a> instead and everything surrounding it in <a class="el" href="classwxMaximaFrame.html" title="The frame containing the menu and the sidebars.">wxMaximaFrame</a>. </p>
 </div><h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="a9c75e3ed4f289dca9f75ac0cd3b8ac7e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9c75e3ed4f289dca9f75ac0cd3b8ac7e">&#9670;&nbsp;</a></span>CALL_MEMBER_FN</h2>
@@ -203,7 +207,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator&gt;</b> (con
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Calls a member function from a function pointer</p>
+
+<p>Calls a member function from a function pointer. </p>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000020">Todo:</a></b></dt><dd>Replace this by a C++17 construct when we switch to C++17 </dd></dl>
 
 </div>

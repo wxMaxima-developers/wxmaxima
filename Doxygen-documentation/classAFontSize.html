@@ -72,6 +72,9 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
+<p>A Type-Safe Fixed-Point Font Size.  
+ <a href="classAFontSize.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="FontAttribs_8h_source.html">FontAttribs.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
@@ -157,9 +160,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="separator:aa4d7d94eb0b2e1d1a4815081e6292f1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>A Type-Safe Fixed-Point Font Size</p>
+<div class="textblock"><p>A Type-Safe Fixed-Point Font Size. </p>
 <p>The use of this type enforces type-safety: a font size isn't just any other float. Additionally, the built-in comparison of floating point types does not behave as one would expect, whereas this type is comparable without any gotchas.</p>
-<p>The size default-constructs to a null value (<a class="el" href="classAFontSize.html">AFontSize()</a>.IsNull() is true).</p>
+<p>The size default-constructs to a null value (<a class="el" href="classAFontSize.html" title="A Type-Safe Fixed-Point Font Size.">AFontSize()</a>.IsNull() is true).</p>
 <p>The range of font size is Minimum_Size (4.0) to Maximum_Size (1638.35), inclusive.</p>
 <p>It is an invariant: the numerical value (available via Get(), GetAsLong(), and operators that convert to double) is always within that range. The Set() operation clamps the value to these two limits, and cannot be used to set the null value.</p>
 <p>To null the size, assign the default value or Clear() it.</p>

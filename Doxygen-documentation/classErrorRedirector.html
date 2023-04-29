@@ -105,6 +105,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a3759256defa9ed1206e5d93483f091ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Restores the previous log target. <br /></td></tr>
 <tr class="separator:a3759256defa9ed1206e5d93483f091ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a14df54cd465a31aa70f8a4d118ebd3fa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classErrorRedirector.html#a14df54cd465a31aa70f8a4d118ebd3fa">Flush</a> () override</td></tr>
+<tr class="memdesc:a14df54cd465a31aa70f8a4d118ebd3fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method is called from the idle loop.  <a href="classErrorRedirector.html#a14df54cd465a31aa70f8a4d118ebd3fa">More...</a><br /></td></tr>
 <tr class="separator:a14df54cd465a31aa70f8a4d118ebd3fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a20b28e6ca66d9eb8c019d0a331eaac7c"><td class="memItemLeft" align="right" valign="top"><a id="a20b28e6ca66d9eb8c019d0a331eaac7c"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>DoLogRecord</b> (wxLogLevel level, const wxString &amp;msg, const wxLogRecordInfo &amp;info) override</td></tr>
@@ -143,6 +144,7 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
 <tr class="memitem:a4abda0ce2cf3958697ef94da9686d786"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classErrorRedirector.html#a4abda0ce2cf3958697ef94da9686d786">m_messages_logPaneOnly</a> = 0</td></tr>
+<tr class="memdesc:a4abda0ce2cf3958697ef94da9686d786"><td class="mdescLeft">&#160;</td><td class="mdescRight">A variable used by the <a class="el" href="classSuppressErrorDialogs.html" title="If a variable of this class is alive errors won&#39;t create popup dialogues.">SuppressErrorDialogs</a> class.  <a href="classErrorRedirector.html#a4abda0ce2cf3958697ef94da9686d786">More...</a><br /></td></tr>
 <tr class="separator:a4abda0ce2cf3958697ef94da9686d786"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
@@ -188,7 +190,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_batchMode</b> = fal
   </tr>
 </table>
 </div><div class="memdoc">
-<p>This method is called from the idle loop.</p>
+
+<p>This method is called from the idle loop. </p>
 <p>All log targets collect log messages between calls to Flush. </p>
 
 </div>
@@ -234,7 +237,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_batchMode</b> = fal
   </tr>
 </table>
 </div><div class="memdoc">
-<p>A variable used by the <a class="el" href="classSuppressErrorDialogs.html" title="If a variable of this class is alive errors won&#39;t create popup dialogues.">SuppressErrorDialogs</a> class</p>
+
+<p>A variable used by the <a class="el" href="classSuppressErrorDialogs.html" title="If a variable of this class is alive errors won&#39;t create popup dialogues.">SuppressErrorDialogs</a> class. </p>
 <p>&gt;=0 means: Messages should appear in the log pane only. </p>
 
 </div>

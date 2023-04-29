@@ -68,23 +68,29 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
+<p>Renders portions of the work sheet (including 2D maths) as bitmap.  
+ <a href="classBitmapOut.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="BitmapOut_8h_source.html">BitmapOut.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a219d0a7bb7ca413bf6c6a2394c15637d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBitmapOut.html#a219d0a7bb7ca413bf6c6a2394c15637d">BitmapOut</a> (<a class="el" href="classConfiguration.html">Configuration</a> **configuration, double scale=1)</td></tr>
+<tr class="memdesc:a219d0a7bb7ca413bf6c6a2394c15637d"><td class="mdescLeft">&#160;</td><td class="mdescRight">The constructor.  <a href="classBitmapOut.html#a219d0a7bb7ca413bf6c6a2394c15637d">More...</a><br /></td></tr>
 <tr class="separator:a219d0a7bb7ca413bf6c6a2394c15637d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a00c847fe2c09e2fdced8f8a75249661c"><td class="memItemLeft" align="right" valign="top"><a id="a00c847fe2c09e2fdced8f8a75249661c"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBitmapOut.html#a00c847fe2c09e2fdced8f8a75249661c">BitmapOut</a> (<a class="el" href="classConfiguration.html">Configuration</a> **configuration, std::unique_ptr&lt; <a class="el" href="classCell.html">Cell</a> &gt; &amp;&amp;tree, double scale=1, long maxSize=-1)</td></tr>
 <tr class="memdesc:a00c847fe2c09e2fdced8f8a75249661c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs and renders the bitmap, setting the IsOK() status accordingly. <br /></td></tr>
 <tr class="separator:a00c847fe2c09e2fdced8f8a75249661c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad631df01df5b3df5b9599bd18932875c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBitmapOut.html#ad631df01df5b3df5b9599bd18932875c">Render</a> (std::unique_ptr&lt; <a class="el" href="classCell.html">Cell</a> &gt; &amp;&amp;tree, long int maxSize=-1)</td></tr>
+<tr class="memdesc:ad631df01df5b3df5b9599bd18932875c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Renders tree as bitmap.  <a href="classBitmapOut.html#ad631df01df5b3df5b9599bd18932875c">More...</a><br /></td></tr>
 <tr class="separator:ad631df01df5b3df5b9599bd18932875c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af46705bab0e3319705367c1ae275a072"><td class="memItemLeft" align="right" valign="top"><a id="af46705bab0e3319705367c1ae275a072"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBitmapOut.html#af46705bab0e3319705367c1ae275a072">IsOk</a> () const</td></tr>
 <tr class="memdesc:af46705bab0e3319705367c1ae275a072"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns whether the tree rendering succeeded. <br /></td></tr>
 <tr class="separator:af46705bab0e3319705367c1ae275a072"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a15352668bc913b80e59e8eb670d08d85"><td class="memItemLeft" align="right" valign="top">wxSize&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBitmapOut.html#a15352668bc913b80e59e8eb670d08d85">ToFile</a> (const wxString &amp;file)</td></tr>
+<tr class="memdesc:a15352668bc913b80e59e8eb670d08d85"><td class="mdescLeft">&#160;</td><td class="mdescRight">Exports this bitmap to a file.  <a href="classBitmapOut.html#a15352668bc913b80e59e8eb670d08d85">More...</a><br /></td></tr>
 <tr class="separator:a15352668bc913b80e59e8eb670d08d85"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8ecdc7a39478efb08dc86f7d604163a6"><td class="memItemLeft" align="right" valign="top"><a id="a8ecdc7a39478efb08dc86f7d604163a6"></a>
 wxBitmap&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBitmapOut.html#a8ecdc7a39478efb08dc86f7d604163a6">GetBitmap</a> () const</td></tr>
@@ -99,7 +105,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="separator:a724a23dc78b6f47a7466914c213b4e2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Renders portions of the work sheet (including 2D maths) as bitmap.</p>
+<div class="textblock"><p>Renders portions of the work sheet (including 2D maths) as bitmap. </p>
 <p>This is used for exporting HTML with embedded maths as bitmap and for putting bitmaps for the clipboard </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a219d0a7bb7ca413bf6c6a2394c15637d"></a>
@@ -135,7 +141,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
   </tr>
 </table>
 </div><div class="memdoc">
-<p>The constructor.</p>
+
+<p>The constructor. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">scale</td><td>By which factor the resolution should be increased in respect to the default 755 DPI? </td></tr>
@@ -172,7 +179,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Renders tree as bitmap</p>
+
+<p>Renders tree as bitmap. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">tree</td><td>The list of cells that is to be rendered </td></tr>
@@ -199,7 +207,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Exports this bitmap to a file</p>
+
+<p>Exports this bitmap to a file. </p>
 <dl class="section return"><dt>Returns</dt><dd>The size of the bitmap in millimeters. Sizes &lt;0 indicate that the export has failed. </dd></dl>
 
 </div>

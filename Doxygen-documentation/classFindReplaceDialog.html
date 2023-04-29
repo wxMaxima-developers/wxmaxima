@@ -70,13 +70,16 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
+<p>The find+replace dialog.  
+ <a href="classFindReplaceDialog.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="FindReplaceDialog_8h_source.html">FindReplaceDialog.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for FindReplaceDialog:</div>
 <div class="dyncontent">
 <div class="center"><img src="classFindReplaceDialog__inherit__graph.png" border="0" usemap="#aFindReplaceDialog_inherit__map" alt="Inheritance graph"/></div>
 <map name="aFindReplaceDialog_inherit__map" id="aFindReplaceDialog_inherit__map">
-<area shape="rect" title=" " alt="" coords="5,80,148,107"/>
+<area shape="rect" title="The find+replace dialog." alt="" coords="5,80,148,107"/>
 <area shape="rect" title=" " alt="" coords="35,5,118,32"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
@@ -85,9 +88,9 @@ Collaboration diagram for FindReplaceDialog:</div>
 <div class="dyncontent">
 <div class="center"><img src="classFindReplaceDialog__coll__graph.png" border="0" usemap="#aFindReplaceDialog_coll__map" alt="Collaboration graph"/></div>
 <map name="aFindReplaceDialog_coll__map" id="aFindReplaceDialog_coll__map">
-<area shape="rect" title=" " alt="" coords="5,171,148,197"/>
+<area shape="rect" title="The find+replace dialog." alt="" coords="5,171,148,197"/>
 <area shape="rect" title=" " alt="" coords="14,81,97,108"/>
-<area shape="rect" href="classFindReplacePane.html" title=" " alt="" coords="121,81,253,108"/>
+<area shape="rect" href="classFindReplacePane.html" title="The find+replace pane." alt="" coords="121,81,253,108"/>
 <area shape="rect" title=" " alt="" coords="149,5,225,32"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
@@ -117,15 +120,17 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memdesc:a7a791a24cebb7acde874a0d41551fefd"><td class="mdescLeft">&#160;</td><td class="mdescRight">We catch a few hot keys here as we don't provide a menu that could declare them. <br /></td></tr>
 <tr class="separator:a7a791a24cebb7acde874a0d41551fefd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad6114b1268bce071b001f39e50f7fb28"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFindReplaceDialog.html#ad6114b1268bce071b001f39e50f7fb28">OnClose</a> (wxCloseEvent &amp;WXUNUSED(event))</td></tr>
+<tr class="memdesc:ad6114b1268bce071b001f39e50f7fb28"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called on closing the dialogue.  <a href="classFindReplaceDialog.html#ad6114b1268bce071b001f39e50f7fb28">More...</a><br /></td></tr>
 <tr class="separator:ad6114b1268bce071b001f39e50f7fb28"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
 <tr class="memitem:a69ea637e828cfea632086b7f7e5b9d86"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classFindReplacePane.html">FindReplacePane</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFindReplaceDialog.html#a69ea637e828cfea632086b7f7e5b9d86">m_contents</a></td></tr>
+<tr class="memdesc:a69ea637e828cfea632086b7f7e5b9d86"><td class="mdescLeft">&#160;</td><td class="mdescRight">The contents of the dialog.  <a href="classFindReplaceDialog.html#a69ea637e828cfea632086b7f7e5b9d86">More...</a><br /></td></tr>
 <tr class="separator:a69ea637e828cfea632086b7f7e5b9d86"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>The find+replace dialog </p>
+<div class="textblock"><p>The find+replace dialog. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="ad6114b1268bce071b001f39e50f7fb28"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad6114b1268bce071b001f39e50f7fb28">&#9670;&nbsp;</a></span>OnClose()</h2>
@@ -150,7 +155,8 @@ Protected Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Called on closing the dialogue.</p>
+
+<p>Called on closing the dialogue. </p>
 <p>Informs our parent that it can stop highlighting search results and saves the window geometry for the next time the window is opened. </p>
 
 </div>
@@ -175,7 +181,8 @@ Protected Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>The contents of the dialog.</p>
+
+<p>The contents of the dialog. </p>
 <p>The contents is split into a separate panel so we can easily make it dockable once dockable dialogues aren't this ugly any more. </p>
 
 </div>
