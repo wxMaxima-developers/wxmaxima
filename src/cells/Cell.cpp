@@ -372,8 +372,6 @@ void Cell::Recalculate(AFontSize fontsize) {
   m_recalculateWidths = false;
 }
 
-/*! Is this cell currently visible in the window?.
- */
 bool Cell::DrawThisCell(wxPoint point) {
   SetCurrentPoint(point);
 

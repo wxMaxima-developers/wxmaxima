@@ -145,6 +145,7 @@ class Cell: public Observed
 
   // This class can be derived from wxAccessible which has no copy constructor
   void operator=(const Cell&) = delete;
+  //! The constructor of this cell
   Cell(GroupCell *group, const Cell&) = delete;
 
   template <typename C, typename std::enable_if<std::is_base_of<Cell, C>::value, bool>::type>
@@ -171,6 +172,10 @@ public:
     Is used for displaying/printing/exporting of text/maths
   */
   int Scale_Px(double px) const {return m_configuration->Scale_Px(px);}
+  /*! Scale font sizes and line widths according to the zoom factor.
+
+    Is used for displaying/printing/exporting of text/maths
+  */
   AFontSize Scale_Px(AFontSize size) const { return m_configuration->Scale_Px(size); }
 
 #if wxUSE_ACCESSIBILITY
@@ -272,8 +277,11 @@ public:
     For details see ClearCache().
   */
   void ClearCacheList();
+  //! Tell this cell list to use the configuration object config
   void SetConfigurationList(Configuration *config);
+  //! Tell this cell to use the configuration object config
   virtual void SetConfiguration(Configuration *config);
+  //! Which configuration object is responsible for this cell?
   Configuration *GetConfiguration(){return m_configuration;}
 
   
@@ -287,8 +295,6 @@ public:
     after the height of denominator and numerator are known.
   */
   virtual void Draw(wxPoint point);
-
-  void Draw(){Draw(m_currentPoint);}
 
   /*! Draw this list of cells
 
@@ -306,7 +312,13 @@ public:
   */
   virtual void DrawBoundingBox(wxDC &WXUNUSED(dc), bool all = false);
 
+  /*! Is this cell currently visible in the window?
+
+    \param point The point to place this cell at
+   */
   bool DrawThisCell(wxPoint point);
+  /*! Is this cell currently visible in the window?
+   */
   bool DrawThisCell(){return DrawThisCell(m_currentPoint);}
 
   /*! Insert (or remove) a forced linebreak at the beginning of this cell.
@@ -440,8 +452,6 @@ public:
 
   //! Tell a whole list of cells that their fonts have changed
   void FontsChangedList();
-
-  void ClearNeedsToRecalculateWidths() { m_recalculateWidths = false; }
 
   //! Mark all cached size information as "to be calculated".
   void ResetData();
@@ -688,8 +698,13 @@ public:
    */
   bool IsHidden() const { return m_isHidden; }
 
+  //! Hide this cell. See IsHidden() for details.
   virtual void Hide(bool hide = true) { m_isHidden = hide; }
 
+  /*! Is this cell editable?
+
+    Editable cells include comments, code, captions and questions from maxima.
+   */
   bool IsEditable(bool input = false) const
     {
       return (m_type == MC_TYPE_INPUT &&
@@ -717,39 +732,59 @@ public:
   virtual bool AddEnding()
     { return false; }
 
+  //! Select the text at point
   virtual void SelectPointText(wxPoint point);
-      
+
+  //! Select the text between the two points
   virtual void SelectRectText(wxPoint one, wxPoint two);
   
+  /*! Paste from the clipboard into this cell
+
+    \param primary Linux has two clipboards: One that automatically stores all
+    selected test and that is pasted on middle-click (true) and the traditional
+    copy-and-paste one (false). This parameter tells which clipboard to use.
+  */
   virtual void PasteFromClipboard(bool primary = false);
-  
+
+  /*! Copy this cell's editable contents to the clipboard
+
+    Only interesting for EditorCells*/
   virtual bool CopyToClipboard() const
     { return false; }
 
+  /*! Cut this cell's editable contents to the clipboard
+
+    Only interesting for EditorCells*/
   virtual bool CutToClipboard()
     { return false; }
 
+  //! Select all editable text of this cell
   virtual void SelectAll()
     {}
 
+  //! Select Can we copy the editable text of this cell?
   virtual bool CanCopy() const
     { return false; }
 
+  //! Locates a char in the editable text of this cell
   virtual wxPoint PositionToPoint(int WXUNUSED(pos) = -1)
     { return wxPoint(-1, -1); }
 
+  //! Is this cell marked as "from an old maxima run"?
   virtual bool IsDirty() const
     { return false; }
 
   virtual void SwitchCaretDisplay()
     {}
 
+  //! Focus this editor cell
   virtual void SetFocus(bool WXUNUSED(focus))
     {}
 
   //! Sets the foreground color
   void SetForeground();
 
+  //! Is this editor cell focused?
   virtual bool IsActive() const
     { return false; }
 
@@ -862,8 +897,16 @@ protected:
   */
   wxPoint m_currentPoint{-1, -1};
 
+protected:
+    /*! Clear the "sizes need to be recalculated" flag of this cell
+
+    Is called by the recalculation code
+   */
+  void ClearNeedsToRecalculateWidths() { m_recalculateWidths = false; }
+
 //** 8/4-byte objects (40 + 8* bytes)
 //**
+
 private:
   //! The next cell in the list of cells, or null if it's the last cell.
   std::unique_ptr<Cell> m_next;
