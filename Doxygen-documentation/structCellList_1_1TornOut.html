@@ -66,8 +66,7 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#pub-attribs">Public Attributes</a> &#124;
-<a href="structCellList_1_1TornOut-members.html">List of all members</a>  </div>
+<a href="#pub-attribs">Data Fields</a>  </div>
   <div class="headertitle">
 <div class="title">CellList::TornOut Struct Reference</div>  </div>
 </div><!--header-->
@@ -84,47 +83,20 @@ Collaboration diagram for CellList::TornOut:</div>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
-Public Attributes</h2></td></tr>
+Data Fields</h2></td></tr>
 <tr class="memitem:a1a59905f41c54f5cd34e20855efa2fe6"><td class="memItemLeft" align="right" valign="top"><a id="a1a59905f41c54f5cd34e20855efa2fe6"></a>
 <a class="el" href="classCellPtr.html">CellPtr</a>&lt; <a class="el" href="classCell.html">Cell</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structCellList_1_1TornOut.html#a1a59905f41c54f5cd34e20855efa2fe6">cell</a></td></tr>
 <tr class="memdesc:a1a59905f41c54f5cd34e20855efa2fe6"><td class="mdescLeft">&#160;</td><td class="mdescRight">The first in the torn-out list of cells, or null if the tearing out had failed. <br /></td></tr>
 <tr class="separator:a1a59905f41c54f5cd34e20855efa2fe6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaec5379f95aa617f78f247c870bda10c"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="classCell.html">Cell</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structCellList_1_1TornOut.html#aaec5379f95aa617f78f247c870bda10c">cellOwner</a></td></tr>
+<tr class="memitem:aaec5379f95aa617f78f247c870bda10c"><td class="memItemLeft" align="right" valign="top"><a id="aaec5379f95aa617f78f247c870bda10c"></a>
+std::unique_ptr&lt; <a class="el" href="classCell.html">Cell</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structCellList_1_1TornOut.html#aaec5379f95aa617f78f247c870bda10c">cellOwner</a></td></tr>
+<tr class="memdesc:aaec5379f95aa617f78f247c870bda10c"><td class="mdescLeft">&#160;</td><td class="mdescRight">The owner of the torn-out cell list, or null if the cell had no predecessor in the list. <br /></td></tr>
 <tr class="separator:aaec5379f95aa617f78f247c870bda10c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a68edf68e8bd2135c90a02e1d7d309e31"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="classCell.html">Cell</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structCellList_1_1TornOut.html#a68edf68e8bd2135c90a02e1d7d309e31">tailOwner</a></td></tr>
+<tr class="memitem:a68edf68e8bd2135c90a02e1d7d309e31"><td class="memItemLeft" align="right" valign="top"><a id="a68edf68e8bd2135c90a02e1d7d309e31"></a>
+std::unique_ptr&lt; <a class="el" href="classCell.html">Cell</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structCellList_1_1TornOut.html#a68edf68e8bd2135c90a02e1d7d309e31">tailOwner</a></td></tr>
+<tr class="memdesc:a68edf68e8bd2135c90a02e1d7d309e31"><td class="mdescLeft">&#160;</td><td class="mdescRight">The owner of the tail beyond the last cell, or null if the cell did have a predecessor in the list. <br /></td></tr>
 <tr class="separator:a68edf68e8bd2135c90a02e1d7d309e31"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Data Documentation</h2>
-<a id="aaec5379f95aa617f78f247c870bda10c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaec5379f95aa617f78f247c870bda10c">&#9670;&nbsp;</a></span>cellOwner</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::unique_ptr&lt;<a class="el" href="classCell.html">Cell</a>&gt; CellList::TornOut::cellOwner</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>The owner of the torn-out cell list, or null if the cell had no predecessor in the list. </p>
-
-</div>
-</div>
-<a id="a68edf68e8bd2135c90a02e1d7d309e31"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a68edf68e8bd2135c90a02e1d7d309e31">&#9670;&nbsp;</a></span>tailOwner</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::unique_ptr&lt;<a class="el" href="classCell.html">Cell</a>&gt; CellList::TornOut::tailOwner</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>The owner of the tail beyond the last cell, or null if the cell did have a predecessor in the list. </p>
-
-</div>
-</div>
 <hr/>The documentation for this struct was generated from the following file:<ul>
 <li>src/cells/<a class="el" href="CellList_8h_source.html">CellList.h</a></li>
 </ul>

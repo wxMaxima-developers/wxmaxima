@@ -65,8 +65,7 @@ $(function() {
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
-<a href="#pro-attribs">Protected Attributes</a> &#124;
-<a href="classErrorRedirector-members.html">List of all members</a>  </div>
+<a href="#pro-attribs">Protected Attributes</a>  </div>
   <div class="headertitle">
 <div class="title">ErrorRedirector Class Reference</div>  </div>
 </div><!--header-->
@@ -97,7 +96,9 @@ Collaboration diagram for ErrorRedirector:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:acbfdb1a4e21bc34694db3994d5059b1d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classErrorRedirector.html#acbfdb1a4e21bc34694db3994d5059b1d">ErrorRedirector</a> (std::unique_ptr&lt; wxLog &gt; &amp;&amp;newLog)</td></tr>
+<tr class="memitem:acbfdb1a4e21bc34694db3994d5059b1d"><td class="memItemLeft" align="right" valign="top"><a id="acbfdb1a4e21bc34694db3994d5059b1d"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classErrorRedirector.html#acbfdb1a4e21bc34694db3994d5059b1d">ErrorRedirector</a> (std::unique_ptr&lt; wxLog &gt; &amp;&amp;newLog)</td></tr>
+<tr class="memdesc:acbfdb1a4e21bc34694db3994d5059b1d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the specified <code>logger</code> (which may be NULL) as the default log target but the log messages are also passed to the previous log target if any. <br /></td></tr>
 <tr class="separator:acbfdb1a4e21bc34694db3994d5059b1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3759256defa9ed1206e5d93483f091ee"><td class="memItemLeft" align="right" valign="top"><a id="a3759256defa9ed1206e5d93483f091ee"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classErrorRedirector.html#a3759256defa9ed1206e5d93483f091ee">~ErrorRedirector</a> () override</td></tr>
@@ -108,15 +109,20 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a20b28e6ca66d9eb8c019d0a331eaac7c"><td class="memItemLeft" align="right" valign="top"><a id="a20b28e6ca66d9eb8c019d0a331eaac7c"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>DoLogRecord</b> (wxLogLevel level, const wxString &amp;msg, const wxLogRecordInfo &amp;info) override</td></tr>
 <tr class="separator:a20b28e6ca66d9eb8c019d0a331eaac7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9ecca863003db5bb23754f4fe8bbabcf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classErrorRedirector.html#a9ecca863003db5bb23754f4fe8bbabcf">DetachOldLog</a> ()</td></tr>
+<tr class="memitem:a9ecca863003db5bb23754f4fe8bbabcf"><td class="memItemLeft" align="right" valign="top"><a id="a9ecca863003db5bb23754f4fe8bbabcf"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classErrorRedirector.html#a9ecca863003db5bb23754f4fe8bbabcf">DetachOldLog</a> ()</td></tr>
+<tr class="memdesc:a9ecca863003db5bb23754f4fe8bbabcf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Detaches the old log target so it won't be destroyed when the wxLogChain object is destroyed. <br /></td></tr>
 <tr class="separator:a9ecca863003db5bb23754f4fe8bbabcf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab0a6d6454ca65548fffadae14d28cf18"><td class="memItemLeft" align="right" valign="top"><a id="ab0a6d6454ca65548fffadae14d28cf18"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classErrorRedirector.html#ab0a6d6454ca65548fffadae14d28cf18">SetBatchMode</a> ()</td></tr>
 <tr class="memdesc:ab0a6d6454ca65548fffadae14d28cf18"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the "batch mode" flag that causes error messages to be output to stderr, as well. <br /></td></tr>
 <tr class="separator:ab0a6d6454ca65548fffadae14d28cf18"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6058601221fd6b92d65efd59d0886d50"><td class="memItemLeft" align="right" valign="top">wxLog *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classErrorRedirector.html#a6058601221fd6b92d65efd59d0886d50">GetOldLog</a> () const</td></tr>
+<tr class="memitem:a6058601221fd6b92d65efd59d0886d50"><td class="memItemLeft" align="right" valign="top"><a id="a6058601221fd6b92d65efd59d0886d50"></a>
+wxLog *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classErrorRedirector.html#a6058601221fd6b92d65efd59d0886d50">GetOldLog</a> () const</td></tr>
+<tr class="memdesc:a6058601221fd6b92d65efd59d0886d50"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the pointer to the previously active log target (which may be NULL). <br /></td></tr>
 <tr class="separator:a6058601221fd6b92d65efd59d0886d50"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0c84105e35c48122064f8e45e2fe7351"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classErrorRedirector.html#a0c84105e35c48122064f8e45e2fe7351">SetLog</a> (std::unique_ptr&lt; wxLog &gt; &amp;&amp;logger)</td></tr>
+<tr class="memdesc:a0c84105e35c48122064f8e45e2fe7351"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets and takes ownership of another log target to use (may be nullptr).  <a href="classErrorRedirector.html#a0c84105e35c48122064f8e45e2fe7351">More...</a><br /></td></tr>
 <tr class="separator:a0c84105e35c48122064f8e45e2fe7351"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7c3b449a3717d39899efb71fbd96062b"><td class="memItemLeft" align="right" valign="top"><a id="a7c3b449a3717d39899efb71fbd96062b"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classErrorRedirector.html#a7c3b449a3717d39899efb71fbd96062b">SetLogThis</a> ()</td></tr>
@@ -159,53 +165,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_batchMode</b> = fal
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Redirect error messages (but not warnings) to a second target. </p>
-</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="acbfdb1a4e21bc34694db3994d5059b1d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acbfdb1a4e21bc34694db3994d5059b1d">&#9670;&nbsp;</a></span>ErrorRedirector()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">ErrorRedirector::ErrorRedirector </td>
-          <td>(</td>
-          <td class="paramtype">std::unique_ptr&lt; wxLog &gt; &amp;&amp;&#160;</td>
-          <td class="paramname"><em>newLog</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">explicit</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Sets the specified <code>logger</code> (which may be NULL) as the default log target but the log messages are also passed to the previous log target if any. </p>
-
-</div>
-</div>
-<h2 class="groupheader">Member Function Documentation</h2>
-<a id="a9ecca863003db5bb23754f4fe8bbabcf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9ecca863003db5bb23754f4fe8bbabcf">&#9670;&nbsp;</a></span>DetachOldLog()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void ErrorRedirector::DetachOldLog </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Detaches the old log target so it won't be destroyed when the wxLogChain object is destroyed. </p>
-
-</div>
-</div>
+</div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a14df54cd465a31aa70f8a4d118ebd3fa"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a14df54cd465a31aa70f8a4d118ebd3fa">&#9670;&nbsp;</a></span>Flush()</h2>
 
@@ -233,24 +193,6 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_batchMode</b> = fal
 
 </div>
 </div>
-<a id="a6058601221fd6b92d65efd59d0886d50"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6058601221fd6b92d65efd59d0886d50">&#9670;&nbsp;</a></span>GetOldLog()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">wxLog* ErrorRedirector::GetOldLog </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Returns the pointer to the previously active log target (which may be NULL). </p>
-
-</div>
-</div>
 <a id="a0c84105e35c48122064f8e45e2fe7351"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0c84105e35c48122064f8e45e2fe7351">&#9670;&nbsp;</a></span>SetLog()</h2>
 
@@ -266,12 +208,13 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_batchMode</b> = fal
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Sets and takes ownership of another log target to use (may be nullptr).</p>
+
+<p>Sets and takes ownership of another log target to use (may be nullptr). </p>
 <p>The previously owned logger - if any - is destroyed. This doesn't change the old log target value (the one the messages are forwarded to) which still remains the same as was active when wxLogChain object was created. </p>
 
 </div>
 </div>
-<h2 class="groupheader">Member Data Documentation</h2>
+<h2 class="groupheader">Field Documentation</h2>
 <a id="a4abda0ce2cf3958697ef94da9686d786"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4abda0ce2cf3958697ef94da9686d786">&#9670;&nbsp;</a></span>m_messages_logPaneOnly</h2>
 

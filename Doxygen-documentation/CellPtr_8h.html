@@ -66,7 +66,7 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a> &#124;
+<a href="#nested-classes">Data Structures</a> &#124;
 <a href="#define-members">Macros</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
@@ -158,7 +158,7 @@ This graph shows which files directly or indirectly include this file:</div>
 <p><a href="CellPtr_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
-Classes</h2></td></tr>
+Data Structures</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classObserved.html">Observed</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCellPtrBase.html">CellPtrBase</a></td></tr>
@@ -218,11 +218,15 @@ template&lt;typename T , typename U &gt; </td></tr>
 template&lt;typename T , typename U , typename std::enable_if&lt; CellPtrBase::is_pointer&lt; U &gt;(), bool &gt;::type  = true&gt; </td></tr>
 <tr class="memitem:ab8f80694a5ad52ed0c726aa7516c4d18"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><b>operator&lt;</b> (const <a class="el" href="classCellPtr.html">CellPtr</a>&lt; T &gt; &amp;left, U right) noexcept</td></tr>
 <tr class="separator:ab8f80694a5ad52ed0c726aa7516c4d18"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ace943e272b9b4c50c482062b119ae879"><td class="memTemplParams" colspan="2">template&lt;typename Derived , typename Base &gt; </td></tr>
+<tr class="memitem:ace943e272b9b4c50c482062b119ae879"><td class="memTemplParams" colspan="2"><a id="ace943e272b9b4c50c482062b119ae879"></a>
+template&lt;typename Derived , typename Base &gt; </td></tr>
 <tr class="memitem:ace943e272b9b4c50c482062b119ae879"><td class="memTemplItemLeft" align="right" valign="top">std::unique_ptr&lt; Derived &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="CellPtr_8h.html#ace943e272b9b4c50c482062b119ae879">static_unique_ptr_cast</a> (std::unique_ptr&lt; Base &gt; &amp;&amp;p) noexcept</td></tr>
+<tr class="memdesc:ace943e272b9b4c50c482062b119ae879"><td class="mdescLeft">&#160;</td><td class="mdescRight">A cast for unique pointers, used to downcast to a derived type iff we're certain the cell is indeed of a derived type. <br /></td></tr>
 <tr class="separator:ace943e272b9b4c50c482062b119ae879"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab671e37a19353791368fe1bd77f12361"><td class="memTemplParams" colspan="2">template&lt;typename Derived , typename Base &gt; </td></tr>
+<tr class="memitem:ab671e37a19353791368fe1bd77f12361"><td class="memTemplParams" colspan="2"><a id="ab671e37a19353791368fe1bd77f12361"></a>
+template&lt;typename Derived , typename Base &gt; </td></tr>
 <tr class="memitem:ab671e37a19353791368fe1bd77f12361"><td class="memTemplItemLeft" align="right" valign="top">std::unique_ptr&lt; Derived &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="CellPtr_8h.html#ab671e37a19353791368fe1bd77f12361">dynamic_unique_ptr_cast</a> (std::unique_ptr&lt; Base &gt; &amp;&amp;p) noexcept</td></tr>
+<tr class="memdesc:ab671e37a19353791368fe1bd77f12361"><td class="mdescLeft">&#160;</td><td class="mdescRight">A cast for unique pointers, used to downcast to a derived type in a type-safe manner. <br /></td></tr>
 <tr class="separator:ab671e37a19353791368fe1bd77f12361"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -230,66 +234,7 @@ template&lt;typename T , typename U , typename std::enable_if&lt; CellPtrBase::i
 <p>It doesn't have the overhead of atomic reference counting, as would be imposed by shared_ptr. The latter has high likelihood of misuse, and suffers from the locking boilerplate needed to use the <code>weak_ptr</code>. But - above all - <a class="el" href="classwxMaxima.html">wxMaxima</a>'s data model does not use shared ownership. All cells are have a single owner - either a cell list rooted in a unique_ptr, or are owned by internal cell pointers.</p>
 <p>Author's Note: I'm not particularly happy with this code, since it could be factored much better. Observe that all three classes that implement this system are the same: they are a pointer. An <code><a class="el" href="classObserved.html">Observed</a></code> is a pointer, a <code><a class="el" href="classCellPtrBase.html">CellPtrBase</a></code> is a pointer, an an <code>Observed::ControlBlock</code> is a pointer. The currently "dumb" <code>CellPtrImplPointer</code> class could be at the heart of all three without any special-casing, and could better handle the reference counting in one spot. But observe the potential performance impact of subtle mistakes in any such refactoring: it takes lots of time to get it right. At the moment, we're at a point where small improvements can gain about 0.5% time reduction in the hs(17) benchmark, listed below. 0.5% time reduction is observed as 1s+ speed-up over runtime of about 180s. </p><pre class="fragment">hs(n):=ratsimp(ratexpand(product(x-a[i],i,1,n)));
 hs(17);
-</pre> </div><h2 class="groupheader">Function Documentation</h2>
-<a id="ab671e37a19353791368fe1bd77f12361"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab671e37a19353791368fe1bd77f12361">&#9670;&nbsp;</a></span>dynamic_unique_ptr_cast()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename Derived , typename Base &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::unique_ptr&lt;Derived&gt; dynamic_unique_ptr_cast </td>
-          <td>(</td>
-          <td class="paramtype">std::unique_ptr&lt; Base &gt; &amp;&amp;&#160;</td>
-          <td class="paramname"><em>p</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>A cast for unique pointers, used to downcast to a derived type in a type-safe manner. </p>
-
-</div>
-</div>
-<a id="ace943e272b9b4c50c482062b119ae879"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ace943e272b9b4c50c482062b119ae879">&#9670;&nbsp;</a></span>static_unique_ptr_cast()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename Derived , typename Base &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::unique_ptr&lt;Derived&gt; static_unique_ptr_cast </td>
-          <td>(</td>
-          <td class="paramtype">std::unique_ptr&lt; Base &gt; &amp;&amp;&#160;</td>
-          <td class="paramname"><em>p</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>A cast for unique pointers, used to downcast to a derived type iff we're certain the cell is indeed of a derived type </p>
-
-</div>
-</div>
-</div><!-- contents -->
+</pre> </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1

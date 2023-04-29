@@ -63,8 +63,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pro-methods">Protected Member Functions</a> &#124;
-<a href="#pro-attribs">Protected Attributes</a> &#124;
-<a href="classCellListBuilderBase-members.html">List of all members</a>  </div>
+<a href="#pro-attribs">Protected Attributes</a>  </div>
   <div class="headertitle">
 <div class="title">CellListBuilderBase Class Reference</div>  </div>
 </div><!--header-->
@@ -102,6 +101,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memdesc:ac23b76a013edafdfede50943b554bc1e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Appends one or more cells. <br /></td></tr>
 <tr class="separator:ac23b76a013edafdfede50943b554bc1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a912afbac8cd712b3bc7fd3b1de3ebd6d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classCell.html">Cell</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCellListBuilderBase.html#a912afbac8cd712b3bc7fd3b1de3ebd6d">base_DynamicAppend</a> (std::unique_ptr&lt; <a class="el" href="classCell.html">Cell</a> &gt; &amp;&amp;cells, <a class="el" href="classCell.html">Cell</a> *(*caster)(<a class="el" href="classCell.html">Cell</a> *))</td></tr>
+<tr class="memdesc:a912afbac8cd712b3bc7fd3b1de3ebd6d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Appends one or more cells if they are of the correct type, otherwise deletes them.  <a href="classCellListBuilderBase.html#a912afbac8cd712b3bc7fd3b1de3ebd6d">More...</a><br /></td></tr>
 <tr class="separator:a912afbac8cd712b3bc7fd3b1de3ebd6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a10d806df4026c6b71c5174ea940c5368"><td class="memItemLeft" align="right" valign="top"><a id="a10d806df4026c6b71c5174ea940c5368"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCellListBuilderBase.html#a10d806df4026c6b71c5174ea940c5368">ClearLastAppended</a> ()</td></tr>
@@ -154,7 +154,9 @@ std::unique_ptr&lt; <a class="el" href="classCell.html">Cell</a> &gt;&#160;</td>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Appends one or more cells if they are of the correct type, otherwise deletes them </p><dl class="section return"><dt>Returns</dt><dd>the appended cells, or null if they weren't appended. </dd></dl>
+
+<p>Appends one or more cells if they are of the correct type, otherwise deletes them. </p>
+<dl class="section return"><dt>Returns</dt><dd>the appended cells, or null if they weren't appended. </dd></dl>
 
 </div>
 </div>

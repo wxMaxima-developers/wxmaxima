@@ -62,12 +62,11 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a> &#124;
+<a href="#nested-classes">Data Structures</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="#pub-attribs">Data Fields</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
-<a href="#pro-attribs">Protected Attributes</a> &#124;
-<a href="classWorksheet-members.html">List of all members</a>  </div>
+<a href="#pro-attribs">Protected Attributes</a>  </div>
   <div class="headertitle">
 <div class="title">Worksheet Class Reference</div>  </div>
 </div><!--header-->
@@ -119,7 +118,7 @@ Collaboration diagram for Worksheet:</div>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
-Classes</h2></td></tr>
+Data Structures</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet_1_1SimpleMathConfigurationIterator.html">SimpleMathConfigurationIterator</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -250,7 +249,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class
 <tr class="separator:aee91de6acffe7acc239532da6bad6fef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
-Public Attributes</h2></td></tr>
+Data Fields</h2></td></tr>
 <tr class="memitem:a07ea367f43d3fb4ffb4f09a1f1b09339"><td class="memItemLeft" align="right" valign="top"><a id="a07ea367f43d3fb4ffb4f09a1f1b09339"></a>
 <a class="el" href="classRecentDocuments.html">RecentDocuments</a>&#160;</td><td class="memItemRight" valign="bottom"><b>m_unsavedDocuments</b></td></tr>
 <tr class="separator:a07ea367f43d3fb4ffb4f09a1f1b09339"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -404,6 +403,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>Redo</b> ()</td></tr>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>TreeUndo_ClearBuffers</b> ()</td></tr>
 <tr class="separator:a4c9614fa1ee909f405b0fe96d26db5f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7ba34e68818f5c6b3374773683e5710c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a7ba34e68818f5c6b3374773683e5710c">Worksheet</a> (wxWindow *parent, int id, <a class="el" href="classConfiguration.html">Configuration</a> *config, wxPoint pos=wxDefaultPosition, wxSize size=wxDefaultSize, bool reactToEvents=true)</td></tr>
+<tr class="memdesc:a7ba34e68818f5c6b3374773683e5710c"><td class="mdescLeft">&#160;</td><td class="mdescRight">This class represents the worksheet shown in the middle of the <a class="el" href="classwxMaxima.html">wxMaxima</a> window.  <a href="classWorksheet.html#a7ba34e68818f5c6b3374773683e5710c">More...</a><br /></td></tr>
 <tr class="separator:a7ba34e68818f5c6b3374773683e5710c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a17069f8e054407fb170285892fc99349"><td class="memItemLeft" align="right" valign="top"><a id="a17069f8e054407fb170285892fc99349"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a17069f8e054407fb170285892fc99349">~Worksheet</a> ()</td></tr>
@@ -489,6 +489,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memdesc:a701d00f61bd5af739f306504c39be463"><td class="mdescLeft">&#160;</td><td class="mdescRight">Does it make sense to enable the "Play" button and the slider now? <br /></td></tr>
 <tr class="separator:a701d00f61bd5af739f306504c39be463"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a264f7ddedae4043868e2c7db1c798c9f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a264f7ddedae4043868e2c7db1c798c9f">Animate</a> (bool run=true)</td></tr>
+<tr class="memdesc:a264f7ddedae4043868e2c7db1c798c9f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Starts playing the animation of a cell generated with the with_slider_* commands.  <a href="classWorksheet.html#a264f7ddedae4043868e2c7db1c798c9f">More...</a><br /></td></tr>
 <tr class="separator:a264f7ddedae4043868e2c7db1c798c9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a749e5a054a6e350d377d9c4afa40bdf0"><td class="memItemLeft" align="right" valign="top"><a id="a749e5a054a6e350d377d9c4afa40bdf0"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>DivideCell</b> ()</td></tr>
@@ -781,16 +782,23 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:af6238f4ec218c313575d0a61b15349a2"><td class="memItemLeft" align="right" valign="top"><a id="af6238f4ec218c313575d0a61b15349a2"></a>
 <a class="el" href="classGroupCell.html">GroupCell</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>UpdateMLast</b> ()</td></tr>
 <tr class="separator:af6238f4ec218c313575d0a61b15349a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a78ceeae9f7262c599b824e0f9a93ad9b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a78ceeae9f7262c599b824e0f9a93ad9b">FoldOccurred</a> ()</td></tr>
+<tr class="memitem:a78ceeae9f7262c599b824e0f9a93ad9b"><td class="memItemLeft" align="right" valign="top"><a id="a78ceeae9f7262c599b824e0f9a93ad9b"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a78ceeae9f7262c599b824e0f9a93ad9b">FoldOccurred</a> ()</td></tr>
+<tr class="memdesc:a78ceeae9f7262c599b824e0f9a93ad9b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Call when a fold action was detected, to update the state in response to a fold occurring. <br /></td></tr>
 <tr class="separator:a78ceeae9f7262c599b824e0f9a93ad9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a05f5dcd8380c87a893b1509559995fc4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGroupCell.html">GroupCell</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a05f5dcd8380c87a893b1509559995fc4">ToggleFold</a> (<a class="el" href="classGroupCell.html">GroupCell</a> *which)</td></tr>
 <tr class="memdesc:a05f5dcd8380c87a893b1509559995fc4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fold or unfold a cell.  <a href="classWorksheet.html#a05f5dcd8380c87a893b1509559995fc4">More...</a><br /></td></tr>
 <tr class="separator:a05f5dcd8380c87a893b1509559995fc4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5874f84b01e4d3a0d60597d8903ce13e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGroupCell.html">GroupCell</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a5874f84b01e4d3a0d60597d8903ce13e">ToggleFoldAll</a> (<a class="el" href="classGroupCell.html">GroupCell</a> *which)</td></tr>
+<tr class="memdesc:a5874f84b01e4d3a0d60597d8903ce13e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Toggles the status of the fold for the given <a class="el" href="classGroupCell.html">GroupCell</a> and its children.  <a href="classWorksheet.html#a5874f84b01e4d3a0d60597d8903ce13e">More...</a><br /></td></tr>
 <tr class="separator:a5874f84b01e4d3a0d60597d8903ce13e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a16eca996fef1aa7e00cfd9886923671d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a16eca996fef1aa7e00cfd9886923671d">FoldAll</a> ()</td></tr>
+<tr class="memitem:a16eca996fef1aa7e00cfd9886923671d"><td class="memItemLeft" align="right" valign="top"><a id="a16eca996fef1aa7e00cfd9886923671d"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a16eca996fef1aa7e00cfd9886923671d">FoldAll</a> ()</td></tr>
+<tr class="memdesc:a16eca996fef1aa7e00cfd9886923671d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Recursively folds the whole document. <br /></td></tr>
 <tr class="separator:a16eca996fef1aa7e00cfd9886923671d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3b39c76c8bd9e25b3c743607a70db892"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a3b39c76c8bd9e25b3c743607a70db892">UnfoldAll</a> ()</td></tr>
+<tr class="memitem:a3b39c76c8bd9e25b3c743607a70db892"><td class="memItemLeft" align="right" valign="top"><a id="a3b39c76c8bd9e25b3c743607a70db892"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a3b39c76c8bd9e25b3c743607a70db892">UnfoldAll</a> ()</td></tr>
+<tr class="memdesc:a3b39c76c8bd9e25b3c743607a70db892"><td class="mdescLeft">&#160;</td><td class="mdescRight">Recursively unfolds the whole document. <br /></td></tr>
 <tr class="separator:a3b39c76c8bd9e25b3c743607a70db892"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa15396d8b280ec48a0c91fb347ad9391"><td class="memItemLeft" align="right" valign="top"><a id="aa15396d8b280ec48a0c91fb347ad9391"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>SetZoomFactor</b> (double newzoom, bool recalc=true)</td></tr>
@@ -920,6 +928,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>This class represents the worksheet shown in the middle of the <a class="el" href="classwxMaxima.html">wxMaxima</a> window. </p>
 <p>The constructor</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -927,11 +937,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
     <tr><td class="paramname">id</td><td>The window ID. Often wxID_ANY </td></tr>
     <tr><td class="paramname">The</td><td>worksheet's initial location </td></tr>
     <tr><td class="paramname">The</td><td>worksheet's initial size </td></tr>
-    <tr><td class="paramname">reactToEvents</td><td>Can be set to false for creating an example panel, for example for the config dialogue.</td></tr>
+    <tr><td class="paramname">reactToEvents</td><td>Can be set to false for creating an example panel, for example for the config dialogue. </td></tr>
   </table>
   </dd>
 </dl>
-<p>This class represents the worksheet shown in the middle of the <a class="el" href="classwxMaxima.html">wxMaxima</a> window. </p>
 
 </div>
 </div>
@@ -971,18 +980,19 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Starts playing the animation of a cell generated with the with_slider_* commands. </p>
 <p>Animate the current slide show</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">run</td><td><ul>
 <li>false: Stop the animation</li>
-<li>true: Run the animation</li>
+<li>true: Run the animation </li>
 </ul>
 </td></tr>
   </table>
   </dd>
 </dl>
-<p>Starts playing the animation of a cell generated with the with_slider_* commands </p>
 
 </div>
 </div>
@@ -1402,42 +1412,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </div><div class="memdoc">
 <p>Find the next occurrence of a string</p>
 <p>Used by the find dialog. </p>
-
-</div>
-</div>
-<a id="a16eca996fef1aa7e00cfd9886923671d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a16eca996fef1aa7e00cfd9886923671d">&#9670;&nbsp;</a></span>FoldAll()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Worksheet::FoldAll </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Recursively folds the whole document. </p>
-
-</div>
-</div>
-<a id="a78ceeae9f7262c599b824e0f9a93ad9b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a78ceeae9f7262c599b824e0f9a93ad9b">&#9670;&nbsp;</a></span>FoldOccurred()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Worksheet::FoldOccurred </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Call when a fold action was detected, to update the state in response to a fold occurring. </p>
 
 </div>
 </div>
@@ -2264,7 +2238,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </div><div class="memdoc">
 
 <p>Fold or unfold a cell. </p>
-<p>Toggles the status of the fold for the given <a class="el" href="classGroupCell.html">GroupCell</a>. If the cell is folded, it will be unfolded; otherwise it will be folded.</p>
+<p>Toggles the status of the fold for the given <a class="el" href="classGroupCell.html">GroupCell</a>.</p>
+<p>If the cell is folded, it will be unfolded; otherwise it will be folded.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">which</td><td>The <a class="el" href="classGroupCell.html">GroupCell</a> to fold or unfold. </td></tr>
@@ -2290,7 +2265,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Toggles the status of the fold for the given <a class="el" href="classGroupCell.html">GroupCell</a> and its children. If the cell is folded, it will be recursively unfolded; otherwise it will be recursively folded.</p>
+
+<p>Toggles the status of the fold for the given <a class="el" href="classGroupCell.html">GroupCell</a> and its children. </p>
+<p>If the cell is folded, it will be recursively unfolded; otherwise it will be recursively folded.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">which</td><td>The <a class="el" href="classGroupCell.html">GroupCell</a> to recursively fold or unfold. </td></tr>
@@ -2298,24 +2275,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A pointer to a <a class="el" href="classGroupCell.html">GroupCell</a> if the action succeeded; NULL otherwise. </dd></dl>
-
-</div>
-</div>
-<a id="a3b39c76c8bd9e25b3c743607a70db892"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3b39c76c8bd9e25b3c743607a70db892">&#9670;&nbsp;</a></span>UnfoldAll()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Worksheet::UnfoldAll </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Recursively unfolds the whole document. </p>
 
 </div>
 </div>
@@ -2366,7 +2325,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<h2 class="groupheader">Member Data Documentation</h2>
+<h2 class="groupheader">Field Documentation</h2>
 <a id="a78160850c773ec772e29cd30a2b11d4f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a78160850c773ec772e29cd30a2b11d4f">&#9670;&nbsp;</a></span>m_scheduleUpdateToc</h2>
 
