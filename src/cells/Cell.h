@@ -643,6 +643,7 @@ public:
   */
   virtual void UnbreakList();
 
+  //! Returns a pointer to the previous cell in the current cell list
   Cell *GetPrevious() const { return m_previous; }
 
   //! Get the next cell in the list.
