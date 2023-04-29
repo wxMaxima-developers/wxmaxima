@@ -471,9 +471,9 @@ virtual wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el
 <tr class="memitem:add8841ffa9d173eb51931eeddc740638"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classCell.html">Cell</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#add8841ffa9d173eb51931eeddc740638">GetNextToDraw</a> () const</td></tr>
 <tr class="memdesc:add8841ffa9d173eb51931eeddc740638"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the next cell that needs to be drawn.  <a href="classCell.html#add8841ffa9d173eb51931eeddc740638">More...</a><br /></td></tr>
 <tr class="separator:add8841ffa9d173eb51931eeddc740638"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa9203114af1b15d15a3ab9d40ff2b7ff"><td class="memTemplParams" colspan="2"><a id="aa9203114af1b15d15a3ab9d40ff2b7ff"></a>
-template&lt;typename T , typename Del , typename std::enable_if&lt; std::is_base_of&lt; Cell, T &gt;::value, bool &gt;::type  = true&gt; </td></tr>
-<tr class="memitem:aa9203114af1b15d15a3ab9d40ff2b7ff"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>SetNextToDraw</b> (const std::unique_ptr&lt; T, Del &gt; &amp;ptr)</td></tr>
+<tr class="memitem:aa9203114af1b15d15a3ab9d40ff2b7ff"><td class="memTemplParams" colspan="2">template&lt;typename T , typename Del , typename std::enable_if&lt; std::is_base_of&lt; Cell, T &gt;::value, bool &gt;::type  = true&gt; </td></tr>
+<tr class="memitem:aa9203114af1b15d15a3ab9d40ff2b7ff"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classCell.html#aa9203114af1b15d15a3ab9d40ff2b7ff">SetNextToDraw</a> (const std::unique_ptr&lt; T, Del &gt; &amp;ptr)</td></tr>
+<tr class="memdesc:aa9203114af1b15d15a3ab9d40ff2b7ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tells this cell which one should be the next cell to be drawn.  <a href="classCell.html#aa9203114af1b15d15a3ab9d40ff2b7ff">More...</a><br /></td></tr>
 <tr class="separator:aa9203114af1b15d15a3ab9d40ff2b7ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acd452bb5f74e9b11692b91c3c7a18dc7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#acd452bb5f74e9b11692b91c3c7a18dc7">IsComment</a> () const</td></tr>
 <tr class="memdesc:acd452bb5f74e9b11692b91c3c7a18dc7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determine if this cell contains text that isn't code.  <a href="classCell.html#acd452bb5f74e9b11692b91c3c7a18dc7">More...</a><br /></td></tr>
@@ -2132,7 +2132,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>m_center</b> = -1</td>
 </div>
 </div>
 <a id="a5473fbdaeca4499c7b6b864bc4a41dc9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5473fbdaeca4499c7b6b864bc4a41dc9">&#9670;&nbsp;</a></span>SetNextToDraw()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a5473fbdaeca4499c7b6b864bc4a41dc9">&#9670;&nbsp;</a></span>SetNextToDraw() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2160,6 +2160,38 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>m_center</b> = -1</td>
 <p>If the cell is broken into lines this sets the pointer of the last of the list of cells this cell is displayed as. </p>
 
 <p>Reimplemented from <a class="el" href="classCell.html#a7622b681639f89920988a849f4ecb1af">Cell</a>.</p>
+
+</div>
+</div>
+<a id="aa9203114af1b15d15a3ab9d40ff2b7ff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa9203114af1b15d15a3ab9d40ff2b7ff">&#9670;&nbsp;</a></span>SetNextToDraw() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , typename Del , typename std::enable_if&lt; std::is_base_of&lt; Cell, T &gt;::value, bool &gt;::type  = true&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Cell::SetNextToDraw </td>
+          <td>(</td>
+          <td class="paramtype">const std::unique_ptr&lt; T, Del &gt; &amp;&#160;</td>
+          <td class="paramname"><em>ptr</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Tells this cell which one should be the next cell to be drawn. </p>
+<p>If the cell is displayed as 2d object this sets the pointer to the next cell.</p>
+<p>If the cell is broken into lines this sets the pointer of the last of the list of cells this cell is displayed as. </p>
 
 </div>
 </div>

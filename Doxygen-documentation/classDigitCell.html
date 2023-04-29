@@ -494,9 +494,9 @@ virtual wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el
 <tr class="memitem:a7622b681639f89920988a849f4ecb1af"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a7622b681639f89920988a849f4ecb1af">SetNextToDraw</a> (<a class="el" href="classCell.html">Cell</a> *next)</td></tr>
 <tr class="memdesc:a7622b681639f89920988a849f4ecb1af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tells this cell which one should be the next cell to be drawn.  <a href="classCell.html#a7622b681639f89920988a849f4ecb1af">More...</a><br /></td></tr>
 <tr class="separator:a7622b681639f89920988a849f4ecb1af"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa9203114af1b15d15a3ab9d40ff2b7ff"><td class="memTemplParams" colspan="2"><a id="aa9203114af1b15d15a3ab9d40ff2b7ff"></a>
-template&lt;typename T , typename Del , typename std::enable_if&lt; std::is_base_of&lt; Cell, T &gt;::value, bool &gt;::type  = true&gt; </td></tr>
-<tr class="memitem:aa9203114af1b15d15a3ab9d40ff2b7ff"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>SetNextToDraw</b> (const std::unique_ptr&lt; T, Del &gt; &amp;ptr)</td></tr>
+<tr class="memitem:aa9203114af1b15d15a3ab9d40ff2b7ff"><td class="memTemplParams" colspan="2">template&lt;typename T , typename Del , typename std::enable_if&lt; std::is_base_of&lt; Cell, T &gt;::value, bool &gt;::type  = true&gt; </td></tr>
+<tr class="memitem:aa9203114af1b15d15a3ab9d40ff2b7ff"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classCell.html#aa9203114af1b15d15a3ab9d40ff2b7ff">SetNextToDraw</a> (const std::unique_ptr&lt; T, Del &gt; &amp;ptr)</td></tr>
+<tr class="memdesc:aa9203114af1b15d15a3ab9d40ff2b7ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tells this cell which one should be the next cell to be drawn.  <a href="classCell.html#aa9203114af1b15d15a3ab9d40ff2b7ff">More...</a><br /></td></tr>
 <tr class="separator:aa9203114af1b15d15a3ab9d40ff2b7ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acd452bb5f74e9b11692b91c3c7a18dc7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#acd452bb5f74e9b11692b91c3c7a18dc7">IsComment</a> () const</td></tr>
 <tr class="memdesc:acd452bb5f74e9b11692b91c3c7a18dc7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determine if this cell contains text that isn't code.  <a href="classCell.html#acd452bb5f74e9b11692b91c3c7a18dc7">More...</a><br /></td></tr>
@@ -2256,7 +2256,7 @@ static wxRegEx&#160;</td><td class="memItemRight" valign="bottom"><b>m_roundingE
 </div>
 </div>
 <a id="a7622b681639f89920988a849f4ecb1af"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7622b681639f89920988a849f4ecb1af">&#9670;&nbsp;</a></span>SetNextToDraw()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a7622b681639f89920988a849f4ecb1af">&#9670;&nbsp;</a></span>SetNextToDraw() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2284,6 +2284,38 @@ static wxRegEx&#160;</td><td class="memItemRight" valign="bottom"><b>m_roundingE
 <p>If the cell is broken into lines this sets the pointer of the last of the list of cells this cell is displayed as. </p>
 
 <p>Reimplemented in <a class="el" href="classSumCell.html#a4bc1650e928173027d321bcb00ff44f6">SumCell</a>, <a class="el" href="classSqrtCell.html#adc5f45c469b9d9b9d1379a6107210203">SqrtCell</a>, <a class="el" href="classParenCell.html#afdef400116646020a56b2a7cfa6d7d07">ParenCell</a>, <a class="el" href="classNamedBoxCell.html#ab048149f934bac49afb9d2284fbf4aae">NamedBoxCell</a>, <a class="el" href="classLongNumberCell.html#afdbc63525bcf8e673b951e0a7fa4e817">LongNumberCell</a>, <a class="el" href="classListCell.html#a19ca9959379d5323986d37c1377ac652">ListCell</a>, <a class="el" href="classLimitCell.html#a4fd32092ecbb103a121a3a62cf62fc41">LimitCell</a>, <a class="el" href="classIntervalCell.html#af67678b4976d1f3a58026f199c15c1af">IntervalCell</a>, <a class="el" href="classIntCell.html#a078abe7d3cffa23217d1be00cee84820">IntCell</a>, <a class="el" href="classFunCell.html#a5473fbdaeca4499c7b6b864bc4a41dc9">FunCell</a>, <a class="el" href="classFracCell.html#ace4aad4d307b73972b0140400253d6c0">FracCell</a>, <a class="el" href="classDiffCell.html#a08a775b476e5e4cfc9bccfddce89905d">DiffCell</a>, <a class="el" href="classConjugateCell.html#a114d6cc1448603f38392bf29713d1170">ConjugateCell</a>, <a class="el" href="classBoxCell.html#aa687c3725053c71583fabc383b2bbab4">BoxCell</a>, and <a class="el" href="classAbsCell.html#aa78da02e6dd907bf0d5f8aa968558f77">AbsCell</a>.</p>
+
+</div>
+</div>
+<a id="aa9203114af1b15d15a3ab9d40ff2b7ff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa9203114af1b15d15a3ab9d40ff2b7ff">&#9670;&nbsp;</a></span>SetNextToDraw() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , typename Del , typename std::enable_if&lt; std::is_base_of&lt; Cell, T &gt;::value, bool &gt;::type  = true&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Cell::SetNextToDraw </td>
+          <td>(</td>
+          <td class="paramtype">const std::unique_ptr&lt; T, Del &gt; &amp;&#160;</td>
+          <td class="paramname"><em>ptr</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Tells this cell which one should be the next cell to be drawn. </p>
+<p>If the cell is displayed as 2d object this sets the pointer to the next cell.</p>
+<p>If the cell is broken into lines this sets the pointer of the last of the list of cells this cell is displayed as. </p>
 
 </div>
 </div>
