@@ -676,6 +676,13 @@ public:
   virtual void SetNextToDraw(Cell *next) { m_nextToDraw = next; }
   template <typename T, typename Del,
             typename std::enable_if<std::is_base_of<Cell, T>::value, bool>::type = true>
+  /*! Tells this cell which one should be the next cell to be drawn
+
+    If the cell is displayed as 2d object this sets the pointer to the next cell.
+
+    If the cell is broken into lines this sets the pointer of the last of the 
+    list of cells this cell is displayed as.
+  */
   void SetNextToDraw(const std::unique_ptr<T, Del> &ptr) { SetNextToDraw(ptr.get()); }
 
   /*! Determine if this cell contains text that isn't code
