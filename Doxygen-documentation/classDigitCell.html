@@ -132,8 +132,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTextCell.html#ae7aabb1b8dba97a12bf98b3780f9ca53">SetValue</a> (const wxString &amp;text) override</td></tr>
 <tr class="memdesc:ae7aabb1b8dba97a12bf98b3780f9ca53"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the text contained in this cell. <br /></td></tr>
 <tr class="separator:ae7aabb1b8dba97a12bf98b3780f9ca53"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4757d78d98b087acde5716901652fd61"><td class="memItemLeft" align="right" valign="top"><a id="a4757d78d98b087acde5716901652fd61"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>SetValue</b> (const wxString &amp;WXUNUSED(text))</td></tr>
+<tr class="memitem:a4757d78d98b087acde5716901652fd61"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a4757d78d98b087acde5716901652fd61">SetValue</a> (const wxString &amp;WXUNUSED(text))</td></tr>
 <tr class="separator:a4757d78d98b087acde5716901652fd61"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a115cce591752bdc9b6c276e2d634f4f0"><td class="memItemLeft" align="right" valign="top"><a id="a115cce591752bdc9b6c276e2d634f4f0"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>Draw</b> ()</td></tr>
@@ -175,7 +174,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memdesc:a4cf54ff09e85bfa8eba366072df3e883"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is this cell an operator? <br /></td></tr>
 <tr class="separator:a4cf54ff09e85bfa8eba366072df3e883"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaf2f8b43ddacb51a27b57b26b6c2eea1"><td class="memItemLeft" align="right" valign="top"><a id="aaf2f8b43ddacb51a27b57b26b6c2eea1"></a>
-const wxString &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>GetValue</b> () const override</td></tr>
+const wxString &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTextCell.html#aaf2f8b43ddacb51a27b57b26b6c2eea1">GetValue</a> () const override</td></tr>
+<tr class="memdesc:aaf2f8b43ddacb51a27b57b26b6c2eea1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the text this text cell contains. <br /></td></tr>
 <tr class="separator:aaf2f8b43ddacb51a27b57b26b6c2eea1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a225d2489b3db89608b08212f52d2718a"><td class="memItemLeft" align="right" valign="top"><a id="a225d2489b3db89608b08212f52d2718a"></a>
 wxString&#160;</td><td class="memItemRight" valign="bottom"><b>GetGreekStringTeX</b> () const</td></tr>
@@ -190,7 +190,8 @@ wxString&#160;</td><td class="memItemRight" valign="bottom"><b>GetGreekStringUni
 wxString&#160;</td><td class="memItemRight" valign="bottom"><b>GetSymbolUnicode</b> (bool keepPercent) const</td></tr>
 <tr class="separator:a4738b95cf1400cad38b5e32041a778a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8915bfe798fc73eeeeda6bcd7025d6f8"><td class="memItemLeft" align="right" valign="top"><a id="a8915bfe798fc73eeeeda6bcd7025d6f8"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsShortNum</b> () const override</td></tr>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTextCell.html#a8915bfe798fc73eeeeda6bcd7025d6f8">IsShortNum</a> () const override</td></tr>
+<tr class="memdesc:a8915bfe798fc73eeeeda6bcd7025d6f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">True if this cell represents a short number. <br /></td></tr>
 <tr class="separator:a8915bfe798fc73eeeeda6bcd7025d6f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a606182b055a0974cb0b4462c36877ad7"><td class="memItemLeft" align="right" valign="top"><a id="a606182b055a0974cb0b4462c36877ad7"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTextCell.html#a606182b055a0974cb0b4462c36877ad7">SetType</a> (<a class="el" href="Cell_8h.html#accb32ccb3ff8f2c6736a6ebe544894fd">CellType</a> type) override</td></tr>
@@ -2096,6 +2097,34 @@ static wxRegEx&#160;</td><td class="memItemRight" valign="bottom"><b>m_roundingE
 
 <p>Set the tooltip of this math cell - it must be exist at least as long as the cell does. </p>
 <p>Translation results behave that way. I.e. it must be a static string! </p>
+
+</div>
+</div>
+<a id="a4757d78d98b087acde5716901652fd61"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4757d78d98b087acde5716901652fd61">&#9670;&nbsp;</a></span>SetValue()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void Cell::SetValue </td>
+          <td>(</td>
+          <td class="paramtype">const wxString &amp;&#160;</td>
+          <td class="paramname"><em>WXUNUSED</em>text</td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Allows to change the text a <a class="el" href="classTextCell.html">TextCell</a> contains</p>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000002">Todo:</a></b></dt><dd>Do we ever use this function? </dd></dl>
 
 </div>
 </div>

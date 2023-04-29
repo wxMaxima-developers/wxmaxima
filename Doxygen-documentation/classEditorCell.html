@@ -666,8 +666,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="separator:a5fe726e0175194a4f8b4cc4298d90c79"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a75bff9f340cff4e32490218c735cb13d"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a75bff9f340cff4e32490218c735cb13d">SetIsExponentList</a> ()</td></tr>
 <tr class="separator:a75bff9f340cff4e32490218c735cb13d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4757d78d98b087acde5716901652fd61"><td class="memItemLeft" align="right" valign="top"><a id="a4757d78d98b087acde5716901652fd61"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>SetValue</b> (const wxString &amp;WXUNUSED(text))</td></tr>
+<tr class="memitem:a4757d78d98b087acde5716901652fd61"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a4757d78d98b087acde5716901652fd61">SetValue</a> (const wxString &amp;WXUNUSED(text))</td></tr>
 <tr class="separator:a4757d78d98b087acde5716901652fd61"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af6fdc7ea7b3f746d7b1f56c827cf5cad"><td class="memItemLeft" align="right" valign="top"><a id="af6fdc7ea7b3f746d7b1f56c827cf5cad"></a>
 <a class="el" href="classCell.html">Cell</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#af6fdc7ea7b3f746d7b1f56c827cf5cad">first</a> () const</td></tr>
@@ -694,7 +693,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memdesc:ad480438870ee7c585045b66a8b856c12"><td class="mdescLeft">&#160;</td><td class="mdescRight">Do we have an operator in this line - draw () in frac... <br /></td></tr>
 <tr class="separator:ad480438870ee7c585045b66a8b856c12"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4c9f48de399a16a801e0e3c53f805b4e"><td class="memItemLeft" align="right" valign="top"><a id="a4c9f48de399a16a801e0e3c53f805b4e"></a>
-virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsShortNum</b> () const</td></tr>
+virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a4c9f48de399a16a801e0e3c53f805b4e">IsShortNum</a> () const</td></tr>
+<tr class="memdesc:a4c9f48de399a16a801e0e3c53f805b4e"><td class="mdescLeft">&#160;</td><td class="mdescRight">True if this cell represents a short number. <br /></td></tr>
 <tr class="separator:a4c9f48de399a16a801e0e3c53f805b4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a29b028fb1ac4c588579202164ed65c8d"><td class="memItemLeft" align="right" valign="top"><a id="a29b028fb1ac4c588579202164ed65c8d"></a>
 <a class="el" href="classGroupCell.html">GroupCell</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a29b028fb1ac4c588579202164ed65c8d">GetGroup</a> () const</td></tr>
@@ -965,7 +965,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>m_center</b> = -1</td>
 </ul>
 <p>Since Unicode doesn't provide us with a "soft linebreak" letter we use <code>\r</code> as a marker that this line has to be broken here if we don't want it to extend beyond the right margin of the screen.</p>
 <p>In a few places we use wxString::const_iterator instead of accessing individual letters within the string using the [] operator. This might look overly complicated. But in UTF-8 all non-standard-ASCII-characters use more than one byte making iterating over every single char of the string the only way of determining which address char n is at. An iterator is the only way of not having to determine the address of every single char independently.</p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000004">Todo:</a></b></dt><dd>Draw only tokens that are in the redraw region. </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000005">Todo:</a></b></dt><dd>Draw only tokens that are in the redraw region. </dd></dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="ac3aaa6e05945f0185ff534a310d94e99"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac3aaa6e05945f0185ff534a310d94e99">&#9670;&nbsp;</a></span>ActivateCursor()</h2>
@@ -1967,7 +1967,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>m_center</b> = -1</td>
 <p>Returns the text contained in this cell</p>
 <p>Naturally all soft line breaks are converted back to spaces beforehand. </p>
 
-<p>Reimplemented from <a class="el" href="classCell.html">Cell</a>.</p>
+<p>Reimplemented from <a class="el" href="classCell.html#ab7288a1822ec661926cfb0956f50d9ab">Cell</a>.</p>
 
 </div>
 </div>
@@ -2501,7 +2501,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>m_center</b> = -1</td>
 </div>
 </div>
 <a id="a06fb7e24c57d9cdfd8146539228b50e7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a06fb7e24c57d9cdfd8146539228b50e7">&#9670;&nbsp;</a></span>SetValue()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a06fb7e24c57d9cdfd8146539228b50e7">&#9670;&nbsp;</a></span>SetValue() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2525,6 +2525,34 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>m_center</b> = -1</td>
 </div><div class="memdoc">
 <p>Sets the text that is to be displayed.</p>
 <p>Automatically calls <a class="el" href="classEditorCell.html#a9b62a79bf64588a23b7620fc58d1e39a">StyleText()</a>. </p>
+
+</div>
+</div>
+<a id="a4757d78d98b087acde5716901652fd61"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4757d78d98b087acde5716901652fd61">&#9670;&nbsp;</a></span>SetValue() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void Cell::SetValue </td>
+          <td>(</td>
+          <td class="paramtype">const wxString &amp;&#160;</td>
+          <td class="paramname"><em>WXUNUSED</em>text</td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Allows to change the text a <a class="el" href="classTextCell.html">TextCell</a> contains</p>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000002">Todo:</a></b></dt><dd>Do we ever use this function? </dd></dl>
 
 </div>
 </div>
@@ -2607,7 +2635,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>m_center</b> = -1</td>
   </table>
   </dd>
 </dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000005">Todo:</a></b></dt><dd>Implement the actual TAB expansion </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000006">Todo:</a></b></dt><dd>Implement the actual TAB expansion </dd></dl>
 
 </div>
 </div>
