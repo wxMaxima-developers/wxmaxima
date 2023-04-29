@@ -504,8 +504,13 @@ public:
     Fractions in exponents are displayed as 1D maths
   */
   virtual void SetIsExponentList();
-  
+
+  /*! Allows to change the text a TextCell contains
+
+    \todo Do we ever use this function?
+   */
   virtual void SetValue(const wxString &WXUNUSED(text)) {}
+  //! Gets the text this text cell contains
   virtual const wxString &GetValue() const;
 
   //! Get the first cell in this list of cells
@@ -514,6 +519,7 @@ public:
   //! Get the last cell in this list of cells
   Cell *last() const;
 
+  //! A struct that allows to specify a region of a cell list
   struct Range {
     Cell *first, *last;
   };
@@ -537,6 +543,7 @@ public:
   //! Do we have an operator in this line - draw () in frac...
   bool IsCompound() const;
 
+  //! True if this cell represents a short number
   virtual bool IsShortNum() const { return false; }
 
   //! Returns the group cell this cell belongs to
