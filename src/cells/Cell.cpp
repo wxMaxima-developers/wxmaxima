@@ -276,8 +276,8 @@ void Cell::Draw(wxPoint point) {
     SetCurrentPoint(point);
 
   // Mark all cells that contain tooltips
-  if (!m_toolTip->empty() && (GetStyle() != TS_LABEL) &&
-      (GetStyle() != TS_USERLABEL) && m_configuration->ClipToDrawRegion() &&
+  if (!m_toolTip->empty() && (GetTextStyle() != TS_LABEL) &&
+      (GetTextStyle() != TS_USERLABEL) && m_configuration->ClipToDrawRegion() &&
       !m_configuration->GetPrinting() && !m_group->GetSuppressTooltipMarker() &&
       (!m_configuration->HideMarkerForThisMessage(*m_toolTip))) {
     wxRect rect = Cell::CropToUpdateRegion(GetRect());
@@ -341,6 +341,12 @@ void Cell::SetAltCopyText(const wxString &text) {
 	       text.empty(),
 	       wxString::Format(_("Bug: AltCopyTexts not implemented for %s cell"),
 				GetInfo().GetName()));
+}
+
+void Cell::SetIsExponentList() {
+  for (Cell &tmp : OnList(this)) {
+    tmp.SetIsExponent();
+  }
 }
 
 void Cell::DrawList(wxPoint point) {
@@ -458,9 +464,9 @@ static const wxString space = wxT(" ");
 wxString Cell::VariablesAndFunctionsList() const {
   wxString retval;
   for (const Cell &tmp : OnDrawList(this)) {
-    if ((tmp.GetStyle() == TS_LABEL) || (tmp.GetStyle() == TS_USERLABEL) ||
-        (tmp.GetStyle() == TS_MAIN_PROMPT) || (tmp.GetStyle() == TS_VARIABLE) ||
-        (tmp.GetStyle() == TS_FUNCTION)) {
+    if ((tmp.GetTextStyle() == TS_LABEL) || (tmp.GetTextStyle() == TS_USERLABEL) ||
+        (tmp.GetTextStyle() == TS_MAIN_PROMPT) || (tmp.GetTextStyle() == TS_VARIABLE) ||
+        (tmp.GetTextStyle() == TS_FUNCTION)) {
       retval << tmp.ToString() << space;
     }
   }
@@ -476,18 +482,18 @@ wxString Cell::ListToString() const {
       if (!retval.EndsWith(wxT('\n')))
         retval += wxT("\n");
       // if(
-      //    (tmp.GetStyle() != TS_LABEL) &&
-      //    (tmp.GetStyle() != TS_USERLABEL) &&
-      //    (tmp.GetStyle() != TS_MAIN_PROMPT) &&
-      //    (tmp.GetStyle() != TS_OTHER_PROMPT))
+      //    (tmp.GetTextStyle() != TS_LABEL) &&
+      //    (tmp.GetTextStyle() != TS_USERLABEL) &&
+      //    (tmp.GetTextStyle() != TS_MAIN_PROMPT) &&
+      //    (tmp.GetTextStyle() != TS_OTHER_PROMPT))
       //   retval += wxT("\t");
     }
     // if(firstline)
     // {
-    //   if((tmp.GetStyle() != TS_LABEL) &&
-    //      (tmp.GetStyle() != TS_USERLABEL) &&
-    //      (tmp.GetStyle() != TS_MAIN_PROMPT) &&
-    //      (tmp.GetStyle() != TS_OTHER_PROMPT))
+    //   if((tmp.GetTextStyle() != TS_LABEL) &&
+    //      (tmp.GetTextStyle() != TS_USERLABEL) &&
+    //      (tmp.GetTextStyle() != TS_MAIN_PROMPT) &&
+    //      (tmp.GetTextStyle() != TS_OTHER_PROMPT))
     //     retval += wxT("\t");
     // }
     retval += tmp.ToString();
@@ -508,18 +514,18 @@ wxString Cell::ListToMatlab() const {
       if (!retval.EndsWith(wxT('\n')))
         retval += wxT("\n");
       // if(
-      //    (tmp.GetStyle() != TS_LABEL) &&
-      //    (tmp.GetStyle() != TS_USERLABEL) &&
-      //    (tmp.GetStyle() != TS_MAIN_PROMPT) &&
-      //    (tmp.GetStyle() != TS_OTHER_PROMPT))
+      //    (tmp.GetTextStyle() != TS_LABEL) &&
+      //    (tmp.GetTextStyle() != TS_USERLABEL) &&
+      //    (tmp.GetTextStyle() != TS_MAIN_PROMPT) &&
+      //    (tmp.GetTextStyle() != TS_OTHER_PROMPT))
       //   retval += wxT("\t");
     }
     // if(firstline)
     // {
-    //   if((tmp.GetStyle() != TS_LABEL) &&
-    //      (tmp.GetStyle() != TS_USERLABEL) &&
-    //      (tmp.GetStyle() != TS_MAIN_PROMPT) &&
-    //      (tmp.GetStyle() != TS_OTHER_PROMPT))
+    //   if((tmp.GetTextStyle() != TS_LABEL) &&
+    //      (tmp.GetTextStyle() != TS_USERLABEL) &&
+    //      (tmp.GetTextStyle() != TS_MAIN_PROMPT) &&
+    //      (tmp.GetTextStyle() != TS_OTHER_PROMPT))
     //     retval += wxT("\t");
     // }
     retval += tmp.ToMatlab();
@@ -535,7 +541,7 @@ wxString Cell::ToTeX() const { return {}; }
 wxString Cell::ListToTeX() const {
   wxString retval;
   for (const Cell &tmp : OnList(this)) {
-    if (((!retval.IsEmpty()) && (tmp.GetStyle() == TS_LABEL)) ||
+    if (((!retval.IsEmpty()) && (tmp.GetTextStyle() == TS_LABEL)) ||
         (tmp.BreakLineHere()))
       retval += wxT("\\]\\[");
     retval += tmp.ToTeX();
@@ -579,7 +585,7 @@ wxString Cell::ListToMathML(bool startofline) const {
     // If a linebreak isn't followed by a label we need to introduce an empty
     // one.
     if ((((tmp.HasHardLineBreak()) || (startofline && (this == &tmp))) &&
-         ((tmp.GetStyle() != TS_LABEL) && (tmp.GetStyle() != TS_USERLABEL))) &&
+         ((tmp.GetTextStyle() != TS_LABEL) && (tmp.GetTextStyle() != TS_USERLABEL))) &&
         (needsTable))
       retval += wxT("<mtext></mtext></mtd><mtd>");
 
@@ -739,7 +745,7 @@ wxString Cell::ListToRTF(bool startofline) const {
   for (const Cell *tmp = this; tmp != NULL;) {
     wxString rtf = tmp->ToRTF();
     if (!rtf.empty()) {
-      if ((GetStyle() == TS_LABEL) || ((GetStyle() == TS_USERLABEL))) {
+      if ((GetTextStyle() == TS_LABEL) || ((GetTextStyle() == TS_USERLABEL))) {
         retval +=
 	  wxT("\\par}\n{\\pard\\s22\\li1105\\lin1105\\fi-1105\\f0\\fs24 ") +
 	  rtf + wxT("\\tab");
@@ -969,7 +975,7 @@ wxColour Cell::GetForegroundColor() const {
   if (m_highlight)
     color = m_configuration->GetColor(TS_HIGHLIGHT);
   else 
-    color = m_configuration->GetColor(GetStyle());
+    color = m_configuration->GetColor(GetTextStyle());
 
   return color;
 }
@@ -1033,8 +1039,8 @@ void Cell::SetForeground() {
 }
 
 bool Cell::IsMath() const {
-  return !(GetStyle() == TS_LABEL || GetStyle() == TS_USERLABEL ||
-           GetStyle() == TS_CODE_DEFAULT);
+  return !(GetTextStyle() == TS_LABEL || GetTextStyle() == TS_USERLABEL ||
+           GetTextStyle() == TS_CODE_DEFAULT);
 }
 
 #if wxUSE_ACCESSIBILITY

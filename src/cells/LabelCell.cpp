@@ -57,7 +57,7 @@ void LabelCell::Draw(wxPoint point) {
 
     wxDC *dc = m_configuration->GetDC();
     int padding = 0;
-    if (GetStyle() != TS_ASCIIMATHS)
+    if (GetTextStyle() != TS_ASCIIMATHS)
       padding = MC_TEXT_PADDING;
 
     SetForeground();
@@ -114,7 +114,7 @@ wxString LabelCell::ToXML() const {
   if (IsHidden() || GetHidableMultSign())
     tag = _T("h");
   else
-    switch (GetStyle()) {
+    switch (GetTextStyle()) {
     case TS_GREEK_CONSTANT:
       tag = _T("g");
       break;

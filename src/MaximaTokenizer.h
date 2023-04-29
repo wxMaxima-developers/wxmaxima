@@ -69,7 +69,7 @@ public:
     Token& operator=(const Token& t) { m_text = t.m_text; m_style = t.m_style; return *this; }
     Token(Token&& token) { *this = std::move(token); }
     Token(const Token &token) { *this = token ;}
-    TextStyle GetStyle() const { return m_style; }
+    TextStyle GetTextStyle() const { return m_style; }
     const wxString &GetText() const { return m_text; }
     operator const wxString &() const { return m_text; }
   private:

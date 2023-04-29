@@ -1500,7 +1500,7 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event) {
 
         if ((GetSelectionStart() != NULL) &&
             (GetSelectionStart()->GetType() == MC_TYPE_TEXT) &&
-            (dynamic_cast<TextCell *>(GetSelectionStart())->GetStyle() ==
+            (dynamic_cast<TextCell *>(GetSelectionStart())->GetTextStyle() ==
              TS_SPECIAL_CONSTANT)) {
           if (popupMenu.GetMenuItemCount() > 0)
             popupMenu.AppendSeparator();
@@ -1527,7 +1527,7 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event) {
         }
         if ((GetSelectionStart() != NULL) &&
             (GetSelectionStart() == GetSelectionEnd()) &&
-            (GetSelectionStart()->GetStyle() == TS_VARIABLE)) {
+            (GetSelectionStart()->GetTextStyle() == TS_VARIABLE)) {
           if (popupMenu.GetMenuItemCount() > 0)
             popupMenu.AppendSeparator();
           popupMenu.Append(EventIDs::popid_add_watch, _("Add to watchlist"),
@@ -1565,7 +1565,7 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event) {
         }
       }
       if ((GetSelectionStart() == GetSelectionEnd()) &&
-          (GetSelectionStart()->GetStyle() == TS_NUMBER)) {
+          (GetSelectionStart()->GetTextStyle() == TS_NUMBER)) {
         popupMenu.AppendSeparator();
         popupMenu.Append(EventIDs::popid_digits_20, _("Show max. 20 digits"));
         popupMenu.Append(EventIDs::popid_digits_50, _("Show max. 50 digits"));
@@ -5188,8 +5188,8 @@ bool Worksheet::ExportToHTML(const wxString &file) {
               auto *chunkNext = chunkEnd->GetNext();
               if ((chunkNext->GetType() == MC_TYPE_SLIDE) ||
                   (chunkNext->GetType() == MC_TYPE_IMAGE) ||
-                  (chunkNext->GetStyle() == TS_LABEL) ||
-                  (chunkNext->GetStyle() == TS_USERLABEL))
+                  (chunkNext->GetTextStyle() == TS_LABEL) ||
+                  (chunkNext->GetTextStyle() == TS_USERLABEL))
                 break;
               chunkEnd = chunkNext;
             }
@@ -5653,7 +5653,7 @@ wxString Worksheet::UnicodeToMaxima(wxString s) {
 
   for (auto const &tok : MaximaTokenizer(s, m_configuration).PopTokens()) {
     auto const &tokenString = tok.GetText();
-    switch (tok.GetStyle()) {
+    switch (tok.GetTextStyle()) {
     case TS_CODE_DEFAULT:
     case TS_CODE_OPERATOR:
     case TS_CODE_VARIABLE:

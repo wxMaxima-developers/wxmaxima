@@ -79,7 +79,7 @@ public:
   wxString ToXML() const override;
 
   //! Fractions in exponents are shown in their linear form.
-  void SetExponentFlag() override;
+  void SetIsExponent() override;
 
   bool BreakUp() override;
 

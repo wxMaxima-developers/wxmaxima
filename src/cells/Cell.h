@@ -26,8 +26,8 @@
   The definition of the base class of all cells the worksheet consists of.
 */
 
-#ifndef MATHCELL_H
-#define MATHCELL_H
+#ifndef CELL_H
+#define CELL_H
 
 #include "../precomp.h"
 #include "CellPtr.h"
@@ -446,6 +446,7 @@ public:
   //! Mark all cached size information as "to be calculated".
   void ResetData();
 
+  //! Mark all cached size information of this cell list as "to be calculated".
   void ResetDataList();
 
   //! Mark the cached height and width information as "to be calculated".
@@ -457,19 +458,21 @@ public:
   //! Mark the line and cell list widths and heights as "to be calculated"
   void ResetCellListSizesList();
 
+  //! Sets the size of this cell to 0.
   void SetZeroSize();
 
   //! Mark the cached height information of the whole list of cells as "to be calculated".
   void ResetSizeList();
 
+  //! Tell this cell to cause an additional vertical space
   void SetBigSkip(bool skip) { m_bigSkip = skip; }
+  //! Does this cell come with an additional vertical space
   bool HasBigSkip() const { return m_bigSkip; }
 
   //! Sets the text style according to the type
   virtual void SetType(CellType type);
 
-  const TextStyle &GetStyle() const
-    { return m_textStyle; }
+  //! Get the text style
   const TextStyle &GetTextStyle() const
     { return m_textStyle; }
 
@@ -486,9 +489,19 @@ public:
   //! Is this cell highlighted (e.G. inside a maxima box)
   bool GetHighlight() const { return m_highlight; }
 
-  virtual void SetExponentFlag()
+  /*! Tell this cell to be an exponent
+
+    Fractions in exponents are displayed as 1D maths
+  */
+  virtual void SetIsExponent()
     {}
 
+  /*! Tell this list of cells to be an exponent
+
+    Fractions in exponents are displayed as 1D maths
+  */
+  virtual void SetIsExponentList();
+  
   virtual void SetValue(const wxString &WXUNUSED(text)) {}
   virtual const wxString &GetValue() const;
 
@@ -860,6 +873,7 @@ protected:
   //! reduce the change "noise" when it will be subsequently removed.
   CellPtr<Cell> m_nextToDraw;
 
+  //! A pointer to the configuration responsible for this worksheet
   Configuration *m_configuration;
 
   //! This tooltip is owned by us when m_ownsToolTip is true. Otherwise,
@@ -880,7 +894,9 @@ private:
   CachedInteger<int> m_fullWidth;
   //! The width of the rest of the line this cell is part of.
   CachedInteger<int> m_lineWidth;
+  //! The position of the center of this line
   CachedInteger<int> m_maxCenter;
+  //! The height-center of this line 
   CachedInteger<int> m_maxDrop;
 protected:
 //** 2-byte objects (2 bytes)
@@ -890,7 +906,9 @@ protected:
 
 //** 1-byte objects (2 bytes)
 //**
+  // The celltype of this object
   CellType m_type = MC_TYPE_DEFAULT;
+  // The text style of this object
   TextStyle m_textStyle = TS_MATH;
 
 private:
@@ -1012,4 +1030,4 @@ inline auto OnInner(C *cell) { return InnerCellAdapter(cell); }
 inline int InnerCellIterator::GetInnerCellCount(const Cell *cell) { return cell->GetInnerCellCount(); }
 inline Cell *InnerCellIterator::GetInnerCell(const Cell *cell, int index) { return cell->GetInnerCell(index); }
 
-#endif // MATHCELL_H
+#endif // CELL_H

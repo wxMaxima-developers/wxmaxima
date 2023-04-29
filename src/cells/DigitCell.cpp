@@ -39,7 +39,7 @@ DigitCell::DigitCell(GroupCell *group, Configuration *config,
   : TextCell(group, config, text, style) {}
 
 DigitCell::DigitCell(GroupCell *group, const DigitCell &cell)
-  : DigitCell(group, cell.m_configuration, cell.m_text, cell.GetStyle()) {}
+  : DigitCell(group, cell.m_configuration, cell.m_text, cell.GetTextStyle()) {}
 
 DEFINE_CELL(DigitCell)
 

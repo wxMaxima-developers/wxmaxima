@@ -5303,7 +5303,7 @@ void wxMaxima::UpdateToolBar() {
       editor = group->GetEditable();
   }
 
-  bool canEvaluateNext = ((editor != NULL) && (editor->GetStyle() == TS_CODE_DEFAULT));
+  bool canEvaluateNext = ((editor != NULL) && (editor->GetTextStyle() == TS_CODE_DEFAULT));
 
   if (!canEvaluateNext) {
     if (m_worksheet->HCaretActive()) {
@@ -10200,7 +10200,7 @@ wxString wxMaxima::GetUnmatchedParenthesisState(wxString text, int &index) {
 
   for (auto const &tok : MaximaTokenizer(text, &m_configuration).PopTokens()) {
     auto &itemText = tok.GetText();
-    const TextStyle itemStyle = tok.GetStyle();
+    const TextStyle itemStyle = tok.GetTextStyle();
     index += itemText.Length();
 
     lastnonWhitespace = lastnonWhitespace_Next;

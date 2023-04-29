@@ -432,10 +432,10 @@ void TextCell::UpdateDisplayedText() {
       m_displayedText = wxT("\u03A8");
   }
 
-  if ((GetStyle() == TS_MATH) && m_text.StartsWith("\""))
+  if ((GetTextStyle() == TS_MATH) && m_text.StartsWith("\""))
     return;
 
-  if ((GetStyle() == TS_GREEK_CONSTANT) && m_configuration->Latin2Greek())
+  if ((GetTextStyle() == TS_GREEK_CONSTANT) && m_configuration->Latin2Greek())
     m_displayedText = GetGreekStringUnicode();
 
   wxString unicodeSym = GetSymbolUnicode(m_configuration->CheckKeepPercent());
@@ -490,7 +490,7 @@ void TextCell::Draw(wxPoint point) {
 
     wxDC *dc = m_configuration->GetDC();
     int padding = 0;
-    if (GetStyle() != TS_ASCIIMATHS)
+    if (GetTextStyle() != TS_ASCIIMATHS)
       padding = MC_TEXT_PADDING;
 
     SetForeground();
@@ -663,13 +663,13 @@ wxString TextCell::ToTeX() const {
   // mode.
   wxString mathModeEnd = wxT(" ");
 
-  if ((GetStyle() == TS_ERROR) || (GetStyle() == TS_WARNING) ||
-      (GetStyle() == TS_LABEL) || (GetStyle() == TS_USERLABEL) ||
-      (GetStyle() == TS_MAIN_PROMPT) || (GetStyle() == TS_OTHER_PROMPT)) {
+  if ((GetTextStyle() == TS_ERROR) || (GetTextStyle() == TS_WARNING) ||
+      (GetTextStyle() == TS_LABEL) || (GetTextStyle() == TS_USERLABEL) ||
+      (GetTextStyle() == TS_MAIN_PROMPT) || (GetTextStyle() == TS_OTHER_PROMPT)) {
     mathModeStart = wxT("\\ensuremath{");
     mathModeEnd = wxT("}");
-    if ((GetStyle() == TS_LABEL) || (GetStyle() == TS_USERLABEL) ||
-        (GetStyle() == TS_MAIN_PROMPT) || (GetStyle() == TS_OTHER_PROMPT))
+    if ((GetTextStyle() == TS_LABEL) || (GetTextStyle() == TS_USERLABEL) ||
+        (GetTextStyle() == TS_MAIN_PROMPT) || (GetTextStyle() == TS_OTHER_PROMPT))
       text.Replace(wxT("\\"), wxEmptyString);
     else
       text.Replace(wxT("\\"), mathModeStart + wxT("\\backslash") + mathModeEnd);
@@ -821,8 +821,8 @@ wxString TextCell::ToTeX() const {
           // This multiplication sign is between 2 cells
           (GetPrevious() && GetNext()) &&
           // These cells are two variable names
-          ((GetPrevious()->GetStyle() == TS_VARIABLE) &&
-           (GetNext()->GetStyle() == TS_VARIABLE)) &&
+          ((GetPrevious()->GetTextStyle() == TS_VARIABLE) &&
+           (GetNext()->GetTextStyle() == TS_VARIABLE)) &&
           // The variable name prior to this cell has no subscript
           (!(GetPrevious()->ToString().Contains(wxT('_')))) &&
           // we will be using \mathit{} for the TeX output.
@@ -849,7 +849,7 @@ wxString TextCell::ToTeX() const {
       // If we want to know if the last element was a "d" we first have to
       // look if there actually is a last element.
       if (GetPrevious()) {
-        if (GetPrevious()->GetStyle() == TS_SPECIAL_CONSTANT &&
+        if (GetPrevious()->GetTextStyle() == TS_SPECIAL_CONSTANT &&
             GetPrevious()->ToTeX() == wxT("d")) {
           text.Replace(wxT("*"), wxT("\\, "));
           text.Replace(wxT("\u00B7"), wxT("\\, "));
@@ -861,7 +861,7 @@ wxString TextCell::ToTeX() const {
     }
   }
 
-  if (GetStyle() == TS_GREEK_CONSTANT) {
+  if (GetTextStyle() == TS_GREEK_CONSTANT) {
     if (text == wxT("\\% alpha"))
       return wxT("\\alpha ");
     else if (text == wxT("\\% beta"))
@@ -962,7 +962,7 @@ wxString TextCell::ToTeX() const {
     return text;
   }
 
-  if (GetStyle() == TS_SPECIAL_CONSTANT) {
+  if (GetTextStyle() == TS_SPECIAL_CONSTANT) {
     if (text == wxT("inf"))
       return wxT("\\infty ");
     else if (text == wxT("%e"))
@@ -975,7 +975,7 @@ wxString TextCell::ToTeX() const {
       return text;
   }
 
-  if ((GetStyle() == TS_LABEL) || (GetStyle() == TS_USERLABEL)) {
+  if ((GetTextStyle() == TS_LABEL) || (GetTextStyle() == TS_USERLABEL)) {
     wxString conditionalLinebreak;
     if (GetPrevious())
       conditionalLinebreak = wxT("\\]\n\\[");
@@ -986,14 +986,14 @@ wxString TextCell::ToTeX() const {
     // Would be a good idea, but apparently breaks mathJaX
     // text += wxT("\\label{") + label + wxT("}");
   } else {
-    if (GetStyle() == TS_FUNCTION) {
+    if (GetTextStyle() == TS_FUNCTION) {
       if (text != wxEmptyString) {
         text.Replace(wxT("^"), wxT("\\hat{} "));
         text = wxT("\\operatorname{") + text + wxT("}");
       }
-    } else if ((GetStyle() == TS_VARIABLE) ||
-               (GetStyle() == TS_GREEK_CONSTANT) ||
-               (GetStyle() == TS_SPECIAL_CONSTANT)) {
+    } else if ((GetTextStyle() == TS_VARIABLE) ||
+               (GetTextStyle() == TS_GREEK_CONSTANT) ||
+               (GetTextStyle() == TS_SPECIAL_CONSTANT)) {
       if ((m_displayedText.Length() > 1) && (text[1] != wxT('_')))
         text = wxT("\\ensuremath{\\mathrm{") + text + wxT("}}");
       if (text == wxT("\\% pi"))
@@ -1004,31 +1004,31 @@ wxString TextCell::ToTeX() const {
       text.Replace(wxT("\\text{Ä}"), wxT("\\text{\\textit{Ä}}"));
       text.Replace(wxT("\\text{Ö}"), wxT("\\text{\\textit{Ö}}"));
       text.Replace(wxT("\\text{Ü}"), wxT("\\text{\\textit{Ü}}"));
-    } else if ((GetStyle() == TS_ERROR) || (GetStyle() == TS_WARNING)) {
+    } else if ((GetTextStyle() == TS_ERROR) || (GetTextStyle() == TS_WARNING)) {
       if (text.Length() > 1)
         text = wxT("\\mbox{%error\n") + text + wxT("}");
-    } else if (GetStyle() == TS_MATH) {
+    } else if (GetTextStyle() == TS_MATH) {
       if ((text.Length() > 2) && (text != wxT("\\,")) && (text != wxT("\\, ")))
         text = wxT("\\mbox{%default\n") + text + wxT("}");
     }
   }
 
-  if ((GetStyle() != TS_FUNCTION) && (GetStyle() != TS_OUTDATED) &&
-      (GetStyle() != TS_VARIABLE) && (GetStyle() != TS_NUMBER) &&
-      (GetStyle() != TS_GREEK_CONSTANT) && (GetStyle() != TS_SPECIAL_CONSTANT))
+  if ((GetTextStyle() != TS_FUNCTION) && (GetTextStyle() != TS_OUTDATED) &&
+      (GetTextStyle() != TS_VARIABLE) && (GetTextStyle() != TS_NUMBER) &&
+      (GetTextStyle() != TS_GREEK_CONSTANT) && (GetTextStyle() != TS_SPECIAL_CONSTANT))
     text.Replace(wxT("^"), wxT("\\textasciicircum"));
 
-  if ((GetStyle() == TS_MATH) || (GetStyle() == TS_STRING)) {
+  if ((GetTextStyle() == TS_MATH) || (GetTextStyle() == TS_STRING)) {
     if (text.Length() > 1) {
       if (BreakLineHere())
         // text=wxT("\\ifhmode\\\\fi\n")+text;
         text = wxT("\\mbox{}\\\\") + text;
-      /*      if(GetStyle() != TS_MATH)
+      /*      if(GetTextStyle() != TS_MATH)
               text.Replace(wxT(" "), wxT("\\, "));*/
     }
   }
 
-  if ((GetStyle() == TS_LABEL) || (GetStyle() == TS_USERLABEL))
+  if ((GetTextStyle() == TS_LABEL) || (GetTextStyle() == TS_USERLABEL))
     text = text + wxT(" ");
 
   return text;
@@ -1049,14 +1049,14 @@ wxString TextCell::ToMathML() const {
   }
   text.Replace(wxT("*"), wxT("\u00B7"));
 
-  switch (GetStyle()) {
+  switch (GetTextStyle()) {
   case TS_GREEK_CONSTANT:
     text = GetGreekStringUnicode();
     break;
   case TS_SPECIAL_CONSTANT: {
     text = GetGreekStringUnicode();
     // The "d" from d/dt can be written as a special unicode symbol. But firefox
-    // doesn't support this currently => Commenting it out. if((GetStyle() ==
+    // doesn't support this currently => Commenting it out. if((GetTextStyle() ==
     // TS_SPECIAL_CONSTANT) && (text == wxT("d")))
     //   text = wxT("&#2146;");
     bool keepPercent = m_configuration->CheckKeepPercent();
@@ -1106,13 +1106,13 @@ wxString TextCell::ToMathML() const {
 
 wxString TextCell::ToOMML() const {
   // Text-only lines are better handled in RTF.
-  if ((GetPrevious() && (GetPrevious()->GetStyle() != TS_LABEL) &&
+  if ((GetPrevious() && (GetPrevious()->GetTextStyle() != TS_LABEL) &&
        (!GetPrevious()->HasHardLineBreak())) &&
       (HasHardLineBreak()))
     return wxEmptyString;
 
   // Labels are text-only.
-  if ((GetStyle() == TS_LABEL) || (GetStyle() == TS_USERLABEL))
+  if ((GetTextStyle() == TS_LABEL) || (GetTextStyle() == TS_USERLABEL))
     return wxEmptyString;
 
   wxString text = XMLescape(m_displayedText);
@@ -1127,11 +1127,11 @@ wxString TextCell::ToOMML() const {
   }
   text.Replace(wxT("*"), wxT("\u00B7"));
 
-  switch (GetStyle()) {
+  switch (GetTextStyle()) {
   case TS_GREEK_CONSTANT:
   case TS_SPECIAL_CONSTANT: {
     // The "d" from d/dt can be written as a special unicode symbol. But firefox
-    // doesn't support this currently => Commenting it out. if((GetStyle() ==
+    // doesn't support this currently => Commenting it out. if((GetTextStyle() ==
     // TS_SPECIAL_CONSTANT) && (text == wxT("d")))
     //   text = wxT("&#2146;");
     bool keepPercent = m_configuration->CheckKeepPercent();
@@ -1179,8 +1179,8 @@ wxString TextCell::ToRTF() const {
   text.Replace(wxT("-->"), wxT("\u2192"));
   // Needed for the output of let(a/b,a+1);
   text.Replace(wxT(" --> "), wxT("\u2192"));
-  if ((GetStyle() == TS_LABEL) || (GetStyle() == TS_USERLABEL)) {
-    retval += wxString::Format(wxT("\\cf%i{"), (int)GetStyle());
+  if ((GetTextStyle() == TS_LABEL) || (GetTextStyle() == TS_USERLABEL)) {
+    retval += wxString::Format(wxT("\\cf%i{"), (int)GetTextStyle());
     retval += RTFescape(text);
     retval += wxT("}\\cf0");
   }
@@ -1189,20 +1189,20 @@ wxString TextCell::ToRTF() const {
 
 wxString TextCell::GetXMLFlags() const {
   wxString flags;
-  if (HasHardLineBreak() && (GetStyle() != TS_LABEL) &&
-      (GetStyle() != TS_USERLABEL))
+  if (HasHardLineBreak() && (GetTextStyle() != TS_LABEL) &&
+      (GetTextStyle() != TS_USERLABEL))
     flags += wxT(" breakline=\"true\"");
   
-  if (GetStyle() == TS_ASCIIMATHS)
+  if (GetTextStyle() == TS_ASCIIMATHS)
     flags += wxT(" type=\"ASCII-Art\"");
   
-  if (GetStyle() == TS_OPERATOR)
+  if (GetTextStyle() == TS_OPERATOR)
     flags += wxT(" type=\"Operator\"");
   
-  if (GetStyle() == TS_ERROR)
+  if (GetTextStyle() == TS_ERROR)
     flags += wxT(" type=\"error\"");
 
-  if (GetStyle() == TS_WARNING)
+  if (GetTextStyle() == TS_WARNING)
     flags += wxT(" type=\"warning\"");
 
   if (!GetAltCopyText().empty())
@@ -1211,7 +1211,7 @@ wxString TextCell::GetXMLFlags() const {
   if (!GetLocalToolTip().empty())
     flags += wxT(" tooltip=\"") + XMLescape(GetLocalToolTip()) + wxT("\"");
 
-  if (GetStyle() == TS_USERLABEL)
+  if (GetTextStyle() == TS_USERLABEL)
     flags += wxT(" userdefined=\"yes\"");
 
   return flags;
@@ -1222,7 +1222,7 @@ wxString TextCell::ToXML() const {
   if (IsHidden() || GetHidableMultSign())
     tag = _T("h");
   else
-    switch (GetStyle()) {
+    switch (GetTextStyle()) {
     case TS_GREEK_CONSTANT:
       tag = _T("g");
       break;
@@ -1415,7 +1415,7 @@ wxString TextCell::GetSymbolUnicode(bool keepPercent) const {
   else if (m_text == wxT(" \u2212\u2192 "))
     return wxT("\u2794");
   /*
-    else if (GetStyle() == TS_SPECIAL_CONSTANT && m_text == wxT("d"))
+    else if (GetTextStyle() == TS_SPECIAL_CONSTANT && m_text == wxT("d"))
     return wxT("\u2202");
   */
 

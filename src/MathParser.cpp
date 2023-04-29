@@ -732,7 +732,7 @@ std::unique_ptr<Cell> MathParser::ParseSupTag(wxXmlNode *node) {
   child = GetNextTag(child);
 
   auto power = HandleNullPointer(ParseTag(child, false));
-  power->SetExponentFlag();
+  power->SetIsExponentList();
   auto powerText = power->ToString();
 
   auto expt = std::make_unique<ExptCell>(m_group, m_configuration,
@@ -774,11 +774,11 @@ std::unique_ptr<Cell> MathParser::ParseSubSupTag(wxXmlNode *node) {
     }
   } else {
     auto index = HandleNullPointer(ParseTag(child, false));
-    index->SetExponentFlag();
+    index->SetIsExponentList();
     subsup->SetIndex(std::move(index));
     child = GetNextTag(child);
     auto power = HandleNullPointer(ParseTag(child, false));
-    power->SetExponentFlag();
+    power->SetIsExponentList();
     subsup->SetExponent(std::move(power));
     subsup->SetType(m_ParserStyle);
     subsup->SetStyle(TS_VARIABLE);
@@ -828,7 +828,7 @@ std::unique_ptr<Cell> MathParser::ParseSubTag(wxXmlNode *node) {
   auto base = HandleNullPointer(ParseTag(child, false));
   child = GetNextTag(child);
   auto index = HandleNullPointer(ParseTag(child, false));
-  index->SetExponentFlag();
+  index->SetIsExponentList();
 
   auto sub = std::make_unique<SubCell>(m_group, m_configuration,
                                        std::move(base), std::move(index));

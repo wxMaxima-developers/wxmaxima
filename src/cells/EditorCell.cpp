@@ -302,7 +302,7 @@ wxString EditorCell::ToRTF() const {
     retval += wxT("\\pard\\s5\\b\\f0\\fs32 ") + RTFescape(m_text) + wxT("\n");
     break;
   case MC_TYPE_PROMPT:
-    retval += wxString::Format(wxT("\\cf%i"), GetStyle()) +
+    retval += wxString::Format(wxT("\\cf%i"), GetTextStyle()) +
       wxT("\\pard\\s22\\li1105\\lin1105\\fi-1105\\f0\\fs24 ") +
       RTFescape(m_text) + wxT("\n");
     break;
@@ -313,7 +313,7 @@ wxString EditorCell::ToRTF() const {
 
       if (textSnippet.IsStyleSet()) {
         retval +=
-	  wxString::Format(wxT("\\cf%i "), static_cast<int>(textSnippet.GetStyle()));
+	  wxString::Format(wxT("\\cf%i "), static_cast<int>(textSnippet.GetTextStyle()));
         retval += RTFescape(textSnippet.GetText());
       } else {
         retval += wxString::Format(wxT("\\cf%i "), static_cast<int>(TS_CODE_DEFAULT));
@@ -621,7 +621,7 @@ wxString EditorCell::ToHTML() const {
       wxString text = PrependNBSP(EscapeHTMLChars(textSnippet.GetText()));
 
       if (textSnippet.IsStyleSet()) {
-        switch (textSnippet.GetStyle()) {
+        switch (textSnippet.GetTextStyle()) {
         case TS_CODE_COMMENT:
           retval +=
 	    wxT("<span class=\"code_comment\">") + text + wxT("</span>");
@@ -729,7 +729,7 @@ void EditorCell::Draw(wxPoint point) {
     if (m_height > 0 && m_width > 0 && y >= 0) {
       wxBrush *br;
       wxPen *pen;
-      if (GetStyle() == TS_TEXT) {
+      if (GetTextStyle() == TS_TEXT) {
         br = wxTheBrushList->FindOrCreateBrush(
 					       m_configuration->EditorBackgroundColor());
         pen = wxThePenList->FindOrCreatePen(
@@ -845,10 +845,10 @@ void EditorCell::Draw(wxPoint point) {
 
         // Grab a pen of the right color.
         if (textSnippet.IsStyleSet()) {
-          if (lastStyle != textSnippet.GetStyle()) {
+          if (lastStyle != textSnippet.GetTextStyle()) {
             dc->SetTextForeground(
-				  m_configuration->GetColor(textSnippet.GetStyle()));
-            lastStyle = textSnippet.GetStyle();
+				  m_configuration->GetColor(textSnippet.GetTextStyle()));
+            lastStyle = textSnippet.GetTextStyle();
           }
         } else {
           lastStyle = -1;
@@ -2309,7 +2309,7 @@ bool EditorCell::AddEnding() {
   bool endingNeeded = true;
 
   for (auto const &tok : GetAllTokens()) {
-    TextStyle itemStyle = tok.GetStyle();
+    TextStyle itemStyle = tok.GetTextStyle();
     if ((itemStyle == TS_CODE_ENDOFLINE) || (itemStyle == TS_CODE_LISP)) {
       endingNeeded = false;
     } else {
@@ -3074,17 +3074,17 @@ void EditorCell::StyleTextCode() {
         line += wxString(*it2);
       else {
         if (line != wxEmptyString)
-          m_styledText.push_back(StyledText(token.GetStyle(), line));
-        m_styledText.push_back(StyledText(token.GetStyle(), "\n"));
+          m_styledText.push_back(StyledText(token.GetTextStyle(), line));
+        m_styledText.push_back(StyledText(token.GetTextStyle(), "\n"));
         line = wxEmptyString;
       }
     }
     if (line != wxEmptyString)
-      m_styledText.push_back(StyledText(token.GetStyle(), line));
+      m_styledText.push_back(StyledText(token.GetTextStyle(), line));
     HandleSoftLineBreaks_Code(lastSpace, lineWidth, token, pos, m_text,
                               lastSpacePos, indentationPixels);
-    if ((token.GetStyle() == TS_CODE_VARIABLE) ||
-        (token.GetStyle() == TS_CODE_FUNCTION)) {
+    if ((token.GetTextStyle() == TS_CODE_VARIABLE) ||
+        (token.GetTextStyle() == TS_CODE_FUNCTION)) {
       m_wordList.push_back(token);
       continue;
     }
@@ -3642,7 +3642,7 @@ TextStyle EditorCell::GetSelectionStyle() const {
           (pos + text.Length() < static_cast<unsigned long>(wxMax(m_selectionStart, m_selectionEnd))) &&
           (wxMax(m_selectionStart, m_selectionEnd) >= 0)) {
         if (textSnippet.IsStyleSet())
-          return textSnippet.GetStyle();
+          return textSnippet.GetTextStyle();
       }
       if (pos > m_selectionEnd)
         return TS_INVALID;
@@ -3656,7 +3656,7 @@ TextStyle EditorCell::GetSelectionStyle() const {
 	  (m_positionOfCaret >= 0) &&
 	  (pos + static_cast<signed>(text.Length()) >= 0)) {
         if (textSnippet.IsStyleSet())
-          return textSnippet.GetStyle();
+          return textSnippet.GetTextStyle();
       }
       if (pos > m_selectionEnd)
         return TS_INVALID;

@@ -407,8 +407,8 @@ void GroupCell::UpdateConfusableCharWarnings() {
     for (auto const &tok :
 	   MaximaTokenizer(output, m_configuration, GetEditable()->GetAllTokens())
 	   .PopTokens())
-      if ((tok.GetStyle() == TS_CODE_VARIABLE) ||
-          (tok.GetStyle() == TS_CODE_FUNCTION))
+      if ((tok.GetTextStyle() == TS_CODE_VARIABLE) ||
+          (tok.GetTextStyle() == TS_CODE_FUNCTION))
         cmdsAndVariables[tok.GetText()] = 1;
 
   // Now we step through all the words we found
@@ -505,7 +505,7 @@ void GroupCell::OnSize() { Recalculate(); }
 AFontSize GroupCell::EditorFontSize() const {
   AFontSize fontSize = m_configuration->GetDefaultFontSize();
   if (GetEditable()) {
-    fontSize = m_configuration->GetFontSize(GetEditable()->GetStyle());
+    fontSize = m_configuration->GetFontSize(GetEditable()->GetTextStyle());
     if (fontSize.IsNull())
       fontSize = m_configuration->GetDefaultFontSize();
   }
@@ -602,7 +602,7 @@ void GroupCell::RecalculateOutput() {
       m_outputRect.height += height_Delta;
 
       if (tmp.GetPrevious() &&
-          ((tmp.GetStyle() == TS_LABEL) || (tmp.GetStyle() == TS_USERLABEL)))
+          ((tmp.GetTextStyle() == TS_LABEL) || (tmp.GetTextStyle() == TS_USERLABEL)))
         m_outputRect.height += m_configuration->GetInterEquationSkip();
 
       if (tmp.HasBigSkip())
@@ -783,11 +783,11 @@ wxRect GroupCell::GetRect(bool WXUNUSED(all)) const {
 }
 
 int GroupCell::GetLineIndent(Cell *cell) {
-  if (cell && (cell->GetStyle() != TS_LABEL) &&
-      (cell->GetStyle() != TS_USERLABEL) &&
-      (cell->GetStyle() != TS_MAIN_PROMPT) &&
-      (cell->GetStyle() != TS_OTHER_PROMPT) &&
-      (cell->GetStyle() != TS_ASCIIMATHS) && m_configuration->IndentMaths())
+  if (cell && (cell->GetTextStyle() != TS_LABEL) &&
+      (cell->GetTextStyle() != TS_USERLABEL) &&
+      (cell->GetTextStyle() != TS_MAIN_PROMPT) &&
+      (cell->GetTextStyle() != TS_OTHER_PROMPT) &&
+      (cell->GetTextStyle() != TS_ASCIIMATHS) && m_configuration->IndentMaths())
     return Scale_Px(m_configuration->GetLabelWidth()) + 2 * MC_TEXT_PADDING;
   return 0;
 }
@@ -1077,7 +1077,7 @@ wxString GroupCell::ToTeX(wxString imgDir, wxString filename,
     if (GetEditable() != NULL && !IsHidden()) {
       str = GetEditable()->ListToTeX();
       str.Trim(true);
-      switch (GetEditable()->GetStyle()) {
+      switch (GetEditable()->GetTextStyle()) {
       case TS_TITLE:
         str = wxT("\n\\pagebreak{}\n{\\Huge {\\scshape ") + str + wxT("}}\n");
         str += wxT("\\setcounter{section}{0}\n\\setcounter{subsection}{0}\n");
@@ -1153,7 +1153,7 @@ wxString GroupCell::ToTeXCodeCell(wxString imgDir, wxString filename,
       if (tmp.GetType() == MC_TYPE_IMAGE || tmp.GetType() == MC_TYPE_SLIDE) {
         str << ToTeXImage(&tmp, imgDir, filename, imgCounter);
       } else {
-        switch (tmp.GetStyle()) {
+        switch (tmp.GetTextStyle()) {
         case TS_LABEL:
         case TS_USERLABEL:
           if (mathMode)
@@ -1471,7 +1471,7 @@ void GroupCell::BreakLines() {
   // 3rd step: Determine a sane maximum line width
   int fullWidth = m_configuration->GetClientWidth();
   int currentWidth = GetLineIndent(cell);
-  if ((cell->GetStyle() != TS_LABEL) && (cell->GetStyle() != TS_USERLABEL))
+  if ((cell->GetTextStyle() != TS_LABEL) && (cell->GetTextStyle() != TS_USERLABEL))
     fullWidth -= m_configuration->GetIndent();
 
   // We don't want the text go exactly to the right border.
@@ -1511,7 +1511,7 @@ Cell::Range GroupCell::GetCellsInOutput() const {
 
   for (Cell &tmp : OnDrawList(m_output.get())) {
     r.first = &tmp;
-    if (tmp.GetStyle() == TS_LABEL || tmp.GetStyle() == TS_USERLABEL)
+    if (tmp.GetTextStyle() == TS_LABEL || tmp.GetTextStyle() == TS_USERLABEL)
       break;
   }
 

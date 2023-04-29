@@ -52,7 +52,7 @@ FracCell::FracCell(GroupCell *group, const FracCell &cell)
   m_fracStyle = cell.m_fracStyle;
   SetupBreakUps();
   if (cell.m_inExponent)
-    SetExponentFlag();
+    SetIsExponent();
 }
 
 DEFINE_CELL(FracCell)
@@ -267,7 +267,7 @@ wxString FracCell::ToXML() const {
     _T("</r><r>") + Denom()->ListToXML() + _T("</r></f>");
 }
 
-void FracCell::SetExponentFlag() {
+void FracCell::SetIsExponent() {
   if (Num()->IsShortNum() && Denom()->IsShortNum()) {
     m_inExponent = true;
     MakeDivideCell();
