@@ -357,8 +357,8 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class
 <tr class="memitem:aeced52cdb26b0559bf33eefc73379f37"><td class="memItemLeft" align="right" valign="top">virtual wxRect&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#aeced52cdb26b0559bf33eefc73379f37">GetRect</a> (bool all=false) const</td></tr>
 <tr class="memdesc:aeced52cdb26b0559bf33eefc73379f37"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the smallest rectangle this cell fits in.  <a href="classCell.html#aeced52cdb26b0559bf33eefc73379f37">More...</a><br /></td></tr>
 <tr class="separator:aeced52cdb26b0559bf33eefc73379f37"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7954c7c66fe91d4003388d80b9d8f95d"><td class="memItemLeft" align="right" valign="top"><a id="a7954c7c66fe91d4003388d80b9d8f95d"></a>
-virtual wxString&#160;</td><td class="memItemRight" valign="bottom"><b>GetDiffPart</b> () const</td></tr>
+<tr class="memitem:a7954c7c66fe91d4003388d80b9d8f95d"><td class="memItemLeft" align="right" valign="top">virtual wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a7954c7c66fe91d4003388d80b9d8f95d">GetDiffPart</a> () const</td></tr>
+<tr class="memdesc:a7954c7c66fe91d4003388d80b9d8f95d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the part for diff tag support.  <a href="classCell.html#a7954c7c66fe91d4003388d80b9d8f95d">More...</a><br /></td></tr>
 <tr class="separator:a7954c7c66fe91d4003388d80b9d8f95d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afde82a5f0708410ea828e65254e62531"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#afde82a5f0708410ea828e65254e62531">RecalculateList</a> (<a class="el" href="classAFontSize.html">AFontSize</a> fontsize)</td></tr>
 <tr class="memdesc:afde82a5f0708410ea828e65254e62531"><td class="mdescLeft">&#160;</td><td class="mdescRight">Recalculate both width and height of this list of cells.  <a href="classCell.html#afde82a5f0708410ea828e65254e62531">More...</a><br /></td></tr>
@@ -461,7 +461,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="separator:a29b028fb1ac4c588579202164ed65c8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2e94a614cedb0f1ad744b71ced439fd3"><td class="memItemLeft" align="right" valign="top"><a id="a2e94a614cedb0f1ad744b71ced439fd3"></a>
 virtual wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a2e94a614cedb0f1ad744b71ced439fd3">ListToString</a> () const</td></tr>
-<tr class="memdesc:a2e94a614cedb0f1ad744b71ced439fd3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the list's representation as a string. <br /></td></tr>
+<tr class="memdesc:a2e94a614cedb0f1ad744b71ced439fd3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns this cell list's representation as a string. <br /></td></tr>
 <tr class="separator:a2e94a614cedb0f1ad744b71ced439fd3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9d61622f3855c073c4ce74c3b755a639"><td class="memItemLeft" align="right" valign="top">wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a9d61622f3855c073c4ce74c3b755a639">VariablesAndFunctionsList</a> () const</td></tr>
 <tr class="memdesc:a9d61622f3855c073c4ce74c3b755a639"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns all variable and function names used inside this list of cells.  <a href="classCell.html#a9d61622f3855c073c4ce74c3b755a639">More...</a><br /></td></tr>
@@ -1524,6 +1524,36 @@ static wxRegEx&#160;</td><td class="memItemRight" valign="bottom"><b>m_roundingE
 
 <p>Get the y position of the top left of this cell. </p>
 <p>See m_currentPoint for more details. </p>
+
+</div>
+</div>
+<a id="a7954c7c66fe91d4003388d80b9d8f95d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7954c7c66fe91d4003388d80b9d8f95d">&#9670;&nbsp;</a></span>GetDiffPart()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">wxString Cell::GetDiffPart </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the part for diff tag support. </p>
+<p>only <a class="el" href="classExptCell.html" title="This cell represents a exp() or e^x-construct.">ExptCell</a> and <a class="el" href="classSubSupCell.html">SubSupCell</a> override this - and this function seems to be used by fractions that represent an diff() command. </p>
+
+<p>Reimplemented in <a class="el" href="classSubSupCell.html#ab14d3d93fff786652d5a3740f1a6d602">SubSupCell</a>, and <a class="el" href="classExptCell.html#a0c22d0e6e482ad329735962d9d76bea2">ExptCell</a>.</p>
 
 </div>
 </div>

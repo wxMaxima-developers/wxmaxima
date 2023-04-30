@@ -167,8 +167,8 @@ wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSubSupCell.html#afecbb4806accb0a2a8c3f549bef6d034">ToXML</a> () const override</td></tr>
 <tr class="memdesc:afecbb4806accb0a2a8c3f549bef6d034"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert this cell to a representation fit for saving in a .wxmx file. <br /></td></tr>
 <tr class="separator:afecbb4806accb0a2a8c3f549bef6d034"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab14d3d93fff786652d5a3740f1a6d602"><td class="memItemLeft" align="right" valign="top"><a id="ab14d3d93fff786652d5a3740f1a6d602"></a>
-wxString&#160;</td><td class="memItemRight" valign="bottom"><b>GetDiffPart</b> () const override</td></tr>
+<tr class="memitem:ab14d3d93fff786652d5a3740f1a6d602"><td class="memItemLeft" align="right" valign="top">wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSubSupCell.html#ab14d3d93fff786652d5a3740f1a6d602">GetDiffPart</a> () const override</td></tr>
+<tr class="memdesc:ab14d3d93fff786652d5a3740f1a6d602"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the part for diff tag support.  <a href="classSubSupCell.html#ab14d3d93fff786652d5a3740f1a6d602">More...</a><br /></td></tr>
 <tr class="separator:ab14d3d93fff786652d5a3740f1a6d602"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8235971425a34c8e3944aebde0260436"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSubSupCell.html#a8235971425a34c8e3944aebde0260436">SetAltCopyText</a> (const wxString &amp;text) override</td></tr>
 <tr class="memdesc:a8235971425a34c8e3944aebde0260436"><td class="mdescLeft">&#160;</td><td class="mdescRight">What should end up if placing this cell on the clipboard?  <a href="classSubSupCell.html#a8235971425a34c8e3944aebde0260436">More...</a><br /></td></tr>
@@ -432,7 +432,7 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <tr class="separator:a29b028fb1ac4c588579202164ed65c8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2e94a614cedb0f1ad744b71ced439fd3"><td class="memItemLeft" align="right" valign="top"><a id="a2e94a614cedb0f1ad744b71ced439fd3"></a>
 virtual wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a2e94a614cedb0f1ad744b71ced439fd3">ListToString</a> () const</td></tr>
-<tr class="memdesc:a2e94a614cedb0f1ad744b71ced439fd3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the list's representation as a string. <br /></td></tr>
+<tr class="memdesc:a2e94a614cedb0f1ad744b71ced439fd3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns this cell list's representation as a string. <br /></td></tr>
 <tr class="separator:a2e94a614cedb0f1ad744b71ced439fd3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9d61622f3855c073c4ce74c3b755a639"><td class="memItemLeft" align="right" valign="top">wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a9d61622f3855c073c4ce74c3b755a639">VariablesAndFunctionsList</a> () const</td></tr>
 <tr class="memdesc:a9d61622f3855c073c4ce74c3b755a639"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns all variable and function names used inside this list of cells.  <a href="classCell.html#a9d61622f3855c073c4ce74c3b755a639">More...</a><br /></td></tr>
@@ -1398,6 +1398,36 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>m_center</b> = -1</td>
 
 <p>Get the y position of the top left of this cell. </p>
 <p>See m_currentPoint for more details. </p>
+
+</div>
+</div>
+<a id="ab14d3d93fff786652d5a3740f1a6d602"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab14d3d93fff786652d5a3740f1a6d602">&#9670;&nbsp;</a></span>GetDiffPart()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">wxString SubSupCell::GetDiffPart </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the part for diff tag support. </p>
+<p>only <a class="el" href="classExptCell.html" title="This cell represents a exp() or e^x-construct.">ExptCell</a> and <a class="el" href="classSubSupCell.html">SubSupCell</a> override this - and this function seems to be used by fractions that represent an diff() command. </p>
+
+<p>Reimplemented from <a class="el" href="classCell.html#a7954c7c66fe91d4003388d80b9d8f95d">Cell</a>.</p>
 
 </div>
 </div>
