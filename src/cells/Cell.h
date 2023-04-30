@@ -432,7 +432,13 @@ public:
 
   //! True, if something that affects the cell size has changed.
   virtual bool NeedsRecalculation(AFontSize fontSize) const;
-  
+
+  /*!
+    Get the part for diff tag support
+    
+    only ExptCell and SubSupCell override this - and this function seems to be used
+    by fractions that represent an diff() command.
+  */
   virtual wxString GetDiffPart() const;
 
   /*! Recalculate the size of the cell and the difference between top and center
@@ -566,7 +572,7 @@ public:
     double x, y;
   };
 
-  //! Returns the list's representation as a string.
+  //! Returns this cell list's representation as a string.
   virtual wxString ListToString() const;
 
   /*! Returns all variable and function names used inside this list of cells.

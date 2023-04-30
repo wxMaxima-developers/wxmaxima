@@ -820,10 +820,6 @@ wxString Cell::ListToXML() const {
   return retval;
 }
 
-/***
- * Get the part for diff tag support - only ExptCell and SubSupCell override
- * this.
- */
 wxString Cell::GetDiffPart() const {
   wxString s = ToString();
   if (s == wxEmptyString)
