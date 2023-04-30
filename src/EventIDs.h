@@ -590,6 +590,7 @@ public:
   static const wxWindowIDRef menu_help_tutorials;
   static const wxWindowIDRef menu_help_tutorials_start; //! Start of bundled tutorials
   static const wxWindowIDRef menu_help_solving;
+  static const wxWindowIDRef menu_help_casvsprogramming;
   static const wxWindowIDRef menu_help_diffequations;
   static const wxWindowIDRef menu_help_numberformats;
   static const wxWindowIDRef menu_help_tolerances;

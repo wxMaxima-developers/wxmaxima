@@ -496,6 +496,7 @@ const wxWindowIDRef EventIDs::menu_format_pagebreak(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::menu_help_tutorials(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::menu_help_tutorials_start(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::menu_help_solving(wxWindow::NewControlId());
+const wxWindowIDRef EventIDs::menu_help_casvsprogramming(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::menu_help_diffequations(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::menu_help_numberformats(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::menu_help_tolerances(wxWindow::NewControlId());

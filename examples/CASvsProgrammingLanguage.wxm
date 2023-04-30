@@ -1,0 +1,335 @@
+/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
+/* [ Created with wxMaxima version 23.04.0-DevelopmentSnapshot ] */
+/* [wxMaxima: title   start ]
+Difference between a Computer Algebra System and a typical programming language
+   [wxMaxima: title   end   ] */
+
+
+/* [wxMaxima: section start ]
+An equation is just an equation
+   [wxMaxima: section end   ] */
+
+
+/* [wxMaxima: comment start ]
+We can name and re-use an equation. But it still is just an equation that we can use, if we want. Not something that is used automatically:
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+eq0:a=b;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+pyth:a^2+b^2=c^2;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: section start ]
+If a variable isn't declared nor defined that is OK.
+   [wxMaxima: section end   ] */
+
+
+/* [wxMaxima: comment start ]
+The following equation contains an unknown "x" and an unknown "y".
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+eq1:x^2+(y+2)*x+3=0;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+If we solve that equation without defining y first maxima won't issue an error. Instead the indicator that maxima doesn't know the value of "y" is that the solution contains an "y".
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+solve(eq1,x);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: section start ]
+Lists
+   [wxMaxima: section end   ] */
+
+
+/* [wxMaxima: comment start ]
+Most maxima commands accept lists. These can be created ad-hoc by enclosing a bunch of comma-separated values in square brackets:
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+list1:[1,2,a,b,c];
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+One can create lists according to a rule:
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+list2:makelist(i*2,i,list1);
+list3:makelist(i^2,i,1,10);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+Lists can easily be manipulated:
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+list4:append(list1,list2,list3);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+But just assigning the nth element of a list a value doesn't create that list, but a hash:
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+a[4]:10;
+a[qdwqd]:30;
+a["qdwqd"]:45;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+a;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+arrayinfo(a);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: section start ]
+A CAS has many types of Numbers
+   [wxMaxima: section end   ] */
+
+
+/* [wxMaxima: subsect start ]
+Exact rational numbers
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: comment start ]
+Maxima supports many types of numbers:
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+1/10*π*sqrt(2);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+is exactly 1/10*π*sqrt(2).
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: subsect start ]
+Floating-point numbers
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: input   start ] */
+0.1*π;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+is a floating-point number of the type the machine's floating-point processor uses. These numbers are accurate enough for most uses. But since maxima was developed for symbolic computations not all of the maxima's algorithms deal with the rounding errors floating-point numbers introduce.
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: subsect start ]
+Arbitrary-precision floats
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: input   start ] */
+0.1b-1*sqrt(2);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+is a floating-point number whose precision can be changed by customizing the variable fpprec. It is way slower than machine floats. But it allows to look what happens if the precision is increased.
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: section start ]
+Handling of knowledge
+   [wxMaxima: section end   ] */
+
+
+/* [wxMaxima: subsect start ]
+Storing actual values for later
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: comment start ]
+We can store knowledge in a list and apply it later:
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+vals:[b=3,c=2];
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+subst(vals,pyth);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsect start ]
+Hard assignments
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: comment start ]
+If we assign a value to an variable that means  that knowledge is used for new equations:
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+b:3;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+pyth2:a^2+b^c=c^2;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+vals2:[b=3];
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+That knowledgie isn't automatically applied to existing equations, though:
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+pyth;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+Two single quote marks make maxima interpret an known equation as one that just has been typed in, thouhg:
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+''pyth;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: section start ]
+Is(a=b) can be evaluated before the real result is known
+   [wxMaxima: section end   ] */
+
+
+/* [wxMaxima: comment start ]
+Even if we might know that we will assign a and c values lateron maxima doesn't know so currently  a≠c:
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+eq2:a=c;
+is(eq2);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+If we assign c the value "a" that knowledge isn't immediately used for already-defined equations:
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+c:a;
+is(eq2);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+If we tell Maxima to act as if eq2 were typed in right now maxima knows that a=c
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+is(''eq2);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: section start ]
+return() returns from the current block, not from the whole function
+   [wxMaxima: section end   ] */
+
+
+/* [wxMaxima: input   start ] */
+f(x):=block(block(return(test)),return(test2));
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+f(2);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: section start ]
+Maxima doesn't try hard to hide numerical errors
+   [wxMaxima: section end   ] */
+
+
+/* [wxMaxima: comment start ]
+1/10 is an exact 1/10. But 0.1 is a floating-point variable of the type that your machine uses and is fast in - but that cannot represent an exact 1/10. This is true for all programming languages.
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+rationalize(0.1);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+Maxima's output routine rounds that floating-point number to 0.1, by default. But it doesn't try hard to hide rounding errors if they accumulate:
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+.1;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+%*.1;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+%*.1;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+%*.1;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+%*.1;
+/* [wxMaxima: input   end   ] */
+
+
+
+/* Old versions of Maxima abort on loading files that end in a comment. */
+"Created with wxMaxima 23.04.0-DevelopmentSnapshot"$

@@ -1890,6 +1890,7 @@ void wxMaximaFrame::SetupMenu() {
   tutorials_sub->Append(EventIDs::menu_help_listaccess, _("Fast list access"), "",
                         wxITEM_NORMAL);
   tutorials_sub->Append(EventIDs::menu_help_memoizing, _("Memoizing"), "", wxITEM_NORMAL);
+  tutorials_sub->Append(EventIDs::menu_help_casvsprogramming, _("Maxima vs. Programming languages"), "", wxITEM_NORMAL);
   tutorials_sub->Append(EventIDs::menu_help_tutorials, _(wxT("↗Tutorials on the web")),
                         _("Online tutorials"), wxITEM_NORMAL);
   m_HelpMenu->Append(wxWindow::NewControlId(), _("Tutorials"), tutorials_sub);

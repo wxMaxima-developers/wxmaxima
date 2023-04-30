@@ -540,6 +540,9 @@ void MyApp::OnFileMenu(wxCommandEvent &ev) {
   else if(ev.GetId() == EventIDs::menu_help_memoizing) {
     NewWindow(wxEmptyString, false, false, MEMOIZING_WXM, MEMOIZING_WXM_SIZE);
   }
+  else if(ev.GetId() == EventIDs::menu_help_casvsprogramming) {
+    NewWindow(wxEmptyString, false, false, CASVSPROGRAMMINGLANGUAGE_WXM, CASVSPROGRAMMINGLANGUAGE_WXM_SIZE);
+  }
   else if(ev.GetId() == wxID_OPEN) {
     wxString lastPath;
     wxConfig::Get()->Read(wxT("lastPath"), &lastPath);
