@@ -38,7 +38,7 @@ foreach(file ${WXM_FILES})
 	        COMMENT "Embedding ${file}.wxm"
 	        DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${file}.wxm ${CMAKE_SOURCE_DIR}/src/bin2h.cmake
 	)
-	add_custom_target(build${file}h DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/${file}.h)
-	add_dependencies(wxmaxima build${file}h)
+	add_custom_target(build_${file}.h DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/${file}.h)
+	add_dependencies(wxmaxima build_${file}.h)
 endforeach()
 

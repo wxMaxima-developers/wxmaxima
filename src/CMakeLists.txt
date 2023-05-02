@@ -394,8 +394,8 @@ add_custom_command(
         COMMENT "Embedding the example worksheet for the config dialogue"
         DEPENDS ${CMAKE_SOURCE_DIR}/data/sampleWorksheet.wxmx ${CMAKE_CURRENT_SOURCE_DIR}/bin2h.cmake
 )
-add_custom_target(buildsampleworksheet DEPENDS ${CMAKE_BINARY_DIR}/sampleWorksheet.h)
-add_dependencies(wxmaxima buildsampleworksheet)
+add_custom_target(build_sampleWorksheet.h DEPENDS ${CMAKE_BINARY_DIR}/sampleWorksheet.h)
+add_dependencies(wxmaxima build_sampleWorksheet.h)
 
 add_custom_command(
         OUTPUT ${CMAKE_BINARY_DIR}/wxMathML_lisp.h
@@ -408,8 +408,8 @@ add_custom_command(
         COMMENT "Embedding wxMathML.lisp"
         DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/wxMathML.lisp ${CMAKE_CURRENT_SOURCE_DIR}/bin2h.cmake
 )
-add_custom_target(buildmathmlh DEPENDS ${CMAKE_BINARY_DIR}/wxMathML_lisp.h)
-add_dependencies(wxmaxima buildmathmlh)
+add_custom_target(build_wxMathML.h DEPENDS ${CMAKE_BINARY_DIR}/wxMathML_lisp.h)
+add_dependencies(wxmaxima build_wxMathML.h)
 
 add_custom_command(
         OUTPUT ${CMAKE_BINARY_DIR}/news_md.h
@@ -422,8 +422,8 @@ add_custom_command(
         COMMENT "Embedding NEWS.md"
         DEPENDS ${CMAKE_SOURCE_DIR}/NEWS.md ${CMAKE_CURRENT_SOURCE_DIR}/bin2h.cmake
 )
-add_custom_target(buildnewsmdh DEPENDS ${CMAKE_BINARY_DIR}/news_md.h)
-add_dependencies(wxmaxima buildnewsmdh)
+add_custom_target(build_news_md.h DEPENDS ${CMAKE_BINARY_DIR}/news_md.h)
+add_dependencies(wxmaxima build_news_md.h)
 
 add_custom_command(
         OUTPUT ${CMAKE_BINARY_DIR}/wxm_license.h
@@ -436,8 +436,8 @@ add_custom_command(
         COMMENT "Embedding the license information"
         DEPENDS ${CMAKE_SOURCE_DIR}/COPYING ${CMAKE_CURRENT_SOURCE_DIR}/bin2h.cmake
 )
-add_custom_target(buildlicenseh DEPENDS ${CMAKE_BINARY_DIR}/wxm_license.h)
-add_dependencies(wxmaxima buildlicenseh)
+add_custom_target(build_license.h DEPENDS ${CMAKE_BINARY_DIR}/wxm_license.h)
+add_dependencies(wxmaxima build_license.h)
 
 add_custom_command(
         OUTPUT ${CMAKE_BINARY_DIR}/wxm_manual_anchors_xml.h
@@ -450,8 +450,8 @@ add_custom_command(
         COMMENT "Embedding the anchors of the maxima manual"
         DEPENDS ${CMAKE_SOURCE_DIR}/data/manual_anchors.xml ${CMAKE_CURRENT_SOURCE_DIR}/bin2h.cmake
 )
-add_custom_target(buildmanualanchorsh DEPENDS ${CMAKE_BINARY_DIR}/wxm_manual_anchors_xml.h)
-add_dependencies(wxmaxima buildmanualanchorsh)
+add_custom_target(build_manualanchors.h DEPENDS ${CMAKE_BINARY_DIR}/wxm_manual_anchors_xml.h)
+add_dependencies(wxmaxima build_manualanchors.h)
 
 # Debian wants to be able to download a signature of the source package from the
 # project's download directory. If it cannot find it it will still work, but will
