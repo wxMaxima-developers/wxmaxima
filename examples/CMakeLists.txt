@@ -1,31 +1,44 @@
 include("${CMAKE_SOURCE_DIR}/cmake-bin2h/bin2h.cmake")
 
-set(HEADER_FILE "${CMAKE_BINARY_DIR}/examples.h")
-message(STATUS "Embedding following files into header file ${HEADER_FILE}")
 
-file(WRITE "${HEADER_FILE}"
-    "#ifndef WXM_EXAMPLES_H\n"
-    "#define WXM_EXAMPLES_H\n")
-
-file(GLOB WXM_FILES *.wxm)
+set(WXM_FILES
+	"CASvsProgrammingLanguage"
+	"diffEquations"
+	"displaying3DCurves"
+	"fastListAccess"
+	"fittingEquations"
+	"memoizing"
+	"numberFormats"
+	"solvingEquations"
+	"toleranceCalculations"
+	"variableNames"
+)
 
 # Copy the .wxm files to the binary dir so they can be used as test case without
 # being afraid that we change the test cases somehow.
-file(
-    COPY
-    ${WXM_FILES}
-    DESTINATION ${CMAKE_CURRENT_BINARY_DIR}
-    FILE_PERMISSIONS OWNER_WRITE OWNER_READ
-    )
 
 foreach(file ${WXM_FILES})
-    message(STATUS "   Processing: ${file}")
-
-    get_filename_component(variableName ${file} NAME)
-    file(APPEND "${HEADER_FILE}" "/* Data for the example: ${variableName} */\n")
-
-    bin2h(SOURCE_FILE ${file} HEADER_FILE "${HEADER_FILE}" VARIABLE_NAME ${variableName} APPEND NULL_TERMINATE)
-    file(APPEND "${HEADER_FILE}" "\n")
+	file(
+	    COPY
+	    ${file}.wxm
+	    DESTINATION ${CMAKE_CURRENT_BINARY_DIR}
+	    FILE_PERMISSIONS OWNER_WRITE OWNER_READ
+        )
 endforeach()
 
-file(APPEND "${HEADER_FILE}" "#endif\n")
+foreach(file ${WXM_FILES})
+	add_custom_command(
+	        OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/${file}.h
+	        COMMAND ${CMAKE_COMMAND} ARGS
+	        -DBIN2H_SOURCE_FILE="${CMAKE_CURRENT_SOURCE_DIR}/${file}.wxm"
+	        -DBIN2H_VARIABLE_NAME=${file}_WXM
+	        -DBIN2H_HEADER_FILE="${CMAKE_CURRENT_BINARY_DIR}/${file}.h"
+	        -DBIN2H="${CMAKE_SOURCE_DIR}/cmake-bin2h/bin2h.cmake"
+	        -P "${CMAKE_SOURCE_DIR}/src/bin2h.cmake"
+	        COMMENT "Embedding ${file}.wxm"
+	        DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${file}.wxm ${CMAKE_SOURCE_DIR}/src/bin2h.cmake
+	)
+	add_custom_target(build${file}h DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/${file}.h)
+	add_dependencies(wxmaxima build${file}h)
+endforeach()
+

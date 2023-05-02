@@ -48,7 +48,17 @@
 
 #include "ConfigDialogue.h"
 #include "Version.h"
-#include "examples.h"
+#include "examples/CASvsProgrammingLanguage.h"
+#include "examples/diffEquations.h"
+#include "examples/displaying3DCurves.h"
+#include "examples/fastListAccess.h"
+#include "examples/fittingEquations.h"
+#include "examples/memoizing.h"
+#include "examples/numberFormats.h"
+#include "examples/solvingEquations.h"
+#include "examples/toleranceCalculations.h"
+#include "examples/variableNames.h"
+
 #include "wxMaxima.h"
 #ifdef WXM_INCLUDE_FONTS
 #include "addprivatefonts.h"
