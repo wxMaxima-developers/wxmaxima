@@ -207,22 +207,21 @@ did_change Style::SetColor(wxSystemColour sysColour) {
 }
 
 did_change Style::SetFontFrom(const Style &o) {
-  bool changed = SetFontFaceAndSizeFrom(o) |       //-V792
-    SetFontStyle(o.GetFontStyle()) |  //-V792
-    SetWeight(o.GetWeight()) |        //-V792
-    SetUnderlined(o.IsUnderlined()) | //-V792
+  return SetFontFaceAndSizeFrom(o) ||
+    SetFontStyle(o.GetFontStyle()) ||
+    SetWeight(o.GetWeight()) ||
+    SetUnderlined(o.IsUnderlined()) ||
     SetStrikethrough(o.IsStrikethrough());
-  return changed;
 }
 
 did_change Style::SetFontFaceFrom(const Style &o) {
-  return SetFontName(o.GetFontName()) | //-V792
-    SetEncoding(o.GetEncoding()) | //-V792
+  return SetFontName(o.GetFontName()) ||
+    SetEncoding(o.GetEncoding()) ||
     SetFamily(o.GetFamily());
 }
 
 did_change Style::SetFontFaceAndSizeFrom(const Style &o) {
-  return SetFontFaceFrom(o) | SetFontSize(o.m.fontSize); //-V792
+  return SetFontFaceFrom(o) || SetFontSize(o.m.fontSize);
 }
 
 bool Style::IsFontOk() const { return GetFont().IsOk(); }
