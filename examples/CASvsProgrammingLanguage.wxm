@@ -11,7 +11,7 @@ An equation is just an equation
 
 
 /* [wxMaxima: comment start ]
-We can name and re-use an equation. But it still is just an equation that we can use, if we want. Not something that is used automatically:
+We can name and re-use an equation. But otherwise an equation is is just an equation as an equation in your notebook would be, not something that immediately has an effect:
    [wxMaxima: comment end   ] */
 
 
@@ -169,12 +169,12 @@ Handling of knowledge
 
 
 /* [wxMaxima: subsect start ]
-Storing actual values for later
+Storing actual values in a list
    [wxMaxima: subsect end   ] */
 
 
 /* [wxMaxima: comment start ]
-We can store knowledge in a list and apply it later:
+Maxima is very good at symbolical maths. That means that if you don't immediately assign variables whose value you know a value the result often is an equation that provides you with additional knowledge about the problem. The actual values can be kept in a list, instead, and be introduced into the equation whenever needed:
    [wxMaxima: comment end   ] */
 
 
@@ -233,6 +233,16 @@ Two single quote marks make maxima interpret an known equation as one that just 
 /* [wxMaxima: input   end   ] */
 
 
+/* [wxMaxima: comment start ]
+If we mean the variable name, not its contents we can tell this maxima by preceding the variable name by a single quote
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+'b=b;
+/* [wxMaxima: input   end   ] */
+
+
 /* [wxMaxima: section start ]
 Is(a=b) can be evaluated before the real result is known
    [wxMaxima: section end   ] */
@@ -271,8 +281,108 @@ is(''eq2);
 
 
 /* [wxMaxima: section start ]
-return() returns from the current block, not from the whole function
+Defining functions
    [wxMaxima: section end   ] */
+
+
+/* [wxMaxima: comment start ]
+If you just want a storage for an equation it often is better to actually keep it in an equation. For example an equation can be solved for x, a function not.
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: comment start ]
+If you actually want a mathematical function similar to sin(x) or store a complete program in a function you can do that, though.
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: subsect start ]
+Storing a program in a function
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: comment start ]
+If you don't need any local variables nor the possibility to issue a return() in the middle of a function just put parenthesis around comma-separated commands - and that program will return what the last command will return.
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: comment start ]
+A naive "sum of all numbers up to x" program for increasing x would therefore be:
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+last_num:0;
+last_sum:0;
+my_sum(x):=(
+    for i:last_num + 1 thru x do last_sum:last_sum + i,
+    last_num:x,
+    last_sum
+);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+my_sum(10);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+my_sum(11);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+If you local variables or a premature return() is needed one needs a block() command:
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+my_sum(x):=block([result:0],
+    for i:1 thru x do
+        result:result+i,
+    result
+);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+my_sum(11);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsect start ]
+Functions and variables can have the same name
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: comment start ]
+Normally that is an easy-to-use feature. But when defining a function it makes a difference: Local variables are declared using block(), local functions by the local() command
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: subsect start ]
+Optional arguments
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: input   start ] */
+f(x,[y]):=(disp(sconcat(length(y)," optional arguments")),x);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+f(a);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+f(a,1,2,3);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsect start ]
+return() returns from the current block, not from the whole function
+   [wxMaxima: subsect end   ] */
 
 
 /* [wxMaxima: input   start ] */
