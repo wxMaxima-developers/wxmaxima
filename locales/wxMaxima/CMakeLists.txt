@@ -39,7 +39,7 @@ if(GETTEXT_FOUND AND GETTEXT_MSGFMT_EXECUTABLE AND GETTEXT_MSGMERGE_EXECUTABLE)
 	# too (at build time, not at install time), so that running ./wxmaxima-local
 	# (without installing it) can find the message files and i18n works.
 	file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/share/locale/${LANG}/LC_MESSAGES")
-	add_custom_target(wxmaxima-local-${LANG} ALL
+	add_custom_target(wxmaxima-locale-${LANG} ALL
             COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/${LANG}.gmo" "${CMAKE_BINARY_DIR}/share/locale/${LANG}/LC_MESSAGES/wxMaxima.mo"
             DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/${LANG}.gmo")
 

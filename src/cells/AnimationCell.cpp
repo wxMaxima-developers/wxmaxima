@@ -472,7 +472,7 @@ wxString AnimationCell::ToRTF() const {
 
   // Convert the data into a hexadecimal string
   for (size_t i = 0; i <= imgdata.GetDataLen(); i++)
-    image += wxString::Format("%02x", ((unsigned char *)imgdata.GetData())[i]);
+    image += wxString::Format("%02x", (static_cast<unsigned char *>(imgdata.GetData()))[i]);
 
   return header + image + footer;
 }

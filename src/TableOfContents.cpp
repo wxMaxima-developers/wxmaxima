@@ -241,13 +241,25 @@ void TableOfContents::UpdateTableOfContents(GroupCell *pos) {
     long item = m_displayedItems->GetNextItem(-1, wxLIST_NEXT_ALL,
                                               wxLIST_STATE_SELECTED);
     UpdateStruct();
+
+    std::vector<GroupCell *>::const_iterator it = m_displayedGroupCells.begin();
+    int cursorItem = -1;
+    
     // Select the cell with the cursor
-    for (auto &cell : OnList(m_tree->get())) {
-      if (&cell == pos) {
-        if (!m_structure.empty())
-          selection = m_structure.size() - 1;
+    if(!m_displayedGroupCells.empty())
+      for (auto &cell : OnList(m_tree->get())) {
+	if ((&cell == *it) && (it != m_displayedGroupCells.end()))
+	  {
+	    it++;
+	    cursorItem++;
+	  }
+	if (&cell == pos) {
+	  if(cursorItem < 0)
+	    cursorItem = 0;
+	  selection = cursorItem;
+	  break;
+	}
       }
-    }
     if ((selection >= 0) && (item != selection)) {
       if ((long)m_displayedItems->GetItemCount() < selection)
         selection = m_displayedItems->GetItemCount() - 1;

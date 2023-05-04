@@ -44,7 +44,7 @@ public:
 private:
 //** Bitfield objects (0 bytes)
 //**
-  void InitBitFields()
+  static void InitBitFields()
     { // Keep the initialization order below same as the order
       // of bit fields in this class!
     }

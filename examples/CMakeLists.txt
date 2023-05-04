@@ -16,7 +16,6 @@ set(WXM_FILES
 
 # Copy the .wxm files to the binary dir so they can be used as test case without
 # being afraid that we change the test cases somehow.
-
 foreach(file ${WXM_FILES})
 	file(
 	    COPY
@@ -26,6 +25,7 @@ foreach(file ${WXM_FILES})
         )
 endforeach()
 
+# Embed the .wxm files into .h files
 foreach(file ${WXM_FILES})
 	add_custom_command(
 	        OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/${file}.h

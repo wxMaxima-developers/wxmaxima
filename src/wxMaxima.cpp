@@ -4989,22 +4989,18 @@ void wxMaxima::OnIdle(wxIdleEvent &event) {
 
   // If we have set the flag that tells us we should update the table of
   // contents sooner or later we should do so now that wxMaxima is idle.
-  if (m_worksheet->m_scheduleUpdateToc) {
+  if ((m_worksheet->m_scheduleUpdateToc) && (m_worksheet->m_tableOfContents)) {
     m_worksheet->m_scheduleUpdateToc = false;
-    if (m_worksheet->m_tableOfContents) {
-      GroupCell *cursorPos;
-      cursorPos = m_worksheet->GetHCaret();
-      if ((!m_worksheet->HCaretActive()) &&
-          (cursorPos == m_worksheet->GetLastCell())) {
-        if (m_worksheet->GetActiveCell())
-          cursorPos = m_worksheet->GetActiveCell()->GetGroup();
-        else
-          cursorPos = m_worksheet->FirstVisibleGC();
-      }
-      m_worksheet->m_tableOfContents->UpdateTableOfContents(cursorPos);
+    GroupCell *cursorPos;
+    if (m_worksheet->GetActiveCell())
+      cursorPos = m_worksheet->GetActiveCell()->GetGroup();
+    else {
+      if (m_worksheet->HCaretActive())
+	cursorPos = m_worksheet->GetHCaret();
+      else
+	cursorPos = m_worksheet->FirstVisibleGC();
     }
-    m_worksheet->m_scheduleUpdateToc = false;
-
+    m_worksheet->m_tableOfContents->UpdateTableOfContents(cursorPos);
     event.RequestMore();
     return;
   }
