@@ -1,5 +1,5 @@
 /* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
-/* [ Created with wxMaxima version 20.07.0-DevelopmentSnapshot ] */
+/* [ Created with wxMaxima version 23.04.1_DevelopmentSnapshot ] */
 /* [wxMaxima: title   start ]
 Memoizing
    [wxMaxima: title   end   ] */
@@ -11,7 +11,7 @@ s
 
 
 /* [wxMaxima: comment start ]
-Maxima is greatly based on lists, so for beginners it is always surprising that trying to construct a list on-the-fly creates an altogether different kind of object:
+Maxima is largely based on lists, so for beginners it is always surprising that trying to construct a list on-the-fly creates an altogether different kind of object:
    [wxMaxima: comment end   ] */
 
 
@@ -51,7 +51,7 @@ x[5]:10;
 
 
 /* [wxMaxima: comment start ]
-sh
+Show what x is.
    [wxMaxima: comment end   ] */
 
 
@@ -212,4 +212,4 @@ fib[10];
 
 
 /* Old versions of Maxima abort on loading files that end in a comment. */
-"Created with wxMaxima 20.07.0-DevelopmentSnapshot"$
+"Created with wxMaxima 23.04.1_DevelopmentSnapshot"$
