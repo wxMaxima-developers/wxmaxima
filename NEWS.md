@@ -3,6 +3,9 @@
  * Big performance improvements
  * A "maxima versus typical programming languages" tutorial.
  * Table of contents: Jump to the chapter the cursor is in.
+ * Resolved another crash in the config dialogue
+ * Updated the unicode character list
+ * Resolved more potential event ID clashes
 
 # 23.04.1
  * More config dialogue tweaks
