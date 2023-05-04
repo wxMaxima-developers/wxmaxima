@@ -2,6 +2,7 @@
  * Got rid of some compiler and cppcheck warnings
  * Big performance improvements
  * A "maxima versus typical programming languages" tutorial.
+ * Table of contents: Jump to the chapter the cursor is in.
 
 # 23.04.1
  * More config dialogue tweaks
