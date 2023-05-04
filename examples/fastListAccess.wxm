@@ -1,5 +1,5 @@
 /* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
-/* [ Created with wxMaxima version 20.03.1-DevelopmentSnapshot ] */
+/* [ Created with wxMaxima version 23.04.1_DevelopmentSnapshot ] */
 /* [wxMaxima: title   start ]
 Fast list access
    [wxMaxima: title   end   ] */
@@ -38,7 +38,7 @@ makelist
 
 
 /* [wxMaxima: comment start ]
-Makelist is a quite universal swiss-army knife, if what you want to generate is shaped like a list.
+Makelist is a quite universal swiss-army knife, if what you want to generate a sequence shaped like a list.
 The most widely known form of this command is:
    [wxMaxima: comment end   ] */
 
@@ -65,7 +65,7 @@ for
 
 
 /* [wxMaxima: comment start ]
-For does do nearly the same as makelist except that it doesn't return a list.:
+The operator for does do nearly the same as makelist except that it doesn't return a list.:
    [wxMaxima: comment end   ] */
 
 
@@ -178,4 +178,4 @@ makelist(f(i[1])=i[2],i,list4);
 
 
 /* Old versions of Maxima abort on loading files that end in a comment. */
-"Created with wxMaxima 20.03.1-DevelopmentSnapshot"$
+"Created with wxMaxima 23.04.1_DevelopmentSnapshot"$
