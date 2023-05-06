@@ -448,9 +448,9 @@ std::unique_ptr&lt; <a class="el" href="classGroupCell.html">GroupCell</a> &gt;&
 <a class="el" href="classGroupCell.html">GroupCell</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a1f88d0ae3d7219b394d964c79a894a3a">GetInsertGroup</a> () const</td></tr>
 <tr class="memdesc:a1f88d0ae3d7219b394d964c79a894a3a"><td class="mdescLeft">&#160;</td><td class="mdescRight">The group that the line's cells will belong to - used by InsertLine. <br /></td></tr>
 <tr class="separator:a1f88d0ae3d7219b394d964c79a894a3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afa66cdcc6eef9bcf517e77f470f430cb"><td class="memItemLeft" align="right" valign="top"><a id="afa66cdcc6eef9bcf517e77f470f430cb"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>RecalculateIfNeeded</b> ()</td></tr>
-<tr class="separator:afa66cdcc6eef9bcf517e77f470f430cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a90d7710a76268c86245352edba021ee5"><td class="memItemLeft" align="right" valign="top"><a id="a90d7710a76268c86245352edba021ee5"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>RecalculateIfNeeded</b> (bool timeout=false)</td></tr>
+<tr class="separator:a90d7710a76268c86245352edba021ee5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acb44db2f3be97c82b6099d8914d2a3e1"><td class="memItemLeft" align="right" valign="top"><a id="acb44db2f3be97c82b6099d8914d2a3e1"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#acb44db2f3be97c82b6099d8914d2a3e1">Recalculate</a> (<a class="el" href="classCell.html">Cell</a> *start)</td></tr>
 <tr class="memdesc:acb44db2f3be97c82b6099d8914d2a3e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Schedule a recalculation of the worksheet starting with the cell start. <br /></td></tr>
@@ -823,9 +823,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#aa51a61c8b5499b6e5556e4289146b5ad">AddCellToEvaluationQueue</a> (<a class="el" href="classGroupCell.html">GroupCell</a> *gc)</td></tr>
 <tr class="memdesc:aa51a61c8b5499b6e5556e4289146b5ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Schedule this cell for evaluation. <br /></td></tr>
 <tr class="separator:aa51a61c8b5499b6e5556e4289146b5ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af6238f4ec218c313575d0a61b15349a2"><td class="memItemLeft" align="right" valign="top"><a id="af6238f4ec218c313575d0a61b15349a2"></a>
-<a class="el" href="classGroupCell.html">GroupCell</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>UpdateMLast</b> ()</td></tr>
+<tr class="memitem:af6238f4ec218c313575d0a61b15349a2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGroupCell.html">GroupCell</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#af6238f4ec218c313575d0a61b15349a2">UpdateMLast</a> ()</td></tr>
+<tr class="memdesc:af6238f4ec218c313575d0a61b15349a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update the info which cell is the last of the worksheet.  <a href="classWorksheet.html#af6238f4ec218c313575d0a61b15349a2">More...</a><br /></td></tr>
 <tr class="separator:af6238f4ec218c313575d0a61b15349a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a25a7d7dc4eb2c3929a2e05c2aad2571d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGroupCell.html">GroupCell</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a25a7d7dc4eb2c3929a2e05c2aad2571d">UpdateMLast</a> (<a class="el" href="classGroupCell.html">GroupCell</a> *gc)</td></tr>
+<tr class="memdesc:a25a7d7dc4eb2c3929a2e05c2aad2571d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update the info which cell is the last of the worksheet.  <a href="classWorksheet.html#a25a7d7dc4eb2c3929a2e05c2aad2571d">More...</a><br /></td></tr>
+<tr class="separator:a25a7d7dc4eb2c3929a2e05c2aad2571d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a78ceeae9f7262c599b824e0f9a93ad9b"><td class="memItemLeft" align="right" valign="top"><a id="a78ceeae9f7262c599b824e0f9a93ad9b"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a78ceeae9f7262c599b824e0f9a93ad9b">FoldOccurred</a> ()</td></tr>
 <tr class="memdesc:a78ceeae9f7262c599b824e0f9a93ad9b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Call when a fold action was detected, to update the state in response to a fold occurring. <br /></td></tr>
@@ -2285,6 +2288,52 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 <p>Make a few unicode characters interpretable by maxima. </p>
 <p>Does convert the not equal sign to a '#' and similar. </p>
+
+</div>
+</div>
+<a id="af6238f4ec218c313575d0a61b15349a2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af6238f4ec218c313575d0a61b15349a2">&#9670;&nbsp;</a></span>UpdateMLast() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classGroupCell.html">GroupCell</a> * Worksheet::UpdateMLast </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Update the info which cell is the last of the worksheet. </p>
+<p>Also adjusts the scrollbar range to the worksheet length </p>
+
+</div>
+</div>
+<a id="a25a7d7dc4eb2c3929a2e05c2aad2571d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a25a7d7dc4eb2c3929a2e05c2aad2571d">&#9670;&nbsp;</a></span>UpdateMLast() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classGroupCell.html">GroupCell</a> * Worksheet::UpdateMLast </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classGroupCell.html">GroupCell</a> *&#160;</td>
+          <td class="paramname"><em>gc</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Update the info which cell is the last of the worksheet. </p>
+<p>Also adjusts the scrollbar range to the worksheet length </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">gc</td><td>The last <a class="el" href="classGroupCell.html" title="A cell grouping input (and, if there is one, also the output) cell to a foldable item.">GroupCell</a> of the worksheet </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
