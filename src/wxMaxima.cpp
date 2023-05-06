@@ -2039,7 +2039,6 @@ TextCell *wxMaxima::DoRawConsoleAppend(wxString s, CellType type,
   }
 
   if (cell) {
-    m_configuration.AdjustWorksheetSize();
     m_worksheet->Recalculate(cell->GetGroup());
     if (scrollToCaret)
       m_worksheet->ScrollToCaret();
@@ -4936,7 +4935,7 @@ void wxMaxima::OnIdle(wxIdleEvent &event) {
   }
 
   if (!m_fastResponseTimer.IsRunning()) {
-    bool requestMore = m_worksheet->RecalculateIfNeeded();
+    bool requestMore = m_worksheet->RecalculateIfNeeded(true);
     m_worksheet->ScrollToCellIfNeeded();
     m_worksheet->ScrollToCaretIfNeeded();
     if (requestMore) {

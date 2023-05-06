@@ -445,40 +445,36 @@ void GroupCell::UpdateConfusableCharWarnings() {
   m_updateConfusableCharWarnings = false;
 }
 
-void GroupCell::Recalculate() {
-  if (NeedsRecalculation(EditorFontSize())) {
-    Cell::Recalculate(m_configuration->GetDefaultFontSize());
-    m_mathFontSize = m_configuration->GetMathFontSize();
-    ClearNeedsToRecalculateWidths();
-
+bool GroupCell::Recalculate() {
+  bool retval = NeedsRecalculation(EditorFontSize());
+  
+  if (retval == true) {
     // Recalculating pagebreaks is simple
     if (m_groupType == GC_TYPE_PAGEBREAK) {
+      retval = NeedsRecalculation(EditorFontSize());
       m_width = m_configuration->GetCellBracketWidth();
-      m_height = 2;
-      m_center = 1;
-      m_clientWidth_old = m_configuration->GetClientWidth();
-      m_cellsAppended = false;
-      return;
+      m_height = Scale_Px(2);
+      m_center = Scale_Px(1);
     }
-
-    if (m_inputLabel != NULL)
-      RecalculateInput();
-
-    RecalculateOutput();
-    m_height = m_outputRect.GetHeight() + m_inputHeight;
-    // Move all cells that follow the current one down by the amount this cell
-    // has grown.
-    m_configuration->AdjustWorksheetSize(true);
-
+    else {
+      m_mathFontSize = m_configuration->GetMathFontSize();
+      
+      if (m_inputLabel != NULL)
+	RecalculateInput();
+      
+      RecalculateOutput();
+      m_height = m_outputRect.GetHeight() + m_inputHeight;
+    }
+    ClearNeedsToRecalculateWidths();
+    Cell::Recalculate(m_configuration->GetDefaultFontSize());
     m_cellsAppended = false;
     m_clientWidth_old = m_configuration->GetClientWidth();
   }
-  // The line breaking will have set our "needs recalculation" flag again.
+  // Move all cells that follow the current one down by the amount this cell
+  // has grown.
   UpdateYPosition();
-  Cell::Recalculate(m_configuration->GetDefaultFontSize());
-  m_cellsAppended = false;
-  m_clientWidth_old = m_configuration->GetClientWidth();
   wxASSERT(!NeedsRecalculation(m_configuration->GetDefaultFontSize()));
+  return retval;
 }
 
 void GroupCell::InputHeightChanged() {

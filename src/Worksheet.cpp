@@ -66,6 +66,7 @@
 #include <wx/region.h>
 #include <wx/richtext/richtextbuffer.h>
 #include <wx/settings.h>
+#include <wx/stopwatch.h>
 #include <wx/tokenzr.h>
 #include <wx/tooltip.h>
 #include <wx/txtstrm.h>
@@ -714,9 +715,6 @@ GroupCell *Worksheet::InsertGroupCells(std::unique_ptr<GroupCell> &&cells,
                                        UndoActions *undoBuffer) {
   if (!cells)
     return NULL; // nothing to insert
-  bool worksheetSizeHasChanged = true;
-  if (where && where->GetNext())
-    worksheetSizeHasChanged = false;
 
   m_configuration->AdjustWorksheetSize(true);
   bool renumbersections = false; // only renumber when true
@@ -773,9 +771,6 @@ GroupCell *Worksheet::InsertGroupCells(std::unique_ptr<GroupCell> &&cells,
     TreeUndo_MarkCellsAsAdded(firstOfCellsToInsert, lastOfCellsToInsert,
                               undoBuffer);
 
-  if (worksheetSizeHasChanged)
-    UpdateMLast();
-
   RequestRedraw(cells.get());
   AdjustSize();
   return lastOfCellsToInsert;
@@ -785,12 +780,21 @@ GroupCell *Worksheet::InsertGroupCells(std::unique_ptr<GroupCell> &&cells,
 // you can call this after folding, unfolding cells to make sure
 // m_last is correct
 GroupCell *Worksheet::UpdateMLast() {
-  m_last = GetTree();
-  if (m_last)
-    m_last = m_last->last();
+  GroupCell *last = GetTree();
+  if (last)
+    last = last->last();
+  return UpdateMLast(last);
+}
+
+GroupCell *Worksheet::UpdateMLast(GroupCell *gc)
+{
+  if(m_last == gc)
+    return gc;
+  m_last = gc;
   if (m_last)
     m_configuration->AdjustWorksheetSize(true);
   return m_last;
+  
 }
 
 void Worksheet::ScrollToError() {
@@ -863,9 +867,9 @@ void Worksheet::InsertLine(std::unique_ptr<Cell> &&newCell, bool forceNewLine) {
   newCell->ForceBreakLine(forceNewLine);
   tmp->AppendOutput(std::move(newCell));
 
-  if (!tmp->GetNext())
-    UpdateMLast();
+  Recalculate(tmp);
   OutputChanged();
+  RequestRedraw(tmp);
 
   if (FollowEvaluation()) {
     ClearSelection();
@@ -874,8 +878,6 @@ void Worksheet::InsertLine(std::unique_ptr<Cell> &&newCell, bool forceNewLine) {
     else
       ScrollToCaret();
   }
-  Recalculate(tmp);
-  RequestRedraw(tmp);
 }
 
 void Worksheet::SetZoomFactor(double newzoom, bool recalc) {
@@ -920,17 +922,12 @@ void Worksheet::SetZoomFactor(double newzoom, bool recalc) {
   ScheduleScrollToCell(cellToScrollTo);
 }
 
-bool Worksheet::RecalculateIfNeeded() {
+bool Worksheet::RecalculateIfNeeded(bool timeout) {
   if (m_configuration->GetClientWidth() < 1)
     return (false);
 
   if (!m_recalculateStart || !GetTree()) {
     m_recalculateStart = {};
-    m_configuration->AdjustWorksheetSize(false);
-    if (m_configuration->AdjustWorksheetSize()) {
-      AdjustSize();
-      m_configuration->AdjustWorksheetSize(false);
-    }
     return false;
   }
 
@@ -948,15 +945,44 @@ bool Worksheet::RecalculateIfNeeded() {
 					   upperLeftScreenCorner, upperLeftScreenCorner + wxPoint(width, height)));
   m_configuration->SetWorksheetPosition(GetPosition());
 
-  for (auto &tmp : OnList(m_recalculateStart)) {
-    tmp.Recalculate();
-  }
-
-  m_recalculateStart = {};
+  if(timeout)
+    {
+      wxStopWatch stopwatch;
+      bool recalculated = false;
+      bool stopwatchStarted = false;
+      for (auto &tmp : OnList(m_recalculateStart)) {
+	recalculated |= tmp.Recalculate();
+	if((tmp.GetRect().GetTop() > m_configuration->GetVisibleRegion().GetBottom()) &&
+	   recalculated)
+	  {
+	    if(!stopwatchStarted)
+	      stopwatch.Start();
+	  }
+	if(tmp.GetNext() != NULL)
+	  m_recalculateStart = tmp.GetNext();
+	else
+	  {
+	    m_recalculateStart = {};
+	    UpdateMLast(&tmp);
+	  }
+	if(stopwatch.Time() > 50)
+	  break;
+      }
+    }
+  else
+    {
+      bool recalculated = false;
+      for (auto &tmp : OnList(m_recalculateStart)) {
+	recalculated |= tmp.Recalculate();
+	if(tmp.GetNext() == NULL)
+	  UpdateMLast(&tmp);
+      }
+      m_recalculateStart = {};
+    }
   if (m_configuration->AdjustWorksheetSize())
     AdjustSize();
   m_configuration->AdjustWorksheetSize(false);
-
+  
   return true;
 }
 
@@ -7026,7 +7052,6 @@ void Worksheet::PasteFromClipboard() {
   // Make sure the clipboard is closed!
   wxTheClipboard->Close();
 
-  UpdateMLast();
   UpdateTableOfContents();
   ScrolledAwayFromEvaluation();
 }
@@ -7293,8 +7318,6 @@ void Worksheet::RemoveAllOutput(GroupCell *cell) {
   for (auto &tmp : OnList(cell)) {
     // If this function actually does do something we
     // should enable the "save" button.
-    OutputChanged();
-
     tmp.RemoveOutput();
 
     GroupCell *sub = tmp.GetHiddenTree();
@@ -7302,6 +7325,7 @@ void Worksheet::RemoveAllOutput(GroupCell *cell) {
       RemoveAllOutput(sub);
   }
   m_configuration->AdjustWorksheetSize(true);
+  OutputChanged();
   Recalculate();
 }
 

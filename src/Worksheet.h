@@ -870,7 +870,7 @@ public:
   GroupCell *GetInsertGroup() const;
 
   // Actually recalculate the worksheet.
-  bool RecalculateIfNeeded();
+  bool RecalculateIfNeeded(bool timeout = false);
 
   //! Schedule a recalculation of the worksheet starting with the cell start.
   void Recalculate(Cell *start);
@@ -1353,11 +1353,21 @@ public:
   //! The list of cells that have to be evaluated
   EvaluationQueue m_evaluationQueue;
 
-  // methods for folding
+  /*! Update the info which cell is the last of the worksheet
+
+    Also adjusts the scrollbar range to the worksheet length
+   */
   GroupCell *UpdateMLast();
+  /*! Update the info which cell is the last of the worksheet
+
+    Also adjusts the scrollbar range to the worksheet length
+    \param gc The last GroupCell of the worksheet
+   */
+  GroupCell *UpdateMLast(GroupCell *gc);
 
   void FoldOccurred();
 
+  // methods for folding
   //! Fold or unfold a cell
   GroupCell *ToggleFold(GroupCell *which);
 

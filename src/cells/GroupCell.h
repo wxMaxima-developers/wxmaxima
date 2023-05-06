@@ -217,7 +217,7 @@ public:
     GroupCell::Draw() by providing Cell::Draw() with the cell's coordinates.
   */
   void Recalculate(AFontSize WXUNUSED(fontsize)) override {Recalculate();}
-  void Recalculate();
+  bool Recalculate();
   wxPoint CalculateInputPosition();
 
   //! Recalculate the height of the input part of the cell
