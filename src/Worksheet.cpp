@@ -122,7 +122,6 @@ Worksheet::Worksheet(wxWindow *parent, int id,
   m_scrollToTopOfCell = false;
   m_pointer_x = -1;
   m_pointer_y = -1;
-  m_recalculateStart = NULL;
   m_mouseMotionWas = false;
   m_configuration->SetContext(m_dc);
   m_configuration->SetWorkSheet(this);
@@ -931,9 +930,6 @@ bool Worksheet::RecalculateIfNeeded(bool timeout) {
     return false;
   }
 
-  if (!GetTree()->Contains(m_recalculateStart))
-    m_recalculateStart = GetTree();
-
   int width;
   int height;
   GetClientSize(&width, &height);
@@ -950,7 +946,7 @@ bool Worksheet::RecalculateIfNeeded(bool timeout) {
       wxStopWatch stopwatch;
       bool recalculated = false;
       bool stopwatchStarted = false;
-      for (auto &tmp : OnList(m_recalculateStart)) {
+      for (auto &tmp : OnList(m_recalculateStart.get())) {
 	recalculated |= tmp.Recalculate();
 	if((tmp.GetRect().GetTop() > m_configuration->GetVisibleRegion().GetBottom()) &&
 	   recalculated)
@@ -972,7 +968,7 @@ bool Worksheet::RecalculateIfNeeded(bool timeout) {
   else
     {
       bool recalculated = false;
-      for (auto &tmp : OnList(m_recalculateStart)) {
+      for (auto &tmp : OnList(m_recalculateStart.get())) {
 	recalculated |= tmp.Recalculate();
 	if(tmp.GetNext() == NULL)
 	  UpdateMLast(&tmp);

@@ -1587,7 +1587,7 @@ protected:
 #endif
   void UpdateConfigurationClientSize();
   //! Where to start recalculation. NULL = No recalculation needed.
-  GroupCell *m_recalculateStart;
+  CellPtr<GroupCell> m_recalculateStart;
   //! The x position of the mouse pointer
   int m_pointer_x;
   //! The y position of the mouse pointer
