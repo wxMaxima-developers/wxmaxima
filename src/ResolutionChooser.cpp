@@ -32,7 +32,7 @@ ResolutionChooser::ResolutionChooser(wxWindow *parent, int id,
     new wxStaticText(this, -1, wxT("Image resolution [in ppi]:"));
 
   m_resolution = new wxSpinCtrl(this, -1, wxEmptyString, wxDefaultPosition,
-                                wxSize(100, -1), wxSP_VERTICAL, 72, 9600);
+                                wxSize(100, -1), wxSP_VERTICAL, 10, 9600);
   m_resolution->SetValue(resolution);
 
 #if defined __WXMSW__
