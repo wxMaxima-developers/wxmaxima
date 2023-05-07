@@ -34,16 +34,12 @@
 #include <wx/wx.h>
 
 wxMathML::wxMathML(Configuration *config) : m_configuration(config) {
-  m_wxMathML_UseFile = m_configuration->WxMathML_UseFile();
 }
-
-extern wxString global_wxMathML_file;
-
 
 wxString wxMathML::GetCmd() {
   m_maximaCMD = wxEmptyString;
 
-  if (global_wxMathML_file == wxEmptyString) {
+  if (Get_MathML_Filename().IsEmpty()) {
     wxLogMessage(_("Reading the Lisp part of wxMaxima from the included header file."));
     wxMemoryInputStream istream(WXMATHML_LISP, WXMATHML_LISP_SIZE);
     wxTextInputStream textIn(istream);
@@ -56,8 +52,9 @@ wxString wxMathML::GetCmd() {
     wxASSERT_MSG(m_wxMathML.Length() > 64000,
                  _("Compiler-Bug? wxMathml.lisp is shorter than expected!"));
   } else {
-    wxLogMessage(_("Reading the Lisp part of wxMaxima from the file %s"), global_wxMathML_file);
-    wxFileInputStream input(global_wxMathML_file);
+    wxLogMessage(_("Reading the Lisp part of wxMaxima from the file %s"),
+		 Get_MathML_Filename().mb_str());
+    wxFileInputStream input(Get_MathML_Filename());
     wxTextInputStream textIn(input);
     wxString line;
 
@@ -99,7 +96,7 @@ wxString wxMathML::GetCmd() {
     }
     m_maximaCMD += lineWithoutComments + " ";
   }
-  if (global_wxMathML_file != wxEmptyString)
+  if (!Get_MathML_Filename().IsEmpty())
     wxASSERT_MSG(m_maximaCMD.Length() > 54000,
                  _("Bug: After removing the whitespace wxMathml.lisp is "
                    "shorter than expected!"));
@@ -108,3 +105,4 @@ wxString wxMathML::GetCmd() {
   return m_maximaCMD;
 }
 wxString wxMathML::m_maximaCMD;
+wxString wxMathML::m_wxMathML_file;
