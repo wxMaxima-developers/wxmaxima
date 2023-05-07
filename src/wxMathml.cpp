@@ -34,7 +34,6 @@
 #include <wx/wx.h>
 
 wxMathML::wxMathML(Configuration *config) : m_configuration(config) {
-  m_wxMathML_UseFile = m_configuration->WxMathML_UseFile();
 }
 
 wxString wxMathML::GetCmd() {

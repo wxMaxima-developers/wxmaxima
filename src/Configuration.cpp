@@ -256,7 +256,6 @@ void Configuration::ResetAllToDefaults(InitOpt options) {
   m_usepngCairo = true;
 #endif
   m_wxMathML_Filename = wxEmptyString;
-  m_wxMathML_UseFile = false;
 
   m_mathJaxURL =
     wxT("https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js");

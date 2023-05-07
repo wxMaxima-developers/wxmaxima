@@ -761,8 +761,6 @@ public:
   bool MathJaXURL_UseUser() const { return m_mathJaxURL_UseUser;}
   void MathJaXURL_UseUser(bool useUser){m_mathJaxURL_UseUser = useUser;}
 
-  bool WxMathML_UseFile() const { return m_wxMathML_UseFile;}
-  void WxMathML_UseFile(bool useFile){m_wxMathML_UseFile = useFile;}
   bool EnterEvaluates() const {return m_enterEvaluates;}
   void EnterEvaluates(bool enterEvaluates) {m_enterEvaluates = enterEvaluates;}
   static wxString MathJaXURL_Auto() { return wxT("https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js");}
@@ -1162,7 +1160,6 @@ private:
   int m_maxClipbrd_BitmapMegabytes;
   int m_autoSaveMinutes;
   wxString m_wxMathML_Filename;
-  bool m_wxMathML_UseFile;
 
   wxTextCtrl *m_lastActiveTextCtrl = NULL;
   wxFont *lastFontUsed = NULL;

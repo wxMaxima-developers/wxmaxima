@@ -46,7 +46,6 @@ private:
   //! If we read wxMathml.lisp from a file this variable is not-empty and contains its name
   static wxString m_wxMathML_file;
   wxString m_wxMathML;
-  bool m_wxMathML_UseFile;
   Configuration *m_configuration;
   static wxString m_maximaCMD;
 };
