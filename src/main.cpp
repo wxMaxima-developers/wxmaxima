@@ -27,6 +27,7 @@
 
 #include "main.h"
 #include "Dirstructure.h"
+#include "wxMathml.h"
 #include <iostream>
 #include <wx/cmdline.h>
 #include <wx/config.h>
@@ -63,7 +64,6 @@
 #ifdef WXM_INCLUDE_FONTS
 #include "addprivatefonts.h"
 #endif
-wxString global_wxMathML_file = wxEmptyString;
 
 // On wxGTK2 we support printing only if wxWidgets is compiled with gnome_print.
 // We have to force gnome_print support to be linked in static builds of
@@ -345,7 +345,7 @@ bool MyApp::OnInit() {
   wxMaxima::ExtraMaximaArgs(extraMaximaArgs);
 
   if (cmdLineParser.Found(wxT("wxmathml-lisp"), &arg)) {
-    global_wxMathML_file = arg;
+    wxMathML::Set_MathML_Filename(arg);
   }
 
   wxImage::AddHandler(new wxPNGHandler);
