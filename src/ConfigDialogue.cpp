@@ -521,8 +521,6 @@ void ConfigDialogue::SetCheckboxValues() {
   m_defaultPlotWidth->SetValue(configuration->DefaultPlotWidth());
   m_defaultPlotHeight->SetValue(configuration->DefaultPlotHeight());
   m_displayedDigits->SetValue(configuration->GetDisplayedDigits());
-  m_userWxMathML->SetValue(configuration->WxMathML_UseFile());
-  m_wxMathMLLocation->SetValue(configuration->WxMathML_Filename());
 
   if (configuration->LineBreaksInLongNums() && configuration->ShowAllDigits())
     m_linebreaksInLongNums->SetValue(true);
@@ -1330,51 +1328,6 @@ wxWindow *ConfigDialogue::CreateOptionsPanel() {
   vsizer->Add(stdOpts_sizer, wxSizerFlags().Expand().Border(
 							    wxALL, 5 * GetContentScaleFactor()));
 
-  wxStaticBoxSizer *devOpts_sizer =
-    new wxStaticBoxSizer(wxVERTICAL, panel, _("Developer Options"));
-  wxStaticBoxSizer *wxMathmlLoc_sizer = new wxStaticBoxSizer(
-							     wxVERTICAL, devOpts_sizer->GetStaticBox(), _("wxMathml.lisp location"));
-  {
-    wxString toolText =
-      _("wxMathml.lisp, the lisp half of wxMaxima is included in the "
-	"wxMaxima binary. But if a developer wants to try out new "
-	"versions of this file without having to recompile wxMaxima "
-	"wxMaxima allows to use an external file, instead.");
-    m_automaticWxMathML =
-      new wxRadioButton(devOpts_sizer->GetStaticBox(), wxID_ANY, _("Built-in"));
-    m_automaticWxMathML->SetToolTip(toolText);
-    wxFlexGridSizer *wxmathmlLocGrid_sizer = new wxFlexGridSizer(9, 3, 5, 5);
-    wxmathmlLocGrid_sizer->Add(m_automaticWxMathML, wxSizerFlags());
-    wxmathmlLocGrid_sizer->Add(0, 0, wxSizerFlags());
-    wxmathmlLocGrid_sizer->Add(0, 0, wxSizerFlags());
-    m_userWxMathML = 
-      new wxRadioButton(devOpts_sizer->GetStaticBox(), wxID_ANY,
-			_("User-specified file:"));
-    m_userWxMathML->SetToolTip(toolText);
-    wxmathmlLocGrid_sizer->Add(m_userWxMathML, wxSizerFlags());
-    m_wxMathMLLocation = 
-      new wxTextCtrl(
-		     devOpts_sizer->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition,
-		     wxSize(350 * GetContentScaleFactor(), wxDefaultSize.GetY()));
-    m_wxMathMLLocation->SetToolTip(toolText);
-    wxmathmlLocGrid_sizer->Add(m_wxMathMLLocation, wxSizerFlags().Expand());
-    m_mpBrowse =
-      new wxButton(devOpts_sizer->GetStaticBox(), wxID_OPEN, _("Open"));
-    m_mpBrowse->Connect(wxEVT_BUTTON,
-                        wxCommandEventHandler(ConfigDialogue::OnwxMathMLBrowse),
-                        NULL, this);
-    wxmathmlLocGrid_sizer->Add(m_mpBrowse, wxSizerFlags());
-
-    wxMathmlLoc_sizer->Add(
-			   wxmathmlLocGrid_sizer,
-			   wxSizerFlags().Expand().Border(wxALL, 5 * GetContentScaleFactor()));
-    devOpts_sizer->Add(
-		       wxMathmlLoc_sizer,
-		       wxSizerFlags().Expand().Border(wxALL, 5 * GetContentScaleFactor()));
-
-    vsizer->Add(devOpts_sizer, wxSizerFlags().Expand().Border(
-							      wxALL, 5 * GetContentScaleFactor()));
-  }
   panel->FitInside();
   return panel;
 }
@@ -2082,9 +2035,6 @@ void ConfigDialogue::WriteSettings() {
 	m_maximaEnvVariables->GetCellValue(row, 1);
   }
 
-  configuration->WxMathML_UseFile(m_userWxMathML->GetValue());
-  configuration->WxMathML_Filename(m_wxMathMLLocation->GetValue());
-
   configuration->SetAbortOnError(m_abortOnError->GetValue());
   configuration->MaxClipbrdBitmapMegabytes(
 					   m_maxClipbrdBitmapMegabytes->GetValue());
@@ -2235,18 +2185,6 @@ void ConfigDialogue::WriteSettings() {
   config->Write(wxT("ConfigDialogTab"), m_notebook->GetSelection());
 }
 
-void ConfigDialogue::OnwxMathMLBrowse(wxCommandEvent &WXUNUSED(event)) {
-  wxConfigBase *config = wxConfig::Get();
-  wxString dd;
-  config->Read(wxT("maxima"), &dd);
-  wxString file =
-    wxFileSelector(_("Select wxMathml.lisp location"), wxPathOnly(dd),
-		   wxFileNameFromPath(dd), wxEmptyString,
-		   _("Lisp files (*.lisp)|*.lisp|All|*"), wxFD_OPEN);
-
-  if (file.Length())
-    m_wxMathMLLocation->SetValue(file);
-}
 
 void ConfigDialogue::OnMpBrowse(wxCommandEvent &WXUNUSED(event)) {
   wxConfigBase *config = wxConfig::Get();

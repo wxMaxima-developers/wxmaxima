@@ -6,6 +6,10 @@
  * Resolved another crash in the config dialogue
  * Updated the unicode character list
  * Resolved more potential event ID clashes
+ * Use an external file as wxMathML.lisp is now selected using
+   a command line option, not configured in the GUI.
+   This is mostly needed for developers, no need to expose it
+   to the end user.
 
 # 23.04.1
  * More config dialogue tweaks

@@ -63,6 +63,7 @@
 #ifdef WXM_INCLUDE_FONTS
 #include "addprivatefonts.h"
 #endif
+wxString global_wxMathML_file = wxEmptyString;
 
 // On wxGTK2 we support printing only if wxWidgets is compiled with gnome_print.
 // We have to force gnome_print support to be linked in static builds of
@@ -140,6 +141,9 @@ static const wxCmdLineEntryDesc cmdLineDesc[] = {
      "Lets Maxima control wxMaxima via interprocess communications. Use this "
      "option with care.",
      wxCMD_LINE_VAL_NONE, 0},
+    {wxCMD_LINE_OPTION, "", "wxmathml-lisp",
+     "Location of wxMathML.lisp (if not the built-in should be used, mainly for developers).",
+     wxCMD_LINE_VAL_STRING, 0},
     {wxCMD_LINE_PARAM, NULL, NULL, "input file", wxCMD_LINE_VAL_STRING,
      wxCMD_LINE_PARAM_OPTIONAL | wxCMD_LINE_PARAM_MULTIPLE},
      wxCMD_LINE_DESC_END};
@@ -339,6 +343,10 @@ bool MyApp::OnInit() {
     extraMaximaArgs += " -u " + arg;
 
   wxMaxima::ExtraMaximaArgs(extraMaximaArgs);
+
+  if (cmdLineParser.Found(wxT("wxmathml-lisp"), &arg)) {
+    global_wxMathML_file = arg;
+  }
 
   wxImage::AddHandler(new wxPNGHandler);
   wxImage::AddHandler(new wxXPMHandler);

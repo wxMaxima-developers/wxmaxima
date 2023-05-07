@@ -746,8 +746,6 @@ void Configuration::ReadConfig() {
   if (m_language == wxLANGUAGE_UNKNOWN)
     m_language = wxLANGUAGE_DEFAULT;
 
-  config->Read("wxMathML_Filename", &m_wxMathML_Filename);
-  config->Read("wxMathML_UseFile", &m_wxMathML_UseFile);
   config->Read("invertBackground", &m_invertBackground);
   config->Read("undoLimit", &m_undoLimit);
   config->Read("recentItems", &m_recentItems);
@@ -1278,8 +1276,6 @@ void Configuration::WriteSettings(const wxString &file) {
   config->Write(wxT("saveUntitled"), m_saveUntitled);
   config->Write(wxT("cursorJump"), m_cursorJump);
   config->Write(wxT("autoSaveMinutes"), m_autoSaveMinutes);
-  config->Write(wxT("wxMathML_Filename"), m_wxMathML_Filename);
-  config->Write(wxT("wxMathML_UseFile"), m_wxMathML_UseFile);
 
   config->Write(wxT("maxClipbrd_BitmapMegabytes"),
                 m_maxClipbrd_BitmapMegabytes);

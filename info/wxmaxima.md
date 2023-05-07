@@ -923,5 +923,6 @@ Most operating systems provide less complicated ways of starting programs than t
 * `-X`, `--extra-args=<str>`:        Allows to specify extra Maxima arguments
 * `-m` or `--maxima=<str>`:    allows specifying the location of the _maxima_ binary
 * `--enableipc`: Lets Maxima control wxMaxima via interprocess communications. Use this option with care.
+* `--wxmathml-lisp=<str>`:   Location of wxMathML.lisp (if not the built-in should be used, mainly for developers).
 
 Instead of a minus, some operating systems might use a dash in front of the command-line switches.

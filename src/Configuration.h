@@ -763,8 +763,6 @@ public:
 
   bool WxMathML_UseFile() const { return m_wxMathML_UseFile;}
   void WxMathML_UseFile(bool useFile){m_wxMathML_UseFile = useFile;}
-  wxString WxMathML_Filename() const { return m_wxMathML_Filename;}
-  void WxMathML_Filename(wxString name) { m_wxMathML_Filename = name;}
   bool EnterEvaluates() const {return m_enterEvaluates;}
   void EnterEvaluates(bool enterEvaluates) {m_enterEvaluates = enterEvaluates;}
   static wxString MathJaXURL_Auto() { return wxT("https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js");}
@@ -1165,6 +1163,7 @@ private:
   int m_autoSaveMinutes;
   wxString m_wxMathML_Filename;
   bool m_wxMathML_UseFile;
+
   wxTextCtrl *m_lastActiveTextCtrl = NULL;
   wxFont *lastFontUsed = NULL;
 };

@@ -280,10 +280,7 @@ protected:
   wxRadioButton *m_displayNDigits;
   wxRadioButton *m_displayAllDigits;
   wxRadioButton *m_linebreaksInLongNums;
-  wxRadioButton *m_automaticWxMathML;
-  wxRadioButton *m_userWxMathML;
   wxSpinCtrl *m_maxClipbrdBitmapMegabytes;
-  wxTextCtrl *m_wxMathMLLocation;
   //! A checkbox that asks if TeX should put the exponents above or after the subscripts.
   wxCheckBox *m_TeXExponentsAfterSubscript;
   //! A checkbox that asks if TeX should use the \\partial symbol for representing diff()
