@@ -796,7 +796,14 @@ Command-line arguments</h1>
 <li><code>--enableipc</code>: Lets <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> control <a class="el" href="classwxMaxima.html">wxMaxima</a> via interprocess communications. Use this option with care.</li>
 <li><code>--wxmathml-lisp=&lt;str&gt;</code>: Location of wxMathML.lisp (if not the built-in should be used, mainly for developers).</li>
 </ul>
-<p>Instead of a minus, some operating systems might use a dash in front of the command-line switches. </p>
+<p>Instead of a minus, some operating systems might use a dash in front of the command-line switches.</p>
+<hr  />
+<h1><a class="anchor" id="autotoc_md118"></a>
+About the program, contributing to wxMaxima</h1>
+<p><a class="el" href="classwxMaxima.html">wxMaxima</a> is mainly developed using the program language C++ using the wxWidgets framework, as build system we use CMake, a small part is written in Lisp. You can contribute to <a class="el" href="classwxMaxima.html">wxMaxima</a>, join the <a class="el" href="classwxMaxima.html">wxMaxima</a> project at <a href="https://github.com/wxMaxima-developers/wxmaxima">https://github.com/wxMaxima-developers/wxmaxima</a>, if you have knowledge of these programming languages and want to help and contribute to the open source project <a class="el" href="classwxMaxima.html">wxMaxima</a>.</p>
+<p>The source code of <a class="el" href="classwxMaxima.html">wxMaxima</a> is documented using Doxygen <a href="https://wxmaxima-developers.github.io/wxmaxima/Doxygen-documentation/">here</a>.</p>
+<p>The program is nearly self-contained, so except for system libraries (and the wxWidgets library), no external dependencies (like graphic files or the Lisp part (the <code>wxmathML.lisp</code>-file) is needed, these files are included in the executable.</p>
+<p>If you are a developer, you might want to try out a modified <code>wxmathML.lisp</code>-file without recompiling everything, one can use the command line option <code>--wxmathml-lisp=&lt;str&gt;</code> to use another Lisp file, not the included one. </p>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
 <!-- start footer part -->
