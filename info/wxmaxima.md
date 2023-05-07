@@ -926,3 +926,16 @@ Most operating systems provide less complicated ways of starting programs than t
 * `--wxmathml-lisp=<str>`:   Location of wxMathML.lisp (if not the built-in should be used, mainly for developers).
 
 Instead of a minus, some operating systems might use a dash in front of the command-line switches.
+
+* * *
+
+About the program, contributing to wxMaxima
+===========================================
+
+wxMaxima is mainly developed using the program language C++ using the wxWidgets framework, as build system we use CMake, a small part is written in Lisp. You can contribute to wxMaxima, join the wxMaxima project at <https://github.com/wxMaxima-developers/wxmaxima>, if you have knowledge of these programming languages and want to help and contribute to the open source project  wxMaxima.
+
+The source code of wxMaxima is documented using Doxygen [here](https://wxmaxima-developers.github.io/wxmaxima/Doxygen-documentation/).
+
+The program is nearly self-contained, so except for system libraries (and the wxWidgets library), no external dependencies (like graphic files or the Lisp part (the `wxmathML.lisp`-file) is needed, these files are included in the executable.
+
+If you are a developer, you might want to try out a modified `wxmathML.lisp`-file without recompiling everything, one can use the command line option `--wxmathml-lisp=<str>` to use another Lisp file, not the included one.
