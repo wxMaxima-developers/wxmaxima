@@ -113,6 +113,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ad879c3cc60eb246e6d44ab33c08210a8"><td class="memItemLeft" align="right" valign="top"><a id="ad879c3cc60eb246e6d44ab33c08210a8"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>wxMaxima</b> (wxWindow *parent, int id, const wxString title, const wxString &amp;filename=wxEmptyString, const wxPoint pos=wxDefaultPosition, const wxSize size=wxDefaultSize)</td></tr>
 <tr class="separator:ad879c3cc60eb246e6d44ab33c08210a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3e9c7e96453a65b5f74aa0d8d9b8b4d1"><td class="memItemLeft" align="right" valign="top"><a id="a3e9c7e96453a65b5f74aa0d8d9b8b4d1"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#a3e9c7e96453a65b5f74aa0d8d9b8b4d1">GetEnableIPC</a> ()</td></tr>
+<tr class="memdesc:a3e9c7e96453a65b5f74aa0d8d9b8b4d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Do we allow maxima to click buttons in <a class="el" href="classwxMaxima.html">wxMaxima</a>? <br /></td></tr>
+<tr class="separator:a3e9c7e96453a65b5f74aa0d8d9b8b4d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9b95a0c3d855f1a45bd2cff7e6edf7fe"><td class="memItemLeft" align="right" valign="top"><a id="a9b95a0c3d855f1a45bd2cff7e6edf7fe"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#a9b95a0c3d855f1a45bd2cff7e6edf7fe">OnTimerEvent</a> (wxTimerEvent &amp;event)</td></tr>
 <tr class="memdesc:a9b95a0c3d855f1a45bd2cff7e6edf7fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is triggered when a timer this class is responsible for requires. <br /></td></tr>
@@ -233,15 +237,29 @@ Static Public Member Functions</h2></td></tr>
 static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#a42eb268a7e4ade573febb9d05d58399f">PipeToStdout</a> ()</td></tr>
 <tr class="memdesc:a42eb268a7e4ade573febb9d05d58399f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pipe maxima's output to stdout. <br /></td></tr>
 <tr class="separator:a42eb268a7e4ade573febb9d05d58399f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a94df9eef25a5266886e6869bd26548ea"><td class="memItemLeft" align="right" valign="top"><a id="a94df9eef25a5266886e6869bd26548ea"></a>
+static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#a94df9eef25a5266886e6869bd26548ea">GetPipeToStdout</a> ()</td></tr>
+<tr class="memdesc:a94df9eef25a5266886e6869bd26548ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pipe maxima's output to stdout? <br /></td></tr>
+<tr class="separator:a94df9eef25a5266886e6869bd26548ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4252227241877b64d96fa93249a6089c"><td class="memItemLeft" align="right" valign="top"><a id="a4252227241877b64d96fa93249a6089c"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>ExitOnError</b> ()</td></tr>
+static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#a4252227241877b64d96fa93249a6089c">ExitOnError</a> ()</td></tr>
+<tr class="memdesc:a4252227241877b64d96fa93249a6089c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Exit if we encounter an error. <br /></td></tr>
 <tr class="separator:a4252227241877b64d96fa93249a6089c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6e02774a2efcee9afe6933a7aa36cc48"><td class="memItemLeft" align="right" valign="top"><a id="a6e02774a2efcee9afe6933a7aa36cc48"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>EnableIPC</b> ()</td></tr>
+<tr class="memitem:a945626c771ca7f928f36e1289c4669c4"><td class="memItemLeft" align="right" valign="top"><a id="a945626c771ca7f928f36e1289c4669c4"></a>
+static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#a945626c771ca7f928f36e1289c4669c4">GetExitOnError</a> ()</td></tr>
+<tr class="memdesc:a945626c771ca7f928f36e1289c4669c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Do we exit if we encounter an error? <br /></td></tr>
+<tr class="separator:a945626c771ca7f928f36e1289c4669c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6e02774a2efcee9afe6933a7aa36cc48"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#a6e02774a2efcee9afe6933a7aa36cc48">EnableIPC</a> ()</td></tr>
+<tr class="memdesc:a6e02774a2efcee9afe6933a7aa36cc48"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allow maxima to click buttons in <a class="el" href="classwxMaxima.html">wxMaxima</a>.  <a href="classwxMaxima.html#a6e02774a2efcee9afe6933a7aa36cc48">More...</a><br /></td></tr>
 <tr class="separator:a6e02774a2efcee9afe6933a7aa36cc48"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3e8b0edd0117a7f64a69c0e17c82ec52"><td class="memItemLeft" align="right" valign="top"><a id="a3e8b0edd0117a7f64a69c0e17c82ec52"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>ExtraMaximaArgs</b> (const wxString &amp;args)</td></tr>
+static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#a3e8b0edd0117a7f64a69c0e17c82ec52">ExtraMaximaArgs</a> (const wxString &amp;args)</td></tr>
+<tr class="memdesc:a3e8b0edd0117a7f64a69c0e17c82ec52"><td class="mdescLeft">&#160;</td><td class="mdescRight">Additional maxima arguments from the command line. <br /></td></tr>
 <tr class="separator:a3e8b0edd0117a7f64a69c0e17c82ec52"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2f0f0d79dfcb0df2455c1de2fd3169b7"><td class="memItemLeft" align="right" valign="top"><a id="a2f0f0d79dfcb0df2455c1de2fd3169b7"></a>
+static wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#a2f0f0d79dfcb0df2455c1de2fd3169b7">ExtraMaximaArgs</a> ()</td></tr>
+<tr class="memdesc:a2f0f0d79dfcb0df2455c1de2fd3169b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Which additional maxima arguments did we get from the command line? <br /></td></tr>
+<tr class="separator:a2f0f0d79dfcb0df2455c1de2fd3169b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af932decfee7dc7f25d9dab2e33387439"><td class="memItemLeft" align="right" valign="top"><a id="af932decfee7dc7f25d9dab2e33387439"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#af932decfee7dc7f25d9dab2e33387439">DelistTopLevelWindow</a> (<a class="el" href="classwxMaxima.html">wxMaxima</a> *)</td></tr>
 <tr class="memdesc:af932decfee7dc7f25d9dab2e33387439"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove the said window from the list of toplevel windows. <br /></td></tr>
@@ -1555,6 +1573,34 @@ Appending stuff to output</h2>
 
 <p>Spawn the "configure" menu. </p>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000021">Todo:</a></b></dt><dd>Inform maxima about the new default plot window size. </dd></dl>
+
+</div>
+</div>
+<a id="a6e02774a2efcee9afe6933a7aa36cc48"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6e02774a2efcee9afe6933a7aa36cc48">&#9670;&nbsp;</a></span>EnableIPC()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void wxMaxima::EnableIPC </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Allow maxima to click buttons in <a class="el" href="classwxMaxima.html">wxMaxima</a>. </p>
+<p>Disabled by default for security reasons </p>
 
 </div>
 </div>
