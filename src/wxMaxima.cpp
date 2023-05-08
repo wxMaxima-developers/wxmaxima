@@ -11033,6 +11033,16 @@ void wxMaxima::ChangeCellStyle(wxCommandEvent &WXUNUSED(event)) {
   m_worksheet->SetFocus();
 }
 
+bool wxMaxima::EscapeFilenameForShell(wxString name)
+{
+#ifdef __WXMSW__
+  name.Replace("\\","/");
+#endif
+  name.Replace("\\","\\\\");
+  name.Replace("\"","\\\"");
+  return "\"" + name + "\"";
+}
+
 bool wxMaxima::m_pipeToStderr = false;
 bool wxMaxima::m_exitOnError = false;
 wxString wxMaxima::m_extraMaximaArgs;
