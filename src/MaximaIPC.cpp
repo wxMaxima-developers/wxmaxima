@@ -88,7 +88,7 @@ static void LookupName(Val &val, const wxString &name, const T &names) {
 }
 
 void MaximaIPC::ReadInputData(wxString &data) {
-  if (!m_enabled)
+  if (!GetEnableIPC())
     return;
   if (!data.StartsWith(ipcPrefix))
     return;
@@ -161,7 +161,7 @@ void MaximaIPC::ReadInputData(wxString &data) {
 }
 
 bool MaximaIPC::DrainQueue() {
-  if (!m_enabled || m_queue.empty())
+  if (!GetEnableIPC() || m_queue.empty())
     return false;
   bool drained = false;
   if (m_queueTail < m_queue.size()) {

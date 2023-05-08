@@ -89,9 +89,23 @@ public:
 
   //! Pipe maxima's output to stdout
   static void PipeToStdout(){m_pipeToStderr = true;}
+  //! Pipe maxima's output to stdout?
+  static bool GetPipeToStdout(){return m_pipeToStderr;}
+  //! Exit if we encounter an error
   static void ExitOnError(){m_exitOnError = true;}
+  //! Do we exit if we encounter an error?
+  static bool GetExitOnError(){return m_exitOnError;}
+  /*! Allow maxima to click buttons in wxMaxima
+
+    Disabled by default for security reasons
+   */
   static void EnableIPC(){ MaximaIPC::EnableIPC(); }
+  //! Do we allow maxima to click buttons in wxMaxima?
+  bool GetEnableIPC(){ return MaximaIPC::GetEnableIPC(); }
+  //! Additional maxima arguments from the command line
   static void ExtraMaximaArgs(const wxString &args){m_extraMaximaArgs = args;}
+  //! Which additional maxima arguments did we get from the command line?
+  static wxString ExtraMaximaArgs(){return m_extraMaximaArgs;}
 
   //! An enum of individual IDs for all timers this class handles
   enum TimerIDs

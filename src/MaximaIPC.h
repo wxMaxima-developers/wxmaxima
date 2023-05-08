@@ -49,6 +49,7 @@ public:
    */
   void ReadInputData(wxString &data);
   static void EnableIPC() { m_enabled = true; }
+  static bool  GetEnableIPC() { return m_enabled; }
 
   /*! Drains the event queue and dispatches a queued IPC event to its target.
    *
