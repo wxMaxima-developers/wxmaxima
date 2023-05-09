@@ -11033,7 +11033,7 @@ void wxMaxima::ChangeCellStyle(wxCommandEvent &WXUNUSED(event)) {
   m_worksheet->SetFocus();
 }
 
-bool wxMaxima::EscapeFilenameForShell(wxString name)
+wxString wxMaxima::EscapeFilenameForShell(wxString name)
 {
 #ifdef __WXMSW__
   name.Replace("\\","/");

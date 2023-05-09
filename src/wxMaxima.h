@@ -87,7 +87,7 @@ public:
 
   virtual ~wxMaxima();
 
-  static bool EscapeFilenameForShell(wxString name);
+  wxString EscapeFilenameForShell(wxString name);
   //! Pipe maxima's output to stdout
   static void PipeToStdout(){m_pipeToStderr = true;}
   //! Pipe maxima's output to stdout?
