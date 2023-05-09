@@ -599,6 +599,8 @@ void MyApp::OnFileMenu(wxCommandEvent &ev) {
 	  args.push_back("-m");
 	  args.push_back(Configuration::m_maximaLocation_override);
 	}
+      if (ErrorRedirector::LoggingToStdErr())
+	  args.push_back("--logtostderr");
       if (wxMaxima::GetPipeToStdout())
 	  args.push_back("--pipe");
       if (wxMaxima::GetExitOnError())
@@ -627,6 +629,12 @@ void MyApp::OnFileMenu(wxCommandEvent &ev) {
       for(size_t i = 0; i< args.size(); i++)
 	args_array.get()[i + 1] = args_c_strings[i].data();
       wxExecute(args_array.get());
+
+      wxString command;
+      for(size_t i = 0; i< args.size() + 1; i++)
+	command += wxString::FromUTF8(args_array.get()[i]) + "\n";
+      command.Trim();
+      wxLogMessage(_("Starting a new wxMaxima process as: %s"), command.mb_str()); 
     }
   }
   else if(ev.GetId() == wxID_PREFERENCES) {
