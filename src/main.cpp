@@ -587,14 +587,46 @@ void MyApp::OnFileMenu(wxCommandEvent &ev) {
     if (m_allWindowsInOneProcess)
       NewWindow();
     else {
-      wxString args;
+      // Compile a list of arguments we want to pass to the new process
+      std::vector<wxString> args;
       if (Configuration::m_configfileLocation_override != wxEmptyString)
-	args += " -f \"" + Configuration::m_configfileLocation_override + "\"";
+	{
+	  args.push_back("-f");
+	  args.push_back(Configuration::m_configfileLocation_override);
+	}
       if (Configuration::m_maximaLocation_override != wxEmptyString)
-	args += " -m \"" + Configuration::m_maximaLocation_override + "\"";
-      
-      wxExecute(wxT("\"") + wxStandardPaths::Get().GetExecutablePath() +
-		wxT("\"") + args);
+	{
+	  args.push_back("-m");
+	  args.push_back(Configuration::m_maximaLocation_override);
+	}
+      if (wxMaxima::GetPipeToStdout())
+	  args.push_back("--pipe");
+      if (wxMaxima::GetExitOnError())
+	  args.push_back("--exit-on-error");
+      if (wxMaxima::GetEnableIPC())
+	  args.push_back("--enableipc");
+      if (!wxMaxima::ExtraMaximaArgs().IsEmpty())
+	{
+	  args.push_back("-u");
+	  args.push_back(wxMaxima::ExtraMaximaArgs());
+	}
+
+      // wxExecute wants the arguments as C strings, not as wxStrings =>
+      // generate those C strings
+      std::vector<wxCharBuffer> args_c_strings;
+      for(size_t i = 0; i < args.size(); i++)
+	args_c_strings.push_back(wxCharBuffer(args[i]));
+
+      // Additionally wxExecute expects these C strings in a C array.
+      // Let's generate an unique pointer to that one so C++ automatically destroys it
+      // once it is no more needed.
+      std::unique_ptr<char *> args_array(new char*[args.size() + 2]);
+      wxCharBuffer executableName(wxStandardPaths::Get().GetExecutablePath());
+      args_array.get()[0] = executableName.data();;
+      args_array.get()[args.size() + 1] = NULL;
+      for(size_t i = 0; i< args.size(); i++)
+	args_array.get()[i + 1] = args_c_strings[i].data();
+      wxExecute(args_array.get());
     }
   }
   else if(ev.GetId() == wxID_PREFERENCES) {
