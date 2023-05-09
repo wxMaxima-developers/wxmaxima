@@ -10,6 +10,10 @@
    a command line option, not configured in the GUI.
    This is mostly needed for developers, no need to expose it
    to the end user.
+ * Better handling of paths to maxima when starting new 
+   wxMaxima processes
+ * new wxMaxima processes now get more of the command-line args
+   of the parent process
 
 # 23.04.1
  * More config dialogue tweaks

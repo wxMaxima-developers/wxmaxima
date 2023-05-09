@@ -102,7 +102,7 @@ public:
    */
   static void EnableIPC(){ MaximaIPC::EnableIPC(); }
   //! Do we allow maxima to click buttons in wxMaxima?
-  bool GetEnableIPC(){ return MaximaIPC::GetEnableIPC(); }
+  static bool GetEnableIPC(){ return MaximaIPC::GetEnableIPC(); }
   //! Additional maxima arguments from the command line
   static void ExtraMaximaArgs(const wxString &args){m_extraMaximaArgs = args;}
   //! Which additional maxima arguments did we get from the command line?
