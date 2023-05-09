@@ -44,7 +44,7 @@ var searchData=
   ['getdisplayeddigits_2342',['GetDisplayedDigits',['../classConfiguration.html#aed909c1cc93e4ed6d7fa074c558d295f',1,'Configuration']]],
   ['getdisplayedtokens_2343',['GetDisplayedTokens',['../classEditorCell.html#a287bc9ad129745cc0d35d183c0982cb5',1,'EditorCell']]],
   ['getdrop_2344',['GetDrop',['../classCell.html#ae2bdaeb007f6dfda36a22577c6de9e44',1,'Cell']]],
-  ['getenableipc_2345',['GetEnableIPC',['../classwxMaxima.html#a3e9c7e96453a65b5f74aa0d8d9b8b4d1',1,'wxMaxima']]],
+  ['getenableipc_2345',['GetEnableIPC',['../classwxMaxima.html#a5164b12bac0fc0c20df1f7791d9be44e',1,'wxMaxima']]],
   ['getescapedvarnames_2346',['GetEscapedVarnames',['../classVariablespane.html#ab390349b3b402d59280e39403fb8c3fc',1,'Variablespane']]],
   ['getesccode_2347',['GetEscCode',['../classConfiguration.html#a33c31133e51e360dadbf6e9bb2f31f0b',1,'Configuration']]],
   ['getexitonerror_2348',['GetExitOnError',['../classwxMaxima.html#a945626c771ca7f928f36e1289c4669c4',1,'wxMaxima']]],
