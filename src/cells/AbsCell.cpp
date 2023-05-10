@@ -56,10 +56,10 @@ DEFINE_CELL(AbsCell)
 void AbsCell::MakeBreakupCells() {
   if (m_open)
     return;
-  m_open = std::make_unique<TextCell>(m_group, m_configuration, wxT("abs("));
+  m_open = std::make_unique<TextCell>(m_group, m_configuration, wxS("abs("));
   static_cast<TextCell &>(*m_open).DontEscapeOpeningParenthesis();
   m_open->SetStyle(TS_FUNCTION);
-  m_close = std::make_unique<TextCell>(m_group, m_configuration, wxT(")"));
+  m_close = std::make_unique<TextCell>(m_group, m_configuration, wxS(")"));
 }
 
 void AbsCell::Recalculate(AFontSize fontsize) {
@@ -107,7 +107,7 @@ wxString AbsCell::ToString() const {
   if (IsBrokenIntoLines())
     return wxEmptyString;
   wxString s;
-  s = wxT("abs(") + m_innerCell->ListToString() + wxT(")");
+  s = wxS("abs(") + m_innerCell->ListToString() + wxS(")");
   return s;
 }
 
@@ -115,34 +115,34 @@ wxString AbsCell::ToMatlab() const {
   if (IsBrokenIntoLines())
     return wxEmptyString;
   wxString s;
-  s = wxT("abs(") + m_innerCell->ListToMatlab() + wxT(")");
+  s = wxS("abs(") + m_innerCell->ListToMatlab() + wxS(")");
   return s;
 }
 
 wxString AbsCell::ToTeX() const {
   if (IsBrokenIntoLines())
     return wxEmptyString;
-  return wxT("\\left| ") + m_innerCell->ListToTeX() + wxT("\\right| ");
+  return wxS("\\left| ") + m_innerCell->ListToTeX() + wxS("\\right| ");
 }
 
 wxString AbsCell::ToMathML() const {
-  return wxT("<row><mo>|</mo>") + m_innerCell->ListToMathML() +
-    wxT("<mo>|</mo></row>\n");
-  //  return wxT("<apply><abs/><ci>") + m_innerCell->ListToMathML() +
-  //  wxT("</ci></apply>");
+  return wxS("<row><mo>|</mo>") + m_innerCell->ListToMathML() +
+    wxS("<mo>|</mo></row>\n");
+  //  return wxS("<apply><abs/><ci>") + m_innerCell->ListToMathML() +
+  //  wxS("</ci></apply>");
 }
 
 wxString AbsCell::ToOMML() const {
-  return wxT("<m:d><m:dPr m:begChr=\"|\" m:endChr=\"|\"></m:dPr><m:e>") +
-    m_innerCell->ListToOMML() + wxT("</m:e></m:d>");
+  return wxS("<m:d><m:dPr m:begChr=\"|\" m:endChr=\"|\"></m:dPr><m:e>") +
+    m_innerCell->ListToOMML() + wxS("</m:e></m:d>");
 }
 
 wxString AbsCell::ToXML() const {
   wxString flags;
   if (HasHardLineBreak())
-    flags += wxT(" breakline=\"true\"");
+    flags += wxS(" breakline=\"true\"");
 
-  return wxT("<a") + flags + wxT(">") + m_innerCell->ListToXML() + wxT("</a>");
+  return wxS("<a") + flags + wxS(">") + m_innerCell->ListToXML() + wxS("</a>");
 }
 
 bool AbsCell::BreakUp() {

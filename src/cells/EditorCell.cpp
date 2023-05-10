@@ -45,8 +45,8 @@ EditorCell::EditorCell(GroupCell *group, Configuration *config,
                        const wxString &text)
   : Cell(group, config), m_text(text) {
   InitBitFields();
-  m_text.Replace(wxT("\u2028"), "\n");
-  m_text.Replace(wxT("\u2029"), "\n");
+  m_text.Replace(wxS("\u2028"), "\n");
+  m_text.Replace(wxS("\u2029"), "\n");
   SetValue(TabExpand(text, 0));
   m_height = m_charHeight + 2 * Scale_Px(2);
   m_center = m_height / 2;
@@ -55,12 +55,12 @@ EditorCell::EditorCell(GroupCell *group, Configuration *config,
 }
 
 wxString EditorCell::EscapeHTMLChars(wxString input) {
-  input.Replace(wxT("&"), wxT("&amp;"));
-  input.Replace(wxT("\""), wxT("&quot;"));
-  input.Replace(wxT("<"), wxT("&lt;"));
-  input.Replace(wxT(">"), wxT("&gt;"));
-  input.Replace(wxT("\n"), wxT("<br/>\n"));
-  input.Replace(wxT("\r"), wxT(" "));
+  input.Replace(wxS("&"), wxS("&amp;"));
+  input.Replace(wxS("\""), wxS("&quot;"));
+  input.Replace(wxS("<"), wxS("&lt;"));
+  input.Replace(wxS(">"), wxS("&gt;"));
+  input.Replace(wxS("\n"), wxS("<br/>\n"));
+  input.Replace(wxS("\r"), wxS(" "));
   return input;
 }
 
@@ -86,11 +86,11 @@ void EditorCell::AddDrawParameter(wxString param) {
   bool commaNeededBefore = false;
   bool commaNeededAfter = false;
   while (ch < m_text.end()) {
-    if ((*ch == wxT('(')) || (*ch == wxT('[')) || (*ch == wxT(',')))
+    if ((*ch == wxS('(')) || (*ch == wxS('[')) || (*ch == wxS(',')))
       commaNeededBefore = false;
     else {
-      if (!((*ch == wxT(' ')) || (*ch == wxT('\n')) || (*ch == wxT('\r')) ||
-            (*ch == wxT('\t'))))
+      if (!((*ch == wxS(' ')) || (*ch == wxS('\n')) || (*ch == wxS('\r')) ||
+            (*ch == wxS('\t'))))
         commaNeededBefore = true;
     }
 
@@ -106,12 +106,12 @@ void EditorCell::AddDrawParameter(wxString param) {
   //  ++ch;
 
   while (ch < m_text.end()) {
-    if ((*ch == wxT(')')) || (*ch == wxT(']')) || (*ch == wxT(','))) {
+    if ((*ch == wxS(')')) || (*ch == wxS(']')) || (*ch == wxS(','))) {
       commaNeededAfter = false;
       break;
     }
-    if ((*ch != wxT(' ')) && (*ch != wxT('\n')) && (*ch != wxT('\r')) &&
-        (*ch != wxT('\t'))) {
+    if ((*ch != wxS(' ')) && (*ch != wxS('\n')) && (*ch != wxS('\r')) &&
+        (*ch != wxS('\t'))) {
       commaNeededAfter = true;
       break;
     }
@@ -121,18 +121,18 @@ void EditorCell::AddDrawParameter(wxString param) {
   }
 
   if (commaNeededAfter)
-    param += ",";
+    param += wxS(",");
 
   wxString textAfterParameter =
     m_text.Right(m_text.Length() - m_positionOfCaret);
   m_text = m_text.Left(m_positionOfCaret);
   m_text.Trim();
   if (commaNeededBefore) {
-    m_text += wxT(",");
+    m_text += wxS(",");
     m_positionOfCaret++;
   }
 
-  wxStringTokenizer lines(param, wxT("\n"), wxTOKEN_RET_EMPTY_ALL);
+  wxStringTokenizer lines(param, wxS("\n"), wxTOKEN_RET_EMPTY_ALL);
   while (lines.HasMoreTokens()) {
     // Todo: Don't insert a newline if we are at the beginning of a line.
     ProcessNewline(false);
@@ -178,7 +178,7 @@ wxString EditorCell::GetFullCommandUnderCursor() {
   wxString::const_iterator ch = m_text.begin();
   while (ch < m_text.end()) {
     result += *ch;
-    if (*ch == wxT('\\')) {
+    if (*ch == wxS('\\')) {
       ++ch;
       ++pos;
       if (ch < m_text.end())
@@ -203,19 +203,19 @@ wxString EditorCell::PrependNBSP(wxString input) {
   bool firstSpace = true;
   wxString retval;
 
-  input.Replace(wxT("\r"), wxT(" "));
+  input.Replace(wxS("\r"), wxS(" "));
 
   for (size_t i = 0; i < input.Length(); i++) {
     wxChar ch = input.GetChar(i);
-    if (ch == wxT('\n'))
+    if (ch == wxS('\n'))
       firstSpace = true;
 
-    if (ch == wxT(' ')) {
+    if (ch == wxS(' ')) {
       if (firstSpace) {
         firstSpace = false;
         retval += ch;
       } else
-        retval += wxT("\u00A0");
+        retval += wxS("\u00A0");
     } else {
       retval += ch;
       firstSpace = true;
@@ -242,9 +242,9 @@ wxString EditorCell::ToString() const { return ToString(false); }
 wxString EditorCell::ToString(bool dontLimitToSelection) const {
   wxString text = m_text;
   // Remove all soft line breaks
-  text.Replace(wxT('\r'), wxT(' '));
+  text.Replace(wxS('\r'), wxS(' '));
   // Convert non-breakable spaces to breakable ones
-  text.Replace(wxT("\u00a0"), wxT(" "));
+  text.Replace(wxS("\u00a0"), wxS(" "));
 
   if (SelectionActive() && (!dontLimitToSelection)) {
     long start = wxMin(m_selectionStart, m_selectionEnd);
@@ -263,9 +263,9 @@ wxString EditorCell::ToMatlab() const { return ToMatlab(false); }
 wxString EditorCell::ToMatlab(bool dontLimitToSelection) const {
   wxString text = m_text;
   // Remove all soft line breaks
-  text.Replace(wxT('\r'), wxT(' '));
+  text.Replace(wxS('\r'), wxS(' '));
   // Convert non-breakable spaces to breakable ones
-  text.Replace(wxT("\u00a0"), wxT(" "));
+  text.Replace(wxS("\u00a0"), wxS(" "));
 
   if (SelectionActive() && (!dontLimitToSelection)) {
     long start = wxMin(m_selectionStart, m_selectionEnd);
@@ -284,50 +284,50 @@ wxString EditorCell::ToRTF() const {
 
   switch (m_type) {
   case MC_TYPE_TITLE:
-    retval += wxT("\\pard\\s16\\b\\f0\\fs56 ") + RTFescape(m_text) + wxT("\n");
+    retval += wxS("\\pard\\s16\\b\\f0\\fs56 ") + RTFescape(m_text) + wxS("\n");
     break;
   case MC_TYPE_SECTION:
-    retval += wxT("\\pard\\s1\\b\\f0\\fs40 ") + RTFescape(m_text) + wxT("\n");
+    retval += wxS("\\pard\\s1\\b\\f0\\fs40 ") + RTFescape(m_text) + wxS("\n");
     break;
   case MC_TYPE_SUBSECTION:
-    retval += wxT("\\pard\\s2\\b\\f0\\fs36 ") + RTFescape(m_text) + wxT("\n");
+    retval += wxS("\\pard\\s2\\b\\f0\\fs36 ") + RTFescape(m_text) + wxS("\n");
     break;
   case MC_TYPE_SUBSUBSECTION:
-    retval += wxT("\\pard\\s3\\b\\f0\\fs32 ") + RTFescape(m_text) + wxT("\n");
+    retval += wxS("\\pard\\s3\\b\\f0\\fs32 ") + RTFescape(m_text) + wxS("\n");
     break;
   case MC_TYPE_HEADING5:
-    retval += wxT("\\pard\\s4\\b\\f0\\fs32 ") + RTFescape(m_text) + wxT("\n");
+    retval += wxS("\\pard\\s4\\b\\f0\\fs32 ") + RTFescape(m_text) + wxS("\n");
     break;
   case MC_TYPE_HEADING6:
-    retval += wxT("\\pard\\s5\\b\\f0\\fs32 ") + RTFescape(m_text) + wxT("\n");
+    retval += wxS("\\pard\\s5\\b\\f0\\fs32 ") + RTFescape(m_text) + wxS("\n");
     break;
   case MC_TYPE_PROMPT:
-    retval += wxString::Format(wxT("\\cf%i"), GetTextStyle()) +
-      wxT("\\pard\\s22\\li1105\\lin1105\\fi-1105\\f0\\fs24 ") +
-      RTFescape(m_text) + wxT("\n");
+    retval += wxString::Format(wxS("\\cf%i"), GetTextStyle()) +
+      wxS("\\pard\\s22\\li1105\\lin1105\\fi-1105\\f0\\fs24 ") +
+      RTFescape(m_text) + wxS("\n");
     break;
   case MC_TYPE_INPUT: {
-    retval += wxT(" ");
+    retval += wxS(" ");
     for (const auto &textSnippet : m_styledText) {
       wxString text = RTFescape(textSnippet.GetText());
 
       if (textSnippet.IsStyleSet()) {
         retval +=
-	  wxString::Format(wxT("\\cf%i "), static_cast<int>(textSnippet.GetTextStyle()));
+	  wxString::Format(wxS("\\cf%i "), static_cast<int>(textSnippet.GetTextStyle()));
         retval += RTFescape(textSnippet.GetText());
       } else {
-        retval += wxString::Format(wxT("\\cf%i "), static_cast<int>(TS_CODE_DEFAULT));
-        retval += wxT("{") + RTFescape(textSnippet.GetText()) + wxT("}\n");
+        retval += wxString::Format(wxS("\\cf%i "), static_cast<int>(TS_CODE_DEFAULT));
+        retval += wxS("{") + RTFescape(textSnippet.GetText()) + wxS("}\n");
       }
-      if (textSnippet.GetText().Contains(wxT("\n"))) {
-        retval += wxT("\\pard\\s21\\li1105\\lin1105\\f0\\fs24 ");
+      if (textSnippet.GetText().Contains(wxS("\n"))) {
+        retval += wxS("\\pard\\s21\\li1105\\lin1105\\f0\\fs24 ");
       }
     }
-    retval += wxString::Format(wxT("\\cf%i "), static_cast<int>(TS_CODE_DEFAULT));
+    retval += wxString::Format(wxS("\\cf%i "), static_cast<int>(TS_CODE_DEFAULT));
     break;
   }
   default:
-    retval += wxT("\\pard\\s0 ") + RTFescape(m_text);
+    retval += wxS("\\pard\\s0 ") + RTFescape(m_text);
     break;
   }
   return retval;
@@ -335,128 +335,128 @@ wxString EditorCell::ToRTF() const {
 
 wxString EditorCell::ToTeX() const {
   wxString text = m_text;
-  if (!text.StartsWith(wxT("TeX:"))) {
-    text.Replace(wxT("\u00a0"), wxT("~"));
-    text.Replace(wxT("\\"), wxT("\\ensuremath{\\backslash}"));
-    text.Replace(wxT("\r"), wxT(" "));
-    text.Replace(wxT("^"), wxT("\\^ "));
-    text.Replace(wxT("\u00B0"), wxT("\\ensuremath{^\\circ}"));
-    text.Replace(wxT("\u2212"), wxT("-")); // unicode minus sign
-    text.Replace(wxT("\u2052"), wxT("-")); // commercial minus sign
-    text.Replace(wxT("\uFE63"), wxT("-")); // unicode small minus sign
-    text.Replace(wxT("\uFF0D"), wxT("-")); // unicode big minus sign
-    text.Replace(wxT("\uFF0B"), wxT("+")); // unicode big plus
-    text.Replace(wxT("\uFB29"), wxT("+")); // hebrew alternate plus
-    text.Replace(wxT("\u03B1"), wxT("\\ensuremath{\\alpha}"));
-    text.Replace(wxT("\u00B1"), wxT("\\ensuremath{\\pm}"));
-    text.Replace(wxT("\u00B2"), wxT("\\ensuremath{^2}"));
-    text.Replace(wxT("\u00B3"), wxT("\\ensuremath{^3}"));
-    text.Replace(wxT("\u221A"), wxT("\\ensuremath{\\sqrt{}}"));
-    text.Replace(wxT("\u2148"), wxT("\\ensuremath{\\mathbbm{i}}"));
-    text.Replace(wxT("\u2147"), wxT("\\ensuremath{\\mathbbm{e}}"));
-    text.Replace(wxT("\u210f"), wxT("\\ensuremath{\\hbar}"));
-    text.Replace(wxT("\u2203"), wxT("\\ensuremath{\\exists}"));
-    text.Replace(wxT("\u2204"), wxT("\\ensuremath{\\nexists}"));
-    text.Replace(wxT("\u2208"), wxT("\\ensuremath{\\in}"));
-    text.Replace(wxT("\u21D2"), wxT("\\ensuremath{\\Longrightarrow}"));
-    text.Replace(wxT("\u221e"), wxT("\\ensuremath{\\infty}"));
-    text.Replace(wxT("\u22C0"), wxT("\\ensuremath{\\wedge}"));
-    text.Replace(wxT("\u22C1"), wxT("\\ensuremath{\\vee}"));
-    text.Replace(wxT("\u22bb"), wxT("\\ensuremath{\\oplus}"));
-    text.Replace(wxT("\u22BC"), wxT("\\ensuremath{\\overline{\\wedge}}"));
-    text.Replace(wxT("\u22BB"), wxT("\\ensuremath{\\overline{\\vee}}"));
-    text.Replace(wxT("\u00AC"), wxT("\\ensuremath{\\setminus}"));
-    text.Replace(wxT("\u22C3"), wxT("\\ensuremath{\\cup}"));
-    text.Replace(wxT("\u22C2"), wxT("\\ensuremath{\\cap}"));
-    text.Replace(wxT("\u2286"), wxT("\\ensuremath{\\subseteq}"));
-    text.Replace(wxT("\u2282"), wxT("\\ensuremath{\\subset}"));
-    text.Replace(wxT("\u2288"), wxT("\\ensuremath{\\not\\subseteq}"));
-    text.Replace(wxT("\u0127"), wxT("\\ensuremath{\\hbar}"));
-    text.Replace(wxT("\u0126"), wxT("\\ensuremath{\\Hbar}"));
-    text.Replace(wxT("\u2205"), wxT("\\ensuremath{\\emptyset}"));
-    text.Replace(wxT("\u00BD"), wxT("\\ensuremath{\\frac{1}{2}}"));
-    text.Replace(wxT("\u03B2"), wxT("\\ensuremath{\\beta}"));
-    text.Replace(wxT("\u03B3"), wxT("\\ensuremath{\\gamma}"));
-    text.Replace(wxT("\u03B4"), wxT("\\ensuremath{\\delta}"));
-    text.Replace(wxT("\u03B5"), wxT("\\ensuremath{\\epsilon}"));
-    text.Replace(wxT("\u03B6"), wxT("\\ensuremath{\\zeta}"));
-    text.Replace(wxT("\u03B7"), wxT("\\ensuremath{\\eta}"));
-    text.Replace(wxT("\u03B8"), wxT("\\ensuremath{\\theta}"));
-    text.Replace(wxT("\u03B9"), wxT("\\ensuremath{\\iota}"));
-    text.Replace(wxT("\u03BA"), wxT("\\ensuremath{\\kappa}"));
-    text.Replace(wxT("\u03BB"), wxT("\\ensuremath{\\lambda}"));
-    text.Replace(wxT("\u03BC"), wxT("\\ensuremath{\\mu}"));
-    text.Replace(wxT("\u03BD"), wxT("\\ensuremath{\\nu}"));
-    text.Replace(wxT("\u03BE"), wxT("\\ensuremath{\\xi}"));
-    text.Replace(wxT("\u03BF"), wxT("o"));
-    text.Replace(wxT("\u03C0"), wxT("\\ensuremath{\\pi}"));
-    text.Replace(wxT("\u03C1"), wxT("\\ensuremath{\\rho}"));
-    text.Replace(wxT("\u03C3"), wxT("\\ensuremath{\\sigma}"));
-    text.Replace(wxT("\u03C4"), wxT("\\ensuremath{\\tau}"));
-    text.Replace(wxT("\u03C5"), wxT("\\ensuremath{\\upsilon}"));
-    text.Replace(wxT("\u03C6"), wxT("\\ensuremath{\\phi}"));
-    text.Replace(wxT("\u03C7"), wxT("\\ensuremath{\\chi}"));
-    text.Replace(wxT("\u03C8"), wxT("\\ensuremath{\\psi}"));
-    text.Replace(wxT("\u03C9"), wxT("\\ensuremath{\\omega}"));
-    text.Replace(wxT("\u0391"), wxT("A"));
-    text.Replace(wxT("\u0392"), wxT("B"));
-    text.Replace(wxT("\u0393"), wxT("\\ensuremath{\\Gamma}"));
-    text.Replace(wxT("\u0394"), wxT("\\ensuremath{\\Delta}"));
-    text.Replace(wxT("\u0395"), wxT("E"));
-    text.Replace(wxT("\u0396"), wxT("Z"));
-    text.Replace(wxT("\u0397"), wxT("H"));
-    text.Replace(wxT("\u0398"), wxT("\\ensuremath{\\Theta}"));
-    text.Replace(wxT("\u0399"), wxT("I"));
-    text.Replace(wxT("\u039A"), wxT("K"));
-    text.Replace(wxT("\u039B"), wxT("\\ensuremath{\\Lambda}"));
-    text.Replace(wxT("\u039C"), wxT("M"));
-    text.Replace(wxT("\u039D"), wxT("N"));
-    text.Replace(wxT("\u039E"), wxT("\\ensuremath{\\Xi}"));
-    text.Replace(wxT("\u039F"), wxT("O"));
-    text.Replace(wxT("\u03A0"), wxT("\\ensuremath{\\Pi}"));
-    text.Replace(wxT("\u03A1"), wxT("P"));
-    text.Replace(wxT("\u03A3"), wxT("\\ensuremath{\\Sigma}"));
-    text.Replace(wxT("\u03A4"), wxT("T"));
-    text.Replace(wxT("\u03A5"), wxT("\\ensuremath{\\Upsilon}"));
-    text.Replace(wxT("\u03A6"), wxT("\\ensuremath{\\Phi}"));
-    text.Replace(wxT("\u03A7"), wxT("X"));
-    text.Replace(wxT("\u03A8"), wxT("\\ensuremath{\\Psi}"));
-    text.Replace(wxT("\u03A9"), wxT("\\ensuremath{\\Omega}"));
-    text.Replace(wxT("\u2202"), wxT("\\ensuremath{\\partial}"));
-    text.Replace(wxT("\u222b"), wxT("\\ensuremath{\\int}"));
-    text.Replace(wxT("\u2245"), wxT("\\ensuremath{\\approx}"));
-    text.Replace(wxT("\u221d"), wxT("\\ensuremath{\\propto}"));
-    text.Replace(wxT("\u2260"), wxT("\\ensuremath{\\neq}"));
-    text.Replace(wxT("\u2264"), wxT("\\ensuremath{\\leq}"));
-    text.Replace(wxT("\u2265"), wxT("\\ensuremath{\\geq}"));
-    text.Replace(wxT("\u226A"), wxT("\\ensuremath{\\ll}"));
-    text.Replace(wxT("\u226B"), wxT("\\ensuremath{\\gg}"));
-    text.Replace(wxT("\u220e"), wxT("\\ensuremath{\\blacksquare}"));
-    text.Replace(wxT("\u2263"), wxT("\\ensuremath{\\equiv}"));
-    text.Replace(wxT("\u2211"), wxT("\\ensuremath{\\sum}"));
-    text.Replace(wxT("\u220F"), wxT("\\ensuremath{\\prod}"));
-    text.Replace(wxT("\u2225"), wxT("\\ensuremath{\\parallel}"));
-    text.Replace(wxT("\u27C2"), wxT("\\ensuremath{\\bot}"));
-    text.Replace(wxT("~"), wxT("\\ensuremath{\\sim }"));
-    text.Replace(wxT("_"), wxT("\\_"));
-    text.Replace(wxT("$"), wxT("\\$"));
-    text.Replace(wxT("%"), wxT("\\%"));
-    text.Replace(wxT("&"), wxT("\\&"));
-    text.Replace(wxT("@"), wxT("\\ensuremath{@}"));
-    text.Replace(wxT("#"), wxT("\\ensuremath{\\neq}"));
-    text.Replace(wxT("\u00A0"), wxT("~")); // A non-breakable space
-    text.Replace(wxT("<"), wxT("\\ensuremath{<}"));
-    text.Replace(wxT(">"), wxT("\\ensuremath{>}"));
-    text.Replace(wxT("\u219D"), wxT("\\ensuremath{\\leadsto}"));
-    text.Replace(wxT("\u2192"), wxT("\\ensuremath{\\rightarrow}"));
-    text.Replace(wxT("\u27F6"), wxT("\\ensuremath{\\longrightarrow}"));
+  if (!text.StartsWith(wxS("TeX:"))) {
+    text.Replace(wxS("\u00a0"), wxS("~"));
+    text.Replace(wxS("\\"), wxS("\\ensuremath{\\backslash}"));
+    text.Replace(wxS("\r"), wxS(" "));
+    text.Replace(wxS("^"), wxS("\\^ "));
+    text.Replace(wxS("\u00B0"), wxS("\\ensuremath{^\\circ}"));
+    text.Replace(wxS("\u2212"), wxS("-")); // unicode minus sign
+    text.Replace(wxS("\u2052"), wxS("-")); // commercial minus sign
+    text.Replace(wxS("\uFE63"), wxS("-")); // unicode small minus sign
+    text.Replace(wxS("\uFF0D"), wxS("-")); // unicode big minus sign
+    text.Replace(wxS("\uFF0B"), wxS("+")); // unicode big plus
+    text.Replace(wxS("\uFB29"), wxS("+")); // hebrew alternate plus
+    text.Replace(wxS("\u03B1"), wxS("\\ensuremath{\\alpha}"));
+    text.Replace(wxS("\u00B1"), wxS("\\ensuremath{\\pm}"));
+    text.Replace(wxS("\u00B2"), wxS("\\ensuremath{^2}"));
+    text.Replace(wxS("\u00B3"), wxS("\\ensuremath{^3}"));
+    text.Replace(wxS("\u221A"), wxS("\\ensuremath{\\sqrt{}}"));
+    text.Replace(wxS("\u2148"), wxS("\\ensuremath{\\mathbbm{i}}"));
+    text.Replace(wxS("\u2147"), wxS("\\ensuremath{\\mathbbm{e}}"));
+    text.Replace(wxS("\u210f"), wxS("\\ensuremath{\\hbar}"));
+    text.Replace(wxS("\u2203"), wxS("\\ensuremath{\\exists}"));
+    text.Replace(wxS("\u2204"), wxS("\\ensuremath{\\nexists}"));
+    text.Replace(wxS("\u2208"), wxS("\\ensuremath{\\in}"));
+    text.Replace(wxS("\u21D2"), wxS("\\ensuremath{\\Longrightarrow}"));
+    text.Replace(wxS("\u221e"), wxS("\\ensuremath{\\infty}"));
+    text.Replace(wxS("\u22C0"), wxS("\\ensuremath{\\wedge}"));
+    text.Replace(wxS("\u22C1"), wxS("\\ensuremath{\\vee}"));
+    text.Replace(wxS("\u22bb"), wxS("\\ensuremath{\\oplus}"));
+    text.Replace(wxS("\u22BC"), wxS("\\ensuremath{\\overline{\\wedge}}"));
+    text.Replace(wxS("\u22BB"), wxS("\\ensuremath{\\overline{\\vee}}"));
+    text.Replace(wxS("\u00AC"), wxS("\\ensuremath{\\setminus}"));
+    text.Replace(wxS("\u22C3"), wxS("\\ensuremath{\\cup}"));
+    text.Replace(wxS("\u22C2"), wxS("\\ensuremath{\\cap}"));
+    text.Replace(wxS("\u2286"), wxS("\\ensuremath{\\subseteq}"));
+    text.Replace(wxS("\u2282"), wxS("\\ensuremath{\\subset}"));
+    text.Replace(wxS("\u2288"), wxS("\\ensuremath{\\not\\subseteq}"));
+    text.Replace(wxS("\u0127"), wxS("\\ensuremath{\\hbar}"));
+    text.Replace(wxS("\u0126"), wxS("\\ensuremath{\\Hbar}"));
+    text.Replace(wxS("\u2205"), wxS("\\ensuremath{\\emptyset}"));
+    text.Replace(wxS("\u00BD"), wxS("\\ensuremath{\\frac{1}{2}}"));
+    text.Replace(wxS("\u03B2"), wxS("\\ensuremath{\\beta}"));
+    text.Replace(wxS("\u03B3"), wxS("\\ensuremath{\\gamma}"));
+    text.Replace(wxS("\u03B4"), wxS("\\ensuremath{\\delta}"));
+    text.Replace(wxS("\u03B5"), wxS("\\ensuremath{\\epsilon}"));
+    text.Replace(wxS("\u03B6"), wxS("\\ensuremath{\\zeta}"));
+    text.Replace(wxS("\u03B7"), wxS("\\ensuremath{\\eta}"));
+    text.Replace(wxS("\u03B8"), wxS("\\ensuremath{\\theta}"));
+    text.Replace(wxS("\u03B9"), wxS("\\ensuremath{\\iota}"));
+    text.Replace(wxS("\u03BA"), wxS("\\ensuremath{\\kappa}"));
+    text.Replace(wxS("\u03BB"), wxS("\\ensuremath{\\lambda}"));
+    text.Replace(wxS("\u03BC"), wxS("\\ensuremath{\\mu}"));
+    text.Replace(wxS("\u03BD"), wxS("\\ensuremath{\\nu}"));
+    text.Replace(wxS("\u03BE"), wxS("\\ensuremath{\\xi}"));
+    text.Replace(wxS("\u03BF"), wxS("o"));
+    text.Replace(wxS("\u03C0"), wxS("\\ensuremath{\\pi}"));
+    text.Replace(wxS("\u03C1"), wxS("\\ensuremath{\\rho}"));
+    text.Replace(wxS("\u03C3"), wxS("\\ensuremath{\\sigma}"));
+    text.Replace(wxS("\u03C4"), wxS("\\ensuremath{\\tau}"));
+    text.Replace(wxS("\u03C5"), wxS("\\ensuremath{\\upsilon}"));
+    text.Replace(wxS("\u03C6"), wxS("\\ensuremath{\\phi}"));
+    text.Replace(wxS("\u03C7"), wxS("\\ensuremath{\\chi}"));
+    text.Replace(wxS("\u03C8"), wxS("\\ensuremath{\\psi}"));
+    text.Replace(wxS("\u03C9"), wxS("\\ensuremath{\\omega}"));
+    text.Replace(wxS("\u0391"), wxS("A"));
+    text.Replace(wxS("\u0392"), wxS("B"));
+    text.Replace(wxS("\u0393"), wxS("\\ensuremath{\\Gamma}"));
+    text.Replace(wxS("\u0394"), wxS("\\ensuremath{\\Delta}"));
+    text.Replace(wxS("\u0395"), wxS("E"));
+    text.Replace(wxS("\u0396"), wxS("Z"));
+    text.Replace(wxS("\u0397"), wxS("H"));
+    text.Replace(wxS("\u0398"), wxS("\\ensuremath{\\Theta}"));
+    text.Replace(wxS("\u0399"), wxS("I"));
+    text.Replace(wxS("\u039A"), wxS("K"));
+    text.Replace(wxS("\u039B"), wxS("\\ensuremath{\\Lambda}"));
+    text.Replace(wxS("\u039C"), wxS("M"));
+    text.Replace(wxS("\u039D"), wxS("N"));
+    text.Replace(wxS("\u039E"), wxS("\\ensuremath{\\Xi}"));
+    text.Replace(wxS("\u039F"), wxS("O"));
+    text.Replace(wxS("\u03A0"), wxS("\\ensuremath{\\Pi}"));
+    text.Replace(wxS("\u03A1"), wxS("P"));
+    text.Replace(wxS("\u03A3"), wxS("\\ensuremath{\\Sigma}"));
+    text.Replace(wxS("\u03A4"), wxS("T"));
+    text.Replace(wxS("\u03A5"), wxS("\\ensuremath{\\Upsilon}"));
+    text.Replace(wxS("\u03A6"), wxS("\\ensuremath{\\Phi}"));
+    text.Replace(wxS("\u03A7"), wxS("X"));
+    text.Replace(wxS("\u03A8"), wxS("\\ensuremath{\\Psi}"));
+    text.Replace(wxS("\u03A9"), wxS("\\ensuremath{\\Omega}"));
+    text.Replace(wxS("\u2202"), wxS("\\ensuremath{\\partial}"));
+    text.Replace(wxS("\u222b"), wxS("\\ensuremath{\\int}"));
+    text.Replace(wxS("\u2245"), wxS("\\ensuremath{\\approx}"));
+    text.Replace(wxS("\u221d"), wxS("\\ensuremath{\\propto}"));
+    text.Replace(wxS("\u2260"), wxS("\\ensuremath{\\neq}"));
+    text.Replace(wxS("\u2264"), wxS("\\ensuremath{\\leq}"));
+    text.Replace(wxS("\u2265"), wxS("\\ensuremath{\\geq}"));
+    text.Replace(wxS("\u226A"), wxS("\\ensuremath{\\ll}"));
+    text.Replace(wxS("\u226B"), wxS("\\ensuremath{\\gg}"));
+    text.Replace(wxS("\u220e"), wxS("\\ensuremath{\\blacksquare}"));
+    text.Replace(wxS("\u2263"), wxS("\\ensuremath{\\equiv}"));
+    text.Replace(wxS("\u2211"), wxS("\\ensuremath{\\sum}"));
+    text.Replace(wxS("\u220F"), wxS("\\ensuremath{\\prod}"));
+    text.Replace(wxS("\u2225"), wxS("\\ensuremath{\\parallel}"));
+    text.Replace(wxS("\u27C2"), wxS("\\ensuremath{\\bot}"));
+    text.Replace(wxS("~"), wxS("\\ensuremath{\\sim }"));
+    text.Replace(wxS("_"), wxS("\\_"));
+    text.Replace(wxS("$"), wxS("\\$"));
+    text.Replace(wxS("%"), wxS("\\%"));
+    text.Replace(wxS("&"), wxS("\\&"));
+    text.Replace(wxS("@"), wxS("\\ensuremath{@}"));
+    text.Replace(wxS("#"), wxS("\\ensuremath{\\neq}"));
+    text.Replace(wxS("\u00A0"), wxS("~")); // A non-breakable space
+    text.Replace(wxS("<"), wxS("\\ensuremath{<}"));
+    text.Replace(wxS(">"), wxS("\\ensuremath{>}"));
+    text.Replace(wxS("\u219D"), wxS("\\ensuremath{\\leadsto}"));
+    text.Replace(wxS("\u2192"), wxS("\\ensuremath{\\rightarrow}"));
+    text.Replace(wxS("\u27F6"), wxS("\\ensuremath{\\longrightarrow}"));
     // Now we might want to introduce some markdown:
     MarkDownTeX MarkDown(m_configuration);
     if (m_type != MC_TYPE_INPUT)
       text = MarkDown.MarkDown(text);
     else {
-      text.Replace(wxT("\n"), wxT("\\\\\n"));
-      text.Replace(wxT(" "), wxT("\\ "));
+      text.Replace(wxS("\n"), wxS("\\\\\n"));
+      text.Replace(wxS(" "), wxS("\\ "));
     }
   } else {
     text = text.Mid(5, text.Length());
@@ -467,48 +467,48 @@ wxString EditorCell::ToTeX() const {
 wxString EditorCell::ToXML() const {
   wxString xmlstring = m_text;
   // convert it, so that the XML parser doesn't fail
-  xmlstring.Replace(wxT("&"), wxT("&amp;"));
-  xmlstring.Replace(wxT("<"), wxT("&lt;"));
-  xmlstring.Replace(wxT(">"), wxT("&gt;"));
-  xmlstring.Replace(wxT("'"), wxT("&apos;"));
-  xmlstring.Replace(wxT("\""), wxT("&quot;"));
-  xmlstring.Replace(wxT("\n"), wxT("</line>\n<line>"));
-  xmlstring.Replace(wxT("\r"), wxT(" "));
-  xmlstring = wxT("<line>") + xmlstring + wxT("</line>\n");
-  wxString head = wxT("<editor");
+  xmlstring.Replace(wxS("&"), wxS("&amp;"));
+  xmlstring.Replace(wxS("<"), wxS("&lt;"));
+  xmlstring.Replace(wxS(">"), wxS("&gt;"));
+  xmlstring.Replace(wxS("'"), wxS("&apos;"));
+  xmlstring.Replace(wxS("\""), wxS("&quot;"));
+  xmlstring.Replace(wxS("\n"), wxS("</line>\n<line>"));
+  xmlstring.Replace(wxS("\r"), wxS(" "));
+  xmlstring = wxS("<line>") + xmlstring + wxS("</line>\n");
+  wxString head = wxS("<editor");
   switch (m_type) {
   case MC_TYPE_TEXT:
-    head += wxT(" type=\"text\"");
+    head += wxS(" type=\"text\"");
     break;
   case MC_TYPE_TITLE:
-    head += wxT(" type=\"title\" sectioning_level=\"1\"");
+    head += wxS(" type=\"title\" sectioning_level=\"1\"");
     break;
   case MC_TYPE_SECTION:
-    head += wxT(" type=\"section\" sectioning_level=\"2\"");
+    head += wxS(" type=\"section\" sectioning_level=\"2\"");
     break;
   case MC_TYPE_SUBSECTION:
-    head += wxT(" type=\"subsection\" sectioning_level=\"3\"");
+    head += wxS(" type=\"subsection\" sectioning_level=\"3\"");
     break;
   case MC_TYPE_SUBSUBSECTION:
     // We save subsubsections as subsections with a higher sectioning level:
     // This makes them backwards-compatible in the way that they are displayed
     // as subsections on old wxMaxima installations.
-    head += wxT(" type=\"subsection\" sectioning_level=\"4\"");
+    head += wxS(" type=\"subsection\" sectioning_level=\"4\"");
     break;
   case MC_TYPE_HEADING5:
-    head += wxT(" type=\"subsection\" sectioning_level=\"5\"");
+    head += wxS(" type=\"subsection\" sectioning_level=\"5\"");
     break;
   case MC_TYPE_HEADING6:
-    head += wxT(" type=\"subsection\" sectioning_level=\"6\"");
+    head += wxS(" type=\"subsection\" sectioning_level=\"6\"");
     break;
   case MC_TYPE_INPUT:
   default:
-    head += wxT(" type=\"input\"");
+    head += wxS(" type=\"input\"");
     break;
   }
-  head += wxT(">\n");
+  head += wxS(">\n");
 
-  return head + xmlstring + wxT("</editor>\n");
+  return head + xmlstring + wxS("</editor>\n");
 }
 
 void EditorCell::ConvertNumToUNicodeChar() {
@@ -566,7 +566,7 @@ void EditorCell::Recalculate(AFontSize fontsize) {
   // Measure the text height using characters that might extend below or above
   // the region ordinary characters move in.
   int charWidth;
-  dc->GetTextExtent(wxT("äXÄgy"), &charWidth, &m_charHeight);
+  dc->GetTextExtent(wxS("äXÄgy"), &charWidth, &m_charHeight);
 
   // We want a little bit of vertical space between two text lines (and between
   // two labels).
@@ -576,8 +576,8 @@ void EditorCell::Recalculate(AFontSize fontsize) {
   m_numberOfLines = 1;
 
   for (const auto &textSnippet : m_styledText) {
-    if ((textSnippet.GetText().StartsWith(wxT('\n')) ||
-         (textSnippet.GetText().StartsWith(wxT('\r'))))) {
+    if ((textSnippet.GetText().StartsWith(wxS('\n')) ||
+         (textSnippet.GetText().StartsWith(wxS('\r'))))) {
       m_numberOfLines++;
       linewidth = textSnippet.GetIndentPixels();
     } else {
@@ -624,33 +624,33 @@ wxString EditorCell::ToHTML() const {
         switch (textSnippet.GetTextStyle()) {
         case TS_CODE_COMMENT:
           retval +=
-	    wxT("<span class=\"code_comment\">") + text + wxT("</span>");
+	    wxS("<span class=\"code_comment\">") + text + wxS("</span>");
           break;
         case TS_CODE_VARIABLE:
           retval +=
-	    wxT("<span class=\"code_variable\">") + text + wxT("</span>");
+	    wxS("<span class=\"code_variable\">") + text + wxS("</span>");
           break;
         case TS_CODE_FUNCTION:
           retval +=
-	    wxT("<span class=\"code_function\">") + text + wxT("</span>");
+	    wxS("<span class=\"code_function\">") + text + wxS("</span>");
           break;
         case TS_CODE_NUMBER:
-          retval += wxT("<span class=\"code_number\">") + text + wxT("</span>");
+          retval += wxS("<span class=\"code_number\">") + text + wxS("</span>");
           break;
         case TS_CODE_STRING:
-          retval += wxT("<span class=\"code_string\">") + text + wxT("</span>");
+          retval += wxS("<span class=\"code_string\">") + text + wxS("</span>");
           break;
         case TS_CODE_OPERATOR:
           retval +=
-	    wxT("<span class=\"code_operator\">") + text + wxT("</span>");
+	    wxS("<span class=\"code_operator\">") + text + wxS("</span>");
           break;
         case TS_CODE_LISP:
-          retval += wxT("<span class=\"code_lisp\">") + text + wxT("</span>");
+          retval += wxS("<span class=\"code_lisp\">") + text + wxS("</span>");
           break;
         case TS_CODE_ENDOFLINE:
         default:
           retval +=
-	    wxT("<span class=\"code_endofline\">") + text + wxT("</span>");
+	    wxS("<span class=\"code_endofline\">") + text + wxS("</span>");
           break;
         }
       } else
@@ -759,7 +759,7 @@ void EditorCell::Draw(wxPoint point) {
     if (m_cellPointers->m_selectionString != wxEmptyString) {
       long start = 0;
       wxString text(m_text);
-      text.Replace(wxT('\r'), wxT(' '));
+      text.Replace(wxS('\r'), wxS(' '));
       while ((start = text.find(m_cellPointers->m_selectionString, start)) !=
              wxNOT_FOUND) {
         long end = start + m_cellPointers->m_selectionString.Length();
@@ -831,8 +831,8 @@ void EditorCell::Draw(wxPoint point) {
       int width, height;
 
       // A newline is a separate token.
-      if ((TextToDraw == wxT("\n")) || (TextToDraw == wxT("\r"))) {
-        if ((TextToDraw == wxT("\n")))
+      if ((TextToDraw == wxS("\n")) || (TextToDraw == wxS("\r"))) {
+        if ((TextToDraw == wxS("\n")))
           lastIndent = textSnippet.GetIndentPixels();
 
         // A newline =>
@@ -963,7 +963,7 @@ wxString EditorCell::GetCurrentCommand() {
   wxString possibleCommand;
   wxString::const_iterator it = lineTillCursor.begin();
   while (it != lineTillCursor.end()) {
-    if (wxIsalpha(*it) || (*it == wxT('_')) || (*it == wxT('\\'))) {
+    if (wxIsalpha(*it) || (*it == wxS('_')) || (*it == wxS('\\'))) {
       if (*it == '\\') {
         possibleCommand += *it;
         ++it;
@@ -973,7 +973,7 @@ wxString EditorCell::GetCurrentCommand() {
         ++it;
       }
       while ((it != lineTillCursor.end()) &&
-             ((wxIsalnum(*it) || (*it == wxT('_')) || (*it == wxT('\\'))))) {
+             ((wxIsalnum(*it) || (*it == wxS('_')) || (*it == wxS('\\'))))) {
         if (*it == '\\') {
           possibleCommand += *it;
           ++it;
@@ -990,10 +990,10 @@ wxString EditorCell::GetCurrentCommand() {
       case '\n':
       case '\r':
         while ((it != lineTillCursor.end()) &&
-               ((*it == wxT(' ')) || (*it == wxT('\t')) || (*it == wxT('\n')) ||
-                (*it == wxT('\r'))))
+               ((*it == wxS(' ')) || (*it == wxS('\t')) || (*it == wxS('\n')) ||
+                (*it == wxS('\r'))))
           ++it;
-        if ((it != lineTillCursor.end()) && (*it == wxT('('))) {
+        if ((it != lineTillCursor.end()) && (*it == wxS('('))) {
           command = possibleCommand;
           possibleCommand = wxEmptyString;
           ++it;
@@ -1028,30 +1028,30 @@ wxString EditorCell::TabExpand(const wxString &input_, long posInLine) {
   // Convert the text to our line endings.
   wxString input =
     input_; // TODO the state machine below can be changed instead
-  input.Replace(wxT("\r\n"), wxT("\n"));
+  input.Replace(wxS("\r\n"), wxS("\n"));
 
   wxString::const_iterator ch = input.begin();
   while (ch < input.end()) {
-    if ((*ch == wxT('\n'))) {
+    if ((*ch == wxS('\n'))) {
       posInLine = 0;
       retval += *ch;
       ++ch;
       continue;
     }
 
-    if (*ch == wxT('\t')) {
+    if (*ch == wxS('\t')) {
       switch (posInLine - (posInLine / 4) * 4) {
       case 0:
-        retval += wxT("    ");
+        retval += wxS("    ");
         break;
       case 1:
-        retval += wxT("   ");
+        retval += wxS("   ");
         break;
       case 2:
-        retval += wxT("  ");
+        retval += wxS("  ");
         break;
       case 3:
-        retval += wxT(" ");
+        retval += wxS(" ");
         break;
       }
       posInLine = 0;
@@ -1078,11 +1078,11 @@ size_t EditorCell::BeginningOfLine(long pos) const {
   if (pos < 0)
     pos = 0;
   while (pos > 0) {
-    if ((m_text[pos] == wxT('\n')) || (m_text[pos] == wxT('\r')))
+    if ((m_text[pos] == wxS('\n')) || (m_text[pos] == wxS('\r')))
       break;
     pos--;
   }
-  if ((m_text[pos] == wxT('\n')) || (m_text[pos] == wxT('\r')))
+  if ((m_text[pos] == wxS('\n')) || (m_text[pos] == wxS('\r')))
     pos++;
   return pos;
 }
@@ -1090,8 +1090,8 @@ size_t EditorCell::BeginningOfLine(long pos) const {
 size_t EditorCell::EndOfLine(long pos) {
   if (pos < 0)
     pos = 0;
-  while (pos < (long)m_text.length() && m_text[pos] != wxT('\n') &&
-         m_text[pos] != wxT('\r'))
+  while (pos < (long)m_text.length() && m_text[pos] != wxS('\n') &&
+         m_text[pos] != wxS('\r'))
     pos++;
   return pos;
 }
@@ -1188,36 +1188,36 @@ int EditorCell::GetIndentDepth(wxString text, int positionOfCaret) {
   long pos = 0;
   while ((pos < positionOfCaret) && (it < m_text.end())) {
     wxChar ch = *it;
-    if (ch == wxT('\\')) {
+    if (ch == wxS('\\')) {
       ++pos;
       ++it;
       continue;
     }
 
-    if (ch == wxT('\"')) {
+    if (ch == wxS('\"')) {
       ++pos;
       ++it;
       while ((it < m_text.end()) && (pos < positionOfCaret) &&
-             (*it != wxT('\"'))) {
+             (*it != wxS('\"'))) {
         ++pos;
         ++it;
       }
     }
 
-    if ((ch == wxT('(')) || (ch == wxT('[')) || (ch == wxT('{'))) {
+    if ((ch == wxS('(')) || (ch == wxS('[')) || (ch == wxS('{'))) {
       if (indentChars.empty())
         indentChars.push_back(4);
       else
         indentChars.push_back(indentChars.back() + 4);
     }
 
-    if ((ch == wxT(')')) || (ch == wxT(']')) || (ch == wxT('}'))) {
+    if ((ch == wxS(')')) || (ch == wxS(']')) || (ch == wxS('}'))) {
       if (!indentChars.empty())
         indentChars.pop_back();
     }
 
     // A comma removes all extra indentation from a "do" or an "if".
-    if (ch == wxT(',')) {
+    if (ch == wxS(',')) {
       // Discard any extra indentation from a "then" or a "do" from the last
       // item of indentChars.
       if (!indentChars.empty()) {
@@ -1232,7 +1232,7 @@ int EditorCell::GetIndentDepth(wxString text, int positionOfCaret) {
     }
 
     // A semicolon or a dollar sign restarts indentation completely.
-    if ((ch == wxT(';')) || (ch == wxT('$'))) {
+    if ((ch == wxS(';')) || (ch == wxS('$'))) {
       // Discard any indentation data
       while (!indentChars.empty())
         indentChars.pop_back();
@@ -1254,7 +1254,7 @@ int EditorCell::GetIndentDepth(wxString text, int positionOfCaret) {
           rest += wxString(*it2);
       }
       // Handle a "do"
-      if (rest.StartsWith(wxT("do")) &&
+      if (rest.StartsWith(wxS("do")) &&
           ((rest.Length() < 3) || (!wxIsalnum(rest[2])))) {
         int lst = 0;
         if (!indentChars.empty()) {
@@ -1265,7 +1265,7 @@ int EditorCell::GetIndentDepth(wxString text, int positionOfCaret) {
       }
 
       // Handle a "if"
-      if (rest.StartsWith(wxT("if")) &&
+      if (rest.StartsWith(wxS("if")) &&
           ((rest.Length() < 3) || (!wxIsalnum(rest[2])))) {
         int lst = 0;
         if (!indentChars.empty()) {
@@ -1283,9 +1283,9 @@ int EditorCell::GetIndentDepth(wxString text, int positionOfCaret) {
   }
 
   if (it < m_text.end()) {
-    if ((text[positionOfCaret] == wxT(')')) ||
-        (text[positionOfCaret] == wxT(']')) ||
-        (text[positionOfCaret] == wxT('}'))) {
+    if ((text[positionOfCaret] == wxS(')')) ||
+        (text[positionOfCaret] == wxS(']')) ||
+        (text[positionOfCaret] == wxS('}'))) {
       if (!indentChars.empty())
         indentChars.pop_back();
     }
@@ -1309,8 +1309,8 @@ int EditorCell::GetIndentDepth(wxString text, int positionOfCaret) {
 
   rightOfCursor.Trim();
   rightOfCursor.Trim(false);
-  if (((rightOfCursor.StartsWith(wxT("else"))) ||
-       (rightOfCursor.StartsWith(wxT("then")))) &&
+  if (((rightOfCursor.StartsWith(wxS("else"))) ||
+       (rightOfCursor.StartsWith(wxS("then")))) &&
       (rightOfCursor.Length() > 4) && (!(wxIsalnum(rightOfCursor[4]))))
     retval -= 4;
 
@@ -1344,11 +1344,11 @@ void EditorCell::ProcessNewline(bool keepCursorAtStartOfLine) {
     // we move it to its end if this makes sense.
     if (autoIndent) {
       int i = BeginningOfLine(m_positionOfCaret);
-      while ((i < m_positionOfCaret) && (m_text[i] == wxT(' ')))
+      while ((i < m_positionOfCaret) && (m_text[i] == wxS(' ')))
         ++i;
       if (i == m_positionOfCaret)
         while ((m_positionOfCaret < (long)m_text.Length() - 1) &&
-               (m_text[m_positionOfCaret] == wxT(' ')))
+               (m_text[m_positionOfCaret] == wxS(' ')))
           ++m_positionOfCaret;
     }
 
@@ -1358,7 +1358,7 @@ void EditorCell::ProcessNewline(bool keepCursorAtStartOfLine) {
     wxString indentString;
     if (autoIndent && (indentChars > 0))
       for (int i = 0; i < indentChars; i++)
-        indentString += wxT(" ");
+        indentString += wxS(" ");
 
     wxString newLines = m_text.SubString(m_positionOfCaret, m_text.Length());
     if (autoIndent) {
@@ -1373,7 +1373,7 @@ void EditorCell::ProcessNewline(bool keepCursorAtStartOfLine) {
         newLines_noleadingSpaces += *it;
       newLines = newLines_noleadingSpaces;
     }
-    m_text = m_text.SubString(0, m_positionOfCaret - 1) + wxT("\n") +
+    m_text = m_text.SubString(0, m_positionOfCaret - 1) + wxS("\n") +
       indentString + newLines;
     m_positionOfCaret++;
     if ((indentChars > 0) && (autoIndent)) {
@@ -1430,11 +1430,11 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent &event) {
 
       while ((m_positionOfCaret > 0) &&
              (wxIsalnum(m_text[m_positionOfCaret - 1]) ||
-              m_text[m_positionOfCaret - 1] == wxT('_') ||
+              m_text[m_positionOfCaret - 1] == wxS('_') ||
               ((m_positionOfCaret > 1) &&
-               (m_text[m_positionOfCaret - 2] == wxT('\\'))))) {
+               (m_text[m_positionOfCaret - 2] == wxS('\\'))))) {
         if ((m_positionOfCaret > 1) &&
-            (m_text[m_positionOfCaret - 2] == wxT('\\')))
+            (m_text[m_positionOfCaret - 2] == wxS('\\')))
           m_positionOfCaret--;
         m_positionOfCaret--;
       }
@@ -1478,9 +1478,9 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent &event) {
 
       while ((m_positionOfCaret < (long)m_text.Length()) &&
              (wxIsalnum(m_text[m_positionOfCaret]) ||
-              m_text[m_positionOfCaret] == wxT('_') ||
-              m_text[m_positionOfCaret] == wxT('\\'))) {
-        if (m_text[m_positionOfCaret] == wxT('\\'))
+              m_text[m_positionOfCaret] == wxS('_') ||
+              m_text[m_positionOfCaret] == wxS('\\'))) {
+        if (m_text[m_positionOfCaret] == wxS('\\'))
           m_positionOfCaret++;
         if (m_positionOfCaret < (long)m_text.Length())
           m_positionOfCaret++;
@@ -1795,7 +1795,7 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent &event) {
           m_isDirty = true;
 
           if (m_text.SubString(0, m_positionOfCaret - 1).Right(4) ==
-              wxT("    ")) {
+              wxS("    ")) {
             m_text = m_text.SubString(0, m_positionOfCaret - 5) +
 	      m_text.SubString(m_positionOfCaret, m_text.Length());
             m_positionOfCaret -= 4;
@@ -1863,15 +1863,15 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent &event) {
 
           long start = wxMin(m_selectionStart, m_selectionEnd);
           long end = wxMax(m_selectionStart, m_selectionEnd);
-          long newLineIndex = wxMin(m_text.find(wxT('\n'), start),
-                                    m_text.find(wxT('\r'), start));
+          long newLineIndex = wxMin(m_text.find(wxS('\n'), start),
+                                    m_text.find(wxS('\r'), start));
 
           if (((newLineIndex != wxNOT_FOUND) && (newLineIndex < end)) ||
               (m_text.SubString(newLineIndex, start).Trim() == wxEmptyString)) {
             start = BeginningOfLine(start);
             long pos = start;
 
-            if ((m_text[end] == wxT('\n')))
+            if ((m_text[end] == wxS('\n')))
               end++;
 
             if (end > (long)m_text.Length())
@@ -1880,23 +1880,23 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent &event) {
             while (pos < end) {
               if (event.ShiftDown()) {
                 for (int i = 0; i < 4; i++)
-                  if (m_text[pos] == wxT(' ')) {
+                  if (m_text[pos] == wxS(' ')) {
                     m_text = m_text.SubString(0, pos - 1) +
 		      m_text.SubString(pos + 1, m_text.Length());
                     if (end > 0)
                       end--;
                   }
               } else {
-                m_text = m_text.SubString(0, pos - 1) + wxT("    ") +
+                m_text = m_text.SubString(0, pos - 1) + wxS("    ") +
 		  m_text.SubString(pos, m_text.Length());
                 end += 4;
                 pos += 4;
               }
-              while ((pos < end) && (m_text[pos] != wxT('\n')) &&
-                     (m_text[pos] != wxT('\r')))
+              while ((pos < end) && (m_text[pos] != wxS('\n')) &&
+                     (m_text[pos] != wxS('\r')))
                 pos++;
               if ((pos < end) &&
-                  ((m_text[pos] == wxT('\n')) || (m_text[pos] == wxT('\r'))))
+                  ((m_text[pos] == wxS('\n')) || (m_text[pos] == wxS('\r'))))
                 pos++;
             }
             SetSelection(start, end);
@@ -1916,7 +1916,7 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent &event) {
             wxString ins;
             do {
               col++;
-              ins += wxT(" ");
+              ins += wxS(" ");
             } while (col % 4 != 0);
 
             m_text = m_text.SubString(0, m_positionOfCaret - 1) + ins +
@@ -1925,13 +1925,13 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent &event) {
           } else {
             // Selection active and Shift+Tab
             long start = BeginningOfLine(m_positionOfCaret);
-            if (m_text.SubString(start, start + 3) == wxT("    ")) {
+            if (m_text.SubString(start, start + 3) == wxS("    ")) {
               m_text = m_text.SubString(0, start - 1) +
 		m_text.SubString(start + 4, m_text.Length());
               if (m_positionOfCaret > start) {
                 m_positionOfCaret = start;
                 while ((m_positionOfCaret < (long)m_text.Length()) &&
-                       (m_text[m_positionOfCaret] == wxT(' ')))
+                       (m_text[m_positionOfCaret] == wxS(' ')))
                   m_positionOfCaret++;
               }
             }
@@ -2001,50 +2001,50 @@ bool EditorCell::HandleOrdinaryKey(wxKeyEvent &event) {
 
     switch (keyCode) {
     case '(':
-      m_text = m_text.SubString(0, start - 1) + wxT("(") +
-	m_text.SubString(start, end - 1) + wxT(")") +
+      m_text = m_text.SubString(0, start - 1) + wxS("(") +
+	m_text.SubString(start, end - 1) + wxS(")") +
 	m_text.SubString(end, m_text.Length());
       m_positionOfCaret = start;
       insertLetter = false;
       break;
     case '\"':
-      m_text = m_text.SubString(0, start - 1) + wxT("\"") +
-	m_text.SubString(start, end - 1) + wxT("\"") +
+      m_text = m_text.SubString(0, start - 1) + wxS("\"") +
+	m_text.SubString(start, end - 1) + wxS("\"") +
 	m_text.SubString(end, m_text.Length());
       m_positionOfCaret = start;
       insertLetter = false;
       break;
     case '{':
-      m_text = m_text.SubString(0, start - 1) + wxT("{") +
-	m_text.SubString(start, end - 1) + wxT("}") +
+      m_text = m_text.SubString(0, start - 1) + wxS("{") +
+	m_text.SubString(start, end - 1) + wxS("}") +
 	m_text.SubString(end, m_text.Length());
       m_positionOfCaret = start;
       insertLetter = false;
       break;
     case '[':
-      m_text = m_text.SubString(0, start - 1) + wxT("[") +
-	m_text.SubString(start, end - 1) + wxT("]") +
+      m_text = m_text.SubString(0, start - 1) + wxS("[") +
+	m_text.SubString(start, end - 1) + wxS("]") +
 	m_text.SubString(end, m_text.Length());
       m_positionOfCaret = start;
       insertLetter = false;
       break;
     case ')':
-      m_text = m_text.SubString(0, start - 1) + wxT("(") +
-	m_text.SubString(start, end - 1) + wxT(")") +
+      m_text = m_text.SubString(0, start - 1) + wxS("(") +
+	m_text.SubString(start, end - 1) + wxS(")") +
 	m_text.SubString(end, m_text.Length());
       m_positionOfCaret = end + 2;
       insertLetter = false;
       break;
     case '}':
-      m_text = m_text.SubString(0, start - 1) + wxT("{") +
-	m_text.SubString(start, end - 1) + wxT("}") +
+      m_text = m_text.SubString(0, start - 1) + wxS("{") +
+	m_text.SubString(start, end - 1) + wxS("}") +
 	m_text.SubString(end, m_text.Length());
       m_positionOfCaret = end + 2;
       insertLetter = false;
       break;
     case ']':
-      m_text = m_text.SubString(0, start - 1) + wxT("[") +
-	m_text.SubString(start, end - 1) + wxT("]") +
+      m_text = m_text.SubString(0, start - 1) + wxS("[") +
+	m_text.SubString(start, end - 1) + wxS("]") +
 	m_text.SubString(end, m_text.Length());
       m_positionOfCaret = end + 2;
       insertLetter = false;
@@ -2066,7 +2066,7 @@ bool EditorCell::HandleOrdinaryKey(wxKeyEvent &event) {
     chr = event.GetUnicodeKey();
 
     if (event.ShiftDown())
-      chr.Replace(wxT(" "), wxT("\u00a0"));
+      chr.Replace(wxS(" "), wxS("\u00a0"));
 
     m_text = m_text.SubString(0, m_positionOfCaret - 1) + chr +
       m_text.SubString(m_positionOfCaret, m_text.Length());
@@ -2076,15 +2076,15 @@ bool EditorCell::HandleOrdinaryKey(wxKeyEvent &event) {
     if (m_configuration->GetMatchParens()) {
       switch (keyCode) {
       case '(':
-        m_text = m_text.SubString(0, m_positionOfCaret - 1) + wxT(")") +
+        m_text = m_text.SubString(0, m_positionOfCaret - 1) + wxS(")") +
 	  m_text.SubString(m_positionOfCaret, m_text.Length());
         break;
       case '[':
-        m_text = m_text.SubString(0, m_positionOfCaret - 1) + wxT("]") +
+        m_text = m_text.SubString(0, m_positionOfCaret - 1) + wxS("]") +
 	  m_text.SubString(m_positionOfCaret, m_text.Length());
         break;
       case '{':
-        m_text = m_text.SubString(0, m_positionOfCaret - 1) + wxT("}") +
+        m_text = m_text.SubString(0, m_positionOfCaret - 1) + wxS("}") +
 	  m_text.SubString(m_positionOfCaret, m_text.Length());
         break;
       case '"':
@@ -2093,7 +2093,7 @@ bool EditorCell::HandleOrdinaryKey(wxKeyEvent &event) {
           m_text = m_text.SubString(0, m_positionOfCaret - 2) +
 	    m_text.SubString(m_positionOfCaret, m_text.Length());
         else
-          m_text = m_text.SubString(0, m_positionOfCaret - 1) + wxT("\"") +
+          m_text = m_text.SubString(0, m_positionOfCaret - 1) + wxS("\"") +
 	    m_text.SubString(m_positionOfCaret, m_text.Length());
         break;
       case ')': // jump over ')'
@@ -2125,7 +2125,7 @@ bool EditorCell::HandleOrdinaryKey(wxKeyEvent &event) {
         if (m_configuration->GetInsertAns()) {
           // Insert an "%" before an operator that begins this cell
           if (len == 1 && m_positionOfCaret == 1) {
-            m_text = m_text.SubString(0, m_positionOfCaret - 2) + wxT("%") +
+            m_text = m_text.SubString(0, m_positionOfCaret - 2) + wxS("%") +
 	      m_text.SubString(m_positionOfCaret - 1, m_text.Length());
             m_positionOfCaret += 1;
           }
@@ -2134,7 +2134,7 @@ bool EditorCell::HandleOrdinaryKey(wxKeyEvent &event) {
           // sign we remove the "%" again as the unability to begin a code cell
           // with a comment in the obvious way tends to surprise users.
           if ((len == 3) && (m_positionOfCaret == 3) &&
-              (m_text.StartsWith(wxT("%/*")))) {
+              (m_text.StartsWith(wxS("%/*")))) {
             m_text = m_text.SubString(m_positionOfCaret - 2, m_text.Length());
             m_positionOfCaret -= 1;
           }
@@ -2164,8 +2164,8 @@ bool EditorCell::FindMatchingQuotes() {
 
   long pos = 0;
   for (auto const &tok : m_tokens) {
-    if ((tok.GetText().StartsWith(wxT("\""))) &&
-        (tok.GetText().EndsWith(wxT("\"")))) {
+    if ((tok.GetText().StartsWith(wxS("\""))) &&
+        (tok.GetText().EndsWith(wxS("\"")))) {
       size_t tokenEnd = pos + tok.GetText().Length() - 1;
       if ((m_positionOfCaret >= 0) &&
           (((unsigned)m_positionOfCaret == tokenEnd) ||
@@ -2188,24 +2188,24 @@ void EditorCell::FindMatchingParens() {
     return;
 
   wxChar charUnderCursor = m_text.GetChar(m_positionOfCaret);
-  if (charUnderCursor == wxT('\"')) {
+  if (charUnderCursor == wxS('\"')) {
     FindMatchingQuotes();
     return;
   }
-  if ((charUnderCursor == wxT('(')) || (charUnderCursor == wxT('[')) ||
-      (charUnderCursor == wxT('{'))) {
+  if ((charUnderCursor == wxS('(')) || (charUnderCursor == wxS('[')) ||
+      (charUnderCursor == wxS('{'))) {
     int parenLevel = 0;
     long pos = 0;
     for (auto const &tok : m_tokens) {
       if (pos >= m_positionOfCaret) {
-        if ((tok.GetText().StartsWith(wxT("("))) ||
-            (tok.GetText().StartsWith(wxT("["))) ||
-            (tok.GetText().StartsWith(wxT("{"))))
+        if ((tok.GetText().StartsWith(wxS("("))) ||
+            (tok.GetText().StartsWith(wxS("["))) ||
+            (tok.GetText().StartsWith(wxS("{"))))
           parenLevel++;
         else {
-          if ((tok.GetText().StartsWith(wxT(")"))) ||
-              (tok.GetText().StartsWith(wxT("]"))) ||
-              (tok.GetText().StartsWith(wxT("}")))) {
+          if ((tok.GetText().StartsWith(wxS(")"))) ||
+              (tok.GetText().StartsWith(wxS("]"))) ||
+              (tok.GetText().StartsWith(wxS("}")))) {
             parenLevel--;
             if (parenLevel == 0) {
               m_paren1 = m_positionOfCaret;
@@ -2219,16 +2219,16 @@ void EditorCell::FindMatchingParens() {
     }
     return;
   }
-  if ((charUnderCursor == wxT(')')) || (charUnderCursor == wxT(']')) ||
-      (charUnderCursor == wxT(']'))) {
+  if ((charUnderCursor == wxS(')')) || (charUnderCursor == wxS(']')) ||
+      (charUnderCursor == wxS(']'))) {
     int parenLevel = 0;
     long pos = m_text.Length() - 1;
     auto const tokens = MaximaTokenizer(m_text, m_configuration).PopTokens();
     for (auto tok = tokens.rbegin(); tok != tokens.rend(); ++tok) {
       if (pos <= m_positionOfCaret) {
-        if ((tok->GetText().StartsWith(wxT("("))) ||
-            (tok->GetText().StartsWith(wxT("["))) ||
-            (tok->GetText().StartsWith(wxT("{")))) {
+        if ((tok->GetText().StartsWith(wxS("("))) ||
+            (tok->GetText().StartsWith(wxS("["))) ||
+            (tok->GetText().StartsWith(wxS("{")))) {
           parenLevel--;
           if (parenLevel == 0) {
             m_paren1 = pos;
@@ -2236,9 +2236,9 @@ void EditorCell::FindMatchingParens() {
             return;
           }
         } else {
-          if ((tok->GetText().StartsWith(wxT(")"))) ||
-              (tok->GetText().StartsWith(wxT("]"))) ||
-              (tok->GetText().StartsWith(wxT("}")))) {
+          if ((tok->GetText().StartsWith(wxS(")"))) ||
+              (tok->GetText().StartsWith(wxS("]"))) ||
+              (tok->GetText().StartsWith(wxS("}")))) {
             parenLevel++;
           }
         }
@@ -2257,7 +2257,7 @@ wxString EditorCell::InterpretEscapeString(const wxString &txt) const {
   if (txt.ToLong(&unicodeval, 16)) {
     if (unicodeval > 32)
       return wxUniChar(unicodeval);
-    return wxT(" ");
+    return wxS(" ");
   }
   return {};
 }
@@ -2323,7 +2323,7 @@ bool EditorCell::AddEnding() {
   }
 
   if (endingNeeded) {
-    m_text += wxT(";");
+    m_text += wxS(";");
     m_paren1 = m_paren2 = m_width = -1;
     StyleText();
     return true;
@@ -2444,7 +2444,7 @@ void EditorCell::SelectPointText(const wxPoint point) {
       int firstCharWidth;
       firstCharWidth = GetTextSize(txt.Left(1)).GetWidth();
 
-      if ((txt == wxT("\n")) || (txt == wxT("\r")))
+      if ((txt == wxS("\n")) || (txt == wxS("\r")))
         break;
 
       wxCoord w = GetTextSize(txt).GetWidth();
@@ -2466,7 +2466,7 @@ void EditorCell::SelectPointText(const wxPoint point) {
     lastwidth = -lastwidth;
 
     // Now determine which char inside this text snippet the cursor is at
-    if ((snippet != wxT("\r")) && (snippet != wxT("\n"))) {
+    if ((snippet != wxS("\r")) && (snippet != wxS("\n"))) {
       for (unsigned int i = 0; i < snippet.Length(); i++) {
         int width = GetTextSize(snippet.Left(i)).GetWidth();
         if (xpos + width + (width - lastwidth) / 2 < posInCell.x)
@@ -2590,12 +2590,12 @@ wxString EditorCell::DivideAtCaret() {
     // Search for the end of whitespace at the end of the new cell
     size_t whiteSpaceEnd = newText.Length() - 1;
     while ((whiteSpaceEnd < newText.Length()) &&
-           ((newText[whiteSpaceEnd] == wxT(' ')) ||
-            (newText[whiteSpaceEnd] == wxT('\t'))))
+           ((newText[whiteSpaceEnd] == wxS(' ')) ||
+            (newText[whiteSpaceEnd] == wxS('\t'))))
       whiteSpaceEnd++;
 
-    if ((newText[whiteSpaceEnd] == wxT('\n')) ||
-        (newText[whiteSpaceEnd] == wxT('\r')))
+    if ((newText[whiteSpaceEnd] == wxS('\n')) ||
+        (newText[whiteSpaceEnd] == wxS('\r')))
       newText = newText.SubString(0, whiteSpaceEnd - 1);
   }
 
@@ -2607,12 +2607,12 @@ wxString EditorCell::DivideAtCaret() {
     // Search for the end of whitespace at the beginning of the new cell
     size_t whiteSpaceEnd = 0;
     while ((whiteSpaceEnd < retval.Length()) &&
-           ((retval[whiteSpaceEnd] == wxT(' ')) ||
-            (retval[whiteSpaceEnd] == wxT('\t'))))
+           ((retval[whiteSpaceEnd] == wxS(' ')) ||
+            (retval[whiteSpaceEnd] == wxS('\t'))))
       whiteSpaceEnd++;
 
-    if ((retval[whiteSpaceEnd] == wxT('\n')) ||
-        (retval[whiteSpaceEnd] == wxT('\r')))
+    if ((retval[whiteSpaceEnd] == wxS('\n')) ||
+        (retval[whiteSpaceEnd] == wxS('\r')))
       retval = retval.SubString(whiteSpaceEnd + 1, retval.Length());
     m_containsChanges = true;
   }
@@ -2632,7 +2632,7 @@ void EditorCell::SetSelection(int start, int end) {
       m_cellPointers->m_selectionString =
 	m_text.SubString(wxMin(m_selectionStart, m_selectionEnd),
 			 wxMax(m_selectionStart, m_selectionEnd) - 1);
-    m_cellPointers->m_selectionString.Replace(wxT('\r'), wxT(' '));
+    m_cellPointers->m_selectionString.Replace(wxS('\r'), wxS(' '));
   }
 }
 
@@ -2641,8 +2641,8 @@ void EditorCell::CommentSelection() {
     return;
   m_containsChanges = true;
   m_isDirty = true;
-  SetValue(m_text.SubString(0, m_selectionStart - 1) + wxT("/*") +
-           m_text.SubString(m_selectionStart, m_selectionEnd - 1) + wxT("*/") +
+  SetValue(m_text.SubString(0, m_selectionStart - 1) + wxS("/*") +
+           m_text.SubString(m_selectionStart, m_selectionEnd - 1) + wxS("*/") +
            m_text.SubString(m_selectionEnd, m_text.Length()));
   m_positionOfCaret = wxMin(m_selectionEnd + 4, (signed long)m_text.Length());
   ClearSelection();
@@ -2727,7 +2727,7 @@ wxString EditorCell::SelectWordUnderCaret(bool WXUNUSED(selectParens),
   if (pos > 0 && start != pos)
     return m_cellPointers->m_selectionString;
   else
-    return wxT("%");
+    return wxS("%");
 }
 
 bool EditorCell::CopyToClipboard() const {
@@ -2743,7 +2743,7 @@ bool EditorCell::CopyToClipboard() const {
   // Copying non-breakable spaces in code to external applications is likely to
   // cause problems
   if (GetType() == MC_TYPE_INPUT)
-    s.Replace(wxT("\u00a0"), wxT(" "));
+    s.Replace(wxS("\u00a0"), wxS(" "));
   if (!s.IsEmpty() && (wxTheClipboard->Open())) {
     if (!wxTheClipboard->SetData(new wxTextDataObject(s))) {
       wxLogMessage(_("Cannot put the copied text on the clipboard (1st try)"));
@@ -2805,8 +2805,8 @@ void EditorCell::InsertText(wxString text) {
   if (GetType() == MC_TYPE_INPUT)
     FindMatchingParens();
 
-  m_text.Replace(wxT("\u2028"), "\n");
-  m_text.Replace(wxT("\u2029"), "\n");
+  m_text.Replace(wxS("\u2028"), "\n");
+  m_text.Replace(wxS("\u2029"), "\n");
 
   //  m_width = m_height = m_center = -1;
   //  InvalidateMaxDrop();
@@ -2975,7 +2975,7 @@ void EditorCell::HandleSoftLineBreaks_Code(
 
   // If this token contains spaces and is followed by a space we will do the
   // line break in the next token.
-  if ((charInCell + 1 < text.Length()) && (token.StartsWith(wxT(" "))) &&
+  if ((charInCell + 1 < text.Length()) && (token.StartsWith(wxS(" "))) &&
       (text[charInCell + 1] == ' '))
     return;
 
@@ -3015,9 +3015,9 @@ void EditorCell::StyleTextCode() {
 
   // Handle folding of EditorCells
   if (m_firstLineOnly) {
-    long newlinepos = textToStyle.Find(wxT("\n"));
+    long newlinepos = textToStyle.Find(wxS("\n"));
     if (newlinepos != wxNOT_FOUND) {
-      int lines = textToStyle.Freq(wxT('\n'));
+      int lines = textToStyle.Freq(wxS('\n'));
       textToStyle = textToStyle.Left(newlinepos);
       if (lines > 1)
         suppressedLinesInfo = 
@@ -3043,7 +3043,7 @@ void EditorCell::StyleTextCode() {
     wxChar Ch = tokenString[0];
 
     // Handle Spaces
-    if (Ch == wxT(' ')) {
+    if (Ch == wxS(' ')) {
       // All spaces except the last one (that could cause a line break)
       // share the same token
       if (tokenString.Length() > 1)
@@ -3053,7 +3053,7 @@ void EditorCell::StyleTextCode() {
       // Now we push the last space to the list of tokens and remember this
       // space as the space that potentially serves as the next point to
       // introduce a soft line break.
-      m_styledText.push_back(StyledText(wxT(" ")));
+      m_styledText.push_back(StyledText(wxS(" ")));
       if (!m_styledText.empty()) {
         lastSpace = &m_styledText.back();
         lastSpacePos = pos + tokenString.Length() - 1;
@@ -3097,7 +3097,7 @@ void EditorCell::StyleTextCode() {
 void EditorCell::StyleTextTexts() {
   // Remove all bullets of item lists as we will introduce them again in the
   // next step, as well.
-  m_text.Replace(wxT("\u2022"), wxT("*"));
+  m_text.Replace(wxS("\u2022"), wxS("*"));
 
   // Insert new soft line breaks where we hit the right border of the worksheet,
   // if this has been requested in the config dialogue
@@ -3139,7 +3139,7 @@ void EditorCell::StyleTextTexts() {
             // Do we need to introduce a soft line break?
             if (width + indent >= m_configuration->GetLineWidth()) {
               // We need a line break in front of the last space
-              m_text[lastSpacePos] = wxT('\r');
+              m_text[lastSpacePos] = wxS('\r');
               line = m_text.SubString(lastLineStart, lastSpacePos - 1);
               i = lastSpacePos;
               it = lastSpaceIt;
@@ -3184,7 +3184,7 @@ void EditorCell::StyleTextTexts() {
               // can break the line at?
               if (lastSpacePos > 0) {
                 // Introduce a soft line break
-                m_text[lastSpacePos] = wxT('\r');
+                m_text[lastSpacePos] = wxS('\r');
                 line = m_text.SubString(lastLineStart, lastSpacePos - 1);
                 i = lastSpacePos + 1;
                 it = lastSpaceIt;
@@ -3193,8 +3193,8 @@ void EditorCell::StyleTextTexts() {
                 lastSpacePos = 0;
                 break;
               } else {
-                if (*it == wxT(' ')) {
-                  m_text[i] = wxT('\r');
+                if (*it == wxS(' ')) {
+                  m_text[i] = wxS('\r');
                   line = m_text.SubString(lastLineStart, i - 1);
                   lastLineStart = i + 1;
                   lastSpacePos = 0;
@@ -3214,7 +3214,7 @@ void EditorCell::StyleTextTexts() {
 
         // Go to the next character if we actually had a string in front of this
         // newline.
-        if ((i > 0) || (*it != wxT('\n'))) {
+        if ((i > 0) || (*it != wxS('\n'))) {
           ++it;
           ++i;
         }
@@ -3228,7 +3228,7 @@ void EditorCell::StyleTextTexts() {
       if (m_firstLineOnly) {
         m_styledText.push_back(
 			       StyledText(line + wxString::Format(_(" ... + %i hidden lines"),
-								  m_text.Freq(wxT('\n')))));
+								  m_text.Freq(wxS('\n')))));
         break;
       }
 
@@ -3240,10 +3240,10 @@ void EditorCell::StyleTextTexts() {
         // Let's see if the line begins with a "begin indenting" marker:
         wxString line_trimmed(line);
         line_trimmed.Trim(false);
-        if ((line_trimmed.StartsWith(wxT("* "))) ||
-            (line_trimmed.StartsWith(wxT("\u2022 "))) ||
-            (line_trimmed.StartsWith(wxT("\u00B7 "))) ||
-            (line_trimmed.StartsWith(wxT("> ")))) {
+        if ((line_trimmed.StartsWith(wxS("* "))) ||
+            (line_trimmed.StartsWith(wxS("\u2022 "))) ||
+            (line_trimmed.StartsWith(wxS("\u00B7 "))) ||
+            (line_trimmed.StartsWith(wxS("> ")))) {
           // An "begin indenting" marker
 
           // Remember what a line that is part of this indentation level has to
@@ -3256,18 +3256,18 @@ void EditorCell::StyleTextTexts() {
           w = GetTextSize(indentChar).GetWidth();
 
           // Every line of a Quote begins with a ">":
-          if (!line_trimmed.StartsWith(wxT("> ")))
+          if (!line_trimmed.StartsWith(wxS("> ")))
             indentChar = wxEmptyString;
 
           // Equip bullet lists with real bullets
-          if (line_trimmed.StartsWith(wxT("* ")))
-            line[line.find("*")] = wxT('\u2022');
-          if (line_trimmed.StartsWith(wxT("\u00B7 ")))
-            line[line.find("\u00B7")] = wxT('\u2022');
+          if (line_trimmed.StartsWith(wxS("* ")))
+            line[line.find("*")] = wxS('\u2022');
+          if (line_trimmed.StartsWith(wxS("\u00B7 ")))
+            line[line.find("\u00B7")] = wxS('\u2022');
 
           // Remember what a continuation for this indenting object would begin
           // with
-          prefixes.push_back(wxT("  ") +
+          prefixes.push_back(wxS("  ") +
                              line.Left(line.Length() - line_trimmed.Length()));
           indentPixels.push_back(w);
         } else {
@@ -3294,7 +3294,7 @@ void EditorCell::StyleTextTexts() {
 
       // Equip the last soft linebreak with indentation.
       if (m_styledText.size() > 0) {
-        if (m_styledText.back().GetText() == wxT("\r"))
+        if (m_styledText.back().GetText() == wxS("\r"))
           m_styledText.back().SetIndentation(indent);
       }
       // Store the indented line in the list of styled text snippets
@@ -3303,38 +3303,38 @@ void EditorCell::StyleTextTexts() {
       if (it < m_text.end()) {
         // If the cell doesn't end with the last char of this line we have to
         // add a line ending to the list of styled text snippets
-        if ((i + 1 < m_text.Length()) || (m_text[i] == wxT('\n'))) {
+        if ((i + 1 < m_text.Length()) || (m_text[i] == wxS('\n'))) {
           // Store the line ending in the list of styled text snippets
-          if (*it == wxT('\n'))
-            m_styledText.push_back(StyledText(wxT("\n"), 0, indentChar));
+          if (*it == wxS('\n'))
+            m_styledText.push_back(StyledText(wxS("\n"), 0, indentChar));
           else
-            m_styledText.push_back(StyledText(wxT("\r"), 0, indentChar));
+            m_styledText.push_back(StyledText(wxS("\r"), 0, indentChar));
         }
       }
 
       // Is this a real new line of comment - or did we insert a soft linebreak?
-      newLine = ((i + 1 >= m_text.Length()) || (*it == wxT('\n')));
+      newLine = ((i + 1 >= m_text.Length()) || (*it == wxS('\n')));
 
       ++i;
       ++it;
     } // The loop that loops over all lines
   }   // Do we want to autowrap lines?
   else {
-    m_text.Replace(wxT("\r"), wxT("\n"));
-    wxStringTokenizer lines(m_text, wxT("\n"), wxTOKEN_RET_EMPTY_ALL);
+    m_text.Replace(wxS("\r"), wxS("\n"));
+    wxStringTokenizer lines(m_text, wxS("\n"), wxTOKEN_RET_EMPTY_ALL);
     while (lines.HasMoreTokens()) {
       wxString line = lines.GetNextToken();
       if (m_firstLineOnly) {
         m_styledText.push_back(
 			       StyledText(line + wxString::Format(_(" ... + %i hidden lines"),
-								  m_text.Freq(wxT('\n'))),
+								  m_text.Freq(wxS('\n'))),
 					  0, wxEmptyString));
         break;
       }
 
       m_styledText.push_back(StyledText(line, 0, wxEmptyString));
       if ((lines.HasMoreTokens()))
-        m_styledText.push_back(StyledText(wxT("\n"), 0, wxEmptyString));
+        m_styledText.push_back(StyledText(wxS("\n"), 0, wxEmptyString));
     }
   }
 } // Style text, not code?
@@ -3372,7 +3372,7 @@ void EditorCell::StyleText() {
 
   // Remove all soft line breaks. They will be re-added in the right places
   // in the next step
-  m_text.Replace(wxT("\r"), wxT(" "));
+  m_text.Replace(wxS("\r"), wxS(" "));
   // Do we need to style code or text?
   if (m_type == MC_TYPE_INPUT)
     StyleTextCode();
@@ -3384,17 +3384,17 @@ void EditorCell::StyleText() {
 void EditorCell::SetValue(const wxString &text) {
   if (m_type == MC_TYPE_INPUT) {
     if (m_configuration->GetMatchParens()) {
-      if (text == wxT("(")) {
-        m_text = wxT("()");
+      if (text == wxS("(")) {
+        m_text = wxS("()");
         m_positionOfCaret = 1;
-      } else if (text == wxT("[")) {
-        m_text = wxT("[]");
+      } else if (text == wxS("[")) {
+        m_text = wxS("[]");
         m_positionOfCaret = 1;
-      } else if (text == wxT("{")) {
-        m_text = wxT("{}");
+      } else if (text == wxS("{")) {
+        m_text = wxS("{}");
         m_positionOfCaret = 1;
-      } else if (text == wxT("\"")) {
-        m_text = wxT("\"\"");
+      } else if (text == wxS("\"")) {
+        m_text = wxS("\"\"");
         m_positionOfCaret = 1;
       } else {
         m_text = text;
@@ -3406,9 +3406,9 @@ void EditorCell::SetValue(const wxString &text) {
     }
 
     if (m_configuration->GetInsertAns()) {
-      if (m_text == wxT("+") || m_text == wxT("*") || m_text == wxT("/") ||
-          m_text == wxT("^") || m_text == wxT("=") || m_text == wxT(",")) {
-        m_text = wxT("%") + m_text;
+      if (m_text == wxS("+") || m_text == wxS("*") || m_text == wxS("/") ||
+          m_text == wxS("^") || m_text == wxS("=") || m_text == wxS(",")) {
+        m_text = wxS("%") + m_text;
         m_positionOfCaret = m_text.Length();
       }
     }
@@ -3423,8 +3423,8 @@ void EditorCell::SetValue(const wxString &text) {
   FindMatchingParens();
   m_containsChanges = true;
 
-  m_text.Replace(wxT("\u2028"), "\n");
-  m_text.Replace(wxT("\u2029"), "\n");
+  m_text.Replace(wxS("\u2028"), "\n");
+  m_text.Replace(wxS("\u2029"), "\n");
 
   // Style the text.
   StyleText();
@@ -3449,12 +3449,12 @@ int EditorCell::ReplaceAll(wxString oldString, const wxString &newString,
   int count = 0;
   if (!ignoreCase) {
     newText = m_text;
-    newText.Replace(wxT("\r"), wxT(" "));
+    newText.Replace(wxS("\r"), wxS(" "));
     count = newText.Replace(oldString, newString);
   } else {
     int pos;
     wxString src = m_text;
-    src.Replace(wxT("\r"), wxT(" "));
+    src.Replace(wxS("\r"), wxS(" "));
     wxString src_LowerCase = src;
     src_LowerCase.MakeLower();
     oldString.MakeLower();
@@ -3481,8 +3481,8 @@ int EditorCell::ReplaceAll(wxString oldString, const wxString &newString,
   if (m_selectionStart > 0)
     SetSelection(m_selectionStart, m_selectionEnd);
 
-  m_text.Replace(wxT("\u2028"), "\n");
-  m_text.Replace(wxT("\u2029"), "\n");
+  m_text.Replace(wxS("\u2028"), "\n");
+  m_text.Replace(wxS("\u2029"), "\n");
 
   return count;
 }
@@ -3508,7 +3508,7 @@ bool EditorCell::FindNext(wxString str, const bool &down,
 
   // Handle soft line breaks and ignore-case
   wxString text(m_text);
-  text.Replace(wxT('\r'), wxT(' '));
+  text.Replace(wxS('\r'), wxS(' '));
   if (ignoreCase) {
     str.MakeLower();
     text.MakeLower();
@@ -3578,7 +3578,7 @@ bool EditorCell::ReplaceSelection(const wxString &oldStr,
                                   const wxString &newString, bool keepSelected,
                                   bool ignoreCase, bool replaceMaximaString) {
   wxString text(m_text);
-  text.Replace(wxT("\r"), wxT(" "));
+  text.Replace(wxS("\r"), wxS(" "));
 
   long start = wxMin(m_selectionStart, m_selectionEnd);
   long end = wxMax(m_selectionStart, m_selectionEnd);
@@ -3683,9 +3683,9 @@ void EditorCell::ClearSelection() {
 bool EditorCell::FindNextTemplate(bool left) {
   static wxRegEx leftVarsRegex, rightVarsRegex;
   static const bool leftVarsRegexOk =
-    leftVarsRegex.Compile(wxT("(<[^> \n]+>)[^>]*$"));
+    leftVarsRegex.Compile(wxS("(<[^> \n]+>)[^>]*$"));
   static const bool rightVarsRegexOk =
-    rightVarsRegex.Compile(wxT("(<[^> \n]+>)"));
+    rightVarsRegex.Compile(wxS("(<[^> \n]+>)"));
 
   wxASSERT(leftVarsRegexOk);
   wxASSERT(rightVarsRegexOk);
@@ -3812,12 +3812,12 @@ wxAccStatus EditorCell::GetValue(int WXUNUSED(childId),
   // If the blinking caret is currently visible we hide the char under the caret
   if ((m_displayCaret) && (m_positionOfCaret > 0)) {
     if ((unsigned(m_positionOfCaret) < retval.Length())) {
-      if (retval[m_positionOfCaret] == wxT(' '))
-        retval[m_positionOfCaret] = wxT('%');
+      if (retval[m_positionOfCaret] == wxS(' '))
+        retval[m_positionOfCaret] = wxS('%');
       else
-        retval[m_positionOfCaret] = wxT(' ');
+        retval[m_positionOfCaret] = wxS(' ');
     } else
-      retval += wxT("%");
+      retval += wxS("%");
   }
   *strValue = retval;
   return wxACC_OK;

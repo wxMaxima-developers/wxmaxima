@@ -103,17 +103,17 @@ wxString FunCell::ToTeX() const {
 
   wxString s;
 
-  if ((m_nameCell->ToString() == wxT("sin")) ||
-      (m_nameCell->ToString() == wxT("cos")) ||
-      (m_nameCell->ToString() == wxT("cosh")) ||
-      (m_nameCell->ToString() == wxT("sinh")) ||
-      (m_nameCell->ToString() == wxT("log")) ||
-      (m_nameCell->ToString() == wxT("cot")) ||
-      (m_nameCell->ToString() == wxT("sec")) ||
-      (m_nameCell->ToString() == wxT("csc")) ||
-      (m_nameCell->ToString() == wxT("tan")))
-    s = wxT("\\") + m_nameCell->ToString() + wxT("{") + m_argCell->ListToTeX() +
-      wxT("}");
+  if ((m_nameCell->ToString() == wxS("sin")) ||
+      (m_nameCell->ToString() == wxS("cos")) ||
+      (m_nameCell->ToString() == wxS("cosh")) ||
+      (m_nameCell->ToString() == wxS("sinh")) ||
+      (m_nameCell->ToString() == wxS("log")) ||
+      (m_nameCell->ToString() == wxS("cot")) ||
+      (m_nameCell->ToString() == wxS("sec")) ||
+      (m_nameCell->ToString() == wxS("csc")) ||
+      (m_nameCell->ToString() == wxS("tan")))
+    s = wxS("\\") + m_nameCell->ToString() + wxS("{") + m_argCell->ListToTeX() +
+      wxS("}");
   else
     s = m_nameCell->ListToTeX() + m_argCell->ListToTeX();
 
@@ -125,16 +125,16 @@ wxString FunCell::ToXML() const {
   //    return wxEmptyString;
   wxString flags;
   if (HasHardLineBreak())
-    flags += wxT(" breakline=\"true\"");
-  return wxT("<fn") + flags + wxT("><r>") + m_nameCell->ListToXML() +
-    wxT("</r>") + m_argCell->ListToXML() + wxT("</fn>");
+    flags += wxS(" breakline=\"true\"");
+  return wxS("<fn") + flags + wxS("><r>") + m_nameCell->ListToXML() +
+    wxS("</r>") + m_argCell->ListToXML() + wxS("</fn>");
 }
 
 wxString FunCell::ToMathML() const {
   //  if (IsBrokenIntoLines())
   //    return wxEmptyString;
-  return wxT("<mrow>") + m_nameCell->ListToMathML() + wxT("<mo>&#x2061;</mo>") +
-    m_argCell->ListToMathML() + wxT("</mrow>\n");
+  return wxS("<mrow>") + m_nameCell->ListToMathML() + wxS("<mo>&#x2061;</mo>") +
+    m_argCell->ListToMathML() + wxS("</mrow>\n");
 }
 
 wxString FunCell::ToOMML() const {

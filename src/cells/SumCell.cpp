@@ -70,13 +70,13 @@ void SumCell::MakeBreakUpCells() {
     : (m_sumStyle == SM_SUM && !overStringEmpty)
     ? S_("sum(")
     :
-    /* (m_sumstyle == SM_PROD) */ S_("prod(");
+    /* (m_sumstyle == SM_PROD) */ wxS("prod(");
 
-  m_comma1 = std::make_unique<TextCell>(m_group, m_configuration, wxT(","));
-  m_comma2 = std::make_unique<TextCell>(m_group, m_configuration, wxT(","));
-  m_comma3 = std::make_unique<TextCell>(m_group, m_configuration, wxT(","));
+  m_comma1 = std::make_unique<TextCell>(m_group, m_configuration, wxS(","));
+  m_comma2 = std::make_unique<TextCell>(m_group, m_configuration, wxS(","));
+  m_comma3 = std::make_unique<TextCell>(m_group, m_configuration, wxS(","));
   m_open = std::make_unique<TextCell>(m_group, m_configuration, openText);
-  m_close = std::make_unique<TextCell>(m_group, m_configuration, wxT(")"));
+  m_close = std::make_unique<TextCell>(m_group, m_configuration, wxS(")"));
 }
 
 ParenCell *SumCell::Paren() const {
@@ -106,7 +106,7 @@ std::unique_ptr<Cell> SumCell::MakeStart(Cell *under) const {
       newStart = start.CopyList(GetGroup());
       break;
     }
-    prevFound = (value == wxT("in")) || (value == wxT("="));
+    prevFound = (value == wxS("in")) || (value == wxS("="));
   }
 
   return newStart ? std::move(newStart)
@@ -208,15 +208,15 @@ wxString SumCell::ToString() const {
 
   wxString s;
   if (m_sumStyle == SM_SUM)
-    s = wxT("sum(");
+    s = wxS("sum(");
   else
-    s = wxT("product(");
+    s = wxS("product(");
 
   if (m_over->ListToString() == wxEmptyString) {
     if (m_sumStyle == SM_PROD)
-      s = wxT("lprod(");
+      s = wxS("lprod(");
     else
-      s = wxT("lsum(");
+      s = wxS("lsum(");
   }
 
   s += Base()->ListToString();
@@ -231,20 +231,20 @@ wxString SumCell::ToString() const {
       from = tmp->ListToString();
   }
   wxString to = m_over->ListToString();
-  s += wxT(",") + var + wxT(",") + from;
+  s += wxS(",") + var + wxS(",") + from;
   if (to != wxEmptyString)
-    s += wxT(",") + to + wxT(")");
+    s += wxS(",") + to + wxS(")");
   else
-    s = wxT("l") + s + wxT(")");
+    s = wxS("l") + s + wxS(")");
   return s;
 }
 
 wxString SumCell::ToMatlab() const {
   wxString s;
   if (m_sumStyle == SM_SUM)
-    s = wxT("sum(");
+    s = wxS("sum(");
   else
-    s = wxT("product(");
+    s = wxS("product(");
   s += Base()->ListToMatlab();
 
   Cell *tmp = m_under.get();
@@ -257,29 +257,29 @@ wxString SumCell::ToMatlab() const {
       from = tmp->ListToMatlab();
   }
   wxString to = m_over->ListToMatlab();
-  s += wxT(",") + var + wxT(",") + from;
+  s += wxS(",") + var + wxS(",") + from;
   if (to != wxEmptyString)
-    s += wxT(",") + to + wxT(")");
+    s += wxS(",") + to + wxS(")");
   else
-    s = wxT("l") + s + wxT(")");
+    s = wxS("l") + s + wxS(")");
   return s;
 }
 
 wxString SumCell::ToTeX() const {
   wxString s;
   if (m_sumStyle == SM_SUM)
-    s = wxT("\\sum");
+    s = wxS("\\sum");
   else
-    s = wxT("\\prod");
+    s = wxS("\\prod");
 
-  s += wxT("_{") + m_under->ListToTeX() + wxT("}");
+  s += wxS("_{") + m_under->ListToTeX() + wxS("}");
   wxString to = m_over->ListToTeX();
   if (to.Length())
-    s += wxT("^{") + to + wxT("}");
+    s += wxS("^{") + to + wxS("}");
 
-  s += wxT("{\\left. ");
+  s += wxS("{\\left. ");
   s += Base()->ListToTeX();
-  s += wxT("\\right.}");
+  s += wxS("\\right.}");
   return s;
 }
 
@@ -290,39 +290,39 @@ wxString SumCell::ToOMML() const {
 
   wxString retval;
 
-  retval = wxT("<m:nary><m:naryPr><m:chr>");
+  retval = wxS("<m:nary><m:naryPr><m:chr>");
   if (m_sumStyle == SM_SUM)
-    retval += wxT("\u2211");
+    retval += wxS("\u2211");
   else
-    retval += wxT("\u220F");
+    retval += wxS("\u220F");
 
-  retval += wxT("</m:chr></m:naryPr>");
+  retval += wxS("</m:chr></m:naryPr>");
   if (from != wxEmptyString)
-    retval += wxT("<m:sub>") + from + wxT("</m:sub>");
+    retval += wxS("<m:sub>") + from + wxS("</m:sub>");
   if (to != wxEmptyString)
-    retval += wxT("<m:sup>") + to + wxT("</m:sup>");
-  retval += wxT("<m:e>") + base + wxT("</m:e></m:nary>");
+    retval += wxS("<m:sup>") + to + wxS("</m:sup>");
+  retval += wxS("<m:e>") + base + wxS("</m:e></m:nary>");
 
   return retval;
 }
 
 wxString SumCell::ToXML() const {
-  wxString type(wxT("sum"));
+  wxString type(wxS("sum"));
 
   if (m_sumStyle == SM_PROD)
-    type = wxT("prod");
+    type = wxS("prod");
   if (m_over->ListToString() == wxEmptyString) {
     if (m_sumStyle == SM_PROD)
-      type = wxT("lprod");
+      type = wxS("lprod");
     else
-      type = wxT("lsum");
+      type = wxS("lsum");
   }
 
   wxString flags;
   if (HasHardLineBreak())
-    flags += wxT(" breakline=\"true\"");
+    flags += wxS(" breakline=\"true\"");
 
-  return wxT("<sm type=\"") + type + "\"" + flags + wxT("><r>") +
+  return wxS("<sm type=\"") + type + "\"" + flags + wxS("><r>") +
     m_under->ListToXML() + _T("</r><r>") + m_over->ListToXML() +
     _T("</r><r>") + Base()->ListToXML() + _T("</r></sm>");
 }
@@ -342,29 +342,29 @@ wxString SumCell::ToMathML() const {
 
   if (m_sumStyle == SM_SUM) {
     if (from.IsEmpty() && to.IsEmpty())
-      retval = wxT("<mo>&#x2211;</mo>") + base;
+      retval = wxS("<mo>&#x2211;</mo>") + base;
     if (from.IsEmpty() && !to.IsEmpty())
-      retval = wxT("<mover><mo>&#x2211;</mo>") + to + wxT("</mover>") + base;
+      retval = wxS("<mover><mo>&#x2211;</mo>") + to + wxS("</mover>") + base;
     if (!from.IsEmpty() && to.IsEmpty())
       retval =
-	wxT("<munder><mo>&#x2211;</mo>") + from + wxT("</munder>") + base;
+	wxS("<munder><mo>&#x2211;</mo>") + from + wxS("</munder>") + base;
     if (!from.IsEmpty() && !to.IsEmpty())
-      retval = wxT("<munderover><mo>&#x2211;</mo>") + from + to +
-	wxT("</munderover>") + base;
+      retval = wxS("<munderover><mo>&#x2211;</mo>") + from + to +
+	wxS("</munderover>") + base;
   } else {
     // A product
     if (from.IsEmpty() && to.IsEmpty())
-      retval = wxT("<mo>&#x220F;</mo>") + base;
+      retval = wxS("<mo>&#x220F;</mo>") + base;
     if (from.IsEmpty() && !to.IsEmpty())
-      retval = wxT("<mover><mo>&#x220F;</mo>") + to + wxT("</mover>") + base;
+      retval = wxS("<mover><mo>&#x220F;</mo>") + to + wxS("</mover>") + base;
     if (!from.IsEmpty() && to.IsEmpty())
       retval =
-	wxT("<munder><mo>&#x220F;</mo>") + from + wxT("</munder>") + base;
+	wxS("<munder><mo>&#x220F;</mo>") + from + wxS("</munder>") + base;
     if (!from.IsEmpty() && !to.IsEmpty())
-      retval = wxT("<munderover><mo>&#x220F;</mo>") + from + to +
-	wxT("</munderover>") + base;
+      retval = wxS("<munderover><mo>&#x220F;</mo>") + from + to +
+	wxS("</munderover>") + base;
   }
-  return (wxT("<mrow>") + retval + wxT("</mrow>"));
+  return (wxS("<mrow>") + retval + wxS("</mrow>"));
 }
 
 void SumCell::Unbreak() {

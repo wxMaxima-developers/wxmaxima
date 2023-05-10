@@ -81,31 +81,31 @@ bool BTextCtrl::MatchParenthesis(int code) {
   bool skip = true;
   switch (code) {
   case '(':
-    CloseParenthesis(wxT("("), wxT(")"), true);
+    CloseParenthesis(wxS("("), wxS(")"), true);
     skip = false;
     break;
   case ')':
-    CloseParenthesis(wxT("("), wxT(")"), false);
+    CloseParenthesis(wxS("("), wxS(")"), false);
     skip = false;
     break;
   case '[':
-    CloseParenthesis(wxT("["), wxT("]"), true);
+    CloseParenthesis(wxS("["), wxS("]"), true);
     skip = false;
     break;
   case ']':
-    CloseParenthesis(wxT("["), wxT("]"), false);
+    CloseParenthesis(wxS("["), wxS("]"), false);
     skip = false;
     break;
   case '{':
-    CloseParenthesis(wxT("{"), wxT("}"), true);
+    CloseParenthesis(wxS("{"), wxS("}"), true);
     skip = false;
     break;
   case '}':
-    CloseParenthesis(wxT("{"), wxT("}"), false);
+    CloseParenthesis(wxS("{"), wxS("}"), false);
     skip = false;
     break;
   case '"':
-    CloseParenthesis(wxT("\""), wxT("\""), true);
+    CloseParenthesis(wxS("\""), wxS("\""), true);
     skip = false;
     break;
   case WXK_UP:
@@ -126,14 +126,14 @@ void BTextCtrl::CloseParenthesis(wxString open, wxString close, bool fromOpen) {
   if (from == to) // nothing selected
     {
       wxString text = GetValue();
-      wxString charHere = wxT(" "); // text.GetChar((size_t)GetInsertionPoint());
+      wxString charHere = wxS(" "); // text.GetChar((size_t)GetInsertionPoint());
       size_t insp = GetInsertionPoint();
 
       if (!fromOpen && charHere == close)
 	SetInsertionPoint(insp + 1);
       else {
-	wxString newtext = (insp > 0 ? text.SubString(0, insp - 1) : wxT("")) +
-	  (fromOpen ? open : wxT("")) + close +
+	wxString newtext = (insp > 0 ? text.SubString(0, insp - 1) : wxS("")) +
+	  (fromOpen ? open : wxS("")) + close +
 	  text.SubString(insp, text.length());
 
 	ChangeValue(newtext);
@@ -143,7 +143,7 @@ void BTextCtrl::CloseParenthesis(wxString open, wxString close, bool fromOpen) {
     } else {
     wxString text = GetValue();
 
-    wxString newtext = (from > 0 ? text.SubString(0, from - 1) : wxT("")) +
+    wxString newtext = (from > 0 ? text.SubString(0, from - 1) : wxS("")) +
       open + text.SubString(from, to - 1) + close +
       text.SubString(to, text.length());
 

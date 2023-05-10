@@ -40,7 +40,7 @@ void Observed::OnEndOfLife() noexcept {
   } else { // Reset the object in our control block.
     auto *cb = m_ptr.GetControlBlock();
     if (CELLPTR_LOG_REFS)
-      CELLPTR_LOG_METHOD("-- ~Obs=%p cb=%p", this, cb);
+      CELLPTR_LOG_METHOD(wxS("-- ~Obs=%p cb=%p"), this, cb);
     wxASSERT(cb);
     cb->reset();
   }
@@ -48,11 +48,11 @@ void Observed::OnEndOfLife() noexcept {
 
 #if CELLPTR_LOG_REFS
 void Observed::LogRef(const CellPtrBase *cellptr) const {
-  CELLPTR_LOG_METHOD("%p Obs::Ref obj=%p", cellptr, this);
+  CELLPTR_LOG_METHOD(wxS("%p Obs::Ref obj=%p"), cellptr, this);
 }
 
 void Observed::LogDeref(const CellPtrBase *cellptr) const {
-  CELLPTR_LOG_METHOD("%p Obs::Deref obj=%p", cellptr, this);
+  CELLPTR_LOG_METHOD(wxS8"%p Obs::Deref obj=%p"), cellptr, this);
 }
 #endif
 
@@ -124,23 +124,23 @@ decltype(nullptr) CellPtrBase::DerefControlBlock() const noexcept {
 
 #if CELLPTR_LOG_INSTANCES
 void CellPtrBase::LogConstruction(Observed *obj) const {
-  CELLPTR_LOG_METHOD("%p->CellPtr(%p) ptr=%" CELL_PRIXPTR, this, obj,
+  CELLPTR_LOG_METHOD(wxS("%p->CellPtr(%p) ptr=%") CELL_PRIXPTR, this, obj,
                      m_ptr.GetImpl());
 }
 
 void CellPtrBase::LogMove(const CellPtrBase &o) const {
-  CELLPTR_LOG_METHOD("%p->Cellptr(&&%p) ptr=%" CELL_PRIXPTR "<->%" CELL_PRIXPTR,
+  CELLPTR_LOG_METHOD(wxS("%p->Cellptr(&&%p) ptr=%") CELL_PRIXPTR wxS("<->%") CELL_PRIXPTR,
                      this, &o, m_ptr.GetImpl(), o.m_ptr.GetImpl());
 }
 
 void CellPtrBase::LogAssignment(const CellPtrBase &o) const {
-  CELLPTR_LOG_METHOD("%p->CellPtr::operator=(&&%p) ptr=%" CELL_PRIXPTR
-                     "<->%" CELL_PRIXPTR,
+  CELLPTR_LOG_METHOD(wxS("%p->CellPtr::operator=(&&%p) ptr=%") CELL_PRIXPTR
+                     wxS("<->%") CELL_PRIXPTR,
                      this, &o, m_ptr.GetImpl(), o.m_ptr.GetImpl());
 }
 
 void CellPtrBase::LogDestruction() const {
-  CELLPTR_LOG_METHOD("%p->~CellPtr() ptr=%" CELL_PRIXPTR " obj=%p", this,
+  CELLPTR_LOG_METHOD(wxS("%p->~CellPtr() ptr=%") CELL_PRIXPTR wxS(" obj=%p"), this,
                      m_ptr.GetImpl(), base_get());
 }
 #endif
@@ -156,8 +156,8 @@ void CellPtrBase::base_reset(Observed *obj) noexcept {
       Ref(obj);
     auto const curPtr = m_ptr.GetImpl();
     if (CELLPTR_LOG_REFS)
-      CELLPTR_LOG_METHOD("%p->CellPtr::reset(%p->%p) ptr=%08" PRIXPTR
-                         "->%08" PRIXPTR,
+      CELLPTR_LOG_METHOD(wxS("%p->CellPtr::reset(%p->%p) ptr=%08") PRIXPTR
+                         wxS("->%08") PRIXPTR,
                          this, base_get(), obj, prevPtr, curPtr);
   } else {
     // The objects are the same - their control blocks must be the same as well.
@@ -176,21 +176,21 @@ CellPtr<GroupCell>::pointer CellPtr<GroupCell>::get() const noexcept {
 #if CELLPTR_LOG_REFS
 
 void Observed::ControlBlock::LogConstruct(const Observed *p) const {
-  CELLPTR_LOG_METHOD("---------------- CB::CB  cb=%p obj=%p", this, p);
+  CELLPTR_LOG_METHOD(wxS("---------------- CB::CB  cb=%p obj=%p"), this, p);
 }
 
 void Observed::ControlBlock::LogRef(const CellPtrBase *cellptr) const {
-  CELLPTR_LOG_METHOD("%p CB::Ref (%d->%d) cb=%p obj=%p", cellptr, m_refCount,
+  CELLPTR_LOG_METHOD(wxS("%p CB::Ref (%d->%d) cb=%p obj=%p"), cellptr, m_refCount,
                      m_refCount + 1, this, m_object);
 }
 
 void Observed::ControlBlock::LogDeref(const CellPtrBase *cellptr) const {
-  CELLPTR_LOG_METHOD("%p CB::Deref (%d->%d) cb=%p obj=%p", cellptr, m_refCount,
+  CELLPTR_LOG_METHOD(wxS("%p CB::Deref (%d->%d) cb=%p obj=%p"), cellptr, m_refCount,
                      m_refCount - 1, this, m_object);
 }
 
 void Observed::ControlBlock::LogDestruct() const {
-  CELLPTR_LOG_METHOD("---------------- CB::~CB cb=%p", this);
+  CELLPTR_LOG_METHOD(wxS("---------------- CB::~CB cb=%p"), this);
 }
 
 #endif

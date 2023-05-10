@@ -244,18 +244,18 @@ void MatrCell::AddNewCell(std::unique_ptr<Cell> &&cell) {
 wxString MatrCell::ToString() const {
   wxString s = wxT("matrix(\n");
   for (unsigned int i = 0; i < m_matHeight; i++) {
-    s += wxT("\t\t[");
+    s += wxS("\t\t[");
     for (unsigned int j = 0; j < m_matWidth; j++) {
       s += m_cells[i * m_matWidth + j]->ListToString();
       if (j < m_matWidth - 1)
-        s += wxT(",\t");
+        s += wxS(",\t");
     }
-    s += wxT("]");
+    s += wxS("]");
     if (i < m_matHeight - 1)
-      s += wxT(",");
-    s += wxT("\n");
+      s += wxS(",");
+    s += wxS("\n");
   }
-  s += wxT("\t)");
+  s += wxS("\t)");
   return s;
 }
 
@@ -263,18 +263,18 @@ wxString MatrCell::ToMatlab() const {
   // ToDo: We ignore colNames and rowNames here. Are they currently in use?
   wxString s;
 
-  s = wxT("[");
+  s = wxS("[");
   for (unsigned int i = 0; i < m_matHeight; i++) {
     for (unsigned int j = 0; j < m_matWidth; j++) {
       s += m_cells[i * m_matWidth + j]->ListToMatlab();
       if (j < m_matWidth - 1)
-        s += wxT(", ");
+        s += wxS(", ");
     }
     if (i < m_matHeight - 1)
-      s += wxT(";\n");
+      s += wxS(";\n");
   }
 
-  s += wxT("];");
+  s += wxS("];");
 
   return s;
 }
@@ -286,142 +286,142 @@ wxString MatrCell::ToTeX() const {
   if (!m_specialMatrix) {
     switch (m_parenType) {
     case paren_rounded:
-      s = wxT("\\begin{pmatrix}");
+      s = wxS("\\begin{pmatrix}");
       break;
     case paren_brackets:
     case paren_angled:
     case paren_straight:
-      s = wxT("\\begin{bmatrix}");
+      s = wxS("\\begin{bmatrix}");
       break;
     }
   } else {
-    s = wxT("\\begin{array}{");
+    s = wxS("\\begin{array}{");
     for (unsigned int j = 0; j < m_matWidth; j++)
-      s += wxT("c");
-    s += wxT("}");
+      s += wxS("c");
+    s += wxS("}");
   }
   for (unsigned int i = 0; i < m_matHeight; i++) {
     for (unsigned int j = 0; j < m_matWidth; j++) {
       s += m_cells[i * m_matWidth + j]->ListToTeX();
       if (j < m_matWidth - 1)
-        s += wxT(" & ");
+        s += wxS(" & ");
     }
     if (i < m_matHeight - 1)
-      s += wxT("\\\\\n");
+      s += wxS("\\\\\n");
   }
   if (!m_specialMatrix) {
     switch (m_parenType) {
     case paren_rounded:
-      s += wxT("\\end{pmatrix}");
+      s += wxS("\\end{pmatrix}");
       break;
     case paren_brackets:
     case paren_angled:
     case paren_straight:
-      s += wxT("\\end{bmatrix}");
+      s += wxS("\\end{bmatrix}");
       break;
     }
   } else
-    s += wxT("\\end{array}");
+    s += wxS("\\end{array}");
   return s;
 }
 
 wxString MatrCell::ToMathML() const {
   wxString retval;
   if (!m_specialMatrix)
-    retval = wxT("<mrow><mo>(</mo><mrow>");
-  retval += wxT("<mtable>");
+    retval = wxS("<mrow><mo>(</mo><mrow>");
+  retval += wxS("<mtable>");
 
   for (unsigned int i = 0; i < m_matHeight; i++) {
-    retval += wxT("<mtr>");
+    retval += wxS("<mtr>");
     for (unsigned int j = 0; j < m_matWidth; j++)
-      retval += wxT("<mtd>") + m_cells[i * m_matWidth + j]->ListToMathML() +
-	wxT("</mtd>");
-    retval += wxT("</mtr>");
+      retval += wxS("<mtd>") + m_cells[i * m_matWidth + j]->ListToMathML() +
+	wxS("</mtd>");
+    retval += wxS("</mtr>");
   }
-  retval += wxT("</mtable>\n");
+  retval += wxS("</mtable>\n");
   if (!m_specialMatrix)
-    retval += wxT("</mrow><mo>)</mo></mrow>\n");
+    retval += wxS("</mrow><mo>)</mo></mrow>\n");
   return retval;
 }
 
 wxString MatrCell::ToOMML() const {
   wxString retval;
 
-  retval = wxT("<m:d>");
+  retval = wxS("<m:d>");
   if (!m_specialMatrix) {
     switch (m_parenType) {
     case paren_rounded:
-      retval += wxT("<m:dPr><m:begChr>(</m:begChr><m:endChr>)</m:endChr> "
+      retval += wxS("<m:dPr><m:begChr>(</m:begChr><m:endChr>)</m:endChr> "
                     "<m:grow>\"1\"</m:grow></m:dPr>");
       break;
     case paren_brackets:
-      retval += wxT("<m:dPr><m:begChr>[</m:begChr><m:endChr>]</m:endChr> "
+      retval += wxS("<m:dPr><m:begChr>[</m:begChr><m:endChr>]</m:endChr> "
                     "<m:grow>\"1\"</m:grow></m:dPr>");
       break;
     case paren_angled:
-      retval += wxT("<m:dPr><m:begChr>&lt;</m:begChr><m:endChr>&gt;</m:endChr> "
+      retval += wxS("<m:dPr><m:begChr>&lt;</m:begChr><m:endChr>&gt;</m:endChr> "
                     "<m:grow>\"1\"</m:grow></m:dPr>");
       break;
     case paren_straight:
-      retval += wxT("<m:dPr><m:begChr>|</m:begChr><m:endChr>|</m:endChr> "
+      retval += wxS("<m:dPr><m:begChr>|</m:begChr><m:endChr>|</m:endChr> "
                     "<m:grow>\"1\"</m:grow></m:dPr>");
       break;
     }
   }
 
-  retval += wxT("<m:e><m:m>");
+  retval += wxS("<m:e><m:m>");
 
   for (unsigned int i = 0; i < m_matHeight; i++) {
-    retval += wxT("<m:mr>");
+    retval += wxS("<m:mr>");
     for (unsigned int j = 0; j < m_matWidth; j++)
-      retval += wxT("<m:e>") + m_cells[i * m_matWidth + j]->ListToOMML() +
-	wxT("</m:e>");
-    retval += wxT("</m:mr>");
+      retval += wxS("<m:e>") + m_cells[i * m_matWidth + j]->ListToOMML() +
+	wxS("</m:e>");
+    retval += wxS("</m:mr>");
   }
 
-  retval += wxT("</m:m></m:e></m:d>");
+  retval += wxS("</m:m></m:e></m:d>");
   return retval;
 }
 
 wxString MatrCell::ToXML() const {
   wxString flags;
   if (HasHardLineBreak())
-    flags += wxT(" breakline=\"true\"");
+    flags += wxS(" breakline=\"true\"");
   switch (m_parenType) {
   case paren_rounded:
-    flags += wxT(" roundedParens=\"true\"");
+    flags += wxS(" roundedParens=\"true\"");
     break;
   case paren_brackets:
-    flags += wxT(" roundedParens=\"false\"");
-    flags += wxT(" bracketParens=\"true\"");
+    flags += wxS(" roundedParens=\"false\"");
+    flags += wxS(" bracketParens=\"true\"");
     break;
   case paren_angled:
-    flags += wxT(" angledParens=\"true\"");
+    flags += wxS(" angledParens=\"true\"");
     break;
   case paren_straight:
-    flags += wxT(" straightParens=\"true\"");
+    flags += wxS(" straightParens=\"true\"");
     break;
   }
 
   wxString s = wxEmptyString;
   if (m_specialMatrix)
-    s = wxString::Format(wxT("<tb") + flags +
-			 wxT(" special=\"true\" inference=\"%s\" "
+    s = wxString::Format(wxS("<tb") + flags +
+			 wxS(" special=\"true\" inference=\"%s\" "
 			     "rownames=\"%s\" colnames=\"%s\">"),
                          m_inferenceMatrix ? "true" : "false",
                          m_rowNames ? "true" : "false",
                          m_colNames ? "true" : "false");
   else
-    s = wxT("<tb") + flags + wxT(">");
+    s = wxS("<tb") + flags + wxS(">");
 
   for (unsigned int i = 0; i < m_matHeight; i++) {
-    s += wxT("<mtr>");
+    s += wxS("<mtr>");
     for (unsigned int j = 0; j < m_matWidth; j++)
-      s += wxT("<mtd>") + m_cells[i * m_matWidth + j]->ListToXML() +
-	wxT("</mtd>");
-    s += wxT("</mtr>");
+      s += wxS("<mtd>") + m_cells[i * m_matWidth + j]->ListToXML() +
+	wxS("</mtd>");
+    s += wxS("</mtr>");
   }
-  s += wxT("</tb>");
+  s += wxS("</tb>");
 
   return s;
 }

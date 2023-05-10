@@ -55,12 +55,12 @@ DEFINE_CELL(ExptCell)
 void ExptCell::MakeBreakupCells() {
   if (m_open)
     return;
-  m_exp = std::make_unique<TextCell>(m_group, m_configuration, "^");
+  m_exp = std::make_unique<TextCell>(m_group, m_configuration, wxS("^"));
   m_exp->SetStyle(TS_FUNCTION);
-  m_open = std::make_unique<TextCell>(m_group, m_configuration, "(");
+  m_open = std::make_unique<TextCell>(m_group, m_configuration, wxS("("));
   m_open->SetStyle(TS_FUNCTION);
   static_cast<TextCell &>(*m_open).DontEscapeOpeningParenthesis();
-  m_close = std::make_unique<TextCell>(m_group, m_configuration, ")");
+  m_close = std::make_unique<TextCell>(m_group, m_configuration, wxS(")"));
   m_close->SetStyle(TS_FUNCTION);
 
   if (!m_exptCell->IsCompound()) {
@@ -121,11 +121,11 @@ wxString ExptCell::ToString() const {
     return m_altCopyText;
   if (IsBrokenIntoLines())
     return wxEmptyString;
-  wxString s = m_baseCell->ListToString() + wxT("^");
+  wxString s = m_baseCell->ListToString() + wxS("^");
   if (m_isMatrix)
-    s += wxT("^");
+    s += wxS("^");
   if (m_exptCell->IsCompound())
-    s += wxT("(") + m_exptCell->ListToString() + wxT(")");
+    s += wxS("(") + m_exptCell->ListToString() + wxS(")");
   else
     s += m_exptCell->ListToString();
   return s;
@@ -136,11 +136,11 @@ wxString ExptCell::ToMatlab() const {
     return m_altCopyText;
   if (IsBrokenIntoLines())
     return wxEmptyString;
-  wxString s = m_baseCell->ListToMatlab() + wxT("^");
+  wxString s = m_baseCell->ListToMatlab() + wxS("^");
   if (m_isMatrix)
-    s += wxT("^");
+    s += wxS("^");
   if (m_exptCell->IsCompound())
-    s += wxT("(") + m_exptCell->ListToMatlab() + wxT(")");
+    s += wxS("(") + m_exptCell->ListToMatlab() + wxS(")");
   else
     s += m_exptCell->ListToMatlab();
   return s;
@@ -149,32 +149,32 @@ wxString ExptCell::ToMatlab() const {
 wxString ExptCell::ToTeX() const {
   if (IsBrokenIntoLines())
     return wxEmptyString;
-  wxString s = wxT("{{") + m_baseCell->ListToTeX() + wxT("}^{") +
-    m_exptCell->ListToTeX() + wxT("}}");
+  wxString s = wxS("{{") + m_baseCell->ListToTeX() + wxS("}^{") +
+    m_exptCell->ListToTeX() + wxS("}}");
   return s;
 }
 
 wxString ExptCell::GetDiffPart() const {
-  wxString s(wxT(","));
+  wxString s(wxS(","));
   if (m_baseCell != NULL)
     s += m_baseCell->ListToString();
-  s += wxT(",");
+  s += wxS(",");
   if (m_exptCell != NULL)
     s += m_exptCell->ListToString();
   return s;
 }
 
 wxString ExptCell::ToMathML() const {
-  return wxT("<msup>") + m_baseCell->ListToMathML() +
-    m_exptCell->ListToMathML() + wxT("</msup>\n");
-  //  return wxT("<apply><power/>") + m_baseCell->ListToMathML() +
-  //  m_exptCell->ListToMathML() + wxT("</apply>");
+  return wxS("<msup>") + m_baseCell->ListToMathML() +
+    m_exptCell->ListToMathML() + wxS("</msup>\n");
+  //  return wxS("<apply><power/>") + m_baseCell->ListToMathML() +
+  //  m_exptCell->ListToMathML() + wxS("</apply>");
 }
 
 wxString ExptCell::ToOMML() const {
-  return wxT("<m:sSup><m:e>") + m_baseCell->ListToOMML() +
-    wxT("</m:e><m:sup>") + m_exptCell->ListToOMML() +
-    wxT("</m:sup></m:sSup>\n");
+  return wxS("<m:sSup><m:e>") + m_baseCell->ListToOMML() +
+    wxS("</m:e><m:sup>") + m_exptCell->ListToOMML() +
+    wxS("</m:sup></m:sSup>\n");
 }
 
 wxString ExptCell::ToXML() const {
@@ -182,10 +182,10 @@ wxString ExptCell::ToXML() const {
   //    return wxEmptyString;
   wxString flags;
   if (HasHardLineBreak())
-    flags += wxT(" breakline=\"true\"");
+    flags += wxS(" breakline=\"true\"");
 
-  return wxT("<e") + flags + wxT("><r>") + m_baseCell->ListToXML() +
-    _T("</r><r>") + m_exptCell->ListToXML() + _T("</r></e>");
+  return wxS("<e") + flags + wxS("><r>") + m_baseCell->ListToXML() +
+    wxS("</r><r>") + m_exptCell->ListToXML() + wxS("</r></e>");
 }
 
 bool ExptCell::BreakUp() {

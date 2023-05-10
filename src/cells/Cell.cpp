@@ -457,7 +457,7 @@ bool Cell::IsCompound() const {
 
 wxString Cell::ToString() const { return {}; }
 
-static const wxString space = wxT(" ");
+static const wxString space = wxS(" ");
 
 wxString Cell::VariablesAndFunctionsList() const {
   wxString retval;
@@ -477,14 +477,14 @@ wxString Cell::ListToString() const {
 
   for (const Cell &tmp : OnList(this)) {
     if ((!firstline) && (tmp.m_forceBreakLine)) {
-      if (!retval.EndsWith(wxT('\n')))
-        retval += wxT("\n");
+      if (!retval.EndsWith(wxS('\n')))
+        retval += wxS("\n");
       // if(
       //    (tmp.GetTextStyle() != TS_LABEL) &&
       //    (tmp.GetTextStyle() != TS_USERLABEL) &&
       //    (tmp.GetTextStyle() != TS_MAIN_PROMPT) &&
       //    (tmp.GetTextStyle() != TS_OTHER_PROMPT))
-      //   retval += wxT("\t");
+      //   retval += wxS("\t");
     }
     // if(firstline)
     // {
@@ -492,7 +492,7 @@ wxString Cell::ListToString() const {
     //      (tmp.GetTextStyle() != TS_USERLABEL) &&
     //      (tmp.GetTextStyle() != TS_MAIN_PROMPT) &&
     //      (tmp.GetTextStyle() != TS_OTHER_PROMPT))
-    //     retval += wxT("\t");
+    //     retval += wxS("\t");
     // }
     retval += tmp.ToString();
 
@@ -509,14 +509,14 @@ wxString Cell::ListToMatlab() const {
 
   for (const Cell &tmp : OnDrawList(this)) {
     if ((!firstline) && (tmp.m_forceBreakLine)) {
-      if (!retval.EndsWith(wxT('\n')))
-        retval += wxT("\n");
+      if (!retval.EndsWith(wxS('\n')))
+        retval += wxS("\n");
       // if(
       //    (tmp.GetTextStyle() != TS_LABEL) &&
       //    (tmp.GetTextStyle() != TS_USERLABEL) &&
       //    (tmp.GetTextStyle() != TS_MAIN_PROMPT) &&
       //    (tmp.GetTextStyle() != TS_OTHER_PROMPT))
-      //   retval += wxT("\t");
+      //   retval += wxS("\t");
     }
     // if(firstline)
     // {
@@ -524,7 +524,7 @@ wxString Cell::ListToMatlab() const {
     //      (tmp.GetTextStyle() != TS_USERLABEL) &&
     //      (tmp.GetTextStyle() != TS_MAIN_PROMPT) &&
     //      (tmp.GetTextStyle() != TS_OTHER_PROMPT))
-    //     retval += wxT("\t");
+    //     retval += wxS("\t");
     // }
     retval += tmp.ToMatlab();
 
@@ -541,7 +541,7 @@ wxString Cell::ListToTeX() const {
   for (const Cell &tmp : OnList(this)) {
     if (((!retval.IsEmpty()) && (tmp.GetTextStyle() == TS_LABEL)) ||
         (tmp.BreakLineHere()))
-      retval += wxT("\\]\\[");
+      retval += wxS("\\]\\[");
     retval += tmp.ToTeX();
   }
   return retval;
@@ -573,23 +573,23 @@ wxString Cell::ListToMathML(bool startofline) const {
   for (const Cell &tmp : OnList(this)) {
     // Do we need to end a highlighting region?
     if ((!tmp.m_highlight) && (highlight))
-      retval += wxT("</mrow>");
+      retval += wxS("</mrow>");
 
     // Handle linebreaks
     if ((&tmp != this) && (tmp.HasHardLineBreak()))
       retval +=
-	wxT("</mtd></mlabeledtr>\n<mlabeledtr columnalign=\"left\"><mtd>");
+	wxS("</mtd></mlabeledtr>\n<mlabeledtr columnalign=\"left\"><mtd>");
 
     // If a linebreak isn't followed by a label we need to introduce an empty
     // one.
     if ((((tmp.HasHardLineBreak()) || (startofline && (this == &tmp))) &&
          ((tmp.GetTextStyle() != TS_LABEL) && (tmp.GetTextStyle() != TS_USERLABEL))) &&
         (needsTable))
-      retval += wxT("<mtext></mtext></mtd><mtd>");
+      retval += wxS("<mtext></mtext></mtd><mtd>");
 
     // Do we need to start a highlighting region?
     if ((tmp.m_highlight) && (!highlight))
-      retval += wxT("<mrow mathcolor=\"red\">");
+      retval += wxS("<mrow mathcolor=\"red\">");
     highlight = tmp.m_highlight;
 
     retval += tmp.ToMathML();
@@ -598,17 +598,17 @@ wxString Cell::ListToMathML(bool startofline) const {
   // If the region we converted to MathML ended within a highlighted region
   // we need to close this region now.
   if (highlight)
-    retval += wxT("</mrow>");
+    retval += wxS("</mrow>");
 
   // If we grouped multiple cells as a single object we need to cose this group
   // now
   if ((multiCell) && (!needsTable))
-    retval = wxT("<mrow>") + retval + wxT("</mrow>\n");
+    retval = wxS("<mrow>") + retval + wxS("</mrow>\n");
 
   // If we put the region we exported into a table we need to end this table now
   if (needsTable)
-    retval = wxT("<mtable>\n<mlabeledtr columnalign=\"left\"><mtd>") + retval +
-      wxT("</mtd></mlabeledtr>\n</mtable>");
+    retval = wxS("<mtable>\n<mlabeledtr columnalign=\"left\"><mtd>") + retval +
+      wxS("</mtd></mlabeledtr>\n</mtable>");
   return retval;
 }
 
@@ -618,14 +618,14 @@ wxString Cell::OMML2RTF(wxXmlNode *node) {
   while (node != NULL) {
     if (node->GetType() == wxXML_ELEMENT_NODE) {
       wxString ommlname = node->GetName();
-      result += wxT("{\\m") + ommlname.Right(ommlname.Length() - 2);
+      result += wxS("{\\m") + ommlname.Right(ommlname.Length() - 2);
 
       // Convert the attributes
       wxXmlAttribute *attributes = node->GetAttributes();
       while (attributes != NULL) {
         wxString ommlatt = attributes->GetName();
-        result += wxT("{\\m") + ommlatt.Right(ommlatt.Length() - 2) + wxT(" ") +
-	  attributes->GetValue() + wxT("}");
+        result += wxS("{\\m") + ommlatt.Right(ommlatt.Length() - 2) + wxS(" ") +
+	  attributes->GetValue() + wxS("}");
         attributes = attributes->GetNext();
       }
 
@@ -633,9 +633,9 @@ wxString Cell::OMML2RTF(wxXmlNode *node) {
       if (node->GetChildren() != NULL) {
         result += OMML2RTF(node->GetChildren());
       }
-      result += wxT("}");
+      result += wxS("}");
     } else
-      result += wxT(" ") + RTFescape(node->GetContent());
+      result += wxS(" ") + RTFescape(node->GetContent());
 
     node = node->GetNext();
   }
@@ -648,49 +648,49 @@ wxString Cell::OMML2RTF(wxString ommltext) {
 
   wxString result;
   wxXmlDocument ommldoc;
-  ommltext = wxT("<m:r>") + ommltext + wxT("</m:r>");
+  ommltext = wxS("<m:r>") + ommltext + wxS("</m:r>");
 
   wxStringInputStream ommlStream(ommltext);
 
-  ommldoc.Load(ommlStream, wxT("UTF-8"));
+  ommldoc.Load(ommlStream, wxS("UTF-8"));
 
   wxXmlNode *node = ommldoc.GetRoot();
   result += OMML2RTF(node);
 
-  if (!result.empty() && (result != wxT("\\mr"))) {
-    result = wxT("{\\mmath {\\*\\moMath") + result + wxT("}}");
+  if (!result.empty() && (result != wxS("\\mr"))) {
+    result = wxS("{\\mmath {\\*\\moMath") + result + wxS("}}");
   }
   return result;
 }
 
 wxString Cell::XMLescape(wxString input) {
-  input.Replace(wxT("&"), wxT("&amp;"));
-  input.Replace(wxT("<"), wxT("&lt;"));
-  input.Replace(wxT(">"), wxT("&gt;"));
-  input.Replace(wxT("'"), wxT("&apos;"));
-  input.Replace(wxT("\""), wxT("&quot;"));
+  input.Replace(wxS("&"), wxS("&amp;"));
+  input.Replace(wxS("<"), wxS("&lt;"));
+  input.Replace(wxS(">"), wxS("&gt;"));
+  input.Replace(wxS("'"), wxS("&apos;"));
+  input.Replace(wxS("\""), wxS("&quot;"));
   return input;
 }
 
 wxString Cell::RTFescape(wxString input, bool MarkDown) {
   // Characters with a special meaning in RTF
-  input.Replace("\\", "\\\\");
-  input.Replace("{", "\\{");
-  input.Replace("}", "\\}");
-  input.Replace(wxT("\r"), "\n");
+  input.Replace(wxS("\\"), wxS("\\\\"));
+  input.Replace(wxS("{"), wxS("\\{"));
+  input.Replace(wxS("}"), wxS("\\}"));
+  input.Replace(wxS("\r"), wxS("\n"));
 
   // The Character we will use as a soft line break
-  input.Replace("\r", wxm::emptyString);
+  input.Replace(wxS("\r"), wxm::emptyString);
 
   // Encode unicode characters in a rather mind-boggling way
   wxString output;
   for (size_t i = 0; i < input.Length(); i++) {
     wxChar ch = input[i];
-    if (ch == wxT('\n')) {
-      if (((i > 0) && (input[i - 1] == wxT('\n'))) || !MarkDown)
-        output += wxT("\\par}\n{\\pard ");
+    if (ch == wxS('\n')) {
+      if (((i > 0) && (input[i - 1] == wxS('\n'))) || !MarkDown)
+        output += wxS("\\par}\n{\\pard ");
       else
-        output += wxT("\n");
+        output += wxS("\n");
     } else {
       if ((ch < 128) && (ch > 0)) {
         output += ch;
@@ -732,7 +732,7 @@ wxString Cell::ListToOMML(bool WXUNUSED(startofline)) const {
   }
 
   if (multiCell && !retval.empty())
-    return wxT("<m:r>") + retval + wxT("</m:r>");
+    return wxS("<m:r>") + retval + wxS("</m:r>");
   else
     return retval;
 }
@@ -745,13 +745,13 @@ wxString Cell::ListToRTF(bool startofline) const {
     if (!rtf.empty()) {
       if ((GetTextStyle() == TS_LABEL) || ((GetTextStyle() == TS_USERLABEL))) {
         retval +=
-	  wxT("\\par}\n{\\pard\\s22\\li1105\\lin1105\\fi-1105\\f0\\fs24 ") +
-	  rtf + wxT("\\tab");
+	  wxS("\\par}\n{\\pard\\s22\\li1105\\lin1105\\fi-1105\\f0\\fs24 ") +
+	  rtf + wxS("\\tab");
         startofline = false;
       } else {
         if (startofline)
-          retval += wxT("\\par}\n{\\pard\\s21\\li1105\\lin1105\\f0\\fs24 ") +
-	    rtf + wxT("\\n");
+          retval += wxS("\\par}\n{\\pard\\s21\\li1105\\lin1105\\f0\\fs24 ") +
+	    rtf + wxS("\\n");
         startofline = true;
       }
       tmp = tmp->GetNext();
@@ -761,7 +761,7 @@ wxString Cell::ListToRTF(bool startofline) const {
 
         // set the style for this line.
         if (startofline)
-          retval += wxT("\\pard\\s21\\li1105\\lin1105\\f0\\fs24 ");
+          retval += wxS("\\pard\\s21\\li1105\\lin1105\\f0\\fs24 ");
 
         retval += OMML2RTF(tmp->ListToOMML());
 
@@ -801,12 +801,12 @@ wxString Cell::ListToXML() const {
 
   for (const Cell &tmp : OnList(this)) {
     if ((tmp.GetHighlight()) && (!highlight)) {
-      retval += wxT("<hl boxname=\"highlight\">\n");
+      retval += wxS("<hl boxname=\"highlight\">\n");
       highlight = true;
     }
 
     if ((!tmp.GetHighlight()) && (highlight)) {
-      retval += wxT("</hl>\n");
+      retval += wxS("</hl>\n");
       highlight = false;
     }
 
@@ -814,7 +814,7 @@ wxString Cell::ListToXML() const {
   }
 
   if (highlight) {
-    retval += wxT("</hl>\n");
+    retval += wxS("</hl>\n");
   }
 
   return retval;
@@ -825,7 +825,7 @@ wxString Cell::GetDiffPart() const {
   if (s == wxEmptyString)
     return s;
 
-  return wxT(",") + s + wxT(",1");
+  return wxS(",") + s + wxS(",1");
 }
 
 Cell::Range Cell::GetCellsInRect(const wxRect &rect) const {
@@ -1015,7 +1015,7 @@ void Cell::SetForeground() {
       color = m_configuration->GetColor(TS_MAIN_PROMPT);
       break;
     case MC_TYPE_ERROR:
-      color = wxColour(wxT("red"));
+      color = wxColour(wxS("red"));
       break;
     case MC_TYPE_WARNING:
       color = m_configuration->GetColor(TS_WARNING);

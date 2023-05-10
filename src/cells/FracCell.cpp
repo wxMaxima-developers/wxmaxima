@@ -60,7 +60,7 @@ DEFINE_CELL(FracCell)
 void FracCell::MakeDivideCell() {
   if (m_divideOwner)
     return;
-  m_divideOwner = std::make_unique<TextCell>(m_group, m_configuration, "/");
+  m_divideOwner = std::make_unique<TextCell>(m_group, m_configuration, wxS("/"));
   m_divideOwner->SetStyle(TS_VARIABLE);
   m_divide = m_divideOwner.get();
 }
@@ -93,12 +93,12 @@ void FracCell::Recalculate(AFontSize fontsize) {
       // We want half a space's widh of blank space to separate us from the
       // next minus.
 
-      if (GetPrevious() && GetPrevious()->ToString().EndsWith(wxT("-")))
+      if (GetPrevious() && GetPrevious()->ToString().EndsWith(wxS("-")))
         m_horizontalGapLeft = m_protrusion;
       else
         m_horizontalGapLeft = 0;
 
-      if (GetNext() && GetNext()->ToString().StartsWith(wxT("-")))
+      if (GetNext() && GetNext()->ToString().StartsWith(wxS("-")))
         m_horizontalGapRight = m_protrusion;
       else
         m_horizontalGapRight = 0;
@@ -166,16 +166,16 @@ wxString FracCell::ToString() const {
   if (!IsBrokenIntoLines()) {
     if (m_fracStyle == FC_NORMAL) {
       if (Num()->IsCompound())
-        s += wxT("(") + Num()->ListToString() + wxT(")/");
+        s += wxS("(") + Num()->ListToString() + wxS(")/");
       else
-        s += Num()->ListToString() + wxT("/");
+        s += Num()->ListToString() + wxS("/");
       if (Denom()->IsCompound())
-        s += wxT("(") + Denom()->ListToString() + wxT(")");
+        s += wxS("(") + Denom()->ListToString() + wxS(")");
       else
         s += Denom()->ListToString();
     } else if (m_fracStyle == FC_CHOOSE) {
-      s = wxT("binomial(") + Num()->ListToString() + wxT(",") +
-	Denom()->ListToString() + wxT(")");
+      s = wxS("binomial(") + Num()->ListToString() + wxS(",") +
+	Denom()->ListToString() + wxS(")");
     } else {
       Cell *tmp = Denom();
       while (tmp != NULL) {
@@ -201,16 +201,16 @@ wxString FracCell::ToMatlab() const {
   if (!IsBrokenIntoLines()) {
     if (m_fracStyle == FC_NORMAL) {
       if (Num()->IsCompound())
-        s += wxT("(") + Num()->ListToMatlab() + wxT(")/");
+        s += wxS("(") + Num()->ListToMatlab() + wxS(")/");
       else
-        s += Num()->ListToMatlab() + wxT("/");
+        s += Num()->ListToMatlab() + wxS("/");
       if (Denom()->IsCompound())
-        s += wxT("(") + Denom()->ListToMatlab() + wxT(")");
+        s += wxS("(") + Denom()->ListToMatlab() + wxS(")");
       else
         s += Denom()->ListToMatlab();
     } else if (m_fracStyle == FC_CHOOSE) {
-      s = wxT("binomial(") + Num()->ListToMatlab() + wxT(",") +
-	Denom()->ListToMatlab() + wxT(")");
+      s = wxS("binomial(") + Num()->ListToMatlab() + wxS(",") +
+	Denom()->ListToMatlab() + wxS(")");
     } else {
       for (Cell *tmp = Denom(); tmp; tmp = tmp->GetNext()) {
         tmp = tmp->GetNext(); // Skip the d
@@ -233,24 +233,24 @@ wxString FracCell::ToTeX() const {
   wxString s;
   if (!IsBrokenIntoLines()) {
     if (m_fracStyle == FC_CHOOSE) {
-      s = wxT("\\begin{pmatrix}") + Num()->ListToTeX() + wxT("\\\\\n") +
-	Denom()->ListToTeX() + wxT("\\end{pmatrix}");
+      s = wxS("\\begin{pmatrix}") + Num()->ListToTeX() + wxS("\\\\\n") +
+	Denom()->ListToTeX() + wxS("\\end{pmatrix}");
     } else {
-      s = wxT("\\frac{") + Num()->ListToTeX() + wxT("}{") +
-	Denom()->ListToTeX() + wxT("}");
+      s = wxS("\\frac{") + Num()->ListToTeX() + wxS("}{") +
+	Denom()->ListToTeX() + wxS("}");
     }
   }
   return s;
 }
 
 wxString FracCell::ToMathML() const {
-  return wxT("<mfrac>") + Num()->ListToMathML() + Denom()->ListToMathML() +
-    wxT("</mfrac>\n");
+  return wxS("<mfrac>") + Num()->ListToMathML() + Denom()->ListToMathML() +
+    wxS("</mfrac>\n");
 }
 
 wxString FracCell::ToOMML() const {
-  return wxT("<m:f><m:num>") + Num()->ListToOMML() + wxT("</m:num><m:den>") +
-    Denom()->ListToOMML() + wxT("</m:den></m:f>\n");
+  return wxS("<m:f><m:num>") + Num()->ListToOMML() + wxS("</m:num><m:den>") +
+    Denom()->ListToOMML() + wxS("</m:den></m:f>\n");
 }
 
 wxString FracCell::ToXML() const {
@@ -259,9 +259,9 @@ wxString FracCell::ToXML() const {
     : _T("f line = \"no\"");
   wxString diffStyle;
   if (m_fracStyle == FC_DIFF)
-    diffStyle = wxT(" diffstyle=\"yes\"");
+    diffStyle = wxS(" diffstyle=\"yes\"");
   if (HasHardLineBreak())
-    diffStyle += wxT(" breakline=\"true\"");
+    diffStyle += wxS(" breakline=\"true\"");
 
   return _T("<") + s + diffStyle + _T("><r>") + Num()->ListToXML() +
     _T("</r><r>") + Denom()->ListToXML() + _T("</r></f>");

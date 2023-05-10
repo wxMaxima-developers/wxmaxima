@@ -35,9 +35,9 @@
 ParenCell::ParenCell(GroupCell *group, Configuration *config,
                      std::unique_ptr<Cell> &&inner)
   : Cell(group, config),
-    m_open(std::make_unique<TextCell>(group, config, wxT("("))),
+    m_open(std::make_unique<TextCell>(group, config, wxS("("))),
     m_innerCell(std::move(inner)),
-    m_close(std::make_unique<TextCell>(group, config, wxT(")"))) {
+    m_close(std::make_unique<TextCell>(group, config, wxS(")"))) {
   InitBitFields();
   // If there is a contents it doesn't need to start with a multiplication
   // dot.
@@ -114,7 +114,7 @@ void ParenCell::Recalculate(AFontSize fontsize) {
   m_height = wxMax(m_signHeight, innerCellHeight) + Scale_Px(2);
   m_center = m_height / 2;
 
-  dc->GetTextExtent(wxT("("), &m_charWidth1, &m_charHeight1);
+  dc->GetTextExtent(wxS("("), &m_charWidth1, &m_charHeight1);
   if (m_charHeight1 < 2)
     m_charHeight1 = 2;
 
@@ -243,7 +243,7 @@ wxString ParenCell::ToString() const {
 
   if (!IsBrokenIntoLines()) {
     if (m_print)
-      s = wxT("(") + m_innerCell->ListToString() + wxT(")");
+      s = wxS("(") + m_innerCell->ListToString() + wxS(")");
     else
       s = m_innerCell->ListToString();
   }
@@ -256,7 +256,7 @@ wxString ParenCell::ToMatlab() const {
   wxString s;
   if (!IsBrokenIntoLines()) {
     if (m_print)
-      s = wxT("(") + m_innerCell->ListToMatlab() + wxT(")");
+      s = wxS("(") + m_innerCell->ListToMatlab() + wxS(")");
     else
       s = m_innerCell->ListToMatlab();
   }
@@ -281,9 +281,9 @@ wxString ParenCell::ToTeX() const {
 
     if (m_print) {
       if (needsLeftRight)
-        s = wxT("\\left( ") + m_innerCell->ListToTeX() + wxT("\\right) ");
+        s = wxS("\\left( ") + m_innerCell->ListToTeX() + wxS("\\right) ");
       else
-        s = wxT("(") + m_innerCell->ListToTeX() + wxT(")");
+        s = wxS("(") + m_innerCell->ListToTeX() + wxS(")");
     } else
       s = m_innerCell->ListToTeX();
   }
@@ -292,15 +292,15 @@ wxString ParenCell::ToTeX() const {
 
 wxString ParenCell::ToOMML() const {
   if(m_innerCell)
-    return wxT("<m:d><m:dPr m:begChr=\"") + XMLescape(m_open->ToString()) +
-      wxT("\" m:endChr=\"") + XMLescape(m_close->ToString()) +
-      wxT("\" m:grow=\"1\"></m:dPr><m:e>") + m_innerCell->ListToOMML() +
-      wxT("</m:e></m:d>");
+    return wxS("<m:d><m:dPr m:begChr=\"") + XMLescape(m_open->ToString()) +
+      wxS("\" m:endChr=\"") + XMLescape(m_close->ToString()) +
+      wxS("\" m:grow=\"1\"></m:dPr><m:e>") + m_innerCell->ListToOMML() +
+      wxS("</m:e></m:d>");
   else
-    return wxT("<m:d><m:dPr m:begChr=\"") + XMLescape(m_open->ToString()) +
-      wxT("\" m:endChr=\"") + XMLescape(m_close->ToString()) +
-      wxT("\" m:grow=\"1\"></m:dPr><m:e>") +
-      wxT("</m:e></m:d>");
+    return wxS("<m:d><m:dPr m:begChr=\"") + XMLescape(m_open->ToString()) +
+      wxS("\" m:endChr=\"") + XMLescape(m_close->ToString()) +
+      wxS("\" m:grow=\"1\"></m:dPr><m:e>") +
+      wxS("</m:e></m:d>");
 }
 
 wxString ParenCell::ToMathML() const {
@@ -313,9 +313,9 @@ wxString ParenCell::ToMathML() const {
   if(m_innerCell)
     innerCellContents = m_innerCell->ListToMathML();
   
-  return (wxT("<mrow><mo>") + XMLescape(open) + wxT("</mo>") +
-          innerCellContents + wxT("<mo>") + XMLescape(close) +
-          wxT("</mo></mrow>\n"));
+  return (wxS("<mrow><mo>") + XMLescape(open) + wxS("</mo>") +
+          innerCellContents + wxS("<mo>") + XMLescape(close) +
+          wxS("</mo></mrow>\n"));
 }
 
 wxString ParenCell::ToXML() const {
@@ -326,8 +326,8 @@ wxString ParenCell::ToXML() const {
     s = m_innerCell->ListToXML();
   wxString flags;
   if (HasHardLineBreak())
-    flags += wxT(" breakline=\"true\"");
-  return ((m_print) ? _T("<r><p") + flags + wxT(">") + s + _T("</p></r>") : s);
+    flags += wxS(" breakline=\"true\"");
+  return ((m_print) ? _T("<r><p") + flags + wxS(">") + s + _T("</p></r>") : s);
 }
 
 bool ParenCell::BreakUp() {

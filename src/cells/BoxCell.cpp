@@ -54,10 +54,10 @@ void BoxCell::MakeBreakupCells() {
   if (m_open)
     return;
   m_open =
-    std::make_unique<TextCell>(m_group, m_configuration, wxT("box("));
+    std::make_unique<TextCell>(m_group, m_configuration, wxS("box("));
   static_cast<TextCell &>(*m_open).DontEscapeOpeningParenthesis();
   m_open->SetStyle(TS_FUNCTION);
-  m_close = std::make_unique<TextCell>(m_group, m_configuration, wxT(")"));
+  m_close = std::make_unique<TextCell>(m_group, m_configuration, wxS(")"));
 }
 
 void BoxCell::Recalculate(AFontSize fontsize) {
@@ -121,26 +121,26 @@ wxString BoxCell::ToString() const {
   if (IsBrokenIntoLines())
     return wxEmptyString;
   else
-    return wxT("box(") + m_innerCell->ListToString() + wxT(")");
+    return wxS("box(") + m_innerCell->ListToString() + wxS(")");
 }
 
 wxString BoxCell::ToMatlab() const {
   if (IsBrokenIntoLines())
     return wxEmptyString;
   else
-    return wxT("box(") + m_innerCell->ListToMatlab() + wxT(")");
+    return wxS("box(") + m_innerCell->ListToMatlab() + wxS(")");
 }
 
 wxString BoxCell::ToTeX() const {
   if (IsBrokenIntoLines())
     return wxEmptyString;
   else
-    return wxT("\\fbox{") + m_innerCell->ListToTeX() + wxT("}");
+    return wxS("\\fbox{") + m_innerCell->ListToTeX() + wxS("}");
 }
 
 wxString BoxCell::ToMathML() const {
-   return wxT("<apply><box/><ci>") + m_innerCell->ListToMathML() +
-      wxT("</ci></apply>");
+   return wxS("<apply><box/><ci>") + m_innerCell->ListToMathML() +
+      wxS("</ci></apply>");
 }
 
 wxString BoxCell::ToOMML() const {
@@ -151,10 +151,10 @@ wxString BoxCell::ToOMML() const {
 wxString BoxCell::ToXML() const {
   wxString flags;
   if (HasHardLineBreak())
-    flags += wxT(" breakline=\"true\"");
+    flags += wxS(" breakline=\"true\"");
 
-  return wxT("<hl") + flags + wxT(">") + m_innerCell->ListToXML() +
-    wxT("</hl>");
+  return wxS("<hl") + flags + wxS(">") + m_innerCell->ListToXML() +
+    wxS("</hl>");
 }
 
 bool BoxCell::BreakUp() {

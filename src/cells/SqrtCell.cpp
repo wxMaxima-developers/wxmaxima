@@ -57,10 +57,10 @@ DEFINE_CELL(SqrtCell)
 void SqrtCell::MakeBreakUpCells() {
   if (m_open)
     return;
-  m_open = std::make_unique<TextCell>(m_group, m_configuration, "sqrt(");
+  m_open = std::make_unique<TextCell>(m_group, m_configuration, wxS("sqrt("));
   m_open->SetStyle(TS_FUNCTION);
   static_cast<TextCell &>(*m_open).DontEscapeOpeningParenthesis();
-  m_close = std::make_unique<TextCell>(m_group, m_configuration, ")");
+  m_close = std::make_unique<TextCell>(m_group, m_configuration, wxS(")"));
 }
 
 void SqrtCell::Recalculate(AFontSize fontsize) {
@@ -118,30 +118,30 @@ wxString SqrtCell::ToString() const {
   if (IsBrokenIntoLines())
     return wxEmptyString;
   else
-    return wxT("sqrt(") + m_innerCell->ListToString() + wxT(")");
+    return wxS("sqrt(") + m_innerCell->ListToString() + wxS(")");
 }
 
 wxString SqrtCell::ToMatlab() const {
   if (IsBrokenIntoLines())
     return wxEmptyString;
   else
-    return wxT("sqrt(") + m_innerCell->ListToMatlab() + wxT(")");
+    return wxS("sqrt(") + m_innerCell->ListToMatlab() + wxS(")");
 }
 
 wxString SqrtCell::ToTeX() const {
   if (IsBrokenIntoLines())
     return wxEmptyString;
   else
-    return wxT("\\sqrt{") + m_innerCell->ListToTeX() + wxT("}");
+    return wxS("\\sqrt{") + m_innerCell->ListToTeX() + wxS("}");
 }
 
 wxString SqrtCell::ToMathML() const {
-  return wxT("<msqrt>") + m_innerCell->ListToMathML() + wxT("</msqrt>\n");
+  return wxS("<msqrt>") + m_innerCell->ListToMathML() + wxS("</msqrt>\n");
 }
 
 wxString SqrtCell::ToOMML() const {
-  return wxT("<m:rad><m:radPr m:degHide=\"1\"></m:radPr><m:deg></m:deg><m:e>") +
-    m_innerCell->ListToOMML() + wxT("</m:e></m:rad>\n");
+  return wxS("<m:rad><m:radPr m:degHide=\"1\"></m:radPr><m:deg></m:deg><m:e>") +
+    m_innerCell->ListToOMML() + wxS("</m:e></m:rad>\n");
 }
 
 wxString SqrtCell::ToXML() const {
@@ -149,9 +149,9 @@ wxString SqrtCell::ToXML() const {
   //    return wxEmptyString;
   wxString flags;
   if (HasHardLineBreak())
-    flags += wxT(" breakline=\"true\"");
+    flags += wxS(" breakline=\"true\"");
 
-  return wxT("<q") + flags + wxT(">") + m_innerCell->ListToXML() + wxT("</q>");
+  return wxS("<q") + flags + wxS(">") + m_innerCell->ListToXML() + wxS("</q>");
 }
 
 bool SqrtCell::BreakUp() {

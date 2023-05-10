@@ -33,9 +33,9 @@
 ListCell::ListCell(GroupCell *group, Configuration *config,
                    std::unique_ptr<Cell> &&inner)
   : Cell(group, config),
-    m_open(std::make_unique<TextCell>(group, config, wxT("["))),
+    m_open(std::make_unique<TextCell>(group, config, wxS("["))),
     m_innerCell(std::move(inner)),
-    m_close(std::make_unique<TextCell>(group, config, wxT("]"))) {
+    m_close(std::make_unique<TextCell>(group, config, wxS("]"))) {
   InitBitFields();
   SetStyle(TS_VARIABLE);
 
@@ -146,17 +146,17 @@ void ListCell::Draw(wxPoint point) {
 wxString ListCell::ToString() const {
   wxString s;
   if (!m_innerCell)
-    return "[]";
+    return wxS("[]");
 
   if (!IsBrokenIntoLines())
-    s = wxT("[") + m_innerCell->ListToString() + wxT("]");
+    s = wxS("[") + m_innerCell->ListToString() + wxS("]");
   return s;
 }
 
 wxString ListCell::ToMatlab() const {
   wxString s;
   if (!IsBrokenIntoLines())
-    s = wxT("[") + m_innerCell->ListToMatlab() + wxT("]");
+    s = wxS("[") + m_innerCell->ListToMatlab() + wxS("]");
   return s;
 }
 
@@ -175,36 +175,36 @@ wxString ListCell::ToTeX() const {
       }
 
     if (needsLeftRight)
-      s = wxT("\\left[ ") + m_innerCell->ListToTeX() + wxT("\\right] ");
+      s = wxS("\\left[ ") + m_innerCell->ListToTeX() + wxS("\\right] ");
     else
-      s = wxT("[") + m_innerCell->ListToTeX() + wxT("]");
+      s = wxS("[") + m_innerCell->ListToTeX() + wxS("]");
   }
   return s;
 }
 
 wxString ListCell::ToOMML() const {
-  return wxT("<m:d><m:dPr m:begChr=\"") + XMLescape(m_open->ToString()) +
-    wxT("\" m:endChr=\"") + XMLescape(m_close->ToString()) +
-    wxT("\" m:grow=\"1\"></m:dPr><m:e>") + m_innerCell->ListToOMML() +
-    wxT("</m:e></m:d>");
+  return wxS("<m:d><m:dPr m:begChr=\"") + XMLescape(m_open->ToString()) +
+    wxS("\" m:endChr=\"") + XMLescape(m_close->ToString()) +
+    wxS("\" m:grow=\"1\"></m:dPr><m:e>") + m_innerCell->ListToOMML() +
+    wxS("</m:e></m:d>");
 }
 
 wxString ListCell::ToMathML() const {
   wxString open = m_open->ToString();
   wxString close = m_close->ToString();
-  return (wxT("<mrow><mo>") + XMLescape(open) + wxT("</mo>") +
-          m_innerCell->ListToMathML() + wxT("<mo>") + XMLescape(close) +
-          wxT("</mo></mrow>\n"));
+  return (wxS("<mrow><mo>") + XMLescape(open) + wxS("</mo>") +
+          m_innerCell->ListToMathML() + wxS("<mo>") + XMLescape(close) +
+          wxS("</mo></mrow>\n"));
 }
 
 wxString ListCell::ToXML() const {
   wxString s = m_innerCell->ListToXML();
   wxString flags;
   if (HasHardLineBreak())
-    flags += wxT(" breakline=\"true\"");
-  return (wxT("<r list=\"true\"") + flags +
-          wxT("><t listdelim=\"true\">[</t>") + s +
-          wxT("<t listdelim=\"true\">]</t></r>"));
+    flags += wxS(" breakline=\"true\"");
+  return (wxS("<r list=\"true\"") + flags +
+          wxS("><t listdelim=\"true\">[</t>") + s +
+          wxS("<t listdelim=\"true\">]</t></r>"));
 }
 
 bool ListCell::BreakUp() {

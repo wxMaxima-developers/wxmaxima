@@ -99,61 +99,61 @@ void LabelCell::UpdateDisplayedText() {
       }
     }
   }
-  m_displayedText.Replace(wxT("\xDCB6"),
-                          wxT("\u00A0")); // A non-breakable space
-  m_displayedText.Replace(wxT("\n"), wxEmptyString);
-  m_displayedText.Replace(wxT("-->"), wxT("\u2794"));
-  m_displayedText.Replace(wxT(" -->"), wxT("\u2794"));
-  m_displayedText.Replace(wxT(" \u2212\u2192 "), wxT("\u2794"));
-  m_displayedText.Replace(wxT("->"), wxT("\u2192"));
-  m_displayedText.Replace(wxT("\u2212>"), wxT("\u2192"));
+  m_displayedText.Replace(wxS("\xDCB6"),
+                          wxS("\u00A0")); // A non-breakable space
+  m_displayedText.Replace(wxS("\n"), wxEmptyString);
+  m_displayedText.Replace(wxS("-->"), wxS("\u2794"));
+  m_displayedText.Replace(wxS(" -->"), wxS("\u2794"));
+  m_displayedText.Replace(wxS(" \u2212\u2192 "), wxS("\u2794"));
+  m_displayedText.Replace(wxS("->"), wxS("\u2192"));
+  m_displayedText.Replace(wxS("\u2212>"), wxS("\u2192"));
 }
 
 wxString LabelCell::ToXML() const {
   wxString tag;
   if (IsHidden() || GetHidableMultSign())
-    tag = _T("h");
+    tag = wxS("h");
   else
     switch (GetTextStyle()) {
     case TS_GREEK_CONSTANT:
-      tag = _T("g");
+      tag = wxS("g");
       break;
     case TS_SPECIAL_CONSTANT:
-      tag = _T("s");
+      tag = wxS("s");
       break;
     case TS_VARIABLE:
-      tag = _T("v");
+      tag = wxS("v");
       break;
     case TS_FUNCTION:
-      tag = _T("fnm");
+      tag = wxS("fnm");
       break;
     case TS_NUMBER:
-      tag = _T("n");
+      tag = wxS("n");
       break;
     case TS_STRING:
-      tag = _T("st");
+      tag = wxS("st");
       break;
     case TS_LABEL:
-      tag = _T("lbl");
+      tag = wxS("lbl");
       break;
     case TS_USERLABEL:
-      tag = _T("lbl");
+      tag = wxS("lbl");
       break;
     case TS_MAIN_PROMPT:
-      tag = _T("lbl");
+      tag = wxS("lbl");
       break;
     case TS_OTHER_PROMPT:
-      tag = _T("lbl");
+      tag = wxS("lbl");
       break;
     default:
-      tag = _T("t");
+      tag = wxS("t");
     }
 
   wxString xmlstring = XMLescape(m_text);
   // convert it, so that the XML configuration doesn't fail
 
-  return wxT("<") + tag + GetXMLFlags() + wxT(">") + xmlstring + wxT("</") +
-    tag + wxT(">");
+  return wxS("<") + tag + GetXMLFlags() + wxS(">") + xmlstring + wxS("</") +
+    tag + wxS(">");
 }
 
 void LabelCell::SetStyle(TextStyle style) {
@@ -169,7 +169,7 @@ wxString LabelCell::GetXMLFlags() const {
   wxString flags = TextCell::GetXMLFlags();
   if (!m_userDefinedLabel.empty())
     flags +=
-      wxT(" userdefinedlabel=\"") + XMLescape(m_userDefinedLabel) + wxT("\"");
+      wxS(" userdefinedlabel=\"") + XMLescape(m_userDefinedLabel) + wxS("\"");
   return flags;
 }
 
@@ -183,11 +183,11 @@ const wxString &LabelCell::GetAltCopyText() const {
   auto &text = m_altCopyText;
   text = m_text;
   if (m_configuration->UseUserLabels() && !m_userDefinedLabel.empty())
-    text = wxT("(") + m_userDefinedLabel + wxT(")");
-  text.Replace(wxT("\u2794"), wxT("-->"));
-  text.Replace(wxT("\u2192"), wxT("->"));
+    text = wxS("(") + m_userDefinedLabel + wxS(")");
+  text.Replace(wxS("\u2794"), wxS("-->"));
+  text.Replace(wxS("\u2192"), wxS("->"));
   text.Trim();
-  text += wxT("\t");
+  text += wxS("\t");
 
   return text;
 }

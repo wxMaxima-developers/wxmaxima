@@ -32,7 +32,7 @@
 #include "CellImpl.h"
 #include "StringUtils.h"
 
-static wxString cellContents(wxT("?"));
+static wxString cellContents(wxS("?"));
 
 VisiblyInvalidCell::VisiblyInvalidCell(GroupCell *group, Configuration *config)
   : TextCell(group, config, cellContents, TS_ERROR) {

@@ -136,10 +136,10 @@ DEFINE_CELL(TextCell)
 void TextCell::SetStyle(TextStyle style) {
   m_sizeCache.clear();
   Cell::SetStyle(style);
-  if ((m_text == wxT("gamma")) && (GetTextStyle() == TS_FUNCTION))
-    m_displayedText = wxT("\u0393");
-  if ((m_text == wxT("psi")) && (GetTextStyle() == TS_FUNCTION))
-    m_displayedText = wxT("\u03A8");
+  if ((m_text == wxS("gamma")) && (GetTextStyle() == TS_FUNCTION))
+    m_displayedText = wxS("\u0393");
+  if ((m_text == wxS("psi")) && (GetTextStyle() == TS_FUNCTION))
+    m_displayedText = wxS("\u03A8");
   if ((style == TS_LABEL) || (style == TS_USERLABEL) ||
       (style == TS_MAIN_PROMPT) || (style == TS_OTHER_PROMPT))
     HasHardLineBreak();
@@ -165,40 +165,40 @@ void TextCell::UpdateToolTip() {
   auto const &c_text = m_text;
 
   if (GetTextStyle() == TS_VARIABLE) {
-    if (m_text == wxT("pnz"))
+    if (m_text == wxS("pnz"))
       SetToolTip(&T_(
 		     "Either positive, negative or zero.\n"
 		     "Normally the result of sign() if the sign cannot be determined."));
 
-    else if (m_text == wxT("pz"))
+    else if (m_text == wxS("pz"))
       SetToolTip(&T_("Either positive or zero.\n"
                      "A possible result of sign()."));
 
-    else if (m_text == wxT("nz"))
+    else if (m_text == wxS("nz"))
       SetToolTip(&T_("Either negative or zero.\n"
                      "A possible result of sign()."));
 
-    else if (m_text == wxT("und"))
+    else if (m_text == wxS("und"))
       SetToolTip(&T_("The result was undefined."));
 
-    else if (m_text == wxT("ind"))
+    else if (m_text == wxS("ind"))
       SetToolTip(&T_("The result was indefinite, which might be infinity, both "
                      "plus or minus infinity or something additionally "
                      "potentially involving a complex infinity."));
 
-    else if (m_text == wxT("zeroa"))
+    else if (m_text == wxS("zeroa"))
       SetToolTip(&T_("Infinitesimal above zero."));
 
-    else if (m_text == wxT("zerob"))
+    else if (m_text == wxS("zerob"))
       SetToolTip(&T_("Infinitesimal below zero."));
 
-    else if (m_text == wxT("inf"))
+    else if (m_text == wxS("inf"))
       SetToolTip(&S_("+∞."));
 
-    else if (m_text == wxT("infinity"))
+    else if (m_text == wxS("infinity"))
       SetToolTip(&T_("Complex infinity."));
 
-    else if (m_text == wxT("minf"))
+    else if (m_text == wxS("minf"))
       SetToolTip(&S_("-∞."));
 
     else if (m_text.StartsWith(S_("%r"))) {
@@ -368,11 +368,11 @@ void TextCell::UpdateToolTip() {
     else if (m_text.StartsWith(S_(": improper argument: "))) {
       auto const prevString =
 	GetPrevious() ? GetPrevious()->ToString() : wxm::emptyString;
-      if (prevString == wxT("at"))
+      if (prevString == wxS("at"))
         SetToolTip(
 		   &T_("The second argument of at() isn't an equation or a list of "
 		       "equations. Most probably it was lacking an \"=\"."));
-      else if (prevString == wxT("subst"))
+      else if (prevString == wxS("subst"))
         SetToolTip(
 		   &T_("The first argument of subst() isn't an equation or a list of "
 		       "equations. Most probably it was lacking an \"=\"."));
@@ -413,23 +413,23 @@ wxSize TextCell::CalculateTextSize(wxDC *const dc, const wxString &text,
 void TextCell::UpdateDisplayedText() {
   m_displayedText = m_text;
 
-  m_displayedText.Replace(wxT("\xDCB6"),
-                          wxT("\u00A0")); // A non-breakable space
-  m_displayedText.Replace(wxT("\n"), wxEmptyString);
-  m_displayedText.Replace(wxT("-->"), wxT("\u2794"));
-  m_displayedText.Replace(wxT(" -->"), wxT("\u2794"));
-  m_displayedText.Replace(wxT(" \u2212\u2192 "), wxT("\u2794"));
-  m_displayedText.Replace(wxT("->"), wxT("\u2192"));
-  m_displayedText.Replace(wxT("\u2212>"), wxT("\u2192"));
+  m_displayedText.Replace(wxS("\xDCB6"),
+                          wxS("\u00A0")); // A non-breakable space
+  m_displayedText.Replace(wxS("\n"), wxEmptyString);
+  m_displayedText.Replace(wxS("-->"), wxS("\u2794"));
+  m_displayedText.Replace(wxS(" -->"), wxS("\u2794"));
+  m_displayedText.Replace(wxS(" \u2212\u2192 "), wxS("\u2794"));
+  m_displayedText.Replace(wxS("->"), wxS("\u2192"));
+  m_displayedText.Replace(wxS("\u2212>"), wxS("\u2192"));
 
   if (GetTextStyle() == TS_FUNCTION) {
-    if (m_text == wxT("ilt"))
+    if (m_text == wxS("ilt"))
       SetToolTip(&T_("The inverse laplace transform."));
 
-    if (m_text == wxT("gamma"))
-      m_displayedText = wxT("\u0393");
-    if (m_text == wxT("psi"))
-      m_displayedText = wxT("\u03A8");
+    if (m_text == wxS("gamma"))
+      m_displayedText = wxS("\u0393");
+    if (m_text == wxS("psi"))
+      m_displayedText = wxS("\u03A8");
   }
 
   if ((GetTextStyle() == TS_MATH) && m_text.StartsWith("\""))
@@ -444,10 +444,10 @@ void TextCell::UpdateDisplayedText() {
 
   /// Change asterisk to a multiplication dot, if applicable
   if (m_configuration->GetChangeAsterisk()) {
-    if (m_displayedText == wxT("*"))
-      m_displayedText = wxT("\u00B7");
-    if (m_displayedText == wxT("#"))
-      m_displayedText = wxT("\u2260");
+    if (m_displayedText == wxS("*"))
+      m_displayedText = wxS("\u00B7");
+    if (m_displayedText == wxS("#"))
+      m_displayedText = wxS("\u2260");
   }
 }
 
@@ -511,7 +511,7 @@ void TextCell::SetFont(AFontSize fontsize) {
 }
 
 bool TextCell::IsOperator() const {
-  if (wxString(wxT("+*/-\u2212\u00B7")).Find(m_text) >= 0)
+  if (wxString(wxS("+*/-\u2212\u00B7")).Find(m_text) >= 0)
     return true;
   if (GetHidableMultSign())
     return true;
@@ -526,9 +526,9 @@ wxString TextCell::ToString() const {
     text = GetAltCopyText();
   else {
     text = m_text;
-    text.Replace(wxT("\u2212"), wxT("-")); // unicode minus sign
-    text.Replace(wxT("\u2794"), wxT("-->"));
-    text.Replace(wxT("\u2192"), wxT("->"));
+    text.Replace(wxS("\u2212"), wxS("-")); // unicode minus sign
+    text.Replace(wxS("\u2794"), wxS("-->"));
+    text.Replace(wxS("\u2192"), wxS("->"));
   }
   switch (GetTextStyle()) {
   case TS_VARIABLE:
@@ -542,7 +542,7 @@ wxString TextCell::ToString() const {
       bool isOperator = true;
       if (m_text.Length() > 1) {
         for (size_t i = 0; i < m_text.Length(); i++) {
-          if ((m_text[i] == wxT(' ')) ||
+          if ((m_text[i] == wxS(' ')) ||
               (charsNeedingQuotes.Find(m_text[i]) == wxNOT_FOUND)) {
             isOperator = false;
             break;
@@ -553,19 +553,19 @@ wxString TextCell::ToString() const {
       if (!isOperator) {
         wxString lastChar;
         if ((m_dontEscapeOpeningParenthesis) && (text.Length() > 0) &&
-            (text[text.Length() - 1] == wxT('('))) {
+            (text[text.Length() - 1] == wxS('('))) {
           lastChar = text[text.Length() - 1];
           text = text.Left(text.Length() - 1);
         }
         for (size_t i = 0; i < charsNeedingQuotes.Length(); i++)
           text.Replace(charsNeedingQuotes[i],
-                       wxT("\\") + wxString(charsNeedingQuotes[i]));
+                       wxS("\\") + wxString(charsNeedingQuotes[i]));
         text += lastChar;
       }
       break;
     }
   case TS_STRING:
-    text = wxT("\"") + text + wxT("\"");
+    text = wxS("\"") + text + wxS("\"");
     break;
 
     // Labels sometimes end with a few spaces. But if they are long they don't
@@ -582,12 +582,12 @@ wxString TextCell::ToString() const {
 
 wxString TextCell::ToMatlab() const {
   wxString text = ToString();
-  if (text == wxT("%e"))
-    text = wxT("e");
-  else if (text == wxT("%i"))
-    text = wxT("i");
-  else if (text == wxT("%pi"))
-    text = wxString(wxT("pi"));
+  if (text == wxS("%e"))
+    text = wxS("e");
+  else if (text == wxS("%i"))
+    text = wxS("i");
+  else if (text == wxS("%pi"))
+    text = wxString(wxS("pi"));
   switch (GetTextStyle()) {
   case TS_VARIABLE:
   case TS_FUNCTION:
@@ -599,7 +599,7 @@ wxString TextCell::ToMatlab() const {
       wxString charsNeedingQuotes("\\'\"()[]{}^+*/&§?:;=#<>$");
       bool isOperator = true;
       for (size_t i = 0; i < m_text.Length(); i++) {
-        if ((m_text[i] == wxT(' ')) ||
+        if ((m_text[i] == wxS(' ')) ||
             (charsNeedingQuotes.Find(m_text[i]) == wxNOT_FOUND)) {
           isOperator = false;
           break;
@@ -609,19 +609,19 @@ wxString TextCell::ToMatlab() const {
       if (!isOperator) {
         wxString lastChar;
         if ((m_dontEscapeOpeningParenthesis) && (text.Length() > 0) &&
-            (text[text.Length() - 1] == wxT('('))) {
+            (text[text.Length() - 1] == wxS('('))) {
           lastChar = text[text.Length() - 1];
           text = text.Left(text.Length() - 1);
         }
         for (size_t i = 0; i < charsNeedingQuotes.Length(); i++)
           text.Replace(charsNeedingQuotes[i],
-                       wxT("\\") + wxString(charsNeedingQuotes[i]));
+                       wxS("\\") + wxString(charsNeedingQuotes[i]));
         text += lastChar;
       }
       break;
     }
   case TS_STRING:
-    text = wxT("\"") + text + wxT("\"");
+    text = wxS("\"") + text + wxS("\"");
     break;
 
     // Labels sometimes end with a few spaces. But if they are long they don't
@@ -632,7 +632,7 @@ wxString TextCell::ToMatlab() const {
   case TS_MAIN_PROMPT:
   case TS_OTHER_PROMPT: {
     text.Trim();
-    text += wxT("\t");
+    text += wxS("\t");
     break;
   }
   default: {
@@ -648,12 +648,12 @@ wxString TextCell::ToTeX() const {
   wxString text = ToString();
 
   if (!m_configuration->CheckKeepPercent()) {
-    if (text == wxT("%e"))
-      text = wxT("e");
-    else if (text == wxT("%i"))
-      text = wxT("i");
-    else if (text == wxT("%pi"))
-      text = wxString(wxT("\u03C0"));
+    if (text == wxS("%e"))
+      text = wxS("e");
+    else if (text == wxS("%i"))
+      text = wxS("i");
+    else if (text == wxS("%pi"))
+      text = wxString(wxS("\u03C0"));
   }
 
   // The string needed in order to ensure we are in math mode. Most TextCells
@@ -661,152 +661,152 @@ wxString TextCell::ToTeX() const {
   wxString mathModeStart;
   // The string needed in order to close the command that ensures we are in math
   // mode.
-  wxString mathModeEnd = wxT(" ");
+  wxString mathModeEnd = wxS(" ");
 
   if ((GetTextStyle() == TS_ERROR) || (GetTextStyle() == TS_WARNING) ||
       (GetTextStyle() == TS_LABEL) || (GetTextStyle() == TS_USERLABEL) ||
       (GetTextStyle() == TS_MAIN_PROMPT) || (GetTextStyle() == TS_OTHER_PROMPT)) {
-    mathModeStart = wxT("\\ensuremath{");
-    mathModeEnd = wxT("}");
+    mathModeStart = wxS("\\ensuremath{");
+    mathModeEnd = wxS("}");
     if ((GetTextStyle() == TS_LABEL) || (GetTextStyle() == TS_USERLABEL) ||
         (GetTextStyle() == TS_MAIN_PROMPT) || (GetTextStyle() == TS_OTHER_PROMPT))
-      text.Replace(wxT("\\"), wxEmptyString);
+      text.Replace(wxS("\\"), wxEmptyString);
     else
-      text.Replace(wxT("\\"), mathModeStart + wxT("\\backslash") + mathModeEnd);
-    text.Replace(wxT("{"), wxT("\\{"));
-    text.Replace(wxT("}"), wxT("\\}"));
+      text.Replace(wxS("\\"), mathModeStart + wxS("\\backslash") + mathModeEnd);
+    text.Replace(wxS("{"), wxS("\\{"));
+    text.Replace(wxS("}"), wxS("\\}"));
   } else {
-    text.Replace(wxT("\\"), mathModeStart + wxT("\\backslash") + mathModeEnd);
-    text.Replace(wxT("{"), wxT("\\{"));
-    text.Replace(wxT("}"), wxT("\\}"));
+    text.Replace(wxS("\\"), mathModeStart + wxS("\\backslash") + mathModeEnd);
+    text.Replace(wxS("{"), wxS("\\{"));
+    text.Replace(wxS("}"), wxS("\\}"));
 
     // Babel replaces Umlaute by constructs like \"a - and \" isn't allowed in
     // math mode. Fortunately amsTeX provides the \text command that allows to
     // switch to plain text mode again - but with the math font size.
-    text.Replace(wxT("ä"), wxT("\\text{ä}"));
-    text.Replace(wxT("ö"), wxT("\\text{ö}"));
-    text.Replace(wxT("ü"), wxT("\\text{ü}"));
-    text.Replace(wxT("Ä"), wxT("\\text{Ä}"));
-    text.Replace(wxT("Ö"), wxT("\\text{Ö}"));
-    text.Replace(wxT("Ü"), wxT("\\text{Ü}"));
+    text.Replace(wxS("ä"), wxS("\\text{ä}"));
+    text.Replace(wxS("ö"), wxS("\\text{ö}"));
+    text.Replace(wxS("ü"), wxS("\\text{ü}"));
+    text.Replace(wxS("Ä"), wxS("\\text{Ä}"));
+    text.Replace(wxS("Ö"), wxS("\\text{Ö}"));
+    text.Replace(wxS("Ü"), wxS("\\text{Ü}"));
   }
 
-  text.Replace(wxT("<"), mathModeStart + wxT("<") + mathModeEnd);
-  text.Replace(wxT(">"), mathModeStart + wxT(">") + mathModeEnd);
-  text.Replace(wxT("\u2212"), wxT("-")); // unicode minus sign
-  text.Replace(wxT("\u00B1"), mathModeStart + wxT("\\pm") + mathModeEnd);
-  text.Replace(wxT("\u03B1"), mathModeStart + wxT("\\alpha") + mathModeEnd);
-  text.Replace(wxT("\u00B2"), mathModeStart + wxT("^2") + mathModeEnd);
-  text.Replace(wxT("\u00B3"), mathModeStart + wxT("^3") + mathModeEnd);
-  text.Replace(wxT("\u221A"), mathModeStart + wxT("\\sqrt{}") + mathModeEnd);
-  text.Replace(wxT("\u2148"),
-               mathModeStart + wxT("\\mathbbm{i}") + mathModeEnd);
-  text.Replace(wxT("\u2147"),
-               mathModeStart + wxT("\\mathbbm{e}") + mathModeEnd);
-  text.Replace(wxT("\u210f"), mathModeStart + wxT("\\hbar") + mathModeEnd);
-  text.Replace(wxT("\u2203"), mathModeStart + wxT("\\exists") + mathModeEnd);
-  text.Replace(wxT("\u2204"), mathModeStart + wxT("\\nexists") + mathModeEnd);
-  text.Replace(wxT("\u2208"), mathModeStart + wxT("\\in") + mathModeEnd);
-  text.Replace(wxT("\u21D2"),
-               mathModeStart + wxT("\\Longrightarrow") + mathModeEnd);
-  text.Replace(wxT("\u221e"), mathModeStart + wxT("\\infty") + mathModeEnd);
-  text.Replace(wxT("\u22C0"), mathModeStart + wxT("\\wedge") + mathModeEnd);
-  text.Replace(wxT("\u22C1"), mathModeStart + wxT("\\vee") + mathModeEnd);
-  text.Replace(wxT("\u22bb"), mathModeStart + wxT("\\oplus") + mathModeEnd);
-  text.Replace(wxT("\u22BC"),
-               mathModeStart + wxT("\\overline{\\wedge}") + mathModeEnd);
-  text.Replace(wxT("\u22BB"),
-               mathModeStart + wxT("\\overline{\\vee}") + mathModeEnd);
-  text.Replace(wxT("\u00AC"), mathModeStart + wxT("\\setminus") + mathModeEnd);
-  text.Replace(wxT("\u22C3"), mathModeStart + wxT("\\cup") + mathModeEnd);
-  text.Replace(wxT("\u22C2"), mathModeStart + wxT("\\cap") + mathModeEnd);
-  text.Replace(wxT("\u2286"), mathModeStart + wxT("\\subseteq") + mathModeEnd);
-  text.Replace(wxT("\u2282"), mathModeStart + wxT("\\subset") + mathModeEnd);
-  text.Replace(wxT("\u2288"),
-               mathModeStart + wxT("\\not\\subseteq") + mathModeEnd);
-  text.Replace(wxT("\u0127"), mathModeStart + wxT("\\hbar") + mathModeEnd);
-  text.Replace(wxT("\u0126"), mathModeStart + wxT("\\Hbar") + mathModeEnd);
-  text.Replace(wxT("\u2205"), mathModeStart + wxT("\\emptyset") + mathModeEnd);
-  text.Replace(wxT("\u00BD"),
-               mathModeStart + wxT("\\frac{1}{2}") + mathModeEnd);
-  text.Replace(wxT("\u03B2"), mathModeStart + wxT("\\beta") + mathModeEnd);
-  text.Replace(wxT("\u03B3"), mathModeStart + wxT("\\gamma") + mathModeEnd);
-  text.Replace(wxT("\u03B4"), mathModeStart + wxT("\\delta") + mathModeEnd);
-  text.Replace(wxT("\u03B5"), mathModeStart + wxT("\\epsilon") + mathModeEnd);
-  text.Replace(wxT("\u03B6"), mathModeStart + wxT("\\zeta") + mathModeEnd);
-  text.Replace(wxT("\u03B7"), mathModeStart + wxT("\\eta") + mathModeEnd);
-  text.Replace(wxT("\u03B8"), mathModeStart + wxT("\\theta") + mathModeEnd);
-  text.Replace(wxT("\u03B9"), mathModeStart + wxT("\\iota") + mathModeEnd);
-  text.Replace(wxT("\u03BA"), mathModeStart + wxT("\\kappa") + mathModeEnd);
-  text.Replace(wxT("\u03BB"), mathModeStart + wxT("\\lambda") + mathModeEnd);
-  text.Replace(wxT("\u03BC"), mathModeStart + wxT("\\mu") + mathModeEnd);
-  text.Replace(wxT("\u03BD"), mathModeStart + wxT("\\nu") + mathModeEnd);
-  text.Replace(wxT("\u03BE"), mathModeStart + wxT("\\xi") + mathModeEnd);
-  text.Replace(wxT("\u03BF"), wxT("o"));
-  text.Replace(wxT("\u03C0"), mathModeStart + wxT("\\pi") + mathModeEnd);
-  text.Replace(wxT("\u03C1"), mathModeStart + wxT("\\rho") + mathModeEnd);
-  text.Replace(wxT("\u03C3"), mathModeStart + wxT("\\sigma") + mathModeEnd);
-  text.Replace(wxT("\u03C4"), mathModeStart + wxT("\\tau") + mathModeEnd);
-  text.Replace(wxT("\u03C5"), mathModeStart + wxT("\\upsilon") + mathModeEnd);
-  text.Replace(wxT("\u03C6"), mathModeStart + wxT("\\phi") + mathModeEnd);
-  text.Replace(wxT("\u03C7"), mathModeStart + wxT("\\chi") + mathModeEnd);
-  text.Replace(wxT("\u03C8"), mathModeStart + wxT("\\psi") + mathModeEnd);
-  text.Replace(wxT("\u03C9"), mathModeStart + wxT("\\omega") + mathModeEnd);
-  text.Replace(wxT("\u0391"), wxT("A"));
-  text.Replace(wxT("\u0392"), wxT("B"));
-  text.Replace(wxT("\u0393"), mathModeStart + wxT("\\Gamma") + mathModeEnd);
-  text.Replace(wxT("\u0394"), mathModeStart + wxT("\\Delta") + mathModeEnd);
-  text.Replace(wxT("\u0395"), wxT("E"));
-  text.Replace(wxT("\u0396"), wxT("Z"));
-  text.Replace(wxT("\u0397"), wxT("H"));
-  text.Replace(wxT("\u0398"), mathModeStart + wxT("\\Theta") + mathModeEnd);
-  text.Replace(wxT("\u0399"), wxT("I"));
-  text.Replace(wxT("\u039A"), wxT("K"));
-  text.Replace(wxT("\u039B"), mathModeStart + wxT("\\Lambda") + mathModeEnd);
-  text.Replace(wxT("\u039C"), wxT("M"));
-  text.Replace(wxT("\u039D"), wxT("N"));
-  text.Replace(wxT("\u039E"), mathModeStart + wxT("\\Xi") + mathModeEnd);
-  text.Replace(wxT("\u039F"), wxT("O"));
-  text.Replace(wxT("\u03A0"), mathModeStart + wxT("\\Pi") + mathModeEnd);
-  text.Replace(wxT("\u03A1"), wxT("P"));
-  text.Replace(wxT("\u03A3"), mathModeStart + wxT("\\Sigma") + mathModeEnd);
-  text.Replace(wxT("\u03A4"), wxT("T"));
-  text.Replace(wxT("\u03A5"), mathModeStart + wxT("\\Upsilon") + mathModeEnd);
-  text.Replace(wxT("\u03A6"), mathModeStart + wxT("\\Phi") + mathModeEnd);
-  text.Replace(wxT("\u03A7"), wxT("X"));
-  text.Replace(wxT("\u03A8"), mathModeStart + wxT("\\Psi") + mathModeEnd);
-  text.Replace(wxT("\u03A9"), mathModeStart + wxT("\\Omega") + mathModeEnd);
-  text.Replace(wxT("\u2202"), mathModeStart + wxT("\\partial") + mathModeEnd);
-  text.Replace(wxT("\u222b"), mathModeStart + wxT("\\int") + mathModeEnd);
-  text.Replace(wxT("\u2245"), mathModeStart + wxT("\\approx") + mathModeEnd);
-  text.Replace(wxT("\u221d"), mathModeStart + wxT("\\propto") + mathModeEnd);
-  text.Replace(wxT("\u2260"), mathModeStart + wxT("\\neq") + mathModeEnd);
-  text.Replace(wxT("\u2264"), mathModeStart + wxT("\\leq") + mathModeEnd);
-  text.Replace(wxT("\u2265"), mathModeStart + wxT("\\geq") + mathModeEnd);
-  text.Replace(wxT("\u226A"), mathModeStart + wxT("\\ll") + mathModeEnd);
-  text.Replace(wxT("\u226B"), mathModeStart + wxT("\\gg") + mathModeEnd);
-  text.Replace(wxT("\u220e"),
-               mathModeStart + wxT("\\blacksquare") + mathModeEnd);
-  text.Replace(wxT("\u2263"), mathModeStart + wxT("\\equiv") + mathModeEnd);
-  text.Replace(wxT("\u2211"), mathModeStart + wxT("\\sum") + mathModeEnd);
-  text.Replace(wxT("\u220F"), mathModeStart + wxT("\\prod") + mathModeEnd);
-  text.Replace(wxT("\u2225"), mathModeStart + wxT("\\parallel") + mathModeEnd);
-  text.Replace(wxT("\u27C2"), mathModeStart + wxT("\\bot") + mathModeEnd);
-  text.Replace(wxT("~"), mathModeStart + wxT("\\sim ") + mathModeEnd);
-  text.Replace(wxT("_"), wxT("\\_ "));
-  text.Replace(wxT("$"), wxT("\\$ "));
-  text.Replace(wxT("%"), wxT("\\% "));
-  text.Replace(wxT("&"), wxT("\\& "));
-  text.Replace(wxT("@"), mathModeStart + wxT("@") + mathModeEnd);
-  text.Replace(wxT("#"), mathModeStart + wxT("\\neq") + mathModeEnd);
-  text.Replace(wxT("\u00A0"), wxT("~")); // A non-breakable space
-  text.Replace(wxT("<"), mathModeStart + wxT("<") + mathModeEnd);
-  text.Replace(wxT(">"), mathModeStart + wxT(">") + mathModeEnd);
-  text.Replace(wxT("\u219D"), mathModeStart + wxT("\\leadsto") + mathModeEnd);
-  text.Replace(wxT("\u2192"),
-               mathModeStart + wxT("\\rightarrow") + mathModeEnd);
-  text.Replace(wxT("\u2794"),
-               mathModeStart + wxT("\\longrightarrow") + mathModeEnd);
+  text.Replace(wxS("<"), mathModeStart + wxS("<") + mathModeEnd);
+  text.Replace(wxS(">"), mathModeStart + wxS(">") + mathModeEnd);
+  text.Replace(wxS("\u2212"), wxS("-")); // unicode minus sign
+  text.Replace(wxS("\u00B1"), mathModeStart + wxS("\\pm") + mathModeEnd);
+  text.Replace(wxS("\u03B1"), mathModeStart + wxS("\\alpha") + mathModeEnd);
+  text.Replace(wxS("\u00B2"), mathModeStart + wxS("^2") + mathModeEnd);
+  text.Replace(wxS("\u00B3"), mathModeStart + wxS("^3") + mathModeEnd);
+  text.Replace(wxS("\u221A"), mathModeStart + wxS("\\sqrt{}") + mathModeEnd);
+  text.Replace(wxS("\u2148"),
+               mathModeStart + wxS("\\mathbbm{i}") + mathModeEnd);
+  text.Replace(wxS("\u2147"),
+               mathModeStart + wxS("\\mathbbm{e}") + mathModeEnd);
+  text.Replace(wxS("\u210f"), mathModeStart + wxS("\\hbar") + mathModeEnd);
+  text.Replace(wxS("\u2203"), mathModeStart + wxS("\\exists") + mathModeEnd);
+  text.Replace(wxS("\u2204"), mathModeStart + wxS("\\nexists") + mathModeEnd);
+  text.Replace(wxS("\u2208"), mathModeStart + wxS("\\in") + mathModeEnd);
+  text.Replace(wxS("\u21D2"),
+               mathModeStart + wxS("\\Longrightarrow") + mathModeEnd);
+  text.Replace(wxS("\u221e"), mathModeStart + wxS("\\infty") + mathModeEnd);
+  text.Replace(wxS("\u22C0"), mathModeStart + wxS("\\wedge") + mathModeEnd);
+  text.Replace(wxS("\u22C1"), mathModeStart + wxS("\\vee") + mathModeEnd);
+  text.Replace(wxS("\u22bb"), mathModeStart + wxS("\\oplus") + mathModeEnd);
+  text.Replace(wxS("\u22BC"),
+               mathModeStart + wxS("\\overline{\\wedge}") + mathModeEnd);
+  text.Replace(wxS("\u22BB"),
+               mathModeStart + wxS("\\overline{\\vee}") + mathModeEnd);
+  text.Replace(wxS("\u00AC"), mathModeStart + wxS("\\setminus") + mathModeEnd);
+  text.Replace(wxS("\u22C3"), mathModeStart + wxS("\\cup") + mathModeEnd);
+  text.Replace(wxS("\u22C2"), mathModeStart + wxS("\\cap") + mathModeEnd);
+  text.Replace(wxS("\u2286"), mathModeStart + wxS("\\subseteq") + mathModeEnd);
+  text.Replace(wxS("\u2282"), mathModeStart + wxS("\\subset") + mathModeEnd);
+  text.Replace(wxS("\u2288"),
+               mathModeStart + wxS("\\not\\subseteq") + mathModeEnd);
+  text.Replace(wxS("\u0127"), mathModeStart + wxS("\\hbar") + mathModeEnd);
+  text.Replace(wxS("\u0126"), mathModeStart + wxS("\\Hbar") + mathModeEnd);
+  text.Replace(wxS("\u2205"), mathModeStart + wxS("\\emptyset") + mathModeEnd);
+  text.Replace(wxS("\u00BD"),
+               mathModeStart + wxS("\\frac{1}{2}") + mathModeEnd);
+  text.Replace(wxS("\u03B2"), mathModeStart + wxS("\\beta") + mathModeEnd);
+  text.Replace(wxS("\u03B3"), mathModeStart + wxS("\\gamma") + mathModeEnd);
+  text.Replace(wxS("\u03B4"), mathModeStart + wxS("\\delta") + mathModeEnd);
+  text.Replace(wxS("\u03B5"), mathModeStart + wxS("\\epsilon") + mathModeEnd);
+  text.Replace(wxS("\u03B6"), mathModeStart + wxS("\\zeta") + mathModeEnd);
+  text.Replace(wxS("\u03B7"), mathModeStart + wxS("\\eta") + mathModeEnd);
+  text.Replace(wxS("\u03B8"), mathModeStart + wxS("\\theta") + mathModeEnd);
+  text.Replace(wxS("\u03B9"), mathModeStart + wxS("\\iota") + mathModeEnd);
+  text.Replace(wxS("\u03BA"), mathModeStart + wxS("\\kappa") + mathModeEnd);
+  text.Replace(wxS("\u03BB"), mathModeStart + wxS("\\lambda") + mathModeEnd);
+  text.Replace(wxS("\u03BC"), mathModeStart + wxS("\\mu") + mathModeEnd);
+  text.Replace(wxS("\u03BD"), mathModeStart + wxS("\\nu") + mathModeEnd);
+  text.Replace(wxS("\u03BE"), mathModeStart + wxS("\\xi") + mathModeEnd);
+  text.Replace(wxS("\u03BF"), wxS("o"));
+  text.Replace(wxS("\u03C0"), mathModeStart + wxS("\\pi") + mathModeEnd);
+  text.Replace(wxS("\u03C1"), mathModeStart + wxS("\\rho") + mathModeEnd);
+  text.Replace(wxS("\u03C3"), mathModeStart + wxS("\\sigma") + mathModeEnd);
+  text.Replace(wxS("\u03C4"), mathModeStart + wxS("\\tau") + mathModeEnd);
+  text.Replace(wxS("\u03C5"), mathModeStart + wxS("\\upsilon") + mathModeEnd);
+  text.Replace(wxS("\u03C6"), mathModeStart + wxS("\\phi") + mathModeEnd);
+  text.Replace(wxS("\u03C7"), mathModeStart + wxS("\\chi") + mathModeEnd);
+  text.Replace(wxS("\u03C8"), mathModeStart + wxS("\\psi") + mathModeEnd);
+  text.Replace(wxS("\u03C9"), mathModeStart + wxS("\\omega") + mathModeEnd);
+  text.Replace(wxS("\u0391"), wxS("A"));
+  text.Replace(wxS("\u0392"), wxS("B"));
+  text.Replace(wxS("\u0393"), mathModeStart + wxS("\\Gamma") + mathModeEnd);
+  text.Replace(wxS("\u0394"), mathModeStart + wxS("\\Delta") + mathModeEnd);
+  text.Replace(wxS("\u0395"), wxS("E"));
+  text.Replace(wxS("\u0396"), wxS("Z"));
+  text.Replace(wxS("\u0397"), wxS("H"));
+  text.Replace(wxS("\u0398"), mathModeStart + wxS("\\Theta") + mathModeEnd);
+  text.Replace(wxS("\u0399"), wxS("I"));
+  text.Replace(wxS("\u039A"), wxS("K"));
+  text.Replace(wxS("\u039B"), mathModeStart + wxS("\\Lambda") + mathModeEnd);
+  text.Replace(wxS("\u039C"), wxS("M"));
+  text.Replace(wxS("\u039D"), wxS("N"));
+  text.Replace(wxS("\u039E"), mathModeStart + wxS("\\Xi") + mathModeEnd);
+  text.Replace(wxS("\u039F"), wxS("O"));
+  text.Replace(wxS("\u03A0"), mathModeStart + wxS("\\Pi") + mathModeEnd);
+  text.Replace(wxS("\u03A1"), wxS("P"));
+  text.Replace(wxS("\u03A3"), mathModeStart + wxS("\\Sigma") + mathModeEnd);
+  text.Replace(wxS("\u03A4"), wxS("T"));
+  text.Replace(wxS("\u03A5"), mathModeStart + wxS("\\Upsilon") + mathModeEnd);
+  text.Replace(wxS("\u03A6"), mathModeStart + wxS("\\Phi") + mathModeEnd);
+  text.Replace(wxS("\u03A7"), wxS("X"));
+  text.Replace(wxS("\u03A8"), mathModeStart + wxS("\\Psi") + mathModeEnd);
+  text.Replace(wxS("\u03A9"), mathModeStart + wxS("\\Omega") + mathModeEnd);
+  text.Replace(wxS("\u2202"), mathModeStart + wxS("\\partial") + mathModeEnd);
+  text.Replace(wxS("\u222b"), mathModeStart + wxS("\\int") + mathModeEnd);
+  text.Replace(wxS("\u2245"), mathModeStart + wxS("\\approx") + mathModeEnd);
+  text.Replace(wxS("\u221d"), mathModeStart + wxS("\\propto") + mathModeEnd);
+  text.Replace(wxS("\u2260"), mathModeStart + wxS("\\neq") + mathModeEnd);
+  text.Replace(wxS("\u2264"), mathModeStart + wxS("\\leq") + mathModeEnd);
+  text.Replace(wxS("\u2265"), mathModeStart + wxS("\\geq") + mathModeEnd);
+  text.Replace(wxS("\u226A"), mathModeStart + wxS("\\ll") + mathModeEnd);
+  text.Replace(wxS("\u226B"), mathModeStart + wxS("\\gg") + mathModeEnd);
+  text.Replace(wxS("\u220e"),
+               mathModeStart + wxS("\\blacksquare") + mathModeEnd);
+  text.Replace(wxS("\u2263"), mathModeStart + wxS("\\equiv") + mathModeEnd);
+  text.Replace(wxS("\u2211"), mathModeStart + wxS("\\sum") + mathModeEnd);
+  text.Replace(wxS("\u220F"), mathModeStart + wxS("\\prod") + mathModeEnd);
+  text.Replace(wxS("\u2225"), mathModeStart + wxS("\\parallel") + mathModeEnd);
+  text.Replace(wxS("\u27C2"), mathModeStart + wxS("\\bot") + mathModeEnd);
+  text.Replace(wxS("~"), mathModeStart + wxS("\\sim ") + mathModeEnd);
+  text.Replace(wxS("_"), wxS("\\_ "));
+  text.Replace(wxS("$"), wxS("\\$ "));
+  text.Replace(wxS("%"), wxS("\\% "));
+  text.Replace(wxS("&"), wxS("\\& "));
+  text.Replace(wxS("@"), mathModeStart + wxS("@") + mathModeEnd);
+  text.Replace(wxS("#"), mathModeStart + wxS("\\neq") + mathModeEnd);
+  text.Replace(wxS("\u00A0"), wxS("~")); // A non-breakable space
+  text.Replace(wxS("<"), mathModeStart + wxS("<") + mathModeEnd);
+  text.Replace(wxS(">"), mathModeStart + wxS(">") + mathModeEnd);
+  text.Replace(wxS("\u219D"), mathModeStart + wxS("\\leadsto") + mathModeEnd);
+  text.Replace(wxS("\u2192"),
+               mathModeStart + wxS("\\rightarrow") + mathModeEnd);
+  text.Replace(wxS("\u2794"),
+               mathModeStart + wxS("\\longrightarrow") + mathModeEnd);
 
   // IsHidden() is set for parenthesis that don't need to be shown
   if (IsHidden() ||
@@ -815,7 +815,7 @@ wxString TextCell::ToTeX() const {
     // directly is chosen to show that this is a multiplication. But any use of
     // \mathit{} will change to ordinary text spacing which means we need to add
     // a \, to show that we want to multiply the two long variable names.
-    if ((text == wxT("*")) || (text == wxT("\u00B7"))) {
+    if ((text == wxS("*")) || (text == wxS("\u00B7"))) {
       // We have a hidden multiplication sign
       if (
           // This multiplication sign is between 2 cells
@@ -824,12 +824,12 @@ wxString TextCell::ToTeX() const {
           ((GetPrevious()->GetTextStyle() == TS_VARIABLE) &&
            (GetNext()->GetTextStyle() == TS_VARIABLE)) &&
           // The variable name prior to this cell has no subscript
-          (!(GetPrevious()->ToString().Contains(wxT('_')))) &&
+          (!(GetPrevious()->ToString().Contains(wxS('_')))) &&
           // we will be using \mathit{} for the TeX output.
           ((ToString().Length() > 1) || (GetNext()->ToString().Length() > 1)))
-        text = wxT("\\, ");
+        text = wxS("\\, ");
       else
-        text = wxT(" ");
+        text = wxS(" ");
     } else
       text = wxEmptyString;
   } else {
@@ -843,134 +843,134 @@ wxString TextCell::ToTeX() const {
     */
 
     if (GetSuppressMultiplicationDot()) {
-      text.Replace(wxT("*"), wxT("\\, "));
-      text.Replace(wxT("\u00B7"), wxT("\\, "));
+      text.Replace(wxS("*"), wxS("\\, "));
+      text.Replace(wxS("\u00B7"), wxS("\\, "));
     } else {
       // If we want to know if the last element was a "d" we first have to
       // look if there actually is a last element.
       if (GetPrevious()) {
         if (GetPrevious()->GetTextStyle() == TS_SPECIAL_CONSTANT &&
-            GetPrevious()->ToTeX() == wxT("d")) {
-          text.Replace(wxT("*"), wxT("\\, "));
-          text.Replace(wxT("\u00B7"), wxT("\\, "));
+            GetPrevious()->ToTeX() == wxS("d")) {
+          text.Replace(wxS("*"), wxS("\\, "));
+          text.Replace(wxS("\u00B7"), wxS("\\, "));
         } else {
-          text.Replace(wxT("*"), wxT("\\ensuremath{\\cdot}"));
-          text.Replace(wxT("\u00B7"), wxT("\\ensuremath{\\cdot}}"));
+          text.Replace(wxS("*"), wxS("\\ensuremath{\\cdot}"));
+          text.Replace(wxS("\u00B7"), wxS("\\ensuremath{\\cdot}}"));
         }
       }
     }
   }
 
   if (GetTextStyle() == TS_GREEK_CONSTANT) {
-    if (text == wxT("\\% alpha"))
-      return wxT("\\alpha ");
-    else if (text == wxT("\\% beta"))
-      return wxT("\\beta ");
-    else if (text == wxT("\\% gamma"))
-      return wxT("\\gamma ");
-    else if (text == wxT("\\% delta"))
-      return wxT("\\delta ");
-    else if (text == wxT("\\% epsilon"))
-      return wxT("\\epsilon ");
-    else if (text == wxT("\\% zeta"))
-      return wxT("\\zeta ");
-    else if (text == wxT("\\% eta"))
-      return wxT("\\eta ");
-    else if (text == wxT("\\% theta"))
-      return wxT("\\theta ");
-    else if (text == wxT("\\% iota"))
-      return wxT("\\iota ");
-    else if (text == wxT("\\% kappa"))
-      return wxT("\\kappa ");
-    else if (text == wxT("\\% lambda"))
-      return wxT("\\lambda ");
-    else if (text == wxT("\\% mu"))
-      return wxT("\\mu ");
-    else if (text == wxT("\\% nu"))
-      return wxT("\\nu ");
-    else if (text == wxT("\\% xi"))
-      return wxT("\\ui ");
-    else if (text == wxT("\\% omicron"))
-      return wxT("\\omicron ");
-    else if (text == wxT("\\% pi"))
-      return wxT("\\pi ");
-    else if (text == wxT("\\% rho"))
-      return wxT("\\rho ");
-    else if (text == wxT("\\% sigma"))
-      return wxT("\\sigma ");
-    else if (text == wxT("\\% tau"))
-      return wxT("\\tau ");
-    else if (text == wxT("\\% upsilon"))
-      return wxT("\\upsilon ");
-    else if (text == wxT("\\% phi"))
-      return wxT("\\phi ");
-    else if (text == wxT("\\% chi"))
-      return wxT("\\chi ");
-    else if (text == wxT("\\% psi"))
-      return wxT("\\psi ");
-    else if (text == wxT("\\% omega"))
-      return wxT("\\omega ");
-    else if (text == wxT("\\% Alpha"))
-      return wxT("A");
-    else if (text == wxT("\\% Beta"))
-      return wxT("B");
-    else if (text == wxT("\\% Gamma"))
-      return wxT("\\Gamma ");
-    else if (text == wxT("\\% Delta"))
-      return wxT("\\Delta ");
-    else if (text == wxT("\\% Epsilon"))
-      return wxT("\\Epsilon ");
-    else if (text == wxT("\\% Zeta"))
-      return wxT("\\Zeta ");
-    else if (text == wxT("\\% Eta"))
-      return wxT("\\Eta ");
-    else if (text == wxT("\\% Theta"))
-      return wxT("\\Theta ");
-    else if (text == wxT("\\% Iota"))
-      return wxT("\\Iota ");
-    else if (text == wxT("\\% Kappa"))
-      return wxT("\\Kappa ");
-    else if (text == wxT("\\% Lambda"))
-      return wxT("\\Lambda ");
-    else if (text == wxT("\\% Mu"))
-      return wxT("\\Mu ");
-    else if (text == wxT("\\% Nu"))
-      return wxT("\\Nu ");
-    else if (text == wxT("\\% Xi"))
-      return wxT("\\ui ");
-    else if (text == wxT("\\% Omicron"))
-      return wxT("\\Omicron ");
-    else if (text == wxT("\\% Pi"))
-      return wxT("\\Pi ");
-    else if (text == wxT("\\% Rho"))
-      return wxT("\\Rho ");
-    else if (text == wxT("\\% Sigma"))
-      return wxT("\\Sigma ");
-    else if (text == wxT("\\% Tau"))
-      return wxT("\\Tau ");
-    else if (text == wxT("\\% Upsilon"))
-      return wxT("\\Upsilon ");
-    else if (text == wxT("\\% Phi"))
-      return wxT("\\Phi ");
-    else if (text == wxT("\\% Chi"))
-      return wxT("\\Chi ");
-    else if (text == wxT("\\% Psi"))
-      return wxT("\\Psi ");
-    else if (text == wxT("\\% Omega"))
-      return wxT("\\Omega ");
+    if (text == wxS("\\% alpha"))
+      return wxS("\\alpha ");
+    else if (text == wxS("\\% beta"))
+      return wxS("\\beta ");
+    else if (text == wxS("\\% gamma"))
+      return wxS("\\gamma ");
+    else if (text == wxS("\\% delta"))
+      return wxS("\\delta ");
+    else if (text == wxS("\\% epsilon"))
+      return wxS("\\epsilon ");
+    else if (text == wxS("\\% zeta"))
+      return wxS("\\zeta ");
+    else if (text == wxS("\\% eta"))
+      return wxS("\\eta ");
+    else if (text == wxS("\\% theta"))
+      return wxS("\\theta ");
+    else if (text == wxS("\\% iota"))
+      return wxS("\\iota ");
+    else if (text == wxS("\\% kappa"))
+      return wxS("\\kappa ");
+    else if (text == wxS("\\% lambda"))
+      return wxS("\\lambda ");
+    else if (text == wxS("\\% mu"))
+      return wxS("\\mu ");
+    else if (text == wxS("\\% nu"))
+      return wxS("\\nu ");
+    else if (text == wxS("\\% xi"))
+      return wxS("\\ui ");
+    else if (text == wxS("\\% omicron"))
+      return wxS("\\omicron ");
+    else if (text == wxS("\\% pi"))
+      return wxS("\\pi ");
+    else if (text == wxS("\\% rho"))
+      return wxS("\\rho ");
+    else if (text == wxS("\\% sigma"))
+      return wxS("\\sigma ");
+    else if (text == wxS("\\% tau"))
+      return wxS("\\tau ");
+    else if (text == wxS("\\% upsilon"))
+      return wxS("\\upsilon ");
+    else if (text == wxS("\\% phi"))
+      return wxS("\\phi ");
+    else if (text == wxS("\\% chi"))
+      return wxS("\\chi ");
+    else if (text == wxS("\\% psi"))
+      return wxS("\\psi ");
+    else if (text == wxS("\\% omega"))
+      return wxS("\\omega ");
+    else if (text == wxS("\\% Alpha"))
+      return wxS("A");
+    else if (text == wxS("\\% Beta"))
+      return wxS("B");
+    else if (text == wxS("\\% Gamma"))
+      return wxS("\\Gamma ");
+    else if (text == wxS("\\% Delta"))
+      return wxS("\\Delta ");
+    else if (text == wxS("\\% Epsilon"))
+      return wxS("\\Epsilon ");
+    else if (text == wxS("\\% Zeta"))
+      return wxS("\\Zeta ");
+    else if (text == wxS("\\% Eta"))
+      return wxS("\\Eta ");
+    else if (text == wxS("\\% Theta"))
+      return wxS("\\Theta ");
+    else if (text == wxS("\\% Iota"))
+      return wxS("\\Iota ");
+    else if (text == wxS("\\% Kappa"))
+      return wxS("\\Kappa ");
+    else if (text == wxS("\\% Lambda"))
+      return wxS("\\Lambda ");
+    else if (text == wxS("\\% Mu"))
+      return wxS("\\Mu ");
+    else if (text == wxS("\\% Nu"))
+      return wxS("\\Nu ");
+    else if (text == wxS("\\% Xi"))
+      return wxS("\\ui ");
+    else if (text == wxS("\\% Omicron"))
+      return wxS("\\Omicron ");
+    else if (text == wxS("\\% Pi"))
+      return wxS("\\Pi ");
+    else if (text == wxS("\\% Rho"))
+      return wxS("\\Rho ");
+    else if (text == wxS("\\% Sigma"))
+      return wxS("\\Sigma ");
+    else if (text == wxS("\\% Tau"))
+      return wxS("\\Tau ");
+    else if (text == wxS("\\% Upsilon"))
+      return wxS("\\Upsilon ");
+    else if (text == wxS("\\% Phi"))
+      return wxS("\\Phi ");
+    else if (text == wxS("\\% Chi"))
+      return wxS("\\Chi ");
+    else if (text == wxS("\\% Psi"))
+      return wxS("\\Psi ");
+    else if (text == wxS("\\% Omega"))
+      return wxS("\\Omega ");
 
     return text;
   }
 
   if (GetTextStyle() == TS_SPECIAL_CONSTANT) {
-    if (text == wxT("inf"))
-      return wxT("\\infty ");
-    else if (text == wxT("%e"))
-      return wxT("e");
-    else if (text == wxT("%i"))
-      return wxT("i");
-    else if (text == wxT("\\% pi"))
-      return wxT("\\ensuremath{\\pi} ");
+    if (text == wxS("inf"))
+      return wxS("\\infty ");
+    else if (text == wxS("%e"))
+      return wxS("e");
+    else if (text == wxS("%i"))
+      return wxS("i");
+    else if (text == wxS("\\% pi"))
+      return wxS("\\ensuremath{\\pi} ");
     else
       return text;
   }
@@ -978,58 +978,58 @@ wxString TextCell::ToTeX() const {
   if ((GetTextStyle() == TS_LABEL) || (GetTextStyle() == TS_USERLABEL)) {
     wxString conditionalLinebreak;
     if (GetPrevious())
-      conditionalLinebreak = wxT("\\]\n\\[");
+      conditionalLinebreak = wxS("\\]\n\\[");
     text.Trim(true);
     wxString label = text.SubString(1, text.Length() - 2);
-    text = conditionalLinebreak + wxT("\\tag{") + label + wxT("}");
-    label.Replace(wxT("\\% "), wxT(""));
+    text = conditionalLinebreak + wxS("\\tag{") + label + wxS("}");
+    label.Replace(wxS("\\% "), wxS(""));
     // Would be a good idea, but apparently breaks mathJaX
-    // text += wxT("\\label{") + label + wxT("}");
+    // text += wxS("\\label{") + label + wxS("}");
   } else {
     if (GetTextStyle() == TS_FUNCTION) {
       if (text != wxEmptyString) {
-        text.Replace(wxT("^"), wxT("\\hat{} "));
-        text = wxT("\\operatorname{") + text + wxT("}");
+        text.Replace(wxS("^"), wxS("\\hat{} "));
+        text = wxS("\\operatorname{") + text + wxS("}");
       }
     } else if ((GetTextStyle() == TS_VARIABLE) ||
                (GetTextStyle() == TS_GREEK_CONSTANT) ||
                (GetTextStyle() == TS_SPECIAL_CONSTANT)) {
-      if ((m_displayedText.Length() > 1) && (text[1] != wxT('_')))
-        text = wxT("\\ensuremath{\\mathrm{") + text + wxT("}}");
-      if (text == wxT("\\% pi"))
-        text = wxT("\\ensuremath{\\pi} ");
-      text.Replace(wxT("\\text{ä}"), wxT("\\text{\\textit{ä}}"));
-      text.Replace(wxT("\\text{ö}"), wxT("\\text{\\textit{ö}}"));
-      text.Replace(wxT("\\text{ü}"), wxT("\\text{\\textit{ü}}"));
-      text.Replace(wxT("\\text{Ä}"), wxT("\\text{\\textit{Ä}}"));
-      text.Replace(wxT("\\text{Ö}"), wxT("\\text{\\textit{Ö}}"));
-      text.Replace(wxT("\\text{Ü}"), wxT("\\text{\\textit{Ü}}"));
+      if ((m_displayedText.Length() > 1) && (text[1] != wxS('_')))
+        text = wxS("\\ensuremath{\\mathrm{") + text + wxS("}}");
+      if (text == wxS("\\% pi"))
+        text = wxS("\\ensuremath{\\pi} ");
+      text.Replace(wxS("\\text{ä}"), wxS("\\text{\\textit{ä}}"));
+      text.Replace(wxS("\\text{ö}"), wxS("\\text{\\textit{ö}}"));
+      text.Replace(wxS("\\text{ü}"), wxS("\\text{\\textit{ü}}"));
+      text.Replace(wxS("\\text{Ä}"), wxS("\\text{\\textit{Ä}}"));
+      text.Replace(wxS("\\text{Ö}"), wxS("\\text{\\textit{Ö}}"));
+      text.Replace(wxS("\\text{Ü}"), wxS("\\text{\\textit{Ü}}"));
     } else if ((GetTextStyle() == TS_ERROR) || (GetTextStyle() == TS_WARNING)) {
       if (text.Length() > 1)
-        text = wxT("\\mbox{%error\n") + text + wxT("}");
+        text = wxS("\\mbox{%error\n") + text + wxS("}");
     } else if (GetTextStyle() == TS_MATH) {
-      if ((text.Length() > 2) && (text != wxT("\\,")) && (text != wxT("\\, ")))
-        text = wxT("\\mbox{%default\n") + text + wxT("}");
+      if ((text.Length() > 2) && (text != wxS("\\,")) && (text != wxS("\\, ")))
+        text = wxS("\\mbox{%default\n") + text + wxS("}");
     }
   }
 
   if ((GetTextStyle() != TS_FUNCTION) && (GetTextStyle() != TS_OUTDATED) &&
       (GetTextStyle() != TS_VARIABLE) && (GetTextStyle() != TS_NUMBER) &&
       (GetTextStyle() != TS_GREEK_CONSTANT) && (GetTextStyle() != TS_SPECIAL_CONSTANT))
-    text.Replace(wxT("^"), wxT("\\textasciicircum"));
+    text.Replace(wxS("^"), wxS("\\textasciicircum"));
 
   if ((GetTextStyle() == TS_MATH) || (GetTextStyle() == TS_STRING)) {
     if (text.Length() > 1) {
       if (BreakLineHere())
-        // text=wxT("\\ifhmode\\\\fi\n")+text;
-        text = wxT("\\mbox{}\\\\") + text;
+        // text=wxS("\\ifhmode\\\\fi\n")+text;
+        text = wxS("\\mbox{}\\\\") + text;
       /*      if(GetTextStyle() != TS_MATH)
-              text.Replace(wxT(" "), wxT("\\, "));*/
+              text.Replace(wxS(" "), wxS("\\, "));*/
     }
   }
 
   if ((GetTextStyle() == TS_LABEL) || (GetTextStyle() == TS_USERLABEL))
-    text = text + wxT(" ");
+    text = text + wxS(" ");
 
   return text;
 }
@@ -1042,12 +1042,12 @@ wxString TextCell::ToMathML() const {
   // If we didn't display a multiplication dot we want to do the same in MathML.
   if (IsHidden() ||
       ((m_configuration->HidemultiplicationSign()) && GetHidableMultSign())) {
-    text.Replace(wxT("*"), wxT("&#8290;"));
-    text.Replace(wxT("\u00B7"), wxT("&#8290;"));
-    if (text != wxT("&#8290;"))
+    text.Replace(wxS("*"), wxS("&#8290;"));
+    text.Replace(wxS("\u00B7"), wxS("&#8290;"));
+    if (text != wxS("&#8290;"))
       text = wxEmptyString;
   }
-  text.Replace(wxT("*"), wxT("\u00B7"));
+  text.Replace(wxS("*"), wxS("\u00B7"));
 
   switch (GetTextStyle()) {
   case TS_GREEK_CONSTANT:
@@ -1057,14 +1057,14 @@ wxString TextCell::ToMathML() const {
     text = GetGreekStringUnicode();
     // The "d" from d/dt can be written as a special unicode symbol. But firefox
     // doesn't support this currently => Commenting it out. if((GetTextStyle() ==
-    // TS_SPECIAL_CONSTANT) && (text == wxT("d")))
-    //   text = wxT("&#2146;");
+    // TS_SPECIAL_CONSTANT) && (text == wxS("d")))
+    //   text = wxS("&#2146;");
     bool keepPercent = m_configuration->CheckKeepPercent();
     if (!keepPercent) {
-      if (text == wxT("%e"))
-        text = wxT("e");
-      else if (text == wxT("%i"))
-        text = wxT("i");
+      if (text == wxS("%e"))
+        text = wxS("e");
+      else if (text == wxS("%i"))
+        text = wxS("i");
     }
   } break;
   case TS_VARIABLE: {
@@ -1073,35 +1073,35 @@ wxString TextCell::ToMathML() const {
     bool keepPercent = m_configuration->CheckKeepPercent();
 
     if (!keepPercent) {
-      if (text == wxT("%pi"))
-        text = wxT("\u03C0");
+      if (text == wxS("%pi"))
+        text = wxS("\u03C0");
     }
   } break;
   case TS_FUNCTION:
     text = GetGreekStringUnicode();
-    if (text == wxT("inf"))
-      text = wxT("\u221e");
-    if ((text == wxT("+")) || (text == wxT("-")) || (text == wxT("*")) ||
-        (text == wxT("/")))
-      return wxT("<mo>") + text + wxT("</mo>\n");
+    if (text == wxS("inf"))
+      text = wxS("\u221e");
+    if ((text == wxS("+")) || (text == wxS("-")) || (text == wxS("*")) ||
+        (text == wxS("/")))
+      return wxS("<mo>") + text + wxS("</mo>\n");
     else
-      return wxT("<mi>") + text + wxT("</mi>\n");
+      return wxS("<mi>") + text + wxS("</mi>\n");
   case TS_NUMBER:
-    return wxT("<mn>") + text + wxT("</mn>\n");
+    return wxS("<mn>") + text + wxS("</mn>\n");
 
   case TS_LABEL:
   case TS_USERLABEL:
-    return wxT("<mtext>") + text + wxT("</mtext></mtd><mtd>\n");
+    return wxS("<mtext>") + text + wxS("</mtext></mtd><mtd>\n");
 
   case TS_STRING:
   default:
-    if (text.StartsWith(wxT("\"")))
-      return wxT("<ms>") + text + wxT("</ms>\n");
+    if (text.StartsWith(wxS("\"")))
+      return wxS("<ms>") + text + wxS("</ms>\n");
     else
-      return wxT("<mo>") + text + wxT("</mo>\n");
+      return wxS("<mo>") + text + wxS("</mo>\n");
   }
 
-  return wxT("<mo>") + text + wxT("</mo>\n");
+  return wxS("<mo>") + text + wxS("</mo>\n");
 }
 
 wxString TextCell::ToOMML() const {
@@ -1120,39 +1120,39 @@ wxString TextCell::ToOMML() const {
   // If we didn't display a multiplication dot we want to do the same in MathML.
   if (IsHidden() ||
       ((m_configuration->HidemultiplicationSign()) && GetHidableMultSign())) {
-    text.Replace(wxT("*"), wxT("&#8290;"));
-    text.Replace(wxT("\u00B7"), wxT("&#8290;"));
-    if (text != wxT("&#8290;"))
+    text.Replace(wxS("*"), wxS("&#8290;"));
+    text.Replace(wxS("\u00B7"), wxS("&#8290;"));
+    if (text != wxS("&#8290;"))
       text = wxEmptyString;
   }
-  text.Replace(wxT("*"), wxT("\u00B7"));
+  text.Replace(wxS("*"), wxS("\u00B7"));
 
   switch (GetTextStyle()) {
   case TS_GREEK_CONSTANT:
   case TS_SPECIAL_CONSTANT: {
     // The "d" from d/dt can be written as a special unicode symbol. But firefox
     // doesn't support this currently => Commenting it out. if((GetTextStyle() ==
-    // TS_SPECIAL_CONSTANT) && (text == wxT("d")))
-    //   text = wxT("&#2146;");
+    // TS_SPECIAL_CONSTANT) && (text == wxS("d")))
+    //   text = wxS("&#2146;");
     bool keepPercent = m_configuration->CheckKeepPercent();
     if (!keepPercent) {
-      if (text == wxT("%e"))
-        text = wxT("e");
-      else if (text == wxT("%i"))
-        text = wxT("i");
+      if (text == wxS("%e"))
+        text = wxS("e");
+      else if (text == wxS("%i"))
+        text = wxS("i");
     }
   }
     /* FALLTHRU */
   case TS_VARIABLE: {
     if (!m_configuration->CheckKeepPercent()) {
-      if (text == wxT("%pi"))
-        text = wxT("\u03C0");
+      if (text == wxS("%pi"))
+        text = wxS("\u03C0");
     }
   } break;
   case TS_FUNCTION:
     text = GetGreekStringUnicode();
-    if (text == wxT("inf"))
-      text = wxT("\u221e");
+    if (text == wxS("inf"))
+      text = wxS("\u221e");
     break;
   case TS_NUMBER:
     break;
@@ -1165,7 +1165,7 @@ wxString TextCell::ToOMML() const {
   default: {
   }
   }
-  text = wxT("<m:r>") + text + wxT("</m:r>\n");
+  text = wxS("<m:r>") + text + wxS("</m:r>\n");
   return text;
 }
 
@@ -1174,15 +1174,15 @@ wxString TextCell::ToRTF() const {
   wxString text = ToString();
 
   if (m_displayedText == wxEmptyString)
-    return (wxT(" "));
+    return (wxS(" "));
 
-  text.Replace(wxT("-->"), wxT("\u2192"));
+  text.Replace(wxS("-->"), wxS("\u2192"));
   // Needed for the output of let(a/b,a+1);
-  text.Replace(wxT(" --> "), wxT("\u2192"));
+  text.Replace(wxS(" --> "), wxS("\u2192"));
   if ((GetTextStyle() == TS_LABEL) || (GetTextStyle() == TS_USERLABEL)) {
-    retval += wxString::Format(wxT("\\cf%i{"), (int)GetTextStyle());
+    retval += wxString::Format(wxS("\\cf%i{"), (int)GetTextStyle());
     retval += RTFescape(text);
-    retval += wxT("}\\cf0");
+    retval += wxS("}\\cf0");
   }
   return retval;
 }
@@ -1191,28 +1191,28 @@ wxString TextCell::GetXMLFlags() const {
   wxString flags;
   if (HasHardLineBreak() && (GetTextStyle() != TS_LABEL) &&
       (GetTextStyle() != TS_USERLABEL))
-    flags += wxT(" breakline=\"true\"");
+    flags += wxS(" breakline=\"true\"");
   
   if (GetTextStyle() == TS_ASCIIMATHS)
-    flags += wxT(" type=\"ASCII-Art\"");
+    flags += wxS(" type=\"ASCII-Art\"");
   
   if (GetTextStyle() == TS_OPERATOR)
-    flags += wxT(" type=\"Operator\"");
+    flags += wxS(" type=\"Operator\"");
   
   if (GetTextStyle() == TS_ERROR)
-    flags += wxT(" type=\"error\"");
+    flags += wxS(" type=\"error\"");
 
   if (GetTextStyle() == TS_WARNING)
-    flags += wxT(" type=\"warning\"");
+    flags += wxS(" type=\"warning\"");
 
   if (!GetAltCopyText().empty())
-    flags += wxT(" altCopy=\"") + XMLescape(GetAltCopyText()) + wxT("\"");
+    flags += wxS(" altCopy=\"") + XMLescape(GetAltCopyText()) + wxS("\"");
 
   if (!GetLocalToolTip().empty())
-    flags += wxT(" tooltip=\"") + XMLescape(GetLocalToolTip()) + wxT("\"");
+    flags += wxS(" tooltip=\"") + XMLescape(GetLocalToolTip()) + wxS("\"");
 
   if (GetTextStyle() == TS_USERLABEL)
-    flags += wxT(" userdefined=\"yes\"");
+    flags += wxS(" userdefined=\"yes\"");
 
   return flags;
 }
@@ -1260,8 +1260,8 @@ wxString TextCell::ToXML() const {
   wxString xmlstring = XMLescape(m_displayedText);
   // convert it, so that the XML configuration doesn't fail
 
-  return wxT("<") + tag + GetXMLFlags() + wxT(">") + xmlstring + wxT("</") +
-    tag + wxT(">");
+  return wxS("<") + tag + GetXMLFlags() + wxS(">") + xmlstring + wxS("</") +
+    tag + wxS(">");
 }
 
 bool TextCell::IsShortNum() const {
@@ -1272,317 +1272,317 @@ wxString TextCell::GetGreekStringUnicode() const {
   wxString txt(m_text);
 
   if (!txt.empty() && txt[0] != '%')
-    txt.Prepend(wxT("%"));
+    txt.Prepend(wxS("%"));
 
-  if (txt == wxT("%alpha"))
-    return wxT("\u03B1");
-  else if (txt == wxT("%beta"))
-    return wxT("\u03B2");
-  else if (txt == wxT("%gamma"))
-    return wxT("\u03B3");
-  else if (txt == wxT("%delta"))
-    return wxT("\u03B4");
-  else if (txt == wxT("%epsilon"))
-    return wxT("\u03B5");
-  else if (txt == wxT("%zeta"))
-    return wxT("\u03B6");
-  else if (txt == wxT("%eta"))
-    return wxT("\u03B7");
-  else if (txt == wxT("%theta"))
-    return wxT("\u03B8");
-  else if (txt == wxT("%iota"))
-    return wxT("\u03B9");
-  else if (txt == wxT("%kappa"))
-    return wxT("\u03BA");
-  else if (txt == wxT("%lambda"))
-    return wxT("\u03BB");
-  else if (txt == wxT("%mu"))
-    return wxT("\u03BC");
-  else if (txt == wxT("%nu"))
-    return wxT("\u03BD");
-  else if (txt == wxT("%xi"))
-    return wxT("\u03BE");
-  else if (txt == wxT("%omicron"))
-    return wxT("\u03BF");
-  else if (txt == wxT("%pi"))
-    return wxT("\u03C0");
-  else if (txt == wxT("%rho"))
-    return wxT("\u03C1");
-  else if (txt == wxT("%sigma"))
-    return wxT("\u03C3");
-  else if (txt == wxT("%tau"))
-    return wxT("\u03C4");
-  else if (txt == wxT("%upsilon"))
-    return wxT("\u03C5");
-  else if (txt == wxT("%phi"))
-    return wxT("\u03C6");
-  else if (txt == wxT("%chi"))
-    return wxT("\u03C7");
-  else if (txt == wxT("%psi"))
-    return wxT("\u03C8");
-  else if (txt == wxT("%omega"))
-    return wxT("\u03C9");
-  else if (txt == wxT("%Alpha"))
-    return wxT("\u0391");
-  else if (txt == wxT("%Beta"))
-    return wxT("\u0392");
-  else if (txt == wxT("%Gamma"))
-    return wxT("\u0393");
-  else if (txt == wxT("%Delta"))
-    return wxT("\u0394");
-  else if (txt == wxT("%Epsilon"))
-    return wxT("\u0395");
-  else if (txt == wxT("%Zeta"))
-    return wxT("\u0396");
-  else if (txt == wxT("%Eta"))
-    return wxT("\u0397");
-  else if (txt == wxT("%Theta"))
-    return wxT("\u0398");
-  else if (txt == wxT("%Iota"))
-    return wxT("\u0399");
-  else if (txt == wxT("%Kappa"))
-    return wxT("\u039A");
-  else if (txt == wxT("%Lambda"))
-    return wxT("\u039B");
-  else if (txt == wxT("%Mu"))
-    return wxT("\u039C");
-  else if (txt == wxT("%Nu"))
-    return wxT("\u039D");
-  else if (txt == wxT("%Xi"))
-    return wxT("\u039E");
-  else if (txt == wxT("%Omicron"))
-    return wxT("\u039F");
-  else if (txt == wxT("%Pi"))
-    return wxT("\u03A0");
-  else if (txt == wxT("%Rho"))
-    return wxT("\u03A1");
-  else if (txt == wxT("%Sigma"))
-    return wxT("\u03A3");
-  else if (txt == wxT("%Tau"))
-    return wxT("\u03A4");
-  else if (txt == wxT("%Upsilon"))
-    return wxT("\u03A5");
-  else if (txt == wxT("%Phi"))
-    return wxT("\u03A6");
-  else if (txt == wxT("%Chi"))
-    return wxT("\u03A7");
-  else if (txt == wxT("%Psi"))
-    return wxT("\u03A8");
-  else if (txt == wxT("%Omega"))
-    return wxT("\u03A9");
+  if (txt == wxS("%alpha"))
+    return wxS("\u03B1");
+  else if (txt == wxS("%beta"))
+    return wxS("\u03B2");
+  else if (txt == wxS("%gamma"))
+    return wxS("\u03B3");
+  else if (txt == wxS("%delta"))
+    return wxS("\u03B4");
+  else if (txt == wxS("%epsilon"))
+    return wxS("\u03B5");
+  else if (txt == wxS("%zeta"))
+    return wxS("\u03B6");
+  else if (txt == wxS("%eta"))
+    return wxS("\u03B7");
+  else if (txt == wxS("%theta"))
+    return wxS("\u03B8");
+  else if (txt == wxS("%iota"))
+    return wxS("\u03B9");
+  else if (txt == wxS("%kappa"))
+    return wxS("\u03BA");
+  else if (txt == wxS("%lambda"))
+    return wxS("\u03BB");
+  else if (txt == wxS("%mu"))
+    return wxS("\u03BC");
+  else if (txt == wxS("%nu"))
+    return wxS("\u03BD");
+  else if (txt == wxS("%xi"))
+    return wxS("\u03BE");
+  else if (txt == wxS("%omicron"))
+    return wxS("\u03BF");
+  else if (txt == wxS("%pi"))
+    return wxS("\u03C0");
+  else if (txt == wxS("%rho"))
+    return wxS("\u03C1");
+  else if (txt == wxS("%sigma"))
+    return wxS("\u03C3");
+  else if (txt == wxS("%tau"))
+    return wxS("\u03C4");
+  else if (txt == wxS("%upsilon"))
+    return wxS("\u03C5");
+  else if (txt == wxS("%phi"))
+    return wxS("\u03C6");
+  else if (txt == wxS("%chi"))
+    return wxS("\u03C7");
+  else if (txt == wxS("%psi"))
+    return wxS("\u03C8");
+  else if (txt == wxS("%omega"))
+    return wxS("\u03C9");
+  else if (txt == wxS("%Alpha"))
+    return wxS("\u0391");
+  else if (txt == wxS("%Beta"))
+    return wxS("\u0392");
+  else if (txt == wxS("%Gamma"))
+    return wxS("\u0393");
+  else if (txt == wxS("%Delta"))
+    return wxS("\u0394");
+  else if (txt == wxS("%Epsilon"))
+    return wxS("\u0395");
+  else if (txt == wxS("%Zeta"))
+    return wxS("\u0396");
+  else if (txt == wxS("%Eta"))
+    return wxS("\u0397");
+  else if (txt == wxS("%Theta"))
+    return wxS("\u0398");
+  else if (txt == wxS("%Iota"))
+    return wxS("\u0399");
+  else if (txt == wxS("%Kappa"))
+    return wxS("\u039A");
+  else if (txt == wxS("%Lambda"))
+    return wxS("\u039B");
+  else if (txt == wxS("%Mu"))
+    return wxS("\u039C");
+  else if (txt == wxS("%Nu"))
+    return wxS("\u039D");
+  else if (txt == wxS("%Xi"))
+    return wxS("\u039E");
+  else if (txt == wxS("%Omicron"))
+    return wxS("\u039F");
+  else if (txt == wxS("%Pi"))
+    return wxS("\u03A0");
+  else if (txt == wxS("%Rho"))
+    return wxS("\u03A1");
+  else if (txt == wxS("%Sigma"))
+    return wxS("\u03A3");
+  else if (txt == wxS("%Tau"))
+    return wxS("\u03A4");
+  else if (txt == wxS("%Upsilon"))
+    return wxS("\u03A5");
+  else if (txt == wxS("%Phi"))
+    return wxS("\u03A6");
+  else if (txt == wxS("%Chi"))
+    return wxS("\u03A7");
+  else if (txt == wxS("%Psi"))
+    return wxS("\u03A8");
+  else if (txt == wxS("%Omega"))
+    return wxS("\u03A9");
 
   return m_text;
 }
 
 wxString TextCell::GetSymbolUnicode(bool keepPercent) const {
-  if (m_text == wxT("+"))
-    return wxT("+");
-  else if (m_text == wxT("="))
-    return wxT("=");
-  else if (m_text == wxT("inf"))
-    return wxT("\u221E");
-  else if (m_text == wxT("%pi"))
-    return wxT("\u03C0");
-  else if (m_text == wxT("<="))
-    return wxT("\u2264");
-  else if (m_text == wxT(">="))
-    return wxT("\u2265");
+  if (m_text == wxS("+"))
+    return wxS("+");
+  else if (m_text == wxS("="))
+    return wxS("=");
+  else if (m_text == wxS("inf"))
+    return wxS("\u221E");
+  else if (m_text == wxS("%pi"))
+    return wxS("\u03C0");
+  else if (m_text == wxS("<="))
+    return wxS("\u2264");
+  else if (m_text == wxS(">="))
+    return wxS("\u2265");
 #ifndef __WXMSW__
-  else if (m_text == wxT(" and "))
-    return wxT(" \u22C0 ");
-  else if (m_text == wxT(" or "))
-    return wxT(" \u22C1 ");
-  else if (m_text == wxT(" xor "))
-    return wxT(" \u22BB ");
-  else if (m_text == wxT(" nand "))
-    return wxT(" \u22BC ");
-  else if (m_text == wxT(" nor "))
-    return wxT(" \u22BD ");
-  else if (m_text == wxT(" implies "))
-    return wxT(" \u21D2 ");
-  else if (m_text == wxT(" equiv "))
-    return wxT(" \u21D4 ");
-  else if (m_text == wxT("not"))
-    return wxT("\u00AC");
+  else if (m_text == wxS(" and "))
+    return wxS(" \u22C0 ");
+  else if (m_text == wxS(" or "))
+    return wxS(" \u22C1 ");
+  else if (m_text == wxS(" xor "))
+    return wxS(" \u22BB ");
+  else if (m_text == wxS(" nand "))
+    return wxS(" \u22BC ");
+  else if (m_text == wxS(" nor "))
+    return wxS(" \u22BD ");
+  else if (m_text == wxS(" implies "))
+    return wxS(" \u21D2 ");
+  else if (m_text == wxS(" equiv "))
+    return wxS(" \u21D4 ");
+  else if (m_text == wxS("not"))
+    return wxS("\u00AC");
 #endif
-  else if (m_text == wxT("->"))
-    return wxT("\u2192");
-  else if (m_text == wxT("-->"))
-    return wxT("\u2794");
+  else if (m_text == wxS("->"))
+    return wxS("\u2192");
+  else if (m_text == wxS("-->"))
+    return wxS("\u2794");
   // The next two ones are needed for the output of let(a/b,a+1);
-  else if (m_text == wxT(" --> "))
-    return wxT("\u2794");
-  else if (m_text == wxT(" \u2212\u2192 "))
-    return wxT("\u2794");
+  else if (m_text == wxS(" --> "))
+    return wxS("\u2794");
+  else if (m_text == wxS(" \u2212\u2192 "))
+    return wxS("\u2794");
   /*
-    else if (GetTextStyle() == TS_SPECIAL_CONSTANT && m_text == wxT("d"))
-    return wxT("\u2202");
+    else if (GetTextStyle() == TS_SPECIAL_CONSTANT && m_text == wxS("d"))
+    return wxS("\u2202");
   */
 
   if (!keepPercent) {
-    if (m_text == wxT("%e"))
-      return wxT("e");
-    else if (m_text == wxT("%i"))
-      return wxT("i");
-    else if (m_text == wxT("%pi"))
-      return wxString(wxT("\u03C0"));
+    if (m_text == wxS("%e"))
+      return wxS("e");
+    else if (m_text == wxS("%i"))
+      return wxS("i");
+    else if (m_text == wxS("%pi"))
+      return wxString(wxS("\u03C0"));
   }
 
   return wxEmptyString;
 }
 
 wxString TextCell::GetGreekStringTeX() const {
-  if (m_text == wxT("gamma"))
-    return wxT("\u00C0");
-  else if (m_text == wxT("zeta"))
-    return wxT("\u00B0");
-  else if (m_text == wxT("psi"))
-    return wxT("\u00C9");
+  if (m_text == wxS("gamma"))
+    return wxS("\u00C0");
+  else if (m_text == wxS("zeta"))
+    return wxS("\u00B0");
+  else if (m_text == wxS("psi"))
+    return wxS("\u00C9");
 
   wxString txt(m_text);
   if (txt[0] != '%')
-    txt = wxT("%") + txt;
+    txt = wxS("%") + txt;
 
-  if (txt == wxT("%alpha"))
-    return wxT("\u00CB");
-  else if (txt == wxT("%beta"))
-    return wxT("\u00CC");
-  else if (txt == wxT("%gamma"))
-    return wxT("\u00CD");
-  else if (txt == wxT("%delta"))
-    return wxT("\u00CE");
-  else if (txt == wxT("%epsilon"))
-    return wxT("\u00CF");
-  else if (txt == wxT("%zeta"))
-    return wxT("\u00B0");
-  else if (txt == wxT("%eta"))
-    return wxT("\u00D1");
-  else if (txt == wxT("%theta"))
-    return wxT("\u00D2");
-  else if (txt == wxT("%iota"))
-    return wxT("\u00D3");
-  else if (txt == wxT("%kappa"))
-    return wxT("\u00D4");
-  else if (txt == wxT("%lambda"))
-    return wxT("\u00D5");
-  else if (txt == wxT("%mu"))
-    return wxT("\u00D6");
-  else if (txt == wxT("%nu"))
-    return wxT("\u00B7");
-  else if (txt == wxT("%xi"))
-    return wxT("\u00D8");
-  else if (txt == wxT("%omicron"))
-    return wxT("o");
-  else if (txt == wxT("%pi"))
-    return wxT("\u00D9");
-  else if (txt == wxT("%rho"))
-    return wxT("\u00DA");
-  else if (txt == wxT("%sigma"))
-    return wxT("\u00DB");
-  else if (txt == wxT("%tau"))
-    return wxT("\u00DC");
-  else if (txt == wxT("%upsilon"))
-    return wxT("\u00B5");
-  else if (txt == wxT("%chi"))
-    return wxT("\u00DF");
-  else if (txt == wxT("%psi"))
-    return wxT("\u00EF");
-  else if (txt == wxT("%phi"))
-    return wxT("\u0027");
-  else if (txt == wxT("%omega"))
-    return wxT("\u0021");
-  else if (txt == wxT("%Alpha"))
-    return wxT("A");
-  else if (txt == wxT("%Beta"))
-    return wxT("B");
-  else if (txt == wxT("%Gamma"))
-    return wxT("\u00C0");
-  else if (txt == wxT("%Delta"))
-    return wxT("\u00C1");
-  else if (txt == wxT("%Epsilon"))
-    return wxT("E");
-  else if (txt == wxT("%Zeta"))
-    return wxT("Z");
-  else if (txt == wxT("%Eta"))
-    return wxT("H");
-  else if (txt == wxT("%Theta"))
-    return wxT("\u00C2");
-  else if (txt == wxT("%Iota"))
-    return wxT("I");
-  else if (txt == wxT("%Kappa"))
-    return wxT("K");
-  else if (txt == wxT("%Lambda"))
-    return wxT("\u00C3");
-  else if (txt == wxT("%Mu"))
-    return wxT("M");
-  else if (txt == wxT("%Nu"))
-    return wxT("N");
-  else if (txt == wxT("%Xi"))
-    return wxT("\u00C4");
-  else if (txt == wxT("%Omicron"))
-    return wxT("O");
-  else if (txt == wxT("%Pi"))
-    return wxT("\u00C5");
-  else if (txt == wxT("%Rho"))
-    return wxT("P");
-  else if (txt == wxT("%Sigma"))
-    return wxT("\u00C6");
-  else if (txt == wxT("%Tau"))
-    return wxT("T");
-  else if (txt == wxT("%Upsilon"))
-    return wxT("Y");
-  else if (txt == wxT("%Phi"))
-    return wxT("\u00C8");
-  else if (txt == wxT("%Chi"))
-    return wxT("X");
-  else if (txt == wxT("%Psi"))
-    return wxT("\u00C9");
-  else if (txt == wxT("%Omega"))
-    return wxT("\u00CA");
+  if (txt == wxS("%alpha"))
+    return wxS("\u00CB");
+  else if (txt == wxS("%beta"))
+    return wxS("\u00CC");
+  else if (txt == wxS("%gamma"))
+    return wxS("\u00CD");
+  else if (txt == wxS("%delta"))
+    return wxS("\u00CE");
+  else if (txt == wxS("%epsilon"))
+    return wxS("\u00CF");
+  else if (txt == wxS("%zeta"))
+    return wxS("\u00B0");
+  else if (txt == wxS("%eta"))
+    return wxS("\u00D1");
+  else if (txt == wxS("%theta"))
+    return wxS("\u00D2");
+  else if (txt == wxS("%iota"))
+    return wxS("\u00D3");
+  else if (txt == wxS("%kappa"))
+    return wxS("\u00D4");
+  else if (txt == wxS("%lambda"))
+    return wxS("\u00D5");
+  else if (txt == wxS("%mu"))
+    return wxS("\u00D6");
+  else if (txt == wxS("%nu"))
+    return wxS("\u00B7");
+  else if (txt == wxS("%xi"))
+    return wxS("\u00D8");
+  else if (txt == wxS("%omicron"))
+    return wxS("o");
+  else if (txt == wxS("%pi"))
+    return wxS("\u00D9");
+  else if (txt == wxS("%rho"))
+    return wxS("\u00DA");
+  else if (txt == wxS("%sigma"))
+    return wxS("\u00DB");
+  else if (txt == wxS("%tau"))
+    return wxS("\u00DC");
+  else if (txt == wxS("%upsilon"))
+    return wxS("\u00B5");
+  else if (txt == wxS("%chi"))
+    return wxS("\u00DF");
+  else if (txt == wxS("%psi"))
+    return wxS("\u00EF");
+  else if (txt == wxS("%phi"))
+    return wxS("\u0027");
+  else if (txt == wxS("%omega"))
+    return wxS("\u0021");
+  else if (txt == wxS("%Alpha"))
+    return wxS("A");
+  else if (txt == wxS("%Beta"))
+    return wxS("B");
+  else if (txt == wxS("%Gamma"))
+    return wxS("\u00C0");
+  else if (txt == wxS("%Delta"))
+    return wxS("\u00C1");
+  else if (txt == wxS("%Epsilon"))
+    return wxS("E");
+  else if (txt == wxS("%Zeta"))
+    return wxS("Z");
+  else if (txt == wxS("%Eta"))
+    return wxS("H");
+  else if (txt == wxS("%Theta"))
+    return wxS("\u00C2");
+  else if (txt == wxS("%Iota"))
+    return wxS("I");
+  else if (txt == wxS("%Kappa"))
+    return wxS("K");
+  else if (txt == wxS("%Lambda"))
+    return wxS("\u00C3");
+  else if (txt == wxS("%Mu"))
+    return wxS("M");
+  else if (txt == wxS("%Nu"))
+    return wxS("N");
+  else if (txt == wxS("%Xi"))
+    return wxS("\u00C4");
+  else if (txt == wxS("%Omicron"))
+    return wxS("O");
+  else if (txt == wxS("%Pi"))
+    return wxS("\u00C5");
+  else if (txt == wxS("%Rho"))
+    return wxS("P");
+  else if (txt == wxS("%Sigma"))
+    return wxS("\u00C6");
+  else if (txt == wxS("%Tau"))
+    return wxS("T");
+  else if (txt == wxS("%Upsilon"))
+    return wxS("Y");
+  else if (txt == wxS("%Phi"))
+    return wxS("\u00C8");
+  else if (txt == wxS("%Chi"))
+    return wxS("X");
+  else if (txt == wxS("%Psi"))
+    return wxS("\u00C9");
+  else if (txt == wxS("%Omega"))
+    return wxS("\u00CA");
 
   return wxEmptyString;
 }
 
 wxString TextCell::GetSymbolTeX() const {
-  if (m_text == wxT("inf"))
-    return wxT("\u0031");
-  else if (m_text == wxT("+"))
-    return wxT("+");
-  else if (m_text == wxT("%pi"))
-    return wxT("\u00D9");
-  else if (m_text == wxT("="))
-    return wxT("=");
-  else if (m_text == wxT("->"))
-    return wxT("\u0021");
-  else if (m_text == wxT(">="))
-    return wxT("\u00D5");
-  else if (m_text == wxT("<="))
-    return wxT("\u00D4");
+  if (m_text == wxS("inf"))
+    return wxS("\u0031");
+  else if (m_text == wxS("+"))
+    return wxS("+");
+  else if (m_text == wxS("%pi"))
+    return wxS("\u00D9");
+  else if (m_text == wxS("="))
+    return wxS("=");
+  else if (m_text == wxS("->"))
+    return wxS("\u0021");
+  else if (m_text == wxS(">="))
+    return wxS("\u00D5");
+  else if (m_text == wxS("<="))
+    return wxS("\u00D4");
   /*
-    else if (m_text == wxT(" and "))
-    return wxT(" \u005E ");
-    else if (m_text == wxT(" or "))
-    return wxT(" \u005F ");
-    else if (m_text == wxT(" nand "))
-    return wxT(" \u0022 ");
-    else if (m_text == wxT(" nor "))
-    return wxT(" \u0023 ");
-    else if (m_text == wxT(" eq "))
-    return wxT(" \u002C ");
-    else if (m_text == wxT(" implies "))
-    return wxT(" \u0029 ");
-    else if (m_text == wxT("not"))
-    return wxT("\u003A");
-    else if (m_text == wxT(" xor "))
-    return wxT("\u00C8");
+    else if (m_text == wxS(" and "))
+    return wxS(" \u005E ");
+    else if (m_text == wxS(" or "))
+    return wxS(" \u005F ");
+    else if (m_text == wxS(" nand "))
+    return wxS(" \u0022 ");
+    else if (m_text == wxS(" nor "))
+    return wxS(" \u0023 ");
+    else if (m_text == wxS(" eq "))
+    return wxS(" \u002C ");
+    else if (m_text == wxS(" implies "))
+    return wxS(" \u0029 ");
+    else if (m_text == wxS("not"))
+    return wxS("\u003A");
+    else if (m_text == wxS(" xor "))
+    return wxS("\u00C8");
   */
 
   return wxEmptyString;
 }
 
 // RegExes all TextCells share.
-wxRegEx TextCell::m_unescapeRegEx(wxT("\\\\(.)"));
-wxRegEx TextCell::m_roundingErrorRegEx1(wxT("\\.000000000000[0-9]+$"));
-wxRegEx TextCell::m_roundingErrorRegEx2(wxT("\\.999999999999[0-9]+$"));
-wxRegEx TextCell::m_roundingErrorRegEx3(wxT("\\.000000000000[0-9]+e"));
-wxRegEx TextCell::m_roundingErrorRegEx4(wxT("\\.999999999999[0-9]+e"));
+wxRegEx TextCell::m_unescapeRegEx(wxS("\\\\(.)"));
+wxRegEx TextCell::m_roundingErrorRegEx1(wxS("\\.000000000000[0-9]+$"));
+wxRegEx TextCell::m_roundingErrorRegEx2(wxS("\\.999999999999[0-9]+$"));
+wxRegEx TextCell::m_roundingErrorRegEx3(wxS("\\.000000000000[0-9]+e"));
+wxRegEx TextCell::m_roundingErrorRegEx4(wxS("\\.999999999999[0-9]+e"));

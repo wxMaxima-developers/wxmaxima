@@ -99,11 +99,11 @@ wxString DiffCell::ToString() const {
   if (IsBrokenIntoLines())
     return wxEmptyString;
   Cell *tmp = m_baseCell->GetNext();
-  wxString s = wxT("'diff(");
+  wxString s = wxS("'diff(");
   if (tmp != NULL)
     s += tmp->ListToString();
   s += m_diffCell->ListToString();
-  s += wxT(")");
+  s += wxS(")");
   return s;
 }
 
@@ -111,11 +111,11 @@ wxString DiffCell::ToMatlab() const {
   if (IsBrokenIntoLines())
     return wxEmptyString;
   Cell *tmp = m_baseCell->GetNext();
-  wxString s = wxT("'diff(");
+  wxString s = wxS("'diff(");
   if (tmp != NULL)
     s += tmp->ListToMatlab();
   s += m_diffCell->ListToMatlab();
-  s += wxT(")");
+  s += wxS(")");
   return s;
 }
 
@@ -126,7 +126,7 @@ wxString DiffCell::ToTeX() const {
   wxString function = m_baseCell->ListToTeX();
 
   if (m_configuration->UsePartialForDiff())
-    diff.Replace(wxT("\\frac{d}{d"), wxT("\\frac{\\partial}{\\partial"));
+    diff.Replace(wxS("\\frac{d}{d"), wxS("\\frac{\\partial}{\\partial"));
 
   wxString s = diff + function;
   return s;
@@ -135,14 +135,14 @@ wxString DiffCell::ToTeX() const {
 wxString DiffCell::ToMathML() const {
   wxString retval;
 
-  retval = wxT("<mrow>") + m_diffCell->ListToMathML();
+  retval = wxS("<mrow>") + m_diffCell->ListToMathML();
   if (m_baseCell)
     retval += m_baseCell->ListToMathML();
-  retval += wxT("</mrow>\n");
-  // retval = wxT("<apply><diff/><ci>") + m_diffCell->ListToMathML() +
-  // wxT("</ci>"); if(m_baseCell)
-  //   retval += wxT("<ci>") + m_baseCell->ListToMathML() + wxT("</ci>") ;
-  // retval += wxT("</apply>");
+  retval += wxS("</mrow>\n");
+  // retval = wxS("<apply><diff/><ci>") + m_diffCell->ListToMathML() +
+  // wxS("</ci>"); if(m_baseCell)
+  //   retval += wxS("<ci>") + m_baseCell->ListToMathML() + wxS("</ci>") ;
+  // retval += wxS("</apply>");
   return retval;
 }
 
@@ -159,9 +159,9 @@ wxString DiffCell::ToOMML() const {
 wxString DiffCell::ToXML() const {
   wxString flags;
   if (HasHardLineBreak())
-    flags += wxT(" breakline=\"true\"");
+    flags += wxS(" breakline=\"true\"");
 
-  return wxT("<d") + flags + wxT(">") + m_diffCell->ListToXML() +
+  return wxS("<d") + flags + wxS(">") + m_diffCell->ListToXML() +
     m_baseCell->ListToXML() + _T("</d>");
 }
 

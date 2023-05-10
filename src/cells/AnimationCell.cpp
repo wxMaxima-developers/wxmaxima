@@ -206,10 +206,10 @@ void AnimationCell::LoadImages(wxArrayString images, bool deleteRead) {
     LoadImages(images[0]);
   } else
     for (size_t i = 0; i < images.GetCount(); i++) {
-      if (images[i].EndsWith(".gnuplot"))
+      if (images[i].EndsWith(wxS(".gnuplot")))
         gnuplotFilename = images[i];
       else {
-        if (images[i].EndsWith(".data"))
+        if (images[i].EndsWith(wxS(".data")))
           dataFilename = images[i];
         else {
           m_images.push_back(std::make_shared<Image>(m_configuration, images[i],
@@ -353,11 +353,11 @@ void AnimationCell::Draw(wxPoint point) {
   m_drawBoundingBox = false;
 }
 
-wxString AnimationCell::ToString() const { return wxT(" << Animation >> "); }
+wxString AnimationCell::ToString() const { return wxS(" << Animation >> "); }
 
-wxString AnimationCell::ToMatlab() const { return wxT(" << Animation >> "); }
+wxString AnimationCell::ToMatlab() const { return wxS(" << Animation >> "); }
 
-wxString AnimationCell::ToTeX() const { return wxT(" << Graphics >> "); }
+wxString AnimationCell::ToTeX() const { return wxS(" << Graphics >> "); }
 
 wxString AnimationCell::ToXML() const {
   if (!IsOk())
@@ -401,25 +401,25 @@ wxString AnimationCell::ToXML() const {
 					m_images[i]->GetCompressedImage());
     }
 
-    images += basename + m_images[i]->GetExtension() + wxT(";");
+    images += basename + m_images[i]->GetExtension() + wxS(";");
   }
 
   wxString flags;
   flags = " gnuplotSources_gz=\"" + gnuplotSourceFiles + "\"";
   flags += " gnuplotData_gz=\"" + gnuplotDataFiles + "\"";
   if (Length() > 0)
-    flags += wxString::Format(wxT(" ppi=\"%i\""), m_images[1]->GetPPI());
+    flags += wxString::Format(wxS(" ppi=\"%i\""), m_images[1]->GetPPI());
   if (HasHardLineBreak())
-    flags += wxT(" breakline=\"true\"");
+    flags += wxS(" breakline=\"true\"");
   if (m_animationRunning)
-    flags += wxT(" running=\"true\"");
+    flags += wxS(" running=\"true\"");
   else
-    flags += wxT(" running=\"false\"");
-  flags += wxString::Format(wxT(" frame=\"%i\""), m_displayed);
+    flags += wxS(" running=\"false\"");
+  flags += wxString::Format(wxS(" frame=\"%i\""), m_displayed);
 
   if (m_framerate > 0)
-    flags += wxString::Format(wxT(" fr=\"%i\""), GetFrameRate());
-  return wxT("\n<slide") + flags + wxT(">") + images + wxT("</slide>");
+    flags += wxString::Format(wxS(" fr=\"%i\""), GetFrameRate());
+  return wxS("\n<slide") + flags + wxS(">") + images + wxS("</slide>");
 }
 
 void AnimationCell::SetPPI(int ppi) {
@@ -440,23 +440,23 @@ wxString AnimationCell::ToRTF() const {
   // image.
 
   // Lines that are common to all types of images
-  wxString header = wxT("{\\pict");
-  wxString footer = wxT("}\n");
+  wxString header = wxS("{\\pict");
+  wxString footer = wxS("}\n");
 
   // Extract the description of the image data
   wxString image;
   wxMemoryBuffer imgdata;
-  if (m_images[m_displayed]->GetExtension().Lower() == wxT("png")) {
+  if (m_images[m_displayed]->GetExtension().Lower() == wxS("png")) {
     imgdata = m_images[m_displayed]->GetCompressedImage();
-    image = wxT("\\pngblip\n");
-  } else if ((m_images[m_displayed]->GetExtension().Lower() == wxT("jpg")) ||
-             (m_images[m_displayed]->GetExtension().Lower() == wxT("jpeg"))) {
+    image = wxS("\\pngblip\n");
+  } else if ((m_images[m_displayed]->GetExtension().Lower() == wxS("jpg")) ||
+             (m_images[m_displayed]->GetExtension().Lower() == wxS("jpeg"))) {
     imgdata = m_images[m_displayed]->GetCompressedImage();
-    image = wxT("\\jpegblip\n");
+    image = wxS("\\jpegblip\n");
   } else {
     // Convert any non-rtf-enabled format to .png before adding it to the .rtf
     // file.
-    image = wxT("\\pngblip\n");
+    image = wxS("\\pngblip\n");
     wxImage imagedata =
       m_images[m_displayed]->GetUnscaledBitmap().ConvertToImage();
     wxMemoryOutputStream stream;
@@ -466,7 +466,7 @@ wxString AnimationCell::ToRTF() const {
   }
 
   image += wxString::Format(
-			    wxT("\\picw%lu\\pich%lu "),
+			    wxS("\\picw%lu\\pich%lu "),
 			    (unsigned long)m_images[m_displayed]->GetOriginalWidth(),
 			    (unsigned long)m_images[m_displayed]->GetOriginalHeight());
 
@@ -597,4 +597,4 @@ bool AnimationCell::CopyAnimationToClipboard() {
   return false;
 }
 
-wxDataFormat AnimationCell::m_gifFormat(wxT("image/gif"));
+wxDataFormat AnimationCell::m_gifFormat(wxS("image/gif"));

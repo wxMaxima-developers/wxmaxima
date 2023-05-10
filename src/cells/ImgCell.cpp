@@ -247,23 +247,23 @@ static void writeHex(void *data, size_t length, wxStringBuffer::CharType *out) {
 
 wxString ImgCell::ToRTF() const {
   // Lines that are common to all types of images
-  wxString header = wxT("{\\pict");
-  wxString footer = wxT("}\n");
+  wxString header = wxS("{\\pict");
+  wxString footer = wxS("}\n");
 
   // Extract the description of the image data
   wxString image;
   wxMemoryBuffer imgdata;
-  if (m_image->GetExtension().Lower() == wxT("png")) {
+  if (m_image->GetExtension().Lower() == wxS("png")) {
     imgdata = GetCompressedImage();
-    image = wxT("\\pngblip");
-  } else if ((m_image->GetExtension().Lower() == wxT("jpg")) ||
-             (m_image->GetExtension().Lower() == wxT("jpeg"))) {
+    image = wxS("\\pngblip");
+  } else if ((m_image->GetExtension().Lower() == wxS("jpg")) ||
+             (m_image->GetExtension().Lower() == wxS("jpeg"))) {
     imgdata = GetCompressedImage();
-    image = wxT("\\jpegblip");
+    image = wxS("\\jpegblip");
   } else {
     // Convert any non-rtf-enabled format to .png before adding it to the .rtf
     // file.
-    image = wxT("\\pngblip");
+    image = wxS("\\pngblip");
     wxImage imagedata = m_image->GetUnscaledBitmap().ConvertToImage();
     wxMemoryOutputStream stream;
     imagedata.SaveFile(stream, wxBITMAP_TYPE_PNG);
@@ -271,7 +271,7 @@ wxString ImgCell::ToRTF() const {
                        stream.GetOutputStreamBuffer()->GetBufferSize());
   }
 
-  image += wxString::Format(wxT("\\picw%lu\\pich%lu "),
+  image += wxString::Format(wxS("\\picw%lu\\pich%lu "),
                             (unsigned long)m_image->GetOriginalWidth(),
                             (unsigned long)m_image->GetOriginalHeight());
 
@@ -298,23 +298,23 @@ wxString ImgCell::ToXML() const {
 
   wxString flags;
   if (HasHardLineBreak())
-    flags += wxT(" breakline=\"true\"");
+    flags += wxS(" breakline=\"true\"");
 
-  flags += wxString::Format(wxT(" ppi=\"%i\""), m_image->GetPPI());
+  flags += wxString::Format(wxS(" ppi=\"%i\""), m_image->GetPPI());
 
   if (!m_drawRectangle)
-    flags += wxT(" rect=\"false\"");
+    flags += wxS(" rect=\"false\"");
 
   if (m_image->GetMaxWidth() > 0)
-    flags += wxString::Format(wxT(" maxWidth=\"%f\""), m_image->GetMaxWidth());
+    flags += wxString::Format(wxS(" maxWidth=\"%f\""), m_image->GetMaxWidth());
 
   if (m_image->GetHeightList() > 0)
     flags +=
-      wxString::Format(wxT(" maxHeight=\"%f\""), m_image->GetHeightList());
+      wxString::Format(wxS(" maxHeight=\"%f\""), m_image->GetHeightList());
 
   if (m_origImageFile != wxEmptyString) {
     if (m_configuration->SaveImgFileName()) {
-      flags += wxString::Format(wxT(" origImageFile=\"%s\""),
+      flags += wxString::Format(wxS(" origImageFile=\"%s\""),
                                 XMLescape(m_origImageFile));
     }
   }
@@ -323,25 +323,25 @@ wxString ImgCell::ToXML() const {
     // Anonymize the name of our temp directory for saving
     if (m_image->GnuplotData() != wxEmptyString) {
       wxFileName gnuplotDataFile(m_image->GnuplotData());
-      wxString gnuplotData = gnuplotDataFile.GetFullName() + wxT(".gz");
+      wxString gnuplotData = gnuplotDataFile.GetFullName() + wxS(".gz");
       m_configuration->PushFileToSave(gnuplotData,
 				      m_image->GetCompressedGnuplotData());
-      flags += " gnuplotdata_gz=\"" + gnuplotData + "\"";
+      flags += wxS(" gnuplotdata_gz=\"") + gnuplotData + wxS("\"");
     }
     if (m_image->GnuplotSource() != wxEmptyString) {
       wxFileName gnuplotSourceFile(m_image->GnuplotSource());
-      wxString gnuplotSource = gnuplotSourceFile.GetFullName() + wxT(".gz");
+      wxString gnuplotSource = gnuplotSourceFile.GetFullName() + wxS(".gz");
       m_configuration->PushFileToSave(gnuplotSource,
 				      m_image->GetCompressedGnuplotSource());
-      flags += " gnuplotsource_gz=\"" + gnuplotSource + "\"";
+      flags += wxS(" gnuplotsource_gz=\"") + gnuplotSource + wxS("\"");
     }
 
-    return (wxT("<img") + flags + wxT(">") + basename + m_image->GetExtension() +
-	    wxT("</img>"));
+    return (wxS("<img") + flags + wxS(">") + basename + m_image->GetExtension() +
+	    wxS("</img>"));
   }
   else
-    return  (wxT("<img") + flags + wxT(">") +
-          wxT("</img>"));
+    return  (wxS("<img") + flags + wxS(">") +
+          wxS("</img>"));
 }
 
 void ImgCell::DrawBoundingBox(wxDC &WXUNUSED(dc), bool WXUNUSED(all)) {

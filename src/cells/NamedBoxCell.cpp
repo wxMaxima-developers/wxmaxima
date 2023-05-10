@@ -59,11 +59,11 @@ void NamedBoxCell::MakeBreakupCells() {
   if (m_open)
     return;
   m_open =
-    std::make_unique<TextCell>(m_group, m_configuration, wxT("box("));
+    std::make_unique<TextCell>(m_group, m_configuration, wxS("box("));
   static_cast<TextCell &>(*m_open).DontEscapeOpeningParenthesis();
   m_open->SetStyle(TS_FUNCTION);
-  m_comma = std::make_unique<TextCell>(m_group, m_configuration, wxT(","));
-  m_close = std::make_unique<TextCell>(m_group, m_configuration, wxT(")"));
+  m_comma = std::make_unique<TextCell>(m_group, m_configuration, wxS(","));
+  m_close = std::make_unique<TextCell>(m_group, m_configuration, wxS(")"));
 }
 
 void NamedBoxCell::Recalculate(AFontSize fontsize) {
@@ -157,35 +157,35 @@ wxString NamedBoxCell::ToString() const {
   if (IsBrokenIntoLines())
     return wxEmptyString;
   else
-    return wxT("box(") + m_innerCell->ListToString() +
-      wxT(",") + m_boxname->ListToString() + wxT(")");
+    return wxS("box(") + m_innerCell->ListToString() +
+      wxS(",") + m_boxname->ListToString() + wxS(")");
 }
 
 wxString NamedBoxCell::ToMatlab() const {
   if (IsBrokenIntoLines())
     return wxEmptyString;
   else
-    return wxT("box(") + m_innerCell->ListToMatlab() +
-      wxT(",") + m_boxname->ListToMatlab() + wxT(")");
+    return wxS("box(") + m_innerCell->ListToMatlab() +
+      wxS(",") + m_boxname->ListToMatlab() + wxS(")");
 }
 
 wxString NamedBoxCell::ToTeX() const {
   if (IsBrokenIntoLines())
     return wxEmptyString;
   else
-    return wxT("\\fbox{") + m_innerCell->ListToTeX() + wxT("}");
+    return wxS("\\fbox{") + m_innerCell->ListToTeX() + wxS("}");
 }
 
 wxString NamedBoxCell::ToMathML() const {
-   return wxT("<apply><box/><ci>") + m_innerCell->ListToMathML() +
-     wxT("</ci><ci>") +
+   return wxS("<apply><box/><ci>") + m_innerCell->ListToMathML() +
+     wxS("</ci><ci>") +
      m_boxname->ListToMathML() +
-     wxT("</apply>");
+     wxS("</apply>");
 }
 
 wxString NamedBoxCell::ToOMML() const {
   return _T("<m:func><m:fName><m:r>box</m:r></m:fName><m:e>") +
-    m_innerCell->ListToOMML() + wxT("</m:e><m:e>") + 
+    m_innerCell->ListToOMML() + wxS("</m:e><m:e>") + 
     m_boxname->ListToOMML() +
     _T("</m:e></m:func>");
 }
@@ -193,10 +193,10 @@ wxString NamedBoxCell::ToOMML() const {
 wxString NamedBoxCell::ToXML() const {
   wxString flags = " boxname =\"" + XMLescape(m_boxname->GetValue()) + "\"";
   if (HasHardLineBreak())
-    flags += wxT(" breakline=\"true\"");
+    flags += wxS(" breakline=\"true\"");
 
-  return wxT("<hl") + flags + wxT(">") + m_innerCell->ListToXML() +
-    wxT("</hl>");
+  return wxS("<hl") + flags + wxS(">") + m_innerCell->ListToXML() +
+    wxS("</hl>");
 }
 
 bool NamedBoxCell::BreakUp() {

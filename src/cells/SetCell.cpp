@@ -33,8 +33,8 @@
 SetCell::SetCell(GroupCell *group, Configuration *config,
                  std::unique_ptr<Cell> &&inner)
   : ListCell(group, config, std::move(inner)) {
-  m_open = std::make_unique<TextCell>(group, config, wxT("{"));
-  m_close = std::make_unique<TextCell>(group, config, wxT("}"));
+  m_open = std::make_unique<TextCell>(group, config, wxS("{"));
+  m_close = std::make_unique<TextCell>(group, config, wxS("}"));
 }
 
 SetCell::SetCell(GroupCell *group, const SetCell &cell)
@@ -104,14 +104,14 @@ wxString SetCell::ToString() const {
     return "[]";
 
   if (!IsBrokenIntoLines())
-    s = wxT("{") + m_innerCell->ListToString() + wxT("}");
+    s = wxS("{") + m_innerCell->ListToString() + wxS("}");
   return s;
 }
 
 wxString SetCell::ToMatlab() const {
   wxString s;
   if (!IsBrokenIntoLines())
-    s = wxT("{") + m_innerCell->ListToMatlab() + wxT("}");
+    s = wxS("{") + m_innerCell->ListToMatlab() + wxS("}");
   return s;
 }
 
@@ -130,9 +130,9 @@ wxString SetCell::ToTeX() const {
       }
 
     if (needsLeftRight)
-      s = wxT("\\left{ ") + m_innerCell->ListToTeX() + wxT("\\right} ");
+      s = wxS("\\left{ ") + m_innerCell->ListToTeX() + wxS("\\right} ");
     else
-      s = wxT("{") + m_innerCell->ListToTeX() + wxT("}");
+      s = wxS("{") + m_innerCell->ListToTeX() + wxS("}");
   }
   return s;
 }
@@ -141,7 +141,7 @@ wxString SetCell::ToXML() const {
   wxString s = m_innerCell->ListToXML();
   wxString flags;
   if (HasHardLineBreak())
-    flags += wxT(" breakline=\"true\"");
-  return (wxT("<r set=\"true\"") + flags + wxT("><t listdelim=\"true\">{</t>") +
-          s + wxT("<t listdelim=\"true\">}</t></r>"));
+    flags += wxS(" breakline=\"true\"");
+  return (wxS("<r set=\"true\"") + flags + wxS("><t listdelim=\"true\">{</t>") +
+          s + wxS("<t listdelim=\"true\">}</t></r>"));
 }
