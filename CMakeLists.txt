@@ -203,7 +203,7 @@ list(REMOVE_AT AUTHORSLINES 0 1) # remove main heading line.
       endif()
     endforeach()
 
-add_definitions(-DwxNO_UNSAFE_WXSTRING_CONV) #  -DwxNO_IMPLICIT_WXSTRING_ENCODING
+add_definitions(-DwxNO_UNSAFE_WXSTRING_CONV)
 
 
 if(NOT CYGWIN)

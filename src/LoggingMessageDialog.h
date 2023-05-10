@@ -50,7 +50,7 @@ public:
 };
 
 extern int LoggingMessageBox(   const wxString &        message,
-                                const wxString &        caption = wxMessageBoxCaptionStr,
+                                const wxString &        caption = wxString(wxMessageBoxCaptionStr),
                                 int     style = wxOK|wxCENTRE,
                                 wxWindow *      parent = NULL,
                                 int     x = wxDefaultCoord,

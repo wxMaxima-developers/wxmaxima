@@ -31,8 +31,8 @@ CellPointers::CellPointers(wxScrolledCanvas *worksheet)
   : m_worksheet(worksheet) {}
 
 wxString CellPointers::WXMXGetNewFileName() {
-  wxString file(wxT("image"));
-  file << (++m_wxmxImgCounter) << wxT(".");
+  wxString file(wxS("image"));
+  file << (++m_wxmxImgCounter) << wxS(".");
   return file;
 }
 
