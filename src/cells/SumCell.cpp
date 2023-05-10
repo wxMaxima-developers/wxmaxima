@@ -66,9 +66,9 @@ void SumCell::MakeBreakUpCells() {
 
   bool overStringEmpty = m_over->ToString().empty();
   const wxString &openText = (m_sumStyle == SM_SUM && overStringEmpty)
-    ? S_("lsum(")
+    ? wxS("lsum(")
     : (m_sumStyle == SM_SUM && !overStringEmpty)
-    ? S_("sum(")
+    ? wxS("sum(")
     :
     /* (m_sumstyle == SM_PROD) */ wxS("prod(");
 

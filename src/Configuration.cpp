@@ -60,11 +60,11 @@ Configuration::Configuration(wxDC *dc, InitOpt options) :
   wxConfigBase *config = wxConfig::Get();
   std::uniform_int_distribution<long> urd(std::numeric_limits<long>::min(), std::numeric_limits<long>::max());
   m_configId = urd(m_eng);
-  if(!config->Read(wxT("configID"), &m_configId))
-    config->Write(wxT("configID"), m_configId);
+  if(!config->Read(wxS("configID"), &m_configId))
+    config->Write(wxS("configID"), m_configId);
 
   // We want to read the zoom factor, but don't want it to be updated on each ReadConfig()
-  config->Read(wxT("ZoomFactor"), &m_zoomFactor);
+  config->Read(wxS("ZoomFactor"), &m_zoomFactor);
 
   if(m_styleNames.empty())
     {
@@ -194,7 +194,7 @@ Configuration::Configuration(wxDC *dc, InitOpt options) :
   SetBackgroundBrush(*wxWHITE_BRUSH);
   ResetAllToDefaults(options);
   ReadConfig();
-  wxString operators(wxT("\u221A\u22C0\u22C1\u22BB\u22BC\u22BD\u00AC\u222b"
+  wxString operators(wxS("\u221A\u22C0\u22C1\u22BB\u22BC\u22BD\u00AC\u222b"
                          "\u2264\u2265\u2211\u2260+-*/^:=#'!()[]{}"));
   for (wxString::const_iterator it = operators.begin(); it != operators.end();
        ++it)
@@ -237,7 +237,7 @@ void Configuration::ResetAllToDefaults(InitOpt options) {
   m_maximaEnvVars.clear();
   // Tell gnuplot not to wait for <enter> every few lines
 #ifndef __WXMSW__
-  m_maximaEnvVars[wxT("PAGER")] = wxT("cat");
+  m_maximaEnvVars[wxS("PAGER")] = wxS("cat");
 #endif
   m_wrapLatexMath = true;
   m_allowNetworkHelp = false;
@@ -258,20 +258,20 @@ void Configuration::ResetAllToDefaults(InitOpt options) {
   m_wxMathML_Filename = wxEmptyString;
 
   m_mathJaxURL =
-    wxT("https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js");
-  m_usePartialForDiff = false, m_documentclass = wxT("article");
-  m_documentclassOptions = wxT("fleqn");
+    wxS("https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js");
+  m_usePartialForDiff = false, m_documentclass = wxS("article");
+  m_documentclassOptions = wxS("fleqn");
   m_incrementalSearch = true;
-  m_symbolPaneAdditionalChars = wxT("Øü§");
+  m_symbolPaneAdditionalChars = wxS("Øü§");
   m_hidemultiplicationsign = true;
   m_autodetectHelpBrowser = true;
   m_singlePageManual = false;
   m_useInternalHelpBrowser = OfferInternalHelpBrowser();
 #ifdef __WXGTK__
-  m_helpBrowserUserLocation = wxT("xdg-open");
+  m_helpBrowserUserLocation = wxS("xdg-open");
 #else
   // see https://docs.wxwidgets.org/3.0/classwx_mime_types_manager.html
-  auto *manager = wxTheMimeTypesManager;
+  auto *manager = wxSheMimeTypesManager;
   wxFileType *filetype = manager->GetFileTypeFromExtension("html");
   m_helpBrowserUserLocation = filetype->GetOpenCommand({});
 #endif
@@ -356,122 +356,122 @@ void Configuration::ResetAllToDefaults(InitOpt options) {
 
 static const Configuration::EscCodeContainer &EscCodes() {
   static const Configuration::EscCodeContainer escCodes{
-    {wxT("pm"), wxT("\u00B1")},
-    {wxT("+/-"), wxT("\u00B1")},
-    {wxT("alpha"), wxT("\u03B1")},
-    {wxT("beta"), wxT("\u03B2")},
-    {wxT("gamma"), wxT("\u03B3")},
-    {wxT("delta"), wxT("\u03B4")},
-    {wxT("epsilon"), wxT("\u03B5")},
-    {wxT("zeta"), wxT("\u03B6")},
-    {wxT("eta"), wxT("\u03B7")},
-    {wxT("theta"), wxT("\u03B8")},
-    {wxT("iota"), wxT("\u03B9")},
-    {wxT("kappa"), wxT("\u03BA")},
-    {wxT("lambda"), wxT("\u03BB")},
-    {wxT("mu"), wxT("\u03BC")},
-    {wxT("nu"), wxT("\u03BD")},
-    {wxT("xi"), wxT("\u03BE")},
-    {wxT("om"), wxT("\u03BF")},
-    {wxT("omicron"), wxT("\u03BF")},
-    {wxT("nabla"), wxT("\u2207")},
-    {wxT("pi"), wxT("\u03C0")},
-    {wxT("rho"), wxT("\u03C1")},
-    {wxT("sigma"), wxT("\u03C3")},
-    {wxT("tau"), wxT("\u03C4")},
-    {wxT("upsilon"), wxT("\u03C5")},
-    {wxT("phi"), wxT("\u03C6")},
-    {wxT("chi"), wxT("\u03C7")},
-    {wxT("psi"), wxT("\u03C8")},
-    {wxT("omega"), wxT("\u03C9")},
-    {wxT("Alpha"), wxT("\u0391")},
-    {wxT("Beta"), wxT("\u0392")},
-    {wxT("Gamma"), wxT("\u0393")},
-    {wxT("Delta"), wxT("\u0394")},
-    {wxT("Epsilon"), wxT("\u0395")},
-    {wxT("Zeta"), wxT("\u0396")},
-    {wxT("Eta"), wxT("\u0397")},
-    {wxT("Theta"), wxT("\u0398")},
-    {wxT("Iota"), wxT("\u0399")},
-    {wxT("Kappa"), wxT("\u039A")},
-    {wxT("Lambda"), wxT("\u039B")},
-    {wxT("Mu"), wxT("\u039C")},
-    {wxT("Nu"), wxT("\u039D")},
-    {wxT("Xi"), wxT("\u039E")},
-    {wxT("Omicron"), wxT("\u039F")},
-    {wxT("Pi"), wxT("\u03A0")},
-    {wxT("Rho"), wxT("\u03A1")},
-    {wxT("Sigma"), wxT("\u03A3")},
-    {wxT("Tau"), wxT("\u03A4")},
-    {wxT("Upsilon"), wxT("\u03A5")},
-    {wxT("Phi"), wxT("\u03A6")},
-    {wxT("Chi"), wxT("\u03A7")},
-    {wxT("Psi"), wxT("\u03A8")},
-    {wxT("Omega"), wxT("\u03A9")},
-    {wxT("Ohm"), wxT("\u03A9")},
+    {wxS("pm"), wxS("\u00B1")},
+    {wxS("+/-"), wxS("\u00B1")},
+    {wxS("alpha"), wxS("\u03B1")},
+    {wxS("beta"), wxS("\u03B2")},
+    {wxS("gamma"), wxS("\u03B3")},
+    {wxS("delta"), wxS("\u03B4")},
+    {wxS("epsilon"), wxS("\u03B5")},
+    {wxS("zeta"), wxS("\u03B6")},
+    {wxS("eta"), wxS("\u03B7")},
+    {wxS("theta"), wxS("\u03B8")},
+    {wxS("iota"), wxS("\u03B9")},
+    {wxS("kappa"), wxS("\u03BA")},
+    {wxS("lambda"), wxS("\u03BB")},
+    {wxS("mu"), wxS("\u03BC")},
+    {wxS("nu"), wxS("\u03BD")},
+    {wxS("xi"), wxS("\u03BE")},
+    {wxS("om"), wxS("\u03BF")},
+    {wxS("omicron"), wxS("\u03BF")},
+    {wxS("nabla"), wxS("\u2207")},
+    {wxS("pi"), wxS("\u03C0")},
+    {wxS("rho"), wxS("\u03C1")},
+    {wxS("sigma"), wxS("\u03C3")},
+    {wxS("tau"), wxS("\u03C4")},
+    {wxS("upsilon"), wxS("\u03C5")},
+    {wxS("phi"), wxS("\u03C6")},
+    {wxS("chi"), wxS("\u03C7")},
+    {wxS("psi"), wxS("\u03C8")},
+    {wxS("omega"), wxS("\u03C9")},
+    {wxS("Alpha"), wxS("\u0391")},
+    {wxS("Beta"), wxS("\u0392")},
+    {wxS("Gamma"), wxS("\u0393")},
+    {wxS("Delta"), wxS("\u0394")},
+    {wxS("Epsilon"), wxS("\u0395")},
+    {wxS("Zeta"), wxS("\u0396")},
+    {wxS("Eta"), wxS("\u0397")},
+    {wxS("Theta"), wxS("\u0398")},
+    {wxS("Iota"), wxS("\u0399")},
+    {wxS("Kappa"), wxS("\u039A")},
+    {wxS("Lambda"), wxS("\u039B")},
+    {wxS("Mu"), wxS("\u039C")},
+    {wxS("Nu"), wxS("\u039D")},
+    {wxS("Xi"), wxS("\u039E")},
+    {wxS("Omicron"), wxS("\u039F")},
+    {wxS("Pi"), wxS("\u03A0")},
+    {wxS("Rho"), wxS("\u03A1")},
+    {wxS("Sigma"), wxS("\u03A3")},
+    {wxS("Tau"), wxS("\u03A4")},
+    {wxS("Upsilon"), wxS("\u03A5")},
+    {wxS("Phi"), wxS("\u03A6")},
+    {wxS("Chi"), wxS("\u03A7")},
+    {wxS("Psi"), wxS("\u03A8")},
+    {wxS("Omega"), wxS("\u03A9")},
+    {wxS("Ohm"), wxS("\u03A9")},
     //////////////////////////
-    {wxT("^2"), wxT("\u00B2")},
-    {wxT("^3"), wxT("\u00B3")},
-    {wxT("/2"), wxT("\u00BD")},
-    {wxT("sq"), wxT("\u221A")},
-    {wxT("ii"), wxT("\u2148")},
-    {wxT("ee"), wxT("\u2147")},
-    {wxT("hb"), wxT("\u210F")},
-    {wxT("in"), wxT("\u2208")},
-    {wxT("impl"), wxT("\u21D2")},
-    {wxT("inf"), wxT("\u221e")},
-    {wxT("empty"), wxT("\u2205")},
-    {wxT("TB"), wxT("\u25b6")},
-    {wxT("tb"), wxT("\u25b8")},
-    {wxT("and"), wxT("\u22C0")},
-    {wxT("or"), wxT("\u22C1")},
-    {wxT("xor"), wxT("\u22BB")},
-    {wxT("nand"), wxT("\u22BC")},
-    {wxT("nor"), wxT("\u22BD")},
-    {wxT("implies"), wxT("\u21D2")},
-    {wxT("=>"), wxT("\u21D2")},
-    {wxT("<=>"), wxT("\u21D4")},
-    {wxT("not"), wxT("\u00AC")},
-    {wxT("union"), wxT("\u22C3")},
-    {wxT("inter"), wxT("\u22C2")},
-    {wxT("subseteq"), wxT("\u2286")},
-    {wxT("subset"), wxT("\u2282")},
-    {wxT("notsubseteq"), wxT("\u2288")},
-    {wxT("notsubset"), wxT("\u2284")},
-    {wxT("hbar"), wxT("\u0127")},
-    {wxT("Hbar"), wxT("\u0126")},
-    {wxT("partial"), wxT("\u2202")},
-    {wxT("integral"), wxT("\u222b")},
-    {wxT("approx"), wxT("\u2245")},
-    {wxT("prop"), wxT("\u221d")},
-    {wxT("propto"), wxT("\u221d")},
-    {wxT("neq"), wxT("\u2260")},
-    {wxT("!="), wxT("\u2260")},
-    {wxT("/="), wxT("\u2260")},
-    {wxT("#"), wxT("\u2260")},
-    {wxT("<="), wxT("\u2264")},
-    {wxT("leq"), wxT("\u2264")},
-    {wxT(">="), wxT("\u2265")},
-    {wxT("geq"), wxT("\u2265")},
-    {wxT("ll"), wxT("\u226A")},
-    {wxT("<<"), wxT("\u226A")},
-    {wxT("gg"), wxT("\u226B")},
-    {wxT(">>"), wxT("\u226B")},
-    {wxT("qed"), wxT("\u220E")},
-    {wxT("equiv"), wxT("\u2263")},
-    {wxT("sum"), wxT("\u2211")},
-    {wxT("prod"), wxT("\u220F")},
-    {wxT("product"), wxT("\u220F")},
-    {wxT("exists"), wxT("\u2203")},
-    {wxT("nexists"), wxT("\u2204")},
-    {wxT("parallel"), wxT("\u2225")},
-    {wxT("perp"), wxT("\u27C2")},
-    {wxT("perpendicular"), wxT("\u27C2")},
-    {wxT("bot"), wxT("\u27C2")},
-    {wxT("leadsto"), wxT("\u219D")},
-    {wxT("->"), wxT("\u2192")},
-    {wxT("-->"), wxT("\u27F6")},
-    {wxT(" --> "), wxT("\u27F6")},
+    {wxS("^2"), wxS("\u00B2")},
+    {wxS("^3"), wxS("\u00B3")},
+    {wxS("/2"), wxS("\u00BD")},
+    {wxS("sq"), wxS("\u221A")},
+    {wxS("ii"), wxS("\u2148")},
+    {wxS("ee"), wxS("\u2147")},
+    {wxS("hb"), wxS("\u210F")},
+    {wxS("in"), wxS("\u2208")},
+    {wxS("impl"), wxS("\u21D2")},
+    {wxS("inf"), wxS("\u221e")},
+    {wxS("empty"), wxS("\u2205")},
+    {wxS("TB"), wxS("\u25b6")},
+    {wxS("tb"), wxS("\u25b8")},
+    {wxS("and"), wxS("\u22C0")},
+    {wxS("or"), wxS("\u22C1")},
+    {wxS("xor"), wxS("\u22BB")},
+    {wxS("nand"), wxS("\u22BC")},
+    {wxS("nor"), wxS("\u22BD")},
+    {wxS("implies"), wxS("\u21D2")},
+    {wxS("=>"), wxS("\u21D2")},
+    {wxS("<=>"), wxS("\u21D4")},
+    {wxS("not"), wxS("\u00AC")},
+    {wxS("union"), wxS("\u22C3")},
+    {wxS("inter"), wxS("\u22C2")},
+    {wxS("subseteq"), wxS("\u2286")},
+    {wxS("subset"), wxS("\u2282")},
+    {wxS("notsubseteq"), wxS("\u2288")},
+    {wxS("notsubset"), wxS("\u2284")},
+    {wxS("hbar"), wxS("\u0127")},
+    {wxS("Hbar"), wxS("\u0126")},
+    {wxS("partial"), wxS("\u2202")},
+    {wxS("integral"), wxS("\u222b")},
+    {wxS("approx"), wxS("\u2245")},
+    {wxS("prop"), wxS("\u221d")},
+    {wxS("propto"), wxS("\u221d")},
+    {wxS("neq"), wxS("\u2260")},
+    {wxS("!="), wxS("\u2260")},
+    {wxS("/="), wxS("\u2260")},
+    {wxS("#"), wxS("\u2260")},
+    {wxS("<="), wxS("\u2264")},
+    {wxS("leq"), wxS("\u2264")},
+    {wxS(">="), wxS("\u2265")},
+    {wxS("geq"), wxS("\u2265")},
+    {wxS("ll"), wxS("\u226A")},
+    {wxS("<<"), wxS("\u226A")},
+    {wxS("gg"), wxS("\u226B")},
+    {wxS(">>"), wxS("\u226B")},
+    {wxS("qed"), wxS("\u220E")},
+    {wxS("equiv"), wxS("\u2263")},
+    {wxS("sum"), wxS("\u2211")},
+    {wxS("prod"), wxS("\u220F")},
+    {wxS("product"), wxS("\u220F")},
+    {wxS("exists"), wxS("\u2203")},
+    {wxS("nexists"), wxS("\u2204")},
+    {wxS("parallel"), wxS("\u2225")},
+    {wxS("perp"), wxS("\u27C2")},
+    {wxS("perpendicular"), wxS("\u27C2")},
+    {wxS("bot"), wxS("\u27C2")},
+    {wxS("leadsto"), wxS("\u219D")},
+    {wxS("->"), wxS("\u2192")},
+    {wxS("-->"), wxS("\u27F6")},
+    {wxS(" --> "), wxS("\u27F6")},
   };
   return escCodes;
 }
@@ -506,7 +506,7 @@ void Configuration::InitStyles() {
   m_styles[TS_SUBSECTION].Bold().FontSize(16);
   m_styles[TS_SECTION].Bold().Slant().FontSize(18);
   m_styles[TS_TITLE].Bold().Underlined().FontSize(24);
-  m_styles[TS_WARNING].Color(wxT("orange")).Bold().FontSize(12);
+  m_styles[TS_WARNING].Color(wxS("orange")).Bold().FontSize(12);
   m_styles[TS_ERROR].Color(*wxRED).FontSize(12);
   m_styles[TS_MAIN_PROMPT].Color(255, 128, 128);
   m_styles[TS_OTHER_PROMPT].Color(*wxRED).Slant();
@@ -575,7 +575,7 @@ bool Configuration::MaximaFound(wxString location) {
     maximaFound = true;
 
   // Find a maxima within an application package.
-  if (wxFileExists(location + wxT("/Contents/Resources/maxima.sh")))
+  if (wxFileExists(location + wxS("/Contents/Resources/maxima.sh")))
     maximaFound = true;
 
   // Don't complain if PATH doesn't yield a result.
@@ -583,7 +583,7 @@ bool Configuration::MaximaFound(wxString location) {
 
   if (!(location.EndsWith("/") || location.EndsWith("\\"))) {
     wxPathList pathlist;
-    pathlist.AddEnvList(wxT("PATH"));
+    pathlist.AddEnvList(wxS("PATH"));
     wxString path = pathlist.FindAbsoluteValidPath(location);
     if (!path.empty())
       maximaFound = true;
@@ -594,7 +594,7 @@ bool Configuration::MaximaFound(wxString location) {
 void Configuration::ReadConfig() {
   wxConfigBase *config = wxConfig::Get();
   
-  config->Read(wxT("configID"), &m_configId);
+  config->Read(wxS("configID"), &m_configId);
 
   wxString str;
   long dummy;
@@ -621,18 +621,18 @@ void Configuration::ReadConfig() {
     // it
     SuppressErrorDialogs suppressor;
     wxString hideMessagesConfigString;
-    config->Read(wxT("showAllDigits"), &m_showAllDigits);
-    config->Read(wxT("lineBreaksInLongNums"), &m_lineBreaksInLongNums);
-    config->Read(wxT("autoSaveMinutes"), &m_autoSaveMinutes);
-    config->Read(wxT("wrapLatexMath"), &m_wrapLatexMath);
-    config->Read(wxT("allowNetworkHelp"), &m_allowNetworkHelp);
-    config->Read(wxT("exportContainsWXMX"), &m_exportContainsWXMX);
-    config->Read(wxT("maximaUsesHhtmlBrowser"), &m_maximaUsesHhtmlBrowser);
-    config->Read(wxT("maximaUsesWxmaximaBrowser"),
+    config->Read(wxS("showAllDigits"), &m_showAllDigits);
+    config->Read(wxS("lineBreaksInLongNums"), &m_lineBreaksInLongNums);
+    config->Read(wxS("autoSaveMinutes"), &m_autoSaveMinutes);
+    config->Read(wxS("wrapLatexMath"), &m_wrapLatexMath);
+    config->Read(wxS("allowNetworkHelp"), &m_allowNetworkHelp);
+    config->Read(wxS("exportContainsWXMX"), &m_exportContainsWXMX);
+    config->Read(wxS("maximaUsesHhtmlBrowser"), &m_maximaUsesHhtmlBrowser);
+    config->Read(wxS("maximaUsesWxmaximaBrowser"),
                  &m_maximaUsesWxmaximaBrowser);
-    config->Read(wxT("texPreamble"), &m_texPreamble);
+    config->Read(wxS("texPreamble"), &m_texPreamble);
     {
-      config->Read(wxT("suppressYellowMarkerMessages"),
+      config->Read(wxS("suppressYellowMarkerMessages"),
                    &hideMessagesConfigString);
       // Write the string into a memory buffer
       wxMemoryOutputStream ostream;
@@ -647,13 +647,13 @@ void Configuration::ReadConfig() {
         wxXmlNode *headNode = xmlDocument.GetDocumentNode();
         if (headNode) {
           headNode = headNode->GetChildren();
-          while ((headNode) && (headNode->GetName() != wxT("markers")))
+          while ((headNode) && (headNode->GetName() != wxS("markers")))
             headNode = headNode->GetNext();
 	  if(headNode)
 	    {
 	      wxXmlNode *entry = headNode->GetChildren();
 	      while (entry) {
-		if (entry->GetName() == wxT("hide")) {
+		if (entry->GetName() == wxS("hide")) {
 		  wxXmlNode *node = entry->GetChildren();
 		  if (node) {
 		    HideMarkerForThisMessage(node->GetContent(), true);
@@ -667,7 +667,7 @@ void Configuration::ReadConfig() {
     }
     {
       wxString maximaEnvironmentString;
-      config->Read(wxT("maximaEnvironment"), &maximaEnvironmentString);
+      config->Read(wxS("maximaEnvironment"), &maximaEnvironmentString);
       // Write the string into a memory buffer
       wxMemoryOutputStream ostream;
       wxTextOutputStream txtstrm(ostream);
@@ -681,16 +681,16 @@ void Configuration::ReadConfig() {
         if (headNode) {
           headNode = headNode->GetChildren();
           while (headNode) {
-            if (headNode->GetName() == wxT("entries")) {
+            if (headNode->GetName() == wxS("entries")) {
               m_maximaEnvVars.clear();
               wxXmlNode *entryNode = headNode->GetChildren();
               while (entryNode) {
-                if (entryNode->GetName() == wxT("entry")) {
+                if (entryNode->GetName() == wxS("entry")) {
                   wxXmlNode *entry = entryNode->GetChildren();
                   wxString var;
                   wxString value;
                   while (entry) {
-                    if (entry->GetName() == wxT("var")) {
+                    if (entry->GetName() == wxS("var")) {
                       wxXmlNode *node = entry->GetChildren();
                       while (node) {
                         if (node->GetType() == wxXML_TEXT_NODE)
@@ -698,7 +698,7 @@ void Configuration::ReadConfig() {
                         node = node->GetNext();
                       }
                     }
-                    if (entry->GetName() == wxT("value")) {
+                    if (entry->GetName() == wxS("value")) {
                       wxXmlNode *node = entry->GetChildren();
                       while (node) {
                         if (node->GetType() == wxXML_TEXT_NODE)
@@ -720,24 +720,24 @@ void Configuration::ReadConfig() {
       }
     }
   }
-  config->Read(wxT("maxClipbrd_BitmapMegabytes"),
+  config->Read(wxS("maxClipbrd_BitmapMegabytes"),
                &m_maxClipbrd_BitmapMegabytes);
   if (m_maxClipbrd_BitmapMegabytes < 0)
     m_maxClipbrd_BitmapMegabytes = 1;
-  config->Read(wxT("wizardTab"), &m_wizardTab);
-  config->Read(wxT("numpadEnterEvaluates"), &m_numpadEnterEvaluates);
-  config->Read(wxT("saveImgFileName"), &m_saveImgFileName);
-  config->Read(wxT("usePartialForDiff"), &m_usePartialForDiff);
-  config->Read(wxT("TeXExponentsAfterSubscript"),
+  config->Read(wxS("wizardTab"), &m_wizardTab);
+  config->Read(wxS("numpadEnterEvaluates"), &m_numpadEnterEvaluates);
+  config->Read(wxS("saveImgFileName"), &m_saveImgFileName);
+  config->Read(wxS("usePartialForDiff"), &m_usePartialForDiff);
+  config->Read(wxS("TeXExponentsAfterSubscript"),
                &m_TeXExponentsAfterSubscript);
-  config->Read(wxT("defaultPlotWidth"), &m_defaultPlotWidth);
-  config->Read(wxT("defaultPlotHeight"), &m_defaultPlotHeight);
-  config->Read(wxT("fixedFontTC"), &m_fixedFontTC);
-  config->Read(wxT("usepngCairo"), &m_usepngCairo);
+  config->Read(wxS("defaultPlotWidth"), &m_defaultPlotWidth);
+  config->Read(wxS("defaultPlotHeight"), &m_defaultPlotHeight);
+  config->Read(wxS("fixedFontTC"), &m_fixedFontTC);
+  config->Read(wxS("usepngCairo"), &m_usepngCairo);
 
-  if (!config->Read(wxT("AutoSaveAsTempFile"), &m_autoSaveAsTempFile)) {
+  if (!config->Read(wxS("AutoSaveAsTempFile"), &m_autoSaveAsTempFile)) {
     long autoSaveMinutes = 3;
-    config->Read(wxT("autoSaveMinutes"), &autoSaveMinutes);
+    config->Read(wxS("autoSaveMinutes"), &autoSaveMinutes);
     m_autoSaveAsTempFile = (autoSaveMinutes == 0);
   }
   config->Read("language", &m_language);
@@ -750,19 +750,19 @@ void Configuration::ReadConfig() {
   config->Read("recentItems", &m_recentItems);
   config->Read("maxGnuplotMegabytes", &m_maxGnuplotMegabytes);
   config->Read("offerKnownAnswers", &m_offerKnownAnswers);
-  config->Read(wxT("documentclass"), &m_documentclass);
-  config->Read(wxT("documentclassoptions"), &m_documentclassOptions);
-  config->Read(wxT("latin2greek"), &m_latin2greek);
-  config->Read(wxT("enterEvaluates"), &m_enterEvaluates);
-  config->Read(wxT("hidemultiplicationsign"), &m_hidemultiplicationsign);
+  config->Read(wxS("documentclass"), &m_documentclass);
+  config->Read(wxS("documentclassoptions"), &m_documentclassOptions);
+  config->Read(wxS("latin2greek"), &m_latin2greek);
+  config->Read(wxS("enterEvaluates"), &m_enterEvaluates);
+  config->Read(wxS("hidemultiplicationsign"), &m_hidemultiplicationsign);
   config->Read("greekSidebar_ShowLatinLookalikes",
                &m_greekSidebar_ShowLatinLookalikes);
   config->Read("greekSidebar_Show_mu", &m_greekSidebar_Show_mu);
   config->Read("symbolPaneAdditionalChars", &m_symbolPaneAdditionalChars);
   config->Read("parameters", &m_maximaParameters);
   config->Read("autodetectHelpBrowser", &m_autodetectHelpBrowser);
-  config->Read(wxT("useInternalHelpBrowser"), &m_useInternalHelpBrowser);
-  config->Read(wxT("singlePageManual"), &m_singlePageManual);
+  config->Read(wxS("useInternalHelpBrowser"), &m_useInternalHelpBrowser);
+  config->Read(wxS("singlePageManual"), &m_singlePageManual);
   config->Read("helpBrowser", &m_helpBrowserUserLocation);
   {
     int tmp = static_cast<int>(m_htmlEquationFormat);
@@ -774,81 +774,81 @@ void Configuration::ReadConfig() {
     m_htmlEquationFormat = static_cast<Configuration::htmlExportFormat>(tmp);
   }
 
-  config->Read(wxT("TOCshowsSectionNumbers"), &m_TOCshowsSectionNumbers);
-  config->Read(wxT("autoWrapMode"), &m_autoWrap);
-  config->Read(wxT("mathJaxURL_UseUser"), &m_mathJaxURL_UseUser);
-  config->Read(wxT("useUnicodeMaths"), &m_useUnicodeMaths);
-  config->Read(wxT("mathJaxURL"), &m_mathJaxURL);
-  config->Read(wxT("autosubscript"), &m_autoSubscript);
+  config->Read(wxS("TOCshowsSectionNumbers"), &m_TOCshowsSectionNumbers);
+  config->Read(wxS("autoWrapMode"), &m_autoWrap);
+  config->Read(wxS("mathJaxURL_UseUser"), &m_mathJaxURL_UseUser);
+  config->Read(wxS("useUnicodeMaths"), &m_useUnicodeMaths);
+  config->Read(wxS("mathJaxURL"), &m_mathJaxURL);
+  config->Read(wxS("autosubscript"), &m_autoSubscript);
   if(m_autoSubscript < 0)
     m_autoSubscript = 0;
   if(m_autoSubscript > 2)
     m_autoSubscript = 2;
-  config->Read(wxT("antiAliasLines"), &m_antiAliasLines);
-  config->Read(wxT("indentMaths"), &m_indentMaths);
-  config->Read(wxT("abortOnError"), &m_abortOnError);
+  config->Read(wxS("antiAliasLines"), &m_antiAliasLines);
+  config->Read(wxS("indentMaths"), &m_indentMaths);
+  config->Read(wxS("abortOnError"), &m_abortOnError);
   config->Read("defaultPort", &m_defaultPort);
-  config->Read(wxT("fixReorderedIndices"), &m_fixReorderedIndices);
-  config->Read(wxT("showLength"), &m_showLength);
+  config->Read(wxS("fixReorderedIndices"), &m_fixReorderedIndices);
+  config->Read(wxS("showLength"), &m_showLength);
   if(m_showLength < 0)
     m_showLength = 0;
   if(m_showLength > 3)
     m_showLength = 3;
-  config->Read(wxT("printScale"), &m_printScale);
-  config->Read(wxT("useSVG"), &m_useSVG);
-  config->Read(wxT("copyBitmap"), &m_copyBitmap);
-  config->Read(wxT("bitmapScale"), &m_bitmapScale);
-  config->Read(wxT("DefaultFramerate"), &m_defaultFramerate);
-  config->Read(wxT("tocDepth"), &m_tocDepth);
+  config->Read(wxS("printScale"), &m_printScale);
+  config->Read(wxS("useSVG"), &m_useSVG);
+  config->Read(wxS("copyBitmap"), &m_copyBitmap);
+  config->Read(wxS("bitmapScale"), &m_bitmapScale);
+  config->Read(wxS("DefaultFramerate"), &m_defaultFramerate);
+  config->Read(wxS("tocDepth"), &m_tocDepth);
   if (m_tocDepth < 1)
     m_tocDepth = 1;
-  config->Read(wxT("copyBitmap"), &m_copyBitmap);
-  config->Read(wxT("copyMathML"), &m_copyMathML);
-  config->Read(wxT("copyMathMLHTML"), &m_copyMathMLHTML);
-  config->Read(wxT("copyRTF"), &m_copyRTF);
-  config->Read(wxT("copySVG"), &m_copySVG);
-  config->Read(wxT("copyEMF"), &m_copyEMF);
-  config->Read(wxT("autodetectMaxima"), &m_autodetectMaxima);
-  config->Read(wxT("maxima"), &m_maximaUserLocation);
+  config->Read(wxS("copyBitmap"), &m_copyBitmap);
+  config->Read(wxS("copyMathML"), &m_copyMathML);
+  config->Read(wxS("copyMathMLHTML"), &m_copyMathMLHTML);
+  config->Read(wxS("copyRTF"), &m_copyRTF);
+  config->Read(wxS("copySVG"), &m_copySVG);
+  config->Read(wxS("copyEMF"), &m_copyEMF);
+  config->Read(wxS("autodetectMaxima"), &m_autodetectMaxima);
+  config->Read(wxS("maxima"), &m_maximaUserLocation);
   // Fix wrong" maxima=1" parameter in ~/.wxMaxima if upgrading from 0.7.0a
-  if (m_maximaUserLocation.IsSameAs(wxT("1")))
+  if (m_maximaUserLocation.IsSameAs(wxS("1")))
     m_maximaUserLocation = Dirstructure::Get()->MaximaDefaultLocation();
 
-  config->Read(wxT("autoIndent"), &m_autoIndent);
+  config->Read(wxS("autoIndent"), &m_autoIndent);
 
   long showLabelChoice = static_cast<long>(m_showLabelChoice);
   if(static_cast<long>(m_showLabelChoice) < 0)
     m_showLabelChoice = labels_automatic;
   if(m_showLabelChoice >= labels_invalidSelection)
     m_showLabelChoice = labels_none;
-  config->Read(wxT("showLabelChoice"), &showLabelChoice);
+  config->Read(wxS("showLabelChoice"), &showLabelChoice);
   m_showLabelChoice = (showLabels)showLabelChoice;
 
-  config->Read(wxT("changeAsterisk"), &m_changeAsterisk);
+  config->Read(wxS("changeAsterisk"), &m_changeAsterisk);
 
-  config->Read(wxT("notifyIfIdle"), &m_notifyIfIdle);
+  config->Read(wxS("notifyIfIdle"), &m_notifyIfIdle);
 
-  config->Read(wxT("hideBrackets"), &m_hideBrackets);
+  config->Read(wxS("hideBrackets"), &m_hideBrackets);
 
-  config->Read(wxT("displayedDigits"), &m_displayedDigits);
+  config->Read(wxS("displayedDigits"), &m_displayedDigits);
   if (m_displayedDigits <= 20)
     m_displayedDigits = 20;
 
-  config->Read(wxT("restartOnReEvaluation"), &m_restartOnReEvaluation);
+  config->Read(wxS("restartOnReEvaluation"), &m_restartOnReEvaluation);
 
-  config->Read(wxT("matchParens"), &m_matchParens);
-  config->Read(wxT("showMatchingParens"), &m_showMatchingParens);
+  config->Read(wxS("matchParens"), &m_matchParens);
+  config->Read(wxS("showMatchingParens"), &m_showMatchingParens);
 
-  config->Read(wxT("insertAns"), &m_insertAns);
+  config->Read(wxS("insertAns"), &m_insertAns);
 
-  config->Read(wxT("openHCaret"), &m_openHCaret);
+  config->Read(wxS("openHCaret"), &m_openHCaret);
 
-  config->Read(wxT("labelWidth"), &m_labelWidth);
+  config->Read(wxS("labelWidth"), &m_labelWidth);
 
-  config->Read(wxT("printBrackets"), &m_printBrackets);
-  config->Read(wxT("keepPercent"), &m_keepPercent);
-  config->Read(wxT("saveUntitled"), &m_saveUntitled);
-  config->Read(wxT("cursorJump"), &m_cursorJump);
+  config->Read(wxS("printBrackets"), &m_printBrackets);
+  config->Read(wxS("keepPercent"), &m_keepPercent);
+  config->Read(wxS("saveUntitled"), &m_saveUntitled);
+  config->Read(wxS("cursorJump"), &m_cursorJump);
 
   ReadStyles();
 }
@@ -1068,7 +1068,7 @@ bool Configuration::CharsExistInFont(const wxFont &font,
   // Seems like Apple didn't hold to their high standards as the maths part of
   // this font don't form nice big mathematical symbols => Blacklisting this
   // font.
-  if (font.GetFaceName() == wxT("Monaco"))
+  if (font.GetFaceName() == wxS("Monaco"))
     return cache(false);
 
   if (!m_useUnicodeMaths)
@@ -1145,10 +1145,10 @@ void Configuration::ReadStyles(const wxString &file) {
 
   // Read legacy defaults for the math font name and size
   long tmpLong;
-  if (config->Read(wxT("mathfontsize"), &tmpLong) && tmpLong > 1)
+  if (config->Read(wxS("mathfontsize"), &tmpLong) && tmpLong > 1)
     m_styles[TS_MATH].SetFontSize(AFontSize(tmpLong));
   wxString tmpString;
-  if (config->Read(wxT("Style/Math/fontname"), &tmpString) &&
+  if (config->Read(wxS("Style/Math/fontname"), &tmpString) &&
       tmpString.size() > 1)
     m_styles[TS_MATH].SetFontName(tmpString);
 
@@ -1188,11 +1188,11 @@ void Configuration::ReadStyles(const wxString &file) {
   m_styles[TS_ERROR].Read(config, "Style/Error/");
   m_styles[TS_CELL_BRACKET].Read(config, "Style/CellBracket/");
   m_styles[TS_ACTIVE_CELL_BRACKET].Read(config,
-                                        wxT("Style/ActiveCellBracket/"));
-  m_styles[TS_CURSOR].Read(config, wxT("Style/ActiveCellBracket/"));
-  m_styles[TS_SELECTION].Read(config, wxT("Style/Selection/"));
-  m_styles[TS_EQUALSSELECTION].Read(config, wxT("Style/EqualsSelection/"));
-  m_styles[TS_OUTDATED].Read(config, wxT("Style/Outdated/"));
+                                        wxS("Style/ActiveCellBracket/"));
+  m_styles[TS_CURSOR].Read(config, wxS("Style/ActiveCellBracket/"));
+  m_styles[TS_SELECTION].Read(config, wxS("Style/Selection/"));
+  m_styles[TS_EQUALSSELECTION].Read(config, wxS("Style/EqualsSelection/"));
+  m_styles[TS_OUTDATED].Read(config, wxS("Style/Outdated/"));
   m_BackgroundBrush = *wxTheBrushList->FindOrCreateBrush(
 							 m_styles[TS_DOCUMENT_BACKGROUND].GetColor(), wxBRUSHSTYLE_SOLID);
   MakeStylesConsistent();
@@ -1204,7 +1204,7 @@ void Configuration::WriteSettings(const wxString &file) {
   if (file == wxEmptyString)
     config = wxConfig::Get();
   else
-    config = new wxFileConfig(wxT("wxMaxima"), wxEmptyString, file);
+    config = new wxFileConfig(wxS("wxMaxima"), wxEmptyString, file);
 
   {
     wxXmlNode *topNode =
@@ -1235,14 +1235,14 @@ void Configuration::WriteSettings(const wxString &file) {
     wxTextInputStream text(istream);
     wxString maximaEnvConfigString;
     while (!istream.Eof())
-      maximaEnvConfigString += text.ReadLine() + wxT("\n");
-    config->Write(wxT("maximaEnvironment"), maximaEnvConfigString);
+      maximaEnvConfigString += text.ReadLine() + wxS("\n");
+    config->Write(wxS("maximaEnvironment"), maximaEnvConfigString);
   }
   {
     wxXmlNode *topNode =
       new wxXmlNode(NULL, wxXML_DOCUMENT_NODE, wxEmptyString, wxEmptyString);
     wxXmlNode *headNode = new wxXmlNode(topNode, wxXML_ELEMENT_NODE,
-                                        wxT("markers"), wxEmptyString);
+                                        wxS("markers"), wxEmptyString);
     StringBoolHash::const_iterator it;
     for (it = m_hideMarkerForThisMessage.begin();
          it != m_hideMarkerForThisMessage.end(); ++it) {
@@ -1263,20 +1263,20 @@ void Configuration::WriteSettings(const wxString &file) {
     wxTextInputStream text(istream);
     wxString hideMessagesConfigString;
     while (!istream.Eof())
-      hideMessagesConfigString += text.ReadLine() + wxT("\n");
-    config->Write(wxT("suppressYellowMarkerMessages"),
+      hideMessagesConfigString += text.ReadLine() + wxS("\n");
+    config->Write(wxS("suppressYellowMarkerMessages"),
                   hideMessagesConfigString);
   }
 
-  config->Write(wxT("showAllDigits"), m_showAllDigits);
-  config->Write(wxT("lineBreaksInLongNums"), m_lineBreaksInLongNums);
-  config->Write(wxT("keepPercent"), m_keepPercent);
-  config->Write(wxT("labelWidth"), m_labelWidth);
-  config->Write(wxT("saveUntitled"), m_saveUntitled);
-  config->Write(wxT("cursorJump"), m_cursorJump);
-  config->Write(wxT("autoSaveMinutes"), m_autoSaveMinutes);
+  config->Write(wxS("showAllDigits"), m_showAllDigits);
+  config->Write(wxS("lineBreaksInLongNums"), m_lineBreaksInLongNums);
+  config->Write(wxS("keepPercent"), m_keepPercent);
+  config->Write(wxS("labelWidth"), m_labelWidth);
+  config->Write(wxS("saveUntitled"), m_saveUntitled);
+  config->Write(wxS("cursorJump"), m_cursorJump);
+  config->Write(wxS("autoSaveMinutes"), m_autoSaveMinutes);
 
-  config->Write(wxT("maxClipbrd_BitmapMegabytes"),
+  config->Write(wxS("maxClipbrd_BitmapMegabytes"),
                 m_maxClipbrd_BitmapMegabytes);
 
   WriteStyles(config);
@@ -1285,9 +1285,9 @@ void Configuration::WriteSettings(const wxString &file) {
     delete config;
   }
   for (auto i : m_renderableChars)
-    config->Write(wxT("renderability/good/") + i.first, i.second);
+    config->Write(wxS("renderability/good/") + i.first, i.second);
   for (auto i : m_nonRenderableChars)
-    config->Write(wxT("renderability/bad/") + i.first, i.second);
+    config->Write(wxS("renderability/bad/") + i.first, i.second);
 }
 
 wxFontWeight Configuration::IsBold(long st) const {
@@ -1365,9 +1365,9 @@ bool Configuration::FontRendersChar(wxChar ch, const wxFont &font) {
     return false;
 
   bool retval = FontDisplaysChar(ch, font) &&
-    CharVisiblyDifferent(ch, wxT('\1'), font) &&
-    CharVisiblyDifferent(ch, wxT('\uF299'), font) &&
-    CharVisiblyDifferent(ch, wxT('\uF000'), font);
+    CharVisiblyDifferent(ch, wxS('\1'), font) &&
+    CharVisiblyDifferent(ch, wxS('\uF299'), font) &&
+    CharVisiblyDifferent(ch, wxS('\uF000'), font);
 
   if (retval)
     m_renderableChars[fontName] += wxString(ch);
@@ -1413,7 +1413,7 @@ bool Configuration::FontDisplaysChar(wxChar ch, const wxFont &font) {
       if (characterImage.GetBlue(x, y) != referenceImage.GetBlue(x, y))
         return true;
     }
-  wxLogMessage(wxT("Char '%s' seems not to be displayed."), wxString(ch).mb_str());
+  wxLogMessage(wxS("Char '%s' seems not to be displayed."), wxString(ch).mb_str());
 
   // characterImage.SaveFile(wxString(m_char)+".png");
 
@@ -1455,7 +1455,7 @@ bool Configuration::CharVisiblyDifferent(wxChar ch, wxChar otherChar,
       if (characterImage.GetBlue(x, y) != referenceImage.GetBlue(x, y))
         return true;
     }
-  wxLogMessage(wxT("Char '%s' looks identical to '%s'."),
+  wxLogMessage(wxS("Char '%s' looks identical to '%s'."),
 	       wxString(ch).mb_str(),
 	       wxString(otherChar).mb_str());
   return false;
@@ -1480,7 +1480,7 @@ bool Configuration::OfferInternalHelpBrowser() const {
 bool Configuration::UpdateNeeded()
 {
   long configId;
-  wxConfig::Get()->Read(wxT("configID"), &configId);
+  wxConfig::Get()->Read(wxS("configID"), &configId);
 
   return m_configId != configId;
 }
@@ -1488,77 +1488,77 @@ bool Configuration::UpdateNeeded()
 void Configuration::WriteStyles(wxConfigBase *config) {
   std::uniform_int_distribution<long> urd(std::numeric_limits<long>::min(), std::numeric_limits<long>::max());
   m_configId = urd(m_eng);
-  config->Write(wxT("configID"), m_configId);
-  config->Write(wxT("wrapLatexMath"), m_wrapLatexMath);
-  config->Write(wxT("allowNetworkHelp"), m_allowNetworkHelp);
-  config->Write(wxT("exportContainsWXMX"), m_exportContainsWXMX);
-  config->Write(wxT("maximaUsesHhtmlBrowser"), m_maximaUsesHhtmlBrowser);
+  config->Write(wxS("configID"), m_configId);
+  config->Write(wxS("wrapLatexMath"), m_wrapLatexMath);
+  config->Write(wxS("allowNetworkHelp"), m_allowNetworkHelp);
+  config->Write(wxS("exportContainsWXMX"), m_exportContainsWXMX);
+  config->Write(wxS("maximaUsesHhtmlBrowser"), m_maximaUsesHhtmlBrowser);
   if (OfferInternalHelpBrowser())
-    config->Write(wxT("maximaUsesWxmaximaBrowser"),
+    config->Write(wxS("maximaUsesWxmaximaBrowser"),
                   m_maximaUsesWxmaximaBrowser);
-  config->Write(wxT("texPreamble"), m_texPreamble);
-  config->Write(wxT("wizardTab"), m_wizardTab);
-  config->Write(wxT("numpadEnterEvaluates"), m_numpadEnterEvaluates);
-  config->Write(wxT("saveImgFileName"), m_saveImgFileName);
-  config->Write(wxT("usePartialForDiff"), m_usePartialForDiff);
-  config->Write(wxT("TeXExponentsAfterSubscript"),
+  config->Write(wxS("texPreamble"), m_texPreamble);
+  config->Write(wxS("wizardTab"), m_wizardTab);
+  config->Write(wxS("numpadEnterEvaluates"), m_numpadEnterEvaluates);
+  config->Write(wxS("saveImgFileName"), m_saveImgFileName);
+  config->Write(wxS("usePartialForDiff"), m_usePartialForDiff);
+  config->Write(wxS("TeXExponentsAfterSubscript"),
                 m_TeXExponentsAfterSubscript);
-  config->Write(wxT("defaultPlotWidth"), m_defaultPlotWidth);
-  config->Write(wxT("defaultPlotHeight"), m_defaultPlotHeight);
-  config->Write(wxT("fixedFontTC"), m_fixedFontTC);
-  config->Write(wxT("bitmapScale"), m_bitmapScale);
-  config->Write(wxT("DefaultFramerate"), m_defaultFramerate);
-  config->Write(wxT("tocDepth"), m_tocDepth);
-  config->Write(wxT("usepngCairo"), m_usepngCairo);
+  config->Write(wxS("defaultPlotWidth"), m_defaultPlotWidth);
+  config->Write(wxS("defaultPlotHeight"), m_defaultPlotHeight);
+  config->Write(wxS("fixedFontTC"), m_fixedFontTC);
+  config->Write(wxS("bitmapScale"), m_bitmapScale);
+  config->Write(wxS("DefaultFramerate"), m_defaultFramerate);
+  config->Write(wxS("tocDepth"), m_tocDepth);
+  config->Write(wxS("usepngCairo"), m_usepngCairo);
   config->Write("incrementalSearch", m_incrementalSearch);
-  config->Write(wxT("hideBrackets"), m_hideBrackets);
-  config->Write(wxT("printScale"), m_printScale);
-  config->Write(wxT("AutoSaveAsTempFile"), m_autoSaveAsTempFile);
-  config->Write(wxT("autoWrapMode"), m_autoWrap);
-  config->Write(wxT("autoIndent"), m_autoIndent);
-  config->Write(wxT("indentMaths"), m_indentMaths);
-  config->Write(wxT("matchParens"), m_matchParens);
-  config->Write(wxT("showMatchingParens"), m_showMatchingParens);
-  config->Write(wxT("changeAsterisk"), m_changeAsterisk);
-  config->Write(wxT("hidemultiplicationsign"), m_hidemultiplicationsign);
-  config->Write(wxT("latin2greek"), m_latin2greek);
-  config->Write(wxT("greekSidebar_ShowLatinLookalikes"),
+  config->Write(wxS("hideBrackets"), m_hideBrackets);
+  config->Write(wxS("printScale"), m_printScale);
+  config->Write(wxS("AutoSaveAsTempFile"), m_autoSaveAsTempFile);
+  config->Write(wxS("autoWrapMode"), m_autoWrap);
+  config->Write(wxS("autoIndent"), m_autoIndent);
+  config->Write(wxS("indentMaths"), m_indentMaths);
+  config->Write(wxS("matchParens"), m_matchParens);
+  config->Write(wxS("showMatchingParens"), m_showMatchingParens);
+  config->Write(wxS("changeAsterisk"), m_changeAsterisk);
+  config->Write(wxS("hidemultiplicationsign"), m_hidemultiplicationsign);
+  config->Write(wxS("latin2greek"), m_latin2greek);
+  config->Write(wxS("greekSidebar_ShowLatinLookalikes"),
                 m_greekSidebar_ShowLatinLookalikes);
-  config->Write(wxT("greekSidebar_Show_mu"), m_greekSidebar_Show_mu);
-  config->Write(wxT("symbolPaneAdditionalChars"), m_symbolPaneAdditionalChars);
-  config->Write(wxT("notifyIfIdle"), m_notifyIfIdle);
-  config->Write(wxT("displayedDigits"), m_displayedDigits);
-  config->Write(wxT("insertAns"), m_insertAns);
-  config->Write(wxT("openHCaret"), m_openHCaret);
-  config->Write(wxT("restartOnReEvaluation"), m_restartOnReEvaluation);
-  config->Write(wxT("invertBackground"), m_invertBackground);
+  config->Write(wxS("greekSidebar_Show_mu"), m_greekSidebar_Show_mu);
+  config->Write(wxS("symbolPaneAdditionalChars"), m_symbolPaneAdditionalChars);
+  config->Write(wxS("notifyIfIdle"), m_notifyIfIdle);
+  config->Write(wxS("displayedDigits"), m_displayedDigits);
+  config->Write(wxS("insertAns"), m_insertAns);
+  config->Write(wxS("openHCaret"), m_openHCaret);
+  config->Write(wxS("restartOnReEvaluation"), m_restartOnReEvaluation);
+  config->Write(wxS("invertBackground"), m_invertBackground);
   config->Write("recentItems", m_recentItems);
-  config->Write(wxT("undoLimit"), m_undoLimit);
-  config->Write(wxT("showLabelChoice"), static_cast<int>(m_showLabelChoice));
-  config->Write(wxT("printBrackets"), m_printBrackets);
-  config->Write(wxT("autodetectMaxima"), m_autodetectMaxima);
-  config->Write(wxT("parameters"), m_maximaParameters);
-  config->Write(wxT("maxima"), m_maximaUserLocation);
-  config->Write(wxT("autodetectHelpBrowser"), m_autodetectHelpBrowser);
+  config->Write(wxS("undoLimit"), m_undoLimit);
+  config->Write(wxS("showLabelChoice"), static_cast<int>(m_showLabelChoice));
+  config->Write(wxS("printBrackets"), m_printBrackets);
+  config->Write(wxS("autodetectMaxima"), m_autodetectMaxima);
+  config->Write(wxS("parameters"), m_maximaParameters);
+  config->Write(wxS("maxima"), m_maximaUserLocation);
+  config->Write(wxS("autodetectHelpBrowser"), m_autodetectHelpBrowser);
   if (OfferInternalHelpBrowser())
-    config->Write(wxT("useInternalHelpBrowser"), m_useInternalHelpBrowser);
-  config->Write(wxT("singlePageManual"), m_singlePageManual);
-  config->Write(wxT("helpBrowser"), m_helpBrowserUserLocation);
-  config->Write(wxT("fixReorderedIndices"), m_fixReorderedIndices);
-  config->Write(wxT("mathJaxURL_UseUser"), m_mathJaxURL_UseUser);
-  config->Write(wxT("enterEvaluates"), m_enterEvaluates);
-  config->Write(wxT("mathJaxURL"), m_mathJaxURL);
-  config->Write(wxT("antiAliasLines"), m_antiAliasLines);
-  config->Write(wxT("copyBitmap"), m_copyBitmap);
-  config->Write(wxT("copyMathML"), m_copyMathML);
-  config->Write(wxT("copyMathMLHTML"), m_copyMathMLHTML);
-  config->Write(wxT("copyRTF"), m_copyRTF);
-  config->Write(wxT("copySVG"), m_copySVG);
-  config->Write(wxT("copyEMF"), m_copyEMF);
-  config->Write(wxT("useSVG"), m_useSVG);
-  config->Write(wxT("showLength"), m_showLength);
-  config->Write(wxT("TOCshowsSectionNumbers"), m_TOCshowsSectionNumbers);
-  config->Write(wxT("useUnicodeMaths"), m_useUnicodeMaths);
+    config->Write(wxS("useInternalHelpBrowser"), m_useInternalHelpBrowser);
+  config->Write(wxS("singlePageManual"), m_singlePageManual);
+  config->Write(wxS("helpBrowser"), m_helpBrowserUserLocation);
+  config->Write(wxS("fixReorderedIndices"), m_fixReorderedIndices);
+  config->Write(wxS("mathJaxURL_UseUser"), m_mathJaxURL_UseUser);
+  config->Write(wxS("enterEvaluates"), m_enterEvaluates);
+  config->Write(wxS("mathJaxURL"), m_mathJaxURL);
+  config->Write(wxS("antiAliasLines"), m_antiAliasLines);
+  config->Write(wxS("copyBitmap"), m_copyBitmap);
+  config->Write(wxS("copyMathML"), m_copyMathML);
+  config->Write(wxS("copyMathMLHTML"), m_copyMathMLHTML);
+  config->Write(wxS("copyRTF"), m_copyRTF);
+  config->Write(wxS("copySVG"), m_copySVG);
+  config->Write(wxS("copyEMF"), m_copyEMF);
+  config->Write(wxS("useSVG"), m_useSVG);
+  config->Write(wxS("showLength"), m_showLength);
+  config->Write(wxS("TOCshowsSectionNumbers"), m_TOCshowsSectionNumbers);
+  config->Write(wxS("useUnicodeMaths"), m_useUnicodeMaths);
   config->Write("defaultPort", m_defaultPort);
   config->Write("abortOnError", m_abortOnError);
   config->Write("language", m_language);
@@ -1568,7 +1568,7 @@ void Configuration::WriteStyles(wxConfigBase *config) {
   config->Write("documentclassoptions", m_documentclassOptions);
   config->Write("HTMLequationFormat", static_cast<int>(m_htmlEquationFormat));
   config->Write("autosubscript", m_autoSubscript);
-  config->Write(wxT("ZoomFactor"), m_zoomFactor);
+  config->Write(wxS("ZoomFactor"), m_zoomFactor);
   // Fonts
   m_styles[TS_MATH].Write(config, "Style/Math/");
   m_styles[TS_TEXT].Write(config, "Style/Text/");
@@ -1607,11 +1607,11 @@ void Configuration::WriteStyles(wxConfigBase *config) {
   m_styles[TS_ERROR].Write(config, "Style/Error/");
   m_styles[TS_CELL_BRACKET].Write(config, "Style/CellBracket/");
   m_styles[TS_ACTIVE_CELL_BRACKET].Write(config,
-                                         wxT("Style/ActiveCellBracket/"));
-  m_styles[TS_CURSOR].Write(config, wxT("Style/ActiveCellBracket/"));
-  m_styles[TS_SELECTION].Write(config, wxT("Style/Selection/"));
-  m_styles[TS_EQUALSSELECTION].Write(config, wxT("Style/EqualsSelection/"));
-  m_styles[TS_OUTDATED].Write(config, wxT("Style/Outdated/"));
+                                         wxS("Style/ActiveCellBracket/"));
+  m_styles[TS_CURSOR].Write(config, wxS("Style/ActiveCellBracket/"));
+  m_styles[TS_SELECTION].Write(config, wxS("Style/Selection/"));
+  m_styles[TS_EQUALSSELECTION].Write(config, wxS("Style/EqualsSelection/"));
+  m_styles[TS_OUTDATED].Write(config, wxS("Style/Outdated/"));
 }
 
 //! Saves the style settings to a file.
@@ -1621,7 +1621,7 @@ void Configuration::WriteStyles(const wxString &file) {
   if (file == wxEmptyString)
     config = wxConfig::Get();
   else
-    config = new wxFileConfig(wxT("wxMaxima"), wxEmptyString, file);
+    config = new wxFileConfig(wxS("wxMaxima"), wxEmptyString, file);
   
   WriteStyles(config);
   if (file != wxEmptyString) {

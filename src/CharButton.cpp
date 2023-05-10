@@ -162,7 +162,7 @@ CharButton::CharButton(wxWindow *parent, wxWindow *worksheet,
     SetToolTip(m_description);
   } else {
     m_buttonText->SetForegroundColour(wxColor(128, 128, 128));
-    SetToolTip(m_description + wxT("\n") +
+    SetToolTip(m_description + wxS("\n") +
                _("(Might not be displayed correctly in at least one of the "
                  "worksheet fonts)"));
   }

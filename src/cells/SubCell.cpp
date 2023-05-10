@@ -83,10 +83,10 @@ wxString SubCell::ToString() const {
 
   wxString s;
   if (m_baseCell->IsCompound())
-    s += wxT("(") + m_baseCell->ListToString() + wxT(")");
+    s += wxS("(") + m_baseCell->ListToString() + wxS(")");
   else
     s += m_baseCell->ListToString();
-  s += wxT("[") + m_indexCell->ListToString() + wxT("]");
+  s += wxS("[") + m_indexCell->ListToString() + wxS("]");
   return s;
 }
 
@@ -97,10 +97,10 @@ wxString SubCell::ToMatlab() const {
 
   wxString s;
   if (m_baseCell->IsCompound())
-    s += wxT("(") + m_baseCell->ListToMatlab() + wxT(")");
+    s += wxS("(") + m_baseCell->ListToMatlab() + wxS(")");
   else
     s += m_baseCell->ListToMatlab();
-  s += wxT("[") + m_indexCell->ListToMatlab() + wxT("]");
+  s += wxS("[") + m_indexCell->ListToMatlab() + wxS("]");
   return s;
 }
 
@@ -109,35 +109,35 @@ wxString SubCell::ToTeX() const {
   wxString base = m_baseCell->ListToTeX();
   wxString index = m_indexCell->ListToTeX();
   if (base.Length() > 1)
-    s = wxT("{{") + base + wxT("}_");
+    s = wxS("{{") + base + wxS("}_");
   else
-    s = wxT("{") + base + wxT("_");
+    s = wxS("{") + base + wxS("_");
   if (index.Length() > 1)
-    s += wxT("{") + index + wxT("}}");
+    s += wxS("{") + index + wxS("}}");
   else
-    s += index + wxT("}");
+    s += index + wxS("}");
   return s;
 }
 
 wxString SubCell::ToMathML() const {
-  return wxT("<msub>") + m_baseCell->ListToMathML() +
-    m_indexCell->ListToMathML() + wxT("</msub>\n");
+  return wxS("<msub>") + m_baseCell->ListToMathML() +
+    m_indexCell->ListToMathML() + wxS("</msub>\n");
 }
 
 wxString SubCell::ToOMML() const {
-  return wxT("<m:sSub><m:e>") + m_baseCell->ListToOMML() +
-    wxT("</m:e><m:sub>") + m_indexCell->ListToOMML() +
-    wxT("</m:sub></m:sSub>\n");
+  return wxS("<m:sSub><m:e>") + m_baseCell->ListToOMML() +
+    wxS("</m:e><m:sub>") + m_indexCell->ListToOMML() +
+    wxS("</m:sub></m:sSub>\n");
 }
 
 wxString SubCell::ToXML() const {
   wxString flags;
   if (HasHardLineBreak())
-    flags += wxT(" breakline=\"true\"");
+    flags += wxS(" breakline=\"true\"");
 
   if (m_altCopyText != wxEmptyString)
-    flags += wxT(" altCopy=\"") + XMLescape(m_altCopyText) + wxT("\"");
+    flags += wxS(" altCopy=\"") + XMLescape(m_altCopyText) + wxS("\"");
 
-  return wxT("<i") + flags + wxT("><r>") + m_baseCell->ListToXML() +
-    wxT("</r><r>") + m_indexCell->ListToXML() + wxT("</r></i>");
+  return wxS("<i") + flags + wxS("><r>") + m_baseCell->ListToXML() +
+    wxS("</r><r>") + m_indexCell->ListToXML() + wxS("</r></i>");
 }
