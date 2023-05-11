@@ -1220,41 +1220,41 @@ wxString TextCell::GetXMLFlags() const {
 wxString TextCell::ToXML() const {
   wxString tag;
   if (IsHidden() || GetHidableMultSign())
-    tag = _T("h");
+    tag = wxS("h");
   else
     switch (GetTextStyle()) {
     case TS_GREEK_CONSTANT:
-      tag = _T("g");
+      tag = wxS("g");
       break;
     case TS_SPECIAL_CONSTANT:
-      tag = _T("s");
+      tag = wxS("s");
       break;
     case TS_VARIABLE:
-      tag = _T("v");
+      tag = wxS("v");
       break;
     case TS_FUNCTION:
-      tag = _T("fnm");
+      tag = wxS("fnm");
       break;
     case TS_NUMBER:
-      tag = _T("n");
+      tag = wxS("n");
       break;
     case TS_STRING:
-      tag = _T("st");
+      tag = wxS("st");
       break;
     case TS_LABEL:
-      tag = _T("lbl");
+      tag = wxS("lbl");
       break;
     case TS_USERLABEL:
-      tag = _T("lbl");
+      tag = wxS("lbl");
       break;
     case TS_MAIN_PROMPT:
-      tag = _T("lbl");
+      tag = wxS("lbl");
       break;
     case TS_OTHER_PROMPT:
-      tag = _T("lbl");
+      tag = wxS("lbl");
       break;
     default:
-      tag = _T("t");
+      tag = wxS("t");
     }
 
   wxString xmlstring = XMLescape(m_displayedText);
