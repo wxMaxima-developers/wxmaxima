@@ -100,7 +100,7 @@ void History::OnMouseRightDown(wxMouseEvent &WXUNUSED(event)) {
 
 void History::MaximaSessionStart() {
   if (m_commands.size() != 0)
-    AddToHistory(wxT("quit();"));
+    AddToHistory(wxS("quit();"));
   m_sessionCommands = 0;
   if (m_showCurrentSessionOnly)
     m_history->Clear();
@@ -272,4 +272,4 @@ void History::SetCurrent(long current) {
 }
 
 wxString
-History::m_showCurrentSessionOnlyKey(wxT("history/ShowCurrentSessionOnly"));
+History::m_showCurrentSessionOnlyKey(wxS("history/ShowCurrentSessionOnly"));

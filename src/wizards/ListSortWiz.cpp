@@ -64,7 +64,7 @@ ListSortWiz::ListSortWiz(Configuration *WXUNUSED(cfg), wxWindow *parent, int id,
   grid->Add(m_sortLambda, wxSizerFlags().Border(wxTOP | wxLEFT, 10));
   m_Criterion = new wxTextCtrl(choicePanel, -1, wxEmptyString,
                                wxDefaultPosition, wxSize(300, wxDefaultSize.y));
-  m_Criterion->SetValue(wxT("a<b"));
+  m_Criterion->SetValue(wxS("a<b"));
   m_Criterion->Connect(
 		       wxEVT_TEXT, wxGridEventHandler(ListSortWiz::OnLambdaChange), NULL, this);
   grid->Add(m_Criterion, wxSizerFlags().Border(wxTOP | wxLEFT, 10));
@@ -100,11 +100,11 @@ void ListSortWiz::set_properties() {
 }
 
 wxString ListSortWiz::GetValue() {
-  wxString retval = wxT("sort(") + m_list->GetValue();
+  wxString retval = wxS("sort(") + m_list->GetValue();
   if (m_sortFunction->GetValue())
-    retval += wxT(",") + m_CriterionFunc->GetValue();
+    retval += wxS(",") + m_CriterionFunc->GetValue();
   if (m_sortLambda->GetValue())
-    retval += wxT(",lambda([a,b],") + m_Criterion->GetValue() + wxT(")");
-  retval += wxT(")");
+    retval += wxS(",lambda([a,b],") + m_Criterion->GetValue() + wxS(")");
+  retval += wxS(")");
   return retval;
 }

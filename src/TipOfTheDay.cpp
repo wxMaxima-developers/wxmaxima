@@ -256,7 +256,7 @@ TipOfTheDay::TipOfTheDay(wxWindow *parent)
 
   // If nm is negative the if will make it posigive.
   long nm;
-  config->Read(wxT("tipNum"), &nm);
+  config->Read(wxS("tipNum"), &nm);
   m_num = nm;
   if (m_num >= m_tips.GetCount())
     m_num = 0;
@@ -292,7 +292,7 @@ TipOfTheDay::TipOfTheDay(wxWindow *parent)
 
   m_showAtStartup = new wxCheckBox(this, -1, _("Show tips at Startup"));
   bool showTip = true;
-  config->Read(wxT("ShowTips"), &showTip);
+  config->Read(wxS("ShowTips"), &showTip);
   m_showAtStartup->SetValue(showTip);
   buttonSizer->Add(m_showAtStartup, wxSizerFlags().Expand());
   buttonSizer->AddStretchSpacer(5);
@@ -306,14 +306,14 @@ TipOfTheDay::TipOfTheDay(wxWindow *parent)
   vbox->Add(buttonSizer, wxSizerFlags().Expand().Proportion(1));
 
   wxPersistenceManager::Get().RegisterAndRestore(this);
-  config->Write(wxT("tipNum"), m_num + 1);
+  config->Write(wxS("tipNum"), m_num + 1);
   SetSizerAndFit(vbox);
 }
 
 TipOfTheDay::~TipOfTheDay() {
   wxConfigBase *config = wxConfig::Get();
-  config->Write(wxT("ShowTips"), m_showAtStartup->GetValue());
-  config->Write(wxT("tipNum"), m_num + 1);
+  config->Write(wxS("ShowTips"), m_showAtStartup->GetValue());
+  config->Write(wxS("tipNum"), m_num + 1);
 }
 
 wxImage TipOfTheDay::GetImage(unsigned char *data, size_t len) {
@@ -384,7 +384,7 @@ void TipOfTheDay::OnPreviousButton(wxCommandEvent &WXUNUSED(dummy)) {
 
 void TipOfTheDay::OnOkButton(wxCommandEvent &WXUNUSED(dummy)) {
   wxConfigBase *config = wxConfig::Get();
-  config->Write(wxT("ShowTips"), m_showAtStartup->GetValue());
-  config->Write(wxT("tipNum"), m_num + 1);
+  config->Write(wxS("ShowTips"), m_showAtStartup->GetValue());
+  config->Write(wxS("tipNum"), m_num + 1);
   Destroy();
 }

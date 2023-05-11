@@ -249,7 +249,7 @@ void Variablespane::OnTextChange(wxGridEvent &event) {
     return;
   m_grid->BeginBatch();
   if (IsValidVariable(m_grid->GetCellValue(event.GetRow(), 0))) {
-    m_grid->SetCellValue(event.GetRow(), 1, wxT(""));
+    m_grid->SetCellValue(event.GetRow(), 1, wxS(""));
     m_grid->SetCellTextColour(event.GetRow(), 0, *wxBLACK);
   } else {
     if (m_grid->GetCellValue(event.GetRow(), 0) != wxEmptyString) {
@@ -369,7 +369,7 @@ void Variablespane::AddWatch(wxString watch) {
 }
 
 wxString Variablespane::UnescapeVarname(wxString var) {
-  if (var.StartsWith(wxT("$")))
+  if (var.StartsWith(wxS("$")))
     var = var.Right(var.Length() - 1);
   else
     var = "?" + var;
@@ -406,7 +406,7 @@ wxString Variablespane::EscapeVarname(wxString var) {
   var.Replace(" ", "\\ ");
   if (var.StartsWith("\\?"))
     var = var.Right(var.Length() - 1);
-  if (!var.StartsWith(wxT("?")))
+  if (!var.StartsWith(wxS("?")))
     var = "$" + var;
   return var;
 }
@@ -441,7 +441,7 @@ void Variablespane::ResetValues() {
       m_grid->SetCellValue(i, 1, _("Undefined"));
       m_grid->RefreshAttr(i, 1);
     } else
-      m_grid->SetCellValue(i, 1, wxT(""));
+      m_grid->SetCellValue(i, 1, wxS(""));
   }
 }
 

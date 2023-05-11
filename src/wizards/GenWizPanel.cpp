@@ -166,30 +166,30 @@ void GenWizPanel::NewWizard(
     if (!m_maximaManual->GetHelpfileAnchorName(word).IsEmpty())
       m_manualKeywords[word] = 1;
   }
-  if (commandRule.Contains(wxT("''")))
-    m_manualKeywords[wxT("''")] = 1;
-  if (commandRule.Contains(wxT("'")))
-    m_manualKeywords[wxT("'")] = 1;
-  if (commandRule.Contains(wxT("!")))
-    m_manualKeywords[wxT("!")] = 1;
-  if (commandRule.Contains(wxT(";")))
-    m_manualKeywords[wxT(";")] = 1;
-  if (commandRule.Contains(wxT("$")))
-    m_manualKeywords[wxT("$")] = 1;
-  if (commandRule.Contains(wxT("\\")))
-    m_manualKeywords[wxT("\\")] = 1;
+  if (commandRule.Contains(wxS("''")))
+    m_manualKeywords[wxS("''")] = 1;
+  if (commandRule.Contains(wxS("'")))
+    m_manualKeywords[wxS("'")] = 1;
+  if (commandRule.Contains(wxS("!")))
+    m_manualKeywords[wxS("!")] = 1;
+  if (commandRule.Contains(wxS(";")))
+    m_manualKeywords[wxS(";")] = 1;
+  if (commandRule.Contains(wxS("$")))
+    m_manualKeywords[wxS("$")] = 1;
+  if (commandRule.Contains(wxS("\\")))
+    m_manualKeywords[wxS("\\")] = 1;
   wxString hashFinder = commandRule;
-  hashFinder.Replace(wxT("#1#"), wxEmptyString);
-  hashFinder.Replace(wxT("#2#"), wxEmptyString);
-  hashFinder.Replace(wxT("#3#"), wxEmptyString);
-  hashFinder.Replace(wxT("#4#"), wxEmptyString);
-  hashFinder.Replace(wxT("#5#"), wxEmptyString);
-  hashFinder.Replace(wxT("#6#"), wxEmptyString);
-  hashFinder.Replace(wxT("#7#"), wxEmptyString);
-  hashFinder.Replace(wxT("#8#"), wxEmptyString);
-  hashFinder.Replace(wxT("#9#"), wxEmptyString);
-  if (hashFinder.Contains(wxT("#")))
-    m_manualKeywords[wxT("#")] = 1;
+  hashFinder.Replace(wxS("#1#"), wxEmptyString);
+  hashFinder.Replace(wxS("#2#"), wxEmptyString);
+  hashFinder.Replace(wxS("#3#"), wxEmptyString);
+  hashFinder.Replace(wxS("#4#"), wxEmptyString);
+  hashFinder.Replace(wxS("#5#"), wxEmptyString);
+  hashFinder.Replace(wxS("#6#"), wxEmptyString);
+  hashFinder.Replace(wxS("#7#"), wxEmptyString);
+  hashFinder.Replace(wxS("#8#"), wxEmptyString);
+  hashFinder.Replace(wxS("#9#"), wxEmptyString);
+  if (hashFinder.Contains(wxS("#")))
+    m_manualKeywords[wxS("#")] = 1;
   m_ignorePageChange = true;
   long page = m_configuration->WizardTab();
   if (page < 0)

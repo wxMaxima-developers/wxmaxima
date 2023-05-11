@@ -27,13 +27,13 @@ SubstituteWiz::SubstituteWiz(wxWindow *parent, int id, Configuration *cfg,
                              const wxSize &size, long style)
   : wxDialog(parent, id, title, pos, size, style) {
   label_2 = new wxStaticText(this, -1, _("Expression:"));
-  text_ctrl_1 = new BTextCtrl(this, -1, cfg, wxT("%"), wxDefaultPosition,
+  text_ctrl_1 = new BTextCtrl(this, -1, cfg, wxS("%"), wxDefaultPosition,
                               wxSize(230, -1));
   label_3 = new wxStaticText(this, -1, _("Old value:"));
-  text_ctrl_2 = new BTextCtrl(this, -1, cfg, wxT("x"), wxDefaultPosition,
+  text_ctrl_2 = new BTextCtrl(this, -1, cfg, wxS("x"), wxDefaultPosition,
                               wxSize(230, -1));
   label_4 = new wxStaticText(this, -1, _("New value:"));
-  text_ctrl_3 = new BTextCtrl(this, -1, cfg, wxT("y"), wxDefaultPosition,
+  text_ctrl_3 = new BTextCtrl(this, -1, cfg, wxS("y"), wxDefaultPosition,
                               wxSize(230, -1));
   checkbox_1 = new wxCheckBox(this, -1, _("&Rational"));
   static_line_1 = new wxStaticLine(this, -1);
@@ -92,14 +92,14 @@ void SubstituteWiz::do_layout() {
 wxString SubstituteWiz::GetValue() {
   wxString val;
   if (checkbox_1->IsChecked())
-    val = wxT("ratsubst(");
+    val = wxS("ratsubst(");
   else
-    val = wxT("subst(");
+    val = wxS("subst(");
   val.Append(text_ctrl_3->GetValue());
-  val.Append(wxT(", "));
+  val.Append(wxS(", "));
   val.Append(text_ctrl_2->GetValue());
-  val.Append(wxT(", "));
+  val.Append(wxS(", "));
   val.Append(text_ctrl_1->GetValue());
-  val.Append(wxT(");"));
+  val.Append(wxS(");"));
   return val;
 }

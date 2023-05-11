@@ -122,7 +122,7 @@ wxString ExplicitWiz::GetValue() {
     retval = "filled_func=" + m_filledfunc->GetValue() + ",\n    ";
 
   retval +=
-    wxT("explicit(\n        ") + m_expression->GetValue() + ",\n        ";
+    wxS("explicit(\n        ") + m_expression->GetValue() + ",\n        ";
   retval +=
     m_x->GetValue() + "," + m_xStart->GetValue() + "," + m_xEnd->GetValue();
   if (m_dimensions > 2)
@@ -231,7 +231,7 @@ wxString ImplicitWiz::GetValue() {
   wxString retval;
 
   retval +=
-    wxT("implicit(\n        ") + m_expression->GetValue() + ",\n        ";
+    wxS("implicit(\n        ") + m_expression->GetValue() + ",\n        ";
   retval +=
     m_x->GetValue() + "," + m_xStart->GetValue() + "," + m_xEnd->GetValue();
   retval += ",\n        " + m_y->GetValue() + "," + m_yStart->GetValue() + "," +
@@ -524,7 +524,7 @@ DrawWiz::DrawWiz(wxWindow *parent, Configuration *config, int dimensions)
 wxString DrawWiz::GetValue() {
   if (m_dimensions < 3) {
     if (m_singleFrame->GetValue())
-      return wxT("wxdraw2d(\n)$");
+      return wxS("wxdraw2d(\n)$");
     else {
       return wxString("with_slider_draw(\n") + m_frameVar->GetValue() +
 	",makelist(i,i," + m_varStart->GetValue() + "," +
@@ -532,7 +532,7 @@ wxString DrawWiz::GetValue() {
     }
   } else {
     if (m_singleFrame->GetValue())
-      return wxT("wxdraw3d(\n)$");
+      return wxS("wxdraw3d(\n)$");
     else {
       return wxString("with_slider_draw3d(\n") + m_frameVar->GetValue() +
 	",makelist(i,i," + m_varStart->GetValue() + "," +
@@ -796,7 +796,7 @@ ParametricWiz::ParametricWiz(wxWindow *parent, Configuration *config,
 
 wxString ParametricWiz::GetValue() {
   wxString retval;
-  retval += wxT("parametric(\n    ") + m_expression_x->GetValue() + ",\n    ";
+  retval += wxS("parametric(\n    ") + m_expression_x->GetValue() + ",\n    ";
   retval += m_expression_y->GetValue() + ",\n    ";
   if (m_dimensions > 2)
     retval += m_expression_z->GetValue() + ",\n    ";
@@ -933,11 +933,11 @@ WizDrawAccuracy::WizDrawAccuracy(wxWindow *parent, Configuration *config,
   vbox->Add(new wxStaticText(this, -1, _("Samples on a line:")),
             wxSizerFlags());
   wxBoxSizer *nticksBox = new wxBoxSizer(wxHORIZONTAL);
-  nticksBox->Add(m_nticks = new BTextCtrl(this, -1, config, wxT("")),
+  nticksBox->Add(m_nticks = new BTextCtrl(this, -1, config, wxS("")),
                  wxSizerFlags().Expand());
   nticksBox->Add(new wxStaticText(this, -1, _(" samples, on demand split ")),
                  wxSizerFlags());
-  nticksBox->Add(m_adapt_depth = new BTextCtrl(this, -1, config, wxT("")),
+  nticksBox->Add(m_adapt_depth = new BTextCtrl(this, -1, config, wxS("")),
                  wxSizerFlags().Expand());
   nticksBox->Add(new wxStaticText(this, -1, _(" times")), wxSizerFlags());
   vbox->Add(nticksBox, wxSizerFlags().Expand());
@@ -946,17 +946,17 @@ WizDrawAccuracy::WizDrawAccuracy(wxWindow *parent, Configuration *config,
     vbox->Add(new wxStaticText(this, -1, _("Samples for implicit plots:")),
               wxSizerFlags());
     wxBoxSizer *ipGridBox = new wxBoxSizer(wxHORIZONTAL);
-    ipGridBox->Add(m_ip_grid_x = new BTextCtrl(this, -1, config, wxT("")),
+    ipGridBox->Add(m_ip_grid_x = new BTextCtrl(this, -1, config, wxS("")),
                    wxSizerFlags().Expand());
     ipGridBox->Add(new wxStaticText(this, -1, _("X")), wxSizerFlags());
-    ipGridBox->Add(m_ip_grid_y = new BTextCtrl(this, -1, config, wxT("")),
+    ipGridBox->Add(m_ip_grid_y = new BTextCtrl(this, -1, config, wxS("")),
                    wxSizerFlags().Expand());
     ipGridBox->Add(new wxStaticText(this, -1, _(" samples, on demand split ")),
                    wxSizerFlags());
-    ipGridBox->Add(m_ip_grid_in_x = new BTextCtrl(this, -1, config, wxT("")),
+    ipGridBox->Add(m_ip_grid_in_x = new BTextCtrl(this, -1, config, wxS("")),
                    wxSizerFlags().Expand());
     ipGridBox->Add(new wxStaticText(this, -1, _("X")), wxSizerFlags());
-    ipGridBox->Add(m_ip_grid_in_y = new BTextCtrl(this, -1, config, wxT("")),
+    ipGridBox->Add(m_ip_grid_in_y = new BTextCtrl(this, -1, config, wxS("")),
                    wxSizerFlags().Expand());
     ipGridBox->Add(new wxStaticText(this, -1, _(" times")), wxSizerFlags());
     vbox->Add(ipGridBox, wxSizerFlags().Expand());
@@ -965,10 +965,10 @@ WizDrawAccuracy::WizDrawAccuracy(wxWindow *parent, Configuration *config,
                                _("Samples for explicit and parametric plots:")),
               wxSizerFlags());
     wxBoxSizer *exp3dGridBox = new wxBoxSizer(wxHORIZONTAL);
-    exp3dGridBox->Add(m_xu_grid = new BTextCtrl(this, -1, config, wxT("")),
+    exp3dGridBox->Add(m_xu_grid = new BTextCtrl(this, -1, config, wxS("")),
                       wxSizerFlags().Expand());
     exp3dGridBox->Add(new wxStaticText(this, -1, _("X")), wxSizerFlags());
-    exp3dGridBox->Add(m_yv_grid = new BTextCtrl(this, -1, config, wxT("")),
+    exp3dGridBox->Add(m_yv_grid = new BTextCtrl(this, -1, config, wxS("")),
                       wxSizerFlags().Expand());
     exp3dGridBox->Add(new wxStaticText(this, -1, _(" samples")),
                       wxSizerFlags());
@@ -978,13 +978,13 @@ WizDrawAccuracy::WizDrawAccuracy(wxWindow *parent, Configuration *config,
                                _("Samples for implicit plots and regions:")),
               wxSizerFlags());
     wxBoxSizer *regionGridBox = new wxBoxSizer(wxHORIZONTAL);
-    regionGridBox->Add(m_x_voxel = new BTextCtrl(this, -1, config, wxT("")),
+    regionGridBox->Add(m_x_voxel = new BTextCtrl(this, -1, config, wxS("")),
                        wxSizerFlags().Expand());
     regionGridBox->Add(new wxStaticText(this, -1, _("X")), wxSizerFlags());
-    regionGridBox->Add(m_y_voxel = new BTextCtrl(this, -1, config, wxT("")),
+    regionGridBox->Add(m_y_voxel = new BTextCtrl(this, -1, config, wxS("")),
                        wxSizerFlags().Expand());
     regionGridBox->Add(new wxStaticText(this, -1, _("X")), wxSizerFlags());
-    regionGridBox->Add(m_z_voxel = new BTextCtrl(this, -1, config, wxT("")),
+    regionGridBox->Add(m_z_voxel = new BTextCtrl(this, -1, config, wxS("")),
                        wxSizerFlags().Expand());
     regionGridBox->Add(new wxStaticText(this, -1, _(" samples")),
                        wxSizerFlags());

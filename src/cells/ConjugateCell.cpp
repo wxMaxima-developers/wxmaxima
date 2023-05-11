@@ -54,10 +54,10 @@ void ConjugateCell::MakeBreakupCells() {
   if (m_open)
     return;
   m_open =
-    std::make_unique<TextCell>(m_group, m_configuration, wxT("conjugate("));
+    std::make_unique<TextCell>(m_group, m_configuration, wxS("conjugate("));
   static_cast<TextCell &>(*m_open).DontEscapeOpeningParenthesis();
   m_open->SetStyle(TS_FUNCTION);
-  m_close = std::make_unique<TextCell>(m_group, m_configuration, wxT(")"));
+  m_close = std::make_unique<TextCell>(m_group, m_configuration, wxS(")"));
 }
 
 void ConjugateCell::Recalculate(AFontSize fontsize) {
@@ -101,42 +101,42 @@ wxString ConjugateCell::ToString() const {
   if (IsBrokenIntoLines())
     return wxEmptyString;
   else
-    return wxT("conjugate(") + m_innerCell->ListToString() + wxT(")");
+    return wxS("conjugate(") + m_innerCell->ListToString() + wxS(")");
 }
 
 wxString ConjugateCell::ToMatlab() const {
   if (IsBrokenIntoLines())
     return wxEmptyString;
   else
-    return wxT("conjugate(") + m_innerCell->ListToMatlab() + wxT(")");
+    return wxS("conjugate(") + m_innerCell->ListToMatlab() + wxS(")");
 }
 
 wxString ConjugateCell::ToTeX() const {
   if (IsBrokenIntoLines())
     return wxEmptyString;
   else
-    return wxT("\\overline{") + m_innerCell->ListToTeX() + wxT("}");
+    return wxS("\\overline{") + m_innerCell->ListToTeX() + wxS("}");
 }
 
 wxString ConjugateCell::ToMathML() const {
-  //  return wxT("<apply><conjugate/><ci>") + m_innerCell->ListToMathML() +
-  //  wxT("</ci></apply>");
-  return wxT("<mover accent=\"true\">") + m_innerCell->ListToMathML() +
-    wxT("<mo>&#xaf;</mo></mover>\n");
+  //  return wxS("<apply><conjugate/><ci>") + m_innerCell->ListToMathML() +
+  //  wxS("</ci></apply>");
+  return wxS("<mover accent=\"true\">") + m_innerCell->ListToMathML() +
+    wxS("<mo>&#xaf;</mo></mover>\n");
 }
 
 wxString ConjugateCell::ToOMML() const {
-  return wxT("<m:bar><m:barPr><m:pos m:val=\"top\"/> </m:barPr><m:e>") +
-    m_innerCell->ListToOMML() + wxT("</m:e></m:bar>");
+  return wxS("<m:bar><m:barPr><m:pos m:val=\"top\"/> </m:barPr><m:e>") +
+    m_innerCell->ListToOMML() + wxS("</m:e></m:bar>");
 }
 
 wxString ConjugateCell::ToXML() const {
   wxString flags;
   if (HasHardLineBreak())
-    flags += wxT(" breakline=\"true\"");
+    flags += wxS(" breakline=\"true\"");
 
-  return wxT("<cj") + flags + wxT(">") + m_innerCell->ListToXML() +
-    wxT("</cj>");
+  return wxS("<cj") + flags + wxS(">") + m_innerCell->ListToXML() +
+    wxS("</cj>");
 }
 
 bool ConjugateCell::BreakUp() {

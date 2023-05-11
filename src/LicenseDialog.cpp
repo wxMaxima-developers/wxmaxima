@@ -55,7 +55,7 @@ LicenseDialog::LicenseDialog(wxWindow *parent)
   long textWidth = 0;
   while (!istream.Eof()) {
     line = textIn.ReadLine();
-    licenseText += line + wxT("\n");
+    licenseText += line + wxS("\n");
     wxSize linesize = dc.GetTextExtent(line);
     if (linesize.x > textWidth) {
       textWidth = linesize.x;

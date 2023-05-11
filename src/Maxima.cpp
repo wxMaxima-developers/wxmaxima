@@ -42,14 +42,14 @@ static constexpr int INPUT_RESTART_PERIOD = -1;
 
 wxDEFINE_EVENT(EVT_MAXIMA, MaximaEvent);
 
-// Attention: 'wxT("\n"), wxConvUTF8' should be the default and one might think, one can omit these
+// Attention: 'wxS("\n"), wxConvUTF8' should be the default and one might think, one can omit these
 // parameters, but don't do it. wxWidgets (at least older versions, which are still used in Linux
 // distributions) had a bug, so that without these parameters one get wrong characters.
 // See: https://github.com/wxWidgets/wxWidgets/issues/14720#issuecomment-1010968576
 Maxima::Maxima(wxSocketBase *socket) :
   m_socket(socket),
   m_socketInput(*m_socket),
-  m_textInput(m_socketInput, wxT("\n"), wxConvUTF8)
+  m_textInput(m_socketInput, wxS("\n"), wxConvUTF8)
 {
   wxASSERT(socket);
   Bind(wxEVT_TIMER, wxTimerEventHandler(Maxima::TimerEvent), this);
@@ -146,7 +146,7 @@ void Maxima::ReadSocket() {
 
   // std::cerr<<"------ transmission start ------\n";
   wxString line;
-  wxString newLine = wxT("\n");
+  wxString newLine = wxS("\n");
   wxChar ch;
   do
     {
@@ -194,6 +194,6 @@ wxEvent *MaximaEvent::Clone() const {
   return event.release();
 }
 
-wxChar Maxima::m_nullChar= wxT('\0');
-wxChar Maxima::m_ascii10 = wxT('\r');
-wxChar Maxima::m_ascii13 = wxT('\n');
+wxChar Maxima::m_nullChar= wxS('\0');
+wxChar Maxima::m_ascii10 = wxS('\r');
+wxChar Maxima::m_ascii13 = wxS('\n');

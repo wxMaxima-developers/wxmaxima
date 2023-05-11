@@ -64,9 +64,9 @@ ChangeLogDialog::ChangeLogDialog(wxWindow *parent)
       textWidth = linesize.x;
       m_longestLine = line;
     }
-    issueLink.Replace(&line,wxT("https://github.com/wxMaxima-developers/wxmaxima/issues/\\1"));
-    bullet.Replace(&line,wxT("\u00a0\u2022"));
-    licenseText += line + wxT("\n");
+    issueLink.Replace(&line,wxS("https://github.com/wxMaxima-developers/wxmaxima/issues/\\1"));
+    bullet.Replace(&line,wxS("\u00a0\u2022"));
+    licenseText += line + wxS("\n");
   }
 
   m_license->SetMinSize(wxSize(textWidth + 20 * GetContentScaleFactor(),

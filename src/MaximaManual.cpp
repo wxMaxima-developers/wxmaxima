@@ -112,7 +112,7 @@ bool MaximaManual::LoadBuiltInManualAnchors() {
   wxLogMessage(_("Using the built-in list of manual anchors."));
   wxMemoryInputStream istream(MANUAL_ANCHORS_XML, MANUAL_ANCHORS_XML_SIZE);
   wxXmlDocument xmlDoc;
-  if (!xmlDoc.Load(istream, wxT("UTF-8")))
+  if (!xmlDoc.Load(istream, wxS("UTF-8")))
     return false;
   if (!LoadManualAnchorsFromXML(xmlDoc, false))
     return false;
@@ -192,7 +192,7 @@ void MaximaManual::CompileHelpFileAnchors(wxString maximaHtmlDir,
     for (auto file : helpFiles) {
       bool is_Singlepage = file.Contains("_singlepage.");
       long foundAnchors = 0;
-      wxString fileURI = wxURI(wxT("file://") + file).BuildURI();
+      wxString fileURI = wxURI(wxS("file://") + file).BuildURI();
       // wxWidgets cannot automatically replace a # as it doesn't know if it is
       // a anchor separator
       fileURI.Replace("#", "%23");
@@ -205,8 +205,8 @@ void MaximaManual::CompileHelpFileAnchors(wxString maximaHtmlDir,
       wxRegEx uriCorector1("^file:([a-zA-Z]):");
       wxRegEx uriCorector2("^file:([a-zA-Z][a-zA-Z]):");
 
-      uriCorector1.ReplaceFirst(&fileURI, wxT("file:///\\1:"));
-      uriCorector2.ReplaceFirst(&fileURI, wxT("file:///\\1:"));
+      uriCorector1.ReplaceFirst(&fileURI, wxS("file:///\\1:"));
+      uriCorector2.ReplaceFirst(&fileURI, wxS("file:///\\1:"));
 #endif
 
       wxLogMessage(_("Scanning help file %s for anchors"),
@@ -219,11 +219,11 @@ void MaximaManual::CompileHelpFileAnchors(wxString maximaHtmlDir,
       wxString escapeChars = "`\"^()<=>[]`%?;\\$%&+-*/.!\'@#:^_";
       wxFileInputStream input(file);
       if (input.IsOk()) {
-        wxTextInputStream text(input, wxT('\t'),
+        wxTextInputStream text(input, wxS('\t'),
                                wxConvAuto(wxFONTENCODING_UTF8));
         while (input.IsOk() && !input.Eof()) {
           wxString line = text.ReadLine();
-          wxStringTokenizer tokens(line, wxT(">"));
+          wxStringTokenizer tokens(line, wxS(">"));
           while (tokens.HasMoreTokens()) {
             wxString token = tokens.GetNextToken();
             wxString oldToken(token);
@@ -331,15 +331,15 @@ void MaximaManual::SaveManualAnchorsToCache(wxString maximaHtmlDir,
     return;
   }
   wxXmlAttribute *htmlDir =
-    new wxXmlAttribute(wxT("html_dir"), maximaHtmlDir);
+    new wxXmlAttribute(wxS("html_dir"), maximaHtmlDir);
 
   wxXmlAttribute *maximaVersionNode =
-    new wxXmlAttribute(wxT("maxima_version"), maximaVersion, htmlDir);
+    new wxXmlAttribute(wxS("maxima_version"), maximaVersion, htmlDir);
 
   wxXmlNode *topNode =
     new wxXmlNode(NULL, wxXML_DOCUMENT_NODE, wxEmptyString, wxEmptyString);
   wxXmlNode *headNode =
-    new wxXmlNode(topNode, wxXML_ELEMENT_NODE, wxT("maxima_toc"),
+    new wxXmlNode(topNode, wxXML_ELEMENT_NODE, wxS("maxima_toc"),
 		  wxEmptyString, maximaVersionNode);
 
   MaximaManual::HelpFileAnchors::const_iterator it;
@@ -395,14 +395,14 @@ bool MaximaManual::LoadManualAnchorsFromXML(wxXmlDocument xmlDocument,
     return false;
   }
   headNode = headNode->GetChildren();
-  while ((headNode) && (headNode->GetName() != wxT("maxima_toc")))
+  while ((headNode) && (headNode->GetName() != wxS("maxima_toc")))
     headNode = headNode->GetNext();
   if (!headNode) {
     wxLogMessage(_("Anchors file has no top node."));
     return false;
   }
-  wxString htmlDir = headNode->GetAttribute(wxT("html_dir"));
-  wxString cacheMaximaVersion = headNode->GetAttribute(wxT("maxima_version"));
+  wxString htmlDir = headNode->GetAttribute(wxS("html_dir"));
+  wxString cacheMaximaVersion = headNode->GetAttribute(wxS("maxima_version"));
   wxLogMessage(_("Maxima version: %s, Anchors cache version"),
 	       m_maximaVersion.utf8_str(),
 	       cacheMaximaVersion.utf8_str());
@@ -426,20 +426,20 @@ bool MaximaManual::LoadManualAnchorsFromXML(wxXmlDocument xmlDocument,
   long urls_FilePerChapter = 0;
   long urls_SinglePage = 0;
   while (entry) {
-    if (entry->GetName() == wxT("entry")) {
+    if (entry->GetName() == wxS("entry")) {
       wxString key;
       wxString url_singlepage;
       wxString url_filePerChapter;
       wxString anchor;
       wxXmlNode *node = entry->GetChildren();
       while (node) {
-        if ((node->GetName() == wxT("anchor")) && (node->GetChildren()))
+        if ((node->GetName() == wxS("anchor")) && (node->GetChildren()))
           anchor = node->GetChildren()->GetContent();
-        if ((node->GetName() == wxT("key")) && (node->GetChildren()))
+        if ((node->GetName() == wxS("key")) && (node->GetChildren()))
           key = node->GetChildren()->GetContent();
-        if ((node->GetName() == wxT("url_singlepage")) && (node->GetChildren()))
+        if ((node->GetName() == wxS("url_singlepage")) && (node->GetChildren()))
           url_singlepage = node->GetChildren()->GetContent();
-        if ((node->GetName() == wxT("url_fileperchapter")) &&
+        if ((node->GetName() == wxS("url_fileperchapter")) &&
             (node->GetChildren()))
           url_filePerChapter = node->GetChildren()->GetContent();
         node = node->GetNext();
@@ -491,7 +491,7 @@ void MaximaManual::FindMaximaHtmlDir(wxString docDir) {
   // helpFile=/usr/local/share/maxima/5.44.0/doc/html/maxima_singlepage.html
   // Use that file, if the configuration option is used.
   wxString headerFile;
-  wxConfig::Get()->Read(wxT("helpFile"), &headerFile);
+  wxConfig::Get()->Read(wxS("helpFile"), &headerFile);
   if (headerFile.Length() && wxFileExists(headerFile)) {
     wxLogMessage(_("Using Maxima help file from wxMaxima configuration file "
                    "(helpFile=...))"));
@@ -501,9 +501,9 @@ void MaximaManual::FindMaximaHtmlDir(wxString docDir) {
   // Cygwin uses /c/something instead of c:/something and passes this path to
   // the web browser - which doesn't support cygwin paths => convert the path to
   // a native windows pathname if needed.
-  if (headerFile.Length() > 1 && headerFile[1] == wxT('/')) {
+  if (headerFile.Length() > 1 && headerFile[1] == wxS('/')) {
     headerFile[1] = headerFile[2];
-    headerFile[2] = wxT(':');
+    headerFile[2] = wxS(':');
   }
 #endif // __CYGWIN__
   wxPathList helpfilepaths;

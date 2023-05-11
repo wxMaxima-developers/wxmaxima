@@ -74,13 +74,13 @@ void AutoComplete::AddSymbols(wxString xml) {
 void AutoComplete::AddSymbols_Backgroundtask(wxString xml) {
   wxXmlDocument xmldoc;
   wxStringInputStream xmlStream(xml);
-  xmldoc.Load(xmlStream, wxT("UTF-8"));
+  xmldoc.Load(xmlStream, wxS("UTF-8"));
   wxXmlNode *node = xmldoc.GetRoot();
   if (node != NULL) {
     wxXmlNode *children = node->GetChildren();
     while (children != NULL) {
       if (children->GetType() == wxXML_ELEMENT_NODE) {
-        if (children->GetName() == wxT("function")) {
+        if (children->GetName() == wxS("function")) {
           wxXmlNode *val = children->GetChildren();
           if (val) {
             wxString name = val->GetContent();
@@ -88,7 +88,7 @@ void AutoComplete::AddSymbols_Backgroundtask(wxString xml) {
           }
         }
 
-        if (children->GetName() == wxT("template")) {
+        if (children->GetName() == wxS("template")) {
           wxXmlNode *val = children->GetChildren();
           if (val) {
             wxString name = val->GetContent();
@@ -96,7 +96,7 @@ void AutoComplete::AddSymbols_Backgroundtask(wxString xml) {
           }
         }
 
-        if (children->GetName() == wxT("unit")) {
+        if (children->GetName() == wxS("unit")) {
           wxXmlNode *val = children->GetChildren();
           if (val) {
             wxString name = val->GetContent();
@@ -104,7 +104,7 @@ void AutoComplete::AddSymbols_Backgroundtask(wxString xml) {
           }
         }
 
-        if (children->GetName() == wxT("value")) {
+        if (children->GetName() == wxS("value")) {
           wxXmlNode *val = children->GetChildren();
           if (val) {
             wxString name = val->GetContent();
@@ -292,16 +292,16 @@ void AutoComplete::LoadableFiles_BackgroundTask(wxString sharedir) {
 void AutoComplete::UpdateDemoFiles(wxString partial, wxString maximaDir) {
   WaitForBackgroundThread_Files();
   // Remove the opening quote from the partial.
-  if (partial[0] == wxT('\"'))
+  if (partial[0] == wxS('\"'))
     partial = partial.Right(partial.Length() - 1);
 
   partial.Replace(wxFileName::GetPathSeparator(), "/");
   int pos;
-  if ((pos = partial.Find(wxT('/'), true)) == wxNOT_FOUND)
+  if ((pos = partial.Find(wxS('/'), true)) == wxNOT_FOUND)
     partial = wxEmptyString;
   else
     partial = partial.Left(pos);
-  wxString prefix = partial + wxT("/");
+  wxString prefix = partial + wxS("/");
 
   // Determine if we need to add the path to maxima's current dir to the path in
   // partial
@@ -318,7 +318,7 @@ void AutoComplete::UpdateDemoFiles(wxString partial, wxString maximaDir) {
   ClearDemofileList();
 
   // Add all files from the maxima directory to the demo file list
-  if (partial != wxT("//")) {
+  if (partial != wxS("//")) {
     GetDemoFiles userLispIterator(m_wordList[demofile], prefix);
     wxDir demofilesdir(partial);
     if (demofilesdir.IsOpened())
@@ -329,16 +329,16 @@ void AutoComplete::UpdateDemoFiles(wxString partial, wxString maximaDir) {
 void AutoComplete::UpdateGeneralFiles(wxString partial, wxString maximaDir) {
   WaitForBackgroundThread_Files();
   // Remove the opening quote from the partial.
-  if (partial[0] == wxT('\"'))
+  if (partial[0] == wxS('\"'))
     partial = partial.Right(partial.Length() - 1);
 
   partial.Replace(wxFileName::GetPathSeparator(), "/");
   int pos;
-  if ((pos = partial.Find(wxT('/'), true)) == wxNOT_FOUND)
+  if ((pos = partial.Find(wxS('/'), true)) == wxNOT_FOUND)
     partial = wxEmptyString;
   else
     partial = partial.Left(pos);
-  wxString prefix = partial + wxT("/");
+  wxString prefix = partial + wxS("/");
 
   // Determine if we need to add the path to maxima's current dir to the path in
   // partial
@@ -352,7 +352,7 @@ void AutoComplete::UpdateGeneralFiles(wxString partial, wxString maximaDir) {
     partial += "/";
 
   // Add all files from the maxima directory to the demo file list
-  if (partial != wxT("//")) {
+  if (partial != wxS("//")) {
     GetGeneralFiles fileIterator(m_wordList[generalfile], prefix);
     wxDir generalfilesdir(partial);
     if (generalfilesdir.IsOpened())
@@ -365,16 +365,16 @@ void AutoComplete::UpdateLoadFiles(wxString partial, wxString maximaDir) {
                  "file names."));
   WaitForBackgroundThread_Files();
   // Remove the opening quote from the partial.
-  if (partial[0] == wxT('\"'))
+  if (partial[0] == wxS('\"'))
     partial = partial.Right(partial.Length() - 1);
 
   partial.Replace(wxFileName::GetPathSeparator(), "/");
   int pos;
-  if ((pos = partial.Find(wxT('/'), true)) == wxNOT_FOUND)
+  if ((pos = partial.Find(wxS('/'), true)) == wxNOT_FOUND)
     partial = wxEmptyString;
   else
     partial = partial.Left(pos);
-  wxString prefix = partial + wxT("/");
+  wxString prefix = partial + wxS("/");
 
   // Determine if we need to add the path to maxima's current dir to the path in
   // partial
@@ -391,7 +391,7 @@ void AutoComplete::UpdateLoadFiles(wxString partial, wxString maximaDir) {
   m_wordList[loadfile] = m_builtInLoadFiles;
 
   // Add all files from the maxima directory to the load file list
-  if (partial != wxT("//")) {
+  if (partial != wxS("//")) {
     GetMacFiles userLispIterator(m_wordList[loadfile], prefix);
     wxDir loadfilesdir(partial);
     if (loadfilesdir.IsOpened())
@@ -425,7 +425,7 @@ wxArrayString AutoComplete::CompleteSymbol(wxString partial,
       if (templ.StartsWith(partial)) {
         if (completions.Index(templ) == wxNOT_FOUND)
           completions.Add(templ);
-        if (templ.SubString(0, templ.Find(wxT("(")) - 1) == partial &&
+        if (templ.SubString(0, templ.Find(wxS("(")) - 1) == partial &&
             perfectCompletions.Index(templ) == wxNOT_FOUND)
           perfectCompletions.Add(templ);
       }
@@ -458,13 +458,13 @@ void AutoComplete::AddSymbol(wxString fun, autoCompletionType type) {
 
 void AutoComplete::AddSymbol_nowait(wxString fun, autoCompletionType type) {
   /// Check for function of template
-  if (fun.StartsWith(wxT("FUNCTION: "))) {
+  if (fun.StartsWith(wxS("FUNCTION: "))) {
     fun = fun.Mid(10);
     type = command;
-  } else if (fun.StartsWith(wxT("TEMPLATE: "))) {
+  } else if (fun.StartsWith(wxS("TEMPLATE: "))) {
     fun = fun.Mid(10);
     type = tmplte;
-  } else if (fun.StartsWith(wxT("UNIT: "))) {
+  } else if (fun.StartsWith(wxS("UNIT: "))) {
     fun = fun.Mid(6);
     type = unit;
   }
@@ -478,7 +478,7 @@ void AutoComplete::AddSymbol_nowait(wxString fun, autoCompletionType type) {
   /// only add one template. We count the arguments by counting '<'
   if (type == tmplte) {
     fun = FixTemplate(fun);
-    wxString funName = fun.SubString(0, fun.Find(wxT("(")));
+    wxString funName = fun.SubString(0, fun.Find(wxS("(")));
     long count = fun.Freq('<');
     size_t i = 0;
     for (i = 0; i < m_wordList[type].GetCount(); i++) {
@@ -492,11 +492,11 @@ void AutoComplete::AddSymbol_nowait(wxString fun, autoCompletionType type) {
 }
 
 wxString AutoComplete::FixTemplate(wxString templ) {
-  templ.Replace(wxT(" "), wxEmptyString);
-  templ.Replace(wxT(",..."), wxEmptyString);
+  templ.Replace(wxS(" "), wxEmptyString);
+  templ.Replace(wxS(",..."), wxEmptyString);
 
   /// This will change optional arguments
-  m_args.ReplaceAll(&templ, wxT("<[\\1]>"));
+  m_args.ReplaceAll(&templ, wxS("<[\\1]>"));
 
   return templ;
 }

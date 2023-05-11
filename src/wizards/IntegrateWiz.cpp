@@ -34,18 +34,18 @@ IntegrateWiz::IntegrateWiz(wxWindow *parent, int id, Configuration *cfg,
   text_ctrl_1 = new BTextCtrl(this, -1, cfg, wxEmptyString, wxDefaultPosition,
                               wxSize(230, -1));
   label_3 = new wxStaticText(this, -1, _("Variable:"));
-  text_ctrl_2 = new BTextCtrl(this, -1, cfg, wxT("x"), wxDefaultPosition,
+  text_ctrl_2 = new BTextCtrl(this, -1, cfg, wxS("x"), wxDefaultPosition,
                               wxSize(110, -1));
   checkbox_1 = new wxCheckBox(this, EventIDs::wizard_definite_id, _("&Definite integration"));
   checkbox_1->Connect(wxEVT_CHECKBOX, wxCommandEventHandler(IntegrateWiz::OnCheckbox), NULL, this);
   label_4 = new wxStaticText(this, -1, _("From:"));
-  text_ctrl_3 = new BTextCtrl(this, -1, cfg, wxT("0"), wxDefaultPosition,
+  text_ctrl_3 = new BTextCtrl(this, -1, cfg, wxS("0"), wxDefaultPosition,
                               wxSize(110, -1));
   button_3 = new wxButton(this, EventIDs::wizard_special_from, _("Special"));
   button_3->Connect(wxEVT_BUTTON, wxCommandEventHandler(IntegrateWiz::OnButton), NULL, this);
 
   label_5 = new wxStaticText(this, -1, _("To:"));
-  text_ctrl_4 = new BTextCtrl(this, -1, cfg, wxT("1"), wxDefaultPosition,
+  text_ctrl_4 = new BTextCtrl(this, -1, cfg, wxS("1"), wxDefaultPosition,
                               wxSize(110, -1));
   button_4 = new wxButton(this, special_to, _("Special"));
   button_4->Connect(wxEVT_BUTTON, wxCommandEventHandler(IntegrateWiz::OnButton), NULL, this);
@@ -53,7 +53,7 @@ IntegrateWiz::IntegrateWiz(wxWindow *parent, int id, Configuration *cfg,
   checkbox_2->Connect(wxEVT_CHECKBOX, wxCommandEventHandler(IntegrateWiz::OnCheckbox), NULL, this);
 
   label_6 = new wxStaticText(this, -1, _("Method:"));
-  wxString numeric_methods[] = {wxT("quadpack"), wxT("romberg")};
+  wxString numeric_methods[] = {wxS("quadpack"), wxS("romberg")};
   choice_1 = new wxChoice(this, -1, wxDefaultPosition, wxDefaultSize, 2,
                           numeric_methods);
   static_line_1 = new wxStaticLine(this, -1);
@@ -85,7 +85,7 @@ void IntegrateWiz::set_properties() {
   choice_1->Enable(false);
 
   int num_sel = 0;
-  wxConfig::Get()->Read(wxT("Wiz/Int/numericSelection"), &num_sel);
+  wxConfig::Get()->Read(wxS("Wiz/Int/numericSelection"), &num_sel);
   choice_1->SetSelection(num_sel);
 
   text_ctrl_1->SetFocus();
@@ -138,36 +138,36 @@ wxString IntegrateWiz::GetValue() {
   wxString s;
   if (checkbox_2->GetValue()) {
     if (choice_1->GetSelection() == 1) {
-      wxConfig::Get()->Write(wxT("Wiz/Int/numericSelection"), 1);
-      s = wxT("romberg(") + text_ctrl_1->GetValue() + wxT(", ") +
-	text_ctrl_2->GetValue() + wxT(", ") + text_ctrl_3->GetValue() +
-	wxT(", ") + text_ctrl_4->GetValue() + wxT(");");
+      wxConfig::Get()->Write(wxS("Wiz/Int/numericSelection"), 1);
+      s = wxS("romberg(") + text_ctrl_1->GetValue() + wxS(", ") +
+	text_ctrl_2->GetValue() + wxS(", ") + text_ctrl_3->GetValue() +
+	wxS(", ") + text_ctrl_4->GetValue() + wxS(");");
     } else {
-      wxConfig::Get()->Write(wxT("Wiz/Int/numericSelection"), 0);
+      wxConfig::Get()->Write(wxS("Wiz/Int/numericSelection"), 0);
       wxString from = text_ctrl_3->GetValue();
       wxString to = text_ctrl_4->GetValue();
-      if (from == wxT("minf") && to == wxT("inf"))
-        s = wxT("quad_qagi(") + text_ctrl_1->GetValue() + wxT(", ") +
-	  text_ctrl_2->GetValue() + wxT(", 0, 'both);");
-      else if (from == wxT("minf"))
-        s = wxT("quad_qagi(") + text_ctrl_1->GetValue() + wxT(", ") +
-	  text_ctrl_2->GetValue() + wxT(", ") + to + wxT(", minf);");
-      else if (to == wxT("inf"))
-        s = wxT("quad_qagi(") + text_ctrl_1->GetValue() + wxT(", ") +
-	  text_ctrl_2->GetValue() + wxT(", ") + from + wxT(", inf);");
+      if (from == wxS("minf") && to == wxS("inf"))
+        s = wxS("quad_qagi(") + text_ctrl_1->GetValue() + wxS(", ") +
+	  text_ctrl_2->GetValue() + wxS(", 0, 'both);");
+      else if (from == wxS("minf"))
+        s = wxS("quad_qagi(") + text_ctrl_1->GetValue() + wxS(", ") +
+	  text_ctrl_2->GetValue() + wxS(", ") + to + wxS(", minf);");
+      else if (to == wxS("inf"))
+        s = wxS("quad_qagi(") + text_ctrl_1->GetValue() + wxS(", ") +
+	  text_ctrl_2->GetValue() + wxS(", ") + from + wxS(", inf);");
       else
-        s = wxT("quad_qags(") + text_ctrl_1->GetValue() + wxT(", ") +
-	  text_ctrl_2->GetValue() + wxT(", ") + from + wxT(", ") + to +
-	  wxT(");");
+        s = wxS("quad_qags(") + text_ctrl_1->GetValue() + wxS(", ") +
+	  text_ctrl_2->GetValue() + wxS(", ") + from + wxS(", ") + to +
+	  wxS(");");
     }
   } else {
-    s = wxT("integrate(") + text_ctrl_1->GetValue() + wxT(", ") +
+    s = wxS("integrate(") + text_ctrl_1->GetValue() + wxS(", ") +
       text_ctrl_2->GetValue();
     if (checkbox_1->GetValue()) {
-      s += wxT(", ") + text_ctrl_3->GetValue() + wxT(", ") +
+      s += wxS(", ") + text_ctrl_3->GetValue() + wxS(", ") +
 	text_ctrl_4->GetValue();
     }
-    s += wxT(");");
+    s += wxS(");");
   }
 
   return s;
@@ -189,33 +189,33 @@ void IntegrateWiz::OnCheckbox(wxCommandEvent &event) {
 
 void IntegrateWiz::OnButton(wxCommandEvent &event) {
   if (event.GetId() == EventIDs::wizard_special_from) {
-    wxString choices[] = {wxT("Pi"), wxT("E"), _("Infinity"), _("- Infinity")};
+    wxString choices[] = {wxS("Pi"), wxS("E"), _("Infinity"), _("- Infinity")};
     wxString choice = wxGetSingleChoice(_("Select a constant"), _("Constant"),
                                         4, choices, this);
     if (choice.Length()) {
-      if (choice == wxT("Pi"))
-        text_ctrl_3->SetValue(wxT("%pi"));
-      else if (choice == wxT("E"))
-        text_ctrl_3->SetValue(wxT("%e"));
+      if (choice == wxS("Pi"))
+        text_ctrl_3->SetValue(wxS("%pi"));
+      else if (choice == wxS("E"))
+        text_ctrl_3->SetValue(wxS("%e"));
       else if (choice == _("Infinity"))
-        text_ctrl_3->SetValue(wxT("inf"));
+        text_ctrl_3->SetValue(wxS("inf"));
       else if (choice == _("- Infinity"))
-        text_ctrl_3->SetValue(wxT("minf"));
+        text_ctrl_3->SetValue(wxS("minf"));
     }
   }
   if (event.GetId() == EventIDs::wizard_special_to) {
-    wxString choices[] = {wxT("Pi"), wxT("E"), _("Infinity"), _("- Infinity")};
+    wxString choices[] = {wxS("Pi"), wxS("E"), _("Infinity"), _("- Infinity")};
     wxString choice = wxGetSingleChoice(_("Select a constant"), _("Constant"),
                                         4, choices, this);
     if (choice.Length()) {
-      if (choice == wxT("Pi"))
-        text_ctrl_4->SetValue(wxT("%pi"));
-      else if (choice == wxT("E"))
-        text_ctrl_4->SetValue(wxT("%e"));
+      if (choice == wxS("Pi"))
+        text_ctrl_4->SetValue(wxS("%pi"));
+      else if (choice == wxS("E"))
+        text_ctrl_4->SetValue(wxS("%e"));
       else if (choice == _("Infinity"))
-        text_ctrl_4->SetValue(wxT("inf"));
+        text_ctrl_4->SetValue(wxS("inf"));
       else if (choice == _("- Infinity"))
-        text_ctrl_4->SetValue(wxT("minf"));
+        text_ctrl_4->SetValue(wxS("minf"));
     }
   }
 }

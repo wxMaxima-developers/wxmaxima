@@ -205,10 +205,10 @@ void ToolBar::AddTools() {
           _("Interrupt current computation. To completely restart maxima press "
             "the button left to this one."));
   int bitmapWidth = GetOptimalBitmapSize().x;
-  m_followIcon = ArtProvider::GetImage(this, wxT("arrow_up_square"), bitmapWidth, ARROW_UP_SQUARE_SVG_GZ,
+  m_followIcon = ArtProvider::GetImage(this, wxS("arrow_up_square"), bitmapWidth, ARROW_UP_SQUARE_SVG_GZ,
 				       ARROW_UP_SQUARE_SVG_GZ_SIZE);
   m_needsInformationIcon =
-    ArtProvider::GetImage(this, wxT("software-update-urgent"), bitmapWidth, SOFTWARE_UPDATE_URGENT_SVG_GZ,
+    ArtProvider::GetImage(this, wxS("software-update-urgent"), bitmapWidth, SOFTWARE_UPDATE_URGENT_SVG_GZ,
 	      SOFTWARE_UPDATE_URGENT_SVG_GZ_SIZE);
   AddTool(tb_follow, _("Follow"), m_followIcon,
           _("Return to the cell that is currently being evaluated"));
@@ -268,10 +268,10 @@ void ToolBar::AddTools() {
   AddControl(m_textStyle);
 
   m_PlayButton =
-    ArtProvider::GetImage(this, wxT("media-playback-start"), bitmapWidth, MEDIA_PLAYBACK_START_SVG_GZ,
+    ArtProvider::GetImage(this, wxS("media-playback-start"), bitmapWidth, MEDIA_PLAYBACK_START_SVG_GZ,
 	      MEDIA_PLAYBACK_START_SVG_GZ_SIZE);
   m_StopButton =
-    ArtProvider::GetImage(this, wxT("media-playback-stop"), bitmapWidth, MEDIA_PLAYBACK_STOP_SVG_GZ,
+    ArtProvider::GetImage(this, wxS("media-playback-stop"), bitmapWidth, MEDIA_PLAYBACK_STOP_SVG_GZ,
 	      MEDIA_PLAYBACK_STOP_SVG_GZ_SIZE);
 
   // It felt like a good idea to combine the play and the stop button.
@@ -353,20 +353,20 @@ void ToolBar::UpdateBitmaps() {
   SetToolBitmap(wxID_FIND, GetFindBitmap(bitmapSize));
   SetToolBitmap(menu_restart_id, GetRestartBitmap(bitmapSize));
   SetToolBitmap(tb_interrupt, GetInterruptBitmap(bitmapSize));
-  m_followIcon = ArtProvider::GetImage(this, wxT("arrow_up_square"), bitmapWidth, ARROW_UP_SQUARE_SVG_GZ, 
+  m_followIcon = ArtProvider::GetImage(this, wxS("arrow_up_square"), bitmapWidth, ARROW_UP_SQUARE_SVG_GZ, 
                            ARROW_UP_SQUARE_SVG_GZ_SIZE);
   m_needsInformationIcon =
-    ArtProvider::GetImage(this, wxT("software-update-urgent"), bitmapWidth, SOFTWARE_UPDATE_URGENT_SVG_GZ,
+    ArtProvider::GetImage(this, wxS("software-update-urgent"), bitmapWidth, SOFTWARE_UPDATE_URGENT_SVG_GZ,
 	      SOFTWARE_UPDATE_URGENT_SVG_GZ_SIZE);
   SetToolBitmap(tb_follow, m_followIcon);
   SetToolBitmap(tb_evaltillhere, GetEvalTillHereBitmap(bitmapSize));
   SetToolBitmap(tb_evaluate_rest, GetEvalRestBitmap(bitmapSize));
   SetToolBitmap(tb_hideCode, GetHideCodeBitmap(bitmapSize));
   m_PlayButton =
-    ArtProvider::GetImage(this, wxT("media-playback-start"), bitmapWidth, MEDIA_PLAYBACK_START_SVG_GZ,
+    ArtProvider::GetImage(this, wxS("media-playback-start"), bitmapWidth, MEDIA_PLAYBACK_START_SVG_GZ,
 	      MEDIA_PLAYBACK_START_SVG_GZ_SIZE);
   m_StopButton =
-    ArtProvider::GetImage(this, wxT("media-playback-stop"), bitmapWidth, MEDIA_PLAYBACK_STOP_SVG_GZ,
+    ArtProvider::GetImage(this, wxS("media-playback-stop"), bitmapWidth, MEDIA_PLAYBACK_STOP_SVG_GZ,
 	      MEDIA_PLAYBACK_STOP_SVG_GZ_SIZE);
   SetToolBitmap(tb_animation_startStop, m_PlayButton);
   SetToolBitmap(wxID_HELP, GetHelpBitmap(bitmapSize));
@@ -374,68 +374,68 @@ void ToolBar::UpdateBitmaps() {
 }
 
 wxBitmap ToolBar::GetEvalAllBitmap(wxSize siz) {
-  return ArtProvider::GetImage(this, wxT("go-next"), siz.x, GO_JUMP_SVG_GZ, GO_JUMP_SVG_GZ_SIZE);
+  return ArtProvider::GetImage(this, wxS("go-next"), siz.x, GO_JUMP_SVG_GZ, GO_JUMP_SVG_GZ_SIZE);
 }
 wxBitmap ToolBar::GetEvalBitmap(wxSize siz) {
-  return ArtProvider::GetImage(this, wxT("go-next"), siz.x, GO_NEXT_SVG_GZ, GO_NEXT_SVG_GZ_SIZE);
+  return ArtProvider::GetImage(this, wxS("go-next"), siz.x, GO_NEXT_SVG_GZ, GO_NEXT_SVG_GZ_SIZE);
 }
 wxBitmap ToolBar::GetNewBitmap(wxSize siz) {
-  return ArtProvider::GetImage(this, wxT("gtk-new"), siz.x, GTK_NEW_SVG_GZ, GTK_NEW_SVG_GZ_SIZE);
+  return ArtProvider::GetImage(this, wxS("gtk-new"), siz.x, GTK_NEW_SVG_GZ, GTK_NEW_SVG_GZ_SIZE);
 }
 
 wxBitmap ToolBar::GetPrintBitmap(wxSize siz) {
-  return ArtProvider::GetImage(this, wxT("gtk-print"), siz.x, GTK_PRINT_SVG_GZ, GTK_PRINT_SVG_GZ_SIZE);
+  return ArtProvider::GetImage(this, wxS("gtk-print"), siz.x, GTK_PRINT_SVG_GZ, GTK_PRINT_SVG_GZ_SIZE);
 }
 wxBitmap ToolBar::GetOpenBitmap(wxSize siz) {
-  return ArtProvider::GetImage(this, wxT("gtk-open"), siz.x, GTK_OPEN_SVG_GZ, GTK_OPEN_SVG_GZ_SIZE);
+  return ArtProvider::GetImage(this, wxS("gtk-open"), siz.x, GTK_OPEN_SVG_GZ, GTK_OPEN_SVG_GZ_SIZE);
 }
 wxBitmap ToolBar::GetSaveBitmap(wxSize siz) {
-  return ArtProvider::GetImage(this, wxT("gtk-save"), siz.x, GTK_SAVE_SVG_GZ, GTK_SAVE_SVG_GZ_SIZE);
+  return ArtProvider::GetImage(this, wxS("gtk-save"), siz.x, GTK_SAVE_SVG_GZ, GTK_SAVE_SVG_GZ_SIZE);
 }
 wxBitmap ToolBar::GetUndoBitmap(wxSize siz) {
-  return ArtProvider::GetImage(this, wxT("gtk-undo"), siz.x, GTK_UNDO_SVG_GZ, GTK_UNDO_SVG_GZ_SIZE);
+  return ArtProvider::GetImage(this, wxS("gtk-undo"), siz.x, GTK_UNDO_SVG_GZ, GTK_UNDO_SVG_GZ_SIZE);
 }
 wxBitmap ToolBar::GetRedoBitmap(wxSize siz) {
-  return ArtProvider::GetImage(this, wxT("gtk-redo"), siz.x, GTK_REDO_SVG_GZ, GTK_REDO_SVG_GZ_SIZE);
+  return ArtProvider::GetImage(this, wxS("gtk-redo"), siz.x, GTK_REDO_SVG_GZ, GTK_REDO_SVG_GZ_SIZE);
 }
 wxBitmap ToolBar::GetPreferencesBitmap(wxSize siz) {
-  return ArtProvider::GetImage(this, wxT("gtk-preferences"), siz.x, GTK_PREFERENCES_SVG_GZ,
+  return ArtProvider::GetImage(this, wxS("gtk-preferences"), siz.x, GTK_PREFERENCES_SVG_GZ,
                    GTK_PREFERENCES_SVG_GZ_SIZE);
 }
 wxBitmap ToolBar::GetCutBitmap(wxSize siz) {
-  return ArtProvider::GetImage(this, wxT("gtk-cut"), siz.x, GTK_CUT_SVG_GZ, GTK_CUT_SVG_GZ_SIZE);
+  return ArtProvider::GetImage(this, wxS("gtk-cut"), siz.x, GTK_CUT_SVG_GZ, GTK_CUT_SVG_GZ_SIZE);
 }
 wxBitmap ToolBar::GetCopyBitmap(wxSize siz) {
-  return ArtProvider::GetImage(this, wxT("gtk-copy"), siz.x, GTK_COPY_SVG_GZ, GTK_COPY_SVG_GZ_SIZE);
+  return ArtProvider::GetImage(this, wxS("gtk-copy"), siz.x, GTK_COPY_SVG_GZ, GTK_COPY_SVG_GZ_SIZE);
 }
 wxBitmap ToolBar::GetPasteBitmap(wxSize siz) {
-  return ArtProvider::GetImage(this, wxT("gtk-paste"), siz.x, GTK_PASTE_SVG_GZ, GTK_PASTE_SVG_GZ_SIZE);
+  return ArtProvider::GetImage(this, wxS("gtk-paste"), siz.x, GTK_PASTE_SVG_GZ, GTK_PASTE_SVG_GZ_SIZE);
 }
 wxBitmap ToolBar::GetSelectAllBitmap(wxSize siz) {
-  return ArtProvider::GetImage(this, wxT("gtk-select-all"), siz.x, GTK_SELECT_ALL_SVG_GZ,
+  return ArtProvider::GetImage(this, wxS("gtk-select-all"), siz.x, GTK_SELECT_ALL_SVG_GZ,
                    GTK_SELECT_ALL_SVG_GZ_SIZE);
 }
 wxBitmap ToolBar::GetFindBitmap(wxSize siz) {
-  return ArtProvider::GetImage(this, wxT("gtk-find"), siz.x, GTK_FIND_SVG_GZ, GTK_FIND_SVG_GZ_SIZE);
+  return ArtProvider::GetImage(this, wxS("gtk-find"), siz.x, GTK_FIND_SVG_GZ, GTK_FIND_SVG_GZ_SIZE);
 }
 wxBitmap ToolBar::GetRestartBitmap(wxSize siz) {
-  return ArtProvider::GetImage(this, wxT("view-refresh"), siz.x, VIEW_REFRESH1_SVG_GZ,
+  return ArtProvider::GetImage(this, wxS("view-refresh"), siz.x, VIEW_REFRESH1_SVG_GZ,
                    VIEW_REFRESH1_SVG_GZ_SIZE);
 }
 wxBitmap ToolBar::GetInterruptBitmap(wxSize siz) {
-  return ArtProvider::GetImage(this, wxT("gtk-stop"), siz.x, GTK_STOP_SVG_GZ, GTK_STOP_SVG_GZ_SIZE);
+  return ArtProvider::GetImage(this, wxS("gtk-stop"), siz.x, GTK_STOP_SVG_GZ, GTK_STOP_SVG_GZ_SIZE);
 }
 wxBitmap ToolBar::GetEvalTillHereBitmap(wxSize siz) {
-  return ArtProvider::GetImage(this, wxT("go-bottom"), siz.x, GO_BOTTOM_SVG_GZ, GO_BOTTOM_SVG_GZ_SIZE);
+  return ArtProvider::GetImage(this, wxS("go-bottom"), siz.x, GO_BOTTOM_SVG_GZ, GO_BOTTOM_SVG_GZ_SIZE);
 }
 wxBitmap ToolBar::GetHelpBitmap(wxSize siz) {
-  return ArtProvider::GetImage(this, wxT("gtk-help"), siz.x, GTK_HELP_SVG_GZ, GTK_HELP_SVG_GZ_SIZE);
+  return ArtProvider::GetImage(this, wxS("gtk-help"), siz.x, GTK_HELP_SVG_GZ, GTK_HELP_SVG_GZ_SIZE);
 }
 wxBitmap ToolBar::GetEvalRestBitmap(wxSize siz) {
-  return ArtProvider::GetImage(this, wxT("go-last"), siz.x, GO_LAST_SVG_GZ, GO_LAST_SVG_GZ_SIZE);
+  return ArtProvider::GetImage(this, wxS("go-last"), siz.x, GO_LAST_SVG_GZ, GO_LAST_SVG_GZ_SIZE);
 }
 wxBitmap ToolBar::GetHideCodeBitmap(wxSize siz) {
-  return ArtProvider::GetImage(this, wxT("eye-slash"), siz.x, EYE_SLASH_SVG_GZ, EYE_SLASH_SVG_GZ_SIZE);
+  return ArtProvider::GetImage(this, wxS("eye-slash"), siz.x, EYE_SLASH_SVG_GZ, EYE_SLASH_SVG_GZ_SIZE);
 }
 
 void ToolBar::SetDefaultCellStyle() {

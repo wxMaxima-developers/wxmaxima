@@ -30,10 +30,10 @@ LimitWiz::LimitWiz(wxWindow *parent, int id, Configuration *cfg,
   text_ctrl_1 = new BTextCtrl(this, -1, cfg, wxEmptyString, wxDefaultPosition,
                               wxSize(230, -1));
   label_3 = new wxStaticText(this, -1, _("Variable:"));
-  text_ctrl_2 = new BTextCtrl(this, -1, cfg, wxT("x"), wxDefaultPosition,
+  text_ctrl_2 = new BTextCtrl(this, -1, cfg, wxS("x"), wxDefaultPosition,
                               wxSize(110, -1));
   label_4 = new wxStaticText(this, -1, _("Point:"));
-  text_ctrl_3 = new BTextCtrl(this, -1, cfg, wxT("0"), wxDefaultPosition,
+  text_ctrl_3 = new BTextCtrl(this, -1, cfg, wxS("0"), wxDefaultPosition,
                               wxSize(110, -1));
   button_1 = new wxButton(this, wxID_ANY, _("Special"));
   button_1->Connect(wxEVT_BUTTON, wxCommandEventHandler(LimitWiz::OnButton), NULL, this);
@@ -108,47 +108,47 @@ void LimitWiz::do_layout() {
 wxString LimitWiz::GetValue() {
   wxString s;
   if (checkbox_1->GetValue())
-    s = wxT("tlimit(");
+    s = wxS("tlimit(");
   else
-    s = wxT("limit(");
+    s = wxS("limit(");
   s += text_ctrl_1->GetValue();
-  s += wxT(", ");
+  s += wxS(", ");
   s += text_ctrl_2->GetValue();
-  s += wxT(", ");
+  s += wxS(", ");
   s += text_ctrl_3->GetValue();
   if (choice_1->IsEnabled()) {
     int f = choice_1->GetSelection();
     if (f == 1)
-      s += wxT(", minus");
+      s += wxS(", minus");
     else if (f == 2)
-      s += wxT(", plus");
+      s += wxS(", plus");
   }
-  s += wxT(");");
+  s += wxS(");");
 
   return s;
 }
 
 void LimitWiz::OnButton(wxCommandEvent &WXUNUSED(event)) {
-  wxString choices[] = {wxT("Pi"), wxT("E"), _("Infinity"), _("- Infinity")};
+  wxString choices[] = {wxS("Pi"), wxS("E"), _("Infinity"), _("- Infinity")};
   wxString choice = wxGetSingleChoice(_("Select a constant"), _("Constant"), 4,
                                       choices, this);
   if (choice.Length()) {
-    if (choice == wxT("Pi"))
-      text_ctrl_3->SetValue(wxT("%pi"));
-    else if (choice == wxT("E"))
-      text_ctrl_3->SetValue(wxT("%e"));
+    if (choice == wxS("Pi"))
+      text_ctrl_3->SetValue(wxS("%pi"));
+    else if (choice == wxS("E"))
+      text_ctrl_3->SetValue(wxS("%e"));
     else if (choice == _("Infinity"))
-      text_ctrl_3->SetValue(wxT("inf"));
+      text_ctrl_3->SetValue(wxS("inf"));
     else if (choice == _("- Infinity"))
-      text_ctrl_3->SetValue(wxT("minf"));
+      text_ctrl_3->SetValue(wxS("minf"));
   }
 }
 
 void LimitWiz::OnIdle(wxIdleEvent &WXUNUSED(ev)) {
   wxString point = text_ctrl_3->GetValue();
 
-  if (point == wxT("inf") || point == wxT("-inf") || point == wxT("+inf") ||
-      point == wxT("minf") || point == wxT("-minf") || point == wxT("+minf")) {
+  if (point == wxS("inf") || point == wxS("-inf") || point == wxS("+inf") ||
+      point == wxS("minf") || point == wxS("-minf") || point == wxS("+minf")) {
     choice_1->Enable(false);
   } else if (choice_1->IsEnabled() == false) {
     choice_1->Enable(true);

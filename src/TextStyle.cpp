@@ -283,16 +283,16 @@ const wxColor &Style::Default_Color() {
   return color;
 }
 
-static const wxString k_color = wxT("/color");
-static const wxString k_bold = wxT("/bold");
-static const wxString k_light = wxT("/light");
-static const wxString k_italic = wxT("/italic");
-static const wxString k_slant = wxT("/slant");
-static const wxString k_underlined = wxT("/underlined");
-static const wxString k_strikethrough = wxT("/strikethrough");
-static const wxString k_fontsize_float = wxT("/Style/Text/fontsize_float");
-static const wxString k_fontsize_legacy = wxT("/Style/Text/fontsize");
-static const wxString k_fontname = wxT("/Style/Text/fontname");
+static const wxString k_color = wxS("/color");
+static const wxString k_bold = wxS("/bold");
+static const wxString k_light = wxS("/light");
+static const wxString k_italic = wxS("/italic");
+static const wxString k_slant = wxS("/slant");
+static const wxString k_underlined = wxS("/underlined");
+static const wxString k_strikethrough = wxS("/strikethrough");
+static const wxString k_fontsize_float = wxS("/Style/Text/fontsize_float");
+static const wxString k_fontsize_legacy = wxS("/Style/Text/fontsize");
+static const wxString k_fontname = wxS("/Style/Text/fontname");
 
 Style &Style::Read(wxConfigBase *config, const wxString &where) {
   wxString tmpStr;

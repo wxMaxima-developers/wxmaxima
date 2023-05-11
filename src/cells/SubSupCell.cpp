@@ -385,7 +385,7 @@ wxString SubSupCell::ToXML() const {
 }
 
 wxString SubSupCell::GetDiffPart() const {
-  wxString s(wxT(","));
+  wxString s(wxS(","));
   if (m_baseCell->IsCompound())
     s += "(" + m_baseCell->ListToString() + ")";
   else

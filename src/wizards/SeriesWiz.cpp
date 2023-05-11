@@ -31,16 +31,16 @@ SeriesWiz::SeriesWiz(wxWindow *parent, int id, Configuration *cfg,
   text_ctrl_1 = new BTextCtrl(this, wxID_ANY, cfg, wxEmptyString, wxDefaultPosition,
                               wxSize(230, wxID_ANY));
   label_3 = new wxStaticText(this, wxID_ANY, _("Variable:"));
-  text_ctrl_2 = new BTextCtrl(this, wxID_ANY, cfg, wxT("x"), wxDefaultPosition,
+  text_ctrl_2 = new BTextCtrl(this, wxID_ANY, cfg, wxS("x"), wxDefaultPosition,
                               wxSize(110, -1));
   label_4 = new wxStaticText(this, wxID_ANY, _("Point:"));
-  text_ctrl_3 = new BTextCtrl(this, wxID_ANY, cfg, wxT("0"), wxDefaultPosition,
+  text_ctrl_3 = new BTextCtrl(this, wxID_ANY, cfg, wxS("0"), wxDefaultPosition,
                               wxSize(110, -1));
   button_3 = new wxButton(this, wxID_ANY, _("Special"));
   button_3->Connect(wxEVT_BUTTON, wxCommandEventHandler(SeriesWiz::OnButton), NULL, this);
 
   label_5 = new wxStaticText(this, wxID_ANY, _("Depth:"));
-  spin_ctrl_1 = new wxSpinCtrl(this, wxID_ANY, wxT("8"), wxDefaultPosition,
+  spin_ctrl_1 = new wxSpinCtrl(this, wxID_ANY, wxS("8"), wxDefaultPosition,
                                wxDefaultSize, wxSP_ARROW_KEYS, 0, 100, 8);
   checkbox_1 = new wxCheckBox(this, wxID_ANY, _("&Power series"));
   checkbox_1->Connect(wxEVT_CHECKBOX, wxCommandEventHandler(SeriesWiz::OnCheckbox), NULL, this);
@@ -101,34 +101,34 @@ void SeriesWiz::do_layout() {
 }
 
 void SeriesWiz::OnButton(wxCommandEvent &WXUNUSED(event)) {
-  wxString choices[] = {wxT("Pi"), wxT("E")};
+  wxString choices[] = {wxS("Pi"), wxS("E")};
   wxString choice = wxGetSingleChoice(_("Select a constant"), _("Constant"), 2,
                                       choices, this);
   if (choice.Length()) {
-    if (choice == wxT("Pi"))
-      text_ctrl_3->SetValue(wxT("%pi"));
-    else if (choice == wxT("E"))
-      text_ctrl_3->SetValue(wxT("%e"));
+    if (choice == wxS("Pi"))
+      text_ctrl_3->SetValue(wxS("%pi"));
+    else if (choice == wxS("E"))
+      text_ctrl_3->SetValue(wxS("%e"));
   }
 }
 
 wxString SeriesWiz::GetValue() {
   wxString s;
   if (checkbox_1->IsChecked())
-    s = wxT("niceindices(powerseries(");
+    s = wxS("niceindices(powerseries(");
   else
-    s = wxT("taylor(");
+    s = wxS("taylor(");
   s += text_ctrl_1->GetValue();
-  s += wxT(", ");
+  s += wxS(", ");
   s += text_ctrl_2->GetValue();
-  s += wxT(", ");
+  s += wxS(", ");
   s += text_ctrl_3->GetValue();
   if (!checkbox_1->IsChecked()) {
-    s += wxT(", ");
-    s += wxString::Format(wxT("%d"), spin_ctrl_1->GetValue());
-    s += wxT(");");
+    s += wxS(", ");
+    s += wxString::Format(wxS("%d"), spin_ctrl_1->GetValue());
+    s += wxS(");");
   } else
-    s += wxT("));");
+    s += wxS("));");
 
   return s;
 }

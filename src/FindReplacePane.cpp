@@ -148,14 +148,14 @@ void FindReplacePane::OnReplaceAll(wxCommandEvent &WXUNUSED(event)) {
 void FindReplacePane::OnDirectionChange(wxCommandEvent &WXUNUSED(event)) {
   m_findReplaceData->SetFlags(!((m_findReplaceData->GetFlags() & (~wxFR_DOWN)) |
                                 (m_forward->GetValue() * wxFR_DOWN)));
-  wxConfig::Get()->Write(wxT("findFlags"), m_findReplaceData->GetFlags());
+  wxConfig::Get()->Write(wxS("findFlags"), m_findReplaceData->GetFlags());
 }
 
 void FindReplacePane::OnMatchCase(wxCommandEvent &event) {
   m_findReplaceData->SetFlags(
 			      (m_findReplaceData->GetFlags() & (~wxFR_MATCHCASE)) |
 			      (event.IsChecked() * wxFR_MATCHCASE));
-  wxConfig::Get()->Write(wxT("findFlags"), m_findReplaceData->GetFlags());
+  wxConfig::Get()->Write(wxS("findFlags"), m_findReplaceData->GetFlags());
 }
 
 void FindReplacePane::OnActivate(wxActivateEvent &event) {
@@ -175,7 +175,7 @@ void FindReplacePane::OnReplaceStringChange(wxCommandEvent &WXUNUSED(event)) {
 }
 
 void FindReplacePane::OnKeyDown(wxKeyEvent &event) {
-  if (event.ControlDown() && (event.GetUnicodeKey() == wxT('F'))) {
+  if (event.ControlDown() && (event.GetUnicodeKey() == wxS('F'))) {
     wxCommandEvent dummyEvent;
     OnSearch(dummyEvent);
   } else if (event.GetKeyCode() == WXK_RETURN) {

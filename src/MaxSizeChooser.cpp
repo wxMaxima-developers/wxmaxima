@@ -29,9 +29,9 @@ MaxSizeChooser::MaxSizeChooser(wxWindow *parent, int id, const int &width,
   : wxDialog(parent, id, _("Set maximum image size [in mm]"), pos, size,
 	     style) {
   wxStaticText *widthText =
-    new wxStaticText(this, -1, wxT("Max width [in cm]:"));
+    new wxStaticText(this, -1, wxS("Max width [in cm]:"));
   wxStaticText *heightText =
-    new wxStaticText(this, -1, wxT("Max height [in cm]:"));
+    new wxStaticText(this, -1, wxS("Max height [in cm]:"));
 
   m_width = new wxSpinCtrl(this, -1, wxEmptyString, wxDefaultPosition,
                            wxSize(100, -1), wxSP_VERTICAL, -1, 1000);

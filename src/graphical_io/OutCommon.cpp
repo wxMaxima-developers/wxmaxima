@@ -32,14 +32,14 @@
 #include <wx/wfstream.h>
 
 static wxString MakeTempFilename() {
-  return wxFileName::CreateTempFileName(wxT("wxmaxima_size_"));
+  return wxFileName::CreateTempFileName(wxS("wxmaxima_size_"));
 }
 
 OutCommon::OutCommon(Configuration **configuration, const wxString &filename,
                      int fullWidth, double scale)
   : m_tempFilename(MakeTempFilename()),
     m_filename(filename.empty()
-	       ? wxFileName::CreateTempFileName(wxT("wxmaxima_"))
+	       ? wxFileName::CreateTempFileName(wxS("wxmaxima_"))
 	       : filename),
     m_configuration(configuration), m_scale(scale), m_fullWidth(fullWidth) {
   m_thisconfig.ShowCodeCells(m_oldconfig->ShowCodeCells());

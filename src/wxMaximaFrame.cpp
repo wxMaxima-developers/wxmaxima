@@ -60,44 +60,44 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
   : wxFrame(parent, id, title, pos, size, style),
     m_manager(this, wxAUI_MGR_ALLOW_FLOATING | wxAUI_MGR_ALLOW_ACTIVE_PANE |
 	      wxAUI_MGR_TRANSPARENT_HINT | wxAUI_MGR_HINT_FADE),
-    m_recentDocuments(wxT("document")),
-    m_recentPackages(wxT("packages")) {
+    m_recentDocuments(wxS("document")),
+    m_recentPackages(wxS("packages")) {
 
   m_bytesFromMaxima = 0;
   m_drawDimensions_last = -1;
   // Suppress window updates until this window has fully been created.
   // Not redrawing the window whilst constructing it hopefully speeds up
   // everything.
-  //  wxWindowUpdateLocker noUpdates(this);    m_worksheet->m_unsavedDocuments(wxT("unsaved")),
+  //  wxWindowUpdateLocker noUpdates(this);    m_worksheet->m_unsavedDocuments(wxS("unsaved")),
 
   // Add some shortcuts that aren't automatically set by menu entries.
   wxAcceleratorEntry entries[18];
-  entries[0].Set(wxACCEL_CTRL, wxT('K'), EventIDs::menu_autocomplete);
+  entries[0].Set(wxACCEL_CTRL, wxS('K'), EventIDs::menu_autocomplete);
   entries[1].Set(wxACCEL_CTRL, WXK_TAB, EventIDs::menu_autocomplete);
   entries[2].Set(wxACCEL_CTRL | wxACCEL_SHIFT, WXK_TAB,
                  EventIDs::menu_autocomplete_templates);
   entries[3].Set(wxACCEL_CTRL, WXK_SPACE, EventIDs::menu_autocomplete);
-  entries[4].Set(wxACCEL_CTRL | wxACCEL_SHIFT, wxT('K'),
+  entries[4].Set(wxACCEL_CTRL | wxACCEL_SHIFT, wxS('K'),
                  EventIDs::menu_autocomplete_templates);
   entries[5].Set(wxACCEL_CTRL | wxACCEL_SHIFT, WXK_SPACE,
                  EventIDs::menu_autocomplete_templates);
-  entries[6].Set(wxACCEL_ALT, wxT('I'), wxID_ZOOM_IN);
-  entries[7].Set(wxACCEL_ALT, wxT('O'), wxID_ZOOM_OUT);
+  entries[6].Set(wxACCEL_ALT, wxS('I'), wxID_ZOOM_IN);
+  entries[7].Set(wxACCEL_ALT, wxS('O'), wxID_ZOOM_OUT);
   entries[8].Set(wxACCEL_CTRL | wxACCEL_SHIFT, WXK_ESCAPE,
                  EventIDs::menu_convert_to_code);
-  entries[9].Set(wxACCEL_CTRL | wxACCEL_SHIFT, wxT('1'),
+  entries[9].Set(wxACCEL_CTRL | wxACCEL_SHIFT, wxS('1'),
                  EventIDs::menu_convert_to_comment);
-  entries[10].Set(wxACCEL_CTRL | wxACCEL_SHIFT, wxT('2'),
+  entries[10].Set(wxACCEL_CTRL | wxACCEL_SHIFT, wxS('2'),
                   EventIDs::menu_convert_to_title);
-  entries[11].Set(wxACCEL_CTRL | wxACCEL_SHIFT, wxT('3'),
+  entries[11].Set(wxACCEL_CTRL | wxACCEL_SHIFT, wxS('3'),
                   EventIDs::menu_convert_to_section);
-  entries[12].Set(wxACCEL_CTRL | wxACCEL_SHIFT, wxT('4'),
+  entries[12].Set(wxACCEL_CTRL | wxACCEL_SHIFT, wxS('4'),
                   EventIDs::menu_convert_to_subsection);
-  entries[13].Set(wxACCEL_CTRL | wxACCEL_SHIFT, wxT('5'),
+  entries[13].Set(wxACCEL_CTRL | wxACCEL_SHIFT, wxS('5'),
                   EventIDs::menu_convert_to_subsubsection);
-  entries[14].Set(wxACCEL_CTRL | wxACCEL_SHIFT, wxT('6'),
+  entries[14].Set(wxACCEL_CTRL | wxACCEL_SHIFT, wxS('6'),
                   EventIDs::menu_convert_to_heading5);
-  entries[15].Set(wxACCEL_CTRL, wxT('.'),
+  entries[15].Set(wxACCEL_CTRL, wxS('.'),
                   EventIDs::menu_interrupt_id); // Standard on the Mac
   entries[16].Set(wxACCEL_NORMAL, WXK_F1, wxID_HELP);
   entries[17].Set(wxACCEL_NORMAL, WXK_F11, EventIDs::menu_fullscreen);
@@ -203,14 +203,14 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
 #endif
 #ifndef __WXOSX__
   SetTitle(
-	   wxString::Format(_("wxMaxima %s (%s) "), wxT(GITVERSION),
+	   wxString::Format(_("wxMaxima %s (%s) "), wxS(GITVERSION),
 			    wxPlatformInfo::Get().GetOperatingSystemDescription()) +
 	   _("[ unsaved ]"));
 #else
   SetTitle(_("untitled"));
 #endif
 
-  m_sidebarNames[EventIDs::menu_pane_console] = wxT("console");
+  m_sidebarNames[EventIDs::menu_pane_console] = wxS("console");
   m_sidebarCaption[EventIDs::menu_pane_console] = _("The worksheet");
   m_manager.AddPane(m_worksheet,
                     wxAuiPaneInfo()
@@ -228,7 +228,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
 		    .Row(2));
 
   m_worksheet->m_mainToolBar = new ToolBar(this);
-  m_sidebarNames[EventIDs::menu_pane_toolbar] = wxT("toolbar");
+  m_sidebarNames[EventIDs::menu_pane_toolbar] = wxS("toolbar");
   m_sidebarCaption[EventIDs::menu_pane_toolbar] = _("The main toolbar");
   m_manager.AddPane(m_worksheet->m_mainToolBar,
                     wxAuiPaneInfo()
@@ -246,25 +246,25 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
 		    .Gripper(false)
 		    .Row(0));
 
-  m_sidebarNames[EventIDs::menu_pane_history] = wxT("history");
+  m_sidebarNames[EventIDs::menu_pane_history] = wxS("history");
   m_sidebarCaption[EventIDs::menu_pane_history] = _("History");
   m_manager.AddPane(m_history, wxAuiPaneInfo()
 		    .Name(m_sidebarNames[EventIDs::menu_pane_history])
 		    .Right());
 
-  m_sidebarNames[EventIDs::menu_pane_structure] = wxT("structure");
+  m_sidebarNames[EventIDs::menu_pane_structure] = wxS("structure");
   m_sidebarCaption[EventIDs::menu_pane_structure] = _("Table of Contents");
   m_manager.AddPane(m_worksheet->m_tableOfContents, wxAuiPaneInfo()
 		    .Name(m_sidebarNames[EventIDs::menu_pane_structure])
 		    .Right());
 
-  m_sidebarNames[EventIDs::menu_pane_xmlInspector] = wxT("XmlInspector");
+  m_sidebarNames[EventIDs::menu_pane_xmlInspector] = wxS("XmlInspector");
   m_sidebarCaption[EventIDs::menu_pane_xmlInspector] = _("Raw XML monitor");
   m_manager.AddPane(m_xmlInspector, wxAuiPaneInfo()
 		    .Name(m_sidebarNames[EventIDs::menu_pane_xmlInspector])
 		    .Right());
 
-  m_sidebarNames[EventIDs::menu_pane_stats] = wxT("stats");
+  m_sidebarNames[EventIDs::menu_pane_stats] = wxS("stats");
   m_sidebarCaption[EventIDs::menu_pane_stats] = _("Statistics");
   wxWindow *statPane;
   m_manager.AddPane(statPane = CreateStatPane(), wxAuiPaneInfo()
@@ -272,7 +272,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
 		    .Left());
   //  wxWindowUpdateLocker statBlocker(statPane);
 
-  m_sidebarNames[EventIDs::menu_pane_greek] = wxT("greek");
+  m_sidebarNames[EventIDs::menu_pane_greek] = wxS("greek");
   m_sidebarCaption[EventIDs::menu_pane_greek] = _("Greek Letters");
   wxPanel *greekPane = new GreekPane(this, &m_configuration, m_worksheet);
   //  wxWindowUpdateLocker greekBlocker(greekPane);
@@ -280,7 +280,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
 		    .Name(m_sidebarNames[EventIDs::menu_pane_greek])
 		    .Left());
 
-  m_sidebarNames[EventIDs::menu_pane_unicode] = wxT("unicode");
+  m_sidebarNames[EventIDs::menu_pane_unicode] = wxS("unicode");
   m_sidebarCaption[EventIDs::menu_pane_unicode] = _("Unicode characters");
   wxPanel *unicodePane =
     new UnicodeSidebar(this, m_worksheet, &m_configuration);
@@ -289,7 +289,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
 		    .Name(m_sidebarNames[EventIDs::menu_pane_unicode])
 		    .Left());
 
-  m_sidebarNames[EventIDs::menu_pane_log] = wxT("log");
+  m_sidebarNames[EventIDs::menu_pane_log] = wxS("log");
   m_sidebarCaption[EventIDs::menu_pane_log] = _("Debug messages");
   m_manager.AddPane(m_logPane, wxAuiPaneInfo()
 		    .Name(m_sidebarNames[EventIDs::menu_pane_log])
@@ -298,7 +298,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
   // Avoid the strange non-responsive see-through log window on the mac
   wxWindowUpdateLocker avoidMacError(m_logPane);
   
-  m_sidebarNames[EventIDs::menu_pane_variables] = wxT("variables");
+  m_sidebarNames[EventIDs::menu_pane_variables] = wxS("variables");
   m_sidebarCaption[EventIDs::menu_pane_variables] = _("Variables");
   m_worksheet->m_variablesPane = new Variablespane(this, wxID_ANY);
   m_manager.AddPane(
@@ -307,7 +307,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
 		    .Name(m_sidebarNames[EventIDs::menu_pane_variables])
 		    .Bottom());
 
-  m_sidebarNames[EventIDs::menu_pane_symbols] = wxT("symbols");
+  m_sidebarNames[EventIDs::menu_pane_symbols] = wxS("symbols");
   m_sidebarCaption[EventIDs::menu_pane_symbols] = _("Mathematical Symbols");
   m_symbolsPane = new SymbolsPane(this, &m_configuration, m_worksheet);
   //  wxWindowUpdateLocker symbolsBlocker(m_symbolsPane);
@@ -316,13 +316,13 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
 		    .Name(m_sidebarNames[EventIDs::menu_pane_symbols])
 		    .Left());
 
-  m_sidebarNames[EventIDs::menu_pane_math] = wxT("math");
+  m_sidebarNames[EventIDs::menu_pane_math] = wxS("math");
   m_sidebarCaption[EventIDs::menu_pane_math] = _("General Math");
   m_manager.AddPane(CreateMathPane(), wxAuiPaneInfo()
 		    .Name(m_sidebarNames[EventIDs::menu_pane_math])
 		    .Left());
 
-  m_sidebarNames[EventIDs::menu_pane_wizard] = wxT("wizard");
+  m_sidebarNames[EventIDs::menu_pane_wizard] = wxS("wizard");
   m_sidebarCaption[EventIDs::menu_pane_wizard] = _("The current Wizard");
   m_manager.AddPane(m_wizard =
 		    new ScrollingGenWizPanel(
@@ -330,16 +330,16 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
 					     m_worksheet->GetMaximaManual()),
                     wxAuiPaneInfo()
 		    .Name(m_sidebarNames[EventIDs::menu_pane_wizard])
-		    .Caption(wxT("Example Wizard")));
+		    .Caption(wxS("Example Wizard")));
 
   
-  m_sidebarNames[EventIDs::menu_pane_format] = wxT("format");
+  m_sidebarNames[EventIDs::menu_pane_format] = wxS("format");
   m_sidebarCaption[EventIDs::menu_pane_format] = _("Insert");
   m_manager.AddPane(CreateFormatPane(), wxAuiPaneInfo()
 		    .Name(m_sidebarNames[EventIDs::menu_pane_format])
 		    .Left());
 
-  m_sidebarNames[EventIDs::menu_pane_draw] = wxT("draw");
+  m_sidebarNames[EventIDs::menu_pane_draw] = wxS("draw");
   m_sidebarCaption[EventIDs::menu_pane_draw] = _("Plot using Draw");
   m_manager.AddPane(m_drawPane = new DrawPane(this, -1),
                     wxAuiPaneInfo()
@@ -348,11 +348,11 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
   //  wxWindowUpdateLocker drawBlocker(m_drawPane);
 
 #ifdef USE_WEBVIEW
-  m_sidebarNames[EventIDs::menu_pane_help] = wxT("help");
+  m_sidebarNames[EventIDs::menu_pane_help] = wxS("help");
   m_sidebarCaption[EventIDs::menu_pane_help] = _("Help");
   m_manager.AddPane(m_helpPane = new HelpBrowser(
 						 this, &m_configuration, m_worksheet->GetMaximaManual(),
-						 wxT("file://") + wxMaximaManualLocation()),
+						 wxS("file://") + wxMaximaManualLocation()),
                     wxAuiPaneInfo()
 		    .Name(m_sidebarNames[EventIDs::menu_pane_help])
 		    .Right());
@@ -374,7 +374,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
   // Read the perspektive (the sidebar state and positions).
   wxConfigBase *config = wxConfig::Get();
   wxString perspective;
-  if(config->Read(wxT("AUI/perspective"), &perspective)) {
+  if(config->Read(wxS("AUI/perspective"), &perspective)) {
     // Loads the window states. We tell wxaui not to recalculate and display the
     // results of this step now as we will do so manually after
     // eventually adding the toolbar.
@@ -589,7 +589,7 @@ void wxMaximaFrame::StatusExportFailed() {
 wxMaximaFrame::~wxMaximaFrame() {
   wxString perspective = m_manager.SavePerspective();
 
-  wxConfig::Get()->Write(wxT("AUI/perspective"), perspective);
+  wxConfig::Get()->Write(wxS("AUI/perspective"), perspective);
   m_manager.UnInit();
 }
 
@@ -612,10 +612,10 @@ void wxMaximaFrame::SetupMenu() {
   m_FileMenu->Append(wxID_NEW, _("New\tCtrl+N"), _("Open a new window"));
 #else
   APPEND_MENU_ITEM(m_FileMenu, wxID_NEW, _("New\tCtrl+N"),
-                   _("Open a new window"), wxT("gtk-new"));
+                   _("Open a new window"), wxS("gtk-new"));
 #endif
   APPEND_MENU_ITEM(m_FileMenu, wxID_OPEN, _("&Open...\tCtrl+O"),
-                   _("Open a document"), wxT("gtk-open"));
+                   _("Open a document"), wxS("gtk-open"));
   m_recentDocumentsMenu = new wxMenu();
   m_FileMenu->Append(EventIDs::menu_recent_documents, _("Open recent"),
                      m_recentDocumentsMenu);
@@ -626,9 +626,9 @@ void wxMaximaFrame::SetupMenu() {
   m_FileMenu->Append(wxID_CLOSE, _("Close\tCtrl+W"), _("Close window"),
                      wxITEM_NORMAL);
   APPEND_MENU_ITEM(m_FileMenu, wxID_SAVE, _("&Save\tCtrl+S"),
-                   _("Save document"), wxT("gtk-save"));
+                   _("Save document"), wxS("gtk-save"));
   APPEND_MENU_ITEM(m_FileMenu, wxID_SAVEAS, _("Save As...\tShift+Ctrl+S"),
-                   _("Save document as"), wxT("gtk-save"));
+                   _("Save document as"), wxS("gtk-save"));
   m_FileMenu->Append(EventIDs::menu_load_id, _("&Load Package...\tCtrl+L"),
                      _("Load a Maxima package file"), wxITEM_NORMAL);
   m_recentPackagesMenu = new wxMenu();
@@ -642,11 +642,11 @@ void wxMaximaFrame::SetupMenu() {
                      wxITEM_NORMAL);
   m_FileMenu->AppendSeparator();
   APPEND_MENU_ITEM(m_FileMenu, wxID_PRINT, _("&Print...\tCtrl+P"),
-                   _("Print document"), wxT("gtk-print"));
+                   _("Print document"), wxS("gtk-print"));
 
   m_FileMenu->AppendSeparator();
   APPEND_MENU_ITEM(m_FileMenu, wxID_EXIT, _("E&xit\tCtrl+Q"),
-                   _("Exit wxMaxima"), wxT("gtk-quit"));
+                   _("Exit wxMaxima"), wxS("gtk-quit"));
   m_MenuBar->Append(m_FileMenu, _("&File"));
 
   m_EditMenu = new wxMenu;
@@ -658,7 +658,7 @@ void wxMaximaFrame::SetupMenu() {
   m_EditMenu->Append(wxID_CUT, _("Cut\tCtrl+X"), _("Cut selection"),
                      wxITEM_NORMAL);
   APPEND_MENU_ITEM(m_EditMenu, wxID_COPY, _("&Copy\tCtrl+C"),
-                   _("Copy selection"), wxT("gtk-copy"));
+                   _("Copy selection"), wxS("gtk-copy"));
   m_EditMenu->Append(EventIDs::menu_copy_text_from_worksheet,
                      _("Copy as Text\tCtrl+Shift+C"),
                      _("Copy selection from document as text"), wxITEM_NORMAL);
@@ -705,10 +705,10 @@ void wxMaximaFrame::SetupMenu() {
   m_EditMenu->AppendSeparator();
 #if defined __WXOSX__
   APPEND_MENU_ITEM(m_EditMenu, wxID_PREFERENCES, _("Preferences...\tCtrl+,"),
-                   _("Configure wxMaxima"), wxT("gtk-preferences"));
+                   _("Configure wxMaxima"), wxS("gtk-preferences"));
 #else
   APPEND_MENU_ITEM(m_EditMenu, wxID_PREFERENCES, _("C&onfigure"),
-                   _("Configure wxMaxima"), wxT("gtk-preferences"));
+                   _("Configure wxMaxima"), wxS("gtk-preferences"));
 #endif
   m_MenuBar->Append(m_EditMenu, _("&Edit"));
 
@@ -816,22 +816,22 @@ void wxMaximaFrame::SetupMenu() {
 
   m_viewMenu->AppendSeparator();
   APPEND_MENU_ITEM(m_viewMenu, wxID_ZOOM_IN, _("Zoom &In\tCtrl++"),
-                   _("Zoom in 10%"), wxT("gtk-zoom-in"));
+                   _("Zoom in 10%"), wxS("gtk-zoom-in"));
   APPEND_MENU_ITEM(m_viewMenu, wxID_ZOOM_OUT, _("Zoom Ou&t\tCtrl+-"),
-                   _("Zoom out 10%"), wxT("gtk-zoom-out"));
+                   _("Zoom out 10%"), wxS("gtk-zoom-out"));
   // zoom submenu
   m_Edit_Zoom_Sub = new wxMenu;
-  m_Edit_Zoom_Sub->Append(EventIDs::menu_zoom_80, wxT("80%"), _("Set zoom to 80%"),
+  m_Edit_Zoom_Sub->Append(EventIDs::menu_zoom_80, wxS("80%"), _("Set zoom to 80%"),
                           wxITEM_NORMAL);
-  m_Edit_Zoom_Sub->Append(wxID_ZOOM_100, wxT("100%"), _("Set zoom to 100%"),
+  m_Edit_Zoom_Sub->Append(wxID_ZOOM_100, wxS("100%"), _("Set zoom to 100%"),
                           wxITEM_NORMAL);
-  m_Edit_Zoom_Sub->Append(EventIDs::menu_zoom_120, wxT("120%"), _("Set zoom to 120%"),
+  m_Edit_Zoom_Sub->Append(EventIDs::menu_zoom_120, wxS("120%"), _("Set zoom to 120%"),
                           wxITEM_NORMAL);
-  m_Edit_Zoom_Sub->Append(EventIDs::menu_zoom_150, wxT("150%"), _("Set zoom to 150%"),
+  m_Edit_Zoom_Sub->Append(EventIDs::menu_zoom_150, wxS("150%"), _("Set zoom to 150%"),
                           wxITEM_NORMAL);
-  m_Edit_Zoom_Sub->Append(EventIDs::menu_zoom_200, wxT("200%"), _("Set zoom to 200%"),
+  m_Edit_Zoom_Sub->Append(EventIDs::menu_zoom_200, wxS("200%"), _("Set zoom to 200%"),
                           wxITEM_NORMAL);
-  m_Edit_Zoom_Sub->Append(EventIDs::menu_zoom_300, wxT("300%"), _("Set zoom to 300%"),
+  m_Edit_Zoom_Sub->Append(EventIDs::menu_zoom_300, wxS("300%"), _("Set zoom to 300%"),
                           wxITEM_NORMAL);
 
   m_viewMenu->Append(wxWindow::NewControlId(), _("Set Zoom"), m_Edit_Zoom_Sub, _("Set Zoom"));
@@ -974,7 +974,7 @@ void wxMaximaFrame::SetupMenu() {
   m_MaximaMenu->Append(EventIDs::menu_soft_restart, _("&Clear Memory"),
                        _("Delete all values from memory"), wxITEM_NORMAL);
   APPEND_MENU_ITEM(m_MaximaMenu, EventIDs::menu_add_path, _("Add to &Path..."),
-                   _("Add a directory to search path"), wxT("gtk-add"));
+                   _("Add a directory to search path"), wxS("gtk-add"));
 
   m_MaximaMenu->AppendSeparator();
   wxMenu *infolists_sub = new wxMenu;
@@ -1442,7 +1442,7 @@ void wxMaximaFrame::SetupMenu() {
   series_sub->Append(EventIDs::menu_taylor, _("Taylor series..."));
   series_sub->Append(EventIDs::menu_powerseries, _("Power series..."));
   series_sub->Append(EventIDs::menu_fourier, _("Fourier coefficients..."));
-  series_sub->Append(EventIDs::menu_pade, _(wxT("P&ad\u00E9 Approximation...")),
+  series_sub->Append(EventIDs::menu_pade, _(wxS("P&ad\u00E9 Approximation...")),
                      _("Pade approximation of a Taylor series"));
   m_CalculusMenu->Append(wxWindow::NewControlId(), _("Series approximation"), series_sub);
   m_CalculusMenu->Append(EventIDs::menu_sum, _("Calculate Su&m..."), _("Calculate sums"),
@@ -1519,12 +1519,12 @@ void wxMaximaFrame::SetupMenu() {
                                    _("Switch off simplifications of log(). Set "
                                      "Maxima option variable logexpand:false"));
 
-  wxString warningSign = wxT("\u26A0");
-  if (!m_configuration.FontRendersChar(wxT('\u26A0'), *wxNORMAL_FONT))
+  wxString warningSign = wxS("\u26A0");
+  if (!m_configuration.FontRendersChar(wxS('\u26A0'), *wxNORMAL_FONT))
     warningSign = _("Warning:");
   m_logexpand_Sub->AppendRadioItem(
 				   EventIDs::menu_logexpand_true,
-				   wxT("log(a^b)=b*log(a) ") + warningSign + _(" Wrong, if a is complex"),
+				   wxS("log(a^b)=b*log(a) ") + warningSign + _(" Wrong, if a is complex"),
 				   _("Set Maxima option variable logexpand:true"));
   m_logexpand_Sub->AppendRadioItem(
 				   EventIDs::menu_logexpand_all, _("Additionally: log(a*b)=log(a)+log(b)"),
@@ -1796,9 +1796,9 @@ void wxMaximaFrame::SetupMenu() {
 			_("Fine-tune the display of engineering-format numbers"), wxITEM_NORMAL);
 
   wxMenu *quadpack_sub = new wxMenu;
-  wxString integralSign = wxT("\u222B");
-  if (!m_configuration.FontRendersChar(wxT('\u222B'), *wxNORMAL_FONT))
-    integralSign = wxT("integrate");
+  wxString integralSign = wxS("\u222B");
+  if (!m_configuration.FontRendersChar(wxS('\u222B'), *wxNORMAL_FONT))
+    integralSign = wxS("integrate");
   quadpack_sub->Append(EventIDs::menu_quad_qag,
                        integralSign + _("(f(x),x,a,b), strategy of Aind"));
   quadpack_sub->Append(EventIDs::menu_quad_qags,
@@ -1808,24 +1808,24 @@ void wxMaximaFrame::SetupMenu() {
   quadpack_sub->Append(EventIDs::menu_quad_qawc,
                        _("Cauchy principal value, finite interval"));
   quadpack_sub->Append(EventIDs::menu_quad_qawf_sin,
-                       integralSign + wxT("(f(x)*sin(ω·x),x,a,∞)"));
+                       integralSign + wxS("(f(x)*sin(ω·x),x,a,∞)"));
   quadpack_sub->Append(EventIDs::menu_quad_qawf_cos,
-                       integralSign + wxT("(f(x)*cos(ω·x),x,a,∞)"));
+                       integralSign + wxS("(f(x)*cos(ω·x),x,a,∞)"));
   quadpack_sub->Append(EventIDs::menu_quad_qawo_sin,
-                       integralSign + wxT("(f(x)*sin(ω·x),x,a,b)"));
+                       integralSign + wxS("(f(x)*sin(ω·x),x,a,b)"));
   quadpack_sub->Append(EventIDs::menu_quad_qawo_cos,
-                       integralSign + wxT("(f(x)*cos(ω·x),x,a,b)"));
+                       integralSign + wxS("(f(x)*cos(ω·x),x,a,b)"));
   quadpack_sub->Append(EventIDs::menu_quad_qaws1,
-                       integralSign + wxT("(f(x)*(x-a)^α(b-x)^β,x,a,b)"));
+                       integralSign + wxS("(f(x)*(x-a)^α(b-x)^β,x,a,b)"));
   quadpack_sub->Append(EventIDs::menu_quad_qaws2,
                        integralSign +
-		       wxT("(f(x)*(x-a)^α(b-x)^β·log(x-a),x,a,b)"));
+		       wxS("(f(x)*(x-a)^α(b-x)^β·log(x-a),x,a,b)"));
   quadpack_sub->Append(EventIDs::menu_quad_qaws3,
                        integralSign +
-		       wxT("(f(x)*(x-a)^α(b-x)^β·log(b-x),x,a,b)"));
+		       wxS("(f(x)*(x-a)^α(b-x)^β·log(b-x),x,a,b)"));
   quadpack_sub->Append(
 		       EventIDs::menu_quad_qaws4,
-		       integralSign + wxT("(f(x)*(x-a)^α(b-x)^β·log(x-a)·log(b-x),x,a,b)"));
+		       integralSign + wxS("(f(x)*(x-a)^α(b-x)^β·log(x-a)·log(b-x),x,a,b)"));
   quadpack_sub->Append(EventIDs::menu_quad_qagp,
                        integralSign +
 		       _("(f(x),x,y) with singularities+discontinuities"));
@@ -1840,7 +1840,7 @@ void wxMaximaFrame::SetupMenu() {
                      _("Show wxMaxima help"), wxITEM_NORMAL);
 #else
   APPEND_MENU_ITEM(m_HelpMenu, wxID_HELP, _("Context-sensitive &Help\tF1"),
-                   _("Show wxMaxima help"), wxT("gtk-help"));
+                   _("Show wxMaxima help"), wxS("gtk-help"));
 #endif
   m_HelpMenu->Append(EventIDs::menu_wxmaximahelp, _("wxMaxima help"),
                      _("The manual of wxMaxima"), wxITEM_NORMAL);
@@ -1891,7 +1891,7 @@ void wxMaximaFrame::SetupMenu() {
                         wxITEM_NORMAL);
   tutorials_sub->Append(EventIDs::menu_help_memoizing, _("Memoizing"), "", wxITEM_NORMAL);
   tutorials_sub->Append(EventIDs::menu_help_casvsprogramming, _("Maxima vs. Programming languages"), "", wxITEM_NORMAL);
-  tutorials_sub->Append(EventIDs::menu_help_tutorials, _(wxT("↗Tutorials on the web")),
+  tutorials_sub->Append(EventIDs::menu_help_tutorials, _(wxS("↗Tutorials on the web")),
                         _("Online tutorials"), wxITEM_NORMAL);
   m_HelpMenu->Append(wxWindow::NewControlId(), _("Tutorials"), tutorials_sub);
 
@@ -1911,10 +1911,10 @@ void wxMaximaFrame::SetupMenu() {
 #ifndef __WXOSX__
   m_HelpMenu->AppendSeparator();
   APPEND_MENU_ITEM(m_HelpMenu, wxID_ABOUT, _("About"), _("About wxMaxima"),
-                   wxT("stock_about"));
+                   wxS("stock_about"));
 #else
   APPEND_MENU_ITEM(m_HelpMenu, wxID_ABOUT, _("About wxMaxima"),
-                   _("About wxMaxima"), wxT("stock_about"));
+                   _("About wxMaxima"), wxS("stock_about"));
 #endif
 
   m_MenuBar->Append(m_HelpMenu, _("&Help"));
@@ -1932,23 +1932,23 @@ wxString wxMaximaFrame::wxMaximaManualLocation() {
   wxString lang_short = lang_long.Left(lang_long.Find('_'));
 
   helpfile =
-    Dirstructure::Get()->HelpDir() + wxT("/wxmaxima.") + lang_long + ".html";
+    Dirstructure::Get()->HelpDir() + wxS("/wxmaxima.") + lang_long + ".html";
   if (!wxFileExists(helpfile))
-    helpfile = Dirstructure::Get()->HelpDir() + wxT("/wxmaxima.") + lang_short +
+    helpfile = Dirstructure::Get()->HelpDir() + wxS("/wxmaxima.") + lang_short +
       ".html";
   if (!wxFileExists(helpfile))
-    helpfile = Dirstructure::Get()->HelpDir() + wxT("/wxmaxima.html");
+    helpfile = Dirstructure::Get()->HelpDir() + wxS("/wxmaxima.html");
 
   /* If wxMaxima is called via ./wxmaxima-local directly from the build
    * directory and *not* installed */
   /* the help files are in the "info/" subdirectory of the current (build)
    * directory */
   if (!wxFileExists(helpfile))
-    helpfile = wxGetCwd() + wxT("/info/wxmaxima.") + lang_long + ".html";
+    helpfile = wxGetCwd() + wxS("/info/wxmaxima.") + lang_long + ".html";
   if (!wxFileExists(helpfile))
-    helpfile = wxGetCwd() + wxT("/info/wxmaxima.") + lang_short + ".html";
+    helpfile = wxGetCwd() + wxS("/info/wxmaxima.") + lang_short + ".html";
   if (!wxFileExists(helpfile))
-    helpfile = wxGetCwd() + wxT("/info/wxmaxima.html");
+    helpfile = wxGetCwd() + wxS("/info/wxmaxima.html");
   return helpfile;
 }
 
@@ -1964,7 +1964,7 @@ void wxMaximaFrame::PopulateRecentDocumentsMenu(wxMenu *menu, int firstEntry,
     {
       wxFileName filename(name);
       wxString path(filename.GetPath()), fullname(filename.GetFullName());
-      wxString label(fullname + wxT("   [ ") + path + wxT(" ]"));
+      wxString label(fullname + wxS("   [ ") + path + wxS(" ]"));
       if(menu->FindItem(id))
 	  menu->SetLabel(id, label);
       else
@@ -1995,7 +1995,7 @@ void wxMaximaFrame::PopulateRecentPackagesMenu(wxMenu *menu, int firstEntry,
 
 void wxMaximaFrame::UpdateRecentDocuments() {
   long recentItems = 10;
-  wxConfig::Get()->Read(wxT("recentItems"), &recentItems);
+  wxConfig::Get()->Read(wxS("recentItems"), &recentItems);
 
   if (recentItems < 5)
     recentItems = 5;
@@ -2032,12 +2032,12 @@ void wxMaximaFrame::ReReadConfig() {
 
       if (Configuration::m_configfileLocation_override == wxEmptyString) {
 	wxLogMessage(_("Re-Reading the config from the default location."));
-	wxConfig::Set(new wxConfig(wxT("wxMaxima")));
+	wxConfig::Set(new wxConfig(wxS("wxMaxima")));
       } else {
 	wxLogMessage(_("Re-Reading the config from %s."),
 		     Configuration::m_configfileLocation_override.utf8_str());
 	wxConfig::Set(
-		      new wxFileConfig(wxT("wxMaxima"), wxEmptyString,
+		      new wxFileConfig(wxS("wxMaxima"), wxEmptyString,
 				       Configuration::m_configfileLocation_override));
       }
     }
@@ -2450,11 +2450,11 @@ void wxMaximaFrame::GreekPane::UpdateSymbols() {
 void wxMaximaFrame::GreekPane::OnMouseRightDown(wxMouseEvent &WXUNUSED(event)) {
   std::unique_ptr<wxMenu> popupMenu(new wxMenu());
   popupMenu->AppendCheckItem(EventIDs::menu_showLatinGreekLookalikes,
-                             _(wxT("Show greek \u21D4 latin lookalikes")));
+                             _(wxS("Show greek \u21D4 latin lookalikes")));
   popupMenu->Check(EventIDs::menu_showLatinGreekLookalikes,
                    m_configuration->GreekSidebar_ShowLatinLookalikes());
   popupMenu->AppendCheckItem(EventIDs::menu_showGreekMu,
-                             _(wxT("Show lookalike for unit prefix µ")));
+                             _(wxS("Show lookalike for unit prefix µ")));
   popupMenu->Check(EventIDs::menu_showGreekMu, m_configuration->GreekSidebar_Show_mu());
   PopupMenu(&*popupMenu);
 }
@@ -2788,7 +2788,7 @@ wxMaximaFrame::DrawPane::DrawPane(wxWindow *parent, int id)
 }
 
 void wxMaximaFrame::ShowToolBar(bool show) {
-  m_manager.GetPane(wxT("toolbar")).Show(show);
+  m_manager.GetPane(wxS("toolbar")).Show(show);
   m_manager.Update();
 }
 

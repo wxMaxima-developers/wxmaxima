@@ -295,11 +295,11 @@ AutocompletePopup::AutocompletePopup(wxWindow *parent, EditorCell *editor,
 void AutocompletePopup::OnChar(wxKeyEvent &event) {
   wxChar key = event.GetUnicodeKey();
   if (((m_type == AutoComplete::esccommand) && wxIsprint(key)) ||
-      ((wxIsalnum(key)) || (key == wxT('_')) || (key == wxT('\"')) ||
+      ((wxIsalnum(key)) || (key == wxS('_')) || (key == wxS('\"')) ||
        (((m_type == AutoComplete::generalfile) ||
          (m_type == AutoComplete::loadfile) ||
          (m_type == AutoComplete::demofile)) &&
-        (key == wxT('/'))))) {
+        (key == wxS('/'))))) {
     wxString oldString = m_editor->GetSelectionString();
     m_partial += wxString(key);
     if (m_type != AutoComplete::esccommand)

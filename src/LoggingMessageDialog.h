@@ -43,7 +43,7 @@ public:
     wxMessageDialog (parent, message, caption, style, pos)
     {
       wxString logString = message;
-      logString.Replace(wxT("%"), wxT("%%"));
+      logString.Replace(wxS("%"), wxS("%%"));
       wxLogMessage(logString);
       wxLogMessage(message);
     }

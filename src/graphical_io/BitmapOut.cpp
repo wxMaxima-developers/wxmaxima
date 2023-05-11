@@ -115,17 +115,17 @@ wxSize BitmapOut::ToFile(const wxString &file) {
   img.SetOption(wxIMAGE_OPTION_RESOLUTION, resolution * m_cmn.GetScale());
 
   bool success = false;
-  if (file.EndsWith(wxT(".bmp")))
+  if (file.EndsWith(wxS(".bmp")))
     success = img.SaveFile(file, wxBITMAP_TYPE_BMP);
-  else if (file.EndsWith(wxT(".xpm")))
+  else if (file.EndsWith(wxS(".xpm")))
     success = img.SaveFile(file, wxBITMAP_TYPE_XPM);
-  else if (file.EndsWith(wxT(".jpg")))
+  else if (file.EndsWith(wxS(".jpg")))
     success = img.SaveFile(file, wxBITMAP_TYPE_JPEG);
   else {
-    if (file.EndsWith(wxT(".png")))
+    if (file.EndsWith(wxS(".png")))
       success = img.SaveFile(file, wxBITMAP_TYPE_PNG);
     else
-      success = img.SaveFile(file + wxT(".png"), wxBITMAP_TYPE_PNG);
+      success = img.SaveFile(file + wxS(".png"), wxBITMAP_TYPE_PNG);
   }
 
   if (success)

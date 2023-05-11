@@ -28,7 +28,7 @@ SysWiz::SysWiz(wxWindow *parent, int id, Configuration *cfg,
   : wxDialog(parent, id, title, pos, sz, style) {
   m_size = numEq;
   for (int i = 0; i < m_size; i++) {
-    m_inputs.push_back(new BTextCtrl(this, -1, cfg, wxT("0"), wxDefaultPosition,
+    m_inputs.push_back(new BTextCtrl(this, -1, cfg, wxS("0"), wxDefaultPosition,
                                      wxSize(230, -1)));
   }
   variables = new BTextCtrl(this, -1, cfg, wxEmptyString, wxDefaultPosition,
@@ -86,12 +86,12 @@ void SysWiz::do_layout() {
 }
 
 wxString SysWiz::GetValue() {
-  wxString cmd = wxT("([");
+  wxString cmd = wxS("([");
   for (int i = 0; i < m_size; i++) {
     cmd += m_inputs[i]->GetValue();
     if (i < m_size - 1)
-      cmd += wxT(", ");
+      cmd += wxS(", ");
   }
-  cmd += wxT("], [") + variables->GetValue() + wxT("]);");
+  cmd += wxS("], [") + variables->GetValue() + wxS("]);");
   return cmd;
 }

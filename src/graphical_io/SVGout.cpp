@@ -93,7 +93,7 @@ bool Svgout::Layout() {
 }
 
 static wxDataFormat &Format() {
-  static wxDataFormat format(wxT("image/svg+xml"));
+  static wxDataFormat format(wxS("image/svg+xml"));
   return format;
 }
 

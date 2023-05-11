@@ -31,16 +31,16 @@ BC2Wiz::BC2Wiz(wxWindow *parent, int id, Configuration *cfg,
   text_ctrl_1 = new BTextCtrl(this, -1, cfg, wxEmptyString, wxDefaultPosition,
                               wxSize(230, -1));
   label_3 = new wxStaticText(this, -1, _("Point:"));
-  text_ctrl_2 = new BTextCtrl(this, -1, cfg, wxT("x="), wxDefaultPosition,
+  text_ctrl_2 = new BTextCtrl(this, -1, cfg, wxS("x="), wxDefaultPosition,
                               wxSize(70, -1));
   label_4 = new wxStaticText(this, -1, _("Value:"));
-  text_ctrl_3 = new BTextCtrl(this, -1, cfg, wxT("y="), wxDefaultPosition,
+  text_ctrl_3 = new BTextCtrl(this, -1, cfg, wxS("y="), wxDefaultPosition,
                               wxSize(70, -1));
   label_5 = new wxStaticText(this, -1, _("Point:"));
-  text_ctrl_4 = new BTextCtrl(this, -1, cfg, wxT("x="), wxDefaultPosition,
+  text_ctrl_4 = new BTextCtrl(this, -1, cfg, wxS("x="), wxDefaultPosition,
                               wxSize(70, -1));
   label_6 = new wxStaticText(this, -1, _("Value:"));
-  text_ctrl_5 = new BTextCtrl(this, -1, cfg, wxT("y="), wxDefaultPosition,
+  text_ctrl_5 = new BTextCtrl(this, -1, cfg, wxS("y="), wxDefaultPosition,
                               wxSize(70, -1));
   static_line_1 = new wxStaticLine(this, -1);
 #if defined __WXMSW__
@@ -101,17 +101,17 @@ void BC2Wiz::do_layout() {
 
 wxString BC2Wiz::GetValue() {
   wxString s;
-  s += wxT("bc2(");
+  s += wxS("bc2(");
   s += text_ctrl_1->GetValue();
-  s += wxT(", ");
+  s += wxS(", ");
   s += text_ctrl_2->GetValue();
-  s += wxT(", ");
+  s += wxS(", ");
   s += text_ctrl_3->GetValue();
-  s += wxT(", ");
+  s += wxS(", ");
   s += text_ctrl_4->GetValue();
-  s += wxT(", ");
+  s += wxS(", ");
   s += text_ctrl_5->GetValue();
-  s += wxT(");");
+  s += wxS(");");
 
   return s;
 }

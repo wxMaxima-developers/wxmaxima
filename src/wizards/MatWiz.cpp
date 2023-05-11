@@ -31,7 +31,7 @@ MatWiz::MatWiz(wxWindow *parent, int id, Configuration *cfg,
   m_matrixType = type;
   int width = 50 > 400 / m_width ? 50 : 400 / m_width;
   for (int i = 0; i < h * w; i++) {
-    m_inputs.push_back(new BTextCtrl(this, -1, cfg, wxT("0"), wxDefaultPosition,
+    m_inputs.push_back(new BTextCtrl(this, -1, cfg, wxS("0"), wxDefaultPosition,
                                      wxSize(width, -1)));
   }
   static_line_1 = new wxStaticLine(this, -1);
@@ -88,13 +88,13 @@ void MatWiz::do_layout() {
   wxStaticText *text;
   grid_sizer_2->Add(20, 20, 0, 0);
   for (int i = 1; i <= m_width; i++) {
-    text = new wxStaticText(this, -1, wxString::Format(wxT("%d"), i),
+    text = new wxStaticText(this, -1, wxString::Format(wxS("%d"), i),
                             wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE);
     grid_sizer_2->Add(text, 0,
                       wxALIGN_CENTER_HORIZONTAL | wxALIGN_CENTER_VERTICAL, 0);
   }
   for (int j = 0; j < m_height; j++) {
-    text = new wxStaticText(this, -1, wxString::Format(wxT("%d"), j + 1),
+    text = new wxStaticText(this, -1, wxString::Format(wxS("%d"), j + 1),
                             wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE);
     grid_sizer_2->Add(text, 0,
                       wxALIGN_CENTER_HORIZONTAL | wxALIGN_CENTER_VERTICAL, 0);
@@ -115,33 +115,33 @@ void MatWiz::do_layout() {
 }
 
 wxString MatWiz::GetValue() {
-  wxString cmd = wxT("matrix(");
+  wxString cmd = wxS("matrix(");
   for (int i = 0; i < m_height; i++) {
-    cmd += wxT("\n [");
+    cmd += wxS("\n [");
     for (int j = 0; j < m_width; j++) {
       if (m_matrixType == MATRIX_SYMMETRIC && i > j)
         cmd += m_inputs[j * m_width + i]->GetValue();
       else if (m_matrixType == MATRIX_ANTISYMMETRIC && i > j)
-        cmd += wxT("-(") + m_inputs[j * m_width + i]->GetValue() + wxT(")");
+        cmd += wxS("-(") + m_inputs[j * m_width + i]->GetValue() + wxS(")");
       else {
         wxString entry = m_inputs[i * m_width + j]->GetValue();
         if (entry == wxEmptyString)
-          entry = wxT("0");
+          entry = wxS("0");
         cmd += entry;
       }
 
       if (j < m_width - 1)
-        cmd += wxT(",");
+        cmd += wxS(",");
       else
-        cmd += wxT("]");
+        cmd += wxS("]");
     }
     if (i < m_height - 1)
-      cmd += wxT(", ");
+      cmd += wxS(", ");
   }
   if (m_width > 7 || m_height > 7)
-    cmd += wxT("\n)$");
+    cmd += wxS("\n)$");
   else
-    cmd += wxT("\n);");
+    cmd += wxS("\n);");
   return cmd;
 }
 
@@ -150,10 +150,10 @@ MatDim::MatDim(wxWindow *parent, int id, Configuration *cfg,
                long style)
   : wxDialog(parent, id, title, pos, size, style) {
   label_2 = new wxStaticText(this, -1, _("Rows:"));
-  text_ctrl_1 = new BTextCtrl(this, -1, cfg, wxT("3"), wxDefaultPosition,
+  text_ctrl_1 = new BTextCtrl(this, -1, cfg, wxS("3"), wxDefaultPosition,
                               wxSize(150, -1));
   label_3 = new wxStaticText(this, -1, _("Columns:"));
-  text_ctrl_2 = new BTextCtrl(this, -1, cfg, wxT("3"), wxDefaultPosition,
+  text_ctrl_2 = new BTextCtrl(this, -1, cfg, wxS("3"), wxDefaultPosition,
                               wxSize(150, -1));
   label_4 = new wxStaticText(this, -1, _("Type:"));
   const wxString choice_1_choices[] = {_("general"), _("diagonal"),

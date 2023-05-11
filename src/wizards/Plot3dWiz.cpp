@@ -33,7 +33,7 @@ Plot3DWiz::Plot3DWiz(wxWindow *parent, int id, Configuration *cfg,
   text_ctrl_1 = new BTextCtrl(this, -1, cfg, wxEmptyString, wxDefaultPosition);
   label_3 = new wxStaticText(this, -1, _("Variable:"));
   text_ctrl_2 =
-    new BTextCtrl(this, -1, cfg, wxT("x"), wxDefaultPosition, wxSize(40, -1));
+    new BTextCtrl(this, -1, cfg, wxS("x"), wxDefaultPosition, wxSize(40, -1));
   label_4 = new wxStaticText(this, -1, _("From:"));
   text_ctrl_3 = new BTextCtrl(this, -1, cfg, wxEmptyString, wxDefaultPosition,
                               wxSize(70, -1));
@@ -42,7 +42,7 @@ Plot3DWiz::Plot3DWiz(wxWindow *parent, int id, Configuration *cfg,
                               wxSize(70, -1));
   label_6 = new wxStaticText(this, -1, _("Variable:"));
   text_ctrl_5 =
-    new BTextCtrl(this, -1, cfg, wxT("y"), wxDefaultPosition, wxSize(40, -1));
+    new BTextCtrl(this, -1, cfg, wxS("y"), wxDefaultPosition, wxSize(40, -1));
   label_7 = new wxStaticText(this, -1, _("From:"));
   text_ctrl_6 = new BTextCtrl(this, -1, cfg, wxEmptyString, wxDefaultPosition,
                               wxSize(70, -1));
@@ -53,24 +53,24 @@ Plot3DWiz::Plot3DWiz(wxWindow *parent, int id, Configuration *cfg,
   text_ctrl_8 = new wxSpinCtrl(this, -1, wxEmptyString, wxDefaultPosition,
                                wxSize(70, -1), wxSP_ARROW_KEYS, 0, 100, 30);
   text_ctrl_8->SetValue(30);
-  label_10 = new wxStaticText(this, -1, wxT("x"));
+  label_10 = new wxStaticText(this, -1, wxS("x"));
   text_ctrl_9 = new wxSpinCtrl(this, -1, wxEmptyString, wxDefaultPosition,
                                wxSize(70, -1), wxSP_ARROW_KEYS, 0, 100, 30);
   text_ctrl_9->SetValue(30);
   label_11 = new wxStaticText(this, -1, _("Format:"));
   const wxString combo_box_1_choices[] = {_("default"), _("inline"),
-    wxT("gnuplot"), wxT("xmaxima")};
+    wxS("gnuplot"), wxS("xmaxima")};
   combo_box_1 =
     new wxComboBox(this, -1, wxEmptyString, wxDefaultPosition,
 		   wxSize(150, -1), 4, combo_box_1_choices, wxCB_DROPDOWN);
   label_12 = new wxStaticText(this, -1, _("Options:"));
   const wxString combo_box_2_choices[] = {
-    wxT("set pm3d at b"),
-    wxT("set pm3d at s; unset surf; unset colorbox"),
-    wxT("set pm3d map; unset surf"),
-    wxT("set hidden3d"),
-    wxT("set mapping spherical"),
-    wxT("set mapping cylindrical")};
+    wxS("set pm3d at b"),
+    wxS("set pm3d at s; unset surf; unset colorbox"),
+    wxS("set pm3d map; unset surf"),
+    wxS("set hidden3d"),
+    wxS("set mapping spherical"),
+    wxS("set mapping cylindrical")};
   combo_box_2 =
     new wxComboBox(this, wxID_ANY, wxEmptyString, wxDefaultPosition,
 		   wxSize(250, -1), 6, combo_box_2_choices, wxCB_DROPDOWN);
@@ -101,10 +101,10 @@ Plot3DWiz::Plot3DWiz(wxWindow *parent, int id, Configuration *cfg,
 
 void Plot3DWiz::set_properties() {
   SetTitle(_("Plot 3D"));
-  text_ctrl_3->SetValue(wxT("-5"));
-  text_ctrl_4->SetValue(wxT("5"));
-  text_ctrl_6->SetValue(wxT("-5"));
-  text_ctrl_7->SetValue(wxT("5"));
+  text_ctrl_3->SetValue(wxS("-5"));
+  text_ctrl_4->SetValue(wxS("5"));
+  text_ctrl_6->SetValue(wxS("-5"));
+  text_ctrl_7->SetValue(wxS("5"));
 
   button_3->SetToolTip(_("Browse"));
 
@@ -117,8 +117,8 @@ void Plot3DWiz::set_properties() {
 #endif
 
   int selection = 1;
-  wxConfig::Get()->Read(wxT("Wiz/Plot3D/format"), &selection);
-  wxConfig::Get()->Read(wxT("Wiz/Plot3D/pm3d"), &pm3dValue);
+  wxConfig::Get()->Read(wxS("Wiz/Plot3D/format"), &selection);
+  wxConfig::Get()->Read(wxS("Wiz/Plot3D/pm3d"), &pm3dValue);
 
   combo_box_1->SetSelection(selection);
   check_box_1->SetValue(pm3dValue);
@@ -187,9 +187,9 @@ void Plot3DWiz::do_layout() {
 }
 
 void Plot3DWiz::SetValue(wxString s) {
-  if (s.StartsWith(wxT("plot3d")))
+  if (s.StartsWith(wxS("plot3d")))
     Parse(s);
-  else if (s.StartsWith(wxT("wxplot3d"))) {
+  else if (s.StartsWith(wxS("wxplot3d"))) {
     Parse(s.SubString(2, s.Length()));
     combo_box_1->SetValue(_("inline"));
   } else
@@ -203,7 +203,7 @@ void Plot3DWiz::Parse(wxString s) {
   wxString curr;
   s = s.SubString(7, s.Length());
   // Function to plot
-  if (s.StartsWith(wxT("["))) {
+  if (s.StartsWith(wxS("["))) {
     int depth = 0;
     do {
       if (s.GetChar(i) == '[') {
@@ -286,7 +286,7 @@ void Plot3DWiz::Parse(wxString s) {
       }
       curr.Trim();
       curr.Trim(false);
-      if (curr == wxT("gnuplot_postamble")) {
+      if (curr == wxS("gnuplot_postamble")) {
         while (i < s.Length() && s.GetChar(i) != '"')
           i++;
         i++;
@@ -296,7 +296,7 @@ void Plot3DWiz::Parse(wxString s) {
           i++;
         }
         combo_box_2->SetValue(curr);
-      } else if (curr == wxT("gnuplot_out_file")) {
+      } else if (curr == wxS("gnuplot_out_file")) {
         while (i < s.Length() && s.GetChar(i) != '"')
           i++;
         i++;
@@ -306,15 +306,15 @@ void Plot3DWiz::Parse(wxString s) {
           i++;
         }
         text_ctrl_10->SetValue(curr);
-      } else if (curr == wxT("gnuplot_pm3d")) {
+      } else if (curr == wxS("gnuplot_pm3d")) {
         curr = wxEmptyString;
         while (i < s.Length() && s.GetChar(i) != ']') {
           curr += s.GetChar(i);
           i++;
         }
-        if (curr.Find(wxT("true")) > -1)
+        if (curr.Find(wxS("true")) > -1)
           check_box_1->SetValue(true);
-        else if (curr.Find(wxT("false")) > -1)
+        else if (curr.Find(wxS("false")) > -1)
           check_box_1->SetValue(false);
       }
     }
@@ -323,80 +323,80 @@ void Plot3DWiz::Parse(wxString s) {
 }
 
 wxString Plot3DWiz::GetValue() {
-  wxString s = wxT("plot3d(");
+  wxString s = wxS("plot3d(");
   wxString p = combo_box_2->GetValue();
   wxString pl = text_ctrl_1->GetValue();
   wxString f = combo_box_1->GetValue();
   wxString file = text_ctrl_10->GetValue();
   int xg = text_ctrl_8->GetValue();
   int yg = text_ctrl_9->GetValue();
-  if (pl.Contains(wxT(", ")))
-    pl = wxT("[") + pl + wxT("]");
+  if (pl.Contains(wxS(", ")))
+    pl = wxS("[") + pl + wxS("]");
   s += pl;
-  s += wxT(", [");
+  s += wxS(", [");
   s += text_ctrl_2->GetValue();
-  s += wxT(",") + text_ctrl_3->GetValue();
-  s += wxT(",") + text_ctrl_4->GetValue();
-  s += wxT("], [");
+  s += wxS(",") + text_ctrl_3->GetValue();
+  s += wxS(",") + text_ctrl_4->GetValue();
+  s += wxS("], [");
   s += text_ctrl_5->GetValue();
-  s += wxT(",") + text_ctrl_6->GetValue();
-  s += wxT(",") + text_ctrl_7->GetValue();
-  s += wxT("]");
+  s += wxS(",") + text_ctrl_6->GetValue();
+  s += wxS(",") + text_ctrl_7->GetValue();
+  s += wxS("]");
   if (f != _("default") && f != _("inline"))
-    s += wxT(", [plot_format,") + f + wxT("]");
+    s += wxS(", [plot_format,") + f + wxS("]");
   if (xg != 30 || yg != 30) {
-    s += wxT(",\n [grid,");
-    s += wxString::Format(wxT("%d"), xg);
-    s += wxT(",");
-    s += wxString::Format(wxT("%d"), yg);
-    s += wxT("]");
+    s += wxS(",\n [grid,");
+    s += wxString::Format(wxS("%d"), xg);
+    s += wxS(",");
+    s += wxString::Format(wxS("%d"), yg);
+    s += wxS("]");
   }
 #if defined(__WXMSW__)
   if (!check_box_1->IsChecked())
-    s += wxT(",\n [gnuplot_pm3d,false]");
+    s += wxS(",\n [gnuplot_pm3d,false]");
 #else
   if (check_box_1->IsChecked())
-    s += wxT(",\n [gnuplot_pm3d,true]");
+    s += wxS(",\n [gnuplot_pm3d,true]");
 #endif
 
   if (p.Length() > 0)
-    s += wxT(",\n [gnuplot_postamble, \"") + p + wxT("\"]");
+    s += wxS(",\n [gnuplot_postamble, \"") + p + wxS("\"]");
   if (file.Length()) {
-    s += wxT(",\n [gnuplot_term, ps]");
+    s += wxS(",\n [gnuplot_term, ps]");
 #if defined(__WXMSW__)
-    file.Replace(wxT("\\"), wxT("/"));
+    file.Replace(wxS("\\"), wxS("/"));
 #endif
 
-    if (file.Right(4) != wxT(".eps") && file.Right(3) != wxT(".ps"))
-      file = file + wxT(".eps");
-    s += wxT(",\n [gnuplot_out_file, \"") + file + wxT("\"]");
+    if (file.Right(4) != wxS(".eps") && file.Right(3) != wxS(".ps"))
+      file = file + wxS(".eps");
+    s += wxS(",\n [gnuplot_out_file, \"") + file + wxS("\"]");
   } else if (f == _("inline"))
-    s = wxT("wx") + s;
+    s = wxS("wx") + s;
 
-  s += wxT(")$");
+  s += wxS(")$");
 
-  wxConfig::Get()->Write(wxT("Wiz/Plot3D/format"), combo_box_1->GetSelection());
-  wxConfig::Get()->Write(wxT("Wiz/Plot3D/pm3d"), check_box_1->GetValue());
+  wxConfig::Get()->Write(wxS("Wiz/Plot3D/format"), combo_box_1->GetSelection());
+  wxConfig::Get()->Write(wxS("Wiz/Plot3D/pm3d"), check_box_1->GetValue());
   return s;
 }
 
 void Plot3DWiz::OnCombobox(wxCommandEvent &event) {
   wxString selection = combo_box_2->GetStringSelection();
-  if (selection.StartsWith(wxT("set mapping cylindrical"))) {
-    text_ctrl_2->SetValue(wxT("ph"));
-    text_ctrl_3->SetValue(wxT("0"));
-    text_ctrl_4->SetValue(wxT("2*%pi"));
-    text_ctrl_5->SetValue(wxT("z"));
-    text_ctrl_6->SetValue(wxT("0"));
-    text_ctrl_7->SetValue(wxT("5"));
+  if (selection.StartsWith(wxS("set mapping cylindrical"))) {
+    text_ctrl_2->SetValue(wxS("ph"));
+    text_ctrl_3->SetValue(wxS("0"));
+    text_ctrl_4->SetValue(wxS("2*%pi"));
+    text_ctrl_5->SetValue(wxS("z"));
+    text_ctrl_6->SetValue(wxS("0"));
+    text_ctrl_7->SetValue(wxS("5"));
     type = cylindrical;
-  } else if (selection.StartsWith(wxT("set mapping spherical"))) {
-    text_ctrl_2->SetValue(wxT("th"));
-    text_ctrl_3->SetValue(wxT("0"));
-    text_ctrl_4->SetValue(wxT("2*%pi"));
-    text_ctrl_5->SetValue(wxT("ph"));
-    text_ctrl_6->SetValue(wxT("-%pi/2"));
-    text_ctrl_7->SetValue(wxT("%pi/2"));
+  } else if (selection.StartsWith(wxS("set mapping spherical"))) {
+    text_ctrl_2->SetValue(wxS("th"));
+    text_ctrl_3->SetValue(wxS("0"));
+    text_ctrl_4->SetValue(wxS("2*%pi"));
+    text_ctrl_5->SetValue(wxS("ph"));
+    text_ctrl_6->SetValue(wxS("-%pi/2"));
+    text_ctrl_7->SetValue(wxS("%pi/2"));
     type = spherical;
   } else
     type = cartesian;
@@ -405,8 +405,8 @@ void Plot3DWiz::OnCombobox(wxCommandEvent &event) {
 
 void Plot3DWiz::OnFileBrowse(wxCommandEvent &event) {
   wxString file =
-    wxFileSelector(_("Save plot to file"), wxEmptyString, wxT("plot3d.eps"),
-		   wxT("eps"), _("Postscript file (*.eps)|*.eps|All|*"),
+    wxFileSelector(_("Save plot to file"), wxEmptyString, wxS("plot3d.eps"),
+		   wxS("eps"), _("Postscript file (*.eps)|*.eps|All|*"),
 		   wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
   if (file.Length() > 0)
     text_ctrl_10->SetValue(file);

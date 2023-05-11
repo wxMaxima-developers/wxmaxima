@@ -45,7 +45,7 @@ wxString MarkDownParser::MarkDown(wxString str) {
   std::list<wxChar> indentationTypes;
 
   // Now process the input string line-by-line.
-  wxStringTokenizer lines(str, wxT("\n"), wxTOKEN_RET_EMPTY_ALL);
+  wxStringTokenizer lines(str, wxS("\n"), wxTOKEN_RET_EMPTY_ALL);
   while (lines.HasMoreTokens()) {
     wxString line = lines.GetNextToken();
     wxString quotingStart;
@@ -68,7 +68,7 @@ wxString MarkDownParser::MarkDown(wxString str) {
 
       // Let's see if the line is the start of a bullet list item
       if ((st.StartsWith("* ")) && ((indentationTypes.empty()) ||
-                                    (indentationTypes.back() == wxT('*')))) {
+                                    (indentationTypes.back() == wxS('*')))) {
         // Remove the bullet list start marker from our string.
         st = st.Right(st.Length() - 2);
         st = st.Trim(false);
@@ -78,7 +78,7 @@ wxString MarkDownParser::MarkDown(wxString str) {
           // This is the first item => Start the itemization.
           result += itemizeBegin();
           indentationLevels.push_back(index);
-          indentationTypes.push_back(wxT('*'));
+          indentationTypes.push_back(wxS('*'));
         } else {
           // End the previous item before we start a new one on the same level.
           if (index == indentationLevels.back())
@@ -90,7 +90,7 @@ wxString MarkDownParser::MarkDown(wxString str) {
           // A higher indentation level => add the itemization-start-command.
           result += itemizeBegin();
           indentationLevels.push_back(index);
-          indentationTypes.push_back(wxT('*'));
+          indentationTypes.push_back(wxS('*'));
         }
 
         // Did we switch to a lower indentation level?
@@ -112,8 +112,8 @@ wxString MarkDownParser::MarkDown(wxString str) {
         st.Trim();
         if (st.EndsWith(NewLine()))
           st = st.Left(st.Length() - NewLine().Length());
-        result += st += wxT(" ");
-      } else if (st.StartsWith(quoteChar() + wxT(" "))) {
+        result += st += wxS(" ");
+      } else if (st.StartsWith(quoteChar() + wxS(" "))) {
         // We are part of a quotation.
         //
         // Remove the bullet list start marker from our string.
@@ -125,7 +125,7 @@ wxString MarkDownParser::MarkDown(wxString str) {
           // This is the first item => Start the itemization.
           result += quoteBegin();
           indentationLevels.push_back(index);
-          indentationTypes.push_back(wxT('>'));
+          indentationTypes.push_back(wxS('>'));
         } else {
           // We are inside a bullet list.
 
@@ -134,14 +134,14 @@ wxString MarkDownParser::MarkDown(wxString str) {
             // A new indentation level => add the itemization-start-command.
             result += quoteBegin();
             indentationLevels.push_back(index);
-            indentationTypes.push_back(wxT('>'));
+            indentationTypes.push_back(wxS('>'));
           }
 
           // End lists if we are at an old indentation level.
           // cppcheck-suppress knownConditionTrueFalse
           while (!indentationLevels.empty() &&
                  (indentationLevels.back() > index)) {
-            if (indentationTypes.back() == wxT('*')) {
+            if (indentationTypes.back() == wxS('*')) {
               result += itemizeEndItem();
               result += itemizeEnd();
             } else
@@ -150,7 +150,7 @@ wxString MarkDownParser::MarkDown(wxString str) {
             indentationTypes.pop_back();
           }
         }
-        result += st += wxT(" ");
+        result += st += wxS(" ");
       } else {
         // Ordinary text.
         //
@@ -166,7 +166,7 @@ wxString MarkDownParser::MarkDown(wxString str) {
           if (indentationLevels.back() > index) {
             while ((!indentationLevels.empty()) &&
                    (indentationLevels.back() > index)) {
-              if (indentationTypes.back() == wxT('*')) {
+              if (indentationTypes.back() == wxS('*')) {
                 result += itemizeEndItem();
                 result += itemizeEnd();
               } else
@@ -185,7 +185,7 @@ wxString MarkDownParser::MarkDown(wxString str) {
 
   // Close all item lists
   while (!indentationLevels.empty()) {
-    if (indentationTypes.back() == wxT('*')) {
+    if (indentationTypes.back() == wxS('*')) {
       result += itemizeEndItem();
       result += itemizeEnd();
     } else
@@ -197,36 +197,36 @@ wxString MarkDownParser::MarkDown(wxString str) {
 }
 
 MarkDownTeX::MarkDownTeX(Configuration *cfg) : MarkDownParser(cfg) {
-  regexReplaceList.emplace_back(wxT("#"), wxT("\\\\#"));
-  regexReplaceList.emplace_back(wxT("\\\\verb\\|<\\|=\\\\verb\\|>\\|"),
-                                wxT("\\\\ensuremath{\\\\Longleftrightarrow}"));
-  regexReplaceList.emplace_back(wxT("=\\\\verb\\|>\\|"),
-                                wxT("\\\\ensuremath{\\\\Longrightarrow}"));
-  regexReplaceList.emplace_back(wxT("\\\\verb\\|<\\|-\\\\verb\\|>\\|"),
-                                wxT("\\\\ensuremath{\\\\longleftrightarrow}"));
-  regexReplaceList.emplace_back(wxT("-\\\\verb\\|>\\|"),
-                                wxT("\\\\ensuremath{\\\\longrightarrow}"));
-  regexReplaceList.emplace_back(wxT("\\\\verb\\|<\\|-"),
-                                wxT("\\\\ensuremath{\\\\longleftarrow}"));
-  regexReplaceList.emplace_back(wxT("\\\\verb\\|<\\|="),
-                                wxT("\\\\ensuremath{\\\\leq}"));
-  regexReplaceList.emplace_back(wxT("\\\\verb\\|>\\|="),
-                                wxT("\\\\ensuremath{\\\\geq}"));
-  regexReplaceList.emplace_back(wxT("\\+/-"), wxT("\\\\ensuremath{\\\\pm}"));
-  regexReplaceList.emplace_back(wxT("\\\\verb\\|>\\|\\\\verb\\|>\\|"),
-                                wxT("\\\\ensuremath{\\\\gg}"));
-  regexReplaceList.emplace_back(wxT("\\\\verb\\|<\\|\\\\verb\\|<\\|"),
-                                wxT("\\\\ensuremath{\\\\ll}"));
+  regexReplaceList.emplace_back(wxS("#"), wxS("\\\\#"));
+  regexReplaceList.emplace_back(wxS("\\\\verb\\|<\\|=\\\\verb\\|>\\|"),
+                                wxS("\\\\ensuremath{\\\\Longleftrightarrow}"));
+  regexReplaceList.emplace_back(wxS("=\\\\verb\\|>\\|"),
+                                wxS("\\\\ensuremath{\\\\Longrightarrow}"));
+  regexReplaceList.emplace_back(wxS("\\\\verb\\|<\\|-\\\\verb\\|>\\|"),
+                                wxS("\\\\ensuremath{\\\\longleftrightarrow}"));
+  regexReplaceList.emplace_back(wxS("-\\\\verb\\|>\\|"),
+                                wxS("\\\\ensuremath{\\\\longrightarrow}"));
+  regexReplaceList.emplace_back(wxS("\\\\verb\\|<\\|-"),
+                                wxS("\\\\ensuremath{\\\\longleftarrow}"));
+  regexReplaceList.emplace_back(wxS("\\\\verb\\|<\\|="),
+                                wxS("\\\\ensuremath{\\\\leq}"));
+  regexReplaceList.emplace_back(wxS("\\\\verb\\|>\\|="),
+                                wxS("\\\\ensuremath{\\\\geq}"));
+  regexReplaceList.emplace_back(wxS("\\+/-"), wxS("\\\\ensuremath{\\\\pm}"));
+  regexReplaceList.emplace_back(wxS("\\\\verb\\|>\\|\\\\verb\\|>\\|"),
+                                wxS("\\\\ensuremath{\\\\gg}"));
+  regexReplaceList.emplace_back(wxS("\\\\verb\\|<\\|\\\\verb\\|<\\|"),
+                                wxS("\\\\ensuremath{\\\\ll}"));
 }
 
 MarkDownHTML::MarkDownHTML(Configuration *cfg) : MarkDownParser(cfg) {
-  regexReplaceList.emplace_back(wxT("\\&lt\\);=\\&gt;"), wxT("\u21d4"));
-  regexReplaceList.emplace_back(wxT("=\\&gt\\);"), wxT("\u21d2"));
-  regexReplaceList.emplace_back(wxT("&lt\\);-\\&gt;"), wxT("\u2194"));
-  regexReplaceList.emplace_back(wxT("-\\&gt\\);"), wxT("\u2192"));
-  regexReplaceList.emplace_back(wxT("\\&lt\\);-"), wxT("\u2190"));
-  regexReplaceList.emplace_back(wxT("\\&lt\\);="), wxT("\u2264"));
-  regexReplaceList.emplace_back(wxT("\\&gt\\);="), wxT("\u2265"));
-  regexReplaceList.emplace_back(wxT("\\+/-"), wxT("\u00B1"));
-  regexReplaceList.emplace_back(wxT("\u00A0"), wxT("\u00A0"));
+  regexReplaceList.emplace_back(wxS("\\&lt\\);=\\&gt;"), wxS("\u21d4"));
+  regexReplaceList.emplace_back(wxS("=\\&gt\\);"), wxS("\u21d2"));
+  regexReplaceList.emplace_back(wxS("&lt\\);-\\&gt;"), wxS("\u2194"));
+  regexReplaceList.emplace_back(wxS("-\\&gt\\);"), wxS("\u2192"));
+  regexReplaceList.emplace_back(wxS("\\&lt\\);-"), wxS("\u2190"));
+  regexReplaceList.emplace_back(wxS("\\&lt\\);="), wxS("\u2264"));
+  regexReplaceList.emplace_back(wxS("\\&gt\\);="), wxS("\u2265"));
+  regexReplaceList.emplace_back(wxS("\\+/-"), wxS("\u00B1"));
+  regexReplaceList.emplace_back(wxS("\u00A0"), wxS("\u00A0"));
 }

@@ -93,28 +93,28 @@ public:
 
 private:
   virtual wxString quoteBegin() override
-    { return wxT("\\begin{quote}\n"); }
+    { return wxS("\\begin{quote}\n"); }
 
   virtual wxString quoteEnd() override
-    { return wxT("\\end{quote}\n"); }
+    { return wxS("\\end{quote}\n"); }
 
   virtual wxString quoteChar() override
-    { return wxT("\\ensuremath{>}"); }
+    { return wxS("\\ensuremath{>}"); }
 
   virtual wxString itemizeBegin() override
-    { return wxT("\\begin{itemize}\n"); }
+    { return wxS("\\begin{itemize}\n"); }
 
   virtual wxString itemizeEnd() override
-    { return wxT("\\end{itemize}\n"); }
+    { return wxS("\\end{itemize}\n"); }
 
   virtual wxString itemizeItem() override
-    { return wxT("\\item "); }
+    { return wxS("\\item "); }
 
   virtual wxString itemizeEndItem() override
     { return wxEmptyString; }
 
   virtual wxString NewLine() override
-    { return wxT("\n\n"); }
+    { return wxS("\n\n"); }
 };
 
 //! A markdown parser for HTML
@@ -125,28 +125,28 @@ public:
 
 private:
   virtual wxString quoteChar() override
-    { return wxT("&gt;"); }
+    { return wxS("&gt;"); }
 
   virtual wxString quoteBegin() override
-    { return wxT("<blockquote>\n"); }
+    { return wxS("<blockquote>\n"); }
 
   virtual wxString quoteEnd() override
-    { return wxT("</blockquote>\n"); }
+    { return wxS("</blockquote>\n"); }
 
   virtual wxString itemizeBegin() override
-    { return wxT("<ul>\n"); }
+    { return wxS("<ul>\n"); }
 
   virtual wxString itemizeEnd() override
-    { return wxT("</ul>\n"); }
+    { return wxS("</ul>\n"); }
 
   virtual wxString itemizeItem() override
-    { return wxT("<li>"); }
+    { return wxS("<li>"); }
 
   virtual wxString itemizeEndItem() override
-    { return wxT("</li>\n"); }
+    { return wxS("</li>\n"); }
 
   virtual wxString NewLine() override
-    { return wxT("<br/>"); }
+    { return wxS("<br/>"); }
 };
 
 #endif // MARKDOWN_H

@@ -74,7 +74,7 @@ public:
   wxString DataDir() const;
 
   //! The directory our private fonts are stored in
-  wxString FontDir() const {return DataDir()+wxT("/../fonts");}
+  wxString FontDir() const {return DataDir()+wxS("/../fonts");}
 
   //! The directory the help file is stored in
   wxString HelpDir() const {return m_helpDir;}
@@ -88,14 +88,14 @@ public:
 
   //! The path to wxMaxima's own AutoComplete file
   wxString AutocompleteFile() const
-    { return DataDir() + wxT("/autocomplete.txt"); }
+    { return DataDir() + wxS("/autocomplete.txt"); }
 
   /*! The directory the locale data is to be found in
 
     Is only used on MSW and MAC
   */
   wxString LocaleDir() const
-    { return ResourcesDir() + wxT("/locale"); }
+    { return ResourcesDir() + wxS("/locale"); }
 
   //! The executable file path to the maxima executable (or .bat on Windows)
   static wxString MaximaDefaultLocation();

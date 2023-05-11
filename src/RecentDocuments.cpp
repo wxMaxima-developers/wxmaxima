@@ -33,7 +33,7 @@ void RecentDocuments::Load() {
   wxString fileName;
 
   for (int i = 0; i < 30; i++) {
-    wxString name = wxString::Format(wxT("RecentDocuments/%s_%d"),
+    wxString name = wxString::Format(wxS("RecentDocuments/%s_%d"),
                                      m_documentType.utf8_str(), i);
     wxString filename;
     if (config->Read(name, &filename)) {
@@ -65,13 +65,13 @@ void RecentDocuments::Save() {
   int i = 0;
   for (std::list<wxString>::const_iterator it = m_listOfFiles.begin();
        it != m_listOfFiles.end(); ++it) {
-    wxString name = wxString::Format(wxT("RecentDocuments/%s_%d"),
+    wxString name = wxString::Format(wxS("RecentDocuments/%s_%d"),
                                      m_documentType.utf8_str(), i);
     i++;
     config->Write(name, *it);
   }
   for (; i < 30; i++) {
-    wxString name = wxString::Format(wxT("RecentDocuments/%s_%d"),
+    wxString name = wxString::Format(wxS("RecentDocuments/%s_%d"),
                                      m_documentType.utf8_str(), i);
     config->DeleteEntry(name);
   }
@@ -94,7 +94,7 @@ void RecentDocuments::AddDocument(wxString name) {
   m_listOfFiles.push_front(name);
   m_listOfFiles.unique();
   long recentItems = 10;
-  wxConfig::Get()->Read(wxT("recentItems"), &recentItems);
+  wxConfig::Get()->Read(wxS("recentItems"), &recentItems);
   if (recentItems < 5)
     recentItems = 5;
   if (recentItems > 30)

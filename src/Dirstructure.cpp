@@ -44,27 +44,27 @@ Dirstructure::Dirstructure() {
   // The path Gentoo hides the manual at
   if (wxDirExists(m_helpDir + wxString::Format("/doc/wxmaxima-%s", GITVERSION)))
     m_helpDir += wxString::Format("/doc/wxmaxima-%s", GITVERSION);
-  if (wxDirExists(m_helpDir + wxT("/doc/wxmaxima")))
-    m_helpDir += wxT("/doc/wxmaxima");
+  if (wxDirExists(m_helpDir + wxS("/doc/wxmaxima")))
+    m_helpDir += wxS("/doc/wxmaxima");
 
-  if (wxDirExists(m_helpDir + wxT("/html")))
-    m_helpDir += wxT("/html");
+  if (wxDirExists(m_helpDir + wxS("/html")))
+    m_helpDir += wxS("/html");
 
-  if (wxDirExists(m_helpDir + wxT("/info")))
-    m_helpDir += wxT("/info");
+  if (wxDirExists(m_helpDir + wxS("/info")))
+    m_helpDir += wxS("/info");
 
-  if (wxDirExists(m_helpDir + wxT("/help")))
-    m_helpDir += wxT("/help");
+  if (wxDirExists(m_helpDir + wxS("/help")))
+    m_helpDir += wxS("/help");
 
-  if (!wxGetEnv(wxT("MAXIMA_USERDIR"), &m_userConfDir))
+  if (!wxGetEnv(wxS("MAXIMA_USERDIR"), &m_userConfDir))
     m_userConfDir = wxGetHomeDir();
   m_userConfDir += "/";
 
 #ifndef __WXMSW__
-  m_userConfDir += wxT(".");
+  m_userConfDir += wxS(".");
 #endif
 
-  m_userConfDir += wxT("maxima");
+  m_userConfDir += wxS("maxima");
 
   if (!wxDirExists(m_userConfDir)) {
     if (!wxMkdir(m_userConfDir, wxS_DIR_DEFAULT))
@@ -78,7 +78,7 @@ Dirstructure::Dirstructure() {
 }
 
 void Dirstructure::UserConfDir(wxString userConfDir) {
-  wxFileName dir(userConfDir + wxT("/"));
+  wxFileName dir(userConfDir + wxS("/"));
   dir.MakeAbsolute();
   m_userConfDir = dir.GetFullPath();
   if (!wxDirExists(m_userConfDir))
@@ -98,23 +98,23 @@ wxString Dirstructure::ResourcesDir() const {
     // If the binary is in a source or bin folder the resources dir is one level
     // above
     wxArrayString dirs = exe.GetDirs();
-    if ((dirs.Last().Upper() == wxT("SRC")) ||
-        (dirs.Last().Upper() == wxT("BIN"))) {
+    if ((dirs.Last().Upper() == wxS("SRC")) ||
+        (dirs.Last().Upper() == wxS("BIN"))) {
       exe.RemoveLastDir();
       dirs = exe.GetDirs();
     }
 
     // If the binary is in the wxMaxima folder the resources dir is two levels
     // above as we are in MacOS/wxmaxima
-    if ((dirs.Last().Upper() == wxT("MACOS")))
+    if ((dirs.Last().Upper() == wxS("MACOS")))
       exe.RemoveLastDir();
 
     // If there is a Resources folder the resources are there
-    if (wxDirExists(exe.GetPath() + wxT("/Resources")))
+    if (wxDirExists(exe.GetPath() + wxS("/Resources")))
       exe.AppendDir("Resources");
 
     // If there is a share folder the resources are there
-    if (wxDirExists(exe.GetPath() + wxT("/share")))
+    if (wxDirExists(exe.GetPath() + wxS("/share")))
       exe.AppendDir("share");
 
     exepath = exe.GetPath();
@@ -126,10 +126,10 @@ wxString Dirstructure::ResourcesDir() const {
 
 wxString Dirstructure::DataDir() const {
   wxString dir = ResourcesDir();
-  if (wxDirExists(dir + wxT("/data")))
-    dir += wxT("/data");
-  if (wxDirExists(dir + wxT("/wxMaxima")))
-    dir += wxT("/wxMaxima");
+  if (wxDirExists(dir + wxS("/data")))
+    dir += wxS("/data");
+  if (wxDirExists(dir + wxS("/wxMaxima")))
+    dir += wxS("/wxMaxima");
 
   return dir;
 }
@@ -243,16 +243,16 @@ wxString Dirstructure::MaximaDefaultLocation() {
 
   wxLogMessage(notFound, maximaLocation.mb_str());
 #endif
-  return wxT("maxima");
+  return wxS("maxima");
 }
 
 wxString Dirstructure::UserAutocompleteFile() {
-  wxString newFileName = UserConfDir() + wxT("wxmaxima.ac");
+  wxString newFileName = UserConfDir() + wxS("wxmaxima.ac");
   if (!wxFileExists(newFileName)) {
-    wxString potentialOldFile = UserConfDir() + wxT(".wxmaxima.ac");
+    wxString potentialOldFile = UserConfDir() + wxS(".wxmaxima.ac");
     if (wxFileExists(potentialOldFile))
       wxRenameFile(potentialOldFile, newFileName);
-    potentialOldFile = UserConfDir() + wxT(".wxmax.ac");
+    potentialOldFile = UserConfDir() + wxS(".wxmax.ac");
     if (wxFileExists(potentialOldFile))
       wxRenameFile(potentialOldFile, newFileName);
   }

@@ -163,7 +163,7 @@ void HelpBrowser::CreateIfNeeded() {
 }
 
 void HelpBrowser::OnSearchboxKeyDown(wxKeyEvent &event) {
-  if (event.ControlDown() && (event.GetUnicodeKey() == wxT('F'))) {
+  if (event.ControlDown() && (event.GetUnicodeKey() == wxS('F'))) {
     wxCommandEvent dummy;
     OnTextEnter(dummy);
   } else
@@ -171,7 +171,7 @@ void HelpBrowser::OnSearchboxKeyDown(wxKeyEvent &event) {
 }
 
 void HelpBrowser::OnWebviewKeyDown(wxKeyEvent &event) {
-  if (event.ControlDown() && (event.GetUnicodeKey() == wxT('F')))
+  if (event.ControlDown() && (event.GetUnicodeKey() == wxS('F')))
     m_searchText->SetFocus();
   else
     event.Skip();
@@ -188,7 +188,7 @@ void HelpBrowser::JumpToKeyword(wxString keyword) {
     SetURL(maximaHelpURL);
   } else {
     if (AllowOnlineManualP()) {
-      wxLogMessage(_(wxT("No offline manual found => Redirecting to the Maxima homepage")));
+      wxLogMessage(_(wxS("No offline manual found => Redirecting to the Maxima homepage")));
       SetURL(
 	     "https://maxima.sourceforge.io/docs/manual/maxima_singlepage.html#" +
 	     keyword);

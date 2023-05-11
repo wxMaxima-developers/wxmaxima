@@ -203,14 +203,14 @@ bool MyApp::OnInit() {
 #if wxCHECK_VERSION(3, 1, 1)
     wxStandardPaths::Get().SetFileLayout(wxStandardPaths::FileLayout_Classic);
     wxString configFileOld =
-      wxStandardPaths::Get().GetUserConfigDir() + wxT("/") +
+      wxStandardPaths::Get().GetUserConfigDir() + wxS("/") +
       wxStandardPaths::Get().MakeConfigFileName(
-						wxString(wxT("wxMaxima")), wxStandardPaths::ConfigFileConv_Dot);
+						wxString(wxS("wxMaxima")), wxStandardPaths::ConfigFileConv_Dot);
     wxStandardPaths::Get().SetFileLayout(wxStandardPaths::FileLayout_XDG);
     wxString configFileXDG =
-      wxStandardPaths::Get().GetUserConfigDir() + wxT("/") +
+      wxStandardPaths::Get().GetUserConfigDir() + wxS("/") +
       wxStandardPaths::Get().MakeConfigFileName(
-						wxString(wxT("wxMaxima")), wxStandardPaths::ConfigFileConv_Ext);
+						wxString(wxS("wxMaxima")), wxStandardPaths::ConfigFileConv_Ext);
 
     if (!wxFileExists(configFileXDG)) {
       wxFileName xdgDir(configFileXDG);
@@ -226,8 +226,8 @@ bool MyApp::OnInit() {
     wxLanguage lang;
     {
       long lng = wxLocale::GetSystemLanguage();
-      wxConfig(wxT("wxMaxima"), wxEmptyString, m_configFileName)
-	.Read(wxT("language"), &lng);
+      wxConfig(wxS("wxMaxima"), wxEmptyString, m_configFileName)
+	.Read(wxS("language"), &lng);
       if (lng == wxLANGUAGE_UNKNOWN)
 	lng = wxLANGUAGE_DEFAULT;
       lang = static_cast<wxLanguage>(lng);
@@ -254,9 +254,9 @@ bool MyApp::OnInit() {
 
     wxFileTranslationsLoader::AddCatalogLookupPathPrefix(m_dirstruct.LocaleDir());
     wxFileTranslationsLoader::AddCatalogLookupPathPrefix(m_dirstruct.LocaleDir() +
-							 wxT("/wxwin"));
-    wxFileTranslationsLoader::AddCatalogLookupPathPrefix(wxT("/usr/share/locale"));
-    wxFileTranslationsLoader::AddCatalogLookupPathPrefix(wxT("/usr/local/share/locale"));
+							 wxS("/wxwin"));
+    wxFileTranslationsLoader::AddCatalogLookupPathPrefix(wxS("/usr/share/locale"));
+    wxFileTranslationsLoader::AddCatalogLookupPathPrefix(wxS("/usr/local/share/locale"));
 
     if (wxLocale::IsAvailable(lang))
       wxTranslations::Get()->SetLanguage(lang);
@@ -267,25 +267,25 @@ bool MyApp::OnInit() {
       wxString localeName = wxLocale().GetCanonicalName();
       if (lang != wxLocale::GetSystemLanguage()) {
         if (wxLocale().GetSystemEncoding() == wxFONTENCODING_UTF16)
-          localeName += wxT(".UTF-16");
+          localeName += wxS(".UTF-16");
         else {
           if (wxLocale().GetSystemEncoding() == wxFONTENCODING_UTF32)
-            localeName += wxT(".UTF-32");
+            localeName += wxS(".UTF-32");
           else {
-            localeName += wxT(".UTF-8");
+            localeName += wxS(".UTF-8");
           }
         }
-        wxSetEnv(wxT("LANG"), localeName);
+        wxSetEnv(wxS("LANG"), localeName);
       }
     }
-    wxTranslations::Get()->AddCatalog(wxT("wxMaxima"));
+    wxTranslations::Get()->AddCatalog(wxS("wxMaxima"));
     /* wxWidgets introduced version suffixes to gettext catalogs, see:
      * https://github.com/wxWidgets/wxWidgets/commit/ded4da5 */
     /* so try to load a catalog with this suffix */
     wxTranslations::Get()->AddCatalog("wxstd-"
 				      wxSTRINGIZE(wxMAJOR_VERSION) "."
 				      wxSTRINGIZE(wxMINOR_VERSION));
-    wxTranslations::Get()->AddCatalog(wxT("wxstd"));
+    wxTranslations::Get()->AddCatalog(wxS("wxstd"));
   }
 
   bool exitAfterEval = false;
@@ -293,10 +293,10 @@ bool MyApp::OnInit() {
 
   int cmdLineError = cmdLineParser.Parse();
 
-  if (cmdLineParser.Found(wxT("single_process")))
+  if (cmdLineParser.Found(wxS("single_process")))
     m_allWindowsInOneProcess = true;
 
-  if (cmdLineParser.Found(wxT("h"))) {
+  if (cmdLineParser.Found(wxS("h"))) {
     std::cout << "A feature-rich graphical user interface for the computer "
       "algebra system Maxima\n";
     std::cout << cmdLineParser.GetUsageString();
@@ -309,42 +309,42 @@ bool MyApp::OnInit() {
   wxString ini, file;
   // Attention: The config file is changed by
   // wxMaximaFrame::wxMaximaFrame::ReReadConfig
-  if (cmdLineParser.Found(wxT("f"), &ini)) {
+  if (cmdLineParser.Found(wxS("f"), &ini)) {
     wxFileName configFile(ini);
     configFile.MakeAbsolute();
     Configuration::m_configfileLocation_override = configFile.GetFullPath();
     wxConfig::Set(
-		  new wxFileConfig(wxT("wxMaxima"), wxEmptyString,
+		  new wxFileConfig(wxS("wxMaxima"), wxEmptyString,
 				   Configuration::m_configfileLocation_override));
   } else
-    wxConfig::Set(new wxConfig(wxT("wxMaxima")));
+    wxConfig::Set(new wxConfig(wxS("wxMaxima")));
 
-  if (cmdLineParser.Found(wxT("logtostderr")))
+  if (cmdLineParser.Found(wxS("logtostderr")))
     ErrorRedirector::LogToStdErr();
 
-  if (cmdLineParser.Found(wxT("pipe")))
+  if (cmdLineParser.Found(wxS("pipe")))
     wxMaxima::PipeToStdout();
 
-  if (cmdLineParser.Found(wxT("exit-on-error")))
+  if (cmdLineParser.Found(wxS("exit-on-error")))
     wxMaxima::ExitOnError();
 
-  if (cmdLineParser.Found(wxT("enableipc")))
+  if (cmdLineParser.Found(wxS("enableipc")))
     wxMaxima::EnableIPC();
 
   wxString extraMaximaArgs;
   wxString arg;
-  if (cmdLineParser.Found(wxT("l"), &arg))
+  if (cmdLineParser.Found(wxS("l"), &arg))
     extraMaximaArgs += " -l " + arg;
 
-  if (cmdLineParser.Found(wxT("X"), &arg))
+  if (cmdLineParser.Found(wxS("X"), &arg))
     extraMaximaArgs += " -X " + arg;
 
-  if (cmdLineParser.Found(wxT("u"), &arg))
+  if (cmdLineParser.Found(wxS("u"), &arg))
     extraMaximaArgs += " -u " + arg;
 
   wxMaxima::ExtraMaximaArgs(extraMaximaArgs);
 
-  if (cmdLineParser.Found(wxT("wxmathml-lisp"), &arg)) {
+  if (cmdLineParser.Found(wxS("wxmathml-lisp"), &arg)) {
     wxMathML::Set_MathML_Filename(arg);
   }
 
@@ -361,35 +361,35 @@ bool MyApp::OnInit() {
 
 #ifdef __WXMSW__
   wxString oldWorkingDir = wxGetCwd();
-  if (!wxGetEnv(wxT("BUILD_DIR"), NULL)) {
+  if (!wxGetEnv(wxS("BUILD_DIR"), NULL)) {
     wxString dir = wxPathOnly(wxStandardPaths::Get().GetExecutablePath());
     if (dir != wxEmptyString)
       wxSetWorkingDirectory(
 			    wxPathOnly(wxStandardPaths::Get().GetExecutablePath()));
   }
 #if wxCHECK_VERSION(3, 1, 1)
-  wxString fontPrefix = m_dirstruct.FontDir() + wxT("/");
+  wxString fontPrefix = m_dirstruct.FontDir() + wxS("/");
 
 #ifdef WXM_INCLUDE_FONTS
   /* Add private Libertine fonts, if they exist */
-  if (wxFileExists(fontPrefix + wxT(LIBERTINE1)))
-    wxFont::AddPrivateFont(fontPrefix + wxT(LIBERTINE1));
-  if (wxFileExists(fontPrefix + wxT(LIBERTINE2)))
-    wxFont::AddPrivateFont(fontPrefix + wxT(LIBERTINE2));
-  if (wxFileExists(fontPrefix + wxT(LIBERTINE3)))
-    wxFont::AddPrivateFont(fontPrefix + wxT(LIBERTINE3));
-  if (wxFileExists(fontPrefix + wxT(LIBERTINE4)))
-    wxFont::AddPrivateFont(fontPrefix + wxT(LIBERTINE4));
-  if (wxFileExists(fontPrefix + wxT(LIBERTINE5)))
-    wxFont::AddPrivateFont(fontPrefix + wxT(LIBERTINE5));
-  if (wxFileExists(fontPrefix + wxT(LIBERTINE6)))
-    wxFont::AddPrivateFont(fontPrefix + wxT(LIBERTINE6));
-  if (wxFileExists(fontPrefix + wxT(LIBERTINE7)))
-    wxFont::AddPrivateFont(fontPrefix + wxT(LIBERTINE7));
-  if (wxFileExists(fontPrefix + wxT(LIBERTINE8)))
-    wxFont::AddPrivateFont(fontPrefix + wxT(LIBERTINE8));
-  if (wxFileExists(fontPrefix + wxT(LIBERTINE9)))
-    wxFont::AddPrivateFont(fontPrefix + wxT(LIBERTINE9));
+  if (wxFileExists(fontPrefix + wxS(LIBERTINE1)))
+    wxFont::AddPrivateFont(fontPrefix + wxS(LIBERTINE1));
+  if (wxFileExists(fontPrefix + wxS(LIBERTINE2)))
+    wxFont::AddPrivateFont(fontPrefix + wxS(LIBERTINE2));
+  if (wxFileExists(fontPrefix + wxS(LIBERTINE3)))
+    wxFont::AddPrivateFont(fontPrefix + wxS(LIBERTINE3));
+  if (wxFileExists(fontPrefix + wxS(LIBERTINE4)))
+    wxFont::AddPrivateFont(fontPrefix + wxS(LIBERTINE4));
+  if (wxFileExists(fontPrefix + wxS(LIBERTINE5)))
+    wxFont::AddPrivateFont(fontPrefix + wxS(LIBERTINE5));
+  if (wxFileExists(fontPrefix + wxS(LIBERTINE6)))
+    wxFont::AddPrivateFont(fontPrefix + wxS(LIBERTINE6));
+  if (wxFileExists(fontPrefix + wxS(LIBERTINE7)))
+    wxFont::AddPrivateFont(fontPrefix + wxS(LIBERTINE7));
+  if (wxFileExists(fontPrefix + wxS(LIBERTINE8)))
+    wxFont::AddPrivateFont(fontPrefix + wxS(LIBERTINE8));
+  if (wxFileExists(fontPrefix + wxS(LIBERTINE9)))
+    wxFont::AddPrivateFont(fontPrefix + wxS(LIBERTINE9));
 #endif
   wxSetWorkingDirectory(oldWorkingDir);
 #endif
@@ -399,8 +399,8 @@ bool MyApp::OnInit() {
 
 #if defined __WXOSX__
   wxString path;
-  wxGetEnv(wxT("PATH"), &path);
-  wxSetEnv(wxT("PATH"), path << wxT(":/usr/local/bin"));
+  wxGetEnv(wxS("PATH"), &path);
+  wxSetEnv(wxS("PATH"), path << wxS(":/usr/local/bin"));
 
   //! The macintosh global menu
   wxMenuBar *menubar = new wxMenuBar;
@@ -420,7 +420,7 @@ bool MyApp::OnInit() {
   wxApp::SetExitOnFrameDelete(false);
 #endif
 
-  if (cmdLineParser.Found(wxT("v"))) {
+  if (cmdLineParser.Found(wxS("v"))) {
     std::cout << "wxMaxima ";
     std::cout << GITVERSION;
 #if defined(WXMAXIMA_GIT_VERSION)
@@ -430,17 +430,17 @@ bool MyApp::OnInit() {
     exit(0);
   }
 
-  if (cmdLineParser.Found(wxT("b"))) {
+  if (cmdLineParser.Found(wxS("b"))) {
     evalOnStartup = true;
     exitAfterEval = true;
   }
 
-  if (cmdLineParser.Found(wxT("e")))
+  if (cmdLineParser.Found(wxS("e")))
     evalOnStartup = true;
 
   bool windowOpened = false;
 
-  if (cmdLineParser.Found(wxT("o"), &file)) {
+  if (cmdLineParser.Found(wxS("o"), &file)) {
     wxFileName FileName = file;
     FileName.MakeAbsolute();
     wxString canonicalFilename = FileName.GetFullPath();
@@ -563,7 +563,7 @@ void MyApp::OnFileMenu(wxCommandEvent &ev) {
   }
   else if(ev.GetId() == wxID_OPEN) {
     wxString lastPath;
-    wxConfig::Get()->Read(wxT("lastPath"), &lastPath);
+    wxConfig::Get()->Read(wxS("lastPath"), &lastPath);
     wxString file =
       wxFileSelector(_("Open"), wxEmptyString, wxEmptyString, wxEmptyString,
 		     _("All openable types (*.wxm, *.wxmx, *.mac, *.out, "

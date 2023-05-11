@@ -33,13 +33,13 @@ SumWiz::SumWiz(wxWindow *parent, int id, Configuration *cfg,
   text_ctrl_1 = new BTextCtrl(this, -1, cfg, wxEmptyString, wxDefaultPosition,
                               wxSize(230, -1));
   label_3 = new wxStaticText(this, -1, _("Variable:"));
-  text_ctrl_2 = new BTextCtrl(this, -1, cfg, wxT("k"), wxDefaultPosition,
+  text_ctrl_2 = new BTextCtrl(this, -1, cfg, wxS("k"), wxDefaultPosition,
                               wxSize(110, -1));
   label_4 = new wxStaticText(this, -1, _("From:"));
-  text_ctrl_3 = new BTextCtrl(this, -1, cfg, wxT("1"), wxDefaultPosition,
+  text_ctrl_3 = new BTextCtrl(this, -1, cfg, wxS("1"), wxDefaultPosition,
                               wxSize(110, -1));
   label_5 = new wxStaticText(this, -1, _("To:"));
-  text_ctrl_4 = new BTextCtrl(this, -1, cfg, wxT("inf"), wxDefaultPosition,
+  text_ctrl_4 = new BTextCtrl(this, -1, cfg, wxS("inf"), wxDefaultPosition,
                               wxSize(110, -1));
   checkbox_1 = new wxCheckBox(this, -1, _("&Simplify"));
   checkbox_2 = new wxCheckBox(this, use_nusum_id, _("&Nusum"));
@@ -108,21 +108,21 @@ void SumWiz::do_layout() {
 wxString SumWiz::GetValue() {
   wxString s;
   if (checkbox_2->IsChecked())
-    s = wxT("nusum(");
+    s = wxS("nusum(");
   else
-    s = wxT("sum(");
+    s = wxS("sum(");
   s += text_ctrl_1->GetValue();
-  s += wxT(", ");
+  s += wxS(", ");
   s += text_ctrl_2->GetValue();
-  s += wxT(", ");
+  s += wxS(", ");
   s += text_ctrl_3->GetValue();
-  s += wxT(", ");
+  s += wxS(", ");
   s += text_ctrl_4->GetValue();
-  s += wxT(")");
+  s += wxS(")");
   if (checkbox_1->IsChecked() && !checkbox_2->IsChecked())
-    s += wxT(", simpsum;");
+    s += wxS(", simpsum;");
   else
-    s += wxT(";");
+    s += wxS(";");
 
   return s;
 }

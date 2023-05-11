@@ -166,7 +166,7 @@ Image::~Image() {
         wxLogMessage(_("Failed to delete gnuplot file %s"),
                      m_gnuplotSource.utf8_str());
     }
-    wxString popoutname = m_gnuplotSource + wxT(".popout");
+    wxString popoutname = m_gnuplotSource + wxS(".popout");
     if (wxFileExists(popoutname))
     {
       if(!wxRemoveFile(popoutname))
@@ -278,7 +278,7 @@ void Image::LoadGnuplotSource_Backgroundtask(
       {
         wxFileInputStream input(m_gnuplotSource);
         if (input.IsOk()) {
-          wxTextInputStream textIn(input, wxT('\t'),
+          wxTextInputStream textIn(input, wxS('\t'),
                                    wxConvAuto(wxFONTENCODING_UTF8));
 
           wxMemoryOutputStream mstream;
@@ -300,9 +300,9 @@ void Image::LoadGnuplotSource_Backgroundtask(
             if (replaceDataFileName.Matches(line)) {
               wxString dataFileName;
               dataFileName = replaceDataFileName.GetMatch(line);
-              replaceDataFileName.Replace(&line, wxT("'<DATAFILENAME>'"));
+              replaceDataFileName.Replace(&line, wxS("'<DATAFILENAME>'"));
             }
-            textOut << line + wxT("\n");
+            textOut << line + wxS("\n");
           }
           textOut.Flush();
           zstream.Close();
@@ -316,7 +316,7 @@ void Image::LoadGnuplotSource_Backgroundtask(
         {
           wxFileInputStream input2(m_gnuplotData);
           if (input2.IsOk()) {
-            wxTextInputStream textIn(input2, wxT('\t'),
+            wxTextInputStream textIn(input2, wxS('\t'),
                                      wxConvAuto(wxFONTENCODING_UTF8));
 
             wxMemoryOutputStream mstream;
@@ -332,7 +332,7 @@ void Image::LoadGnuplotSource_Backgroundtask(
 
             while (!input2.Eof()) {
               line = textIn.ReadLine();
-              textOut << line + wxT("\n");
+              textOut << line + wxS("\n");
             }
             textOut.Flush();
             zstream.Close();
@@ -352,7 +352,7 @@ void Image::LoadGnuplotSource_Backgroundtask(
       if (fsfile) { // open successful
         std::unique_ptr<wxInputStream> input(fsfile->GetStream());
         if (input->IsOk()) {
-          wxTextInputStream textIn(*input, wxT('\t'),
+          wxTextInputStream textIn(*input, wxS('\t'),
                                    wxConvAuto(wxFONTENCODING_UTF8));
 
           wxMemoryOutputStream mstream;
@@ -379,9 +379,9 @@ void Image::LoadGnuplotSource_Backgroundtask(
                   dataFileName = replaceDataFileName.GetMatch(line);
                   if (dataFileName != wxEmptyString)
                     wxLogMessage(_("Gnuplot Data File Name: ") + dataFileName);
-                  replaceDataFileName.Replace(&line, wxT("'<DATAFILENAME>'"));
+                  replaceDataFileName.Replace(&line, wxS("'<DATAFILENAME>'"));
                 }
-                textOut << line + wxT("\n");
+                textOut << line + wxS("\n");
               }
               textOut.Flush();
               zstream.Close();
@@ -400,7 +400,7 @@ void Image::LoadGnuplotSource_Backgroundtask(
       if (fsfile) { // open successful
         wxInputStream *input = fsfile->GetStream();
         if (input->IsOk()) {
-          wxTextInputStream textIn(*input, wxT('\t'),
+          wxTextInputStream textIn(*input, wxS('\t'),
                                    wxConvAuto(wxFONTENCODING_UTF8));
 
           wxMemoryOutputStream mstream;
@@ -418,7 +418,7 @@ void Image::LoadGnuplotSource_Backgroundtask(
 
               while (!input->Eof()) {
                 line = textIn.ReadLine();
-                textOut << line + wxT("\n");
+                textOut << line + wxS("\n");
               }
               textOut.Flush();
               zstream.Close();
@@ -502,7 +502,7 @@ const wxMemoryBuffer Image::GetGnuplotSource() const {
 
     while (!zstream.Eof()) {
       line = textIn.ReadLine();
-      textOut << line + wxT("\n");
+      textOut << line + wxS("\n");
     }
     textOut.Flush();
 
@@ -541,7 +541,7 @@ const wxMemoryBuffer Image::GetGnuplotData() const {
 
     while (!zstream.Eof()) {
       line = textIn.ReadLine();
-      textOut << line + wxT("\n");
+      textOut << line + wxS("\n");
     }
     textOut.Flush();
 
@@ -576,7 +576,7 @@ wxString Image::GnuplotData() {
 
       while (!zstream.Eof()) {
         line = textIn.ReadLine();
-        textOut << line + wxT("\n");
+        textOut << line + wxS("\n");
       }
       textOut.Flush();
     }
@@ -610,9 +610,9 @@ wxString Image::GnuplotSource() {
 
         while (!zstream.Eof()) {
           line = textIn.ReadLine();
-          line.Replace(wxT("'<DATAFILENAME>'"),
-                       wxT("'") + m_gnuplotData + wxT("'"));
-          textOut << line + wxT("\n");
+          line.Replace(wxS("'<DATAFILENAME>'"),
+                       wxS("'") + m_gnuplotData + wxS("'"));
+          textOut << line + wxS("\n");
         }
         textOut.Flush();
       }
@@ -650,7 +650,7 @@ wxSize Image::ToImageFile(wxString filename) {
     wxString line;
     while (!zstream.Eof()) {
       line = textIn.ReadLine();
-      svgContents_string += line + wxT("\n");
+      svgContents_string += line + wxS("\n");
     }
     wxFile file(filename, wxFile::write);
     if (!file.IsOpened())
@@ -666,21 +666,21 @@ wxSize Image::ToImageFile(wxString filename) {
     wxBitmap bitmap = GetUnscaledBitmap();
     wxImage image = bitmap.ConvertToImage();
     wxBitmapType mimetype = wxBITMAP_TYPE_ANY;
-    if ((ext.Lower() == wxT("jpg")) || (ext.Lower() == wxT("jpeg")))
+    if ((ext.Lower() == wxS("jpg")) || (ext.Lower() == wxS("jpeg")))
       mimetype = wxBITMAP_TYPE_JPEG;
-    else if (ext.Lower() == wxT("png"))
+    else if (ext.Lower() == wxS("png"))
       mimetype = wxBITMAP_TYPE_PNG;
-    else if (ext.Lower() == wxT("pcx"))
+    else if (ext.Lower() == wxS("pcx"))
       mimetype = wxBITMAP_TYPE_PCX;
-    else if (ext.Lower() == wxT("pnm"))
+    else if (ext.Lower() == wxS("pnm"))
       mimetype = wxBITMAP_TYPE_PNM;
-    else if ((ext.Lower() == wxT("tif")) || (ext.Lower() == wxT("tiff")))
+    else if ((ext.Lower() == wxS("tif")) || (ext.Lower() == wxS("tiff")))
       mimetype = wxBITMAP_TYPE_TIFF;
-    else if (ext.Lower() == wxT("xpm"))
+    else if (ext.Lower() == wxS("xpm"))
       mimetype = wxBITMAP_TYPE_XPM;
-    else if (ext.Lower() == wxT("ico"))
+    else if (ext.Lower() == wxS("ico"))
       mimetype = wxBITMAP_TYPE_ICO;
-    else if (ext.Lower() == wxT("cur"))
+    else if (ext.Lower() == wxS("cur"))
       mimetype = wxBITMAP_TYPE_CUR;
     else
       return (wxSize(-1, -1));
@@ -785,7 +785,7 @@ void Image::LoadImage(const wxBitmap &bitmap) {
                                stream.GetOutputStreamBuffer()->GetBufferSize());
 
   // Set the info about the image.
-  m_extension = wxT("png");
+  m_extension = wxS("png");
   m_originalWidth = image.GetWidth();
   m_originalHeight = image.GetHeight();
   m_scaledBitmap.Create(1, 1);
@@ -828,8 +828,8 @@ void Image::LoadImage_Backgroundtask(wxString image,
   } else {
     wxFile file;
     // Support relative and absolute paths.
-    if (wxFileExists(m_configuration->GetWorkingDirectory() + wxT("/") + image))
-      file.Open(m_configuration->GetWorkingDirectory() + wxT("/") + image);
+    if (wxFileExists(m_configuration->GetWorkingDirectory() + wxS("/") + image))
+      file.Open(m_configuration->GetWorkingDirectory() + wxS("/") + image);
     else
       file.Open(image);
 
@@ -883,7 +883,7 @@ void Image::LoadImage_Backgroundtask(wxString image,
         wxString line;
         while (!zstream.Eof()) {
           line = textIn.ReadLine();
-          svgContents_string += line + wxT("\n");
+          svgContents_string += line + wxS("\n");
         }
       }
       // Convert the data we have read to a modifiable char * containing the svg
@@ -920,10 +920,10 @@ void Image::LoadImage_Backgroundtask(wxString image,
         m_originalWidth = Image.GetWidth();
         m_originalHeight = Image.GetHeight();
         m_isOk = true;
-        if (Image.HasOption(wxT("wxIMAGE_OPTION_RESOLUTION"))) {
+        if (Image.HasOption(wxS("wxIMAGE_OPTION_RESOLUTION"))) {
           int resolution;
-          resolution = Image.GetOptionInt(wxT("wxIMAGE_OPTION_RESOLUTION"));
-          if (Image.HasOption(wxT("wxIMAGE_OPTION_RESOLUTIONUNIT"))) {
+          resolution = Image.GetOptionInt(wxS("wxIMAGE_OPTION_RESOLUTION"));
+          if (Image.HasOption(wxS("wxIMAGE_OPTION_RESOLUTIONUNIT"))) {
             if (Image.GetOptionInt("wxIMAGE_OPTION_RESOLUTIONUNIT") ==
                 wxIMAGE_RESOLUTION_CM)
               resolution *= 2.54;

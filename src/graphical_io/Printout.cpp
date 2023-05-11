@@ -238,7 +238,7 @@ void Printout::SetupData() {
   // screenPPI = m_tree->GetConfiguration()->GetDC()->GetPPI();
   // double oldZoomFactor = m_tree->GetConfiguration()->GetZoomFactor();
   // wxMessageDialog dialog(NULL,
-  //   wxString::Format(wxT("screenPPI.x=%i,\nprintPPI.x=%i\nzoomFactor=%f\nUserScale.x=%f"),
+  //   wxString::Format(wxS("screenPPI.x=%i,\nprintPPI.x=%i\nzoomFactor=%f\nUserScale.x=%f"),
   //     screenPPI.x, printPPI.x, oldZoomFactor, userScale_x),
   //   wxString("Printer Parameters"));
   // dialog.ShowModal();
@@ -304,15 +304,15 @@ void Printout::PrintHeader(int pageNum, wxDC *dc) {
   GetPageMargins(&marginX, &marginY);
   GetPageSizePixels(&pageWidth, &pageHeight);
 
-  dc->SetTextForeground(wxColour(wxT("grey")));
+  dc->SetTextForeground(wxColour(wxS("grey")));
   dc->SetPen(
-	     wxPen(wxT("light grey"), m_configuration.Scale_Px(1), wxPENSTYLE_SOLID));
+	     wxPen(wxS("light grey"), m_configuration.Scale_Px(1), wxPENSTYLE_SOLID));
 
   dc->SetFont(wxFont(m_configuration.Scale_Px(10), wxFONTFAMILY_MODERN,
                      wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL));
   dc->GetTextExtent(GetTitle(), &title_width, &title_height);
   wxString page =
-    wxString::Format(wxT("%d / %li"), pageNum, (long)m_pages.size());
+    wxString::Format(wxS("%d / %li"), pageNum, (long)m_pages.size());
   dc->GetTextExtent(page, &page_width, &page_height);
 
   dc->DrawText(GetTitle(), marginX, marginY);
@@ -322,8 +322,8 @@ void Printout::PrintHeader(int pageNum, wxDC *dc) {
                pageWidth - marginX,
                marginY + title_height + m_configuration.Scale_Px(3));
 
-  dc->SetTextForeground(wxColour(wxT("black")));
-  dc->SetPen(wxPen(wxT("black"), 1, wxPENSTYLE_SOLID));
+  dc->SetTextForeground(wxColour(wxS("black")));
+  dc->SetPen(wxPen(wxS("black"), 1, wxPENSTYLE_SOLID));
 }
 
 void Printout::Recalculate() {

@@ -763,7 +763,7 @@ public:
 
   bool EnterEvaluates() const {return m_enterEvaluates;}
   void EnterEvaluates(bool enterEvaluates) {m_enterEvaluates = enterEvaluates;}
-  static wxString MathJaXURL_Auto() { return wxT("https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js");}
+  static wxString MathJaXURL_Auto() { return wxS("https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js");}
   //! Returns the URL MathJaX can be found at.
   void MathJaXURL(wxString url){m_mathJaxURL = url;}
   bool AntiAliasLines() const {return m_antiAliasLines;}

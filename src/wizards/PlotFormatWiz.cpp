@@ -30,15 +30,15 @@ PlotFormatWiz::PlotFormatWiz(wxWindow *parent, int id,
   : wxDialog(parent, id, title, pos, size, style) {
   label_1 = new wxStaticText(this, -1, _("Choose new plot format:"));
   const wxString combo_box_1_choices[] = {
-    wxT("gnuplot"),
+    wxS("gnuplot"),
 #if !defined(__WXMSW__)
     /* gnuplot_pipes is not available on Windows, geomview requires Motif, which
        is not available on Windows */
-    wxT("gnuplot_pipes"),
-    wxT("geomview"),
+    wxS("gnuplot_pipes"),
+    wxS("geomview"),
 #endif
-    wxT("xmaxima"),
-    wxT("mgnuplot")
+    wxS("xmaxima"),
+    wxS("mgnuplot")
   };
   combo_box_1 = new wxComboBox(
 			       this, -1, combo_box_1_choices[0], wxDefaultPosition, wxSize(140, -1),
@@ -83,8 +83,8 @@ void PlotFormatWiz::do_layout() {
 
 wxString PlotFormatWiz::GetValue() {
   wxString s;
-  s = wxT("set_plot_option(['plot_format, '");
+  s = wxS("set_plot_option(['plot_format, '");
   s += combo_box_1->GetValue();
-  s += wxT("])$");
+  s += wxS("])$");
   return s;
 }

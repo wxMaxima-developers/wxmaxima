@@ -181,18 +181,18 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent, Configuration *cfg)
 #else
   int imgSize = GetImageSize();
   m_imageList = std::unique_ptr<wxImageList>(new wxImageList(imgSize, imgSize,false,0));
-  m_imageList->Add(ArtProvider::GetImage(this, wxT("editing"), imgSize, EDITING_SVG_GZ, EDITING_SVG_GZ_SIZE));
-  m_imageList->Add(ArtProvider::GetImage(this, wxT("maxima"), imgSize, MAXIMA_SVG_GZ, MAXIMA_SVG_GZ_SIZE));
-  m_imageList->Add(ArtProvider::GetImage(this, wxT("styles"), imgSize, STYLES_SVG_GZ, STYLES_SVG_GZ_SIZE));
-  m_imageList->Add(ArtProvider::GetImage(this, wxT("document-export"), imgSize, DOCUMENT_EXPORT_SVG_GZ,
+  m_imageList->Add(ArtProvider::GetImage(this, wxS("editing"), imgSize, EDITING_SVG_GZ, EDITING_SVG_GZ_SIZE));
+  m_imageList->Add(ArtProvider::GetImage(this, wxS("maxima"), imgSize, MAXIMA_SVG_GZ, MAXIMA_SVG_GZ_SIZE));
+  m_imageList->Add(ArtProvider::GetImage(this, wxS("styles"), imgSize, STYLES_SVG_GZ, STYLES_SVG_GZ_SIZE));
+  m_imageList->Add(ArtProvider::GetImage(this, wxS("document-export"), imgSize, DOCUMENT_EXPORT_SVG_GZ,
 					 DOCUMENT_EXPORT_SVG_GZ_SIZE));
-  m_imageList->Add(ArtProvider::GetImage(this, wxT("options"), imgSize, OPTIONS_SVG_GZ, OPTIONS_SVG_GZ_SIZE));
-  m_imageList->Add(ArtProvider::GetImage(this, wxT("edit-copy"), imgSize, EDIT_COPY_CONFDIALOGUE_SVG_GZ,
+  m_imageList->Add(ArtProvider::GetImage(this, wxS("options"), imgSize, OPTIONS_SVG_GZ, OPTIONS_SVG_GZ_SIZE));
+  m_imageList->Add(ArtProvider::GetImage(this, wxS("edit-copy"), imgSize, EDIT_COPY_CONFDIALOGUE_SVG_GZ,
 					 EDIT_COPY_CONFDIALOGUE_SVG_GZ_SIZE));
-  m_imageList->Add(ArtProvider::GetImage(this, wxT("media-playback-start"), imgSize,
+  m_imageList->Add(ArtProvider::GetImage(this, wxS("media-playback-start"), imgSize,
 					 MEDIA_PLAYBACK_START_CONFDIALOGUE_SVG_GZ,
 					 MEDIA_PLAYBACK_START_CONFDIALOGUE_SVG_GZ_SIZE));
-  m_imageList->Add(ArtProvider::GetImage(this, wxT("edit-undo"), imgSize, VIEW_REFRESH_SVG_GZ,
+  m_imageList->Add(ArtProvider::GetImage(this, wxS("edit-undo"), imgSize, VIEW_REFRESH_SVG_GZ,
 					 VIEW_REFRESH_SVG_GZ_SIZE));
   m_notebook->SetImageList(m_imageList.get());
 #endif
@@ -212,7 +212,7 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent, Configuration *cfg)
 
   wxConfigBase *config = wxConfig::Get();
   int notebookTab = 0;
-  config->Read(wxT("ConfigDialogTab"), &notebookTab);
+  config->Read(wxS("ConfigDialogTab"), &notebookTab);
   if ((notebookTab < 0) ||
       ((unsigned int)notebookTab >= m_notebook->GetPageCount()))
     notebookTab = 0;
@@ -950,8 +950,8 @@ wxWindow *ConfigDialogue::CreateStartupPanel() {
   panel->SetSizer(vsizer);
 
   m_startupFileName = Dirstructure::Get()->UserConfDir();
-  m_wxStartupFileName += m_startupFileName + wxT("wxmaxima-init.mac");
-  m_startupFileName += wxT("maxima-init.mac");
+  m_wxStartupFileName += m_startupFileName + wxS("wxmaxima-init.mac");
+  m_startupFileName += wxS("maxima-init.mac");
 
   wxStaticBoxSizer *wxMaximaStartupSizer = new wxStaticBoxSizer(
 								wxVERTICAL, panel,
@@ -966,11 +966,11 @@ wxWindow *ConfigDialogue::CreateStartupPanel() {
   if (wxFileExists(m_wxStartupFileName)) {
     wxFileInputStream input(m_wxStartupFileName);
     if (input.IsOk()) {
-      wxTextInputStream text(input, wxT('\t'), wxConvAuto(wxFONTENCODING_UTF8));
+      wxTextInputStream text(input, wxS('\t'), wxConvAuto(wxFONTENCODING_UTF8));
       while (input.IsOk() && !input.Eof()) {
         wxString line = text.ReadLine();
         if ((!input.Eof()) || (line != wxEmptyString))
-          contents += line + wxT("\n");
+          contents += line + wxS("\n");
       }
     }
   }
@@ -1011,11 +1011,11 @@ wxWindow *ConfigDialogue::CreateStartupPanel() {
   if (wxFileExists(m_startupFileName)) {
     wxFileInputStream input(m_startupFileName);
     if (input.IsOk()) {
-      wxTextInputStream text(input, wxT('\t'), wxConvAuto(wxFONTENCODING_UTF8));
+      wxTextInputStream text(input, wxS('\t'), wxConvAuto(wxFONTENCODING_UTF8));
       while (input.IsOk() && !input.Eof()) {
         wxString line = text.ReadLine();
         if ((!input.Eof()) || (line != wxEmptyString))
-          contents += line + wxT("\n");
+          contents += line + wxS("\n");
       }
     }
   }
@@ -1499,7 +1499,7 @@ wxWindow *ConfigDialogue::CreateMaximaPanel() {
   sizer2->Add(new wxStaticText(configSizer->GetStaticBox(), wxID_ANY,
                                _("choose between installed maxima versions")),
               wxSizerFlags());
-  if (m_configuration->LispType().Lower().Contains(wxT("sbcl"))) {
+  if (m_configuration->LispType().Lower().Contains(wxS("sbcl"))) {
     wxString sbclMemoryParameter1;
     wxString sbclMemoryParameter2;
 #ifdef __WXMSW__
@@ -1593,25 +1593,25 @@ void ConfigDialogue::OnMaximaEnvRightClick(wxGridEvent &event) {
        .IsEmpty()) &&
       (!m_maximaEnvVariables->GetCellValue(m_maximaEmvRightClickRow, 1)
        .IsEmpty()))
-    popupMenu->Append(VAR_DELETE, wxT("Delete this entry"));
+    popupMenu->Append(VAR_DELETE, wxS("Delete this entry"));
 
   if (event.GetCol() == 0) {
     if (popupMenu->GetMenuItemCount() > 0)
       popupMenu->AppendSeparator();
-    popupMenu->Append(MAXIMA_DEFAULT_LISP, wxT("MAXIMA_DEFAULT_LISP"));
-    popupMenu->Append(MAXIMA_IMAGESDIR, wxT("MAXIMA_IMAGESDIR"));
-    popupMenu->Append(MAXIMA_USERDIR, wxT("MAXIMA_USERDIR"));
-    popupMenu->Append(MAXIMA_TEMPDIR, wxT("MAXIMA_TEMPDIR"));
-    popupMenu->Append(MAXIMA_OBJDIR, wxT("MAXIMA_OBJDIR"));
-    popupMenu->Append(MAXIMA_DOC_PREFIX, wxT("MAXIMA_DOC_PREFIX"));
-    popupMenu->Append(HOME, wxT("HOME"));
-    popupMenu->Append(GCL_GC_PAGE_THRESH, wxT("GCL_GC_PAGE_THRESH"));
-    popupMenu->Append(GCL_GC_ALLOC_MIN, wxT("GCL_GC_ALLOC_MIN"));
-    popupMenu->Append(GCL_GC_PAGE_MAX, wxT("GCL_GC_PAGE_MAX"));
-    popupMenu->Append(GCL_MEM_MULTIPLE, wxT("GCL_MEM_MULTIPLE"));
+    popupMenu->Append(MAXIMA_DEFAULT_LISP, wxS("MAXIMA_DEFAULT_LISP"));
+    popupMenu->Append(MAXIMA_IMAGESDIR, wxS("MAXIMA_IMAGESDIR"));
+    popupMenu->Append(MAXIMA_USERDIR, wxS("MAXIMA_USERDIR"));
+    popupMenu->Append(MAXIMA_TEMPDIR, wxS("MAXIMA_TEMPDIR"));
+    popupMenu->Append(MAXIMA_OBJDIR, wxS("MAXIMA_OBJDIR"));
+    popupMenu->Append(MAXIMA_DOC_PREFIX, wxS("MAXIMA_DOC_PREFIX"));
+    popupMenu->Append(HOME, wxS("HOME"));
+    popupMenu->Append(GCL_GC_PAGE_THRESH, wxS("GCL_GC_PAGE_THRESH"));
+    popupMenu->Append(GCL_GC_ALLOC_MIN, wxS("GCL_GC_ALLOC_MIN"));
+    popupMenu->Append(GCL_GC_PAGE_MAX, wxS("GCL_GC_PAGE_MAX"));
+    popupMenu->Append(GCL_MEM_MULTIPLE, wxS("GCL_MEM_MULTIPLE"));
     popupMenu->Append(GCL_MULTIPROCESS_MEMORY_POOL,
-                      wxT("GCL_MULTIPROCESS_MEMORY_POOL"));
-    popupMenu->Append(LANG, wxT("LANG"));
+                      wxS("GCL_MULTIPROCESS_MEMORY_POOL"));
+    popupMenu->Append(LANG, wxS("LANG"));
     Connect(wxEVT_MENU, wxCommandEventHandler(ConfigDialogue::OnNewEnvMenu),
             NULL, this);
     PopupMenu(&*popupMenu);
@@ -1948,7 +1948,7 @@ wxWindow *ConfigDialogue::CreateStylePanel() {
   stylesSizer->Add(hbox_sizer_2, 0, wxUP | wxDOWN | wxEXPAND, 0);
   wxConfigBase *config = wxConfig::Get();
   int styleToEditNum = 0;
-  config->Read(wxT("StyleToEdit"), &styleToEditNum);
+  config->Read(wxS("StyleToEdit"), &styleToEditNum);
   if ((styleToEditNum >= TextStyle::NUMBEROFSTYLES) || (styleToEditNum < 0))
     styleToEditNum = 0;
   m_styleFor->SetSelection(styleToEditNum);
@@ -2004,13 +2004,13 @@ wxWindow *ConfigDialogue::CreateStylePanel() {
 
 void ConfigDialogue::OnStyleToEditChanged(wxCommandEvent &event) {
   wxConfigBase *config = wxConfig::Get();
-  config->Write(wxT("StyleToEdit"), static_cast<int>(GetSelectedStyle()));
+  config->Write(wxS("StyleToEdit"), static_cast<int>(GetSelectedStyle()));
   OnChangeStyle(event);
 }
 
 void ConfigDialogue::OnClose(wxCloseEvent &event) {
   wxConfigBase *config = wxConfig::Get();
-  config->Write(wxT("ConfigDialogTab"), m_notebook->GetSelection());
+  config->Write(wxS("ConfigDialogTab"), m_notebook->GetSelection());
 #if defined __WXOSX__
   EndModal(wxID_OK);
 #else
@@ -2182,14 +2182,14 @@ void ConfigDialogue::WriteSettings() {
       text.Flush();
     }
   }
-  config->Write(wxT("ConfigDialogTab"), m_notebook->GetSelection());
+  config->Write(wxS("ConfigDialogTab"), m_notebook->GetSelection());
 }
 
 
 void ConfigDialogue::OnMpBrowse(wxCommandEvent &WXUNUSED(event)) {
   wxConfigBase *config = wxConfig::Get();
   wxString dd;
-  config->Read(wxT("maxima"), &dd);
+  config->Read(wxS("maxima"), &dd);
   wxString file = wxFileSelector(_("Select Maxima program"), wxPathOnly(dd),
                                  wxFileNameFromPath(dd), wxEmptyString,
 #if defined __WXMSW__
@@ -2200,8 +2200,8 @@ void ConfigDialogue::OnMpBrowse(wxCommandEvent &WXUNUSED(event)) {
                                  wxFD_OPEN);
 
   if (file.Length()) {
-    if (file.Right(8).Lower() == wxT("wxmaxima") ||
-        file.Right(12).Lower() == wxT("wxmaxima.exe"))
+    if (file.Right(8).Lower() == wxS("wxmaxima") ||
+        file.Right(12).Lower() == wxS("wxmaxima.exe"))
       LoggingMessageBox(_("Invalid entry for Maxima program.\n\nPlease enter "
                           "the path to Maxima program again."),
                         _("Error"), wxOK | wxICON_ERROR);
@@ -2278,7 +2278,7 @@ void ConfigDialogue::OnChangeStyle(wxCommandEvent &WXUNUSED(event)) {
 
 void ConfigDialogue::OnExportAll(wxCommandEvent &WXUNUSED(event)) {
   wxString file = wxFileSelector(
-				 _("Save config to file"), wxEmptyString, wxT("style.ini"), wxT("ini"),
+				 _("Save config to file"), wxEmptyString, wxS("style.ini"), wxS("ini"),
 				 _("Config file (*.ini)|*.ini"), wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
   if (file != wxEmptyString) {
     WriteSettings();
@@ -2288,7 +2288,7 @@ void ConfigDialogue::OnExportAll(wxCommandEvent &WXUNUSED(event)) {
 
 void ConfigDialogue::OnImport(wxCommandEvent &WXUNUSED(event)) {
   wxString file = wxFileSelector(
-				 _("Read config to file"), wxEmptyString, wxT("style.ini"), wxT("ini"),
+				 _("Read config to file"), wxEmptyString, wxS("style.ini"), wxS("ini"),
 				 _("Config file (*.ini)|*.ini"), wxFD_OPEN | wxFD_FILE_MUST_EXIST);
   if (file != wxEmptyString) {
     wxFileInputStream fis(file);
@@ -2319,28 +2319,28 @@ void ConfigDialogue::CopyConfig(wxConfigBase *src, wxConfigBase *dst,
     switch (src->GetEntryType(str)) {
     case wxConfigBase::EntryType::Type_String:
       wxLogMessage(_("Copying config string \"%s\""),
-		   wxString(src->GetPath() + wxT("/") + str).mb_str());
+		   wxString(src->GetPath() + wxS("/") + str).mb_str());
       dst->Write(str, src->ReadBool(str, wxEmptyString));
       break;
     case wxConfigBase::EntryType::Type_Boolean:
       wxLogMessage(_("Copying config bool \"%s\""),
-		   wxString(src->GetPath() + wxT("/") + str).mb_str());
+		   wxString(src->GetPath() + wxS("/") + str).mb_str());
       dst->Write(str, src->ReadBool(str, false));
       break;
     case wxConfigBase::EntryType::Type_Integer:
       wxLogMessage(_("Copying config int \"%s\""),
-		   wxString(src->GetPath() + wxT("/") + str).mb_str());
+		   wxString(src->GetPath() + wxS("/") + str).mb_str());
       dst->Write(str, src->ReadLong(str, 0));
       break;
     case wxConfigBase::EntryType::Type_Float:
       wxLogMessage(_("Copying config float \"%s\""),
-		   wxString(src->GetPath() + wxT("/") + str).mb_str());
+		   wxString(src->GetPath() + wxS("/") + str).mb_str());
       dst->Write(str, src->ReadDouble(str, 0.0));
       break;
     default:
       wxLogMessage(
 		   _("Config item \"%s\" was of an unknown type"),
-		   wxString(src->GetPath() + wxT("/") + str).mb_str());
+		   wxString(src->GetPath() + wxS("/") + str).mb_str());
     }
     bCont = src->GetNextEntry(str, dummy);
   }
@@ -2437,20 +2437,20 @@ void ConfigDialogue::UpdateExample() {
 
 void ConfigDialogue::OnTabChange(wxBookCtrlEvent &event) {
   wxConfigBase *config = wxConfig::Get();
-  config->Write(wxT("ConfigDialogTab"), event.GetSelection());
+  config->Write(wxS("ConfigDialogTab"), event.GetSelection());
   UpdateExample();
 }
 
 void ConfigDialogue::LoadSave(wxCommandEvent &event) {
   if (event.GetId() == save_id) {
     wxString file = wxFileSelector(
-				   _("Save style to file"), wxEmptyString, wxT("style.ini"), wxT("ini"),
+				   _("Save style to file"), wxEmptyString, wxS("style.ini"), wxS("ini"),
 				   _("Config file (*.ini)|*.ini"), wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
     if (file != wxEmptyString)
       m_configuration->WriteStyles(file);
   } else {
     wxString file = wxFileSelector(_("Load style from file"), wxEmptyString,
-                                   wxT("style.ini"), wxT("ini"),
+                                   wxS("style.ini"), wxS("ini"),
                                    _("Config file (*.ini)|*.ini"), wxFD_OPEN);
     if (file != wxEmptyString) {
       m_configuration->ReadStyles(file);

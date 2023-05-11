@@ -107,7 +107,7 @@ void XmlInspector::UpdateContents() {
       EndTextColour();
       m_state = fromMaxima;
     }
-    m_fromMaxima.Replace(wxT("$FUNCTION:"), wxT("\n$FUNCTION:"));
+    m_fromMaxima.Replace(wxS("$FUNCTION:"), wxS("\n$FUNCTION:"));
 
     // Indent the XML
     wxString textWithIndention;
@@ -116,21 +116,21 @@ void XmlInspector::UpdateContents() {
          it != m_fromMaxima.end(); ++it) {
       length++;
       // Assume that all tags add indentation
-      if (*it == wxT('>'))
+      if (*it == wxS('>'))
         m_indentLevel++;
 
       // A closing tag needs to remove the indentation of the opening tag
       // plus the indentation of the closing tag
-      if ((m_lastChar == wxT('<')) && (*it == wxT('/')))
+      if ((m_lastChar == wxS('<')) && (*it == wxS('/')))
         m_indentLevel -= 2;
 
       // Self-closing Tags remove their own indentation
-      if ((m_lastChar == wxT('/')) && (*it == wxT('>')))
+      if ((m_lastChar == wxS('/')) && (*it == wxS('>')))
         m_indentLevel -= 1;
 
       // Add a linebreak and indent if we are at the space between 2 tags
-      if ((m_lastChar == wxT('>')) && (*it == wxT('<')))
-        textWithIndention += wxT("\n") + IndentString(m_indentLevel);
+      if ((m_lastChar == wxS('>')) && (*it == wxS('<')))
+        textWithIndention += wxS("\n") + IndentString(m_indentLevel);
 
       textWithIndention += *it;
       m_lastChar = *it;
@@ -151,15 +151,15 @@ void XmlInspector::UpdateContents() {
 wxString XmlInspector::IndentString(int level) {
   wxString result;
   for (int i = 0; i <= level; i++)
-    result += wxT(" ");
+    result += wxS(" ");
   return result;
 }
 
 void XmlInspector::Add_ToMaxima(wxString text) {
   if (m_toMaxima != wxEmptyString) {
-    m_toMaxima += wxT("\n\u2015\n");
+    m_toMaxima += wxS("\n\u2015\n");
     if (m_fromMaxima != wxEmptyString)
-      m_fromMaxima += wxT("\n\u2015\n");
+      m_fromMaxima += wxS("\n\u2015\n");
   }
   m_toMaxima += text;
   m_updateNeeded = true;

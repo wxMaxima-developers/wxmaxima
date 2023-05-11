@@ -107,19 +107,19 @@ void ActualValuesStorageWiz::set_properties() {
 
 wxString ActualValuesStorageWiz::GetValue() {
   bool firstline = true;
-  wxString retval = wxT("[");
+  wxString retval = wxS("[");
   for (int i = 0; i < m_grid->GetNumberRows(); i++) {
     if ((m_grid->GetCellValue(i, 0) != wxEmptyString) ||
         (m_grid->GetCellValue(i, 1) != wxEmptyString)) {
       if (!firstline)
-        retval += wxT(",\n");
+        retval += wxS(",\n");
       else
-        retval += wxT("\n");
-      retval += wxT("    ") + m_grid->GetCellValue(i, 0) + wxT("=") +
+        retval += wxS("\n");
+      retval += wxS("    ") + m_grid->GetCellValue(i, 0) + wxS("=") +
 	m_grid->GetCellValue(i, 1);
       firstline = false;
     }
   }
-  retval += wxT("\n]");
+  retval += wxS("\n]");
   return retval;
 }

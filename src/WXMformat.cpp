@@ -40,7 +40,7 @@
 namespace Format {
 
   const wxString WXMFirstLine =
-    wxT("/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/");
+    wxS("/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/");
 
   struct WXMHeader //-V730
   {
@@ -50,36 +50,36 @@ namespace Format {
   };
 
   static const WXMHeader WXMHeaders[] = {
-    {WXM_INPUT, wxT("/* [wxMaxima: input   start ] */"),
-     wxT("/* [wxMaxima: input   end   ] */")},
-    {WXM_TITLE, wxT("/* [wxMaxima: title   start ]"),
-     wxT("   [wxMaxima: title   end   ] */")},
-    {WXM_SECTION, wxT("/* [wxMaxima: section start ]"),
-     wxT("   [wxMaxima: section end   ] */")},
-    {WXM_SUBSECTION, wxT("/* [wxMaxima: subsect start ]"),
-     wxT("   [wxMaxima: subsect end   ] */")},
-    {WXM_SUBSUBSECTION, wxT("/* [wxMaxima: subsubsect start ]"),
-     wxT("   [wxMaxima: subsubsect end   ] */")},
-    {WXM_HEADING5, wxT("/* [wxMaxima: heading5 start ]"),
-     wxT("   [wxMaxima: heading5 end   ] */")},
-    {WXM_HEADING6, wxT("/* [wxMaxima: heading6 start ]"),
-     wxT("   [wxMaxima: heading6 end   ] */")},
-    {WXM_COMMENT, wxT("/* [wxMaxima: comment start ]"),
-     wxT("   [wxMaxima: comment end   ] */")},
-    {WXM_CAPTION, wxT("/* [wxMaxima: caption start ]"),
-     wxT("   [wxMaxima: caption end   ] */")},
-    {WXM_PAGEBREAK, wxT("/* [wxMaxima: page break    ] */")},
-    {WXM_IMAGE, wxT("/* [wxMaxima: image   start ]"),
-     wxT("   [wxMaxima: image   end   ] */")},
-    {WXM_ANSWER, wxT("/* [wxMaxima: answer  start ] */"),
-     wxT("/* [wxMaxima: answer  end   ] */")},
-    {WXM_QUESTION, wxT("/* [wxMaxima: question  start ] */"),
-     wxT("/* [wxMaxima: question  end   ] */")},
-    {WXM_FOLD, wxT("/* [wxMaxima: fold    start ] */"),
-     wxT("/* [wxMaxima: fold    end   ] */")},
-    {WXM_FOLD_END, wxT("/* [wxMaxima: fold    end   ] */")},
-    {WXM_HIDE, wxT("/* [wxMaxima: hide output   ] */")},
-    {WXM_AUTOANSWER, wxT("/* [wxMaxima: autoanswer    ] */")},
+    {WXM_INPUT, wxS("/* [wxMaxima: input   start ] */"),
+     wxS("/* [wxMaxima: input   end   ] */")},
+    {WXM_TITLE, wxS("/* [wxMaxima: title   start ]"),
+     wxS("   [wxMaxima: title   end   ] */")},
+    {WXM_SECTION, wxS("/* [wxMaxima: section start ]"),
+     wxS("   [wxMaxima: section end   ] */")},
+    {WXM_SUBSECTION, wxS("/* [wxMaxima: subsect start ]"),
+     wxS("   [wxMaxima: subsect end   ] */")},
+    {WXM_SUBSUBSECTION, wxS("/* [wxMaxima: subsubsect start ]"),
+     wxS("   [wxMaxima: subsubsect end   ] */")},
+    {WXM_HEADING5, wxS("/* [wxMaxima: heading5 start ]"),
+     wxS("   [wxMaxima: heading5 end   ] */")},
+    {WXM_HEADING6, wxS("/* [wxMaxima: heading6 start ]"),
+     wxS("   [wxMaxima: heading6 end   ] */")},
+    {WXM_COMMENT, wxS("/* [wxMaxima: comment start ]"),
+     wxS("   [wxMaxima: comment end   ] */")},
+    {WXM_CAPTION, wxS("/* [wxMaxima: caption start ]"),
+     wxS("   [wxMaxima: caption end   ] */")},
+    {WXM_PAGEBREAK, wxS("/* [wxMaxima: page break    ] */")},
+    {WXM_IMAGE, wxS("/* [wxMaxima: image   start ]"),
+     wxS("   [wxMaxima: image   end   ] */")},
+    {WXM_ANSWER, wxS("/* [wxMaxima: answer  start ] */"),
+     wxS("/* [wxMaxima: answer  end   ] */")},
+    {WXM_QUESTION, wxS("/* [wxMaxima: question  start ] */"),
+     wxS("/* [wxMaxima: question  end   ] */")},
+    {WXM_FOLD, wxS("/* [wxMaxima: fold    start ] */"),
+     wxS("/* [wxMaxima: fold    end   ] */")},
+    {WXM_FOLD_END, wxS("/* [wxMaxima: fold    end   ] */")},
+    {WXM_HIDE, wxS("/* [wxMaxima: hide output   ] */")},
+    {WXM_AUTOANSWER, wxS("/* [wxMaxima: autoanswer    ] */")},
   };
 
   class WXMHeaderCollection {
@@ -154,7 +154,7 @@ namespace Format {
 	       << cell->GetEditable()->ToString() << '\n'
 	       << Headers.GetEnd(groupType) << '\n';
       else {
-	retval << wxT("/* ") << cell->GetEditable()->ToString() << wxT(" */\n");
+	retval << wxS("/* ") << cell->GetEditable()->ToString() << wxS(" */\n");
 	trailingNewline = false;
       }
       break;
@@ -379,7 +379,7 @@ namespace Format {
 	bool isCommentLine = false;
 	wxString trimmed = line;
 	trimmed.Trim(false);
-	if (trimmed == wxT('/')) {
+	if (trimmed == wxS('/')) {
 	  isCommentLine = true;
 	  line = trimmed;
 	}
@@ -387,7 +387,7 @@ namespace Format {
 	// Skip to the end of the comment
 	while (s.ch != macContents.end()) {
 	  wxChar ch = *s.ch++;
-	  bool finished = (s.lastChar == wxT('*') && ch == wxT('/'));
+	  bool finished = (s.lastChar == wxS('*') && ch == wxS('/'));
 	  line += s.lastChar = ch;
 	  if (finished)
 	    break;
@@ -398,7 +398,7 @@ namespace Format {
 	  line.Trim(false);
 
 	  // Is this a comment from wxMaxima?
-	  if (line.StartsWith(wxT("/* [wxMaxima: "))) {
+	  if (line.StartsWith(wxS("/* [wxMaxima: "))) {
 	    // Add the rest of this comment block to the "line".
 	    while (!line.EndsWith(" end   ] */") &&
 		   !line.EndsWith(" end   ] */\n")) {
@@ -467,8 +467,8 @@ namespace Format {
 
 	// A line ending followed by a new line means: We want to insert a new
 	// code cell.
-	if ((s.lastChar == wxT('$') || s.lastChar == wxT(';')) &&
-	    (c == wxT('\n'))) {
+	if ((s.lastChar == wxS('$') || s.lastChar == wxS(';')) &&
+	    (c == wxS('\n'))) {
 	  line.Trim(true);
 	  line.Trim(false);
 	  tree.Append(std::make_unique<GroupCell>(config, GC_TYPE_CODE, line));
@@ -508,11 +508,11 @@ namespace Format {
     for (auto line = text.GetFirstLine();; line = text.GetNextLine()) {
       if (xMaximaFile) {
 	// Detect output cells.
-	if (line.StartsWith(wxT("(%o")))
+	if (line.StartsWith(wxS("(%o")))
 	  input = false;
 
-	if (line.StartsWith(wxT("(%i"))) {
-	  int end = line.Find(wxT(")"));
+	if (line.StartsWith(wxS("(%i"))) {
+	  int end = line.Find(wxS(")"));
 	  if (end > 0) {
 	    line = line.Right(line.Length() - end - 2);
 	    input = true;
@@ -521,7 +521,7 @@ namespace Format {
       }
 
       if (input)
-	macContents << line << wxT('\n');
+	macContents << line << wxS('\n');
 
       if (text.Eof())
 	break;

@@ -209,7 +209,7 @@ protected:
   Worksheet *m_sampleWorksheet = NULL;
   wxGrid *m_maximaEnvVariables;
   void OnImport(wxCommandEvent& event);
-  static void CopyConfig(wxConfigBase *src, wxConfigBase *dst, wxString dir = wxT("/"));
+  static void CopyConfig(wxConfigBase *src, wxConfigBase *dst, wxString dir = wxS("/"));
   void OnReloadAll(wxCommandEvent& event);
   void OnReloadStyles(wxCommandEvent& event);
   void OnResetAllToDefaults(wxCommandEvent& event);

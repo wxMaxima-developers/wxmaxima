@@ -43,7 +43,7 @@ CsvImportWiz::CsvImportWiz(wxWindow *parent, Configuration *config)
   m_separator =
     new wxChoice(this, -1, wxDefaultPosition, wxDefaultSize, choices);
   long choice = 0;
-  wxConfig::Get()->Read(wxT("csvSeparator"), choice);
+  wxConfig::Get()->Read(wxS("csvSeparator"), choice);
   if (choice < 0)
     choice = 0;
   if (choice > 2)
@@ -98,7 +98,7 @@ void CsvImportWiz::OnBrowse(wxCommandEvent &WXUNUSED(event)) {
 }
 
 CsvImportWiz::~CsvImportWiz() {
-  wxConfig::Get()->Write(wxT("csvSeparator"), m_separator->GetSelection());
+  wxConfig::Get()->Write(wxS("csvSeparator"), m_separator->GetSelection());
 }
 
 CsvExportWiz::CsvExportWiz(wxWindow *parent, Configuration *config,
@@ -115,7 +115,7 @@ CsvExportWiz::CsvExportWiz(wxWindow *parent, Configuration *config,
   m_separator =
     new wxChoice(this, -1, wxDefaultPosition, wxDefaultSize, choices);
   long choice = 0;
-  wxConfig::Get()->Read(wxT("csvSeparator"), choice);
+  wxConfig::Get()->Read(wxS("csvSeparator"), choice);
   if (choice < 0)
     choice = 0;
   if (choice > 2)
@@ -173,5 +173,5 @@ void CsvExportWiz::OnBrowse(wxCommandEvent &WXUNUSED(event)) {
 }
 
 CsvExportWiz::~CsvExportWiz() {
-  wxConfig::Get()->Write(wxT("csvSeparator"), m_separator->GetSelection());
+  wxConfig::Get()->Write(wxS("csvSeparator"), m_separator->GetSelection());
 }

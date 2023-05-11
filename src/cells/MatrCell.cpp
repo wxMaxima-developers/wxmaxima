@@ -242,7 +242,7 @@ void MatrCell::AddNewCell(std::unique_ptr<Cell> &&cell) {
 }
 
 wxString MatrCell::ToString() const {
-  wxString s = wxT("matrix(\n");
+  wxString s = wxS("matrix(\n");
   for (unsigned int i = 0; i < m_matHeight; i++) {
     s += wxS("\t\t[");
     for (unsigned int j = 0; j < m_matWidth; j++) {

@@ -148,7 +148,7 @@ void UnicodeSidebar::OnPaint(wxPaintEvent &event) {
   m_grid->HideColLabels();
   while (!zstream.Eof()) {
     wxString line = textIn.ReadLine();
-    wxStringTokenizer items(line, wxT(";"), wxTOKEN_RET_EMPTY_ALL);
+    wxStringTokenizer items(line, wxS(";"), wxTOKEN_RET_EMPTY_ALL);
     wxString number = items.GetNextToken();
     wxString name = items.GetNextToken();
     if (!name.IsEmpty() && (name != "<control>") &&

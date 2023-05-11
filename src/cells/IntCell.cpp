@@ -193,7 +193,7 @@ void IntCell::Draw(wxPoint point) {
 }
 
 wxString IntCell::ToString() const {
-  wxString s = wxT("integrate(");
+  wxString s = wxS("integrate(");
 
   s += m_base->ListToString();
 
@@ -207,16 +207,16 @@ wxString IntCell::ToString() const {
   wxString to = m_over->ListToString();
   wxString from = m_under->ListToString();
 
-  s += wxT(",") + var;
+  s += wxS(",") + var;
   if (m_intStyle == INT_DEF)
-    s += wxT(",") + from + wxT(",") + to;
+    s += wxS(",") + from + wxS(",") + to;
 
-  s += wxT(")");
+  s += wxS(")");
   return s;
 }
 
 wxString IntCell::ToMatlab() const {
-  wxString s = wxT("integrate(");
+  wxString s = wxS("integrate(");
 
   s += m_base->ListToMatlab();
 
@@ -229,29 +229,29 @@ wxString IntCell::ToMatlab() const {
   wxString to = m_over->ListToMatlab();
   wxString from = m_under->ListToMatlab();
 
-  s += wxT(",") + var;
+  s += wxS(",") + var;
   if (m_intStyle == INT_DEF)
-    s += wxT(",") + from + wxT(",") + to;
+    s += wxS(",") + from + wxS(",") + to;
 
-  s += wxT(")");
+  s += wxS(")");
   return s;
 }
 
 wxString IntCell::ToTeX() const {
-  wxString s = wxT("\\int");
+  wxString s = wxS("\\int");
 
   wxString to = m_over->ListToTeX();
   wxString from = m_under->ListToTeX();
 
   if (m_intStyle == INT_DEF)
-    s += wxT("_{") + from + wxT("}^{") + to + wxT("}");
+    s += wxS("_{") + from + wxS("}^{") + to + wxS("}");
   else
-    s += wxT(" ");
+    s += wxS(" ");
 
-  s += wxT("{\\left. ");
+  s += wxS("{\\left. ");
   s += m_base->ListToTeX();
   s += m_var->ListToTeX();
-  s += wxT("\\right.}");
+  s += wxS("\\right.}");
 
   return s;
 }
@@ -273,18 +273,18 @@ wxString IntCell::ToMathML() const {
 
   wxString retval;
   if (from.IsEmpty() && to.IsEmpty())
-    retval = wxT("<mo>&#x222B;</mo>") + base;
+    retval = wxS("<mo>&#x222B;</mo>") + base;
   if (from.IsEmpty() && !to.IsEmpty())
-    retval = wxT("<mover><mo>&#x222B;</mo>") + to + wxT("</mover>") + base;
+    retval = wxS("<mover><mo>&#x222B;</mo>") + to + wxS("</mover>") + base;
   if (!from.IsEmpty() && to.IsEmpty())
-    retval = wxT("<munder><mo>&#x222B;</mo>") + from + wxT("</munder>") + base;
+    retval = wxS("<munder><mo>&#x222B;</mo>") + from + wxS("</munder>") + base;
   if (!from.IsEmpty() && !to.IsEmpty())
-    retval = wxT("<munderover><mo>&#x222B;</mo>") + from + to +
-      wxT("</munderover>\n") + base;
+    retval = wxS("<munderover><mo>&#x222B;</mo>") + from + to +
+      wxS("</munderover>\n") + base;
   if (!var.IsEmpty())
     retval = retval + var;
 
-  return (wxT("<mrow>") + retval + wxT("</mrow>"));
+  return (wxS("<mrow>") + retval + wxS("</mrow>"));
 }
 
 wxString IntCell::ToOMML() const {
@@ -304,12 +304,12 @@ wxString IntCell::ToOMML() const {
 
   wxString retval;
 
-  retval = wxT("<m:nary><m:naryPr><m:chr>\u222b</m:chr></m:naryPr>");
+  retval = wxS("<m:nary><m:naryPr><m:chr>\u222b</m:chr></m:naryPr>");
   if (from != wxEmptyString)
-    retval += wxT("<m:sub>") + from + wxT("</m:sub>");
+    retval += wxS("<m:sub>") + from + wxS("</m:sub>");
   if (to != wxEmptyString)
-    retval += wxT("<m:sup>") + to + wxT("</m:sup>");
-  retval += wxT("<m:e><m:r>") + base + var + wxT("</m:r></m:e></m:nary>");
+    retval += wxS("<m:sup>") + to + wxS("</m:sup>");
+  retval += wxS("<m:e><m:r>") + base + var + wxS("</m:r></m:e></m:nary>");
 
   return retval;
 }
@@ -318,33 +318,33 @@ wxString IntCell::ToXML() const {
   wxString from;
   if (m_under != NULL)
     from = m_under->ListToXML();
-  from = wxT("<r>") + from + wxT("</r>");
+  from = wxS("<r>") + from + wxS("</r>");
 
   wxString to;
   if (m_over != NULL)
     to = m_over->ListToXML();
-  to = wxT("<r>") + to + wxT("</r>");
+  to = wxS("<r>") + to + wxS("</r>");
 
   wxString base;
   if (m_base != NULL)
     base = m_base->ListToXML();
-  base = wxT("<r>") + base + wxT("</r>");
+  base = wxS("<r>") + base + wxS("</r>");
 
   wxString var;
   if (m_var != NULL)
     var = m_var->ListToXML();
-  var = wxT("<r>") + var + wxT("</r>");
+  var = wxS("<r>") + var + wxS("</r>");
 
   wxString flags;
   if (HasHardLineBreak())
-    flags += wxT(" breakline=\"true\"");
+    flags += wxS(" breakline=\"true\"");
 
   if (m_intStyle != INT_DEF) {
-    flags += wxT(" def=\"false\">");
-    return wxT("<in") + flags + wxT(">") + base + var + wxT("</in>");
+    flags += wxS(" def=\"false\">");
+    return wxS("<in") + flags + wxS(">") + base + var + wxS("</in>");
   } else
-    return wxT("<in") + flags + wxT(">") + from + to + base + var +
-      wxT("</in>");
+    return wxS("<in") + flags + wxS(">") + from + to + base + var +
+      wxS("</in>");
 }
 
 bool IntCell::BreakUp() {

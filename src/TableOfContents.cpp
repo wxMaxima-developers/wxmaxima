@@ -155,7 +155,7 @@ void TableOfContents::OnDragStart(wxListEvent &evt) {
     if (!m_displayedItems->HasCapture()) {
       wxString dragImageLabel = m_displayedItems->GetItemText(evt.GetIndex());
       if (dragImageLabel.Length() > 15)
-        dragImageLabel = dragImageLabel.Left(12) + wxT("...");
+        dragImageLabel = dragImageLabel.Left(12) + wxS("...");
       m_dragImage = new wxDragImage(dragImageLabel);
       m_dragImage->BeginDrag(
 			     wxPoint(-20 * GetContentScaleFactor(), -20 * GetContentScaleFactor()),
@@ -420,33 +420,33 @@ wxString TableOfContents::TocEntryString(GroupCell *cell) {
 
   if (m_configuration->TocShowsSectionNumbers()) {
     if (cell->GetPrompt() != NULL)
-      curr = cell->GetPrompt()->ToString() + wxT(" ") + curr;
+      curr = cell->GetPrompt()->ToString() + wxS(" ") + curr;
     curr.Trim(false);
   } else
     switch (cell->GetGroupType()) {
     case GC_TYPE_TITLE:
       break;
     case GC_TYPE_SECTION:
-      curr = wxT("  ") + curr;
+      curr = wxS("  ") + curr;
       break;
     case GC_TYPE_SUBSECTION:
-      curr = wxT("    ") + curr;
+      curr = wxS("    ") + curr;
       break;
     case GC_TYPE_SUBSUBSECTION:
-      curr = wxT("      ") + curr;
+      curr = wxS("      ") + curr;
       break;
     case GC_TYPE_HEADING5:
-      curr = wxT("        ") + curr;
+      curr = wxS("        ") + curr;
       break;
     case GC_TYPE_HEADING6:
-      curr = wxT("          ") + curr;
+      curr = wxS("          ") + curr;
       break;
     default: {
     }
     }
 
   // Respecting linebreaks doesn't make much sense here.
-  curr.Replace(wxT("\n"), wxT(" "));
+  curr.Replace(wxS("\n"), wxS(" "));
   return curr;
 }
 

@@ -108,7 +108,7 @@ private:
 };
 #endif
 
-#define EMPTY_INPUT_LABEL wxT(" -->  ")
+#define EMPTY_INPUT_LABEL wxS(" -->  ")
 
 GroupCell::GroupCell(Configuration *config, GroupType groupType,
                      const wxString &initString)
@@ -124,7 +124,7 @@ GroupCell::GroupCell(Configuration *config, GroupType groupType,
       m_inputLabel =
 	std::make_unique<LabelCell>(this, m_configuration, EMPTY_INPUT_LABEL);
     else
-      m_inputLabel = std::make_unique<TextCell>(this, m_configuration, wxT(""));
+      m_inputLabel = std::make_unique<TextCell>(this, m_configuration, wxS(""));
 
     m_inputLabel->SetType(MC_TYPE_MAIN_PROMPT);
   }
@@ -264,7 +264,7 @@ const wxString &GroupCell::GetAnswer(int answer) const {
   if ((!m_autoAnswer) && (!m_configuration->OfferKnownAnswers()))
     return wxm::emptyString;
 
-  wxString const question = wxString::Format(wxT("Question #%i"), answer);
+  wxString const question = wxString::Format(wxS("Question #%i"), answer);
   auto it = m_knownAnswers.find(question);
   return (it != m_knownAnswers.end()) ? it->second : wxm::emptyString;
 }
@@ -295,7 +295,7 @@ GroupCell *GroupCell::GetLastWorkingGroup() const {
 
 wxString GroupCell::TexEscapeOutputCell(wxString Input) {
   wxString retval(Input);
-  Input.Replace(wxT("#"), wxT("\\#"));
+  Input.Replace(wxS("#"), wxS("\\#"));
   return (Input);
 }
 
@@ -430,13 +430,13 @@ void GroupCell::UpdateConfusableCharWarnings() {
         if (word_subst.Replace(ch1, ch2)) {
           if (cmp->first == word_subst)
             AddToolTip(_("Warning: Lookalike chars: ") + cmp->first.utf8_str() +
-                       wxT("\u2260") + word.utf8_str());
+                       wxS("\u2260") + word.utf8_str());
         }
         word_subst = word;
         if (word_subst.Replace(ch2, ch1)) {
           if (cmp->first == word_subst)
             AddToolTip(_("Warning: Lookalike chars: ") + cmp->first +
-                       wxT(" \u2260 ") + word);
+                       wxS(" \u2260 ") + word);
         }
       }
       ++cmp;
@@ -976,7 +976,7 @@ wxString GroupCell::ToString() const {
       if (GetEditable() != NULL)
         str += GetEditable()->ToString();
 
-      str.Replace(wxT("\n"), wxT("\n\t"));
+      str.Replace(wxS("\n"), wxS("\n\t"));
     }
   }
 
@@ -984,7 +984,7 @@ wxString GroupCell::ToString() const {
     bool firstCell = true;
     for (Cell &tmp : OnDrawList(m_output.get())) {
       if (firstCell || (tmp.HasHardLineBreak() && !str.empty()))
-        str += wxT("\n");
+        str += wxS("\n");
       str += tmp.ToString();
       firstCell = false;
     }
@@ -998,26 +998,26 @@ wxString GroupCell::ToTeX() const {
 
 wxString GroupCell::ToRTF() const {
   if (m_groupType == GC_TYPE_PAGEBREAK)
-    return (wxT("\\page "));
+    return (wxS("\\page "));
 
   wxString retval;
   if (m_groupType == GC_TYPE_CODE) {
     if (m_inputLabel && m_configuration->ShowCodeCells()) {
       if (GetPrevious())
         retval =
-	  wxT("\\par}{\\pard\\s22\\li1105\\lin1105\\fi-1105\\f0\\fs24 \n");
+	  wxS("\\par}{\\pard\\s22\\li1105\\lin1105\\fi-1105\\f0\\fs24 \n");
       else
-        retval += wxT("\\pard\\s22\\li1105\\lin1105\\fi-1105\\f0\\fs24 ");
+        retval += wxS("\\pard\\s22\\li1105\\lin1105\\fi-1105\\f0\\fs24 ");
       retval += RTFescape(m_inputLabel->ToString());
-      retval += wxT("\\tab\n");
+      retval += wxS("\\tab\n");
     } else {
       if (GetPrevious())
-        retval = wxT("\\par}\n{\\pard\\s21\\li1105\\lin1105\\f0\\fs24 ");
+        retval = wxS("\\par}\n{\\pard\\s21\\li1105\\lin1105\\f0\\fs24 ");
       else
-        retval = wxT("\\pard\\s21\\li1105\\lin1105\\f0\\fs24 ");
+        retval = wxS("\\pard\\s21\\li1105\\lin1105\\f0\\fs24 ");
     }
   } else
-    retval = wxT("\\par}\n{");
+    retval = wxS("\\par}\n{");
 
   if (GetEditable() != NULL)
     retval += GetEditable()->ToRTF();
@@ -1037,7 +1037,7 @@ wxString GroupCell::ToTeX(wxString imgDir, wxString filename,
   wxString str;
   switch (m_groupType) {
   case GC_TYPE_PAGEBREAK:
-    str = wxT("\\pagebreak\n");
+    str = wxS("\\pagebreak\n");
     break;
 
   case GC_TYPE_IMAGE:
@@ -1046,27 +1046,27 @@ wxString GroupCell::ToTeX(wxString imgDir, wxString filename,
       auto const copy = m_output->Copy(&parent);
       auto *const imgCopy = dynamic_cast<ImgCell *>(copy.get());
       (*imgCounter)++;
-      wxString image = filename + wxString::Format(wxT("_%d"), *imgCounter);
+      wxString image = filename + wxString::Format(wxS("_%d"), *imgCounter);
       wxString file =
-	imgDir + wxT("/") + image + wxT(".") + imgCopy->GetExtension();
+	imgDir + wxS("/") + image + wxS(".") + imgCopy->GetExtension();
 
       if (!wxDirExists(imgDir))
         wxMkdir(imgDir);
 
       if (imgCopy->ToImageFile(file).x >= 0) {
-        str << wxT("\\begin{figure}[htb]\n") << wxT("  \\centering\n")
-            << wxT("    \\includeimage{") << filename << wxT("_img/") << image
-            << wxT("}\n") << wxT("  \\caption{")
-            << m_inputLabel->GetNext()->ToTeX().Trim() << wxT("}\n")
-            << wxT("\\end{figure}\n");
+        str << wxS("\\begin{figure}[htb]\n") << wxS("  \\centering\n")
+            << wxS("    \\includeimage{") << filename << wxS("_img/") << image
+            << wxS("}\n") << wxS("  \\caption{")
+            << m_inputLabel->GetNext()->ToTeX().Trim() << wxS("}\n")
+            << wxS("\\end{figure}\n");
       }
     } else
-      str << wxT("\n\\verb|<<GRAPHICS>>|\n");
+      str << wxS("\n\\verb|<<GRAPHICS>>|\n");
     break;
 
   case GC_TYPE_CODE:
     str = ToTeXCodeCell(imgDir, filename, imgCounter);
-    str.Replace(wxT("\\[\\displaystyle \\]"), wxT(""));
+    str.Replace(wxS("\\[\\displaystyle \\]"), wxS(""));
     break;
 
   default:
@@ -1075,9 +1075,9 @@ wxString GroupCell::ToTeX(wxString imgDir, wxString filename,
       str.Trim(true);
       switch (GetEditable()->GetTextStyle()) {
       case TS_TITLE:
-        str = wxT("\n\\pagebreak{}\n{\\Huge {\\scshape ") + str + wxT("}}\n");
-        str += wxT("\\setcounter{section}{0}\n\\setcounter{subsection}{0}\n");
-        str += wxT("\\setcounter{figure}{0}\n");
+        str = wxS("\n\\pagebreak{}\n{\\Huge {\\scshape ") + str + wxS("}}\n");
+        str += wxS("\\setcounter{section}{0}\n\\setcounter{subsection}{0}\n");
+        str += wxS("\\setcounter{figure}{0}\n");
         break;
       case TS_SECTION:
         // Trim() strings for TeX export to remove newlines in \section{},
@@ -1085,22 +1085,22 @@ wxString GroupCell::ToTeX(wxString imgDir, wxString filename,
         // code: \section{Chapter 1
         //
         // }
-        str = wxT("\n\\section{") + str.Trim() + wxT("}");
+        str = wxS("\n\\section{") + str.Trim() + wxS("}");
         break;
       case TS_SUBSECTION:
-        str = wxT("\n\\subsection{") + str.Trim() + wxT("}");
+        str = wxS("\n\\subsection{") + str.Trim() + wxS("}");
         break;
       case TS_SUBSUBSECTION:
-        str = wxT("\n\\subsubsection{") + str.Trim() + wxT("}");
+        str = wxS("\n\\subsubsection{") + str.Trim() + wxS("}");
         break;
       case TS_HEADING5:
-        str = wxT("\n\\paragraph{") + str.Trim() + wxT("}");
+        str = wxS("\n\\paragraph{") + str.Trim() + wxS("}");
         break;
       case TS_HEADING6:
-        str = wxT("\n\\subparagraph{") + str.Trim() + wxT("}");
+        str = wxS("\n\\subparagraph{") + str.Trim() + wxS("}");
         break;
       default:
-        if (str.StartsWith(wxT("TeX:"))) {
+        if (str.StartsWith(wxS("TeX:"))) {
           str = GetEditable()->ToString();
           str = str.Mid(5, str.Length());
         }
@@ -1132,16 +1132,16 @@ wxString GroupCell::ToTeXCodeCell(wxString imgDir, wxString filename,
     setlocale(LC_NUMERIC, saved_lc_numeric.c_str());
 
     if (m_inputLabel->GetNext()) {
-      str += wxT("\n\\begin{minipage}[t]{\\textwidth}\\color{blue}\n") +
+      str += wxS("\n\\begin{minipage}[t]{\\textwidth}\\color{blue}\n") +
 	m_inputLabel->GetNext()->ToTeX() + "\n\\end{minipage}";
     }
   }
 
   if (m_output != NULL) {
-    str += wxT("\n%%%% OUTPUT:\n");
+    str += wxS("\n%%%% OUTPUT:\n");
     // Need to define labelcolor if this is Copy as LaTeX!
     if (imgCounter == NULL)
-      str += wxT("\\definecolor{labelcolor}{RGB}{100,0,0}\n");
+      str += wxS("\\definecolor{labelcolor}{RGB}{100,0,0}\n");
 
     bool mathMode = false;
 
@@ -1153,25 +1153,25 @@ wxString GroupCell::ToTeXCodeCell(wxString imgDir, wxString filename,
         case TS_LABEL:
         case TS_USERLABEL:
           if (mathMode)
-            str += wxT("\\mbox{}\\]\n\\[\\displaystyle ");
+            str += wxS("\\mbox{}\\]\n\\[\\displaystyle ");
           else {
-            str += wxT("\\[\\displaystyle ");
+            str += wxS("\\[\\displaystyle ");
             mathMode = true;
           }
-          str += tmp.ToTeX() + wxT("\n");
+          str += tmp.ToTeX() + wxS("\n");
           break;
 
         case TS_STRING:
           if (mathMode) {
-            str += wxT("\\mbox{}\n\\]");
+            str += wxS("\\mbox{}\n\\]");
             mathMode = false;
           }
-          str += TexEscapeOutputCell(tmp.ToTeX()) + wxT("\n");
+          str += TexEscapeOutputCell(tmp.ToTeX()) + wxS("\n");
           break;
 
         default:
           if (!mathMode) {
-            str += wxT("\\[\\displaystyle ");
+            str += wxS("\\[\\displaystyle ");
             mathMode = true;
           }
           str += tmp.ToTeX();
@@ -1183,10 +1183,10 @@ wxString GroupCell::ToTeXCodeCell(wxString imgDir, wxString filename,
     if (mathMode) {
       // Some invisible dummy content that keeps TeX happy if there really is
       // no output to display.
-      str += wxT("\\mbox{}\n\\]\n%%%%%%%%%%%%%%%%");
+      str += wxS("\\mbox{}\n\\]\n%%%%%%%%%%%%%%%%");
     }
   } else
-    str += wxT("\n\n\\noindent%\n");
+    str += wxS("\n\n\\noindent%\n");
 
   return str;
 }
@@ -1204,19 +1204,19 @@ wxString GroupCell::ToTeXImage(Cell *tmp, wxString imgDir, wxString filename,
     auto const copy = tmp->Copy(tmp->GetGroup());
     auto *const imgCopy = dynamic_cast<ImgCell *>(copy.get());
     (*imgCounter)++;
-    wxString image = filename + wxString::Format(wxT("_%d"), *imgCounter);
+    wxString image = filename + wxString::Format(wxS("_%d"), *imgCounter);
     if (!wxDirExists(imgDir))
       if (!wxMkdir(imgDir))
         return wxEmptyString;
 
     wxString file =
-      imgDir + wxT("/") + image + wxT(".") + imgCopy->GetExtension();
+      imgDir + wxS("/") + image + wxS(".") + imgCopy->GetExtension();
     if (imgCopy->ToImageFile(file).x >= 0)
-      str += wxT("\\includegraphics[width=.95\\linewidth,height=."
+      str += wxS("\\includegraphics[width=.95\\linewidth,height=."
                  "80\\textheight,keepaspectratio]{") +
-	filename + wxT("_img/") + image + wxT("}");
+	filename + wxS("_img/") + image + wxS("}");
     else
-      str << wxT("\n\\verb|<<GRAPHICS>>|\n");
+      str << wxS("\n\\verb|<<GRAPHICS>>|\n");
   }
 
   return str;
@@ -1224,11 +1224,11 @@ wxString GroupCell::ToTeXImage(Cell *tmp, wxString imgDir, wxString filename,
 
 wxString GroupCell::ToXML() const {
   wxString str;
-  str = wxT("\n<cell"); // start opening tag
+  str = wxS("\n<cell"); // start opening tag
   // write "type" according to m_groupType
   switch (m_groupType) {
   case GC_TYPE_CODE: {
-    str += wxT(" type=\"code\"");
+    str += wxS(" type=\"code\"");
     int i = 0;
     for (StringHash::const_iterator it = m_knownAnswers.begin();
          it != m_knownAnswers.end(); ++it) {
@@ -1237,60 +1237,60 @@ wxString GroupCell::ToXML() const {
       // exception of the characters XML wants to be quoted. In reality
       // wxWidget's newline handling seems to be broken => escape newlines.
       wxString question = Cell::XMLescape(it->first);
-      question.Replace(wxT("\n"), wxT("&#10;"));
+      question.Replace(wxS("\n"), wxS("&#10;"));
       wxString answer = Cell::XMLescape(it->second);
-      answer.Replace(wxT("\n"), wxT("&#10;"));
-      str += wxString::Format(wxT(" question%i=\""), i) + question + wxT("\"");
-      str += wxString::Format(wxT(" answer%i=\""), i) + answer + wxT("\"");
+      answer.Replace(wxS("\n"), wxS("&#10;"));
+      str += wxString::Format(wxS(" question%i=\""), i) + question + wxS("\"");
+      str += wxString::Format(wxS(" answer%i=\""), i) + answer + wxS("\"");
     }
 
     if (m_autoAnswer)
-      str += wxT(" auto_answer=\"yes\"");
+      str += wxS(" auto_answer=\"yes\"");
     break;
   }
   case GC_TYPE_IMAGE:
-    str += wxT(" type=\"image\"");
+    str += wxS(" type=\"image\"");
     break;
   case GC_TYPE_TEXT:
-    str += wxT(" type=\"text\"");
+    str += wxS(" type=\"text\"");
     break;
   case GC_TYPE_TITLE:
-    str += wxT(" type=\"title\" sectioning_level=\"1\"");
+    str += wxS(" type=\"title\" sectioning_level=\"1\"");
     break;
   case GC_TYPE_SECTION:
-    str += wxT(" type=\"section\" sectioning_level=\"2\"");
+    str += wxS(" type=\"section\" sectioning_level=\"2\"");
     break;
   case GC_TYPE_SUBSECTION:
-    str += wxT(" type=\"subsection\" sectioning_level=\"3\"");
+    str += wxS(" type=\"subsection\" sectioning_level=\"3\"");
     break;
   case GC_TYPE_SUBSUBSECTION:
     // We save subsubsections as subsections with a higher sectioning level:
     // This makes them backwards-compatible in the way that they are displayed
     // as subsections on old wxMaxima installations.
-    str += wxT(" type=\"subsection\" sectioning_level=\"4\"");
+    str += wxS(" type=\"subsection\" sectioning_level=\"4\"");
     break;
   case GC_TYPE_HEADING5:
-    str += wxT(" type=\"subsection\" sectioning_level=\"5\"");
+    str += wxS(" type=\"subsection\" sectioning_level=\"5\"");
     break;
   case GC_TYPE_HEADING6:
-    str += wxT(" type=\"subsection\" sectioning_level=\"6\"");
+    str += wxS(" type=\"subsection\" sectioning_level=\"6\"");
     break;
   case GC_TYPE_PAGEBREAK: {
-    str += wxT(" type=\"pagebreak\"/>");
+    str += wxS(" type=\"pagebreak\"/>");
     return str;
   } break;
   default:
-    str += wxT(" type=\"unknown\"");
+    str += wxS(" type=\"unknown\"");
     break;
   }
 
   if (GetSuppressTooltipMarker())
-    str += wxT(" hideToolTip=\"true\"");
+    str += wxS(" hideToolTip=\"true\"");
 
   // write hidden status
   if (IsHidden())
-    str += wxT(" hide=\"true\"");
-  str += wxT(">\n");
+    str += wxS(" hide=\"true\"");
+  str += wxS(">\n");
 
   Cell *input = GetEditable();
   Cell *output = GetLabel();
@@ -1298,15 +1298,15 @@ wxString GroupCell::ToXML() const {
   switch (m_groupType) {
   case GC_TYPE_CODE:
     if (input != NULL) {
-      str += wxT("<input>\n");
+      str += wxS("<input>\n");
       str += input->ListToXML();
-      str += wxT("</input>");
+      str += wxS("</input>");
     }
     if (output != NULL) {
-      str += wxT("\n<output>\n");
-      str += wxT("<mth>");
+      str += wxS("\n<output>\n");
+      str += wxS("<mth>");
       str += output->ListToXML();
-      str += wxT("\n</mth></output>");
+      str += wxS("\n</mth></output>");
     }
     break;
   case GC_TYPE_IMAGE:
@@ -1328,9 +1328,9 @@ wxString GroupCell::ToXML() const {
     if (input)
       str += input->ListToXML();
     if (m_hiddenTree) {
-      str += wxT("<fold>");
+      str += wxS("<fold>");
       str += m_hiddenTree->ListToXML();
-      str += wxT("</fold>");
+      str += wxS("</fold>");
     }
     break;
   default: {
@@ -1341,7 +1341,7 @@ wxString GroupCell::ToXML() const {
     break;
   }
   }
-  str += wxT("\n</cell>\n");
+  str += wxS("\n</cell>\n");
 
   return str;
 }
@@ -1805,8 +1805,8 @@ void GroupCell::Number(int &section, int &subsection, int &subsubsection,
       section++;
       subsection = subsubsection = heading5 = heading6 = 0;
       {
-        wxString num = wxT("  ");
-        num << section << wxT(" ");
+        wxString num = wxS("  ");
+        num << section << wxS(" ");
         tmp.m_inputLabel->SetValue(num);
         tmp.m_inputLabel->SetStyle(TS_SECTION);
       }
@@ -1815,8 +1815,8 @@ void GroupCell::Number(int &section, int &subsection, int &subsubsection,
       subsubsection = heading5 = heading6 = 0;
       subsection++;
       {
-        wxString num = wxT("  ");
-        num << section << wxT(".") << subsection << wxT(" ");
+        wxString num = wxS("  ");
+        num << section << wxS(".") << subsection << wxS(" ");
         tmp.m_inputLabel->SetValue(num);
         tmp.m_inputLabel->SetStyle(TS_SUBSECTION);
       }
@@ -1825,9 +1825,9 @@ void GroupCell::Number(int &section, int &subsection, int &subsubsection,
       heading5 = heading6 = 0;
       subsubsection++;
       {
-        wxString num = wxT("  ");
-        num << section << wxT(".") << subsection << wxT(".") << subsubsection
-            << wxT(" ");
+        wxString num = wxS("  ");
+        num << section << wxS(".") << subsection << wxS(".") << subsubsection
+            << wxS(" ");
         tmp.m_inputLabel->SetValue(num);
         tmp.m_inputLabel->SetStyle(TS_SUBSUBSECTION);
       }
@@ -1836,9 +1836,9 @@ void GroupCell::Number(int &section, int &subsection, int &subsubsection,
       heading5++;
       heading6 = 0;
       {
-        wxString num = wxT("  ");
-        num << section << wxT(".") << subsection << wxT(".") << subsubsection
-            << wxT(".") << heading5 << wxT(" ");
+        wxString num = wxS("  ");
+        num << section << wxS(".") << subsection << wxS(".") << subsubsection
+            << wxS(".") << heading5 << wxS(" ");
         tmp.m_inputLabel->SetValue(num);
         tmp.m_inputLabel->SetStyle(TS_HEADING5);
       }
@@ -1846,9 +1846,9 @@ void GroupCell::Number(int &section, int &subsection, int &subsubsection,
     case GC_TYPE_HEADING6:
       heading6++;
       {
-        wxString num = wxT("  ");
-        num << section << wxT(".") << subsection << wxT(".") << subsubsection
-            << wxT(".") << heading5 << wxT(".") << heading6 << wxT(" ");
+        wxString num = wxS("  ");
+        num << section << wxS(".") << subsection << wxS(".") << subsubsection
+            << wxS(".") << heading5 << wxS(".") << heading6 << wxS(" ");
         tmp.m_inputLabel->SetValue(num);
         tmp.m_inputLabel->SetStyle(TS_HEADING6);
       }
@@ -1963,43 +1963,43 @@ void CellList::Check(const GroupCell *c) {
 }
 
 wxString GroupCell::m_lookalikeChars(
-				     wxT("µ") wxT("\u03bc") wxT("\u2126") wxT("\u03a9") wxT("C") wxT(
-												     "\u03F2") wxT("C") wxT("\u0421") wxT("\u03F2") wxT("\u0421") wxT("A")
-				     wxT("\u0391") wxT("A") wxT("\u0410") wxT("\u0391") wxT("\u0410") wxT(
-													  "M") wxT("\u0392") wxT("E") wxT("\u0395") wxT("E") wxT("\u0415")
-				     wxT("\u0415") wxT("\u0395") wxT("Z") wxT("\u0396") wxT("H") wxT(
-												     "\u0397") wxT("H") wxT("\u041D") wxT("\u0397") wxT("\u041D")
-				     wxT("I") wxT("\u0399") wxT("I") wxT("\u0406") wxT("l") wxT(
-												"\u0406") wxT("K") wxT("\u039A")
-				     wxT("K") wxT("\u041A") wxT("\u039A") wxT("\u041A") wxT("\u212a") wxT(
-													  "\u041A") wxT("K") wxT("\u212A") wxT("M") wxT("\u041c") wxT("\u039C")
-				     wxT("\u041c") wxT("M") wxT("\u039C") wxT("N") wxT("\u039D") wxT("O") wxT(
-													      "\u039F") wxT("O") wxT("\u041E") wxT("\u039F") wxT("\u041E") wxT("\u039F")
-				     wxT("\u041E") wxT("P") wxT("\u03A1") wxT("X") wxT("\u0425") wxT("e") wxT(
-													      "\u0435") wxT("p") wxT("\u0440") wxT("x") wxT("\u0445") wxT("y")
-				     wxT("\u0443") wxT("P") wxT("\u0420") wxT("\u03A1") wxT(
-											    "\u0420") wxT("T") wxT("\u03A4") wxT("T") wxT("\u0422") wxT("\u03A4")
-				     wxT("\u0422") wxT("Y") wxT("\u03A5") wxT("\u212a") wxT(
-											    "\u039A") wxT("l") wxT("I") wxT("B")
-				     wxT("\u0392") wxT("S") wxT("\u0405") wxT("\u0392") wxT(
-											    "\u0412") wxT("B") wxT("\u0412") wxT("J")
-				     wxT("\u0408") wxT("a") wxT("\u0430") wxT(
-									      "o") wxT("\u03bf") wxT("\u03a3") wxT("\u2211")
-				     wxT("o") wxT("\u043e") wxT("\u03bf") wxT(
-									      "\u043e") wxT("c") wxT("\u0441") wxT("s")
-				     wxT("\u0455") wxT("t") wxT("\u03c4") wxT(
-									      "u") wxT("\u03c5") wxT("x") wxT("\u03c7")
-				     wxT("ü") wxT("\u03cb") wxT("\u0460") wxT(
-									      "\u03c9") wxT("\u0472") wxT("\u0398")
-				     wxT("У") wxT("Y") wxT("У") wxT(
-								    "y") wxT("ѡ") wxT("ω")
-				     wxT("Ѳ") wxT("Θ") wxT(
-							   "θ") wxT("ѳ") wxT("ø")
-				     wxT("⌀") wxT("∅") wxT(
-							   "⊘") wxT("∅")
-				     wxT("⌀") wxT(
-						  "ø") wxT("⊘")
-				     wxT("ø") wxT(
+				     wxS("µ") wxS("\u03bc") wxS("\u2126") wxS("\u03a9") wxS("C") wxS(
+												     "\u03F2") wxS("C") wxS("\u0421") wxS("\u03F2") wxS("\u0421") wxS("A")
+				     wxS("\u0391") wxS("A") wxS("\u0410") wxS("\u0391") wxS("\u0410") wxS(
+													  "M") wxS("\u0392") wxS("E") wxS("\u0395") wxS("E") wxS("\u0415")
+				     wxS("\u0415") wxS("\u0395") wxS("Z") wxS("\u0396") wxS("H") wxS(
+												     "\u0397") wxS("H") wxS("\u041D") wxS("\u0397") wxS("\u041D")
+				     wxS("I") wxS("\u0399") wxS("I") wxS("\u0406") wxS("l") wxS(
+												"\u0406") wxS("K") wxS("\u039A")
+				     wxS("K") wxS("\u041A") wxS("\u039A") wxS("\u041A") wxS("\u212a") wxS(
+													  "\u041A") wxS("K") wxS("\u212A") wxS("M") wxS("\u041c") wxS("\u039C")
+				     wxS("\u041c") wxS("M") wxS("\u039C") wxS("N") wxS("\u039D") wxS("O") wxS(
+													      "\u039F") wxS("O") wxS("\u041E") wxS("\u039F") wxS("\u041E") wxS("\u039F")
+				     wxS("\u041E") wxS("P") wxS("\u03A1") wxS("X") wxS("\u0425") wxS("e") wxS(
+													      "\u0435") wxS("p") wxS("\u0440") wxS("x") wxS("\u0445") wxS("y")
+				     wxS("\u0443") wxS("P") wxS("\u0420") wxS("\u03A1") wxS(
+											    "\u0420") wxS("T") wxS("\u03A4") wxS("T") wxS("\u0422") wxS("\u03A4")
+				     wxS("\u0422") wxS("Y") wxS("\u03A5") wxS("\u212a") wxS(
+											    "\u039A") wxS("l") wxS("I") wxS("B")
+				     wxS("\u0392") wxS("S") wxS("\u0405") wxS("\u0392") wxS(
+											    "\u0412") wxS("B") wxS("\u0412") wxS("J")
+				     wxS("\u0408") wxS("a") wxS("\u0430") wxS(
+									      "o") wxS("\u03bf") wxS("\u03a3") wxS("\u2211")
+				     wxS("o") wxS("\u043e") wxS("\u03bf") wxS(
+									      "\u043e") wxS("c") wxS("\u0441") wxS("s")
+				     wxS("\u0455") wxS("t") wxS("\u03c4") wxS(
+									      "u") wxS("\u03c5") wxS("x") wxS("\u03c7")
+				     wxS("ü") wxS("\u03cb") wxS("\u0460") wxS(
+									      "\u03c9") wxS("\u0472") wxS("\u0398")
+				     wxS("У") wxS("Y") wxS("У") wxS(
+								    "y") wxS("ѡ") wxS("ω")
+				     wxS("Ѳ") wxS("Θ") wxS(
+							   "θ") wxS("ѳ") wxS("ø")
+				     wxS("⌀") wxS("∅") wxS(
+							   "⊘") wxS("∅")
+				     wxS("⌀") wxS(
+						  "ø") wxS("⊘")
+				     wxS("ø") wxS(
 						  "∅")
-				     wxT("⌀") wxT(
+				     wxS("⌀") wxS(
 						  "⊘"));

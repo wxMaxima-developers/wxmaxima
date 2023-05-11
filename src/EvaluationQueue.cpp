@@ -119,7 +119,7 @@ void EvaluationQueue::AddTokens(GroupCell *cell) {
   for (auto const &tok : cell->GetEditable()->GetAllTokens()) {
     const TextStyle itemStyle = tok.GetTextStyle();
     wxString itemText = tok.GetText();
-    itemText.Replace(wxT("\u00a0"), " ");
+    itemText.Replace(wxS("\u00a0"), " ");
     index += itemText.Length();
     if (itemStyle != TS_CODE_COMMENT)
       token += itemText;
@@ -164,16 +164,16 @@ wxString EvaluationQueue::GetCommand() {
   m_userLabel.Clear();
   wxString userLabel;
 
-  int colonPos = retval.find(wxT(":"));
-  if (colonPos != wxNOT_FOUND && !retval.StartsWith(wxT(":lisp"))) {
+  int colonPos = retval.find(wxS(":"));
+  if (colonPos != wxNOT_FOUND && !retval.StartsWith(wxS(":lisp"))) {
     userLabel = retval.Left(colonPos);
     userLabel.Trim(true);
     userLabel.Trim(false);
     if (!userLabel.empty() &&
-        (wxIsalpha(userLabel[0]) || (userLabel[0] == wxT('\\')) ||
-         (userLabel[0] > 127) || (userLabel[0] == wxT('_')))) {
+        (wxIsalpha(userLabel[0]) || (userLabel[0] == wxS('\\')) ||
+         (userLabel[0] > 127) || (userLabel[0] == wxS('_')))) {
       for (size_t i = 0; i < userLabel.Length(); i++) {
-        if (userLabel[i] == wxT('\\'))
+        if (userLabel[i] == wxS('\\'))
           i++;
         else {
           if ((!wxIsalnum(userLabel[i])) && (userLabel[i] != '_') &&
