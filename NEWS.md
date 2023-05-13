@@ -14,6 +14,7 @@
    wxMaxima processes
  * new wxMaxima processes now get more of the command-line args
    of the parent process
+ * wxMaxima no more tries to install its own fonts.
 
 # 23.04.1
  * More config dialogue tweaks
