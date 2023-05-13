@@ -15,10 +15,6 @@ set(PIXMAPS
         ${CMAKE_CURRENT_SOURCE_DIR}/io.github.wxmaxima_developers.wxMaxima.svg
         ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima-32.xpm)
 
-if(WXM_INCLUDE_FONTS)
-    add_subdirectory(fonts)
-endif()
-
 if(NOT WIN32)
     # the config file is ~/.wxMaxima if wxWidgets < 3.1.1
     #                    ~/.config/wxMaxima.conf if wxWidgets >= 3.1.1 (XDG Specification)

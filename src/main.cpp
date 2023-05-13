@@ -61,9 +61,6 @@
 #include "examples/variableNames.h"
 
 #include "wxMaxima.h"
-#ifdef WXM_INCLUDE_FONTS
-#include "addprivatefonts.h"
-#endif
 
 // On wxGTK2 we support printing only if wxWidgets is compiled with gnome_print.
 // We have to force gnome_print support to be linked in static builds of
@@ -355,10 +352,6 @@ bool MyApp::OnInit() {
 
   wxFileSystem::AddHandler(new wxZipFSHandler);
 
-#ifdef WXM_INCLUDE_FONTS
-  addprivatefonts();
-#endif
-
 #ifdef __WXMSW__
   wxString oldWorkingDir = wxGetCwd();
   if (!wxGetEnv(wxS("BUILD_DIR"), NULL)) {
@@ -370,27 +363,6 @@ bool MyApp::OnInit() {
 #if wxCHECK_VERSION(3, 1, 1)
   wxString fontPrefix = m_dirstruct.FontDir() + wxS("/");
 
-#ifdef WXM_INCLUDE_FONTS
-  /* Add private Libertine fonts, if they exist */
-  if (wxFileExists(fontPrefix + wxS(LIBERTINE1)))
-    wxFont::AddPrivateFont(fontPrefix + wxS(LIBERTINE1));
-  if (wxFileExists(fontPrefix + wxS(LIBERTINE2)))
-    wxFont::AddPrivateFont(fontPrefix + wxS(LIBERTINE2));
-  if (wxFileExists(fontPrefix + wxS(LIBERTINE3)))
-    wxFont::AddPrivateFont(fontPrefix + wxS(LIBERTINE3));
-  if (wxFileExists(fontPrefix + wxS(LIBERTINE4)))
-    wxFont::AddPrivateFont(fontPrefix + wxS(LIBERTINE4));
-  if (wxFileExists(fontPrefix + wxS(LIBERTINE5)))
-    wxFont::AddPrivateFont(fontPrefix + wxS(LIBERTINE5));
-  if (wxFileExists(fontPrefix + wxS(LIBERTINE6)))
-    wxFont::AddPrivateFont(fontPrefix + wxS(LIBERTINE6));
-  if (wxFileExists(fontPrefix + wxS(LIBERTINE7)))
-    wxFont::AddPrivateFont(fontPrefix + wxS(LIBERTINE7));
-  if (wxFileExists(fontPrefix + wxS(LIBERTINE8)))
-    wxFont::AddPrivateFont(fontPrefix + wxS(LIBERTINE8));
-  if (wxFileExists(fontPrefix + wxS(LIBERTINE9)))
-    wxFont::AddPrivateFont(fontPrefix + wxS(LIBERTINE9));
-#endif
   wxSetWorkingDirectory(oldWorkingDir);
 #endif
 #endif
