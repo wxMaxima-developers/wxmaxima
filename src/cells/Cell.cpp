@@ -948,15 +948,12 @@ void Cell::Unbreak() {
   if (m_isBrokenIntoLines) {
     ResetData();
     m_recalculateWidths = true;
+    m_isBrokenIntoLines = false;
+    // Unbreak the inner cells, too
+    for (Cell &cell : OnInner(this))
+      cell.UnbreakList();
+    SetNextToDraw(m_next);
   }
-
-  m_isBrokenIntoLines = false;
-  SetNextToDraw(m_next);
-
-  // Unbreak the inner cells, too
-  for (Cell &cell : OnInner(this))
-    for (Cell &tmp : OnList(&cell))
-      tmp.Unbreak();
 }
 
 void Cell::UnbreakList() {
