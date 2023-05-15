@@ -953,6 +953,8 @@ wxColor Configuration::EditorBackgroundColor() {
 }
 
 void Configuration::NotifyOfCellRedraw(const Cell *cell) {
+  if(!GetDebugmode())
+    return;
   if (!m_cellRedrawTrace || !cell)
     return;
   // This operation is fast and doesn't allocate after the configuration
@@ -961,6 +963,8 @@ void Configuration::NotifyOfCellRedraw(const Cell *cell) {
 }
 
 void Configuration::ClearAndEnableRedrawTracing() {
+  if(!GetDebugmode())
+    return;
   if (!m_cellRedrawTrace)
     m_cellRedrawTrace.reset(new CellRedrawTrace);
   else
@@ -968,6 +972,9 @@ void Configuration::ClearAndEnableRedrawTracing() {
 }
 
 void Configuration::ReportMultipleRedraws() {
+  if(!GetDebugmode())
+    return;
+
   if (!m_cellRedrawTrace)
     return;
 
@@ -1639,3 +1646,4 @@ const wxString &Configuration::GetStyleName(TextStyle textStyle) {
 wxString Configuration::m_maximaLocation_override;
 wxString Configuration::m_configfileLocation_override;
 std::unordered_map<TextStyle, wxString> Configuration::m_styleNames;
+bool Configuration::m_debugMode = false;

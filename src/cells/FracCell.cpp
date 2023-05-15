@@ -118,11 +118,11 @@ void FracCell::Recalculate(AFontSize fontsize) {
 void FracCell::Draw(wxPoint point) {
   Cell::Draw(point);
   if (DrawThisCell(point)) {
-    wxDC *dc = m_configuration->GetDC();
-    wxPoint num, denom;
-
     if (IsBrokenIntoLines())
       return;
+
+    wxDC *dc = m_configuration->GetDC();
+    wxPoint num, denom;
 
     if (m_inExponent) {
       num = point;

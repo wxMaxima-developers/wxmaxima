@@ -117,6 +117,9 @@ static const wxCmdLineEntryDesc cmdLineDesc[] = {
     {wxCMD_LINE_SWITCH, "", "logtostderr",
      "Log all \"debug messages\" sidebar messages to stderr, too.",
      wxCMD_LINE_VAL_NONE, 0},
+    {wxCMD_LINE_SWITCH, "", "debug",
+     "Enable costly debug checks.",
+     wxCMD_LINE_VAL_NONE, 0},
     {wxCMD_LINE_SWITCH, "", "pipe", "Pipe messages from Maxima to stderr.",
      wxCMD_LINE_VAL_NONE, 0},
     {wxCMD_LINE_SWITCH, "", "exit-on-error",
@@ -318,6 +321,9 @@ bool MyApp::OnInit() {
 
   if (cmdLineParser.Found(wxS("logtostderr")))
     ErrorRedirector::LogToStdErr();
+  
+  if (cmdLineParser.Found(wxS("debug")))
+    Configuration::SetDebugmode();
 
   if (cmdLineParser.Found(wxS("pipe")))
     wxMaxima::PipeToStdout();
@@ -573,6 +579,8 @@ void MyApp::OnFileMenu(wxCommandEvent &ev) {
 	}
       if (ErrorRedirector::LoggingToStdErr())
 	  args.push_back("--logtostderr");
+      if (Configuration::GetDebugmode())
+	  args.push_back("--debug");
       if (wxMaxima::GetPipeToStdout())
 	  args.push_back("--pipe");
       if (wxMaxima::GetExitOnError())

@@ -966,6 +966,10 @@ public:
   bool StyleAffectsColorOnly(TextStyle style) const;
   //! true means: The system's config storage has changed since the configuration has been read
   bool UpdateNeeded();
+  //! Enable costly checks
+  static void SetDebugmode(){m_debugMode = true;}
+  //! Enable costly checks?
+  static bool GetDebugmode(){return m_debugMode;}
 
 private:
   /*! The id of the current configuration
@@ -998,6 +1002,7 @@ private:
   wxSize m_ppi = wxSize(-1, -1);
   mathDisplayMode m_displayMode = display_2d;
   using CellRedrawTrace = std::vector<const Cell*>;
+  static bool m_debugMode;
   long m_wizardTab;
   bool m_usePartialForDiff;
   bool m_maximaUsesHhtmlBrowser;
