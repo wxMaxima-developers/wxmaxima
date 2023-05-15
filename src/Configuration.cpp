@@ -985,6 +985,7 @@ void Configuration::ReportMultipleRedraws() {
   const Cell *prev = {};
   for (auto *cell : *m_cellRedrawTrace) {
     if (prev != cell) {
+      wxASSERT(counter <= 1);
       if (counter > 1)
         wxLogMessage(
 		     "Bug: %i redraws in one screen refresh for a cell reading \"%s\"",
