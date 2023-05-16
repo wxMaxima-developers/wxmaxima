@@ -575,13 +575,14 @@ void EditorCell::Recalculate(AFontSize fontsize) {
 
   m_numberOfLines = 1;
 
-  for (const auto &textSnippet : m_styledText) {
+  for (auto &textSnippet : m_styledText) {
     if ((textSnippet.GetText().StartsWith(wxS('\n')) ||
          (textSnippet.GetText().StartsWith(wxS('\r'))))) {
       m_numberOfLines++;
       linewidth = textSnippet.GetIndentPixels();
     } else {
       dc->GetTextExtent(textSnippet.GetText(), &tokenwidth, &tokenheight);
+      textSnippet.SetWidth(tokenwidth);
       linewidth += tokenwidth;
       width = wxMax(width, linewidth);
     }
