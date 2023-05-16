@@ -826,7 +826,7 @@ void EditorCell::Draw(wxPoint point) {
     wxPoint TextCurrentPoint = TextStartingpoint;
     int lastStyle = -1;
     int lastIndent = 0;
-    for (auto textSnippet : m_styledText) {
+    for (auto &textSnippet : m_styledText) {
       auto &TextToDraw = textSnippet.GetText();
       int width, height;
 
