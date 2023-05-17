@@ -1,4 +1,4 @@
-# Current
+# 23.05.1
  * Got rid of some compiler and cppcheck warnings
  * Big performance improvements
  * A "maxima versus typical programming languages" tutorial.

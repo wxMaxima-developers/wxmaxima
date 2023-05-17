@@ -10374,7 +10374,7 @@ void wxMaxima::TriggerEvaluation() {
           m_worksheet->ScrollToCaret();
         }
       }
-
+const
       m_worksheet->SetWorkingGroup(tmp);
       tmp->GetPrompt()->SetValue(m_lastPrompt);
       tmp->ResetSize();
