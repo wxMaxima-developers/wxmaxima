@@ -238,7 +238,7 @@ void GenWizPanel::NewWizard(
     
     m_topicButtonID0 = wxWindow::NewControlId(m_manualKeywords.size());
     int id = m_topicButtonID0;
-    for (auto i : m_manualKeywords) {
+    for (const auto &i : m_manualKeywords) {
       wxButton *button = new wxButton(
 				      descriptionpane, id, wxString::Format(_("Help on %s"), i.first));
       pageSizer->Add(button, wxSizerFlags(0).Expand());
@@ -315,7 +315,7 @@ wxString GenWizPanel::GetHelpKeyword(wxWindowID ID) {
   ID -= m_topicButtonID0;
   if (static_cast<unsigned>(ID) >= m_manualKeywords.size())
     return wxEmptyString;
-  for (auto i : m_manualKeywords) {
+  for (const auto &i : m_manualKeywords) {
     if (ID-- == 0)
       return i.first;
   }

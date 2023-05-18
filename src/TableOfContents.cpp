@@ -280,12 +280,12 @@ void TableOfContents::UpdateDisplay() {
 
   // Create a wxArrayString containing all section/chapter/... titles we want
   // to display
-  for (unsigned int i = 0; i < m_structure.size(); i++) {
+  for (const auto &i: m_structure) {
     // Indentation further reduces the screen real-estate. So it is to be used
     // sparingly. But we should perhaps add at least a little bit of it to make
     // the list more readable.
     int tocDepth = 0;
-    switch (m_structure[i]->GetGroupType()) {
+    switch (i->GetGroupType()) {
     case GC_TYPE_TITLE:
       tocDepth = 0;
       break;
@@ -312,10 +312,10 @@ void TableOfContents::UpdateDisplay() {
     if (m_configuration->TocDepth() <= tocDepth)
       continue;
 
-    wxString curr = TocEntryString(m_structure[i]);
+    wxString curr = TocEntryString(i);
 
     if (m_regex->Matches(curr)) {
-      m_displayedGroupCells.push_back(m_structure[i]);
+      m_displayedGroupCells.push_back(i);
     }
   }
 
@@ -371,7 +371,7 @@ void TableOfContents::UpdateDisplay() {
     displayedCells_dndOrder = m_displayedGroupCells;
 
   wxArrayString items;
-  for (auto i : displayedCells_dndOrder)
+  for (const auto &i : displayedCells_dndOrder)
     items.Add(TocEntryString(i));
   // Work around a wxWidgets bug: items==m_items_old if items is empty and
   // m_items_old isn't.

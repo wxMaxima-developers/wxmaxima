@@ -100,9 +100,8 @@ void Variablespane::OnKey(wxKeyEvent &event) {
 
       if (!selectedRows.IsEmpty()) {
         int offset = 0;
-        for (wxArrayInt::const_iterator it = selectedRows.begin();
-             it != selectedRows.end(); ++it) {
-          m_grid->DeleteRows(*it - offset);
+        for (const auto &i: selectedRows) {
+          m_grid->DeleteRows(i - offset);
           offset++;
         }
       } else {
@@ -330,14 +329,14 @@ wxArrayString Variablespane::GetVarnames() {
 
 wxString Variablespane::InvertCase(wxString var) {
   wxString retval;
-  for (wxString::const_iterator it = var.begin(); it != var.end(); ++it) {
-    if (wxIsupper(*it))
-      retval += wxString(*it).Lower();
+  for (auto const &i: var) {
+    if (wxIsupper(i))
+      retval += wxString(i).Lower();
     else {
-      if (wxIslower(*it))
-        retval += wxString(*it).Upper();
+      if (wxIslower(i))
+        retval += wxString(i).Upper();
       else
-        retval += *it;
+        retval += i;
     }
   }
   return retval;
@@ -412,8 +411,8 @@ wxString Variablespane::EscapeVarname(wxString var) {
 }
 
 bool Variablespane::IsValidVariable(wxString var) {
-  for (wxString::const_iterator it = var.begin(); it != var.end(); ++it) {
-    if (!wxIsprint(*it))
+  for (const auto &i: var) {
+    if (!wxIsprint(i))
       return false;
   }
 
