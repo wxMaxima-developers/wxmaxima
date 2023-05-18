@@ -1154,14 +1154,6 @@ private:
     draws its sub-cells, but didn't remove them from the list of cells to draw
     after this cell has been drawn.
   */
-  bool m_saveUntitled;
-  bool m_cursorJump;
-  bool m_numpadEnterEvaluates;
-  bool m_saveImgFileName;
-  /*! A vector containing pointers to all cells the current draw command hit
-
-    Only used in debug mode. There it is  in order to 
-   */
   std::unique_ptr<CellRedrawTrace> m_cellRedrawTrace;
   wxString m_documentclass;
   wxString m_documentclassOptions;

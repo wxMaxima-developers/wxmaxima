@@ -2042,7 +2042,7 @@ void wxMaximaFrame::ReReadConfig() {
       }
     }
 #endif
-  for(auto window: m_topLevelWindows)
+  for(auto &window: m_topLevelWindows)
     {
       window->ReadConfig();
     }

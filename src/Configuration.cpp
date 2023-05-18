@@ -868,7 +868,7 @@ bool Configuration::HideMarkerForThisMessage(wxString message) {
 //TODO: Don't underline the section number of titles
 void Configuration::MakeStylesConsistent()
 {
-  for(auto style : GetCodeStylesList())
+  for(const auto &style : GetCodeStylesList())
     {
       m_styles[style].SetFamily(GetStyle(TS_CODE_DEFAULT)->GetFamily());
       m_styles[style].SetEncoding(GetStyle(TS_CODE_DEFAULT)->GetEncoding());
@@ -883,7 +883,7 @@ void Configuration::MakeStylesConsistent()
       m_styles[style].CantChangeFontVariant(true);
     }
 
-  for(auto style : GetMathStylesList())
+  for(const auto &style : GetMathStylesList())
     {
       if((style != TS_ASCIIMATHS) && (style != TS_TEXT))
 	{
@@ -895,7 +895,7 @@ void Configuration::MakeStylesConsistent()
 	}
     }
 
-  for(auto style : GetColorOnlyStylesList())
+  for(const auto &style : GetColorOnlyStylesList())
     {
       m_styles[style].SetFamily(GetStyle(TS_CODE_DEFAULT)->GetFamily());
       m_styles[style].SetEncoding(GetStyle(TS_CODE_DEFAULT)->GetEncoding());

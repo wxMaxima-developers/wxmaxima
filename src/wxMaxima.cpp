@@ -1530,7 +1530,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
           wxCommandEventHandler(wxMaxima::OnUnsavedDocument));
   Connect(EventIDs::menu_insert_image, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::InsertMenu), NULL, this);
-  for(auto sidebar: GetSidebarNames())
+  for(const auto &sidebar: GetSidebarNames())
     Connect(sidebar.first, wxEVT_MENU,
 	    wxCommandEventHandler(wxMaxima::ShowPane));
   Connect(EventIDs::menu_pane_toolbar, wxEVT_MENU,
@@ -4978,9 +4978,8 @@ void wxMaxima::OnIdle(wxIdleEvent &event) {
     m_newStatusText = false;
 
     wxString toolTip;
-    for(size_t i = 0; i < m_statusTextHistory.size();i++)
-      if(!m_statusTextHistory[i].IsEmpty()) toolTip +=
-					      m_statusTextHistory[i] + "\n";
+    for( auto const &i: m_statusTextHistory)
+      if(!i.IsEmpty()) toolTip += i + "\n";
 
     toolTip += "\nDouble-click in order to toggle the dockable sidebar with all past messages.";
     
