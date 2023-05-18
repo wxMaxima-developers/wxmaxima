@@ -968,13 +968,15 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>UsePartialForDiff</b>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>UsePartialForDiff</b> (bool usePartialForDiff)</td></tr>
 <tr class="separator:aa9a2808e464c9637d37b1024006d5f61"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad47f83d888f67fc6e303b5c0f6faa7ca"><td class="memItemLeft" align="right" valign="top"><a id="ad47f83d888f67fc6e303b5c0f6faa7ca"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>NotifyOfCellRedraw</b> (const <a class="el" href="classCell.html">Cell</a> *cell)</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConfiguration.html#ad47f83d888f67fc6e303b5c0f6faa7ca">NotifyOfCellRedraw</a> (const <a class="el" href="classCell.html">Cell</a> *cell)</td></tr>
+<tr class="memdesc:ad47f83d888f67fc6e303b5c0f6faa7ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Record that this cell has been drawn to <a class="el" href="classConfiguration.html#a295a632df3661ad823bd4f8b604e6224" title="Report if a cell has been redrawn 2 or more times during a simple Draw() command.">ReportMultipleRedraws()</a> <br /></td></tr>
 <tr class="separator:ad47f83d888f67fc6e303b5c0f6faa7ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2950b05485909a73ed76ae7f8d1aed63"><td class="memItemLeft" align="right" valign="top"><a id="a2950b05485909a73ed76ae7f8d1aed63"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>ClearAndEnableRedrawTracing</b> ()</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConfiguration.html#a2950b05485909a73ed76ae7f8d1aed63">ClearAndEnableRedrawTracing</a> ()</td></tr>
+<tr class="memdesc:a2950b05485909a73ed76ae7f8d1aed63"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear the memory of <a class="el" href="classConfiguration.html#a295a632df3661ad823bd4f8b604e6224" title="Report if a cell has been redrawn 2 or more times during a simple Draw() command.">ReportMultipleRedraws()</a> <br /></td></tr>
 <tr class="separator:a2950b05485909a73ed76ae7f8d1aed63"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a295a632df3661ad823bd4f8b604e6224"><td class="memItemLeft" align="right" valign="top"><a id="a295a632df3661ad823bd4f8b604e6224"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>ReportMultipleRedraws</b> ()</td></tr>
+<tr class="memitem:a295a632df3661ad823bd4f8b604e6224"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConfiguration.html#a295a632df3661ad823bd4f8b604e6224">ReportMultipleRedraws</a> ()</td></tr>
+<tr class="memdesc:a295a632df3661ad823bd4f8b604e6224"><td class="mdescLeft">&#160;</td><td class="mdescRight">Report if a cell has been redrawn 2 or more times during a simple Draw() command.  <a href="classConfiguration.html#a295a632df3661ad823bd4f8b604e6224">More...</a><br /></td></tr>
 <tr class="separator:a295a632df3661ad823bd4f8b604e6224"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab2fcb222ca14fbc1b97967829d80c06d"><td class="memItemLeft" align="right" valign="top"><a id="ab2fcb222ca14fbc1b97967829d80c06d"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConfiguration.html#ab2fcb222ca14fbc1b97967829d80c06d">OfferInternalHelpBrowser</a> () const</td></tr>
@@ -1546,6 +1548,26 @@ static std::unordered_map&lt; <a class="el" href="TextStyle_8h.html#a68ac52da612
 
 <p>Reads the style settings. </p>
 <p>If a file name is given the settings are read from a file. </p>
+
+</div>
+</div>
+<a id="a295a632df3661ad823bd4f8b604e6224"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a295a632df3661ad823bd4f8b604e6224">&#9670;&nbsp;</a></span>ReportMultipleRedraws()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Configuration::ReportMultipleRedraws </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Report if a cell has been redrawn 2 or more times during a simple Draw() command. </p>
+<p>Only used in debug mode; If a cell is drawn and then re-drawn in the same draw command this most likely means that a 2D-displayed cell draws its sub-cells, but didn't remove them from the Cell::NextToDraw()-list of cells to draw after this cell has been drawn. </p>
 
 </div>
 </div>
