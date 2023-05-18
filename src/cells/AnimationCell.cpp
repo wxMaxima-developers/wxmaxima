@@ -96,10 +96,8 @@ AnimationCell::AnimationCell(GroupCell *group, const AnimationCell &cell)
   CopyCommonData(cell);
 
   m_images.reserve(cell.Length());
-  for (std::vector<std::shared_ptr<Image>>::const_iterator i =
-	 cell.m_images.begin();
-       i != cell.m_images.end(); ++i)
-    m_images.push_back(std::make_shared<Image>(cell.m_configuration, **i));
+  for (const auto &i: cell.m_images)
+    m_images.push_back(std::make_shared<Image>(cell.m_configuration, *i));
 
   m_framerate = cell.m_framerate;
   m_displayed = cell.m_displayed;
@@ -205,14 +203,14 @@ void AnimationCell::LoadImages(wxArrayString images, bool deleteRead) {
   if (images.GetCount() == 1) {
     LoadImages(images[0]);
   } else
-    for (size_t i = 0; i < images.GetCount(); i++) {
-      if (images[i].EndsWith(wxS(".gnuplot")))
-        gnuplotFilename = images[i];
+    for (auto const &i: images) {
+      if (i.EndsWith(wxS(".gnuplot")))
+        gnuplotFilename = i;
       else {
-        if (images[i].EndsWith(wxS(".data")))
-          dataFilename = images[i];
+        if (i.EndsWith(wxS(".data")))
+          dataFilename = i;
         else {
-          m_images.push_back(std::make_shared<Image>(m_configuration, images[i],
+          m_images.push_back(std::make_shared<Image>(m_configuration, i,
                                                      m_fileSystem, deleteRead));
           if (gnuplotFilename != wxEmptyString) {
             if (m_images.back())
@@ -248,15 +246,13 @@ double AnimationCell::GetHeightList() const {
 }
 
 void AnimationCell::SetMaxWidth(double width) {
-  for (std::vector<std::shared_ptr<Image>>::iterator i = m_images.begin();
-       i != m_images.end(); i++)
-    (*i)->SetMaxWidth(width);
+  for (auto &i: m_images)
+    (*i).SetMaxWidth(width);
 }
 
 void AnimationCell::SetMaxHeight(double height) {
-  for (std::vector<std::shared_ptr<Image>>::iterator i = m_images.begin();
-       i != m_images.end(); i++)
-    (*i)->SetMaxHeight(height);
+  for (auto &i: m_images)
+    (*i).SetMaxHeight(height);
 }
 
 void AnimationCell::Recalculate(AFontSize fontsize) {
@@ -270,18 +266,18 @@ void AnimationCell::Recalculate(AFontSize fontsize) {
   m_height = m_width = 10;
 
   // Make the cell as big as the biggest image plus its border.
-  for (int i = 0; i < Length(); i++) {
-    if (m_images[i] != NULL) {
+  for (auto &i: m_images) {
+    if (i != NULL) {
       if (m_configuration->GetPrinting()) {
-        m_images[i]->Recalculate(m_configuration->GetZoomFactor() *
+        i->Recalculate(m_configuration->GetZoomFactor() *
                                  PRINT_SIZE_MULTIPLIER);
       } else {
-        m_images[i]->Recalculate();
+        i->Recalculate();
       }
-      if (m_width < m_images[i]->m_width + 2 * m_imageBorderWidth)
-        m_width = m_images[i]->m_width + 2 * m_imageBorderWidth;
-      if (m_height < m_images[i]->m_height + 2 * m_imageBorderWidth)
-        m_height = m_images[i]->m_height + 2 * m_imageBorderWidth;
+      if (m_width < i->m_width + 2 * m_imageBorderWidth)
+        m_width = i->m_width + 2 * m_imageBorderWidth;
+      if (m_height < i->m_height + 2 * m_imageBorderWidth)
+        m_height = i->m_height + 2 * m_imageBorderWidth;
     }
   }
   m_center = m_height / 2;
@@ -366,42 +362,42 @@ wxString AnimationCell::ToXML() const {
   wxString gnuplotSourceFiles;
   wxString gnuplotDataFiles;
 
-  for (int i = 0; i < Length(); i++) {
+  for (const auto &i: m_images) {
     wxString basename = m_cellPointers->WXMXGetNewFileName();
     // add the file to memory
-    if (m_images[i]) {
+    if (i) {
       // Anonymize the name of our temp directory for saving
       wxString gnuplotSource;
       wxString gnuplotData;
-      if (m_images[i]->GnuplotData() != wxEmptyString) {
-        wxFileName gnuplotDataFile(m_images[i]->GnuplotData());
+      if (i->GnuplotData() != wxEmptyString) {
+        wxFileName gnuplotDataFile(i->GnuplotData());
         gnuplotData = gnuplotDataFile.GetFullName();
       }
-      if (m_images[i]->GnuplotSource() != wxEmptyString) {
-        wxFileName gnuplotSourceFile(m_images[i]->GnuplotSource());
+      if (i->GnuplotSource() != wxEmptyString) {
+        wxFileName gnuplotSourceFile(i->GnuplotSource());
         gnuplotSource = gnuplotSourceFile.GetFullName();
       }
 
       // Save the gnuplot source, if necessary.
       if (gnuplotSource != wxEmptyString) {
         gnuplotSourceFiles += gnuplotSource + wxS(".gz;");
-        const wxMemoryBuffer data = m_images[i]->GetCompressedGnuplotSource();
+        const wxMemoryBuffer data = i->GetCompressedGnuplotSource();
         if (data.GetDataLen() > 0)
 	  m_configuration->PushFileToSave(gnuplotSource + wxS(".gz"), data);
       }
       if (gnuplotData != wxEmptyString) {
         gnuplotDataFiles += gnuplotData + wxS(".gz;");
-        const wxMemoryBuffer data = m_images[i]->GetCompressedGnuplotData();
+        const wxMemoryBuffer data = i->GetCompressedGnuplotData();
         if (data.GetDataLen() > 0)
 	  m_configuration->PushFileToSave(gnuplotData + wxS(".gz"), data);
       }
 
-      if (m_images[i]->GetCompressedImage())
-	m_configuration->PushFileToSave(basename + m_images[i]->GetExtension(),
-					m_images[i]->GetCompressedImage());
+      if (i->GetCompressedImage())
+	m_configuration->PushFileToSave(basename + i->GetExtension(),
+					i->GetCompressedImage());
     }
 
-    images += basename + m_images[i]->GetExtension() + wxS(";");
+    images += basename + i->GetExtension() + wxS(";");
   }
 
   wxString flags;
@@ -498,10 +494,10 @@ wxSize AnimationCell::ToGif(wxString file) {
 
   wxImageArray gifFrames;
 
-  for (int i = 0; i < Length(); i++) {
+  for (const auto &i: m_images) {
     wxImage frame;
     // Reduce the frame to at most 256 colors
-    wxQuantize::Quantize(m_images[i]->GetUnscaledBitmap().ConvertToImage(),
+    wxQuantize::Quantize(i->GetUnscaledBitmap().ConvertToImage(),
                          frame);
     // Gif supports only fully transparent or not transparent at all.
     frame.ConvertAlphaToMask();
@@ -523,9 +519,9 @@ wxSize AnimationCell::ToGif(wxString file) {
 }
 
 void AnimationCell::ClearCache() {
-  for (int i = 0; i < Length(); i++)
-    if (m_images[i] != NULL)
-      m_images[i]->ClearCache();
+  for (auto &i: m_images)
+    if (i != NULL)
+      i->ClearCache();
 }
 
 AnimationCell::GifDataObject::GifDataObject(const wxMemoryOutputStream &str)
@@ -573,10 +569,10 @@ bool AnimationCell::CopyAnimationToClipboard() {
 
     wxImageArray gifFrames;
 
-    for (int i = 0; i < Length(); i++) {
+    for (auto &i: m_images) {
       wxImage frame;
       // Reduce the frame to at most 256 colors
-      wxQuantize::Quantize(m_images[i]->GetUnscaledBitmap().ConvertToImage(),
+      wxQuantize::Quantize(i->GetUnscaledBitmap().ConvertToImage(),
                            frame);
       // Gif supports only fully transparent or not transparent at all.
       frame.ConvertAlphaToMask();

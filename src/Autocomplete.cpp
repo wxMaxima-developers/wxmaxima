@@ -414,20 +414,19 @@ wxArrayString AutoComplete::CompleteSymbol(wxString partial,
                _("Bug: Autocompletion requested for unknown type of item."));
 
   if (type != tmplte) {
-    for (size_t i = 0; i < m_wordList[type].GetCount(); i++) {
-      if (m_wordList[type][i].StartsWith(partial) &&
-          completions.Index(m_wordList[type][i]) == wxNOT_FOUND)
-        completions.Add(m_wordList[type][i]);
+    for (const auto &i : m_wordList[type]) {
+      if (i.StartsWith(partial) &&
+          completions.Index(i) == wxNOT_FOUND)
+        completions.Add(i);
     }
   } else {
-    for (size_t i = 0; i < m_wordList[type].GetCount(); i++) {
-      wxString templ = m_wordList[type][i];
-      if (templ.StartsWith(partial)) {
-        if (completions.Index(templ) == wxNOT_FOUND)
-          completions.Add(templ);
-        if (templ.SubString(0, templ.Find(wxS("(")) - 1) == partial &&
-            perfectCompletions.Index(templ) == wxNOT_FOUND)
-          perfectCompletions.Add(templ);
+    for (const auto &i: m_wordList[type]) {
+      if (i.StartsWith(partial)) {
+        if (completions.Index(i) == wxNOT_FOUND)
+          completions.Add(i);
+        if (i.SubString(0, i.Find(wxS("(")) - 1) == partial &&
+            perfectCompletions.Index(i) == wxNOT_FOUND)
+          perfectCompletions.Add(i);
       }
     }
   }
@@ -435,11 +434,10 @@ wxArrayString AutoComplete::CompleteSymbol(wxString partial,
   // Add a list of words that were defined on the work sheet but that aren't
   // defined as maxima commands or functions.
   if (type == command) {
-    WorksheetWords::const_iterator it;
-    for (it = m_worksheetWords.begin(); it != m_worksheetWords.end(); ++it) {
-      if (it->first.StartsWith(partial)) {
-        if (completions.Index(it->first) == wxNOT_FOUND) {
-          completions.Add(it->first);
+    for (const auto &it : m_worksheetWords) {
+      if (it.first.StartsWith(partial)) {
+        if (completions.Index(it.first) == wxNOT_FOUND) {
+          completions.Add(it.first);
         }
       }
     }
@@ -481,9 +479,8 @@ void AutoComplete::AddSymbol_nowait(wxString fun, autoCompletionType type) {
     wxString funName = fun.SubString(0, fun.Find(wxS("(")));
     long count = fun.Freq('<');
     size_t i = 0;
-    for (i = 0; i < m_wordList[type].GetCount(); i++) {
-      wxString t = m_wordList[type][i];
-      if (t.StartsWith(funName) && (t.Freq('<') == count))
+    for (const auto &o: m_wordList[type]) {
+      if (o.StartsWith(funName) && (o.Freq('<') == count))
         break;
     }
     if (i == m_wordList[type].GetCount())
