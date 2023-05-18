@@ -896,8 +896,17 @@ public:
   bool UsePartialForDiff() const {return m_usePartialForDiff;}
   void UsePartialForDiff(bool usePartialForDiff)
     {m_usePartialForDiff = usePartialForDiff;}
+  //! Record that this cell has been drawn to ReportMultipleRedraws()
   void NotifyOfCellRedraw(const Cell *cell);
+  //! Clear the memory of ReportMultipleRedraws()
   void ClearAndEnableRedrawTracing();
+  /*! Report if a cell has been redrawn 2 or more times during a simple Draw() command
+    
+    Only used in debug mode; If a cell is drawn and then re-drawn in the same draw
+    command this most likely means that a 2D-displayed cell draws its sub-cells,
+    but didn't remove them from the Cell::NextToDraw()-list of cells to draw
+    after this cell has been drawn.
+  */
   void ReportMultipleRedraws();
   //! If we decide that the HTML browser in the sidebar doesn't work for every platform...
   bool OfferInternalHelpBrowser() const;
@@ -1138,6 +1147,21 @@ private:
   bool m_cursorJump;
   bool m_numpadEnterEvaluates;
   bool m_saveImgFileName;
+  /*! A vector containing pointers to all cells the current draw command hit
+
+    Only used in debug mode. There it is used in order to determine if any
+    cell is drawn twice - which most likely means that a 2D-displayed cell
+    draws its sub-cells, but didn't remove them from the list of cells to draw
+    after this cell has been drawn.
+  */
+  bool m_saveUntitled;
+  bool m_cursorJump;
+  bool m_numpadEnterEvaluates;
+  bool m_saveImgFileName;
+  /*! A vector containing pointers to all cells the current draw command hit
+
+    Only used in debug mode. There it is  in order to 
+   */
   std::unique_ptr<CellRedrawTrace> m_cellRedrawTrace;
   wxString m_documentclass;
   wxString m_documentclassOptions;
