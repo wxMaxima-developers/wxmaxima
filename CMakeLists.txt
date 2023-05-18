@@ -14,7 +14,7 @@ if(WIN32)
     enable_language(RC)
 endif()
 
-set(VERSION 23.05.0)
+set(VERSION 23.05.0-DevelopmentSnapshot)
 set(GITVERSION ${VERSION})
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
