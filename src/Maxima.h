@@ -99,9 +99,6 @@ private:
 
   wxTimer m_stringEndTimer{this};
   wxTimer m_readIdleTimer{this};
-  static wxChar m_nullChar;
-  static wxChar m_ascii10;
-  static wxChar m_ascii13;
 };
 
 class MaximaEvent : public wxEvent

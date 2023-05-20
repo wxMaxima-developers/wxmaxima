@@ -151,10 +151,10 @@ void Maxima::ReadSocket() {
   do
     {
       ch = m_textInput.GetChar();
-      if(ch == m_ascii10)
-	ch = m_ascii13;
-      if(ch != m_nullChar)
-	m_socketInputData.append(ch);
+      if(ch == wxS('\r'))
+        ch = wxS('\n');
+      if(ch != wxS('\0'))
+        m_socketInputData.append(ch);
     }  while (m_socket->LastReadCount() > 0);
   {
     MaximaEvent *event = new MaximaEvent(MaximaEvent::READ_PENDING, this);
@@ -193,7 +193,3 @@ wxEvent *MaximaEvent::Clone() const {
   event->SetData(GetData());
   return event.release();
 }
-
-wxChar Maxima::m_nullChar= wxS('\0');
-wxChar Maxima::m_ascii10 = wxS('\r');
-wxChar Maxima::m_ascii13 = wxS('\n');
