@@ -150,7 +150,7 @@
   t
   )
 
-;; Muffles compiler-notes where we don't wnat to drown in debug messages.
+;; Muffles compiler-notes where we don't want to drown in debug messages.
 (defmacro no-warning (form)
   #+sbcl `(handler-bind
 	      ((style-warning #'muffle-warning)
@@ -725,7 +725,7 @@ Submit bug reports by following the 'New issue' link on that page."))
 (wx-defprop $%kappa "<g>%kappa</g>" wxxmlword)
 (wx-defprop $kappa "<g>kappa</g>" wxxmlword)
 (wx-defprop $%lambda "<g>%lambda</g>" wxxmlword)
-(wx-defprop lambda "<g>lambda</g>" wxxmlword) ; No preceeding "$" required, see https://sourceforge.net/p/maxima/mailman/message/37764771/
+(wx-defprop lambda "<g>lambda</g>" wxxmlword) ; No preceding "$" required, see https://sourceforge.net/p/maxima/mailman/message/37764771/
 (wx-defprop $%mu "<g>%mu</g>" wxxmlword)
 (wx-defprop $mu "<g>mu</g>" wxxmlword)
 (wx-defprop $%nu "<g>%nu</g>" wxxmlword)

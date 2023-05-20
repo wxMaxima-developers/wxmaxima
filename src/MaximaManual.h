@@ -83,7 +83,7 @@ public:
 
   ~MaximaManual();
 private:
-  //! Add our aliasses to a list of anchors
+  //! Add our aliases to a list of anchors
   static void AnchorAliasses(HelpFileAnchors &anchors);
   //! Scans the maxima directory for a list of loadable files
   class GetHTMLFiles : public wxDirTraverser
