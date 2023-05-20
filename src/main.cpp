@@ -242,7 +242,7 @@ bool MyApp::OnInit() {
       m_locale->Init(lang);
 #endif
     }
-    
+
     // Create the temporary directory if it doesn't exist
     // On some platforms, the temporary directory has an application-specific
     // path element prepended doesn't exist by default in the temporary
@@ -260,7 +260,7 @@ bool MyApp::OnInit() {
 
     if (wxLocale::IsAvailable(lang))
       wxTranslations::Get()->SetLanguage(lang);
-    
+
     // Do we reckon we improve something if we set maxima's language, as well?
     if ((wxLocale::IsAvailable(lang)) && (lang != wxLANGUAGE_DEFAULT)) {
       // Set maxima's language, as well.
@@ -321,7 +321,7 @@ bool MyApp::OnInit() {
 
   if (cmdLineParser.Found(wxS("logtostderr")))
     ErrorRedirector::LogToStdErr();
-  
+
   if (cmdLineParser.Found(wxS("debug")))
     Configuration::SetDebugmode();
 
@@ -349,6 +349,10 @@ bool MyApp::OnInit() {
 
   if (cmdLineParser.Found(wxS("wxmathml-lisp"), &arg)) {
     wxMathML::Set_MathML_Filename(arg);
+  }
+
+  if (cmdLineParser.Found(wxS("m"), &arg)) {
+    wxMaxima::Set_Maxima_Commandline_Filename(arg);
   }
 
   wxImage::AddHandler(new wxPNGHandler);
@@ -555,7 +559,7 @@ void MyApp::OnFileMenu(wxCommandEvent &ev) {
       // On the mac the "File/New" menu item by default opens a new window
       // instead of reusing the old one.
       NewWindow(file);
-    } 
+    }
   }
   else if(ev.GetId() == wxID_NEW) {
       // Mac computers insist that all instances of a new application need to
@@ -614,7 +618,7 @@ void MyApp::OnFileMenu(wxCommandEvent &ev) {
       for(size_t i = 0; i< args.size() + 1; i++)
 	command += wxString::FromUTF8(args_array.get()[i]) + "\n";
       command.Trim();
-      wxLogMessage(_("Starting a new wxMaxima process as: %s"), command.mb_str()); 
+      wxLogMessage(_("Starting a new wxMaxima process as: %s"), command.mb_str());
     }
   }
   else if(ev.GetId() == wxID_PREFERENCES) {
@@ -623,7 +627,7 @@ void MyApp::OnFileMenu(wxCommandEvent &ev) {
     configW->Centre(wxBOTH);
     if (configW->ShowModal() == wxID_OK)
       configW->WriteSettings();
-    
+
     configW->Destroy();
     wxConfig::Get()->Flush();
   }

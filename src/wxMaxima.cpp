@@ -367,7 +367,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
 #endif
 
   StatusMaximaBusy(StatusBar::MaximaStatus::disconnected);
-  
+
   m_statusBar->GetNetworkStatusElement()->Connect(
 						  wxEVT_LEFT_DCLICK,
 						  wxCommandEventHandler(wxMaxima::NetworkDClick),
@@ -378,7 +378,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
 						 wxCommandEventHandler(wxMaxima::MaximaDClick),
 						 NULL,
 						 this);
-  
+
   m_statusBar->GetStatusTextElement()->Connect(
 					       wxEVT_LEFT_DCLICK,
 					       wxCommandEventHandler(wxMaxima::StatusMsgDClick),
@@ -2301,7 +2301,7 @@ bool wxMaxima::StartServer() {
 bool wxMaxima::StartMaxima(bool force) {
   if (!StartServer())
     return false;
-  
+
   if ((m_process != NULL) || (m_pid >= 0) || (m_client))
     {
       m_unsuccessfulConnectionAttempts = 0;
@@ -2309,7 +2309,7 @@ bool wxMaxima::StartMaxima(bool force) {
       if(m_process != NULL)
 	m_process->Detach();
     }
-  
+
   wxString dirname;
   {
     wxString filename = m_worksheet->m_currentFile;
@@ -2386,7 +2386,7 @@ bool wxMaxima::StartMaxima(bool force) {
 	membuf.AppendByte(static_cast<char>(urd(m_configuration.m_eng)));
       m_maximaAuthString = wxBase64Encode(membuf);
       environment["MAXIMA_AUTH_CODE"] = m_maximaAuthString;
-      
+
       env->env = environment;
       if (wxExecute(command, wxEXEC_ASYNC | wxEXEC_MAKE_GROUP_LEADER, m_process,
                     env) <= 0) {
@@ -2752,7 +2752,7 @@ void wxMaxima::OnProcessEvent(wxProcessEvent &event) {
   }
   else
     StartMaxima(true);
-  
+
   StatusMaximaBusy(StatusBar::MaximaStatus::disconnected);
   UpdateToolBar();
   UpdateMenus();
@@ -2893,7 +2893,7 @@ bool wxMaxima::ParseNextChunkFromMaxima(wxString &data) {
 void wxMaxima::ReadMiscText(const wxString &data) {
   if(!m_maximaAuthenticated)
     return;
-  
+
   auto style = MC_TYPE_ASCIIMATHS;
 
   if (data.StartsWith(wxS("(%")))
@@ -3043,7 +3043,7 @@ void wxMaxima::ReadManualTopicNames(wxString &data) {
 	wxXmlNode *node = xmldoc.GetRoot();
 	while ((node) && (node->GetName() != wxS("html-manual-keywords")))
 	  node = node->GetNext();
-	
+
 	if (node == NULL) {
 	  wxLogMessage(_("No topics found in topic tag"));
 	} else {
@@ -3136,7 +3136,7 @@ void wxMaxima::ReadSuppressedOutput(wxString &data) {
 	  LoggingMessageBox(
 			    _("Could not make sure that we talk to the maxima we started => "
 			      "discarding all data it sends."),
-			    _("Warning"), wxOK | wxICON_EXCLAMATION);	    
+			    _("Warning"), wxOK | wxICON_EXCLAMATION);
 	  m_discardAllData = true;
 	}
       }
@@ -3152,7 +3152,7 @@ void wxMaxima::ReadSuppressedOutput(wxString &data) {
 	LoggingMessageBox(
 			  _("Could not make sure that we talk to the maxima we started => "
 			    "discarding all data it sends."),
-			  _("Warning"), wxOK | wxICON_EXCLAMATION);	    
+			  _("Warning"), wxOK | wxICON_EXCLAMATION);
 	m_discardAllData = true;
       }
 
@@ -3206,7 +3206,7 @@ void wxMaxima::ReadVariables(wxString &data) {
 	  wxXmlNode *vars = node->GetChildren();
 	  while (vars != NULL) {
 	    wxXmlNode *var = vars->GetChildren();
-	    
+
 	    wxString name;
 	    wxString value;
 	    bool bound = false;
@@ -4567,7 +4567,14 @@ void wxMaxima::SetupVariables() {
 ///--------------------------------------------------------------------------------
 
 wxString wxMaxima::GetCommand(bool params) {
-  wxString command = m_configuration.MaximaLocation();
+  wxString command;
+  if (Get_Maxima_Commandline_Filename().IsEmpty()) {
+    command = m_configuration.MaximaLocation();
+    wxLogMessage(_("Using configured Maxima path."));
+  } else {
+    command = Get_Maxima_Commandline_Filename();
+    wxLogMessage(_("Using Maxima path from command line."));
+  }
 
 #if defined(__WXOSX__)
   if (command.EndsWith(wxS(".app"))) // if pointing to a Maxima.app
@@ -4636,7 +4643,7 @@ void wxMaxima::LaunchHelpBrowser(wxString uri) {
       // see https://docs.wxwidgets.org/3.0/classwx_mime_types_manager.html
       auto *manager = wxTheMimeTypesManager;
       wxFileType *filetype = manager->GetFileTypeFromExtension("html");
-      
+
       wxString command = filetype->GetOpenCommand(uri);
       if(!command.IsEmpty())
 	{
@@ -4828,7 +4835,7 @@ bool wxMaxima::InterpretDataFromMaxima() {
   wxTimer maxGuiFreezeTime;
   wxStopWatch stopWatch;
   long startlength = m_currentOutput.Length();
-    
+
   while ((length_old != m_currentOutput.Length()) && (stopWatch.Time() < 250)) {
     if (m_currentOutput.StartsWith("\n<"))
       m_currentOutput = m_currentOutput.Right(m_currentOutput.Length() - 1);
@@ -4872,7 +4879,7 @@ bool wxMaxima::InterpretDataFromMaxima() {
 void wxMaxima::OnIdle(wxIdleEvent &event) {
   // Make sure everybody else who wants to process idle events gets this one.
   event.Skip();
-  
+
   // Update the info what maxima is currently doing
   UpdateStatusMaximaBusy();
 
@@ -4902,11 +4909,11 @@ void wxMaxima::OnIdle(wxIdleEvent &event) {
 
     event.RequestMore();
     return;
-  }    
-  
+  }
+
   if (m_worksheet == NULL)
     return;
-  
+
   if(InterpretDataFromMaxima())
     {
       event.RequestMore();
@@ -4946,7 +4953,7 @@ void wxMaxima::OnIdle(wxIdleEvent &event) {
       event.RequestMore();
       return;
     }
-    
+
     if (m_worksheet->RedrawIfRequested())
       {
 	event.RequestMore();
@@ -4974,7 +4981,7 @@ void wxMaxima::OnIdle(wxIdleEvent &event) {
 
   if ((m_newStatusText) && (!m_worksheet->StatusTextHas())) {
     m_statusBar->SetStatusText(m_leftStatusText);
-    
+
     m_newStatusText = false;
 
     wxString toolTip;
@@ -4982,9 +4989,9 @@ void wxMaxima::OnIdle(wxIdleEvent &event) {
       if(!i.IsEmpty()) toolTip += i + "\n";
 
     toolTip += "\nDouble-click in order to toggle the dockable sidebar with all past messages.";
-    
+
     m_statusBar->GetStatusTextElement()->SetToolTip(toolTip);
-    
+
     event.RequestMore();
     return;
   }
@@ -5894,16 +5901,16 @@ void wxMaxima::FileMenu(wxCommandEvent &event) {
   else if(event.GetId() == wxID_OPEN) {
     if (SaveNecessary()) {
       int close = SaveDocumentP();
-      
+
       if (close == wxID_CANCEL)
         return;
-      
+
       if (close == wxID_YES) {
         if (!SaveFile())
           return;
       }
     }
-    
+
     wxString file =
       wxFileSelector(_("Open"), m_lastPath, wxEmptyString, wxEmptyString,
 		     _("All openable types (*.wxm, *.wxmx, *.mac, *.out, "
@@ -5913,7 +5920,7 @@ void wxMaxima::FileMenu(wxCommandEvent &event) {
 		       "Xmaxima session (*.out)|*.out|"
 		       "xml from broken .wxmx (*.xml)|*.xml"),
 		     wxFD_OPEN);
-    
+
     if (!file.empty()) {
       // On the mac the "File/New" menu item by default opens a new window instead of
       // reusing the old one.
@@ -5926,7 +5933,7 @@ void wxMaxima::FileMenu(wxCommandEvent &event) {
       OpenFile(file, wxEmptyString);
 #endif
     }
-  } 
+  }
   else if(event.GetId() == wxID_SAVEAS) {
     forceSave = true;
     m_fileSaved = false;
@@ -6025,7 +6032,7 @@ void wxMaxima::FileMenu(wxCommandEvent &event) {
             StatusExportFinished();
         }
         StartAutoSaveTimer();
-	
+
         wxConfig::Get()->Write(wxS("defaultExportExt"), fileExt);
       }
     }
@@ -6045,7 +6052,7 @@ void wxMaxima::FileMenu(wxCommandEvent &event) {
 				   _("Maxima package (*.mac)|*.mac"), wxFD_OPEN);
     if (file != wxEmptyString)
       OpenFile(file, wxS("batch"));
-  } 
+  }
   else if(event.GetId() == ToolBar::tb_animation_startStop) {
     if (m_worksheet->CanAnimate()) {
       AnimationCell *animation =
@@ -6182,8 +6189,8 @@ void wxMaxima::EditMenu(wxCommandEvent &event) {
     argv[0] = commandnamebuffer.data();
     argv[1] = urlbuffer.data();
     argv[2] = NULL;
-    
-    wxLogMessage(_("Running %s on the file %s: "), commandnamebuffer, urlbuffer);    
+
+    wxLogMessage(_("Running %s on the file %s: "), commandnamebuffer, urlbuffer);
     m_gnuplotProcess = new wxProcess(this, m_gnuplot_process_id);
     if (wxExecute(argv, wxEXEC_ASYNC | wxEXEC_SHOW_CONSOLE,
                   m_gnuplotProcess) < 0)
@@ -8540,7 +8547,7 @@ void wxMaxima::SimplifyMenu(wxCommandEvent &event) {
       wxString cmd = wxS("trigsimp(") + expr + wxS(");");
       MenuCommand(cmd);
     } }
-  else if((event.GetId() == EventIDs::button_trigexpand) || 
+  else if((event.GetId() == EventIDs::button_trigexpand) ||
 	  (event.GetId() == EventIDs::menu_trigexpand)){ {
       wxString cmd = wxS("trigexpand(") + expr + wxS(");");
       MenuCommand(cmd);
@@ -9449,7 +9456,7 @@ bool wxMaxima::SaveOnClose() {
 	return true;
     }
     int close = SaveDocumentP();
-    
+
     if (close == wxID_CANCEL)
       return false;
     else {
@@ -9475,7 +9482,7 @@ void wxMaxima::OnClose(wxCloseEvent &event) {
     if(m_process)
       m_process->Detach();
   }
-  
+
   SuppressErrorDialogs blocker;
   // We have saved the file and will close now => No need to have the
   // timer around any longer.
@@ -10954,7 +10961,7 @@ int wxMaxima::SaveDocumentP() {
         return wxID_NO;
     }
   }
-  
+
 #if defined __WXOSX__
     file = GetTitle();
 #else
@@ -11080,3 +11087,4 @@ wxString wxMaxima::m_firstPrompt(wxS("(%i1) "));
 wxMaxima::ParseFunctionHash wxMaxima::m_knownXMLTags;
 wxMaxima::VarReadFunctionHash wxMaxima::m_variableReadActions;
 wxMaxima::VarUndefinedFunctionHash wxMaxima::m_variableUndefinedActions;
+wxString wxMaxima::maxima_command_line_filename;

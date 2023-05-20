@@ -1,5 +1,6 @@
 # Current development version
  * Update Russian translation.
+ * Process the command line option --maxima=<str>.
 
 # 23.05.0
  * Got rid of some compiler and cppcheck warnings

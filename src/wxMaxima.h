@@ -119,9 +119,9 @@ public:
     MAXIMA_STDOUT_POLL_ID
   };
 
-#ifdef wxHAS_POWER_EVENTS 
+#ifdef wxHAS_POWER_EVENTS
   void OnPowerEvent(wxPowerEvent &event);
-#endif 
+#endif
 
   //! Is triggered when a timer this class is responsible for requires
   void OnTimerEvent(wxTimerEvent &event);
@@ -185,7 +185,15 @@ public:
     long m_patchlevel;
   };
 
+  //! Use this maxima command (from a command line option) instead of the configured path
+  static void Set_Maxima_Commandline_Filename(wxString filename) {maxima_command_line_filename = filename;}
+  //! The maxima command, if we use the --maxima=<str> command. If empty we use the configured path, not a command line option --maxima=<str>.
+  static const wxString Get_Maxima_Commandline_Filename() {return maxima_command_line_filename;}
+
+
 private:
+  //! If we use the command line option --maxima=<str>, this variable is not-empty and contains its name
+  static wxString maxima_command_line_filename;
   bool m_maximaAuthenticated = false;
   bool m_discardAllData = false;
   wxString m_maximaAuthString;
@@ -250,6 +258,7 @@ private:
   //! The buffer all text from maxima is stored in before converting it to a wxString.
   wxMemoryBuffer m_uncompletedChars;
 
+
 protected:
   //! Invoke our standard wizard that generates maxima commands
   void CommandWiz(const wxString &title,
@@ -300,7 +309,7 @@ protected:
 
   //! Show the help for Maxima
   void ShowMaximaHelp(wxString = {});
-  
+
   //! Show the help for Maxima (without handling of anchors).
   void ShowMaximaHelpWithoutAnchor();
 
@@ -714,7 +723,7 @@ protected:
   };
   /*! The server maxima connects to as client
 
-    The destructor of the server causes 
+    The destructor of the server causes
     crashes if there are still pending events.
     Instead we need to call destroy.
   */
