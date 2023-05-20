@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['23_2e05_2e1_3204',['23.05.1',['../md_NEWS.html',1,'']]]
+  ['building_20wxmaxima_20from_20source_3204',['Building wxMaxima from source',['../md_Compiling.html',1,'']]]
 ];
