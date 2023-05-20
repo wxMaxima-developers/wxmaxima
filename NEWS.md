@@ -1,4 +1,7 @@
-# 23.05.1
+# Current development version
+ * Update Russian translation.
+
+# 23.05.0
  * Got rid of some compiler and cppcheck warnings
  * Big performance improvements
  * A "maxima versus typical programming languages" tutorial.
