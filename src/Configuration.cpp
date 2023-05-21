@@ -310,17 +310,6 @@ void Configuration::ResetAllToDefaults(InitOpt options) {
   m_clientWidth = 1024;
   m_clientHeight = 768;
   m_indentMaths = true;
-  if (!(options & InitOpt::temporary)) {
-    if (m_maximaLocation_override != wxEmptyString)
-      m_maximaUserLocation = m_maximaLocation_override;
-    else
-      {
-	// We don't want all debug messages from searching for maxima pop up
-	// as dialogues if the debug messages sidebar still doesn't exist.
-	wxLogNull suppress;
-	m_maximaUserLocation = Dirstructure::Get()->MaximaDefaultLocation();
-      }
-  }
   m_indent = -1;
   m_autoSubscript = 2;
   m_antiAliasLines = true;
@@ -1644,7 +1633,6 @@ const wxString &Configuration::GetStyleName(TextStyle textStyle) {
     return wxm::emptyString;
 }
 
-wxString Configuration::m_maximaLocation_override;
 wxString Configuration::m_configfileLocation_override;
 std::unordered_map<TextStyle, wxString> Configuration::m_styleNames;
 bool Configuration::m_debugMode = false;

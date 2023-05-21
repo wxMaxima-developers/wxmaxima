@@ -576,10 +576,10 @@ void MyApp::OnFileMenu(wxCommandEvent &ev) {
 	  args.push_back("-f");
 	  args.push_back(Configuration::m_configfileLocation_override);
 	}
-      if (Configuration::m_maximaLocation_override != wxEmptyString)
+      if (wxMaxima::Get_Maxima_Commandline_Filename() != wxEmptyString)
 	{
 	  args.push_back("-m");
-	  args.push_back(Configuration::m_maximaLocation_override);
+	  args.push_back(wxMaxima::Get_Maxima_Commandline_Filename());
 	}
       if (ErrorRedirector::LoggingToStdErr())
 	  args.push_back("--logtostderr");

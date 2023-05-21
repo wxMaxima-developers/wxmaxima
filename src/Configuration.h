@@ -179,7 +179,6 @@ public:
 
   ~Configuration();
 
-  static wxString m_maximaLocation_override;
   static wxString m_configfileLocation_override;
 
   using EscCodeContainer = std::unordered_map<wxString, wxString, wxStringHash>;
