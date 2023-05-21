@@ -111,6 +111,9 @@ void IntCell::Recalculate(AFontSize fontsize) {
     m_height = 0;
     m_width = 0;
   } else {
+    m_width = m_signWidth + m_base->GetFullWidth() +
+      wxMax(m_over->GetFullWidth(), m_under->GetFullWidth()) +
+      m_var->GetFullWidth() + Scale_Px(4);
     if (m_intStyle == INT_DEF) {
       m_center = wxMax(m_over->GetHeightList() + Scale_Px(4) +
 		       m_signHeight / 2 - m_signHeight / 3,
