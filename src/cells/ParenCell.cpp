@@ -327,7 +327,7 @@ wxString ParenCell::ToXML() const {
   wxString flags;
   if (HasHardLineBreak())
     flags += wxS(" breakline=\"true\"");
-  return ((m_print) ? _T("<r><p") + flags + wxS(">") + s + _T("</p></r>") : s);
+  return ((m_print) ? wxS("<r><p") + flags + wxS(">") + s + wxS("</p></r>") : s);
 }
 
 bool ParenCell::BreakUp() {
