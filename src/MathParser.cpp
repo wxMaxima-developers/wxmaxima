@@ -1046,7 +1046,7 @@ std::unique_ptr<Cell> MathParser::ParseParenTag(wxXmlNode *node) {
   cell->SetType(m_ParserStyle);
   cell->SetHighlight(m_highlight);
   cell->SetStyle(TS_VARIABLE);
-  if (node->GetAttributes() != NULL)
+  if (node->GetAttribute(wxS("print")) == wxS("no"))
     cell->SetPrint(false);
   ParseCommonAttrs(node, cell);
   return cell;
