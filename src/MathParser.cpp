@@ -723,7 +723,7 @@ std::unique_ptr<Cell> MathParser::ParseDiffTag(wxXmlNode *node) {
 }
 
 std::unique_ptr<Cell> MathParser::ParseSupTag(wxXmlNode *node) {
-  bool matrix = (node->GetAttributes() != NULL);
+  bool matrix = (node->GetAttribute(wxS("mat")) == wxS("true"));
   wxXmlNode *child = node->GetChildren();
   child = SkipWhitespaceNode(child);
 
