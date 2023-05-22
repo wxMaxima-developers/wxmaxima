@@ -239,7 +239,7 @@ void ParenCell::Draw(wxPoint point) {
 wxString ParenCell::ToString() const {
   wxString s;
   if (!m_innerCell)
-    return "()";
+    return wxS("()");
 
   if (!IsBrokenIntoLines()) {
     if (m_print)
