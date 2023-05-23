@@ -357,6 +357,7 @@ bool Worksheet::RedrawIfRequested() {
     m_mouseMotionWas = false;
     redrawIssued = true;
   }
+  
   if (m_fullRedrawRequested) {
     // A redraw of the whole worksheet beginning with a specific cell was requested
 
@@ -369,22 +370,25 @@ bool Worksheet::RedrawIfRequested() {
     m_rectToRefresh.Clear();
     m_rectToRefresh.Clear();
   } else {
-    // A redraw of a worksheet region was requested
-    wxRegionIterator region(m_rectToRefresh);
-    while (region) {
-      wxRect rect = region.GetRect();
+    if(m_rectToRefresh.IsOk())
+      {
+	// A redraw of a worksheet region was requested
+	wxRegionIterator region(m_rectToRefresh);
+	while (region.HaveRects()) {
+	  wxRect rect = region.GetRect();
 
-      // Don't draw rectangles with zero size or height
-      if ((rect.GetWidth() >= 1) && (rect.GetHeight() >= 1)) {
-        CalcScrolledPosition(rect.x, rect.y, &rect.x, &rect.y);
-        RefreshRect(rect);
+	  // Don't draw rectangles with zero size or height
+	  if ((rect.GetWidth() >= 1) && (rect.GetHeight() >= 1)) {
+	    CalcScrolledPosition(rect.x, rect.y, &rect.x, &rect.y);
+	    RefreshRect(rect);
+	  }
+	  redrawIssued = true;
+	  region++;
+	}
       }
-      redrawIssued = true;
-      region++;
-    }
   }
   m_rectToRefresh.Clear();
-
+  
   return redrawIssued;
 }
 
