@@ -117,7 +117,7 @@ private:
   //! Is our window currently active?
   bool m_windowActive;
   //! The rectangle we need to refresh.
-  wxRegion m_rectToRefresh;
+  wxRegion m_regionToRefresh;
   /*! The size of a scroll step
 
     Defines the size of a

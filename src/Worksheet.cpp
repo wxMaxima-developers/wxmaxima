@@ -367,13 +367,16 @@ bool Worksheet::RedrawIfRequested() {
     m_fullRedrawRequested = false;
     m_redrawStart = NULL;
     redrawIssued = true;
-    m_rectToRefresh.Clear();
-    m_rectToRefresh.Clear();
   } else {
-    if(m_rectToRefresh.IsOk())
+    // Ignore regions that we marked for redrawing, but that are outside the
+    // current window
+    m_regionToRefresh.Intersect(m_configuration->GetVisibleRegion());
+
+    // Only try to draw a region if said region still exists
+    if(m_regionToRefresh.IsOk())
       {
 	// A redraw of a worksheet region was requested
-	wxRegionIterator region(m_rectToRefresh);
+	wxRegionIterator region(m_regionToRefresh);
 	while (region.HaveRects()) {
 	  wxRect rect = region.GetRect();
 
@@ -387,7 +390,7 @@ bool Worksheet::RedrawIfRequested() {
 	}
       }
   }
-  m_rectToRefresh.Clear();
+  m_regionToRefresh.Clear();
   
   return redrawIssued;
 }
@@ -617,9 +620,10 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event)) {
         wxPoint upperLeftScreenCorner;
         CalcScrolledPosition(0, 0, &upperLeftScreenCorner.x,
                              &upperLeftScreenCorner.y);
-        m_configuration->SetVisibleRegion(
-					  wxRect(upperLeftScreenCorner,
-						 upperLeftScreenCorner + wxPoint(width, height)));
+	wxRect visibleRegion = wxRect(upperLeftScreenCorner,
+				      upperLeftScreenCorner + wxPoint(width, height));
+
+        m_configuration->SetVisibleRegion(visibleRegion);
         m_configuration->SetWorksheetPosition(GetPosition());
         // Clear the image cache of all cells above or below the viewport.
         if (cellRect.GetTop() >= bottom || cellRect.GetBottom() <= top) {
@@ -4346,8 +4350,8 @@ void Worksheet::OnTimer(wxTimerEvent &event) {
 }
 
 void Worksheet::RequestRedraw(wxRect rect) {
-  if (!m_rectToRefresh.Union(rect))
-    m_rectToRefresh = wxRegion(rect);
+  if (!m_regionToRefresh.Union(rect))
+    m_regionToRefresh = wxRegion(rect);
 }
 
 /***
