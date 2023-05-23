@@ -91,6 +91,7 @@ Worksheet::Worksheet(wxWindow *parent, int id,
   m_cellPointers(this), m_dc(this), m_configuration(config),
     m_autocomplete(config),
     m_maximaManual(m_configuration) {
+  m_configuration->SetContext(m_dc);
   m_scrollToCaret = false;
   m_newxPosition = -1;
   m_newyPosition = -1;
@@ -124,7 +125,6 @@ Worksheet::Worksheet(wxWindow *parent, int id,
   m_pointer_y = -1;
   m_recalculateStart = NULL;
   m_mouseMotionWas = false;
-  m_configuration->SetContext(m_dc);
   m_configuration->SetWorkSheet(this);
   m_configuration->ReadConfig();
   SetBackgroundColour(m_configuration->DefaultBackgroundColor());

@@ -929,6 +929,8 @@ void EditorCell::SetStyle(TextStyle style) {
 
 void EditorCell::SetFont() {
   wxDC *dc = m_configuration->GetDC();
+  if(!dc)
+    return;
   const wxFont &font = GetFont();
   if(m_configuration->GetLastFontUsed() != &font)
     {
@@ -3360,6 +3362,8 @@ const MaximaTokenizer::TokenList &EditorCell::GetAllTokens() {
 }
 
 void EditorCell::StyleText() {
+  if(!m_configuration->GetDC())
+    return;
   ResetSize();
   // We will need to determine the width of text and therefore need to set
   // the font type and size.
