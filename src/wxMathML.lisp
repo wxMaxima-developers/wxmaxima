@@ -2452,7 +2452,6 @@ Submit bug reports by following the 'New issue' link on that page."))
 	 (decf *wxmaxima-nested-loads* )
 	 (if (< *wxmaxima-nested-loads* 1)
 	     (wxPrint_autocompletesymbols)))))))
-(format t "</suppressOutput>~%")
 ;; Publish all new global variables maxima might contain to wxMaxima's
 ;; autocompletion feature.
 (wxPrint_autocompletesymbols)
@@ -2465,4 +2464,5 @@ Submit bug reports by following the 'New issue' link on that page."))
 	   (if
 	    (search "_" (print_value key))
 	    ($wxdeclare_subscripted (print_value key) nil))) *variable-initial-values*)
+(format t "</suppressOutput>~%")
 (finish-output)

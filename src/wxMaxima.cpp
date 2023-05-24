@@ -160,27 +160,27 @@ void wxMaxima::ConfigChanged() {
 
   wxLogMessage(_("Sending configuration data to maxima."));
   if (m_configuration.UseSVG())
-    m_configCommands.Add(wxS(":lisp (setq $wxplot_usesvg t)\n"));
+    AddConfigLispCommand(wxS("(setq $wxplot_usesvg t)"));
   else
-    m_configCommands.Add(wxS(":lisp (setq $wxplot_usesvg nil)\n"));
+    AddConfigLispCommand(wxS("(setq $wxplot_usesvg nil)"));
   if (m_configuration.UsePngCairo())
-    m_configCommands.Add(wxS(":lisp (setq $wxplot_pngcairo t)\n"));
+    AddConfigLispCommand(wxS("(setq $wxplot_pngcairo t)"));
   else
-    m_configCommands.Add(wxS(":lisp (setq $wxplot_pngcairo nil)\n"));
+    AddConfigLispCommand(wxS("(setq $wxplot_pngcairo nil)"));
 
-  m_configCommands.Add(wxS(":lisp (setq $wxsubscripts ") +
-		       m_configuration.GetAutosubscript_string() + wxS(")\n"));
+  AddConfigLispCommand(wxS("(setq $wxsubscripts ") +
+		       m_configuration.GetAutosubscript_string() + wxS(")"));
   
   // A few variables for additional debug info in wxbuild_info();
-  m_configCommands.Add(wxString::Format(
-					wxS(":lisp (setq wxUserConfDir \"%s\")\n"),
+  AddConfigLispCommand(wxString::Format(
+					wxS("(setq wxUserConfDir \"%s\")"),
 					EscapeForLisp(Dirstructure::Get()->UserConfDir()).utf8_str()));
-  m_configCommands.Add(wxString::Format(
-					wxS(":lisp (setq wxHelpDir \"%s\")\n"),
+  AddConfigLispCommand(wxString::Format(
+					wxS("(setq wxHelpDir \"%s\")"),
 					EscapeForLisp(Dirstructure::Get()->HelpDir()).utf8_str()));
 
-  m_configCommands.Add(wxString::Format(
-					wxS(":lisp (setq $wxplot_size '((mlist simp) %i %i))\n"),
+  AddConfigLispCommand(wxString::Format(
+					wxS("(setq $wxplot_size '((mlist simp) %i %i))"),
 					m_configuration.DefaultPlotWidth(), m_configuration.DefaultPlotHeight()));
 
   if (m_worksheet->m_currentFile != wxEmptyString) {
@@ -2667,13 +2667,13 @@ void wxMaxima::OnGnuplotQueryTerminals(wxProcessEvent &event) {
   if (gnuplotMessage.Contains(wxS("pngcairo"))) {
     wxLogMessage(_("Using gnuplot's pngcairo driver for embedded plots"));
     if (!m_configuration.UsePngCairo())
-      m_configCommands.Add(wxS(":lisp (setq $wxplot_pngcairo t)\n"));
+      AddConfigLispCommand(wxS("(setq $wxplot_pngcairo t)"));
     m_configuration.UsePngCairo(true);
   } else {
     wxLogMessage(_("Using gnuplot's antialiassing-less png driver for embedded "
                    "plots as pngcairo could not be found"));
     if (m_configuration.UsePngCairo())
-      m_configCommands.Add(wxS(":lisp (setq $wxplot_pngcairo nil)\n"));
+      AddConfigLispCommand(wxS("(setq $wxplot_pngcairo nil)"));
     m_configuration.UsePngCairo(false);
   }
   m_gnuplotTerminalQueryProcess->CloseOutput();
@@ -3733,13 +3733,13 @@ bool wxMaxima::QueryVariableValue() {
     return false;
 
   if (m_varNamesToQuery.GetCount() > 0) {
-    SendMaxima(wxS(":lisp (wx-query-variable \"") +
-               m_varNamesToQuery.Last() + wxS("\")\n"));
+    AddConfigLispCommand(wxS("(wx-query-variable \"") +
+               m_varNamesToQuery.Last() + wxS("\")"));
     m_varNamesToQuery.RemoveAt(m_varNamesToQuery.GetCount() - 1);
     return true;
   } else {
     if (m_readMaximaVariables) {
-      SendMaxima(wxS(":lisp (wx-print-gui-variables)\n"));
+      AddConfigLispCommand(wxS("(wx-print-gui-variables)\n"));
       m_readMaximaVariables = false;
     }
     if (!m_worksheet->m_variablesPane->GetEscapedVarnames().IsEmpty())
@@ -3920,10 +3920,10 @@ void wxMaxima::SetCWD(wxString file) {
 
   if (workingDirectory != GetCWD()) {
     wxLogMessage(_("Telling maxima about the new working directory."));
-    m_configCommands.Add(wxS(":lisp (setf $wxfilename \"") + filenamestring + wxS("\")\n"));
-    m_configCommands.Add(wxS(":lisp (setf $wxdirname \"") + dirname + wxS("\")\n"));
+    AddConfigLispCommand(wxS("(setf $wxfilename \"") + filenamestring + wxS("\")"));
+    AddConfigLispCommand(wxS("(setf $wxdirname \"") + dirname + wxS("\")"));
 
-    m_configCommands.Add(wxS(":lisp (wx-cd \"") + filenamestring + wxS("\")\n"));
+    AddConfigLispCommand(wxS("(wx-cd \"") + filenamestring + wxS("\")"));
     if (m_ready) {
       if (m_worksheet->m_evaluationQueue.Empty())
         StatusMaximaBusy(StatusBar::MaximaStatus::waiting);
@@ -4480,8 +4480,7 @@ wxString wxMaxima::EscapeForLisp(wxString str) {
 void wxMaxima::SetupVariables() {
   wxLogMessage(_("Sending maxima the info how to express 2d maths as XML"));
   wxMathML wxmathml(&m_configuration);
-  m_configCommands.Add(wxmathml.GetCmd());
-  TriggerEvaluation();
+  AddConfigLispCommand(wxmathml.GetCmd());
   wxString cmd;
 
 #if defined(__WXOSX__)
@@ -4490,13 +4489,13 @@ void wxMaxima::SetupVariables() {
   gnuplot_binary.Replace("\\", "\\\\");
   gnuplot_binary.Replace("\"", "\\\"");
   if (wxFileExists(m_gnuplotcommand))
-    cmd += wxS(":lisp (setf $gnuplot_command \"") + m_gnuplotcommand +
+    cmd += wxS("(setf $gnuplot_command \"") + m_gnuplotcommand +
       wxS("\")");
   wxLogMessage(_("Setting gnuplot_binary to %s"),
 	       m_gnuplotcommand.utf8_str());
 #endif
   cmd.Replace(wxS("\\"), wxS("/"));
-  m_configCommands.Add(cmd);
+  AddConfigLispCommand(cmd);
 
   wxString wxmaximaversion_lisp(wxS(GITVERSION));
 
@@ -4531,7 +4530,7 @@ void wxMaxima::SetupVariables() {
   wxmaximaversion_lisp.Replace("\\", "\\\\");
   wxmaximaversion_lisp.Replace("\"", "\\\"");
   wxLogMessage(_("Updating maxima's configuration"));
-  m_configCommands.Add(wxString(wxS(":lisp (progn (setq $wxmaximaversion \"")) +
+  AddConfigLispCommand(wxString(wxS("(setq $wxmaximaversion \"")) +
              wxString(wxmaximaversion_lisp) +
              wxS("\") ($put \'$wxmaxima (read-wxmaxima-version \"" +
                  wxString(wxmaximaversion_lisp) +
@@ -4542,14 +4541,14 @@ void wxMaxima::SetupVariables() {
                  wxmaximaversion_lisp +
                  "\")) (ignore-errors (setf (symbol-value "
                  "'*lisp-quiet-suppressed-prompt*) \"" +
-                 m_promptPrefix + "(%i1)" + m_promptSuffix + "\")))\n"));
+                 m_promptPrefix + "(%i1)" + m_promptSuffix + "\")))"))
   wxString useHtml = wxS("'$text");
   if (m_configuration.MaximaUsesHtmlBrowser())
     useHtml = wxS("'$html");
   if (m_configuration.MaximaUsesWxmaximaBrowser())
     useHtml = wxS("'$frontend");
   wxLogMessage(_("Setting prompt and help format"));
-  m_configCommands.Add(wxS(":lisp (progn (setf *prompt-suffix* \"") +
+  AddConfigLispCommand(wxS("(progn (setf *prompt-suffix* \"") +
              m_promptSuffix + wxS("\") (setf *prompt-prefix* \"") +
              m_promptPrefix +
              wxS("\") (setf $in_netmath nil) (setf $show_openplot t)) ") +
@@ -10106,13 +10105,11 @@ void wxMaxima::EditInputMenu(wxCommandEvent &WXUNUSED(event)) {
 }
 
 void wxMaxima::VarAddAllEvent(wxCommandEvent &WXUNUSED(event)) {
-  wxString command = ":lisp (wx-add-all-variables)\n";
   if ((!m_worksheet->m_evaluationQueue.Empty()) || (m_maximaBusy) ||
       (m_worksheet->QuestionPending()))
-    m_configCommands.Add(command);
-  else
-    m_configCommands->Add(command);
-  TriggerEvaluation();
+    return;
+  wxString command = "(wx-add-all-variables)";
+  AddConfigLispCommand(command);
 }
 
 void wxMaxima::VarReadEvent(wxCommandEvent &WXUNUSED(event)) {
@@ -10275,11 +10272,26 @@ wxString wxMaxima::GetUnmatchedParenthesisState(wxString text, int &index) {
   if (!delimiters.empty())
     return _("Un-closed parenthesis");
 
-  if ((endingNeeded) && (!m_configuration.InLispMode()))
+  if ((endingNeeded) && (!m_configuration.InLispMode()) && (!text.Contains(wxS(":lisp"))))
     return _("No dollar ($) or semicolon (;) at the end of command");
   else
     return wxEmptyString;
 }
+
+void wxMaxima::AddConfigLispCommand(wxString command)
+{
+  // We cannot send multi-line :lisp commands to maxima
+  wxASSERT(command.Find(wxS("\n")) == wxNOT_FOUND);
+  m_configCommands.Add(wxS(":lisp ") + command + wxS("\n"));
+  if ((m_maximaBusy) && (!m_first))
+    return;
+  if (m_worksheet->QuestionPending())
+    return;
+  SendMaxima(m_configCommands[0]);
+  m_configCommands.RemoveAt(0);
+  m_maximaBusy = true;
+}
+
 
 //! Tries to evaluate next group cell in queue
 //
@@ -10292,6 +10304,7 @@ void wxMaxima::TriggerEvaluation() {
   // While we wait for an answer we cannot send new commands.
   if (m_worksheet->QuestionPending())
     return;
+
   if (!m_configCommands.IsEmpty())
     {
       SendMaxima(m_configCommands[0]);
@@ -10400,12 +10413,7 @@ void wxMaxima::TriggerEvaluation() {
 			    m_worksheet->m_evaluationQueue.CommandsLeftInCell());
 
       text.Trim(false);
-      if (!m_hasEvaluatedCells) {
-        if (text.StartsWith(wxS(":lisp")))
-          StatusText(_("A \":lisp\" as the first command might fail to "
-                           "send a \"finished\" signal."));
-      }
-
+      
       // Mark the current maxima process as "no more in its initial condition".
       m_hasEvaluatedCells = true;
     } else {

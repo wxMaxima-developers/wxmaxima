@@ -211,6 +211,8 @@ private:
   bool m_openInitialFileError;
   //! Escape strings into a format lisp accepts
   wxString EscapeForLisp(wxString str);
+  //! Send a lisp command to maxima, as soon as possible
+  void AddConfigLispCommand(wxString command);
   //! The number of Jiffies Maxima had used the last time we asked
   long long m_maximaJiffies_old;
   //! The number of Jiffies the CPU had made the last time
