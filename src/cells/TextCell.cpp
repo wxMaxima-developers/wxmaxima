@@ -502,6 +502,9 @@ void TextCell::Draw(wxPoint point) {
 
 void TextCell::SetFont(AFontSize fontsize) {
   wxDC *dc = m_configuration->GetDC();
+  if(dc == NULL)
+    return;
+  
   const wxFont &font = GetFont(fontsize);
   if(m_configuration->GetLastFontUsed() != &font)
     {
