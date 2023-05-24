@@ -56,6 +56,8 @@
 (setq $lmxchar #\()
 (setq $rmxchar #\))
 
+(setf *prompt-prefix* "<PROMPT>")
+(setf *prompt-suffix* "</PROMPT>")
 ;; Permanently assign a property named indic with the value val to the symbol sym
 ;;
 ;; Properties can, for example, tell the formatter how to express this
