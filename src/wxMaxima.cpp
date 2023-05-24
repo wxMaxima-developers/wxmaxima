@@ -3739,7 +3739,7 @@ bool wxMaxima::QueryVariableValue() {
     return true;
   } else {
     if (m_readMaximaVariables) {
-      AddConfigLispCommand(wxS("(wx-print-gui-variables)\n"));
+      AddConfigLispCommand(wxS("(wx-print-gui-variables)"));
       m_readMaximaVariables = false;
     }
     if (!m_worksheet->m_variablesPane->GetEscapedVarnames().IsEmpty())
@@ -4480,7 +4480,7 @@ wxString wxMaxima::EscapeForLisp(wxString str) {
 void wxMaxima::SetupVariables() {
   wxLogMessage(_("Sending maxima the info how to express 2d maths as XML"));
   wxMathML wxmathml(&m_configuration);
-  AddConfigLispCommand(wxmathml.GetCmd());
+  SendMaxima(wxmathml.GetCmd());
   wxString cmd;
 
 #if defined(__WXOSX__)
@@ -4489,13 +4489,13 @@ void wxMaxima::SetupVariables() {
   gnuplot_binary.Replace("\\", "\\\\");
   gnuplot_binary.Replace("\"", "\\\"");
   if (wxFileExists(m_gnuplotcommand))
-    cmd += wxS("(setf $gnuplot_command \"") + m_gnuplotcommand +
-      wxS("\")");
+    cmd += wxS("\n:lisp-quiet (setf $gnuplot_command \"") + m_gnuplotcommand +
+      wxS("\")\n");
   wxLogMessage(_("Setting gnuplot_binary to %s"),
 	       m_gnuplotcommand.utf8_str());
 #endif
   cmd.Replace(wxS("\\"), wxS("/"));
-  AddConfigLispCommand(cmd);
+  SendMaxima(cmd);
 
   wxString wxmaximaversion_lisp(wxS(GITVERSION));
 
@@ -4541,20 +4541,20 @@ void wxMaxima::SetupVariables() {
                  wxmaximaversion_lisp +
                  "\")) (ignore-errors (setf (symbol-value "
                  "'*lisp-quiet-suppressed-prompt*) \"" +
-                 m_promptPrefix + "(%i1)" + m_promptSuffix + "\")))"))
+                 m_promptPrefix + "(%i1)" + m_promptSuffix + "\"))"));
   wxString useHtml = wxS("'$text");
   if (m_configuration.MaximaUsesHtmlBrowser())
     useHtml = wxS("'$html");
   if (m_configuration.MaximaUsesWxmaximaBrowser())
     useHtml = wxS("'$frontend");
   wxLogMessage(_("Setting prompt and help format"));
-  AddConfigLispCommand(wxS("(progn (setf *prompt-suffix* \"") +
+  AddConfigLispCommand(wxS("(setf *prompt-suffix* \"") +
              m_promptSuffix + wxS("\") (setf *prompt-prefix* \"") +
              m_promptPrefix +
              wxS("\") (setf $in_netmath nil) (setf $show_openplot t)) ") +
              wxS("(if (fboundp 'set-output-format-for-help) "
                  "(set-output-format-for-help nil ") +
-             useHtml + wxS("))"));
+             useHtml + wxS(")"));
 
   ConfigChanged();
 }
@@ -10108,8 +10108,7 @@ void wxMaxima::VarAddAllEvent(wxCommandEvent &WXUNUSED(event)) {
   if ((!m_worksheet->m_evaluationQueue.Empty()) || (m_maximaBusy) ||
       (m_worksheet->QuestionPending()))
     return;
-  wxString command = "(wx-add-all-variables)";
-  AddConfigLispCommand(command);
+  AddConfigLispCommand(wxS("(wx-add-all-variables)"));
 }
 
 void wxMaxima::VarReadEvent(wxCommandEvent &WXUNUSED(event)) {
@@ -10272,16 +10271,22 @@ wxString wxMaxima::GetUnmatchedParenthesisState(wxString text, int &index) {
   if (!delimiters.empty())
     return _("Un-closed parenthesis");
 
-  if ((endingNeeded) && (!m_configuration.InLispMode()) && (!text.Contains(wxS(":lisp"))))
-    return _("No dollar ($) or semicolon (;) at the end of command");
+  if ((endingNeeded) && (!m_configuration.InLispMode()))
+    {
+      wxLogMessage(_("No dollar ($) or semicolon (;) at the end of command %s"), text.mb_str());
+      return _("No dollar ($) or semicolon (;) at the end of command");
+    }
   else
-    return wxEmptyString;
+    {
+      return wxEmptyString;
+    }
 }
 
 void wxMaxima::AddConfigLispCommand(wxString command)
 {
   // We cannot send multi-line :lisp commands to maxima
   wxASSERT(command.Find(wxS("\n")) == wxNOT_FOUND);
+  wxASSERT(!command.IsEmpty());
   m_configCommands.Add(wxS(":lisp ") + command + wxS("\n"));
   if ((m_maximaBusy) && (!m_first))
     return;
