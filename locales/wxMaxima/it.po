@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: wxMaxima\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-05-17 10:45+0200\n"
-"PO-Revision-Date: 2023-05-19 14:34+0200\n"
+"PO-Revision-Date: 2023-05-25 17:48+0200\n"
 "Last-Translator: Marco Ciampa <ciampix@posteo.net>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "Language: it\n"
@@ -285,7 +285,7 @@ msgstr "&Maxima"
 
 #: ../../src/wxMaximaFrame.cpp:1847
 msgid "&Maxima help"
-msgstr "Guida di &Maxima"
+msgstr "Aiuto di &Maxima"
 
 #: ../../src/wxMaximaFrame.cpp:1628
 msgid "&Modulus Computation..."
@@ -2875,9 +2875,8 @@ msgstr ""
 "Hadamard)"
 
 #: ../../src/wxMaxima.cpp:7720
-#, fuzzy
 msgid "Element-by-element exponentiation of two matrices"
-msgstr "Moltiplicazione elemento-per-elemento"
+msgstr "Esponenziazione elemento-per-elemento di due matrici"
 
 #: ../../src/wxMaximaFrame.cpp:1311
 msgid "Element-by-element multiplication"
@@ -2917,9 +2916,8 @@ msgid "End of proof"
 msgstr "Fine dimostrazione"
 
 #: ../../src/wxMaxima.cpp:7552
-#, fuzzy
 msgid "End of t:"
-msgstr "Fine dimostrazione"
+msgstr "Fine di t:"
 
 #: ../../src/wxMaxima.cpp:3887
 msgid "Ended lisp mode after receiving a maxima prompt!"
@@ -2973,15 +2971,14 @@ msgstr "Inserire la nuova precisione per i bigfloat:"
 msgid "Enter the path to the Maxima executable."
 msgstr "Inserire il percorso dell'eseguibile Maxima."
 
+# TODO: check
 #: ../../src/wxMaxima.cpp:7631
-#, fuzzy
 msgid "Enumerator:"
-msgstr "Iteratore:"
+msgstr "Enumeratore:"
 
 #: ../../src/wxMaximaFrame.cpp:1191
-#, fuzzy
 msgid "Environment variables"
-msgstr "Variabili ambiente per maxima"
+msgstr "Variabili ambiente"
 
 #: ../../src/ConfigDialogue.cpp:1551
 msgid "Environment variables for maxima"
@@ -3070,6 +3067,9 @@ msgid ""
 "Escapes all special characters in a string. The result is a regex that "
 "matches this string exactly."
 msgstr ""
+"Escapes all special characters in a string. The result is a regex that matches this string exactly.<\n"
+"\n"
+"Esegue l'escape su tutti i caratteri speciali in una stringa. Il risultato è una regex che corrisponde esattamente la stringa."
 
 #: ../../src/wxMaximaFrame.cpp:2407
 msgid "Eta"
@@ -3686,9 +3686,8 @@ msgid "Find first difference..."
 msgstr "Trova la prima differenza..."
 
 #: ../../src/wxMaximaFrame.cpp:1226
-#, fuzzy
 msgid "Find fractions that real roots of a polynomial and "
-msgstr "Trova le radici reali di una polinomiale"
+msgstr "Trova frazioni che siano radici reali di una polinomiale e"
 
 #: ../../src/wxMaxima.cpp:8762
 msgid "Find minimum"
@@ -5633,27 +5632,24 @@ msgid "Make an eventual ev() evaluate this"
 msgstr ""
 
 #: ../../src/wxMaximaFrame.cpp:1041
-#, fuzzy
 msgid "Make function local..."
-msgstr "Mappa la funzione su di una lista"
+msgstr "Rendi la funzione locale..."
 
 #: ../../src/wxMaxima.cpp:7916
 msgid "Map"
 msgstr "Mappa"
 
 #: ../../src/wxMaxima.cpp:7924
-#, fuzzy
 msgid "Map an expression"
-msgstr "Espandi un'espressione"
+msgstr "Mappa un'espressione"
 
 #: ../../src/wxMaximaFrame.cpp:1412
 msgid "Map function to a matrix"
 msgstr "Mappa la funzione su di una matrice"
 
 #: ../../src/wxMaximaFrame.cpp:1415
-#, fuzzy
 msgid "Map function to a matrix, affecting all of its clones"
-msgstr "Mappa la funzione su di una matrice"
+msgstr "Mappa la funzione su di una matrice, influenza tutti i suoi cloni"
 
 #: ../../src/FindReplacePane.cpp:103
 msgid "Match Case"
@@ -5722,28 +5718,24 @@ msgid "Matrix"
 msgstr "Matrice"
 
 #: ../../src/wxMaxima.cpp:7694
-#, fuzzy
 msgid "Matrix Exponent"
 msgstr "Esponente matrice"
 
 #: ../../src/wxMaximaFrame.cpp:1308
-#, fuzzy
 msgid "Matrix exponent..."
-msgstr "Esponente matrice"
+msgstr "Esponente matrice..."
 
 #: ../../src/wxMaximaFrame.cpp:1298
 msgid "Matrix from csv file"
 msgstr "Matrice da file csv"
 
 #: ../../src/wxMaximaFrame.cpp:1292
-#, fuzzy
 msgid "Matrix from csv file..."
-msgstr "Matrice da file csv"
+msgstr "Matrice da file csv..."
 
 #: ../../src/wxMaxima.cpp:7912
-#, fuzzy
 msgid "Matrix height"
-msgstr "Parentesi di matrice"
+msgstr "Altezza matrice"
 
 #: ../../src/wxMaxima.cpp:7845
 msgid "Matrix map"
@@ -5770,9 +5762,8 @@ msgid "Matrix to nested List"
 msgstr "Matrice a lista nidificata"
 
 #: ../../src/wxMaxima.cpp:7911
-#, fuzzy
 msgid "Matrix width"
-msgstr "Prodotto matrice"
+msgstr "Larghezza matrice"
 
 #: ../../src/wxMaxima.cpp:7664 ../../src/wxMaxima.cpp:7669
 #: ../../src/wxMaxima.cpp:7674 ../../src/wxMaxima.cpp:7679
@@ -5867,9 +5858,8 @@ msgid "Maxima errors"
 msgstr "Errori maxima"
 
 #: ../../src/wxMaxima.cpp:3132
-#, fuzzy
 msgid "Maxima has authenticated!"
-msgstr "Maxima ha una domanda!"
+msgstr "Maxima si è autenticato!"
 
 #: ../../src/wxMaxima.cpp:10313
 msgid "Maxima has finished calculating."
@@ -5889,9 +5879,8 @@ msgid "Maxima has sent a new variable value."
 msgstr "Maxima ha inviato un nuovo valore variabile."
 
 #: ../../src/MaximaManual.cpp:557
-#, fuzzy
 msgid "Maxima help file not found!"
-msgstr "File non trovato"
+msgstr "File di aiuto maxima non trovato!"
 
 #: ../../src/wxMaximaFrame.cpp:1014
 msgid "Maxima input"
@@ -5919,9 +5908,9 @@ msgid "Maxima package (*.mac)|*.mac|Lisp package (*.lisp)|*.lisp|All|*"
 msgstr "Pacchetto Maxima (*.mac)|*.mac|Pacchetto Lisp (*.lisp)|*.lisp|Tutti|*"
 
 #: ../../src/wxMaxima.cpp:2695
-#, fuzzy, c-format
+#, c-format
 msgid "Maxima process (pid %li) has terminated with exit code %li.\n"
-msgstr "Il processo Maxima (pid %i) è terminato con codice d'uscita %i."
+msgstr "Il processo Maxima (pid %li) è terminato con codice d'uscita %li.\n"
 
 #: ../../src/wxMaxima.cpp:2725
 msgid "Maxima process terminated unexpectedly."
@@ -5946,9 +5935,8 @@ msgstr ""
 "comportamento."
 
 #: ../../src/Configuration.cpp:80
-#, fuzzy
 msgid "Maxima question labels"
-msgstr "Domande di Maxima"
+msgstr "Etichette domanda di Maxima"
 
 #: ../../src/wxMaxima.cpp:3253
 msgid "Maxima sends a new set of auto-completable symbols."
@@ -5964,16 +5952,15 @@ msgstr "Sessione Maxima (*.mac)|*.mac"
 
 #: ../../src/ConfigDialogue.cpp:1458 ../../src/wxMaximaFrame.cpp:1866
 msgid "Maxima shows help in a browser"
-msgstr ""
+msgstr "Maxima mostra l'aiuto in un browser"
 
 #: ../../src/ConfigDialogue.cpp:1463 ../../src/wxMaximaFrame.cpp:1862
 msgid "Maxima shows help in a sidebar"
-msgstr ""
+msgstr "Maxima mostra l'aiuto in una barra laterale"
 
 #: ../../src/ConfigDialogue.cpp:1451 ../../src/wxMaximaFrame.cpp:1857
-#, fuzzy
 msgid "Maxima shows help in the console"
-msgstr "File non trovato"
+msgstr "Maxima mostra l'aiuto nella console"
 
 #: ../../src/StatusBar.cpp:204
 #, fuzzy
@@ -8416,7 +8403,7 @@ msgstr "Mostra la definizione della funzione:"
 #: ../../src/ToolBar.cpp:302 ../../src/wxMaximaFrame.cpp:1840
 #: ../../src/wxMaximaFrame.cpp:1843
 msgid "Show wxMaxima help"
-msgstr "Mostra la guida di maxima"
+msgstr "Mostra l'aiuto di maxima"
 
 #: ../../src/wxMaximaFrame.cpp:1789
 msgid "Shows how many digits of a numbers are displayed"
@@ -10143,9 +10130,8 @@ msgid "Use square parenthesis for matrices"
 msgstr "Usa le parentesi quadre per le matrici"
 
 #: ../../src/wxMaximaFrame.cpp:1054
-#, fuzzy
 msgid "Use struct field..."
-msgstr "Frazione &continua"
+msgstr "Usa campo struct..."
 
 #: ../../src/ConfigDialogue.cpp:348
 msgid ""
@@ -10294,10 +10280,8 @@ msgid "View"
 msgstr "Vista"
 
 #: ../../src/MaximaManual.cpp:566
-#, fuzzy
 msgid "Waiting for the thread that parses the maxima manual to finish"
-msgstr ""
-"Compilazione della lista delle ancore che il manuale di maxima fornisce"
+msgstr "In attesa che il thread che analizza il manuale di maxima finisca"
 
 #: ../../src/ConfigDialogue.cpp:1324
 msgid "Warn if an inactive window is idle"
@@ -10361,23 +10345,16 @@ msgid "While loop..."
 msgstr ""
 
 #: ../../src/TipOfTheDay.cpp:241
-#, fuzzy
 msgid ""
 "While wxMaxima is programmed mostly in C++, it also uses some Lisp code. You "
 "can help to improve wxMaxima, if you have knowledge of Common Lisp."
-msgstr ""
-"wxMaxima è programmato in C++ usando il toolkit wxWidgets e usa CMake come "
-"sistema di compilazione. Si può contribuire a wxMaxima, se si possiede "
-"qualche conoscenza su questo ambiente."
+msgstr "Sebbene wxMaxima sia programmato principalmente in C++, utilizza anche del codice Lisp. Puoi aiutare a migliorare wxMaxima, se conosci Common Lisp."
 
 #: ../../src/wxMaxima.cpp:5519
-#, fuzzy
 msgid ""
 "Whole document (*.wxmx)|*.wxmx|The input, readable by load() (maxima > 5.38) "
 "(*.wxm)|*.wxm|All Files (*.*)|*"
-msgstr ""
-"Intero documento (*.wxmx)|*.wxmx|L'ingresso, leggibile da load() (maxima > "
-"5.38) (*.wxm)|*.wxm"
+msgstr "Intero documento (*.wxmx)|*.wxmx|L'ingresso, leggibile da load() (maxima > 5.38) (*.wxm)|*.wxm|Tutti i file (*.*)|*"
 
 #: ../../src/ConfigDialogue.cpp:199
 msgid "Worksheet"
@@ -10385,11 +10362,11 @@ msgstr "Foglio di lavoro"
 
 #: ../../src/Worksheet.cpp:7219
 msgid "Worksheet got activated"
-msgstr ""
+msgstr "Il foglio di lavoro è stato attivato"
 
 #: ../../src/Worksheet.cpp:7137
 msgid "Worksheet got the mouse focus"
-msgstr ""
+msgstr "Il foglio di lavoro ha catturato il focus del mouse"
 
 #: ../../src/ConfigDialogue.cpp:351
 msgid ""
@@ -10405,15 +10382,15 @@ msgstr "Ricerca in tutto il documento"
 
 #: ../../src/Worksheet.cpp:6158
 msgid "Wrote all image and gnuplot files to the zip archive"
-msgstr ""
+msgstr "Scritti tutti i file immagine e gnuplot nell'archivio zip"
 
 #: ../../src/Worksheet.cpp:6148
 msgid "Wrote the XML representation of the document to the zip archive"
-msgstr ""
+msgstr "Scritta la rappresentazione XML del documento nell'archivio zip"
 
 #: ../../src/Worksheet.cpp:5966
 msgid "Wrote the mimetype info"
-msgstr ""
+msgstr "Scritte le informazioni sul tipo mime"
 
 #: ../../src/wxMaximaFrame.cpp:2414
 msgid "Xi"
@@ -10448,10 +10425,7 @@ msgid ""
 "You can get help on a Maxima function by selecting or clicking on the "
 "function name and pressing F1. wxMaxima will search the help index for the "
 "selection or the word under the cursor."
-msgstr ""
-"Si può ottenere aiuto su una funzione di Maxima selezionandola o facendo "
-"clic sul nome della funzione e premendo F1. wxMaxima cercherà nell'indice "
-"della guida la parola o la selezione di parole sutto il cursore."
+msgstr "Si può ottenere aiuto su una funzione di Maxima selezionandola o facendo clic sul nome della funzione e premendo F1. wxMaxima cercherà nell'indice dell'aiuto la parola o la selezione di parole sutto il cursore."
 
 #: ../../src/TipOfTheDay.cpp:90
 msgid ""
@@ -10647,9 +10621,8 @@ msgid "eta"
 msgstr "eta"
 
 #: ../../src/Worksheet.cpp:1986
-#, fuzzy
 msgid "ev() shall evaluate this automatically"
-msgstr "Salva il foglio di lavoro automaticamente"
+msgstr "ev() lo valuterà automaticamente"
 
 #: ../../src/wxMaximaFrame.cpp:2482
 msgid "exists"
@@ -10768,9 +10741,8 @@ msgid "much less than"
 msgstr "molto minore di"
 
 #: ../../src/wxMaxima.cpp:7754
-#, fuzzy
 msgid "m×n Matrix A:"
-msgstr "Matrice #1:"
+msgstr "m×n Matrix A:"
 
 #: ../../src/wxMaxima.cpp:7096 ../../src/wxMaxima.cpp:8250
 #: ../../src/wxMaxima.cpp:8256
@@ -10920,7 +10892,6 @@ msgid "sigma"
 msgstr "sigma"
 
 #: ../../src/wxMaxima.cpp:9823
-#, fuzzy
 msgid ""
 "solve() will solve a list of equations only if for n independent equations "
 "there are n variables to solve to.\n"
@@ -10931,11 +10902,9 @@ msgid ""
 "solve() is to use solve() to eliminate variables one by one and to manually "
 "choose which of the solutions solve() found matches the current problem."
 msgstr ""
-"solve() risolverà un elenco di equazioni solo se per n equazioni "
-"indipendenti ci sono n variabili da risolvere.\n"
-"Se è interessante solo il risultato di una variabile, e le altre variabili "
-"servono solo per trovare il risultato, si può dire a solve() quali variabili "
-"eliminare dalla soluzione per ottenere solo le variabili interessanti."
+"solve() risolverà un elenco di equazioni solo se per n equazioni indipendenti ci sono n variabili da risolvere.\n"
+"Se interessa solo una variabile di risultato, le altre variabili di risultato possono essere utilizzate per indicare a solve() quali variabili eliminare dalla soluzione\n"
+"solve() cerca una soluzione globale. Se un problema ha soluzioni diverse a seconda dell'intervallo delle sue variabili, un modo per utilizzare correttamente solve() consiste nell'usare solve() per eliminare le variabili una per una e scegliere manualmente quale delle soluzioni solve() trovate corrisponde al problema corrente ."
 
 #: ../../src/wxMaxima.cpp:7462
 msgid ""

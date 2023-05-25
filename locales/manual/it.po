@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "POT-Creation-Date: 2022-05-29 21:54+0200\n"
-"PO-Revision-Date: 2023-05-21 22:50+0200\n"
+"PO-Revision-Date: 2023-05-25 17:57+0200\n"
 "Last-Translator: Marco Ciampa <ciampix@posteo.net>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "Language: it\n"
@@ -516,7 +516,7 @@ msgstr "Autocompletamento comandi"
 #: ../../info/wxmaxima.md:135
 #, no-wrap
 msgid "_wxMaxima_ contains an autocompletion feature that is triggered via the menu (Cell/Complete Word) or alternatively by pressing the key combination <kbd>CTRL</kbd>+<kbd>SPACE</kbd>. The autocompletion is context-sensitive. For example if activated within a unit specification for ezUnits it will offer a list of applicable units.\n"
-msgstr "_wxMaxima_ contiene una funzione di completamento automatico che viene attivata tramite il menu (Cella/Parola completa) o in alternativa premendo la combinazione di tasti <kbd>CTRL</kbd>+<kbd>SPAZIO</kbd>. Il completamento automatico è sensibile al contesto. Ad esempio, se attivato all'interno di una specifica di unità di ezUnits, offrirà un elenco di unità applicabili."
+msgstr "_wxMaxima_ contiene una funzione di completamento automatico che viene attivata tramite il menu (Cella/Parola completa) o in alternativa premendo la combinazione di tasti <kbd>CTRL</kbd>+<kbd>SPAZIO</kbd>. Il completamento automatico è sensibile al contesto. Ad esempio, se attivato all'interno di una specifica di unità di ezUnits, offrirà un elenco di unità applicabili.\n"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:137
@@ -744,7 +744,7 @@ msgstr "Se un simbolo speciale non compare nell'elenco, è possibile inserire ca
 #: ../../info/wxmaxima.md:226
 #, no-wrap
 msgid "<kbd>ESC</kbd> <kbd>61</kbd> <kbd>ESC</kbd> therefore results in an `a`.\n"
-msgstr "<kbd>ESC</kbd> <kbd>61</kbd> <kbd>ESC</kbd> diventa quindi una `a`."
+msgstr "<kbd>ESC</kbd> <kbd>61</kbd> <kbd>ESC</kbd> diventa quindi una `a`.\n"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:228
@@ -890,7 +890,7 @@ msgstr "cogito => sum.\n"
 #: ../../info/wxmaxima.md:279
 #, no-wrap
 msgid "Other symbols the HTML and TeX export will recognize are `<=` and `>=` for comparisons, a double-pointed double arrow (`<=>`), single- headed arrows (`<->`, `->` and `<-`) and `+/-` as the respective sign. For TeX output also `<<` and `>>` are recognized.\n"
-msgstr ""
+msgstr "Altri simboli che l'esportazione HTML e TeX riconoscerà sono `<=` e `>=` per i confronti, una doppia freccia a doppia punta (`<=>`), frecce a punta singola (`<->`, `-> ` e `<-`) e `+/-` come simbolo. Per l'uscita TeX sono riconosciuti anche `<<` e `>>`.\n"
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:280
@@ -906,25 +906,25 @@ msgid ""
 "translations of _wxMaxima_ to match the needs of users of the local "
 "keyboard, we do not document them here. A few hotkeys or hotkey aliases, "
 "though, are not documented in the menus:"
-msgstr ""
+msgstr "La maggior parte dei tasti di scelta rapida si trova nel testo dei rispettivi menu. Dal momento che sono effettivamente presi dal testo del menu e quindi possono essere personalizzati dalle traduzioni di _wxMaxima_ per soddisfare le esigenze degli utenti della tastiera locale, non vengono documentati quì. Alcuni tasti di scelta rapida o alias di tasti di scelta rapida, tuttavia, non sono documentati neanche nei menu:"
 
 #. type: Bullet: '* '
 #: ../../info/wxmaxima.md:287
 msgid ""
 "<kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>DELETE</kbd> deletes a complete cell."
-msgstr ""
+msgstr "<kbd>CTRL</kbd>+<kbd>MAIUSC</kbd>+<kbd>CANC</kbd> elimina una cella intera."
 
 #. type: Bullet: '* '
 #: ../../info/wxmaxima.md:287
 msgid ""
 "<kbd>CTRL</kbd>+<kbd>TAB</kbd> or <kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>TAB</"
 "kbd> triggers the auto-completion mechanism."
-msgstr ""
+msgstr "<kbd>CTRL</kbd>+<kbd>TAB</kbd> o <kbd>CTRL</kbd>+<kbd>MAIUSC</kbd>+<kbd>TAB</kbd> innesca l'autocompletamento."
 
 #. type: Bullet: '* '
 #: ../../info/wxmaxima.md:287
 msgid "<kbd>SHIFT</kbd>+<kbd>SPACE</kbd> inserts a non-breaking space."
-msgstr ""
+msgstr "<kbd>MAIUSC</kbd>+<kbd>SPAZIO</kbd> inserisce uno spazio non divisibile."
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:288
@@ -938,7 +938,7 @@ msgid ""
 "If a text cell begins with `TeX:` the TeX export contains the literal text "
 "that follows the `TeX:` marker. Using this feature allows the entry of TeX "
 "markup within the _wxMaxima_ workbook."
-msgstr ""
+msgstr "Se una cella di testo inizia con `TeX:`, l'esportazione TeX contiene il testo letterale che segue l'indicatore `TeX:`. L'utilizzo di questa funzione consente l'inserimento del marcatore TeX all'interno della cartella di lavoro _wxMaxima_."
 
 #. type: Title ##
 #: ../../info/wxmaxima.md:292
@@ -951,7 +951,7 @@ msgstr "Formati di file"
 msgid ""
 "The material that is developed in a _wxMaxima_ session can be stored for "
 "later use in any of three ways:"
-msgstr ""
+msgstr "Il materiale sviluppato in una sessione _wxMaxima_ può essere archiviato per un uso successivo in uno dei seguenti tre modi:"
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:297
@@ -965,7 +965,7 @@ msgid ""
 "`.mac` files are ordinary text files that contain _Maxima_ commands. They "
 "can be read using _Maxima_’s `batch()` or `load()` command or _wxMaxima_’s "
 "File/Batch File menu entry."
-msgstr ""
+msgstr "I file `.mac` sono normali file di testo che contengono comandi _Maxima_. Possono essere letti usando il comando `batch()` o `load()` di _Maxima_ o la voce di menu File/File batch di _wxMaxima_."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:303
@@ -974,14 +974,14 @@ msgid ""
 "afterwards generates a plot with `wxdraw2d()`.  Afterwards the contents of "
 "the file `Quadratic.mac` are printed and new defined function `f()` is "
 "evaluated."
-msgstr ""
+msgstr "Un esempio viene mostrato di seguito. `Quadratic.mac` definisce una funzione e successivamente genera un grafico con `wxdraw2d()`. Successivamente viene stampato il contenuto del file `Quadratic.mac` e viene valutata la nuova funzione definita `f()`."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:305
 msgid ""
 "![Loading a `.mac` file with `batch()`](./BatchImage.png)"
 "{ id=img_BatchImage }"
-msgstr ""
+msgstr "![Caricamento di un file `.mac` con `batch()`](./BatchImage.png){ id=img_BatchImage }"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:307
@@ -989,7 +989,7 @@ msgid ""
 "Attention: Although the file `Quadratic.mac` has a usual _Maxima_ extension "
 "(`.mac`), it can only be read by _wxMaxima_, since the command `wxdraw2d()` "
 "is a wxMaxima-extension to _Maxima_."
-msgstr ""
+msgstr "Attenzione: Sebbene il file `Quadratic.mac` abbia una normale estensione _Maxima_ (`.mac`), può essere letto solo da _wxMaxima_, poiché il comando `wxdraw2d()` è un'estensione wxMaxima di _Maxima_."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:309
@@ -997,7 +997,7 @@ msgid ""
 "You can be use `.mac` files for writing your own library of macros. But "
 "since they don’t contain enough structural information they cannot be read "
 "back as a _wxMaxima_ session."
-msgstr ""
+msgstr "Si può usare i file `.mac` per scrivere la propria libreria di macro. Ma dal momento che non contengono informazioni strutturali sufficienti, non possono essere rilette come sessioni _wxMaxima_."
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:310
@@ -1009,7 +1009,7 @@ msgstr ".wxm"
 #: ../../info/wxmaxima.md:313
 #, no-wrap
 msgid ".wxm files contain the worksheet except _Maxima_'s output. On Maxima versions >5.38 they can be read using _Maxima_'s `load()` function just as .mac files can be. With this plain-text format it sometimes is unavoidable that worksheets that use new features are not downwards-compatible with older versions of _wxMaxima_.\n"
-msgstr ""
+msgstr "I file .wxm contengono il foglio di lavoro tranne l'uscita di _Maxima_. Nelle versioni di Maxima >5.38 possono essere letti usando la funzione `load()` di _Maxima_ proprio come possono esserlo i file .mac. Con questo formato di testo semplice a volte è inevitabile che i fogli di lavoro che utilizzano nuove funzionalità non siano compatibili verso il basso con le versioni precedenti di _wxMaxima_.\n"
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:314
@@ -1017,12 +1017,13 @@ msgstr ""
 msgid ".wxmx"
 msgstr ".wxmx"
 
+# FIXME: translation of watchlist
 #. type: Plain text
 #: ../../info/wxmaxima.md:317
 msgid ""
 "This XML-based file format saves the complete worksheet including things "
 "like the zoom factor and the watchlist. It is the preferred file format."
-msgstr ""
+msgstr "Questo formato di file basato su XML salva il foglio di lavoro completo, inclusi elementi come il fattore di zoom e la watchlist. È il formato di file preferito."
 
 #. type: Title ##
 #: ../../info/wxmaxima.md:318
@@ -1035,14 +1036,14 @@ msgstr "Opzioni di configurazione"
 msgid ""
 "For some common configuration variables _wxMaxima_ offers two ways of "
 "configuring:"
-msgstr ""
+msgstr "Per alcune variabili di configurazione comuni _wxMaxima_ offre due modalità di configurazione:"
 
 #. type: Bullet: '* '
 #: ../../info/wxmaxima.md:324
 msgid ""
 "The configuration dialog box below lets you change their default values for "
 "the current and subsequent sessions."
-msgstr ""
+msgstr "La finestra di dialogo di configurazione sottostante consente di modificare i valori predefiniti per le sessioni correnti e successive."
 
 #. type: Bullet: '* '
 #: ../../info/wxmaxima.md:324
@@ -1050,14 +1051,14 @@ msgid ""
 "Also, the values for most configuration variables can be changed for the "
 "current session only by overwriting their values from the worksheet, as "
 "shown below."
-msgstr ""
+msgstr "Inoltre, i valori per la maggior parte delle variabili di configurazione possono essere modificati per la sessione corrente solo sovrascrivendo i loro valori dal foglio di lavoro, come mostrato di seguito."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:326
 msgid ""
 "![wxMaxima configuration 1](./wxMaxima_configuration_001.png)"
 "{ id=img_wxMaxima_configuration_001 }"
-msgstr ""
+msgstr "![Configurazione wxMaxima 1](./wxMaxima_configuration_001.png){ id=img_wxMaxima_configuration_001 }"
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:327
@@ -1071,27 +1072,27 @@ msgid ""
 "The animation framerate that is used for new animations is kept in the "
 "variable `wxanimate_framerate`. The initial value this variable will contain "
 "in a new worksheet can be changed using the configuration dialogue."
-msgstr ""
+msgstr "La frequenza di quadro dell'animazione usata per le nuove animazioni è conservata nella variabile `wxanimate_framerate`. Il valore iniziale che questa variabile conterrà in un nuovo foglio di lavoro può essere modificato utilizzando la finestra di configurazione."
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:331
 #, no-wrap
 msgid "Default plot size for new _maxima_ sessions"
-msgstr ""
+msgstr "Dimensione predefinita dei grafici per le nuove sessioni _maxima_"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:334
 msgid ""
 "After the next start plots embedded into the worksheet will be created with "
 "this size if the value of `wxplot_size` isn't changed by _maxima_."
-msgstr ""
+msgstr "Al prossimo riavvio, i grafici incorporati nel foglio di lavoro verranno creati con questa dimensione se il valore di `wxplot_size` non viene modificato da _maxima_."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:336
 msgid ""
 "In order to set the plot size of a single graph only use the following "
 "notation can be used that sets a variable’s value for one command only:"
-msgstr ""
+msgstr "Per impostare la dimensione del grafico di un singolo grafico è possibile utilizzare solo la seguente notazione che imposta il valore di una variabile per un solo comando:"
 
 #. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:337
@@ -1104,37 +1105,43 @@ msgid ""
 "   )\n"
 "), wxplot_size=[480,480]$\n"
 msgstr ""
+"wxdraw2d(\n"
+"   explicit(\n"
+"       x^2,\n"
+"\t   x,-5,5\n"
+"   )\n"
+"), wxplot_size=[480,480]$\n"
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:346
 #, no-wrap
 msgid "Match parenthesis in text controls"
-msgstr ""
+msgstr "Abbina parentesi nei controlli di testo"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:349
 msgid "This option enables two things:"
-msgstr ""
+msgstr "Questa opzione abilita due cose:"
 
 #. type: Bullet: '* '
 #: ../../info/wxmaxima.md:352
 msgid ""
 "If an opening parenthesis, bracket or double quote is entered _wxMaxima_ "
 "will insert a closing one after it."
-msgstr ""
+msgstr "Se viene inserita una apertura parentesi tonda, quadra o virgolette doppie _wxMaxima_ ne inserirà una di chiusura dopo di essa."
 
 #. type: Bullet: '* '
 #: ../../info/wxmaxima.md:352
 msgid ""
 "If text is selected if any of these keys is pressed the selected text will "
 "be put between the matched signs."
-msgstr ""
+msgstr "Se il testo è selezionato e viene premuto uno di questi tasti, questo verrà inserito in una coppia di segni corrispondenti."
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:353
 #, no-wrap
 msgid "Don't save the worksheet automatically"
-msgstr ""
+msgstr "Non salvare il foglio di lavoro automaticamente"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:356
@@ -1142,29 +1149,29 @@ msgid ""
 "If this option is set, the file where the worksheet is will be overwritten "
 "only on request of the user. In case of a crash/power loss/... a recent "
 "backup copy is still made available in the temp directory, though."
-msgstr ""
+msgstr "Se questa opzione è impostata, il file in cui si trova il foglio di lavoro verrà sovrascritto solo su richiesta dell'utente. Tuttavia, in caso di arresto anomalo/interruzione dell'alimentazione/... una copia di backup recente sarà ancora disponibile nella directory temp."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:358
 msgid ""
 "If this option isn't set _wxMaxima_ behaves more like a modern cellphone app:"
-msgstr ""
+msgstr "Se questa opzione non è impostata, _wxMaxima_ si comporta più come una moderna app per cellulari:"
 
 #. type: Bullet: '* '
 #: ../../info/wxmaxima.md:361
 msgid "Files are saved automatically on exit"
-msgstr ""
+msgstr "I file vengono salvati automaticamente all'uscita"
 
 #. type: Bullet: '* '
 #: ../../info/wxmaxima.md:361
 msgid "And the file will automatically be saved every 3 minutes."
-msgstr ""
+msgstr "E il file verrà automaticamente salvato ogni 3 minuti."
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:362
 #, no-wrap
 msgid "Where is the configuration saved?"
-msgstr ""
+msgstr "Dove viene salvata la configurazione?"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:366
