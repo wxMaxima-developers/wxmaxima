@@ -1,13 +1,13 @@
 # The wxMaxima User Manual Translation
-# Copyright (C) 2020 Free Software Foundation, Inc.
+# Copyright (C) 2020-2023 Free Software Foundation, Inc.
 # Questo file viene distribuito nei termini della stessa licenza del pacchetto wxMaxima.
-# Marco Ciampa <ciampix@posteo.net>, 2020.
+# Marco Ciampa <ciampix@posteo.net>, 2020-2023.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "POT-Creation-Date: 2022-05-29 21:54+0200\n"
-"PO-Revision-Date: 2020-07-05 22:56+0200\n"
+"PO-Revision-Date: 2023-05-21 22:50+0200\n"
 "Last-Translator: Marco Ciampa <ciampix@posteo.net>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "Language: it\n"
@@ -220,10 +220,9 @@ msgstr ""
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:59
-#, fuzzy, no-wrap
-#| msgid "Extensive documentation for _Maxima_ is [available in the internet](http://maxima.sourceforge.net/documentation.html). Part of this documentation is also available in wxMaxima’s help menu. Pressing the Help key (on most systems the F1 key) causes _wxMaxima_’s context-sensitive help feature to automatically jump to _Maxima_’s manual page for the command at the cursor."
+#, no-wrap
 msgid "Extensive documentation for _Maxima_ is  [available in the internet](https://maxima.sourceforge.io/documentation.html). Part of this documentation is also available in wxMaxima’s help menu. Pressing the Help key (on most systems the <kbd>F1</kbd> key) causes _wxMaxima_’s context-sensitive help feature to automatically jump to _Maxima_’s manual page for the command at the cursor.\n"
-msgstr "Ampia documentazione per _Maxima_ è [disponibile su Internet] (https://maxima.sourceforge.io/documentation.html). Parte di questa documentazione è disponibile anche nel menu di aiuto di wxMaxima. Premendo il tasto Guida (sulla maggior parte dei sistemi il tasto F1), la funzione di guida sensibile al contesto di _wxMaxima_ passa automaticamente alla pagina di manuale di _Maxima_ per il comando sul cursore."
+msgstr "Ampia documentazione per _Maxima_ è [disponibile su Internet] (https://maxima.sourceforge.io/documentation.html). Parte di questa documentazione è disponibile anche nel menu di aiuto di wxMaxima. Premendo il tasto Guida (sulla maggior parte dei sistemi il tasto  <kbd>F1</kbd>), la funzione di guida sensibile al contesto di _wxMaxima_ passa automaticamente alla pagina di manuale di _Maxima_ per il comando sotto il cursore.\n"
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:60
@@ -244,7 +243,7 @@ msgid ""
 "_wxMaxima_, including workbooks to illustrate aspects of its use, is online "
 "at the _wxMaxima_ [help site](https://wxMaxima-developers.github.io/wxmaxima/"
 "help.html), as well as via the help menu."
-msgstr ""
+msgstr "_wxMaxima_ è un'interfaccia utente grafica che fornisce flessibilità e tutte le funzionalità di _Maxima_. wxMaxima offre agli utenti una visualizzazione grafica e molte caratteristiche che rendono più facile lavorare con _Maxima_. Ad esempio _wxMaxima_ consente di esportare il contenuto di una qualsiasi cella (o, se necessario, anche qualsiasi parte di una formula) come testo, come LaTeX o come specifica MathML con un semplice clic destro. In effetti, è possibile esportare un'intera cartella di lavoro, sia come file HTML che come file LaTeX. La documentazione per _wxMaxima_, comprese le cartelle di lavoro per illustrare gli aspetti del suo utilizzo, è online su _wxMaxima_ [sito della guida](https://wxMaxima-developers.github.io/wxmaxima/help.html), nonché tramite il menu della guida."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:65
@@ -256,13 +255,13 @@ msgstr "![wxMaxima window](./wxMaximaWindow.png){ id=img_wxMaximaWindow }"
 msgid ""
 "The calculations that are entered in _wxMaxima_ are performed by the "
 "_Maxima_ command-line tool in the background."
-msgstr ""
+msgstr "I calcoli immessi in _wxMaxima_ vengono eseguiti dallo strumento della riga di comando _Maxima_ in background."
 
 #. type: Title ##
 #: ../../info/wxmaxima.md:69
 #, no-wrap
 msgid "Workbook basics"
-msgstr ""
+msgstr "Nozioni di base sulle cartelle di lavoro"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:72
@@ -275,13 +274,13 @@ msgid ""
 "_Maxima_ and the use of _wxMaxima_ to interact with _Maxima_. This manual "
 "concentrates on describing aspects of _wxMaxima_ that are not likely to be "
 "self-evident and that might not be covered in the online material."
-msgstr ""
+msgstr "Gran parte di _wxMaxima_ si spiega da sé, ma alcuni dettagli richiedono attenzione. [Questo sito](https://wxMaxima-developers.github.io/wxmaxima/help.html) contiene una serie di cartelle di lavoro che affrontano vari aspetti di _wxMaxima_. Lavorare attraverso alcuni di questi (in particolare il \"tutorial _(wx)Maxima_ di 10 minuti\") può essere utile ad aumentare la propria familiarità sia con il contenuto di _Maxima_ sia con l'uso di _wxMaxima_ per interagire con _Maxima_. Questo manuale si concentra sulla descrizione degli aspetti di _wxMaxima_ che probabilmente non sono evidenti e che potrebbero non essere trattati nel materiale online."
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:73
 #, no-wrap
 msgid "The workbook approach"
-msgstr ""
+msgstr "L'approccio della cartella di lavoro"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:76
@@ -298,7 +297,7 @@ msgid ""
 "(where the user does not want every change to automatically trigger a full "
 "re-evaluation of the whole document). Also, this approach is very handy for "
 "debugging."
-msgstr ""
+msgstr "Una delle pochissime cose che non sono standard in _wxMaxima_ è che organizza i dati per _Maxima_ in celle che vengono elaborate (ovvero: inviate a _Maxima_) solo quando l'utente lo richiede. Quando viene elaborata una cella, tutti i comandi in quella cella, e solo quella cella, vengono valutati in modalità 'batch'. (L'affermazione precedente non è del tutto accurata: si può selezionare un insieme di celle adiacenti e valutarle tutte assieme. Inoltre, si può istruire _Maxima_ a valutare tutte le celle in una cartella di lavoro in un solo passaggio.) L'approccio di _wxMaxima_ all'invio di comandi per l'esecuzione potrebbe sembrare poco familiare a prima vista. Tuttavia, facilita drasticamente il lavoro con documenti di grandi dimensioni (dove l'utente potrebbe non desiderare che ogni modifica attivi automaticamente una rivalutazione completa dell'intero documento). Inoltre, questo approccio è molto utile per la ricerca difetti."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:78
@@ -308,7 +307,7 @@ msgid ""
 "is created the cell can be sent to _Maxima_, which causes the result of the "
 "calculation to be displayed below the code. A pair of such commands is shown "
 "below."
-msgstr ""
+msgstr "Se il testo viene digitato in _wxMaxima_, si crea automaticamente una nuova cella del foglio di lavoro. Il tipo di questa cella può essere selezionato nella barra degli strumenti. Se viene creata una cella di codice, la cella può essere inviata a _Maxima_, il che fa sì che il risultato del calcolo venga visualizzato sotto il codice. Di seguito viene mostrata una coppia di tali comandi."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:80
@@ -325,7 +324,7 @@ msgid ""
 "hidden, except if the user assigns the output a name. In this case by "
 "default the user-defined label is displayed. The `%o`\\-style label _Maxima_ "
 "auto-generates will also be accessible, though."
-msgstr ""
+msgstr "Sulla valutazione del contenuto di una cella di ingresso, la cella di ingresso _Maxima_ assegna un'etichetta all'ingresso (per impostazione predefinita mostrata in rosso e riconoscibile da `%i`) con la quale può essere referenziata successivamente durante la sessione. L'uscita generata da _Maxima_ ottiene anch'essa un'etichetta, la quale inizia con `%o` e, per impostazione predefinita, è nascosta, tranne se l'utente assegna un nome all'uscita. In questo caso, ancora per impostazione predefinita, viene visualizzata un'etichetta definita dall'utente. Anche l'etichetta in stile `%o`\\ _Maxima_ e generata automaticamente, sarà accessibile."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:84
@@ -336,14 +335,14 @@ msgid ""
 "then gradually reverting the unneeded changes is rather easy. Furthermore "
 "the worksheet itself has a global undo buffer that can undo cell edits, adds "
 "and deletes."
-msgstr ""
+msgstr "Oltre alle celle di ingresso, _wxMaxima_ consente l'uso di celle di testo per la documentazione, celle immagine, celle titolo, celle capitolo e celle sezione. Ogni cella ha una propria memoria degli annullamenti, quindi eseguire la correzione modificando i valori di più celle e quindi ripristinare gradualmente le modifiche non necessarie, è piuttosto semplice. Inoltre, il foglio di lavoro stesso ha una memoria degli annullamenti globale che può annullare le modifiche, le aggiunte e le eliminazioni delle celle."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:86
 msgid ""
 "The figure below shows different cell types (title cells, section cells, "
 "subsection cells, text cells, input/output cells and image cells)."
-msgstr ""
+msgstr "La figura seguente mostra diversi tipi di celle (celle titolo, celle sezione, celle sottosezione, celle testo, celle ingresso/uscita e celle immagine)."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:88
@@ -364,39 +363,39 @@ msgstr "Celle"
 #: ../../info/wxmaxima.md:93
 msgid ""
 "The worksheet is organized in cells. wxMaxima knows the following cell types:"
-msgstr ""
+msgstr "Il foglio di lavoro è organizzato in celle. wxMaxima riconosce i seguenti tipi di celle:"
 
 #. type: Bullet: '* '
 #: ../../info/wxmaxima.md:100
 msgid "Math cells, containing one or more lines of _Maxima_ input."
-msgstr ""
+msgstr "Celle matematiche, contenenti una o più righe di ingresso _Maxima_."
 
 #. type: Bullet: '* '
 #: ../../info/wxmaxima.md:100
 msgid "Output of, or a question from, _Maxima_."
-msgstr ""
+msgstr "Uscita di, o una domanda da parte di, _Maxima_."
 
 #. type: Bullet: '* '
 #: ../../info/wxmaxima.md:100
 msgid "Image cells."
-msgstr ""
+msgstr "Celle immagine."
 
 #. type: Bullet: '* '
 #: ../../info/wxmaxima.md:100
 msgid "Text cells, that can for example be used for documentation."
-msgstr ""
+msgstr "Celle di testo, che per esempio possono essere usate per documentazione."
 
 #. type: Bullet: '* '
 #: ../../info/wxmaxima.md:100
 msgid ""
 "A title, section or a subsection. 6 levels of different headings are "
 "possible."
-msgstr ""
+msgstr "Un titolo, sezione o sottosezione. Sono possibili 6 livelli diversi di intestazione."
 
 #. type: Bullet: '* '
 #: ../../info/wxmaxima.md:100
 msgid "Page breaks."
-msgstr ""
+msgstr "Interruzioni di pagina."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:102
@@ -406,25 +405,25 @@ msgid ""
 "using the hot keys shown in the menu or using the drop-down list in the "
 "toolbar. Once the non-math cell is created, whatever is typed into the file "
 "is interpreted as text."
-msgstr ""
+msgstr "Il comportamento predefinito di _wxMaxima_ quando viene inserito del testo è creare automaticamente una cella matematica. È possibile creare celle di altro tipo utilizzando il menu Cella, utilizzando i tasti di scelta rapida visualizzati nel menu o utilizzando l'elenco a discesa nella barra degli strumenti. Una volta creata la cella non-matematica, tutto ciò che viene digitato nel file viene interpretato come testo."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:104
 msgid ""
 "A (C-style) comment text can be part of a math cell as follows: `/* This "
 "comment will be ignored by Maxima */`"
-msgstr ""
+msgstr "Un testo di commento (in stile linguaggio C) può fare parte di una cella matematica come di seguito: `/* Questo commento verrà ignorato da Maxima */`"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:106
 msgid "\"`/*`\" marks the start of the comment, \"`*/`\" the end."
-msgstr ""
+msgstr "\"`/*`\" marca l'inizio del commento, mentre \"`*/`\" la sua fine."
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:107
 #, no-wrap
 msgid "Horizontal and vertical cursors"
-msgstr ""
+msgstr "Cursori orizzontali e verticali"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:110
@@ -433,7 +432,7 @@ msgid ""
 "extend the selection to automatically begin and end with a word boundary. "
 "Likewise _wxMaxima_ if more than one cell is selected will extend the "
 "selection to whole cells."
-msgstr ""
+msgstr "Se l'utente tenta di selezionare una frase completa, un elaboratore di testi tenterà di estendere la selezione per iniziare e terminare automaticamente con un limite di parola. Allo stesso modo _wxMaxima_ se viene selezionata più di una cella estenderà la selezione alle celle intere."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:112
@@ -441,14 +440,14 @@ msgid ""
 "What isn't standard is that _wxMaxima_ provides drag-and-drop flexibility by "
 "defining two types of cursors. _wxMaxima_ will switch between them "
 "automatically when needed:"
-msgstr ""
+msgstr "Ciò che non è standard è che _wxMaxima_ fornisce flessibilità di trascinamento della selezione definendo due tipi di cursori. _wxMaxima_ passerà da uno all'altro automaticamente alla bisogna:"
 
 #. type: Bullet: '* '
 #: ../../info/wxmaxima.md:115
 msgid ""
 "The cursor is drawn horizontally if it is moved in the space between two "
 "cells or by clicking there."
-msgstr ""
+msgstr "Il cursore viene disegnato orizzontalmente se viene spostato nello spazio tra due celle o facendo clic lì."
 
 #. type: Bullet: '* '
 #: ../../info/wxmaxima.md:115
@@ -456,20 +455,20 @@ msgid ""
 "A vertical cursor that works inside a cell. This cursor is activated by "
 "moving the cursor inside a cell using the mouse pointer or the cursor keys "
 "and works much like the cursor in a text editor."
-msgstr ""
+msgstr "Un cursore verticale che funziona all'interno di una cella. Questo cursore viene attivato spostando il cursore all'interno di una cella utilizzando il puntatore del mouse o i tasti cursore e funziona in modo molto simile al cursore in un editor di testo."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:117
 #, no-wrap
 msgid "When you start wxMaxima, you will only see the blinking horizontal cursor. If you start typing, a math cell will be automatically created and the cursor will change to a regular vertical one (you will see a right arrow as \"prompt\", after the Math cell is evaluated (<kbd>CTRL+ENTER</kbd>), you will see the labels, e.g. `(%i1)`, `(%o1)`).\n"
-msgstr ""
+msgstr "Quando si avvia wxMaxima, è visibile solo un cursore orizzontale lampeggiante. Se si inizia a digitare, viene creata automaticamente una cella matematica e il cursore diventa verticale (si vedrà una freccia destra come \"prompt\", dopo l'elaborazione della cella matematica (<kbd>CTRL+INVIO</kbd >), si noteranno, ad esempio, le etichette `(%i1)` e `(%o1)`).\n"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:120
 msgid ""
 "![(blinking) horizontal cursor after wxMaxima start](./horizontal-cursor-"
 "only.png){ id=img_horizontal_cursor_only }"
-msgstr ""
+msgstr "![(blinking) cursore orizzontale dopo l'avvio di wxMaxima](./horizontal-cursor-only.png){ id=img_horizontal_cursor_only }"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:123
@@ -477,7 +476,7 @@ msgid ""
 "You might want to create another cell type (using the \"Cell\" menu), maybe "
 "a title cell or text cell, which describes, what will be done, when you "
 "start creating your worksheet."
-msgstr ""
+msgstr "Si potrebbe voler creare un altro tipo di cella (usando il menu \"Cella\"), magari una cella titolo o una cella di testo, che descriva cosa verrà fatto quando si inizi a creare il foglio di lavoro."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:125
@@ -486,55 +485,55 @@ msgid ""
 "(blinking) horizontal cursor, where you can insert a cell into your "
 "worksheet (either a math cell, by just start typing your formula - or "
 "another cell type using the menu)."
-msgstr ""
+msgstr "Se si naviga tra le diverse celle, si vedrà anche il cursore orizzontale (lampeggiante), col quale si può inserire una cella nel foglio di lavoro (una cella matematica, semplicemente iniziando a digitare la formula, o un altro tipo di cella utilizzando il menu)."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:127
 msgid ""
 "![(blinking) horizontal cursor between cells](./horizontal-cursor-between-"
 "cells.png){ id=img_horizontal_cursor_between_cells }"
-msgstr ""
+msgstr "![(blinking) cursore orizzontale tra celle](./horizontal-cursor-between-cells.png){ id=img_horizontal_cursor_between_cells }"
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:128
 #, no-wrap
 msgid "Sending cells to Maxima"
-msgstr ""
+msgstr "Invio delle celle a Maxima"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:131
 #, no-wrap
 msgid "The command in a code cell are executed once <kbd>CTRL</kbd>+<kbd>ENTER</kbd>, <kbd>SHIFT</kbd>+<kbd>ENTER</kbd> or the <kbd>ENTER</kbd> key on the keypad is pressed. The _wxMaxima_ default is to enter commands when either <kbd>CTRL+ENTER</kbd> or <kbd>SHIFT+ENTER</kbd> is entered, but _wxMaxima_ can be configured to execute commands in response to <kbd>ENTER</kbd>.\n"
-msgstr ""
+msgstr "Il comando in una cella di codice viene eseguito una volta premuti i tasti <kbd>CTRL</kbd>+<kbd>INVIO</kbd>, <kbd>MAIUSC</kbd>+<kbd>INVIO</kbd> o <kbd>INVIO</kbd> sulla tastiera. L'impostazione predefinita di _wxMaxima_ prevede l'immissione di comandi quando viene inserito <kbd>CTRL</kbd>+<kbd>INVIO</kbd> o <kbd>MAIUSC</kbd>+<kbd>INVIO</kbd>, ma _wxMaxima_ può essere configurato per eseguire comandi in risposta anche a solo <kbd>INVIO</kbd>.\n"
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:132
 #, no-wrap
 msgid "Command autocompletion"
-msgstr ""
+msgstr "Autocompletamento comandi"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:135
 #, no-wrap
 msgid "_wxMaxima_ contains an autocompletion feature that is triggered via the menu (Cell/Complete Word) or alternatively by pressing the key combination <kbd>CTRL</kbd>+<kbd>SPACE</kbd>. The autocompletion is context-sensitive. For example if activated within a unit specification for ezUnits it will offer a list of applicable units.\n"
-msgstr ""
+msgstr "_wxMaxima_ contiene una funzione di completamento automatico che viene attivata tramite il menu (Cella/Parola completa) o in alternativa premendo la combinazione di tasti <kbd>CTRL</kbd>+<kbd>SPAZIO</kbd>. Il completamento automatico è sensibile al contesto. Ad esempio, se attivato all'interno di una specifica di unità di ezUnits, offrirà un elenco di unità applicabili."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:137
 msgid "![ezUnits](./ezUnits.png){ id=img_ezUnits }"
-msgstr ""
+msgstr "![ezUnits](./ezUnits.png){ id=img_ezUnits }"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:139
 #, no-wrap
 msgid "Besides completing a file name, a unit name or the current command’s or variable’s name the autocompletion is able to show a template for most of the commands indicating the type (and meaning) of the parameters this program expects. To activate this feature press <kbd>SHIFT</kbd>+<kbd>CTRL</kbd>+<kbd>SPACE</kbd> or select the respective menu item (Cell/Show Template).\n"
-msgstr ""
+msgstr "Oltre a completare un nome di file, un nome di unità o il nome del comando o della variabile corrente, l'autocompletamento è in grado di mostrare un modello per la maggior parte dei comandi indicando il tipo (e il significato) dei parametri che questo programma si aspetta. Per attivare questa funzione premere <kbd>MAIUSC</kbd>+<kbd>CTRL</kbd>+<kbd>SPAZIO</kbd> o selezionare la rispettiva voce di menu (Cella/Mostra modello).\n"
 
 #. type: Title ####
 #: ../../info/wxmaxima.md:140
 #, no-wrap
 msgid "Greek characters"
-msgstr ""
+msgstr "Caratteri greci"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:143
@@ -544,7 +543,7 @@ msgid ""
 "symbols (end of transmission, end of string, lines and edges for drawing "
 "rectangles for menus _etc_.) of nearly any given language can fit within "
 "that limit."
-msgstr ""
+msgstr "I computer tradizionalmente memorizzavano i caratteri in valori a 8 bit. Ciò consente un massimo di 256 caratteri diversi. Tutte le lettere, i numeri e i simboli di controllo (fine trasmissione, fine stringa, linee e bordi per disegnare rettangoli per i menu, _ecc._ .) di quasi tutte le lingue possono essere compresi in tale limitazione."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:145
@@ -554,7 +553,7 @@ msgid ""
 "mathematics. To overcome this type of limitation [Unicode](https://home."
 "unicode.org/) has been invented: An encoding that makes English text work "
 "like normal, but to use much more than 256 characters."
-msgstr ""
+msgstr "Per la maggior parte dei paesi, la codifica di 256 caratteri che è stata scelta non include per esempio le lettere greche, che sono usate frequentemente in matematica. Per superare questo tipo di limitazione è stato inventato [Unicode](https://home.unicode.org/): una codifica che fa funzionare normalmente il testo inglese, ma può andare molto oltre il limite dei 256 caratteri."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:147
@@ -563,14 +562,14 @@ msgid ""
 "either supports Unicode or that doesn't care about the font encoding. As at "
 "least one of this pair of conditions is likely to be true. _wxMaxima_ "
 "provides a method of entering Greek characters using the keyboard:"
-msgstr ""
+msgstr "_Maxima_ consente Unicode, se è stato compilato utilizzando un compilatore Lisp che supporta Unicode o che non si preoccupa della codifica dei caratteri. Dato che è molto probabile che almeno una di questa coppia di condizioni sia vera, _wxMaxima_ fornisce un metodo per inserire caratteri greci usando la tastiera:"
 
 #. type: Bullet: '* '
 #: ../../info/wxmaxima.md:150
 msgid ""
 "A Greek letter can be entered by pressing the <kbd>ESC</kbd> key and then "
 "starting to type the Greek character's name."
-msgstr ""
+msgstr "È possibile inserire una lettera greca premendo il tasto <kbd>ESC</kbd> e quindi iniziare a digitare il nome del carattere greco."
 
 #. type: Bullet: '* '
 #: ../../info/wxmaxima.md:150
@@ -578,7 +577,7 @@ msgid ""
 "Alternatively it can be entered by pressing <kbd>ESC</kbd>, one letter (or "
 "two for the Greek letter omicron) and <kbd>ESC</kbd> again. In this case the "
 "following letters are supported:"
-msgstr ""
+msgstr "In alternativa può essere inserito premendo <kbd>ESC</kbd>, una lettera (o due per la lettera greca omicron) e <kbd>ESC</kbd> nuovamente. In questo caso sono supportate le seguenti lettere:"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:169
@@ -603,13 +602,31 @@ msgid ""
 "|  H  |      Eta     |  Om |    Omicron   |  Y  |      Psi     |\n"
 "|  T  |     Theta    |  P  |      Pi      |  O  |     Omega    |\n"
 msgstr ""
+"|tasto|Lettera greca |tasto|Lettera greca |Tasto|Lettera greca |\n"
+"|:---:|:------------:|:---:|:------------:|:---:|:------------:|\n"
+"|  a  |     alpha    |  i  |     iota     |  r  |      rho     |\n"
+"|  b  |     beta     |  k  |     kappa    |  s  |     sigma    |\n"
+"|  g  |     gamma    |  l  |    lambda    |  t  |      tau     |\n"
+"|  d  |     delta    |  m  |      mu      |  u  |    upsilon   |\n"
+"|  e  |    epsilon   |  n  |      nu      |  f  |      phi     |\n"
+"|  z  |     zeta     |  x  |      xi      |  c  |      chi     |\n"
+"|  h  |      eta     |  om |    omicron   |  y  |      psi     |\n"
+"|  q  |     theta    |  p  |      pi      |  o  |     omega    |\n"
+"|  A  |     Alpha    |  I  |     Iota     |  R  |      Rho     |\n"
+"|  B  |     Beta     |  K  |     Kappa    |  S  |     Sigma    |\n"
+"|  G  |     Gamma    |  L  |    Lambda    |  T  |      Tau     |\n"
+"|  D  |     Delta    |  M  |      Mu      |  U  |    Upsilon   |\n"
+"|  E  |    Epsilon   |  N  |      Nu      |  P  |      Phi     |\n"
+"|  Z  |     Zeta     |  X  |      Xi      |  C  |      Chi     |\n"
+"|  H  |      Eta     |  Om |    Omicron   |  Y  |      Psi     |\n"
+"|  T  |     Theta    |  P  |      Pi      |  O  |     Omega    |\n"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:171
 msgid ""
 "The same mechanism also allows to enter some miscellaneous mathematical "
 "symbols:"
-msgstr ""
+msgstr "Lo stesso meccanismo permette anche di inserire alcuni simboli matematici vari:"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:222
@@ -666,18 +683,68 @@ msgid ""
 "| ->             | a right arrow                                         |\n"
 "| -->            | a long right arrow                                    |\n"
 msgstr ""
+"|tasti da premere| Simboli matematici                                    |\n"
+"|----------------|-------------------------------------------------------|\n"
+"| hbar           | Costante di Planck: una h con una barra orizzontale   |\n"
+"| Hbar           | Una H (maiuscola) con una barra orizzontale           |\n"
+"| 2              | al quadrato                                           |\n"
+"| 3              | al cubo                                               |\n"
+"| /2             | 1/2                                                   |\n"
+"| partial        | simbolo di derivata (la d di dx/dt)                   |\n"
+"| integral       | simbolo di integrale                                  |\n"
+"| sq             | radice quadrata                                       |\n"
+"| ii             | immaginario                                           |\n"
+"| ee             | elemento                                              |\n"
+"| in             | in                                                    |\n"
+"| impl implies   | implica                                               |\n"
+"| inf            | infinito                                              |\n"
+"| empty          | vuoto                                                 |\n"
+"| TB             | grande triangolo a destra                             |\n"
+"| tb             | piccolo triangolo a destra                            |\n"
+"| and            | and                                                   |\n"
+"| or             | or                                                    |\n"
+"| xor            | xor                                                   |\n"
+"| nand           | nand                                                  |\n"
+"| nor            | nor                                                   |\n"
+"| equiv          | equivalente a                                         |\n"
+"| not            | not                                                   |\n"
+"| union          | unione                                                |\n"
+"| inter          | intersezione                                          |\n"
+"| subseteq       | sottoinsieme o uguale                                 |\n"
+"| subset         | sottoinsieme                                          |\n"
+"| notsubseteq    | non sottoinsieme o uguale                             |\n"
+"| notsubset      | non sottoinsieme                                      |\n"
+"| approx         | approssimatamente                                     |\n"
+"| propto         | proporzionale a                                       |\n"
+"| neq != /= or # | non uguale a                                          |\n"
+"| +/- or pm      | simbolo di più/meno                                   |\n"
+"| <= or leq      | uguale o minore di                                    |\n"
+"| >= or geq      | uguale o maggiore di                                  |\n"
+"| << or ll       | molto più piccolo di                                  |\n"
+"| >> or gg       | molto maggiore di                                     |\n"
+"| qed            | cvd                                                   |\n"
+"| nabla          | un operatore nabla                                    |\n"
+"| sum            | simbolo di sommatoria                                 |\n"
+"| prod           | simbolo di prodotto                                   |\n"
+"| exists         | simbolo di esistenza                                  |\n"
+"| nexists        | simbolo di non esistenza                              |\n"
+"| parallel       | simbolo di parallelo                                  |\n"
+"| perp           | simbolo di perpendicolare                             |\n"
+"| leadsto        | simbol di conseguenza                                 |\n"
+"| ->             | una freccia a destra                                  |\n"
+"| -->            | una freccia a destra lunga                            |\n"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:224
 #, no-wrap
 msgid "If a special symbol isn’t in the list it is possible to input arbitrary Unicode characters by pressing <kbd>ESC</kbd> [number of the character (hexadecimal)] <kbd>ESC</kbd>.\n"
-msgstr ""
+msgstr "Se un simbolo speciale non compare nell'elenco, è possibile inserire caratteri Unicode arbitrari premendo <kbd>ESC</kbd> [numero del carattere (esadecimale)] <kbd>ESC</kbd>.\n"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:226
 #, no-wrap
 msgid "<kbd>ESC</kbd> <kbd>61</kbd> <kbd>ESC</kbd> therefore results in an `a`.\n"
-msgstr ""
+msgstr "<kbd>ESC</kbd> <kbd>61</kbd> <kbd>ESC</kbd> diventa quindi una `a`."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:228
@@ -687,7 +754,7 @@ msgid ""
 "interpreted as ordinary characters. If _Maxima_ is compiled using a Lisp "
 "that doesn’t support dealing with Unicode characters they might cause an "
 "error message instead."
-msgstr ""
+msgstr "Si noti che la maggior parte di questi simboli (eccezioni degne di nota sono i simboli logici) non hanno un significato speciale in _Maxima_ e pertanto verranno interpretati come caratteri ordinari. Se _Maxima_ viene compilato utilizzando un Lisp che non supporta la gestione dei caratteri Unicode, potrebbero invece causare un messaggio di errore."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:231
@@ -696,12 +763,14 @@ msgid ""
 "It may be the case, that e.g. greek characters or mathematical symbols are not included in the selected font, then they can not be displayed.\n"
 "To solve that problem, select other fonts (using: Edit -> Configure -> Style).\n"
 msgstr ""
+"Potrebbe capitare che, ad es. caratteri greci o simboli matematici non siano stati inclusi nel font selezionato, e quindi non possano essere visualizzati.\n"
+"Per risolvere questo problema, provare a selezionare un altro font (tramite: Modifica -> Configura -> Stile).\n"
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:232
 #, no-wrap
 msgid "Side Panes"
-msgstr ""
+msgstr "Pannelli laterali"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:235
@@ -712,12 +781,12 @@ msgid ""
 "\"View\" menu. They all can be moved to other locations inside or outside "
 "the _wxMaxima_ window. Other useful panes is the one that allows to input "
 "Greek letters using the mouse."
-msgstr ""
+msgstr "È possibile accedere più velocemente ai comandi _Maxima_ più importanti o a cose come il sommario, finestre con messaggi diagnostici o la cronologia degli ultimi comandi emessi utilizzando i riquadri laterali. Questi possono essere abilitati utilizzando il menu \"Visualizza\". Tutti possono essere spostati in altre posizioni all'interno o all'esterno della finestra _wxMaxima_. Altro riquadro utile è quello che permette di inserire le lettere greche utilizzando il mouse."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:237
 msgid "![Example of different side panes](./SidePanes.png){ id=img_SidePanes }"
-msgstr ""
+msgstr "![Esempio di diversi pannelli laterali](./SidePanes.png){ id=img_SidePanes }"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:240
@@ -725,20 +794,20 @@ msgid ""
 "In the \"table of contents\" side pane one can increase or decrease a "
 "heading, just click on the heading with the right mouse button and select "
 "the next higher or lower heading type."
-msgstr ""
+msgstr "Nel riquadro laterale \"sommario\" è possibile elevare o abbassare di livello un'intestazione; è sufficiente fare clic sull'intestazione con il tasto destro del mouse e selezionare il tipo di intestazione successiva superiore o inferiore."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:242
 msgid ""
 "![Increase or decrease headings in the TOC side pane](./Sidepane-TOC-convert-"
 "headings.png){ id=Sidepane-TOC-convert-headings }"
-msgstr ""
+msgstr "![Eleva o abbassa le intestazioni nel riquadro laterale del sommario](./Sidepane-TOC-convert-headings.png){ id=Sidepane-TOC-convert-headings }"
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:243
 #, no-wrap
 msgid "MathML output"
-msgstr ""
+msgstr "Uscita MathML"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:246
@@ -748,20 +817,20 @@ msgid ""
 "LibreOffice 5.1) have an equation editor that offers an “import MathML from "
 "clipboard” feature. Others support RTF maths. _wxMaxima_ therefore offers "
 "several entries in the right-click menu."
-msgstr ""
+msgstr "Diversi elaboratori di testo e programmi simili riconoscono in ingresso MathML e lo inseriscono automaticamente come un'equazione 2D modificabile o (come LibreOffice 5.1) dispongono di un editor di equazioni che offre una funzione di \"importazione MathML dagli appunti\". Altri supportano la matematica nel formato RTF. _wxMaxima_ offre quindi diverse voci nel menu di scelta rapida."
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:248
 #, no-wrap
 msgid "Markdown support"
-msgstr ""
+msgstr "Supporto Markdown"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:251
 msgid ""
 "_wxMaxima_ offers a set of standard markdown conventions that don't collide "
 "with mathematical notation. One of this elements is bullet lists."
-msgstr ""
+msgstr "_wxMaxima_ offre una serie di convenzioni markdown standard che non entrano in conflitto con la notazione matematica. Una di queste sono gli elenchi puntati."
 
 #. type: Fenced code block
 #: ../../info/wxmaxima.md:252
@@ -775,12 +844,19 @@ msgid ""
 " * A third item at the first indentation level\n"
 "Ordinary text\n"
 msgstr ""
+"Testo normale\n"
+" * Un elemento, livello indentazione 1\n"
+" * Un altro elemento a livello indentazione 1\n"
+"   * Un elemento al secondo livello di indentazione\n"
+"   * Un secondo elemento al secondo livello di indentazione\n"
+" * Un terzo elemento al primo livello di indentazione\n"
+"Testo normale\n"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:263
 #, no-wrap
 msgid "_wxMaxima_ will recognize text starting with `>` chars as block quotes:\n"
-msgstr ""
+msgstr "_wxMaxima_ riconoscerà il testo che inizia con i caratteri `>` come virgolette di blocco:\n"
 
 #. type: Fenced code block
 #: ../../info/wxmaxima.md:264
@@ -792,18 +868,23 @@ msgid ""
 "> quote quote quote quote\n"
 "Ordinary text\n"
 msgstr ""
+"Testo normale\n"
+"> citazione citazione citazione\n"
+"> citazione citazione citazione\n"
+"> citazione citazione citazione\n"
+"Testo normale\n"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:273
 #, no-wrap
 msgid "_wxMaxima_'s TeX and HTML output will also recognize `=>` and replace it by the corresponding Unicode sign:\n"
-msgstr ""
+msgstr "Anche l'uscita TeX e HTML di _wxMaxima_ riconoscerà `=>` e lo sostituirà con il corrispondente simbolo Unicode:\n"
 
 #. type: Fenced code block
 #: ../../info/wxmaxima.md:274
 #, no-wrap
 msgid "cogito => sum.\n"
-msgstr ""
+msgstr "cogito => sum.\n"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:279
@@ -815,7 +896,7 @@ msgstr ""
 #: ../../info/wxmaxima.md:280
 #, no-wrap
 msgid "Hotkeys"
-msgstr ""
+msgstr "Scorciatoie da tastiera"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:283
@@ -849,7 +930,7 @@ msgstr ""
 #: ../../info/wxmaxima.md:288
 #, no-wrap
 msgid "Raw TeX in the TeX export"
-msgstr ""
+msgstr "TeX grezzo nell'esportazione TeX"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:291
@@ -863,7 +944,7 @@ msgstr ""
 #: ../../info/wxmaxima.md:292
 #, no-wrap
 msgid "File Formats"
-msgstr ""
+msgstr "Formati di file"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:295
@@ -876,7 +957,7 @@ msgstr ""
 #: ../../info/wxmaxima.md:297
 #, no-wrap
 msgid ".mac"
-msgstr ""
+msgstr ".mac"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:300
@@ -922,7 +1003,7 @@ msgstr ""
 #: ../../info/wxmaxima.md:310
 #, no-wrap
 msgid ".wxm"
-msgstr ""
+msgstr ".wxm"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:313
@@ -934,7 +1015,7 @@ msgstr ""
 #: ../../info/wxmaxima.md:314
 #, no-wrap
 msgid ".wxmx"
-msgstr ""
+msgstr ".wxmx"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:317
@@ -947,7 +1028,7 @@ msgstr ""
 #: ../../info/wxmaxima.md:318
 #, no-wrap
 msgid "Configuration options"
-msgstr ""
+msgstr "Opzioni di configurazione"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:321
@@ -982,7 +1063,7 @@ msgstr ""
 #: ../../info/wxmaxima.md:327
 #, no-wrap
 msgid "Default animation framerate"
-msgstr ""
+msgstr "Frequenza di quadro animazioni predefinita"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:330
@@ -2553,14 +2634,3 @@ msgid ""
 "Instead of a minus some operating systems might use a dash in front of the "
 "command-line switches."
 msgstr ""
-
-#~ msgid "one or more image"
-#~ msgstr "una o più immagini"
-
-#~ msgid "a title, section or a subsection."
-#~ msgstr "un titolo, sezione o subsezione."
-
-#, fuzzy
-#~| msgid "_Maxima_"
-#~ msgid "maxima"
-#~ msgstr "_Maxima_"
