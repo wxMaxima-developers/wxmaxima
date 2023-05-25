@@ -4480,7 +4480,7 @@ wxString wxMaxima::EscapeForLisp(wxString str) {
 void wxMaxima::SetupVariables() {
   wxLogMessage(_("Sending maxima the info how to express 2d maths as XML"));
   wxMathML wxmathml(&m_configuration);
-  SendMaxima(wxmathml.GetCmd());
+  AddConfigLispCommand((wxmathml.GetCmd()));
   wxString cmd;
 
 #if defined(__WXOSX__)
@@ -4489,13 +4489,14 @@ void wxMaxima::SetupVariables() {
   gnuplot_binary.Replace("\\", "\\\\");
   gnuplot_binary.Replace("\"", "\\\"");
   if (wxFileExists(m_gnuplotcommand))
-    cmd += wxS("\n:lisp-quiet (setf $gnuplot_command \"") + m_gnuplotcommand +
-      wxS("\")\n");
+    cmd += wxS("(setf $gnuplot_command \"") + m_gnuplotcommand +
+      wxS("\")");
   wxLogMessage(_("Setting gnuplot_binary to %s"),
 	       m_gnuplotcommand.utf8_str());
 #endif
   cmd.Replace(wxS("\\"), wxS("/"));
-  SendMaxima(cmd);
+  if(!cmd.IsEmpty())
+  AddConfigLispCommand(cmd);
 
   wxString wxmaximaversion_lisp(wxS(GITVERSION));
 

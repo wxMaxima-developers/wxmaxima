@@ -100,8 +100,6 @@ wxString wxMathML::GetCmd() {
     wxASSERT_MSG(m_maximaCMD.Length() > 54000,
                  _("Bug: After removing the whitespace wxMathml.lisp is "
                    "shorter than expected!"));
-  m_maximaCMD = wxS(":lisp-quiet ") + m_maximaCMD + "\n";
-
   return m_maximaCMD;
 }
 wxString wxMathML::m_maximaCMD;
