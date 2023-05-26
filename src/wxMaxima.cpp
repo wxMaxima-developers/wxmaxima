@@ -2691,6 +2691,8 @@ void wxMaxima::OnProcessEvent(wxProcessEvent &event) {
   if(event.GetPid() != m_pid)
     return;
   m_process = NULL;
+  m_maximaStdout = NULL;
+  m_maximaStderr = NULL;
   m_pid = -1;
   wxLogMessage(_("Maxima process (pid %li) has terminated with exit code %li.\n"),
                (long)event.GetPid(), (long)event.GetExitCode());
