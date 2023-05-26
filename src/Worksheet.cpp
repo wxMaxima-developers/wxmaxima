@@ -758,7 +758,7 @@ GroupCell *Worksheet::InsertGroupCells(std::unique_ptr<GroupCell> &&cells,
     if (!whereNext)
       m_last = lastOfCellsToInsert;
     else
-      wxASSERT_MSG(m_last,
+      wxASSERT_MSG(GetLastCellInWorksheet(),
                    "The pointer to last cell in the document is invalid");
   }
 
@@ -796,12 +796,12 @@ GroupCell *Worksheet::UpdateMLast() {
 
 GroupCell *Worksheet::UpdateMLast(GroupCell *gc)
 {
-  if(m_last == gc)
+  if(GetLastCellInWorksheet() == gc)
     return gc;
   m_last = gc;
-  if (m_last)
+  if (GetLastCellInWorksheet())
     m_configuration->AdjustWorksheetSize(true);
-  return m_last;
+  return GetLastCellInWorksheet();
   
 }
 
@@ -850,7 +850,7 @@ GroupCell *Worksheet::GetWorkingGroup(bool resortToLast) const {
   // If there is no such cell, neither, we append the line to the end of the
   // worksheet.
   if (!tmp)
-    tmp = m_last;
+    tmp = GetLastCellInWorksheet();
 
   return tmp;
 }
@@ -970,6 +970,7 @@ bool Worksheet::RecalculateIfNeeded(bool timeout) {
 	  m_recalculateStart = tmp.GetNext();
 	else
 	  {
+	    wxLogMessage(_("Recalculation hit the end of the worksheet => Updating its size"));
 	    m_recalculateStart = {};
 	    UpdateMLast(&tmp);
 	  }
@@ -2268,7 +2269,7 @@ void Worksheet::OnMouseLeftDown(wxMouseEvent &event) {
   else { // we clicked below last groupcell (both clickedInGC and
          // clickedBeforeGC == NULL)
     // set hCaret (or activate last cell?)
-    SetHCaret(m_last);
+    SetHCaret(GetLastCellInWorksheet());
     m_clickType = CLICK_TYPE_GROUP_SELECTION;
     ScrolledAwayFromEvaluation(true);
   }
@@ -2410,7 +2411,7 @@ void Worksheet::SelectGroupCells(wxPoint down, wxPoint up) {
     }
   }
   if (!m_cellPointers.m_selectionEnd)
-    m_cellPointers.m_selectionEnd = m_last;
+    m_cellPointers.m_selectionEnd = GetLastCellInWorksheet();
 
   if (m_cellPointers.m_selectionStart) {
     if (m_cellPointers.m_selectionEnd->GetNext() ==
@@ -2422,7 +2423,7 @@ void Worksheet::SelectGroupCells(wxPoint down, wxPoint up) {
     }
   } else {
     m_hCaretActive = true;
-    m_hCaretPosition = m_last;
+    m_hCaretPosition = GetLastCellInWorksheet();
   }
 
   if (down.y > up.y) {
@@ -2434,6 +2435,11 @@ void Worksheet::SelectGroupCells(wxPoint down, wxPoint up) {
     m_hCaretPositionEnd = m_cellPointers.m_selectionStart.CastAs<GroupCell *>();
   }
   SetSelection(m_cellPointers.m_selectionStart, m_cellPointers.m_selectionEnd);
+}
+
+GroupCell *Worksheet::GetLastCellInWorksheet() const
+{
+  return m_last;
 }
 
 void Worksheet::ClickNDrag(wxPoint down, wxPoint up) {
@@ -3048,9 +3054,9 @@ void Worksheet::DeleteRegion(GroupCell *start, GroupCell *end,
 
   GroupCell *cellBeforeStart = start->GetPrevious();
 
-  // If the selection ends with the last file of the file m_last has to be
+  // If the selection ends with the last file of the file GetLastCellInWorksheet() has to be
   // set to the last cell that isn't deleted.
-  if (end == m_last)
+  if (end == GetLastCellInWorksheet())
     m_last = cellBeforeStart;
 
   auto tornOut = CellList::TearOut(start, end);
@@ -3159,9 +3165,9 @@ void Worksheet::OpenHCaret(const wxString &txt, GroupType type) {
     SetHCaret(m_cellPointers.m_selectionStart->GetGroup());
 
   if (!m_hCaretActive) {
-    if (!m_last)
+    if (!GetLastCellInWorksheet())
       return;
-    SetHCaret(m_last);
+    SetHCaret(GetLastCellInWorksheet());
   }
 
   // insert a new group cell
@@ -3712,7 +3718,7 @@ void Worksheet::SelectEditable(EditorCell *editor, bool up) {
         if (m_hCaretPosition->GetNext())
           SetHCaret(m_hCaretPosition->GetNext());
         else
-          SetHCaret(m_last);
+          SetHCaret(GetLastCellInWorksheet());
       }
     } else
       SetHCaret(m_hCaretPosition->GetPrevious());
@@ -3757,7 +3763,7 @@ void Worksheet::OnCharNoActive(wxKeyEvent &event) {
       int width;
       int height;
       CalcUnscrolledPosition(0, 0, &topleft.x, &topleft.y);
-      GroupCell *CellToScrollTo = m_last;
+      GroupCell *CellToScrollTo = GetLastCellInWorksheet();
 
       GetClientSize(&width, &height);
 
@@ -3798,7 +3804,7 @@ void Worksheet::OnCharNoActive(wxKeyEvent &event) {
 
     // Now scroll far enough that the bottom of the cell we reach is the last
     // bottom of a cell on the new page.
-    while (CellToScrollTo && CellToScrollTo != m_last) {
+    while (CellToScrollTo && CellToScrollTo != GetLastCellInWorksheet()) {
       if (CellToScrollTo->GetRect().GetBottom() > topleft.y + 2 * height)
         break;
       else
@@ -3846,13 +3852,13 @@ void Worksheet::OnCharNoActive(wxKeyEvent &event) {
 
     if (event.CmdDown()) {
       GroupCell *oldCell = GetHCaret();
-      SetHCaret(m_last);
+      SetHCaret(GetLastCellInWorksheet());
       if (event.ShiftDown()) {
         if (oldCell)
           oldCell = oldCell->GetNext();
-        SetSelection(oldCell, m_last);
+        SetSelection(oldCell, GetLastCellInWorksheet());
         m_hCaretPositionStart = oldCell;
-        m_hCaretPositionEnd = m_last;
+        m_hCaretPositionEnd = GetLastCellInWorksheet();
       }
       ScrolledAwayFromEvaluation();
     }
@@ -6362,7 +6368,7 @@ void Worksheet::AddDocumentToEvaluationQueue() {
   for (auto &tmp : OnList(GetTree()))
     AddToEvaluationQueue(&tmp);
 
-  SetHCaret(m_last);
+  SetHCaret(GetLastCellInWorksheet());
 }
 
 void Worksheet::AddToEvaluationQueue(GroupCell *cell) {
@@ -6385,7 +6391,7 @@ void Worksheet::AddEntireDocumentToEvaluationQueue() {
     AddToEvaluationQueue(&tmp);
     m_evaluationQueue.AddHiddenTreeToQueue(&tmp);
   }
-  SetHCaret(m_last);
+  SetHCaret(GetLastCellInWorksheet());
 }
 
 void Worksheet::AddSectionToEvaluationQueue(GroupCell *start) {
@@ -6414,7 +6420,7 @@ void Worksheet::AddRestToEvaluationQueue() {
   if (!start)
     return;
 
-  AddSelectionToEvaluationQueue(start, m_last);
+  AddSelectionToEvaluationQueue(start, GetLastCellInWorksheet());
 }
 
 void Worksheet::AddSelectionToEvaluationQueue() {
@@ -7066,7 +7072,7 @@ void Worksheet::PasteFromClipboard() {
 
 void Worksheet::SelectAll() {
   if (!GetActiveCell() && GetTree()) {
-    SetSelection(GetTree(), m_last);
+    SetSelection(GetTree(), GetLastCellInWorksheet());
     m_clickType = CLICK_TYPE_GROUP_SELECTION;
     m_hCaretActive = false;
   } else if (GetActiveCell()) {
@@ -7074,7 +7080,7 @@ void Worksheet::SelectAll() {
       GetActiveCell()->SelectAll();
     else {
       SetActiveCell(NULL);
-      SetSelection(GetTree(), m_last);
+      SetSelection(GetTree(), GetLastCellInWorksheet());
       m_clickType = CLICK_TYPE_GROUP_SELECTION;
       m_hCaretActive = false;
     }
@@ -7215,10 +7221,10 @@ GroupCell *Worksheet::GetHCaret() {
     return MouseSelectionStart()->GetGroup();
 
   // A fallback value that is returned if nothing else seems to work
-  return m_last;
+  return GetLastCellInWorksheet();
 }
 
-void Worksheet::SetDefaultHCaret() { SetHCaret(m_last); }
+void Worksheet::SetDefaultHCaret() { SetHCaret(GetLastCellInWorksheet()); }
 
 void Worksheet::OnActivate(wxActivateEvent &event) {
   // If the focus changes we might want to refresh the menu.
@@ -7262,7 +7268,7 @@ void Worksheet::SetHCaret(GroupCell *where) {
 
 void Worksheet::ShowHCaret() {
   if (!m_hCaretPosition)
-    SetHCaret(m_last);
+    SetHCaret(GetLastCellInWorksheet());
 
   m_hCaretActive = true;
 }
@@ -7469,7 +7475,7 @@ bool Worksheet::FindNext(const wxString &str, bool down, bool ignoreCase,
   }
 
   if (!pos)
-    pos = down ? GetTree() : m_last;
+    pos = down ? GetTree() : GetLastCellInWorksheet();
 
   // If a cursor is active we start the search there instead
   if (GetActiveCell())
@@ -7524,7 +7530,7 @@ bool Worksheet::FindNext(const wxString &str, bool down, bool ignoreCase,
       pos = pos->GetPrevious();
       if (!pos) {
         wrappedSearch = true;
-        pos = m_last;
+        pos = GetLastCellInWorksheet();
       }
     }
   }

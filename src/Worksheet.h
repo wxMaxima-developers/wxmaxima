@@ -591,7 +591,10 @@ private:
   bool m_mouseOutside;
   //! The list of tree that contains the document itself
   std::unique_ptr<GroupCell> m_tree;
-  GroupCell *m_last;
+  //! A pointer to the last cell of this worksheet
+  mutable GroupCell *m_last;
+  //! Returns a pointer to the last cell of this worksheet
+  GroupCell *GetLastCellInWorksheet() const;
   int m_clickType;
   int m_clickType_selectionStart;
   GroupCell *m_clickInGC;
