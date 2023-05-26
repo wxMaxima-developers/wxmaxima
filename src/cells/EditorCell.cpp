@@ -3362,8 +3362,12 @@ const MaximaTokenizer::TokenList &EditorCell::GetAllTokens() {
 }
 
 void EditorCell::StyleText() {
+  wxASSERT(m_configuration->GetDC() != NULL);
   if(!m_configuration->GetDC())
-    return;
+    {
+      wxLogMessage(_("Bug: dc == NULL"));
+      return;
+    }
   ResetSize();
   // We will need to determine the width of text and therefore need to set
   // the font type and size.

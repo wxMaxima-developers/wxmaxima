@@ -1970,9 +1970,9 @@ wxWindow *ConfigDialogue::CreateStylePanel() {
   vsizer->Add(loadSavesizer, 0, wxALIGN_RIGHT | wxALL,
               5 * GetContentScaleFactor());
 
+  m_configuration->SetZoomFactor(1.0);
   m_sampleWorksheet = new Worksheet(panel, wxID_ANY, m_configuration,
 				    wxDefaultPosition, wxDefaultSize, false);
-  m_configuration->SetZoomFactor(1.0);
   
   // Load the sample worksheet's contents
   {
@@ -1983,7 +1983,6 @@ wxWindow *ConfigDialogue::CreateStylePanel() {
       {
 	entry = zipstream.GetNextEntry();
       } while((entry != NULL) && (entry->GetName() != "content.xml"));
-    //    wxTextInputStream textIn(zipstream);
     wxXmlDocument xmlText;
     xmlText.Load(zipstream);
     wxXmlNode *xmlcells = xmlText.GetRoot();
@@ -2429,10 +2428,7 @@ void ConfigDialogue::UpdateExample() {
 					m_configuration->m_styles[TS_DOCUMENT_BACKGROUND].GetColor());
   }
   if(m_sampleWorksheet)
-    {
-      m_sampleWorksheet->RecalculateForce();
-      m_sampleWorksheet->Refresh();
-    }
+    m_sampleWorksheet->Refresh();
 }
 
 void ConfigDialogue::OnTabChange(wxBookCtrlEvent &event) {

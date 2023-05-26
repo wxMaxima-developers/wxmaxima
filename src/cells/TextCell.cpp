@@ -109,6 +109,9 @@ TextCell::TextCell(GroupCell *group, Configuration *config,
   case TS_TITLE:
     m_type = MC_TYPE_TITLE;
     break;
+  case TS_OPERATOR:
+    m_type = MC_TYPE_TEXT;
+    break;
   default:
     wxLogMessage(_("Unexpected text style %li for TextCell"), (long)style);
     m_type = MC_TYPE_TITLE;
@@ -503,7 +506,10 @@ void TextCell::Draw(wxPoint point) {
 void TextCell::SetFont(AFontSize fontsize) {
   wxDC *dc = m_configuration->GetDC();
   if(dc == NULL)
-    return;
+    {
+      wxLogMessage(_("Bug: dc == NULL"));
+      return;
+    }
   
   const wxFont &font = GetFont(fontsize);
   if(m_configuration->GetLastFontUsed() != &font)
