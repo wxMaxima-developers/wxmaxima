@@ -1985,8 +1985,9 @@ Submit bug reports by following the 'New issue' link on that page."))
     ($ldisp `((wxxmltag simp) ,(wxxml-fix-string filename) "img")))
   "")
 
-(defun $show_image (file)
-  ($ldisp `((wxxmltag simp) ,(wxxml-fix-string file) "img" "del=\"no\"")))
+(defmfun $show_image (file)
+  ($ldisp `((wxxmltag simp) ,(wxxml-fix-string file) "img" "del=\"no\""))
+  "")
 
 ;;
 ;; Port of Barton Willis's texput function.

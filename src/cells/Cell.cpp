@@ -58,7 +58,7 @@ const wxString &Cell::GetToolTip(const wxPoint point) const {
 Cell::Cell(GroupCell *group, Configuration *config)
   : m_group(group), m_configuration(config), m_toolTip(&wxm::emptyString),
     m_fontSize_Scaled(-1) {
-  wxASSERT(group && (group->GetType() == MC_TYPE_GROUP || group == this));
+  wxASSERT((!group) || ((group->GetType() == MC_TYPE_GROUP || group == this)));
   InitBitFields();
   ResetSize();
 }
