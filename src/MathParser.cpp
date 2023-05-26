@@ -389,6 +389,7 @@ std::unique_ptr<Cell> MathParser::ParseImageTag(wxXmlNode *node) {
         return std::make_unique<AnimationCell>(m_group, m_configuration,
                                                filename, true);
     } else {
+      SuppressErrorDialogs suppressor;
       // This is the only case show_image() produces ergo this is the only
       // case we might get a local path
       if ((!wxFileExists(filename)) &&

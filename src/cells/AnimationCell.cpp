@@ -186,10 +186,10 @@ void AnimationCell::LoadImages(wxMemoryBuffer imageData) {
 }
 
 void AnimationCell::LoadImages(wxString imageFile) {
+  SuppressErrorDialogs logNull;
   wxImage images;
   size_t count = wxImage::GetImageCount(imageFile);
 
-  SuppressErrorDialogs logNull;
   for (size_t i = 0; i < count; i++) {
     wxImage image;
     image.LoadFile(imageFile, wxBITMAP_TYPE_ANY, i);
