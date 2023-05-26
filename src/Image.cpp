@@ -96,7 +96,10 @@ Image::Image(Configuration *config, wxMemoryBuffer image, wxString type) {
   if (m_compressedImage.GetDataLen() > 0) {
     wxMemoryInputStream istream(m_compressedImage.GetData(),
                                 m_compressedImage.GetDataLen());
-    Image.LoadFile(istream);
+    {
+      SuppressErrorDialogs logNull;
+      Image.LoadFile(istream);
+    }
     m_isOk = Image.IsOk();
     m_originalWidth = Image.GetWidth();
     m_originalHeight = Image.GetHeight();
@@ -812,6 +815,7 @@ void Image::LoadImage_Backgroundtask(wxString image,
                                      bool remove) {
   m_compressedImage.Clear();
   m_scaledBitmap.Create(1, 1);
+  SuppressErrorDialogs logNull;
 
   if (filesystem) {
     wxFSFile *fsfile;
@@ -912,7 +916,10 @@ void Image::LoadImage_Backgroundtask(wxString image,
     } else {
       wxMemoryInputStream istream(m_compressedImage.GetData(),
                                   m_compressedImage.GetDataLen());
-      Image.LoadFile(istream);
+      {
+        SuppressErrorDialogs logNull;
+        Image.LoadFile(istream);
+      }
       m_originalWidth = 700;
       m_originalHeight = 300;
 
