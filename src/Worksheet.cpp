@@ -747,7 +747,6 @@ GroupCell *Worksheet::InsertGroupCells(std::unique_ptr<GroupCell> &&cells,
 
   if (!m_tree) {
     m_tree = std::move(cells);
-    m_last = lastOfCellsToInsert;
   } else if (!where) {
     CellList::SpliceInAfter(lastOfCellsToInsert, std::move(m_tree));
     m_tree = std::move(cells);
@@ -755,11 +754,6 @@ GroupCell *Worksheet::InsertGroupCells(std::unique_ptr<GroupCell> &&cells,
     auto *whereNext = where->GetNext();
     CellList::SpliceInAfter(where, std::move(cells), lastOfCellsToInsert);
     // make sure m_last still points to the last cell of the worksheet!!
-    if (!whereNext)
-      m_last = lastOfCellsToInsert;
-    else
-      wxASSERT_MSG(GetLastCellInWorksheet(),
-                   "The pointer to last cell in the document is invalid");
   }
 
   if (renumbersections)
@@ -798,7 +792,6 @@ GroupCell *Worksheet::UpdateMLast(GroupCell *gc)
 {
   if(GetLastCellInWorksheet() == gc)
     return gc;
-  m_last = gc;
   if (GetLastCellInWorksheet())
     m_adjustWorksheetSizeNeeded = true;
   return GetLastCellInWorksheet();
@@ -3064,11 +3057,6 @@ void Worksheet::DeleteRegion(GroupCell *start, GroupCell *end,
   }
 
   GroupCell *cellBeforeStart = start->GetPrevious();
-
-  // If the selection ends with the last file of the file GetLastCellInWorksheet() has to be
-  // set to the last cell that isn't deleted.
-  if (end == GetLastCellInWorksheet())
-    m_last = cellBeforeStart;
 
   auto tornOut = CellList::TearOut(start, end);
   if (!tornOut.cellOwner) {
@@ -7016,7 +7004,6 @@ void Worksheet::PasteFromClipboard() {
         if (!GetTree()) {
           // Empty work sheet => We paste cells as the new cells
           m_tree = std::move(contents);
-          m_last = end;
         } else {
           bool hasHSelection =
 	    m_cellPointers.m_selectionStart &&
