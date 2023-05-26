@@ -876,7 +876,7 @@ add_test(
 
 add_test(
     NAME testbench_simple.wxmx
-    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
     COMMAND wxmaxima --debug --logtostderr --pipe  --batch testbench_simple.wxmx)
 
 find_program(DESKTOP_FILE_VALIDATE desktop-file-validate)
