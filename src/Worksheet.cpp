@@ -724,7 +724,7 @@ GroupCell *Worksheet::InsertGroupCells(std::unique_ptr<GroupCell> &&cells,
   if (!cells)
     return NULL; // nothing to insert
 
-  m_configuration->AdjustWorksheetSize(true);
+  m_adjustWorksheetSizeNeeded = true;
   bool renumbersections = false; // only renumber when true
 
   // TODO What we have here is an iteration through all the cells to see if they
@@ -800,7 +800,7 @@ GroupCell *Worksheet::UpdateMLast(GroupCell *gc)
     return gc;
   m_last = gc;
   if (GetLastCellInWorksheet())
-    m_configuration->AdjustWorksheetSize(true);
+    m_adjustWorksheetSizeNeeded = true;
   return GetLastCellInWorksheet();
   
 }
@@ -984,14 +984,17 @@ bool Worksheet::RecalculateIfNeeded(bool timeout) {
       for (auto &tmp : OnList(m_recalculateStart)) {
 	recalculated |= tmp.Recalculate();
 	if(tmp.GetNext() == NULL)
-	  UpdateMLast(&tmp);
+	  {
+	    wxLogMessage(_("Recalculated the whole worksheet at once => Updating its size"));
+	    
+	    UpdateMLast(&tmp);
+	  }
       }
       m_recalculateStart = {};
     }
-  if (m_configuration->AdjustWorksheetSize())
+  if (m_adjustWorksheetSizeNeeded)
     AdjustSize();
-  m_configuration->AdjustWorksheetSize(false);
-  
+
   return true;
 }
 
@@ -1079,7 +1082,7 @@ void Worksheet::OnSize(wxSizeEvent &event) {
     prev = &tmp;
   }
 
-  m_configuration->AdjustWorksheetSize(true);
+  m_adjustWorksheetSizeNeeded = true;
   RequestRedraw();
   if (CellToScrollTo)
     ScheduleScrollToCell(CellToScrollTo, false);
@@ -2439,6 +2442,14 @@ void Worksheet::SelectGroupCells(wxPoint down, wxPoint up) {
 
 GroupCell *Worksheet::GetLastCellInWorksheet() const
 {
+  if((m_last == NULL) || (m_last->GetNext() != NULL))
+    {
+      GroupCell *last = GetTree();
+      if (last)
+	last = last->last();
+      m_last = last;
+      m_adjustWorksheetSizeNeeded = true;
+    }
   return m_last;
 }
 
@@ -3216,7 +3227,7 @@ void Worksheet::Evaluate() {
 void Worksheet::OnKeyDown(wxKeyEvent &event) {
   m_configuration->LastActiveTextCtrl(NULL);
   m_updateControls = true;
-  m_configuration->AdjustWorksheetSize(true);
+  m_adjustWorksheetSizeNeeded = true;
   ClearNotification();
   // Track the activity of the keyboard. Setting the keyboard
   // to inactive again is done in wxMaxima.cpp
@@ -4068,7 +4079,7 @@ void Worksheet::SetNotification(const wxString &message, int flags) {
  */
 void Worksheet::OnChar(wxKeyEvent &event) {
   m_configuration->LastActiveTextCtrl(NULL);
-  m_configuration->AdjustWorksheetSize(true);
+  m_adjustWorksheetSizeNeeded = true;
   // Alt+Up and Alt+Down are hotkeys. In order for the main application to
   // realize them they need to be passed to it using the event's Skip()
   // function.
@@ -4197,7 +4208,7 @@ void Worksheet::AdjustSize() {
 
     SetScrollRate(m_scrollUnit, m_scrollUnit);
   }
-  m_configuration->AdjustWorksheetSize(false);
+  m_adjustWorksheetSizeNeeded = false;
 }
 
 /***
@@ -7338,7 +7349,7 @@ void Worksheet::RemoveAllOutput(GroupCell *cell) {
     if (sub)
       RemoveAllOutput(sub);
   }
-  m_configuration->AdjustWorksheetSize(true);
+  m_adjustWorksheetSizeNeeded = true;
   OutputChanged();
   Recalculate();
 }

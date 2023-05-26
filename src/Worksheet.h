@@ -593,6 +593,8 @@ private:
   std::unique_ptr<GroupCell> m_tree;
   //! A pointer to the last cell of this worksheet
   mutable CellPtr<GroupCell> m_last;
+  //! Request adjusting the worksheet size?
+  mutable bool m_adjustWorksheetSizeNeeded = false;
   //! Returns a pointer to the last cell of this worksheet
   GroupCell *GetLastCellInWorksheet() const;
   int m_clickType;

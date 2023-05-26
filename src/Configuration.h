@@ -866,11 +866,6 @@ public:
   bool ClipToDrawRegion() const {return m_clipToDrawRegion;}
   //! Do we want to save time by only redrawing the area currently shown on the screen?
   void ClipToDrawRegion(bool clipToDrawRegion){m_clipToDrawRegion = clipToDrawRegion; m_forceUpdate = true;}
-  //! Request adjusting the worksheet size?
-  void AdjustWorksheetSize(bool adjust)
-    { m_adjustWorksheetSizeNeeded = adjust; }
-  bool AdjustWorksheetSize() const
-    { return m_adjustWorksheetSizeNeeded; }
   void SetVisibleRegion(wxRect visibleRegion){m_visibleRegion = visibleRegion;}
   wxRect GetVisibleRegion() const {return m_visibleRegion;}
   void SetWorksheetPosition(wxPoint worksheetPosition){m_worksheetPosition = worksheetPosition;}
@@ -1157,7 +1152,6 @@ private:
   wxString m_documentclass;
   wxString m_documentclassOptions;
   htmlExportFormat m_htmlEquationFormat;
-  bool m_adjustWorksheetSizeNeeded;
   //! The rectangle of the worksheet that is currently visible.
   wxRect m_visibleRegion;
   //! The position of the worksheet in the wxMaxima window

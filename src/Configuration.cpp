@@ -302,7 +302,6 @@ void Configuration::ResetAllToDefaults(InitOpt options) {
   m_defaultPlotWidth = 1200;
   m_defaultPlotHeight = 900;
   SetLanguage(wxLANGUAGE_DEFAULT);
-  m_adjustWorksheetSizeNeeded = false;
   m_showLabelChoice = labels_prefer_user;
   m_abortOnError = true;
   m_defaultPort = 49152;
