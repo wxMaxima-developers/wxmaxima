@@ -3769,6 +3769,7 @@ void wxMaxima::ReadPrompt(wxString &data) {
   if (end == wxNOT_FOUND)
     return;
 
+  wxLogMessage(_("Got a new input prompt!"));
   m_maximaBusy = false;
   m_bytesFromMaxima = 0;
 
@@ -10290,20 +10291,30 @@ wxString wxMaxima::GetUnmatchedParenthesisState(wxString text, int &index) {
 void wxMaxima::TriggerEvaluation() {
   // If evaluation is already running we don't have anything to do
   if (m_maximaBusy)
-    return;
+    {
+      wxLogMessage(_("Not triggering evaluation as maxima is still busy!"));
+      return;
+    }
 
   // While we wait for an answer we cannot send new commands.
   if (m_worksheet->QuestionPending())
-    return;
-
+    {
+      wxLogMessage(_("Not triggering evaluation as maxima still asks a question!"));
+      return;
+    }
+  
   // If we aren't connected yet this function will be triggered as soon as
   // maxima connects to wxMaxima
   if (!m_client || (!m_client->IsConnected()))
-    return;
+    {
+      wxLogMessage(_("Not triggering evaluation as there is no working maxima process"));
+      return;
+    }
 
   // Maxima is connected. Let's test if the evaluation queue is empty.
   GroupCell *const tmp = m_worksheet->m_evaluationQueue.GetCell();
   if (!tmp) {
+    wxLogMessage(_("Evaluation ended, since evaluation queue is empty."));
     // Maxima is no more busy.
     StatusMaximaBusy(StatusBar::MaximaStatus::waiting);
     // Inform the user that the evaluation queue length now is 0.
@@ -10335,12 +10346,8 @@ void wxMaxima::TriggerEvaluation() {
   EvaluationQueueLength(m_worksheet->m_evaluationQueue.Size(),
                         m_worksheet->m_evaluationQueue.CommandsLeftInCell());
 
-  // We don't want to evaluate a new cell if the user still has to answer
-  // a question.
-  if (m_worksheet->QuestionPending())
-    return;
 
-  // Maxima is connected and the queue contains an item.
+  // Maxima is connected, not asking a question and the queue contains an item.
 
   // From now on we look every second if we got some output from a crashing
   // maxima: Is maxima is working correctly the stdout and stderr descriptors we
@@ -10387,6 +10394,7 @@ void wxMaxima::TriggerEvaluation() {
       tmp->GetPrompt()->SetValue(m_lastPrompt);
       tmp->ResetSize();
 
+      wxLogMessage(_("Sending a new command to Maxima."));
       SendMaxima(m_configCommands);
       SendMaxima(text, true);
       m_maximaBusy = true;
@@ -10440,6 +10448,7 @@ void wxMaxima::TriggerEvaluation() {
         m_worksheet->SetActiveCell(tmp->GetEditable());
     }
   } else {
+    wxLogMessage(_("Empty command => re-triggering evaluation"));
     m_outputCellsFromCurrentCommand = 0;
     m_worksheet->m_evaluationQueue.RemoveFirst();
     TriggerEvaluation();

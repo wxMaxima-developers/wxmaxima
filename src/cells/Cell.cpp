@@ -201,6 +201,8 @@ bool Cell::NeedsRecalculation(AFontSize fontSize) const {
     return true;
   if (GetType() == MC_TYPE_GROUP)
     return false;
+  if(m_configuration->GetVisibleRegion().GetWidth() != m_visibleRegionWidth_last)
+    return false;
   return !EqualToWithin(Scale_Px(fontSize), m_fontSize_Scaled, 0.1f);
 }
 
@@ -368,6 +370,7 @@ void Cell::ResetSizeList() {
 
 void Cell::Recalculate(AFontSize fontsize) {
   m_fontSize_Scaled = Scale_Px(fontsize);
+  m_visibleRegionWidth_last = m_configuration->GetVisibleRegion().GetWidth();
   ResetCellListSizes();
   m_recalculateWidths = false;
 }

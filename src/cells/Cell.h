@@ -921,6 +921,8 @@ protected:
 //**
 
 private:
+  //! The worksheet window with the last time this cell has been recalculated
+  int m_visibleRegionWidth_last = -1;
   //! The next cell in the list of cells, or null if it's the last cell.
   std::unique_ptr<Cell> m_next;
 
