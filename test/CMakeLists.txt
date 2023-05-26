@@ -1,7 +1,7 @@
 # -*- mode: CMake; cmake-tab-width: 4; -*-
 
 # Compile a list of test files
-file(GLOB TEST_FILES automatic_test_files/*.png automatic_test_files/*.wxmx automatic_test_files/*.wxm automatic_test_files/*.mac automatic_test_files/*.cfg *.png)
+file(GLOB TEST_FILES automatic_test_files/*.png automatic_test_files/*.wxmx automatic_test_files/*.wxm automatic_test_files/*.mac automatic_test_files/*.cfg *.png testbench_simple.wxmx)
 
 find_program(MAXIMA maxima)
 execute_process(COMMAND ${MAXIMA} --version
@@ -873,6 +873,11 @@ add_test(
     NAME tutorial_solvingEquations
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/../examples
     COMMAND wxmaxima --debug --logtostderr --pipe  --batch solvingEquations.wxm)
+
+add_test(
+    NAME testbench_simple.wxmx
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+    COMMAND wxmaxima --debug --logtostderr --pipe  --batch testbench_simple.wxmx)
 
 find_program(DESKTOP_FILE_VALIDATE desktop-file-validate)
 if(DESKTOP_FILE_VALIDATE)
