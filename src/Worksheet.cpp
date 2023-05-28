@@ -1105,12 +1105,12 @@ void Worksheet::ClearDocument() {
   m_recalculateStart = NULL;
   m_evaluationQueue.Clear();
   TreeUndo_ClearBuffers();
-  DestroyTree();
 
   m_blinkDisplayCaret = true;
   SetSaved(false);
   UpdateTableOfContents();
-
+  DestroyTree();
+  
   Scroll(0, 0);
 }
 
