@@ -1,6 +1,14 @@
 # Current development version
  * Update Russian translation.
  * Process the command line option --maxima=<str>.
+ * Resolved several possibilities to crash the config dialogue 
+   (#1774, #1766)
+ * Correctly calculate the worksheet size in the background (#1766)
+ * Correctly restore parenthesis on load (#1779)
+ * Always revise the decision what to display as 2D equation on 
+   window width changes
+ * 2D display of integrals had zero size (#1780)
+ 
 
 # 23.05.0
  * Got rid of some compiler and cppcheck warnings
