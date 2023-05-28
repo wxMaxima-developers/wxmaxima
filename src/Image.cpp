@@ -348,10 +348,9 @@ void Image::LoadGnuplotSource_Backgroundtask(
     }
   } else {
     {
-      std::unique_ptr<wxFSFile> fsfile;
-      fsfile = std::unique_ptr<wxFSFile>(filesystem->OpenFile(m_gnuplotSource));
+      std::unique_ptr<wxFSFile> fsfile(filesystem->OpenFile(m_gnuplotSource));
       if (fsfile) { // open successful
-        std::unique_ptr<wxInputStream> input(fsfile->GetStream());
+        std::unique_ptr<wxInputStream> input(fsfile->DetachStream());
         if (input->IsOk()) {
           wxTextInputStream textIn(*input, wxS('\t'),
                                    wxConvAuto(wxFONTENCODING_UTF8));
@@ -385,21 +384,20 @@ void Image::LoadGnuplotSource_Backgroundtask(
                 textOut << line + wxS("\n");
               }
               textOut.Flush();
-              zstream.Close();
               m_gnuplotSource_Compressed.Clear();
               m_gnuplotSource_Compressed.AppendData(
 						    mstream.GetOutputStreamBuffer()->GetBufferStart(),
 						    mstream.GetOutputStreamBuffer()->GetBufferSize());
             }
+            zstream.Close();
           }
         }
       }
     }
     {
-      std::unique_ptr<wxFSFile> fsfile;
-      fsfile = std::unique_ptr<wxFSFile>(filesystem->OpenFile(m_gnuplotData));
+      std::unique_ptr<wxFSFile> fsfile(filesystem->OpenFile(m_gnuplotData));
       if (fsfile) { // open successful
-        wxInputStream *input = fsfile->GetStream();
+        std::unique_ptr<wxInputStream> input(fsfile->DetachStream());
         if (input->IsOk()) {
           wxTextInputStream textIn(*input, wxS('\t'),
                                    wxConvAuto(wxFONTENCODING_UTF8));
@@ -452,10 +450,9 @@ void Image::LoadCompressedGnuplotSource_Backgroundtask(
 
   // Read the gnuplot source
   {
-    std::unique_ptr<wxFSFile> fsfile;
-    fsfile = std::unique_ptr<wxFSFile>(filesystem->OpenFile(gnuplotFilename));
+    std::unique_ptr<wxFSFile> fsfile(filesystem->OpenFile(gnuplotFilename));
     if (fsfile) { // open successful
-      std::unique_ptr<wxInputStream> input(fsfile->GetStream());
+      std::unique_ptr<wxInputStream> input(fsfile->DetachStream());
       if (input->IsOk()) {
         m_gnuplotSource_Compressed.Clear();
         wxMemoryOutputStream mstream;
@@ -468,10 +465,9 @@ void Image::LoadCompressedGnuplotSource_Backgroundtask(
   }
   // Read the gnuplot data
   {
-    std::unique_ptr<wxFSFile> fsfile;
-    fsfile = std::unique_ptr<wxFSFile>(filesystem->OpenFile(dataFilename));
+    std::unique_ptr<wxFSFile> fsfile(filesystem->OpenFile(dataFilename));
     if (fsfile) { // open successful
-      std::unique_ptr<wxInputStream> input(fsfile->GetStream());
+      std::unique_ptr<wxInputStream> input(fsfile->DetachStream());
       if (input->IsOk()) {
         m_gnuplotData_Compressed.Clear();
         wxMemoryOutputStream mstream;
@@ -813,12 +809,11 @@ void Image::LoadImage_Backgroundtask(wxString image,
   SuppressErrorDialogs logNull;
 
   if (filesystem) {
-    std::unique_ptr<wxFSFile> fsfile;
-    fsfile = std::unique_ptr<wxFSFile>(filesystem->OpenFile(image));
+    std::unique_ptr<wxFSFile> fsfile(filesystem->OpenFile(image));
     if (fsfile) { // open successful
-      wxInputStream *istream = fsfile->GetStream();
+      std::unique_ptr<wxInputStream> istream(fsfile->DetachStream());
 
-      m_compressedImage = ReadCompressedImage(istream);
+      m_compressedImage = ReadCompressedImage(istream.get());
     }
 
     // Closing and deleting fsfile is important: If this line is missing
