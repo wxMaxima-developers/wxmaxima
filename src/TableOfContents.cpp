@@ -247,8 +247,8 @@ void TableOfContents::UpdateTableOfContents(GroupCell *pos) {
     
     // Select the cell with the cursor
     if(!m_displayedGroupCells.empty())
-      for (auto &cell : OnList(m_tree->get())) {
-	if ((&cell == *it) && (it != m_displayedGroupCells.end()))
+      for (const auto &cell : OnList(m_tree->get())) {
+	if ((it != m_displayedGroupCells.end()) && (&cell == *it))
 	  {
 	    it++;
 	    cursorItem++;

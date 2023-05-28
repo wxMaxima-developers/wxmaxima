@@ -272,6 +272,12 @@ int Cell::GetLineWidth() const {
   and then call MathCall::Draw(...).
 */
 void Cell::Draw(wxPoint point) {
+  if(!m_isHidden)
+    {
+      wxASSERT(m_width >= 0);
+      wxASSERT(m_height >= 0);
+      wxASSERT(m_center >= 0);
+    }
   m_configuration->NotifyOfCellRedraw(this);
 
   if ((point.x >= 0) && (point.y >= 0))
