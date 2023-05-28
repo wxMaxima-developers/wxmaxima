@@ -2380,7 +2380,7 @@ bool wxMaxima::StartMaxima(bool force) {
       m_maximaAuthenticated = false;
       m_discardAllData = false;
       std::uniform_real_distribution<double> urd(0.0, 256.0);
-      wxExecuteEnv *env = new wxExecuteEnv;
+      std::unique_ptr<wxExecuteEnv> env = std::unique_ptr<wxExecuteEnv>(new wxExecuteEnv);
       wxMemoryBuffer membuf(512);
       for(auto i = 0 ; i < 512; i++)
 	membuf.AppendByte(static_cast<char>(urd(m_configuration.m_eng)));
@@ -2389,7 +2389,7 @@ bool wxMaxima::StartMaxima(bool force) {
 
       env->env = environment;
       if (wxExecute(command, wxEXEC_ASYNC | wxEXEC_MAKE_GROUP_LEADER, m_process,
-                    env) <= 0) {
+                    env.get()) <= 0) {
         StatusMaximaBusy(StatusBar::MaximaStatus::process_wont_start);
         StatusText(_("Cannot start the maxima binary"));
         m_process = NULL;
@@ -3446,10 +3446,10 @@ void wxMaxima::VariableActionGnuplotCommand(const wxString &value) {
   m_gnuplotTerminalQueryProcess->Redirect();
   // We don't want error dialogues here.
   SuppressErrorDialogs suppressor;
-  wxExecuteEnv *env = new wxExecuteEnv;
+  std::unique_ptr<wxExecuteEnv> env(new wxExecuteEnv);
   env->env = environment;
   if (wxExecute(m_gnuplotcommand, wxEXEC_ASYNC | wxEXEC_HIDE_CONSOLE,
-                m_gnuplotTerminalQueryProcess, env) < 0)
+                m_gnuplotTerminalQueryProcess, env.get()) < 0)
     wxLogMessage(_("Cannot start gnuplot"));
   else {
     wxOutputStream *ostream = m_gnuplotTerminalQueryProcess->GetOutputStream();

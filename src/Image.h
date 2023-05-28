@@ -262,9 +262,6 @@ private:
   struct free_deleter { void operator()(void *p) const { std::free(p); } };
   NSVGimage* m_svgImage = {};
   std::unique_ptr<struct NSVGrasterizer, free_deleter> m_svgRast{nullptr};
-
-  std::shared_ptr<wxFileSystem> m_fs_keepalive_gnuplotdata;
-  std::shared_ptr<wxFileSystem> m_fs_keepalive_imagedata;
 };
 
 #endif // IMAGE_H

@@ -76,7 +76,6 @@ HelpBrowser::HelpBrowser(wxWindow *parent, Configuration *configuration,
   vbox->Add(m_browserPanel, wxSizerFlags(1).Expand());
   m_topicSizer = new wxBoxSizer(wxVERTICAL);
   m_topicPanel = new wxPanel(this, wxID_ANY);
-  m_topicSizer = new wxBoxSizer(wxVERTICAL);
   m_topicPanel->SetSizer(m_topicSizer);
   vbox->Add(m_topicPanel, wxSizerFlags(1).Expand());
 

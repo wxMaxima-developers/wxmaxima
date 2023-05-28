@@ -128,7 +128,7 @@ Image::Image(Configuration *config, const wxBitmap &bitmap) {
 // cppcheck-suppress performance symbolName=filesystem
 Image::Image(Configuration *config, wxString image,
              std::shared_ptr<wxFileSystem> filesystem, bool remove)
-  : m_fs_keepalive_imagedata(filesystem) {
+{
   m_svgImage = NULL;
   m_configuration = config;
   m_scaledBitmap.Create(1, 1);
@@ -243,13 +243,11 @@ bool Image::IsOk() const { return m_isOk; }
 // cppcheck-suppress performance symbolName=filesystem
 void Image::GnuplotSource(wxString gnuplotFilename, wxString dataFilename,
                           std::shared_ptr<wxFileSystem> filesystem) {
-  m_fs_keepalive_gnuplotdata = filesystem;
   LoadGnuplotSource_Backgroundtask(gnuplotFilename, dataFilename, filesystem);
 }
 
 void Image::CompressedGnuplotSource(wxString gnuplotFilename, wxString dataFilename,
                                     std::shared_ptr<wxFileSystem> filesystem) {
-  m_fs_keepalive_gnuplotdata = filesystem;
   LoadCompressedGnuplotSource_Backgroundtask(gnuplotFilename, dataFilename, filesystem);
 }
 
@@ -350,8 +348,8 @@ void Image::LoadGnuplotSource_Backgroundtask(
     }
   } else {
     {
-      wxFSFile *fsfile;
-      fsfile = filesystem->OpenFile(m_gnuplotSource);
+      std::unique_ptr<wxFSFile> fsfile;
+      fsfile = std::unique_ptr<wxFSFile>(filesystem->OpenFile(m_gnuplotSource));
       if (fsfile) { // open successful
         std::unique_ptr<wxInputStream> input(fsfile->GetStream());
         if (input->IsOk()) {
@@ -398,8 +396,8 @@ void Image::LoadGnuplotSource_Backgroundtask(
       }
     }
     {
-      wxFSFile *fsfile;
-      fsfile = filesystem->OpenFile(m_gnuplotData);
+      std::unique_ptr<wxFSFile> fsfile;
+      fsfile = std::unique_ptr<wxFSFile>(filesystem->OpenFile(m_gnuplotData));
       if (fsfile) { // open successful
         wxInputStream *input = fsfile->GetStream();
         if (input->IsOk()) {
@@ -436,7 +434,6 @@ void Image::LoadGnuplotSource_Backgroundtask(
       }
     }
   }
-  m_fs_keepalive_gnuplotdata.reset();
 }
 
 void Image::LoadCompressedGnuplotSource_Backgroundtask(
@@ -455,8 +452,8 @@ void Image::LoadCompressedGnuplotSource_Backgroundtask(
 
   // Read the gnuplot source
   {
-    wxFSFile *fsfile;
-    fsfile = filesystem->OpenFile(gnuplotFilename);
+    std::unique_ptr<wxFSFile> fsfile;
+    fsfile = std::unique_ptr<wxFSFile>(filesystem->OpenFile(gnuplotFilename));
     if (fsfile) { // open successful
       std::unique_ptr<wxInputStream> input(fsfile->GetStream());
       if (input->IsOk()) {
@@ -471,8 +468,8 @@ void Image::LoadCompressedGnuplotSource_Backgroundtask(
   }
   // Read the gnuplot data
   {
-    wxFSFile *fsfile;
-    fsfile = filesystem->OpenFile(dataFilename);
+    std::unique_ptr<wxFSFile> fsfile;
+    fsfile = std::unique_ptr<wxFSFile>(filesystem->OpenFile(dataFilename));
     if (fsfile) { // open successful
       std::unique_ptr<wxInputStream> input(fsfile->GetStream());
       if (input->IsOk()) {
@@ -485,7 +482,6 @@ void Image::LoadCompressedGnuplotSource_Backgroundtask(
       }
     }
   }
-  m_fs_keepalive_gnuplotdata.reset();
 }
 
 const wxMemoryBuffer Image::GetGnuplotSource() const {
@@ -803,7 +799,6 @@ wxString Image::GetExtension() const { return m_extension; }
 // cppcheck-suppress performance symbolName=filesystem
 void Image::LoadImage(wxString image, std::shared_ptr<wxFileSystem> filesystem,
                       bool remove) {
-  m_fs_keepalive_imagedata = filesystem;
   m_extension = wxFileName(image).GetExt();
   m_extension = m_extension.Lower();
   m_imageName = image;
@@ -818,8 +813,8 @@ void Image::LoadImage_Backgroundtask(wxString image,
   SuppressErrorDialogs logNull;
 
   if (filesystem) {
-    wxFSFile *fsfile;
-    fsfile = filesystem->OpenFile(image);
+    std::unique_ptr<wxFSFile> fsfile;
+    fsfile = std::unique_ptr<wxFSFile>(filesystem->OpenFile(image));
     if (fsfile) { // open successful
       wxInputStream *istream = fsfile->GetStream();
 
@@ -943,7 +938,6 @@ void Image::LoadImage_Backgroundtask(wxString image,
       }
     }
   }
-  m_fs_keepalive_imagedata.reset();
 }
 
 void Image::Recalculate(double scale) {

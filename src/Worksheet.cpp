@@ -6221,8 +6221,8 @@ bool Worksheet::ExportToWXMX(const wxString &file, bool markAsSaved) {
   // actually managed to save it correctly.
   {
     wxFileSystem fs;
-    wxFSFile *fsfile;
-    fsfile = fs.OpenFile(filename);
+    std::unique_ptr<wxFSFile> fsfile;
+    fsfile = std::unique_ptr<wxFSFile>(fs.OpenFile(filename));
 
     // Did we succeed in opening the file?
     if (!fsfile) {
@@ -6232,7 +6232,6 @@ bool Worksheet::ExportToWXMX(const wxString &file, bool markAsSaved) {
       dialog.ShowModal();
       return false;
     }
-    wxDELETE(fsfile);
   }
   wxLogMessage(_("Verified that we are able to read the whole .zip archive we produced."));
 
