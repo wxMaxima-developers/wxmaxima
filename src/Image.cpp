@@ -256,7 +256,7 @@ void Image::LoadGnuplotSource_Backgroundtask(
 					     std::shared_ptr<wxFileSystem> filesystem) {
   // Error dialogues need to be created by the foreground thread.
   SuppressErrorDialogs suppressor;
-
+  std::shared_ptr<wxFileSystem> keepalive(filesystem);
   m_gnuplotSource = gnuplotFilename;
   m_gnuplotData = dataFilename;
 
@@ -437,6 +437,8 @@ void Image::LoadGnuplotSource_Backgroundtask(
 void Image::LoadCompressedGnuplotSource_Backgroundtask(
   wxString gnuplotFilename, wxString dataFilename,
   std::shared_ptr<wxFileSystem> filesystem) {
+  std::shared_ptr<wxFileSystem> keepalive(filesystem);
+
   // Error dialogues need to be created by the foreground thread.
   SuppressErrorDialogs suppressor;
 
@@ -804,6 +806,7 @@ void Image::LoadImage(wxString image, std::shared_ptr<wxFileSystem> filesystem,
 void Image::LoadImage_Backgroundtask(wxString image,
                                      std::shared_ptr<wxFileSystem> filesystem,
                                      bool remove) {
+  std::shared_ptr<wxFileSystem> keepalive(filesystem);
   m_compressedImage.Clear();
   m_scaledBitmap.Create(1, 1);
   SuppressErrorDialogs logNull;

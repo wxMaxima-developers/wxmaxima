@@ -222,6 +222,7 @@ public:
   static const wxString &GetBadImageToolTip();
 
 private:
+  //  static std::atomic<int> m_numberOfThreads;
   //! A zipped version of the gnuplot commands that produced this image.
   wxMemoryBuffer m_gnuplotSource_Compressed;
   //! A zipped version of the gnuplot data needed in order to create this image.
