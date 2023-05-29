@@ -1,5 +1,5 @@
 # 23.05.1
- * Update Russian translation.
+ * Updated the Russian and Italian translation.
  * Process the command line option --maxima=<str>.
  * Resolved several possibilities to crash the config dialogue 
    (#1774, #1766)
