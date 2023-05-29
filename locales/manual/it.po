@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "POT-Creation-Date: 2022-05-29 21:54+0200\n"
-"PO-Revision-Date: 2023-05-25 17:57+0200\n"
+"PO-Revision-Date: 2023-05-29 14:33+0200\n"
 "Last-Translator: Marco Ciampa <ciampix@posteo.net>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "Language: it\n"
@@ -1180,6 +1180,8 @@ msgid ""
 "If you are using Unix/Linux, the configuration information will be saved in a file `.wxMaxima` in your home directory (if you are using wxWidgets < 3.1.1), or `.config/wxMaxima.conf` ((XDG-Standard) if wxWidgets >= 3.1.1 is used). You can retrieve the wxWidgets version from the command `wxbuild_info();` or by using the menu option Help->About. [wxWidgets](https://www.wxwidgets.org/) is the cross-platform GUI library, which is the base for _wxMaxima_ (therefore the `wx` in the name).\n"
 "(Since the filename starts with a dot, `.wxMaxima` or `.config` will be hidden).\n"
 msgstr ""
+"Se si sta usando Unix/Linux, le informazioni di configurazione saranno salvate in un file `.wxMaxima` nella propria cartella utente (se si sta usando wxWidgets < 3.1.1), o `.config/wxMaxima.conf` ((XDG- Standard) se si utilizza wxWidgets >= 3.1.1). Si può recuperare la versione di wxWidgets dal comando `wxbuild_info();` o usando l'opzione di menu Aiuto->Informazioni. [wxWidgets](https://www.wxwidgets.org/) è la libreria GUI multipiattaforma, che è la base per _wxMaxima_ (quindi `wx` nel nome).\n"
+"(Poiché il nome del file inizia con un punto, `.wxMaxima` o `.config` saranno nascosti).\n"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:368
@@ -1187,7 +1189,7 @@ msgid ""
 "If you are using Windows, the configuration will be stored in the registry. "
 "You will find the entries for _wxMaxima_ at the following position in the "
 "registry: `HKEY_CURRENT_USER\\Software\\wxMaxima`"
-msgstr ""
+msgstr "Se si sta usando Windows, la configurazione verrà memorizzata nel registro di sistema. Le voci per _wxMaxima_ sono nella seguente posizione nel registro: `HKEY_CURRENT_USER\\Software\\wxMaxima`"
 
 #. type: Title =
 #: ../../info/wxmaxima.md:374
@@ -1205,30 +1207,30 @@ msgid ""
 "exporting a workbook’s contents to HTML and LaTeX files has been mentioned. "
 "This section considers some ways that _wxMaxima_ enhances the inclusion of "
 "graphics into a session."
-msgstr ""
+msgstr "_wxMaxima_ è principalmente un'interfaccia utente grafica per _Maxima_. In quanto tale, il suo scopo principale è passare i comandi a _Maxima_ e riportare i risultati dell'esecuzione di tali comandi. In alcuni casi, tuttavia, _wxMaxima_ aggiunge funzionalità a _Maxima_. È stata menzionata la capacità di _wxMaxima_ di generare report esportando il contenuto di una cartella di lavoro in file HTML e LaTeX. Questa sezione descrive alcuni modi in cui _wxMaxima_ migliora l'inclusione della grafica in una sessione."
 
 #. type: Title ##
 #: ../../info/wxmaxima.md:378
 #, no-wrap
 msgid "Subscripted variables"
-msgstr ""
+msgstr "Variabili pedice"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:381
 msgid ""
 "if `wxsubscripts` is set to true variable names of the format `x_y` are "
 "displayed using a subscript if"
-msgstr ""
+msgstr "se `wxsubscripts` è impostato su vera i nomi delle variabili nel formato `x_y` vengono visualizzati utilizzando un pedice se"
 
 #. type: Bullet: '* '
 #: ../../info/wxmaxima.md:384
 msgid "`y` is a single letter"
-msgstr ""
+msgstr "`y` è una singola lettera"
 
 #. type: Bullet: '* '
 #: ../../info/wxmaxima.md:384
 msgid "`y` is an integer"
-msgstr ""
+msgstr "`y` è un intero"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:386
@@ -1239,13 +1241,13 @@ msgid ""
 "`wxdeclare_subscript([variable_name1,variable_name2,...]);` Declaring a "
 "variable as subscripted can be reverted using the following command: "
 "`wxdeclare_subscript(variable_name,false);`"
-msgstr ""
+msgstr "Se il nome della variabile non soddisfa questi requisiti, può comunque essere dichiarato come \"da rendere pedice\" usando il comando `wxdeclare_subscript(nome_variabile);` o `wxdeclare_subscript([nome_variabile1,nome_variabile2,...]);` Dichiarare una variabile pedice può essere ripristinata usando il seguente comando: `wxdeclare_subscript(nome_variabile,false);`"
 
 #. type: Title ##
 #: ../../info/wxmaxima.md:387
 #, no-wrap
 msgid "User feedback in the status bar"
-msgstr ""
+msgstr "Feedback utente nella barra di stato"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:390
@@ -1257,7 +1259,7 @@ msgid ""
 "in libraries that might be used with plain _Maxima_ (as opposed to "
 "_wxMaxima_): If _wxMaxima_ isn't present the `wxstatusbar()` command will "
 "just be left unevaluated."
-msgstr ""
+msgstr "I comandi a esecuzione prolungata possono fornire feedback all'utente nella barra di stato. Questo feedback all'utente viene sostituito da qualsiasi nuovo feedback inserito lì (consentendo di utilizzarlo come indicatore di avanzamento) e viene eliminato non appena il comando corrente inviato a _Maxima_ viene terminato. È sicuro usare `wxstatusbar()` anche nelle librerie che potrebbero essere usate semplicemente solo con _Maxima_ (invece che con _wxMaxima_): Se _wxMaxima_ non è presente, il comando `wxstatusbar()` non viene valutato."
 
 #. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:391
@@ -1272,12 +1274,20 @@ msgid ""
 "    ?sleep(3)\n"
 ")$\n"
 msgstr ""
+"for i:1 thru 10 do (\n"
+"    /* Dice all'utente a che punto è l'esecuzione */\n"
+"    wxstatusbar(concat(\"Pass \",i)),\n"
+"    /* (sleep n) è una funzione Lisp, che può essere usata */\n"
+"    /* con prima il carattere \"?\". Ritarda */\n"
+"    /* l'esecuzione del programma (qui per 3 secondi) */\n"
+"    ?sleep(3)\n"
+")$\n"
 
 #. type: Title ##
 #: ../../info/wxmaxima.md:402 ../../info/wxmaxima.md:794
 #, no-wrap
 msgid "Plotting"
-msgstr ""
+msgstr "Diagrammi"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:405
@@ -1285,13 +1295,13 @@ msgid ""
 "Plotting (having fundamentally to do with graphics) is a place where a "
 "graphical user interface will have to provide some extensions to the "
 "original program."
-msgstr ""
+msgstr "Fare diagrammi (che ha fondamentalmente a che fare con la grafica) è un luogo in cui un'interfaccia utente grafica dovrà fornire alcune estensioni al programma originale."
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:406
 #, no-wrap
 msgid "Embedding a plot into the work sheet"
-msgstr ""
+msgstr "Incorporare un diagramma nel foglio di lavoro"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:409
@@ -1304,13 +1314,13 @@ msgid ""
 "example `wxplot2d` corresponds to `plot2d`, `wxplot3d` corresponds to "
 "`plot3d`, `wxdraw` corresponds to `draw` and `wxhistogram` corresponds to "
 "`histogram`."
-msgstr ""
+msgstr "_Maxima_ normalmente istruisce il programma esterno _gnuplot_ ad aprire una finestra separata per ogni diagramma che crea. Poiché molte volte è conveniente incorporare i grafici nel foglio di lavoro, _wxMaxima_ fornisce il proprio set di funzioni per fare diagrammi che non differiscono dalle corrispondenti funzioni _maxima_ tranne nel nome: sono tutte precedute da \"wx\". Ad esempio, `wxplot2d` corrisponde a `plot2d`, `wxplot3d` corrisponde a `plot3d`, `wxdraw` corrisponde a `draw` e `wxhistogram` corrisponde a `histogram`."
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:410
 #, no-wrap
 msgid "Making embedded plots bigger or smaller"
-msgstr ""
+msgstr "Rendere i diagrammi incorporati più grandi o più piccoli"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:413
@@ -1320,7 +1330,7 @@ msgid ""
 "The plotting routines of _wxMaxima_ respect this variable that specifies the "
 "size of a plot in pixels. It can always be queried or used to set the size "
 "of the following plots:"
-msgstr ""
+msgstr "Come evidenziato sopra, la finestra di dialogo di configurazione fornisce un modo per modificare le dimensioni predefinite dei grafici creati impostando il valore iniziale di `wxplot_size`. Le routine di graficazione di _wxMaxima_ rispettano questa variabile che specifica la dimensione di un grafico in pixel. Può sempre essere interrogata o utilizzata per impostare la dimensione dei seguenti grafici:"
 
 #. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:414
@@ -1334,6 +1344,13 @@ msgid ""
 "    )\n"
 ")$\n"
 msgstr ""
+"wxplot_size:[1200,800]$\n"
+"wxdraw2d(\n"
+"    explicit(\n"
+"        sin(x),\n"
+"        x,1,10\n"
+"    )\n"
+")$\n"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:425
@@ -1342,7 +1359,7 @@ msgid ""
 "way to change an attribute only for the current cell. In this usage the "
 "specification `wxplot_size = [value1, value2]` is appended to the "
 "`wxdraw2d( )` command, and is not part of the `wxdraw2d` command."
-msgstr ""
+msgstr "Se è necessario modificare la dimensione di un solo grafico, _Maxima_ fornisce un modo canonico per modificare un attributo solo per la cella corrente. Con questo metodo di utilizzo la specifica `wxplot_size = [value1, value2]` viene aggiunta al comando `wxdraw2d()` e non fa parte del comando `wxdraw2d`."
 
 #. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:426
@@ -1355,12 +1372,18 @@ msgid ""
 "    )\n"
 "),wxplot_size=[1600,800]$\n"
 msgstr ""
+"wxdraw2d(\n"
+"    explicit(\n"
+"        sin(x),\n"
+"        x,1,10\n"
+"    )\n"
+"),wxplot_size=[1600,800]$\n"
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:435
 #, no-wrap
 msgid "Better quality plots"
-msgstr ""
+msgstr "Grafici di qualità superiore"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:438
@@ -1372,13 +1395,13 @@ msgid ""
 "`wxplot_pngcairo`) enables support for antialiasing and additional line "
 "styles. If `wxplot_pngcairo` is set without _gnuplot_ supporting this the "
 "result will be error messages instead of graphics."
-msgstr ""
+msgstr "_Gnuplot_ non sembra fornire un modo portatile per determinare se supporta l'uscita bitmap di alta qualità fornito dalla libreria cairo. Sui sistemi in cui _gnuplot_ è compilato per utilizzare questa libreria, l'opzione pngcairo dal menu di configurazione (che può essere sovrascritta dalla variabile `wxplot_pngcairo`) abilita il supporto per l'antialiasing e stili di linea aggiuntivi. Se `wxplot_pngcairo` è impostato senza che _gnuplot_ lo supporti, il risultato saranno messaggi di errore invece di grafici."
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:439
 #, no-wrap
 msgid "Opening embedded plots in interactive _gnuplot_ windows"
-msgstr ""
+msgstr "Aprire grafici incorporati in finestre interattive _gnuplot_"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:442
@@ -1387,13 +1410,13 @@ msgid ""
 "`wxplot3d` isn't supported by this feature) and the file size of the "
 "underlying _gnuplot_ project isn't way too high _wxMaxima_ offers a right-"
 "click menu that allows to open the plot in an interactive _gnuplot_ window."
-msgstr ""
+msgstr "Se un grafico è stato generato utilizzando i comandi di tipo `wxdraw` (`wxplot2d` e `wxplot3d` non sono supportati da questa funzione) e la dimensione del file del progetto _gnuplot_ sottostante non è troppo alta _wxMaxima_ offre un menu accessibile tramite clic con il pulsante destro del mouse che permette di aprire il grafico in una finestra _gnuplot_ interattiva."
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:443
 #, no-wrap
 msgid "Opening gnuplot's command console in `plot` windows"
-msgstr ""
+msgstr "Apertura della console dei comandi di gnuplot in finestra `plot`"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:446
@@ -1403,13 +1426,13 @@ msgid ""
 "window, where _gnuplot_ commands can be entered into. Unfortunately, "
 "enabling this feature causes _gnuplot_ to \"steal\" the keyboard focus for a "
 "short time every time a plot is prepared."
-msgstr ""
+msgstr "Su MS Windows, se nella variabile `gnuplot_command` di _Maxima_ \"gnuplot\" viene sostituito da \"wgnuplot\", _gnuplot_ offre la possibilità di aprire una finestra della console, dove è possibile inserire i comandi _gnuplot_. Sfortunatamente, l'abilitazione di questa funzione fa sì che _gnuplot_ \"rubi\" il focus della tastiera per un breve periodo ogni volta che viene preparato un grafico."
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:447
 #, no-wrap
 msgid "Embedding animations into the spreadsheet"
-msgstr ""
+msgstr "Incorporamento di animazioni nel foglio di calcolo"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:450
@@ -1419,7 +1442,7 @@ msgid ""
 "`with_slider_draw` command is a version of `wxdraw2d` that does prepare "
 "multiple plots and allows to switch between them by moving the slider on top "
 "of the screen. _wxMaxima_ allows to export this animation as an animated gif."
-msgstr ""
+msgstr "I diagrammi 3D tendono a rendere difficile la lettura dei dati quantitativi. Una valida alternativa potrebbe essere quella di assegnare il 3° parametro alla rotellina del mouse. Il comando `with_slider_draw` è una versione di `wxdraw2d` che prepara più grafici e consente di passare da uno all'altro muovendo il cursore nella parte superiore dello schermo. _wxMaxima_ consente di esportare questa animazione come gif animata."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:452
@@ -1428,7 +1451,7 @@ msgid ""
 "that is stepped between the plots and a list of the values of these "
 "variable. The arguments that follow are the ordinary arguments for "
 "`wxdraw2d`:"
-msgstr ""
+msgstr "I primi due argomenti per `with_slider_draw` sono il nome della variabile che si trova tra i grafici e un elenco dei valori di queste variabili. Gli argomenti che seguono sono gli argomenti ordinari per `wxdraw2d`:"
 
 #. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:453
@@ -1443,13 +1466,21 @@ msgid ""
 "    ),grid=true\n"
 ");\n"
 msgstr ""
+"with_slider_draw(\n"
+"    f,[1,2,3,4,5,6,7,10],\n"
+"    title=concat(\"f=\",f,\"Hz\"),\n"
+"    explicit(\n"
+"        sin(2*%pi*f*x),\n"
+"        x,0,1\n"
+"    ),grid=true\n"
+");\n"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:465
 msgid ""
 "The same functionality for 3D plots is accessible as `with_slider_draw3d`, "
 "which allows for rotating 3d plots:"
-msgstr ""
+msgstr "La stessa funzionalità per i grafici 3D è accessibile come `with_slider_draw3d`, che consente di ruotare i grafici 3D:"
 
 #. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:466
@@ -1470,6 +1501,20 @@ msgid ""
 "    )\n"
 ")$\n"
 msgstr ""
+"wxanimate_autoplay:true;\n"
+"wxanimate_framerate:20;\n"
+"with_slider_draw3d(\n"
+"    α,makelist(i,i,1,360,3),\n"
+"    title=sconcat(\"α=\",α),\n"
+"    surface_hide=true,\n"
+"    contour=both,\n"
+"    view=[60,α],\n"
+"    explicit(\n"
+"        sin(x)*sin(y),\n"
+"        x,-π,π,\n"
+"        y,-π,π\n"
+"    )\n"
+")$\n"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:484
@@ -1477,7 +1522,7 @@ msgid ""
 "If the general shape of the plot is what matters it might suffice to move "
 "the plot just a little bit in order to make its 3D nature available to the "
 "intuition:"
-msgstr ""
+msgstr "Se ciò che conta è la forma generale del grafico, potrebbe bastare spostare leggermente il grafico per rendere intuibile la sua natura 3D:"
 
 #. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:485
@@ -1498,23 +1543,37 @@ msgid ""
 "    )\n"
 ")$\n"
 msgstr ""
+"wxanimate_autoplay:true;\n"
+"wxanimate_framerate:20;\n"
+"with_slider_draw3d(\n"
+"    t,makelist(i,i,0,2*π,.05*π),\n"
+"    title=sconcat(\"α=\",α),\n"
+"    surface_hide=true,\n"
+"    contour=both,\n"
+"    view=[60,30+5*sin(t)],\n"
+"    explicit(\n"
+"        sin(x)*y^2,\n"
+"        x,-2*π,2*π,\n"
+"        y,-2*π,2*π\n"
+"    )\n"
+")$\n"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:503
 msgid ""
 "For those more familiar with `plot` than with `draw` there is a second set "
 "of functions:"
-msgstr ""
+msgstr "Per coloro che hanno più familiarità con `plot` che con `draw` c'è un secondo insieme di funzioni:"
 
 #. type: Bullet: '* '
 #: ../../info/wxmaxima.md:506
 msgid "`with_slider` and"
-msgstr ""
+msgstr "`with_slider` e"
 
 #. type: Bullet: '* '
 #: ../../info/wxmaxima.md:506
 msgid "`wxanimate`."
-msgstr ""
+msgstr "`wxanimate`."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:508
@@ -1522,7 +1581,7 @@ msgid ""
 "Normally the animations are played back or exported with the frame rate "
 "chosen in the configuration of _wxMaxima_. To set the speed an individual "
 "animation is played back the variable `wxanimate_framerate` can be used:"
-msgstr ""
+msgstr "Normalmente le animazioni vengono riprodotte o esportate con la frequenza di quadro scelta nella configurazione di _wxMaxima_. Per impostare la velocità di riproduzione di una singola animazione è possibile utilizzare la variabile `wxanimate_framerate`:"
 
 #. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:509
@@ -1531,6 +1590,8 @@ msgid ""
 "wxanimate(a, 10,\n"
 "    sin(a*x), [x,-5,5]), wxanimate_framerate=6$\n"
 msgstr ""
+"wxanimate(a, 10,\n"
+"    sin(a*x), [x,-5,5]), wxanimate_framerate=6$\n"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:515
@@ -1539,7 +1600,7 @@ msgid ""
 "shares the pitfall that the slider variable's value is substituted into the "
 "expression only if the variable is directly visible in the expression. "
 "Therefore the following example will fail:"
-msgstr ""
+msgstr "Le funzioni di animazione usano il comando `makelist` di _Maxima_ e quindi condividono il problema che il valore della variabile slider viene sostituito nell'espressione solo se la variabile è direttamente visibile nell'espressione. Pertanto il seguente esempio fallirà:"
 
 #. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:516
@@ -1553,13 +1614,20 @@ msgid ""
 "    explicit(f,x,0,10)\n"
 ")$\n"
 msgstr ""
+"f:sin(a*x);\n"
+"with_slider_draw(\n"
+"    a,makelist(i/2,i,1,10),\n"
+"    title=concat(\"a=\",float(a)),\n"
+"    grid=true,\n"
+"    explicit(f,x,0,10)\n"
+")$\n"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:527
 msgid ""
 "If _Maxima_ is explicitly asked to substitute the slider’s value plotting "
 "works fine instead:"
-msgstr ""
+msgstr "Se a _Maxima_ viene chiesto esplicitamente di sostituire il valore del dispositivo di scorrimento, il tracciato funziona invece correttamente:"
 
 #. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:528
@@ -1576,12 +1644,22 @@ msgid ""
 "    )\n"
 ")$\n"
 msgstr ""
+"f:sin(a*x);\n"
+"with_slider_draw(\n"
+"    b,makelist(i/2,i,1,10),\n"
+"    title=concat(\"a=\",float(b)),\n"
+"    grid=true,\n"
+"    explicit(\n"
+"        subst(a=b,f),\n"
+"        x,0,10\n"
+"    )\n"
+")$\n"
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:541
 #, no-wrap
 msgid "Opening multiple plots in contemporaneous windows"
-msgstr ""
+msgstr "Apertura di più grafici in più finestre contemporaneamente"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:544
@@ -1589,7 +1667,7 @@ msgid ""
 "While not being a provided by _wxMaxima_ this feature of _Maxima_ (on setups "
 "that support it) sometimes comes in handily. The following example comes "
 "from a post from Mario Rodriguez to the _Maxima_ mailing list:"
-msgstr ""
+msgstr "Sebbene non sia fornita da _wxMaxima_, questa funzionalità di _Maxima_ (nei setup che la supportano) a volte è utile. L'esempio seguente viene da un post di Mario Rodriguez alla mailing list _Maxima_:"
 
 #. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:545
@@ -1606,11 +1684,21 @@ msgid ""
 "    /* Paraboloid in window #3 */\n"
 "    draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));\n"
 msgstr ""
+"    load(draw);\n"
+"\n"
+"    /* Parabola in window #1 */\n"
+"    draw2d(terminal=[wxt,1],explicit(x^2,x,-1,1));\n"
+"\n"
+"    /* Parabola in window #2 */\n"
+"    draw2d(terminal=[wxt,2],explicit(x^2,x,-1,1));\n"
+"\n"
+"    /* Paraboloid in window #3 */\n"
+"    draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));\n"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:559
 msgid "Plotting multiple plots in the same window is possible, too:"
-msgstr ""
+msgstr "È anche possibile tracciare più grafici nella stessa finestra:"
 
 #. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:560
@@ -1625,6 +1713,14 @@ msgid ""
 "\t   \texplicit(cos(x),x,0,2*%pi))\n"
 "\t );\n"
 msgstr ""
+"\twxdraw(\n"
+"\t\tgr2d(\n"
+"\t    \tkey=\"sin (x)\",grid=[2,2],\n"
+"\t    \texplicit(sin(x),x,0,2*%pi)),\n"
+"\t\tgr2d(\n"
+"\t   \tkey=\"cos (x)\",grid=[2,2],\n"
+"\t   \texplicit(cos(x),x,0,2*%pi))\n"
+"\t );\n"
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:571
@@ -1644,7 +1740,7 @@ msgstr ""
 #: ../../info/wxmaxima.md:575
 #, no-wrap
 msgid "2D"
-msgstr ""
+msgstr "2D"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:578
@@ -1668,7 +1764,7 @@ msgstr ""
 #: ../../info/wxmaxima.md:581
 #, no-wrap
 msgid "3D"
-msgstr ""
+msgstr "3D"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:584
@@ -1727,7 +1823,7 @@ msgstr ""
 #: ../../info/wxmaxima.md:597
 #, no-wrap
 msgid "Points"
-msgstr ""
+msgstr "Punti"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:600
@@ -1752,7 +1848,7 @@ msgstr ""
 #: ../../info/wxmaxima.md:605
 #, no-wrap
 msgid "Axis"
-msgstr ""
+msgstr "Assi"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:608
@@ -1805,7 +1901,7 @@ msgstr ""
 #: ../../info/wxmaxima.md:621
 #, no-wrap
 msgid "Fill colour"
-msgstr ""
+msgstr "Colore riempimento"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:624
@@ -1818,7 +1914,7 @@ msgstr ""
 #: ../../info/wxmaxima.md:625
 #, no-wrap
 msgid "Grid"
-msgstr ""
+msgstr "Griglia"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:628
