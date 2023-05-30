@@ -224,6 +224,7 @@ public:
   static const wxString &GetBadImageToolTip();
 
 private:
+  bool m_gnuplotDataThreadRunning = false;
   //  static std::atomic<int> m_numberOfThreads;
   //! A zipped version of the gnuplot commands that produced this image.
   wxMemoryBuffer m_gnuplotSource_Compressed;

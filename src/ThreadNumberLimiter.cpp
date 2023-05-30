@@ -35,8 +35,11 @@ std::mutex ThreadNumberLimiter::m_counterMutex;
 std::mutex ThreadNumberLimiter::m_mutex;
 int ThreadNumberLimiter::m_numberOfBackgroundThreads;
 
-ThreadNumberLimiter::ThreadNumberLimiter()
+ThreadNumberLimiter::ThreadNumberLimiter(bool *running):
+  m_runningIndicator(running)
 {
+  if(m_runningIndicator)
+    *m_runningIndicator = true;
   m_mutex.lock();
   int maxThreads =  std::thread::hardware_concurrency();
   if(maxThreads < 1)
@@ -60,4 +63,6 @@ ThreadNumberLimiter::~ThreadNumberLimiter()
   m_numberOfBackgroundThreads--;
   m_mutex.unlock();  
   wxLogMessage(_("%li background threads"), (long)m_numberOfBackgroundThreads);
+  if(m_runningIndicator)
+    *m_runningIndicator = false;
 }

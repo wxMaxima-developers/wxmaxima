@@ -247,7 +247,8 @@ void Image::GnuplotSource(wxString gnuplotFilename, wxString dataFilename,
                           std::shared_ptr<wxFileSystem> filesystem) {
   if(m_loadGnuplotSourceTask.joinable())
     m_loadGnuplotSourceTask.join();
-  std::unique_ptr<ThreadNumberLimiter> limiter(new ThreadNumberLimiter); 
+  std::unique_ptr<ThreadNumberLimiter> limiter(new
+                                               ThreadNumberLimiter(&m_gnuplotDataThreadRunning)); 
   m_loadGnuplotSourceTask = std::thread(&Image::LoadGnuplotSource_Backgroundtask,
                                         this, gnuplotFilename, dataFilename, filesystem,
                                         std::move(limiter));
@@ -257,7 +258,8 @@ void Image::CompressedGnuplotSource(wxString gnuplotFilename, wxString dataFilen
                                     std::shared_ptr<wxFileSystem> filesystem) {
   if(m_loadGnuplotSourceTask.joinable())
     m_loadGnuplotSourceTask.join();
-  std::unique_ptr<ThreadNumberLimiter> limiter(new ThreadNumberLimiter); 
+  std::unique_ptr<ThreadNumberLimiter> limiter(new
+                                               ThreadNumberLimiter(&m_gnuplotDataThreadRunning)); 
   m_loadGnuplotSourceTask = std::thread(&Image::LoadCompressedGnuplotSource_Backgroundtask,
                                         this, gnuplotFilename, dataFilename, filesystem,
                                         std::move(limiter));
@@ -966,6 +968,10 @@ void Image::LoadImage_Backgroundtask(wxString image,
 }
 
 void Image::Recalculate(double scale) {
+  // It would better to use a jthread for joining no-more used threads.
+  // But that is C++20, which now (in 2023) is still too early.
+  if((!m_gnuplotDataThreadRunning) && m_loadGnuplotSourceTask.joinable())
+     m_loadGnuplotSourceTask.join();
   int width = m_originalWidth;
   int height = m_originalHeight;
 
