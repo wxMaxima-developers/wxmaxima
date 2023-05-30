@@ -160,6 +160,8 @@ Image::Image(Configuration *config, const Image &image) {
 }
 
 Image::~Image() {
+  if(m_loadImageTask.joinable())
+    m_loadImageTask.join();
   if(m_loadGnuplotSourceTask.joinable())
     m_loadGnuplotSourceTask.join();
   m_isOk = false;
@@ -208,6 +210,8 @@ wxMemoryBuffer Image::ReadCompressedImage(wxInputStream *data) {
 }
 
 wxBitmap Image::GetUnscaledBitmap() {
+  if(m_loadImageTask.joinable())
+    m_loadImageTask.join();
   if (!m_isOk) {
     InvalidBitmap();
     return m_scaledBitmap;
@@ -232,13 +236,31 @@ wxBitmap Image::GetUnscaledBitmap() {
   }
 }
 
-const wxMemoryBuffer Image::GetCompressedImage() const { return m_compressedImage; }
+const wxMemoryBuffer Image::GetCompressedImage() const {
+  if(m_loadImageTask.joinable())
+    m_loadImageTask.join();
+  return m_compressedImage;
+}
 
-size_t Image::GetOriginalWidth() const { return m_originalWidth; }
+size_t Image::GetOriginalWidth() const {
+  if(m_loadImageTask.joinable())
+    m_loadImageTask.join();
+  
+  return m_originalWidth;
+}
 
-size_t Image::GetOriginalHeight() const { return m_originalHeight; }
+size_t Image::GetOriginalHeight() const {
+    if(m_loadImageTask.joinable())
+    m_loadImageTask.join();
 
-bool Image::IsOk() const { return m_isOk; }
+    return m_originalHeight;
+}
+
+bool Image::IsOk() const {
+    if(m_loadImageTask.joinable())
+    m_loadImageTask.join();
+return m_isOk;
+}
 
 // filesystem cannot be passed by const reference as we want to keep the
 // pointer to the file system alive in a background task
@@ -650,6 +672,8 @@ wxString Image::GnuplotSource() {
 }
 
 wxSize Image::ToImageFile(wxString filename) {
+  if(m_loadImageTask.joinable())
+    m_loadImageTask.join();
   wxFileName fn(filename);
   wxString ext = fn.GetExt();
   if (filename.Lower().EndsWith(GetExtension().Lower())) {
@@ -718,6 +742,8 @@ wxSize Image::ToImageFile(wxString filename) {
 }
 
 wxBitmap Image::GetBitmap(double scale) {
+  if(m_loadImageTask.joinable())
+    m_loadImageTask.join();
   // Recalculate contains its own WaitForLoad object.
   Recalculate(scale);
 
@@ -802,6 +828,8 @@ void Image::InvalidBitmap() {
 }
 
 void Image::LoadImage(const wxBitmap &bitmap) {
+  if(m_loadImageTask.joinable())
+    m_loadImageTask.join();
   // Convert the bitmap to a png image we can use as m_compressedImage
   wxImage image = bitmap.ConvertToImage();
   m_isOk = image.IsOk();
@@ -826,16 +854,21 @@ wxString Image::GetExtension() const { return m_extension; }
 // cppcheck-suppress performance symbolName=filesystem
 void Image::LoadImage(wxString image, std::shared_ptr<wxFileSystem> filesystem,
                       bool remove) {
+  if(m_loadImageTask.joinable())
+    m_loadImageTask.join();
   m_extension = wxFileName(image).GetExt();
   m_extension = m_extension.Lower();
   m_imageName = image;
-  LoadImage_Backgroundtask(image, filesystem, remove);
+  std::unique_ptr<ThreadNumberLimiter> limiter(new ThreadNumberLimiter()); 
+  m_loadImageTask = std::thread(&Image::LoadImage_Backgroundtask,
+                                        this, image, filesystem, remove,
+                                        std::move(limiter));
+
 }
 
 void Image::LoadImage_Backgroundtask(wxString image,
                                      std::shared_ptr<wxFileSystem> filesystem,
-                                     bool remove) {
-  std::shared_ptr<wxFileSystem> keepalive(filesystem);
+                                     bool remove, std::unique_ptr<ThreadNumberLimiter> limiter) {
   m_compressedImage.Clear();
   m_scaledBitmap.Create(1, 1);
   SuppressErrorDialogs logNull;
@@ -968,6 +1001,8 @@ void Image::LoadImage_Backgroundtask(wxString image,
 }
 
 void Image::Recalculate(double scale) {
+  if(m_loadImageTask.joinable())
+    m_loadImageTask.join();
   // It would better to use a jthread for joining no-more used threads.
   // But that is C++20, which now (in 2023) is still too early.
   if((!m_gnuplotDataThreadRunning) && m_loadGnuplotSourceTask.joinable())
