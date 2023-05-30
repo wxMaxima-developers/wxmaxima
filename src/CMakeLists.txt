@@ -139,6 +139,7 @@ set(SOURCE_FILES
     SvgPanel.cpp
     TableOfContents.cpp
     TextStyle.cpp
+    ThreadNumberLimiter.cpp
     TipOfTheDay.cpp
     ToolBar.cpp
     UnicodeSidebar.cpp

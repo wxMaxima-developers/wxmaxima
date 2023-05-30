@@ -160,6 +160,8 @@ Image::Image(Configuration *config, const Image &image) {
 }
 
 Image::~Image() {
+  if(m_loadGnuplotSourceTask.joinable())
+    m_loadGnuplotSourceTask.join();
   m_isOk = false;
   if (!m_gnuplotSource.IsEmpty()) {
     SuppressErrorDialogs logNull;
@@ -243,17 +245,28 @@ bool Image::IsOk() const { return m_isOk; }
 // cppcheck-suppress performance symbolName=filesystem
 void Image::GnuplotSource(wxString gnuplotFilename, wxString dataFilename,
                           std::shared_ptr<wxFileSystem> filesystem) {
-  LoadGnuplotSource_Backgroundtask(gnuplotFilename, dataFilename, filesystem);
+  if(m_loadGnuplotSourceTask.joinable())
+    m_loadGnuplotSourceTask.join();
+  std::unique_ptr<ThreadNumberLimiter> limiter(new ThreadNumberLimiter); 
+  m_loadGnuplotSourceTask = std::thread(&Image::LoadGnuplotSource_Backgroundtask,
+                                        this, gnuplotFilename, dataFilename, filesystem,
+                                        std::move(limiter));
 }
 
 void Image::CompressedGnuplotSource(wxString gnuplotFilename, wxString dataFilename,
                                     std::shared_ptr<wxFileSystem> filesystem) {
-  LoadCompressedGnuplotSource_Backgroundtask(gnuplotFilename, dataFilename, filesystem);
+  if(m_loadGnuplotSourceTask.joinable())
+    m_loadGnuplotSourceTask.join();
+  std::unique_ptr<ThreadNumberLimiter> limiter(new ThreadNumberLimiter); 
+  m_loadGnuplotSourceTask = std::thread(&Image::LoadCompressedGnuplotSource_Backgroundtask,
+                                        this, gnuplotFilename, dataFilename, filesystem,
+                                        std::move(limiter));
 }
 
 void Image::LoadGnuplotSource_Backgroundtask(
 					     wxString gnuplotFilename, wxString dataFilename,
-					     std::shared_ptr<wxFileSystem> filesystem) {
+					     std::shared_ptr<wxFileSystem> filesystem,
+                                             std::unique_ptr<ThreadNumberLimiter> limiter) {
   // Error dialogues need to be created by the foreground thread.
   SuppressErrorDialogs suppressor;
   std::shared_ptr<wxFileSystem> keepalive(filesystem);
@@ -436,7 +449,8 @@ void Image::LoadGnuplotSource_Backgroundtask(
 
 void Image::LoadCompressedGnuplotSource_Backgroundtask(
   wxString gnuplotFilename, wxString dataFilename,
-  std::shared_ptr<wxFileSystem> filesystem) {
+  std::shared_ptr<wxFileSystem> filesystem,
+  std::unique_ptr<ThreadNumberLimiter> limiter) {
   std::shared_ptr<wxFileSystem> keepalive(filesystem);
 
   // Error dialogues need to be created by the foreground thread.
@@ -482,7 +496,10 @@ void Image::LoadCompressedGnuplotSource_Backgroundtask(
   }
 }
 
-const wxMemoryBuffer Image::GetGnuplotSource() const {
+const wxMemoryBuffer Image::GetGnuplotSource() {
+  if(m_loadGnuplotSourceTask.joinable())
+    m_loadGnuplotSourceTask.join();
+
   wxMemoryBuffer retval;
   if ((m_gnuplotSource_Compressed.GetDataLen() < 2) ||
       (m_gnuplotData_Compressed.GetDataLen() < 2)) {
@@ -510,17 +527,23 @@ const wxMemoryBuffer Image::GetGnuplotSource() const {
   return retval;
 }
 
-const wxMemoryBuffer Image::GetCompressedGnuplotSource() const
+const wxMemoryBuffer Image::GetCompressedGnuplotSource()
 {
+  if(m_loadGnuplotSourceTask.joinable())
+    m_loadGnuplotSourceTask.join();
   return m_gnuplotSource_Compressed;
 }
 
-const wxMemoryBuffer Image::GetCompressedGnuplotData() const
+const wxMemoryBuffer Image::GetCompressedGnuplotData()
 {
+  if(m_loadGnuplotSourceTask.joinable())
+    m_loadGnuplotSourceTask.join();
   return m_gnuplotData_Compressed;
 }
 
-const wxMemoryBuffer Image::GetGnuplotData() const {
+const wxMemoryBuffer Image::GetGnuplotData() {
+  if(m_loadGnuplotSourceTask.joinable())
+    m_loadGnuplotSourceTask.join();
   wxMemoryBuffer retval;
   if ((m_gnuplotSource_Compressed.GetDataLen() < 2) ||
       (m_gnuplotData_Compressed.GetDataLen() < 2)) {
@@ -549,6 +572,8 @@ const wxMemoryBuffer Image::GetGnuplotData() const {
 }
 
 wxString Image::GnuplotData() {
+  if(m_loadGnuplotSourceTask.joinable())
+    m_loadGnuplotSourceTask.join();
   if ((!m_gnuplotData.IsEmpty()) && (!wxFileExists(m_gnuplotData))) {
     // Move the gnuplot data and data file into our temp directory
     wxFileName gnuplotSourceFile(m_gnuplotSource);
@@ -582,6 +607,8 @@ wxString Image::GnuplotData() {
 }
 
 wxString Image::GnuplotSource() {
+  if(m_loadGnuplotSourceTask.joinable())
+    m_loadGnuplotSourceTask.join();
   if ((!m_gnuplotSource.IsEmpty()) && (!wxFileExists(m_gnuplotSource))) {
     // Move the gnuplot source and data file into our temp directory
     wxFileName gnuplotSourceFile(m_gnuplotSource);

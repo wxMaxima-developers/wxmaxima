@@ -30,6 +30,8 @@
 #define IMAGE_H
 
 #include <memory>
+#include <thread>
+#include "ThreadNumberLimiter.h"
 #include "precomp.h"
 #include "Cell.h"
 #include "Version.h"
@@ -151,11 +153,11 @@ public:
   wxString GnuplotData();
 
   //! Returns the gnuplot source of this image
-  const wxMemoryBuffer GetGnuplotSource() const;
-  const wxMemoryBuffer GetCompressedGnuplotSource() const;
+  const wxMemoryBuffer GetGnuplotSource();
+  const wxMemoryBuffer GetCompressedGnuplotSource();
   //! Returns the gnuplot data of this image
-  const wxMemoryBuffer GetGnuplotData() const;
-  const wxMemoryBuffer GetCompressedGnuplotData() const;
+  const wxMemoryBuffer GetGnuplotData();
+  const wxMemoryBuffer GetCompressedGnuplotData();
   
   /*! Temporarily forget the scaled image in order to save memory
 
@@ -241,9 +243,11 @@ private:
   wxString m_gnuplotSource;
   //! The gnuplot data file for this image, if any.
   wxString m_gnuplotData;
+  std::thread m_loadImageTask;
   void LoadImage_Backgroundtask(wxString image, std::shared_ptr<wxFileSystem> filesystem, bool remove);
-  void LoadGnuplotSource_Backgroundtask(wxString gnuplotFilename, wxString dataFilename, std::shared_ptr<wxFileSystem> filesystem);
-  void LoadCompressedGnuplotSource_Backgroundtask(wxString gnuplotFilename, wxString dataFilename, std::shared_ptr<wxFileSystem> filesystem);
+  std::thread m_loadGnuplotSourceTask;
+  void LoadGnuplotSource_Backgroundtask(wxString gnuplotFilename, wxString dataFilename, std::shared_ptr<wxFileSystem> filesystem, std::unique_ptr<ThreadNumberLimiter> limiter);
+  void LoadCompressedGnuplotSource_Backgroundtask(wxString gnuplotFilename, wxString dataFilename, std::shared_ptr<wxFileSystem> filesystem, std::unique_ptr<ThreadNumberLimiter> limiter);
   //! Loads an image from a file
   void LoadImage(wxString image, std::shared_ptr<wxFileSystem> filesystem, bool remove = true);
   //! Reads the compressed image into a memory buffer
