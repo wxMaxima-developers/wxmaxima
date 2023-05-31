@@ -893,10 +893,10 @@ void Image::LoadImage_Backgroundtask(wxString image,
       file.Open(image);
 
     if (file.IsOpened()) {
-      wxFileInputStream strm(file);
-      bool ok = strm.IsOk();
+      std::unique_ptr<wxInputStream> strm (new wxFileInputStream(file));
+      bool ok = strm->IsOk();
       if (ok)
-        m_compressedImage = ReadCompressedImage(&strm);
+        m_compressedImage = ReadCompressedImage(strm.get());
 
       file.Close();
       if (ok && remove) {
