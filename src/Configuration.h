@@ -253,6 +253,9 @@ public:
   wxDC *GetDC()
     { return m_dc; }
 
+  void SetDC(wxDC *dc)
+    { m_dc = dc; }
+
   //! Get a drawing context suitable for size calculations
   wxDC *GetAntialiassingDC()
     {
