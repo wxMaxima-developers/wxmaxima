@@ -151,7 +151,7 @@ Worksheet::Worksheet(wxWindow *parent, int id,
   m_mainToolBar = NULL;
   m_clickType = CLICK_TYPE_NONE;
   m_clickInGC = NULL;
-  m_last = NULL;
+  m_last = nullptr;
   m_hCaretActive = true;
   m_hCaretPosition = NULL; // horizontal caret at the top of document
   m_hCaretPositionStart = m_hCaretPositionEnd = NULL;
@@ -2435,7 +2435,7 @@ void Worksheet::SelectGroupCells(wxPoint down, wxPoint up) {
 
 GroupCell *Worksheet::GetLastCellInWorksheet() const
 {
-  if((m_last == NULL) || (m_last->GetNext() != NULL))
+  if((m_last == nullptr) || (m_last->GetNext() != nullptr))
     {
       GroupCell *last = GetTree();
       if (last)
