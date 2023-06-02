@@ -245,7 +245,7 @@ private:
   //! The gnuplot data file for this image, if any.
   wxString m_gnuplotData;
   mutable std::thread m_loadImageTask;
-  void LoadImage_Backgroundtask(wxString image, std::shared_ptr<wxFileSystem> filesystem, bool remove, std::unique_ptr<ThreadNumberLimiter> limiter);
+  void LoadImage_Backgroundtask(std::unique_ptr<ThreadNumberLimiter> limiter);
   std::thread m_loadGnuplotSourceTask;
   void LoadGnuplotSource_Backgroundtask(wxString gnuplotFilename, wxString dataFilename, std::shared_ptr<wxFileSystem> filesystem, std::unique_ptr<ThreadNumberLimiter> limiter);
   void LoadCompressedGnuplotSource_Backgroundtask(wxString gnuplotFilename, wxString dataFilename, std::shared_ptr<wxFileSystem> filesystem, std::unique_ptr<ThreadNumberLimiter> limiter);

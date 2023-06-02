@@ -860,15 +860,6 @@ void Image::LoadImage(wxString image, std::shared_ptr<wxFileSystem> filesystem,
   m_extension = m_extension.Lower();
   m_imageName = image;
   std::unique_ptr<ThreadNumberLimiter> limiter(new ThreadNumberLimiter()); 
-  m_loadImageTask = std::thread(&Image::LoadImage_Backgroundtask,
-                                        this, image, filesystem, remove,
-                                        std::move(limiter));
-
-}
-
-void Image::LoadImage_Backgroundtask(wxString image,
-                                     std::shared_ptr<wxFileSystem> filesystem,
-                                     bool remove, std::unique_ptr<ThreadNumberLimiter> limiter) {
   m_compressedImage.Clear();
   m_scaledBitmap.Create(1, 1);
   SuppressErrorDialogs logNull;
@@ -906,6 +897,13 @@ void Image::LoadImage_Backgroundtask(wxString image,
     }
   }
 
+  m_loadImageTask = std::thread(&Image::LoadImage_Backgroundtask,
+                                this,
+                                std::move(limiter));
+
+}
+
+void Image::LoadImage_Backgroundtask(std::unique_ptr<ThreadNumberLimiter> limiter) {
   m_isOk = false;
 
   wxImage Image;
