@@ -549,7 +549,7 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event)) {
 	antiAliassingDC.SetBrush(m_configuration->GetBackgroundBrush());
 	antiAliassingDC.SetPen(*wxWHITE_PEN);
         antiAliassingDC.SetLogicalFunction(wxCOPY);
-	m_configuration->SetAntialiassingDC(antiAliassingDC);
+	m_configuration->SetAntialiassingDC(&antiAliassingDC);
       }
 
     // Tell the configuration where to crop in this region
