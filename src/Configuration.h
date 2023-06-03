@@ -171,8 +171,8 @@ public:
   void FixedFontInTextControls(bool fixed) {m_fixedFontTC = fixed;}
   wxBrush GetBackgroundBrush() const {return m_BackgroundBrush;}
   wxBrush GetTooltipBrush() const {return m_tooltipBrush;}
-  void SetAntialiassingDC(wxDC &antialiassingDC)
-    {m_antialiassingDC = &antialiassingDC;}
+  void SetAntialiassingDC(wxDC *antialiassingDC)
+    {m_antialiassingDC = antialiassingDC;}
 
   void UnsetAntialiassingDC()
     {m_antialiassingDC = NULL; ResetLastFontUsed();}
@@ -252,6 +252,9 @@ public:
   //! Get a drawing context suitable for size calculations
   wxDC *GetDC()
     { return m_dc; }
+
+  void SetDC(wxDC *dc)
+    { m_dc = dc; }
 
   //! Get a drawing context suitable for size calculations
   wxDC *GetAntialiassingDC()

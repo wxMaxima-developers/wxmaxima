@@ -6205,11 +6205,14 @@ void wxMaxima::EditMenu(wxCommandEvent &event) {
     // config dialogue.
     ReReadConfig();
     wxConfigBase *config = wxConfig::Get();
-
+    wxDC *dc = m_configuration.GetDC();
+    wxDC *antialiassingDc = m_configuration.GetAntialiassingDC();
     ConfigDialogue *configW = new ConfigDialogue(this, &m_configuration);
     configW->Centre(wxBOTH);
     auto result = configW->ShowModal();
     m_configuration.SetWorkSheet(m_worksheet);
+    m_configuration.SetDC(dc);
+    m_configuration.SetAntialiassingDC(antialiassingDc);
     if (result == wxID_OK) {
       configW->WriteSettings();
       // Write the changes in the configuration to the disk.

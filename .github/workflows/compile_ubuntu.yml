@@ -21,7 +21,7 @@ jobs:
           fetch-depth: 15
       - name: install_packages
         run: |
-             sudo apt update
+             sudo apt-get update
              sudo apt-get install appstream-util cmake desktop-file-utils doxygen gettext gnuplot gnuplot-x11 graphviz libwxgtk3.0-gtk3-dev libwxgtk-webview3.0-gtk3-dev maxima maxima-share maxima-doc netcat-openbsd ninja-build pandoc xvfb at-spi2-core
       - name: configure
         run: |
@@ -62,7 +62,7 @@ jobs:
           fetch-depth: 15
       - name: install_packages
         run: |
-             sudo apt update
+             sudo apt-get update
              sudo apt-get install appstream-util cmake desktop-file-utils doxygen gettext gnuplot gnuplot-x11 graphviz libwxgtk3.0-gtk3-dev maxima maxima-share maxima-doc netcat-openbsd ninja-build pandoc xvfb at-spi2-core
       - name: configure
         run: |
@@ -103,7 +103,7 @@ jobs:
           fetch-depth: 15
       - name: install_packages
         run: |
-             sudo apt update
+             sudo apt-get update
              sudo apt-get install appstream-util cmake desktop-file-utils doxygen gettext gnuplot gnuplot-x11 graphviz libwxgtk3.0-gtk3-dev libwxgtk-webview3.0-gtk3-dev maxima maxima-share netcat-openbsd pandoc xvfb at-spi2-core make
       - name: configure
         run: |
