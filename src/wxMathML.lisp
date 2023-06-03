@@ -10,7 +10,7 @@
 ;; binary and sent to Maxima using a :lisp-quiet command.
 ;; If you want to use a file (on disk), you can use the command line
 ;; option --wxmathml-lisp=<str> to specify the path to a file, which
-;; will used instead of the compiled-in file.
+;; will be used instead of the compiled-in file.
 ;; This might be useful, if you want to test a new wxMathML.lisp file
 ;; without recompiling wxMaxima.
 ;;
