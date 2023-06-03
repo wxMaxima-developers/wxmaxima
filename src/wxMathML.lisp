@@ -6,9 +6,13 @@
 ;;  SPDX-License-Identifier: GPL-2.0+
 
 ;; This file isn't directly loaded by maxima on startup of wxMaxima.
-;; Instead generate_wxmathml.sh, when run manually, generates a
-;; gzip'ed version that is included in the wxMaxima binary and 
-;; sent to maxima using a :lisp-quiet command.
+;; Instead it is converted to a C header file, compiled in the wxMaxima
+;; binary and sent to Maxima using a :lisp-quiet command.
+;; If you want to use a file (on disk), you can use the command line
+;; option --wxmathml-lisp=<str> to specify the path to a file, which
+;; will used instead of the compiled-in file.
+;; This might be useful, if you want to test a new wxMathML.lisp file
+;; without recompiling wxMaxima.
 ;;
 ;; Rationale: This approach means that wxMaxima doesn't need to
 ;; know where wxMathml.lisp was moved by the ArchLinux, Gentoo,
