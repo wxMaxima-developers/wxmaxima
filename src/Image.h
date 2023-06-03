@@ -244,11 +244,26 @@ private:
   wxString m_gnuplotSource;
   //! The gnuplot data file for this image, if any.
   wxString m_gnuplotData;
-  std::thread m_loadImageTask;
-  void LoadImage_Backgroundtask(wxString image, std::shared_ptr<wxFileSystem> filesystem, bool remove);
+  mutable std::thread m_loadImageTask;
+  void LoadImage_Backgroundtask(std::unique_ptr<ThreadNumberLimiter> limiter);
   std::thread m_loadGnuplotSourceTask;
-  void LoadGnuplotSource_Backgroundtask(wxString gnuplotFilename, wxString dataFilename, std::shared_ptr<wxFileSystem> filesystem, std::unique_ptr<ThreadNumberLimiter> limiter);
-  void LoadCompressedGnuplotSource_Backgroundtask(wxString gnuplotFilename, wxString dataFilename, std::shared_ptr<wxFileSystem> filesystem, std::unique_ptr<ThreadNumberLimiter> limiter);
+  void LoadGnuplotSource_Backgroundtask1(
+    std::unique_ptr<ThreadNumberLimiter> limiter,
+    std::shared_ptr<wxFileSystem> filesystem,
+    std::shared_ptr<wxInputStream> gnuplotFile,
+    std::shared_ptr<wxInputStream> dataFile
+    );
+  void LoadGnuplotSource_Backgroundtask2(
+    std::unique_ptr<ThreadNumberLimiter> limiter,
+    wxString gnuplotFilename, wxString dataFilename);
+  void LoadGnuplotSource_Backgroundtask(
+    wxInputStream *source,
+    wxInputStream *data);
+  void LoadCompressedGnuplotSource_Backgroundtask(std::unique_ptr<ThreadNumberLimiter> limiter,
+                                                  std::shared_ptr<wxFileSystem> filesystem,
+                                                  std::shared_ptr<wxFSFile> sourcefile,
+                                                  std::shared_ptr<wxFSFile> datafile
+                                                  );
   //! Loads an image from a file
   void LoadImage(wxString image, std::shared_ptr<wxFileSystem> filesystem, bool remove = true);
   //! Reads the compressed image into a memory buffer
