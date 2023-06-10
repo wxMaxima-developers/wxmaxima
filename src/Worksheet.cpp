@@ -453,8 +453,6 @@ Worksheet::~Worksheet() {
 #endif
 #endif
 
-#define WORKING_AUTO_BUFFER 1
-
 void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event)) {
   m_configuration->ClearAndEnableRedrawTracing();
   m_configuration->SetBackgroundBrush(*(wxTheBrushList->FindOrCreateBrush(
@@ -482,47 +480,16 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event)) {
   RecalculateIfNeeded();
 
   // Create a working drawing context that is valid for the time of this redraw
-#ifdef WORKING_AUTO_BUFFER
   m_configuration->SetContext(dc);
 
   // Create a graphics context that supports antialiasing, but on MSW
   // only supports fonts that come in the Right Format.
   wxGCDC antiAliassingDC(dc);
-#else
-  wxMemoryDC dcm;
-  // Test if m_memory is NULL or of the wrong size
-#ifdef __WXMAC__
-  if ((!m_memory.IsOk()) || (m_memory.GetSize() != sz))
-    m_memory =
-      wxBitmap(sz * wxWindow::GetContentScaleFactor(), wxBITMAP_SCREEN_DEPTH,
-	       wxWindow::GetContentScaleFactor());
-#else
-  if ((!m_memory.IsOk()) || (m_memory.GetSize() != sz))
-    m_memory =
-      wxBitmap(sz * wxWindow::GetContentScaleFactor(), wxBITMAP_SCREEN_DEPTH);
-#endif
-  if (!m_memory.IsOk()) {
-    m_configuration->SetContext(m_dc);
-    return;
-  }
-  dcm.SetUserScale(wxWindow::GetContentScaleFactor(),
-                   wxWindow::GetContentScaleFactor());
-  dcm.SelectObject(m_memory);
-  if (!dcm.IsOk()) {
-    m_configuration->SetContext(m_dc);
-    return;
-  }
-  DoPrepareDC(dcm);
-  m_configuration->SetContext(dcm);
-  // Create a graphics context that supports antialiasing, but on MSW
-  // only supports fonts that come in the Right Format.
-  wxGCDC antiAliassingDC(dcm);
-#endif
 
   // Don't fill the text background with the background color
   // No need to do the same for the antialiassing DC: We won't use that
   // one for drawing text as on MS Windows it doesn't support all fonts
-  m_configuration->GetDC()->SetMapMode(wxMM_TEXT);
+  dc.SetMapMode(wxMM_TEXT);
 
   // Now iterate over all single parts of the region we need to redraw and
   // redraw the worksheet
@@ -536,21 +503,19 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event)) {
 
     // Set line pen and fill brushes
     SetBackgroundColour(m_configuration->DefaultBackgroundColor());
-    m_configuration->GetDC()->SetBackgroundMode(wxTRANSPARENT);
-    m_configuration->GetDC()->SetBackground(
+    dc.SetBackgroundMode(wxTRANSPARENT);
+    dc.SetBackground(
 					    m_configuration->GetBackgroundBrush());
-    m_configuration->GetDC()->SetBrush(m_configuration->GetBackgroundBrush());
-    m_configuration->GetDC()->SetPen(*wxWHITE_PEN);
-    m_configuration->GetDC()->SetLogicalFunction(wxCOPY);
+    dc.SetBrush(m_configuration->GetBackgroundBrush());
+    dc.SetPen(*wxWHITE_PEN);
+    dc.SetLogicalFunction(wxCOPY);
 
-    if (antiAliassingDC.IsOk()) {
 	antiAliassingDC.SetMapMode(wxMM_TEXT);
 	antiAliassingDC.SetBackgroundMode(wxTRANSPARENT);
 	antiAliassingDC.SetBrush(m_configuration->GetBackgroundBrush());
 	antiAliassingDC.SetPen(*wxWHITE_PEN);
         antiAliassingDC.SetLogicalFunction(wxCOPY);
 	m_configuration->SetAntialiassingDC(&antiAliassingDC);
-      }
 
     // Tell the configuration where to crop in this region
     int xstart, xend, top, bottom;
@@ -564,16 +529,16 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event)) {
     m_configuration->SetUpdateRegion(unscrolledRect);
 
     // Clear the drawing area
-    m_configuration->GetDC()->DrawRectangle(unscrolledRect);
+    dc.DrawRectangle(unscrolledRect);
 
     //
     // Draw the selection marks
     //
     if (HasCellsSelected() &&
         m_cellPointers.m_selectionStart->GetType() != MC_TYPE_GROUP) {
-      m_configuration->GetDC()->SetPen(*(wxThePenList->FindOrCreatePen(
+      dc.SetPen(*(wxThePenList->FindOrCreatePen(
 								       m_configuration->GetColor(TS_SELECTION), 1, wxPENSTYLE_SOLID)));
-      m_configuration->GetDC()->SetBrush(*(wxTheBrushList->FindOrCreateBrush(
+      dc.SetBrush(*(wxTheBrushList->FindOrCreateBrush(
 									     m_configuration->GetColor(TS_SELECTION))));
 
       // Draw the marker that tells us which output cells are selected -
@@ -585,8 +550,8 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event)) {
         if (&tmp == m_cellPointers.m_selectionEnd)
           break;
       }
-      m_configuration->GetDC()->SetBrush(m_configuration->GetBackgroundBrush());
-      m_configuration->GetDC()->SetPen(*wxWHITE_PEN);
+      dc.SetBrush(m_configuration->GetBackgroundBrush());
+      dc.SetPen(*wxWHITE_PEN);
     }
 
     //
@@ -598,9 +563,9 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event)) {
       point.y = m_configuration->GetBaseIndent() + GetTree()->GetCenterList();
 
       // Draw tree
-      m_configuration->GetDC()->SetPen(*(wxThePenList->FindOrCreatePen(
+      dc.SetPen(*(wxThePenList->FindOrCreatePen(
 								       m_configuration->GetColor(TS_MATH), 1, wxPENSTYLE_SOLID)));
-      m_configuration->GetDC()->SetBrush(*(wxTheBrushList->FindOrCreateBrush(
+      dc.SetBrush(*(wxTheBrushList->FindOrCreateBrush(
 									     m_configuration->GetColor(TS_MATH))));
 
       bool atStart = true;
@@ -645,27 +610,21 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event)) {
         tmp.Draw(point);
       }
     }
-#ifndef WORKING_AUTO_BUFFER
-    // Blit the memory image to the window
-    dcm.SetDeviceOrigin(0, 0);
-    dc.Blit(0, rect.GetTop(), sz.x, rect.GetBottom() - rect.GetTop() + 1, &dcm,
-            0, rect.GetTop());
-#endif
 
     //
     // Draw the horizontal caret
     //
     if ((m_hCaretActive) && (m_hCaretPositionStart == NULL) &&
         (m_hCaretBlinkVisible) && (m_hasFocus) && (m_hCaretPosition != NULL)) {
-      m_configuration->GetDC()->SetPen(*(wxThePenList->FindOrCreatePen(
+      dc.SetPen(*(wxThePenList->FindOrCreatePen(
 								       m_configuration->GetColor(TS_CURSOR), 1, wxPENSTYLE_SOLID)));
-      m_configuration->GetDC()->SetBrush(*(wxTheBrushList->FindOrCreateBrush(
+      dc.SetBrush(*(wxTheBrushList->FindOrCreateBrush(
 									     m_configuration->GetColor(TS_CURSOR), wxBRUSHSTYLE_SOLID)));
 
       wxRect currentGCRect = m_hCaretPosition->GetRect();
       int caretY = (static_cast<int>(m_configuration->GetGroupSkip())) / 2 +
 	currentGCRect.GetBottom() + 1;
-      m_configuration->GetDC()->DrawRectangle(
+      dc.DrawRectangle(
 					      xstart + m_configuration->GetBaseIndent(),
 					      caretY - m_configuration->GetCursorWidth() / 2, MC_HCARET_WIDTH,
 					      m_configuration->GetCursorWidth());
@@ -674,15 +633,15 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event)) {
     if ((m_hCaretActive) && (m_hCaretPositionStart == NULL) && (m_hasFocus) &&
         (m_hCaretPosition == NULL)) {
       if (!m_hCaretBlinkVisible) {
-        m_configuration->GetDC()->SetBrush(
+        dc.SetBrush(
 					   m_configuration->GetBackgroundBrush());
-        m_configuration->GetDC()->SetPen(*wxThePenList->FindOrCreatePen(
+        dc.SetPen(*wxThePenList->FindOrCreatePen(
 									GetBackgroundColour(), m_configuration->Scale_Px(1)));
       } else {
-        m_configuration->GetDC()->SetPen(*(wxThePenList->FindOrCreatePen(
+        dc.SetPen(*(wxThePenList->FindOrCreatePen(
 									 m_configuration->GetColor(TS_CURSOR), m_configuration->Scale_Px(1),
 									 wxPENSTYLE_SOLID)));
-        m_configuration->GetDC()->SetBrush(*(wxTheBrushList->FindOrCreateBrush(
+        dc.SetBrush(*(wxTheBrushList->FindOrCreateBrush(
 									       m_configuration->GetColor(TS_CURSOR), wxBRUSHSTYLE_SOLID)));
       }
 
@@ -692,12 +651,12 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event)) {
 		m_configuration->GetCursorWidth()) /
 	       2,
 	       MC_HCARET_WIDTH, m_configuration->GetCursorWidth());
-      m_configuration->GetDC()->DrawRectangle(cursor);
+      dc.DrawRectangle(cursor);
     }
 
     if (GetTree() == NULL) {
       m_configuration->SetContext(m_dc);
-      return;
+      continue;
     }
     m_lastTop = top;
     m_lastBottom = bottom;
@@ -751,7 +710,6 @@ GroupCell *Worksheet::InsertGroupCells(std::unique_ptr<GroupCell> &&cells,
     CellList::SpliceInAfter(lastOfCellsToInsert, std::move(m_tree));
     m_tree = std::move(cells);
   } else {
-    auto *whereNext = where->GetNext();
     CellList::SpliceInAfter(where, std::move(cells), lastOfCellsToInsert);
     // make sure m_last still points to the last cell of the worksheet!!
   }
