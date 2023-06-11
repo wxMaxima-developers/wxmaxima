@@ -465,8 +465,15 @@ private:
 
   /*! Is called by wxWidgets when it wants to redraw the worksheet or a part of it.
 
-    The canonical way to schedule triggering this function is calling the Refresh()
-    function of this class.
+    The canonical way to schedule triggering this function is calling the
+    Refresh() or RequestRedraw() function of this class.
+
+    Using multiple threads in order to speed up this process is kind of hard:
+     * Using more than one wxPaintDC at the same time isn't supported by most
+       (if not all) operating systems.
+     * Drawing in a wxMemoryDC and then blitting the result in the central
+       wxPaintDC works, but each wxMemoryDC needs to draw into a separate bitmap
+       for that to work.
   */
   void OnPaint(wxPaintEvent &event);
 
