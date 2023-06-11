@@ -499,7 +499,10 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event)) {
 
     // Don't draw rectangles with zero size or height
     if ((rect.GetWidth() < 1) || (rect.GetHeight() < 1))
-      continue;
+      {
+	region++;
+	continue;
+      }
 
     // Set line pen and fill brushes
     SetBackgroundColour(m_configuration->DefaultBackgroundColor());
@@ -654,10 +657,6 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event)) {
       dc.DrawRectangle(cursor);
     }
 
-    if (GetTree() == NULL) {
-      m_configuration->SetContext(m_dc);
-      continue;
-    }
     m_lastTop = top;
     m_lastBottom = bottom;
     region++;
