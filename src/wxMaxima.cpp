@@ -10006,7 +10006,10 @@ void wxMaxima::PopupMenu(wxCommandEvent &event) {
       if (file.Length()) {
 	Cell *selectedCell = m_worksheet->GetSelectionStart();
 	if (selectedCell != NULL && selectedCell->GetType() == MC_TYPE_SLIDE)
-	  dynamic_cast<AnimationCell *>(selectedCell)->ToGif(file);
+	  {
+	    wxBusyCursor crs;
+	    dynamic_cast<AnimationCell *>(selectedCell)->ToGif(file);
+	  }
       }
     } }
   else if(event.GetId() == EventIDs::popid_merge_cells){
