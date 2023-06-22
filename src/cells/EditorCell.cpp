@@ -961,6 +961,10 @@ wxSize EditorCell::GetTextSize(wxString const &text) {
   return sz;
 }
 
+void EditorCell::SetForeground(wxDC *dc) {
+  dc->SetTextForeground(m_configuration->GetColor(GetTextStyle()));
+}
+
 wxString EditorCell::GetCurrentCommand() {
   // Discard all chars behind the cursor.
   wxString lineTillCursor = m_text.Left(m_positionOfCaret);
