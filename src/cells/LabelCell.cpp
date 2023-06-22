@@ -47,7 +47,13 @@ LabelCell::LabelCell(GroupCell *group, const LabelCell &cell)
   : TextCell(group, cell.m_configuration),
     m_userDefinedLabel(cell.m_userDefinedLabel) {}
 
-DEFINE_CELL(LabelCell)
+DEFINE_CELL_TYPEINFO(LabelCell)
+ 
+std::unique_ptr<Cell> LabelCell::Copy(GroupCell *group) const
+{
+ std::unique_ptr<LabelCell> rr = std::make_unique<LabelCell>(group, m_configuration, m_displayedText, GetTextStyle() );
+  return rr;
+}
 
 void LabelCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
   Cell::Draw(point, dc, antialiassingDC);
