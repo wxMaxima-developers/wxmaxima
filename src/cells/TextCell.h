@@ -50,11 +50,11 @@ public:
 
   virtual void Recalculate(AFontSize fontsize) override;
 
-  void Draw(wxPoint point) override;
+  void Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) override;
   const wxFont &GetFont(AFontSize fontsize) const {
     return m_configuration->GetStyle(GetTextStyle())->GetFont(fontsize);
   }
-  void SetFont(AFontSize fontsize);
+  void SetFont(wxDC *dc, AFontSize fontsize);
 
   /*! Calling this function signals that the "(" this cell ends in isn't part of the function name
 

@@ -41,7 +41,7 @@ public:
   const CellTypeInfo &GetInfo() override;
 
   void Recalculate(AFontSize fontsize) override;
-  void Draw(wxPoint point) override;
+  void Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) override;
   bool NeedsRecalculation(AFontSize fontSize) const override;
   void SetStyle(TextStyle style) override;
   wxString ToString() const override;

@@ -66,7 +66,7 @@ public:
   //! \todo m_open and m_close are recalculated in handdrawn mode, too.
   void Recalculate(AFontSize fontsize) override;
 
-  void Draw(wxPoint point) override;
+  void Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) override;
 
   bool BreakUp() override;
   

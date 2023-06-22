@@ -93,20 +93,19 @@ void NamedBoxCell::Recalculate(AFontSize fontsize) {
   Cell::Recalculate(fontsize);
 }
 
-void NamedBoxCell::Draw(wxPoint point) {
-  Cell::Draw(point);
+void NamedBoxCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
+  Cell::Draw(point, dc, antialiassingDC);
   if (DrawThisCell(point)) {
-    wxDC *dc = m_configuration->GetDC();
-    SetPen();
+    SetPen(dc);
     wxPoint in;
     in.x = point.x + Scale_Px(4) + ((m_width - Scale_Px(8)) - m_innerCellWidth) / 2;
     in.y = point.y;
-    m_innerCell->DrawList(in);
+    m_innerCell->DrawList(in, dc, antialiassingDC);
 
     wxPoint namepos(point);
     namepos.x += ((m_width - Scale_Px(8)) - m_nameWidth) / 2 + Scale_Px(4);
     namepos.y -= m_center - m_boxname->GetCenterList();
-    m_boxname->DrawList(namepos);
+    m_boxname->DrawList(namepos, dc, antialiassingDC);
 
     // dc->DrawLine(
     // 		 point.x + Scale_Px(2),

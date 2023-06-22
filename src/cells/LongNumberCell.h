@@ -39,7 +39,7 @@ public:
   const CellTypeInfo &GetInfo() override;
 
   void Recalculate(AFontSize fontsize) override;
-  void Draw(wxPoint point) override;
+  void Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) override;
   bool NeedsRecalculation(AFontSize fontSize) const override;
   bool BreakUp() override;
   void SetNextToDraw(Cell *next) override;

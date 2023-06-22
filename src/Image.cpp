@@ -139,7 +139,7 @@ Image::Image(Configuration *config, wxString image,
   m_maxHeight = -1;
   m_originalWidth = 640;
   m_originalHeight = 480;
-  m_ppi = m_configuration->GetDC()->GetPPI().x;
+  m_ppi = m_configuration->GetRecalcDC()->GetPPI().x;
   LoadImage(image, filesystem, remove);
 }
 
@@ -905,8 +905,8 @@ void Image::LoadImage_Backgroundtask(std::unique_ptr<ThreadNumberLimiter> limite
 
       // Parse the svg file's contents
       int ppi;
-      if (m_configuration->GetDC()->GetPPI().x > 50)
-        ppi = m_configuration->GetDC()->GetPPI().x;
+      if (m_configuration->GetRecalcDC()->GetPPI().x > 50)
+        ppi = m_configuration->GetRecalcDC()->GetPPI().x;
       else
         ppi = 96;
 

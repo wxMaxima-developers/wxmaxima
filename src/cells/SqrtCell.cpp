@@ -80,15 +80,14 @@ void SqrtCell::Recalculate(AFontSize fontsize) {
   Cell::Recalculate(fontsize);
 }
 
-void SqrtCell::Draw(wxPoint point) {
-  Cell::Draw(point);
+void SqrtCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
+  Cell::Draw(point, dc, antialiassingDC);
   if (DrawThisCell(point)) {
     wxPoint in(point);
 
     {
-      wxDC *adc = m_configuration->GetAntialiassingDC();
       in.x += Scale_Px(11) + 1;
-      SetPen(1.2);
+      SetPen(antialiassingDC, 1.2);
 
       const wxPoint points[12] = {
 	{0, 0},
@@ -107,10 +106,10 @@ void SqrtCell::Draw(wxPoint point) {
 	{m_width - Scale_Px(1), -m_center + Scale_Px(2)},
 	// The serif at the end of the root
 	{m_width - Scale_Px(1), -m_center + Scale_Px(6)}};
-      adc->DrawLines(12, points, point.x, point.y);
+      antialiassingDC->DrawLines(12, points, point.x, point.y);
     }
 
-    m_innerCell->DrawList(in);
+    m_innerCell->DrawList(in, dc, antialiassingDC);
   }
 }
 

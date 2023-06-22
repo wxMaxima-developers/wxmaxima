@@ -189,7 +189,6 @@ Configuration::Configuration(wxDC *dc, InitOpt options) :
   m_forceUpdate = false;
   m_outdated = false;
   m_lineWidth_em = 88;
-  m_antialiassingDC = NULL;
   m_workSheet = NULL;
   SetBackgroundBrush(*wxWHITE_BRUSH);
   ResetAllToDefaults(options);
@@ -199,6 +198,13 @@ Configuration::Configuration(wxDC *dc, InitOpt options) :
   for (wxString::const_iterator it = operators.begin(); it != operators.end();
        ++it)
     m_maximaOperators[wxString(*it)] = 1;
+}
+
+void Configuration::SetWorkSheet(wxWindow *workSheet)
+{
+  m_workSheet = workSheet;
+  m_worksheetDC = std::unique_ptr<wxClientDC>(new wxClientDC(workSheet));
+  m_dc = m_worksheetDC.get();
 }
 
 wxSize Configuration::GetPPI() const {
@@ -311,7 +317,6 @@ void Configuration::ResetAllToDefaults(InitOpt options) {
   m_indentMaths = true;
   m_indent = -1;
   m_autoSubscript = 2;
-  m_antiAliasLines = true;
   m_showCodeCells = true;
   m_greekSidebar_ShowLatinLookalikes = false;
   m_greekSidebar_Show_mu = false;
@@ -772,7 +777,6 @@ void Configuration::ReadConfig() {
     m_autoSubscript = 0;
   if(m_autoSubscript > 2)
     m_autoSubscript = 2;
-  config->Read(wxS("antiAliasLines"), &m_antiAliasLines);
   config->Read(wxS("indentMaths"), &m_indentMaths);
   config->Read(wxS("abortOnError"), &m_abortOnError);
   config->Read("defaultPort", &m_defaultPort);
@@ -1079,10 +1083,10 @@ bool Configuration::CharsExistInFont(const wxFont &font,
   std::vector<Params> P(chars.begin(), chars.end());
 
   // Letters with width or height = 0 don't exist in the current font
-  GetDC()->SetFont(font);
+  GetRecalcDC()->SetFont(font);
   for (auto &p : P) {
     wxCoord descent;
-    GetDC()->GetTextExtent(p.ch, &p.size.x, &p.size.y, &descent);
+    GetRecalcDC()->GetTextExtent(p.ch, &p.size.x, &p.size.y, &descent);
     if ((p.size.x < 1) || ((p.size.y - descent) < 1))
       return cache(false);
   }
@@ -1189,8 +1193,11 @@ void Configuration::ReadStyles(const wxString &file) {
   m_styles[TS_SELECTION].Read(config, wxS("Style/Selection/"));
   m_styles[TS_EQUALSSELECTION].Read(config, wxS("Style/EqualsSelection/"));
   m_styles[TS_OUTDATED].Read(config, wxS("Style/Outdated/"));
-  m_BackgroundBrush = *wxTheBrushList->FindOrCreateBrush(
+  {
+    std::lock_guard<std::mutex> guard(m_refcount_mutex);
+    m_BackgroundBrush = *wxTheBrushList->FindOrCreateBrush(
 							 m_styles[TS_DOCUMENT_BACKGROUND].GetColor(), wxBRUSHSTYLE_SOLID);
+  }
   MakeStylesConsistent();
 }
 
@@ -1544,7 +1551,6 @@ void Configuration::WriteStyles(wxConfigBase *config) {
   config->Write(wxS("mathJaxURL_UseUser"), m_mathJaxURL_UseUser);
   config->Write(wxS("enterEvaluates"), m_enterEvaluates);
   config->Write(wxS("mathJaxURL"), m_mathJaxURL);
-  config->Write(wxS("antiAliasLines"), m_antiAliasLines);
   config->Write(wxS("copyBitmap"), m_copyBitmap);
   config->Write(wxS("copyMathML"), m_copyMathML);
   config->Write(wxS("copyMathMLHTML"), m_copyMathMLHTML);
@@ -1635,3 +1641,4 @@ const wxString &Configuration::GetStyleName(TextStyle textStyle) {
 wxString Configuration::m_configfileLocation_override;
 std::unordered_map<TextStyle, wxString> Configuration::m_styleNames;
 bool Configuration::m_debugMode = false;
+std::mutex Configuration::m_refcount_mutex;

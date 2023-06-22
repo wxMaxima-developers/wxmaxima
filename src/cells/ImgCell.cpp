@@ -168,20 +168,22 @@ void ImgCell::Recalculate(AFontSize fontsize) {
   Cell::Recalculate(fontsize);
 }
 
-void ImgCell::Draw(wxPoint point) {
-  Cell::Draw(point);
+void ImgCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
+  Cell::Draw(point, dc, antialiassingDC);
   if (DrawThisCell(point) && (m_image != NULL)) {
     if (!InUpdateRegion())
       return;
 
-    wxDC *dc = m_configuration->GetDC();
     wxMemoryDC bitmapDC;
 
     if (m_drawBoundingBox)
-      dc->SetBrush(*(wxTheBrushList->FindOrCreateBrush(
-						       m_configuration->GetColor(TS_SELECTION))));
+      {
+	std::lock_guard<std::mutex> guard(Configuration::m_refcount_mutex);
+	dc->SetBrush(*(wxTheBrushList->FindOrCreateBrush(
+							 m_configuration->GetColor(TS_SELECTION))));
+      }
     else
-      SetPen();
+      SetPen(dc);
 
     if (m_drawRectangle || m_drawBoundingBox)
       dc->DrawRectangle(wxRect(point.x, point.y - m_center, m_width, m_height));

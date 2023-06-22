@@ -336,12 +336,12 @@ public:
     by RecalculateOutput().
 
   */
-  void Draw(wxPoint point) override;
+  void Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) override;
 
   bool AddEnding() override;
 
   //! Draw the bracket of this cell
-  void DrawBracket();
+  void DrawBracket(wxDC *dc, wxDC *antialiassingDC);
 
   //! Is this list of cells empty?
   bool Empty() const;

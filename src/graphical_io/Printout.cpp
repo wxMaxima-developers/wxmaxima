@@ -120,7 +120,7 @@ bool Printout::OnPrintPage(int num) {
     // cells aren't printed" problem on linux.
     // No Idea why, though.
     dc->SetPen(wxPen(*wxBLACK, 1, wxPENSTYLE_SOLID));
-    group->Draw(group->GetGroup()->GetCurrentPoint());
+    group->Draw(group->GetGroup()->GetCurrentPoint(), dc, dc);
 
     if (end && (group == end->GetGroup()))
       break;
@@ -128,19 +128,22 @@ bool Printout::OnPrintPage(int num) {
     group = group->GetNext();
   }
 
-  wxPen pen = *(wxThePenList->FindOrCreatePen(*wxRED, 10, wxPENSTYLE_SOLID));
+  {
+    std::lock_guard<std::mutex> guard(Configuration::m_refcount_mutex);
+    wxPen pen = *(wxThePenList->FindOrCreatePen(*wxRED, 10, wxPENSTYLE_SOLID));
+  }
   return true;
 }
 
 bool Printout::OnBeginDocument(int startPage, int endPage) {
-  m_configuration.SetContext(*GetDC());
+  m_configuration.SetRecalcContext(*GetDC());
   if (!wxPrintout::OnBeginDocument(startPage, endPage))
     return false;
   return true;
 }
 
 void Printout::BreakPages() {
-  m_configuration.SetContext(*GetDC());
+  m_configuration.SetRecalcContext(*GetDC());
   if (m_tree == NULL)
     return;
 
@@ -175,7 +178,7 @@ void Printout::BreakPages() {
       } else {
         // Drawing a cell assigns its output positions
         gr.Recalculate();
-        gr.Draw(gr.GetCurrentPoint());
+        gr.Draw(gr.GetCurrentPoint(), GetDC(), GetDC());
 
         if ((gr.GetOutput()) &&
             (gr.GetOutput()->GetRect(true).GetTop() - pageStart <
@@ -210,7 +213,7 @@ void Printout::BreakPages() {
 }
 
 void Printout::SetupData() {
-  m_configuration.SetContext(*GetDC());
+  m_configuration.SetRecalcContext(*GetDC());
   //  SetUserScale(1/DCSCALE,
   //               1/DCSCALE);
   // on MSW according to
@@ -229,7 +232,7 @@ void Printout::SetupData() {
     printPPI.x = 72;
   if (printPPI.y < 1)
     printPPI.y = 72;
-  m_tree->GetConfiguration()->GetDC()->SetUserScale(1.0, 1.0);
+  m_tree->GetConfiguration()->GetRecalcDC()->SetUserScale(1.0, 1.0);
   m_configuration.SetZoomFactor_temporarily(
 					    printPPI.x / DPI_REFERENCE * m_tree->GetConfiguration()->PrintScale() /
 					    m_scaleFactor);
@@ -276,7 +279,7 @@ void Printout::GetPageInfo(int *minPage, int *maxPage, int *fromPage,
 }
 
 void Printout::OnPreparePrinting() {
-  m_configuration.SetContext(*GetDC());
+  m_configuration.SetRecalcContext(*GetDC());
   SetupData();
 }
 
@@ -332,7 +335,7 @@ void Printout::Recalculate() {
 
   // Don't take the ppi rate from the worksheet but use a fixed one instead
   m_configuration.SetWorkSheet(NULL);
-  m_configuration.SetContext(*GetDC());
+  m_configuration.SetRecalcContext(*GetDC());
   m_configuration.SetPPI(GetDC()->GetPPI());
 
   int marginX, marginY;

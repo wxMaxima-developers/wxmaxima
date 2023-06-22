@@ -69,17 +69,17 @@ void ExptCell::MakeBreakupCells() {
   }
 }
 
-void ExptCell::Draw(wxPoint point) {
-  Cell::Draw(point);
+void ExptCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
+  Cell::Draw(point, dc, antialiassingDC);
   if (DrawThisCell(point)) {
     wxPoint bs, pw;
     bs.x = point.x;
     bs.y = point.y;
-    m_baseCell->DrawList(bs);
+    m_baseCell->DrawList(bs, dc, antialiassingDC);
 
     point.x += m_baseCell->GetFullWidth() - MC_TEXT_PADDING;
     point.y -= m_expt_yoffset;
-    m_exptCell->DrawList(point);
+    m_exptCell->DrawList(point, dc, antialiassingDC);
   }
 }
 

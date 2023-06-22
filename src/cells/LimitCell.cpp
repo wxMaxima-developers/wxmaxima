@@ -88,25 +88,25 @@ void LimitCell::Recalculate(AFontSize fontsize) {
   Cell::Recalculate(fontsize);
 }
 
-void LimitCell::Draw(wxPoint point) {
-  Cell::Draw(point);
+void LimitCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
+  Cell::Draw(point, dc, antialiassingDC);
   if (DrawThisCell(point)) {
     wxPoint base(point), under(point), name(point);
 
     name.x = point.x +
       wxMax(m_name->GetFullWidth(), m_under->GetFullWidth()) / 2 -
       m_name->GetFullWidth() / 2;
-    m_name->DrawList(name);
+    m_name->DrawList(name, dc, antialiassingDC);
 
     under.x = point.x +
       wxMax(m_name->GetFullWidth(), m_under->GetFullWidth()) / 2 -
       m_under->GetFullWidth() / 2;
 
     under.y = point.y + m_name->GetMaxDrop() + m_under->GetCenterList();
-    m_under->DrawList(under);
+    m_under->DrawList(under, dc, antialiassingDC);
 
     base.x += wxMax(m_name->GetFullWidth(), m_under->GetFullWidth());
-    m_base->DrawList(base);
+    m_base->DrawList(base, dc, antialiassingDC);
   }
 }
 

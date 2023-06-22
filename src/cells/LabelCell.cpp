@@ -49,19 +49,18 @@ LabelCell::LabelCell(GroupCell *group, const LabelCell &cell)
 
 DEFINE_CELL(LabelCell)
 
-void LabelCell::Draw(wxPoint point) {
-  Cell::Draw(point);
+void LabelCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
+  Cell::Draw(point, dc, antialiassingDC);
   if (DrawThisCell(point) &&
       !(IsHidden() ||
         (GetHidableMultSign() && m_configuration->HidemultiplicationSign()))) {
 
-    wxDC *dc = m_configuration->GetDC();
     int padding = 0;
     if (GetTextStyle() != TS_ASCIIMATHS)
       padding = MC_TEXT_PADDING;
 
-    SetForeground();
-    SetFont(m_fontSize_Scaled);
+    SetTextColor(dc);
+    SetFont(dc, m_fontSize_Scaled);
     dc->DrawText(m_displayedText, point.x + padding,
                  point.y - m_center + MC_TEXT_PADDING);
   }

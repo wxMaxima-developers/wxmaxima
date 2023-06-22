@@ -60,7 +60,7 @@ public:
 
   void Recalculate(AFontSize fontsize) override;
 
-  virtual void Draw(wxPoint point) override;
+  virtual void Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) override;
 
   bool BreakUp() override;
 

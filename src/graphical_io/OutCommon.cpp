@@ -92,7 +92,7 @@ bool OutCommon::PrepareLayout(Cell *tree) {
 
   tree->FontsChangedList();
   tree->ResetSize();
-  m_thisconfig.SetContext(*m_recalculationDc);
+  m_thisconfig.SetRecalcContext(*m_recalculationDc);
 
   if (tree->GetType() != MC_TYPE_GROUP) {
     Recalculate(tree);
@@ -180,7 +180,7 @@ void OutCommon::Draw(Cell *tree) {
   for (Cell &tmp : OnDrawList(tree)) {
     Cell *const next = tmp.GetNext();
     if (!tmp.IsBrokenIntoLines()) {
-      tmp.Draw(point);
+      tmp.Draw(point, m_recalculationDc, m_recalculationDc);
       if (next && next->BreakLineHere()) {
         point.x = 0;
         point.y += drop + next->GetCenterList();
@@ -205,7 +205,7 @@ void OutCommon::Draw(Cell *tree) {
   }
 
   // Update the bitmap's size information.
-  m_ppi = m_thisconfig.GetDC()->GetPPI();
+  m_ppi = m_thisconfig.GetRecalcDC()->GetPPI();
   m_ppi.x *= m_scale;
   m_ppi.y *= m_scale;
 }

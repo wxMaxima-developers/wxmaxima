@@ -45,21 +45,20 @@ SetCell::SetCell(GroupCell *group, const SetCell &cell)
 
 DEFINE_CELL(SetCell)
 
-void SetCell::Draw(wxPoint point) {
-  Cell::Draw(point);
+void SetCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
+  Cell::Draw(point, dc, antialiassingDC);
   if (DrawThisCell(point)) {
     wxPoint innerCellPos(point);
 
     if (m_drawAsAscii) {
       innerCellPos.x += m_open->GetWidth();
-      m_open->DrawList(point);
-      m_close->DrawList(wxPoint(
-				point.x + m_open->GetWidth() + m_innerCell->GetFullWidth(), point.y));
+      m_open->DrawList(point, dc, antialiassingDC);
+      m_close->DrawList(wxPoint(point.x + m_open->GetWidth() + m_innerCell->GetFullWidth(),
+				point.y), dc, antialiassingDC);
     } else {
-      wxDC *adc = m_configuration->GetAntialiassingDC();
       innerCellPos.y +=
 	(m_innerCell->GetCenterList() - m_innerCell->GetHeightList() / 2);
-      SetPen(1.5);
+      SetPen(dc, 1.5);
 
       int signWidth = m_signWidth - Scale_Px(2);
       innerCellPos.x = point.x + m_signWidth;
@@ -76,7 +75,7 @@ void SetCell::Draw(wxPoint point) {
 	{point.x + signWidth / 2,
 	 point.y + m_center - Scale_Px(4) - signWidth / 2},
 	{point.x + signWidth, point.y + m_center - Scale_Px(4)}};
-      adc->DrawSpline(8, pointsL);
+      antialiassingDC->DrawSpline(8, pointsL);
 
       // Right curly brace
       const wxPoint pointsR[8] = {
@@ -90,11 +89,11 @@ void SetCell::Draw(wxPoint point) {
 	{point.x - signWidth / 2 + m_width,
 	 point.y + m_center - Scale_Px(4) - signWidth / 2},
 	{point.x + m_width - signWidth, point.y + m_center - Scale_Px(4)}};
-      adc->DrawSpline(8, pointsR);
+      antialiassingDC->DrawSpline(8, pointsR);
     }
 
     if (!IsBrokenIntoLines())
-      m_innerCell->DrawList(innerCellPos);
+      m_innerCell->DrawList(innerCellPos, dc, antialiassingDC);
   }
 }
 

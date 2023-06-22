@@ -462,10 +462,10 @@ void TextCell::Recalculate(AFontSize fontsize) {
   if (NeedsRecalculation(fontsize)) {
     Cell::Recalculate(fontsize);
     m_keepPercent_last = m_configuration->CheckKeepPercent();
-    SetFont(m_fontSize_Scaled);
+    SetFont(m_configuration->GetRecalcDC(), m_fontSize_Scaled);
 
     wxSize sz =
-      CalculateTextSize(m_configuration->GetDC(), m_displayedText, cellText);
+      CalculateTextSize(m_configuration->GetRecalcDC(), m_displayedText, cellText);
     m_width = sz.GetWidth();
     m_height = sz.GetHeight();
 
@@ -484,27 +484,26 @@ void TextCell::Recalculate(AFontSize fontsize) {
   }
 }
 
-void TextCell::Draw(wxPoint point) {
-  Cell::Draw(point);
+void TextCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
+  Cell::Draw(point, dc, antialiassingDC);
 
   if (DrawThisCell(point) &&
       !(IsHidden() ||
         (GetHidableMultSign() && m_configuration->HidemultiplicationSign()))) {
 
-    wxDC *dc = m_configuration->GetDC();
     int padding = 0;
     if (GetTextStyle() != TS_ASCIIMATHS)
       padding = MC_TEXT_PADDING;
 
-    SetForeground();
-    SetFont(m_fontSize_Scaled);
+    SetFont(dc, m_fontSize_Scaled);
+    SetTextColor(dc);
     dc->DrawText(m_displayedText, point.x + padding,
                  point.y - m_center + MC_TEXT_PADDING);
   }
 }
 
-void TextCell::SetFont(AFontSize fontsize) {
-  wxDC *dc = m_configuration->GetDC();
+void TextCell::SetFont(wxDC *dc, AFontSize fontsize) {
+  std::lock_guard<std::mutex> guard(Configuration::m_refcount_mutex);
   if(dc == NULL)
     {
       wxLogMessage(_("Bug: dc == NULL"));
@@ -512,11 +511,10 @@ void TextCell::SetFont(AFontSize fontsize) {
     }
   
   const wxFont &font = GetFont(fontsize);
-  if(m_configuration->GetLastFontUsed() != &font)
-    {
-      m_configuration->SetLastFontUsed(&font);
-      dc->SetFont(font);
-    }
+  if(!dc)
+    return;
+  if(!dc->GetFont().IsSameAs(font))
+    dc->SetFont(font);
 }
 
 bool TextCell::IsOperator() const {

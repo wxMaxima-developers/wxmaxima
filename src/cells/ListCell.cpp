@@ -100,21 +100,21 @@ void ListCell::Recalculate(AFontSize fontsize) {
   Cell::Recalculate(fontsize);
 }
 
-void ListCell::Draw(wxPoint point) {
-  Cell::Draw(point);
+void ListCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
+  Cell::Draw(point, dc, antialiassingDC);
   if (DrawThisCell(point)) {
     wxPoint innerCellPos(point);
 
     if (m_drawAsAscii) {
       innerCellPos.x += m_open->GetWidth();
-      m_open->DrawList(point);
+      m_open->DrawList(point, dc, antialiassingDC);
       m_close->DrawList(wxPoint(
-				point.x + m_open->GetWidth() + m_innerCell->GetFullWidth(), point.y));
+				point.x + m_open->GetWidth() + m_innerCell->GetFullWidth(),
+				point.y), dc, antialiassingDC);
     } else {
-      wxDC *adc = m_configuration->GetAntialiassingDC();
       innerCellPos.y +=
 	(m_innerCell->GetCenterList() - m_innerCell->GetHeightList() / 2);
-      SetPen(1.5);
+      SetPen(antialiassingDC, 1.5);
 
       int signWidth = m_signWidth - Scale_Px(2);
       innerCellPos.x = point.x + m_signWidth;
@@ -126,7 +126,7 @@ void ListCell::Draw(wxPoint point) {
 	{point.x + Scale_Px(1), point.y + m_center - Scale_Px(4)},
 	{point.x - Scale_Px(1) + signWidth,
 	 point.y + m_center - Scale_Px(4)}};
-      adc->DrawLines(4, pointsL);
+      antialiassingDC->DrawLines(4, pointsL);
 
       // Right bracket
       const wxPoint pointsR[4] = {
@@ -136,10 +136,10 @@ void ListCell::Draw(wxPoint point) {
 	{point.x + m_width - Scale_Px(1), point.y + m_center - Scale_Px(4)},
 	{point.x + m_width + Scale_Px(1) - signWidth,
 	 point.y + m_center - Scale_Px(4)}};
-      adc->DrawLines(4, pointsR);
+      antialiassingDC->DrawLines(4, pointsR);
     }
 
-    m_innerCell->DrawList(innerCellPos);
+    m_innerCell->DrawList(innerCellPos, dc, antialiassingDC);
   }
 }
 

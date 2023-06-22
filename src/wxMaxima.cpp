@@ -5034,7 +5034,7 @@ void wxMaxima::OnIdle(wxIdleEvent &event) {
   // The draw context is created on displaying the worksheet for the 1st time
   // and after drawing the worksheet onIdle is called => we won't miss this
   // event when we wait for it here.
-  if ((m_worksheet != NULL) && (m_configuration.GetDC() != NULL)) {
+  if ((m_worksheet != NULL) && (m_configuration.GetRecalcDC() != NULL)) {
     if (!m_openFile.IsEmpty()) {
       wxString file = m_openFile;
       m_openFile = wxEmptyString;
@@ -6205,14 +6205,10 @@ void wxMaxima::EditMenu(wxCommandEvent &event) {
     // config dialogue.
     ReReadConfig();
     wxConfigBase *config = wxConfig::Get();
-    wxDC *dc = m_configuration.GetDC();
-    wxDC *antialiassingDc = m_configuration.GetAntialiassingDC();
     ConfigDialogue *configW = new ConfigDialogue(this, &m_configuration);
     configW->Centre(wxBOTH);
     auto result = configW->ShowModal();
     m_configuration.SetWorkSheet(m_worksheet);
-    m_configuration.SetDC(dc);
-    m_configuration.SetAntialiassingDC(antialiassingDc);
     if (result == wxID_OK) {
       configW->WriteSettings();
       // Write the changes in the configuration to the disk.

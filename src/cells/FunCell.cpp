@@ -69,14 +69,14 @@ void FunCell::Recalculate(AFontSize fontsize) {
   Cell::Recalculate(fontsize);
 }
 
-void FunCell::Draw(wxPoint point) {
-  Cell::Draw(point);
+void FunCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
+  Cell::Draw(point, dc, antialiassingDC);
   if (DrawThisCell(point)) {
     wxPoint name(point), arg(point);
-    m_nameCell->DrawList(name);
+    m_nameCell->DrawList(name, dc, antialiassingDC);
 
     arg.x += m_nameCell->GetFullWidth();
-    m_argCell->DrawList(arg);
+    m_argCell->DrawList(arg, dc, antialiassingDC);
   }
 }
 

@@ -128,12 +128,12 @@ void IntCell::Recalculate(AFontSize fontsize) {
   }
 }
 
-void IntCell::Draw(wxPoint point) {
-  Cell::Draw(point);
+void IntCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
+  Cell::Draw(point, dc, antialiassingDC);
   if (DrawThisCell(point)) {
     wxPoint base(point), under(point), over(point), var(point), sign(point);
 
-    SetPen(1.5);
+    SetPen(antialiassingDC, 1.5);
     // top decoration
     int m_signWCenter = m_signWidth / 2;
     wxPoint points[7] = {
@@ -155,7 +155,7 @@ void IntCell::Draw(wxPoint point) {
       {sign.x + m_signWCenter - 2 * (m_signWidth / 4),
        sign.y + (m_signHeight - Scale_Px(1)) / 2 - m_signWidth / 4}};
 
-    m_configuration->GetAntialiassingDC()->DrawSpline(7, points);
+    antialiassingDC->DrawSpline(7, points);
     points[1] = {sign.x + m_signWCenter + m_signWidth / 4,
       sign.y - (m_signHeight - Scale_Px(1.25)) / 2};
     points[2] = {sign.x + m_signWCenter,
@@ -167,20 +167,20 @@ void IntCell::Draw(wxPoint point) {
       2 * (m_signWidth / 4) + Scale_Px(.35)};
     points[5] = {sign.x + m_signWCenter - m_signWidth / 4,
       sign.y + (m_signHeight - Scale_Px(1.25)) / 2};
-    m_configuration->GetAntialiassingDC()->DrawSpline(7, points);
+    antialiassingDC->DrawSpline(7, points);
     // line
 
     if (m_intStyle == INT_DEF) {
       under.x += m_signWidth;
       under.y = point.y + m_signHeight / 2 + m_under->GetCenterList() +
 	Scale_Px(2) - m_signHeight / 3;
-      m_under->DrawList(under);
+      m_under->DrawList(under, dc, antialiassingDC);
 
       over.x += m_signWidth;
 
       over.y = point.y - m_signHeight / 2 - m_over->GetMaxDrop() - Scale_Px(2) +
 	m_signHeight / 3;
-      m_over->DrawList(over);
+      m_over->DrawList(over, dc, antialiassingDC);
 
       base.x += m_signWidth +
 	wxMax(m_over->GetFullWidth(), m_under->GetFullWidth());
@@ -188,10 +188,10 @@ void IntCell::Draw(wxPoint point) {
     else
       base.x += m_signWidth;
 
-    m_base->DrawList(base);
+    m_base->DrawList(base, dc, antialiassingDC);
 
     var.x = base.x + m_base->GetFullWidth();
-    m_var->DrawList(var);
+    m_var->DrawList(var, dc, antialiassingDC);
   }
 }
 

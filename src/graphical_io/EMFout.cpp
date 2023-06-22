@@ -35,7 +35,7 @@ Emfout::Emfout(Configuration **configuration, const wxString &filename)
     m_recalculationDc(m_cmn.GetTempFilename(), 3000, 50000) {
   m_cmn.SetRecalculationContext(m_recalculationDc);
   auto &config = m_cmn.GetConfiguration();
-  config.SetContext(m_recalculationDc);
+  config.SetRecalcContext(m_recalculationDc);
   config.SetClientWidth(3000);
 }
 
@@ -63,7 +63,7 @@ bool Emfout::Layout() {
   auto &config = m_cmn.GetConfiguration();
   wxEnhMetaFileDC dc(m_cmn.GetFilename(), size.x, size.y);
 
-  config.SetContext(dc);
+  config.SetRecalcContext(dc);
   m_cmn.Draw(m_tree.get());
   m_metaFile.reset(
 		   dc.Close()); // Closing the DC triggers the output of the file.

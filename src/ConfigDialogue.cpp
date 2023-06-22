@@ -378,9 +378,6 @@ void ConfigDialogue::SetCheckboxValues() {
 				    "might use fonts that don't match the rest of the document."));
   m_usesvg->SetToolTip(_("PNG images can be read by old wxMaxima versions - "
                          "but aren't really scalable."));
-  m_antialiasLines->SetToolTip(
-			       _("Try to antialias lines (which allows to move them by a fraction of a "
-				 "pixel, but reduces their sharpness)."));
   m_matchParens->SetToolTip(_("Automatically insert a closing parenthesis the "
                               "moment the user enters an opening one."));
   m_showMatchingParens->SetToolTip(
@@ -468,7 +465,6 @@ void ConfigDialogue::SetCheckboxValues() {
 
   m_additionalParameters->SetValue(configuration->MaximaParameters());
   m_usesvg->SetValue(configuration->UseSVG());
-  m_antialiasLines->SetValue(configuration->AntiAliasLines());
 
   m_TeXExponentsAfterSubscript->SetValue(
 					 configuration->TeXExponentsAfterSubscript());
@@ -741,9 +737,6 @@ wxWindow *ConfigDialogue::CreateWorksheetPanel() {
     new wxCheckBox(displaySizer->GetStaticBox(), wxID_ANY,
 		   _("Keep percent sign with special symbols: %e, %i, etc."));
   displaySizer->Add(m_keepPercentWithSpecials, wxSizerFlags());
-  m_antialiasLines =
-    new wxCheckBox(displaySizer->GetStaticBox(), wxID_ANY, _("Antialias lines."));
-  displaySizer->Add(m_antialiasLines, wxSizerFlags());
 
   m_showMatchingParens =
     new wxCheckBox(displaySizer->GetStaticBox(), wxID_ANY,
@@ -2093,7 +2086,6 @@ void ConfigDialogue::WriteSettings() {
 				(Configuration::showLabels)m_showUserDefinedLabels->GetSelection());
   configuration->DefaultPort(m_defaultPort->GetValue());
   configuration->UseSVG(m_usesvg->GetValue());
-  configuration->AntiAliasLines(m_antialiasLines->GetValue());
   configuration->DefaultFramerate(m_defaultFramerate->GetValue());
   configuration->MaxGnuplotMegabytes(m_maxGnuplotMegabytes->GetValue());
   configuration->AutosaveMinutes(m_autosaveMinutes->GetValue());

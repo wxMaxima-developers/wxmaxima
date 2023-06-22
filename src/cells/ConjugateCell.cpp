@@ -80,15 +80,14 @@ void ConjugateCell::Recalculate(AFontSize fontsize) {
   Cell::Recalculate(fontsize);
 }
 
-void ConjugateCell::Draw(wxPoint point) {
-  Cell::Draw(point);
+void ConjugateCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
+  Cell::Draw(point, dc, antialiassingDC);
   if (DrawThisCell(point)) {
-    wxDC *dc = m_configuration->GetDC();
-    SetPen();
+    SetPen(dc);
     wxPoint in;
     in.x = point.x + Scale_Px(4);
     in.y = point.y;
-    m_innerCell->DrawList(in);
+    m_innerCell->DrawList(in, dc, antialiassingDC);
 
     dc->DrawLine(point.x + Scale_Px(2), point.y - m_center + Scale_Px(6),
                  point.x + m_width - Scale_Px(2) - 1,

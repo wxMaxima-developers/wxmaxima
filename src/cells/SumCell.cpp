@@ -151,26 +151,24 @@ void SumCell::Recalculate(AFontSize fontsize) {
   Cell::Recalculate(fontsize);
 }
 
-void SumCell::Draw(wxPoint point) {
-  Cell::Draw(point);
+void SumCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
+  Cell::Draw(point, dc, antialiassingDC);
 
   if (DrawThisCell(point)) {
-    wxDC *dc = m_configuration->GetDC();
 
     wxPoint base(point), under(point), over(point);
 
     under.x += m_signWCenter - m_under->GetFullWidth() / 2;
     under.y =
       point.y + m_signHeight / 2 + m_under->GetCenterList() + Scale_Px(2);
-    m_under->DrawList(under);
+    m_under->DrawList(under, dc, antialiassingDC);
 
     over.x += m_signWCenter - m_over->GetFullWidth() / 2;
     over.y = point.y - m_signHeight / 2 - m_over->GetMaxDrop() - Scale_Px(2);
-    m_over->DrawList(over);
+    m_over->DrawList(over, dc, antialiassingDC);
 
-    SetPen(1.5);
+    SetPen(antialiassingDC, 1.5);
     if (m_sumStyle == SM_SUM) {
-      wxDC *adc = m_configuration->GetAntialiassingDC();
       // DRAW SUM SIGN
       //  Upper part
       const wxPoint points[5] = {
@@ -179,26 +177,26 @@ void SumCell::Draw(wxPoint point) {
 	{m_signWCenter + int(m_signWidth / 5), 0},
 	{m_signWCenter - int(m_signWidth / 2), (m_signHeight / 2)},
 	{m_signWCenter + int(m_signWidth / 2), (m_signHeight / 2)}};
-      adc->DrawLines(5, points, point.x, point.y);
+      antialiassingDC->DrawLines(5, points, point.x, point.y);
     } else {
       // DRAW PRODUCT SIGN
       // Vertical lines
-      dc->DrawLine(point.x + m_signWCenter + m_signWidth / 6,
-                   point.y + m_signHeight / 2,
-                   point.x + m_signWCenter + m_signWidth / 6,
-                   point.y - m_signHeight / 2);
-      dc->DrawLine(point.x + m_signWCenter - m_signWidth / 6,
-                   point.y + m_signHeight / 2,
-                   point.x + m_signWCenter - m_signWidth / 6,
-                   point.y - m_signHeight / 2);
+      antialiassingDC->DrawLine(point.x + m_signWCenter + m_signWidth / 6,
+				point.y + m_signHeight / 2,
+				point.x + m_signWCenter + m_signWidth / 6,
+				point.y - m_signHeight / 2);
+      antialiassingDC->DrawLine(point.x + m_signWCenter - m_signWidth / 6,
+				point.y + m_signHeight / 2,
+				point.x + m_signWCenter - m_signWidth / 6,
+				point.y - m_signHeight / 2);
       // Horizontal line
-      dc->DrawLine(point.x + m_signWCenter - m_signWidth / 2,
-                   point.y - m_signHeight / 2,
-                   point.x + m_signWCenter + m_signWidth / 2,
-                   point.y - m_signHeight / 2);
+      antialiassingDC->DrawLine(point.x + m_signWCenter - m_signWidth / 2,
+				point.y - m_signHeight / 2,
+				point.x + m_signWCenter + m_signWidth / 2,
+				point.y - m_signHeight / 2);
     }
     base.x += (2 * m_signWCenter + Scale_Px(4));
-    DisplayedBase()->DrawList(base);
+    DisplayedBase()->DrawList(base, dc, antialiassingDC);
   }
 }
 

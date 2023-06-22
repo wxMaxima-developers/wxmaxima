@@ -123,7 +123,7 @@ public:
 
   void Recalculate(AFontSize fontsize) override;
 
-  virtual void Draw(wxPoint point) override;
+  virtual void Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) override;
 
   //! Convert the current cell to HTML code.
   wxString ToHTML() const;
@@ -150,10 +150,10 @@ public:
     return m_configuration->GetStyle(GetTextStyle())->GetFont(m_fontSize_Scaled);
   }
   //! Set the currently used font to the one that matches this cell's formatting
-  void SetFont();
+  void SetFont(wxDC *dc);
 
   //! Sets the current color to this cell's foreground color
-  void SetForeground();
+  void SetForeground(wxDC *dc);
 
   /*! Sets the text that is to be displayed.
     
@@ -579,7 +579,7 @@ private:
   wxString InterpretEscapeString(const wxString &txt) const;
 
   //! Draw a box that marks the current selection
-  void MarkSelection(long start, long end, TextStyle style);
+  void MarkSelection(wxDC *dc, long start, long end, TextStyle style);
 
   //! Determines the size of a text snippet
   wxSize GetTextSize(const wxString &text);

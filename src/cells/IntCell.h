@@ -54,7 +54,7 @@ public:
 
   void Recalculate(AFontSize fontsize) override;
 
-  void Draw(wxPoint point) override;
+  void Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) override;
 
   enum IntegralType : int8_t
   {

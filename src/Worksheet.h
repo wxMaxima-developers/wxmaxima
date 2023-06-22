@@ -60,6 +60,8 @@
 #include "TableOfContents.h"
 #include "UnicodeSidebar.h"
 #include "ToolBar.h"
+#include <thread>
+#include <vector>
 
 /*! The canvas that contains the spreadsheet the whole program is about.
 
@@ -476,7 +478,20 @@ private:
        for that to work.
   */
   void OnPaint(wxPaintEvent &event);
+  //! Draws a groupcell on the DC
+  void DrawGroupCell(wxDC &dc, wxDC &adc, GroupCell &cell);
+  /*! Draws a groupcell in a bitmap and then blits it onto the DC
 
+    Drawing to a DC is only allowed to one Thread at once. But doing the lenghty
+    stuff with bitmaps is possible to do in multiple threads at the same time so
+    as long as there is a mutex watching that we do the blit when no-one else
+    accesses the DC should be fine.
+   */
+  void DrawGroupCell_UsingBitmap(wxDC *dc, GroupCell *cell, wxRect DrawRegion);
+
+  //! All that has need to be done before drawing a GroupCell in a DC
+  void PrepareDrawGC(wxDC &dc);
+  
   void OnSize(wxSizeEvent &event);
 
   void OnMouseRightDown(wxMouseEvent &event);
@@ -671,6 +686,8 @@ public:
   //! Is called if this element looses or gets the focus
   void OnActivate(wxActivateEvent &event);
 private:
+  std::vector<std::thread> m_drawThreads;
+  static std::mutex m_drawDCLock;
   /*! The pointer to thesettings storage
    */
   Configuration *m_configuration;
@@ -1616,8 +1633,5 @@ inline Worksheet *Cell::GetWorksheet() const
   wxASSERT(worksheet != NULL);
   return static_cast<Worksheet*>(worksheet);
 }
-
-inline void Configuration::SetWorkSheet(wxWindow *workSheet)
-{ m_workSheet = dynamic_cast<Worksheet*>(workSheet); }
 
 #endif // WORKSHEET_H

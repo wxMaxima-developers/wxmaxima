@@ -61,19 +61,19 @@ void SubCell::Recalculate(AFontSize fontsize) {
   Cell::Recalculate(fontsize);
 }
 
-void SubCell::Draw(wxPoint point) {
-  Cell::Draw(point);
+void SubCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
+  Cell::Draw(point, dc, antialiassingDC);
   if (DrawThisCell(point)) {
     wxPoint bs, in;
 
     bs.x = point.x;
     bs.y = point.y;
-    m_baseCell->DrawList(bs);
+    m_baseCell->DrawList(bs, dc, antialiassingDC);
 
     in.x = point.x + m_baseCell->GetFullWidth() - Scale_Px(2);
     in.y = point.y + m_baseCell->GetMaxDrop() + m_indexCell->GetCenterList() -
       .8 * m_fontSize_Scaled + MC_EXP_INDENT;
-    m_indexCell->DrawList(in);
+    m_indexCell->DrawList(in, dc, antialiassingDC);
   }
 }
 

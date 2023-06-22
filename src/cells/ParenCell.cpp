@@ -84,7 +84,7 @@ void ParenCell::Recalculate(AFontSize fontsize) {
   m_open->RecalculateList(fontsize);
   m_close->RecalculateList(fontsize);
 
-  wxDC *dc = m_configuration->GetDC();
+  wxDC *dc = m_configuration->GetRecalcDC();
   auto fontsize1 = Scale_Px(fontsize);
   int size = 0;
   if(m_innerCell)
@@ -154,8 +154,8 @@ void ParenCell::Recalculate(AFontSize fontsize) {
   Cell::Recalculate(fontsize);
 }
 
-void ParenCell::Draw(wxPoint point) {
-  Cell::Draw(point);
+void ParenCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
+  Cell::Draw(point, dc, antialiassingDC);
   if (DrawThisCell(point)) {
     wxPoint innerCellPos(point);
 
@@ -163,24 +163,23 @@ void ParenCell::Draw(wxPoint point) {
     case Configuration::ascii:
       {
 	innerCellPos.x += m_open->GetWidth();
-	m_open->DrawList(point);
+	m_open->DrawList(point, dc, antialiassingDC);
 	int innerCellWidth = 0;
 	if(m_innerCell)
 	  innerCellWidth = m_innerCell->GetFullWidth();
 	
-	m_close->DrawList(wxPoint(
-				  point.x + m_open->GetWidth() + innerCellWidth, point.y));
+	m_close->DrawList(wxPoint(point.x + m_open->GetWidth() + innerCellWidth,
+				  point.y), dc, antialiassingDC);
 	break;
       }
     default: {
-      wxDC *adc = m_configuration->GetAntialiassingDC();
       if(m_innerCell)
 	{
 	  innerCellPos.y +=
 	    (m_innerCell->GetCenterList() - m_innerCell->GetHeightList() / 2);
 	}
-      SetPen(1.0);
-      SetBrush();
+      SetPen(antialiassingDC, 1.0);
+      SetBrush(antialiassingDC);
 
       int signWidth = m_signWidth - Scale_Px(2);
       innerCellPos.x = point.x + m_signWidth;
@@ -205,7 +204,7 @@ void ParenCell::Draw(wxPoint point) {
 	 point.y - m_center + 3 * signWidth / 4 + Scale_Px(4)},
 	{point.x + Scale_Px(1) + signWidth,
 	 point.y - m_center + Scale_Px(4)}};
-      adc->DrawSpline(10, pointsL);
+      antialiassingDC->DrawSpline(10, pointsL);
 
       // Right bracket
       const wxPoint pointsR[10] = {
@@ -227,12 +226,12 @@ void ParenCell::Draw(wxPoint point) {
 	 point.y - m_center + signWidth / 2 + Scale_Px(4)},
 	{point.x + m_width - Scale_Px(1) - signWidth,
 	 point.y - m_center + Scale_Px(4)}};
-      adc->DrawSpline(10, pointsR);
+      antialiassingDC->DrawSpline(10, pointsR);
     } break;
     }
 
     if (!IsBrokenIntoLines())
-      m_innerCell->DrawList(innerCellPos);
+      m_innerCell->DrawList(innerCellPos, dc, antialiassingDC);
   }
 }
 

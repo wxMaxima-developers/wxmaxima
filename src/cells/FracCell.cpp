@@ -115,13 +115,12 @@ void FracCell::Recalculate(AFontSize fontsize) {
   Cell::Recalculate(fontsize);
 }
 
-void FracCell::Draw(wxPoint point) {
-  Cell::Draw(point);
+void FracCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
+  Cell::Draw(point, dc, antialiassingDC);
   if (DrawThisCell(point)) {
     if (IsBrokenIntoLines())
       return;
 
-    wxDC *dc = m_configuration->GetDC();
     wxPoint num, denom;
 
     if (m_inExponent) {
@@ -131,9 +130,9 @@ void FracCell::Draw(wxPoint point) {
       denom = divide;
       denom.x += m_divide->GetFullWidth();
 
-      m_displayedNum->DrawList(num);
-      m_divide->Draw(divide);
-      m_displayedDenom->DrawList(denom);
+      m_displayedNum->DrawList(num, dc, antialiassingDC);
+      m_divide->Draw(divide, dc, antialiassingDC);
+      m_displayedDenom->DrawList(denom, dc, antialiassingDC);
     } else {
       num.x = point.x + m_horizontalGapLeft +
 	(m_width - m_horizontalGapLeft - m_horizontalGapRight -
@@ -141,22 +140,24 @@ void FracCell::Draw(wxPoint point) {
 	2;
       num.y = point.y - m_displayedNum->GetHeightList() +
 	m_displayedNum->GetCenterList();
-      m_displayedNum->DrawList(num);
+      m_displayedNum->DrawList(num, dc, antialiassingDC);
 
       denom.x = point.x + m_horizontalGapLeft +
 	(m_width - m_horizontalGapLeft - m_horizontalGapRight -
 	 m_displayedDenom->GetFullWidth()) /
 	2;
       denom.y = point.y + m_displayedDenom->GetCenterList() + Scale_Px(4);
-      m_displayedDenom->DrawList(denom);
-      SetPen(1.2);
+      m_displayedDenom->DrawList(denom, dc, antialiassingDC);
       if (m_fracStyle != FC_CHOOSE)
-        dc->DrawLine(point.x + m_horizontalGapLeft +
-		     m_configuration->GetDefaultLineWidth() / 2,
-                     point.y + Scale_Px(2),
-                     point.x + m_width - m_horizontalGapRight -
-		     m_configuration->GetDefaultLineWidth() / 2,
-                     point.y + Scale_Px(2));
+	{
+	  SetPen(antialiassingDC, 1.2);
+	  antialiassingDC->DrawLine(point.x + m_horizontalGapLeft +
+				    m_configuration->GetDefaultLineWidth() / 2,
+				    point.y + Scale_Px(2),
+				    point.x + m_width - m_horizontalGapRight -
+				    m_configuration->GetDefaultLineWidth() / 2,
+				    point.y + Scale_Px(2));
+	}
     }
   }
 }

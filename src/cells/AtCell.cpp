@@ -60,21 +60,20 @@ void AtCell::Recalculate(AFontSize fontsize) {
   Cell::Recalculate(fontsize);
 }
 
-void AtCell::Draw(wxPoint point) {
-  Cell::Draw(point);
+void AtCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
+  Cell::Draw(point, dc, antialiassingDC);
   if (DrawThisCell(point)) {
-    wxDC *dc = m_configuration->GetDC();
     wxPoint bs, in;
 
     bs.x = point.x;
     bs.y = point.y;
-    m_baseCell->DrawList(bs);
+    m_baseCell->DrawList(bs, dc, antialiassingDC);
 
     in.x = point.x + m_baseCell->GetFullWidth() + Scale_Px(4);
     in.y = point.y + m_baseCell->GetMaxDrop() + +m_indexCell->GetCenterList() -
       Scale_Px(7);
-    m_indexCell->DrawList(in);
-    SetPen();
+    m_indexCell->DrawList(in, dc, antialiassingDC);
+    SetPen(dc);
     dc->DrawLine(in.x - Scale_Px(2), bs.y - m_baseCell->GetCenterList(),
                  in.x - Scale_Px(2), in.y);
   }

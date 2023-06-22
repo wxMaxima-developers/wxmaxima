@@ -31,6 +31,7 @@
 #include "LoggingMessageDialog.h"
 #include "TextStyle.h"
 #include <memory>
+#include <mutex>
 #include <unordered_map>
 #include <random>
 #include <list>
@@ -158,24 +159,19 @@ public:
   void ResetAllToDefaults(InitOpt options = {});
 
   //! Set the drawing context that is currently active
-  void SetContext(wxDC &dc)
+  void SetRecalcContext(wxDC &dc)
     {
       m_dc = &dc;
-      m_antialiassingDC = NULL;
-      ResetLastFontUsed();
     }
   void UnsetContext() {m_dc = NULL;}
+
+  static std::mutex m_refcount_mutex;
 
   void SetBackgroundBrush(wxBrush brush);
   bool FixedFontInTextControls() const {return m_fixedFontTC;}
   void FixedFontInTextControls(bool fixed) {m_fixedFontTC = fixed;}
   wxBrush GetBackgroundBrush() const {return m_BackgroundBrush;}
   wxBrush GetTooltipBrush() const {return m_tooltipBrush;}
-  void SetAntialiassingDC(wxDC *antialiassingDC)
-    {m_antialiassingDC = antialiassingDC;}
-
-  void UnsetAntialiassingDC()
-    {m_antialiassingDC = NULL; ResetLastFontUsed();}
 
   ~Configuration();
 
@@ -250,20 +246,11 @@ public:
     { return m_zoomFactor; }
 
   //! Get a drawing context suitable for size calculations
-  wxDC *GetDC()
+  wxDC *GetRecalcDC()
     { return m_dc; }
 
-  void SetDC(wxDC *dc)
+  void SetRecalcDC(wxDC *dc)
     { m_dc = dc; }
-
-  //! Get a drawing context suitable for size calculations
-  wxDC *GetAntialiassingDC()
-    {
-      if ((m_antialiassingDC != NULL) && m_antiAliasLines)
-        return m_antialiassingDC;
-      else
-        return m_dc;
-    }
   
   wxString GetFontName(TextStyle ts = TS_CODE_DEFAULT) const;
 
@@ -768,8 +755,6 @@ public:
   static wxString MathJaXURL_Auto() { return wxS("https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js");}
   //! Returns the URL MathJaX can be found at.
   void MathJaXURL(wxString url){m_mathJaxURL = url;}
-  bool AntiAliasLines() const {return m_antiAliasLines;}
-  void AntiAliasLines(bool antiAlias){ m_antiAliasLines = antiAlias; }
 
   bool CopyBitmap() const {return m_copyBitmap;}
   void CopyBitmap(bool copyBitmap){ m_copyBitmap = copyBitmap; }
@@ -825,7 +810,7 @@ public:
   //! Get the worksheet this configuration storage is valid for
   wxWindow *GetWorkSheet() const {return m_workSheet;}
   //! Set the worksheet this configuration storage is valid for
-  inline void SetWorkSheet(wxWindow *workSheet);
+  void SetWorkSheet(wxWindow *workSheet);
 
   long DefaultPort() const {return m_defaultPort;}
   void DefaultPort(long port){m_defaultPort = port;}
@@ -939,28 +924,6 @@ public:
   wxTextCtrl *LastActiveTextCtrl() const { return m_lastActiveTextCtrl; }
   void LastActiveTextCtrl(wxTextCtrl *last);
 
-  /*! Clear the memory which font this DC was last used with.
-
-    Used for avoiding setting a font if the Right Font already is in use.
-   */
-  void ResetLastFontUsed(){m_lastFontUsed = NULL;}
-  /*! A pointer to the last font we used on this DC. Needs not to be a valid wxFont!
-
-    Used for avoiding setting a font if the Right Font already is in use.
-   */
-  const wxFont *GetLastFontUsed() const {return m_lastFontUsed;}
-  /*! Set a pointer to the last font we used on this DC.
-
-    Used for avoiding setting a font if the Right Font already is in use.
-   */
-  void SetLastFontUsed(const wxFont *font){m_lastFontUsed = font;}
-  /*! Set a pointer to the last font we used on this DC.
-
-    Used for avoiding setting a font if the Right Font already is in use.
-   */
-  void SetLastFontUsed(std::shared_ptr <wxFont> font){m_lastFontUsed = font.get();}
-  const wxFont *m_lastFontUsed = NULL;
-
   //! Which styles affect how code is displayed?
   const std::vector<TextStyle> &GetCodeStylesList() const {return m_codeStyles;}
   //! Which styles affect how math output is displayed?
@@ -1033,6 +996,8 @@ private:
   long m_autoSubscript;
   //! The worksheet this configuration storage is valid for
   wxWindow *m_workSheet = NULL;
+  //! A drawing context that knows the text sizes for the worksheet 
+  std::unique_ptr<wxClientDC> m_worksheetDC;
   /*! Do these chars exist in the given font?
 
     wxWidgets currently doesn't define such a function. But we can do the following:
@@ -1095,10 +1060,8 @@ private:
   long m_labelWidth;
   long m_indent;
   bool m_latin2greek;
-  bool m_antiAliasLines;
   double m_zoomFactor;
   wxDC *m_dc;
-  wxDC *m_antialiassingDC;
   wxString m_maximaShareDir;
   bool m_forceUpdate;
   bool m_clipToDrawRegion = true;
@@ -1179,7 +1142,6 @@ private:
   wxString m_wxMathML_Filename;
 
   wxTextCtrl *m_lastActiveTextCtrl = NULL;
-  wxFont *lastFontUsed = NULL;
 };
 
 //! Sets the configuration's "printing" flag until this class is left.

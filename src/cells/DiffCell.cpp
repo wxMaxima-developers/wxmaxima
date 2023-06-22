@@ -81,17 +81,17 @@ void DiffCell::Recalculate(AFontSize fontsize) {
   Cell::Recalculate(fontsize);
 }
 
-void DiffCell::Draw(wxPoint point) {
-  Cell::Draw(point);
+void DiffCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
+  Cell::Draw(point, dc, antialiassingDC);
   if (DrawThisCell(point) && InUpdateRegion()) {
     wxPoint bs, df;
     df.x = point.x;
     df.y = point.y;
-    m_diffCell->DrawList(df);
+    m_diffCell->DrawList(df, dc, antialiassingDC);
 
     bs.x = point.x + m_diffCell->GetFullWidth();
     bs.y = point.y;
-    m_baseCell->DrawList(bs);
+    m_baseCell->DrawList(bs, dc, antialiassingDC);
   }
 }
 

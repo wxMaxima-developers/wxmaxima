@@ -41,7 +41,7 @@ public:
 
   void Recalculate(AFontSize fontsize) override;
 
-  void Draw(wxPoint point) override;
+  void Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) override;
 
   wxString ToMathML() const override;
   wxString ToMatlab() const override;

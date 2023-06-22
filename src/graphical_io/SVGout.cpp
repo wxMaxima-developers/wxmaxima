@@ -54,7 +54,7 @@ Svgout::Svgout(Configuration **configuration, const wxString &filename,
   m_recalculationDc.SetBitmapHandler(new wxSVGBitmapEmbedHandler());
 #endif
   auto &config = m_cmn.GetConfiguration();
-  config.SetContext(m_recalculationDc);
+  config.SetRecalcContext(m_recalculationDc);
   config.SetClientWidth(700 * scale);
 }
 
@@ -85,7 +85,7 @@ bool Svgout::Layout() {
   dc.SetBitmapHandler(new wxSVGBitmapEmbedHandler());
 #endif
 
-  config.SetContext(dc);
+  config.SetRecalcContext(dc);
   m_cmn.Draw(m_tree.get());
   config.UnsetContext();
 
