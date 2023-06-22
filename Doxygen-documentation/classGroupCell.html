@@ -312,16 +312,16 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGroupCell.html#a1bc7ca9e1bf5923dbdd5e2e8735da8cd">Number</a> (int &amp;section, int &amp;subsection, int &amp;subsubsection, int &amp;heading5, int &amp;heading6, int &amp;image) const</td></tr>
 <tr class="memdesc:a1bc7ca9e1bf5923dbdd5e2e8735da8cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return this cell's section- or image number. <br /></td></tr>
 <tr class="separator:a1bc7ca9e1bf5923dbdd5e2e8735da8cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a179d1ca10520829b7eafcea259521945"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGroupCell.html#a179d1ca10520829b7eafcea259521945">Draw</a> (wxPoint point) override</td></tr>
-<tr class="memdesc:a179d1ca10520829b7eafcea259521945"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draw this <a class="el" href="classGroupCell.html" title="A cell grouping input (and, if there is one, also the output) cell to a foldable item.">GroupCell</a>.  <a href="classGroupCell.html#a179d1ca10520829b7eafcea259521945">More...</a><br /></td></tr>
-<tr class="separator:a179d1ca10520829b7eafcea259521945"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a321d972c866e667f9478a088684a352b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGroupCell.html#a321d972c866e667f9478a088684a352b">Draw</a> (wxPoint point, wxDC *dc, wxDC *antialiassingDC) override</td></tr>
+<tr class="memdesc:a321d972c866e667f9478a088684a352b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draw this <a class="el" href="classGroupCell.html" title="A cell grouping input (and, if there is one, also the output) cell to a foldable item.">GroupCell</a>.  <a href="classGroupCell.html#a321d972c866e667f9478a088684a352b">More...</a><br /></td></tr>
+<tr class="separator:a321d972c866e667f9478a088684a352b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac592a77ab3fed321981f25d68cc16234"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGroupCell.html#ac592a77ab3fed321981f25d68cc16234">AddEnding</a> () override</td></tr>
 <tr class="memdesc:ac592a77ab3fed321981f25d68cc16234"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a semicolon to a code cell, if needed.  <a href="classGroupCell.html#ac592a77ab3fed321981f25d68cc16234">More...</a><br /></td></tr>
 <tr class="separator:ac592a77ab3fed321981f25d68cc16234"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adeda42ec3997f57ad1652ac451f20aef"><td class="memItemLeft" align="right" valign="top"><a id="adeda42ec3997f57ad1652ac451f20aef"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGroupCell.html#adeda42ec3997f57ad1652ac451f20aef">DrawBracket</a> ()</td></tr>
-<tr class="memdesc:adeda42ec3997f57ad1652ac451f20aef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draw the bracket of this cell. <br /></td></tr>
-<tr class="separator:adeda42ec3997f57ad1652ac451f20aef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a463d2e8fa2e01dcc3b225be0a8b850b5"><td class="memItemLeft" align="right" valign="top"><a id="a463d2e8fa2e01dcc3b225be0a8b850b5"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGroupCell.html#a463d2e8fa2e01dcc3b225be0a8b850b5">DrawBracket</a> (wxDC *dc, wxDC *antialiassingDC)</td></tr>
+<tr class="memdesc:a463d2e8fa2e01dcc3b225be0a8b850b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draw the bracket of this cell. <br /></td></tr>
+<tr class="separator:a463d2e8fa2e01dcc3b225be0a8b850b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7d134e4f14869920ea47fc94d504c10e"><td class="memItemLeft" align="right" valign="top"><a id="a7d134e4f14869920ea47fc94d504c10e"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGroupCell.html#a7d134e4f14869920ea47fc94d504c10e">Empty</a> () const</td></tr>
 <tr class="memdesc:a7d134e4f14869920ea47fc94d504c10e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is this list of cells empty? <br /></td></tr>
@@ -425,12 +425,12 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <a class="el" href="classConfiguration.html">Configuration</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#ace05c5f8e6002cb159bc32bebe502305">GetConfiguration</a> ()</td></tr>
 <tr class="memdesc:ace05c5f8e6002cb159bc32bebe502305"><td class="mdescLeft">&#160;</td><td class="mdescRight">Which configuration object is responsible for this cell? <br /></td></tr>
 <tr class="separator:ace05c5f8e6002cb159bc32bebe502305"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac5d81ff45cd61085e02c84030c0631f9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#ac5d81ff45cd61085e02c84030c0631f9">DrawList</a> (wxPoint point)</td></tr>
-<tr class="memdesc:ac5d81ff45cd61085e02c84030c0631f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draw this list of cells.  <a href="classCell.html#ac5d81ff45cd61085e02c84030c0631f9">More...</a><br /></td></tr>
-<tr class="separator:ac5d81ff45cd61085e02c84030c0631f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af18debd7c3c9d1e6382ced7cc49c906e"><td class="memItemLeft" align="right" valign="top"><a id="af18debd7c3c9d1e6382ced7cc49c906e"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>DrawList</b> ()</td></tr>
-<tr class="separator:af18debd7c3c9d1e6382ced7cc49c906e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4f03f4c55b0ea22614b97cd7b7d467e3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a4f03f4c55b0ea22614b97cd7b7d467e3">DrawList</a> (wxPoint point, wxDC *dc, wxDC *adc)</td></tr>
+<tr class="memdesc:a4f03f4c55b0ea22614b97cd7b7d467e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draw this list of cells.  <a href="classCell.html#a4f03f4c55b0ea22614b97cd7b7d467e3">More...</a><br /></td></tr>
+<tr class="separator:a4f03f4c55b0ea22614b97cd7b7d467e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8c35dea62297500d1f9a339220fb57f9"><td class="memItemLeft" align="right" valign="top"><a id="a8c35dea62297500d1f9a339220fb57f9"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>DrawList</b> (wxDC *dc, wxDC *adc)</td></tr>
+<tr class="separator:a8c35dea62297500d1f9a339220fb57f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a095e15665c668ae04ff902c010361ce9"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a095e15665c668ae04ff902c010361ce9">DrawBoundingBox</a> (wxDC &amp;WXUNUSED(dc), bool all=false)</td></tr>
 <tr class="memdesc:a095e15665c668ae04ff902c010361ce9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draw a rectangle that marks this cell or this list of cells as selected.  <a href="classCell.html#a095e15665c668ae04ff902c010361ce9">More...</a><br /></td></tr>
 <tr class="separator:a095e15665c668ae04ff902c010361ce9"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -550,14 +550,14 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 const <a class="el" href="TextStyle_8h.html#a68ac52da6129614b3fa14e7c828c1993">TextStyle</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a2afa2ee23203fb98188cf26ce41a9908">GetTextStyle</a> () const</td></tr>
 <tr class="memdesc:a2afa2ee23203fb98188cf26ce41a9908"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the text style. <br /></td></tr>
 <tr class="separator:a2afa2ee23203fb98188cf26ce41a9908"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acdcfbf4b48bcca8291a7f68e2e501979"><td class="memItemLeft" align="right" valign="top"><a id="acdcfbf4b48bcca8291a7f68e2e501979"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#acdcfbf4b48bcca8291a7f68e2e501979">SetPen</a> (double lineWidth=1.0) const</td></tr>
-<tr class="memdesc:acdcfbf4b48bcca8291a7f68e2e501979"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the drawing pen to the cell's default foreground color. <br /></td></tr>
-<tr class="separator:acdcfbf4b48bcca8291a7f68e2e501979"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aac229f7ec2c366cd298268ba6aaf172e"><td class="memItemLeft" align="right" valign="top"><a id="aac229f7ec2c366cd298268ba6aaf172e"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#aac229f7ec2c366cd298268ba6aaf172e">SetBrush</a> () const</td></tr>
-<tr class="memdesc:aac229f7ec2c366cd298268ba6aaf172e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the fill brush to the cell's default foreground color. <br /></td></tr>
-<tr class="separator:aac229f7ec2c366cd298268ba6aaf172e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0f44e0b72d391aff8bc93ecb2afa061e"><td class="memItemLeft" align="right" valign="top"><a id="a0f44e0b72d391aff8bc93ecb2afa061e"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a0f44e0b72d391aff8bc93ecb2afa061e">SetPen</a> (wxDC *dc, double lineWidth=1.0) const</td></tr>
+<tr class="memdesc:a0f44e0b72d391aff8bc93ecb2afa061e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the drawing pen to the cell's default foreground color. <br /></td></tr>
+<tr class="separator:a0f44e0b72d391aff8bc93ecb2afa061e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af4b5a4c257d98355e4ccfb8436f1018d"><td class="memItemLeft" align="right" valign="top"><a id="af4b5a4c257d98355e4ccfb8436f1018d"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#af4b5a4c257d98355e4ccfb8436f1018d">SetBrush</a> (wxDC *dc) const</td></tr>
+<tr class="memdesc:af4b5a4c257d98355e4ccfb8436f1018d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the fill brush to the cell's default foreground color. <br /></td></tr>
+<tr class="separator:af4b5a4c257d98355e4ccfb8436f1018d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2e49885d5ac867573f7487823cf01254"><td class="memItemLeft" align="right" valign="top"><a id="a2e49885d5ac867573f7487823cf01254"></a>
 wxColour&#160;</td><td class="memItemRight" valign="bottom"><b>GetForegroundColor</b> () const</td></tr>
 <tr class="separator:a2e49885d5ac867573f7487823cf01254"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -724,10 +724,10 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>SwitchCaretDi
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#abd91a61f26bcce4f6d783a963727faaf">SetFocus</a> (bool WXUNUSED(focus))</td></tr>
 <tr class="memdesc:abd91a61f26bcce4f6d783a963727faaf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Focus this editor cell. <br /></td></tr>
 <tr class="separator:abd91a61f26bcce4f6d783a963727faaf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6d40680afc9d3273d8bf1a2d4ebbb10e"><td class="memItemLeft" align="right" valign="top"><a id="a6d40680afc9d3273d8bf1a2d4ebbb10e"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a6d40680afc9d3273d8bf1a2d4ebbb10e">SetForeground</a> ()</td></tr>
-<tr class="memdesc:a6d40680afc9d3273d8bf1a2d4ebbb10e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the foreground color. <br /></td></tr>
-<tr class="separator:a6d40680afc9d3273d8bf1a2d4ebbb10e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4e33d352bc051f63e64093a2cbd3eea2"><td class="memItemLeft" align="right" valign="top"><a id="a4e33d352bc051f63e64093a2cbd3eea2"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a4e33d352bc051f63e64093a2cbd3eea2">SetTextColor</a> (wxDC *dc)</td></tr>
+<tr class="memdesc:a4e33d352bc051f63e64093a2cbd3eea2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the text color. <br /></td></tr>
+<tr class="separator:a4e33d352bc051f63e64093a2cbd3eea2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2b727bd0956468c57342bd88484d9316"><td class="memItemLeft" align="right" valign="top"><a id="a2b727bd0956468c57342bd88484d9316"></a>
 virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a2b727bd0956468c57342bd88484d9316">IsActive</a> () const</td></tr>
 <tr class="memdesc:a2b727bd0956468c57342bd88484d9316"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is this editor cell focused? <br /></td></tr>
@@ -1465,8 +1465,8 @@ static wxString&#160;</td><td class="memItemRight" valign="bottom"><b>m_lookalik
 
 </div>
 </div>
-<a id="a179d1ca10520829b7eafcea259521945"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a179d1ca10520829b7eafcea259521945">&#9670;&nbsp;</a></span>Draw()</h2>
+<a id="a321d972c866e667f9478a088684a352b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a321d972c866e667f9478a088684a352b">&#9670;&nbsp;</a></span>Draw()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1478,8 +1478,24 @@ static wxString&#160;</td><td class="memItemRight" valign="bottom"><b>m_lookalik
           <td class="memname">void GroupCell::Draw </td>
           <td>(</td>
           <td class="paramtype">wxPoint&#160;</td>
-          <td class="paramname"><em>point</em></td><td>)</td>
+          <td class="paramname"><em>point</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">wxDC *&#160;</td>
+          <td class="paramname"><em>dc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">wxDC *&#160;</td>
+          <td class="paramname"><em>antialiassingDC</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -1495,7 +1511,7 @@ static wxString&#160;</td><td class="memItemRight" valign="bottom"><b>m_lookalik
 <dd>
 The y position used here must be in sync with the one calculated by <a class="el" href="classGroupCell.html#a51a935cd9ea554d24e7b332d8211a5a1" title="Recalculate the height of the output part of the cell.">RecalculateOutput()</a>. </dd></dl>
 
-<p>Reimplemented from <a class="el" href="classCell.html#a4736dca6e9e114239bd3e484cc1bd0ef">Cell</a>.</p>
+<p>Reimplemented from <a class="el" href="classCell.html#a8298061e3f2b8c6e8f9e5d65ae7b0526">Cell</a>.</p>
 
 </div>
 </div>
@@ -1548,8 +1564,8 @@ The y position used here must be in sync with the one calculated by <a class="el
 
 </div>
 </div>
-<a id="ac5d81ff45cd61085e02c84030c0631f9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac5d81ff45cd61085e02c84030c0631f9">&#9670;&nbsp;</a></span>DrawList()</h2>
+<a id="a4f03f4c55b0ea22614b97cd7b7d467e3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4f03f4c55b0ea22614b97cd7b7d467e3">&#9670;&nbsp;</a></span>DrawList()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1561,8 +1577,24 @@ The y position used here must be in sync with the one calculated by <a class="el
           <td class="memname">void Cell::DrawList </td>
           <td>(</td>
           <td class="paramtype">wxPoint&#160;</td>
-          <td class="paramname"><em>point</em></td><td>)</td>
+          <td class="paramname"><em>point</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">wxDC *&#160;</td>
+          <td class="paramname"><em>dc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">wxDC *&#160;</td>
+          <td class="paramname"><em>adc</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -2519,7 +2551,7 @@ The y position used here must be in sync with the one calculated by <a class="el
 </div><div class="memdoc">
 
 <p>Recalculates the size of this <a class="el" href="classGroupCell.html" title="A cell grouping input (and, if there is one, also the output) cell to a foldable item.">GroupCell</a> and all cells inside it if needed. </p>
-<p>This command will also assign the <a class="el" href="classGroupCell.html" title="A cell grouping input (and, if there is one, also the output) cell to a foldable item.">GroupCell</a> a y coordinate it is plotted at. The y coordinate of all output cells of this <a class="el" href="classGroupCell.html" title="A cell grouping input (and, if there is one, also the output) cell to a foldable item.">GroupCell</a> is assigned during <a class="el" href="classGroupCell.html#a179d1ca10520829b7eafcea259521945" title="Draw this GroupCell.">GroupCell::Draw()</a> by providing <a class="el" href="classCell.html#a4736dca6e9e114239bd3e484cc1bd0ef" title="Draw this cell.">Cell::Draw()</a> with the cell's coordinates. </p>
+<p>This command will also assign the <a class="el" href="classGroupCell.html" title="A cell grouping input (and, if there is one, also the output) cell to a foldable item.">GroupCell</a> a y coordinate it is plotted at. The y coordinate of all output cells of this <a class="el" href="classGroupCell.html" title="A cell grouping input (and, if there is one, also the output) cell to a foldable item.">GroupCell</a> is assigned during <a class="el" href="classGroupCell.html#a321d972c866e667f9478a088684a352b" title="Draw this GroupCell.">GroupCell::Draw()</a> by providing <a class="el" href="classCell.html#a8298061e3f2b8c6e8f9e5d65ae7b0526" title="Draw this cell.">Cell::Draw()</a> with the cell's coordinates. </p>
 
 </div>
 </div>
@@ -2568,7 +2600,7 @@ The y position used here must be in sync with the one calculated by <a class="el
 </div><div class="memdoc">
 
 <p>Recalculate the height of the output part of the cell. </p>
-<dl class="section attention"><dt>Attention</dt><dd>Needs to be in sync with the height calculation done during <a class="el" href="classGroupCell.html#a179d1ca10520829b7eafcea259521945" title="Draw this GroupCell.">Draw()</a> and during RecalculateAppended. </dd></dl>
+<dl class="section attention"><dt>Attention</dt><dd>Needs to be in sync with the height calculation done during <a class="el" href="classGroupCell.html#a321d972c866e667f9478a088684a352b" title="Draw this GroupCell.">Draw()</a> and during RecalculateAppended. </dd></dl>
 
 </div>
 </div>

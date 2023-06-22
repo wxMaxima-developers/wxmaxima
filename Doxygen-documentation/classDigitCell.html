@@ -108,9 +108,9 @@ const <a class="el" href="classCellTypeInfo.html">CellTypeInfo</a> &amp;&#160;</
 <tr class="memitem:acffb3769d097964cafbbb1dd5006b0fe"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDigitCell.html#acffb3769d097964cafbbb1dd5006b0fe">Recalculate</a> (<a class="el" href="classAFontSize.html">AFontSize</a> fontsize) override</td></tr>
 <tr class="memdesc:acffb3769d097964cafbbb1dd5006b0fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Recalculate the size of the cell and the difference between top and center.  <a href="classDigitCell.html#acffb3769d097964cafbbb1dd5006b0fe">More...</a><br /></td></tr>
 <tr class="separator:acffb3769d097964cafbbb1dd5006b0fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abef5610d4646f61cb165d95bd3bbb0ef"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDigitCell.html#abef5610d4646f61cb165d95bd3bbb0ef">Draw</a> (wxPoint point) override</td></tr>
-<tr class="memdesc:abef5610d4646f61cb165d95bd3bbb0ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draw this cell.  <a href="classDigitCell.html#abef5610d4646f61cb165d95bd3bbb0ef">More...</a><br /></td></tr>
-<tr class="separator:abef5610d4646f61cb165d95bd3bbb0ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a446d080d0999b14b9fdbe98459de08a6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDigitCell.html#a446d080d0999b14b9fdbe98459de08a6">Draw</a> (wxPoint point, wxDC *dc, wxDC *antialiassingDC) override</td></tr>
+<tr class="memdesc:a446d080d0999b14b9fdbe98459de08a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draw this cell.  <a href="classDigitCell.html#a446d080d0999b14b9fdbe98459de08a6">More...</a><br /></td></tr>
+<tr class="separator:a446d080d0999b14b9fdbe98459de08a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aef2a46004f38f508b8749861521ae35f"><td class="memItemLeft" align="right" valign="top"><a id="aef2a46004f38f508b8749861521ae35f"></a>
 <a class="el" href="classAFontSize.html">AFontSize</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetScaledTextSize</b> () const</td></tr>
 <tr class="separator:aef2a46004f38f508b8749861521ae35f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -128,9 +128,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:ac406f603ab937225b3fb2115d3845e2f"><td class="memItemLeft" align="right" valign="top"><a id="ac406f603ab937225b3fb2115d3845e2f"></a>
 const wxFont &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>GetFont</b> (<a class="el" href="classAFontSize.html">AFontSize</a> fontsize) const</td></tr>
 <tr class="separator:ac406f603ab937225b3fb2115d3845e2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a26fbc5058cfeed0b04fc732812e6a1d2"><td class="memItemLeft" align="right" valign="top"><a id="a26fbc5058cfeed0b04fc732812e6a1d2"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>SetFont</b> (<a class="el" href="classAFontSize.html">AFontSize</a> fontsize)</td></tr>
-<tr class="separator:a26fbc5058cfeed0b04fc732812e6a1d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afb44201545bd905d0ea7aff8235a4568"><td class="memItemLeft" align="right" valign="top"><a id="afb44201545bd905d0ea7aff8235a4568"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>SetFont</b> (wxDC *dc, <a class="el" href="classAFontSize.html">AFontSize</a> fontsize)</td></tr>
+<tr class="separator:afb44201545bd905d0ea7aff8235a4568"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8abcea096d9cd4b3ed999b3efe760a26"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTextCell.html#a8abcea096d9cd4b3ed999b3efe760a26">DontEscapeOpeningParenthesis</a> ()</td></tr>
 <tr class="memdesc:a8abcea096d9cd4b3ed999b3efe760a26"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calling this function signals that the "(" this cell ends in isn't part of the function name.  <a href="classTextCell.html#a8abcea096d9cd4b3ed999b3efe760a26">More...</a><br /></td></tr>
 <tr class="separator:a8abcea096d9cd4b3ed999b3efe760a26"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -253,12 +253,12 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <a class="el" href="classConfiguration.html">Configuration</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#ace05c5f8e6002cb159bc32bebe502305">GetConfiguration</a> ()</td></tr>
 <tr class="memdesc:ace05c5f8e6002cb159bc32bebe502305"><td class="mdescLeft">&#160;</td><td class="mdescRight">Which configuration object is responsible for this cell? <br /></td></tr>
 <tr class="separator:ace05c5f8e6002cb159bc32bebe502305"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac5d81ff45cd61085e02c84030c0631f9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#ac5d81ff45cd61085e02c84030c0631f9">DrawList</a> (wxPoint point)</td></tr>
-<tr class="memdesc:ac5d81ff45cd61085e02c84030c0631f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draw this list of cells.  <a href="classCell.html#ac5d81ff45cd61085e02c84030c0631f9">More...</a><br /></td></tr>
-<tr class="separator:ac5d81ff45cd61085e02c84030c0631f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af18debd7c3c9d1e6382ced7cc49c906e"><td class="memItemLeft" align="right" valign="top"><a id="af18debd7c3c9d1e6382ced7cc49c906e"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>DrawList</b> ()</td></tr>
-<tr class="separator:af18debd7c3c9d1e6382ced7cc49c906e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4f03f4c55b0ea22614b97cd7b7d467e3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a4f03f4c55b0ea22614b97cd7b7d467e3">DrawList</a> (wxPoint point, wxDC *dc, wxDC *adc)</td></tr>
+<tr class="memdesc:a4f03f4c55b0ea22614b97cd7b7d467e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draw this list of cells.  <a href="classCell.html#a4f03f4c55b0ea22614b97cd7b7d467e3">More...</a><br /></td></tr>
+<tr class="separator:a4f03f4c55b0ea22614b97cd7b7d467e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8c35dea62297500d1f9a339220fb57f9"><td class="memItemLeft" align="right" valign="top"><a id="a8c35dea62297500d1f9a339220fb57f9"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>DrawList</b> (wxDC *dc, wxDC *adc)</td></tr>
+<tr class="separator:a8c35dea62297500d1f9a339220fb57f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a095e15665c668ae04ff902c010361ce9"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a095e15665c668ae04ff902c010361ce9">DrawBoundingBox</a> (wxDC &amp;WXUNUSED(dc), bool all=false)</td></tr>
 <tr class="memdesc:a095e15665c668ae04ff902c010361ce9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draw a rectangle that marks this cell or this list of cells as selected.  <a href="classCell.html#a095e15665c668ae04ff902c010361ce9">More...</a><br /></td></tr>
 <tr class="separator:a095e15665c668ae04ff902c010361ce9"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -374,14 +374,14 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 const <a class="el" href="TextStyle_8h.html#a68ac52da6129614b3fa14e7c828c1993">TextStyle</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a2afa2ee23203fb98188cf26ce41a9908">GetTextStyle</a> () const</td></tr>
 <tr class="memdesc:a2afa2ee23203fb98188cf26ce41a9908"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the text style. <br /></td></tr>
 <tr class="separator:a2afa2ee23203fb98188cf26ce41a9908"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acdcfbf4b48bcca8291a7f68e2e501979"><td class="memItemLeft" align="right" valign="top"><a id="acdcfbf4b48bcca8291a7f68e2e501979"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#acdcfbf4b48bcca8291a7f68e2e501979">SetPen</a> (double lineWidth=1.0) const</td></tr>
-<tr class="memdesc:acdcfbf4b48bcca8291a7f68e2e501979"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the drawing pen to the cell's default foreground color. <br /></td></tr>
-<tr class="separator:acdcfbf4b48bcca8291a7f68e2e501979"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aac229f7ec2c366cd298268ba6aaf172e"><td class="memItemLeft" align="right" valign="top"><a id="aac229f7ec2c366cd298268ba6aaf172e"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#aac229f7ec2c366cd298268ba6aaf172e">SetBrush</a> () const</td></tr>
-<tr class="memdesc:aac229f7ec2c366cd298268ba6aaf172e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the fill brush to the cell's default foreground color. <br /></td></tr>
-<tr class="separator:aac229f7ec2c366cd298268ba6aaf172e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0f44e0b72d391aff8bc93ecb2afa061e"><td class="memItemLeft" align="right" valign="top"><a id="a0f44e0b72d391aff8bc93ecb2afa061e"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a0f44e0b72d391aff8bc93ecb2afa061e">SetPen</a> (wxDC *dc, double lineWidth=1.0) const</td></tr>
+<tr class="memdesc:a0f44e0b72d391aff8bc93ecb2afa061e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the drawing pen to the cell's default foreground color. <br /></td></tr>
+<tr class="separator:a0f44e0b72d391aff8bc93ecb2afa061e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af4b5a4c257d98355e4ccfb8436f1018d"><td class="memItemLeft" align="right" valign="top"><a id="af4b5a4c257d98355e4ccfb8436f1018d"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#af4b5a4c257d98355e4ccfb8436f1018d">SetBrush</a> (wxDC *dc) const</td></tr>
+<tr class="memdesc:af4b5a4c257d98355e4ccfb8436f1018d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the fill brush to the cell's default foreground color. <br /></td></tr>
+<tr class="separator:af4b5a4c257d98355e4ccfb8436f1018d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2e49885d5ac867573f7487823cf01254"><td class="memItemLeft" align="right" valign="top"><a id="a2e49885d5ac867573f7487823cf01254"></a>
 wxColour&#160;</td><td class="memItemRight" valign="bottom"><b>GetForegroundColor</b> () const</td></tr>
 <tr class="separator:a2e49885d5ac867573f7487823cf01254"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -549,10 +549,10 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>SwitchCaretDi
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#abd91a61f26bcce4f6d783a963727faaf">SetFocus</a> (bool WXUNUSED(focus))</td></tr>
 <tr class="memdesc:abd91a61f26bcce4f6d783a963727faaf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Focus this editor cell. <br /></td></tr>
 <tr class="separator:abd91a61f26bcce4f6d783a963727faaf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6d40680afc9d3273d8bf1a2d4ebbb10e"><td class="memItemLeft" align="right" valign="top"><a id="a6d40680afc9d3273d8bf1a2d4ebbb10e"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a6d40680afc9d3273d8bf1a2d4ebbb10e">SetForeground</a> ()</td></tr>
-<tr class="memdesc:a6d40680afc9d3273d8bf1a2d4ebbb10e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the foreground color. <br /></td></tr>
-<tr class="separator:a6d40680afc9d3273d8bf1a2d4ebbb10e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4e33d352bc051f63e64093a2cbd3eea2"><td class="memItemLeft" align="right" valign="top"><a id="a4e33d352bc051f63e64093a2cbd3eea2"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a4e33d352bc051f63e64093a2cbd3eea2">SetTextColor</a> (wxDC *dc)</td></tr>
+<tr class="memdesc:a4e33d352bc051f63e64093a2cbd3eea2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the text color. <br /></td></tr>
+<tr class="separator:a4e33d352bc051f63e64093a2cbd3eea2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2b727bd0956468c57342bd88484d9316"><td class="memItemLeft" align="right" valign="top"><a id="a2b727bd0956468c57342bd88484d9316"></a>
 virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a2b727bd0956468c57342bd88484d9316">IsActive</a> () const</td></tr>
 <tr class="memdesc:a2b727bd0956468c57342bd88484d9316"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is this editor cell focused? <br /></td></tr>
@@ -1206,8 +1206,8 @@ static wxRegEx&#160;</td><td class="memItemRight" valign="bottom"><b>m_roundingE
 
 </div>
 </div>
-<a id="abef5610d4646f61cb165d95bd3bbb0ef"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abef5610d4646f61cb165d95bd3bbb0ef">&#9670;&nbsp;</a></span>Draw()</h2>
+<a id="a446d080d0999b14b9fdbe98459de08a6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a446d080d0999b14b9fdbe98459de08a6">&#9670;&nbsp;</a></span>Draw()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1219,8 +1219,24 @@ static wxRegEx&#160;</td><td class="memItemRight" valign="bottom"><b>m_roundingE
           <td class="memname">void DigitCell::Draw </td>
           <td>(</td>
           <td class="paramtype">wxPoint&#160;</td>
-          <td class="paramname"><em>point</em></td><td>)</td>
+          <td class="paramname"><em>point</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">wxDC *&#160;</td>
+          <td class="paramname"><em>dc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">wxDC *&#160;</td>
+          <td class="paramname"><em>antialiassingDC</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -1241,7 +1257,7 @@ static wxRegEx&#160;</td><td class="memItemRight" valign="bottom"><b>m_roundingE
 <p>Example: The position of the denominator of a fraction can only be determined after the height of denominator and numerator are known.</p>
 <p>To make this work each derived class must draw the content of the cell and then call MathCall::Draw(...). </p>
 
-<p>Reimplemented from <a class="el" href="classCell.html#a4736dca6e9e114239bd3e484cc1bd0ef">Cell</a>.</p>
+<p>Reimplemented from <a class="el" href="classCell.html#a8298061e3f2b8c6e8f9e5d65ae7b0526">Cell</a>.</p>
 
 </div>
 </div>
@@ -1294,8 +1310,8 @@ static wxRegEx&#160;</td><td class="memItemRight" valign="bottom"><b>m_roundingE
 
 </div>
 </div>
-<a id="ac5d81ff45cd61085e02c84030c0631f9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac5d81ff45cd61085e02c84030c0631f9">&#9670;&nbsp;</a></span>DrawList()</h2>
+<a id="a4f03f4c55b0ea22614b97cd7b7d467e3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4f03f4c55b0ea22614b97cd7b7d467e3">&#9670;&nbsp;</a></span>DrawList()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1307,8 +1323,24 @@ static wxRegEx&#160;</td><td class="memItemRight" valign="bottom"><b>m_roundingE
           <td class="memname">void Cell::DrawList </td>
           <td>(</td>
           <td class="paramtype">wxPoint&#160;</td>
-          <td class="paramname"><em>point</em></td><td>)</td>
+          <td class="paramname"><em>point</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">wxDC *&#160;</td>
+          <td class="paramname"><em>dc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">wxDC *&#160;</td>
+          <td class="paramname"><em>adc</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
