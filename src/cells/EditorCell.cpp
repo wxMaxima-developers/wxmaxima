@@ -864,8 +864,11 @@ void EditorCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
                        TextCurrentPoint.y - m_center);
 
         // Determine the box the will be is in.
-	width = textSnippet.GetWidth();
-	wxASSERT(width >= 0);
+        if (!textSnippet.SizeKnown()) {
+          dc->GetTextExtent(TextToDraw, &width, &height);
+          textSnippet.SetWidth(width);
+        } else
+          width = textSnippet.GetWidth();
         wxRect textRect(TextCurrentPoint.x, TextCurrentPoint.y - m_center,
                         TextCurrentPoint.x + width,
                         TextCurrentPoint.y - m_center + m_charHeight);
