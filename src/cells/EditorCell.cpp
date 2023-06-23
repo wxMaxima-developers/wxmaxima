@@ -829,6 +829,7 @@ void EditorCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
     // Draw the text
     //
 
+    wxRect updateRegion = m_configuration->GetUpdateRegion();
     wxPoint TextStartingpoint = point;
     wxPoint TextCurrentPoint = TextStartingpoint;
     int lastStyle = -1;
@@ -857,7 +858,7 @@ void EditorCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
 
         // Draw a char that shows we continue an indentation - if this is
         // needed.
-        if (textSnippet.GetIndentChar() != wxEmptyString)
+        if (!textSnippet.GetIndentChar().IsEmpty())
           dc->DrawText(textSnippet.GetIndentChar(),
                        TextStartingpoint.x + lastIndent,
                        TextCurrentPoint.y - m_center);
@@ -870,7 +871,6 @@ void EditorCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
                         TextCurrentPoint.y - m_center + m_charHeight);
 
         // Draw the text only if it overlaps the update region
-        wxRect updateRegion = m_configuration->GetUpdateRegion();
         if (((!m_configuration->ClipToDrawRegion())) ||
             (updateRegion.Intersects(textRect) ||
              updateRegion.Contains(textRect)))
