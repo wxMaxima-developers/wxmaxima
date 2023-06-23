@@ -835,7 +835,7 @@ void EditorCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
     int lastStyle = -1;
     int lastIndent = 0;
     for (auto &textSnippet : m_styledText) {
-      int width, height;
+      int width;
 
       // A newline is a separate token.
       if ((textSnippet.GetText() == wxS("\n")) || (textSnippet.GetText() == wxS("\r"))) {
