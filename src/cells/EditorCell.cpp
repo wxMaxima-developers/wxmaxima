@@ -555,7 +555,6 @@ bool EditorCell::NeedsRecalculation(AFontSize fontSize) const {
 void EditorCell::Recalculate(AFontSize fontsize) {
   if(NeedsRecalculation(fontsize))
     {
-      Cell::Recalculate(fontsize);
       m_isDirty = false;
       if (IsZoomFactorChanged()) {
 	m_widths.clear();
@@ -613,6 +612,7 @@ void EditorCell::Recalculate(AFontSize fontsize) {
       }
       m_containsChanges = false;
     }
+  Cell::Recalculate(fontsize);
 }
 
 wxString EditorCell::ToHTML() const {
