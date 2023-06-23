@@ -732,27 +732,27 @@ void EditorCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
   if (!IsHidden() && (DrawThisCell())) {
     wxRect rect = GetRect();
     int y = rect.GetY();
-
+    if((m_height < 1) || (m_width < 1) || (y < 0))
+      return;
+    
     // Set the background to the cell's background color
-    if (m_height > 0 && m_width > 0 && y >= 0) {
-      wxBrush *br;
-      wxPen *pen;
-      if (GetTextStyle() == TS_TEXT) {
-	if (m_configuration->InUpdateRegion(rect) &&
-	    (m_configuration->EditorBackgroundColor() !=
-	     m_configuration->DefaultBackgroundColor()))
-	  {
+    if (GetTextStyle() == TS_TEXT) {
+      if (m_configuration->InUpdateRegion(rect) &&
+	  (m_configuration->EditorBackgroundColor() !=
+	   m_configuration->DefaultBackgroundColor()))
+	{
+	  wxBrush *br;
+	  wxPen *pen;
 	    std::lock_guard<std::mutex> guard(Configuration::m_refcount_mutex);
 	    br = wxTheBrushList->FindOrCreateBrush(m_configuration->EditorBackgroundColor());
 	    pen = wxThePenList->FindOrCreatePen(m_configuration->EditorBackgroundColor(),
 						0, wxPENSTYLE_SOLID);
 	    dc->SetBrush(*br);
 	    dc->SetPen(*pen);
-	  }
-	auto width = m_configuration->GetCanvasSize().GetWidth() - rect.x;
-	rect.SetWidth(width);
-        dc->DrawRectangle(CropToUpdateRegion(rect));
-      }
+	}
+      auto width = m_configuration->GetCanvasSize().GetWidth() - rect.x;
+      rect.SetWidth(width);
+      dc->DrawRectangle(CropToUpdateRegion(rect));
     }
     SetFont(dc);
 
@@ -761,7 +761,7 @@ void EditorCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
     //
     // Mark text that coincides with the selection
     //
-    if (m_cellPointers->m_selectionString != wxEmptyString) {
+    if (!m_cellPointers->m_selectionString.IsEmpty()) {
       long start = 0;
       wxString text(m_text);
       text.Replace(wxS('\r'), wxS(' '));
@@ -834,12 +834,11 @@ void EditorCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
     int lastStyle = -1;
     int lastIndent = 0;
     for (auto &textSnippet : m_styledText) {
-      auto &TextToDraw = textSnippet.GetText();
       int width, height;
 
       // A newline is a separate token.
-      if ((TextToDraw == wxS("\n")) || (TextToDraw == wxS("\r"))) {
-        if ((TextToDraw == wxS("\n")))
+      if ((textSnippet.GetText() == wxS("\n")) || (textSnippet.GetText() == wxS("\r"))) {
+        if ((textSnippet.GetText() == wxS("\n")))
           lastIndent = textSnippet.GetIndentPixels();
 
         // A newline =>
@@ -864,11 +863,8 @@ void EditorCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
                        TextCurrentPoint.y - m_center);
 
         // Determine the box the will be is in.
-        if (!textSnippet.SizeKnown()) {
-          dc->GetTextExtent(TextToDraw, &width, &height);
-          textSnippet.SetWidth(width);
-        } else
-          width = textSnippet.GetWidth();
+	width = textSnippet.GetWidth();
+	wxASSERT(width >= 0);
         wxRect textRect(TextCurrentPoint.x, TextCurrentPoint.y - m_center,
                         TextCurrentPoint.x + width,
                         TextCurrentPoint.y - m_center + m_charHeight);
@@ -877,11 +873,9 @@ void EditorCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
         wxRect updateRegion = m_configuration->GetUpdateRegion();
         if (((!m_configuration->ClipToDrawRegion())) ||
             (updateRegion.Intersects(textRect) ||
-             updateRegion.Contains(textRect) || (updateRegion == textRect) ||
-             textRect.Contains(updateRegion)))
-          dc->DrawText(TextToDraw, TextCurrentPoint.x,
+             updateRegion.Contains(textRect)))
+          dc->DrawText(textSnippet.GetText(), TextCurrentPoint.x,
                        TextCurrentPoint.y - m_center);
-
         TextCurrentPoint.x += width;
       }
     }
