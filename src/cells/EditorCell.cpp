@@ -865,7 +865,8 @@ void EditorCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
 
         // Determine the box the will be is in.
         if (!textSnippet.SizeKnown()) {
-          dc->GetTextExtent(TextToDraw, &width, &height);
+	  int height;
+          dc->GetTextExtent(textSnippet.GetText(), &width, &height);
           textSnippet.SetWidth(width);
         } else
           width = textSnippet.GetWidth();
