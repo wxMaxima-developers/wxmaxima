@@ -553,7 +553,7 @@ bool EditorCell::NeedsRecalculation(AFontSize fontSize) const {
 }
 
 void EditorCell::Recalculate(AFontSize fontsize) {
-  if(NeedsRecalculation(fontsize))
+  //  if(NeedsRecalculation(fontsize))
     {
       m_isDirty = false;
       if (IsZoomFactorChanged()) {
