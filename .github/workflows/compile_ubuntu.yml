@@ -46,7 +46,7 @@ jobs:
         run: |
              cd build
              export HOME=`pwd`
-             export CTEST_PARALLEL_LEVEL=4
+             export CTEST_PARALLEL_LEVEL=1
              export CTEST_OUTPUT_ON_FAILURE=1
              xvfb-run -a ctest
              cd ..
@@ -88,7 +88,7 @@ jobs:
         run: |
              cd build
              export HOME=`pwd`
-             export CTEST_PARALLEL_LEVEL=4
+             export CTEST_PARALLEL_LEVEL=1
              export CTEST_OUTPUT_ON_FAILURE=1
              xvfb-run -a ctest
              cd ..

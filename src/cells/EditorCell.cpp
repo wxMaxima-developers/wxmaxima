@@ -549,70 +549,68 @@ bool EditorCell::IsZoomFactorChanged() const {
 }
 
 bool EditorCell::NeedsRecalculation(AFontSize fontSize) const {
-  return Cell::NeedsRecalculation(fontSize) || m_containsChanges || m_isDirty;
+  return Cell::NeedsRecalculation(fontSize) | m_containsChanges;
 }
 
 void EditorCell::Recalculate(AFontSize fontsize) {
-  //  if(NeedsRecalculation(fontsize))
-    {
-      m_isDirty = false;
-      if (IsZoomFactorChanged()) {
-	m_widths.clear();
-	m_lastZoomFactor = m_configuration->GetZoomFactor();
-      }
-      StyleText();
-      SetFont(m_configuration->GetRecalcDC());
+  m_isDirty = false;
+  Cell::Recalculate(fontsize);
+  if (IsZoomFactorChanged()) {
+    m_widths.clear();
+    m_lastZoomFactor = m_configuration->GetZoomFactor();
+  }
+  StyleText();
+  SetFont(m_configuration->GetRecalcDC());
 
-      // Measure the text height using characters that might extend below or above
-      // the region ordinary characters move in.
-      int charWidth;
-      m_configuration->GetRecalcDC()->GetTextExtent(wxS("äXÄgy"), &charWidth, &m_charHeight);
+  // Measure the text height using characters that might extend below or above
+  // the region ordinary characters move in.
+  int charWidth;
+  m_configuration->GetRecalcDC()->GetTextExtent(wxS("äXÄgy"), &charWidth, &m_charHeight);
 
-      // We want a little bit of vertical space between two text lines (and between
-      // two labels).
-      m_charHeight += 2 * MC_TEXT_PADDING;
-      int width = 0, tokenwidth, tokenheight, linewidth = 0;
+  // We want a little bit of vertical space between two text lines (and between
+  // two labels).
+  m_charHeight += 2 * MC_TEXT_PADDING;
+  int width = 0, tokenwidth, tokenheight, linewidth = 0;
 
+  m_numberOfLines = 1;
+
+  for (auto &textSnippet : m_styledText) {
+    if ((textSnippet.GetText().StartsWith(wxS('\n')) ||
+         (textSnippet.GetText().StartsWith(wxS('\r'))))) {
+      m_numberOfLines++;
+      linewidth = textSnippet.GetIndentPixels();
+    } else {
+      m_configuration->GetRecalcDC()->GetTextExtent(textSnippet.GetText(), &tokenwidth, &tokenheight);
+      textSnippet.SetWidth(tokenwidth);
+      linewidth += tokenwidth;
+      width = wxMax(width, linewidth);
+    }
+
+    // Handle folding
+    if (m_firstLineOnly)
       m_numberOfLines = 1;
 
-      for (auto &textSnippet : m_styledText) {
-	if ((textSnippet.GetText().StartsWith(wxS('\n')) ||
-	     (textSnippet.GetText().StartsWith(wxS('\r'))))) {
-	  m_numberOfLines++;
-	  linewidth = textSnippet.GetIndentPixels();
-	} else {
-	  m_configuration->GetRecalcDC()->GetTextExtent(textSnippet.GetText(), &tokenwidth, &tokenheight);
-	  textSnippet.SetWidth(tokenwidth);
-	  linewidth += tokenwidth;
-	  width = wxMax(width, linewidth);
-	}
+    // Assign empty lines a minimum width
+    if (m_text == wxEmptyString)
+      width = charWidth;
 
-	// Handle folding
-	if (m_firstLineOnly)
-	  m_numberOfLines = 1;
+    // Add a line border
+    m_width = width + 2 * Scale_Px(2);
 
-	// Assign empty lines a minimum width
-	if (m_text == wxEmptyString)
-	  width = charWidth;
+    // Calculate the cell height
+    if (m_firstLineOnly)
+      m_height = m_charHeight + 2 * Scale_Px(2);
+    else
+      m_height = m_numberOfLines * m_charHeight + 2 * Scale_Px(2);
 
-	// Add a line border
-	m_width = width + 2 * Scale_Px(2);
+    if (m_height < m_charHeight + 2 * Scale_Px(2))
+      m_height = (m_charHeight) + 2 * Scale_Px(2);
 
-	// Calculate the cell height
-	if (m_firstLineOnly)
-	  m_height = m_charHeight + 2 * Scale_Px(2);
-	else
-	  m_height = m_numberOfLines * m_charHeight + 2 * Scale_Px(2);
-
-	if (m_height < m_charHeight + 2 * Scale_Px(2))
-	  m_height = (m_charHeight) + 2 * Scale_Px(2);
-
-	// The center lies in the middle of the 1st line
-	m_center = m_charHeight / 2;
-      }
-      m_containsChanges = false;
-    }
-  Cell::Recalculate(fontsize);
+    // The center lies in the middle of the 1st line
+    m_center = m_charHeight / 2;
+    Cell::Recalculate(fontsize);
+  }
+  m_containsChanges = false;
 }
 
 wxString EditorCell::ToHTML() const {
@@ -732,27 +730,32 @@ void EditorCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
   if (!IsHidden() && (DrawThisCell())) {
     wxRect rect = GetRect();
     int y = rect.GetY();
-    if((m_height < 1) || (m_width < 1) || (y < 0))
-      return;
-    
+
     // Set the background to the cell's background color
-    if (GetTextStyle() == TS_TEXT) {
-      if (m_configuration->InUpdateRegion(rect) &&
-	  (m_configuration->EditorBackgroundColor() !=
-	   m_configuration->DefaultBackgroundColor()))
-	{
-	  wxBrush *br;
-	  wxPen *pen;
-	    std::lock_guard<std::mutex> guard(Configuration::m_refcount_mutex);
-	    br = wxTheBrushList->FindOrCreateBrush(m_configuration->EditorBackgroundColor());
-	    pen = wxThePenList->FindOrCreatePen(m_configuration->EditorBackgroundColor(),
-						0, wxPENSTYLE_SOLID);
-	    dc->SetBrush(*br);
-	    dc->SetPen(*pen);
-	}
+    if (m_height > 0 && m_width > 0 && y >= 0) {
+      wxBrush *br;
+      wxPen *pen;
+      if (GetTextStyle() == TS_TEXT) {
+	std::lock_guard<std::mutex> guard(Configuration::m_refcount_mutex);
+        br = wxTheBrushList->FindOrCreateBrush(m_configuration->EditorBackgroundColor());
+        pen = wxThePenList->FindOrCreatePen(m_configuration->EditorBackgroundColor(),
+					    0, wxPENSTYLE_SOLID);
+      } else {
+	std::lock_guard<std::mutex> guard(Configuration::m_refcount_mutex);
+        br = wxTheBrushList->FindOrCreateBrush(m_configuration->DefaultBackgroundColor());
+        pen = wxThePenList->FindOrCreatePen(m_configuration->DefaultBackgroundColor(),
+					    0, wxPENSTYLE_SOLID);
+      }
+      {
+	std::lock_guard<std::mutex> guard(Configuration::m_refcount_mutex);
+	dc->SetBrush(*br);
+	dc->SetPen(*pen);
+      }
       auto width = m_configuration->GetCanvasSize().GetWidth() - rect.x;
       rect.SetWidth(width);
-      dc->DrawRectangle(CropToUpdateRegion(rect));
+      if (m_configuration->InUpdateRegion(rect) &&
+          (br->GetColour() != m_configuration->DefaultBackgroundColor()))
+        dc->DrawRectangle(CropToUpdateRegion(rect));
     }
     SetFont(dc);
 
@@ -761,7 +764,7 @@ void EditorCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
     //
     // Mark text that coincides with the selection
     //
-    if (!m_cellPointers->m_selectionString.IsEmpty()) {
+    if (m_cellPointers->m_selectionString != wxEmptyString) {
       long start = 0;
       wxString text(m_text);
       text.Replace(wxS('\r'), wxS(' '));
@@ -829,17 +832,17 @@ void EditorCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
     // Draw the text
     //
 
-    wxRect updateRegion = m_configuration->GetUpdateRegion();
     wxPoint TextStartingpoint = point;
     wxPoint TextCurrentPoint = TextStartingpoint;
     int lastStyle = -1;
     int lastIndent = 0;
     for (auto &textSnippet : m_styledText) {
-      int width;
+      auto &TextToDraw = textSnippet.GetText();
+      int width, height;
 
       // A newline is a separate token.
-      if ((textSnippet.GetText() == wxS("\n")) || (textSnippet.GetText() == wxS("\r"))) {
-        if ((textSnippet.GetText() == wxS("\n")))
+      if ((TextToDraw == wxS("\n")) || (TextToDraw == wxS("\r"))) {
+        if ((TextToDraw == wxS("\n")))
           lastIndent = textSnippet.GetIndentPixels();
 
         // A newline =>
@@ -851,22 +854,26 @@ void EditorCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
         // We need to draw some text.
 
         // Grab a pen of the right color.
-	if (lastStyle != textSnippet.GetTextStyle()) {
-	  dc->SetTextForeground(m_configuration->GetColor(textSnippet.GetTextStyle()));
-	  lastStyle = textSnippet.GetTextStyle();
-	}
+        if (textSnippet.IsStyleSet()) {
+          if (lastStyle != textSnippet.GetTextStyle()) {
+            dc->SetTextForeground(m_configuration->GetColor(textSnippet.GetTextStyle()));
+            lastStyle = textSnippet.GetTextStyle();
+          }
+        } else {
+          lastStyle = -1;
+          SetForeground(dc);
+        }
 
         // Draw a char that shows we continue an indentation - if this is
         // needed.
-        if (!textSnippet.GetIndentChar().IsEmpty())
+        if (textSnippet.GetIndentChar() != wxEmptyString)
           dc->DrawText(textSnippet.GetIndentChar(),
                        TextStartingpoint.x + lastIndent,
                        TextCurrentPoint.y - m_center);
 
         // Determine the box the will be is in.
         if (!textSnippet.SizeKnown()) {
-	  int height;
-          dc->GetTextExtent(textSnippet.GetText(), &width, &height);
+          dc->GetTextExtent(TextToDraw, &width, &height);
           textSnippet.SetWidth(width);
         } else
           width = textSnippet.GetWidth();
@@ -875,11 +882,14 @@ void EditorCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
                         TextCurrentPoint.y - m_center + m_charHeight);
 
         // Draw the text only if it overlaps the update region
+        wxRect updateRegion = m_configuration->GetUpdateRegion();
         if (((!m_configuration->ClipToDrawRegion())) ||
             (updateRegion.Intersects(textRect) ||
-             updateRegion.Contains(textRect)))
-          dc->DrawText(textSnippet.GetText(), TextCurrentPoint.x,
+             updateRegion.Contains(textRect) || (updateRegion == textRect) ||
+             textRect.Contains(updateRegion)))
+          dc->DrawText(TextToDraw, TextCurrentPoint.x,
                        TextCurrentPoint.y - m_center);
+
         TextCurrentPoint.x += width;
       }
     }
