@@ -1193,11 +1193,8 @@ void Configuration::ReadStyles(const wxString &file) {
   m_styles[TS_SELECTION].Read(config, wxS("Style/Selection/"));
   m_styles[TS_EQUALSSELECTION].Read(config, wxS("Style/EqualsSelection/"));
   m_styles[TS_OUTDATED].Read(config, wxS("Style/Outdated/"));
-  {
-    std::lock_guard<std::mutex> guard(m_refcount_mutex);
-    m_BackgroundBrush = *wxTheBrushList->FindOrCreateBrush(
+  m_BackgroundBrush = *wxTheBrushList->FindOrCreateBrush(
 							 m_styles[TS_DOCUMENT_BACKGROUND].GetColor(), wxBRUSHSTYLE_SOLID);
-  }
   MakeStylesConsistent();
 }
 
@@ -1641,4 +1638,3 @@ const wxString &Configuration::GetStyleName(TextStyle textStyle) {
 wxString Configuration::m_configfileLocation_override;
 std::unordered_map<TextStyle, wxString> Configuration::m_styleNames;
 bool Configuration::m_debugMode = false;
-std::mutex Configuration::m_refcount_mutex;

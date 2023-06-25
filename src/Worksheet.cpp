@@ -127,12 +127,9 @@ Worksheet::Worksheet(wxWindow *parent, int id,
   m_configuration->SetWorkSheet(this);
   m_configuration->ReadConfig();
   SetBackgroundColour(m_configuration->DefaultBackgroundColor());
-  {
-    std::lock_guard<std::mutex> guard(Configuration::m_refcount_mutex);
-
-    m_configuration->SetBackgroundBrush(*(wxTheBrushList->FindOrCreateBrush(
-									    m_configuration->DefaultBackgroundColor(), wxBRUSHSTYLE_SOLID)));
-  }
+  
+  m_configuration->SetBackgroundBrush(*(wxTheBrushList->FindOrCreateBrush(
+									  m_configuration->DefaultBackgroundColor(), wxBRUSHSTYLE_SOLID)));
   m_redrawStart = NULL;
   m_fullRedrawRequested = false;
   m_autocompletePopup = NULL;
@@ -458,11 +455,8 @@ Worksheet::~Worksheet() {
 
 void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event)) {
   m_configuration->ClearAndEnableRedrawTracing();
-  {
-    std::lock_guard<std::mutex> guard(Configuration::m_refcount_mutex);
-    m_configuration->SetBackgroundBrush(*(wxTheBrushList->FindOrCreateBrush(
-									    m_configuration->DefaultBackgroundColor(), wxBRUSHSTYLE_SOLID)));
-  }
+  m_configuration->SetBackgroundBrush(*(wxTheBrushList->FindOrCreateBrush(
+									  m_configuration->DefaultBackgroundColor(), wxBRUSHSTYLE_SOLID)));
   wxAutoBufferedPaintDC dc(this);
   if (!dc.IsOk())
     return;
@@ -535,13 +529,10 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event)) {
       point.y = m_configuration->GetBaseIndent() + GetTree()->GetCenterList();
 
       // Draw tree
-      {
-	std::lock_guard<std::mutex> guard(Configuration::m_refcount_mutex);
-	dc.SetPen(*(wxThePenList->FindOrCreatePen(
-						  m_configuration->GetColor(TS_MATH), 1, wxPENSTYLE_SOLID)));
-	dc.SetBrush(*(wxTheBrushList->FindOrCreateBrush(
-							m_configuration->GetColor(TS_MATH))));
-      }
+      dc.SetPen(*(wxThePenList->FindOrCreatePen(
+						m_configuration->GetColor(TS_MATH), 1, wxPENSTYLE_SOLID)));
+      dc.SetBrush(*(wxTheBrushList->FindOrCreateBrush(
+						      m_configuration->GetColor(TS_MATH))));
       bool atStart = true;
       for (auto &cell : OnList(GetTree())) {
 	if (!atStart) {
@@ -593,13 +584,10 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event)) {
       //
       if ((m_hCaretActive) && (m_hCaretPositionStart == NULL) &&
 	  (m_hCaretBlinkVisible) && (m_hasFocus) && (m_hCaretPosition != NULL)) {
-	{
-	  std::lock_guard<std::mutex> guard(Configuration::m_refcount_mutex);
-	  dc.SetPen(*(wxThePenList->FindOrCreatePen(
-						    m_configuration->GetColor(TS_CURSOR), 1, wxPENSTYLE_SOLID)));
-	  dc.SetBrush(*(wxTheBrushList->FindOrCreateBrush(
-							  m_configuration->GetColor(TS_CURSOR), wxBRUSHSTYLE_SOLID)));
-	}
+	dc.SetPen(*(wxThePenList->FindOrCreatePen(
+						  m_configuration->GetColor(TS_CURSOR), 1, wxPENSTYLE_SOLID)));
+	dc.SetBrush(*(wxTheBrushList->FindOrCreateBrush(
+							m_configuration->GetColor(TS_CURSOR), wxBRUSHSTYLE_SOLID)));
 	wxRect currentGCRect = m_hCaretPosition->GetRect();
 	int caretY = (static_cast<int>(m_configuration->GetGroupSkip())) / 2 +
 	  currentGCRect.GetBottom() + 1;
@@ -612,13 +600,11 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event)) {
       if ((m_hCaretActive) && (m_hCaretPositionStart == NULL) && (m_hasFocus) &&
 	  (m_hCaretPosition == NULL)) {
 	if (!m_hCaretBlinkVisible) {
-	  std::lock_guard<std::mutex> guard(Configuration::m_refcount_mutex);
 	  dc.SetBrush(
 		      m_configuration->GetBackgroundBrush());
 	  dc.SetPen(*wxThePenList->FindOrCreatePen(
 						   GetBackgroundColour(), m_configuration->Scale_Px(1)));
 	} else {
-	  std::lock_guard<std::mutex> guard(Configuration::m_refcount_mutex);
 	  dc.SetPen(*(wxThePenList->FindOrCreatePen(
 						    m_configuration->GetColor(TS_CURSOR), m_configuration->Scale_Px(1),
 						    wxPENSTYLE_SOLID)));
@@ -727,12 +713,9 @@ void Worksheet::DrawGroupCell(wxDC &dc, wxDC &adc, GroupCell &cell)
 	if (!cell.IsBrokenIntoLines() && !cell.IsHidden() &&
 	    &cell != GetActiveCell())
 	  {
-	    {
-	      std::lock_guard<std::mutex> guard(Configuration::m_refcount_mutex);
 	      dc.SetPen(*(wxThePenList->FindOrCreatePen(m_configuration->GetColor(TS_SELECTION),
 							1, wxPENSTYLE_SOLID)));
 	      dc.SetBrush(*(wxTheBrushList->FindOrCreateBrush(m_configuration->GetColor(TS_SELECTION))));
-	    }
 	    cell.DrawBoundingBox(dc, false);
 	    dc.SetBrush(m_configuration->GetBackgroundBrush());
 	    dc.SetPen(*wxWHITE_PEN);
