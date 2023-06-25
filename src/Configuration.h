@@ -165,8 +165,6 @@ public:
     }
   void UnsetContext() {m_dc = NULL;}
 
-  static std::mutex m_refcount_mutex;
-
   void SetBackgroundBrush(wxBrush brush);
   bool FixedFontInTextControls() const {return m_fixedFontTC;}
   void FixedFontInTextControls(bool fixed) {m_fixedFontTC = fixed;}

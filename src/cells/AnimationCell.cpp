@@ -314,14 +314,11 @@ void AnimationCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
     wxMemoryDC bitmapDC;
 
     // Slide show cells have a red border except if they are selected
-    {
-      std::lock_guard<std::mutex> guard(Configuration::m_refcount_mutex);
-      if (m_drawBoundingBox)
-	dc->SetPen(*(wxThePenList->FindOrCreatePen(
-						   m_configuration->GetColor(TS_SELECTION))));
-      else
-	dc->SetPen(*wxRED_PEN);
-    }
+    if (m_drawBoundingBox)
+      dc->SetPen(*(wxThePenList->FindOrCreatePen(
+						 m_configuration->GetColor(TS_SELECTION))));
+    else
+      dc->SetPen(*wxRED_PEN);
     dc->DrawRectangle(wxRect(point.x, point.y - m_center, m_width, m_height));
 
     wxBitmap bitmap =
@@ -334,11 +331,8 @@ void AnimationCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
     int imageBorderWidth = m_imageBorderWidth;
     if (m_drawBoundingBox) {
       imageBorderWidth = Scale_Px(3);
-      {
-	std::lock_guard<std::mutex> guard(Configuration::m_refcount_mutex);
-	dc->SetBrush(*(wxTheBrushList->FindOrCreateBrush(
-							 m_configuration->GetColor(TS_SELECTION))));
-      }
+      dc->SetBrush(*(wxTheBrushList->FindOrCreateBrush(
+						       m_configuration->GetColor(TS_SELECTION))));
       dc->DrawRectangle(wxRect(point.x, point.y - m_center, m_width, m_height));
     }
 

@@ -667,23 +667,14 @@ void EditorCell::MarkSelection(wxDC *dc, long start, long end, TextStyle style) 
   long pos1 = start, pos2 = start;
 
 #if defined(__WXOSX__)
-  {
-    std::lock_guard<std::mutex> guard(Configuration::m_refcount_mutex);
     dc->SetPen(wxNullPen); // no border on rectangles
-  }
 #else
-  {
-    std::lock_guard<std::mutex> guard(Configuration::m_refcount_mutex);
     dc->SetPen(*(wxThePenList->FindOrCreatePen(
 					       m_configuration->GetColor(style), 1, wxPENSTYLE_SOLID)));
-  }
   // window linux, set a pen
 #endif
-  {
-    std::lock_guard<std::mutex> guard(Configuration::m_refcount_mutex);
     dc->SetBrush(*(wxTheBrushList->FindOrCreateBrush(
 						     m_configuration->GetColor(style)))); // highlight c.
-  }
   while (pos1 <
          end) // go through selection, draw a rect for each line of selection
     {
@@ -736,18 +727,15 @@ void EditorCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
       wxBrush *br;
       wxPen *pen;
       if (GetTextStyle() == TS_TEXT) {
-	std::lock_guard<std::mutex> guard(Configuration::m_refcount_mutex);
         br = wxTheBrushList->FindOrCreateBrush(m_configuration->EditorBackgroundColor());
         pen = wxThePenList->FindOrCreatePen(m_configuration->EditorBackgroundColor(),
 					    0, wxPENSTYLE_SOLID);
       } else {
-	std::lock_guard<std::mutex> guard(Configuration::m_refcount_mutex);
         br = wxTheBrushList->FindOrCreateBrush(m_configuration->DefaultBackgroundColor());
         pen = wxThePenList->FindOrCreatePen(m_configuration->DefaultBackgroundColor(),
 					    0, wxPENSTYLE_SOLID);
       }
       {
-	std::lock_guard<std::mutex> guard(Configuration::m_refcount_mutex);
 	dc->SetBrush(*br);
 	dc->SetPen(*pen);
       }
@@ -798,7 +786,6 @@ void EditorCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
 	else if ((m_paren1 != -1 && m_paren2 != -1) &&
 		 (m_configuration->ShowMatchingParens())) {
 	  {
-	    	std::lock_guard<std::mutex> guard(Configuration::m_refcount_mutex);
 
 #if defined(__WXOSX__)
 		dc->SetPen(wxNullPen); // no border on rectangles
@@ -905,13 +892,10 @@ void EditorCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
 
       int lineWidth = GetLineWidth(caretInLine, caretInColumn);
 
-      {
-	std::lock_guard<std::mutex> guard(Configuration::m_refcount_mutex);
-	dc->SetPen(*(wxThePenList->FindOrCreatePen(
-						   m_configuration->GetColor(TS_CURSOR), 1, wxPENSTYLE_SOLID)));
-	dc->SetBrush(*(wxTheBrushList->FindOrCreateBrush(
-							 m_configuration->GetColor(TS_CURSOR), wxBRUSHSTYLE_SOLID)));
-      }
+      dc->SetPen(*(wxThePenList->FindOrCreatePen(
+						 m_configuration->GetColor(TS_CURSOR), 1, wxPENSTYLE_SOLID)));
+      dc->SetBrush(*(wxTheBrushList->FindOrCreateBrush(
+						       m_configuration->GetColor(TS_CURSOR), wxBRUSHSTYLE_SOLID)));
 #if defined(__WXOSX__)
       // draw 1 pixel shorter caret than on windows
       dc->DrawRectangle(
@@ -939,7 +923,6 @@ void EditorCell::SetStyle(TextStyle style) {
 }
 
 void EditorCell::SetFont(wxDC *dc) {
-  std::lock_guard<std::mutex> guard(Configuration::m_refcount_mutex);
   if(!dc)
     return;
   const wxFont &font = GetFont();
