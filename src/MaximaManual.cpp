@@ -70,7 +70,6 @@ void MaximaManual::WaitForBackgroundProcess() {
 
   if (!m_helpFileAnchorsThreadActive.try_lock()) {
     wxBusyCursor crs;
-    wxWindowDisabler disableAll;
     wxBusyInfo wait(_("Please wait while wxMaxima parses the maxima manual"));
     wxLogNull suppressRecursiveYieldWarning;
     while (!m_helpFileAnchorsThreadActive.try_lock()) {

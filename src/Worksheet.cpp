@@ -398,7 +398,7 @@ bool Worksheet::RedrawIfRequested() {
 void Worksheet::RequestRedraw(GroupCell *start) {
   m_fullRedrawRequested = true;
 
-  if (start == 0)
+  if (start == NULL)
     m_redrawStart = GetTree();
   else {
     if (m_redrawStart != NULL) {
@@ -6811,8 +6811,6 @@ void Worksheet::SetActiveCell(EditorCell *cell) {
     m_cellPointers.m_selectionEnd = nullptr;
     if(cell->ActivateCursor())
       Recalculate(cell->GetGroup());
-    if (!m_fullRedrawRequested)
-      m_caretTimer.Stop();
   } else if (GetActiveCell())
     GetActiveCell()->DeactivateCursor();
 

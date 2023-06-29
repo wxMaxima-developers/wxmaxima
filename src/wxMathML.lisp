@@ -1,4 +1,4 @@
-(format t "<suppressOutput>~%")
+(format t "~:@csuppressOutput~:@c~%" (code-char 60) (code-char 62))
 ;; wxMaxima xml format (based on David Drysdale MathML printing)
 ;; Andrej Vodopivec,  2004-2014
 ;; Gunter Königsmann, 2014-2023

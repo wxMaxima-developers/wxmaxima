@@ -4536,7 +4536,7 @@ void wxMaxima::SetupVariables() {
   wxmaximaversion_lisp.Replace("\\", "\\\\");
   wxmaximaversion_lisp.Replace("\"", "\\\"");
   wxLogMessage(_("Updating maxima's configuration"));
-  SendMaxima(wxString(wxS(":lisp-quiet (progn (setq $wxmaximaversion \"")) +
+  SendMaxima(wxString(wxS(":lisp-quiet (setq $wxmaximaversion \"")) +
              wxString(wxmaximaversion_lisp) +
              wxS("\") ($put \'$wxmaxima (read-wxmaxima-version \"" +
                  wxString(wxmaximaversion_lisp) +
@@ -4547,17 +4547,17 @@ void wxMaxima::SetupVariables() {
                  wxmaximaversion_lisp +
                  "\")) (ignore-errors (setf (symbol-value "
                  "'*lisp-quiet-suppressed-prompt*) \"" +
-                 m_promptPrefix + "(%i1)" + m_promptSuffix + "\")))\n"));
+                 m_promptPrefix + "(%i1)" + m_promptSuffix + "\"))\n"));
   wxString useHtml = wxS("'$text");
   if (m_configuration.MaximaUsesHtmlBrowser())
     useHtml = wxS("'$html");
   if (m_configuration.MaximaUsesWxmaximaBrowser())
     useHtml = wxS("'$frontend");
   wxLogMessage(_("Setting prompt and help format"));
-  SendMaxima(wxS(":lisp-quiet (progn (setf *prompt-suffix* \"") +
+  SendMaxima(wxS(":lisp-quiet (setf *prompt-suffix* \"") +
              m_promptSuffix + wxS("\") (setf *prompt-prefix* \"") +
              m_promptPrefix +
-             wxS("\") (setf $in_netmath nil) (setf $show_openplot t)) ") +
+             wxS("\") (setf $in_netmath nil) (setf $show_openplot t) ") +
              wxS("(if (fboundp 'set-output-format-for-help) "
                  "(set-output-format-for-help nil ") +
              useHtml + wxS("))") + wxS("\n"));
@@ -4882,6 +4882,10 @@ bool wxMaxima::InterpretDataFromMaxima() {
 void wxMaxima::OnIdle(wxIdleEvent &event) {
   // Make sure everybody else who wants to process idle events gets this one.
   event.Skip();
+  // Sometimes socket events arrive before data arrives. The subsequent idle
+  // event arrives when the data is accessible.
+  //if(m_client != NULL)
+  //  m_client->ReadSocket();
 
   // Update the info what maxima is currently doing
   UpdateStatusMaximaBusy();
