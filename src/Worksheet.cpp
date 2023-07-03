@@ -4363,8 +4363,7 @@ void Worksheet::OnTimer(wxTimerEvent &event) {
       }
 
       if (m_mainToolBar && GetSelectionStart() == animation) {
-        if (m_mainToolBar->m_plotSlider)
-          m_mainToolBar->UpdateSlider(animation);
+	m_mainToolBar->UpdateSlider(animation);
       }
     }
     break;
