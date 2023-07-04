@@ -517,6 +517,19 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event)) {
     unscrolledRect.SetBottom(bottom);
     m_configuration->SetUpdateRegion(unscrolledRect);
 
+    int width;
+    int height;
+    GetClientSize(&width, &height);
+    
+    wxPoint upperLeftScreenCorner;
+    CalcUnscrolledPosition(0, 0, &upperLeftScreenCorner.x,
+			 &upperLeftScreenCorner.y);
+    wxRect visibleRegion = wxRect(upperLeftScreenCorner,
+				  upperLeftScreenCorner + wxPoint(width, height));
+
+    m_configuration->SetVisibleRegion(visibleRegion);
+    m_configuration->SetWorksheetPosition(GetPosition());
+    
     // Clear the drawing area (Clear() doesn't work on some wx3.0 installs)
     dc.DrawRectangle(unscrolledRect);
 
@@ -527,8 +540,6 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event)) {
       wxPoint point;
       point.x = m_configuration->GetIndent();
       point.y = m_configuration->GetBaseIndent() + GetTree()->GetCenterList();
-
-      // Draw tree
       dc.SetPen(*(wxThePenList->FindOrCreatePen(
 						m_configuration->GetColor(TS_MATH), 1, wxPENSTYLE_SOLID)));
       dc.SetBrush(*(wxTheBrushList->FindOrCreateBrush(
@@ -542,21 +553,6 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event)) {
         atStart = false;
 
 	wxRect cellRect = cell.GetRect();
-	
-	int width;
-	int height;
-	GetClientSize(&width, &height);
-	
-	wxPoint upperLeftScreenCorner;
-	CalcScrolledPosition(0, 0, &upperLeftScreenCorner.x,
-			     &upperLeftScreenCorner.y);
-	wxRect visibleRegion = wxRect(upperLeftScreenCorner,
-				      upperLeftScreenCorner + wxPoint(width, height));
-	
-	m_configuration->SetVisibleRegion(visibleRegion);
-	m_configuration->SetWorksheetPosition(GetPosition());
-	
-	cell.SetCurrentPoint(point);
 	
 	// Clear the image cache of all cells above or below the viewport.
 	if (cellRect.GetTop() >= bottom || cellRect.GetBottom() <= top) {
@@ -960,8 +956,6 @@ bool Worksheet::RecalculateIfNeeded(bool timeout) {
   wxPoint upperLeftScreenCorner;
   CalcScrolledPosition(0, 0, &upperLeftScreenCorner.x,
                        &upperLeftScreenCorner.y);
-  m_configuration->SetVisibleRegion(wxRect(
-					   upperLeftScreenCorner, upperLeftScreenCorner + wxPoint(width, height)));
   m_configuration->SetWorksheetPosition(GetPosition());
 
   if(timeout)
