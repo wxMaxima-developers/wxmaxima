@@ -249,7 +249,6 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
     m_variableReadActions[wxS("wxsubscripts")] =
       &wxMaxima::VariableActionWxSubscripts;
     m_variableReadActions[wxS("lmxchar")] = &wxMaxima::VariableActionLmxChar;
-    m_variableReadActions[wxS("numer")] = &wxMaxima::VariableActionNumer;
     m_variableReadActions[wxS("stringdisp")] =
       &wxMaxima::VariableActionStringdisp;
     m_variableReadActions[wxS("algebraic")] =
@@ -3515,10 +3514,6 @@ void wxMaxima::VariableActionLmxChar(const wxString &value) {
   }
 }
 
-// Toggle the status of the numer variable.
-void wxMaxima::VariableActionNumer(const wxString &value) {
-  m_NumericMenu->Check(EventIDs::menu_num_out, m_NumericMenu->IsChecked(EventIDs::menu_num_out));
-}
 void wxMaxima::VariableActionStringdisp(const wxString &value) {
   if (value == wxS("true")) {
     if (!m_viewMenu->IsChecked(EventIDs::menu_stringdisp))

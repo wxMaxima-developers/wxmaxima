@@ -598,7 +598,6 @@ protected:
   void VariableActionLmxChar(const wxString &value);
   void VariableActionDisplay2D(const wxString &value);
   void VariableActionAltDisplay2D(const wxString &value);
-  void VariableActionNumer(const wxString &value);
   void VariableActionAlgebraic(const wxString &value);
   void VariableActionShowtime(const wxString &value);
   void VariableActionDomain(const wxString &value);
