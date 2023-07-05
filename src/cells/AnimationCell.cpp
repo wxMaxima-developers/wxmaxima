@@ -330,8 +330,11 @@ void AnimationCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
              &bitmapDC, imageBorderWidth - m_imageBorderWidth,
              imageBorderWidth - m_imageBorderWidth);
   } else
-    // The cell isn't drawn => No need to keep it's image cache for now.
-    ClearCache();
+    {
+      // The cell isn't drawn => No need to keep it's image cache for now.
+      if(!GetRect().Intersects(m_configuration->GetVisibleRegion()))
+	ClearCache();
+    }
 
   // If we need a selection border on another redraw we will be informed by
   // OnPaint() again.

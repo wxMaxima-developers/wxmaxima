@@ -210,8 +210,11 @@ void ImgCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
     } else
       dc->Blit(xDst, yDst, widthDst, heightDst, &bitmapDC, xSrc, ySrc);
   } else
-    // The cell isn't drawn => No need to keep it's image cache for now.
-    ClearCache();
+    {
+      // The cell isn't drawn => No need to keep it's image cache for now.
+      if(!GetRect().Intersects(m_configuration->GetVisibleRegion()))
+	ClearCache();
+    }
 
   // The next time we need to draw a bounding box we will be informed again.
   m_drawBoundingBox = false;

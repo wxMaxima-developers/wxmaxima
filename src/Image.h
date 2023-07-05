@@ -182,7 +182,7 @@ public:
   
   //! "Loads" an image from a bitmap
   void LoadImage(const wxBitmap &bitmap);
-
+  
   //! Saves the image in its original form, or as .png if it originates in a bitmap
   wxSize ToImageFile(wxString filename);
 
