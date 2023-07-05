@@ -730,8 +730,7 @@ void GroupCell::Draw(wxPoint const point, wxDC *dc, wxDC *antialiassingDC) {
       m_outputRect.SetPosition(in);
 
       if((!m_configuration->ClipToDrawRegion()) ||
-	 (m_configuration->GetUpdateRegion().Intersects(m_outputRect)) ||
-	 (m_configuration->GetUpdateRegion().Contains(m_outputRect)))
+	 (m_configuration->GetUpdateRegion().Intersects(m_outputRect)))
 	{
 	  bool first = true;
 	  int drop = 0;

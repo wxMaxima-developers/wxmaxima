@@ -1352,8 +1352,7 @@ bool Configuration::InUpdateRegion(wxRect const rect) const {
 
   wxRect const updateRegion = GetUpdateRegion();
 
-  return updateRegion.Intersects(rect) || updateRegion.Contains(rect) ||
-    (updateRegion == rect) || rect.Contains(updateRegion);
+  return updateRegion.Intersects(rect);
 }
 
 bool Configuration::FontRendersChar(wxChar ch, const wxFont &font) {
