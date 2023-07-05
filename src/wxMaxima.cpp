@@ -3514,14 +3514,10 @@ void wxMaxima::VariableActionLmxChar(const wxString &value) {
       m_roundedMatrixParensMenu->Check(EventIDs::menu_noMatrixParens, true);
   }
 }
+
+// Toggle the status of the numer variable.
 void wxMaxima::VariableActionNumer(const wxString &value) {
-  if (value == wxS("true")) {
-    if (!m_NumericMenu->IsChecked(EventIDs::menu_num_out))
-      m_NumericMenu->Check(EventIDs::menu_num_out, true);
-  } else {
-    if (m_NumericMenu->IsChecked(EventIDs::menu_num_out))
-      m_NumericMenu->Check(EventIDs::menu_num_out, false);
-  }
+  m_NumericMenu->Check(EventIDs::menu_num_out, m_NumericMenu->IsChecked(EventIDs::menu_num_out));
 }
 void wxMaxima::VariableActionStringdisp(const wxString &value) {
   if (value == wxS("true")) {
@@ -8923,14 +8919,12 @@ void wxMaxima::NumericalMenu(wxCommandEvent &event) {
       wxString cmd = wxS("guess_exact_value(") + expr + wxS(");");
       MenuCommand(cmd);
     } }
-  else if(event.GetId() == EventIDs::menu_num_out){ {
-      wxString cmd;
+  else if(event.GetId() == EventIDs::menu_num_out) {
       if (!event.IsChecked())
-	cmd = wxS("numer:false$");
+	MenuCommand("numer:false$");
       else
-	cmd = wxS("numer:true$");
-      MenuCommand(cmd);
-    } }
+	MenuCommand("numer:true$");
+    }
   else if(event.GetId() == EventIDs::menu_stringdisp){ {
       wxString cmd;
       if (!event.IsChecked())
