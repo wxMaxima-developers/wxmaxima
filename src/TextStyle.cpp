@@ -300,7 +300,7 @@ Style &Style::Read(wxConfigBase *config, const wxString &where) {
   long tmpLong;
   double tmpDouble;
 
-  if (config->Read(wxString::Format(k_color, where), &tmpStr)) {
+  if (config->Read(where+k_color, &tmpStr)) {
     wxColor color = wxColor(tmpStr);
     if (color.IsOk())
       SetColor(color);
