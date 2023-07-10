@@ -38,6 +38,7 @@
 #include "wxm_config_images.h"
 #include "MathParser.h"
 #include "CellList.h"
+#include "ToolBar.h"
 #include <cstdlib>
 #include <wx/colordlg.h>
 #include <wx/memtext.h>
@@ -192,6 +193,7 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent, Configuration *cfg)
   m_imageList->Add(ArtProvider::GetImage(this, wxS("media-playback-start"), imgSize,
 					 MEDIA_PLAYBACK_START_CONFDIALOGUE_SVG_GZ,
 					 MEDIA_PLAYBACK_START_CONFDIALOGUE_SVG_GZ_SIZE));
+  m_imageList->Add(ArtProvider::GetImage(this, wxS("gtk-print"), imgSize, GTK_PRINT_SVG_GZ, GTK_PRINT_SVG_GZ_SIZE));
   m_imageList->Add(ArtProvider::GetImage(this, wxS("edit-undo"), imgSize, VIEW_REFRESH_SVG_GZ,
 					 VIEW_REFRESH_SVG_GZ_SIZE));
   m_notebook->SetImageList(m_imageList.get());
@@ -203,8 +205,9 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent, Configuration *cfg)
   m_notebook->AddPage(CreateOptionsPanel(), _("Options"), false, 4);
   m_notebook->AddPage(CreateClipboardPanel(), _("Copy"), false, 5);
   m_notebook->AddPage(CreateStartupPanel(), _("Startup commands"), false, 6);
+  m_notebook->AddPage(CreatePrintPanel(), _("Printout settings"), false, 7);
   m_notebook->AddPage(CreateRevertToDefaultsPanel(),
-                      _("Revert all to defaults"), false, 7);
+                      _("Revert all to defaults"), false, 8);
 
 #if !defined(__WXOSX__)
   CreateButtons(wxOK | wxCANCEL);
@@ -1167,29 +1170,6 @@ wxWindow *ConfigDialogue::CreateExportPanel() {
   vsizer->Add(misc_sizer, wxSizerFlags().Expand().Border(
 							 wxALL, 5 * GetContentScaleFactor()));
 
-  wxStaticBoxSizer *print_sizer =
-    new wxStaticBoxSizer(wxVERTICAL, panel, _("Printing"));
-  wxFlexGridSizer *printGrid_sizer = new wxFlexGridSizer(9, 2, 5, 5);
-  wxStaticText *ps =
-    new wxStaticText(print_sizer->GetStaticBox(), wxID_ANY, _("Print scale:"));
-  m_printScale = new wxSpinCtrlDouble(
-				      print_sizer->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition,
-				      wxSize(150 * GetContentScaleFactor(), -1), wxSP_ARROW_KEYS, .1, 4, .1);
-  m_printScale->SetDigits(2);
-  m_printScale->SetIncrement(.1);
-  printGrid_sizer->Add(ps, 0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL,
-                       5 * GetContentScaleFactor());
-  printGrid_sizer->Add(m_printScale, wxSizerFlags());
-
-  m_printBrackets =
-    new wxCheckBox(print_sizer->GetStaticBox(), wxID_ANY,
-		   _("Print the cell brackets [drawn to their left]"));
-  print_sizer->Add(m_printBrackets, wxSizerFlags());
-  print_sizer->Add(printGrid_sizer, wxSizerFlags().Expand().Border(
-								   wxALL, 5 * GetContentScaleFactor()));
-  vsizer->Add(print_sizer, wxSizerFlags().Expand().Border(
-							  wxALL, 5 * GetContentScaleFactor()));
-
   panel->FitInside();
   return panel;
 }
@@ -1835,6 +1815,52 @@ wxWindow *ConfigDialogue::CreateClipboardPanel() {
 							       wxALL, 5 * GetContentScaleFactor()));
   vbox->Add(formatParamsSizer,
             wxSizerFlags().Expand().Border(wxALL, 5 * GetContentScaleFactor()));
+  panel->SetSizer(vbox);
+  panel->FitInside();
+
+  return panel;
+}
+
+
+
+
+
+wxWindow *ConfigDialogue::CreatePrintPanel() {
+  wxScrolled<wxPanel> *panel = new wxScrolled<wxPanel>(m_notebook, wxID_ANY);
+  panel->SetScrollRate(5 * GetContentScaleFactor(),
+                       5 * GetContentScaleFactor());
+  panel->SetMinSize(wxSize(GetContentScaleFactor() * mMinPanelWidth,
+                           GetContentScaleFactor() * mMinPanelHeight));
+
+  wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
+
+  wxFlexGridSizer *printGrid_sizer = new wxFlexGridSizer(9, 2, 5, 5);
+  wxStaticText *ps =
+    new wxStaticText(panel, wxID_ANY, _("Print scale:"));
+  m_printScale = new wxSpinCtrlDouble(
+				      panel, wxID_ANY, wxEmptyString, wxDefaultPosition,
+				      wxSize(150 * GetContentScaleFactor(), -1),
+				      wxSP_ARROW_KEYS, .1, 4, .1);
+  m_printScale->SetDigits(2);
+  m_printScale->SetIncrement(.1);
+  printGrid_sizer->Add(ps, 0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL,
+                       5 * GetContentScaleFactor());
+  printGrid_sizer->Add(m_printScale, wxSizerFlags());
+
+  m_printBrackets = new wxCheckBox(panel, wxID_ANY,
+				   _("Print the cell brackets [drawn to their left]"));
+  vbox->Add(m_printBrackets, wxSizerFlags());
+  vbox->Add(printGrid_sizer, wxSizerFlags().Expand().Border(
+								   wxALL, 5 * GetContentScaleFactor()));
+  vbox->Add(printGrid_sizer, wxSizerFlags().Expand().Border(
+							  wxALL, 5 * GetContentScaleFactor()));
+
+
+  //  wxStaticBoxSizer *marginSizer =
+  //    new wxStaticBoxSizer(wxVERTICAL, panel,
+  //			 _("Margins"));
+//  vbox->Add(marginSizer,
+//            wxSizerFlags().Expand().Border(wxALL, 5 * GetContentScaleFactor()));
   panel->SetSizer(vbox);
   panel->FitInside();
 
