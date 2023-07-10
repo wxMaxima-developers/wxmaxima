@@ -226,14 +226,16 @@ void Printout::SetupData() {
   wxSize printPPI;
   printPPI = GetDC()->GetPPI();
   if (printPPI.x < 1)
-    printPPI.x = 72;
+    printPPI.x = 96;
   if (printPPI.y < 1)
-    printPPI.y = 72;
-  m_tree->GetConfiguration()->GetRecalcDC()->SetUserScale(1.0, 1.0);
-  m_configuration.SetZoomFactor_temporarily(
-					    printPPI.x / DPI_REFERENCE * m_tree->GetConfiguration()->PrintScale() /
-					    m_scaleFactor);
+    printPPI.y = 96;
 
+  double scaleFactor = printPPI.x / DPI_REFERENCE *
+    m_tree->GetConfiguration()->PrintScale();
+  m_tree->GetConfiguration()->GetRecalcDC()->SetUserScale(scaleFactor, scaleFactor);
+  GetDC()->SetUserScale(scaleFactor, scaleFactor);
+  m_configuration.SetZoomFactor_temporarily(1.0);
+  
   // wxSize screenPPI;
   // screenPPI = m_tree->GetConfiguration()->GetDC()->GetPPI();
   // double oldZoomFactor = m_tree->GetConfiguration()->GetZoomFactor();
@@ -250,7 +252,7 @@ void Printout::SetupData() {
 
   m_configuration.SetClientWidth(
 				 pageWidth - 2 * marginX -
-				 m_configuration.Scale_Px(72) // Some additional margin to compensate for
+				 m_configuration.Scale_Px(printPPI.y) // Some additional margin to compensate for
 				 // title and section indent
 				 - m_configuration.Scale_Px(m_configuration.GetBaseIndent()));
   m_configuration.SetClientHeight(pageHeight - 2 * marginY);
