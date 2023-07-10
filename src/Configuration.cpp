@@ -230,6 +230,11 @@ wxSize Configuration::GetPPI() const {
 }
 
 void Configuration::ResetAllToDefaults(InitOpt options) {
+  m_printMargin_Top = 10;
+  m_printMargin_Bot = 10;
+  m_printMargin_Left = 10;
+  m_printMargin_Right = 10;
+
   m_wizardTab = 0;
   for (auto i : m_renderableChars)
     m_renderableChars[i.first] = wxEmptyString;
@@ -614,6 +619,10 @@ void Configuration::ReadConfig() {
     // it
     SuppressErrorDialogs suppressor;
     wxString hideMessagesConfigString;
+    config->Read(wxS("Print/Margin/Top"), &m_printMargin_Top);
+    config->Read(wxS("Print/Margin/Bot"), &m_printMargin_Bot);
+    config->Read(wxS("Print/Margin/Left"), &m_printMargin_Left);
+    config->Read(wxS("Print/Margin/Right"), &m_printMargin_Right);
     config->Read(wxS("showAllDigits"), &m_showAllDigits);
     config->Read(wxS("lineBreaksInLongNums"), &m_lineBreaksInLongNums);
     config->Read(wxS("autoSaveMinutes"), &m_autoSaveMinutes);
@@ -1268,6 +1277,10 @@ void Configuration::WriteSettings(const wxString &file) {
                   hideMessagesConfigString);
   }
 
+  config->Write(wxS("Print/Margin/Top"), m_printMargin_Top);
+  config->Write(wxS("Print/Margin/Bot"), m_printMargin_Bot);
+  config->Write(wxS("Print/Margin/Left"), m_printMargin_Left);
+  config->Write(wxS("Print/Margin/Right"), m_printMargin_Right);
   config->Write(wxS("showAllDigits"), m_showAllDigits);
   config->Write(wxS("lineBreaksInLongNums"), m_lineBreaksInLongNums);
   config->Write(wxS("keepPercent"), m_keepPercent);

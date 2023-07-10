@@ -1856,11 +1856,11 @@ wxWindow *ConfigDialogue::CreatePrintPanel() {
 							  wxALL, 5 * GetContentScaleFactor()));
 
 
-  //  wxStaticBoxSizer *marginSizer =
-  //    new wxStaticBoxSizer(wxVERTICAL, panel,
-  //			 _("Margins"));
-//  vbox->Add(marginSizer,
-//            wxSizerFlags().Expand().Border(wxALL, 5 * GetContentScaleFactor()));
+  wxStaticBoxSizer *marginSizer =
+    new wxStaticBoxSizer(wxVERTICAL, panel,
+  			 _("Margins"));
+  vbox->Add(marginSizer,
+            wxSizerFlags().Expand().Border(wxALL, 5 * GetContentScaleFactor()));
   panel->SetSizer(vbox);
   panel->FitInside();
 

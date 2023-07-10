@@ -224,6 +224,15 @@ public:
   //! Define if we want to hide brackets that are not under the pointer.
   void PrintScale(double scale){m_printScale = scale;}
 
+  void PrintMargin_Top(double margin){m_printMargin_Top = margin;}
+  void PrintMargin_Bot(double margin){m_printMargin_Bot = margin;}
+  void PrintMargin_Left(double margin){m_printMargin_Left = margin;}
+  void PrintMargin_Right(double margin){m_printMargin_Right = margin;}
+  double PrintMargin_Top(){return m_printMargin_Top;}
+  double PrintMargin_Bot(){return m_printMargin_Bot;}
+  double PrintMargin_Left(){return m_printMargin_Left;}
+  double PrintMargin_Right(){return m_printMargin_Right;}
+
   //! Sets the zoom factor the worksheet is displayed at
   void SetZoomFactor(double newzoom);
 
@@ -946,7 +955,7 @@ private:
   */
   long m_configId;
 public:
-  //! Our random device
+ //! Our random device
   std::random_device m_rd;
   //! Our random engine
   std::default_random_engine m_eng;
@@ -1024,6 +1033,10 @@ private:
   bool m_hideBrackets;
   //! The scale for printing
   double m_printScale;
+  double m_printMargin_Top;
+  double m_printMargin_Bot;
+  double m_printMargin_Left;
+  double m_printMargin_Right;
   //! The size of the canvas our cells have to be drawn on
   wxSize m_canvasSize;
   //! Show the cell brackets [displayed left to each group cell showing its extend]?
