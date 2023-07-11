@@ -1838,23 +1838,30 @@ wxWindow *ConfigDialogue::CreatePrintPanel() {
 
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
 
-  wxFlexGridSizer *printGrid_sizer = new wxFlexGridSizer(9, 2, 5, 5);
-  wxStaticText *ps =
-    new wxStaticText(panel, wxID_ANY, _("Print scale:"));
+  wxStaticBoxSizer *miscSettingsSizer =
+    new wxStaticBoxSizer(wxVERTICAL, panel,
+  			 _("Misc settings"));
+  wxBoxSizer *vbox2 = new wxBoxSizer(wxVERTICAL);
+  wxFlexGridSizer *printGrid_sizer = new wxFlexGridSizer(2);
+  printGrid_sizer->AddGrowableCol(1);
+  printGrid_sizer->Add(new wxStaticText(miscSettingsSizer->GetStaticBox(),
+					wxID_ANY, _("Print scale:")),
+		       0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL, 0);
   m_printScale = new wxSpinCtrlDouble(
-				      panel, wxID_ANY, wxEmptyString, wxDefaultPosition,
+				      miscSettingsSizer->GetStaticBox(),
+				      wxID_ANY, wxEmptyString, wxDefaultPosition,
 				      wxSize(150 * GetContentScaleFactor(), -1),
 				      wxSP_ARROW_KEYS, .1, 4, .1);
   m_printScale->SetDigits(2);
   m_printScale->SetIncrement(.1);
-  printGrid_sizer->Add(ps, 0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL, 0);
-  printGrid_sizer->Add(m_printScale, wxSizerFlags().Expand());
-
-  m_printBrackets = new wxCheckBox(panel, wxID_ANY,
+  printGrid_sizer->Add(m_printScale, wxSizerFlags().Expand().Border(wxRIGHT,
+								    5 * GetContentScaleFactor()));
+  vbox2->Add(printGrid_sizer, wxSizerFlags().Expand());
+  m_printBrackets = new wxCheckBox(miscSettingsSizer->GetStaticBox(), wxID_ANY,
 				   _("Print the cell brackets [drawn to their left]"));
-  vbox->Add(m_printBrackets, wxSizerFlags());
-  vbox->Add(printGrid_sizer, wxSizerFlags().Expand());
-
+  vbox2->Add(m_printBrackets, wxSizerFlags());
+  miscSettingsSizer->Add(vbox2, wxSizerFlags().Expand());
+  vbox->Add(miscSettingsSizer, wxSizerFlags().Expand().Border(wxALL, 5 * GetContentScaleFactor()));
 
   wxStaticBoxSizer *marginSizer =
     new wxStaticBoxSizer(wxVERTICAL, panel,
@@ -1866,28 +1873,32 @@ wxWindow *ConfigDialogue::CreatePrintPanel() {
 		      0);
   m_printMargin_Top = new wxSpinCtrl(marginSizer->GetStaticBox(), wxID_ANY);
   m_printMargin_Top->SetRange(0, 100);
-  dimensionSizer->Add(m_printMargin_Top, wxSizerFlags().Expand());
+  dimensionSizer->Add(m_printMargin_Top, wxSizerFlags().Expand().Border(wxRIGHT,
+									5 * GetContentScaleFactor()));
 
   dimensionSizer->Add(new wxStaticText(marginSizer->GetStaticBox(), wxID_ANY, _("Bottom")),
 		      0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL,
 		      0);
   m_printMargin_Bot = new wxSpinCtrl(marginSizer->GetStaticBox(), wxID_ANY);
   m_printMargin_Bot->SetRange(0, 100);
-  dimensionSizer->Add(m_printMargin_Bot, wxSizerFlags().Expand());
+  dimensionSizer->Add(m_printMargin_Bot, wxSizerFlags().Expand().Border(wxRIGHT,
+									5 * GetContentScaleFactor()));
 
     dimensionSizer->Add(new wxStaticText(marginSizer->GetStaticBox(), wxID_ANY, _("Left")),
 		      0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL,
 		      0);
   m_printMargin_Left = new wxSpinCtrl(marginSizer->GetStaticBox(), wxID_ANY);
   m_printMargin_Left->SetRange(0, 100);
-  dimensionSizer->Add(m_printMargin_Left, wxSizerFlags().Expand());
+  dimensionSizer->Add(m_printMargin_Left, wxSizerFlags().Expand().Border(wxRIGHT,
+									 5 * GetContentScaleFactor()));
 
     dimensionSizer->Add(new wxStaticText(marginSizer->GetStaticBox(), wxID_ANY, _("Right")),
 		      0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL,
 		      0);
   m_printMargin_Right = new wxSpinCtrl(marginSizer->GetStaticBox(), wxID_ANY);
   m_printMargin_Right->SetRange(0, 100);
-  dimensionSizer->Add(m_printMargin_Right, wxSizerFlags().Expand());
+  dimensionSizer->Add(m_printMargin_Right, wxSizerFlags().Expand().Border(wxRIGHT,
+									  5 * GetContentScaleFactor()));
 marginSizer->Add(dimensionSizer, wxSizerFlags().Expand());
   vbox->Add(marginSizer,
             wxSizerFlags().Expand().Border(wxALL, 5 * GetContentScaleFactor()));
