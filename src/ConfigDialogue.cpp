@@ -444,6 +444,10 @@ void ConfigDialogue::SetCheckboxValues() {
   m_texPreamble->SetValue(configuration->TexPreamble());
   m_autoSave->SetValue(!configuration->AutoSaveAsTempFile());
 
+  m_printMargin_Right->SetValue(configuration->PrintMargin_Right());
+  m_printMargin_Left->SetValue(configuration->PrintMargin_Left());
+  m_printMargin_Top->SetValue(configuration->PrintMargin_Top());
+  m_printMargin_Bot->SetValue(configuration->PrintMargin_Bot());
   m_maximaEnvVariables->BeginBatch();
   if (m_maximaEnvVariables->GetNumberRows() > 0)
     m_maximaEnvVariables->DeleteRows(0, m_maximaEnvVariables->GetNumberRows());
@@ -1843,22 +1847,48 @@ wxWindow *ConfigDialogue::CreatePrintPanel() {
 				      wxSP_ARROW_KEYS, .1, 4, .1);
   m_printScale->SetDigits(2);
   m_printScale->SetIncrement(.1);
-  printGrid_sizer->Add(ps, 0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL,
-                       5 * GetContentScaleFactor());
-  printGrid_sizer->Add(m_printScale, wxSizerFlags());
+  printGrid_sizer->Add(ps, 0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL, 0);
+  printGrid_sizer->Add(m_printScale, wxSizerFlags().Expand());
 
   m_printBrackets = new wxCheckBox(panel, wxID_ANY,
 				   _("Print the cell brackets [drawn to their left]"));
   vbox->Add(m_printBrackets, wxSizerFlags());
-  vbox->Add(printGrid_sizer, wxSizerFlags().Expand().Border(
-								   wxALL, 5 * GetContentScaleFactor()));
-  vbox->Add(printGrid_sizer, wxSizerFlags().Expand().Border(
-							  wxALL, 5 * GetContentScaleFactor()));
+  vbox->Add(printGrid_sizer, wxSizerFlags().Expand());
 
 
   wxStaticBoxSizer *marginSizer =
     new wxStaticBoxSizer(wxVERTICAL, panel,
-  			 _("Margins"));
+  			 _("Print Margins"));
+  wxFlexGridSizer *dimensionSizer = new wxFlexGridSizer(2);
+  dimensionSizer->AddGrowableCol(1);
+  dimensionSizer->Add(new wxStaticText(marginSizer->GetStaticBox(), wxID_ANY, _("Top")),
+		      0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL,
+		      0);
+  m_printMargin_Top = new wxSpinCtrl(marginSizer->GetStaticBox(), wxID_ANY);
+  m_printMargin_Top->SetRange(0, 100);
+  dimensionSizer->Add(m_printMargin_Top, wxSizerFlags().Expand());
+
+  dimensionSizer->Add(new wxStaticText(marginSizer->GetStaticBox(), wxID_ANY, _("Bottom")),
+		      0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL,
+		      0);
+  m_printMargin_Bot = new wxSpinCtrl(marginSizer->GetStaticBox(), wxID_ANY);
+  m_printMargin_Bot->SetRange(0, 100);
+  dimensionSizer->Add(m_printMargin_Bot, wxSizerFlags().Expand());
+
+    dimensionSizer->Add(new wxStaticText(marginSizer->GetStaticBox(), wxID_ANY, _("Left")),
+		      0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL,
+		      0);
+  m_printMargin_Left = new wxSpinCtrl(marginSizer->GetStaticBox(), wxID_ANY);
+  m_printMargin_Left->SetRange(0, 100);
+  dimensionSizer->Add(m_printMargin_Left, wxSizerFlags().Expand());
+
+    dimensionSizer->Add(new wxStaticText(marginSizer->GetStaticBox(), wxID_ANY, _("Right")),
+		      0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL,
+		      0);
+  m_printMargin_Right = new wxSpinCtrl(marginSizer->GetStaticBox(), wxID_ANY);
+  m_printMargin_Right->SetRange(0, 100);
+  dimensionSizer->Add(m_printMargin_Right, wxSizerFlags().Expand());
+marginSizer->Add(dimensionSizer, wxSizerFlags().Expand());
   vbox->Add(marginSizer,
             wxSizerFlags().Expand().Border(wxALL, 5 * GetContentScaleFactor()));
   panel->SetSizer(vbox);
@@ -2118,6 +2148,12 @@ void ConfigDialogue::WriteSettings() {
   configuration->DefaultPlotWidth(m_defaultPlotWidth->GetValue());
   configuration->DefaultPlotHeight(m_defaultPlotHeight->GetValue());
   configuration->SetDisplayedDigits(m_displayedDigits->GetValue());
+
+  configuration->PrintMargin_Right(m_printMargin_Right->GetValue());
+  configuration->PrintMargin_Left(m_printMargin_Left->GetValue());
+  configuration->PrintMargin_Top(m_printMargin_Top->GetValue());
+  configuration->PrintMargin_Bot(m_printMargin_Bot->GetValue());
+
   configuration->TeXExponentsAfterSubscript(
 					    m_TeXExponentsAfterSubscript->GetValue());
   configuration->UsePartialForDiff(m_usePartialForDiff->GetValue());

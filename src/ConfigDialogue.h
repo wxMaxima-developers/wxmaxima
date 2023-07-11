@@ -283,6 +283,10 @@ protected:
   wxSpinCtrl *m_defaultPlotWidth;
   wxSpinCtrl *m_defaultPlotHeight;
   wxSpinCtrl *m_displayedDigits;
+  wxSpinCtrl *m_printMargin_Top;
+  wxSpinCtrl *m_printMargin_Bot;
+  wxSpinCtrl *m_printMargin_Left;
+  wxSpinCtrl *m_printMargin_Right;
   wxRadioButton *m_displayNDigits;
   wxRadioButton *m_displayAllDigits;
   wxRadioButton *m_linebreaksInLongNums;
