@@ -65,8 +65,6 @@ public:
 
   virtual void OnPreparePrinting() override;
 
-  void GetPageMargins(int *horizontal, int *vertical);
-
   int GetHeaderHeight();
 
   void PrintHeader(int pageNum, wxDC *dc);
