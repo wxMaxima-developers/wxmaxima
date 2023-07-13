@@ -6200,25 +6200,22 @@ void wxMaxima::EditMenu(wxCommandEvent &event) {
     // config dialogue.
     ReReadConfig();
     wxConfigBase *config = wxConfig::Get();
+    // Write the changes in the configuration to the disk.
+    config->Flush(true);
     ConfigDialogue *configW = new ConfigDialogue(this, &m_configuration);
     configW->Centre(wxBOTH);
     auto result = configW->ShowModal();
-    m_configuration.SetWorkSheet(m_worksheet);
     if (result == wxID_OK) {
       configW->WriteSettings();
-      // Write the changes in the configuration to the disk.
-      config->Flush(true);
       // Refresh the display as the settings that affect it might have changed.
-      m_configuration.ReadStyles();
-      m_worksheet->RecalculateForce();
+      m_configuration.ReadConfig();
       m_configuration.FontChanged();
       if (m_worksheet->GetTree())
         m_worksheet->GetTree()->FontsChangedList();
-
-      m_worksheet->RequestRedraw();
       ConfigChanged();
+      m_worksheet->RecalculateForce();      
+      m_worksheet->RequestRedraw();
     }
-
     configW->Destroy();
   }
   else if(event.GetId() == wxID_COPY) {

@@ -171,7 +171,7 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent, Configuration *cfg)
   m_languages[_("Turkish")] = wxLANGUAGE_TURKISH;
   m_languages[_("Ukrainian")] = wxLANGUAGE_UKRAINIAN;
 
-  m_configuration = cfg;
+  m_configuration = std::unique_ptr<Configuration>(new Configuration());
   SetSheetInnerBorder(3);
   SetSheetOuterBorder(3);
 
@@ -282,7 +282,7 @@ void ConfigDialogue::MaximaLocationChanged(wxCommandEvent &WXUNUSED(unused)) {
 }
 
 void ConfigDialogue::SetCheckboxValues() {
-  Configuration *configuration = m_configuration;
+  Configuration *configuration = m_configuration.get();
 
   m_showUserDefinedLabels->SetToolTip(_(
 					"Maxima assigns each command/equation an automatic label (which looks "
@@ -976,7 +976,8 @@ wxWindow *ConfigDialogue::CreateStartupPanel() {
   }
   m_wxStartupCommands = 
     new BTextCtrl(
-		  wxMaximaStartupSizer->GetStaticBox(), wxID_ANY, m_configuration, wxEmptyString,
+		  wxMaximaStartupSizer->GetStaticBox(), wxID_ANY, m_configuration.get(),
+		  wxEmptyString,
 		  wxDefaultPosition,
 		  wxSize(150 * GetContentScaleFactor(), 150 * GetContentScaleFactor()),
 		  wxTE_MULTILINE | wxHSCROLL);
@@ -1021,7 +1022,8 @@ wxWindow *ConfigDialogue::CreateStartupPanel() {
   }
   m_startupCommands = 
     new BTextCtrl(
-		  maximaStartupSizer->GetStaticBox(), wxID_ANY, m_configuration, wxEmptyString,
+		  maximaStartupSizer->GetStaticBox(), wxID_ANY, m_configuration.get(),
+		  wxEmptyString,
 		  wxDefaultPosition,
 		  wxSize(150 * GetContentScaleFactor(), 150 * GetContentScaleFactor()),
 		  wxTE_MULTILINE | wxHSCROLL);
@@ -2031,7 +2033,7 @@ wxWindow *ConfigDialogue::CreateStylePanel() {
               5 * GetContentScaleFactor());
 
   m_configuration->SetZoomFactor(1.0);
-  m_sampleWorksheet = new Worksheet(panel, wxID_ANY, m_configuration,
+  m_sampleWorksheet = new Worksheet(panel, wxID_ANY, m_configuration.get(),
 				    wxDefaultPosition, wxDefaultSize, false);
   
   // Load the sample worksheet's contents
@@ -2049,7 +2051,7 @@ wxWindow *ConfigDialogue::CreateStylePanel() {
     if (xmlcells)
       xmlcells = xmlcells->GetChildren();
 
-    MathParser mp(m_configuration);
+    MathParser mp(m_configuration.get());
     CellListBuilder<GroupCell> tree;
     tree.DynamicAppend(mp.ParseTag(xmlcells));
     m_sampleWorksheet->InsertGroupCells(std::move(tree));
@@ -2081,7 +2083,7 @@ void ConfigDialogue::OnClose(wxCloseEvent &event) {
 void ConfigDialogue::WriteSettings() {
   wxArrayString out;
   wxConfigBase *config = wxConfig::Get();
-  Configuration *configuration = m_configuration;
+  Configuration *configuration = m_configuration.get();
 
   configuration->m_maximaEnvVars.clear();
   for (int row = m_maximaEnvVariables->GetNumberRows() - 1; row >= 0; row--) {
