@@ -6207,7 +6207,7 @@ void wxMaxima::EditMenu(wxCommandEvent &event) {
     if (result == wxID_OK) {
       configW->WriteSettings();
       // Write the changes in the configuration to the disk.
-      config->Flush();
+      config->Flush(true);
       // Refresh the display as the settings that affect it might have changed.
       m_configuration.ReadStyles();
       m_worksheet->RecalculateForce();

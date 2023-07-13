@@ -2026,9 +2026,7 @@ void wxMaximaFrame::ReReadConfig() {
     {
       // Delete the old config
       wxConfigBase *config = wxConfig::Get();
-      config->Flush();
-      wxDELETE(config);
-      config = NULL;
+      config->Flush(true);
 
       if (Configuration::m_configfileLocation_override == wxEmptyString) {
 	wxLogMessage(_("Re-Reading the config from the default location."));
@@ -2040,6 +2038,8 @@ void wxMaximaFrame::ReReadConfig() {
 		      new wxFileConfig(wxS("wxMaxima"), wxEmptyString,
 				       Configuration::m_configfileLocation_override));
       }
+      wxDELETE(config);
+      config = NULL;
     }
 #endif
   for(auto &window: m_topLevelWindows)
