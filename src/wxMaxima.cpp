@@ -2877,8 +2877,11 @@ bool wxMaxima::ParseNextChunkFromMaxima(wxString &data) {
     rest.reserve(data.Length());
     if (tagFound)
       rest = wxS("<") + tagName + wxS(">");
-    for (; (it != data.end()); ++it)
-      rest += *it;
+    while(it < data.end())
+      {
+	rest += *it;
+	it++;
+      }
     data = rest;
   }
   if (tagFound) {
