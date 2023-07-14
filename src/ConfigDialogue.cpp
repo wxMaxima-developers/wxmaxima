@@ -2494,8 +2494,7 @@ void ConfigDialogue::UpdateExample() {
     m_examplePanel->SetBackgroundColour(
 					m_configuration->m_styles[TS_DOCUMENT_BACKGROUND].GetColor());
   }
-  if(m_sampleWorksheet)
-    m_sampleWorksheet->Refresh();
+  m_sampleWorksheet->Refresh();
 }
 
 void ConfigDialogue::OnTabChange(wxBookCtrlEvent &event) {
