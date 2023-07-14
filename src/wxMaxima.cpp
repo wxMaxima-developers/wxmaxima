@@ -2874,6 +2874,7 @@ bool wxMaxima::ParseNextChunkFromMaxima(wxString &data) {
 
     // Remove the miscellaneous text we just have processed
     wxString rest;
+    rest.reserve(10000);
     rest.reserve(data.Length());
     if (tagFound)
       rest = wxS("<") + tagName + wxS(">");

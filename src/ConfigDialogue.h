@@ -136,7 +136,8 @@ private:
   std::unique_ptr<struct NSVGrasterizer, decltype(std::free)*> m_svgRast{nullptr, std::free};
   //! The configuration storage
   std::unique_ptr<Configuration> m_configuration;
-  
+  Worksheet *m_sampleWorksheet = NULL;
+
   WX_DECLARE_STRING_HASH_MAP(wxString, StringHash);
   WX_DECLARE_STRING_HASH_MAP(long, Languages);
   Languages m_languages;
@@ -212,7 +213,6 @@ private:
   wxWindow *CreateStartupPanel();
   
 protected:
-  Worksheet *m_sampleWorksheet = NULL;
   wxGrid *m_maximaEnvVariables;
   void OnImport(wxCommandEvent& event);
   static void CopyConfig(wxConfigBase *src, wxConfigBase *dst, wxString dir = wxS("/"));
