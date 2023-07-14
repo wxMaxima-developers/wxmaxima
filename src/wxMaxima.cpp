@@ -2835,7 +2835,7 @@ bool wxMaxima::ParseNextChunkFromMaxima(wxString &data) {
   auto tagIndex = m_knownXMLTags.end();
   bool tagFound = false;
   wxString::const_iterator it;
-  for (it = data.begin(); (it != data.end()) && !tagFound; ++it) {
+  for (it = data.begin(); (it < data.end()) && (!tagFound); it++) {
     if (*it == wxS('<')) {
       tagName = wxEmptyString;
       wxString::const_iterator it2 = it;
@@ -2873,17 +2873,7 @@ bool wxMaxima::ParseNextChunkFromMaxima(wxString &data) {
     ReadMiscText(miscText);
 
     // Remove the miscellaneous text we just have processed
-    wxString rest;
-    rest.reserve(10000);
-    rest.reserve(data.Length());
-    if (tagFound)
-      rest = wxS("<") + tagName + wxS(">");
-    while(it < data.end())
-      {
-	rest += *it;
-	it++;
-      }
-    data = rest;
+    data = data.Right(data.Length() - miscText.Length());
   }
   if (tagFound) {
     if((m_maximaAuthenticated) || (tagIndex->second == &wxMaxima::ReadSuppressedOutput))
