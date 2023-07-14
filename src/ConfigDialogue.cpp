@@ -1916,6 +1916,8 @@ TextStyle ConfigDialogue::GetSelectedStyle() const {
 
 wxWindow *ConfigDialogue::CreateStylePanel() {
   wxScrolled<wxPanel> *panel = new wxScrolled<wxPanel>(m_notebook, wxID_ANY);
+  m_sampleWorksheet = new Worksheet(panel, wxID_ANY, m_configuration.get(),
+				    wxDefaultPosition, wxDefaultSize, false);
   panel->SetScrollRate(5 * GetContentScaleFactor(),
                        5 * GetContentScaleFactor());
   panel->SetMinSize(wxSize(GetContentScaleFactor() * mMinPanelWidth,
@@ -2033,9 +2035,7 @@ wxWindow *ConfigDialogue::CreateStylePanel() {
               5 * GetContentScaleFactor());
 
   m_configuration->SetZoomFactor(1.0);
-  m_sampleWorksheet = new Worksheet(panel, wxID_ANY, m_configuration.get(),
-				    wxDefaultPosition, wxDefaultSize, false);
-  
+
   // Load the sample worksheet's contents
   {
     wxMemoryInputStream istream(SAMPLEWORKSHEET_WXMX, SAMPLEWORKSHEET_WXMX_SIZE);
