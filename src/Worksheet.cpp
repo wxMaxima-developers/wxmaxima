@@ -2835,7 +2835,7 @@ bool Worksheet::CopyCells() {
     wxString str;
     wxString rtf = RTFStart();
 
-    GroupCell *const end = m_cellPointers.m_selectionEnd->GetGroup();
+    const GroupCell *const end = m_cellPointers.m_selectionEnd->GetGroup();
     bool firstcell = true;
     for (auto &tmp : OnList(m_cellPointers.m_selectionStart->GetGroup())) {
       if (!firstcell)
@@ -4431,7 +4431,7 @@ bool Worksheet::CopyRTF() {
   wxDataObjectComposite *data = new wxDataObjectComposite;
 
   wxString rtf = RTFStart();
-  GroupCell *end = m_cellPointers.m_selectionEnd->GetGroup();
+  const GroupCell *end = m_cellPointers.m_selectionEnd->GetGroup();
 
   for (auto &tmp : OnList(m_cellPointers.m_selectionStart->GetGroup())) {
     rtf += tmp.ToRTF();
@@ -5197,7 +5197,7 @@ bool Worksheet::ExportToHTML(const wxString &file) {
     // Handle a code cell
     if (tmp.GetGroupType() == GC_TYPE_CODE) {
       // Handle the label
-      Cell *out = tmp.GetLabel();
+      const Cell *out = tmp.GetLabel();
 
       if (out || (m_configuration->ShowCodeCells()))
         output << wxS("\n\n<!-- Code cell -->\n\n\n");
@@ -6901,7 +6901,7 @@ void Worksheet::ShowPoint(wxPoint point) {
   height -= wxSystemSettings::GetMetric(wxSYS_VTHUMB_Y);
   width -= wxSystemSettings::GetMetric(wxSYS_HTHUMB_X);
 
-  Configuration *configuration = m_configuration;
+  const Configuration *configuration = m_configuration;
   int fontsize_px =
     configuration->GetZoomFactor() * configuration->GetDefaultFontSize();
   if ((point.y - fontsize_px < view_y) ||
