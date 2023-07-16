@@ -482,6 +482,7 @@ void AutoComplete::AddSymbol_nowait(wxString fun, autoCompletionType type) {
     for (const auto &o: m_wordList[type]) {
       if (o.StartsWith(funName) && (o.Freq('<') == count))
         break;
+      i++;
     }
     if (i == m_wordList[type].GetCount())
       m_wordList[type].Add(fun);
