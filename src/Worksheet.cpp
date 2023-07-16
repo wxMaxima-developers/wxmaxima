@@ -4621,9 +4621,9 @@ void Worksheet::CalculateReorderedCellIndices(GroupCell *tree, int &cellIndex,
         long promptIndex = GetCellIndex(prompt);
         long outputIndex =
 	  GetCellIndex(tmp.GetLabel()) - initialHiddenExpressions;
-        long index = promptIndex;
         if (promptIndex >= 0)
 	  {
+	    long index = promptIndex;
 	    if (outputIndex < 0 && initialHiddenExpressions < outputExpressions) {
 	      // input index, but no output index means the expression was
 	      // evaluated, but produced no result
