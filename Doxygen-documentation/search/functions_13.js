@@ -25,7 +25,7 @@ var searchData=
   ['updateloadfiles_2890',['UpdateLoadFiles',['../classAutoComplete.html#a5feac4d1d3f1d9096598b7fc02f9012a',1,'AutoComplete']]],
   ['updatemenus_2891',['UpdateMenus',['../classwxMaxima.html#a4927bc31b09ccfb63d030b9d11a2e896',1,'wxMaxima']]],
   ['updatemlast_2892',['UpdateMLast',['../classWorksheet.html#af6238f4ec218c313575d0a61b15349a2',1,'Worksheet::UpdateMLast()'],['../classWorksheet.html#a25a7d7dc4eb2c3929a2e05c2aad2571d',1,'Worksheet::UpdateMLast(GroupCell *gc)']]],
-  ['updateneeded_2893',['UpdateNeeded',['../classConfiguration.html#a7446811fe556dbcf913e1c3237c77a15',1,'Configuration::UpdateNeeded()'],['../classXmlInspector.html#a83c9ecd3e19b82dce7bb0860e9c16e1f',1,'XmlInspector::UpdateNeeded()']]],
+  ['updateneeded_2893',['UpdateNeeded',['../classConfiguration.html#aea03003b3b121b181a4ec9ff97b81e7f',1,'Configuration::UpdateNeeded()'],['../classXmlInspector.html#a83c9ecd3e19b82dce7bb0860e9c16e1f',1,'XmlInspector::UpdateNeeded()']]],
   ['updaterecentdocuments_2894',['UpdateRecentDocuments',['../classwxMaximaFrame.html#a07184252b5e406dea552d64d265088fd',1,'wxMaximaFrame']]],
   ['updatescrollpos_2895',['UpdateScrollPos',['../classWorksheet.html#ad9583dd8badd4f21d1abdea8fe065011',1,'Worksheet']]],
   ['updateslider_2896',['UpdateSlider',['../classToolBar.html#a2069a79d6de58c7385b71e69612f0a36',1,'ToolBar::UpdateSlider()'],['../classwxMaxima.html#aef0fdffd82ee849d531fb86270e524d9',1,'wxMaxima::UpdateSlider()']]],
