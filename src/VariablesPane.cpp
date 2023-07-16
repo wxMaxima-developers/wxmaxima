@@ -411,10 +411,8 @@ wxString Variablespane::EscapeVarname(wxString var) {
 }
 
 bool Variablespane::IsValidVariable(wxString var) {
-  for (const auto &i: var) {
-    if (!wxIsprint(i))
-      return false;
-  }
+  if(!std::all_of(var.begin(), var.end(), wxIsprint))
+    return false;
 
   if (var == wxEmptyString)
     return false;
