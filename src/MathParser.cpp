@@ -1283,7 +1283,7 @@ std::unique_ptr<Cell> MathParser::ParseLine(wxString s, CellType style) {
   } else {
     cell = std::make_unique<TextCell>(
 				      m_group, m_configuration,
-				      T_("(wxMaxima is configired not to show long expressions - which would be slow)"),
+				      T_("(wxMaxima is configured not to show long expressions - which would be slow)"),
 				      TS_WARNING);
     cell->SetToolTip(&T_(
 			 "The maximum size of the expressions wxMaxima is allowed to display "

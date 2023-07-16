@@ -482,7 +482,7 @@ private:
   void DrawGroupCell(wxDC &dc, wxDC &adc, GroupCell &cell);
   /*! Draws a groupcell in a bitmap and then blits it onto the DC
 
-    Drawing to a DC is only allowed to one Thread at once. But doing the lenghty
+    Drawing to a DC is only allowed to one thread at once. But doing the lengthy
     stuff with bitmaps is possible to do in multiple threads at the same time so
     as long as there is a mutex watching that we do the blit when no-one else
     accesses the DC should be fine.
