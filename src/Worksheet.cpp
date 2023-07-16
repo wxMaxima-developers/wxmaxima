@@ -340,7 +340,7 @@ bool Worksheet::RedrawIfRequested() {
         if (m_cellPointers.m_cellUnderPointer) {
           if ((m_cellPointers.m_cellUnderPointer->GetType() == MC_TYPE_IMAGE) ||
               (m_cellPointers.m_cellUnderPointer->GetType() == MC_TYPE_SLIDE)) {
-            ImgCellBase *image = dynamic_cast<ImgCellBase *>(
+            const ImgCellBase *image = dynamic_cast<ImgCellBase *>(
 							     m_cellPointers.m_cellUnderPointer.get());
             StatusText(wxString::Format(
 					_("%s image, %li×%li, %li ppi"), image->GetExtension().ToUTF8().data(),
@@ -2023,7 +2023,7 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event) {
 
   if ((m_cellPointers.m_selectionStart)) {
     wxString toolTip = m_cellPointers.m_selectionStart->GetLocalToolTip();
-    GroupCell *group = m_cellPointers.m_selectionStart->GetGroup();
+    const GroupCell *group = m_cellPointers.m_selectionStart->GetGroup();
     if (toolTip.IsEmpty())
       toolTip = group->GetLocalToolTip();
 
@@ -3373,7 +3373,7 @@ GroupCell *Worksheet::StartOfSectioningUnit(GroupCell *start) {
 
 GroupCell *Worksheet::EndOfSectioningUnit(GroupCell *start) {
   wxASSERT(start);
-  GroupCell *sectionbegin = StartOfSectioningUnit(start);
+  const GroupCell *sectionbegin = StartOfSectioningUnit(start);
   int endgrouptype = sectionbegin->GetGroupType();
 
   // Begin with the cell after the start cell - that might contain a section
@@ -4598,7 +4598,7 @@ void Worksheet::CalculateReorderedCellIndices(GroupCell *tree, int &cellIndex,
     if (!tmp.IsHidden() && tmp.GetGroupType() == GC_TYPE_CODE) {
       wxString input;
       Cell *prompt = tmp.GetPrompt();
-      Cell *cell = tmp.GetEditable();
+      const Cell *cell = tmp.GetEditable();
 
       if (cell)
         input = cell->ToString();
@@ -5203,13 +5203,13 @@ bool Worksheet::ExportToHTML(const wxString &file) {
 
       // Handle the input
       if (m_configuration->ShowCodeCells()) {
-        Cell *prompt = tmp.GetPrompt();
+        const Cell *prompt = tmp.GetPrompt();
         output << wxS("<table><tr><td>\n");
         output << wxS("  <span class=\"prompt\">\n");
         output << prompt->ToString();
         output << wxS("\n  </span></td>\n");
 
-        EditorCell *input = tmp.GetEditable();
+        const EditorCell *input = tmp.GetEditable();
         if (input) {
           output << wxS("  <td><span class=\"input\">\n");
           output << input->ToHTML();
@@ -5812,7 +5812,7 @@ void Worksheet::ExportToMAC(wxTextFile &output, GroupCell *tree, bool wxm,
     AddLineToFile(output, Format::TreeToWXM(&tmp));
 
     if (wxm && tmp.GetGroupType() == GC_TYPE_CODE) {
-      EditorCell *txt = tmp.GetEditable();
+      const EditorCell *txt = tmp.GetEditable();
       if (txt && fixReorderedIndices) {
         wxString input = txt->ToString(true);
 
@@ -6314,7 +6314,7 @@ void Worksheet::OnDoubleClick(wxMouseEvent &event) {
   else if (m_cellPointers.m_selectionStart) {
     // FIXME This code path can never get activated, because
     // OnMouseLeftDown clears the selection.
-    GroupCell *parent = m_cellPointers.m_selectionStart->GetGroup();
+    const GroupCell *parent = m_cellPointers.m_selectionStart->GetGroup();
     auto sel = parent->GetCellsInOutput();
     m_cellPointers.m_selectionStart = sel.first;
     m_cellPointers.m_selectionEnd = sel.last;
@@ -6505,7 +6505,7 @@ void Worksheet::ScrollToCellIfNeeded() {
 
   RecalculateIfNeeded();
 
-  Cell *cell = m_cellPointers.CellToScrollTo();
+  const Cell *cell = m_cellPointers.CellToScrollTo();
 
   if (!cell) {
     int view_x, view_y;
