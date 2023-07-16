@@ -84,7 +84,7 @@ void EvaluationQueue::AddToQueue(GroupCell *gr) {
  * Add the tree of hidden cells to the EQ by recursively adding cells'
  * hidden branches to the EQ.
  */
-void EvaluationQueue::AddHiddenTreeToQueue(GroupCell *gr) {
+void EvaluationQueue::AddHiddenTreeToQueue(const GroupCell *gr) {
   if (!gr)
     return; // caller should check, but just in case
 
@@ -111,7 +111,7 @@ void EvaluationQueue::RemoveFirst() {
   }
 }
 
-void EvaluationQueue::AddTokens(GroupCell *cell) {
+void EvaluationQueue::AddTokens(const GroupCell *cell) {
   if (cell == NULL)
     return;
   wxString token;

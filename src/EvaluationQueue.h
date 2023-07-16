@@ -83,7 +83,7 @@ private:
   std::vector<GroupCell *> m_queue;
 
   //! Adds all commands in commandString as separate tokens to the queue.
-  void AddTokens(GroupCell *cell);
+  void AddTokens(const GroupCell *cell);
 
 public:
   /*! Query for the label the user has assigned to the current command.  
@@ -132,7 +132,7 @@ public:
   void Remove(GroupCell *gr);
   
   //! Adds all hidden cells attached to the GroupCell gr to the evaluation queue.
-  void AddHiddenTreeToQueue(GroupCell *gr);
+  void AddHiddenTreeToQueue(const GroupCell *gr);
 
   //! Removes the first command in the queue
   void RemoveFirst();
