@@ -116,7 +116,7 @@ var searchData=
   ['getprevious_488',['GetPrevious',['../classCell.html#a1c1c37050471f229ffb39b0c321e671b',1,'Cell::GetPrevious()'],['../classEditorCell.html#a13db4f3ce976c93769ed39e0c10af4bb',1,'EditorCell::GetPrevious()'],['../classGroupCell.html#af26df85640ad3e9df0c43b427dba22fb',1,'GroupCell::GetPrevious()']]],
   ['getprinting_489',['GetPrinting',['../classConfiguration.html#aa71e8052dccf4e1c732b3e738415d868',1,'Configuration']]],
   ['getrecalcdc_490',['GetRecalcDC',['../classConfiguration.html#a93795ef9d2ea39cab8ed57da9f0eeb59',1,'Configuration']]],
-  ['getrect_491',['GetRect',['../classCell.html#aeced52cdb26b0559bf33eefc73379f37',1,'Cell::GetRect()'],['../classGroupCell.html#a5ce94d5adb8176267439335240927526',1,'GroupCell::GetRect()']]],
+  ['getrect_491',['GetRect',['../classCell.html#a2f7416c87bf13e37367ceb256805db06',1,'Cell::GetRect()'],['../classGroupCell.html#a5ce94d5adb8176267439335240927526',1,'GroupCell::GetRect()']]],
   ['getscaledsize_492',['GetScaledSize',['../classOutCommon.html#a3431e70b2cc4b086174f76bed1600ced',1,'OutCommon']]],
   ['getscreenconfig_493',['GetScreenConfig',['../classOutCommon.html#ab18b7e923f604f0ac706c33c5531b983',1,'OutCommon']]],
   ['getselectedstyle_494',['GetSelectedStyle',['../classConfigDialogue.html#ac7008fa02afb4834fc7efce94151ad67',1,'ConfigDialogue']]],
