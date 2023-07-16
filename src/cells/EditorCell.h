@@ -576,7 +576,7 @@ private:
     TextCell::ToTeX and EditorCell::ToTeX. They can also be
     converted to maxima strings in wxMaxima::SendMaxima.
   */
-  wxString InterpretEscapeString(const wxString &txt) const;
+  static wxString InterpretEscapeString(const wxString &txt);
 
   //! Draw a box that marks the current selection
   void MarkSelection(wxDC *dc, long start, long end, TextStyle style);

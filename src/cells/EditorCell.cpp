@@ -2232,7 +2232,7 @@ void EditorCell::FindMatchingParens() {
   }
 }
 
-wxString EditorCell::InterpretEscapeString(const wxString &txt) const {
+wxString EditorCell::InterpretEscapeString(const wxString &txt) {
   auto &escCode = Configuration::GetEscCode(txt);
   if (!escCode.empty())
     return escCode;

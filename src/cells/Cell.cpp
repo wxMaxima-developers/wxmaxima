@@ -409,7 +409,7 @@ bool Cell::HasStaleSize() const {
 }
 
 bool Cell::HasValidPosition() const {
-  return (m_currentPoint.x >= 0) & (m_currentPoint.y >= 0);
+  return (m_currentPoint.x >= 0) && (m_currentPoint.y >= 0);
 }
 
 void Cell::SetConfigurationList(Configuration *config) {

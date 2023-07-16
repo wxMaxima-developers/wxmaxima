@@ -248,12 +248,12 @@ double AnimationCell::GetHeightList() const {
 }
 
 void AnimationCell::SetMaxWidth(double width) {
-  for (auto &i: m_images)
+  for (const auto &i: m_images)
     (*i).SetMaxWidth(width);
 }
 
 void AnimationCell::SetMaxHeight(double height) {
-  for (auto &i: m_images)
+  for (const auto &i: m_images)
     (*i).SetMaxHeight(height);
 }
 
