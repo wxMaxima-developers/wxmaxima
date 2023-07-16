@@ -428,7 +428,7 @@ public:
     - true: Get the rectangle for this cell and the ones that follow it in the list of cells
     - false: Get the rectangle for this cell only.
   */
-  virtual wxRect GetRect(bool all = false) const;
+  virtual wxRect GetRect(bool wholeList = false) const;
 
   //! True, if something that affects the cell size has changed.
   virtual bool NeedsRecalculation(AFontSize fontSize) const;
@@ -825,7 +825,7 @@ public:
   //! Remove this cell's tooltip
   void ClearToolTip();
   //! Set the tooltip to a given temporary string - the cell will move from it
-  void SetToolTip(wxString &&tooltip);
+  void SetToolTip(wxString &&toolTip);
   //! Set the tooltip of this math cell - it must be exist at least as long
   //! as the cell does. Translation results behave that way. I.e. it must be
   //! a static string!

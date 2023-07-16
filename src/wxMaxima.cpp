@@ -5245,7 +5245,7 @@ void wxMaxima::UpdateToolBar() {
   // animation start and stop. On the rest of the OSes we use one combined
   // start/stop button instead.
   if (m_worksheet->CanAnimate()) {
-    AnimationCell *animation =
+    const AnimationCell *animation =
       dynamic_cast<AnimationCell *>(m_worksheet->GetSelectionStart());
     if (animation->AnimationRunning())
       m_worksheet->m_mainToolBar->AnimationButtonState(ToolBar::Running);
@@ -6044,7 +6044,7 @@ void wxMaxima::FileMenu(wxCommandEvent &event) {
   }
   else if(event.GetId() == ToolBar::tb_animation_startStop) {
     if (m_worksheet->CanAnimate()) {
-      AnimationCell *animation =
+      const AnimationCell *animation =
 	dynamic_cast<AnimationCell *>(m_worksheet->GetSelectionStart());
       if (animation->AnimationRunning())
         m_worksheet->Animate(false);
@@ -6410,7 +6410,7 @@ void wxMaxima::EditMenu(wxCommandEvent &event) {
       m_worksheet->SetActiveCellText(command);
   }
   else if(event.GetId() == EventIDs::popid_hide_tooltipMarkerForThisMessage) {
-    Cell *cell = m_worksheet->GetSelectionStart();
+    const Cell *cell = m_worksheet->GetSelectionStart();
     if (cell == NULL)
       return;
     wxString toolTip = cell->GetLocalToolTip();
@@ -10406,7 +10406,6 @@ void wxMaxima::TriggerEvaluation() {
     } else {
       // Manually mark the current cell as the one that has caused an error.
       m_worksheet->GetErrorList().Add(tmp);
-      tmp->GetEditable()->SetErrorIndex(m_commandIndex - 1);
       // Inform the user about the error (which automatically causes the
       // worksheet to the cell we marked as erroneous a few seconds ago.
       auto cell =
@@ -10429,8 +10428,7 @@ void wxMaxima::TriggerEvaluation() {
         m_outputCellsFromCurrentCommand = 0;
         TriggerEvaluation();
       }
-      if (tmp->GetEditable())
-        m_worksheet->SetActiveCell(tmp->GetEditable());
+      m_worksheet->SetActiveCell(tmp->GetEditable());
     }
   } else {
     wxLogMessage(_("Empty command => re-triggering evaluation"));
