@@ -705,18 +705,18 @@ void Worksheet::DrawGroupCell(wxDC &dc, wxDC &adc, GroupCell &cell)
 	(&cell == m_cellPointers.m_selectionStart->GetGroup())) {
       // Draw the marker that tells us which output cells are selected -
       // if output cells are selected, that is.
-      for (Cell &cell : OnDrawList(m_cellPointers.m_selectionStart.get())) {
-	if (!cell.IsBrokenIntoLines() && !cell.IsHidden() &&
-	    &cell != GetActiveCell())
+      for (Cell &c : OnDrawList(m_cellPointers.m_selectionStart.get())) {
+	if (!c.IsBrokenIntoLines() && !c.IsHidden() &&
+	    &c != GetActiveCell())
 	  {
 	      dc.SetPen(*(wxThePenList->FindOrCreatePen(m_configuration->GetColor(TS_SELECTION),
 							1, wxPENSTYLE_SOLID)));
 	      dc.SetBrush(*(wxTheBrushList->FindOrCreateBrush(m_configuration->GetColor(TS_SELECTION))));
-	    cell.DrawBoundingBox(dc, false);
+	    c.DrawBoundingBox(dc, false);
 	    dc.SetBrush(m_configuration->GetBackgroundBrush());
 	    dc.SetPen(*wxWHITE_PEN);
 	  }
-	if (&cell == m_cellPointers.m_selectionEnd)
+	if (&c == m_cellPointers.m_selectionEnd)
 	  break;
       }
     }
