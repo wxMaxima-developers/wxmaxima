@@ -55,7 +55,7 @@ extern unsigned char view_refresh_svg_gz[];
 #include "Worksheet.h"
 #include "Configuration.h"
 
-extern unsigned char *GTK_PRINT_SVG_GZ;
+extern unsigned char GTK_PRINT_SVG_GZ[];
 extern size_t GTK_PRINT_SVG_GZ_SIZE;
 
 enum
