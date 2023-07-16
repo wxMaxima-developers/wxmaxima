@@ -224,14 +224,14 @@ public:
   //! Define if we want to hide brackets that are not under the pointer.
   void PrintScale(double scale){m_printScale = scale;}
 
-  void PrintMargin_Top(double margin) {m_printMargin_Top = margin;}
-  void PrintMargin_Bot(double margin) {m_printMargin_Bot = margin;}
-  void PrintMargin_Left(double margin) {m_printMargin_Left = margin;}
-  void PrintMargin_Right(double margin) {m_printMargin_Right = margin;}
-  double PrintMargin_Top() const {return m_printMargin_Top;}
-  double PrintMargin_Bot() const {return m_printMargin_Bot;}
-  double PrintMargin_Left() const {return m_printMargin_Left;}
-  double PrintMargin_Right() const {return m_printMargin_Right;}
+  void PrintMargin_Top(double margin){m_printMargin_Top = margin;}
+  void PrintMargin_Bot(double margin){m_printMargin_Bot = margin;}
+  void PrintMargin_Left(double margin){m_printMargin_Left = margin;}
+  void PrintMargin_Right(double margin){m_printMargin_Right = margin;}
+  double PrintMargin_Top(){return m_printMargin_Top;}
+  double PrintMargin_Bot(){return m_printMargin_Bot;}
+  double PrintMargin_Left(){return m_printMargin_Left;}
+  double PrintMargin_Right(){return m_printMargin_Right;}
 
   //! Sets the zoom factor the worksheet is displayed at
   void SetZoomFactor(double newzoom);

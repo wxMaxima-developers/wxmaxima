@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="1">
     <builddir>cppcheck-cppcheck-build-dir</builddir>
+    <platform>Unspecified</platform>
     <analyze-all-vs-configs>false</analyze-all-vs-configs>
     <check-headers>true</check-headers>
     <check-unused-templates>true</check-unused-templates>
@@ -15,9 +16,6 @@
         <dir name="src/graphical_io"/>
         <dir name="src/utils"/>
         <dir name="src/wizards"/>
-        <dir name="build"/>
-        <dir name="build/examples"/>
-        <dir name="/usr/local/include/wx-3.3"/>
     </paths>
     <suppressions>
         <suppression>unusedFunction</suppression>

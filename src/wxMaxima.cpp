@@ -1976,14 +1976,13 @@ TextCell *wxMaxima::DoRawConsoleAppend(wxString s, CellType type,
   } else {
     std::unique_ptr<LabelCell> ownedCell;
     TextCell *incompleteTextCell = nullptr;
-
     if (type == MC_TYPE_PROMPT) {
-      ownedCell =
-	std::make_unique<LabelCell>(m_worksheet->GetTree(), &m_configuration,
-				    wxEmptyString, TS_OTHER_PROMPT);
-      incompleteTextCell = ownedCell.get();
-      incompleteTextCell->ForceBreakLine(true);
-    } else
+
+ incompleteTextCell = new LabelCell(m_worksheet->GetTree(), 
+						 &m_configuration,
+						 wxEmptyString, TS_OTHER_PROMPT);
+    incompleteTextCell->ForceBreakLine(true);
+  } else
       incompleteTextCell = m_worksheet->GetCurrentTextCell();
 
     if (incompleteTextCell) {
@@ -2000,8 +1999,6 @@ TextCell *wxMaxima::DoRawConsoleAppend(wxString s, CellType type,
       incompleteTextCell->SetValue(newVal);
       m_worksheet->InsertLine(std::move(ownedCell));
       if (s.IsEmpty()) {
-        incompleteTextCell->GetGroup()->ResetSize();
-        incompleteTextCell->GetGroup()->Recalculate();
         return incompleteTextCell;
       }
     }
