@@ -228,10 +228,10 @@ public:
   void PrintMargin_Bot(double margin){m_printMargin_Bot = margin;}
   void PrintMargin_Left(double margin){m_printMargin_Left = margin;}
   void PrintMargin_Right(double margin){m_printMargin_Right = margin;}
-  double PrintMargin_Top(){return m_printMargin_Top;}
-  double PrintMargin_Bot(){return m_printMargin_Bot;}
-  double PrintMargin_Left(){return m_printMargin_Left;}
-  double PrintMargin_Right(){return m_printMargin_Right;}
+  double PrintMargin_Top() const {return m_printMargin_Top;}
+  double PrintMargin_Bot() const {return m_printMargin_Bot;}
+  double PrintMargin_Left() const {return m_printMargin_Left;}
+  double PrintMargin_Right() const {return m_printMargin_Right;}
 
   //! Sets the zoom factor the worksheet is displayed at
   void SetZoomFactor(double newzoom);
@@ -941,7 +941,7 @@ public:
   bool StyleAffectsMathOut(TextStyle style) const;
   bool StyleAffectsColorOnly(TextStyle style) const;
   //! true means: The system's config storage has changed since the configuration has been read
-  bool UpdateNeeded();
+  bool UpdateNeeded() const;
   //! Enable costly checks
   static void SetDebugmode(){m_debugMode = true;}
   //! Enable costly checks?
