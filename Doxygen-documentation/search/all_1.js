@@ -14,7 +14,7 @@ var searchData=
   ['adddrawparameter_12',['AddDrawParameter',['../classwxMaxima.html#a38d67d29e2a899451459d93e7714b9e2',1,'wxMaxima::AddDrawParameter()'],['../classEditorCell.html#a84d10743cabc6445fa37e044debc2a95',1,'EditorCell::AddDrawParameter(wxString param)']]],
   ['addending_13',['AddEnding',['../classEditorCell.html#add4b1605ec516805a42af9d667fdf641',1,'EditorCell::AddEnding()'],['../classCell.html#af0f18ef99c280e60940d94cd55143cd1',1,'Cell::AddEnding()'],['../classGroupCell.html#ac592a77ab3fed321981f25d68cc16234',1,'GroupCell::AddEnding()']]],
   ['addentiredocumenttoevaluationqueue_14',['AddEntireDocumentToEvaluationQueue',['../classWorksheet.html#a2413870093f05ce54e8f64151bb8bc2e',1,'Worksheet']]],
-  ['addhiddentreetoqueue_15',['AddHiddenTreeToQueue',['../classEvaluationQueue.html#a4d45f87bbf320d6c975754469d380dd7',1,'EvaluationQueue']]],
+  ['addhiddentreetoqueue_15',['AddHiddenTreeToQueue',['../classEvaluationQueue.html#a6a7ea885329007de76dae99015bfb0da',1,'EvaluationQueue']]],
   ['addresttoevaluationqueue_16',['AddRestToEvaluationQueue',['../classWorksheet.html#ae796ce9d3038125da248b81f738ad46f',1,'Worksheet']]],
   ['addsectiontoevaluationqueue_17',['AddSectionToEvaluationQueue',['../classWorksheet.html#a15dadd2e5efdda449b3d293bc9e2ab69',1,'Worksheet']]],
   ['addselectiontoevaluationqueue_18',['AddSelectionToEvaluationQueue',['../classWorksheet.html#a2fce4051a27a7bba3b673c6580ee6a16',1,'Worksheet::AddSelectionToEvaluationQueue(GroupCell *start, GroupCell *end)'],['../classWorksheet.html#a5da554c9b1588171ea0683da31ba2ad5',1,'Worksheet::AddSelectionToEvaluationQueue()']]],
