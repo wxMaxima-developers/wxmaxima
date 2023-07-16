@@ -825,7 +825,7 @@ public:
   //! Remove this cell's tooltip
   void ClearToolTip();
   //! Set the tooltip to a given temporary string - the cell will move from it
-  void SetToolTip(wxString &&toolTip);
+  void SetToolTip(wxString &&tooltip);
   //! Set the tooltip of this math cell - it must be exist at least as long
   //! as the cell does. Translation results behave that way. I.e. it must be
   //! a static string!
