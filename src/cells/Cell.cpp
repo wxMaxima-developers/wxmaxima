@@ -293,7 +293,6 @@ void Cell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
       (!m_configuration->HideMarkerForThisMessage(*m_toolTip))) {
     wxRect rect = Cell::CropToUpdateRegion(GetRect());
     if (m_configuration->InUpdateRegion(rect) && !rect.IsEmpty()) {
-      wxDC *dc = m_configuration->GetRecalcDC();
       dc->SetPen(*wxTRANSPARENT_PEN);
       dc->SetBrush(m_configuration->GetTooltipBrush());
       dc->DrawRectangle(rect);
