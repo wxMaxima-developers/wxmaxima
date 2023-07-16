@@ -243,21 +243,23 @@ void TableOfContents::UpdateTableOfContents(GroupCell *pos) {
     UpdateStruct();
 
     std::vector<GroupCell *>::const_iterator it = m_displayedGroupCells.begin();
-    int cursorItem = -1;
     
     // Select the cell with the cursor
     if(!m_displayedGroupCells.empty())
-      for (const auto &cell : OnList(m_tree->get())) {
-	if ((it != m_displayedGroupCells.end()) && (&cell == *it))
-	  {
-	    it++;
-	    cursorItem++;
+      {
+	int cursorItem = -1;
+	for (const auto &cell : OnList(m_tree->get())) {
+	  if ((it != m_displayedGroupCells.end()) && (&cell == *it))
+	    {
+	      ++it;
+	      ++cursorItem;
+	    }
+	  if (&cell == pos) {
+	    if(cursorItem < 0)
+	      cursorItem = 0;
+	    selection = cursorItem;
+	    break;
 	  }
-	if (&cell == pos) {
-	  if(cursorItem < 0)
-	    cursorItem = 0;
-	  selection = cursorItem;
-	  break;
 	}
       }
     if ((selection >= 0) && (item != selection)) {

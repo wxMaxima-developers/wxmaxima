@@ -705,18 +705,18 @@ void Worksheet::DrawGroupCell(wxDC &dc, wxDC &adc, GroupCell &cell)
 	(&cell == m_cellPointers.m_selectionStart->GetGroup())) {
       // Draw the marker that tells us which output cells are selected -
       // if output cells are selected, that is.
-      for (Cell &cell : OnDrawList(m_cellPointers.m_selectionStart.get())) {
-	if (!cell.IsBrokenIntoLines() && !cell.IsHidden() &&
-	    &cell != GetActiveCell())
+      for (Cell &c : OnDrawList(m_cellPointers.m_selectionStart.get())) {
+	if (!c.IsBrokenIntoLines() && !c.IsHidden() &&
+	    &c != GetActiveCell())
 	  {
 	      dc.SetPen(*(wxThePenList->FindOrCreatePen(m_configuration->GetColor(TS_SELECTION),
 							1, wxPENSTYLE_SOLID)));
 	      dc.SetBrush(*(wxTheBrushList->FindOrCreateBrush(m_configuration->GetColor(TS_SELECTION))));
-	    cell.DrawBoundingBox(dc, false);
+	    c.DrawBoundingBox(dc, false);
 	    dc.SetBrush(m_configuration->GetBackgroundBrush());
 	    dc.SetPen(*wxWHITE_PEN);
 	  }
-	if (&cell == m_cellPointers.m_selectionEnd)
+	if (&c == m_cellPointers.m_selectionEnd)
 	  break;
       }
     }
@@ -985,9 +985,7 @@ bool Worksheet::RecalculateIfNeeded(bool timeout) {
     }
   else
     {
-      bool recalculated = false;
       for (auto &cell : OnList(m_recalculateStart)) {
-	recalculated |= cell.Recalculate();
 	if(cell.GetNext() == NULL)
 	  {
 	    wxLogMessage(_("Recalculated the whole worksheet at once => Updating its size"));
@@ -2835,7 +2833,7 @@ bool Worksheet::CopyCells() {
     wxString str;
     wxString rtf = RTFStart();
 
-    GroupCell *const end = m_cellPointers.m_selectionEnd->GetGroup();
+    const GroupCell *const end = m_cellPointers.m_selectionEnd->GetGroup();
     bool firstcell = true;
     for (auto &tmp : OnList(m_cellPointers.m_selectionStart->GetGroup())) {
       if (!firstcell)
@@ -4431,7 +4429,7 @@ bool Worksheet::CopyRTF() {
   wxDataObjectComposite *data = new wxDataObjectComposite;
 
   wxString rtf = RTFStart();
-  GroupCell *end = m_cellPointers.m_selectionEnd->GetGroup();
+  const GroupCell *end = m_cellPointers.m_selectionEnd->GetGroup();
 
   for (auto &tmp : OnList(m_cellPointers.m_selectionStart->GetGroup())) {
     rtf += tmp.ToRTF();
@@ -4621,9 +4619,9 @@ void Worksheet::CalculateReorderedCellIndices(GroupCell *tree, int &cellIndex,
         long promptIndex = GetCellIndex(prompt);
         long outputIndex =
 	  GetCellIndex(tmp.GetLabel()) - initialHiddenExpressions;
-        long index = promptIndex;
         if (promptIndex >= 0)
 	  {
+	    long index = promptIndex;
 	    if (outputIndex < 0 && initialHiddenExpressions < outputExpressions) {
 	      // input index, but no output index means the expression was
 	      // evaluated, but produced no result
@@ -5197,7 +5195,7 @@ bool Worksheet::ExportToHTML(const wxString &file) {
     // Handle a code cell
     if (tmp.GetGroupType() == GC_TYPE_CODE) {
       // Handle the label
-      Cell *out = tmp.GetLabel();
+      const Cell *out = tmp.GetLabel();
 
       if (out || (m_configuration->ShowCodeCells()))
         output << wxS("\n\n<!-- Code cell -->\n\n\n");
@@ -6901,7 +6899,7 @@ void Worksheet::ShowPoint(wxPoint point) {
   height -= wxSystemSettings::GetMetric(wxSYS_VTHUMB_Y);
   width -= wxSystemSettings::GetMetric(wxSYS_HTHUMB_X);
 
-  Configuration *configuration = m_configuration;
+  const Configuration *configuration = m_configuration;
   int fontsize_px =
     configuration->GetZoomFactor() * configuration->GetDefaultFontSize();
   if ((point.y - fontsize_px < view_y) ||

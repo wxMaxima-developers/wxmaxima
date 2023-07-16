@@ -36,7 +36,7 @@ class ArtProvider
 {
 public:
   ArtProvider(){}
-  static wxBitmap GetImage(wxWindow *win, wxString name, int width, unsigned char *data,
+  static wxBitmap GetImage(wxWindow *win, wxString name, int width, const unsigned char *data,
                            size_t dataLen);
 };
 

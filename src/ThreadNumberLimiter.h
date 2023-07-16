@@ -36,7 +36,7 @@
 class ThreadNumberLimiter
 {
 public:
-  ThreadNumberLimiter(bool *running = NULL);
+  explicit ThreadNumberLimiter(bool *running = NULL);
   ~ThreadNumberLimiter();
 private:
   static int m_numberOfBackgroundThreads;
