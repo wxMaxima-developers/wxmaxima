@@ -985,9 +985,8 @@ bool Worksheet::RecalculateIfNeeded(bool timeout) {
     }
   else
     {
-      bool recalculated = false;
       for (auto &cell : OnList(m_recalculateStart)) {
-	recalculated |= cell.Recalculate();
+	m_adjustWorksheetSizeNeeded |= cell.Recalculate();
 	if(cell.GetNext() == NULL)
 	  {
 	    wxLogMessage(_("Recalculated the whole worksheet at once => Updating its size"));
