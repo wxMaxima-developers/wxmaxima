@@ -1378,8 +1378,8 @@ bool Configuration::FontRendersChar(wxChar ch, const wxFont &font) {
 
   bool retval = FontDisplaysChar(ch, font) &&
     CharVisiblyDifferent(ch, wxS('\1'), font) &&
-    CharVisiblyDifferent(ch, wxS('\uF299'), font) &&
-    CharVisiblyDifferent(ch, wxS('\uF000'), font);
+    CharVisiblyDifferent(ch, L'\uF299', font) &&
+    CharVisiblyDifferent(ch, L'\uF000', font);
 
   if (retval)
     m_renderableChars[fontName] += wxString(ch);

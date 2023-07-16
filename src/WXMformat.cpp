@@ -173,7 +173,7 @@ namespace Format {
 	     << cell->GetEditable()->ToString() << '\n'
 	     << Headers.GetEnd(groupType) << '\n';
       if (cell->GetLabel() && cell->GetLabel()->GetType() == MC_TYPE_IMAGE) {
-	ImgCell *image = dynamic_cast<ImgCell *>(cell->GetLabel());
+	const ImgCell *image = dynamic_cast<ImgCell *>(cell->GetLabel());
 	retval << Headers.GetStart(WXM_IMAGE) << '\n'
 	       << image->GetExtension() << '\n'
 	       << wxBase64Encode(image->GetCompressedImage()) << '\n'
@@ -430,8 +430,7 @@ namespace Format {
 		commentLines.Add(tokenizer.GetNextToken());
 
 	      // Interpret the comment block
-	      bool ok = tree.Append(TreeFromWXM(commentLines, config));
-	      if (!ok)
+	      if (!tree.Append(TreeFromWXM(commentLines, config)))
 		tree.Append(
 			    std::make_unique<GroupCell>(config, GC_TYPE_TEXT, wxmLines));
 	      wxmLines = wxEmptyString;
@@ -486,8 +485,7 @@ namespace Format {
 	commentLines.Add(tokenizer.GetNextToken());
 
       // Interpret the comment block
-      bool ok = tree.Append(TreeFromWXM(commentLines, config));
-      if (!ok)
+      if (!tree.Append(TreeFromWXM(commentLines, config)))
 	tree.Append(std::make_unique<GroupCell>(config, GC_TYPE_TEXT, wxmLines));
       wxmLines = wxEmptyString;
     }
