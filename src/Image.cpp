@@ -848,7 +848,16 @@ void Image::LoadImage(wxString image, std::shared_ptr<wxFileSystem> filesystem,
       file.Close();
       if (ok && remove) {
         SuppressErrorDialogs logNull;
-        wxRemoveFile(image);
+        if(!wxRemoveFile(image))
+        {
+          wxMilliSleep(300);
+          if(!wxRemoveFile(image))
+          {
+            wxMilliSleep(300);
+            wxRemoveFile(image);
+            wxLogMessage("File %s cannot be deleted.", image.mb_str());
+          }
+        }
       }
     }
   }
