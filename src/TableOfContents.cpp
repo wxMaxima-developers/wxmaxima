@@ -251,8 +251,8 @@ void TableOfContents::UpdateTableOfContents(GroupCell *pos) {
 	for (const auto &cell : OnList(m_tree->get())) {
 	  if ((it != m_displayedGroupCells.end()) && (&cell == *it))
 	    {
-	      it++;
-	      cursorItem++;
+	      ++it;
+	      ++cursorItem;
 	    }
 	  if (&cell == pos) {
 	    if(cursorItem < 0)
