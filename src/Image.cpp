@@ -847,7 +847,6 @@ void Image::LoadImage(wxString image, std::shared_ptr<wxFileSystem> filesystem,
 
       file.Close();
       if (ok && remove) {
-        SuppressErrorDialogs logNull;
         if(!wxRemoveFile(image))
         {
           wxMilliSleep(300);

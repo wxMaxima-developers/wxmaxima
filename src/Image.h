@@ -255,7 +255,7 @@ private:
     );
   void LoadGnuplotSource_Backgroundtask2(
     std::unique_ptr<ThreadNumberLimiter> limiter,
-    wxString gnuplotFilename, wxString dataFilename);
+    wxString gnuplotFile, wxString dataFile);
   void LoadGnuplotSource_Backgroundtask(
     wxInputStream *source,
     wxInputStream *data);
