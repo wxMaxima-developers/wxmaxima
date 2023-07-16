@@ -22,6 +22,7 @@
 
 #include "VariablesPane.h"
 #include <memory>
+#include <algorithm>
 
 Variablespane::Variablespane(wxWindow *parent, wxWindowID id)
   : wxPanel(parent, id) {
