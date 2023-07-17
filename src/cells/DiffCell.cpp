@@ -98,7 +98,7 @@ void DiffCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
 wxString DiffCell::ToString() const {
   if (IsBrokenIntoLines())
     return wxEmptyString;
-  Cell *tmp = m_baseCell->GetNext();
+  const Cell *tmp = m_baseCell->GetNext();
   wxString s = wxS("'diff(");
   if (tmp != NULL)
     s += tmp->ListToString();
@@ -110,7 +110,7 @@ wxString DiffCell::ToString() const {
 wxString DiffCell::ToMatlab() const {
   if (IsBrokenIntoLines())
     return wxEmptyString;
-  Cell *tmp = m_baseCell->GetNext();
+  const Cell *tmp = m_baseCell->GetNext();
   wxString s = wxS("'diff(");
   if (tmp != NULL)
     s += tmp->ListToMatlab();

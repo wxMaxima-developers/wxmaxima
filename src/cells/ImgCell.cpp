@@ -232,7 +232,7 @@ wxSize ImgCell::ToImageFile(wxString filename) {
 
 static void writeHex(void *data, size_t length, wxStringBuffer::CharType *out) {
   using char_t = std::remove_reference_t<decltype(*out)>;
-  char *const end = static_cast<char *>(data) + length;
+  const char *const end = static_cast<char *>(data) + length;
   for (char *in = static_cast<char *>(data); in != end; in++) {
     char c = *in;
     unsigned char const h = (c >> 4) & 0xF, l = c & 0xF;

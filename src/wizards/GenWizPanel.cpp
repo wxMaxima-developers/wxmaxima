@@ -157,11 +157,11 @@ void GenWizPanel::NewWizard(
   m_manualKeywords.clear();
   while (it < commandRule.end()) {
     while ((it < commandRule.end()) && (!wxIsalpha(*it)) && (!(*it == '_')))
-      it++;
+      ++it;
     wxString word;
     while (((it < commandRule.end()) && (wxIsalpha(*it))) || ((*it == '_'))) {
       word += *it;
-      it++;
+      ++it;
     }
     if (!m_maximaManual->GetHelpfileAnchorName(word).IsEmpty())
       m_manualKeywords[word] = 1;

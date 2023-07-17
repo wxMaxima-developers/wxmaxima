@@ -113,7 +113,7 @@ private:
   void Recalculate(Cell *tree) const;
 
   void BreakLines(Cell *tree) const;
-  void BreakUpCells(Cell *tree);
+  void BreakUpCells(Cell *tree) const;
 
   //! The name of a temp file we create while calculating the output size.
   wxString m_tempFilename;

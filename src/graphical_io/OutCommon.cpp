@@ -149,7 +149,7 @@ void OutCommon::GetMaxPoint(Cell *tree, int *width, int *height) const {
   bool bigSkip = false;
   bool firstCell = true;
 
-  for (Cell &tmp : OnDrawList(tree)) {
+  for (const Cell &tmp : OnDrawList(tree)) {
     if (tmp.IsBrokenIntoLines())
       continue;
 
@@ -178,7 +178,7 @@ void OutCommon::Draw(Cell *tree) {
   int drop = tree->GetMaxDrop();
 
   for (Cell &tmp : OnDrawList(tree)) {
-    Cell *const next = tmp.GetNext();
+    const Cell *const next = tmp.GetNext();
     if (!tmp.IsBrokenIntoLines()) {
       tmp.Draw(point, m_recalculationDc, m_recalculationDc);
       if (next && next->BreakLineHere()) {
@@ -210,7 +210,7 @@ void OutCommon::Draw(Cell *tree) {
   m_ppi.y *= m_scale;
 }
 
-void OutCommon::BreakUpCells(Cell *tree) {
+void OutCommon::BreakUpCells(Cell *tree) const {
   int fullWidth = m_fullWidth * m_scale;
   auto fontsize = m_thisconfig.GetDefaultFontSize();
   auto mathFontsize = m_thisconfig.GetMathFontSize();

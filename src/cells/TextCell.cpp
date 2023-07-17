@@ -510,8 +510,6 @@ void TextCell::SetFont(wxDC *dc, AFontSize fontsize) {
     }
   
   const wxFont &font = GetFont(fontsize);
-  if(!dc)
-    return;
   if(!dc->GetFont().IsSameAs(font))
     dc->SetFont(font);
 }
