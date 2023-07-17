@@ -1167,7 +1167,7 @@ private:
 
       T_DEST *dest_ptr = &dynamic_cast<T_DEST &>(*src.get());
 
-      src.release();
+      (void) src.release();
       return std::unique_ptr<T_DEST>(dest_ptr);
     }
   wxString m_statusText;

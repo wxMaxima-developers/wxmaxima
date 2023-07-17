@@ -79,7 +79,7 @@ public:
     {
       T *ptr = dynamic_cast<T *>(m_head.get());
       if (ptr) {
-        m_head.release();
+        (void) m_head.release();
         m_tail = {};
         m_lastAppended = {};
       } else

@@ -52,7 +52,7 @@ public:
   constexpr CachedInteger &operator=(const CachedInteger &) = default;
   constexpr bool IsValid() const { return m_value != invalid; }
   constexpr bool IsInvalid() const { return m_value == invalid; }
-  constexpr void Invalidate() { m_value = invalid; }
+  constexpr void Invalidate() const { m_value = invalid; }
   operator T() const { return Get(); }
   T Get() const
     {
