@@ -730,7 +730,7 @@ $(function() {
 <div class="line"><a name="l01167"></a><span class="lineno"> 1167</span>&#160; </div>
 <div class="line"><a name="l01168"></a><span class="lineno"> 1168</span>&#160;      T_DEST *dest_ptr = &amp;<span class="keyword">dynamic_cast&lt;</span>T_DEST &amp;<span class="keyword">&gt;</span>(*src.get());</div>
 <div class="line"><a name="l01169"></a><span class="lineno"> 1169</span>&#160; </div>
-<div class="line"><a name="l01170"></a><span class="lineno"> 1170</span>&#160;      src.release();</div>
+<div class="line"><a name="l01170"></a><span class="lineno"> 1170</span>&#160;      (void) src.release();</div>
 <div class="line"><a name="l01171"></a><span class="lineno"> 1171</span>&#160;      <span class="keywordflow">return</span> std::unique_ptr&lt;T_DEST&gt;(dest_ptr);</div>
 <div class="line"><a name="l01172"></a><span class="lineno"> 1172</span>&#160;    }</div>
 <div class="line"><a name="l01173"></a><span class="lineno"> 1173</span>&#160;  wxString m_statusText;</div>
