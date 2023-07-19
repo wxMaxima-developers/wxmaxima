@@ -203,8 +203,17 @@ Configuration::Configuration(wxDC *dc, InitOpt options) :
 void Configuration::SetWorkSheet(wxWindow *workSheet)
 {
   m_workSheet = workSheet;
-  m_worksheetDC = std::unique_ptr<wxClientDC>(new wxClientDC(workSheet));
-  m_dc = m_worksheetDC.get();
+  if(workSheet)
+    {
+      m_worksheetDC = std::unique_ptr<wxClientDC>(new wxClientDC(workSheet));
+      m_dc = m_worksheetDC.get();
+    }
+  else
+    {
+      if(m_dc == m_worksheetDC.get())
+	m_dc = NULL;
+      m_worksheetDC.reset();
+    }
 }
 
 wxSize Configuration::GetPPI() const {

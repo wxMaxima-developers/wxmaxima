@@ -914,7 +914,7 @@ void Cell::ResetSize() {
   m_maxDrop.Invalidate();
 }
 
-void Cell::ResetCellListSizes() {
+void Cell::ResetCellListSizes() const {
   m_fullWidth.Invalidate();
   m_lineWidth.Invalidate();
   m_maxCenter.Invalidate();

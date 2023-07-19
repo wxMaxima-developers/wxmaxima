@@ -469,7 +469,7 @@ public:
   void ResetSize();
 
   //! Mark the line and cell list widths and heights as "to be calculated"
-  void ResetCellListSizes();
+  void ResetCellListSizes() const;
 
   //! Mark the line and cell list widths and heights as "to be calculated"
   void ResetCellListSizesList();
@@ -1036,7 +1036,7 @@ protected:
 
   CellPointers *GetCellPointers() const;
 
-  void InvalidateMaxDrop() { m_maxDrop.Invalidate(); }
+  void InvalidateMaxDrop() const { m_maxDrop.Invalidate(); }
 
 private:
   void RecalcCenterListAndMaxDropCache();

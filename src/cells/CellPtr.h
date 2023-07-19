@@ -167,6 +167,8 @@ class Observed
       to_MASK = 3,
       to_MASK_OUT = uintptr_t(-intptr_t(to_MASK + 1)),
     };
+    // TODO: Does this make sense? "| to_Observed" is "| 0". Is this a bug or is
+    // it meant as a readable zero?
     static uintptr_t ReprFor(Observed *ptr) noexcept
       { return reinterpret_cast<uintptr_t>(ptr) | to_Observed; }
     static uintptr_t ReprFor(ControlBlock *ptr) noexcept
@@ -663,7 +665,7 @@ std::unique_ptr<Derived> dynamic_unique_ptr_cast(std::unique_ptr<Base>&& p) noex
 {
   auto d = dynamic_cast<Derived *>(p.get());
   if (d)
-    p.release();
+    (void) p.release();
   return std::unique_ptr<Derived>(d);
   // Note: We don't move the deleter, since it's not special.
 }
