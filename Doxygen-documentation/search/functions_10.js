@@ -41,7 +41,7 @@ var searchData=
   ['reportmultipleredraws_2684',['ReportMultipleRedraws',['../classConfiguration.html#a295a632df3661ad823bd4f8b604e6224',1,'Configuration']]],
   ['requestredraw_2685',['RequestRedraw',['../classWorksheet.html#af9dad24c6f633dd774c5ca28824e5d64',1,'Worksheet::RequestRedraw(wxRect rect)'],['../classWorksheet.html#ad1d57afe66434741be1ee0e5861d3738',1,'Worksheet::RequestRedraw(GroupCell *start=NULL)']]],
   ['rereadconfig_2686',['ReReadConfig',['../classwxMaximaFrame.html#a35e463f4ea5872f9e9a052c02447bbd6',1,'wxMaximaFrame']]],
-  ['resetcelllistsizes_2687',['ResetCellListSizes',['../classCell.html#a2219ed2924638c9b28ff88903146f389',1,'Cell']]],
+  ['resetcelllistsizes_2687',['ResetCellListSizes',['../classCell.html#a740ba67dd9b4a57ea10dd97e85495805',1,'Cell']]],
   ['resetcelllistsizeslist_2688',['ResetCellListSizesList',['../classCell.html#a2da825740b9d4f2d05f6723f549ac07e',1,'Cell']]],
   ['resetdata_2689',['ResetData',['../classCell.html#a9789abced025e68b3e3b09d19e7eee89',1,'Cell']]],
   ['resetdatalist_2690',['ResetDataList',['../classCell.html#ae831a1a1e392eb4b99a34dbb7ddb3bb0',1,'Cell']]],
