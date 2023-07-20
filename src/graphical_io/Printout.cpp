@@ -260,7 +260,10 @@ void Printout::SetupData() {
   //  if (marginX < m_configuration.Scale_Px(1 + m_configuration.GetBaseIndent()))
   //    marginX = m_configuration.Scale_Px(1 + m_configuration.GetBaseIndent());
   //}
-  m_configuration.SetIndent(0);
+  if(m_configuration.PrintBrackets())
+    m_configuration.SetIndent(0);
+  else
+    m_configuration.SetIndent(-GetCellBracketWidth());
   // Inform the output routines that we are printing
   m_configuration.SetPrinting(true);
   m_configuration.LineWidth_em(10000);
