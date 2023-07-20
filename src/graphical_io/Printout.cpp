@@ -263,7 +263,7 @@ void Printout::SetupData() {
   if(m_configuration.PrintBrackets())
     m_configuration.SetIndent(0);
   else
-    m_configuration.SetIndent(-GetCellBracketWidth());
+    m_configuration.SetIndent(-m_configuration.GetCellBracketWidth());
   // Inform the output routines that we are printing
   m_configuration.SetPrinting(true);
   m_configuration.LineWidth_em(10000);
