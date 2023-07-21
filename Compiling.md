@@ -72,7 +72,8 @@ the newer version of CMake in the commands above).
 On macOS X you most probably need the command-line compiler one can tell
 Xcode to install. Additionally wxWidgets needs to be installed, which can
 be done using Homebrew, Fink or MacPorts and should be named wxWidgets or
-wxMac there.
+wxMac there. XCode versions older than version 13.0 have problems compiling
+wxMaxima.
 
 Additional information about building on macOS:
 
