@@ -1,3 +1,14 @@
+# Current
+ * Printing: Made the page margins configurable (#1787)
+ * Printing: We no more print page headers (#1791)
+ * Printing: Printing no more omits labels (#1507)
+ * Many stability fixes
+ * More Consistent worksheet scaling ans sizes (#1780)
+ * Correctly save the color settings (#1789)
+ * Correctly check the numeric and other menu items
+ * The cursor no more disappears (#1788)
+ * Updated italian translation
+
 # 23.05.1
  * Updated the Russian and Italian translation.
  * Process the command line option --maxima=<str>.
