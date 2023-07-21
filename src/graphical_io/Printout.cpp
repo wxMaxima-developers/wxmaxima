@@ -90,14 +90,10 @@ bool Printout::OnPrintPage(int num) {
   if (!group)
     return true;
 
-  // Print the header
-  dc->SetDeviceOrigin(0, 0);
-  PrintHeader(num, dc);
-
   // Print the page contents
   dc->SetDeviceOrigin(
 		      m_configuration.PrintMargin_Left(),
-		      m_configuration.PrintMargin_Top() + GetHeaderHeight() -
+		      m_configuration.PrintMargin_Top() -
 		      m_pages[num - 1]->GetRect(true).GetTop() +
 		      m_configuration.Scale_Px(m_tree->GetConfiguration()->GetGroupSkip()));
 
@@ -145,12 +141,11 @@ void Printout::BreakPages() {
     return;
 
   int pageWidth, pageHeight;
-  int headerHeight = GetHeaderHeight();
 
   GetPageSizePixels(&pageWidth, &pageHeight);
 
   wxCoord maxContentHeight = pageHeight - m_configuration.PrintMargin_Top() -
-    m_configuration.PrintMargin_Bot() -headerHeight;
+    m_configuration.PrintMargin_Bot();
 
   // The 1st page starts at the beginning of the document
   GroupCell *group = m_tree.get();
@@ -282,48 +277,6 @@ void Printout::GetPageInfo(int *minPage, int *maxPage, int *fromPage,
 void Printout::OnPreparePrinting() {
   m_configuration.SetRecalcContext(*GetDC());
   SetupData();
-}
-
-int Printout::GetHeaderHeight() {
-  wxDC *dc = GetDC();
-  int width, height;
-
-  dc->SetFont(wxFont(m_configuration.Scale_Px(10), wxFONTFAMILY_MODERN,
-                     wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL));
-  dc->GetTextExtent(GetTitle(), &width, &height);
-  return height + m_configuration.Scale_Px(12);
-}
-
-void Printout::PrintHeader(int pageNum, wxDC *dc) {
-  int page_width, page_height;
-  int title_width, title_height;
-  int pageWidth, pageHeight;
-
-  GetPageSizePixels(&pageWidth, &pageHeight);
-
-  dc->SetTextForeground(wxColour(wxS("grey")));
-  dc->SetPen(
-	     wxPen(wxS("light grey"), m_configuration.Scale_Px(1), wxPENSTYLE_SOLID));
-
-  dc->SetFont(wxFont(m_configuration.Scale_Px(10), wxFONTFAMILY_MODERN,
-                     wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL));
-  dc->GetTextExtent(GetTitle(), &title_width, &title_height);
-  wxString page =
-    wxString::Format(wxS("%d / %li"), pageNum, (long)m_pages.size());
-  dc->GetTextExtent(page, &page_width, &page_height);
-
-  dc->DrawText(GetTitle(), m_configuration.PrintMargin_Left(),
-	       m_configuration.PrintMargin_Top());
-  dc->DrawText(page, pageWidth - page_width - m_configuration.PrintMargin_Left(),
-	       m_configuration.PrintMargin_Top());
-
-  dc->DrawLine(m_configuration.PrintMargin_Left(),
-	       m_configuration.PrintMargin_Top() + title_height + m_configuration.Scale_Px(3),
-               pageWidth - m_configuration.PrintMargin_Right(),
-               m_configuration.PrintMargin_Top() + title_height + m_configuration.Scale_Px(3));
-
-  dc->SetTextForeground(wxColour(wxS("black")));
-  dc->SetPen(wxPen(wxS("black"), 1, wxPENSTYLE_SOLID));
 }
 
 void Printout::Recalculate() {

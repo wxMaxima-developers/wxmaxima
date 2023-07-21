@@ -65,10 +65,6 @@ public:
 
   virtual void OnPreparePrinting() override;
 
-  int GetHeaderHeight();
-
-  void PrintHeader(int pageNum, wxDC *dc);
-
 private:
   wxString m_title;
   std::unique_ptr<GroupCell> m_tree;
