@@ -484,6 +484,7 @@ static const Configuration::EscCodeContainer &EscCodes() {
 }
 
 void Configuration::InitStyles() {
+  m_showInputLabels = true;
   std::fill(std::begin(m_styles), std::end(m_styles), Style{});
 
   Style defaultStyle;
@@ -1165,6 +1166,7 @@ void Configuration::ReadStyles(const wxString &file) {
   long tmpLong;
   if (config->Read(wxS("mathfontsize"), &tmpLong) && tmpLong > 1)
     m_styles[TS_MATH].SetFontSize(AFontSize(tmpLong));
+  config->Read(wxS("showInputLabels"), &m_showInputLabels);
   wxString tmpString;
   if (config->Read(wxS("Style/Math/fontname"), &tmpString) &&
       tmpString.size() > 1)
@@ -1510,6 +1512,7 @@ void Configuration::WriteStyles(wxConfigBase *config) {
   std::uniform_int_distribution<long> urd(std::numeric_limits<long>::min(), std::numeric_limits<long>::max());
   m_configId = urd(m_eng);
   config->Write(wxS("configID"), m_configId);
+  config->Write(wxS("showInputLabels"), m_showInputLabels);
   config->Write(wxS("wrapLatexMath"), m_wrapLatexMath);
   config->Write(wxS("allowNetworkHelp"), m_allowNetworkHelp);
   config->Write(wxS("exportContainsWXMX"), m_exportContainsWXMX);

@@ -65,10 +65,14 @@ void LabelCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
     if (GetTextStyle() != TS_ASCIIMATHS)
       padding = MC_TEXT_PADDING;
 
-    SetTextColor(dc);
-    SetFont(dc, m_fontSize_Scaled);
-    dc->DrawText(m_displayedText, point.x + padding,
-                 point.y - m_center + MC_TEXT_PADDING);
+    // Hide input labels if the user wants to
+    if((GetType() != MC_TYPE_MAIN_PROMPT) || (m_configuration->ShowInputLabels()))
+      {
+	SetTextColor(dc);
+	SetFont(dc, m_fontSize_Scaled);
+	dc->DrawText(m_displayedText, point.x + padding,
+		     point.y - m_center + MC_TEXT_PADDING);
+      }
   }
 }
 

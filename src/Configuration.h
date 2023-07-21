@@ -656,6 +656,9 @@ public:
   showLabels GetLabelChoice() const
     { return m_showLabelChoice; }
 
+  bool ShowInputLabels() const {return m_showInputLabels;}
+  void ShowInputLabels(bool show) {m_showInputLabels = show;}
+  
   bool InvertBackground() const {return m_invertBackground;}
   void InvertBackground(bool invert){ m_invertBackground = invert; }
 
@@ -979,6 +982,7 @@ private:
   mathDisplayMode m_displayMode = display_2d;
   using CellRedrawTrace = std::vector<const Cell*>;
   static bool m_debugMode;
+  bool m_showInputLabels;
   long m_wizardTab;
   bool m_usePartialForDiff;
   bool m_maximaUsesHhtmlBrowser;
