@@ -102,7 +102,7 @@ var searchData=
   ['getppi_2410',['GetPPI',['../classConfiguration.html#a28bc5b2357e309d3c71ff43c58e21bd7',1,'Configuration::GetPPI()'],['../classImage.html#a17a564a02896978036e1070a91602a57',1,'Image::GetPPI()']]],
   ['getprevious_2411',['GetPrevious',['../classCell.html#a1c1c37050471f229ffb39b0c321e671b',1,'Cell::GetPrevious()'],['../classEditorCell.html#a13db4f3ce976c93769ed39e0c10af4bb',1,'EditorCell::GetPrevious()'],['../classGroupCell.html#af26df85640ad3e9df0c43b427dba22fb',1,'GroupCell::GetPrevious()']]],
   ['getprinting_2412',['GetPrinting',['../classConfiguration.html#aa71e8052dccf4e1c732b3e738415d868',1,'Configuration']]],
-  ['getrecalcdc_2413',['GetRecalcDC',['../classConfiguration.html#a93795ef9d2ea39cab8ed57da9f0eeb59',1,'Configuration']]],
+  ['getrecalcdc_2413',['GetRecalcDC',['../classConfiguration.html#a5bff55fbfebd2265ec6620034e730d81',1,'Configuration']]],
   ['getrect_2414',['GetRect',['../classCell.html#a2f7416c87bf13e37367ceb256805db06',1,'Cell::GetRect()'],['../classGroupCell.html#a5ce94d5adb8176267439335240927526',1,'GroupCell::GetRect()']]],
   ['getscaledsize_2415',['GetScaledSize',['../classOutCommon.html#a3431e70b2cc4b086174f76bed1600ced',1,'OutCommon']]],
   ['getscreenconfig_2416',['GetScreenConfig',['../classOutCommon.html#ab18b7e923f604f0ac706c33c5531b983',1,'OutCommon']]],
