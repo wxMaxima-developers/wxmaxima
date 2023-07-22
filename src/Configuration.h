@@ -253,7 +253,7 @@ public:
     { return m_zoomFactor; }
 
   //! Get a drawing context suitable for size calculations
-  wxDC *GetRecalcDC()
+  wxDC *GetRecalcDC() const
     { return m_dc; }
 
   void SetRecalcDC(wxDC *dc)
@@ -288,7 +288,6 @@ public:
         return m_indent;
     }
 
-  void SetPPI(wxSize ppi){m_ppi = ppi;}
   /*! Get the resolution 
 
     During recalculation the drawing context doesn't know the display's resolution
@@ -977,8 +976,6 @@ private:
   static bool FontDisplaysChar(wxChar ch, const wxFont &font = *wxNORMAL_FONT);
   //! True if drawing the char this button displays differs visibly from otherChar
   static bool CharVisiblyDifferent(wxChar ch, wxChar otherChar, const wxFont &font = *wxNORMAL_FONT);
-  //! The ppi rate if we don't have a worksheet that provides a current ppi rate
-  wxSize m_ppi = wxSize(-1, -1);
   mathDisplayMode m_displayMode = display_2d;
   using CellRedrawTrace = std::vector<const Cell*>;
   static bool m_debugMode;

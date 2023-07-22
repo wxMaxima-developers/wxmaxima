@@ -286,7 +286,6 @@ void Printout::Recalculate() {
   // Don't take the ppi rate from the worksheet but use a fixed one instead
   m_configuration.SetWorkSheet(NULL);
   m_configuration.SetRecalcContext(*GetDC());
-  m_configuration.SetPPI(GetDC()->GetPPI());
 
   int pageWidth, pageHeight;
   GetPageSizePixels(&pageWidth, &pageHeight);

@@ -217,25 +217,27 @@ void Configuration::SetWorkSheet(wxWindow *workSheet)
 }
 
 wxSize Configuration::GetPPI() const {
-  if (GetWorkSheet()) {
-    wxSize ppi;
+  wxSize ppi;
+  if(GetRecalcDC())
+    {
+      if(GetRecalcDC()->IsOk())
+	ppi = GetRecalcDC()->GetPPI();
+    }
 #if wxCHECK_VERSION(3, 1, 1)
-    wxDisplay display;
-
-    int display_idx = wxDisplay::GetFromWindow(GetWorkSheet());
-    if (display_idx < 0)
-      ppi = wxSize(72, 72);
-    else
-      ppi = wxDisplay(display_idx).GetPPI();
-#else
-    ppi = wxGetDisplayPPI();
+  if((ppi.x < 10 ) || (ppi.y < 10 ))
+    {
+      if (GetWorkSheet()) {
+	wxDisplay display;
+	
+	int display_idx = wxDisplay::GetFromWindow(GetWorkSheet());
+	if (display_idx >= 0)
+	  ppi = wxDisplay(display_idx).GetPPI();
+      }
+    }
 #endif
-    if ((ppi.x <= 10) || (ppi.y < 10))
-      ppi = wxSize(72, 72);
-
-    return ppi;
-  } else
-    return m_ppi;
+  if((ppi.x < 10 ) || (ppi.y < 10 ))
+    ppi = wxSize(96, 96);
+  return ppi;
 }
 
 void Configuration::ResetAllToDefaults(InitOpt options) {
