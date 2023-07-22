@@ -68,7 +68,10 @@ bool Printout::HasPage(int num) {
 }
 
 bool Printout::OnPrintPage(int num) {
+  wxLogMessage(_("Printout: Request to print page %li"), (long) num);
   if ((unsigned)num > m_pages.size())
+    return false;
+  if (num < 0)
     return false;
   //  wxBusyInfo busyInfo(wxString::Format(_("Printing page %i..."),num));
   wxDC *dc = GetDC();
@@ -91,11 +94,17 @@ bool Printout::OnPrintPage(int num) {
     return true;
 
   // Print the page contents
-  dc->SetDeviceOrigin(
-		      m_configuration.PrintMargin_Left(),
-		      m_configuration.PrintMargin_Top() -
-		      m_pages[num - 1]->GetRect(true).GetTop() +
-		      m_configuration.Scale_Px(m_tree->GetConfiguration()->GetGroupSkip()));
+  wxPoint deviceOrigin(
+		       m_configuration.PrintMargin_Left(),
+		       m_configuration.PrintMargin_Top() -
+		       m_pages[num - 1]->GetRect(true).GetTop() +
+		       m_configuration.Scale_Px(m_tree->GetConfiguration()->GetGroupSkip()));
+  wxLogMessage(_("Printout: Setting the device origin to %lix%li"),
+	       (long) deviceOrigin.x,
+	       (long) deviceOrigin.y
+	       );
+  dc->SetDeviceOrigin(deviceOrigin.x, deviceOrigin.y);
+
 
   Cell *end = NULL;
   wxCoord startpoint;
@@ -136,7 +145,7 @@ bool Printout::OnBeginDocument(int startPage, int endPage) {
 }
 
 void Printout::BreakPages() {
-  m_configuration.SetRecalcContext(*GetDC());
+  SetupData();
   if (m_tree == NULL)
     return;
 
@@ -174,12 +183,12 @@ void Printout::BreakPages() {
         if ((gr.GetOutput()) &&
             (gr.GetOutput()->GetRect(true).GetTop() - pageStart <
              maxContentHeight)) {
-          wxLogMessage("Page %li: Adding a partial GroupCell!",
+          wxLogMessage("Printout: Page %li: Adding a partial GroupCell!",
 		       (long)m_pages.size());
           {
             Cell *out = gr.GetOutput();
             if (out->GetRect(true).GetBottom() - pageStart > maxContentHeight) {
-              wxLogMessage("Page %li: Page break after input.",
+              wxLogMessage("Printout: Page %li: Page break after input.",
 			   (long)m_pages.size());
               m_pages.push_back(gr.GetOutput());
             }
@@ -187,7 +196,7 @@ void Printout::BreakPages() {
               pageStart = m_pages[m_pages.size() - 1]->GetRect(true).GetTop();
               if (out->GetRect(true).GetBottom() - pageStart >
                   maxContentHeight) {
-                wxLogMessage("Page %li: Page break in the output",
+                wxLogMessage("Printout: Page %li: Page break in the output",
 					      (long)m_pages.size());
                 m_pages.push_back(out);
               }
@@ -219,15 +228,12 @@ void Printout::SetupData() {
   // printer the scaling factor is 1.0.
   wxSize printPPI;
   printPPI = GetDC()->GetPPI();
-  if (printPPI.x < 1)
-    printPPI.x = 96;
-  if (printPPI.y < 1)
-    printPPI.y = 96;
+  wxLogMessage(_("Printout: Print ppi: %lix%li"), (long)printPPI.x, (long)printPPI.y);
 
   double scaleFactor = printPPI.x / DPI_REFERENCE *
     m_tree->GetConfiguration()->PrintScale();
   m_tree->GetConfiguration()->GetRecalcDC()->SetUserScale(scaleFactor, scaleFactor);
-  GetDC()->SetUserScale(scaleFactor, scaleFactor);
+  wxLogMessage(_("Printout: Scalefactor: %lix%li"), (long)scaleFactor, (long)scaleFactor);
   m_configuration.SetZoomFactor_temporarily(1.0);
   
   // wxSize screenPPI;
@@ -239,9 +245,9 @@ void Printout::SetupData() {
   //   wxString("Printer Parameters"));
   // dialog.ShowModal();
 
+  // Handle page width and height
   int pageWidth, pageHeight;
   GetPageSizePixels(&pageWidth, &pageHeight);
-
   m_configuration.SetClientWidth(
 				 pageWidth - m_configuration.PrintMargin_Left() -
 				 m_configuration.PrintMargin_Right() -
