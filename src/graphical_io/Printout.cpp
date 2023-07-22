@@ -40,12 +40,13 @@
 
 Printout::Printout(wxString title, GroupCell *tree, double scaleFactor)
   : wxPrintout(title), m_configuration(GetDC(), Configuration::temporary),
-    m_configPointer(&m_configuration) {
+    m_configPointer(&m_configuration),
+    m_printing(&m_configuration)
+{
   m_configuration.LineWidth_em(10000);
 
   // Don't take the ppi rate from the worksheet
   m_configuration.SetWorkSheet(NULL);
-
   m_configuration.ClipToDrawRegion(false);
 
   if (tree) {
@@ -54,35 +55,37 @@ Printout::Printout(wxString title, GroupCell *tree, double scaleFactor)
     auto copy = tree->CopyList();
     m_tree = std::move(copy);
     m_tree->SetConfigurationList(m_configPointer);
-
     m_scaleFactor = scaleFactor;
   }
 }
 
-Printout::~Printout() { DestroyTree(); }
-
 bool Printout::HasPage(int num) {
-  if ((num >= 0) && (static_cast<unsigned int>(num) <= m_pages.size()))
+  // Num starts counting with 1, m_pages[n] starts counting with n=0 
+  if ((num > 0) && (static_cast<unsigned int>(num) <= m_pages.size()))
     return true;
   return false;
 }
 
 bool Printout::OnPrintPage(int num) {
   wxLogMessage(_("Printout: Request to print page %li"), (long) num);
+  // Num starts counting with 1, m_pages[n] starts counting with n=0 
   if ((unsigned)num > m_pages.size())
     return false;
-  if (num < 0)
+  if (num <= 0)
     return false;
   //  wxBusyInfo busyInfo(wxString::Format(_("Printing page %i..."),num));
   wxDC *dc = GetDC();
   dc->SetBackground(*wxWHITE_BRUSH);
   dc->Clear();
 
+  // Set the canvas size
   int pageWidth, pageHeight;
   GetPageSizePixels(&pageWidth, &pageHeight);
-  m_configuration.SetCanvasSize(wxSize(pageWidth - m_configuration.PrintMargin_Left() -
+  m_configuration.SetCanvasSize(wxSize(pageWidth -
+				       m_configuration.PrintMargin_Left() -
 				       m_configuration.PrintMargin_Right(),
-				       pageHeight - m_configuration.PrintMargin_Top() -
+				       pageHeight -
+				       m_configuration.PrintMargin_Top() -
 				       m_configuration.PrintMargin_Bot()));
 				
   GroupCell *group = m_pages[num - 1]->GetGroup();
@@ -93,7 +96,8 @@ bool Printout::OnPrintPage(int num) {
   if (!group)
     return true;
 
-  // Print the page contents
+  // Move the origin so the cell we want to print first appears on the top
+  // of our page
   wxPoint deviceOrigin(
 		       m_configuration.PrintMargin_Left(),
 		       m_configuration.PrintMargin_Top() -
@@ -105,17 +109,20 @@ bool Printout::OnPrintPage(int num) {
 	       );
   dc->SetDeviceOrigin(deviceOrigin.x, deviceOrigin.y);
 
-
+  // Print the page contents
   Cell *end = NULL;
   wxCoord startpoint;
   wxCoord endpoint;
   startpoint = m_pages[num - 1]->GetRect(true).GetTop();
-  endpoint = startpoint + 2 * pageHeight;
 
-  if ((m_pages.size() > (unsigned)num) && (m_pages[num])) {
+  if (m_pages.size() > (unsigned)num) {
     endpoint = m_pages[num]->GetRect(true).GetTop() - 1;
     end = m_pages[num];
   }
+  else {
+    endpoint = startpoint + pageHeight;
+  }
+    
   dc->DestroyClippingRegion();
   wxCoord len = endpoint - startpoint;
   dc->SetClippingRegion(0, startpoint, pageWidth, len);
@@ -132,22 +139,21 @@ bool Printout::OnPrintPage(int num) {
 
     group = group->GetNext();
   }
-
-  wxPen pen = *(wxThePenList->FindOrCreatePen(*wxRED, 10, wxPENSTYLE_SOLID));
   return true;
 }
 
 bool Printout::OnBeginDocument(int startPage, int endPage) {
-  m_configuration.SetRecalcContext(*GetDC());
   if (!wxPrintout::OnBeginDocument(startPage, endPage))
     return false;
+  SetupData();
   return true;
 }
 
 void Printout::BreakPages() {
-  SetupData();
   if (m_tree == NULL)
     return;
+
+  SetupData();
 
   int pageWidth, pageHeight;
 
@@ -306,4 +312,3 @@ void Printout::Recalculate() {
   m_tree->UpdateYPositionList();
 }
 
-void Printout::DestroyTree() { m_tree.reset(); }

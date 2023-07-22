@@ -43,12 +43,6 @@ class Printout : public wxPrintout
 public:
   Printout(wxString title, GroupCell *tree, double scaleFactor);
 
-  ~Printout();
-
-  void DestroyTree();
-
-  void DestroyTree(GroupCell *tree);
-
   void SetupData();
 
   void BreakPages();
@@ -72,6 +66,8 @@ private:
   Configuration m_configuration;
   Configuration *m_configPointer;
   double m_scaleFactor;
+  // Sets Configuration::Printing() to true while we print
+  Printing m_printing;
 };
 
 #endif // MATHPRINTOUT_H
