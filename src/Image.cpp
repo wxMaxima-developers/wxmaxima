@@ -948,7 +948,7 @@ void Image::LoadImage_Backgroundtask(std::unique_ptr<ThreadNumberLimiter> limite
                 wxIMAGE_RESOLUTION_CM)
               resolution *= 2.54;
           }
-          if (resolution > 50)
+          if (resolution > 10)
             m_ppi = resolution;
         }
       } else {
