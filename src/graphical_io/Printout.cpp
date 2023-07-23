@@ -28,7 +28,7 @@
 */
 
 //! Bitmaps are scaled down if the resolution of the DC is too low.
-#define DPI_REFERENCE 96.0
+#define DPI_REFERENCE 300
 
 #include "Printout.h"
 #include "Worksheet.h"
@@ -125,6 +125,9 @@ bool Printout::OnPrintPage(int num) {
     
   dc->DestroyClippingRegion();
   wxCoord len = endpoint - startpoint;
+  wxLogMessage(_("Printout: Printing the region %li-%li"),
+	       (long) startpoint,
+	       (long) endpoint);
   dc->SetClippingRegion(0, startpoint, pageWidth, len);
 
   while (group && (group->GetGroupType() != GC_TYPE_PAGEBREAK)) {
@@ -143,9 +146,9 @@ bool Printout::OnPrintPage(int num) {
 }
 
 bool Printout::OnBeginDocument(int startPage, int endPage) {
+  m_configuration.SetRecalcContext(*GetDC());
   if (!wxPrintout::OnBeginDocument(startPage, endPage))
     return false;
-  SetupData();
   return true;
 }
 
@@ -218,8 +221,6 @@ void Printout::BreakPages() {
 
 void Printout::SetupData() {
   m_configuration.SetRecalcContext(*GetDC());
-  //  SetUserScale(1/DCSCALE,
-  //               1/DCSCALE);
   // on MSW according to
   // https://groups.google.com/forum/#!topic/wx-users/QF_W4g3Oe98 the
   // wxFont::SetPointSize is scaled relative to the screen DPI rate in order to
@@ -235,14 +236,15 @@ void Printout::SetupData() {
   wxLogMessage(_("Printout: Print ppi: %lix%li"), (long)printPPI.x, (long)printPPI.y);
 
   double scaleFactor = printPPI.x / DPI_REFERENCE *
-    m_tree->GetConfiguration()->PrintScale();
-  m_tree->GetConfiguration()->GetRecalcDC()->SetUserScale(scaleFactor, scaleFactor);
-  wxLogMessage(_("Printout: Scalefactor: %lix%li"), (long)scaleFactor, (long)scaleFactor);
-  m_configuration.SetZoomFactor_temporarily(1.0);
+    m_configuration.PrintScale();
+  wxLogMessage(_("Printout: Scalefactor: %ex%e"),
+	       m_configuration.PrintScale(),
+	       m_configuration.PrintScale());
+  m_configuration.SetZoomFactor_temporarily(scaleFactor);
   
   // wxSize screenPPI;
-  // screenPPI = m_tree->GetConfiguration()->GetDC()->GetPPI();
-  // double oldZoomFactor = m_tree->GetConfiguration()->GetZoomFactor();
+  // screenPPI = m_configuration.GetDC()->GetPPI();
+  // double oldZoomFactor = m_configuration.GetZoomFactor();
   // wxMessageDialog dialog(NULL,
   //   wxString::Format(wxS("screenPPI.x=%i,\nprintPPI.x=%i\nzoomFactor=%f\nUserScale.x=%f"),
   //     screenPPI.x, printPPI.x, oldZoomFactor, userScale_x),
