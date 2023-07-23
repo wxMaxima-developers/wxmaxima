@@ -131,10 +131,7 @@ bool Printout::OnPrintPage(int num) {
   dc->SetClippingRegion(0, startpoint, pageWidth, len);
 
   while (group && (group->GetGroupType() != GC_TYPE_PAGEBREAK)) {
-    // The following line seems to mysteriously fix the "subsequent text
-    // cells aren't printed" problem on linux.
-    // No Idea why, though.
-    dc->SetPen(wxPen(*wxBLACK, 1, wxPENSTYLE_SOLID));
+    dc->SetPen(*wxTRANSPARENT_PEN);
     group->Draw(group->GetGroup()->GetCurrentPoint(), dc, dc);
 
     if (end && (group == end->GetGroup()))
