@@ -115,7 +115,7 @@ bool Printout::OnPrintPage(int num) {
   wxCoord endpoint;
   startpoint = m_pages[num - 1]->GetRect(true).GetTop();
 
-  if (m_pages.size() > (unsigned)num) {
+  if (m_pages.size() > (unsigned)num) && (m_pages[num]){
     endpoint = m_pages[num]->GetRect(true).GetTop() - 1;
     end = m_pages[num];
   }
