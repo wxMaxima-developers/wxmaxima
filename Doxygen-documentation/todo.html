@@ -70,8 +70,6 @@ $(function() {
 <dd><p class="startdd"><a class="anchor" id="_todo000020"></a>Replace this by a C++17 construct when we switch to C++17 </p>
 <p class="enddd"><a class="anchor" id="_todo000011"></a>Replace this by a C++17 construct when we switch to C++17  </p>
 </dd>
-<dt>Global <a class="el" href="classCell.html#a5fe726e0175194a4f8b4cc4298d90c79">Cell::SetIsExponent</a>  ()</dt>
-<dd><a class="anchor" id="_todo000001"></a>Does it make sense that we don't set the flag for sub-cells of the current cell? What if the exponent contains a parenthesis with a fraction inside?  </dd>
 <dt>Global <a class="el" href="classCell.html#a4757d78d98b087acde5716901652fd61">Cell::SetValue</a>  (const wxString &amp;WXUNUSED(text))</dt>
 <dd><a class="anchor" id="_todo000002"></a>Do we ever use this function?  </dd>
 <dt>Global <a class="el" href="classCellList.html#a95b498550738955189a8609fa7e658d8">CellList::SpliceInAfter</a>  (<a class="el" href="classCell.html" title="The base class all cell types the worksheet can consist of are derived from.">Cell</a> *where, std::unique_ptr&lt; Cell &gt; &amp;&amp;head, <a class="el" href="classCell.html" title="The base class all cell types the worksheet can consist of are derived from.">Cell</a> *last=nullptr)</dt>
@@ -80,6 +78,8 @@ $(function() {
 <dd><a class="anchor" id="_todo000004"></a> This function is deprecated. It is provided temporarily to support porting to unique_ptr-based <a class="el" href="classCell.html" title="The base class all cell types the worksheet can consist of are derived from.">Cell</a> ownership. It should be removed after the porting is done.  </dd>
 <dt>Class <a class="el" href="classEditorCell.html">EditorCell</a>  </dt>
 <dd><a class="anchor" id="_todo000005"></a>Draw only tokens that are in the redraw region.  </dd>
+<dt>Global <a class="el" href="classCell.html#a5fe726e0175194a4f8b4cc4298d90c79">Cell::SetIsExponent</a>  ()</dt>
+<dd><a class="anchor" id="_todo000001"></a>Does it make sense that we don't set the flag for sub-cells of the current cell? What if the exponent contains a parenthesis with a fraction inside?  </dd>
 <dt>Global <a class="el" href="classEditorCell.html#a6c48e8aacb5855c1346a80cf5e20408e">EditorCell::TabExpand</a>  (const wxString &amp;input_, long posInLine)</dt>
 <dd><a class="anchor" id="_todo000006"></a>Implement the actual TAB expansion  </dd>
 <dt>Global <a class="el" href="classMathParser.html#ad10265ea446b1b75a90c7222fd1fe2a7">MathParser::MathParser</a>  (<a class="el" href="classConfiguration.html" title="The configuration storage for the current worksheet.">Configuration</a> *cfg, const wxString &amp;zipfile={})</dt>
