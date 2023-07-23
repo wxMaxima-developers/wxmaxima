@@ -28,7 +28,7 @@
 */
 
 //! Bitmaps are scaled down if the resolution of the DC is too low.
-#define DPI_REFERENCE 300
+#define DPI_REFERENCE 96
 
 #include "Printout.h"
 #include "Worksheet.h"
