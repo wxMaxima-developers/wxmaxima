@@ -80,7 +80,7 @@ bool Printout::OnPrintPage(int num) {
 
   // Set the canvas size
   int pageWidth, pageHeight;
-  GetPageSizePixels(&pageWidth, &pageHeight);
+  dc->GetSize(&pageWidth, &pageHeight);
   m_configuration.SetCanvasSize(wxSize(pageWidth -
 				       m_configuration.PrintMargin_Left() -
 				       m_configuration.PrintMargin_Right(),
