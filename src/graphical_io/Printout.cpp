@@ -168,18 +168,19 @@ void Printout::BreakPages() {
       continue;
     }
 
+    wxCoord pageHeight = gr.GetRect(true).GetBottom() - pageStart;
     // Add complete GroupCells as long as they fit on the page
-    if (((gr.GetRect(true).GetBottom() - pageStart > canvasSize.y)) ||
+    if ((pageHeight > canvasSize.y) ||
         (&gr == m_pages[m_pages.size() - 1])) {
       if (!gr.GetOutput()) {
-        if (((gr.GetRect(true).GetBottom() - pageStart > canvasSize.y)))
+        if (((pageHeight > canvasSize.y)))
           m_pages.push_back(&gr);
       } else {
-        // Drawing a cell assigns its output positions
+        // Drawing a cell causes its output positions to be calculated
         gr.Recalculate();
         gr.Draw(gr.GetCurrentPoint(), GetDC(), GetDC());
 
-        if ((gr.GetOutput()) &&
+        if ((gr.GetOutput() != NULL) &&
             (gr.GetOutput()->GetRect(true).GetTop() - pageStart <
              canvasSize.y)) {
           wxLogMessage("Printout: Page %li: Adding a partial GroupCell!",
