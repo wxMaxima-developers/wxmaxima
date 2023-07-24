@@ -81,13 +81,14 @@ bool Printout::OnPrintPage(int num) {
   // Set the canvas size
   int pageWidth, pageHeight;
   dc->GetSize(&pageWidth, &pageHeight);
-  m_configuration.SetCanvasSize(wxSize(pageWidth -
-				       m_configuration.PrintMargin_Left() -
-				       m_configuration.PrintMargin_Right(),
-				       pageHeight -
-				       m_configuration.PrintMargin_Top() -
-				       m_configuration.PrintMargin_Bot()));
-				
+  pageWidth -= m_configuration.PrintMargin_Left() +
+    m_configuration.PrintMargin_Right();
+  pageHeight -= m_configuration.PrintMargin_Top() +
+    m_configuration.PrintMargin_Bot();
+  m_configuration.SetCanvasSize(wxSize(pageWidth,pageHeight));
+  wxLogMessage(_("printOut: Setting the page size to (%li,%li)"),
+		 (long) pageWidth,
+		 (long) pageHeight);
   GroupCell *group = m_pages[num - 1]->GetGroup();
   if (!group)
     return true;
@@ -152,13 +153,8 @@ bool Printout::OnBeginDocument(int startPage, int endPage) {
 void Printout::BreakPages() {
   if (m_tree == NULL)
     return;
+  wxSize canvasSize = m_configuration.GetCanvasSize();
 
-  int pageWidth, pageHeight;
-
-  GetPageSizePixels(&pageWidth, &pageHeight);
-
-  wxCoord maxContentHeight = pageHeight - m_configuration.PrintMargin_Top() -
-    m_configuration.PrintMargin_Bot();
 
   // The 1st page starts at the beginning of the document
   GroupCell *group = m_tree.get();
@@ -174,10 +170,10 @@ void Printout::BreakPages() {
     }
 
     // Add complete GroupCells as long as they fit on the page
-    if (((gr.GetRect(true).GetBottom() - pageStart > maxContentHeight)) ||
+    if (((gr.GetRect(true).GetBottom() - pageStart > canvasSize.y)) ||
         (&gr == m_pages[m_pages.size() - 1])) {
       if (!gr.GetOutput()) {
-        if (((gr.GetRect(true).GetBottom() - pageStart > maxContentHeight)))
+        if (((gr.GetRect(true).GetBottom() - pageStart > canvasSize.y)))
           m_pages.push_back(&gr);
       } else {
         // Drawing a cell assigns its output positions
@@ -186,12 +182,12 @@ void Printout::BreakPages() {
 
         if ((gr.GetOutput()) &&
             (gr.GetOutput()->GetRect(true).GetTop() - pageStart <
-             maxContentHeight)) {
+             canvasSize.y)) {
           wxLogMessage("Printout: Page %li: Adding a partial GroupCell!",
 		       (long)m_pages.size());
           {
             Cell *out = gr.GetOutput();
-            if (out->GetRect(true).GetBottom() - pageStart > maxContentHeight) {
+            if (out->GetRect(true).GetBottom() - pageStart > canvasSize.y) {
               wxLogMessage("Printout: Page %li: Page break after input.",
 			   (long)m_pages.size());
               m_pages.push_back(gr.GetOutput());
@@ -199,7 +195,7 @@ void Printout::BreakPages() {
             while (out) {
               pageStart = m_pages[m_pages.size() - 1]->GetRect(true).GetTop();
               if (out->GetRect(true).GetBottom() - pageStart >
-                  maxContentHeight) {
+                  canvasSize.y) {
                 wxLogMessage("Printout: Page %li: Page break in the output",
 					      (long)m_pages.size());
                 m_pages.push_back(out);
@@ -248,17 +244,13 @@ void Printout::SetupData() {
   //   wxString("Printer Parameters"));
   // dialog.ShowModal();
 
-  // Handle page width and height
   int pageWidth, pageHeight;
-  GetPageSizePixels(&pageWidth, &pageHeight);
-  m_configuration.SetClientWidth(
-				 pageWidth - m_configuration.PrintMargin_Left() -
-				 m_configuration.PrintMargin_Right() -
-				 m_configuration.Scale_Px(printPPI.y) // Some additional margin to compensate for
-				 // title and section indent
-				 - m_configuration.Scale_Px(m_configuration.GetBaseIndent()));
-  m_configuration.SetClientHeight(pageHeight - m_configuration.PrintMargin_Top() -
-				  m_configuration.PrintMargin_Bot());
+  GetDC()->GetSize(&pageWidth, &pageHeight);
+  pageWidth -= m_configuration.PrintMargin_Left() +
+    m_configuration.PrintMargin_Right();
+  pageHeight -= m_configuration.PrintMargin_Top() +
+    m_configuration.PrintMargin_Bot();
+  m_configuration.SetCanvasSize(wxSize(pageWidth,pageHeight));
 
   //  if (m_configuration.PrintBrackets()) {
   //  if (marginX < m_configuration.Scale_Px(1 + m_configuration.GetBaseIndent()))
@@ -268,8 +260,6 @@ void Printout::SetupData() {
     m_configuration.SetIndent(0);
   else
     m_configuration.SetIndent(-m_configuration.GetCellBracketWidth());
-  // Inform the output routines that we are printing
-  m_configuration.SetPrinting(true);
   m_configuration.LineWidth_em(10000);
   Recalculate();
   BreakPages();
