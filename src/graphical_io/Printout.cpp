@@ -132,7 +132,6 @@ bool Printout::OnPrintPage(int num) {
   dc->SetClippingRegion(0, startpoint, pageWidth, len);
 
   while (group && (group->GetGroupType() != GC_TYPE_PAGEBREAK)) {
-    dc->SetPen(*wxTRANSPARENT_PEN);
     group->Draw(group->GetGroup()->GetCurrentPoint(), dc, dc);
 
     if (end && (group == end->GetGroup()))
