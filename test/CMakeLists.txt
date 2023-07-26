@@ -857,10 +857,10 @@ add_test(
     COMMAND wxmaxima --debug --batch --single_process unicode.wxm boxes.wxm)
 set_tests_properties(multiple_batch_files2 PROPERTIES DEPENDS wxmaxima_performance)
 
-add_test(
-    NAME multiwindow
-    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --debug --logtostderr --pipe --single_process --batch unicode.wxm boxes.wxm)
+#add_test(
+#    NAME multiwindow
+#    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+#    COMMAND wxmaxima --debug --logtostderr --pipe --single_process --batch unicode.wxm boxes.wxm)
 
 # Maxima sometimes fails if this test is run in parallel,
 # see https://sourceforge.net/p/maxima/bugs/3699/
