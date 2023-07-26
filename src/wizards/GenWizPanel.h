@@ -100,7 +100,6 @@ protected:
   WX_DECLARE_STRING_HASH_MAP(int, keywordHash);
 
   void OnSize(wxSizeEvent &event);
-  wxSizer *m_descriptionSizer;
   wxNotebook *m_notebook;
   void UpdateOutput();
   void OnParamChange(wxCommandEvent& event);

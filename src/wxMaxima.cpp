@@ -2424,8 +2424,7 @@ bool wxMaxima::StartMaxima(bool force) {
 }
 
 void wxMaxima::Interrupt(wxCommandEvent &WXUNUSED(event)) {
-  if (m_worksheet != NULL)
-    m_worksheet->CloseAutoCompletePopup();
+  m_worksheet->CloseAutoCompletePopup();
 
   if (m_pid < 0) {
     m_MenuBar->EnableItem(EventIDs::menu_interrupt_id, false);
@@ -5022,7 +5021,7 @@ void wxMaxima::OnIdle(wxIdleEvent &event) {
   // The draw context is created on displaying the worksheet for the 1st time
   // and after drawing the worksheet onIdle is called => we won't miss this
   // event when we wait for it here.
-  if ((m_worksheet != NULL) && (m_configuration.GetRecalcDC() != NULL)) {
+  if (m_configuration.GetRecalcDC() != NULL) {
     if (!m_openFile.IsEmpty()) {
       wxString file = m_openFile;
       m_openFile = wxEmptyString;
@@ -5122,8 +5121,7 @@ void wxMaxima::MenuCommand(const wxString &cmd) {
 ///--------------------------------------------------------------------------------
 
 void wxMaxima::PrintMenu(wxCommandEvent &event) {
-  if (m_worksheet != NULL)
-    m_worksheet->CloseAutoCompletePopup();
+  m_worksheet->CloseAutoCompletePopup();
 
   switch (event.GetId()) {
   case wxID_PRINT: {
@@ -5876,8 +5874,7 @@ bool wxMaxima::AutoSave() {
 }
 
 void wxMaxima::FileMenu(wxCommandEvent &event) {
-  if (m_worksheet != NULL)
-    m_worksheet->CloseAutoCompletePopup();
+  m_worksheet->CloseAutoCompletePopup();
 
   wxString expr = GetDefaultEntry();
   bool forceSave = false;
@@ -6065,8 +6062,7 @@ void wxMaxima::FileMenu(wxCommandEvent &event) {
 }
 
 void wxMaxima::EditMenu(wxCommandEvent &event) {
-  if (m_worksheet != NULL)
-    m_worksheet->CloseAutoCompletePopup();
+  m_worksheet->CloseAutoCompletePopup();
 
   // if (m_worksheet->m_findDialog != NULL) {
   //   event.Skip();
@@ -6617,8 +6613,7 @@ void wxMaxima::PropertiesMenu(wxCommandEvent &event) {
 }
 
 void wxMaxima::MaximaMenu(wxCommandEvent &event) {
-  if (m_worksheet != NULL)
-    m_worksheet->CloseAutoCompletePopup();
+  m_worksheet->CloseAutoCompletePopup();
 
   wxString expr = GetDefaultEntry();
   wxString b = wxS("\\");
@@ -7415,8 +7410,7 @@ void wxMaxima::MaximaMenu(wxCommandEvent &event) {
 }
 
 void wxMaxima::EquationsMenu(wxCommandEvent &event) {
-  if (m_worksheet != NULL)
-    m_worksheet->CloseAutoCompletePopup();
+  m_worksheet->CloseAutoCompletePopup();
 
   wxString expr = GetDefaultEntry();
   if(event.GetId() == EventIDs::menu_allroots){
@@ -7634,8 +7628,7 @@ void wxMaxima::EquationsMenu(wxCommandEvent &event) {
 
 
 void wxMaxima::MatrixMenu(wxCommandEvent &event) {
-  if (m_worksheet != NULL)
-    m_worksheet->CloseAutoCompletePopup();
+  m_worksheet->CloseAutoCompletePopup();
 
   wxString expr = GetDefaultEntry();
   if(event.GetId() == EventIDs::menu_csv2mat){
@@ -7962,8 +7955,7 @@ void wxMaxima::DrawMenu(wxCommandEvent &event) {
   UpdateDrawPane();
   int dimensions = m_drawPane->GetDimensions();
 
-  if (m_worksheet != NULL)
-    m_worksheet->CloseAutoCompletePopup();
+  m_worksheet->CloseAutoCompletePopup();
 
   wxString expr;
   if (dimensions < 2)
@@ -8137,8 +8129,7 @@ void wxMaxima::DrawMenu(wxCommandEvent &event) {
 }
 
 void wxMaxima::ListMenu(wxCommandEvent &event) {
-  if (m_worksheet != NULL)
-    m_worksheet->CloseAutoCompletePopup();
+  m_worksheet->CloseAutoCompletePopup();
 
   wxString expr = GetDefaultEntry();
   if(event.GetId() == EventIDs::menu_csv2list){ {
@@ -8338,7 +8329,6 @@ void wxMaxima::ListMenu(wxCommandEvent &event) {
 }
 
 void wxMaxima::SimplifyMenu(wxCommandEvent &event) {
-  if (m_worksheet != NULL)
     m_worksheet->CloseAutoCompletePopup();
 
   wxString expr = GetDefaultEntry();
@@ -8597,8 +8587,7 @@ void wxMaxima::SimplifyMenu(wxCommandEvent &event) {
 
 
 void wxMaxima::CalculusMenu(wxCommandEvent &event) {
-  if (m_worksheet != NULL)
-    m_worksheet->CloseAutoCompletePopup();
+  m_worksheet->CloseAutoCompletePopup();
 
   wxString expr = GetDefaultEntry();
   if(event.GetId() == EventIDs::menu_change_var){
@@ -8790,8 +8779,7 @@ void wxMaxima::CalculusMenu(wxCommandEvent &event) {
 
 
 void wxMaxima::PlotMenu(wxCommandEvent &event) {
-  if (m_worksheet != NULL)
-    m_worksheet->CloseAutoCompletePopup();
+  m_worksheet->CloseAutoCompletePopup();
 
   wxString expr = GetDefaultEntry();
   if((event.GetId() == EventIDs::button_plot3) ||
@@ -8851,8 +8839,7 @@ void wxMaxima::PlotMenu(wxCommandEvent &event) {
 
 
 void wxMaxima::NumericalMenu(wxCommandEvent &event) {
-  if (m_worksheet != NULL)
-    m_worksheet->CloseAutoCompletePopup();
+  m_worksheet->CloseAutoCompletePopup();
 
   wxString expr = GetDefaultEntry();
   wxString integralSign = wxS("∫");
@@ -9150,8 +9137,7 @@ void wxMaxima::OnWizardInsert(wxCommandEvent &WXUNUSED(event)) {
 }
 
 void wxMaxima::HelpMenu(wxCommandEvent &event) {
-  if (m_worksheet != NULL)
-    m_worksheet->CloseAutoCompletePopup();
+  m_worksheet->CloseAutoCompletePopup();
 
   wxString expr = GetDefaultEntry();
 
@@ -9278,8 +9264,7 @@ void wxMaxima::HelpMenu(wxCommandEvent &event) {
 
 
 void wxMaxima::StatsMenu(wxCommandEvent &event) {
-  if (m_worksheet != NULL)
-    m_worksheet->CloseAutoCompletePopup();
+  m_worksheet->CloseAutoCompletePopup();
 
   wxString expr = GetDefaultEntry();
 
@@ -10002,8 +9987,7 @@ void wxMaxima::PopupMenu(wxCommandEvent &event) {
 
 
 void wxMaxima::OnRecentDocument(wxCommandEvent &event) {
-  if (m_worksheet != NULL)
-    m_worksheet->CloseAutoCompletePopup();
+  m_worksheet->CloseAutoCompletePopup();
 
   wxString file = m_recentDocuments.Get(event.GetId() - EventIDs::menu_recent_document_0);
 
@@ -10029,8 +10013,7 @@ void wxMaxima::OnRecentDocument(wxCommandEvent &event) {
 }
 
 void wxMaxima::OnRecentPackage(wxCommandEvent &event) {
-  if (m_worksheet != NULL)
-    m_worksheet->CloseAutoCompletePopup();
+  m_worksheet->CloseAutoCompletePopup();
 
   wxString file = m_recentPackages.Get(event.GetId() - EventIDs::menu_recent_package_0);
 #ifdef __WXMSW__
@@ -10040,7 +10023,6 @@ void wxMaxima::OnRecentPackage(wxCommandEvent &event) {
 }
 
 void wxMaxima::OnUnsavedDocument(wxCommandEvent &event) {
-  wxASSERT(m_worksheet != NULL);
   m_worksheet->CloseAutoCompletePopup();
 
   wxString file =
@@ -10456,8 +10438,7 @@ void wxMaxima::ReplaceSuggestion(wxCommandEvent &event) {
 }
 
 void wxMaxima::InsertMenu(wxCommandEvent &event) {
-  if (m_worksheet != NULL)
-    m_worksheet->CloseAutoCompletePopup();
+  m_worksheet->CloseAutoCompletePopup();
 
   GroupType type = GC_TYPE_CODE;
   bool output = false;
@@ -10777,8 +10758,7 @@ void wxMaxima::SliderEvent(wxScrollEvent &event) {
 }
 
 void wxMaxima::ShowPane(wxCommandEvent &event) {
-  if (m_worksheet != NULL)
-    m_worksheet->CloseAutoCompletePopup();
+  m_worksheet->CloseAutoCompletePopup();
 
   int id = event.GetId();
 
@@ -10794,14 +10774,12 @@ void wxMaxima::ShowPane(wxCommandEvent &event) {
 }
 
 void wxMaxima::OnChar(wxKeyEvent &event) {
-  if (m_worksheet != NULL)
-    m_worksheet->OnChar(event);
+  m_worksheet->OnChar(event);
   event.Skip();
 }
 
 void wxMaxima::OnKeyDown(wxKeyEvent &event) {
-  if (m_worksheet != NULL)
-    m_worksheet->OnKeyDown(event);
+  m_worksheet->OnKeyDown(event);
   event.Skip();
 }
 
@@ -11009,8 +10987,7 @@ void wxMaxima::OnMinimize(wxIconizeEvent &event) {
 }
 
 void wxMaxima::ChangeCellStyle(wxCommandEvent &WXUNUSED(event)) {
-  if (m_worksheet != NULL)
-    m_worksheet->CloseAutoCompletePopup();
+  m_worksheet->CloseAutoCompletePopup();
 
   if ((m_worksheet == NULL) || (m_worksheet->m_mainToolBar == NULL))
     return;

@@ -331,12 +331,14 @@ void Image::LoadGnuplotSource_Backgroundtask2(
     if (wxFileExists(dataFile)) {
       // Don't cache the data for unreasonably long files.
       wxStructStat strucStat;
-      wxStat(dataFile, &strucStat);
-      if (strucStat.st_size >
-          m_configuration->MaxGnuplotMegabytes() * 1000 * 1000) {
-        wxLogMessage(_("Too much gnuplot data => Not storing it in the worksheet"));
-        m_gnuplotData_Compressed.Clear();
-        return;
+      if(wxStat(dataFile, &strucStat) == 0)
+      {
+        if (strucStat.st_size >
+            m_configuration->MaxGnuplotMegabytes() * 1000 * 1000) {
+          wxLogMessage(_("Too much gnuplot data => Not storing it in the worksheet"));
+          m_gnuplotData_Compressed.Clear();
+          return;
+        }
       }
 
       wxFileInputStream source(gnuplotFile);

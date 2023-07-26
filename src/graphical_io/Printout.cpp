@@ -55,8 +55,8 @@ Printout::Printout(wxString title, GroupCell *tree, double scaleFactor)
     auto copy = tree->CopyList();
     m_tree = std::move(copy);
     m_tree->SetConfigurationList(m_configPointer);
-    m_scaleFactor = scaleFactor;
   }
+  m_scaleFactor = scaleFactor;
 }
 
 bool Printout::HasPage(int num) {

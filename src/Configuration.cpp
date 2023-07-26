@@ -1304,14 +1304,14 @@ void Configuration::WriteSettings(const wxString &file) {
                 m_maxClipbrd_BitmapMegabytes);
 
   WriteStyles(config);
-  if (file != wxEmptyString) {
-    config->Flush();
-    delete config;
-  }
   for (auto i : m_renderableChars)
     config->Write(wxS("renderability/good/") + i.first, i.second);
   for (auto i : m_nonRenderableChars)
     config->Write(wxS("renderability/bad/") + i.first, i.second);
+  if (file != wxEmptyString) {
+    config->Flush();
+    delete config;
+  }
 }
 
 wxFontWeight Configuration::IsBold(long st) const {
