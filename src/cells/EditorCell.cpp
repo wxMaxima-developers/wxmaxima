@@ -733,16 +733,13 @@ void EditorCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
 	   m_configuration->DefaultBackgroundColor()))
 	{
 	  wxBrush *br;
-	  wxPen *pen;
 	  br = wxTheBrushList->FindOrCreateBrush(m_configuration->EditorBackgroundColor());
-	  pen = wxThePenList->FindOrCreatePen(m_configuration->EditorBackgroundColor(),
-					      0, wxPENSTYLE_SOLID);
 	  dc->SetBrush(*br);
-	  dc->SetPen(*pen);
+	  dc->SetPen(*wxTRANSPARENT_PEN);
+	  auto width = m_configuration->GetCanvasSize().GetWidth() - rect.x;
+	  rect.SetWidth(width);
+	  dc->DrawRectangle(CropToUpdateRegion(rect));
 	}
-      auto width = m_configuration->GetCanvasSize().GetWidth() - rect.x;
-      rect.SetWidth(width);
-      dc->DrawRectangle(CropToUpdateRegion(rect));
     }
     SetFont(dc);
 
