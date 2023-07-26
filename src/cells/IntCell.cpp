@@ -86,8 +86,8 @@ void IntCell::MakeBreakUpCells() {
 void IntCell::Recalculate(AFontSize fontsize) {
   wxASSERT(fontsize.IsValid());
 
-  m_signHeight = Scale_Px(35 * m_configuration->GetZoomFactor());
-  m_signWidth = Scale_Px(18 * m_configuration->GetZoomFactor());
+  m_signHeight = Scale_Px(35);
+  m_signWidth = Scale_Px(18);
   if (m_signWidth < 4)
     m_signWidth = 4;
 
@@ -104,6 +104,9 @@ void IntCell::Recalculate(AFontSize fontsize) {
   } else {
     m_under->RecalculateList({MC_MIN_SIZE, fontsize - 5});
     m_over->RecalculateList({MC_MIN_SIZE, fontsize - 5});
+    if (m_intStyle == INT_DEF) {
+      m_signHeight = Scale_Px(35) + m_over->GetHeightList() + m_under->GetHeightList();
+    }
   }
 
   if (IsBrokenIntoLines()) {
@@ -115,11 +118,9 @@ void IntCell::Recalculate(AFontSize fontsize) {
       wxMax(m_over->GetFullWidth(), m_under->GetFullWidth()) +
       m_var->GetFullWidth() + Scale_Px(4);
     if (m_intStyle == INT_DEF) {
-      m_center = wxMax(m_over->GetHeightList() + Scale_Px(4) +
-		       m_signHeight / 2 - m_signHeight / 3,
+      m_center = wxMax(m_signHeight / 2,
                        m_base->GetCenterList());
-      m_height = m_center + wxMax(m_under->GetHeightList() + Scale_Px(4) +
-				  m_signHeight / 2 - m_signHeight / 3,
+      m_height = m_center + wxMax(m_signHeight / 2,
                                   m_base->GetMaxDrop());
     } else {
       m_center = wxMax(m_signHeight / 2, m_base->GetCenterList());
@@ -156,30 +157,16 @@ void IntCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
        sign.y + (m_signHeight - Scale_Px(1)) / 2 - m_signWidth / 4}};
 
     antialiassingDC->DrawSpline(7, points);
-    points[1] = {sign.x + m_signWCenter + m_signWidth / 4,
-      sign.y - (m_signHeight - Scale_Px(1.25)) / 2};
-    points[2] = {sign.x + m_signWCenter,
-      sign.y - (m_signHeight - Scale_Px(1)) / 2 +
-      2 * (m_signWidth / 4) - Scale_Px(.35)};
-    points[3] = {sign.x + m_signWCenter - Scale_Px(.5), sign.y};
-    points[4] = {sign.x + m_signWCenter,
-      sign.y + (m_signHeight - Scale_Px(1)) / 2 -
-      2 * (m_signWidth / 4) + Scale_Px(.35)};
-    points[5] = {sign.x + m_signWCenter - m_signWidth / 4,
-      sign.y + (m_signHeight - Scale_Px(1.25)) / 2};
-    antialiassingDC->DrawSpline(7, points);
     // line
 
     if (m_intStyle == INT_DEF) {
       under.x += m_signWidth;
-      under.y = point.y + m_signHeight / 2 + m_under->GetCenterList() +
-	Scale_Px(2) - m_signHeight / 3;
+      under.y = point.y + m_signHeight / 2 - m_under->GetMaxDrop();
       m_under->DrawList(under, dc, antialiassingDC);
 
       over.x += m_signWidth;
-
-      over.y = point.y - m_signHeight / 2 - m_over->GetMaxDrop() - Scale_Px(2) +
-	m_signHeight / 3;
+      
+      over.y = point.y - m_signHeight / 2 + m_over->GetHeightList() - m_over->GetCenterList();
       m_over->DrawList(over, dc, antialiassingDC);
 
       base.x += m_signWidth +
