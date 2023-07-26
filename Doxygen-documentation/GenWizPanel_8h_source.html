@@ -164,34 +164,33 @@ $(function() {
 <div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;  WX_DECLARE_STRING_HASH_MAP(<span class="keywordtype">int</span>, keywordHash);</div>
 <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160; </div>
 <div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;  <span class="keywordtype">void</span> OnSize(wxSizeEvent &amp;event);</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;  wxSizer *m_descriptionSizer;</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;  wxNotebook *m_notebook;</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;  <span class="keywordtype">void</span> UpdateOutput();</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;  <span class="keywordtype">void</span> OnParamChange(wxCommandEvent&amp; event);</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;  <span class="keywordtype">void</span> OnTextEnter(wxCommandEvent&amp; event);</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;  <span class="keywordtype">void</span> OnNotebookPageChange(wxBookCtrlEvent&amp; event);</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160; </div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;  std::vector&lt;BTextCtrl*&gt; m_textctrl;</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;  std::vector&lt;wxStaticText *&gt; m_label;</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;  wxButton *button_1;</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;  wxButton *button_2;</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;  wxContextHelpButton *m_helpButton;</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;  wxButton *m_insertButton;</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;  wxString m_commandRule;</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;  wxTextCtrl *m_output;</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;  wxString m_description;</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;  wxString m_descriptionToolTip;</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;  wxString m_title;</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;  <a class="code" href="classConfiguration.html">Configuration</a> *m_configuration;</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;  <a class="code" href="classMaximaManual.html">MaximaManual</a> *m_maximaManual;</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;  <span class="keywordtype">int</span> m_topicButtonID0;</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;  std::vector&lt;wxWindowIDRef&gt; m_topicButtonIDs;</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;  <span class="keywordtype">bool</span> m_ignorePageChange = <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;  keywordHash m_manualKeywords;</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;};</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160; </div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// GENWIZ_PANEL_H</span></div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;  wxNotebook *m_notebook;</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;  <span class="keywordtype">void</span> UpdateOutput();</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;  <span class="keywordtype">void</span> OnParamChange(wxCommandEvent&amp; event);</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;  <span class="keywordtype">void</span> OnTextEnter(wxCommandEvent&amp; event);</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;  <span class="keywordtype">void</span> OnNotebookPageChange(wxBookCtrlEvent&amp; event);</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160; </div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;  std::vector&lt;BTextCtrl*&gt; m_textctrl;</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;  std::vector&lt;wxStaticText *&gt; m_label;</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;  wxButton *button_1;</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;  wxButton *button_2;</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;  wxContextHelpButton *m_helpButton;</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;  wxButton *m_insertButton;</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;  wxString m_commandRule;</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;  wxTextCtrl *m_output;</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;  wxString m_description;</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;  wxString m_descriptionToolTip;</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;  wxString m_title;</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;  <a class="code" href="classConfiguration.html">Configuration</a> *m_configuration;</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;  <a class="code" href="classMaximaManual.html">MaximaManual</a> *m_maximaManual;</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;  <span class="keywordtype">int</span> m_topicButtonID0;</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;  std::vector&lt;wxWindowIDRef&gt; m_topicButtonIDs;</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;  <span class="keywordtype">bool</span> m_ignorePageChange = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;  keywordHash m_manualKeywords;</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;};</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160; </div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// GENWIZ_PANEL_H</span></div>
 <div class="ttc" id="aMaximaManual_8h_html"><div class="ttname"><a href="MaximaManual_8h.html">MaximaManual.h</a></div><div class="ttdoc">This file declares the class MaximaManual.</div></div>
 <div class="ttc" id="aclassConfiguration_html"><div class="ttname"><a href="classConfiguration.html">Configuration</a></div><div class="ttdoc">The configuration storage for the current worksheet.</div><div class="ttdef"><b>Definition:</b> Configuration.h:92</div></div>
 <div class="ttc" id="aclassGenWizPanel_html"><div class="ttname"><a href="classGenWizPanel.html">GenWizPanel</a></div><div class="ttdoc">A dockable, embeddable generic wizard.</div><div class="ttdef"><b>Definition:</b> GenWizPanel.h:42</div></div>
