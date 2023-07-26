@@ -100,10 +100,9 @@ bool Printout::OnPrintPage(int num) {
   // Move the origin so the cell we want to print first appears on the top
   // of our page
   wxPoint deviceOrigin(
-		       m_configuration.PrintMargin_Left(),
-		       m_configuration.PrintMargin_Top() -
-		       m_pages[num - 1]->GetRect(true).GetTop() +
-		       m_configuration.Scale_Px(m_tree->GetConfiguration()->GetGroupSkip()));
+		       -m_configuration.PrintMargin_Left(),
+		       -m_configuration.PrintMargin_Top() -
+		       m_pages[num - 1]->GetRect(true).GetTop());
   wxLogMessage(_("Printout: Setting the device origin to %lix%li"),
 	       (long) deviceOrigin.x,
 	       (long) deviceOrigin.y
@@ -131,12 +130,9 @@ bool Printout::OnPrintPage(int num) {
 	       (long) endpoint);
   dc->SetClippingRegion(0, startpoint, pageWidth, len);
 
-  while (group && (group->GetGroupType() != GC_TYPE_PAGEBREAK)) {
+  while (group && (group->GetGroupType() != GC_TYPE_PAGEBREAK) &&
+	 ((end == NULL) || (group != end->GetGroup()))) {
     group->Draw(group->GetGroup()->GetCurrentPoint(), dc, dc);
-
-    if (end && (group == end->GetGroup()))
-      break;
-
     group = group->GetNext();
   }
   return true;
@@ -154,61 +150,48 @@ void Printout::BreakPages() {
     return;
   wxSize canvasSize = m_configuration.GetCanvasSize();
 
+  std::vector <Cell*> breakingPoints;
+  for (GroupCell &gr : OnList(m_tree.get())) {
+    // Drawing a GroupCell makes it calculate the position of its output cells.
+    gr.Draw(gr.GetCurrentPoint(), GetDC(), GetDC());
+    // We can introduce a break after the input part of any group cell.
+    if(gr.GetPrompt())
+      breakingPoints.push_back(gr.GetPrompt());
 
+    // We can introduce a break after each line of output of any
+    // group cell.
+    Cell *out = gr.GetOutput();
+    if(out)
+      {
+	while(out)
+	  {
+	    if((out->BreakLineHere()) || (out->GetNext() == NULL))
+	      breakingPoints.push_back(out);
+	    out = out->GetNext();
+	  }	    
+      }
+  }
+    
   // The 1st page starts at the beginning of the document
   GroupCell *group = m_tree.get();
   m_pages.push_back(group);
 
   // Now see where the next pages should start
-  for (GroupCell &gr : OnList(m_tree.get())) {
-    wxCoord pageStart = m_pages[m_pages.size() - 1]->GetRect(true).GetTop();
-    // Handle pagebreak cells
-    if ((gr.GetGroupType() == GC_TYPE_PAGEBREAK) && (gr.GetNext())) {
-      m_pages.push_back(gr.GetNext());
-      continue;
-    }
-
-    wxCoord pageHeight = gr.GetRect(true).GetBottom() - pageStart;
-    // Add complete GroupCells as long as they fit on the page
-    if ((pageHeight > canvasSize.y) ||
-        (&gr == m_pages[m_pages.size() - 1])) {
-      if (!gr.GetOutput()) {
-        if (((pageHeight > canvasSize.y)))
-          m_pages.push_back(&gr);
-      } else {
-        // Drawing a cell causes its output positions to be calculated
-        gr.Recalculate();
-        gr.Draw(gr.GetCurrentPoint(), GetDC(), GetDC());
-
-        if ((gr.GetOutput() != NULL) &&
-            (gr.GetOutput()->GetRect(true).GetTop() - pageStart <
-             canvasSize.y)) {
-          wxLogMessage("Printout: Page %li: Adding a partial GroupCell!",
-		       (long)m_pages.size());
-          {
-            Cell *out = gr.GetOutput();
-            if (out->GetRect(true).GetBottom() - pageStart > canvasSize.y) {
-              wxLogMessage("Printout: Page %li: Page break after input.",
-			   (long)m_pages.size());
-              m_pages.push_back(gr.GetOutput());
-            }
-            while (out) {
-              pageStart = m_pages[m_pages.size() - 1]->GetRect(true).GetTop();
-              if (out->GetRect(true).GetBottom() - pageStart >
-                  canvasSize.y) {
-                wxLogMessage("Printout: Page %li: Page break in the output",
-					      (long)m_pages.size());
-                m_pages.push_back(out);
-              }
-              out = out->GetNextToDraw();
-              while (out && (!out->BreakLineHere()))
-                out = out->GetNextToDraw();
-            }
-          }
-        } else
-          m_pages.push_back(&gr);
+  wxCoord pageStart = 0;
+  
+  for (const auto &i : breakingPoints) {
+    wxCoord pageStart = m_pages[m_pages.size() - 1]->GetRect(true).GetBottom(); 
+    wxCoord pageHeight = i->GetRect(true).GetBottom() - pageStart;
+    if(i->GetNext())
+      pageHeight = i->GetNext()->GetRect(true).GetBottom() - pageStart;
+    wxLogMessage(_("Printout: PageStart=%li, PageHeight=%li, canvasSize=%li"),
+		 (long) pageStart,
+		 (long) pageHeight,
+		 (long) canvasSize.y);
+    if(pageHeight > canvasSize.y)
+      {
+	m_pages.push_back(i);
       }
-    }
   }
 }
 
