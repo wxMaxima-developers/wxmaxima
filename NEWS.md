@@ -2,6 +2,8 @@
  * Printing: Made the page margins configurable (#1787)
  * Printing: We no more print page headers (#1791)
  * Printing: Printing no more omits labels (#1507)
+ * Printing now uses a better pagebreak algorithm
+ * Less ugly integral signs
  * Many stability fixes
  * More Consistent worksheet scaling ans sizes (#1780)
  * Correctly save the color settings (#1789)
