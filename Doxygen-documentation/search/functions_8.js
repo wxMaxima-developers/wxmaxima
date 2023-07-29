@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['image_2462',['Image',['../classImage.html#aaa1a1ecd05aa79a052c3eb61cb1e764a',1,'Image::Image(Configuration *config, wxMemoryBuffer image, wxString type)'],['../classImage.html#a2462b18d6cd2f5009980fa2fef7bdcc0',1,'Image::Image(Configuration *config)'],['../classImage.html#a1846504a6a94d8a3f27a337176a82a71',1,'Image::Image(Configuration *config, wxString image, std::shared_ptr&lt; wxFileSystem &gt; filesystem, bool remove=true)'],['../classImage.html#a5914663cd2c7958ef99bad1c8d0b4a7c',1,'Image::Image(Configuration *config, const wxBitmap &amp;bitmap)']]],
+  ['image_2462',['Image',['../classImage.html#aaa1a1ecd05aa79a052c3eb61cb1e764a',1,'Image::Image(Configuration *config, wxMemoryBuffer image, wxString type)'],['../classImage.html#a2462b18d6cd2f5009980fa2fef7bdcc0',1,'Image::Image(Configuration *config)'],['../classImage.html#ad100c48ebe25263067dcd51b91c70187',1,'Image::Image(Configuration *config, wxString image, std::shared_ptr&lt; wxFileSystem &gt; &amp;filesystem, bool remove=true)'],['../classImage.html#a5914663cd2c7958ef99bad1c8d0b4a7c',1,'Image::Image(Configuration *config, const wxBitmap &amp;bitmap)']]],
   ['indentmaths_2463',['IndentMaths',['../classConfiguration.html#a6b462da78c1de14b200236724520ba2f',1,'Configuration']]],
   ['inevaluationqueue_2464',['InEvaluationQueue',['../classGroupCell.html#a9baabf290b054214b91f5ba60fd66714',1,'GroupCell']]],
   ['initstyles_2465',['InitStyles',['../classConfiguration.html#a9af08347ef09515dbf02e4f780588f65',1,'Configuration']]],

@@ -92,9 +92,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a6782000e0d3c9fd1400388dfa912fd7b"><td class="memItemLeft" align="right" valign="top"><a id="a6782000e0d3c9fd1400388dfa912fd7b"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>ImgCell</b> (<a class="el" href="classGroupCell.html">GroupCell</a> *group, <a class="el" href="classConfiguration.html">Configuration</a> *config, const wxMemoryBuffer &amp;image, const wxString &amp;type)</td></tr>
 <tr class="separator:a6782000e0d3c9fd1400388dfa912fd7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1e6f37a77f9fb533064889c1a23a88c9"><td class="memItemLeft" align="right" valign="top"><a id="a1e6f37a77f9fb533064889c1a23a88c9"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>ImgCell</b> (<a class="el" href="classGroupCell.html">GroupCell</a> *group, <a class="el" href="classConfiguration.html">Configuration</a> *config, const wxString &amp;image, std::shared_ptr&lt; wxFileSystem &gt; filesystem, bool remove=true)</td></tr>
-<tr class="separator:a1e6f37a77f9fb533064889c1a23a88c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ace05a1429c7ff48e243645748126af62"><td class="memItemLeft" align="right" valign="top"><a id="ace05a1429c7ff48e243645748126af62"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>ImgCell</b> (<a class="el" href="classGroupCell.html">GroupCell</a> *group, <a class="el" href="classConfiguration.html">Configuration</a> *config, const wxString &amp;image, std::shared_ptr&lt; wxFileSystem &gt; &amp;filesystem, bool remove=true)</td></tr>
+<tr class="separator:ace05a1429c7ff48e243645748126af62"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac61c2b05c70f216e02583b39c009dbad"><td class="memItemLeft" align="right" valign="top"><a id="ac61c2b05c70f216e02583b39c009dbad"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>ImgCell</b> (<a class="el" href="classGroupCell.html">GroupCell</a> *group, <a class="el" href="classConfiguration.html">Configuration</a> *config, const wxBitmap &amp;bitmap)</td></tr>
 <tr class="separator:ac61c2b05c70f216e02583b39c009dbad"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -112,13 +112,13 @@ const <a class="el" href="classCellTypeInfo.html">CellTypeInfo</a> &amp;&#160;</
 <a class="el" href="classImgCell.html">ImgCell</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classImgCell.html#a9c2eaa027c8658adaee3d64e79e537b1">operator=</a> (const <a class="el" href="classImgCell.html">ImgCell</a> &amp;)=delete</td></tr>
 <tr class="memdesc:a9c2eaa027c8658adaee3d64e79e537b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">This class can be derived from wxAccessible which has no copy constructor. <br /></td></tr>
 <tr class="separator:a9c2eaa027c8658adaee3d64e79e537b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad82e896888453a32f097936ebce787e0"><td class="memItemLeft" align="right" valign="top"><a id="ad82e896888453a32f097936ebce787e0"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classImgCell.html#ad82e896888453a32f097936ebce787e0">GnuplotSource</a> (wxString sourcefile, wxString datafile, std::shared_ptr&lt; wxFileSystem &gt; filesystem)</td></tr>
-<tr class="memdesc:ad82e896888453a32f097936ebce787e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tell the image which gnuplot files it was made from. <br /></td></tr>
-<tr class="separator:ad82e896888453a32f097936ebce787e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad1020b2999db4fd536cde564fdae3da0"><td class="memItemLeft" align="right" valign="top"><a id="ad1020b2999db4fd536cde564fdae3da0"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>CompressedGnuplotSource</b> (wxString sourcefile, wxString datafile, std::shared_ptr&lt; wxFileSystem &gt; filesystem)</td></tr>
-<tr class="separator:ad1020b2999db4fd536cde564fdae3da0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a19512f00d4e2e332ab1c9aa68056fbb8"><td class="memItemLeft" align="right" valign="top"><a id="a19512f00d4e2e332ab1c9aa68056fbb8"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classImgCell.html#a19512f00d4e2e332ab1c9aa68056fbb8">GnuplotSource</a> (wxString sourcefile, wxString datafile, std::shared_ptr&lt; wxFileSystem &gt; &amp;filesystem)</td></tr>
+<tr class="memdesc:a19512f00d4e2e332ab1c9aa68056fbb8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tell the image which gnuplot files it was made from. <br /></td></tr>
+<tr class="separator:a19512f00d4e2e332ab1c9aa68056fbb8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afbca57e721b4262e2b95f9a00912d289"><td class="memItemLeft" align="right" valign="top"><a id="afbca57e721b4262e2b95f9a00912d289"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>CompressedGnuplotSource</b> (wxString sourcefile, wxString datafile, std::shared_ptr&lt; wxFileSystem &gt; &amp;filesystem)</td></tr>
+<tr class="separator:afbca57e721b4262e2b95f9a00912d289"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aefb8bdaacf6d2957ca76e963a929a83e"><td class="memItemLeft" align="right" valign="top"><a id="aefb8bdaacf6d2957ca76e963a929a83e"></a>
 wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classImgCell.html#aefb8bdaacf6d2957ca76e963a929a83e">GnuplotSource</a> () const override</td></tr>
 <tr class="memdesc:aefb8bdaacf6d2957ca76e963a929a83e"><td class="mdescLeft">&#160;</td><td class="mdescRight">The name of the file with gnuplot commands that created this file. <br /></td></tr>
@@ -139,9 +139,9 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>GetOriginalWidth</b
 <tr class="memitem:a4b25d5e3f1b065b1cc2c47c19d4115a7"><td class="memItemLeft" align="right" valign="top"><a id="a4b25d5e3f1b065b1cc2c47c19d4115a7"></a>
 size_t&#160;</td><td class="memItemRight" valign="bottom"><b>GetOriginalHeight</b> () const override</td></tr>
 <tr class="separator:a4b25d5e3f1b065b1cc2c47c19d4115a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1bde153d88d5a069c1ae1d07dd072c3c"><td class="memItemLeft" align="right" valign="top"><a id="a1bde153d88d5a069c1ae1d07dd072c3c"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>ReloadImage</b> (const wxString &amp;image, std::shared_ptr&lt; wxFileSystem &gt; filesystem)</td></tr>
-<tr class="separator:a1bde153d88d5a069c1ae1d07dd072c3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5f5ec27ad82853cdc70d5ef12d3ab327"><td class="memItemLeft" align="right" valign="top"><a id="a5f5ec27ad82853cdc70d5ef12d3ab327"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>ReloadImage</b> (const wxString &amp;image, std::shared_ptr&lt; wxFileSystem &gt; &amp;filesystem)</td></tr>
+<tr class="separator:a5f5ec27ad82853cdc70d5ef12d3ab327"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afc11564f6cbb0a96322579f9c7da9f21"><td class="memItemLeft" align="right" valign="top"><a id="afc11564f6cbb0a96322579f9c7da9f21"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classImgCell.html#afc11564f6cbb0a96322579f9c7da9f21">CanExportSVG</a> () const override</td></tr>
 <tr class="memdesc:afc11564f6cbb0a96322579f9c7da9f21"><td class="mdescLeft">&#160;</td><td class="mdescRight">Can this image be exported in SVG format? <br /></td></tr>

@@ -95,7 +95,7 @@ var searchData=
   ['completesymbol_184',['CompleteSymbol',['../classAutoComplete.html#a1874ccc108257fb16cbfe2d2328a3e71',1,'AutoComplete']]],
   ['compositedataobject_185',['CompositeDataObject',['../classCompositeDataObject.html',1,'']]],
   ['compositedataobject_2eh_186',['CompositeDataObject.h',['../CompositeDataObject_8h.html',1,'']]],
-  ['compressedgnuplotsource_187',['CompressedGnuplotSource',['../classImage.html#ad7d01d1f2706c9f3a402abc143b33fb8',1,'Image']]],
+  ['compressedgnuplotsource_187',['CompressedGnuplotSource',['../classImage.html#a3bd1f03c240a2fb1f55cd8a40c5d24ba',1,'Image']]],
   ['configchanged_188',['ConfigChanged',['../classwxMaxima.html#af2f5e80d2d27151a20ffc5efd641bc4e',1,'wxMaxima']]],
   ['configdialogue_189',['ConfigDialogue',['../classConfigDialogue.html',1,'ConfigDialogue'],['../classConfigDialogue.html#a2f800127ac6769f5d1793834e91bf3b0',1,'ConfigDialogue::ConfigDialogue()']]],
   ['configdialogue_2eh_190',['ConfigDialogue.h',['../ConfigDialogue_8h.html',1,'']]],
