@@ -2784,7 +2784,8 @@ void wxMaxima::ReadFirstPrompt(wxString &data) {
   // Read this pid
   if (s < t)
     if(!data.SubString(s, t).ToLong(&m_pid))
-      wxLogMessage(_("Cannot interpret the numeric value of pid %s"), m_pid.mb_str());
+      wxLogMessage(_("Cannot interpret the numeric value of pid %s"),
+		   data.SubString(s, t).mb_str());
 
   if (m_pid > 0)
     m_MenuBar->EnableItem(EventIDs::menu_interrupt_id, true);
@@ -10841,21 +10842,24 @@ wxMaxima::VersionNumber::VersionNumber(const wxString &version)
 
   if (tokens.HasMoreTokens())
     {
-      if(!tokens.GetNextToken().ToLong(&m_major))
+      wxString token = tokens.GetNextToken();
+      if(!token.ToLong(&m_major))
 	wxLogMessage(_("Cannot interpret version number component %s"),
-		     m_major.mb_str());
+		     token.mb_str());
     }
   if (tokens.HasMoreTokens()) //-V581
     {
-      if(!tokens.GetNextToken().ToLong(&m_minor))
+      wxString token = tokens.GetNextToken();
+      if(!token.ToLong(&m_minor))
 	wxLogMessage(_("Cannot interpret version number component %s"),
-		     m_major.mb_str());
+		     token.mb_str());
     }
   if (tokens.HasMoreTokens()) //-V581
     {
-      if(!tokens.GetNextToken().ToLong(&m_patchlevel))
+      wxString token = tokens.GetNextToken();
+      if(!token.ToLong(&m_patchlevel))
 	wxLogMessage(_("Cannot interpret version number component %s"),
-		     m_major.mb_str());
+		     token.mb_str());
     }
 }
 
