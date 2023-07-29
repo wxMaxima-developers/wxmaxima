@@ -5093,12 +5093,12 @@ bool wxMaxima::UpdateDrawPane() {
         dimensions = 3;
     } else
       dimensions = 0;
-  }
 
-  if (m_drawDimensions_last != dimensions) {
-    m_drawPane->SetDimensions(dimensions);
-    m_drawDimensions_last = dimensions;
-    return true;
+    if (m_drawDimensions_last != dimensions) {
+      m_drawPane->SetDimensions(dimensions);
+      m_drawDimensions_last = dimensions;
+      return true;
+    }
   }
   return false;
 }

@@ -231,7 +231,10 @@ void ParenCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
     }
 
     if (!IsBrokenIntoLines())
-      m_innerCell->DrawList(innerCellPos, dc, antialiassingDC);
+      {
+	if(m_innerCell)
+	  m_innerCell->DrawList(innerCellPos, dc, antialiassingDC);
+      }
   }
 }
 
