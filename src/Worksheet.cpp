@@ -1910,8 +1910,9 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event) {
 				  EventIDs::popid_hide_tooltipMarker,
 				  _("Hide yellow tooltip marker for this cell"),
 				  _("Don't mark cells that contain tooltips in yellow"));
-        popupMenu.Check(EventIDs::popid_hide_tooltipMarker,
-                        group->GetSuppressTooltipMarker());
+	if(group)
+	  popupMenu.Check(EventIDs::popid_hide_tooltipMarker,
+			  group->GetSuppressTooltipMarker());
         popupMenu.AppendCheckItem(
 				  EventIDs::popid_hide_tooltipMarkerForThisMessage,
 				  _("Hide yellow tooltip marker for this message type"),
