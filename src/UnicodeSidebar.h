@@ -68,7 +68,7 @@ protected:
   
 private:
   bool m_initialized;
-  long m_charRightClickedOn;
+  long m_charRightClickedOn = 0;
   wxWindow *m_worksheet;
   wxGrid *m_grid;
   RegexCtrl *m_regex;

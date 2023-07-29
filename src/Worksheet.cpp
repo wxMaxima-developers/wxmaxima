@@ -5457,7 +5457,8 @@ bool Worksheet::ExportToHTML(const wxString &file) {
 						tmp.GetEditable()->ToString())
 		 << wxS("\n");
 	  output << wxS("<br/>\n");
-	  if (tmp.GetLabel()->GetType() == MC_TYPE_SLIDE) {
+	  if ((tmp.GetLabel()->GetType() == MC_TYPE_SLIDE) &&
+	      (tmp.GetOutput() != NULL)) {
 	    dynamic_cast<AnimationCell *>(tmp.GetOutput())
               ->ToGif(imgDir + wxS("/") + filename +
                       wxString::Format(wxS("_%d.gif"), count));

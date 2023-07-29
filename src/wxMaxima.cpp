@@ -7866,7 +7866,8 @@ void wxMaxima::MatrixMenu(wxCommandEvent &event) {
 	  }
 	  if (w != h)
 	    type = MatWiz::MATRIX_GENERAL;
-	  wxWindowPtr<MatWiz> mwiz(new MatWiz(this, -1, &m_configuration, _("Enter matrix"), type, w, h));
+	  wxWindowPtr<MatWiz> mwiz(new MatWiz(this, -1, &m_configuration, _("Enter matrix"),
+					      type, h, w));
 	  // wiz->Centre(wxBOTH);
 	  mwiz->ShowWindowModalThenDo([this,mwiz,cmd](int retcode) {
 	    if (retcode == wxID_OK) {
@@ -9883,7 +9884,8 @@ void wxMaxima::PopupMenu(wxCommandEvent &event) {
     MenuCommand(wxS("float(") + selection + wxS("), numer;"));
   }
   else if(event.GetId() == EventIDs::popid_image){ {
-      if (m_worksheet->GetSelectionStart() == m_worksheet->GetSelectionEnd())
+      if ((m_worksheet->GetSelectionStart() == m_worksheet->GetSelectionEnd()) &&
+	  (m_worksheet->GetSelectionStart() != NULL))
 	{
 
 	  bool canExportSVG = false;
@@ -10993,10 +10995,9 @@ void wxMaxima::OnMinimize(wxIconizeEvent &event) {
 }
 
 void wxMaxima::ChangeCellStyle(wxCommandEvent &WXUNUSED(event)) {
-  m_worksheet->CloseAutoCompletePopup();
-
   if ((m_worksheet == NULL) || (m_worksheet->m_mainToolBar == NULL))
     return;
+  m_worksheet->CloseAutoCompletePopup();
 
   if (m_worksheet->GetActiveCell()) {
     GroupCell *group = m_worksheet->GetActiveCell()->GetGroup();

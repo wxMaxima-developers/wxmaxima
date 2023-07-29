@@ -302,18 +302,21 @@ wxString ImgCell::ToXML() const {
   if (HasHardLineBreak())
     flags += wxS(" breakline=\"true\"");
 
-  flags += wxString::Format(wxS(" ppi=\"%i\""), m_image->GetPPI());
+  if (m_image)
+    flags += wxString::Format(wxS(" ppi=\"%i\""), m_image->GetPPI());
 
   if (!m_drawRectangle)
     flags += wxS(" rect=\"false\"");
 
-  if (m_image->GetMaxWidth() > 0)
-    flags += wxString::Format(wxS(" maxWidth=\"%f\""), m_image->GetMaxWidth());
-
-  if (m_image->GetHeightList() > 0)
-    flags +=
-      wxString::Format(wxS(" maxHeight=\"%f\""), m_image->GetHeightList());
-
+  if (m_image)
+    {
+      if (m_image->GetMaxWidth() > 0)
+	flags += wxString::Format(wxS(" maxWidth=\"%f\""), m_image->GetMaxWidth());
+      if (m_image->GetHeightList() > 0)
+	flags +=
+	  wxString::Format(wxS(" maxHeight=\"%f\""), m_image->GetHeightList());
+    }
+  
   if (m_origImageFile != wxEmptyString) {
     if (m_configuration->SaveImgFileName()) {
       flags += wxString::Format(wxS(" origImageFile=\"%s\""),
@@ -338,7 +341,10 @@ wxString ImgCell::ToXML() const {
       flags += wxS(" gnuplotsource_gz=\"") + gnuplotSource + wxS("\"");
     }
 
-    return (wxS("<img") + flags + wxS(">") + basename + m_image->GetExtension() +
+    wxString extension;
+    if (m_image)
+      extension = m_image->GetExtension();
+    return (wxS("<img") + flags + wxS(">") + basename + extension +
 	    wxS("</img>"));
   }
   else
