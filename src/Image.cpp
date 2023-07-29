@@ -127,7 +127,7 @@ Image::Image(Configuration *config, const wxBitmap &bitmap) {
 // pointer to the file system alive in a background task
 // cppcheck-suppress performance symbolName=filesystem
 Image::Image(Configuration *config, wxString image,
-             std::shared_ptr<wxFileSystem> filesystem, bool remove)
+             std::shared_ptr<wxFileSystem> &filesystem, bool remove)
 {
   m_svgImage = NULL;
   m_configuration = config;
@@ -266,7 +266,7 @@ return m_isOk;
 // pointer to the file system alive in a background task
 // cppcheck-suppress performance symbolName=filesystem
 void Image::GnuplotSource(wxString gnuplotFilename, wxString dataFilename,
-                          std::shared_ptr<wxFileSystem> filesystem) {
+                          std::shared_ptr<wxFileSystem> &filesystem) {
   SuppressErrorDialogs suppressor;
   if(m_loadGnuplotSourceTask.joinable())
     m_loadGnuplotSourceTask.join();
@@ -297,7 +297,7 @@ void Image::GnuplotSource(wxString gnuplotFilename, wxString dataFilename,
 }
 
 void Image::CompressedGnuplotSource(wxString gnuplotFilename, wxString dataFilename,
-                                    std::shared_ptr<wxFileSystem> filesystem) {
+                                    std::shared_ptr<wxFileSystem> &filesystem) {
   if(m_loadGnuplotSourceTask.joinable())
     m_loadGnuplotSourceTask.join();
   std::unique_ptr<ThreadNumberLimiter> limiter(new
@@ -311,6 +311,7 @@ void Image::CompressedGnuplotSource(wxString gnuplotFilename, wxString dataFilen
   if(m_gnuplotData.EndsWith(".gz"))
     m_gnuplotData = m_gnuplotData.Left(m_gnuplotData.Length()-3);
 
+  
   m_loadGnuplotSourceTask =
     std::thread(&Image::LoadCompressedGnuplotSource_Backgroundtask,
                 this,
@@ -810,7 +811,7 @@ wxString Image::GetExtension() const { return m_extension; }
 // filesystem cannot be passed by const reference as we want to keep the
 // pointer to the file system alive in a background task
 // cppcheck-suppress performance symbolName=filesystem
-void Image::LoadImage(wxString image, std::shared_ptr<wxFileSystem> filesystem,
+void Image::LoadImage(wxString image, std::shared_ptr<wxFileSystem> &filesystem,
                       bool remove) {
   if(m_loadImageTask.joinable())
     m_loadImageTask.join();

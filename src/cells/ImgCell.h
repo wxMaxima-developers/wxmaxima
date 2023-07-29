@@ -37,7 +37,7 @@ class ImgCell final : public ImgCellBase
 public:
   ImgCell(GroupCell *group, Configuration *config);
   ImgCell(GroupCell *group, Configuration *config, const wxMemoryBuffer &image, const wxString &type);
-  ImgCell(GroupCell *group, Configuration *config, const wxString &image, std::shared_ptr<wxFileSystem> filesystem, bool remove = true);
+  ImgCell(GroupCell *group, Configuration *config, const wxString &image, std::shared_ptr<wxFileSystem> &filesystem, bool remove = true);
 
   ImgCell(GroupCell *group, Configuration *config, const wxBitmap &bitmap);
   ImgCell(GroupCell *group, const ImgCell &cell);
@@ -49,9 +49,10 @@ public:
   ImgCell &operator=(const ImgCell&) = delete;
 
   //! Tell the image which gnuplot files it was made from
-  void GnuplotSource(wxString sourcefile, wxString datafile, std::shared_ptr<wxFileSystem> filesystem)
+  void GnuplotSource(wxString sourcefile, wxString datafile, std::shared_ptr<wxFileSystem> &filesystem)
     { if (m_image) m_image->GnuplotSource(sourcefile, datafile, filesystem); }
-  void CompressedGnuplotSource(wxString sourcefile, wxString datafile, std::shared_ptr<wxFileSystem> filesystem)
+  void CompressedGnuplotSource(wxString sourcefile, wxString datafile,
+                               std::shared_ptr<wxFileSystem> &filesystem)
     { if (m_image) m_image->CompressedGnuplotSource(sourcefile, datafile, filesystem); }
 
   //! The name of the file with gnuplot commands that created this file
@@ -66,7 +67,7 @@ public:
   size_t GetOriginalWidth() const override {return m_image->GetOriginalWidth();}
   size_t GetOriginalHeight() const override {return m_image->GetOriginalHeight();}
 
-  void ReloadImage(const wxString &image, std::shared_ptr<wxFileSystem> filesystem);
+  void ReloadImage(const wxString &image, std::shared_ptr<wxFileSystem> &filesystem);
 
   //! Can this image be exported in SVG format?
   bool CanExportSVG() const override {return (m_image != NULL) && m_image->CanExportSVG();}

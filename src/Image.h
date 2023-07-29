@@ -91,7 +91,7 @@ public:
     \param filesystem The filesystem to load it from
     \param remove true = Delete the file after loading it
   */
-  Image(Configuration *config, wxString image, std::shared_ptr<wxFileSystem> filesystem, bool remove = true);
+  Image(Configuration *config, wxString image, std::shared_ptr<wxFileSystem> &filesystem, bool remove = true);
 
   Image(Configuration *config, const Image &image);
   Image(const Image &image) = delete;
@@ -118,17 +118,20 @@ public:
     are text-only they profit from being compressed and are stored in the 
     memory in their compressed form.
   */
-  void GnuplotSource(wxString gnuplotFilename, wxString dataFilename, std::shared_ptr<wxFileSystem> filesystem);
+  void GnuplotSource(wxString gnuplotFilename, wxString dataFilename,
+                     std::shared_ptr<wxFileSystem> &filesystem);
 
   /*! Loads the compressed gnuplot source and data file for this image
 
    */
-  void CompressedGnuplotSource(wxString gnuplotFilename, wxString dataFilename, std::shared_ptr<wxFileSystem> filesystem);
+  void CompressedGnuplotSource(wxString gnuplotFilename, wxString dataFilename,
+                               std::shared_ptr<wxFileSystem> &filesystem);
 
   //! Load the gnuplot source file from the system's filesystem
   void GnuplotSource(wxString gnuplotFilename, wxString dataFilename)
     {
-      GnuplotSource(gnuplotFilename, dataFilename, {} /* system fs */);
+      std::shared_ptr<wxFileSystem> filesystem;
+      GnuplotSource(gnuplotFilename, dataFilename, filesystem /* system fs */);
     }
 
 /*! Returns the gnuplot source file name of this image
@@ -265,7 +268,7 @@ private:
                                                   std::shared_ptr<wxFSFile> datafile
                                                   );
   //! Loads an image from a file
-  void LoadImage(wxString image, std::shared_ptr<wxFileSystem> filesystem, bool remove = true);
+  void LoadImage(wxString image, std::shared_ptr<wxFileSystem> &filesystem, bool remove = true);
   //! Reads the compressed image into a memory buffer
   static wxMemoryBuffer ReadCompressedImage(wxInputStream *data);
   Configuration *m_configuration;

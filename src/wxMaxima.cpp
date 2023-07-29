@@ -9596,8 +9596,9 @@ void wxMaxima::PopupMenu(wxCommandEvent &event) {
       }
 
       wxLogMessage(_("Reloading image file %s."), imgFile);
-      dynamic_cast<ImgCell *>(output)->ReloadImage(
-						   imgFile, std::shared_ptr<wxFileSystem>{} /* system fs */);
+      std::shared_ptr<wxFileSystem> fs;
+      dynamic_cast<ImgCell *>(output)->ReloadImage(imgFile,
+						   fs);
 
       m_worksheet->RecalculateForce();
       m_worksheet->RequestRedraw();
@@ -9963,7 +9964,8 @@ void wxMaxima::PopupMenu(wxCommandEvent &event) {
 
       wxLogMessage(_("Changing image originally loaded from file %s to %s."),
 		   ic->GetOrigImageFile(), newImg);
-      ic->ReloadImage(newImg, std::shared_ptr<wxFileSystem>{} /* system fs */);
+      std::shared_ptr<wxFileSystem> fs;
+      ic->ReloadImage(newImg, fs /* system fs */);
       ic->SetOrigImageFile(newImg);
 
       m_worksheet->RecalculateForce();

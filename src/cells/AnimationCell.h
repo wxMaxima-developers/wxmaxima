@@ -57,7 +57,8 @@ public:
     NULL = the operating system's filesystem
     \param group     The parent GroupCell this cell belongs to.
   */
-  AnimationCell(GroupCell *group, Configuration *config, std::shared_ptr<wxFileSystem> filesystem, int framerate = -1);
+  AnimationCell(GroupCell *group, Configuration *config,
+                std::shared_ptr<wxFileSystem> &filesystem, int framerate = -1);
   AnimationCell(GroupCell *group, Configuration *config, int framerate = -1);
   AnimationCell(GroupCell *group, const AnimationCell &cell);
   //! A constructor that loads the compressed file from a wxMemoryBuffer
@@ -163,9 +164,11 @@ public:
   bool CanPopOut() const override
     { return (!m_images[m_displayed]->GnuplotSource().empty()); }
 
-  void GnuplotSource(int image, wxString gnuplotFilename, wxString dataFilename, std::shared_ptr<wxFileSystem> filesystem)
+  void GnuplotSource(int image, wxString gnuplotFilename, wxString dataFilename,
+                     std::shared_ptr<wxFileSystem> &filesystem)
     { m_images[image]->GnuplotSource(gnuplotFilename, dataFilename, filesystem); }
-  void CompressedGnuplotSource(int image, wxString gnuplotFilename, wxString dataFilename, std::shared_ptr<wxFileSystem> filesystem)
+  void CompressedGnuplotSource(int image, wxString gnuplotFilename, wxString dataFilename,
+                               std::shared_ptr<wxFileSystem> &filesystem)
     { m_images[image]->CompressedGnuplotSource(gnuplotFilename, dataFilename, filesystem); }
 
   wxString GnuplotSource() const override

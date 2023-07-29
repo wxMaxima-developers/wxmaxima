@@ -56,7 +56,7 @@
 // pointer to the file system alive in a background task
 // cppcheck-suppress performance symbolName=filesystem
 AnimationCell::AnimationCell(GroupCell *group, Configuration *config,
-                             std::shared_ptr<wxFileSystem> filesystem,
+                             std::shared_ptr<wxFileSystem> &filesystem,
                              int framerate)
   : ImgCellBase(group, config),
     m_timer(m_cellPointers->GetWorksheet(), wxWindow::NewControlId()),

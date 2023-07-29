@@ -70,7 +70,7 @@ int ImgCell::s_counter = 0;
 
 // constructor which load image
 ImgCell::ImgCell(GroupCell *group, Configuration *config, const wxString &image,
-                 std::shared_ptr<wxFileSystem> filesystem, bool remove)
+                 std::shared_ptr<wxFileSystem> &filesystem, bool remove)
   : ImgCellBase(group, config), m_imageBorderWidth(1) {
   InitBitFields();
   m_type = MC_TYPE_IMAGE;
@@ -98,7 +98,7 @@ ImgCell::ImgCell(GroupCell *group, const ImgCell &cell)
 DEFINE_CELL(ImgCell)
 
 void ImgCell::ReloadImage(const wxString &image,
-                          std::shared_ptr<wxFileSystem> filesystem) {
+                          std::shared_ptr<wxFileSystem> &filesystem) {
   // Store old size limits
   double width = m_image->GetMaxWidth();
   double height = m_image->GetHeightList();
