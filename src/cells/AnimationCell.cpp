@@ -387,16 +387,15 @@ wxString AnimationCell::ToXML() const {
       if (i->GetCompressedImage())
 	m_configuration->PushFileToSave(basename + i->GetExtension(),
 					i->GetCompressedImage());
+      images += basename + i->GetExtension() + wxS(";");
     }
-
-    images += basename + i->GetExtension() + wxS(";");
   }
 
   wxString flags;
   flags = wxS(" gnuplotSources_gz=\"") + gnuplotSourceFiles + wxS("\"");
   flags += wxS(" gnuplotData_gz=\"") + gnuplotDataFiles + "\"";
-  if (Length() > 0)
-    flags += wxString::Format(wxS(" ppi=\"%i\""), m_images[1]->GetPPI());
+  if ((Length() > 0) && (m_images[0] != NULL))
+    flags += wxString::Format(wxS(" ppi=\"%i\""), m_images[0]->GetPPI());
   if (HasHardLineBreak())
     flags += wxS(" breakline=\"true\"");
   if (m_animationRunning)

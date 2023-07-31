@@ -48,7 +48,7 @@ private:
   void set_properties();
 
 protected:
-  wxChoice *m_choice;
+  wxChoice *m_choice = NULL;
   wxRadioButton *m_sortTraditional;
   wxRadioButton *m_sortFunction;
   wxRadioButton *m_sortLambda;

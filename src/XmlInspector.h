@@ -74,7 +74,7 @@ private:
   };
   monitorState m_state;
 
-  wxChar m_lastChar;
+  wxChar m_lastChar = '\0';
   int m_indentLevel;
 
   wxString IndentString(int level);

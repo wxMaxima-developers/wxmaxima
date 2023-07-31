@@ -4482,6 +4482,8 @@ std::unique_ptr<Cell> Worksheet::CopySelection(bool asData) const {
 }
 
 void Worksheet::TOCdnd() {
+  if((m_cellPointers.m_selectionStart == NULL) || (m_cellPointers.m_selectionEnd == NULL))
+    return;
   if (!m_tableOfContents->DNDStart())
     return;
   // Select the region that is to be moved
@@ -6857,8 +6859,10 @@ void Worksheet::SetSelection(Cell *start, Cell *end) {
       if (start != end && !GetActiveCell())
         m_mainToolBar->UnsetCellStyle();
       else
-        m_mainToolBar->SetCellStyle(
-				    dynamic_cast<GroupCell *>(start)->GetGroupType());
+	{
+	  if(start)
+	    m_mainToolBar->SetCellStyle(dynamic_cast<GroupCell *>(start)->GetGroupType());
+	}
     }
   }
 }

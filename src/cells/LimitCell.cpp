@@ -145,18 +145,19 @@ wxString LimitCell::ToTeX() const {
   wxString base = m_base->ListToTeX();
   int varEnd = under.Find(wxS("->"));
   int toStart = 0;
+  wxString var;
   if (varEnd == wxNOT_FOUND) {
     varEnd = under.Find(wxS("\\mbox{\\rightarrow }"));
     if (varEnd != wxNOT_FOUND) {
       toStart = varEnd + 19;
       varEnd -= 1;
     }
+    var = under.SubString(0, varEnd);
   } else {
     toStart = varEnd + 2;
     varEnd -= 1;
   }
 
-  wxString var = under.SubString(0, varEnd);
   wxString to = under.SubString(toStart, under.Length() - 1);
   wxString s =
     wxS("\\lim_{") + var + wxS("\\to ") + to + wxS("}{") + base + wxS("}");

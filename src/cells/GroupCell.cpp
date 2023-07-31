@@ -1627,23 +1627,29 @@ void GroupCell::SwitchHide() { Hide(!IsHidden()); }
 bool GroupCell::HideTree(std::unique_ptr<GroupCell> &&tree) {
   if (m_hiddenTree)
     return false;
-  m_hiddenTree = std::move(tree);
-  m_hiddenTree->SetHiddenTreeParent(this);
-
-  // Clear cached images from cells that are hidden
-  for (auto &tmp : OnList(m_hiddenTree.get())) {
-    if (tmp.GetLabel())
-      tmp.GetLabel()->ClearCacheList();
-  }
-
-  m_cellsAppended = true;
+  if(tree) {
+        m_hiddenTree = std::move(tree);
+	m_hiddenTree->SetHiddenTreeParent(this);
+      
+	// Clear cached images from cells that are hidden
+	for (auto &tmp : OnList(m_hiddenTree.get())) {
+	  if (tmp.GetLabel())
+	    tmp.GetLabel()->ClearCacheList();
+	}
+	
+	m_cellsAppended = true;
   return true;
+  }
+  else
+    return false;
 }
 
 std::unique_ptr<GroupCell> GroupCell::UnhideTree() {
-  m_hiddenTree->SetHiddenTreeParent(m_hiddenTreeParent);
   if (m_hiddenTree)
-    m_cellsAppended = true;
+    {
+      m_cellsAppended = true;
+      m_hiddenTree->SetHiddenTreeParent(m_hiddenTreeParent);
+    }
   return std::move(m_hiddenTree);
 }
 

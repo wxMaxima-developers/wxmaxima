@@ -9664,7 +9664,7 @@ void wxMaxima::PopupMenu(wxCommandEvent &event) {
 							  SelectionStart->GetGroupType())))
             SelectionEnd = SelectionEnd->GetNext();
           m_worksheet->SetActiveCell(NULL);
-          m_worksheet->ScrolledAwayFromEvaluation();
+          m_worksheet->ScrolledAwayFromEvaluation(true);
           m_worksheet->SetHCaret(SelectionEnd);
           m_worksheet->SetSelection(SelectionStart, SelectionEnd);
           m_worksheet->RequestRedraw();
