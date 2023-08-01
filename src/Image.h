@@ -91,7 +91,8 @@ public:
     \param filesystem The filesystem to load it from
     \param remove true = Delete the file after loading it
   */
-  Image(Configuration *config, wxString image, std::shared_ptr<wxFileSystem> &filesystem, bool remove = true);
+  Image(Configuration *config, wxString image,
+        std::shared_ptr<wxFileSystem> &filesystem, bool remove = true);
 
   Image(Configuration *config, const Image &image);
   Image(const Image &image) = delete;
@@ -131,7 +132,8 @@ public:
   void GnuplotSource(wxString gnuplotFilename, wxString dataFilename)
     {
       std::shared_ptr<wxFileSystem> filesystem;
-      GnuplotSource(gnuplotFilename, dataFilename, filesystem /* system fs */);
+      GnuplotSource(std::move(gnuplotFilename), std::move(dataFilename),
+                    filesystem /* system fs */);
     }
 
 /*! Returns the gnuplot source file name of this image

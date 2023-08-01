@@ -38,12 +38,18 @@ GenWizPanel::GenWizPanel(
 			 wxString defaultval7, wxString tooltip7, wxString label8,
 			 wxString defaultval8, wxString tooltip8, wxString label9,
 			 wxString defaultval9, wxString tooltip9)
-: GenWizPanel(parent, cfg, manual, description, description_tooltip,
-	      commandRule, false, label1, defaultval1, tooltip1, label2,
-	      defaultval2, tooltip2, label3, defaultval3, tooltip3, label4,
-	      defaultval4, tooltip4, label5, defaultval5, tooltip5, label6,
-	      defaultval6, tooltip6, label7, defaultval7, tooltip7, label8,
-	      defaultval8, tooltip8, label9, defaultval9, tooltip9) {}
+: GenWizPanel(std::move(parent), std::move(cfg), std::move(manual),
+	      std::move(description), std::move(description_tooltip),
+	      std::move(commandRule), false, std::move(label1),
+	      std::move(defaultval1), std::move(tooltip1), std::move(label2),
+	      std::move(defaultval2), std::move(tooltip2), std::move(label3),
+	      std::move(defaultval3), std::move(tooltip3), std::move(label4),
+	      std::move(defaultval4), std::move(tooltip4), std::move(label5),
+	      std::move(defaultval5), std::move(tooltip5), std::move(label6),
+	      std::move(defaultval6), std::move(tooltip6), std::move(label7),
+	      std::move(defaultval7), std::move(tooltip7), std::move(label8),
+	      std::move(defaultval8), std::move(tooltip8), std::move(label9),
+	      std::move(defaultval9), std::move(tooltip9)) {}
 
 GenWizPanel::GenWizPanel(
 			 wxWindow *parent, Configuration *cfg, MaximaManual *manual,

@@ -270,8 +270,8 @@ void Image::GnuplotSource(wxString gnuplotFilename, wxString dataFilename,
   SuppressErrorDialogs suppressor;
   if(m_loadGnuplotSourceTask.joinable())
     m_loadGnuplotSourceTask.join();
-  m_gnuplotSource = gnuplotFilename;
-  m_gnuplotData = dataFilename;
+  m_gnuplotSource = std::move(gnuplotFilename);
+  m_gnuplotData = std::move(dataFilename);
   std::unique_ptr<ThreadNumberLimiter> limiter(new
                                                ThreadNumberLimiter(&m_gnuplotDataThreadRunning));
   if (filesystem == NULL) {
@@ -304,8 +304,8 @@ void Image::CompressedGnuplotSource(wxString gnuplotFilename, wxString dataFilen
                                                ThreadNumberLimiter(&m_gnuplotDataThreadRunning)); 
 
     // Store the filenames without the ".gz".
-  m_gnuplotSource = gnuplotFilename;
-  m_gnuplotData = dataFilename;
+  m_gnuplotSource = std::move(gnuplotFilename);
+  m_gnuplotData = std::move(dataFilename);
   if(m_gnuplotSource.EndsWith(".gz"))
     m_gnuplotSource = m_gnuplotSource.Left(m_gnuplotSource.Length()-3);
   if(m_gnuplotData.EndsWith(".gz"))

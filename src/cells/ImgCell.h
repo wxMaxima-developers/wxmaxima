@@ -50,10 +50,14 @@ public:
 
   //! Tell the image which gnuplot files it was made from
   void GnuplotSource(wxString sourcefile, wxString datafile, std::shared_ptr<wxFileSystem> &filesystem)
-    { if (m_image) m_image->GnuplotSource(sourcefile, datafile, filesystem); }
+    { if (m_image) m_image->GnuplotSource(std::move(sourcefile),
+                                          std::move(datafile),
+                                          filesystem); }
   void CompressedGnuplotSource(wxString sourcefile, wxString datafile,
                                std::shared_ptr<wxFileSystem> &filesystem)
-    { if (m_image) m_image->CompressedGnuplotSource(sourcefile, datafile, filesystem); }
+    { if (m_image) m_image->CompressedGnuplotSource(std::move(sourcefile),
+                                                    std::move(datafile),
+                                                    filesystem); }
 
   //! The name of the file with gnuplot commands that created this file
   wxString GnuplotSource() const override

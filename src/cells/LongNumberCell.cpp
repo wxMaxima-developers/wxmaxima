@@ -76,6 +76,14 @@ bool LongNumberCell::NeedsRecalculation(AFontSize fontSize) const {
      m_configuration->LineBreaksInLongNums());
 }
 
+Cell *LongNumberCell::GetInnerCell(int index) const
+{
+  if(index != 0)
+    return NULL;
+  else
+    return m_innerCell.get();
+}
+
 void LongNumberCell::Recalculate(AFontSize fontsize) {
   // If the config settings about how many digits to display has changed we
   // need to regenerate the info which number to show.

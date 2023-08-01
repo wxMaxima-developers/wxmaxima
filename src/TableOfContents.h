@@ -92,15 +92,15 @@ protected:
 private:
   void UpdateStruct();
   std::unique_ptr<GroupCell> *m_tree;
-  GroupCell *m_dndStartCell;
-  GroupCell *m_dndEndCell;
+  GroupCell *m_dndStartCell = NULL;
+  GroupCell *m_dndEndCell = NULL;
   wxTimer m_scrollUpTimer;
   wxTimer m_scrollDownTimer;
   wxDragImage *m_dragImage = NULL;
   std::vector<GroupCell *> m_displayedGroupCells;
   //! How many toc items did the user drag at the same time?
-  unsigned int m_numberOfCaptionsDragged;
-  GroupCell *m_cellRightClickedOn;
+  unsigned int m_numberOfCaptionsDragged = 0;
+  GroupCell *m_cellRightClickedOn = NULL;
   //! The item that was dragged away at the start of the current drag-and-drop
   long m_dragStart = -1;
   long m_dragStop = -1;

@@ -283,7 +283,6 @@ MaximaTokenizer::MaximaTokenizer(wxString commands,
       if (Ch == '?') {
         token += Ch;
         ++it;
-        Ch = *it;
       }
 
       while ((it < commands.end()) && (IsAlphaNum(*it) || (*it == '\\'))) {

@@ -72,7 +72,7 @@ public:
   //! Load the result from the last CompileHelpFileAnchors from the disk cache
   bool LoadManualAnchorsFromCache();
   //! Load the help file anchors from an wxXmlDocument
-  bool LoadManualAnchorsFromXML(wxXmlDocument xmlDocument, bool checkManualVersion = true);
+  bool LoadManualAnchorsFromXML(const wxXmlDocument &xmlDocument, bool checkManualVersion = true);
   //! Load the help file anchors from the built-in list
   bool LoadBuiltInManualAnchors();
   //! Save the list of help file anchors to the cache.

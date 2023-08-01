@@ -166,10 +166,13 @@ public:
 
   void GnuplotSource(int image, wxString gnuplotFilename, wxString dataFilename,
                      std::shared_ptr<wxFileSystem> &filesystem)
-    { m_images[image]->GnuplotSource(gnuplotFilename, dataFilename, filesystem); }
+    { m_images[image]->GnuplotSource(std::move(gnuplotFilename),
+                                     std::move(dataFilename), filesystem); }
   void CompressedGnuplotSource(int image, wxString gnuplotFilename, wxString dataFilename,
                                std::shared_ptr<wxFileSystem> &filesystem)
-    { m_images[image]->CompressedGnuplotSource(gnuplotFilename, dataFilename, filesystem); }
+    { m_images[image]->CompressedGnuplotSource(std::move(gnuplotFilename),
+                                               std::move(dataFilename),
+                                               filesystem); }
 
   wxString GnuplotSource() const override
     {

@@ -386,7 +386,7 @@ void MaximaManual::SaveManualAnchorsToCache(wxString maximaHtmlDir,
   xmlDoc.Save(saveName);
 }
 
-bool MaximaManual::LoadManualAnchorsFromXML(wxXmlDocument xmlDocument,
+bool MaximaManual::LoadManualAnchorsFromXML(const wxXmlDocument &xmlDocument,
                                             bool checkManualVersion) {
   wxXmlNode *headNode = xmlDocument.GetDocumentNode();
   if (!headNode) {

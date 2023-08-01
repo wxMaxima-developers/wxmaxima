@@ -143,7 +143,7 @@ public:
 
   //! Set maxima's working directory
   void SetWorkingDirectory(wxString dir)
-    { m_workingdir = dir; }
+    { m_workingdir = std::move(dir); }
 
   wxString GetWorkingDirectory() const
     { return m_workingdir; }
@@ -550,7 +550,7 @@ public:
   
   wxString SymbolPaneAdditionalChars() const
     {return m_symbolPaneAdditionalChars;}
-  void SymbolPaneAdditionalChars(wxString symbols) {m_symbolPaneAdditionalChars = symbols;}
+  void SymbolPaneAdditionalChars(wxString symbols) {m_symbolPaneAdditionalChars = std::move(symbols);}
   
   //! Notify the user if maxima is idle?
   bool NotifyIfIdle() const
@@ -696,7 +696,7 @@ public:
   //! Parameters to the maxima binary
   wxString MaximaParameters() const {return m_maximaParameters;}
   //! The parameters we pass to the maxima binary
-  void MaximaParameters(wxString parameters){m_maximaParameters = parameters;}
+  void MaximaParameters(wxString parameters){m_maximaParameters = std::move(parameters);}
 
   //! The auto-detected maxima location
   static wxString MaximaDefaultLocation();
@@ -710,7 +710,7 @@ public:
   void OnMpBrowse(wxCommandEvent& event);
   
   //! Sets the location of the maxima binary.
-  void MaximaUserLocation(wxString maxima) { m_maximaUserLocation = maxima; }
+  void MaximaUserLocation(wxString maxima) { m_maximaUserLocation = std::move(maxima); }
 
   //! Autodetect the web browser? (If false the user-specified location is used)
   bool AutodetectHelpBrowser() const {return m_autodetectHelpBrowser;}
@@ -733,7 +733,7 @@ public:
   wxString HelpBrowserUserLocation() const {return m_helpBrowserUserLocation;}
 
   //! Sets the location of the web browser the user has detected.
-  void HelpBrowserUserLocation(wxString helpBrowser) { m_helpBrowserUserLocation = helpBrowser;}
+  void HelpBrowserUserLocation(wxString helpBrowser) { m_helpBrowserUserLocation = std::move(helpBrowser);}
 
   /*! Could a maxima binary be found in the path we expect it to be in?
 
@@ -763,7 +763,7 @@ public:
   void EnterEvaluates(bool enterEvaluates) {m_enterEvaluates = enterEvaluates;}
   static wxString MathJaXURL_Auto() { return wxS("https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js");}
   //! Returns the URL MathJaX can be found at.
-  void MathJaXURL(wxString url){m_mathJaxURL = url;}
+  void MathJaXURL(wxString url){m_mathJaxURL = std::move(url);}
 
   bool CopyBitmap() const {return m_copyBitmap;}
   void CopyBitmap(bool copyBitmap){ m_copyBitmap = copyBitmap; }
@@ -785,7 +785,7 @@ public:
   void UseSVG(bool useSVG) { m_useSVG = useSVG ;}
   void ShowLength(long length) { m_showLength = length; }
   long ShowLength() const {return m_showLength;}
-  void LispType(wxString type) { m_lispType = type; }
+  void LispType(wxString type) { m_lispType = std::move(type); }
   wxString LispType() const {return m_lispType;}
   
   //! Which way do we want to draw parenthesis?
@@ -839,9 +839,9 @@ public:
     {m_offerKnownAnswers = offerKnownAnswers;}
   
   wxString Documentclass() const {return m_documentclass;}
-  void Documentclass(wxString clss){m_documentclass = clss;}
+  void Documentclass(wxString clss){m_documentclass = std::move(clss);}
   wxString DocumentclassOptions() const {return m_documentclassOptions;}
-  void DocumentclassOptions(wxString classOptions){m_documentclassOptions = classOptions;}
+  void DocumentclassOptions(wxString classOptions){m_documentclassOptions = std::move(classOptions);}
 
   
   htmlExportFormat HTMLequationFormat() const {return m_htmlEquationFormat;}
@@ -868,7 +868,7 @@ public:
   void SetWorksheetPosition(wxPoint worksheetPosition){m_worksheetPosition = worksheetPosition;}
   wxPoint GetWorksheetPosition() const {return m_worksheetPosition;}
   wxString MaximaShareDir() const {return m_maximaShareDir;}
-  void MaximaShareDir(wxString dir){m_maximaShareDir = dir;}
+  void MaximaShareDir(wxString dir){m_maximaShareDir = std::move(dir);}
   void InLispMode(bool lisp){m_inLispMode = lisp;}
   bool InLispMode() const {return m_inLispMode;}
   void BitmapScale(int factor){m_bitmapScale = factor;}
@@ -923,7 +923,7 @@ public:
   long WizardTab() const {return m_wizardTab;}
 
   wxString TexPreamble() const {return m_texPreamble;}
-  void TexPreamble(wxString texPreamble) {m_texPreamble = texPreamble;}
+  void TexPreamble(wxString texPreamble) {m_texPreamble = std::move(texPreamble);}
 
   Style m_styles[NUMBEROFSTYLES];
   //! Initialize the text styles on construction.

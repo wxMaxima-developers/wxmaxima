@@ -5461,7 +5461,7 @@ bool wxMaxima::OpenFile(const wxString &file, const wxString &command) {
   m_worksheet->TreeUndo_ClearBuffers();
   if (m_worksheet->m_currentFile != wxEmptyString) {
     wxString filename(m_worksheet->m_currentFile);
-    SetCWD(filename);
+    SetCWD(std::move(filename));
   }
   if (m_worksheet->m_tableOfContents != NULL) {
     m_worksheet->m_scheduleUpdateToc = false;
