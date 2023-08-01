@@ -35,7 +35,7 @@ var searchData=
   ['loadhelpfileanchors_690',['LoadHelpFileAnchors',['../classMaximaManual.html#af130119bf939187ec30fc0e5a5fb1d00',1,'MaximaManual::LoadHelpFileAnchors()'],['../classWorksheet.html#acfd29d21d377a247566aa99deb37acd8',1,'Worksheet::LoadHelpFileAnchors()']]],
   ['loadimage_691',['LoadImage',['../classImage.html#a07e9f48042ddd9004c24c3ff9e899094',1,'Image::LoadImage()'],['../classwxMaxima.html#a7a4826538b58db187f5ee253c6445c67',1,'wxMaxima::LoadImage()']]],
   ['loadmanualanchorsfromcache_692',['LoadManualAnchorsFromCache',['../classMaximaManual.html#a8f70e3615c5761666ac92b7902cc96bc',1,'MaximaManual']]],
-  ['loadmanualanchorsfromxml_693',['LoadManualAnchorsFromXML',['../classMaximaManual.html#a11a12d90db93e4952ac089a9a1ead621',1,'MaximaManual']]],
+  ['loadmanualanchorsfromxml_693',['LoadManualAnchorsFromXML',['../classMaximaManual.html#acddcb69633df12600c39ebea000ef9c2',1,'MaximaManual']]],
   ['loadsave_694',['LoadSave',['../classConfigDialogue.html#afeac2a9acf99d95414b0f0e823550805',1,'ConfigDialogue']]],
   ['loadsymbols_695',['LoadSymbols',['../classAutoComplete.html#a6022d262109966147cbda01d6166d2ca',1,'AutoComplete::LoadSymbols()'],['../classWorksheet.html#aaa5b37aee0c005bb6f303c7dd84c64d1',1,'Worksheet::LoadSymbols()']]],
   ['localedir_696',['LocaleDir',['../classDirstructure.html#a854184b4fd40416aab4f26021f895544',1,'Dirstructure']]],

@@ -189,64 +189,67 @@ $(function() {
 <div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160; </div>
 <div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classAnimationCell.html#a69674af20401792e65d0f48438894491">GnuplotSource</a>(<span class="keywordtype">int</span> image, wxString gnuplotFilename, wxString dataFilename,</div>
 <div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;                     std::shared_ptr&lt;wxFileSystem&gt; &amp;filesystem)</div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;    { m_images[image]-&gt;GnuplotSource(gnuplotFilename, dataFilename, filesystem); }</div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;  <span class="keywordtype">void</span> CompressedGnuplotSource(<span class="keywordtype">int</span> image, wxString gnuplotFilename, wxString dataFilename,</div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;                               std::shared_ptr&lt;wxFileSystem&gt; &amp;filesystem)</div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;    { m_images[image]-&gt;CompressedGnuplotSource(gnuplotFilename, dataFilename, filesystem); }</div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160; </div>
-<div class="line"><a name="l00174"></a><span class="lineno"><a class="line" href="classAnimationCell.html#a69674af20401792e65d0f48438894491">  174</a></span>&#160;  wxString <a class="code" href="classAnimationCell.html#a69674af20401792e65d0f48438894491">GnuplotSource</a>()<span class="keyword"> const override</span></div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;<span class="keyword">    </span>{</div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;      <span class="keywordflow">if</span> (!m_images[m_displayed])</div>
-<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;        <span class="keywordflow">return</span> wxEmptyString;</div>
-<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;      <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;        <span class="keywordflow">return</span> m_images[m_displayed]-&gt;GnuplotSource();</div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;    }</div>
-<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160; </div>
-<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;  <a class="code" href="classCellPointers.html">CellPointers</a> *<span class="keyword">const</span> m_cellPointers = GetCellPointers(); <span class="comment">// must come before m_timer (!)</span></div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;  wxTimer m_timer;</div>
-<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;  std::vector&lt;std::shared_ptr&lt;Image&gt;&gt; m_images;</div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;  std::shared_ptr&lt;wxFileSystem&gt; m_fileSystem;</div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160; </div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;  <span class="keywordtype">int</span> m_framerate = -1;</div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;  <span class="keywordtype">int</span> m_displayed = 0;</div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;  <span class="keywordtype">int</span> m_imageBorderWidth = 0;</div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160; </div>
-<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;<span class="comment">//** Bitfield objects (1 bytes)</span></div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;<span class="comment">//**</span></div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;  <span class="keywordtype">void</span> InitBitFields()</div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;    { <span class="comment">// Keep the initialization order below same as the order</span></div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;      <span class="comment">// of bit fields in this class!</span></div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;      m_animationRunning = <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;      m_drawBoundingBox = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;    }</div>
-<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160; </div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;  <span class="keywordtype">bool</span> m_animationRunning : 1 <span class="comment">/* InitBitFields */</span>;</div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;  <span class="keywordtype">bool</span> m_drawBoundingBox : 1 <span class="comment">/* InitBitFields */</span>;</div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;    { m_images[image]-&gt;GnuplotSource(std::move(gnuplotFilename),</div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;                                     std::move(dataFilename), filesystem); }</div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;  <span class="keywordtype">void</span> CompressedGnuplotSource(<span class="keywordtype">int</span> image, wxString gnuplotFilename, wxString dataFilename,</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;                               std::shared_ptr&lt;wxFileSystem&gt; &amp;filesystem)</div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;    { m_images[image]-&gt;CompressedGnuplotSource(std::move(gnuplotFilename),</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;                                               std::move(dataFilename),</div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;                                               filesystem); }</div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160; </div>
+<div class="line"><a name="l00177"></a><span class="lineno"><a class="line" href="classAnimationCell.html#a69674af20401792e65d0f48438894491">  177</a></span>&#160;  wxString <a class="code" href="classAnimationCell.html#a69674af20401792e65d0f48438894491">GnuplotSource</a>()<span class="keyword"> const override</span></div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;<span class="keyword">    </span>{</div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;      <span class="keywordflow">if</span> (!m_images[m_displayed])</div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;        <span class="keywordflow">return</span> wxEmptyString;</div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;      <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;        <span class="keywordflow">return</span> m_images[m_displayed]-&gt;GnuplotSource();</div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;    }</div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160; </div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;  <a class="code" href="classCellPointers.html">CellPointers</a> *<span class="keyword">const</span> m_cellPointers = GetCellPointers(); <span class="comment">// must come before m_timer (!)</span></div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;  wxTimer m_timer;</div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;  std::vector&lt;std::shared_ptr&lt;Image&gt;&gt; m_images;</div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;  std::shared_ptr&lt;wxFileSystem&gt; m_fileSystem;</div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160; </div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;  <span class="keywordtype">int</span> m_framerate = -1;</div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;  <span class="keywordtype">int</span> m_displayed = 0;</div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;  <span class="keywordtype">int</span> m_imageBorderWidth = 0;</div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160; </div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;<span class="comment">//** Bitfield objects (1 bytes)</span></div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;<span class="comment">//**</span></div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;  <span class="keywordtype">void</span> InitBitFields()</div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;    { <span class="comment">// Keep the initialization order below same as the order</span></div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;      <span class="comment">// of bit fields in this class!</span></div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;      m_animationRunning = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;      m_drawBoundingBox = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;    }</div>
 <div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160; </div>
-<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160; </div>
-<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;  <span class="keywordtype">int</span> GetImageBorderWidth()<span class="keyword"> const override </span>{ <span class="keywordflow">return</span> m_imageBorderWidth; }</div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;  <span class="keywordtype">bool</span> m_animationRunning : 1 <span class="comment">/* InitBitFields */</span>;</div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;  <span class="keywordtype">bool</span> m_drawBoundingBox : 1 <span class="comment">/* InitBitFields */</span>;</div>
 <div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160; </div>
-<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;  <span class="keywordtype">void</span> Recalculate(<a class="code" href="classAFontSize.html">AFontSize</a> fontsize) <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160; </div>
-<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;  <span class="keywordtype">void</span> Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160; </div>
-<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;  wxString ToMatlab() <span class="keyword">const override</span>;</div>
-<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;  wxString ToRTF() <span class="keyword">const override</span>;</div>
-<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;  wxString ToString() <span class="keyword">const override</span>;</div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;  wxString ToTeX() <span class="keyword">const override</span>;</div>
-<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;  wxString ToXML() <span class="keyword">const override</span>;</div>
-<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160; </div>
-<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;  <span class="keywordtype">double</span> GetMaxWidth() <span class="keyword">const override</span>;</div>
-<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;  <span class="keywordtype">double</span> GetHeightList() <span class="keyword">const override</span>;</div>
-<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;  <span class="keywordtype">void</span> SetMaxWidth(<span class="keywordtype">double</span> width) <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;  <span class="keywordtype">void</span> SetMaxHeight(<span class="keywordtype">double</span> height) <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;  </div>
-<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;  <span class="keywordtype">void</span> DrawBoundingBox(wxDC &amp;WXUNUSED(dc), <span class="keywordtype">bool</span> WXUNUSED(all) = <span class="keyword">false</span>)<span class="keyword">  override</span></div>
-<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;<span class="keyword">    </span>{ m_drawBoundingBox = <span class="keyword">true</span>; }</div>
-<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;};</div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160; </div>
-<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// ANIMATIONCELL_H</span></div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160; </div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;  <span class="keywordtype">int</span> GetImageBorderWidth()<span class="keyword"> const override </span>{ <span class="keywordflow">return</span> m_imageBorderWidth; }</div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160; </div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;  <span class="keywordtype">void</span> Recalculate(<a class="code" href="classAFontSize.html">AFontSize</a> fontsize) <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160; </div>
+<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;  <span class="keywordtype">void</span> Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160; </div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;  wxString ToMatlab() <span class="keyword">const override</span>;</div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;  wxString ToRTF() <span class="keyword">const override</span>;</div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;  wxString ToString() <span class="keyword">const override</span>;</div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;  wxString ToTeX() <span class="keyword">const override</span>;</div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;  wxString ToXML() <span class="keyword">const override</span>;</div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160; </div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;  <span class="keywordtype">double</span> GetMaxWidth() <span class="keyword">const override</span>;</div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;  <span class="keywordtype">double</span> GetHeightList() <span class="keyword">const override</span>;</div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;  <span class="keywordtype">void</span> SetMaxWidth(<span class="keywordtype">double</span> width) <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;  <span class="keywordtype">void</span> SetMaxHeight(<span class="keywordtype">double</span> height) <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;  </div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;  <span class="keywordtype">void</span> DrawBoundingBox(wxDC &amp;WXUNUSED(dc), <span class="keywordtype">bool</span> WXUNUSED(all) = <span class="keyword">false</span>)<span class="keyword">  override</span></div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;<span class="keyword">    </span>{ m_drawBoundingBox = <span class="keyword">true</span>; }</div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;};</div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160; </div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// ANIMATIONCELL_H</span></div>
 <div class="ttc" id="aCell_8h_html"><div class="ttname"><a href="Cell_8h.html">Cell.h</a></div><div class="ttdoc">The definition of the base class of all cells the worksheet consists of.</div></div>
 <div class="ttc" id="aImage_8h_html"><div class="ttname"><a href="Image_8h.html">Image.h</a></div><div class="ttdoc">This file declares the class Image.</div></div>
 <div class="ttc" id="aclassAFontSize_html"><div class="ttname"><a href="classAFontSize.html">AFontSize</a></div><div class="ttdoc">A Type-Safe Fixed-Point Font Size.</div><div class="ttdef"><b>Definition:</b> FontAttribs.h:98</div></div>
@@ -261,7 +264,7 @@ $(function() {
 <div class="ttc" id="aclassAnimationCell_html_a5bab7a5dc8782312c7443bd3ccef2284"><div class="ttname"><a href="classAnimationCell.html#a5bab7a5dc8782312c7443bd3ccef2284">AnimationCell::ToGif</a></div><div class="ttdeci">wxSize ToGif(wxString file)</div><div class="ttdoc">Exports the whole animation as animated gif.</div><div class="ttdef"><b>Definition:</b> AnimationCell.cpp:478</div></div>
 <div class="ttc" id="aclassAnimationCell_html_a632a97928d031a5e123835807a0fa7dd"><div class="ttname"><a href="classAnimationCell.html#a632a97928d031a5e123835807a0fa7dd">AnimationCell::SetPPI</a></div><div class="ttdeci">void SetPPI(int ppi) override</div><div class="ttdoc">Set the animation's resolution.</div><div class="ttdef"><b>Definition:</b> AnimationCell.cpp:412</div></div>
 <div class="ttc" id="aclassAnimationCell_html_a690b37a6d87ec79a40b101116e7bb896"><div class="ttname"><a href="classAnimationCell.html#a690b37a6d87ec79a40b101116e7bb896">AnimationCell::ToImageFile</a></div><div class="ttdeci">wxSize ToImageFile(wxString file) override</div><div class="ttdoc">Exports the image the animation currently displays.</div><div class="ttdef"><b>Definition:</b> AnimationCell.cpp:418</div></div>
-<div class="ttc" id="aclassAnimationCell_html_a69674af20401792e65d0f48438894491"><div class="ttname"><a href="classAnimationCell.html#a69674af20401792e65d0f48438894491">AnimationCell::GnuplotSource</a></div><div class="ttdeci">wxString GnuplotSource() const override</div><div class="ttdoc">The name of the file with gnuplot commands that created this file.</div><div class="ttdef"><b>Definition:</b> AnimationCell.h:174</div></div>
+<div class="ttc" id="aclassAnimationCell_html_a69674af20401792e65d0f48438894491"><div class="ttname"><a href="classAnimationCell.html#a69674af20401792e65d0f48438894491">AnimationCell::GnuplotSource</a></div><div class="ttdeci">wxString GnuplotSource() const override</div><div class="ttdoc">The name of the file with gnuplot commands that created this file.</div><div class="ttdef"><b>Definition:</b> AnimationCell.h:177</div></div>
 <div class="ttc" id="aclassAnimationCell_html_a72930617d43a900352de9cfe2df1492a"><div class="ttname"><a href="classAnimationCell.html#a72930617d43a900352de9cfe2df1492a">AnimationCell::StopTimer</a></div><div class="ttdeci">void StopTimer()</div><div class="ttdoc">Stops the timer.</div><div class="ttdef"><b>Definition:</b> AnimationCell.cpp:146</div></div>
 <div class="ttc" id="aclassAnimationCell_html_a7960ee45f7ba8058f1d0b2a0a36890ff"><div class="ttname"><a href="classAnimationCell.html#a7960ee45f7ba8058f1d0b2a0a36890ff">AnimationCell::GetFrameRate</a></div><div class="ttdeci">int GetFrameRate() const</div><div class="ttdoc">Get the frame rate of this AnimationCell [in Hz].</div><div class="ttdef"><b>Definition:</b> AnimationCell.cpp:123</div></div>
 <div class="ttc" id="aclassAnimationCell_html_a7dc2f11ce3d781bd68e99cc76fb7c165"><div class="ttname"><a href="classAnimationCell.html#a7dc2f11ce3d781bd68e99cc76fb7c165">AnimationCell::SetFrameRate</a></div><div class="ttdeci">int SetFrameRate(int Freq)</div><div class="ttdoc">Set the frame rate of this AnimationCell [in Hz].</div><div class="ttdef"><b>Definition:</b> AnimationCell.cpp:159</div></div>

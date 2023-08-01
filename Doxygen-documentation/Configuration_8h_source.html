@@ -194,7 +194,7 @@ $(function() {
 <div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;  <span class="keywordtype">void</span> DisplayMode(mathDisplayMode mode ) {m_displayMode = mode;}</div>
 <div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160; </div>
 <div class="line"><a name="l00145"></a><span class="lineno"><a class="line" href="classConfiguration.html#a8807928b97e9aff1a0b8d176329ee45d">  145</a></span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classConfiguration.html#a8807928b97e9aff1a0b8d176329ee45d">SetWorkingDirectory</a>(wxString dir)</div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;    { m_workingdir = dir; }</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;    { m_workingdir = std::move(dir); }</div>
 <div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160; </div>
 <div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;  wxString GetWorkingDirectory()<span class="keyword"> const</span></div>
 <div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;<span class="keyword">    </span>{ <span class="keywordflow">return</span> m_workingdir; }</div>
@@ -517,7 +517,7 @@ $(function() {
 <div class="line"><a name="l00550"></a><span class="lineno">  550</span>&#160;  </div>
 <div class="line"><a name="l00551"></a><span class="lineno">  551</span>&#160;  wxString SymbolPaneAdditionalChars()<span class="keyword"> const</span></div>
 <div class="line"><a name="l00552"></a><span class="lineno">  552</span>&#160;<span class="keyword">    </span>{<span class="keywordflow">return</span> m_symbolPaneAdditionalChars;}</div>
-<div class="line"><a name="l00553"></a><span class="lineno">  553</span>&#160;  <span class="keywordtype">void</span> SymbolPaneAdditionalChars(wxString symbols) {m_symbolPaneAdditionalChars = symbols;}</div>
+<div class="line"><a name="l00553"></a><span class="lineno">  553</span>&#160;  <span class="keywordtype">void</span> SymbolPaneAdditionalChars(wxString symbols) {m_symbolPaneAdditionalChars = std::move(symbols);}</div>
 <div class="line"><a name="l00554"></a><span class="lineno">  554</span>&#160;  </div>
 <div class="line"><a name="l00556"></a><span class="lineno"><a class="line" href="classConfiguration.html#a35914468c50b5421c93c802f72b5ce9e">  556</a></span>&#160;  <span class="keywordtype">bool</span> <a class="code" href="classConfiguration.html#a35914468c50b5421c93c802f72b5ce9e">NotifyIfIdle</a>()<span class="keyword"> const</span></div>
 <div class="line"><a name="l00557"></a><span class="lineno">  557</span>&#160;<span class="keyword">    </span>{ <span class="keywordflow">return</span> m_notifyIfIdle; }</div>
@@ -642,7 +642,7 @@ $(function() {
 <div class="line"><a name="l00694"></a><span class="lineno"><a class="line" href="classConfiguration.html#a8fe525f2332e1cab5fbef7b59725a537">  694</a></span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classConfiguration.html#a8fe525f2332e1cab5fbef7b59725a537">AutodetectMaxima</a>(<span class="keywordtype">bool</span> autodetectmaxima){m_autodetectMaxima = autodetectmaxima;}</div>
 <div class="line"><a name="l00695"></a><span class="lineno">  695</span>&#160; </div>
 <div class="line"><a name="l00697"></a><span class="lineno"><a class="line" href="classConfiguration.html#a5b565e55d9e06075da06dab3863e313b">  697</a></span>&#160;  wxString <a class="code" href="classConfiguration.html#a5b565e55d9e06075da06dab3863e313b">MaximaParameters</a>()<span class="keyword"> const </span>{<span class="keywordflow">return</span> m_maximaParameters;}</div>
-<div class="line"><a name="l00699"></a><span class="lineno"><a class="line" href="classConfiguration.html#ad239d557be93853639c3425b21ade190">  699</a></span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classConfiguration.html#ad239d557be93853639c3425b21ade190">MaximaParameters</a>(wxString parameters){m_maximaParameters = parameters;}</div>
+<div class="line"><a name="l00699"></a><span class="lineno"><a class="line" href="classConfiguration.html#ad239d557be93853639c3425b21ade190">  699</a></span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classConfiguration.html#ad239d557be93853639c3425b21ade190">MaximaParameters</a>(wxString parameters){m_maximaParameters = std::move(parameters);}</div>
 <div class="line"><a name="l00700"></a><span class="lineno">  700</span>&#160; </div>
 <div class="line"><a name="l00702"></a><span class="lineno">  702</span>&#160;  <span class="keyword">static</span> wxString <a class="code" href="classConfiguration.html#a408780614dd19920537cfdc7310115f2">MaximaDefaultLocation</a>();</div>
 <div class="line"><a name="l00703"></a><span class="lineno">  703</span>&#160; </div>
@@ -652,7 +652,7 @@ $(function() {
 <div class="line"><a name="l00709"></a><span class="lineno">  709</span>&#160; </div>
 <div class="line"><a name="l00710"></a><span class="lineno">  710</span>&#160;  <span class="keywordtype">void</span> OnMpBrowse(wxCommandEvent&amp; event);</div>
 <div class="line"><a name="l00711"></a><span class="lineno">  711</span>&#160;  </div>
-<div class="line"><a name="l00713"></a><span class="lineno"><a class="line" href="classConfiguration.html#ab243f8140f4f378ddd57caa0dbb2b9b0">  713</a></span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classConfiguration.html#ab243f8140f4f378ddd57caa0dbb2b9b0">MaximaUserLocation</a>(wxString maxima) { m_maximaUserLocation = maxima; }</div>
+<div class="line"><a name="l00713"></a><span class="lineno"><a class="line" href="classConfiguration.html#ab243f8140f4f378ddd57caa0dbb2b9b0">  713</a></span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classConfiguration.html#ab243f8140f4f378ddd57caa0dbb2b9b0">MaximaUserLocation</a>(wxString maxima) { m_maximaUserLocation = std::move(maxima); }</div>
 <div class="line"><a name="l00714"></a><span class="lineno">  714</span>&#160; </div>
 <div class="line"><a name="l00716"></a><span class="lineno"><a class="line" href="classConfiguration.html#aeef043c2f0e8bf9386c3d43fe7df5e29">  716</a></span>&#160;  <span class="keywordtype">bool</span> <a class="code" href="classConfiguration.html#aeef043c2f0e8bf9386c3d43fe7df5e29">AutodetectHelpBrowser</a>()<span class="keyword"> const </span>{<span class="keywordflow">return</span> m_autodetectHelpBrowser;}</div>
 <div class="line"><a name="l00718"></a><span class="lineno"><a class="line" href="classConfiguration.html#a175bdb5cf609cd908ef25a93a926adc9">  718</a></span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classConfiguration.html#a175bdb5cf609cd908ef25a93a926adc9">AutodetectHelpBrowser</a>(<span class="keywordtype">bool</span> autodetect){m_autodetectHelpBrowser = autodetect;}</div>
@@ -667,7 +667,7 @@ $(function() {
 <div class="line"><a name="l00731"></a><span class="lineno">  731</span>&#160; </div>
 <div class="line"><a name="l00733"></a><span class="lineno"><a class="line" href="classConfiguration.html#a0c5f8dc5f190f8c061097f230e6070be">  733</a></span>&#160;  wxString <a class="code" href="classConfiguration.html#a0c5f8dc5f190f8c061097f230e6070be">HelpBrowserUserLocation</a>()<span class="keyword"> const </span>{<span class="keywordflow">return</span> m_helpBrowserUserLocation;}</div>
 <div class="line"><a name="l00734"></a><span class="lineno">  734</span>&#160; </div>
-<div class="line"><a name="l00736"></a><span class="lineno"><a class="line" href="classConfiguration.html#a8704e8f0514e29f02578230d39e30e27">  736</a></span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classConfiguration.html#a8704e8f0514e29f02578230d39e30e27">HelpBrowserUserLocation</a>(wxString helpBrowser) { m_helpBrowserUserLocation = helpBrowser;}</div>
+<div class="line"><a name="l00736"></a><span class="lineno"><a class="line" href="classConfiguration.html#a8704e8f0514e29f02578230d39e30e27">  736</a></span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classConfiguration.html#a8704e8f0514e29f02578230d39e30e27">HelpBrowserUserLocation</a>(wxString helpBrowser) { m_helpBrowserUserLocation = std::move(helpBrowser);}</div>
 <div class="line"><a name="l00737"></a><span class="lineno">  737</span>&#160; </div>
 <div class="line"><a name="l00744"></a><span class="lineno">  744</span>&#160;  <span class="keyword">static</span> <span class="keywordtype">bool</span> <a class="code" href="classConfiguration.html#a0e5c3f0d285912e0f72d36b8eff1d664">MaximaFound</a>(wxString location = wxEmptyString);</div>
 <div class="line"><a name="l00745"></a><span class="lineno">  745</span>&#160; </div>
@@ -688,7 +688,7 @@ $(function() {
 <div class="line"><a name="l00762"></a><span class="lineno">  762</span>&#160;  <span class="keywordtype">bool</span> EnterEvaluates()<span class="keyword"> const </span>{<span class="keywordflow">return</span> m_enterEvaluates;}</div>
 <div class="line"><a name="l00763"></a><span class="lineno">  763</span>&#160;  <span class="keywordtype">void</span> EnterEvaluates(<span class="keywordtype">bool</span> enterEvaluates) {m_enterEvaluates = enterEvaluates;}</div>
 <div class="line"><a name="l00764"></a><span class="lineno">  764</span>&#160;  <span class="keyword">static</span> wxString MathJaXURL_Auto() { <span class="keywordflow">return</span> wxS(<span class="stringliteral">&quot;https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js&quot;</span>);}</div>
-<div class="line"><a name="l00766"></a><span class="lineno"><a class="line" href="classConfiguration.html#a19fa14b5da6db871966920d852f755f3">  766</a></span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classConfiguration.html#a19fa14b5da6db871966920d852f755f3">MathJaXURL</a>(wxString url){m_mathJaxURL = url;}</div>
+<div class="line"><a name="l00766"></a><span class="lineno"><a class="line" href="classConfiguration.html#a19fa14b5da6db871966920d852f755f3">  766</a></span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classConfiguration.html#a19fa14b5da6db871966920d852f755f3">MathJaXURL</a>(wxString url){m_mathJaxURL = std::move(url);}</div>
 <div class="line"><a name="l00767"></a><span class="lineno">  767</span>&#160; </div>
 <div class="line"><a name="l00768"></a><span class="lineno">  768</span>&#160;  <span class="keywordtype">bool</span> CopyBitmap()<span class="keyword"> const </span>{<span class="keywordflow">return</span> m_copyBitmap;}</div>
 <div class="line"><a name="l00769"></a><span class="lineno">  769</span>&#160;  <span class="keywordtype">void</span> CopyBitmap(<span class="keywordtype">bool</span> copyBitmap){ m_copyBitmap = copyBitmap; }</div>
@@ -710,7 +710,7 @@ $(function() {
 <div class="line"><a name="l00785"></a><span class="lineno">  785</span>&#160;  <span class="keywordtype">void</span> UseSVG(<span class="keywordtype">bool</span> useSVG) { m_useSVG = useSVG ;}</div>
 <div class="line"><a name="l00786"></a><span class="lineno">  786</span>&#160;  <span class="keywordtype">void</span> ShowLength(<span class="keywordtype">long</span> length) { m_showLength = length; }</div>
 <div class="line"><a name="l00787"></a><span class="lineno">  787</span>&#160;  <span class="keywordtype">long</span> ShowLength()<span class="keyword"> const </span>{<span class="keywordflow">return</span> m_showLength;}</div>
-<div class="line"><a name="l00788"></a><span class="lineno">  788</span>&#160;  <span class="keywordtype">void</span> LispType(wxString type) { m_lispType = type; }</div>
+<div class="line"><a name="l00788"></a><span class="lineno">  788</span>&#160;  <span class="keywordtype">void</span> LispType(wxString type) { m_lispType = std::move(type); }</div>
 <div class="line"><a name="l00789"></a><span class="lineno">  789</span>&#160;  wxString LispType()<span class="keyword"> const </span>{<span class="keywordflow">return</span> m_lispType;}</div>
 <div class="line"><a name="l00790"></a><span class="lineno">  790</span>&#160;  </div>
 <div class="line"><a name="l00792"></a><span class="lineno"><a class="line" href="classConfiguration.html#acad62b1a62222fa20d4bd2acbf25b206">  792</a></span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classConfiguration.html#acad62b1a62222fa20d4bd2acbf25b206">SetParenthesisDrawMode</a>(<a class="code" href="classConfiguration.html#acc2f54f4547aea31768bc9db04a9f24b">drawMode</a> mode) { m_parenthesisDrawMode = mode; }</div>
@@ -749,9 +749,9 @@ $(function() {
 <div class="line"><a name="l00839"></a><span class="lineno">  839</span>&#160;    {m_offerKnownAnswers = offerKnownAnswers;}</div>
 <div class="line"><a name="l00840"></a><span class="lineno">  840</span>&#160;  </div>
 <div class="line"><a name="l00841"></a><span class="lineno">  841</span>&#160;  wxString Documentclass()<span class="keyword"> const </span>{<span class="keywordflow">return</span> m_documentclass;}</div>
-<div class="line"><a name="l00842"></a><span class="lineno">  842</span>&#160;  <span class="keywordtype">void</span> Documentclass(wxString clss){m_documentclass = clss;}</div>
+<div class="line"><a name="l00842"></a><span class="lineno">  842</span>&#160;  <span class="keywordtype">void</span> Documentclass(wxString clss){m_documentclass = std::move(clss);}</div>
 <div class="line"><a name="l00843"></a><span class="lineno">  843</span>&#160;  wxString DocumentclassOptions()<span class="keyword"> const </span>{<span class="keywordflow">return</span> m_documentclassOptions;}</div>
-<div class="line"><a name="l00844"></a><span class="lineno">  844</span>&#160;  <span class="keywordtype">void</span> DocumentclassOptions(wxString classOptions){m_documentclassOptions = classOptions;}</div>
+<div class="line"><a name="l00844"></a><span class="lineno">  844</span>&#160;  <span class="keywordtype">void</span> DocumentclassOptions(wxString classOptions){m_documentclassOptions = std::move(classOptions);}</div>
 <div class="line"><a name="l00845"></a><span class="lineno">  845</span>&#160; </div>
 <div class="line"><a name="l00846"></a><span class="lineno">  846</span>&#160;  </div>
 <div class="line"><a name="l00847"></a><span class="lineno">  847</span>&#160;  <a class="code" href="classConfiguration.html#ae285be0c26dbdd7a86eac37c9cebdd7d">htmlExportFormat</a> HTMLequationFormat()<span class="keyword"> const </span>{<span class="keywordflow">return</span> m_htmlEquationFormat;}</div>
@@ -773,7 +773,7 @@ $(function() {
 <div class="line"><a name="l00868"></a><span class="lineno">  868</span>&#160;  <span class="keywordtype">void</span> SetWorksheetPosition(wxPoint worksheetPosition){m_worksheetPosition = worksheetPosition;}</div>
 <div class="line"><a name="l00869"></a><span class="lineno">  869</span>&#160;  wxPoint GetWorksheetPosition()<span class="keyword"> const </span>{<span class="keywordflow">return</span> m_worksheetPosition;}</div>
 <div class="line"><a name="l00870"></a><span class="lineno">  870</span>&#160;  wxString MaximaShareDir()<span class="keyword"> const </span>{<span class="keywordflow">return</span> m_maximaShareDir;}</div>
-<div class="line"><a name="l00871"></a><span class="lineno">  871</span>&#160;  <span class="keywordtype">void</span> MaximaShareDir(wxString dir){m_maximaShareDir = dir;}</div>
+<div class="line"><a name="l00871"></a><span class="lineno">  871</span>&#160;  <span class="keywordtype">void</span> MaximaShareDir(wxString dir){m_maximaShareDir = std::move(dir);}</div>
 <div class="line"><a name="l00872"></a><span class="lineno">  872</span>&#160;  <span class="keywordtype">void</span> InLispMode(<span class="keywordtype">bool</span> lisp){m_inLispMode = lisp;}</div>
 <div class="line"><a name="l00873"></a><span class="lineno">  873</span>&#160;  <span class="keywordtype">bool</span> InLispMode()<span class="keyword"> const </span>{<span class="keywordflow">return</span> m_inLispMode;}</div>
 <div class="line"><a name="l00874"></a><span class="lineno">  874</span>&#160;  <span class="keywordtype">void</span> BitmapScale(<span class="keywordtype">int</span> factor){m_bitmapScale = factor;}</div>
@@ -818,7 +818,7 @@ $(function() {
 <div class="line"><a name="l00923"></a><span class="lineno">  923</span>&#160;  <span class="keywordtype">long</span> WizardTab()<span class="keyword"> const </span>{<span class="keywordflow">return</span> m_wizardTab;}</div>
 <div class="line"><a name="l00924"></a><span class="lineno">  924</span>&#160; </div>
 <div class="line"><a name="l00925"></a><span class="lineno">  925</span>&#160;  wxString TexPreamble()<span class="keyword"> const </span>{<span class="keywordflow">return</span> m_texPreamble;}</div>
-<div class="line"><a name="l00926"></a><span class="lineno">  926</span>&#160;  <span class="keywordtype">void</span> TexPreamble(wxString texPreamble) {m_texPreamble = texPreamble;}</div>
+<div class="line"><a name="l00926"></a><span class="lineno">  926</span>&#160;  <span class="keywordtype">void</span> TexPreamble(wxString texPreamble) {m_texPreamble = std::move(texPreamble);}</div>
 <div class="line"><a name="l00927"></a><span class="lineno">  927</span>&#160; </div>
 <div class="line"><a name="l00928"></a><span class="lineno">  928</span>&#160;  <a class="code" href="classStyle.html">Style</a> m_styles[<a class="code" href="TextStyle_8h.html#a68ac52da6129614b3fa14e7c828c1993a4ff5d935a79c3cd0c1e5d3a188645046">NUMBEROFSTYLES</a>];</div>
 <div class="line"><a name="l00930"></a><span class="lineno">  930</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classConfiguration.html#a9af08347ef09515dbf02e4f780588f65">InitStyles</a>();</div>

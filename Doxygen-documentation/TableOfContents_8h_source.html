@@ -145,14 +145,14 @@ $(function() {
 <div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="keyword">private</span>:</div>
 <div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;  <span class="keywordtype">void</span> UpdateStruct();</div>
 <div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;  std::unique_ptr&lt;GroupCell&gt; *m_tree;</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;  <a class="code" href="classGroupCell.html">GroupCell</a> *m_dndStartCell;</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;  <a class="code" href="classGroupCell.html">GroupCell</a> *m_dndEndCell;</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;  <a class="code" href="classGroupCell.html">GroupCell</a> *m_dndStartCell = NULL;</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;  <a class="code" href="classGroupCell.html">GroupCell</a> *m_dndEndCell = NULL;</div>
 <div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;  wxTimer m_scrollUpTimer;</div>
 <div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;  wxTimer m_scrollDownTimer;</div>
 <div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;  wxDragImage *m_dragImage = NULL;</div>
 <div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;  std::vector&lt;GroupCell *&gt; m_displayedGroupCells;</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> m_numberOfCaptionsDragged;</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;  <a class="code" href="classGroupCell.html">GroupCell</a> *m_cellRightClickedOn;</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> m_numberOfCaptionsDragged = 0;</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;  <a class="code" href="classGroupCell.html">GroupCell</a> *m_cellRightClickedOn = NULL;</div>
 <div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;  <span class="keywordtype">long</span> m_dragStart = -1;</div>
 <div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;  <span class="keywordtype">long</span> m_dragStop = -1;</div>
 <div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;  <span class="keywordtype">signed</span> <span class="keywordtype">long</span> m_dragCurrentPos = -1;</div>
