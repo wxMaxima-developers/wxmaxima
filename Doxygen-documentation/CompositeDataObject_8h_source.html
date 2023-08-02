@@ -127,7 +127,7 @@ $(function() {
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    wxDataFormat format;</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    std::shared_ptr&lt;wxDataObject&gt; object;</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    Entry(<span class="keyword">const</span> wxDataFormat &amp;format, std::shared_ptr&lt;wxDataObject&gt; <span class="keywordtype">object</span>) :</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;      format(format), object(<span class="keywordtype">object</span>) {}</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;      format(format), object(std::move(<span class="keywordtype">object</span>)) {}</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  };</div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  std::vector&lt;Entry&gt; m_entries;</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  wxDataFormat m_preferredFormat;</div>
