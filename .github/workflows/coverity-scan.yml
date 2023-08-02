@@ -23,10 +23,6 @@ jobs:
         run: |
              sudo apt-get update
              sudo apt-get install appstream-util cmake desktop-file-utils doxygen gettext gnuplot gnuplot-x11 graphviz libwxgtk3.0-gtk3-dev libwxgtk-webview3.0-gtk3-dev maxima maxima-share maxima-doc netcat-openbsd ninja-build pandoc xvfb at-spi2-core
-      - name: Create build dir
-        run: |
-             mkdir build
-             pwd
       - name: configure
         run: |
              export CXXFLAGS="-Wall -Wextra -ansi"
@@ -36,6 +32,12 @@ jobs:
              cd build
              cmake -G "Ninja" -DCMAKE_UNITY_BUILD=YES -DCMAKE_BUILD_TYPE=debug -DCMAKE_UNITY_BUILD_BATCH_SIZE=8 -DWXM_UNIT_TESTS=YES ..
              cd ..
+      - name: Create build dir
+        run: |
+             echo Determining where the build dir should be
+             pwd
+             '${{ github.workspace }}/build'
+             ls
       - name: compile
         uses: vapier/coverity-scan-action@v1
         with:
