@@ -192,7 +192,7 @@ wxString ListCell::ToOMML() const {
 wxString ListCell::ToMathML() const {
   wxString open = m_open->ToString();
   wxString close = m_close->ToString();
-  return (wxS("<mrow><mo>") + XMLescape(open) + wxS("</mo>") +
+  return (wxS("<mrow><mo>") + XMLescape(std::move(open)) + wxS("</mo>") +
           m_innerCell->ListToMathML() + wxS("<mo>") + XMLescape(close) +
           wxS("</mo></mrow>\n"));
 }

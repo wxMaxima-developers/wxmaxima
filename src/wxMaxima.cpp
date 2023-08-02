@@ -7943,7 +7943,7 @@ void wxMaxima::AddDrawParameter(wxString cmd, int dimensionsOfNewDrawCommand) {
 						   m_worksheet->GetActiveCell()->GetCaretPosition() - 3);
   } else {
     if (m_worksheet->GetActiveCell()) {
-      m_worksheet->GetActiveCell()->AddDrawParameter(cmd);
+      m_worksheet->GetActiveCell()->AddDrawParameter(std::move(cmd));
       m_worksheet->Recalculate();
       m_worksheet->RequestRedraw();
     }
@@ -8024,7 +8024,7 @@ void wxMaxima::DrawMenu(wxCommandEvent &event) {
       wiz->ShowWindowModalThenDo([this,wiz](int retcode) {
 	if (retcode == wxID_OK) {
 	  wxString cmd = wxS("title=\"") + wiz->GetValue() + wxS("\"");
-	  AddDrawParameter(cmd);
+	  AddDrawParameter(std::move(cmd));
 	}
       });
     }
@@ -8038,7 +8038,7 @@ void wxMaxima::DrawMenu(wxCommandEvent &event) {
       wiz->ShowWindowModalThenDo([this,wiz](int retcode) {
 	if (retcode == wxID_OK) {
 	  wxString cmd = wxS("key=\"") + wiz->GetValue() + wxS("\"");
-	  AddDrawParameter(cmd);
+	  AddDrawParameter(std::move(cmd));
 	}
       });
     }
@@ -8093,7 +8093,7 @@ void wxMaxima::DrawMenu(wxCommandEvent &event) {
 	if (retcode == wxID_OK) {
 	  wxString cmd =
 	    wxS("grid=[") + wiz->GetValue1() + "," + wiz->GetValue2() + wxS("]");
-	  AddDrawParameter(cmd);
+	  AddDrawParameter(std::move(cmd));
 	}
       });
     }
