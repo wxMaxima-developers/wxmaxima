@@ -191,17 +191,17 @@ namespace Format {
     GroupCell *tree = cell->GetHiddenTree();
     if (tree) {
       if (wxm)
-	retval << Headers.GetStart(WXM_FOLD) << '\n';
+	retval += Headers.GetStart(WXM_FOLD) + '\n';
       for (auto &tmp : OnList(tree))
 	{
 	  wxString tmp2;
-	  retval << TreeToWXM(tmp2, &tmp, wxm);
+	  retval += TreeToWXM(tmp2, &tmp, wxm);
 	}
       if (wxm)
-	retval << Headers.GetEnd(WXM_FOLD) << '\n';
+	retval += Headers.GetEnd(WXM_FOLD) + '\n';
     }
     if (trailingNewline)
-      retval << '\n';
+      retval += '\n';
 
     return retval;
   }

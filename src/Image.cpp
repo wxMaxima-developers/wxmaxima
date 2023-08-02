@@ -317,8 +317,8 @@ void Image::CompressedGnuplotSource(wxString gnuplotFilename, wxString dataFilen
                 this,
                 std::move(limiter),
                 filesystem,
-                std::shared_ptr<wxFSFile>(filesystem->OpenFile(gnuplotFilename)),
-                std::shared_ptr<wxFSFile>(filesystem->OpenFile(dataFilename)));
+                std::shared_ptr<wxFSFile>(filesystem->OpenFile(m_gnuplotSource)),
+                std::shared_ptr<wxFSFile>(filesystem->OpenFile(m_gnuplotData)));
 }
 
 void Image::LoadGnuplotSource_Backgroundtask2(
