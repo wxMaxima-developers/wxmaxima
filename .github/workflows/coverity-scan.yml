@@ -23,6 +23,10 @@ jobs:
         run: |
              sudo apt-get update
              sudo apt-get install appstream-util cmake desktop-file-utils doxygen gettext gnuplot gnuplot-x11 graphviz libwxgtk3.0-gtk3-dev libwxgtk-webview3.0-gtk3-dev maxima maxima-share maxima-doc netcat-openbsd ninja-build pandoc xvfb at-spi2-core
+      - name: Create build dir
+        run: |
+             mkdir build
+             pwd
       - name: configure
         run: |
              export CXXFLAGS="-Wall -Wextra -ansi"
@@ -101,6 +105,6 @@ jobs:
           # Command to pass to cov-build.
           #
           # Default: 'make'
-          command: 'sh -c "ls&&cd wxmaxima&&cd build && make && cd .."'
-
-
+          command: 'make'
+          # Default: ${{ github.workspace }}
+          working-directory: '${{ github.workspace }}/build'
