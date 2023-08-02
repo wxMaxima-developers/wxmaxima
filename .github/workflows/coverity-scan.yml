@@ -81,7 +81,7 @@ jobs:
           # previous "token" section for more information.
           #
           # REQUIRED.
-          email: '${{ secrets.COVERITY_SCAN_EMAIL }}'
+          email: ${{ secrets.COVERITY_SCAN_EMAIL }}
       
           # Which Coverity Scan language pack to download.
           #
@@ -110,4 +110,4 @@ jobs:
           # Default: 'make'
           command: 'sh -c "cd ${{ github.workspace }}/build;make"'
           # Default: ${{ github.workspace }}
-          working-directory: '${{ github.workspace }}/build'
+          working-directory: ${{ github.workspace }}/build
