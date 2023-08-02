@@ -1,7 +1,8 @@
 name: coverity_scan
 
-on: [push]
-
+on:
+  schedule:
+    - cron: "* * */1 * *"
 env:
   BUILD_TYPE: Release
 
@@ -18,7 +19,8 @@ jobs:
         with:
           # We must fetch at least the immediate parents so that if this is
           # a pull request then we can checkout the head.
-          fetch-depth: 15
+          fetch-depth: 1
+          ref: 'main'
       - name: install_packages
         run: |
              sudo apt-get update
@@ -54,7 +56,7 @@ jobs:
           # is registered as exactly!
           #
           # Default: ${{ github.repository }}
-          project: ${{ github.repository }}
+          project: ${{github.repository}}
       
           # Secret project token for accessing this project in Coverity Scan.
           #
@@ -70,7 +72,7 @@ jobs:
           # GitHub Actions are not allowed to access secrets directly.
           #
           # REQUIRED.
-          token: ${{ secrets.COVERITY_SCAN_TOKEN }}
+          token: ${{secrets.COVERITY_SCAN_TOKEN}}
       
           # Where Coverity Scan should send notifications.
           #
@@ -110,4 +112,4 @@ jobs:
           # Default: 'make'
           command: 'sh -c "cd ${{ github.workspace }}/build;make"'
           # Default: ${{ github.workspace }}
-          working-directory: ${{ github.workspace }}/build
+          working-directory: ${{github.workspace}}/build
