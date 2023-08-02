@@ -81,7 +81,7 @@ jobs:
           # previous "token" section for more information.
           #
           # REQUIRED.
-          email: ${{ secrets.COVERITY_SCAN_EMAIL }}
+          email: 'coverity@peterpall.de'
       
           # Which Coverity Scan language pack to download.
           #
