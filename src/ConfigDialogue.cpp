@@ -539,7 +539,7 @@ void ConfigDialogue::SetCheckboxValues() {
   m_showUserDefinedLabels->SetSelection(configuration->GetLabelChoice());
   unsigned int i = 0;
   // First set the language to "default".
-  for (auto it2 : m_languages) {
+  for (const auto &it2 : m_languages) {
     if (it2.second == wxLANGUAGE_DEFAULT) {
       m_language->SetSelection(i);
       break;
@@ -549,7 +549,7 @@ void ConfigDialogue::SetCheckboxValues() {
   // Now try to set the language to the one from the config
   i = 0;
   int lang = m_configuration->GetLanguage();
-  for (auto it2 : m_languages) {
+  for (const auto &it2 : m_languages) {
     if (it2.second == lang) {
       m_language->SetSelection(i);
       break;
