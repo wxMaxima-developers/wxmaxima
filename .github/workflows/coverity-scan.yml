@@ -101,4 +101,4 @@ jobs:
           # Command to pass to cov-build.
           #
           # Default: 'make'
-          command: 'cd build && make && cd ..'
+          command: 'sh -c "cd build && make && cd .."'
