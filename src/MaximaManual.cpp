@@ -188,7 +188,7 @@ void MaximaManual::CompileHelpFileAnchors(wxString maximaHtmlDir,
       dir.Traverse(htmlFilesTraverser);
     }
 
-    for (auto file : helpFiles) {
+    for (const auto &file : helpFiles) {
       bool is_Singlepage = file.Contains("_singlepage.");
       long foundAnchors = 0;
       wxString fileURI = wxURI(wxS("file://") + file).BuildURI();

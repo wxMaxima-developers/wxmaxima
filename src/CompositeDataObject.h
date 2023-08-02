@@ -64,7 +64,7 @@ private:
     wxDataFormat format;
     std::shared_ptr<wxDataObject> object;
     Entry(const wxDataFormat &format, std::shared_ptr<wxDataObject> object) :
-      format(format), object(object) {}
+      format(format), object(std::move(object)) {}
   };
   std::vector<Entry> m_entries;
   wxDataFormat m_preferredFormat;

@@ -245,9 +245,9 @@ void Configuration::ResetAllToDefaults(InitOpt options) {
   m_printMargin_Right = 10;
 
   m_wizardTab = 0;
-  for (auto i : m_renderableChars)
+  for (const auto &i : m_renderableChars)
     m_renderableChars[i.first] = wxEmptyString;
-  for (auto i : m_nonRenderableChars)
+  for (const auto &i : m_nonRenderableChars)
     m_nonRenderableChars[i.first] = wxEmptyString;
   m_showAllDigits = false;
   m_lineBreaksInLongNums = false;
@@ -1053,7 +1053,7 @@ void Configuration::SetZoomFactor(double newzoom) {
   if(m_zoomFactor == newzoom)
     return;
 
-  for (auto i: m_styles)
+  for (auto &i: m_styles)
     i.ClearCache();
   if (newzoom > GetMaxZoomFactor())
     newzoom = GetMaxZoomFactor();
