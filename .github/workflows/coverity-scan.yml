@@ -30,7 +30,7 @@ jobs:
              mkdir build
              touch build build/build.ninja
              cd build
-             cmake -G "Ninja" -DCMAKE_UNITY_BUILD=YES -DCMAKE_BUILD_TYPE=debug -DCMAKE_UNITY_BUILD_BATCH_SIZE=8 -DWXM_UNIT_TESTS=YES ..
+             cmake -DCMAKE_BUILD_TYPE=debug ..
              cd ..
       - name: Create build dir
         run: |
@@ -38,6 +38,7 @@ jobs:
              pwd
              echo '${{ github.workspace }}/build'
              ls
+             ls '${{ github.workspace }}/build'
       - name: compile
         uses: vapier/coverity-scan-action@v1
         with:
@@ -107,6 +108,6 @@ jobs:
           # Command to pass to cov-build.
           #
           # Default: 'make'
-          command: 'make'
+          command: 'sh -c "cd ${{ github.workspace }}/build;make"'
           # Default: ${{ github.workspace }}
           working-directory: '${{ github.workspace }}/build'
