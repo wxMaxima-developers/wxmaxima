@@ -36,7 +36,7 @@ jobs:
         run: |
              echo Determining where the build dir should be
              pwd
-             '${{ github.workspace }}/build'
+             echo '${{ github.workspace }}/build'
              ls
       - name: compile
         uses: vapier/coverity-scan-action@v1
