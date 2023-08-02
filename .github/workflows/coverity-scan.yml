@@ -1,0 +1,104 @@
+name: coverity_scan
+
+on: [push]
+
+env:
+  BUILD_TYPE: Release
+
+permissions:
+  contents: read
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout_git
+        uses: actions/checkout@v3
+        with:
+          # We must fetch at least the immediate parents so that if this is
+          # a pull request then we can checkout the head.
+          fetch-depth: 15
+      - name: install_packages
+        run: |
+             sudo apt-get update
+             sudo apt-get install appstream-util cmake desktop-file-utils doxygen gettext gnuplot gnuplot-x11 graphviz libwxgtk3.0-gtk3-dev libwxgtk-webview3.0-gtk3-dev maxima maxima-share maxima-doc netcat-openbsd ninja-build pandoc xvfb at-spi2-core
+      - name: configure
+        run: |
+             export CXXFLAGS="-Wall -Wextra -ansi"
+             export LANG=en_US.UTF-8
+             mkdir build
+             touch build build/build.ninja
+             cd build
+             cmake -G "Ninja" -DCMAKE_UNITY_BUILD=YES -DCMAKE_BUILD_TYPE=debug -DCMAKE_UNITY_BUILD_BATCH_SIZE=8 -DWXM_UNIT_TESTS=YES ..
+             cd ..
+      - name: compile
+        uses: vapier/coverity-scan-action@v1
+        with:
+          # Project name in Coverity Scan.
+          #
+          # This should be as it appears on the Coverity Scan website.
+          # Find it in your dashboard:
+          # https://scan.coverity.com/dashboard
+          #
+          # For example, a GitHub project will look like "gentoo/pax-utils".
+          #
+          # NB: This value is case-sensitive and must match what your GitHub project
+          # is registered as exactly!
+          #
+          # Default: ${{ github.repository }}
+          project: ${{ github.repository }}
+      
+          # Secret project token for accessing this project in Coverity Scan.
+          #
+          # Find this in the project's "Project Settings" tab under "Project token" on
+          # the Coverity Scan website.
+          #
+          # This value should not be specified in the yaml file directly.  Instead it
+          # should be set in your repositories secrets.  "COVERITY_SCAN_TOKEN" is a
+          # common name here.
+          # https://docs.github.com/en/actions/security-guides/encrypted-secrets
+          #
+          # You still have to write ${{ secrets.COVERITY_SCAN_TOKEN }} explicitly as
+          # GitHub Actions are not allowed to access secrets directly.
+          #
+          # REQUIRED.
+          token: ${{ secrets.COVERITY_SCAN_TOKEN }}
+      
+          # Where Coverity Scan should send notifications.
+          #
+          # The Coverity Scan tool requires this be set.
+          #
+          # If you don't want to write this in your config files, you can also use a
+          # repository secret.  "COVERITY_SCAN_EMAIL" is a common name.  See the
+          # previous "token" section for more information.
+          #
+          # REQUIRED.
+          email: '${{ COVERITY_SCAN_EMAIL }}'
+      
+          # Which Coverity Scan language pack to download.
+          #
+          # May be "cxx", "java", "csharp", "javascript", or "other".
+          #
+          # See the Coverity Scan download page for possible values:
+          # https://scan.coverity.com/download
+          # The tab strip along the top lists the languages.
+          #
+          # NB: 'cxx' is used for both C & C++ code.
+          #
+          # Default: 'cxx'
+          build_language: 'cxx'
+      
+          # Which Coverity Scan platform pack to download.
+          #
+          # See the Coverity Scan download page for possible values:
+          # https://scan.coverity.com/download
+          # The tab strip along the right side lists the platforms.
+          #
+          # Default: 'linux64'
+          build_platform: 'linux64'
+      
+          # Command to pass to cov-build.
+          #
+          # Default: 'make'
+          command: 'cd build && make && cd ..'
