@@ -218,7 +218,7 @@ void HelpBrowser::SelectKeywords(wxArrayString keywords) {
   m_keywords = keywords;
   m_topicButtonID0 = wxWindow::NewControlId(keywords.GetCount());
   int id = m_topicButtonID0;
-  for (auto i : keywords) {
+  for (const auto &i : keywords) {
     m_topicButtonIDs.push_back(id);
     m_topicSizer->Add(new wxButton(m_topicPanel, id++, i),
                       wxSizerFlags().Expand());
