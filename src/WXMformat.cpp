@@ -117,7 +117,8 @@ namespace Format {
 
   static WXMHeaderCollection Headers;
 
-  static wxString &TreeToWXM(wxString &retval, GroupCell *cell, bool wxm) {
+  wxString TreeToWXM(GroupCell *cell, bool wxm) {
+    wxString retval;
     bool trailingNewline = true;
     if (cell->IsHidden())
       retval += Headers.GetStart(WXM_HIDE);
@@ -193,22 +194,13 @@ namespace Format {
       if (wxm)
 	retval += Headers.GetStart(WXM_FOLD) + '\n';
       for (auto &tmp : OnList(tree))
-	{
-	  wxString tmp2;
-	  retval += TreeToWXM(tmp2, &tmp, wxm);
-	}
+	  retval += TreeToWXM(&tmp, wxm);
       if (wxm)
 	retval += Headers.GetEnd(WXM_FOLD) + '\n';
     }
     if (trailingNewline)
       retval += '\n';
 
-    return retval;
-  }
-
-  wxString TreeToWXM(GroupCell *cell, bool wxm) {
-    wxString retval;
-    TreeToWXM(retval, cell, wxm);
     return retval;
   }
 
