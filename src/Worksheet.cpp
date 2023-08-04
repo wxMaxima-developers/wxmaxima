@@ -5453,40 +5453,45 @@ bool Worksheet::ExportToHTML(const wxString &file) {
 	  output << wxS("</div>\n");
 	  break;
 	case GC_TYPE_IMAGE: {
-	  output << wxS("\n\n<!-- Image cell -->\n\n\n");
 	  Cell *out = tmp.GetLabel();
-	  output << wxS("<div class=\"image\">\n");
-	  output << EditorCell::EscapeHTMLChars(tmp.GetPrompt()->ToString() +
-						tmp.GetEditable()->ToString())
-		 << wxS("\n");
-	  output << wxS("<br/>\n");
-	  if ((tmp.GetLabel()->GetType() == MC_TYPE_SLIDE) &&
-	      (tmp.GetOutput() != NULL)) {
-	    dynamic_cast<AnimationCell *>(tmp.GetOutput())
-              ->ToGif(imgDir + wxS("/") + filename +
-                      wxString::Format(wxS("_%d.gif"), count));
-	    output << wxS("  <img src=\"") + filename_encoded + wxS("_htmlimg/") +
-	      filename_encoded +
-	      wxString::Format(
-			       _("_%d.gif\" alt=\"Animated Diagram\" "
-				 "style=\"max-width:90%%;\" loading=\"lazy\" />"),
-			       count)
-		   << wxS("\n");
-	  } else {
-	    ImgCellBase *imgCell = dynamic_cast<ImgCellBase *>(out);
-	    imgCell->ToImageFile(imgDir + wxS("/") + filename +
-				 wxString::Format(wxS("_%d."), count) +
-				 imgCell->GetExtension());
-	    output
-              << wxS("  <img src=\"") + filename_encoded + wxS("_htmlimg/") +
-	      filename_encoded +
-	      wxString::Format(
-			       wxS("_%d.%s\" alt=\"Diagram\" "
-				   "style=\"max-width:90%%;\" loading=\"lazy\" />"),
-			       count, imgCell->GetExtension().utf8_str());
-	  }
-	  output << wxS("</div>\n");
-	  count++;
+	  if(out)
+	    {
+	      output << wxS("\n\n<!-- Image cell -->\n\n\n");
+	      output << wxS("<div class=\"image\">\n");
+	      output << EditorCell::EscapeHTMLChars(tmp.GetPrompt()->ToString() +
+						    tmp.GetEditable()->ToString())
+		     << wxS("\n");
+	      output << wxS("<br/>\n");
+	      if ((tmp.GetLabel()->GetType() == MC_TYPE_SLIDE) &&
+		  (tmp.GetOutput() != NULL)) {
+		dynamic_cast<AnimationCell *>(tmp.GetOutput())
+		  ->ToGif(imgDir + wxS("/") + filename +
+			  wxString::Format(wxS("_%d.gif"), count));
+		output << wxS("  <img src=\"") + filename_encoded + wxS("_htmlimg/") +
+		  filename_encoded +
+		  wxString::Format(
+				   _("_%d.gif\" alt=\"Animated Diagram\" "
+				     "style=\"max-width:90%%;\" loading=\"lazy\" />"),
+				   count)
+		       << wxS("\n");
+	      } else {
+		ImgCellBase *imgCell = dynamic_cast<ImgCellBase *>(out);
+		imgCell->ToImageFile(imgDir + wxS("/") + filename +
+				     wxString::Format(wxS("_%d."), count) +
+				     imgCell->GetExtension());
+		output
+		  << wxS("  <img src=\"") + filename_encoded + wxS("_htmlimg/") +
+		  filename_encoded +
+		  wxString::Format(
+				   wxS("_%d.%s\" alt=\"Diagram\" "
+				       "style=\"max-width:90%%;\" loading=\"lazy\" />"),
+				   count, imgCell->GetExtension().utf8_str());
+	      }
+	      output << wxS("</div>\n");
+	      count++;
+	    }
+	  else
+	    wxLogMessage(_("ImageCell without image."));
 	} break;
 	case GC_TYPE_CODE:
 	case GC_TYPE_INVALID:

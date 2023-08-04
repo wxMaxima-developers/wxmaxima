@@ -22,6 +22,7 @@
 //  SPDX-License-Identifier: GPL-2.0+
 
 #include "Gen1Wiz.h"
+#include <utility>
 #include <wx/persist/toplevel.h>
 #include <wx/windowptr.h>
 
