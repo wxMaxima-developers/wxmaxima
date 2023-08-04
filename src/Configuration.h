@@ -340,12 +340,6 @@ public:
       m_indent = indent;
     }
 
-  //! Set the width of the visible window for GetClientWidth()
-  void SetClientWidth(long width)
-    {
-      m_clientWidth = width;
-    }
-
   bool IncrementalSearch() const {return m_incrementalSearch;}
 
 
@@ -364,18 +358,6 @@ public:
       m_charsInFont.clear();
     }
   
-  //! Set the height of the visible window for GetClientHeight()
-  void SetClientHeight(long height)
-    { m_clientHeight = height; }
-
-  //! Returns the width of the visible portion of the worksheet
-  long GetClientWidth() const
-    { return m_clientWidth; }
-
-  //! Returns the height of the visible portion of the worksheet
-  long GetClientHeight() const
-    { return m_clientHeight; }
-
   //! Calculates the default line width for the worksheet
   double GetDefaultLineWidth() const
     {

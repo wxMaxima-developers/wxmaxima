@@ -991,8 +991,9 @@ void Image::Recalculate(double scale) {
     return;
   }
 
-  int viewPortHeight = m_configuration->GetClientHeight();
-  int viewPortWidth = m_configuration->GetClientWidth();
+  double maxscale_viewportsize;
+  int viewPortHeight = m_configuration->GetCanvasSize().y;
+  int viewPortWidth = m_configuration->GetCanvasSize().x;
 
   if (viewPortHeight < 10)
     viewPortHeight = 10;

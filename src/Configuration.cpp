@@ -326,8 +326,6 @@ void Configuration::ResetAllToDefaults(InitOpt options) {
   m_abortOnError = true;
   m_defaultPort = 49152;
   m_maxGnuplotMegabytes = 12;
-  m_clientWidth = 1024;
-  m_clientHeight = 768;
   m_indentMaths = true;
   m_indent = -1;
   m_autoSubscript = 2;

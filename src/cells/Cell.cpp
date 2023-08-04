@@ -442,7 +442,7 @@ bool Cell::InUpdateRegion() const {
     // scrolled by the user, or when maxima is updating it.
     wxRect cellRect;
     cellRect.SetPosition(m_currentPoint);
-    cellRect.SetWidth(m_configuration->GetClientWidth() - m_currentPoint.x);
+    cellRect.SetWidth(m_configuration->GetCanvasSize().x - m_currentPoint.x);
     if (m_next && m_next->HasValidPosition())
       cellRect.SetHeight(m_next->m_currentPoint.y - m_currentPoint.y);
     else

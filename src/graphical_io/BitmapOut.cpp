@@ -42,8 +42,7 @@ BitmapOut::BitmapOut(Configuration **configuration, double scale)
 
   auto &config = m_cmn.GetConfiguration();
   config.SetRecalcContext(m_dc);
-  config.SetClientWidth(BM_FULL_WIDTH);
-  config.SetClientHeight(BM_FULL_WIDTH);
+  config.SetCanvasSize(wxSize(BM_FULL_WIDTH, BM_FULL_WIDTH));
 }
 
 BitmapOut::BitmapOut(Configuration **configuration,

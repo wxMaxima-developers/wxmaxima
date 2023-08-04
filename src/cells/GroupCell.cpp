@@ -468,7 +468,7 @@ bool GroupCell::Recalculate() {
     ClearNeedsToRecalculateWidths();
     Cell::Recalculate(m_configuration->GetDefaultFontSize());
     m_cellsAppended = false;
-    m_clientWidth_old = m_configuration->GetClientWidth();
+    m_clientWidth_old = m_configuration->GetCanvasSize().x;
   }
   // Move all cells that follow the current one down by the amount this cell
   // has grown.
@@ -611,7 +611,7 @@ bool GroupCell::NeedsRecalculation(AFontSize fontSize) const {
   return Cell::NeedsRecalculation(fontSize) ||
     //    (GetEditable() &&
     //    GetEditable()->NeedsRecalculation(EditorFontSize())) ||
-    (m_clientWidth_old != m_configuration->GetClientWidth()) ||
+    (m_clientWidth_old != m_configuration->GetCanvasSize().x) ||
     m_cellsAppended;
 }
 
@@ -1463,7 +1463,7 @@ void GroupCell::BreakLines() {
   }
 
   // 3rd step: Determine a sane maximum line width
-  int fullWidth = m_configuration->GetClientWidth();
+  int fullWidth = m_configuration->GetCanvasSize().x;
   int currentWidth = GetLineIndent(cell);
   if ((cell->GetTextStyle() != TS_LABEL) && (cell->GetTextStyle() != TS_USERLABEL))
     fullWidth -= m_configuration->GetIndent();
@@ -1538,7 +1538,7 @@ bool GroupCell::BreakUpCells(Cell *cell) {
   }
 
   int clientWidth =
-    .8 * m_configuration->GetClientWidth() - m_configuration->GetIndent();
+    .8 * m_configuration->GetCanvasSize().x - m_configuration->GetIndent();
   if (clientWidth < Scale_Px(50))
     clientWidth = Scale_Px(50);
 

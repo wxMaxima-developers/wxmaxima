@@ -938,7 +938,9 @@ void Worksheet::SetZoomFactor(double newzoom, bool recalc) {
 }
 
 bool Worksheet::RecalculateIfNeeded(bool timeout) {
-  if (m_configuration->GetClientWidth() < 1)
+  if (m_configuration->GetCanvasSize().x < 1)
+    return (false);
+  if (m_configuration->GetCanvasSize().y < 1)
     return (false);
 
   if (!m_recalculateStart || !GetTree()) {
@@ -3396,10 +3398,7 @@ GroupCell *Worksheet::EndOfSectioningUnit(GroupCell *start) {
 }
 
 void Worksheet::UpdateConfigurationClientSize() {
-  m_configuration->SetClientWidth(GetClientSize().GetWidth() -
-                                  m_configuration->GetCellBracketWidth() -
-                                  m_configuration->GetBaseIndent());
-  m_configuration->SetClientHeight(GetClientSize().GetHeight());
+  m_configuration->SetCanvasSize(GetClientSize());
 }
 
 /****
