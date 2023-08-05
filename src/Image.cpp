@@ -993,17 +993,17 @@ void Image::Recalculate(double scale) {
 
   double maxscale_viewportsize;
   int viewPortHeight = m_configuration->GetCanvasSize().y - 1;
-  int viewPortWidth = m_configuration->GetCanvasSize().x - 1;
+  int viewPortWidth = m_configuration->GetLineWidth();
 
   if (viewPortHeight < 10)
     viewPortHeight = 10;
   if (viewPortWidth < 10)
     viewPortWidth = 10;
 
-  // Shrink to .9* the canvas size, if needed
-  if (scale * width > .9 * viewPortWidth)
-    scale = .9 * viewPortWidth / width;
+  if (scale * width > .99 * viewPortWidth)
+    scale = .99 * viewPortWidth / width;
 
+  // Shrink to .9* the canvas height, if needed
   if (scale * height > .9 * viewPortHeight) {
     if (scale > .9 * viewPortHeight / height)
       scale = .9 * viewPortHeight / height;
