@@ -1520,7 +1520,7 @@ void wxMaximaFrame::SetupMenu() {
                                      "Maxima option variable logexpand:false"));
 
   wxString warningSign = wxT("\u26A0");
-  if (!m_configuration.FontRendersChar(wxT('\u26A0'), *wxNORMAL_FONT))
+  if (!m_configuration.FontRendersChar(L'\u26A0', *wxNORMAL_FONT))
     warningSign = _("Warning:");
   m_logexpand_Sub->AppendRadioItem(
 				   EventIDs::menu_logexpand_true,
@@ -1797,7 +1797,7 @@ void wxMaximaFrame::SetupMenu() {
 
   wxMenu *quadpack_sub = new wxMenu;
   wxString integralSign = wxS("\u222B");
-  if (!m_configuration.FontRendersChar(wxS('\u222B'), *wxNORMAL_FONT))
+  if (!m_configuration.FontRendersChar(L'\u222B', *wxNORMAL_FONT))
     integralSign = wxS("integrate");
   quadpack_sub->Append(EventIDs::menu_quad_qag,
                        integralSign + _("(f(x),x,a,b), strategy of Aind"));

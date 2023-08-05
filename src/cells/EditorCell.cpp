@@ -2200,7 +2200,7 @@ void EditorCell::FindMatchingParens() {
     return;
   }
   if ((charUnderCursor == wxS(')')) || (charUnderCursor == wxS(']')) ||
-      (charUnderCursor == wxS(']'))) {
+      (charUnderCursor == wxS('}'))) {
     int parenLevel = 0;
     long pos = m_text.Length() - 1;
     auto const tokens = MaximaTokenizer(m_text, m_configuration).PopTokens();
@@ -3236,9 +3236,9 @@ void EditorCell::StyleTextTexts() {
 
           // Equip bullet lists with real bullets
           if (line_trimmed.StartsWith(wxS("* ")))
-            line[line.find("*")] = wxS('\u2022');
-          if (line_trimmed.StartsWith(wxS("\u00B7 ")))
-            line[line.find("\u00B7")] = wxS('\u2022');
+            line[line.find("*")] = L'\u2022';
+          if (line_trimmed.StartsWith(L"\u00B7 "))
+            line[line.find(L"\u00B7")] = L'\u2022';
 
           // Remember what a continuation for this indenting object would begin
           // with

@@ -8081,18 +8081,20 @@ Worksheet::MathMLDataObject2::MathMLDataObject2()
   : wxCustomDataObject(m_mathmlFormat2) {}
 
 Worksheet::MathMLDataObject2::MathMLDataObject2(wxString data)
-  : wxCustomDataObject(m_mathmlFormat2) {
+  : wxCustomDataObject(m_mathmlFormat2),
+    m_databuf(data.utf8_str())
+{
   data += wxS('\0');
-  m_databuf = data.utf8_str();
   SetData(m_databuf.length(), m_databuf.data());
 }
 
 Worksheet::RtfDataObject::RtfDataObject() : wxCustomDataObject(m_rtfFormat) {}
 
 Worksheet::RtfDataObject::RtfDataObject(wxString data)
-  : wxCustomDataObject(m_rtfFormat) {
+  : wxCustomDataObject(m_rtfFormat),
+    m_databuf(data.utf8_str())
+{
   data += wxS('\0');
-  m_databuf = data.utf8_str();
   SetData(m_databuf.length(), m_databuf.data());
 }
 
@@ -8100,9 +8102,10 @@ Worksheet::RtfDataObject2::RtfDataObject2()
   : wxCustomDataObject(m_rtfFormat2) {}
 
 Worksheet::RtfDataObject2::RtfDataObject2(wxString data)
-  : wxCustomDataObject(m_rtfFormat2) {
+  : wxCustomDataObject(m_rtfFormat2),
+    m_databuf(data.utf8_str())
+{
   data += wxS('\0');
-  m_databuf = data.utf8_str();
   SetData(m_databuf.length(), m_databuf.data());
 }
 

@@ -22,11 +22,11 @@
         <undefine>__APPLE__ USE_PRECOMP_HEADER __WXMSW__</undefine>
     </undefines>
     <paths>
-        <dir name="src"/>
-        <dir name="src/cells"/>
-        <dir name="src/graphical_io"/>
-        <dir name="src/utils"/>
-        <dir name="src/wizards"/>
+        <dir name="src/"/>
+        <dir name="src/cells/"/>
+        <dir name="src/src/graphical_io/"/>
+        <dir name="src/utils/"/>
+        <dir name="src/wizards/"/>
     </paths>
     <suppressions>
         <suppression>unusedFunction</suppression>

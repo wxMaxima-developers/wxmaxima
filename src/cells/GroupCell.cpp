@@ -478,7 +478,7 @@ void GroupCell::InputHeightChanged() {
   ResetCellListSizes();
   if (m_inputLabel)
     m_inputLabel->ResetCellListSizes();
-  EditorCell *editorCell = GetEditable();
+  const EditorCell *editorCell = GetEditable();
   if (editorCell == NULL)
     return;
   RecalculateInput();
@@ -1140,7 +1140,7 @@ wxString GroupCell::ToTeXCodeCell(wxString imgDir, wxString filename,
 
     bool mathMode = false;
 
-    for (Cell &tmp : OnDrawList(m_output.get())) {
+    for (const Cell &tmp : OnDrawList(m_output.get())) {
       if (tmp.GetType() == MC_TYPE_IMAGE || tmp.GetType() == MC_TYPE_SLIDE) {
         str << ToTeXImage(&tmp, imgDir, filename, imgCounter);
       } else {
