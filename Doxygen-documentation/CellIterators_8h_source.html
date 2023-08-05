@@ -142,9 +142,9 @@ $(function() {
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="keyword">public</span>:</div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  <span class="keyword">explicit</span> <a class="code" href="classCellListAdapter.html">CellListAdapter</a>(<a class="code" href="classCell.html">Cell</a> *cell) : m_cell(cell) {}</div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  constexpr <a class="code" href="classCellListIterator.html">iterator</a> begin()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <a class="code" href="classCellListIterator.html">iterator</a>(m_cell); }</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;  constexpr <a class="code" href="classCellListIterator.html">iterator</a> end()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> {}; }</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;  <span class="keyword">static</span> constexpr <a class="code" href="classCellListIterator.html">iterator</a> end() { <span class="keywordflow">return</span> {}; }</div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;  constexpr <a class="code" href="classCellListIterator.html">const_iterator</a> cbegin()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <a class="code" href="classCellListIterator.html">const_iterator</a>(m_cell); }</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;  constexpr <a class="code" href="classCellListIterator.html">const_iterator</a> cend()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> {}; }</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;  <span class="keyword">static</span> constexpr <a class="code" href="classCellListIterator.html">const_iterator</a> cend() { <span class="keywordflow">return</span> {}; }</div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;};</div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160; </div>
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">typename</span> Cell&gt;</div>
@@ -192,9 +192,9 @@ $(function() {
 <div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;<span class="keyword">public</span>:</div>
 <div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;  <span class="keyword">explicit</span> <a class="code" href="classCellDrawListAdapter.html">CellDrawListAdapter</a>(<a class="code" href="classCell.html">Cell</a> *cell) : m_cell(cell) {}</div>
 <div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;  constexpr <a class="code" href="classCellDrawListIterator.html">iterator</a> begin()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <a class="code" href="classCellDrawListIterator.html">iterator</a>(m_cell); }</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;  constexpr <a class="code" href="classCellDrawListIterator.html">iterator</a> end()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> {}; }</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;  <span class="keyword">static</span> constexpr <a class="code" href="classCellDrawListIterator.html">iterator</a> end() { <span class="keywordflow">return</span> {}; }</div>
 <div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;  constexpr <a class="code" href="classCellDrawListIterator.html">const_iterator</a> cbegin()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <a class="code" href="classCellDrawListIterator.html">const_iterator</a>(m_cell); }</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;  constexpr <a class="code" href="classCellDrawListIterator.html">const_iterator</a> cend()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> {}; }</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;  <span class="keyword">static</span> constexpr <a class="code" href="classCellDrawListIterator.html">const_iterator</a> cend() { <span class="keywordflow">return</span> {}; }</div>
 <div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;};</div>
 <div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160; </div>
 <div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;<span class="keyword">class </span><a class="code" href="classCell.html">Cell</a>;</div>
@@ -280,7 +280,7 @@ $(function() {
 <div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;  <span class="keyword">explicit</span> <a class="code" href="classInnerCellAdapter.html">InnerCellAdapter</a>(<span class="keyword">const</span> <a class="code" href="classInnerCellIterator.html">iterator</a> &amp;) = <span class="keyword">delete</span>;</div>
 <div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;  <span class="keyword">explicit</span> <a class="code" href="classInnerCellAdapter.html">InnerCellAdapter</a>(<a class="code" href="classCell.html">Cell</a> *cell) : m_iter(cell) {}</div>
 <div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;  <a class="code" href="classInnerCellIterator.html">iterator</a> begin()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> m_iter; }</div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;  <a class="code" href="classInnerCellIterator.html">iterator</a> end()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> {}; }</div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;  <span class="keyword">static</span> <a class="code" href="classInnerCellIterator.html">iterator</a> end() { <span class="keywordflow">return</span> {}; }</div>
 <div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;};</div>
 <div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160; </div>
 <div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;<span class="preprocessor">#endif</span></div>
