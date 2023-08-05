@@ -76,9 +76,9 @@ template <typename Cell> class CellListAdapter final {
 public:
   explicit CellListAdapter(Cell *cell) : m_cell(cell) {}
   constexpr iterator begin() const { return iterator(m_cell); }
-  constexpr iterator end() const { return {}; }
+  static constexpr iterator end() { return {}; }
   constexpr const_iterator cbegin() const { return const_iterator(m_cell); }
-  constexpr const_iterator cend() const { return {}; }
+  static constexpr const_iterator cend() { return {}; }
 };
 
 template <typename Cell>
@@ -126,9 +126,9 @@ template <typename Cell> class CellDrawListAdapter final
 public:
   explicit CellDrawListAdapter(Cell *cell) : m_cell(cell) {}
   constexpr iterator begin() const { return iterator(m_cell); }
-  constexpr iterator end() const { return {}; }
+  static constexpr iterator end() { return {}; }
   constexpr const_iterator cbegin() const { return const_iterator(m_cell); }
-  constexpr const_iterator cend() const { return {}; }
+  static constexpr const_iterator cend() { return {}; }
 };
 
 class Cell;
@@ -215,7 +215,7 @@ public:
   explicit InnerCellAdapter(const iterator &) = delete;
   explicit InnerCellAdapter(Cell *cell) : m_iter(cell) {}
   iterator begin() const { return m_iter; }
-  iterator end() const { return {}; }
+  static iterator end() { return {}; }
 };
 
 #endif
