@@ -1025,7 +1025,7 @@ long Configuration::GetLineWidth() const {
   // The default line width is the width of the viewport minus the indentation
   // minus roughly one char
   long lineWidth =
-    m_clientWidth -
+    GetCanvasSize().x -
     Scale_Px(GetLabelWidth() + GetCellBracketWidth() + GetDefaultFontSize());
 
   // If that was suspiciously wide we reduce the default line width again.

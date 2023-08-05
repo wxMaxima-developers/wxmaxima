@@ -1064,8 +1064,6 @@ private:
   bool m_keepPercent;
   bool m_restartOnReEvaluation;
   wxString m_fontCMRI, m_fontCMSY, m_fontCMEX, m_fontCMMI, m_fontCMTI;
-  long m_clientWidth;
-  long m_clientHeight;
   bool m_printing;
   long m_lineWidth_em;
   showLabels m_showLabelChoice;
