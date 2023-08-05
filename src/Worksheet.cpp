@@ -4481,7 +4481,7 @@ std::unique_ptr<Cell> Worksheet::CopySelection(bool asData) const {
 }
 
 void Worksheet::TOCdnd() {
-  if((m_cellPointers.m_selectionStart == NULL) || (m_cellPointers.m_selectionEnd == NULL))
+  if((m_cellPointers.m_selectionStart == nullptr) || (m_cellPointers.m_selectionEnd == nullptr))
     return;
   if (!m_tableOfContents->DNDStart())
     return;
