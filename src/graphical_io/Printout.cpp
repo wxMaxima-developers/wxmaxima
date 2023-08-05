@@ -180,7 +180,7 @@ void Printout::BreakPages() {
   wxCoord pageStart = 0;
   
   for (const auto &i : breakingPoints) {
-    wxCoord pageStart = m_pages[m_pages.size() - 1]->GetRect(true).GetBottom(); 
+    pageStart = m_pages[m_pages.size() - 1]->GetRect(true).GetBottom(); 
     wxCoord pageHeight = i->GetRect(true).GetBottom() - pageStart;
     if(i->GetNext())
       pageHeight = i->GetNext()->GetRect(true).GetBottom() - pageStart;

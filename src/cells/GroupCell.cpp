@@ -132,10 +132,9 @@ GroupCell::GroupCell(Configuration *config, GroupType groupType,
   std::unique_ptr<EditorCell> editor =
     std::make_unique<EditorCell>(this, m_configuration);
 
-  if (editor && !initString.empty())
+  if (!initString.empty())
     editor->SetValue(initString);
-  if (editor)
-    AppendInput(std::move(editor));
+  AppendInput(std::move(editor));
 
   SetGroupType(groupType);
 
@@ -343,8 +342,6 @@ void GroupCell::RemoveOutput() {
   if (!m_output)
     return;
   m_numberedAnswersCount = 0;
-  if (m_output == NULL)
-    return;
   // If there is nothing to do we can skip the rest of this action.
 
   if ((m_cellPointers->m_answerCell) &&
@@ -589,7 +586,7 @@ void GroupCell::RecalculateOutput() {
   }
 
   // Calculate the height of the output
-  for (Cell &tmp : OnDrawList(m_output.get())) {
+  for (const Cell &tmp : OnDrawList(m_output.get())) {
     if (tmp.BreakLineHere()) {
       tmp.ResetCellListSizes();
       int height_Delta = tmp.GetHeightList();
@@ -670,11 +667,11 @@ void GroupCell::UpdateOutputPositions() {
       in.y += m_inputLabel->GetMaxDrop();
 
     m_outputRect.SetPosition(in);
-    bool first = true;
+    bool isFirst = true;
     int drop = 0;
     for (Cell &tmp : OnDrawList(m_output.get())) {
-      if (first || tmp.BreakLineHere()) {
-        if (!first && tmp.HasBigSkip())
+      if (isFirst || tmp.BreakLineHere()) {
+        if (!isFirst && tmp.HasBigSkip())
           in.y += MC_LINE_SKIP;
 
         in.x = GetCurrentPoint().x + GetLineIndent(&tmp);
@@ -683,7 +680,7 @@ void GroupCell::UpdateOutputPositions() {
       }
       tmp.SetCurrentPoint(in);
       in.x += tmp.GetWidth();
-      first = false;
+      isFirst = false;
     }
   }
 }
@@ -733,11 +730,11 @@ void GroupCell::Draw(wxPoint const point, wxDC *dc, wxDC *antialiassingDC) {
       if((!m_configuration->ClipToDrawRegion()) ||
 	 (m_configuration->GetUpdateRegion().Intersects(m_outputRect)))
 	{
-	  bool first = true;
+	  bool isFirst = true;
 	  int drop = 0;
 	  for (Cell &tmp : OnDrawList(m_output.get())) {
-	    if (first || tmp.BreakLineHere()) {
-	      if (!first && tmp.HasBigSkip())
+	    if (isFirst || tmp.BreakLineHere()) {
+	      if (!isFirst && tmp.HasBigSkip())
 		in.y += MC_LINE_SKIP;
 	      
 	      in.x = point.x + GetLineIndent(&tmp);
@@ -746,7 +743,7 @@ void GroupCell::Draw(wxPoint const point, wxDC *dc, wxDC *antialiassingDC) {
 	    }
 	    tmp.Draw(in, dc, antialiassingDC);
 	    in.x += tmp.GetWidth();
-	    first = false;
+	    isFirst = false;
 	  }
 	}
     }
@@ -776,7 +773,7 @@ wxRect GroupCell::GetRect(bool WXUNUSED(all)) const {
                 m_height);
 }
 
-int GroupCell::GetLineIndent(Cell *cell) {
+int GroupCell::GetLineIndent(const Cell *cell) const {
   if (cell && (cell->GetTextStyle() != TS_LABEL) &&
       (cell->GetTextStyle() != TS_USERLABEL) &&
       (cell->GetTextStyle() != TS_MAIN_PROMPT) &&
@@ -882,7 +879,7 @@ void GroupCell::DrawBracket(wxDC *dc, wxDC *antialiassingDC) {
       dc->DrawRectangle(bracketRect);
   }
 
-  Cell *editable = GetEditable();
+  const Cell *editable = GetEditable();
   if (editable != NULL && editable->IsActive()) {
     drawBracket = true;
     antialiassingDC->SetPen(*(wxThePenList->FindOrCreatePen(
@@ -980,7 +977,7 @@ wxString GroupCell::ToString() const {
 
   if (!IsHidden()) {
     bool firstCell = true;
-    for (Cell &tmp : OnDrawList(m_output.get())) {
+    for (const Cell &tmp : OnDrawList(m_output.get())) {
       if (firstCell || (tmp.HasHardLineBreak() && !str.empty()))
         str += wxS("\n");
       str += tmp.ToString();
@@ -1020,7 +1017,7 @@ wxString GroupCell::ToRTF() const {
   if (GetEditable() != NULL)
     retval += GetEditable()->ToRTF();
 
-  Cell *out = GetLabel();
+  const Cell *out = GetLabel();
   if (out != NULL) {
     retval += out->ListToRTF(true);
   }
@@ -1189,7 +1186,7 @@ wxString GroupCell::ToTeXCodeCell(wxString imgDir, wxString filename,
   return str;
 }
 
-wxString GroupCell::ToTeXImage(Cell *tmp, wxString imgDir, wxString filename,
+wxString GroupCell::ToTeXImage(const Cell *tmp, wxString imgDir, wxString filename,
                                int *imgCounter) {
   wxASSERT_MSG((imgCounter != NULL), _("Bug: No image counter to write to!"));
   if (imgCounter == NULL)
@@ -1290,7 +1287,7 @@ wxString GroupCell::ToXML() const {
     str += wxS(" hide=\"true\"");
   str += wxS(">\n");
 
-  Cell *input = GetEditable();
+  const Cell *input = GetEditable();
   Cell *output = GetLabel();
   // write contents
   switch (m_groupType) {
@@ -1374,7 +1371,7 @@ Cell::Range GroupCell::GetCellsInOutputRect(const wxRect &rect,
 
   // If selection is on multiple lines, we need to correct it
   if (r.first->GetCurrentY() != r.last->GetCurrentY()) {
-    Cell *const tmp = r.last;
+    const Cell *const tmp = r.last;
 
     // Find the first cell in selection
     for (Cell &curr : OnDrawList(r.first)) {
@@ -1515,7 +1512,7 @@ Cell::Range GroupCell::GetCellsInOutput() const {
   return r;
 }
 
-bool GroupCell::BreakUpCells(Cell *cell) {
+bool GroupCell::BreakUpCells(Cell *cell) const {
   if (cell == NULL)
     return false;
 
@@ -1560,7 +1557,7 @@ bool GroupCell::BreakUpCells(Cell *cell) {
   }
 }
 
-bool GroupCell::UnBreakUpCells(Cell *cell) {
+bool GroupCell::UnBreakUpCells(Cell *cell) const {
   int showLength;
   switch (m_configuration->ShowLength()) {
   case 0:
@@ -1874,7 +1871,7 @@ void GroupCell::Number(int &section, int &subsection, int &subsubsection,
   }
 }
 
-bool GroupCell::IsMainInput(Cell *active) const {
+bool GroupCell::IsMainInput(const Cell *active) const {
   return active && active == m_inputLabel->GetNext();
 }
 

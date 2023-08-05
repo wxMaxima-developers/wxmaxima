@@ -120,7 +120,7 @@ public:
   // general methods
   GroupType GetGroupType() const { return m_groupType; }
 
-  void SetGroupType(GroupType type);
+  void SetGroupType(GroupType groupType);
 
   // selection methods
   Range GetInnerCellsInRect(const wxRect &rect) const override;
@@ -163,7 +163,7 @@ public:
 
   wxString ToTeXCodeCell(wxString imgDir, wxString filename, int *imgCounter) const;
 
-  static wxString ToTeXImage(Cell *tmp, wxString imgDir, wxString filename, int *imgCounter);
+  static wxString ToTeXImage(const Cell *tmp, wxString imgDir, wxString filename, int *imgCounter);
 
   wxString ToTeX() const override;
 
@@ -234,10 +234,10 @@ public:
     
     \retval true, if this action has changed the height of cells.
   */
-  bool BreakUpCells(Cell *cell);
+  bool BreakUpCells(Cell *cell) const;
 
   //! Undo a BreakUpCells
-  bool UnBreakUpCells(Cell *cell);
+  bool UnBreakUpCells(Cell *cell) const;
 
   //! Break this cell into lines
   void BreakLines();
@@ -312,7 +312,7 @@ public:
   bool IsLesserGCType(GroupType comparedTo) const;
 
   //! @}
-  bool IsMainInput(Cell *active) const;
+  bool IsMainInput(const Cell *active) const;
 
   bool IsHeading() const;
   //! Can this chapter/section/... converted to a 'smaller' cell, e.g. section->subsection, paragraph->subparagraph, ...?
@@ -386,7 +386,7 @@ public:
 protected:
   bool NeedsRecalculation(AFontSize fontSize) const override;
   int GetInputIndent();
-  int GetLineIndent(Cell *cell);
+  int GetLineIndent (const Cell *cell) const ;
   void UpdateCellsInGroup();
 
 //** 16-byte objects (16 bytes)

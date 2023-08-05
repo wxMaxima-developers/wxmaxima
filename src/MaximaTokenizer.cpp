@@ -95,7 +95,7 @@ MaximaTokenizer::MaximaTokenizer(wxString commands,
     }
     // Check for comments
     if ((Ch == '/') &&
-        ((nextChar == wxS('*')) || (nextChar == wxS('\u00B7')))) {
+        ((nextChar == wxS('*')) || (nextChar == L'\u00B7'))) {
       wxString token;
       // Add the comment start
       token += *it;
@@ -124,7 +124,7 @@ MaximaTokenizer::MaximaTokenizer(wxString commands,
           nextCh = *it3;
 
         // handle comment begins within comments.
-        if ((*it == '/') && ((nextCh == '*') || (nextCh == wxS('\u00B7')))) {
+        if ((*it == '/') && ((nextCh == '*') || (nextCh == L'\u00B7'))) {
           commentDepth++;
           token += *it;
           ++it;
@@ -135,7 +135,7 @@ MaximaTokenizer::MaximaTokenizer(wxString commands,
           continue;
         }
         // handle comment endings
-        if (((*it == '*') || (*it == wxS('\u00B7'))) && (nextCh == '/')) {
+        if (((*it == '*') || (*it == L'\u00B7')) && (nextCh == '/')) {
           commentDepth--;
           token += *it;
           ++it;
@@ -183,7 +183,7 @@ MaximaTokenizer::MaximaTokenizer(wxString commands,
       } else {
         wxString token = wxString(Ch);
         if (configuration->GetChangeAsterisk()) {
-          token.Replace(wxS("*"), wxS("\u00B7"));
+          token.Replace(wxS("*"), L"\u00B7");
           token.Replace(wxS("-"), wxS("\u2212"));
         }
 
@@ -389,8 +389,8 @@ bool MaximaTokenizer::IsAlphaNum(wxChar ch) { return IsAlpha(ch) || IsNum(ch); }
 const wxString MaximaTokenizer::m_additional_alphas = wxS("\\_%µ");
 const wxString MaximaTokenizer::m_not_alphas =
 // cppcheck-suppress unknownMacro
-  wxS("\u00B7\u2212\u2260\u2264\u2265\u2265\u2212\u00B2\u00B3\u00BD\u221E"
-      "\u22C0\u22C1\u22BB\u22BC\u22BD\u00AC\u2264\u2265\u2212") wxS("\uFE62")
+  L"\u00B7\u2212\u2260\u2264\u2265\u2265\u2212\u00B2\u00B3\u00BD\u221E"
+      "\u22C0\u22C1\u22BB\u22BC\u22BD\u00AC\u2264\u2265\u2212" wxS("\uFE62")
   wxS("\uFF0B") wxS("\uFB29") wxS("\u2795") wxS("\u2064") wxS("\u2796")
   wxS("\uFE63") wxS("\uFF0D");
 const wxString MaximaTokenizer::m_spaces =

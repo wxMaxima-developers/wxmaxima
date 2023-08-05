@@ -29,6 +29,7 @@
 
 #include "BTextCtrl.h"
 
+// cppcheck-suppress ctuOneDefinitionRuleViolation
 class Gen5Wiz : public wxDialog
 {
 public:

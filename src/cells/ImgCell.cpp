@@ -342,8 +342,7 @@ wxString ImgCell::ToXML() const {
     }
 
     wxString extension;
-    if (m_image)
-      extension = m_image->GetExtension();
+    extension = m_image->GetExtension();
     return (wxS("<img") + flags + wxS(">") + basename + extension +
 	    wxS("</img>"));
   }

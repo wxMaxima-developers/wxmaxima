@@ -272,6 +272,7 @@ class GroupCell;
  * 3. One of many pointers to the object: its m_ptr points to the Observed::ControlBlock,
  *    and the observed's m_ptr *also* points to the control block.
  */
+// cppcheck-suppress ctuOneDefinitionRuleViolation
 class CellPtrBase
 {
   using CellPtrImplPointer = Observed::CellPtrImplPointer;

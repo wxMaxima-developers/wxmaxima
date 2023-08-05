@@ -146,7 +146,7 @@ public:
   //! Checks the integrity of the list pointers of the given cell in relation to
   //! its neighbors.
   static void Check(const Cell *cell);
-  static void Check(const GroupCell *cell);
+  static void Check(const GroupCell *c);
 
   /*! Replaces the successor of a given cell, and returns the old one (if any).
    *

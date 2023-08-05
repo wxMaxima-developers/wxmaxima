@@ -1519,8 +1519,8 @@ void wxMaximaFrame::SetupMenu() {
                                    _("Switch off simplifications of log(). Set "
                                      "Maxima option variable logexpand:false"));
 
-  wxString warningSign = wxS("\u26A0");
-  if (!m_configuration.FontRendersChar(wxS('\u26A0'), *wxNORMAL_FONT))
+  wxString warningSign = wxT("\u26A0");
+  if (!m_configuration.FontRendersChar(wxT('\u26A0'), *wxNORMAL_FONT))
     warningSign = _("Warning:");
   m_logexpand_Sub->AppendRadioItem(
 				   EventIDs::menu_logexpand_true,

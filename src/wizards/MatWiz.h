@@ -30,6 +30,7 @@
 
 #include <vector>
 
+// cppcheck-suppress ctuOneDefinitionRuleViolation
 class MatWiz : public wxDialog
 {
 public:

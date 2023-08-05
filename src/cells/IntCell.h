@@ -36,6 +36,7 @@
 
   This class represents an integral including the integral sign and its contents.
 */
+// cppcheck-suppress ctuOneDefinitionRuleViolation
 class IntCell final : public Cell
 {
 public:

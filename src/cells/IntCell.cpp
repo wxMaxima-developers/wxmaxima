@@ -117,6 +117,7 @@ void IntCell::Recalculate(AFontSize fontsize) {
     m_width = m_signWidth + m_base->GetFullWidth() +
       wxMax(m_over->GetFullWidth(), m_under->GetFullWidth()) +
       m_var->GetFullWidth() + Scale_Px(4);
+    // cppcheck-suppress duplicateBranch
     if (m_intStyle == INT_DEF) {
       m_center = wxMax(m_signHeight / 2,
                        m_base->GetCenterList());

@@ -40,6 +40,7 @@
 #include "SvgPanel.h"
 
 //! A wizard for explicit plots using draw
+// cppcheck-suppress ctuOneDefinitionRuleViolation
 class ExplicitWiz : public wxDialog
 {
 public:
@@ -58,6 +59,7 @@ private:
 };
 
 //! A wizard for parametric plots using draw
+// cppcheck-suppress ctuOneDefinitionRuleViolation
 class ParametricWiz : public wxDialog
 {
 public:
@@ -74,6 +76,7 @@ private:
 };
 
 //! A wizard for implicit plots using draw
+// cppcheck-suppress ctuOneDefinitionRuleViolation
 class ImplicitWiz : public wxDialog
 {
 public:
@@ -94,6 +97,7 @@ private:
 };
 
 //! A wizard for axis setup for draw
+// cppcheck-suppress ctuOneDefinitionRuleViolation
 class AxisWiz : public wxDialog
 {
 public:
@@ -122,6 +126,7 @@ private:
 
 
 //! A wizard for explicit plots using draw
+// cppcheck-suppress ctuOneDefinitionRuleViolation
 class DrawWiz : public wxDialog
 {
 public:
@@ -139,6 +144,7 @@ private:
 };
 
 //! A wizard for axis setup for draw
+// cppcheck-suppress ctuOneDefinitionRuleViolation
 class Wiz3D : public wxDialog
 {
 public:
@@ -150,6 +156,7 @@ private:
 };
 
 //! A wizard for contour plots
+// cppcheck-suppress ctuOneDefinitionRuleViolation
 class WizContour : public wxDialog
 {
 public:
@@ -167,6 +174,7 @@ private:
 };
 
 //! A wizard for the points object for draw
+// cppcheck-suppress ctuOneDefinitionRuleViolation
 class WizPoints : public wxDialog
 {
 public:
@@ -184,6 +192,7 @@ private:
 };
 
 //! A wizard that sets the draw accuracy
+// cppcheck-suppress ctuOneDefinitionRuleViolation
 class WizDrawAccuracy : public wxDialog
 {
 public:

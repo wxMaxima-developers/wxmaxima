@@ -33,6 +33,7 @@
   of input cells: Input cells are handled by EditorCell instead.
 */
 // 304 bytes <- 744 bytes
+// cppcheck-suppress ctuOneDefinitionRuleViolation
 class TextCell : public Cell
 {
 public:

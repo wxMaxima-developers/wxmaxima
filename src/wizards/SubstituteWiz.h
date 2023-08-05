@@ -28,6 +28,7 @@
 
 #include "BTextCtrl.h"
 
+// cppcheck-suppress ctuOneDefinitionRuleViolation
 class SubstituteWiz : public wxDialog
 {
 public:

@@ -30,6 +30,7 @@
 
 #include "BTextCtrl.h"
 
+// cppcheck-suppress ctuOneDefinitionRuleViolation
 class Plot2DWiz : public wxDialog
 {
 public:
