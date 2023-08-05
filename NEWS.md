@@ -2,7 +2,7 @@
 
  * Better print scaling
  * More consistent page size handling for printing
- * Many performance and stability fixes from coverity-scan 
+ * Many performance and stability fixes from coverity-scan
 
 # 23.07.0
  * Printing: Made the page margins configurable (#1787)
@@ -11,11 +11,8 @@
  * Printing: A better pagebreak algorithm
  * Printing: No more ghost lines around text cells
  * Less ugly integral signs
- * Many stability fixes  if (scale * width > .9 * viewPortWidth)
-    scale = .9 * viewPortWidth / width;
-
-
- * More Consistent worksheet scaling and sizes (#1780)
+ * Many stability fixes
+ * More consistent worksheet scaling and sizes (#1780)
  * Correctly save the color settings (#1789)
  * Correctly check the numeric and other menu items
  * The cursor no more disappears (#1788)
