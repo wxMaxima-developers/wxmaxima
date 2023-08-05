@@ -3,7 +3,7 @@ var searchData=
   ['unaryexpr_1475',['UnaryExpr',['../classCatch_1_1UnaryExpr.html',1,'Catch']]],
   ['unbreak_1476',['Unbreak',['../classCell.html#af678aad9b9d05f0d631b83c11a25ba7e',1,'Cell::Unbreak()'],['../classSumCell.html#a5af87b01d89682eb1a952096974d448a',1,'SumCell::Unbreak()']]],
   ['unbreaklist_1477',['UnbreakList',['../classCell.html#acb69c093987a3f0f6db927d3e0e2a705',1,'Cell']]],
-  ['unbreakupcells_1478',['UnBreakUpCells',['../classGroupCell.html#a2e259cbb481d16429f2a0bfef3762ebd',1,'GroupCell']]],
+  ['unbreakupcells_1478',['UnBreakUpCells',['../classGroupCell.html#a3f9f060fc1524c8b6fa0e043a8689786',1,'GroupCell']]],
   ['undo_1479',['Undo',['../classEditorCell.html#aaf1d96e92d05bf269423e42aa6d5b13c',1,'EditorCell']]],
   ['undo_20methods_20for_20cell_20additions_2fdeletions_3a_1480',['Undo methods for cell additions/deletions:',['../group__UndoBufferFill.html',1,'']]],
   ['unescapevarname_1481',['UnescapeVarname',['../classVariablespane.html#afbb41264dadeb1976a429c553ff59321',1,'Variablespane']]],

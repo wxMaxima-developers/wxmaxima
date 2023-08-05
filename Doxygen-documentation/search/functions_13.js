@@ -2,7 +2,7 @@ var searchData=
 [
   ['unbreak_2860',['Unbreak',['../classSumCell.html#a5af87b01d89682eb1a952096974d448a',1,'SumCell::Unbreak()'],['../classCell.html#af678aad9b9d05f0d631b83c11a25ba7e',1,'Cell::Unbreak()']]],
   ['unbreaklist_2861',['UnbreakList',['../classCell.html#acb69c093987a3f0f6db927d3e0e2a705',1,'Cell']]],
-  ['unbreakupcells_2862',['UnBreakUpCells',['../classGroupCell.html#a2e259cbb481d16429f2a0bfef3762ebd',1,'GroupCell']]],
+  ['unbreakupcells_2862',['UnBreakUpCells',['../classGroupCell.html#a3f9f060fc1524c8b6fa0e043a8689786',1,'GroupCell']]],
   ['undo_2863',['Undo',['../classEditorCell.html#aaf1d96e92d05bf269423e42aa6d5b13c',1,'EditorCell']]],
   ['unescapevarname_2864',['UnescapeVarname',['../classVariablespane.html#afbb41264dadeb1976a429c553ff59321',1,'Variablespane']]],
   ['unfold_2865',['Unfold',['../classGroupCell.html#ae702e3d21db18a336c72bfe2d6da667a',1,'GroupCell']]],
