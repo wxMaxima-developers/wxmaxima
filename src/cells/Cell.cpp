@@ -899,9 +899,9 @@ void Cell::ResetDataList() {
 }
 
 void Cell::ResetCellListSizesList() {
-  for (Cell &cell : OnList(this)) {
+  for (const Cell &cell : OnList(this)) {
     cell.ResetCellListSizes();
-    for (Cell &tmp : OnList(&cell))
+    for (const Cell &tmp : OnList(&cell))
       tmp.ResetCellListSizes();
   }
 }
@@ -1106,7 +1106,7 @@ wxAccStatus CellAccessible::GetChildCount(int *childCount) {
     return wxACC_FAIL;
 
   int count = 0;
-  for (Cell &cell : OnInner(m_cell))
+  for (const Cell &cell : OnInner(m_cell))
     ++count;
 
   return (*childCount = count), wxACC_OK;

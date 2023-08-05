@@ -910,7 +910,7 @@ void EditorCell::SetStyle(TextStyle style) {
   Cell::SetStyle(style);
 }
 
-void EditorCell::SetFont(wxDC *dc) {
+void EditorCell::SetFont(wxDC *dc) const {
   if(!dc)
     return;
   const wxFont &font = GetFont();
@@ -2148,9 +2148,8 @@ bool EditorCell::FindMatchingQuotes() {
     if ((tok.GetText().StartsWith(wxS("\""))) &&
         (tok.GetText().EndsWith(wxS("\"")))) {
       size_t tokenEnd = pos + tok.GetText().Length() - 1;
-      if ((m_positionOfCaret >= 0) &&
-          (((unsigned)m_positionOfCaret == tokenEnd) ||
-           (m_positionOfCaret == pos))) {
+      if (((unsigned)m_positionOfCaret == tokenEnd) ||
+           (m_positionOfCaret == pos)) {
         m_paren1 = pos;
         m_paren2 = tokenEnd;
         return true;
@@ -2951,6 +2950,7 @@ void EditorCell::HandleSoftLineBreaks_Code(
 					   unsigned int charInCell, wxString &text, size_t const &lastSpacePos,
 					   int &indentationPixels) {
   // If we don't want to autowrap code we don't do nothing here.
+  // cppcheck-suppress knownConditionTrueFalse
   if (!m_configuration->GetAutoWrapCode())
     return;
 
@@ -3035,14 +3035,8 @@ void EditorCell::StyleTextCode() {
       // space as the space that potentially serves as the next point to
       // introduce a soft line break.
       m_styledText.push_back(StyledText(wxS(" ")));
-      if (!m_styledText.empty()) {
-        lastSpace = &m_styledText.back();
-        lastSpacePos = pos + tokenString.Length() - 1;
-      } else {
-        // FIXME m_styledText is **never** empty!
-        lastSpace = NULL;
-        lastSpacePos = 0;
-      }
+      lastSpace = &m_styledText.back();
+      lastSpacePos = pos + tokenString.Length() - 1;
       continue;
     }
 

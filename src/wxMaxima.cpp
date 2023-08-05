@@ -2835,7 +2835,7 @@ bool wxMaxima::ParseNextChunkFromMaxima(wxString &data) {
   auto tagIndex = m_knownXMLTags.end();
   bool tagFound = false;
   wxString::const_iterator it;
-  for (it = data.begin(); (it < data.end()) && (!tagFound); it++) {
+  for (it = data.begin(); (it < data.end()) && (!tagFound); ++it) {
     if (*it == wxS('<')) {
       tagName = wxEmptyString;
       wxString::const_iterator it2 = it;
@@ -5077,8 +5077,9 @@ void wxMaxima::OnIdle(wxIdleEvent &event) {
 }
 
 bool wxMaxima::UpdateDrawPane() {
-  int dimensions = 0;
-  if (m_drawPane) {
+  if
+    (m_drawPane) {
+    int dimensions = 0;
     EditorCell *editor = m_worksheet->GetActiveCell();
     if (editor) {
       wxString command =

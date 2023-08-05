@@ -825,11 +825,11 @@ public:
   //! Remove this cell's tooltip
   void ClearToolTip();
   //! Set the tooltip to a given temporary string - the cell will move from it
-  void SetToolTip(wxString &&toolTip);
+  void SetToolTip(wxString &&tooltip);
   //! Set the tooltip of this math cell - it must be exist at least as long
   //! as the cell does. Translation results behave that way. I.e. it must be
   //! a static string!
-  void SetToolTip(const wxString *tooltip);
+  void SetToolTip(const wxString *toolTip);
   //! Add another tooltip to this cell
   void AddToolTip(const wxString &tip);
   //! Tells this cell where it is placed on the worksheet
@@ -1061,7 +1061,7 @@ public:
   wxAccStatus GetChild (int childId, wxAccessible **child) override;
   //! Accessibility: Is pt inside this cell or a child cell?
   wxAccStatus HitTest (const wxPoint &pt,
-                       int *childId, wxAccessible **childObject) override;
+                       int *childId, wxAccessible **child) override;
   //! Accessibility: Describe the current cell to a Screen Reader
   wxAccStatus GetDescription(int childId, wxString *description) override;
   //! Accessibility: Describe the action this Cell performs, if any
