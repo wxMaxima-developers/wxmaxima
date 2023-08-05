@@ -899,102 +899,100 @@ $(function() {
 <div class="line"><a name="l01064"></a><span class="lineno"> 1064</span>&#160;  <span class="keywordtype">bool</span> m_keepPercent;</div>
 <div class="line"><a name="l01065"></a><span class="lineno"> 1065</span>&#160;  <span class="keywordtype">bool</span> m_restartOnReEvaluation;</div>
 <div class="line"><a name="l01066"></a><span class="lineno"> 1066</span>&#160;  wxString m_fontCMRI, m_fontCMSY, m_fontCMEX, m_fontCMMI, m_fontCMTI;</div>
-<div class="line"><a name="l01067"></a><span class="lineno"> 1067</span>&#160;  <span class="keywordtype">long</span> m_clientWidth;</div>
-<div class="line"><a name="l01068"></a><span class="lineno"> 1068</span>&#160;  <span class="keywordtype">long</span> m_clientHeight;</div>
-<div class="line"><a name="l01069"></a><span class="lineno"> 1069</span>&#160;  <span class="keywordtype">bool</span> m_printing;</div>
-<div class="line"><a name="l01070"></a><span class="lineno"> 1070</span>&#160;  <span class="keywordtype">long</span> m_lineWidth_em;</div>
-<div class="line"><a name="l01071"></a><span class="lineno"> 1071</span>&#160;  showLabels m_showLabelChoice;</div>
-<div class="line"><a name="l01072"></a><span class="lineno"> 1072</span>&#160;  <span class="keywordtype">bool</span> m_fixReorderedIndices;</div>
-<div class="line"><a name="l01073"></a><span class="lineno"> 1073</span>&#160;  wxString m_mathJaxURL;</div>
-<div class="line"><a name="l01074"></a><span class="lineno"> 1074</span>&#160;  <span class="keywordtype">bool</span> m_mathJaxURL_UseUser;</div>
-<div class="line"><a name="l01075"></a><span class="lineno"> 1075</span>&#160;  <span class="keywordtype">bool</span> m_showCodeCells;</div>
-<div class="line"><a name="l01076"></a><span class="lineno"> 1076</span>&#160;  <span class="keywordtype">bool</span> m_copyBitmap;</div>
-<div class="line"><a name="l01077"></a><span class="lineno"> 1077</span>&#160;  <span class="keywordtype">bool</span> m_copyMathML;</div>
-<div class="line"><a name="l01078"></a><span class="lineno"> 1078</span>&#160;  <span class="keywordtype">bool</span> m_copyMathMLHTML;</div>
-<div class="line"><a name="l01079"></a><span class="lineno"> 1079</span>&#160;  <span class="keywordtype">long</span> m_showLength;</div>
-<div class="line"><a name="l01081"></a><span class="lineno"> 1081</span>&#160;  <span class="keywordtype">bool</span> m_inLispMode;</div>
-<div class="line"><a name="l01082"></a><span class="lineno"> 1082</span>&#160;  <span class="keywordtype">bool</span> m_usepngCairo;</div>
-<div class="line"><a name="l01083"></a><span class="lineno"> 1083</span>&#160;  <span class="keywordtype">bool</span> m_enterEvaluates;</div>
-<div class="line"><a name="l01084"></a><span class="lineno"> 1084</span>&#160;  <span class="keywordtype">bool</span> m_useSVG;</div>
-<div class="line"><a name="l01085"></a><span class="lineno"> 1085</span>&#160;  <span class="keywordtype">bool</span> m_fixedFontTC;</div>
-<div class="line"><a name="l01086"></a><span class="lineno"> 1086</span>&#160;  <span class="keywordtype">bool</span> m_copyRTF;</div>
-<div class="line"><a name="l01087"></a><span class="lineno"> 1087</span>&#160;  <span class="keywordtype">bool</span> m_copySVG;</div>
-<div class="line"><a name="l01088"></a><span class="lineno"> 1088</span>&#160;  <span class="keywordtype">bool</span> m_copyEMF;</div>
-<div class="line"><a name="l01089"></a><span class="lineno"> 1089</span>&#160;  <span class="keywordtype">bool</span> m_TOCshowsSectionNumbers;</div>
-<div class="line"><a name="l01090"></a><span class="lineno"> 1090</span>&#160;  <span class="keywordtype">bool</span> m_useUnicodeMaths;</div>
-<div class="line"><a name="l01091"></a><span class="lineno"> 1091</span>&#160;  <span class="keywordtype">bool</span> m_indentMaths;</div>
-<div class="line"><a name="l01092"></a><span class="lineno"> 1092</span>&#160;  <span class="keywordtype">bool</span> m_abortOnError;</div>
-<div class="line"><a name="l01093"></a><span class="lineno"> 1093</span>&#160;  <span class="keywordtype">bool</span> m_showMatchingParens;</div>
-<div class="line"><a name="l01094"></a><span class="lineno"> 1094</span>&#160;  <span class="keywordtype">bool</span> m_hidemultiplicationsign;</div>
-<div class="line"><a name="l01095"></a><span class="lineno"> 1095</span>&#160;  <span class="keywordtype">bool</span> m_offerKnownAnswers;</div>
-<div class="line"><a name="l01096"></a><span class="lineno"> 1096</span>&#160;  <span class="keywordtype">long</span> m_defaultPort;</div>
-<div class="line"><a name="l01097"></a><span class="lineno"> 1097</span>&#160;  <span class="keywordtype">long</span> m_maxGnuplotMegabytes;</div>
-<div class="line"><a name="l01098"></a><span class="lineno"> 1098</span>&#160;  <span class="keywordtype">long</span> m_defaultPlotHeight;</div>
-<div class="line"><a name="l01099"></a><span class="lineno"> 1099</span>&#160;  <span class="keywordtype">long</span> m_defaultPlotWidth;</div>
-<div class="line"><a name="l01100"></a><span class="lineno"> 1100</span>&#160;  <span class="keywordtype">bool</span> m_saveUntitled;</div>
-<div class="line"><a name="l01101"></a><span class="lineno"> 1101</span>&#160;  <span class="keywordtype">bool</span> m_cursorJump;</div>
-<div class="line"><a name="l01102"></a><span class="lineno"> 1102</span>&#160;  <span class="keywordtype">bool</span> m_numpadEnterEvaluates;</div>
-<div class="line"><a name="l01103"></a><span class="lineno"> 1103</span>&#160;  <span class="keywordtype">bool</span> m_saveImgFileName;</div>
-<div class="line"><a name="l01111"></a><span class="lineno"> 1111</span>&#160;  std::unique_ptr&lt;CellRedrawTrace&gt; m_cellRedrawTrace;</div>
-<div class="line"><a name="l01112"></a><span class="lineno"> 1112</span>&#160;  wxString m_documentclass;</div>
-<div class="line"><a name="l01113"></a><span class="lineno"> 1113</span>&#160;  wxString m_documentclassOptions;</div>
-<div class="line"><a name="l01114"></a><span class="lineno"> 1114</span>&#160;  <a class="code" href="classConfiguration.html#ae285be0c26dbdd7a86eac37c9cebdd7d">htmlExportFormat</a> m_htmlEquationFormat;</div>
-<div class="line"><a name="l01116"></a><span class="lineno"> 1116</span>&#160;  wxRect m_visibleRegion;</div>
-<div class="line"><a name="l01118"></a><span class="lineno"> 1118</span>&#160;  wxPoint m_worksheetPosition;</div>
-<div class="line"><a name="l01119"></a><span class="lineno"> 1119</span>&#160; </div>
-<div class="line"><a name="l01120"></a><span class="lineno"> 1120</span>&#160;  wxColour m_defaultBackgroundColor;</div>
-<div class="line"><a name="l01122"></a><span class="lineno"> 1122</span>&#160;  wxBrush m_BackgroundBrush;</div>
-<div class="line"><a name="l01123"></a><span class="lineno"> 1123</span>&#160;  wxBrush m_tooltipBrush;</div>
-<div class="line"><a name="l01124"></a><span class="lineno"> 1124</span>&#160;  <span class="keywordtype">bool</span> m_greekSidebar_ShowLatinLookalikes;</div>
-<div class="line"><a name="l01125"></a><span class="lineno"> 1125</span>&#160;  <span class="keywordtype">bool</span> m_greekSidebar_Show_mu;</div>
-<div class="line"><a name="l01126"></a><span class="lineno"> 1126</span>&#160;  wxString m_symbolPaneAdditionalChars;</div>
-<div class="line"><a name="l01127"></a><span class="lineno"> 1127</span>&#160;  <span class="keywordtype">bool</span> m_invertBackground;</div>
-<div class="line"><a name="l01128"></a><span class="lineno"> 1128</span>&#160;  <span class="keywordtype">long</span> m_undoLimit;</div>
-<div class="line"><a name="l01129"></a><span class="lineno"> 1129</span>&#160;  <span class="keywordtype">long</span> m_recentItems;</div>
-<div class="line"><a name="l01130"></a><span class="lineno"> 1130</span>&#160;  wxString m_lispType;</div>
-<div class="line"><a name="l01131"></a><span class="lineno"> 1131</span>&#160;  <span class="keywordtype">int</span> m_bitmapScale;</div>
-<div class="line"><a name="l01132"></a><span class="lineno"> 1132</span>&#160;  <span class="keywordtype">int</span> m_defaultFramerate;</div>
-<div class="line"><a name="l01133"></a><span class="lineno"> 1133</span>&#160;  <span class="keywordtype">int</span> m_tocDepth;</div>
-<div class="line"><a name="l01134"></a><span class="lineno"> 1134</span>&#160;  <span class="keywordtype">int</span> m_maxClipbrd_BitmapMegabytes;</div>
-<div class="line"><a name="l01135"></a><span class="lineno"> 1135</span>&#160;  <span class="keywordtype">int</span> m_autoSaveMinutes;</div>
-<div class="line"><a name="l01136"></a><span class="lineno"> 1136</span>&#160;  wxString m_wxMathML_Filename;</div>
-<div class="line"><a name="l01137"></a><span class="lineno"> 1137</span>&#160; </div>
-<div class="line"><a name="l01138"></a><span class="lineno"> 1138</span>&#160;  wxTextCtrl *m_lastActiveTextCtrl = NULL;</div>
-<div class="line"><a name="l01139"></a><span class="lineno"> 1139</span>&#160;};</div>
-<div class="line"><a name="l01140"></a><span class="lineno"> 1140</span>&#160; </div>
-<div class="line"><a name="l01142"></a><span class="lineno"><a class="line" href="classPrinting.html"> 1142</a></span>&#160;<span class="keyword">class </span><a class="code" href="classPrinting.html">Printing</a></div>
-<div class="line"><a name="l01143"></a><span class="lineno"> 1143</span>&#160;{</div>
-<div class="line"><a name="l01144"></a><span class="lineno"> 1144</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l01145"></a><span class="lineno"> 1145</span>&#160;  <span class="keyword">explicit</span> <a class="code" href="classPrinting.html">Printing</a>(<a class="code" href="classConfiguration.html">Configuration</a> *configuration)</div>
-<div class="line"><a name="l01146"></a><span class="lineno"> 1146</span>&#160;    {</div>
-<div class="line"><a name="l01147"></a><span class="lineno"> 1147</span>&#160;      m_configuration = configuration;</div>
-<div class="line"><a name="l01148"></a><span class="lineno"> 1148</span>&#160;      m_configuration-&gt;<a class="code" href="classConfiguration.html#a3fa0f73520c7f84e872fa0839e89fe06">SetPrinting</a>(<span class="keyword">true</span>);</div>
-<div class="line"><a name="l01149"></a><span class="lineno"> 1149</span>&#160;    }</div>
-<div class="line"><a name="l01150"></a><span class="lineno"> 1150</span>&#160;  ~<a class="code" href="classPrinting.html">Printing</a>()</div>
-<div class="line"><a name="l01151"></a><span class="lineno"> 1151</span>&#160;    {</div>
-<div class="line"><a name="l01152"></a><span class="lineno"> 1152</span>&#160;      m_configuration-&gt;<a class="code" href="classConfiguration.html#a3fa0f73520c7f84e872fa0839e89fe06">SetPrinting</a>(<span class="keyword">false</span>);</div>
-<div class="line"><a name="l01153"></a><span class="lineno"> 1153</span>&#160;    }</div>
-<div class="line"><a name="l01154"></a><span class="lineno"> 1154</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l01155"></a><span class="lineno"> 1155</span>&#160;  <a class="code" href="classConfiguration.html">Configuration</a> * m_configuration;</div>
-<div class="line"><a name="l01156"></a><span class="lineno"> 1156</span>&#160;};</div>
-<div class="line"><a name="l01157"></a><span class="lineno"> 1157</span>&#160; </div>
-<div class="line"><a name="l01159"></a><span class="lineno"><a class="line" href="classNoClipToDrawRegion.html"> 1159</a></span>&#160;<span class="keyword">class </span><a class="code" href="classNoClipToDrawRegion.html">NoClipToDrawRegion</a></div>
-<div class="line"><a name="l01160"></a><span class="lineno"> 1160</span>&#160;{</div>
-<div class="line"><a name="l01161"></a><span class="lineno"> 1161</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l01162"></a><span class="lineno"> 1162</span>&#160;  <span class="keyword">explicit</span> <a class="code" href="classNoClipToDrawRegion.html">NoClipToDrawRegion</a>(<a class="code" href="classConfiguration.html">Configuration</a> *configuration)</div>
-<div class="line"><a name="l01163"></a><span class="lineno"> 1163</span>&#160;    {</div>
-<div class="line"><a name="l01164"></a><span class="lineno"> 1164</span>&#160;      m_configuration = configuration;</div>
-<div class="line"><a name="l01165"></a><span class="lineno"> 1165</span>&#160;      m_configuration-&gt;<a class="code" href="classConfiguration.html#aa08122a12605de9fefa0c6be0ced8347">ClipToDrawRegion</a>(<span class="keyword">false</span>);</div>
-<div class="line"><a name="l01166"></a><span class="lineno"> 1166</span>&#160;    }</div>
-<div class="line"><a name="l01167"></a><span class="lineno"> 1167</span>&#160;  ~<a class="code" href="classNoClipToDrawRegion.html">NoClipToDrawRegion</a>()</div>
-<div class="line"><a name="l01168"></a><span class="lineno"> 1168</span>&#160;    {</div>
-<div class="line"><a name="l01169"></a><span class="lineno"> 1169</span>&#160;      m_configuration-&gt;<a class="code" href="classConfiguration.html#aa08122a12605de9fefa0c6be0ced8347">ClipToDrawRegion</a>(<span class="keyword">true</span>);</div>
-<div class="line"><a name="l01170"></a><span class="lineno"> 1170</span>&#160;    }</div>
-<div class="line"><a name="l01171"></a><span class="lineno"> 1171</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l01172"></a><span class="lineno"> 1172</span>&#160;  <a class="code" href="classConfiguration.html">Configuration</a> * m_configuration;</div>
-<div class="line"><a name="l01173"></a><span class="lineno"> 1173</span>&#160;};</div>
-<div class="line"><a name="l01174"></a><span class="lineno"> 1174</span>&#160; </div>
-<div class="line"><a name="l01175"></a><span class="lineno"> 1175</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// CONFIGURATION_H</span></div>
+<div class="line"><a name="l01067"></a><span class="lineno"> 1067</span>&#160;  <span class="keywordtype">bool</span> m_printing;</div>
+<div class="line"><a name="l01068"></a><span class="lineno"> 1068</span>&#160;  <span class="keywordtype">long</span> m_lineWidth_em;</div>
+<div class="line"><a name="l01069"></a><span class="lineno"> 1069</span>&#160;  showLabels m_showLabelChoice;</div>
+<div class="line"><a name="l01070"></a><span class="lineno"> 1070</span>&#160;  <span class="keywordtype">bool</span> m_fixReorderedIndices;</div>
+<div class="line"><a name="l01071"></a><span class="lineno"> 1071</span>&#160;  wxString m_mathJaxURL;</div>
+<div class="line"><a name="l01072"></a><span class="lineno"> 1072</span>&#160;  <span class="keywordtype">bool</span> m_mathJaxURL_UseUser;</div>
+<div class="line"><a name="l01073"></a><span class="lineno"> 1073</span>&#160;  <span class="keywordtype">bool</span> m_showCodeCells;</div>
+<div class="line"><a name="l01074"></a><span class="lineno"> 1074</span>&#160;  <span class="keywordtype">bool</span> m_copyBitmap;</div>
+<div class="line"><a name="l01075"></a><span class="lineno"> 1075</span>&#160;  <span class="keywordtype">bool</span> m_copyMathML;</div>
+<div class="line"><a name="l01076"></a><span class="lineno"> 1076</span>&#160;  <span class="keywordtype">bool</span> m_copyMathMLHTML;</div>
+<div class="line"><a name="l01077"></a><span class="lineno"> 1077</span>&#160;  <span class="keywordtype">long</span> m_showLength;</div>
+<div class="line"><a name="l01079"></a><span class="lineno"> 1079</span>&#160;  <span class="keywordtype">bool</span> m_inLispMode;</div>
+<div class="line"><a name="l01080"></a><span class="lineno"> 1080</span>&#160;  <span class="keywordtype">bool</span> m_usepngCairo;</div>
+<div class="line"><a name="l01081"></a><span class="lineno"> 1081</span>&#160;  <span class="keywordtype">bool</span> m_enterEvaluates;</div>
+<div class="line"><a name="l01082"></a><span class="lineno"> 1082</span>&#160;  <span class="keywordtype">bool</span> m_useSVG;</div>
+<div class="line"><a name="l01083"></a><span class="lineno"> 1083</span>&#160;  <span class="keywordtype">bool</span> m_fixedFontTC;</div>
+<div class="line"><a name="l01084"></a><span class="lineno"> 1084</span>&#160;  <span class="keywordtype">bool</span> m_copyRTF;</div>
+<div class="line"><a name="l01085"></a><span class="lineno"> 1085</span>&#160;  <span class="keywordtype">bool</span> m_copySVG;</div>
+<div class="line"><a name="l01086"></a><span class="lineno"> 1086</span>&#160;  <span class="keywordtype">bool</span> m_copyEMF;</div>
+<div class="line"><a name="l01087"></a><span class="lineno"> 1087</span>&#160;  <span class="keywordtype">bool</span> m_TOCshowsSectionNumbers;</div>
+<div class="line"><a name="l01088"></a><span class="lineno"> 1088</span>&#160;  <span class="keywordtype">bool</span> m_useUnicodeMaths;</div>
+<div class="line"><a name="l01089"></a><span class="lineno"> 1089</span>&#160;  <span class="keywordtype">bool</span> m_indentMaths;</div>
+<div class="line"><a name="l01090"></a><span class="lineno"> 1090</span>&#160;  <span class="keywordtype">bool</span> m_abortOnError;</div>
+<div class="line"><a name="l01091"></a><span class="lineno"> 1091</span>&#160;  <span class="keywordtype">bool</span> m_showMatchingParens;</div>
+<div class="line"><a name="l01092"></a><span class="lineno"> 1092</span>&#160;  <span class="keywordtype">bool</span> m_hidemultiplicationsign;</div>
+<div class="line"><a name="l01093"></a><span class="lineno"> 1093</span>&#160;  <span class="keywordtype">bool</span> m_offerKnownAnswers;</div>
+<div class="line"><a name="l01094"></a><span class="lineno"> 1094</span>&#160;  <span class="keywordtype">long</span> m_defaultPort;</div>
+<div class="line"><a name="l01095"></a><span class="lineno"> 1095</span>&#160;  <span class="keywordtype">long</span> m_maxGnuplotMegabytes;</div>
+<div class="line"><a name="l01096"></a><span class="lineno"> 1096</span>&#160;  <span class="keywordtype">long</span> m_defaultPlotHeight;</div>
+<div class="line"><a name="l01097"></a><span class="lineno"> 1097</span>&#160;  <span class="keywordtype">long</span> m_defaultPlotWidth;</div>
+<div class="line"><a name="l01098"></a><span class="lineno"> 1098</span>&#160;  <span class="keywordtype">bool</span> m_saveUntitled;</div>
+<div class="line"><a name="l01099"></a><span class="lineno"> 1099</span>&#160;  <span class="keywordtype">bool</span> m_cursorJump;</div>
+<div class="line"><a name="l01100"></a><span class="lineno"> 1100</span>&#160;  <span class="keywordtype">bool</span> m_numpadEnterEvaluates;</div>
+<div class="line"><a name="l01101"></a><span class="lineno"> 1101</span>&#160;  <span class="keywordtype">bool</span> m_saveImgFileName;</div>
+<div class="line"><a name="l01109"></a><span class="lineno"> 1109</span>&#160;  std::unique_ptr&lt;CellRedrawTrace&gt; m_cellRedrawTrace;</div>
+<div class="line"><a name="l01110"></a><span class="lineno"> 1110</span>&#160;  wxString m_documentclass;</div>
+<div class="line"><a name="l01111"></a><span class="lineno"> 1111</span>&#160;  wxString m_documentclassOptions;</div>
+<div class="line"><a name="l01112"></a><span class="lineno"> 1112</span>&#160;  <a class="code" href="classConfiguration.html#ae285be0c26dbdd7a86eac37c9cebdd7d">htmlExportFormat</a> m_htmlEquationFormat;</div>
+<div class="line"><a name="l01114"></a><span class="lineno"> 1114</span>&#160;  wxRect m_visibleRegion;</div>
+<div class="line"><a name="l01116"></a><span class="lineno"> 1116</span>&#160;  wxPoint m_worksheetPosition;</div>
+<div class="line"><a name="l01117"></a><span class="lineno"> 1117</span>&#160; </div>
+<div class="line"><a name="l01118"></a><span class="lineno"> 1118</span>&#160;  wxColour m_defaultBackgroundColor;</div>
+<div class="line"><a name="l01120"></a><span class="lineno"> 1120</span>&#160;  wxBrush m_BackgroundBrush;</div>
+<div class="line"><a name="l01121"></a><span class="lineno"> 1121</span>&#160;  wxBrush m_tooltipBrush;</div>
+<div class="line"><a name="l01122"></a><span class="lineno"> 1122</span>&#160;  <span class="keywordtype">bool</span> m_greekSidebar_ShowLatinLookalikes;</div>
+<div class="line"><a name="l01123"></a><span class="lineno"> 1123</span>&#160;  <span class="keywordtype">bool</span> m_greekSidebar_Show_mu;</div>
+<div class="line"><a name="l01124"></a><span class="lineno"> 1124</span>&#160;  wxString m_symbolPaneAdditionalChars;</div>
+<div class="line"><a name="l01125"></a><span class="lineno"> 1125</span>&#160;  <span class="keywordtype">bool</span> m_invertBackground;</div>
+<div class="line"><a name="l01126"></a><span class="lineno"> 1126</span>&#160;  <span class="keywordtype">long</span> m_undoLimit;</div>
+<div class="line"><a name="l01127"></a><span class="lineno"> 1127</span>&#160;  <span class="keywordtype">long</span> m_recentItems;</div>
+<div class="line"><a name="l01128"></a><span class="lineno"> 1128</span>&#160;  wxString m_lispType;</div>
+<div class="line"><a name="l01129"></a><span class="lineno"> 1129</span>&#160;  <span class="keywordtype">int</span> m_bitmapScale;</div>
+<div class="line"><a name="l01130"></a><span class="lineno"> 1130</span>&#160;  <span class="keywordtype">int</span> m_defaultFramerate;</div>
+<div class="line"><a name="l01131"></a><span class="lineno"> 1131</span>&#160;  <span class="keywordtype">int</span> m_tocDepth;</div>
+<div class="line"><a name="l01132"></a><span class="lineno"> 1132</span>&#160;  <span class="keywordtype">int</span> m_maxClipbrd_BitmapMegabytes;</div>
+<div class="line"><a name="l01133"></a><span class="lineno"> 1133</span>&#160;  <span class="keywordtype">int</span> m_autoSaveMinutes;</div>
+<div class="line"><a name="l01134"></a><span class="lineno"> 1134</span>&#160;  wxString m_wxMathML_Filename;</div>
+<div class="line"><a name="l01135"></a><span class="lineno"> 1135</span>&#160; </div>
+<div class="line"><a name="l01136"></a><span class="lineno"> 1136</span>&#160;  wxTextCtrl *m_lastActiveTextCtrl = NULL;</div>
+<div class="line"><a name="l01137"></a><span class="lineno"> 1137</span>&#160;};</div>
+<div class="line"><a name="l01138"></a><span class="lineno"> 1138</span>&#160; </div>
+<div class="line"><a name="l01140"></a><span class="lineno"><a class="line" href="classPrinting.html"> 1140</a></span>&#160;<span class="keyword">class </span><a class="code" href="classPrinting.html">Printing</a></div>
+<div class="line"><a name="l01141"></a><span class="lineno"> 1141</span>&#160;{</div>
+<div class="line"><a name="l01142"></a><span class="lineno"> 1142</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l01143"></a><span class="lineno"> 1143</span>&#160;  <span class="keyword">explicit</span> <a class="code" href="classPrinting.html">Printing</a>(<a class="code" href="classConfiguration.html">Configuration</a> *configuration)</div>
+<div class="line"><a name="l01144"></a><span class="lineno"> 1144</span>&#160;    {</div>
+<div class="line"><a name="l01145"></a><span class="lineno"> 1145</span>&#160;      m_configuration = configuration;</div>
+<div class="line"><a name="l01146"></a><span class="lineno"> 1146</span>&#160;      m_configuration-&gt;<a class="code" href="classConfiguration.html#a3fa0f73520c7f84e872fa0839e89fe06">SetPrinting</a>(<span class="keyword">true</span>);</div>
+<div class="line"><a name="l01147"></a><span class="lineno"> 1147</span>&#160;    }</div>
+<div class="line"><a name="l01148"></a><span class="lineno"> 1148</span>&#160;  ~<a class="code" href="classPrinting.html">Printing</a>()</div>
+<div class="line"><a name="l01149"></a><span class="lineno"> 1149</span>&#160;    {</div>
+<div class="line"><a name="l01150"></a><span class="lineno"> 1150</span>&#160;      m_configuration-&gt;<a class="code" href="classConfiguration.html#a3fa0f73520c7f84e872fa0839e89fe06">SetPrinting</a>(<span class="keyword">false</span>);</div>
+<div class="line"><a name="l01151"></a><span class="lineno"> 1151</span>&#160;    }</div>
+<div class="line"><a name="l01152"></a><span class="lineno"> 1152</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l01153"></a><span class="lineno"> 1153</span>&#160;  <a class="code" href="classConfiguration.html">Configuration</a> * m_configuration;</div>
+<div class="line"><a name="l01154"></a><span class="lineno"> 1154</span>&#160;};</div>
+<div class="line"><a name="l01155"></a><span class="lineno"> 1155</span>&#160; </div>
+<div class="line"><a name="l01157"></a><span class="lineno"><a class="line" href="classNoClipToDrawRegion.html"> 1157</a></span>&#160;<span class="keyword">class </span><a class="code" href="classNoClipToDrawRegion.html">NoClipToDrawRegion</a></div>
+<div class="line"><a name="l01158"></a><span class="lineno"> 1158</span>&#160;{</div>
+<div class="line"><a name="l01159"></a><span class="lineno"> 1159</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l01160"></a><span class="lineno"> 1160</span>&#160;  <span class="keyword">explicit</span> <a class="code" href="classNoClipToDrawRegion.html">NoClipToDrawRegion</a>(<a class="code" href="classConfiguration.html">Configuration</a> *configuration)</div>
+<div class="line"><a name="l01161"></a><span class="lineno"> 1161</span>&#160;    {</div>
+<div class="line"><a name="l01162"></a><span class="lineno"> 1162</span>&#160;      m_configuration = configuration;</div>
+<div class="line"><a name="l01163"></a><span class="lineno"> 1163</span>&#160;      m_configuration-&gt;<a class="code" href="classConfiguration.html#aa08122a12605de9fefa0c6be0ced8347">ClipToDrawRegion</a>(<span class="keyword">false</span>);</div>
+<div class="line"><a name="l01164"></a><span class="lineno"> 1164</span>&#160;    }</div>
+<div class="line"><a name="l01165"></a><span class="lineno"> 1165</span>&#160;  ~<a class="code" href="classNoClipToDrawRegion.html">NoClipToDrawRegion</a>()</div>
+<div class="line"><a name="l01166"></a><span class="lineno"> 1166</span>&#160;    {</div>
+<div class="line"><a name="l01167"></a><span class="lineno"> 1167</span>&#160;      m_configuration-&gt;<a class="code" href="classConfiguration.html#aa08122a12605de9fefa0c6be0ced8347">ClipToDrawRegion</a>(<span class="keyword">true</span>);</div>
+<div class="line"><a name="l01168"></a><span class="lineno"> 1168</span>&#160;    }</div>
+<div class="line"><a name="l01169"></a><span class="lineno"> 1169</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l01170"></a><span class="lineno"> 1170</span>&#160;  <a class="code" href="classConfiguration.html">Configuration</a> * m_configuration;</div>
+<div class="line"><a name="l01171"></a><span class="lineno"> 1171</span>&#160;};</div>
+<div class="line"><a name="l01172"></a><span class="lineno"> 1172</span>&#160; </div>
+<div class="line"><a name="l01173"></a><span class="lineno"> 1173</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// CONFIGURATION_H</span></div>
 <div class="ttc" id="aLoggingMessageDialog_8h_html"><div class="ttname"><a href="LoggingMessageDialog_8h.html">LoggingMessageDialog.h</a></div><div class="ttdoc">This file declares a message dialog that sends its contents to the log message sink.</div></div>
 <div class="ttc" id="aTextStyle_8h_html"><div class="ttname"><a href="TextStyle_8h.html">TextStyle.h</a></div><div class="ttdoc">This file declares everything needed for the text style system used to style all the elements on the ...</div></div>
 <div class="ttc" id="aTextStyle_8h_html_a68ac52da6129614b3fa14e7c828c1993"><div class="ttname"><a href="TextStyle_8h.html#a68ac52da6129614b3fa14e7c828c1993">TextStyle</a></div><div class="ttdeci">TextStyle</div><div class="ttdoc">All text styles known to wxMaxima.</div><div class="ttdef"><b>Definition:</b> TextStyle.h:226</div></div>
@@ -1107,8 +1105,8 @@ $(function() {
 <div class="ttc" id="aclassConfiguration_html_aeef043c2f0e8bf9386c3d43fe7df5e29"><div class="ttname"><a href="classConfiguration.html#aeef043c2f0e8bf9386c3d43fe7df5e29">Configuration::AutodetectHelpBrowser</a></div><div class="ttdeci">bool AutodetectHelpBrowser() const</div><div class="ttdoc">Autodetect the web browser? (If false the user-specified location is used)</div><div class="ttdef"><b>Definition:</b> Configuration.h:698</div></div>
 <div class="ttc" id="aclassConfiguration_html_af77df81165c8b53f5febf45bc056a754"><div class="ttname"><a href="classConfiguration.html#af77df81165c8b53f5febf45bc056a754">Configuration::GetWorkSheet</a></div><div class="ttdeci">wxWindow * GetWorkSheet() const</div><div class="ttdoc">Get the worksheet this configuration storage is valid for.</div><div class="ttdef"><b>Definition:</b> Configuration.h:802</div></div>
 <div class="ttc" id="aclassConfiguration_html_afe27c0e96ea92b68097674846bad5044"><div class="ttname"><a href="classConfiguration.html#afe27c0e96ea92b68097674846bad5044">Configuration::PrintBrackets</a></div><div class="ttdeci">bool PrintBrackets() const</div><div class="ttdoc">Prlong the cell brackets [displayed left to each group cell showing its extend]?</div><div class="ttdef"><b>Definition:</b> Configuration.h:634</div></div>
-<div class="ttc" id="aclassNoClipToDrawRegion_html"><div class="ttname"><a href="classNoClipToDrawRegion.html">NoClipToDrawRegion</a></div><div class="ttdoc">Clears the configuration's &quot;Clip to draw region&quot; flag until this class is left.</div><div class="ttdef"><b>Definition:</b> Configuration.h:1160</div></div>
-<div class="ttc" id="aclassPrinting_html"><div class="ttname"><a href="classPrinting.html">Printing</a></div><div class="ttdoc">Sets the configuration's &quot;printing&quot; flag until this class is left.</div><div class="ttdef"><b>Definition:</b> Configuration.h:1143</div></div>
+<div class="ttc" id="aclassNoClipToDrawRegion_html"><div class="ttname"><a href="classNoClipToDrawRegion.html">NoClipToDrawRegion</a></div><div class="ttdoc">Clears the configuration's &quot;Clip to draw region&quot; flag until this class is left.</div><div class="ttdef"><b>Definition:</b> Configuration.h:1158</div></div>
+<div class="ttc" id="aclassPrinting_html"><div class="ttname"><a href="classPrinting.html">Printing</a></div><div class="ttdoc">Sets the configuration's &quot;printing&quot; flag until this class is left.</div><div class="ttdef"><b>Definition:</b> Configuration.h:1141</div></div>
 <div class="ttc" id="aclassStyle_html"><div class="ttname"><a href="classStyle.html">Style</a></div><div class="ttdoc">Text Style Definition.</div><div class="ttdef"><b>Definition:</b> TextStyle.h:58</div></div>
 <div class="ttc" id="aclassStyle_html_a656f2706c40158fe34d54719573dfa22"><div class="ttname"><a href="classStyle.html#a656f2706c40158fe34d54719573dfa22">Style::GetFontSize</a></div><div class="ttdeci">AFontSize GetFontSize() const</div><div class="ttdoc">The size of this style's font, asserted to be valid.</div><div class="ttdef"><b>Definition:</b> TextStyle.cpp:101</div></div>
 <div class="ttc" id="astructConfiguration_1_1CharsExist_html"><div class="ttname"><a href="structConfiguration_1_1CharsExist.html">Configuration::CharsExist</a></div><div class="ttdef"><b>Definition:</b> Configuration.h:348</div></div>
