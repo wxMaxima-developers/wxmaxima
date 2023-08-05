@@ -116,7 +116,7 @@ $(function() {
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;  <a class="code" href="classCellListIterator.html">CellListIterator</a> &amp;operator++() {</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <span class="keywordflow">if</span> (m_ptr)</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    {</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;      <span class="keyword">auto</span> *<span class="keyword">const</span> prev = m_ptr;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;      <span class="keyword">const</span> <span class="keyword">auto</span> *<span class="keyword">const</span> prev = m_ptr;</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;      m_ptr = m_ptr-&gt;<a class="code" href="classCell.html#abb5242bd8147c9bee0909027b09c60d0">GetNext</a>();</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;      wxASSERT(prev != m_ptr);</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    }</div>
@@ -167,7 +167,7 @@ $(function() {
 <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    {</div>
 <div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;      <span class="keywordflow">if</span> (m_ptr)</div>
 <div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;      {</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;        <span class="keyword">auto</span> *<span class="keyword">const</span> prev = m_ptr;</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;        <span class="keyword">const</span> <span class="keyword">auto</span> *<span class="keyword">const</span> prev = m_ptr;</div>
 <div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;        m_ptr = m_ptr-&gt;<a class="code" href="classCell.html#add8841ffa9d173eb51931eeddc740638">GetNextToDraw</a>();</div>
 <div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;        wxASSERT(prev != m_ptr);</div>
 <div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;      }</div>
@@ -254,7 +254,7 @@ $(function() {
 <div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160; </div>
 <div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;<span class="keyword">inline</span> <span class="keywordtype">void</span> InnerCellIterator::AdvanceLoop(Advance mode)</div>
 <div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;{</div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;  <a class="code" href="classCell.html">Cell</a> *prev = m_innerCell;</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;  <span class="keyword">const</span> <a class="code" href="classCell.html">Cell</a> *prev = m_innerCell;</div>
 <div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;  <span class="keywordflow">if</span> (mode == Advance::OnlyIfNull &amp;&amp; prev)</div>
 <div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;    <span class="keywordflow">return</span>;</div>
 <div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;  <span class="keywordflow">for</span> (;;)</div>
