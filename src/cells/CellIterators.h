@@ -50,7 +50,7 @@ public:
   CellListIterator &operator++() {
     if (m_ptr)
     {
-      auto *const prev = m_ptr;
+      const auto *const prev = m_ptr;
       m_ptr = m_ptr->GetNext();
       wxASSERT(prev != m_ptr);
     }
@@ -101,7 +101,7 @@ public:
     {
       if (m_ptr)
       {
-        auto *const prev = m_ptr;
+        const auto *const prev = m_ptr;
         m_ptr = m_ptr->GetNextToDraw();
         wxASSERT(prev != m_ptr);
       }
@@ -189,7 +189,7 @@ inline void InnerCellIterator::FindFirstInnerCell()
 
 inline void InnerCellIterator::AdvanceLoop(Advance mode)
 {
-  Cell *prev = m_innerCell;
+  const Cell *prev = m_innerCell;
   if (mode == Advance::OnlyIfNull && prev)
     return;
   for (;;)

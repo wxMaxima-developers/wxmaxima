@@ -15,6 +15,9 @@
         <dir name="build/"/>
         <dir name="build/examples/"/>
     </includedir>
+    <defines>
+        <define name="wxS(x)=x"/>
+    </defines>
     <undefines>
         <undefine>__APPLE__ USE_PRECOMP_HEADER __WXMSW__</undefine>
     </undefines>

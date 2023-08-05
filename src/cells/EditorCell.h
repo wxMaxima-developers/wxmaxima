@@ -150,7 +150,7 @@ public:
     return m_configuration->GetStyle(GetTextStyle())->GetFont(m_fontSize_Scaled);
   }
   //! Set the currently used font to the one that matches this cell's formatting
-  void SetFont(wxDC *dc);
+  void SetFont(wxDC *dc) const;
 
   //! Sets the current color to this cell's foreground color
   void SetForeground(wxDC *dc);

@@ -101,10 +101,10 @@ class Observed
     void LogDeref(const CellPtrBase *) const;
     void LogDestruct() const;
 #else
-    void LogConstruct(const Observed *) const {}
-    void LogRef(const CellPtrBase *) const {}
-    void LogDeref(const CellPtrBase *) const {}
-    void LogDestruct() const {}
+    static void LogConstruct(const Observed *) {}
+    static void LogRef(const CellPtrBase *) {}
+    static void LogDeref(const CellPtrBase *) {}
+    static void LogDestruct() {}
 #endif
 
   public:
@@ -230,8 +230,8 @@ class Observed
   void LogRef(const CellPtrBase *) const;
   void LogDeref(const CellPtrBase *) const;
 #else
-  void LogRef(const CellPtrBase *) const {}
-  void LogDeref(const CellPtrBase *) const {}
+  static void LogRef(const CellPtrBase *) {}
+  static void LogDeref(const CellPtrBase *) {}
 #endif
 
 protected:
@@ -304,10 +304,10 @@ class CellPtrBase
   void LogAssignment(const CellPtrBase &o) const;
   void LogDestruction() const;
 #else
-  inline void LogConstruction(Observed *) const {}
-  inline void LogMove(const CellPtrBase &) const {}
-  inline void LogAssignment(const CellPtrBase &) const {}
-  inline void LogDestruction() const {}
+  static inline void LogConstruction(Observed *) {}
+  static inline void LogMove(const CellPtrBase &) {}
+  static inline void LogAssignment(const CellPtrBase &) {}
+  static inline void LogDestruction() {}
 #endif
 
 protected:
