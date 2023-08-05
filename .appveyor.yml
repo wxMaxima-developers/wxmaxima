@@ -2,10 +2,10 @@
 # https://github.com/Ifsttar/I-Simpa/blob/master/appveyor.yml
 
 
-version: '21.05.2-DevelopmentSnapshot_{build}'
+version: '23.07.0-DevelopmentSnapshot_{build}'
 
 image:
- - Visual Studio 2019 # For MSVC 2019 builds only
+ - Visual Studio 2022 # For MSVC 2022 builds only
 
 # clone directory
 clone_folder: c:\projects\wxMaxima
@@ -25,7 +25,7 @@ environment:
   WXBUILDVER: 3.2.2.1_0
   CMAKEGEN: "Ninja"
   matrix:
-    - TOOLKIT_INIT: ".appveyor\\MSVC_2019_x64.ps1"
+    - TOOLKIT_INIT: ".appveyor\\MSVC_2022_x64.ps1"
       WXW_LIB: vc_x64_lib
       EXTRA_CMAKE_ARGS: ""
     - TOOLKIT_INIT: ".appveyor\\MINGW_8.1.0_x64.ps1"
@@ -38,7 +38,7 @@ matrix:
     TOOLKIT_INIT: ".appveyor\\MINGW_8.1.0_x64.ps1"
     WXW_LIB: vc_x64_lib
   - configuration: debug
-    TOOLKIT_INIT: ".appveyor\\MSVC_2019_x64.ps1"
+    TOOLKIT_INIT: ".appveyor\\MSVC_2022_x64.ps1"
     WXW_LIB: gcc_x64_lib
 
 cache:
