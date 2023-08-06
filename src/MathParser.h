@@ -42,6 +42,7 @@
 #include "EditorCell.h"
 #include "FracCell.h"
 #include "GroupCell.h"
+#include <unordered_map>
 
 /*! This class handles parsing the xml representation of a cell tree.
 
@@ -82,11 +83,17 @@ public:
 private:
   //! A pointer to a method that handles an XML tag for a type of Cell
   using MathCellFunc = std::unique_ptr<Cell> (MathParser::*)(wxXmlNode *node);
-  WX_DECLARE_STRING_HASH_MAP(MathCellFunc, MathCellFunctionHash);
 
   //! A pointer to a method that handles an XML tag for a type of GroupCell
   using GroupCellFunc = std::unique_ptr<GroupCell> (MathParser::*)(wxXmlNode *node);
+
+  #if wxCHECK_VERSION(3, 3, 0) || wxUSE_STL
+  typedef std::unordered_map <wxString, MathCellFunc> MathCellFunctionHash;
+  typedef std::unordered_map <wxString, GroupCellFunc> GroupCellFunctionHash;
+#else
+  WX_DECLARE_STRING_HASH_MAP(MathCellFunc, MathCellFunctionHash);
   WX_DECLARE_STRING_HASH_MAP(GroupCellFunc, GroupCellFunctionHash);
+#endif
 
   //! Who you gonna call if you encounter any of these math cell tags?
   static MathCellFunctionHash m_innerTags;

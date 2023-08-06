@@ -47,6 +47,7 @@ extern unsigned char view_refresh_svg_gz[];
 #include <wx/imaglist.h>
 #include <wx/bookctrl.h>
 #include <wx/artprov.h>
+#include <unordered_map>
 
 #ifndef CONFIGDIALOGUE_H
 #define CONFIGDIALOGUE_H
@@ -54,6 +55,7 @@ extern unsigned char view_refresh_svg_gz[];
 #include "TextStyle.h"
 #include "Worksheet.h"
 #include "Configuration.h"
+#include <unordered_map>
 
 extern unsigned char GTK_PRINT_SVG_GZ[];
 extern size_t GTK_PRINT_SVG_GZ_SIZE;
@@ -138,8 +140,14 @@ private:
   std::unique_ptr<Configuration> m_configuration;
   Worksheet *m_sampleWorksheet = NULL;
 
+#if wxCHECK_VERSION(3, 3, 0) || wxUSE_STL
+  typedef std::unordered_map <wxString, wxString> StringHash;
+  typedef std::unordered_map <wxString, long> Languages;
+#else
   WX_DECLARE_STRING_HASH_MAP(wxString, StringHash);
   WX_DECLARE_STRING_HASH_MAP(long, Languages);
+#endif
+
   Languages m_languages;
   /*! TheSample text that is shown by the style selector.
 

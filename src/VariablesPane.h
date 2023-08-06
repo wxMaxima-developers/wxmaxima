@@ -28,6 +28,7 @@
 #include <wx/grid.h>
 #include <wx/panel.h>
 #include <wx/arrstr.h>
+#include <unordered_map>
 
 /*! \file 
   The file that contains the "variables" sidepane
@@ -100,7 +101,12 @@ private:
   wxGrid *m_grid;
   bool m_updateSizeNeeded = false;
   wxString InvertCase(wxString var);
+#if wxCHECK_VERSION(3, 3, 0) || wxUSE_STL
+  typedef std::unordered_map <wxString, int> IntHash;
+#else
   WX_DECLARE_STRING_HASH_MAP(int, IntHash);
+#endif
+
   //! A list of all symbols that can be entered using Esc-Codes
   IntHash m_vars;
   //! The row that was right-clicked at

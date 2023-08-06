@@ -41,7 +41,7 @@
 #include <wx/hashmap.h>
 #include "Configuration.h"
 #include "precomp.h"
-
+#include <unordered_map>
 /* The autocompletion logic
 
    The wordlists for autocompletion for keywords come from several sources:
@@ -53,8 +53,11 @@
 */
 class AutoComplete
 {
+#if wxCHECK_VERSION(3, 3, 0) || wxUSE_STL
+  typedef std::unordered_map <wxString, int> WorksheetWords;
+#else
   WX_DECLARE_STRING_HASH_MAP(int, WorksheetWords);
-
+#endif
 public:
   using WordList = std::vector<wxString>;
 

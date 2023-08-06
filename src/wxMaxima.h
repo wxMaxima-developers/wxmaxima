@@ -51,6 +51,7 @@
 #ifdef __WXMSW__
 #include <windows.h>
 #endif
+#include <unordered_map>
 #define DOCUMENT_VERSION_MAJOR 1
 /*! The part of the .wxmx format version number that appears after the dot.
 
@@ -836,11 +837,17 @@ private:
   wxString m_logexpand;
   //! A pointer to a method that handles a text chunk
   typedef void (wxMaxima::*ParseFunction)(wxString &s);
-  WX_DECLARE_STRING_HASH_MAP(ParseFunction, ParseFunctionHash);
   typedef void (wxMaxima::*VarReadFunction)(const wxString &value);
-  WX_DECLARE_STRING_HASH_MAP(VarReadFunction, VarReadFunctionHash);
   typedef void (wxMaxima::*VarUndefinedFunction)();
+#if wxCHECK_VERSION(3, 3, 0) || wxUSE_STL
+  typedef std::unordered_map <wxString, ParseFunction> ParseFunctionHash;
+  typedef std::unordered_map <wxString, VarReadFunction> VarReadFunctionHash;
+  typedef std::unordered_map <wxString, VarUndefinedFunction> VarUndefinedFunctionHash;
+#else
+  WX_DECLARE_STRING_HASH_MAP(ParseFunction, ParseFunctionHash);
+  WX_DECLARE_STRING_HASH_MAP(VarReadFunction, VarReadFunctionHash);
   WX_DECLARE_STRING_HASH_MAP(VarUndefinedFunction, VarUndefinedFunctionHash);
+#endif
   //! A list of XML tags we know and what we want to do if we encounter them
   static ParseFunctionHash m_knownXMLTags;
   //! A list of actions we want to execute if we are sent the contents of specific variables

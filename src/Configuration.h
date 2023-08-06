@@ -41,6 +41,7 @@
 #ifdef __WXMSW__
 #include <wx/msw/webview_ie.h>
 #endif
+#include <unordered_map>
 
 #define MC_LINE_SKIP Scale_Px(2)
 #define MC_TEXT_PADDING Scale_Px(1)
@@ -129,7 +130,15 @@ public:
     display_1dASCII
   };
 
+#if wxCHECK_VERSION(3, 3, 0) || wxUSE_STL
+  typedef std::unordered_map <wxString, bool> StringBoolHash;
+  typedef std::unordered_map <wxString, wxString> RenderablecharsHash;
+  typedef std::unordered_map <wxString, int> StringHash;
+#else
+  WX_DECLARE_STRING_HASH_MAP(bool, StringBoolHash);
+  WX_DECLARE_STRING_HASH_MAP(wxString, RenderablecharsHash);
   WX_DECLARE_STRING_HASH_MAP(int, StringHash);
+#endif
   /*! All maxima operator names we know
    */
   StringHash m_maximaOperators;
@@ -781,7 +790,6 @@ public:
     { m_useUnicodeMaths = useunicodemaths; }
   bool UseUnicodeMaths() const {return m_useUnicodeMaths;}
   
-  WX_DECLARE_STRING_HASH_MAP(bool, StringBoolHash);
   StringBoolHash m_hideMarkerForThisMessage;
 
   /*! Get the text Style for a given text style identifier.
@@ -951,7 +959,6 @@ private:
   //! Which styles affect only colors?
   std::vector<TextStyle> m_colorOnlyStyles;
   std::list<FileToSave> m_filesToSave;
-  WX_DECLARE_STRING_HASH_MAP(wxString, RenderablecharsHash);
   RenderablecharsHash m_renderableChars;
   RenderablecharsHash m_nonRenderableChars;
   //! True if drawing the char this button displays alters at least one pixel

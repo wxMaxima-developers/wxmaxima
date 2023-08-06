@@ -32,6 +32,7 @@
 #include "precomp.h"
 #include "TextStyle.h"
 #include "Configuration.h"
+#include <unordered_map>
 
 /*!\file
 
@@ -112,7 +113,11 @@ protected:
 
   Configuration *m_configuration;
 
+#if wxCHECK_VERSION(3, 3, 0) || wxUSE_STL
+  typedef std::unordered_map <wxString, int> StringHash;
+#else
   WX_DECLARE_STRING_HASH_MAP(int, StringHash);
+#endif
   /*! Names of functions that don't require parenthesis
 
     The maxima parser automatically parses everything that is followed by

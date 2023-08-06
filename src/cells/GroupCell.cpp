@@ -388,8 +388,6 @@ void GroupCell::AppendOutput(std::unique_ptr<Cell> &&cell) {
   m_cellsAppended = true;
 }
 
-WX_DECLARE_STRING_HASH_MAP(int, CmdsAndVariables);
-
 void GroupCell::UpdateConfusableCharWarnings() {
   ClearToolTip();
 
@@ -1189,6 +1187,11 @@ wxString GroupCell::ToTeXCodeCell(wxString imgDir, wxString filename,
 wxString GroupCell::ToTeXImage(const Cell *tmp, wxString imgDir, wxString filename,
                                int *imgCounter) {
   wxASSERT_MSG((imgCounter != NULL), _("Bug: No image counter to write to!"));
+  if(tmp == NULL)
+    {
+      wxLogMessage(_("No image to export"));
+      return wxEmptyString;
+    }
   if (imgCounter == NULL)
     return wxEmptyString;
 

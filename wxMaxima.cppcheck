@@ -17,9 +17,29 @@
     </includedir>
     <defines>
         <define name="wxS(x)=x"/>
+        <define name="__UNIX__=x"/>
+        <define name="wxUSE_STL=1"/>
+        <define name="__cplusplus=1"/>
+        <define name="USE_WEBVIEW=1"/>
+        <define name="wxUSE_STD_IOSTREAM=1"/>
+        <define name="WXK_NUMPAD_PRIOR=1"/>
+        <define name="WXK_NUMPAD_NEXT=1"/>
+        <define name="WXK_PRIOR=2"/>
+        <define name="WXK_NEXT=3"/>
+        <define name="__WXGTK__=3"/>
+        <define name="wxHAS_POWER_EVENTS=1"/>
     </defines>
     <undefines>
-        <undefine>__APPLE__ USE_PRECOMP_HEADER __WXMSW__</undefine>
+        <undefine>__APPLE__</undefine>
+        <undefine>USE_PRECOMP_HEADER__</undefine>
+        <undefine>__WXMSW__</undefine>
+        <undefine>__WINDOWS__</undefine>
+        <undefine>__CYGWIN__</undefine>
+        <undefine>__WXOSX__</undefine>
+        <undefine>__WXMAC__</undefine>
+        <undefine>__WXMOTIF__</undefine>
+        <undefine>__WXUNIVERSAL__</undefine>
+	
     </undefines>
     <paths>
         <dir name="src/"/>

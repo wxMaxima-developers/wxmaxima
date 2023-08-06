@@ -38,6 +38,7 @@
 #include <functional>
 #include "FontAttribs.h"
 #include "FontVariantCache.h"
+#include <unordered_map>
 
 //! Returns a r,g,b components packed into a 32-bit 00bbggrr triple.
 static constexpr uint32_t MAKE_RGB(uint32_t r, uint32_t g, uint32_t b)
@@ -177,8 +178,11 @@ public:
     }
   std::shared_ptr<FontVariantCache> GetFontCache() const {return m.fontCache;}
 private:
-  WX_DECLARE_STRING_HASH_MAP( std::shared_ptr<FontVariantCache>,     // type of the values
-                              FontVariantCachesMap); // name of the class
+#if wxCHECK_VERSION(3, 3, 0) || wxUSE_STL
+  typedef std::unordered_map <wxString, std::shared_ptr<FontVariantCache>> FontVariantCachesMap;
+#else
+  WX_DECLARE_STRING_HASH_MAP(std::shared_ptr<FontVariantCache>, FontVariantCachesMap);
+#endif
 
   //! An empty string we can return a reference to
   static wxString m_emptyString;

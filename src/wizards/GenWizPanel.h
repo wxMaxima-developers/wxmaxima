@@ -32,6 +32,7 @@
 #include <wx/notebook.h>
 #include "MaximaManual.h"
 #include <wx/hashmap.h>
+#include <unordered_map>
 
 
 /*! A dockable, embeddable generic wizard
@@ -97,7 +98,11 @@ public:
   wxString GetHelpKeyword(wxWindowID ID);
   virtual ~GenWizPanel();
 protected:
+#if wxCHECK_VERSION(3, 3, 0) || wxUSE_STL
+  typedef std::unordered_map <wxString, int> keywordHash;
+#else
   WX_DECLARE_STRING_HASH_MAP(int, keywordHash);
+#endif
 
   void OnSize(wxSizeEvent &event);
   wxNotebook *m_notebook;

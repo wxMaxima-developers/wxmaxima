@@ -34,6 +34,7 @@
 #include <memory>
 #include "Cell.h"
 #include "EditorCell.h"
+#include <unordered_map>
 
 //! All types a GroupCell can be of
 // This enum's elements must be synchronized with (WXMFormat.h) WXMHeaderId.
@@ -364,7 +365,14 @@ public:
   //! Reset the data when the input size changes
   void InputHeightChanged();
 
+#if wxCHECK_VERSION(3, 3, 0) || wxUSE_STL
+  typedef std::unordered_map <wxString, wxString> StringHash;
+  typedef std::unordered_map <wxString, int> CmdsAndVariables;
+#else
   WX_DECLARE_STRING_HASH_MAP(wxString, StringHash);
+  WX_DECLARE_STRING_HASH_MAP(int, CmdsAndVariables);
+#endif
+
   //! A list of answers provided by the user
   StringHash m_knownAnswers;
 

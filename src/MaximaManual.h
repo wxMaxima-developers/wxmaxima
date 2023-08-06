@@ -42,6 +42,7 @@
 #include <wx/filename.h>
 #include "precomp.h"
 #include "Configuration.h"
+#include <unordered_map>
 
 /* The autocompletion logic
 
@@ -56,7 +57,11 @@ class MaximaManual
 {
 public:
   explicit MaximaManual(Configuration *configuration);
+#if wxCHECK_VERSION(3, 3, 0) || wxUSE_STL
+  typedef std::unordered_map <wxString, wxString> HelpFileAnchors;
+#else
   WX_DECLARE_STRING_HASH_MAP(wxString, HelpFileAnchors);
+#endif
   HelpFileAnchors GetHelpfileAnchors();
   void FindMaximaHtmlDir(wxString docDir);
   wxString GetHelpfileAnchorName(wxString keyword);

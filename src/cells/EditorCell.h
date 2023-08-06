@@ -29,6 +29,7 @@
 #include "MaximaTokenizer.h"
 #include <vector>
 #include <list>
+#include <unordered_map>
 
 /*! \file
 
@@ -602,7 +603,11 @@ private:
 
 //** Large fields
 //**
+#if wxCHECK_VERSION(3, 3, 0) || wxUSE_STL
+  typedef std::unordered_map <wxString, wxSize> StringHash;
+#else
   WX_DECLARE_STRING_HASH_MAP(wxSize, StringHash);
+#endif
   //! Cached widths of text snippets, one width per style
   StringHash m_widths;
 
