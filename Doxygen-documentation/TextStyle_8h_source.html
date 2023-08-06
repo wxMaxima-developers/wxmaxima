@@ -104,212 +104,216 @@ $(function() {
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor">#include &lt;functional&gt;</span></div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor">#include &quot;FontAttribs.h&quot;</span></div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="FontVariantCache_8h.html">FontVariantCache.h</a>&quot;</span></div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160; </div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="keyword">static</span> constexpr uint32_t MAKE_RGB(uint32_t r, uint32_t g, uint32_t b)</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;{ <span class="keywordflow">return</span> (0xFF &amp; r) | ((0xFF &amp; g) &lt;&lt; 8) | ((0xFF &amp; b) &lt;&lt; 16); }</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
-<div class="line"><a name="l00057"></a><span class="lineno"><a class="line" href="classStyle.html">   57</a></span>&#160;<span class="keyword">class </span><a class="code" href="classStyle.html">Style</a> final</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;{</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  <a class="code" href="classStyle.html">Style</a>();</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  <span class="keyword">explicit</span> <a class="code" href="classStyle.html">Style</a>(<a class="code" href="classAFontSize.html">AFontSize</a> fontSize);</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  <a class="code" href="classStyle.html">Style</a>(<span class="keyword">const</span> <a class="code" href="classStyle.html">Style</a> &amp;);</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; </div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  <a class="code" href="classStyle.html">Style</a> &amp;operator=(<span class="keyword">const</span> <a class="code" href="classStyle.html">Style</a> &amp;);</div>
-<div class="line"><a name="l00066"></a><span class="lineno"><a class="line" href="classStyle.html#abaf9b7896bde19e6bc7682701620c14f">   66</a></span>&#160;  <span class="keywordtype">bool</span> <a class="code" href="classStyle.html#abaf9b7896bde19e6bc7682701620c14f">operator==</a>(<span class="keyword">const</span> <a class="code" href="classStyle.html">Style</a> &amp;o) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160; </div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;  <a class="code" href="classStyle.html">Style</a> &amp;<a class="code" href="classStyle.html#af999d8bd639fdbd1fbb5c65023d8d286">Read</a>(wxConfigBase *config, <span class="keyword">const</span> wxString &amp;where);</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classStyle.html#a259bf27abcb1f6d66dbb02bc9bc9f6cb">Write</a>(wxConfigBase *config, <span class="keyword">const</span> wxString &amp;where) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  </div>
-<div class="line"><a name="l00078"></a><span class="lineno"><a class="line" href="classStyle.html#a8df61730ef2f6b73c76354c9156a819b">   78</a></span>&#160;  <span class="keyword">static</span> <span class="keyword">const</span> <a class="code" href="classStyle.html">Style</a> &amp;<a class="code" href="classStyle.html#a8df61730ef2f6b73c76354c9156a819b">FromFont</a>(<span class="keyword">const</span> wxFont &amp;font);</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;  <span class="keyword">static</span> <span class="keyword">const</span> <a class="code" href="classStyle.html">Style</a> &amp;<a class="code" href="classStyle.html#a39d7c0ac8fc1f4a09d85c76f4006a792">FromStockFont</a>(wxStockGDI::Item font);</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160; </div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;  constexpr <span class="keyword">static</span> wxFontFamily Default_Family{wxFONTFAMILY_DEFAULT};</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  constexpr <span class="keyword">static</span> wxFontEncoding Default_Encoding{wxFONTENCODING_DEFAULT};</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;  constexpr <span class="keyword">static</span> wxFontWeight Default_Weight{wxFONTWEIGHT_NORMAL};</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;  constexpr <span class="keyword">static</span> wxFontStyle Default_FontStyle{wxFONTSTYLE_NORMAL};</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;  constexpr <span class="keyword">static</span> <span class="keywordtype">bool</span> Default_Underlined{<span class="keyword">false</span>};</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;  constexpr <span class="keyword">static</span> <span class="keywordtype">bool</span> Default_Strikethrough{<span class="keyword">false</span>};</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;  constexpr <span class="keyword">static</span> <a class="code" href="classAFontSize.html">AFontSize</a> Default_FontSize{10.0f};</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;  constexpr <span class="keyword">static</span> uint32_t Default_ColorRGB{MAKE_RGB(0, 0, 0)};</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;  <span class="keyword">static</span> <span class="keyword">const</span> wxColor &amp;Default_Color();</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160; </div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;  wxFontFamily GetFamily() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;  wxFontEncoding GetEncoding() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;  wxFontWeight GetWeight() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;  <span class="keywordtype">bool</span> IsBold()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> GetWeight() == wxFONTWEIGHT_BOLD; }</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;  <span class="keywordtype">bool</span> IsLight()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> GetWeight() == wxFONTWEIGHT_LIGHT; }</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;  wxFontStyle GetFontStyle() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;  <span class="keywordtype">bool</span> IsItalic()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> GetFontStyle() == wxFONTSTYLE_ITALIC; }</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;  <span class="keywordtype">bool</span> IsSlant()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> GetFontStyle() == wxFONTSTYLE_SLANT; }</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;  <span class="keywordtype">bool</span> IsUnderlined() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;  <span class="keywordtype">bool</span> IsStrikethrough() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;  <span class="keyword">const</span> wxString &amp;GetFontName() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;  <a class="code" href="classAFontSize.html">AFontSize</a> <a class="code" href="classStyle.html#a656f2706c40158fe34d54719573dfa22">GetFontSize</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;  uint32_t GetRGBColor() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;  wxColor GetColor()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> wxColor(GetRGBColor()); }</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160; </div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;  <span class="keyword">using</span> did_change = bool;</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;  did_change SetFamily(wxFontFamily family);</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;  did_change SetEncoding(wxFontEncoding encoding);</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;  did_change SetWeight(wxFontWeight weight);</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;  did_change SetBold(<span class="keywordtype">bool</span> bold = <span class="keyword">true</span>);</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;  did_change SetLight(<span class="keywordtype">bool</span> light = <span class="keyword">true</span>);</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;  did_change SetFontStyle(wxFontStyle style);</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;  did_change SetItalic(<span class="keywordtype">bool</span> italic = <span class="keyword">true</span>);</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;  did_change SetSlant(<span class="keywordtype">bool</span> slant = <span class="keyword">true</span>);</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;  did_change SetUnderlined(<span class="keywordtype">bool</span> underlined = <span class="keyword">true</span>);</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;  did_change SetStrikethrough(<span class="keywordtype">bool</span> strikethrough = <span class="keyword">true</span>);</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;  did_change SetFontName(wxString fontName);</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;  did_change SetFontSize(<a class="code" href="classAFontSize.html">AFontSize</a> fontSize);</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;  did_change SetRGBColor(uint32_t rgb);</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;  did_change SetColor(<span class="keyword">const</span> wxColor &amp;color);</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;  did_change SetColor(wxSystemColour sysColour);</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160; </div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;  <a class="code" href="classStyle.html">Style</a>&amp; Family(wxFontFamily family) { <span class="keywordflow">return</span> SetFamily(family), *<span class="keyword">this</span>; }</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;  <a class="code" href="classStyle.html">Style</a>&amp; Encoding(wxFontEncoding encoding) { <span class="keywordflow">return</span> SetEncoding(encoding), *<span class="keyword">this</span>; }</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;  <a class="code" href="classStyle.html">Style</a>&amp; Weight(wxFontWeight weight) { <span class="keywordflow">return</span> SetWeight(weight), *<span class="keyword">this</span>; }</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;  <a class="code" href="classStyle.html">Style</a>&amp; FontStyle(wxFontStyle style) { <span class="keywordflow">return</span> SetFontStyle(style), *<span class="keyword">this</span>; }</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;  <a class="code" href="classStyle.html">Style</a>&amp; Bold(<span class="keywordtype">bool</span> bold = <span class="keyword">true</span>) { <span class="keywordflow">return</span> SetBold(bold), *<span class="keyword">this</span>; }</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;  <a class="code" href="classStyle.html">Style</a>&amp; Light(<span class="keywordtype">bool</span> light = <span class="keyword">true</span>) { <span class="keywordflow">return</span> SetLight(light), *<span class="keyword">this</span>; }</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;  <a class="code" href="classStyle.html">Style</a>&amp; Italic(<span class="keywordtype">bool</span> italic = <span class="keyword">true</span>) { <span class="keywordflow">return</span> SetItalic(italic), *<span class="keyword">this</span>; }</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;  <a class="code" href="classStyle.html">Style</a>&amp; Slant(<span class="keywordtype">bool</span> slant = <span class="keyword">true</span>) { <span class="keywordflow">return</span> SetSlant(slant), *<span class="keyword">this</span>; }</div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;  <a class="code" href="classStyle.html">Style</a>&amp; Underlined(<span class="keywordtype">bool</span> underlined = <span class="keyword">true</span>) { <span class="keywordflow">return</span> SetUnderlined(underlined), *<span class="keyword">this</span>; }</div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;  <a class="code" href="classStyle.html">Style</a>&amp; Strikethrough(<span class="keywordtype">bool</span> strikethrough = <span class="keyword">true</span>) { <span class="keywordflow">return</span> SetStrikethrough(strikethrough), *<span class="keyword">this</span>; }</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;  <a class="code" href="classStyle.html">Style</a>&amp; FontSize(<span class="keywordtype">float</span> size) { <span class="keywordflow">return</span> SetFontSize(<a class="code" href="classAFontSize.html">AFontSize</a>(size)), *<span class="keyword">this</span>; }</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;  <a class="code" href="classStyle.html">Style</a>&amp; FontSize(<a class="code" href="classAFontSize.html">AFontSize</a> fontSize) { <span class="keywordflow">return</span> SetFontSize(fontSize), *<span class="keyword">this</span>; }</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;  <a class="code" href="classStyle.html">Style</a>&amp; RGBColor(uint32_t rgb) { <span class="keywordflow">return</span> SetRGBColor(rgb), *<span class="keyword">this</span>; }</div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;  <a class="code" href="classStyle.html">Style</a>&amp; Color(<span class="keyword">const</span> wxColor &amp;color) { <span class="keywordflow">return</span> SetColor(color), *<span class="keyword">this</span>; }</div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;  <a class="code" href="classStyle.html">Style</a>&amp; Color(uint8_t r, uint8_t g, uint8_t b) { <span class="keywordflow">return</span> SetColor({r, g, b}), *<span class="keyword">this</span>; }</div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;  <a class="code" href="classStyle.html">Style</a>&amp; Color(wxSystemColour sysColour) { <span class="keywordflow">return</span> SetColor(sysColour), *<span class="keyword">this</span>; }</div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;  <a class="code" href="classStyle.html">Style</a>&amp; ChangeLightness(<span class="keywordtype">int</span> alpha) { <span class="keywordflow">return</span> SetColor(GetColor().ChangeLightness(alpha)), *<span class="keyword">this</span>; }</div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160; </div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;  <span class="keywordtype">bool</span> CantChangeFontName()<span class="keyword"> const </span>{<span class="keywordflow">return</span> m.cantChangeFontName;}</div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;  <span class="keywordtype">bool</span> CantChangeFontVariant()<span class="keyword"> const </span>{<span class="keywordflow">return</span> m.cantChangeFontVariant;}</div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;  <span class="keywordtype">void</span> CantChangeFontName(<span class="keywordtype">bool</span> changeForbidden) {m.cantChangeFontName = changeForbidden;}</div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;  <span class="keywordtype">void</span> CantChangeFontVariant(<span class="keywordtype">bool</span> changeForbidden) {m.cantChangeFontVariant = changeForbidden;}</div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;  wxFontInfo GetAsFontInfo() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160; </div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="preprocessor">#include &lt;unordered_map&gt;</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="keyword">static</span> constexpr uint32_t MAKE_RGB(uint32_t r, uint32_t g, uint32_t b)</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;{ <span class="keywordflow">return</span> (0xFF &amp; r) | ((0xFF &amp; g) &lt;&lt; 8) | ((0xFF &amp; b) &lt;&lt; 16); }</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160; </div>
+<div class="line"><a name="l00058"></a><span class="lineno"><a class="line" href="classStyle.html">   58</a></span>&#160;<span class="keyword">class </span><a class="code" href="classStyle.html">Style</a> final</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;{</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  <a class="code" href="classStyle.html">Style</a>();</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  <span class="keyword">explicit</span> <a class="code" href="classStyle.html">Style</a>(<a class="code" href="classAFontSize.html">AFontSize</a> fontSize);</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;  <a class="code" href="classStyle.html">Style</a>(<span class="keyword">const</span> <a class="code" href="classStyle.html">Style</a> &amp;);</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160; </div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  <a class="code" href="classStyle.html">Style</a> &amp;operator=(<span class="keyword">const</span> <a class="code" href="classStyle.html">Style</a> &amp;);</div>
+<div class="line"><a name="l00067"></a><span class="lineno"><a class="line" href="classStyle.html#abaf9b7896bde19e6bc7682701620c14f">   67</a></span>&#160;  <span class="keywordtype">bool</span> <a class="code" href="classStyle.html#abaf9b7896bde19e6bc7682701620c14f">operator==</a>(<span class="keyword">const</span> <a class="code" href="classStyle.html">Style</a> &amp;o) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  <a class="code" href="classStyle.html">Style</a> &amp;<a class="code" href="classStyle.html#af999d8bd639fdbd1fbb5c65023d8d286">Read</a>(wxConfigBase *config, <span class="keyword">const</span> wxString &amp;where);</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classStyle.html#a259bf27abcb1f6d66dbb02bc9bc9f6cb">Write</a>(wxConfigBase *config, <span class="keyword">const</span> wxString &amp;where) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  </div>
+<div class="line"><a name="l00079"></a><span class="lineno"><a class="line" href="classStyle.html#a8df61730ef2f6b73c76354c9156a819b">   79</a></span>&#160;  <span class="keyword">static</span> <span class="keyword">const</span> <a class="code" href="classStyle.html">Style</a> &amp;<a class="code" href="classStyle.html#a8df61730ef2f6b73c76354c9156a819b">FromFont</a>(<span class="keyword">const</span> wxFont &amp;font);</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;  <span class="keyword">static</span> <span class="keyword">const</span> <a class="code" href="classStyle.html">Style</a> &amp;<a class="code" href="classStyle.html#a39d7c0ac8fc1f4a09d85c76f4006a792">FromStockFont</a>(wxStockGDI::Item font);</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160; </div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  constexpr <span class="keyword">static</span> wxFontFamily Default_Family{wxFONTFAMILY_DEFAULT};</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;  constexpr <span class="keyword">static</span> wxFontEncoding Default_Encoding{wxFONTENCODING_DEFAULT};</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;  constexpr <span class="keyword">static</span> wxFontWeight Default_Weight{wxFONTWEIGHT_NORMAL};</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;  constexpr <span class="keyword">static</span> wxFontStyle Default_FontStyle{wxFONTSTYLE_NORMAL};</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;  constexpr <span class="keyword">static</span> <span class="keywordtype">bool</span> Default_Underlined{<span class="keyword">false</span>};</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;  constexpr <span class="keyword">static</span> <span class="keywordtype">bool</span> Default_Strikethrough{<span class="keyword">false</span>};</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;  constexpr <span class="keyword">static</span> <a class="code" href="classAFontSize.html">AFontSize</a> Default_FontSize{10.0f};</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;  constexpr <span class="keyword">static</span> uint32_t Default_ColorRGB{MAKE_RGB(0, 0, 0)};</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;  <span class="keyword">static</span> <span class="keyword">const</span> wxColor &amp;Default_Color();</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160; </div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;  wxFontFamily GetFamily() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;  wxFontEncoding GetEncoding() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;  wxFontWeight GetWeight() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;  <span class="keywordtype">bool</span> IsBold()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> GetWeight() == wxFONTWEIGHT_BOLD; }</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;  <span class="keywordtype">bool</span> IsLight()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> GetWeight() == wxFONTWEIGHT_LIGHT; }</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;  wxFontStyle GetFontStyle() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;  <span class="keywordtype">bool</span> IsItalic()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> GetFontStyle() == wxFONTSTYLE_ITALIC; }</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;  <span class="keywordtype">bool</span> IsSlant()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> GetFontStyle() == wxFONTSTYLE_SLANT; }</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;  <span class="keywordtype">bool</span> IsUnderlined() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;  <span class="keywordtype">bool</span> IsStrikethrough() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;  <span class="keyword">const</span> wxString &amp;GetFontName() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;  <a class="code" href="classAFontSize.html">AFontSize</a> <a class="code" href="classStyle.html#a656f2706c40158fe34d54719573dfa22">GetFontSize</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;  uint32_t GetRGBColor() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;  wxColor GetColor()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> wxColor(GetRGBColor()); }</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160; </div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;  <span class="keyword">using</span> did_change = bool;</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;  did_change SetFamily(wxFontFamily family);</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;  did_change SetEncoding(wxFontEncoding encoding);</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;  did_change SetWeight(wxFontWeight weight);</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;  did_change SetBold(<span class="keywordtype">bool</span> bold = <span class="keyword">true</span>);</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;  did_change SetLight(<span class="keywordtype">bool</span> light = <span class="keyword">true</span>);</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;  did_change SetFontStyle(wxFontStyle style);</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;  did_change SetItalic(<span class="keywordtype">bool</span> italic = <span class="keyword">true</span>);</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;  did_change SetSlant(<span class="keywordtype">bool</span> slant = <span class="keyword">true</span>);</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;  did_change SetUnderlined(<span class="keywordtype">bool</span> underlined = <span class="keyword">true</span>);</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;  did_change SetStrikethrough(<span class="keywordtype">bool</span> strikethrough = <span class="keyword">true</span>);</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;  did_change SetFontName(wxString fontName);</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;  did_change SetFontSize(<a class="code" href="classAFontSize.html">AFontSize</a> fontSize);</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;  did_change SetRGBColor(uint32_t rgb);</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;  did_change SetColor(<span class="keyword">const</span> wxColor &amp;color);</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;  did_change SetColor(wxSystemColour sysColour);</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160; </div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;  <a class="code" href="classStyle.html">Style</a>&amp; Family(wxFontFamily family) { <span class="keywordflow">return</span> SetFamily(family), *<span class="keyword">this</span>; }</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;  <a class="code" href="classStyle.html">Style</a>&amp; Encoding(wxFontEncoding encoding) { <span class="keywordflow">return</span> SetEncoding(encoding), *<span class="keyword">this</span>; }</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;  <a class="code" href="classStyle.html">Style</a>&amp; Weight(wxFontWeight weight) { <span class="keywordflow">return</span> SetWeight(weight), *<span class="keyword">this</span>; }</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;  <a class="code" href="classStyle.html">Style</a>&amp; FontStyle(wxFontStyle style) { <span class="keywordflow">return</span> SetFontStyle(style), *<span class="keyword">this</span>; }</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;  <a class="code" href="classStyle.html">Style</a>&amp; Bold(<span class="keywordtype">bool</span> bold = <span class="keyword">true</span>) { <span class="keywordflow">return</span> SetBold(bold), *<span class="keyword">this</span>; }</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;  <a class="code" href="classStyle.html">Style</a>&amp; Light(<span class="keywordtype">bool</span> light = <span class="keyword">true</span>) { <span class="keywordflow">return</span> SetLight(light), *<span class="keyword">this</span>; }</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;  <a class="code" href="classStyle.html">Style</a>&amp; Italic(<span class="keywordtype">bool</span> italic = <span class="keyword">true</span>) { <span class="keywordflow">return</span> SetItalic(italic), *<span class="keyword">this</span>; }</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;  <a class="code" href="classStyle.html">Style</a>&amp; Slant(<span class="keywordtype">bool</span> slant = <span class="keyword">true</span>) { <span class="keywordflow">return</span> SetSlant(slant), *<span class="keyword">this</span>; }</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;  <a class="code" href="classStyle.html">Style</a>&amp; Underlined(<span class="keywordtype">bool</span> underlined = <span class="keyword">true</span>) { <span class="keywordflow">return</span> SetUnderlined(underlined), *<span class="keyword">this</span>; }</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;  <a class="code" href="classStyle.html">Style</a>&amp; Strikethrough(<span class="keywordtype">bool</span> strikethrough = <span class="keyword">true</span>) { <span class="keywordflow">return</span> SetStrikethrough(strikethrough), *<span class="keyword">this</span>; }</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;  <a class="code" href="classStyle.html">Style</a>&amp; FontSize(<span class="keywordtype">float</span> size) { <span class="keywordflow">return</span> SetFontSize(<a class="code" href="classAFontSize.html">AFontSize</a>(size)), *<span class="keyword">this</span>; }</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;  <a class="code" href="classStyle.html">Style</a>&amp; FontSize(<a class="code" href="classAFontSize.html">AFontSize</a> fontSize) { <span class="keywordflow">return</span> SetFontSize(fontSize), *<span class="keyword">this</span>; }</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;  <a class="code" href="classStyle.html">Style</a>&amp; RGBColor(uint32_t rgb) { <span class="keywordflow">return</span> SetRGBColor(rgb), *<span class="keyword">this</span>; }</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;  <a class="code" href="classStyle.html">Style</a>&amp; Color(<span class="keyword">const</span> wxColor &amp;color) { <span class="keywordflow">return</span> SetColor(color), *<span class="keyword">this</span>; }</div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;  <a class="code" href="classStyle.html">Style</a>&amp; Color(uint8_t r, uint8_t g, uint8_t b) { <span class="keywordflow">return</span> SetColor({r, g, b}), *<span class="keyword">this</span>; }</div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;  <a class="code" href="classStyle.html">Style</a>&amp; Color(wxSystemColour sysColour) { <span class="keywordflow">return</span> SetColor(sysColour), *<span class="keyword">this</span>; }</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;  <a class="code" href="classStyle.html">Style</a>&amp; ChangeLightness(<span class="keywordtype">int</span> alpha) { <span class="keywordflow">return</span> SetColor(GetColor().ChangeLightness(alpha)), *<span class="keyword">this</span>; }</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160; </div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;  <span class="keywordtype">bool</span> CantChangeFontName()<span class="keyword"> const </span>{<span class="keywordflow">return</span> m.cantChangeFontName;}</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;  <span class="keywordtype">bool</span> CantChangeFontVariant()<span class="keyword"> const </span>{<span class="keywordflow">return</span> m.cantChangeFontVariant;}</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;  <span class="keywordtype">void</span> CantChangeFontName(<span class="keywordtype">bool</span> changeForbidden) {m.cantChangeFontName = changeForbidden;}</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;  <span class="keywordtype">void</span> CantChangeFontVariant(<span class="keywordtype">bool</span> changeForbidden) {m.cantChangeFontVariant = changeForbidden;}</div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;  wxFontInfo GetAsFontInfo() <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160; </div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;  <span class="keywordtype">bool</span> IsFontOk() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;  <span class="keyword">const</span> wxFont &amp;<a class="code" href="classStyle.html#ae810298e6e6f31c595c0b4ea22dd026b">GetFont</a>(<a class="code" href="classAFontSize.html">AFontSize</a> fontSize) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00153"></a><span class="lineno"><a class="line" href="classStyle.html#ae810298e6e6f31c595c0b4ea22dd026b">  153</a></span>&#160;  <span class="keyword">const</span> wxFont &amp;<a class="code" href="classStyle.html#ae810298e6e6f31c595c0b4ea22dd026b">GetFont</a>()<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classStyle.html#ae810298e6e6f31c595c0b4ea22dd026b">GetFont</a>(<a class="code" href="classStyle.html#a656f2706c40158fe34d54719573dfa22">GetFontSize</a>());</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;  }</div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160; </div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;  did_change <a class="code" href="classStyle.html#a8bd1e2dac2cb164001669fcaaff3b41c">SetFromFont</a>(<span class="keyword">const</span> wxFont&amp;);</div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;  did_change <a class="code" href="classStyle.html#a779cf42ab0bbe8af28ad3e16282c3e10">SetFontFrom</a>(<span class="keyword">const</span> <a class="code" href="classStyle.html">Style</a>&amp;);</div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;  did_change <a class="code" href="classStyle.html#a5e90e66ae9e77ce444367fb86d2cad94">SetFontFaceFrom</a>(<span class="keyword">const</span> <a class="code" href="classStyle.html">Style</a>&amp;);</div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;  did_change <a class="code" href="classStyle.html#a26c2e5d2af267107ac38eb0c847ab96a">SetFontFaceAndSizeFrom</a>(<span class="keyword">const</span> <a class="code" href="classStyle.html">Style</a>&amp;);</div>
-<div class="line"><a name="l00166"></a><span class="lineno"><a class="line" href="classStyle.html#a4c6b3e7bc330c22e3300b1ad16d7f4d1">  166</a></span>&#160;  constexpr <span class="keyword">static</span> <span class="keywordtype">bool</span> <a class="code" href="classStyle.html#a4c6b3e7bc330c22e3300b1ad16d7f4d1">IsFractionalFontSizeSupported</a>() {</div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;    <span class="keywordflow">return</span> wxCHECK_VERSION(3, 1, 2); } <span class="comment">//-V686 //-V501</span></div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;<span class="comment"></span>  <span class="keyword">static</span> <a class="code" href="classAFontSize.html">AFontSize</a> <a class="code" href="classStyle.html#a656f2706c40158fe34d54719573dfa22">GetFontSize</a>(<span class="keyword">const</span> wxFont &amp;);</div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;  <span class="keyword">static</span> <span class="keywordtype">void</span> SetFontSize(wxFont &amp;, <a class="code" href="classAFontSize.html">AFontSize</a> fontSize);</div>
-<div class="line"><a name="l00173"></a><span class="lineno"><a class="line" href="classStyle.html#aa7ccb59d4e28ec029eedb6aa0a6fc0f9">  173</a></span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classStyle.html#aa7ccb59d4e28ec029eedb6aa0a6fc0f9">ClearCache</a>()</div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;    {</div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;      <span class="keywordflow">if</span>(m.fontCache)</div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;        m.fontCache-&gt;ClearCache();</div>
-<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;    }</div>
-<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;  std::shared_ptr&lt;FontVariantCache&gt; GetFontCache()<span class="keyword"> const </span>{<span class="keywordflow">return</span> m.fontCache;}</div>
-<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;  WX_DECLARE_STRING_HASH_MAP( std::shared_ptr&lt;FontVariantCache&gt;,     <span class="comment">// type of the values</span></div>
-<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;                              FontVariantCachesMap); <span class="comment">// name of the class</span></div>
-<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160; </div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;  <span class="keyword">static</span> wxString m_emptyString;</div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;  <span class="keyword">static</span> FontVariantCachesMap m_fontCaches;</div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160; </div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;  <span class="keyword">struct </span>Data</div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;  {</div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;    <span class="comment">// 8/4-byte members</span></div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;<span class="comment"></span>    <span class="keyword">mutable</span> std::shared_ptr&lt;FontVariantCache&gt; fontCache;</div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;    <span class="comment">// 4-byte members</span></div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;    uint32_t rgbColor = Default_ColorRGB;</div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;    <span class="comment">// 2-byte members</span></div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;    <a class="code" href="classAFontSize.html">AFontSize</a> fontSize = Default_FontSize;</div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;    <a class="code" href="classEnumWrapper.html">AFontFamily</a> family = Default_Family;</div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;    <a class="code" href="classEnumWrapper.html">AFontEncoding</a> encoding = Default_Encoding;</div>
-<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;    <a class="code" href="classEnumWrapper.html">AFontWeight</a> weight = Default_Weight;</div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;    <a class="code" href="classEnumWrapper.html">AFontStyle</a> fontStyle = Default_FontStyle;</div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;    <span class="comment">// 1-byte members</span></div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;    <span class="keywordtype">bool</span> underlined : 1;</div>
-<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;    <span class="keywordtype">bool</span> strikethrough : 1;</div>
-<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;    <span class="keywordtype">bool</span> cantChangeFontName    : 1; <span class="comment">// !&lt; Allow to change only color, underline etc.</span></div>
-<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;    <span class="keywordtype">bool</span> cantChangeFontVariant : 1; <span class="comment">// !&lt; Allow to change only color</span></div>
-<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160; </div>
-<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;    Data() : underlined(false), strikethrough(false), cantChangeFontName(false),</div>
-<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;             cantChangeFontVariant(false) {}</div>
-<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;  } m;</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160; </div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;  <span class="keywordtype">bool</span> IsFontOk() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;  <span class="keyword">const</span> wxFont &amp;<a class="code" href="classStyle.html#ae810298e6e6f31c595c0b4ea22dd026b">GetFont</a>(<a class="code" href="classAFontSize.html">AFontSize</a> fontSize) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00154"></a><span class="lineno"><a class="line" href="classStyle.html#ae810298e6e6f31c595c0b4ea22dd026b">  154</a></span>&#160;  <span class="keyword">const</span> wxFont &amp;<a class="code" href="classStyle.html#ae810298e6e6f31c595c0b4ea22dd026b">GetFont</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classStyle.html#ae810298e6e6f31c595c0b4ea22dd026b">GetFont</a>(<a class="code" href="classStyle.html#a656f2706c40158fe34d54719573dfa22">GetFontSize</a>());</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;  }</div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160; </div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;  did_change <a class="code" href="classStyle.html#a8bd1e2dac2cb164001669fcaaff3b41c">SetFromFont</a>(<span class="keyword">const</span> wxFont&amp;);</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;  did_change <a class="code" href="classStyle.html#a779cf42ab0bbe8af28ad3e16282c3e10">SetFontFrom</a>(<span class="keyword">const</span> <a class="code" href="classStyle.html">Style</a>&amp;);</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;  did_change <a class="code" href="classStyle.html#a5e90e66ae9e77ce444367fb86d2cad94">SetFontFaceFrom</a>(<span class="keyword">const</span> <a class="code" href="classStyle.html">Style</a>&amp;);</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;  did_change <a class="code" href="classStyle.html#a26c2e5d2af267107ac38eb0c847ab96a">SetFontFaceAndSizeFrom</a>(<span class="keyword">const</span> <a class="code" href="classStyle.html">Style</a>&amp;);</div>
+<div class="line"><a name="l00167"></a><span class="lineno"><a class="line" href="classStyle.html#a4c6b3e7bc330c22e3300b1ad16d7f4d1">  167</a></span>&#160;  constexpr <span class="keyword">static</span> <span class="keywordtype">bool</span> <a class="code" href="classStyle.html#a4c6b3e7bc330c22e3300b1ad16d7f4d1">IsFractionalFontSizeSupported</a>() {</div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;    <span class="keywordflow">return</span> wxCHECK_VERSION(3, 1, 2); } <span class="comment">//-V686 //-V501</span></div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;<span class="comment"></span>  <span class="keyword">static</span> <a class="code" href="classAFontSize.html">AFontSize</a> <a class="code" href="classStyle.html#a656f2706c40158fe34d54719573dfa22">GetFontSize</a>(<span class="keyword">const</span> wxFont &amp;);</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;  <span class="keyword">static</span> <span class="keywordtype">void</span> SetFontSize(wxFont &amp;, <a class="code" href="classAFontSize.html">AFontSize</a> fontSize);</div>
+<div class="line"><a name="l00174"></a><span class="lineno"><a class="line" href="classStyle.html#aa7ccb59d4e28ec029eedb6aa0a6fc0f9">  174</a></span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classStyle.html#aa7ccb59d4e28ec029eedb6aa0a6fc0f9">ClearCache</a>()</div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;    {</div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;      <span class="keywordflow">if</span>(m.fontCache)</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;        m.fontCache-&gt;ClearCache();</div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;    }</div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;  std::shared_ptr&lt;FontVariantCache&gt; GetFontCache()<span class="keyword"> const </span>{<span class="keywordflow">return</span> m.fontCache;}</div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;<span class="preprocessor">#if wxCHECK_VERSION(3, 3, 0) || wxUSE_STL</span></div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;  <span class="keyword">typedef</span> std::unordered_map &lt;wxString, std::shared_ptr&lt;FontVariantCache&gt;&gt; FontVariantCachesMap;</div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;<span class="preprocessor">#else</span></div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;  WX_DECLARE_STRING_HASH_MAP(std::shared_ptr&lt;FontVariantCache&gt;, FontVariantCachesMap);</div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160; </div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;  <span class="keyword">static</span> wxString m_emptyString;</div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;  <span class="keyword">static</span> FontVariantCachesMap m_fontCaches;</div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160; </div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;  <span class="keyword">struct </span>Data</div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;  {</div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;    <span class="comment">// 8/4-byte members</span></div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;<span class="comment"></span>    <span class="keyword">mutable</span> std::shared_ptr&lt;FontVariantCache&gt; fontCache;</div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;    <span class="comment">// 4-byte members</span></div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;    uint32_t rgbColor = Default_ColorRGB;</div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;    <span class="comment">// 2-byte members</span></div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;    <a class="code" href="classAFontSize.html">AFontSize</a> fontSize = Default_FontSize;</div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;    <a class="code" href="classEnumWrapper.html">AFontFamily</a> family = Default_Family;</div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;    <a class="code" href="classEnumWrapper.html">AFontEncoding</a> encoding = Default_Encoding;</div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;    <a class="code" href="classEnumWrapper.html">AFontWeight</a> weight = Default_Weight;</div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;    <a class="code" href="classEnumWrapper.html">AFontStyle</a> fontStyle = Default_FontStyle;</div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;    <span class="comment">// 1-byte members</span></div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;    <span class="keywordtype">bool</span> underlined : 1;</div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;    <span class="keywordtype">bool</span> strikethrough : 1;</div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;    <span class="keywordtype">bool</span> cantChangeFontName    : 1; <span class="comment">// !&lt; Allow to change only color, underline etc.</span></div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;    <span class="keywordtype">bool</span> cantChangeFontVariant : 1; <span class="comment">// !&lt; Allow to change only color</span></div>
 <div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160; </div>
-<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;  <span class="comment">// cppcheck-suppress noExplicitConstructor</span></div>
-<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;};</div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160; </div>
+<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;    Data() : underlined(false), strikethrough(false), cantChangeFontName(false),</div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;             cantChangeFontVariant(false) {}</div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;  } m;</div>
 <div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160; </div>
-<div class="line"><a name="l00225"></a><span class="lineno"><a class="line" href="TextStyle_8h.html#a68ac52da6129614b3fa14e7c828c1993">  225</a></span>&#160;<span class="keyword">enum</span> <a class="code" href="TextStyle_8h.html#a68ac52da6129614b3fa14e7c828c1993">TextStyle</a> : int8_t</div>
-<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;{</div>
-<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;  TS_CODE_DEFAULT       , <span class="comment">//&lt;! The font code uses by default</span></div>
-<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;  TS_CODE_VARIABLE      ,</div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;  TS_CODE_FUNCTION      ,</div>
-<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;  TS_CODE_COMMENT       ,</div>
-<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;  TS_CODE_NUMBER        ,</div>
-<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;  TS_CODE_STRING        ,</div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;  TS_CODE_OPERATOR      ,</div>
-<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;  TS_CODE_LISP          ,</div>
-<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;  TS_CODE_ENDOFLINE     ,</div>
-<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;  TS_ASCIIMATHS         ,</div>
-<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;  TS_MATH               ,</div>
-<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;  TS_TEXT               ,</div>
-<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;  TS_VARIABLE           ,</div>
-<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;  TS_OPERATOR           ,</div>
-<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;  TS_NUMBER             ,</div>
-<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;  TS_FUNCTION           ,</div>
-<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;  TS_SPECIAL_CONSTANT   ,</div>
-<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;  TS_GREEK_CONSTANT     ,</div>
-<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;  TS_STRING             ,</div>
-<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;  TS_OUTDATED           ,</div>
-<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;  TS_MAIN_PROMPT        ,</div>
-<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;  TS_OTHER_PROMPT       ,</div>
-<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;  TS_LABEL              ,</div>
-<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;  TS_USERLABEL          ,</div>
-<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;  TS_HIGHLIGHT          ,</div>
-<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;  TS_WARNING            ,</div>
-<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;  TS_ERROR              ,</div>
-<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;  TS_TITLE              ,</div>
-<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;  TS_SECTION            ,</div>
-<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;  TS_SUBSECTION         ,</div>
-<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;  TS_SUBSUBSECTION      ,</div>
-<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;  TS_HEADING5           ,</div>
-<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;  TS_HEADING6           ,</div>
-<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;  TS_TEXT_BACKGROUND    ,</div>
-<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;  TS_DOCUMENT_BACKGROUND,</div>
-<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;  TS_CELL_BRACKET       ,</div>
-<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;  TS_ACTIVE_CELL_BRACKET,</div>
-<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;  TS_CURSOR             ,</div>
-<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;  TS_SELECTION          ,</div>
-<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;  TS_EQUALSSELECTION    ,</div>
-<div class="line"><a name="l00267"></a><span class="lineno"><a class="line" href="TextStyle_8h.html#a68ac52da6129614b3fa14e7c828c1993a4ff5d935a79c3cd0c1e5d3a188645046">  267</a></span>&#160;  <a class="code" href="TextStyle_8h.html#a68ac52da6129614b3fa14e7c828c1993a4ff5d935a79c3cd0c1e5d3a188645046">NUMBEROFSTYLES</a>, </div>
-<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;  <a class="code" href="TextStyle_8h.html#a68ac52da6129614b3fa14e7c828c1993a0cb8e35e6ba7c1291832043f36e1541c">TS_INVALID</a> </div>
-<div class="line"><a name="l00269"></a><span class="lineno"><a class="line" href="TextStyle_8h.html#a68ac52da6129614b3fa14e7c828c1993a0cb8e35e6ba7c1291832043f36e1541c">  269</a></span>&#160;};</div>
-<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160; </div>
-<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// TEXTSTYLE_H</span></div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;  <span class="comment">// cppcheck-suppress noExplicitConstructor</span></div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;};</div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160; </div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160; </div>
+<div class="line"><a name="l00229"></a><span class="lineno"><a class="line" href="TextStyle_8h.html#a68ac52da6129614b3fa14e7c828c1993">  229</a></span>&#160;<span class="keyword">enum</span> <a class="code" href="TextStyle_8h.html#a68ac52da6129614b3fa14e7c828c1993">TextStyle</a> : int8_t</div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;{</div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;  TS_CODE_DEFAULT       , <span class="comment">//&lt;! The font code uses by default</span></div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;  TS_CODE_VARIABLE      ,</div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;  TS_CODE_FUNCTION      ,</div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;  TS_CODE_COMMENT       ,</div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;  TS_CODE_NUMBER        ,</div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;  TS_CODE_STRING        ,</div>
+<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;  TS_CODE_OPERATOR      ,</div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;  TS_CODE_LISP          ,</div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;  TS_CODE_ENDOFLINE     ,</div>
+<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;  TS_ASCIIMATHS         ,</div>
+<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;  TS_MATH               ,</div>
+<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;  TS_TEXT               ,</div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;  TS_VARIABLE           ,</div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;  TS_OPERATOR           ,</div>
+<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;  TS_NUMBER             ,</div>
+<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;  TS_FUNCTION           ,</div>
+<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;  TS_SPECIAL_CONSTANT   ,</div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;  TS_GREEK_CONSTANT     ,</div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;  TS_STRING             ,</div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;  TS_OUTDATED           ,</div>
+<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;  TS_MAIN_PROMPT        ,</div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;  TS_OTHER_PROMPT       ,</div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;  TS_LABEL              ,</div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;  TS_USERLABEL          ,</div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;  TS_HIGHLIGHT          ,</div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;  TS_WARNING            ,</div>
+<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;  TS_ERROR              ,</div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;  TS_TITLE              ,</div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;  TS_SECTION            ,</div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;  TS_SUBSECTION         ,</div>
+<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;  TS_SUBSUBSECTION      ,</div>
+<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;  TS_HEADING5           ,</div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;  TS_HEADING6           ,</div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;  TS_TEXT_BACKGROUND    ,</div>
+<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;  TS_DOCUMENT_BACKGROUND,</div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;  TS_CELL_BRACKET       ,</div>
+<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;  TS_ACTIVE_CELL_BRACKET,</div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;  TS_CURSOR             ,</div>
+<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;  TS_SELECTION          ,</div>
+<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;  TS_EQUALSSELECTION    ,</div>
+<div class="line"><a name="l00271"></a><span class="lineno"><a class="line" href="TextStyle_8h.html#a68ac52da6129614b3fa14e7c828c1993a4ff5d935a79c3cd0c1e5d3a188645046">  271</a></span>&#160;  <a class="code" href="TextStyle_8h.html#a68ac52da6129614b3fa14e7c828c1993a4ff5d935a79c3cd0c1e5d3a188645046">NUMBEROFSTYLES</a>, </div>
+<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;  <a class="code" href="TextStyle_8h.html#a68ac52da6129614b3fa14e7c828c1993a0cb8e35e6ba7c1291832043f36e1541c">TS_INVALID</a> </div>
+<div class="line"><a name="l00273"></a><span class="lineno"><a class="line" href="TextStyle_8h.html#a68ac52da6129614b3fa14e7c828c1993a0cb8e35e6ba7c1291832043f36e1541c">  273</a></span>&#160;};</div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160; </div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// TEXTSTYLE_H</span></div>
 <div class="ttc" id="aFontVariantCache_8h_html"><div class="ttname"><a href="FontVariantCache_8h.html">FontVariantCache.h</a></div><div class="ttdoc">This file implements the wxFont cache system.</div></div>
-<div class="ttc" id="aTextStyle_8h_html_a68ac52da6129614b3fa14e7c828c1993"><div class="ttname"><a href="TextStyle_8h.html#a68ac52da6129614b3fa14e7c828c1993">TextStyle</a></div><div class="ttdeci">TextStyle</div><div class="ttdoc">All text styles known to wxMaxima.</div><div class="ttdef"><b>Definition:</b> TextStyle.h:226</div></div>
-<div class="ttc" id="aTextStyle_8h_html_a68ac52da6129614b3fa14e7c828c1993a0cb8e35e6ba7c1291832043f36e1541c"><div class="ttname"><a href="TextStyle_8h.html#a68ac52da6129614b3fa14e7c828c1993a0cb8e35e6ba7c1291832043f36e1541c">TS_INVALID</a></div><div class="ttdeci">@ TS_INVALID</div><div class="ttdoc">If a text style cannot be determined this value is used.</div><div class="ttdef"><b>Definition:</b> TextStyle.h:268</div></div>
-<div class="ttc" id="aTextStyle_8h_html_a68ac52da6129614b3fa14e7c828c1993a4ff5d935a79c3cd0c1e5d3a188645046"><div class="ttname"><a href="TextStyle_8h.html#a68ac52da6129614b3fa14e7c828c1993a4ff5d935a79c3cd0c1e5d3a188645046">NUMBEROFSTYLES</a></div><div class="ttdeci">@ NUMBEROFSTYLES</div><div class="ttdoc">This is not a style, but its value tells us how many styles are defined.</div><div class="ttdef"><b>Definition:</b> TextStyle.h:267</div></div>
+<div class="ttc" id="aTextStyle_8h_html_a68ac52da6129614b3fa14e7c828c1993"><div class="ttname"><a href="TextStyle_8h.html#a68ac52da6129614b3fa14e7c828c1993">TextStyle</a></div><div class="ttdeci">TextStyle</div><div class="ttdoc">All text styles known to wxMaxima.</div><div class="ttdef"><b>Definition:</b> TextStyle.h:230</div></div>
+<div class="ttc" id="aTextStyle_8h_html_a68ac52da6129614b3fa14e7c828c1993a0cb8e35e6ba7c1291832043f36e1541c"><div class="ttname"><a href="TextStyle_8h.html#a68ac52da6129614b3fa14e7c828c1993a0cb8e35e6ba7c1291832043f36e1541c">TS_INVALID</a></div><div class="ttdeci">@ TS_INVALID</div><div class="ttdoc">If a text style cannot be determined this value is used.</div><div class="ttdef"><b>Definition:</b> TextStyle.h:272</div></div>
+<div class="ttc" id="aTextStyle_8h_html_a68ac52da6129614b3fa14e7c828c1993a4ff5d935a79c3cd0c1e5d3a188645046"><div class="ttname"><a href="TextStyle_8h.html#a68ac52da6129614b3fa14e7c828c1993a4ff5d935a79c3cd0c1e5d3a188645046">NUMBEROFSTYLES</a></div><div class="ttdeci">@ NUMBEROFSTYLES</div><div class="ttdoc">This is not a style, but its value tells us how many styles are defined.</div><div class="ttdef"><b>Definition:</b> TextStyle.h:271</div></div>
 <div class="ttc" id="aclassAFontSize_html"><div class="ttname"><a href="classAFontSize.html">AFontSize</a></div><div class="ttdoc">A Type-Safe Fixed-Point Font Size.</div><div class="ttdef"><b>Definition:</b> FontAttribs.h:98</div></div>
 <div class="ttc" id="aclassEnumWrapper_html"><div class="ttname"><a href="classEnumWrapper.html">EnumWrapper&lt; wxFontFamily, int16_t, wxFONTFAMILY_DEFAULT &gt;</a></div></div>
-<div class="ttc" id="aclassStyle_html"><div class="ttname"><a href="classStyle.html">Style</a></div><div class="ttdoc">Text Style Definition.</div><div class="ttdef"><b>Definition:</b> TextStyle.h:58</div></div>
+<div class="ttc" id="aclassStyle_html"><div class="ttname"><a href="classStyle.html">Style</a></div><div class="ttdoc">Text Style Definition.</div><div class="ttdef"><b>Definition:</b> TextStyle.h:59</div></div>
 <div class="ttc" id="aclassStyle_html_a259bf27abcb1f6d66dbb02bc9bc9f6cb"><div class="ttname"><a href="classStyle.html#a259bf27abcb1f6d66dbb02bc9bc9f6cb">Style::Write</a></div><div class="ttdeci">void Write(wxConfigBase *config, const wxString &amp;where) const</div><div class="ttdoc">Write this style to a config source.</div><div class="ttdef"><b>Definition:</b> TextStyle.cpp:334</div></div>
 <div class="ttc" id="aclassStyle_html_a26c2e5d2af267107ac38eb0c847ab96a"><div class="ttname"><a href="classStyle.html#a26c2e5d2af267107ac38eb0c847ab96a">Style::SetFontFaceAndSizeFrom</a></div><div class="ttdeci">did_change SetFontFaceAndSizeFrom(const Style &amp;)</div><div class="ttdoc">Sets font-face and size only properties based on another style (not attributes like bold,...</div><div class="ttdef"><b>Definition:</b> TextStyle.cpp:223</div></div>
 <div class="ttc" id="aclassStyle_html_a39d7c0ac8fc1f4a09d85c76f4006a792"><div class="ttname"><a href="classStyle.html#a39d7c0ac8fc1f4a09d85c76f4006a792">Style::FromStockFont</a></div><div class="ttdeci">static const Style &amp; FromStockFont(wxStockGDI::Item font)</div><div class="ttdoc">Gets a style that represents a stock font. The font is pre-cached.</div><div class="ttdef"><b>Definition:</b> TextStyle.cpp:351</div></div>
-<div class="ttc" id="aclassStyle_html_a4c6b3e7bc330c22e3300b1ad16d7f4d1"><div class="ttname"><a href="classStyle.html#a4c6b3e7bc330c22e3300b1ad16d7f4d1">Style::IsFractionalFontSizeSupported</a></div><div class="ttdeci">constexpr static bool IsFractionalFontSizeSupported()</div><div class="ttdoc">Old wxWidgets versions only support integers as font sizes.</div><div class="ttdef"><b>Definition:</b> TextStyle.h:166</div></div>
+<div class="ttc" id="aclassStyle_html_a4c6b3e7bc330c22e3300b1ad16d7f4d1"><div class="ttname"><a href="classStyle.html#a4c6b3e7bc330c22e3300b1ad16d7f4d1">Style::IsFractionalFontSizeSupported</a></div><div class="ttdeci">constexpr static bool IsFractionalFontSizeSupported()</div><div class="ttdoc">Old wxWidgets versions only support integers as font sizes.</div><div class="ttdef"><b>Definition:</b> TextStyle.h:167</div></div>
 <div class="ttc" id="aclassStyle_html_a5e90e66ae9e77ce444367fb86d2cad94"><div class="ttname"><a href="classStyle.html#a5e90e66ae9e77ce444367fb86d2cad94">Style::SetFontFaceFrom</a></div><div class="ttdeci">did_change SetFontFaceFrom(const Style &amp;)</div><div class="ttdoc">Sets font-face-only properties based on another style.</div><div class="ttdef"><b>Definition:</b> TextStyle.cpp:217</div></div>
 <div class="ttc" id="aclassStyle_html_a656f2706c40158fe34d54719573dfa22"><div class="ttname"><a href="classStyle.html#a656f2706c40158fe34d54719573dfa22">Style::GetFontSize</a></div><div class="ttdeci">AFontSize GetFontSize() const</div><div class="ttdoc">The size of this style's font, asserted to be valid.</div><div class="ttdef"><b>Definition:</b> TextStyle.cpp:101</div></div>
 <div class="ttc" id="aclassStyle_html_a779cf42ab0bbe8af28ad3e16282c3e10"><div class="ttname"><a href="classStyle.html#a779cf42ab0bbe8af28ad3e16282c3e10">Style::SetFontFrom</a></div><div class="ttdeci">did_change SetFontFrom(const Style &amp;)</div><div class="ttdoc">Sets all font-related properties based on another style, including size, font style and weight.</div><div class="ttdef"><b>Definition:</b> TextStyle.cpp:209</div></div>
 <div class="ttc" id="aclassStyle_html_a8bd1e2dac2cb164001669fcaaff3b41c"><div class="ttname"><a href="classStyle.html#a8bd1e2dac2cb164001669fcaaff3b41c">Style::SetFromFont</a></div><div class="ttdeci">did_change SetFromFont(const wxFont &amp;)</div><div class="ttdoc">Sets all font-related properties based on another font.</div><div class="ttdef"><b>Definition:</b> TextStyle.cpp:229</div></div>
 <div class="ttc" id="aclassStyle_html_a8df61730ef2f6b73c76354c9156a819b"><div class="ttname"><a href="classStyle.html#a8df61730ef2f6b73c76354c9156a819b">Style::FromFont</a></div><div class="ttdeci">static const Style &amp; FromFont(const wxFont &amp;font)</div><div class="ttdoc">Gets a style that represents a given font. The font gets cached.</div></div>
-<div class="ttc" id="aclassStyle_html_aa7ccb59d4e28ec029eedb6aa0a6fc0f9"><div class="ttname"><a href="classStyle.html#aa7ccb59d4e28ec029eedb6aa0a6fc0f9">Style::ClearCache</a></div><div class="ttdeci">void ClearCache()</div><div class="ttdoc">Empties the font variant cache.</div><div class="ttdef"><b>Definition:</b> TextStyle.h:173</div></div>
+<div class="ttc" id="aclassStyle_html_aa7ccb59d4e28ec029eedb6aa0a6fc0f9"><div class="ttname"><a href="classStyle.html#aa7ccb59d4e28ec029eedb6aa0a6fc0f9">Style::ClearCache</a></div><div class="ttdeci">void ClearCache()</div><div class="ttdoc">Empties the font variant cache.</div><div class="ttdef"><b>Definition:</b> TextStyle.h:174</div></div>
 <div class="ttc" id="aclassStyle_html_abaf9b7896bde19e6bc7682701620c14f"><div class="ttname"><a href="classStyle.html#abaf9b7896bde19e6bc7682701620c14f">Style::operator==</a></div><div class="ttdeci">bool operator==(const Style &amp;o) const</div><div class="ttdoc">Compares.</div></div>
-<div class="ttc" id="aclassStyle_html_ae810298e6e6f31c595c0b4ea22dd026b"><div class="ttname"><a href="classStyle.html#ae810298e6e6f31c595c0b4ea22dd026b">Style::GetFont</a></div><div class="ttdeci">const wxFont &amp; GetFont() const</div><div class="ttdoc">Returns the font associated with this style.</div><div class="ttdef"><b>Definition:</b> TextStyle.h:153</div></div>
+<div class="ttc" id="aclassStyle_html_ae810298e6e6f31c595c0b4ea22dd026b"><div class="ttname"><a href="classStyle.html#ae810298e6e6f31c595c0b4ea22dd026b">Style::GetFont</a></div><div class="ttdeci">const wxFont &amp; GetFont() const</div><div class="ttdoc">Returns the font associated with this style.</div><div class="ttdef"><b>Definition:</b> TextStyle.h:154</div></div>
 <div class="ttc" id="aclassStyle_html_af999d8bd639fdbd1fbb5c65023d8d286"><div class="ttname"><a href="classStyle.html#af999d8bd639fdbd1fbb5c65023d8d286">Style::Read</a></div><div class="ttdeci">Style &amp; Read(wxConfigBase *config, const wxString &amp;where)</div><div class="ttdoc">Read this style from a config source.</div><div class="ttdef"><b>Definition:</b> TextStyle.cpp:297</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
