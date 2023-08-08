@@ -2345,9 +2345,9 @@ bool wxMaxima::StartMaxima(bool force) {
         // Tell maxima to start in the directory the file is in
         wxSetEnv(wxS("MAXIMA_INITIAL_FOLDER"), dirname);
       } else {
-        wxLogWarning(wxString::Format(wxS("Directory %s doesn't exist. Maxima "
-                                          "might complain about that."),
-                                      dirname.utf8_str()));
+        wxLogWarning(wxS("Directory %s doesn't exist. Maxima "
+			 "might complain about that."),
+		     dirname.utf8_str());
       }
     }
 
