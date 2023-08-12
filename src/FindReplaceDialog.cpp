@@ -52,8 +52,6 @@ FindReplaceDialog::FindReplaceDialog(wxWindow *parent, wxFindReplaceData *data,
           NULL, this);
   Connect(wxEVT_CHAR_HOOK, wxKeyEventHandler(FindReplaceDialog::OnKeyDown),
           NULL, this);
-  Connect(wxEVT_CLOSE_WINDOW, wxCloseEventHandler(FindReplaceDialog::OnClose),
-          NULL, this);
 }
 
 FindReplaceDialog::~FindReplaceDialog()
@@ -69,13 +67,6 @@ void FindReplaceDialog::OnKeyDown(wxKeyEvent &event) {
     Close();
   else
     event.Skip();
-}
-
-void FindReplaceDialog::OnClose(wxCloseEvent &WXUNUSED(event)) {
-  wxFindDialogEvent *findEvent = new wxFindDialogEvent(wxEVT_FIND_CLOSE);
-  GetParent()->GetEventHandler()->QueueEvent(findEvent);
-  m_windowSize = GetSize();
-  m_windowPos = GetPosition();
 }
 
 void FindReplaceDialog::OnActivate(wxActivateEvent &event) {

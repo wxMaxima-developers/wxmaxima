@@ -60,13 +60,6 @@ protected:
   //! We catch a few hot keys here as we don't provide a menu that could declare them
   void OnKeyDown(wxKeyEvent &WXUNUSED(event));
 
-  /*! Called on closing the dialogue.
-
-    Informs our parent that it can stop highlighting search results and saves
-    the window geometry for the next time the window is opened.
-  */
-  void OnClose(wxCloseEvent& WXUNUSED(event));
-
   /*! The contents of the dialog.
 
     The contents is split into a separate panel so we can easily make it dockable
