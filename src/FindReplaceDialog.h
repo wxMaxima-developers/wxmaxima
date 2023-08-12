@@ -41,8 +41,10 @@ class FindReplaceDialog : public wxDialog
 {
 public:
   FindReplaceDialog(wxWindow *parent, wxFindReplaceData *data, const wxString &title,
+                    FindReplaceDialog **m_pointerToDialogue = NULL,
                     int style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER);
 
+  ~FindReplaceDialog();
   //! Returns the standard wxFindReplaceData data structure
   wxFindReplaceData *GetData()
     { return m_contents->GetData(); }
@@ -73,6 +75,7 @@ protected:
   FindReplacePane *m_contents;
 
 private:
+  FindReplaceDialog **m_pointerToDialogue;
   //! true means: The next Activation event is generated during construction
   bool m_activateDuringConstruction;
   /*! Allows to remember how wide the window was the last time it was used.

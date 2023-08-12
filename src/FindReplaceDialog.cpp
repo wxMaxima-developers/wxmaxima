@@ -30,9 +30,13 @@
 #include "EditorCell.h"
 
 FindReplaceDialog::FindReplaceDialog(wxWindow *parent, wxFindReplaceData *data,
-                                     const wxString &title, int style)
+                                     const wxString &title,
+				     FindReplaceDialog **pointerToDialogue, int style)
   : wxDialog(parent, wxID_ANY, title, wxDefaultPosition, wxDefaultSize,
 	     style) {
+  m_pointerToDialogue = pointerToDialogue;
+  if(m_pointerToDialogue != NULL)
+    *m_pointerToDialogue = this;
   m_contents = new FindReplacePane(this, data);
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
   vbox->Add(m_contents, wxSizerFlags().Expand());
@@ -50,6 +54,14 @@ FindReplaceDialog::FindReplaceDialog(wxWindow *parent, wxFindReplaceData *data,
           NULL, this);
   Connect(wxEVT_CLOSE_WINDOW, wxCloseEventHandler(FindReplaceDialog::OnClose),
           NULL, this);
+}
+
+FindReplaceDialog::~FindReplaceDialog()
+{
+  if(m_pointerToDialogue)
+    {
+      *m_pointerToDialogue = NULL;
+    }
 }
 
 void FindReplaceDialog::OnKeyDown(wxKeyEvent &event) {

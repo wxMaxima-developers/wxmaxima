@@ -1609,8 +1609,6 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
           NULL, this);
   Connect(wxEVT_FIND_REPLACE_ALL,
           wxFindDialogEventHandler(wxMaxima::OnReplaceAll), NULL, this);
-  Connect(wxEVT_FIND_CLOSE, wxFindDialogEventHandler(wxMaxima::OnFindClose),
-          NULL, this);
   Connect(wxEVT_SET_FOCUS, wxFocusEventHandler(wxMaxima::OnFocus), NULL, this);
   Connect(wxEVT_ICONIZE, wxIconizeEventHandler(wxMaxima::OnMinimize), NULL,
           this);
@@ -6389,8 +6387,7 @@ void wxMaxima::EditMenu(wxCommandEvent &event) {
     bool findDialogActiveWas = ((m_worksheet->m_findDialog != NULL) &&
 				(m_worksheet->m_findDialog->IsShown())) ;
     if (m_worksheet->m_findDialog == NULL)
-      m_worksheet->m_findDialog =
-	new FindReplaceDialog(this, &m_findData, _("Find and Replace"));
+      new FindReplaceDialog(this, &m_findData, _("Find and Replace"), &m_worksheet->m_findDialog);
 
     if (m_worksheet->GetActiveCell() != NULL) {
 
@@ -6460,14 +6457,6 @@ void wxMaxima::OnFind(wxFindDialogEvent &event) {
                              event.GetFlags() & wxFR_DOWN,
                              !(event.GetFlags() & wxFR_MATCHCASE)))
     LoggingMessageBox(_("No matches found!"));
-  event.Skip();
-}
-
-void wxMaxima::OnFindClose(wxFindDialogEvent &event) {
-  if (m_worksheet->m_findDialog != NULL)
-    m_worksheet->m_findDialog->Destroy();
-  m_oldFindString = wxEmptyString;
-  m_worksheet->m_findDialog = NULL;
   event.Skip();
 }
 

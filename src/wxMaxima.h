@@ -396,9 +396,6 @@ protected:
   //! Is triggered when the "Find" button in the search dialog is pressed
   void OnFind(wxFindDialogEvent &event);
 
-  //! Is triggered when the "Close" button in the search dialog is pressed
-  void OnFindClose(wxFindDialogEvent &event);
-
   //! Is triggered when the "Replace" button in the search dialog is pressed
   void OnReplace(wxFindDialogEvent &event);
 
