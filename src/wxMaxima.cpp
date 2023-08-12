@@ -6386,17 +6386,22 @@ void wxMaxima::EditMenu(wxCommandEvent &event) {
   }
   else if(event.GetId() == wxID_FIND) {
     wxLogMessage(_("A Ctrl-F event"));
-    bool findDialogActiveWas = m_worksheet->m_findDialog != NULL;
-    if (!findDialogActiveWas)
+    bool findDialogActiveWas = ((m_worksheet->m_findDialog != NULL) &&
+				(m_worksheet->m_findDialog->IsShown())) ;
+    if (m_worksheet->m_findDialog == NULL)
       m_worksheet->m_findDialog =
 	new FindReplaceDialog(this, &m_findData, _("Find and Replace"));
 
     if (m_worksheet->GetActiveCell() != NULL) {
+
+      wxString selected = m_worksheet->GetActiveCell()->GetSelectionString();
+      
       // Start incremental search and highlighting of search results again.
       if(findDialogActiveWas)
 	m_oldFindString = wxEmptyString;
-
-      wxString selected = m_worksheet->GetActiveCell()->GetSelectionString();
+      else
+	m_oldFindString = selected;
+	
       if (selected.Length() > 0)
 	m_worksheet->m_findDialog->SetFindString(selected);
     }
