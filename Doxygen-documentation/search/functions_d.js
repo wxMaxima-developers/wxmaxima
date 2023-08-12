@@ -11,7 +11,7 @@ var searchData=
   ['onchar_2566',['OnChar',['../classAutocompletePopup.html#a02a33d37be9af83142ed179bb415c533',1,'AutocompletePopup::OnChar()'],['../classVariablespane.html#a3e88ff2eb48de8b5351af3d638085fb8',1,'Variablespane::OnChar()'],['../classWorksheet.html#a5b6e97c9a670ebe4d1dbd703dbc17194',1,'Worksheet::OnChar()']]],
   ['oncheckbox_2567',['OnCheckbox',['../classConfigDialogue.html#a0776208b2cfa68579e8ed265bf65e4e6',1,'ConfigDialogue']]],
   ['onclick_2568',['OnClick',['../classNotification.html#a9f941a6f19664c5bdf6d6c1d8f07322b',1,'Notification']]],
-  ['onclose_2569',['OnClose',['../classFindReplaceDialog.html#ad6114b1268bce071b001f39e50f7fb28',1,'FindReplaceDialog::OnClose()'],['../classwxMaxima.html#ac213265a89885e1fbf56dbbea647c4e4',1,'wxMaxima::OnClose()'],['../classConfigDialogue.html#a7e07e1ffb227a5fb351a04ae7f78c326',1,'ConfigDialogue::OnClose()']]],
+  ['onclose_2569',['OnClose',['../classwxMaxima.html#ac213265a89885e1fbf56dbbea647c4e4',1,'wxMaxima::OnClose()'],['../classConfigDialogue.html#a7e07e1ffb227a5fb351a04ae7f78c326',1,'ConfigDialogue::OnClose()']]],
   ['ondclick_2570',['OnDClick',['../classUnicodeSidebar.html#a2a7798d2b0cfc385e74f79cec50d585e',1,'UnicodeSidebar']]],
   ['ondrawlist_2571',['OnDrawList',['../Cell_8h.html#a9e6fa20089cf63259f71743f096ccd08',1,'Cell.h']]],
   ['onfind_2572',['OnFind',['../classwxMaxima.html#a7efe7b1de16bea5685f8968667f6274f',1,'wxMaxima']]],
