@@ -112,7 +112,8 @@ FindReplacePane::FindReplacePane(wxWindow *parent, wxFindReplaceData *data)
   m_replaceText->MoveAfterInTabOrder(m_searchText);
   this->SetSizerAndFit(grid_sizer);
   Connect(wxEVT_ACTIVATE, wxActivateEventHandler(FindReplacePane::OnActivate),
-          NULL, this);
+	  NULL, this);
+  m_activateDuringConstruction = true;
   Connect(wxEVT_CHAR_HOOK, wxKeyEventHandler(FindReplacePane::OnKeyDown), NULL,
           this);
 }
@@ -159,6 +160,12 @@ void FindReplacePane::OnMatchCase(wxCommandEvent &event) {
 }
 
 void FindReplacePane::OnActivate(wxActivateEvent &event) {
+  event.Skip();
+  if(m_activateDuringConstruction)
+    {
+      m_activateDuringConstruction = false;
+      return;
+    }
   if (event.GetActive())
     SetTransparent(255);
   else

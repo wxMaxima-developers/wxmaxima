@@ -55,7 +55,8 @@ private:
   wxRadioButton *m_forward;
   wxRadioButton *m_backwards;
   wxCheckBox *m_matchCase;
-
+  //! true means: The next Activation event is generated during construction
+  bool m_activateDuringConstruction;
 public:
   FindReplacePane(wxWindow *parent, wxFindReplaceData *data);
 

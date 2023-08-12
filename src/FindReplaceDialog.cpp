@@ -37,7 +37,7 @@ FindReplaceDialog::FindReplaceDialog(wxWindow *parent, wxFindReplaceData *data,
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
   vbox->Add(m_contents, wxSizerFlags().Expand());
   SetSizerAndFit(vbox);
-
+  m_activateDuringConstruction = true;
   // Remember how wide the user wanted the dialogue to be the last time it was
   // used.
   if (m_windowPos != wxPoint(-1, -1))
@@ -67,6 +67,12 @@ void FindReplaceDialog::OnClose(wxCloseEvent &WXUNUSED(event)) {
 }
 
 void FindReplaceDialog::OnActivate(wxActivateEvent &event) {
+  event.Skip();
+  if(m_activateDuringConstruction)
+    {
+      m_activateDuringConstruction = false;
+      return;
+    }
   if (event.GetActive())
     SetTransparent(255);
   else

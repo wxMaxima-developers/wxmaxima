@@ -73,6 +73,8 @@ protected:
   FindReplacePane *m_contents;
 
 private:
+  //! true means: The next Activation event is generated during construction
+  bool m_activateDuringConstruction;
   /*! Allows to remember how wide the window was the last time it was used.
 
     I don't think it makes sense to keep this between sessions.
