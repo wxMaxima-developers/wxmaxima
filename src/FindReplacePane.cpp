@@ -123,14 +123,16 @@ void FindReplacePane::SetFindString(wxString strng) {
   m_searchText->SetValue(strng);
 }
 
-void FindReplacePane::OnSearch(wxCommandEvent &WXUNUSED(event)) {
+void FindReplacePane::OnSearch(wxCommandEvent &event) {
+  event.Skip();
   wxFindDialogEvent *findEvent = new wxFindDialogEvent(wxEVT_FIND_NEXT);
   findEvent->SetFindString(m_findReplaceData->GetFindString());
   findEvent->SetFlags(m_findReplaceData->GetFlags());
   GetParent()->GetParent()->GetEventHandler()->QueueEvent(findEvent);
 }
 
-void FindReplacePane::OnReplace(wxCommandEvent &WXUNUSED(event)) {
+void FindReplacePane::OnReplace(wxCommandEvent &event) {
+  event.Skip();
   wxFindDialogEvent *findEvent = new wxFindDialogEvent(wxEVT_FIND_REPLACE);
   findEvent->SetFindString(m_findReplaceData->GetFindString());
   findEvent->SetReplaceString(m_findReplaceData->GetReplaceString());
@@ -138,7 +140,8 @@ void FindReplacePane::OnReplace(wxCommandEvent &WXUNUSED(event)) {
   GetParent()->GetParent()->GetEventHandler()->QueueEvent(findEvent);
 }
 
-void FindReplacePane::OnReplaceAll(wxCommandEvent &WXUNUSED(event)) {
+void FindReplacePane::OnReplaceAll(wxCommandEvent &event) {
+  event.Skip();
   wxFindDialogEvent *findEvent = new wxFindDialogEvent(wxEVT_FIND_REPLACE_ALL);
   findEvent->SetFindString(m_findReplaceData->GetFindString());
   findEvent->SetReplaceString(m_findReplaceData->GetReplaceString());
@@ -146,7 +149,8 @@ void FindReplacePane::OnReplaceAll(wxCommandEvent &WXUNUSED(event)) {
   GetParent()->GetParent()->GetEventHandler()->QueueEvent(findEvent);
 }
 
-void FindReplacePane::OnDirectionChange(wxCommandEvent &WXUNUSED(event)) {
+void FindReplacePane::OnDirectionChange(wxCommandEvent &event) {
+  event.Skip();
   m_findReplaceData->SetFlags(!((m_findReplaceData->GetFlags() & (~wxFR_DOWN)) |
                                 (m_forward->GetValue() * wxFR_DOWN)));
   wxConfig::Get()->Write(wxS("findFlags"), m_findReplaceData->GetFlags());
