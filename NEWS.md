@@ -1,4 +1,4 @@
-# Current
+# 23.08.0
 
  * Better print scaling
  * More consistent page size handling for printing
