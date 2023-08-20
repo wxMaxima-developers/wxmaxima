@@ -4,6 +4,7 @@
  * More consistent page size handling for printing
  * Many performance and stability fixes from coverity-scan
  * Resolved many warnings from cppcheck
+ * A RegEx search
 
 # 23.07.0
  * Printing: Made the page margins configurable (#1787)
