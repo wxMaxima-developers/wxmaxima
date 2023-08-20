@@ -44,14 +44,14 @@ public:
     Match(){m_start=wxNOT_FOUND;m_length = 0;}
     void SetStart(size_t start){m_start = start;}
     void SetLength(size_t length){m_length = length;}
-    long GetStart(){return m_start;}
-    long GetLength(){return m_length;}
-    long GetEnd(){return m_start + m_length;}
+    long GetStart() const {return m_start;}
+    long GetLength() const {return m_length;}
+    long GetEnd() const {return m_start + m_length;}
   private:
     long m_start;
     long m_length;
   };
-  RegexSearch(wxString regex);
+  explicit RegexSearch(wxString regex);
   ~RegexSearch();
   Match FindNext(wxString string, size_t start);
   Match FindNext_Reverse(wxString string, size_t start);
