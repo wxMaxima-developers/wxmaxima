@@ -1,5 +1,4 @@
 # 23.08.0
-
  * Better print scaling
  * More consistent page size handling for printing
  * Many performance and stability fixes from coverity-scan
