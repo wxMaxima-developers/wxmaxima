@@ -33,6 +33,7 @@
 #include "precomp.h"
 #include <wx/dialog.h>
 #include <wx/event.h>
+#include <wx/radiobut.h>
 #include "FindReplacePane.h"
 
 /*! The find+replace dialog
@@ -40,7 +41,8 @@
 class FindReplaceDialog : public wxDialog
 {
 public:
-  FindReplaceDialog(wxWindow *parent, wxFindReplaceData *data, const wxString &title,
+  FindReplaceDialog(wxWindow *parent, FindReplacePane::FindReplaceData *data,
+                    const wxString &title,
                     FindReplaceDialog **m_pointerToDialogue = NULL,
                     int style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER);
 
@@ -48,6 +50,8 @@ public:
   //! Returns the standard wxFindReplaceData data structure
   wxFindReplaceData *GetData()
     { return m_contents->GetData(); }
+
+  bool GetRegexSearch() const {return m_contents->GetRegexSearch();}
 
   //! Set the string we are currently searching for
   void SetFindString(wxString strng)

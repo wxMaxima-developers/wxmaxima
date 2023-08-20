@@ -7471,6 +7471,16 @@ bool Worksheet::FindIncremental(const wxString &str, bool down,
   return (!str.empty()) ? FindNext(str, down, ignoreCase, false) : true;
 }
 
+
+bool Worksheet::FindIncremental_RegEx(const wxString &str, bool down) {
+  if (SearchStart()) {
+    SetActiveCell(SearchStart());
+    SearchStart()->CaretToPosition(IndexSearchStartedAt());
+  }
+
+  return (!str.empty()) ? FindNext_Regex(str, down, false) : true;
+}
+
 bool Worksheet::FindNext(const wxString &str, bool down, bool ignoreCase,
                          bool warn) {
   if (!GetTree())
@@ -7522,6 +7532,92 @@ bool Worksheet::FindNext(const wxString &str, bool down, bool ignoreCase,
 
     if (editor) {
       bool found = editor->FindNext(str, down, ignoreCase);
+
+      if (found) {
+        int strt, end;
+        editor->GetSelection(&strt, &end);
+        SetActiveCell(editor);
+        editor->SetSelection(strt, end);
+        ScrollToCaret();
+        UpdateTableOfContents();
+        RequestRedraw();
+        if ((wrappedSearch) && warn) {
+          LoggingMessageDialog dialog(m_findDialog, _("Wrapped search"),
+                                      wxEmptyString, wxCENTER | wxOK);
+          dialog.ShowModal();
+        }
+        return true;
+      }
+    }
+
+    if (down) {
+      pos = pos->GetNext();
+      if (!pos) {
+        wrappedSearch = true;
+        pos = GetTree();
+      }
+    } else {
+      pos = pos->GetPrevious();
+      if (!pos) {
+        wrappedSearch = true;
+        pos = GetLastCellInWorksheet();
+      }
+    }
+  }
+  return false;
+}
+
+bool Worksheet::FindNext_Regex(const wxString &str, bool down,
+                         bool warn) {
+  if (!GetTree())
+    return false;
+  
+  int starty;
+  if (down)
+    starty = 0;
+  else {
+    wxSize canvasSize = GetClientSize();
+    starty = canvasSize.y;
+  }
+
+  // Default the start of the search at the top or the bottom of the screen
+  wxPoint topleft;
+  CalcUnscrolledPosition(0, starty, &topleft.x, &topleft.y);
+  GroupCell *pos = GetTree();
+  for (; pos; pos = pos->GetNext()) {
+    wxRect rect = pos->GetRect();
+    if (rect.GetBottom() > topleft.y)
+      break;
+  }
+
+  if (!pos)
+    pos = down ? GetTree() : GetLastCellInWorksheet();
+
+  // If a cursor is active we start the search there instead
+  if (GetActiveCell())
+    pos = GetActiveCell()->GetGroup();
+  else if (m_hCaretActive) {
+    pos = (down && m_hCaretPosition && m_hCaretPosition->GetNext())
+      ? m_hCaretPosition->GetNext()
+      : m_hCaretPosition;
+  }
+
+  // If we still don't have a place to start searching we have definitively
+  // tried to search in any empty worksheet and know we won't get any result.
+  if (!pos)
+    return false;
+
+  pos->GetEditable()->SearchStartedHere(pos->GetEditable()->GetCaretPosition());
+
+  // Remember where to go if we need to wrap the search.
+  GroupCell *start = pos;
+
+  bool wrappedSearch = false;
+  while (pos != start || !wrappedSearch) {
+    EditorCell *editor = pos->GetEditable();
+
+    if (editor) {
+      bool found = editor->FindNext_RegEx(str, down);
 
       if (found) {
         int strt, end;
@@ -7630,6 +7726,22 @@ void Worksheet::Replace(const wxString &oldString, const wxString &newString,
   GetActiveCell()->SearchStartedHere();
 }
 
+void Worksheet::Replace_RegEx(const wxString &oldString, const wxString &newString) {
+  if (!GetActiveCell())
+    return;
+
+  if (GetActiveCell()->ReplaceSelection_RegEx(oldString, newString)) {
+    SetSaved(false);
+    GroupCell *group = GetActiveCell()->GetGroup();
+    group->ResetInputLabel();
+    group->ResetSize();
+    GetActiveCell()->ResetSize();
+    Recalculate();
+    RequestRedraw();
+  }
+  GetActiveCell()->SearchStartedHere();
+}
+
 int Worksheet::ReplaceAll(const wxString &oldString, const wxString &newString,
                           bool ignoreCase) {
   m_cellPointers.ResetSearchStart();
@@ -7643,6 +7755,35 @@ int Worksheet::ReplaceAll(const wxString &oldString, const wxString &newString,
     if (editor) {
       SetActiveCell(editor);
       int replaced = editor->ReplaceAll(oldString, newString, ignoreCase);
+      if (replaced > 0) {
+        count += replaced;
+        tmp.ResetInputLabel();
+        tmp.ResetSize();
+      }
+    }
+  }
+
+  if (count > 0) {
+    SetSaved(false);
+    Recalculate();
+    RequestRedraw();
+  }
+
+  return count;
+}
+
+int Worksheet::ReplaceAll_RegEx(const wxString &oldString, const wxString &newString) {
+  m_cellPointers.ResetSearchStart();
+
+  if (!GetTree())
+    return 0;
+
+  int count = 0;
+  for (auto &tmp : OnList(GetTree())) {
+    EditorCell *editor = tmp.GetEditable();
+    if (editor) {
+      SetActiveCell(editor);
+      int replaced = editor->ReplaceAll_RegEx(oldString, newString);
       if (replaced > 0) {
         count += replaced;
         tmp.ResetInputLabel();

@@ -821,7 +821,7 @@ protected:
   wxString m_gnuplotcommand;
   //! The Char the current command starts at in the current WorkingGroup
   int m_commandIndex;
-  wxFindReplaceData m_findData;
+  FindReplacePane::FindReplaceData m_findData;
   static wxRegEx m_funRegEx;
   static wxRegEx m_varRegEx;
   static wxRegEx m_blankStatementRegEx;

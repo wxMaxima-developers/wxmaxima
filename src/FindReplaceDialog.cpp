@@ -29,7 +29,8 @@
 #include "FindReplaceDialog.h"
 #include "EditorCell.h"
 
-FindReplaceDialog::FindReplaceDialog(wxWindow *parent, wxFindReplaceData *data,
+FindReplaceDialog::FindReplaceDialog(wxWindow *parent,
+				     FindReplacePane::FindReplaceData *data,
                                      const wxString &title,
 				     FindReplaceDialog **pointerToDialogue, int style)
   : wxDialog(parent, wxID_ANY, title, wxDefaultPosition, wxDefaultSize,

@@ -132,6 +132,7 @@ set(SOURCE_FILES
     Notification.cpp
     RecentDocuments.cpp
     RegexCtrl.cpp
+    RegexSearch.cpp
     ResolutionChooser.cpp
     StatusBar.cpp
     StringUtils.cpp

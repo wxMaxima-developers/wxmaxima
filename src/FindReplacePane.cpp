@@ -30,20 +30,24 @@
 #include "EditorCell.h"
 #include <wx/button.h>
 #include <wx/stattext.h>
+#include <wx/regex.h>
 
-FindReplacePane::FindReplacePane(wxWindow *parent, wxFindReplaceData *data)
+FindReplacePane::FindReplacePane(wxWindow *parent, FindReplaceData *data)
   : wxPanel(parent, -1) {
   m_active = true;
   m_findReplaceData = data;
-  wxFlexGridSizer *grid_sizer = new wxFlexGridSizer(3, 1, 1);
+  wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
+  wxBoxSizer *top_sizer = new wxBoxSizer(wxHORIZONTAL);
+  wxBoxSizer *button_sizer = new wxBoxSizer(wxVERTICAL);
+  wxBoxSizer *lefttop_sizer = new wxBoxSizer(wxVERTICAL);
+  wxFlexGridSizer *grid_sizer = new wxFlexGridSizer(2);
   grid_sizer->SetFlexibleDirection(wxHORIZONTAL);
   grid_sizer->AddGrowableCol(0, 0);
   grid_sizer->AddGrowableCol(1, 1);
-  grid_sizer->AddGrowableCol(2, 0);
 
   grid_sizer->Add(new wxStaticText(this, -1, _("Find:")),
                   wxSizerFlags().Right().Center().Border(wxALL, 5));
-
+  
   m_searchText = new wxTextCtrl(this, -1, data->GetFindString());
   m_searchText->Connect(
 			wxEVT_TEXT, wxCommandEventHandler(FindReplacePane::OnFindStringChange),
@@ -51,7 +55,7 @@ FindReplacePane::FindReplacePane(wxWindow *parent, wxFindReplaceData *data)
   grid_sizer->Add(m_searchText, wxSizerFlags().Expand().Border(wxALL, 5));
 
   m_searchButton = new wxButton(this, wxID_FIND);
-  grid_sizer->Add(m_searchButton, wxSizerFlags().Expand().Border(wxALL, 5));
+  button_sizer->Add(m_searchButton, wxSizerFlags().Expand().Border(wxALL, 5));
   m_searchButton->Connect(wxEVT_BUTTON,
                           wxCommandEventHandler(FindReplacePane::OnSearch),
                           NULL, this);
@@ -64,22 +68,41 @@ FindReplacePane::FindReplacePane(wxWindow *parent, wxFindReplaceData *data)
 			 wxEVT_TEXT, wxCommandEventHandler(FindReplacePane::OnReplaceStringChange),
 			 NULL, this);
   grid_sizer->Add(m_replaceText, wxSizerFlags().Expand().Border(wxALL, 5));
+  m_matchCase = new wxCheckBox(this, -1, _("Match Case"));
+  lefttop_sizer->Add(grid_sizer, wxSizerFlags().Expand());
+  lefttop_sizer->Add(m_matchCase, wxSizerFlags().Expand().Border(wxALL, 5));
 
   m_replaceButton = new wxButton(this, wxID_REPLACE);
   m_replaceButton->Connect(wxEVT_BUTTON,
                            wxCommandEventHandler(FindReplacePane::OnReplace),
                            NULL, this);
-  grid_sizer->Add(m_replaceButton, wxSizerFlags().Expand().Border(wxALL, 5));
+  button_sizer->Add(m_replaceButton, wxSizerFlags().Expand().Border(wxALL, 5));
 
-  grid_sizer->Add(new wxStaticText(this, -1, _("Direction:")),
-                  wxSizerFlags().Right().Center().Border(wxALL, 5));
-
-  wxBoxSizer *fbbox = new wxBoxSizer(wxHORIZONTAL);
+  wxSizer *fbbox = new wxBoxSizer(wxHORIZONTAL);
   m_forward = new wxRadioButton(this, -1, _("Up"), wxDefaultPosition,
                                 wxDefaultSize, wxRB_GROUP);
   fbbox->Add(m_forward, wxSizerFlags().Expand().Border(wxALL, 5));
   m_backwards = new wxRadioButton(this, -1, _("Down"));
   fbbox->Add(m_backwards, wxSizerFlags().Expand().Border(wxALL, 5));
+  m_regexSearch = new wxRadioButton(this, -1, _("Regex"), wxDefaultPosition,
+                                wxDefaultSize, wxRB_GROUP);
+  fbbox->Add(m_regexSearch, wxSizerFlags().Expand().Border(wxALL, 5));
+  m_simpleSearch = new wxRadioButton(this, -1, _("Simple"));
+  fbbox->Add(m_simpleSearch, wxSizerFlags().Expand().Border(wxALL, 5));
+
+  m_regexSearch->SetValue((data->GetRegexSearch()));
+  m_regexSearch->Connect(wxEVT_RADIOBUTTON,
+			 wxCommandEventHandler(FindReplacePane::OnRegexSimpleChange),
+			 NULL, this);
+  m_simpleSearch->SetValue(!(data->GetRegexSearch()));
+  m_simpleSearch->Connect(wxEVT_RADIOBUTTON,
+			  wxCommandEventHandler(FindReplacePane::OnRegexSimpleChange),
+			  NULL, this);
+  m_matchCase->Enable(!m_regexSearch->GetValue());
+  if(m_regexSearch->GetValue())
+    m_matchCase->SetValue(true);
+  else
+    m_matchCase->SetValue(!!(data->GetFlags() & wxFR_MATCHCASE));
 
   m_forward->SetValue(!(data->GetFlags() & wxFR_DOWN));
   m_backwards->SetValue(!!(data->GetFlags() & wxFR_DOWN));
@@ -90,19 +113,16 @@ FindReplacePane::FindReplacePane(wxWindow *parent, wxFindReplaceData *data)
 		       wxEVT_RADIOBUTTON,
 		       wxCommandEventHandler(FindReplacePane::OnDirectionChange), NULL, this);
 
-  grid_sizer->Add(fbbox, wxSizerFlags().Expand());
-
   m_replaceAllButton = new wxButton(this, 1, _("Replace All"));
-  grid_sizer->Add(m_replaceAllButton, wxSizerFlags().Expand().Border(wxALL, 5));
+  button_sizer->Add(m_replaceAllButton, wxSizerFlags().Expand().Border(wxALL, 5));
   m_replaceAllButton->Connect(
 			      wxEVT_BUTTON, wxCommandEventHandler(FindReplacePane::OnReplaceAll), NULL,
 			      this);
+  top_sizer->Add(lefttop_sizer, wxSizerFlags().Expand());
+  top_sizer->Add(button_sizer, wxSizerFlags());
 
-  grid_sizer->AddSpacer(0);
-
-  m_matchCase = new wxCheckBox(this, -1, _("Match Case"));
-  m_matchCase->SetValue(!!(data->GetFlags() & wxFR_MATCHCASE));
-  grid_sizer->Add(m_matchCase, wxSizerFlags().Expand().Border(wxALL, 5));
+  mainSizer->Add(top_sizer, wxSizerFlags().Expand());
+  mainSizer->Add(fbbox, wxSizerFlags().Expand());
   m_matchCase->Connect(wxEVT_CHECKBOX,
                        wxCommandEventHandler(FindReplacePane::OnMatchCase),
                        NULL, this);
@@ -110,12 +130,18 @@ FindReplacePane::FindReplacePane(wxWindow *parent, wxFindReplaceData *data)
   // If I press <tab> in the search text box I want to arrive in the
   // replacement text box immediately.
   m_replaceText->MoveAfterInTabOrder(m_searchText);
-  this->SetSizerAndFit(grid_sizer);
+  this->SetSizerAndFit(mainSizer);
   Connect(wxEVT_ACTIVATE, wxActivateEventHandler(FindReplacePane::OnActivate),
 	  NULL, this);
   m_activateDuringConstruction = true;
   Connect(wxEVT_CHAR_HOOK, wxKeyEventHandler(FindReplacePane::OnKeyDown), NULL,
           this);
+}
+
+FindReplacePane::FindReplaceData::FindReplaceData() :
+  wxFindReplaceData(),
+  m_regexSearch(false)
+{
 }
 
 void FindReplacePane::SetFindString(wxString strng) {
@@ -165,6 +191,17 @@ void FindReplacePane::OnDirectionChange(wxCommandEvent &event) {
   wxConfig::Get()->Write(wxS("findFlags"), m_findReplaceData->GetFlags());
 }
 
+void FindReplacePane::OnRegexSimpleChange(wxCommandEvent &event){
+  event.Skip();
+  m_findReplaceData->SetRegexSearch(m_regexSearch->GetValue());
+  m_matchCase->Enable(!m_regexSearch->GetValue());
+  if(m_regexSearch->GetValue())
+    m_matchCase->SetValue(true);
+  else
+    m_matchCase->SetValue(!!(m_findReplaceData->GetFlags() & wxFR_MATCHCASE));
+}
+
+
 void FindReplacePane::OnMatchCase(wxCommandEvent &event) {
   m_findReplaceData->SetFlags(
 			      (m_findReplaceData->GetFlags() & (~wxFR_MATCHCASE)) |
@@ -186,8 +223,21 @@ void FindReplacePane::OnActivate(wxActivateEvent &event) {
   m_active = true;
 }
 
-void FindReplacePane::OnFindStringChange(wxCommandEvent &WXUNUSED(event)) {
+void FindReplacePane::OnFindStringChange(wxCommandEvent &event) {
+  event.Skip();
   m_findReplaceData->SetFindString(m_searchText->GetValue());
+  if(m_findReplaceData->GetRegexSearch())
+    {
+      wxLogNull suppressor;
+      wxRegEx test(m_searchText->GetValue());
+      if(test.IsValid())
+	m_searchText->SetForegroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOWTEXT));
+      else
+	m_searchText->SetForegroundColour(wxColor(255, 165, 0));
+    }
+  else
+    m_searchText->SetForegroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOWTEXT));
+  
 }
 
 void FindReplacePane::OnReplaceStringChange(wxCommandEvent &WXUNUSED(event)) {

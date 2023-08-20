@@ -1444,24 +1444,28 @@ public:
     \todo Keep a list of positions the last few letters were found at?
   */
   bool FindIncremental(const wxString &str, bool down, bool ignoreCase);
+  bool FindIncremental_RegEx(const wxString &str, bool down);
 
   /*! Find the next occurrence of a string
 
     Used by the find dialog.
   */
   bool FindNext(const wxString &str, bool down, bool ignoreCase, bool warn = true);
+  bool FindNext_Regex(const wxString &str, bool down, bool warn = true);
 
   /*! Replace the current occurrence of a string
 
     Used by the find dialog.
   */
   void Replace(const wxString &oldString, const wxString &newString, bool ignoreCase);
+  void Replace_RegEx(const wxString &oldString, const wxString &newString);
 
   /*! Replace all occurrences of a string
 
     Used by the find dialog.
   */
   int ReplaceAll(const wxString &oldString, const wxString &newString, bool ignoreCase);
+  int ReplaceAll_RegEx(const wxString &oldString, const wxString &newString);
 
   wxString GetInputAboveCaret();
 

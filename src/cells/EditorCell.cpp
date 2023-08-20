@@ -40,6 +40,7 @@
 #include <wx/clipbrd.h>
 #include <wx/regex.h>
 #include <wx/tokenzr.h>
+#include "RegexSearch.h"
 
 EditorCell::EditorCell(GroupCell *group, Configuration *config,
                        const wxString &text)
@@ -786,12 +787,10 @@ void EditorCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
 #if defined(__WXOSX__)
 		dc->SetPen(wxNullPen); // no border on rectangles
 #else
-		dc->SetPen(*(wxThePenList->FindOrCreatePen(
-							   m_configuration->GetColor(TS_SELECTION), 1,
-						     wxPENSTYLE_SOLID))); // window linux, set a pen
+		dc->SetPen(*(wxThePenList->FindOrCreatePen(m_configuration->GetColor(TS_SELECTION), 1,
+							   wxPENSTYLE_SOLID))); // window linux, set a pen
 #endif
-		dc->SetBrush(*(wxTheBrushList->FindOrCreateBrush(
-								 m_configuration->GetColor(TS_SELECTION)))); // highlight c.
+		dc->SetBrush(*(wxTheBrushList->FindOrCreateBrush(m_configuration->GetColor(TS_SELECTION)))); // highlight c.
 	  }
 	  wxPoint matchPoint = PositionToPoint(m_paren1);
 	  int width, height;
@@ -3427,7 +3426,7 @@ int EditorCell::ReplaceAll(wxString oldString, const wxString &newString,
 
   SaveValue();
   wxString newText;
-  int count = 0;
+  long count = 0;
   if (!ignoreCase) {
     newText = m_text;
     newText.Replace(wxS("\r"), wxS(" "));
@@ -3467,6 +3466,43 @@ int EditorCell::ReplaceAll(wxString oldString, const wxString &newString,
 
   return count;
 }
+
+int EditorCell::ReplaceAll_RegEx(wxString oldString, const wxString &newString) {
+  if (oldString == wxEmptyString)
+    return 0;
+
+  SaveValue();
+  wxString newText;
+  size_t count = 0;
+  RegexSearch regexsearch(oldString);
+  newText = m_text;
+  newText.Replace(wxS("\r"), wxS(" "));
+  count = regexsearch.ReplaceAll(&newText, newString);
+  if(count > 0)
+    {
+      m_text = newText;
+      m_containsChanges = true;
+      ClearSelection();
+      StyleText();
+      if (m_selectionStart > 0)
+	SetSelection(m_selectionStart, m_selectionEnd);
+    }
+  if (count > 0) {
+    m_text = newText;
+    m_containsChanges = true;
+    ClearSelection();
+    StyleText();
+  }
+  
+  // If text is selected setting the selection again updates m_selectionString
+  if (m_selectionStart > 0)
+    SetSelection(m_selectionStart, m_selectionEnd);
+  
+  m_text.Replace(wxS("\u2028"), "\n");
+  m_text.Replace(wxS("\u2029"), "\n");
+return count;
+}
+
 
 bool EditorCell::FindNext(wxString str, const bool &down,
                           const bool &ignoreCase) {
@@ -3512,9 +3548,9 @@ bool EditorCell::FindNext(wxString str, const bool &down,
       // We are at the start of a match, but the search expression has changed
       if (m_selectionStart > 0) {
         if (down)
-          start = wxMin(m_selectionStart, m_selectionEnd);
+          start = wxMin(m_selectionStart, m_selectionEnd) + 1;
         else
-          start = wxMax(m_selectionStart, m_selectionEnd) + 1;
+          start = wxMax(m_selectionStart, m_selectionEnd) - 1;
       } else {
         if (m_positionOfCaret > 0)
           start = m_positionOfCaret;
@@ -3543,6 +3579,69 @@ bool EditorCell::FindNext(wxString str, const bool &down,
     SetSelection(strStart, strStart + str.Length());
     return true;
   }
+  if (IsActive()) {
+    if (down) {
+      m_positionOfCaret = 0;
+      m_selectionEnd = m_selectionStart = -1;
+    } else {
+      m_positionOfCaret = m_text.Length();
+      m_selectionEnd = m_selectionStart = -1;
+    }
+  }
+  return false;
+}
+
+
+bool EditorCell::FindNext_RegEx(wxString str, const bool &down) {
+  wxString text(m_text);
+  text.Replace(wxS('\r'), wxS(' '));
+
+  RegexSearch regexSearch(str);
+  RegexSearch::Match match;
+
+  int start;
+  if (down)
+    start = 0;
+  else
+    start = m_text.Length();
+  
+  // If this cell is already active we might already be at a suitable
+  // start position for the search or within a search.
+  if (IsActive()) {
+    // If the last search already has marked a match for our word we want
+    // to search for the next match.
+    if ((m_selectionStart >= 0) &&
+        (static_cast<size_t>(abs(m_selectionStart - m_selectionEnd)) == str.Length()) &&
+        (text.Right(text.Length() - wxMin(m_selectionStart, m_selectionEnd))
+	 .StartsWith(str))) {
+      if (down)
+        start = wxMin(m_selectionStart, m_selectionEnd) + 1;
+      else
+        start = wxMax(m_selectionStart, m_selectionEnd) - 1;
+    } else {
+      // We are at the start of a match, but the search expression has changed
+      if (m_selectionStart > 0) {
+        if (down)
+          start = wxMin(m_selectionStart, m_selectionEnd);
+        else
+          start = wxMax(m_selectionStart, m_selectionEnd) + 1;
+      } else {
+        if (m_positionOfCaret > 0)
+          start = m_positionOfCaret;
+      }
+    }
+  }
+  
+  if (down)
+    match =  regexSearch.FindNext(text, start);
+  else
+    match =  regexSearch.FindNext_Reverse(text, start);
+  if(match.GetStart() != wxNOT_FOUND)
+    {
+      m_positionOfCaret = match.GetStart();
+      SetSelection(match.GetStart(), match.GetEnd());
+      return true;
+    }
   if (IsActive()) {
     if (down) {
       m_positionOfCaret = 0;
@@ -3599,6 +3698,37 @@ bool EditorCell::ReplaceSelection(const wxString &oldStr,
   else
     ClearSelection();
 
+  if (GetType() == MC_TYPE_INPUT)
+    FindMatchingParens();
+
+  StyleText();
+  return true;
+}
+
+
+bool EditorCell::ReplaceSelection_RegEx(const wxString &oldStr,
+					const wxString &newString) {
+  wxString text(m_text);
+  text.Replace(wxS("\r"), wxS(" "));
+
+  long start = wxMin(m_selectionStart, m_selectionEnd);
+  long end = wxMax(m_selectionStart, m_selectionEnd);
+  if (m_selectionStart < 0) {
+    if (oldStr == wxEmptyString)
+      SetSelection(m_positionOfCaret, m_positionOfCaret);
+    else
+      return false;
+  }
+
+  RegexSearch regexSearch(oldStr);
+  RegexSearch::Match match;
+  match =  regexSearch.Replace(&text, start, newString);
+  if(match.GetStart() == wxNOT_FOUND)
+    return false;
+  m_text = text;
+  m_positionOfCaret = match.GetEnd();
+  ClearSelection();
+  
   if (GetType() == MC_TYPE_INPUT)
     FindMatchingParens();
 

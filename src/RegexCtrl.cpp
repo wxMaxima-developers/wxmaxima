@@ -77,7 +77,7 @@ void RegexCtrl::OnTextChange(wxCommandEvent &WXUNUSED(ev)) {
       if (m_regexInputState != newInputState) {
         m_regexInputState = newInputState;
         const wxColor colors[3] = {
-	  wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOW), /* empty regexx field  */ 
+	  wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOWTEXT), /* empty regexx field  */ 
 	  {255, 165, 0}, /* invalid is orange. Red seems too 'dangerous'.
 			  */
 	  {0, 255, 0}    /* valid is green: Input okay. */

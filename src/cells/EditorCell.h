@@ -366,6 +366,7 @@ public:
   /*! Replaces all occurrences of a given string
    */
   int ReplaceAll(wxString oldString, const wxString &newString, bool ignoreCase);
+  int ReplaceAll_RegEx(wxString oldString, const wxString &newString);
 
   /*! Finds the next occurrences of a string
 
@@ -378,6 +379,7 @@ public:
     - false: Case-sensitive search
   */
   bool FindNext(wxString str, const bool &down, const bool &ignoreCase);
+  bool FindNext_RegEx(wxString str, const bool &down);
 
   bool IsSelectionChanged() const { return m_selectionChanged; }
 
@@ -404,6 +406,7 @@ public:
   bool ReplaceSelection(const wxString &oldStr, const wxString &newString,
                         bool keepSelected = false, bool ignoreCase = false,
                         bool replaceMaximaString = false);
+  bool ReplaceSelection_RegEx(const wxString &oldStr, const wxString &newString);
 
   //! Convert the current selection to a string
   wxString GetSelectionString() const;
