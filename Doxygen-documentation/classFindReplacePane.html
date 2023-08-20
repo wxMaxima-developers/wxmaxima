@@ -62,6 +62,7 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Data Structures</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a>  </div>
   <div class="headertitle">
@@ -86,20 +87,28 @@ Collaboration diagram for FindReplacePane:</div>
 </div>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
+Data Structures</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFindReplacePane_1_1FindReplaceData.html">FindReplaceData</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ad01851e12976ba480efb008c73c09098"><td class="memItemLeft" align="right" valign="top"><a id="ad01851e12976ba480efb008c73c09098"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>FindReplacePane</b> (wxWindow *parent, wxFindReplaceData *data)</td></tr>
-<tr class="separator:ad01851e12976ba480efb008c73c09098"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9d1f9ec3b5e18053377db610103f4cc9"><td class="memItemLeft" align="right" valign="top"><a id="a9d1f9ec3b5e18053377db610103f4cc9"></a>
-wxString&#160;</td><td class="memItemRight" valign="bottom"><b>GetFindString</b> ()</td></tr>
-<tr class="separator:a9d1f9ec3b5e18053377db610103f4cc9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a73d8c57c6d795b539fb55a4656ed27be"><td class="memItemLeft" align="right" valign="top"><a id="a73d8c57c6d795b539fb55a4656ed27be"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>FindReplacePane</b> (wxWindow *parent, <a class="el" href="classFindReplacePane_1_1FindReplaceData.html">FindReplaceData</a> *data)</td></tr>
+<tr class="separator:a73d8c57c6d795b539fb55a4656ed27be"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3b853b36f82556527af2c3869c4c3745"><td class="memItemLeft" align="right" valign="top"><a id="a3b853b36f82556527af2c3869c4c3745"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>GetRegexSearch</b> () const</td></tr>
+<tr class="separator:a3b853b36f82556527af2c3869c4c3745"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7c06703a97670e90509121d97e5bf7e9"><td class="memItemLeft" align="right" valign="top"><a id="a7c06703a97670e90509121d97e5bf7e9"></a>
+wxString&#160;</td><td class="memItemRight" valign="bottom"><b>GetFindString</b> () const</td></tr>
+<tr class="separator:a7c06703a97670e90509121d97e5bf7e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4617b74331e4c15c71c5721947541a85"><td class="memItemLeft" align="right" valign="top"><a id="a4617b74331e4c15c71c5721947541a85"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>SetFindString</b> (wxString strng)</td></tr>
 <tr class="separator:a4617b74331e4c15c71c5721947541a85"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaca1b158f0019152de5313c9dd757980"><td class="memItemLeft" align="right" valign="top"><a id="aaca1b158f0019152de5313c9dd757980"></a>
-wxFindReplaceData *&#160;</td><td class="memItemRight" valign="bottom"><b>GetData</b> ()</td></tr>
-<tr class="separator:aaca1b158f0019152de5313c9dd757980"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:add9640ff7398e3411fe5465f527e2cdc"><td class="memItemLeft" align="right" valign="top"><a id="add9640ff7398e3411fe5465f527e2cdc"></a>
+wxFindReplaceData *&#160;</td><td class="memItemRight" valign="bottom"><b>GetData</b> () const</td></tr>
+<tr class="separator:add9640ff7398e3411fe5465f527e2cdc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
@@ -124,6 +133,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>OnFindStringChange</b
 <tr class="memitem:a4da5c5142a552f8013bcdca81af174e8"><td class="memItemLeft" align="right" valign="top"><a id="a4da5c5142a552f8013bcdca81af174e8"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>OnDirectionChange</b> (wxCommandEvent &amp;event)</td></tr>
 <tr class="separator:a4da5c5142a552f8013bcdca81af174e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac5beffa5562b672fdd6c3c443fac60fe"><td class="memItemLeft" align="right" valign="top"><a id="ac5beffa5562b672fdd6c3c443fac60fe"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>OnRegexSimpleChange</b> (wxCommandEvent &amp;event)</td></tr>
+<tr class="separator:ac5beffa5562b672fdd6c3c443fac60fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6b6ecf5be84b74b08f7bbed05437fc09"><td class="memItemLeft" align="right" valign="top"><a id="a6b6ecf5be84b74b08f7bbed05437fc09"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>OnMatchCase</b> (wxCommandEvent &amp;event)</td></tr>
 <tr class="separator:a6b6ecf5be84b74b08f7bbed05437fc09"><td class="memSeparator" colspan="2">&#160;</td></tr>
