@@ -7514,6 +7514,8 @@ bool Worksheet::FindNext(const wxString &str, bool down, bool ignoreCase,
     pos = (down && m_hCaretPosition && m_hCaretPosition->GetNext())
       ? m_hCaretPosition->GetNext()
       : m_hCaretPosition;
+    if(pos == NULL)
+      pos = GetTree();
   }
 
   // If we still don't have a place to start searching we have definitively
@@ -7600,6 +7602,8 @@ bool Worksheet::FindNext_Regex(const wxString &str, bool down,
     pos = (down && m_hCaretPosition && m_hCaretPosition->GetNext())
       ? m_hCaretPosition->GetNext()
       : m_hCaretPosition;
+    if(pos == NULL)
+      pos = GetTree();
   }
 
   // If we still don't have a place to start searching we have definitively
