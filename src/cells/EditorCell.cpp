@@ -3628,9 +3628,9 @@ bool EditorCell::FindNext_RegEx(wxString str, const bool &down) {
       // We are at the start of a match, but the search expression has changed
       if (m_selectionStart > 0) {
         if (down)
-          start = wxMin(m_selectionStart, m_selectionEnd) - 1;
+          start = wxMin(m_selectionStart, m_selectionEnd) + 1;
         else
-          start = wxMax(m_selectionStart, m_selectionEnd) + 1;
+          start = wxMax(m_selectionStart, m_selectionEnd) - 1;
 	if((start < 0) || (start >= m_text.Length()))
 	  return false;
       } else {
