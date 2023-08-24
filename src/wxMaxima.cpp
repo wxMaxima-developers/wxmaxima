@@ -6184,17 +6184,17 @@ void wxMaxima::EditMenu(wxCommandEvent &event) {
     }
 
     // Execute gnuplot
-    char *argv[3];
+    std::vector<char *>argv;
     wxCharBuffer commandnamebuffer = m_gnuplotcommand.mb_str();
     wxString uri = gnuplotSource + wxS(".popout");
     wxCharBuffer urlbuffer = uri.mb_str();
-    argv[0] = commandnamebuffer.data();
-    argv[1] = urlbuffer.data();
-    argv[2] = NULL;
+    argv.push_back(commandnamebuffer.data());
+    argv.push_back(urlbuffer.data());
+    argv.push_back(NULL);
 
     wxLogMessage(_("Running %s on the file %s: "), commandnamebuffer, urlbuffer);
     m_gnuplotProcess = new wxProcess(this, m_gnuplot_process_id);
-    if (wxExecute(argv, wxEXEC_ASYNC | wxEXEC_SHOW_CONSOLE,
+    if (wxExecute(argv.data(), wxEXEC_ASYNC | wxEXEC_SHOW_CONSOLE,
                   m_gnuplotProcess) < 0)
       wxLogMessage(_("Cannot start gnuplot"));
   }
