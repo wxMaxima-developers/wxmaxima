@@ -2456,21 +2456,19 @@ void wxMaxima::Interrupt(wxCommandEvent &WXUNUSED(event)) {
     // SetConsoleCtrlHandler(NULL, true);
 
     /* First try to send the signal to gcl. */
-    wxString sharedMemoryName1 = wxString::Format("gcl-%d", m_pid);
-    wcsncpy(sharedMemoryName, sharedMemoryName1.wchar_str(), 50);
+    wxScopedCharBuffer sharedMemoryName(wxString::Format("gcl-%d", m_pid));
     sharedMemoryHandle =
       OpenFileMapping(FILE_MAP_WRITE,    /*  Read/write permission.   */
 		      FALSE,             /*  Do not inherit the name  */
-		      sharedMemoryName); /*  of the mapping object.   */
+		      sharedMemoryName.data()); /*  of the mapping object.   */
 
     /* If gcl is not running, send to maxima. */
-    wxString sharedMemoryName2 = wxString::Format("maxima-%d", m_pid);
+    wxScopedCharBuffer sharedMemoryName2(wxString::Format("maxima-%d", m_pid));
     if (sharedMemoryHandle == NULL) {
-      wcsncpy(sharedMemoryName, sharedMemoryName2.wchar_str(), 50);
       sharedMemoryHandle =
 	OpenFileMapping(FILE_MAP_WRITE,    /*  Read/write permission.   */
 			FALSE,             /*  Do not inherit the name  */
-			sharedMemoryName); /*  of the mapping object.   */
+			sharedMemoryName2.data()); /*  of the mapping object.   */
     }
 
     if (sharedMemoryHandle == NULL) {
@@ -4655,13 +4653,13 @@ void wxMaxima::LaunchHelpBrowser(wxString uri) {
       }
     } else {
       wxString command;
-      char *argv[3];
+      std::vector<char *>argv;
       wxCharBuffer commandnamebuffer = m_configuration.HelpBrowserUserLocation().mb_str();
       wxCharBuffer urlbuffer= uri.mb_str();
-      argv[0] = commandnamebuffer.data();
-      argv[1] = urlbuffer.data();
-      argv[2] = NULL;
-      wxExecute(argv);
+      argv.push_back(commandnamebuffer.data());
+      argv.push_back(urlbuffer.data());
+      argv.push_back(NULL);
+      wxExecute(argv.data());
     }
   }
 }
@@ -6184,7 +6182,7 @@ void wxMaxima::EditMenu(wxCommandEvent &event) {
     }
 
     // Execute gnuplot
-    std::vector<char *>argv;
+    std::vector<char *> argv;
     wxCharBuffer commandnamebuffer = m_gnuplotcommand.mb_str();
     wxString uri = gnuplotSource + wxS(".popout");
     wxCharBuffer urlbuffer = uri.mb_str();
