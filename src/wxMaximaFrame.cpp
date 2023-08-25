@@ -71,37 +71,37 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
   //  wxWindowUpdateLocker noUpdates(this);    m_worksheet->m_unsavedDocuments(wxS("unsaved")),
 
   // Add some shortcuts that aren't automatically set by menu entries.
-  wxAcceleratorEntry entries[18];
-  entries[0].Set(wxACCEL_CTRL, wxS('K'), EventIDs::menu_autocomplete);
-  entries[1].Set(wxACCEL_CTRL, WXK_TAB, EventIDs::menu_autocomplete);
-  entries[2].Set(wxACCEL_CTRL | wxACCEL_SHIFT, WXK_TAB,
-                 EventIDs::menu_autocomplete_templates);
-  entries[3].Set(wxACCEL_CTRL, WXK_SPACE, EventIDs::menu_autocomplete);
-  entries[4].Set(wxACCEL_CTRL | wxACCEL_SHIFT, wxS('K'),
-                 EventIDs::menu_autocomplete_templates);
-  entries[5].Set(wxACCEL_CTRL | wxACCEL_SHIFT, WXK_SPACE,
-                 EventIDs::menu_autocomplete_templates);
-  entries[6].Set(wxACCEL_ALT, wxS('I'), wxID_ZOOM_IN);
-  entries[7].Set(wxACCEL_ALT, wxS('O'), wxID_ZOOM_OUT);
-  entries[8].Set(wxACCEL_CTRL | wxACCEL_SHIFT, WXK_ESCAPE,
-                 EventIDs::menu_convert_to_code);
-  entries[9].Set(wxACCEL_CTRL | wxACCEL_SHIFT, wxS('1'),
-                 EventIDs::menu_convert_to_comment);
-  entries[10].Set(wxACCEL_CTRL | wxACCEL_SHIFT, wxS('2'),
-                  EventIDs::menu_convert_to_title);
-  entries[11].Set(wxACCEL_CTRL | wxACCEL_SHIFT, wxS('3'),
-                  EventIDs::menu_convert_to_section);
-  entries[12].Set(wxACCEL_CTRL | wxACCEL_SHIFT, wxS('4'),
-                  EventIDs::menu_convert_to_subsection);
-  entries[13].Set(wxACCEL_CTRL | wxACCEL_SHIFT, wxS('5'),
-                  EventIDs::menu_convert_to_subsubsection);
-  entries[14].Set(wxACCEL_CTRL | wxACCEL_SHIFT, wxS('6'),
-                  EventIDs::menu_convert_to_heading5);
-  entries[15].Set(wxACCEL_CTRL, wxS('.'),
-                  EventIDs::menu_interrupt_id); // Standard on the Mac
-  entries[16].Set(wxACCEL_NORMAL, WXK_F1, wxID_HELP);
-  entries[17].Set(wxACCEL_NORMAL, WXK_F11, EventIDs::menu_fullscreen);
-  wxAcceleratorTable accel(sizeof(entries) / sizeof(entries[0]), entries);
+  std::vector<wxAcceleratorEntry> entries;
+  entries.push_back(wxAcceleratorEntry(wxACCEL_CTRL, wxS('K'), EventIDs::menu_autocomplete));
+  entries.push_back(wxAcceleratorEntry(wxACCEL_CTRL, WXK_TAB, EventIDs::menu_autocomplete));
+  entries.push_back(wxAcceleratorEntry(wxACCEL_CTRL | wxACCEL_SHIFT, WXK_TAB,
+				       EventIDs::menu_autocomplete_templates));
+  entries.push_back(wxAcceleratorEntry(wxACCEL_CTRL, WXK_SPACE, EventIDs::menu_autocomplete));
+  entries.push_back(wxAcceleratorEntry(wxACCEL_CTRL | wxACCEL_SHIFT, wxS('K'),
+				       EventIDs::menu_autocomplete_templates));
+  entries.push_back(wxAcceleratorEntry(wxACCEL_CTRL | wxACCEL_SHIFT, WXK_SPACE,
+				       EventIDs::menu_autocomplete_templates));
+  entries.push_back(wxAcceleratorEntry(wxACCEL_ALT, wxS('I'), wxID_ZOOM_IN));
+  entries.push_back(wxAcceleratorEntry(wxACCEL_ALT, wxS('O'), wxID_ZOOM_OUT));
+  entries.push_back(wxAcceleratorEntry(wxACCEL_CTRL | wxACCEL_SHIFT, WXK_ESCAPE,
+				       EventIDs::menu_convert_to_code));
+  entries.push_back(wxAcceleratorEntry(wxACCEL_CTRL | wxACCEL_SHIFT, wxS('1'),
+				       EventIDs::menu_convert_to_comment));
+  entries.push_back(wxAcceleratorEntry(wxACCEL_CTRL | wxACCEL_SHIFT, wxS('2'),
+				       EventIDs::menu_convert_to_title));
+  entries.push_back(wxAcceleratorEntry(wxACCEL_CTRL | wxACCEL_SHIFT, wxS('3'),
+				       EventIDs::menu_convert_to_section));
+  entries.push_back(wxAcceleratorEntry(wxACCEL_CTRL | wxACCEL_SHIFT, wxS('4'),
+				       EventIDs::menu_convert_to_subsection));
+  entries.push_back(wxAcceleratorEntry(wxACCEL_CTRL | wxACCEL_SHIFT, wxS('5'),
+				       EventIDs::menu_convert_to_subsubsection));
+  entries.push_back(wxAcceleratorEntry(wxACCEL_CTRL | wxACCEL_SHIFT, wxS('6'),
+				       EventIDs::menu_convert_to_heading5));
+  entries.push_back(wxAcceleratorEntry(wxACCEL_CTRL, wxS('.'),
+				       EventIDs::menu_interrupt_id)); // Standard on the Mac
+  entries.push_back(wxAcceleratorEntry(wxACCEL_NORMAL, WXK_F1, wxID_HELP));
+  entries.push_back(wxAcceleratorEntry(wxACCEL_NORMAL, WXK_F11, EventIDs::menu_fullscreen));
+  wxAcceleratorTable accel(entries.size(), entries.data());
   SetAcceleratorTable(accel);
 
   // Redirect all debug messages to a dockable panel and output some info
