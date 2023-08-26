@@ -2454,14 +2454,14 @@ void wxMaxima::Interrupt(wxCommandEvent &WXUNUSED(event)) {
     // SetConsoleCtrlHandler(NULL, true);
 
     /* First try to send the signal to gcl. */
-    wxWCharBuffer sharedMemoryName(wxString::Format("gcl-%d", m_pid).mb_str());
+    wxWCharBuffer sharedMemoryName(wxString::Format("gcl-%d", m_pid).utf8_str());
     sharedMemoryHandle =
       OpenFileMapping(FILE_MAP_WRITE,    /*  Read/write permission.   */
 		      FALSE,             /*  Do not inherit the name  */
 		      sharedMemoryName.data()); /*  of the mapping object.   */
 
     /* If gcl is not running, send to maxima. */
-    wxWCharBuffer sharedMemoryName2(wxString::Format("maxima-%d", m_pid).mb_str());
+    wxWCharBuffer sharedMemoryName2(wxString::Format("maxima-%d", m_pid).utf8_str());
     if (sharedMemoryHandle == NULL) {
       sharedMemoryHandle =
 	OpenFileMapping(FILE_MAP_WRITE,    /*  Read/write permission.   */
