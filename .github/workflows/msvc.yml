@@ -1,0 +1,87 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+#
+# Find more information at:
+# https://github.com/microsoft/msvc-code-analysis-action
+
+name: Microsoft C++ Code Analysis
+
+on: [push]
+#on:
+#  push:
+#    branches: [ "main" ]
+#  pull_request:
+#    branches: [ "main" ]
+#  schedule:
+#    - cron: '43 4 * * 6'
+
+env:
+  build: '${{ github.workspace }}/build'
+  WXVERSION: 3.2.2.1
+
+permissions:
+  contents: read
+
+jobs:
+  analyze:
+    permissions:
+      contents: read # for actions/checkout to fetch code
+      security-events: write # for github/codeql-action/upload-sarif to upload SARIF results
+      actions: read # only required for a private repository by github/codeql-action/upload-sarif to get the Action run status
+    name: Analyze
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Cache wxWidgets
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-wxWidgets
+        with:
+          path: wxWidgets-${{env.WXVERSION}}
+          key: ${{ runner.os }}-build-msvc-${{ env.cache-name }}-0
+      - name: wxWidgets
+        run: |
+             if (Test-Path wxwidgets-source) { echo "wxWidgets already present"} else {
+                 echo "Downloading wxWidgets"
+                 curl "https://github.com/wxWidgets/wxWidgets/releases/download/v${env:WXVERSION}/wxWidgets-${env:WXVERSION}.7z" -L --output wxWidgets.7z
+                 echo "Unpacking wxWidgets sources"
+                 7z x "wxWidgets.7z" "-owxwidgets-source" -y
+                 echo "Building wxWidgets from sources"
+                 cd "wxwidgets-source"
+                 cmake "."
+                 cmake --build .
+                 cd .. }
+      - name: Configure wxMaxima
+        run: |
+             mkdir build
+             cd build
+             cmake -DwxWidgets_ROOT_DIR="../wxwidgets-source" -DwxWidgets_LIB_DIR="../wxwidgets-source/lib/vc_x64_dll" -DwxWidgets_CONFIGURATION="mswud" -DWXM_DISABLE_WEBVIEW=ON -DCMAKE_BUILD_TYPE=debug ..
+             cd ..
+      - name: Compile wxMaxima
+        run: |
+             cd build
+             cmake --build .
+             cd ..
+      # - name: Initialize MSVC Code Analysis
+      #   uses: microsoft/msvc-code-analysis-action@04825f6d9e00f87422d6bf04e1a38b1f3ed60d99
+      #   # Provide a unique ID to access the sarif output path
+      #   id: run-analysis
+      #   with:
+      #     cmakeBuildDirectory: ${{ env.build }}
+      #     # Ruleset file that will determine what checks will be run
+      #     ruleset: NativeRecommendedRules.ruleset
+      # # Upload SARIF file to GitHub Code Scanning Alerts
+      # - name: Upload SARIF to GitHub
+      #   uses: github/codeql-action/upload-sarif@v2
+      #   with:
+      #     sarif_file: ${{ steps.run-analysis.outputs.sarif }}
+      # Upload SARIF file as an Artifact to download and view
+      # - name: Upload SARIF as an Artifact
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     name: sarif-file
+      #     path: ${{ steps.run-analysis.outputs.sarif }}
