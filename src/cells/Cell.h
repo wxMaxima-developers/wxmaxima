@@ -171,7 +171,7 @@ public:
 
     Is used for displaying/printing/exporting of text/maths
   */
-  int Scale_Px(double px) const {return m_configuration->Scale_Px(px);}
+  wxCoord Scale_Px(double px) const {return m_configuration->Scale_Px(px);}
   /*! Scale font sizes and line widths according to the zoom factor.
 
     Is used for displaying/printing/exporting of text/maths
@@ -216,7 +216,7 @@ public:
   virtual ~Cell();
 
   //! How many cells does this cell contain?
-  int CellsInListRecursive() const;
+  unsigned long CellsInListRecursive() const;
   
   //! The part of the rectangle rect that is in the region that is currently drawn
   wxRect CropToUpdateRegion(wxRect rect) const;
@@ -333,7 +333,7 @@ public:
 
     This value is recalculated by Recalculate()
   */
-  int GetHeight() const
+  wxCoord GetHeight() const
     { return m_height; }
 
   /*! Get the width of this cell
@@ -367,7 +367,7 @@ public:
 
     This value is recalculated by Recalculate
   */
-  int GetDrop() const
+  wxCoord GetDrop() const
     { return m_height - m_center; }
 
   /*! 
@@ -382,7 +382,7 @@ public:
     For a fraction for example the center is exactly at the middle of the 
     horizontal line.
   */
-  int GetMaxDrop() const;
+  wxCoord GetMaxDrop() const;
 
   /*! Returns the maximum distance between top and center of this line
 
@@ -390,36 +390,36 @@ public:
     For a fraction for example the center is exactly at the middle of the 
     horizontal line.
   */
-  int GetCenterList() const;
+  wxCoord GetCenterList() const;
 
   /*! Returns the total height of this line
 
     Returns GetCenterList()+GetMaxDrop()
   */
-  int GetHeightList() const;
+  wxCoord GetHeightList() const;
 
   //! How many pixels is this list of cells wide, if we don't break it into lines?
-  int GetFullWidth() const;
+  wxCoord GetFullWidth() const;
 
   /*! How many pixels is the current line of this list of cells wide?
 
     This command returns the real line width when all line breaks are really performed. 
     See GetFullWidth().
   */
-  int GetLineWidth() const;
+  wxCoord GetLineWidth() const;
 
   /*! Get the x position of the top left of this cell
 
     See m_currentPoint for more details.
   */
-  int GetCurrentX() const
+  wxCoord GetCurrentX() const
     { return m_currentPoint.x; }
 
   /*! Get the y position of the top left of this cell
 
     See m_currentPoint for more details.
   */
-  int GetCurrentY() const
+  wxCoord GetCurrentY() const
     { return m_currentPoint.y; }
 
   /*! Get the smallest rectangle this cell fits in
@@ -953,20 +953,20 @@ protected:
 //**
 protected:
   //! The height of this cell.
-  int m_height = -1;
+  wxCoord m_height = -1;
   //! The width of this cell; is recalculated by RecalculateHeight.
-  int m_width = -1;
-  int m_center = -1;
+  wxCoord m_width = -1;
+  wxCoord m_center = -1;
 
 private:
   //! The width of the list starting with this cell.
-  CachedInteger<int> m_fullWidth;
+  CachedInteger<wxCoord> m_fullWidth;
   //! The width of the rest of the line this cell is part of.
-  CachedInteger<int> m_lineWidth;
+  CachedInteger<wxCoord> m_lineWidth;
   //! The position of the center of this line
-  CachedInteger<int> m_maxCenter;
+  CachedInteger<wxCoord> m_maxCenter;
   //! The height-center of this line 
-  CachedInteger<int> m_maxDrop;
+  CachedInteger<wxCoord> m_maxDrop;
 protected:
 //** 2-byte objects (2 bytes)
 //**

@@ -161,9 +161,9 @@ void Cell::ClearCacheList() {
     tmp.ClearCache();
 }
 
-int Cell::CellsInListRecursive() const {
+unsigned long Cell::CellsInListRecursive() const {
   //! The number of cells the current group contains (-1, if no GroupCell)
-  int cells = 0;
+  unsigned cells = 0;
 
   for (const Cell &tmp : OnList(this)) {
     ++cells;

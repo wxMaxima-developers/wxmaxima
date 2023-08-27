@@ -46,14 +46,14 @@ MatrCell::MatrCell(GroupCell *group, const MatrCell &cell)
   m_colNames = cell.m_colNames;
   m_matWidth = cell.m_matWidth;
   m_matHeight = cell.m_matHeight;
-  for (unsigned int i = 0; i < cell.m_matWidth * cell.m_matHeight; i++)
+  for (unsigned long i = 0; i < cell.m_matWidth * cell.m_matHeight; i++)
     if (i < cell.m_cells.size())
       m_cells.emplace_back(cell.m_cells[i]->CopyList(group));
 
-  for (unsigned int i = 0; i < m_matHeight; i++)
+  for (unsigned long i = 0; i < m_matHeight; i++)
     m_dropCenters.emplace_back(-1, -1);
 
-  for (unsigned int i = 0; i < m_matWidth; i++)
+  for (unsigned long i = 0; i < m_matWidth; i++)
     m_widths.emplace_back(-1);
 }
 
@@ -61,14 +61,14 @@ DEFINE_CELL(MatrCell)
 
 void MatrCell::Recalculate(AFontSize const fontsize) {
   AFontSize const fontsize_entry{MC_MIN_SIZE, fontsize - 2};
-  for (unsigned int i = 0; i < m_cells.size(); i++)
+  for (unsigned long i = 0; i < m_cells.size(); i++)
     m_cells[i]->RecalculateList(fontsize_entry);
 
   m_width = 0;
   m_widths.clear();
-  for (unsigned int i = 0; i < m_matWidth; i++) {
-    int width = 0;
-    for (unsigned int j = 0; j < m_matHeight; j++) {
+  for (unsigned long i = 0; i < m_matWidth; i++) {
+    long width = 0;
+    for (unsigned long j = 0; j < m_matHeight; j++) {
       if ((m_matWidth * j + i) < m_cells.size())
         width = wxMax(width, m_cells[m_matWidth * j + i]->GetFullWidth());
     }
@@ -80,9 +80,9 @@ void MatrCell::Recalculate(AFontSize const fontsize) {
 
   m_height = 0;
   m_dropCenters.clear();
-  for (unsigned int i = 0; i < m_matHeight; i++) {
-    int center = 0, drop = 0;
-    for (unsigned int j = 0; j < m_matWidth; j++)
+  for (unsigned long i = 0; i < m_matHeight; i++) {
+    long center = 0, drop = 0;
+    for (unsigned long j = 0; j < m_matWidth; j++)
       if (m_matWidth * i + j < m_cells.size()) {
         center = wxMax(center, m_cells[m_matWidth * i + j]->GetCenterList());
         drop = wxMax(drop, m_cells[m_matWidth * i + j]->GetMaxDrop());
@@ -104,9 +104,9 @@ void MatrCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
     wxPoint mp;
     mp.x = point.x + Scale_Px(5);
     mp.y = point.y - m_center;
-    for (unsigned int i = 0; i < m_matWidth; i++) {
+    for (unsigned long i = 0; i < m_matWidth; i++) {
       mp.y = point.y - m_center + Scale_Px(5);
-      for (unsigned int j = 0; j < m_matHeight; j++) {
+      for (unsigned long j = 0; j < m_matHeight; j++) {
         if ((j * m_matWidth + i) < m_cells.size()) {
           mp.y += m_dropCenters[j].center;
           wxPoint mp1(mp);
@@ -141,7 +141,7 @@ void MatrCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
       switch (m_parenType) {
       case paren_rounded: {
         SetPen(dc, 1);
-        int signWidth = Scale_Px(4);
+        wxCoord signWidth = Scale_Px(4);
         if (m_height <= signWidth / 3)
           signWidth = m_height / 3;
 
@@ -174,7 +174,7 @@ void MatrCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
       }
       case paren_angled: {
         SetPen(dc, 1);
-        int signWidth = Scale_Px(4);
+        wxCoord signWidth = Scale_Px(4);
         if (m_height <= signWidth / 3)
           signWidth = m_height / 3;
 
@@ -195,7 +195,7 @@ void MatrCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
       }
       case paren_straight: {
         SetPen(dc, 1);
-        int signWidth = Scale_Px(4);
+        wxCoord signWidth = Scale_Px(4);
         if (m_height <= signWidth / 3)
           signWidth = m_height / 3;
 
@@ -241,9 +241,9 @@ void MatrCell::AddNewCell(std::unique_ptr<Cell> &&cell) {
 
 wxString MatrCell::ToString() const {
   wxString s = wxS("matrix(\n");
-  for (unsigned int i = 0; i < m_matHeight; i++) {
+  for (unsigned long i = 0; i < m_matHeight; i++) {
     s += wxS("\t\t[");
-    for (unsigned int j = 0; j < m_matWidth; j++) {
+    for (unsigned long j = 0; j < m_matWidth; j++) {
       s += m_cells[i * m_matWidth + j]->ListToString();
       if (j < m_matWidth - 1)
         s += wxS(",\t");
@@ -262,8 +262,8 @@ wxString MatrCell::ToMatlab() const {
   wxString s;
 
   s = wxS("[");
-  for (unsigned int i = 0; i < m_matHeight; i++) {
-    for (unsigned int j = 0; j < m_matWidth; j++) {
+  for (unsigned long i = 0; i < m_matHeight; i++) {
+    for (unsigned long j = 0; j < m_matWidth; j++) {
       s += m_cells[i * m_matWidth + j]->ListToMatlab();
       if (j < m_matWidth - 1)
         s += wxS(", ");
@@ -294,12 +294,12 @@ wxString MatrCell::ToTeX() const {
     }
   } else {
     s = wxS("\\begin{array}{");
-    for (unsigned int j = 0; j < m_matWidth; j++)
+    for (unsigned long j = 0; j < m_matWidth; j++)
       s += wxS("c");
     s += wxS("}");
   }
-  for (unsigned int i = 0; i < m_matHeight; i++) {
-    for (unsigned int j = 0; j < m_matWidth; j++) {
+  for (unsigned long i = 0; i < m_matHeight; i++) {
+    for (unsigned long j = 0; j < m_matWidth; j++) {
       s += m_cells[i * m_matWidth + j]->ListToTeX();
       if (j < m_matWidth - 1)
         s += wxS(" & ");
@@ -329,9 +329,9 @@ wxString MatrCell::ToMathML() const {
     retval = wxS("<mrow><mo>(</mo><mrow>");
   retval += wxS("<mtable>");
 
-  for (unsigned int i = 0; i < m_matHeight; i++) {
+  for (unsigned long i = 0; i < m_matHeight; i++) {
     retval += wxS("<mtr>");
-    for (unsigned int j = 0; j < m_matWidth; j++)
+    for (unsigned long j = 0; j < m_matWidth; j++)
       retval += wxS("<mtd>") + m_cells[i * m_matWidth + j]->ListToMathML() +
 	wxS("</mtd>");
     retval += wxS("</mtr>");
@@ -369,9 +369,9 @@ wxString MatrCell::ToOMML() const {
 
   retval += wxS("<m:e><m:m>");
 
-  for (unsigned int i = 0; i < m_matHeight; i++) {
+  for (unsigned long i = 0; i < m_matHeight; i++) {
     retval += wxS("<m:mr>");
-    for (unsigned int j = 0; j < m_matWidth; j++)
+    for (unsigned long j = 0; j < m_matWidth; j++)
       retval += wxS("<m:e>") + m_cells[i * m_matWidth + j]->ListToOMML() +
 	wxS("</m:e>");
     retval += wxS("</m:mr>");
@@ -412,9 +412,9 @@ wxString MatrCell::ToXML() const {
   else
     s = wxS("<tb") + flags + wxS(">");
 
-  for (unsigned int i = 0; i < m_matHeight; i++) {
+  for (unsigned long i = 0; i < m_matHeight; i++) {
     s += wxS("<mtr>");
-    for (unsigned int j = 0; j < m_matWidth; j++)
+    for (unsigned long j = 0; j < m_matWidth; j++)
       s += wxS("<mtd>") + m_cells[i * m_matWidth + j]->ListToXML() +
 	wxS("</mtd>");
     s += wxS("</mtr>");

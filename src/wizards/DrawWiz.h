@@ -53,9 +53,9 @@ private:
   BTextCtrl *m_x;
   BTextCtrl *m_xStart;
   BTextCtrl *m_xEnd;
-  BTextCtrl *m_y;
-  BTextCtrl *m_yStart;
-  BTextCtrl *m_yEnd;
+  BTextCtrl *m_y = NULL;
+  BTextCtrl *m_yStart = NULL;
+  BTextCtrl *m_yEnd = NULL;
 };
 
 //! A wizard for parametric plots using draw
@@ -69,9 +69,9 @@ private:
   int m_dimensions;
   BTextCtrl *m_expression_x;
   BTextCtrl *m_expression_y;
-  BTextCtrl *m_expression_z;
+  BTextCtrl *m_expression_z = NULL;
   BTextCtrl *m_parameter;
-  BTextCtrl *m_parameterStart;
+  BTextCtrl *m_parameterStart = NULL;
   BTextCtrl *m_parameterEnd;
 };
 
@@ -91,9 +91,9 @@ private:
   BTextCtrl *m_y;
   BTextCtrl *m_yStart;
   BTextCtrl *m_yEnd;
-  BTextCtrl *m_z;
-  BTextCtrl *m_zStart;
-  BTextCtrl *m_zEnd;
+  BTextCtrl *m_z = NULL;
+  BTextCtrl *m_zStart = NULL;
+  BTextCtrl *m_zEnd = NULL;
 };
 
 //! A wizard for axis setup for draw
@@ -111,17 +111,17 @@ private:
   BTextCtrl *m_yLabel;
   BTextCtrl *m_yStart;
   BTextCtrl *m_yEnd;
-  BTextCtrl *m_zLabel;
-  BTextCtrl *m_zStart;
-  BTextCtrl *m_zEnd;
+  BTextCtrl *m_zLabel = NULL;
+  BTextCtrl *m_zStart = NULL;
+  BTextCtrl *m_zEnd = NULL;
   wxCheckBox *m_useSecondaryX;
   wxCheckBox *m_useSecondaryY;
-  BTextCtrl *m_x2Label;
-  BTextCtrl *m_x2Start;
-  BTextCtrl *m_x2End;
-  BTextCtrl *m_y2Label;
-  BTextCtrl *m_y2Start;
-  BTextCtrl *m_y2End;
+  BTextCtrl *m_x2Label = NULL;
+  BTextCtrl *m_x2Start = NULL;
+  BTextCtrl *m_x2End = NULL;
+  BTextCtrl *m_y2Label = NULL;
+  BTextCtrl *m_y2Start = NULL;
+  BTextCtrl *m_y2End = NULL;
 };
 
 
@@ -202,15 +202,15 @@ private:
   int m_dimensions;
   BTextCtrl *m_nticks;  
   BTextCtrl *m_adapt_depth;  
-  BTextCtrl *m_xu_grid;  
-  BTextCtrl *m_yv_grid;
+  BTextCtrl *m_xu_grid  = NULL;  
+  BTextCtrl *m_yv_grid  = NULL;
   BTextCtrl *m_ip_grid_x;
   BTextCtrl *m_ip_grid_y;
-  BTextCtrl *m_ip_grid_in_x;
-  BTextCtrl *m_ip_grid_in_y;
+  BTextCtrl *m_ip_grid_in_x = NULL;
+  BTextCtrl *m_ip_grid_in_y = NULL;
   BTextCtrl *m_x_voxel;
-  BTextCtrl *m_y_voxel;
-  BTextCtrl *m_z_voxel;
+  BTextCtrl *m_y_voxel = NULL;
+  BTextCtrl *m_z_voxel = NULL;
 };
 
 #endif // DRAWWIZ_H

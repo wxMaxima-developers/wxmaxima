@@ -129,6 +129,7 @@ set(SOURCE_FILES
     MaximaTokenizer.cpp
     MaxSizeChooser.cpp
     MaximaManual.cpp
+    nanoSVG.cpp
     Notification.cpp
     RecentDocuments.cpp
     RegexCtrl.cpp

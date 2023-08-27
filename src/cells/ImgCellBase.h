@@ -89,10 +89,10 @@ public:
   //! Returns the file name extension that matches the image type
   virtual wxString GetExtension() const = 0;
   
-  virtual double GetMaxWidth() const = 0;
-  virtual double GetHeightList() const = 0;
-  virtual void SetMaxWidth(double width) = 0;
-  virtual void SetMaxHeight(double height) = 0;
+  virtual wxCoord GetMaxWidth() const = 0;
+  virtual wxCoord GetHeightList() const = 0;
+  virtual void SetMaxWidth(wxCoord width) = 0;
+  virtual void SetMaxHeight(wxCoord height) = 0;
 
   virtual void Recalculate(AFontSize fontsize) override = 0;
 

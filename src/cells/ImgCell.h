@@ -120,10 +120,10 @@ public:
   //! Returns the original compressed version of the image
   wxMemoryBuffer GetCompressedImage() const { return m_image->m_compressedImage; }
 
-  double GetMaxWidth() const override { return m_image ? m_image->GetMaxWidth() : -1; }
-  double GetHeightList() const override { return m_image ? m_image->GetHeightList() : -1; }
-  void SetMaxWidth(double width) override { if (m_image) m_image->SetMaxWidth(width); }
-  void SetMaxHeight(double height) override { if (m_image) m_image->SetMaxHeight(height); }
+  wxCoord GetMaxWidth() const override { return m_image ? m_image->GetMaxWidth() : -1; }
+  wxCoord GetHeightList() const override { return m_image ? m_image->GetHeightList() : -1; }
+  void SetMaxWidth(wxCoord width) override { if (m_image) m_image->SetMaxWidth(width); }
+  void SetMaxHeight(wxCoord height) override { if (m_image) m_image->SetMaxHeight(height); }
 
   void Recalculate(AFontSize fontsize) override;
 

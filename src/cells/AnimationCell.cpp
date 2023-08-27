@@ -233,26 +233,26 @@ void AnimationCell::SetDisplayedIndex(int ind) {
     m_displayed = 0;
 }
 
-double AnimationCell::GetMaxWidth() const {
+wxCoord AnimationCell::GetMaxWidth() const {
   if (!IsOk())
     return -1;
   else
     return m_images[m_displayed]->GetMaxWidth();
 }
 
-double AnimationCell::GetHeightList() const {
+wxCoord AnimationCell::GetHeightList() const {
   if (!IsOk())
     return -1;
   else
     return m_images[m_displayed]->GetHeightList();
 }
 
-void AnimationCell::SetMaxWidth(double width) {
+void AnimationCell::SetMaxWidth(wxCoord width) {
   for (const auto &i: m_images)
     (*i).SetMaxWidth(width);
 }
 
-void AnimationCell::SetMaxHeight(double height) {
+void AnimationCell::SetMaxHeight(wxCoord height) {
   for (const auto &i: m_images)
     (*i).SetMaxHeight(height);
 }

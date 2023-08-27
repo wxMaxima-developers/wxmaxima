@@ -92,8 +92,9 @@ bool OutCommon::PrepareLayout(Cell *tree) {
 
   tree->FontsChangedList();
   tree->ResetSize();
-  m_thisconfig.SetRecalcContext(*m_recalculationDc);
-
+  if(m_recalculationDc)
+    m_thisconfig.SetRecalcContext(*m_recalculationDc);
+  
   if (tree->GetType() != MC_TYPE_GROUP) {
     Recalculate(tree);
     BreakUpCells(tree);
