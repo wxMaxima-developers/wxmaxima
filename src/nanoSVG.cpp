@@ -29,25 +29,10 @@
    make the implementation visible to the compiler. That might be here -
    or in wxWidgets. In the latter case this file isn't added by cmake to
    the list of files to compile.
-
-   This seems not to work on MinGW => on MinGW the preprocessor decides
-   if to instantiate nanoSVG.
 */
-
-#ifndef __MINGW32__
 #include <stdio.h>
 #define NANOSVG_IMPLEMENTATION
 #define NANOSVGRAST_IMPLEMENTATION
 #define NANOSVG_ALL_COLOR_KEYWORDS
 #include "nanoSVG/nanosvg.h"
 #include "nanoSVG/nanosvgrast.h"
-#else
-#if (wxCHECK_VERSION(3, 1, 6))
-#else
-#include <stdio.h>
-#define NANOSVG_IMPLEMENTATION
-#define NANOSVGRAST_IMPLEMENTATION
-#define NANOSVG_ALL_COLOR_KEYWORDS
-#include "nanoSVG/nanosvg.h"
-#include "nanoSVG/nanosvgrast.h"
-#endif
