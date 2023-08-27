@@ -129,7 +129,6 @@ set(SOURCE_FILES
     MaximaTokenizer.cpp
     MaxSizeChooser.cpp
     MaximaManual.cpp
-    nanoSVG.cpp
     Notification.cpp
     RecentDocuments.cpp
     RegexCtrl.cpp
@@ -158,6 +157,14 @@ set(SOURCE_FILES
     wxMaximaFrame.cpp
     wxMaximaIcon.cpp
 )
+
+try_compile(NANOSVG_NEEDED ${CMAKE_BINARY_DIR}/compile_test ${CMAKE_CURRENT_SOURCE_DIR}/nanoSVG.cpp
+			   LINK_LIBRARIES ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
+
+if(NANOSVG_NEEDED)
+	list(APPEND SOURCE_FILES nanoSVG.cpp)
+endif()
+
 
 if(NOT CYGWIN)
     list(APPEND SOURCE_FILES ${CMAKE_CURRENT_BINARY_DIR}/wxmaxima.rc)
@@ -300,6 +307,10 @@ else()
 endif()
 
 target_link_libraries(wxmaxima ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
+
+if(COMPILE_SUCCEEDED)
+  message("Success!")
+endif()
 
 if(WIN32)
     target_link_libraries(wxmaxima ws2_32)

@@ -28,31 +28,11 @@
 
 /* The nanosvg .h files contain both the header and the implementation.
    In exactly one file of the project need to be defined in order to
-   make the implementation visible to the compiler.
-
-   In wxWidgets >3.1.6 this is done in wxWidgets itself so we need to
-   skip that step there.
-
-   So that should work. But for Linux builds with 3.1.6 I get linking errors,
-   e.g.: undefined reference to `nsvgRasterize' Therefore do not define
-   NANOSVG_IMPLEMENTATION/NANOSVGRAST_IMPLEMENTATION only for Windows. That is
-   probably not correct (a FIXME), but I have no idea, why Linux still requires
-   that NANOSVG_IMPLEMENTATION/NANOSVGRAST_IMPLEMENTATION is defined.
+   make the implementation visible to the compiler. That might be here -
+   or in wxWidgets
 */
-#if (wxCHECK_VERSION(3, 1, 6)) && (defined(__WINDOWS__))
-#ifdef _MSC_VER
-#if _MSC_VER < 1700
 #define NANOSVG_IMPLEMENTATION
 #define NANOSVGRAST_IMPLEMENTATION
 #define NANOSVG_ALL_COLOR_KEYWORDS
 #include "nanoSVG/nanosvg.h"
 #include "nanoSVG/nanosvgrast.h"
-#endif
-#endif
-#else
-#define NANOSVG_IMPLEMENTATION
-#define NANOSVGRAST_IMPLEMENTATION
-#define NANOSVG_ALL_COLOR_KEYWORDS
-#include "nanoSVG/nanosvg.h"
-#include "nanoSVG/nanosvgrast.h"
-#endif
