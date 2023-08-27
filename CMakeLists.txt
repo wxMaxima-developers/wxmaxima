@@ -119,6 +119,9 @@ endif()
 
 include(GNUInstallDirs)
 
+message(STATUS "CMake version:                      ${CMAKE_VERSION}")
+message(STATUS "CMake config:                       ${CONFIG}")
+message(STATUS "wxWidgets config:                   ${wxWidgets_CONFIGURATION}")
 message(STATUS "Looking for wxWidgets in:           ${wxWidgets_ROOT_DIR}")
 message(STATUS "Looking for wxWidgets libraries in: ${wxWidgets_LIB_DIR}")
 

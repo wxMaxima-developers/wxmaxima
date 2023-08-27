@@ -8,18 +8,17 @@
 
 name: Microsoft C++ Code Analysis
 
-on: [push]
-#on:
-#  push:
-#    branches: [ "main" ]
-#  pull_request:
-#    branches: [ "main" ]
-#  schedule:
-#    - cron: '43 4 * * 6'
+on:
+ push:
+   branches: [ "main" ]
+ pull_request:
+   branches: [ "main" ]
+ schedule:
+   - cron: '43 4 * * 6'
 
 env:
   build: '${{ github.workspace }}/build'
-  config: debug
+  config: Debug
   WXVERSION: 3.2.2.1
 
 permissions:
@@ -67,20 +66,20 @@ jobs:
              cd build
              cmake --build .
              cd ..
-      # - name: Initialize MSVC Code Analysis
-      #   uses: microsoft/msvc-code-analysis-action@v0.1.1
-      #   # Provide a unique ID to access the sarif output path
-      #   id: run-analysis
-      #   with:
-      #     cmakeBuildDirectory: ${{ env.build }}
-      #     buildConfiguration: ${{ env.config }}
-      #     # Ruleset file that will determine what checks will be run
-      #     ruleset: NativeRecommendedRules.ruleset
-      # # Upload SARIF file to GitHub Code Scanning Alerts
-      # - name: Upload SARIF to GitHub
-      #   uses: github/codeql-action/upload-sarif@v2
-      #   with:
-      #     sarif_file: ${{ steps.run-analysis.outputs.sarif }}
+      - name: Initialize MSVC Code Analysis
+        uses: microsoft/msvc-code-analysis-action@v0.1.1
+        # Provide a unique ID to access the sarif output path
+        id: run-analysis
+        with:
+          cmakeBuildDirectory: ${{ env.build }}
+          buildConfiguration: ${{ env.config }}
+          # Ruleset file that will determine what checks will be run
+          ruleset: NativeRecommendedRules.ruleset
+      # Upload SARIF file to GitHub Code Scanning Alerts
+      - name: Upload SARIF to GitHub
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: ${{ steps.run-analysis.outputs.sarif }}
       # Upload SARIF file as an Artifact to download and view
       # - name: Upload SARIF as an Artifact
       #   uses: actions/upload-artifact@v3

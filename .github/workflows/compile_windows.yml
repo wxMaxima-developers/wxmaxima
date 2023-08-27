@@ -11,6 +11,7 @@ permissions:
 
 jobs:
   compile_windows:
+    name: Compile using minGW
     permissions:
       contents: write  # for actions/create-release to create a release
     runs-on: windows-latest
@@ -87,3 +88,44 @@ jobs:
             cpack
             cd ..
             cd ..
+
+  MSVC:
+    permissions:
+      contents: read # for actions/checkout to fetch code
+      actions: read # only required for a private repository by github/codeql-action/upload-sarif to get the Action run status
+    name: Compile using MSVC
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Cache wxWidgets
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-wxWidgets
+        with:
+          path: wxwidgets-source
+          key: ${{ runner.os }}-build-msvc-${{ env.cache-name }}-${env:WXVERSION}-0
+      - name: wxWidgets
+        run: |
+             if (Test-Path wxwidgets-source) { echo "wxWidgets already present"} else {
+                 echo "Downloading wxWidgets"
+                 curl "https://github.com/wxWidgets/wxWidgets/releases/download/v${env:WXVERSION}/wxWidgets-${env:WXVERSION}.7z" -L --output wxWidgets.7z
+                 echo "Unpacking wxWidgets sources"
+                 7z x "wxWidgets.7z" "-owxwidgets-source" -y
+                 echo "Building wxWidgets from sources"
+                 cd "wxwidgets-source"
+                 cmake "." -DwxUSE_WEBVIEW_EDGE=true
+                 cmake --build .
+                 cd .. }
+      - name: Configure wxMaxima
+        run: |
+             mkdir build
+             cd build
+             cmake -DwxWidgets_ROOT_DIR="../wxwidgets-source" -DwxWidgets_LIB_DIR="../wxwidgets-source/lib/vc_x64_dll" -DwxWidgets_CONFIGURATION="mswud" -DCMAKE_BUILD_TYPE=${{ env.config}} ..
+             cd ..
+      - name: Compile wxMaxima
+        run: |
+             cd build
+             cmake --build .
+             cd ..
