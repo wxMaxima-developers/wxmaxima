@@ -54,9 +54,9 @@
 
 */
 #if (wxCHECK_VERSION(3, 1, 6)) && defined(__WINDOWS__)
-#if (wxCHECK_VERSION(3, 2, 0))
 #define NANOSVG_IMPLEMENTATION
 #define NANOSVGRAST_IMPLEMENTATION
+#if (wxCHECK_VERSION(3, 2, 2))
 #endif
 #else
 #define NANOSVG_IMPLEMENTATION

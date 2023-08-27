@@ -60,7 +60,7 @@ jobs:
         run: |
              mkdir build
              cd build
-             cmake -DwxWidgets_ROOT_DIR="../wxwidgets-source" -DwxWidgets_LIB_DIR="../wxwidgets-source/lib/vc_x64_dll" -DwxWidgets_CONFIGURATION="mswud" -DWXM_DISABLE_WEBVIEW=ON -DCMAKE_BUILD_TYPE=${env:config} ..
+             cmake -DwxWidgets_ROOT_DIR="../wxwidgets-source" -DwxWidgets_LIB_DIR="../wxwidgets-source/lib/vc_x64_dll" -DwxWidgets_CONFIGURATION="mswud" -DCMAKE_BUILD_TYPE=${{ env.config}} ..
              cd ..
       - name: Compile wxMaxima
         run: |
