@@ -27,6 +27,11 @@
   wxMaxima sources.
 */
 
+/*
+
+  27.8.2023:
+
+  Appveyor 
 #include <stdio.h>
 #define NANOSVG_IMPLEMENTATION
 #define NANOSVGRAST_IMPLEMENTATION
