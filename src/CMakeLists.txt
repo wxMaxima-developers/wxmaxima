@@ -162,10 +162,10 @@ try_compile(NANOSVG_NEEDED SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/nanoSVGTest.cpp
 			   LINK_LIBRARIES ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
 
 if(NANOSVG_NEEDED)
-	message(STATUS "nanoSVG is provided by wxWidgets")
-else()
 	message(STATUS "nanoSVG isn't provided by wxWidgets")
 	list(APPEND SOURCE_FILES nanoSVG.cpp)
+else()
+	message(STATUS "nanoSVG is provided by wxWidgets")
 endif()
 
 
