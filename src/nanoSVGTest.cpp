@@ -27,7 +27,13 @@
   wxMaxima sources.
 */
 
-#include "nanoSVG.cpp"
+#include <stdio.h>
+#define NANOSVG_IMPLEMENTATION
+#define NANOSVGRAST_IMPLEMENTATION
+#define NANOSVG_ALL_COLOR_KEYWORDS
+#include "nanoSVG/nanosvg.h"
+#include "nanoSVG/nanosvgrast.h"
+
 int main(int argc, char* argv[]) {
 	return 0;
 }
