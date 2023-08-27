@@ -1,7 +1,7 @@
 var searchData=
 [
   ['cachedinteger_92',['CachedInteger',['../classCachedInteger.html',1,'']]],
-  ['cachedinteger_3c_20int_20_3e_93',['CachedInteger&lt; int &gt;',['../classCachedInteger.html',1,'']]],
+  ['cachedinteger_3c_20wxcoord_20_3e_93',['CachedInteger&lt; wxCoord &gt;',['../classCachedInteger.html',1,'']]],
   ['cachedvalue_2eh_94',['CachedValue.h',['../CachedValue_8h.html',1,'']]],
   ['calculusmenu_95',['CalculusMenu',['../classwxMaxima.html#afc9e0062e3e22a0740c73300632adfee',1,'wxMaxima']]],
   ['call_5fmember_5ffn_96',['CALL_MEMBER_FN',['../wxMaxima_8cpp.html#a9c75e3ed4f289dca9f75ac0cd3b8ac7e',1,'CALL_MEMBER_FN():&#160;wxMaxima.cpp'],['../MathParser_8cpp.html#a9c75e3ed4f289dca9f75ac0cd3b8ac7e',1,'CALL_MEMBER_FN():&#160;MathParser.cpp']]],
@@ -56,7 +56,7 @@ var searchData=
   ['cellptr_5flog_5fmethod_145',['CELLPTR_LOG_METHOD',['../CellPtr_8h.html#aaa6993ecc680d67f9e0ee559619435aa',1,'CellPtr.h']]],
   ['cellptr_5flog_5frefs_146',['CELLPTR_LOG_REFS',['../CellPtr_8h.html#afd4b81fe3c987bede1e8d45f121fcddc',1,'CellPtr.h']]],
   ['cellptrbase_147',['CellPtrBase',['../classCellPtrBase.html',1,'']]],
-  ['cellsinlistrecursive_148',['CellsInListRecursive',['../classCell.html#a0e9021991a8f98811b477a2398ae05a7',1,'Cell']]],
+  ['cellsinlistrecursive_148',['CellsInListRecursive',['../classCell.html#a5cf56227ab908a76e812c0bd29df39ad',1,'Cell']]],
   ['celltype_149',['CellType',['../Cell_8h.html#accb32ccb3ff8f2c6736a6ebe544894fd',1,'Cell.h']]],
   ['celltypeinfo_150',['CellTypeInfo',['../classCellTypeInfo.html',1,'']]],
   ['cellunderpointer_151',['CellUnderPointer',['../classGroupCell.html#a1782eed25a1f0c2bd91f11f1c3f67311',1,'GroupCell']]],
