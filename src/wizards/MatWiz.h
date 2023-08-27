@@ -45,7 +45,7 @@ public:
   MatWiz(wxWindow *parent, int id,
          Configuration *cfg,
          const wxString &title,
-         int type, int h, int w,
+         int type, long h, long w,
          const wxPoint &pos = wxDefaultPosition,
          const wxSize &size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE);
 

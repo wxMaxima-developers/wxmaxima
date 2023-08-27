@@ -23,14 +23,14 @@
 #include "MatWiz.h"
 
 MatWiz::MatWiz(wxWindow *parent, int id, Configuration *cfg,
-               const wxString &title, int type, int h, int w,
+               const wxString &title, int type, long h, long w,
                const wxPoint &pos, const wxSize &size, long style)
   : wxDialog(parent, id, title, pos, size, style) {
   m_height = h;
   m_width = w;
   m_matrixType = type;
-  int width = 50 > 400 / m_width ? 50 : 400 / m_width;
-  for (int i = 0; i < h * w; i++) {
+  long width = 50 > 400 / m_width ? 50 : 400 / m_width;
+  for (long i = 0; i < h * w; i++) {
     m_inputs.push_back(new BTextCtrl(this, -1, cfg, wxS("0"), wxDefaultPosition,
                                      wxSize(width, -1)));
   }
@@ -51,20 +51,20 @@ void MatWiz::set_properties() {
   button_1->SetDefault();
 
   if (m_matrixType == MATRIX_ANTISYMMETRIC) {
-    for (int i = 0; i < m_height; i++)
-      for (int j = 0; j <= i; j++) {
+    for (long i = 0; i < m_height; i++)
+      for (long j = 0; j <= i; j++) {
         m_inputs[i * m_width + j]->SetValue(wxEmptyString);
         m_inputs[i * m_width + j]->Enable(false);
       }
   } else if (m_matrixType == MATRIX_SYMMETRIC) {
-    for (int i = 0; i < m_height; i++)
-      for (int j = 0; j < i; j++) {
+    for (long i = 0; i < m_height; i++)
+      for (long j = 0; j < i; j++) {
         m_inputs[i * m_width + j]->SetValue(wxEmptyString);
         m_inputs[i * m_width + j]->Enable(false);
       }
   } else if (m_matrixType == MATRIX_DIAGONAL) {
-    for (int i = 0; i < m_height; i++)
-      for (int j = 0; j < m_width; j++)
+    for (long i = 0; i < m_height; i++)
+      for (long j = 0; j < m_width; j++)
         if (i != j) {
           m_inputs[i * m_width + j]->SetValue(wxEmptyString);
           m_inputs[i * m_width + j]->Enable(false);
@@ -87,13 +87,13 @@ void MatWiz::do_layout() {
   wxBoxSizer *sizer_1 = new wxBoxSizer(wxHORIZONTAL);
   wxStaticText *text;
   grid_sizer_2->Add(20, 20, 0, 0);
-  for (int i = 1; i <= m_width; i++) {
+  for (long i = 1; i <= m_width; i++) {
     text = new wxStaticText(this, -1, wxString::Format(wxS("%d"), i),
                             wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE);
     grid_sizer_2->Add(text, 0,
                       wxALIGN_CENTER_HORIZONTAL | wxALIGN_CENTER_VERTICAL, 0);
   }
-  for (int j = 0; j < m_height; j++) {
+  for (long j = 0; j < m_height; j++) {
     text = new wxStaticText(this, -1, wxString::Format(wxS("%d"), j + 1),
                             wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE);
     grid_sizer_2->Add(text, 0,
@@ -116,9 +116,9 @@ void MatWiz::do_layout() {
 
 wxString MatWiz::GetValue() {
   wxString cmd = wxS("matrix(");
-  for (int i = 0; i < m_height; i++) {
+  for (long i = 0; i < m_height; i++) {
     cmd += wxS("\n [");
-    for (int j = 0; j < m_width; j++) {
+    for (long j = 0; j < m_width; j++) {
       if (m_matrixType == MATRIX_SYMMETRIC && i > j)
         cmd += m_inputs[j * m_width + i]->GetValue();
       else if (m_matrixType == MATRIX_ANTISYMMETRIC && i > j)

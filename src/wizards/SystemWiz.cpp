@@ -63,7 +63,7 @@ void SysWiz::do_layout() {
   wxFlexGridSizer *grid_sizer_2 = new wxFlexGridSizer(m_size + 1, 2, 0, 0);
   wxBoxSizer *sizer_1 = new wxBoxSizer(wxHORIZONTAL);
   wxStaticText *text;
-  for (int i = 1; i <= m_size; i++) {
+  for (long i = 1; i <= m_size; i++) {
     text = new wxStaticText(this, -1, wxString::Format(_("Equation %d:"), i));
     grid_sizer_2->Add(text, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL,
                       5);
