@@ -21,18 +21,13 @@
 //  SPDX-License-Identifier: GPL-2.0+
 
 /*! \file
-  This file instantiates nanoSVG.
+  This C++ project instantiates nanoSVG. If it is linked with wxWidgets
+  and wxWidgets provides nanoSVG it fails to build with a linker error.
+  CMake tests for that before deciding if to include nanoSVG.cpp in the
+  wxMaxima sources.
 */
 
-/* The nanosvg .h files contain both the header and the implementation.
-   In exactly one file of the project need to be defined in order to
-   make the implementation visible to the compiler. That might be here -
-   or in wxWidgets. In the latter case this file isn't added by cmake to
-   the list of files to compile.
-*/
-#include <stdio.h>
-#define NANOSVG_IMPLEMENTATION
-#define NANOSVGRAST_IMPLEMENTATION
-#define NANOSVG_ALL_COLOR_KEYWORDS
-#include "nanoSVG/nanosvg.h"
-#include "nanoSVG/nanosvgrast.h"
+#include "nanoSVG.cpp"
+int main(int argc, char* argv[]) {
+	return 0;
+}
