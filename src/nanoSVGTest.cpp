@@ -30,18 +30,21 @@
 /*
 
   27.8.2023:
-
-  Appveyor 
+  Local Ubuntu: 
+  Appveyor
+*/
 #include <stdio.h>
 #define NANOSVG_IMPLEMENTATION
 #define NANOSVGRAST_IMPLEMENTATION
 #define NANOSVG_ALL_COLOR_KEYWORDS
 #include "nanoSVG/nanosvg.h"
-#include "nanoSVG/nanosvgrast.h"int main(int argc, char* argv[]) {
+#include "nanoSVG/nanosvgrast.h"
+
+int main(int argc, char* argv[]) {
 	return 0;
 }
 
-#ifdef __MINGW32__
-#error On MinGW the test if we need nanoSVG fails
-#endif
+//#ifdef __MINGW32__
+//#error On MinGW the test if we need nanoSVG fails
+//#endif
 
