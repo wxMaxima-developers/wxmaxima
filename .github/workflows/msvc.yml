@@ -19,6 +19,7 @@ on: [push]
 
 env:
   build: '${{ github.workspace }}/build'
+  config: debug
   WXVERSION: 3.2.2.1
 
 permissions:
@@ -41,7 +42,7 @@ jobs:
         env:
           cache-name: cache-wxWidgets
         with:
-          path: wxWidgets-${{env.WXVERSION}}
+          path: wxwidgets-source
           key: ${{ runner.os }}-build-msvc-${{ env.cache-name }}-0
       - name: wxWidgets
         run: |
