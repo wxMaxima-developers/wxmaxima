@@ -73,6 +73,7 @@ jobs:
         id: run-analysis
         with:
           cmakeBuildDirectory: ${{ env.build }}
+          buildConfiguration: ${{ env.config }}
           # Ruleset file that will determine what checks will be run
           ruleset: NativeRecommendedRules.ruleset
       # Upload SARIF file to GitHub Code Scanning Alerts
