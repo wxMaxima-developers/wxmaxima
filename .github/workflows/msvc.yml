@@ -43,7 +43,7 @@ jobs:
           cache-name: cache-wxWidgets
         with:
           path: wxwidgets-source
-          key: ${{ runner.os }}-build-msvc-${{ env.cache-name }}-0
+          key: ${{ runner.os }}-build-msvc-${{ env.cache-name }}-${env:WXVERSION}-0
       - name: wxWidgets
         run: |
              if (Test-Path wxwidgets-source) { echo "wxWidgets already present"} else {
@@ -53,14 +53,14 @@ jobs:
                  7z x "wxWidgets.7z" "-owxwidgets-source" -y
                  echo "Building wxWidgets from sources"
                  cd "wxwidgets-source"
-                 cmake "."
+                 cmake "." -DwxUSE_WEBVIEW_EDGE=true
                  cmake --build .
                  cd .. }
       - name: Configure wxMaxima
         run: |
              mkdir build
              cd build
-             cmake -DwxWidgets_ROOT_DIR="../wxwidgets-source" -DwxWidgets_LIB_DIR="../wxwidgets-source/lib/vc_x64_dll" -DwxWidgets_CONFIGURATION="mswud" -DWXM_DISABLE_WEBVIEW=ON -DCMAKE_BUILD_TYPE=debug ..
+             cmake -DwxWidgets_ROOT_DIR="../wxwidgets-source" -DwxWidgets_LIB_DIR="../wxwidgets-source/lib/vc_x64_dll" -DwxWidgets_CONFIGURATION="mswud" -DWXM_DISABLE_WEBVIEW=ON -DCMAKE_BUILD_TYPE=${env:config} ..
              cd ..
       - name: Compile wxMaxima
         run: |
