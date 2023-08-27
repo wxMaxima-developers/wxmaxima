@@ -54,8 +54,10 @@
 
 */
 #if (wxCHECK_VERSION(3, 1, 6)) && defined(__WINDOWS__)
+#ifndef _MSVC_LANG
 #define NANOSVG_IMPLEMENTATION
 #define NANOSVGRAST_IMPLEMENTATION
+#endif
 #if (wxCHECK_VERSION(3, 2, 2))
 #endif
 #else
