@@ -27,7 +27,16 @@
   wxMaxima sources.
 */
 
-#include "nanoSVG.cpp"
-int main(int argc, char* argv[]) {
+#include <stdio.h>
+#define NANOSVG_IMPLEMENTATION
+#define NANOSVGRAST_IMPLEMENTATION
+#define NANOSVG_ALL_COLOR_KEYWORDS
+#include "nanoSVG/nanosvg.h"
+#include "nanoSVG/nanosvgrast.h"int main(int argc, char* argv[]) {
 	return 0;
 }
+
+#ifdef __MINGW32__
+#error On MinGW the test if we need nanoSVG fails
+#endif
+
