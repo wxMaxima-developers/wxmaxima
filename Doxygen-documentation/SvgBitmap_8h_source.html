@@ -96,8 +96,8 @@ $(function() {
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &lt;memory&gt;</span></div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#include &quot;precomp.h&quot;</span></div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#include &lt;wx/bitmap.h&gt;</span></div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#include &quot;nanoSVG/nanosvg.h&quot;</span></div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#include &quot;nanoSVG/nanosvgrast.h&quot;</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#include &quot;nanosvg_private.h&quot;</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#include &quot;nanosvgrast_private.h&quot;</span></div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="Cell_8h.html">Cell.h</a>&quot;</span></div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">#define NANOSVG_ALL_COLOR_KEYWORDS</span></div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160; </div>
@@ -116,8 +116,8 @@ $(function() {
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="keyword">    </span>{ <span class="keywordflow">return</span> m_svgImage ? wxSize(m_svgImage-&gt;width, m_svgImage-&gt;height) : wxDefaultSize; }</div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;  wxBitmap <a class="code" href="classSvgBitmap.html#a3cb094555331124576038b9300fd9631">GetInvalidBitmap</a>(<span class="keywordtype">int</span> targetSize);</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  <span class="keyword">static</span> <span class="keyword">struct </span>NSVGrasterizer* m_svgRast;</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  std::unique_ptr&lt;<a class="code" href="structNSVGimage.html">NSVGimage</a>, decltype(std::free)*&gt; m_svgImage{<span class="keyword">nullptr</span>, std::free};</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  <span class="keyword">static</span> <span class="keyword">struct </span>wxm_NSVGrasterizer* m_svgRast;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  std::unique_ptr&lt;wxm_NSVGimage, decltype(std::free)*&gt; m_svgImage{<span class="keyword">nullptr</span>, std::free};</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;  wxWindow *m_window = NULL;</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;};</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
@@ -129,7 +129,6 @@ $(function() {
 <div class="ttc" id="aclassSvgBitmap_html_aa41cbbaf33d84f805f2b0fdba06897df"><div class="ttname"><a href="classSvgBitmap.html#aa41cbbaf33d84f805f2b0fdba06897df">SvgBitmap::SetSize</a></div><div class="ttdeci">const SvgBitmap &amp; SetSize(wxSize siz)</div><div class="ttdoc">Sets the bitmap to a new size and renders the svg image at this size.</div><div class="ttdef"><b>Definition:</b> SvgBitmap.h:54</div></div>
 <div class="ttc" id="aclassSvgBitmap_html_ab8b5c714e33eaaf36236390ad946d6e4"><div class="ttname"><a href="classSvgBitmap.html#ab8b5c714e33eaaf36236390ad946d6e4">SvgBitmap::SetSize</a></div><div class="ttdeci">const SvgBitmap &amp; SetSize(int width, int height)</div><div class="ttdoc">Sets the bitmap to a new size and renders the svg image at this size.</div><div class="ttdef"><b>Definition:</b> SvgBitmap.cpp:73</div></div>
 <div class="ttc" id="aclassSvgBitmap_html_adb66fbb2882a1832e7a4405edc698447"><div class="ttname"><a href="classSvgBitmap.html#adb66fbb2882a1832e7a4405edc698447">SvgBitmap::SvgBitmap</a></div><div class="ttdeci">SvgBitmap(wxWindow *window, const unsigned char *data, size_t len, int width=640, int height=480)</div><div class="ttdoc">A constructor that loads the data into a wxBitmap.</div><div class="ttdef"><b>Definition:</b> SvgBitmap.cpp:41</div></div>
-<div class="ttc" id="astructNSVGimage_html"><div class="ttname"><a href="structNSVGimage.html">NSVGimage</a></div><div class="ttdef"><b>Definition:</b> nanosvg.h:159</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

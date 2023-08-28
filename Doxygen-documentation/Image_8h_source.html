@@ -106,8 +106,8 @@ $(function() {
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="preprocessor">#include &lt;wx/fs_arc.h&gt;</span></div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="preprocessor">#include &lt;wx/buffer.h&gt;</span></div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="preprocessor">#define NANOSVG_ALL_COLOR_KEYWORDS</span></div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="preprocessor">#include &quot;nanoSVG/nanosvg.h&quot;</span></div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="preprocessor">#include &quot;nanoSVG/nanosvgrast.h&quot;</span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="preprocessor">#include &quot;nanosvg_private.h&quot;</span></div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="preprocessor">#include &quot;nanosvgrast_private.h&quot;</span></div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160; </div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; </div>
 <div class="line"><a name="l00071"></a><span class="lineno"><a class="line" href="classImage.html">   71</a></span>&#160;<span class="keyword">class </span><a class="code" href="classImage.html">Image</a> final</div>
@@ -239,8 +239,8 @@ $(function() {
 <div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;  wxString m_imageName;</div>
 <div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;  <span class="keywordtype">double</span> m_ppi = 72;</div>
 <div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;  <span class="keyword">struct </span>free_deleter { <span class="keywordtype">void</span> operator()(<span class="keywordtype">void</span> *p)<span class="keyword"> const </span>{ std::free(p); } };</div>
-<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;  <a class="code" href="structNSVGimage.html">NSVGimage</a>* m_svgImage = {};</div>
-<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;  std::unique_ptr&lt;struct NSVGrasterizer, free_deleter&gt; m_svgRast{<span class="keyword">nullptr</span>};</div>
+<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;  wxm_NSVGimage* m_svgImage = {};</div>
+<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;  std::unique_ptr&lt;struct wxm_NSVGrasterizer, free_deleter&gt; m_svgRast{<span class="keyword">nullptr</span>};</div>
 <div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;};</div>
 <div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160; </div>
 <div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// IMAGE_H</span></div>
@@ -279,7 +279,6 @@ $(function() {
 <div class="ttc" id="aclassImage_html_ae215879f7fdb14b9277fd9ca69227b98"><div class="ttname"><a href="classImage.html#ae215879f7fdb14b9277fd9ca69227b98">Image::GnuplotData</a></div><div class="ttdeci">wxString GnuplotData()</div><div class="ttdoc">Returns the gnuplot data file name of this image.</div><div class="ttdef"><b>Definition:</b> Image.cpp:536</div></div>
 <div class="ttc" id="aclassImage_html_ae449235a45e803d3968abf1758aac5d0"><div class="ttname"><a href="classImage.html#ae449235a45e803d3968abf1758aac5d0">Image::GetUnscaledBitmap</a></div><div class="ttdeci">wxBitmap GetUnscaledBitmap()</div><div class="ttdoc">Returns the image in its unscaled form.</div><div class="ttdef"><b>Definition:</b> Image.cpp:191</div></div>
 <div class="ttc" id="aclassImage_html_ae792e58c167f0210ba8dd3289f46eff4"><div class="ttname"><a href="classImage.html#ae792e58c167f0210ba8dd3289f46eff4">Image::ClearCache</a></div><div class="ttdeci">void ClearCache()</div><div class="ttdoc">Temporarily forget the scaled image in order to save memory.</div><div class="ttdef"><b>Definition:</b> Image.h:171</div></div>
-<div class="ttc" id="astructNSVGimage_html"><div class="ttname"><a href="structNSVGimage.html">NSVGimage</a></div><div class="ttdef"><b>Definition:</b> nanosvg.h:159</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
