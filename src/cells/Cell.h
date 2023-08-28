@@ -348,7 +348,7 @@ public:
     Remember that (for example with double fractions) the center does not have to be in the 
     middle of a cell even if this object is --- by definition --- center-aligned.
   */
-  int GetCenter() const
+  wxCoord GetCenter() const
     { return m_center; }
 
   //! Is the size valid and not pending a recalculation?
