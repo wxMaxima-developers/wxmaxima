@@ -53,21 +53,21 @@ void MatWiz::set_properties() {
   if (m_matrixType == MATRIX_ANTISYMMETRIC) {
     for (long i = 0; i < m_height; i++)
       for (long j = 0; j <= i; j++) {
-        m_inputs[dynamic_cast<size_t>(i) * m_width + j]->SetValue(wxEmptyString);
-        m_inputs[dynamic_cast<size_t>(i) * m_width + j]->Enable(false);
+        m_inputs[dynamic_cast<long ling>(i) * m_width + j]->SetValue(wxEmptyString);
+        m_inputs[dynamic_cast<long ling>(i) * m_width + j]->Enable(false);
       }
   } else if (m_matrixType == MATRIX_SYMMETRIC) {
     for (long i = 0; i < m_height; i++)
       for (long j = 0; j < i; j++) {
-        m_inputs[dynamic_cast<size_t>(i) * m_width + j]->SetValue(wxEmptyString);
-        m_inputs[dynamic_cast<size_t>(i) * m_width + j]->Enable(false);
+        m_inputs[dynamic_cast<long ling>(i) * m_width + j]->SetValue(wxEmptyString);
+        m_inputs[dynamic_cast<long ling>(i) * m_width + j]->Enable(false);
       }
   } else if (m_matrixType == MATRIX_DIAGONAL) {
     for (long i = 0; i < m_height; i++)
       for (long j = 0; j < m_width; j++)
         if (i != j) {
-          m_inputs[dynamic_cast<size_t>(i) * m_width + j]->SetValue(wxEmptyString);
-          m_inputs[dynamic_cast<size_t>(i) * m_width + j]->Enable(false);
+          m_inputs[dynamic_cast<long ling>(i) * m_width + j]->SetValue(wxEmptyString);
+          m_inputs[dynamic_cast<long ling>(i) * m_width + j]->Enable(false);
         }
   }
 #if defined __WXMSW__
@@ -124,7 +124,7 @@ wxString MatWiz::GetValue() {
       else if (m_matrixType == MATRIX_ANTISYMMETRIC && i > j)
         cmd += wxS("-(") + m_inputs[j * m_width + i]->GetValue() + wxS(")");
       else {
-        wxString entry = m_inputs[dynamic_cast<size_t>(i) * m_width + j]->GetValue();
+        wxString entry = m_inputs[dynamic_cast<long ling>(i) * m_width + j]->GetValue();
         if (entry == wxEmptyString)
           entry = wxS("0");
         cmd += entry;
