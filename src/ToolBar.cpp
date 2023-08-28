@@ -121,7 +121,7 @@ ToolBar::ToolBar(wxWindow *parent)
     m_canEvalThisCell_old(true),
     m_worksheetEmpty_old(false)
 {
-  m_svgRast.reset(nsvgCreateRasterizer());
+  m_svgRast.reset(wxm_nsvgCreateRasterizer());
 
   m_needsInformation = false;
   m_AnimationStartStopState = Inactive;

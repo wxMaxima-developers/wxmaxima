@@ -58,13 +58,13 @@ SvgBitmap::SvgBitmap(wxWindow *window, const unsigned char *data, size_t len,
 
   // Render the .svgz image
   if (!m_svgRast)
-    m_svgRast = nsvgCreateRasterizer();
+    m_svgRast = wxm_nsvgCreateRasterizer();
   if (!m_svgRast)
     wxBitmap::operator=(GetInvalidBitmap(width));
   if (svgContents.size() < 2)
     wxBitmap::operator=(GetInvalidBitmap(width));
 
-  m_svgImage.reset(nsvgParse(svgContents.data(), "px", 96));
+  m_svgImage.reset(wxm_nsvgParse(svgContents.data(), "px", 96));
   SetSize(width, height);
 }
 
@@ -95,7 +95,7 @@ const SvgBitmap &SvgBitmap::SetSize(int width, int height) {
   std::vector<unsigned char> imgdata((long)width * height * 4);
 
   // Actually render the bitmap
-  nsvgRasterize(m_svgRast, m_svgImage.get(), 0, 0,
+  wxm_nsvgRasterize(m_svgRast, m_svgImage.get(), 0, 0,
                 wxMin(static_cast<double>(width) / static_cast<double>(m_svgImage->width),
                       static_cast<double>(height) / static_cast<double>(m_svgImage->height)),
                 imgdata.data(), width, height, width * 4);
@@ -142,4 +142,4 @@ wxBitmap SvgBitmap::GetInvalidBitmap(int targetSize) {
   return retval;
 }
 
-struct NSVGrasterizer *SvgBitmap::m_svgRast = NULL;
+struct wxm_NSVGrasterizer *SvgBitmap::m_svgRast = NULL;

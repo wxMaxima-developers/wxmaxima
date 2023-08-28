@@ -35,8 +35,8 @@
 #include <wx/fs_arc.h>
 #include <wx/buffer.h>
 #define NANOSVG_ALL_COLOR_KEYWORDS
-#include "nanoSVG/nanosvg.h"
-#include "nanoSVG/nanosvgrast.h"
+#include "nanosvg_private.h"
+#include "nanosvgrast_private.h"
 #include <Image.h>
 #include "ErrorRedirector.h"
 #include "StringUtils.h"
@@ -200,7 +200,7 @@ wxBitmap Image::GetUnscaledBitmap() {
   if (m_svgRast) {
     std::vector<unsigned char> imgdata(m_originalWidth * m_originalHeight * 4);
 
-    nsvgRasterize(m_svgRast.get(), m_svgImage, 0, 0, 1, imgdata.data(),
+    wxm_nsvgRasterize(m_svgRast.get(), m_svgImage, 0, 0, 1, imgdata.data(),
                   m_originalWidth, m_originalHeight, m_originalWidth * 4);
     return RGBA2wxBitmap(imgdata.data(), m_originalWidth,
                                     m_originalHeight);
@@ -699,7 +699,7 @@ wxBitmap Image::GetBitmap(double scale) {
     // First create rgba data
     std::vector<unsigned char> imgdata(m_width * m_height * 4);
 
-    nsvgRasterize(m_svgRast.get(), m_svgImage, 0, 0,
+    wxm_nsvgRasterize(m_svgRast.get(), m_svgImage, 0, 0,
                   static_cast<double>(m_width) / (static_cast<double>(m_originalWidth)),
                   imgdata.data(),
                   m_width, m_height, m_width * 4);
@@ -897,12 +897,12 @@ void Image::LoadImage_Backgroundtask(std::unique_ptr<ThreadNumberLimiter> limite
       int ppi = m_configuration->GetPPI().x;
 
       if (svgContents.data()) {
-        m_svgImage = nsvgParse(svgContents.data(), "px", ppi);
+        m_svgImage = wxm_nsvgParse(svgContents.data(), "px", ppi);
       }
 
       if (m_svgImage) {
         if (!m_svgRast)
-          m_svgRast.reset(nsvgCreateRasterizer());
+          m_svgRast.reset(wxm_nsvgCreateRasterizer());
         if (m_svgRast)
           m_isOk = true;
         m_originalWidth = m_svgImage->width;

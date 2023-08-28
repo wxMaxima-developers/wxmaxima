@@ -40,7 +40,7 @@
 
 StatusBar::StatusBar(wxWindow *parent, int id)
   : wxStatusBar(parent, id), m_ppi(wxSize(-1, -1)) {
-  m_svgRast.reset(nsvgCreateRasterizer());
+  m_svgRast.reset(wxm_nsvgCreateRasterizer());
   int widths[] = {-1, GetSize().GetHeight(), GetSize().GetHeight()};
   m_maximaPercentage = -1;
   m_oldmaximaPercentage = -1;

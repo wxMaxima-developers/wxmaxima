@@ -31,8 +31,8 @@
 #include <memory>
 #include "precomp.h"
 #include <wx/bitmap.h>
-#include "nanoSVG/nanosvg.h"
-#include "nanoSVG/nanosvgrast.h"
+#include "nanosvg_private.h"
+#include "nanosvgrast_private.h"
 #include "Cell.h"
 #define NANOSVG_ALL_COLOR_KEYWORDS
 
@@ -59,9 +59,9 @@ public:
   wxBitmap GetInvalidBitmap(int targetSize);
 private:
   //! No idea what nanoSVG stores here. But can be shared between images.
-  static struct NSVGrasterizer* m_svgRast;
+  static struct wxm_NSVGrasterizer* m_svgRast;
   //! The renderable svg image after we have read it in
-  std::unique_ptr<NSVGimage, decltype(std::free)*> m_svgImage{nullptr, std::free};
+  std::unique_ptr<wxm_NSVGimage, decltype(std::free)*> m_svgImage{nullptr, std::free};
   //! The window this bitmap will be drawn on
   wxWindow *m_window = NULL;
 };

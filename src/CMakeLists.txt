@@ -159,23 +159,6 @@ set(SOURCE_FILES
     wxMaximaIcon.cpp
 )
 
-try_compile(NANOSVG_CAUSES_NO_LINK_ERROR
-	SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/nanoSVGTest.cpp 
-	LINK_LIBRARIES ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
-try_compile(NANOSVG_COMPILES
-	SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/nanoSVGTest.cpp )
-
-if(NANOSVG_COMPILES)
-	message(STATUS "nanoSVG could be compiled")
-else()
-	message(STATUS "Trying to compile nanoSVG into a separate file failed?!?")
-endif()
-if(NANOSVG_CAUSES_NO_LINK_ERROR)
-	message(STATUS "Linking nanoSVG with wxWidgets doesn't cause a link error")
-else()
-	message(STATUS "Trying to link nanoSVG with wxWidgets failed")
-endif()
-
 if(NOT CYGWIN)
     list(APPEND SOURCE_FILES ${CMAKE_CURRENT_BINARY_DIR}/wxmaxima.rc)
 endif()
@@ -406,6 +389,31 @@ set(CPACK_SOURCE_IGNORE_FILES
   "wxmaxima-.*\\\\.Z$"
   "wxmaxima-.*\\\\.gz$"
   "${CPACK_SOURCE_IGNORE_FILES}")
+
+add_custom_command(
+        OUTPUT ${CMAKE_BINARY_DIR}/nanosvg_private.h
+        COMMAND ${CMAKE_COMMAND} ARGS
+        -DINPUT_FILE="${CMAKE_CURRENT_SOURCE_DIR}/nanoSVG/nanosvg.h"
+        -DOUTPUT_FILE=${CMAKE_BINARY_DIR}/nanosvg_private.h
+        -P "${CMAKE_CURRENT_SOURCE_DIR}/privateNanoSVG.cmake"
+        COMMENT "Generating our private copy of nanosvg.h"
+        DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/nanoSVG/nanosvg.h ${CMAKE_CURRENT_SOURCE_DIR}/privateNanoSVG.cmake
+)
+add_custom_target(build_nanosvg_private.h DEPENDS ${CMAKE_BINARY_DIR}/nanosvg_private.h)
+add_dependencies(wxmaxima build_nanosvg_private.h)
+
+add_custom_command(
+        OUTPUT ${CMAKE_BINARY_DIR}/nanosvgrast_private.h
+        COMMAND ${CMAKE_COMMAND} ARGS
+        -DINPUT_FILE="${CMAKE_CURRENT_SOURCE_DIR}/nanoSVG/nanosvgrast.h"
+        -DOUTPUT_FILE=${CMAKE_BINARY_DIR}/nanosvgrast_private.h
+        -P "${CMAKE_CURRENT_SOURCE_DIR}/privateNanoSVG.cmake"
+        COMMENT "Generating our private copy of nanosvgrast.h"
+        DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/nanoSVG/nanosvgrast.h ${CMAKE_CURRENT_SOURCE_DIR}/privateNanoSVG.cmake
+)
+add_custom_target(build_nanosvgrast_private.h DEPENDS ${CMAKE_BINARY_DIR}/nanosvgrast_private.h)
+add_dependencies(wxmaxima build_nanosvgrast_private.h)
+
 
 add_custom_command(
         OUTPUT ${CMAKE_BINARY_DIR}/sampleWorksheet.h

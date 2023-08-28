@@ -105,7 +105,7 @@ protected:
   void HandleTimerEvent();
 
 private:
-  std::unique_ptr<struct NSVGrasterizer, decltype(std::free)*> m_svgRast{nullptr, std::free};
+  std::unique_ptr<struct wxm_NSVGrasterizer, decltype(std::free)*> m_svgRast{nullptr, std::free};
   //! The display resolution
   wxSize m_ppi;
   /*! How many percents of the available CPU power does maxima use?
