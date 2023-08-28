@@ -159,6 +159,23 @@ set(SOURCE_FILES
     wxMaximaIcon.cpp
 )
 
+try_compile(NANOSVG_CAUSES_NO_LINK_ERROR
+	SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/nanoSVGTest.cpp 
+	LINK_LIBRARIES ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
+try_compile(NANOSVG_COMPILES
+	SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/nanoSVGTest.cpp )
+
+if(NANOSVG_COMPILES)
+	message(STATUS "nanoSVG could be compiled")
+else()
+	message(STATUS "Trying to compile nanoSVG into a separate file failed?!?")
+endif()
+if(NANOSVG_CAUSES_NO_LINK_ERROR)
+	message(STATUS "Linking nanoSVG with wxWidgets doesn't cause a link error")
+else()
+	message(STATUS "Trying to link nanoSVG with wxWidgets failed")
+endif()
+
 if(NOT CYGWIN)
     list(APPEND SOURCE_FILES ${CMAKE_CURRENT_BINARY_DIR}/wxmaxima.rc)
 endif()
@@ -300,6 +317,10 @@ else()
 endif()
 
 target_link_libraries(wxmaxima ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
+
+if(COMPILE_SUCCEEDED)
+  message("Success!")
+endif()
 
 if(WIN32)
     target_link_libraries(wxmaxima ws2_32)

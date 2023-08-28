@@ -1,6 +1,6 @@
 # -*- mode: CMake; cmake-tab-width: 4; -*-
 
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.25)
 project(wxMaxima LANGUAGES CXX)
 
 add_compile_options("$<$<C_COMPILER_ID:MSVC>:/utf-8>")
