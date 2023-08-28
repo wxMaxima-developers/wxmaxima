@@ -33,7 +33,7 @@ var searchData=
   ['getcellindex_406',['GetCellIndex',['../classWorksheet.html#ad276ac7366afcc147d437480d8f70b2b',1,'Worksheet']]],
   ['getcellsinrect_407',['GetCellsInRect',['../classCell.html#a13b4b331007df099131fdbbe7fda903a',1,'Cell']]],
   ['getcelltype_408',['GetCellType',['../classToolBar.html#ac12d5ee35ac3608662a83f0d9ad975b4',1,'ToolBar']]],
-  ['getcenter_409',['GetCenter',['../classCell.html#a5a26a96d1b707567205c4f1d802ac04a',1,'Cell']]],
+  ['getcenter_409',['GetCenter',['../classCell.html#a7e24879799180879057621844056db20',1,'Cell']]],
   ['getcenterlist_410',['GetCenterList',['../classCell.html#a3b385281e2cb77ffa5dfd902802ac692',1,'Cell']]],
   ['getcodestyleslist_411',['GetCodeStylesList',['../classConfiguration.html#a8050ce954e049a21c245135962ed0cf3',1,'Configuration']]],
   ['getcolor_412',['GetColor',['../classConfiguration.html#ab49ae1da5169571137816ff38f0b7edc',1,'Configuration']]],
