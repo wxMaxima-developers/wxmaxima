@@ -177,11 +177,6 @@ endif()
 
 if(NANOSVG_CAUSES_NO_LINK_ERROR)
 	list(APPEND SOURCE_FILES nanoSVG.cpp)
-else()
-	if(NANOSVG_COMPILES)
-	else()
-		list(APPEND SOURCE_FILES nanoSVG.cpp)
-	endif()
 endif()
 
 if(NOT CYGWIN)
