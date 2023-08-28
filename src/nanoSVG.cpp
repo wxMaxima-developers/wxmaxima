@@ -30,8 +30,8 @@
    or in wxWidgets.
 */
 #include <stdio.h>
-#include <wx.h>
-#include "version.h"
+#include <wx/wx.h>
+#include "Version.h"
 
 // Before wxWidgets 3.1.6 we need to instantiate nanoSVG.
 // With newer wxWidgets versions than that we needto instantiate it
