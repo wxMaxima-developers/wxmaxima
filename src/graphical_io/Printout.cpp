@@ -89,7 +89,7 @@ bool Printout::OnPrintPage(int num) {
   wxLogMessage(_("printOut: Setting the page size to (%li,%li)"),
 		 (long) pageWidth,
 		 (long) pageHeight);
-  GroupCell *group = m_pages[static_cast<long>(num) - 1]->GetGroup();
+  GroupCell *group = m_pages[static_cast<long long>(num) - 1]->GetGroup();
   if (!group)
     return true;
   if (group->GetGroupType() == GC_TYPE_PAGEBREAK)
@@ -102,7 +102,7 @@ bool Printout::OnPrintPage(int num) {
   wxPoint deviceOrigin(
 		       -m_configuration.PrintMargin_Left(),
 		       -m_configuration.PrintMargin_Top() -
-		       m_pages[static_cast<long>(num) - 1]->GetRect(true).GetTop());
+		       m_pages[static_cast<long long>(num) - 1]->GetRect(true).GetTop());
   wxLogMessage(_("Printout: Setting the device origin to %lix%li"),
 	       (long) deviceOrigin.x,
 	       (long) deviceOrigin.y
@@ -113,7 +113,7 @@ bool Printout::OnPrintPage(int num) {
   Cell *end = NULL;
   wxCoord startpoint;
   wxCoord endpoint;
-  startpoint = m_pages[static_cast<long>(num) - 1]->GetRect(true).GetTop();
+  startpoint = m_pages[static_cast<long long>(num) - 1]->GetRect(true).GetTop();
 
   if (m_pages.size() > (unsigned)num) {
     endpoint = m_pages[num]->GetRect(true).GetTop() - 1;

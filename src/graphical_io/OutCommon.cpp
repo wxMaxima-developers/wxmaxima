@@ -105,6 +105,8 @@ bool OutCommon::PrepareLayout(Cell *tree) {
       tmp.Recalculate();
   }
 
+  if(m_recalculationDc == NULL)
+    return false;
   if (!m_recalculationDc->IsOk())
     return false;
 
