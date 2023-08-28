@@ -49,7 +49,7 @@ public:
 private:
   int m_dimensions;
   BTextCtrl *m_expression;
-  BTextCtrl *m_filledfunc;
+  BTextCtrl *m_filledfunc  = NULL;
   BTextCtrl *m_x;
   BTextCtrl *m_xStart;
   BTextCtrl *m_xEnd;
@@ -204,11 +204,11 @@ private:
   BTextCtrl *m_adapt_depth;  
   BTextCtrl *m_xu_grid  = NULL;  
   BTextCtrl *m_yv_grid  = NULL;
-  BTextCtrl *m_ip_grid_x;
-  BTextCtrl *m_ip_grid_y;
+  BTextCtrl *m_ip_grid_x = NULL;
+  BTextCtrl *m_ip_grid_y = NULL;
   BTextCtrl *m_ip_grid_in_x = NULL;
   BTextCtrl *m_ip_grid_in_y = NULL;
-  BTextCtrl *m_x_voxel;
+  BTextCtrl *m_x_voxel = NULL;
   BTextCtrl *m_y_voxel = NULL;
   BTextCtrl *m_z_voxel = NULL;
 };
