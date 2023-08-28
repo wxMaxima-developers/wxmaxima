@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>wxMaxima: src/nanoSVG.cpp File Reference</title>
+<title>wxMaxima: src/nanoSVGTest.cpp File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -66,43 +66,34 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#define-members">Macros</a>  </div>
+<a href="#define-members">Macros</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
-<div class="title">nanoSVG.cpp File Reference</div>  </div>
+<div class="title">nanoSVGTest.cpp File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>This file instantiates nanoSVG.  
+<p>This C++ project instantiates nanoSVG.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;stdio.h&gt;</code><br />
-<code>#include &lt;wx/wx.h&gt;</code><br />
-<code>#include &quot;Version.h&quot;</code><br />
 <code>#include &quot;nanoSVG/nanosvg.h&quot;</code><br />
 <code>#include &quot;nanoSVG/nanosvgrast.h&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
-Include dependency graph for nanoSVG.cpp:</div>
+Include dependency graph for nanoSVGTest.cpp:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="nanoSVG_8cpp__incl.svg" width="664" height="112"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="nanoSVGTest_8cpp__incl.svg" width="456" height="112"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 </div><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
-Macros</h2></td></tr>
-<tr class="memitem:a5bb6a4bdacfa109fd1288e2917055635"><td class="memItemLeft" align="right" valign="top"><a id="a5bb6a4bdacfa109fd1288e2917055635"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>INSTANTIATE_NANOSVG</b>&#160;&#160;&#160;1</td></tr>
-<tr class="separator:a5bb6a4bdacfa109fd1288e2917055635"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a13c9addcfac4e47276eb19eca89158a6"><td class="memItemLeft" align="right" valign="top"><a id="a13c9addcfac4e47276eb19eca89158a6"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>NANOSVG_IMPLEMENTATION</b></td></tr>
-<tr class="separator:a13c9addcfac4e47276eb19eca89158a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2e25595d9bb04cdd08698c4c5735296a"><td class="memItemLeft" align="right" valign="top"><a id="a2e25595d9bb04cdd08698c4c5735296a"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>NANOSVGRAST_IMPLEMENTATION</b></td></tr>
-<tr class="separator:a2e25595d9bb04cdd08698c4c5735296a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac5e738b7eabcf922a18662268683a6cd"><td class="memItemLeft" align="right" valign="top"><a id="ac5e738b7eabcf922a18662268683a6cd"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>NANOSVG_ALL_COLOR_KEYWORDS</b></td></tr>
-<tr class="separator:ac5e738b7eabcf922a18662268683a6cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:a0ddf1224851353fc92bfbff6f499fa97"><td class="memItemLeft" align="right" valign="top"><a id="a0ddf1224851353fc92bfbff6f499fa97"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>main</b> (int argc, char *argv[])</td></tr>
+<tr class="separator:a0ddf1224851353fc92bfbff6f499fa97"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>This file instantiates nanoSVG. </p>
+<div class="textblock"><p>This C++ project instantiates nanoSVG. </p>
+<p>If it is linked with wxWidgets and wxWidgets provides nanoSVG it fails to build with a linker error. CMake tests for that before deciding if to include <a class="el" href="nanoSVG_8cpp.html" title="This file instantiates nanoSVG.">nanoSVG.cpp</a> in the <a class="el" href="classwxMaxima.html">wxMaxima</a> sources. </p>
 </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
