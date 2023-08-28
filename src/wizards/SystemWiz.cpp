@@ -67,7 +67,7 @@ void SysWiz::do_layout() {
     text = new wxStaticText(this, -1, wxString::Format(_("Equation %d:"), i));
     grid_sizer_2->Add(text, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL,
                       5);
-    grid_sizer_2->Add(m_inputs[i - 1], 0, wxALL, 5);
+    grid_sizer_2->Add(m_inputs[static_cast<size_t>(i) - 1], 0, wxALL, 5);
   }
   text = new wxStaticText(this, -1, _("Variables:"));
   grid_sizer_2->Add(text, 0, wxALL | wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL,
