@@ -129,6 +129,7 @@ set(SOURCE_FILES
     MaximaTokenizer.cpp
     MaxSizeChooser.cpp
     MaximaManual.cpp
+    nanoSVG.cpp
     Notification.cpp
     RecentDocuments.cpp
     RegexCtrl.cpp
@@ -164,19 +165,15 @@ try_compile(NANOSVG_CAUSES_NO_LINK_ERROR
 try_compile(NANOSVG_COMPILES
 	SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/nanoSVGTest.cpp )
 
+if(NANOSVG_COMPILES)
+	message(STATUS "nanoSVG could be compiled")
+else()
+	message(STATUS "Trying to compile nanoSVG into a separate file failed?!?")
+endif()
 if(NANOSVG_CAUSES_NO_LINK_ERROR)
 	message(STATUS "Linking nanoSVG with wxWidgets doesn't cause a link error")
 else()
 	message(STATUS "Trying to link nanoSVG with wxWidgets failed")
-endif()
-if(NANOSVG_COMPILES)
-	message(STATUS "Linking could be compiled")
-else()
-	message(STATUS "Trying to compile nanoSVG into a separate file failed?!?")
-endif()
-
-if(NANOSVG_CAUSES_NO_LINK_ERROR)
-	list(APPEND SOURCE_FILES nanoSVG.cpp)
 endif()
 
 if(NOT CYGWIN)

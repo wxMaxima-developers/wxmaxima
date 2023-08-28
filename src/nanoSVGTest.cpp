@@ -46,7 +46,3 @@ int main(int argc, char* argv[]) {
   return 0;
 }
 
-//#ifdef __MINGW32__
-//#error On MinGW the test if we need nanoSVG fails
-//#endif
-

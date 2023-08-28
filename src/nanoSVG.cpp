@@ -27,12 +27,31 @@
 /* The nanosvg .h files contain both the header and the implementation.
    In exactly one file of the project need to be defined in order to
    make the implementation visible to the compiler. That might be here -
-   or in wxWidgets. In the latter case this file isn't added by cmake to
-   the list of files to compile.
+   or in wxWidgets.
 */
 #include <stdio.h>
+#include <wx.h>
+#include "version.h"
+
+// Before wxWidgets 3.1.6 we need to instantiate nanoSVG.
+// With newer wxWidgets versions than that we needto instantiate it
+// if it doesn't cause a linker error, except on mingw32 where it
+// mysteriously doesn'tl but only in the example cmake tries.
+#if (wxCHECK_VERSION(3, 1, 6))
+#ifdef __MINGW32__
+#else
+#ifdef NANOSVG_CAUSES_NO_LINK_ERROR
+#define INSTANTIATE_NANOSVG 1
+#endif
+#endif
+#else
+#define INSTANTIATE_NANOSVG 1
+#endif
+
+#ifdef INSTANTIATE_NANOSVG
 #define NANOSVG_IMPLEMENTATION
 #define NANOSVGRAST_IMPLEMENTATION
 #define NANOSVG_ALL_COLOR_KEYWORDS
 #include "nanoSVG/nanosvg.h"
 #include "nanoSVG/nanosvgrast.h"
+#endif
