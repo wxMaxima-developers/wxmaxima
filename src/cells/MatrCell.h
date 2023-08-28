@@ -81,11 +81,11 @@ private:
   //! Collection of pointers to inner cells.
   std::vector<std::unique_ptr<Cell>> m_cells;
 
-  std::vector<int> m_widths;
+  std::vector<wxCoord> m_widths;
   std::vector<DropCenter> m_dropCenters;
 
-  unsigned int m_matWidth = 0;
-  unsigned int m_matHeight = 0;
+  wxCoord m_matWidth = 0;
+  wxCoord m_matHeight = 0;
 
   enum parenType : int8_t
   {

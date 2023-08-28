@@ -110,10 +110,10 @@ void SubSupCell::Recalculate(AFontSize const fontsize) {
 
   m_baseCell->RecalculateList(fontsize);
 
-  int preWidth = 0;
-  int postWidth = 0;
-  int subHeight = 0;
-  int supHeight = 0;
+  wxCoord preWidth = 0;
+  wxCoord postWidth = 0;
+  wxCoord subHeight = 0;
+  wxCoord supHeight = 0;
   if (m_postSubCell) {
     m_postSubCell->RecalculateList(smallerFontSize);
     postWidth = m_postSubCell->GetFullWidth();
@@ -150,7 +150,7 @@ void SubSupCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
   if (DrawThisCell(point)) {
     wxPoint in;
 
-    int preWidth = 0;
+    wxCoord preWidth = 0;
 
     if (m_preSubCell)
       preWidth = m_preSubCell->GetFullWidth();
