@@ -30,8 +30,8 @@
 #include <wx/image.h>
 #include <wx/artprov.h>
 #include "SvgBitmap.h"
-#include "nanoSVG/nanosvg.h"
-#include "nanoSVG/nanosvgrast.h"
+#include "nanosvg_private.h"
+#include "nanosvgrast_private.h"
 
 wxBitmap ArtProvider::GetImage(wxWindow *win, wxString name, int width,
 			       unsigned const char *data, size_t dataLen) {  

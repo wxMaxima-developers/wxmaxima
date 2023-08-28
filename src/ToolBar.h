@@ -304,7 +304,7 @@ private:
   bool m_canPrint_old = true;
   bool m_canEvalTillHere_old = true;
   bool m_canEvalThisCell_old = true;
-  std::unique_ptr<struct NSVGrasterizer, decltype(std::free)*> m_svgRast{nullptr, std::free};
+  std::unique_ptr<struct wxm_NSVGrasterizer, decltype(std::free)*> m_svgRast{nullptr, std::free};
   bool m_worksheetEmpty_old  = false ;
   AnimationStartStopState m_AnimationStartStopState;
   //! True if we show the "needs information" button.

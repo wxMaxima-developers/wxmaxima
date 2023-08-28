@@ -41,8 +41,8 @@
 #include <wx/fs_arc.h>
 #include <wx/buffer.h>
 #define NANOSVG_ALL_COLOR_KEYWORDS
-#include "nanoSVG/nanosvg.h"
-#include "nanoSVG/nanosvgrast.h"
+#include "nanosvg_private.h"
+#include "nanosvgrast_private.h"
 
 
 /*! Manages an auto-scaling image
@@ -286,8 +286,8 @@ private:
   //! The image resolution
   double m_ppi = 72;
   struct free_deleter { void operator()(void *p) const { std::free(p); } };
-  NSVGimage* m_svgImage = {};
-  std::unique_ptr<struct NSVGrasterizer, free_deleter> m_svgRast{nullptr};
+  wxm_NSVGimage* m_svgImage = {};
+  std::unique_ptr<struct wxm_NSVGrasterizer, free_deleter> m_svgRast{nullptr};
 };
 
 #endif // IMAGE_H
