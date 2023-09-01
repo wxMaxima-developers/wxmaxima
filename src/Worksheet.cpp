@@ -7536,7 +7536,7 @@ bool Worksheet::FindNext(const wxString &str, bool down, bool ignoreCase,
       bool found = editor->FindNext(str, down, ignoreCase);
 
       if (found) {
-        int strt, end;
+        long strt, end;
         editor->GetSelection(&strt, &end);
         SetActiveCell(editor);
         editor->SetSelection(strt, end);
@@ -7624,7 +7624,7 @@ bool Worksheet::FindNext_Regex(const wxString &str, bool down,
       bool found = editor->FindNext_RegEx(str, down);
 
       if (found) {
-        int strt, end;
+        long strt, end;
         editor->GetSelection(&strt, &end);
         SetActiveCell(editor);
         editor->SetSelection(strt, end);
@@ -7943,7 +7943,7 @@ bool Worksheet::Autocomplete(AutoComplete::autoCompletionType type) {
 
   /// If there is only one completion, use it
   if ((m_completions.GetCount() == 1) && (type != AutoComplete::esccommand)) {
-    int start, end;
+    long start, end;
     editor->GetSelection(&start, &end);
 
     editor->ReplaceSelection(editor->GetSelectionString(), m_completions[0],
@@ -8024,7 +8024,7 @@ void Worksheet::OnComplete(wxCommandEvent &event) {
     editor->InsertText(m_completions[item]);
 
   if (m_autocompleteTemplates) {
-    int sel_start, sel_end;
+    long sel_start, sel_end;
     editor->GetSelection(&sel_start, &sel_end);
     editor->ClearSelection();
 

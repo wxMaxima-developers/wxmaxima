@@ -97,7 +97,7 @@ public:
 
     \param index The index of the character the search was started at.
   */
-  void SearchStartedHere(int index) const;
+  void SearchStartedHere(long index) const;
   //! Remember that this is the cell the search was started in.
   void SearchStartedHere() const;
   //! Remember that this is the cell the mouse selection was started in.
@@ -208,10 +208,10 @@ public:
   bool AddEnding() override;
 
   //! Determines which line and column the pos'th char is at.
-  void PositionToXY(int position, unsigned int *x, unsigned int *y);
+  void PositionToXY(long position, unsigned long *x, unsigned long *y);
 
   //! Determines which index the char at the position "x chars left, y chars down" is at.
-  int XYToPosition(int x, int y);
+  long XYToPosition(long x, long y);
 
   //! The screen coordinates of the cursor
   wxPoint PositionToPoint(int pos = -1) override;
@@ -236,11 +236,11 @@ public:
   void PasteFromClipboard(bool primary = false) override;
 
   //! Get the character position the selection has been started with
-  int GetSelectionStart() const
+  long GetSelectionStart() const
     { return m_selectionStart; }
 
   //! Get the character position the selection has been ended with
-  int GetSelectionEnd() const
+  long GetSelectionEnd() const
     { return m_selectionEnd; }
 
   //! Select the whole text contained in this Cell
@@ -277,7 +277,7 @@ public:
 
   void FindMatchingParens();
 
-  int GetLineWidth(unsigned int line, int pos);
+  long GetLineWidth(unsigned long line, long pos);
 
   //! true, if this cell's width has to be recalculated.
   bool IsDirty() const override
@@ -324,7 +324,7 @@ public:
   void CaretToEnd();
 
   //! Move the cursor to a certain position in the cell
-  void CaretToPosition(int pos);
+  void CaretToPosition(long pos);
 
   //! True, if there is undo information for this cell
   bool CanUndo() const;
@@ -365,8 +365,8 @@ public:
 
   /*! Replaces all occurrences of a given string
    */
-  int ReplaceAll(wxString oldString, const wxString &newString, bool ignoreCase);
-  int ReplaceAll_RegEx(wxString oldString, const wxString &newString);
+  long ReplaceAll(wxString oldString, const wxString &newString, bool ignoreCase);
+  long ReplaceAll_RegEx(wxString oldString, const wxString &newString);
 
   /*! Finds the next occurrences of a string
 
@@ -383,9 +383,9 @@ public:
 
   bool IsSelectionChanged() const { return m_selectionChanged; }
 
-  void SetSelection(int start, int end);
+  void SetSelection(long start, long end);
 
-  void GetSelection(int *start, int *end) const
+  void GetSelection(long *start, long *end) const
     {
       *start = m_selectionStart;
       *end = m_selectionEnd;
@@ -424,7 +424,7 @@ public:
   void ClearSelection();
 
   //! Sets the index the error is at
-  void SetErrorIndex(int index){m_errorIndex = index;}
+  void SetErrorIndex(long index){m_errorIndex = index;}
 
   bool ErrorIndexSet() const {return m_errorIndex >= 0;}
 
@@ -434,14 +434,14 @@ public:
   void ProcessNewline(bool keepCursorAtStartOfLine = true);
 
   //! Get the cursor's current position inside the cell.
-  int GetCaretPosition() const
+  long GetCaretPosition() const
     { return m_positionOfCaret; }
 
   //! Convert a number to unicode chars.
   void ConvertNumToUNicodeChar();
 
   //! Set the cursor's current position inside the cell.
-  void SetCaretPosition(int pos)
+  void SetCaretPosition(long pos)
     { m_positionOfCaret = pos;
       if(m_positionOfCaret < -1)
         m_positionOfCaret = -1;
@@ -504,9 +504,9 @@ private:
     //! Chars that mark continued indentation
     wxString m_indentChar;
     //! The cached width of this piece of text
-    int m_width = -1;
+    wxCoord m_width = -1;
     //! By How many pixels we want to indent this line?
-    int m_indentPixels = 0;
+    wxCoord m_indentPixels = 0;
     //! The color of this text portion
     TextStyle m_style = TS_CODE_DEFAULT;
     //! Do we really want to style this text portion different than the default?
@@ -517,26 +517,26 @@ private:
       : m_text(text), m_style(style), m_styleThisText(true) {}
 
     //! Defines a piece of text with the default style that possibly is indented
-    explicit StyledText(const wxString &text, int indentPixels = 0,
+    explicit StyledText(const wxString &text, wxCoord indentPixels = 0,
                         const wxString &indentChar = {})
       : m_text(text), m_indentChar(indentChar), m_indentPixels(indentPixels)  {}
 
-    void SetWidth(int width){m_width = width;}
+    void SetWidth(wxCoord width){m_width = width;}
     void ResetSize(){SetWidth(-1);}
-    int GetWidth() const {return m_width;}
+    wxCoord GetWidth() const {return m_width;}
     bool SizeKnown() const {return GetWidth() >= 0;}
     //! Returns the piece of text
     const wxString &GetText() const { return m_text; }
     //! Changes the piece of text kept in this token
     void SetText(const wxString &text) { m_text = text; }
     //! Changes the indentation level of this token
-    void SetIndentation(int indentPixels, const wxString &indentString = {})
+    void SetIndentation(wxCoord indentPixels, const wxString &indentString = {})
       {
         m_indentPixels = indentPixels;
         m_indentChar = indentString;
       }
     //! By how many pixels do we need to indent this line due to a bullet list or similar?
-    int GetIndentPixels() const { return m_indentPixels; }
+    wxCoord GetIndentPixels() const { return m_indentPixels; }
     const wxString &GetIndentChar() const { return m_indentChar; }
     //! If IsStyleSet() is true this function returns the style of this text
     //! portion
@@ -564,15 +564,15 @@ private:
     The current behavior is O(n^2) (scanning the text needs linear time and for each word 
     the indentation algorithm scans the text again) which is unfortunate.
   */
-  void HandleSoftLineBreaks_Code(StyledText *&lastSpace, int &lineWidth, const wxString &token, unsigned int charInCell,
-                                 wxString &text, const size_t &lastSpacePos, int &indentationPixels);
+  void HandleSoftLineBreaks_Code(StyledText *&lastSpace, wxCoord &lineWidth, const wxString &token, size_t charInCell,
+                                 wxString &text, const size_t &lastSpacePos, wxCoord &indentationPixels);
 
   /*! How many chars do we need to indent text at the position the caret is currently at?
 
     \todo We should provide an alternative function that allows to resume the calculation
     for the next word/line - which would provide an additional speedup.
   */
-  int GetIndentDepth(wxString text, int positionOfCaret);
+  long GetIndentDepth(wxString text, long  positionOfCaret);
 
   /*! Handle ESC shortcuts for special characters
 
@@ -591,9 +591,9 @@ private:
   struct HistoryEntry // 64 bytes
   {
     wxString text;
-    int caretPosition = -1;
-    int selStart = -1;
-    int selEnd = -1;
+    long caretPosition = -1;
+    long selStart = -1;
+    long selEnd = -1;
     HistoryEntry() = default;
     HistoryEntry(const wxString &text, int caretPosition, int selStart, int selEnd) :
       text(text), caretPosition(caretPosition), selStart(selStart), selEnd(selEnd) {}
@@ -635,10 +635,10 @@ private:
 
 //** 4 bytes
 //**
-  int m_errorIndex = 1;
-  unsigned int m_numberOfLines = 1;
+  long m_errorIndex = 1;
+  unsigned long m_numberOfLines = 1;
   //! Where in the undo history are we?
-  int m_historyPosition = -1;
+  long m_historyPosition = -1;
 
   /*! The start of the current selection.
 
@@ -660,14 +660,14 @@ private:
   long m_oldSelectionEnd = -1;
   long m_lastSelectionStart = -1;
 
-  int m_charHeight = 12;
-  int m_paren1 = -1, m_paren2 = -1;
+  wxCoord m_charHeight = 12;
+  long m_paren1 = -1, m_paren2 = -1;
 
   //! Where inside this cell is the cursor?
-  int m_positionOfCaret = 0;
+  long m_positionOfCaret = 0;
   //! Which column the cursor would be if the current line were long enough?
   //! Used when moving up/down between lines
-  int m_caretColumn = -1;
+  long  m_caretColumn = -1;
 
 //** 2 bytes
 //**
