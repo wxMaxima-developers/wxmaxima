@@ -120,9 +120,9 @@ wxString MatWiz::GetValue() {
     cmd += wxS("\n [");
     for (long j = 0; j < m_width; j++) {
       if (m_matrixType == MATRIX_SYMMETRIC && i > j)
-        cmd += m_inputs[j * m_width + i]->GetValue();
+        cmd += m_inputs[static_cast<size_t>(j) * m_width + i]->GetValue();
       else if (m_matrixType == MATRIX_ANTISYMMETRIC && i > j)
-        cmd += wxS("-(") + m_inputs[static_cast<long>(j) * m_width + i]->GetValue() + wxS(")");
+        cmd += wxS("-(") + m_inputs[static_cast<size_t>(j) * m_width + i]->GetValue() + wxS(")");
       else {
         wxString entry = m_inputs[static_cast<size_t>(i) * m_width + j]->GetValue();
         if (entry == wxEmptyString)
