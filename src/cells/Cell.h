@@ -1020,10 +1020,10 @@ private:
 protected:
   friend class InnerCellIterator;
   //! The number of inner cells - for use by the iterators
-  virtual int GetInnerCellCount() const;
+  virtual size_t GetInnerCellCount() const;
   //! Retrieve an inner cell with given index which must be
   //! less than GetInnerCellCount.
-  virtual Cell *GetInnerCell(int index) const;
+  virtual Cell *GetInnerCell(size_t index) const;
 
   inline Worksheet *GetWorksheet() const;
 
@@ -1096,7 +1096,7 @@ inline auto OnInner(const C *cell) { return InnerCellAdapter(const_cast<Cell *>(
 template <typename C, typename std::enable_if<std::is_base_of<Cell, C>::value, bool>::type>
 inline auto OnInner(C *cell) { return InnerCellAdapter(cell); }
 
-inline int InnerCellIterator::GetInnerCellCount(const Cell *cell) { return cell->GetInnerCellCount(); }
-inline Cell *InnerCellIterator::GetInnerCell(const Cell *cell, int index) { return cell->GetInnerCell(index); }
+inline size_t InnerCellIterator::GetInnerCellCount(const Cell *cell) { return cell->GetInnerCellCount(); }
+inline Cell *InnerCellIterator::GetInnerCell(const Cell *cell, size_t index) { return cell->GetInnerCell(index); }
 
 #endif // CELL_H

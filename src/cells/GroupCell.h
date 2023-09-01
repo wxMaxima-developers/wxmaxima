@@ -94,9 +94,9 @@ public:
   //! Add a new answer to the cell
   void SetAnswer(const wxString &question, const wxString &answer);
 
-  int GetInnerCellCount() const override { return (m_groupType == GC_TYPE_PAGEBREAK) ? 0 : 2; }
+  size_t GetInnerCellCount() const override { return (m_groupType == GC_TYPE_PAGEBREAK) ? 0 : 2; }
   // cppcheck-suppress objectIndex
-  Cell *GetInnerCell(int index) const override { return (&m_inputLabel)[index].get(); }
+  Cell *GetInnerCell(size_t index) const override { return (&m_inputLabel)[index].get(); }
 
   /*! Which GroupCell was the last maxima was working on?
 

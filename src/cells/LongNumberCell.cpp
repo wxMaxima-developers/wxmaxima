@@ -76,7 +76,7 @@ bool LongNumberCell::NeedsRecalculation(AFontSize fontSize) const {
      m_configuration->LineBreaksInLongNums());
 }
 
-Cell *LongNumberCell::GetInnerCell(int index) const
+Cell *LongNumberCell::GetInnerCell(size_t index) const
 {
   if(index != 0)
     return NULL;

@@ -139,11 +139,11 @@ class InnerCellIterator
   enum class Advance { Always, OnlyIfNull };
   const Cell *m_parentCell = {};
   Cell *m_innerCell = {};
-  int16_t m_index = 0;
-  int16_t m_endIndex = 0;
+  size_t m_index = 0;
+  size_t m_endIndex = 0;
 
-  static int GetInnerCellCount(const Cell *cell);
-  static Cell *GetInnerCell(const Cell *cell, int index);
+  static size_t GetInnerCellCount(const Cell *cell);
+  static Cell *GetInnerCell(const Cell *cell, size_t index);
 public:
   InnerCellIterator() = default;
   explicit InnerCellIterator(Cell *parentCell) :

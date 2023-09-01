@@ -43,9 +43,9 @@ public:
   bool NeedsRecalculation(AFontSize fontSize) const override;
   bool BreakUp() override;
   void SetNextToDraw(Cell *next) override;
-  int GetInnerCellCount() const override { if(m_innerCell) return 1; else return 0; }
+  size_t GetInnerCellCount() const override { if(m_innerCell) return 1; else return 0; }
   // cppcheck-suppress objectIndex
-  Cell *GetInnerCell(int index) const override;
+  Cell *GetInnerCell(size_t index) const override;
 
 protected:
   virtual void UpdateDisplayedText() override;

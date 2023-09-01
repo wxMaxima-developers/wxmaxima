@@ -55,9 +55,9 @@ public:
   std::unique_ptr<Cell> Copy(GroupCell *group) const override;
   const CellTypeInfo &GetInfo() override;
 
-  int GetInnerCellCount() const override { return 5; }
+  size_t GetInnerCellCount() const override { return 5; }
   // cppcheck-suppress objectIndex
-  Cell *GetInnerCell(int index) const override { return (&m_baseCell)[index].get(); }
+  Cell *GetInnerCell(size_t index) const override { return (&m_baseCell)[index].get(); }
 
   //! By how much do we want to rise the power?
   double PowRise() const {return .3 * m_fontSize_Scaled;}

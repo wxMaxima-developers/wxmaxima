@@ -35,8 +35,10 @@ public:
   std::unique_ptr<Cell> Copy(GroupCell *group) const override;
   const CellTypeInfo &GetInfo() override;
 
-  int GetInnerCellCount() const override { return m_cells.size(); }
-  Cell *GetInnerCell(int index) const override { return m_cells[index].get(); }
+  size_t GetInnerCellCount() const override { return m_cells.size(); }
+  Cell *GetInnerCell(size_t index) const override { return m_cells[index].get(); }
+  Cell *GetInnerCell(long x, long y) const {
+    return m_cells[static_cast<size_t>(x) * m_matWidth + y].get(); }
 
   void Recalculate(AFontSize fontsize) override;
 

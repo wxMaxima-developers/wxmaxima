@@ -1257,9 +1257,9 @@ wxAccStatus Cell::GetRole(int WXUNUSED(childId), wxAccRole *role) const {
 
 #endif
 
-int Cell::GetInnerCellCount() const { return 0; }
+size_t Cell::GetInnerCellCount() const { return 0; }
 
-Cell *Cell::GetInnerCell(int) const {
+Cell *Cell::GetInnerCell(size_t) const {
   // This method should never have been called since there are no inner cells
   // in this class.
   wxASSERT_MSG(false, "Invalid use of GetInnerCell with no inner cells");

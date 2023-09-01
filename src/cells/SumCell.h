@@ -53,9 +53,9 @@ public:
   std::unique_ptr<Cell> Copy(GroupCell *group) const override;
   const CellTypeInfo &GetInfo() override;
 
-  int GetInnerCellCount() const override { return 10; }
+  size_t GetInnerCellCount() const override { return 10; }
   // cppcheck-suppress objectIndex
-  Cell *GetInnerCell(int index) const override { return (&m_open)[index].get(); }
+  Cell *GetInnerCell(size_t index) const override { return (&m_open)[index].get(); }
   
   void Recalculate(AFontSize fontsize) override;
 

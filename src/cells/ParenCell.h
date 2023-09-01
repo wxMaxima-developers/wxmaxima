@@ -54,9 +54,9 @@ public:
   const CellTypeInfo &GetInfo() override;
   std::unique_ptr<Cell> Copy(GroupCell *group) const override;
 
-  int GetInnerCellCount() const override { return 3; }
+  size_t GetInnerCellCount() const override { return 3; }
   // cppcheck-suppress objectIndex
-  Cell *GetInnerCell(int index) const override { return (&m_open)[index].get(); }
+  Cell *GetInnerCell(size_t index) const override { return (&m_open)[index].get(); }
 
   Cell *GetInner() const { return m_innerCell.get(); }
   void SetInner(std::unique_ptr<Cell> inner, CellType type = MC_TYPE_DEFAULT);

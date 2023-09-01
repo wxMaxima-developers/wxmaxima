@@ -98,8 +98,8 @@ void MatWiz::do_layout() {
                             wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE);
     grid_sizer_2->Add(text, 0,
                       wxALIGN_CENTER_HORIZONTAL | wxALIGN_CENTER_VERTICAL, 0);
-    for (int i = 0; i < m_width; i++) {
-      grid_sizer_2->Add(m_inputs[j * m_width + i], 0, wxALL, 1);
+    for (long i = 0; i < m_width; i++) {
+      grid_sizer_2->Add(m_inputs[static_cast<size_t>(j) * m_width + i], 0, wxALL, 1);
     }
   }
   grid_sizer_1->Add(grid_sizer_2, 1, wxALL | wxALIGN_CENTER_HORIZONTAL, 0);
