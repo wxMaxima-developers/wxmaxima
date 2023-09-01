@@ -19,7 +19,7 @@ var searchData=
   ['populaterecentdocumentsmenu_1098',['PopulateRecentDocumentsMenu',['../classwxMaximaFrame.html#a82c022a0e467e75e697b7a065305d8dc',1,'wxMaximaFrame']]],
   ['populaterecentpackagesmenu_1099',['PopulateRecentPackagesMenu',['../classwxMaximaFrame.html#a6218bcb8c108890e9d8ea7312a339a8f',1,'wxMaximaFrame']]],
   ['positiontopoint_1100',['PositionToPoint',['../classEditorCell.html#a49c8af4814c5acdb05f61e2ed753f465',1,'EditorCell::PositionToPoint()'],['../classCell.html#ad24cc4463bff20ed19d83eea099a4b44',1,'Cell::PositionToPoint()']]],
-  ['positiontoxy_1101',['PositionToXY',['../classEditorCell.html#a95996819740cb641fded74cdd2a3edbb',1,'EditorCell']]],
+  ['positiontoxy_1101',['PositionToXY',['../classEditorCell.html#a06836797065082e0e10997e8d0f09fe8',1,'EditorCell']]],
   ['powrise_1102',['PowRise',['../classExptCell.html#a40499d5c427329fd04e7876ccaba71e5',1,'ExptCell']]],
   ['predicatematcher_1103',['PredicateMatcher',['../classCatch_1_1Matchers_1_1Generic_1_1PredicateMatcher.html',1,'Catch::Matchers::Generic']]],
   ['preparelayout_1104',['PrepareLayout',['../classOutCommon.html#a4b5e3adb4dad182d5bd4e43b0a9171a7',1,'OutCommon']]],

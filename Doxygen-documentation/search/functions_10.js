@@ -35,7 +35,7 @@ var searchData=
   ['removetempautosavefile_2684',['RemoveTempAutosavefile',['../classwxMaximaFrame.html#a9631a80cc2adad3e3272fec12b80e7af',1,'wxMaximaFrame']]],
   ['render_2685',['Render',['../classBitmapOut.html#ad631df01df5b3df5b9599bd18932875c',1,'BitmapOut::Render()'],['../classSvgout.html#a2b61b721a5eb267ce894331a6d1ff9d4',1,'Svgout::Render()']]],
   ['replace_2686',['Replace',['../classWorksheet.html#a45dd852f44f53430ea492c65414e5440',1,'Worksheet']]],
-  ['replaceall_2687',['ReplaceAll',['../classEditorCell.html#adb77d7ba1929fa7309938ee267287060',1,'EditorCell::ReplaceAll()'],['../classWorksheet.html#a4b908639059d4dc42d60ce049ff1ff71',1,'Worksheet::ReplaceAll()']]],
+  ['replaceall_2687',['ReplaceAll',['../classEditorCell.html#a9db0b4c7bce41735a6972fcf210c5e96',1,'EditorCell::ReplaceAll()'],['../classWorksheet.html#a4b908639059d4dc42d60ce049ff1ff71',1,'Worksheet::ReplaceAll()']]],
   ['replaceselection_2688',['ReplaceSelection',['../classEditorCell.html#a67ea61d6cfa90cd8da86e236e4061460',1,'EditorCell']]],
   ['replacesuggestion_2689',['ReplaceSuggestion',['../classwxMaxima.html#a631676fba885bf2e4ca0e85406532133',1,'wxMaxima']]],
   ['reportmultipleredraws_2690',['ReportMultipleRedraws',['../classConfiguration.html#a295a632df3661ad823bd4f8b604e6224',1,'Configuration']]],
