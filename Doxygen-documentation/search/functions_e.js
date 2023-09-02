@@ -9,7 +9,7 @@ var searchData=
   ['populaterecentdocumentsmenu_2636',['PopulateRecentDocumentsMenu',['../classwxMaximaFrame.html#a82c022a0e467e75e697b7a065305d8dc',1,'wxMaximaFrame']]],
   ['populaterecentpackagesmenu_2637',['PopulateRecentPackagesMenu',['../classwxMaximaFrame.html#a6218bcb8c108890e9d8ea7312a339a8f',1,'wxMaximaFrame']]],
   ['positiontopoint_2638',['PositionToPoint',['../classCell.html#ad24cc4463bff20ed19d83eea099a4b44',1,'Cell::PositionToPoint()'],['../classEditorCell.html#a49c8af4814c5acdb05f61e2ed753f465',1,'EditorCell::PositionToPoint(int pos=-1) override']]],
-  ['positiontoxy_2639',['PositionToXY',['../classEditorCell.html#a06836797065082e0e10997e8d0f09fe8',1,'EditorCell']]],
+  ['positiontoxy_2639',['PositionToXY',['../classEditorCell.html#aab014fc6b15be1b1e5c265c06f7a5509',1,'EditorCell']]],
   ['powrise_2640',['PowRise',['../classExptCell.html#a40499d5c427329fd04e7876ccaba71e5',1,'ExptCell']]],
   ['preparelayout_2641',['PrepareLayout',['../classOutCommon.html#a4b5e3adb4dad182d5bd4e43b0a9171a7',1,'OutCommon']]],
   ['prependnbsp_2642',['PrependNBSP',['../classEditorCell.html#af3be8dfe7234ba3db4cfc0e7d43946fd',1,'EditorCell']]],

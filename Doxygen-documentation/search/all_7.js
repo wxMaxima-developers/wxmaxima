@@ -28,7 +28,7 @@ var searchData=
   ['getbaseindent_401',['GetBaseIndent',['../classConfiguration.html#a8004ace11a8c74983670984d521cecbb',1,'Configuration']]],
   ['getbitmap_402',['GetBitmap',['../classBitmapOut.html#a8ecdc7a39478efb08dc86f7d604163a6',1,'BitmapOut::GetBitmap()'],['../classImage.html#ae0069b9dc77158a097750c2328364ecd',1,'Image::GetBitmap()']]],
   ['getcanvassize_403',['GetCanvasSize',['../classConfiguration.html#a5e7326216b7fd2fbd4adec92c13c4e6a',1,'Configuration']]],
-  ['getcaretposition_404',['GetCaretPosition',['../classEditorCell.html#a3d4e46d6094899312cfaa0a2ab8dadc0',1,'EditorCell']]],
+  ['getcaretposition_404',['GetCaretPosition',['../classEditorCell.html#a2c33d7258eabe6034872a7013b3a4c15',1,'EditorCell']]],
   ['getcell_405',['GetCell',['../classEvaluationQueue.html#a959aff9f267029a9560743d0af70caff',1,'EvaluationQueue::GetCell()'],['../classTableOfContents.html#a97e431eb23e73185abfbfdec665e379c',1,'TableOfContents::GetCell()']]],
   ['getcellindex_406',['GetCellIndex',['../classWorksheet.html#ad276ac7366afcc147d437480d8f70b2b',1,'Worksheet']]],
   ['getcellsinrect_407',['GetCellsInRect',['../classCell.html#a13b4b331007df099131fdbbe7fda903a',1,'Cell']]],

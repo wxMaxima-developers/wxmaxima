@@ -16,7 +16,7 @@ var searchData=
   ['caretatend_2180',['CaretAtEnd',['../classEditorCell.html#adf3db20a3b7c54ca247d48eb63a8fd19',1,'EditorCell']]],
   ['caretatstart_2181',['CaretAtStart',['../classEditorCell.html#a6195006bc1731759c821a1a4d41dd2e4',1,'EditorCell']]],
   ['carettoend_2182',['CaretToEnd',['../classEditorCell.html#a27b2ba5be4f3b55d3574006948740769',1,'EditorCell']]],
-  ['carettoposition_2183',['CaretToPosition',['../classEditorCell.html#afc040a2fcdeed2a74bc2a579216aef56',1,'EditorCell']]],
+  ['carettoposition_2183',['CaretToPosition',['../classEditorCell.html#ad42c365579d28493d633fdae6f4f72c4',1,'EditorCell']]],
   ['carettostart_2184',['CaretToStart',['../classEditorCell.html#a155efb7d7f14b98672c444293b3ac99a',1,'EditorCell']]],
   ['caretvisibleis_2185',['CaretVisibleIs',['../classWorksheet.html#a85e0e572501a859a450a6fdc5def3de5',1,'Worksheet']]],
   ['cellsinlistrecursive_2186',['CellsInListRecursive',['../classCell.html#a5cf56227ab908a76e812c0bd29df39ad',1,'Cell']]],

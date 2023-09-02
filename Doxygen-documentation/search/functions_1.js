@@ -4,7 +4,7 @@ var searchData=
   ['base_5fdynamicappend_2157',['base_DynamicAppend',['../classCellListBuilderBase.html#a912afbac8cd712b3bc7fd3b1de3ebd6d',1,'CellListBuilderBase']]],
   ['base_5freset_2158',['base_reset',['../classCellPtrBase.html#a8caf3e9b626fc9e72681c67a127246d1',1,'CellPtrBase']]],
   ['becomelogtarget_2159',['BecomeLogTarget',['../classwxMaximaFrame.html#a11304019bac5674ec8bc275fef78c311',1,'wxMaximaFrame']]],
-  ['beginningofline_2160',['BeginningOfLine',['../classEditorCell.html#ad94d0c7c8af9fd344ee7a7c12111effa',1,'EditorCell']]],
+  ['beginningofline_2160',['BeginningOfLine',['../classEditorCell.html#a3d892fe086a3da93fa79541cbaef442c',1,'EditorCell']]],
   ['bitmapout_2161',['BitmapOut',['../classBitmapOut.html#a219d0a7bb7ca413bf6c6a2394c15637d',1,'BitmapOut::BitmapOut(Configuration **configuration, double scale=1)'],['../classBitmapOut.html#a00c847fe2c09e2fdced8f8a75249661c',1,'BitmapOut::BitmapOut(Configuration **configuration, std::unique_ptr&lt; Cell &gt; &amp;&amp;tree, double scale=1, long maxSize=-1)']]],
   ['breaklinehere_2162',['BreakLineHere',['../classCell.html#a7632b374bbf0c222783a5f9fe1d301ca',1,'Cell']]],
   ['breaklines_2163',['BreakLines',['../classGroupCell.html#abe633a4a13444b279fb3def1a319b5b7',1,'GroupCell']]],

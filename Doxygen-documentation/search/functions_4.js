@@ -7,7 +7,7 @@ var searchData=
   ['empty_2275',['Empty',['../classCellPointers_1_1ErrorList.html#a753b6464f99227556b7fc8e382da6901',1,'CellPointers::ErrorList::Empty()'],['../classGroupCell.html#a7d134e4f14869920ea47fc94d504c10e',1,'GroupCell::Empty()'],['../classEvaluationQueue.html#a51e73fac4a469890cfe2a57add221e9b',1,'EvaluationQueue::Empty()']]],
   ['enableipc_2276',['EnableIPC',['../classwxMaxima.html#a6e02774a2efcee9afe6933a7aa36cc48',1,'wxMaxima']]],
   ['enableitem_2277',['EnableItem',['../classMainMenuBar.html#ab476667a74b99d30831c7ad5994c3ece',1,'MainMenuBar']]],
-  ['endofline_2278',['EndOfLine',['../classEditorCell.html#a90339a8a4107bbe71ebfdc7608722db5',1,'EditorCell']]],
+  ['endofline_2278',['EndOfLine',['../classEditorCell.html#a58dd02fde1f65448e486de18d4054fed',1,'EditorCell']]],
   ['equationsmenu_2279',['EquationsMenu',['../classwxMaxima.html#a2428d7720e004d0c3df47c72ae6ce466',1,'wxMaxima']]],
   ['errorredirector_2280',['ErrorRedirector',['../classErrorRedirector.html#acbfdb1a4e21bc34694db3994d5059b1d',1,'ErrorRedirector']]],
   ['escapehtmlchars_2281',['EscapeHTMLChars',['../classEditorCell.html#af7a4a8ae88746563be0420bb0c242838',1,'EditorCell']]],

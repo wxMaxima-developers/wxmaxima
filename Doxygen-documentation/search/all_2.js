@@ -6,7 +6,7 @@ var searchData=
   ['base_5freset_72',['base_reset',['../classCellPtrBase.html#a8caf3e9b626fc9e72681c67a127246d1',1,'CellPtrBase']]],
   ['bc2wiz_73',['BC2Wiz',['../classBC2Wiz.html',1,'']]],
   ['becomelogtarget_74',['BecomeLogTarget',['../classwxMaximaFrame.html#a11304019bac5674ec8bc275fef78c311',1,'wxMaximaFrame']]],
-  ['beginningofline_75',['BeginningOfLine',['../classEditorCell.html#ad94d0c7c8af9fd344ee7a7c12111effa',1,'EditorCell']]],
+  ['beginningofline_75',['BeginningOfLine',['../classEditorCell.html#a3d892fe086a3da93fa79541cbaef442c',1,'EditorCell']]],
   ['binaryexpr_76',['BinaryExpr',['../classCatch_1_1BinaryExpr.html',1,'Catch']]],
   ['bitmapout_77',['BitmapOut',['../classBitmapOut.html#a00c847fe2c09e2fdced8f8a75249661c',1,'BitmapOut::BitmapOut(Configuration **configuration, std::unique_ptr&lt; Cell &gt; &amp;&amp;tree, double scale=1, long maxSize=-1)'],['../classBitmapOut.html#a219d0a7bb7ca413bf6c6a2394c15637d',1,'BitmapOut::BitmapOut(Configuration **configuration, double scale=1)'],['../classBitmapOut.html',1,'BitmapOut']]],
   ['bitmapout_2ecpp_78',['BitmapOut.cpp',['../BitmapOut_8cpp.html',1,'']]],

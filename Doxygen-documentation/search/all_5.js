@@ -10,7 +10,7 @@ var searchData=
   ['empty_285',['Empty',['../classEvaluationQueue.html#a51e73fac4a469890cfe2a57add221e9b',1,'EvaluationQueue::Empty()'],['../classGroupCell.html#a7d134e4f14869920ea47fc94d504c10e',1,'GroupCell::Empty()'],['../classCellPointers_1_1ErrorList.html#a753b6464f99227556b7fc8e382da6901',1,'CellPointers::ErrorList::Empty()']]],
   ['enableipc_286',['EnableIPC',['../classwxMaxima.html#a6e02774a2efcee9afe6933a7aa36cc48',1,'wxMaxima']]],
   ['enableitem_287',['EnableItem',['../classMainMenuBar.html#ab476667a74b99d30831c7ad5994c3ece',1,'MainMenuBar']]],
-  ['endofline_288',['EndOfLine',['../classEditorCell.html#a90339a8a4107bbe71ebfdc7608722db5',1,'EditorCell']]],
+  ['endofline_288',['EndOfLine',['../classEditorCell.html#a58dd02fde1f65448e486de18d4054fed',1,'EditorCell']]],
   ['endswithmatcher_289',['EndsWithMatcher',['../structCatch_1_1Matchers_1_1StdString_1_1EndsWithMatcher.html',1,'Catch::Matchers::StdString']]],
   ['enuminfo_290',['EnumInfo',['../structCatch_1_1Detail_1_1EnumInfo.html',1,'Catch::Detail']]],
   ['enumwrapper_291',['EnumWrapper',['../classEnumWrapper.html',1,'']]],
