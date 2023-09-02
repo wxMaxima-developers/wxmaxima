@@ -49,7 +49,7 @@ var searchData=
   ['setbitmap_1250',['SetBitmap',['../classImgCell.html#a46d1d50d4b5a75afacf1b671efd3a0ca',1,'ImgCell']]],
   ['setbrush_1251',['SetBrush',['../classCell.html#af4b5a4c257d98355e4ccfb8436f1018d',1,'Cell']]],
   ['setcanvassize_1252',['SetCanvasSize',['../classConfiguration.html#acf2480a0cd9d621c7cb910153c8daba1',1,'Configuration']]],
-  ['setcaretposition_1253',['SetCaretPosition',['../classEditorCell.html#ac165e80ea63811347d11e5382e345be4',1,'EditorCell']]],
+  ['setcaretposition_1253',['SetCaretPosition',['../classEditorCell.html#a58b2ce9463ba9843ded0efe1dc4aaab1',1,'EditorCell']]],
   ['setcell_1254',['SetCell',['../classSetCell.html',1,'']]],
   ['setcell_2ecpp_1255',['SetCell.cpp',['../SetCell_8cpp.html',1,'']]],
   ['setcell_2eh_1256',['SetCell.h',['../SetCell_8h.html',1,'']]],

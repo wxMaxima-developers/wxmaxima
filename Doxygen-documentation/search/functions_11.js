@@ -41,7 +41,7 @@ var searchData=
   ['setbitmap_2752',['SetBitmap',['../classImgCell.html#a46d1d50d4b5a75afacf1b671efd3a0ca',1,'ImgCell']]],
   ['setbrush_2753',['SetBrush',['../classCell.html#af4b5a4c257d98355e4ccfb8436f1018d',1,'Cell']]],
   ['setcanvassize_2754',['SetCanvasSize',['../classConfiguration.html#acf2480a0cd9d621c7cb910153c8daba1',1,'Configuration']]],
-  ['setcaretposition_2755',['SetCaretPosition',['../classEditorCell.html#ac165e80ea63811347d11e5382e345be4',1,'EditorCell']]],
+  ['setcaretposition_2755',['SetCaretPosition',['../classEditorCell.html#a58b2ce9463ba9843ded0efe1dc4aaab1',1,'EditorCell']]],
   ['setcellstyle_2756',['SetCellStyle',['../classToolBar.html#a0e6954f95c0b9c16ae79ebb2cbde086f',1,'ToolBar::SetCellStyle()'],['../classWorksheet.html#aa5b333ae5acf17ffd4b915796d051cd5',1,'Worksheet::SetCellStyle()']]],
   ['setconfiguration_2757',['SetConfiguration',['../classAnimationCell.html#adb09de9b052d2a3f2e623855b50f77c0',1,'AnimationCell::SetConfiguration()'],['../classCell.html#aac42e30dcf4552ed6ab88197185e9912',1,'Cell::SetConfiguration(Configuration *config)']]],
   ['setconfigurationlist_2758',['SetConfigurationList',['../classCell.html#a66419f232b008b6dbbe814868f01320d',1,'Cell']]],
