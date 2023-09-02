@@ -441,11 +441,9 @@ public:
   void ConvertNumToUNicodeChar();
 
   //! Set the cursor's current position inside the cell.
-  void SetCaretPosition(long pos)
+  void SetCaretPosition(size_t pos)
     { m_positionOfCaret = pos;
-      if(m_positionOfCaret < -1)
-        m_positionOfCaret = -1;
-      if(m_positionOfCaret > (signed long)m_text.Length())
+      if(m_positionOfCaret > m_text.Length())
         m_positionOfCaret = m_text.Length();
     }
 
@@ -664,7 +662,7 @@ private:
   long m_paren1 = -1, m_paren2 = -1;
 
   //! Where inside this cell is the cursor?
-  long m_positionOfCaret = 0;
+  size_t m_positionOfCaret = 0;
   //! Which column the cursor would be if the current line were long enough?
   //! Used when moving up/down between lines
   long  m_caretColumn = -1;
