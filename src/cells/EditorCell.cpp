@@ -1974,10 +1974,10 @@ bool EditorCell::HandleOrdinaryKey(wxKeyEvent &event) {
   // if we have a selection either put parens around it (and don't write the
   // letter afterwards) or delete selection and write letter (insertLetter =
   // true).
-  if (m_selectionStart > -1) {
+  if ((m_selectionStart > 0) && (m_selectionEnd > -1)) {
     SaveValue();
-    long start = wxMin(m_selectionEnd, m_selectionStart);
-    long end = wxMax(m_selectionEnd, m_selectionStart);
+    size_t start = wxMin(m_selectionEnd, m_selectionStart);
+    size_t end = wxMax(m_selectionEnd, m_selectionStart);
 
     switch (keyCode) {
     case '(':
