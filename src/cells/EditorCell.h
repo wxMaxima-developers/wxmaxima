@@ -97,7 +97,7 @@ public:
 
     \param index The index of the character the search was started at.
   */
-  void SearchStartedHere(long index) const;
+  void SearchStartedHere(size_t index) const;
   //! Remember that this is the cell the search was started in.
   void SearchStartedHere() const;
   //! Remember that this is the cell the mouse selection was started in.
@@ -114,7 +114,7 @@ public:
     \param posInLine The number of characters that come before the input in the same line
     \todo Implement the actual TAB expansion
   */
-  static wxString TabExpand(const wxString &input_, long posInLine);
+  static wxString TabExpand(const wxString &input_, size_t posInLine);
 
   //! Escape all chars that cannot be used in HTML otherwise
   static wxString EscapeHTMLChars(wxString input);
@@ -199,19 +199,19 @@ public:
   void DeactivateCursor();
 
   //! Return the index of the 1st char of the line containing the letter pos.
-  size_t BeginningOfLine(long pos) const;
+  size_t BeginningOfLine(size_t pos) const;
 
   //! Return the index of the last char of the line containing the letter \#pos,
-  size_t EndOfLine(long pos);
+  size_t EndOfLine(size_t pos);
 
   //! Adds a ";" to the end of the last command in this cell in case that it doesn't end in $ or ;
   bool AddEnding() override;
 
   //! Determines which line and column the pos'th char is at.
-  void PositionToXY(long position, unsigned long *x, unsigned long *y);
+  void PositionToXY(size_t position,  size_t *x, size_t *y);
 
   //! Determines which index the char at the position "x chars left, y chars down" is at.
-  long XYToPosition(long x, long y);
+  size_t XYToPosition(size_t x, size_t y);
 
   //! The screen coordinates of the cursor
   wxPoint PositionToPoint(int pos = -1) override;
@@ -277,7 +277,7 @@ public:
 
   void FindMatchingParens();
 
-  long GetLineWidth(unsigned long line, long pos);
+  size_t GetLineWidth(size_t line, size_t pos);
 
   //! true, if this cell's width has to be recalculated.
   bool IsDirty() const override
@@ -324,7 +324,7 @@ public:
   void CaretToEnd();
 
   //! Move the cursor to a certain position in the cell
-  void CaretToPosition(long pos);
+  void CaretToPosition(size_t pos);
 
   //! True, if there is undo information for this cell
   bool CanUndo() const;
@@ -365,8 +365,8 @@ public:
 
   /*! Replaces all occurrences of a given string
    */
-  long ReplaceAll(wxString oldString, const wxString &newString, bool ignoreCase);
-  long ReplaceAll_RegEx(wxString oldString, const wxString &newString);
+  size_t ReplaceAll(wxString oldString, const wxString &newString, bool ignoreCase);
+  size_t ReplaceAll_RegEx(wxString oldString, const wxString &newString);
 
   /*! Finds the next occurrences of a string
 
@@ -424,7 +424,7 @@ public:
   void ClearSelection();
 
   //! Sets the index the error is at
-  void SetErrorIndex(long index){m_errorIndex = index;}
+  void SetErrorIndex(size_t index){m_errorIndex = index;}
 
   bool ErrorIndexSet() const {return m_errorIndex >= 0;}
 
@@ -434,7 +434,7 @@ public:
   void ProcessNewline(bool keepCursorAtStartOfLine = true);
 
   //! Get the cursor's current position inside the cell.
-  long GetCaretPosition() const
+  size_t GetCaretPosition() const
     { return m_positionOfCaret; }
 
   //! Convert a number to unicode chars.
@@ -570,7 +570,7 @@ private:
     \todo We should provide an alternative function that allows to resume the calculation
     for the next word/line - which would provide an additional speedup.
   */
-  long GetIndentDepth(wxString text, long  positionOfCaret);
+  size_t GetIndentDepth(wxString text, size_t  positionOfCaret);
 
   /*! Handle ESC shortcuts for special characters
 
@@ -581,7 +581,7 @@ private:
   static wxString InterpretEscapeString(const wxString &txt);
 
   //! Draw a box that marks the current selection
-  void MarkSelection(wxDC *dc, long start, long end, TextStyle style);
+  void MarkSelection(wxDC *dc, size_t start, size_t end, TextStyle style);
 
   //! Determines the size of a text snippet
   wxSize GetTextSize(const wxString &text);
@@ -589,11 +589,11 @@ private:
   struct HistoryEntry // 64 bytes
   {
     wxString text;
-    long caretPosition = -1;
-    long selStart = -1;
-    long selEnd = -1;
+    size_t caretPosition = -1;
+    long long selStart = -1;
+    long long selEnd = -1;
     HistoryEntry() = default;
-    HistoryEntry(const wxString &text, int caretPosition, int selStart, int selEnd) :
+    HistoryEntry(const wxString &text, size_t caretPosition, long long selStart, long long selEnd) :
       text(text), caretPosition(caretPosition), selStart(selStart), selEnd(selEnd) {}
   };
   //! Set the editor's state from a history entry
@@ -633,8 +633,8 @@ private:
 
 //** 4 bytes
 //**
-  long m_errorIndex = 1;
-  unsigned long m_numberOfLines = 1;
+  size_t m_errorIndex = 1;
+  size_t m_numberOfLines = 1;
   //! Where in the undo history are we?
   long m_historyPosition = -1;
 
