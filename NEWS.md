@@ -1,3 +1,6 @@
+# Current
+ * CMake >= 3.25 is required to build wxMaxima
+
 # 23.08.0
  * Better print scaling
  * More consistent page size handling for printing
