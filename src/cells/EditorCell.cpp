@@ -248,10 +248,15 @@ wxString EditorCell::ToString(bool dontLimitToSelection) const {
   if (SelectionActive() && (!dontLimitToSelection)) {
     auto start = SelectionLeft();
     auto end   = SelectionRight();
-    if (end >= m_text.Length())
-      end = m_text.Length() - 1;
-    if (start < 0)
-      start = 0;
+    if (start >= m_text.Length())
+    {
+      if(m_text.Length() > 0)
+        start = m_text.Length() - 1;
+      else
+        start = 0;
+    }
+    if(end > 0)
+      end--;
     text = m_text.SubString(start, end);
   }
   return text;
@@ -269,10 +274,15 @@ wxString EditorCell::ToMatlab(bool dontLimitToSelection) const {
   if (SelectionActive() && (!dontLimitToSelection)) {
     auto start = SelectionLeft();
     auto end   = SelectionRight();
-    if (end >= m_text.Length())
-      end = m_text.Length() - 1;
-    if (start < 0)
-      start = 0;
+    if (start >= m_text.Length())
+    {
+      if(m_text.Length() > 0)
+        start = m_text.Length() - 1;
+      else
+        start = 0;
+    }
+    if(end > 0)
+      end--;
     text = m_text.SubString(start, end);
   }
   return text;
@@ -513,8 +523,10 @@ wxString EditorCell::ToXML() const {
 void EditorCell::ConvertNumToUNicodeChar() {
   if (CursorPosition() == 0)
     return;
+  if (CursorPosition() >= m_text.Length())
+    return;
   int numLen = 0;
-  while ((CursorPosition() > 0) &&
+  while ((CursorPosition() >= 0) &&
          (((m_text[CursorPosition() - 1] >= '0') &&
            (m_text[CursorPosition() - 1] <= '9')) ||
           ((m_text[CursorPosition() - 1] >= 'a') &&
@@ -1092,7 +1104,8 @@ bool EditorCell::HandleCtrlCommand(wxKeyEvent &ev) {
     size_t end = EndOfLine(CursorPosition());
     if (ev.ShiftDown())
       SetSelection(CursorPosition(), end);
-    CursorPosition(end);
+    else
+      CursorPosition(end);
     m_displayCaret = true;
     break;
   }
@@ -1102,7 +1115,8 @@ bool EditorCell::HandleCtrlCommand(wxKeyEvent &ev) {
     size_t start = BeginningOfLine(CursorPosition());
     if (ev.ShiftDown())
       SetSelection(start, CursorPosition());
-    CursorPosition(start);
+    else
+      CursorPosition(start);
     m_displayCaret = true;
     break;
   }
@@ -2115,7 +2129,7 @@ bool EditorCell::FindMatchingQuotes() {
     if ((tok.GetText().StartsWith(wxS("\""))) &&
         (tok.GetText().EndsWith(wxS("\"")))) {
       size_t tokenEnd = pos + tok.GetText().Length() - 1;
-      if (((unsigned)CursorPosition() == tokenEnd) ||
+      if ((CursorPosition() == tokenEnd) ||
            (CursorPosition() == pos)) {
         m_paren1 = pos;
         m_paren2 = tokenEnd;
@@ -2169,7 +2183,11 @@ void EditorCell::FindMatchingParens() {
   if ((charUnderCursor == wxS(')')) || (charUnderCursor == wxS(']')) ||
       (charUnderCursor == wxS('}'))) {
     size_t parenLevel = 0;
-    size_t pos = m_text.Length() - 1;
+    size_t pos;
+    if(m_text.IsEmpty())
+      pos = 0;
+    else
+      pos = m_text.Length() - 1;
     auto const tokens = MaximaTokenizer(m_text, m_configuration).PopTokens();
     for (auto tok = tokens.rbegin(); tok != tokens.rend(); ++tok) {
       if (pos <= CursorPosition()) {
