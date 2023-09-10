@@ -70,7 +70,23 @@ public:
   //! The constructor
   EditorCell(GroupCell *group, Configuration *config, const wxString &text = {});
   EditorCell(GroupCell *group, const EditorCell &cell);
-//  std::unique_ptr<Cell> Copy(GroupCell *group) const override;
+  void UpdateSelectionString();
+  void SetSelection(size_t start, size_t end){m_selectionStart = start; m_selectionEnd = end;UpdateSelectionString();}
+  bool SelectionActive() const {return m_selectionStart != m_selectionEnd;}
+  void ClearSelection() {SelectionEnd(SelectionStart());}
+  void SelectionStart(size_t start) {m_selectionStart = start; UpdateSelectionString();}
+  void SelectionEnd(size_t end) {m_selectionEnd = end; UpdateSelectionString();}
+  size_t SelectionStart() const {return wxMin(m_selectionStart, m_text.Length());}
+  size_t SelectionEnd() const {return wxMin(m_selectionEnd, m_text.Length());}
+  size_t SelectionLeft() const {return wxMin(SelectionStart(), SelectionEnd());}
+  size_t SelectionRight() const {return wxMax(SelectionStart(), SelectionEnd());}
+  size_t SelectionLength() {return(SelectionEnd()-SelectionStart());}
+  void  SelectionLength(size_t length) {SelectionEnd(SelectionStart() + length);  UpdateSelectionString();}
+  void CursorMove(long long increment) {m_selectionEnd += increment;
+    m_selectionStart = m_selectionEnd; UpdateSelectionString();}
+  size_t CursorPosition() const {return wxMin(m_selectionEnd, m_text.Length());}
+  void CursorPosition(size_t pos) {m_selectionStart = pos;
+    m_selectionEnd = pos; UpdateSelectionString();}
   const CellTypeInfo &GetInfo() override;
   std::unique_ptr<Cell> Copy(GroupCell *group) const override;
 
@@ -236,48 +252,42 @@ public:
   void PasteFromClipboard(bool primary = false) override;
 
   //! Get the character position the selection has been started with
-  long GetSelectionStart() const
-    { return m_selectionStart; }
+  size_t GetSelectionStart() const
+    { return SelectionStart(); }
 
   //! Get the character position the selection has been ended with
   long GetSelectionEnd() const
-    { return m_selectionEnd; }
+    { return SelectionEnd(); }
 
   //! Select the whole text contained in this Cell
   void SelectAll() override
     {
-      m_selectionStart = 0;
-      m_selectionEnd = m_positionOfCaret = m_text.Length();
+      SetSelection(0, m_text.Length());
     }
 
   //! Does the selection currently span the whole cell?
   bool AllSelected() const
     {
-      return (m_selectionStart == 0) && (m_selectionEnd == (long) m_text.Length());
+      return (SelectionStart() == 0) && (SelectionEnd() == m_text.Length());
     }
 
   //! Unselect everything.
   void SelectNone()
     {
-      m_selectionStart = m_selectionEnd = 0;
+      ClearSelection();
     }
 
-  //! Is there any text selected right now?
-  bool SelectionActive() const
-    {
-      return (m_selectionStart >= 0) && (m_selectionEnd >= 0);
-    }
 
   bool CanCopy() const override
     {
-      return m_selectionStart != -1;
+      return SelectionActive();
     }
 
   bool FindMatchingQuotes();
 
   void FindMatchingParens();
 
-  size_t GetLineWidth(size_t line, size_t pos);
+  wxCoord GetLineWidth(size_t line, size_t pos);
 
   //! true, if this cell's width has to be recalculated.
   bool IsDirty() const override
@@ -311,14 +321,14 @@ public:
 
   //! Is the cursor at the start of this cell?
   bool CaretAtStart() const
-    { return m_positionOfCaret == 0; }
+    { return CursorPosition() == 0; }
 
   //! Move the cursor to the start of this cell
   void CaretToStart();
 
   //! Is the cursor at the end of this cell?
   bool CaretAtEnd() const
-    { return m_positionOfCaret == (long) m_text.Length(); }
+    { return CursorPosition() == m_text.Length(); }
 
   //! Move the cursor to the end of this cell
   void CaretToEnd();
@@ -383,12 +393,10 @@ public:
 
   bool IsSelectionChanged() const { return m_selectionChanged; }
 
-  void SetSelection(long start, long end);
-
-  void GetSelection(long *start, long *end) const
+  void GetSelection(size_t *start, size_t *end) const
     {
-      *start = m_selectionStart;
-      *end = m_selectionEnd;
+      *start = SelectionStart();
+      *end   = SelectionEnd();
     }
 
   /*! Replace the current selection with a string
@@ -420,9 +428,6 @@ public:
   //! Get the command the cursor is in the arguments for.
   wxString GetCurrentCommand();
   
-  //! Unselect everything
-  void ClearSelection();
-
   //! Sets the index the error is at
   void SetErrorIndex(size_t index){m_errorIndex = index;}
 
@@ -435,17 +440,13 @@ public:
 
   //! Get the cursor's current position inside the cell.
   size_t GetCaretPosition() const
-    { return m_positionOfCaret; }
+    { return CursorPosition(); }
 
   //! Convert a number to unicode chars.
   void ConvertNumToUNicodeChar();
 
   //! Set the cursor's current position inside the cell.
-  void SetCaretPosition(size_t pos)
-    { m_positionOfCaret = pos;
-      if(m_positionOfCaret > m_text.Length())
-        m_positionOfCaret = m_text.Length();
-    }
+  void SetCaretPosition(size_t pos){CursorPosition(pos);}
 
   bool FindNextTemplate(bool left = false);
 
@@ -453,7 +454,7 @@ public:
 
   wxString TextInFrontOfSelection() const
     {
-      return GetValue().Mid(1, m_selectionStart);
+      return GetValue().Mid(1, SelectionLeft());
     }
 
   //! Return to the selection after the cell has been left upwards
@@ -479,6 +480,9 @@ public:
   const MaximaTokenizer::TokenList &GetAllTokens();
 
 private:
+  size_t m_selectionStart = 0;
+  size_t m_selectionEnd = 0;
+  size_t m_lastSelectionStart = 0;
   //! Did the zoom factor change since the last recalculation?
   bool IsZoomFactorChanged() const;
   //! The zoom factor we had the last time we recalculated this cell.
@@ -638,31 +642,9 @@ private:
   //! Where in the undo history are we?
   long m_historyPosition = -1;
 
-  /*! The start of the current selection.
-
-    - >0: the position of the cursors in characters from start
-    - -1: Currently no selection is active
-
-    If the selection has been done from right to left m_selectionStart>m_selectionEnd.
-  */
-  long m_selectionStart = -1;
-  /*! The end of the current selection.
-
-    - >0: the position of the cursors in characters from start
-    - -1: Currently no selection is active
-
-    If the selection has been done from right to left m_selectionStart>m_selectionEnd.
-  */
-  long m_selectionEnd = -1;
-  long m_oldSelectionStart = -1;
-  long m_oldSelectionEnd = -1;
-  long m_lastSelectionStart = -1;
-
   wxCoord m_charHeight = 12;
   long m_paren1 = -1, m_paren2 = -1;
 
-  //! Where inside this cell is the cursor?
-  size_t m_positionOfCaret = 0;
   //! Which column the cursor would be if the current line were long enough?
   //! Used when moving up/down between lines
   long  m_caretColumn = -1;
