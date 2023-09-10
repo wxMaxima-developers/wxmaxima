@@ -3390,7 +3390,7 @@ GroupCell *Worksheet::EndOfSectioningUnit(GroupCell *start) {
   // Begin with the cell after the start cell - that might contain a section
   // start of any sorts.
   GroupCell *end = start;
-  if(end->GetNext())
+  if((end) && (end->GetNext()))
     end = end->GetNext();
   
   // Find the end of the chapter/section/...

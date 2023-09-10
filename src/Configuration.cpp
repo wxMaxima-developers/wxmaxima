@@ -1024,7 +1024,7 @@ wxColour Configuration::InvertColour(wxColour col) {
 long Configuration::GetLineWidth() const {
   // The default line width is the width of the viewport minus the indentation
   // minus roughly one char
-  long lineWidth =
+  wxCoord lineWidth =
     GetCanvasSize().x -
     Scale_Px(GetLabelWidth() + GetCellBracketWidth() + GetDefaultFontSize());
 
