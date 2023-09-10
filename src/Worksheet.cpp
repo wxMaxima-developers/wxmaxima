@@ -4629,7 +4629,7 @@ void Worksheet::CalculateReorderedCellIndices(GroupCell *tree, int &cellIndex,
 	  GetCellIndex(tmp.GetLabel()) - initialHiddenExpressions;
         if (promptIndex >= 0)
 	  {
-	    long index = promptIndex;
+	    size_t index = promptIndex;
 	    if (outputIndex < 0 && initialHiddenExpressions < outputExpressions) {
 	      // input index, but no output index means the expression was
 	      // evaluated, but produced no result
@@ -6688,9 +6688,15 @@ bool Worksheet::TreeUndoCellAddition(UndoActions *sourcelist,
 
   // Set the cursor to a sane position.
   if (action.m_newCellsEnd->GetNext())
-    SetHCaret(action.m_newCellsEnd->GetNext());
+    {
+      if(action.m_newCellsEnd)
+	SetHCaret(action.m_newCellsEnd->GetNext());
+    }
   else
-    SetHCaret(action.m_start->GetPrevious());
+    {
+      if(action.m_start)
+	SetHCaret(action.m_start->GetPrevious());
+    }
 
   // Actually delete the cells we want to remove.
   DeleteRegion(action.m_start, action.m_newCellsEnd, undoForThisOperation);
