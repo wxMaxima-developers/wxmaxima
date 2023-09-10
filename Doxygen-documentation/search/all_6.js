@@ -119,7 +119,7 @@ var searchData=
   ['getscreenconfig_492',['GetScreenConfig',['../classOutCommon.html#ab18b7e923f604f0ac706c33c5531b983',1,'OutCommon']]],
   ['getselectedstyle_493',['GetSelectedStyle',['../classConfigDialogue.html#ac7008fa02afb4834fc7efce94151ad67',1,'ConfigDialogue']]],
   ['getselectionend_494',['GetSelectionEnd',['../classEditorCell.html#a57585e241718990629ac9349560cee56',1,'EditorCell::GetSelectionEnd()'],['../classWorksheet.html#a781b6c234ba786650fe3dac000e46b85',1,'Worksheet::GetSelectionEnd()']]],
-  ['getselectionstart_495',['GetSelectionStart',['../classEditorCell.html#a4984b2bc275e9192dc0da3da5a4cc741',1,'EditorCell::GetSelectionStart()'],['../classWorksheet.html#a854aa190c2b599af3ea6deb8fe75def4',1,'Worksheet::GetSelectionStart()']]],
+  ['getselectionstart_495',['GetSelectionStart',['../classEditorCell.html#a234d38a5ff2a814c723621f53f4d76ef',1,'EditorCell::GetSelectionStart()'],['../classWorksheet.html#a854aa190c2b599af3ea6deb8fe75def4',1,'Worksheet::GetSelectionStart()']]],
   ['getselectionstring_496',['GetSelectionString',['../classEditorCell.html#a5696a44d97c01a5826a9834afd30a04f',1,'EditorCell']]],
   ['getselectionstyle_497',['GetSelectionStyle',['../classEditorCell.html#aa8658a3cb619b86e551add37fd52b374',1,'EditorCell']]],
   ['getsidebarnames_498',['GetSidebarNames',['../classwxMaximaFrame.html#acf26116fcc488847a52b64c7165d912a',1,'wxMaximaFrame']]],
