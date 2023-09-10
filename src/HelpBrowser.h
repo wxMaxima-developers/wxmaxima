@@ -68,7 +68,7 @@ private:
   void OnTopicButton(wxCommandEvent& event);
   bool AllowOnlineManualP(){return AllowOnlineManualP(m_configuration, this);}
 
-  int m_topicButtonID0;
+  wxWindowIDRef m_topicButtonID0;
   std::vector<wxWindowIDRef> m_topicButtonIDs;
   MaximaManual *m_maximaManual = NULL;
   wxWebView *m_webView = NULL;

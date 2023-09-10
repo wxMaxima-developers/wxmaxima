@@ -314,7 +314,7 @@ void Image::LoadGnuplotSource_Backgroundtask2(
       if(wxStat(dataFile, &strucStat) == 0)
       {
         if (strucStat.st_size >
-            m_configuration->MaxGnuplotMegabytes() * 1000 * 1000) {
+            static_cast<size_t>(m_configuration->MaxGnuplotMegabytes()) * 1000 * 1000) {
           wxLogMessage(_("Too much gnuplot data => Not storing it in the worksheet"));
           m_gnuplotData_Compressed.Clear();
           return;
@@ -697,7 +697,7 @@ wxBitmap Image::GetBitmap(double scale) {
   // Seems like we need to create a new scaled bitmap.
   if (m_svgRast) {
     // First create rgba data
-    std::vector<unsigned char> imgdata(m_width * m_height * 4);
+    std::vector<unsigned char> imgdata(static_cast<size_t>(m_width) * m_height * 4);
 
     wxm_nsvgRasterize(m_svgRast.get(), m_svgImage, 0, 0,
                   static_cast<double>(m_width) / (static_cast<double>(m_originalWidth)),

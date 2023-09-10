@@ -46,7 +46,7 @@ public:
   SvgBitmap(wxWindow *window, const unsigned char *data, size_t len, wxSize siz);
   ~SvgBitmap() override;
   SvgBitmap(SvgBitmap &&) = delete;
-  SvgBitmap &operator=(SvgBitmap &&o);
+  SvgBitmap &operator=(SvgBitmap &&o) noexcept;
 
   //! Sets the bitmap to a new size and renders the svg image at this size.
   const SvgBitmap& SetSize(int width, int height);
@@ -62,7 +62,7 @@ private:
   static struct wxm_NSVGrasterizer* m_svgRast;
   //! The renderable svg image after we have read it in
   std::unique_ptr<wxm_NSVGimage, decltype(std::free)*> m_svgImage{nullptr, std::free};
-  //! The window this bitmap will be drawn on
+  //! The window this bitmap will be drawn o
   wxWindow *m_window = NULL;
 };
 

@@ -764,11 +764,11 @@ std::unique_ptr<Cell> MathParser::ParseSubSupTag(wxXmlNode *node) {
       pos = child->GetAttribute("pos", wxEmptyString);
       if (pos == "presub")
         subsup->SetPreSub(std::move(cell));
-      if (pos == "presup")
+      else if (pos == "presup")
         subsup->SetPreSup(std::move(cell));
-      if (pos == "postsup")
+      else if (pos == "postsup")
         subsup->SetPostSup(std::move(cell));
-      if (pos == "postsub")
+      else if (pos == "postsub")
         subsup->SetPostSub(std::move(cell));
       child = SkipWhitespaceNode(child);
       child = GetNextTag(child);

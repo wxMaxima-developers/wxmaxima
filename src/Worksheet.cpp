@@ -764,6 +764,7 @@ GroupCell *Worksheet::InsertGroupCells(std::unique_ptr<GroupCell> &&cells,
     m_tree = std::move(cells);
   } else if (!where) {
     CellList::SpliceInAfter(lastOfCellsToInsert, std::move(m_tree));
+    RequestRedraw(cells.get());
     m_tree = std::move(cells);
   } else {
     CellList::SpliceInAfter(where, std::move(cells), lastOfCellsToInsert);
@@ -787,7 +788,6 @@ GroupCell *Worksheet::InsertGroupCells(std::unique_ptr<GroupCell> &&cells,
     TreeUndo_MarkCellsAsAdded(firstOfCellsToInsert, lastOfCellsToInsert,
                               undoBuffer);
 
-  RequestRedraw(cells.get());
   AdjustSize();
   return lastOfCellsToInsert;
 }
@@ -2699,7 +2699,10 @@ wxString Worksheet::ConvertSelectionToMathML() {
 			     ostream.GetOutputStreamBuffer()->GetBufferSize());
 
       // Now the string has a header we want to get rid of again.
-      s = s.SubString(s.Find("\n") + 1, s.Length());
+      auto pos = s.Find("\n");
+      wxASSERT(pos >= 0);
+      if(pos >= 0)
+	s = s.SubString(static_cast<size_t>(pos) + 1, s.Length());
     }
   }
   Recalculate();
@@ -3386,10 +3389,10 @@ GroupCell *Worksheet::EndOfSectioningUnit(GroupCell *start) {
 
   // Begin with the cell after the start cell - that might contain a section
   // start of any sorts.
-  GroupCell *end = start->GetNext();
-  if (!end)
-    return start;
-
+  GroupCell *end = start;
+  if(end->GetNext())
+    end = end->GetNext();
+  
   // Find the end of the chapter/section/...
   while (end->GetNext() && IsLesserGCType(end->GetGroupType(), endgrouptype))
     end = end->GetNext();
