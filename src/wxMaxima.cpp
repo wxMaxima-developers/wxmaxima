@@ -2082,7 +2082,7 @@ void wxMaxima::SendMaxima(wxString s, bool addToHistory) {
   // Normally we catch parenthesis errors before adding cells to the
   // evaluation queue. But if the error is introduced only after the
   // cell is placed in the evaluation queue we need to catch it here.
-  int index;
+  size_t index;
   wxString parenthesisError = GetUnmatchedParenthesisState(s, index);
   if (parenthesisError.IsEmpty()) {
     s = m_worksheet->UnicodeToMaxima(s);
@@ -10213,7 +10213,7 @@ void wxMaxima::EvaluateEvent(wxCommandEvent &WXUNUSED(event)) {
   TriggerEvaluation();
 }
 
-wxString wxMaxima::GetUnmatchedParenthesisState(wxString text, int &index) {
+wxString wxMaxima::GetUnmatchedParenthesisState(wxString text, size_t &index) {
   text.Trim(false);
   if (text.EndsWith(wxS("\\")))
     return (_("Cell ends in a backslash"));
@@ -10401,7 +10401,7 @@ void wxMaxima::TriggerEvaluation() {
   wxString text = m_worksheet->m_evaluationQueue.GetCommand();
   m_commandIndex = m_worksheet->m_evaluationQueue.GetIndex();
   if ((text != wxEmptyString) && (text != wxS(";")) && (text != wxS("$"))) {
-    int index;
+    size_t index;
     wxString parenthesisError =
       GetUnmatchedParenthesisState(tmp->GetEditable()->ToString(true), index);
     if (parenthesisError.IsEmpty()) {

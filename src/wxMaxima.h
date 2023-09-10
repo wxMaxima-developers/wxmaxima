@@ -255,7 +255,7 @@ private:
 
     If text doesn't contain any error this function returns wxEmptyString
   */
-  wxString GetUnmatchedParenthesisState(wxString text, int &index);
+  wxString GetUnmatchedParenthesisState(wxString text, size_t &index);
   //! The buffer all text from maxima is stored in before converting it to a wxString.
   wxMemoryBuffer m_uncompletedChars;
 

@@ -1551,7 +1551,8 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent &event) {
       
       if (line < m_numberOfLines - 1) // can we go down ?
 	{
-	  size_t scrolllength = m_configuration->GetCanvasSize().y - m_charHeight;
+	  size_t scrolllength = static_cast<size_t>(m_configuration->GetCanvasSize().y) -
+	    m_charHeight;
 	  
 	  while ((line < m_numberOfLines - 1) && (scrolllength > 0)) {
 	    line++;
@@ -1618,7 +1619,7 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent &event) {
 
       if (line > 0) // can we go up?
 	{
-	  size_t scrolllength = m_configuration->GetCanvasSize().y - m_charHeight;
+	  size_t scrolllength = static_cast<size_t>(m_configuration->GetCanvasSize().y) - m_charHeight;
 
 	  while ((line > 0) && (scrolllength > 0)) {
 	    line--;
@@ -2379,7 +2380,7 @@ void EditorCell::SelectPointText(const wxPoint point) {
   //  posInCell -= wxPoint(m_fontSize, 2);
   posInCell.y -= m_center;
 
-  size_t lin = posInCell.y / m_charHeight + 1;
+  size_t lin = static_cast<size_t>(posInCell.y) / m_charHeight + 1;
   if (posInCell.y < 0)
     lin = 0;
   size_t lineStart = XYToPosition(0, lin);
@@ -2656,7 +2657,7 @@ wxString EditorCell::SelectWordUnderCaret(bool WXUNUSED(selectParens),
     if (!wxIsalnum(*it) && !(*it == '\\') && !(*it == '_') && !(*it == '?') &&
         !(*it == '%') && !((*it == '\"') && includeDoubleQuotes)) {
       // !!toRight is 0, if toRight is false or guaranteed to be 1, if toRight
-      // is true
+      // !! toRight either is 0 or 1.
       if (pos >= CursorPosition() + !!toRight)
         break;
       else
@@ -2677,7 +2678,11 @@ bool EditorCell::CopyToClipboard() const {
   wxASSERT_MSG(!wxTheClipboard->IsOpened(),
                _("Bug: The clipboard is already opened"));
   auto start = SelectionLeft();
-  auto end = SelectionRight() - 1;
+  size_t end;
+  if(SelectionRight() > 0)
+    end = SelectionRight() - 1;
+  else
+    end = 0;
   if (end > m_text.Length())
     end = m_text.Length();
   wxString s = m_text.SubString(start, end);
@@ -3564,8 +3569,12 @@ bool EditorCell::FindNext_RegEx(wxString str, const bool &down) {
       if (down)
         start = SelectionLeft() + 1;
       else
+      {
+        if(SelectionRight() == 0)
+          return false;
         start = SelectionRight() - 1;
-      if((start < 0) || (start >= m_text.Length()))
+       }
+      if(start >= m_text.Length())
 	return false;
     } else {
       // We are at the start of a match, but the search expression has changed
@@ -3573,8 +3582,12 @@ bool EditorCell::FindNext_RegEx(wxString str, const bool &down) {
         if (down)
           start =SelectionLeft() + 1;
         else
-          start = SelectionRight() - 1;
-	if((start < 0) || (start >= m_text.Length()))
+      {
+        if(SelectionRight() == 0)
+          return false;
+        start = SelectionRight() - 1;
+       }
+	if(start >= m_text.Length())
 	  return false;
       } else {
 	start = CursorPosition();
