@@ -160,7 +160,7 @@ void SubSupCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
     if (m_preSubCell) {
       wxPoint presub = point;
       presub.x += preWidth - m_preSubCell->GetFullWidth();
-      presub.y += m_baseCell->GetMaxDrop() + m_preSubCell->GetCenterList() -
+      presub.y += static_cast<long>(m_baseCell->GetMaxDrop()) + m_preSubCell->GetCenterList() -
 	.8 * m_fontSize_Scaled + static_cast<long>(MC_EXP_INDENT);
       m_preSubCell->DrawList(presub, dc, antialiassingDC);
     }

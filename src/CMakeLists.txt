@@ -159,23 +159,6 @@ set(SOURCE_FILES
     wxMaximaIcon.cpp
 )
 
-try_compile(NANOSVG_CAUSES_NO_LINK_ERROR
-	SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/nanoSVGTest.cpp 
-	LINK_LIBRARIES ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
-try_compile(NANOSVG_COMPILES
-	SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/nanoSVGTest.cpp )
-
-if(NANOSVG_COMPILES)
-	message(STATUS "nanoSVG could be compiled")
-else()
-	message(STATUS "Trying to compile nanoSVG into a separate file failed?!?")
-endif()
-if(NANOSVG_CAUSES_NO_LINK_ERROR)
-	message(STATUS "Linking nanoSVG with wxWidgets doesn't cause a link error")
-else()
-	message(STATUS "Trying to link nanoSVG with wxWidgets failed")
-endif()
-
 if(NOT CYGWIN)
     list(APPEND SOURCE_FILES ${CMAKE_CURRENT_BINARY_DIR}/wxmaxima.rc)
 endif()
@@ -245,7 +228,9 @@ endif()
 
 if(WIN32)
   add_executable(wxmaxima WIN32 ${SOURCE_FILES})
-  set_target_properties(wxmaxima PROPERTIES VS_DPI_AWARE "PerMonitor")
+  if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.16")
+    set_target_properties(wxmaxima PROPERTIES VS_DPI_AWARE "PerMonitor")
+  endif()
 elseif(APPLE)
     set(MACOSX_BUNDLE_NAME wxmaxima)
     set(MACOSX_BUNDLE_ICON_FILE wxmac.icns)
@@ -294,10 +279,12 @@ else()
   set(USE_WEBVIEW "1")
 endif()
 
-if(WXM_ENABLE_PRECOMPILED_HEADERS)
-  target_precompile_headers(wxmaxima PUBLIC "precomp.h")
-else()
-  set(USE_PRECOMP_HEADER "0")
+if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.16")
+  if(WXM_ENABLE_PRECOMPILED_HEADERS)
+    target_precompile_headers(wxmaxima PUBLIC "precomp.h")
+  else()
+    set(USE_PRECOMP_HEADER "0")
+  endif()
 endif()
 
 file(RELATIVE_PATH TRANSLATIONS_DIR ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_SOURCE_DIR}/locales/wxMaxima/)
