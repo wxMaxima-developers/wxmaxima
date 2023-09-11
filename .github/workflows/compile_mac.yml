@@ -13,7 +13,7 @@ jobs:
   #   runs-on: osx-arm64
   #   steps:
   #     - name: Checkout wxMaxima from git
-  #       uses: actions/checkout@v3
+  #       uses: actions/checkout@v4
   #       with:
   #         # We must fetch at least the immediate parents so that if this is
   #         # a pull request then we can checkout the head.
@@ -49,7 +49,7 @@ jobs:
 
     steps:
       - name: Checkout wxMaxima from git
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           # We must fetch at least the immediate parents so that if this is
           # a pull request then we can checkout the head.
@@ -103,7 +103,7 @@ jobs:
 
     steps:
       - name: Checkout_git
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           # We must fetch at least the immediate parents so that if this is
           # a pull request then we can checkout the head.
@@ -137,7 +137,7 @@ jobs:
   #         path: /opt/local/
   #         key: ${{ runner.os }}-macports-${{ hashFiles('macos_build.txt') }}
   #     - name: Checkout wxMaxima from git
-  #       uses: actions/checkout@v3
+  #       uses: actions/checkout@v4
   #       with:
   #         # We must fetch at least the immediate parents so that if this is
   #         # a pull request then we can checkout the head.
