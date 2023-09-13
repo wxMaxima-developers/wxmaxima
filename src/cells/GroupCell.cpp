@@ -48,6 +48,7 @@
 #include <wx/log.h>
 #include <wx/string.h>
 #include <wx/config.h>
+#include <clocale>
 
 #ifdef __WINDOWS__
 constexpr bool TEMPORARY_WINDOWS_PERFORMANCE_HACK = true;
@@ -1114,15 +1115,19 @@ wxString GroupCell::ToTeXCodeCell(wxString imgDir, wxString filename,
   if (m_configuration->ShowCodeCells()) {
     // For LaTeX export we must use a dot as decimal separator
     // Save LC_NUMERIC, set it to "C", print out the float and then restore it.
-    const std::string saved_lc_numeric{
-      setlocale(LC_NUMERIC, NULL)}; // get current LC_NUMERIC locale
-    setlocale(LC_NUMERIC, "C");
+    char *old_lc_numeric;
+    wxString saved_lc_numeric("C");
+    old_lc_numeric = 
+      std::setlocale(LC_NUMERIC, NULL); // get current LC_NUMERIC locale
+    if (old_lc_numeric)
+      saved_lc_numeric = wxString::FromUTF8(old_lc_numeric);
+    std::setlocale(LC_NUMERIC, "C");
     str += wxString::Format(
 			    "\n\n\\noindent\n%%%%%%%%%%%%%%%%\n%%%% "
 			    "INPUT:\n\\begin{minipage}[t]{%fem}\\color{red}\\bfseries\n",
 			    static_cast<double>(m_configuration->GetLabelWidth() / 14)) +
       m_inputLabel->ToTeX() + wxString("\n\\end{minipage}");
-    setlocale(LC_NUMERIC, saved_lc_numeric.c_str());
+    std::setlocale(LC_NUMERIC, saved_lc_numeric.c_str());
 
     if (m_inputLabel->GetNext()) {
       str += wxS("\n\\begin{minipage}[t]{\\textwidth}\\color{blue}\n") +
