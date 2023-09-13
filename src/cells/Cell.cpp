@@ -1190,7 +1190,7 @@ wxAccStatus Cell::GetFocus(int *childId, Cell **child) const {
 	wxACC_OK;
   }
 
-  return (childId && (*childId = 0)), (child && (*child = nullptr)), //-V560
+  return (childId && (*childId == 0)), (child && (*child == nullptr)), //-V560
     wxACC_FAIL;
 }
 
