@@ -132,7 +132,8 @@ void Cell::CopyCommonData(const Cell &cell) {
   wxASSERT(cell.m_toolTip);
   if (cell.m_ownsToolTip) {
     m_ownsToolTip = true;
-    m_toolTip = new wxString(*cell.m_toolTip);
+    if(cell.m_toolTip)
+      m_toolTip = new wxString(*cell.m_toolTip);
   } else
     m_toolTip = cell.m_toolTip;
 
