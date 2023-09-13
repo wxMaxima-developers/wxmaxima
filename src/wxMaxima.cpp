@@ -5333,12 +5333,12 @@ void wxMaxima::UpdateToolBar() {
 }
 
 wxString wxMaxima::ExtractFirstExpression(const wxString &entry) {
-  int semicolon = entry.Find(';');
-  int dollar = entry.Find('$');
+  long semicolon = entry.Find(';');
+  long dollar = entry.Find('$');
   bool semiFound = (semicolon != wxNOT_FOUND);
   bool dollarFound = (dollar != wxNOT_FOUND);
 
-  int index;
+  size_t index;
   if (semiFound && dollarFound)
     index = wxMin(semicolon, dollar);
   else if (semiFound && !dollarFound)
@@ -5610,6 +5610,8 @@ void wxMaxima::ReadStdErr() {
     wxASSERT_MSG(
 		 m_maximaStdout != NULL,
 		 wxS("Bug: Trying to read from maxima but don't have an input stream"));
+    if(m_maximaStdout == NULL)
+      return;
     wxTextInputStream istrm(*m_maximaStdout, wxS('\t'),
                             wxConvAuto(wxFONTENCODING_UTF8));
     wxString o;
@@ -5632,6 +5634,8 @@ void wxMaxima::ReadStdErr() {
     wxASSERT_MSG(m_maximaStderr != NULL,
                  wxS("Bug: Trying to read from maxima but don't have a error "
                      "input stream"));
+    if(m_maximaStderr == NULL)
+      return;
     wxTextInputStream istrm(*m_maximaStderr, wxS('\t'),
                             wxConvAuto(wxFONTENCODING_UTF8));
     wxString o;
