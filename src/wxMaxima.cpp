@@ -9147,8 +9147,8 @@ void wxMaxima::CommandWiz(
 			  wxString defaultval8, wxString tooltip8, wxString label9,
 			  wxString defaultval9, wxString tooltip9) {
   m_wizard->NewWizard(
-		      std::move(description), std::move(description_tooltip),
-		      std::move(commandRule), std::move(label1), std::move(defaultval1),
+		      description, description_tooltip,
+		      commandRule, std::move(label1), std::move(defaultval1),
 		      std::move(tooltip1), std::move(label2), std::move(defaultval2),
 		      std::move(tooltip2), std::move(label3), std::move(defaultval3),
 		      std::move(tooltip3), std::move(label4), std::move(defaultval4),
