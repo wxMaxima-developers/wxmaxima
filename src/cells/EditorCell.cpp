@@ -2778,7 +2778,9 @@ wxCoord EditorCell::GetLineWidth(size_t line, size_t pos) {
   // the indentation needed.
   size_t currentLine = 1;
   wxCoord indentPixels = 0;
+  SetFont(m_configuration->GetRecalcDC());
 
+  // Determine how many pixels the line is indented.
   for (const auto &textSnippet : m_styledText) {
     if (currentLine > line)
       break;
@@ -2788,43 +2790,50 @@ wxCoord EditorCell::GetLineWidth(size_t line, size_t pos) {
     }
   }
 
+  // If the caller wants to know the position of the first character we can
+  // already return a number
   if (pos == 0) {
     return indentPixels;
   }
 
-  size_t i = 0;
+  // TODO: Are we sure that this for loop does generate a result the last one
+  // didn't calculate?
+  size_t lin = 0;
   std::vector<StyledText>::const_iterator textSnippet;
   for (textSnippet = m_styledText.begin();
-       (textSnippet < m_styledText.end()) && (i < line); ++textSnippet) {
+       (textSnippet < m_styledText.end()) && (lin < line); ++textSnippet) {
     wxString text = textSnippet->GetText();
     if ((text.Right(1) == '\n') || (text.Right(1) == '\r'))
-      i++;
+      lin++;
   }
 
-  if (i < line)
+  // Handle the case that the caller wants to know a position beyond the
+  // end of the text
+  if (lin < line)
     return 0;
 
-  SetFont(m_configuration->GetRecalcDC());
-  wxCoord width = 0;
-  wxString text;
-  wxCoord textWidth = 0;
-  pos--;
-  for (; (textSnippet < m_styledText.end()) && (pos >= 0); ++textSnippet) {
-    text = textSnippet->GetText();
-    textWidth = GetTextSize(text).GetWidth();
-    width += textWidth;
-    pos -= text.Length();
+  // Step through the text snippets before the cursor in the current line
+  // and add up their lengths
+  wxCoord lineWidth = indentPixels;
+  wxString snippet;
+  for (; textSnippet < m_styledText.end(); ++textSnippet) {
+    snippet = textSnippet->GetText();
+    if(snippet.Length() <= pos)
+      {
+	pos -= snippet.Length();
+	wxCoord snippetWidth = GetTextSize(snippet).GetWidth();
+	lineWidth += snippetWidth;
+      }
+    else
+      {
+	wxString partialSnippet = snippet.Left(pos);
+	wxCoord snippetWidth = GetTextSize(partialSnippet).GetWidth();
+	lineWidth += snippetWidth;
+	break;
+      }
   }
 
-  if (pos > 0) {
-    width -= textWidth;
-    wxString partialSnippet = text.SubString(0, text.Length() + pos);
-    textWidth = GetTextSize(partialSnippet).GetWidth();
-    width += textWidth;
-  }
-
-  // Handle indentation
-  return width + indentPixels;
+  return lineWidth;
 }
 
 void EditorCell::SetState(const HistoryEntry &state) {
