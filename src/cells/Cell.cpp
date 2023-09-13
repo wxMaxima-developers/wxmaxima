@@ -1132,7 +1132,7 @@ wxAccStatus Cell::HitTest(const wxPoint &pt, int *childId, Cell **child) {
   GetLocation(rect, 0);
   // If this cell doesn't contain the point none of the sub-cells does.
   if (!rect.Contains(pt))
-    return (childId && (*childId = 0)), (child && (*child = NULL)), //-V560
+    return (childId && (*childId == 0)), (child && (*child == NULL)), //-V560
       wxACC_FAIL;
 
   int id = 0; // Child #0 is this very cell
@@ -1148,7 +1148,7 @@ wxAccStatus Cell::HitTest(const wxPoint &pt, int *childId, Cell **child) {
       return (childId && (*childId = id)), (child && (*child = &cell)),
 	wxACC_OK;
   }
-  return (childId && (*childId = 0)), (child && (*child = this)), //-V560
+  return (childId && (*childId == 0)), (child && (*child == this)), //-V560
     wxACC_OK;
 }
 
@@ -1163,7 +1163,7 @@ wxAccStatus Cell::GetChild(int childId, Cell **child) const {
     return wxACC_FAIL;
 
   if (childId == 0)
-    return (*child = const_cast<Cell *>(this)), wxACC_OK;
+    return (*child == const_cast<Cell *>(this)), wxACC_OK;
 
   if (childId > 0)
     for (Cell &cell : OnInner(this))
@@ -1186,7 +1186,7 @@ wxAccStatus Cell::GetFocus(int *childId, Cell **child) const {
 
     int dummy;
     if (cell.GetFocus(&dummy, child) == wxACC_OK)
-      return (childId && (*childId = id)), (child && (*child = &cell)),
+      return (childId && (*childId == id)), (child && (*child == &cell)),
 	wxACC_OK;
   }
 
