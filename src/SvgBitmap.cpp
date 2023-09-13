@@ -92,7 +92,7 @@ const SvgBitmap &SvgBitmap::SetSize(int width, int height) {
     return *this;
   }
 
-  std::vector<unsigned char> imgdata(static_cast<long>(width) * height * 4);
+  std::vector<unsigned char> imgdata(static_cast<size_t>(width) * height * 4);
 
   // Actually render the bitmap
   wxm_nsvgRasterize(m_svgRast, m_svgImage.get(), 0, 0,

@@ -3394,8 +3394,9 @@ GroupCell *Worksheet::EndOfSectioningUnit(GroupCell *start) {
     end = end->GetNext();
   
   // Find the end of the chapter/section/...
-  while (end->GetNext() && IsLesserGCType(end->GetGroupType(), endgrouptype))
-    end = end->GetNext();
+  if(end)
+    while (end->GetNext() && IsLesserGCType(end->GetGroupType(), endgrouptype))
+      end = end->GetNext();
 
   return end;
 }

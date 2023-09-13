@@ -696,7 +696,7 @@ void EditorCell::MarkSelection(wxDC *dc, size_t start, size_t end, TextStyle sty
 
       point = PositionToPoint(pos_left);  // left  point
       point1 = PositionToPoint(pos_right); // right point
-      size_t selectionWidth = point1.x - point.x;
+      wxCoord selectionWidth = point1.x - point.x;
       wxRect rect;
 #if defined(__WXOSX__)
       rect = GetRect(); // rectangle representing the cell

@@ -145,7 +145,7 @@ void BTextCtrl::CloseParenthesis(wxString open, wxString close, bool fromOpen) {
 
     if(from >= 0) {
 	wxString newtext = text.SubString(0, static_cast<size_t>(from) - 1) +
-	  open + text.SubString(from, to - 1) + close +
+	  open + text.SubString(from, static_cast<size_t>(to) - 1) + close +
 	  text.SubString(to, text.length());
 	
 		      ChangeValue(newtext);
