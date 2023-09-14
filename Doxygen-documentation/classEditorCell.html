@@ -291,10 +291,14 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEditorCell.html#a1ce69a1557d3ef113a1fc107c2a5ab98">XYToPosition</a> (size_t x, size_t y)</td></tr>
 <tr class="memdesc:a1ce69a1557d3ef113a1fc107c2a5ab98"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines which index the char at the position "x chars left, y chars down" is at. <br /></td></tr>
 <tr class="separator:a1ce69a1557d3ef113a1fc107c2a5ab98"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a49c8af4814c5acdb05f61e2ed753f465"><td class="memItemLeft" align="right" valign="top"><a id="a49c8af4814c5acdb05f61e2ed753f465"></a>
-wxPoint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEditorCell.html#a49c8af4814c5acdb05f61e2ed753f465">PositionToPoint</a> (int pos=-1) override</td></tr>
-<tr class="memdesc:a49c8af4814c5acdb05f61e2ed753f465"><td class="mdescLeft">&#160;</td><td class="mdescRight">The screen coordinates of the cursor. <br /></td></tr>
-<tr class="separator:a49c8af4814c5acdb05f61e2ed753f465"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aee2e4419dba49c4fe442356e4fe86dd8"><td class="memItemLeft" align="right" valign="top"><a id="aee2e4419dba49c4fe442356e4fe86dd8"></a>
+wxPoint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEditorCell.html#aee2e4419dba49c4fe442356e4fe86dd8">PositionToPoint</a> (size_t pos) override</td></tr>
+<tr class="memdesc:aee2e4419dba49c4fe442356e4fe86dd8"><td class="mdescLeft">&#160;</td><td class="mdescRight">The screen coordinates of the cursor. <br /></td></tr>
+<tr class="separator:aee2e4419dba49c4fe442356e4fe86dd8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a984fe2e0c07f031fc103bbdd72c1f70a"><td class="memItemLeft" align="right" valign="top"><a id="a984fe2e0c07f031fc103bbdd72c1f70a"></a>
+wxPoint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEditorCell.html#a984fe2e0c07f031fc103bbdd72c1f70a">PositionToPoint</a> () override</td></tr>
+<tr class="memdesc:a984fe2e0c07f031fc103bbdd72c1f70a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Locates the cursor in the editable text of this cell. <br /></td></tr>
+<tr class="separator:a984fe2e0c07f031fc103bbdd72c1f70a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adfa73a425db8d54d6b13bfdff40cee54"><td class="memItemLeft" align="right" valign="top"><a id="adfa73a425db8d54d6b13bfdff40cee54"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEditorCell.html#adfa73a425db8d54d6b13bfdff40cee54">SelectPointText</a> (wxPoint point) override</td></tr>
 <tr class="memdesc:adfa73a425db8d54d6b13bfdff40cee54"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the cursor to the screen coordinate point. <br /></td></tr>
@@ -862,10 +866,10 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#ac2c7b0f78b2d1e9e0d2865305fdbe07e">ProcessEvent</a> (wxKeyEvent &amp;WXUNUSED(event))</td></tr>
 <tr class="memdesc:ac2c7b0f78b2d1e9e0d2865305fdbe07e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Processes a key event. <br /></td></tr>
 <tr class="separator:ac2c7b0f78b2d1e9e0d2865305fdbe07e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad24cc4463bff20ed19d83eea099a4b44"><td class="memItemLeft" align="right" valign="top"><a id="ad24cc4463bff20ed19d83eea099a4b44"></a>
-virtual wxPoint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#ad24cc4463bff20ed19d83eea099a4b44">PositionToPoint</a> (int WXUNUSED(pos)=-1)</td></tr>
-<tr class="memdesc:ad24cc4463bff20ed19d83eea099a4b44"><td class="mdescLeft">&#160;</td><td class="mdescRight">Locates a char in the editable text of this cell. <br /></td></tr>
-<tr class="separator:ad24cc4463bff20ed19d83eea099a4b44"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:affb518e214e892d67c6e252eb303fece"><td class="memItemLeft" align="right" valign="top"><a id="affb518e214e892d67c6e252eb303fece"></a>
+virtual wxPoint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#affb518e214e892d67c6e252eb303fece">PositionToPoint</a> (size_t WXUNUSED(pos))</td></tr>
+<tr class="memdesc:affb518e214e892d67c6e252eb303fece"><td class="mdescLeft">&#160;</td><td class="mdescRight">Locates a char in the editable text of this cell. <br /></td></tr>
+<tr class="separator:affb518e214e892d67c6e252eb303fece"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abd91a61f26bcce4f6d783a963727faaf"><td class="memItemLeft" align="right" valign="top"><a id="abd91a61f26bcce4f6d783a963727faaf"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#abd91a61f26bcce4f6d783a963727faaf">SetFocus</a> (bool WXUNUSED(focus))</td></tr>
 <tr class="memdesc:abd91a61f26bcce4f6d783a963727faaf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Focus this editor cell. <br /></td></tr>

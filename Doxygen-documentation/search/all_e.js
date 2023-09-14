@@ -18,7 +18,7 @@ var searchData=
   ['pointvisibleis_1098',['PointVisibleIs',['../classWorksheet.html#ac071af0406ed85b9e8669a9630999bc9',1,'Worksheet']]],
   ['populaterecentdocumentsmenu_1099',['PopulateRecentDocumentsMenu',['../classwxMaximaFrame.html#a82c022a0e467e75e697b7a065305d8dc',1,'wxMaximaFrame']]],
   ['populaterecentpackagesmenu_1100',['PopulateRecentPackagesMenu',['../classwxMaximaFrame.html#a6218bcb8c108890e9d8ea7312a339a8f',1,'wxMaximaFrame']]],
-  ['positiontopoint_1101',['PositionToPoint',['../classEditorCell.html#a49c8af4814c5acdb05f61e2ed753f465',1,'EditorCell::PositionToPoint()'],['../classCell.html#ad24cc4463bff20ed19d83eea099a4b44',1,'Cell::PositionToPoint()']]],
+  ['positiontopoint_1101',['PositionToPoint',['../classCell.html#affb518e214e892d67c6e252eb303fece',1,'Cell::PositionToPoint(size_t WXUNUSED(pos))'],['../classCell.html#aaa36d155774bc5968831c791e710e431',1,'Cell::PositionToPoint()'],['../classEditorCell.html#aee2e4419dba49c4fe442356e4fe86dd8',1,'EditorCell::PositionToPoint(size_t pos) override'],['../classEditorCell.html#a984fe2e0c07f031fc103bbdd72c1f70a',1,'EditorCell::PositionToPoint() override']]],
   ['positiontoxy_1102',['PositionToXY',['../classEditorCell.html#aab014fc6b15be1b1e5c265c06f7a5509',1,'EditorCell']]],
   ['powrise_1103',['PowRise',['../classExptCell.html#a40499d5c427329fd04e7876ccaba71e5',1,'ExptCell']]],
   ['predicatematcher_1104',['PredicateMatcher',['../classCatch_1_1Matchers_1_1Generic_1_1PredicateMatcher.html',1,'Catch::Matchers::Generic']]],
