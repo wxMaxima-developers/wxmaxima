@@ -91,8 +91,8 @@ namespace Format
 
 //! First line of the WXM files - used by both loading and saving code.
   extern const wxString WXMFirstLine;
+  extern const wxString m_emptyString;
 
-  wxString m_emptyString;
 }; // namespace Format
 
 #endif // WXMFORMAT_H

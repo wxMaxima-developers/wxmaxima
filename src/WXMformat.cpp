@@ -527,3 +527,4 @@ namespace Format {
   }
 
 } // namespace Format
+const wxString Format::m_emptyString;
