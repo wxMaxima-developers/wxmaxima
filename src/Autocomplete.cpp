@@ -42,6 +42,8 @@
 #include <wx/xml/xml.h>
 
 AutoComplete::AutoComplete(Configuration *configuration) {
+  for(unsigned i = 0; i < autoCompletionType::numberOfTypes; i++)
+    m_wordList.push_back(wxArrayString());
   m_configuration = configuration;
 }
 

@@ -64,13 +64,14 @@ public:
   //! All types of things we can autocomplete
   enum autoCompletionType
   {
-    command, //! Command names. \attention Must be the first entry in this enum
+    command = 0, //! Command names. \attention Must be the first entry in this enum
     tmplte,  //! Function templates
     loadfile,//! loadable files
     demofile,//! loadable files
     generalfile,//! general files
     esccommand, //! Esc commands describing symbols
-    unit    //! Unit names. \attention Must be the last entry in this enum
+    unit,    //! Unit names. \attention Must be the last entry in this enum
+    numberOfTypes //! Not a completion type, but the marker for how many types there are
   };
   explicit AutoComplete(Configuration *configuration);
 
@@ -278,7 +279,7 @@ private:
   void WaitForBackgroundThreads();
   
   //! The lists of autocompletable symbols for the classes defined in autoCompletionType
-  wxArrayString m_wordList[7];
+  std::vector<wxArrayString> m_wordList;
   static wxRegEx m_args;
   WorksheetWords m_worksheetWords;
   std::unique_ptr<std::thread> m_addSymbols_backgroundThread;
