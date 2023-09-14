@@ -94,11 +94,17 @@ namespace Format {
     }
     static const wxString &GetStart(WXMHeaderId index) {
       wxASSERT(index >= 0 && size_t(index) < size);
-      return WXMHeaders[index].start;
+      if((index >= 0 && size_t(index) < size))	
+	return WXMHeaders[index].start;
+      else
+	return wxEmptyString;
     }
     static const wxString &GetEnd(WXMHeaderId index) {
       wxASSERT(index >= 0 && size_t(index) < size);
-      return WXMHeaders[index].end;
+      if((index >= 0 && size_t(index) < size))	
+	return WXMHeaders[index].end;
+      else
+	return wxEmptyString;
     }
     static const wxString &GetStart(GroupType type) {
       return GetStart(WXMHeaderId(type));
