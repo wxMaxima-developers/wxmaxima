@@ -1207,7 +1207,7 @@ wxAccStatus Cell::GetDefaultAction(int childId, wxString *actionName) const {
     return actionName->Clear(), wxACC_OK;
 
   Cell *childCell = nullptr;
-  if (GetChild(childId, &childCell) = wxACC_OK && childCell)
+  if (GetChild(childId, &childCell) == wxACC_OK && childCell)
     return childCell->GetDefaultAction(0, actionName);
 
   actionName->clear();
