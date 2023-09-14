@@ -232,9 +232,9 @@ private:
   //! Searches for maxima's output prompts
 //  static wxRegEx m_outputPromptRegEx;
   //! The number of output cells the current command has produced so far.
-  int m_outputCellsFromCurrentCommand;
+  long m_outputCellsFromCurrentCommand;
   //! The maximum number of lines per command we will display
-  int m_maxOutputCellsPerCommand;
+  long m_maxOutputCellsPerCommand;
   /*! Double the number of consecutive unsuccessful attempts to connect to the maxima server
 
     Each prompt is deemed as but one hint for a working maxima while each crash counts twice
@@ -820,7 +820,7 @@ protected:
   //! Maxima's idea about gnuplot's location
   wxString m_gnuplotcommand;
   //! The Char the current command starts at in the current WorkingGroup
-  int m_commandIndex;
+  size_t m_commandIndex;
   FindReplacePane::FindReplaceData m_findData;
   static wxRegEx m_funRegEx;
   static wxRegEx m_varRegEx;
