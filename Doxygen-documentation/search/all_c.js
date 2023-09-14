@@ -33,6 +33,7 @@ var searchData=
   ['numberofstyles_1013',['NUMBEROFSTYLES',['../TextStyle_8h.html#a68ac52da6129614b3fa14e7c828c1993a4ff5d935a79c3cd0c1e5d3a188645046',1,'TextStyle.h']]],
   ['numberofsuggestions_1014',['NumberOfSuggestions',['../classEventIDs.html#a22036a6ca5e299f95646018f0d08f801',1,'EventIDs']]],
   ['numberoftoclevels_1015',['NumberOfTocLevels',['../classEventIDs.html#a883d6b4b1a30dcf3146e0ec3420f531c',1,'EventIDs']]],
-  ['numbersections_1016',['NumberSections',['../classWorksheet.html#aaae87decc0964b306316e5341b92f3d8',1,'Worksheet']]],
-  ['numericalmenu_1017',['NumericalMenu',['../classwxMaxima.html#a9c1ad69ebd56bb77c7f403d967f2ced2',1,'wxMaxima']]]
+  ['numberoftypes_1016',['numberOfTypes',['../classAutoComplete.html#a6225a91b46c0459755a62de137620b29a83b932a902206b352f3795faf6f2d231',1,'AutoComplete']]],
+  ['numbersections_1017',['NumberSections',['../classWorksheet.html#aaae87decc0964b306316e5341b92f3d8',1,'Worksheet']]],
+  ['numericalmenu_1018',['NumericalMenu',['../classwxMaxima.html#a9c1ad69ebd56bb77c7f403d967f2ced2',1,'wxMaxima']]]
 ];

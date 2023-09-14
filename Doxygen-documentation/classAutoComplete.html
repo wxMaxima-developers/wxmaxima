@@ -74,7 +74,7 @@ $(function() {
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
 <tr class="memitem:a6225a91b46c0459755a62de137620b29"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAutoComplete.html#a6225a91b46c0459755a62de137620b29">autoCompletionType</a> { <br />
-&#160;&#160;<b>command</b>
+&#160;&#160;<b>command</b> = 0
 , <a class="el" href="classAutoComplete.html#a6225a91b46c0459755a62de137620b29a537040456dba8d9d080cdb4bcd15bcad">tmplte</a>
 , <a class="el" href="classAutoComplete.html#a6225a91b46c0459755a62de137620b29ae79474d174763269e5ba387002436e43">loadfile</a>
 , <a class="el" href="classAutoComplete.html#a6225a91b46c0459755a62de137620b29a653d70d312cae37be23d27c9526317f7">demofile</a>
@@ -82,6 +82,7 @@ Public Types</h2></td></tr>
 &#160;&#160;<a class="el" href="classAutoComplete.html#a6225a91b46c0459755a62de137620b29a5d27d54eac21bd6060c332d95314b445">generalfile</a>
 , <a class="el" href="classAutoComplete.html#a6225a91b46c0459755a62de137620b29aee4022f4d28eb504969b3042359544e4">esccommand</a>
 , <a class="el" href="classAutoComplete.html#a6225a91b46c0459755a62de137620b29ac18a9c878b44c379ca78faedaac2cd6c">unit</a>
+, <a class="el" href="classAutoComplete.html#a6225a91b46c0459755a62de137620b29a83b932a902206b352f3795faf6f2d231">numberOfTypes</a>
 <br />
  }</td></tr>
 <tr class="memdesc:a6225a91b46c0459755a62de137620b29"><td class="mdescLeft">&#160;</td><td class="mdescRight">All types of things we can autocomplete.  <a href="classAutoComplete.html#a6225a91b46c0459755a62de137620b29">More...</a><br /></td></tr>
@@ -182,7 +183,9 @@ Static Public Member Functions</h2></td></tr>
 <tr><td class="fieldname"><a id="a6225a91b46c0459755a62de137620b29aee4022f4d28eb504969b3042359544e4"></a>esccommand&#160;</td><td class="fielddoc"><p>general files </p>
 </td></tr>
 <tr><td class="fieldname"><a id="a6225a91b46c0459755a62de137620b29ac18a9c878b44c379ca78faedaac2cd6c"></a>unit&#160;</td><td class="fielddoc"><p>Esc commands describing symbols. </p>
-<p>Unit names. </p><dl class="section attention"><dt>Attention</dt><dd>Must be the last entry in this enum </dd></dl>
+</td></tr>
+<tr><td class="fieldname"><a id="a6225a91b46c0459755a62de137620b29a83b932a902206b352f3795faf6f2d231"></a>numberOfTypes&#160;</td><td class="fielddoc"><p>Unit names. </p>
+<dl class="section attention"><dt>Attention</dt><dd>Must be the last entry in this enum Not a completion type, but the marker for how many types there are </dd></dl>
 </td></tr>
 </table>
 
