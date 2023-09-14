@@ -18,7 +18,7 @@ var searchData=
   ['m_5fcellsingroup_719',['m_cellsInGroup',['../classGroupCell.html#a9f6efe22f925fcaf88c2f45f494f094f',1,'GroupCell']]],
   ['m_5fcellunderpointer_720',['m_cellUnderPointer',['../classCellPointers.html#abf52a2270e73be5f8cde303c6dab0fd6',1,'CellPointers']]],
   ['m_5fclosing_721',['m_closing',['../classwxMaxima.html#a9ecc598661f55af9f94c9d7a3c244264',1,'wxMaxima']]],
-  ['m_5fcommandindex_722',['m_commandIndex',['../classwxMaxima.html#a5d36152bc0212484a4b6b2477e5594c8',1,'wxMaxima']]],
+  ['m_5fcommandindex_722',['m_commandIndex',['../classwxMaxima.html#a6cbeeb45bb33e6e5272e3a590761d985',1,'wxMaxima']]],
   ['m_5fcommandsleftincurrentcell_723',['m_commandsLeftInCurrentCell',['../classwxMaximaFrame.html#a30b787ac938b5f749ee6f6aacec8d762',1,'wxMaximaFrame']]],
   ['m_5fcompressedimage_724',['m_compressedImage',['../classImage.html#ab8cad9e339ba1917923f7a639ac6daa0',1,'Image']]],
   ['m_5fconfiguration_725',['m_configuration',['../classCell.html#ab838986df358498e18db0df480910aa5',1,'Cell']]],
