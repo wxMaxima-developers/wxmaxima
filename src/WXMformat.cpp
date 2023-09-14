@@ -97,14 +97,14 @@ namespace Format {
       if((index >= 0 && size_t(index) < size))	
 	return WXMHeaders[index].start;
       else
-	return wxEmptyString;
+	return m_emptyString;
     }
     static const wxString &GetEnd(WXMHeaderId index) {
       wxASSERT(index >= 0 && size_t(index) < size);
       if((index >= 0 && size_t(index) < size))	
 	return WXMHeaders[index].end;
       else
-	return wxEmptyString;
+	return m_emptyString;
     }
     static const wxString &GetStart(GroupType type) {
       return GetStart(WXMHeaderId(type));
