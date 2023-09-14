@@ -1001,8 +1001,6 @@ wxString EditorCell::GetCurrentCommand() {
 }
 
 wxString EditorCell::TabExpand(const wxString &input_, size_t posInLine) {
-  if (posInLine < 0)
-    posInLine = 0;
   wxString retval;
 
   // Convert the text to our line endings.
@@ -1055,8 +1053,6 @@ size_t EditorCell::BeginningOfLine(size_t pos) const {
     pos = m_text.size();
   if (pos > 0)
     pos--;
-  if (pos < 0)
-    pos = 0;
   while (pos > 0) {
     if ((m_text[pos] == wxS('\n')) || (m_text[pos] == wxS('\r')))
       break;
@@ -1068,8 +1064,6 @@ size_t EditorCell::BeginningOfLine(size_t pos) const {
 }
 
 size_t EditorCell::EndOfLine(size_t pos) {
-  if (pos < 0)
-    pos = 0;
   while (pos < m_text.length() && m_text[pos] != wxS('\n') &&
          m_text[pos] != wxS('\r'))
     pos++;
@@ -1290,11 +1284,13 @@ size_t EditorCell::GetIndentDepth(wxString text, size_t positionOfCaret) {
   if (((rightOfCursor.StartsWith(wxS("else"))) ||
        (rightOfCursor.StartsWith(wxS("then")))) &&
       (rightOfCursor.Length() > 4) && (!(wxIsalnum(rightOfCursor[4]))))
-    retval -= 4;
-
-  if (retval < 0)
-    retval = 0;
-
+    {
+      if(retval >= 4)
+	retval -= 4;
+      else
+	retval = 0;
+    }
+  
   return retval;
 }
 
@@ -1398,7 +1394,7 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent &event) {
   case WXK_LEFT:
     {
       SaveValue();
-      auto pos = CursorPosition();
+      size_t pos = CursorPosition();
       if (event.ControlDown()) {
 	size_t lastpos = CursorPosition();
 	while ((pos > 0) &&
@@ -2121,11 +2117,6 @@ bool EditorCell::HandleOrdinaryKey(wxKeyEvent &event) {
  * @return true if matching quotation marks were found; false otherwise
  */
 bool EditorCell::FindMatchingQuotes() {
-  if (CursorPosition() < 0) {
-    m_paren1 = m_paren2 = -1;
-    return false;
-  }
-
   size_t pos = 0;
   for (auto const &tok : m_tokens) {
     if ((tok.GetText().StartsWith(wxS("\""))) &&
@@ -2346,7 +2337,7 @@ size_t EditorCell::XYToPosition(size_t x, size_t y) {
   return pos;
 }
 
-wxPoint EditorCell::PositionToPoint(int pos) {
+wxPoint EditorCell::PositionToPoint(size_t pos) {
   SetFont(m_configuration->GetRecalcDC());
 
   wxCoord x = m_currentPoint.x, y = m_currentPoint.y;
@@ -2356,9 +2347,6 @@ wxPoint EditorCell::PositionToPoint(int pos) {
 
   wxCoord width;
   size_t cX, cY;
-
-  if (pos < 0)
-    pos = CursorPosition();
 
   PositionToXY(pos, &cX, &cY);
 
@@ -3507,8 +3495,13 @@ bool EditorCell::FindNext(wxString str, const bool &down,
       if (down)
         start = SelectionLeft() + 1;
       else
-        start = SelectionRight() - 1;
-      if((start < 0) || (start >= m_text.Length()))
+	{
+	  if(SelectionRight() > 0)
+	    start = SelectionRight() - 1;
+	  else
+	    start = 0;
+	}
+      if(start >= m_text.Length())
 	return false;
     } else {
       // We are at the start of a match, but the search expression has changed
@@ -3516,8 +3509,13 @@ bool EditorCell::FindNext(wxString str, const bool &down,
         if (down)
           start = SelectionLeft() + 1;
         else
-          start = SelectionRight() - 1;
-	if((start < 0) || (start >= m_text.Length()))
+	  {
+	    if(SelectionRight() > 0)
+	      start = SelectionRight() - 1;
+	    else
+	      start = 0;
+	  }
+	if((start >= m_text.Length()))
 	  return false;
       } else {
 	start = CursorPosition();
@@ -3723,7 +3721,6 @@ TextStyle EditorCell::GetSelectionStyle() const {
       wxString text = textSnippet.GetText();
       if ((CursorPosition() >= pos) &&
 	  (CursorPosition() < pos + text.Length()) &&
-	  (CursorPosition() >= 0) &&
 	  (pos + text.Length() >= 0)) {
         if (textSnippet.IsStyleSet())
           return textSnippet.GetTextStyle();

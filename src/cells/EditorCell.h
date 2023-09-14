@@ -230,7 +230,8 @@ public:
   size_t XYToPosition(size_t x, size_t y);
 
   //! The screen coordinates of the cursor
-  wxPoint PositionToPoint(int pos = -1) override;
+  wxPoint PositionToPoint(size_t pos) override;
+  wxPoint PositionToPoint() override {return PositionToPoint(CursorPosition());}
 
   //! Sets the cursor to the screen coordinate point
   void SelectPointText(wxPoint point) override;

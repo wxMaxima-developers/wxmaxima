@@ -780,7 +780,11 @@ public:
     { return false; }
 
   //! Locates a char in the editable text of this cell
-  virtual wxPoint PositionToPoint(int WXUNUSED(pos) = -1)
+  virtual wxPoint PositionToPoint(size_t WXUNUSED(pos))
+    { return wxPoint(-1, -1); }
+
+  //! Locates the cursor in the editable text of this cell
+  virtual wxPoint PositionToPoint()
     { return wxPoint(-1, -1); }
 
   //! Is this cell marked as "from an old maxima run"?
