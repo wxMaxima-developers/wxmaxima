@@ -2871,24 +2871,24 @@ bool Worksheet::CopyCells() {
     data->Add(new wxmDataObject(wxm));
 
     if (m_configuration->CopyBitmap()) {
-      BitmapOut output(&m_configuration, CopySelection(),
-                       m_configuration->BitmapScale(),
-                       1000000 * m_configuration->MaxClipbrdBitmapMegabytes());
-      if (output.IsOk())
-        data->Add(output.GetDataObject().release());
+      std::unique_ptr<BitmapOut> output(new BitmapOut(&m_configuration, CopySelection(),
+						      m_configuration->BitmapScale(),
+						      1000000 * m_configuration->MaxClipbrdBitmapMegabytes()));
+      if (output->IsOk())
+        data->Add(output->GetDataObject().release());
     }
 
 #if wxUSE_ENH_METAFILE
     if (m_configuration->CopyEMF()) {
-      Emfout emf(&m_configuration, CopySelection());
-      if (emf.IsOk())
-        data->Add(emf.GetDataObject().release());
+      std::unique_ptr<Emfout> emf(new Emfout(&m_configuration, CopySelection()));
+      if (emf->IsOk())
+        data->Add(emf->GetDataObject().release());
     }
 #endif
     if (m_configuration->CopySVG()) {
-      Svgout svg(&m_configuration, CopySelection());
-      if (svg.IsOk())
-        data->Add(svg.GetDataObject().release());
+      std::unique_ptr<Svgout> svg(new Svgout(&m_configuration, CopySelection()));
+      if (svg->IsOk())
+        data->Add(svg->GetDataObject().release());
     }
 
     wxTheClipboard->SetData(data);
