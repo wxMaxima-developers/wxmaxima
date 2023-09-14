@@ -429,11 +429,13 @@ public:
   wxString GetCurrentCommand();
   
   //! Sets the index the error is at
-  void SetErrorIndex(size_t index){m_errorIndex = index;}
+  void SetErrorIndex(size_t index){m_errorIndex = index; m_errorIndexSet = true;}
+  //! Clears the index the error is at
+  void ClearErrorIndex(){m_errorIndexSet = false;}
 
-  bool ErrorIndexSet() const {return m_errorIndex >= 0;}
+  bool ErrorIndexSet() const {return m_errorIndexSet;}
 
-  void GotoError(){SetCaretPosition(m_errorIndex); ActivateCursor();}
+  void GotoError(){SetCaretPosition(m_errorIndex); ActivateCursor(); ClearErrorIndex();}
 
   //! Start a new line and optionally auto-indent it.
   void ProcessNewline(bool keepCursorAtStartOfLine = true);
@@ -676,6 +678,7 @@ private:
       m_saveValue = false;
       m_selectionChanged = false;
       m_underlined = false;
+      m_errorIndexSet = false;
     }
 
   //! Mark this cell as "Automatically answer questions".
@@ -688,6 +691,7 @@ private:
   bool m_hasFocus : 1 /* InitBitFields */;
   bool m_isDirty : 1 /* InitBitFields */;
   bool m_saveValue :1 /* InitBitFields */;
+  bool m_errorIndexSet : 1 /* InitBitFields */;
   //! Has the selection changed since the last draw event?
   bool m_selectionChanged : 1 /* InitBitFields */;
   //! Does this cell's size have to be recalculated?

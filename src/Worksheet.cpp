@@ -6691,14 +6691,13 @@ bool Worksheet::TreeUndoCellAddition(UndoActions *sourcelist,
                  "isn't possible at this moment."));
 
   // Set the cursor to a sane position.
-  if (action.m_newCellsEnd->GetNext())
+  if ((action.m_newCellsEnd) && (action.m_newCellsEnd->GetNext()))
     {
-      if(action.m_newCellsEnd)
-	SetHCaret(action.m_newCellsEnd->GetNext());
+      SetHCaret(action.m_newCellsEnd->GetNext());
     }
   else
     {
-      if(action.m_start)
+      if((action.m_start) && (action.m_start->GetPrevious()))
 	SetHCaret(action.m_start->GetPrevious());
     }
 

@@ -526,14 +526,15 @@ void EditorCell::ConvertNumToUNicodeChar() {
   if (CursorPosition() >= m_text.Length())
     return;
   int numLen = 0;
-  while ((CursorPosition() >= 0) &&
-         (((m_text[CursorPosition() - 1] >= '0') &&
-           (m_text[CursorPosition() - 1] <= '9')) ||
-          ((m_text[CursorPosition() - 1] >= 'a') &&
-           (m_text[CursorPosition() - 1] <= 'f')) ||
-          ((m_text[CursorPosition() - 1] >= 'A') &&
-           (m_text[CursorPosition() - 1] <= 'F')))) {
+  while (((m_text[CursorPosition() - 1] >= '0') &&
+	  (m_text[CursorPosition() - 1] <= '9')) ||
+	 ((m_text[CursorPosition() - 1] >= 'a') &&
+	  (m_text[CursorPosition() - 1] <= 'f')) ||
+	 ((m_text[CursorPosition() - 1] >= 'A') &&
+	  (m_text[CursorPosition() - 1] <= 'F'))) {
     numLen++;
+    if(CursorPosition() == 0)
+      break;
     CursorMove(-1);
   }
 
