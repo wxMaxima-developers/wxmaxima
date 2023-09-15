@@ -44,12 +44,12 @@ public:
     Match(){m_start=wxNOT_FOUND;m_length = 0;}
     void SetStart(size_t start){m_start = start;}
     void SetLength(size_t length){m_length = length;}
-    long GetStart() const {return m_start;}
-    long GetLength() const {return m_length;}
-    long GetEnd() const {return m_start + m_length;}
+    size_t GetStart() const {return m_start;}
+    size_t GetLength() const {return m_length;}
+    size_t GetEnd() const {return m_start + m_length;}
   private:
-    long m_start;
-    long m_length;
+    size_t m_start;
+    size_t m_length;
   };
   explicit RegexSearch(wxString regex);
   ~RegexSearch();
