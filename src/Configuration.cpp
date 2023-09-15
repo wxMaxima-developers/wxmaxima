@@ -1341,7 +1341,9 @@ wxColour Configuration::GetColor(TextStyle style) {
 
 wxCoord Configuration::Scale_Px(double px) const {
   wxCoord retval = lround(px * GetZoomFactor());
-  return std::max(retval, 1l);
+  if(retval < 1)
+    retval = 1;
+  return retval;
 }
 
 AFontSize Configuration::Scale_Px(AFontSize size) const {
