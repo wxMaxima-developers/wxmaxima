@@ -1073,7 +1073,7 @@ wxAccStatus CellAccessible::GetParent(wxAccessible **parent) {
       {
 	  *parent =
 	    m_cell->GetConfiguration()->GetWorkSheet()->GetAccessible();
-	    return wxACC_OK;
+	  return wxACC_OK;
       }
     
     *parent = parentCell->GetAccessible();

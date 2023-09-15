@@ -138,10 +138,10 @@ void SubSupCell::Recalculate(AFontSize const fontsize) {
   m_width = preWidth + m_baseCell->GetFullWidth() + postWidth;
 
   m_height = m_baseCell->GetHeightList() + subHeight + supHeight -
-    2 * Scale_Px(.8 * fontsize + MC_EXP_INDENT);
+    2 * Scale_Px(.8 * fontsize.Get() + MC_EXP_INDENT);
 
   m_center = supHeight + m_baseCell->GetCenterList() -
-    Scale_Px(.8 * fontsize + MC_EXP_INDENT);
+    Scale_Px(.8 * fontsize.Get() + MC_EXP_INDENT);
   Cell::Recalculate(fontsize);
 }
 
@@ -180,14 +180,14 @@ void SubSupCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
     in.x = point.x + m_baseCell->GetFullWidth() - Scale_Px(2);
     if (m_postSubCell) {
       in.y = point.y + m_baseCell->GetMaxDrop() +
-	m_postSubCell->GetCenterList() - .8 * m_fontSize_Scaled +
+	m_postSubCell->GetCenterList() - .8 * m_fontSize_Scaled.Get() +
 	MC_EXP_INDENT;
       m_postSubCell->DrawList(in, dc, antialiassingDC);
     }
     if (m_postSupCell) {
       in.y = point.y - m_baseCell->GetCenterList() -
 	m_postSupCell->GetHeightList() + m_postSupCell->GetCenterList() +
-	.8 * m_fontSize_Scaled + MC_EXP_INDENT;
+	.8 * m_fontSize_Scaled.Get() + MC_EXP_INDENT;
       m_postSupCell->DrawList(in, dc, antialiassingDC);
     }
   }
