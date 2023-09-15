@@ -1376,6 +1376,8 @@ Cell::Range GroupCell::GetCellsInOutputRect(const wxRect &rect,
     return {};
 
   wxASSERT(r.last);
+  if (!r.last)
+    return {};
 
   // If selection is on multiple lines, we need to correct it
   if (r.first->GetCurrentY() != r.last->GetCurrentY()) {
