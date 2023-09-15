@@ -86,8 +86,8 @@ private:
   std::vector<wxCoord> m_widths;
   std::vector<DropCenter> m_dropCenters;
 
-  wxCoord m_matWidth = 0;
-  wxCoord m_matHeight = 0;
+  size_t m_matWidth = 0;
+  size_t m_matHeight = 0;
 
   enum parenType : int8_t
   {
