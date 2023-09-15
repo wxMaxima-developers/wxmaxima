@@ -1,5 +1,6 @@
 # Current
  * Many stability improvements
+ * Maxima's help commands work again out-of-the-box. 
 
 # 23.08.0
  * Better print scaling

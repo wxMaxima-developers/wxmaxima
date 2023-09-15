@@ -4544,9 +4544,7 @@ void wxMaxima::SetupVariables() {
              m_promptSuffix + wxS("\") (setf *prompt-prefix* \"") +
              m_promptPrefix +
              wxS("\") (setf $in_netmath nil) (setf $show_openplot t) ") +
-             wxS("(if (fboundp 'set-output-format-for-help) "
-                 "(set-output-format-for-help nil ") +
-             useHtml + wxS("))") + wxS("\n"));
+             wxS("\n"));
 
   ConfigChanged();
 }
