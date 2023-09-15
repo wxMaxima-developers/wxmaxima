@@ -281,7 +281,7 @@ public:
 
   bool IsUnderlined(long st) const {return m_styles[st].IsUnderlined();}
 
-  long GetLabelWidth() const
+  wxCoord GetLabelWidth() const
     { return m_labelWidth * 14; }
 
   long LabelWidth() const
