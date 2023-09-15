@@ -54,12 +54,13 @@
 #define PAREN_CLOSE_BOTTOM_UNICODE "\u23a0"
 #define SUM_SIGN "\u2211"
 #define PROD_SIGN "\u220F"
+//! How much to make the font smaller for the sum index and limit?
 #define SUM_DEC 2
 
 //! The width of the horizontally-drawn cursor
 #define MC_HCARET_WIDTH 25
 
-#define MC_EXP_INDENT 2
+#define MC_EXP_INDENT Scale_Px(2)
 static constexpr AFontSize MC_MIN_SIZE{ 6.0f };
 static constexpr AFontSize MC_MAX_SIZE{ 48.0f };
 
