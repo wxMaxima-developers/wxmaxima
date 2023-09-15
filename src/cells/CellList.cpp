@@ -134,20 +134,24 @@ CellList::SpliceInAfter(Cell *where, std::unique_ptr<Cell> &&head, Cell *last) {
   if (!last)
     last = head->last();
   wxASSERT(last);
-  wxASSERT_MSG(!last->m_next,
-               "Bug: SpliceIn::last has a successor, it will be deleted.");
-
-  // We're explicitly splicing into the draw list as well
-  // - preserve the draw list.
-  auto *const nextToDraw = where->GetNextToDraw();
-
-  // Insert the cells into the cell list
-  SetNext(last, std::move(where->m_next));
-  last->SetNextToDraw(nextToDraw);
+  if(last)
+    {
+      wxASSERT_MSG(!last->m_next,
+		   "Bug: SpliceIn::last has a successor, it will be deleted.");
+      
+      // We're explicitly splicing into the draw list as well
+      // - preserve the draw list.
+      auto *const nextToDraw = where->GetNextToDraw();
+      
+      // Insert the cells into the cell list
+      SetNext(last, std::move(where->m_next));
+      last->SetNextToDraw(nextToDraw);
+    }
   SetNext(where, std::move(head));
 
   Check(where);
-  Check(last);
+  if(last)
+    Check(last);
 
   //! \todo There should be more diagnostic checks for list integrity.
   return {last};

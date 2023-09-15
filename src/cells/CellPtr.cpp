@@ -59,7 +59,9 @@ void Observed::LogDeref(const CellPtrBase *cellptr) const {
 void CellPtrBase::Ref(Observed *obj) {
   // References can only be set on null pointers
   wxASSERT(obj && !m_ptr);
-
+  if(!obj)
+    return;
+  
   auto obj_ptr = obj->m_ptr;
   if (!obj_ptr) {
     // The object has no pointers pointing to it yet
@@ -114,9 +116,12 @@ decltype(nullptr) CellPtrBase::DerefControlBlock() const noexcept {
     // The last reference to the object has been lost.
     // If there's an object, clear its reference to the control block (it's gone
     // now)
-    if (cb->Get())
-      cb->Get()->m_ptr = nullptr;
-    delete cb;
+    if(cb)
+      {
+	if (cb->Get())
+	  cb->Get()->m_ptr = nullptr;
+	delete cb;
+      }
   }
   m_ptr = nullptr;
   return nullptr;
