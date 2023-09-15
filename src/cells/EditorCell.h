@@ -643,7 +643,7 @@ private:
   size_t m_errorIndex = 1;
   size_t m_numberOfLines = 1;
   //! Where in the undo history are we?
-  size_t m_historyPosition = 0;
+  long long m_historyPosition = 0;
 
   wxCoord m_charHeight = 12;
   long m_paren1 = -1, m_paren2 = -1;

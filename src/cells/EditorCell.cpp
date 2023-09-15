@@ -1555,8 +1555,6 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent &event) {
         pos = XYToPosition(column, line + 1);
       else { // we can't go down. move caret to the end
         pos = m_text.Length();
-        if (pos < -1L)
-          pos = -1;
       }
 
       if (event.ShiftDown())
@@ -1781,11 +1779,11 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent &event) {
 
 	    auto start = SelectionLeft();
 	    auto end   = SelectionRight();
-	    size_t newLineIndex = wxMin(m_text.find(wxS('\n'), start),
-					m_text.find(wxS('\r'), start));
+	    long long newLineIndex = wxMin(m_text.find(wxS('\n'), start),
+					   m_text.find(wxS('\r'), start));
 
 	    if (((newLineIndex != wxNOT_FOUND) && (static_cast<size_t>(newLineIndex) < end)) ||
-		(m_text.SubString(newLineIndex, start).Trim() == wxEmptyString)) {
+		(m_text.SubString(static_cast<size_t>(newLineIndex), start).Trim() == wxEmptyString)) {
 	      start = BeginningOfLine(start);
 	      size_t pos = start;
 
