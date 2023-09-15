@@ -1109,7 +1109,7 @@ wxAccStatus Cell::GetValue(int childId, wxString *strValue) const {
   if (GetChild(childId, &childCell) == wxACC_OK)
     {
       *strValue = childCell->ToString();
-      return wxACC_OK
+      return wxACC_OK;
     }
 
   strValue->clear();
