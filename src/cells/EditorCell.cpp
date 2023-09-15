@@ -2910,7 +2910,7 @@ void EditorCell::StyleTextCode() {
 
   // Handle folding of EditorCells
   if (m_firstLineOnly) {
-    long ling newlinepos = textToStyle.Find(wxS("\n"));
+    long long newlinepos = textToStyle.Find(wxS("\n"));
     if (newlinepos != wxNOT_FOUND) {
       size_t lines = textToStyle.Freq(wxS('\n'));
       textToStyle = textToStyle.Left(static_cast<size_t>(newlinepos));
@@ -3638,7 +3638,7 @@ bool EditorCell::ReplaceSelection_RegEx(const wxString &oldStr,
 
   RegexSearch regexSearch(oldStr);
   RegexSearch::Match match;
-  match =  regexSearch.FindNext(&text, start);
+  match =  regexSearch.FindNext(text, start);
   if((start != end) && (match.GetLength() != end - start))
     return false;
   
