@@ -643,14 +643,10 @@ private:
   size_t m_errorIndex = 1;
   size_t m_numberOfLines = 1;
   //! Where in the undo history are we?
-  long m_historyPosition = -1;
+  size_t m_historyPosition = 0;
 
   wxCoord m_charHeight = 12;
   long m_paren1 = -1, m_paren2 = -1;
-
-  //! Which column the cursor would be if the current line were long enough?
-  //! Used when moving up/down between lines
-  long  m_caretColumn = -1;
 
 //** 2 bytes
 //**

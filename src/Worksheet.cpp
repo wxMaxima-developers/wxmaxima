@@ -4519,7 +4519,7 @@ void Worksheet::TOCdnd() {
 
   std::unique_ptr<Cell> copiedCells = std::move(copy);
   std::unique_ptr<GroupCell> copiedGroupCells =
-    std::move(unique_cast<Cell, GroupCell>(std::move(copiedCells)));
+    unique_cast<Cell, GroupCell>(std::move(copiedCells));
   InsertGroupCells(std::move(copiedGroupCells), m_tableOfContents->DNDEnd());
   RecalculateForce();
   RequestRedraw();
@@ -4641,7 +4641,7 @@ void Worksheet::CalculateReorderedCellIndices(GroupCell *tree, int &cellIndex,
 	      // evaluated, but produced no result
 	      //  => it is invalid and should be ignored
 	      outputExpressions = 0;
-	    } else if (index + outputExpressions > (long)cellMap.size())
+	    } else if (index + outputExpressions > cellMap.size())
 	      cellMap.resize(index + outputExpressions);
 	    for (int i = 0; i < outputExpressions; i++)
 	      cellMap[index + i] = cellIndex + i;

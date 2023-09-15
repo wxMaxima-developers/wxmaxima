@@ -760,18 +760,18 @@ void EditorCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
     // Mark text that coincides with the selection
     //
     if (!m_cellPointers->m_selectionString.IsEmpty()) {
-      size_t start = 0;
+      long long start = 0;
       wxString text(m_text);
       text.Replace(wxS('\r'), wxS(' '));
       while ((start = text.find(m_cellPointers->m_selectionString, start)) !=
              wxNOT_FOUND) {
-        size_t end = start + m_cellPointers->m_selectionString.Length();
+        size_t end = static_cast<size_t>(start) + m_cellPointers->m_selectionString.Length();
 
         // Mark only text that won't be marked in the next step:
         // This would not only be unnecessary but also could cause
         // selections to flicker in very long texts
-        if ((!IsActive()) || (start != SelectionLeft()))
-          MarkSelection(dc, start, end, TS_EQUALSSELECTION);
+        if ((!IsActive()) || (static_cast<size_t>(start) != SelectionLeft()))
+          MarkSelection(dc, static_cast<size_t>(start), end, TS_EQUALSSELECTION);
         if (m_cellPointers->m_selectionString.Length() == 0)
           end++;
         start = end;
@@ -1372,24 +1372,6 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent &event) {
     return true;
   }
 
-  if ((event.GetKeyCode() != WXK_DOWN) &&
-      (event.GetKeyCode() != WXK_PAGEDOWN) &&
-      (event.GetKeyCode() != WXK_PAGEUP) &&
-#ifdef WXK_NUMPAD_PRIOR
-      (event.GetKeyCode() != WXK_NUMPAD_PRIOR) &&
-#endif
-#ifdef WXK_PRIOR
-      (event.GetKeyCode() != WXK_PRIOR) &&
-#endif
-#ifdef WXK_NEXT
-      (event.GetKeyCode() != WXK_NEXT) &&
-#endif
-#ifdef WXK_NUMPAD_NEXT
-      (event.GetKeyCode() != WXK_NUMPAD_NEXT) &&
-#endif
-      (event.GetKeyCode() != WXK_UP))
-    m_caretColumn = -1; // make caretColumn invalid
-
   switch (event.GetKeyCode()) {
   case WXK_LEFT:
     {
@@ -1492,8 +1474,6 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent &event) {
 	  
 	  if (event.ControlDown()) {
 	    pos = m_text.Length();
-	    if (pos < -1)
-	      pos = -1;
 	  } else {
 	    while (pos < m_text.Length() &&
 		   m_text.GetChar(pos) != '\n' &&
@@ -1541,10 +1521,6 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent &event) {
       size_t column;
       size_t line;
       PositionToXY(pos, &column, &line); // get current line
-      if (m_caretColumn > -1)
-        column = m_caretColumn;
-      else
-        m_caretColumn = column;
       
       if (line < m_numberOfLines - 1) // can we go down ?
 	{
@@ -1558,7 +1534,6 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent &event) {
 	  }
 	} else { // we can't go down. move caret to the end
         pos = m_text.Length();
-        m_caretColumn = -1; // make caretColumn invalid
       }
       
       if (event.ShiftDown())
@@ -1575,18 +1550,13 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent &event) {
       SaveValue();
       size_t column, line;
       PositionToXY(pos, &column, &line); // get current line
-      if (m_caretColumn > -1)
-        column = m_caretColumn;
-      else
-        m_caretColumn = column;
 
       if (line < m_numberOfLines - 1) // can we go down ?
         pos = XYToPosition(column, line + 1);
       else { // we can't go down. move caret to the end
         pos = m_text.Length();
-        if (pos < -1)
+        if (pos < -1L)
           pos = -1;
-        m_caretColumn = -1; // make caretColumn invalid
       }
 
       if (event.ShiftDown())
@@ -1609,10 +1579,6 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent &event) {
 
       size_t column, line;
       PositionToXY(pos, &column, &line); // get current line
-      if (m_caretColumn > -1)
-        column = m_caretColumn;
-      else
-        m_caretColumn = column;
 
       if (line > 0) // can we go up?
 	{
@@ -1625,7 +1591,6 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent &event) {
 	  }
 	} else { // we can't move up, move to the beginning
         pos = 0;
-        m_caretColumn = -1; // make caretColumn invalid
       }
 
       if (event.ShiftDown())
@@ -1642,16 +1607,11 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent &event) {
 
       size_t column, line;
       PositionToXY(pos, &column, &line); // get current line
-      if (m_caretColumn > -1)
-        column = m_caretColumn;
-      else
-        m_caretColumn = column;
 
       if (line > 0) // can we go up?
         pos = XYToPosition(column, line - 1);
       else { // we can't move up, move to the beginning
         pos = 0;
-        m_caretColumn = -1; // make caretColumn invalid
       }
 
       if (event.ShiftDown())
@@ -1824,7 +1784,7 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent &event) {
 	    size_t newLineIndex = wxMin(m_text.find(wxS('\n'), start),
 					m_text.find(wxS('\r'), start));
 
-	    if (((newLineIndex != wxNOT_FOUND) && (newLineIndex < end)) ||
+	    if (((newLineIndex != wxNOT_FOUND) && (static_cast<size_t>(newLineIndex) < end)) ||
 		(m_text.SubString(newLineIndex, start).Trim() == wxEmptyString)) {
 	      start = BeginningOfLine(start);
 	      size_t pos = start;
@@ -2430,7 +2390,6 @@ void EditorCell::SelectPointText(const wxPoint point) {
       }
     }
     m_displayCaret = true;
-    m_caretColumn = -1;
     FindMatchingParens();
     // The line that now follows is pure paranoia.
     pos = wxMin(pos, m_text.Length());
@@ -2456,7 +2415,6 @@ void EditorCell::SelectPointText(const wxPoint point) {
     pos = wxMin(pos, text.Length());
 
     m_displayCaret = true;
-    m_caretColumn = -1;
   }
   CursorPosition(pos);
 }
@@ -2466,7 +2424,6 @@ void EditorCell::SelectRectText(const wxPoint one, const wxPoint two) {
   size_t start = CursorPosition();
   SelectPointText(two);
   m_paren2 = m_paren1 = -1;
-  m_caretColumn = -1;
   SelectionStart(start);
 }
 
@@ -2509,7 +2466,7 @@ bool EditorCell::IsPointInSelection(wxPoint point) {
   // Handle indentation
   posInCell.x -= indentPixels;
 
-  while (positionOfCaret < (signed)text.Length() &&
+  while (positionOfCaret < text.Length() &&
          text.GetChar(positionOfCaret) != '\n' &&
          text.GetChar(positionOfCaret) != '\r') {
     wxCoord width;
@@ -2520,8 +2477,6 @@ bool EditorCell::IsPointInSelection(wxPoint point) {
     positionOfCaret++;
   }
   positionOfCaret = wxMin(positionOfCaret, (signed)text.Length());
-  if (positionOfCaret < -1)
-    positionOfCaret = -1;
   return !((SelectionStart() >= positionOfCaret) ||
            (SelectionEnd() <= positionOfCaret));
 }
@@ -2955,10 +2910,10 @@ void EditorCell::StyleTextCode() {
 
   // Handle folding of EditorCells
   if (m_firstLineOnly) {
-    size_t newlinepos = textToStyle.Find(wxS("\n"));
+    long ling newlinepos = textToStyle.Find(wxS("\n"));
     if (newlinepos != wxNOT_FOUND) {
       size_t lines = textToStyle.Freq(wxS('\n'));
-      textToStyle = textToStyle.Left(newlinepos);
+      textToStyle = textToStyle.Left(static_cast<size_t>(newlinepos));
       if (lines > 1)
         suppressedLinesInfo = 
 	  wxString::Format(_(" ... + %i hidden lines"), lines);
@@ -3527,7 +3482,7 @@ bool EditorCell::FindNext(wxString str, const bool &down,
       CursorPosition(m_text.Length());
     }
   }
-  size_t strStart = wxNOT_FOUND;
+  long long strStart = wxNOT_FOUND;
   if (down)
     strStart = text.find(str, start);
   else
@@ -3535,9 +3490,9 @@ bool EditorCell::FindNext(wxString str, const bool &down,
 
   if (strStart != wxNOT_FOUND) {
     if (down)
-      SetSelection(strStart, strStart + str.Length());
+      SetSelection(static_cast<size_t>(strStart), static_cast<size_t>(strStart) + str.Length());
     else
-      SetSelection(strStart + str.Length(), strStart);
+      SetSelection(static_cast<size_t>(strStart) + str.Length(), static_cast<size_t>(strStart));
     return true;
   }
   if (IsActive()) {
@@ -3683,6 +3638,10 @@ bool EditorCell::ReplaceSelection_RegEx(const wxString &oldStr,
 
   RegexSearch regexSearch(oldStr);
   RegexSearch::Match match;
+  match =  regexSearch.FindNext(&text, start);
+  if((start != end) && (match.GetLength() != end - start))
+    return false;
+  
   match =  regexSearch.Replace(&text, start, newString);
   if(match.GetStart() == wxNOT_FOUND)
     return false;

@@ -78,7 +78,7 @@ RegexSearch::Match RegexSearch::Replace(wxString *string, size_t start, wxString
 RegexSearch::Match RegexSearch::Replace_Reverse(wxString *string, size_t start,
 						wxString replacement)
 {
-  return Replace_Reverse(string, start, replacement);
+  return Replace(string, start, replacement);
 }
 
 RegexSearch::Match RegexSearch::FindNext_Reverse(wxString string, size_t start)
