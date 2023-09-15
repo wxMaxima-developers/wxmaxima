@@ -107,12 +107,12 @@ $(function() {
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <a class="code" href="classRegexSearch_1_1Match.html">Match</a>(){m_start=wxNOT_FOUND;m_length = 0;}</div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="keywordtype">void</span> SetStart(<span class="keywordtype">size_t</span> start){m_start = start;}</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <span class="keywordtype">void</span> SetLength(<span class="keywordtype">size_t</span> length){m_length = length;}</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="keywordtype">long</span> GetStart()<span class="keyword"> const </span>{<span class="keywordflow">return</span> m_start;}</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <span class="keywordtype">long</span> GetLength()<span class="keyword"> const </span>{<span class="keywordflow">return</span> m_length;}</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="keywordtype">long</span> GetEnd()<span class="keyword"> const </span>{<span class="keywordflow">return</span> m_start + m_length;}</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="keywordtype">size_t</span> GetStart()<span class="keyword"> const </span>{<span class="keywordflow">return</span> m_start;}</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <span class="keywordtype">size_t</span> GetLength()<span class="keyword"> const </span>{<span class="keywordflow">return</span> m_length;}</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="keywordtype">size_t</span> GetEnd()<span class="keyword"> const </span>{<span class="keywordflow">return</span> m_start + m_length;}</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;  <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <span class="keywordtype">long</span> m_start;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="keywordtype">long</span> m_length;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <span class="keywordtype">size_t</span> m_start;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="keywordtype">size_t</span> m_length;</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;  };</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;  <span class="keyword">explicit</span> <a class="code" href="classRegexSearch.html">RegexSearch</a>(wxString regex);</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;  ~<a class="code" href="classRegexSearch.html">RegexSearch</a>();</div>
