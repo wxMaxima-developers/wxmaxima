@@ -4,7 +4,7 @@ var searchData=
   ['findincremental_2298',['FindIncremental',['../classWorksheet.html#acbbbf6f3f7d6c9357c368debcec48dd5',1,'Worksheet']]],
   ['findmatchingquotes_2299',['FindMatchingQuotes',['../classEditorCell.html#a81fa08f7b106052e321219c094e937bd',1,'EditorCell']]],
   ['findnext_2300',['FindNext',['../classEditorCell.html#aca3068e7b6ecd6db4cbfb168cf070b09',1,'EditorCell::FindNext()'],['../classWorksheet.html#ae74e366b36f740d0cd174eb95c7b769e',1,'Worksheet::FindNext()']]],
-  ['findtagend_2301',['FindTagEnd',['../classwxMaxima.html#ac3c31fb520e4da68459a2a1eb0d5634f',1,'wxMaxima']]],
+  ['findtagend_2301',['FindTagEnd',['../classwxMaxima.html#a495bb260c6a800b1adc48d3d3127080a',1,'wxMaxima']]],
   ['first_2302',['first',['../classCell.html#af6fdc7ea7b3f746d7b1f56c827cf5cad',1,'Cell']]],
   ['firsterror_2303',['FirstError',['../classCellPointers_1_1ErrorList.html#a56d5a4858048355465698f93476c20c8',1,'CellPointers::ErrorList']]],
   ['firstvisiblegc_2304',['FirstVisibleGC',['../classWorksheet.html#a270e32d80f47588a429985ed1d8f5c05',1,'Worksheet']]],
