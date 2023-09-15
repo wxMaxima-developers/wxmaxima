@@ -1,4 +1,5 @@
 # Current
+ * Many stability improvements
 
 # 23.08.0
  * Better print scaling
