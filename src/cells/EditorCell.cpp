@@ -1415,7 +1415,7 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent &event) {
 	if ((lastpos == pos) && (pos > 0))
 	  pos--;
       } else if (event.AltDown()) {
-	size_t count = 0;
+	long count = 0;
 	
 	while (pos > 0 && count >= 0) {
 	  pos--;
@@ -3389,13 +3389,12 @@ size_t EditorCell::ReplaceAll(wxString oldString, const wxString &newString,
     newText.Replace(wxS("\r"), wxS(" "));
     count = newText.Replace(oldString, newString);
   } else {
-    size_t pos;
     wxString src = m_text;
     src.Replace(wxS("\r"), wxS(" "));
     wxString src_LowerCase = src;
     src_LowerCase.MakeLower();
     oldString.MakeLower();
-    pos = src_LowerCase.Find(oldString);
+    auto pos = src_LowerCase.Find(oldString);
     while (pos >= 0) {
       newText += src.Left(pos);
       newText += newString;
@@ -3720,8 +3719,7 @@ TextStyle EditorCell::GetSelectionStyle() const {
     for (const auto &textSnippet: m_styledText) {
       wxString text = textSnippet.GetText();
       if ((CursorPosition() >= pos) &&
-	  (CursorPosition() < pos + text.Length()) &&
-	  (pos + text.Length() >= 0)) {
+	  (CursorPosition() < pos + text.Length())) {
         if (textSnippet.IsStyleSet())
           return textSnippet.GetTextStyle();
       }
