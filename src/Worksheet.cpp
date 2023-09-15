@@ -5555,7 +5555,10 @@ bool Worksheet::ExportToHTML(const wxString &file) {
 				ostream.GetOutputStreamBuffer()->GetBufferSize());
 
     // Now the string has a header we want to drop again.
-    output = output.SubString(output.Find("\n") + 1, output.Length());
+
+    auto newlinepos = output.Find("\n");
+    if(newlinepos >= 0)
+      output = output.SubString(static_cast<size_t>(newlinepos) + 1, output.Length());
   } else
     wxLogMessage(_("Bug: HTML output is no valid XML"));
 
