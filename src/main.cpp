@@ -157,8 +157,8 @@ int main(int argc, char *argv[]) {
   return CommonMain();
 }
 #else
-int WINAPI WinMain(HINSTANCE hI, HINSTANCE hPrevI, LPSTR lpCmdLine,
-                   int nCmdShow) {
+int WINAPI WinMain(_In_ HINSTANCE hI, _In_opt_ HINSTANCE hPrevI, _In_ LPSTR lpCmdLine,
+                   _In_ int nCmdShow) {
   // // Only needed if we don't manage to ship the right manifest
   // #ifdef DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE
   // SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE);

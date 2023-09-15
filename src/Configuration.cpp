@@ -1026,12 +1026,12 @@ long Configuration::GetLineWidth() const {
   // minus roughly one char
   wxCoord lineWidth =
     GetCanvasSize().x -
-    Scale_Px(GetLabelWidth() + GetCellBracketWidth() + GetDefaultFontSize());
+    Scale_Px(GetLabelWidth() + GetCellBracketWidth() + GetDefaultFontSize().Get());
 
   // If that was suspiciously wide we reduce the default line width again.
-  if ((lineWidth >= Scale_Px(GetDefaultFontSize()) * LineWidth_em()) &&
+  if ((lineWidth >= Scale_Px(GetDefaultFontSize().Get()) * LineWidth_em()) &&
       (!m_printing))
-    lineWidth = Scale_Px(GetDefaultFontSize()) * LineWidth_em();
+    lineWidth = Scale_Px(GetDefaultFontSize().Get()) * LineWidth_em();
   return lineWidth;
 }
 

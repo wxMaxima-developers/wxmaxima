@@ -2071,8 +2071,8 @@ void wxMaxima::StripLispComments(wxString &s) {
       int commentEnd = s.find(wxS('\n'), commentStart);
       if (commentEnd == wxNOT_FOUND)
         commentEnd = s.length();
-      s = s.SubString(0, commentStart - 1) +
-	s.SubString(commentEnd, s.length());
+      s = s.SubString(0, static_cast<size_t>(commentStart) - 1) +
+	s.SubString(static_cast<size_t>(commentEnd), s.length());
     }
   } else
     m_blankStatementRegEx.Replace(&s, wxS(";"));
@@ -2795,7 +2795,8 @@ void wxMaxima::ReadFirstPrompt(wxString &data) {
   StatusMaximaBusy(StatusBar::MaximaStatus::waiting);
   m_closing = false; // when restarting maxima this is temporarily true
 
-  wxString prompt_compact = data.Left(start + end + m_firstPrompt.Length() - 1);
+  wxString prompt_compact = data.Left(start + static_cast<size_t>(end) +
+				      m_firstPrompt.Length() - 1);
   prompt_compact.Replace(wxS("\n"), wxS("\u21b2"));
 
   wxLogMessage(_("Received maxima's first prompt: %s"), prompt_compact.utf8_str());
@@ -2975,7 +2976,7 @@ void wxMaxima::ReadMiscText(const wxString &data) {
     m_worksheet->SetCurrentTextCell(nullptr);
 }
 
-int wxMaxima::FindTagEnd(const wxString &data, const wxString &tag) {
+long wxMaxima::FindTagEnd(const wxString &data, const wxString &tag) {
   if ((m_currentOutputEnd.IsEmpty()) ||
       (m_currentOutputEnd.Find(tag) != wxNOT_FOUND))
     return data.Find(tag);
@@ -3101,8 +3102,8 @@ void wxMaxima::ReadMath(wxString &data) {
     mthTagLen = m_mathSuffix2.Length();
   }
   if (end >= 0) {
-    wxString o = data.Left(end + mthTagLen);
-    data = data.Right(data.Length() - end - mthTagLen);
+    wxString o = data.Left(static_cast<size_t>(end) + mthTagLen);
+    data = data.Right(data.Length() - static_cast<size_t>(end) - mthTagLen);
     o.Trim(true);
     o.Trim(false);
     if (o.Length() > 0) {
@@ -3758,9 +3759,9 @@ void wxMaxima::ReadPrompt(wxString &data) {
   m_maximaBusy = false;
   m_bytesFromMaxima = 0;
 
-  wxString label = data.SubString(m_promptPrefix.Length(), end - 1);
+  wxString label = data.SubString(m_promptPrefix.Length(), static_cast<size_t>(end) - 1);
   // Remove the prompt we will process from the string.
-  data = data.Right(data.Length() - end - m_promptSuffix.Length());
+  data = data.Right(data.Length() - static_cast<size_t>(end) - m_promptSuffix.Length());
   if (data == wxS(" "))
     data = wxEmptyString;
 

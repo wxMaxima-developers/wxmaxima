@@ -7,6 +7,6 @@
 
 #include <wx/wx.h>
 
-int LevenshteinDistance(const wxString &s1, const wxString &s2);
+size_t LevenshteinDistance(const wxString &s1, const wxString &s2);
 
 #endif

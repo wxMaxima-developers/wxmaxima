@@ -2,19 +2,21 @@
 // https://forums.wxwidgets.org/viewtopic.php?t=35124
 // from mjuergens (mjx). It is under the wxWidgets license
 // (https://www.wxwidgets.org/about/licence/) that is GPL-compatible.
+//
+// Added some modifications that remove MSVC code scanning warnings
 
 #include "levenshtein.h"
 
-int LevenshteinDistance(const wxString &s1, const wxString &s2) {
-  const int m = s1.Len();
-  const int n = s2.Len();
+size_t LevenshteinDistance(const wxString &s1, const wxString &s2) {
+  const size_t m = s1.Len();
+  const size_t n = s2.Len();
 
   if (m == 0)
     return n;
   if (n == 0)
     return m;
 
-  int *costs = new int[n + 1];
+  size_t *costs = new size_t[wxMax(m, n) + 1];
 
   for (int k = 0; k <= n; k++)
     costs[k] = k;

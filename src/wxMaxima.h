@@ -520,7 +520,7 @@ protected:
   bool ParseNextChunkFromMaxima(wxString &data);
 
   //! Find the end of a tag in wxMaxima's output.
-  int FindTagEnd(const wxString &data, const wxString &tag);
+  long FindTagEnd(const wxString &data, const wxString &tag);
 
   /*! Reads text that isn't enclosed between xml tags.
 

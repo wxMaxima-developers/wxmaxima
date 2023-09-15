@@ -7833,7 +7833,7 @@ bool Worksheet::Autocomplete(AutoComplete::autoCompletionType type) {
     int positionOfEzunitStart = frontOfSelection.rfind(wxS('`'));
 
     if (positionOfEzunitStart != wxNOT_FOUND) {
-      frontOfSelection = frontOfSelection.Mid(positionOfEzunitStart + 1);
+      frontOfSelection = frontOfSelection.Mid(static_cast<size_t>(positionOfEzunitStart) + 1);
       int numberOfParenthesis = 0;
 
       for (wxString::const_iterator it = frontOfSelection.begin();
