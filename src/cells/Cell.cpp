@@ -1058,18 +1058,25 @@ wxAccStatus Cell::GetDescription(int childId, wxString *description) const {
   if (GetChild(childId, &childCell) == wxACC_OK && childCell)
     return childCell->GetDescription(0, description);
 
-  return (description->clear()), wxACC_FAIL;
+  description->clear();
+  return wxACC_FAIL;
 }
 
 wxAccStatus CellAccessible::GetParent(wxAccessible **parent) {
+  if(!parent)
+    return wxACC_FAIL;
+
   Cell *parentCell = nullptr;
   auto rc = m_cell->GetParent(&parentCell);
   if (rc == wxACC_OK) {
     if (!parentCell && m_cell->GetConfiguration()->GetWorkSheet())
-      return (*parent =
-	      m_cell->GetConfiguration()->GetWorkSheet()->GetAccessible()),
-	wxACC_OK;
-
+      {
+	  *parent =
+	    m_cell->GetConfiguration()->GetWorkSheet()->GetAccessible(),
+	    return wxACC_OK;
+      }
+    
+    *parent = parentCell->GetAccessible();
     return parentCell ? (*parent = parentCell->GetAccessible()),
       wxACC_OK   : wxACC_FAIL;
   }
@@ -1081,7 +1088,10 @@ wxAccStatus Cell::GetParent(Cell **parent) const {
     return wxACC_FAIL;
 
   if (*parent != this)
-    return (*parent = GetGroup()), wxACC_OK;
+    {
+      *parent = GetGroup();
+      return wxACC_OK;
+    }
 
   *parent = nullptr; // This means the worksheet
   return wxACC_OK;
@@ -1097,9 +1107,13 @@ wxAccStatus Cell::GetValue(int childId, wxString *strValue) const {
 
   Cell *childCell = nullptr;
   if (GetChild(childId, &childCell) == wxACC_OK)
-    return (*strValue = childCell->ToString()), wxACC_OK;
+    {
+      *strValue = childCell->ToString();
+      return wxACC_OK
+    }
 
-  return (strValue->clear()), wxACC_FAIL;
+  strValue->clear();
+  return wxACC_FAIL;
 }
 
 wxAccStatus CellAccessible::GetChildCount(int *childCount) {
@@ -1110,7 +1124,9 @@ wxAccStatus CellAccessible::GetChildCount(int *childCount) {
   for (const Cell &cell : OnInner(m_cell))
     ++count;
 
-  return (*childCount = count), wxACC_OK;
+  if(childCount)
+    *childCount = count;
+  return wxACC_OK;
 }
 
 static wxAccStatus ReturnCell(wxAccStatus rc, Cell *cell,
@@ -1132,9 +1148,14 @@ wxAccStatus Cell::HitTest(const wxPoint &pt, int *childId, Cell **child) {
   GetLocation(rect, 0);
   // If this cell doesn't contain the point none of the sub-cells does.
   if (!rect.Contains(pt))
-    return (childId && (*childId = 0)), (child && (*child== NULL)), //-V560
-      wxACC_FAIL;
-
+    {
+      if(childId)
+	*childId = 0;
+      if(child)
+	*child = NULL;
+      return wxACC_FAIL;
+    }
+  
   int id = 0; // Child #0 is this very cell
   for (Cell &cell : OnInner(this)) {
     // GetChildCount(), GetChild(), and this loop all skip null children - thus
@@ -1145,11 +1166,19 @@ wxAccStatus Cell::HitTest(const wxPoint &pt, int *childId, Cell **child) {
 
     cell.GetLocation(rect, 0);
     if (rect.Contains(pt))
-      return (childId && (*childId = id)), (child && (*child = &cell)),
-	wxACC_OK;
+      {
+	if(childId)
+	  *childId = id;
+	if(child)
+	  *child = &cell;
+	return wxACC_OK;
+      }
   }
-  return (childId && (*childId = 0)), (child && (*child = this)), //-V560
-    wxACC_OK;
+  if(childId)
+    *childId = 0;
+  if(child)
+    *child = this;
+  return wxACC_OK;
 }
 
 wxAccStatus CellAccessible::GetChild(int childId, wxAccessible **child) {
@@ -1163,12 +1192,20 @@ wxAccStatus Cell::GetChild(int childId, Cell **child) const {
     return wxACC_FAIL;
 
   if (childId == 0)
-    return (*child = const_cast<Cell *>(this)), wxACC_OK;
+    {
+      if(child)
+	*child = const_cast<Cell *>(this);
+      return wxACC_OK;
+    }
 
   if (childId > 0)
     for (Cell &cell : OnInner(this))
       if (--childId == 0)
-        return (*child = &cell), wxACC_OK;
+	{
+	  if(child)
+	    *child = &cell;
+	  return wxACC_OK;
+	}
 
   return wxACC_FAIL;
 }
@@ -1186,12 +1223,20 @@ wxAccStatus Cell::GetFocus(int *childId, Cell **child) const {
 
     int dummy;
     if (cell.GetFocus(&dummy, child) == wxACC_OK)
-      return (childId && (*childId = id)), (child && (*child = &cell)),
-	wxACC_OK;
+      {
+	if(childId)
+	  *childId = id;
+	if(child)
+	  *child = &cell;
+	return wxACC_OK;
+      }
   }
 
-  return (childId && (*childId = 0)), (child && (*child = nullptr)), //-V560
-    wxACC_FAIL;
+  if (childId)
+    *childId = 0;
+  if(child)
+    *child = nullptr;
+  return wxACC_FAIL;
 }
 
 wxAccStatus CellAccessible::GetDefaultAction(int childId,
@@ -1204,7 +1249,10 @@ wxAccStatus Cell::GetDefaultAction(int childId, wxString *actionName) const {
     return wxACC_FAIL;
 
   if (childId == 0)
-    return actionName->Clear(), wxACC_OK;
+    {
+      actionName->Clear();
+      return wxACC_OK;
+    }
 
   Cell *childCell = nullptr;
   if (GetChild(childId, &childCell) == wxACC_OK && childCell)

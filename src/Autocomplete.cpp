@@ -415,13 +415,13 @@ wxArrayString AutoComplete::CompleteSymbol(wxString partial,
   wxASSERT_MSG((type >= command) && (type <= unit),
                _("Bug: Autocompletion requested for unknown type of item."));
 
-  if ((type != tmplte) && (type >=0 )) {
+  if ((type != tmplte) && (type >=0 ) && (type < numberOfTypes )) {
     for (const auto &i : m_wordList[type]) {
       if (i.StartsWith(partial) &&
           completions.Index(i) == wxNOT_FOUND)
         completions.Add(i);
     }
-  } else {
+  } else if (type == tmplte) {
     for (const auto &i: m_wordList[type]) {
       if (i.StartsWith(partial)) {
         if (completions.Index(i) == wxNOT_FOUND)
