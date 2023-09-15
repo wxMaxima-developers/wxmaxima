@@ -115,7 +115,6 @@ wxString LimitCell::ToString() const {
   wxString under = m_under->ListToString();
   wxString base = m_base->ListToString();
   auto arrowpos = under.Find(wxS("->"));
-  wxASSERT(arrowpos >= 0);
   wxString var;
   wxString to;
   if(arrowpos >= 0)
