@@ -18,18 +18,18 @@ size_t LevenshteinDistance(const wxString &s1, const wxString &s2) {
 
   size_t *costs = new size_t[wxMax(m, n) + 1];
 
-  for (int k = 0; k <= n; k++)
+  for (size_t k = 0; k <= n; k++)
     costs[k] = k;
 
-  int i = 0;
+  size_t i = 0;
   for (wxString::const_iterator it1 = s1.begin(); it1 != s1.end(); ++it1, ++i) {
     costs[0] = i + 1;
-    int corner = i;
+    size_t corner = i;
 
-    int j = 0;
+    size_t j = 0;
     for (wxString::const_iterator it2 = s2.begin(); it2 != s2.end();
          ++it2, ++j) {
-      int upper = costs[j + 1];
+      size_t upper = costs[j + 1];
       if (*it1 == *it2)
         costs[j + 1] = corner;
       else
@@ -39,7 +39,7 @@ size_t LevenshteinDistance(const wxString &s1, const wxString &s2) {
     }
   }
 
-  int result = costs[n];
+  size_t result = costs[n];
   delete[] costs;
 
   return result;
