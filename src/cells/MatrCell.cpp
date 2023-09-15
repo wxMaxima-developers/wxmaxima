@@ -46,7 +46,7 @@ MatrCell::MatrCell(GroupCell *group, const MatrCell &cell)
   m_colNames = cell.m_colNames;
   m_matWidth = cell.m_matWidth;
   m_matHeight = cell.m_matHeight;
-  for (size_t long i = 0; i < static_cast<long long>(cell.m_matWidth) * cell.m_matHeight; i++)
+  for (size_t i = 0; i < cell.m_matWidth * cell.m_matHeight; i++)
     if (i < cell.m_cells.size())
       m_cells.emplace_back(cell.m_cells[i]->CopyList(group));
 
