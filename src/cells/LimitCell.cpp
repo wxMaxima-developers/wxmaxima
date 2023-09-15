@@ -114,8 +114,15 @@ wxString LimitCell::ToString() const {
   wxString s(wxS("limit"));
   wxString under = m_under->ListToString();
   wxString base = m_base->ListToString();
-  wxString var = under.SubString(0, under.Find(wxS("->")) - 1);
-  wxString to = under.SubString(under.Find(wxS("->")) + 2, under.Length() - 1);
+  auto arrowpos = under.Find(wxS("->"));
+  wxASSERT(arrowpos >= 0);
+  wxString var;
+  wxString to;
+  if(arrowpos >= 0)
+    {
+      var = under.SubString(0, static_cast<size_t>(arrowpos) - 1);
+      to = under.SubString(static_cast<size_t>(arrowpos) + 2, under.Length() - 1);
+    }
   if (to.Right(1) == wxS("+"))
     to = to.Left(to.Length() - 1) + wxS(",plus");
   if (to.Right(1) == wxS("-"))
@@ -129,8 +136,15 @@ wxString LimitCell::ToMatlab() const {
   wxString s(wxS("limit"));
   wxString under = m_under->ListToMatlab();
   wxString base = m_base->ListToMatlab();
-  wxString var = under.SubString(0, under.Find(wxS("->")) - 1);
-  wxString to = under.SubString(under.Find(wxS("->")) + 2, under.Length() - 1);
+  wxString var;
+  wxString to;
+  auto arrowpos = under.Find(wxS("->"));
+  wxASSERT(arrowpos >= 0);
+  if(arrowpos >= 0)
+    {
+      var = under.SubString(0, static_cast<size_t>(arrowpos) - 1);
+      to = under.SubString(static_cast<size_t>(arrowpos) + 2, under.Length() - 1);
+    }
   if (to.Right(1) == wxS("+"))
     to = to.Left(to.Length() - 1) + wxS(",plus");
   if (to.Right(1) == wxS("-"))
@@ -144,6 +158,7 @@ wxString LimitCell::ToTeX() const {
   wxString under = m_under->ListToTeX();
   wxString base = m_base->ListToTeX();
   int varEnd = under.Find(wxS("->"));
+  wxASSERT(varEnd >= 0);
   int toStart = 0;
   wxString var;
   wxString to;
