@@ -1339,8 +1339,8 @@ wxColour Configuration::GetColor(TextStyle style) {
   return col;
 }
 
-long Configuration::Scale_Px(double px) const {
-  long retval = lround(px * GetZoomFactor());
+wxCoord Configuration::Scale_Px(double px) const {
+  wxCoord retval = lround(px * GetZoomFactor());
   return std::max(retval, 1l);
 }
 

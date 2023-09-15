@@ -254,7 +254,7 @@ public:
 
     Is used for displaying/printing/exporting of text/maths.
   */
-  long Scale_Px(double px) const;
+  wxCoord Scale_Px(double px) const;
   AFontSize Scale_Px(AFontSize size) const;
 
   //! Determines the zoom factor the worksheet is displayed at
