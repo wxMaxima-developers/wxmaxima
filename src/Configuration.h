@@ -215,9 +215,9 @@ public:
         return GetZoomFactor() * m_styles[TS_MATH].GetFontSize() / 2;
     }
 
-  long GetCellBracketWidth() const
+  wxCoord GetCellBracketWidth() const
     {
-      return static_cast<int>(GetZoomFactor() * 16);
+      return static_cast<wxCoord>(GetZoomFactor() * 16);
     }
 
   //! Hide brackets that are not under the pointer?

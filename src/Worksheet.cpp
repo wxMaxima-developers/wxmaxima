@@ -3369,6 +3369,8 @@ void Worksheet::UpdateScrollPos() {
 
 GroupCell *Worksheet::StartOfSectioningUnit(GroupCell *start) {
   wxASSERT(start);
+  if(start == NULL)
+    return start;
   // If the current cell is a sectioning cell we return this cell
   if (IsLesserGCType(GC_TYPE_TEXT, start->GetGroupType()))
     return start;

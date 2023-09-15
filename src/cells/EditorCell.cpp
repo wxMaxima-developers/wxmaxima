@@ -616,7 +616,7 @@ void EditorCell::Recalculate(AFontSize fontsize) {
 	if (m_firstLineOnly)
 	  m_height = m_charHeight + 2 * Scale_Px(2);
 	else
-	  m_height = m_numberOfLines * static_cast<size_t>(m_charHeight) + 2 * Scale_Px(2);
+	  m_height = m_numberOfLines * m_charHeight + 2 * static_cast<size_t>(Scale_Px(2));
 
 	if (m_height < m_charHeight + 2 * Scale_Px(2))
 	  m_height = (m_charHeight) + 2 * Scale_Px(2);
