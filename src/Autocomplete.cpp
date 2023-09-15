@@ -426,7 +426,7 @@ wxArrayString AutoComplete::CompleteSymbol(wxString partial,
       if (i.StartsWith(partial)) {
         if (completions.Index(i) == wxNOT_FOUND)
           completions.Add(i);
-        if (i.SubString(0, i.Find(wxS("(")) - 1) == partial &&
+        if (i.SubString(0, static_cast<size_t>(i.Find(wxS("("))) - 1) == partial &&
             perfectCompletions.Index(i) == wxNOT_FOUND)
           perfectCompletions.Add(i);
       }

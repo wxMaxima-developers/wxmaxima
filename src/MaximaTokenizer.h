@@ -66,9 +66,9 @@ public:
     explicit Token(const wxString &text) : m_text(text) {}
     Token(wxString&& text, TextStyle style) : m_text(std::move(text)), m_style(style) {}
     Token(const wxString& text, TextStyle style) : m_text(text), m_style(style) {}
-    Token& operator=(Token&& t) { m_text = std::move(t.m_text); m_style = t.m_style; return *this; }
+    Token& operator=(Token&& t) noexcept { m_text = std::move(t.m_text); m_style = t.m_style; return *this; }
     Token& operator=(const Token& t) { m_text = t.m_text; m_style = t.m_style; return *this; }
-    Token(Token&& token) { *this = std::move(token); }
+    Token(Token&& token) noexcept { *this = std::move(token); }
     Token(const Token &token) { *this = token ;}
     TextStyle GetTextStyle() const { return m_style; }
     const wxString &GetText() const { return m_text; }

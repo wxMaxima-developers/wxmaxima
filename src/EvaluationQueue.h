@@ -45,9 +45,9 @@ private:
   class Command{
   public:
     Command(const wxString &strng, int index) : m_indexStart(index), m_command(strng) {}
-    Command(Command &&o) : m_indexStart(o.m_indexStart), m_command(std::move(o.m_command)) {}
+    Command(Command &&o) noexcept : m_indexStart(o.m_indexStart), m_command(std::move(o.m_command)) {}
     Command(const Command &o) : m_indexStart(o.m_indexStart), m_command(o.m_command) {}
-    Command &operator=(Command &&o)
+    Command &operator=(Command &&o) noexcept
       {
         m_indexStart = o.m_indexStart;
         m_command = std::move(o.m_command);
