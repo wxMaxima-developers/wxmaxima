@@ -107,9 +107,9 @@ $(function() {
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;  <span class="keyword">class </span>Command{</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;  <span class="keyword">public</span>:</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    Command(<span class="keyword">const</span> wxString &amp;strng, <span class="keywordtype">int</span> index) : m_indexStart(index), m_command(strng) {}</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    Command(Command &amp;&amp;o) : m_indexStart(o.m_indexStart), m_command(std::move(o.m_command)) {}</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    Command(Command &amp;&amp;o) noexcept : m_indexStart(o.m_indexStart), m_command(std::move(o.m_command)) {}</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    Command(<span class="keyword">const</span> Command &amp;o) : m_indexStart(o.m_indexStart), m_command(o.m_command) {}</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    Command &amp;operator=(Command &amp;&amp;o)</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    Command &amp;operator=(Command &amp;&amp;o) noexcept</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;      {</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        m_indexStart = o.m_indexStart;</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        m_command = std::move(o.m_command);</div>
