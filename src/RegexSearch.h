@@ -42,14 +42,17 @@ public:
   {
   public:
     Match(){m_start=wxNOT_FOUND;m_length = 0;}
-    void SetStart(size_t start){m_start = start;}
+    void SetStart(size_t start){m_start = start; m_found = true;}
+    void SetNotFound(){m_found = false;}
+    bool Found() const {return m_found;}
     void SetLength(size_t length){m_length = length;}
     long long GetStart() const {return m_start;}
     size_t GetLength() const {return m_length;}
     size_t GetEnd() const {return m_start + m_length;}
   private:
-    long long m_start;
+    size_t m_start;
     size_t m_length;
+    bool m_found = false;
   };
   explicit RegexSearch(wxString regex);
   ~RegexSearch();

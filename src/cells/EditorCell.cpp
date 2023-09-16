@@ -3559,7 +3559,7 @@ bool EditorCell::FindNext_RegEx(wxString str, const bool &down) {
     match =  regexSearch.FindNext(text, start);
   else
     match =  regexSearch.FindNext_Reverse(text, start);
-  if(match.GetStart() != wxNOT_FOUND)
+  if(!match.Found())
     {
       SetSelection(match.GetStart(), match.GetEnd());
       return true;
@@ -3641,7 +3641,7 @@ bool EditorCell::ReplaceSelection_RegEx(const wxString &oldStr,
     return false;
   
   match =  regexSearch.Replace(&text, start, newString);
-  if(match.GetStart() == wxNOT_FOUND)
+  if(!match.Found())
     return false;
   m_text = text;
   CursorPosition(match.GetEnd());
