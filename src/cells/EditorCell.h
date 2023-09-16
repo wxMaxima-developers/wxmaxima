@@ -80,7 +80,7 @@ public:
   size_t SelectionEnd() const {return wxMin(m_selectionEnd, m_text.Length());}
   size_t SelectionLeft() const {return wxMin(SelectionStart(), SelectionEnd());}
   size_t SelectionRight() const {return wxMax(SelectionStart(), SelectionEnd());}
-  size_t SelectionLength() {return(SelectionEnd()-SelectionStart());}
+  size_t SelectionLength() const {return(SelectionEnd()-SelectionStart());}
   void  SelectionLength(size_t length) {SelectionEnd(SelectionStart() + length);  UpdateSelectionString();}
   void CursorMove(long long increment) {m_selectionEnd += increment;
     m_selectionStart = m_selectionEnd; UpdateSelectionString();}
