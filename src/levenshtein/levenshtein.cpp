@@ -6,6 +6,7 @@
 // Added some modifications that remove MSVC code scanning warnings
 
 #include "levenshtein.h"
+#include <vector>
 
 size_t LevenshteinDistance(const wxString &s1, const wxString &s2) {
   const size_t m = s1.Len();
@@ -16,9 +17,10 @@ size_t LevenshteinDistance(const wxString &s1, const wxString &s2) {
   if (n == 0)
     return m;
 
-  size_t *costs = new size_t[wxMax(m, n) + 1];
-
-  for (size_t k = 0; k <= n; k++)
+  std::vector<size_t> costs;
+  costs.resize(wxMax(m, n) + 1);
+  
+  for (size_t k = 0; k <= wxMax(m, n) + 1; k++)
     costs[k] = k;
 
   size_t i = 0;
@@ -40,7 +42,6 @@ size_t LevenshteinDistance(const wxString &s1, const wxString &s2) {
   }
 
   size_t result = costs[n];
-  delete[] costs;
 
   return result;
 }

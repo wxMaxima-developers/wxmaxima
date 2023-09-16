@@ -60,7 +60,7 @@
 //! The width of the horizontally-drawn cursor
 #define MC_HCARET_WIDTH 25
 
-#define MC_EXP_INDENT Scale_Px(2)
+#define MC_EXP_INDENT static_cast<wxCoord>(Scale_Px(2))
 static constexpr AFontSize MC_MIN_SIZE{ 6.0f };
 static constexpr AFontSize MC_MAX_SIZE{ 48.0f };
 
