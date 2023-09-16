@@ -1904,9 +1904,9 @@ bool EditorCell::HandleOrdinaryKey(wxKeyEvent &event) {
   if (keyCode == ' ')
     m_widths.clear();
 
-  if (m_historyPosition != -1) {
-    m_history.erase(m_history.begin() + m_historyPosition + 1, m_history.end());
-    m_historyPosition = -1;
+  if (m_historyPosition != 0) {
+    m_history.erase(m_history.begin() + m_historyPosition, m_history.end());
+    m_historyPosition = 0;
   }
 
   // if we have a selection either put parens around it (and don't write the
@@ -2799,17 +2799,17 @@ bool EditorCell::CanUndo() const {
 }
 
 void EditorCell::Undo() {
-  if (m_historyPosition == -1) {
-    m_historyPosition = m_history.size() - 1;
+  if (m_historyPosition == 0) {
+    m_historyPosition = m_history.size();
     AppendStateToHistory();
   } else
     m_historyPosition--;
 
-  if (m_historyPosition == -1)
+  if (m_historyPosition == 0)
     return;
 
   // We cannot use SetValue() here, since SetValue() tends to move the cursor.
-  SetState(m_history[m_historyPosition]);
+  SetState(m_history[m_historyPosition - 1]);
 
   m_paren1 = m_paren2 = -1;
   m_isDirty = true;
@@ -2819,20 +2819,20 @@ void EditorCell::Undo() {
 
 bool EditorCell::CanRedo() const {
   return !m_history.empty() && m_historyPosition >= 0 &&
-    m_historyPosition < (m_history.size()) - 1;
+    m_historyPosition < (m_history.size());
 }
 
 void EditorCell::Redo() {
-  if (m_historyPosition == -1)
+  if (m_historyPosition == 0)
     return;
 
   m_historyPosition++;
 
-  if (m_historyPosition >= m_history.size())
+  if (m_historyPosition >= m_history.size() + 1)
     return;
 
   // We cannot use SetValue() here, since SetValue() tends to move the cursor.
-  SetState(m_history[m_historyPosition]);
+  SetState(m_history[m_historyPosition - 1]);
 
   m_paren1 = m_paren2 = -1;
   m_isDirty = true;
@@ -2844,17 +2844,17 @@ void EditorCell::SaveValue() {
   if (!m_history.empty() && m_history.back().text == m_text)
     return;
 
-  if (m_historyPosition != -1) {
-    m_history.erase(m_history.begin() + m_historyPosition, m_history.end());
+  if (m_historyPosition != 0) {
+    m_history.erase(m_history.begin() + m_historyPosition - 1, m_history.end());
   }
 
   AppendStateToHistory();
-  m_historyPosition = -1;
+  m_historyPosition = 0;
 }
 
 void EditorCell::ClearUndo() {
   m_history.clear();
-  m_historyPosition = -1;
+  m_historyPosition = 0;
 }
 
 void EditorCell::HandleSoftLineBreaks_Code(
