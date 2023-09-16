@@ -6688,7 +6688,7 @@ bool Worksheet::TreeUndoCellAddition(UndoActions *sourcelist,
                                  "the beginning of the worksheet."));
 
   // We make the cell we want to end the deletion with visible.
-  if (action.m_newCellsEnd->RevealHidden())
+  if ((action.m_newCellsEnd) && (action.m_newCellsEnd->RevealHidden()))
     FoldOccurred();
 
   wxASSERT_MSG(CanDeleteRegion(action.m_start, action.m_newCellsEnd),

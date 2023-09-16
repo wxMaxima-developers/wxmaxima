@@ -112,17 +112,17 @@ decltype(nullptr) CellPtrBase::DerefControlBlock() const noexcept {
   // The object has multiple pointers pointing to it
   auto *const cb = m_ptr.GetControlBlock();
   wxASSERT(cb);
-  if (!cb->Deref(this)) {
-    // The last reference to the object has been lost.
-    // If there's an object, clear its reference to the control block (it's gone
-    // now)
-    if(cb)
-      {
+  if(cb)
+    {
+      if (!cb->Deref(this)) {
+	// The last reference to the object has been lost.
+	// If there's an object, clear its reference to the control block (it's gone
+	// now)
 	if (cb->Get())
 	  cb->Get()->m_ptr = nullptr;
 	delete cb;
       }
-  }
+    }
   m_ptr = nullptr;
   return nullptr;
 }

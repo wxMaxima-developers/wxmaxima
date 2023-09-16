@@ -1446,7 +1446,7 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent &event) {
 	} else if (event.AltDown()) {
 	  size_t count = 0;
 
-	  while (pos < m_text.Length() && count >= 0) {
+	  while (pos < m_text.Length() && count > 0) {
 	    pos++;
 	    if ((m_text[pos - 1] == '(') ||
 		(m_text[pos - 1] == '['))
