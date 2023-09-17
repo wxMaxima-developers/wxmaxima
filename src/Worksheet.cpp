@@ -3387,7 +3387,6 @@ GroupCell *Worksheet::StartOfSectioningUnit(GroupCell *start) {
 GroupCell *Worksheet::EndOfSectioningUnit(GroupCell *start) {
   wxASSERT(start);
   const GroupCell *sectionbegin = StartOfSectioningUnit(start);
-  int endgrouptype = sectionbegin->GetGroupType();
 
   // Begin with the cell after the start cell - that might contain a section
   // start of any sorts.
@@ -3397,9 +3396,11 @@ GroupCell *Worksheet::EndOfSectioningUnit(GroupCell *start) {
   
   // Find the end of the chapter/section/...
   if(end)
-    while (end->GetNext() && IsLesserGCType(end->GetGroupType(), endgrouptype))
-      end = end->GetNext();
-
+    {
+      int endgrouptype = sectionbegin->GetGroupType();
+      while (end->GetNext() && IsLesserGCType(end->GetGroupType(), endgrouptype))
+	end = end->GetNext();
+    }
   return end;
 }
 

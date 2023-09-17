@@ -1444,9 +1444,9 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent &event) {
 	      (lastpos == pos))
 	    pos++;
 	} else if (event.AltDown()) {
-	  size_t count = 0;
+	  long long count = 0;
 
-	  while (pos < m_text.Length() && count > 0) {
+	  while (pos < m_text.Length() && count >= 0) {
 	    pos++;
 	    if ((m_text[pos - 1] == '(') ||
 		(m_text[pos - 1] == '['))
@@ -1653,7 +1653,6 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent &event) {
       m_containsChanges = true;
       m_isDirty = true;
 
-      size_t lastpos = CursorPosition();
       size_t pos     = CursorPosition();
       // Delete characters until the end of the current word or number
       while (pos > 0 &&
@@ -1671,7 +1670,7 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent &event) {
       }
 
       // If we didn't delete anything till now delete one single character.
-      if (lastpos == pos) {
+      if (CursorPosition() == pos) {
         pos--;
         m_text = m_text.SubString(0, pos - 1) +
 	  m_text.SubString(pos + 1, m_text.Length());
@@ -1693,8 +1692,7 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent &event) {
 	auto end   = SelectionRight();
 	m_text = m_text.SubString(0, start - 1) +
 	  m_text.SubString(end, m_text.Length());
-	pos = start;
-	ClearSelection();
+	CursorPosition(start);
 	StyleText();
 	break;
       } else {
@@ -1785,7 +1783,7 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent &event) {
 	    if (((newLineIndex != wxNOT_FOUND) && (static_cast<size_t>(newLineIndex) < end)) ||
 		(m_text.SubString(static_cast<size_t>(newLineIndex), start).Trim() == wxEmptyString)) {
 	      start = BeginningOfLine(start);
-	      size_t pos = start;
+	      size_t p = start;
 
 	      if ((m_text[end] == wxS('\n')))
 		end++;
@@ -1793,35 +1791,34 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent &event) {
 	      if (end > m_text.Length())
 		end = m_text.Length();
 
-	      while (pos < end) {
+	      while (p < end) {
 		if (event.ShiftDown()) {
 		  for (int i = 0; i < 4; i++)
-		    if (m_text[pos] == wxS(' ')) {
-		      m_text = m_text.SubString(0, pos - 1) +
-			m_text.SubString(pos + 1, m_text.Length());
+		    if (m_text[p] == wxS(' ')) {
+		      m_text = m_text.SubString(0, p - 1) +
+			m_text.SubString(p + 1, m_text.Length());
 		      if (end > 0)
 			end--;
 		    }
 		} else {
-		  m_text = m_text.SubString(0, pos - 1) + wxS("    ") +
-		    m_text.SubString(pos, m_text.Length());
+		  m_text = m_text.SubString(0, p - 1) + wxS("    ") +
+		    m_text.SubString(p, m_text.Length());
 		  end += 4;
-		  pos += 4;
+		  p += 4;
 		}
-		while ((pos < end) && (m_text[pos] != wxS('\n')) &&
-		       (m_text[pos] != wxS('\r')))
-		  pos++;
-		if ((pos < end) &&
-		    ((m_text[pos] == wxS('\n')) || (m_text[pos] == wxS('\r'))))
-		  pos++;
+		while ((p < end) && (m_text[p] != wxS('\n')) &&
+		       (m_text[p] != wxS('\r')))
+		  p++;
+		if ((p < end) &&
+		    ((m_text[p] == wxS('\n')) || (m_text[p] == wxS('\r'))))
+		  p++;
 	      }
 	      SetSelection(start, end);
 	    } else {
 	      m_text = m_text.SubString(0, start - 1) +
 		m_text.SubString(end, m_text.Length());
-	      ClearSelection();
 	    }
-	    pos = start;
+	    CursorPosition(start);
 	    StyleText();
 	    break;
 	  } else {
@@ -2818,7 +2815,7 @@ void EditorCell::Undo() {
 }
 
 bool EditorCell::CanRedo() const {
-  return !m_history.empty() && m_historyPosition >= 0 &&
+  return !m_history.empty() && m_historyPosition > 0 &&
     m_historyPosition < (m_history.size());
 }
 
@@ -3386,15 +3383,12 @@ size_t EditorCell::ReplaceAll_RegEx(wxString oldString, const wxString &newStrin
   newText = m_text;
   newText.Replace(wxS("\r"), wxS(" "));
   count = regexsearch.ReplaceAll(&newText, newString);
-  if(count > 0)
-    {
-      m_text = newText;
-      m_containsChanges = true;
-      ClearSelection();
-      StyleText();
-      SetSelection(SelectionStart(), SelectionEnd());
-    }
-  if (count > 0) {
+  if(count > 0) {
+    m_text = newText;
+    m_containsChanges = true;
+    ClearSelection();
+    StyleText();
+    SetSelection(SelectionStart(), SelectionEnd());
     m_text = newText;
     m_containsChanges = true;
     ClearSelection();

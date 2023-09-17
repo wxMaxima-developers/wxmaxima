@@ -1075,10 +1075,16 @@ wxAccStatus CellAccessible::GetParent(wxAccessible **parent) {
 	    m_cell->GetConfiguration()->GetWorkSheet()->GetAccessible();
 	  return wxACC_OK;
       }
-    
-    *parent = parentCell->GetAccessible();
-    return parentCell ? (*parent = parentCell->GetAccessible()),
-      wxACC_OK   : wxACC_FAIL;
+    if(parentCell)
+      {
+	*parent = parentCell->GetAccessible();
+	return wxACC_OK;
+      }
+    else
+      {
+	*parent = NULL;
+	return wxACC_OK;
+      }
   }
   return rc;
 }
@@ -1124,8 +1130,7 @@ wxAccStatus CellAccessible::GetChildCount(int *childCount) {
   for (const Cell &cell : OnInner(m_cell))
     ++count;
 
-  if(childCount)
-    *childCount = count;
+  *childCount = count;
   return wxACC_OK;
 }
 
@@ -1193,8 +1198,7 @@ wxAccStatus Cell::GetChild(int childId, Cell **child) const {
 
   if (childId == 0)
     {
-      if(child)
-	*child = const_cast<Cell *>(this);
+      *child = const_cast<Cell *>(this);
       return wxACC_OK;
     }
 
@@ -1202,8 +1206,7 @@ wxAccStatus Cell::GetChild(int childId, Cell **child) const {
     for (Cell &cell : OnInner(this))
       if (--childId == 0)
 	{
-	  if(child)
-	    *child = &cell;
+	  *child = &cell;
 	  return wxACC_OK;
 	}
 
