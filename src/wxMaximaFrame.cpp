@@ -433,7 +433,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
   // We still have no wizard we can show => hide the wizard until it is invoked.
   m_manager.GetPane(m_sidebarNames[EventIDs::menu_pane_wizard]).Show(false);
   // The xml inspector slows down everything => close it at startup
-  m_manager.GetPane(m_sidebarNames[EventIDs::menu_pane_xmlInspector]).Show(true);
+  m_manager.GetPane(m_sidebarNames[EventIDs::menu_pane_xmlInspector]).Show(false);
   // The unicode selector needs loads of time for starting up
   // => close it at startup
   m_manager.GetPane(m_sidebarNames[EventIDs::menu_pane_unicode]).Show(false);
