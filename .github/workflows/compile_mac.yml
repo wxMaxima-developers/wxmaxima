@@ -61,11 +61,13 @@ jobs:
              set -e
              brew install gettext ninja pandoc wxwidgets
              set +e
+      - name: xcode-select
+      - run: |
+             sudo xcode-select --reset
       - name: Configure wxMaxima
         run: |
              mkdir build-wxm
              cmake -S . -B build-wxm -G Ninja -DCMAKE_INSTALL_PREFIX=. -DCMAKE_UNITY_BUILD_BATCH_SIZE=8 -DWXM_UNIT_TESTS=YES -DCMAKE_UNITY_BUILD=YES
-
       - name: Check Info.plist
         run: |
              ls -l build-wxm/src/Info.plist

@@ -68,7 +68,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
   // Suppress window updates until this window has fully been created.
   // Not redrawing the window whilst constructing it hopefully speeds up
   // everything.
-  //  wxWindowUpdateLocker noUpdates(this);    m_worksheet->m_unsavedDocuments(wxS("unsaved")),
+  // wxWindowUpdateLocker noUpdates(this);
 
   // Add some shortcuts that aren't automatically set by menu entries.
   std::vector<wxAcceleratorEntry> entries;
