@@ -137,7 +137,9 @@ jobs:
 
     steps:
       - name: Make NacPorts cachable
-        run: chown -R 1001:1001 /opt/local
+        run: |
+             sudo mkdir /opt/local
+             sudp chown -R 1001:1001 /opt/local
       - name: Cache MacPorts
         id: cache-macports
         uses: actions/cache@v2
