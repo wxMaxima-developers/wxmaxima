@@ -136,14 +136,14 @@ jobs:
     runs-on: macos-latest
 
     steps:
+      - name: Make NacPorts cachable
+        run: chown -R 1001:1001 /opt/local
       - name: Cache MacPorts
         id: cache-macports
         uses: actions/cache@v2
         with:
           path: /opt/local/
           key: ${{ runner.os }}-macports-${{ hashFiles('macos_build.txt') }}
-      - name: Make NacPorts cachable
-        run: chown -R 1001:1001 /opt/local
       - name: Checkout wxMaxima from git
         uses: actions/checkout@v4
         with:
@@ -176,6 +176,6 @@ jobs:
         run: |
              cd ../build-wxm
              cpack -G DragNDrop
-      # - name: Cleanup
-      #   run: |
-      #        port -f uninstall inactive
+      - name: Cleanup
+        run: |
+             port -f uninstall inactive
