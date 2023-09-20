@@ -127,43 +127,39 @@ jobs:
       - name: compile
         run: |
              cmake --build ../build-wxm
-      # - name: install
-      #   run: |
-      #        cmake --install ../build-wxm
 
-  compile_macports:
-    runs-on: macos-latest
+  # compile_macports:
+  #   runs-on: macos-latest
 
-    steps:
-      - name: Cache MacPorts
-        id: cache-macports
-        uses: actions/cache@v2
-        with:
-          path: /opt/local/
-          key: ${{ runner.os }}-macports-${{ hashFiles('macos_build.txt') }}
-      - name: Checkout wxMaxima from git
-        uses: actions/checkout@v4
-        with:
-          # We must fetch at least the immediate parents so that if this is
-          # a pull request then we can checkout the head.
-          fetch-depth: 15
-      - name: Install macports
-        uses: melusina-org/gha-install-macports@v1.0.0
-        id: 'macports'
-      - name: Install the dependencies
-        run: |
-             export PATH=$PATH:/usr/local/opt/bin
-             set -e
-             port selfupdate
-             port install gettext ninja pandoc wxWidgets-3.2 maxima gnuplot pkgconfig
-             port select wxWidgets wxWidgets-3.2
-             set +e
-      - name: Configure wxMaxima
-        run: |
-             mkdir ../build-wxm
-             export CXXFLAGS=-I/opt/local/include
-             export LDFLAGS=-I/opt/local/lib
-             cmake -S . -B ../build-wxm -G Ninja -DCMAKE_INSTALL_PREFIX=. -DCMAKE_UNITY_BUILD_BATCH_SIZE=8 -DWXM_UNIT_TESTS=YES -DCMAKE_UNITY_BUILD=YES -DWXM_DISABLE_WEBVIEW=YES
+  #   steps:
+  #     - name: Cache MacPorts
+  #       id: cache-macports
+  #       uses: actions/cache@v2
+  #       with:
+  #         path: /opt/local/
+  #         key: ${{ runner.os }}-macports-${{ hashFiles('macos_build.txt') }}
+  #     - name: Checkout wxMaxima from git
+  #       uses: actions/checkout@v4
+  #       with:
+  #         # We must fetch at least the immediate parents so that if this is
+  #         # a pull request then we can checkout the head.
+  #         fetch-depth: 15
+  #     - name: Install macports
+  #       uses: melusina-org/gha-install-macports@v1.0.0
+  #     - name: Install the dependencies
+  #       run: |
+  #            export PATH=$PATH:/usr/local/opt/bin
+  #            set -e
+  #            port selfupdate
+  #            port install gettext ninja pandoc wxWidgets-3.2 maxima gnuplot pkgconfig
+  #            port select wxWidgets wxWidgets-3.2
+  #            set +e
+  #     - name: Configure wxMaxima
+  #       run: |
+  #            mkdir ../build-wxm
+  #            export CXXFLAGS=-I/opt/local/include
+  #            export LDFLAGS=-I/opt/local/lib
+  #            cmake -S . -B ../build-wxm -G Ninja -DCMAKE_INSTALL_PREFIX=. -DCMAKE_UNITY_BUILD_BATCH_SIZE=8 -DWXM_UNIT_TESTS=YES -DCMAKE_UNITY_BUILD=YES -DWXM_DISABLE_WEBVIEW=YES
 
       - name: Check Info.plist
         run: |
