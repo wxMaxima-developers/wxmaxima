@@ -127,9 +127,9 @@ jobs:
       - name: compile
         run: |
              cmake --build ../build-wxm
-      - name: install
-        run: |
-             cmake --install ../build-wxm
+      # - name: install
+      #   run: |
+      #        cmake --install ../build-wxm
 
   compile_macports:
     runs-on: macos-latest
@@ -149,6 +149,7 @@ jobs:
           fetch-depth: 15
       - name: Install macports
         uses: melusina-org/gha-install-macports@v1.0.0
+        id: 'macports'
       - name: Install the dependencies
         run: |
              export PATH=$PATH:/usr/local/opt/bin
