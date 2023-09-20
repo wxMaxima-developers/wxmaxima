@@ -127,6 +127,9 @@ jobs:
       - name: compile
         run: |
              cmake --build ../build-wxm
+      - name: install
+        run: |
+             cmake --install ../build-wxm
 
   # compile_macports:
   #   runs-on: macos-latest
