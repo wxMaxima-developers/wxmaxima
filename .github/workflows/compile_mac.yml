@@ -142,6 +142,8 @@ jobs:
         with:
           path: /opt/local/
           key: ${{ runner.os }}-macports-${{ hashFiles('macos_build.txt') }}
+      - name: Make NacPorts cachable
+        run: chown -R 1001:1001 /opt/local
       - name: Checkout wxMaxima from git
         uses: actions/checkout@v4
         with:
