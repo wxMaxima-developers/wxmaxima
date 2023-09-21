@@ -6,5 +6,13 @@ variants:
     - metal
 deselect: x11
 ports:
-  select: [ gettext, ninja, pandoc, maxima, gnuplot, pkgconfig, wxWidgets, wxWidgets-3.2 ]
+  select:
+    - gettext
+    - ninja
+    - pandoc
+    - maxima
+    - gnuplot
+    - pkgconfig
+    - wxWidgets
+    - wxWidgets-3.2
   deselect: [ java ]
