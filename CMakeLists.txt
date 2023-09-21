@@ -65,6 +65,10 @@ endif()
 # CMake Policies
 #
 
+# Better clang support
+if(POLICY CMP0025)
+cmake_policy(SET CMP0025 NEW)
+endif()
 # Avoid a warning by deciding which version of this policy we prefer.
 if(POLICY CMP0066)
     cmake_policy(SET CMP0066 NEW)
