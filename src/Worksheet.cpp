@@ -5955,6 +5955,8 @@ bool Worksheet::ExportToMAC(const wxString &file) {
 bool Worksheet::ExportToWXMX(const wxString &file, bool markAsSaved) {
   // Show a busy cursor as long as we export a file.
   wxBusyCursor crs;
+  // Clear the list of files we need to embed
+  m_configuration->ClearFilesToSave();
   // Don't update the worksheet whilst exporting
   //  wxWindowUpdateLocker noUpdates(this);
   wxLogMessage(_("Starting to save the worksheet as .wxmx"));

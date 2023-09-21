@@ -604,6 +604,7 @@ public:
 
   wxRect GetUpdateRegion() const {return m_updateRegion;}
   const std::list<FileToSave> &GetFilesToSave() const {return m_filesToSave;}
+  void ClearFilesToSave () { m_filesToSave.clear();}
   void SetUpdateRegion(wxRect rect){m_updateRegion = rect;}
 
   //! Whether any part of the given rectangle is within the current update region,
