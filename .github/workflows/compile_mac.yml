@@ -140,6 +140,7 @@ jobs:
         run: |
              sudo mkdir /opt/local
              sudo chown -R 1001:1001 /opt/local
+             sudo chmod a+rwx /opt/local
       - name: Cache MacPorts
         id: cache-macports
         uses: actions/cache@v2

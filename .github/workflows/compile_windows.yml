@@ -47,7 +47,7 @@ jobs:
           cache-name: cache-wxWidgets
         with:
           path: wxWidgets-${{env.WXVERSION}}
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-2
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-3
 
       # multi-job compilation is broken in wxWidgets, see https://trac.wxwidgets.org/ticket/19029
       # compiling wxWidgets via cmake works, but the result isn't detected by cmake any more.
@@ -105,7 +105,7 @@ jobs:
           cache-name: cache-wxWidgets
         with:
           path: wxwidgets-source
-          key: ${{ runner.os }}-build-msvc-${{ env.cache-name }}-${env:WXVERSION}-0
+          key: ${{ runner.os }}-build-msvc-${{ env.cache-name }}-${env:WXVERSION}-1
       - name: wxWidgets
         run: |
              if (Test-Path wxwidgets-source) { echo "wxWidgets already present"} else {
