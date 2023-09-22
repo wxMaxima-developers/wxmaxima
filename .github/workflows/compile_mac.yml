@@ -138,43 +138,51 @@ jobs:
     runs-on: macos-latest
 
     steps:
-      # - name: Make NacPorts cachable
-      #   run: |
-      #        sudo mkdir /opt/local
-      #        sudo chown -R 1001:1001 /opt/local
-      #        sudo chmod a+rwx /opt/local
-      # - name: Cache MacPorts
-      #   id: cache-macports
-      #   uses: actions/cache@v2
-      #   with:
-      #     path: /opt/local/
-      #     key: ${{ runner.os }}-macports-${{ hashFiles('macos_build.txt') }}
-      # - name: Checkout wxMaxima from git
-      #   uses: actions/checkout@v4
-      #   with:
-      #     # We must fetch at least the immediate parents so that if this is
-      #     # a pull request then we can checkout the head.
-      #     fetch-depth: 15
-      # - name: Install macports
-      #   uses: melusina-org/gha-install-macports@v1.0.0
-      #   with:
-      #     parameters: 'test/install_macports.yml'
-      # - name: Configure wxMaxima
-      #   run: |
-      #        mkdir ../build-wxm
-      #        export CXXFLAGS=-I/opt/local/include
-      #        export LDFLAGS=-I/opt/local/lib
-      #        cmake -S . -B ../build-wxm -G Ninja -DCMAKE_INSTALL_PREFIX=. -DCMAKE_UNITY_BUILD_BATCH_SIZE=8 -DWXM_UNIT_TESTS=YES -DCMAKE_UNITY_BUILD=YES -DWXM_DISABLE_WEBVIEW=YES
-      # - name: Compile wxMaxima
-      #   run: |
-      #        cmake --build ../build-wxm
-      # - name: Install wxMaxima
-      #   run: |
-      #        cmake --install ../build-wxm
-      # - name: Package wxMaxima
-      #   run: |
-      #        cd ../build-wxm
-      #        cpack -G DragNDrop
-      # - name: Cleanup
-      #   run: |
-      #        port -f uninstall inactive
+      - name: Make MacPorts cachable
+        run: |
+             sudo mkdir /opt/local
+             sudo chown -R 1001:1001 /opt/local
+             sudo chmod a+rwx /opt/local
+      - name: Cache MacPorts
+        id: cache-macports
+        uses: actions/cache@v2
+        with:
+          path: /opt/local/
+          key: ${{ runner.os }}-macports-${{ hashFiles('macos_build.txt') }}
+      - name: Checkout wxMaxima from git
+        uses: actions/checkout@v4
+        with:
+          # We must fetch at least the immediate parents so that if this is
+          # a pull request then we can checkout the head.
+          fetch-depth: 15
+      - name: Install macports
+        run: |
+          if test -e "/opt/local/bin"; then echo Macports already installed; else aria2c https://github.com/macports/macports-base/releases/download/v2.8.1/MacPorts-2.8.1-12-Monterey.pkg && sudo installer -pkg MacPorts-2.8.1-12-Monterey.pkg -target /; fi
+          echo "/opt/local/bin" >> $GITHUB_PATH
+      - name: Update macports
+        run: |
+          set
+          sudo port selfupdate
+      - name: Install dependencies
+        run: |
+          sudo port install gettext ninja pandoc maxima gnuplot pkgconfig wxWidgets-3.2
+          sudo port select wxWidgets wxWidgets-3.2
+      - name: Configure wxMaxima
+        run: |
+             mkdir ../build-wxm
+             export CXXFLAGS=-I/opt/local/include
+             export LDFLAGS=-I/opt/local/lib
+             cmake -S . -B ../build-wxm -G Ninja -DCMAKE_INSTALL_PREFIX=. -DCMAKE_UNITY_BUILD_BATCH_SIZE=8 -DWXM_UNIT_TESTS=YES -DCMAKE_UNITY_BUILD=YES -DWXM_DISABLE_WEBVIEW=YES
+      - name: Compile wxMaxima
+        run: |
+             cmake --build ../build-wxm
+      - name: Install wxMaxima
+        run: |
+             cmake --install ../build-wxm
+      - name: Package wxMaxima
+        run: |
+             cd ../build-wxm
+             cpack -G DragNDrop
+      - name: Cleanup
+        run: |
+             port -f uninstall inactive || echo "No cleanup necessary"
