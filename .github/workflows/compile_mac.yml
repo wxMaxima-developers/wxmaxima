@@ -9,6 +9,8 @@ permissions:
   contents: read
   
 jobs:
+  # Commented out, because github has no ARM runners
+  #
   # compile_Ninja_ARM:
   #   runs-on: osx-arm64
   #   steps:
@@ -147,32 +149,32 @@ jobs:
       #   with:
       #     path: /opt/local/
       #     key: ${{ runner.os }}-macports-${{ hashFiles('macos_build.txt') }}
-      - name: Checkout wxMaxima from git
-        uses: actions/checkout@v4
-        with:
-          # We must fetch at least the immediate parents so that if this is
-          # a pull request then we can checkout the head.
-          fetch-depth: 15
-      - name: Install macports
-        uses: melusina-org/gha-install-macports@v1.0.0
-        with:
-          parameters: 'test/install_macports.yml'
-      - name: Configure wxMaxima
-        run: |
-             mkdir ../build-wxm
-             export CXXFLAGS=-I/opt/local/include
-             export LDFLAGS=-I/opt/local/lib
-             cmake -S . -B ../build-wxm -G Ninja -DCMAKE_INSTALL_PREFIX=. -DCMAKE_UNITY_BUILD_BATCH_SIZE=8 -DWXM_UNIT_TESTS=YES -DCMAKE_UNITY_BUILD=YES -DWXM_DISABLE_WEBVIEW=YES
-      - name: Compile wxMaxima
-        run: |
-             cmake --build ../build-wxm
-      - name: Install wxMaxima
-        run: |
-             cmake --install ../build-wxm
-      - name: Package wxMaxima
-        run: |
-             cd ../build-wxm
-             cpack -G DragNDrop
-      - name: Cleanup
-        run: |
-             port -f uninstall inactive
+      # - name: Checkout wxMaxima from git
+      #   uses: actions/checkout@v4
+      #   with:
+      #     # We must fetch at least the immediate parents so that if this is
+      #     # a pull request then we can checkout the head.
+      #     fetch-depth: 15
+      # - name: Install macports
+      #   uses: melusina-org/gha-install-macports@v1.0.0
+      #   with:
+      #     parameters: 'test/install_macports.yml'
+      # - name: Configure wxMaxima
+      #   run: |
+      #        mkdir ../build-wxm
+      #        export CXXFLAGS=-I/opt/local/include
+      #        export LDFLAGS=-I/opt/local/lib
+      #        cmake -S . -B ../build-wxm -G Ninja -DCMAKE_INSTALL_PREFIX=. -DCMAKE_UNITY_BUILD_BATCH_SIZE=8 -DWXM_UNIT_TESTS=YES -DCMAKE_UNITY_BUILD=YES -DWXM_DISABLE_WEBVIEW=YES
+      # - name: Compile wxMaxima
+      #   run: |
+      #        cmake --build ../build-wxm
+      # - name: Install wxMaxima
+      #   run: |
+      #        cmake --install ../build-wxm
+      # - name: Package wxMaxima
+      #   run: |
+      #        cd ../build-wxm
+      #        cpack -G DragNDrop
+      # - name: Cleanup
+      #   run: |
+      #        port -f uninstall inactive
