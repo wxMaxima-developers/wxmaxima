@@ -920,7 +920,7 @@ public:
   bool CanCopy(bool fromActive = false)
     {
       return m_cellPointers.m_selectionStart ||
-        (fromActive && m_cellPointers.m_activeCell &&
+        (_cellPointers.m_activeCell &&
          m_cellPointers.m_activeCell->CanCopy());
     }
 
