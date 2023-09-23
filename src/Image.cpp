@@ -83,7 +83,7 @@ Image::Image(Configuration *config, wxMemoryBuffer image, wxString type) {
     m_originalWidth = Image.GetWidth();
     m_originalHeight = Image.GetHeight();
   } else
-    InvalidBitmap();
+    InvalidBitmap(_("Image data had zero length!"));
   m_maxWidth = -1;
   m_maxHeight = -1;
 }
@@ -191,10 +191,6 @@ wxMemoryBuffer Image::ReadCompressedImage(wxInputStream *data) {
 wxBitmap Image::GetUnscaledBitmap() {
   if(m_loadImageTask.joinable())
     m_loadImageTask.join();
-  if (!m_isOk) {
-    InvalidBitmap();
-    return m_scaledBitmap;
-  }
 
   SuppressErrorDialogs logNull;
   if (m_svgRast) {
@@ -686,11 +682,7 @@ wxBitmap Image::GetBitmap(double scale) {
   // Recalculate contains its own WaitForLoad object.
   Recalculate(scale);
 
-  if (!m_isOk) {
-    InvalidBitmap();
-    return m_scaledBitmap;
-  }
-
+  wxLogBuffer errorAggregator;
   // Let's see if we have cached the scaled bitmap with the right size
   if (m_scaledBitmap.GetWidth() == m_width)
     return m_scaledBitmap;
@@ -719,7 +711,7 @@ wxBitmap Image::GetBitmap(double scale) {
     if (img.Ok())
       m_scaledBitmap = wxBitmap(img);
     else
-      InvalidBitmap();
+      InvalidBitmap(errorAggregator.GetBuffer());
   }
 
   // Make sure we stay within sane defaults
@@ -738,19 +730,32 @@ wxBitmap Image::GetBitmap(double scale) {
   return m_scaledBitmap;
 }
 
-void Image::InvalidBitmap() {
+void Image::InvalidBitmap(wxString message) {
   m_isOk = false;
-  m_width = 800 * m_ppi / 96;
-  m_height = 600 * m_ppi / 96;
+  m_originalWidth = m_width = 1200 * m_ppi / 96;
+  m_originalHeight = m_height = 900 * m_ppi / 96;
   // Create a "image not loaded" bitmap.
   m_scaledBitmap.Create(m_width, m_height);
-
+  wxString fileSystemMessage;
+  if(m_fromWxFS)
+    fileSystemMessage = _("\nImage was loaded from a .wxmx file");
   wxString error;
   if (m_imageName != wxEmptyString)
-    error =
-      wxString::Format(_("Error: Cannot render %s."), m_imageName.utf8_str());
+  {
+    if(message.IsEmpty())
+      error =
+        wxString::Format(_("Error: Cannot render %s."), m_imageName.utf8_str() + fileSystemMessage);
+    else
+      error =
+        wxString::Format(_("Error: Cannot render %s:\n%s"), m_imageName.utf8_str(), message.utf8_str() + fileSystemMessage);
+  }
   else
-    error = wxString::Format(_("Error: Cannot render the image."));
+  {
+    if(message.IsEmpty())
+      error = wxString::Format(_("Error: Cannot render the image.") + fileSystemMessage);
+    else
+      error = wxString::Format(_("Error: Cannot render the image:\n%s"), message.utf8_str() + fileSystemMessage);
+  }
 
   wxMemoryDC dc;
   dc.SelectObject(m_scaledBitmap);
@@ -764,6 +769,11 @@ void Image::InvalidBitmap() {
 
   dc.GetTextExtent(error, &width, &height);
   dc.DrawText(error, (m_width - width) / 2, (m_height - height) / 2);
+  wxMemoryOutputStream mstream;
+  m_scaledBitmap.ConvertToImage().SaveFile(mstream, wxBITMAP_TYPE_PNG);
+  m_compressedImage.AppendData(mstream.GetOutputStreamBuffer()->GetBufferStart(),
+                               mstream.GetOutputStreamBuffer()->GetBufferSize());
+  Recalculate();
 }
 
 void Image::LoadImage(const wxBitmap &bitmap) {
@@ -793,6 +803,7 @@ wxString Image::GetExtension() const { return m_extension; }
 // cppcheck-suppress performance symbolName=filesystem
 void Image::LoadImage(wxString image, std::shared_ptr<wxFileSystem> &filesystem,
                       bool remove) {
+  m_fromWxFS = filesystem != NULL;
   if(m_loadImageTask.joinable())
     m_loadImageTask.join();
   m_extension = wxFileName(image).GetExt();
@@ -854,6 +865,7 @@ void Image::LoadImage_Backgroundtask(std::unique_ptr<ThreadNumberLimiter> limite
   m_isOk = false;
 
   wxImage Image;
+  wxLogBuffer errorAggregator;
   if (m_compressedImage.GetDataLen() > 0) {
     if ((m_extension == "svg") || (m_extension == "svgz")) {
       wxString svgContents_string;
@@ -935,7 +947,7 @@ void Image::LoadImage_Backgroundtask(std::unique_ptr<ThreadNumberLimiter> limite
             m_ppi = resolution;
         }
       } else {
-        InvalidBitmap();
+        InvalidBitmap(errorAggregator.GetBuffer());
       }
     }
   }

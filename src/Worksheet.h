@@ -917,7 +917,7 @@ public:
 
   void ResetInputPrompts();
 
-  bool CanCopy(bool fromActive = false)
+  bool CanCopy()
     {
       return m_cellPointers.m_selectionStart ||
         (m_cellPointers.m_activeCell &&

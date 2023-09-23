@@ -1504,7 +1504,7 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event) {
                            wxEmptyString, wxITEM_NORMAL);
         }
       } else {
-        if (CanCopy(true)) {
+        if (CanCopy()) {
           popupMenu.Append(wxID_COPY, _("Copy"), wxEmptyString, wxITEM_NORMAL);
           popupMenu.Append(EventIDs::popid_copy_matlab, _("Copy for Octave/Matlab"),
                            wxEmptyString, wxITEM_NORMAL);
@@ -7204,7 +7204,7 @@ void Worksheet::OnKillFocus(wxFocusEvent &event) {
 }
 
 void Worksheet::CheckUnixCopy() {
-  if (CanCopy(true)) {
+  if (CanCopy()) {
     wxTheClipboard->UsePrimarySelection(true);
     if (wxTheClipboard->IsUsingPrimarySelection()) {
       wxASSERT_MSG(!wxTheClipboard->IsOpened(),

@@ -5169,7 +5169,7 @@ void wxMaxima::UpdateMenus() {
   wxASSERT_MSG(
 	       (!m_worksheet->HCaretActive()) || (m_worksheet->GetActiveCell() == NULL),
 	       _("Both horizontal and vertical cursor active at the same time"));
-  m_MenuBar->EnableItem(wxID_COPY, m_worksheet->CanCopy(true));
+  m_MenuBar->EnableItem(wxID_COPY, m_worksheet->CanCopy());
   m_MenuBar->EnableItem(wxID_CUT, m_worksheet->CanCut());
   m_MenuBar->EnableItem(EventIDs::menu_copy_tex_from_worksheet, m_worksheet->CanCopy());
   m_MenuBar->EnableItem(EventIDs::menu_copy_matlab_from_worksheet,
@@ -5183,7 +5183,7 @@ void wxMaxima::UpdateMenus() {
   m_MenuBar->EnableItem(EventIDs::menu_copy_as_rtf, m_worksheet->CanCopy());
   m_MenuBar->EnableItem(EventIDs::menu_copy_to_file, m_worksheet->CanCopy());
   m_MenuBar->EnableItem(EventIDs::menu_copy_text_from_worksheet,
-                        m_worksheet->CanCopy(true));
+                        m_worksheet->CanCopy());
   m_MenuBar->EnableItem(wxID_SELECTALL, m_worksheet->GetTree() != NULL);
   m_MenuBar->EnableItem(wxID_UNDO, m_worksheet->CanUndo());
   m_MenuBar->EnableItem(wxID_REDO, m_worksheet->CanRedo());
@@ -5237,7 +5237,7 @@ void wxMaxima::UpdateToolBar() {
 
   m_worksheet->m_mainToolBar->CanUndo(m_worksheet->CanUndo());
   m_worksheet->m_mainToolBar->CanRedo(m_worksheet->CanRedo());
-  m_worksheet->m_mainToolBar->CanCopy(m_worksheet->CanCopy(true));
+  m_worksheet->m_mainToolBar->CanCopy(m_worksheet->CanCopy());
   m_worksheet->m_mainToolBar->CanCut(m_worksheet->CanCut());
   m_worksheet->m_mainToolBar->CanSave((!m_fileSaved));
   m_worksheet->m_mainToolBar->CanPrint(m_worksheet->GetTree() != NULL);
@@ -5351,7 +5351,7 @@ wxString wxMaxima::ExtractFirstExpression(const wxString &entry) {
 }
 
 wxString wxMaxima::GetDefaultEntry() {
-  if (m_worksheet->CanCopy(true))
+  if (m_worksheet->CanCopy())
     return (m_worksheet->GetString()).Trim().Trim(false);
   wxString retval;
   if (m_worksheet->GetActiveCell() != NULL)
@@ -9802,15 +9802,15 @@ void wxMaxima::PopupMenu(wxCommandEvent &event) {
     TriggerEvaluation();
   }
   else if(event.GetId() == EventIDs::popid_copy_matlab){
-    if (m_worksheet->CanCopy(true))
+    if (m_worksheet->CanCopy())
       m_worksheet->CopyMatlab();
   }
   else if(event.GetId() == EventIDs::popid_copy_tex){
-    if (m_worksheet->CanCopy(true))
+    if (m_worksheet->CanCopy())
       m_worksheet->CopyTeX();
   }
   else if(event.GetId() == EventIDs::popid_copy_text){
-    if (m_worksheet->CanCopy(true))
+    if (m_worksheet->CanCopy())
       m_worksheet->CopyText();
   }
   else if(event.GetId() == EventIDs::popid_comment_selection){
@@ -9838,7 +9838,7 @@ void wxMaxima::PopupMenu(wxCommandEvent &event) {
   }
 #endif
   else if(event.GetId() == EventIDs::popid_copy_rtf){
-    if (m_worksheet->CanCopy(true))
+    if (m_worksheet->CanCopy())
       m_worksheet->CopyRTF();
   }
   else if(event.GetId() == EventIDs::popid_simplify){

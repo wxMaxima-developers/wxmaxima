@@ -111,7 +111,7 @@ public:
   void SetPPI(int ppi) {m_ppi = ppi;}
 
   //! Creates a bitmap showing an error message
-  void InvalidBitmap();
+  void InvalidBitmap(wxString message = wxEmptyString);
 
   /*! Sets the name of the gnuplot source and data file of this image
 
@@ -229,6 +229,7 @@ public:
   static const wxString &GetBadImageToolTip();
 
 private:
+  bool m_fromWxFS = false;
   bool m_gnuplotDataThreadRunning = false;
   //  static std::atomic<int> m_numberOfThreads;
   //! A zipped version of the gnuplot commands that produced this image.
