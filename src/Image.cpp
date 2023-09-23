@@ -713,7 +713,7 @@ wxBitmap Image::GetBitmap(double scale) {
     else
     {
       InvalidBitmap(errorAggregator.GetBuffer());
-      wxLogMessage("GetBitmap():", errorAggregator.GetBuffer().mb_str());
+      wxLogMessage("GetBitmap(): %s", errorAggregator.GetBuffer().mb_str());
       Recalculate();
     }
   }
@@ -735,7 +735,7 @@ wxBitmap Image::GetBitmap(double scale) {
 }
 
 void Image::InvalidBitmap(wxString message) {
-  m_isOk = false;
+  m_isOk = true;
   m_originalWidth = m_width = 1200 * m_ppi / 96;
   m_originalHeight = m_height = 900 * m_ppi / 96;
   // Create a "image not loaded" bitmap.
@@ -951,7 +951,7 @@ void Image::LoadImage_Backgroundtask(std::unique_ptr<ThreadNumberLimiter> limite
         }
       } else {
         InvalidBitmap(errorAggregator.GetBuffer());
-        wxLogMessage("LoadImage():", errorAggregator.GetBuffer().mb_str());
+        wxLogMessage("LoadImage(): %s", errorAggregator.GetBuffer().mb_str());
 
       }
     }
