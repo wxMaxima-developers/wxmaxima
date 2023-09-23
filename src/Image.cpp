@@ -711,7 +711,11 @@ wxBitmap Image::GetBitmap(double scale) {
     if (img.Ok())
       m_scaledBitmap = wxBitmap(img);
     else
+    {
       InvalidBitmap(errorAggregator.GetBuffer());
+      wxLogMessage("GetBitmap():", errorAggregator.GetBuffer().mb_str());
+      Recalculate();
+    }
   }
 
   // Make sure we stay within sane defaults
@@ -744,23 +748,23 @@ void Image::InvalidBitmap(wxString message) {
   {
     if(message.IsEmpty())
       error =
-        wxString::Format(_("Error: Cannot render %s."), m_imageName.utf8_str() + fileSystemMessage);
+        wxString::Format(_("Error: Cannot render %s."), m_imageName.utf8_str())  + fileSystemMessage;
     else
       error =
-        wxString::Format(_("Error: Cannot render %s:\n%s"), m_imageName.utf8_str(), message.utf8_str() + fileSystemMessage);
+        wxString::Format(_("Error: Cannot render %s:\n%s"), m_imageName.utf8_str(), message.utf8_str()) + fileSystemMessage;
   }
   else
   {
     if(message.IsEmpty())
-      error = wxString::Format(_("Error: Cannot render the image.") + fileSystemMessage);
+      error = wxString::Format(_("Error: Cannot render the image.")) + fileSystemMessage;
     else
-      error = wxString::Format(_("Error: Cannot render the image:\n%s"), message.utf8_str() + fileSystemMessage);
+      error = wxString::Format(_("Error: Cannot render the image:\n%s"), message.utf8_str()) + fileSystemMessage;
   }
 
   wxMemoryDC dc;
   dc.SelectObject(m_scaledBitmap);
 
-  int width = 0, height = 0;
+  wxCoord width = 0, height = 0;
   dc.GetTextExtent(error, &width, &height);
 
   dc.DrawRectangle(0, 0, m_width - 1, m_height - 1);
@@ -773,7 +777,6 @@ void Image::InvalidBitmap(wxString message) {
   m_scaledBitmap.ConvertToImage().SaveFile(mstream, wxBITMAP_TYPE_PNG);
   m_compressedImage.AppendData(mstream.GetOutputStreamBuffer()->GetBufferStart(),
                                mstream.GetOutputStreamBuffer()->GetBufferSize());
-  Recalculate();
 }
 
 void Image::LoadImage(const wxBitmap &bitmap) {
@@ -948,6 +951,8 @@ void Image::LoadImage_Backgroundtask(std::unique_ptr<ThreadNumberLimiter> limite
         }
       } else {
         InvalidBitmap(errorAggregator.GetBuffer());
+        wxLogMessage("LoadImage():", errorAggregator.GetBuffer().mb_str());
+
       }
     }
   }
