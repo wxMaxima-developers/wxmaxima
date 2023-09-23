@@ -51,7 +51,7 @@ var searchData=
   ['intervalcell_2ecpp_606',['IntervalCell.cpp',['../IntervalCell_8cpp.html',1,'']]],
   ['intervalcell_2eh_607',['IntervalCell.h',['../IntervalCell_8h.html',1,'']]],
   ['inupdateregion_608',['InUpdateRegion',['../classConfiguration.html#a4d8ad50245bbb73bc5d4bcd91bcc001c',1,'Configuration::InUpdateRegion()'],['../classCell.html#a0835d4dd3d72ed0013aa5a091d64d9ab',1,'Cell::InUpdateRegion()']]],
-  ['invalidbitmap_609',['InvalidBitmap',['../classImage.html#a7fd957f945374a5335edf9bf76333500',1,'Image']]],
+  ['invalidbitmap_609',['InvalidBitmap',['../classImage.html#a100d5935a1e23c89d905b3075a72f60b',1,'Image']]],
   ['invertcolour_610',['InvertColour',['../classConfiguration.html#a2c02a3cf06a1d52dd15bbba628b0899c',1,'Configuration']]],
   ['iregistryhub_611',['IRegistryHub',['../structCatch_1_1IRegistryHub.html',1,'Catch']]],
   ['iresultcapture_612',['IResultCapture',['../structCatch_1_1IResultCapture.html',1,'Catch']]],

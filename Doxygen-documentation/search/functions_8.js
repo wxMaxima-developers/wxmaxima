@@ -13,7 +13,7 @@ var searchData=
   ['interpretdatafrommaxima_2481',['InterpretDataFromMaxima',['../classwxMaxima.html#a337d5dfc278d3d3b751f941c064f351a',1,'wxMaxima']]],
   ['interrupt_2482',['Interrupt',['../classwxMaxima.html#ab15fdc4e2b74903b68813ad96d4a9b1f',1,'wxMaxima']]],
   ['inupdateregion_2483',['InUpdateRegion',['../classCell.html#a0835d4dd3d72ed0013aa5a091d64d9ab',1,'Cell::InUpdateRegion()'],['../classConfiguration.html#a4d8ad50245bbb73bc5d4bcd91bcc001c',1,'Configuration::InUpdateRegion()']]],
-  ['invalidbitmap_2484',['InvalidBitmap',['../classImage.html#a7fd957f945374a5335edf9bf76333500',1,'Image']]],
+  ['invalidbitmap_2484',['InvalidBitmap',['../classImage.html#a100d5935a1e23c89d905b3075a72f60b',1,'Image']]],
   ['invertcolour_2485',['InvertColour',['../classConfiguration.html#a2c02a3cf06a1d52dd15bbba628b0899c',1,'Configuration']]],
   ['isactive_2486',['IsActive',['../classCell.html#a2b727bd0956468c57342bd88484d9316',1,'Cell::IsActive()'],['../classEditorCell.html#a1cd32f9f2a818fb8e37459da063e7fe2',1,'EditorCell::IsActive()']]],
   ['isactiveinlast_2487',['IsActiveInLast',['../classWorksheet.html#a68efc43440c75965493d07ff496b27f6',1,'Worksheet']]],
