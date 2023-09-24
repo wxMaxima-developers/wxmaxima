@@ -30,7 +30,7 @@ var searchData=
   ['islastinqueue_2498',['IsLastInQueue',['../classEvaluationQueue.html#a0dca8a9fb427d333a75d1612162e8bd2',1,'EvaluationQueue']]],
   ['islessergctype_2499',['IsLesserGCType',['../classGroupCell.html#aeffb98409072154212d9481319d6914a',1,'GroupCell']]],
   ['ismath_2500',['IsMath',['../classCell.html#adc34d37cd08670497ee5d0a5bb2a4925',1,'Cell']]],
-  ['isok_2501',['IsOk',['../classBitmapOut.html#af46705bab0e3319705367c1ae275a072',1,'BitmapOut::IsOk()'],['../classImage.html#aa6c41462e7de6e105c237e276f83677c',1,'Image::IsOk()']]],
+  ['isok_2501',['IsOk',['../classBitmapOut.html#af46705bab0e3319705367c1ae275a072',1,'BitmapOut']]],
   ['isoperator_2502',['IsOperator',['../classCell.html#ad9ead4b4296d8f1f1fe50f8e8c83868c',1,'Cell::IsOperator()'],['../classFracCell.html#a1ae2e54a7fe858f0f21c2fc031e0ed80',1,'FracCell::IsOperator()'],['../classTextCell.html#a4cf54ff09e85bfa8eba366072df3e883',1,'TextCell::IsOperator()'],['../classConfiguration.html#ae4d6699f5f7ce4330b1e6806b05d286b',1,'Configuration::IsOperator()']]],
   ['ispanedisplayed_2503',['IsPaneDisplayed',['../classwxMaximaFrame.html#aca9ae11de0e947738270669867ec3b0e',1,'wxMaximaFrame']]],
   ['ispointinselection_2504',['IsPointInSelection',['../classEditorCell.html#aacd184cb9e7f5ef35176df9f5735b4cc',1,'EditorCell']]],
