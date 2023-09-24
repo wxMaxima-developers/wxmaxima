@@ -695,8 +695,9 @@ wxBitmap Image::GetBitmap(double scale) {
       m_scaledBitmap = wxBitmap(img);
     else
     {
-      InvalidBitmap(errorAggregator.GetBuffer());
-      wxLogMessage("GetBitmap(): %s", errorAggregator.GetBuffer().mb_str());
+      wxString errorMessage = errorAggregator.GetBuffer();
+      InvalidBitmap(errorMessage);
+      wxLogMessage("GetBitmap(): %s", errorMessage.mb_str());
       Recalculate();
     }
   }
@@ -936,8 +937,9 @@ void Image::LoadImage_Backgroundtask(std::unique_ptr<ThreadNumberLimiter> limite
             m_ppi = resolution;
         }
       } else {
-        InvalidBitmap(errorAggregator.GetBuffer());
-        wxLogMessage("LoadImage(): %s", errorAggregator.GetBuffer().mb_str());
+        wxString errorMessage = errorAggregator.GetBuffer();
+        InvalidBitmap(errorMessage);
+        wxLogMessage("LoadImage(): %s", errorMessage.mb_str());
 
       }
     }
