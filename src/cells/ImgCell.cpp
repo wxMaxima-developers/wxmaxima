@@ -137,8 +137,6 @@ const wxString &ImgCell::GetToolTip(const wxPoint point) const {
     return wxm::emptyString;
 
   m_cellPointers->m_cellUnderPointer = const_cast<ImgCell *>(this);
-  if (!m_image->IsOk())
-    return Image::GetBadImageToolTip();
 
   return GetLocalToolTip();
 }

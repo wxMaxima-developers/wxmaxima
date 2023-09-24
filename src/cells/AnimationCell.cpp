@@ -544,8 +544,6 @@ bool AnimationCell::IsOk() const {
     return false;
   if (!m_images[m_displayed])
     return false;
-  if (!m_images[m_displayed]->IsOk())
-    return false;
   return true;
 }
 

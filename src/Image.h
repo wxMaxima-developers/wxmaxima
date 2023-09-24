@@ -193,9 +193,6 @@ public:
 
   //! Returns the bitmap being displayed with custom scale
   wxBitmap GetBitmap(double scale = 1.0);
-
-  //! Does the image show an actual image or an "broken image" symbol?
-  bool IsOk() const;
   
   //! Returns the image in its unscaled form
   wxBitmap GetUnscaledBitmap();
@@ -244,8 +241,6 @@ private:
   wxBitmap m_scaledBitmap;
   //! The file extension for the current image type
   wxString m_extension;
-  //! Does this image contain an actual image?
-  bool m_isOk;
   //! The gnuplot source file for this image, if any.
   wxString m_gnuplotSource;
   //! The gnuplot data file for this image, if any.

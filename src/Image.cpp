@@ -28,6 +28,7 @@
 #include "precomp.h"
 #include "Cell.h"
 #include "Version.h"
+#include "ErrorRedirector.h"
 #include <wx/image.h>
 #include <wx/rawbmp.h>
 
@@ -38,7 +39,7 @@
 #include "nanosvg_private.h"
 #include "nanosvgrast_private.h"
 #include <Image.h>
-#include "ErrorRedirector.h"
+#include "wx/log.h"
 #include "StringUtils.h"
 #include "SvgBitmap.h"
 #include <wx/mstream.h>
@@ -50,14 +51,7 @@
 
 Image::Image(Configuration *config) {
   m_configuration = config;
-  m_width = 1;
-  m_height = 1;
-  m_originalWidth = 640;
-  m_originalHeight = 480;
-  m_scaledBitmap.Create(1, 1);
-  m_isOk = false;
-  m_maxWidth = -1;
-  m_maxHeight = -1;
+  InvalidBitmap();
 }
 
 Image::Image(Configuration *config, wxMemoryBuffer image, wxString type) {
@@ -65,23 +59,24 @@ Image::Image(Configuration *config, wxMemoryBuffer image, wxString type) {
   m_scaledBitmap.Create(1, 1);
   m_compressedImage = image;
   m_extension = type;
-  m_isOk = false;
   m_width = 1;
   m_height = 1;
-  m_originalWidth = 640;
-  m_originalHeight = 480;
 
+  wxLogBuffer errorAggregator;
   wxImage Image;
   if (m_compressedImage.GetDataLen() > 0) {
     wxMemoryInputStream istream(m_compressedImage.GetData(),
                                 m_compressedImage.GetDataLen());
+    Image.LoadFile(istream);
+    if(Image.IsOk())
     {
-      SuppressErrorDialogs logNull;
-      Image.LoadFile(istream);
+      m_originalWidth = Image.GetWidth();
+      m_originalHeight = Image.GetHeight();
     }
-    m_isOk = Image.IsOk();
-    m_originalWidth = Image.GetWidth();
-    m_originalHeight = Image.GetHeight();
+    else
+    {
+      InvalidBitmap(errorAggregator.GetBuffer());
+    }
   } else
     InvalidBitmap(_("Image data had zero length!"));
   m_maxWidth = -1;
@@ -90,7 +85,6 @@ Image::Image(Configuration *config, wxMemoryBuffer image, wxString type) {
 
 Image::Image(Configuration *config, const wxBitmap &bitmap) {
   m_configuration = config;
-  m_isOk = false;
   m_width = 1;
   m_height = 1;
   m_maxWidth = -1;
@@ -111,7 +105,6 @@ Image::Image(Configuration *config, wxString image,
   m_svgImage = NULL;
   m_configuration = config;
   m_scaledBitmap.Create(1, 1);
-  m_isOk = false;
   m_width = 1;
   m_height = 1;
   m_maxWidth = -1;
@@ -126,7 +119,6 @@ Image::Image(Configuration *config, const Image &image) {
   m_svgImage = NULL;
   m_configuration = config;
   m_scaledBitmap.Create(1, 1);
-  m_isOk = image.m_isOk;
   m_width = 1;
   m_height = 1;
   m_maxWidth = image.m_maxWidth;
@@ -139,13 +131,12 @@ Image::Image(Configuration *config, const Image &image) {
 }
 
 Image::~Image() {
+  SuppressErrorDialogs logNull;
   if(m_loadImageTask.joinable())
     m_loadImageTask.join();
   if(m_loadGnuplotSourceTask.joinable())
     m_loadGnuplotSourceTask.join();
-  m_isOk = false;
   if (!m_gnuplotSource.IsEmpty()) {
-    SuppressErrorDialogs logNull;
     if (wxFileExists(m_gnuplotSource))
     {
       if(!wxRemoveFile(m_gnuplotSource))
@@ -163,7 +154,6 @@ Image::~Image() {
   }
 
   if (!m_gnuplotData.IsEmpty()) {
-    SuppressErrorDialogs logNull;
     if (wxFileExists(m_gnuplotData))
     {
       if(!wxRemoveFile(m_gnuplotData))
@@ -191,7 +181,7 @@ wxMemoryBuffer Image::ReadCompressedImage(wxInputStream *data) {
 wxBitmap Image::GetUnscaledBitmap() {
   if(m_loadImageTask.joinable())
     m_loadImageTask.join();
-
+  
   SuppressErrorDialogs logNull;
   if (m_svgRast) {
     std::vector<unsigned char> imgdata(m_originalWidth * m_originalHeight * 4);
@@ -229,12 +219,6 @@ size_t Image::GetOriginalHeight() const {
     m_loadImageTask.join();
 
     return m_originalHeight;
-}
-
-bool Image::IsOk() const {
-    if(m_loadImageTask.joinable())
-    m_loadImageTask.join();
-return m_isOk;
 }
 
 // filesystem cannot be passed by const reference as we want to keep the
@@ -706,7 +690,6 @@ wxBitmap Image::GetBitmap(double scale) {
 
       img = wxImage(istream, wxBITMAP_TYPE_ANY);
     }
-    m_isOk = true;
 
     if (img.Ok())
       m_scaledBitmap = wxBitmap(img);
@@ -735,7 +718,6 @@ wxBitmap Image::GetBitmap(double scale) {
 }
 
 void Image::InvalidBitmap(wxString message) {
-  m_isOk = true;
   m_originalWidth = m_width = 1200 * m_ppi / 96;
   m_originalHeight = m_height = 900 * m_ppi / 96;
   // Create a "image not loaded" bitmap.
@@ -761,20 +743,28 @@ void Image::InvalidBitmap(wxString message) {
       error = wxString::Format(_("Error: Cannot render the image:\n%s"), message.utf8_str()) + fileSystemMessage;
   }
 
-  wxMemoryDC dc;
-  dc.SelectObject(m_scaledBitmap);
-
-  wxCoord width = 0, height = 0;
-  dc.GetTextExtent(error, &width, &height);
-
-  dc.DrawRectangle(0, 0, m_width - 1, m_height - 1);
-  dc.DrawLine(0, 0, m_width - 1, m_height - 1);
-  dc.DrawLine(0, m_height - 1, m_width - 1, 0);
-
-  dc.GetTextExtent(error, &width, &height);
-  dc.DrawText(error, (m_width - width) / 2, (m_height - height) / 2);
+  {
+    wxMemoryDC dc;
+    dc.SelectObject(m_scaledBitmap);
+    dc.SetPen(*wxBLACK_PEN);
+    dc.SetBrush(*wxWHITE_BRUSH);
+    dc.Clear();
+    wxCoord width = 0, height = 0;
+    dc.GetTextExtent(error, &width, &height);
+    
+    dc.DrawRectangle(0, 0, m_width - 1, m_height - 1);
+    dc.DrawLine(0, 0, m_width - 1, m_height - 1);
+    dc.DrawLine(0, m_height - 1, m_width - 1, 0);
+    
+    dc.GetTextExtent(error, &width, &height);
+    dc.DrawText(error, (m_width - width) / 2, (m_height - height) / 2);
+  }
   wxMemoryOutputStream mstream;
-  m_scaledBitmap.ConvertToImage().SaveFile(mstream, wxBITMAP_TYPE_PNG);
+  wxASSERT(m_scaledBitmap.IsOk());
+  wxImage image = m_scaledBitmap.ConvertToImage();
+  wxASSERT(image.IsOk());
+  image.SaveFile(mstream, wxBITMAP_TYPE_PNG);
+  m_compressedImage.Clear();
   m_compressedImage.AppendData(mstream.GetOutputStreamBuffer()->GetBufferStart(),
                                mstream.GetOutputStreamBuffer()->GetBufferSize());
 }
@@ -784,7 +774,6 @@ void Image::LoadImage(const wxBitmap &bitmap) {
     m_loadImageTask.join();
   // Convert the bitmap to a png image we can use as m_compressedImage
   wxImage image = bitmap.ConvertToImage();
-  m_isOk = image.IsOk();
   wxMemoryOutputStream stream;
   image.SaveFile(stream, wxBITMAP_TYPE_PNG);
   m_compressedImage.AppendData(stream.GetOutputStreamBuffer()->GetBufferStart(),
@@ -815,7 +804,7 @@ void Image::LoadImage(wxString image, std::shared_ptr<wxFileSystem> &filesystem,
   std::unique_ptr<ThreadNumberLimiter> limiter(new ThreadNumberLimiter()); 
   m_compressedImage.Clear();
   m_scaledBitmap.Create(1, 1);
-  SuppressErrorDialogs logNull;
+  wxLogBuffer errorAggregator;
 
   if (filesystem) {
     std::unique_ptr<wxFSFile> fsfile(filesystem->OpenFile(image));
@@ -824,6 +813,8 @@ void Image::LoadImage(wxString image, std::shared_ptr<wxFileSystem> &filesystem,
 
       m_compressedImage = ReadCompressedImage(istream.get());
     }
+    else
+      InvalidBitmap(errorAggregator.GetBuffer());
 
     // Closing and deleting fsfile is important: If this line is missing
     // opening .wxmx files containing hundreds of images might lead to a
@@ -856,6 +847,8 @@ void Image::LoadImage(wxString image, std::shared_ptr<wxFileSystem> &filesystem,
         }
       }
     }
+    else
+      InvalidBitmap(errorAggregator.GetBuffer());      
   }
 
   m_loadImageTask = std::thread(&Image::LoadImage_Backgroundtask,
@@ -865,7 +858,6 @@ void Image::LoadImage(wxString image, std::shared_ptr<wxFileSystem> &filesystem,
 }
 
 void Image::LoadImage_Backgroundtask(std::unique_ptr<ThreadNumberLimiter> limiter) {
-  m_isOk = false;
 
   wxImage Image;
   wxLogBuffer errorAggregator;
@@ -919,25 +911,19 @@ void Image::LoadImage_Backgroundtask(std::unique_ptr<ThreadNumberLimiter> limite
       if (m_svgImage) {
         if (!m_svgRast)
           m_svgRast.reset(wxm_nsvgCreateRasterizer());
-        if (m_svgRast)
-          m_isOk = true;
         m_originalWidth = m_svgImage->width;
         m_originalHeight = m_svgImage->height;
       }
     } else {
       wxMemoryInputStream istream(m_compressedImage.GetData(),
                                   m_compressedImage.GetDataLen());
-      {
-        SuppressErrorDialogs logNull;
-        Image.LoadFile(istream);
-      }
+      Image.LoadFile(istream);
       m_originalWidth = 700;
       m_originalHeight = 300;
 
       if (Image.Ok()) {
         m_originalWidth = Image.GetWidth();
         m_originalHeight = Image.GetHeight();
-        m_isOk = true;
         if (Image.HasOption(wxS("wxIMAGE_OPTION_RESOLUTION"))) {
           int resolution;
           resolution = Image.GetOptionInt(wxS("wxIMAGE_OPTION_RESOLUTION"));
