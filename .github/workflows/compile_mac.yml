@@ -145,7 +145,7 @@ jobs:
              sudo chmod a+rwx /opt/local
       - name: Cache MacPorts
         id: cache-macports
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: /opt/local/
           key: ${{ runner.os }}-macports-${{ hashFiles('macos_build.txt') }}
