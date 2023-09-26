@@ -34,7 +34,7 @@ var searchData=
   ['allselected_31',['AllSelected',['../classEditorCell.html#aa5416be45e35122d2a4e491aa6ee40ad',1,'EditorCell']]],
   ['always_5ffalse_32',['always_false',['../structCatch_1_1always__false.html',1,'Catch']]],
   ['animate_33',['Animate',['../classWorksheet.html#a264f7ddedae4043868e2c7db1c798c9f',1,'Worksheet']]],
-  ['animationcell_34',['AnimationCell',['../classAnimationCell.html',1,'AnimationCell'],['../classAnimationCell.html#aebed0015a14f936f50d9efdbd237ceae',1,'AnimationCell::AnimationCell(GroupCell *group, Configuration *config, std::shared_ptr&lt; wxFileSystem &gt; &amp;filesystem, int framerate=-1)'],['../classAnimationCell.html#a2b08abd9999571a92775095946058f25',1,'AnimationCell::AnimationCell(GroupCell *group, Configuration *config, const wxMemoryBuffer &amp;image, const wxString &amp;type)']]],
+  ['animationcell_34',['AnimationCell',['../classAnimationCell.html',1,'AnimationCell'],['../classAnimationCell.html#a94e0a814e6f8dd598e16992f8f7a2504',1,'AnimationCell::AnimationCell(GroupCell *group, Configuration *config, const wxString &amp;wxmxFile, int framerate=-1)'],['../classAnimationCell.html#a2b08abd9999571a92775095946058f25',1,'AnimationCell::AnimationCell(GroupCell *group, Configuration *config, const wxMemoryBuffer &amp;image, const wxString &amp;type)']]],
   ['animationcell_2ecpp_35',['AnimationCell.cpp',['../AnimationCell_8cpp.html',1,'']]],
   ['animationcell_2eh_36',['AnimationCell.h',['../AnimationCell_8h.html',1,'']]],
   ['animationstartstopstate_37',['AnimationStartStopState',['../classToolBar.html#a327b655c366e7932f751d2815cc629fc',1,'ToolBar']]],

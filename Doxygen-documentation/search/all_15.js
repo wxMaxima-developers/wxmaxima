@@ -11,9 +11,9 @@ var searchData=
   ['wizard_5fparametric_5fplot_1546',['wizard_parametric_plot',['../classEventIDs.html#a95017fc059b222493b76c640a4aab03e',1,'EventIDs']]],
   ['wizardhelp_1547',['Wizardhelp',['../classWizardhelp.html',1,'']]],
   ['wizcontour_1548',['WizContour',['../classWizContour.html',1,'']]],
-  ['wizdrawaccuracy_1549',['WizDrawAccuracy',['../classWizDrawAccuracy.html#a14a027a1623d28baa6d64e74f4d67e61',1,'WizDrawAccuracy::WizDrawAccuracy()'],['../classWizDrawAccuracy.html',1,'WizDrawAccuracy']]],
+  ['wizdrawaccuracy_1549',['WizDrawAccuracy',['../classWizDrawAccuracy.html',1,'WizDrawAccuracy'],['../classWizDrawAccuracy.html#a14a027a1623d28baa6d64e74f4d67e61',1,'WizDrawAccuracy::WizDrawAccuracy()']]],
   ['wizpoints_1550',['WizPoints',['../classWizPoints.html',1,'']]],
-  ['worksheet_1551',['Worksheet',['../classWorksheet.html',1,'Worksheet'],['../classWorksheet.html#a7ba34e68818f5c6b3374773683e5710c',1,'Worksheet::Worksheet()']]],
+  ['worksheet_1551',['Worksheet',['../classWorksheet.html#a7ba34e68818f5c6b3374773683e5710c',1,'Worksheet::Worksheet()'],['../classWorksheet.html',1,'Worksheet']]],
   ['worksheet_2ecpp_1552',['Worksheet.cpp',['../Worksheet_8cpp.html',1,'']]],
   ['worksheet_2eh_1553',['Worksheet.h',['../Worksheet_8h.html',1,'']]],
   ['wrappingstatictext_1554',['WrappingStaticText',['../classWrappingStaticText.html',1,'']]],
@@ -22,7 +22,7 @@ var searchData=
   ['write_1557',['Write',['../classStyle.html#a259bf27abcb1f6d66dbb02bc9bc9f6cb',1,'Style::Write()'],['../classMaxima.html#a3db8124662f2b0770e270a1140427623',1,'Maxima::Write()']]],
   ['write_5ferror_1558',['WRITE_ERROR',['../classMaximaEvent.html#a2ab45a3cb6d3f8cddb8ff9d70f371fe5a1c4d8eb451f551e07f8c700b72a82d69',1,'MaximaEvent']]],
   ['write_5fpending_1559',['WRITE_PENDING',['../classMaximaEvent.html#a2ab45a3cb6d3f8cddb8ff9d70f371fe5ab38f486d812449a16439bb2d963ed778',1,'MaximaEvent']]],
-  ['writesettings_1560',['WriteSettings',['../classConfigDialogue.html#a6a3d11ed034adf263350d8aa54a7e28d',1,'ConfigDialogue::WriteSettings()'],['../classConfiguration.html#a53af46fba084e7e9f45fabbfb8eb4030',1,'Configuration::WriteSettings(const wxString &amp;file={})']]],
+  ['writesettings_1560',['WriteSettings',['../classConfiguration.html#a53af46fba084e7e9f45fabbfb8eb4030',1,'Configuration::WriteSettings()'],['../classConfigDialogue.html#a6a3d11ed034adf263350d8aa54a7e28d',1,'ConfigDialogue::WriteSettings()']]],
   ['writestyles_1561',['WriteStyles',['../classConfiguration.html#a4f7f692a8178c2062765ddafd0fd4782',1,'Configuration']]],
   ['wximagepanel_1562',['wxImagePanel',['../classwxImagePanel.html',1,'']]],
   ['wximagepanel_2ecpp_1563',['wxImagePanel.cpp',['../wxImagePanel_8cpp.html',1,'']]],
@@ -44,7 +44,8 @@ var searchData=
   ['wxmaximaicon_2eh_1579',['wxMaximaIcon.h',['../wxMaximaIcon_8h.html',1,'']]],
   ['wxmheader_1580',['WXMHeader',['../structFormat_1_1WXMHeader.html',1,'Format']]],
   ['wxmheadercollection_1581',['WXMHeaderCollection',['../classFormat_1_1WXMHeaderCollection.html',1,'Format']]],
-  ['wxscrolled_1582',['wxScrolled',['../classwxScrolled.html',1,'']]],
-  ['wxscrolled_3c_20wxpanel_20_3e_1583',['wxScrolled&lt; wxPanel &gt;',['../classwxScrolled.html',1,'']]],
-  ['wxscrolled_3c_20wxwindow_20_3e_1584',['wxScrolled&lt; wxWindow &gt;',['../classwxScrolled.html',1,'']]]
+  ['wxmxstream_1582',['WxmxStream',['../classImage_1_1WxmxStream.html',1,'Image']]],
+  ['wxscrolled_1583',['wxScrolled',['../classwxScrolled.html',1,'']]],
+  ['wxscrolled_3c_20wxpanel_20_3e_1584',['wxScrolled&lt; wxPanel &gt;',['../classwxScrolled.html',1,'']]],
+  ['wxscrolled_3c_20wxwindow_20_3e_1585',['wxScrolled&lt; wxWindow &gt;',['../classwxScrolled.html',1,'']]]
 ];

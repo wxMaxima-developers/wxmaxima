@@ -93,9 +93,9 @@ Data Structures</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aebed0015a14f936f50d9efdbd237ceae"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAnimationCell.html#aebed0015a14f936f50d9efdbd237ceae">AnimationCell</a> (<a class="el" href="classGroupCell.html">GroupCell</a> *group, <a class="el" href="classConfiguration.html">Configuration</a> *config, std::shared_ptr&lt; wxFileSystem &gt; &amp;filesystem, int framerate=-1)</td></tr>
-<tr class="memdesc:aebed0015a14f936f50d9efdbd237ceae"><td class="mdescLeft">&#160;</td><td class="mdescRight">The constructor.  <a href="classAnimationCell.html#aebed0015a14f936f50d9efdbd237ceae">More...</a><br /></td></tr>
-<tr class="separator:aebed0015a14f936f50d9efdbd237ceae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a94e0a814e6f8dd598e16992f8f7a2504"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAnimationCell.html#a94e0a814e6f8dd598e16992f8f7a2504">AnimationCell</a> (<a class="el" href="classGroupCell.html">GroupCell</a> *group, <a class="el" href="classConfiguration.html">Configuration</a> *config, const wxString &amp;wxmxFile, int framerate=-1)</td></tr>
+<tr class="memdesc:a94e0a814e6f8dd598e16992f8f7a2504"><td class="mdescLeft">&#160;</td><td class="mdescRight">The constructor.  <a href="classAnimationCell.html#a94e0a814e6f8dd598e16992f8f7a2504">More...</a><br /></td></tr>
+<tr class="separator:a94e0a814e6f8dd598e16992f8f7a2504"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7446bf7de6ba279969953f7045e04075"><td class="memItemLeft" align="right" valign="top"><a id="a7446bf7de6ba279969953f7045e04075"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>AnimationCell</b> (<a class="el" href="classGroupCell.html">GroupCell</a> *group, <a class="el" href="classConfiguration.html">Configuration</a> *config, int framerate=-1)</td></tr>
 <tr class="separator:a7446bf7de6ba279969953f7045e04075"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -215,12 +215,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>AnimationRunning</b> 
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAnimationCell.html#a3a54518c72ccde277cab0ca6ba201261">CanPopOut</a> () const override</td></tr>
 <tr class="memdesc:a3a54518c72ccde277cab0ca6ba201261"><td class="mdescLeft">&#160;</td><td class="mdescRight">Can this cell be popped out interactively in gnuplot? <br /></td></tr>
 <tr class="separator:a3a54518c72ccde277cab0ca6ba201261"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adbed8ab73b1043d6fe4ed7bf6d97b1eb"><td class="memItemLeft" align="right" valign="top"><a id="adbed8ab73b1043d6fe4ed7bf6d97b1eb"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>GnuplotSource</b> (int image, wxString gnuplotFilename, wxString dataFilename, std::shared_ptr&lt; wxFileSystem &gt; &amp;filesystem)</td></tr>
-<tr class="separator:adbed8ab73b1043d6fe4ed7bf6d97b1eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab8d1ac884b7e0b6efc0f251f2c1b4f49"><td class="memItemLeft" align="right" valign="top"><a id="ab8d1ac884b7e0b6efc0f251f2c1b4f49"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>CompressedGnuplotSource</b> (int image, wxString gnuplotFilename, wxString dataFilename, std::shared_ptr&lt; wxFileSystem &gt; &amp;filesystem)</td></tr>
-<tr class="separator:ab8d1ac884b7e0b6efc0f251f2c1b4f49"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a045d400689dcef33786ca98b6c35c9cb"><td class="memItemLeft" align="right" valign="top"><a id="a045d400689dcef33786ca98b6c35c9cb"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>GnuplotSource</b> (int image, wxString gnuplotFilename, wxString dataFilename, const wxString &amp;wxmxFile)</td></tr>
+<tr class="separator:a045d400689dcef33786ca98b6c35c9cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a05ae542b9629dd9484d5a417d3bc7dfb"><td class="memItemLeft" align="right" valign="top"><a id="a05ae542b9629dd9484d5a417d3bc7dfb"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>CompressedGnuplotSource</b> (int image, wxString gnuplotFilename, wxString dataFilename, const wxString &amp;wxmxFile)</td></tr>
+<tr class="separator:a05ae542b9629dd9484d5a417d3bc7dfb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a69674af20401792e65d0f48438894491"><td class="memItemLeft" align="right" valign="top"><a id="a69674af20401792e65d0f48438894491"></a>
 wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAnimationCell.html#a69674af20401792e65d0f48438894491">GnuplotSource</a> () const override</td></tr>
 <tr class="memdesc:a69674af20401792e65d0f48438894491"><td class="mdescLeft">&#160;</td><td class="mdescRight">The name of the file with gnuplot commands that created this file. <br /></td></tr>
@@ -796,8 +796,8 @@ wxCoord&#160;</td><td class="memItemRight" valign="bottom"><b>m_center</b> = -1<
 <tr class="separator:ae03803790faeaa324ae8c51eb1e96d03"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="aebed0015a14f936f50d9efdbd237ceae"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aebed0015a14f936f50d9efdbd237ceae">&#9670;&nbsp;</a></span>AnimationCell()</h2>
+<a id="a94e0a814e6f8dd598e16992f8f7a2504"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a94e0a814e6f8dd598e16992f8f7a2504">&#9670;&nbsp;</a></span>AnimationCell()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -817,8 +817,8 @@ wxCoord&#160;</td><td class="memItemRight" valign="bottom"><b>m_center</b> = -1<
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">std::shared_ptr&lt; wxFileSystem &gt; &amp;&#160;</td>
-          <td class="paramname"><em>filesystem</em>, </td>
+          <td class="paramtype">const wxString &amp;&#160;</td>
+          <td class="paramname"><em>wxmxFile</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -839,7 +839,7 @@ wxCoord&#160;</td><td class="memItemRight" valign="bottom"><b>m_center</b> = -1<
   <table class="params">
     <tr><td class="paramname">framerate</td><td>The individual frame rate that has to be set for this cell only. If the default frame rate from the config is to be used instead this parameter has to be set to -1. </td></tr>
     <tr><td class="paramname">config</td><td>A pointer to the pointer to the configuration storage of the worksheet this cell belongs to. </td></tr>
-    <tr><td class="paramname">filesystem</td><td>The filesystem the contents of this animation can be found in. NULL = the operating system's filesystem </td></tr>
+    <tr><td class="paramname">wxmxFile</td><td>The wxmx file the contents of this animation can be found in. wxEmptyString = no wxmx file, but the system's filesystem instead </td></tr>
     <tr><td class="paramname">group</td><td>The parent <a class="el" href="classGroupCell.html" title="A cell grouping input (and, if there is one, also the output) cell to a foldable item.">GroupCell</a> this cell belongs to. </td></tr>
   </table>
   </dd>

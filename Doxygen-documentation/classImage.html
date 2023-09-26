@@ -76,6 +76,11 @@ $(function() {
 
 <p><code>#include &lt;<a class="el" href="Image_8h_source.html">Image.h</a>&gt;</code></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
+Data Structures</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classImage_1_1WxmxStream.html">WxmxStream</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a2462b18d6cd2f5009980fa2fef7bdcc0"><td class="memItemLeft" align="right" valign="top"><a id="a2462b18d6cd2f5009980fa2fef7bdcc0"></a>
@@ -89,9 +94,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a5914663cd2c7958ef99bad1c8d0b4a7c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classImage.html#a5914663cd2c7958ef99bad1c8d0b4a7c">Image</a> (<a class="el" href="classConfiguration.html">Configuration</a> *config, const wxBitmap &amp;bitmap)</td></tr>
 <tr class="memdesc:a5914663cd2c7958ef99bad1c8d0b4a7c"><td class="mdescLeft">&#160;</td><td class="mdescRight">A constructor that loads a bitmap.  <a href="classImage.html#a5914663cd2c7958ef99bad1c8d0b4a7c">More...</a><br /></td></tr>
 <tr class="separator:a5914663cd2c7958ef99bad1c8d0b4a7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad100c48ebe25263067dcd51b91c70187"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classImage.html#ad100c48ebe25263067dcd51b91c70187">Image</a> (<a class="el" href="classConfiguration.html">Configuration</a> *config, wxString image, std::shared_ptr&lt; wxFileSystem &gt; &amp;filesystem, bool remove=true)</td></tr>
-<tr class="memdesc:ad100c48ebe25263067dcd51b91c70187"><td class="mdescLeft">&#160;</td><td class="mdescRight">A constructor that loads an image.  <a href="classImage.html#ad100c48ebe25263067dcd51b91c70187">More...</a><br /></td></tr>
-<tr class="separator:ad100c48ebe25263067dcd51b91c70187"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac2ffd64b2b12795bc6a6a0fcb1816e8c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classImage.html#ac2ffd64b2b12795bc6a6a0fcb1816e8c">Image</a> (<a class="el" href="classConfiguration.html">Configuration</a> *config, wxString image, wxString wxmxFile, bool remove=true)</td></tr>
+<tr class="memdesc:ac2ffd64b2b12795bc6a6a0fcb1816e8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">A constructor that loads an image.  <a href="classImage.html#ac2ffd64b2b12795bc6a6a0fcb1816e8c">More...</a><br /></td></tr>
+<tr class="separator:ac2ffd64b2b12795bc6a6a0fcb1816e8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8fe4e9afe10f38133b5ba743a8b4ddb1"><td class="memItemLeft" align="right" valign="top"><a id="a8fe4e9afe10f38133b5ba743a8b4ddb1"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>Image</b> (<a class="el" href="classConfiguration.html">Configuration</a> *config, const <a class="el" href="classImage.html">Image</a> &amp;image)</td></tr>
 <tr class="separator:a8fe4e9afe10f38133b5ba743a8b4ddb1"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -113,17 +118,13 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classImage.html#a100d5935a1e23c89d905b3075a72f60b">InvalidBitmap</a> (wxString message=wxEmptyString)</td></tr>
 <tr class="memdesc:a100d5935a1e23c89d905b3075a72f60b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a bitmap showing an error message. <br /></td></tr>
 <tr class="separator:a100d5935a1e23c89d905b3075a72f60b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae6cd2455cd603b58e300b33375669a4f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classImage.html#ae6cd2455cd603b58e300b33375669a4f">GnuplotSource</a> (wxString gnuplotFilename, wxString dataFilename, std::shared_ptr&lt; wxFileSystem &gt; &amp;filesystem)</td></tr>
-<tr class="memdesc:ae6cd2455cd603b58e300b33375669a4f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the name of the gnuplot source and data file of this image.  <a href="classImage.html#ae6cd2455cd603b58e300b33375669a4f">More...</a><br /></td></tr>
-<tr class="separator:ae6cd2455cd603b58e300b33375669a4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3bd1f03c240a2fb1f55cd8a40c5d24ba"><td class="memItemLeft" align="right" valign="top"><a id="a3bd1f03c240a2fb1f55cd8a40c5d24ba"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classImage.html#a3bd1f03c240a2fb1f55cd8a40c5d24ba">CompressedGnuplotSource</a> (wxString gnuplotFilename, wxString dataFilename, std::shared_ptr&lt; wxFileSystem &gt; &amp;filesystem)</td></tr>
-<tr class="memdesc:a3bd1f03c240a2fb1f55cd8a40c5d24ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads the compressed gnuplot source and data file for this image. <br /></td></tr>
-<tr class="separator:a3bd1f03c240a2fb1f55cd8a40c5d24ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a75cda87121d287b697cd91539706095d"><td class="memItemLeft" align="right" valign="top"><a id="a75cda87121d287b697cd91539706095d"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classImage.html#a75cda87121d287b697cd91539706095d">GnuplotSource</a> (wxString gnuplotFilename, wxString dataFilename)</td></tr>
-<tr class="memdesc:a75cda87121d287b697cd91539706095d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load the gnuplot source file from the system's filesystem. <br /></td></tr>
-<tr class="separator:a75cda87121d287b697cd91539706095d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3c34ab150b832b17035becc4f9b30b9b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classImage.html#a3c34ab150b832b17035becc4f9b30b9b">GnuplotSource</a> (wxString gnuplotFilename, wxString dataFilename, wxString wxmxFile=wxEmptyString)</td></tr>
+<tr class="memdesc:a3c34ab150b832b17035becc4f9b30b9b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the name of the gnuplot source and data file of this image.  <a href="classImage.html#a3c34ab150b832b17035becc4f9b30b9b">More...</a><br /></td></tr>
+<tr class="separator:a3c34ab150b832b17035becc4f9b30b9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a81e9dd25a310174661afc1401798e0ee"><td class="memItemLeft" align="right" valign="top"><a id="a81e9dd25a310174661afc1401798e0ee"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classImage.html#a81e9dd25a310174661afc1401798e0ee">CompressedGnuplotSource</a> (wxString gnuplotFilename, wxString dataFilename, wxString wxmxFile=wxEmptyString)</td></tr>
+<tr class="memdesc:a81e9dd25a310174661afc1401798e0ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads the compressed gnuplot source and data file for this image. <br /></td></tr>
+<tr class="separator:a81e9dd25a310174661afc1401798e0ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a299156259e50c7a78733a252e1ed36bc"><td class="memItemLeft" align="right" valign="top">wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classImage.html#a299156259e50c7a78733a252e1ed36bc">GnuplotSource</a> ()</td></tr>
 <tr class="memdesc:a299156259e50c7a78733a252e1ed36bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the gnuplot source file name of this image.  <a href="classImage.html#a299156259e50c7a78733a252e1ed36bc">More...</a><br /></td></tr>
 <tr class="separator:a299156259e50c7a78733a252e1ed36bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -203,6 +204,9 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cl
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classImage.html#a8819623c3b5eaad1a153c53483397426">CanExportSVG</a> () const</td></tr>
 <tr class="memdesc:a8819623c3b5eaad1a153c53483397426"><td class="mdescLeft">&#160;</td><td class="mdescRight">Can this image be exported in SVG format? <br /></td></tr>
 <tr class="separator:a8819623c3b5eaad1a153c53483397426"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad193447868c05ecc9474cf56cd455b2c"><td class="memItemLeft" align="right" valign="top"><a id="ad193447868c05ecc9474cf56cd455b2c"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>HasGnuplotSource</b> ()</td></tr>
+<tr class="separator:ad193447868c05ecc9474cf56cd455b2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -276,8 +280,8 @@ wxMemoryBuffer&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
 
 </div>
 </div>
-<a id="ad100c48ebe25263067dcd51b91c70187"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad100c48ebe25263067dcd51b91c70187">&#9670;&nbsp;</a></span>Image() <span class="overload">[2/2]</span></h2>
+<a id="ac2ffd64b2b12795bc6a6a0fcb1816e8c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac2ffd64b2b12795bc6a6a0fcb1816e8c">&#9670;&nbsp;</a></span>Image() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -297,8 +301,8 @@ wxMemoryBuffer&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">std::shared_ptr&lt; wxFileSystem &gt; &amp;&#160;</td>
-          <td class="paramname"><em>filesystem</em>, </td>
+          <td class="paramtype">wxString&#160;</td>
+          <td class="paramname"><em>wxmxFile</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -319,7 +323,7 @@ wxMemoryBuffer&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
   <table class="params">
     <tr><td class="paramname">config</td><td>The pointer to the current configuration storage for the worksheet </td></tr>
     <tr><td class="paramname">image</td><td>The name of the file </td></tr>
-    <tr><td class="paramname">filesystem</td><td>The filesystem to load it from </td></tr>
+    <tr><td class="paramname">wxmxFile</td><td>The wxmx file to load it from. Empty when loading from a standalone file from the filesystem. </td></tr>
     <tr><td class="paramname">remove</td><td>true = Delete the file after loading it </td></tr>
   </table>
   </dd>
@@ -398,8 +402,8 @@ wxMemoryBuffer&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
 
 </div>
 </div>
-<a id="ae6cd2455cd603b58e300b33375669a4f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae6cd2455cd603b58e300b33375669a4f">&#9670;&nbsp;</a></span>GnuplotSource() <span class="overload">[2/2]</span></h2>
+<a id="a3c34ab150b832b17035becc4f9b30b9b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3c34ab150b832b17035becc4f9b30b9b">&#9670;&nbsp;</a></span>GnuplotSource() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -419,8 +423,8 @@ wxMemoryBuffer&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">std::shared_ptr&lt; wxFileSystem &gt; &amp;&#160;</td>
-          <td class="paramname"><em>filesystem</em>&#160;</td>
+          <td class="paramtype">wxString&#160;</td>
+          <td class="paramname"><em>wxmxFile</em> = <code>wxEmptyString</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
