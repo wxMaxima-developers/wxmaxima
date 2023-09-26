@@ -1043,7 +1043,7 @@ void Worksheet::Recalculate(Cell *start) {
 void Worksheet::OnSize(wxSizeEvent &event) {
   event.Skip();
   // Inform all cells how wide our display is now
-  m_configuration->SetCanvasSize(GetClientSize());
+  UpdateConfigurationClientSize();
 
   // Determine if we have a sane thing we can scroll to.
   Cell *CellToScrollTo = {};
@@ -1067,7 +1067,6 @@ void Worksheet::OnSize(wxSizeEvent &event) {
   }
   RecalculateForce();
 
-  UpdateConfigurationClientSize();
 
   GroupCell *prev = {};
   for (auto &cell : OnList(GetTree())) {

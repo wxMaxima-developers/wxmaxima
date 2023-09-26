@@ -153,12 +153,6 @@ void ImgCell::Recalculate(AFontSize fontsize) {
     } else
       m_image->Recalculate();
     m_width = m_image->m_width + 2 * m_imageBorderWidth;
-    if (m_configuration->GetPrinting()) {
-      m_image->Recalculate(m_configuration->GetZoomFactor() *
-                           PRINT_SIZE_MULTIPLIER);
-      m_imageBorderWidth = Scale_Px(1);
-    } else
-      m_image->Recalculate();
     m_height = m_image->m_height + 2 * m_imageBorderWidth;
     m_center = m_height / 2;
   }
