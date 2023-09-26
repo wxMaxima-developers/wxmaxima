@@ -1,6 +1,8 @@
 # Current
  * Many stability improvements
  * Maxima's help commands work again out-of-the-box. 
+ * Corrected the worksheet size calculation
+ * Better support for loading .wxmx files from weird paths
 
 # 23.08.0
  * Better print scaling
