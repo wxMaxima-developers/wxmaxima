@@ -266,7 +266,7 @@ private:
   CellPtr<GroupCell> m_group;
   Configuration *m_configuration;
   bool m_highlight;
-  std::shared_ptr<wxFileSystem> m_fileSystem; // used for loading pictures in <img> and <slide>
+  wxString m_wxmxFile; // if not wxEmptyString: The wxmx file to load images from
   static wxString m_unknownXMLTagToolTip;
 };
 

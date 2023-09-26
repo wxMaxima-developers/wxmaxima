@@ -32,7 +32,6 @@
 #include <wx/image.h>
 #include <wx/rawbmp.h>
 
-#include <wx/filesys.h>
 #include <wx/fs_arc.h>
 #include <wx/buffer.h>
 #define NANOSVG_ALL_COLOR_KEYWORDS
@@ -96,11 +95,9 @@ Image::Image(Configuration *config, const wxBitmap &bitmap) {
 }
 
 // constructor which loads an image
-// filesystem cannot be passed by const reference as we want to keep the
-// pointer to the file system alive in a background task
 // cppcheck-suppress performance symbolName=filesystem
 Image::Image(Configuration *config, wxString image,
-             std::shared_ptr<wxFileSystem> &filesystem, bool remove)
+             wxString wxmxFile, bool remove)
 {
   m_svgImage = NULL;
   m_configuration = config;
@@ -112,7 +109,7 @@ Image::Image(Configuration *config, wxString image,
   m_originalWidth = 640;
   m_originalHeight = 480;
   m_ppi = m_configuration->GetPPI().x;
-  LoadImage(image, filesystem, remove);
+  LoadImage(image, wxmxFile, remove);
 }
 
 Image::Image(Configuration *config, const Image &image) {
@@ -221,11 +218,8 @@ size_t Image::GetOriginalHeight() const {
     return m_originalHeight;
 }
 
-// filesystem cannot be passed by const reference as we want to keep the
-// pointer to the file system alive in a background task
-// cppcheck-suppress performance symbolName=filesystem
 void Image::GnuplotSource(wxString gnuplotFilename, wxString dataFilename,
-                          std::shared_ptr<wxFileSystem> &filesystem) {
+                          wxString wxmxFile) {
   SuppressErrorDialogs suppressor;
   if(m_loadGnuplotSourceTask.joinable())
     m_loadGnuplotSourceTask.join();
@@ -233,209 +227,195 @@ void Image::GnuplotSource(wxString gnuplotFilename, wxString dataFilename,
   m_gnuplotData = std::move(dataFilename);
   std::unique_ptr<ThreadNumberLimiter> limiter(new
                                                ThreadNumberLimiter(&m_gnuplotDataThreadRunning));
-  if (filesystem == NULL) {
-    m_loadGnuplotSourceTask = std::thread(&Image::LoadGnuplotSource_Backgroundtask2,
-                                          this,
-                                          std::move(limiter),
-                                          m_gnuplotSource, m_gnuplotData);
+  m_loadGnuplotSourceTask = std::thread(&Image::LoadGnuplotSource_Backgroundtask,
+                                        this,
+                                        std::move(limiter),
+                                        m_gnuplotSource, m_gnuplotData, wxmxFile);
+}
+
+void Image::LoadGnuplotSource_Backgroundtask(
+  std::unique_ptr<ThreadNumberLimiter> limiter,
+  wxString gnuplotFile, wxString dataFile, wxString wxmxFile)
+{
+  SuppressErrorDialogs suppressor;
+  if(wxmxFile.IsEmpty())
+  {
+    {
+      wxFileInputStream source(gnuplotFile);
+      LoadGnuplotSource(&source);
+    }
+    {
+      wxFileInputStream data(dataFile);
+      LoadGnuplotData(&data);
+    }
   }
-  else {
-    std::unique_ptr<wxFSFile> sourcefile(filesystem->OpenFile(m_gnuplotSource));
-    std::shared_ptr<wxInputStream> source;
-    if (sourcefile)
-      source = std::shared_ptr<wxInputStream> (sourcefile->DetachStream());
-    std::unique_ptr<wxFSFile> datafile(filesystem->OpenFile(m_gnuplotData));
-    std::shared_ptr<wxInputStream> data;
-    if (datafile)
-      data = std::shared_ptr<wxInputStream> (datafile->DetachStream());
-    m_loadGnuplotSourceTask = std::thread(&Image::LoadGnuplotSource_Backgroundtask1,
-                                          this,
-                                          std::move(limiter),
-                                          filesystem, source, data);
-  } 
+  else
+  {
+    {
+      wxFileInputStream wxmx(wxmxFile);
+      WxmxStream source(wxmx, gnuplotFile);
+      LoadGnuplotSource(&source);
+    }
+    {
+      wxFileInputStream wxmx(wxmxFile);
+      WxmxStream data(wxmx, dataFile);
+      LoadGnuplotData(&data);
+    }
+  }
 }
 
 void Image::CompressedGnuplotSource(wxString gnuplotFilename, wxString dataFilename,
-                                    std::shared_ptr<wxFileSystem> &filesystem) {
+                                    wxString wxmxFile) {
   if(m_loadGnuplotSourceTask.joinable())
     m_loadGnuplotSourceTask.join();
   std::unique_ptr<ThreadNumberLimiter> limiter(new
                                                ThreadNumberLimiter(&m_gnuplotDataThreadRunning)); 
 
-    // Store the filenames without the ".gz".
   m_gnuplotSource = std::move(gnuplotFilename);
   m_gnuplotData = std::move(dataFilename);
-  if(m_gnuplotSource.EndsWith(".gz"))
-    m_gnuplotSource = m_gnuplotSource.Left(m_gnuplotSource.Length()-3);
-  if(m_gnuplotData.EndsWith(".gz"))
-    m_gnuplotData = m_gnuplotData.Left(m_gnuplotData.Length()-3);
-
-  
   m_loadGnuplotSourceTask =
     std::thread(&Image::LoadCompressedGnuplotSource_Backgroundtask,
                 this,
                 std::move(limiter),
-                filesystem,
-                std::shared_ptr<wxFSFile>(filesystem->OpenFile(m_gnuplotSource)),
-                std::shared_ptr<wxFSFile>(filesystem->OpenFile(m_gnuplotData)));
+                m_gnuplotSource,
+                m_gnuplotData,
+                wxmxFile);
+  // Store the filenames without the ".gz".
+  if(m_gnuplotSource.EndsWith(".gz"))
+    m_gnuplotSource = m_gnuplotSource.Left(m_gnuplotSource.Length()-3);
+  if(m_gnuplotData.EndsWith(".gz"))
+    m_gnuplotData = m_gnuplotData.Left(m_gnuplotData.Length()-3);
 }
 
-void Image::LoadGnuplotSource_Backgroundtask2(
-  std::unique_ptr<ThreadNumberLimiter> limiter,
-  wxString gnuplotFile,
-  wxString dataFile
-  ) {
-  // Error dialogues need to be created by the foreground thread.
-  SuppressErrorDialogs suppressor;
-  
-    if (wxFileExists(dataFile)) {
-      // Don't cache the data for unreasonably long files.
-      wxStructStat strucStat;
-      if(wxStat(dataFile, &strucStat) == 0)
-      {
-        if ((strucStat.st_size > 0) && (static_cast<size_t>(strucStat.st_size) >
-                                        static_cast<size_t>(m_configuration->MaxGnuplotMegabytes())
-                                        * 1000 * 1000)) {
-          wxLogMessage(_("Too much gnuplot data => Not storing it in the worksheet"));
-          m_gnuplotData_Compressed.Clear();
-          return;
-        }
-      }
 
-      wxFileInputStream source(gnuplotFile);
-      wxFileInputStream data(dataFile);
-      
-      LoadGnuplotSource_Backgroundtask(&source, &data);
-    }
-}
-
-void Image::LoadGnuplotSource_Backgroundtask(
-  wxInputStream *source,
-  wxInputStream *data)
+void Image::LoadGnuplotSource(
+  wxInputStream *source)
 {
   // The gnuplot source of the image is cached in a compressed form:
   //
   // as it is text-only and contains many redundancies it will get way
   // smaller this way.
-  {
-    if (source->IsOk()) {
-      wxTextInputStream textIn(*source, wxS('\t'),
-                               wxConvAuto(wxFONTENCODING_UTF8));
+  if (source->IsOk()) {
+    wxTextInputStream textIn(*source, wxS('\t'),
+                             wxConvAuto(wxFONTENCODING_UTF8));
 
-      wxMemoryOutputStream mstream;
-      int zlib_flags;
-      if (wxZlibOutputStream::CanHandleGZip())
-        zlib_flags = wxZLIB_GZIP;
-      else
-        zlib_flags = wxZLIB_ZLIB;
-      wxZlibOutputStream zstream(mstream, wxZ_BEST_COMPRESSION, zlib_flags);
-      wxTextOutputStream textOut(zstream);
-      wxString line;
+    wxMemoryOutputStream mstream;
+    int zlib_flags;
+    if (wxZlibOutputStream::CanHandleGZip())
+      zlib_flags = wxZLIB_GZIP;
+    else
+      zlib_flags = wxZLIB_ZLIB;
+    wxZlibOutputStream zstream(mstream, wxZ_BEST_COMPRESSION, zlib_flags);
+    wxTextOutputStream textOut(zstream);
+    wxString line;
 
-      // A RegEx that matches the name of the data file (needed if we ever
-      // want to move a data file into the temp directory of a new computer
-      // that locates its temp data somewhere strange).
-      wxRegEx replaceDataFileName("'[^']*maxout_[^']*_[0-9]*\\.data'");
-      while (!source->Eof()) {
-        line = textIn.ReadLine();
-        if (replaceDataFileName.Matches(line)) {
-          wxString dataFileName;
-          dataFileName = replaceDataFileName.GetMatch(line);
-          replaceDataFileName.Replace(&line, wxS("'<DATAFILENAME>'"));
-        }
-        textOut << line + wxS("\n");
+    // A RegEx that matches the name of the data file (needed if we ever
+    // want to move a data file into the temp directory of a new computer
+    // that locates its temp data somewhere strange).
+    wxRegEx replaceDataFileName("'[^']*maxout_[^']*_[0-9]*\\.data'");
+    while (!source->Eof()) {
+      line = textIn.ReadLine();
+      if (replaceDataFileName.Matches(line)) {
+        wxString dataFileName;
+        dataFileName = replaceDataFileName.GetMatch(line);
+        replaceDataFileName.Replace(&line, wxS("'<DATAFILENAME>'"));
       }
-      textOut.Flush();
-      zstream.Close();
-
-      m_gnuplotSource_Compressed.Clear();
-      m_gnuplotSource_Compressed.AppendData(
-        mstream.GetOutputStreamBuffer()->GetBufferStart(),
-        mstream.GetOutputStreamBuffer()->GetBufferSize());
+      textOut << line + wxS("\n");
     }
+    textOut.Flush();
+    zstream.Close();
 
-    {
-      if (data->IsOk()) {
-        wxTextInputStream textIn(*data, wxS('\t'),
-                                 wxConvAuto(wxFONTENCODING_UTF8));
-
-        wxMemoryOutputStream mstream;
-        int zlib_flags;
-        if (wxZlibOutputStream::CanHandleGZip())
-          zlib_flags = wxZLIB_GZIP;
-        else
-          zlib_flags = wxZLIB_ZLIB;
-        wxZlibOutputStream zstream(mstream, wxZ_BEST_COMPRESSION,
-                                   zlib_flags);
-        wxTextOutputStream textOut(zstream);
-        wxString line;
-
-        while (!data->Eof()) {
-          line = textIn.ReadLine();
-          textOut << line + wxS("\n");
-        }
-        textOut.Flush();
-        zstream.Close();
-
-        m_gnuplotData_Compressed.Clear();
-        m_gnuplotData_Compressed.AppendData(
-          mstream.GetOutputStreamBuffer()->GetBufferStart(),
-          mstream.GetOutputStreamBuffer()->GetBufferSize());
-      }
-    }
+    m_gnuplotSource_Compressed.Clear();
+    m_gnuplotSource_Compressed.AppendData(
+      mstream.GetOutputStreamBuffer()->GetBufferStart(),
+      mstream.GetOutputStreamBuffer()->GetBufferSize());
   }
 }
 
-void Image::LoadGnuplotSource_Backgroundtask1(
-  std::unique_ptr<ThreadNumberLimiter> limiter,
-  std::shared_ptr<wxFileSystem> filesystem,
-  std::shared_ptr<wxInputStream> gnuplotFile,
-  std::shared_ptr<wxInputStream> dataFile
-  ) {
-  // Error dialogues need to be created by the foreground thread.
-  SuppressErrorDialogs suppressor;
-  wxFileInputStream source(m_gnuplotSource);
-  wxFileInputStream data(m_gnuplotData);
-  
-  LoadGnuplotSource_Backgroundtask(&source, &data);
+void Image::LoadGnuplotData(
+  wxInputStream *data)
+{
+  if (data->IsOk()) {
+    wxTextInputStream textIn(*data, wxS('\t'),
+                             wxConvAuto(wxFONTENCODING_UTF8));
+    
+    wxMemoryOutputStream mstream;
+    int zlib_flags;
+    if (wxZlibOutputStream::CanHandleGZip())
+      zlib_flags = wxZLIB_GZIP;
+        else
+          zlib_flags = wxZLIB_ZLIB;
+    wxZlibOutputStream zstream(mstream, wxZ_BEST_COMPRESSION,
+                               zlib_flags);
+    wxTextOutputStream textOut(zstream);
+    wxString line;
+    
+    while (!data->Eof()) {
+      line = textIn.ReadLine();
+      textOut << line + wxS("\n");
+    }
+    textOut.Flush();
+    zstream.Close();
+    
+    m_gnuplotData_Compressed.Clear();
+    m_gnuplotData_Compressed.AppendData(
+      mstream.GetOutputStreamBuffer()->GetBufferStart(),
+      mstream.GetOutputStreamBuffer()->GetBufferSize());
+  }
 }
 
 void Image::LoadCompressedGnuplotSource_Backgroundtask(
   std::unique_ptr<ThreadNumberLimiter> limiter,
-  std::shared_ptr<wxFileSystem> filesystem,
-  std::shared_ptr<wxFSFile> sourcefile,
-  std::shared_ptr<wxFSFile> datafile) {
-
-  // Error dialogues need to be created by the foreground thread.
-  SuppressErrorDialogs suppressor;
-
-  // Read the gnuplot source
+  wxString sourcefile,
+  wxString datafile,
+  wxString wxmxFile
+  ) {
   {
-    if(sourcefile) { // open successful
-      std::unique_ptr<wxInputStream> input(sourcefile->DetachStream());
-      if (input->IsOk()) {
+    // Error dialogues need to be created by the foreground thread.
+    SuppressErrorDialogs suppressor;
+    
+    // Read the gnuplot source
+    {
+      wxFileInputStream wxmx(wxmxFile);
+      WxmxStream source(wxmx, sourcefile);
+      if (!source.Eof()) {
         m_gnuplotSource_Compressed.Clear();
         wxMemoryOutputStream mstream;
-        input->Read(mstream);
+        source.Read(mstream);
         m_gnuplotSource_Compressed.AppendData(
           mstream.GetOutputStreamBuffer()->GetBufferStart(),
           mstream.GetOutputStreamBuffer()->GetBufferSize());
       }
     }
-  }
-  // Read the gnuplot data
-  {
-    if (datafile) { // open successful
-      std::unique_ptr<wxInputStream> input(datafile->DetachStream());
-      if (input->IsOk()) {
-        m_gnuplotData_Compressed.Clear();
-        wxMemoryOutputStream mstream;
-        input->Read(mstream);
-        m_gnuplotData_Compressed.AppendData(
-          mstream.GetOutputStreamBuffer()->GetBufferStart(),
-          mstream.GetOutputStreamBuffer()->GetBufferSize());
+    // Read the gnuplot data
+    {
+      m_gnuplotData_Compressed.Clear();
+      wxFileInputStream wxmx(wxmxFile);
+      WxmxStream data(wxmx, datafile);
+      if (!data.Eof()) { // open successful
+      wxMemoryOutputStream mstream;
+      data.Read(mstream);
+      m_gnuplotData_Compressed.AppendData(
+        mstream.GetOutputStreamBuffer()->GetBufferStart(),
+        mstream.GetOutputStreamBuffer()->GetBufferSize());
       }
     }
+  }
+  wxLogMessage(_("Downloaded %s (%li bytes) and %s (%li bytes) from %s"),
+               sourcefile.mb_str(), (long)m_gnuplotSource_Compressed.GetDataLen(),
+               datafile.mb_str(), (long)m_gnuplotData_Compressed.GetDataLen(),
+               wxmxFile.mb_str());
+}
+
+Image::WxmxStream::WxmxStream(wxInputStream &wxmxFile, wxString fileInWxmx):
+  wxZipInputStream(wxmxFile, wxConvLocal)
+{
+  while(!Eof())
+  {
+    wxZipEntry *contentsEntry = NULL;
+    contentsEntry = GetNextEntry();
+    if((!contentsEntry) || (contentsEntry->GetName() == fileInWxmx))
+      break;
   }
 }
 
@@ -791,12 +771,9 @@ void Image::LoadImage(const wxBitmap &bitmap) {
 
 wxString Image::GetExtension() const { return m_extension; }
 
-// filesystem cannot be passed by const reference as we want to keep the
-// pointer to the file system alive in a background task
-// cppcheck-suppress performance symbolName=filesystem
-void Image::LoadImage(wxString image, std::shared_ptr<wxFileSystem> &filesystem,
+void Image::LoadImage(wxString image, wxString wxmxFile,
                       bool remove) {
-  m_fromWxFS = filesystem != NULL;
+  m_fromWxFS = !wxmxFile.IsEmpty();
   if(m_loadImageTask.joinable())
     m_loadImageTask.join();
   m_extension = wxFileName(image).GetExt();
@@ -807,19 +784,10 @@ void Image::LoadImage(wxString image, std::shared_ptr<wxFileSystem> &filesystem,
   m_scaledBitmap.Create(1, 1);
   wxLogBuffer errorAggregator;
 
-  if (filesystem) {
-    std::unique_ptr<wxFSFile> fsfile(filesystem->OpenFile(image));
-    if (fsfile) { // open successful
-      std::unique_ptr<wxInputStream> istream(fsfile->DetachStream());
-
-      m_compressedImage = ReadCompressedImage(istream.get());
-    }
-    else
-      InvalidBitmap(errorAggregator.GetBuffer());
-
-    // Closing and deleting fsfile is important: If this line is missing
-    // opening .wxmx files containing hundreds of images might lead to a
-    // "too many open files" error.
+  if (!wxmxFile.IsEmpty()) {
+    wxFileInputStream wxmx(wxmxFile);
+    WxmxStream imgData(wxmx, image);
+    m_compressedImage = ReadCompressedImage(&imgData);
   } else {
     wxFile file;
     // Support relative and absolute paths.
@@ -851,15 +819,14 @@ void Image::LoadImage(wxString image, std::shared_ptr<wxFileSystem> &filesystem,
     else
       InvalidBitmap(errorAggregator.GetBuffer());      
   }
-
+  
   m_loadImageTask = std::thread(&Image::LoadImage_Backgroundtask,
                                 this,
                                 std::move(limiter));
-
 }
 
 void Image::LoadImage_Backgroundtask(std::unique_ptr<ThreadNumberLimiter> limiter) {
-
+  SuppressErrorDialogs suppressor;
   wxImage Image;
   wxLogBuffer errorAggregator;
   if (m_compressedImage.GetDataLen() > 0) {

@@ -162,10 +162,7 @@ MathParser::MathParser(Configuration *cfg, const wxString &zipfile) {
     m_groupTags[wxS("heading6")] = &MathParser::GroupCellHeading6Tag;
   }
   m_highlight = false;
-  if (zipfile.Length() > 0) {
-    m_fileSystem = std::unique_ptr<wxFileSystem>(new wxFileSystem());
-    m_fileSystem->ChangePathTo(zipfile + wxS("#zip:/"), true);
-  }
+  m_wxmxFile = zipfile;
 }
 
 MathParser::~MathParser() {}
@@ -300,7 +297,7 @@ std::unique_ptr<Cell> MathParser::ParseAnimationTag(wxXmlNode *node) {
   wxString gnuplotData;
   bool del = node->GetAttribute(wxS("del"), wxS("false")) == wxS("true");
   auto animation =
-    std::make_unique<AnimationCell>(m_group, m_configuration, m_fileSystem);
+    std::make_unique<AnimationCell>(m_group, m_configuration, m_wxmxFile);
   auto const &str = node->GetChildren()->GetContent();
   wxArrayString images;
   wxString framerate;
@@ -342,7 +339,7 @@ std::unique_ptr<Cell> MathParser::ParseAnimationTag(wxXmlNode *node) {
       for (int i = 0; i < numImgs; i++) {
 	if ((dataFiles.HasMoreTokens()) && (gnuplotFiles.HasMoreTokens())) {
 	  animation->GnuplotSource(i, gnuplotFiles.GetNextToken(),
-				   dataFiles.GetNextToken(), m_fileSystem);
+				   dataFiles.GetNextToken(), m_wxmxFile);
 	}
       }
     }
@@ -355,7 +352,7 @@ std::unique_ptr<Cell> MathParser::ParseAnimationTag(wxXmlNode *node) {
       for (int i = 0; i < numImgs; i++) {
 	if ((dataFiles.HasMoreTokens()) && (gnuplotFiles.HasMoreTokens())) {
 	  animation->CompressedGnuplotSource(i, gnuplotFiles.GetNextToken(),
-					     dataFiles.GetNextToken(), m_fileSystem);
+					     dataFiles.GetNextToken(), m_wxmxFile);
 	}
       }
     }
@@ -367,10 +364,10 @@ std::unique_ptr<Cell> MathParser::ParseImageTag(wxXmlNode *node) {
   std::unique_ptr<ImgCell> imageCell;
   wxString filename(node->GetChildren()->GetContent());
 
-  if (m_fileSystem) // loading from zip
+  if (!m_wxmxFile.IsEmpty()) // loading from zip
     {
       imageCell = std::make_unique<ImgCell>(m_group, m_configuration, filename,
-					    m_fileSystem, false);
+					    m_wxmxFile, false);
 
       wxString origImageFile =
         node->GetAttribute(wxS("origImageFile"), wxEmptyString);
@@ -379,12 +376,11 @@ std::unique_ptr<Cell> MathParser::ParseImageTag(wxXmlNode *node) {
 	imageCell->SetOrigImageFile(origImageFile);
       }
     } else {
-    std::shared_ptr<wxFileSystem> system_fs = {};
     if (node->GetAttribute(wxS("del"), wxS("yes")) != wxS("no")) {
       SuppressErrorDialogs suppressor;
       if ((!wxFileExists(filename))||(wxImage::GetImageCount(filename) < 2))
         imageCell = std::make_unique<ImgCell>(m_group, m_configuration,
-                                              filename, system_fs, true);
+                                              filename, wxEmptyString, true);
       else
         return std::make_unique<AnimationCell>(m_group, m_configuration,
                                                filename, true);
@@ -398,7 +394,7 @@ std::unique_ptr<Cell> MathParser::ParseImageTag(wxXmlNode *node) {
         filename = m_configuration->GetWorkingDirectory() + wxS("/") + filename;
       if (wxImage::GetImageCount(filename) < 2)
         imageCell = std::make_unique<ImgCell>(m_group, m_configuration,
-                                              filename, system_fs, false);
+                                              filename, wxEmptyString, false);
       else
         return std::make_unique<AnimationCell>(m_group, m_configuration,
                                                filename, false);
@@ -414,12 +410,12 @@ std::unique_ptr<Cell> MathParser::ParseImageTag(wxXmlNode *node) {
   if(node->GetAttribute(wxS("gnuplotsource"), &gnuplotSource))
     {
       wxString gnuplotData = node->GetAttribute(wxS("gnuplotdata"), wxEmptyString);      
-      imageCell->GnuplotSource(gnuplotSource, gnuplotData, m_fileSystem);
+      imageCell->GnuplotSource(gnuplotSource, gnuplotData, m_wxmxFile);
     }
   if(node->GetAttribute(wxS("gnuplotsource_gz"), &gnuplotSource))
     {
       wxString gnuplotData = node->GetAttribute(wxS("gnuplotdata_gz"), wxEmptyString);      
-      imageCell->CompressedGnuplotSource(gnuplotSource, gnuplotData, m_fileSystem);
+      imageCell->CompressedGnuplotSource(gnuplotSource, gnuplotData, m_wxmxFile);
     }
 
   if (node->GetAttribute(wxS("rect"), wxS("true")) == wxS("false"))

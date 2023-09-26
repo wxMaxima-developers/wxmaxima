@@ -42,6 +42,7 @@
 #include <utility>
 #include <vector>
 #include <time.h>
+#include <wx/zipstrm.h>
 #include "ActualValuesStorageWiz.h"
 #include "AnimationCell.h"
 #include "BC2Wiz.h"
@@ -4107,54 +4108,40 @@ bool wxMaxima::OpenWXMXFile(const wxString &file, Worksheet *document,
   // open wxmx file
   wxXmlDocument xmldoc;
 
-  wxFileSystem fs;
-
-  wxString wxmxURI = wxURI(wxS("file://") + file).BuildURI();
-  // wxURI doesn't know that a "#" in a file name is a literal "#" and
-  // not an anchor within the file so we have to care about url-encoding
-  // this char by hand.
-  wxmxURI.Replace("#", "%23");
-
-#ifdef __WXMSW__
-  // Fixes a missing "///" after the "file:". This works because we always get
-  // absolute file names.
-  wxRegEx uriCorector1("^file:([a-zA-Z]):");
-  wxRegEx uriCorector2("^file:([a-zA-Z][a-zA-Z]):");
-
-  uriCorector1.ReplaceFirst(&wxmxURI, wxS("file:///\\1:"));
-  uriCorector2.ReplaceFirst(&wxmxURI, wxS("file:///\\1:"));
-#endif
-  // The URI of the wxm code contained within the .wxmx file
-  wxString filename = wxmxURI + wxS("#zip:content.xml");
+  wxFileInputStream wxmxFile(file);
+  wxZipInputStream wxmxContents(wxmxFile);
+  wxZipEntry *contentsEntry = NULL;
+  while(!wxmxContents.Eof())
+    {
+      contentsEntry = wxmxContents.GetNextEntry();
+      if((!contentsEntry) || (contentsEntry->GetName() == wxS("content.xml")))
+	break;
+    }
 
   // Open the file
-  std::shared_ptr<wxFSFile> fsfile;
-  fsfile.reset(fs.OpenFile(filename));
-  if (fsfile) {
-    xmldoc.Load(*(fsfile->GetStream()), wxS("UTF-8"),
-                wxXMLDOC_KEEP_WHITESPACE_NODES);
-  }
+  xmldoc.Load(wxmxContents, wxS("UTF-8"),
+	      wxXMLDOC_KEEP_WHITESPACE_NODES);
+  
   if (!xmldoc.IsOk()) {
     // If we cannot read the file a typical error in old wxMaxima versions was
     // to include a letter of ascii code 27 in content.xml. Let's filter this
     // char out.
 
-    // Re-open the file.
-    std::shared_ptr<wxFSFile> fsfile2;
-    fsfile2.reset(fs.OpenFile(filename));
     wxString contents;
-    if (fsfile2) {
+    if (contentsEntry) {
+      // Re-open the file.
+      wxmxContents.OpenEntry(*contentsEntry);
       // Read the file into a string
-      wxTextInputStream istream1(*fsfile2->GetStream(), wxS('\t'),
+      wxTextInputStream istream1(wxmxContents, wxS('\t'),
                                  wxConvAuto(wxFONTENCODING_UTF8));
-      while (!fsfile2->GetStream()->Eof())
+      while (!wxmxContents.Eof())
         contents += istream1.ReadLine() + wxS("\n");
     } else {
       wxLogMessage(_("Trying to recover a broken .wxmx file."));
       // Let's try to recover the uncompressed text from a truncated .zip file
       wxFileInputStream input(file);
       if (input.IsOk()) {
-        wxLogMessage(_("Trying to extract contents.xml out of a broken .zip file."));
+        wxLogMessage(_("Trying to extract content.xml out of a broken .zip file."));
         wxTextInputStream text(input, wxS('\t'),
                                wxConvAuto(wxFONTENCODING_UTF8));
         while (input.IsOk() && !input.Eof()) {
@@ -4305,7 +4292,7 @@ bool wxMaxima::OpenWXMXFile(const wxString &file, Worksheet *document,
 
   // Read the worksheet's contents.
   wxXmlNode *xmlcells = xmldoc.GetRoot();
-  auto tree = CreateTreeFromXMLNode(xmlcells, wxmxURI);
+  auto tree = CreateTreeFromXMLNode(xmlcells, file);
 
   // from here on code is identical for wxm and wxmx
   if (clearDocument) {
@@ -9639,9 +9626,8 @@ void wxMaxima::PopupMenu(wxCommandEvent &event) {
       }
 
       wxLogMessage(_("Reloading image file %s."), imgFile);
-      std::shared_ptr<wxFileSystem> fs;
       dynamic_cast<ImgCell *>(output)->ReloadImage(imgFile,
-						   fs);
+						   wxEmptyString);
 
       m_worksheet->RecalculateForce();
       m_worksheet->RequestRedraw();
@@ -10007,8 +9993,7 @@ void wxMaxima::PopupMenu(wxCommandEvent &event) {
 
       wxLogMessage(_("Changing image originally loaded from file %s to %s."),
 		   ic->GetOrigImageFile(), newImg);
-      std::shared_ptr<wxFileSystem> fs;
-      ic->ReloadImage(newImg, fs /* system fs */);
+      ic->ReloadImage(newImg, wxEmptyString);
       ic->SetOrigImageFile(newImg);
 
       m_worksheet->RecalculateForce();

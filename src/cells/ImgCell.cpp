@@ -40,7 +40,6 @@
 #include <wx/clipbrd.h>
 #include <wx/file.h>
 #include <wx/filename.h>
-#include <wx/filesys.h>
 #include <wx/fs_mem.h>
 #include <wx/mstream.h>
 
@@ -70,13 +69,13 @@ int ImgCell::s_counter = 0;
 
 // constructor which load image
 ImgCell::ImgCell(GroupCell *group, Configuration *config, const wxString &image,
-                 std::shared_ptr<wxFileSystem> &filesystem, bool remove)
+                 const wxString &wxmFile, bool remove)
   : ImgCellBase(group, config), m_imageBorderWidth(1) {
   InitBitFields();
   m_type = MC_TYPE_IMAGE;
   if (image != wxEmptyString) {
     m_image =
-      std::make_shared<Image>(m_configuration, image, filesystem, remove);
+      std::make_shared<Image>(m_configuration, image, wxmFile, remove);
   } else
     m_image = std::make_shared<Image>(m_configuration);
   m_drawBoundingBox = false;
@@ -98,13 +97,13 @@ ImgCell::ImgCell(GroupCell *group, const ImgCell &cell)
 DEFINE_CELL(ImgCell)
 
 void ImgCell::ReloadImage(const wxString &image,
-                          std::shared_ptr<wxFileSystem> &filesystem) {
+                          const wxString &wxmFile) {
   // Store old size limits
   double width = m_image->GetMaxWidth();
   double height = m_image->GetHeightList();
 
   // Load new image
-  m_image = std::make_shared<Image>(m_configuration, image, filesystem, false);
+  m_image = std::make_shared<Image>(m_configuration, image, wxmFile, false);
 
   // Restore size limits
   m_image->SetMaxHeight(height);
@@ -112,7 +111,7 @@ void ImgCell::ReloadImage(const wxString &image,
 }
 
 void ImgCell::LoadImage(wxString image, bool remove) {
-  m_image = std::make_shared<Image>(m_configuration, remove, image);
+  m_image = std::make_shared<Image>(m_configuration, image, wxEmptyString, remove);
 }
 
 void ImgCell::SetBitmap(const wxBitmap &bitmap) {

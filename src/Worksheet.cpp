@@ -6226,7 +6226,7 @@ bool Worksheet::ExportToWXMX(const wxString &file, bool markAsSaved) {
   // If all data is saved now we can overwrite the actual save file.
   // We will try to do so a few times if we suspect a MSW virus scanner or
   // similar temporarily hindering us from doing so.
-
+  
   // The following line is paranoia as closing (and thus writing) the file has
   // succeeded.
   if (!wxFileExists(backupfile))
@@ -6239,37 +6239,27 @@ bool Worksheet::ExportToWXMX(const wxString &file, bool markAsSaved) {
 
   // Now we try to open the file in order to see if saving hasn't failed
   // without returning an error - which can apparently happen on MSW.
-  wxString wxmxURI = wxURI(wxS("file://") + backupfile).BuildURI();
-  wxmxURI.Replace("#", "%23");
-#ifdef __WXMSW__
-  // Fixes a missing "///" after the "file:". This works because we always get
-  // absolute file names.
-  wxRegEx uriCorector1("^file:([a-zA-Z]):");
-  wxRegEx uriCorector2("^file:([a-zA-Z][a-zA-Z]):");
-  uriCorector1.ReplaceFirst(&wxmxURI, wxS("file:///\\1:"));
-  uriCorector2.ReplaceFirst(&wxmxURI, wxS("file:///\\1:"));
-#endif
-  // The URI of the wxm code contained within the .wxmx file
-  wxString filename = wxmxURI + wxS("#zip:content.xml");
-
-  // Open the file we have saved yet just in order to see if we
-  // actually managed to save it correctly.
   {
-    wxFileSystem fs;
-    std::unique_ptr<wxFSFile> fsfile;
-    fsfile = std::unique_ptr<wxFSFile>(fs.OpenFile(filename));
-
+    wxFileInputStream wxmxFile(file);
+    wxZipInputStream wxmxContents(wxmxFile);
+    wxZipEntry *contentsEntry = NULL;
+    while(!wxmxContents.Eof())
+      {
+	contentsEntry = wxmxContents.GetNextEntry();
+	if((!contentsEntry) || (contentsEntry->GetName() == wxS("content.xml")))
+	  break;
+      }
     // Did we succeed in opening the file?
-    if (!fsfile) {
+    if (!contentsEntry) {
       LoggingMessageDialog dialog(this, _(wxS("Saving succeeded, but the file could not be read "
-					"again \u21D2 Not replacing the old saved file.")),
+					      "again \u21D2 Not replacing the old saved file.")),
 				  _("Error"), wxCENTER | wxOK);
       dialog.ShowModal();
       return false;
     }
   }
   wxLogMessage(_("Verified that we are able to read the whole .zip archive we produced."));
-
+  
   {
     bool done;
     SuppressErrorDialogs suppressor;

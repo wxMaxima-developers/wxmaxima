@@ -36,7 +36,6 @@
 #include <wx/image.h>
 #include <wx/timer.h>
 
-#include <wx/filesys.h>
 #include <wx/fs_arc.h>
 #include <wx/mstream.h>
 #include <wx/wfstream.h>
@@ -53,12 +52,12 @@ public:
     has to be set to -1.
     \param config A pointer to the pointer to the configuration storage of the 
     worksheet this cell belongs to.
-    \param filesystem The filesystem the contents of this animation can be found in.
-    NULL = the operating system's filesystem
+    \param wxmxFile The wxmx file the contents of this animation can be found in.
+    wxEmptyString = no wxmx file, but the system's filesystem instead
     \param group     The parent GroupCell this cell belongs to.
   */
   AnimationCell(GroupCell *group, Configuration *config,
-                std::shared_ptr<wxFileSystem> &filesystem, int framerate = -1);
+                const wxString &wxmxFile, int framerate = -1);
   AnimationCell(GroupCell *group, Configuration *config, int framerate = -1);
   AnimationCell(GroupCell *group, const AnimationCell &cell);
   //! A constructor that loads the compressed file from a wxMemoryBuffer
@@ -162,17 +161,17 @@ public:
   bool AnimationRunning() const { return m_animationRunning; }
   void AnimationRunning(bool run);
   bool CanPopOut() const override
-    { return (!m_images[m_displayed]->GnuplotSource().empty()); }
+    { return m_images[m_displayed] && (m_images[m_displayed]->HasGnuplotSource()); }
 
   void GnuplotSource(int image, wxString gnuplotFilename, wxString dataFilename,
-                     std::shared_ptr<wxFileSystem> &filesystem)
+                     const wxString &wxmxFile)
     { m_images[image]->GnuplotSource(std::move(gnuplotFilename),
-                                     std::move(dataFilename), filesystem); }
+                                     std::move(dataFilename), wxmxFile); }
   void CompressedGnuplotSource(int image, wxString gnuplotFilename, wxString dataFilename,
-                               std::shared_ptr<wxFileSystem> &filesystem)
+                               const wxString &wxmxFile)
     { m_images[image]->CompressedGnuplotSource(std::move(gnuplotFilename),
                                                std::move(dataFilename),
-                                               filesystem); }
+                                               wxmxFile); }
 
   wxString GnuplotSource() const override
     {
@@ -186,7 +185,6 @@ private:
   CellPointers *const m_cellPointers = GetCellPointers(); // must come before m_timer (!)
   wxTimer m_timer;
   std::vector<std::shared_ptr<Image>> m_images;
-  std::shared_ptr<wxFileSystem> m_fileSystem;
 
   /*! The framerate of this cell.
 
@@ -207,7 +205,7 @@ private:
 
   bool m_animationRunning : 1 /* InitBitFields */;
   bool m_drawBoundingBox : 1 /* InitBitFields */;
-
+  wxString m_wxmxFile;
 
   int GetImageBorderWidth() const override { return m_imageBorderWidth; }
 

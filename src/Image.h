@@ -36,10 +36,9 @@
 #include "Cell.h"
 #include "Version.h"
 #include <wx/image.h>
-
-#include <wx/filesys.h>
-#include <wx/fs_arc.h>
 #include <wx/buffer.h>
+#include <wx/zipstrm.h>
+#include <wx/wfstream.h>
 #define NANOSVG_ALL_COLOR_KEYWORDS
 #include "nanosvg_private.h"
 #include "nanosvgrast_private.h"
@@ -88,17 +87,18 @@ public:
 
     \param config The pointer to the current configuration storage for the worksheet
     \param image The name of the file
-    \param filesystem The filesystem to load it from
+    \param wxmxFile The wxmx file to load it from.
+    Empty when loading from a standalone file from the filesystem.
     \param remove true = Delete the file after loading it
   */
   Image(Configuration *config, wxString image,
-        std::shared_ptr<wxFileSystem> &filesystem, bool remove = true);
-
+        wxString wxmxFile, bool remove = true);
+  
   Image(Configuration *config, const Image &image);
   Image(const Image &image) = delete;
-
+  
   ~Image();
-
+  
   //! Converts rgba data to a wxBitmap
   static wxBitmap RGBA2wxBitmap(const unsigned char imgdata[],
                                 const int &width, const int &height,
@@ -109,10 +109,10 @@ public:
   int GetPPI() const {return m_ppi;}
   //! Set the image's resolution
   void SetPPI(int ppi) {m_ppi = ppi;}
-
+  
   //! Creates a bitmap showing an error message
   void InvalidBitmap(wxString message = wxEmptyString);
-
+  
   /*! Sets the name of the gnuplot source and data file of this image
 
     Causes the files to be cached if they are not way too long; As the files
@@ -120,28 +120,20 @@ public:
     memory in their compressed form.
   */
   void GnuplotSource(wxString gnuplotFilename, wxString dataFilename,
-                     std::shared_ptr<wxFileSystem> &filesystem);
-
+                     wxString wxmxFile = wxEmptyString);
+  
   /*! Loads the compressed gnuplot source and data file for this image
-
+    
    */
   void CompressedGnuplotSource(wxString gnuplotFilename, wxString dataFilename,
-                               std::shared_ptr<wxFileSystem> &filesystem);
-
-  //! Load the gnuplot source file from the system's filesystem
-  void GnuplotSource(wxString gnuplotFilename, wxString dataFilename)
-    {
-      std::shared_ptr<wxFileSystem> filesystem;
-      GnuplotSource(std::move(gnuplotFilename), std::move(dataFilename),
-                    filesystem /* system fs */);
-    }
-
+                               wxString wxmxFile = wxEmptyString);
+  
 /*! Returns the gnuplot source file name of this image
-
+  
   If maxima has deleted the temporary file in the meantime or if it comes from 
   a .wxmx file and has never been created from maxima the file is created by this 
   function.
-
+  
   If the file cannot be created (for example if no gnuplot source exists/ 
   is known) this function returns wxEmptyString.
 */
@@ -165,7 +157,7 @@ public:
   const wxMemoryBuffer GetCompressedGnuplotData();
   
   /*! Temporarily forget the scaled image in order to save memory
-
+    
     Will recreate the scaled image as soon as needed.
   */
   void ClearCache()
@@ -225,6 +217,13 @@ public:
   //! The tooltip to use wherever an image that's not Ok is shown.
   static const wxString &GetBadImageToolTip();
 
+  class WxmxStream: public wxZipInputStream
+  {
+  public:
+    WxmxStream(wxInputStream &wxmxfile, wxString fileInWxmx);
+  };
+
+  bool HasGnuplotSource(){return m_gnuplotSource_Compressed.GetDataLen() > 20;}
 private:
   bool m_fromWxFS = false;
   bool m_gnuplotDataThreadRunning = false;
@@ -248,35 +247,31 @@ private:
   mutable std::thread m_loadImageTask;
   void LoadImage_Backgroundtask(std::unique_ptr<ThreadNumberLimiter> limiter);
   std::thread m_loadGnuplotSourceTask;
-  void LoadGnuplotSource_Backgroundtask1(
-    std::unique_ptr<ThreadNumberLimiter> limiter,
-    std::shared_ptr<wxFileSystem> filesystem,
-    std::shared_ptr<wxInputStream> gnuplotFile,
-    std::shared_ptr<wxInputStream> dataFile
-    );
-  void LoadGnuplotSource_Backgroundtask2(
-    std::unique_ptr<ThreadNumberLimiter> limiter,
-    wxString gnuplotFile, wxString dataFile);
   void LoadGnuplotSource_Backgroundtask(
+    std::unique_ptr<ThreadNumberLimiter> limiter,
+    wxString gnuplotFile, wxString dataFile, wxString wxmxFile);
+  void LoadGnuplotSource(wxInputStream *source);
+  void LoadGnuplotData(wxInputStream *data);
+  void LoadGnuplotSource_Backgroundtask_internal(
     wxInputStream *source,
     wxInputStream *data);
+                   
+                     
   void LoadCompressedGnuplotSource_Backgroundtask(std::unique_ptr<ThreadNumberLimiter> limiter,
-                                                  std::shared_ptr<wxFileSystem> filesystem,
-                                                  std::shared_ptr<wxFSFile> sourcefile,
-                                                  std::shared_ptr<wxFSFile> datafile
-                                                  );
+                                                  wxString sourcefile,
+                                                  wxString datafile,
+                                                  wxString wxmxFile
+    );
   //! Loads an image from a file
-  void LoadImage(wxString image, std::shared_ptr<wxFileSystem> &filesystem, bool remove = true);
+  void LoadImage(wxString image, wxString wxmxFile, bool remove = true);
   //! Reads the compressed image into a memory buffer
   static wxMemoryBuffer ReadCompressedImage(wxInputStream *data);
   Configuration *m_configuration;
   /*! The upper width limit for displaying this image
-
-    \todo: Why is this a float and not an integer value?
   */
-  double m_maxWidth;
+  wxCoord m_maxWidth = -1;
   //! The upper height limit for displaying this image
-  double m_maxHeight;
+  wxCoord m_maxHeight = -1;
   //! The name of the image, if known.
   wxString m_imageName;
   //! The image resolution

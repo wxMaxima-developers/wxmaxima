@@ -43,7 +43,6 @@
 #include <wx/config.h>
 #include <wx/file.h>
 #include <wx/filename.h>
-#include <wx/filesys.h>
 #include <wx/fs_mem.h>
 #include <wx/imaggif.h>
 #include <wx/mstream.h>
@@ -52,16 +51,14 @@
 #include <wx/wfstream.h>
 #include <wx/window.h>
 
-// filesystem cannot be passed by const reference as we want to keep the
-// pointer to the file system alive in a background task
-// cppcheck-suppress performance symbolName=filesystem
 AnimationCell::AnimationCell(GroupCell *group, Configuration *config,
-                             std::shared_ptr<wxFileSystem> &filesystem,
+			     const wxString &wxmxFile,
                              int framerate)
   : ImgCellBase(group, config),
     m_timer(m_cellPointers->GetWorksheet(), wxWindow::NewControlId()),
-    m_fileSystem(filesystem), m_framerate(framerate), m_displayed(0),
-    m_imageBorderWidth(Scale_Px(1)) {
+    m_framerate(framerate), m_displayed(0),
+    m_imageBorderWidth(Scale_Px(1)),
+    m_wxmxFile(wxmxFile) {
   InitBitFields();
   m_type = MC_TYPE_SLIDE;
   ReloadTimer();
@@ -213,7 +210,7 @@ void AnimationCell::LoadImages(wxArrayString images, bool deleteRead) {
           dataFilename = i;
         else {
           m_images.push_back(std::make_shared<Image>(m_configuration, i,
-                                                     m_fileSystem, deleteRead));
+                                                     m_wxmxFile, deleteRead));
           if (gnuplotFilename != wxEmptyString) {
             if (m_images.back())
               m_images.back()->GnuplotSource(gnuplotFilename, dataFilename);
@@ -221,7 +218,7 @@ void AnimationCell::LoadImages(wxArrayString images, bool deleteRead) {
         }
       }
     }
-  m_fileSystem = NULL;
+  m_wxmxFile = wxEmptyString;
   m_displayed = 0;
 }
 
