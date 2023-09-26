@@ -980,6 +980,7 @@ bool Worksheet::RecalculateIfNeeded(bool timeout) {
 	    wxLogMessage(_("Recalculation hit the end of the worksheet => Updating its size"));
 	    m_recalculateStart = {};
 	    UpdateMLast(&cell);
+	    AdjustSize();
 	  }
 	if(stopwatch.Time() > 50)
 	  break;
@@ -6239,7 +6240,7 @@ bool Worksheet::ExportToWXMX(const wxString &file, bool markAsSaved) {
   // Now we try to open the file in order to see if saving hasn't failed
   // without returning an error - which can apparently happen on MSW.
   {
-    wxFileInputStream wxmxFile(file);
+    wxFileInputStream wxmxFile(file + "~");
     wxZipInputStream wxmxContents(wxmxFile);
     wxZipEntry *contentsEntry = NULL;
     while(!wxmxContents.Eof())
