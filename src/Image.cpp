@@ -920,8 +920,8 @@ void Image::Recalculate(double scale) {
   // But that is C++20, which now (in 2023) is still too early.
   if((!m_gnuplotDataThreadRunning) && m_loadGnuplotSourceTask.joinable())
      m_loadGnuplotSourceTask.join();
-  int width = m_originalWidth;
-  int height = m_originalHeight;
+  wxCoord width = m_originalWidth;
+  wxCoord height = m_originalHeight;
 
   // We want the image to get bigger if the user zooms in - and
   // if a high printing resolution requires us to scale everything up.
