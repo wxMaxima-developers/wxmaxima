@@ -781,8 +781,20 @@ void Image::LoadImage(wxString image, wxString wxmxFile,
   m_imageName = image;
   std::unique_ptr<ThreadNumberLimiter> limiter(new ThreadNumberLimiter()); 
   m_compressedImage.Clear();
-  m_scaledBitmap.Create(1, 1);
-  wxLogBuffer errorAggregator;
+  m_scaledBitmap.Create(1, 1);  
+  m_loadImageTask = std::thread(&Image::LoadImage_Backgroundtask,
+                                this,
+                                std::move(limiter),
+                                std::move(image), std::move(wxmxFile),
+                                remove
+                                
+    );
+}
+
+void Image::LoadImage_Backgroundtask(std::unique_ptr<ThreadNumberLimiter> limiter,
+                                     wxString image, wxString wxmxFile,
+                                     bool remove) {
+    wxLogBuffer errorAggregator;
 
   if (!wxmxFile.IsEmpty()) {
     wxFileInputStream wxmx(wxmxFile);
@@ -819,16 +831,9 @@ void Image::LoadImage(wxString image, wxString wxmxFile,
     else
       InvalidBitmap(errorAggregator.GetBuffer());      
   }
-  
-  m_loadImageTask = std::thread(&Image::LoadImage_Backgroundtask,
-                                this,
-                                std::move(limiter));
-}
 
-void Image::LoadImage_Backgroundtask(std::unique_ptr<ThreadNumberLimiter> limiter) {
   SuppressErrorDialogs suppressor;
   wxImage Image;
-  wxLogBuffer errorAggregator;
   if (m_compressedImage.GetDataLen() > 0) {
     if ((m_extension == "svg") || (m_extension == "svgz")) {
       wxString svgContents_string;
