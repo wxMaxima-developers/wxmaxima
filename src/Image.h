@@ -104,11 +104,20 @@ public:
                                 const int &width, const int &height,
                                 const int &scaleFactor = 1);
   
-  void SetConfiguration(Configuration *config){ m_configuration = config; }
+  void SetConfiguration(Configuration *config){
+    if(m_loadImageTask.joinable())
+      m_loadImageTask.join();
+    m_configuration = config; }
   //! Return the image's resolution
-  int GetPPI() const {return m_ppi;}
+  int GetPPI() const {
+    if(m_loadImageTask.joinable())
+      m_loadImageTask.join();
+    return m_ppi;}
   //! Set the image's resolution
-  void SetPPI(int ppi) {m_ppi = ppi;}
+  void SetPPI(int ppi) {
+    if(m_loadImageTask.joinable())
+      m_loadImageTask.join();
+    m_ppi = ppi;}
   
   //! Creates a bitmap showing an error message
   void InvalidBitmap(wxString message = wxEmptyString);
@@ -162,6 +171,8 @@ public:
   */
   void ClearCache()
     {
+      if(m_loadImageTask.joinable())
+        m_loadImageTask.join();
       if ((m_scaledBitmap.GetWidth() > 1) || (m_scaledBitmap.GetHeight() > 1))
         m_scaledBitmap.Create(1, 1);
     }
@@ -169,13 +180,27 @@ public:
   //! Returns the file name extension of the current image
   wxString GetExtension() const;
   //! The maximum width this image shall be displayed with
-  double GetMaxWidth() const {return m_maxWidth;}
+  double GetMaxWidth() const {
+    if(m_loadImageTask.joinable())
+      m_loadImageTask.join();
+    return m_maxWidth;}
   //! The maximum height this image shall be displayed with
-  double GetHeightList() const {return m_maxHeight;}
+  double GetHeightList() const {
+    if(m_loadImageTask.joinable())
+      m_loadImageTask.join();
+    return m_maxHeight;}
   //! Set the maximum width this image shall be displayed with
-  void   SetMaxWidth(double width){m_maxWidth = width;}
+  void   SetMaxWidth(double width){
+    if(m_loadImageTask.joinable())
+      m_loadImageTask.join();
+    m_maxWidth = width;
+  }
   //! Set the maximum height this image shall be displayed with
-  void   SetMaxHeight(double height){m_maxHeight = height;}
+  void   SetMaxHeight(double height){
+    if(m_loadImageTask.joinable())
+      m_loadImageTask.join();
+    m_maxHeight = height;
+  }
   
   //! "Loads" an image from a bitmap
   void LoadImage(const wxBitmap &bitmap);
@@ -212,7 +237,10 @@ public:
   wxMemoryBuffer m_compressedImage;
 
   //! Can this image be exported in SVG format?
-  bool CanExportSVG() const {return m_svgRast != nullptr;}
+  bool CanExportSVG() const {
+    if(m_loadImageTask.joinable())
+      m_loadImageTask.join();
+    return m_svgRast != nullptr;}
 
   //! The tooltip to use wherever an image that's not Ok is shown.
   static const wxString &GetBadImageToolTip();

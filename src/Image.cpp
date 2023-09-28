@@ -769,13 +769,17 @@ void Image::LoadImage(const wxBitmap &bitmap) {
   m_height = 1;
 }
 
-wxString Image::GetExtension() const { return m_extension; }
+wxString Image::GetExtension() const {
+  if(m_loadImageTask.joinable())
+    m_loadImageTask.join();
+  return m_extension;
+}
 
 void Image::LoadImage(wxString image, wxString wxmxFile,
                       bool remove) {
-  m_fromWxFS = !wxmxFile.IsEmpty();
   if(m_loadImageTask.joinable())
     m_loadImageTask.join();
+  m_fromWxFS = !wxmxFile.IsEmpty();
   m_extension = wxFileName(image).GetExt();
   m_extension = m_extension.Lower();
   m_imageName = image;
@@ -967,10 +971,10 @@ void Image::Recalculate(double scale) {
 
   // Shrink to be smaller than the maximum size.
   if ((m_maxWidth > 0) &&
-      (scale * width > m_maxWidth * m_configuration->GetPPI().x))
+      (scale * width > m_maxWidth * static_cast<wxCoord>(m_configuration->GetPPI().x)))
     scale = m_maxWidth * m_configuration->GetPPI().x / width;
   if ((m_maxHeight > 0) &&
-      (scale * height > m_maxHeight * m_configuration->GetPPI().y))
+      (scale * height > m_maxHeight * static_cast<wxCoord>(m_configuration->GetPPI().y)))
     scale = m_maxHeight * m_configuration->GetPPI().y / height;
 
   // Set the width of the scaled image
