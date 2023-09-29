@@ -50,7 +50,7 @@ ErrorRedirector::ErrorRedirector(std::unique_ptr<wxLog> &&newLog)
 ErrorRedirector::~ErrorRedirector() {
   assert(!m_logNew || m_logOwned.get() == m_logNew ||
          (!m_logOwned && m_logNew == this));
-  wxLog::SetActiveTarget(m_logOld);
+  wxLog::SetActiveTarget(new wxLogStderr());
 }
 
 void ErrorRedirector::SetLog(std::unique_ptr<wxLog> &&logger) {
