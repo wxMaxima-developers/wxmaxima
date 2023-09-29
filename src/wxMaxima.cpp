@@ -1747,6 +1747,7 @@ void wxMaxima::StartAutoSaveTimer() {
 wxMaxima::~wxMaxima() {
   wxConfig::Get()->Write(wxS("Find/Flags"), m_findData.GetFlags());
   wxConfig::Get()->Write(wxS("Find/RegexSearch"), m_findData.GetRegexSearch());
+  m_logPane->DropLogTarget();
 
   KillMaxima(false);
   DelistTopLevelWindow(this);
@@ -1755,7 +1756,6 @@ wxMaxima::~wxMaxima() {
     wxExit();
   else {
     if (m_isLogTarget) {
-      m_logPane->DropLogTarget();
       if(m_topLevelWindows.size() > 0)
 	m_topLevelWindows.back()->BecomeLogTarget();
     }
