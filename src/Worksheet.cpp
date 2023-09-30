@@ -1769,13 +1769,10 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event) {
             popupMenu.Append(wxID_HELP, wxString::Format(_("Help on \"%s\""),
                                                          wordUnderCursor));
 
-          MaximaManual::HelpFileAnchors::const_iterator it;
           MaximaManual::HelpFileAnchors helpFileAnchors =
 	    m_maximaManual.GetHelpfileAnchors();
-
-          for (it = helpFileAnchors.begin(); it != helpFileAnchors.end();
-               ++it) {
-            wxString cmdName = it->first;
+          for (const auto &it : helpFileAnchors) {
+            wxString cmdName = it.first;
             if (cmdName.Contains(" "))
               continue;
             if (cmdName.EndsWith("_"))
