@@ -183,6 +183,7 @@ Configuration::Configuration(wxDC *dc, InitOpt options) :
   m_maximaOperators[wxS(">=")] = 1;
   m_maximaOperators[wxS("$BFLOAT")] = 1;
   m_maximaOperators[wxS("do")] = 1;
+  m_maximaHelpFormat = frontend;
   m_printing = false;
   m_clipToDrawRegion = true;
   m_inLispMode = false;
@@ -754,7 +755,11 @@ void Configuration::ReadConfig() {
   config->Read("incrementalSearch", &m_incrementalSearch);
   if (m_language == wxLANGUAGE_UNKNOWN)
     m_language = wxLANGUAGE_DEFAULT;
-
+  {
+    long format;
+    if(config->Read("maximaHelpFormat", &format))
+      MaximaHelpFormat(static_cast<maximaHelpFormat>(format));
+  }
   config->Read("invertBackground", &m_invertBackground);
   config->Read("undoLimit", &m_undoLimit);
   config->Read("recentItems", &m_recentItems);
@@ -860,6 +865,17 @@ void Configuration::ReadConfig() {
   config->Read(wxS("cursorJump"), &m_cursorJump);
 
   ReadStyles();
+}
+
+Configuration::maximaHelpFormat Configuration::MaximaHelpFormat() const
+{
+  if(
+     (m_maximaHelpFormat == frontend) ||
+     (m_maximaHelpFormat == browser) ||
+     (m_maximaHelpFormat == maxima))
+    return m_maximaHelpFormat;
+  else
+    return frontend;
 }
 
 void Configuration::LastActiveTextCtrl(wxTextCtrl *last) {
@@ -1287,6 +1303,7 @@ void Configuration::WriteSettings(const wxString &file) {
                   hideMessagesConfigString);
   }
 
+  config->Write("maximaHelpFormat", static_cast<long>(m_maximaHelpFormat));
   config->Write(wxS("Print/Margin/Top"), m_printMargin_Top);
   config->Write(wxS("Print/Margin/Bot"), m_printMargin_Bot);
   config->Write(wxS("Print/Margin/Left"), m_printMargin_Left);

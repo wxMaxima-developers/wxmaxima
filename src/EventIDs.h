@@ -323,6 +323,8 @@ public:
   static const wxWindowIDRef menu_dependencies;
   static const wxWindowIDRef menu_gradefs;
   static const wxWindowIDRef menu_let_rule_packages;
+  static const wxWindowIDRef menu_wxmaxima_uses_help_sidebar;
+  static const wxWindowIDRef menu_wxmaxima_uses_help_browser;
   static const wxWindowIDRef menu_maxima_uses_internal_help;
   static const wxWindowIDRef menu_maxima_uses_html_help;
   static const wxWindowIDRef menu_maxima_uses_wxmaxima_help;

@@ -93,6 +93,11 @@ class Cell;
 class Configuration
 {
 public:
+  enum maximaHelpFormat{
+    maxima = 0,
+    frontend = 1,
+    browser = 2
+  };
   //! The export formats we support for HTML equations
   enum htmlExportFormat
   {
@@ -940,7 +945,9 @@ public:
   static void SetDebugmode(){m_debugMode = true;}
   //! Enable costly checks?
   static bool GetDebugmode(){return m_debugMode;}
-
+  maximaHelpFormat MaximaHelpFormat() const;
+  void MaximaHelpFormat(maximaHelpFormat format) {m_maximaHelpFormat = format;}
+  
 private:
   /*! The id of the current configuration
 
@@ -1141,7 +1148,7 @@ private:
   int m_maxClipbrd_BitmapMegabytes;
   int m_autoSaveMinutes;
   wxString m_wxMathML_Filename;
-
+  maximaHelpFormat m_maximaHelpFormat;
   wxTextCtrl *m_lastActiveTextCtrl = NULL;
 };
 

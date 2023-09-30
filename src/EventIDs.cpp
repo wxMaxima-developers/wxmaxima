@@ -233,6 +233,8 @@ const wxWindowIDRef EventIDs::menu_structs(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::menu_dependencies(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::menu_gradefs(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::menu_let_rule_packages(wxWindow::NewControlId());
+const wxWindowIDRef EventIDs::menu_wxmaxima_uses_help_sidebar(wxWindow::NewControlId());
+const wxWindowIDRef EventIDs::menu_wxmaxima_uses_help_browser(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::menu_maxima_uses_internal_help(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::menu_maxima_uses_html_help(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::menu_maxima_uses_wxmaxima_help(wxWindow::NewControlId());

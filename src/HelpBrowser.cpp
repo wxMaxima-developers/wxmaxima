@@ -83,6 +83,7 @@ HelpBrowser::HelpBrowser(wxWindow *parent, Configuration *configuration,
           this);
   SetSizer(vbox);
   FitInside();
+  SetMinSize(wxSize(300 * GetContentScaleFactor(), 400 * GetContentScaleFactor()));
 }
 
 wxString HelpBrowser::GetKeyword(wxWindowID id) {

@@ -1852,7 +1852,18 @@ void wxMaximaFrame::SetupMenu() {
                      _("Show commands similar to"), wxITEM_NORMAL);
   APPEND_MENU_ITEM(m_HelpMenu, EventIDs::menu_show_tip, _("Show &Tips..."),
                    _("Show a tip"), wxART_TIP);
-
+  #ifdef USE_WEBVIEW
+  m_HelpMenu->AppendSeparator();
+  m_HelpMenu->AppendRadioItem(EventIDs::menu_wxmaxima_uses_help_sidebar,
+                              _("wxMaxima shows help in the sidebar"));
+  m_HelpMenu->AppendRadioItem(EventIDs::menu_wxmaxima_uses_help_browser,
+                              _("wxMaxima shows help in a browser"));
+  if(m_configuration.InternalHelpBrowser())
+    m_HelpMenu->Check(EventIDs::menu_wxmaxima_uses_help_sidebar, true);
+  else
+    m_HelpMenu->Check(EventIDs::menu_wxmaxima_uses_help_browser, true);
+  #endif
+  m_HelpMenu->AppendSeparator();
   m_HelpMenu->AppendRadioItem(EventIDs::menu_maxima_uses_internal_help,
                               _("Maxima shows help in the console"),
                               _("Tells maxima to show the help for ?, ?? and "
