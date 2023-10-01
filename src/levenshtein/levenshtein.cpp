@@ -2,43 +2,44 @@
 // https://forums.wxwidgets.org/viewtopic.php?t=35124
 // from mjuergens (mjx). It is under the wxWidgets license
 // (https://www.wxwidgets.org/about/licence/) that is GPL-compatible.
+//
+// Added some modifications that remove MSVC code scanning warnings
 
 #include "levenshtein.h"
+#include <vector>
 
-int LevenshteinDistance(const wxString &s1, const wxString &s2) {
-  const int m = s1.Len();
-  const int n = s2.Len();
+size_t LevenshteinDistance(const wxString &s1, const wxString &s2) {
+  const size_t m = s1.Len();
+  const size_t n = s2.Len();
 
   if (m == 0)
     return n;
   if (n == 0)
     return m;
 
-  int *costs = new int[n + 1];
+  std::vector<size_t> costs;
+  costs.resize(n + 1);
+  
+  for (size_t k = 0; k <= n; k++)
+    costs.at(k) = k;
 
-  for (int k = 0; k <= n; k++)
-    costs[k] = k;
-
-  int i = 0;
+  size_t i = 0;
   for (wxString::const_iterator it1 = s1.begin(); it1 != s1.end(); ++it1, ++i) {
-    costs[0] = i + 1;
-    int corner = i;
+    costs.at(0) = i + 1;
+    size_t corner = i;
 
-    int j = 0;
+    size_t j = 0;
     for (wxString::const_iterator it2 = s2.begin(); it2 != s2.end();
          ++it2, ++j) {
-      int upper = costs[j + 1];
+      size_t upper = costs.at(j + 1);
       if (*it1 == *it2)
-        costs[j + 1] = corner;
+        costs.at(j + 1) = corner;
       else
-        costs[j + 1] = wxMin(costs[j], wxMin(upper, corner)) + 1;
+        costs.at(j + 1) = wxMin(costs.at(j), wxMin(upper, corner)) + 1;
 
       corner = upper;
     }
   }
 
-  int result = costs[n];
-  delete[] costs;
-
-  return result;
+  return costs.at(n);
 }
