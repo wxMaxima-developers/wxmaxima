@@ -3,7 +3,7 @@ var searchData=
   ['editinputmenu_279',['EditInputMenu',['../classwxMaxima.html#a6be8b3148868fd873cac52f83dd7e82d',1,'wxMaxima']]],
   ['editmenu_280',['EditMenu',['../classwxMaxima.html#a583d63bd73914f60c6baa6fe737efb3d',1,'wxMaxima']]],
   ['editorbackgroundcolor_281',['EditorBackgroundColor',['../classConfiguration.html#a0ef02b1b5d03f40b585eed65c4c8e570',1,'Configuration']]],
-  ['editorcell_282',['EditorCell',['../classEditorCell.html',1,'EditorCell'],['../classEditorCell.html#a0339aa5593470dcb562ca06cfbb064a4',1,'EditorCell::EditorCell()']]],
+  ['editorcell_282',['EditorCell',['../classEditorCell.html',1,'EditorCell'],['../classEditorCell.html#a16732e2b40149ba3baefd2f9bbf614a7',1,'EditorCell::EditorCell()']]],
   ['editorcell_2ecpp_283',['EditorCell.cpp',['../EditorCell_8cpp.html',1,'']]],
   ['editorcell_2eh_284',['EditorCell.h',['../EditorCell_8h.html',1,'']]],
   ['emfout_2ecpp_285',['EMFout.cpp',['../EMFout_8cpp.html',1,'']]],

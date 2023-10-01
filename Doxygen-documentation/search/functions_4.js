@@ -3,7 +3,7 @@ var searchData=
   ['editinputmenu_2275',['EditInputMenu',['../classwxMaxima.html#a6be8b3148868fd873cac52f83dd7e82d',1,'wxMaxima']]],
   ['editmenu_2276',['EditMenu',['../classwxMaxima.html#a583d63bd73914f60c6baa6fe737efb3d',1,'wxMaxima']]],
   ['editorbackgroundcolor_2277',['EditorBackgroundColor',['../classConfiguration.html#a0ef02b1b5d03f40b585eed65c4c8e570',1,'Configuration']]],
-  ['editorcell_2278',['EditorCell',['../classEditorCell.html#a0339aa5593470dcb562ca06cfbb064a4',1,'EditorCell']]],
+  ['editorcell_2278',['EditorCell',['../classEditorCell.html#a16732e2b40149ba3baefd2f9bbf614a7',1,'EditorCell']]],
   ['empty_2279',['Empty',['../classCellPointers_1_1ErrorList.html#a753b6464f99227556b7fc8e382da6901',1,'CellPointers::ErrorList::Empty()'],['../classGroupCell.html#a7d134e4f14869920ea47fc94d504c10e',1,'GroupCell::Empty()'],['../classEvaluationQueue.html#a51e73fac4a469890cfe2a57add221e9b',1,'EvaluationQueue::Empty()']]],
   ['enableipc_2280',['EnableIPC',['../classwxMaxima.html#a6e02774a2efcee9afe6933a7aa36cc48',1,'wxMaxima']]],
   ['enableitem_2281',['EnableItem',['../classMainMenuBar.html#ab476667a74b99d30831c7ad5994c3ece',1,'MainMenuBar']]],
