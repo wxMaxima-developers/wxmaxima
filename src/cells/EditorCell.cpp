@@ -43,16 +43,33 @@
 #include "RegexSearch.h"
 
 EditorCell::EditorCell(GroupCell *group, Configuration *config,
-                       const wxString &text)
+                       wxString text)
   : Cell(group, config), m_text(text) {
   InitBitFields();
-  m_text.Replace(wxS("\u2028"), "\n");
-  m_text.Replace(wxS("\u2029"), "\n");
-  SetValue(TabExpand(text, 0));
+  text.Replace(wxS("\r"), "\n");
+  text.Replace(wxS("\u2028"), "\n");
+  text.Replace(wxS("\u2029"), "\n");
+  if(text == wxS("("))
+    {
+      SetValue(wxS("()"));
+      CursorPosition(1);
+    }
+  else if(text == wxS("["))
+    {
+      SetValue(wxS("[]"));
+      CursorPosition(1);
+    }
+  else if(text == wxS("{"))
+    {
+      SetValue(wxS("{}"));
+      CursorPosition(1);
+    }
+  else SetValue(TabExpand(text, 0));
   m_height = m_charHeight + 2 * Scale_Px(2);
   m_center = m_height / 2;
   m_width = 2 * Scale_Px(2);
   SetStyle(TS_CODE_DEFAULT);
+  StyleText();
 }
 
 wxString EditorCell::EscapeHTMLChars(wxString input) {
@@ -621,9 +638,11 @@ void EditorCell::Recalculate(AFontSize fontsize) {
 	if (m_height < m_charHeight + 2 * Scale_Px(2))
 	  m_height = (m_charHeight) + 2 * Scale_Px(2);
 
-	// The center lies in the middle of the 1st line
-	m_center = m_charHeight / 2;
       }
+      // The center lies in the middle of the 1st line
+      m_center = m_charHeight / 2;
+      m_height = wxMax(m_height, m_charHeight + 2 * Scale_Px(2));
+
       m_containsChanges = false;
     }
 }

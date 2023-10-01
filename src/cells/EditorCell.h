@@ -68,7 +68,7 @@ private:
 
 public:
   //! The constructor
-  EditorCell(GroupCell *group, Configuration *config, const wxString &text = {});
+  EditorCell(GroupCell *group, Configuration *config, wxString text = {});
   EditorCell(GroupCell *group, const EditorCell &cell);
   void UpdateSelectionString();
   void SetSelection(size_t start, size_t end){m_selectionStart = start; m_selectionEnd = end;UpdateSelectionString();}

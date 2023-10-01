@@ -131,10 +131,7 @@ GroupCell::GroupCell(Configuration *config, GroupType groupType,
   }
 
   std::unique_ptr<EditorCell> editor =
-    std::make_unique<EditorCell>(this, m_configuration);
-
-  if (!initString.empty())
-    editor->SetValue(initString);
+    std::make_unique<EditorCell>(this, m_configuration, initString);
   AppendInput(std::move(editor));
 
   SetGroupType(groupType);
