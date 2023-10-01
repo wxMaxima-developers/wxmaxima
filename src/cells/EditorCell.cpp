@@ -3577,10 +3577,21 @@ bool EditorCell::ReplaceSelection(const wxString &oldStr,
   auto start = SelectionLeft();
   auto end = SelectionRight();
   if (!SelectionActive()) {
-    if (oldStr == wxEmptyString)
-      ClearSelection();
+    wxString left;
+    wxString right;
+    if(CursorPosition() < m_text.length())
+      {
+	left = m_text.Left(CursorPosition());
+	right = m_text.Right(m_text.Length() - CursorPosition());
+      }
     else
-      return false;
+      {
+	left = m_text;
+      }
+    m_text = left + newString + right;
+    CursorPosition(CursorPosition() + newString.Length());
+    StyleText();
+    return true;
   }
 
   if (ignoreCase) {
