@@ -3678,7 +3678,10 @@ bool EditorCell::ReplaceSelection_RegEx(const wxString &oldStr,
 }
 
 wxString EditorCell::GetSelectionString() const {
-  return m_text.SubString(SelectionLeft(), SelectionRight());
+  if(SelectionActive())
+    return m_text.SubString(SelectionLeft(), SelectionRight());
+  else
+    return wxEmptyString;
 }
 
 TextStyle EditorCell::GetSelectionStyle() const {

@@ -186,6 +186,8 @@ void LabelCell::Recalculate(AFontSize fontsize) {
   TextCell::Recalculate(fontsize);
   m_width = wxMax(m_width, Scale_Px(m_configuration->GetLabelWidth())  +
     MC_TEXT_PADDING);
+  m_height = wxMax(m_height, m_fontSize_Scaled.Get() + Scale_Px(2));
+  m_center = m_height / 2;    
 }
 
 const wxString &LabelCell::GetAltCopyText() const {
