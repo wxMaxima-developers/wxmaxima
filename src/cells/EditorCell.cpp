@@ -2563,7 +2563,8 @@ wxString EditorCell::GetWordUnderCaret() {
 
   wxString retval;
   size_t pos = 0;
-  for (wxString::const_iterator it = m_text.begin(); it != m_text.end(); ++it) {
+  wxString::const_iterator it;
+  for (it = m_text.begin(); it < m_text.end(); ++it) {
     if (!wxIsalnum(*it) && !(*it == '\\') && !(*it == '_') && !(*it == '&') &&
         !(*it == '%') && !(*it == '?')) {
       if (pos >= start)
@@ -2583,10 +2584,6 @@ wxString EditorCell::GetWordUnderCaret() {
       }
     }
   }
-  if (retval.IsEmpty())
-    if (!m_text.IsEmpty() && start < m_text.size())
-      retval = wxString(m_text.GetChar(start));
-
   return retval;
 }
 
@@ -3678,10 +3675,7 @@ bool EditorCell::ReplaceSelection_RegEx(const wxString &oldStr,
 }
 
 wxString EditorCell::GetSelectionString() const {
-  if(SelectionActive())
-    return m_text.SubString(SelectionLeft(), SelectionRight());
-  else
-    return wxEmptyString;
+  return m_text.SubString(SelectionLeft(), SelectionRight() - 1);
 }
 
 TextStyle EditorCell::GetSelectionStyle() const {

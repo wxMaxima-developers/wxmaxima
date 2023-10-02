@@ -1697,9 +1697,10 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event) {
         GetActiveCell()->GetGroup()->GetGroupType() == GC_TYPE_CODE)
       popupMenu.Append(EventIDs::popid_comment_selection, _("Comment Selection"),
                        wxEmptyString, wxITEM_NORMAL);
-    wxString selectionString = GetActiveCell()->GetSelectionString();
-    if (selectionString.IsEmpty())
-      selectionString = GetActiveCell()->GetWordUnderCaret();
+    wxString selectionString1 = GetActiveCell()->GetSelectionString();
+    if (selectionString1.IsEmpty())
+      selectionString1 = GetActiveCell()->GetWordUnderCaret();
+    const wxString selectionString(selectionString1);
     if (!selectionString.IsEmpty() && !selectionString.Contains("\n") &&
         !selectionString.Contains("\r") && !selectionString.Contains(":") &&
         ((selectionString[0] < '0') || (selectionString[0] > '9')))
@@ -2018,9 +2019,9 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event) {
                             _("Declare these chars as ordinary letters"));
         }
         popupMenu.Append(
-			 wxWindow::NewControlId(),
+			 wxWindow::NewControlId(),			 
 			 wxString::Format(_("Declare facts about %s"),
-					  selectionString.ToUTF8().data()),
+					  selectionString.mb_str()),
 			 facts_sub, _("Inform maxima about facts you know for this symbol"));
       }
     }
