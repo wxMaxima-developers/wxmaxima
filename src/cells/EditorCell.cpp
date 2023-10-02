@@ -49,20 +49,24 @@ EditorCell::EditorCell(GroupCell *group, Configuration *config,
   text.Replace(wxS("\r"), "\n");
   text.Replace(wxS("\u2028"), "\n");
   text.Replace(wxS("\u2029"), "\n");
-  if(text == wxS("("))
+  if(m_configuration->GetMatchParens())
     {
-      SetValue(wxS("()"));
-      CursorPosition(1);
-    }
-  else if(text == wxS("["))
-    {
-      SetValue(wxS("[]"));
-      CursorPosition(1);
-    }
-  else if(text == wxS("{"))
-    {
-      SetValue(wxS("{}"));
-      CursorPosition(1);
+      if(text == wxS("("))
+	{
+	  SetValue(wxS("()"));
+	  CursorPosition(1);
+	}
+      else if(text == wxS("["))
+	{
+	  SetValue(wxS("[]"));
+	  CursorPosition(1);
+	}
+      else if(text == wxS("{"))
+	{
+	  SetValue(wxS("{}"));
+	  CursorPosition(1);
+	}
+      else SetValue(TabExpand(text, 0));
     }
   else SetValue(TabExpand(text, 0));
   m_height = m_charHeight + 2 * Scale_Px(2);

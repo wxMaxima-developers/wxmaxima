@@ -83,10 +83,6 @@ void LabelCell::SetUserDefinedLabel(const wxString &userDefinedLabel) {
 
 bool LabelCell::NeedsRecalculation(AFontSize fontSize) const {
   return TextCell::NeedsRecalculation(fontSize) ||
-    ((GetTextStyle() == TS_USERLABEL) &&
-     (!m_configuration->UseUserLabels())) ||
-    ((GetTextStyle() == TS_LABEL) && (m_configuration->UseUserLabels()) &&
-     (!m_userDefinedLabel.empty())) ||
     (m_configuration->GetLabelChoice() != m_labelChoice_Last);
 }
 
@@ -187,7 +183,11 @@ void LabelCell::Recalculate(AFontSize fontsize) {
   m_width = wxMax(m_width, Scale_Px(m_configuration->GetLabelWidth())  +
     MC_TEXT_PADDING);
   m_height = wxMax(m_height, m_fontSize_Scaled.Get() + Scale_Px(2));
-  m_center = m_height / 2;    
+  m_center = m_height / 2;
+  if(m_labelChoice_Last != m_configuration->GetLabelChoice())
+    UpdateDisplayedText();
+
+  m_labelChoice_Last = m_configuration->GetLabelChoice();
 }
 
 const wxString &LabelCell::GetAltCopyText() const {
