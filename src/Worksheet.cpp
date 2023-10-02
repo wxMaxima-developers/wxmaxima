@@ -1698,7 +1698,7 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event) {
       popupMenu.Append(EventIDs::popid_comment_selection, _("Comment Selection"),
                        wxEmptyString, wxITEM_NORMAL);
     wxString selectionString1 = GetActiveCell()->GetSelectionString();
-    if (selectionString1.IsEmpty())
+    if ((selectionString1.IsEmpty()) && (GetActiveCell()->ContainsPoint(wxPoint(downx, downy))))
       selectionString1 = GetActiveCell()->GetWordUnderCaret();
     const wxString selectionString(selectionString1);
     if (!selectionString.IsEmpty() && !selectionString.Contains("\n") &&
@@ -2018,11 +2018,14 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event) {
           facts_sub->Append(EventIDs::popid_property_alphabetic,
                             _("Declare these chars as ordinary letters"));
         }
-        popupMenu.Append(
-			 wxWindow::NewControlId(),			 
-			 wxString::Format(_("Declare facts about %s"),
-					  selectionString.mb_str()),
-			 facts_sub, _("Inform maxima about facts you know for this symbol"));
+	if(!selectionString.IsEmpty())
+	  {
+	    popupMenu.Append(
+			     wxWindow::NewControlId(),			 
+			     wxString::Format(_("Declare facts about %s"),
+					      selectionString.mb_str()),
+			     facts_sub, _("Inform maxima about facts you know for this symbol"));
+	  }
       }
     }
   }

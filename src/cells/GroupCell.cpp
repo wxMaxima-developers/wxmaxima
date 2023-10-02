@@ -1419,7 +1419,16 @@ const wxString &GroupCell::GetToolTip(const wxPoint point) const {
   if (IsHidden())
     return *retval;
 
+  for (auto &tmp : OnList(m_inputLabel.get())) {
+    if (tmp.ContainsPoint(point))    
+      m_cellPointers->m_cellUnderPointer = &tmp;
+  }
+
+  // TODO: Handle the case that m_cellUnderPointer should be a cell inside a cell
   for (auto &tmp : OnList(m_output.get())) {
+    if (tmp.ContainsPoint(point))    
+      m_cellPointers->m_cellUnderPointer = &tmp;
+
     // If a cell contains a cell containing a tooltip, the tooltip of the
     // containing cell will be overridden.
     // TODO: Why do we keep iterating? Is there a reason to return the

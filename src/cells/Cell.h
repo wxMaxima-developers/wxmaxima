@@ -808,8 +808,8 @@ public:
   //! Sets the TextStyle of this cell
   virtual void SetStyle(TextStyle style)
     {
-      m_textStyle = style;
       ResetData();
+      m_textStyle = style;
     }
   //! Is this cell possibly output of maxima?
   bool IsMath() const;
