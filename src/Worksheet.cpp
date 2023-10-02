@@ -185,8 +185,10 @@ Worksheet::Worksheet(wxWindow *parent, int id,
   m_accessibilityInfo = new AccessibilityInfo(GetTargetWindow(), this);
 #endif
 #if wxCHECK_VERSION(3, 1, 1)
-  Connect(wxEVT_GESTURE_ZOOM, wxZoomGestureEventHandler(Worksheet::OnZoom),
-          NULL, this);
+  //  Disabled, as it resets the zoom to 1:1 on right-click (GTK) or closes the
+  //  right-click dialogue (wxMSW)
+  //  Connect(wxEVT_GESTURE_ZOOM, wxZoomGestureEventHandler(Worksheet::OnZoom),
+  //        NULL, this);
 #endif
   Connect(SIDEBARKEYEVENT, wxCommandEventHandler(Worksheet::OnSidebarKey), NULL,
           this);
