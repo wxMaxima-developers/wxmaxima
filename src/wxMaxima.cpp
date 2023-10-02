@@ -2605,12 +2605,9 @@ void wxMaxima::KillMaxima(bool logMessage) {
   // Just to be absolutely sure: Additionally try to kill maxima
   if (m_pid > 0) {
     // wxProcess::kill will fail on MSW. Something with a console.
-    SuppressErrorDialogs logNull;
+    wxLogNull logNull;
     if (wxProcess::Kill(m_pid, wxSIGKILL, wxKILL_CHILDREN) != wxKILL_OK) {
-      if (wxProcess::Kill(m_pid, wxSIGKILL) != wxKILL_OK)
-        wxLogMessage(_("Sending a wxSIGKILL to maxima has failed"));
-      else
-        wxLogMessage(_("Sent wxSIGKILL to maxima, but not to its child processes"));
+      wxProcess::Kill(m_pid, wxSIGKILL);
     }
   }
   m_configuration.InLispMode(false);
