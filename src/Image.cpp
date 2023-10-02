@@ -971,10 +971,12 @@ void Image::Recalculate(double scale) {
 
   // Shrink to be smaller than the maximum size.
   if ((m_maxWidth > 0) &&
-      (static_cast<wxCoord>(scale) * width > m_maxWidth * static_cast<wxCoord>(m_configuration->GetPPI().x)))
+      (static_cast<wxCoord>(scale) * width >
+       m_maxWidth * static_cast<wxCoord>(m_configuration->GetPPI().x)))
     scale = m_maxWidth * m_configuration->GetPPI().x / width;
   if ((m_maxHeight > 0) &&
-      (static_cast<wxCoord>(scale) * height > m_maxHeight * static_cast<wxCoord>(m_configuration->GetPPI().y)))
+      (static_cast<wxCoord>(scale) * height >
+       m_maxHeight * static_cast<wxCoord>(m_configuration->GetPPI().y)))
     scale = m_maxHeight * m_configuration->GetPPI().y / height;
 
   // Set the width of the scaled image
