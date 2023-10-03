@@ -849,13 +849,13 @@ add_test(
     NAME multiple_batch_files
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
     COMMAND wxmaxima --debug --batch unicode.wxm boxes.wxm)
-set_tests_properties(multiple_batch_files PROPERTIES DEPENDS wxmaxima_performance)
+set_tests_properties(multiple_batch_files PROPERTIES DEPENDS wxmaxima_performance RUN_SERIAL true)
 
-# add_test(
-#     NAME multiple_batch_files2
-#     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-#     COMMAND wxmaxima --debug --batch --single_process unicode.wxm boxes.wxm)
-# set_tests_properties(multiple_batch_files2 PROPERTIES DEPENDS wxmaxima_performance)
+add_test(
+    NAME multiple_batch_files2
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+    COMMAND wxmaxima --debug --batch --single_process unicode.wxm boxes.wxm)
+set_tests_properties(multiple_batch_files2 PROPERTIES DEPENDS wxmaxima_performance RUN_SERIAL true)
 
 #add_test(
 #    NAME multiwindow
