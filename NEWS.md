@@ -1,8 +1,19 @@
-# Current
+# 23.10.0
+ * A big rewrite to make the static analysis tools happy
  * Many stability improvements
  * Maxima's help commands work again out-of-the-box. 
  * Corrected the worksheet size calculation
  * Better support for loading .wxmx files from weird paths
+ * Finally resolved the "Right-click resets zoom" problem (#1810)
+ * A speed up
+ * Many right-click menu fixes (#1810)
+ * Display/Hide label fixes
+ * Many help browser improvements (#1802)
+ * The worksheet size no more is underestimated (#1802)
+ * Cell creation fixes
+ * Copy-and-paste improvements (#1809)
+ * Better error messages for bitmaps
+ * Many additional bug fixes
 
 # 23.08.0
  * Better print scaling
