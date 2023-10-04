@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: wxMaxima\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-10-03 14:13+0200\n"
-"PO-Revision-Date: 2023-05-18 11:58+0300\n"
+"PO-Revision-Date: 2023-10-04 11:03+0300\n"
 "Last-Translator: Olesya Gerasimenko <translation-team@basealt.ru>\n"
 "Language-Team: Basealt Translation Team\n"
 "Language: ru_RU\n"
@@ -21,7 +21,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 22.12.3\n"
+"X-Generator: Lokalize 23.04.3\n"
 
 #: ../../src/StatusBar.cpp:300
 #, c-format
@@ -52,6 +52,8 @@ msgid ""
 "\n"
 "Image was loaded from a .wxmx file"
 msgstr ""
+"\n"
+"Изображение загружено из файла .wxmx"
 
 #: ../../src/wxMaxima.cpp:9242
 msgid ""
@@ -143,12 +145,12 @@ msgstr "%li уровней"
 #: ../../src/ThreadNumberLimiter.cpp:65
 #, c-format
 msgid "%li background threads"
-msgstr ""
+msgstr "%li фоновых потоков"
 
 #: ../../src/ThreadNumberLimiter.cpp:53
 #, c-format
 msgid "%li background threads (%li max)"
-msgstr ""
+msgstr "%li фоновых потоков (макс. %li)"
 
 #: ../../src/Worksheet.cpp:348
 #, c-format
@@ -158,7 +160,7 @@ msgstr "%s изображение, %li×%li, %li пикселов на дюйм"
 #: ../../src/Autocomplete.cpp:215
 #, c-format
 msgid "%s: Can't interpret line: %s"
-msgstr "%s: не удалось разобрать строку: %s"
+msgstr "%s: не удалось интерпретировать строку: %s"
 
 #: ../../src/wxMaximaFrame.cpp:1623
 msgid "&Algebraic Mode"
@@ -490,7 +492,7 @@ msgstr ""
 
 #: ../../src/wxMaxima.cpp:6405
 msgid "A Ctrl-F event"
-msgstr ""
+msgstr "Событие Ctrl-F"
 
 #: ../../src/Worksheet.cpp:1956
 msgid "A Scalar"
@@ -499,7 +501,7 @@ msgstr "Скаляр"
 #: ../../src/wxMaxima.cpp:6474
 #, c-format
 msgid "A find event, %s"
-msgstr ""
+msgstr "Событие поиска, %s"
 
 #: ../../src/Worksheet.cpp:1995
 msgid "A function returning integers"
@@ -1130,9 +1132,8 @@ msgid "Both horizontal and vertical cursor active at the same time"
 msgstr "Одновременно активны и горизонтальный, и вертикальный курсоры"
 
 #: ../../src/ConfigDialogue.cpp:1881
-#, fuzzy
 msgid "Bottom"
-msgstr "Нижняя сторона"
+msgstr "Снизу"
 
 #: ../../src/wxMaxima.cpp:7945
 msgid "Bottom end"
@@ -1426,20 +1427,20 @@ msgstr ""
 "Не удалось найти исполняемый файл Maxima, и он не указан в диалоге настройки."
 
 #: ../../src/Autocomplete.cpp:483
-#, fuzzy, c-format
+#, c-format
 msgid "Cannot interpret template %s"
-msgstr "%s: не удалось разобрать строку: %s"
+msgstr "Не удалось интерпретировать шаблон %s"
 
 #: ../../src/wxMaxima.cpp:2789
 #, c-format
 msgid "Cannot interpret the numeric value of pid %s"
-msgstr ""
+msgstr "Не удалось интерпретировать числовое значение pid %s"
 
 #: ../../src/wxMaxima.cpp:10901 ../../src/wxMaxima.cpp:10908
 #: ../../src/wxMaxima.cpp:10915
 #, c-format
 msgid "Cannot interpret version number component %s"
-msgstr ""
+msgstr "Не удалось интерпретировать компонент номера версии %s"
 
 #: ../../src/wxMaxima.cpp:2272
 msgid "Cannot set the communication address to localhost."
@@ -2888,7 +2889,7 @@ msgstr "Вниз"
 #: ../../src/Image.cpp:404
 #, c-format
 msgid "Downloaded %s (%li bytes) and %s (%li bytes) from %s"
-msgstr ""
+msgstr "Выполнена загрузка %s (%li байт) и %s (%li байт) из %s"
 
 #: ../../src/wxMaximaFrame.cpp:2581
 msgid "Drag-and-drop unicode symbols here"
@@ -2984,7 +2985,7 @@ msgstr "Исключить переменную из системы уравне
 
 #: ../../src/wxMaxima.cpp:10488
 msgid "Empty command => re-triggering evaluation"
-msgstr ""
+msgstr "Пустая команда => повторная активация вычисления"
 
 #: ../../src/wxMaxima.cpp:8991
 msgid "Enable:"
@@ -3151,22 +3152,26 @@ msgid "Error: Cannot render %s."
 msgstr "Ошибка: не удалось обработать %s."
 
 #: ../../src/Image.cpp:717
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Error: Cannot render %s:\n"
 "%s"
-msgstr "Ошибка: не удалось обработать %s."
+msgstr ""
+"Ошибка: не удалось обработать %s:\n"
+"%s"
 
 #: ../../src/Image.cpp:722
 msgid "Error: Cannot render the image."
 msgstr "Ошибка: не удалось обработать изображение."
 
 #: ../../src/Image.cpp:724
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Error: Cannot render the image:\n"
 "%s"
-msgstr "Ошибка: не удалось обработать изображение."
+msgstr ""
+"Ошибка: не удалось обработать изображение:\n"
+"%s"
 
 #: ../../src/wxMaxima.cpp:7309
 msgid ""
@@ -3295,7 +3300,7 @@ msgstr "Вычислить до поля над курсором"
 
 #: ../../src/wxMaxima.cpp:10356
 msgid "Evaluation ended, since evaluation queue is empty."
-msgstr ""
+msgstr "Вычисление завершилось, так как очередь на вычисление пуста."
 
 #: ../../src/Worksheet.cpp:1940
 msgid "Even number"
@@ -4180,9 +4185,8 @@ msgid "Go to URL"
 msgstr "Перейти по URL-адресу"
 
 #: ../../src/wxMaxima.cpp:3763
-#, fuzzy
 msgid "Got a new input prompt!"
-msgstr "Вставить новое поле ввода"
+msgstr "Получен новый запрос на ввод!"
 
 #: ../../src/Worksheet.cpp:6691
 msgid ""
@@ -4666,7 +4670,7 @@ msgstr "Изображение"
 
 #: ../../src/Image.cpp:80
 msgid "Image data had zero length!"
-msgstr ""
+msgstr "Нулевая длина данных изображения!"
 
 #: ../../src/wxMaxima.cpp:9999 ../../src/wxMaxima.cpp:10690
 msgid ""
@@ -4678,7 +4682,7 @@ msgstr ""
 
 #: ../../src/Worksheet.cpp:5503
 msgid "ImageCell without image."
-msgstr ""
+msgstr "ImageCell без изображения."
 
 #: ../../src/wxMaximaFrame.cpp:2746
 msgid "Implicit Plot"
@@ -5460,9 +5464,8 @@ msgid "Least Squares Fit..."
 msgstr "Прив. методом наименьших квадратов..."
 
 #: ../../src/ConfigDialogue.cpp:1889
-#, fuzzy
 msgid "Left"
-msgstr "Левая сторона"
+msgstr "Слева"
 
 #: ../../src/wxMaxima.cpp:7735 ../../src/wxMaxima.cpp:7740
 #: ../../src/wxMaxima.cpp:7760 ../../src/wxMaxima.cpp:7766
@@ -6391,9 +6394,8 @@ msgid "Misc"
 msgstr "Прочее"
 
 #: ../../src/ConfigDialogue.cpp:1845
-#, fuzzy
 msgid "Misc settings"
-msgstr "Параметры конфиденциальности"
+msgstr "Различные параметры"
 
 #: ../../src/wxMaxima.cpp:10289 ../../src/wxMaxima.cpp:10291
 msgid "Mismatched parenthesis"
@@ -6599,15 +6601,17 @@ msgstr "Нет соединения с Maxima"
 
 #: ../../src/wxMaxima.cpp:10334
 msgid "Not triggering evaluation as maxima is still busy!"
-msgstr ""
+msgstr "Вычисление не активировано, так как программа Maxima всё ещё занята!"
 
 #: ../../src/wxMaxima.cpp:10341
 msgid "Not triggering evaluation as maxima still asks a question!"
 msgstr ""
+"Вычисление не активировано, так как на вопрос программы Maxima всё ещё нет"
+" ответа!"
 
 #: ../../src/wxMaxima.cpp:10349
 msgid "Not triggering evaluation as there is no working maxima process"
-msgstr ""
+msgstr "Вычисление не активировано, так как нет работающего процесса Maxima"
 
 #: ../../src/wxMaximaFrame.cpp:2424
 msgid "Nu"
@@ -7196,9 +7200,8 @@ msgid "Print"
 msgstr "Печать"
 
 #: ../../src/ConfigDialogue.cpp:1870
-#, fuzzy
 msgid "Print Margins"
-msgstr "Печать"
+msgstr "Границы печатного поля"
 
 #: ../../src/ToolBar.cpp:594
 msgid "Print button"
@@ -7222,9 +7225,8 @@ msgid "Print the cell brackets [drawn to their left]"
 msgstr "Печать квадратных скобок полей [слева от них]"
 
 #: ../../src/ConfigDialogue.cpp:208
-#, fuzzy
 msgid "Printout settings"
-msgstr "Параметры конфиденциальности"
+msgstr "Параметры распечатки"
 
 #: ../../src/ConfigDialogue.cpp:817
 msgid "Privacy settings"
@@ -7378,7 +7380,7 @@ msgstr "Прочитать строку"
 #: ../../src/MaximaManual.cpp:137
 #, c-format
 msgid "Read the entries the maxima manual offers from %s"
-msgstr "Прочитать записи руководства пользователя Maxima из %s"
+msgstr "Прочитать записи руководства пользователя Maxima по адресу %s"
 
 #: ../../src/StatusBar.cpp:217
 msgid "Reading Maxima output"
@@ -7413,11 +7415,11 @@ msgstr "Готова к вводу"
 
 #: ../../src/Worksheet.cpp:997
 msgid "Recalculated the whole worksheet at once => Updating its size"
-msgstr ""
+msgstr "Пересчитан сразу весь лист => Обновление его размера"
 
 #: ../../src/Worksheet.cpp:982
 msgid "Recalculation hit the end of the worksheet => Updating its size"
-msgstr ""
+msgstr "Пересчёт достиг конца листа => Обновление его размера"
 
 #: ../../src/wxMaximaFrame.cpp:940
 msgid "Recall next command from history"
@@ -7486,9 +7488,8 @@ msgid "RegEx"
 msgstr "Регулярное выражение"
 
 #: ../../src/FindReplacePane.cpp:86
-#, fuzzy
 msgid "Regex"
-msgstr "Совпадение по регулярному выражению"
+msgstr "Регулярное выражение"
 
 #: ../../src/wxMaxima.cpp:7288
 msgid "Regex match"
@@ -7637,9 +7638,9 @@ msgid "Replace..."
 msgstr "Заменить..."
 
 #: ../../src/wxMaxima.cpp:6534
-#, fuzzy, c-format
+#, c-format
 msgid "Replaced %li occurrences."
-msgstr "Заменено вхождений: %d."
+msgstr "Заменено вхождений: %li."
 
 #: ../../src/FindReplacePane.cpp:62
 msgid "Replacement:"
@@ -7758,9 +7759,8 @@ msgid "Rho"
 msgstr "Ρ"
 
 #: ../../src/ConfigDialogue.cpp:1897
-#, fuzzy
 msgid "Right"
-msgstr "справа"
+msgstr "Справа"
 
 #: ../../src/wxMaxima.cpp:7736 ../../src/wxMaxima.cpp:7741
 #: ../../src/wxMaxima.cpp:7761 ../../src/wxMaxima.cpp:7767
@@ -8129,9 +8129,8 @@ msgid "Sending a command to Maxima"
 msgstr "Отправка команды в Maxima."
 
 #: ../../src/wxMaxima.cpp:10436
-#, fuzzy
 msgid "Sending a new command to Maxima."
-msgstr "Отправка команды в Maxima."
+msgstr "Отправка новой команды в Maxima."
 
 #: ../../src/wxMaxima.cpp:2552
 msgid "Sending an interactive Interrupt signal (Ctrl+C) to Maxima."
@@ -8400,9 +8399,8 @@ msgid "Show function template"
 msgstr "Показать шаблон функции"
 
 #: ../../src/Worksheet.cpp:1628
-#, fuzzy
 msgid "Show input labels"
-msgstr "Метки ввода"
+msgstr "Показывать метки ввода"
 
 #: ../../src/ConfigDialogue.cpp:672
 msgid "Show labels:"
@@ -8499,9 +8497,8 @@ msgid "Sigma"
 msgstr "Σ"
 
 #: ../../src/FindReplacePane.cpp:89
-#, fuzzy
 msgid "Simple"
-msgstr "Выборка:"
+msgstr "Простой"
 
 #: ../../src/wxMaximaFrame.cpp:2163
 msgid "Simplify"
@@ -9839,9 +9836,8 @@ msgid "Tolerance calculations with Maxima"
 msgstr "Расчёты допусков с помощью Maxima"
 
 #: ../../src/ConfigDialogue.cpp:1873
-#, fuzzy
 msgid "Top"
-msgstr "Вытолкнуть"
+msgstr "Сверху"
 
 #: ../../src/wxMaxima.cpp:7946
 msgid "Top end"
@@ -9976,9 +9972,8 @@ msgid "Trying to discard all output."
 msgstr "Попытка отбросить весь вывод."
 
 #: ../../src/wxMaxima.cpp:4148
-#, fuzzy
 msgid "Trying to extract content.xml out of a broken .zip file."
-msgstr "Попытка извлечь файл contents.xml из повреждённого файла .zip."
+msgstr "Попытка извлечь файл content.xml из повреждённого файла .zip."
 
 #: ../../src/Autocomplete.cpp:191
 #, c-format
@@ -10069,7 +10064,8 @@ msgid ""
 "Unable to interpret the version info I got from http://wxMaxima-developers."
 "github.io/wxmaxima/version.txt: "
 msgstr ""
-"Не удалось разобрать сведения о версии из файла http://wxMaxima-developers."
+"Не удалось интерпретировать сведения о версии из файла"
+" http://wxMaxima-developers."
 "github.io/wxmaxima/version.txt: "
 
 #: ../../src/VariablesPane.cpp:307 ../../src/VariablesPane.cpp:439
@@ -10294,14 +10290,12 @@ msgstr ""
 "(helpFile=...))"
 
 #: ../../src/wxMaxima.cpp:4571
-#, fuzzy
 msgid "Using Maxima path from command line."
-msgstr "Прочитать сессию из файла"
+msgstr "Использование пути Maxima из командной строки."
 
 #: ../../src/wxMaxima.cpp:4568
-#, fuzzy
 msgid "Using configured Maxima path."
-msgstr "Настроить wxMaxima"
+msgstr "Использование настроенного пути Maxima."
 
 #: ../../src/wxMaxima.cpp:2672
 msgid ""
@@ -11318,14 +11312,12 @@ msgstr ""
 "вопрос."
 
 #: ../../src/wxMaximaFrame.cpp:1860
-#, fuzzy
 msgid "wxMaxima shows help in a browser"
-msgstr "Maxima отображает справку в браузере"
+msgstr "wxMaxima отображает справку в браузере"
 
 #: ../../src/wxMaximaFrame.cpp:1858
-#, fuzzy
 msgid "wxMaxima shows help in the sidebar"
-msgstr "Maxima отображает справку на боковой панели"
+msgstr "wxMaxima отображает справку на боковой панели"
 
 #: ../../src/ConfigDialogue.cpp:990
 msgid "wxMaxima startup file location: "
