@@ -423,6 +423,10 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
           wxCommandEventHandler(wxMaxima::InsertMenu), NULL, this);
   Connect(EventIDs::popid_popup_gnuplot, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
+  Connect(EventIDs::menu_show_cellbrackets, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
+  Connect(EventIDs::menu_print_cellbrackets, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
   Connect(EventIDs::popid_delete, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
   Connect(EventIDs::popid_simplify, wxEVT_MENU,
@@ -6301,6 +6305,13 @@ void wxMaxima::EditMenu(wxCommandEvent &event) {
       m_worksheet->CopyToFile(file);
       m_lastPath = wxPathOnly(file);
     }
+  }
+  else if(event.GetId() == EventIDs::menu_print_cellbrackets) {
+    m_configuration.PrintBrackets(!m_configuration.PrintBrackets());
+  }
+  else if(event.GetId() == EventIDs::menu_show_cellbrackets) {
+    m_configuration.ShowBrackets(!m_configuration.ShowBrackets());
+    m_worksheet->RequestRedraw();
   }
   else if(event.GetId() == EventIDs::popid_delete) {
     if (m_worksheet->CanDeleteSelection()) {

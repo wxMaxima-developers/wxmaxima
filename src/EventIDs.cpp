@@ -352,6 +352,8 @@ const wxWindowIDRef EventIDs::menu_add_path(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::menu_evaluate_all_visible(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::menu_evaluate_all(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::menu_show_tip(wxWindow::NewControlId());
+const wxWindowIDRef EventIDs::menu_show_cellbrackets(wxWindow::NewControlId());
+const wxWindowIDRef EventIDs::menu_print_cellbrackets(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::menu_copy_matlab_from_worksheet(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::menu_copy_tex_from_worksheet(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::menu_copy_text_from_worksheet(wxWindow::NewControlId());

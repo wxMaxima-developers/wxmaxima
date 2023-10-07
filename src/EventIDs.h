@@ -442,6 +442,8 @@ public:
   static const wxWindowIDRef menu_evaluate_all_visible;
   static const wxWindowIDRef menu_evaluate_all;
   static const wxWindowIDRef menu_show_tip;
+  static const wxWindowIDRef menu_show_cellbrackets;
+  static const wxWindowIDRef menu_print_cellbrackets;
   static const wxWindowIDRef menu_copy_matlab_from_worksheet;
   static const wxWindowIDRef menu_copy_tex_from_worksheet;
   static const wxWindowIDRef menu_copy_text_from_worksheet;

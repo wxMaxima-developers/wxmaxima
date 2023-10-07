@@ -1423,6 +1423,10 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event) {
                              wxITEM_NORMAL);
         }
         popupMenu.AppendSeparator();
+        if (m_cellPointers.m_selectionStart == m_cellPointers.m_selectionEnd)
+	  popupMenu.Append(ToolBar::tb_evaltillhere, _("Evaluate Cells Above"),
+			   wxEmptyString, wxITEM_NORMAL);
+	
         popupMenu.Append(EventIDs::popid_evaluate, _("Evaluate Cell(s)"), wxEmptyString,
                          wxITEM_NORMAL);
         if (m_cellPointers.m_selectionStart == m_cellPointers.m_selectionEnd)
@@ -1505,6 +1509,14 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event) {
           popupMenu.Append(EventIDs::popid_popup_gnuplot, _("Popout interactively"),
                            wxEmptyString, wxITEM_NORMAL);
         }
+	if(downx < m_configuration->GetIndent() + m_configuration->GetCellBracketWidth())
+	  {
+	    popupMenu.AppendSeparator();
+	    popupMenu.AppendCheckItem(EventIDs::menu_show_cellbrackets, _("Hide cell brackets"));
+	    popupMenu.Check(EventIDs::menu_show_cellbrackets, m_configuration->ShowBrackets());
+	    popupMenu.AppendCheckItem(EventIDs::menu_print_cellbrackets, _("Print cell brackets"));
+	    popupMenu.Check(EventIDs::menu_print_cellbrackets, m_configuration->PrintBrackets());
+	  }
       } else {
         if (CanCopy()) {
           popupMenu.Append(wxID_COPY, _("Copy"), wxEmptyString, wxITEM_NORMAL);
