@@ -825,9 +825,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>CommentSelection</b> 
 <tr class="memitem:afb954bda762d567ccc4e807b698f9f35"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#afb954bda762d567ccc4e807b698f9f35">OnScrollChanged</a> (wxScrollEvent &amp;ev)</td></tr>
 <tr class="memdesc:afb954bda762d567ccc4e807b698f9f35"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called if the user is using the scrollbar for scrolling through the document.  <a href="classWorksheet.html#afb954bda762d567ccc4e807b698f9f35">More...</a><br /></td></tr>
 <tr class="separator:afb954bda762d567ccc4e807b698f9f35"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af8ecd84667dbcbde320492a5a3d52434"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#af8ecd84667dbcbde320492a5a3d52434">OnThumbtrack</a> (wxScrollWinEvent &amp;ev)</td></tr>
-<tr class="memdesc:af8ecd84667dbcbde320492a5a3d52434"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called if the user uses the touchpad for scrolling.  <a href="classWorksheet.html#af8ecd84667dbcbde320492a5a3d52434">More...</a><br /></td></tr>
-<tr class="separator:af8ecd84667dbcbde320492a5a3d52434"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a699297980f78222e4aa8c93684523ef4"><td class="memItemLeft" align="right" valign="top"><a id="a699297980f78222e4aa8c93684523ef4"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>OnScrollEvent</b> (wxScrollWinEvent &amp;ev)</td></tr>
+<tr class="separator:a699297980f78222e4aa8c93684523ef4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aece583e90ef8d938c2be9f32d5264020"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#aece583e90ef8d938c2be9f32d5264020">OnMouseWheel</a> (wxMouseEvent &amp;event)</td></tr>
 <tr class="memdesc:aece583e90ef8d938c2be9f32d5264020"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called if the mouse wheel sents events.  <a href="classWorksheet.html#aece583e90ef8d938c2be9f32d5264020">More...</a><br /></td></tr>
 <tr class="separator:aece583e90ef8d938c2be9f32d5264020"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1807,7 +1807,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 <p>Called if the mouse wheel sents events. </p>
 <p>The virtual mouse wheel touchpads provide are handled by OnThumbtrack instead. </p>
-<p>Step the slide show.</p>
 
 </div>
 </div>
@@ -1829,30 +1828,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 <p>Called if the user is using the scrollbar for scrolling through the document. </p>
 <p>See also OnThumbtrack and OnMouseWheel </p>
-
-</div>
-</div>
-<a id="af8ecd84667dbcbde320492a5a3d52434"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af8ecd84667dbcbde320492a5a3d52434">&#9670;&nbsp;</a></span>OnThumbtrack()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Worksheet::OnThumbtrack </td>
-          <td>(</td>
-          <td class="paramtype">wxScrollWinEvent &amp;&#160;</td>
-          <td class="paramname"><em>ev</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Called if the user uses the touchpad for scrolling. </p>
-<p>Why we need to override this signal is that on Linux and at least on wxGTK and wxWidgets 3.0+3.1 each single scroll step generates its own thumbtrack event that forces an immediate scroll of the worksheet including an immediate redraw. It therefore is possible for a user to queue hundreds of thumbtrack events per seconds while <a class="el" href="classwxMaxima.html">wxMaxima</a>'s framerate (and event processing speed) might be considerably lower than that.</p>
-<p>OnThumbtrack is a try to merge all scroll events until the idle task redraws the worksheet.</p>
-<p>See also OnMouseWheel and OnScrollChanged </p>
-<p>Step the slide show.</p>
 
 </div>
 </div>
