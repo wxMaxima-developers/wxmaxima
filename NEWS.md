@@ -1,3 +1,6 @@
+# Current
+ * Correctly draw the bracket of the cell under the cursor
+
 # 23.10.0
  * A big rewrite to make the static analysis tools happy
  * Many stability improvements

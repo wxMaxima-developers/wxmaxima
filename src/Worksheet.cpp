@@ -300,13 +300,13 @@ bool Worksheet::RedrawIfRequested() {
         if (oldGroupCellUnderPointer) {
           RequestRedraw(
 			wxRect(0, oldGroupCellUnderPointer->GetRect().GetTop(),
-			       m_configuration->GetIndent() - 1,
+			       m_configuration->GetIndent() + m_configuration->GetCellBracketWidth() - 1,
 			       oldGroupCellUnderPointer->GetRect().GetBottom()));
         }
         if (m_cellPointers.m_groupCellUnderPointer) {
           RequestRedraw(wxRect(
 			       0, m_cellPointers.m_groupCellUnderPointer->GetRect().GetTop(),
-			       m_configuration->GetIndent() - 1,
+			       m_configuration->GetIndent() + m_configuration->GetCellBracketWidth() - 1,
 			       m_cellPointers.m_groupCellUnderPointer->GetRect().GetBottom()));
         }
       }
