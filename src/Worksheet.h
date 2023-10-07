@@ -1416,22 +1416,7 @@ public:
     See also OnThumbtrack and OnMouseWheel
   */
   void OnScrollChanged(wxScrollEvent &ev);
-  /*! Called if the user uses the touchpad for scrolling
-
-    Why we need to override this signal is that on Linux and at least on
-    wxGTK and wxWidgets 3.0+3.1 each single scroll step generates its own
-    thumbtrack event that forces an immediate scroll of the worksheet
-    including an immediate redraw. It therefore is possible for a user
-    to queue hundreds of thumbtrack events per seconds while wxMaxima's
-    framerate (and event processing speed) might be considerably lower
-    than that.
-
-    OnThumbtrack is a try to merge all scroll events until the idle task
-    redraws the worksheet.
-
-    See also OnMouseWheel and OnScrollChanged
-  */
-  void OnThumbtrack(wxScrollWinEvent &ev);
+  void OnScrollEvent(wxScrollWinEvent &ev);
   /*! Called if the mouse wheel sents events
 
     The virtual mouse wheel touchpads provide are handled by OnThumbtrack instead.
