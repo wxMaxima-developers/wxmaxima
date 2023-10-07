@@ -4380,6 +4380,9 @@ void Worksheet::OnTimer(wxTimerEvent &event) {
 }
 
 void Worksheet::RequestRedraw(wxRect rect) {
+  // If a cell has been wider the last time it was drawn we need to clear the screen to the right end of the viewport
+  if(rect.GetRight() > m_configuration->GetIndent() + m_configuration->GetCellBracketWidth())
+    rect.SetRight(wxMax(rect.GetRight(), m_configuration->GetVisibleRegion().GetRight()));
   if (!m_regionToRefresh.Union(rect))
     m_regionToRefresh = wxRegion(rect);
 }

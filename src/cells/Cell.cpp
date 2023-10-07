@@ -964,8 +964,8 @@ void Cell::Unbreak() {
     // Unbreak the inner cells, too
     for (Cell &cell : OnInner(this))
       cell.UnbreakList();
-    SetNextToDraw(m_next);
   }
+  SetNextToDraw(GetNext());
 }
 
 void Cell::UnbreakList() {

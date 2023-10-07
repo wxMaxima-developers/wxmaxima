@@ -1,5 +1,7 @@
 # Current
- * Correctly draw the bracket of the cell under the cursor
+ * Correctly draw the bracket of the cell under the cursor (#1811)
+ * Maths was corrupted if the window was temporarily not wide
+   enough to display it in 2D (#1812)
 
 # 23.10.0
  * A big rewrite to make the static analysis tools happy
