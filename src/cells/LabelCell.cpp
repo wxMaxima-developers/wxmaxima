@@ -83,7 +83,8 @@ void LabelCell::SetUserDefinedLabel(const wxString &userDefinedLabel) {
 
 bool LabelCell::NeedsRecalculation(AFontSize fontSize) const {
   return TextCell::NeedsRecalculation(fontSize) ||
-    (m_configuration->GetLabelChoice() != m_labelChoice_Last);
+    (m_configuration->GetLabelChoice() != m_labelChoice_Last) ||
+    (m_zoomFactor_old != m_configuration->GetZoomFactor());
 }
 
 void LabelCell::UpdateDisplayedText() {
@@ -188,6 +189,7 @@ void LabelCell::Recalculate(AFontSize fontsize) {
     UpdateDisplayedText();
 
   m_labelChoice_Last = m_configuration->GetLabelChoice();
+  m_zoomFactor_old = m_configuration->GetZoomFactor();
 }
 
 const wxString &LabelCell::GetAltCopyText() const {

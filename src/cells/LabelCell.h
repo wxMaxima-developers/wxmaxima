@@ -55,6 +55,7 @@ public:
   wxString ToXML() const override;
 
 private:
+  double m_zoomFactor_old = 0;
 //** Large objects (48 bytes)
 //**
   //! The user-defined label for this label cell.
