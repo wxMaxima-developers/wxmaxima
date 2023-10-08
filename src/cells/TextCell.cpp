@@ -993,7 +993,7 @@ wxString TextCell::ToTeX() const {
     if (GetTextStyle() == TS_FUNCTION) {
       if (text != wxEmptyString) {
         text.Replace(wxS("^"), wxS("\\hat{} "));
-        text = wxS("\\operatorname{") + text + wxS("}");
+        text = wxS("\\mathop{") + text + wxS("}");
       }
     } else if ((GetTextStyle() == TS_VARIABLE) ||
                (GetTextStyle() == TS_GREEK_CONSTANT) ||
