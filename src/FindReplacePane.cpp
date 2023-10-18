@@ -216,10 +216,16 @@ void FindReplacePane::OnActivate(wxActivateEvent &event) {
       return;
     }
   if (event.GetActive())
-    SetTransparent(255);
+    {
+      SetTransparent(255);
+      m_searchText->SetFocus();
+      m_active = true;
+    }
   else
-    SetTransparent(180);
-  m_active = true;
+    {
+      SetTransparent(180);
+      m_active = false;
+    }
 }
 
 void FindReplacePane::OnFindStringChange(wxCommandEvent &event) {

@@ -4,6 +4,7 @@
    enough to display it in 2D (#1812)
  * Correct label scaling after changing the zoom factor (#1815)
  * Repaired "copy as bitmap" (#1820)
+ * Focus the search text on activating the search box (#1821)
 
 # 23.10.0
  * A big rewrite to make the static analysis tools happy
