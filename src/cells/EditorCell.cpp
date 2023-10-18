@@ -1990,7 +1990,7 @@ bool EditorCell::HandleOrdinaryKey(wxKeyEvent &event) {
     default: // delete selection
       m_text = m_text.SubString(0, start - 1) +
 	m_text.SubString(end, m_text.Length());
-      CursorPosition(end + 2);
+      CursorPosition(start);
       break;
     }
     ClearSelection();
