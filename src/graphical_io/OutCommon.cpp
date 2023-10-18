@@ -54,7 +54,6 @@ OutCommon::OutCommon(Configuration **configuration, const wxString &filename,
   // usable. Also the probability was high that the right font wasn't
   // available in inkscape.
   m_thisconfig.SetParenthesisDrawMode(Configuration::handdrawn);
-  m_thisconfig.ClipToDrawRegion(false);
 }
 
 OutCommon::OutCommon(Configuration **configuration, int fullWidth, double scale)
@@ -90,6 +89,7 @@ bool OutCommon::PrepareLayout(Cell *tree) {
   if (!tree)
     return false;
 
+  tree->SetConfigurationList(&m_thisconfig);
   tree->FontsChangedList();
   tree->ResetSize();
   if(m_recalculationDc)
@@ -111,6 +111,7 @@ bool OutCommon::PrepareLayout(Cell *tree) {
     return false;
 
   GetMaxPoint(tree, &m_size.x, &m_size.y);
+  m_thisconfig.SetUpdateRegion(wxRect(0, 0, m_size.x, m_size.y));
   return true;
 }
 

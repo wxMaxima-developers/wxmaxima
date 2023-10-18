@@ -55,11 +55,14 @@ BitmapOut::~BitmapOut() {}
 
 bool BitmapOut::Render(std::unique_ptr<Cell> &&tree, long int maxSize) {
   m_tree = std::move(tree);
-  m_isOk = m_tree && Layout(maxSize);
+  m_isOk = Layout(maxSize);
   return m_isOk;
 }
 
 bool BitmapOut::Layout(long int maxSize) {
+  if(m_tree == NULL)
+    return false;
+  
   if (!m_cmn.PrepareLayout(m_tree.get()))
     return false;
 
@@ -67,8 +70,8 @@ bool BitmapOut::Layout(long int maxSize) {
   auto size = m_cmn.GetScaledSize();
   auto rawSize = m_cmn.GetSize();
 
-  // Too big bitmaps or bitmaps that are too wide or high can crash windows
-  // or the X server.
+  // Bitmaps that are bigger than the available memory can lead to crashes within
+  // MS Windows or the X server.
   if (maxSize >= 0 && (((long)size.x * size.y >= maxSize) ||
                        (size.x >= 20000) || (size.y >= 20000)))
     goto failed;
@@ -100,8 +103,8 @@ void BitmapOut::Draw() {
   config.ClipToDrawRegion(false);
 
   auto bgColor = config.m_styles[TS_TEXT_BACKGROUND].GetColor();
-  m_dc.SetBackground(
-		     *(wxTheBrushList->FindOrCreateBrush(bgColor, wxBRUSHSTYLE_SOLID)));
+  m_dc.SetBackground(*(wxTheBrushList->FindOrCreateBrush(bgColor,
+							 wxBRUSHSTYLE_SOLID)));
   m_dc.Clear();
 
   m_cmn.Draw(m_tree.get());
