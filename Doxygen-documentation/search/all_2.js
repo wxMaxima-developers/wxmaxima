@@ -93,7 +93,7 @@ var searchData=
   ['commandsleftincell_181',['CommandsLeftInCell',['../classEvaluationQueue.html#aa2d62d074c9b0112eddb9f97e1256105',1,'EvaluationQueue']]],
   ['commandwiz_182',['CommandWiz',['../classwxMaxima.html#a3b1e17abaea9346d17d4854d60ed34c7',1,'wxMaxima']]],
   ['compilehelpfileanchors_183',['CompileHelpFileAnchors',['../classMaximaManual.html#a2d1c46e271ab9525ca6fcd2152a74dc2',1,'MaximaManual']]],
-  ['completesymbol_184',['CompleteSymbol',['../classAutoComplete.html#a1874ccc108257fb16cbfe2d2328a3e71',1,'AutoComplete']]],
+  ['completesymbol_184',['CompleteSymbol',['../classAutoComplete.html#a820f73cfb05abb20f73ae74f224c39e3',1,'AutoComplete']]],
   ['compositedataobject_185',['CompositeDataObject',['../classCompositeDataObject.html',1,'']]],
   ['compositedataobject_2eh_186',['CompositeDataObject.h',['../CompositeDataObject_8h.html',1,'']]],
   ['compressedgnuplotsource_187',['CompressedGnuplotSource',['../classImage.html#a81e9dd25a310174661afc1401798e0ee',1,'Image']]],

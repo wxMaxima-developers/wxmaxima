@@ -47,7 +47,7 @@ var searchData=
   ['commandsleftincell_2212',['CommandsLeftInCell',['../classEvaluationQueue.html#aa2d62d074c9b0112eddb9f97e1256105',1,'EvaluationQueue']]],
   ['commandwiz_2213',['CommandWiz',['../classwxMaxima.html#a3b1e17abaea9346d17d4854d60ed34c7',1,'wxMaxima']]],
   ['compilehelpfileanchors_2214',['CompileHelpFileAnchors',['../classMaximaManual.html#a2d1c46e271ab9525ca6fcd2152a74dc2',1,'MaximaManual']]],
-  ['completesymbol_2215',['CompleteSymbol',['../classAutoComplete.html#a1874ccc108257fb16cbfe2d2328a3e71',1,'AutoComplete']]],
+  ['completesymbol_2215',['CompleteSymbol',['../classAutoComplete.html#a820f73cfb05abb20f73ae74f224c39e3',1,'AutoComplete']]],
   ['compressedgnuplotsource_2216',['CompressedGnuplotSource',['../classImage.html#a81e9dd25a310174661afc1401798e0ee',1,'Image']]],
   ['configchanged_2217',['ConfigChanged',['../classwxMaxima.html#af2f5e80d2d27151a20ffc5efd641bc4e',1,'wxMaxima']]],
   ['configdialogue_2218',['ConfigDialogue',['../classConfigDialogue.html#a2f800127ac6769f5d1793834e91bf3b0',1,'ConfigDialogue']]],

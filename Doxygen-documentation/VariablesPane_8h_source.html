@@ -100,64 +100,65 @@ $(function() {
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;wx/panel.h&gt;</span></div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &lt;wx/arrstr.h&gt;</span></div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &lt;unordered_map&gt;</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160; </div>
-<div class="line"><a name="l00042"></a><span class="lineno"><a class="line" href="classVariablespane.html">   42</a></span>&#160;<span class="keyword">class </span><a class="code" href="classVariablespane.html">Variablespane</a> : <span class="keyword">public</span> wxPanel</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;{</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;  wxWindowIDRef m_varID_values;</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;  wxWindowIDRef m_varID_functions;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;  wxWindowIDRef m_varID_arrays;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;  wxWindowIDRef m_varID_macros;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;  wxWindowIDRef m_varID_labels;</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;  wxWindowIDRef m_varID_myoptions;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;  wxWindowIDRef m_varID_rules;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;  wxWindowIDRef m_varID_aliases;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;  wxWindowIDRef m_varID_structs;</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;  wxWindowIDRef m_varID_dependencies;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;  wxWindowIDRef m_varID_gradefs;</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  wxWindowIDRef m_varID_prop;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;  wxWindowIDRef m_varID_let_rule_packages;</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  wxWindowIDRef m_varID_delete_row;</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;  wxWindowIDRef m_varID_clear;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  <span class="keyword">explicit</span> <a class="code" href="classVariablespane.html#a8cd8d3779077c5bbc0913150af324783">Variablespane</a>(wxWindow *parent, wxWindowID <span class="keywordtype">id</span> = wxID_ANY);</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classVariablespane.html#a1e804a8c8e0657e09fef3ca40f246e21">OnTextChange</a>(wxGridEvent &amp;event);</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classVariablespane.html#a1f592e4588c2b7ef0a1f8f2dc7f79b65">OnTextChanging</a>(wxGridEvent &amp;event);</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classVariablespane.html#aaee6c757a027d8e9c2fa8e4cc66735cf">OnRightClick</a>(wxGridEvent &amp;event);</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classVariablespane.html#a866fd3c0764feb178ade7369ae486e74">InsertMenu</a>(wxCommandEvent &amp;event);</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classVariablespane.html#a6042b5a74e34c8234d619927a96a1493">OnKey</a>(wxKeyEvent &amp;event);</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classVariablespane.html#a3e88ff2eb48de8b5351af3d638085fb8">OnChar</a>(wxKeyEvent &amp;event);</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classVariablespane.html#a45816fc7974327ede76df2c251d53eb6">AddWatchCode</a>(wxString code);</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classVariablespane.html#a666070d5e63a8f830c119e012bb6a90e">AddWatch</a>(wxString watch);</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;  <span class="keywordtype">bool</span> <a class="code" href="classVariablespane.html#a7ad9c02ee28a4e8dedab236c44ef1994">IsValidVariable</a>(wxString var);</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;  wxArrayString <a class="code" href="classVariablespane.html#ab390349b3b402d59280e39403fb8c3fc">GetEscapedVarnames</a>();</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  wxArrayString <a class="code" href="classVariablespane.html#a60c91abc83c9c503bba31cf9fcfd9260">GetVarnames</a>();</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classVariablespane.html#a61d391589ed4ec331b56b8e2c5fc74b3">ResetValues</a>();</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classVariablespane.html#a94b89ad105eac5a2d12d8bbabe60390b">Clear</a>();</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;  wxString <a class="code" href="classVariablespane.html#aa2d981cfaa9e638174f1f919a753d01d">EscapeVarname</a>(wxString var);</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;  wxString <a class="code" href="classVariablespane.html#afbb41264dadeb1976a429c553ff59321">UnescapeVarname</a>(wxString var);</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classVariablespane.html#a167162a11036459b51dce22e0839a7ae">VariableValue</a>(wxString var, wxString val);</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classVariablespane.html#a7eee49754ce2e8065de23225703d60bf">VariableUndefined</a>(wxString var);</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;  <span class="keywordtype">void</span> UpdateSize();</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;  <a class="code" href="classVariablespane.html#a24455eb3a4b44eff8ea4eed83015bab6">~Variablespane</a>();</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;  <span class="comment">// The spreadsheet with the variable names</span></div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;  wxGrid *m_grid;</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;  <span class="keywordtype">bool</span> m_updateSizeNeeded = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;  wxString InvertCase(wxString var);</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;<span class="preprocessor">#if wxCHECK_VERSION(3, 3, 0) || wxUSE_STL</span></div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;  <span class="keyword">typedef</span> std::unordered_map &lt;wxString, int&gt; IntHash;</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;<span class="preprocessor">#else</span></div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;  WX_DECLARE_STRING_HASH_MAP(<span class="keywordtype">int</span>, IntHash);</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160; </div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;  IntHash m_vars;</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;  <span class="keywordtype">int</span> m_rightClickRow;</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;  <span class="keyword">static</span> <span class="keywordtype">int</span> CompareInt(<span class="keywordtype">int</span> *int1, <span class="keywordtype">int</span> *int2){<span class="keywordflow">return</span> (*int1 &lt; *int2);}</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;};</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160; </div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// VARIABLESPANE_H</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#include &lt;vector&gt;</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160; </div>
+<div class="line"><a name="l00043"></a><span class="lineno"><a class="line" href="classVariablespane.html">   43</a></span>&#160;<span class="keyword">class </span><a class="code" href="classVariablespane.html">Variablespane</a> : <span class="keyword">public</span> wxPanel</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;{</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;  wxWindowIDRef m_varID_values;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;  wxWindowIDRef m_varID_functions;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;  wxWindowIDRef m_varID_arrays;</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;  wxWindowIDRef m_varID_macros;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;  wxWindowIDRef m_varID_labels;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;  wxWindowIDRef m_varID_myoptions;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;  wxWindowIDRef m_varID_rules;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;  wxWindowIDRef m_varID_aliases;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;  wxWindowIDRef m_varID_structs;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;  wxWindowIDRef m_varID_dependencies;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  wxWindowIDRef m_varID_gradefs;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;  wxWindowIDRef m_varID_prop;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  wxWindowIDRef m_varID_let_rule_packages;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;  wxWindowIDRef m_varID_delete_row;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  wxWindowIDRef m_varID_clear;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  <span class="keyword">explicit</span> <a class="code" href="classVariablespane.html#a8cd8d3779077c5bbc0913150af324783">Variablespane</a>(wxWindow *parent, wxWindowID <span class="keywordtype">id</span> = wxID_ANY);</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classVariablespane.html#a1e804a8c8e0657e09fef3ca40f246e21">OnTextChange</a>(wxGridEvent &amp;event);</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classVariablespane.html#a1f592e4588c2b7ef0a1f8f2dc7f79b65">OnTextChanging</a>(wxGridEvent &amp;event);</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classVariablespane.html#aaee6c757a027d8e9c2fa8e4cc66735cf">OnRightClick</a>(wxGridEvent &amp;event);</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classVariablespane.html#a866fd3c0764feb178ade7369ae486e74">InsertMenu</a>(wxCommandEvent &amp;event);</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classVariablespane.html#a6042b5a74e34c8234d619927a96a1493">OnKey</a>(wxKeyEvent &amp;event);</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classVariablespane.html#a3e88ff2eb48de8b5351af3d638085fb8">OnChar</a>(wxKeyEvent &amp;event);</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classVariablespane.html#a45816fc7974327ede76df2c251d53eb6">AddWatchCode</a>(wxString code);</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classVariablespane.html#a666070d5e63a8f830c119e012bb6a90e">AddWatch</a>(wxString watch);</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;  <span class="keywordtype">bool</span> <a class="code" href="classVariablespane.html#a7ad9c02ee28a4e8dedab236c44ef1994">IsValidVariable</a>(wxString var);</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;  std::vector&lt;wxString&gt; <a class="code" href="classVariablespane.html#ac84460f7b556076a3c3784c5ed55c8df">GetEscapedVarnames</a>();</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;  std::vector&lt;wxString&gt; <a class="code" href="classVariablespane.html#aa12d5d65f9e471cddd273ffa2e5c1653">GetVarnames</a>();</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classVariablespane.html#a61d391589ed4ec331b56b8e2c5fc74b3">ResetValues</a>();</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classVariablespane.html#a94b89ad105eac5a2d12d8bbabe60390b">Clear</a>();</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;  wxString <a class="code" href="classVariablespane.html#aa2d981cfaa9e638174f1f919a753d01d">EscapeVarname</a>(wxString var);</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;  wxString <a class="code" href="classVariablespane.html#afbb41264dadeb1976a429c553ff59321">UnescapeVarname</a>(wxString var);</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classVariablespane.html#a167162a11036459b51dce22e0839a7ae">VariableValue</a>(wxString var, wxString val);</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classVariablespane.html#a7eee49754ce2e8065de23225703d60bf">VariableUndefined</a>(wxString var);</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;  <span class="keywordtype">void</span> UpdateSize();</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;  <a class="code" href="classVariablespane.html#a24455eb3a4b44eff8ea4eed83015bab6">~Variablespane</a>();</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;  <span class="comment">// The spreadsheet with the variable names</span></div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;  wxGrid *m_grid;</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;  <span class="keywordtype">bool</span> m_updateSizeNeeded = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;  wxString InvertCase(wxString var);</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;<span class="preprocessor">#if wxCHECK_VERSION(3, 3, 0) || wxUSE_STL</span></div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;  <span class="keyword">typedef</span> std::unordered_map &lt;wxString, int&gt; IntHash;</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;<span class="preprocessor">#else</span></div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;  WX_DECLARE_STRING_HASH_MAP(<span class="keywordtype">int</span>, IntHash);</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160; </div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;  IntHash m_vars;</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;  <span class="keywordtype">int</span> m_rightClickRow;</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;  <span class="keyword">static</span> <span class="keywordtype">int</span> CompareInt(<span class="keywordtype">int</span> *int1, <span class="keywordtype">int</span> *int2){<span class="keywordflow">return</span> (*int1 &lt; *int2);}</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;};</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160; </div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// VARIABLESPANE_H</span></div>
 <div class="ttc" id="aEventIDs_8h_html"><div class="ttname"><a href="EventIDs_8h.html">EventIDs.h</a></div><div class="ttdoc">This file defines the class EventIDs that contains unique IDs for many events wxMaxima needs.</div></div>
-<div class="ttc" id="aclassVariablespane_html"><div class="ttname"><a href="classVariablespane.html">Variablespane</a></div><div class="ttdoc">A &quot;variables&quot; sidepane.</div><div class="ttdef"><b>Definition:</b> VariablesPane.h:43</div></div>
+<div class="ttc" id="aclassVariablespane_html"><div class="ttname"><a href="classVariablespane.html">Variablespane</a></div><div class="ttdoc">A &quot;variables&quot; sidepane.</div><div class="ttdef"><b>Definition:</b> VariablesPane.h:44</div></div>
 <div class="ttc" id="aclassVariablespane_html_a167162a11036459b51dce22e0839a7ae"><div class="ttname"><a href="classVariablespane.html#a167162a11036459b51dce22e0839a7ae">Variablespane::VariableValue</a></div><div class="ttdeci">void VariableValue(wxString var, wxString val)</div><div class="ttdoc">Tell the variables pane about a variable value.</div><div class="ttdef"><b>Definition:</b> VariablesPane.cpp:291</div></div>
 <div class="ttc" id="aclassVariablespane_html_a1e804a8c8e0657e09fef3ca40f246e21"><div class="ttname"><a href="classVariablespane.html#a1e804a8c8e0657e09fef3ca40f246e21">Variablespane::OnTextChange</a></div><div class="ttdeci">void OnTextChange(wxGridEvent &amp;event)</div><div class="ttdoc">Called when a variable name was changed.</div><div class="ttdef"><b>Definition:</b> VariablesPane.cpp:247</div></div>
 <div class="ttc" id="aclassVariablespane_html_a1f592e4588c2b7ef0a1f8f2dc7f79b65"><div class="ttname"><a href="classVariablespane.html#a1f592e4588c2b7ef0a1f8f2dc7f79b65">Variablespane::OnTextChanging</a></div><div class="ttdeci">void OnTextChanging(wxGridEvent &amp;event)</div><div class="ttdoc">Called after the user has entered a variable name but before it is committed.</div><div class="ttdef"><b>Definition:</b> VariablesPane.cpp:238</div></div>
@@ -165,7 +166,6 @@ $(function() {
 <div class="ttc" id="aclassVariablespane_html_a3e88ff2eb48de8b5351af3d638085fb8"><div class="ttname"><a href="classVariablespane.html#a3e88ff2eb48de8b5351af3d638085fb8">Variablespane::OnChar</a></div><div class="ttdeci">void OnChar(wxKeyEvent &amp;event)</div><div class="ttdoc">Called if a printable char was entered.</div><div class="ttdef"><b>Definition:</b> VariablesPane.cpp:83</div></div>
 <div class="ttc" id="aclassVariablespane_html_a45816fc7974327ede76df2c251d53eb6"><div class="ttname"><a href="classVariablespane.html#a45816fc7974327ede76df2c251d53eb6">Variablespane::AddWatchCode</a></div><div class="ttdeci">void AddWatchCode(wxString code)</div><div class="ttdoc">Add a variable whose name contains all the escapes maxima needs to the variables list.</div><div class="ttdef"><b>Definition:</b> VariablesPane.cpp:346</div></div>
 <div class="ttc" id="aclassVariablespane_html_a6042b5a74e34c8234d619927a96a1493"><div class="ttname"><a href="classVariablespane.html#a6042b5a74e34c8234d619927a96a1493">Variablespane::OnKey</a></div><div class="ttdeci">void OnKey(wxKeyEvent &amp;event)</div><div class="ttdoc">Called on key press.</div><div class="ttdef"><b>Definition:</b> VariablesPane.cpp:93</div></div>
-<div class="ttc" id="aclassVariablespane_html_a60c91abc83c9c503bba31cf9fcfd9260"><div class="ttname"><a href="classVariablespane.html#a60c91abc83c9c503bba31cf9fcfd9260">Variablespane::GetVarnames</a></div><div class="ttdeci">wxArrayString GetVarnames()</div><div class="ttdoc">Returns the variable list in a human-readable format.</div><div class="ttdef"><b>Definition:</b> VariablesPane.cpp:322</div></div>
 <div class="ttc" id="aclassVariablespane_html_a61d391589ed4ec331b56b8e2c5fc74b3"><div class="ttname"><a href="classVariablespane.html#a61d391589ed4ec331b56b8e2c5fc74b3">Variablespane::ResetValues</a></div><div class="ttdeci">void ResetValues()</div><div class="ttdoc">Set all variable's contents to &quot;unknown&quot;.</div><div class="ttdef"><b>Definition:</b> VariablesPane.cpp:435</div></div>
 <div class="ttc" id="aclassVariablespane_html_a666070d5e63a8f830c119e012bb6a90e"><div class="ttname"><a href="classVariablespane.html#a666070d5e63a8f830c119e012bb6a90e">Variablespane::AddWatch</a></div><div class="ttdeci">void AddWatch(wxString watch)</div><div class="ttdoc">Add a variable without escapes to the list.</div><div class="ttdef"><b>Definition:</b> VariablesPane.cpp:361</div></div>
 <div class="ttc" id="aclassVariablespane_html_a7ad9c02ee28a4e8dedab236c44ef1994"><div class="ttname"><a href="classVariablespane.html#a7ad9c02ee28a4e8dedab236c44ef1994">Variablespane::IsValidVariable</a></div><div class="ttdeci">bool IsValidVariable(wxString var)</div><div class="ttdoc">Is this string a valid variable name?</div><div class="ttdef"><b>Definition:</b> VariablesPane.cpp:414</div></div>
@@ -173,9 +173,10 @@ $(function() {
 <div class="ttc" id="aclassVariablespane_html_a866fd3c0764feb178ade7369ae486e74"><div class="ttname"><a href="classVariablespane.html#a866fd3c0764feb178ade7369ae486e74">Variablespane::InsertMenu</a></div><div class="ttdeci">void InsertMenu(wxCommandEvent &amp;event)</div><div class="ttdoc">Called if a right-click menu item was clicked at.</div><div class="ttdef"><b>Definition:</b> VariablesPane.cpp:123</div></div>
 <div class="ttc" id="aclassVariablespane_html_a8cd8d3779077c5bbc0913150af324783"><div class="ttname"><a href="classVariablespane.html#a8cd8d3779077c5bbc0913150af324783">Variablespane::Variablespane</a></div><div class="ttdeci">Variablespane(wxWindow *parent, wxWindowID id=wxID_ANY)</div><div class="ttdoc">The constructor.</div><div class="ttdef"><b>Definition:</b> VariablesPane.cpp:27</div></div>
 <div class="ttc" id="aclassVariablespane_html_a94b89ad105eac5a2d12d8bbabe60390b"><div class="ttname"><a href="classVariablespane.html#a94b89ad105eac5a2d12d8bbabe60390b">Variablespane::Clear</a></div><div class="ttdeci">void Clear()</div><div class="ttdoc">Remove all entries from the variables list.</div><div class="ttdef"><b>Definition:</b> VariablesPane.cpp:446</div></div>
+<div class="ttc" id="aclassVariablespane_html_aa12d5d65f9e471cddd273ffa2e5c1653"><div class="ttname"><a href="classVariablespane.html#aa12d5d65f9e471cddd273ffa2e5c1653">Variablespane::GetVarnames</a></div><div class="ttdeci">std::vector&lt; wxString &gt; GetVarnames()</div><div class="ttdoc">Returns the variable list in a human-readable format.</div><div class="ttdef"><b>Definition:</b> VariablesPane.cpp:322</div></div>
 <div class="ttc" id="aclassVariablespane_html_aa2d981cfaa9e638174f1f919a753d01d"><div class="ttname"><a href="classVariablespane.html#aa2d981cfaa9e638174f1f919a753d01d">Variablespane::EscapeVarname</a></div><div class="ttdeci">wxString EscapeVarname(wxString var)</div><div class="ttdoc">Convert a human-readable variable name to one maxima understands.</div><div class="ttdef"><b>Definition:</b> VariablesPane.cpp:379</div></div>
 <div class="ttc" id="aclassVariablespane_html_aaee6c757a027d8e9c2fa8e4cc66735cf"><div class="ttname"><a href="classVariablespane.html#aaee6c757a027d8e9c2fa8e4cc66735cf">Variablespane::OnRightClick</a></div><div class="ttdeci">void OnRightClick(wxGridEvent &amp;event)</div><div class="ttdoc">Called on right-clicking the variables list.</div><div class="ttdef"><b>Definition:</b> VariablesPane.cpp:175</div></div>
-<div class="ttc" id="aclassVariablespane_html_ab390349b3b402d59280e39403fb8c3fc"><div class="ttname"><a href="classVariablespane.html#ab390349b3b402d59280e39403fb8c3fc">Variablespane::GetEscapedVarnames</a></div><div class="ttdeci">wxArrayString GetEscapedVarnames()</div><div class="ttdoc">Returns a list of all variable names in a format maxima understands.</div><div class="ttdef"><b>Definition:</b> VariablesPane.cpp:312</div></div>
+<div class="ttc" id="aclassVariablespane_html_ac84460f7b556076a3c3784c5ed55c8df"><div class="ttname"><a href="classVariablespane.html#ac84460f7b556076a3c3784c5ed55c8df">Variablespane::GetEscapedVarnames</a></div><div class="ttdeci">std::vector&lt; wxString &gt; GetEscapedVarnames()</div><div class="ttdoc">Returns a list of all variable names in a format maxima understands.</div><div class="ttdef"><b>Definition:</b> VariablesPane.cpp:312</div></div>
 <div class="ttc" id="aclassVariablespane_html_afbb41264dadeb1976a429c553ff59321"><div class="ttname"><a href="classVariablespane.html#afbb41264dadeb1976a429c553ff59321">Variablespane::UnescapeVarname</a></div><div class="ttdeci">wxString UnescapeVarname(wxString var)</div><div class="ttdoc">Convert a variable name maxima understands to human-readable.</div><div class="ttdef"><b>Definition:</b> VariablesPane.cpp:371</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->

@@ -128,7 +128,7 @@ var searchData=
   ['m_5fquestionprompt_3065',['m_questionPrompt',['../classWorksheet.html#a8512089d7ec41796ef78ce68edc26a74',1,'Worksheet']]],
   ['m_5frd_3066',['m_rd',['../classConfiguration.html#a5897be9039afeb0aa6e0edb510eafa11',1,'Configuration']]],
   ['m_5frecalculatestart_3067',['m_recalculateStart',['../classWorksheet.html#a3b67212794e550fed3dfe0b727c100a0',1,'Worksheet']]],
-  ['m_5freplacementsforcurrentword_3068',['m_replacementsForCurrentWord',['../classWorksheet.html#ab91e109db43e51add15456fb872b5b07',1,'Worksheet']]],
+  ['m_5freplacementsforcurrentword_3068',['m_replacementsForCurrentWord',['../classWorksheet.html#ae52d845f761bd3e0e13a468f4ea5b1e3',1,'Worksheet']]],
   ['m_5frightstatustext_3069',['m_rightStatusText',['../classwxMaximaFrame.html#a5b22628caa0969deedbd790500ba945f',1,'wxMaximaFrame']]],
   ['m_5fscheduleupdatetoc_3070',['m_scheduleUpdateToc',['../classWorksheet.html#a78160850c773ec772e29cd30a2b11d4f',1,'Worksheet']]],
   ['m_5fscrolltocell_3071',['m_scrollToCell',['../classCellPointers.html#a50a3c67c32cd71365208723ba606c25f',1,'CellPointers']]],
