@@ -2540,18 +2540,19 @@ void wxMaxima::Interrupt(wxCommandEvent &WXUNUSED(event)) {
       sharedMemoryAddress = NULL;
       sharedMemoryHandle = NULL;
     }
-  } else {
-    if (m_process) {
-      // We need to send the CTRL_BREAK_EVENT to the process group, not
-      // to the lisp.
-      long pid = m_process->GetPid();
-      if (!GenerateConsoleCtrlEvent(CTRL_C_EVENT, pid)) {
-        wxLogMessage(_("Could not send an interrupt signal to maxima."));
-        return;
-      } else
-        wxLogMessage(
-		     _("Sending an interactive Interrupt signal (Ctrl+C) to Maxima."));
-    }
+  }
+  
+  if (m_process) {
+    // We need to send the CTRL_BREAK_EVENT to the process group, not
+    // to the lisp.
+    long pid = m_process->GetPid();
+    if (!GenerateConsoleCtrlEvent(CTRL_C_EVENT, pid)) {
+      wxLogMessage(_("Could not send an interrupt signal to maxima."));
+      return;
+    } else
+      wxLogMessage(
+		   _("Sent an interactive Interrupt signal (Ctrl+C) to Maxima."));
+    wxProcess::Kill(pid, wxSIGINT);
   }
 #else
   wxLogMessage(_("Sending Maxima a SIGINT signal."));

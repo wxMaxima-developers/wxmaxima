@@ -9,7 +9,7 @@
  * Correctly support dropping multiple files on the worksheet
  * If the worksheet isn't empty dropping a file on the worksheed 
    no more closes the currently open file
- * Try harder to kill maxima on closing it
+ * Try harder to kill maxima on closing it (#1824)
 
 # 23.10.0
  * A big rewrite to make the static analysis tools happy
