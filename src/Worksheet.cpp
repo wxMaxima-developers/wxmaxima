@@ -1814,7 +1814,7 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event) {
               if (wordUnderCursor != cmdName)
                 sameBeginning.push_back(cmdName);
             } else {
-              int dstnce = LevenshteinDistance(wordUnderCursor, cmdName);
+              auto dstnce = LevenshteinDistance(wordUnderCursor, cmdName);
               if ((dstnce <= 4) && (dstnce > 0))
                 dst.at(dstnce - 1).push_back(cmdName);
             }
