@@ -117,47 +117,11 @@ $(function() {
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="keyword">class </span><a class="code" href="classMaxima.html">Maxima</a>; <span class="comment">// The Maxima process interface</span></div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="keyword">class </span><a class="code" href="classMaximaEvent.html">MaximaEvent</a>;</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160; </div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="comment">// cppcheck-suppress noConstructor</span></div>
-<div class="line"><a name="l00060"></a><span class="lineno"><a class="line" href="classMyApp.html">   60</a></span>&#160;<span class="keyword">class </span><a class="code" href="classMyApp.html">MyApp</a> : <span class="keyword">public</span> wxApp</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;{</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">bool</span> OnInit();</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">int</span> OnRun();</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">int</span> OnExit();</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classMyApp.html#a1f6e5cf2600da99f0e3fc6356f36dfc7">NewWindow</a>(<span class="keyword">const</span> wxString &amp;file = {}, <span class="keywordtype">bool</span> evalOnStartup = <span class="keyword">false</span>, <span class="keywordtype">bool</span> exitAfterEval = <span class="keyword">false</span>, <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> *wxmData = NULL, <span class="keywordtype">size_t</span> wxmLen = 0);</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160; </div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;  <span class="keywordtype">void</span> OnFileMenu(wxCommandEvent &amp;ev);</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160; </div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">void</span> MacNewFile();</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;  <span class="keywordtype">void</span> BecomeLogTarget();</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160; </div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">void</span> MacOpenFile(<span class="keyword">const</span> wxString &amp;file);</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160; </div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;  std::unique_ptr&lt;wxLocale&gt; m_locale;</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;  std::unique_ptr&lt;wxTranslations&gt; m_translations;</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;  wxString m_configFileName;</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;  <a class="code" href="classDirstructure.html">Dirstructure</a> m_dirstruct;</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;<span class="preprocessor">#if defined __WXOSX__</span></div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;  <span class="keywordtype">bool</span> m_allWindowsInOneProcess = <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;<span class="preprocessor">#else</span></div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;  <span class="keywordtype">bool</span> m_allWindowsInOneProcess = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;};</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160; </div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160; </div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160; </div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// MAIN_H</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// MAIN_H</span></div>
 <div class="ttc" id="aDirstructure_8h_html"><div class="ttname"><a href="Dirstructure_8h.html">Dirstructure.h</a></div><div class="ttdoc">This file declares the class DirStructure.</div></div>
 <div class="ttc" id="aMathParser_8h_html"><div class="ttname"><a href="MathParser_8h.html">MathParser.h</a></div><div class="ttdoc">The header file for the xml cell parser.</div></div>
-<div class="ttc" id="aclassDirstructure_html"><div class="ttname"><a href="classDirstructure.html">Dirstructure</a></div><div class="ttdoc">An object that represents the directory structure wxMaxima is installed in.</div><div class="ttdef"><b>Definition:</b> Dirstructure.h:58</div></div>
 <div class="ttc" id="aclassMaximaEvent_html"><div class="ttname"><a href="classMaximaEvent.html">MaximaEvent</a></div><div class="ttdef"><b>Definition:</b> Maxima.h:105</div></div>
 <div class="ttc" id="aclassMaxima_html"><div class="ttname"><a href="classMaxima.html">Maxima</a></div><div class="ttdoc">Interface to the Maxima process.</div><div class="ttdef"><b>Definition:</b> Maxima.h:53</div></div>
-<div class="ttc" id="aclassMyApp_html"><div class="ttname"><a href="classMyApp.html">MyApp</a></div><div class="ttdef"><b>Definition:</b> main.h:61</div></div>
-<div class="ttc" id="aclassMyApp_html_a1f6e5cf2600da99f0e3fc6356f36dfc7"><div class="ttname"><a href="classMyApp.html#a1f6e5cf2600da99f0e3fc6356f36dfc7">MyApp::NewWindow</a></div><div class="ttdeci">void NewWindow(const wxString &amp;file={}, bool evalOnStartup=false, bool exitAfterEval=false, unsigned char *wxmData=NULL, size_t wxmLen=0)</div><div class="ttdoc">Create a new window.</div><div class="ttdef"><b>Definition:</b> main.cpp:464</div></div>
 <div class="ttc" id="awxMaximaFrame_8h_html"><div class="ttname"><a href="wxMaximaFrame_8h.html">wxMaximaFrame.h</a></div><div class="ttdoc">This file declares the class wxMaximaFrame.</div></div>
 <div class="ttc" id="awxMaxima_8h_html"><div class="ttname"><a href="wxMaxima_8h.html">wxMaxima.h</a></div><div class="ttdoc">This file declares the class wxMaxima that contains most of the program's logic.</div></div>
 </div><!-- fragment --></div><!-- contents -->
