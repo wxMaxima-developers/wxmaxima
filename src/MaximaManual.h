@@ -94,25 +94,25 @@ private:
   class GetHTMLFiles : public wxDirTraverser
   {
   public:
-    explicit GetHTMLFiles(wxArrayString& files, wxString prefix = wxEmptyString) :
+    explicit GetHTMLFiles(std::vector<wxString>& files, wxString prefix = wxEmptyString) :
       m_files(files), m_prefix(prefix) { }
     virtual wxDirTraverseResult OnFile(const wxString& filename) override;
     virtual wxDirTraverseResult OnDir(const wxString& dirname) override;
-    wxArrayString& GetResult() const {return m_files;}
+    std::vector<wxString>& GetResult() const {return m_files;}
   protected:
-    wxArrayString& m_files;
+    std::vector<wxString>& m_files;
     wxString m_prefix;
   };
   class GetHTMLFiles_Recursive : public wxDirTraverser
   {
   public:
-    explicit GetHTMLFiles_Recursive(wxArrayString& files, wxString prefix = wxEmptyString) :
+    explicit GetHTMLFiles_Recursive(std::vector<wxString>& files, wxString prefix = wxEmptyString) :
       m_files(files), m_prefix(prefix) { }
     virtual wxDirTraverseResult OnFile(const wxString& filename) override;
     virtual wxDirTraverseResult OnDir(const wxString& dirname) override;
-    wxArrayString& GetResult() const {return m_files;}
+    std::vector<wxString>& GetResult() const {return m_files;}
   protected:
-    wxArrayString& m_files;
+    std::vector<wxString>& m_files;
     wxString m_prefix;
   };
 

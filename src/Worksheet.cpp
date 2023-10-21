@@ -1727,7 +1727,7 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event) {
     const wxString selectionString(selectionString1);
     if (!selectionString.IsEmpty() && !selectionString.Contains("\n") &&
         !selectionString.Contains("\r") && !selectionString.Contains(":") &&
-        ((selectionString[0] < '0') || (selectionString[0] > '9')))
+        ((selectionString.at(0) < '0') || (selectionString.at(0) > '9')))
       popupMenu.Append(EventIDs::popid_add_watch, _("Add to watchlist"), wxEmptyString,
                        wxITEM_NORMAL);
 
@@ -1786,8 +1786,8 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event) {
         if ((group->GetEditable() != NULL) &&
             (group->GetEditable()->ContainsPoint(wxPoint(downx, downy)))) {
           wxString wordUnderCursor = group->GetEditable()->GetWordUnderCaret();
-          wxArrayString dst[4];
-          wxArrayString sameBeginning;
+	  std::array<std::vector<wxString>, 4> dst;
+          std::vector<wxString> sameBeginning;
           wxString anchor =
 	    m_maximaManual.GetHelpfileAnchorName(wordUnderCursor);
           if (!anchor.IsEmpty())
@@ -1812,28 +1812,28 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event) {
               continue;
             if (cmdName.StartsWith(wordUnderCursor)) {
               if (wordUnderCursor != cmdName)
-                sameBeginning.Add(cmdName);
+                sameBeginning.push_back(cmdName);
             } else {
               int dstnce = LevenshteinDistance(wordUnderCursor, cmdName);
               if ((dstnce <= 4) && (dstnce > 0))
-                dst[dstnce - 1].Add(cmdName);
+                dst.at(dstnce - 1).push_back(cmdName);
             }
           }
-          m_replacementsForCurrentWord.Clear();
-          if (sameBeginning.GetCount() <= 10)
+          m_replacementsForCurrentWord.clear();
+          if (sameBeginning.size() <= 10)
             m_replacementsForCurrentWord = sameBeginning;
           for (int o = 0; o < 4; o++) {
-            if (m_replacementsForCurrentWord.GetCount() + dst[o].GetCount() <=
+            if (m_replacementsForCurrentWord.size() + dst.at(o).size() <=
                 10) {
-              for (unsigned int i = 0; i < dst[o].GetCount(); i++)
-                m_replacementsForCurrentWord.Add(dst[o][i]);
+              for (unsigned int i = 0; i < dst.at(o).size(); i++)
+                m_replacementsForCurrentWord.push_back(dst.at(o).at(i));
             } else
               break;
           }
-          for (unsigned int i = 0; i < m_replacementsForCurrentWord.GetCount();
+          for (unsigned int i = 0; i < m_replacementsForCurrentWord.size();
                i++)
             popupMenu.Append(EventIDs::popid_suggestion1 + i,
-                             m_replacementsForCurrentWord[i]);
+                             m_replacementsForCurrentWord.at(i));
         }
         popupMenu.AppendSeparator();
         if ((group->ContainsSavedAnswers()) ||
@@ -4586,8 +4586,8 @@ int Worksheet::GetCellIndex(Cell *cell) const {
 Worksheet::SimpleMathConfigurationIterator::SimpleMathConfigurationIterator(
 									    const wxString &ainput)
   : pos(0), input(ainput) {
-  if (isValid() && (input[0] == '"' || (input[0] == '/' && input.length() > 1 &&
-                                        input[1] == '*'))) {
+  if (isValid() && (input.at(0) == '"' || (input.at(0) == '/' && input.length() > 1 &&
+					   input.at(1) == '*'))) {
     // skip strings or comments at string start
     pos--;
     ++(*this);
@@ -4599,17 +4599,17 @@ void Worksheet::SimpleMathConfigurationIterator::operator++() {
   pos++;
   while (pos < input.length() && oldpos != pos) {
     oldpos = pos;
-    if (input[pos] == '"') { // skip strings
+    if (input.at(pos) == '"') { // skip strings
       pos++;                 // skip leading "
-      while (pos < input.length() && input[pos] != '"')
+      while (pos < input.length() && input.at(pos) != '"')
         pos++;
       pos++; // skip trailing "
     }
-    if (pos + 1 < input.length() && input[pos] == '/' &&
-        input[pos + 1] == '*') { // skip comments
+    if (pos + 1 < input.length() && input.at(pos) == '/' &&
+        input.at(pos + 1) == '*') { // skip comments
       pos += 2;                  // skip /*
       while (pos < input.length() &&
-             (input[pos] != '*' || input[pos + 1] != '/'))
+             (input.at(pos) != '*' || input.at(pos + 1) != '/'))
         pos++;
       pos += 2; // skip */
     }
@@ -4655,7 +4655,7 @@ void Worksheet::CalculateReorderedCellIndices(GroupCell *tree, int &cellIndex,
 	    } else if (index + outputExpressions > cellMap.size())
 	      cellMap.resize(index + outputExpressions);
 	    for (int i = 0; i < outputExpressions; i++)
-	      cellMap[index + i] = cellIndex + i;
+	      cellMap.at(index + i) = cellIndex + i;
 	  }
 	
         cellIndex += outputExpressions; // new cell index
@@ -5853,18 +5853,18 @@ void Worksheet::ExportToMAC(wxTextFile &output, GroupCell *tree, bool wxm,
 	       SimpleMathConfigurationIterator(input);
              it.pos + 1 < it.input.length(); ++it)
           if (*it == '%' &&
-              (input[it.pos + 1] == 'i' || input[it.pos + 1] == 'o') &&
-              (it.pos == 0 || input[it.pos - 1] != '%')) {
+              (input.at(it.pos + 1) == 'i' || input.at(it.pos + 1) == 'o') &&
+              (it.pos == 0 || input.at(it.pos - 1) != '%')) {
             it.pos += 2;
             unsigned int startPos = it.pos;
             unsigned int temp = 0;
             for (; it.pos < input.Length() && (*it >= '0' && *it <= '9');
                  ++it.pos)
               temp = temp * 10 + (*it - '0');
-            if (temp >= cellMap.size() || cellMap[temp] < 1)
+            if (temp >= cellMap.size() || cellMap.at(temp) < 1)
               continue;
             wxString tempstr;
-            tempstr << cellMap[temp];
+            tempstr << cellMap.at(temp);
             input.replace(startPos, it.pos - startPos, tempstr);
             it.pos = startPos + tempstr.length();
           }
@@ -6130,14 +6130,14 @@ bool Worksheet::ExportToWXMX(const wxString &file, bool markAsSaved) {
                                       ActiveCellNumber);
 
         // Save the variables list for the "variables" sidepane.
-        wxArrayString variables = m_variablesPane->GetVarnames();
-        if (variables.GetCount() > 1) {
-          long varcount = variables.GetCount() - 1;
+	std::vector<wxString> variables = m_variablesPane->GetVarnames();
+        if (variables.size() > 1) {
+          long varcount = variables.size() - 1;
           xmlText += wxString::Format(" variables_num=\"%li\"", varcount);
-          for (unsigned long i = 0; i < variables.GetCount(); i++)
+          for (unsigned long i = 0; i < variables.size(); i++)
             xmlText +=
 	      wxString::Format(" variables_%li=\"%s\"", i,
-			       Cell::XMLescape(variables[i]).utf8_str());
+			       Cell::XMLescape(variables.at(i)).utf8_str());
         }
 
         xmlText << ">\n";
@@ -7024,9 +7024,9 @@ void Worksheet::PasteFromClipboard() {
     if (inputs.StartsWith(wxS("/* [wxMaxima: "))) {
       // Convert the text from the clipboard into an array of lines
       wxStringTokenizer lines(inputs, wxS("\n"), wxTOKEN_RET_EMPTY);
-      wxArrayString lines_array;
+      std::vector <wxString> lines_array;
       while (lines.HasMoreTokens())
-        lines_array.Add(lines.GetNextToken());
+        lines_array.push_back(lines.GetNextToken());
 
       // Load the array like we would do with a .wxm file
       auto contents = Format::TreeFromWXM(lines_array, m_configuration);
@@ -7861,7 +7861,7 @@ bool Worksheet::Autocomplete(AutoComplete::autoCompletionType type) {
 
       if ((type == AutoComplete::demofile) ||
           (type == AutoComplete::loadfile)) {
-        if (partial[0] != wxS('\"')) {
+        if (partial.at(0) != wxS('\"')) {
           partial = wxS("\"") + partial;
           // If the editor auto-adds a closing quote this causes auto-completion
           // to fail
@@ -7874,7 +7874,7 @@ bool Worksheet::Autocomplete(AutoComplete::autoCompletionType type) {
         }
       }
 
-      if ((type == AutoComplete::command) && (partial[0] == wxS('\"')))
+      if ((type == AutoComplete::command) && (partial.at(0) == wxS('\"')))
         type = AutoComplete::generalfile;
 
       if (type == AutoComplete::demofile)
@@ -7926,27 +7926,27 @@ bool Worksheet::Autocomplete(AutoComplete::autoCompletionType type) {
   }
 
   m_completions = m_autocomplete.CompleteSymbol(partial, type);
-  m_completions.Sort();
+  std::sort(m_completions.begin(), m_completions.end());
   m_autocompleteTemplates = (type == AutoComplete::tmplte);
 
   /// No completions - clear the selection and return false
-  if (m_completions.GetCount() == 0) {
+  if (m_completions.size() == 0) {
     editor->ClearSelection();
     return false;
   }
 
   /// If there is only one completion, use it
-  if ((m_completions.GetCount() == 1) && (type != AutoComplete::esccommand)) {
+  if ((m_completions.size() == 1) && (type != AutoComplete::esccommand)) {
     size_t start, end;
     editor->GetSelection(&start, &end);
 
-    editor->ReplaceSelection(editor->GetSelectionString(), m_completions[0],
+    editor->ReplaceSelection(editor->GetSelectionString(), m_completions.at(0),
                              true, false, true);
     editor->ClearSelection();
     editor->CaretToPosition(start);
 
     if (type != AutoComplete::tmplte || !editor->FindNextTemplate())
-      editor->CaretToPosition(start + m_completions[0].Length());
+      editor->CaretToPosition(start + m_completions.at(0).Length());
 
     editor->ResetSize();
     editor->GetGroup()->ResetSize();
@@ -8012,10 +8012,10 @@ void Worksheet::OnComplete(wxCommandEvent &event) {
     
   if (!editor->GetSelectionString().empty())
     editor->ReplaceSelection(editor->GetSelectionString(),
-                             m_completions[item],
+                             m_completions.at(item),
                              true, false, true);
   else
-    editor->InsertText(m_completions[item]);
+    editor->InsertText(m_completions.at(item));
 
   if (m_autocompleteTemplates) {
     size_t sel_start, sel_end;
@@ -8026,7 +8026,7 @@ void Worksheet::OnComplete(wxCommandEvent &event) {
     if (!editor->FindNextTemplate())
       editor->CaretToPosition(
 			      sel_start +
-			      m_completions[item].Length());
+			      m_completions.at(item).Length());
   }
 
   editor->ResetSize();

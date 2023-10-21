@@ -29,6 +29,7 @@
 #include <wx/panel.h>
 #include <wx/arrstr.h>
 #include <unordered_map>
+#include <vector>
 
 /*! \file 
   The file that contains the "variables" sidepane
@@ -78,9 +79,9 @@ public:
   //! Is this string a valid variable name?
   bool IsValidVariable(wxString var);
   //! Returns a list of all variable names in a format maxima understands
-  wxArrayString GetEscapedVarnames();
+  std::vector<wxString> GetEscapedVarnames();
   //! Returns the variable list in a human-readable format
-  wxArrayString GetVarnames();
+  std::vector<wxString> GetVarnames();
   //! Set all variable's contents to "unknown".
   void ResetValues();
   //! Remove all entries from the variables list

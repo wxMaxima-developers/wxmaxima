@@ -68,13 +68,13 @@ public:
   AnimationCell(const AnimationCell&) = delete;
 
   void SetConfiguration(Configuration *config) override;
-  int GetPPI() const override {if(IsOk()) return m_images[m_displayed]->GetPPI(); else return 0;}
+  int GetPPI() const override {if(IsOk()) return m_images.at(m_displayed)->GetPPI(); else return 0;}
   size_t GetOriginalWidth() const override {
-    if(IsOk())return m_images[m_displayed]->GetOriginalWidth(); else return 0;}
+    if(IsOk())return m_images.at(m_displayed)->GetOriginalWidth(); else return 0;}
   size_t GetOriginalHeight() const override {
-    if(IsOk())return m_images[m_displayed]->GetOriginalHeight(); else return 0;}
+    if(IsOk())return m_images.at(m_displayed)->GetOriginalHeight(); else return 0;}
   wxString GetExtension() const override
-    { if (IsOk())return m_images[m_displayed]->GetExtension(); else return wxEmptyString; }
+    { if (IsOk())return m_images.at(m_displayed)->GetExtension(); else return wxEmptyString; }
 
   const CellTypeInfo &GetInfo() override;
   ~AnimationCell();
@@ -87,7 +87,7 @@ public:
   static wxDataFormat m_gifFormat;
 
   //! Can the current image be exported in SVG format?
-  bool CanExportSVG() const override {return (m_images[m_displayed] != NULL) && m_images[m_displayed]->CanExportSVG();}
+  bool CanExportSVG() const override {return (m_images.at(m_displayed) != NULL) && m_images.at(m_displayed)->CanExportSVG();}
 
   //! A Gif object for the clipboard
   class GifDataObject : public wxCustomDataObject
@@ -161,7 +161,7 @@ public:
   bool AnimationRunning() const { return m_animationRunning; }
   void AnimationRunning(bool run);
   bool CanPopOut() const override
-    { return m_images[m_displayed] && (m_images[m_displayed]->HasGnuplotSource()); }
+    { return m_images.at(m_displayed) && (m_images.at(m_displayed)->HasGnuplotSource()); }
 
   void GnuplotSource(int image, wxString gnuplotFilename, wxString dataFilename,
                      const wxString &wxmxFile)
@@ -175,10 +175,10 @@ public:
 
   wxString GnuplotSource() const override
     {
-      if (!m_images[m_displayed])
+      if (!m_images.at(m_displayed))
         return wxEmptyString;
       else
-        return m_images[m_displayed]->GnuplotSource();
+        return m_images.at(m_displayed)->GnuplotSource();
     }
 
 private:

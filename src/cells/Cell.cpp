@@ -704,9 +704,9 @@ wxString Cell::RTFescape(wxString input, bool MarkDown) {
   // Encode unicode characters in a rather mind-boggling way
   wxString output;
   for (size_t i = 0; i < input.Length(); i++) {
-    wxChar ch = input[i];
+    wxChar ch = input.at(i);
     if (ch == wxS('\n')) {
-      if (((i > 0) && (input[i - 1] == wxS('\n'))) || !MarkDown)
+      if (((i > 0) && (input.at(i - 1) == wxS('\n'))) || !MarkDown)
         output += wxS("\\par}\n{\\pard ");
       else
         output += wxS("\n");

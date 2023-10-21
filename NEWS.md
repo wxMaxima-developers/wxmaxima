@@ -2,6 +2,7 @@
  * Correctly draw the bracket of the cell under the cursor (#1811)
  * Maths was corrupted if the window was temporarily not wide
    enough to display it in 2D (#1812)
+ * Added many range checks to the code
  * Correct label scaling after changing the zoom factor (#1815)
  * Repaired "copy as bitmap" (#1820)
  * Focus the search text on activating the search box (#1821)

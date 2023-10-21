@@ -2130,7 +2130,7 @@ void wxMaxima::SendMaxima(wxString s, bool addToHistory) {
             funName << wxS(",");
           wxString a = argTokens.GetNextToken().Trim().Trim(false);
           if (a != wxEmptyString) {
-            if (a[0] == '[')
+            if (a.at(0) == '[')
               funName << wxS("[<") << a.SubString(1, a.Length() - 2)
                       << wxS(">]");
             else
@@ -3030,7 +3030,7 @@ void wxMaxima::ReadManualTopicNames(wxString &data) {
 
   int end;
   if ((end = FindTagEnd(data, m_jumpManualSuffix)) != wxNOT_FOUND) {
-    wxArrayString topics;
+    std::vector<wxString> topics;
     wxXmlDocument xmldoc;
     wxString xml = data.Left(end + m_jumpManualSuffix.Length());
     wxStringInputStream xmlStream(xml);
@@ -3055,9 +3055,9 @@ void wxMaxima::ReadManualTopicNames(wxString &data) {
 		if (topic) {
 		  wxLogMessage(_("Received manual topic request: %s"),
 			       topic->GetContent().ToUTF8().data());
-		  topics.Add(topic->GetContent());
+		  topics.push_back(topic->GetContent());
 		}
-		if (topics.IsEmpty())
+		if (topics.size() == 0)
 		  wxLogMessage(_("No topics found in topic flag"));
 #ifdef USE_WEBVIEW
 		else
@@ -3650,7 +3650,7 @@ void wxMaxima::VariableActionOperators(const wxString &value) {
 	      if ((!content.IsEmpty()) &&
 		  (m_configuration.m_maximaOperators.find(content) ==
 		   m_configuration.m_maximaOperators.end())) {
-		if ((content[0] > '9') || (content[0] < '0')) {
+		if ((content.at(0) > '9') || (content.at(0) < '0')) {
 		  m_configuration.m_maximaOperators[content] = 1;
 		  if (!newOperators.IsEmpty())
 		    newOperators += wxS(", ");
@@ -3727,17 +3727,17 @@ bool wxMaxima::QueryVariableValue() {
   if (m_worksheet->QuestionPending())
     return false;
 
-  if (m_varNamesToQuery.GetCount() > 0) {
+  if (m_varNamesToQuery.size() > 0) {
     SendMaxima(wxS(":lisp-quiet (wx-query-variable \"") +
-               m_varNamesToQuery.Last() + wxS("\")\n"));
-    m_varNamesToQuery.RemoveAt(m_varNamesToQuery.GetCount() - 1);
+               m_varNamesToQuery.back() + wxS("\")\n"));
+    m_varNamesToQuery.pop_back();
     return true;
   } else {
     if (m_readMaximaVariables) {
       SendMaxima(wxS(":lisp-quiet (wx-print-gui-variables)\n"));
       m_readMaximaVariables = false;
     }
-    if (!m_worksheet->m_variablesPane->GetEscapedVarnames().IsEmpty())
+    if (m_worksheet->m_variablesPane->GetEscapedVarnames().size() != 0)
       m_worksheet->m_variablesPane->UpdateSize();
 
     return false;
@@ -4692,9 +4692,9 @@ void wxMaxima::ShowWxMaximaHelp() {
     // Cygwin uses /c/something instead of c:/something and passes this path to
     // the web browser - which doesn't support cygwin paths => convert the path
     // to a native windows pathname if needed.
-    if (helpfile.Length() > 1 && helpfile[0] == wxS('/')) {
-      helpfile[0] = helpfile[1];
-      helpfile[1] = wxS(':');
+    if (helpfile.Length() > 1 && helpfile.at(0) == wxS('/')) {
+      helpfile.at(0) = helpfile[1];
+      helpfile.at(1) = wxS(':');
     }
 #endif // __CYGWIN__
 
@@ -4736,9 +4736,9 @@ void wxMaxima::ShowMaximaHelpWithoutAnchor() {
     // Cygwin uses /c/something instead of c:/something and passes this path to
     // the web browser - which doesn't support cygwin paths => convert the path
     // to a native windows pathname if needed.
-    if (helpfile.Length() > 1 && helpfile[0] == wxS('/')) {
-      helpfile[0] = helpfile[1];
-      helpfile[1] = wxS(':');
+    if (helpfile.Length() > 1 && helpfile.at(0) == wxS('/')) {
+      helpfile.at(0) = helpfile.at(1);
+      helpfile.at(1) = wxS(':');
     }
 #endif // __CYGWIN__
 
@@ -5052,9 +5052,9 @@ void wxMaxima::OnIdle(wxIdleEvent &event) {
     if (!m_initialWorkSheetContents.IsEmpty()) {
       //  Convert the comment block to an array of lines
       wxStringTokenizer tokenizer(m_initialWorkSheetContents, "\n");
-      wxArrayString lines;
+      std::vector<wxString> lines;
       while (tokenizer.HasMoreTokens())
-        lines.Add(tokenizer.GetNextToken());
+        lines.push_back(tokenizer.GetNextToken());
       m_worksheet->InsertGroupCells(
 				    Format::TreeFromWXM(lines, &m_configuration));
       m_worksheet->UpdateMLast();
@@ -10268,7 +10268,7 @@ wxString wxMaxima::GetUnmatchedParenthesisState(wxString text, size_t &index) {
       continue;
     }
 
-    wxChar firstC = itemText[0];
+    wxChar firstC = itemText.at(0);
     wxChar lastC = itemText.Last();
 
     // Remember the last non-whitespace character that isn't part
@@ -10509,7 +10509,7 @@ void wxMaxima::ReplaceSuggestion(wxCommandEvent &event) {
     return;
   editor->SelectWordUnderCaret(false);
   editor->ReplaceSelection(editor->GetWordUnderCaret(),
-                           m_worksheet->m_replacementsForCurrentWord[index]);
+                           m_worksheet->m_replacementsForCurrentWord.at(index));
 }
 
 void wxMaxima::InsertMenu(wxCommandEvent &event) {

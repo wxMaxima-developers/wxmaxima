@@ -90,7 +90,7 @@ wxString HelpBrowser::GetKeyword(wxWindowID id) {
   if (id < m_topicButtonID0)
     return wxEmptyString;
   id -= m_topicButtonID0;
-  if (static_cast<unsigned>(id) > m_keywords.GetCount())
+  if (static_cast<unsigned>(id) > m_keywords.size())
     return wxEmptyString;
   return m_keywords[id];
 }
@@ -198,12 +198,12 @@ void HelpBrowser::JumpToKeyword(wxString keyword) {
   Layout();
 }
 
-void HelpBrowser::SelectKeywords(wxArrayString keywords) {
+void HelpBrowser::SelectKeywords(std::vector<wxString> keywords) {
   //  wxWindowUpdateLocker speedUp(this);
-  if (keywords.GetCount() == 0)
+  if (keywords.size() == 0)
     return;
 
-  if (keywords.GetCount() == 1) {
+  if (keywords.size() == 1) {
     JumpToKeyword(keywords[0]);
     return;
   }
@@ -217,7 +217,7 @@ void HelpBrowser::SelectKeywords(wxArrayString keywords) {
 		    wxSizerFlags());
 
   m_keywords = keywords;
-  m_topicButtonID0 = wxWindow::NewControlId(keywords.GetCount());
+  m_topicButtonID0 = wxWindow::NewControlId(keywords.size());
   int id = m_topicButtonID0;
   for (const auto &i : keywords) {
     m_topicButtonIDs.push_back(id);

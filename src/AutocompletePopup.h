@@ -41,6 +41,7 @@
 #include "EditorCell.h"
 #include <wx/combo.h>
 #include <wx/listctrl.h>
+#include <vector>
 
 class AutocompletePopup final : public wxListView, public wxComboPopup
 {  
@@ -66,7 +67,7 @@ private:
 
   wxWindow *m_parent = {};
   const DonePtr m_doneptr;
-  wxArrayString m_completions;
+  std::vector<wxString> m_completions;
   AutoComplete *m_autocomplete = {};
   EditorCell *m_editor = {};
   AutoComplete::autoCompletionType m_type;

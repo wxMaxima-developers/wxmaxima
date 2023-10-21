@@ -31,10 +31,11 @@
 #define AUTOCOMPLETE_H
 
 #include <thread>
+#include <algorithm>
 #include <memory>
 #include <wx/wx.h>
 #include <wx/dir.h>
-#include <wx/arrstr.h>
+#include <vector>
 #include <wx/regex.h>
 #include <wx/filename.h>
 #include <vector>
@@ -113,7 +114,7 @@ public:
   void ClearDemofileList();
   
   //! Returns a list of possible autocompletions for the string "partial"
-  wxArrayString CompleteSymbol(wxString partial, autoCompletionType type = command);
+  std::vector<wxString> CompleteSymbol(wxString partial, autoCompletionType type = command);
   //! Basically runs a regex over templates
   static wxString FixTemplate(wxString templ);
 
@@ -130,23 +131,23 @@ private:
   //! Replace the list of files in the directory the worksheet file is in to the load files list
   void UpdateLoadFiles_BackgroundTask(wxString partial, wxString maximaDir);
   //! The list of loadable files maxima provides
-  wxArrayString m_builtInLoadFiles;
+  std::vector<wxString> m_builtInLoadFiles;
   //! The list of demo files maxima provides
-  wxArrayString m_builtInDemoFiles;
+  std::vector<wxString> m_builtInDemoFiles;
 
   //! Scans the maxima directory for a list of loadable files
   class GetGeneralFiles : public wxDirTraverser
   {
   public:
-    explicit GetGeneralFiles(wxArrayString& files, wxString prefix = wxEmptyString) :
+    explicit GetGeneralFiles(std::vector<wxString>& files, wxString prefix = wxEmptyString) :
       m_files(files), m_prefix(prefix) { }
     wxDirTraverseResult OnFile(const wxString& filename) override
       {
         wxFileName newItemName(filename);
         wxString newItem = "\"" + m_prefix + newItemName.GetFullName() + "\"";
         newItem.Replace(wxFileName::GetPathSeparator(), "/");
-        if(m_files.Index(newItem) == wxNOT_FOUND)
-          m_files.Add(newItem);
+        if(std::find(m_files.begin(), m_files.end(), newItem) == m_files.end())
+          m_files.push_back(newItem);
         return wxDIR_CONTINUE;
       }
     wxDirTraverseResult OnDir(const wxString& dirname) override
@@ -154,13 +155,13 @@ private:
         wxFileName newItemName(dirname);
         wxString newItem = "\"" + m_prefix + newItemName.GetFullName() + "/\"";
         newItem.Replace(wxFileName::GetPathSeparator(), "/");
-        if(m_files.Index(newItem) == wxNOT_FOUND)
-          m_files.Add(newItem);
+        if(std::find(m_files.begin(), m_files.end(), newItem) == m_files.end())
+          m_files.push_back(newItem);
         return wxDIR_IGNORE;
       }
-    wxArrayString& GetResult(){return m_files;}
+    std::vector<wxString>& GetResult(){return m_files;}
   protected: 
-    wxArrayString& m_files;
+    std::vector<wxString>& m_files;
     wxString m_prefix;
   };
 
@@ -168,7 +169,7 @@ private:
   class GetMacFiles_includingSubdirs : public wxDirTraverser
   {
   public:
-    explicit GetMacFiles_includingSubdirs(wxArrayString& files, wxString prefix = wxEmptyString) :
+    explicit GetMacFiles_includingSubdirs(std::vector<wxString>& files, wxString prefix = wxEmptyString) :
       m_files(files), m_prefix(prefix)  { }
     wxDirTraverseResult OnFile(const wxString& filename) override
       {
@@ -181,8 +182,8 @@ private:
           wxFileName newItemName(filename);
           wxString newItem = "\"" + m_prefix + newItemName.GetName() + "\"";
           newItem.Replace(wxFileName::GetPathSeparator(), "/");
-          if(m_files.Index(newItem) == wxNOT_FOUND)
-            m_files.Add(newItem);
+          if(std::find(m_files.begin(), m_files.end(), newItem) == m_files.end())
+          m_files.push_back(newItem);
         }
         return wxDIR_CONTINUE;
       }
@@ -198,9 +199,9 @@ private:
         else
           return wxDIR_CONTINUE;
       }
-    wxArrayString& GetResult(){return m_files;}
+    std::vector<wxString>& GetResult(){return m_files;}
   protected: 
-    wxArrayString& m_files;
+    std::vector<wxString>& m_files;
     wxString m_prefix;
   };
   
@@ -208,15 +209,15 @@ private:
   class GetMacFiles : public GetMacFiles_includingSubdirs
   {
   public:
-    explicit GetMacFiles(wxArrayString& files, wxString prefix = wxEmptyString) :
+    explicit GetMacFiles(std::vector<wxString>& files, wxString prefix = wxEmptyString) :
       GetMacFiles_includingSubdirs(files, prefix){ }
     wxDirTraverseResult OnDir(const wxString& dirname) override
       {
         wxFileName newItemName(dirname);
         wxString newItem = "\"" + m_prefix + newItemName.GetFullName() + "/\"";
         newItem.Replace(wxFileName::GetPathSeparator(), "/");
-        if(m_files.Index(newItem) == wxNOT_FOUND)
-          m_files.Add(newItem);
+        if(std::find(m_files.begin(), m_files.end(), newItem) == m_files.end())
+          m_files.push_back(newItem);
         return wxDIR_IGNORE;
       }
   };
@@ -225,7 +226,7 @@ private:
   class GetDemoFiles_includingSubdirs : public wxDirTraverser
   {
   public:
-    explicit GetDemoFiles_includingSubdirs(wxArrayString& files, wxString prefix = wxEmptyString) :
+    explicit GetDemoFiles_includingSubdirs(std::vector<wxString>& files, wxString prefix = wxEmptyString) :
       m_files(files), m_prefix(prefix) { }
     wxDirTraverseResult OnFile(const wxString& filename) override
       {
@@ -234,8 +235,8 @@ private:
           wxFileName newItemName(filename);
           wxString newItem = "\"" + m_prefix + newItemName.GetName() + "\"";
           newItem.Replace(wxFileName::GetPathSeparator(), "/");
-          if(m_files.Index(newItem) == wxNOT_FOUND)
-            m_files.Add(newItem);
+          if(std::find(m_files.begin(), m_files.end(), newItem) == m_files.end())
+            m_files.push_back(newItem);
         }
         return wxDIR_CONTINUE;
       }
@@ -251,9 +252,9 @@ private:
         else
           return wxDIR_CONTINUE;
       }
-    wxArrayString& GetResult(){return m_files;}
+    std::vector<wxString>& GetResult(){return m_files;}
   protected: 
-    wxArrayString& m_files;
+    std::vector<wxString>& m_files;
     wxString m_prefix;
   };
   
@@ -261,15 +262,15 @@ private:
   class GetDemoFiles : public GetDemoFiles_includingSubdirs
   {
   public:
-    explicit GetDemoFiles(wxArrayString& files, wxString prefix = wxEmptyString) :
+    explicit GetDemoFiles(std::vector<wxString>& files, wxString prefix = wxEmptyString) :
       GetDemoFiles_includingSubdirs(files, prefix){ }
     virtual wxDirTraverseResult OnDir(const wxString& dirname) override
       {
         wxFileName newItemName(dirname);
         wxString newItem = "\"" + m_prefix + newItemName.GetFullName() + "/\"";
         newItem.Replace(wxFileName::GetPathSeparator(), "/");
-        if(m_files.Index(newItem) == wxNOT_FOUND)
-          m_files.Add(newItem);
+        if(std::find(m_files.begin(), m_files.end(), newItem) == m_files.end())
+          m_files.push_back(newItem);
         return wxDIR_IGNORE;
       }
   };
@@ -279,7 +280,7 @@ private:
   void WaitForBackgroundThreads();
   
   //! The lists of autocompletable symbols for the classes defined in autoCompletionType
-  std::vector<wxArrayString> m_wordList;
+  std::vector<std::vector<wxString>> m_wordList;
   static wxRegEx m_args;
   WorksheetWords m_worksheetWords;
   std::unique_ptr<std::thread> m_addSymbols_backgroundThread;

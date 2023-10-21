@@ -234,14 +234,14 @@ wxCoord AnimationCell::GetMaxWidth() const {
   if (!IsOk())
     return -1;
   else
-    return m_images[m_displayed]->GetMaxWidth();
+    return m_images.at(m_displayed)->GetMaxWidth();
 }
 
 wxCoord AnimationCell::GetHeightList() const {
   if (!IsOk())
     return -1;
   else
-    return m_images[m_displayed]->GetHeightList();
+    return m_images.at(m_displayed)->GetHeightList();
 }
 
 void AnimationCell::SetMaxWidth(wxCoord width) {
@@ -286,7 +286,7 @@ void AnimationCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
   if (m_animationRunning)
     ReloadTimer();
 
-  if (DrawThisCell(point) && (m_images[m_displayed] != NULL)) {
+  if (DrawThisCell(point) && (m_images.at(m_displayed) != NULL)) {
     // Start the timer once the animation appears on the screen.
     // But start it only once: Else the animation could be refreshed
     // more frequent than it can be drawn. Each update of the animation
@@ -309,9 +309,9 @@ void AnimationCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
 
     wxBitmap bitmap =
       (m_configuration->GetPrinting()
-       ? m_images[m_displayed]->GetBitmap(
+       ? m_images.at(m_displayed)->GetBitmap(
 					  m_configuration->GetZoomFactor() * PRINT_SIZE_MULTIPLIER)
-       : m_images[m_displayed]->GetBitmap());
+       : m_images.at(m_displayed)->GetBitmap());
     bitmapDC.SelectObject(bitmap);
 
     int imageBorderWidth = m_imageBorderWidth;
@@ -413,7 +413,7 @@ void AnimationCell::SetPPI(int ppi) {
 }
 
 wxSize AnimationCell::ToImageFile(wxString file) {
-  return m_images[m_displayed]->ToImageFile(file);
+  return m_images.at(m_displayed)->ToImageFile(file);
 }
 
 wxString AnimationCell::ToRTF() const {
@@ -430,19 +430,19 @@ wxString AnimationCell::ToRTF() const {
   // Extract the description of the image data
   wxString image;
   wxMemoryBuffer imgdata;
-  if (m_images[m_displayed]->GetExtension().Lower() == wxS("png")) {
-    imgdata = m_images[m_displayed]->GetCompressedImage();
+  if (m_images.at(m_displayed)->GetExtension().Lower() == wxS("png")) {
+    imgdata = m_images.at(m_displayed)->GetCompressedImage();
     image = wxS("\\pngblip\n");
-  } else if ((m_images[m_displayed]->GetExtension().Lower() == wxS("jpg")) ||
-             (m_images[m_displayed]->GetExtension().Lower() == wxS("jpeg"))) {
-    imgdata = m_images[m_displayed]->GetCompressedImage();
+  } else if ((m_images.at(m_displayed)->GetExtension().Lower() == wxS("jpg")) ||
+             (m_images.at(m_displayed)->GetExtension().Lower() == wxS("jpeg"))) {
+    imgdata = m_images.at(m_displayed)->GetCompressedImage();
     image = wxS("\\jpegblip\n");
   } else {
     // Convert any non-rtf-enabled format to .png before adding it to the .rtf
     // file.
     image = wxS("\\pngblip\n");
     wxImage imagedata =
-      m_images[m_displayed]->GetUnscaledBitmap().ConvertToImage();
+      m_images.at(m_displayed)->GetUnscaledBitmap().ConvertToImage();
     wxMemoryOutputStream stream;
     imagedata.SaveFile(stream, wxBITMAP_TYPE_PNG);
     imgdata.AppendData(stream.GetOutputStreamBuffer()->GetBufferStart(),
@@ -451,8 +451,8 @@ wxString AnimationCell::ToRTF() const {
 
   image += wxString::Format(
 			    wxS("\\picw%lu\\pich%lu "),
-			    (unsigned long)m_images[m_displayed]->GetOriginalWidth(),
-			    (unsigned long)m_images[m_displayed]->GetOriginalHeight());
+			    (unsigned long)m_images.at(m_displayed)->GetOriginalWidth(),
+			    (unsigned long)m_images.at(m_displayed)->GetOriginalHeight());
 
   // Convert the data into a hexadecimal string
   for (size_t i = 0; i <= imgdata.GetDataLen(); i++)
@@ -525,7 +525,7 @@ bool AnimationCell::CopyToClipboard() const {
                _("Bug: The clipboard is already opened"));
   if (wxTheClipboard->Open()) {
     bool res = wxTheClipboard->SetData(
-				       new wxBitmapDataObject(m_images[m_displayed]->GetUnscaledBitmap()));
+				       new wxBitmapDataObject(m_images.at(m_displayed)->GetUnscaledBitmap()));
     wxTheClipboard->Close();
     return res;
   }
@@ -539,7 +539,7 @@ bool AnimationCell::IsOk() const {
     return false;
   if (m_displayed < 0)
     return false;
-  if (!m_images[m_displayed])
+  if (!m_images.at(m_displayed))
     return false;
   return true;
 }

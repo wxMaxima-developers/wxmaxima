@@ -632,7 +632,7 @@ private:
   wxTimer m_caretTimer;
   //! True if no changes have to be saved.
   bool m_saved = true;
-  wxArrayString m_completions;
+  std::vector<wxString> m_completions;
   bool m_autocompleteTemplates;
   AutocompletePopup *m_autocompletePopup;
 
@@ -1546,7 +1546,7 @@ public:
   int GetCellIndex(Cell *cell) const;
 
   //! Suggestions for how the word that was right-clicked on could continue
-  wxArrayString m_replacementsForCurrentWord;
+  std::vector<wxString> m_replacementsForCurrentWord;
   //Simple iterator over a Maxima input string, skipping comments and strings
   class SimpleMathConfigurationIterator
   {

@@ -205,7 +205,7 @@ private:
   static bool m_exitOnError;
   static wxString m_extraMaximaArgs;
   //! The variable names to query for the variables pane and for internal reasons
-  wxArrayString m_varNamesToQuery;
+  std::vector<wxString> m_varNamesToQuery;
 
   bool m_isLogTarget;
   //! Is true if opening the file from the command line failed before updating the statusbar.

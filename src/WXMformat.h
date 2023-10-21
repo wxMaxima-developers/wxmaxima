@@ -28,6 +28,7 @@
 
 #include <memory>
 #include "GroupCell.h"
+#include <vector>
 
 class wxTextBuffer;
 
@@ -67,7 +68,7 @@ namespace Format
   wxString TreeToWXM(GroupCell *cell, bool wxm = true);
 
 //! Converts a wxm description into individual cells
-  std::unique_ptr<GroupCell> TreeFromWXM(const wxArrayString &wxmLines, Configuration *config);
+  std::unique_ptr<GroupCell> TreeFromWXM(const std::vector<wxString> &wxmLines, Configuration *config);
 
 /*! Parses the contents of a .wxm file into individual cells.
  * Invokes TreeFromWXM on pre-processed data,

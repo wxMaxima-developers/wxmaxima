@@ -210,7 +210,7 @@ namespace Format {
     return retval;
   }
 
-  std::unique_ptr<GroupCell> TreeFromWXM(const wxArrayString &wxmLines,
+  std::unique_ptr<GroupCell> TreeFromWXM(const std::vector<wxString> &wxmLines,
 					 Configuration *config) {
     auto wxmLine = wxmLines.begin();
     auto const end = wxmLines.end();
@@ -316,10 +316,10 @@ namespace Format {
 
 	// Read a folded tree and build it
       case WXM_FOLD: {
-	wxArrayString hiddenTree;
+	std::vector<wxString> hiddenTree;
 	auto const &endHeader = Headers.GetEnd(headerId);
 	while (wxmLine != end && *wxmLine != endHeader)
-	  hiddenTree.Add(*wxmLine++);
+	  hiddenTree.push_back(*wxmLine++);
 
 	last->HideTree(TreeFromWXM(hiddenTree, config));
       } break;
@@ -337,9 +337,9 @@ namespace Format {
 
   std::unique_ptr<GroupCell> ParseWXMFile(wxTextBuffer &text,
 					  Configuration *config) {
-    wxArrayString wxmLines;
+    std::vector<wxString> wxmLines;
     for (auto line = text.GetFirstLine();; line = text.GetNextLine()) {
-      wxmLines.Add(line);
+      wxmLines.push_back(line);
       if (text.Eof())
 	break;
     }
@@ -423,9 +423,9 @@ namespace Format {
 	    if (!wxmLines.IsEmpty()) {
 	      // Convert the comment block to an array of lines
 	      wxStringTokenizer tokenizer(wxmLines, "\n");
-	      wxArrayString commentLines;
+	      std::vector<wxString> commentLines;
 	      while (tokenizer.HasMoreTokens())
-		commentLines.Add(tokenizer.GetNextToken());
+		commentLines.push_back(tokenizer.GetNextToken());
 
 	      // Interpret the comment block
 	      if (!tree.Append(TreeFromWXM(commentLines, config)))
@@ -478,9 +478,9 @@ namespace Format {
     if (!wxmLines.IsEmpty()) {
       // Convert the comment block to an array of lines
       wxStringTokenizer tokenizer(wxmLines, "\n");
-      wxArrayString commentLines;
+      std::vector<wxString> commentLines;
       while (tokenizer.HasMoreTokens())
-	commentLines.Add(tokenizer.GetNextToken());
+	commentLines.push_back(tokenizer.GetNextToken());
 
       // Interpret the comment block
       if (!tree.Append(TreeFromWXM(commentLines, config)))

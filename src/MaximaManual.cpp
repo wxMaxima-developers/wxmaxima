@@ -175,7 +175,7 @@ void MaximaManual::CompileHelpFileAnchors(wxString maximaHtmlDir,
 
   long foundAnchorsTotal = 0;
   if (m_helpFileURLs_singlePage.empty() && (!(m_maximaHtmlDir.IsEmpty()))) {
-    wxArrayString helpFiles;
+    std::vector<wxString> helpFiles;
     {
       GetHTMLFiles htmlFilesTraverser(helpFiles, m_maximaHtmlDir);
       wxDir dir(m_maximaHtmlDir);
@@ -293,8 +293,9 @@ MaximaManual::GetHTMLFiles::OnFile(const wxString &filename) {
   wxString newItem =
     m_prefix + wxFileName::GetPathSeparator() + newItemName.GetFullName();
   newItem.Replace(wxFileName::GetPathSeparator(), "/");
-  if (newItem.EndsWith(".html") && (m_files.Index(newItem) == wxNOT_FOUND))
-    m_files.Add(newItem);
+  if (newItem.EndsWith(".html") &&
+      (std::find(m_files.begin(), m_files.end(), newItem) == m_files.end()))
+    m_files.push_back(newItem);
   return wxDIR_CONTINUE;
 }
 
@@ -309,8 +310,9 @@ MaximaManual::GetHTMLFiles_Recursive::OnFile(const wxString &filename) {
   newItemName.MakeAbsolute();
   wxString newItem = newItemName.GetFullPath();
   newItem.Replace(wxFileName::GetPathSeparator(), "/");
-  if (newItem.EndsWith(".html") && (m_files.Index(newItem) == wxNOT_FOUND))
-    m_files.Add(newItem);
+  if (newItem.EndsWith(".html") &&
+      (std::find(m_files.begin(), m_files.end(), newItem) == m_files.end()))
+    m_files.push_back(newItem);
   return wxDIR_CONTINUE;
 }
 
@@ -500,9 +502,9 @@ void MaximaManual::FindMaximaHtmlDir(wxString docDir) {
   // Cygwin uses /c/something instead of c:/something and passes this path to
   // the web browser - which doesn't support cygwin paths => convert the path to
   // a native windows pathname if needed.
-  if (headerFile.Length() > 1 && headerFile[1] == wxS('/')) {
-    headerFile[1] = headerFile[2];
-    headerFile[2] = wxS(':');
+  if (headerFile.Length() > 1 && headerFile.at(1) == wxS('/')) {
+    headerFile.at(1) = headerFile.at(2);
+    headerFile.at(2) = wxS(':');
   }
 #endif // __CYGWIN__
   wxPathList helpfilepaths;

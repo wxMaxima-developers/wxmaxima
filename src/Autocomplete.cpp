@@ -40,10 +40,12 @@
 #include <wx/utils.h>
 #include <wx/wfstream.h>
 #include <wx/xml/xml.h>
+#include <algorithm>
 
 AutoComplete::AutoComplete(Configuration *configuration) {
+  std::vector<wxString> emptyList;
   for(unsigned i = 0; i < autoCompletionType::numberOfTypes; i++)
-    m_wordList.push_back(wxArrayString());
+    m_wordList.push_back(emptyList);
   m_configuration = configuration;
 }
 
@@ -57,7 +59,7 @@ void AutoComplete::ClearDemofileList() {
     WaitForBackgroundThread_Files();
     m_addFiles_backgroundThread.reset();
   }
-  m_wordList[demofile] = m_builtInDemoFiles;
+  m_wordList.at(demofile) = m_builtInDemoFiles;
 }
 
 void AutoComplete::AddSymbols(wxString xml) {
@@ -167,22 +169,18 @@ void AutoComplete::LoadSymbols() {
 }
 
 void AutoComplete::BuiltinSymbols_BackgroundTask() {
-  m_wordList[command].Clear();
-  m_wordList[tmplte].Clear();
-  m_wordList[esccommand].Clear();
-  m_wordList[unit].Clear();
+  for(auto &wordlist:m_wordList)
+    wordlist.clear();
 
   LoadBuiltinSymbols();
 
   for (auto it = Configuration::EscCodesBegin();
        it != Configuration::EscCodesEnd(); ++it)
-    m_wordList[esccommand].Add(it->first);
+    m_wordList.at(esccommand).push_back(it->first);
 
-  m_wordList[command].Sort();
-  m_wordList[tmplte].Sort();
-  m_wordList[unit].Sort();
-  m_wordList[esccommand].Sort();
-
+  for(auto &wordlist:m_wordList)
+    std::sort(wordlist.begin(), wordlist.end());
+ 
   wxString line;
 
   /// Load private symbol list (do something different on Windows).
@@ -204,13 +202,13 @@ void AutoComplete::BuiltinSymbols_BackgroundTask() {
       line.Trim(false);
       if (!line.StartsWith("#")) {
         if (function.Replace(&line, ""))
-          m_wordList[command].Add(line);
+          m_wordList.at(command).push_back(line);
         else if (option.Replace(&line, ""))
-          m_wordList[command].Add(line);
+          m_wordList.at(command).push_back(line);
         else if (templte.Replace(&line, ""))
-          m_wordList[tmplte].Add(FixTemplate(line));
+          m_wordList.at(tmplte).push_back(FixTemplate(line));
         else if (unt.Replace(&line, ""))
-          m_wordList[unit].Add(line);
+          m_wordList.at(unit).push_back(line);
         else
           wxLogMessage(_("%s: Can't interpret line: %s"),
 	    privateList.mb_str(),
@@ -266,7 +264,7 @@ void AutoComplete::LoadableFiles_BackgroundTask(wxString sharedir) {
 		 userDir.GetFullPath().utf8_str());
     if (maximauserfilesdir.IsOpened())
       maximauserfilesdir.Traverse(userLispIterator);
-    int num = m_builtInLoadFiles.GetCount();
+    int num = m_builtInLoadFiles.size();
     wxLogMessage(_("Found %i loadable files."), num);
   }
 
@@ -284,17 +282,17 @@ void AutoComplete::LoadableFiles_BackgroundTask(wxString sharedir) {
     wxDir maximadir(demoDir.GetFullPath());
     if (maximadir.IsOpened())
       maximadir.Traverse(maximaLispIterator);
-    int num = m_builtInDemoFiles.GetCount();
+    int num = m_builtInDemoFiles.size();
     wxLogMessage(_("Found %i demo files."), num);
   }
-  m_builtInLoadFiles.Sort();
-  m_builtInDemoFiles.Sort();
+  std::sort(m_builtInLoadFiles.begin(), m_builtInLoadFiles.end());
+  std::sort(m_builtInDemoFiles.begin(), m_builtInDemoFiles.end());
 }
 
 void AutoComplete::UpdateDemoFiles(wxString partial, wxString maximaDir) {
   WaitForBackgroundThread_Files();
   // Remove the opening quote from the partial.
-  if (partial[0] == wxS('\"'))
+  if (partial.at(0) == wxS('\"'))
     partial = partial.Right(partial.Length() - 1);
 
   partial.Replace(wxFileName::GetPathSeparator(), "/");
@@ -321,7 +319,7 @@ void AutoComplete::UpdateDemoFiles(wxString partial, wxString maximaDir) {
 
   // Add all files from the maxima directory to the demo file list
   if (partial != wxS("//")) {
-    GetDemoFiles userLispIterator(m_wordList[demofile], prefix);
+    GetDemoFiles userLispIterator(m_wordList.at(demofile), prefix);
     wxDir demofilesdir(partial);
     if (demofilesdir.IsOpened())
       demofilesdir.Traverse(userLispIterator);
@@ -331,7 +329,7 @@ void AutoComplete::UpdateDemoFiles(wxString partial, wxString maximaDir) {
 void AutoComplete::UpdateGeneralFiles(wxString partial, wxString maximaDir) {
   WaitForBackgroundThread_Files();
   // Remove the opening quote from the partial.
-  if (partial[0] == wxS('\"'))
+  if (partial.at(0) == wxS('\"'))
     partial = partial.Right(partial.Length() - 1);
 
   partial.Replace(wxFileName::GetPathSeparator(), "/");
@@ -367,7 +365,7 @@ void AutoComplete::UpdateLoadFiles(wxString partial, wxString maximaDir) {
                  "file names."));
   WaitForBackgroundThread_Files();
   // Remove the opening quote from the partial.
-  if (partial[0] == wxS('\"'))
+  if (partial.at(0) == wxS('\"'))
     partial = partial.Right(partial.Length() - 1);
 
   partial.Replace(wxFileName::GetPathSeparator(), "/");
@@ -394,7 +392,7 @@ void AutoComplete::UpdateLoadFiles(wxString partial, wxString maximaDir) {
 
   // Add all files from the maxima directory to the load file list
   if (partial != wxS("//")) {
-    GetMacFiles userLispIterator(m_wordList[loadfile], prefix);
+    GetMacFiles userLispIterator(m_wordList.at(loadfile), prefix);
     wxDir loadfilesdir(partial);
     if (loadfilesdir.IsOpened())
       loadfilesdir.Traverse(userLispIterator);
@@ -402,10 +400,10 @@ void AutoComplete::UpdateLoadFiles(wxString partial, wxString maximaDir) {
 }
 
 /// Returns a string array with functions which start with partial.
-wxArrayString AutoComplete::CompleteSymbol(wxString partial,
+std::vector<wxString> AutoComplete::CompleteSymbol(wxString partial,
                                            autoCompletionType type) {
-  wxArrayString completions;
-  wxArrayString perfectCompletions;
+  std::vector<wxString> completions;
+  std::vector<wxString> perfectCompletions;
 
   WaitForBackgroundThreads();
   if (((type == AutoComplete::demofile) || (type == AutoComplete::loadfile)) &&
@@ -416,19 +414,20 @@ wxArrayString AutoComplete::CompleteSymbol(wxString partial,
                _("Bug: Autocompletion requested for unknown type of item."));
 
   if ((type != tmplte) && (type >=0 ) && (type < numberOfTypes )) {
-    for (const auto &i : m_wordList[type]) {
+    for (const auto &i : m_wordList.at(type)) {
       if (i.StartsWith(partial) &&
-          completions.Index(i) == wxNOT_FOUND)
-        completions.Add(i);
+          (std::find(completions.begin(), completions.end(), i) == completions.end()))
+        completions.push_back(i);
     }
   } else if (type == tmplte) {
-    for (const auto &i: m_wordList[type]) {
+    for (const auto &i: m_wordList.at(type)) {
       if (i.StartsWith(partial)) {
-        if (completions.Index(i) == wxNOT_FOUND)
-          completions.Add(i);
+        if (std::find(completions.begin(), completions.end(), i) == completions.end())
+          completions.push_back(i);
         if (i.SubString(0, static_cast<size_t>(i.Find(wxS("("))) - 1) == partial &&
-            perfectCompletions.Index(i) == wxNOT_FOUND)
-          perfectCompletions.Add(i);
+            (std::find(perfectCompletions.begin(), perfectCompletions.end(), i) ==
+	     perfectCompletions.end()))
+          perfectCompletions.push_back(i);
       }
     }
   }
@@ -438,15 +437,15 @@ wxArrayString AutoComplete::CompleteSymbol(wxString partial,
   if (type == command) {
     for (const auto &it : m_worksheetWords) {
       if (it.first.StartsWith(partial)) {
-        if (completions.Index(it.first) == wxNOT_FOUND) {
-          completions.Add(it.first);
+        if (std::find(completions.begin(), completions.end(), it.first) == completions.end()) {
+          completions.push_back(it.first);
         }
       }
     }
   }
 
-  completions.Sort();
-  if (perfectCompletions.Count() > 0)
+  std::sort(completions.begin(), completions.end());
+  if (perfectCompletions.size() > 0)
     return perfectCompletions;
   return completions;
 }
@@ -471,8 +470,9 @@ void AutoComplete::AddSymbol_nowait(wxString fun, autoCompletionType type) {
 
   /// Add symbols
   if ((type != tmplte) &&
-      m_wordList[type].Index(fun, true, true) == wxNOT_FOUND)
-    m_wordList[type].Add(fun);
+      (std::find(m_wordList.at(type).begin(), m_wordList.at(type).end(), fun) ==
+       m_wordList.at(type).end()))
+    m_wordList.at(type).push_back(fun);
 
   /// Add templates - for given function and given argument count we
   /// only add one template. We count the arguments by counting '<'
@@ -486,13 +486,13 @@ void AutoComplete::AddSymbol_nowait(wxString fun, autoCompletionType type) {
 	wxString funName = fun.SubString(0, openpos);
 	long count = fun.Freq('<');
 	size_t i = 0;
-	for (const auto &o: m_wordList[type]) {
+	for (const auto &o: m_wordList.at(type)) {
 	  if (o.StartsWith(funName) && (o.Freq('<') == count))
 	    break;
 	  i++;
 	}
-	if (i == m_wordList[type].GetCount())
-	  m_wordList[type].Add(fun);
+	if (i == m_wordList.at(type).size())
+	  m_wordList.at(type).push_back(fun);
       }
   }
 }

@@ -309,21 +309,21 @@ void Variablespane::VariableUndefined(wxString var) {
     }
 }
 
-wxArrayString Variablespane::GetEscapedVarnames() {
-  wxArrayString retVal;
+std::vector<wxString> Variablespane::GetEscapedVarnames() {
+  std::vector<wxString> retVal;
   for (int i = 0; i < m_grid->GetNumberRows(); i++) {
     wxString var = m_grid->GetCellValue(i, 0);
     if (IsValidVariable(var))
-      retVal.Add(InvertCase(EscapeVarname(var)));
+      retVal.push_back(InvertCase(EscapeVarname(var)));
   }
   return retVal;
 }
 
-wxArrayString Variablespane::GetVarnames() {
-  wxArrayString retVal;
+std::vector<wxString> Variablespane::GetVarnames() {
+  std::vector<wxString> retVal;
   for (int i = 0; i < m_grid->GetNumberRows(); i++) {
     wxString var = m_grid->GetCellValue(i, 0);
-    retVal.Add(var);
+    retVal.push_back(var);
   }
   return retVal;
 }
