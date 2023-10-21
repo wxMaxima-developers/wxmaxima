@@ -1786,45 +1786,42 @@ wxMaxima::~wxMaxima() {
 
 bool MyDropTarget::OnDropFiles(wxCoord WXUNUSED(x), wxCoord WXUNUSED(y),
                                const wxArrayString &files) {
-  if (files.GetCount() != 1)
-    return true;
-
-  if (wxGetKeyState(WXK_SHIFT)) {
-    m_wxmax->m_worksheet->InsertText(files[0]);
-    return true;
-  }
-
-  if (files[0].Lower().EndsWith(wxS(".wxm")) ||
-      files[0].Lower().EndsWith(wxS(".wxmx")) ||
-      files[0].Lower().EndsWith(wxS(".wxmx~"))) {
-    if (m_wxmax->m_worksheet->GetTree() != NULL && !m_wxmax->DocumentSaved()) {
-      int close = m_wxmax->SaveDocumentP();
-
-      if (close == wxID_CANCEL)
-        return false;
-
-      if (close == wxID_YES) {
-        if (!m_wxmax->SaveFile())
-          return false;
+  bool success = true;
+  for(auto file:files)
+    {
+      if (wxGetKeyState(WXK_SHIFT)) {
+	m_wxmax->m_worksheet->InsertText(file);
       }
+      else if (file.Lower().EndsWith(wxS(".wxm")) ||
+	       file.Lower().EndsWith(wxS(".wxm~")) ||
+	       file.Lower().EndsWith(wxS("contents.xml")) ||
+	       file.Lower().EndsWith(wxS(".mac")) ||
+	       file.Lower().EndsWith(wxS(".wxmx")) ||
+	       file.Lower().EndsWith(wxS(".wxmx~"))) {
+	if (m_wxmax->m_worksheet->IsEmpty())
+	  {
+	    m_wxmax->OpenFile(file);
+	    continue;
+	  }
+	else
+	  MyApp::NewWindow(file);
+      }
+      else if (file.Lower().EndsWith(wxS(".png")) ||
+	       file.Lower().EndsWith(wxS(".jpeg")) ||
+	       file.Lower().EndsWith(wxS(".jpg")) ||
+	       file.Lower().EndsWith(wxS(".gif")) ||
+	       file.Lower().EndsWith(wxS(".svg")) ||
+	       file.Lower().EndsWith(wxS(".svgz"))) {
+	m_wxmax->LoadImage(file);
+      }
+      else if (file.Lower().EndsWith(wxS(".txt")))
+	{
+	  m_wxmax->m_worksheet->InsertText(file);
+	}
+      else
+	success = false;
     }
-
-    m_wxmax->OpenFile(files[0]);
-    return true;
-  }
-
-  if (files[0].Lower().EndsWith(wxS(".png")) ||
-      files[0].Lower().EndsWith(wxS(".jpeg")) ||
-      files[0].Lower().EndsWith(wxS(".jpg")) ||
-      files[0].Lower().EndsWith(wxS(".gif")) ||
-      files[0].Lower().EndsWith(wxS(".svg")) ||
-      files[0].Lower().EndsWith(wxS(".svgz"))) {
-    m_wxmax->LoadImage(files[0]);
-    return true;
-  }
-
-  m_wxmax->m_worksheet->InsertText(files[0]);
-  return true;
+  return success;
 }
 
 #endif
@@ -2611,7 +2608,8 @@ void wxMaxima::KillMaxima(bool logMessage) {
     // wxProcess::kill will fail on MSW. Something with a console.
     wxLogNull logNull;
     if (wxProcess::Kill(m_pid, wxSIGKILL, wxKILL_CHILDREN) != wxKILL_OK) {
-      wxProcess::Kill(m_pid, wxSIGKILL);
+      if(wxProcess::Kill(m_pid, wxSIGKILL) != wxKILL_OK)
+	  wxKill(m_pid, wxSIGKILL);
     }
   }
   m_configuration.InLispMode(false);

@@ -5,6 +5,10 @@
  * Correct label scaling after changing the zoom factor (#1815)
  * Repaired "copy as bitmap" (#1820)
  * Focus the search text on activating the search box (#1821)
+ * Correctly support dropping multiple files on the worksheet
+ * If the worksheet isn't empty dropping a file on the worksheed 
+   no more closes the currently open file
+ * Try harder to kill maxima on closing it
 
 # 23.10.0
  * A big rewrite to make the static analysis tools happy

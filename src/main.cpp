@@ -497,8 +497,6 @@ void MyApp::NewWindow(const wxString &file, bool evalOnStartup,
   frame->EvalOnStartup(evalOnStartup);
   wxMaximaFrame::m_topLevelWindows.push_back(frame);
   frame->ExitAfterEval(exitAfterEval);
-
-  SetTopWindow(frame);
   frame->Show(true);
   frame->ShowTip(false);
 }

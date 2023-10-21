@@ -62,7 +62,6 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
 	      wxAUI_MGR_TRANSPARENT_HINT | wxAUI_MGR_HINT_FADE),
     m_recentDocuments(wxS("document")),
     m_recentPackages(wxS("packages")) {
-
   m_bytesFromMaxima = 0;
   m_drawDimensions_last = -1;
   // Suppress window updates until this window has fully been created.
