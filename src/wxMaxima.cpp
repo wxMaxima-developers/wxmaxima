@@ -2609,8 +2609,12 @@ void wxMaxima::KillMaxima(bool logMessage) {
     // wxProcess::kill will fail on MSW. Something with a console.
     wxLogNull logNull;
     if (wxProcess::Kill(m_pid, wxSIGKILL, wxKILL_CHILDREN) != wxKILL_OK) {
-      if(wxProcess::Kill(m_pid, wxSIGKILL) != wxKILL_OK)
-	  wxKill(m_pid, wxSIGKILL);
+      if(wxProcess::Kill(m_pid, wxSIGKILL) != wxKILL_OK) {
+        wxKillError wxKillError_result;
+        if (wxKill(m_pid, wxSIGKILL, &wxKillError_result, wxKILL_CHILDREN) != 0){
+          wxLogMessage(_("Killing Maxima failed. wxKillError = %d"), wxKillError_result);
+        }
+      }
     }
   }
   m_configuration.InLispMode(false);
