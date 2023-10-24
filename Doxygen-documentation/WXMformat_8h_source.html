@@ -105,42 +105,42 @@ $(function() {
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; </div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="comment">// This enum&#39;s elements must be synchronized with (GroupCell.h) GroupType</span></div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="keyword">enum</span> WXMHeaderId {</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  WXM_INVALID = GC_TYPE_INVALID,</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  WXM_INPUT = GC_TYPE_CODE,</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;  WXM_TITLE = GC_TYPE_TITLE,</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;  WXM_SECTION = GC_TYPE_SECTION,</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;  WXM_SUBSECTION = GC_TYPE_SUBSECTION,</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;  WXM_SUBSUBSECTION = GC_TYPE_SUBSUBSECTION,</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;  WXM_HEADING5 = GC_TYPE_HEADING5,</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;  WXM_HEADING6 = GC_TYPE_HEADING6,</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;  WXM_COMMENT = GC_TYPE_TEXT,</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;  WXM_CAPTION = GC_TYPE_IMAGE,</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;  WXM_PAGEBREAK = GC_TYPE_PAGEBREAK,</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;  WXM_IMAGE,</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;  WXM_ANSWER,</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;  WXM_QUESTION,</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;  WXM_FOLD, WXM_FOLD_END,</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;  WXM_HIDE,</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;  WXM_AUTOANSWER,</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    WXM_INVALID = GC_TYPE_INVALID,</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    WXM_INPUT = GC_TYPE_CODE,</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    WXM_TITLE = GC_TYPE_TITLE,</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    WXM_SECTION = GC_TYPE_SECTION,</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    WXM_SUBSECTION = GC_TYPE_SUBSECTION,</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    WXM_SUBSUBSECTION = GC_TYPE_SUBSUBSECTION,</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    WXM_HEADING5 = GC_TYPE_HEADING5,</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    WXM_HEADING6 = GC_TYPE_HEADING6,</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    WXM_COMMENT = GC_TYPE_TEXT,</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    WXM_CAPTION = GC_TYPE_IMAGE,</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    WXM_PAGEBREAK = GC_TYPE_PAGEBREAK,</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    WXM_IMAGE,</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    WXM_ANSWER,</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    WXM_QUESTION,</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    WXM_FOLD, WXM_FOLD_END,</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    WXM_HIDE,</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    WXM_AUTOANSWER,</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  WXM_MAX <span class="comment">// Must be the last member</span></div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    WXM_MAX <span class="comment">// Must be the last member</span></div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;};</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="keyword">namespace </span>Format</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;{</div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160; </div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  wxString TreeToWXM(<a class="code" href="classGroupCell.html">GroupCell</a> *cell, <span class="keywordtype">bool</span> wxm = <span class="keyword">true</span>);</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    wxString TreeToWXM(<a class="code" href="classGroupCell.html">GroupCell</a> *cell, <span class="keywordtype">bool</span> wxm = <span class="keyword">true</span>);</div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; </div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  std::unique_ptr&lt;GroupCell&gt; TreeFromWXM(<span class="keyword">const</span> std::vector&lt;wxString&gt; &amp;wxmLines, <a class="code" href="classConfiguration.html">Configuration</a> *config);</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    std::unique_ptr&lt;GroupCell&gt; TreeFromWXM(<span class="keyword">const</span> std::vector&lt;wxString&gt; &amp;wxmLines, <a class="code" href="classConfiguration.html">Configuration</a> *config);</div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; </div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  std::unique_ptr&lt;GroupCell&gt; ParseWXMFile(wxTextBuffer &amp;text, <a class="code" href="classConfiguration.html">Configuration</a> *config);</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    std::unique_ptr&lt;GroupCell&gt; ParseWXMFile(wxTextBuffer &amp;text, <a class="code" href="classConfiguration.html">Configuration</a> *config);</div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; </div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;  std::unique_ptr&lt;GroupCell&gt; ParseMACContents(<span class="keyword">const</span> wxString &amp;macContents, <a class="code" href="classConfiguration.html">Configuration</a> *config);</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    std::unique_ptr&lt;GroupCell&gt; ParseMACContents(<span class="keyword">const</span> wxString &amp;macContents, <a class="code" href="classConfiguration.html">Configuration</a> *config);</div>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160; </div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;  std::unique_ptr&lt;GroupCell&gt; ParseMACFile(wxTextBuffer &amp;text, <span class="keywordtype">bool</span> xMaximaFile, <a class="code" href="classConfiguration.html">Configuration</a> *config);</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    std::unique_ptr&lt;GroupCell&gt; ParseMACFile(wxTextBuffer &amp;text, <span class="keywordtype">bool</span> xMaximaFile, <a class="code" href="classConfiguration.html">Configuration</a> *config);</div>
 <div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160; </div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;  <span class="keyword">extern</span> <span class="keyword">const</span> wxString WXMFirstLine;</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;  <span class="keyword">extern</span> <span class="keyword">const</span> wxString m_emptyString;</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    <span class="keyword">extern</span> <span class="keyword">const</span> wxString WXMFirstLine;</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    <span class="keyword">extern</span> <span class="keyword">const</span> wxString m_emptyString;</div>
 <div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160; </div>
 <div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;}; <span class="comment">// namespace Format</span></div>
 <div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160; </div>

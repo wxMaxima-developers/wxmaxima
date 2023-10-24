@@ -104,32 +104,32 @@ $(function() {
 <div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="classFindReplaceDialog.html">   41</a></span>&#160;<span class="keyword">class </span><a class="code" href="classFindReplaceDialog.html">FindReplaceDialog</a> : <span class="keyword">public</span> wxDialog</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;{</div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;  <a class="code" href="classFindReplaceDialog.html">FindReplaceDialog</a>(wxWindow *parent, <a class="code" href="classFindReplacePane_1_1FindReplaceData.html">FindReplacePane::FindReplaceData</a> *data,</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;                    <span class="keyword">const</span> wxString &amp;title,</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;                    <a class="code" href="classFindReplaceDialog.html">FindReplaceDialog</a> **pointerToDialogue = NULL,</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;                    <span class="keywordtype">int</span> style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER);</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <a class="code" href="classFindReplaceDialog.html">FindReplaceDialog</a>(wxWindow *parent, <a class="code" href="classFindReplacePane_1_1FindReplaceData.html">FindReplacePane::FindReplaceData</a> *data,</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;                      <span class="keyword">const</span> wxString &amp;title,</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;                      <a class="code" href="classFindReplaceDialog.html">FindReplaceDialog</a> **pointerToDialogue = NULL,</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;                      <span class="keywordtype">int</span> style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER);</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;  ~<a class="code" href="classFindReplaceDialog.html">FindReplaceDialog</a>();</div>
-<div class="line"><a name="l00051"></a><span class="lineno"><a class="line" href="classFindReplaceDialog.html#a5c6985be0bce8908674c2a7e39facbfc">   51</a></span>&#160;  wxFindReplaceData *<a class="code" href="classFindReplaceDialog.html#a5c6985be0bce8908674c2a7e39facbfc">GetData</a>()</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    { <span class="keywordflow">return</span> <a class="code" href="classFindReplaceDialog.html#a69ea637e828cfea632086b7f7e5b9d86">m_contents</a>-&gt;GetData(); }</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    ~<a class="code" href="classFindReplaceDialog.html">FindReplaceDialog</a>();</div>
+<div class="line"><a name="l00051"></a><span class="lineno"><a class="line" href="classFindReplaceDialog.html#a5c6985be0bce8908674c2a7e39facbfc">   51</a></span>&#160;    wxFindReplaceData *<a class="code" href="classFindReplaceDialog.html#a5c6985be0bce8908674c2a7e39facbfc">GetData</a>()</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        { <span class="keywordflow">return</span> <a class="code" href="classFindReplaceDialog.html#a69ea637e828cfea632086b7f7e5b9d86">m_contents</a>-&gt;GetData(); }</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;  <span class="keywordtype">bool</span> GetRegexSearch()<span class="keyword"> const </span>{<span class="keywordflow">return</span> <a class="code" href="classFindReplaceDialog.html#a69ea637e828cfea632086b7f7e5b9d86">m_contents</a>-&gt;GetRegexSearch();}</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <span class="keywordtype">bool</span> GetRegexSearch()<span class="keyword"> const </span>{<span class="keywordflow">return</span> <a class="code" href="classFindReplaceDialog.html#a69ea637e828cfea632086b7f7e5b9d86">m_contents</a>-&gt;GetRegexSearch();}</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
-<div class="line"><a name="l00057"></a><span class="lineno"><a class="line" href="classFindReplaceDialog.html#a87293d082ad3b0b56cbc1cae0de5c14c">   57</a></span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classFindReplaceDialog.html#a87293d082ad3b0b56cbc1cae0de5c14c">SetFindString</a>(wxString strng)</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    { <a class="code" href="classFindReplaceDialog.html#a69ea637e828cfea632086b7f7e5b9d86">m_contents</a>-&gt;SetFindString(strng); }</div>
+<div class="line"><a name="l00057"></a><span class="lineno"><a class="line" href="classFindReplaceDialog.html#a87293d082ad3b0b56cbc1cae0de5c14c">   57</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classFindReplaceDialog.html#a87293d082ad3b0b56cbc1cae0de5c14c">SetFindString</a>(wxString strng)</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        { <a class="code" href="classFindReplaceDialog.html#a69ea637e828cfea632086b7f7e5b9d86">m_contents</a>-&gt;SetFindString(strng); }</div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160; </div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classFindReplaceDialog.html#ad530f83012199f8a360bedc4dd3463bb">OnActivate</a>(wxActivateEvent &amp;WXUNUSED(event));</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classFindReplaceDialog.html#ad530f83012199f8a360bedc4dd3463bb">OnActivate</a>(wxActivateEvent &amp;WXUNUSED(event));</div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; </div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classFindReplaceDialog.html#a7a791a24cebb7acde874a0d41551fefd">OnKeyDown</a>(wxKeyEvent &amp;WXUNUSED(event));</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classFindReplaceDialog.html#a7a791a24cebb7acde874a0d41551fefd">OnKeyDown</a>(wxKeyEvent &amp;WXUNUSED(event));</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
-<div class="line"><a name="l00072"></a><span class="lineno"><a class="line" href="classFindReplaceDialog.html#a69ea637e828cfea632086b7f7e5b9d86">   72</a></span>&#160;  <a class="code" href="classFindReplacePane.html">FindReplacePane</a> *<a class="code" href="classFindReplaceDialog.html#a69ea637e828cfea632086b7f7e5b9d86">m_contents</a>;</div>
+<div class="line"><a name="l00072"></a><span class="lineno"><a class="line" href="classFindReplaceDialog.html#a69ea637e828cfea632086b7f7e5b9d86">   72</a></span>&#160;    <a class="code" href="classFindReplacePane.html">FindReplacePane</a> *<a class="code" href="classFindReplaceDialog.html#a69ea637e828cfea632086b7f7e5b9d86">m_contents</a>;</div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160; </div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  <a class="code" href="classFindReplaceDialog.html">FindReplaceDialog</a> **m_pointerToDialogue;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  <span class="keywordtype">bool</span> m_activateDuringConstruction;</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;  <span class="keyword">static</span> wxSize m_windowSize;</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;  <span class="keyword">static</span> wxPoint m_windowPos;</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <a class="code" href="classFindReplaceDialog.html">FindReplaceDialog</a> **m_pointerToDialogue;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="keywordtype">bool</span> m_activateDuringConstruction;</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <span class="keyword">static</span> wxSize m_windowSize;</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    <span class="keyword">static</span> wxPoint m_windowPos;</div>
 <div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;};</div>
 <div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160; </div>
 <div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// FINDREPLACEDIALOG_H</span></div>

@@ -113,46 +113,46 @@ $(function() {
 <div class="line"><a name="l00057"></a><span class="lineno"><a class="line" href="classDirstructure.html">   57</a></span>&#160;<span class="keyword">class </span><a class="code" href="classDirstructure.html">Dirstructure</a></div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;{</div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  <a class="code" href="classDirstructure.html#a34b1650abc08ce6c71a1d6fec582bbc0">Dirstructure</a>();</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  </div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <a class="code" href="classDirstructure.html#a34b1650abc08ce6c71a1d6fec582bbc0">Dirstructure</a>();</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  wxString ResourcesDir() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    wxString ResourcesDir() <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00069"></a><span class="lineno"><a class="line" href="classDirstructure.html#a41e6178b2f12bd89cf47cb1f83e44791">   69</a></span>&#160;  <span class="keyword">static</span> wxString <a class="code" href="classDirstructure.html#a41e6178b2f12bd89cf47cb1f83e44791">UserConfDir</a>() {<span class="keywordflow">return</span> m_userConfDir;}</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="classDirstructure.html#a41e6178b2f12bd89cf47cb1f83e44791">UserConfDir</a>(wxString userConfDir);</div>
+<div class="line"><a name="l00069"></a><span class="lineno"><a class="line" href="classDirstructure.html#a41e6178b2f12bd89cf47cb1f83e44791">   69</a></span>&#160;    <span class="keyword">static</span> wxString <a class="code" href="classDirstructure.html#a41e6178b2f12bd89cf47cb1f83e44791">UserConfDir</a>() {<span class="keywordflow">return</span> m_userConfDir;}</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="classDirstructure.html#a41e6178b2f12bd89cf47cb1f83e44791">UserConfDir</a>(wxString userConfDir);</div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; </div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  wxString <a class="code" href="classDirstructure.html#a3988e035ddee8858db137cb59a1d7e0f">DataDir</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    wxString <a class="code" href="classDirstructure.html#a3988e035ddee8858db137cb59a1d7e0f">DataDir</a>() <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; </div>
-<div class="line"><a name="l00077"></a><span class="lineno"><a class="line" href="classDirstructure.html#a5f669ac1a484b9e148b6404796d7dcbe">   77</a></span>&#160;  wxString <a class="code" href="classDirstructure.html#a5f669ac1a484b9e148b6404796d7dcbe">FontDir</a>()<span class="keyword"> const </span>{<span class="keywordflow">return</span> <a class="code" href="classDirstructure.html#a3988e035ddee8858db137cb59a1d7e0f">DataDir</a>()+wxS(<span class="stringliteral">&quot;/../fonts&quot;</span>);}</div>
+<div class="line"><a name="l00077"></a><span class="lineno"><a class="line" href="classDirstructure.html#a5f669ac1a484b9e148b6404796d7dcbe">   77</a></span>&#160;    wxString <a class="code" href="classDirstructure.html#a5f669ac1a484b9e148b6404796d7dcbe">FontDir</a>()<span class="keyword"> const </span>{<span class="keywordflow">return</span> <a class="code" href="classDirstructure.html#a3988e035ddee8858db137cb59a1d7e0f">DataDir</a>()+wxS(<span class="stringliteral">&quot;/../fonts&quot;</span>);}</div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
-<div class="line"><a name="l00080"></a><span class="lineno"><a class="line" href="classDirstructure.html#ad67a848e54d1e40f97453a8e4279f59c">   80</a></span>&#160;  wxString <a class="code" href="classDirstructure.html#ad67a848e54d1e40f97453a8e4279f59c">HelpDir</a>()<span class="keyword"> const </span>{<span class="keywordflow">return</span> m_helpDir;}</div>
-<div class="line"><a name="l00082"></a><span class="lineno"><a class="line" href="classDirstructure.html#abf0874006796c5a8ac435fa14565f57a">   82</a></span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classDirstructure.html#abf0874006796c5a8ac435fa14565f57a">HelpDir</a>(wxString helpDir){m_helpDir = helpDir;}</div>
+<div class="line"><a name="l00080"></a><span class="lineno"><a class="line" href="classDirstructure.html#ad67a848e54d1e40f97453a8e4279f59c">   80</a></span>&#160;    wxString <a class="code" href="classDirstructure.html#ad67a848e54d1e40f97453a8e4279f59c">HelpDir</a>()<span class="keyword"> const </span>{<span class="keywordflow">return</span> m_helpDir;}</div>
+<div class="line"><a name="l00082"></a><span class="lineno"><a class="line" href="classDirstructure.html#abf0874006796c5a8ac435fa14565f57a">   82</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classDirstructure.html#abf0874006796c5a8ac435fa14565f57a">HelpDir</a>(wxString helpDir){m_helpDir = helpDir;}</div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160; </div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;  <span class="keyword">static</span> wxString <a class="code" href="classDirstructure.html#a9983e2d05056f5e55105a9d5c6cb63b9">UserAutocompleteFile</a>();</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <span class="keyword">static</span> wxString <a class="code" href="classDirstructure.html#a9983e2d05056f5e55105a9d5c6cb63b9">UserAutocompleteFile</a>();</div>
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160; </div>
-<div class="line"><a name="l00090"></a><span class="lineno"><a class="line" href="classDirstructure.html#a97c4733132048586d7142b55d194e41e">   90</a></span>&#160;  wxString <a class="code" href="classDirstructure.html#a97c4733132048586d7142b55d194e41e">AutocompleteFile</a>()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<span class="keyword">    </span>{ <span class="keywordflow">return</span> <a class="code" href="classDirstructure.html#a3988e035ddee8858db137cb59a1d7e0f">DataDir</a>() + wxS(<span class="stringliteral">&quot;/autocomplete.txt&quot;</span>); }</div>
+<div class="line"><a name="l00090"></a><span class="lineno"><a class="line" href="classDirstructure.html#a97c4733132048586d7142b55d194e41e">   90</a></span>&#160;    wxString <a class="code" href="classDirstructure.html#a97c4733132048586d7142b55d194e41e">AutocompleteFile</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<span class="keyword">        </span>{ <span class="keywordflow">return</span> <a class="code" href="classDirstructure.html#a3988e035ddee8858db137cb59a1d7e0f">DataDir</a>() + wxS(<span class="stringliteral">&quot;/autocomplete.txt&quot;</span>); }</div>
 <div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160; </div>
-<div class="line"><a name="l00097"></a><span class="lineno"><a class="line" href="classDirstructure.html#a854184b4fd40416aab4f26021f895544">   97</a></span>&#160;  wxString <a class="code" href="classDirstructure.html#a854184b4fd40416aab4f26021f895544">LocaleDir</a>()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<span class="keyword">    </span>{ <span class="keywordflow">return</span> ResourcesDir() + wxS(<span class="stringliteral">&quot;/locale&quot;</span>); }</div>
+<div class="line"><a name="l00097"></a><span class="lineno"><a class="line" href="classDirstructure.html#a854184b4fd40416aab4f26021f895544">   97</a></span>&#160;    wxString <a class="code" href="classDirstructure.html#a854184b4fd40416aab4f26021f895544">LocaleDir</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<span class="keyword">        </span>{ <span class="keywordflow">return</span> ResourcesDir() + wxS(<span class="stringliteral">&quot;/locale&quot;</span>); }</div>
 <div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160; </div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;  <span class="keyword">static</span> wxString <a class="code" href="classDirstructure.html#a280d3ee7cd41633a0c3a79d4a19d04ee">MaximaDefaultLocation</a>();</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    <span class="keyword">static</span> wxString <a class="code" href="classDirstructure.html#a280d3ee7cd41633a0c3a79d4a19d04ee">MaximaDefaultLocation</a>();</div>
 <div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160; </div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;  <span class="keyword">static</span> wxString</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;  AnchorsCacheFile()</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    {</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;      <span class="keywordflow">return</span> <a class="code" href="classDirstructure.html#a41e6178b2f12bd89cf47cb1f83e44791">UserConfDir</a>() + <span class="stringliteral">&quot;/manual_anchors.xml&quot;</span>;</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    }</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;  </div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;  <span class="keyword">static</span> <a class="code" href="classDirstructure.html">Dirstructure</a> *Get()</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    {</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;      <span class="keywordflow">return</span> m_dirStructure;</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    }</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    <span class="keyword">static</span> wxString</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    AnchorsCacheFile()</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;        {</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="classDirstructure.html#a41e6178b2f12bd89cf47cb1f83e44791">UserConfDir</a>() + <span class="stringliteral">&quot;/manual_anchors.xml&quot;</span>;</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;        }</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160; </div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    <span class="keyword">static</span> <a class="code" href="classDirstructure.html">Dirstructure</a> *Get()</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;        {</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;            <span class="keywordflow">return</span> m_dirStructure;</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;        }</div>
 <div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;  wxString m_helpDir;</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;  <span class="keyword">static</span> wxString m_userConfDir;</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;  <span class="keyword">static</span> <a class="code" href="classDirstructure.html">Dirstructure</a> *m_dirStructure;</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;    wxString m_helpDir;</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;    <span class="keyword">static</span> wxString m_userConfDir;</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;    <span class="keyword">static</span> <a class="code" href="classDirstructure.html">Dirstructure</a> *m_dirStructure;</div>
 <div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;};</div>
 <div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160; </div>
 <div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// DIRSTRUCTURE_H</span></div>

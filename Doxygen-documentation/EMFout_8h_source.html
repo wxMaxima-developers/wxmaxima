@@ -104,28 +104,28 @@ $(function() {
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="keyword">class </span>Emfout final</div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;{</div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  <span class="keyword">explicit</span> Emfout(<a class="code" href="classConfiguration.html">Configuration</a> **configuration, <span class="keyword">const</span> wxString &amp;filename = {});</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  <span class="keyword">explicit</span> Emfout(<a class="code" href="classConfiguration.html">Configuration</a> **configuration, std::unique_ptr&lt;Cell&gt; &amp;&amp;tree, <span class="keyword">const</span> wxString &amp;filename = {});</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  ~Emfout();</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <span class="keyword">explicit</span> Emfout(<a class="code" href="classConfiguration.html">Configuration</a> **configuration, <span class="keyword">const</span> wxString &amp;filename = {});</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="keyword">explicit</span> Emfout(<a class="code" href="classConfiguration.html">Configuration</a> **configuration, std::unique_ptr&lt;Cell&gt; &amp;&amp;tree, <span class="keyword">const</span> wxString &amp;filename = {});</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    ~Emfout();</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; </div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;  wxSize Render(std::unique_ptr&lt;Cell&gt; &amp;&amp;tree);</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    wxSize Render(std::unique_ptr&lt;Cell&gt; &amp;&amp;tree);</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; </div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;  wxSize GetSize()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> m_size; }</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;  <span class="keywordtype">bool</span> IsOk()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> m_isOk; }</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    wxSize GetSize()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> m_size; }</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="keywordtype">bool</span> IsOk()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> m_isOk; }</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; </div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;  <span class="keywordtype">bool</span> ToClipboard();</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="keywordtype">bool</span> ToClipboard();</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;  std::unique_ptr&lt;wxEnhMetaFileDataObject&gt; GetDataObject() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    std::unique_ptr&lt;wxEnhMetaFileDataObject&gt; GetDataObject() <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160; </div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  std::unique_ptr&lt;Cell&gt; m_tree;</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;  <a class="code" href="classOutCommon.html">OutCommon</a> m_cmn;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  wxEnhMetaFileDC m_recalculationDc;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;  std::unique_ptr&lt;wxEnhMetaFile&gt; m_metaFile;</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  wxSize m_size = wxDefaultSize;</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  <span class="keywordtype">bool</span> m_isOk = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    std::unique_ptr&lt;Cell&gt; m_tree;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <a class="code" href="classOutCommon.html">OutCommon</a> m_cmn;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    wxEnhMetaFileDC m_recalculationDc;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    std::unique_ptr&lt;wxEnhMetaFile&gt; m_metaFile;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    wxSize m_size = wxDefaultSize;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <span class="keywordtype">bool</span> m_isOk = <span class="keyword">false</span>;</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  <span class="keywordtype">bool</span> Layout();</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <span class="keywordtype">bool</span> Layout();</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;};</div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; </div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// wxUSE_ENH_METAFILE</span></div>

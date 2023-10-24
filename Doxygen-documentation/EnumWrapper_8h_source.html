@@ -130,36 +130,36 @@ $(function() {
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="preprocessor">#include &lt;type_traits&gt;</span></div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">typename</span> Enum, <span class="keyword">typename</span> Storage, Enum defaultValue = Enum{},</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  <span class="keyword">typename</span> std::enable_if&lt;std::is_enum&lt;Enum&gt;::value &amp;&amp;</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;              std::is_integral&lt;Storage&gt;::value,</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;              <span class="keywordtype">bool</span>&gt;::type = <span class="keyword">true</span>&gt;</div>
-<div class="line"><a name="l00075"></a><span class="lineno"><a class="line" href="classEnumWrapper.html">   75</a></span>&#160;  <span class="keyword">class </span><a class="code" href="classEnumWrapper.html">EnumWrapper</a> {</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    Storage value = Storage(defaultValue);</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <span class="keyword">typename</span> std::enable_if&lt;std::is_enum&lt;Enum&gt;::value &amp;&amp;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;                            std::is_integral&lt;Storage&gt;::value,</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;                            <span class="keywordtype">bool</span>&gt;::type = <span class="keyword">true</span>&gt;</div>
+<div class="line"><a name="l00075"></a><span class="lineno"><a class="line" href="classEnumWrapper.html">   75</a></span>&#160;    <span class="keyword">class </span><a class="code" href="classEnumWrapper.html">EnumWrapper</a> {</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;        Storage value = Storage(defaultValue);</div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160; </div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="comment">// We can at least make sure that the default value fits</span></div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    static_assert(</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;          Enum(Storage(defaultValue)) == defaultValue,</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;          <span class="stringliteral">&quot;The default value doesn&#39;t survive a roundtrip through this wrapper.&quot;</span>);</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <span class="comment">// There&#39;s no point in using this type if it doesn&#39;t save space.</span></div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    static_assert(</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;          <span class="keyword">sizeof</span>(Storage) &lt; <span class="keyword">sizeof</span>(Enum),</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;          <span class="stringliteral">&quot;EnumWrapper should be used only to save space.&quot;</span></div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;          <span class="stringliteral">&quot;When removing it, don&#39;t forget to take care of default value!&quot;</span>);</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        <span class="comment">// We can at least make sure that the default value fits</span></div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        static_assert(</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;            Enum(Storage(defaultValue)) == defaultValue,</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;            <span class="stringliteral">&quot;The default value doesn&#39;t survive a roundtrip through this wrapper.&quot;</span>);</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        <span class="comment">// There&#39;s no point in using this type if it doesn&#39;t save space.</span></div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        static_assert(</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;            <span class="keyword">sizeof</span>(Storage) &lt; <span class="keyword">sizeof</span>(Enum),</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;            <span class="stringliteral">&quot;EnumWrapper should be used only to save space.&quot;</span></div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;            <span class="stringliteral">&quot;When removing it, don&#39;t forget to take care of default value!&quot;</span>);</div>
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160; </div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;  <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    constexpr <a class="code" href="classEnumWrapper.html">EnumWrapper</a>() = <span class="keywordflow">default</span>;</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    constexpr <a class="code" href="classEnumWrapper.html">EnumWrapper</a>(Storage) = <span class="keyword">delete</span>;</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    <span class="comment">// cppcheck-suppress noExplicitConstructor</span></div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    constexpr <a class="code" href="classEnumWrapper.html">EnumWrapper</a>(Enum value) noexcept : value(value) {}</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    constexpr <span class="keyword">operator</span> Enum() <span class="keyword">const</span> noexcept { <span class="keywordflow">return</span> Enum(value); }</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    constexpr <span class="keyword">operator</span> Storage() <span class="keyword">const</span> = <span class="keyword">delete</span>;</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    constexpr <span class="keywordtype">size_t</span> hash()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> std::hash&lt;Storage&gt;()(value); }</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        constexpr <a class="code" href="classEnumWrapper.html">EnumWrapper</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        constexpr <a class="code" href="classEnumWrapper.html">EnumWrapper</a>(Storage) = <span class="keyword">delete</span>;</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        <span class="comment">// cppcheck-suppress noExplicitConstructor</span></div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        constexpr <a class="code" href="classEnumWrapper.html">EnumWrapper</a>(Enum value) noexcept : value(value) {}</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        constexpr <span class="keyword">operator</span> Enum() <span class="keyword">const</span> noexcept { <span class="keywordflow">return</span> Enum(value); }</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        constexpr <span class="keyword">operator</span> Storage() <span class="keyword">const</span> = <span class="keyword">delete</span>;</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        constexpr <span class="keywordtype">size_t</span> hash()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> std::hash&lt;Storage&gt;()(value); }</div>
 <div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160; </div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    constexpr <span class="keywordtype">bool</span> operator==(<a class="code" href="classEnumWrapper.html">EnumWrapper</a> o)<span class="keyword"> const </span>{ <span class="keywordflow">return</span> value == o.value;  }</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    constexpr <span class="keywordtype">bool</span> operator==(Enum o)<span class="keyword"> const </span>{ <span class="keywordflow">return</span> value == o;  }</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    constexpr <span class="keywordtype">bool</span> operator!=(<a class="code" href="classEnumWrapper.html">EnumWrapper</a> o)<span class="keyword"> const </span>{ <span class="keywordflow">return</span> value != o.value;  }</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    constexpr <span class="keywordtype">bool</span> operator!=(Enum o)<span class="keyword"> const </span>{ <span class="keywordflow">return</span> value != o;  }</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;  };</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        constexpr <span class="keywordtype">bool</span> operator==(<a class="code" href="classEnumWrapper.html">EnumWrapper</a> o)<span class="keyword"> const </span>{ <span class="keywordflow">return</span> value == o.value;  }</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;        constexpr <span class="keywordtype">bool</span> operator==(Enum o)<span class="keyword"> const </span>{ <span class="keywordflow">return</span> value == o;  }</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;        constexpr <span class="keywordtype">bool</span> operator!=(<a class="code" href="classEnumWrapper.html">EnumWrapper</a> o)<span class="keyword"> const </span>{ <span class="keywordflow">return</span> value != o.value;  }</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;        constexpr <span class="keywordtype">bool</span> operator!=(Enum o)<span class="keyword"> const </span>{ <span class="keywordflow">return</span> value != o;  }</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    };</div>
 <div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160; </div>
 <div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">typename</span> E, <span class="keyword">typename</span> S, E defVal&gt;</div>
 <div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;constexpr <span class="keywordtype">bool</span> operator==(E a, <a class="code" href="classEnumWrapper.html">EnumWrapper&lt;E, S, defVal&gt;</a> b) { <span class="keywordflow">return</span> b == a;  }</div>
@@ -169,13 +169,13 @@ $(function() {
 <div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160; </div>
 <div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;<span class="keyword">namespace </span>std {</div>
 <div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160; </div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;  <span class="keyword">template</span> &lt;<span class="keyword">typename</span> Enum, <span class="keyword">typename</span> Storage, Enum defaultValue&gt;</div>
-<div class="line"><a name="l00112"></a><span class="lineno"><a class="line" href="structstd_1_1hash_3_01EnumWrapper_3_01Enum_00_01Storage_00_01defaultValue_01_4_01_4.html">  112</a></span>&#160;  <span class="keyword">struct </span>hash&lt;<a class="code" href="classEnumWrapper.html">EnumWrapper</a>&lt;Enum, Storage, defaultValue&gt;&gt; {</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    constexpr <span class="keyword">auto</span></div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;    operator()(<a class="code" href="classEnumWrapper.html">EnumWrapper&lt;Enum, Storage, defaultValue&gt;</a> value)<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;      <span class="keywordflow">return</span> value.hash();</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;    }</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;  };</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> Enum, <span class="keyword">typename</span> Storage, Enum defaultValue&gt;</div>
+<div class="line"><a name="l00112"></a><span class="lineno"><a class="line" href="structstd_1_1hash_3_01EnumWrapper_3_01Enum_00_01Storage_00_01defaultValue_01_4_01_4.html">  112</a></span>&#160;    <span class="keyword">struct </span>hash&lt;<a class="code" href="classEnumWrapper.html">EnumWrapper</a>&lt;Enum, Storage, defaultValue&gt;&gt; {</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;        constexpr <span class="keyword">auto</span></div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;        operator()(<a class="code" href="classEnumWrapper.html">EnumWrapper&lt;Enum, Storage, defaultValue&gt;</a> value)<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;            <span class="keywordflow">return</span> value.hash();</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;        }</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;    };</div>
 <div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160; </div>
 <div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;} <span class="comment">// namespace std</span></div>
 <div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160; </div>

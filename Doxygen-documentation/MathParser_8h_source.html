@@ -113,120 +113,120 @@ $(function() {
 <div class="line"><a name="l00052"></a><span class="lineno"><a class="line" href="classMathParser.html">   52</a></span>&#160;<span class="keyword">class </span><a class="code" href="classMathParser.html">MathParser</a></div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;{</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  <span class="keyword">explicit</span> <a class="code" href="classMathParser.html#ad10265ea446b1b75a90c7222fd1fe2a7">MathParser</a>(<a class="code" href="classConfiguration.html">Configuration</a> *cfg, <span class="keyword">const</span> wxString &amp;zipfile = {});</div>
-<div class="line"><a name="l00062"></a><span class="lineno"><a class="line" href="classMathParser.html#a88bcb342d41f0ffcd126cbea77d1dccd">   62</a></span>&#160;  <a class="code" href="classMathParser.html#a88bcb342d41f0ffcd126cbea77d1dccd">MathParser</a>(<span class="keyword">const</span> <a class="code" href="classMathParser.html">MathParser</a>&amp;) = <span class="keyword">delete</span>;</div>
-<div class="line"><a name="l00064"></a><span class="lineno"><a class="line" href="classMathParser.html#acc85f505eed0e6aa69aa7bb9d1062a22">   64</a></span>&#160;  <a class="code" href="classMathParser.html">MathParser</a>&amp; <a class="code" href="classMathParser.html#acc85f505eed0e6aa69aa7bb9d1062a22">operator=</a>(<span class="keyword">const</span> <a class="code" href="classMathParser.html">MathParser</a>&amp;) = <span class="keyword">delete</span>;</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  ~<a class="code" href="classMathParser.html">MathParser</a>();</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="keyword">explicit</span> <a class="code" href="classMathParser.html#ad10265ea446b1b75a90c7222fd1fe2a7">MathParser</a>(<a class="code" href="classConfiguration.html">Configuration</a> *cfg, <span class="keyword">const</span> wxString &amp;zipfile = {});</div>
+<div class="line"><a name="l00062"></a><span class="lineno"><a class="line" href="classMathParser.html#a88bcb342d41f0ffcd126cbea77d1dccd">   62</a></span>&#160;    <a class="code" href="classMathParser.html#a88bcb342d41f0ffcd126cbea77d1dccd">MathParser</a>(<span class="keyword">const</span> <a class="code" href="classMathParser.html">MathParser</a>&amp;) = <span class="keyword">delete</span>;</div>
+<div class="line"><a name="l00064"></a><span class="lineno"><a class="line" href="classMathParser.html#acc85f505eed0e6aa69aa7bb9d1062a22">   64</a></span>&#160;    <a class="code" href="classMathParser.html">MathParser</a>&amp; <a class="code" href="classMathParser.html#acc85f505eed0e6aa69aa7bb9d1062a22">operator=</a>(<span class="keyword">const</span> <a class="code" href="classMathParser.html">MathParser</a>&amp;) = <span class="keyword">delete</span>;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    ~<a class="code" href="classMathParser.html">MathParser</a>();</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  <span class="keywordtype">void</span> SetUserLabel(wxString label){ m_userDefinedLabel = label; }</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="comment">  /***</span></div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="comment">   * Parse the string s, which is (correct) xml fragment.</span></div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="comment">   * Put the result in line.</span></div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="comment">   */</span></div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  std::unique_ptr&lt;Cell&gt; ParseLine(wxString s, <a class="code" href="Cell_8h.html#accb32ccb3ff8f2c6736a6ebe544894fd">CellType</a> style = MC_TYPE_DEFAULT);</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="comment">  /***</span></div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="comment">   * Parse the node and return the corresponding tag.</span></div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="comment">   */</span></div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  </div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  std::unique_ptr&lt;Cell&gt; ParseTag(wxXmlNode *node, <span class="keywordtype">bool</span> all = <span class="keyword">true</span>);</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  std::unique_ptr&lt;Cell&gt; ParseRowTag(wxXmlNode *node);</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <span class="keywordtype">void</span> SetUserLabel(wxString label){ m_userDefinedLabel = label; }</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="comment">    /***</span></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="comment">     * Parse the string s, which is (correct) xml fragment.</span></div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="comment">     * Put the result in line.</span></div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="comment">     */</span></div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    std::unique_ptr&lt;Cell&gt; ParseLine(wxString s, <a class="code" href="Cell_8h.html#accb32ccb3ff8f2c6736a6ebe544894fd">CellType</a> style = MC_TYPE_DEFAULT);</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="comment">    /***</span></div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="comment">     * Parse the node and return the corresponding tag.</span></div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="comment">     */</span></div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; </div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    std::unique_ptr&lt;Cell&gt; ParseTag(wxXmlNode *node, <span class="keywordtype">bool</span> all = <span class="keyword">true</span>);</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    std::unique_ptr&lt;Cell&gt; ParseRowTag(wxXmlNode *node);</div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; </div>
-<div class="line"><a name="l00081"></a><span class="lineno"><a class="line" href="classMathParser.html#ad0fbc23e1d108a73e2718893fb7bf7e2">   81</a></span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classMathParser.html#ad0fbc23e1d108a73e2718893fb7bf7e2">SetGroup</a>(<a class="code" href="classGroupCell.html">GroupCell</a> *group) { m_group = group; }</div>
+<div class="line"><a name="l00081"></a><span class="lineno"><a class="line" href="classMathParser.html#ad0fbc23e1d108a73e2718893fb7bf7e2">   81</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classMathParser.html#ad0fbc23e1d108a73e2718893fb7bf7e2">SetGroup</a>(<a class="code" href="classGroupCell.html">GroupCell</a> *group) { m_group = group; }</div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160; </div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;  <span class="keyword">using</span> MathCellFunc = std::unique_ptr&lt;Cell&gt; (<a class="code" href="classMathParser.html">MathParser</a>::*)(wxXmlNode *node);</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    <span class="keyword">using</span> MathCellFunc = std::unique_ptr&lt;Cell&gt; (<a class="code" href="classMathParser.html">MathParser</a>::*)(wxXmlNode *node);</div>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160; </div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;  <span class="keyword">using</span> GroupCellFunc = std::unique_ptr&lt;GroupCell&gt; (<a class="code" href="classMathParser.html">MathParser</a>::*)(wxXmlNode *node);</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    <span class="keyword">using</span> GroupCellFunc = std::unique_ptr&lt;GroupCell&gt; (<a class="code" href="classMathParser.html">MathParser</a>::*)(wxXmlNode *node);</div>
 <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160; </div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;<span class="preprocessor">  #if wxCHECK_VERSION(3, 3, 0) || wxUSE_STL</span></div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;  <span class="keyword">typedef</span> std::unordered_map &lt;wxString, MathCellFunc&gt; MathCellFunctionHash;</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;  <span class="keyword">typedef</span> std::unordered_map &lt;wxString, GroupCellFunc&gt; GroupCellFunctionHash;</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;<span class="preprocessor">#if wxCHECK_VERSION(3, 3, 0) || wxUSE_STL</span></div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    <span class="keyword">typedef</span> std::unordered_map &lt;wxString, MathCellFunc&gt; MathCellFunctionHash;</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    <span class="keyword">typedef</span> std::unordered_map &lt;wxString, GroupCellFunc&gt; GroupCellFunctionHash;</div>
 <div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;<span class="preprocessor">#else</span></div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;  WX_DECLARE_STRING_HASH_MAP(MathCellFunc, MathCellFunctionHash);</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;  WX_DECLARE_STRING_HASH_MAP(GroupCellFunc, GroupCellFunctionHash);</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    WX_DECLARE_STRING_HASH_MAP(MathCellFunc, MathCellFunctionHash);</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    WX_DECLARE_STRING_HASH_MAP(GroupCellFunc, GroupCellFunctionHash);</div>
 <div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160; </div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;  <span class="keyword">static</span> MathCellFunctionHash m_innerTags;</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;  <span class="keyword">static</span> GroupCellFunctionHash m_groupTags;</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    <span class="keyword">static</span> MathCellFunctionHash m_innerTags;</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    <span class="keyword">static</span> GroupCellFunctionHash m_groupTags;</div>
 <div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160; </div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;  <span class="keyword">static</span> <span class="keywordtype">void</span> ParseCommonAttrs(wxXmlNode *node, <a class="code" href="classCell.html">Cell</a> *cell);</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;  <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;  <span class="keyword">static</span> <span class="keywordtype">void</span> ParseCommonAttrs(wxXmlNode *node, <span class="keyword">const</span> std::unique_ptr&lt;T&gt; &amp;cell)</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    { ParseCommonAttrs(node, cell.get()); }</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">void</span> ParseCommonAttrs(wxXmlNode *node, <a class="code" href="classCell.html">Cell</a> *cell);</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">void</span> ParseCommonAttrs(wxXmlNode *node, <span class="keyword">const</span> std::unique_ptr&lt;T&gt; &amp;cell)</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;        { ParseCommonAttrs(node, cell.get()); }</div>
 <div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160; </div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;  <span class="keyword">static</span> <span class="keywordtype">void</span> ParseCommonGroupCellAttrs(wxXmlNode *node, <span class="keyword">const</span> std::unique_ptr&lt;GroupCell&gt; &amp;group);</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">void</span> ParseCommonGroupCellAttrs(wxXmlNode *node, <span class="keyword">const</span> std::unique_ptr&lt;GroupCell&gt; &amp;group);</div>
 <div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160; </div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;  std::unique_ptr&lt;Cell&gt; HandleNullPointer(std::unique_ptr&lt;Cell&gt; &amp;&amp;cell);</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    std::unique_ptr&lt;Cell&gt; HandleNullPointer(std::unique_ptr&lt;Cell&gt; &amp;&amp;cell);</div>
 <div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160; </div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;  <span class="keyword">static</span> wxXmlNode *GetNextTag(wxXmlNode *node);</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;    <span class="keyword">static</span> wxXmlNode *GetNextTag(wxXmlNode *node);</div>
 <div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160; </div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;  <span class="keyword">static</span> <span class="keywordtype">int</span> CountChildren(wxXmlNode *node);</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">int</span> CountChildren(wxXmlNode *node);</div>
 <div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160; </div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;  <span class="keyword">static</span> wxXmlNode *SkipWhitespaceNode(wxXmlNode *node);</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;    <span class="keyword">static</span> wxXmlNode *SkipWhitespaceNode(wxXmlNode *node);</div>
 <div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160; </div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;  std::unique_ptr&lt;Cell&gt; ParseCellTag(wxXmlNode *node);</div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;  std::unique_ptr&lt;GroupCell&gt; GroupCellFromCodeTag(wxXmlNode *node);</div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;  std::unique_ptr&lt;GroupCell&gt; GroupCellFromImageTag(wxXmlNode *node);</div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;  std::unique_ptr&lt;GroupCell&gt; GroupCellFromTitleTag(wxXmlNode *WXUNUSED(node));</div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;  std::unique_ptr&lt;GroupCell&gt; GroupCellFromSectionTag(wxXmlNode *WXUNUSED(node));</div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;  std::unique_ptr&lt;GroupCell&gt; GroupCellFromPagebreakTag(wxXmlNode *WXUNUSED(node));</div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;  std::unique_ptr&lt;GroupCell&gt; GroupCellFromSubsectionTag(wxXmlNode *node);</div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;  std::unique_ptr&lt;GroupCell&gt; GroupCellFromSubsubsectionTag(wxXmlNode *WXUNUSED(node));</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;  std::unique_ptr&lt;GroupCell&gt; GroupCellHeading5Tag(wxXmlNode *WXUNUSED(node));</div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;  std::unique_ptr&lt;GroupCell&gt; GroupCellHeading6Tag(wxXmlNode *WXUNUSED(node));</div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;  std::unique_ptr&lt;GroupCell&gt; GroupCellFromTextTag(wxXmlNode *WXUNUSED(node));</div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;  <span class="comment">/* @} */</span></div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;  </div>
-<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;  std::unique_ptr&lt;Cell&gt; ParseEditorTag(wxXmlNode *node);</div>
-<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;  std::unique_ptr&lt;Cell&gt; ParseFracTag(wxXmlNode *node);</div>
-<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;  std::unique_ptr&lt;Cell&gt; ParseText(wxXmlNode *node, <a class="code" href="TextStyle_8h.html#a68ac52da6129614b3fa14e7c828c1993">TextStyle</a> style = TS_MATH);</div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;  std::unique_ptr&lt;Cell&gt; ParseVariableNameTag(wxXmlNode *node);</div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;  std::unique_ptr&lt;Cell&gt; ParseOperatorNameTag(wxXmlNode *node){<span class="keywordflow">return</span> ParseText(node-&gt;GetChildren(), TS_FUNCTION);}</div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;  std::unique_ptr&lt;Cell&gt; ParseMiscTextTag(wxXmlNode *node);</div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;  std::unique_ptr&lt;Cell&gt; ParseNumberTag(wxXmlNode *node){<span class="keywordflow">return</span> ParseText(node-&gt;GetChildren(), TS_NUMBER);}</div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;  std::unique_ptr&lt;Cell&gt; ParseHiddenOperatorTag(wxXmlNode *node);</div>
-<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;  std::unique_ptr&lt;Cell&gt; ParseGreekTag(wxXmlNode *node){<span class="keywordflow">return</span> ParseText(node-&gt;GetChildren(), TS_GREEK_CONSTANT);}</div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;  std::unique_ptr&lt;Cell&gt; ParseSpecialConstantTag(wxXmlNode *node){<span class="keywordflow">return</span> ParseText(node-&gt;GetChildren(), TS_SPECIAL_CONSTANT);}</div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;  std::unique_ptr&lt;Cell&gt; ParseFunctionNameTag(wxXmlNode *node){<span class="keywordflow">return</span> ParseText(node-&gt;GetChildren(), TS_FUNCTION);}</div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;  std::unique_ptr&lt;Cell&gt; ParseSpaceTag(wxXmlNode *WXUNUSED(node)){<span class="keywordflow">return</span> std::make_unique&lt;TextCell&gt;(m_group, m_configuration, wxS(<span class="stringliteral">&quot; &quot;</span>));}</div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;  std::unique_ptr&lt;Cell&gt; ParseMthTag(wxXmlNode *node);</div>
-<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;  std::unique_ptr&lt;Cell&gt; ParseOutputLabelTag(wxXmlNode *node);</div>
-<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;  std::unique_ptr&lt;Cell&gt; ParseStringTag(wxXmlNode *node);</div>
-<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;  std::unique_ptr&lt;Cell&gt; ParseHighlightTag(wxXmlNode *node);</div>
-<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;  std::unique_ptr&lt;Cell&gt; ParseImageTag(wxXmlNode *node);</div>
-<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;  std::unique_ptr&lt;Cell&gt; ParseAnimationTag(wxXmlNode *node);</div>
-<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;  std::unique_ptr&lt;Cell&gt; ParseCharCode(wxXmlNode *node);</div>
-<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;  std::unique_ptr&lt;Cell&gt; ParseSupTag(wxXmlNode *node);</div>
-<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;  std::unique_ptr&lt;Cell&gt; ParseSubTag(wxXmlNode *node);</div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;  std::unique_ptr&lt;Cell&gt; ParseAbsTag(wxXmlNode *node);</div>
-<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;  std::unique_ptr&lt;Cell&gt; ParseConjugateTag(wxXmlNode *node);</div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;    std::unique_ptr&lt;Cell&gt; ParseCellTag(wxXmlNode *node);</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;    std::unique_ptr&lt;GroupCell&gt; GroupCellFromCodeTag(wxXmlNode *node);</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;    std::unique_ptr&lt;GroupCell&gt; GroupCellFromImageTag(wxXmlNode *node);</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;    std::unique_ptr&lt;GroupCell&gt; GroupCellFromTitleTag(wxXmlNode *WXUNUSED(node));</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;    std::unique_ptr&lt;GroupCell&gt; GroupCellFromSectionTag(wxXmlNode *WXUNUSED(node));</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;    std::unique_ptr&lt;GroupCell&gt; GroupCellFromPagebreakTag(wxXmlNode *WXUNUSED(node));</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;    std::unique_ptr&lt;GroupCell&gt; GroupCellFromSubsectionTag(wxXmlNode *node);</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;    std::unique_ptr&lt;GroupCell&gt; GroupCellFromSubsubsectionTag(wxXmlNode *WXUNUSED(node));</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;    std::unique_ptr&lt;GroupCell&gt; GroupCellHeading5Tag(wxXmlNode *WXUNUSED(node));</div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;    std::unique_ptr&lt;GroupCell&gt; GroupCellHeading6Tag(wxXmlNode *WXUNUSED(node));</div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;    std::unique_ptr&lt;GroupCell&gt; GroupCellFromTextTag(wxXmlNode *WXUNUSED(node));</div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;    <span class="comment">/* @} */</span></div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160; </div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;    std::unique_ptr&lt;Cell&gt; ParseEditorTag(wxXmlNode *node);</div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;    std::unique_ptr&lt;Cell&gt; ParseFracTag(wxXmlNode *node);</div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;    std::unique_ptr&lt;Cell&gt; ParseText(wxXmlNode *node, <a class="code" href="TextStyle_8h.html#a68ac52da6129614b3fa14e7c828c1993">TextStyle</a> style = TS_MATH);</div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;    std::unique_ptr&lt;Cell&gt; ParseVariableNameTag(wxXmlNode *node);</div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;    std::unique_ptr&lt;Cell&gt; ParseOperatorNameTag(wxXmlNode *node){<span class="keywordflow">return</span> ParseText(node-&gt;GetChildren(), TS_FUNCTION);}</div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;    std::unique_ptr&lt;Cell&gt; ParseMiscTextTag(wxXmlNode *node);</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;    std::unique_ptr&lt;Cell&gt; ParseNumberTag(wxXmlNode *node){<span class="keywordflow">return</span> ParseText(node-&gt;GetChildren(), TS_NUMBER);}</div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;    std::unique_ptr&lt;Cell&gt; ParseHiddenOperatorTag(wxXmlNode *node);</div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;    std::unique_ptr&lt;Cell&gt; ParseGreekTag(wxXmlNode *node){<span class="keywordflow">return</span> ParseText(node-&gt;GetChildren(), TS_GREEK_CONSTANT);}</div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;    std::unique_ptr&lt;Cell&gt; ParseSpecialConstantTag(wxXmlNode *node){<span class="keywordflow">return</span> ParseText(node-&gt;GetChildren(), TS_SPECIAL_CONSTANT);}</div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;    std::unique_ptr&lt;Cell&gt; ParseFunctionNameTag(wxXmlNode *node){<span class="keywordflow">return</span> ParseText(node-&gt;GetChildren(), TS_FUNCTION);}</div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;    std::unique_ptr&lt;Cell&gt; ParseSpaceTag(wxXmlNode *WXUNUSED(node)){<span class="keywordflow">return</span> std::make_unique&lt;TextCell&gt;(m_group, m_configuration, wxS(<span class="stringliteral">&quot; &quot;</span>));}</div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;    std::unique_ptr&lt;Cell&gt; ParseMthTag(wxXmlNode *node);</div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;    std::unique_ptr&lt;Cell&gt; ParseOutputLabelTag(wxXmlNode *node);</div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;    std::unique_ptr&lt;Cell&gt; ParseStringTag(wxXmlNode *node);</div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;    std::unique_ptr&lt;Cell&gt; ParseHighlightTag(wxXmlNode *node);</div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;    std::unique_ptr&lt;Cell&gt; ParseImageTag(wxXmlNode *node);</div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;    std::unique_ptr&lt;Cell&gt; ParseAnimationTag(wxXmlNode *node);</div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;    std::unique_ptr&lt;Cell&gt; ParseCharCode(wxXmlNode *node);</div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;    std::unique_ptr&lt;Cell&gt; ParseSupTag(wxXmlNode *node);</div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;    std::unique_ptr&lt;Cell&gt; ParseSubTag(wxXmlNode *node);</div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;    std::unique_ptr&lt;Cell&gt; ParseAbsTag(wxXmlNode *node);</div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;    std::unique_ptr&lt;Cell&gt; ParseConjugateTag(wxXmlNode *node);</div>
 <div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;<span class="preprocessor">#if 0</span></div>
-<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;  std::unique_ptr&lt;Cell&gt; ParseUnderTag(wxXmlNode *node);</div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;    std::unique_ptr&lt;Cell&gt; ParseUnderTag(wxXmlNode *node);</div>
 <div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;  std::unique_ptr&lt;Cell&gt; ParseTableTag(wxXmlNode *node);</div>
-<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;  std::unique_ptr&lt;Cell&gt; ParseAtTag(wxXmlNode *node);</div>
-<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;  std::unique_ptr&lt;Cell&gt; ParseDiffTag(wxXmlNode *node);</div>
-<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;  std::unique_ptr&lt;Cell&gt; ParseSumTag(wxXmlNode *node);</div>
-<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;  std::unique_ptr&lt;Cell&gt; ParseIntTag(wxXmlNode *node);</div>
-<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;  std::unique_ptr&lt;Cell&gt; ParseFunTag(wxXmlNode *node);</div>
-<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;  std::unique_ptr&lt;Cell&gt; ParseSqrtTag(wxXmlNode *node);</div>
-<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;  std::unique_ptr&lt;Cell&gt; ParseLimitTag(wxXmlNode *node);</div>
-<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;  std::unique_ptr&lt;Cell&gt; ParseParenTag(wxXmlNode *node);</div>
-<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;  std::unique_ptr&lt;Cell&gt; ParseSubSupTag(wxXmlNode *node);</div>
-<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;  std::unique_ptr&lt;Cell&gt; ParseMmultiscriptsTag(wxXmlNode *node);</div>
-<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;  std::unique_ptr&lt;Cell&gt; ParseOutputTag(wxXmlNode *node);</div>
-<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;  std::unique_ptr&lt;Cell&gt; ParseMtdTag(wxXmlNode *node);</div>
-<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;  <span class="comment">// @}</span></div>
-<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;<span class="comment"></span>  wxString m_userDefinedLabel;</div>
-<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;  <span class="keyword">static</span> wxRegEx m_graphRegex;</div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;    std::unique_ptr&lt;Cell&gt; ParseTableTag(wxXmlNode *node);</div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;    std::unique_ptr&lt;Cell&gt; ParseAtTag(wxXmlNode *node);</div>
+<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;    std::unique_ptr&lt;Cell&gt; ParseDiffTag(wxXmlNode *node);</div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;    std::unique_ptr&lt;Cell&gt; ParseSumTag(wxXmlNode *node);</div>
+<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;    std::unique_ptr&lt;Cell&gt; ParseIntTag(wxXmlNode *node);</div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;    std::unique_ptr&lt;Cell&gt; ParseFunTag(wxXmlNode *node);</div>
+<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;    std::unique_ptr&lt;Cell&gt; ParseSqrtTag(wxXmlNode *node);</div>
+<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;    std::unique_ptr&lt;Cell&gt; ParseLimitTag(wxXmlNode *node);</div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;    std::unique_ptr&lt;Cell&gt; ParseParenTag(wxXmlNode *node);</div>
+<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;    std::unique_ptr&lt;Cell&gt; ParseSubSupTag(wxXmlNode *node);</div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;    std::unique_ptr&lt;Cell&gt; ParseMmultiscriptsTag(wxXmlNode *node);</div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;    std::unique_ptr&lt;Cell&gt; ParseOutputTag(wxXmlNode *node);</div>
+<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;    std::unique_ptr&lt;Cell&gt; ParseMtdTag(wxXmlNode *node);</div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;    <span class="comment">// @}</span></div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;<span class="comment"></span>    wxString m_userDefinedLabel;</div>
+<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;    <span class="keyword">static</span> wxRegEx m_graphRegex;</div>
 <div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160; </div>
-<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;  <a class="code" href="Cell_8h.html#accb32ccb3ff8f2c6736a6ebe544894fd">CellType</a> m_ParserStyle;</div>
-<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;  <a class="code" href="classFracCell.html#a707d51907c28eebb33894f128d76917b">FracCell::FracType</a> m_FracStyle;</div>
-<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;  <a class="code" href="classCellPtr.html">CellPtr&lt;GroupCell&gt;</a> m_group;</div>
-<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;  <a class="code" href="classConfiguration.html">Configuration</a> *m_configuration;</div>
-<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;  <span class="keywordtype">bool</span> m_highlight;</div>
-<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;  wxString m_wxmxFile; <span class="comment">// if not wxEmptyString: The wxmx file to load images from</span></div>
-<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;  <span class="keyword">static</span> wxString m_unknownXMLTagToolTip;</div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;    <a class="code" href="Cell_8h.html#accb32ccb3ff8f2c6736a6ebe544894fd">CellType</a> m_ParserStyle;</div>
+<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;    <a class="code" href="classFracCell.html#a707d51907c28eebb33894f128d76917b">FracCell::FracType</a> m_FracStyle;</div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;    <a class="code" href="classCellPtr.html">CellPtr&lt;GroupCell&gt;</a> m_group;</div>
+<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;    <a class="code" href="classConfiguration.html">Configuration</a> *m_configuration;</div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;    <span class="keywordtype">bool</span> m_highlight;</div>
+<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;    wxString m_wxmxFile; <span class="comment">// if not wxEmptyString: The wxmx file to load images from</span></div>
+<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;    <span class="keyword">static</span> wxString m_unknownXMLTagToolTip;</div>
 <div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;};</div>
 <div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160; </div>
 <div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// MATHPARSER_H</span></div>

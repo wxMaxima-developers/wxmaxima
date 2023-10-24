@@ -110,21 +110,21 @@ $(function() {
 <div class="line"><a name="l00048"></a><span class="lineno"><a class="line" href="classTipOfTheDay.html">   48</a></span>&#160;<span class="keyword">class </span><a class="code" href="classTipOfTheDay.html">TipOfTheDay</a> : <span class="keyword">public</span> wxDialog</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;{</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;  <span class="keyword">explicit</span> <a class="code" href="classTipOfTheDay.html">TipOfTheDay</a>(wxWindow *parent);</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;  ~<a class="code" href="classTipOfTheDay.html">TipOfTheDay</a>();</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <span class="keyword">explicit</span> <a class="code" href="classTipOfTheDay.html">TipOfTheDay</a>(wxWindow *parent);</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    ~<a class="code" href="classTipOfTheDay.html">TipOfTheDay</a>();</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;  <span class="keywordtype">void</span> OnNextButton(wxCommandEvent &amp;dummy);</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;  <span class="keywordtype">void</span> OnPreviousButton(wxCommandEvent &amp;dummy);</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  <span class="keywordtype">void</span> OnOkButton(wxCommandEvent &amp;dummy);</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <span class="keywordtype">void</span> OnNextButton(wxCommandEvent &amp;dummy);</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="keywordtype">void</span> OnPreviousButton(wxCommandEvent &amp;dummy);</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="keywordtype">void</span> OnOkButton(wxCommandEvent &amp;dummy);</div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;  wxString GetTip(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> n);</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> m_num;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  wxTextCtrl *m_tip;</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  wxString GetTip();</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;  wxCheckBox *m_showAtStartup;</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  wxImage GetImage(<span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> *data, <span class="keywordtype">size_t</span> len);</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  wxArrayString m_tips;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    wxString GetTip(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> n);</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> m_num;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    wxTextCtrl *m_tip;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    wxString GetTip();</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    wxCheckBox *m_showAtStartup;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    wxImage GetImage(<span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> *data, <span class="keywordtype">size_t</span> len);</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    wxArrayString m_tips;</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;};</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160; </div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// TIPOFTHEDAY_H</span></div>

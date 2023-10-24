@@ -100,53 +100,53 @@ $(function() {
 <div class="line"><a name="l00048"></a><span class="lineno"><a class="line" href="classSqrtCell.html">   48</a></span>&#160;<span class="keyword">class </span><a class="code" href="classSqrtCell.html">SqrtCell</a> final : <span class="keyword">public</span> <a class="code" href="classCell.html">Cell</a></div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;{</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;  <a class="code" href="classSqrtCell.html">SqrtCell</a>(<a class="code" href="classGroupCell.html">GroupCell</a> *group, <a class="code" href="classConfiguration.html">Configuration</a> *config, std::unique_ptr&lt;Cell&gt; &amp;&amp;inner);</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;  <a class="code" href="classSqrtCell.html">SqrtCell</a>(<a class="code" href="classGroupCell.html">GroupCell</a> *group, <span class="keyword">const</span> <a class="code" href="classSqrtCell.html">SqrtCell</a> &amp;cell);</div>
-<div class="line"><a name="l00053"></a><span class="lineno"><a class="line" href="classSqrtCell.html#abb82417ad1219c606e53923bc3513365">   53</a></span>&#160;  std::unique_ptr&lt;Cell&gt; <a class="code" href="classSqrtCell.html#abb82417ad1219c606e53923bc3513365">Copy</a>(<a class="code" href="classGroupCell.html">GroupCell</a> *group) <span class="keyword">const override</span>;</div>
-<div class="line"><a name="l00054"></a><span class="lineno"><a class="line" href="classSqrtCell.html#a35a4b16d3b5a32ac2cf9e15b259fc55e">   54</a></span>&#160;  <span class="keyword">const</span> <a class="code" href="classCellTypeInfo.html">CellTypeInfo</a> &amp;<a class="code" href="classSqrtCell.html#a35a4b16d3b5a32ac2cf9e15b259fc55e">GetInfo</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <a class="code" href="classSqrtCell.html">SqrtCell</a>(<a class="code" href="classGroupCell.html">GroupCell</a> *group, <a class="code" href="classConfiguration.html">Configuration</a> *config, std::unique_ptr&lt;Cell&gt; &amp;&amp;inner);</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <a class="code" href="classSqrtCell.html">SqrtCell</a>(<a class="code" href="classGroupCell.html">GroupCell</a> *group, <span class="keyword">const</span> <a class="code" href="classSqrtCell.html">SqrtCell</a> &amp;cell);</div>
+<div class="line"><a name="l00053"></a><span class="lineno"><a class="line" href="classSqrtCell.html#abb82417ad1219c606e53923bc3513365">   53</a></span>&#160;    std::unique_ptr&lt;Cell&gt; <a class="code" href="classSqrtCell.html#abb82417ad1219c606e53923bc3513365">Copy</a>(<a class="code" href="classGroupCell.html">GroupCell</a> *group) <span class="keyword">const override</span>;</div>
+<div class="line"><a name="l00054"></a><span class="lineno"><a class="line" href="classSqrtCell.html#a35a4b16d3b5a32ac2cf9e15b259fc55e">   54</a></span>&#160;    <span class="keyword">const</span> <a class="code" href="classCellTypeInfo.html">CellTypeInfo</a> &amp;<a class="code" href="classSqrtCell.html#a35a4b16d3b5a32ac2cf9e15b259fc55e">GetInfo</a>() <span class="keyword">override</span>;</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
-<div class="line"><a name="l00056"></a><span class="lineno"><a class="line" href="classSqrtCell.html#a5119ffab8e1999954212ec28a6d030a9">   56</a></span>&#160;  <span class="keywordtype">size_t</span> <a class="code" href="classSqrtCell.html#a5119ffab8e1999954212ec28a6d030a9">GetInnerCellCount</a>()<span class="keyword"> const override </span>{ <span class="keywordflow">return</span> 3; }</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;  <span class="comment">// cppcheck-suppress objectIndex</span></div>
-<div class="line"><a name="l00058"></a><span class="lineno"><a class="line" href="classSqrtCell.html#aa617104bcf671885345af81114172760">   58</a></span>&#160;  <a class="code" href="classCell.html">Cell</a> *<a class="code" href="classSqrtCell.html#aa617104bcf671885345af81114172760">GetInnerCell</a>(<span class="keywordtype">size_t</span> index)<span class="keyword"> const override </span>{ <span class="keywordflow">return</span> (&amp;m_open)[index].get(); }</div>
+<div class="line"><a name="l00056"></a><span class="lineno"><a class="line" href="classSqrtCell.html#a5119ffab8e1999954212ec28a6d030a9">   56</a></span>&#160;    <span class="keywordtype">size_t</span> <a class="code" href="classSqrtCell.html#a5119ffab8e1999954212ec28a6d030a9">GetInnerCellCount</a>()<span class="keyword"> const override </span>{ <span class="keywordflow">return</span> 3; }</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="comment">// cppcheck-suppress objectIndex</span></div>
+<div class="line"><a name="l00058"></a><span class="lineno"><a class="line" href="classSqrtCell.html#aa617104bcf671885345af81114172760">   58</a></span>&#160;    <a class="code" href="classCell.html">Cell</a> *<a class="code" href="classSqrtCell.html#aa617104bcf671885345af81114172760">GetInnerCell</a>(<span class="keywordtype">size_t</span> index)<span class="keyword"> const override </span>{ <span class="keywordflow">return</span> (&amp;m_open)[index].get(); }</div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160; </div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classSqrtCell.html#a65c0c7305f9c796699528dda6785bb3c">Recalculate</a>(<a class="code" href="classAFontSize.html">AFontSize</a> fontsize) <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classSqrtCell.html#a65c0c7305f9c796699528dda6785bb3c">Recalculate</a>(<a class="code" href="classAFontSize.html">AFontSize</a> fontsize) <span class="keyword">override</span>;</div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160; </div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classSqrtCell.html#a3027d32e08aded0acb4d1cb1218ff710">Draw</a>(wxPoint point, wxDC *dc, wxDC *antialiassingDC) <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classSqrtCell.html#a3027d32e08aded0acb4d1cb1218ff710">Draw</a>(wxPoint point, wxDC *dc, wxDC *antialiassingDC) <span class="keyword">override</span>;</div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; </div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  <span class="keywordtype">bool</span> <a class="code" href="classSqrtCell.html#a5c66a3711c7ab487ccc51b44239a0155">BreakUp</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classSqrtCell.html#a5c66a3711c7ab487ccc51b44239a0155">BreakUp</a>() <span class="keyword">override</span>;</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160; </div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;  wxString <a class="code" href="classSqrtCell.html#a1e7ed335868e678b045eafe1c8bb489c">ToMathML</a>() <span class="keyword">const override</span>;</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  wxString <a class="code" href="classSqrtCell.html#a9cf94ea870ce156151173bf3dd88a580">ToMatlab</a>() <span class="keyword">const override</span>;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  wxString <a class="code" href="classSqrtCell.html#a261c65c34cf47675de28f9f5ec820e9c">ToOMML</a>() <span class="keyword">const override</span>;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  wxString <a class="code" href="classSqrtCell.html#a0402eed02c85ae3143b351d62b9d9fbe">ToString</a>() <span class="keyword">const override</span>;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  wxString <a class="code" href="classSqrtCell.html#a9d17d8d728e09afad04559f80ec52b43">ToTeX</a>() <span class="keyword">const override</span>;</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  wxString <a class="code" href="classSqrtCell.html#ac636896ba221f065290076f8e3c0551f">ToXML</a>() <span class="keyword">const override</span>;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    wxString <a class="code" href="classSqrtCell.html#a1e7ed335868e678b045eafe1c8bb489c">ToMathML</a>() <span class="keyword">const override</span>;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    wxString <a class="code" href="classSqrtCell.html#a9cf94ea870ce156151173bf3dd88a580">ToMatlab</a>() <span class="keyword">const override</span>;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    wxString <a class="code" href="classSqrtCell.html#a261c65c34cf47675de28f9f5ec820e9c">ToOMML</a>() <span class="keyword">const override</span>;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    wxString <a class="code" href="classSqrtCell.html#a0402eed02c85ae3143b351d62b9d9fbe">ToString</a>() <span class="keyword">const override</span>;</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    wxString <a class="code" href="classSqrtCell.html#a9d17d8d728e09afad04559f80ec52b43">ToTeX</a>() <span class="keyword">const override</span>;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    wxString <a class="code" href="classSqrtCell.html#ac636896ba221f065290076f8e3c0551f">ToXML</a>() <span class="keyword">const override</span>;</div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; </div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classSqrtCell.html#adc5f45c469b9d9b9d1379a6107210203">SetNextToDraw</a>(<a class="code" href="classCell.html">Cell</a> *next) <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classSqrtCell.html#adc5f45c469b9d9b9d1379a6107210203">SetNextToDraw</a>(<a class="code" href="classCell.html">Cell</a> *next) <span class="keyword">override</span>;</div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160; </div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  <span class="keywordtype">void</span> MakeBreakUpCells();</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <span class="keywordtype">void</span> MakeBreakUpCells();</div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160; </div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  <span class="comment">// The pointers below point to inner cells and must be kept contiguous.</span></div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;  <span class="comment">// ** This is the draw list order. All pointers must be the same:</span></div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;  <span class="comment">// ** either Cell * or std::unique_ptr&lt;Cell&gt;. NO OTHER TYPES are allowed.</span></div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;  std::unique_ptr&lt;Cell&gt; m_open;</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;  std::unique_ptr&lt;Cell&gt; m_innerCell;</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  std::unique_ptr&lt;Cell&gt; m_close;</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;  <span class="comment">// The pointers above point to inner cells and must be kept contiguous.</span></div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="comment">// The pointers below point to inner cells and must be kept contiguous.</span></div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="comment">// ** This is the draw list order. All pointers must be the same:</span></div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="comment">// ** either Cell * or std::unique_ptr&lt;Cell&gt;. NO OTHER TYPES are allowed.</span></div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    std::unique_ptr&lt;Cell&gt; m_open;</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    std::unique_ptr&lt;Cell&gt; m_innerCell;</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    std::unique_ptr&lt;Cell&gt; m_close;</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <span class="comment">// The pointers above point to inner cells and must be kept contiguous.</span></div>
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160; </div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;  <span class="keywordtype">double</span> m_signFontScale = 0;</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;  <span class="keywordtype">int</span> m_signWidth = 18;</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;  <span class="keywordtype">int</span> m_signSize = 50;</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;  <span class="keywordtype">int</span> m_signTop = m_signSize / 2;</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;  <span class="keywordtype">int</span> m_signType = 0;</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    <span class="keywordtype">double</span> m_signFontScale = 0;</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <span class="keywordtype">int</span> m_signWidth = 18;</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    <span class="keywordtype">int</span> m_signSize = 50;</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    <span class="keywordtype">int</span> m_signTop = m_signSize / 2;</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    <span class="keywordtype">int</span> m_signType = 0;</div>
 <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160; </div>
 <div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="comment">//** Bitfield objects (0 bytes)</span></div>
 <div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;<span class="comment">//**</span></div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;  <span class="keyword">static</span> <span class="keywordtype">void</span> InitBitFields()</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    { <span class="comment">// Keep the initialization order below same as the order</span></div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;      <span class="comment">// of bit fields in this class!</span></div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    }</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">void</span> InitBitFields()</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        { <span class="comment">// Keep the initialization order below same as the order</span></div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;            <span class="comment">// of bit fields in this class!</span></div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        }</div>
 <div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;};</div>
 <div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160; </div>
 <div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// SQRTCELL_H</span></div>

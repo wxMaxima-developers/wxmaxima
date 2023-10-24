@@ -100,13 +100,13 @@ $(function() {
 <div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="classThreadNumberLimiter.html">   36</a></span>&#160;<span class="keyword">class </span><a class="code" href="classThreadNumberLimiter.html">ThreadNumberLimiter</a></div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;{</div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  <span class="keyword">explicit</span> <a class="code" href="classThreadNumberLimiter.html">ThreadNumberLimiter</a>(<span class="keywordtype">bool</span> *running = NULL);</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;  ~<a class="code" href="classThreadNumberLimiter.html">ThreadNumberLimiter</a>();</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <span class="keyword">explicit</span> <a class="code" href="classThreadNumberLimiter.html">ThreadNumberLimiter</a>(<span class="keywordtype">bool</span> *running = NULL);</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    ~<a class="code" href="classThreadNumberLimiter.html">ThreadNumberLimiter</a>();</div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;  <span class="keyword">static</span> <span class="keywordtype">int</span> m_numberOfBackgroundThreads;</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;  <span class="keyword">static</span> std::mutex m_mutex;</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;  <span class="keyword">static</span> std::mutex m_counterMutex;</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;  <span class="keywordtype">bool</span> *m_runningIndicator;</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">int</span> m_numberOfBackgroundThreads;</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <span class="keyword">static</span> std::mutex m_mutex;</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <span class="keyword">static</span> std::mutex m_counterMutex;</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="keywordtype">bool</span> *m_runningIndicator;</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;};</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; </div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// THREADNUMBERLIMITER_H</span></div>
