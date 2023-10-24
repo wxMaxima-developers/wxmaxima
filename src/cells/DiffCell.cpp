@@ -38,155 +38,155 @@
 
 DiffCell::DiffCell(GroupCell *group, Configuration *config,
                    std::unique_ptr<Cell> &&base, std::unique_ptr<Cell> &&diff)
-  : Cell(group, config), m_baseCell(std::move(base)),
-    m_diffCell(std::move(diff))
+    : Cell(group, config), m_baseCell(std::move(base)),
+      m_diffCell(std::move(diff))
 
 {
-  InitBitFields();
-  SetStyle(TS_VARIABLE);
-  m_diffCell->SetSuppressMultiplicationDot(true);
+    InitBitFields();
+    SetStyle(TS_VARIABLE);
+    m_diffCell->SetSuppressMultiplicationDot(true);
 }
 
 DiffCell::DiffCell(GroupCell *group, const DiffCell &cell)
-  : DiffCell(group, cell.m_configuration,
-	     CopyList(group, cell.m_baseCell.get()),
-	     CopyList(group, cell.m_diffCell.get())) {
-  CopyCommonData(cell);
+    : DiffCell(group, cell.m_configuration,
+               CopyList(group, cell.m_baseCell.get()),
+               CopyList(group, cell.m_diffCell.get())) {
+    CopyCommonData(cell);
 }
 
 DEFINE_CELL(DiffCell)
 
 void DiffCell::MakeBreakupCells() {
-  if (m_open)
-    return;
-  m_open = std::make_unique<TextCell>(m_group, m_configuration, "diff(");
-  m_comma = std::make_unique<TextCell>(m_group, m_configuration, ",");
-  m_close = std::make_unique<TextCell>(m_group, m_configuration, ")");
+    if (m_open)
+        return;
+    m_open = std::make_unique<TextCell>(m_group, m_configuration, "diff(");
+    m_comma = std::make_unique<TextCell>(m_group, m_configuration, ",");
+    m_close = std::make_unique<TextCell>(m_group, m_configuration, ")");
 }
 
 void DiffCell::Recalculate(AFontSize fontsize) {
-  m_baseCell->RecalculateList(fontsize);
-  m_diffCell->RecalculateList(fontsize);
-  if (!IsBrokenIntoLines()) {
-    m_width = m_baseCell->GetFullWidth() + m_diffCell->GetFullWidth();
-    m_center = wxMax(m_diffCell->GetCenterList(), m_baseCell->GetCenterList());
-    m_height =
-      m_center + wxMax(m_diffCell->GetMaxDrop(), m_baseCell->GetMaxDrop());
-  } else {
-    m_width = m_center = m_height = 0;
-    m_open->RecalculateList(fontsize);
-    m_comma->RecalculateList(fontsize);
-    m_close->RecalculateList(fontsize);
-  }
-  Cell::Recalculate(fontsize);
+    m_baseCell->RecalculateList(fontsize);
+    m_diffCell->RecalculateList(fontsize);
+    if (!IsBrokenIntoLines()) {
+        m_width = m_baseCell->GetFullWidth() + m_diffCell->GetFullWidth();
+        m_center = wxMax(m_diffCell->GetCenterList(), m_baseCell->GetCenterList());
+        m_height =
+            m_center + wxMax(m_diffCell->GetMaxDrop(), m_baseCell->GetMaxDrop());
+    } else {
+        m_width = m_center = m_height = 0;
+        m_open->RecalculateList(fontsize);
+        m_comma->RecalculateList(fontsize);
+        m_close->RecalculateList(fontsize);
+    }
+    Cell::Recalculate(fontsize);
 }
 
 void DiffCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
-  Cell::Draw(point, dc, antialiassingDC);
-  if (DrawThisCell(point) && InUpdateRegion()) {
-    wxPoint bs, df;
-    df.x = point.x;
-    df.y = point.y;
-    m_diffCell->DrawList(df, dc, antialiassingDC);
+    Cell::Draw(point, dc, antialiassingDC);
+    if (DrawThisCell(point) && InUpdateRegion()) {
+        wxPoint bs, df;
+        df.x = point.x;
+        df.y = point.y;
+        m_diffCell->DrawList(df, dc, antialiassingDC);
 
-    bs.x = point.x + m_diffCell->GetFullWidth();
-    bs.y = point.y;
-    m_baseCell->DrawList(bs, dc, antialiassingDC);
-  }
+        bs.x = point.x + m_diffCell->GetFullWidth();
+        bs.y = point.y;
+        m_baseCell->DrawList(bs, dc, antialiassingDC);
+    }
 }
 
 wxString DiffCell::ToString() const {
-  if (IsBrokenIntoLines())
-    return wxEmptyString;
-  const Cell *tmp = m_baseCell->GetNext();
-  wxString s = wxS("'diff(");
-  if (tmp != NULL)
-    s += tmp->ListToString();
-  s += m_diffCell->ListToString();
-  s += wxS(")");
-  return s;
+    if (IsBrokenIntoLines())
+        return wxEmptyString;
+    const Cell *tmp = m_baseCell->GetNext();
+    wxString s = wxS("'diff(");
+    if (tmp != NULL)
+        s += tmp->ListToString();
+    s += m_diffCell->ListToString();
+    s += wxS(")");
+    return s;
 }
 
 wxString DiffCell::ToMatlab() const {
-  if (IsBrokenIntoLines())
-    return wxEmptyString;
-  const Cell *tmp = m_baseCell->GetNext();
-  wxString s = wxS("'diff(");
-  if (tmp != NULL)
-    s += tmp->ListToMatlab();
-  s += m_diffCell->ListToMatlab();
-  s += wxS(")");
-  return s;
+    if (IsBrokenIntoLines())
+        return wxEmptyString;
+    const Cell *tmp = m_baseCell->GetNext();
+    wxString s = wxS("'diff(");
+    if (tmp != NULL)
+        s += tmp->ListToMatlab();
+    s += m_diffCell->ListToMatlab();
+    s += wxS(")");
+    return s;
 }
 
 wxString DiffCell::ToTeX() const {
-  if (IsBrokenIntoLines())
-    return wxEmptyString;
-  wxString diff = m_diffCell->ListToTeX();
-  wxString function = m_baseCell->ListToTeX();
+    if (IsBrokenIntoLines())
+        return wxEmptyString;
+    wxString diff = m_diffCell->ListToTeX();
+    wxString function = m_baseCell->ListToTeX();
 
-  if (m_configuration->UsePartialForDiff())
-    diff.Replace(wxS("\\frac{d}{d"), wxS("\\frac{\\partial}{\\partial"));
+    if (m_configuration->UsePartialForDiff())
+        diff.Replace(wxS("\\frac{d}{d"), wxS("\\frac{\\partial}{\\partial"));
 
-  wxString s = diff + function;
-  return s;
+    wxString s = diff + function;
+    return s;
 }
 
 wxString DiffCell::ToMathML() const {
-  wxString retval;
+    wxString retval;
 
-  retval = wxS("<mrow>") + m_diffCell->ListToMathML();
-  if (m_baseCell)
-    retval += m_baseCell->ListToMathML();
-  retval += wxS("</mrow>\n");
-  // retval = wxS("<apply><diff/><ci>") + m_diffCell->ListToMathML() +
-  // wxS("</ci>"); if(m_baseCell)
-  //   retval += wxS("<ci>") + m_baseCell->ListToMathML() + wxS("</ci>") ;
-  // retval += wxS("</apply>");
-  return retval;
+    retval = wxS("<mrow>") + m_diffCell->ListToMathML();
+    if (m_baseCell)
+        retval += m_baseCell->ListToMathML();
+    retval += wxS("</mrow>\n");
+    // retval = wxS("<apply><diff/><ci>") + m_diffCell->ListToMathML() +
+    // wxS("</ci>"); if(m_baseCell)
+    //   retval += wxS("<ci>") + m_baseCell->ListToMathML() + wxS("</ci>") ;
+    // retval += wxS("</apply>");
+    return retval;
 }
 
 wxString DiffCell::ToOMML() const {
-  wxString retval;
+    wxString retval;
 
-  retval = m_diffCell->ListToOMML();
-  if (m_baseCell)
-    retval += m_baseCell->ListToOMML();
+    retval = m_diffCell->ListToOMML();
+    if (m_baseCell)
+        retval += m_baseCell->ListToOMML();
 
-  return retval;
+    return retval;
 }
 
 wxString DiffCell::ToXML() const {
-  wxString flags;
-  if (HasHardLineBreak())
-    flags += wxS(" breakline=\"true\"");
+    wxString flags;
+    if (HasHardLineBreak())
+        flags += wxS(" breakline=\"true\"");
 
-  return wxS("<d") + flags + wxS(">") + m_diffCell->ListToXML() +
-    m_baseCell->ListToXML() + _T("</d>");
+    return wxS("<d") + flags + wxS(">") + m_diffCell->ListToXML() +
+        m_baseCell->ListToXML() + _T("</d>");
 }
 
 bool DiffCell::BreakUp() {
-  if (IsBrokenIntoLines())
-    return false;
+    if (IsBrokenIntoLines())
+        return false;
 
-  MakeBreakupCells();
-  Cell::BreakUpAndMark();
-  m_open->SetNextToDraw(m_baseCell);
-  m_baseCell->last()->SetNextToDraw(m_comma);
-  m_comma->SetNextToDraw(m_diffCell);
-  m_diffCell->last()->SetNextToDraw(m_close);
-  m_close->SetNextToDraw(m_nextToDraw);
-  m_nextToDraw = m_open;
-  ResetCellListSizes();
-  m_height = 0;
-  m_center = 0;
-  m_width = 0;
-  return true;
+    MakeBreakupCells();
+    Cell::BreakUpAndMark();
+    m_open->SetNextToDraw(m_baseCell);
+    m_baseCell->last()->SetNextToDraw(m_comma);
+    m_comma->SetNextToDraw(m_diffCell);
+    m_diffCell->last()->SetNextToDraw(m_close);
+    m_close->SetNextToDraw(m_nextToDraw);
+    m_nextToDraw = m_open;
+    ResetCellListSizes();
+    m_height = 0;
+    m_center = 0;
+    m_width = 0;
+    return true;
 }
 
 void DiffCell::SetNextToDraw(Cell *next) {
-  if (IsBrokenIntoLines())
-    m_close->SetNextToDraw(next);
-  else
-    m_nextToDraw = next;
+    if (IsBrokenIntoLines())
+        m_close->SetNextToDraw(next);
+    else
+        m_nextToDraw = next;
 }

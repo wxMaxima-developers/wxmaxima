@@ -33,78 +33,78 @@
 
 /* ! The base class of ImgCell and Animation
 
-   Images and animation share most of the functionality with each other => we 
+   Images and animation share most of the functionality with each other => we
    can generate a class ImgCellBase that allows us to create pointers that both
    can point to an ImgCell and an Animation and that can use the methods common
-   to both  
+   to both
 */
 class ImgCellBase : public Cell
 {
 public:
-  ImgCellBase(GroupCell *group, Configuration *config);
+    ImgCellBase(GroupCell *group, Configuration *config);
 
-  virtual std::unique_ptr<Cell> Copy(GroupCell *group) const override = 0;
-  virtual const CellTypeInfo &GetInfo() override = 0;
-  virtual ~ImgCellBase() override;
+    virtual std::unique_ptr<Cell> Copy(GroupCell *group) const override = 0;
+    virtual const CellTypeInfo &GetInfo() override = 0;
+    virtual ~ImgCellBase() override;
 
-  //! This class can be derived from wxAccessible which has no copy constructor
-  ImgCellBase &operator=(const ImgCellBase&) = delete;
+    //! This class can be derived from wxAccessible which has no copy constructor
+    ImgCellBase &operator=(const ImgCellBase&) = delete;
 
-  //! The name of the file with gnuplot commands that created this file
-  virtual wxString GnuplotSource() const override = 0;
+    //! The name of the file with gnuplot commands that created this file
+    virtual wxString GnuplotSource() const override = 0;
 
-  //! Set the image's resolution
-  virtual void SetPPI(int ppi) = 0;
-  virtual int GetPPI() const = 0;
-  virtual size_t GetOriginalWidth() const = 0;
-  virtual size_t GetOriginalHeight() const = 0;
+    //! Set the image's resolution
+    virtual void SetPPI(int ppi) = 0;
+    virtual int GetPPI() const = 0;
+    virtual size_t GetOriginalWidth() const = 0;
+    virtual size_t GetOriginalHeight() const = 0;
 
-  //! Can this image be exported in SVG format?
-  virtual bool CanExportSVG() const = 0;
+    //! Can this image be exported in SVG format?
+    virtual bool CanExportSVG() const = 0;
 
-  friend class AnimationCell;
+    friend class AnimationCell;
 
-  /*! Writes the image to a file
+    /*! Writes the image to a file
 
-    The image file that is written is either a bit-per-bit copy of the original
-    file loaded into the ImgCellybase - or in the case that there is no original file
-    a losslessly compressed png version of the bitmap.
+      The image file that is written is either a bit-per-bit copy of the original
+      file loaded into the ImgCellybase - or in the case that there is no original file
+      a losslessly compressed png version of the bitmap.
 
-    See also GetExtension().
-  */
-  virtual wxSize ToImageFile(wxString filename)  = 0;
+      See also GetExtension().
+    */
+    virtual wxSize ToImageFile(wxString filename)  = 0;
 
-  /*! Removes the cached scaled image from memory
+    /*! Removes the cached scaled image from memory
 
-    The scaled version of the image will be recreated automatically once it is 
-    needed.
-  */
-  virtual void ClearCache() override = 0;
+      The scaled version of the image will be recreated automatically once it is
+      needed.
+    */
+    virtual void ClearCache() override = 0;
 
-  virtual const wxString &GetToolTip(wxPoint point) const override = 0;
-  
-  //! Copies the cell to the system's clipboard
-  virtual bool CopyToClipboard() const override = 0;
+    virtual const wxString &GetToolTip(wxPoint point) const override = 0;
 
-  //! Returns the file name extension that matches the image type
-  virtual wxString GetExtension() const = 0;
-  
-  virtual wxCoord GetMaxWidth() const = 0;
-  virtual wxCoord GetHeightList() const = 0;
-  virtual void SetMaxWidth(wxCoord width) = 0;
-  virtual void SetMaxHeight(wxCoord height) = 0;
+    //! Copies the cell to the system's clipboard
+    virtual bool CopyToClipboard() const override = 0;
 
-  virtual void Recalculate(AFontSize fontsize) override = 0;
+    //! Returns the file name extension that matches the image type
+    virtual wxString GetExtension() const = 0;
 
-  virtual void Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) override = 0;
+    virtual wxCoord GetMaxWidth() const = 0;
+    virtual wxCoord GetHeightList() const = 0;
+    virtual void SetMaxWidth(wxCoord width) = 0;
+    virtual void SetMaxHeight(wxCoord height) = 0;
 
-  virtual wxString ToMatlab() const override = 0;
-  virtual wxString ToRTF() const override = 0;
-  virtual wxString ToString() const override = 0;
-  virtual wxString ToTeX() const override = 0;
-  virtual wxString ToXML() const override = 0;
+    virtual void Recalculate(AFontSize fontsize) override = 0;
 
-  virtual bool CanPopOut() const override = 0;
+    virtual void Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) override = 0;
+
+    virtual wxString ToMatlab() const override = 0;
+    virtual wxString ToRTF() const override = 0;
+    virtual wxString ToString() const override = 0;
+    virtual wxString ToTeX() const override = 0;
+    virtual wxString ToXML() const override = 0;
+
+    virtual bool CanPopOut() const override = 0;
 };
 
 #endif // IMGCELLBASE_H

@@ -52,68 +52,68 @@
   - PREFIX+"/share/wxMaxima/" on Linux
   - wxStandardPaths::GetExecutablePath()+"/wxMaxima.app/Contents/Resources" on mac.
 
-  - on linux in 
+  - on linux in
 */
 class Dirstructure
 {
 public:
-  //! The constructor
-  Dirstructure();
-  
+    //! The constructor
+    Dirstructure();
+
 private:
-  //! The directory all data is stored relative to.
-  wxString ResourcesDir() const;
+    //! The directory all data is stored relative to.
+    wxString ResourcesDir() const;
 
 public:
-  //! The directory the user stores its data in.
-  static wxString UserConfDir() {return m_userConfDir;}
-  //! Set the directory the user stores its data in.
-  static void UserConfDir(wxString userConfDir);
+    //! The directory the user stores its data in.
+    static wxString UserConfDir() {return m_userConfDir;}
+    //! Set the directory the user stores its data in.
+    static void UserConfDir(wxString userConfDir);
 
-  //! The directory general data is stored in
-  wxString DataDir() const;
+    //! The directory general data is stored in
+    wxString DataDir() const;
 
-  //! The directory our private fonts are stored in
-  wxString FontDir() const {return DataDir()+wxS("/../fonts");}
+    //! The directory our private fonts are stored in
+    wxString FontDir() const {return DataDir()+wxS("/../fonts");}
 
-  //! The directory the help file is stored in
-  wxString HelpDir() const {return m_helpDir;}
-  //! Set the directory the help file is stored in
-  void HelpDir(wxString helpDir){m_helpDir = helpDir;}
+    //! The directory the help file is stored in
+    wxString HelpDir() const {return m_helpDir;}
+    //! Set the directory the help file is stored in
+    void HelpDir(wxString helpDir){m_helpDir = helpDir;}
 
-  /*! The file private accelerator key information is stored in
+    /*! The file private accelerator key information is stored in
 
-   */
-  static wxString UserAutocompleteFile();
+     */
+    static wxString UserAutocompleteFile();
 
-  //! The path to wxMaxima's own AutoComplete file
-  wxString AutocompleteFile() const
-    { return DataDir() + wxS("/autocomplete.txt"); }
+    //! The path to wxMaxima's own AutoComplete file
+    wxString AutocompleteFile() const
+        { return DataDir() + wxS("/autocomplete.txt"); }
 
-  /*! The directory the locale data is to be found in
+    /*! The directory the locale data is to be found in
 
-    Is only used on MSW and MAC
-  */
-  wxString LocaleDir() const
-    { return ResourcesDir() + wxS("/locale"); }
+      Is only used on MSW and MAC
+    */
+    wxString LocaleDir() const
+        { return ResourcesDir() + wxS("/locale"); }
 
-  //! The executable file path to the maxima executable (or .bat on Windows)
-  static wxString MaximaDefaultLocation();
+    //! The executable file path to the maxima executable (or .bat on Windows)
+    static wxString MaximaDefaultLocation();
 
-  static wxString
-  AnchorsCacheFile()
-    {
-      return UserConfDir() + "/manual_anchors.xml";
-    }
-  
-  static Dirstructure *Get()
-    {
-      return m_dirStructure;
-    }
+    static wxString
+    AnchorsCacheFile()
+        {
+            return UserConfDir() + "/manual_anchors.xml";
+        }
+
+    static Dirstructure *Get()
+        {
+            return m_dirStructure;
+        }
 private:
-  wxString m_helpDir;
-  static wxString m_userConfDir;
-  static Dirstructure *m_dirStructure;
+    wxString m_helpDir;
+    static wxString m_userConfDir;
+    static Dirstructure *m_dirStructure;
 };
 
 #endif // DIRSTRUCTURE_H

@@ -37,18 +37,18 @@ GenWiz::GenWiz(wxWindow *parent, Configuration *cfg, MaximaManual *manual,
                wxString label8, wxString defaultval8, wxString tooltip8,
                wxString label9, wxString defaultval9, wxString tooltip9)
 : wxDialog(parent, wxID_ANY, title, wxDefaultPosition, wxDefaultSize,
-	   wxMINIMIZE_BOX | wxMAXIMIZE_BOX | wxRESIZE_BORDER | wxCAPTION |
-	   wxCLOSE_BOX | wxCLIP_CHILDREN) {
-  SetName(title);
-  wxSizer *vbox = new wxBoxSizer(wxVERTICAL);
-  m_panel = new GenWizPanel(
-			    this, cfg, manual, description, description_tooltip, commandRule, label1,
-			    defaultval1, tooltip1, label2, defaultval2, tooltip2, label3, defaultval3,
-			    tooltip3, label4, defaultval4, tooltip4, label5, defaultval5, tooltip5,
-			    label6, defaultval6, tooltip6, label7, defaultval7, tooltip7, label8,
-			    defaultval8, tooltip8, label9, defaultval9, tooltip9);
-  vbox->Add(m_panel, wxSizerFlags(1).Expand());
-  SetAutoLayout(true);
-  SetSizerAndFit(vbox);
-  wxPersistenceManager::Get().RegisterAndRestore(this);
+           wxMINIMIZE_BOX | wxMAXIMIZE_BOX | wxRESIZE_BORDER | wxCAPTION |
+           wxCLOSE_BOX | wxCLIP_CHILDREN) {
+    SetName(title);
+    wxSizer *vbox = new wxBoxSizer(wxVERTICAL);
+    m_panel = new GenWizPanel(
+        this, cfg, manual, description, description_tooltip, commandRule, label1,
+        defaultval1, tooltip1, label2, defaultval2, tooltip2, label3, defaultval3,
+        tooltip3, label4, defaultval4, tooltip4, label5, defaultval5, tooltip5,
+        label6, defaultval6, tooltip6, label7, defaultval7, tooltip7, label8,
+        defaultval8, tooltip8, label9, defaultval9, tooltip9);
+    vbox->Add(m_panel, wxSizerFlags(1).Expand());
+    SetAutoLayout(true);
+    SetSizerAndFit(vbox);
+    wxPersistenceManager::Get().RegisterAndRestore(this);
 }

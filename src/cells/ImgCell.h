@@ -34,133 +34,133 @@
 class ImgCell final : public ImgCellBase
 {
 public:
-  ImgCell(GroupCell *group, Configuration *config);
-  ImgCell(GroupCell *group, Configuration *config, const wxMemoryBuffer &image, const wxString &type);
-  ImgCell(GroupCell *group, Configuration *config, const wxString &image, const wxString &wxmFile, bool remove = true);
+    ImgCell(GroupCell *group, Configuration *config);
+    ImgCell(GroupCell *group, Configuration *config, const wxMemoryBuffer &image, const wxString &type);
+    ImgCell(GroupCell *group, Configuration *config, const wxString &image, const wxString &wxmFile, bool remove = true);
 
-  ImgCell(GroupCell *group, Configuration *config, const wxBitmap &bitmap);
-  ImgCell(GroupCell *group, const ImgCell &cell);
-  std::unique_ptr<Cell> Copy(GroupCell *group) const override;
-  const CellTypeInfo &GetInfo() override;
-  ~ImgCell() override;
+    ImgCell(GroupCell *group, Configuration *config, const wxBitmap &bitmap);
+    ImgCell(GroupCell *group, const ImgCell &cell);
+    std::unique_ptr<Cell> Copy(GroupCell *group) const override;
+    const CellTypeInfo &GetInfo() override;
+    ~ImgCell() override;
 
-  //! This class can be derived from wxAccessible which has no copy constructor
-  ImgCell &operator=(const ImgCell&) = delete;
+    //! This class can be derived from wxAccessible which has no copy constructor
+    ImgCell &operator=(const ImgCell&) = delete;
 
-  //! Tell the image which gnuplot files it was made from
-  void GnuplotSource(wxString sourcefile, wxString datafile, const wxString &wxmFile)
-    { if (m_image) m_image->GnuplotSource(std::move(sourcefile),
-                                          std::move(datafile),
-                                          wxmFile); }
-  void CompressedGnuplotSource(wxString sourcefile, wxString datafile,
-                               const wxString &wxmFile)
-    { if (m_image) m_image->CompressedGnuplotSource(std::move(sourcefile),
-                                                    std::move(datafile),
-                                                    wxmFile); }
+    //! Tell the image which gnuplot files it was made from
+    void GnuplotSource(wxString sourcefile, wxString datafile, const wxString &wxmFile)
+        { if (m_image) m_image->GnuplotSource(std::move(sourcefile),
+                                              std::move(datafile),
+                                              wxmFile); }
+    void CompressedGnuplotSource(wxString sourcefile, wxString datafile,
+                                 const wxString &wxmFile)
+        { if (m_image) m_image->CompressedGnuplotSource(std::move(sourcefile),
+                                                        std::move(datafile),
+                                                        wxmFile); }
 
-  //! The name of the file with gnuplot commands that created this file
-  wxString GnuplotSource() const override
-    { return m_image ? m_image->GnuplotSource() : wxString(); }
+    //! The name of the file with gnuplot commands that created this file
+    wxString GnuplotSource() const override
+        { return m_image ? m_image->GnuplotSource() : wxString(); }
 
-  void LoadImage(wxString image, bool remove = true);
+    void LoadImage(wxString image, bool remove = true);
 
-  //! Set the image's resolution
-  void SetPPI(int ppi) override {m_image->SetPPI(ppi);}
-  int GetPPI() const override {return m_image->GetPPI();}
-  size_t GetOriginalWidth() const override {return m_image->GetOriginalWidth();}
-  size_t GetOriginalHeight() const override {return m_image->GetOriginalHeight();}
+    //! Set the image's resolution
+    void SetPPI(int ppi) override {m_image->SetPPI(ppi);}
+    int GetPPI() const override {return m_image->GetPPI();}
+    size_t GetOriginalWidth() const override {return m_image->GetOriginalWidth();}
+    size_t GetOriginalHeight() const override {return m_image->GetOriginalHeight();}
 
-  void ReloadImage(const wxString &image, const wxString &wxmFile);
+    void ReloadImage(const wxString &image, const wxString &wxmFile);
 
-  //! Can this image be exported in SVG format?
-  bool CanExportSVG() const override {return (m_image != NULL) && m_image->CanExportSVG();}
+    //! Can this image be exported in SVG format?
+    bool CanExportSVG() const override {return (m_image != NULL) && m_image->CanExportSVG();}
 
-  friend class AnimationCell;
+    friend class AnimationCell;
 
-  /*! Writes the image to a file
+    /*! Writes the image to a file
 
-    The image file that is written is either a bit-per-bit copy of the original
-    file loaded into the ImgCell - or in the case that there is no original file
-    a losslessly compressed png version of the bitmap.
+      The image file that is written is either a bit-per-bit copy of the original
+      file loaded into the ImgCell - or in the case that there is no original file
+      a losslessly compressed png version of the bitmap.
 
-    See also GetExtension().
-  */
-  wxSize ToImageFile(wxString filename) override;
+      See also GetExtension().
+    */
+    wxSize ToImageFile(wxString filename) override;
 
-  /*! Removes the cached scaled image from memory
+    /*! Removes the cached scaled image from memory
 
-    The scaled version of the image will be recreated automatically once it is 
-    needed.
-  */
-  void ClearCache() override { if (m_image) m_image->ClearCache(); }
+      The scaled version of the image will be recreated automatically once it is
+      needed.
+    */
+    void ClearCache() override { if (m_image) m_image->ClearCache(); }
 
-  const wxString &GetToolTip(wxPoint point) const override;
-  
-  //! Sets the bitmap that is shown
-  void SetBitmap(const wxBitmap &bitmap);
+    const wxString &GetToolTip(wxPoint point) const override;
 
-  //! Copies the cell to the system's clipboard
-  bool CopyToClipboard() const override;
+    //! Sets the bitmap that is shown
+    void SetBitmap(const wxBitmap &bitmap);
 
-  void DrawRectangle(bool draw) { m_drawRectangle = draw; }
+    //! Copies the cell to the system's clipboard
+    bool CopyToClipboard() const override;
 
-  //! Returns the file name extension that matches the image type
-  wxString GetExtension() const override
-    { if (m_image)return m_image->GetExtension(); else return wxEmptyString; }
+    void DrawRectangle(bool draw) { m_drawRectangle = draw; }
 
-  //! Returns the name of the file the image was originally created from
-  wxString GetOrigImageFile() const
-    { return m_origImageFile; }
-  
-  //! Sets the name of the file the image was originally created from
-  void SetOrigImageFile(wxString file)
-    { m_origImageFile = file; }
+    //! Returns the file name extension that matches the image type
+    wxString GetExtension() const override
+        { if (m_image)return m_image->GetExtension(); else return wxEmptyString; }
 
-  //! Returns the original compressed version of the image
-  wxMemoryBuffer GetCompressedImage() const { return m_image->m_compressedImage; }
+    //! Returns the name of the file the image was originally created from
+    wxString GetOrigImageFile() const
+        { return m_origImageFile; }
 
-  wxCoord GetMaxWidth() const override { return m_image ? m_image->GetMaxWidth() : -1; }
-  wxCoord GetHeightList() const override { return m_image ? m_image->GetHeightList() : -1; }
-  void SetMaxWidth(wxCoord width) override { if (m_image) m_image->SetMaxWidth(width); }
-  void SetMaxHeight(wxCoord height) override { if (m_image) m_image->SetMaxHeight(height); }
+    //! Sets the name of the file the image was originally created from
+    void SetOrigImageFile(wxString file)
+        { m_origImageFile = file; }
 
-  void Recalculate(AFontSize fontsize) override;
+    //! Returns the original compressed version of the image
+    wxMemoryBuffer GetCompressedImage() const { return m_image->m_compressedImage; }
 
-  void Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) override;
+    wxCoord GetMaxWidth() const override { return m_image ? m_image->GetMaxWidth() : -1; }
+    wxCoord GetHeightList() const override { return m_image ? m_image->GetHeightList() : -1; }
+    void SetMaxWidth(wxCoord width) override { if (m_image) m_image->SetMaxWidth(width); }
+    void SetMaxHeight(wxCoord height) override { if (m_image) m_image->SetMaxHeight(height); }
 
-  wxString ToMatlab() const override;
-  wxString ToRTF() const override;
-  wxString ToString() const override;
-  wxString ToTeX() const override;
-  wxString ToXML() const override;
+    void Recalculate(AFontSize fontsize) override;
 
-  bool CanPopOut() const override { return m_image && m_image->HasGnuplotSource(); }
+    void Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) override;
+
+    wxString ToMatlab() const override;
+    wxString ToRTF() const override;
+    wxString ToString() const override;
+    wxString ToTeX() const override;
+    wxString ToXML() const override;
+
+    bool CanPopOut() const override { return m_image && m_image->HasGnuplotSource(); }
 
 private:
-  void SetConfiguration(Configuration *config) override;
-  void DrawBoundingBox(wxDC &WXUNUSED(dc), bool WXUNUSED(all) = false) override;
-  int GetImageBorderWidth() const override { return m_imageBorderWidth; }
+    void SetConfiguration(Configuration *config) override;
+    void DrawBoundingBox(wxDC &WXUNUSED(dc), bool WXUNUSED(all) = false) override;
+    int GetImageBorderWidth() const override { return m_imageBorderWidth; }
 
-  std::shared_ptr<Image> m_image;
+    std::shared_ptr<Image> m_image;
 
-  CellPointers *const m_cellPointers = GetCellPointers();
+    CellPointers *const m_cellPointers = GetCellPointers();
 
-  int m_imageBorderWidth = 0;
+    int m_imageBorderWidth = 0;
 
 //** Bitfield objects (1 bytes)
 //**
-  void InitBitFields()
-    { // Keep the initialization order below same as the order
-      // of bit fields in this class!
-      m_drawRectangle = true;
-      m_drawBoundingBox = false;
-    }
-  bool m_drawRectangle : 1 /* InitBitFields */;
-  bool m_drawBoundingBox : 1 /* InitBitFields */;
+    void InitBitFields()
+        { // Keep the initialization order below same as the order
+            // of bit fields in this class!
+            m_drawRectangle = true;
+            m_drawBoundingBox = false;
+        }
+    bool m_drawRectangle : 1 /* InitBitFields */;
+    bool m_drawBoundingBox : 1 /* InitBitFields */;
 
-  static int s_counter;
-  
-  wxString m_origImageFile;
+    static int s_counter;
+
+    wxString m_origImageFile;
 };
 
 #endif // IMGCELL_H

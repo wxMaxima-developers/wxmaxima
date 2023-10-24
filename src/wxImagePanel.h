@@ -38,17 +38,17 @@
 */
 class wxImagePanel : public wxPanel
 {
-  wxImage m_image;
-  wxBitmap m_resized;
-  int m_w, m_h;
- 
+    wxImage m_image;
+    wxBitmap m_resized;
+    int m_w, m_h;
+
 public:
-  wxImagePanel(wxWindow* parent, unsigned char *data, size_t len);
-  void Load(unsigned char *data, size_t len);
- 
-  void paintEvent(wxPaintEvent & evt);
-  void paintNow();
-  void OnSize(wxSizeEvent& event); 
+    wxImagePanel(wxWindow* parent, unsigned char *data, size_t len);
+    void Load(unsigned char *data, size_t len);
+
+    void paintEvent(wxPaintEvent & evt);
+    void paintNow();
+    void OnSize(wxSizeEvent& event);
 };
 
 #endif // IMAGEPANEL_H

@@ -47,149 +47,149 @@ wxDEFINE_EVENT(EVT_MAXIMA, MaximaEvent);
 // distributions) had a bug, so that without these parameters one get wrong characters.
 // See: https://github.com/wxWidgets/wxWidgets/issues/14720#issuecomment-1010968576
 Maxima::Maxima(wxSocketBase *socket) :
-  m_socket(socket),
-  m_socketInput(*m_socket),
-  m_textInput(m_socketInput, wxS("\n"), wxConvUTF8)
+    m_socket(socket),
+    m_socketInput(*m_socket),
+    m_textInput(m_socketInput, wxS("\n"), wxConvUTF8)
 {
-  wxASSERT(socket);
-  Bind(wxEVT_TIMER, wxTimerEventHandler(Maxima::TimerEvent), this);
-  Bind(wxEVT_SOCKET, wxSocketEventHandler(Maxima::SocketEvent), this);
-  m_socket->SetEventHandler(*this);
-  m_socket->SetNotify(wxSOCKET_INPUT_FLAG | wxSOCKET_OUTPUT_FLAG |
-                      wxSOCKET_LOST_FLAG);
-  m_socket->Notify(true);
-  m_socket->SetFlags(wxSOCKET_NOWAIT_READ);
-  m_socket->SetTimeout(120);
+    wxASSERT(socket);
+    Bind(wxEVT_TIMER, wxTimerEventHandler(Maxima::TimerEvent), this);
+    Bind(wxEVT_SOCKET, wxSocketEventHandler(Maxima::SocketEvent), this);
+    m_socket->SetEventHandler(*this);
+    m_socket->SetNotify(wxSOCKET_INPUT_FLAG | wxSOCKET_OUTPUT_FLAG |
+                        wxSOCKET_LOST_FLAG);
+    m_socket->Notify(true);
+    m_socket->SetFlags(wxSOCKET_NOWAIT_READ);
+    m_socket->SetTimeout(120);
 
-  // There are some hints in the code history that wxSOCKET_INPUT
-  // event may be "flaky". We don't want wxMaxima to get stuck, but we don't
-  // want to be forcing idle events for nothing. So this is a "way out" - we
-  // monitor the progress of input, and only act if we expected some but none
-  // came.
-  if (INPUT_RESTART_PERIOD > 0)
-    m_readIdleTimer.Start(INPUT_RESTART_PERIOD);
+    // There are some hints in the code history that wxSOCKET_INPUT
+    // event may be "flaky". We don't want wxMaxima to get stuck, but we don't
+    // want to be forcing idle events for nothing. So this is a "way out" - we
+    // monitor the progress of input, and only act if we expected some but none
+    // came.
+    if (INPUT_RESTART_PERIOD > 0)
+        m_readIdleTimer.Start(INPUT_RESTART_PERIOD);
 }
 
 Maxima::~Maxima() { m_socket->Close(); }
 
 bool Maxima::Write(const void *buffer, size_t length) {
-  if (!m_socketOutputData.IsEmpty()) {
-    if (buffer && length)
-      m_socketOutputData.AppendData(buffer, length);
-    buffer = m_socketOutputData.GetData();
-    length = m_socketOutputData.GetDataLen();
-  }
-  if (!length)
-    return false;
-  m_socket->Write(buffer, length);
-  if (m_socket->Error() && m_socket->LastError() != wxSOCKET_WOULDBLOCK) {
-    MaximaEvent *event = new MaximaEvent(MaximaEvent::WRITE_ERROR, this);
-    QueueEvent(event);
-    m_socketOutputData.Clear();
-    return true;
-  }
-  auto const wrote = m_socket->LastWriteCount();
-  if (wrote < length) {
-    auto *const source = reinterpret_cast<const char *>(buffer);
-    auto const leftToWrite = length - wrote;
-    if (m_socketOutputData.IsEmpty())
-      m_socketOutputData.AppendData(source + wrote, leftToWrite);
-    else {
-      memmove(m_socketOutputData.GetData(), source + wrote, leftToWrite);
-      m_socketOutputData.SetDataLen(leftToWrite);
+    if (!m_socketOutputData.IsEmpty()) {
+        if (buffer && length)
+            m_socketOutputData.AppendData(buffer, length);
+        buffer = m_socketOutputData.GetData();
+        length = m_socketOutputData.GetDataLen();
     }
-  } else
-    m_socketOutputData.Clear();
-  return true;
+    if (!length)
+        return false;
+    m_socket->Write(buffer, length);
+    if (m_socket->Error() && m_socket->LastError() != wxSOCKET_WOULDBLOCK) {
+        MaximaEvent *event = new MaximaEvent(MaximaEvent::WRITE_ERROR, this);
+        QueueEvent(event);
+        m_socketOutputData.Clear();
+        return true;
+    }
+    auto const wrote = m_socket->LastWriteCount();
+    if (wrote < length) {
+        auto *const source = reinterpret_cast<const char *>(buffer);
+        auto const leftToWrite = length - wrote;
+        if (m_socketOutputData.IsEmpty())
+            m_socketOutputData.AppendData(source + wrote, leftToWrite);
+        else {
+            memmove(m_socketOutputData.GetData(), source + wrote, leftToWrite);
+            m_socketOutputData.SetDataLen(leftToWrite);
+        }
+    } else
+        m_socketOutputData.Clear();
+    return true;
 }
 
 void Maxima::SocketEvent(wxSocketEvent &event) {
-  switch (event.GetSocketEvent()) {
-  case wxSOCKET_INPUT:
-    ReadSocket();
-    break;
-  case wxSOCKET_OUTPUT:
-    if (Write(nullptr, 0)) {
-      MaximaEvent *discEvent =
-	new MaximaEvent(MaximaEvent::WRITE_PENDING, this);
-      QueueEvent(discEvent);
+    switch (event.GetSocketEvent()) {
+    case wxSOCKET_INPUT:
+        ReadSocket();
+        break;
+    case wxSOCKET_OUTPUT:
+        if (Write(nullptr, 0)) {
+            MaximaEvent *discEvent =
+                new MaximaEvent(MaximaEvent::WRITE_PENDING, this);
+            QueueEvent(discEvent);
+        }
+        break;
+    case wxSOCKET_LOST: {
+        MaximaEvent *discEvent = new MaximaEvent(MaximaEvent::DISCONNECTED, this);
+        QueueEvent(discEvent);
+        break;
     }
-    break;
-  case wxSOCKET_LOST: {
-    MaximaEvent *discEvent = new MaximaEvent(MaximaEvent::DISCONNECTED, this);
-    QueueEvent(discEvent);
-    break;
-  }
-  case wxSOCKET_CONNECTION:
-    // We don't get these events, as we only deal with connected sockets.
-    break;
-  }
+    case wxSOCKET_CONNECTION:
+        // We don't get these events, as we only deal with connected sockets.
+        break;
+    }
 }
 
 void Maxima::TimerEvent(wxTimerEvent &event) {
-  if (&event.GetTimer() == &m_stringEndTimer) {
-    MaximaEvent *sendevent = new MaximaEvent(MaximaEvent::READ_TIMEOUT, this,
-                                             std::move(m_socketInputData));
-    QueueEvent(sendevent);
-  } else if (&event.GetTimer() == &m_readIdleTimer) {
-    // Let's keep the input from Maxima flowing in. This is a platform-specific
-    // workaround, so this timer is not guaranteed to fire at all.
-    ReadSocket();
-  }
+    if (&event.GetTimer() == &m_stringEndTimer) {
+        MaximaEvent *sendevent = new MaximaEvent(MaximaEvent::READ_TIMEOUT, this,
+                                                 std::move(m_socketInputData));
+        QueueEvent(sendevent);
+    } else if (&event.GetTimer() == &m_readIdleTimer) {
+        // Let's keep the input from Maxima flowing in. This is a platform-specific
+        // workaround, so this timer is not guaranteed to fire at all.
+        ReadSocket();
+    }
 }
 
 void Maxima::ReadSocket() {
-  // It is theoretically possible that the client has exited after sending us
-  // data and before we had been able to process it.
-  if (!m_socket->IsConnected() || !m_socket->IsData())
-    return;
+    // It is theoretically possible that the client has exited after sending us
+    // data and before we had been able to process it.
+    if (!m_socket->IsConnected() || !m_socket->IsData())
+        return;
 
-  // std::cerr<<"------ transmission start ------\n";
-  wxString line;
-  wxString newLine = wxS("\n");
-  wxChar ch;
-  do
+    // std::cerr<<"------ transmission start ------\n";
+    wxString line;
+    wxString newLine = wxS("\n");
+    wxChar ch;
+    do
     {
-      ch = m_textInput.GetChar();
-      if(ch == wxS('\r'))
-        ch = wxS('\n');
-      if(ch != wxS('\0'))
-        m_socketInputData.append(ch);
+        ch = m_textInput.GetChar();
+        if(ch == wxS('\r'))
+            ch = wxS('\n');
+        if(ch != wxS('\0'))
+            m_socketInputData.append(ch);
     }  while (m_socket->LastReadCount() > 0);
-  {
-    MaximaEvent *event = new MaximaEvent(MaximaEvent::READ_PENDING, this);
-    QueueEvent(event);
-  }
-  // std::cerr<<m_socketInputData<<"\n";
-  // std::cerr<<"------ transmission end ------\n";
-
-  if ((m_pipeToStderr) && (!m_socketInputData.IsEmpty()))
     {
-      std::cerr << m_socketInputData;
-      std::cerr.flush();
+        MaximaEvent *event = new MaximaEvent(MaximaEvent::READ_PENDING, this);
+        QueueEvent(event);
     }
-  
-  if (m_first || wxm::EndsWithChar(m_socketInputData, '\n') ||
-      m_socketInputData.EndsWith(wxMaxima::m_promptSuffix)) {
-    m_stringEndTimer.Stop();
-    MaximaEvent *event = new MaximaEvent(MaximaEvent::READ_DATA, this,
-                                         std::move(m_socketInputData));
-    QueueEvent(event);
-  } else
-    m_stringEndTimer.StartOnce(STRING_END_TIMEOUT);
+    // std::cerr<<m_socketInputData<<"\n";
+    // std::cerr<<"------ transmission end ------\n";
+
+    if ((m_pipeToStderr) && (!m_socketInputData.IsEmpty()))
+    {
+        std::cerr << m_socketInputData;
+        std::cerr.flush();
+    }
+
+    if (m_first || wxm::EndsWithChar(m_socketInputData, '\n') ||
+        m_socketInputData.EndsWith(wxMaxima::m_promptSuffix)) {
+        m_stringEndTimer.Stop();
+        MaximaEvent *event = new MaximaEvent(MaximaEvent::READ_DATA, this,
+                                             std::move(m_socketInputData));
+        QueueEvent(event);
+    } else
+        m_stringEndTimer.StartOnce(STRING_END_TIMEOUT);
 }
 
 MaximaEvent::MaximaEvent(MaximaEvent::Cause cause, Maxima *source,
                          wxString &&data)
-  : wxEvent(0, EVT_MAXIMA), m_cause(cause), m_source(source) {
-  m_data.swap(data);
+    : wxEvent(0, EVT_MAXIMA), m_cause(cause), m_source(source) {
+    m_data.swap(data);
 }
 
 MaximaEvent::MaximaEvent(MaximaEvent::Cause cause, Maxima *source)
-  : wxEvent(0, EVT_MAXIMA), m_cause(cause), m_source(source) {}
+    : wxEvent(0, EVT_MAXIMA), m_cause(cause), m_source(source) {}
 
 wxEvent *MaximaEvent::Clone() const {
-  auto event = std::make_unique<MaximaEvent>(GetCause(), GetSource());
-  event->SetData(GetData());
-  return event.release();
+    auto event = std::make_unique<MaximaEvent>(GetCause(), GetSource());
+    event->SetData(GetData());
+    return event.release();
 }

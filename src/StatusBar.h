@@ -22,7 +22,7 @@
 
 /*! \file
 
-  This file contains the definition of the class History that handles the recently 
+  This file contains the definition of the class History that handles the recently
   issued commands for the history pane.
 */
 #include "precomp.h"
@@ -46,126 +46,126 @@ extern size_t GO_NEXT_SVG_GZ_SIZE;
 class StatusBar : public wxStatusBar
 {
 public:
-  StatusBar(wxWindow *parent, int id);
-  ~StatusBar();
-  //! The network states that can be passed to NetworkStatus()
-  enum networkState
-  {
-    idle,
-    error,
-    offline,
-    receive,
-    transmit
-  };
-
-  //! Update the bitmaps to the Right size for the Resolution
-  void UpdateBitmaps();
-  
-  //! Informs the status bar about networking events.
-  void NetworkStatus(networkState status);
-
-  wxWindow *GetNetworkStatusElement()
-    { return m_networkStatus; }
-
-  wxWindow *GetStatusTextElement()
-    { return m_statusTextPanel; }
-
-  wxWindow *GetMaximaStatusElement()
-    { return m_maximaStatus; }
-
-  //! Inform the status bar how many percents of the available CPU power maxima uses
-  void SetMaximaCPUPercentage(float percentage)
+    StatusBar(wxWindow *parent, int id);
+    ~StatusBar();
+    //! The network states that can be passed to NetworkStatus()
+    enum networkState
     {
-      m_maximaPercentage = percentage;
-      NetworkStatus(m_oldNetworkState);
-    }
+        idle,
+        error,
+        offline,
+        receive,
+        transmit
+    };
 
-  enum MaximaStatus
-  {
-    wait_for_start,
-    process_wont_start,
-    sending,
-    waiting,
-    waitingForPrompt,
-    waitingForAuth,
-    calculating,
-    parsing,
-    transferring,
-    userinput,
-    disconnected
-  };
+    //! Update the bitmaps to the Right size for the Resolution
+    void UpdateBitmaps();
 
-  void UpdateStatusMaximaBusy(MaximaStatus status, long bytesFromMaxima);
-  void SetStatusText(wxString statusText){m_statusText->SetLabel(statusText);}
+    //! Informs the status bar about networking events.
+    void NetworkStatus(networkState status);
+
+    wxWindow *GetNetworkStatusElement()
+        { return m_networkStatus; }
+
+    wxWindow *GetStatusTextElement()
+        { return m_statusTextPanel; }
+
+    wxWindow *GetMaximaStatusElement()
+        { return m_maximaStatus; }
+
+    //! Inform the status bar how many percents of the available CPU power maxima uses
+    void SetMaximaCPUPercentage(float percentage)
+        {
+            m_maximaPercentage = percentage;
+            NetworkStatus(m_oldNetworkState);
+        }
+
+    enum MaximaStatus
+    {
+        wait_for_start,
+        process_wont_start,
+        sending,
+        waiting,
+        waitingForPrompt,
+        waitingForAuth,
+        calculating,
+        parsing,
+        transferring,
+        userinput,
+        disconnected
+    };
+
+    void UpdateStatusMaximaBusy(MaximaStatus status, long bytesFromMaxima);
+    void SetStatusText(wxString statusText){m_statusText->SetLabel(statusText);}
 protected:
-  void StatusMsgDClick(wxCommandEvent &ev);
-  void OnSize(wxSizeEvent &event);
-  void OnTimerEvent(wxTimerEvent &event);
+    void StatusMsgDClick(wxCommandEvent &ev);
+    void OnSize(wxSizeEvent &event);
+    void OnTimerEvent(wxTimerEvent &event);
 
-  void HandleTimerEvent();
+    void HandleTimerEvent();
 
 private:
-  std::unique_ptr<struct wxm_NSVGrasterizer, decltype(std::free)*> m_svgRast{nullptr, std::free};
-  //! The display resolution
-  wxSize m_ppi;
-  /*! How many percents of the available CPU power does maxima use?
+    std::unique_ptr<struct wxm_NSVGrasterizer, decltype(std::free)*> m_svgRast{nullptr, std::free};
+    //! The display resolution
+    wxSize m_ppi;
+    /*! How many percents of the available CPU power does maxima use?
 
-    See m_maximaPercentage and SetMaximaCPUPercentage()
-  */
-  float m_maximaPercentage;
-  /*! How many percents of the available CPU power did maxima use when updating the network icon last?
+      See m_maximaPercentage and SetMaximaCPUPercentage()
+    */
+    float m_maximaPercentage;
+    /*! How many percents of the available CPU power did maxima use when updating the network icon last?
 
-    See m_maximaPercentage and SetMaximaCPUPercentage()
-  */
-  float m_oldmaximaPercentage;
-  networkState m_oldNetworkState;
-  wxString m_stdToolTip;
-  wxString m_networkErrToolTip;
-  wxString m_noConnectionToolTip;
-  //! The basic network state we currently display without receive or transmit info
-  networkState m_networkState;
-  //! Does the icon show that we currently receive data?
-  bool m_icon_shows_receive;
-  //! Does the icon show that we currently transmit data?
-  bool m_icon_shows_transmit;
-  //! The background for m_statusText;
-  wxPanel *m_statusTextPanel;
-  //! The currently shown network status bitmap
-  wxStaticText *m_statusText;
-  //! The currently shown network status bitmap
-  wxStaticBitmap *m_networkStatus;
-  //! The currently shown network status bitmap
-  wxStaticBitmap *m_maximaStatus;
-  //! The bitmap shown on network errors
-  wxBitmap m_network_error;
-  //! The bitmap shown while not connected to the network
-  wxBitmap m_network_offline;
-  //! The bitmap shown while transmitting data
-  wxBitmap m_network_transmit;
-  //! The bitmap shown while not transmitting or receiving data
-  wxBitmap m_network_idle;
-  //! The bitmap shown while not transmitting or receiving data and maxima not using CPU power
-  wxBitmap m_network_idle_inactive;
-  //! The bitmap shown while receiving data
-  wxBitmap m_network_receive;
-  //! The bitmap shown while simultaneously receiving and transmitting data
-  wxBitmap m_network_transmit_receive;
-  //! The timer that prolongs the showing of the "sending" bitmap a bit.
-  wxTimer SendTimer;
-  //! The timer that prolongs the showing of the "receiving" bitmap a bit.
-  wxTimer ReceiveTimer;
-  
-  wxBitmap m_bitmap_waitForStart;
-  wxBitmap m_bitmap_process_wont_start;
-  wxBitmap m_bitmap_sending;
-  wxBitmap m_bitmap_waiting;
-  wxBitmap m_bitmap_waitingForPrompt;
-  wxBitmap m_bitmap_waitingForAuth;
-  wxBitmap m_bitmap_calculating;
-  wxBitmap m_bitmap_parsing;
-  wxBitmap m_bitmap_transferring;
-  wxBitmap m_bitmap_userinput;
-  wxBitmap m_bitmap_disconnected;
+      See m_maximaPercentage and SetMaximaCPUPercentage()
+    */
+    float m_oldmaximaPercentage;
+    networkState m_oldNetworkState;
+    wxString m_stdToolTip;
+    wxString m_networkErrToolTip;
+    wxString m_noConnectionToolTip;
+    //! The basic network state we currently display without receive or transmit info
+    networkState m_networkState;
+    //! Does the icon show that we currently receive data?
+    bool m_icon_shows_receive;
+    //! Does the icon show that we currently transmit data?
+    bool m_icon_shows_transmit;
+    //! The background for m_statusText;
+    wxPanel *m_statusTextPanel;
+    //! The currently shown network status bitmap
+    wxStaticText *m_statusText;
+    //! The currently shown network status bitmap
+    wxStaticBitmap *m_networkStatus;
+    //! The currently shown network status bitmap
+    wxStaticBitmap *m_maximaStatus;
+    //! The bitmap shown on network errors
+    wxBitmap m_network_error;
+    //! The bitmap shown while not connected to the network
+    wxBitmap m_network_offline;
+    //! The bitmap shown while transmitting data
+    wxBitmap m_network_transmit;
+    //! The bitmap shown while not transmitting or receiving data
+    wxBitmap m_network_idle;
+    //! The bitmap shown while not transmitting or receiving data and maxima not using CPU power
+    wxBitmap m_network_idle_inactive;
+    //! The bitmap shown while receiving data
+    wxBitmap m_network_receive;
+    //! The bitmap shown while simultaneously receiving and transmitting data
+    wxBitmap m_network_transmit_receive;
+    //! The timer that prolongs the showing of the "sending" bitmap a bit.
+    wxTimer SendTimer;
+    //! The timer that prolongs the showing of the "receiving" bitmap a bit.
+    wxTimer ReceiveTimer;
+
+    wxBitmap m_bitmap_waitForStart;
+    wxBitmap m_bitmap_process_wont_start;
+    wxBitmap m_bitmap_sending;
+    wxBitmap m_bitmap_waiting;
+    wxBitmap m_bitmap_waitingForPrompt;
+    wxBitmap m_bitmap_waitingForAuth;
+    wxBitmap m_bitmap_calculating;
+    wxBitmap m_bitmap_parsing;
+    wxBitmap m_bitmap_transferring;
+    wxBitmap m_bitmap_userinput;
+    wxBitmap m_bitmap_disconnected;
 };
 
 #endif

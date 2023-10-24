@@ -28,80 +28,80 @@
 #include <iterator>
 
 CellPointers::CellPointers(wxScrolledCanvas *worksheet)
-  : m_worksheet(worksheet) {}
+    : m_worksheet(worksheet) {}
 
 wxString CellPointers::WXMXGetNewFileName() {
-  wxString file(wxS("image"));
-  file << (++m_wxmxImgCounter) << wxS(".");
-  return file;
+    wxString file(wxS("image"));
+    file << (++m_wxmxImgCounter) << wxS(".");
+    return file;
 }
 
 void CellPointers::SetTimerIdForCell(Cell *const cell, int const timerId) {
-  auto match =
-    std::find_if(m_timerIds.begin(), m_timerIds.end(),
-		 [cell](auto const &ctid) { return ctid.cell == cell; });
-  if (match != m_timerIds.end()) {
-    match->timerId = timerId;
-    return;
-  }
+    auto match =
+        std::find_if(m_timerIds.begin(), m_timerIds.end(),
+                     [cell](auto const &ctid) { return ctid.cell == cell; });
+    if (match != m_timerIds.end()) {
+        match->timerId = timerId;
+        return;
+    }
 
-  m_timerIds.emplace_back(cell, timerId);
+    m_timerIds.emplace_back(cell, timerId);
 }
 
 int CellPointers::GetTimerIdForCell(Cell *const cell) const {
-  auto match =
-    std::find_if(m_timerIds.begin(), m_timerIds.end(),
-		 [cell](auto const &ctid) { return ctid.cell == cell; });
-  if (match != m_timerIds.end())
-    return match->timerId;
-  return -1;
+    auto match =
+        std::find_if(m_timerIds.begin(), m_timerIds.end(),
+                     [cell](auto const &ctid) { return ctid.cell == cell; });
+    if (match != m_timerIds.end())
+        return match->timerId;
+    return -1;
 }
 
 Cell *CellPointers::GetCellForTimerId(int const timerId) const {
-  auto match = std::find_if(
-			    m_timerIds.begin(), m_timerIds.end(),
-			    [timerId](auto const &ctid) { return ctid.timerId == timerId; });
-  if (match != m_timerIds.end())
-    return match->cell;
-  return nullptr;
+    auto match = std::find_if(
+        m_timerIds.begin(), m_timerIds.end(),
+        [timerId](auto const &ctid) { return ctid.timerId == timerId; });
+    if (match != m_timerIds.end())
+        return match->cell;
+    return nullptr;
 }
 
 void CellPointers::RemoveTimerIdForCell(const Cell *const cell) {
-  auto it = m_timerIds.begin();
-  while (it != m_timerIds.end() && it->cell != cell)
-    std::advance(it, 1);
-  if (it != m_timerIds.end())
-    m_timerIds.erase(it);
+    auto it = m_timerIds.begin();
+    while (it != m_timerIds.end() && it->cell != cell)
+        std::advance(it, 1);
+    if (it != m_timerIds.end())
+        m_timerIds.erase(it);
 }
 
 void CellPointers::ErrorList::Remove(GroupCell *cell) {
-  m_errors.erase(std::remove(m_errors.begin(), m_errors.end(), cell),
-                 m_errors.end());
+    m_errors.erase(std::remove(m_errors.begin(), m_errors.end(), cell),
+                   m_errors.end());
 }
 
 bool CellPointers::ErrorList::Contains(GroupCell *cell) const {
-  return std::find(m_errors.begin(), m_errors.end(), cell) != m_errors.end();
+    return std::find(m_errors.begin(), m_errors.end(), cell) != m_errors.end();
 }
 
 void CellPointers::ErrorList::Add(GroupCell *cell) {
-  m_errors.emplace_back(cell);
+    m_errors.emplace_back(cell);
 }
 
 void CellPointers::SetWorkingGroup(GroupCell *group) {
-  if (group)
-    m_lastWorkingGroup = group;
-  m_workingGroup = group;
+    if (group)
+        m_lastWorkingGroup = group;
+    m_workingGroup = group;
 }
 
 GroupCell *CellPointers::GetWorkingGroup(bool resortToLast) const {
-  return (m_workingGroup || !resortToLast) ? m_workingGroup
-    : m_lastWorkingGroup;
+    return (m_workingGroup || !resortToLast) ? m_workingGroup
+        : m_lastWorkingGroup;
 }
 
 GroupCell *CellPointers::ErrorList::FirstError() const {
-  return m_errors.empty() ? nullptr : m_errors.front().get();
+    return m_errors.empty() ? nullptr : m_errors.front().get();
 }
 
 GroupCell *CellPointers::ErrorList::LastError() const {
-  return m_errors.empty() ? nullptr : m_errors.back().get();
+    return m_errors.empty() ? nullptr : m_errors.back().get();
 }

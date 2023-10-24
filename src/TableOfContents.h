@@ -22,7 +22,7 @@
 
 /*! \file
 
-  This file contains the definition of the class TableOfContents that handles the 
+  This file contains the definition of the class TableOfContents that handles the
   table of contents pane.
 */
 #include <memory>
@@ -41,8 +41,8 @@
 
 enum
 {
-  structure_ctrl_id = 4,
-  structure_regex_id
+    structure_ctrl_id = 4,
+    structure_regex_id
 };
 
 /*! This class generates a pane containing the table of contents.
@@ -51,75 +51,75 @@ enum
 class TableOfContents : public wxPanel
 {
 public:
-  TableOfContents(wxWindow *parent, int id, Configuration *config, std::unique_ptr<GroupCell> *tree);
+    TableOfContents(wxWindow *parent, int id, Configuration *config, std::unique_ptr<GroupCell> *tree);
 
-  /* The destructor
-   */
-  ~TableOfContents();
+    /* The destructor
+     */
+    ~TableOfContents();
 
-  void OnMouseRightDown(wxListEvent &event);
+    void OnMouseRightDown(wxListEvent &event);
 
-  //! What happens if someone changes the search box contents
-  void OnRegExEvent(wxCommandEvent &ev);
+    //! What happens if someone changes the search box contents
+    void OnRegExEvent(wxCommandEvent &ev);
 
-  /*! Update the structure information from the tree
+    /*! Update the structure information from the tree
 
-    Since this function traverses the tree and we don't want it 
-    to impact the performance too much
-    - we call it only on creation of a cell and on leaving it again
-    - and we only traverse the tree if the pane is actually shown.
-  */
-  void UpdateTableOfContents(GroupCell *pos);
+      Since this function traverses the tree and we don't want it
+      to impact the performance too much
+      - we call it only on creation of a cell and on leaving it again
+      - and we only traverse the tree if the pane is actually shown.
+    */
+    void UpdateTableOfContents(GroupCell *pos);
 
-  //! Get the nth Cell in the table of contents.
-  GroupCell *GetCell(long index);
+    //! Get the nth Cell in the table of contents.
+    GroupCell *GetCell(long index);
 
-  //! Returns the cell that was last right-clicked on.
-  GroupCell *RightClickedOn()
-    { return m_cellRightClickedOn; }
+    //! Returns the cell that was last right-clicked on.
+    GroupCell *RightClickedOn()
+        { return m_cellRightClickedOn; }
 
-  GroupCell *DNDStart() {return m_dndStartCell;}
-  GroupCell *DNDEnd() {return m_dndEndCell;}
+    GroupCell *DNDStart() {return m_dndStartCell;}
+    GroupCell *DNDEnd() {return m_dndEndCell;}
 protected:
-  void OnSize(wxSizeEvent &event);
-  void OnDragStart(wxListEvent &evt);
-  void OnMouseUp(wxMouseEvent &evt);
-  void OnMouseCaptureLost(wxMouseCaptureLostEvent &event);
-  void OnMouseMotion(wxMouseEvent &event);
-  void OnTimer(wxTimerEvent &event);
+    void OnSize(wxSizeEvent &event);
+    void OnDragStart(wxListEvent &evt);
+    void OnMouseUp(wxMouseEvent &evt);
+    void OnMouseCaptureLost(wxMouseCaptureLostEvent &event);
+    void OnMouseMotion(wxMouseEvent &event);
+    void OnTimer(wxTimerEvent &event);
 
-  wxString TocEntryString(GroupCell *cell);
+    wxString TocEntryString(GroupCell *cell);
 private:
-  void UpdateStruct();
-  std::unique_ptr<GroupCell> *m_tree;
-  GroupCell *m_dndStartCell = NULL;
-  GroupCell *m_dndEndCell = NULL;
-  wxTimer m_scrollUpTimer;
-  wxTimer m_scrollDownTimer;
-  wxDragImage *m_dragImage = NULL;
-  std::vector<GroupCell *> m_displayedGroupCells;
-  //! How many toc items did the user drag at the same time?
-  unsigned int m_numberOfCaptionsDragged = 0;
-  GroupCell *m_cellRightClickedOn = NULL;
-  //! The item that was dragged away at the start of the current drag-and-drop
-  long m_dragStart = -1;
-  long m_dragStop = -1;
-  signed long m_dragCurrentPos = -1;
-  //! The position the dragged item was when we last displayed the reordered toc
-  int m_dragFeedback_Last = -1;
-  //! The last selected item
-  long m_lastSelection;
-  
-  //! Update the displayed contents.
-  void UpdateDisplay();
+    void UpdateStruct();
+    std::unique_ptr<GroupCell> *m_tree;
+    GroupCell *m_dndStartCell = NULL;
+    GroupCell *m_dndEndCell = NULL;
+    wxTimer m_scrollUpTimer;
+    wxTimer m_scrollDownTimer;
+    wxDragImage *m_dragImage = NULL;
+    std::vector<GroupCell *> m_displayedGroupCells;
+    //! How many toc items did the user drag at the same time?
+    unsigned int m_numberOfCaptionsDragged = 0;
+    GroupCell *m_cellRightClickedOn = NULL;
+    //! The item that was dragged away at the start of the current drag-and-drop
+    long m_dragStart = -1;
+    long m_dragStop = -1;
+    signed long m_dragCurrentPos = -1;
+    //! The position the dragged item was when we last displayed the reordered toc
+    int m_dragFeedback_Last = -1;
+    //! The last selected item
+    long m_lastSelection;
 
-  wxListCtrl *m_displayedItems;
-  RegexCtrl *m_regex;
-  //! The items we displayed the last time update() was called
-  wxArrayString m_items_old;
-  Configuration *m_configuration;
+    //! Update the displayed contents.
+    void UpdateDisplay();
 
-  std::vector<GroupCell *> m_structure;
+    wxListCtrl *m_displayedItems;
+    RegexCtrl *m_regex;
+    //! The items we displayed the last time update() was called
+    wxArrayString m_items_old;
+    Configuration *m_configuration;
+
+    std::vector<GroupCell *> m_structure;
 };
 
 #endif // TABLEOFCONTENTS_H

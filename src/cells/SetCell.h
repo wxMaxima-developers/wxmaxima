@@ -36,31 +36,31 @@
 /*! The class that represents parenthesis that are wrapped around text
 
   In the case that this cell is broken into two lines in the order of
-  m_nextToDraw this cell is represented by the following individual 
+  m_nextToDraw this cell is represented by the following individual
   cells:
-  
+
   - The SetCell itself
   - The opening "["
   - The contents
   - The closing "]".
-   
-  If it isn't broken into multiple cells m_nextToDraw points to the 
+
+  If it isn't broken into multiple cells m_nextToDraw points to the
   cell that follows this Cell.
 */
 class SetCell final : public ListCell
 {
 public:
-  SetCell(GroupCell *group, Configuration *config, std::unique_ptr<Cell> &&inner);
-  SetCell(GroupCell *group, const SetCell &cell);
-  std::unique_ptr<Cell> Copy(GroupCell *group) const override;
-  const CellTypeInfo &GetInfo() override;
+    SetCell(GroupCell *group, Configuration *config, std::unique_ptr<Cell> &&inner);
+    SetCell(GroupCell *group, const SetCell &cell);
+    std::unique_ptr<Cell> Copy(GroupCell *group) const override;
+    const CellTypeInfo &GetInfo() override;
 
-  void Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) override;
+    void Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) override;
 
-  wxString ToMatlab() const override;
-  wxString ToString() const override;
-  wxString ToTeX() const override;
-  wxString ToXML() const override;
+    wxString ToMatlab() const override;
+    wxString ToString() const override;
+    wxString ToTeX() const override;
+    wxString ToXML() const override;
 };
 
 #endif // SETCELL_H

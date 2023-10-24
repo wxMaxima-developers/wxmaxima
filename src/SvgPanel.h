@@ -37,16 +37,16 @@
   From https://forums.wxwidgets.org/viewtopic.php?t=21664 with a few modifications.
 */
 class SvgPanel : public wxPanel
-{ 
+{
 public:
-  SvgPanel(wxWindow* parent, unsigned char *data, size_t len);
-  void Load(unsigned char *data, size_t len);
- 
-  void paintEvent(wxPaintEvent & evt);
-  void paintNow();
-  void OnSize(wxSizeEvent& event);
+    SvgPanel(wxWindow* parent, unsigned char *data, size_t len);
+    void Load(unsigned char *data, size_t len);
+
+    void paintEvent(wxPaintEvent & evt);
+    void paintNow();
+    void OnSize(wxSizeEvent& event);
 private:
-  SvgBitmap m_bitmap;
+    SvgBitmap m_bitmap;
 };
 
 #endif // SVGPANEL_H

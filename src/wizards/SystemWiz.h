@@ -34,25 +34,25 @@
 class SysWiz : public wxDialog
 {
 public:
-  SysWiz(wxWindow *parent, int id,
-         Configuration *cfg,
-         const wxString &title,
-         int numEq, const wxPoint &pos = wxDefaultPosition,
-         const wxSize &sz = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE);
+    SysWiz(wxWindow *parent, int id,
+           Configuration *cfg,
+           const wxString &title,
+           int numEq, const wxPoint &pos = wxDefaultPosition,
+           const wxSize &sz = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE);
 
-  wxString GetValue();
+    wxString GetValue();
 
 private:
-  void set_properties();
+    void set_properties();
 
-  void do_layout();
+    void do_layout();
 
-  int m_size;
-  std::vector<BTextCtrl *> m_inputs;
-  BTextCtrl *variables;
-  wxStaticLine *static_line_1;
-  wxButton *button_1;
-  wxButton *button_2;
+    int m_size;
+    std::vector<BTextCtrl *> m_inputs;
+    BTextCtrl *variables;
+    wxStaticLine *static_line_1;
+    wxButton *button_1;
+    wxButton *button_2;
 };
 
 #endif // SYSTEMWIZ_H

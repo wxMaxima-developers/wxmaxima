@@ -27,64 +27,64 @@ PlotFormatWiz::PlotFormatWiz(wxWindow *parent, int id,
                              Configuration *WXUNUSED(cfg),
                              const wxString &title, const wxPoint &pos,
                              const wxSize &size, long style)
-  : wxDialog(parent, id, title, pos, size, style) {
-  label_1 = new wxStaticText(this, -1, _("Choose new plot format:"));
-  const wxString combo_box_1_choices[] = {
-    wxS("gnuplot"),
+    : wxDialog(parent, id, title, pos, size, style) {
+    label_1 = new wxStaticText(this, -1, _("Choose new plot format:"));
+    const wxString combo_box_1_choices[] = {
+        wxS("gnuplot"),
 #if !defined(__WXMSW__)
-    /* gnuplot_pipes is not available on Windows, geomview requires Motif, which
-       is not available on Windows */
-    wxS("gnuplot_pipes"),
-    wxS("geomview"),
+        /* gnuplot_pipes is not available on Windows, geomview requires Motif, which
+           is not available on Windows */
+        wxS("gnuplot_pipes"),
+        wxS("geomview"),
 #endif
-    wxS("xmaxima"),
-    wxS("mgnuplot")
-  };
-  combo_box_1 = new wxComboBox(
-			       this, -1, combo_box_1_choices[0], wxDefaultPosition, wxSize(140, -1),
-			       sizeof(combo_box_1_choices) / sizeof(combo_box_1_choices[0]),
-			       combo_box_1_choices, wxCB_DROPDOWN);
-  static_line_1 = new wxStaticLine(this, -1);
+        wxS("xmaxima"),
+        wxS("mgnuplot")
+    };
+    combo_box_1 = new wxComboBox(
+        this, -1, combo_box_1_choices[0], wxDefaultPosition, wxSize(140, -1),
+        sizeof(combo_box_1_choices) / sizeof(combo_box_1_choices[0]),
+        combo_box_1_choices, wxCB_DROPDOWN);
+    static_line_1 = new wxStaticLine(this, -1);
 #if defined __WXMSW__
-  button_1 = new wxButton(this, wxID_OK, _("OK"));
-  button_2 = new wxButton(this, wxID_CANCEL, _("Cancel"));
+    button_1 = new wxButton(this, wxID_OK, _("OK"));
+    button_2 = new wxButton(this, wxID_CANCEL, _("Cancel"));
 #else
-  button_1 = new wxButton(this, wxID_CANCEL, _("Cancel"));
-  button_2 = new wxButton(this, wxID_OK, _("OK"));
+    button_1 = new wxButton(this, wxID_CANCEL, _("Cancel"));
+    button_2 = new wxButton(this, wxID_OK, _("OK"));
 #endif
 
-  set_properties();
-  do_layout();
+    set_properties();
+    do_layout();
 }
 
 void PlotFormatWiz::set_properties() {
 #if defined __WXMSW__
-  button_1->SetDefault();
+    button_1->SetDefault();
 #else
-  button_2->SetDefault();
+    button_2->SetDefault();
 #endif
 }
 
 void PlotFormatWiz::do_layout() {
-  wxFlexGridSizer *grid_sizer_1 = new wxFlexGridSizer(4, 1, 0, 0);
-  wxBoxSizer *sizer_1 = new wxBoxSizer(wxHORIZONTAL);
-  grid_sizer_1->Add(label_1, 0, wxALIGN_CENTER | wxALL, 5);
-  grid_sizer_1->Add(combo_box_1, 0, wxALIGN_CENTER | wxALL, 5);
-  grid_sizer_1->Add(static_line_1, 0, wxEXPAND | wxLEFT | wxRIGHT, 2);
-  sizer_1->Add(button_1, 0, wxALL, 5);
-  sizer_1->Add(button_2, 0, wxALL, 5);
-  grid_sizer_1->Add(sizer_1, 1, wxALIGN_RIGHT, 0);
-  SetAutoLayout(true);
-  SetSizer(grid_sizer_1);
-  grid_sizer_1->Fit(this);
-  grid_sizer_1->SetSizeHints(this);
-  Layout();
+    wxFlexGridSizer *grid_sizer_1 = new wxFlexGridSizer(4, 1, 0, 0);
+    wxBoxSizer *sizer_1 = new wxBoxSizer(wxHORIZONTAL);
+    grid_sizer_1->Add(label_1, 0, wxALIGN_CENTER | wxALL, 5);
+    grid_sizer_1->Add(combo_box_1, 0, wxALIGN_CENTER | wxALL, 5);
+    grid_sizer_1->Add(static_line_1, 0, wxEXPAND | wxLEFT | wxRIGHT, 2);
+    sizer_1->Add(button_1, 0, wxALL, 5);
+    sizer_1->Add(button_2, 0, wxALL, 5);
+    grid_sizer_1->Add(sizer_1, 1, wxALIGN_RIGHT, 0);
+    SetAutoLayout(true);
+    SetSizer(grid_sizer_1);
+    grid_sizer_1->Fit(this);
+    grid_sizer_1->SetSizeHints(this);
+    Layout();
 }
 
 wxString PlotFormatWiz::GetValue() {
-  wxString s;
-  s = wxS("set_plot_option(['plot_format, '");
-  s += combo_box_1->GetValue();
-  s += wxS("])$");
-  return s;
+    wxString s;
+    s = wxS("set_plot_option(['plot_format, '");
+    s += combo_box_1->GetValue();
+    s += wxS("])$");
+    return s;
 }

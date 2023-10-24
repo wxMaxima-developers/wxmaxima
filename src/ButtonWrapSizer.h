@@ -27,7 +27,7 @@
 
 /*! \file
 
-  This file contains the definition of the class Buttonwrapsizer that allows to 
+  This file contains the definition of the class Buttonwrapsizer that allows to
   select arbitrary unicode symbols.
 */
 #include "precomp.h"
@@ -39,9 +39,9 @@
 class Buttonwrapsizer : public wxWrapSizer
 {
 public:
-  explicit Buttonwrapsizer(int orient = wxHORIZONTAL);
+    explicit Buttonwrapsizer(int orient = wxHORIZONTAL);
 protected:
-  virtual void RecalcSizes();
+    virtual void RecalcSizes();
 };
 
 #endif // BUTTONWRAPSIZER_H

@@ -39,66 +39,66 @@
 
 Svgout::Svgout(Configuration **configuration, const wxString &filename,
                double scale)
-  : m_cmn(configuration, filename, 500,
-	  scale), // Note: old SVGout code had this also at 500
-    m_recalculationDc(m_cmn.GetTempFilename(), 700 * scale, 50000 * scale,
-		      20 * scale),
-    m_CWD(wxGetCwd()) {
+    : m_cmn(configuration, filename, 500,
+            scale), // Note: old SVGout code had this also at 500
+      m_recalculationDc(m_cmn.GetTempFilename(), 700 * scale, 50000 * scale,
+                        20 * scale),
+      m_CWD(wxGetCwd()) {
 
-  wxString path = wxFileName(filename).GetPath();
-  if (path.Length() > 1)
-    wxSetWorkingDirectory(path);
-  m_cmn.SetRecalculationContext(m_recalculationDc);
+    wxString path = wxFileName(filename).GetPath();
+    if (path.Length() > 1)
+        wxSetWorkingDirectory(path);
+    m_cmn.SetRecalculationContext(m_recalculationDc);
 
 #if wxCHECK_VERSION(3, 1, 0)
-  m_recalculationDc.SetBitmapHandler(new wxSVGBitmapEmbedHandler());
+    m_recalculationDc.SetBitmapHandler(new wxSVGBitmapEmbedHandler());
 #endif
-  auto &config = m_cmn.GetConfiguration();
-  config.SetRecalcContext(m_recalculationDc);
-  config.SetCanvasSize(wxSize(700 * scale, 100000 * scale));
+    auto &config = m_cmn.GetConfiguration();
+    config.SetRecalcContext(m_recalculationDc);
+    config.SetCanvasSize(wxSize(700 * scale, 100000 * scale));
 }
 
 Svgout::Svgout(Configuration **configuration, std::unique_ptr<Cell> &&tree,
                const wxString &filename, double scale)
-  : Svgout(configuration, filename, scale) {
-  Render(std::move(tree));
+    : Svgout(configuration, filename, scale) {
+    Render(std::move(tree));
 }
 
 Svgout::~Svgout() { wxSetWorkingDirectory(m_CWD); }
 
 wxSize Svgout::Render(std::unique_ptr<Cell> &&tree) {
-  m_tree = std::move(tree);
-  m_isOk = m_tree && Layout();
-  m_size = m_isOk ? m_cmn.GetScaledSize() : wxDefaultSize;
-  return m_size;
+    m_tree = std::move(tree);
+    m_isOk = m_tree && Layout();
+    m_size = m_isOk ? m_cmn.GetScaledSize() : wxDefaultSize;
+    return m_size;
 }
 
 bool Svgout::Layout() {
-  if (!m_cmn.PrepareLayout(m_tree.get()))
-    return false;
+    if (!m_cmn.PrepareLayout(m_tree.get()))
+        return false;
 
-  // Let's switch to a DC of the right size for our object.
-  auto size = m_cmn.GetSize();
-  auto &config = m_cmn.GetConfiguration();
-  wxSVGFileDC dc(m_cmn.GetFilename(), size.x, size.y, 20 * m_cmn.GetScale());
+    // Let's switch to a DC of the right size for our object.
+    auto size = m_cmn.GetSize();
+    auto &config = m_cmn.GetConfiguration();
+    wxSVGFileDC dc(m_cmn.GetFilename(), size.x, size.y, 20 * m_cmn.GetScale());
 #if wxCHECK_VERSION(3, 1, 0)
-  dc.SetBitmapHandler(new wxSVGBitmapEmbedHandler());
+    dc.SetBitmapHandler(new wxSVGBitmapEmbedHandler());
 #endif
 
-  config.SetRecalcContext(dc);
-  m_cmn.Draw(m_tree.get());
-  config.UnsetContext();
+    config.SetRecalcContext(dc);
+    m_cmn.Draw(m_tree.get());
+    config.UnsetContext();
 
-  return true;
+    return true;
 }
 
 static wxDataFormat &Format() {
-  static wxDataFormat format(wxS("image/svg+xml"));
-  return format;
+    static wxDataFormat format(wxS("image/svg+xml"));
+    return format;
 }
 
 std::unique_ptr<wxCustomDataObject> Svgout::GetDataObject() {
-  return m_cmn.GetDataObject(Format());
+    return m_cmn.GetDataObject(Format());
 }
 
 bool Svgout::ToClipboard() { return m_cmn.ToClipboard(Format()); }

@@ -96,46 +96,46 @@ using AFontWeight = EnumWrapper<wxFontWeight, int16_t, wxFONTWEIGHT_NORMAL>;
  */
 class AFontSize final
 {
-  constexpr static float Size_Unit = 0.05f;
+    constexpr static float Size_Unit = 0.05f;
 
 public:
-  using value_type = int16_t;
+    using value_type = int16_t;
 
-  constexpr static float Minimum_Size = 4.0f;
-  constexpr static float Maximum_Size = std::numeric_limits<value_type>::max() * Size_Unit;
+    constexpr static float Minimum_Size = 4.0f;
+    constexpr static float Maximum_Size = std::numeric_limits<value_type>::max() * Size_Unit;
 
-  constexpr AFontSize() = default;
-  constexpr explicit AFontSize(float size) : m_uSize(ToUSize(size)) {}
-  constexpr AFontSize(AFontSize minimum, double size) :
-    m_uSize(std::max(minimum.m_uSize, ToUSize(static_cast<float>(size)))) {}
-  constexpr AFontSize(AFontSize minimum, AFontSize size) : m_uSize(std::max(minimum.m_uSize, size.m_uSize)) {}
-  constexpr AFontSize(const AFontSize &o) = default;
+    constexpr AFontSize() = default;
+    constexpr explicit AFontSize(float size) : m_uSize(ToUSize(size)) {}
+    constexpr AFontSize(AFontSize minimum, double size) :
+        m_uSize(std::max(minimum.m_uSize, ToUSize(static_cast<float>(size)))) {}
+    constexpr AFontSize(AFontSize minimum, AFontSize size) : m_uSize(std::max(minimum.m_uSize, size.m_uSize)) {}
+    constexpr AFontSize(const AFontSize &o) = default;
 
-  constexpr void Set(float size) { m_uSize = ToUSize(size); }
-  constexpr void Clear() { m_uSize = {}; }
-  // Old cppcheck bugs:
-  // cppcheck-suppress operatorEq
-  constexpr AFontSize &operator=(const AFontSize &o) = default;
+    constexpr void Set(float size) { m_uSize = ToUSize(size); }
+    constexpr void Clear() { m_uSize = {}; }
+    // Old cppcheck bugs:
+    // cppcheck-suppress operatorEq
+    constexpr AFontSize &operator=(const AFontSize &o) = default;
 
-  constexpr bool operator==(AFontSize o) const { return m_uSize == o.m_uSize; }
-  constexpr bool operator!=(AFontSize o) const { return m_uSize != o.m_uSize; }
-  constexpr bool operator<(AFontSize o) const { return m_uSize < o.m_uSize; }
-  constexpr bool operator>(AFontSize o) const { return m_uSize > o.m_uSize; }
-  constexpr float Get() const { return IsValid() ? m_uSize * Size_Unit : Minimum_Size; }
-  constexpr long GetAsLong() const { return long(Get() + 0.5f); }
-  constexpr auto GetForWX() const;
-  constexpr bool IsNull() const { return !IsValid(); }
-  constexpr bool IsValid() const { return m_uSize > 0; }
-  constexpr bool IsMinimal() const { return m_uSize == ToUSize(Minimum_Size); }
+    constexpr bool operator==(AFontSize o) const { return m_uSize == o.m_uSize; }
+    constexpr bool operator!=(AFontSize o) const { return m_uSize != o.m_uSize; }
+    constexpr bool operator<(AFontSize o) const { return m_uSize < o.m_uSize; }
+    constexpr bool operator>(AFontSize o) const { return m_uSize > o.m_uSize; }
+    constexpr float Get() const { return IsValid() ? m_uSize * Size_Unit : Minimum_Size; }
+    constexpr long GetAsLong() const { return long(Get() + 0.5f); }
+    constexpr auto GetForWX() const;
+    constexpr bool IsNull() const { return !IsValid(); }
+    constexpr bool IsValid() const { return m_uSize > 0; }
+    constexpr bool IsMinimal() const { return m_uSize == ToUSize(Minimum_Size); }
 
-  struct Equals {
-    bool operator()(AFontSize l, AFontSize r) const { return l == r; }
-  };
+    struct Equals {
+        bool operator()(AFontSize l, AFontSize r) const { return l == r; }
+    };
 
 private:
-  friend bool EqualToWithin(AFontSize, AFontSize, float);
-  value_type m_uSize = {};
-  constexpr static value_type ToUSize(float size);
+    friend bool EqualToWithin(AFontSize, AFontSize, float);
+    value_type m_uSize = {};
+    constexpr static value_type ToUSize(float size);
 };
 
 constexpr double operator*(double factor, AFontSize size)   { return factor * size.Get(); }
@@ -151,16 +151,16 @@ constexpr AFontSize operator-=(AFontSize &size, double factor)
 
 constexpr AFontSize::value_type AFontSize::ToUSize(float size)
 {
-  return AFontSize::value_type(stx::clamp(size, Minimum_Size, Maximum_Size) / Size_Unit + 0.5f);
+    return AFontSize::value_type(stx::clamp(size, Minimum_Size, Maximum_Size) / Size_Unit + 0.5f);
 }
 
 //! Get the numerical value suitable for passing to wxFont/wxFontInfo.
 constexpr auto AFontSize::GetForWX() const
 {
 #if wxCHECK_VERSION(3, 1, 2)
-  return Get();
+    return Get();
 #else
-  return GetAsLong();
+    return GetAsLong();
 #endif
 }
 

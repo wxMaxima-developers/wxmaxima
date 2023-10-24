@@ -31,50 +31,50 @@
 #if wxUSE_ENH_METAFILE
 
 Emfout::Emfout(Configuration **configuration, const wxString &filename)
-  : m_cmn(configuration, filename, 500, 1.0),
-    m_recalculationDc(m_cmn.GetTempFilename(), 3000, 50000) {
-  m_cmn.SetRecalculationContext(m_recalculationDc);
-  auto &config = m_cmn.GetConfiguration();
-  config.SetRecalcContext(m_recalculationDc);
-  config.SetCanvasSize(wxSize(3000,100000));
+    : m_cmn(configuration, filename, 500, 1.0),
+      m_recalculationDc(m_cmn.GetTempFilename(), 3000, 50000) {
+    m_cmn.SetRecalculationContext(m_recalculationDc);
+    auto &config = m_cmn.GetConfiguration();
+    config.SetRecalcContext(m_recalculationDc);
+    config.SetCanvasSize(wxSize(3000,100000));
 }
 
 Emfout::Emfout(Configuration **configuration, std::unique_ptr<Cell> &&tree,
                const wxString &filename)
-  : Emfout(configuration, filename) {
-  Render(std::move(tree));
+    : Emfout(configuration, filename) {
+    Render(std::move(tree));
 }
 
 Emfout::~Emfout() {}
 
 wxSize Emfout::Render(std::unique_ptr<Cell> &&tree) {
-  m_tree = std::move(tree);
-  m_isOk = m_tree && Layout();
-  m_size = m_isOk ? m_cmn.GetSize() : wxDefaultSize;
-  return m_size;
+    m_tree = std::move(tree);
+    m_isOk = m_tree && Layout();
+    m_size = m_isOk ? m_cmn.GetSize() : wxDefaultSize;
+    return m_size;
 }
 
 bool Emfout::Layout() {
-  if (!m_cmn.PrepareLayout(m_tree.get()))
-    return false;
+    if (!m_cmn.PrepareLayout(m_tree.get()))
+        return false;
 
-  // Let's switch to a DC of the right size for our object.
-  auto size = m_cmn.GetSize();
-  auto &config = m_cmn.GetConfiguration();
-  wxEnhMetaFileDC dc(m_cmn.GetFilename(), size.x, size.y);
+    // Let's switch to a DC of the right size for our object.
+    auto size = m_cmn.GetSize();
+    auto &config = m_cmn.GetConfiguration();
+    wxEnhMetaFileDC dc(m_cmn.GetFilename(), size.x, size.y);
 
-  config.SetRecalcContext(dc);
-  m_cmn.Draw(m_tree.get());
-  m_metaFile.reset(
-		   dc.Close()); // Closing the DC triggers the output of the file.
-  config.UnsetContext();
+    config.SetRecalcContext(dc);
+    m_cmn.Draw(m_tree.get());
+    m_metaFile.reset(
+        dc.Close()); // Closing the DC triggers the output of the file.
+    config.UnsetContext();
 
-  return true;
+    return true;
 }
 
 std::unique_ptr<wxEnhMetaFileDataObject> Emfout::GetDataObject() const {
-  return m_metaFile ? std::make_unique<wxEnhMetaFileDataObject>(*m_metaFile)
-    : nullptr;
+    return m_metaFile ? std::make_unique<wxEnhMetaFileDataObject>(*m_metaFile)
+        : nullptr;
 }
 
 bool Emfout::ToClipboard() { return m_metaFile && m_metaFile->SetClipboard(); }

@@ -21,10 +21,10 @@
 //
 //  SPDX-License-Identifier: GPL-2.0+
 
-/*! \file 
+/*! \file
   The evaluation queue
 
-  The class EvaluationQueue that is declared here handles the queue of commands 
+  The class EvaluationQueue that is declared here handles the queue of commands
   that still have to be sent to maxima.
 */
 
@@ -42,121 +42,121 @@
 class EvaluationQueue
 {
 private:
-  class Command{
-  public:
-    Command(const wxString &strng, int index) : m_indexStart(index), m_command(strng) {}
-    Command(Command &&o) noexcept : m_indexStart(o.m_indexStart), m_command(std::move(o.m_command)) {}
-    Command(const Command &o) : m_indexStart(o.m_indexStart), m_command(o.m_command) {}
-    Command &operator=(Command &&o) noexcept
-      {
-        m_indexStart = o.m_indexStart;
-        m_command = std::move(o.m_command);
-        return *this;
-      }
-    Command &operator=(const Command &o)
-      {
-        m_indexStart = o.m_indexStart;
-        m_command = o.m_command;
-        return *this;
-      }
+    class Command{
+    public:
+        Command(const wxString &strng, int index) : m_indexStart(index), m_command(strng) {}
+        Command(Command &&o) noexcept : m_indexStart(o.m_indexStart), m_command(std::move(o.m_command)) {}
+        Command(const Command &o) : m_indexStart(o.m_indexStart), m_command(o.m_command) {}
+        Command &operator=(Command &&o) noexcept
+            {
+                m_indexStart = o.m_indexStart;
+                m_command = std::move(o.m_command);
+                return *this;
+            }
+        Command &operator=(const Command &o)
+            {
+                m_indexStart = o.m_indexStart;
+                m_command = o.m_command;
+                return *this;
+            }
 
-    const wxString &GetString() const { return m_command; }
-    void AddEnding() { m_command += ";"; }
-    int GetIndex() const { return m_indexStart; }
-  private:
-    int m_indexStart;
-    wxString m_command;
-  };
-    
-  /*! A list of all the commands in the current cell
-    
-    We need to track each single command:
-    - If we send more than one command at once maxima will interpret the command
-    as an answer to an eventual question and
-    - we need to know when to switch to the next cell
-  */
-  std::vector<EvaluationQueue::Command> m_commands;
-  int m_size;
-  //! The label the user has assigned to the current command.
-  wxString m_userLabel;
-  //! The groupCells in the evaluation Queue.
-  std::vector<GroupCell *> m_queue;
+        const wxString &GetString() const { return m_command; }
+        void AddEnding() { m_command += ";"; }
+        int GetIndex() const { return m_indexStart; }
+    private:
+        int m_indexStart;
+        wxString m_command;
+    };
 
-  //! Adds all commands in commandString as separate tokens to the queue.
-  void AddTokens(const GroupCell *cell);
+    /*! A list of all the commands in the current cell
+
+      We need to track each single command:
+      - If we send more than one command at once maxima will interpret the command
+      as an answer to an eventual question and
+      - we need to know when to switch to the next cell
+    */
+    std::vector<EvaluationQueue::Command> m_commands;
+    int m_size;
+    //! The label the user has assigned to the current command.
+    wxString m_userLabel;
+    //! The groupCells in the evaluation Queue.
+    std::vector<GroupCell *> m_queue;
+
+    //! Adds all commands in commandString as separate tokens to the queue.
+    void AddTokens(const GroupCell *cell);
 
 public:
-  /*! Query for the label the user has assigned to the current command.  
+    /*! Query for the label the user has assigned to the current command.
 
-    If there is no such label or the label as hidden deep down inside the command
-    (in which case we assume the user wanted to hide it and for example didn't use
-    it as a label at all) we return wxEmptyString.
-  */
-  wxString GetUserLabel() const
-    { return m_userLabel; }
+      If there is no such label or the label as hidden deep down inside the command
+      (in which case we assume the user wanted to hide it and for example didn't use
+      it as a label at all) we return wxEmptyString.
+    */
+    wxString GetUserLabel() const
+        { return m_userLabel; }
 
-  int GetIndex() const
-    {
-      if (!m_commands.empty())
-        return  m_commands.front().GetIndex();
-      else
-        return -1;
-    }
+    int GetIndex() const
+        {
+            if (!m_commands.empty())
+                return  m_commands.front().GetIndex();
+            else
+                return -1;
+        }
 
-  bool m_workingGroupChanged;
+    bool m_workingGroupChanged;
 
-  EvaluationQueue();
+    EvaluationQueue();
 
-  void AddEnding()
-    {
-      if (!m_commands.empty())
-        m_commands.back().AddEnding();
-    }
-  
-  ~EvaluationQueue()
-    {};
+    void AddEnding()
+        {
+            if (!m_commands.empty())
+                m_commands.back().AddEnding();
+        }
 
-  //! Is GroupCell gr part of the evaluation queue?
-  bool IsLastInQueue(GroupCell const *gr)
-    {
-      return !m_queue.empty() && (gr == m_queue.front());
-    }
+    ~EvaluationQueue()
+        {};
 
-  //! Is GroupCell gr part of the evaluation queue?
-  bool IsInQueue(GroupCell *gr) const;
+    //! Is GroupCell gr part of the evaluation queue?
+    bool IsLastInQueue(GroupCell const *gr)
+        {
+            return !m_queue.empty() && (gr == m_queue.front());
+        }
 
-  //! Adds a GroupCell to the evaluation queue.
-  void AddToQueue(GroupCell *gr);
+    //! Is GroupCell gr part of the evaluation queue?
+    bool IsInQueue(GroupCell *gr) const;
 
-  //! Remove a GroupCell from the evaluation queue.
-  void Remove(GroupCell *gr);
-  
-  //! Adds all hidden cells attached to the GroupCell gr to the evaluation queue.
-  void AddHiddenTreeToQueue(const GroupCell *gr);
+    //! Adds a GroupCell to the evaluation queue.
+    void AddToQueue(GroupCell *gr);
 
-  //! Removes the first command in the queue
-  void RemoveFirst();
+    //! Remove a GroupCell from the evaluation queue.
+    void Remove(GroupCell *gr);
 
-  /*! Gets the cell the next command in the queue belongs to
+    //! Adds all hidden cells attached to the GroupCell gr to the evaluation queue.
+    void AddHiddenTreeToQueue(const GroupCell *gr);
 
-    The command itself can be read out by issuing GetCommand();
-  */
-  GroupCell *GetCell();
+    //! Removes the first command in the queue
+    void RemoveFirst();
 
-  //! Is the queue empty?
-  bool Empty() const;
+    /*! Gets the cell the next command in the queue belongs to
 
-  //! Clear the queue
-  void Clear();
+      The command itself can be read out by issuing GetCommand();
+    */
+    GroupCell *GetCell();
 
-  //! Return the next command that needs to be evaluated.
-  wxString GetCommand();
+    //! Is the queue empty?
+    bool Empty() const;
 
-  //! Get the size of the queue [in cells]
-  int Size() const { return m_size; }
+    //! Clear the queue
+    void Clear();
 
-  //! Get the size of the queue
-  int CommandsLeftInCell() const { return m_commands.size(); }
+    //! Return the next command that needs to be evaluated.
+    wxString GetCommand();
+
+    //! Get the size of the queue [in cells]
+    int Size() const { return m_size; }
+
+    //! Get the size of the queue
+    int CommandsLeftInCell() const { return m_commands.size(); }
 };
 
 

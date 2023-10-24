@@ -32,52 +32,52 @@
 #include "MaximaTokenizer.h"
 
 bool EvaluationQueue::Empty() const {
-  return (m_queue.empty()) && (m_commands.empty());
+    return (m_queue.empty()) && (m_commands.empty());
 }
 
 EvaluationQueue::EvaluationQueue() {
-  m_size = 0;
-  m_workingGroupChanged = false;
+    m_size = 0;
+    m_workingGroupChanged = false;
 }
 
 void EvaluationQueue::Clear() {
-  m_queue.clear();
-  m_size = 0;
-  m_commands.clear();
-  m_workingGroupChanged = false;
+    m_queue.clear();
+    m_size = 0;
+    m_commands.clear();
+    m_workingGroupChanged = false;
 }
 
 bool EvaluationQueue::IsInQueue(GroupCell *gr) const {
-  return std::find(m_queue.begin(), m_queue.end(), gr) != m_queue.end();
+    return std::find(m_queue.begin(), m_queue.end(), gr) != m_queue.end();
 }
 
 void EvaluationQueue::Remove(GroupCell *gr) {
-  bool removeFirst = IsLastInQueue(gr);
-  auto pos = std::find(m_queue.begin(), m_queue.end(), gr);
-  if (pos != m_queue.end())
-    m_queue.erase(pos);
-  m_size = m_queue.size();
-  if (removeFirst) {
-    m_commands.clear();
-    if (!m_queue.empty())
-      AddTokens(gr);
-  }
+    bool removeFirst = IsLastInQueue(gr);
+    auto pos = std::find(m_queue.begin(), m_queue.end(), gr);
+    if (pos != m_queue.end())
+        m_queue.erase(pos);
+    m_size = m_queue.size();
+    if (removeFirst) {
+        m_commands.clear();
+        if (!m_queue.empty())
+            AddTokens(gr);
+    }
 }
 
 void EvaluationQueue::AddToQueue(GroupCell *gr) {
-  if (gr == NULL)
-    return;
+    if (gr == NULL)
+        return;
 
-  if (gr->GetGroupType() != GC_TYPE_CODE ||
-      gr->GetEditable() == NULL) // don't add cells which can't be evaluated
-    return;
+    if (gr->GetGroupType() != GC_TYPE_CODE ||
+        gr->GetEditable() == NULL) // don't add cells which can't be evaluated
+        return;
 
-  if (m_queue.empty()) {
-    AddTokens(gr);
-    m_workingGroupChanged = true;
-  }
-  m_size++;
-  m_queue.push_back(gr);
+    if (m_queue.empty()) {
+        AddTokens(gr);
+        m_workingGroupChanged = true;
+    }
+    m_size++;
+    m_queue.push_back(gr);
 }
 
 /**
@@ -85,107 +85,107 @@ void EvaluationQueue::AddToQueue(GroupCell *gr) {
  * hidden branches to the EQ.
  */
 void EvaluationQueue::AddHiddenTreeToQueue(const GroupCell *gr) {
-  if (!gr)
-    return; // caller should check, but just in case
+    if (!gr)
+        return; // caller should check, but just in case
 
-  for (auto &cell : OnList(gr->GetHiddenTree())) {
-    AddToQueue(&cell);
-    AddHiddenTreeToQueue(&cell);
-  }
+    for (auto &cell : OnList(gr->GetHiddenTree())) {
+        AddToQueue(&cell);
+        AddHiddenTreeToQueue(&cell);
+    }
 }
 
 void EvaluationQueue::RemoveFirst() {
-  if (!m_commands.empty()) {
-    m_workingGroupChanged = false;
-    m_commands.erase(m_commands.begin());
-  } else {
-    do {
-      if (m_queue.empty())
-        return;
+    if (!m_commands.empty()) {
+        m_workingGroupChanged = false;
+        m_commands.erase(m_commands.begin());
+    } else {
+        do {
+            if (m_queue.empty())
+                return;
 
-      m_queue.erase(m_queue.begin());
-      m_size--;
-      AddTokens(GetCell());
-    } while (m_commands.empty() && (!m_queue.empty()));
-    m_workingGroupChanged = true;
-  }
+            m_queue.erase(m_queue.begin());
+            m_size--;
+            AddTokens(GetCell());
+        } while (m_commands.empty() && (!m_queue.empty()));
+        m_workingGroupChanged = true;
+    }
 }
 
 void EvaluationQueue::AddTokens(const GroupCell *cell) {
-  if (cell == NULL)
-    return;
-  wxString token;
-  int index = 0;
-  for (auto const &tok : cell->GetEditable()->GetAllTokens()) {
-    const TextStyle itemStyle = tok.GetTextStyle();
-    wxString itemText = tok.GetText();
-    itemText.Replace(wxS("\u00a0"), " ");
-    index += itemText.Length();
-    if (itemStyle != TS_CODE_COMMENT)
-      token += itemText;
+    if (cell == NULL)
+        return;
+    wxString token;
+    int index = 0;
+    for (auto const &tok : cell->GetEditable()->GetAllTokens()) {
+        const TextStyle itemStyle = tok.GetTextStyle();
+        wxString itemText = tok.GetText();
+        itemText.Replace(wxS("\u00a0"), " ");
+        index += itemText.Length();
+        if (itemStyle != TS_CODE_COMMENT)
+            token += itemText;
 
-    if (itemStyle == TS_CODE_LISP) {
-      token.Trim(true);
-      token.Trim(false);
-      if (!token.IsEmpty())
-        m_commands.emplace_back(token, index);
-      token.Clear();
-      continue;
-    }
+        if (itemStyle == TS_CODE_LISP) {
+            token.Trim(true);
+            token.Trim(false);
+            if (!token.IsEmpty())
+                m_commands.emplace_back(token, index);
+            token.Clear();
+            continue;
+        }
 
-    if (itemStyle == TS_CODE_ENDOFLINE) {
-      token.Trim(true);
-      token.Trim(false);
-      if (!token.IsEmpty())
-        m_commands.emplace_back(token, index);
-      token.Clear();
-      continue;
+        if (itemStyle == TS_CODE_ENDOFLINE) {
+            token.Trim(true);
+            token.Trim(false);
+            if (!token.IsEmpty())
+                m_commands.emplace_back(token, index);
+            token.Clear();
+            continue;
+        }
     }
-  }
-  token.Trim(true);
-  token.Trim(false);
-  if (!token.IsEmpty())
-    m_commands.emplace_back(token, index);
+    token.Trim(true);
+    token.Trim(false);
+    if (!token.IsEmpty())
+        m_commands.emplace_back(token, index);
 }
 
 GroupCell *EvaluationQueue::GetCell() {
-  if (m_queue.empty())
-    return NULL;
-  else
-    return m_queue.front();
+    if (m_queue.empty())
+        return NULL;
+    else
+        return m_queue.front();
 }
 
 wxString EvaluationQueue::GetCommand() {
-  if (m_commands.empty())
-    return {};
+    if (m_commands.empty())
+        return {};
 
-  auto retval = m_commands.front().GetString();
+    auto retval = m_commands.front().GetString();
 
-  m_userLabel.Clear();
-  wxString userLabel;
+    m_userLabel.Clear();
+    wxString userLabel;
 
-  int colonPos = retval.find(wxS(":"));
-  if (colonPos != wxNOT_FOUND && !retval.StartsWith(wxS(":lisp"))) {
-    userLabel = retval.Left(colonPos);
-    userLabel.Trim(true);
-    userLabel.Trim(false);
-    if (!userLabel.empty() &&
-        (wxIsalpha(userLabel[0]) || (userLabel[0] == wxS('\\')) ||
-         (userLabel[0] > 127) || (userLabel[0] == wxS('_')))) {
-      for (size_t i = 0; i < userLabel.Length(); i++) {
-        if (userLabel[i] == wxS('\\'))
-          i++;
-        else {
-          if ((!wxIsalnum(userLabel[i])) && (userLabel[i] != '_') &&
-              (userLabel[i] < 128) && (userLabel[i] != '[') &&
-              (userLabel[i] != ']')) {
-            userLabel.Clear();
-            break;
-          }
+    int colonPos = retval.find(wxS(":"));
+    if (colonPos != wxNOT_FOUND && !retval.StartsWith(wxS(":lisp"))) {
+        userLabel = retval.Left(colonPos);
+        userLabel.Trim(true);
+        userLabel.Trim(false);
+        if (!userLabel.empty() &&
+            (wxIsalpha(userLabel[0]) || (userLabel[0] == wxS('\\')) ||
+             (userLabel[0] > 127) || (userLabel[0] == wxS('_')))) {
+            for (size_t i = 0; i < userLabel.Length(); i++) {
+                if (userLabel[i] == wxS('\\'))
+                    i++;
+                else {
+                    if ((!wxIsalnum(userLabel[i])) && (userLabel[i] != '_') &&
+                        (userLabel[i] < 128) && (userLabel[i] != '[') &&
+                        (userLabel[i] != ']')) {
+                        userLabel.Clear();
+                        break;
+                    }
+                }
+            }
+            m_userLabel = userLabel;
         }
-      }
-      m_userLabel = userLabel;
     }
-  }
-  return retval;
+    return retval;
 }

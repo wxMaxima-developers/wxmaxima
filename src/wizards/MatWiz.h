@@ -34,82 +34,82 @@
 class MatWiz : public wxDialog
 {
 public:
-  enum MatrixType
-  {
-    MATRIX_GENERAL,
-    MATRIX_DIAGONAL,
-    MATRIX_SYMMETRIC,
-    MATRIX_ANTISYMMETRIC
-  };
+    enum MatrixType
+    {
+        MATRIX_GENERAL,
+        MATRIX_DIAGONAL,
+        MATRIX_SYMMETRIC,
+        MATRIX_ANTISYMMETRIC
+    };
 
-  MatWiz(wxWindow *parent, int id,
-         Configuration *cfg,
-         const wxString &title,
-         int type, long h, long w,
-         const wxPoint &pos = wxDefaultPosition,
-         const wxSize &size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE);
+    MatWiz(wxWindow *parent, int id,
+           Configuration *cfg,
+           const wxString &title,
+           int type, long h, long w,
+           const wxPoint &pos = wxDefaultPosition,
+           const wxSize &size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE);
 
-  wxString GetValue();
+    wxString GetValue();
 
 private:
-  void OnButton(wxCommandEvent &event);
+    void OnButton(wxCommandEvent &event);
 
-  void set_properties();
+    void set_properties();
 
-  void do_layout();
+    void do_layout();
 
-  int m_width, m_height;
-  int m_matrixType;
-  std::vector<BTextCtrl *> m_inputs;
-  wxStaticLine *static_line_1;
-  wxButton *button_1;
-  wxButton *button_2;
+    int m_width, m_height;
+    int m_matrixType;
+    std::vector<BTextCtrl *> m_inputs;
+    wxStaticLine *static_line_1;
+    wxButton *button_1;
+    wxButton *button_2;
 };
 
 class MatDim : public wxDialog
 {
 public:
-  MatDim(wxWindow *parent, int id,
-         Configuration *cfg,
-         const wxString &title,
-         const wxPoint &pos = wxDefaultPosition,
-         const wxSize &size = wxDefaultSize,
-         long style = wxDEFAULT_DIALOG_STYLE);
+    MatDim(wxWindow *parent, int id,
+           Configuration *cfg,
+           const wxString &title,
+           const wxPoint &pos = wxDefaultPosition,
+           const wxSize &size = wxDefaultSize,
+           long style = wxDEFAULT_DIALOG_STYLE);
 
-  wxString GetValue1()
-    {
-      return text_ctrl_1->GetValue();
-    }
+    wxString GetValue1()
+        {
+            return text_ctrl_1->GetValue();
+        }
 
-  wxString GetValue2()
-    {
-      return text_ctrl_2->GetValue();
-    }
+    wxString GetValue2()
+        {
+            return text_ctrl_2->GetValue();
+        }
 
-  wxString GetValue0()
-    {
-      return text_ctrl_0->GetValue();
-    }
+    wxString GetValue0()
+        {
+            return text_ctrl_0->GetValue();
+        }
 
-  int GetMatrixType();
+    int GetMatrixType();
 
 private:
-  void set_properties();
+    void set_properties();
 
-  void do_layout();
+    void do_layout();
 
 protected:
-  wxStaticText *label_0;
-  BTextCtrl *text_ctrl_0;
-  wxStaticText *label_2;
-  BTextCtrl *text_ctrl_1;
-  wxStaticText *label_3;
-  BTextCtrl *text_ctrl_2;
-  wxStaticText *label_4;
-  wxChoice *choice_1;
-  wxStaticLine *static_line_1;
-  wxButton *button_1;
-  wxButton *button_2;
+    wxStaticText *label_0;
+    BTextCtrl *text_ctrl_0;
+    wxStaticText *label_2;
+    BTextCtrl *text_ctrl_1;
+    wxStaticText *label_3;
+    BTextCtrl *text_ctrl_2;
+    wxStaticText *label_4;
+    wxChoice *choice_1;
+    wxStaticLine *static_line_1;
+    wxButton *button_1;
+    wxButton *button_2;
 };
 
 #endif // MATWIZ_H

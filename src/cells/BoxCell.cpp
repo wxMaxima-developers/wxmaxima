@@ -33,148 +33,148 @@
 #include "CellImpl.h"
 
 BoxCell::BoxCell(GroupCell *group, Configuration *config,
-                             std::unique_ptr<Cell> &&inner)
-  : Cell(group, config), m_innerCell(std::move(inner)) {
-  InitBitFields();
-  SetStyle(TS_VARIABLE);
+                 std::unique_ptr<Cell> &&inner)
+    : Cell(group, config), m_innerCell(std::move(inner)) {
+    InitBitFields();
+    SetStyle(TS_VARIABLE);
 }
 
 // Old cppcheck bugs:
 // cppcheck-suppress uninitMemberVar symbolName=BoxCell::m_open
 // cppcheck-suppress uninitMemberVar symbolName=BoxCell::m_close
 BoxCell::BoxCell(GroupCell *group, const BoxCell &cell)
-  : BoxCell(group, cell.m_configuration,
-		  CopyList(group, cell.m_innerCell.get())) {
-  CopyCommonData(cell);
+    : BoxCell(group, cell.m_configuration,
+              CopyList(group, cell.m_innerCell.get())) {
+    CopyCommonData(cell);
 }
 
 DEFINE_CELL(BoxCell)
 
 void BoxCell::MakeBreakupCells() {
-  if (m_open)
-    return;
-  m_open =
-    std::make_unique<TextCell>(m_group, m_configuration, wxS("box("));
-  static_cast<TextCell &>(*m_open).DontEscapeOpeningParenthesis();
-  m_open->SetStyle(TS_FUNCTION);
-  m_close = std::make_unique<TextCell>(m_group, m_configuration, wxS(")"));
+    if (m_open)
+        return;
+    m_open =
+        std::make_unique<TextCell>(m_group, m_configuration, wxS("box("));
+    static_cast<TextCell &>(*m_open).DontEscapeOpeningParenthesis();
+    m_open->SetStyle(TS_FUNCTION);
+    m_close = std::make_unique<TextCell>(m_group, m_configuration, wxS(")"));
 }
 
 void BoxCell::Recalculate(AFontSize fontsize) {
-  m_innerCell->RecalculateList(fontsize);
+    m_innerCell->RecalculateList(fontsize);
 
-  if (!IsBrokenIntoLines()) {
-    m_width = m_innerCell->GetFullWidth() + Scale_Px(8);
-    m_height = m_innerCell->GetHeightList() + Scale_Px(8);
-    m_center = m_innerCell->GetCenterList() + Scale_Px(4);
-  } else {
-    // The BoxCell itself isn't displayed if it is broken into lines.
-    // instead m_open, m_innerCell and m_close are => We can set our size to 0
-    // in this case.
-    m_width = 0;
-    m_height = 0;
-    m_center = 0;
-    m_open->RecalculateList(fontsize);
-    m_close->RecalculateList(fontsize);
-  }
-  Cell::Recalculate(fontsize);
+    if (!IsBrokenIntoLines()) {
+        m_width = m_innerCell->GetFullWidth() + Scale_Px(8);
+        m_height = m_innerCell->GetHeightList() + Scale_Px(8);
+        m_center = m_innerCell->GetCenterList() + Scale_Px(4);
+    } else {
+        // The BoxCell itself isn't displayed if it is broken into lines.
+        // instead m_open, m_innerCell and m_close are => We can set our size to 0
+        // in this case.
+        m_width = 0;
+        m_height = 0;
+        m_center = 0;
+        m_open->RecalculateList(fontsize);
+        m_close->RecalculateList(fontsize);
+    }
+    Cell::Recalculate(fontsize);
 }
 
 void BoxCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
-  Cell::Draw(point, dc, antialiassingDC);
-  if (DrawThisCell(point)) {
-    SetPen(dc);
-    wxPoint in;
-    in.x = point.x + Scale_Px(4);
-    in.y = point.y;
-    m_innerCell->DrawList(in, dc, antialiassingDC);
+    Cell::Draw(point, dc, antialiassingDC);
+    if (DrawThisCell(point)) {
+        SetPen(dc);
+        wxPoint in;
+        in.x = point.x + Scale_Px(4);
+        in.y = point.y;
+        m_innerCell->DrawList(in, dc, antialiassingDC);
 
-    dc->DrawLine(
-		 point.x + Scale_Px(2),
-		 point.y - m_center + m_height - Scale_Px(2),
-                 point.x + m_width - Scale_Px(2) - 1,
-                 point.y - m_center + m_height - Scale_Px(2)
-		 );
-    dc->DrawLine(
-		 point.x + Scale_Px(2),
-		 point.y - m_center + Scale_Px(2),
-                 point.x + m_width - Scale_Px(2) - 1,
-                 point.y - m_center + Scale_Px(2)
-		 );
-    dc->DrawLine(
-		 point.x + Scale_Px(2),
-		 point.y - m_center + m_height - Scale_Px(2),
-		 point.x + Scale_Px(2),
-                 point.y - m_center + Scale_Px(2)
-		 );
-    dc->DrawLine(
-                 point.x + m_width - Scale_Px(2) - 1,
-		 point.y - m_center + Scale_Px(2),
-                 point.x + m_width - Scale_Px(2) - 1,
-                 point.y - m_center + m_height - Scale_Px(2)
-		 );
-  }
+        dc->DrawLine(
+            point.x + Scale_Px(2),
+            point.y - m_center + m_height - Scale_Px(2),
+            point.x + m_width - Scale_Px(2) - 1,
+            point.y - m_center + m_height - Scale_Px(2)
+            );
+        dc->DrawLine(
+            point.x + Scale_Px(2),
+            point.y - m_center + Scale_Px(2),
+            point.x + m_width - Scale_Px(2) - 1,
+            point.y - m_center + Scale_Px(2)
+            );
+        dc->DrawLine(
+            point.x + Scale_Px(2),
+            point.y - m_center + m_height - Scale_Px(2),
+            point.x + Scale_Px(2),
+            point.y - m_center + Scale_Px(2)
+            );
+        dc->DrawLine(
+            point.x + m_width - Scale_Px(2) - 1,
+            point.y - m_center + Scale_Px(2),
+            point.x + m_width - Scale_Px(2) - 1,
+            point.y - m_center + m_height - Scale_Px(2)
+            );
+    }
 }
 
 wxString BoxCell::ToString() const {
-  if (IsBrokenIntoLines())
-    return wxEmptyString;
-  else
-    return wxS("box(") + m_innerCell->ListToString() + wxS(")");
+    if (IsBrokenIntoLines())
+        return wxEmptyString;
+    else
+        return wxS("box(") + m_innerCell->ListToString() + wxS(")");
 }
 
 wxString BoxCell::ToMatlab() const {
-  if (IsBrokenIntoLines())
-    return wxEmptyString;
-  else
-    return wxS("box(") + m_innerCell->ListToMatlab() + wxS(")");
+    if (IsBrokenIntoLines())
+        return wxEmptyString;
+    else
+        return wxS("box(") + m_innerCell->ListToMatlab() + wxS(")");
 }
 
 wxString BoxCell::ToTeX() const {
-  if (IsBrokenIntoLines())
-    return wxEmptyString;
-  else
-    return wxS("\\fbox{") + m_innerCell->ListToTeX() + wxS("}");
+    if (IsBrokenIntoLines())
+        return wxEmptyString;
+    else
+        return wxS("\\fbox{") + m_innerCell->ListToTeX() + wxS("}");
 }
 
 wxString BoxCell::ToMathML() const {
-   return wxS("<apply><box/><ci>") + m_innerCell->ListToMathML() +
-      wxS("</ci></apply>");
+    return wxS("<apply><box/><ci>") + m_innerCell->ListToMathML() +
+        wxS("</ci></apply>");
 }
 
 wxString BoxCell::ToOMML() const {
-  return _T("<m:func><m:fName><m:r>box</m:r></m:fName><m:e>") +
-    m_innerCell->ListToOMML() + _T("</m:e></m:func>");
+    return _T("<m:func><m:fName><m:r>box</m:r></m:fName><m:e>") +
+        m_innerCell->ListToOMML() + _T("</m:e></m:func>");
 }
 
 wxString BoxCell::ToXML() const {
-  wxString flags;
-  if (HasHardLineBreak())
-    flags += wxS(" breakline=\"true\"");
+    wxString flags;
+    if (HasHardLineBreak())
+        flags += wxS(" breakline=\"true\"");
 
-  return wxS("<hl") + flags + wxS(">") + m_innerCell->ListToXML() +
-    wxS("</hl>");
+    return wxS("<hl") + flags + wxS(">") + m_innerCell->ListToXML() +
+        wxS("</hl>");
 }
 
 bool BoxCell::BreakUp() {
-  if (IsBrokenIntoLines())
-    return false;
+    if (IsBrokenIntoLines())
+        return false;
 
-  MakeBreakupCells();
-  Cell::BreakUpAndMark();
-  m_open->SetNextToDraw(m_innerCell);
-  m_innerCell->last()->SetNextToDraw(m_close);
-  m_close->SetNextToDraw(m_nextToDraw);
-  m_nextToDraw = m_open;
-  ResetCellListSizes();
-  m_height = 0;
-  m_center = 0;
-  return true;
+    MakeBreakupCells();
+    Cell::BreakUpAndMark();
+    m_open->SetNextToDraw(m_innerCell);
+    m_innerCell->last()->SetNextToDraw(m_close);
+    m_close->SetNextToDraw(m_nextToDraw);
+    m_nextToDraw = m_open;
+    ResetCellListSizes();
+    m_height = 0;
+    m_center = 0;
+    return true;
 }
 
 void BoxCell::SetNextToDraw(Cell *next) {
-  if (IsBrokenIntoLines())
-    m_close->SetNextToDraw(next);
-  else
-    m_nextToDraw = next;
+    if (IsBrokenIntoLines())
+        m_close->SetNextToDraw(next);
+    else
+        m_nextToDraw = next;
 }

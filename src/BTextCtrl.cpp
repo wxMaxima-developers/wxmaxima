@@ -26,133 +26,133 @@
 BTextCtrl::BTextCtrl(wxWindow *parent, wxWindowID id, Configuration *cfg,
                      const wxString &value, const wxPoint &pos,
                      const wxSize &size, long style)
-  : wxTextCtrl(parent, id, value, pos, size, style) {
+    : wxTextCtrl(parent, id, value, pos, size, style) {
 #ifdef __WXOSX__
 #if wxCHECK_VERSION(3, 1, 1)
-  OSXDisableAllSmartSubstitutions();
+    OSXDisableAllSmartSubstitutions();
 #endif
 #endif
-  m_config = cfg;
-  m_skipTab = true;
-  if (m_config->FixedFontInTextControls()) {
-    wxFont font;
+    m_config = cfg;
+    m_skipTab = true;
+    if (m_config->FixedFontInTextControls()) {
+        wxFont font;
 #if defined(__WXOSX__)
-    font = wxFont(12, wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL,
-                  wxFONTWEIGHT_NORMAL, 0, wxEmptyString);
+        font = wxFont(12, wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL,
+                      wxFONTWEIGHT_NORMAL, 0, wxEmptyString);
 #else
-    font = wxFont(10, wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL,
-                  wxFONTWEIGHT_NORMAL, 0, wxEmptyString);
+        font = wxFont(10, wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL,
+                      wxFONTWEIGHT_NORMAL, 0, wxEmptyString);
 #endif
-    wxASSERT_MSG(font.IsOk(), _("Seems like something is broken with a font."));
-    if (font.IsOk())
-      SetFont(font);
-  }
+        wxASSERT_MSG(font.IsOk(), _("Seems like something is broken with a font."));
+        if (font.IsOk())
+            SetFont(font);
+    }
 #if defined __WXGTK__
-  Connect(wxEVT_KEY_DOWN, wxKeyEventHandler(BTextCtrl::OnChar), NULL, this);
+    Connect(wxEVT_KEY_DOWN, wxKeyEventHandler(BTextCtrl::OnChar), NULL, this);
 #else
-  Connect(wxEVT_CHAR, wxKeyEventHandler(BTextCtrl::OnChar), NULL, this);
+    Connect(wxEVT_CHAR, wxKeyEventHandler(BTextCtrl::OnChar), NULL, this);
 #endif
-  Connect(wxEVT_SET_FOCUS, wxFocusEventHandler(BTextCtrl::OnFocus), NULL, this);
+    Connect(wxEVT_SET_FOCUS, wxFocusEventHandler(BTextCtrl::OnFocus), NULL, this);
 
 #ifdef __WXOSX__
 #if wxCHECK_VERSION(3, 1, 1)
-  OSXDisableAllSmartSubstitutions();
+    OSXDisableAllSmartSubstitutions();
 #endif
 #endif
 }
 
 void BTextCtrl::OnFocus(wxFocusEvent &event) {
-  wxLogMessage(_("A text control got the mouse focus"));
-  m_config->LastActiveTextCtrl(this);
-  event.Skip();
-}
-
-BTextCtrl::~BTextCtrl() {
-  if (m_config->LastActiveTextCtrl() == this)
-    m_config->LastActiveTextCtrl(NULL);
-}
-
-void BTextCtrl::OnChar(wxKeyEvent &event) {
-  if (!m_config->GetMatchParens() || MatchParenthesis(event.GetUnicodeKey()))
+    wxLogMessage(_("A text control got the mouse focus"));
+    m_config->LastActiveTextCtrl(this);
     event.Skip();
 }
 
-bool BTextCtrl::MatchParenthesis(int code) {
-  bool skip = true;
-  switch (code) {
-  case '(':
-    CloseParenthesis(wxS("("), wxS(")"), true);
-    skip = false;
-    break;
-  case ')':
-    CloseParenthesis(wxS("("), wxS(")"), false);
-    skip = false;
-    break;
-  case '[':
-    CloseParenthesis(wxS("["), wxS("]"), true);
-    skip = false;
-    break;
-  case ']':
-    CloseParenthesis(wxS("["), wxS("]"), false);
-    skip = false;
-    break;
-  case '{':
-    CloseParenthesis(wxS("{"), wxS("}"), true);
-    skip = false;
-    break;
-  case '}':
-    CloseParenthesis(wxS("{"), wxS("}"), false);
-    skip = false;
-    break;
-  case '"':
-    CloseParenthesis(wxS("\""), wxS("\""), true);
-    skip = false;
-    break;
-  case WXK_UP:
-  case WXK_DOWN:
-  case WXK_TAB:
-    skip = m_skipTab;
-  default:
-    break;
-  }
+BTextCtrl::~BTextCtrl() {
+    if (m_config->LastActiveTextCtrl() == this)
+        m_config->LastActiveTextCtrl(NULL);
+}
 
-  return skip;
+void BTextCtrl::OnChar(wxKeyEvent &event) {
+    if (!m_config->GetMatchParens() || MatchParenthesis(event.GetUnicodeKey()))
+        event.Skip();
+}
+
+bool BTextCtrl::MatchParenthesis(int code) {
+    bool skip = true;
+    switch (code) {
+    case '(':
+        CloseParenthesis(wxS("("), wxS(")"), true);
+        skip = false;
+        break;
+    case ')':
+        CloseParenthesis(wxS("("), wxS(")"), false);
+        skip = false;
+        break;
+    case '[':
+        CloseParenthesis(wxS("["), wxS("]"), true);
+        skip = false;
+        break;
+    case ']':
+        CloseParenthesis(wxS("["), wxS("]"), false);
+        skip = false;
+        break;
+    case '{':
+        CloseParenthesis(wxS("{"), wxS("}"), true);
+        skip = false;
+        break;
+    case '}':
+        CloseParenthesis(wxS("{"), wxS("}"), false);
+        skip = false;
+        break;
+    case '"':
+        CloseParenthesis(wxS("\""), wxS("\""), true);
+        skip = false;
+        break;
+    case WXK_UP:
+    case WXK_DOWN:
+    case WXK_TAB:
+        skip = m_skipTab;
+    default:
+        break;
+    }
+
+    return skip;
 }
 
 void BTextCtrl::CloseParenthesis(wxString open, wxString close, bool fromOpen) {
-  long from, to;
-  GetSelection(&from, &to);
+    long from, to;
+    GetSelection(&from, &to);
 
-  if (from == to) // nothing selected
+    if (from == to) // nothing selected
     {
-      wxString text = GetValue();
-      wxString charHere = wxS(" "); // text.GetChar((size_t)GetInsertionPoint());
-      size_t insp = GetInsertionPoint();
+        wxString text = GetValue();
+        wxString charHere = wxS(" "); // text.GetChar((size_t)GetInsertionPoint());
+        size_t insp = GetInsertionPoint();
 
-      if (!fromOpen && charHere == close)
-	SetInsertionPoint(insp + 1);
-      else {
-	wxString newtext = (insp > 0 ? text.SubString(0, insp - 1) : wxS("")) +
-	  (fromOpen ? open : wxS("")) + close +
-	  text.SubString(insp, text.length());
+        if (!fromOpen && charHere == close)
+            SetInsertionPoint(insp + 1);
+        else {
+            wxString newtext = (insp > 0 ? text.SubString(0, insp - 1) : wxS("")) +
+                (fromOpen ? open : wxS("")) + close +
+                text.SubString(insp, text.length());
 
-	ChangeValue(newtext);
+            ChangeValue(newtext);
 
-	SetInsertionPoint(insp + 1);
-      }
+            SetInsertionPoint(insp + 1);
+        }
     } else {
-    wxString text = GetValue();
+        wxString text = GetValue();
 
-    if(from >= 0) {
-	wxString newtext = text.SubString(0, static_cast<size_t>(from) - 1) +
-	  open + text.SubString(from, static_cast<size_t>(to) - 1) + close +
-	  text.SubString(to, text.length());
-	
-		      ChangeValue(newtext);
-		      if (fromOpen)
-			SetInsertionPoint(from + 1);
-		      else
-			SetInsertionPoint(to + 1);
-      }
-  }
+        if(from >= 0) {
+            wxString newtext = text.SubString(0, static_cast<size_t>(from) - 1) +
+                open + text.SubString(from, static_cast<size_t>(to) - 1) + close +
+                text.SubString(to, text.length());
+
+            ChangeValue(newtext);
+            if (fromOpen)
+                SetInsertionPoint(from + 1);
+            else
+                SetInsertionPoint(to + 1);
+        }
+    }
 }

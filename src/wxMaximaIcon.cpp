@@ -32,11 +32,11 @@
 #include <wx/wfstream.h>
 
 wxIcon wxMaximaIcon() {
-  wxImage img;
-  wxMemoryInputStream istream(io_github_wxmaxima_developers_wxMaxima_png,
-                              io_github_wxmaxima_developers_wxMaxima_png_len);
-  img.LoadFile(istream);
-  wxIcon icon;
-  icon.CopyFromBitmap(wxBitmap(img));
-  return icon;
+    wxImage img;
+    wxMemoryInputStream istream(io_github_wxmaxima_developers_wxMaxima_png,
+                                io_github_wxmaxima_developers_wxMaxima_png_len);
+    img.LoadFile(istream);
+    wxIcon icon;
+    icon.CopyFromBitmap(wxBitmap(img));
+    return icon;
 }

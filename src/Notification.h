@@ -39,33 +39,33 @@
 /*! A user notification the operating system claims to be non-disturbing
 
   We use this notification sparingly, which means: Only if the wxMaxima window has lost
-  focus between the user action that caused maxima to run a command and the moment the 
+  focus between the user action that caused maxima to run a command and the moment the
   command has finished or has caused an error.
 */
 class Notification final: public wxNotificationMessage
 {
 public:
-  //! A constructor that doesn't take any arguments
-  Notification();
-  //! A constructor that completely prepares the notification, but doesn't call Show() yet.
-  explicit Notification(const wxString &title,
-                        const wxString &message = {},
-                        wxWindow *parent = NULL,
-                        int flags = wxICON_INFORMATION);
-  //! A destructor that also closes the notification
-  ~Notification() { Notification::Close(); }
-  //! Informs the notification which the main window is it notified for.
-  void SetGroup(wxWindow *parent);
-  //! Returns a pointer to the main window or NULL, if no main window is set.
-  wxWindow *GetGroup() { return m_parent; }
-  //! The cell we signal an error for
-  GroupCell *m_errorNotificationCell;
+    //! A constructor that doesn't take any arguments
+    Notification();
+    //! A constructor that completely prepares the notification, but doesn't call Show() yet.
+    explicit Notification(const wxString &title,
+                          const wxString &message = {},
+                          wxWindow *parent = NULL,
+                          int flags = wxICON_INFORMATION);
+    //! A destructor that also closes the notification
+    ~Notification() { Notification::Close(); }
+    //! Informs the notification which the main window is it notified for.
+    void SetGroup(wxWindow *parent);
+    //! Returns a pointer to the main window or NULL, if no main window is set.
+    wxWindow *GetGroup() { return m_parent; }
+    //! The cell we signal an error for
+    GroupCell *m_errorNotificationCell;
 private:
-  //! The main window we notify for.
-  wxWindow *m_parent;
+    //! The main window we notify for.
+    wxWindow *m_parent;
 protected:
-  //! Called on clicking at the notification, if the OS supports that.
-  void OnClick(wxCommandEvent &event);
+    //! Called on clicking at the notification, if the OS supports that.
+    void OnClick(wxCommandEvent &event);
 };
 
 #endif

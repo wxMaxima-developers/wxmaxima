@@ -25,73 +25,73 @@
 SysWiz::SysWiz(wxWindow *parent, int id, Configuration *cfg,
                const wxString &title, int numEq, const wxPoint &pos,
                const wxSize &sz, long style)
-  : wxDialog(parent, id, title, pos, sz, style) {
-  m_size = numEq;
-  for (int i = 0; i < m_size; i++) {
-    m_inputs.push_back(new BTextCtrl(this, -1, cfg, wxS("0"), wxDefaultPosition,
-                                     wxSize(230, -1)));
-  }
-  variables = new BTextCtrl(this, -1, cfg, wxEmptyString, wxDefaultPosition,
-                            wxSize(230, -1));
-  static_line_1 = new wxStaticLine(this, -1);
+    : wxDialog(parent, id, title, pos, sz, style) {
+    m_size = numEq;
+    for (int i = 0; i < m_size; i++) {
+        m_inputs.push_back(new BTextCtrl(this, -1, cfg, wxS("0"), wxDefaultPosition,
+                                         wxSize(230, -1)));
+    }
+    variables = new BTextCtrl(this, -1, cfg, wxEmptyString, wxDefaultPosition,
+                              wxSize(230, -1));
+    static_line_1 = new wxStaticLine(this, -1);
 #if defined __WXMSW__
-  button_1 = new wxButton(this, wxID_OK, _("OK"));
-  button_2 = new wxButton(this, wxID_CANCEL, _("Cancel"));
+    button_1 = new wxButton(this, wxID_OK, _("OK"));
+    button_2 = new wxButton(this, wxID_CANCEL, _("Cancel"));
 #else
-  button_1 = new wxButton(this, wxID_CANCEL, _("Cancel"));
-  button_2 = new wxButton(this, wxID_OK, _("OK"));
+    button_1 = new wxButton(this, wxID_CANCEL, _("Cancel"));
+    button_2 = new wxButton(this, wxID_OK, _("OK"));
 #endif
 
-  set_properties();
-  do_layout();
+    set_properties();
+    do_layout();
 }
 
 void SysWiz::set_properties() {
-  variables->SetToolTip(_("Enter comma separated list of variables."));
+    variables->SetToolTip(_("Enter comma separated list of variables."));
 #if defined __WXMSW__
-  button_1->SetDefault();
+    button_1->SetDefault();
 #else
-  button_2->SetDefault();
+    button_2->SetDefault();
 #endif
 
-  m_inputs[0]->SetFocus();
-  m_inputs[0]->SetSelection(-1, -1);
+    m_inputs[0]->SetFocus();
+    m_inputs[0]->SetSelection(-1, -1);
 }
 
 void SysWiz::do_layout() {
-  wxFlexGridSizer *grid_sizer_1 = new wxFlexGridSizer(4, 1, 0, 0);
-  wxFlexGridSizer *grid_sizer_2 = new wxFlexGridSizer(m_size + 1, 2, 0, 0);
-  wxBoxSizer *sizer_1 = new wxBoxSizer(wxHORIZONTAL);
-  wxStaticText *text;
-  for (long i = 1; i <= m_size; i++) {
-    text = new wxStaticText(this, -1, wxString::Format(_("Equation %d:"), i));
-    grid_sizer_2->Add(text, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL,
+    wxFlexGridSizer *grid_sizer_1 = new wxFlexGridSizer(4, 1, 0, 0);
+    wxFlexGridSizer *grid_sizer_2 = new wxFlexGridSizer(m_size + 1, 2, 0, 0);
+    wxBoxSizer *sizer_1 = new wxBoxSizer(wxHORIZONTAL);
+    wxStaticText *text;
+    for (long i = 1; i <= m_size; i++) {
+        text = new wxStaticText(this, -1, wxString::Format(_("Equation %d:"), i));
+        grid_sizer_2->Add(text, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL,
+                          5);
+        grid_sizer_2->Add(m_inputs[static_cast<size_t>(i) - 1], 0, wxALL, 5);
+    }
+    text = new wxStaticText(this, -1, _("Variables:"));
+    grid_sizer_2->Add(text, 0, wxALL | wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL,
                       5);
-    grid_sizer_2->Add(m_inputs[static_cast<size_t>(i) - 1], 0, wxALL, 5);
-  }
-  text = new wxStaticText(this, -1, _("Variables:"));
-  grid_sizer_2->Add(text, 0, wxALL | wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL,
-                    5);
-  grid_sizer_2->Add(variables, 0, wxALL, 5);
-  grid_sizer_1->Add(grid_sizer_2, 1, wxEXPAND, 0);
-  grid_sizer_1->Add(static_line_1, 0, wxEXPAND | wxLEFT | wxRIGHT, 2);
-  sizer_1->Add(button_1, 0, wxALL, 5);
-  sizer_1->Add(button_2, 0, wxALL, 5);
-  grid_sizer_1->Add(sizer_1, 1, wxALIGN_RIGHT, 0);
-  SetAutoLayout(true);
-  SetSizer(grid_sizer_1);
-  grid_sizer_1->Fit(this);
-  grid_sizer_1->SetSizeHints(this);
-  Layout();
+    grid_sizer_2->Add(variables, 0, wxALL, 5);
+    grid_sizer_1->Add(grid_sizer_2, 1, wxEXPAND, 0);
+    grid_sizer_1->Add(static_line_1, 0, wxEXPAND | wxLEFT | wxRIGHT, 2);
+    sizer_1->Add(button_1, 0, wxALL, 5);
+    sizer_1->Add(button_2, 0, wxALL, 5);
+    grid_sizer_1->Add(sizer_1, 1, wxALIGN_RIGHT, 0);
+    SetAutoLayout(true);
+    SetSizer(grid_sizer_1);
+    grid_sizer_1->Fit(this);
+    grid_sizer_1->SetSizeHints(this);
+    Layout();
 }
 
 wxString SysWiz::GetValue() {
-  wxString cmd = wxS("([");
-  for (int i = 0; i < m_size; i++) {
-    cmd += m_inputs[i]->GetValue();
-    if (i < m_size - 1)
-      cmd += wxS(", ");
-  }
-  cmd += wxS("], [") + variables->GetValue() + wxS("]);");
-  return cmd;
+    wxString cmd = wxS("([");
+    for (int i = 0; i < m_size; i++) {
+        cmd += m_inputs[i]->GetValue();
+        if (i < m_size - 1)
+            cmd += wxS(", ");
+    }
+    cmd += wxS("], [") + variables->GetValue() + wxS("]);");
+    return cmd;
 }

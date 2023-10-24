@@ -30,6 +30,6 @@
 MainMenuBar::MainMenuBar() : wxMenuBar() {}
 
 void MainMenuBar::EnableItem(int id, bool enable) {
-  if (IsEnabled(id) != enable)
-    wxMenuBar::Enable(id, enable);
+    if (IsEnabled(id) != enable)
+        wxMenuBar::Enable(id, enable);
 }

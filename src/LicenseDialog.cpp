@@ -33,89 +33,89 @@
 #include <wx/txtstrm.h>
 
 LicenseDialog::LicenseDialog(wxWindow *parent)
-  : wxDialog(parent, -1, _("License"), wxDefaultPosition, wxDefaultSize,
-	     wxRESIZE_BORDER | wxCLOSE_BOX | wxMAXIMIZE_BOX |
-	     wxMINIMIZE_BOX) {
-  wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
-  wxMemoryInputStream istream(WXM_LICENSE, WXM_LICENSE_SIZE);
-  wxTextInputStream textIn(istream);
-  m_movedToStart = false;
-  Connect(wxEVT_TEXT_URL, wxTextUrlEventHandler(LicenseDialog::OnTextURLEvent),
-	  NULL, this);
-  wxString line;
-  wxString licenseText;
+    : wxDialog(parent, -1, _("License"), wxDefaultPosition, wxDefaultSize,
+               wxRESIZE_BORDER | wxCLOSE_BOX | wxMAXIMIZE_BOX |
+               wxMINIMIZE_BOX) {
+    wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
+    wxMemoryInputStream istream(WXM_LICENSE, WXM_LICENSE_SIZE);
+    wxTextInputStream textIn(istream);
+    m_movedToStart = false;
+    Connect(wxEVT_TEXT_URL, wxTextUrlEventHandler(LicenseDialog::OnTextURLEvent),
+            NULL, this);
+    wxString line;
+    wxString licenseText;
 
-  m_license = new wxTextCtrl(
-			     this, -1, wxEmptyString, wxDefaultPosition, wxDefaultSize,
-			     wxTE_MULTILINE | wxHSCROLL | wxTE_READONLY | wxTE_AUTO_URL);
+    m_license = new wxTextCtrl(
+        this, -1, wxEmptyString, wxDefaultPosition, wxDefaultSize,
+        wxTE_MULTILINE | wxHSCROLL | wxTE_READONLY | wxTE_AUTO_URL);
 
-  wxFont fnt = m_license->GetFont();
-  wxClientDC dc(this);
-  dc.SetFont(fnt);
-  long textWidth = 0;
-  while (!istream.Eof()) {
-    line = textIn.ReadLine();
-    licenseText += line + wxS("\n");
-    wxSize linesize = dc.GetTextExtent(line);
-    if (linesize.x > textWidth) {
-      textWidth = linesize.x;
-      m_longestLine = line;
+    wxFont fnt = m_license->GetFont();
+    wxClientDC dc(this);
+    dc.SetFont(fnt);
+    long textWidth = 0;
+    while (!istream.Eof()) {
+        line = textIn.ReadLine();
+        licenseText += line + wxS("\n");
+        wxSize linesize = dc.GetTextExtent(line);
+        if (linesize.x > textWidth) {
+            textWidth = linesize.x;
+            m_longestLine = line;
+        }
     }
-  }
 
-  m_license->SetMinSize(wxSize(textWidth + 20 * GetContentScaleFactor(),
-                               550 * GetContentScaleFactor()));
-  m_license->SetValue(licenseText);
-  vbox->Add(m_license, wxSizerFlags(10).Expand().Border(wxALL, 5));
-  wxBoxSizer *buttonSizer = new wxBoxSizer(wxHORIZONTAL);
+    m_license->SetMinSize(wxSize(textWidth + 20 * GetContentScaleFactor(),
+                                 550 * GetContentScaleFactor()));
+    m_license->SetValue(licenseText);
+    vbox->Add(m_license, wxSizerFlags(10).Expand().Border(wxALL, 5));
+    wxBoxSizer *buttonSizer = new wxBoxSizer(wxHORIZONTAL);
 
-  wxButton *okButton = new wxButton(this, wxID_OK, _("OK"));
-  buttonSizer->Add(okButton, wxSizerFlags().Border(wxALL, 5));
-  okButton->SetDefault();
-  vbox->Add(buttonSizer, wxSizerFlags(0).Right());
+    wxButton *okButton = new wxButton(this, wxID_OK, _("OK"));
+    buttonSizer->Add(okButton, wxSizerFlags().Border(wxALL, 5));
+    okButton->SetDefault();
+    vbox->Add(buttonSizer, wxSizerFlags(0).Right());
 
-  SetName("License");
-  wxPersistenceManager::Get().RegisterAndRestore(this);
-  Connect(wxEVT_SIZE, wxSizeEventHandler(LicenseDialog::OnSize));
-  SetSizerAndFit(vbox);
+    SetName("License");
+    wxPersistenceManager::Get().RegisterAndRestore(this);
+    Connect(wxEVT_SIZE, wxSizeEventHandler(LicenseDialog::OnSize));
+    SetSizerAndFit(vbox);
 }
 
 void LicenseDialog::OnSize(wxSizeEvent &event) {
-  wxFont fnt = m_license->GetFont();
-  wxClientDC dc(this);
-  double pointSize = 8;
-  int width;
-  do {
+    wxFont fnt = m_license->GetFont();
+    wxClientDC dc(this);
+    double pointSize = 8;
+    int width;
+    do {
 #if wxCHECK_VERSION(3, 1, 2)
-    pointSize += .1;
+        pointSize += .1;
+        fnt.SetFractionalPointSize(pointSize);
+#else
+        pointSize += 1;
+        fnt.SetPointSize(pointSize);
+#endif
+        dc.SetFont(fnt);
+        width = dc.GetTextExtent(m_longestLine).x;
+    } while ((pointSize < 128) && (width < event.GetSize().x));
+#if wxCHECK_VERSION(3, 1, 2)
+    pointSize -= .1;
     fnt.SetFractionalPointSize(pointSize);
 #else
-    pointSize += 1;
+    pointSize -= 1;
     fnt.SetPointSize(pointSize);
 #endif
-    dc.SetFont(fnt);
-    width = dc.GetTextExtent(m_longestLine).x;
-  } while ((pointSize < 128) && (width < event.GetSize().x));
-#if wxCHECK_VERSION(3, 1, 2)
-  pointSize -= .1;
-  fnt.SetFractionalPointSize(pointSize);
-#else
-  pointSize -= 1;
-  fnt.SetPointSize(pointSize);
-#endif
-  m_license->SetFont(fnt);
-  event.Skip();
-  if (!m_movedToStart) {
-    m_license->SetInsertionPoint(0);
-    m_license->ShowPosition(0);
-  }
+    m_license->SetFont(fnt);
+    event.Skip();
+    if (!m_movedToStart) {
+        m_license->SetInsertionPoint(0);
+        m_license->ShowPosition(0);
+    }
 }
 
 void LicenseDialog::OnTextURLEvent(wxTextUrlEvent &event) {
-  if (event.GetMouseEvent().LeftUp()) {
-    wxTextCtrl *pTextCtrl = static_cast<wxTextCtrl *>(event.GetEventObject());
-    wxLaunchDefaultBrowser(
-			   pTextCtrl->GetRange(event.GetURLStart(), event.GetURLEnd()));
-  }
+    if (event.GetMouseEvent().LeftUp()) {
+        wxTextCtrl *pTextCtrl = static_cast<wxTextCtrl *>(event.GetEventObject());
+        wxLaunchDefaultBrowser(
+            pTextCtrl->GetRange(event.GetURLStart(), event.GetURLEnd()));
+    }
 }
 

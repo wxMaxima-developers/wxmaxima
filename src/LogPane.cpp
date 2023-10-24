@@ -23,42 +23,42 @@
 #include "LogPane.h"
 #include <memory>
 LogPane::LogPane(wxWindow *parent, wxWindowID id, bool becomeLogTarget)
-  : wxPanel(parent, id) {
-  wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
+    : wxPanel(parent, id) {
+    wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
 
-  m_textCtrl =
-    new wxTextCtrl(this, -1, wxEmptyString, wxDefaultPosition, wxDefaultSize,
-		   wxTE_MULTILINE | wxTE_READONLY | wxHSCROLL | wxVSCROLL);
+    m_textCtrl =
+        new wxTextCtrl(this, -1, wxEmptyString, wxDefaultPosition, wxDefaultSize,
+                       wxTE_MULTILINE | wxTE_READONLY | wxHSCROLL | wxVSCROLL);
 
-  // m_textCtrl->SetMinSize(
-  // 			 wxSize(wxSystemSettings::GetMetric(wxSYS_SCREEN_X) / 10,
-  // 				wxSystemSettings::GetMetric(wxSYS_SCREEN_Y) / 10));
-  vbox->Add(m_textCtrl, wxSizerFlags(1).Expand());
+    // m_textCtrl->SetMinSize(
+    //                   wxSize(wxSystemSettings::GetMetric(wxSYS_SCREEN_X) / 10,
+    //                          wxSystemSettings::GetMetric(wxSYS_SCREEN_Y) / 10));
+    vbox->Add(m_textCtrl, wxSizerFlags(1).Expand());
 
-  if (becomeLogTarget)
-    BecomeLogTarget();
+    if (becomeLogTarget)
+        BecomeLogTarget();
 
-  // m_logPanelTarget->SetRepetitionCounting();
-  // m_logPanelTarget->DisableTimestamp();
-  SetSizer(vbox);
-  FitInside();
+    // m_logPanelTarget->SetRepetitionCounting();
+    // m_logPanelTarget->DisableTimestamp();
+    SetSizer(vbox);
+    FitInside();
 }
 
 void LogPane::DropLogTarget() {
-  if (m_errorRedirector) {
-    m_errorRedirector.reset(); // redirector restores old target on destruction
-    wxLog::SetActiveTarget(nullptr); // but we don't want to be a target
-  }
-  m_logPanelTarget.reset();
+    if (m_errorRedirector) {
+        m_errorRedirector.reset(); // redirector restores old target on destruction
+        wxLog::SetActiveTarget(nullptr); // but we don't want to be a target
+    }
+    m_logPanelTarget.reset();
 }
 
 void LogPane::BecomeLogTarget() {
-  m_logPanelTarget.emplace(m_textCtrl);
-  wxLog::SetActiveTarget(&*m_logPanelTarget);
-  m_errorRedirector.emplace(std::unique_ptr<wxLog>(new wxLogGui()));
+    m_logPanelTarget.emplace(m_textCtrl);
+    wxLog::SetActiveTarget(&*m_logPanelTarget);
+    m_errorRedirector.emplace(std::unique_ptr<wxLog>(new wxLogGui()));
 #ifdef wxUSE_STD_IOSTREAM
-  if (!ErrorRedirector::LoggingToStdErr())
-    m_textRedirector.emplace(m_textCtrl);
+    if (!ErrorRedirector::LoggingToStdErr())
+        m_textRedirector.emplace(m_textCtrl);
 #endif
 }
 

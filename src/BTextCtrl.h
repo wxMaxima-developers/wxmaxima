@@ -26,38 +26,38 @@
 #include <wx/wx.h>
 #include "Configuration.h"
 
-/*! A wxTextCtrl with parenthesis matching 
+/*! A wxTextCtrl with parenthesis matching
 
  */
 class BTextCtrl : public wxTextCtrl
 {
 public:
-  BTextCtrl(wxWindow *parent,
-            wxWindowID id,
-            Configuration *cfg,
-            const wxString &value = wxEmptyString,
-            const wxPoint &pos = wxDefaultPosition,
-            const wxSize &size = wxDefaultSize,
-            long style = 0);
+    BTextCtrl(wxWindow *parent,
+              wxWindowID id,
+              Configuration *cfg,
+              const wxString &value = wxEmptyString,
+              const wxPoint &pos = wxDefaultPosition,
+              const wxSize &size = wxDefaultSize,
+              long style = 0);
 
-  ~BTextCtrl();
+    ~BTextCtrl();
 
-  void SetSkipTab(bool skip)
-    {
-      m_skipTab = skip;
-    }
+    void SetSkipTab(bool skip)
+        {
+            m_skipTab = skip;
+        }
 
 private:
-  bool m_skipTab;
+    bool m_skipTab;
 
-  bool MatchParenthesis(int code);
+    bool MatchParenthesis(int code);
 
-  void CloseParenthesis(wxString open, wxString close, bool fromOpen);
+    void CloseParenthesis(wxString open, wxString close, bool fromOpen);
 
-  void OnChar(wxKeyEvent &event);
-  void OnFocus(wxFocusEvent &event);
+    void OnChar(wxKeyEvent &event);
+    void OnFocus(wxFocusEvent &event);
 
-  Configuration *m_config;
+    Configuration *m_config;
 };
 
 #endif // BTEXTCTRL_H

@@ -50,8 +50,8 @@ void Configuration::NotifyOfCellRedraw(const Cell *) {}
 
 // // Style Configuration::GetStyle(TextStyle, AFontSize) const
 // // {
-// //   Style style;  
-// //   return style;  
+// //   Style style;
+// //   return style;
 // }
 GroupCell::GroupCell(Configuration *config, GroupType groupType, const wxString &) :
   Cell(this, config), m_groupType(groupType)

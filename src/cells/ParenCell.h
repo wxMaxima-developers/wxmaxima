@@ -35,72 +35,72 @@
 /*! The class that represents parenthesis that are wrapped around text
 
   In the case that this cell is broken into two lines in the order of
-  m_nextToDraw this cell is represented by the following individual 
+  m_nextToDraw this cell is represented by the following individual
   cells:
-  
+
   - The ParenCell itself
   - The opening "("
   - The contents
   - The closing ")".
-   
-  If it isn't broken into multiple cells m_nextToDraw points to the 
+
+  If it isn't broken into multiple cells m_nextToDraw points to the
   cell that follows this Cell.
 */
 class ParenCell final : public Cell
 {
 public:
-  ParenCell(GroupCell *group, Configuration *config, std::unique_ptr<Cell> &&inner);
-  ParenCell(GroupCell *group, const ParenCell &cell);
-  const CellTypeInfo &GetInfo() override;
-  std::unique_ptr<Cell> Copy(GroupCell *group) const override;
+    ParenCell(GroupCell *group, Configuration *config, std::unique_ptr<Cell> &&inner);
+    ParenCell(GroupCell *group, const ParenCell &cell);
+    const CellTypeInfo &GetInfo() override;
+    std::unique_ptr<Cell> Copy(GroupCell *group) const override;
 
-  size_t GetInnerCellCount() const override { return 3; }
-  // cppcheck-suppress objectIndex
-  Cell *GetInnerCell(size_t index) const override { return (&m_open)[index].get(); }
+    size_t GetInnerCellCount() const override { return 3; }
+    // cppcheck-suppress objectIndex
+    Cell *GetInnerCell(size_t index) const override { return (&m_open)[index].get(); }
 
-  Cell *GetInner() const { return m_innerCell.get(); }
-  void SetInner(std::unique_ptr<Cell> inner, CellType type = MC_TYPE_DEFAULT);
+    Cell *GetInner() const { return m_innerCell.get(); }
+    void SetInner(std::unique_ptr<Cell> inner, CellType type = MC_TYPE_DEFAULT);
 
-  void SetPrint(bool print) { m_print = print; }
+    void SetPrint(bool print) { m_print = print; }
 
-  //! \todo m_open and m_close are recalculated in handdrawn mode, too.
-  void Recalculate(AFontSize fontsize) override;
+    //! \todo m_open and m_close are recalculated in handdrawn mode, too.
+    void Recalculate(AFontSize fontsize) override;
 
-  void Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) override;
+    void Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) override;
 
-  bool BreakUp() override;
-  
-  wxString ToMathML() const override;
-  wxString ToMatlab() const override;
-  wxString ToOMML() const override;
-  wxString ToString() const override;
-  wxString ToTeX() const override;
-  wxString ToXML() const override;
+    bool BreakUp() override;
 
-  void SetNextToDraw(Cell *next) override;
+    wxString ToMathML() const override;
+    wxString ToMatlab() const override;
+    wxString ToOMML() const override;
+    wxString ToString() const override;
+    wxString ToTeX() const override;
+    wxString ToXML() const override;
+
+    void SetNextToDraw(Cell *next) override;
 
 private:
-  // The pointers below point to inner cells and must be kept contiguous.
-  // ** This is the draw list order. All pointers must be the same:
-  // ** either Cell * or std::unique_ptr<Cell>. NO OTHER TYPES are allowed.
-  std::unique_ptr<Cell> m_open;
-  std::unique_ptr<Cell> m_innerCell;
-  std::unique_ptr<Cell> m_close;
-  // The pointers above point to inner cells and must be kept contiguous.
+    // The pointers below point to inner cells and must be kept contiguous.
+    // ** This is the draw list order. All pointers must be the same:
+    // ** either Cell * or std::unique_ptr<Cell>. NO OTHER TYPES are allowed.
+    std::unique_ptr<Cell> m_open;
+    std::unique_ptr<Cell> m_innerCell;
+    std::unique_ptr<Cell> m_close;
+    // The pointers above point to inner cells and must be kept contiguous.
 
-  //! How to create a big parenthesis sign?
-  Configuration::drawMode m_bigParenType = Configuration::ascii;
-  int m_charWidth1 = 12, m_charHeight1 = 12;
-  int m_signWidth = 12, m_signHeight = 50;
+    //! How to create a big parenthesis sign?
+    Configuration::drawMode m_bigParenType = Configuration::ascii;
+    int m_charWidth1 = 12, m_charHeight1 = 12;
+    int m_signWidth = 12, m_signHeight = 50;
 
 //** Bitfield objects (1 bytes)
 //**
-  void InitBitFields()
-    { // Keep the initialization order below same as the order
-      // of bit fields in this class!
-      m_print = true;
-    }
-  bool m_print : 1 /* InitBitFields */;
+    void InitBitFields()
+        { // Keep the initialization order below same as the order
+            // of bit fields in this class!
+            m_print = true;
+        }
+    bool m_print : 1 /* InitBitFields */;
 };
 
 #endif // PARENCELL_H

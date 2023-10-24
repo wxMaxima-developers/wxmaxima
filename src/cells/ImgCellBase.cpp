@@ -39,6 +39,6 @@
 #include <wx/mstream.h>
 
 ImgCellBase::ImgCellBase(GroupCell *group, Configuration *config)
-  : Cell(group, config) {}
+    : Cell(group, config) {}
 
 ImgCellBase::~ImgCellBase() {}

@@ -25,36 +25,36 @@
 #include <wx/persist/toplevel.h>
 
 ScrollingGenWizPanel::ScrollingGenWizPanel(
-					   wxWindow *parent, Configuration *cfg, MaximaManual *manual,
-					   const wxString &description, const wxString &description_tooltip,
-					   const wxString &commandRule, wxString label1, wxString defaultval1,
-					   wxString tooltip1, wxString label2, wxString defaultval2, wxString tooltip2,
-					   wxString label3, wxString defaultval3, wxString tooltip3, wxString label4,
-					   wxString defaultval4, wxString tooltip4, wxString label5,
-					   wxString defaultval5, wxString tooltip5, wxString label6,
-					   wxString defaultval6, wxString tooltip6, wxString label7,
-					   wxString defaultval7, wxString tooltip7, wxString label8,
-					   wxString defaultval8, wxString tooltip8, wxString label9,
-					   wxString defaultval9, wxString tooltip9)
+    wxWindow *parent, Configuration *cfg, MaximaManual *manual,
+    const wxString &description, const wxString &description_tooltip,
+    const wxString &commandRule, wxString label1, wxString defaultval1,
+    wxString tooltip1, wxString label2, wxString defaultval2, wxString tooltip2,
+    wxString label3, wxString defaultval3, wxString tooltip3, wxString label4,
+    wxString defaultval4, wxString tooltip4, wxString label5,
+    wxString defaultval5, wxString tooltip5, wxString label6,
+    wxString defaultval6, wxString tooltip6, wxString label7,
+    wxString defaultval7, wxString tooltip7, wxString label8,
+    wxString defaultval8, wxString tooltip8, wxString label9,
+    wxString defaultval9, wxString tooltip9)
 : wxScrolled<wxPanel>(parent, wxID_ANY) {
-  wxSizer *vbox = new wxBoxSizer(wxVERTICAL);
-  m_panel = new GenWizPanel(
-			    this, cfg, manual, description, description_tooltip, commandRule, true,
-			    label1, defaultval1, tooltip1, label2, defaultval2, tooltip2, label3,
-			    defaultval3, tooltip3, label4, defaultval4, tooltip4, label5, defaultval5,
-			    tooltip5, label6, defaultval6, tooltip6, label7, defaultval7, tooltip7,
-			    label8, defaultval8, tooltip8, label9, defaultval9, tooltip9);
-  vbox->Add(m_panel, wxSizerFlags(1).Expand());
-  EnableScrolling(false, true);
-  SetScrollRate(5, 5);
-  Connect(wxEVT_SIZE, wxSizeEventHandler(ScrollingGenWizPanel::OnSize), NULL,
-          this);
-  SetSizerAndFit(vbox);
+    wxSizer *vbox = new wxBoxSizer(wxVERTICAL);
+    m_panel = new GenWizPanel(
+        this, cfg, manual, description, description_tooltip, commandRule, true,
+        label1, defaultval1, tooltip1, label2, defaultval2, tooltip2, label3,
+        defaultval3, tooltip3, label4, defaultval4, tooltip4, label5, defaultval5,
+        tooltip5, label6, defaultval6, tooltip6, label7, defaultval7, tooltip7,
+        label8, defaultval8, tooltip8, label9, defaultval9, tooltip9);
+    vbox->Add(m_panel, wxSizerFlags(1).Expand());
+    EnableScrolling(false, true);
+    SetScrollRate(5, 5);
+    Connect(wxEVT_SIZE, wxSizeEventHandler(ScrollingGenWizPanel::OnSize), NULL,
+            this);
+    SetSizerAndFit(vbox);
 }
 
 void ScrollingGenWizPanel::OnSize(wxSizeEvent &event) {
-  // Shrink the width of the wxScrolled's virtual size if the wxScrolled is
-  // shrinking
-  SetVirtualSize(GetClientSize().x, wxDefaultSize.y);
-  event.Skip();
+    // Shrink the width of the wxScrolled's virtual size if the wxScrolled is
+    // shrinking
+    SetVirtualSize(GetClientSize().x, wxDefaultSize.y);
+    event.Skip();
 }

@@ -19,7 +19,7 @@ size_t LevenshteinDistance(const wxString &s1, const wxString &s2) {
 
   std::vector<size_t> costs;
   costs.resize(n + 1);
-  
+
   for (size_t k = 0; k <= n; k++)
     costs.at(k) = k;
 

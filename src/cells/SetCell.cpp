@@ -32,115 +32,115 @@
 
 SetCell::SetCell(GroupCell *group, Configuration *config,
                  std::unique_ptr<Cell> &&inner)
-  : ListCell(group, config, std::move(inner)) {
-  m_open = std::make_unique<TextCell>(group, config, wxS("{"));
-  m_close = std::make_unique<TextCell>(group, config, wxS("}"));
+    : ListCell(group, config, std::move(inner)) {
+    m_open = std::make_unique<TextCell>(group, config, wxS("{"));
+    m_close = std::make_unique<TextCell>(group, config, wxS("}"));
 }
 
 SetCell::SetCell(GroupCell *group, const SetCell &cell)
-  : SetCell(group, cell.m_configuration,
-	    CopyList(group, cell.m_innerCell.get())) {
-  CopyCommonData(cell);
+    : SetCell(group, cell.m_configuration,
+              CopyList(group, cell.m_innerCell.get())) {
+    CopyCommonData(cell);
 }
 
 DEFINE_CELL(SetCell)
 
 void SetCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
-  Cell::Draw(point, dc, antialiassingDC);
-  if (DrawThisCell(point)) {
-    wxPoint innerCellPos(point);
+    Cell::Draw(point, dc, antialiassingDC);
+    if (DrawThisCell(point)) {
+        wxPoint innerCellPos(point);
 
-    if (m_drawAsAscii) {
-      innerCellPos.x += m_open->GetWidth();
-      m_open->DrawList(point, dc, antialiassingDC);
-      m_close->DrawList(wxPoint(point.x + m_open->GetWidth() + m_innerCell->GetFullWidth(),
-				point.y), dc, antialiassingDC);
-    } else {
-      innerCellPos.y +=
-	(m_innerCell->GetCenterList() - m_innerCell->GetHeightList() / 2);
-      SetPen(dc, 1.5);
+        if (m_drawAsAscii) {
+            innerCellPos.x += m_open->GetWidth();
+            m_open->DrawList(point, dc, antialiassingDC);
+            m_close->DrawList(wxPoint(point.x + m_open->GetWidth() + m_innerCell->GetFullWidth(),
+                                      point.y), dc, antialiassingDC);
+        } else {
+            innerCellPos.y +=
+                (m_innerCell->GetCenterList() - m_innerCell->GetHeightList() / 2);
+            SetPen(dc, 1.5);
 
-      int signWidth = m_signWidth - Scale_Px(2);
-      innerCellPos.x = point.x + m_signWidth;
+            int signWidth = m_signWidth - Scale_Px(2);
+            innerCellPos.x = point.x + m_signWidth;
 
-      // Left curly brace
-      const wxPoint pointsL[8] = {
-	{point.x + signWidth, point.y - m_center + Scale_Px(4)},
-	{point.x + signWidth / 2,
-	 point.y - m_center + Scale_Px(4) + signWidth / 2},
-	{point.x + signWidth / 2, point.y - signWidth / 2},
-	{point.x, point.y},
-	{point.x, point.y},
-	{point.x + signWidth / 2, point.y + signWidth / 2},
-	{point.x + signWidth / 2,
-	 point.y + m_center - Scale_Px(4) - signWidth / 2},
-	{point.x + signWidth, point.y + m_center - Scale_Px(4)}};
-      antialiassingDC->DrawSpline(8, pointsL);
+            // Left curly brace
+            const wxPoint pointsL[8] = {
+                {point.x + signWidth, point.y - m_center + Scale_Px(4)},
+                {point.x + signWidth / 2,
+                 point.y - m_center + Scale_Px(4) + signWidth / 2},
+                {point.x + signWidth / 2, point.y - signWidth / 2},
+                {point.x, point.y},
+                {point.x, point.y},
+                {point.x + signWidth / 2, point.y + signWidth / 2},
+                {point.x + signWidth / 2,
+                 point.y + m_center - Scale_Px(4) - signWidth / 2},
+                {point.x + signWidth, point.y + m_center - Scale_Px(4)}};
+            antialiassingDC->DrawSpline(8, pointsL);
 
-      // Right curly brace
-      const wxPoint pointsR[8] = {
-	{point.x + m_width - signWidth, point.y - m_center + Scale_Px(4)},
-	{point.x - signWidth / 2 + m_width,
-	 point.y - m_center + Scale_Px(4) + signWidth / 2},
-	{point.x - signWidth / 2 + m_width, point.y - signWidth / 2},
-	{point.x + m_width, point.y},
-	{point.x + m_width, point.y},
-	{point.x - signWidth / 2 + m_width, point.y + signWidth / 2},
-	{point.x - signWidth / 2 + m_width,
-	 point.y + m_center - Scale_Px(4) - signWidth / 2},
-	{point.x + m_width - signWidth, point.y + m_center - Scale_Px(4)}};
-      antialiassingDC->DrawSpline(8, pointsR);
+            // Right curly brace
+            const wxPoint pointsR[8] = {
+                {point.x + m_width - signWidth, point.y - m_center + Scale_Px(4)},
+                {point.x - signWidth / 2 + m_width,
+                 point.y - m_center + Scale_Px(4) + signWidth / 2},
+                {point.x - signWidth / 2 + m_width, point.y - signWidth / 2},
+                {point.x + m_width, point.y},
+                {point.x + m_width, point.y},
+                {point.x - signWidth / 2 + m_width, point.y + signWidth / 2},
+                {point.x - signWidth / 2 + m_width,
+                 point.y + m_center - Scale_Px(4) - signWidth / 2},
+                {point.x + m_width - signWidth, point.y + m_center - Scale_Px(4)}};
+            antialiassingDC->DrawSpline(8, pointsR);
+        }
+
+        if (!IsBrokenIntoLines())
+            m_innerCell->DrawList(innerCellPos, dc, antialiassingDC);
     }
-
-    if (!IsBrokenIntoLines())
-      m_innerCell->DrawList(innerCellPos, dc, antialiassingDC);
-  }
 }
 
 wxString SetCell::ToString() const {
-  wxString s;
-  if (!m_innerCell)
-    return "[]";
+    wxString s;
+    if (!m_innerCell)
+        return "[]";
 
-  if (!IsBrokenIntoLines())
-    s = wxS("{") + m_innerCell->ListToString() + wxS("}");
-  return s;
+    if (!IsBrokenIntoLines())
+        s = wxS("{") + m_innerCell->ListToString() + wxS("}");
+    return s;
 }
 
 wxString SetCell::ToMatlab() const {
-  wxString s;
-  if (!IsBrokenIntoLines())
-    s = wxS("{") + m_innerCell->ListToMatlab() + wxS("}");
-  return s;
+    wxString s;
+    if (!IsBrokenIntoLines())
+        s = wxS("{") + m_innerCell->ListToMatlab() + wxS("}");
+    return s;
 }
 
 wxString SetCell::ToTeX() const {
-  wxString s;
-  if (!IsBrokenIntoLines()) {
-    wxString innerCell = m_innerCell->ListToTeX();
+    wxString s;
+    if (!IsBrokenIntoLines()) {
+        wxString innerCell = m_innerCell->ListToTeX();
 
-    // Let's see if the cell contains anything potentially higher than a normal
-    // character.
-    bool needsLeftRight = false;
-    for (size_t i = 0; i < innerCell.Length(); i++)
-      if (!wxIsalnum(innerCell[i])) {
-        needsLeftRight = true;
-        break;
-      }
+        // Let's see if the cell contains anything potentially higher than a normal
+        // character.
+        bool needsLeftRight = false;
+        for (size_t i = 0; i < innerCell.Length(); i++)
+            if (!wxIsalnum(innerCell[i])) {
+                needsLeftRight = true;
+                break;
+            }
 
-    if (needsLeftRight)
-      s = wxS("\\left{ ") + m_innerCell->ListToTeX() + wxS("\\right} ");
-    else
-      s = wxS("{") + m_innerCell->ListToTeX() + wxS("}");
-  }
-  return s;
+        if (needsLeftRight)
+            s = wxS("\\left{ ") + m_innerCell->ListToTeX() + wxS("\\right} ");
+        else
+            s = wxS("{") + m_innerCell->ListToTeX() + wxS("}");
+    }
+    return s;
 }
 
 wxString SetCell::ToXML() const {
-  wxString s = m_innerCell->ListToXML();
-  wxString flags;
-  if (HasHardLineBreak())
-    flags += wxS(" breakline=\"true\"");
-  return (wxS("<r set=\"true\"") + flags + wxS("><t listdelim=\"true\">{</t>") +
-          s + wxS("<t listdelim=\"true\">}</t></r>"));
+    wxString s = m_innerCell->ListToXML();
+    wxString flags;
+    if (HasHardLineBreak())
+        flags += wxS(" breakline=\"true\"");
+    return (wxS("<r set=\"true\"") + flags + wxS("><t listdelim=\"true\">{</t>") +
+            s + wxS("<t listdelim=\"true\">}</t></r>"));
 }

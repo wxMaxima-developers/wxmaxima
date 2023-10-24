@@ -39,7 +39,7 @@ extern unsigned int  media_playback_start_reverse_svg_gz_len;
 /*! A minimalistic Tip of the day dialogue
 
   We roll our own dialogue here as the one from wxWidgets is modal (which
-  means it blocks the application until it is closed) and Ubuntu's Focus 
+  means it blocks the application until it is closed) and Ubuntu's Focus
   Stealing Prevention makes it pop up below wxMaxima (which means the user
   has no means of finding out it needs closing).
 
@@ -48,21 +48,21 @@ extern unsigned int  media_playback_start_reverse_svg_gz_len;
 class TipOfTheDay : public wxDialog
 {
 public:
-  explicit TipOfTheDay(wxWindow *parent);
-  ~TipOfTheDay();
+    explicit TipOfTheDay(wxWindow *parent);
+    ~TipOfTheDay();
 protected:
-  void OnNextButton(wxCommandEvent &dummy);
-  void OnPreviousButton(wxCommandEvent &dummy);
-  void OnOkButton(wxCommandEvent &dummy);
+    void OnNextButton(wxCommandEvent &dummy);
+    void OnPreviousButton(wxCommandEvent &dummy);
+    void OnOkButton(wxCommandEvent &dummy);
 
 private:
-  wxString GetTip(unsigned int n);
-  unsigned int m_num;
-  wxTextCtrl *m_tip;
-  wxString GetTip();
-  wxCheckBox *m_showAtStartup;
-  wxImage GetImage(unsigned char *data, size_t len);
-  wxArrayString m_tips;
+    wxString GetTip(unsigned int n);
+    unsigned int m_num;
+    wxTextCtrl *m_tip;
+    wxString GetTip();
+    wxCheckBox *m_showAtStartup;
+    wxImage GetImage(unsigned char *data, size_t len);
+    wxArrayString m_tips;
 };
 
 #endif // TIPOFTHEDAY_H

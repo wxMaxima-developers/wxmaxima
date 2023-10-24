@@ -29,7 +29,7 @@
 /*! \file
   This file declares the class ContentAssistantPopup.
 
-  The content assistant offers more functionality than AutocompletePopup but 
+  The content assistant offers more functionality than AutocompletePopup but
   only works on systems that allow popups to handle key presses.
 */
 
@@ -44,64 +44,64 @@
 #include <vector>
 
 class AutocompletePopup final : public wxListView, public wxComboPopup
-{  
-  // Return pointer to the created control
-  wxWindow *GetControl() override { return this; }
+{
+    // Return pointer to the created control
+    wxWindow *GetControl() override { return this; }
 
-  // Translate string into a list selection
-  void SetStringValue(const wxString& s) override
-    {
-      int n = wxListView::FindItem(-1, s);
-      if (n >= 0 && n < wxListView::GetItemCount() )
-        wxListView::Select(n);
-    }
-  // Get list selection as a string
-  wxString GetStringValue() const override
-    { return (m_value >= 0) ? wxListView::GetItemText(m_value) : wxString(); }
+    // Translate string into a list selection
+    void SetStringValue(const wxString& s) override
+        {
+            int n = wxListView::FindItem(-1, s);
+            if (n >= 0 && n < wxListView::GetItemCount() )
+                wxListView::Select(n);
+        }
+    // Get list selection as a string
+    wxString GetStringValue() const override
+        { return (m_value >= 0) ? wxListView::GetItemText(m_value) : wxString(); }
 
 private:
-  struct DonePtr { AutocompletePopup*& observer; ~DonePtr() { observer = nullptr; } };
-  int m_value = -1; // current item index
-  //! The current string in the autocompletion
-  wxString m_partial;
+    struct DonePtr { AutocompletePopup*& observer; ~DonePtr() { observer = nullptr; } };
+    int m_value = -1; // current item index
+    //! The current string in the autocompletion
+    wxString m_partial;
 
-  wxWindow *m_parent = {};
-  const DonePtr m_doneptr;
-  std::vector<wxString> m_completions;
-  AutoComplete *m_autocomplete = {};
-  EditorCell *m_editor = {};
-  AutoComplete::autoCompletionType m_type;
+    wxWindow *m_parent = {};
+    const DonePtr m_doneptr;
+    std::vector<wxString> m_completions;
+    AutoComplete *m_autocomplete = {};
+    EditorCell *m_editor = {};
+    AutoComplete::autoCompletionType m_type;
 
-  //! The position of our pop-up
-  wxPoint m_position;
-  //! The visible rectangle of the screen
-  wxRect m_screenRect;
+    //! The position of our pop-up
+    wxPoint m_position;
+    //! The visible rectangle of the screen
+    wxRect m_screenRect;
 
 public:
-  //! Define where the popup will appear on Create()
-  void SetPosition(wxPoint pos){m_position = pos;}
-  //! Create popup control
-  bool Create(wxWindow* parent) override;
-  ~AutocompletePopup();
-  //! Gets the info which keycode the current keypress results in
-  void OnChar(wxKeyEvent &event);
-  //! Gets the info which key has been pressed with which modifier
-  void OnKeyDown(wxKeyEvent &event);
+    //! Define where the popup will appear on Create()
+    void SetPosition(wxPoint pos){m_position = pos;}
+    //! Create popup control
+    bool Create(wxWindow* parent) override;
+    ~AutocompletePopup();
+    //! Gets the info which keycode the current keypress results in
+    void OnChar(wxKeyEvent &event);
+    //! Gets the info which key has been pressed with which modifier
+    void OnKeyDown(wxKeyEvent &event);
 
-  /*! The constructor of the autocompletion window
+    /*! The constructor of the autocompletion window
 
-    \param parent The parent window
-    \param editor The cell that contains the text that is to be completed
-    \param autocomplete The autocompletion data
-    \param type The type of completion needed
-    \param doneptr A pointer that will be set to NULL when the pop-up is destroyed.
-  */
-  AutocompletePopup(wxWindow *parent, EditorCell *editor, AutoComplete *autocomplete,
-                    AutoComplete::autoCompletionType type, AutocompletePopup **doneptr);
+      \param parent The parent window
+      \param editor The cell that contains the text that is to be completed
+      \param autocomplete The autocompletion data
+      \param type The type of completion needed
+      \param doneptr A pointer that will be set to NULL when the pop-up is destroyed.
+    */
+    AutocompletePopup(wxWindow *parent, EditorCell *editor, AutoComplete *autocomplete,
+                      AutoComplete::autoCompletionType type, AutocompletePopup **doneptr);
 
-  void UpdateResults();
+    void UpdateResults();
 
-  void OnClick(wxMouseEvent &event);
+    void OnClick(wxMouseEvent &event);
 };
 
 #endif // AUTOCOMPLETEPOPUP_H

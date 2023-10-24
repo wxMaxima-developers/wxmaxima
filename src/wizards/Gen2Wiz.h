@@ -33,47 +33,47 @@
 class Gen2Wiz : public wxDialog
 {
 public:
-  Gen2Wiz(wxString lab1, wxString lab2,
-          wxString val1, wxString val2,
-          Configuration *cfg,
-          wxWindow *parent, int id, const wxString &title,
-          bool eq = false,
-          const wxString &warning = wxEmptyString,
-          const wxString &warningToolTip = wxEmptyString,
-          const wxPoint &pos = wxDefaultPosition,
-          const wxSize &size = wxDefaultSize,
-          long style = wxMINIMIZE_BOX | wxMAXIMIZE_BOX | wxRESIZE_BORDER | wxCAPTION | wxCLOSE_BOX | wxCLIP_CHILDREN);
+    Gen2Wiz(wxString lab1, wxString lab2,
+            wxString val1, wxString val2,
+            Configuration *cfg,
+            wxWindow *parent, int id, const wxString &title,
+            bool eq = false,
+            const wxString &warning = wxEmptyString,
+            const wxString &warningToolTip = wxEmptyString,
+            const wxPoint &pos = wxDefaultPosition,
+            const wxSize &size = wxDefaultSize,
+            long style = wxMINIMIZE_BOX | wxMAXIMIZE_BOX | wxRESIZE_BORDER | wxCAPTION | wxCLOSE_BOX | wxCLIP_CHILDREN);
 
-  wxString GetValue1()
-    {
-      return text_ctrl_1->GetValue();
-    }
+    wxString GetValue1()
+        {
+            return text_ctrl_1->GetValue();
+        }
 
-  wxString GetValue2()
-    {
-      return text_ctrl_2->GetValue();
-    }
+    wxString GetValue2()
+        {
+            return text_ctrl_2->GetValue();
+        }
 
-  void SetLabel1ToolTip(wxString toolTip){label_2->SetToolTip(toolTip);}
-  void SetLabel2ToolTip(wxString toolTip){label_3->SetToolTip(toolTip);}
+    void SetLabel1ToolTip(wxString toolTip){label_2->SetToolTip(toolTip);}
+    void SetLabel2ToolTip(wxString toolTip){label_3->SetToolTip(toolTip);}
 
 private:
-  bool equal;
+    bool equal;
 
-  void set_properties();
+    void set_properties();
 
-  void do_layout();
+    void do_layout();
 
 protected:
-  wxStaticText *label_2;
-  BTextCtrl *text_ctrl_1;
-  wxStaticText *label_3;
-  BTextCtrl *text_ctrl_2;
-  wxStaticLine *static_line_1;
-  wxButton *button_1;
-  wxButton *button_2;
-  wxStaticText *m_warning;
-  wxString m_warningText;
+    wxStaticText *label_2;
+    BTextCtrl *text_ctrl_1;
+    wxStaticText *label_3;
+    BTextCtrl *text_ctrl_2;
+    wxStaticLine *static_line_1;
+    wxButton *button_1;
+    wxButton *button_2;
+    wxStaticText *m_warning;
+    wxString m_warningText;
 };
 
 

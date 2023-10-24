@@ -36,78 +36,78 @@
 /*! This cell represents a exp() or %e^x-construct.
 
   In the case that this cell is broken into two lines in the order of
-  m_nextToDraw this cell is represented by the following individual 
+  m_nextToDraw this cell is represented by the following individual
   cells:
-  
+
   - The ExptCell itself
   - The opening "exp("
   - The contents
   - The closing ")".
-   
-  If it isn't broken into multiple cells m_nextToDraw points to the 
-  cell that follows this Cell. 
+
+  If it isn't broken into multiple cells m_nextToDraw points to the
+  cell that follows this Cell.
 */
 class ExptCell final : public Cell
 {
 public:
-  ExptCell(GroupCell *group, Configuration *config, std::unique_ptr<Cell> &&base, std::unique_ptr<Cell> &&expt);
-  ExptCell(GroupCell *group, const ExptCell &cell);
-  std::unique_ptr<Cell> Copy(GroupCell *group) const override;
-  const CellTypeInfo &GetInfo() override;
+    ExptCell(GroupCell *group, Configuration *config, std::unique_ptr<Cell> &&base, std::unique_ptr<Cell> &&expt);
+    ExptCell(GroupCell *group, const ExptCell &cell);
+    std::unique_ptr<Cell> Copy(GroupCell *group) const override;
+    const CellTypeInfo &GetInfo() override;
 
-  size_t GetInnerCellCount() const override { return 5; }
-  // cppcheck-suppress objectIndex
-  Cell *GetInnerCell(size_t index) const override { return (&m_baseCell)[index].get(); }
+    size_t GetInnerCellCount() const override { return 5; }
+    // cppcheck-suppress objectIndex
+    Cell *GetInnerCell(size_t index) const override { return (&m_baseCell)[index].get(); }
 
-  //! By how much do we want to rise the power?
-  double PowRise() const {return .3 * m_fontSize_Scaled;}
-  
-  void Recalculate(AFontSize fontsize) override;
+    //! By how much do we want to rise the power?
+    double PowRise() const {return .3 * m_fontSize_Scaled;}
 
-  void Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) override;
+    void Recalculate(AFontSize fontsize) override;
 
-  wxString ToMathML() const override;
-  wxString ToMatlab() const override;
-  wxString ToOMML() const override;
-  wxString ToString() const override;
-  wxString ToTeX() const override;
-  wxString ToXML() const override;
+    void Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) override;
 
-  wxString GetDiffPart() const override;
+    wxString ToMathML() const override;
+    wxString ToMatlab() const override;
+    wxString ToOMML() const override;
+    wxString ToString() const override;
+    wxString ToTeX() const override;
+    wxString ToXML() const override;
 
-  void IsMatrix(bool isMatrix) { m_isMatrix = isMatrix; }
+    wxString GetDiffPart() const override;
 
-  bool BreakUp() override;
+    void IsMatrix(bool isMatrix) { m_isMatrix = isMatrix; }
 
-  void SetAltCopyText(const wxString &text) override { m_altCopyText = text; }
-  const wxString &GetAltCopyText() const override { return m_altCopyText; }
+    bool BreakUp() override;
+
+    void SetAltCopyText(const wxString &text) override { m_altCopyText = text; }
+    const wxString &GetAltCopyText() const override { return m_altCopyText; }
 
 private:
-  void MakeBreakupCells();
+    void MakeBreakupCells();
 
-  //! Text that should end up on the clipboard if this cell is copied as text.
-  wxString m_altCopyText;
+    //! Text that should end up on the clipboard if this cell is copied as text.
+    wxString m_altCopyText;
 
-  // The pointers below point to inner cells and must be kept contiguous.
-  // ** This is the draw list order. All pointers must be the same:
-  // ** either Cell * or std::unique_ptr<Cell>. NO OTHER TYPES are allowed.
-  std::unique_ptr<Cell> m_baseCell;
-  std::unique_ptr<Cell> m_exp;
-  std::unique_ptr<Cell> m_open;
-  std::unique_ptr<Cell> m_exptCell;
-  std::unique_ptr<Cell> m_close;
-  // The pointers above point to inner cells and must be kept contiguous.
+    // The pointers below point to inner cells and must be kept contiguous.
+    // ** This is the draw list order. All pointers must be the same:
+    // ** either Cell * or std::unique_ptr<Cell>. NO OTHER TYPES are allowed.
+    std::unique_ptr<Cell> m_baseCell;
+    std::unique_ptr<Cell> m_exp;
+    std::unique_ptr<Cell> m_open;
+    std::unique_ptr<Cell> m_exptCell;
+    std::unique_ptr<Cell> m_close;
+    // The pointers above point to inner cells and must be kept contiguous.
 
-  int m_expt_yoffset = 0;
+    int m_expt_yoffset = 0;
 
 //** Bitfield objects (1 bytes)
 //**
-  void InitBitFields()
-    { // Keep the initialization order below same as the order
-      // of bit fields in this class!
-      m_isMatrix = false;
-    }
-  bool m_isMatrix : 1 /* InitBitFields */;
+    void InitBitFields()
+        { // Keep the initialization order below same as the order
+            // of bit fields in this class!
+            m_isMatrix = false;
+        }
+    bool m_isMatrix : 1 /* InitBitFields */;
 };
 
 

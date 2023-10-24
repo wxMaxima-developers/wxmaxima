@@ -34,41 +34,41 @@
 class Gen1Wiz : public wxDialog
 {
 public:
-  Gen1Wiz(wxWindow *parent, int id,
-          Configuration *cfg,
-          const wxString &title,
-          const wxString &label,
-          const wxString &val = wxEmptyString,
-          const wxString &warning = wxEmptyString,
-          const wxString &warningToolTip = wxEmptyString,
-          const wxPoint &pos = wxDefaultPosition,
-          const wxSize &size = wxDefaultSize, long style = wxMINIMIZE_BOX | wxMAXIMIZE_BOX | wxRESIZE_BORDER | wxCAPTION | wxCLOSE_BOX | wxCLIP_CHILDREN);
+    Gen1Wiz(wxWindow *parent, int id,
+            Configuration *cfg,
+            const wxString &title,
+            const wxString &label,
+            const wxString &val = wxEmptyString,
+            const wxString &warning = wxEmptyString,
+            const wxString &warningToolTip = wxEmptyString,
+            const wxPoint &pos = wxDefaultPosition,
+            const wxSize &size = wxDefaultSize, long style = wxMINIMIZE_BOX | wxMAXIMIZE_BOX | wxRESIZE_BORDER | wxCAPTION | wxCLOSE_BOX | wxCLIP_CHILDREN);
 
-  wxString GetValue()
-    {
-      return text_ctrl_1->GetValue();
-    }
+    wxString GetValue()
+        {
+            return text_ctrl_1->GetValue();
+        }
 
-  void SetValue(const wxString &v)
-    {
-      text_ctrl_1->SetValue(v);
-      text_ctrl_1->SetSelection(-1, -1);
-    }
+    void SetValue(const wxString &v)
+        {
+            text_ctrl_1->SetValue(v);
+            text_ctrl_1->SetSelection(-1, -1);
+        }
 
-  void SetLabel1ToolTip(wxString toolTip){label_2->SetToolTip(toolTip);}
+    void SetLabel1ToolTip(wxString toolTip){label_2->SetToolTip(toolTip);}
 private:
-  
-  void set_properties();
 
-  void do_layout();
+    void set_properties();
 
-  wxStaticText *label_2;
-  BTextCtrl *text_ctrl_1;
-  wxStaticLine *static_line_1;
-  wxButton *button_1;
-  wxButton *button_2;
-  wxStaticText *m_warning;
-  wxString m_warningText;
+    void do_layout();
+
+    wxStaticText *label_2;
+    BTextCtrl *text_ctrl_1;
+    wxStaticLine *static_line_1;
+    wxButton *button_1;
+    wxButton *button_2;
+    wxStaticText *m_warning;
+    wxString m_warningText;
 };
 
 void GetTextFromUser(wxString label, wxString title, Configuration *cfg, wxString value,

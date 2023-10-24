@@ -31,25 +31,25 @@
 #define WXMAXIMA_CELLIMPL_H
 
 #define DEFINE_CELL_TYPEINFO(type)                                      \
-  const CellTypeInfo &type::GetInfo()                                   \
-  {                                                                     \
-    class type##TypeInfo final : public CellTypeInfo {                  \
-    public:                                                             \
-    /* cppcheck-suppress returnTempReference */                         \
-    const wxString &GetName() const override { return S_(#type); }      \
-    };                                                                  \
-    const type##TypeInfo static info;                                   \
-    return info;                                                        \
-  }                                                                     \
+    const CellTypeInfo &type::GetInfo()                                 \
+    {                                                                   \
+        class type##TypeInfo final : public CellTypeInfo {              \
+        public:                                                         \
+        /* cppcheck-suppress returnTempReference */                     \
+        const wxString &GetName() const override { return S_(#type); }  \
+        };                                                              \
+        const type##TypeInfo static info;                               \
+        return info;                                                    \
+    }                                                                   \
 
 #define DEFINE_CELL_COPY(type)                                  \
-  std::unique_ptr<Cell> type::Copy(GroupCell *group) const      \
-  {                                                             \
-    return std::make_unique<type>(group, *this);                \
-  }                                                             \
+    std::unique_ptr<Cell> type::Copy(GroupCell *group) const    \
+    {                                                           \
+        return std::make_unique<type>(group, *this);            \
+    }                                                           \
 
 #define DEFINE_CELL(type)                       \
-  DEFINE_CELL_COPY(type)                        \
-  DEFINE_CELL_TYPEINFO(type)                    \
+    DEFINE_CELL_COPY(type)                      \
+    DEFINE_CELL_TYPEINFO(type)                  \
 
 #endif

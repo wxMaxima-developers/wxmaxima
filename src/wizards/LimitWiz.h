@@ -32,48 +32,48 @@
 class LimitWiz : public wxDialog
 {
 public:
-  LimitWiz(wxWindow *parent, int id,
-           Configuration *cfg,
-           const wxString &title,
-           const wxPoint &pos = wxDefaultPosition,
-           const wxSize &size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE);
+    LimitWiz(wxWindow *parent, int id,
+             Configuration *cfg,
+             const wxString &title,
+             const wxPoint &pos = wxDefaultPosition,
+             const wxSize &size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE);
 
-  void SetValue(wxString s)
-    {
-      text_ctrl_1->SetValue(s);
-      text_ctrl_1->SetSelection(-1, -1);
-    }
+    void SetValue(wxString s)
+        {
+            text_ctrl_1->SetValue(s);
+            text_ctrl_1->SetSelection(-1, -1);
+        }
 
-  wxString GetValue();
+    wxString GetValue();
 
 private:
-  void OnButton(wxCommandEvent &event);
+    void OnButton(wxCommandEvent &event);
 
-  void OnIdle(wxIdleEvent &event);
+    void OnIdle(wxIdleEvent &event);
 
-  void set_properties();
+    void set_properties();
 
-  void do_layout();
+    void do_layout();
 
-  enum
-  {
-    special
-  };
+    enum
+    {
+        special
+    };
 
 protected:
-  wxStaticText *label_2;
-  BTextCtrl *text_ctrl_1;
-  wxStaticText *label_3;
-  BTextCtrl *text_ctrl_2;
-  wxStaticText *label_4;
-  BTextCtrl *text_ctrl_3;
-  wxButton *button_1;
-  wxStaticText *label_5;
-  wxChoice *choice_1;
-  wxCheckBox *checkbox_1;
-  wxStaticLine *static_line_1;
-  wxButton *button_2;
-  wxButton *button_3;
+    wxStaticText *label_2;
+    BTextCtrl *text_ctrl_1;
+    wxStaticText *label_3;
+    BTextCtrl *text_ctrl_2;
+    wxStaticText *label_4;
+    BTextCtrl *text_ctrl_3;
+    wxButton *button_1;
+    wxStaticText *label_5;
+    wxChoice *choice_1;
+    wxCheckBox *checkbox_1;
+    wxStaticLine *static_line_1;
+    wxButton *button_2;
+    wxButton *button_3;
 };
 
 #endif // LIMITWIZ_H

@@ -24,7 +24,7 @@
 /*! \file
   This file declares the class AbsCell
 
-  AbsCell is the Cell type that represents the field that represents the 
+  AbsCell is the Cell type that represents the field that represents the
   <code>abs()</code> and <code>cabs()</code> commands.
 */
 
@@ -35,70 +35,70 @@
 #include <memory>
 
 /*! \file
-  
+
   This file defines the class for the cell type that represents an abs(x) block.
 */
 
 /*! A cell that represents an abs(x) block
-  
+
   In the case that this cell is broken into multiple lines, it is
   represented by the following cells in the draw order:
-  
+
   - The AbsCell itself
   - The opening "abs("
   - The contents
   - The closing ")".
-   
+
   If it isn't broken into multiple cells, then m_nextToDraw points to the
-  cell that follows this AbsCell.  
+  cell that follows this AbsCell.
 */
 class AbsCell final : public Cell
 {
 public:
-  AbsCell(GroupCell *group, Configuration *config, std::unique_ptr<Cell> &&inner);
-  AbsCell(GroupCell *group, const AbsCell &cell);
-  std::unique_ptr<Cell> Copy(GroupCell *group) const override;
-  const CellTypeInfo &GetInfo() override;
+    AbsCell(GroupCell *group, Configuration *config, std::unique_ptr<Cell> &&inner);
+    AbsCell(GroupCell *group, const AbsCell &cell);
+    std::unique_ptr<Cell> Copy(GroupCell *group) const override;
+    const CellTypeInfo &GetInfo() override;
 
-  size_t GetInnerCellCount() const override { return 3; }
-  // cppcheck-suppress objectIndex
-  Cell *GetInnerCell(size_t index) const override { return (&m_open)[index].get(); }
+    size_t GetInnerCellCount() const override { return 3; }
+    // cppcheck-suppress objectIndex
+    Cell *GetInnerCell(size_t index) const override { return (&m_open)[index].get(); }
 
-  bool BreakUp() override;
-  
-  void Recalculate(AFontSize fontsize) override;
+    bool BreakUp() override;
 
-  void Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) override;
+    void Recalculate(AFontSize fontsize) override;
 
-  wxString ToMathML() const override;
-  wxString ToMatlab() const override;
-  wxString ToOMML() const override;
-  wxString ToString() const override;
-  wxString ToTeX() const override;
-  wxString ToXML() const override;
+    void Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) override;
 
-  void SetNextToDraw(Cell *next) override;
-  
+    wxString ToMathML() const override;
+    wxString ToMatlab() const override;
+    wxString ToOMML() const override;
+    wxString ToString() const override;
+    wxString ToTeX() const override;
+    wxString ToXML() const override;
+
+    void SetNextToDraw(Cell *next) override;
+
 private:
-  void MakeBreakupCells();
+    void MakeBreakupCells();
 
-  // The pointers below point to inner cells and must be kept contiguous.
-  // ** This is the draw list order. All pointers must be the same:
-  // ** either Cell * or std::unique_ptr<Cell>. NO OTHER TYPES are allowed.
-  //! The cell containing the eventual "abs" and the opening parenthesis
-  std::unique_ptr<Cell> m_open;
-  //! The contents of the abs() command
-  std::unique_ptr<Cell> m_innerCell;
-  //! The cell containing the closing parenthesis
-  std::unique_ptr<Cell> m_close;
-  // The pointers above point to inner cells and must be kept contiguous.
+    // The pointers below point to inner cells and must be kept contiguous.
+    // ** This is the draw list order. All pointers must be the same:
+    // ** either Cell * or std::unique_ptr<Cell>. NO OTHER TYPES are allowed.
+    //! The cell containing the eventual "abs" and the opening parenthesis
+    std::unique_ptr<Cell> m_open;
+    //! The contents of the abs() command
+    std::unique_ptr<Cell> m_innerCell;
+    //! The cell containing the closing parenthesis
+    std::unique_ptr<Cell> m_close;
+    // The pointers above point to inner cells and must be kept contiguous.
 
 //** Bitfield objects (0 bytes)
 //**
-  static void InitBitFields()
-    { // Keep the initialization order below same as the order
-      // of bit fields in this class!
-    }
+    static void InitBitFields()
+        { // Keep the initialization order below same as the order
+            // of bit fields in this class!
+        }
 };
 
 #endif // ABSCELL_H

@@ -31,7 +31,7 @@
 #include <wx/log.h>
 
 RegexSearch::RegexSearch(wxString regex)
-  : wxRegEx(regex) {}
+    : wxRegEx(regex) {}
 
 RegexSearch::~RegexSearch()
 {
@@ -39,64 +39,64 @@ RegexSearch::~RegexSearch()
 
 RegexSearch::Match RegexSearch::FindNext(wxString string, size_t start)
 {
-  wxLogNull suppress;
-  Match retval;
-  if(start >= string.Length())
+    wxLogNull suppress;
+    Match retval;
+    if(start >= string.Length())
+        return retval;
+    wxString src = string.Right(string.Length() - start);
+    if(!Matches(src))
+        return retval;
+    size_t matchstart;
+    size_t length;
+    GetMatch(&matchstart, &length, 0);
+    retval.SetStart(start + matchstart);
+    retval.SetLength (length);
     return retval;
-  wxString src = string.Right(string.Length() - start);
-  if(!Matches(src))
-    return retval;
-  size_t matchstart;
-  size_t length;
-  GetMatch(&matchstart, &length, 0);
-  retval.SetStart(start + matchstart);
-  retval.SetLength (length);
-  return retval;
 }
 
 RegexSearch::Match RegexSearch::Replace(wxString *string, size_t start, wxString replacement)
 {
-  wxLogNull suppress;
-  Match retval;
-  if(start >= string->Length())
-    return retval;
-  wxString src = string->Right(string->Length() - start);
+    wxLogNull suppress;
+    Match retval;
+    if(start >= string->Length())
+        return retval;
+    wxString src = string->Right(string->Length() - start);
     if(!Matches(src))
+        return retval;
+    size_t matchstart;
+    size_t length;
+    GetMatch(&matchstart, &length, 0);
+    wxRegEx::Replace(&src, replacement, 1);
+    if(matchstart != 0)
+        return retval;
+    *string = string->Left(start) + src;
+    retval.SetStart(start + matchstart);
+    retval.SetLength (length);
     return retval;
-  size_t matchstart;
-  size_t length;
-  GetMatch(&matchstart, &length, 0);
-  wxRegEx::Replace(&src, replacement, 1);
-  if(matchstart != 0)
-    return retval;
-  *string = string->Left(start) + src;
-  retval.SetStart(start + matchstart);
-  retval.SetLength (length);
-  return retval;
 }
 
 RegexSearch::Match RegexSearch::Replace_Reverse(wxString *string, size_t start,
-						wxString replacement)
+                                                wxString replacement)
 {
-  return Replace(string, start, replacement);
+    return Replace(string, start, replacement);
 }
 
 RegexSearch::Match RegexSearch::FindNext_Reverse(wxString string, size_t start)
 {
-  wxLogNull suppress;
-  Match retval;
-  size_t matchstart;
-  size_t length;
-  wxString src = string.Left(start);
-  long offset = 0;
-  // We want to find the last match before start.
-  while(Matches(src))
+    wxLogNull suppress;
+    Match retval;
+    size_t matchstart;
+    size_t length;
+    wxString src = string.Left(start);
+    long offset = 0;
+    // We want to find the last match before start.
+    while(Matches(src))
     {
-      GetMatch(&matchstart, &length, 0);
-      retval.SetStart(offset + matchstart);
-      retval.SetLength(length);
-      src = src.Right(src.Length() - matchstart - length);
-      offset += matchstart + length;
+        GetMatch(&matchstart, &length, 0);
+        retval.SetStart(offset + matchstart);
+        retval.SetLength(length);
+        src = src.Right(src.Length() - matchstart - length);
+        offset += matchstart + length;
     }
     return retval;
 }

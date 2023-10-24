@@ -35,40 +35,40 @@
 static wxString cellContents(wxS("?"));
 
 VisiblyInvalidCell::VisiblyInvalidCell(GroupCell *group, Configuration *config)
-  : TextCell(group, config, cellContents, TS_ERROR) {
-  InitBitFields();
-  // We cannot do this at the startup of the program as we first need to wait
-  // for the language selection to take place.
-  // NOTE: static variables are initialized exactly 0 or 1 times, so the below
-  // is not wasteful.
-  SetToolTip(&T_("Missing contents. Bug?"));
+    : TextCell(group, config, cellContents, TS_ERROR) {
+    InitBitFields();
+    // We cannot do this at the startup of the program as we first need to wait
+    // for the language selection to take place.
+    // NOTE: static variables are initialized exactly 0 or 1 times, so the below
+    // is not wasteful.
+    SetToolTip(&T_("Missing contents. Bug?"));
 }
 
 VisiblyInvalidCell::VisiblyInvalidCell(GroupCell *group, Configuration *config,
                                        wxString &&toolTip)
-  : TextCell(group, config, cellContents, TS_ERROR) {
-  InitBitFields();
-  SetToolTip(std::move(toolTip));
+    : TextCell(group, config, cellContents, TS_ERROR) {
+    InitBitFields();
+    SetToolTip(std::move(toolTip));
 }
 
 VisiblyInvalidCell::VisiblyInvalidCell(GroupCell *group, Configuration *config,
                                        const wxString *toolTip)
-  : TextCell(group, config, cellContents, TS_ERROR) {
-  InitBitFields();
-  SetToolTip(toolTip);
+    : TextCell(group, config, cellContents, TS_ERROR) {
+    InitBitFields();
+    SetToolTip(toolTip);
 }
 
 VisiblyInvalidCell::VisiblyInvalidCell(GroupCell *group,
                                        const VisiblyInvalidCell &cell)
-  : VisiblyInvalidCell(group, cell.m_configuration) {}
+    : VisiblyInvalidCell(group, cell.m_configuration) {}
 
 DEFINE_CELL_TYPEINFO(VisiblyInvalidCell)
 
 std::unique_ptr<Cell> Cell::MakeVisiblyInvalidCell() const {
-  return std::make_unique<VisiblyInvalidCell>(m_group, m_configuration);
+    return std::make_unique<VisiblyInvalidCell>(m_group, m_configuration);
 }
 
 std::unique_ptr<Cell> Cell::MakeVisiblyInvalidCell(GroupCell *group,
                                                    Configuration *config) {
-  return std::make_unique<VisiblyInvalidCell>(group, config);
+    return std::make_unique<VisiblyInvalidCell>(group, config);
 }

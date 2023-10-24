@@ -45,187 +45,187 @@
 class AnimationCell final : public ImgCellBase
 {
 public:
-  /*! The constructor
+    /*! The constructor
 
-    \param framerate The individual frame rate that has to be set for this cell only. 
-    If the default frame rate from the config is to be used instead this parameter 
-    has to be set to -1.
-    \param config A pointer to the pointer to the configuration storage of the 
-    worksheet this cell belongs to.
-    \param wxmxFile The wxmx file the contents of this animation can be found in.
-    wxEmptyString = no wxmx file, but the system's filesystem instead
-    \param group     The parent GroupCell this cell belongs to.
-  */
-  AnimationCell(GroupCell *group, Configuration *config,
-                const wxString &wxmxFile, int framerate = -1);
-  AnimationCell(GroupCell *group, Configuration *config, int framerate = -1);
-  AnimationCell(GroupCell *group, const AnimationCell &cell);
-  //! A constructor that loads the compressed file from a wxMemoryBuffer
-  AnimationCell(GroupCell *group, Configuration *config, const wxMemoryBuffer &image, const wxString &type);
-  AnimationCell(GroupCell *group, Configuration *config, const wxString &image, bool remove);
-  std::unique_ptr<Cell> Copy(GroupCell *group) const override;
-  void operator=(const AnimationCell&) = delete;
-  AnimationCell(const AnimationCell&) = delete;
+      \param framerate The individual frame rate that has to be set for this cell only.
+      If the default frame rate from the config is to be used instead this parameter
+      has to be set to -1.
+      \param config A pointer to the pointer to the configuration storage of the
+      worksheet this cell belongs to.
+      \param wxmxFile The wxmx file the contents of this animation can be found in.
+      wxEmptyString = no wxmx file, but the system's filesystem instead
+      \param group     The parent GroupCell this cell belongs to.
+    */
+    AnimationCell(GroupCell *group, Configuration *config,
+                  const wxString &wxmxFile, int framerate = -1);
+    AnimationCell(GroupCell *group, Configuration *config, int framerate = -1);
+    AnimationCell(GroupCell *group, const AnimationCell &cell);
+    //! A constructor that loads the compressed file from a wxMemoryBuffer
+    AnimationCell(GroupCell *group, Configuration *config, const wxMemoryBuffer &image, const wxString &type);
+    AnimationCell(GroupCell *group, Configuration *config, const wxString &image, bool remove);
+    std::unique_ptr<Cell> Copy(GroupCell *group) const override;
+    void operator=(const AnimationCell&) = delete;
+    AnimationCell(const AnimationCell&) = delete;
 
-  void SetConfiguration(Configuration *config) override;
-  int GetPPI() const override {if(IsOk()) return m_images.at(m_displayed)->GetPPI(); else return 0;}
-  size_t GetOriginalWidth() const override {
-    if(IsOk())return m_images.at(m_displayed)->GetOriginalWidth(); else return 0;}
-  size_t GetOriginalHeight() const override {
-    if(IsOk())return m_images.at(m_displayed)->GetOriginalHeight(); else return 0;}
-  wxString GetExtension() const override
-    { if (IsOk())return m_images.at(m_displayed)->GetExtension(); else return wxEmptyString; }
+    void SetConfiguration(Configuration *config) override;
+    int GetPPI() const override {if(IsOk()) return m_images.at(m_displayed)->GetPPI(); else return 0;}
+    size_t GetOriginalWidth() const override {
+        if(IsOk())return m_images.at(m_displayed)->GetOriginalWidth(); else return 0;}
+    size_t GetOriginalHeight() const override {
+        if(IsOk())return m_images.at(m_displayed)->GetOriginalHeight(); else return 0;}
+    wxString GetExtension() const override
+        { if (IsOk())return m_images.at(m_displayed)->GetExtension(); else return wxEmptyString; }
 
-  const CellTypeInfo &GetInfo() override;
-  ~AnimationCell();
-  int Length() const {return m_images.size();}
-  void LoadImages(wxMemoryBuffer imageData);
-  void LoadImages(wxString imageFile);
-  //! Set the animation's resolution
-  void SetPPI(int ppi) override;
-  //! A class that publishes wxm data to the clipboard
-  static wxDataFormat m_gifFormat;
+    const CellTypeInfo &GetInfo() override;
+    ~AnimationCell();
+    int Length() const {return m_images.size();}
+    void LoadImages(wxMemoryBuffer imageData);
+    void LoadImages(wxString imageFile);
+    //! Set the animation's resolution
+    void SetPPI(int ppi) override;
+    //! A class that publishes wxm data to the clipboard
+    static wxDataFormat m_gifFormat;
 
-  //! Can the current image be exported in SVG format?
-  bool CanExportSVG() const override {return (m_images.at(m_displayed) != NULL) && m_images.at(m_displayed)->CanExportSVG();}
+    //! Can the current image be exported in SVG format?
+    bool CanExportSVG() const override {return (m_images.at(m_displayed) != NULL) && m_images.at(m_displayed)->CanExportSVG();}
 
-  //! A Gif object for the clipboard
-  class GifDataObject : public wxCustomDataObject
-  {
-  public:
-    explicit GifDataObject(const wxMemoryOutputStream &str);
-
-    GifDataObject();
-
-  private:
-    wxCharBuffer m_databuf;
-  };
-
-  bool IsOk() const;
-  
-  const wxString &GetToolTip(wxPoint point) const override;
-
-  /*! Remove all cached scaled images from memory
-
-    To be called when the animation is outside of the displayed portion 
-    of the screen; The bitmaps will be re-generated when needed.
-  */
-  void ClearCache() override;
-
-  void LoadImages(wxArrayString images, bool deleteRead);
-
-  int GetDisplayedIndex() const { return m_displayed; }
-
-  wxImage GetBitmap(int n) const
-    { return m_images[n]->GetUnscaledBitmap().ConvertToImage(); }
-
-  void SetDisplayedIndex(int ind);
-
-  //! Exports the image the animation currently displays
-  wxSize ToImageFile(wxString file) override;
-
-  //! Exports the whole animation as animated gif
-  wxSize ToGif(wxString file);
-
-  bool CopyToClipboard() const override;
-  
-  //! Put the animation on the clipboard.
-  bool CopyAnimationToClipboard();
-
-  /*! Get the frame rate of this AnimationCell [in Hz].
-
-    Returns either the frame rate set for this slide show cell individually or 
-    the default frame rate chosen in the config.
-  */
-  int GetFrameRate() const;
-
-  /*! Reload the animation timer starting and instantiating and registering it if necessary.
-
-    If the timer is already running, the request to reload it is ignored.
-  */
-  void ReloadTimer();
-
-  /*! Stops the timer
-    
-    Also deletes the timer as on MSW there aren't many timers available.
-  */
-  void StopTimer();
-
-  /*! Set the frame rate of this AnimationCell [in Hz].
-    
-    \param Freq The requested frequency [in Hz] or -1 for: Use the default value.
-    \return The frame rate that was actually set.
-  */
-  int SetFrameRate(int Freq);
-
-  bool AnimationRunning() const { return m_animationRunning; }
-  void AnimationRunning(bool run);
-  bool CanPopOut() const override
-    { return m_images.at(m_displayed) && (m_images.at(m_displayed)->HasGnuplotSource()); }
-
-  void GnuplotSource(int image, wxString gnuplotFilename, wxString dataFilename,
-                     const wxString &wxmxFile)
-    { m_images[image]->GnuplotSource(std::move(gnuplotFilename),
-                                     std::move(dataFilename), wxmxFile); }
-  void CompressedGnuplotSource(int image, wxString gnuplotFilename, wxString dataFilename,
-                               const wxString &wxmxFile)
-    { m_images[image]->CompressedGnuplotSource(std::move(gnuplotFilename),
-                                               std::move(dataFilename),
-                                               wxmxFile); }
-
-  wxString GnuplotSource() const override
+    //! A Gif object for the clipboard
+    class GifDataObject : public wxCustomDataObject
     {
-      if (!m_images.at(m_displayed))
-        return wxEmptyString;
-      else
-        return m_images.at(m_displayed)->GnuplotSource();
-    }
+    public:
+        explicit GifDataObject(const wxMemoryOutputStream &str);
+
+        GifDataObject();
+
+    private:
+        wxCharBuffer m_databuf;
+    };
+
+    bool IsOk() const;
+
+    const wxString &GetToolTip(wxPoint point) const override;
+
+    /*! Remove all cached scaled images from memory
+
+      To be called when the animation is outside of the displayed portion
+      of the screen; The bitmaps will be re-generated when needed.
+    */
+    void ClearCache() override;
+
+    void LoadImages(wxArrayString images, bool deleteRead);
+
+    int GetDisplayedIndex() const { return m_displayed; }
+
+    wxImage GetBitmap(int n) const
+        { return m_images[n]->GetUnscaledBitmap().ConvertToImage(); }
+
+    void SetDisplayedIndex(int ind);
+
+    //! Exports the image the animation currently displays
+    wxSize ToImageFile(wxString file) override;
+
+    //! Exports the whole animation as animated gif
+    wxSize ToGif(wxString file);
+
+    bool CopyToClipboard() const override;
+
+    //! Put the animation on the clipboard.
+    bool CopyAnimationToClipboard();
+
+    /*! Get the frame rate of this AnimationCell [in Hz].
+
+      Returns either the frame rate set for this slide show cell individually or
+      the default frame rate chosen in the config.
+    */
+    int GetFrameRate() const;
+
+    /*! Reload the animation timer starting and instantiating and registering it if necessary.
+
+      If the timer is already running, the request to reload it is ignored.
+    */
+    void ReloadTimer();
+
+    /*! Stops the timer
+
+      Also deletes the timer as on MSW there aren't many timers available.
+    */
+    void StopTimer();
+
+    /*! Set the frame rate of this AnimationCell [in Hz].
+
+      \param Freq The requested frequency [in Hz] or -1 for: Use the default value.
+      \return The frame rate that was actually set.
+    */
+    int SetFrameRate(int Freq);
+
+    bool AnimationRunning() const { return m_animationRunning; }
+    void AnimationRunning(bool run);
+    bool CanPopOut() const override
+        { return m_images.at(m_displayed) && (m_images.at(m_displayed)->HasGnuplotSource()); }
+
+    void GnuplotSource(int image, wxString gnuplotFilename, wxString dataFilename,
+                       const wxString &wxmxFile)
+        { m_images[image]->GnuplotSource(std::move(gnuplotFilename),
+                                         std::move(dataFilename), wxmxFile); }
+    void CompressedGnuplotSource(int image, wxString gnuplotFilename, wxString dataFilename,
+                                 const wxString &wxmxFile)
+        { m_images[image]->CompressedGnuplotSource(std::move(gnuplotFilename),
+                                                   std::move(dataFilename),
+                                                   wxmxFile); }
+
+    wxString GnuplotSource() const override
+        {
+            if (!m_images.at(m_displayed))
+                return wxEmptyString;
+            else
+                return m_images.at(m_displayed)->GnuplotSource();
+        }
 
 private:
-  CellPointers *const m_cellPointers = GetCellPointers(); // must come before m_timer (!)
-  wxTimer m_timer;
-  std::vector<std::shared_ptr<Image>> m_images;
+    CellPointers *const m_cellPointers = GetCellPointers(); // must come before m_timer (!)
+    wxTimer m_timer;
+    std::vector<std::shared_ptr<Image>> m_images;
 
-  /*! The framerate of this cell.
+    /*! The framerate of this cell.
 
-    Can contain a frame rate [in Hz] or a -1, which means: Use the default frame rate.
-  */
-  int m_framerate = -1;
-  int m_displayed = 0;
-  int m_imageBorderWidth = 0;
+      Can contain a frame rate [in Hz] or a -1, which means: Use the default frame rate.
+    */
+    int m_framerate = -1;
+    int m_displayed = 0;
+    int m_imageBorderWidth = 0;
 
 //** Bitfield objects (1 bytes)
 //**
-  void InitBitFields()
-    { // Keep the initialization order below same as the order
-      // of bit fields in this class!
-      m_animationRunning = true;
-      m_drawBoundingBox = false;
-    }
+    void InitBitFields()
+        { // Keep the initialization order below same as the order
+            // of bit fields in this class!
+            m_animationRunning = true;
+            m_drawBoundingBox = false;
+        }
 
-  bool m_animationRunning : 1 /* InitBitFields */;
-  bool m_drawBoundingBox : 1 /* InitBitFields */;
-  wxString m_wxmxFile;
+    bool m_animationRunning : 1 /* InitBitFields */;
+    bool m_drawBoundingBox : 1 /* InitBitFields */;
+    wxString m_wxmxFile;
 
-  int GetImageBorderWidth() const override { return m_imageBorderWidth; }
+    int GetImageBorderWidth() const override { return m_imageBorderWidth; }
 
-  void Recalculate(AFontSize fontsize) override;
+    void Recalculate(AFontSize fontsize) override;
 
-  void Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) override;
+    void Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) override;
 
-  wxString ToMatlab() const override;
-  wxString ToRTF() const override;
-  wxString ToString() const override;
-  wxString ToTeX() const override;
-  wxString ToXML() const override;
+    wxString ToMatlab() const override;
+    wxString ToRTF() const override;
+    wxString ToString() const override;
+    wxString ToTeX() const override;
+    wxString ToXML() const override;
 
-  wxCoord GetMaxWidth() const override;
-  wxCoord GetHeightList() const override;
-  void SetMaxWidth(wxCoord width) override;
-  void SetMaxHeight(wxCoord height) override;
-  
-  void DrawBoundingBox(wxDC &WXUNUSED(dc), bool WXUNUSED(all) = false)  override
-    { m_drawBoundingBox = true; }
+    wxCoord GetMaxWidth() const override;
+    wxCoord GetHeightList() const override;
+    void SetMaxWidth(wxCoord width) override;
+    void SetMaxHeight(wxCoord height) override;
+
+    void DrawBoundingBox(wxDC &WXUNUSED(dc), bool WXUNUSED(all) = false)  override
+        { m_drawBoundingBox = true; }
 };
 
 #endif // ANIMATIONCELL_H

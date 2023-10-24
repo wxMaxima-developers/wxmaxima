@@ -32,24 +32,24 @@
 class ActualValuesStorageWiz : public wxDialog
 {
 public:
-  ActualValuesStorageWiz(
-    Configuration *cfg,
-    wxWindow *parent, int id, const wxString &title,
-    bool eq = false,
-    const wxPoint &pos = wxDefaultPosition,
-    const wxSize &size = wxDefaultSize,
-    long style = wxDEFAULT_DIALOG_STYLE);
+    ActualValuesStorageWiz(
+        Configuration *cfg,
+        wxWindow *parent, int id, const wxString &title,
+        bool eq = false,
+        const wxPoint &pos = wxDefaultPosition,
+        const wxSize &size = wxDefaultSize,
+        long style = wxDEFAULT_DIALOG_STYLE);
 
-  wxString GetValue();
+    wxString GetValue();
 
 private:
-  void set_properties();
+    void set_properties();
 
 protected:
-  wxGrid *m_grid;
-  wxButton *button_1;
-  wxButton *button_2;
-  void OnValueChange(wxGridEvent &event);
+    wxGrid *m_grid;
+    wxButton *button_1;
+    wxButton *button_2;
+    void OnValueChange(wxGridEvent &event);
 };
 
 #endif // ACTUALVALUESSTORAGEWIZ_H

@@ -37,132 +37,132 @@
 
 AbsCell::AbsCell(GroupCell *group, Configuration *config,
                  std::unique_ptr<Cell> &&inner)
-  : Cell(group, config), m_innerCell(std::move(inner)) {
-  InitBitFields();
-  SetStyle(TS_VARIABLE);
+    : Cell(group, config), m_innerCell(std::move(inner)) {
+    InitBitFields();
+    SetStyle(TS_VARIABLE);
 }
 
 // Old cppcheck bugs:
 // cppcheck-suppress uninitMemberVar symbolName=AbsCell::m_open
 // cppcheck-suppress uninitMemberVar symbolName=AbsCell::m_close
 AbsCell::AbsCell(GroupCell *group, const AbsCell &cell)
-  : AbsCell(group, cell.m_configuration,
-	    CopyList(group, cell.m_innerCell.get())) {
-  CopyCommonData(cell);
+    : AbsCell(group, cell.m_configuration,
+              CopyList(group, cell.m_innerCell.get())) {
+    CopyCommonData(cell);
 }
 
 DEFINE_CELL(AbsCell)
 
 void AbsCell::MakeBreakupCells() {
-  if (m_open)
-    return;
-  m_open = std::make_unique<TextCell>(m_group, m_configuration, wxS("abs("));
-  static_cast<TextCell &>(*m_open).DontEscapeOpeningParenthesis();
-  m_open->SetStyle(TS_FUNCTION);
-  m_close = std::make_unique<TextCell>(m_group, m_configuration, wxS(")"));
+    if (m_open)
+        return;
+    m_open = std::make_unique<TextCell>(m_group, m_configuration, wxS("abs("));
+    static_cast<TextCell &>(*m_open).DontEscapeOpeningParenthesis();
+    m_open->SetStyle(TS_FUNCTION);
+    m_close = std::make_unique<TextCell>(m_group, m_configuration, wxS(")"));
 }
 
 void AbsCell::Recalculate(AFontSize fontsize) {
-  m_innerCell->RecalculateList(fontsize);
-  if (IsBrokenIntoLines()) {
-    m_width = 0;
-    m_height = 0;
-    m_center = 0;
-    m_open->RecalculateList(fontsize);
-    m_close->RecalculateList(fontsize);
-  } else {
-    m_width = m_innerCell->GetFullWidth() + Scale_Px(8) +
-      2 * m_configuration->GetDefaultLineWidth();
-    m_height = m_innerCell->GetHeightList() + Scale_Px(4);
-    m_center = m_innerCell->GetCenterList() + Scale_Px(2);
-  }
-  Cell::Recalculate(fontsize);
+    m_innerCell->RecalculateList(fontsize);
+    if (IsBrokenIntoLines()) {
+        m_width = 0;
+        m_height = 0;
+        m_center = 0;
+        m_open->RecalculateList(fontsize);
+        m_close->RecalculateList(fontsize);
+    } else {
+        m_width = m_innerCell->GetFullWidth() + Scale_Px(8) +
+            2 * m_configuration->GetDefaultLineWidth();
+        m_height = m_innerCell->GetHeightList() + Scale_Px(4);
+        m_center = m_innerCell->GetCenterList() + Scale_Px(2);
+    }
+    Cell::Recalculate(fontsize);
 }
 
 void AbsCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
-  Cell::Draw(point, dc, antialiassingDC);
-  if (DrawThisCell(point)) {
-    SetPen(dc);
-    wxPoint in;
-    in.x = point.x + Scale_Px(4) + m_configuration->GetDefaultLineWidth();
-    in.y = point.y;
-    m_innerCell->DrawList(in, dc, antialiassingDC);
+    Cell::Draw(point, dc, antialiassingDC);
+    if (DrawThisCell(point)) {
+        SetPen(dc);
+        wxPoint in;
+        in.x = point.x + Scale_Px(4) + m_configuration->GetDefaultLineWidth();
+        in.y = point.y;
+        m_innerCell->DrawList(in, dc, antialiassingDC);
 
-    dc->DrawLine(
-		 point.x + Scale_Px(2) + m_configuration->GetDefaultLineWidth() / 2,
-		 point.y - m_center + Scale_Px(2),
-		 point.x + Scale_Px(2) + m_configuration->GetDefaultLineWidth() / 2,
-		 point.y - m_center + m_height - Scale_Px(2));
-    dc->DrawLine(point.x + m_width - Scale_Px(2) - 1 -
-		 m_configuration->GetDefaultLineWidth() / 2,
-                 point.y - m_center + Scale_Px(2),
-                 point.x + m_width - Scale_Px(2) - 1 -
-		 m_configuration->GetDefaultLineWidth() / 2,
-                 point.y - m_center + m_height - Scale_Px(2));
-  }
+        dc->DrawLine(
+            point.x + Scale_Px(2) + m_configuration->GetDefaultLineWidth() / 2,
+            point.y - m_center + Scale_Px(2),
+            point.x + Scale_Px(2) + m_configuration->GetDefaultLineWidth() / 2,
+            point.y - m_center + m_height - Scale_Px(2));
+        dc->DrawLine(point.x + m_width - Scale_Px(2) - 1 -
+                     m_configuration->GetDefaultLineWidth() / 2,
+                     point.y - m_center + Scale_Px(2),
+                     point.x + m_width - Scale_Px(2) - 1 -
+                     m_configuration->GetDefaultLineWidth() / 2,
+                     point.y - m_center + m_height - Scale_Px(2));
+    }
 }
 
 wxString AbsCell::ToString() const {
-  if (IsBrokenIntoLines())
-    return wxEmptyString;
-  wxString s;
-  s = wxS("abs(") + m_innerCell->ListToString() + wxS(")");
-  return s;
+    if (IsBrokenIntoLines())
+        return wxEmptyString;
+    wxString s;
+    s = wxS("abs(") + m_innerCell->ListToString() + wxS(")");
+    return s;
 }
 
 wxString AbsCell::ToMatlab() const {
-  if (IsBrokenIntoLines())
-    return wxEmptyString;
-  wxString s;
-  s = wxS("abs(") + m_innerCell->ListToMatlab() + wxS(")");
-  return s;
+    if (IsBrokenIntoLines())
+        return wxEmptyString;
+    wxString s;
+    s = wxS("abs(") + m_innerCell->ListToMatlab() + wxS(")");
+    return s;
 }
 
 wxString AbsCell::ToTeX() const {
-  if (IsBrokenIntoLines())
-    return wxEmptyString;
-  return wxS("\\left| ") + m_innerCell->ListToTeX() + wxS("\\right| ");
+    if (IsBrokenIntoLines())
+        return wxEmptyString;
+    return wxS("\\left| ") + m_innerCell->ListToTeX() + wxS("\\right| ");
 }
 
 wxString AbsCell::ToMathML() const {
-  return wxS("<row><mo>|</mo>") + m_innerCell->ListToMathML() +
-    wxS("<mo>|</mo></row>\n");
-  //  return wxS("<apply><abs/><ci>") + m_innerCell->ListToMathML() +
-  //  wxS("</ci></apply>");
+    return wxS("<row><mo>|</mo>") + m_innerCell->ListToMathML() +
+        wxS("<mo>|</mo></row>\n");
+    //  return wxS("<apply><abs/><ci>") + m_innerCell->ListToMathML() +
+    //  wxS("</ci></apply>");
 }
 
 wxString AbsCell::ToOMML() const {
-  return wxS("<m:d><m:dPr m:begChr=\"|\" m:endChr=\"|\"></m:dPr><m:e>") +
-    m_innerCell->ListToOMML() + wxS("</m:e></m:d>");
+    return wxS("<m:d><m:dPr m:begChr=\"|\" m:endChr=\"|\"></m:dPr><m:e>") +
+        m_innerCell->ListToOMML() + wxS("</m:e></m:d>");
 }
 
 wxString AbsCell::ToXML() const {
-  wxString flags;
-  if (HasHardLineBreak())
-    flags += wxS(" breakline=\"true\"");
+    wxString flags;
+    if (HasHardLineBreak())
+        flags += wxS(" breakline=\"true\"");
 
-  return wxS("<a") + flags + wxS(">") + m_innerCell->ListToXML() + wxS("</a>");
+    return wxS("<a") + flags + wxS(">") + m_innerCell->ListToXML() + wxS("</a>");
 }
 
 bool AbsCell::BreakUp() {
-  if (IsBrokenIntoLines())
-    return false;
+    if (IsBrokenIntoLines())
+        return false;
 
-  MakeBreakupCells();
-  Cell::BreakUpAndMark();
-  m_open->SetNextToDraw(m_innerCell);
-  m_innerCell->last()->SetNextToDraw(m_close);
-  m_close->SetNextToDraw(m_nextToDraw);
-  m_nextToDraw = m_open;
-  ResetCellListSizes();
-  m_height = 0;
-  m_center = 0;
-  return true;
+    MakeBreakupCells();
+    Cell::BreakUpAndMark();
+    m_open->SetNextToDraw(m_innerCell);
+    m_innerCell->last()->SetNextToDraw(m_close);
+    m_close->SetNextToDraw(m_nextToDraw);
+    m_nextToDraw = m_open;
+    ResetCellListSizes();
+    m_height = 0;
+    m_center = 0;
+    return true;
 }
 
 void AbsCell::SetNextToDraw(Cell *next) {
-  if (IsBrokenIntoLines())
-    m_close->SetNextToDraw(next);
-  else
-    m_nextToDraw = next;
+    if (IsBrokenIntoLines())
+        m_close->SetNextToDraw(next);
+    else
+        m_nextToDraw = next;
 }

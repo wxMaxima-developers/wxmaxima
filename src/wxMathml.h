@@ -36,18 +36,18 @@
 class wxMathML
 {
 public:
-  explicit wxMathML(Configuration *config);
-  wxString GetCmd();
-  //! Read the wxMathML.lisp from the file filename instead from the builtin data.
-  static void Set_MathML_Filename(wxString filename) {m_wxMathML_file = filename;}
-  //! The name to read wxMathML.lisp from. If empty we use the builtin file.
-  static const wxString& Get_MathML_Filename() {return m_wxMathML_file;}
+    explicit wxMathML(Configuration *config);
+    wxString GetCmd();
+    //! Read the wxMathML.lisp from the file filename instead from the builtin data.
+    static void Set_MathML_Filename(wxString filename) {m_wxMathML_file = filename;}
+    //! The name to read wxMathML.lisp from. If empty we use the builtin file.
+    static const wxString& Get_MathML_Filename() {return m_wxMathML_file;}
 private:
-  //! If we read wxMathml.lisp from a file this variable is not-empty and contains its name
-  static wxString m_wxMathML_file;
-  wxString m_wxMathML;
-  Configuration *m_configuration;
-  static wxString m_maximaCMD;
+    //! If we read wxMathml.lisp from a file this variable is not-empty and contains its name
+    static wxString m_wxMathML_file;
+    wxString m_wxMathML;
+    Configuration *m_configuration;
+    static wxString m_maximaCMD;
 };
 
 #endif
