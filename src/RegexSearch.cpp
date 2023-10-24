@@ -28,6 +28,7 @@
 
 #include "RegexSearch.h"
 #include <iostream>
+#include <string>
 #include <wx/log.h>
 
 RegexSearch::RegexSearch(wxString regex)

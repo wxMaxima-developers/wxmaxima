@@ -130,7 +130,9 @@ void StatusBar::UpdateBitmaps() {
                                                   GetClientSize().GetHeight(),
                                                   NETWORK_OFFLINE_SVG_GZ,
                                                   NETWORK_OFFLINE_SVG_GZ_SIZE);
-        m_network_transmit = ArtProvider::GetImage(this, "network-transmit", GetClientSize().GetHeight(),NETWORK_TRANSMIT_SVG_GZ,
+        m_network_transmit = ArtProvider::GetImage(this, "network-transmit",
+                                                   GetClientSize().GetHeight(),
+                                                   NETWORK_TRANSMIT_SVG_GZ,
                                                    NETWORK_TRANSMIT_SVG_GZ_SIZE);
         m_network_idle =
             ArtProvider::GetImage(this, "network-idle", GetClientSize().GetHeight(),

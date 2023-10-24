@@ -56,7 +56,6 @@ Configuration::Configuration(wxDC *dc, InitOpt options) :
     m_eng{m_rd()},
     m_dc(dc)
 {
-
     wxConfigBase *config = wxConfig::Get();
     std::uniform_int_distribution<long> urd(std::numeric_limits<long>::min(), std::numeric_limits<long>::max());
     m_configId = urd(m_eng);

@@ -30,6 +30,7 @@
 #include "TextStyle.h"
 #include <array>
 #include <list>
+#include <memory>
 #include <iostream>
 #include <vector>
 #include <wx/fontenum.h>

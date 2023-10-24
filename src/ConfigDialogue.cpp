@@ -182,19 +182,26 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent, Configuration *cfg)
 #if defined __WXOSX__
 #else
     int imgSize = GetImageSize();
-    m_imageList = std::unique_ptr<wxImageList>(new wxImageList(imgSize, imgSize,false,0));
-    m_imageList->Add(ArtProvider::GetImage(this, wxS("editing"), imgSize, EDITING_SVG_GZ, EDITING_SVG_GZ_SIZE));
-    m_imageList->Add(ArtProvider::GetImage(this, wxS("maxima"), imgSize, MAXIMA_SVG_GZ, MAXIMA_SVG_GZ_SIZE));
-    m_imageList->Add(ArtProvider::GetImage(this, wxS("styles"), imgSize, STYLES_SVG_GZ, STYLES_SVG_GZ_SIZE));
-    m_imageList->Add(ArtProvider::GetImage(this, wxS("document-export"), imgSize, DOCUMENT_EXPORT_SVG_GZ,
+    m_imageList = std::unique_ptr<wxImageList>(new wxImageList(imgSize, imgSize, false, 0));
+    m_imageList->Add(ArtProvider::GetImage(this, wxS("editing"), imgSize, EDITING_SVG_GZ,
+                                           EDITING_SVG_GZ_SIZE));
+    m_imageList->Add(ArtProvider::GetImage(this, wxS("maxima"), imgSize, MAXIMA_SVG_GZ,
+                                           MAXIMA_SVG_GZ_SIZE));
+    m_imageList->Add(ArtProvider::GetImage(this, wxS("styles"), imgSize, STYLES_SVG_GZ,
+                                           STYLES_SVG_GZ_SIZE));
+    m_imageList->Add(ArtProvider::GetImage(this, wxS("document-export"), imgSize,
+                                           DOCUMENT_EXPORT_SVG_GZ,
                                            DOCUMENT_EXPORT_SVG_GZ_SIZE));
-    m_imageList->Add(ArtProvider::GetImage(this, wxS("options"), imgSize, OPTIONS_SVG_GZ, OPTIONS_SVG_GZ_SIZE));
-    m_imageList->Add(ArtProvider::GetImage(this, wxS("edit-copy"), imgSize, EDIT_COPY_CONFDIALOGUE_SVG_GZ,
+    m_imageList->Add(ArtProvider::GetImage(this, wxS("options"), imgSize, OPTIONS_SVG_GZ,
+                                           OPTIONS_SVG_GZ_SIZE));
+    m_imageList->Add(ArtProvider::GetImage(this, wxS("edit-copy"), imgSize,
+                                           EDIT_COPY_CONFDIALOGUE_SVG_GZ,
                                            EDIT_COPY_CONFDIALOGUE_SVG_GZ_SIZE));
     m_imageList->Add(ArtProvider::GetImage(this, wxS("media-playback-start"), imgSize,
                                            MEDIA_PLAYBACK_START_CONFDIALOGUE_SVG_GZ,
                                            MEDIA_PLAYBACK_START_CONFDIALOGUE_SVG_GZ_SIZE));
-    m_imageList->Add(ArtProvider::GetImage(this, wxS("gtk-print"), imgSize, GTK_PRINT_SVG_GZ, GTK_PRINT_SVG_GZ_SIZE));
+    m_imageList->Add(ArtProvider::GetImage(this, wxS("gtk-print"), imgSize, GTK_PRINT_SVG_GZ,
+                                           GTK_PRINT_SVG_GZ_SIZE));
     m_imageList->Add(ArtProvider::GetImage(this, wxS("edit-undo"), imgSize, VIEW_REFRESH_SVG_GZ,
                                            VIEW_REFRESH_SVG_GZ_SIZE));
     m_notebook->SetImageList(m_imageList.get());
