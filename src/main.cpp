@@ -43,6 +43,7 @@
 #include <wx/tipdlg.h>
 #include <wx/utils.h>
 #include <wx/wx.h>
+#include <vector>
 #ifdef __WXMSW__
 #include <windows.h>
 #endif

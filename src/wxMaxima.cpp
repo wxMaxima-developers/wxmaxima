@@ -114,7 +114,6 @@
 #include <wx/sckstrm.h>
 #include <wx/txtstrm.h>
 #include <wx/wfstream.h>
-#include <wx/zipstrm.h>
 
 #include "main.h"
 #include <list>
@@ -1989,7 +1988,6 @@ TextCell *wxMaxima::DoRawConsoleAppend(wxString s, CellType type,
         std::unique_ptr<LabelCell> ownedCell;
         TextCell *incompleteTextCell = nullptr;
         if (type == MC_TYPE_PROMPT) {
-
             incompleteTextCell = new LabelCell(m_worksheet->GetTree(),
                                                &m_configuration,
                                                wxEmptyString, TS_OTHER_PROMPT);
@@ -3160,7 +3158,6 @@ void wxMaxima::ReadSuppressedOutput(wxString &data) {
                 _("Warning"), wxOK | wxICON_EXCLAMATION);
             m_discardAllData = true;
         }
-
     }
 }
 
@@ -4667,7 +4664,7 @@ void wxMaxima::LaunchHelpBrowser(wxString uri) {
             wxString command;
             std::vector<char *>argv;
             wxCharBuffer commandnamebuffer = m_configuration.HelpBrowserUserLocation().mb_str();
-            wxCharBuffer urlbuffer= uri.mb_str();
+            wxCharBuffer urlbuffer = uri.mb_str();
             argv.push_back(commandnamebuffer.data());
             argv.push_back(urlbuffer.data());
             argv.push_back(NULL);
@@ -6418,12 +6415,11 @@ void wxMaxima::EditMenu(wxCommandEvent &event) {
     else if(event.GetId() == wxID_FIND) {
         wxLogMessage(_("A Ctrl-F event"));
         bool findDialogActiveWas = ((m_worksheet->m_findDialog != NULL) &&
-                                    (m_worksheet->m_findDialog->IsShown())) ;
+                                    (m_worksheet->m_findDialog->IsShown()));
         if (m_worksheet->m_findDialog == NULL)
             new FindReplaceDialog(this, &m_findData, _("Find and Replace"), &m_worksheet->m_findDialog);
 
         if (m_worksheet->GetActiveCell() != NULL) {
-
             wxString selected = m_worksheet->GetActiveCell()->GetSelectionString();
 
             // Start incremental search and highlighting of search results again.
@@ -7467,7 +7463,7 @@ void wxMaxima::MaximaMenu(wxCommandEvent &event) {
         wxWindowPtr<SubstituteWiz> wiz(new SubstituteWiz(this, -1, &m_configuration, _("Substitute")));
         wiz->SetValue(expr);
         // wiz->Centre(wxBOTH);
-        wiz->ShowWindowModalThenDo([this,wiz](int retcode) {
+        wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
             if (retcode == wxID_OK) {
                 wxString val = wiz->GetValue();
                 MenuCommand(val);
@@ -7631,7 +7627,7 @@ void wxMaxima::EquationsMenu(wxCommandEvent &event) {
                             wxWindowPtr<SysWiz> wiz(new SysWiz(this, -1, &m_configuration,
                                                                _("Solve algebraic system"), isz));
                             // wiz->Centre(wxBOTH);
-                            wiz->ShowWindowModalThenDo([this,wiz](int retcode) {
+                            wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
                                 if (retcode == wxID_OK) {
                                     wxString cmd = wxS("algsys") + wiz->GetValue();
                                     MenuCommand(cmd);
@@ -7652,7 +7648,7 @@ void wxMaxima::EquationsMenu(wxCommandEvent &event) {
                             }
                             wxWindowPtr<SysWiz> wiz(new SysWiz(this, -1, &m_configuration, _("Solve linear system"), isz));
                             // wiz->Centre(wxBOTH);
-                            wiz->ShowWindowModalThenDo([this,wiz](int retcode) {
+                            wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
                                 if (retcode == wxID_OK) {
                                     wxString cmd = wxS("linsolve") + wiz->GetValue();
                                     MenuCommand(cmd);
@@ -7700,7 +7696,7 @@ void wxMaxima::MatrixMenu(wxCommandEvent &event) {
     wxString expr = GetDefaultEntry();
     if(event.GetId() == EventIDs::menu_csv2mat){
         wxWindowPtr<CsvImportWiz> wiz(new CsvImportWiz(this, &m_configuration));
-        wiz->ShowWindowModalThenDo([this,wiz](int retcode) {
+        wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
             if (retcode == wxID_OK) {
                 wxString cmd = wxS("read_matrix(\"") + wiz->GetFilename() + wxS("\", ") +
                     wiz->GetSeparator() + wxS(");");
@@ -7710,7 +7706,7 @@ void wxMaxima::MatrixMenu(wxCommandEvent &event) {
     }
     else if(event.GetId() == EventIDs::menu_mat2csv){
         wxWindowPtr<CsvExportWiz> wiz(new CsvExportWiz(this, &m_configuration, _("Matrix")));
-        wiz->ShowWindowModalThenDo([this,wiz](int retcode) {
+        wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
             if (retcode == wxID_OK) {
                 wxString cmd = wxS("write_data(") + wiz->GetMatrix() + wxS(", \"") +
                     wiz->GetFilename() + wxS("\", ") + wiz->GetSeparator() + wxS(");");
@@ -7903,7 +7899,7 @@ void wxMaxima::MatrixMenu(wxCommandEvent &event) {
                                              _("Matrix:"), wxEmptyString, wxEmptyString, expr,
                                              &m_configuration, this, -1, _("Matrix map")));
         // wiz->Centre(wxBOTH);
-        wiz->ShowWindowModalThenDo([this,wiz](int retcode) {
+        wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
             if (retcode == wxID_OK) {
                 wxString cmd = wxEmptyString;
                 if (wiz->GetValue1().IsEmpty())
@@ -7918,7 +7914,7 @@ void wxMaxima::MatrixMenu(wxCommandEvent &event) {
             (event.GetId() == EventIDs::menu_stats_enterm)){ {
             wxWindowPtr<MatDim> wiz(new MatDim(this, -1, &m_configuration, _("Matrix")));
             // wiz->Centre(wxBOTH);
-            wiz->ShowWindowModalThenDo([this,wiz](int retcode) {
+            wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
                 if (retcode == wxID_OK) {
                     wxString cmd;
                     if (wiz->GetValue0() != wxEmptyString)
@@ -8034,7 +8030,7 @@ void wxMaxima::DrawMenu(wxCommandEvent &event) {
     if(event.GetId() == EventIDs::menu_draw_2d){ {
             wxWindowPtr<DrawWiz> wiz(new DrawWiz(this, &m_configuration, 2));
             // wiz->Centre(wxBOTH);
-            wiz->ShowWindowModalThenDo([this,wiz](int retcode) {
+            wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
                 if (retcode == wxID_OK) {
                     m_worksheet->SetFocus();
 
@@ -8049,7 +8045,7 @@ void wxMaxima::DrawMenu(wxCommandEvent &event) {
         if (dimensions < 2) {
             wxWindowPtr<DrawWiz> wiz(new DrawWiz(this, &m_configuration, 3));
             // wiz->Centre(wxBOTH);
-            wiz->ShowWindowModalThenDo([this,wiz](int retcode) {
+            wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
                 if (retcode == wxID_OK) {
                     m_worksheet->SetFocus();
 
@@ -8061,7 +8057,7 @@ void wxMaxima::DrawMenu(wxCommandEvent &event) {
         } else {
             wxWindowPtr<Wiz3D> wiz(new Wiz3D(this, &m_configuration));
             // wiz->Centre(wxBOTH);
-            wiz->ShowWindowModalThenDo([this,wiz](int retcode) {
+            wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
                 if (retcode == wxID_OK)
                     AddDrawParameter(wiz->GetValue());
             });
@@ -8086,7 +8082,7 @@ void wxMaxima::DrawMenu(wxCommandEvent &event) {
                                          this, -1, &m_configuration, _("Set the diagram title"),
                                          _("Title (Sub- and superscripts as x_{10} or x^{10})"), expr));
             // wiz->Centre(wxBOTH);
-            wiz->ShowWindowModalThenDo([this,wiz](int retcode) {
+            wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
                 if (retcode == wxID_OK) {
                     wxString cmd = wxS("title=\"") + wiz->GetValue() + wxS("\"");
                     AddDrawParameter(std::move(cmd));
@@ -8100,7 +8096,7 @@ void wxMaxima::DrawMenu(wxCommandEvent &event) {
                                          _("Set the next plot's title. Empty = no title."),
                                          _("Title (Sub- and superscripts as x_{10} or x^{10})"), expr));
             // wiz->Centre(wxBOTH);
-            wiz->ShowWindowModalThenDo([this,wiz](int retcode) {
+            wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
                 if (retcode == wxID_OK) {
                     wxString cmd = wxS("key=\"") + wiz->GetValue() + wxS("\"");
                     AddDrawParameter(std::move(cmd));
@@ -8111,7 +8107,7 @@ void wxMaxima::DrawMenu(wxCommandEvent &event) {
     else if(event.GetId() == EventIDs::menu_draw_explicit){ {
             wxWindowPtr<ExplicitWiz> wiz(new ExplicitWiz(this, &m_configuration, expr, dimensions));
             // wiz->Centre(wxBOTH);
-            wiz->ShowWindowModalThenDo([this,wiz](int retcode) {
+            wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
                 if (retcode == wxID_OK)
                     AddDrawParameter(wiz->GetValue());
             });
@@ -8121,7 +8117,7 @@ void wxMaxima::DrawMenu(wxCommandEvent &event) {
     else if(event.GetId() == EventIDs::menu_draw_implicit){ {
             wxWindowPtr<ImplicitWiz> wiz(new ImplicitWiz(this, &m_configuration, expr, dimensions));
             // wiz->Centre(wxBOTH);
-            wiz->ShowWindowModalThenDo([this,wiz](int retcode) {
+            wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
                 if (retcode == wxID_OK)
                     AddDrawParameter(wiz->GetValue());
             });
@@ -8131,7 +8127,7 @@ void wxMaxima::DrawMenu(wxCommandEvent &event) {
     else if(event.GetId() == EventIDs::menu_draw_parametric){ {
             wxWindowPtr<ParametricWiz> wiz(new ParametricWiz(this, &m_configuration, dimensions));
             // wiz->Centre(wxBOTH);
-            wiz->ShowWindowModalThenDo([this,wiz](int retcode) {
+            wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
                 if (retcode == wxID_OK)
                     AddDrawParameter(wiz->GetValue());
             });
@@ -8141,7 +8137,7 @@ void wxMaxima::DrawMenu(wxCommandEvent &event) {
     else if(event.GetId() == EventIDs::menu_draw_points){ {
             wxWindowPtr<WizPoints> wiz(new WizPoints(this, &m_configuration, dimensions, expr));
             // wiz->Centre(wxBOTH);
-            wiz->ShowWindowModalThenDo([this,wiz](int retcode) {
+            wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
                 if (retcode == wxID_OK)
                     AddDrawParameter(wiz->GetValue());
             });
@@ -8154,7 +8150,7 @@ void wxMaxima::DrawMenu(wxCommandEvent &event) {
                                          _("y direction [in multiples of the tick frequency]"), "1", "1",
                                          &m_configuration, this, -1, _("Set the grid density.")));
             // wiz->Centre(wxBOTH);
-            wiz->ShowWindowModalThenDo([this,wiz](int retcode) {
+            wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
                 if (retcode == wxID_OK) {
                     wxString cmd =
                         wxS("grid=[") + wiz->GetValue1() + "," + wiz->GetValue2() + wxS("]");
@@ -8167,7 +8163,7 @@ void wxMaxima::DrawMenu(wxCommandEvent &event) {
     else if(event.GetId() == EventIDs::menu_draw_axis){ {
             wxWindowPtr<AxisWiz> wiz(new AxisWiz(this, &m_configuration, dimensions));
             // wiz->Centre(wxBOTH);
-            wiz->ShowWindowModalThenDo([this,wiz](int retcode) {
+            wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
                 if (retcode == wxID_OK) {
                     AddDrawParameter(wiz->GetValue());
                 }
@@ -8178,7 +8174,7 @@ void wxMaxima::DrawMenu(wxCommandEvent &event) {
     else if(event.GetId() == EventIDs::menu_draw_contour){ {
             wxWindowPtr<WizContour> wiz(new WizContour(this, &m_configuration));
             // wiz->Centre(wxBOTH);
-            wiz->ShowWindowModalThenDo([this,wiz](int retcode) {
+            wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
                 if (retcode == wxID_OK)
                     AddDrawParameter(wiz->GetValue(), 3);
             });
@@ -8202,7 +8198,7 @@ void wxMaxima::ListMenu(wxCommandEvent &event) {
     wxString expr = GetDefaultEntry();
     if(event.GetId() == EventIDs::menu_csv2list){ {
             wxWindowPtr<CsvImportWiz> wiz(new CsvImportWiz(this, &m_configuration));
-            wiz->ShowWindowModalThenDo([this,wiz](int retcode) {
+            wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
                 if (retcode == wxID_OK) {
                     wxString cmd = wxS("read_nested_list(\"") + wiz->GetFilename() + wxS("\", ") +
                         wiz->GetSeparator() + wxS(");");
@@ -8213,7 +8209,7 @@ void wxMaxima::ListMenu(wxCommandEvent &event) {
     }
     else if(event.GetId() == EventIDs::menu_list2csv){ {
             wxWindowPtr<CsvExportWiz> wiz(new CsvExportWiz(this, &m_configuration, _("List")));
-            wiz->ShowWindowModalThenDo([this,wiz](int retcode) {
+            wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
                 if (retcode == wxID_OK) {
                     wxString cmd = wxS("write_data(") + wiz->GetMatrix() + wxS(", \"") +
                         wiz->GetFilename() + wxS("\", ") + wiz->GetSeparator() + wxS(");");
@@ -8267,7 +8263,7 @@ void wxMaxima::ListMenu(wxCommandEvent &event) {
                                                         &m_configuration, this, -1,
                                                         _("Create a list as a storage for the values of variables")));
             // wiz->Centre(wxBOTH);
-            wiz->ShowWindowModalThenDo([this,wiz](int retcode) {
+            wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
                 if (retcode == wxID_OK) {
                     MenuCommand(wiz->GetValue());
                 }
@@ -8276,7 +8272,7 @@ void wxMaxima::ListMenu(wxCommandEvent &event) {
     else if(event.GetId() == EventIDs::menu_list_sort){ {
             wxWindowPtr<ListSortWiz> wiz(new ListSortWiz(&m_configuration, this, -1, _("Sort a list"), expr));
             // wiz->Centre(wxBOTH);
-            wiz->ShowWindowModalThenDo([this,wiz](int retcode) {
+            wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
                 if (retcode == wxID_OK) {
                     MenuCommand(wiz->GetValue());
                 }
@@ -8765,7 +8761,7 @@ void wxMaxima::CalculusMenu(wxCommandEvent &event) {
             wxWindowPtr<IntegrateWiz> wiz(new IntegrateWiz(this, -1, &m_configuration, _("Integrate")));
             wiz->SetValue(expr);
             // wiz->Centre(wxBOTH);
-            wiz->ShowWindowModalThenDo([this,wiz](int retcode) {
+            wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
                 if (retcode == wxID_OK) {
                     wxString val = wiz->GetValue();
                     MenuCommand(val);
@@ -8795,7 +8791,7 @@ void wxMaxima::CalculusMenu(wxCommandEvent &event) {
             wxWindowPtr<SeriesWiz> wiz(new SeriesWiz(this, -1, &m_configuration, _("Series")));
             wiz->SetValue(expr);
             // wiz->Centre(wxBOTH);
-            wiz->ShowWindowModalThenDo([this,wiz](int retcode) {
+            wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
                 if (retcode == wxID_OK) {
                     wxString val = wiz->GetValue();
                     MenuCommand(val);
@@ -8807,7 +8803,7 @@ void wxMaxima::CalculusMenu(wxCommandEvent &event) {
             wxWindowPtr<LimitWiz> wiz(new LimitWiz(this, -1, &m_configuration, _("Limit")));
             wiz->SetValue(expr);
             // wiz->Centre(wxBOTH);
-            wiz->ShowWindowModalThenDo([this,wiz](int retcode) {
+            wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
                 if (retcode == wxID_OK) {
                     wxString val = wiz->GetValue();
                     MenuCommand(val);
@@ -8828,7 +8824,7 @@ void wxMaxima::CalculusMenu(wxCommandEvent &event) {
             wxWindowPtr<SumWiz> wiz(new SumWiz(this, -1, &m_configuration, _("Sum")));
             wiz->SetValue(expr);
             // wiz->Centre(wxBOTH);
-            wiz->ShowWindowModalThenDo([this,wiz](int retcode) {
+            wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
                 if (retcode == wxID_OK) {
                     wxString val = wiz->GetValue();
                     MenuCommand(val);
@@ -8855,7 +8851,7 @@ void wxMaxima::PlotMenu(wxCommandEvent &event) {
         wxWindowPtr<Plot3DWiz> wiz(new Plot3DWiz(this, -1, &m_configuration, _("Plot 3D")));
         wiz->SetValue(expr);
         // wiz->Centre(wxBOTH);
-        wiz->ShowWindowModalThenDo([this,wiz](int retcode) {
+        wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
             if (retcode == wxID_OK) {
                 wxString val = wiz->GetValue();
                 MenuCommand(val);
@@ -8878,7 +8874,7 @@ void wxMaxima::PlotMenu(wxCommandEvent &event) {
         wxWindowPtr<Plot2DWiz> wiz(new Plot2DWiz(this, -1, &m_configuration, _("Plot 2D")));
         wiz->SetValue(expr);
         // wiz->Centre(wxBOTH);
-        wiz->ShowWindowModalThenDo([this,wiz](int retcode) {
+        wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
             if (retcode == wxID_OK) {
                 wxString val = wiz->GetValue();
                 MenuCommand(val);
@@ -8888,7 +8884,7 @@ void wxMaxima::PlotMenu(wxCommandEvent &event) {
     else if(event.GetId() == EventIDs::menu_plot_format){
         wxWindowPtr<PlotFormatWiz> wiz(new PlotFormatWiz(this, -1, &m_configuration, _("Plot format")));
         wiz->Center(wxBOTH);
-        wiz->ShowWindowModalThenDo([this,wiz](int retcode) {
+        wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
             if (retcode == wxID_OK) {
                 MenuCommand(wiz->GetValue());
             }
@@ -9221,7 +9217,7 @@ void wxMaxima::HelpMenu(wxCommandEvent &event) {
                                                _("URL"), wxEmptyString, wxEmptyString));
             // wiz->Centre(wxBOTH);
 #ifdef USE_WEBVIEW
-            wiz->ShowWindowModalThenDo([this,wiz](int retcode) {
+            wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
                 if (retcode == wxID_OK) {
                     m_helpPane->SetURL((*wiz)[0]);
                     wxMaximaFrame::ShowPane(EventIDs::menu_pane_help);
@@ -9453,7 +9449,7 @@ void wxMaxima::StatsMenu(wxCommandEvent &event) {
                                          _("Matrix name:"), expr, wxS("col[1]#'NA"), wxEmptyString,
                                          wxEmptyString, &m_configuration, this, -1, _("Select Subsample"), true));
             // wiz->Centre(wxBOTH);
-            wiz->ShowWindowModalThenDo([this,wiz](int retcode) {
+            wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
                 if (retcode == wxID_OK) {
                     wxString name = wiz->GetValue4();
 
@@ -9910,7 +9906,7 @@ void wxMaxima::PopupMenu(wxCommandEvent &event) {
             wxWindowPtr<IntegrateWiz> wiz(new IntegrateWiz(this, -1, &m_configuration, _("Integrate")));
             wiz->SetValue(selection);
             // wiz->Centre(wxBOTH);
-            wiz->ShowWindowModalThenDo([this,wiz](int retcode) {
+            wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
                 if (retcode == wxID_OK) {
                     wxString val = wiz->GetValue();
                     MenuCommand(val);
@@ -9934,7 +9930,7 @@ void wxMaxima::PopupMenu(wxCommandEvent &event) {
             wxWindowPtr<Plot2DWiz> wiz(new Plot2DWiz(this, -1, &m_configuration, _("Plot 2D")));
             wiz->SetValue(selection);
             // wiz->Centre(wxBOTH);
-            wiz->ShowWindowModalThenDo([this,wiz](int retcode) {
+            wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
                 if (retcode == wxID_OK) {
                     wxString val = wiz->GetValue();
                     MenuCommand(val);
@@ -9945,7 +9941,7 @@ void wxMaxima::PopupMenu(wxCommandEvent &event) {
             wxWindowPtr<Plot3DWiz> wiz(new Plot3DWiz(this, -1, &m_configuration, _("Plot 3D")));
             wiz->SetValue(selection);
             // wiz->Centre(wxBOTH);
-            wiz->ShowWindowModalThenDo([this,wiz](int retcode) {
+            wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
                 if (retcode == wxID_OK) {
                     wxString val = wiz->GetValue();
                     MenuCommand(val);

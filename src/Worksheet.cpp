@@ -47,6 +47,7 @@
 #include "levenshtein/levenshtein.h"
 #include "wxMaxima.h"
 #include "wxMaximaFrame.h"
+#include <algorithm>
 #include <memory>
 #include <vector>
 #include <utility>
@@ -821,7 +822,6 @@ GroupCell *Worksheet::UpdateMLast(GroupCell *gc)
     if (GetLastCellInWorksheet())
         m_adjustWorksheetSizeNeeded = true;
     return GetLastCellInWorksheet();
-
 }
 
 void Worksheet::ScrollToError() {
@@ -1674,7 +1674,6 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event) {
                     labelWidthMenu->AppendRadioItem(EventIDs::popid_labelwidth1 + i, wxString::Format(wxS("%li em"), (long) i));
                     if(i == m_configuration->LabelWidth())
                         labelWidthMenu->Check(EventIDs::popid_labelwidth1 + i, true);
-
                 }
                 popupMenu.Append(EventIDs::popid_labelwidth, _("Label width"), labelWidthMenu);
             }
@@ -2382,7 +2381,6 @@ void Worksheet::OnMouseWheel(wxMouseEvent &event) {
         }
         wxRect rect = animation->GetRect();
         RequestRedraw(rect);
-
     }
     else
         event.Skip();
@@ -3936,7 +3934,9 @@ void Worksheet::OnCharNoActive(wxKeyEvent &event) {
                         m_cellPointers.m_selectionStart.CastAs<GroupCell *>();
                     if (tmp->GetPrevious()) {
                         do
+                          {
                             tmp = tmp->GetPrevious();
+                          }
                         while ((tmp->GetPrevious()) &&
                                ((tmp->GetGroupType() != GC_TYPE_TITLE) &&
                                 (tmp->GetGroupType() != GC_TYPE_SECTION) &&
@@ -3954,13 +3954,15 @@ void Worksheet::OnCharNoActive(wxKeyEvent &event) {
                 if (event.CmdDown()) {
                     GroupCell *tmp = m_hCaretPosition;
                     if (tmp->GetPrevious()) {
-                        do
-                            tmp = tmp->GetPrevious();
-                        while ((tmp->GetPrevious()) &&
-                               ((tmp->GetGroupType() != GC_TYPE_TITLE) &&
-                                (tmp->GetGroupType() != GC_TYPE_SECTION) &&
-                                (tmp->GetGroupType() != GC_TYPE_SUBSECTION)));
-                        SetHCaret(tmp);
+                      do
+                        {
+                          tmp = tmp->GetPrevious();
+                        }
+                      while ((tmp->GetPrevious()) &&
+                             ((tmp->GetGroupType() != GC_TYPE_TITLE) &&
+                              (tmp->GetGroupType() != GC_TYPE_SECTION) &&
+                              (tmp->GetGroupType() != GC_TYPE_SUBSECTION)));
+                      SetHCaret(tmp);
                     } else if (tmp->GetEditable())
                         SelectEditable(tmp->GetEditable(), false);
                 } else {
@@ -3994,14 +3996,16 @@ void Worksheet::OnCharNoActive(wxKeyEvent &event) {
                 if (event.CmdDown()) {
                     GroupCell *tmp = m_cellPointers.m_selectionEnd.CastAs<GroupCell *>();
                     if (tmp->GetNext()) {
-                        do
-                            tmp = tmp->GetNext();
-                        while (tmp->GetNext() &&
-                               (((tmp->GetGroupType() != GC_TYPE_TITLE) &&
-                                 (tmp->GetGroupType() != GC_TYPE_SECTION) &&
-                                 (tmp->GetGroupType() != GC_TYPE_SUBSECTION)) ||
-                                (tmp->GetNext()->GetMaxDrop() == 0)));
-                        SetHCaret(tmp);
+                      do
+                        {
+                          tmp = tmp->GetNext();
+                        }
+                      while (tmp->GetNext() &&
+                             (((tmp->GetGroupType() != GC_TYPE_TITLE) &&
+                               (tmp->GetGroupType() != GC_TYPE_SECTION) &&
+                               (tmp->GetGroupType() != GC_TYPE_SUBSECTION)) ||
+                              (tmp->GetNext()->GetMaxDrop() == 0)));
+                      SetHCaret(tmp);
                     } else {
                         SelectEditable(tmp->GetEditable(), false);
                     }

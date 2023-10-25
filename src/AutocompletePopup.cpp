@@ -188,11 +188,12 @@ void AutocompletePopup::OnKeyDown(wxKeyEvent &event) {
     }
     case WXK_DOWN:
     case WXK_NUMPAD_DOWN: {
-        long selection = GetNextItem(0, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
-        if (selection < 0)
-            selection = 0;
+        auto sel = GetNextItem(0, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
+        if (sel < 0)
+            sel = 0;
+        size_t selection = sel;
         selection++;
-        if (selection >= (long)m_completions.size())
+        if (selection >= m_completions.size())
             selection--;
         if (m_completions.size() > 0) {
             Select(selection);

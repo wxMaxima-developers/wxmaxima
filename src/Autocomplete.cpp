@@ -478,13 +478,13 @@ void AutoComplete::AddSymbol_nowait(wxString fun, autoCompletionType type) {
     /// only add one template. We count the arguments by counting '<'
     if (type == tmplte) {
         fun = FixTemplate(fun);
-        long openpos = fun.Find(wxS("("));
+        auto openpos = fun.Find(wxS("("));
         if(openpos < 0)
             wxLogMessage(_("Cannot interpret template %s"), fun.mb_str());
         else
         {
             wxString funName = fun.SubString(0, openpos);
-            long count = fun.Freq('<');
+            auto count = fun.Freq('<');
             size_t i = 0;
             for (const auto &o: m_wordList.at(type)) {
                 if (o.StartsWith(funName) && (o.Freq('<') == count))
