@@ -34,7 +34,7 @@
 #include "nanosvgrast_private.h"
 
 wxBitmap ArtProvider::GetImage(wxWindow *win, wxString name, int width,
-                               unsigned const char *data, size_t dataLen) {
+                               unsigned const char *data, std::size_t dataLen) {
     wxBitmap bmp = wxArtProvider::GetBitmap(name, wxART_TOOLBAR,
                                             wxSize(width * 4, width * 4));
     wxImage img;

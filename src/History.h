@@ -79,7 +79,7 @@ private:
     void OnMenu(wxCommandEvent &event);
 
     void UnselectAll() const;
-    void SetCurrent(long);
+    void SetCurrent(std::size_t current);
 
     int m_sessionCommands = 0;
     wxListBox *m_history;

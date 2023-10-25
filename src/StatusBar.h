@@ -95,7 +95,7 @@ public:
         disconnected
     };
 
-    void UpdateStatusMaximaBusy(MaximaStatus status, long bytesFromMaxima);
+    void UpdateStatusMaximaBusy(MaximaStatus status, std::size_t bytesFromMaxima);
     void SetStatusText(wxString statusText){m_statusText->SetLabel(statusText);}
 protected:
     void StatusMsgDClick(wxCommandEvent &ev);

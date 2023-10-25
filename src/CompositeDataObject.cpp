@@ -85,7 +85,7 @@ void CompositeDataObject::SetPreferredFormat(const wxDataFormat &format) {
     m_preferredFormat = format;
 }
 
-size_t CompositeDataObject::GetFormatCount(Direction dir) const {
+std::size_t CompositeDataObject::GetFormatCount(Direction dir) const {
     return (dir & wxDataObject::Get) ? m_entries.size() : 0;
 }
 
@@ -98,7 +98,7 @@ void CompositeDataObject::GetAllFormats(wxDataFormat *formats,
         *formats++ = entry.format;
 }
 
-size_t CompositeDataObject::GetDataSize(const wxDataFormat &format) const {
+std::size_t CompositeDataObject::GetDataSize(const wxDataFormat &format) const {
     for (auto &entry : m_entries)
         // cppcheck-suppress useStlAlgorithm
         if (entry.format == format)
@@ -120,7 +120,7 @@ bool CompositeDataObject::GetDataHere(const wxDataFormat &format,
 #ifdef __WXMSW__
 
 const void *CompositeDataObject::GetSizeFromBuffer(const void *buffer,
-                                                   size_t *size,
+                                                   std::size_t *size,
                                                    const wxDataFormat &format) {
     if (!size)
         return {};
@@ -134,13 +134,13 @@ const void *CompositeDataObject::GetSizeFromBuffer(const void *buffer,
     return object->GetSizeFromBuffer(buffer, size, format);
 }
 
-void *CompositeDataObject::SetSizeInBuffer(void *buffer, size_t size,
+void *CompositeDataObject::SetSizeInBuffer(void *buffer, std::size_t size,
                                            const wxDataFormat &format) {
     auto *object = GetObject(format);
     return object ? object->SetSizeInBuffer(buffer, size, format) : nullptr;
 }
 
-size_t CompositeDataObject::GetBufferOffset(const wxDataFormat &format) {
+std::size_t CompositeDataObject::GetBufferOffset(const wxDataFormat &format) {
     auto *object = GetObject(format);
     return object ? object->GetBufferOffset(format) : 0;
 }

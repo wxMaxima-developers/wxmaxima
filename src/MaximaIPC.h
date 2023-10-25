@@ -74,7 +74,7 @@ private:
         QueuedEvent(wxEvtHandler *target, std::unique_ptr<wxEvent> &&event)
             : target(target), event(std::move(event)) {}
     };
-    size_t m_queueTail = 0;
+    std::size_t m_queueTail = 0;
     std::vector<QueuedEvent> m_queue;
 
     static bool m_enabled;

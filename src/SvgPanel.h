@@ -39,8 +39,8 @@
 class SvgPanel : public wxPanel
 {
 public:
-    SvgPanel(wxWindow* parent, unsigned char *data, size_t len);
-    void Load(unsigned char *data, size_t len);
+    SvgPanel(wxWindow* parent, unsigned char *data, std::size_t len);
+    void Load(unsigned char *data, std::size_t len);
 
     void paintEvent(wxPaintEvent & evt);
     void paintNow();

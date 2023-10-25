@@ -1562,7 +1562,7 @@ public:
         inline wxChar operator*() const
             { return input[pos]; }
 
-        size_t pos;
+        std::size_t pos;
 
         /*! reference to input string (must be a reference, so it can be modified)
 

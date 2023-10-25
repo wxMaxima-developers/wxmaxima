@@ -72,7 +72,7 @@ Maxima::Maxima(wxSocketBase *socket) :
 
 Maxima::~Maxima() { m_socket->Close(); }
 
-bool Maxima::Write(const void *buffer, size_t length) {
+bool Maxima::Write(const void *buffer, std::size_t length) {
     if (!m_socketOutputData.IsEmpty()) {
         if (buffer && length)
             m_socketOutputData.AppendData(buffer, length);

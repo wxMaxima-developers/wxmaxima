@@ -28,7 +28,7 @@
 #include <wx/display.h>
 #include <wx/mstream.h>
 
-wxImagePanel::wxImagePanel(wxWindow *parent, unsigned char *data, size_t len)
+wxImagePanel::wxImagePanel(wxWindow *parent, unsigned char *data, std::size_t len)
     : wxPanel(parent) {
     Load(data, len);
     int ppi;
@@ -53,7 +53,7 @@ wxImagePanel::wxImagePanel(wxWindow *parent, unsigned char *data, size_t len)
     Connect(wxEVT_SIZE, wxSizeEventHandler(wxImagePanel::OnSize), NULL, this);
 }
 
-void wxImagePanel::Load(unsigned char *data, size_t len) {
+void wxImagePanel::Load(unsigned char *data, std::size_t len) {
     wxMemoryInputStream istream(data, len);
     m_image.LoadFile(istream);
     m_w = m_h = -1;

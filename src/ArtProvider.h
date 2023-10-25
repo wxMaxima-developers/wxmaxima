@@ -37,7 +37,7 @@ class ArtProvider
 public:
     ArtProvider(){}
     static wxBitmap GetImage(wxWindow *win, wxString name, int width, unsigned const char *data,
-                             size_t dataLen);
+                             std::size_t dataLen);
 };
 
 #endif

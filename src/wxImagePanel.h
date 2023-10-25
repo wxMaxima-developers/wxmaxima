@@ -43,8 +43,8 @@ class wxImagePanel : public wxPanel
     int m_w, m_h;
 
 public:
-    wxImagePanel(wxWindow* parent, unsigned char *data, size_t len);
-    void Load(unsigned char *data, size_t len);
+    wxImagePanel(wxWindow* parent, unsigned char *data, std::size_t len);
+    void Load(unsigned char *data, std::size_t len);
 
     void paintEvent(wxPaintEvent & evt);
     void paintNow();

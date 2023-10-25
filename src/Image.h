@@ -226,10 +226,10 @@ public:
     const wxMemoryBuffer GetCompressedImage() const;
 
     //! Returns the original width
-    size_t GetOriginalWidth() const;
+    std::size_t GetOriginalWidth() const;
 
     //! Returns the original height
-    size_t GetOriginalHeight() const;
+    std::size_t GetOriginalHeight() const;
 
 
 
@@ -261,9 +261,9 @@ private:
     //! A zipped version of the gnuplot data needed in order to create this image.
     wxMemoryBuffer m_gnuplotData_Compressed;
     //! The width of the unscaled image
-    size_t m_originalWidth;
+    std::size_t m_originalWidth;
     //! The height of the unscaled image
-    size_t m_originalHeight;
+    std::size_t m_originalHeight;
     //! The bitmap, scaled down to the screen size
     wxBitmap m_scaledBitmap;
     //! The file extension for the current image type

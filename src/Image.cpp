@@ -204,14 +204,14 @@ const wxMemoryBuffer Image::GetCompressedImage() const {
     return m_compressedImage;
 }
 
-size_t Image::GetOriginalWidth() const {
+std::size_t Image::GetOriginalWidth() const {
     if(m_loadImageTask.joinable())
         m_loadImageTask.join();
 
     return m_originalWidth;
 }
 
-size_t Image::GetOriginalHeight() const {
+std::size_t Image::GetOriginalHeight() const {
     if(m_loadImageTask.joinable())
         m_loadImageTask.join();
 
@@ -654,7 +654,7 @@ wxBitmap Image::GetBitmap(double scale) {
     // Seems like we need to create a new scaled bitmap.
     if (m_svgRast) {
         // First create rgba data
-        std::vector<unsigned char> imgdata(static_cast<size_t>(m_width) * m_height * 4);
+        std::vector<unsigned char> imgdata(static_cast<std::size_t>(m_width) * m_height * 4);
 
         wxm_nsvgRasterize(m_svgRast.get(), m_svgImage, 0, 0,
                           static_cast<double>(m_width) / (static_cast<double>(m_originalWidth)),

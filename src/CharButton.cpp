@@ -87,7 +87,7 @@ void CharButton::OnIdle(wxIdleEvent &event) {
 }
 
 void CharButton::CharButtonPressed(wxCommandEvent &WXUNUSED(event)) {
-    wxCommandEvent *ev = new wxCommandEvent(SIDEBARKEYEVENT, (long)(m_char));
+  wxCommandEvent *ev = new wxCommandEvent(SIDEBARKEYEVENT, static_cast<wxWindowID>(m_char));
     m_worksheet->GetEventHandler()->QueueEvent(ev);
 }
 

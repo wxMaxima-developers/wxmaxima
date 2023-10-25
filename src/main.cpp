@@ -464,7 +464,7 @@ int MyApp::OnRun() {
 
 void MyApp::NewWindow(const wxString &file, bool evalOnStartup,
                       bool exitAfterEval, unsigned char *wxmData,
-                      size_t wxmLen) {
+                      std::size_t wxmLen) {
     int numberOfWindows = wxMaximaFrame::m_topLevelWindows.size();
 
     wxString title = _("wxMaxima");
@@ -610,12 +610,12 @@ void MyApp::OnFileMenu(wxCommandEvent &ev) {
             wxCharBuffer executableName(wxStandardPaths::Get().GetExecutablePath().mb_str());
             args_array.get()[0] = executableName.data();;
             args_array.get()[args.size() + 1] = NULL;
-            for(size_t i = 0; i< args.size(); i++)
+            for(std::size_t i = 0; i< args.size(); i++)
                 args_array.get()[i + 1] = args_c_strings[i].data();
             wxExecute(args_array.get());
 
             wxString command;
-            for(size_t i = 0; i< args.size() + 1; i++)
+            for(std::size_t i = 0; i< args.size() + 1; i++)
                 command += wxString::FromUTF8(args_array.get()[i]) + "\n";
             command.Trim();
             wxLogMessage(_("Starting a new wxMaxima process as: %s"), command.mb_str());

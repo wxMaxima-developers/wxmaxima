@@ -196,7 +196,7 @@ void StatusBar::UpdateBitmaps() {
     }
 }
 
-void StatusBar::UpdateStatusMaximaBusy(MaximaStatus status, long bytesFromMaxima)
+void StatusBar::UpdateStatusMaximaBusy(MaximaStatus status, std::size_t bytesFromMaxima)
 {
     switch(status)
     {

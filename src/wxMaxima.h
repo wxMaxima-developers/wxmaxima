@@ -255,7 +255,7 @@ private:
 
       If text doesn't contain any error this function returns wxEmptyString
     */
-    wxString GetUnmatchedParenthesisState(wxString text, size_t &index);
+    wxString GetUnmatchedParenthesisState(wxString text, std::size_t &index);
     //! The buffer all text from maxima is stored in before converting it to a wxString.
     wxMemoryBuffer m_uncompletedChars;
 
@@ -820,7 +820,7 @@ protected:
     //! Maxima's idea about gnuplot's location
     wxString m_gnuplotcommand;
     //! The Char the current command starts at in the current WorkingGroup
-    size_t m_commandIndex;
+    std::size_t m_commandIndex;
     FindReplacePane::FindReplaceData m_findData;
     static wxRegEx m_funRegEx;
     static wxRegEx m_varRegEx;
@@ -905,7 +905,7 @@ public:
       \param wxmData A .wxm file containing the initial worksheet contents
       \param wxmLen  The length of wxmData
     */
-    static void NewWindow(const wxString &file = {}, bool evalOnStartup = false, bool exitAfterEval = false, unsigned char *wxmData = NULL, size_t wxmLen = 0);
+    static void NewWindow(const wxString &file = {}, bool evalOnStartup = false, bool exitAfterEval = false, unsigned char *wxmData = NULL, std::size_t wxmLen = 0);
 
     void OnFileMenu(wxCommandEvent &ev);
 

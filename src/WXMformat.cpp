@@ -84,7 +84,7 @@ namespace Format {
 
   class WXMHeaderCollection {
   public:
-    static constexpr size_t size = sizeof(WXMHeaders) / sizeof(WXMHeaders[0]);
+    static constexpr std::size_t size = sizeof(WXMHeaders) / sizeof(WXMHeaders[0]);
     WXMHeaderCollection() {
       bool check = std::is_sorted(
                                   std::begin(WXMHeaders), std::end(WXMHeaders),
@@ -93,15 +93,15 @@ namespace Format {
         abort(); // An assertion is not enough - this is a programming bug
     }
     static const wxString &GetStart(WXMHeaderId index) {
-      wxASSERT(index >= 0 && size_t(index) < size);
-      if((index >= 0 && size_t(index) < size))
+      wxASSERT(index >= 0 && std::size_t(index) < size);
+      if((index >= 0 && std::size_t(index) < size))
         return WXMHeaders[index].start;
       else
         return m_emptyString;
     }
     static const wxString &GetEnd(WXMHeaderId index) {
-      wxASSERT(index >= 0 && size_t(index) < size);
-      if((index >= 0 && size_t(index) < size))
+      wxASSERT(index >= 0 && std::size_t(index) < size);
+      if((index >= 0 && std::size_t(index) < size))
         return WXMHeaders[index].end;
       else
         return m_emptyString;

@@ -90,13 +90,13 @@ void AutocompletePopup::OnKeyDown(wxKeyEvent &event) {
             wxChar ch;
             bool addChar = true;
             wxString word = m_editor->GetSelectionString();
-            size_t index = word.Length();
+            std::size_t index = word.Length();
             do {
                 if (m_completions.at(0).Length() <= index)
                     addChar = false;
                 else {
                     ch = m_completions.at(0).at(index);
-                    for (size_t i = 0; i < m_completions.size(); i++)
+                    for (std::size_t i = 0; i < m_completions.size(); i++)
                         if ((m_completions.at(i).Length() < index + 1) ||
                             (m_completions.at(i).at(index) != ch))
                             addChar = false;
@@ -191,7 +191,7 @@ void AutocompletePopup::OnKeyDown(wxKeyEvent &event) {
         auto sel = GetNextItem(0, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
         if (sel < 0)
             sel = 0;
-        size_t selection = sel;
+        std::size_t selection = sel;
         selection++;
         if (selection >= m_completions.size())
             selection--;
@@ -235,7 +235,7 @@ bool AutocompletePopup::Create(wxWindow *parent) {
 
     wxSize minSize;
     wxSize optimumSize = wxSize(-1, 0);
-    for (size_t i = 0; i < m_completions.size(); i++) {
+    for (std::size_t i = 0; i < m_completions.size(); i++) {
         wxRect itemRect;
         if (GetItemRect(i, itemRect)) {
             if (optimumSize.x < itemRect.GetWidth())

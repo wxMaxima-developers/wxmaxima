@@ -26,7 +26,7 @@
 
 #include "SvgPanel.h"
 
-SvgPanel::SvgPanel(wxWindow *parent, unsigned char *data, size_t len)
+SvgPanel::SvgPanel(wxWindow *parent, unsigned char *data, std::size_t len)
     : wxPanel(parent), m_bitmap(this, data, len) {
     int ppi;
 #if wxCHECK_VERSION(3, 1, 1)
@@ -48,7 +48,7 @@ SvgPanel::SvgPanel(wxWindow *parent, unsigned char *data, size_t len)
     Connect(wxEVT_SIZE, wxSizeEventHandler(SvgPanel::OnSize), NULL, this);
 }
 
-void SvgPanel::Load(unsigned char *data, size_t len) {
+void SvgPanel::Load(unsigned char *data, std::size_t len) {
     m_bitmap = SvgBitmap(this, data, len);
     Refresh();
 }

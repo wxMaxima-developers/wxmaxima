@@ -2206,7 +2206,7 @@ void ConfigDialogue::WriteSettings() {
     configuration->MathJaXURL_UseUser(m_noAutodetectMathJaX->GetValue());
     {
         configuration->SetLanguage(static_cast<int>(wxLANGUAGE_DEFAULT));
-        long i = 0;
+        std::size_t i = 0;
         for (Languages::const_iterator it = m_languages.begin();
              it != m_languages.end(); ++it) {
             if (i == m_language->GetSelection())

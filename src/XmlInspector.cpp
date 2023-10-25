@@ -111,7 +111,7 @@ void XmlInspector::UpdateContents() {
 
         // Indent the XML
         wxString textWithIndention;
-        long length = 0;
+        std::size_t length = 0;
         for (wxString::const_iterator it = m_fromMaxima.begin();
              it != m_fromMaxima.end(); ++it) {
             length++;

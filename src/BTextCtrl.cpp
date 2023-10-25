@@ -126,8 +126,8 @@ void BTextCtrl::CloseParenthesis(wxString open, wxString close, bool fromOpen) {
     if (from == to) // nothing selected
     {
         wxString text = GetValue();
-        wxString charHere = wxS(" "); // text.GetChar((size_t)GetInsertionPoint());
-        size_t insp = GetInsertionPoint();
+        wxString charHere = wxS(" "); // text.GetChar((std::size_t)GetInsertionPoint());
+        std::size_t insp = GetInsertionPoint();
 
         if (!fromOpen && charHere == close)
             SetInsertionPoint(insp + 1);
@@ -144,8 +144,8 @@ void BTextCtrl::CloseParenthesis(wxString open, wxString close, bool fromOpen) {
         wxString text = GetValue();
 
         if(from >= 0) {
-            wxString newtext = text.SubString(0, static_cast<size_t>(from) - 1) +
-                open + text.SubString(from, static_cast<size_t>(to) - 1) + close +
+            wxString newtext = text.SubString(0, static_cast<std::size_t>(from) - 1) +
+                open + text.SubString(from, static_cast<std::size_t>(to) - 1) + close +
                 text.SubString(to, text.length());
 
             ChangeValue(newtext);

@@ -80,7 +80,7 @@ void TableOfContents::OnTimer(wxTimerEvent &event) {
     case wxUP: {
         if (m_displayedItems->GetItemCount() < 1)
             return;
-        long item = m_displayedItems->GetTopItem() - 1;
+        auto item = m_displayedItems->GetTopItem() - 1;
         if (item < 0) {
             item = 0;
         }
@@ -90,7 +90,7 @@ void TableOfContents::OnTimer(wxTimerEvent &event) {
     case wxDOWN: {
         if (m_displayedItems->GetItemCount() < 1)
             return;
-        long item =
+        auto item =
             m_displayedItems->GetTopItem() + m_displayedItems->GetCountPerPage();
         if (item >= m_displayedItems->GetItemCount()) {
             item = m_displayedItems->GetItemCount() - 1;
@@ -109,7 +109,7 @@ void TableOfContents::OnMouseMotion(wxMouseEvent &event) {
         m_dragCurrentPos =
             m_displayedItems->HitTest(event.GetPosition(), flags, NULL);
         if ((m_dragCurrentPos >= 0) &&
-            (static_cast<unsigned long>(m_dragCurrentPos) >=
+            (static_cast<std::size_t>(m_dragCurrentPos) >=
              m_displayedItems->GetItemCount() - m_numberOfCaptionsDragged))
             m_dragCurrentPos = m_numberOfCaptionsDragged - 1;
         if (m_dragFeedback_Last != m_dragCurrentPos) {
@@ -166,7 +166,7 @@ void TableOfContents::OnDragStart(wxListEvent &evt) {
         // For the visual feedback: How many toc items does the user drag?
         m_numberOfCaptionsDragged = 1;
         GroupCell *tmp = m_displayedGroupCells[evt.GetIndex()];
-        long index = evt.GetIndex() + 1;
+        auto index = evt.GetIndex() + 1;
         tmp = tmp->GetNext();
         while ((tmp != NULL) && (index <= m_displayedItems->GetItemCount())) {
             if (!tmp->IsLesserGCType(
@@ -193,7 +193,7 @@ void TableOfContents::OnMouseUp(wxMouseEvent &evt) {
     int flags;
     m_dragStop = m_displayedItems->HitTest(evt.GetPosition(), flags, NULL);
     if ((m_dragStop >= 0) &&
-        (static_cast<unsigned long>(m_dragStop) >=
+        (static_cast<std::size_t>(m_dragStop) >=
          m_displayedItems->GetItemCount() - m_numberOfCaptionsDragged))
         m_dragStop = m_numberOfCaptionsDragged - 1;
     if ((m_dragStart >= 0) && (m_dragStop >= 0) && (m_dragStart != m_dragStop)) {
@@ -236,10 +236,10 @@ void TableOfContents::UpdateStruct() {
 }
 
 void TableOfContents::UpdateTableOfContents(GroupCell *pos) {
-    long selection = m_lastSelection;
+    auto selection = m_lastSelection;
     if (IsShown()) {
-        long item = m_displayedItems->GetNextItem(-1, wxLIST_NEXT_ALL,
-                                                  wxLIST_STATE_SELECTED);
+      auto item = m_displayedItems->GetNextItem(-1, wxLIST_NEXT_ALL,
+                                                wxLIST_STATE_SELECTED);
         UpdateStruct();
 
         std::vector<GroupCell *>::const_iterator it = m_displayedGroupCells.begin();
@@ -263,7 +263,7 @@ void TableOfContents::UpdateTableOfContents(GroupCell *pos) {
             }
         }
         if ((selection >= 0) && (item != selection)) {
-            if ((long)m_displayedItems->GetItemCount() < selection)
+          if (m_displayedItems->GetItemCount() < static_cast<std::size_t>(selection))
                 selection = m_displayedItems->GetItemCount() - 1;
             if ((selection >= 0) && (selection < m_displayedItems->GetItemCount())) {
                 m_displayedItems->SetItemState(
@@ -329,8 +329,8 @@ void TableOfContents::UpdateDisplay() {
 
         std::list<GroupCell *> m_draggedCells;
         std::list<GroupCell *> m_otherCells;
-        for (unsigned long i = 0; i < m_structure.size(); i++) {
-            if ((i >= static_cast<unsigned long>(m_dragStart)) && (i < static_cast<unsigned long>(m_dragStart) + m_numberOfCaptionsDragged))
+        for (auto i = 0; i < m_structure.size(); i++) {
+          if ((i >= static_cast<std::size_t>(m_dragStart)) && (i < static_cast<unsigned long>(m_dragStart) + m_numberOfCaptionsDragged))
                 m_draggedCells.push_back(m_displayedGroupCells[i]);
             else
                 m_otherCells.push_back(m_displayedGroupCells[i]);
@@ -338,8 +338,8 @@ void TableOfContents::UpdateDisplay() {
 
         m_dndEndCell = NULL;
 
-        for (unsigned long index = 0; index < m_structure.size(); index++) {
-            if (index >= static_cast<unsigned long>(m_dragCurrentPos)) {
+        for (auto index = 0; index < m_structure.size(); index++) {
+          if (index >= static_cast<std::size_t>(m_dragCurrentPos)) {
                 m_dndEndCell = m_tree->get();
                 if (m_otherCells.empty()) {
                     while (m_dndEndCell->GetNext() != NULL)
@@ -406,10 +406,8 @@ void TableOfContents::UpdateDisplay() {
     }
 }
 
-GroupCell *TableOfContents::GetCell(long index) {
-    if ((unsigned long)index > m_structure.size())
-        return NULL;
-    if (index < 0)
+GroupCell *TableOfContents::GetCell(std::size_t index) {
+    if (index > m_structure.size())
         return NULL;
 
     return m_displayedGroupCells[index];
@@ -526,8 +524,10 @@ void TableOfContents::OnMouseRightDown(wxListEvent &event) {
     wxMenu *tocLevelMenu = new wxMenu();
     tocLevelMenu->AppendRadioItem(EventIDs::popid_tocLevel1, _("1 Level"));
     for(int i = 2; i < EventIDs::NumberOfTocLevels() - 1; i++)
-        tocLevelMenu->AppendRadioItem(EventIDs::popid_tocLevel1 + i - 1, wxString::Format(_("%li Levels"), (long) i));
-    tocLevelMenu->AppendRadioItem(EventIDs::popid_tocLevel1 + EventIDs::NumberOfTocLevels() - 1, _("All Levels"));
+        tocLevelMenu->AppendRadioItem(EventIDs::popid_tocLevel1 + i - 1,
+                                      wxString::Format(_("%li Levels"), (long) i));
+    tocLevelMenu->AppendRadioItem(EventIDs::popid_tocLevel1 +
+                                  EventIDs::NumberOfTocLevels() - 1, _("All Levels"));
 
     if (m_configuration->TocDepth() < EventIDs::NumberOfTocLevels())
         tocLevelMenu->Check(EventIDs::popid_tocLevel1 + m_configuration->TocDepth() - 1,

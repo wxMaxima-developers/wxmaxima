@@ -61,7 +61,7 @@ private:
     wxTextCtrl *m_tip;
     wxString GetTip();
     wxCheckBox *m_showAtStartup;
-    wxImage GetImage(unsigned char *data, size_t len);
+    wxImage GetImage(unsigned char *data, std::size_t len);
     wxArrayString m_tips;
 };
 

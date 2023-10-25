@@ -251,19 +251,17 @@ wxString History::GetCommand(bool next) {
     return m_history->GetString(m_current);
 }
 
-void History::SetCurrent(long current) {
-    auto const count = long(m_history->GetCount());
-    if (current < 0)
-        current = count - 1;
-    else if (current >= count)
+void History::SetCurrent(std::size_t current) {
+    auto const count = m_history->GetCount();
+    if (current >= count)
         current = 0;
     if (count < 1)
-        current = -1;
+        current = 0;
 
     if (current == m_current)
         return;
 
-    if (current >= 0) {
+    if (current > 0) {
         m_current = current;
         m_history->EnsureVisible(m_current);
         UnselectAll();

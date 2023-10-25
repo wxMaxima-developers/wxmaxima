@@ -424,7 +424,7 @@ std::vector<wxString> AutoComplete::CompleteSymbol(wxString partial,
             if (i.StartsWith(partial)) {
                 if (std::find(completions.begin(), completions.end(), i) == completions.end())
                     completions.push_back(i);
-                if (i.SubString(0, static_cast<size_t>(i.Find(wxS("("))) - 1) == partial &&
+                if (i.SubString(0, static_cast<std::size_t>(i.Find(wxS("("))) - 1) == partial &&
                     (std::find(perfectCompletions.begin(), perfectCompletions.end(), i) ==
                      perfectCompletions.end()))
                     perfectCompletions.push_back(i);
@@ -485,7 +485,7 @@ void AutoComplete::AddSymbol_nowait(wxString fun, autoCompletionType type) {
         {
             wxString funName = fun.SubString(0, openpos);
             auto count = fun.Freq('<');
-            size_t i = 0;
+            std::size_t i = 0;
             for (const auto &o: m_wordList.at(type)) {
                 if (o.StartsWith(funName) && (o.Freq('<') == count))
                     break;

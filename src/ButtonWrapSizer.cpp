@@ -36,8 +36,8 @@ Buttonwrapsizer::Buttonwrapsizer(int orient) : wxWrapSizer(orient) {}
 
 void Buttonwrapsizer::RecalcSizes() {
     wxSizerItemList children = GetChildren();
-    long width = -1;
-    long height = 20;
+    wxCoord width = -1;
+    wxCoord height = 20;
     for (auto node = children.GetFirst(); node; node = node->GetNext()) {
         wxSizerItem *current = node->GetData();
         wxWindow *item = current->GetWindow();

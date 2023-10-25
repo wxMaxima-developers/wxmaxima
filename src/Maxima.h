@@ -71,7 +71,7 @@ public:
      *        the event handler and doesn't have to be cared for by the user.
      * \returns true if writing was attempted, false if there's nothing else left to send.
      */
-    bool Write(const void *buffer, size_t length);
+    bool Write(const void *buffer, std::size_t length);
 
     //! Read whatever data is in the socket. This is normally handled by the event handler,
     //! but can be called manually to poll for data. Ideally, this should be private.

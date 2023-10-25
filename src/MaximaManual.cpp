@@ -65,7 +65,7 @@ wxString MaximaManual::GetHelpfileAnchorName(wxString keyword) {
         return anchor->second;
 }
 void MaximaManual::WaitForBackgroundProcess() {
-    unsigned long nestedWaits = m_nestedBackgroundProcessWaits;
+  std::size_t nestedWaits = m_nestedBackgroundProcessWaits;
     m_nestedBackgroundProcessWaits++;
 
     if (!m_helpFileAnchorsThreadActive.try_lock()) {
@@ -173,7 +173,7 @@ void MaximaManual::CompileHelpFileAnchors(wxString maximaHtmlDir,
                                           wxString saveName) {
     SuppressErrorDialogs suppressor;
 
-    long foundAnchorsTotal = 0;
+    std::size_t foundAnchorsTotal = 0;
     if (m_helpFileURLs_singlePage.empty() && (!(m_maximaHtmlDir.IsEmpty()))) {
         std::vector<wxString> helpFiles;
         {
@@ -190,7 +190,7 @@ void MaximaManual::CompileHelpFileAnchors(wxString maximaHtmlDir,
 
         for (const auto &file : helpFiles) {
             bool is_Singlepage = file.Contains("_singlepage.");
-            long foundAnchors = 0;
+            std::size_t foundAnchors = 0;
             wxString fileURI = wxURI(wxS("file://") + file).BuildURI();
             // wxWidgets cannot automatically replace a # as it doesn't know if it is
             // a anchor separator
@@ -270,7 +270,7 @@ void MaximaManual::CompileHelpFileAnchors(wxString maximaHtmlDir,
             AnchorAliasses(m_helpFileURLs_filePerChapter);
             AnchorAliasses(m_helpFileURLs_singlePage);
             wxLogMessage(_("Found %li anchors, %li anchors total."),
-                         foundAnchors, foundAnchorsTotal);
+                         (long)foundAnchors, (long)foundAnchorsTotal);
         }
         if(foundAnchorsTotal < 100)
         {
@@ -324,7 +324,7 @@ MaximaManual::GetHTMLFiles_Recursive::OnDir(const wxString &WXUNUSED(dirname)) {
 void MaximaManual::SaveManualAnchorsToCache(wxString maximaHtmlDir,
                                             wxString maximaVersion,
                                             wxString saveName) {
-    long num = m_helpFileURLs_singlePage.size();
+    auto num = m_helpFileURLs_singlePage.size();
     if (num <= 50) {
         wxLogMessage(_("Found only %li keywords in maxima's "
                        "manual. Not caching them to disc."),
@@ -423,9 +423,9 @@ bool MaximaManual::LoadManualAnchorsFromXML(const wxXmlDocument &xmlDocument,
         wxLogMessage(_("No entries in the caches for the subjects the manual contains."));
         return false;
     }
-    long anchors = 0;
-    long urls_FilePerChapter = 0;
-    long urls_SinglePage = 0;
+    std::size_t anchors = 0;
+    std::size_t urls_FilePerChapter = 0;
+    std::size_t urls_SinglePage = 0;
     while (entry) {
         if (entry->GetName() == wxS("entry")) {
             wxString key;

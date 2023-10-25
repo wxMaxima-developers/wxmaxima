@@ -2075,8 +2075,8 @@ void wxMaxima::StripLispComments(wxString &s) {
             int commentEnd = s.find(wxS('\n'), commentStart);
             if (commentEnd == wxNOT_FOUND)
                 commentEnd = s.length();
-            s = s.SubString(0, static_cast<size_t>(commentStart) - 1) +
-                s.SubString(static_cast<size_t>(commentEnd), s.length());
+            s = s.SubString(0, static_cast<std::size_t>(commentStart) - 1) +
+                s.SubString(static_cast<std::size_t>(commentEnd), s.length());
         }
     } else
         m_blankStatementRegEx.Replace(&s, wxS(";"));
@@ -2086,7 +2086,7 @@ void wxMaxima::SendMaxima(wxString s, bool addToHistory) {
     // Normally we catch parenthesis errors before adding cells to the
     // evaluation queue. But if the error is introduced only after the
     // cell is placed in the evaluation queue we need to catch it here.
-    size_t index;
+    std::size_t index;
     wxString parenthesisError = GetUnmatchedParenthesisState(s, index);
     if (parenthesisError.IsEmpty()) {
         s = m_worksheet->UnicodeToMaxima(s);
@@ -2802,7 +2802,7 @@ void wxMaxima::ReadFirstPrompt(wxString &data) {
     StatusMaximaBusy(StatusBar::MaximaStatus::waiting);
     m_closing = false; // when restarting maxima this is temporarily true
 
-    wxString prompt_compact = data.Left(start + static_cast<size_t>(end) +
+    wxString prompt_compact = data.Left(start + static_cast<std::size_t>(end) +
                                         m_firstPrompt.Length() - 1);
     prompt_compact.Replace(wxS("\n"), wxS("\u21b2"));
 
@@ -3109,8 +3109,8 @@ void wxMaxima::ReadMath(wxString &data) {
         mthTagLen = m_mathSuffix2.Length();
     }
     if (end >= 0) {
-        wxString o = data.Left(static_cast<size_t>(end) + mthTagLen);
-        data = data.Right(data.Length() - static_cast<size_t>(end) - mthTagLen);
+        wxString o = data.Left(static_cast<std::size_t>(end) + mthTagLen);
+        data = data.Right(data.Length() - static_cast<std::size_t>(end) - mthTagLen);
         o.Trim(true);
         o.Trim(false);
         if (o.Length() > 0) {
@@ -3768,9 +3768,9 @@ void wxMaxima::ReadPrompt(wxString &data) {
     m_maximaBusy = false;
     m_bytesFromMaxima = 0;
 
-    wxString label = data.SubString(m_promptPrefix.Length(), static_cast<size_t>(end) - 1);
+    wxString label = data.SubString(m_promptPrefix.Length(), static_cast<std::size_t>(end) - 1);
     // Remove the prompt we will process from the string.
-    data = data.Right(data.Length() - static_cast<size_t>(end) - m_promptSuffix.Length());
+    data = data.Right(data.Length() - static_cast<std::size_t>(end) - m_promptSuffix.Length());
     if (data == wxS(" "))
         data = wxEmptyString;
 
@@ -4829,7 +4829,7 @@ bool wxMaxima::InterpretDataFromMaxima(const wxString &newData) {
 }
 
 bool wxMaxima::InterpretDataFromMaxima() {
-    size_t length_old = 0;
+    std::size_t length_old = 0;
 
     wxTimer maxGuiFreezeTime;
     wxStopWatch stopWatch;
@@ -5349,7 +5349,7 @@ wxString wxMaxima::ExtractFirstExpression(const wxString &entry) {
     bool semiFound = (semicolon != wxNOT_FOUND);
     bool dollarFound = (dollar != wxNOT_FOUND);
 
-    size_t index;
+    std::size_t index;
     if (semiFound && dollarFound)
         index = wxMin(semicolon, dollar);
     else if (semiFound && !dollarFound)
@@ -8646,7 +8646,6 @@ void wxMaxima::SimplifyMenu(wxCommandEvent &event) {
         CommandWiz(_("Calculate modulus:"), wxEmptyString, wxEmptyString,
                    wxS("modulus : #1#$"), wxS("Modulus"), wxS("%"), wxEmptyString);
     }
-
 }
 
 
@@ -9955,7 +9954,6 @@ void wxMaxima::PopupMenu(wxCommandEvent &event) {
             if ((m_worksheet->GetSelectionStart() == m_worksheet->GetSelectionEnd()) &&
                 (m_worksheet->GetSelectionStart() != NULL))
             {
-
                 bool canExportSVG = false;
 
                 if ((m_worksheet->GetSelectionStart()->GetType() == MC_TYPE_IMAGE) ||
@@ -10239,7 +10237,7 @@ void wxMaxima::EvaluateEvent(wxCommandEvent &WXUNUSED(event)) {
     TriggerEvaluation();
 }
 
-wxString wxMaxima::GetUnmatchedParenthesisState(wxString text, size_t &index) {
+wxString wxMaxima::GetUnmatchedParenthesisState(wxString text, std::size_t &index) {
     text.Trim(false);
     if (text.EndsWith(wxS("\\")))
         return (_("Cell ends in a backslash"));
@@ -10427,7 +10425,7 @@ void wxMaxima::TriggerEvaluation() {
     wxString text = m_worksheet->m_evaluationQueue.GetCommand();
     m_commandIndex = m_worksheet->m_evaluationQueue.GetIndex();
     if ((text != wxEmptyString) && (text != wxS(";")) && (text != wxS("$"))) {
-        size_t index;
+        std::size_t index;
         wxString parenthesisError =
             GetUnmatchedParenthesisState(tmp->GetEditable()->ToString(true), index);
         if (parenthesisError.IsEmpty()) {
@@ -11109,10 +11107,10 @@ void wxMaxima::ChangeCellStyle(wxCommandEvent &WXUNUSED(event)) {
 wxString wxMaxima::EscapeFilenameForShell(wxString name)
 {
 #ifdef __WXMSW__
-    name.Replace("\\","/");
+    name.Replace("\\", "/");
 #endif
-    name.Replace("\\","\\\\");
-    name.Replace("\"","\\\"");
+    name.Replace("\\", "\\\\");
+    name.Replace("\"", "\\\"");
     return "\"" + name + "\"";
 }
 

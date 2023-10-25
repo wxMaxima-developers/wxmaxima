@@ -38,7 +38,7 @@ RegexSearch::~RegexSearch()
 {
 }
 
-RegexSearch::Match RegexSearch::FindNext(wxString string, size_t start)
+RegexSearch::Match RegexSearch::FindNext(wxString string, std::size_t start)
 {
     wxLogNull suppress;
     Match retval;
@@ -47,15 +47,15 @@ RegexSearch::Match RegexSearch::FindNext(wxString string, size_t start)
     wxString src = string.Right(string.Length() - start);
     if(!Matches(src))
         return retval;
-    size_t matchstart;
-    size_t length;
+    std::size_t matchstart;
+    std::size_t length;
     GetMatch(&matchstart, &length, 0);
     retval.SetStart(start + matchstart);
     retval.SetLength (length);
     return retval;
 }
 
-RegexSearch::Match RegexSearch::Replace(wxString *string, size_t start, wxString replacement)
+RegexSearch::Match RegexSearch::Replace(wxString *string, std::size_t start, wxString replacement)
 {
     wxLogNull suppress;
     Match retval;
@@ -64,8 +64,8 @@ RegexSearch::Match RegexSearch::Replace(wxString *string, size_t start, wxString
     wxString src = string->Right(string->Length() - start);
     if(!Matches(src))
         return retval;
-    size_t matchstart;
-    size_t length;
+    std::size_t matchstart;
+    std::size_t length;
     GetMatch(&matchstart, &length, 0);
     wxRegEx::Replace(&src, replacement, 1);
     if(matchstart != 0)
@@ -76,20 +76,20 @@ RegexSearch::Match RegexSearch::Replace(wxString *string, size_t start, wxString
     return retval;
 }
 
-RegexSearch::Match RegexSearch::Replace_Reverse(wxString *string, size_t start,
+RegexSearch::Match RegexSearch::Replace_Reverse(wxString *string, std::size_t start,
                                                 wxString replacement)
 {
     return Replace(string, start, replacement);
 }
 
-RegexSearch::Match RegexSearch::FindNext_Reverse(wxString string, size_t start)
+RegexSearch::Match RegexSearch::FindNext_Reverse(wxString string, std::size_t start)
 {
     wxLogNull suppress;
     Match retval;
-    size_t matchstart;
-    size_t length;
+    std::size_t matchstart;
+    std::size_t length;
     wxString src = string.Left(start);
-    long offset = 0;
+    std::size_t offset = 0;
     // We want to find the last match before start.
     while(Matches(src))
     {

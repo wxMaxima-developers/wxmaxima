@@ -172,7 +172,7 @@ wxString EvaluationQueue::GetCommand() {
         if (!userLabel.empty() &&
             (wxIsalpha(userLabel[0]) || (userLabel[0] == wxS('\\')) ||
              (userLabel[0] > 127) || (userLabel[0] == wxS('_')))) {
-            for (size_t i = 0; i < userLabel.Length(); i++) {
+            for (std::size_t i = 0; i < userLabel.Length(); i++) {
                 if (userLabel[i] == wxS('\\'))
                     i++;
                 else {

@@ -52,7 +52,7 @@ LicenseDialog::LicenseDialog(wxWindow *parent)
     wxFont fnt = m_license->GetFont();
     wxClientDC dc(this);
     dc.SetFont(fnt);
-    long textWidth = 0;
+    wxCoord textWidth = 0;
     while (!istream.Eof()) {
         line = textIn.ReadLine();
         licenseText += line + wxS("\n");

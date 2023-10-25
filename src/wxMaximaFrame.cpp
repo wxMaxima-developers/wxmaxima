@@ -51,6 +51,7 @@
 #include <wx/wupdlock.h>
 #include <wx/windowptr.h>
 #include <functional>
+#include <vector>
 #include <unordered_map>
 
 wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
@@ -284,7 +285,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
     wxPanel *unicodePane =
         new UnicodeSidebar(this, m_worksheet, &m_configuration);
     //  wxWindowUpdateLocker unicodeBlocker(unicodePane);
-    m_manager.AddPane(unicodePane,wxAuiPaneInfo()
+    m_manager.AddPane(unicodePane, wxAuiPaneInfo()
                       .Name(m_sidebarNames[EventIDs::menu_pane_unicode])
                       .Left());
 
@@ -2345,7 +2346,7 @@ void wxMaximaFrame::SymbolsPane::OnSize(wxSizeEvent &event) {
 }
 
 void wxMaximaFrame::GreekPane::OnMenu(wxCommandEvent &event) {
-    std::unordered_map<int,std::function<void()>> m{
+    std::unordered_map<int, std::function<void()>> m{
         {EventIDs::menu_showLatinGreekLookalikes, [&](){
             m_configuration->GreekSidebar_ShowLatinLookalikes(
                 !m_configuration->GreekSidebar_ShowLatinLookalikes());
@@ -2569,7 +2570,7 @@ wxMaximaFrame::SymbolsPane::SymbolsPane(wxWindow *parent,
 }
 
 void wxMaximaFrame::SymbolsPane::OnMenu(wxCommandEvent &event) {
-    std::unordered_map<int,std::function<void()>> m{
+    std::unordered_map<int, std::function<void()>> m{
         {EventIDs::menu_additionalSymbols, [&](){
             wxWindowPtr<Gen1Wiz> wiz(new Gen1Wiz(
                                          this, -1, m_configuration, _("Non-builtin symbols"),
@@ -2578,7 +2579,7 @@ void wxMaximaFrame::SymbolsPane::OnMenu(wxCommandEvent &event) {
                                            "displayed in the symbols sidebar along with the built-in symbols.")));
             // wiz->Centre(wxBOTH);
             wiz->SetLabel1ToolTip(_("Drag-and-drop unicode symbols here"));
-            wiz->ShowWindowModalThenDo([this,wiz](int retcode) {
+            wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
                 if (retcode == wxID_OK)
                     m_configuration->SymbolPaneAdditionalChars(wiz->GetValue());
                 UpdateUserSymbols();

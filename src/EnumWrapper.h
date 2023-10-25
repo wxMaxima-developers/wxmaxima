@@ -92,7 +92,7 @@ template <typename Enum, typename Storage, Enum defaultValue = Enum{},
         constexpr EnumWrapper(Enum value) noexcept : value(value) {}
         constexpr operator Enum() const noexcept { return Enum(value); }
         constexpr operator Storage() const = delete;
-        constexpr size_t hash() const { return std::hash<Storage>()(value); }
+        constexpr std::size_t hash() const { return std::hash<Storage>()(value); }
 
         constexpr bool operator==(EnumWrapper o) const { return value == o.value;  }
         constexpr bool operator==(Enum o) const { return value == o;  }

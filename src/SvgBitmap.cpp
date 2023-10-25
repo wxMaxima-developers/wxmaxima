@@ -38,7 +38,7 @@
 #include "Image.h"
 #include "invalidImage.h"
 
-SvgBitmap::SvgBitmap(wxWindow *window, const unsigned char *data, size_t len,
+SvgBitmap::SvgBitmap(wxWindow *window, const unsigned char *data, std::size_t len,
                      int width, int height)
     : m_window(window) {
     // Unzip the .svgz image
@@ -92,7 +92,7 @@ const SvgBitmap &SvgBitmap::SetSize(int width, int height) {
         return *this;
     }
 
-    std::vector<unsigned char> imgdata(static_cast<size_t>(width) * height * 4);
+    std::vector<unsigned char> imgdata(static_cast<std::size_t>(width) * height * 4);
 
     // Actually render the bitmap
     wxm_nsvgRasterize(m_svgRast, m_svgImage.get(), 0, 0,
@@ -119,7 +119,7 @@ const SvgBitmap &SvgBitmap::SetSize(int width, int height) {
     return *this;
 }
 
-SvgBitmap::SvgBitmap(wxWindow *window, const unsigned char *data, size_t len,
+SvgBitmap::SvgBitmap(wxWindow *window, const unsigned char *data, std::size_t len,
                      wxSize siz)
     : SvgBitmap(window, data, len, siz.x, siz.y) {}
 

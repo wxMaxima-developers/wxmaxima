@@ -316,7 +316,7 @@ TipOfTheDay::~TipOfTheDay() {
     config->Write(wxS("tipNum"), m_num + 1);
 }
 
-wxImage TipOfTheDay::GetImage(unsigned char *data, size_t len) {
+wxImage TipOfTheDay::GetImage(unsigned char *data, std::size_t len) {
     int ppi;
 #if wxCHECK_VERSION(3, 1, 1)
     wxDisplay display;

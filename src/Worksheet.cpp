@@ -2707,7 +2707,7 @@ wxString Worksheet::ConvertSelectionToMathML() {
             auto pos = s.Find("\n");
             wxASSERT(pos >= 0);
             if(pos >= 0)
-                s = s.SubString(static_cast<size_t>(pos) + 1, s.Length());
+                s = s.SubString(static_cast<std::size_t>(pos) + 1, s.Length());
         }
     }
     Recalculate();
@@ -4650,7 +4650,7 @@ void Worksheet::CalculateReorderedCellIndices(GroupCell *tree, int &cellIndex,
                     GetCellIndex(tmp.GetLabel()) - initialHiddenExpressions;
                 if (promptIndex >= 0)
                 {
-                    size_t index = promptIndex;
+                    std::size_t index = promptIndex;
                     if (outputIndex < 0 && initialHiddenExpressions < outputExpressions) {
                         // input index, but no output index means the expression was
                         // evaluated, but produced no result
@@ -5573,7 +5573,7 @@ bool Worksheet::ExportToHTML(const wxString &file) {
 
         auto newlinepos = output.Find("\n");
         if(newlinepos >= 0)
-            output = output.SubString(static_cast<size_t>(newlinepos) + 1, output.Length());
+            output = output.SubString(static_cast<std::size_t>(newlinepos) + 1, output.Length());
     } else
         wxLogMessage(_("Bug: HTML output is no valid XML"));
 
@@ -7534,7 +7534,7 @@ bool Worksheet::FindNext(const wxString &str, bool down, bool ignoreCase,
             bool found = editor->FindNext(str, down, ignoreCase);
 
             if (found) {
-                size_t strt, end;
+                std::size_t strt, end;
                 editor->GetSelection(&strt, &end);
                 SetActiveCell(editor);
                 editor->SetSelection(strt, end);
@@ -7622,7 +7622,7 @@ bool Worksheet::FindNext_Regex(const wxString &str, bool down,
             bool found = editor->FindNext_RegEx(str, down);
 
             if (found) {
-                size_t strt, end;
+                std::size_t strt, end;
                 editor->GetSelection(&strt, &end);
                 SetActiveCell(editor);
                 editor->SetSelection(strt, end);
@@ -7822,7 +7822,7 @@ bool Worksheet::Autocomplete(AutoComplete::autoCompletionType type) {
         int positionOfEzunitStart = frontOfSelection.rfind(wxS('`'));
 
         if (positionOfEzunitStart != wxNOT_FOUND) {
-            frontOfSelection = frontOfSelection.Mid(static_cast<size_t>(positionOfEzunitStart) + 1);
+            frontOfSelection = frontOfSelection.Mid(static_cast<std::size_t>(positionOfEzunitStart) + 1);
             int numberOfParenthesis = 0;
 
             for (wxString::const_iterator it = frontOfSelection.begin();
@@ -7941,7 +7941,7 @@ bool Worksheet::Autocomplete(AutoComplete::autoCompletionType type) {
 
     /// If there is only one completion, use it
     if ((m_completions.size() == 1) && (type != AutoComplete::esccommand)) {
-        size_t start, end;
+        std::size_t start, end;
         editor->GetSelection(&start, &end);
 
         editor->ReplaceSelection(editor->GetSelectionString(), m_completions.at(0),
@@ -8022,7 +8022,7 @@ void Worksheet::OnComplete(wxCommandEvent &event) {
         editor->InsertText(m_completions.at(item));
 
     if (m_autocompleteTemplates) {
-        size_t sel_start, sel_end;
+        std::size_t sel_start, sel_end;
         editor->GetSelection(&sel_start, &sel_end);
         editor->ClearSelection();
 
