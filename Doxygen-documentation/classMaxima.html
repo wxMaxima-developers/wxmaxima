@@ -100,9 +100,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsConnected</b> () co
 <tr class="memitem:ac3340933ce972cbe49ba54f9dab71694"><td class="memItemLeft" align="right" valign="top"><a id="ac3340933ce972cbe49ba54f9dab71694"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>SetPipeToStdOut</b> (bool pipe)</td></tr>
 <tr class="separator:ac3340933ce972cbe49ba54f9dab71694"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3db8124662f2b0770e270a1140427623"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMaxima.html#a3db8124662f2b0770e270a1140427623">Write</a> (const void *buffer, size_t length)</td></tr>
-<tr class="memdesc:a3db8124662f2b0770e270a1140427623"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write more data to be sent to maxima.  <a href="classMaxima.html#a3db8124662f2b0770e270a1140427623">More...</a><br /></td></tr>
-<tr class="separator:a3db8124662f2b0770e270a1140427623"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeb45e2fda6a941f99aa9181b644c75be"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMaxima.html#aeb45e2fda6a941f99aa9181b644c75be">Write</a> (const void *buffer, std::size_t length)</td></tr>
+<tr class="memdesc:aeb45e2fda6a941f99aa9181b644c75be"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write more data to be sent to maxima.  <a href="classMaxima.html#aeb45e2fda6a941f99aa9181b644c75be">More...</a><br /></td></tr>
+<tr class="separator:aeb45e2fda6a941f99aa9181b644c75be"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2a43dbaf7acf0560851899a20683543e"><td class="memItemLeft" align="right" valign="top"><a id="a2a43dbaf7acf0560851899a20683543e"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMaxima.html#a2a43dbaf7acf0560851899a20683543e">ReadSocket</a> ()</td></tr>
 <tr class="memdesc:a2a43dbaf7acf0560851899a20683543e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read whatever data is in the socket. This is normally handled by the event handler, but can be called manually to poll for data. Ideally, this should be private. <br /></td></tr>
@@ -117,8 +117,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Eventually this class will be the entire stand-alone <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> interface, factored out from <a class="el" href="classwxMaxima.html">wxMaxima</a>. For now, it only provides socket I/O.</p>
 <p>It is a source of EVT_MAXIMA events, used to asynchronously decouple the I/O from the front-end. In the future, this class could run on a worker thread perhaps (after it'd do more work in string processing). </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a3db8124662f2b0770e270a1140427623"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3db8124662f2b0770e270a1140427623">&#9670;&nbsp;</a></span>Write()</h2>
+<a id="aeb45e2fda6a941f99aa9181b644c75be"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeb45e2fda6a941f99aa9181b644c75be">&#9670;&nbsp;</a></span>Write()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -132,7 +132,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">size_t&#160;</td>
+          <td class="paramtype">std::size_t&#160;</td>
           <td class="paramname"><em>length</em>&#160;</td>
         </tr>
         <tr>

@@ -19,7 +19,7 @@ var searchData=
   ['wrappingstatictext_1553',['WrappingStaticText',['../classWrappingStaticText.html',1,'']]],
   ['wrappingstatictext_2ecpp_1554',['WrappingStaticText.cpp',['../WrappingStaticText_8cpp.html',1,'']]],
   ['wrappingstatictext_2eh_1555',['WrappingStaticText.h',['../WrappingStaticText_8h.html',1,'']]],
-  ['write_1556',['Write',['../classStyle.html#a259bf27abcb1f6d66dbb02bc9bc9f6cb',1,'Style::Write()'],['../classMaxima.html#a3db8124662f2b0770e270a1140427623',1,'Maxima::Write()']]],
+  ['write_1556',['Write',['../classStyle.html#a259bf27abcb1f6d66dbb02bc9bc9f6cb',1,'Style::Write()'],['../classMaxima.html#aeb45e2fda6a941f99aa9181b644c75be',1,'Maxima::Write()']]],
   ['write_5ferror_1557',['WRITE_ERROR',['../classMaximaEvent.html#a2ab45a3cb6d3f8cddb8ff9d70f371fe5a1c4d8eb451f551e07f8c700b72a82d69',1,'MaximaEvent']]],
   ['write_5fpending_1558',['WRITE_PENDING',['../classMaximaEvent.html#a2ab45a3cb6d3f8cddb8ff9d70f371fe5ab38f486d812449a16439bb2d963ed778',1,'MaximaEvent']]],
   ['writesettings_1559',['WriteSettings',['../classConfiguration.html#a53af46fba084e7e9f45fabbfb8eb4030',1,'Configuration::WriteSettings()'],['../classConfigDialogue.html#a6a3d11ed034adf263350d8aa54a7e28d',1,'ConfigDialogue::WriteSettings()']]],
