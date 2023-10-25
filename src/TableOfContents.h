@@ -99,7 +99,7 @@ private:
     wxDragImage *m_dragImage = NULL;
     std::vector<GroupCell *> m_displayedGroupCells;
     //! How many toc items did the user drag at the same time?
-    unsigned int m_numberOfCaptionsDragged = 0;
+  std::size_t m_numberOfCaptionsDragged = 0;
     GroupCell *m_cellRightClickedOn = NULL;
     //! The item that was dragged away at the start of the current drag-and-drop
     long m_dragStart = -1;

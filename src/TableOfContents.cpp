@@ -329,7 +329,7 @@ void TableOfContents::UpdateDisplay() {
 
     std::list<GroupCell *> m_draggedCells;
     std::list<GroupCell *> m_otherCells;
-    for (auto i = 0; i < m_structure.size(); i++) {
+    for (size_t i = 0; i < m_structure.size(); i++) {
       if ((i >= static_cast<std::size_t>(m_dragStart)) && (i < static_cast<unsigned long>(m_dragStart) + m_numberOfCaptionsDragged))
         m_draggedCells.push_back(m_displayedGroupCells[i]);
       else

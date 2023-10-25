@@ -279,7 +279,7 @@ wxFontInfo Style::GetAsFontInfo() const {
 }
 
 const wxColor &Style::Default_Color() {
-  using colorULong = std::size_t;
+  using colorULong = unsigned long;
   static const wxColor color{colorULong(Default_ColorRGB)};
   return color;
 }
