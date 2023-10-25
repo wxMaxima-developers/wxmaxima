@@ -26,37 +26,37 @@
 ResolutionChooser::ResolutionChooser(wxWindow *parent, int id,
                                      const int &resolution, const wxPoint &pos,
                                      const wxSize &size, long style)
-    : wxDialog(parent, id, _("Set image resolution [in ppi]"), pos, size,
-               style) {
-    wxStaticText *resolutionText =
-        new wxStaticText(this, -1, wxS("Image resolution [in ppi]:"));
+  : wxDialog(parent, id, _("Set image resolution [in ppi]"), pos, size,
+             style) {
+  wxStaticText *resolutionText =
+    new wxStaticText(this, -1, wxS("Image resolution [in ppi]:"));
 
-    m_resolution = new wxSpinCtrl(this, -1, wxEmptyString, wxDefaultPosition,
-                                  wxSize(100, -1), wxSP_VERTICAL, 10, 9600);
-    m_resolution->SetValue(resolution);
+  m_resolution = new wxSpinCtrl(this, -1, wxEmptyString, wxDefaultPosition,
+                                wxSize(100, -1), wxSP_VERTICAL, 10, 9600);
+  m_resolution->SetValue(resolution);
 
 #if defined __WXMSW__
-    button_1 = new wxButton(this, wxID_OK, _("OK"));
-    button_1->SetDefault();
-    button_2 = new wxButton(this, wxID_CANCEL, _("Cancel"));
+  button_1 = new wxButton(this, wxID_OK, _("OK"));
+  button_1->SetDefault();
+  button_2 = new wxButton(this, wxID_CANCEL, _("Cancel"));
 #else
-    button_1 = new wxButton(this, wxID_CANCEL, _("Cancel"));
-    button_2 = new wxButton(this, wxID_OK, _("OK"));
-    button_2->SetDefault();
+  button_1 = new wxButton(this, wxID_CANCEL, _("Cancel"));
+  button_2 = new wxButton(this, wxID_OK, _("OK"));
+  button_2->SetDefault();
 #endif
 
-    wxBoxSizer *vsizer = new wxBoxSizer(wxVERTICAL);
-    wxFlexGridSizer *grid_sizer_1 = new wxFlexGridSizer(4, 2, 0, 0);
-    wxBoxSizer *sizer_1 = new wxBoxSizer(wxHORIZONTAL);
-    vsizer->Add(new wxStaticText(this, -1, _("The resolution for this image.")),
-                0, wxALL | wxALIGN_CENTER_HORIZONTAL, 5);
-    grid_sizer_1->Add(resolutionText, 0, wxALL | wxEXPAND, 5);
-    grid_sizer_1->Add(m_resolution, 0, wxEXPAND | wxLEFT | wxRIGHT, 2);
+  wxBoxSizer *vsizer = new wxBoxSizer(wxVERTICAL);
+  wxFlexGridSizer *grid_sizer_1 = new wxFlexGridSizer(4, 2, 0, 0);
+  wxBoxSizer *sizer_1 = new wxBoxSizer(wxHORIZONTAL);
+  vsizer->Add(new wxStaticText(this, -1, _("The resolution for this image.")),
+              0, wxALL | wxALIGN_CENTER_HORIZONTAL, 5);
+  grid_sizer_1->Add(resolutionText, 0, wxALL | wxEXPAND, 5);
+  grid_sizer_1->Add(m_resolution, 0, wxEXPAND | wxLEFT | wxRIGHT, 2);
 
-    sizer_1->Add(button_1, 0, wxALL, 5);
-    sizer_1->Add(button_2, 0, wxALL, 5);
-    grid_sizer_1->Add(sizer_1, 1, wxALIGN_RIGHT, 0);
-    SetAutoLayout(true);
-    vsizer->Add(grid_sizer_1, 1, wxEXPAND | wxLEFT, 0);
-    SetSizerAndFit(vsizer);
+  sizer_1->Add(button_1, 0, wxALL, 5);
+  sizer_1->Add(button_2, 0, wxALL, 5);
+  grid_sizer_1->Add(sizer_1, 1, wxALIGN_RIGHT, 0);
+  SetAutoLayout(true);
+  vsizer->Add(grid_sizer_1, 1, wxEXPAND | wxLEFT, 0);
+  SetSizerAndFit(vsizer);
 }

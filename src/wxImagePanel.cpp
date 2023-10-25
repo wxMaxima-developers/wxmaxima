@@ -29,35 +29,35 @@
 #include <wx/mstream.h>
 
 wxImagePanel::wxImagePanel(wxWindow *parent, unsigned char *data, std::size_t len)
-    : wxPanel(parent) {
-    Load(data, len);
-    int ppi;
+  : wxPanel(parent) {
+  Load(data, len);
+  int ppi;
 #if wxCHECK_VERSION(3, 1, 1)
-    wxDisplay display;
+  wxDisplay display;
 
-    int display_idx = wxDisplay::GetFromWindow(GetParent());
-    if (display_idx < 0)
-        ppi = 72;
-    else
-        ppi = wxDisplay(display_idx).GetPPI().x;
+  int display_idx = wxDisplay::GetFromWindow(GetParent());
+  if (display_idx < 0)
+    ppi = 72;
+  else
+    ppi = wxDisplay(display_idx).GetPPI().x;
 #else
-    ppi = wxGetDisplayPPI().x;
+  ppi = wxGetDisplayPPI().x;
 #endif
-    ppi = wxMax(ppi, 75);
+  ppi = wxMax(ppi, 75);
 
-    SetMinSize(
-        wxSize(ppi * 4, m_image.GetHeight() * ppi * 4 / m_image.GetWidth()));
+  SetMinSize(
+             wxSize(ppi * 4, m_image.GetHeight() * ppi * 4 / m_image.GetWidth()));
 
-    Connect(wxEVT_PAINT, wxPaintEventHandler(wxImagePanel::paintEvent), NULL,
-            this);
-    Connect(wxEVT_SIZE, wxSizeEventHandler(wxImagePanel::OnSize), NULL, this);
+  Connect(wxEVT_PAINT, wxPaintEventHandler(wxImagePanel::paintEvent), NULL,
+          this);
+  Connect(wxEVT_SIZE, wxSizeEventHandler(wxImagePanel::OnSize), NULL, this);
 }
 
 void wxImagePanel::Load(unsigned char *data, std::size_t len) {
-    wxMemoryInputStream istream(data, len);
-    m_image.LoadFile(istream);
-    m_w = m_h = -1;
-    Refresh(true);
+  wxMemoryInputStream istream(data, len);
+  m_image.LoadFile(istream);
+  m_w = m_h = -1;
+  Refresh(true);
 }
 
 /*
@@ -67,18 +67,18 @@ void wxImagePanel::Load(unsigned char *data, std::size_t len) {
  */
 
 void wxImagePanel::paintEvent(wxPaintEvent &WXUNUSED(evt)) {
-    // depending on your system you may need to look at double-buffered dcs
-    wxMemoryDC dcm;
-    wxPaintDC dc(this);
-    int neww, newh;
-    dc.GetSize(&neww, &newh);
+  // depending on your system you may need to look at double-buffered dcs
+  wxMemoryDC dcm;
+  wxPaintDC dc(this);
+  int neww, newh;
+  dc.GetSize(&neww, &newh);
 
-    if (neww != m_w || newh != m_h) {
-        m_resized = wxBitmap(m_image.Scale(neww, newh, wxIMAGE_QUALITY_HIGH));
-        m_w = neww;
-        m_h = newh;
-    }
-    dc.DrawBitmap(m_resized, 0, 0, false);
+  if (neww != m_w || newh != m_h) {
+    m_resized = wxBitmap(m_image.Scale(neww, newh, wxIMAGE_QUALITY_HIGH));
+    m_w = neww;
+    m_h = newh;
+  }
+  dc.DrawBitmap(m_resized, 0, 0, false);
 }
 
 /*
@@ -86,6 +86,6 @@ void wxImagePanel::paintEvent(wxPaintEvent &WXUNUSED(evt)) {
  * So when the user resizes the image panel the image should be resized too.
  */
 void wxImagePanel::OnSize(wxSizeEvent &event) {
-    Refresh();
-    event.Skip();
+  Refresh();
+  event.Skip();
 }

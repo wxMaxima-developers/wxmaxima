@@ -39,48 +39,48 @@
 
 namespace Format {
 
-    const wxString WXMFirstLine =
-        wxS("/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/");
+  const wxString WXMFirstLine =
+    wxS("/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/");
 
-    struct WXMHeader //-V730
-    {
-        WXMHeaderId id;
-        wxString start = {};
-        wxString end = {};
-    };
+  struct WXMHeader //-V730
+  {
+    WXMHeaderId id;
+    wxString start = {};
+    wxString end = {};
+  };
 
-    static const WXMHeader WXMHeaders[] = {
-        {WXM_INPUT, wxS("/* [wxMaxima: input   start ] */"),
-         wxS("/* [wxMaxima: input   end   ] */")},
-        {WXM_TITLE, wxS("/* [wxMaxima: title   start ]"),
-         wxS("   [wxMaxima: title   end   ] */")},
-        {WXM_SECTION, wxS("/* [wxMaxima: section start ]"),
-         wxS("   [wxMaxima: section end   ] */")},
-        {WXM_SUBSECTION, wxS("/* [wxMaxima: subsect start ]"),
-         wxS("   [wxMaxima: subsect end   ] */")},
-        {WXM_SUBSUBSECTION, wxS("/* [wxMaxima: subsubsect start ]"),
-         wxS("   [wxMaxima: subsubsect end   ] */")},
-        {WXM_HEADING5, wxS("/* [wxMaxima: heading5 start ]"),
-         wxS("   [wxMaxima: heading5 end   ] */")},
-        {WXM_HEADING6, wxS("/* [wxMaxima: heading6 start ]"),
-         wxS("   [wxMaxima: heading6 end   ] */")},
-        {WXM_COMMENT, wxS("/* [wxMaxima: comment start ]"),
-         wxS("   [wxMaxima: comment end   ] */")},
-        {WXM_CAPTION, wxS("/* [wxMaxima: caption start ]"),
-         wxS("   [wxMaxima: caption end   ] */")},
-        {WXM_PAGEBREAK, wxS("/* [wxMaxima: page break    ] */")},
-        {WXM_IMAGE, wxS("/* [wxMaxima: image   start ]"),
-         wxS("   [wxMaxima: image   end   ] */")},
-        {WXM_ANSWER, wxS("/* [wxMaxima: answer  start ] */"),
-         wxS("/* [wxMaxima: answer  end   ] */")},
-        {WXM_QUESTION, wxS("/* [wxMaxima: question  start ] */"),
-         wxS("/* [wxMaxima: question  end   ] */")},
-        {WXM_FOLD, wxS("/* [wxMaxima: fold    start ] */"),
-         wxS("/* [wxMaxima: fold    end   ] */")},
-        {WXM_FOLD_END, wxS("/* [wxMaxima: fold    end   ] */")},
-        {WXM_HIDE, wxS("/* [wxMaxima: hide output   ] */")},
-        {WXM_AUTOANSWER, wxS("/* [wxMaxima: autoanswer    ] */")},
-    };
+  static const WXMHeader WXMHeaders[] = {
+    {WXM_INPUT, wxS("/* [wxMaxima: input   start ] */"),
+     wxS("/* [wxMaxima: input   end   ] */")},
+    {WXM_TITLE, wxS("/* [wxMaxima: title   start ]"),
+     wxS("   [wxMaxima: title   end   ] */")},
+    {WXM_SECTION, wxS("/* [wxMaxima: section start ]"),
+     wxS("   [wxMaxima: section end   ] */")},
+    {WXM_SUBSECTION, wxS("/* [wxMaxima: subsect start ]"),
+     wxS("   [wxMaxima: subsect end   ] */")},
+    {WXM_SUBSUBSECTION, wxS("/* [wxMaxima: subsubsect start ]"),
+     wxS("   [wxMaxima: subsubsect end   ] */")},
+    {WXM_HEADING5, wxS("/* [wxMaxima: heading5 start ]"),
+     wxS("   [wxMaxima: heading5 end   ] */")},
+    {WXM_HEADING6, wxS("/* [wxMaxima: heading6 start ]"),
+     wxS("   [wxMaxima: heading6 end   ] */")},
+    {WXM_COMMENT, wxS("/* [wxMaxima: comment start ]"),
+     wxS("   [wxMaxima: comment end   ] */")},
+    {WXM_CAPTION, wxS("/* [wxMaxima: caption start ]"),
+     wxS("   [wxMaxima: caption end   ] */")},
+    {WXM_PAGEBREAK, wxS("/* [wxMaxima: page break    ] */")},
+    {WXM_IMAGE, wxS("/* [wxMaxima: image   start ]"),
+     wxS("   [wxMaxima: image   end   ] */")},
+    {WXM_ANSWER, wxS("/* [wxMaxima: answer  start ] */"),
+     wxS("/* [wxMaxima: answer  end   ] */")},
+    {WXM_QUESTION, wxS("/* [wxMaxima: question  start ] */"),
+     wxS("/* [wxMaxima: question  end   ] */")},
+    {WXM_FOLD, wxS("/* [wxMaxima: fold    start ] */"),
+     wxS("/* [wxMaxima: fold    end   ] */")},
+    {WXM_FOLD_END, wxS("/* [wxMaxima: fold    end   ] */")},
+    {WXM_HIDE, wxS("/* [wxMaxima: hide output   ] */")},
+    {WXM_AUTOANSWER, wxS("/* [wxMaxima: autoanswer    ] */")},
+  };
 
   class WXMHeaderCollection {
   public:

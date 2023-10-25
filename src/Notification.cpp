@@ -31,40 +31,40 @@
 
 #include "Notification.h"
 Notification::Notification() : wxNotificationMessage() {
-    m_parent = NULL;
-    m_errorNotificationCell = NULL;
+  m_parent = NULL;
+  m_errorNotificationCell = NULL;
 #if wxCHECK_VERSION(3, 1, 0)
-    //  AddAction(wxID_ANY,_("Focus window"));
-    Connect(wxEVT_NOTIFICATION_MESSAGE_CLICK,
-            wxCommandEventHandler(Notification::OnClick), NULL, this);
-    Connect(wxEVT_NOTIFICATION_MESSAGE_ACTION,
-            wxCommandEventHandler(Notification::OnClick), NULL, this);
+  //  AddAction(wxID_ANY,_("Focus window"));
+  Connect(wxEVT_NOTIFICATION_MESSAGE_CLICK,
+          wxCommandEventHandler(Notification::OnClick), NULL, this);
+  Connect(wxEVT_NOTIFICATION_MESSAGE_ACTION,
+          wxCommandEventHandler(Notification::OnClick), NULL, this);
 #endif
 }
 
 Notification::Notification(const wxString &title, const wxString &message,
                            wxWindow *parent, int flags)
-    : wxNotificationMessage(title, message, parent, flags) {
-    m_errorNotificationCell = NULL;
-    m_parent = parent;
+  : wxNotificationMessage(title, message, parent, flags) {
+  m_errorNotificationCell = NULL;
+  m_parent = parent;
 #if wxCHECK_VERSION(3, 1, 0)
-    //  AddAction(wxID_ANY,_("Focus window"));
-    Connect(wxEVT_NOTIFICATION_MESSAGE_CLICK,
-            wxCommandEventHandler(Notification::OnClick), NULL, this);
-    Connect(wxEVT_NOTIFICATION_MESSAGE_ACTION,
-            wxCommandEventHandler(Notification::OnClick), NULL, this);
+  //  AddAction(wxID_ANY,_("Focus window"));
+  Connect(wxEVT_NOTIFICATION_MESSAGE_CLICK,
+          wxCommandEventHandler(Notification::OnClick), NULL, this);
+  Connect(wxEVT_NOTIFICATION_MESSAGE_ACTION,
+          wxCommandEventHandler(Notification::OnClick), NULL, this);
 #endif
 }
 
 void Notification::SetGroup(wxWindow *parent) {
-    m_parent = parent;
-    wxNotificationMessage::SetParent(parent);
+  m_parent = parent;
+  wxNotificationMessage::SetParent(parent);
 }
 
 void Notification::OnClick(wxCommandEvent &WXUNUSED(event)) {
-    if (GetGroup()) {
-        GetGroup()->Raise();
-        GetGroup()->Show();
-        GetGroup()->SetFocus();
-    }
+  if (GetGroup()) {
+    GetGroup()->Raise();
+    GetGroup()->Show();
+    GetGroup()->SetFocus();
+  }
 }

@@ -40,106 +40,106 @@
 
 SvgBitmap::SvgBitmap(wxWindow *window, const unsigned char *data, std::size_t len,
                      int width, int height)
-    : m_window(window) {
-    // Unzip the .svgz image
-    wxMemoryInputStream istream(data, len);
-    wxZlibInputStream zstream(istream);
-    std::vector<char> svgContents;
+  : m_window(window) {
+  // Unzip the .svgz image
+  wxMemoryInputStream istream(data, len);
+  wxZlibInputStream zstream(istream);
+  std::vector<char> svgContents;
 
-    static constexpr auto chunkSize = 8192;
-    while (!zstream.Eof()) {
-        auto const baseSize = svgContents.size();
-        svgContents.resize(baseSize + chunkSize);
-        zstream.Read(svgContents.data() + baseSize, chunkSize);
-        if (zstream.LastRead() < chunkSize)
-            svgContents.resize(baseSize + zstream.LastRead());
-    }
-    svgContents.push_back('\0');
+  static constexpr auto chunkSize = 8192;
+  while (!zstream.Eof()) {
+    auto const baseSize = svgContents.size();
+    svgContents.resize(baseSize + chunkSize);
+    zstream.Read(svgContents.data() + baseSize, chunkSize);
+    if (zstream.LastRead() < chunkSize)
+      svgContents.resize(baseSize + zstream.LastRead());
+  }
+  svgContents.push_back('\0');
 
-    // Render the .svgz image
-    if (!m_svgRast)
-        m_svgRast = wxm_nsvgCreateRasterizer();
-    if (!m_svgRast)
-        wxBitmap::operator=(GetInvalidBitmap(width));
-    if (svgContents.size() < 2)
-        wxBitmap::operator=(GetInvalidBitmap(width));
+  // Render the .svgz image
+  if (!m_svgRast)
+    m_svgRast = wxm_nsvgCreateRasterizer();
+  if (!m_svgRast)
+    wxBitmap::operator=(GetInvalidBitmap(width));
+  if (svgContents.size() < 2)
+    wxBitmap::operator=(GetInvalidBitmap(width));
 
-    m_svgImage.reset(wxm_nsvgParse(svgContents.data(), "px", 96));
-    SetSize(width, height);
+  m_svgImage.reset(wxm_nsvgParse(svgContents.data(), "px", 96));
+  SetSize(width, height);
 }
 
 SvgBitmap::~SvgBitmap() {}
 
 const SvgBitmap &SvgBitmap::SetSize(int width, int height) {
-    if (width < 1)
-        width = 1;
-    if (height < 1)
-        height = 1;
-    // Set the bitmap to the new size
+  if (width < 1)
+    width = 1;
+  if (height < 1)
+    height = 1;
+  // Set the bitmap to the new size
 #if defined __WXOSX__
-    int scaleFactor = m_window->GetContentScaleFactor();
-    if (scaleFactor < 1)
-        scaleFactor = 1;
-    if (scaleFactor > 16)
-        scaleFactor = 16;
-    this->wxBitmap::operator=(wxBitmap(wxSize(width, height), 32, scaleFactor));
+  int scaleFactor = m_window->GetContentScaleFactor();
+  if (scaleFactor < 1)
+    scaleFactor = 1;
+  if (scaleFactor > 16)
+    scaleFactor = 16;
+  this->wxBitmap::operator=(wxBitmap(wxSize(width, height), 32, scaleFactor));
 #else
-    this->wxBitmap::operator=(wxBitmap(wxSize(width, height), 32));
+  this->wxBitmap::operator=(wxBitmap(wxSize(width, height), 32));
 #endif
 
-    if (!m_svgImage) {
-        this->wxBitmap::operator=(GetInvalidBitmap(width));
-        return *this;
-    }
-
-    std::vector<unsigned char> imgdata(static_cast<std::size_t>(width) * height * 4);
-
-    // Actually render the bitmap
-    wxm_nsvgRasterize(m_svgRast, m_svgImage.get(), 0, 0,
-                      wxMin(static_cast<double>(width) / static_cast<double>(m_svgImage->width),
-                            static_cast<double>(height) / static_cast<double>(m_svgImage->height)),
-                      imgdata.data(), width, height, width * 4);
-
-    // Copy the bitmap to this object's bitmap storage
-    wxAlphaPixelData bmpdata(*this);
-    wxAlphaPixelData::Iterator dst(bmpdata);
-    const unsigned char *rgba = imgdata.data();
-    for (int y = 0; y < height; y++) {
-        dst.MoveTo(bmpdata, 0, y);
-        for (int x = 0; x < width; x++) {
-            unsigned char a = rgba[3];
-            dst.Red() = rgba[0] * a / 255;
-            dst.Green() = rgba[1] * a / 255;
-            dst.Blue() = rgba[2] * a / 255;
-            dst.Alpha() = a;
-            dst++;
-            rgba += 4;
-        }
-    }
+  if (!m_svgImage) {
+    this->wxBitmap::operator=(GetInvalidBitmap(width));
     return *this;
+  }
+
+  std::vector<unsigned char> imgdata(static_cast<std::size_t>(width) * height * 4);
+
+  // Actually render the bitmap
+  wxm_nsvgRasterize(m_svgRast, m_svgImage.get(), 0, 0,
+                    wxMin(static_cast<double>(width) / static_cast<double>(m_svgImage->width),
+                          static_cast<double>(height) / static_cast<double>(m_svgImage->height)),
+                    imgdata.data(), width, height, width * 4);
+
+  // Copy the bitmap to this object's bitmap storage
+  wxAlphaPixelData bmpdata(*this);
+  wxAlphaPixelData::Iterator dst(bmpdata);
+  const unsigned char *rgba = imgdata.data();
+  for (int y = 0; y < height; y++) {
+    dst.MoveTo(bmpdata, 0, y);
+    for (int x = 0; x < width; x++) {
+      unsigned char a = rgba[3];
+      dst.Red() = rgba[0] * a / 255;
+      dst.Green() = rgba[1] * a / 255;
+      dst.Blue() = rgba[2] * a / 255;
+      dst.Alpha() = a;
+      dst++;
+      rgba += 4;
+    }
+  }
+  return *this;
 }
 
 SvgBitmap::SvgBitmap(wxWindow *window, const unsigned char *data, std::size_t len,
                      wxSize siz)
-    : SvgBitmap(window, data, len, siz.x, siz.y) {}
+  : SvgBitmap(window, data, len, siz.x, siz.y) {}
 
 SvgBitmap &SvgBitmap::operator=(SvgBitmap &&o) noexcept {
-    wxBitmap::operator=(o);
-    m_svgImage = std::move(o.m_svgImage);
-    return *this;
+  wxBitmap::operator=(o);
+  m_svgImage = std::move(o.m_svgImage);
+  return *this;
 }
 
 wxBitmap SvgBitmap::GetInvalidBitmap(int targetSize) {
-    wxImage img = wxImage(invalidImage_xpm);
-    img.Rescale(targetSize, targetSize, wxIMAGE_QUALITY_HIGH);
-    wxBitmap retval;
+  wxImage img = wxImage(invalidImage_xpm);
+  img.Rescale(targetSize, targetSize, wxIMAGE_QUALITY_HIGH);
+  wxBitmap retval;
 #if defined __WXOSX__
-    retval =
-        wxBitmap(img, wxBITMAP_SCREEN_DEPTH, m_window->GetContentScaleFactor());
+  retval =
+    wxBitmap(img, wxBITMAP_SCREEN_DEPTH, m_window->GetContentScaleFactor());
 #else
-    retval = wxBitmap(img, wxBITMAP_SCREEN_DEPTH);
+  retval = wxBitmap(img, wxBITMAP_SCREEN_DEPTH);
 #endif
-    return retval;
+  return retval;
 }
 
 struct wxm_NSVGrasterizer *SvgBitmap::m_svgRast = NULL;

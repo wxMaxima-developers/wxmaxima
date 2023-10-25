@@ -37,72 +37,72 @@ wxMathML::wxMathML(Configuration *config) : m_configuration(config) {
 }
 
 wxString wxMathML::GetCmd() {
-    m_maximaCMD = wxEmptyString;
+  m_maximaCMD = wxEmptyString;
 
-    if (Get_MathML_Filename().IsEmpty()) {
-        wxLogMessage(_("Reading the Lisp part of wxMaxima from the included header file."));
-        wxMemoryInputStream istream(WXMATHML_LISP, WXMATHML_LISP_SIZE);
-        wxTextInputStream textIn(istream);
-        wxString line;
+  if (Get_MathML_Filename().IsEmpty()) {
+    wxLogMessage(_("Reading the Lisp part of wxMaxima from the included header file."));
+    wxMemoryInputStream istream(WXMATHML_LISP, WXMATHML_LISP_SIZE);
+    wxTextInputStream textIn(istream);
+    wxString line;
 
-        while (!istream.Eof()) {
-            line = textIn.ReadLine();
-            m_wxMathML += line + wxS("\n");
-        }
-        wxASSERT_MSG(m_wxMathML.Length() > 64000,
-                     _("Compiler-Bug? wxMathml.lisp is shorter than expected!"));
-    } else {
-        wxLogMessage(_("Reading the Lisp part of wxMaxima from the file %s"),
-                     Get_MathML_Filename().mb_str());
-        wxFileInputStream input(Get_MathML_Filename());
-        wxTextInputStream textIn(input);
-        wxString line;
-
-        while (!input.Eof()) {
-            line = textIn.ReadLine();
-            m_wxMathML += line + wxS("\n");
-        }
+    while (!istream.Eof()) {
+      line = textIn.ReadLine();
+      m_wxMathML += line + wxS("\n");
     }
-    wxStringTokenizer lines(m_wxMathML, wxS("\n"));
-    while (lines.HasMoreTokens()) {
-        wxString line = lines.GetNextToken();
-        wxString lineWithoutComments;
+    wxASSERT_MSG(m_wxMathML.Length() > 64000,
+                 _("Compiler-Bug? wxMathml.lisp is shorter than expected!"));
+  } else {
+    wxLogMessage(_("Reading the Lisp part of wxMaxima from the file %s"),
+                 Get_MathML_Filename().mb_str());
+    wxFileInputStream input(Get_MathML_Filename());
+    wxTextInputStream textIn(input);
+    wxString line;
 
-        bool stringIs = false;
-        wxChar lastChar = wxS('\n');
-        wxString::const_iterator ch = line.begin();
-        while (ch < line.end()) {
-            // Remove formatting spaces
-            if (((lastChar == '\n') && ((*ch == ' ') || (*ch == '\t'))))
-                ++ch;
-            else {
-                // Handle backslashes that might escape double quotes
-                if (*ch == wxS('\\')) {
-                    lineWithoutComments += *ch;
-                    ++ch;
-                } else {
-                    // Handle strings
-                    if (*ch == wxS('\"'))
-                        stringIs = !stringIs;
-
-                    // Handle comments
-                    if ((*ch == wxS(';')) && (!stringIs))
-                        break;
-                }
-                lineWithoutComments += *ch;
-                lastChar = *ch;
-                ++ch;
-            }
-        }
-        m_maximaCMD += lineWithoutComments + " ";
+    while (!input.Eof()) {
+      line = textIn.ReadLine();
+      m_wxMathML += line + wxS("\n");
     }
-    if (!Get_MathML_Filename().IsEmpty())
-        wxASSERT_MSG(m_maximaCMD.Length() > 54000,
-                     _("Bug: After removing the whitespace wxMathml.lisp is "
-                       "shorter than expected!"));
-    m_maximaCMD = wxS(":lisp-quiet ") + m_maximaCMD + "\n";
+  }
+  wxStringTokenizer lines(m_wxMathML, wxS("\n"));
+  while (lines.HasMoreTokens()) {
+    wxString line = lines.GetNextToken();
+    wxString lineWithoutComments;
 
-    return m_maximaCMD;
+    bool stringIs = false;
+    wxChar lastChar = wxS('\n');
+    wxString::const_iterator ch = line.begin();
+    while (ch < line.end()) {
+      // Remove formatting spaces
+      if (((lastChar == '\n') && ((*ch == ' ') || (*ch == '\t'))))
+        ++ch;
+      else {
+        // Handle backslashes that might escape double quotes
+        if (*ch == wxS('\\')) {
+          lineWithoutComments += *ch;
+          ++ch;
+        } else {
+          // Handle strings
+          if (*ch == wxS('\"'))
+            stringIs = !stringIs;
+
+          // Handle comments
+          if ((*ch == wxS(';')) && (!stringIs))
+            break;
+        }
+        lineWithoutComments += *ch;
+        lastChar = *ch;
+        ++ch;
+      }
+    }
+    m_maximaCMD += lineWithoutComments + " ";
+  }
+  if (!Get_MathML_Filename().IsEmpty())
+    wxASSERT_MSG(m_maximaCMD.Length() > 54000,
+                 _("Bug: After removing the whitespace wxMathml.lisp is "
+                   "shorter than expected!"));
+  m_maximaCMD = wxS(":lisp-quiet ") + m_maximaCMD + "\n";
+
+  return m_maximaCMD;
 }
 wxString wxMathML::m_maximaCMD;
 wxString wxMathML::m_wxMathML_file;

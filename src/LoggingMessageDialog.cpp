@@ -24,8 +24,8 @@
 
 int LoggingMessageBox(const wxString &message, const wxString &caption,
                       int style, wxWindow *parent, int x, int y) {
-    wxString logString = message;
-    logString.Replace(wxS("%"), wxS("%%"));
-    wxLogMessage(logString);
-    return wxMessageBox(message, caption, style, parent, x, y);
+  wxString logString = message;
+  logString.Replace(wxS("%"), wxS("%%"));
+  wxLogMessage(logString);
+  return wxMessageBox(message, caption, style, parent, x, y);
 }

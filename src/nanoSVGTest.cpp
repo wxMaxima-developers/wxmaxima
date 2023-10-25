@@ -41,8 +41,8 @@
 #include "nanoSVG/nanosvgrast.h"
 
 int main(int argc, char* argv[]) {
-    struct NSVGimage* image;
-    image = nsvgParseFromFile("test.svg", "px", 96);
-    return 0;
+  struct NSVGimage* image;
+  image = nsvgParseFromFile("test.svg", "px", 96);
+  return 0;
 }
 

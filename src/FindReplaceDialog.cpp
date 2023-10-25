@@ -33,54 +33,54 @@ FindReplaceDialog::FindReplaceDialog(wxWindow *parent,
                                      FindReplacePane::FindReplaceData *data,
                                      const wxString &title,
                                      FindReplaceDialog **pointerToDialogue, int style)
-    : wxDialog(parent, wxID_ANY, title, wxDefaultPosition, wxDefaultSize,
-               style) {
-    m_pointerToDialogue = pointerToDialogue;
-    if(m_pointerToDialogue != NULL)
-        *m_pointerToDialogue = this;
-    m_contents = new FindReplacePane(this, data);
-    wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
-    vbox->Add(m_contents, wxSizerFlags().Expand());
-    SetSizerAndFit(vbox);
-    m_activateDuringConstruction = true;
-    // Remember how wide the user wanted the dialogue to be the last time it was
-    // used.
-    if (m_windowPos != wxPoint(-1, -1))
-        SetPosition(m_windowPos);
-    if (m_windowSize.x > 0)
-        SetSize(wxSize(m_windowSize.x, GetSize().y));
-    Connect(wxEVT_ACTIVATE, wxActivateEventHandler(FindReplaceDialog::OnActivate),
-            NULL, this);
-    Connect(wxEVT_CHAR_HOOK, wxKeyEventHandler(FindReplaceDialog::OnKeyDown),
-            NULL, this);
+  : wxDialog(parent, wxID_ANY, title, wxDefaultPosition, wxDefaultSize,
+             style) {
+  m_pointerToDialogue = pointerToDialogue;
+  if(m_pointerToDialogue != NULL)
+    *m_pointerToDialogue = this;
+  m_contents = new FindReplacePane(this, data);
+  wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
+  vbox->Add(m_contents, wxSizerFlags().Expand());
+  SetSizerAndFit(vbox);
+  m_activateDuringConstruction = true;
+  // Remember how wide the user wanted the dialogue to be the last time it was
+  // used.
+  if (m_windowPos != wxPoint(-1, -1))
+    SetPosition(m_windowPos);
+  if (m_windowSize.x > 0)
+    SetSize(wxSize(m_windowSize.x, GetSize().y));
+  Connect(wxEVT_ACTIVATE, wxActivateEventHandler(FindReplaceDialog::OnActivate),
+          NULL, this);
+  Connect(wxEVT_CHAR_HOOK, wxKeyEventHandler(FindReplaceDialog::OnKeyDown),
+          NULL, this);
 }
 
 FindReplaceDialog::~FindReplaceDialog()
 {
-    if(m_pointerToDialogue)
+  if(m_pointerToDialogue)
     {
-        *m_pointerToDialogue = NULL;
+      *m_pointerToDialogue = NULL;
     }
 }
 
 void FindReplaceDialog::OnKeyDown(wxKeyEvent &event) {
-    if (event.GetKeyCode() == WXK_ESCAPE)
-        Close();
-    else
-        event.Skip();
+  if (event.GetKeyCode() == WXK_ESCAPE)
+    Close();
+  else
+    event.Skip();
 }
 
 void FindReplaceDialog::OnActivate(wxActivateEvent &event) {
-    event.Skip();
-    if(m_activateDuringConstruction)
+  event.Skip();
+  if(m_activateDuringConstruction)
     {
-        m_activateDuringConstruction = false;
-        return;
+      m_activateDuringConstruction = false;
+      return;
     }
-    if (event.GetActive())
-        SetTransparent(255);
-    else
-        SetTransparent(180);
+  if (event.GetActive())
+    SetTransparent(255);
+  else
+    SetTransparent(180);
 }
 
 wxSize FindReplaceDialog::m_windowSize = wxSize(-1, -1);

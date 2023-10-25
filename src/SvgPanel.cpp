@@ -27,30 +27,30 @@
 #include "SvgPanel.h"
 
 SvgPanel::SvgPanel(wxWindow *parent, unsigned char *data, std::size_t len)
-    : wxPanel(parent), m_bitmap(this, data, len) {
-    int ppi;
+  : wxPanel(parent), m_bitmap(this, data, len) {
+  int ppi;
 #if wxCHECK_VERSION(3, 1, 1)
-    wxDisplay display;
+  wxDisplay display;
 
-    int display_idx = wxDisplay::GetFromWindow(GetParent());
-    if (display_idx < 0)
-        ppi = 72;
-    else
-        ppi = wxDisplay(display_idx).GetPPI().x;
+  int display_idx = wxDisplay::GetFromWindow(GetParent());
+  if (display_idx < 0)
+    ppi = 72;
+  else
+    ppi = wxDisplay(display_idx).GetPPI().x;
 #else
-    ppi = wxGetDisplayPPI().x;
+  ppi = wxGetDisplayPPI().x;
 #endif
-    ppi = wxMax(ppi, 75);
+  ppi = wxMax(ppi, 75);
 
-    SetMinSize(wxSize(ppi * 4, ppi * 4));
+  SetMinSize(wxSize(ppi * 4, ppi * 4));
 
-    Connect(wxEVT_PAINT, wxPaintEventHandler(SvgPanel::paintEvent), NULL, this);
-    Connect(wxEVT_SIZE, wxSizeEventHandler(SvgPanel::OnSize), NULL, this);
+  Connect(wxEVT_PAINT, wxPaintEventHandler(SvgPanel::paintEvent), NULL, this);
+  Connect(wxEVT_SIZE, wxSizeEventHandler(SvgPanel::OnSize), NULL, this);
 }
 
 void SvgPanel::Load(unsigned char *data, std::size_t len) {
-    m_bitmap = SvgBitmap(this, data, len);
-    Refresh();
+  m_bitmap = SvgBitmap(this, data, len);
+  Refresh();
 }
 
 /*
@@ -60,14 +60,14 @@ void SvgPanel::Load(unsigned char *data, std::size_t len) {
  */
 
 void SvgPanel::paintEvent(wxPaintEvent &WXUNUSED(evt)) {
-    // depending on your system you may need to look at double-buffered dcs
-    wxMemoryDC dcm;
-    wxPaintDC dc(this);
-    wxSize newSize(dc.GetSize());
+  // depending on your system you may need to look at double-buffered dcs
+  wxMemoryDC dcm;
+  wxPaintDC dc(this);
+  wxSize newSize(dc.GetSize());
 
-    if (newSize != m_bitmap.GetSize())
-        m_bitmap.SetSize(newSize);
-    dc.DrawBitmap(m_bitmap, 0, 0, false);
+  if (newSize != m_bitmap.GetSize())
+    m_bitmap.SetSize(newSize);
+  dc.DrawBitmap(m_bitmap, 0, 0, false);
 }
 
 /*
@@ -75,6 +75,6 @@ void SvgPanel::paintEvent(wxPaintEvent &WXUNUSED(evt)) {
  * So when the user resizes the image panel the image should be resized too.
  */
 void SvgPanel::OnSize(wxSizeEvent &event) {
-    Refresh();
-    event.Skip();
+  Refresh();
+  event.Skip();
 }
