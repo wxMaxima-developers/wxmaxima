@@ -64,7 +64,7 @@ echo -e "\033[33;1mExtracting Coverity Scan Analysis Tool...\033[0m"
 tar xzf coverity_tool.tgz
 
 
-TOOL_DIR=$(find -type d -name 'cov-analysis*')
+TOOL_DIR=$(find . -type d -name 'cov-analysis*')
 export PATH=$TOOL_DIR/bin:$PATH
 
 # Build

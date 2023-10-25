@@ -35,45 +35,45 @@
 
 wxBitmap ArtProvider::GetImage(wxWindow *win, wxString name, int width,
                                unsigned const char *data, std::size_t dataLen) {
-    wxBitmap bmp = wxArtProvider::GetBitmap(name, wxART_TOOLBAR,
-                                            wxSize(width * 4, width * 4));
-    wxImage img;
+  wxBitmap bmp = wxArtProvider::GetBitmap(name, wxART_TOOLBAR,
+                                          wxSize(width * 4, width * 4));
+  wxImage img;
 
-    if (bmp.IsOk()) {
-        img = bmp.ConvertToImage();
-    }
-    if (img.IsOk())
+  if (bmp.IsOk()) {
+    img = bmp.ConvertToImage();
+  }
+  if (img.IsOk())
     {
-        img.Rescale(width, width, wxIMAGE_QUALITY_BICUBIC);
+      img.Rescale(width, width, wxIMAGE_QUALITY_BICUBIC);
 #if defined __WXOSX__
-        int scaleFactor = win->GetContentScaleFactor();
-        if(scaleFactor < 1)
-            scaleFactor = 1;
-        if(scaleFactor > 16)
-            scaleFactor = 16;
+      int scaleFactor = win->GetContentScaleFactor();
+      if(scaleFactor < 1)
+        scaleFactor = 1;
+      if(scaleFactor > 16)
+        scaleFactor = 16;
 
-        bmp = wxBitmap(img, wxBITMAP_SCREEN_DEPTH, scaleFactor);
+      bmp = wxBitmap(img, wxBITMAP_SCREEN_DEPTH, scaleFactor);
 #else
-        bmp = wxBitmap(img, wxBITMAP_SCREEN_DEPTH);
+      bmp = wxBitmap(img, wxBITMAP_SCREEN_DEPTH);
 #endif
     }
-    if(!bmp.IsOk())
-        bmp = SvgBitmap(win, data, dataLen, width, width);
+  if(!bmp.IsOk())
+    bmp = SvgBitmap(win, data, dataLen, width, width);
 
 #if defined __WXOSX__
-    int scaleFactor = win->GetContentScaleFactor();
-    if(scaleFactor < 1)
-        scaleFactor = 1;
-    if(scaleFactor > 16)
-        scaleFactor = 16;
+  int scaleFactor = win->GetContentScaleFactor();
+  if(scaleFactor < 1)
+    scaleFactor = 1;
+  if(scaleFactor > 16)
+    scaleFactor = 16;
 #endif
 
-    if(!bmp.IsOk())
+  if(!bmp.IsOk())
 #if defined __WXOSX__
 
-        bmp = wxBitmap(wxSize(width, width), wxBITMAP_SCREEN_DEPTH, scaleFactor);
+    bmp = wxBitmap(wxSize(width, width), wxBITMAP_SCREEN_DEPTH, scaleFactor);
 #else
-    bmp = wxBitmap(wxSize(width, width), wxBITMAP_SCREEN_DEPTH);
+  bmp = wxBitmap(wxSize(width, width), wxBITMAP_SCREEN_DEPTH);
 #endif
-    return bmp;
+  return bmp;
 }

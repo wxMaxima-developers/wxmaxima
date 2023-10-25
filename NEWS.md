@@ -51,7 +51,7 @@
 
 # 23.05.1
  * Updated the Russian and Italian translation.
- * Process the command line option --maxima=<str>.
+ * Process the command line option `--maxima=<str>`.
  * Resolved several possibilities to crash the config dialogue 
    (#1774, #1766)
  * Correctly calculate the worksheet size in the background (#1766)
@@ -302,5 +302,5 @@
  * A Russian translation update by OlesyaGerasimenko
  * Many small bugfixes including a crash on loading files with images.
 
-# Changes in older wxMaxima versions you can find here:
+# Changes in older wxMaxima versions you can find here
 <https://github.com/wxMaxima-developers/wxmaxima/blob/Version-21.02.0/NEWS.md>
