@@ -191,7 +191,7 @@ Configuration::Configuration(wxDC *dc, InitOpt options) :
   m_lineWidth_em = 88;
   m_workSheet = NULL;
   SetBackgroundBrush(*wxWHITE_BRUSH);
-  ResetAllToDefaults(options);
+  ResetAllToDefaults();
   ReadConfig();
   wxString operators(wxS("\u221A\u22C0\u22C1\u22BB\u22BC\u22BD\u00AC\u222b"
                          "\u2264\u2265\u2211\u2260+-*/^:=#'!()[]{}"));
@@ -238,7 +238,7 @@ wxSize Configuration::GetPPI() const {
   return ppi;
 }
 
-void Configuration::ResetAllToDefaults(InitOpt options) {
+void Configuration::ResetAllToDefaults() {
   m_printMargin_Top = 10;
   m_printMargin_Bot = 10;
   m_printMargin_Left = 10;
