@@ -430,7 +430,35 @@ Plotting</h2>
 <p>Plotting (having fundamentally to do with graphics) is a place where a graphical user interface will have to provide some extensions to the original program.</p>
 <h3><a class="anchor" id="autotoc_md66"></a>
 Embedding a plot into the worksheet</h3>
-<p><em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> normally instructs the external program <em>gnuplot</em> to open a separate window for every diagram it creates. Since many times it is convenient to embed graphs into the worksheet instead <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> provides its own set of plot functions that don’t differ from the corresponding <em>maxima</em> functions save in their name: They are all prefixed by a “wx”. For example <code>wxplot2d</code> corresponds to <code>plot2d</code>, <code>wxplot3d</code> corresponds to <code>plot3d</code>, <code>wxdraw</code> corresponds to <code>draw</code> and <code>wxhistogram</code> corresponds to <code>histogram</code>.</p>
+<p><em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> normally instructs the external program <em>gnuplot</em> to open a separate window for every diagram it creates. Since many times it is convenient to embed graphs into the worksheet instead <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> provides its own set of plot functions that don’t differ from the corresponding <em>maxima</em> functions save in their name: They are all prefixed by a “wx”.</p>
+<p>The following plotting functions have wx-counterparts:</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone"><a class="el" href="classwxMaxima.html">wxMaxima</a>'s plot function   </th><th class="markdownTableHeadNone"><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s plot function    </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>wxplot2d()</code>   </td><td class="markdownTableBodyNone"><a href="https://maxima.sourceforge.io/docs/manual/maxima_singlepage.html#plot2d">plot2d</a>    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>wxplot3d()</code>   </td><td class="markdownTableBodyNone"><a href="https://maxima.sourceforge.io/docs/manual/maxima_singlepage.html#plot3d">plot3d</a>    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>wxdraw2d()</code>   </td><td class="markdownTableBodyNone"><a href="https://maxima.sourceforge.io/docs/manual/maxima_singlepage.html#draw2d">draw2d</a>    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>wxdraw3d()</code>   </td><td class="markdownTableBodyNone"><a href="https://maxima.sourceforge.io/docs/manual/maxima_singlepage.html#draw3d">draw2d</a>    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>wxdraw()</code>   </td><td class="markdownTableBodyNone"><a href="https://maxima.sourceforge.io/docs/manual/maxima_singlepage.html#draw">draw</a>    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>wximplicit_plot()</code>   </td><td class="markdownTableBodyNone"><a href="https://maxima.sourceforge.io/docs/manual/maxima_singlepage.html#implicit_plot">implicit_plot</a>    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>wxhistogram()</code>   </td><td class="markdownTableBodyNone"><a href="https://maxima.sourceforge.io/docs/manual/maxima_singlepage.html#histogram">histogram</a>    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>wxscatterplot()</code>   </td><td class="markdownTableBodyNone"><a href="https://maxima.sourceforge.io/docs/manual/maxima_singlepage.html#scatterplot">scatterplot</a>    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>wxbarsplot()</code>   </td><td class="markdownTableBodyNone"><a href="https://maxima.sourceforge.io/docs/manual/maxima_singlepage.html#barsplot">barsplot</a>    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>wxpiechart()</code>   </td><td class="markdownTableBodyNone"><a href="https://maxima.sourceforge.io/docs/manual/maxima_singlepage.html#piechart">piechart</a>    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>wxboxplot()</code>   </td><td class="markdownTableBodyNone"><a href="https://maxima.sourceforge.io/docs/manual/maxima_singlepage.html#boxplot">boxplot</a>   </td></tr>
+</table>
+<p>If a <code>wxm</code>-file is read by (console) <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>, these functions are ignored (and printed as output, as other unknown functions in <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>).</p>
 <h3><a class="anchor" id="autotoc_md67"></a>
 Making embedded plots bigger or smaller</h3>
 <p>As noted above, the configure dialog provides a way to change the default size plots created which sets the starting value of <code>wxplot_size</code>. The plotting routines of <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> respect this variable that specifies the size of a plot in pixels. It can always be queried or used to set the size of the following plots:</p>
