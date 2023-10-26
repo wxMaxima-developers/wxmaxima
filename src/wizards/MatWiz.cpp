@@ -88,13 +88,13 @@ void MatWiz::do_layout() {
     wxStaticText *text;
     grid_sizer_2->Add(20, 20, 0, 0);
     for (long i = 1; i <= m_width; i++) {
-        text = new wxStaticText(this, -1, wxString::Format(wxS("%d"), i),
+        text = new wxStaticText(this, -1, wxString::Format(wxS("%ld"), i),
                                 wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE);
         grid_sizer_2->Add(text, 0,
                           wxALIGN_CENTER_HORIZONTAL | wxALIGN_CENTER_VERTICAL, 0);
     }
     for (long j = 0; j < m_height; j++) {
-        text = new wxStaticText(this, -1, wxString::Format(wxS("%d"), j + 1),
+        text = new wxStaticText(this, -1, wxString::Format(wxS("%ld"), j + 1),
                                 wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE);
         grid_sizer_2->Add(text, 0,
                           wxALIGN_CENTER_HORIZONTAL | wxALIGN_CENTER_VERTICAL, 0);
