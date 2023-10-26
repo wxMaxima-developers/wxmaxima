@@ -2,6 +2,7 @@
 file(READ "${INPUT_FILE}" FILE_CONTENTS)
 string(REPLACE "nsvg" "wxm_nsvg" FILE_CONTENTS "${FILE_CONTENTS}")
 string(REPLACE "NSVG" "wxm_NSVG" FILE_CONTENTS "${FILE_CONTENTS}")
+string(REPLACE "nanosvg.h" "nanosvg_private.h" FILE_CONTENTS "${FILE_CONTENTS}")
 # string(REPLACE "nsvg__parseXML" "wxm_nsvg__parseXML" FILE_CONTENTS "${FILE_CONTENTS}")
 # string(REPLACE "nsvgCreate" "wxm_nsvgCreate" FILE_CONTENTS "${FILE_CONTENTS}")
 # string(REPLACE "nsvgDelete" "wxm_nsvgDelete" FILE_CONTENTS "${FILE_CONTENTS}")
