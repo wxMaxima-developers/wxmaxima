@@ -53,15 +53,6 @@ endif()
 
 
 ##
-# Internal Options
-#
-
-if(CMAKE_VERSION VERSION_LESS "3.16")
-    unset(CMAKE_UNITY_BUILD)
-    unset(CMAKE_UNITY_BUILD_BATCH_SIZE)
-endif()
-
-##
 # CMake Policies
 #
 

@@ -30,7 +30,7 @@ jobs:
   #     - name: Configure wxMaxima
   #       run: |
   #            mkdir ../build-wxm
-  #            cmake -S . -B ../build-wxm -G Ninja -DCMAKE_INSTALL_PREFIX=. -DCMAKE_UNITY_BUILD_BATCH_SIZE=8 -DWXM_UNIT_TESTS=YES -DCMAKE_UNITY_BUILD=YES
+  #            cmake -S . -B ../build-wxm -G Ninja -DCMAKE_INSTALL_PREFIX=. -DWXM_UNIT_TESTS=YES
 
   #     - name: Check Info.plist
   #       run: |
@@ -69,7 +69,7 @@ jobs:
       - name: Configure wxMaxima
         run: |
              mkdir build-wxm
-             cmake -S . -B build-wxm -G Ninja -DCMAKE_INSTALL_PREFIX=. -DCMAKE_UNITY_BUILD_BATCH_SIZE=8 -DWXM_UNIT_TESTS=YES -DCMAKE_UNITY_BUILD=YES
+             cmake -S . -B build-wxm -G Ninja -DCMAKE_INSTALL_PREFIX=. -DWXM_UNIT_TESTS=YES
       - name: Check Info.plist
         run: |
              ls -l build-wxm/src/Info.plist
@@ -172,7 +172,7 @@ jobs:
              mkdir ../build-wxm
              export CXXFLAGS=-I/opt/local/include
              export LDFLAGS=-I/opt/local/lib
-             cmake -S . -B ../build-wxm -G Ninja -DCMAKE_INSTALL_PREFIX=. -DCMAKE_UNITY_BUILD_BATCH_SIZE=8 -DWXM_UNIT_TESTS=YES -DCMAKE_UNITY_BUILD=YES -DWXM_DISABLE_WEBVIEW=YES
+             cmake -S . -B ../build-wxm -G Ninja -DCMAKE_INSTALL_PREFIX=. -DWXM_UNIT_TESTS=YES -DWXM_DISABLE_WEBVIEW=YES
       - name: Compile wxMaxima
         run: |
              cmake --build ../build-wxm

@@ -30,7 +30,7 @@ jobs:
              mkdir build
              touch build build/build.ninja
              cd build
-             cmake -G "Ninja" -DCMAKE_UNITY_BUILD=YES -DCMAKE_BUILD_TYPE=debug -DCMAKE_UNITY_BUILD_BATCH_SIZE=8 -DWXM_UNIT_TESTS=YES ..
+             cmake -G "Ninja" -DCMAKE_BUILD_TYPE=debug -DWXM_UNIT_TESTS=YES ..
              cd ..
       - name: compile
         run: |
@@ -72,7 +72,7 @@ jobs:
              mkdir build
              touch build build/build.ninja
              cd build
-             cmake -G "Ninja" -DCMAKE_UNITY_BUILD=YES -DCMAKE_BUILD_TYPE=debug -DCMAKE_UNITY_BUILD_BATCH_SIZE=8 -DWXM_UNIT_TESTS=YES -DWXM_DISABLE_WEBVIEW=ON ..
+             cmake -G "Ninja" -DCMAKE_BUILD_TYPE=debug -DWXM_UNIT_TESTS=YES -DWXM_DISABLE_WEBVIEW=ON ..
              cd ..
       - name: compile
         run: |

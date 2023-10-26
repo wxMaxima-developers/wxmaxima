@@ -71,7 +71,7 @@ jobs:
             new-item build -itemtype directory
             new-item build\Release -itemtype directory
             cd build
-            cmake -DwxWidgets_ROOT_DIR="../../wxWidgets-${{env.WXVERSION}}" -DwxWidgets_LIB_DIR="../../wxWidgets-${{env.WXVERSION}}/lib/gcc_lib" -DwxWidgets_CONFIGURATION=mswu -DCMAKE_BUILD_TYPE=release -G "MinGW Makefiles" -DwxWidgets_USE_DEBUG=false -DwxWidgets_USE_UNICODE=true -DwxWidgets_USE_STATIC=true -G Ninja -DCMAKE_UNITY_BUILD=YES ..
+            cmake -DwxWidgets_ROOT_DIR="../../wxWidgets-${{env.WXVERSION}}" -DwxWidgets_LIB_DIR="../../wxWidgets-${{env.WXVERSION}}/lib/gcc_lib" -DwxWidgets_CONFIGURATION=mswu -DCMAKE_BUILD_TYPE=release -G "MinGW Makefiles" -DwxWidgets_USE_DEBUG=false -DwxWidgets_USE_UNICODE=true -DwxWidgets_USE_STATIC=true -G Ninja ..
             cd ..
             cd ..
       - name: Compile wxMaxima
