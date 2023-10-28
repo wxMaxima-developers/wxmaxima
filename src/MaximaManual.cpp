@@ -328,7 +328,7 @@ void MaximaManual::SaveManualAnchorsToCache(wxString maximaHtmlDir,
   if (num <= 50) {
     wxLogMessage(_("Found only %li keywords in maxima's "
                    "manual. Not caching them to disc."),
-                 num);
+                 (long)num);
     return;
   }
   wxXmlAttribute *htmlDir =
@@ -383,8 +383,7 @@ void MaximaManual::SaveManualAnchorsToCache(wxString maximaHtmlDir,
 
   xmlDoc.AppendToProlog(commentNode);
   wxLogMessage(_("Trying to cache the list of subjects the "
-                 "manual contains in the file %s."),
-               saveName.utf8_str());
+                 "manual contains in the file %s."), saveName.utf8_str());
   xmlDoc.Save(saveName);
 }
 
@@ -464,9 +463,9 @@ bool MaximaManual::LoadManualAnchorsFromXML(const wxXmlDocument &xmlDocument,
     entry = entry->GetNext();
   }
   wxLogMessage(_("Found %li anchors, URLs (individual files): %li, URLs (singlepage): %li"),
-               anchors,
-               urls_FilePerChapter,
-               urls_SinglePage);
+               (long)anchors,
+               (long)urls_FilePerChapter,
+               (long)urls_SinglePage);
   return !m_helpFileURLs_singlePage.empty();
 }
 
