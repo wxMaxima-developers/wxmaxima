@@ -1,3 +1,11 @@
+engines:
+  duplication:
+    minTokenMatch: 70
+    skipLexicalErrors: false
+    ignoreLiterals: false
+    ignoreIdentifiers: false
+    ignoreAnnotations: false
+    ignoreUsings: false
 exclude_paths:
   - ".appveyor/**"
   - ".coverity/**"
