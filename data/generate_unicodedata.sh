@@ -2,7 +2,7 @@
 
 # convert Unicodedata.txt to C Sourcecode (using xxd -i)
 
-UNICODEURL="https://www.unicode.org/Public/15.0.0/ucd/UnicodeData.txt"
+UNICODEURL="https://www.unicode.org/Public/15.1.0/ucd/UnicodeData.txt"
 
 cat >UnicodeData.h <<END
 /* Automatically generated file using generate_unicodedata.sh                           */
