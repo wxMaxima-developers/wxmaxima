@@ -1,20 +1,17 @@
-wxMaxima Release Checklist
-==========================
+# wxMaxima Release Checklist
 
-GitHub documentation about managing releases:
----------------------------------------------
+## GitHub documentation about managing releases:
 
 <https://docs.github.com/en/github/administering-a-repository/managing-releases-in-a-repository>
 
-wxMaxima (additional) steps:
-----------------------------
+## wxMaxima (additional) steps:
 
 - Does the current git version compile? Do the checks on GitHub work?
 - Enter the new version number into CMakeLists.txt
 - Update the version numbers in the 'docker-wxmaxima' repository (update_versions.sh)
 - Update NEWS.md in order to announce the new version on <https://freshcode.club/>
 - Update data/io.github.wxmaxima_developers.wxMaxima.appdata.xml with the information
-  about the new release. Most html tags are forbidden by flatpack or appImage 
+  about the new release. Most html tags are forbidden by flatpack or appImage
   builders.
 - Validate the appdata file with:
   appstream-util validate data/io.github.wxmaxima_developers.wxMaxima.appdata.xml

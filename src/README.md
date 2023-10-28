@@ -1,13 +1,12 @@
-Src
-===
+# Src
 
 This directory contains the following things:
 
 C++ and header files for wxMaxima.
 wxMaxima is mostly programmed in C++, C++14 is the required C++ standard.
 
-wxMathml.lisp
--------------
+## wxMathml.lisp
+
 The lisp part of wxMaxima. Note that wxMathml.lisp isn't automatically
 used directly by the program: Files a program depends on may fail to be
 shipped along with the program or be installed in a folder that is logical

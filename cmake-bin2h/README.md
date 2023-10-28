@@ -1,11 +1,12 @@
 These files were downloaded from: https://github.com/sivachandran/cmake-bin2h
 (Git commit: 3777f88)
 
-
 # bin2h.cmake
+
 Pure CMake function to convert any file into C/C++ header, implemented with only CMake commands.
 
 ## Example Usage
+
 ```cmake
 include(bin2h.cmake)
 ...

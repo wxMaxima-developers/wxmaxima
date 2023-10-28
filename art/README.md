@@ -10,8 +10,6 @@ replace.
 The toolbar icons "arrow-up-square.svg" and "eye-slash.svg" are
 from the Bootstrap icons (https://icons.getbootstrap.com/).
 
-
-
 wxMaxima icons (wxmac.icns, maximaicon.ico, io.github.wxmaxima_developers.wxMaxima.png) were created
 by Sven Hodapp and are licensed under GPL.
 io.github.wxmaxima_developers.wxMaxima.svg was an attempt to make a scaleable vector image that
