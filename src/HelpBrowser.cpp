@@ -197,7 +197,7 @@ void HelpBrowser::JumpToKeyword(wxString keyword) {
   Layout();
 }
 
-void HelpBrowser::SelectKeywords(std::vector<wxString> keywords) {
+void HelpBrowser::SelectKeywords(const std::vector<wxString> &keywords) {
   //  wxWindowUpdateLocker speedUp(this);
   if (keywords.size() == 0)
     return;

@@ -43,6 +43,7 @@
 int main(int argc, char* argv[]) {
   struct NSVGimage* image;
   image = nsvgParseFromFile("test.svg", "px", 96);
+  WXUNUSED(image);
   return 0;
 }
 

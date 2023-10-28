@@ -55,7 +55,7 @@ public:
 #ifdef USE_WEBVIEW
     void SetURL(wxString url);
     void JumpToKeyword(wxString keyword);
-    void SelectKeywords(std::vector<wxString> keywords);
+    void SelectKeywords(const std::vector<wxString> &keywords);
     wxString GetKeyword(wxWindowID id);
 
 private:
