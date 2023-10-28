@@ -65,22 +65,19 @@ $(function() {
 <div class="title"><a class="el" href="classwxMaxima.html">wxMaxima</a> </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="mainpage"></a></p>
-<h1><a class="anchor" id="autotoc_md23"></a>
+<div class="textblock"><p><a class="anchor" id="mainpage"></a> </p>
+<h1><a class="anchor" id="autotoc_md25"></a>
 What is this file about?</h1>
 <p>This is the documentation for the C++ code of <a class="el" href="classwxMaxima.html">wxMaxima</a>. If you are looking on information how to use the program instead you might want to consult the online manual instead that is shipped with the program and (after compilation of the program) can be found at <a href="../../info/wxmaxima.html">info/wxmaxima.html</a> in the directory the contents of the tarball or the git repository the code is in.</p>
-<h1><a class="anchor" id="autotoc_md24"></a>
+<h1><a class="anchor" id="autotoc_md26"></a>
 What is wxMaxima?</h1>
 <p><a class="el" href="classwxMaxima.html">wxMaxima</a> is a full-featured graphical frontend for maxima, a full-featured computer algebra system that will do numeric calculations, if one wants to. But it is specialized in manipulating and solving symbolic equations.</p>
-<div class="image">
-<img src="wxMaxima.gif" alt=""/>
-<div class="caption">
-A random screenshot of wxMaxima</div></div>
-<h1><a class="anchor" id="autotoc_md25"></a>
+<p>\image html wxMaxima.gif "A random screenshot of wxMaxima"</p>
+<h1><a class="anchor" id="autotoc_md27"></a>
 How does wxMaxima work?</h1>
 <p>The main things that are important to know are:</p>
 <ul>
-<li><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> is a command-line program that can use a network connection in order to communicate with a frontend.<ul>
+<li><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> is a command-line program that can use a network connection in order to communicate with a frontend.</li>
 <li>In data/wxmathml.lisp <a class="el" href="classwxMaxima.html">wxMaxima</a> teaches <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> to talk in a XML dialect: <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s normal output format is human-readable. But it can be tricked into containing strings that look like input or output labels and it doesn't guarantee that there is a way to transform output from <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> into a valid input again that has exactly the same meaning.</li>
 <li>The worksheet is defined in the class <a class="el" href="classWorksheet.html" title="The canvas that contains the spreadsheet the whole program is about.">Worksheet</a>.</li>
 <li>It is organized in GroupCells that each can contain a cell containing a list of cells containing a label and the user input and a list of cells containing the output label and 2d math from maxima.</li>
@@ -88,9 +85,7 @@ How does wxMaxima work?</h1>
 <li>For every mathematical function, image or piece of text a <a class="el" href="classCell.html" title="The base class all cell types the worksheet can consist of are derived from.">Cell</a> there is a specialized MathCell type that "knows" how to draw it, how to convert it to a string or how to convert it to Mathml, OOML, RTF or any other data format <a class="el" href="classwxMaxima.html">wxMaxima</a> supports. There is, for example, an <a class="el" href="classAbsCell.html" title="A cell that represents an abs(x) block.">AbsCell</a> for the <code>abs()</code> command, an <a class="el" href="classIntCell.html" title="This class represents an integral.">IntCell</a> representing <code>integrate</code>, a <a class="el" href="classParenCell.html" title="The class that represents parenthesis that are wrapped around text.">ParenCell</a> for parenthesis and a <a class="el" href="classFunCell.html" title="FunCell represents a maxima function no special visual representation exists for.">FunCell</a> for all the functions no special handling is needed for.</li>
 <li><a class="el" href="classConfiguration.html" title="The configuration storage for the current worksheet.">Configuration</a> is something like a central object keeping the configuration needed for displaying cells.</li>
 </ul>
-</li>
-</ul>
-<h1><a class="anchor" id="autotoc_md26"></a>
+<h1><a class="anchor" id="autotoc_md28"></a>
 How to get documentation for the code?</h1>
 <ul>
 <li>Install <a href="https://www.doxygen.nl">Doxygen</a>,</li>
@@ -102,7 +97,7 @@ How to get documentation for the code?</h1>
 <p class="startli">afterwards.</p>
 </li>
 </ul>
-<h1><a class="anchor" id="autotoc_md27"></a>
+<h1><a class="anchor" id="autotoc_md29"></a>
 Where to start reading?</h1>
 <p>This naturally depends on what you want to achieve.</p>
 <ul>
@@ -112,7 +107,7 @@ Where to start reading?</h1>
 <li>The menus are generated by <a class="el" href="classwxMaximaFrame.html" title="The frame containing the menu and the sidebars.">wxMaximaFrame</a> and most of the menu actions are handled by the class <a class="el" href="classwxMaxima.html">wxMaxima</a>.</li>
 </ul>
 <p>One of the most important concepts that are important to know is that everything that is displayed in</p>
-<h1><a class="anchor" id="autotoc_md28"></a>
+<h1><a class="anchor" id="autotoc_md30"></a>
 Things you have to know</h1>
 <ul>
 <li>C++ provides the magic that allows to attach objects of all imaginable cell types to a list of the type MathCell *</li>
@@ -123,23 +118,25 @@ Things you have to know</h1>
 <li>GroupCells allow to move their children to a separate list that isn't displayed (which enables folding of chapters).</li>
 </ul>
 </li>
-<li>Methods that operate on lists typically start processing the list from the element they were called from. This means that they only will work as expected (in other words: process the complete list) only if they are called for the first element of the list. <a class="el" href="classwxMaxima.html">wxMaxima</a> currently makes sure that this requirement is met by treating the first element of a list as the list itself. Searching the first element of a given list would be simple, though: <pre class="fragment"> MathCell *ListStart=this;
- while(ListStart-&gt;m_previous) ListStart = ListStart-&gt;m_previous;
-</pre> </li>
+<li>Methods that operate on lists typically start processing the list from the element they were called from. This means that they only will work as expected (in other words: process the complete list) only if they are called for the first element of the list. <a class="el" href="classwxMaxima.html">wxMaxima</a> currently makes sure that this requirement is met by treating the first element of a list as the list itself. Searching the first element of a given list would be simple, though:</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md29"></a>
+<div class="fragment"><div class="line">MathCell *ListStart=this;</div>
+<div class="line">while(ListStart-&gt;m_previous) ListStart = ListStart-&gt;m_previous;</div>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md31"></a>
 Breaking long 2D objects into lines</h1>
 <p><a class="el" href="classwxMaxima.html">wxMaxima</a> can break some 2D objects into lines if they otherwise would be longer wider than the screen. This is done in <a class="el" href="classGroupCell.html#abe633a4a13444b279fb3def1a319b5b7" title="Break this cell into lines.">GroupCell::BreakLines</a>.</p>
 <p>Objects that are broken apart this way technically aren't displayed any more. Instead the lists of objects they contain are. If an object isn't broken apart it is displayed directly and automatically handles displaying all of its contents.</p>
-<h1><a class="anchor" id="autotoc_md30"></a>
+<h1><a class="anchor" id="autotoc_md32"></a>
 Naming rules</h1>
 <p>Keeping the code more or less homogenous increases the readability. In order to archieve that <a class="el" href="classwxMaxima.html">wxMaxima</a> uses a few naming rules:</p>
 <ul>
 <li>The names of member variables are prefixed with <code>m_</code> for "member".</li>
 <li>The names of member functions (aka methods) are written in CamelCase.</li>
-<li>The names of enums do not really matter as they are rarely used and if they are they are used in context where it is obvious that they name an enum type so there aren't any rules for the names of enums right now. </li>
+<li>The names of enums do not really matter as they are rarely used and if they are they are used in context where it is obvious that they name an enum type so there aren't any rules for the names of enums right now.</li>
 </ul>
-</div></div><!-- PageDoc -->
+<p>\def <code>WXUNUSED</code> Tell the C++ compiler that it is OK that one parameter is unused.</p>
+<div class="fragment"><div class="line">#define WXUNUSED(x) x</div>
+</div><!-- fragment --> </div></div><!-- PageDoc -->
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
