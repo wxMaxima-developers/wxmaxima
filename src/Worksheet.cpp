@@ -1671,7 +1671,7 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event) {
         wxMenu *labelWidthMenu = new wxMenu();
         for(int i = 3; i < EventIDs::NumberOfLabelWidths(); i++)
           {
-            labelWidthMenu->AppendRadioItem(EventIDs::popid_labelwidth1 + i, wxString::Format(wxS("%li em"), (long) i));
+            labelWidthMenu->AppendRadioItem(EventIDs::popid_labelwidth1 + i, wxString::Format(wxS("%li em"), (long)i));
             if(i == m_configuration->LabelWidth())
               labelWidthMenu->Check(EventIDs::popid_labelwidth1 + i, true);
           }
@@ -6131,7 +6131,7 @@ bool Worksheet::ExportToWXMX(const wxString &file, bool markAsSaved) {
         // If not we omit it.
         if (ActiveCellNumber >= 0)
           xmlText << wxString::Format(wxS(" activecell=\"%li\""),
-                                      ActiveCellNumber);
+                                      (long)ActiveCellNumber);
 
         // Save the variables list for the "variables" sidepane.
         std::vector<wxString> variables = m_variablesPane->GetVarnames();

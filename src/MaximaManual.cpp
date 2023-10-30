@@ -276,7 +276,7 @@ void MaximaManual::CompileHelpFileAnchors(wxString maximaHtmlDir,
       {
         wxLogMessage(_("Have only %li keyword anchors at the end of parsing the maxima manual => "
                        "Not caching the result of using the built-in keyword list"),
-                     foundAnchorsTotal);
+                     (long)foundAnchorsTotal);
         LoadBuiltInManualAnchors();
       }
     else

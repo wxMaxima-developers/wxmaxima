@@ -2261,7 +2261,7 @@ bool wxMaxima::StartServer() {
   do {
     wxLogMessage(_("Trying to start the socket a maxima on the local "
                    "machine can connect to on port %i"),
-                 m_port);
+                 (int)m_port);
 #if wxUSE_IPV6wxUSE_IPV6
     wxIPV6address addr;
 #else
@@ -2270,7 +2270,7 @@ bool wxMaxima::StartServer() {
     if (!addr.LocalHost())
       wxLogMessage(_("Cannot set the communication address to localhost."));
     if (!addr.Service(m_port))
-      wxLogMessage(_("Cannot set the communication port to %i."), m_port);
+      wxLogMessage(_("Cannot set the communication port to %i."), (int)m_port);
     m_server = std::unique_ptr<wxSocketServer,
                                ServerDeleter>(
                                               new wxSocketServer(addr, wxSOCKET_WAITALL_WRITE));
@@ -2363,7 +2363,7 @@ bool wxMaxima::StartMaxima(bool force) {
 
     wxString command = GetCommand();
     if (!command.IsEmpty()) {
-      command.Append(wxString::Format(wxS(" -s %d "), m_port));
+      command.Append(wxString::Format(wxS(" -s %d "), (int)m_port));
 
       m_process = new wxProcess(this, m_maxima_process_id);
       m_process->Redirect();
@@ -2622,29 +2622,29 @@ void wxMaxima::KillMaxima(bool logMessage) {
   if (m_maximaTempDir != wxEmptyString) {
     SuppressErrorDialogs logNull;
     if (wxFileExists(m_maximaTempDir + wxS("/maxout") +
-                     wxString::Format("%li.gnuplot", m_pid)))
+                     wxString::Format("%li.gnuplot", (long)m_pid)))
       wxRemoveFile(m_maximaTempDir + wxS("/maxout") +
-                   wxString::Format("%li.gnuplot", m_pid));
+                   wxString::Format("%li.gnuplot", (long)m_pid));
     if (wxFileExists(m_maximaTempDir + wxS("/data") +
-                     wxString::Format("%li.gnuplot", m_pid)))
+                     wxString::Format("%li.gnuplot", (long)m_pid)))
       wxRemoveFile(m_maximaTempDir + wxS("/data") +
-                   wxString::Format("%li.gnuplot", m_pid));
+                   wxString::Format("%li.gnuplot", (long)m_pid));
     if (wxFileExists(m_maximaTempDir + wxS("/maxout") +
-                     wxString::Format("%li.xmaxima", m_pid)))
+                     wxString::Format("%li.xmaxima", (long)m_pid)))
       wxRemoveFile(m_maximaTempDir + wxS("/maxout") +
-                   wxString::Format("%li.xmaxima", m_pid));
+                   wxString::Format("%li.xmaxima", (long)m_pid));
     if (wxFileExists(m_maximaTempDir + wxS("/maxout_") +
-                     wxString::Format("%li.gnuplot", m_pid)))
+                     wxString::Format("%li.gnuplot", (long)m_pid)))
       wxRemoveFile(m_maximaTempDir + wxS("/maxout_") +
-                   wxString::Format("%li.gnuplot", m_pid));
+                   wxString::Format("%li.gnuplot", (long)m_pid));
     if (wxFileExists(m_maximaTempDir + wxS("/data_") +
-                     wxString::Format("%li.gnuplot", m_pid)))
+                     wxString::Format("%li.gnuplot", (long)m_pid)))
       wxRemoveFile(m_maximaTempDir + wxS("/data_") +
-                   wxString::Format("%li.gnuplot", m_pid));
+                   wxString::Format("%li.gnuplot", (long)m_pid));
     if (wxFileExists(m_maximaTempDir + wxS("/maxout_") +
-                     wxString::Format("%li.xmaxima", m_pid)))
+                     wxString::Format("%li.xmaxima", (long)m_pid)))
       wxRemoveFile(m_maximaTempDir + wxS("/maxout_") +
-                   wxString::Format("%li.xmaxima", m_pid));
+                   wxString::Format("%li.xmaxima", (long)m_pid));
   }
   m_pid = -1;
 }
@@ -5760,7 +5760,7 @@ long long wxMaxima::GetMaximaCpuTime() {
   }
 #endif
   int maximaJiffies = 0;
-  wxString statFileName = wxString::Format("/proc/%li/stat", m_pid);
+  wxString statFileName = wxString::Format("/proc/%li/stat", (long)m_pid);
   if (wxFileExists(statFileName)) {
     wxFileInputStream input(statFileName);
     if (input.IsOk()) {
@@ -5865,7 +5865,7 @@ bool wxMaxima::AutoSave() {
   wxString oldFilename = m_worksheet->m_currentFile;
   m_tempfileName =
     wxStandardPaths::Get().GetTempDir() +
-    wxString::Format("/untitled_%li_%li.wxmx", wxGetProcessId(), m_pid);
+    wxString::Format("/untitled_%li_%li.wxmx", (long)wxGetProcessId(), (long)m_pid);
 
   if (m_configuration.AutoSaveAsTempFile() ||
       m_worksheet->m_currentFile.IsEmpty()) {
