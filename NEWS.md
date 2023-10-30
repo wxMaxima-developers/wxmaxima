@@ -11,6 +11,8 @@
 - If the worksheet isn't empty dropping a file on the worksheed
   no more closes the currently open file
 - Try harder to kill maxima on closing it (#1824)
+- Menu items for displaying the internal representation
+- Better display of diff(), if multiplication dots are enabled (#1825)
 
 # 23.10.0
 

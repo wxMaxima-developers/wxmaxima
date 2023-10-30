@@ -375,6 +375,8 @@ public:
     static const wxWindowIDRef menu_math_as_1D_ASCII;
     static const wxWindowIDRef menu_math_as_2D_ASCII;
     static const wxWindowIDRef menu_math_as_graphics;
+    static const wxWindowIDRef internalRepresentation;
+    static const wxWindowIDRef wxMathML;
     static const wxWindowIDRef menu_logexpand_false;
     static const wxWindowIDRef menu_logexpand_true;
     static const wxWindowIDRef menu_logexpand_all;

@@ -66,7 +66,7 @@ public:
 
     void Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) override;
 
-    void SetFracStyle(FracType style) { m_fracStyle = style; }
+    void SetFracStyle(FracType style);
 
     //! Answers the question if this is an operator by returning "true".
     bool IsOperator() const override { return true; }

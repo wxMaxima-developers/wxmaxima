@@ -953,7 +953,8 @@ Submit bug reports by following the 'New issue' link on that page."))
 ;; Creates the XML tags for quotients
 (defun wxxml-mquotient (x l r)
   (if (or (null (cddr x)) (cdddr x)) (return-from wxxml-mquotient (wxxml-function x l r)))
-  (setq l (wxxml (cadr x) (append l '("<mfrac><mrow>")) nil 'mparen 'mparen)
+  (setq l (wxxml (cadr x) (append l '("<mfrac lisp=\"wxxml-mquotient\"><mrow>")) nil
+                 'mparen 'mparen)
 	r (wxxml (caddr x) (list "</mrow><mrow>")
 		 (append '("</mrow></mfrac>")r) 'mparen 'mparen))
   (append l r))
@@ -1130,7 +1131,7 @@ Submit bug reports by following the 'New issue' link on that page."))
 
 (defun wxxml-choose (x l r)
   `(,@l
-    "<p print=\"no\"><mfrac line=\"no\"><mrow>"
+    "<p print=\"no\"><mfrac lisp=\"wxxml-choose\" line=\"no\"><mrow>"
     ,@(wxxml (cadr x) nil nil 'mparen 'mparen)
     "</mrow><mrow>"
     ,@(wxxml (caddr x) nil nil 'mparen 'mparen)
@@ -1257,7 +1258,7 @@ Submit bug reports by following the 'New issue' link on that page."))
 	   (every #'integerp (odds (cddr x) 0))
 	   (every #'atom (odds (cddr x) 1)))
       (append l (wxxml-d-abbrev x) r)
-      (wxxml (wxxml-d x) (append l '("<d>"))
+      (wxxml (wxxml-d x) (append l '("<d lisp=\"wxxml-derivative\">"))
 	     (append '("</d>") r) 'mparen 'mparen)))
 
 (defun $derivabbrev (a)

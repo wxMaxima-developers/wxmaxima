@@ -766,6 +766,13 @@ void wxMaximaFrame::SetupMenu() {
                                           _("2D equations using ASCII Art"));
   m_equationTypeMenuMenu->AppendRadioItem(EventIDs::menu_math_as_graphics, _("in 2D"),
                                           _("Nice Graphical Equations"));
+  m_equationTypeMenuMenu->AppendSeparator();
+  m_equationTypeMenuMenu->Append(EventIDs::internalRepresentation, _("Show lisp representation"),
+                                          _("Display an expression as maxima's internal "
+                                            "lisp representation"));
+  m_equationTypeMenuMenu->Append(EventIDs::wxMathML, _("Show XML representation"),
+                                          _("Display an expression as wxMaxima's internal "
+                                            "XML representation"));
   m_equationTypeMenuMenu->Check(EventIDs::menu_math_as_graphics, true);
 
   m_viewMenu->Append(wxWindow::NewControlId(), _("Display equations"), m_equationTypeMenuMenu,

@@ -1236,6 +1236,10 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
           wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
   Connect(EventIDs::menu_math_as_graphics, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
+  Connect(EventIDs::internalRepresentation, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
+  Connect(EventIDs::wxMathML, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
   Connect(EventIDs::menu_noAutosubscript, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
   Connect(EventIDs::menu_defaultAutosubscript, wxEVT_MENU,
@@ -6353,6 +6357,18 @@ void wxMaxima::EditMenu(wxCommandEvent &event) {
   }
   else if(event.GetId() == EventIDs::menu_math_as_graphics) {
     MenuCommand(wxS("set_display('xml)$"));
+  }
+  else if(event.GetId() == EventIDs::internalRepresentation) {
+    CommandWiz(_("Display expression in maxima's internal representation"),
+               wxEmptyString, wxEmptyString,
+               wxS("?print(#1#)$"), _("Expression"), expr,
+               wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::wxMathML) {
+    CommandWiz(_("Display expression in wxMaxima's internal representation"),
+               wxEmptyString, wxEmptyString,
+               wxS("printf(false,\"~m\", #1#);"), _("Expression"), expr,
+               wxEmptyString);
   }
   else if(event.GetId() == EventIDs::menu_noAutosubscript) {
     MenuCommand(wxS("wxsubscripts: false$"));

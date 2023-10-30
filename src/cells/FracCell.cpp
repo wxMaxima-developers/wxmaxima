@@ -57,6 +57,24 @@ FracCell::FracCell(GroupCell *group, const FracCell &cell)
 
 DEFINE_CELL(FracCell)
 
+void FracCell::SetFracStyle(FracType style)
+{ m_fracStyle = style;
+  if(style == FC_DIFF)
+    {
+      Cell *multsign = Denom();
+      if(multsign)
+        multsign = multsign->GetNext();
+      if(multsign)
+        {
+          if ((multsign->GetValue() == wxS("\u00B7")) || (multsign->GetValue() == wxS("*")))
+            multsign->Hide(true);
+          else
+            wxLogMessage(_("diff(): Cannot find the multiplication sign I should hide"));
+        }
+    }
+}
+
+
 void FracCell::MakeDivideCell() {
     if (m_divideOwner)
         return;
