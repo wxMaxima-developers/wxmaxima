@@ -80,7 +80,9 @@ public:
     std::unique_ptr<GroupCell> CopyList() const;
     ~GroupCell();
 
+    // cppcheck-suppress duplInheritedMember
     GroupCell *first() const { return dynamic_cast<GroupCell*>(Cell::first()); }
+    // cppcheck-suppress duplInheritedMember
     GroupCell *last() const { return dynamic_cast<GroupCell*>(Cell::last()); }
 
     const wxString &GetAnswer(int answer) const;
@@ -184,8 +186,11 @@ public:
     void AppendInput(std::unique_ptr<Cell> &&cell);
 
     //! Get the previous GroupCell in the list
+    // cppcheck-suppress duplInheritedMember
     GroupCell *GetPrevious() const { return dynamic_cast<GroupCell *>(Cell::GetPrevious()); }
+
     //! Get the next GroupCell in the list.
+    // cppcheck-suppress duplInheritedMember
     GroupCell *GetNext() const { return dynamic_cast<GroupCell *>(Cell::GetNext()); }
 
     static wxString TexEscapeOutputCell(wxString Input);
