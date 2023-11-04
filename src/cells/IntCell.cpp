@@ -239,10 +239,10 @@ wxString IntCell::ToTeX() const {
     else
         s += wxS(" ");
 
-    s += wxS("{\\left. ");
     s += m_base->ListToTeX();
+    s += wxS("{\\, ");
     s += m_var->ListToTeX();
-    s += wxS("\\right.}");
+    s += wxS("}");
 
     return s;
 }
