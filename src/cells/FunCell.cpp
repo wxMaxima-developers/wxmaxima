@@ -98,26 +98,38 @@ wxString FunCell::ToMatlab() const {
 }
 
 wxString FunCell::ToTeX() const {
-    if (IsBrokenIntoLines())
-        return wxEmptyString;
+    if (IsBrokenIntoLines()) return wxEmptyString;
 
-    wxString s;
+    if (m_nameCell->ToString() == wxS("sin")) return wxS("\\sin{") + m_argCell->ListToTeX() + wxS("}");
+    if (m_nameCell->ToString() == wxS("cos")) return wxS("\\cos{") + m_argCell->ListToTeX() + wxS("}");
+    if (m_nameCell->ToString() == wxS("tan")) return wxS("\\tan{") + m_argCell->ListToTeX() + wxS("}");
+    if (m_nameCell->ToString() == wxS("cot")) return wxS("\\cot{") + m_argCell->ListToTeX() + wxS("}");
+    if (m_nameCell->ToString() == wxS("sec")) return wxS("\\sec{") + m_argCell->ListToTeX() + wxS("}");
+    if (m_nameCell->ToString() == wxS("csc")) return wxS("\\csc{") + m_argCell->ListToTeX() + wxS("}");
 
-    if ((m_nameCell->ToString() == wxS("sin")) ||
-        (m_nameCell->ToString() == wxS("cos")) ||
-        (m_nameCell->ToString() == wxS("cosh")) ||
-        (m_nameCell->ToString() == wxS("sinh")) ||
-        (m_nameCell->ToString() == wxS("log")) ||
-        (m_nameCell->ToString() == wxS("cot")) ||
-        (m_nameCell->ToString() == wxS("sec")) ||
-        (m_nameCell->ToString() == wxS("csc")) ||
-        (m_nameCell->ToString() == wxS("tan")))
-        s = wxS("\\") + m_nameCell->ToString() + wxS("{") + m_argCell->ListToTeX() +
-            wxS("}");
-    else
-        s = m_nameCell->ListToTeX() + m_argCell->ListToTeX();
+    if (m_nameCell->ToString() == wxS("sinh")) return wxS("\\sinh{") + m_argCell->ListToTeX() + wxS("}");
+    if (m_nameCell->ToString() == wxS("cosh")) return wxS("\\cosh{") + m_argCell->ListToTeX() + wxS("}");
+    if (m_nameCell->ToString() == wxS("tanh")) return wxS("\\tanh{") + m_argCell->ListToTeX() + wxS("}");
+    if (m_nameCell->ToString() == wxS("coth")) return wxS("\\coth{") + m_argCell->ListToTeX() + wxS("}");
+    if (m_nameCell->ToString() == wxS("sech")) return wxS("\\operatorname{sech}{") + m_argCell->ListToTeX() + wxS("}");
+    if (m_nameCell->ToString() == wxS("csch")) return wxS("\\operatorname{csch}{") + m_argCell->ListToTeX() + wxS("}");
 
-    return s;
+    if (m_nameCell->ToString() == wxS("asin")) return wxS("\\operatorname{asin}{") + m_argCell->ListToTeX() + wxS("}");
+    if (m_nameCell->ToString() == wxS("acos")) return wxS("\\operatorname{acos}{") + m_argCell->ListToTeX() + wxS("}");
+    if (m_nameCell->ToString() == wxS("atan")) return wxS("\\operatorname{atan}{") + m_argCell->ListToTeX() + wxS("}");
+    if (m_nameCell->ToString() == wxS("acot")) return wxS("\\operatorname{acot}{") + m_argCell->ListToTeX() + wxS("}");
+    if (m_nameCell->ToString() == wxS("asec")) return wxS("\\operatorname{asec}{") + m_argCell->ListToTeX() + wxS("}");
+    if (m_nameCell->ToString() == wxS("acsc")) return wxS("\\operatorname{acsc}{") + m_argCell->ListToTeX() + wxS("}");
+
+    if (m_nameCell->ToString() == wxS("asinh")) return wxS("\\operatorname{asinh}{") + m_argCell->ListToTeX() + wxS("}");
+    if (m_nameCell->ToString() == wxS("acosh")) return wxS("\\operatorname{acosh}{") + m_argCell->ListToTeX() + wxS("}");
+    if (m_nameCell->ToString() == wxS("atanh")) return wxS("\\operatorname{atanh}{") + m_argCell->ListToTeX() + wxS("}");
+    if (m_nameCell->ToString() == wxS("acoth")) return wxS("\\operatorname{acoth}{") + m_argCell->ListToTeX() + wxS("}");
+    if (m_nameCell->ToString() == wxS("asech")) return wxS("\\operatorname{asech}{") + m_argCell->ListToTeX() + wxS("}");
+    if (m_nameCell->ToString() == wxS("acsch")) return wxS("\\operatorname{acsch}{") + m_argCell->ListToTeX() + wxS("}");
+
+    if (m_nameCell->ToString() == wxS("log")) return wxS("\\log{") + m_argCell->ListToTeX() + wxS("}");
+    return m_nameCell->ListToTeX() + m_argCell->ListToTeX();
 }
 
 wxString FunCell::ToXML() const {
