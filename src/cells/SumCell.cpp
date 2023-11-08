@@ -40,7 +40,6 @@ SumCell::SumCell(GroupCell *group, Configuration *config, sumStyle style,
       m_paren(std::make_unique<ParenCell>(group, config, std::move(base))),
       m_var(under->Copy(group)), m_start(MakeStart(under.get())),
       m_over(std::move(over)), m_under(std::move(under)), m_sumStyle(style) {
-    InitBitFields();
     if (!m_over)
         m_over = std::make_unique<TextCell>(group, config);
     wxASSERT(Base());

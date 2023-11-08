@@ -446,25 +446,14 @@ protected:
 
 //** Bitfield objects (1 bytes)
 //**
-    void InitBitFields()
-        { // Keep the initialization order below same as the order
-            // of bit fields in this class!
-            m_autoAnswer = false;
-            m_inEvaluationQueue = false;
-            m_lastInEvaluationQueue = false;
-            m_updateConfusableCharWarnings = true;
-            m_suppressTooltipMarker = false;
-            m_cellsAppended = false;
-        }
-
     //! Does this GroupCell automatically fill in the answer to questions?
-    bool m_autoAnswer : 1 /* InitBitFields */;
-    bool m_inEvaluationQueue : 1 /* InitBitFields */;
-    bool m_lastInEvaluationQueue : 1 /* InitBitFields */;
-    bool m_updateConfusableCharWarnings : 1 /* InitBitFields */;
+    bool m_autoAnswer CPP20BITFIELD(1) = false;
+    bool m_inEvaluationQueue CPP20BITFIELD(1) = false;
+    bool m_lastInEvaluationQueue CPP20BITFIELD(1) = false;
+    bool m_updateConfusableCharWarnings CPP20BITFIELD(1) = false;
     //! Suppress the yellow ToolTip marker?
-    bool m_suppressTooltipMarker : 1 /* InitBitFields */;
-    bool m_cellsAppended : 1; /* InitBitFields */
+    bool m_suppressTooltipMarker CPP20BITFIELD(1) = true;
+    bool m_cellsAppended CPP20BITFIELD(1) =false;
 
     static wxString m_lookalikeChars;
 };

@@ -33,7 +33,6 @@
 
 MatrCell::MatrCell(GroupCell *group, Configuration *config)
     : Cell(group, config) {
-    InitBitFields();
 }
 
 MatrCell::MatrCell(GroupCell *group, const MatrCell &cell)

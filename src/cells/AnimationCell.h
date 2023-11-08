@@ -196,15 +196,8 @@ private:
 
 //** Bitfield objects (1 bytes)
 //**
-    void InitBitFields()
-        { // Keep the initialization order below same as the order
-            // of bit fields in this class!
-            m_animationRunning = true;
-            m_drawBoundingBox = false;
-        }
-
-    bool m_animationRunning : 1 /* InitBitFields */;
-    bool m_drawBoundingBox : 1 /* InitBitFields */;
+    bool m_animationRunning CPP20BITFIELD(1) = true;
+    bool m_drawBoundingBox CPP20BITFIELD(1) = false;
     wxString m_wxmxFile;
 
     int GetImageBorderWidth() const override { return m_imageBorderWidth; }

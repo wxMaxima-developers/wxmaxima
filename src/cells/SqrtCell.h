@@ -88,13 +88,6 @@ private:
     int m_signSize = 50;
     int m_signTop = m_signSize / 2;
     int m_signType = 0;
-
-//** Bitfield objects (0 bytes)
-//**
-    static void InitBitFields()
-        { // Keep the initialization order below same as the order
-            // of bit fields in this class!
-        }
 };
 
 #endif // SQRTCELL_H

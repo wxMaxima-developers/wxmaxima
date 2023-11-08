@@ -40,14 +40,6 @@ public:
     VisiblyInvalidCell(GroupCell *group, const VisiblyInvalidCell &cell);
 //  std::unique_ptr<Cell> Copy(GroupCell *cell) const override;
     const CellTypeInfo &GetInfo() override;
-
-private:
-//** Bitfield objects (0 bytes)
-//**
-    static void InitBitFields()
-        { // Keep the initialization order below same as the order
-            // of bit fields in this class!
-        }
 };
 
 #endif // VISIBLYINVALIDCELL_H

@@ -39,7 +39,6 @@ NamedBoxCell::NamedBoxCell(GroupCell *group, Configuration *config,
       m_innerCell(std::move(inner)),
       m_boxname(std::make_unique<TextCell>(m_group, m_configuration, name, TS_STRING))
 {
-    InitBitFields();
     SetStyle(TS_VARIABLE);
 }
 

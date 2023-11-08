@@ -38,7 +38,6 @@ ParenCell::ParenCell(GroupCell *group, Configuration *config,
       m_open(std::make_unique<TextCell>(group, config, wxS("("))),
       m_innerCell(std::move(inner)),
       m_close(std::make_unique<TextCell>(group, config, wxS(")"))) {
-    InitBitFields();
     // If there is a contents it doesn't need to start with a multiplication
     // dot.
     if(m_innerCell)

@@ -46,7 +46,6 @@ IntervalCell::IntervalCell(GroupCell *group, Configuration *config,
       m_closeBracket(std::make_unique<TextCell>(
                          group, config, m_rightBracketOpensRight ? wxS("[") : wxS("]"))),
       m_close(std::make_unique<TextCell>(group, config, wxS(")"))) {
-    InitBitFields();
     SetStyle(TS_VARIABLE);
 
     // Tell the first of our inner cells not to begin with a multiplication dot.

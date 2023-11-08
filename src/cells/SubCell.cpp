@@ -36,7 +36,6 @@ SubCell::SubCell(GroupCell *group, Configuration *config,
                  std::unique_ptr<Cell> &&base, std::unique_ptr<Cell> &&index)
     : Cell(group, config), m_baseCell(std::move(base)),
       m_indexCell(std::move(index)) {
-    InitBitFields();
     SetStyle(TS_VARIABLE);
 }
 
