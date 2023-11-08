@@ -77,6 +77,13 @@ private:
     std::unique_ptr<Cell> m_close;
     // The pointers above point to inner cells and must be kept contiguous.
 
+//** Bitfield objects (0 bytes)
+//**
+    static void InitBitFields()
+        { // Keep the initialization order below same as the order
+            // of bit fields in this class!
+        }
+
     void Recalculate(AFontSize fontsize) override;
 
     void Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) override;

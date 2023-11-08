@@ -29,20 +29,7 @@
 #ifndef CELL_H
 #define CELL_H
 
-/*! Create a bitfield entry with initializer if C++20 is available
-
-  @KubaO has found out that wxMaxima is faster if we save the number of
-  bits a cell is long. But in C++<20 C++ doesn't allow initializers for
-  bit fields.
- */
-#if __cplusplus > 202001L
-#define CPP20BITFIELD(x)  :x 
-#else
-#define CPP20BITFIELD(x)
-#endif
-
 #include "../precomp.h"
-#include "Version.h"
 #include "CellPtr.h"
 #include "CellIterators.h"
 #include "Configuration.h"
@@ -998,19 +985,41 @@ protected:
     TextStyle m_textStyle = TS_MATH;
 
 private:
+//** Bitfield objects (2 bytes)
+//**
+    void InitBitFields()
+        { // Keep the initialization order below same as the order
+            // of bit fields in this class!
+            m_ownsToolTip = false;
+            m_bigSkip = false;
+            m_isBrokenIntoLines = false;
+            m_isHidden = false;
+            m_isHidableMultSign = false;
+            m_suppressMultiplicationDot = false;
+            m_recalculateWidths = true;
+            m_breakLine = false;
+            m_forceBreakLine = false;
+            m_highlight = false;
+        }
+
+    // In the boolean bit fields below, InitBitFields is an indication that
+    // the InitBitFields() method initializes a given field. It should be
+    // only added once such initialization is in place. It makes it easier
+    // to verify that all bit fields are initialized.
+
     //! Whether the cell owns its m_tooltip - otherwise it points to a static string.
-    bool m_ownsToolTip CPP20BITFIELD(1) = false;
-    bool m_bigSkip CPP20BITFIELD(1) = false;
-    bool m_isBrokenIntoLines CPP20BITFIELD(1) = false;
-    bool m_isHidden CPP20BITFIELD(1) = false;
-    bool m_isHidableMultSign CPP20BITFIELD(1) = false;
-    bool m_suppressMultiplicationDot CPP20BITFIELD(1) = false;
+    bool m_ownsToolTip : 1 /* InitBitFields */;
+    bool m_bigSkip : 1 /* InitBitFields */;
+    bool m_isBrokenIntoLines : 1 /* InitBitFields */;
+    bool m_isHidden : 1 /* InitBitFields */;
+    bool m_isHidableMultSign : 1 /* InitBitFields */;
+    bool m_suppressMultiplicationDot : 1 /* InitBitFields */;
     //! true, if this cell clearly needs recalculation
-    bool m_recalculateWidths CPP20BITFIELD(1) = true;
+    bool m_recalculateWidths : 1 /* InitBitFields */;
     //! Are we allowed to add a line break before this cell?
-    bool m_breakLine CPP20BITFIELD(1) = false;
-    bool m_forceBreakLine CPP20BITFIELD(1) = false;
-    bool m_highlight CPP20BITFIELD(1) = false;
+    bool m_breakLine : 1 /* InitBitFields */;
+    bool m_forceBreakLine : 1 /* InitBitFields */;
+    bool m_highlight : 1 /* InitBitFields */;
 
 protected:
     friend class InnerCellIterator;

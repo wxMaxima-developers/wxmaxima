@@ -36,6 +36,7 @@ ListCell::ListCell(GroupCell *group, Configuration *config,
       m_open(std::make_unique<TextCell>(group, config, wxS("["))),
       m_innerCell(std::move(inner)),
       m_close(std::make_unique<TextCell>(group, config, wxS("]"))) {
+    InitBitFields();
     SetStyle(TS_VARIABLE);
 
     // It is valid to construct this cell this with a null inner cell

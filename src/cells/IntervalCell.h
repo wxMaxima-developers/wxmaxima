@@ -96,8 +96,13 @@ protected:
 
 //** Bitfield objects (1 bytes)
 //**
+    void InitBitFields()
+        { // Keep the initialization order below same as the order
+            // of bit fields in this class!
+            m_drawAsAscii = true;
+        }
     //! How to create a big parenthesis sign?
-    bool m_drawAsAscii CPP20BITFIELD(1) = true;
+    bool m_drawAsAscii : 1 /* InitBitFields */;
 };
 
 #endif // INTERVALCELL_H

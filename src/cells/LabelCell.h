@@ -64,6 +64,13 @@ private:
 //** 1-byte objects (1 byte)
 //**
     Configuration::showLabels m_labelChoice_Last = {};
+
+//** Bitfield objects (0 bytes)
+//**
+    static void InitBitFields()
+        { // Keep the initialization order below same as the order
+            // of bit fields in this class!
+        }
 };
 
 #endif // LABELCELL_H

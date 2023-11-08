@@ -38,7 +38,7 @@ TextCell::TextCell(GroupCell *group, Configuration *config,
                    const wxString &text, TextStyle style)
     : Cell(group, config)
 {
-  m_keepPercent_last = m_configuration->CheckKeepPercent();
+    InitBitFields();
     switch (style) {
     case TS_MATH:
         m_type = MC_TYPE_TEXT;
@@ -126,6 +126,7 @@ TextCell::TextCell(GroupCell *group, Configuration *config,
 TextCell::TextCell(GroupCell *group, const TextCell &cell)
     : Cell(group, cell.m_configuration), m_text(cell.m_text),
       m_displayedText(cell.m_displayedText) {
+    InitBitFields();
     m_type = cell.m_type;
     CopyCommonData(cell);
     SetBigSkip(cell.HasBigSkip());

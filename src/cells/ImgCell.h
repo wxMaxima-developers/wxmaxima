@@ -149,8 +149,14 @@ private:
 
 //** Bitfield objects (1 bytes)
 //**
-    bool m_drawRectangle CPP20BITFIELD(1) = true;
-    bool m_drawBoundingBox CPP20BITFIELD(1) = false;
+    void InitBitFields()
+        { // Keep the initialization order below same as the order
+            // of bit fields in this class!
+            m_drawRectangle = true;
+            m_drawBoundingBox = false;
+        }
+    bool m_drawRectangle : 1 /* InitBitFields */;
+    bool m_drawBoundingBox : 1 /* InitBitFields */;
 
     static int s_counter;
 

@@ -37,6 +37,7 @@
 LongNumberCell::LongNumberCell(GroupCell *group, Configuration *config,
                                const wxString &number)
     : TextCell(group, config, number, TS_NUMBER) {
+    InitBitFields();
 }
 
 // cppcheck-suppress uninitMemberVar symbolName=LongNumberCell::m_alt

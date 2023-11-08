@@ -135,8 +135,15 @@ private:
     //! The way the fraction should be displayed
     FracType m_fracStyle = FC_NORMAL;
 
+//** Bitfield objects (1 bytes)
+//**
+    void InitBitFields()
+        { // Keep the initialization order below same as the order
+            // of bit fields in this class!
+            m_inExponent = false;
+        }
     //! Fractions in exponents are shown in their linear form.
-    bool m_inExponent CPP20BITFIELD(1) = false;
+    bool m_inExponent : 1 /* InitBitFields */;
 };
 
 #endif // FRACCELL_H

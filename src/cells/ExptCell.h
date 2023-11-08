@@ -97,8 +97,17 @@ private:
     std::unique_ptr<Cell> m_exptCell;
     std::unique_ptr<Cell> m_close;
     // The pointers above point to inner cells and must be kept contiguous.
+
     int m_expt_yoffset = 0;
-    bool m_isMatrix CPP20BITFIELD(1) = false;
+
+//** Bitfield objects (1 bytes)
+//**
+    void InitBitFields()
+        { // Keep the initialization order below same as the order
+            // of bit fields in this class!
+            m_isMatrix = false;
+        }
+    bool m_isMatrix : 1 /* InitBitFields */;
 };
 
 

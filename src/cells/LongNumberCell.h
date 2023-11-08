@@ -69,6 +69,13 @@ private:
     int m_displayedDigits_old = -1;
     bool m_showAllDigits_old = false;
     bool m_linebreaksInLongLines_old = true;
+
+    //** Bitfield objects (0 bytes)
+    //**
+    static void InitBitFields()
+        { // Keep the initialization order below same as the order
+            // of bit fields in this class!
+        }
 };
 
 #endif // LONGNUMBERCELL_H

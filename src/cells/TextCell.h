@@ -146,11 +146,23 @@ protected:
   wxString m_displayedText;
   std::vector<SizeEntry> m_sizeCache;
 
+//** Bitfield objects (1 bytes)
+//**
+  void InitBitFields()
+    { // Keep the initialization order below same as the order
+      // of bit fields in this class!
+      m_dontEscapeOpeningParenthesis = false;
+      m_promptTooltip = false;
+      m_keepPercent_last = m_configuration->CheckKeepPercent();
+    }
+
   //! Is an ending "(" of a function name the opening parenthesis of the function?
-  bool m_dontEscapeOpeningParenthesis CPP20BITFIELD(x) = false; 
+  bool m_dontEscapeOpeningParenthesis : 1 /* InitBitFields */;
   //! Default to a special tooltip for prompts?
-  bool m_promptTooltip CPP20BITFIELD(x) = false;
-  bool m_keepPercent_last CPP20BITFIELD(x) = false;
+  bool m_promptTooltip : 1 /* InitBitFields */;
+  //! The last known value of CheckKeepPercent
+  bool m_keepPercent_last : 1;
+
 };
 
 #endif // TEXTCELL_H

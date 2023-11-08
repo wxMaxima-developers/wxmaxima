@@ -93,7 +93,14 @@ private:
     int m_charWidth1 = 12, m_charHeight1 = 12;
     int m_signWidth = 12, m_signHeight = 50;
 
-    bool m_print CPP20BITFIELD(1) = true;;
+//** Bitfield objects (1 bytes)
+//**
+    void InitBitFields()
+        { // Keep the initialization order below same as the order
+            // of bit fields in this class!
+            m_print = true;
+        }
+    bool m_print : 1 /* InitBitFields */;
 };
 
 #endif // PARENCELL_H

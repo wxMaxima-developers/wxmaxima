@@ -38,6 +38,7 @@ FunCell::FunCell(GroupCell *group, Configuration *config,
                  std::unique_ptr<Cell> &&name, std::unique_ptr<Cell> &&arg)
     : Cell(group, config), m_nameCell(std::move(name)),
       m_argCell(std::move(arg)) {
+    InitBitFields();
     SetStyle(TS_FUNCTION);
     m_nameCell->SetStyle(TS_FUNCTION);
 }
