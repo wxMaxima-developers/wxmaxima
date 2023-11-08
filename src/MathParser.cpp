@@ -606,14 +606,16 @@ std::unique_ptr<GroupCell> MathParser::GroupCellFromCodeTag(wxXmlNode *node) {
   wxString isAutoAnswer = node->GetAttribute(wxS("auto_answer"), wxS("no"));
   if (isAutoAnswer == wxS("yes"))
     group->SetAutoAnswer(true);
-  int i = 1;
+  size_t i = 1;
   wxString answer;
   wxString question;
-  while (node->GetAttribute(wxString::Format(wxS("answer%i"), i), &answer)) {
-    if (node->GetAttribute(wxString::Format(wxS("question%i"), i), &question))
+  while (node->GetAttribute(wxString::Format(wxS("answer%li"), static_cast<long>(i)),
+                            &answer)) {
+      if (node->GetAttribute(wxString::Format(wxS("question%li"), static_cast<long>(i)),
+                             &question))
       group->SetAnswer(question, answer);
     else
-      group->SetAnswer(wxString::Format(wxS("Question #%i"), i), answer);
+      group->SetAnswer(wxString::Format(wxS("Question #%li"), static_cast<long>(i)), answer);
     i++;
   }
   ParseCommonGroupCellAttrs(node, group);

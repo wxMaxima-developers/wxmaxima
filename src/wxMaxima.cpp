@@ -180,8 +180,9 @@ void wxMaxima::ConfigChanged() {
                                        EscapeForLisp(Dirstructure::Get()->HelpDir()).utf8_str());
 
   m_configCommands += wxString::Format(
-                                       wxS(":lisp-quiet (setq $wxplot_size '((mlist simp) %i %i))\n"),
-                                       m_configuration.DefaultPlotWidth(), m_configuration.DefaultPlotHeight());
+                                       wxS(":lisp-quiet (setq $wxplot_size '((mlist simp) %li %li))\n"),
+                                       static_cast<long>(m_configuration.DefaultPlotWidth()),
+                                       static_cast<long>(m_configuration.DefaultPlotHeight()));
 
   if (m_worksheet->m_currentFile != wxEmptyString) {
     wxString filename(m_worksheet->m_currentFile);
@@ -2264,8 +2265,8 @@ bool wxMaxima::StartServer() {
 
   do {
     wxLogMessage(_("Trying to start the socket a maxima on the local "
-                   "machine can connect to on port %i"),
-                 (int)m_port);
+                   "machine can connect to on port %li"),
+                 static_cast<long>(m_port));
 #if wxUSE_IPV6wxUSE_IPV6
     wxIPV6address addr;
 #else
@@ -2274,7 +2275,7 @@ bool wxMaxima::StartServer() {
     if (!addr.LocalHost())
       wxLogMessage(_("Cannot set the communication address to localhost."));
     if (!addr.Service(m_port))
-      wxLogMessage(_("Cannot set the communication port to %i."), (int)m_port);
+      wxLogMessage(_("Cannot set the communication port to %li."), static_cast<long>(m_port));
     m_server = std::unique_ptr<wxSocketServer,
                                ServerDeleter>(
                                               new wxSocketServer(addr, wxSOCKET_WAITALL_WRITE));
@@ -4894,12 +4895,12 @@ void wxMaxima::OnIdle(wxIdleEvent &event) {
   if (m_updateEvaluationQueueLengthDisplay) {
     m_updateEvaluationQueueLengthDisplay = false;
     if ((m_EvaluationQueueLength > 0) || (m_commandsLeftInCurrentCell >= 1)) {
-      wxString statusLine = wxString::Format(_("%i cells in evaluation queue"),
-                                             m_EvaluationQueueLength);
+      wxString statusLine = wxString::Format(_("%li cells in evaluation queue"),
+                                             static_cast<long>(m_EvaluationQueueLength));
       if (m_commandsLeftInCurrentCell > 1)
         statusLine +=
-          wxString::Format(_("; %i commands left in the current cell"),
-                           m_commandsLeftInCurrentCell - 1);
+          wxString::Format(_("; %li commands left in the current cell"),
+                           static_cast<long>(m_commandsLeftInCurrentCell) - 1);
       StatusText(statusLine, false);
     } else {
       if (m_first) {

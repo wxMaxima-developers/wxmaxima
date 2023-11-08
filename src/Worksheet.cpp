@@ -5322,9 +5322,9 @@ bool Worksheet::ExportToHTML(const wxString &file) {
                 wxS("  <img src=\"") + filename_encoded + wxS("_htmlimg/") +
                 filename_encoded +
                 wxString::Format(
-                                 wxS("_%d.svg\" width=\"%i\" style=\"max-width:90%%;\" "
+                                 wxS("_%d.svg\" width=\"%li\" style=\"max-width:90%%;\" "
                                      "loading=\"lazy\" alt=\""),
-                                 count, svgout.GetSize().x) +
+                                 count, static_cast<long>(svgout.GetSize().x)) +
                 alttext + wxS("\" /><br/>\n");
 
               output << line + "\n";
@@ -5346,10 +5346,10 @@ bool Worksheet::ExportToHTML(const wxString &file) {
                 wxS("  <img src=\"") + filename_encoded + wxS("_htmlimg/") +
                 filename_encoded +
                 wxString::Format(
-                                 wxS("_%d%s\" width=\"%i\" style=\"max-width:90%%;\" "
+                                 wxS("_%d%s\" width=\"%li\" style=\"max-width:90%%;\" "
                                      "loading=\"lazy\" alt=\" "),
                                  count, ext.utf8_str(),
-                                 size.x / m_configuration->BitmapScale() -
+                                 static_cast<long>(size.x) / m_configuration->BitmapScale() -
                                  2 * borderwidth) +
                 alttext + wxS("\" /><br/>\n");
 
@@ -5381,9 +5381,9 @@ bool Worksheet::ExportToHTML(const wxString &file) {
               wxS("  <img src=\"") + filename_encoded + wxS("_htmlimg/") +
               filename_encoded +
               wxString::Format(
-                               wxS("_%d%s\" width=\"%i\" style=\"max-width:90%%;\" "
+                               wxS("_%d%s\" width=\"%li\" style=\"max-width:90%%;\" "
                                    "loading=\"lazy\" alt=\""),
-                               count, ext.utf8_str(), size.x - 2 * borderwidth) +
+                               count, ext.utf8_str(), static_cast<long>(size.x) - 2 * borderwidth) +
               alttext + wxS("\" /><br/>\n");
 
             output << line + "\n";
@@ -8264,8 +8264,10 @@ wxString Worksheet::RTFStart() const {
   for (int i = 1; i < NUMBEROFSTYLES; i++) {
     wxColor color = wxColor(m_configuration->GetColor((TextStyle)i));
     if (color.IsOk())
-      document += wxString::Format(wxS("\\red%i\\green%i\\blue%i;\n"),
-                                   color.Red(), color.Green(), color.Blue());
+      document += wxString::Format(wxS("\\red%li\\green%li\\blue%li;\n"),
+                                   static_cast<long>(color.Red()),
+                                   static_cast<long>(color.Green()),
+                                   static_cast<long>(color.Blue()));
     else
       document += wxString::Format(wxS("\\red%i\\green%i\\blue%i;\n"), 0, 0, 0);
   }

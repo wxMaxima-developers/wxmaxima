@@ -73,7 +73,7 @@ bool Printout::OnPrintPage(int num) {
         return false;
     if (num <= 0)
         return false;
-    //  wxBusyInfo busyInfo(wxString::Format(_("Printing page %i..."),num));
+    //  wxBusyInfo busyInfo(wxString::Format(_("Printing page %i..."), num));
     wxDC *dc = GetDC();
     dc->SetBackground(*wxWHITE_BRUSH);
     dc->Clear();

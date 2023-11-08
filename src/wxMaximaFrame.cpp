@@ -119,8 +119,8 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
   int major = 0;
   int minor = 0;
   wxGetOsVersion(&major, &minor);
-  wxLogMessage(_("OS: %s Version %i.%i"),
-               wxGetOsDescription().utf8_str(), major, minor);
+  wxLogMessage(_("OS: %s Version %li.%li"),
+               wxGetOsDescription().utf8_str(), static_cast<long>(major), static_cast<long>(minor));
 
 #ifdef __WXMOTIF__
   wxLogMessage(_("Running on Motif"));

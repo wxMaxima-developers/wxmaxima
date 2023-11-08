@@ -103,7 +103,9 @@ void ToolBar::UpdateSlider(AnimationCell *cell) {
       m_plotSlider->SetRange(0, cell->Length() - 1);
       m_plotSlider->SetValue(cell->GetDisplayedIndex());
       m_plotSlider->SetToolTip(wxString::Format(
-                                                _("Frame %i of %i"), cell->GetDisplayedIndex() + 1, cell->Length()));
+                                                _("Frame %li of %li"),
+                                                static_cast<long>(cell->GetDisplayedIndex()) + 1,
+                                                static_cast<long>(cell->Length())));
     }
   }
 }
