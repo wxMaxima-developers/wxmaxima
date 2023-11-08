@@ -716,6 +716,17 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <tr class="memitem:a59e4226df2cd88a3f22a3a0534de68b1"><td class="memItemLeft" align="right" valign="top"><a id="a59e4226df2cd88a3f22a3a0534de68b1"></a>
 wxSize&#160;</td><td class="memItemRight" valign="bottom"><b>CalculateTextSize</b> (wxDC *dc, const wxString &amp;text, TextCell::TextIndex const index)</td></tr>
 <tr class="separator:a59e4226df2cd88a3f22a3a0534de68b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4289ee58afab2adc1602ae560c90f690"><td class="memItemLeft" align="right" valign="top"><a id="a4289ee58afab2adc1602ae560c90f690"></a>
+bool m_dontEscapeOpeningParenthesis&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTextCell.html#a4289ee58afab2adc1602ae560c90f690">CPP20BITFIELD</a> (x)</td></tr>
+<tr class="memdesc:a4289ee58afab2adc1602ae560c90f690"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is an ending "(" of a function name the opening parenthesis of the function? <br /></td></tr>
+<tr class="separator:a4289ee58afab2adc1602ae560c90f690"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5395ec997faebc455eed78b83db95724"><td class="memItemLeft" align="right" valign="top"><a id="a5395ec997faebc455eed78b83db95724"></a>
+bool m_promptTooltip&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTextCell.html#a5395ec997faebc455eed78b83db95724">CPP20BITFIELD</a> (x)</td></tr>
+<tr class="memdesc:a5395ec997faebc455eed78b83db95724"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default to a special tooltip for prompts? <br /></td></tr>
+<tr class="separator:a5395ec997faebc455eed78b83db95724"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aad60d7c604f48f402f36abe44263bf79"><td class="memItemLeft" align="right" valign="top"><a id="aad60d7c604f48f402f36abe44263bf79"></a>
+bool m_keepPercent_last&#160;</td><td class="memItemRight" valign="bottom"><b>CPP20BITFIELD</b> (x)</td></tr>
+<tr class="separator:aad60d7c604f48f402f36abe44263bf79"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a57878bfc0ce007d7288bda097eb18f03"><td class="memItemLeft" align="right" valign="top"><a id="a57878bfc0ce007d7288bda097eb18f03"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a57878bfc0ce007d7288bda097eb18f03">BreakUpAndMark</a> ()</td></tr>
 <tr class="memdesc:a57878bfc0ce007d7288bda097eb18f03"><td class="mdescLeft">&#160;</td><td class="mdescRight">Break up the internal cells of this cell, and mark it as broken up. <br /></td></tr>
@@ -760,18 +771,6 @@ wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 <tr class="memitem:a52a50b102b17fcdaca56e883a80fa1ed"><td class="memItemLeft" align="right" valign="top"><a id="a52a50b102b17fcdaca56e883a80fa1ed"></a>
 std::vector&lt; <a class="el" href="structTextCell_1_1SizeEntry.html">SizeEntry</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>m_sizeCache</b></td></tr>
 <tr class="separator:a52a50b102b17fcdaca56e883a80fa1ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a29a7ea98c248a741844dc13dff28c6c3"><td class="memItemLeft" align="right" valign="top"><a id="a29a7ea98c248a741844dc13dff28c6c3"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTextCell.html#a29a7ea98c248a741844dc13dff28c6c3">m_dontEscapeOpeningParenthesis</a>: 1</td></tr>
-<tr class="memdesc:a29a7ea98c248a741844dc13dff28c6c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is an ending "(" of a function name the opening parenthesis of the function? <br /></td></tr>
-<tr class="separator:a29a7ea98c248a741844dc13dff28c6c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abc72edb63ab7cdfcb2739807452d9019"><td class="memItemLeft" align="right" valign="top"><a id="abc72edb63ab7cdfcb2739807452d9019"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTextCell.html#abc72edb63ab7cdfcb2739807452d9019">m_promptTooltip</a>: 1</td></tr>
-<tr class="memdesc:abc72edb63ab7cdfcb2739807452d9019"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default to a special tooltip for prompts? <br /></td></tr>
-<tr class="separator:abc72edb63ab7cdfcb2739807452d9019"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9940c5c893f492e29c32c3e0a049a34a"><td class="memItemLeft" align="right" valign="top"><a id="a9940c5c893f492e29c32c3e0a049a34a"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTextCell.html#a9940c5c893f492e29c32c3e0a049a34a">m_keepPercent_last</a>: 1</td></tr>
-<tr class="memdesc:a9940c5c893f492e29c32c3e0a049a34a"><td class="mdescLeft">&#160;</td><td class="mdescRight">The last known value of CheckKeepPercent. <br /></td></tr>
-<tr class="separator:a9940c5c893f492e29c32c3e0a049a34a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a82735e7fb2d5fd1dbefd3a37ae758b32"><td class="memItemLeft" align="right" valign="top">wxPoint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a82735e7fb2d5fd1dbefd3a37ae758b32">m_currentPoint</a> {-1, -1}</td></tr>
 <tr class="memdesc:a82735e7fb2d5fd1dbefd3a37ae758b32"><td class="mdescLeft">&#160;</td><td class="mdescRight">The point in the work sheet at which this cell begins.  <a href="classCell.html#a82735e7fb2d5fd1dbefd3a37ae758b32">More...</a><br /></td></tr>
 <tr class="separator:a82735e7fb2d5fd1dbefd3a37ae758b32"><td class="memSeparator" colspan="2">&#160;</td></tr>

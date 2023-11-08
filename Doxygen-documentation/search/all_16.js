@@ -1,8 +1,8 @@
 var searchData=
 [
-  ['xmlescape_1585',['XMLescape',['../classCell.html#ab242fd84c7c21108e106abf22bd05780',1,'Cell']]],
-  ['xmlinspector_1586',['XmlInspector',['../classXmlInspector.html',1,'']]],
-  ['xmlinspector_2ecpp_1587',['XmlInspector.cpp',['../XmlInspector_8cpp.html',1,'']]],
-  ['xmlinspector_2eh_1588',['XmlInspector.h',['../XmlInspector_8h.html',1,'']]],
-  ['xytoposition_1589',['XYToPosition',['../classEditorCell.html#a1ce69a1557d3ef113a1fc107c2a5ab98',1,'EditorCell']]]
+  ['xmlescape_1580',['XMLescape',['../classCell.html#ab242fd84c7c21108e106abf22bd05780',1,'Cell']]],
+  ['xmlinspector_1581',['XmlInspector',['../classXmlInspector.html',1,'']]],
+  ['xmlinspector_2ecpp_1582',['XmlInspector.cpp',['../XmlInspector_8cpp.html',1,'']]],
+  ['xmlinspector_2eh_1583',['XmlInspector.h',['../XmlInspector_8h.html',1,'']]],
+  ['xytoposition_1584',['XYToPosition',['../classEditorCell.html#a1ce69a1557d3ef113a1fc107c2a5ab98',1,'EditorCell']]]
 ];
