@@ -1183,7 +1183,7 @@ wxString TextCell::ToRTF() const {
     // Needed for the output of let(a/b,a+1);
     text.Replace(wxS(" --> "), wxS("\u2192"));
     if ((GetTextStyle() == TS_LABEL) || (GetTextStyle() == TS_USERLABEL)) {
-        retval += wxString::Format(wxS("\\cf%i{"), (int)GetTextStyle());
+      retval += wxString::Format(wxS("\\cf%li{"), static_cast<long>(GetTextStyle()));
         retval += RTFescape(text);
         retval += wxS("}\\cf0");
     }

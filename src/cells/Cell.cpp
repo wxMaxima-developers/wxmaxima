@@ -714,9 +714,9 @@ wxString Cell::RTFescape(wxString input, bool MarkDown) {
                 output += ch;
             } else {
                 if (ch < 32768) {
-                    output += wxString::Format("\\u%i?", static_cast<int>(ch));
+                    output += wxString::Format("\\u%li?", static_cast<long>(ch));
                 } else {
-                    output += wxString::Format("\\u%i?", static_cast<int>(ch) - 65536);
+                    output += wxString::Format("\\u%li?", static_cast<long>(ch) - 65536);
                 }
             }
         }

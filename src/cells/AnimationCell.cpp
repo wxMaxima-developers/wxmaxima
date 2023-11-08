@@ -390,17 +390,17 @@ wxString AnimationCell::ToXML() const {
     flags = wxS(" gnuplotSources_gz=\"") + gnuplotSourceFiles + wxS("\"");
     flags += wxS(" gnuplotData_gz=\"") + gnuplotDataFiles + "\"";
     if ((Length() > 0) && (m_images[0] != NULL))
-        flags += wxString::Format(wxS(" ppi=\"%i\""), m_images[0]->GetPPI());
+      flags += wxString::Format(wxS(" ppi=\"%li\""), static_cast<long>(m_images[0]->GetPPI()));
     if (HasHardLineBreak())
         flags += wxS(" breakline=\"true\"");
     if (m_animationRunning)
         flags += wxS(" running=\"true\"");
     else
         flags += wxS(" running=\"false\"");
-    flags += wxString::Format(wxS(" frame=\"%i\""), m_displayed);
+    flags += wxString::Format(wxS(" frame=\"%li\""), static_cast<long>(m_displayed));
 
     if (m_framerate > 0)
-        flags += wxString::Format(wxS(" fr=\"%i\""), GetFrameRate());
+      flags += wxString::Format(wxS(" fr=\"%li\""), static_cast<long>(GetFrameRate()));
     return wxS("\n<slide") + flags + wxS(">") + images + wxS("</slide>");
 }
 

@@ -85,7 +85,7 @@ public:
     // cppcheck-suppress duplInheritedMember
     GroupCell *last() const { return dynamic_cast<GroupCell*>(Cell::last()); }
 
-    const wxString &GetAnswer(int answer) const;
+    const wxString &GetAnswer(size_t answer) const;
     const wxString &GetAnswer(const wxString &question) const;
     //! Does this GroupCell know the answer to any of maxima's questions?
     bool ContainsSavedAnswers() { return !m_knownAnswers.empty(); }

@@ -265,7 +265,7 @@ void AutoComplete::LoadableFiles_BackgroundTask(wxString sharedir) {
     if (maximauserfilesdir.IsOpened())
       maximauserfilesdir.Traverse(userLispIterator);
     int num = m_builtInLoadFiles.size();
-    wxLogMessage(_("Found %i loadable files."), num);
+    wxLogMessage(_("Found %li loadable files."), static_cast<long>(num));
   }
 
   // Prepare a list of all built-in demos of maxima.
@@ -283,7 +283,7 @@ void AutoComplete::LoadableFiles_BackgroundTask(wxString sharedir) {
     if (maximadir.IsOpened())
       maximadir.Traverse(maximaLispIterator);
     int num = m_builtInDemoFiles.size();
-    wxLogMessage(_("Found %i demo files."), num);
+    wxLogMessage(_("Found %li demo files."), static_cast<long>(num));
   }
   std::sort(m_builtInLoadFiles.begin(), m_builtInLoadFiles.end());
   std::sort(m_builtInDemoFiles.begin(), m_builtInDemoFiles.end());

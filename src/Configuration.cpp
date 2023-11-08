@@ -1005,15 +1005,15 @@ void Configuration::ReportMultipleRedraws() {
   // This sort is over two orders of magnitude faster,
   // per-cell, than having counters in a map or hash.
   std::sort(m_cellRedrawTrace->begin(), m_cellRedrawTrace->end());
-  int counter = 0;
+  size_t counter = 0;
   const Cell *prev = {};
   for (auto *cell : *m_cellRedrawTrace) {
     if (prev != cell) {
       wxASSERT(counter <= 1);
       if (counter > 1)
         wxLogMessage(
-                     "Bug: %i redraws in one screen refresh for a cell reading \"%s\"",
-                     counter, prev->ToString().mb_str());
+                     "Bug: %li redraws in one screen refresh for a cell reading \"%s\"",
+                     static_cast<long>(counter), prev->ToString().mb_str());
       prev = cell;
       counter = 1;
     } else

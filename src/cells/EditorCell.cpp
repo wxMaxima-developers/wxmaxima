@@ -331,7 +331,7 @@ wxString EditorCell::ToRTF() const {
         retval += wxS("\\pard\\s5\\b\\f0\\fs32 ") + RTFescape(m_text) + wxS("\n");
         break;
     case MC_TYPE_PROMPT:
-        retval += wxString::Format(wxS("\\cf%i"), GetTextStyle()) +
+      retval += wxString::Format(wxS("\\cf%li"), static_cast<long>(GetTextStyle())) +
             wxS("\\pard\\s22\\li1105\\lin1105\\fi-1105\\f0\\fs24 ") +
             RTFescape(m_text) + wxS("\n");
         break;
@@ -342,17 +342,17 @@ wxString EditorCell::ToRTF() const {
 
             if (textSnippet.IsStyleSet()) {
                 retval +=
-                    wxString::Format(wxS("\\cf%i "), static_cast<int>(textSnippet.GetTextStyle()));
+                    wxString::Format(wxS("\\cf%li "), static_cast<long>(textSnippet.GetTextStyle()));
                 retval += RTFescape(textSnippet.GetText());
             } else {
-                retval += wxString::Format(wxS("\\cf%i "), static_cast<int>(TS_CODE_DEFAULT));
+                retval += wxString::Format(wxS("\\cf%li "), static_cast<long>(TS_CODE_DEFAULT));
                 retval += wxS("{") + RTFescape(textSnippet.GetText()) + wxS("}\n");
             }
             if (textSnippet.GetText().Contains(wxS("\n"))) {
                 retval += wxS("\\pard\\s21\\li1105\\lin1105\\f0\\fs24 ");
             }
         }
-        retval += wxString::Format(wxS("\\cf%i "), static_cast<int>(TS_CODE_DEFAULT));
+        retval += wxString::Format(wxS("\\cf%li "), static_cast<long>(TS_CODE_DEFAULT));
         break;
     }
     default:
@@ -2930,7 +2930,7 @@ void EditorCell::StyleTextCode() {
             textToStyle = textToStyle.Left(static_cast<size_t>(newlinepos));
             if (lines > 1)
                 suppressedLinesInfo =
-                    wxString::Format(_(" ... + %i hidden lines"), lines);
+                  wxString::Format(_(" ... + %li hidden lines"), static_cast<long>(lines));
             else
                 suppressedLinesInfo = _(" ... + 1 hidden line");
         }
@@ -3130,8 +3130,8 @@ void EditorCell::StyleTextTexts() {
             // If we fold the cell we only show the first line of text.
             if (m_firstLineOnly) {
                 m_styledText.push_back(
-                    StyledText(line + wxString::Format(_(" ... + %i hidden lines"),
-                                                       m_text.Freq(wxS('\n')))));
+                    StyledText(line + wxString::Format(_(" ... + %li hidden lines"),
+                                                       static_cast<long>(m_text.Freq(wxS('\n'))))));
                 break;
             }
 
@@ -3229,8 +3229,8 @@ void EditorCell::StyleTextTexts() {
             wxString line = lines.GetNextToken();
             if (m_firstLineOnly) {
                 m_styledText.push_back(
-                    StyledText(line + wxString::Format(_(" ... + %i hidden lines"),
-                                                       m_text.Freq(wxS('\n'))),
+                    StyledText(line + wxString::Format(_(" ... + %li hidden lines"),
+                                                       static_cast<long>(m_text.Freq(wxS('\n')))),
                                0, wxEmptyString));
                 break;
             }

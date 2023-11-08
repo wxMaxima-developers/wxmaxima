@@ -55,8 +55,8 @@ void LongNumberCell::UpdateDisplayedText() {
         if (left > 30)
             left = 30;
         m_numStart = m_displayedText.Left(left);
-        m_ellipsis = wxString::Format(_("[%i digits]"),
-                                      (int)m_displayedText.Length() - 2 * left);
+        m_ellipsis = wxString::Format(_("[%li digits]"),
+                                      static_cast<long>(m_displayedText.Length()) - 2 * left);
         m_numEnd = m_displayedText.Right(left);
     } else {
         m_numStart.clear();

@@ -256,11 +256,11 @@ bool GroupCell::IsFoldable() const {
 
 GroupCell::~GroupCell() {}
 
-const wxString &GroupCell::GetAnswer(int answer) const {
+const wxString &GroupCell::GetAnswer(size_t answer) const {
     if ((!m_autoAnswer) && (!m_configuration->OfferKnownAnswers()))
         return wxm::emptyString;
 
-    wxString const question = wxString::Format(wxS("Question #%i"), answer);
+    wxString const question = wxString::Format(wxS("Question #%li"), static_cast<long>(answer));
     auto it = m_knownAnswers.find(question);
     return (it != m_knownAnswers.end()) ? it->second : wxm::emptyString;
 }
@@ -1227,7 +1227,7 @@ wxString GroupCell::ToXML() const {
     switch (m_groupType) {
     case GC_TYPE_CODE: {
         str += wxS(" type=\"code\"");
-        int i = 0;
+        size_t i = 0;
         for (StringHash::const_iterator it = m_knownAnswers.begin();
              it != m_knownAnswers.end(); ++it) {
             i++;
@@ -1238,8 +1238,10 @@ wxString GroupCell::ToXML() const {
             question.Replace(wxS("\n"), wxS("&#10;"));
             wxString answer = Cell::XMLescape(it->second);
             answer.Replace(wxS("\n"), wxS("&#10;"));
-            str += wxString::Format(wxS(" question%i=\""), i) + question + wxS("\"");
-            str += wxString::Format(wxS(" answer%i=\""), i) + answer + wxS("\"");
+            str += wxString::Format(wxS(" question%li=\""), static_cast<long>(i)) +
+              question + wxS("\"");
+            str += wxString::Format(wxS(" answer%li=\""), static_cast<long>(i)) +
+              answer + wxS("\"");
         }
 
         if (m_autoAnswer)
