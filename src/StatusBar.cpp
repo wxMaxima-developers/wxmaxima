@@ -238,7 +238,7 @@ void StatusBar::UpdateStatusMaximaBusy(MaximaStatus status, std::size_t bytesFro
         m_maximaStatus->SetToolTip(_("Reading Maxima output"));
       else
         m_maximaStatus->SetToolTip(wxString::Format(_("Reading Maxima output: %li bytes"),
-                                                    bytesFromMaxima));
+                                                    static_cast<long>(bytesFromMaxima)));
       break;
     case userinput:
       m_maximaStatus->SetBitmap(m_bitmap_userinput);

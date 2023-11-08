@@ -144,7 +144,8 @@ void XmlInspector::UpdateContents() {
     // Adding many chars to the XML inspector is slow => Warn our users if we do
     // so.
     if (length > 100000)
-      wxLogMessage(_("Added much text (%li chars) to the XML inspector."), (long)length);
+      wxLogMessage(_("Added much text (%li chars) to the XML inspector."),
+                   static_cast<long>(length));
   }
 }
 

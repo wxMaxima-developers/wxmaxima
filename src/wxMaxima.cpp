@@ -172,15 +172,12 @@ void wxMaxima::ConfigChanged() {
     m_configuration.GetAutosubscript_string() + wxS(")\n");
 
   // A few variables for additional debug info in wxbuild_info();
-  m_configCommands += wxString::Format(
-                                       wxS(":lisp-quiet (setq wxUserConfDir \"%s\")\n"),
+  m_configCommands += wxString::Format(wxS(":lisp-quiet (setq wxUserConfDir \"%s\")\n"),
                                        EscapeForLisp(Dirstructure::Get()->UserConfDir()).utf8_str());
-  m_configCommands += wxString::Format(
-                                       wxS(":lisp-quiet (setq wxHelpDir \"%s\")\n"),
+  m_configCommands += wxString::Format(wxS(":lisp-quiet (setq wxHelpDir \"%s\")\n"),
                                        EscapeForLisp(Dirstructure::Get()->HelpDir()).utf8_str());
 
-  m_configCommands += wxString::Format(
-                                       wxS(":lisp-quiet (setq $wxplot_size '((mlist simp) %li %li))\n"),
+  m_configCommands += wxString::Format(wxS(":lisp-quiet (setq $wxplot_size '((mlist simp) %li %li))\n"),
                                        static_cast<long>(m_configuration.DefaultPlotWidth()),
                                        static_cast<long>(m_configuration.DefaultPlotHeight()));
 
@@ -2627,29 +2624,29 @@ void wxMaxima::KillMaxima(bool logMessage) {
   if (m_maximaTempDir != wxEmptyString) {
     SuppressErrorDialogs logNull;
     if (wxFileExists(m_maximaTempDir + wxS("/maxout") +
-                     wxString::Format("%li.gnuplot", (long)m_pid)))
+                     wxString::Format("%li.gnuplot", static_cast<long>(m_pid))))
       wxRemoveFile(m_maximaTempDir + wxS("/maxout") +
-                   wxString::Format("%li.gnuplot", (long)m_pid));
+                   wxString::Format("%li.gnuplot", static_cast<long>(m_pid)));
     if (wxFileExists(m_maximaTempDir + wxS("/data") +
-                     wxString::Format("%li.gnuplot", (long)m_pid)))
+                     wxString::Format("%li.gnuplot", static_cast<long>(m_pid))))
       wxRemoveFile(m_maximaTempDir + wxS("/data") +
-                   wxString::Format("%li.gnuplot", (long)m_pid));
+                   wxString::Format("%li.gnuplot", static_cast<long>(m_pid)));
     if (wxFileExists(m_maximaTempDir + wxS("/maxout") +
-                     wxString::Format("%li.xmaxima", (long)m_pid)))
+                     wxString::Format("%li.xmaxima", static_cast<long>(m_pid))))
       wxRemoveFile(m_maximaTempDir + wxS("/maxout") +
-                   wxString::Format("%li.xmaxima", (long)m_pid));
+                   wxString::Format("%li.xmaxima", static_cast<long>(m_pid)));
     if (wxFileExists(m_maximaTempDir + wxS("/maxout_") +
-                     wxString::Format("%li.gnuplot", (long)m_pid)))
+                     wxString::Format("%li.gnuplot", static_cast<long>(m_pid))))
       wxRemoveFile(m_maximaTempDir + wxS("/maxout_") +
-                   wxString::Format("%li.gnuplot", (long)m_pid));
+                   wxString::Format("%li.gnuplot", static_cast<long>(m_pid)));
     if (wxFileExists(m_maximaTempDir + wxS("/data_") +
-                     wxString::Format("%li.gnuplot", (long)m_pid)))
+                     wxString::Format("%li.gnuplot", static_cast<long>(m_pid))))
       wxRemoveFile(m_maximaTempDir + wxS("/data_") +
-                   wxString::Format("%li.gnuplot", (long)m_pid));
+                   wxString::Format("%li.gnuplot", static_cast<long>(m_pid)));
     if (wxFileExists(m_maximaTempDir + wxS("/maxout_") +
-                     wxString::Format("%li.xmaxima", (long)m_pid)))
+                     wxString::Format("%li.xmaxima", static_cast<long>(m_pid))))
       wxRemoveFile(m_maximaTempDir + wxS("/maxout_") +
-                   wxString::Format("%li.xmaxima", (long)m_pid));
+                   wxString::Format("%li.xmaxima", static_cast<long>(m_pid)));
   }
   m_pid = -1;
 }
@@ -2702,7 +2699,7 @@ void wxMaxima::OnProcessEvent(wxProcessEvent &event) {
   m_process = NULL;
   m_pid = -1;
   wxLogMessage(_("Maxima process (pid %li) has terminated with exit code %li.\n"),
-               (long)event.GetPid(), (long)event.GetExitCode());
+               static_cast<long>(event.GetPid()), static_cast<long>(event.GetExitCode()));
   if (m_maximaStdout) {
     wxTextInputStream istrm(*m_maximaStdout, wxS('\t'),
                             wxConvAuto(wxFONTENCODING_UTF8));
@@ -2813,7 +2810,7 @@ void wxMaxima::ReadFirstPrompt(wxString &data) {
 
   wxLogMessage(_("Received maxima's first prompt: %s"), prompt_compact.utf8_str());
 
-  wxLogMessage(_("Maxima's PID is %li"), (long)m_pid);
+  wxLogMessage(_("Maxima's PID is %li"), static_cast<long>(m_pid));
   // Remove the first prompt from Maxima's answer.
   data = data.Right(data.Length() - end - m_firstPrompt.Length());
 
@@ -4295,7 +4292,7 @@ bool wxMaxima::OpenWXMXFile(const wxString &file, Worksheet *document,
 
     for (long i = 0; i < VariablesNumber; i++) {
       wxString variable =
-        xmldoc.GetRoot()->GetAttribute(wxString::Format("variables_%li", i));
+        xmldoc.GetRoot()->GetAttribute(wxString::Format("variables_%li", static_cast<long>(i)));
       m_worksheet->m_variablesPane->AddWatch(variable);
     }
   }
@@ -5765,7 +5762,7 @@ long long wxMaxima::GetMaximaCpuTime() {
   }
 #endif
   int maximaJiffies = 0;
-  wxString statFileName = wxString::Format("/proc/%li/stat", (long)m_pid);
+  wxString statFileName = wxString::Format("/proc/%li/stat", static_cast<long>(m_pid));
   if (wxFileExists(statFileName)) {
     wxFileInputStream input(statFileName);
     if (input.IsOk()) {
@@ -5870,7 +5867,8 @@ bool wxMaxima::AutoSave() {
   wxString oldFilename = m_worksheet->m_currentFile;
   m_tempfileName =
     wxStandardPaths::Get().GetTempDir() +
-    wxString::Format("/untitled_%li_%li.wxmx", (long)wxGetProcessId(), (long)m_pid);
+    wxString::Format("/untitled_%li_%li.wxmx", static_cast<long>(wxGetProcessId()),
+                     static_cast<long>(m_pid));
 
   if (m_configuration.AutoSaveAsTempFile() ||
       m_worksheet->m_currentFile.IsEmpty()) {
@@ -6558,7 +6556,7 @@ void wxMaxima::OnReplaceAll(wxFindDialogEvent &event) {
   else
     count =
       m_worksheet->ReplaceAll_RegEx(event.GetFindString(), event.GetReplaceString());
-  LoggingMessageBox(wxString::Format(_("Replaced %li occurrences."), (long)count));
+  LoggingMessageBox(wxString::Format(_("Replaced %li occurrences."), static_cast<long>(count)));
   if (count > 0)
     m_worksheet->UpdateTableOfContents();
 }

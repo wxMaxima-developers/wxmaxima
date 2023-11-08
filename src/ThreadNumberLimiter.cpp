@@ -50,8 +50,9 @@ ThreadNumberLimiter::ThreadNumberLimiter(bool *running):
   {
     std::lock_guard<std::mutex> lock_guard(m_counterMutex);
     unlock = m_numberOfBackgroundThreads++ < maxThreads;
-    wxLogMessage(_("%li background threads (%li max)"), (long)m_numberOfBackgroundThreads,
-                 (long)maxThreads);
+    wxLogMessage(_("%li background threads (%li max)"),
+                 static_cast<long>(m_numberOfBackgroundThreads),
+                 static_cast<long>(maxThreads));
   }
   if(unlock)
     m_mutex.unlock();
@@ -62,7 +63,7 @@ ThreadNumberLimiter::~ThreadNumberLimiter()
   std::lock_guard<std::mutex> lock_guard(m_counterMutex);
   m_numberOfBackgroundThreads--;
   m_mutex.unlock();
-  wxLogMessage(_("%li background threads"), (long)m_numberOfBackgroundThreads);
+  wxLogMessage(_("%li background threads"), static_cast<long>(m_numberOfBackgroundThreads));
   if(m_runningIndicator)
     *m_runningIndicator = false;
 }

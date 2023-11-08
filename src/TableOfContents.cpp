@@ -525,7 +525,7 @@ void TableOfContents::OnMouseRightDown(wxListEvent &event) {
   tocLevelMenu->AppendRadioItem(EventIDs::popid_tocLevel1, _("1 Level"));
   for(int i = 2; i < EventIDs::NumberOfTocLevels() - 1; i++)
     tocLevelMenu->AppendRadioItem(EventIDs::popid_tocLevel1 + i - 1,
-                                  wxString::Format(_("%li Levels"), (long) i));
+                                  wxString::Format(_("%li Levels"), static_cast<long>(i)));
   tocLevelMenu->AppendRadioItem(EventIDs::popid_tocLevel1 +
                                 EventIDs::NumberOfTocLevels() - 1, _("All Levels"));
 

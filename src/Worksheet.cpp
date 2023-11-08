@@ -356,9 +356,11 @@ bool Worksheet::RedrawIfRequested() {
             const ImgCellBase *image = dynamic_cast<ImgCellBase *>(
                                                                    m_cellPointers.m_cellUnderPointer.get());
             StatusText(wxString::Format(
-                                        _("%s image, %li×%li, %li ppi"), image->GetExtension().ToUTF8().data(),
-                                        (long)image->GetOriginalWidth(),
-                                        (long)image->GetOriginalWidth(), (long)image->GetPPI()));
+                                        _("%s image, %li×%li, %li ppi"),
+                                        image->GetExtension().ToUTF8().data(),
+                                        static_cast<long>(image->GetOriginalWidth()),
+                                        static_cast<long>(image->GetOriginalWidth()),
+                                        static_cast<long>(image->GetPPI())));
           }
         }
       } else
@@ -1671,7 +1673,9 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event) {
         wxMenu *labelWidthMenu = new wxMenu();
         for(int i = 3; i < EventIDs::NumberOfLabelWidths(); i++)
           {
-            labelWidthMenu->AppendRadioItem(EventIDs::popid_labelwidth1 + i, wxString::Format(wxS("%li em"), (long)i));
+            labelWidthMenu->AppendRadioItem(EventIDs::popid_labelwidth1 + i,
+                                            wxString::Format(wxS("%li em"),
+                                                             static_cast<long>(i)));
             if(i == m_configuration->LabelWidth())
               labelWidthMenu->Check(EventIDs::popid_labelwidth1 + i, true);
           }
@@ -5381,9 +5385,10 @@ bool Worksheet::ExportToHTML(const wxString &file) {
               wxS("  <img src=\"") + filename_encoded + wxS("_htmlimg/") +
               filename_encoded +
               wxString::Format(
-                               wxS("_%d%s\" width=\"%li\" style=\"max-width:90%%;\" "
+                               wxS("_%li%s\" width=\"%li\" style=\"max-width:90%%;\" "
                                    "loading=\"lazy\" alt=\""),
-                               count, ext.utf8_str(), static_cast<long>(size.x) - 2 * borderwidth) +
+                               static_cast<long>(count),
+                               ext.utf8_str(), static_cast<long>(size.x) - 2 * borderwidth) +
               alttext + wxS("\" /><br/>\n");
 
             output << line + "\n";
@@ -6131,16 +6136,16 @@ bool Worksheet::ExportToWXMX(const wxString &file, bool markAsSaved) {
         // If not we omit it.
         if (ActiveCellNumber >= 0)
           xmlText << wxString::Format(wxS(" activecell=\"%li\""),
-                                      (long)ActiveCellNumber);
+                                      static_cast<long>(ActiveCellNumber));
 
         // Save the variables list for the "variables" sidepane.
         std::vector<wxString> variables = m_variablesPane->GetVarnames();
         if (variables.size() > 1) {
-          long varcount = variables.size() - 1;
-          xmlText += wxString::Format(" variables_num=\"%li\"", varcount);
-          for (unsigned long i = 0; i < variables.size(); i++)
+          std::size_t varcount = variables.size() - 1;
+          xmlText += wxString::Format(" variables_num=\"%li\"", static_cast<long>(varcount));
+          for (std::size_t i = 0; i < variables.size(); i++)
             xmlText +=
-              wxString::Format(" variables_%li=\"%s\"", i,
+              wxString::Format(" variables_%li=\"%s\"", static_cast<long>(i),
                                Cell::XMLescape(variables.at(i)).utf8_str());
         }
 

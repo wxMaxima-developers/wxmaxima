@@ -67,7 +67,7 @@ bool Printout::HasPage(int num) {
 }
 
 bool Printout::OnPrintPage(int num) {
-    wxLogMessage(_("Printout: Request to print page %li"), (long) num);
+  wxLogMessage(_("Printout: Request to print page %li"), static_cast<long>(num));
     // Num starts counting with 1, m_pages[n] starts counting with n=0
     if ((unsigned)num > m_pages.size())
         return false;
@@ -87,8 +87,8 @@ bool Printout::OnPrintPage(int num) {
         m_configuration.PrintMargin_Bot();
     m_configuration.SetCanvasSize(wxSize(pageWidth,pageHeight));
     wxLogMessage(_("printOut: Setting the page size to (%li,%li)"),
-                 (long) pageWidth,
-                 (long) pageHeight);
+                 static_cast<long>(pageWidth),
+                 static_cast<long>(pageHeight));
     GroupCell *group = m_pages[static_cast<size_t>(num) - 1]->GetGroup();
     if (!group)
         return true;
@@ -104,8 +104,8 @@ bool Printout::OnPrintPage(int num) {
         -m_configuration.PrintMargin_Top() -
         m_pages[static_cast<size_t>(num) - 1]->GetRect(true).GetTop());
     wxLogMessage(_("Printout: Setting the device origin to %lix%li"),
-                 (long) deviceOrigin.x,
-                 (long) deviceOrigin.y
+                 static_cast<long>(deviceOrigin.x),
+                 static_cast<long>(deviceOrigin.y)
         );
     dc->SetDeviceOrigin(deviceOrigin.x, deviceOrigin.y);
 
@@ -126,8 +126,8 @@ bool Printout::OnPrintPage(int num) {
     dc->DestroyClippingRegion();
     wxCoord len = endpoint - startpoint;
     wxLogMessage(_("Printout: Printing the region %li-%li"),
-                 (long) startpoint,
-                 (long) endpoint);
+                 static_cast<long>(startpoint),
+                 static_cast<long>(endpoint));
     dc->SetClippingRegion(0, startpoint, pageWidth, len);
 
     while (group && (group->GetGroupType() != GC_TYPE_PAGEBREAK) &&
@@ -185,9 +185,9 @@ void Printout::BreakPages() {
         if(i->GetNext())
             pageHeight = i->GetNext()->GetRect(true).GetBottom() - pageStart;
         wxLogMessage(_("Printout: PageStart=%li, PageHeight=%li, canvasSize=%li"),
-                     (long) pageStart,
-                     (long) pageHeight,
-                     (long) canvasSize.y);
+                     static_cast<long>(pageStart),
+                     static_cast<long>(pageHeight),
+                     static_cast<long>(canvasSize.y));
         if(pageHeight > canvasSize.y)
         {
             m_pages.push_back(i);
@@ -209,7 +209,8 @@ void Printout::SetupData() {
     // printer the scaling factor is 1.0.
     wxSize printPPI;
     printPPI = GetDC()->GetPPI();
-    wxLogMessage(_("Printout: Print ppi: %lix%li"), (long)printPPI.x, (long)printPPI.y);
+    wxLogMessage(_("Printout: Print ppi: %lix%li"),
+                 static_cast<long>(printPPI.x), static_cast<long>(printPPI.y));
 
     double scaleFactor = printPPI.x / DPI_REFERENCE *
         m_configuration.PrintScale();

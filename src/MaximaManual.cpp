@@ -270,13 +270,13 @@ void MaximaManual::CompileHelpFileAnchors(wxString maximaHtmlDir,
       AnchorAliasses(m_helpFileURLs_filePerChapter);
       AnchorAliasses(m_helpFileURLs_singlePage);
       wxLogMessage(_("Found %li anchors, %li anchors total."),
-                   (long)foundAnchors, (long)foundAnchorsTotal);
+                   static_cast<long>(foundAnchors), static_cast<long>(foundAnchorsTotal));
     }
     if(foundAnchorsTotal < 100)
       {
         wxLogMessage(_("Have only %li keyword anchors at the end of parsing the maxima manual => "
                        "Not caching the result of using the built-in keyword list"),
-                     (long)foundAnchorsTotal);
+                     static_cast<long>(foundAnchorsTotal));
         LoadBuiltInManualAnchors();
       }
     else
@@ -328,7 +328,7 @@ void MaximaManual::SaveManualAnchorsToCache(wxString maximaHtmlDir,
   if (num <= 50) {
     wxLogMessage(_("Found only %li keywords in maxima's "
                    "manual. Not caching them to disc."),
-                 (long)num);
+                 static_cast<long>(num));
     return;
   }
   wxXmlAttribute *htmlDir =
@@ -463,9 +463,9 @@ bool MaximaManual::LoadManualAnchorsFromXML(const wxXmlDocument &xmlDocument,
     entry = entry->GetNext();
   }
   wxLogMessage(_("Found %li anchors, URLs (individual files): %li, URLs (singlepage): %li"),
-               (long)anchors,
-               (long)urls_FilePerChapter,
-               (long)urls_SinglePage);
+               static_cast<long>(anchors),
+               static_cast<long>(urls_FilePerChapter),
+               static_cast<long>((long)urls_SinglePage));
   return !m_helpFileURLs_singlePage.empty();
 }
 
