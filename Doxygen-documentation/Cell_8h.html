@@ -67,7 +67,6 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Data Structures</a> &#124;
-<a href="#define-members">Macros</a> &#124;
 <a href="#enum-members">Enumerations</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
@@ -78,7 +77,6 @@ $(function() {
 <p>The definition of the base class of all cells the worksheet consists of.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;../precomp.h&quot;</code><br />
-<code>#include &quot;Version.h&quot;</code><br />
 <code>#include &quot;<a class="el" href="CellPtr_8h_source.html">CellPtr.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="CellIterators_8h_source.html">CellIterators.h</a>&quot;</code><br />
 <code>#include &quot;Configuration.h&quot;</code><br />
@@ -120,12 +118,6 @@ Data Structures</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structCell_1_1SizeInMillimeters.html">Cell::SizeInMillimeters</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">For the bitmap export we sometimes want to know how big the result will be...  <a href="structCell_1_1SizeInMillimeters.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
-Macros</h2></td></tr>
-<tr class="memitem:a8e930bd42d226792d2c5357e74fd1928"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Cell_8h.html#a8e930bd42d226792d2c5357e74fd1928">CPP20BITFIELD</a>(x)</td></tr>
-<tr class="memdesc:a8e930bd42d226792d2c5357e74fd1928"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a bitfield entry with initializer if C++20 is available.  <a href="Cell_8h.html#a8e930bd42d226792d2c5357e74fd1928">More...</a><br /></td></tr>
-<tr class="separator:a8e930bd42d226792d2c5357e74fd1928"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
 Enumerations</h2></td></tr>
@@ -189,29 +181,7 @@ template&lt;typename C , typename std::enable_if&lt; std::is_base_of&lt; Cell, C
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The definition of the base class of all cells the worksheet consists of. </p>
-</div><h2 class="groupheader">Macro Definition Documentation</h2>
-<a id="a8e930bd42d226792d2c5357e74fd1928"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8e930bd42d226792d2c5357e74fd1928">&#9670;&nbsp;</a></span>CPP20BITFIELD</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define CPP20BITFIELD</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">x</td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Create a bitfield entry with initializer if C++20 is available. </p>
-<p>@KubaO has found out that <a class="el" href="classwxMaxima.html">wxMaxima</a> is faster if we save the number of bits a cell is long. But in C++&lt;20 C++ doesn't allow initializers for bit fields. </p>
-
-</div>
-</div>
-<h2 class="groupheader">Enumeration Type Documentation</h2>
+</div><h2 class="groupheader">Enumeration Type Documentation</h2>
 <a id="accb32ccb3ff8f2c6736a6ebe544894fd"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#accb32ccb3ff8f2c6736a6ebe544894fd">&#9670;&nbsp;</a></span>CellType</h2>
 

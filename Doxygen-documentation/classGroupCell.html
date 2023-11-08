@@ -919,26 +919,9 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>GetLineIndent</b> (con
 <tr class="memitem:af11c1e46f8f268933872da56c890a9d9"><td class="memItemLeft" align="right" valign="top"><a id="af11c1e46f8f268933872da56c890a9d9"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>UpdateCellsInGroup</b> ()</td></tr>
 <tr class="separator:af11c1e46f8f268933872da56c890a9d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a70a7891a780c1d2a7ac4e467478ba834"><td class="memItemLeft" align="right" valign="top"><a id="a70a7891a780c1d2a7ac4e467478ba834"></a>
-bool m_autoAnswer&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGroupCell.html#a70a7891a780c1d2a7ac4e467478ba834">CPP20BITFIELD</a> (1)</td></tr>
-<tr class="memdesc:a70a7891a780c1d2a7ac4e467478ba834"><td class="mdescLeft">&#160;</td><td class="mdescRight">Does this <a class="el" href="classGroupCell.html" title="A cell grouping input (and, if there is one, also the output) cell to a foldable item.">GroupCell</a> automatically fill in the answer to questions? <br /></td></tr>
-<tr class="separator:a70a7891a780c1d2a7ac4e467478ba834"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac8e590121a9757e272bd4ef91c69d5fe"><td class="memItemLeft" align="right" valign="top"><a id="ac8e590121a9757e272bd4ef91c69d5fe"></a>
-bool m_inEvaluationQueue&#160;</td><td class="memItemRight" valign="bottom"><b>CPP20BITFIELD</b> (1)</td></tr>
-<tr class="separator:ac8e590121a9757e272bd4ef91c69d5fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aad14f56392c73616e53e538bcc312f55"><td class="memItemLeft" align="right" valign="top"><a id="aad14f56392c73616e53e538bcc312f55"></a>
-bool m_lastInEvaluationQueue&#160;</td><td class="memItemRight" valign="bottom"><b>CPP20BITFIELD</b> (1)</td></tr>
-<tr class="separator:aad14f56392c73616e53e538bcc312f55"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aee14951d5d4f2a9989a083b526f3cc1c"><td class="memItemLeft" align="right" valign="top"><a id="aee14951d5d4f2a9989a083b526f3cc1c"></a>
-bool m_updateConfusableCharWarnings&#160;</td><td class="memItemRight" valign="bottom"><b>CPP20BITFIELD</b> (1)</td></tr>
-<tr class="separator:aee14951d5d4f2a9989a083b526f3cc1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a700a0f1c7765590b258a594bf27ca56d"><td class="memItemLeft" align="right" valign="top"><a id="a700a0f1c7765590b258a594bf27ca56d"></a>
-bool m_suppressTooltipMarker&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGroupCell.html#a700a0f1c7765590b258a594bf27ca56d">CPP20BITFIELD</a> (1)</td></tr>
-<tr class="memdesc:a700a0f1c7765590b258a594bf27ca56d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Suppress the yellow ToolTip marker? <br /></td></tr>
-<tr class="separator:a700a0f1c7765590b258a594bf27ca56d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a97bf5d620b98a27327412a98e6e131b9"><td class="memItemLeft" align="right" valign="top"><a id="a97bf5d620b98a27327412a98e6e131b9"></a>
-bool m_cellsAppended&#160;</td><td class="memItemRight" valign="bottom"><b>CPP20BITFIELD</b> (1)</td></tr>
-<tr class="separator:a97bf5d620b98a27327412a98e6e131b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af0184bf12aa62d0c026981bbc118f104"><td class="memItemLeft" align="right" valign="top"><a id="af0184bf12aa62d0c026981bbc118f104"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>InitBitFields</b> ()</td></tr>
+<tr class="separator:af0184bf12aa62d0c026981bbc118f104"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a57878bfc0ce007d7288bda097eb18f03"><td class="memItemLeft" align="right" valign="top"><a id="a57878bfc0ce007d7288bda097eb18f03"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a57878bfc0ce007d7288bda097eb18f03">BreakUpAndMark</a> ()</td></tr>
 <tr class="memdesc:a57878bfc0ce007d7288bda097eb18f03"><td class="mdescLeft">&#160;</td><td class="mdescRight">Break up the internal cells of this cell, and mark it as broken up. <br /></td></tr>
@@ -1010,6 +993,26 @@ int16_t&#160;</td><td class="memItemRight" valign="bottom"><b>m_numberedAnswersC
 <a class="el" href="GroupCell_8h.html#ac96e474603b83b95ba1717acefc3e831">GroupType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGroupCell.html#a1ea2f385e51bb846b2799fae710014a4">m_groupType</a> = {}</td></tr>
 <tr class="memdesc:a1ea2f385e51bb846b2799fae710014a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Which type this cell is of? <br /></td></tr>
 <tr class="separator:a1ea2f385e51bb846b2799fae710014a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3c0fc474baebfe58f022886d4c67df31"><td class="memItemLeft" align="right" valign="top"><a id="a3c0fc474baebfe58f022886d4c67df31"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGroupCell.html#a3c0fc474baebfe58f022886d4c67df31">m_autoAnswer</a>: 1</td></tr>
+<tr class="memdesc:a3c0fc474baebfe58f022886d4c67df31"><td class="mdescLeft">&#160;</td><td class="mdescRight">Does this <a class="el" href="classGroupCell.html" title="A cell grouping input (and, if there is one, also the output) cell to a foldable item.">GroupCell</a> automatically fill in the answer to questions? <br /></td></tr>
+<tr class="separator:a3c0fc474baebfe58f022886d4c67df31"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1cb323adf4d78fdf03b7c835a45703eb"><td class="memItemLeft" align="right" valign="top"><a id="a1cb323adf4d78fdf03b7c835a45703eb"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_inEvaluationQueue</b>: 1</td></tr>
+<tr class="separator:a1cb323adf4d78fdf03b7c835a45703eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad01bcf8bec367f43ac823d1388b1550c"><td class="memItemLeft" align="right" valign="top"><a id="ad01bcf8bec367f43ac823d1388b1550c"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_lastInEvaluationQueue</b>: 1</td></tr>
+<tr class="separator:ad01bcf8bec367f43ac823d1388b1550c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a05a57d396b4920f2eb5062fd6e65f04a"><td class="memItemLeft" align="right" valign="top"><a id="a05a57d396b4920f2eb5062fd6e65f04a"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_updateConfusableCharWarnings</b>: 1</td></tr>
+<tr class="separator:a05a57d396b4920f2eb5062fd6e65f04a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af78c9f91699bd500e5a167027760de40"><td class="memItemLeft" align="right" valign="top"><a id="af78c9f91699bd500e5a167027760de40"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGroupCell.html#af78c9f91699bd500e5a167027760de40">m_suppressTooltipMarker</a>: 1</td></tr>
+<tr class="memdesc:af78c9f91699bd500e5a167027760de40"><td class="mdescLeft">&#160;</td><td class="mdescRight">Suppress the yellow ToolTip marker? <br /></td></tr>
+<tr class="separator:af78c9f91699bd500e5a167027760de40"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6533764a8a367825d9ad862a9c9b5f83"><td class="memItemLeft" align="right" valign="top"><a id="a6533764a8a367825d9ad862a9c9b5f83"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_cellsAppended</b>: 1</td></tr>
+<tr class="separator:a6533764a8a367825d9ad862a9c9b5f83"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a82735e7fb2d5fd1dbefd3a37ae758b32"><td class="memItemLeft" align="right" valign="top">wxPoint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a82735e7fb2d5fd1dbefd3a37ae758b32">m_currentPoint</a> {-1, -1}</td></tr>
 <tr class="memdesc:a82735e7fb2d5fd1dbefd3a37ae758b32"><td class="mdescLeft">&#160;</td><td class="mdescRight">The point in the work sheet at which this cell begins.  <a href="classCell.html#a82735e7fb2d5fd1dbefd3a37ae758b32">More...</a><br /></td></tr>
 <tr class="separator:a82735e7fb2d5fd1dbefd3a37ae758b32"><td class="memSeparator" colspan="2">&#160;</td></tr>

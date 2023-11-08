@@ -129,36 +129,43 @@ $(function() {
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    std::unique_ptr&lt;Cell&gt; m_close;</div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="comment">// The pointers above point to inner cells and must be kept contiguous.</span></div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; </div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="keywordtype">void</span> Recalculate(<a class="code" href="classAFontSize.html">AFontSize</a> fontsize) <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160; </div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <span class="keywordtype">void</span> Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160; </div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    wxString ToMathML() <span class="keyword">const override</span>;</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    wxString ToMatlab() <span class="keyword">const override</span>;</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    wxString ToOMML() <span class="keyword">const override</span>;</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    wxString ToString() <span class="keyword">const override</span>;</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    wxString ToTeX() <span class="keyword">const override</span>;</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    wxString ToXML() <span class="keyword">const override</span>;</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    <span class="keywordtype">int</span> m_innerCellWidth = -1;</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    <span class="keywordtype">int</span> m_innerCellHeight = -1;</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    <span class="keywordtype">int</span> m_nameWidth = -1;</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    <span class="keywordtype">int</span> m_nameHeight = -1;</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;};</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160; </div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// NAMEDBOXCELL_H</span></div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="comment">//** Bitfield objects (0 bytes)</span></div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="comment">//**</span></div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">void</span> InitBitFields()</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        { <span class="comment">// Keep the initialization order below same as the order</span></div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;            <span class="comment">// of bit fields in this class!</span></div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        }</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160; </div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <span class="keywordtype">void</span> Recalculate(<a class="code" href="classAFontSize.html">AFontSize</a> fontsize) <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160; </div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    <span class="keywordtype">void</span> Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160; </div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    wxString ToMathML() <span class="keyword">const override</span>;</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    wxString ToMatlab() <span class="keyword">const override</span>;</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    wxString ToOMML() <span class="keyword">const override</span>;</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    wxString ToString() <span class="keyword">const override</span>;</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    wxString ToTeX() <span class="keyword">const override</span>;</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    wxString ToXML() <span class="keyword">const override</span>;</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    <span class="keywordtype">int</span> m_innerCellWidth = -1;</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    <span class="keywordtype">int</span> m_innerCellHeight = -1;</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    <span class="keywordtype">int</span> m_nameWidth = -1;</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    <span class="keywordtype">int</span> m_nameHeight = -1;</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;};</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160; </div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// NAMEDBOXCELL_H</span></div>
 <div class="ttc" id="aCell_8h_html"><div class="ttname"><a href="Cell_8h.html">Cell.h</a></div><div class="ttdoc">The definition of the base class of all cells the worksheet consists of.</div></div>
 <div class="ttc" id="aclassAFontSize_html"><div class="ttname"><a href="classAFontSize.html">AFontSize</a></div><div class="ttdoc">A Type-Safe Fixed-Point Font Size.</div><div class="ttdef"><b>Definition:</b> FontAttribs.h:98</div></div>
-<div class="ttc" id="aclassCellTypeInfo_html"><div class="ttname"><a href="classCellTypeInfo.html">CellTypeInfo</a></div><div class="ttdoc">A class that carries information about the type of a cell.</div><div class="ttdef"><b>Definition:</b> Cell.h:104</div></div>
-<div class="ttc" id="aclassCell_html"><div class="ttname"><a href="classCell.html">Cell</a></div><div class="ttdoc">The base class all cell types the worksheet can consist of are derived from.</div><div class="ttdef"><b>Definition:</b> Cell.h:153</div></div>
+<div class="ttc" id="aclassCellTypeInfo_html"><div class="ttname"><a href="classCellTypeInfo.html">CellTypeInfo</a></div><div class="ttdoc">A class that carries information about the type of a cell.</div><div class="ttdef"><b>Definition:</b> Cell.h:91</div></div>
+<div class="ttc" id="aclassCell_html"><div class="ttname"><a href="classCell.html">Cell</a></div><div class="ttdoc">The base class all cell types the worksheet can consist of are derived from.</div><div class="ttdef"><b>Definition:</b> Cell.h:140</div></div>
 <div class="ttc" id="aclassConfiguration_html"><div class="ttname"><a href="classConfiguration.html">Configuration</a></div><div class="ttdoc">The configuration storage for the current worksheet.</div><div class="ttdef"><b>Definition:</b> Configuration.h:94</div></div>
 <div class="ttc" id="aclassGroupCell_html"><div class="ttname"><a href="classGroupCell.html">GroupCell</a></div><div class="ttdoc">A cell grouping input (and, if there is one, also the output) cell to a foldable item.</div><div class="ttdef"><b>Definition:</b> GroupCell.h:72</div></div>
 <div class="ttc" id="aclassNamedBoxCell_html"><div class="ttname"><a href="classNamedBoxCell.html">NamedBoxCell</a></div><div class="ttdoc">A cell that represents a box(x) block.</div><div class="ttdef"><b>Definition:</b> NamedBoxCell.h:51</div></div>
 <div class="ttc" id="aclassNamedBoxCell_html_a01f9d19953c0b89b11cf4c4110f8064b"><div class="ttname"><a href="classNamedBoxCell.html#a01f9d19953c0b89b11cf4c4110f8064b">NamedBoxCell::Copy</a></div><div class="ttdeci">std::unique_ptr&lt; Cell &gt; Copy(GroupCell *group) const override</div><div class="ttdoc">Create a copy of this cell.</div></div>
 <div class="ttc" id="aclassNamedBoxCell_html_a37052ca4b2f5368b5c802f1e3d02e0a9"><div class="ttname"><a href="classNamedBoxCell.html#a37052ca4b2f5368b5c802f1e3d02e0a9">NamedBoxCell::GetInnerCell</a></div><div class="ttdeci">Cell * GetInnerCell(size_t index) const override</div><div class="ttdoc">Retrieve an inner cell with given index which must be less than GetInnerCellCount.</div><div class="ttdef"><b>Definition:</b> NamedBoxCell.h:61</div></div>
 <div class="ttc" id="aclassNamedBoxCell_html_a78a22c9529c06b5f9d7edaa38dc2c09c"><div class="ttname"><a href="classNamedBoxCell.html#a78a22c9529c06b5f9d7edaa38dc2c09c">NamedBoxCell::GetInfo</a></div><div class="ttdeci">const CellTypeInfo &amp; GetInfo() override</div><div class="ttdoc">Returns the information about this cell's type.</div></div>
-<div class="ttc" id="aclassNamedBoxCell_html_ab048149f934bac49afb9d2284fbf4aae"><div class="ttname"><a href="classNamedBoxCell.html#ab048149f934bac49afb9d2284fbf4aae">NamedBoxCell::SetNextToDraw</a></div><div class="ttdeci">void SetNextToDraw(Cell *next) override</div><div class="ttdoc">Tells this cell which one should be the next cell to be drawn.</div><div class="ttdef"><b>Definition:</b> NamedBoxCell.cpp:218</div></div>
+<div class="ttc" id="aclassNamedBoxCell_html_ab048149f934bac49afb9d2284fbf4aae"><div class="ttname"><a href="classNamedBoxCell.html#ab048149f934bac49afb9d2284fbf4aae">NamedBoxCell::SetNextToDraw</a></div><div class="ttdeci">void SetNextToDraw(Cell *next) override</div><div class="ttdoc">Tells this cell which one should be the next cell to be drawn.</div><div class="ttdef"><b>Definition:</b> NamedBoxCell.cpp:219</div></div>
 <div class="ttc" id="aclassNamedBoxCell_html_ab2f6381a3c0108a5ea598918ef78eee4"><div class="ttname"><a href="classNamedBoxCell.html#ab2f6381a3c0108a5ea598918ef78eee4">NamedBoxCell::GetInnerCellCount</a></div><div class="ttdeci">size_t GetInnerCellCount() const override</div><div class="ttdoc">The number of inner cells - for use by the iterators.</div><div class="ttdef"><b>Definition:</b> NamedBoxCell.h:59</div></div>
-<div class="ttc" id="aclassNamedBoxCell_html_ab9a7d0db911bc12137e6dc13d967c585"><div class="ttname"><a href="classNamedBoxCell.html#ab9a7d0db911bc12137e6dc13d967c585">NamedBoxCell::BreakUp</a></div><div class="ttdeci">bool BreakUp() override</div><div class="ttdoc">Try to split this command into lines to make it fit on the screen.</div><div class="ttdef"><b>Definition:</b> NamedBoxCell.cpp:200</div></div>
+<div class="ttc" id="aclassNamedBoxCell_html_ab9a7d0db911bc12137e6dc13d967c585"><div class="ttname"><a href="classNamedBoxCell.html#ab9a7d0db911bc12137e6dc13d967c585">NamedBoxCell::BreakUp</a></div><div class="ttdeci">bool BreakUp() override</div><div class="ttdoc">Try to split this command into lines to make it fit on the screen.</div><div class="ttdef"><b>Definition:</b> NamedBoxCell.cpp:201</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

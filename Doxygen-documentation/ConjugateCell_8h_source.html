@@ -126,28 +126,35 @@ $(function() {
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    std::unique_ptr&lt;Cell&gt; m_close;</div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <span class="comment">// The pointers above point to inner cells and must be kept contiguous.</span></div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; </div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="keywordtype">void</span> Recalculate(<a class="code" href="classAFontSize.html">AFontSize</a> fontsize) <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="keywordtype">void</span> Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; </div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    wxString ToMathML() <span class="keyword">const override</span>;</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    wxString ToMatlab() <span class="keyword">const override</span>;</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    wxString ToOMML() <span class="keyword">const override</span>;</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    wxString ToString() <span class="keyword">const override</span>;</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    wxString ToTeX() <span class="keyword">const override</span>;</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    wxString ToXML() <span class="keyword">const override</span>;</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;};</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160; </div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// CONJUGATECELL_H</span></div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="comment">//** Bitfield objects (0 bytes)</span></div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="comment">//**</span></div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">void</span> InitBitFields()</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        { <span class="comment">// Keep the initialization order below same as the order</span></div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;            <span class="comment">// of bit fields in this class!</span></div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        }</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160; </div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <span class="keywordtype">void</span> Recalculate(<a class="code" href="classAFontSize.html">AFontSize</a> fontsize) <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160; </div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    <span class="keywordtype">void</span> Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160; </div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    wxString ToMathML() <span class="keyword">const override</span>;</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    wxString ToMatlab() <span class="keyword">const override</span>;</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    wxString ToOMML() <span class="keyword">const override</span>;</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    wxString ToString() <span class="keyword">const override</span>;</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    wxString ToTeX() <span class="keyword">const override</span>;</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    wxString ToXML() <span class="keyword">const override</span>;</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;};</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160; </div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// CONJUGATECELL_H</span></div>
 <div class="ttc" id="aCell_8h_html"><div class="ttname"><a href="Cell_8h.html">Cell.h</a></div><div class="ttdoc">The definition of the base class of all cells the worksheet consists of.</div></div>
 <div class="ttc" id="aclassAFontSize_html"><div class="ttname"><a href="classAFontSize.html">AFontSize</a></div><div class="ttdoc">A Type-Safe Fixed-Point Font Size.</div><div class="ttdef"><b>Definition:</b> FontAttribs.h:98</div></div>
-<div class="ttc" id="aclassCellTypeInfo_html"><div class="ttname"><a href="classCellTypeInfo.html">CellTypeInfo</a></div><div class="ttdoc">A class that carries information about the type of a cell.</div><div class="ttdef"><b>Definition:</b> Cell.h:104</div></div>
-<div class="ttc" id="aclassCell_html"><div class="ttname"><a href="classCell.html">Cell</a></div><div class="ttdoc">The base class all cell types the worksheet can consist of are derived from.</div><div class="ttdef"><b>Definition:</b> Cell.h:153</div></div>
+<div class="ttc" id="aclassCellTypeInfo_html"><div class="ttname"><a href="classCellTypeInfo.html">CellTypeInfo</a></div><div class="ttdoc">A class that carries information about the type of a cell.</div><div class="ttdef"><b>Definition:</b> Cell.h:91</div></div>
+<div class="ttc" id="aclassCell_html"><div class="ttname"><a href="classCell.html">Cell</a></div><div class="ttdoc">The base class all cell types the worksheet can consist of are derived from.</div><div class="ttdef"><b>Definition:</b> Cell.h:140</div></div>
 <div class="ttc" id="aclassConfiguration_html"><div class="ttname"><a href="classConfiguration.html">Configuration</a></div><div class="ttdoc">The configuration storage for the current worksheet.</div><div class="ttdef"><b>Definition:</b> Configuration.h:94</div></div>
 <div class="ttc" id="aclassConjugateCell_html"><div class="ttname"><a href="classConjugateCell.html">ConjugateCell</a></div><div class="ttdoc">A cell that represents a conjugate(x) block.</div><div class="ttdef"><b>Definition:</b> ConjugateCell.h:51</div></div>
 <div class="ttc" id="aclassConjugateCell_html_a0681a03d23bda6ee6abe5b959cdab118"><div class="ttname"><a href="classConjugateCell.html#a0681a03d23bda6ee6abe5b959cdab118">ConjugateCell::GetInnerCell</a></div><div class="ttdeci">Cell * GetInnerCell(size_t index) const override</div><div class="ttdoc">Retrieve an inner cell with given index which must be less than GetInnerCellCount.</div><div class="ttdef"><b>Definition:</b> ConjugateCell.h:60</div></div>
-<div class="ttc" id="aclassConjugateCell_html_a114d6cc1448603f38392bf29713d1170"><div class="ttname"><a href="classConjugateCell.html#a114d6cc1448603f38392bf29713d1170">ConjugateCell::SetNextToDraw</a></div><div class="ttdeci">void SetNextToDraw(Cell *next) override</div><div class="ttdoc">Tells this cell which one should be the next cell to be drawn.</div><div class="ttdef"><b>Definition:</b> ConjugateCell.cpp:156</div></div>
-<div class="ttc" id="aclassConjugateCell_html_a41b3e26837e9c7f9ef01619b3ea4727d"><div class="ttname"><a href="classConjugateCell.html#a41b3e26837e9c7f9ef01619b3ea4727d">ConjugateCell::BreakUp</a></div><div class="ttdeci">bool BreakUp() override</div><div class="ttdoc">Try to split this command into lines to make it fit on the screen.</div><div class="ttdef"><b>Definition:</b> ConjugateCell.cpp:140</div></div>
+<div class="ttc" id="aclassConjugateCell_html_a114d6cc1448603f38392bf29713d1170"><div class="ttname"><a href="classConjugateCell.html#a114d6cc1448603f38392bf29713d1170">ConjugateCell::SetNextToDraw</a></div><div class="ttdeci">void SetNextToDraw(Cell *next) override</div><div class="ttdoc">Tells this cell which one should be the next cell to be drawn.</div><div class="ttdef"><b>Definition:</b> ConjugateCell.cpp:157</div></div>
+<div class="ttc" id="aclassConjugateCell_html_a41b3e26837e9c7f9ef01619b3ea4727d"><div class="ttname"><a href="classConjugateCell.html#a41b3e26837e9c7f9ef01619b3ea4727d">ConjugateCell::BreakUp</a></div><div class="ttdeci">bool BreakUp() override</div><div class="ttdoc">Try to split this command into lines to make it fit on the screen.</div><div class="ttdef"><b>Definition:</b> ConjugateCell.cpp:141</div></div>
 <div class="ttc" id="aclassConjugateCell_html_ac4835083931e60d25429572fa1d6097b"><div class="ttname"><a href="classConjugateCell.html#ac4835083931e60d25429572fa1d6097b">ConjugateCell::Copy</a></div><div class="ttdeci">std::unique_ptr&lt; Cell &gt; Copy(GroupCell *group) const override</div><div class="ttdoc">Create a copy of this cell.</div></div>
 <div class="ttc" id="aclassConjugateCell_html_aecb8b6eefb611f4db238dfd478239697"><div class="ttname"><a href="classConjugateCell.html#aecb8b6eefb611f4db238dfd478239697">ConjugateCell::GetInnerCellCount</a></div><div class="ttdeci">size_t GetInnerCellCount() const override</div><div class="ttdoc">The number of inner cells - for use by the iterators.</div><div class="ttdef"><b>Definition:</b> ConjugateCell.h:58</div></div>
 <div class="ttc" id="aclassConjugateCell_html_afa96f58cc0aebb5138d3a5e1f15d97d9"><div class="ttname"><a href="classConjugateCell.html#afa96f58cc0aebb5138d3a5e1f15d97d9">ConjugateCell::GetInfo</a></div><div class="ttdeci">const CellTypeInfo &amp; GetInfo() override</div><div class="ttdoc">Returns the information about this cell's type.</div></div>
