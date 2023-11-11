@@ -1,7 +1,7 @@
 # Current
 
 - Correctly draw the bracket of the cell under the cursor (#1811)
-- Maths was corrupted if the window was temporarily not wide
+- Maths display was corrupted if the window was temporarily not wide
   enough to display it in 2D (#1812)
 - Added many range checks to the code
 - Correct label scaling after changing the zoom factor (#1815)
@@ -13,6 +13,8 @@
 - Try harder to kill maxima on closing it (#1824)
 - Menu items for displaying the internal representation
 - Better display of diff(), if multiplication dots are enabled (#1825)
+- Tried to resolve a few asserts (#1831)
+- Resolved many warnings from different static analysis tools
 
 # 23.10.0
 
