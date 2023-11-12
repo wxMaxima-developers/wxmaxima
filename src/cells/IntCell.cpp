@@ -146,7 +146,7 @@ void IntCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
         // From: https://commons.wikimedia.org/wiki/File:Integral_Sign.svg (public domain)
         const char* integralSVG = R"svg(
 <?xml version="1.0" encoding="UTF-8"?>
-<svg width="19.879pt" height="51.781pt" preserveAspectRatio="xMidYMid" version="1.0" viewBox="0 0 19.879 51.781" xmlns="http://www.w3.org/2000/svg"><g transform="matrix(.1 0 0 -.1 -19 65.781)"><path d="m342 648c-24-29-49-130-87-343-19-107-33-155-46-155-5 0-8 3-7 7 2 5 0 9-4 11-5 1-8 0-8-3v-15c0-5 9-10 20-10 32 0 48 47 90 262 40 203 59 271 67 236 6-23 26-23 21-1-4 22-31 28-46 11z"/></g></svg>
+<svg version="1.0" viewBox="0 0 19.879 51.781" xmlns="http://www.w3.org/2000/svg"><path d="m15.2 0.981c-2.4 2.9-4.9 13-8.7 34.3-1.9 10.7-3.3 15.5-4.6 15.5-0.5 0-0.8-0.3-0.7-0.7 0.2-0.5 0-0.9-0.4-1.1-0.5-0.1-0.8 0-0.8 0.3v1.5c0 0.5 0.9 1 2 1 3.2 0 4.8-4.7 9-26.2 4-20.3 5.9-27.1 6.7-23.6 0.6 2.3 2.6 2.3 2.1 0.1-0.4-2.2-3.1-2.8-4.6-1.1z" stroke-width=".1"/></svg>
 )svg";
 
         sign.y -= .5 * m_signHeight;
