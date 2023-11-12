@@ -27,6 +27,8 @@
 
   IntCell is the Cell type that represents maxima's <code>integrate()</code>
   command.
+  If the wxWidgets version is at least 3.1.6, then the integral sign is rendered as SVG,
+  otherwise as as spline.
 */
 
 #include "IntCell.h"
@@ -91,12 +93,6 @@ void IntCell::MakeBreakUpCells() {
 void IntCell::Recalculate(AFontSize fontsize) {
     wxASSERT(fontsize.IsValid());
 
-#if wxCHECK_VERSION(3, 1, 6)
-    m_drawMode = svg;
-#else
-    m_drawMode = spline;
-#endif
-
     m_signHeight = Scale_Px(40.0);
     if (m_signHeight < 6)
         m_signHeight = 6;
@@ -115,7 +111,7 @@ void IntCell::Recalculate(AFontSize fontsize) {
     } else {
         m_under->RecalculateList({MC_MIN_SIZE, fontsize - 5});
         m_over->RecalculateList({MC_MIN_SIZE, fontsize - 5});
-        if ((m_intStyle == INT_DEF) && (m_drawMode != svg)) {
+        if ((m_intStyle == INT_DEF) && (wxCHECK_VERSION(3, 1, 6) == false)) {
             m_signHeight = Scale_Px(35) + m_over->GetHeightList() + m_under->GetHeightList();
         }
     }
@@ -148,14 +144,13 @@ void IntCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
 
         SetPen(antialiassingDC, 1.5);
         // FIXME: The integral sign look ok now (for wxWidgets >= 3.1.6) but the position/size is WRONG!!
-        if(m_drawMode == svg)
-          {
+#if wxCHECK_VERSION(3, 1, 6)
             // From: https://commons.wikimedia.org/wiki/File:Integral_Sign.svg (public domain)
             const char* integralSVG = R"svg(
 <?xml version=\"1.0\" encoding=\"UTF-8\"?>
 <svg version=\"1.0\" viewBox=\"0 0 19.879 51.781\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"m15.2 0.981c-2.4 2.9-4.9 13-8.7 34.3-1.9 10.7-3.3 15.5-4.6 15.5-0.5 0-0.8-0.3-0.7-0.7 0.2-0.5 0-0.9-0.4-1.1-0.5-0.1-0.8 0-0.8 0.3v1.5c0 0.5 0.9 1 2 1 3.2 0 4.8-4.7 9-26.2 4-20.3 5.9-27.1 6.7-23.6 0.6 2.3 2.6 2.3 2.1 0.1-0.4-2.2-3.1-2.8-4.6-1.1z\" stroke-width=\".1\"/></svg>
 )svg";
-            
+
             sign.y -= .5 * m_signHeight;
             wxBitmapBundle integralbitmap = wxBitmapBundle::FromSVG(integralSVG, wxSize(m_signWidth, m_signHeight));
             // antialiassingDC->DrawLine(sign.x + m_signWidth, sign.y, sign.x, sign.y  + m_signHeight);
@@ -164,9 +159,7 @@ void IntCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
             //         <<bmp.GetWidth()<<"x"<<bmp.GetHeight()<<"\n";
             antialiassingDC->DrawBitmap(bmp, sign.x, sign.y, true);
             //antialiassingDC->DrawLine(sign.x, sign.y, sign.x + m_signWidth, sign.y  + m_signHeight);
-          }
-        else
-          {
+#else
             // top decoration
             int m_signWCenter = m_signWidth / 2;
             wxPoint points[7] = {
@@ -176,10 +169,10 @@ void IntCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
                sign.y - (m_signHeight - Scale_Px(1)) / 2},
               {sign.x + m_signWCenter, sign.y - (m_signHeight - Scale_Px(1)) / 2 +
                2 * (m_signWidth / 4) + Scale_Px(.35)},
-              
+
               // The line
               {sign.x + m_signWCenter + Scale_Px(.5), sign.y},
-              
+
               // Bottom Decoration
               {sign.x + m_signWCenter, sign.y + (m_signHeight - Scale_Px(1)) / 2 -
                2 * (m_signWidth / 4) + Scale_Px(.35)},
@@ -187,10 +180,10 @@ void IntCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
                sign.y + (m_signHeight - Scale_Px(1)) / 2},
               {sign.x + m_signWCenter - 2 * (m_signWidth / 4),
                sign.y + (m_signHeight - Scale_Px(1)) / 2 - m_signWidth / 4}};
-            
+
             antialiassingDC->DrawSpline(7, points);
             // line
-          }
+#endif
 
         if (m_intStyle == INT_DEF) {
             under.x += m_signWidth;

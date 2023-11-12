@@ -77,12 +77,6 @@ public:
     void SetNextToDraw(Cell *next) override;
 
 private:
-  enum drawMode : int8_t
-  {
-    svg,
-    spline
-  };
-  drawMode m_drawMode = spline;
     void MakeBreakUpCells();
 
     // The pointers below point to inner cells and must be kept contiguous.
