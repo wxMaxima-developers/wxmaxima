@@ -2,7 +2,8 @@
 // nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
-//            (C) 2014-2018 Gunter Königsmann <wxMaxima@physikbuch.de>
+//            (C) 2014-2023 Gunter Königsmann <wxMaxima@physikbuch.de>
+//            (C)      2023 Wolfgang Dautermann
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -151,7 +152,7 @@ void IntCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
         sign.y -= .5 * m_signHeight;
         wxBitmapBundle integralbitmap = wxBitmapBundle::FromSVG(integralSVG, wxSize(m_signWidth, m_signHeight));
         antialiassingDC->DrawBitmap(integralbitmap.GetBitmap(wxSize(m_signWidth, m_signHeight)), sign.x, sign.y, true);
-        //        antialiassingDC->DrawLine(sign.x, sign.y, sign.x + m_signWidth, sign.y  + m_signHeight);
+        // antialiassingDC->DrawLine(sign.x, sign.y, sign.x + m_signWidth, sign.y  + m_signHeight);
 #else
         // top decoration
         int m_signWCenter = m_signWidth / 2;
