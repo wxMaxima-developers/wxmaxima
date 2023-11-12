@@ -33,6 +33,9 @@
 #include "TextCell.h"
 #include <memory>
 #include <utility>
+#if wxCHECK_VERSION(3, 1, 6)
+#include <wx/bmpbndl.h>
+#endif
 
 #if defined __WXMSW__
 #define INTEGRAL_TOP "\xF3"
@@ -40,6 +43,7 @@
 #define INTEGRAL_EXTEND "\xF4"
 static constexpr AFontSize INTEGRAL_FONT_SIZE{12.0f};
 #endif
+
 
 IntCell::IntCell(GroupCell *group, Configuration *config,
                  std::unique_ptr<Cell> &&base, std::unique_ptr<Cell> &&under,
@@ -136,6 +140,30 @@ void IntCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
         wxPoint base(point), under(point), over(point), var(point), sign(point);
 
         SetPen(antialiassingDC, 1.5);
+        // FIXME: The integral sign look ok now (for wxWidgets >= 3.1.6) but the position/size is WRONG!!
+#if wxCHECK_VERSION(3, 1, 6)
+        // From: https://commons.wikimedia.org/wiki/File:Integral_Sign.svg (public domain)
+        const char* integralSVG = R"svg(
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 20010904//EN"
+ "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
+<svg version="1.0" xmlns="http://www.w3.org/2000/svg"
+ width="52.000000pt" height="75.000000pt" viewBox="0 0 52.000000 75.000000"
+ preserveAspectRatio="xMidYMid meet">
+
+<g transform="translate(0.000000,75.000000) scale(0.100000,-0.100000)"
+fill="#000000" stroke="none">
+<path d="M342 648 c-24 -29 -49 -130 -87 -343 -19 -107 -33 -155 -46 -155 -5
+0 -8 3 -7 7 2 5 0 9 -4 11 -5 1 -8 0 -8 -3 0 -3 0 -9 0 -15 0 -5 9 -10 20 -10
+32 0 48 47 90 262 40 203 59 271 67 236 6 -23 26 -23 21 -1 -4 22 -31 28 -46
+11z"/>
+</g>
+</svg>
+)svg";
+
+        wxBitmapBundle integralbitmap = wxBitmapBundle::FromSVG(integralSVG, wxSize(m_signWidth, m_signHeight));
+        antialiassingDC->DrawBitmap(integralbitmap.GetBitmap(wxSize(m_signWidth, m_signHeight)), point.x, point.y, true);
+#else
         // top decoration
         int m_signWCenter = m_signWidth / 2;
         wxPoint points[7] = {
@@ -159,6 +187,7 @@ void IntCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
 
         antialiassingDC->DrawSpline(7, points);
         // line
+#endif
 
         if (m_intStyle == INT_DEF) {
             under.x += m_signWidth;
