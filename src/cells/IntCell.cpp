@@ -91,10 +91,10 @@ void IntCell::MakeBreakUpCells() {
 void IntCell::Recalculate(AFontSize fontsize) {
     wxASSERT(fontsize.IsValid());
 
-    m_signHeight = Scale_Px(47);
-    m_signWidth = Scale_Px(18);
-    if (m_signWidth < 4)
-        m_signWidth = 4;
+    m_signHeight = Scale_Px(40);
+    if (m_signHeight < 6)
+        m_signHeight = 6;
+    m_signWidth = m_signHeight * 19.879 / 51.781;
 
     m_base->RecalculateList(fontsize);
     m_var->RecalculateList(fontsize);
