@@ -151,6 +151,7 @@ void IntCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
 
         sign.y -= .5 * m_signHeight;
         wxBitmapBundle integralbitmap = wxBitmapBundle::FromSVG(integralSVG, wxSize(m_signWidth, m_signHeight));
+        // antialiassingDC->DrawLine(sign.x + m_signWidth, sign.y, sign.x, sign.y  + m_signHeight);
         antialiassingDC->DrawBitmap(integralbitmap.GetBitmap(wxSize(m_signWidth, m_signHeight)), sign.x, sign.y, true);
         // antialiassingDC->DrawLine(sign.x, sign.y, sign.x + m_signWidth, sign.y  + m_signHeight);
 #else
