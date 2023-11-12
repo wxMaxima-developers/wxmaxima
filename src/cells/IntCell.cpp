@@ -160,9 +160,10 @@ fill="#000000" stroke="none">
 </g>
 </svg>
 )svg";
-
-        wxBitmapBundle integralbitmap = wxBitmapBundle::FromSVG(integralSVG, wxSize(m_signWidth, m_signHeight));
-        antialiassingDC->DrawBitmap(integralbitmap.GetBitmap(wxSize(m_signWidth, m_signHeight)), point.x, point.y, true);
+        // FIXME: What is the *correct* position/size? Can't say, why these factors (*2, /3, ...) are necessary.
+        // Now it seems more or less correct for indefinite integrals, but not for definite integrals.
+        wxBitmapBundle integralbitmap = wxBitmapBundle::FromSVG(integralSVG, wxSize(m_signWidth*2, m_signHeight*2-m_signWidth/3-m_signHeight/3));
+        antialiassingDC->DrawBitmap(integralbitmap.GetBitmap(integralbitmap.GetDefaultSize()), point.x-m_signWidth/3, point.y-m_signHeight/3, true);
 #else
         // top decoration
         int m_signWCenter = m_signWidth / 2;
