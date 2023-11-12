@@ -133,6 +133,7 @@ if(WXM_DISABLE_WEBVIEW)
 else()
 	find_package(wxWidgets 3 REQUIRED richtext aui adv html webview core xml net base)
 endif()
+message(STATUS "Found wxWidgets: (found version \"${wxWidgets_VERSION_STRING}\")")
 include(${wxWidgets_USE_FILE})
 
 
