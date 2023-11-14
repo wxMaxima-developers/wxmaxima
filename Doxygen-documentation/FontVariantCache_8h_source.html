@@ -103,45 +103,45 @@ $(function() {
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160; </div>
 <div class="line"><a name="l00042"></a><span class="lineno"><a class="line" href="classFontVariantCache.html">   42</a></span>&#160;<span class="keyword">class </span><a class="code" href="classFontVariantCache.html">FontVariantCache</a> final</div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;{</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <a class="code" href="classFontVariantCache.html">FontVariantCache</a>(<span class="keyword">const</span> <a class="code" href="classFontVariantCache.html">FontVariantCache</a> &amp;) = <span class="keyword">delete</span>;</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <a class="code" href="classFontVariantCache.html">FontVariantCache</a> &amp;operator=(<span class="keyword">const</span> <a class="code" href="classFontVariantCache.html">FontVariantCache</a> &amp;) = <span class="keyword">delete</span>;</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;  <a class="code" href="classFontVariantCache.html">FontVariantCache</a>(<span class="keyword">const</span> <a class="code" href="classFontVariantCache.html">FontVariantCache</a> &amp;) = <span class="keyword">delete</span>;</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;  <a class="code" href="classFontVariantCache.html">FontVariantCache</a> &amp;operator=(<span class="keyword">const</span> <a class="code" href="classFontVariantCache.html">FontVariantCache</a> &amp;) = <span class="keyword">delete</span>;</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <span class="keyword">explicit</span> <a class="code" href="classFontVariantCache.html">FontVariantCache</a>(wxString fontName);</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    ~<a class="code" href="classFontVariantCache.html">FontVariantCache</a>(){}</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classFontVariantCache.html#ac9f0638d102c615b4de1ba3929617bd0">ClearCache</a>();</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    std::shared_ptr&lt;wxFont&gt; <a class="code" href="classFontVariantCache.html#a1e9362b0852d549ddf9429b07c57227a">GetFont</a> (<span class="keywordtype">double</span> size,</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;                                     <span class="keywordtype">bool</span> isItalic,</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                                     <span class="keywordtype">bool</span> isBold,</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;                                     <span class="keywordtype">bool</span> isUnderlined,</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;                                     <span class="keywordtype">bool</span> isSlanted,</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                                     <span class="keywordtype">bool</span> isStrikeThrough</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        );</div>
-<div class="line"><a name="l00063"></a><span class="lineno"><a class="line" href="classFontVariantCache.html#a8eeb75e48c767df4bbdeb4663e15e85e">   63</a></span>&#160;    <span class="keyword">const</span> wxString&amp; <a class="code" href="classFontVariantCache.html#a8eeb75e48c767df4bbdeb4663e15e85e">GetFaceName</a>()<span class="keyword"> const </span>{<span class="keywordflow">return</span> m_fontName;}</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;  <span class="keyword">explicit</span> <a class="code" href="classFontVariantCache.html">FontVariantCache</a>(wxString fontName);</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;  ~<a class="code" href="classFontVariantCache.html">FontVariantCache</a>(){}</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classFontVariantCache.html#ac9f0638d102c615b4de1ba3929617bd0">ClearCache</a>();</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;  std::shared_ptr&lt;wxFont&gt; <a class="code" href="classFontVariantCache.html#a1e9362b0852d549ddf9429b07c57227a">GetFont</a> (<span class="keywordtype">double</span> size,</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;                                   <span class="keywordtype">bool</span> isItalic,</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                                   <span class="keywordtype">bool</span> isBold,</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;                                   <span class="keywordtype">bool</span> isUnderlined,</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;                                   <span class="keywordtype">bool</span> isSlanted,</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                                   <span class="keywordtype">bool</span> isStrikeThrough</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    );</div>
+<div class="line"><a name="l00063"></a><span class="lineno"><a class="line" href="classFontVariantCache.html#a8eeb75e48c767df4bbdeb4663e15e85e">   63</a></span>&#160;  <span class="keyword">const</span> wxString&amp; <a class="code" href="classFontVariantCache.html#a8eeb75e48c767df4bbdeb4663e15e85e">GetFaceName</a>()<span class="keyword"> const </span>{<span class="keywordflow">return</span> m_fontName;}</div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">int</span> GetIndex (</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        <span class="keywordtype">bool</span> isItalic,</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        <span class="keywordtype">bool</span> isBold,</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        <span class="keywordtype">bool</span> isUnderlined,</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        <span class="keywordtype">bool</span> isSlanted,</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        <span class="keywordtype">bool</span> isStrikeThrough</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        )</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        {</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;            <span class="keywordtype">int</span> result =0;</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;            <span class="keywordflow">if</span>(isItalic)</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;                result++;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;            <span class="keywordflow">if</span>(isBold)</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;                result += 2;</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;            <span class="keywordflow">if</span>(isUnderlined)</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;                result +=4;</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;            <span class="keywordflow">if</span>(isSlanted)</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;                result +=8;</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;            <span class="keywordflow">if</span>(isStrikeThrough)</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;                result +=16;</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;            <span class="keywordflow">return</span> result;</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;        }</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;  <span class="keyword">static</span> <span class="keywordtype">int</span> GetIndex (</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <span class="keywordtype">bool</span> isItalic,</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <span class="keywordtype">bool</span> isBold,</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <span class="keywordtype">bool</span> isUnderlined,</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <span class="keywordtype">bool</span> isSlanted,</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <span class="keywordtype">bool</span> isStrikeThrough</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    )</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    {</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;      <span class="keywordtype">int</span> result =0;</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;      <span class="keywordflow">if</span>(isItalic)</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;        result++;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;      <span class="keywordflow">if</span>(isBold)</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        result += 2;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;      <span class="keywordflow">if</span>(isUnderlined)</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        result +=4;</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;      <span class="keywordflow">if</span>(isSlanted)</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        result +=8;</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;      <span class="keywordflow">if</span>(isStrikeThrough)</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        result +=16;</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;      <span class="keywordflow">return</span> result;</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    }</div>
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160; </div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    <span class="keyword">mutable</span> std::unordered_map&lt;double, std::shared_ptr&lt;wxFont&gt;&gt; m_fontCaches[32];</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    wxString m_fontName;</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;  <span class="keyword">mutable</span> std::unordered_map&lt;double, std::shared_ptr&lt;wxFont&gt;&gt; m_fontCaches[32];</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;  wxString m_fontName;</div>
 <div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;};</div>
 <div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160; </div>
 <div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;<span class="preprocessor">#endif  </span><span class="comment">// FONTVARIANTCACHE_H</span></div>

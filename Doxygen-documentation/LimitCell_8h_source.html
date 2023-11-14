@@ -105,52 +105,52 @@ $(function() {
 <div class="line"><a name="l00040"></a><span class="lineno"><a class="line" href="classLimitCell.html">   40</a></span>&#160;<span class="keyword">class </span><a class="code" href="classLimitCell.html">LimitCell</a> final : <span class="keyword">public</span> <a class="code" href="classCell.html">Cell</a></div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;{</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <a class="code" href="classLimitCell.html">LimitCell</a>(<a class="code" href="classGroupCell.html">GroupCell</a> *group, <a class="code" href="classConfiguration.html">Configuration</a> *config,</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;              std::unique_ptr&lt;Cell&gt; &amp;&amp;base, std::unique_ptr&lt;Cell&gt; &amp;&amp;under,</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;              std::unique_ptr&lt;Cell&gt; &amp;&amp;name);</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <a class="code" href="classLimitCell.html">LimitCell</a>(<a class="code" href="classGroupCell.html">GroupCell</a> *group, <span class="keyword">const</span> <a class="code" href="classLimitCell.html">LimitCell</a> &amp;cell);</div>
-<div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="classLimitCell.html#a1534b6b8097942fe1a711947f1ec8604">   47</a></span>&#160;    std::unique_ptr&lt;Cell&gt; <a class="code" href="classLimitCell.html#a1534b6b8097942fe1a711947f1ec8604">Copy</a>(<a class="code" href="classGroupCell.html">GroupCell</a> *group) <span class="keyword">const override</span>;</div>
-<div class="line"><a name="l00048"></a><span class="lineno"><a class="line" href="classLimitCell.html#a88fa56fd38f5e2509dbc12c79867d8e4">   48</a></span>&#160;    <span class="keyword">const</span> <a class="code" href="classCellTypeInfo.html">CellTypeInfo</a> &amp;<a class="code" href="classLimitCell.html#a88fa56fd38f5e2509dbc12c79867d8e4">GetInfo</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;  <a class="code" href="classLimitCell.html">LimitCell</a>(<a class="code" href="classGroupCell.html">GroupCell</a> *group, <a class="code" href="classConfiguration.html">Configuration</a> *config,</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;            std::unique_ptr&lt;Cell&gt; &amp;&amp;base, std::unique_ptr&lt;Cell&gt; &amp;&amp;under,</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;            std::unique_ptr&lt;Cell&gt; &amp;&amp;name);</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;  <a class="code" href="classLimitCell.html">LimitCell</a>(<a class="code" href="classGroupCell.html">GroupCell</a> *group, <span class="keyword">const</span> <a class="code" href="classLimitCell.html">LimitCell</a> &amp;cell);</div>
+<div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="classLimitCell.html#a1534b6b8097942fe1a711947f1ec8604">   47</a></span>&#160;  std::unique_ptr&lt;Cell&gt; <a class="code" href="classLimitCell.html#a1534b6b8097942fe1a711947f1ec8604">Copy</a>(<a class="code" href="classGroupCell.html">GroupCell</a> *group) <span class="keyword">const override</span>;</div>
+<div class="line"><a name="l00048"></a><span class="lineno"><a class="line" href="classLimitCell.html#a88fa56fd38f5e2509dbc12c79867d8e4">   48</a></span>&#160;  <span class="keyword">const</span> <a class="code" href="classCellTypeInfo.html">CellTypeInfo</a> &amp;<a class="code" href="classLimitCell.html#a88fa56fd38f5e2509dbc12c79867d8e4">GetInfo</a>() <span class="keyword">override</span>;</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; </div>
-<div class="line"><a name="l00050"></a><span class="lineno"><a class="line" href="classLimitCell.html#a9e313096bd46fdaef3f50fb788f42e93">   50</a></span>&#160;    <span class="keywordtype">size_t</span> <a class="code" href="classLimitCell.html#a9e313096bd46fdaef3f50fb788f42e93">GetInnerCellCount</a>()<span class="keyword"> const override </span>{ <span class="keywordflow">return</span> 6; }</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <span class="comment">// cppcheck-suppress objectIndex</span></div>
-<div class="line"><a name="l00052"></a><span class="lineno"><a class="line" href="classLimitCell.html#a1707bef9931e61193ff7a901b4787721">   52</a></span>&#160;    <a class="code" href="classCell.html">Cell</a> *<a class="code" href="classLimitCell.html#a1707bef9931e61193ff7a901b4787721">GetInnerCell</a>(<span class="keywordtype">size_t</span> index)<span class="keyword"> const override </span>{ <span class="keywordflow">return</span> (&amp;m_name)[index].get(); }</div>
+<div class="line"><a name="l00050"></a><span class="lineno"><a class="line" href="classLimitCell.html#a9e313096bd46fdaef3f50fb788f42e93">   50</a></span>&#160;  <span class="keywordtype">size_t</span> <a class="code" href="classLimitCell.html#a9e313096bd46fdaef3f50fb788f42e93">GetInnerCellCount</a>()<span class="keyword"> const override </span>{ <span class="keywordflow">return</span> 6; }</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;  <span class="comment">// cppcheck-suppress objectIndex</span></div>
+<div class="line"><a name="l00052"></a><span class="lineno"><a class="line" href="classLimitCell.html#a1707bef9931e61193ff7a901b4787721">   52</a></span>&#160;  <a class="code" href="classCell.html">Cell</a> *<a class="code" href="classLimitCell.html#a1707bef9931e61193ff7a901b4787721">GetInnerCell</a>(<span class="keywordtype">size_t</span> index)<span class="keyword"> const override </span>{ <span class="keywordflow">return</span> (&amp;m_name)[index].get(); }</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classLimitCell.html#a03b150572eb207d9d88ab56d09799f95">Recalculate</a>(<a class="code" href="classAFontSize.html">AFontSize</a> fontsize) <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classLimitCell.html#a03b150572eb207d9d88ab56d09799f95">Recalculate</a>(<a class="code" href="classAFontSize.html">AFontSize</a> fontsize) <span class="keyword">override</span>;</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classLimitCell.html#a2d2e69f65005a870cc34e95cdb3fbc2a">Draw</a>(wxPoint point, wxDC *dc, wxDC *antialiassingDC) <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classLimitCell.html#a2d2e69f65005a870cc34e95cdb3fbc2a">Draw</a>(wxPoint point, wxDC *dc, wxDC *antialiassingDC) <span class="keyword">override</span>;</div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    wxString <a class="code" href="classLimitCell.html#aac34ab9a6f6205541185edbb8cc635da">ToMathML</a>() <span class="keyword">const override</span>;</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    wxString <a class="code" href="classLimitCell.html#a9154004c52cd71d06375b01149fbc880">ToMatlab</a>() <span class="keyword">const override</span>;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    wxString <a class="code" href="classLimitCell.html#a43b10cf7a983ab065f3371d2ecd9dc26">ToOMML</a>() <span class="keyword">const override</span>;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    wxString <a class="code" href="classLimitCell.html#a6125333c0db29700786f877f58b97d6a">ToString</a>() <span class="keyword">const override</span>;</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    wxString <a class="code" href="classLimitCell.html#a338efbd3aa01ed66098894af4cba7a77">ToTeX</a>() <span class="keyword">const override</span>;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    wxString <a class="code" href="classLimitCell.html#afa11f67c78a718330cf9b050a057fd1a">ToXML</a>() <span class="keyword">const override</span>;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  wxString <a class="code" href="classLimitCell.html#aac34ab9a6f6205541185edbb8cc635da">ToMathML</a>() <span class="keyword">const override</span>;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;  wxString <a class="code" href="classLimitCell.html#a9154004c52cd71d06375b01149fbc880">ToMatlab</a>() <span class="keyword">const override</span>;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  wxString <a class="code" href="classLimitCell.html#a43b10cf7a983ab065f3371d2ecd9dc26">ToOMML</a>() <span class="keyword">const override</span>;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  wxString <a class="code" href="classLimitCell.html#a6125333c0db29700786f877f58b97d6a">ToString</a>() <span class="keyword">const override</span>;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  wxString <a class="code" href="classLimitCell.html#a338efbd3aa01ed66098894af4cba7a77">ToTeX</a>() <span class="keyword">const override</span>;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;  wxString <a class="code" href="classLimitCell.html#afa11f67c78a718330cf9b050a057fd1a">ToXML</a>() <span class="keyword">const override</span>;</div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160; </div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classLimitCell.html#a4e33dc30d0bb938cb343f8fd5f5a4c1f">BreakUp</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  <span class="keywordtype">bool</span> <a class="code" href="classLimitCell.html#a4e33dc30d0bb938cb343f8fd5f5a4c1f">BreakUp</a>() <span class="keyword">override</span>;</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classLimitCell.html#a4fd32092ecbb103a121a3a62cf62fc41">SetNextToDraw</a>(<a class="code" href="classCell.html">Cell</a> *next) <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classLimitCell.html#a4fd32092ecbb103a121a3a62cf62fc41">SetNextToDraw</a>(<a class="code" href="classCell.html">Cell</a> *next) <span class="keyword">override</span>;</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <span class="keywordtype">void</span> MakeBreakUpCells();</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  <span class="keywordtype">void</span> MakeBreakUpCells();</div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; </div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <span class="comment">// The pointers below point to inner cells and must be kept contiguous.</span></div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <span class="comment">// ** This is the draw list order. All pointers must be the same:</span></div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <span class="comment">// ** either Cell * or std::unique_ptr&lt;Cell&gt;. NO OTHER TYPES are allowed.</span></div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    std::unique_ptr&lt;Cell&gt; m_name;</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    std::unique_ptr&lt;Cell&gt; m_open;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    std::unique_ptr&lt;Cell&gt; m_base;</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    std::unique_ptr&lt;Cell&gt; m_comma;</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    std::unique_ptr&lt;Cell&gt; m_under;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    std::unique_ptr&lt;Cell&gt; m_close;</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    <span class="comment">// The pointers above point to inner cells and must be kept contiguous.</span></div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  <span class="comment">// The pointers below point to inner cells and must be kept contiguous.</span></div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;  <span class="comment">// ** This is the draw list order. All pointers must be the same:</span></div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  <span class="comment">// ** either Cell * or std::unique_ptr&lt;Cell&gt;. NO OTHER TYPES are allowed.</span></div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  std::unique_ptr&lt;Cell&gt; m_name;</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  std::unique_ptr&lt;Cell&gt; m_open;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  std::unique_ptr&lt;Cell&gt; m_base;</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  std::unique_ptr&lt;Cell&gt; m_comma;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;  std::unique_ptr&lt;Cell&gt; m_under;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;  std::unique_ptr&lt;Cell&gt; m_close;</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;  <span class="comment">// The pointers above point to inner cells and must be kept contiguous.</span></div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160; </div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="comment">//** Bitfield objects (0 bytes)</span></div>
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="comment">//**</span></div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">void</span> InitBitFields()</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;        { <span class="comment">// Keep the initialization order below same as the order</span></div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;            <span class="comment">// of bit fields in this class!</span></div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        }</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;  <span class="keyword">static</span> <span class="keywordtype">void</span> InitBitFields()</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    { <span class="comment">// Keep the initialization order below same as the order</span></div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;      <span class="comment">// of bit fields in this class!</span></div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    }</div>
 <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;};</div>
 <div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160; </div>
 <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// LIMITCELL_H</span></div>

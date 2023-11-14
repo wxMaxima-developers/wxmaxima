@@ -101,38 +101,38 @@ $(function() {
 <div class="line"><a name="l00039"></a><span class="lineno"><a class="line" href="classXmlInspector.html">   39</a></span>&#160;<span class="keyword">class </span><a class="code" href="classXmlInspector.html">XmlInspector</a> : <span class="keyword">public</span> wxRichTextCtrl</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;{</div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <a class="code" href="classXmlInspector.html">XmlInspector</a>(wxWindow *parent, <span class="keywordtype">int</span> <span class="keywordtype">id</span>);</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;  <a class="code" href="classXmlInspector.html">XmlInspector</a>(wxWindow *parent, <span class="keywordtype">int</span> <span class="keywordtype">id</span>);</div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160; </div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <a class="code" href="classXmlInspector.html#a9d8cb605490465aad6e75c6fcaa45f92">~XmlInspector</a>();</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;  <a class="code" href="classXmlInspector.html#a9d8cb605490465aad6e75c6fcaa45f92">~XmlInspector</a>();</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; </div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classXmlInspector.html#a306b80efe16aab68d9a3834eeeed53f5">Clear</a>();</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classXmlInspector.html#a306b80efe16aab68d9a3834eeeed53f5">Clear</a>();</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; </div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classXmlInspector.html#af1a3b1385cc958c11e936e84c825401f">Add_ToMaxima</a>(wxString text);</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classXmlInspector.html#a9ba652c4a4c11749e63825a187ac5477">Add_FromMaxima</a>(wxString text);</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classXmlInspector.html#acaf69592815c0749c16e8ea795078491">UpdateContents</a>();</div>
-<div class="line"><a name="l00058"></a><span class="lineno"><a class="line" href="classXmlInspector.html#a83c9ecd3e19b82dce7bb0860e9c16e1f">   58</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classXmlInspector.html#a83c9ecd3e19b82dce7bb0860e9c16e1f">UpdateNeeded</a>(){<span class="keywordflow">return</span> m_updateNeeded;}</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classXmlInspector.html#af1a3b1385cc958c11e936e84c825401f">Add_ToMaxima</a>(wxString text);</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classXmlInspector.html#a9ba652c4a4c11749e63825a187ac5477">Add_FromMaxima</a>(wxString text);</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classXmlInspector.html#acaf69592815c0749c16e8ea795078491">UpdateContents</a>();</div>
+<div class="line"><a name="l00058"></a><span class="lineno"><a class="line" href="classXmlInspector.html#a83c9ecd3e19b82dce7bb0860e9c16e1f">   58</a></span>&#160;  <span class="keywordtype">bool</span> <a class="code" href="classXmlInspector.html#a83c9ecd3e19b82dce7bb0860e9c16e1f">UpdateNeeded</a>(){<span class="keywordflow">return</span> m_updateNeeded;}</div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="keywordtype">bool</span> m_updateNeeded;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    wxString m_fromMaxima;</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    wxString m_toMaxima;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <span class="keywordtype">bool</span> m_clear;</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="keyword">enum</span> xmlInspectorIDs</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    {</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        XmlInspector_ctrl_id = 4,</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        XmlInspector_regex_id</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    };</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <span class="keyword">enum</span> monitorState</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    {</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        clear,</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        fromMaxima,</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        toMaxima</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    };</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    monitorState m_state;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  <span class="keywordtype">bool</span> m_updateNeeded;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  wxString m_fromMaxima;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  wxString m_toMaxima;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;  <span class="keywordtype">bool</span> m_clear;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  <span class="keyword">enum</span> xmlInspectorIDs</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  {</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    XmlInspector_ctrl_id = 4,</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    XmlInspector_regex_id</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  };</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  <span class="keyword">enum</span> monitorState</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  {</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    clear,</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    fromMaxima,</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    toMaxima</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  };</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  monitorState m_state;</div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; </div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    wxChar m_lastChar = <span class="charliteral">&#39;\0&#39;</span>;</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="keywordtype">int</span> m_indentLevel;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  wxChar m_lastChar = <span class="charliteral">&#39;\0&#39;</span>;</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  <span class="keywordtype">int</span> m_indentLevel;</div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; </div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    wxString IndentString(<span class="keywordtype">int</span> level);</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;  wxString IndentString(<span class="keywordtype">int</span> level);</div>
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;};</div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160; </div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// XMLINSPECTOR_H</span></div>

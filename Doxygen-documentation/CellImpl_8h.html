@@ -117,8 +117,8 @@ Macros</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">    DEFINE_CELL_COPY(type)                      \</div>
-<div class="line">    DEFINE_CELL_TYPEINFO(type)                  \</div>
+<b>Value:</b><div class="fragment"><div class="line">  DEFINE_CELL_COPY(type)                        \</div>
+<div class="line">  DEFINE_CELL_TYPEINFO(type)                    \</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -137,10 +137,10 @@ Macros</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">    std::unique_ptr&lt;Cell&gt; type::Copy(<a class="code" href="classGroupCell.html">GroupCell</a> *group) <span class="keyword">const</span>    \</div>
-<div class="line">    {                                                           \</div>
-<div class="line">        return std::make_unique&lt;type&gt;(group, *<span class="keyword">this</span>);            \</div>
-<div class="line">    }                                                           \</div>
+<b>Value:</b><div class="fragment"><div class="line">  std::unique_ptr&lt;Cell&gt; type::Copy(<a class="code" href="classGroupCell.html">GroupCell</a> *group) <span class="keyword">const</span>      \</div>
+<div class="line">  {                                                             \</div>
+<div class="line">    return std::make_unique&lt;type&gt;(group, *<span class="keyword">this</span>);                \</div>
+<div class="line">  }                                                             \</div>
 <div class="ttc" id="aclassGroupCell_html"><div class="ttname"><a href="classGroupCell.html">GroupCell</a></div><div class="ttdoc">A cell grouping input (and, if there is one, also the output) cell to a foldable item.</div><div class="ttdef"><b>Definition:</b> GroupCell.h:72</div></div>
 </div><!-- fragment -->
 </div>
@@ -160,16 +160,16 @@ Macros</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">    <span class="keyword">const</span> <a class="code" href="classCellTypeInfo.html">CellTypeInfo</a> &amp;type::GetInfo()                                 \</div>
-<div class="line">    {                                                                   \</div>
-<div class="line">        class type##TypeInfo final : <span class="keyword">public</span> <a class="code" href="classCellTypeInfo.html">CellTypeInfo</a> {              \</div>
-<div class="line">        public:                                                         \</div>
-<div class="line">        <span class="comment">/* cppcheck-suppress returnTempReference */</span>                     \</div>
-<div class="line">        const wxString &amp;GetName()<span class="keyword"> const override </span>{ <span class="keywordflow">return</span> S_(#type); }  \</div>
-<div class="line">        };                                                              \</div>
-<div class="line">        const type##TypeInfo <span class="keyword">static</span> info;                               \</div>
-<div class="line">        return info;                                                    \</div>
-<div class="line">    }                                                                   \</div>
+<b>Value:</b><div class="fragment"><div class="line">  <span class="keyword">const</span> <a class="code" href="classCellTypeInfo.html">CellTypeInfo</a> &amp;type::GetInfo()                                   \</div>
+<div class="line">  {                                                                     \</div>
+<div class="line">    class type##TypeInfo final : <span class="keyword">public</span> <a class="code" href="classCellTypeInfo.html">CellTypeInfo</a> {                  \</div>
+<div class="line">    public:                                                             \</div>
+<div class="line">    <span class="comment">/* cppcheck-suppress returnTempReference */</span>                         \</div>
+<div class="line">    const wxString &amp;GetName()<span class="keyword"> const override </span>{ <span class="keywordflow">return</span> S_(#type); }      \</div>
+<div class="line">    };                                                                  \</div>
+<div class="line">    const type##TypeInfo <span class="keyword">static</span> info;                                   \</div>
+<div class="line">    return info;                                                        \</div>
+<div class="line">  }                                                                     \</div>
 <div class="ttc" id="aclassCellTypeInfo_html"><div class="ttname"><a href="classCellTypeInfo.html">CellTypeInfo</a></div><div class="ttdoc">A class that carries information about the type of a cell.</div><div class="ttdef"><b>Definition:</b> Cell.h:91</div></div>
 </div><!-- fragment -->
 </div>

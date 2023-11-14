@@ -107,30 +107,30 @@ $(function() {
 <div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="classSvgout.html">   36</a></span>&#160;<span class="keyword">class </span><a class="code" href="classSvgout.html">Svgout</a> final</div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;{</div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <span class="keyword">explicit</span> <a class="code" href="classSvgout.html#aaf5a5d7592f4c74f54e62ee86baa1bf8">Svgout</a>(<a class="code" href="classConfiguration.html">Configuration</a> **configuration, <span class="keyword">const</span> wxString &amp;filename = {}, <span class="keywordtype">double</span> scale = 1.0);</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <span class="keyword">explicit</span> <a class="code" href="classSvgout.html#aaf5a5d7592f4c74f54e62ee86baa1bf8">Svgout</a>(<a class="code" href="classConfiguration.html">Configuration</a> **configuration, std::unique_ptr&lt;Cell&gt; &amp;&amp;tree,</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;                    <span class="keyword">const</span> wxString &amp;filename = {}, <span class="keywordtype">double</span> scale = 1.0);</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    ~<a class="code" href="classSvgout.html">Svgout</a>();</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;  <span class="keyword">explicit</span> <a class="code" href="classSvgout.html#aaf5a5d7592f4c74f54e62ee86baa1bf8">Svgout</a>(<a class="code" href="classConfiguration.html">Configuration</a> **configuration, <span class="keyword">const</span> wxString &amp;filename = {}, <span class="keywordtype">double</span> scale = 1.0);</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;  <span class="keyword">explicit</span> <a class="code" href="classSvgout.html#aaf5a5d7592f4c74f54e62ee86baa1bf8">Svgout</a>(<a class="code" href="classConfiguration.html">Configuration</a> **configuration, std::unique_ptr&lt;Cell&gt; &amp;&amp;tree,</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;                  <span class="keyword">const</span> wxString &amp;filename = {}, <span class="keywordtype">double</span> scale = 1.0);</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;  ~<a class="code" href="classSvgout.html">Svgout</a>();</div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    wxSize <a class="code" href="classSvgout.html#a2b61b721a5eb267ce894331a6d1ff9d4">Render</a>(std::unique_ptr&lt;Cell&gt; &amp;&amp;tree);</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;  wxSize <a class="code" href="classSvgout.html#a2b61b721a5eb267ce894331a6d1ff9d4">Render</a>(std::unique_ptr&lt;Cell&gt; &amp;&amp;tree);</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160; </div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    wxSize GetSize()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> m_size; }</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <span class="keywordtype">bool</span> IsOk()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> m_isOk; }</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;  wxSize GetSize()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> m_size; }</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;  <span class="keywordtype">bool</span> IsOk()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> m_isOk; }</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classSvgout.html#a1ac1a2c8c5f58baa75f038b5acae68f6">ToClipboard</a>();</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;  <span class="keywordtype">bool</span> <a class="code" href="classSvgout.html#a1ac1a2c8c5f58baa75f038b5acae68f6">ToClipboard</a>();</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    std::unique_ptr&lt;wxCustomDataObject&gt; <a class="code" href="classSvgout.html#a35fec32320bccef0ad67508b7ad673fb">GetDataObject</a>();</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  std::unique_ptr&lt;wxCustomDataObject&gt; <a class="code" href="classSvgout.html#a35fec32320bccef0ad67508b7ad673fb">GetDataObject</a>();</div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160; </div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    std::unique_ptr&lt;Cell&gt; m_tree;</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <a class="code" href="classOutCommon.html">OutCommon</a> m_cmn;</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    wxSVGFileDC m_recalculationDc;</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    wxSize m_size = wxDefaultSize;</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <span class="keywordtype">bool</span> m_isOk = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;  std::unique_ptr&lt;Cell&gt; m_tree;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  <a class="code" href="classOutCommon.html">OutCommon</a> m_cmn;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  wxSVGFileDC m_recalculationDc;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;  wxSize m_size = wxDefaultSize;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  <span class="keywordtype">bool</span> m_isOk = <span class="keyword">false</span>;</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    wxString m_CWD;</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  wxString m_CWD;</div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; </div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="keywordtype">bool</span> Layout();</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  <span class="keywordtype">bool</span> Layout();</div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;};</div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; </div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// SVGOUT_H</span></div>

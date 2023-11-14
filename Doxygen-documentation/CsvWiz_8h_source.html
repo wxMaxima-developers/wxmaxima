@@ -109,33 +109,33 @@ $(function() {
 <div class="line"><a name="l00043"></a><span class="lineno"><a class="line" href="classCsvImportWiz.html">   43</a></span>&#160;<span class="keyword">class </span><a class="code" href="classCsvImportWiz.html">CsvImportWiz</a> : <span class="keyword">public</span> wxDialog</div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;{</div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <a class="code" href="classCsvImportWiz.html">CsvImportWiz</a>(wxWindow *parent, <a class="code" href="classConfiguration.html">Configuration</a> *config);</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    ~<a class="code" href="classCsvImportWiz.html">CsvImportWiz</a>();</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    wxString GetFilename(){<span class="keywordflow">return</span> m_filename-&gt;GetValue();}</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    wxString GetSeparator();</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;  <a class="code" href="classCsvImportWiz.html">CsvImportWiz</a>(wxWindow *parent, <a class="code" href="classConfiguration.html">Configuration</a> *config);</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;  ~<a class="code" href="classCsvImportWiz.html">CsvImportWiz</a>();</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;  wxString GetFilename(){<span class="keywordflow">return</span> m_filename-&gt;GetValue();}</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;  wxString GetSeparator();</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <span class="keywordtype">void</span> OnBrowse(wxCommandEvent &amp;event);</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;  <span class="keywordtype">void</span> OnBrowse(wxCommandEvent &amp;event);</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    wxButton *m_browseButton;</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <a class="code" href="classBTextCtrl.html">BTextCtrl</a> *m_filename;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    wxChoice *m_separator;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;  wxButton *m_browseButton;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;  <a class="code" href="classBTextCtrl.html">BTextCtrl</a> *m_filename;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;  wxChoice *m_separator;</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;};</div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
 <div class="line"><a name="l00059"></a><span class="lineno"><a class="line" href="classCsvExportWiz.html">   59</a></span>&#160;<span class="keyword">class </span><a class="code" href="classCsvExportWiz.html">CsvExportWiz</a> : <span class="keyword">public</span> wxDialog</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;{</div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <a class="code" href="classCsvExportWiz.html">CsvExportWiz</a>(wxWindow *parent, <a class="code" href="classConfiguration.html">Configuration</a> *config, wxString objectType);</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    ~<a class="code" href="classCsvExportWiz.html">CsvExportWiz</a>();</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    wxString GetFilename(){<span class="keywordflow">return</span> m_filename-&gt;GetValue();}</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    wxString GetMatrix(){<span class="keywordflow">return</span> m_matrix-&gt;GetValue();}</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    wxString GetSeparator();</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  <a class="code" href="classCsvExportWiz.html">CsvExportWiz</a>(wxWindow *parent, <a class="code" href="classConfiguration.html">Configuration</a> *config, wxString objectType);</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;  ~<a class="code" href="classCsvExportWiz.html">CsvExportWiz</a>();</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  wxString GetFilename(){<span class="keywordflow">return</span> m_filename-&gt;GetValue();}</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  wxString GetMatrix(){<span class="keywordflow">return</span> m_matrix-&gt;GetValue();}</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;  wxString GetSeparator();</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <span class="keywordtype">void</span> OnBrowse(wxCommandEvent &amp;event);</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  <span class="keywordtype">void</span> OnBrowse(wxCommandEvent &amp;event);</div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    wxButton *m_browseButton;</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <a class="code" href="classBTextCtrl.html">BTextCtrl</a> *m_matrix;</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <a class="code" href="classBTextCtrl.html">BTextCtrl</a> *m_filename;</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    wxChoice *m_separator;</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  wxButton *m_browseButton;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  <a class="code" href="classBTextCtrl.html">BTextCtrl</a> *m_matrix;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  <a class="code" href="classBTextCtrl.html">BTextCtrl</a> *m_filename;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;  wxChoice *m_separator;</div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;};</div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; </div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// CSVWIZ_H</span></div>

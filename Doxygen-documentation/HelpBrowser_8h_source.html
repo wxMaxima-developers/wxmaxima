@@ -111,39 +111,39 @@ $(function() {
 <div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="classHelpBrowser.html">   47</a></span>&#160;<span class="keyword">class </span><a class="code" href="classHelpBrowser.html">HelpBrowser</a> : <span class="keyword">public</span> wxPanel</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;{</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">bool</span> <a class="code" href="classHelpBrowser.html#a97f1f32d8d5ba72a03e76a5fd8d94e7f">AllowOnlineManualP</a>(<a class="code" href="classConfiguration.html">Configuration</a> *configuration, wxWindow *parent);</div>
-<div class="line"><a name="l00053"></a><span class="lineno"><a class="line" href="classHelpBrowser.html#a32f4d36e99b96d0c1ca951a045212be1">   53</a></span>&#160;    <span class="keyword">explicit</span> <a class="code" href="classHelpBrowser.html#a32f4d36e99b96d0c1ca951a045212be1">HelpBrowser</a>(wxWindow *parent, <a class="code" href="classConfiguration.html">Configuration</a> *configuration, <a class="code" href="classMaximaManual.html">MaximaManual</a> *manual,</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;                         wxString url);</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;  <span class="keyword">static</span> <span class="keywordtype">bool</span> <a class="code" href="classHelpBrowser.html#a97f1f32d8d5ba72a03e76a5fd8d94e7f">AllowOnlineManualP</a>(<a class="code" href="classConfiguration.html">Configuration</a> *configuration, wxWindow *parent);</div>
+<div class="line"><a name="l00053"></a><span class="lineno"><a class="line" href="classHelpBrowser.html#a32f4d36e99b96d0c1ca951a045212be1">   53</a></span>&#160;  <span class="keyword">explicit</span> <a class="code" href="classHelpBrowser.html#a32f4d36e99b96d0c1ca951a045212be1">HelpBrowser</a>(wxWindow *parent, <a class="code" href="classConfiguration.html">Configuration</a> *configuration, <a class="code" href="classMaximaManual.html">MaximaManual</a> *manual,</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;                       wxString url);</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="preprocessor">#ifdef USE_WEBVIEW</span></div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="keywordtype">void</span> SetURL(wxString url);</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keywordtype">void</span> JumpToKeyword(wxString keyword);</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="keywordtype">void</span> SelectKeywords(<span class="keyword">const</span> std::vector&lt;wxString&gt; &amp;keywords);</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    wxString GetKeyword(wxWindowID <span class="keywordtype">id</span>);</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  <span class="keywordtype">void</span> SetURL(wxString url);</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;  <span class="keywordtype">void</span> JumpToKeyword(wxString keyword);</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  <span class="keywordtype">void</span> SelectKeywords(<span class="keyword">const</span> std::vector&lt;wxString&gt; &amp;keywords);</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;  wxString GetKeyword(wxWindowID <span class="keywordtype">id</span>);</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <span class="keywordtype">void</span> CreateIfNeeded();</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <span class="keywordtype">void</span> OnTextEnter(wxCommandEvent&amp; event);</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="keywordtype">void</span> OnSearchUp(wxCommandEvent&amp; event);</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <span class="keywordtype">void</span> OnSearchDown(wxCommandEvent&amp; event);</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    <span class="keywordtype">void</span> OnSearchboxKeyDown(wxKeyEvent &amp;event);</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <span class="keywordtype">void</span> OnWebviewKeyDown(wxKeyEvent &amp;event);</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <span class="keywordtype">void</span> OnActivate(wxActivateEvent &amp;event);</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <span class="keywordtype">void</span> OnTopicButton(wxCommandEvent&amp; event);</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classHelpBrowser.html#a97f1f32d8d5ba72a03e76a5fd8d94e7f">AllowOnlineManualP</a>(){<span class="keywordflow">return</span> <a class="code" href="classHelpBrowser.html#a97f1f32d8d5ba72a03e76a5fd8d94e7f">AllowOnlineManualP</a>(m_configuration, <span class="keyword">this</span>);}</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  <span class="keywordtype">void</span> CreateIfNeeded();</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;  <span class="keywordtype">void</span> OnTextEnter(wxCommandEvent&amp; event);</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  <span class="keywordtype">void</span> OnSearchUp(wxCommandEvent&amp; event);</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  <span class="keywordtype">void</span> OnSearchDown(wxCommandEvent&amp; event);</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;  <span class="keywordtype">void</span> OnSearchboxKeyDown(wxKeyEvent &amp;event);</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  <span class="keywordtype">void</span> OnWebviewKeyDown(wxKeyEvent &amp;event);</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  <span class="keywordtype">void</span> OnActivate(wxActivateEvent &amp;event);</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  <span class="keywordtype">void</span> OnTopicButton(wxCommandEvent&amp; event);</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  <span class="keywordtype">bool</span> <a class="code" href="classHelpBrowser.html#a97f1f32d8d5ba72a03e76a5fd8d94e7f">AllowOnlineManualP</a>(){<span class="keywordflow">return</span> <a class="code" href="classHelpBrowser.html#a97f1f32d8d5ba72a03e76a5fd8d94e7f">AllowOnlineManualP</a>(m_configuration, <span class="keyword">this</span>);}</div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; </div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    wxWindowIDRef m_topicButtonID0;</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    std::vector&lt;wxWindowIDRef&gt; m_topicButtonIDs;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <a class="code" href="classMaximaManual.html">MaximaManual</a> *m_maximaManual = NULL;</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    wxWebView *m_webView = NULL;</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    wxTextCtrl *m_searchText = NULL;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <a class="code" href="classConfiguration.html">Configuration</a> *m_configuration;</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    wxString m_startUrl;</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="keywordtype">bool</span> m_findDown = <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    wxBoxSizer *m_vbox;</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    wxPanel *m_browserPanel;</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    wxPanel *m_topicPanel;</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    wxBoxSizer *m_topicSizer;</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    std::vector&lt;wxString&gt; m_keywords;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  wxWindowIDRef m_topicButtonID0;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;  std::vector&lt;wxWindowIDRef&gt; m_topicButtonIDs;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  <a class="code" href="classMaximaManual.html">MaximaManual</a> *m_maximaManual = NULL;</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  wxWebView *m_webView = NULL;</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  wxTextCtrl *m_searchText = NULL;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  <a class="code" href="classConfiguration.html">Configuration</a> *m_configuration;</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  wxString m_startUrl;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;  <span class="keywordtype">bool</span> m_findDown = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;  wxBoxSizer *m_vbox;</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;  wxPanel *m_browserPanel;</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;  wxPanel *m_topicPanel;</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  wxBoxSizer *m_topicSizer;</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;  std::vector&lt;wxString&gt; m_keywords;</div>
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;};</div>
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160; </div>

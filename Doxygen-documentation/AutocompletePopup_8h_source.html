@@ -103,48 +103,48 @@ $(function() {
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
 <div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="classAutocompletePopup.html">   46</a></span>&#160;<span class="keyword">class </span><a class="code" href="classAutocompletePopup.html">AutocompletePopup</a> final : <span class="keyword">public</span> wxListView, <span class="keyword">public</span> wxComboPopup</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;{</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <span class="comment">// Return pointer to the created control</span></div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    wxWindow *GetControl()<span class="keyword"> override </span>{ <span class="keywordflow">return</span> <span class="keyword">this</span>; }</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;  <span class="comment">// Return pointer to the created control</span></div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;  wxWindow *GetControl()<span class="keyword"> override </span>{ <span class="keywordflow">return</span> <span class="keyword">this</span>; }</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; </div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <span class="comment">// Translate string into a list selection</span></div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="keywordtype">void</span> SetStringValue(<span class="keyword">const</span> wxString&amp; s)<span class="keyword"> override</span></div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="keyword">        </span>{</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;            <span class="keywordtype">int</span> n = wxListView::FindItem(-1, s);</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;            <span class="keywordflow">if</span> (n &gt;= 0 &amp;&amp; n &lt; wxListView::GetItemCount() )</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;                wxListView::Select(n);</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        }</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="comment">// Get list selection as a string</span></div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    wxString GetStringValue()<span class="keyword"> const override</span></div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="keyword">        </span>{ <span class="keywordflow">return</span> (m_value &gt;= 0) ? wxListView::GetItemText(m_value) : wxString(); }</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;  <span class="comment">// Translate string into a list selection</span></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;  <span class="keywordtype">void</span> SetStringValue(<span class="keyword">const</span> wxString&amp; s)<span class="keyword"> override</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="keyword">    </span>{</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;      <span class="keywordtype">int</span> n = wxListView::FindItem(-1, s);</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;      <span class="keywordflow">if</span> (n &gt;= 0 &amp;&amp; n &lt; wxListView::GetItemCount() )</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        wxListView::Select(n);</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    }</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  <span class="comment">// Get list selection as a string</span></div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;  wxString GetStringValue()<span class="keyword"> const override</span></div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="keyword">    </span>{ <span class="keywordflow">return</span> (m_value &gt;= 0) ? wxListView::GetItemText(m_value) : wxString(); }</div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160; </div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <span class="keyword">struct </span>DonePtr { <a class="code" href="classAutocompletePopup.html">AutocompletePopup</a>*&amp; observer; ~DonePtr() { observer = <span class="keyword">nullptr</span>; } };</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="keywordtype">int</span> m_value = -1; <span class="comment">// current item index</span></div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="comment"></span>    wxString m_partial;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;  <span class="keyword">struct </span>DonePtr { <a class="code" href="classAutocompletePopup.html">AutocompletePopup</a>*&amp; observer; ~DonePtr() { observer = <span class="keyword">nullptr</span>; } };</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  <span class="keywordtype">int</span> m_value = -1; <span class="comment">// current item index</span></div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="comment"></span>  wxString m_partial;</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160; </div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    wxWindow *m_parent = {};</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <span class="keyword">const</span> DonePtr m_doneptr;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    std::vector&lt;wxString&gt; m_completions;</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <a class="code" href="classAutoComplete.html">AutoComplete</a> *m_autocomplete = {};</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <a class="code" href="classEditorCell.html">EditorCell</a> *m_editor = {};</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <a class="code" href="classAutoComplete.html#a6225a91b46c0459755a62de137620b29">AutoComplete::autoCompletionType</a> m_type;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  wxWindow *m_parent = {};</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  <span class="keyword">const</span> DonePtr m_doneptr;</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  std::vector&lt;wxString&gt; m_completions;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  <a class="code" href="classAutoComplete.html">AutoComplete</a> *m_autocomplete = {};</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  <a class="code" href="classEditorCell.html">EditorCell</a> *m_editor = {};</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;  <a class="code" href="classAutoComplete.html#a6225a91b46c0459755a62de137620b29">AutoComplete::autoCompletionType</a> m_type;</div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160; </div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    wxPoint m_position;</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    wxRect m_screenRect;</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  wxPoint m_position;</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  wxRect m_screenRect;</div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; </div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00082"></a><span class="lineno"><a class="line" href="classAutocompletePopup.html#a7358290fe4d2f83229dd0baef11c8b76">   82</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classAutocompletePopup.html#a7358290fe4d2f83229dd0baef11c8b76">SetPosition</a>(wxPoint pos){m_position = pos;}</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classAutocompletePopup.html#a74a44083feada4539b0de850c1a10983">Create</a>(wxWindow* parent) <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    ~<a class="code" href="classAutocompletePopup.html">AutocompletePopup</a>();</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classAutocompletePopup.html#a02a33d37be9af83142ed179bb415c533">OnChar</a>(wxKeyEvent &amp;event);</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classAutocompletePopup.html#af93c58d3f7a281e0b06f6661ee8d3241">OnKeyDown</a>(wxKeyEvent &amp;event);</div>
+<div class="line"><a name="l00082"></a><span class="lineno"><a class="line" href="classAutocompletePopup.html#a7358290fe4d2f83229dd0baef11c8b76">   82</a></span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classAutocompletePopup.html#a7358290fe4d2f83229dd0baef11c8b76">SetPosition</a>(wxPoint pos){m_position = pos;}</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;  <span class="keywordtype">bool</span> <a class="code" href="classAutocompletePopup.html#a74a44083feada4539b0de850c1a10983">Create</a>(wxWindow* parent) <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;  ~<a class="code" href="classAutocompletePopup.html">AutocompletePopup</a>();</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classAutocompletePopup.html#a02a33d37be9af83142ed179bb415c533">OnChar</a>(wxKeyEvent &amp;event);</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classAutocompletePopup.html#af93c58d3f7a281e0b06f6661ee8d3241">OnKeyDown</a>(wxKeyEvent &amp;event);</div>
 <div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160; </div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    <a class="code" href="classAutocompletePopup.html#a1a7033ddc45ef7622b8748c829265fda">AutocompletePopup</a>(wxWindow *parent, <a class="code" href="classEditorCell.html">EditorCell</a> *editor, <a class="code" href="classAutoComplete.html">AutoComplete</a> *autocomplete,</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;                      <a class="code" href="classAutoComplete.html#a6225a91b46c0459755a62de137620b29">AutoComplete::autoCompletionType</a> type, <a class="code" href="classAutocompletePopup.html">AutocompletePopup</a> **doneptr);</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;  <a class="code" href="classAutocompletePopup.html#a1a7033ddc45ef7622b8748c829265fda">AutocompletePopup</a>(wxWindow *parent, <a class="code" href="classEditorCell.html">EditorCell</a> *editor, <a class="code" href="classAutoComplete.html">AutoComplete</a> *autocomplete,</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;                    <a class="code" href="classAutoComplete.html#a6225a91b46c0459755a62de137620b29">AutoComplete::autoCompletionType</a> type, <a class="code" href="classAutocompletePopup.html">AutocompletePopup</a> **doneptr);</div>
 <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160; </div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    <span class="keywordtype">void</span> UpdateResults();</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;  <span class="keywordtype">void</span> UpdateResults();</div>
 <div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160; </div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    <span class="keywordtype">void</span> OnClick(wxMouseEvent &amp;event);</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;  <span class="keywordtype">void</span> OnClick(wxMouseEvent &amp;event);</div>
 <div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;};</div>
 <div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160; </div>
 <div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// AUTOCOMPLETEPOPUP_H</span></div>
