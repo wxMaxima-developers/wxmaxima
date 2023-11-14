@@ -96,7 +96,7 @@ void IntCell::Recalculate(AFontSize fontsize) {
     m_signHeight = Scale_Px(40.0);
     if (m_signHeight < 6)
         m_signHeight = 6;
-    m_signWidth = 40.0 * 19.879 / 51.781;
+    m_signWidth = m_signHeight * 19.879 / 51.781;
 
     m_base->RecalculateList(fontsize);
     m_var->RecalculateList(fontsize);
@@ -157,7 +157,7 @@ void IntCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
             const wxWindow *worksheet = m_configuration->GetWorkSheet();
             if(worksheet)
               integralbitmap.GetPreferredBitmapSizeFor(worksheet);
-            wxBitmap bmp(integralbitmap.GetBitmap(wxDefaultSize));
+            wxBitmap bmp(integralbitmap.GetBitmap(wxSize(m_signWidth, m_signHeight)));
             antialiassingDC->DrawBitmap(bmp, sign.x, sign.y, true);
 #else
             // top decoration
