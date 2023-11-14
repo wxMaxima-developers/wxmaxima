@@ -37,13 +37,13 @@
 class WrappingStaticText : public wxPanel
 {
 public:
-    WrappingStaticText(wxWindow* parent, int id, wxString text);
-    void SetLabel(wxString const &value) override;
+  WrappingStaticText(wxWindow* parent, int id, wxString text);
+  void SetLabel(wxString const &value) override;
 protected:
-    void OnSize(wxSizeEvent &event);
+  void OnSize(wxSizeEvent &event);
 private:
-    wxStaticText *m_textCtrl;
-    wxString m_label;
+  wxStaticText *m_textCtrl;
+  wxString m_label;
 };
 
 #endif // WRAPPINGSTATICTEXT_H

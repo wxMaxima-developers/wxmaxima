@@ -39,61 +39,61 @@
 class UnicodeSidebar : public wxPanel
 {
 public:
-    //! The constructor
-    UnicodeSidebar(wxWindow *parent, wxWindow *worksheet, Configuration *cfg);
+  //! The constructor
+  UnicodeSidebar(wxWindow *parent, wxWindow *worksheet, Configuration *cfg);
 
-    /* The destructor
+  /* The destructor
 
-     */
-    ~UnicodeSidebar();
+   */
+  ~UnicodeSidebar();
 
-    //! Is called if the RegEx changes
-    void OnRegExEvent(wxCommandEvent &ev);
-    //! Update the display after the regex has changed
-    void UpdateDisplay();
+  //! Is called if the RegEx changes
+  void OnRegExEvent(wxCommandEvent &ev);
+  //! Update the display after the regex has changed
+  void UpdateDisplay();
 
 protected:
-    //! Is called if a menu item is selected
-    void OnMenu(wxCommandEvent &event);
-    //! Is called if a paint command is issued
-    void OnPaint(wxPaintEvent &event);
-    //! Is called if the control is resized
-    void OnSize(wxSizeEvent &event);
-    //! Is called if the control is double-clicked at
-    void OnDClick(wxGridEvent &event);
-    //! Is called if the control is right-clicked at
-    void OnRightClick(wxGridEvent &event);
-    //! Is called if the user tries to edit the control's text
-    void OnChangeAttempt(wxGridEvent &event);
+  //! Is called if a menu item is selected
+  void OnMenu(wxCommandEvent &event);
+  //! Is called if a paint command is issued
+  void OnPaint(wxPaintEvent &event);
+  //! Is called if the control is resized
+  void OnSize(wxSizeEvent &event);
+  //! Is called if the control is double-clicked at
+  void OnDClick(wxGridEvent &event);
+  //! Is called if the control is right-clicked at
+  void OnRightClick(wxGridEvent &event);
+  //! Is called if the user tries to edit the control's text
+  void OnChangeAttempt(wxGridEvent &event);
 
 private:
-    bool m_initialized;
-    long m_charRightClickedOn = 0;
-    wxWindow *m_worksheet;
-    wxGrid *m_grid;
-    RegexCtrl *m_regex;
+  bool m_initialized;
+  long m_charRightClickedOn = 0;
+  wxWindow *m_worksheet;
+  wxGrid *m_grid;
+  RegexCtrl *m_regex;
 };
 
 //! An event that simulates a keypress and can be issued by UnicodeSidebar
 class SidebarKeyEvent: public wxCommandEvent
 {
 public:
-    explicit SidebarKeyEvent(int id = 0)
-        :  wxCommandEvent(id) { }
+  explicit SidebarKeyEvent(int id = 0)
+    :  wxCommandEvent(id) { }
 
-    explicit SidebarKeyEvent(const SidebarKeyEvent& event)
-        :  wxCommandEvent(event) {}
+  explicit SidebarKeyEvent(const SidebarKeyEvent& event)
+    :  wxCommandEvent(event) {}
 };
 
 //! An event that can be issued by UnicodeSidebar and tells the symbols sidebar to add a symbol
 class SymboladdEvent: public wxCommandEvent
 {
 public:
-    explicit SymboladdEvent(int id = 0)
-        :  wxCommandEvent(id) { }
+  explicit SymboladdEvent(int id = 0)
+    :  wxCommandEvent(id) { }
 
-    explicit SymboladdEvent(const SymboladdEvent& event)
-        :  wxCommandEvent(event) {}
+  explicit SymboladdEvent(const SymboladdEvent& event)
+    :  wxCommandEvent(event) {}
 };
 
 wxDECLARE_EVENT(SIDEBARKEYEVENT, SidebarKeyEvent);

@@ -34,110 +34,110 @@
 
 SubCell::SubCell(GroupCell *group, Configuration *config,
                  std::unique_ptr<Cell> &&base, std::unique_ptr<Cell> &&index)
-    : Cell(group, config), m_baseCell(std::move(base)),
-      m_indexCell(std::move(index)) {
-    InitBitFields();
-    SetStyle(TS_VARIABLE);
+  : Cell(group, config), m_baseCell(std::move(base)),
+    m_indexCell(std::move(index)) {
+  InitBitFields();
+  SetStyle(TS_VARIABLE);
 }
 
 SubCell::SubCell(GroupCell *group, const SubCell &cell)
-    : SubCell(group, cell.m_configuration,
-              CopyList(group, cell.m_baseCell.get()),
-              CopyList(group, cell.m_indexCell.get())) {
-    CopyCommonData(cell);
-    m_altCopyText = cell.m_altCopyText;
+  : SubCell(group, cell.m_configuration,
+            CopyList(group, cell.m_baseCell.get()),
+            CopyList(group, cell.m_indexCell.get())) {
+  CopyCommonData(cell);
+  m_altCopyText = cell.m_altCopyText;
 }
 
 DEFINE_CELL(SubCell)
 
 void SubCell::Recalculate(AFontSize fontsize) {
-    m_baseCell->RecalculateList(fontsize);
-    m_indexCell->RecalculateList({MC_MIN_SIZE, fontsize - SUB_DEC});
-    m_width =
-        m_baseCell->GetFullWidth() + m_indexCell->GetFullWidth() - Scale_Px(2);
-    m_height = m_baseCell->GetHeightList() + m_indexCell->GetHeightList() -
-        Scale_Px(.8 * fontsize + MC_EXP_INDENT);
-    m_center = m_baseCell->GetCenter();
-    Cell::Recalculate(fontsize);
+  m_baseCell->RecalculateList(fontsize);
+  m_indexCell->RecalculateList({MC_MIN_SIZE, fontsize - SUB_DEC});
+  m_width =
+    m_baseCell->GetFullWidth() + m_indexCell->GetFullWidth() - Scale_Px(2);
+  m_height = m_baseCell->GetHeightList() + m_indexCell->GetHeightList() -
+    Scale_Px(.8 * fontsize + MC_EXP_INDENT);
+  m_center = m_baseCell->GetCenter();
+  Cell::Recalculate(fontsize);
 }
 
 void SubCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
-    Cell::Draw(point, dc, antialiassingDC);
-    if (DrawThisCell(point)) {
-        wxPoint bs, in;
+  Cell::Draw(point, dc, antialiassingDC);
+  if (DrawThisCell(point)) {
+    wxPoint bs, in;
 
-        bs.x = point.x;
-        bs.y = point.y;
-        m_baseCell->DrawList(bs, dc, antialiassingDC);
+    bs.x = point.x;
+    bs.y = point.y;
+    m_baseCell->DrawList(bs, dc, antialiassingDC);
 
-        in.x = point.x + m_baseCell->GetFullWidth() - Scale_Px(2);
-        in.y = point.y + m_baseCell->GetMaxDrop() + m_indexCell->GetCenterList() -
-            .8 * m_fontSize_Scaled + MC_EXP_INDENT;
-        m_indexCell->DrawList(in, dc, antialiassingDC);
-    }
+    in.x = point.x + m_baseCell->GetFullWidth() - Scale_Px(2);
+    in.y = point.y + m_baseCell->GetMaxDrop() + m_indexCell->GetCenterList() -
+      .8 * m_fontSize_Scaled + MC_EXP_INDENT;
+    m_indexCell->DrawList(in, dc, antialiassingDC);
+  }
 }
 
 wxString SubCell::ToString() const {
-    if (m_altCopyText != wxEmptyString)
-        return m_altCopyText;
+  if (m_altCopyText != wxEmptyString)
+    return m_altCopyText;
 
-    wxString s;
-    if (m_baseCell->IsCompound())
-        s += wxS("(") + m_baseCell->ListToString() + wxS(")");
-    else
-        s += m_baseCell->ListToString();
-    s += wxS("[") + m_indexCell->ListToString() + wxS("]");
-    return s;
+  wxString s;
+  if (m_baseCell->IsCompound())
+    s += wxS("(") + m_baseCell->ListToString() + wxS(")");
+  else
+    s += m_baseCell->ListToString();
+  s += wxS("[") + m_indexCell->ListToString() + wxS("]");
+  return s;
 }
 
 wxString SubCell::ToMatlab() const {
-    if (m_altCopyText != wxEmptyString) {
-        return m_altCopyText;
-    }
+  if (m_altCopyText != wxEmptyString) {
+    return m_altCopyText;
+  }
 
-    wxString s;
-    if (m_baseCell->IsCompound())
-        s += wxS("(") + m_baseCell->ListToMatlab() + wxS(")");
-    else
-        s += m_baseCell->ListToMatlab();
-    s += wxS("[") + m_indexCell->ListToMatlab() + wxS("]");
-    return s;
+  wxString s;
+  if (m_baseCell->IsCompound())
+    s += wxS("(") + m_baseCell->ListToMatlab() + wxS(")");
+  else
+    s += m_baseCell->ListToMatlab();
+  s += wxS("[") + m_indexCell->ListToMatlab() + wxS("]");
+  return s;
 }
 
 wxString SubCell::ToTeX() const {
-    wxString s;
-    wxString base = m_baseCell->ListToTeX();
-    wxString index = m_indexCell->ListToTeX();
-    if (base.Length() > 1)
-        s = wxS("{{") + base + wxS("}_");
-    else
-        s = wxS("{") + base + wxS("_");
-    if (index.Length() > 1)
-        s += wxS("{") + index + wxS("}}");
-    else
-        s += index + wxS("}");
-    return s;
+  wxString s;
+  wxString base = m_baseCell->ListToTeX();
+  wxString index = m_indexCell->ListToTeX();
+  if (base.Length() > 1)
+    s = wxS("{{") + base + wxS("}_");
+  else
+    s = wxS("{") + base + wxS("_");
+  if (index.Length() > 1)
+    s += wxS("{") + index + wxS("}}");
+  else
+    s += index + wxS("}");
+  return s;
 }
 
 wxString SubCell::ToMathML() const {
-    return wxS("<msub>") + m_baseCell->ListToMathML() +
-        m_indexCell->ListToMathML() + wxS("</msub>\n");
+  return wxS("<msub>") + m_baseCell->ListToMathML() +
+    m_indexCell->ListToMathML() + wxS("</msub>\n");
 }
 
 wxString SubCell::ToOMML() const {
-    return wxS("<m:sSub><m:e>") + m_baseCell->ListToOMML() +
-        wxS("</m:e><m:sub>") + m_indexCell->ListToOMML() +
-        wxS("</m:sub></m:sSub>\n");
+  return wxS("<m:sSub><m:e>") + m_baseCell->ListToOMML() +
+    wxS("</m:e><m:sub>") + m_indexCell->ListToOMML() +
+    wxS("</m:sub></m:sSub>\n");
 }
 
 wxString SubCell::ToXML() const {
-    wxString flags;
-    if (HasHardLineBreak())
-        flags += wxS(" breakline=\"true\"");
+  wxString flags;
+  if (HasHardLineBreak())
+    flags += wxS(" breakline=\"true\"");
 
-    if (m_altCopyText != wxEmptyString)
-        flags += wxS(" altCopy=\"") + XMLescape(m_altCopyText) + wxS("\"");
+  if (m_altCopyText != wxEmptyString)
+    flags += wxS(" altCopy=\"") + XMLescape(m_altCopyText) + wxS("\"");
 
-    return wxS("<i") + flags + wxS("><r>") + m_baseCell->ListToXML() +
-        wxS("</r><r>") + m_indexCell->ListToXML() + wxS("</r></i>");
+  return wxS("<i") + flags + wxS("><r>") + m_baseCell->ListToXML() +
+    wxS("</r><r>") + m_indexCell->ListToXML() + wxS("</r></i>");
 }

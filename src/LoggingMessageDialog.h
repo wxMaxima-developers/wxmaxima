@@ -37,16 +37,16 @@
 class LoggingMessageDialog : public wxMessageDialog
 {
 public:
-    LoggingMessageDialog(wxWindow *parent, const wxString &message,
-                         const wxString &caption = wxMessageBoxCaptionStr,
-                         long style = wxOK|wxCENTRE, const wxPoint &pos = wxDefaultPosition):
-        wxMessageDialog (parent, message, caption, style, pos)
-        {
-            wxString logString = message;
-            logString.Replace(wxS("%"), wxS("%%"));
-            wxLogMessage(logString);
-            wxLogMessage(message);
-        }
+  LoggingMessageDialog(wxWindow *parent, const wxString &message,
+                       const wxString &caption = wxMessageBoxCaptionStr,
+                       long style = wxOK|wxCENTRE, const wxPoint &pos = wxDefaultPosition):
+    wxMessageDialog (parent, message, caption, style, pos)
+    {
+      wxString logString = message;
+      logString.Replace(wxS("%"), wxS("%%"));
+      wxLogMessage(logString);
+      wxLogMessage(message);
+    }
 };
 
 extern int LoggingMessageBox(   const wxString &        message,
@@ -55,6 +55,6 @@ extern int LoggingMessageBox(   const wxString &        message,
                                 wxWindow *      parent = NULL,
                                 int     x = wxDefaultCoord,
                                 int     y = wxDefaultCoord
-    );
+  );
 
 #endif // LOGGINGMESSAGEDIALOG_H

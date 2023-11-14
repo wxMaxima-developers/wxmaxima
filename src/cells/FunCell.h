@@ -53,51 +53,51 @@
 class FunCell final : public Cell
 {
 public:
-    FunCell(GroupCell *group, Configuration *config,
-            std::unique_ptr<Cell> &&name, std::unique_ptr<Cell> &&arg);
-    FunCell(GroupCell *group, const FunCell &cell);
-    std::unique_ptr<Cell> Copy(GroupCell *group) const override;
-    const CellTypeInfo &GetInfo() override;
+  FunCell(GroupCell *group, Configuration *config,
+          std::unique_ptr<Cell> &&name, std::unique_ptr<Cell> &&arg);
+  FunCell(GroupCell *group, const FunCell &cell);
+  std::unique_ptr<Cell> Copy(GroupCell *group) const override;
+  const CellTypeInfo &GetInfo() override;
 
-    size_t GetInnerCellCount() const override { return 2; }
-    // cppcheck-suppress objectIndex
-    Cell *GetInnerCell(size_t index) const override { return (&m_nameCell)[index].get(); }
+  size_t GetInnerCellCount() const override { return 2; }
+  // cppcheck-suppress objectIndex
+  Cell *GetInnerCell(size_t index) const override { return (&m_nameCell)[index].get(); }
 
-    void Recalculate(AFontSize fontsize) override;
+  void Recalculate(AFontSize fontsize) override;
 
-    void Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) override;
+  void Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) override;
 
-    wxString ToMathML() const override;
-    wxString ToMatlab() const override;
-    wxString ToOMML() const override;
-    wxString ToString() const override;
-    wxString ToTeX() const override;
-    wxString ToXML() const override;
+  wxString ToMathML() const override;
+  wxString ToMatlab() const override;
+  wxString ToOMML() const override;
+  wxString ToString() const override;
+  wxString ToTeX() const override;
+  wxString ToXML() const override;
 
-    void SetAltCopyText(const wxString &text) override { m_altCopyText = text; }
-    const wxString &GetAltCopyText() const override { return m_altCopyText; }
+  void SetAltCopyText(const wxString &text) override { m_altCopyText = text; }
+  const wxString &GetAltCopyText() const override { return m_altCopyText; }
 
-    bool BreakUp() override;
+  bool BreakUp() override;
 
-    void SetNextToDraw(Cell *next) override;
+  void SetNextToDraw(Cell *next) override;
 
 private:
-    //! Text that should end up on the clipboard if this cell is copied as text.
-    wxString m_altCopyText;
+  //! Text that should end up on the clipboard if this cell is copied as text.
+  wxString m_altCopyText;
 
-    // The pointers below point to inner cells and must be kept contiguous.
-    // ** This is the draw list order. All pointers must be the same:
-    // ** either Cell * or std::unique_ptr<Cell>. NO OTHER TYPES are allowed.
-    std::unique_ptr<Cell> m_nameCell;
-    std::unique_ptr<Cell> m_argCell;
-    // The pointers above point to inner cells and must be kept contiguous.
+  // The pointers below point to inner cells and must be kept contiguous.
+  // ** This is the draw list order. All pointers must be the same:
+  // ** either Cell * or std::unique_ptr<Cell>. NO OTHER TYPES are allowed.
+  std::unique_ptr<Cell> m_nameCell;
+  std::unique_ptr<Cell> m_argCell;
+  // The pointers above point to inner cells and must be kept contiguous.
 
 //** Bitfield objects (0 bytes)
 //**
-    static void InitBitFields()
-        { // Keep the initialization order below same as the order
-            // of bit fields in this class!
-        }
+  static void InitBitFields()
+    { // Keep the initialization order below same as the order
+      // of bit fields in this class!
+    }
 };
 
 #endif // FUNCELL_H

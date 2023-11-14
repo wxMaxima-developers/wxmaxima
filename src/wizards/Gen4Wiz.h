@@ -33,66 +33,66 @@
 class Gen4Wiz : public wxDialog
 {
 public:
-    Gen4Wiz(wxString lab1, wxString lab2, wxString lab3, wxString lab4,
-            wxString val1, wxString val2, wxString val3, wxString val4,
-            Configuration *cfg,
-            wxWindow *parent, int id, const wxString &title,
-            bool eq = false,
-            const wxString &warning = wxEmptyString,
-            const wxString &warningToolTip = wxEmptyString,
-            const wxPoint &pos = wxDefaultPosition,
-            const wxSize &size = wxDefaultSize,
-            long style = wxMINIMIZE_BOX | wxMAXIMIZE_BOX | wxRESIZE_BORDER | wxCAPTION | wxCLOSE_BOX | wxCLIP_CHILDREN);
+  Gen4Wiz(wxString lab1, wxString lab2, wxString lab3, wxString lab4,
+          wxString val1, wxString val2, wxString val3, wxString val4,
+          Configuration *cfg,
+          wxWindow *parent, int id, const wxString &title,
+          bool eq = false,
+          const wxString &warning = wxEmptyString,
+          const wxString &warningToolTip = wxEmptyString,
+          const wxPoint &pos = wxDefaultPosition,
+          const wxSize &size = wxDefaultSize,
+          long style = wxMINIMIZE_BOX | wxMAXIMIZE_BOX | wxRESIZE_BORDER | wxCAPTION | wxCLOSE_BOX | wxCLIP_CHILDREN);
 
-    void SetValue(const wxString &s)
-        {
-            text_ctrl_1->SetValue(s);
-            text_ctrl_1->SetSelection(-1, -1);
-        }
+  void SetValue(const wxString &s)
+    {
+      text_ctrl_1->SetValue(s);
+      text_ctrl_1->SetSelection(-1, -1);
+    }
 
-    wxString GetValue1()
-        {
-            return text_ctrl_1->GetValue();
-        };
+  wxString GetValue1()
+    {
+      return text_ctrl_1->GetValue();
+    };
 
-    wxString GetValue2()
-        {
-            return text_ctrl_2->GetValue();
-        };
+  wxString GetValue2()
+    {
+      return text_ctrl_2->GetValue();
+    };
 
-    wxString GetValue3()
-        {
-            return text_ctrl_3->GetValue();
-        };
+  wxString GetValue3()
+    {
+      return text_ctrl_3->GetValue();
+    };
 
-    wxString GetValue4()
-        {
-            return text_ctrl_4->GetValue();
-        };
-    void SetLabel1ToolTip(wxString toolTip){label_2->SetToolTip(toolTip);}
-    void SetLabel2ToolTip(wxString toolTip){label_3->SetToolTip(toolTip);}
-    void SetLabel3ToolTip(wxString toolTip){label_4->SetToolTip(toolTip);}
-    void SetLabel4ToolTip(wxString toolTip){label_5->SetToolTip(toolTip);}
+  wxString GetValue4()
+    {
+      return text_ctrl_4->GetValue();
+    };
+  void SetLabel1ToolTip(wxString toolTip){label_2->SetToolTip(toolTip);}
+  void SetLabel2ToolTip(wxString toolTip){label_3->SetToolTip(toolTip);}
+  void SetLabel3ToolTip(wxString toolTip){label_4->SetToolTip(toolTip);}
+  void SetLabel4ToolTip(wxString toolTip){label_5->SetToolTip(toolTip);}
 
 private:
-    void set_properties();
+  void set_properties();
 
-    void do_layout();
+  void do_layout();
 
 protected:
-    wxStaticText *label_2;
-    BTextCtrl *text_ctrl_1;
-    wxStaticText *label_3;
-    BTextCtrl *text_ctrl_2;
-    wxStaticText *label_4;
-    BTextCtrl *text_ctrl_3;
-    wxStaticText *label_5;
-    BTextCtrl *text_ctrl_4;
-    wxStaticLine *static_line_1;
-    wxButton *button_1;
-    wxButton *button_2;
-    wxStaticText *m_warning;
-    wxString m_warningText;
+  wxStaticText *label_2;
+  BTextCtrl *text_ctrl_1;
+  wxStaticText *label_3;
+  BTextCtrl *text_ctrl_2;
+  wxStaticText *label_4;
+  BTextCtrl *text_ctrl_3;
+  wxStaticText *label_5;
+  BTextCtrl *text_ctrl_4;
+  wxStaticLine *static_line_1;
+  wxButton *button_1;
+  wxButton *button_2;
+  wxStaticText *m_warning;
+  wxString m_warningText;
 };
 
 #endif // GEN4WIZ_H

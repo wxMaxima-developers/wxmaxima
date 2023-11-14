@@ -33,54 +33,54 @@
 class BitmapOut final
 {
 public:
-    /*! The constructor.
+  /*! The constructor.
 
-      \param scale By which factor the resolution should be increased in respect
-      to the default 755 DPI?
-      \param configuration A pointer to the pointer to this worksheet's configuration
-      storage
-    */
-    explicit BitmapOut(Configuration **configuration, double scale = 1);
-    //! Constructs and renders the bitmap, setting the IsOK() status accordingly.
-    explicit BitmapOut(Configuration **configuration, std::unique_ptr<Cell> &&tree, double scale = 1, long maxSize = -1);
-    ~BitmapOut();
+    \param scale By which factor the resolution should be increased in respect
+    to the default 755 DPI?
+    \param configuration A pointer to the pointer to this worksheet's configuration
+    storage
+  */
+  explicit BitmapOut(Configuration **configuration, double scale = 1);
+  //! Constructs and renders the bitmap, setting the IsOK() status accordingly.
+  explicit BitmapOut(Configuration **configuration, std::unique_ptr<Cell> &&tree, double scale = 1, long maxSize = -1);
+  ~BitmapOut();
 
-    /*! Renders tree as bitmap
+  /*! Renders tree as bitmap
 
-      \param tree The list of cells that is to be rendered
-      \param maxSize maxSize tells the maximum size [in square pixels] that will be rendered.
-      -1 means: No limit.
+    \param tree The list of cells that is to be rendered
+    \param maxSize maxSize tells the maximum size [in square pixels] that will be rendered.
+    -1 means: No limit.
 
-      \return true, if the bitmap could be created.
-    */
-    bool Render(std::unique_ptr<Cell> &&tree, long int maxSize = -1);
+    \return true, if the bitmap could be created.
+  */
+  bool Render(std::unique_ptr<Cell> &&tree, long int maxSize = -1);
 
-    //! Returns whether the tree rendering succeeded.
-    bool IsOk() const { return m_isOk; }
+  //! Returns whether the tree rendering succeeded.
+  bool IsOk() const { return m_isOk; }
 
-    /*! Exports this bitmap to a file
+  /*! Exports this bitmap to a file
 
-      \return The size of the bitmap in millimeters. Sizes <0 indicate that the export has failed.
-    */
-    wxSize ToFile(const wxString &file);
+    \return The size of the bitmap in millimeters. Sizes <0 indicate that the export has failed.
+  */
+  wxSize ToFile(const wxString &file);
 
-    //! Returns the bitmap representation of the list of cells that was passed to SetData()
-    wxBitmap GetBitmap() const { return m_bmp; }
+  //! Returns the bitmap representation of the list of cells that was passed to SetData()
+  wxBitmap GetBitmap() const { return m_bmp; }
 
-    std::unique_ptr<wxBitmapDataObject> GetDataObject() const;
+  std::unique_ptr<wxBitmapDataObject> GetDataObject() const;
 
-    //! Copies the bitmap representation of the list of cells that was passed to SetData()
-    bool ToClipboard() const;
+  //! Copies the bitmap representation of the list of cells that was passed to SetData()
+  bool ToClipboard() const;
 
 private:
-    std::unique_ptr<Cell> m_tree;
-    OutCommon m_cmn;
-    wxBitmap m_bmp;
-    wxMemoryDC m_dc;
-    bool m_isOk = false;
+  std::unique_ptr<Cell> m_tree;
+  OutCommon m_cmn;
+  wxBitmap m_bmp;
+  wxMemoryDC m_dc;
+  bool m_isOk = false;
 
-    bool Layout(long int maxSize = -1);
-    void Draw();
+  bool Layout(long int maxSize = -1);
+  void Draw();
 };
 
 #endif // BITMAPOUT_H

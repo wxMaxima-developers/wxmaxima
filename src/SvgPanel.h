@@ -39,14 +39,14 @@
 class SvgPanel : public wxPanel
 {
 public:
-    SvgPanel(wxWindow* parent, unsigned char *data, std::size_t len);
-    void Load(unsigned char *data, std::size_t len);
+  SvgPanel(wxWindow* parent, unsigned char *data, std::size_t len);
+  void Load(unsigned char *data, std::size_t len);
 
-    void paintEvent(wxPaintEvent & evt);
-    void paintNow();
-    void OnSize(wxSizeEvent& event);
+  void paintEvent(wxPaintEvent & evt);
+  void paintNow();
+  void OnSize(wxSizeEvent& event);
 private:
-    SvgBitmap m_bitmap;
+  SvgBitmap m_bitmap;
 };
 
 #endif // SVGPANEL_H

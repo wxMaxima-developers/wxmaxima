@@ -36,45 +36,45 @@
 class Svgout final
 {
 public:
-    /*! The constructor.
-     */
-    explicit Svgout(Configuration **configuration, const wxString &filename = {}, double scale = 1.0);
-    explicit Svgout(Configuration **configuration, std::unique_ptr<Cell> &&tree,
-                    const wxString &filename = {}, double scale = 1.0);
-    ~Svgout();
+  /*! The constructor.
+   */
+  explicit Svgout(Configuration **configuration, const wxString &filename = {}, double scale = 1.0);
+  explicit Svgout(Configuration **configuration, std::unique_ptr<Cell> &&tree,
+                  const wxString &filename = {}, double scale = 1.0);
+  ~Svgout();
 
-    /*! Renders tree as svg
+  /*! Renders tree as svg
 
-      \param tree The list of cells that is to be rendered
-      \return true, if the svgout could be created.
-    */
-    wxSize Render(std::unique_ptr<Cell> &&tree);
+    \param tree The list of cells that is to be rendered
+    \return true, if the svgout could be created.
+  */
+  wxSize Render(std::unique_ptr<Cell> &&tree);
 
-    wxSize GetSize() const { return m_size; }
-    bool IsOk() const { return m_isOk; }
+  wxSize GetSize() const { return m_size; }
+  bool IsOk() const { return m_isOk; }
 
-    //! Copies the svg representation of the list of cells that was passed to SetData()
-    bool ToClipboard();
+  //! Copies the svg representation of the list of cells that was passed to SetData()
+  bool ToClipboard();
 
-    //! Returns the svg representation in a format that can be placed on the clipBoard.
-    std::unique_ptr<wxCustomDataObject> GetDataObject();
+  //! Returns the svg representation in a format that can be placed on the clipBoard.
+  std::unique_ptr<wxCustomDataObject> GetDataObject();
 
 private:
-    std::unique_ptr<Cell> m_tree;
-    OutCommon m_cmn;
-    wxSVGFileDC m_recalculationDc;
-    wxSize m_size = wxDefaultSize;
-    bool m_isOk = false;
+  std::unique_ptr<Cell> m_tree;
+  OutCommon m_cmn;
+  wxSVGFileDC m_recalculationDc;
+  wxSize m_size = wxDefaultSize;
+  bool m_isOk = false;
 
-    /*! The current working directory we were in when we started creating a svg file
+  /*! The current working directory we were in when we started creating a svg file
 
-      wxWidgets tends to place bitmaps it links to svg files in its current working
-      directory, not in the dir of the .svg file so we temporarily switch the working
-      directory.
-    */
-    wxString m_CWD;
+    wxWidgets tends to place bitmaps it links to svg files in its current working
+    directory, not in the dir of the .svg file so we temporarily switch the working
+    directory.
+  */
+  wxString m_CWD;
 
-    bool Layout();
+  bool Layout();
 };
 
 #endif // SVGOUT_H

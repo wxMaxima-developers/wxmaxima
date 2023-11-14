@@ -34,34 +34,34 @@
  */
 class RegexCtrl : public BTextCtrl
 {
-    class wxLogBuffer_noStdErrFlush : public wxLogBuffer
-    {
-    public:
-        wxLogBuffer_noStdErrFlush(): wxLogBuffer() {};
-        virtual void Flush() override {}
-        ~wxLogBuffer_noStdErrFlush() override{};
-    };
+  class wxLogBuffer_noStdErrFlush : public wxLogBuffer
+  {
+  public:
+    wxLogBuffer_noStdErrFlush(): wxLogBuffer() {};
+    virtual void Flush() override {}
+    ~wxLogBuffer_noStdErrFlush() override{};
+  };
 public:
-    RegexCtrl(wxWindow *parent,
-              wxWindowID id, Configuration *cfg);
-    bool Matches(wxString text);
+  RegexCtrl(wxWindow *parent,
+            wxWindowID id, Configuration *cfg);
+  bool Matches(wxString text);
 
 protected:
-    void OnTextChange(wxCommandEvent &ev);
+  void OnTextChange(wxCommandEvent &ev);
 
-    ~RegexCtrl();
+  ~RegexCtrl();
 
 private:
-    wxString m_oldRegex;
-    wxRegEx m_regex;
-    enum class RegexInputState : int8_t { empty, invalid, valid };
-    //! The state of the regex in the regex entry control
-    RegexInputState m_regexInputState = RegexInputState::empty;
-    RegexInputState GetNewRegexInputState() const;
-    //! The tooltip that is displayed if the regex cannot be interpreted
-    static wxString RegexTooltip_error;
-    //! The tooltip that is displayed if the regex is empty or can be interpreted
-    static wxString RegexTooltip_norm;
+  wxString m_oldRegex;
+  wxRegEx m_regex;
+  enum class RegexInputState : int8_t { empty, invalid, valid };
+  //! The state of the regex in the regex entry control
+  RegexInputState m_regexInputState = RegexInputState::empty;
+  RegexInputState GetNewRegexInputState() const;
+  //! The tooltip that is displayed if the regex cannot be interpreted
+  static wxString RegexTooltip_error;
+  //! The tooltip that is displayed if the regex is empty or can be interpreted
+  static wxString RegexTooltip_norm;
 };
 
 wxDECLARE_EVENT(REGEX_EVENT, wxCommandEvent);

@@ -32,50 +32,50 @@
 class LongNumberCell final : public TextCell
 {
 public:
-    //! The constructor for cell that, if displayed, means that something is amiss
-    LongNumberCell(GroupCell *group, Configuration *config, const wxString &number);
-    LongNumberCell(GroupCell *group, const LongNumberCell &cell);
-    std::unique_ptr<Cell> Copy(GroupCell *group) const override;
-    const CellTypeInfo &GetInfo() override;
+  //! The constructor for cell that, if displayed, means that something is amiss
+  LongNumberCell(GroupCell *group, Configuration *config, const wxString &number);
+  LongNumberCell(GroupCell *group, const LongNumberCell &cell);
+  std::unique_ptr<Cell> Copy(GroupCell *group) const override;
+  const CellTypeInfo &GetInfo() override;
 
-    void Recalculate(AFontSize fontsize) override;
-    void Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) override;
-    bool NeedsRecalculation(AFontSize fontSize) const override;
-    bool BreakUp() override;
-    void SetNextToDraw(Cell *next) override;
-    size_t GetInnerCellCount() const override { if(m_innerCell) return 1; else return 0; }
-    // cppcheck-suppress objectIndex
-    Cell *GetInnerCell(size_t index) const override;
+  void Recalculate(AFontSize fontsize) override;
+  void Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) override;
+  bool NeedsRecalculation(AFontSize fontSize) const override;
+  bool BreakUp() override;
+  void SetNextToDraw(Cell *next) override;
+  size_t GetInnerCellCount() const override { if(m_innerCell) return 1; else return 0; }
+  // cppcheck-suppress objectIndex
+  Cell *GetInnerCell(size_t index) const override;
 
 protected:
-    virtual void UpdateDisplayedText() override;
+  virtual void UpdateDisplayedText() override;
 private:
-    //** Large objects (144 bytes)
-    //**
-    //! The first few digits
-    wxString m_numStart;
-    //! The inividual digits, if this cell is broken into lines
-    std::unique_ptr<Cell> m_innerCell;
-    //! The "not all digits displayed" message.
-    wxString m_ellipsis;
-    //! Last few digits (also used for user defined label)
-    wxString m_numEnd;
+  //** Large objects (144 bytes)
+  //**
+  //! The first few digits
+  wxString m_numStart;
+  //! The inividual digits, if this cell is broken into lines
+  std::unique_ptr<Cell> m_innerCell;
+  //! The "not all digits displayed" message.
+  wxString m_ellipsis;
+  //! Last few digits (also used for user defined label)
+  wxString m_numEnd;
 
-    //** 4-byte objects (12 bytes)
-    //**
-    int m_numStartWidth = 0;
-    int m_ellipsisWidth = 0;
-    //! The number of digits we did display the last time we displayed a number.
-    int m_displayedDigits_old = -1;
-    bool m_showAllDigits_old = false;
-    bool m_linebreaksInLongLines_old = true;
+  //** 4-byte objects (12 bytes)
+  //**
+  int m_numStartWidth = 0;
+  int m_ellipsisWidth = 0;
+  //! The number of digits we did display the last time we displayed a number.
+  int m_displayedDigits_old = -1;
+  bool m_showAllDigits_old = false;
+  bool m_linebreaksInLongLines_old = true;
 
-    //** Bitfield objects (0 bytes)
-    //**
-    static void InitBitFields()
-        { // Keep the initialization order below same as the order
-            // of bit fields in this class!
-        }
+  //** Bitfield objects (0 bytes)
+  //**
+  static void InitBitFields()
+    { // Keep the initialization order below same as the order
+      // of bit fields in this class!
+    }
 };
 
 #endif // LONGNUMBERCELL_H

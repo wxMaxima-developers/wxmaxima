@@ -39,45 +39,45 @@
 class XmlInspector : public wxRichTextCtrl
 {
 public:
-    XmlInspector(wxWindow *parent, int id);
+  XmlInspector(wxWindow *parent, int id);
 
-    /*! The destructor
-     */
-    ~XmlInspector();
+  /*! The destructor
+   */
+  ~XmlInspector();
 
-    //! Remove all text from the editor.
-    virtual void Clear();
+  //! Remove all text from the editor.
+  virtual void Clear();
 
-    //! Add some text we sent to maxima.
-    void Add_ToMaxima(wxString text);
-    //! Add some text we have received from maxima.
-    void Add_FromMaxima(wxString text);
-    //! Actually draw the updates
-    void UpdateContents();
-    //! Do we need to update the XmlInspector's display?
-    bool UpdateNeeded(){return m_updateNeeded;}
+  //! Add some text we sent to maxima.
+  void Add_ToMaxima(wxString text);
+  //! Add some text we have received from maxima.
+  void Add_FromMaxima(wxString text);
+  //! Actually draw the updates
+  void UpdateContents();
+  //! Do we need to update the XmlInspector's display?
+  bool UpdateNeeded(){return m_updateNeeded;}
 private:
-    bool m_updateNeeded;
-    wxString m_fromMaxima;
-    wxString m_toMaxima;
-    bool m_clear;
-    enum xmlInspectorIDs
-    {
-        XmlInspector_ctrl_id = 4,
-        XmlInspector_regex_id
-    };
-    enum monitorState
-    {
-        clear,
-        fromMaxima,
-        toMaxima
-    };
-    monitorState m_state;
+  bool m_updateNeeded;
+  wxString m_fromMaxima;
+  wxString m_toMaxima;
+  bool m_clear;
+  enum xmlInspectorIDs
+  {
+    XmlInspector_ctrl_id = 4,
+    XmlInspector_regex_id
+  };
+  enum monitorState
+  {
+    clear,
+    fromMaxima,
+    toMaxima
+  };
+  monitorState m_state;
 
-    wxChar m_lastChar = '\0';
-    int m_indentLevel;
+  wxChar m_lastChar = '\0';
+  int m_indentLevel;
 
-    wxString IndentString(int level);
+  wxString IndentString(int level);
 };
 
 #endif // XMLINSPECTOR_H

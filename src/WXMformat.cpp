@@ -51,7 +51,7 @@ namespace Format {
 
   static const WXMHeader WXMHeaders[] = {
     {WXM_INPUT, wxS("/* [wxMaxima: input   start ] */"),
-     wxS("/* [wxMaxima: input   end   ] */")},
+        wxS("/* [wxMaxima: input   end   ] */")},
     {WXM_TITLE, wxS("/* [wxMaxima: title   start ]"),
      wxS("   [wxMaxima: title   end   ] */")},
     {WXM_SECTION, wxS("/* [wxMaxima: section start ]"),

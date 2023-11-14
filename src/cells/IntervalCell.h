@@ -49,60 +49,60 @@
 class IntervalCell : public Cell
 {
 public:
-    IntervalCell(GroupCell *group, Configuration *config, std::unique_ptr<Cell> &&start,
-                 std::unique_ptr<Cell> &&end);
-    IntervalCell(GroupCell *group, const IntervalCell &cell);
-    virtual std::unique_ptr<Cell> Copy(GroupCell *group) const override;
-    virtual const CellTypeInfo &GetInfo() override;
+  IntervalCell(GroupCell *group, Configuration *config, std::unique_ptr<Cell> &&start,
+               std::unique_ptr<Cell> &&end);
+  IntervalCell(GroupCell *group, const IntervalCell &cell);
+  virtual std::unique_ptr<Cell> Copy(GroupCell *group) const override;
+  virtual const CellTypeInfo &GetInfo() override;
 
-    size_t GetInnerCellCount() const override { return 8; }
-    // cppcheck-suppress objectIndex
-    Cell *GetInnerCell(size_t index) const override { return (&m_open)[index].get(); }
+  size_t GetInnerCellCount() const override { return 8; }
+  // cppcheck-suppress objectIndex
+  Cell *GetInnerCell(size_t index) const override { return (&m_open)[index].get(); }
 
-    void Recalculate(AFontSize fontsize) override;
+  void Recalculate(AFontSize fontsize) override;
 
-    virtual void Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) override;
+  virtual void Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) override;
 
-    bool BreakUp() override;
+  bool BreakUp() override;
 
-    wxString ToMathML() const override;
-    virtual wxString ToMatlab() const override;
-    wxString ToOMML() const override;
-    virtual wxString ToString() const override;
-    virtual wxString ToTeX() const override;
-    virtual wxString ToXML() const override;
+  wxString ToMathML() const override;
+  virtual wxString ToMatlab() const override;
+  wxString ToOMML() const override;
+  virtual wxString ToString() const override;
+  virtual wxString ToTeX() const override;
+  virtual wxString ToXML() const override;
 
-    void SetNextToDraw(Cell *next) override;
+  void SetNextToDraw(Cell *next) override;
 
 protected:
-    void DrawBigLeftOpenBracket(wxDC *dc, wxPoint point) const;
-    void DrawBigRightOpenBracket(wxDC *dc, wxPoint point) const;
-    bool m_leftBracketOpensLeft;
-    bool m_rightBracketOpensRight;
-    // The pointers below point to inner cells and must be kept contiguous.
-    // ** This is the draw list order. All pointers must be the same:
-    // ** either Cell * or std::unique_ptr<Cell>. NO OTHER TYPES are allowed.
-    std::unique_ptr<Cell> m_open;
-    std::unique_ptr<Cell> m_openBracket;
-    std::unique_ptr<Cell> m_start;
-    std::unique_ptr<TextCell> m_comma;
-    std::unique_ptr<TextCell> m_ellipsis;
-    std::unique_ptr<Cell> m_stop;
-    std::unique_ptr<Cell> m_closeBracket;
-    std::unique_ptr<Cell> m_close;
-    // The pointers above point to inner cells and must be kept contiguous.
+  void DrawBigLeftOpenBracket(wxDC *dc, wxPoint point) const;
+  void DrawBigRightOpenBracket(wxDC *dc, wxPoint point) const;
+  bool m_leftBracketOpensLeft;
+  bool m_rightBracketOpensRight;
+  // The pointers below point to inner cells and must be kept contiguous.
+  // ** This is the draw list order. All pointers must be the same:
+  // ** either Cell * or std::unique_ptr<Cell>. NO OTHER TYPES are allowed.
+  std::unique_ptr<Cell> m_open;
+  std::unique_ptr<Cell> m_openBracket;
+  std::unique_ptr<Cell> m_start;
+  std::unique_ptr<TextCell> m_comma;
+  std::unique_ptr<TextCell> m_ellipsis;
+  std::unique_ptr<Cell> m_stop;
+  std::unique_ptr<Cell> m_closeBracket;
+  std::unique_ptr<Cell> m_close;
+  // The pointers above point to inner cells and must be kept contiguous.
 
-    int m_signWidth = 12, m_signHeight = -1;
+  int m_signWidth = 12, m_signHeight = -1;
 
 //** Bitfield objects (1 bytes)
 //**
-    void InitBitFields()
-        { // Keep the initialization order below same as the order
-            // of bit fields in this class!
-            m_drawAsAscii = true;
-        }
-    //! How to create a big parenthesis sign?
-    bool m_drawAsAscii : 1 /* InitBitFields */;
+  void InitBitFields()
+    { // Keep the initialization order below same as the order
+      // of bit fields in this class!
+      m_drawAsAscii = true;
+    }
+  //! How to create a big parenthesis sign?
+  bool m_drawAsAscii : 1 /* InitBitFields */;
 };
 
 #endif // INTERVALCELL_H

@@ -31,47 +31,47 @@
 class SumWiz : public wxDialog
 {
 public:
-    SumWiz(wxWindow *parent, int id,
-           Configuration *cfg,
-           const wxString &title,
-           const wxPoint &pos = wxDefaultPosition,
-           const wxSize &size = wxDefaultSize,
-           long style = wxDEFAULT_DIALOG_STYLE);
+  SumWiz(wxWindow *parent, int id,
+         Configuration *cfg,
+         const wxString &title,
+         const wxPoint &pos = wxDefaultPosition,
+         const wxSize &size = wxDefaultSize,
+         long style = wxDEFAULT_DIALOG_STYLE);
 
-    void SetValue(wxString s)
-        {
-            text_ctrl_1->SetValue(s);
-            text_ctrl_1->SetSelection(-1, -1);
-        }
+  void SetValue(wxString s)
+    {
+      text_ctrl_1->SetValue(s);
+      text_ctrl_1->SetSelection(-1, -1);
+    }
 
-    wxString GetValue();
+  wxString GetValue();
 
 private:
-    enum
-    {
-        use_nusum_id
-    };
+  enum
+  {
+    use_nusum_id
+  };
 
-    void set_properties();
+  void set_properties();
 
-    void do_layout();
+  void do_layout();
 
-    void OnCheckbox(wxCommandEvent &event);
+  void OnCheckbox(wxCommandEvent &event);
 
 protected:
-    wxStaticText *label_2;
-    BTextCtrl *text_ctrl_1;
-    wxStaticText *label_3;
-    BTextCtrl *text_ctrl_2;
-    wxStaticText *label_4;
-    BTextCtrl *text_ctrl_3;
-    wxStaticText *label_5;
-    BTextCtrl *text_ctrl_4;
-    wxStaticLine *static_line_1;
-    wxButton *button_1;
-    wxButton *button_2;
-    wxCheckBox *checkbox_1;
-    wxCheckBox *checkbox_2;
+  wxStaticText *label_2;
+  BTextCtrl *text_ctrl_1;
+  wxStaticText *label_3;
+  BTextCtrl *text_ctrl_2;
+  wxStaticText *label_4;
+  BTextCtrl *text_ctrl_3;
+  wxStaticText *label_5;
+  BTextCtrl *text_ctrl_4;
+  wxStaticLine *static_line_1;
+  wxButton *button_1;
+  wxButton *button_2;
+  wxCheckBox *checkbox_1;
+  wxCheckBox *checkbox_2;
 };
 
 #endif // SUMWIZ_H

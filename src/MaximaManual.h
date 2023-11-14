@@ -56,82 +56,82 @@
 class MaximaManual
 {
 public:
-    explicit MaximaManual(Configuration *configuration);
+  explicit MaximaManual(Configuration *configuration);
 #if wxCHECK_VERSION(3, 3, 0) || wxUSE_STL
-    typedef std::unordered_map <wxString, wxString> HelpFileAnchors;
+  typedef std::unordered_map <wxString, wxString> HelpFileAnchors;
 #else
-    WX_DECLARE_STRING_HASH_MAP(wxString, HelpFileAnchors);
+  WX_DECLARE_STRING_HASH_MAP(wxString, HelpFileAnchors);
 #endif
-    HelpFileAnchors GetHelpfileAnchors();
-    void FindMaximaHtmlDir(wxString docDir);
-    wxString GetHelpfileAnchorName(wxString keyword);
-    wxString GetHelpfileUrl_Singlepage(wxString keyword);
-    wxString GetHelpfileUrl_FilePerChapter(wxString keyword);
-    wxString GetHelpfileURL(wxString keyword);
-    //! Search maxima's help file for command and variable names
-    void LoadHelpFileAnchors(wxString docdir, wxString maximaVersion);
-    //! Collect all keyword anchors in the help file
-    void CompileHelpFileAnchors(wxString maximaHtmlDir,
+  HelpFileAnchors GetHelpfileAnchors();
+  void FindMaximaHtmlDir(wxString docDir);
+  wxString GetHelpfileAnchorName(wxString keyword);
+  wxString GetHelpfileUrl_Singlepage(wxString keyword);
+  wxString GetHelpfileUrl_FilePerChapter(wxString keyword);
+  wxString GetHelpfileURL(wxString keyword);
+  //! Search maxima's help file for command and variable names
+  void LoadHelpFileAnchors(wxString docdir, wxString maximaVersion);
+  //! Collect all keyword anchors in the help file
+  void CompileHelpFileAnchors(wxString maximaHtmlDir,
+                              wxString maximaVersion,
+                              wxString saveName);
+  //! Load the result from the last CompileHelpFileAnchors from the disk cache
+  bool LoadManualAnchorsFromCache();
+  //! Load the help file anchors from an wxXmlDocument
+  bool LoadManualAnchorsFromXML(const wxXmlDocument &xmlDocument, bool checkManualVersion = true);
+  //! Load the help file anchors from the built-in list
+  bool LoadBuiltInManualAnchors();
+  //! Save the list of help file anchors to the cache.
+  void SaveManualAnchorsToCache(wxString maximaHtmlDir,
                                 wxString maximaVersion,
                                 wxString saveName);
-    //! Load the result from the last CompileHelpFileAnchors from the disk cache
-    bool LoadManualAnchorsFromCache();
-    //! Load the help file anchors from an wxXmlDocument
-    bool LoadManualAnchorsFromXML(const wxXmlDocument &xmlDocument, bool checkManualVersion = true);
-    //! Load the help file anchors from the built-in list
-    bool LoadBuiltInManualAnchors();
-    //! Save the list of help file anchors to the cache.
-    void SaveManualAnchorsToCache(wxString maximaHtmlDir,
-                                  wxString maximaVersion,
-                                  wxString saveName);
-    void WaitForBackgroundProcess();
+  void WaitForBackgroundProcess();
 
-    ~MaximaManual();
+  ~MaximaManual();
 private:
-    //! Add our aliases to a list of anchors
-    static void AnchorAliasses(HelpFileAnchors &anchors);
-    //! Scans the maxima directory for a list of loadable files
-    class GetHTMLFiles : public wxDirTraverser
-    {
-    public:
-        explicit GetHTMLFiles(std::vector<wxString>& files, wxString prefix = wxEmptyString) :
-            m_files(files), m_prefix(prefix) { }
-        virtual wxDirTraverseResult OnFile(const wxString& filename) override;
-        virtual wxDirTraverseResult OnDir(const wxString& dirname) override;
-        std::vector<wxString>& GetResult() const {return m_files;}
-    protected:
-        std::vector<wxString>& m_files;
-        wxString m_prefix;
-    };
-    class GetHTMLFiles_Recursive : public wxDirTraverser
-    {
-    public:
-        explicit GetHTMLFiles_Recursive(std::vector<wxString>& files, wxString prefix = wxEmptyString) :
-            m_files(files), m_prefix(prefix) { }
-        virtual wxDirTraverseResult OnFile(const wxString& filename) override;
-        virtual wxDirTraverseResult OnDir(const wxString& dirname) override;
-        std::vector<wxString>& GetResult() const {return m_files;}
-    protected:
-        std::vector<wxString>& m_files;
-        wxString m_prefix;
-    };
+  //! Add our aliases to a list of anchors
+  static void AnchorAliasses(HelpFileAnchors &anchors);
+  //! Scans the maxima directory for a list of loadable files
+  class GetHTMLFiles : public wxDirTraverser
+  {
+  public:
+    explicit GetHTMLFiles(std::vector<wxString>& files, wxString prefix = wxEmptyString) :
+      m_files(files), m_prefix(prefix) { }
+    virtual wxDirTraverseResult OnFile(const wxString& filename) override;
+    virtual wxDirTraverseResult OnDir(const wxString& dirname) override;
+    std::vector<wxString>& GetResult() const {return m_files;}
+  protected:
+    std::vector<wxString>& m_files;
+    wxString m_prefix;
+  };
+  class GetHTMLFiles_Recursive : public wxDirTraverser
+  {
+  public:
+    explicit GetHTMLFiles_Recursive(std::vector<wxString>& files, wxString prefix = wxEmptyString) :
+      m_files(files), m_prefix(prefix) { }
+    virtual wxDirTraverseResult OnFile(const wxString& filename) override;
+    virtual wxDirTraverseResult OnDir(const wxString& dirname) override;
+    std::vector<wxString>& GetResult() const {return m_files;}
+  protected:
+    std::vector<wxString>& m_files;
+    wxString m_prefix;
+  };
 
-    //    m_configuration.MaximaShareDir(dir);
+  //    m_configuration.MaximaShareDir(dir);
 
-    //! The thread the help file anchors are compiled in
-    std::unique_ptr<std::thread> m_helpfileanchorsThread;
-    std::mutex m_helpFileAnchorsThreadActive;
-    //! The configuration storage
-    Configuration *m_configuration;
-    //! All anchors for keywords maxima's helpfile contains (singlepage version)
-    HelpFileAnchors m_helpFileURLs_singlePage;
-    //! All anchors for keywords maxima's helpfile contains (file-per-chapter version)
-    HelpFileAnchors m_helpFileURLs_filePerChapter;
-    //! All anchors for keywords maxima's helpfile contains (without the file name)
-    HelpFileAnchors m_helpFileAnchors;
-    wxString m_maximaHtmlDir;
-    wxString m_maximaVersion;
-    unsigned long m_nestedBackgroundProcessWaits = 0;
+  //! The thread the help file anchors are compiled in
+  std::unique_ptr<std::thread> m_helpfileanchorsThread;
+  std::mutex m_helpFileAnchorsThreadActive;
+  //! The configuration storage
+  Configuration *m_configuration;
+  //! All anchors for keywords maxima's helpfile contains (singlepage version)
+  HelpFileAnchors m_helpFileURLs_singlePage;
+  //! All anchors for keywords maxima's helpfile contains (file-per-chapter version)
+  HelpFileAnchors m_helpFileURLs_filePerChapter;
+  //! All anchors for keywords maxima's helpfile contains (without the file name)
+  HelpFileAnchors m_helpFileAnchors;
+  wxString m_maximaHtmlDir;
+  wxString m_maximaVersion;
+  unsigned long m_nestedBackgroundProcessWaits = 0;
 };
 
 #endif // MAXIMAMANUAL_H

@@ -36,31 +36,31 @@
 
 DigitCell::DigitCell(GroupCell *group, Configuration *config,
                      const wxString &text, TextStyle style)
-    : TextCell(group, config, text, style) {}
+  : TextCell(group, config, text, style) {}
 
 DigitCell::DigitCell(GroupCell *group, const DigitCell &cell)
-    : DigitCell(group, cell.m_configuration, cell.m_text, cell.GetTextStyle()) {}
+  : DigitCell(group, cell.m_configuration, cell.m_text, cell.GetTextStyle()) {}
 
 DEFINE_CELL(DigitCell)
 
 void DigitCell::Recalculate(AFontSize fontsize) {
-    if (NeedsRecalculation(fontsize)) {
-        Cell::Recalculate(fontsize);
-        SetFont(m_configuration->GetRecalcDC(), m_fontSize_Scaled);
-        wxSize sz =
-            CalculateTextSize(m_configuration->GetRecalcDC(), m_displayedText, cellText);
-        m_width = sz.GetWidth();
-        m_height = sz.GetHeight();
-        m_height += 2 * MC_TEXT_PADDING;
-        m_center = m_height / 2;
-    }
+  if (NeedsRecalculation(fontsize)) {
+    Cell::Recalculate(fontsize);
+    SetFont(m_configuration->GetRecalcDC(), m_fontSize_Scaled);
+    wxSize sz =
+      CalculateTextSize(m_configuration->GetRecalcDC(), m_displayedText, cellText);
+    m_width = sz.GetWidth();
+    m_height = sz.GetHeight();
+    m_height += 2 * MC_TEXT_PADDING;
+    m_center = m_height / 2;
+  }
 }
 
 void DigitCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
-    Cell::Draw(point, dc, antialiassingDC);
-    if (DrawThisCell(point)) {
-        SetTextColor(dc);
-        SetFont(dc, m_fontSize_Scaled);
-        dc->DrawText(m_text, point.x, point.y - m_center + MC_TEXT_PADDING);
-    }
+  Cell::Draw(point, dc, antialiassingDC);
+  if (DrawThisCell(point)) {
+    SetTextColor(dc);
+    SetFont(dc, m_fontSize_Scaled);
+    dc->DrawText(m_text, point.x, point.y - m_center + MC_TEXT_PADDING);
+  }
 }

@@ -34,9 +34,9 @@
 
 SqrtCell::SqrtCell(GroupCell *group, Configuration *config,
                    std::unique_ptr<Cell> &&inner)
-    : Cell(group, config), m_innerCell(std::move(inner)) {
-    InitBitFields();
-    SetStyle(TS_VARIABLE);
+  : Cell(group, config), m_innerCell(std::move(inner)) {
+  InitBitFields();
+  SetStyle(TS_VARIABLE);
 }
 
 // cppcheck-suppress uninitMemberVar symbolName=SqrtCell::m_open
@@ -47,132 +47,132 @@ SqrtCell::SqrtCell(GroupCell *group, Configuration *config,
 // cppcheck-suppress uninitMemberVar symbolName=SqrtCell::m_signType
 // cppcheck-suppress uninitMemberVar symbolName=SqrtCell::m_signFontScale
 SqrtCell::SqrtCell(GroupCell *group, const SqrtCell &cell)
-    : SqrtCell(group, cell.m_configuration,
-               CopyList(group, cell.m_innerCell.get())) {
-    CopyCommonData(cell);
+  : SqrtCell(group, cell.m_configuration,
+             CopyList(group, cell.m_innerCell.get())) {
+  CopyCommonData(cell);
 }
 
 DEFINE_CELL(SqrtCell)
 
 void SqrtCell::MakeBreakUpCells() {
-    if (m_open)
-        return;
-    m_open = std::make_unique<TextCell>(m_group, m_configuration, wxS("sqrt("));
-    m_open->SetStyle(TS_FUNCTION);
-    static_cast<TextCell &>(*m_open).DontEscapeOpeningParenthesis();
-    m_close = std::make_unique<TextCell>(m_group, m_configuration, wxS(")"));
+  if (m_open)
+    return;
+  m_open = std::make_unique<TextCell>(m_group, m_configuration, wxS("sqrt("));
+  m_open->SetStyle(TS_FUNCTION);
+  static_cast<TextCell &>(*m_open).DontEscapeOpeningParenthesis();
+  m_close = std::make_unique<TextCell>(m_group, m_configuration, wxS(")"));
 }
 
 void SqrtCell::Recalculate(AFontSize fontsize) {
-    m_innerCell->RecalculateList(fontsize);
+  m_innerCell->RecalculateList(fontsize);
 
-    m_width = m_innerCell->GetFullWidth() + Scale_Px(13) + 1;
-    if (!IsBrokenIntoLines()) {
-        auto openHeight = 0; // m_open->GetHeightList();
-        auto openCenter = 0; // m_open->GetCenterList();
-        m_height = wxMax(m_innerCell->GetHeightList(), openHeight) + Scale_Px(3);
-        m_center = wxMax(m_innerCell->GetCenterList(), openCenter) + Scale_Px(3);
-    } else {
-        m_height = m_center = m_width = 0;
-        m_open->Recalculate(fontsize);
-        m_close->Recalculate(fontsize);
-    }
-    Cell::Recalculate(fontsize);
+  m_width = m_innerCell->GetFullWidth() + Scale_Px(13) + 1;
+  if (!IsBrokenIntoLines()) {
+    auto openHeight = 0; // m_open->GetHeightList();
+    auto openCenter = 0; // m_open->GetCenterList();
+    m_height = wxMax(m_innerCell->GetHeightList(), openHeight) + Scale_Px(3);
+    m_center = wxMax(m_innerCell->GetCenterList(), openCenter) + Scale_Px(3);
+  } else {
+    m_height = m_center = m_width = 0;
+    m_open->Recalculate(fontsize);
+    m_close->Recalculate(fontsize);
+  }
+  Cell::Recalculate(fontsize);
 }
 
 void SqrtCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
-    Cell::Draw(point, dc, antialiassingDC);
-    if (DrawThisCell(point)) {
-        wxPoint in(point);
+  Cell::Draw(point, dc, antialiassingDC);
+  if (DrawThisCell(point)) {
+    wxPoint in(point);
 
-        {
-            in.x += Scale_Px(11) + 1;
-            SetPen(antialiassingDC, 1.2);
+    {
+      in.x += Scale_Px(11) + 1;
+      SetPen(antialiassingDC, 1.2);
 
-            const wxPoint points[12] = {
-                {0, 0},
-                {Scale_Px(3), -Scale_Px(1)},
-                //  A wider line
-                {Scale_Px(3), -Scale_Px(1)},
-                {Scale_Px(7), m_height - m_center - Scale_Px(4)},
-                {Scale_Px(7.5), m_height - m_center - Scale_Px(4)},
-                {Scale_Px(3.5), -Scale_Px(1)},
-                {Scale_Px(3.5), -Scale_Px(1)},
-                {Scale_Px(3), -Scale_Px(1)},
-                {Scale_Px(8), m_height - m_center - Scale_Px(4)},
-                // The upwards line
-                {Scale_Px(10), -m_center + Scale_Px(2)},
-                // The horizontal line
-                {m_width - Scale_Px(1), -m_center + Scale_Px(2)},
-                // The serif at the end of the root
-                {m_width - Scale_Px(1), -m_center + Scale_Px(6)}};
-            antialiassingDC->DrawLines(12, points, point.x, point.y);
-        }
-
-        m_innerCell->DrawList(in, dc, antialiassingDC);
+      const wxPoint points[12] = {
+        {0, 0},
+        {Scale_Px(3), -Scale_Px(1)},
+        //  A wider line
+        {Scale_Px(3), -Scale_Px(1)},
+        {Scale_Px(7), m_height - m_center - Scale_Px(4)},
+        {Scale_Px(7.5), m_height - m_center - Scale_Px(4)},
+        {Scale_Px(3.5), -Scale_Px(1)},
+        {Scale_Px(3.5), -Scale_Px(1)},
+        {Scale_Px(3), -Scale_Px(1)},
+        {Scale_Px(8), m_height - m_center - Scale_Px(4)},
+        // The upwards line
+        {Scale_Px(10), -m_center + Scale_Px(2)},
+        // The horizontal line
+        {m_width - Scale_Px(1), -m_center + Scale_Px(2)},
+        // The serif at the end of the root
+        {m_width - Scale_Px(1), -m_center + Scale_Px(6)}};
+      antialiassingDC->DrawLines(12, points, point.x, point.y);
     }
+
+    m_innerCell->DrawList(in, dc, antialiassingDC);
+  }
 }
 
 wxString SqrtCell::ToString() const {
-    if (IsBrokenIntoLines())
-        return wxEmptyString;
-    else
-        return wxS("sqrt(") + m_innerCell->ListToString() + wxS(")");
+  if (IsBrokenIntoLines())
+    return wxEmptyString;
+  else
+    return wxS("sqrt(") + m_innerCell->ListToString() + wxS(")");
 }
 
 wxString SqrtCell::ToMatlab() const {
-    if (IsBrokenIntoLines())
-        return wxEmptyString;
-    else
-        return wxS("sqrt(") + m_innerCell->ListToMatlab() + wxS(")");
+  if (IsBrokenIntoLines())
+    return wxEmptyString;
+  else
+    return wxS("sqrt(") + m_innerCell->ListToMatlab() + wxS(")");
 }
 
 wxString SqrtCell::ToTeX() const {
-    if (IsBrokenIntoLines())
-        return wxEmptyString;
-    else
-        return wxS("\\sqrt{") + m_innerCell->ListToTeX() + wxS("}");
+  if (IsBrokenIntoLines())
+    return wxEmptyString;
+  else
+    return wxS("\\sqrt{") + m_innerCell->ListToTeX() + wxS("}");
 }
 
 wxString SqrtCell::ToMathML() const {
-    return wxS("<msqrt>") + m_innerCell->ListToMathML() + wxS("</msqrt>\n");
+  return wxS("<msqrt>") + m_innerCell->ListToMathML() + wxS("</msqrt>\n");
 }
 
 wxString SqrtCell::ToOMML() const {
-    return wxS("<m:rad><m:radPr m:degHide=\"1\"></m:radPr><m:deg></m:deg><m:e>") +
-        m_innerCell->ListToOMML() + wxS("</m:e></m:rad>\n");
+  return wxS("<m:rad><m:radPr m:degHide=\"1\"></m:radPr><m:deg></m:deg><m:e>") +
+    m_innerCell->ListToOMML() + wxS("</m:e></m:rad>\n");
 }
 
 wxString SqrtCell::ToXML() const {
-    //  if (IsBrokenIntoLines())
-    //    return wxEmptyString;
-    wxString flags;
-    if (HasHardLineBreak())
-        flags += wxS(" breakline=\"true\"");
+  //  if (IsBrokenIntoLines())
+  //    return wxEmptyString;
+  wxString flags;
+  if (HasHardLineBreak())
+    flags += wxS(" breakline=\"true\"");
 
-    return wxS("<q") + flags + wxS(">") + m_innerCell->ListToXML() + wxS("</q>");
+  return wxS("<q") + flags + wxS(">") + m_innerCell->ListToXML() + wxS("</q>");
 }
 
 bool SqrtCell::BreakUp() {
-    if (IsBrokenIntoLines())
-        return false;
+  if (IsBrokenIntoLines())
+    return false;
 
-    MakeBreakUpCells();
-    Cell::BreakUpAndMark();
-    m_open->SetNextToDraw(m_innerCell);
-    m_innerCell->last()->SetNextToDraw(m_close);
-    m_close->SetNextToDraw(m_nextToDraw);
-    m_nextToDraw = m_open;
+  MakeBreakUpCells();
+  Cell::BreakUpAndMark();
+  m_open->SetNextToDraw(m_innerCell);
+  m_innerCell->last()->SetNextToDraw(m_close);
+  m_close->SetNextToDraw(m_nextToDraw);
+  m_nextToDraw = m_open;
 
-    ResetCellListSizes();
-    m_height = 0;
-    m_center = 0;
-    return true;
+  ResetCellListSizes();
+  m_height = 0;
+  m_center = 0;
+  return true;
 }
 
 void SqrtCell::SetNextToDraw(Cell *next) {
-    if (IsBrokenIntoLines())
-        m_close->SetNextToDraw(next);
-    else
-        m_nextToDraw = next;
+  if (IsBrokenIntoLines())
+    m_close->SetNextToDraw(next);
+  else
+    m_nextToDraw = next;
 }

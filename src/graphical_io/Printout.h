@@ -41,33 +41,33 @@
 class Printout : public wxPrintout
 {
 public:
-    Printout(wxString title, GroupCell *tree, double scaleFactor);
+  Printout(wxString title, GroupCell *tree, double scaleFactor);
 
-    void SetupData();
+  void SetupData();
 
-    void BreakPages();
+  void BreakPages();
 
-    void Recalculate();
+  void Recalculate();
 
-    virtual bool OnPrintPage(int num) override;
+  virtual bool OnPrintPage(int num) override;
 
-    virtual bool HasPage(int num) override;
+  virtual bool HasPage(int num) override;
 
-    virtual void GetPageInfo(int *minPage, int *maxPage, int *fromPage, int *toPage) override;
+  virtual void GetPageInfo(int *minPage, int *maxPage, int *fromPage, int *toPage) override;
 
-    virtual bool OnBeginDocument(int startPage, int endPage) override;
+  virtual bool OnBeginDocument(int startPage, int endPage) override;
 
-    virtual void OnPreparePrinting() override;
+  virtual void OnPreparePrinting() override;
 
 private:
-    wxString m_title;
-    std::unique_ptr<GroupCell> m_tree;
-    std::vector<Cell *> m_pages;
-    Configuration m_configuration;
-    Configuration *m_configPointer;
-    double m_scaleFactor;
-    // Sets Configuration::Printing() to true while we print
-    Printing m_printing;
+  wxString m_title;
+  std::unique_ptr<GroupCell> m_tree;
+  std::vector<Cell *> m_pages;
+  Configuration m_configuration;
+  Configuration *m_configPointer;
+  double m_scaleFactor;
+  // Sets Configuration::Printing() to true while we print
+  Printing m_printing;
 };
 
 #endif // MATHPRINTOUT_H

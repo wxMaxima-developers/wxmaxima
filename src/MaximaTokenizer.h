@@ -50,82 +50,82 @@
 class MaximaTokenizer
 {
 public:
-    /*! The constructor
+  /*! The constructor
 
-      \param commands The maxima commands to tokenize
-      \param configuration A pointer to the configuration object
-    */
-    MaximaTokenizer(wxString commands, Configuration *configuration);
+    \param commands The maxima commands to tokenize
+    \param configuration A pointer to the configuration object
+  */
+  MaximaTokenizer(wxString commands, Configuration *configuration);
 
-    //! A maxima code snippet from this tokenizer
-    class Token
-    {
-    public:
-        Token() = default;
-        explicit Token(wxString&& text) : m_text(std::move(text)) {}
-        explicit Token(const wxString &text) : m_text(text) {}
-        Token(wxString&& text, TextStyle style) : m_text(std::move(text)), m_style(style) {}
-        Token(const wxString& text, TextStyle style) : m_text(text), m_style(style) {}
-        Token& operator=(Token&& t) noexcept { m_text = std::move(t.m_text); m_style = t.m_style; return *this; }
-        Token& operator=(const Token& t) { m_text = t.m_text; m_style = t.m_style; return *this; }
-        Token(Token&& token) noexcept { *this = std::move(token); }
-        Token(const Token &token) { *this = token ;}
-        TextStyle GetTextStyle() const { return m_style; }
-        const wxString &GetText() const { return m_text; }
-        operator const wxString &() const { return m_text; }
-    private:
-        wxString m_text;
-        TextStyle m_style = TS_CODE_DEFAULT;
-    };
-    static bool IsAlpha(wxChar ch);
-    static bool IsNum(wxChar ch);
-    static bool IsAlphaNum(wxChar ch);
-    static bool IsSpace(wxChar ch);
-    static const wxString &UnicodeNumbers() { return m_unicodeNumbers; }
-    static const wxString &Operators() { return m_operators; }
+  //! A maxima code snippet from this tokenizer
+  class Token
+  {
+  public:
+    Token() = default;
+    explicit Token(wxString&& text) : m_text(std::move(text)) {}
+    explicit Token(const wxString &text) : m_text(text) {}
+    Token(wxString&& text, TextStyle style) : m_text(std::move(text)), m_style(style) {}
+    Token(const wxString& text, TextStyle style) : m_text(text), m_style(style) {}
+    Token& operator=(Token&& t) noexcept { m_text = std::move(t.m_text); m_style = t.m_style; return *this; }
+    Token& operator=(const Token& t) { m_text = t.m_text; m_style = t.m_style; return *this; }
+    Token(Token&& token) noexcept { *this = std::move(token); }
+    Token(const Token &token) { *this = token ;}
+    TextStyle GetTextStyle() const { return m_style; }
+    const wxString &GetText() const { return m_text; }
+    operator const wxString &() const { return m_text; }
+  private:
+    wxString m_text;
+    TextStyle m_style = TS_CODE_DEFAULT;
+  };
+  static bool IsAlpha(wxChar ch);
+  static bool IsNum(wxChar ch);
+  static bool IsAlphaNum(wxChar ch);
+  static bool IsSpace(wxChar ch);
+  static const wxString &UnicodeNumbers() { return m_unicodeNumbers; }
+  static const wxString &Operators() { return m_operators; }
 
-    using TokenList = std::vector<Token>;
-    TokenList PopTokens() && { return std::move(m_tokens); }
+  using TokenList = std::vector<Token>;
+  TokenList PopTokens() && { return std::move(m_tokens); }
 
-    //! A constructor that adds additional words to the token list
-    MaximaTokenizer(wxString commands, Configuration *configuration,
-                    const TokenList &initialTokens);
+  //! A constructor that adds additional words to the token list
+  MaximaTokenizer(wxString commands, Configuration *configuration,
+                  const TokenList &initialTokens);
 
 protected:
-    //! The tokens the string is divided into
-    TokenList m_tokens;
-    //! ASCII symbols that wxIsalnum() doesn't see as chars, but maxima does.
-    static const wxString m_additional_alphas;
-    //! Unicode Operators and other special non-ascii characters
-    static const wxString m_not_alphas;
-    //! Space characters
-    static const wxString m_spaces;
-    //! Plus sign
-    static const wxString m_plusSigns;
-    //! Minus sign
-    static const wxString m_minusSigns;
-    //! Linebreak characters
-    static const wxString m_linebreaks;
-    //! Unicode numbers
-    static const wxString m_unicodeNumbers;
-    //! Operators
-    static const wxString m_operators;
+  //! The tokens the string is divided into
+  TokenList m_tokens;
+  //! ASCII symbols that wxIsalnum() doesn't see as chars, but maxima does.
+  static const wxString m_additional_alphas;
+  //! Unicode Operators and other special non-ascii characters
+  static const wxString m_not_alphas;
+  //! Space characters
+  static const wxString m_spaces;
+  //! Plus sign
+  static const wxString m_plusSigns;
+  //! Minus sign
+  static const wxString m_minusSigns;
+  //! Linebreak characters
+  static const wxString m_linebreaks;
+  //! Unicode numbers
+  static const wxString m_unicodeNumbers;
+  //! Operators
+  static const wxString m_operators;
 
-    Configuration *m_configuration;
+  Configuration *m_configuration;
 
 #if wxCHECK_VERSION(3, 3, 0) || wxUSE_STL
-    typedef std::unordered_map <wxString, int> StringHash;
+  typedef std::unordered_map <wxString, int> StringHash;
 #else
-    WX_DECLARE_STRING_HASH_MAP(int, StringHash);
+  WX_DECLARE_STRING_HASH_MAP(int, StringHash);
 #endif
-    /*! Names of functions that don't require parenthesis
+  /*! Names of functions that don't require parenthesis
 
-      The maxima parser automatically parses everything that is followed by
-      an opening parenthesis as a function. But a few things like "then"
-      are very similar to functions except that they don't require an
-      argument. These fake functions are kept in this hash.
-    */
-    static StringHash m_hardcodedFunctions;
+    The maxima parser automatically parses everything that is followed by
+    an opening parenthesis as a function. But a few things like "then"
+    are very similar to functions except that they don't require an
+    argument. These fake functions are kept in this hash.
+  */
+  static StringHash m_hardcodedFunctions;
 };
 
 #endif // MAXIMATOKENIZER_H

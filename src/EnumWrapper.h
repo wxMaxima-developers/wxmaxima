@@ -69,36 +69,36 @@
  *    is a pessimization. It's not meant to be used that way.*
  */
 template <typename Enum, typename Storage, Enum defaultValue = Enum{},
-    typename std::enable_if<std::is_enum<Enum>::value &&
-                            std::is_integral<Storage>::value,
-                            bool>::type = true>
-    class EnumWrapper {
-        Storage value = Storage(defaultValue);
+  typename std::enable_if<std::is_enum<Enum>::value &&
+                          std::is_integral<Storage>::value,
+                          bool>::type = true>
+  class EnumWrapper {
+    Storage value = Storage(defaultValue);
 
-        // We can at least make sure that the default value fits
-        static_assert(
-            Enum(Storage(defaultValue)) == defaultValue,
-            "The default value doesn't survive a roundtrip through this wrapper.");
-        // There's no point in using this type if it doesn't save space.
-        static_assert(
-            sizeof(Storage) < sizeof(Enum),
-            "EnumWrapper should be used only to save space."
-            "When removing it, don't forget to take care of default value!");
+    // We can at least make sure that the default value fits
+    static_assert(
+                  Enum(Storage(defaultValue)) == defaultValue,
+                  "The default value doesn't survive a roundtrip through this wrapper.");
+    // There's no point in using this type if it doesn't save space.
+    static_assert(
+                  sizeof(Storage) < sizeof(Enum),
+                  "EnumWrapper should be used only to save space."
+                  "When removing it, don't forget to take care of default value!");
 
-    public:
-        constexpr EnumWrapper() = default;
-        constexpr EnumWrapper(Storage) = delete;
-        // cppcheck-suppress noExplicitConstructor
-        constexpr EnumWrapper(Enum value) noexcept : value(value) {}
-        constexpr operator Enum() const noexcept { return Enum(value); }
-        constexpr operator Storage() const = delete;
-        constexpr std::size_t hash() const { return std::hash<Storage>()(value); }
+  public:
+    constexpr EnumWrapper() = default;
+    constexpr EnumWrapper(Storage) = delete;
+    // cppcheck-suppress noExplicitConstructor
+    constexpr EnumWrapper(Enum value) noexcept : value(value) {}
+    constexpr operator Enum() const noexcept { return Enum(value); }
+    constexpr operator Storage() const = delete;
+    constexpr std::size_t hash() const { return std::hash<Storage>()(value); }
 
-        constexpr bool operator==(EnumWrapper o) const { return value == o.value;  }
-        constexpr bool operator==(Enum o) const { return value == o;  }
-        constexpr bool operator!=(EnumWrapper o) const { return value != o.value;  }
-        constexpr bool operator!=(Enum o) const { return value != o;  }
-    };
+    constexpr bool operator==(EnumWrapper o) const { return value == o.value;  }
+    constexpr bool operator==(Enum o) const { return value == o;  }
+    constexpr bool operator!=(EnumWrapper o) const { return value != o.value;  }
+    constexpr bool operator!=(Enum o) const { return value != o;  }
+  };
 
 template <typename E, typename S, E defVal>
 constexpr bool operator==(E a, EnumWrapper<E, S, defVal> b) { return b == a;  }
@@ -108,13 +108,13 @@ constexpr bool operator!=(E a, EnumWrapper<E, S, defVal> b) { return b != a;  }
 
 namespace std {
 
-    template <typename Enum, typename Storage, Enum defaultValue>
-    struct hash<EnumWrapper<Enum, Storage, defaultValue>> {
-        constexpr auto
-        operator()(EnumWrapper<Enum, Storage, defaultValue> value) const {
-            return value.hash();
-        }
-    };
+  template <typename Enum, typename Storage, Enum defaultValue>
+  struct hash<EnumWrapper<Enum, Storage, defaultValue>> {
+    constexpr auto
+    operator()(EnumWrapper<Enum, Storage, defaultValue> value) const {
+      return value.hash();
+    }
+  };
 
 } // namespace std
 

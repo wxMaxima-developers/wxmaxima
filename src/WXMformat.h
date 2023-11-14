@@ -35,25 +35,25 @@ class wxTextBuffer;
 //! An identifier for each of the headers in a WXM file
 // This enum's elements must be synchronized with (GroupCell.h) GroupType
 enum WXMHeaderId {
-    WXM_INVALID = GC_TYPE_INVALID,
-    WXM_INPUT = GC_TYPE_CODE,
-    WXM_TITLE = GC_TYPE_TITLE,
-    WXM_SECTION = GC_TYPE_SECTION,
-    WXM_SUBSECTION = GC_TYPE_SUBSECTION,
-    WXM_SUBSUBSECTION = GC_TYPE_SUBSUBSECTION,
-    WXM_HEADING5 = GC_TYPE_HEADING5,
-    WXM_HEADING6 = GC_TYPE_HEADING6,
-    WXM_COMMENT = GC_TYPE_TEXT,
-    WXM_CAPTION = GC_TYPE_IMAGE,
-    WXM_PAGEBREAK = GC_TYPE_PAGEBREAK,
-    WXM_IMAGE,
-    WXM_ANSWER,
-    WXM_QUESTION,
-    WXM_FOLD, WXM_FOLD_END,
-    WXM_HIDE,
-    WXM_AUTOANSWER,
+  WXM_INVALID = GC_TYPE_INVALID,
+  WXM_INPUT = GC_TYPE_CODE,
+  WXM_TITLE = GC_TYPE_TITLE,
+  WXM_SECTION = GC_TYPE_SECTION,
+  WXM_SUBSECTION = GC_TYPE_SUBSECTION,
+  WXM_SUBSUBSECTION = GC_TYPE_SUBSUBSECTION,
+  WXM_HEADING5 = GC_TYPE_HEADING5,
+  WXM_HEADING6 = GC_TYPE_HEADING6,
+  WXM_COMMENT = GC_TYPE_TEXT,
+  WXM_CAPTION = GC_TYPE_IMAGE,
+  WXM_PAGEBREAK = GC_TYPE_PAGEBREAK,
+  WXM_IMAGE,
+  WXM_ANSWER,
+  WXM_QUESTION,
+  WXM_FOLD, WXM_FOLD_END,
+  WXM_HIDE,
+  WXM_AUTOANSWER,
 
-    WXM_MAX // Must be the last member
+  WXM_MAX // Must be the last member
 };
 
 namespace Format
@@ -65,34 +65,34 @@ namespace Format
  * - false: We generate a.mac file instead that doesn't look nice with a dedicated comment per input line.
  * \param cell The starting cell of the tree of cells that is to be converted
  */
-    wxString TreeToWXM(GroupCell *cell, bool wxm = true);
+  wxString TreeToWXM(GroupCell *cell, bool wxm = true);
 
 //! Converts a wxm description into individual cells
-    std::unique_ptr<GroupCell> TreeFromWXM(const std::vector<wxString> &wxmLines, Configuration *config);
+  std::unique_ptr<GroupCell> TreeFromWXM(const std::vector<wxString> &wxmLines, Configuration *config);
 
 /*! Parses the contents of a .wxm file into individual cells.
  * Invokes TreeFromWXM on pre-processed data,
  * concatenates the results.
  * \returns the tree, or nullptr on failure.
  */
-    std::unique_ptr<GroupCell> ParseWXMFile(wxTextBuffer &text, Configuration *config);
+  std::unique_ptr<GroupCell> ParseWXMFile(wxTextBuffer &text, Configuration *config);
 
 /*! Parses the contents of a preloaded .mac file into individual cells.
  *
  * Invokes TreeFromWXM on pre-processed data.
  * \returns the cell tree, or nullptr on failure.
  */
-    std::unique_ptr<GroupCell> ParseMACContents(const wxString &macContents, Configuration *config);
+  std::unique_ptr<GroupCell> ParseMACContents(const wxString &macContents, Configuration *config);
 
 /*! Parses the contents of a .mac or a .out file into individual cells.
  * Invokes ParseMACContents on pre-processed data.
  * \returns the cell tree, or nullptr on failure.
  */
-    std::unique_ptr<GroupCell> ParseMACFile(wxTextBuffer &text, bool xMaximaFile, Configuration *config);
+  std::unique_ptr<GroupCell> ParseMACFile(wxTextBuffer &text, bool xMaximaFile, Configuration *config);
 
 //! First line of the WXM files - used by both loading and saving code.
-    extern const wxString WXMFirstLine;
-    extern const wxString m_emptyString;
+  extern const wxString WXMFirstLine;
+  extern const wxString m_emptyString;
 
 }; // namespace Format
 

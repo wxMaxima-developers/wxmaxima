@@ -33,44 +33,44 @@
 class LabelCell final : public TextCell
 {
 public:
-    //! The constructor for cell that, if displayed, means that something is amiss
-    LabelCell(GroupCell *group,
-              Configuration *config, wxString automaticLabel, TextStyle style = TS_MAIN_PROMPT);
-    LabelCell(GroupCell *group, const LabelCell &cell);
-    std::unique_ptr<Cell> Copy(GroupCell *group) const override;
-    const CellTypeInfo &GetInfo() override;
+  //! The constructor for cell that, if displayed, means that something is amiss
+  LabelCell(GroupCell *group,
+            Configuration *config, wxString automaticLabel, TextStyle style = TS_MAIN_PROMPT);
+  LabelCell(GroupCell *group, const LabelCell &cell);
+  std::unique_ptr<Cell> Copy(GroupCell *group) const override;
+  const CellTypeInfo &GetInfo() override;
 
-    void Recalculate(AFontSize fontsize) override;
-    void Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) override;
-    bool NeedsRecalculation(AFontSize fontSize) const override;
-    void SetStyle(TextStyle style) override;
-    wxString ToString() const override;
-    //! Set the automatic label maxima has assigned the current equation
-    void SetUserDefinedLabel(const wxString &userDefinedLabel);
-    //! Returns the XML flags this cell needs in wxMathML
-    wxString GetXMLFlags() const override;
-    void UpdateDisplayedText() override;
-    const wxString &GetAltCopyText() const override;
-    void SetAltCopyText(const wxString &WXUNUSED(text)) override;
-    wxString ToXML() const override;
+  void Recalculate(AFontSize fontsize) override;
+  void Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) override;
+  bool NeedsRecalculation(AFontSize fontSize) const override;
+  void SetStyle(TextStyle style) override;
+  wxString ToString() const override;
+  //! Set the automatic label maxima has assigned the current equation
+  void SetUserDefinedLabel(const wxString &userDefinedLabel);
+  //! Returns the XML flags this cell needs in wxMathML
+  wxString GetXMLFlags() const override;
+  void UpdateDisplayedText() override;
+  const wxString &GetAltCopyText() const override;
+  void SetAltCopyText(const wxString &WXUNUSED(text)) override;
+  wxString ToXML() const override;
 
 private:
-    double m_zoomFactor_old = 0;
+  double m_zoomFactor_old = 0;
 //** Large objects (48 bytes)
 //**
-    //! The user-defined label for this label cell.
-    wxString m_userDefinedLabel;
+  //! The user-defined label for this label cell.
+  wxString m_userDefinedLabel;
 
 //** 1-byte objects (1 byte)
 //**
-    Configuration::showLabels m_labelChoice_Last = {};
+  Configuration::showLabels m_labelChoice_Last = {};
 
 //** Bitfield objects (0 bytes)
 //**
-    static void InitBitFields()
-        { // Keep the initialization order below same as the order
-            // of bit fields in this class!
-        }
+  static void InitBitFields()
+    { // Keep the initialization order below same as the order
+      // of bit fields in this class!
+    }
 };
 
 #endif // LABELCELL_H

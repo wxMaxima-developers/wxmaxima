@@ -34,30 +34,30 @@
 class GenWiz : public wxDialog
 {
 public:
-    GenWiz(wxWindow *parent, Configuration *cfg, MaximaManual *manual,
-           const wxString &title,
-           const wxString &description, const wxString &description_tooltip,
-           const wxString &commandRule,
-           wxString label1, wxString defaultval1, wxString tooltip1 = {},
-           wxString label2 = {}, wxString defaultval2 = {}, wxString tooltip2 = {},
-           wxString label3 = {}, wxString defaultval3 = {}, wxString tooltip3 = {},
-           wxString label4 = {}, wxString defaultval4 = {}, wxString tooltip4 = {},
-           wxString label5 = {}, wxString defaultval5 = {}, wxString tooltip5 = {},
-           wxString label6 = {}, wxString defaultval6 = {}, wxString tooltip6 = {},
-           wxString label7 = {}, wxString defaultval7 = {}, wxString tooltip7 = {},
-           wxString label8 = {}, wxString defaultval8 = {}, wxString tooltip8 = {},
-           wxString label9 = {}, wxString defaultval9 = {}, wxString tooltip9 = {});
+  GenWiz(wxWindow *parent, Configuration *cfg, MaximaManual *manual,
+         const wxString &title,
+         const wxString &description, const wxString &description_tooltip,
+         const wxString &commandRule,
+         wxString label1, wxString defaultval1, wxString tooltip1 = {},
+         wxString label2 = {}, wxString defaultval2 = {}, wxString tooltip2 = {},
+         wxString label3 = {}, wxString defaultval3 = {}, wxString tooltip3 = {},
+         wxString label4 = {}, wxString defaultval4 = {}, wxString tooltip4 = {},
+         wxString label5 = {}, wxString defaultval5 = {}, wxString tooltip5 = {},
+         wxString label6 = {}, wxString defaultval6 = {}, wxString tooltip6 = {},
+         wxString label7 = {}, wxString defaultval7 = {}, wxString tooltip7 = {},
+         wxString label8 = {}, wxString defaultval8 = {}, wxString tooltip8 = {},
+         wxString label9 = {}, wxString defaultval9 = {}, wxString tooltip9 = {});
 
-    //! Returns the contents of the nth field.
-    wxString operator[](int i) const { return m_panel->operator[](i); }
-    //! Returns the command the wizard has generated, if commandRule wasn't empty
-    wxString GetOutput() const {return m_panel->GetOutput();}
-    //! If we generate a help keyword event this function tells what keyword it was for
-    wxString GetHelpKeyword(int ID){return m_panel->GetHelpKeyword(ID);}
+  //! Returns the contents of the nth field.
+  wxString operator[](int i) const { return m_panel->operator[](i); }
+  //! Returns the command the wizard has generated, if commandRule wasn't empty
+  wxString GetOutput() const {return m_panel->GetOutput();}
+  //! If we generate a help keyword event this function tells what keyword it was for
+  wxString GetHelpKeyword(int ID){return m_panel->GetHelpKeyword(ID);}
 
 protected:
-    //! The contents of the dialogue
-    GenWizPanel *m_panel;
+  //! The contents of the dialogue
+  GenWizPanel *m_panel;
 };
 
 #endif // GENWIZ_H

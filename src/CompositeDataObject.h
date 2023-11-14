@@ -37,37 +37,37 @@
 class CompositeDataObject final : public wxDataObject
 {
 public:
-    CompositeDataObject();
-    ~CompositeDataObject() override;
+  CompositeDataObject();
+  ~CompositeDataObject() override;
 
-    void Add(wxDataObject *object, bool preferred = false);
-    wxDataObject *GetObject(const wxDataFormat& format,
-                            wxDataObjectBase::Direction dir = Get) const;
-    wxDataFormat GetPreferredFormat(Direction dir = Get) const override;
-    void SetPreferredFormat(const wxDataFormat &format);
+  void Add(wxDataObject *object, bool preferred = false);
+  wxDataObject *GetObject(const wxDataFormat& format,
+                          wxDataObjectBase::Direction dir = Get) const;
+  wxDataFormat GetPreferredFormat(Direction dir = Get) const override;
+  void SetPreferredFormat(const wxDataFormat &format);
 
-    size_t GetFormatCount(Direction dir = Get) const override;
-    void GetAllFormats(wxDataFormat *formats, Direction dir = Get) const override;
-    size_t GetDataSize(const wxDataFormat &format) const override;
-    bool GetDataHere(const wxDataFormat &format, void *buf) const override;
+  size_t GetFormatCount(Direction dir = Get) const override;
+  void GetAllFormats(wxDataFormat *formats, Direction dir = Get) const override;
+  size_t GetDataSize(const wxDataFormat &format) const override;
+  bool GetDataHere(const wxDataFormat &format, void *buf) const override;
 
 #ifdef __WXMSW__
-    const void* GetSizeFromBuffer(const void* buffer, size_t* size,
-                                  const wxDataFormat& format) override;
-    void* SetSizeInBuffer(void* buffer, size_t size, const wxDataFormat& format) override;
-    size_t GetBufferOffset(const wxDataFormat& format) override;
+  const void* GetSizeFromBuffer(const void* buffer, size_t* size,
+                                const wxDataFormat& format) override;
+  void* SetSizeInBuffer(void* buffer, size_t size, const wxDataFormat& format) override;
+  size_t GetBufferOffset(const wxDataFormat& format) override;
 #endif
 
 private:
-    struct Entry
-    {
-        wxDataFormat format;
-        std::shared_ptr<wxDataObject> object;
-        Entry(const wxDataFormat &format, std::shared_ptr<wxDataObject> object) :
-            format(format), object(std::move(object)) {}
-    };
-    std::vector<Entry> m_entries;
-    wxDataFormat m_preferredFormat;
+  struct Entry
+  {
+    wxDataFormat format;
+    std::shared_ptr<wxDataObject> object;
+    Entry(const wxDataFormat &format, std::shared_ptr<wxDataObject> object) :
+      format(format), object(std::move(object)) {}
+  };
+  std::vector<Entry> m_entries;
+  wxDataFormat m_preferredFormat;
 };
 
 #endif // COMPOSITEDATAOBJECT_H

@@ -30,62 +30,62 @@
 class SubSupCell final : public Cell
 {
 public:
-    SubSupCell(GroupCell *group, Configuration *config, std::unique_ptr<Cell> &&base);
-    SubSupCell(GroupCell *group, const SubSupCell &cell);
-    const CellTypeInfo &GetInfo() override;
-    std::unique_ptr<Cell> Copy(GroupCell *group) const override;
+  SubSupCell(GroupCell *group, Configuration *config, std::unique_ptr<Cell> &&base);
+  SubSupCell(GroupCell *group, const SubSupCell &cell);
+  const CellTypeInfo &GetInfo() override;
+  std::unique_ptr<Cell> Copy(GroupCell *group) const override;
 
-    size_t GetInnerCellCount() const override { return 5; }
-    // cppcheck-suppress objectIndex
-    Cell *GetInnerCell(size_t index) const override { return (&m_baseCell)[index].get(); }
+  size_t GetInnerCellCount() const override { return 5; }
+  // cppcheck-suppress objectIndex
+  Cell *GetInnerCell(size_t index) const override { return (&m_baseCell)[index].get(); }
 
-    void SetIndex(std::unique_ptr<Cell> &&index);
-    void SetExponent(std::unique_ptr<Cell> &&expt);
-    void SetPreSub(std::unique_ptr<Cell> &&index);
-    void SetPreSup(std::unique_ptr<Cell> &&index);
-    void SetPostSub(std::unique_ptr<Cell> &&index);
-    void SetPostSup(std::unique_ptr<Cell> &&index);
+  void SetIndex(std::unique_ptr<Cell> &&index);
+  void SetExponent(std::unique_ptr<Cell> &&expt);
+  void SetPreSub(std::unique_ptr<Cell> &&index);
+  void SetPreSup(std::unique_ptr<Cell> &&index);
+  void SetPostSub(std::unique_ptr<Cell> &&index);
+  void SetPostSup(std::unique_ptr<Cell> &&index);
 
-    void Recalculate(AFontSize fontsize) override;
+  void Recalculate(AFontSize fontsize) override;
 
-    void Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) override;
+  void Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) override;
 
-    wxString ToMathML() const override;
-    wxString ToMatlab() const override;
-    wxString ToOMML() const override;
-    wxString ToString() const override;
-    wxString ToTeX() const override;
-    wxString ToXML() const override;
+  wxString ToMathML() const override;
+  wxString ToMatlab() const override;
+  wxString ToOMML() const override;
+  wxString ToString() const override;
+  wxString ToTeX() const override;
+  wxString ToXML() const override;
 
-    wxString GetDiffPart() const override;
+  wxString GetDiffPart() const override;
 
-    void SetAltCopyText(const wxString &text) override { m_altCopyText = text; }
-    const wxString &GetAltCopyText() const override { return m_altCopyText; }
+  void SetAltCopyText(const wxString &text) override { m_altCopyText = text; }
+  const wxString &GetAltCopyText() const override { return m_altCopyText; }
 
 private:
-    //! Text that should end up on the clipboard if this cell is copied as text.
-    wxString m_altCopyText;
+  //! Text that should end up on the clipboard if this cell is copied as text.
+  wxString m_altCopyText;
 
-    //! The inner cells set via SetPre* or SetPost*, but not SetBase nor SetIndex
-    //! nor SetExponent.
-    std::vector<Cell *> m_scriptCells;
+  //! The inner cells set via SetPre* or SetPost*, but not SetBase nor SetIndex
+  //! nor SetExponent.
+  std::vector<Cell *> m_scriptCells;
 
-    // The pointers below point to inner cells and must be kept contiguous.
-    // ** All pointers must be the same: either Cell * or std::unique_ptr<Cell>.
-    // ** NO OTHER TYPES are allowed.
-    std::unique_ptr<Cell> m_baseCell;
-    std::unique_ptr<Cell> m_postSubCell;
-    std::unique_ptr<Cell> m_postSupCell;
-    std::unique_ptr<Cell> m_preSubCell;
-    std::unique_ptr<Cell> m_preSupCell;
-    // The pointers above point to inner cells and must be kept contiguous.
+  // The pointers below point to inner cells and must be kept contiguous.
+  // ** All pointers must be the same: either Cell * or std::unique_ptr<Cell>.
+  // ** NO OTHER TYPES are allowed.
+  std::unique_ptr<Cell> m_baseCell;
+  std::unique_ptr<Cell> m_postSubCell;
+  std::unique_ptr<Cell> m_postSupCell;
+  std::unique_ptr<Cell> m_preSubCell;
+  std::unique_ptr<Cell> m_preSupCell;
+  // The pointers above point to inner cells and must be kept contiguous.
 
 //** Bitfield objects (0 bytes)
 //**
-    static void InitBitFields()
-        { // Keep the initialization order below same as the order
-            // of bit fields in this class!
-        }
+  static void InitBitFields()
+    { // Keep the initialization order below same as the order
+      // of bit fields in this class!
+    }
 };
 
 #endif // SUBSUPCELL_H

@@ -41,54 +41,54 @@
 class FindReplaceDialog : public wxDialog
 {
 public:
-    FindReplaceDialog(wxWindow *parent, FindReplacePane::FindReplaceData *data,
-                      const wxString &title,
-                      FindReplaceDialog **pointerToDialogue = NULL,
-                      int style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER);
+  FindReplaceDialog(wxWindow *parent, FindReplacePane::FindReplaceData *data,
+                    const wxString &title,
+                    FindReplaceDialog **pointerToDialogue = NULL,
+                    int style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER);
 
-    ~FindReplaceDialog();
-    //! Returns the standard wxFindReplaceData data structure
-    wxFindReplaceData *GetData()
-        { return m_contents->GetData(); }
+  ~FindReplaceDialog();
+  //! Returns the standard wxFindReplaceData data structure
+  wxFindReplaceData *GetData()
+    { return m_contents->GetData(); }
 
-    bool GetRegexSearch() const {return m_contents->GetRegexSearch();}
+  bool GetRegexSearch() const {return m_contents->GetRegexSearch();}
 
-    //! Set the string we are currently searching for
-    void SetFindString(wxString strng)
-        { m_contents->SetFindString(strng); }
+  //! Set the string we are currently searching for
+  void SetFindString(wxString strng)
+    { m_contents->SetFindString(strng); }
 
 protected:
-    //! Is called if this element looses or gets the focus
-    void OnActivate(wxActivateEvent &WXUNUSED(event));
+  //! Is called if this element looses or gets the focus
+  void OnActivate(wxActivateEvent &WXUNUSED(event));
 
-    //! We catch a few hot keys here as we don't provide a menu that could declare them
-    void OnKeyDown(wxKeyEvent &WXUNUSED(event));
+  //! We catch a few hot keys here as we don't provide a menu that could declare them
+  void OnKeyDown(wxKeyEvent &WXUNUSED(event));
 
-    /*! The contents of the dialog.
+  /*! The contents of the dialog.
 
-      The contents is split into a separate panel so we can easily make it dockable
-      once dockable dialogues aren't this ugly any more.
-    */
-    FindReplacePane *m_contents;
+    The contents is split into a separate panel so we can easily make it dockable
+    once dockable dialogues aren't this ugly any more.
+  */
+  FindReplacePane *m_contents;
 
 private:
-    FindReplaceDialog **m_pointerToDialogue;
-    //! true means: The next Activation event is generated during construction
-    bool m_activateDuringConstruction;
-    /*! Allows to remember how wide the window was the last time it was used.
+  FindReplaceDialog **m_pointerToDialogue;
+  //! true means: The next Activation event is generated during construction
+  bool m_activateDuringConstruction;
+  /*! Allows to remember how wide the window was the last time it was used.
 
-      I don't think it makes sense to keep this between sessions.
-    */
-    static wxSize m_windowSize;
-    /*! Allows to remember how wide the window was the last time it was used.
+    I don't think it makes sense to keep this between sessions.
+  */
+  static wxSize m_windowSize;
+  /*! Allows to remember how wide the window was the last time it was used.
 
-      We don't keep this value between sessions because the user might change
-      the screen (and therefore the screen resolution) between sessions. And
-      putting a window off screen (where it is hard to grab and to move it)
-      is possible at least on MSW.
-    */
+    We don't keep this value between sessions because the user might change
+    the screen (and therefore the screen resolution) between sessions. And
+    putting a window off screen (where it is hard to grab and to move it)
+    is possible at least on MSW.
+  */
 
-    static wxPoint m_windowPos;
+  static wxPoint m_windowPos;
 };
 
 #endif // FINDREPLACEDIALOG_H

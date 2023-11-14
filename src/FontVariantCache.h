@@ -41,54 +41,54 @@
 */
 class FontVariantCache final
 {
-    FontVariantCache(const FontVariantCache &) = delete;
-    FontVariantCache &operator=(const FontVariantCache &) = delete;
+  FontVariantCache(const FontVariantCache &) = delete;
+  FontVariantCache &operator=(const FontVariantCache &) = delete;
 public:
-    //! Creates a font variant cache for the font named fontName.
-    explicit FontVariantCache(wxString fontName);
-    ~FontVariantCache(){}
-    //! Clear this font variant cache
-    void ClearCache();
-    /*! Returns a font with the requested attributes
+  //! Creates a font variant cache for the font named fontName.
+  explicit FontVariantCache(wxString fontName);
+  ~FontVariantCache(){}
+  //! Clear this font variant cache
+  void ClearCache();
+  /*! Returns a font with the requested attributes
 
-      This font can be either cached or newly created.*/
-    std::shared_ptr<wxFont> GetFont (double size,
-                                     bool isItalic,
-                                     bool isBold,
-                                     bool isUnderlined,
-                                     bool isSlanted,
-                                     bool isStrikeThrough
-        );
-    //! Get the name of the fonts this font variant cache is responsible for
-    const wxString& GetFaceName() const {return m_fontName;}
+    This font can be either cached or newly created.*/
+  std::shared_ptr<wxFont> GetFont (double size,
+                                   bool isItalic,
+                                   bool isBold,
+                                   bool isUnderlined,
+                                   bool isSlanted,
+                                   bool isStrikeThrough
+    );
+  //! Get the name of the fonts this font variant cache is responsible for
+  const wxString& GetFaceName() const {return m_fontName;}
 private:
-    //! Get the number of the internal cache hashmap
-    static int GetIndex (
-        bool isItalic,
-        bool isBold,
-        bool isUnderlined,
-        bool isSlanted,
-        bool isStrikeThrough
-        )
-        {
-            int result =0;
-            if(isItalic)
-                result++;
-            if(isBold)
-                result += 2;
-            if(isUnderlined)
-                result +=4;
-            if(isSlanted)
-                result +=8;
-            if(isStrikeThrough)
-                result +=16;
-            return result;
-        }
+  //! Get the number of the internal cache hashmap
+  static int GetIndex (
+    bool isItalic,
+    bool isBold,
+    bool isUnderlined,
+    bool isSlanted,
+    bool isStrikeThrough
+    )
+    {
+      int result =0;
+      if(isItalic)
+        result++;
+      if(isBold)
+        result += 2;
+      if(isUnderlined)
+        result +=4;
+      if(isSlanted)
+        result +=8;
+      if(isStrikeThrough)
+        result +=16;
+      return result;
+    }
 
-    //! One hashmap for each value GetIndex() can return.
-    mutable std::unordered_map<double, std::shared_ptr<wxFont>> m_fontCaches[32];
-    //! The name our font cache
-    wxString m_fontName;
+  //! One hashmap for each value GetIndex() can return.
+  mutable std::unordered_map<double, std::shared_ptr<wxFont>> m_fontCaches[32];
+  //! The name our font cache
+  wxString m_fontName;
 };
 
 #endif  // FONTVARIANTCACHE_H

@@ -40,44 +40,44 @@ class wxEvtHandler;
 class MaximaIPC
 {
 public:
-    explicit MaximaIPC(wxMaxima *wxm);
+  explicit MaximaIPC(wxMaxima *wxm);
 
-    /*! Reads the interprocess communications tag, used in test scripts,
-     * etc.
-     *
-     * Since it may be unsafe, it must be enabled via command line.
-     */
-    void ReadInputData(wxString &data);
-    static void EnableIPC() { m_enabled = true; }
-    static bool  GetEnableIPC() { return m_enabled; }
+  /*! Reads the interprocess communications tag, used in test scripts,
+   * etc.
+   *
+   * Since it may be unsafe, it must be enabled via command line.
+   */
+  void ReadInputData(wxString &data);
+  static void EnableIPC() { m_enabled = true; }
+  static bool  GetEnableIPC() { return m_enabled; }
 
-    /*! Drains the event queue and dispatches a queued IPC event to its target.
-     *
-     * Only one event is drained at a time. This method should be invoked from
-     * the idle loop, on the condition that the idle loop was about to sleep, i.e.
-     * there was no more work for it to do.
-     *
-     * \returns true if there was an event in the queue. This value is meant to
-     * re-schedule another idle event, so that the consequences of the event
-     * could be handled by the idle handler, and so that any potential other
-     * events could be subsequently drained.
-     */
-    bool DrainQueue();
+  /*! Drains the event queue and dispatches a queued IPC event to its target.
+   *
+   * Only one event is drained at a time. This method should be invoked from
+   * the idle loop, on the condition that the idle loop was about to sleep, i.e.
+   * there was no more work for it to do.
+   *
+   * \returns true if there was an event in the queue. This value is meant to
+   * re-schedule another idle event, so that the consequences of the event
+   * could be handled by the idle handler, and so that any potential other
+   * events could be subsequently drained.
+   */
+  bool DrainQueue();
 
 private:
-    wxMaxima *m_wxMaxima = nullptr;
-    std::unordered_map<wxString, wxEvtHandler*, wxStringHash> m_eventTargets;
+  wxMaxima *m_wxMaxima = nullptr;
+  std::unordered_map<wxString, wxEvtHandler*, wxStringHash> m_eventTargets;
 
-    struct QueuedEvent {
-        wxEvtHandler *target;
-        std::unique_ptr<wxEvent> event;
-        QueuedEvent(wxEvtHandler *target, std::unique_ptr<wxEvent> &&event)
-            : target(target), event(std::move(event)) {}
-    };
-    std::size_t m_queueTail = 0;
-    std::vector<QueuedEvent> m_queue;
+  struct QueuedEvent {
+    wxEvtHandler *target;
+    std::unique_ptr<wxEvent> event;
+    QueuedEvent(wxEvtHandler *target, std::unique_ptr<wxEvent> &&event)
+      : target(target), event(std::move(event)) {}
+  };
+  std::size_t m_queueTail = 0;
+  std::vector<QueuedEvent> m_queue;
 
-    static bool m_enabled;
+  static bool m_enabled;
 };
 
 #endif

@@ -41,45 +41,45 @@
 class CharButton : public wxPanel
 {
 public:
-    //! A definition of this button, used to construct it.
-    struct Definition
-    {
-        wchar_t symbol = {};                            ///< The unicode symbol
-        const wxString description = wxm::emptyString;  ///< The help text for the symbol
-        bool matchesMaximaCommand = false;              ///< Whether this symbol is automatically translated into a maxima command/operator
-    };
+  //! A definition of this button, used to construct it.
+  struct Definition
+  {
+    wchar_t symbol = {};                            ///< The unicode symbol
+    const wxString description = wxm::emptyString;  ///< The help text for the symbol
+    bool matchesMaximaCommand = false;              ///< Whether this symbol is automatically translated into a maxima command/operator
+  };
 
-    /*! A flat, compact button for the greek and the symbols pane
+  /*! A flat, compact button for the greek and the symbols pane
 
-      \param parent The parent panel/window
-      \param worksheet The worksheet this button sends char events to
-      \param def The definition of the button
-    */
-    CharButton(wxWindow *parent, wxWindow *worksheet, Configuration *config,
-               const Definition &def,
-               bool forceShow = false);
+    \param parent The parent panel/window
+    \param worksheet The worksheet this button sends char events to
+    \param def The definition of the button
+  */
+  CharButton(wxWindow *parent, wxWindow *worksheet, Configuration *config,
+             const Definition &def,
+             bool forceShow = false);
 protected:
-    wchar_t m_char;
-    Configuration *m_configuration;
-    void ForwardToParent(wxMouseEvent &event);
-    void CharButtonPressed(wxCommandEvent &event);
-    void OnSize(wxSizeEvent &event);
-    void OnIdle(wxIdleEvent &event);
-    void MouseOverPanel(wxMouseEvent &event);
-    void MouseOverText(wxMouseEvent &event);
-    void MouseLeftPanel(wxMouseEvent &event);
-    void MouseLeftText(wxMouseEvent &event);
+  wchar_t m_char;
+  Configuration *m_configuration;
+  void ForwardToParent(wxMouseEvent &event);
+  void CharButtonPressed(wxCommandEvent &event);
+  void OnSize(wxSizeEvent &event);
+  void OnIdle(wxIdleEvent &event);
+  void MouseOverPanel(wxMouseEvent &event);
+  void MouseOverText(wxMouseEvent &event);
+  void MouseLeftPanel(wxMouseEvent &event);
+  void MouseLeftText(wxMouseEvent &event);
 protected:
-    void MouseOverTextIs(bool mouseOver = true);
-    void MouseOverPanelIs(bool mouseOver = true);
-    wxString m_description;
+  void MouseOverTextIs(bool mouseOver = true);
+  void MouseOverPanelIs(bool mouseOver = true);
+  wxString m_description;
 
 private:
-    bool m_mouseOverPanel = false;
-    bool m_mouseOverText = false;
-    bool m_backgroundColorChangeNeeded = false;
-    wxStaticText *m_buttonText;
-    wxWindow *m_worksheet;
+  bool m_mouseOverPanel = false;
+  bool m_mouseOverText = false;
+  bool m_backgroundColorChangeNeeded = false;
+  wxStaticText *m_buttonText;
+  wxWindow *m_worksheet;
 };
 
 #endif // CHARBUTTON_H

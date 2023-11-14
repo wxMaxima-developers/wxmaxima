@@ -611,8 +611,8 @@ std::unique_ptr<GroupCell> MathParser::GroupCellFromCodeTag(wxXmlNode *node) {
   wxString question;
   while (node->GetAttribute(wxString::Format(wxS("answer%li"), static_cast<long>(i)),
                             &answer)) {
-      if (node->GetAttribute(wxString::Format(wxS("question%li"), static_cast<long>(i)),
-                             &question))
+    if (node->GetAttribute(wxString::Format(wxS("question%li"), static_cast<long>(i)),
+                           &question))
       group->SetAnswer(question, answer);
     else
       group->SetAnswer(wxString::Format(wxS("Question #%li"), static_cast<long>(i)), answer);

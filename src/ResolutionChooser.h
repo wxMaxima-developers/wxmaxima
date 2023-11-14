@@ -31,20 +31,20 @@
 class ResolutionChooser : public wxDialog
 {
 public:
-    ResolutionChooser(wxWindow *parent, int id,
-                      const int &resolution,
-                      const wxPoint &pos = wxDefaultPosition,
-                      const wxSize &size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE);
+  ResolutionChooser(wxWindow *parent, int id,
+                    const int &resolution,
+                    const wxPoint &pos = wxDefaultPosition,
+                    const wxSize &size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE);
 
-    double GetResolution()
-        {
-            return m_resolution->GetValue();
-        }
+  double GetResolution()
+    {
+      return m_resolution->GetValue();
+    }
 
 private:
-    wxSpinCtrl *m_resolution;
-    wxButton *button_1;
-    wxButton *button_2;
+  wxSpinCtrl *m_resolution;
+  wxButton *button_1;
+  wxButton *button_2;
 };
 
 #endif // RESOLUTIONCHOOSER_H

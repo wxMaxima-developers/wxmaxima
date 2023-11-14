@@ -36,13 +36,13 @@
 class ThreadNumberLimiter
 {
 public:
-    explicit ThreadNumberLimiter(bool *running = NULL);
-    ~ThreadNumberLimiter();
+  explicit ThreadNumberLimiter(bool *running = NULL);
+  ~ThreadNumberLimiter();
 private:
-    static int m_numberOfBackgroundThreads;
-    static std::mutex m_mutex;
-    static std::mutex m_counterMutex;
-    bool *m_runningIndicator;
+  static int m_numberOfBackgroundThreads;
+  static std::mutex m_mutex;
+  static std::mutex m_counterMutex;
+  bool *m_runningIndicator;
 };
 
 #endif // THREADNUMBERLIMITER_H

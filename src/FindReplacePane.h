@@ -43,66 +43,66 @@
 class FindReplacePane : public wxPanel
 {
 public:
-    class FindReplaceData: public wxFindReplaceData
-    {
-    public:
-        FindReplaceData();
-        bool GetRegexSearch() const {return m_regexSearch;}
-        void SetRegexSearch(bool regexSearch) {m_regexSearch = regexSearch;}
-    private:
-        bool m_regexSearch;
-    };
+  class FindReplaceData: public wxFindReplaceData
+  {
+  public:
+    FindReplaceData();
+    bool GetRegexSearch() const {return m_regexSearch;}
+    void SetRegexSearch(bool regexSearch) {m_regexSearch = regexSearch;}
+  private:
+    bool m_regexSearch;
+  };
 
 private:
-    //! The storage the search strings and settings are kept in
-    FindReplaceData *m_findReplaceData;
-    //! Is this pane currently in focus?
-    bool m_active;
-    wxTextCtrl *m_searchText;
-    wxTextCtrl *m_replaceText;
-    wxButton *m_searchButton;
-    wxButton *m_replaceButton;
-    wxButton *m_replaceAllButton;
-    wxRadioButton *m_forward;
-    wxRadioButton *m_backwards;
-    wxRadioButton *m_regexSearch;
-    wxRadioButton *m_simpleSearch;
-    wxCheckBox *m_matchCase;
-    //! true means: The next Activation event is generated during construction
-    bool m_activateDuringConstruction;
+  //! The storage the search strings and settings are kept in
+  FindReplaceData *m_findReplaceData;
+  //! Is this pane currently in focus?
+  bool m_active;
+  wxTextCtrl *m_searchText;
+  wxTextCtrl *m_replaceText;
+  wxButton *m_searchButton;
+  wxButton *m_replaceButton;
+  wxButton *m_replaceAllButton;
+  wxRadioButton *m_forward;
+  wxRadioButton *m_backwards;
+  wxRadioButton *m_regexSearch;
+  wxRadioButton *m_simpleSearch;
+  wxCheckBox *m_matchCase;
+  //! true means: The next Activation event is generated during construction
+  bool m_activateDuringConstruction;
 public:
-    FindReplacePane(wxWindow *parent, FindReplaceData *data);
+  FindReplacePane(wxWindow *parent, FindReplaceData *data);
 
-    bool GetRegexSearch() const {return m_findReplaceData->GetRegexSearch();}
+  bool GetRegexSearch() const {return m_findReplaceData->GetRegexSearch();}
 
-    wxString GetFindString() const
-        { return m_findReplaceData->GetFindString(); }
+  wxString GetFindString() const
+    { return m_findReplaceData->GetFindString(); }
 
-    void SetFindString(wxString strng);
+  void SetFindString(wxString strng);
 
-    wxFindReplaceData *GetData() const
-        { return m_findReplaceData; }
+  wxFindReplaceData *GetData() const
+    { return m_findReplaceData; }
 
 protected:
-    void OnActivate(wxActivateEvent &event);
+  void OnActivate(wxActivateEvent &event);
 
-    void OnSearch(wxCommandEvent &event);
+  void OnSearch(wxCommandEvent &event);
 
-    void OnReplace(wxCommandEvent &event);
+  void OnReplace(wxCommandEvent &event);
 
-    void OnReplaceAll(wxCommandEvent &event);
+  void OnReplaceAll(wxCommandEvent &event);
 
-    void OnReplaceStringChange(wxCommandEvent &event);
+  void OnReplaceStringChange(wxCommandEvent &event);
 
-    void OnFindStringChange(wxCommandEvent &event);
+  void OnFindStringChange(wxCommandEvent &event);
 
-    void OnDirectionChange(wxCommandEvent &event);
+  void OnDirectionChange(wxCommandEvent &event);
 
-    void OnRegexSimpleChange(wxCommandEvent &event);
+  void OnRegexSimpleChange(wxCommandEvent &event);
 
-    void OnMatchCase(wxCommandEvent &event);
+  void OnMatchCase(wxCommandEvent &event);
 
-    void OnKeyDown(wxKeyEvent &event);
+  void OnKeyDown(wxKeyEvent &event);
 };
 
 #endif // FINDREPLACEPANE_H

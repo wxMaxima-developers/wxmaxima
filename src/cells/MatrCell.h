@@ -30,88 +30,88 @@
 class MatrCell final : public Cell
 {
 public:
-    MatrCell(GroupCell *group, Configuration *config);
-    MatrCell(GroupCell *group, const MatrCell &cell);
-    std::unique_ptr<Cell> Copy(GroupCell *group) const override;
-    const CellTypeInfo &GetInfo() override;
+  MatrCell(GroupCell *group, Configuration *config);
+  MatrCell(GroupCell *group, const MatrCell &cell);
+  std::unique_ptr<Cell> Copy(GroupCell *group) const override;
+  const CellTypeInfo &GetInfo() override;
 
-    size_t GetInnerCellCount() const override { return m_cells.size(); }
-    Cell *GetInnerCell(size_t index) const override { return m_cells[index].get(); }
-    Cell *GetInnerCell(long x, long y) const {
-        return m_cells[static_cast<size_t>(x) * m_matWidth + y].get(); }
+  size_t GetInnerCellCount() const override { return m_cells.size(); }
+  Cell *GetInnerCell(size_t index) const override { return m_cells[index].get(); }
+  Cell *GetInnerCell(long x, long y) const {
+    return m_cells[static_cast<size_t>(x) * m_matWidth + y].get(); }
 
-    void Recalculate(AFontSize fontsize) override;
+  void Recalculate(AFontSize fontsize) override;
 
-    void Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) override;
+  void Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) override;
 
-    void AddNewCell(std::unique_ptr<Cell> &&cell);
+  void AddNewCell(std::unique_ptr<Cell> &&cell);
 
-    void NewRow() { m_matHeight++; m_dropCenters.emplace_back(-1, -1);}
-    void NewColumn() { m_matWidth++; m_widths.emplace_back(-1);}
+  void NewRow() { m_matHeight++; m_dropCenters.emplace_back(-1, -1);}
+  void NewColumn() { m_matWidth++; m_widths.emplace_back(-1);}
 
-    void SetDimension();
+  void SetDimension();
 
-    wxString ToMathML() const override;
-    wxString ToMatlab() const override;
-    wxString ToOMML() const override;
-    wxString ToString() const override;
-    wxString ToTeX() const override;
-    wxString ToXML() const override;
+  wxString ToMathML() const override;
+  wxString ToMatlab() const override;
+  wxString ToOMML() const override;
+  wxString ToString() const override;
+  wxString ToTeX() const override;
+  wxString ToXML() const override;
 
-    void SetSpecialFlag(bool special) { m_specialMatrix = special; }
+  void SetSpecialFlag(bool special) { m_specialMatrix = special; }
 
-    void SetInferenceFlag(bool inference) { m_inferenceMatrix = inference; }
+  void SetInferenceFlag(bool inference) { m_inferenceMatrix = inference; }
 
-    void RowNames(bool rn) { m_rowNames = rn; }
+  void RowNames(bool rn) { m_rowNames = rn; }
 
-    void ColNames(bool cn) { m_colNames = cn; }
+  void ColNames(bool cn) { m_colNames = cn; }
 
-    void RoundedParens()  { m_parenType = paren_rounded;}
-    void BracketParens()  { m_parenType = paren_brackets;}
-    void StraightParens() { m_parenType = paren_straight;}
-    void AngledParens()   { m_parenType = paren_angled;}
+  void RoundedParens()  { m_parenType = paren_rounded;}
+  void BracketParens()  { m_parenType = paren_brackets;}
+  void StraightParens() { m_parenType = paren_straight;}
+  void AngledParens()   { m_parenType = paren_angled;}
 
 private:
-    struct DropCenter
-    {
-        int drop = {}, center = {};
-        constexpr int Sum() const { return drop + center; }
-        constexpr DropCenter() = default;
-        constexpr DropCenter(int drop, int center) : drop(drop), center(center) {}
-    };
+  struct DropCenter
+  {
+    int drop = {}, center = {};
+    constexpr int Sum() const { return drop + center; }
+    constexpr DropCenter() = default;
+    constexpr DropCenter(int drop, int center) : drop(drop), center(center) {}
+  };
 
-    //! Collection of pointers to inner cells.
-    std::vector<std::unique_ptr<Cell>> m_cells;
+  //! Collection of pointers to inner cells.
+  std::vector<std::unique_ptr<Cell>> m_cells;
 
-    std::vector<wxCoord> m_widths;
-    std::vector<DropCenter> m_dropCenters;
+  std::vector<wxCoord> m_widths;
+  std::vector<DropCenter> m_dropCenters;
 
-    size_t m_matWidth = 0;
-    size_t m_matHeight = 0;
+  size_t m_matWidth = 0;
+  size_t m_matHeight = 0;
 
-    enum parenType : int8_t
-    {
-        paren_rounded = 0,
-        paren_brackets = 1,
-        paren_angled = 2,
-        paren_straight = 3
-    };
+  enum parenType : int8_t
+  {
+    paren_rounded = 0,
+    paren_brackets = 1,
+    paren_angled = 2,
+    paren_straight = 3
+  };
 //** Bitfield objects (1 bytes)
 //**
-    void InitBitFields()
-        { // Keep the initialization order below same as the order
-            // of bit fields in this class!
-            m_parenType = paren_rounded;
-            m_specialMatrix = false;
-            m_inferenceMatrix = false;
-            m_rowNames = false;
-            m_colNames = false;
-        }
-    uint8_t m_parenType : 2 /* InitBitFields */;
-    bool m_specialMatrix : 1 /* InitBitFields */;
-    bool m_inferenceMatrix : 1 /* InitBitFields */;
-    bool m_rowNames : 1 /* InitBitFields */;
-    bool m_colNames : 1 /* InitBitFields */;
+  void InitBitFields()
+    { // Keep the initialization order below same as the order
+      // of bit fields in this class!
+      m_parenType = paren_rounded;
+      m_specialMatrix = false;
+      m_inferenceMatrix = false;
+      m_rowNames = false;
+      m_colNames = false;
+    }
+  uint8_t m_parenType : 2 /* InitBitFields */;
+  bool m_specialMatrix : 1 /* InitBitFields */;
+  bool m_inferenceMatrix : 1 /* InitBitFields */;
+  bool m_rowNames : 1 /* InitBitFields */;
+  bool m_colNames : 1 /* InitBitFields */;
 };
 
 #endif // MATRCELL_H

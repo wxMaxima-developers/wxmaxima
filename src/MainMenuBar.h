@@ -36,8 +36,8 @@
 class MainMenuBar : public wxMenuBar
 {
 public:
-    MainMenuBar();
-    //! Enable or disable an item - but only if the item needs enabling or disabling
-    void EnableItem(int id, bool enable);
+  MainMenuBar();
+  //! Enable or disable an item - but only if the item needs enabling or disabling
+  void EnableItem(int id, bool enable);
 };
 #endif // MAINMENUBAR_H

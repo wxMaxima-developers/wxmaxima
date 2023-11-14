@@ -38,14 +38,14 @@
 class LicenseDialog : public wxDialog
 {
 public:
-    explicit LicenseDialog(wxWindow *parent);
+  explicit LicenseDialog(wxWindow *parent);
 protected:
-    void OnSize(wxSizeEvent &event);
+  void OnSize(wxSizeEvent &event);
 private:
-    wxString m_longestLine;
-    wxTextCtrl *m_license;
-    bool m_movedToStart;
-    void OnTextURLEvent(wxTextUrlEvent& event);
+  wxString m_longestLine;
+  wxTextCtrl *m_license;
+  bool m_movedToStart;
+  void OnTextURLEvent(wxTextUrlEvent& event);
 };
 
 #endif // LICENSEDIALOG_H

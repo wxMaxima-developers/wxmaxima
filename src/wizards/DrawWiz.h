@@ -44,18 +44,18 @@
 class ExplicitWiz : public wxDialog
 {
 public:
-    ExplicitWiz(wxWindow *parent, Configuration *config, wxString expression, int dimensions = 2);
-    wxString GetValue();
+  ExplicitWiz(wxWindow *parent, Configuration *config, wxString expression, int dimensions = 2);
+  wxString GetValue();
 private:
-    int m_dimensions;
-    BTextCtrl *m_expression;
-    BTextCtrl *m_filledfunc  = NULL;
-    BTextCtrl *m_x;
-    BTextCtrl *m_xStart;
-    BTextCtrl *m_xEnd;
-    BTextCtrl *m_y = NULL;
-    BTextCtrl *m_yStart = NULL;
-    BTextCtrl *m_yEnd = NULL;
+  int m_dimensions;
+  BTextCtrl *m_expression;
+  BTextCtrl *m_filledfunc  = NULL;
+  BTextCtrl *m_x;
+  BTextCtrl *m_xStart;
+  BTextCtrl *m_xEnd;
+  BTextCtrl *m_y = NULL;
+  BTextCtrl *m_yStart = NULL;
+  BTextCtrl *m_yEnd = NULL;
 };
 
 //! A wizard for parametric plots using draw
@@ -63,16 +63,16 @@ private:
 class ParametricWiz : public wxDialog
 {
 public:
-    ParametricWiz(wxWindow *parent, Configuration *config, int dimensions = 2);
-    wxString GetValue();
+  ParametricWiz(wxWindow *parent, Configuration *config, int dimensions = 2);
+  wxString GetValue();
 private:
-    int m_dimensions;
-    BTextCtrl *m_expression_x;
-    BTextCtrl *m_expression_y;
-    BTextCtrl *m_expression_z = NULL;
-    BTextCtrl *m_parameter;
-    BTextCtrl *m_parameterStart = NULL;
-    BTextCtrl *m_parameterEnd;
+  int m_dimensions;
+  BTextCtrl *m_expression_x;
+  BTextCtrl *m_expression_y;
+  BTextCtrl *m_expression_z = NULL;
+  BTextCtrl *m_parameter;
+  BTextCtrl *m_parameterStart = NULL;
+  BTextCtrl *m_parameterEnd;
 };
 
 //! A wizard for implicit plots using draw
@@ -80,20 +80,20 @@ private:
 class ImplicitWiz : public wxDialog
 {
 public:
-    ImplicitWiz(wxWindow *parent, Configuration *config, wxString expression, int dimensions = 2);
-    wxString GetValue();
+  ImplicitWiz(wxWindow *parent, Configuration *config, wxString expression, int dimensions = 2);
+  wxString GetValue();
 private:
-    int m_dimensions;
-    BTextCtrl *m_expression;
-    BTextCtrl *m_x;
-    BTextCtrl *m_xStart;
-    BTextCtrl *m_xEnd;
-    BTextCtrl *m_y;
-    BTextCtrl *m_yStart;
-    BTextCtrl *m_yEnd;
-    BTextCtrl *m_z = NULL;
-    BTextCtrl *m_zStart = NULL;
-    BTextCtrl *m_zEnd = NULL;
+  int m_dimensions;
+  BTextCtrl *m_expression;
+  BTextCtrl *m_x;
+  BTextCtrl *m_xStart;
+  BTextCtrl *m_xEnd;
+  BTextCtrl *m_y;
+  BTextCtrl *m_yStart;
+  BTextCtrl *m_yEnd;
+  BTextCtrl *m_z = NULL;
+  BTextCtrl *m_zStart = NULL;
+  BTextCtrl *m_zEnd = NULL;
 };
 
 //! A wizard for axis setup for draw
@@ -101,27 +101,27 @@ private:
 class AxisWiz : public wxDialog
 {
 public:
-    AxisWiz(wxWindow *parent, Configuration *config, int dimensions = 2);
-    wxString GetValue();
+  AxisWiz(wxWindow *parent, Configuration *config, int dimensions = 2);
+  wxString GetValue();
 private:
-    int m_dimensions;
-    BTextCtrl *m_xLabel;
-    BTextCtrl *m_xStart;
-    BTextCtrl *m_xEnd;
-    BTextCtrl *m_yLabel;
-    BTextCtrl *m_yStart;
-    BTextCtrl *m_yEnd;
-    BTextCtrl *m_zLabel = NULL;
-    BTextCtrl *m_zStart = NULL;
-    BTextCtrl *m_zEnd = NULL;
-    wxCheckBox *m_useSecondaryX;
-    wxCheckBox *m_useSecondaryY;
-    BTextCtrl *m_x2Label = NULL;
-    BTextCtrl *m_x2Start = NULL;
-    BTextCtrl *m_x2End = NULL;
-    BTextCtrl *m_y2Label = NULL;
-    BTextCtrl *m_y2Start = NULL;
-    BTextCtrl *m_y2End = NULL;
+  int m_dimensions;
+  BTextCtrl *m_xLabel;
+  BTextCtrl *m_xStart;
+  BTextCtrl *m_xEnd;
+  BTextCtrl *m_yLabel;
+  BTextCtrl *m_yStart;
+  BTextCtrl *m_yEnd;
+  BTextCtrl *m_zLabel = NULL;
+  BTextCtrl *m_zStart = NULL;
+  BTextCtrl *m_zEnd = NULL;
+  wxCheckBox *m_useSecondaryX;
+  wxCheckBox *m_useSecondaryY;
+  BTextCtrl *m_x2Label = NULL;
+  BTextCtrl *m_x2Start = NULL;
+  BTextCtrl *m_x2End = NULL;
+  BTextCtrl *m_y2Label = NULL;
+  BTextCtrl *m_y2Start = NULL;
+  BTextCtrl *m_y2End = NULL;
 };
 
 
@@ -130,17 +130,17 @@ private:
 class DrawWiz : public wxDialog
 {
 public:
-    DrawWiz(wxWindow *parent, Configuration *config, int dimensions);
-    wxString GetValue();
+  DrawWiz(wxWindow *parent, Configuration *config, int dimensions);
+  wxString GetValue();
 protected:
-    void OnParametricFocus(wxFocusEvent &event);
+  void OnParametricFocus(wxFocusEvent &event);
 private:
-    int m_dimensions;
-    wxRadioButton *m_singleFrame;
-    wxRadioButton *m_multipleFrames;
-    BTextCtrl *m_frameVar;
-    BTextCtrl *m_varStart;
-    BTextCtrl *m_varEnd;
+  int m_dimensions;
+  wxRadioButton *m_singleFrame;
+  wxRadioButton *m_multipleFrames;
+  BTextCtrl *m_frameVar;
+  BTextCtrl *m_varStart;
+  BTextCtrl *m_varEnd;
 };
 
 //! A wizard for axis setup for draw
@@ -148,11 +148,11 @@ private:
 class Wiz3D : public wxDialog
 {
 public:
-    Wiz3D(wxWindow *parent, Configuration *config);
-    wxString GetValue();
+  Wiz3D(wxWindow *parent, Configuration *config);
+  wxString GetValue();
 private:
-    wxCheckBox *m_hidden3d;
-    wxCheckBox *m_enhanced3d;
+  wxCheckBox *m_hidden3d;
+  wxCheckBox *m_enhanced3d;
 };
 
 //! A wizard for contour plots
@@ -160,17 +160,17 @@ private:
 class WizContour : public wxDialog
 {
 public:
-    WizContour(wxWindow *parent, Configuration *config);
-    wxString GetValue();
+  WizContour(wxWindow *parent, Configuration *config);
+  wxString GetValue();
 protected:
-    void OnRadioButton(wxCommandEvent &dummy);
+  void OnRadioButton(wxCommandEvent &dummy);
 private:
-    SvgPanel *m_image;
-    wxRadioButton *m_contourNone;
-    wxRadioButton *m_contourSurface;
-    wxRadioButton *m_contourBase;
-    wxRadioButton *m_contourBoth;
-    wxRadioButton *m_contourOnly;
+  SvgPanel *m_image;
+  wxRadioButton *m_contourNone;
+  wxRadioButton *m_contourSurface;
+  wxRadioButton *m_contourBase;
+  wxRadioButton *m_contourBoth;
+  wxRadioButton *m_contourOnly;
 };
 
 //! A wizard for the points object for draw
@@ -178,17 +178,17 @@ private:
 class WizPoints : public wxDialog
 {
 public:
-    WizPoints(wxWindow *parent, Configuration *config, int dimensions, wxString expr);
-    wxString GetValue();
+  WizPoints(wxWindow *parent, Configuration *config, int dimensions, wxString expr);
+  wxString GetValue();
 private:
-    BTextCtrl *m_data;
-    wxRadioButton *m_formatStd;
-    wxRadioButton *m_formatListOfLists;
-    wxRadioButton *m_transposedMatrix;
-    wxRadioButton *m_transposedListOfLists;
-    wxCheckBox *m_pointsJoined;
-    wxChoice *m_pointStyle;
-    int m_dimensions;
+  BTextCtrl *m_data;
+  wxRadioButton *m_formatStd;
+  wxRadioButton *m_formatListOfLists;
+  wxRadioButton *m_transposedMatrix;
+  wxRadioButton *m_transposedListOfLists;
+  wxCheckBox *m_pointsJoined;
+  wxChoice *m_pointStyle;
+  int m_dimensions;
 };
 
 //! A wizard that sets the draw accuracy
@@ -196,21 +196,21 @@ private:
 class WizDrawAccuracy : public wxDialog
 {
 public:
-    WizDrawAccuracy(wxWindow *parent, Configuration *config, int dimensions);
-    wxString GetValue();
+  WizDrawAccuracy(wxWindow *parent, Configuration *config, int dimensions);
+  wxString GetValue();
 private:
-    int m_dimensions;
-    BTextCtrl *m_nticks;
-    BTextCtrl *m_adapt_depth;
-    BTextCtrl *m_xu_grid  = NULL;
-    BTextCtrl *m_yv_grid  = NULL;
-    BTextCtrl *m_ip_grid_x = NULL;
-    BTextCtrl *m_ip_grid_y = NULL;
-    BTextCtrl *m_ip_grid_in_x = NULL;
-    BTextCtrl *m_ip_grid_in_y = NULL;
-    BTextCtrl *m_x_voxel = NULL;
-    BTextCtrl *m_y_voxel = NULL;
-    BTextCtrl *m_z_voxel = NULL;
+  int m_dimensions;
+  BTextCtrl *m_nticks;
+  BTextCtrl *m_adapt_depth;
+  BTextCtrl *m_xu_grid  = NULL;
+  BTextCtrl *m_yv_grid  = NULL;
+  BTextCtrl *m_ip_grid_x = NULL;
+  BTextCtrl *m_ip_grid_y = NULL;
+  BTextCtrl *m_ip_grid_in_x = NULL;
+  BTextCtrl *m_ip_grid_in_y = NULL;
+  BTextCtrl *m_x_voxel = NULL;
+  BTextCtrl *m_y_voxel = NULL;
+  BTextCtrl *m_z_voxel = NULL;
 };
 
 #endif // DRAWWIZ_H

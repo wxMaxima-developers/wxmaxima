@@ -35,25 +35,25 @@
 class LogPane : public wxPanel
 {
 public:
-    explicit LogPane(wxWindow *parent, wxWindowID id = wxID_ANY, bool becomeLogTarget = true);
-    void BecomeLogTarget();
-    void SetBatchMode() {
-        if (m_errorRedirector)
-            m_errorRedirector->SetBatchMode();
-    }
-    void DropLogTarget();
-    bool IsLogTarget() {return m_logPanelTarget.has_value();}
-    ~LogPane();
+  explicit LogPane(wxWindow *parent, wxWindowID id = wxID_ANY, bool becomeLogTarget = true);
+  void BecomeLogTarget();
+  void SetBatchMode() {
+    if (m_errorRedirector)
+      m_errorRedirector->SetBatchMode();
+  }
+  void DropLogTarget();
+  bool IsLogTarget() {return m_logPanelTarget.has_value();}
+  ~LogPane();
 
 private:
-    //! The textctrl all log messages appear on
-    wxTextCtrl *m_textCtrl;
-    //! Shows all error messages on gui dialogues
-    stx::optional<wxLogTextCtrl> m_logPanelTarget;
-    //! Redirects error messages - here to a wxLog
-    stx::optional<ErrorRedirector> m_errorRedirector;
+  //! The textctrl all log messages appear on
+  wxTextCtrl *m_textCtrl;
+  //! Shows all error messages on gui dialogues
+  stx::optional<wxLogTextCtrl> m_logPanelTarget;
+  //! Redirects error messages - here to a wxLog
+  stx::optional<ErrorRedirector> m_errorRedirector;
 #ifdef wxUSE_STD_IOSTREAM
-    stx::optional<wxStreamToTextRedirector> m_textRedirector;
+  stx::optional<wxStreamToTextRedirector> m_textRedirector;
 #endif
 };
 

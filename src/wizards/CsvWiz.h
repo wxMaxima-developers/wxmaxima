@@ -43,34 +43,34 @@
 class CsvImportWiz : public wxDialog
 {
 public:
-    CsvImportWiz(wxWindow *parent, Configuration *config);
-    ~CsvImportWiz();
-    wxString GetFilename(){return m_filename->GetValue();}
-    wxString GetSeparator();
+  CsvImportWiz(wxWindow *parent, Configuration *config);
+  ~CsvImportWiz();
+  wxString GetFilename(){return m_filename->GetValue();}
+  wxString GetSeparator();
 protected:
-    void OnBrowse(wxCommandEvent &event);
+  void OnBrowse(wxCommandEvent &event);
 private:
-    wxButton *m_browseButton;
-    BTextCtrl *m_filename;
-    wxChoice *m_separator;
+  wxButton *m_browseButton;
+  BTextCtrl *m_filename;
+  wxChoice *m_separator;
 };
 
 //! A wizard for explicit plots using draw
 class CsvExportWiz : public wxDialog
 {
 public:
-    CsvExportWiz(wxWindow *parent, Configuration *config, wxString objectType);
-    ~CsvExportWiz();
-    wxString GetFilename(){return m_filename->GetValue();}
-    wxString GetMatrix(){return m_matrix->GetValue();}
-    wxString GetSeparator();
+  CsvExportWiz(wxWindow *parent, Configuration *config, wxString objectType);
+  ~CsvExportWiz();
+  wxString GetFilename(){return m_filename->GetValue();}
+  wxString GetMatrix(){return m_matrix->GetValue();}
+  wxString GetSeparator();
 protected:
-    void OnBrowse(wxCommandEvent &event);
+  void OnBrowse(wxCommandEvent &event);
 private:
-    wxButton *m_browseButton;
-    BTextCtrl *m_matrix;
-    BTextCtrl *m_filename;
-    wxChoice *m_separator;
+  wxButton *m_browseButton;
+  BTextCtrl *m_matrix;
+  BTextCtrl *m_filename;
+  wxChoice *m_separator;
 };
 
 #endif // CSVWIZ_H

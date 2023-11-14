@@ -32,16 +32,16 @@
 class Wizardhelp : public wxDialog
 {
 public:
-    Wizardhelp(wxWindow *parent, int id,
-               const wxString &title,
-               const wxString &message,
-               const wxString &tooltip = wxEmptyString);
+  Wizardhelp(wxWindow *parent, int id,
+             const wxString &title,
+             const wxString &message,
+             const wxString &tooltip = wxEmptyString);
 
 private:
-    WrappingStaticText *m_message;
-    wxStaticLine *static_line_1;
-    wxButton *button_1 = NULL;
-    wxButton *button_2 = NULL;
+  WrappingStaticText *m_message;
+  wxStaticLine *static_line_1;
+  wxButton *button_1 = NULL;
+  wxButton *button_2 = NULL;
 };
 
 #endif // WIZARDHELP_H

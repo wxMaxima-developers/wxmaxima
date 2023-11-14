@@ -50,17 +50,17 @@
 class SetCell final : public ListCell
 {
 public:
-    SetCell(GroupCell *group, Configuration *config, std::unique_ptr<Cell> &&inner);
-    SetCell(GroupCell *group, const SetCell &cell);
-    std::unique_ptr<Cell> Copy(GroupCell *group) const override;
-    const CellTypeInfo &GetInfo() override;
+  SetCell(GroupCell *group, Configuration *config, std::unique_ptr<Cell> &&inner);
+  SetCell(GroupCell *group, const SetCell &cell);
+  std::unique_ptr<Cell> Copy(GroupCell *group) const override;
+  const CellTypeInfo &GetInfo() override;
 
-    void Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) override;
+  void Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) override;
 
-    wxString ToMatlab() const override;
-    wxString ToString() const override;
-    wxString ToTeX() const override;
-    wxString ToXML() const override;
+  wxString ToMatlab() const override;
+  wxString ToString() const override;
+  wxString ToTeX() const override;
+  wxString ToXML() const override;
 };
 
 #endif // SETCELL_H
