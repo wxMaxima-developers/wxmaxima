@@ -3597,6 +3597,7 @@ bool EditorCell::ReplaceSelection(const wxString &oldStr,
     auto start = SelectionLeft();
     auto end = SelectionRight();
     if (!SelectionActive()) {
+        SaveValue();
         wxString left;
         wxString right;
         if(CursorPosition() < m_text.length())
@@ -3625,6 +3626,7 @@ bool EditorCell::ReplaceSelection(const wxString &oldStr,
     // We cannot use SetValue() here, since SetValue() tends to move the cursor.
     wxString text_left = text.SubString(0, start - 1);
     wxString text_right = text.SubString(end, text.Length());
+    SaveValue();
     m_text = text_left + newString + text_right;
     StyleText();
 
@@ -3665,6 +3667,7 @@ bool EditorCell::ReplaceSelection_RegEx(const wxString &oldStr,
     if((start != end) && (match.GetLength() != end - start))
         return false;
 
+    SaveValue();
     match =  regexSearch.Replace(&text, start, newString);
     if(!match.Found())
         return false;
