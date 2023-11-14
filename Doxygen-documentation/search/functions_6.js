@@ -27,7 +27,7 @@ var searchData=
   ['getcoloronlystyleslist_2348',['GetColorOnlyStylesList',['../classConfiguration.html#ad652f1df02aa3bd094c8342cc00c4e15',1,'Configuration']]],
   ['getcommand_2349',['GetCommand',['../classwxMaxima.html#a7a21b166a198e37ef62ac4be7a726669',1,'wxMaxima::GetCommand()'],['../classEvaluationQueue.html#a921081b1abf5f9348d7b1a4bc7192d53',1,'EvaluationQueue::GetCommand()']]],
   ['getcompressedimage_2350',['GetCompressedImage',['../classImgCell.html#a497dbf3abbda6f12cf5d0d5336bc3e98',1,'ImgCell::GetCompressedImage()'],['../classImage.html#a87a485daca6a2b4e9ab1566bce8ce9d1',1,'Image::GetCompressedImage()']]],
-  ['getconfiguration_2351',['GetConfiguration',['../classCell.html#ace05c5f8e6002cb159bc32bebe502305',1,'Cell::GetConfiguration()'],['../classOutCommon.html#abcaee8939799237e3c14ca0e8060a1c9',1,'OutCommon::GetConfiguration()']]],
+  ['getconfiguration_2351',['GetConfiguration',['../classCell.html#ace05c5f8e6002cb159bc32bebe502305',1,'Cell::GetConfiguration()'],['../classOutCommon.html#ac45bd784f993368cf9c35d697bbcca7b',1,'OutCommon::GetConfiguration()']]],
   ['getcurrentcommand_2352',['GetCurrentCommand',['../classEditorCell.html#aa1350a7de95a1ae1d8fcadee433d1e39',1,'EditorCell']]],
   ['getcurrentpoint_2353',['GetCurrentPoint',['../classCell.html#abad02e43ae23b7de040b79d013d41485',1,'Cell']]],
   ['getcurrentx_2354',['GetCurrentX',['../classCell.html#ac8d6edb789bd629e144ea0a06daac13a',1,'Cell']]],
