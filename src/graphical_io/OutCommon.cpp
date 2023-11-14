@@ -90,6 +90,7 @@ bool OutCommon::PrepareLayout(Cell *tree) {
         return false;
 
     tree->SetConfigurationList(&m_thisconfig);
+    m_thisconfig.ClipToDrawRegion(false);
     tree->FontsChangedList();
     tree->ResetSize();
     if(m_recalculationDc)

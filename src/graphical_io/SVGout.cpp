@@ -53,9 +53,9 @@ Svgout::Svgout(Configuration **configuration, const wxString &filename,
 #if wxCHECK_VERSION(3, 1, 0)
     m_recalculationDc.SetBitmapHandler(new wxSVGBitmapEmbedHandler());
 #endif
-    auto &config = m_cmn.GetConfiguration();
-    config.SetRecalcContext(m_recalculationDc);
-    config.SetCanvasSize(wxSize(700 * scale, 100000 * scale));
+    auto *config = m_cmn.GetConfiguration();
+    config->SetRecalcContext(m_recalculationDc);
+    config->SetCanvasSize(wxSize(700 * scale, 100000 * scale));
 }
 
 Svgout::Svgout(Configuration **configuration, std::unique_ptr<Cell> &&tree,
@@ -79,16 +79,37 @@ bool Svgout::Layout() {
 
     // Let's switch to a DC of the right size for our object.
     auto size = m_cmn.GetSize();
-    auto &config = m_cmn.GetConfiguration();
+    auto *config = m_cmn.GetConfiguration();
     wxSVGFileDC dc(m_cmn.GetFilename(), size.x, size.y, 20 * m_cmn.GetScale());
+    m_cmn.SetRecalculationContext(dc);
 #if wxCHECK_VERSION(3, 1, 0)
     dc.SetBitmapHandler(new wxSVGBitmapEmbedHandler());
 #endif
 
-    config.SetRecalcContext(dc);
-    m_cmn.Draw(m_tree.get());
-    config.UnsetContext();
+    config->SetRecalcContext(dc);
+    //std::cerr<<"DrawContext="<<&dc<<"\n";
+    //std::cerr<<"Visible region1: ("<<config->GetVisibleRegion().GetLeft()<<","<<
+    //  config->GetVisibleRegion().GetTop()<<"):("<<config->GetVisibleRegion().GetRight() <<
+    //  ","<<config->GetVisibleRegion().GetBottom()<<")\n";
 
+    //std::cerr<<"Visible region2: ("<<m_tree.get()->GetConfiguration()->GetVisibleRegion().GetLeft()<<","<<
+    //  m_tree.get()->GetConfiguration()->GetVisibleRegion().GetTop()<<"):("<<m_tree.get()->GetConfiguration()->GetVisibleRegion().GetRight() <<
+    //  ","<<m_tree.get()->GetConfiguration()->GetVisibleRegion().GetBottom()<<")\n";
+
+    //std::cerr<<"Visible region1: ("<<config->GetVisibleRegion().GetLeft()<<","<<
+    //  config->GetVisibleRegion().GetTop()<<"):("<<config->GetVisibleRegion().GetRight() <<
+    //  ","<<config->GetVisibleRegion().GetBottom()<<")\n";
+
+    //std::cerr<<"Visible region2: ("<<m_tree.get()->GetConfiguration()->GetVisibleRegion().GetLeft()<<","<<
+    //  m_tree.get()->GetConfiguration()->GetVisibleRegion().GetTop()<<"):("<<m_tree.get()->GetConfiguration()->GetVisibleRegion().GetRight() <<
+    //  ","<<m_tree.get()->GetConfiguration()->GetVisibleRegion().GetBottom()<<")\n";
+    //std::cerr<<"Update region2: ("<<m_tree.get()->GetConfiguration()->GetUpdateRegion().GetLeft()<<","<<
+    //  m_tree.get()->GetConfiguration()->GetUpdateRegion().GetTop()<<"):("<<m_tree.get()->GetConfiguration()->GetUpdateRegion().GetRight() <<
+    //  ","<<m_tree.get()->GetConfiguration()->GetUpdateRegion().GetBottom()<<")\n";
+    m_cmn.Draw(m_tree.get());
+    config->UnsetContext();
+    // std::cerr<<"cfg1="<<config<<", cfg2="<<m_tree.get()->GetConfiguration()<<"\n";
+    // std::cerr<<"LayoutEnd\n";
     return true;
 }
 

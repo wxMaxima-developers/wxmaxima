@@ -15,6 +15,7 @@
 - Better display of diff(), if multiplication dots are enabled (#1825)
 - Tried to resolve a few asserts (#1831)
 - Resolved many warnings from different static analysis tools
+- Repaired EMF and SVG output (#1838)
 
 # 23.10.0
 

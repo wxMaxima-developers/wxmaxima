@@ -40,9 +40,9 @@ BitmapOut::BitmapOut(Configuration **configuration, double scale)
     m_dc.SetPen(wxNullPen);
     m_cmn.SetRecalculationContext(m_dc);
 
-    auto &config = m_cmn.GetConfiguration();
-    config.SetRecalcContext(m_dc);
-    config.SetCanvasSize(wxSize(BM_FULL_WIDTH, BM_FULL_WIDTH));
+    auto *config = m_cmn.GetConfiguration();
+    config->SetRecalcContext(m_dc);
+    config->SetCanvasSize(wxSize(BM_FULL_WIDTH, BM_FULL_WIDTH));
 }
 
 BitmapOut::BitmapOut(Configuration **configuration,
@@ -99,10 +99,10 @@ failed:
 }
 
 void BitmapOut::Draw() {
-    auto &config = m_cmn.GetConfiguration();
-    config.ClipToDrawRegion(false);
+    auto config = m_cmn.GetConfiguration();
+    config->ClipToDrawRegion(false);
 
-    auto bgColor = config.m_styles[TS_TEXT_BACKGROUND].GetColor();
+    auto bgColor = config->m_styles[TS_TEXT_BACKGROUND].GetColor();
     m_dc.SetBackground(*(wxTheBrushList->FindOrCreateBrush(bgColor,
                                                            wxBRUSHSTYLE_SOLID)));
     m_dc.Clear();

@@ -80,7 +80,7 @@ public:
     const wxString &GetFilename() const { return m_filename; }
     const wxString &GetTempFilename() const { return m_tempFilename; }
     //! Get the configuration for the file/bitmap/... output
-    Configuration &GetConfiguration() { return m_thisconfig; }
+    Configuration *GetConfiguration() { return &m_thisconfig; }
     //! Get the configuration for the screen output
     Configuration &GetScreenConfig() { return *(*m_configuration); }
     wxSize getPPI() const { return m_ppi; }
