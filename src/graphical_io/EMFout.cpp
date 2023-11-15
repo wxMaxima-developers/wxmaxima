@@ -33,10 +33,10 @@
 Emfout::Emfout(Configuration **configuration, const wxString &filename)
   : m_cmn(configuration, filename, 500, 1.0),
     m_recalculationDc(m_cmn.GetTempFilename(), 3000, 50000) {
-  m_cmn.SetRecalculationContext(m_recalculationDc);
-  auto &config = m_cmn.GetConfiguration();
-  config.SetRecalcContext(m_recalculationDc);
-  config.SetCanvasSize(wxSize(3000,100000));
+  m_cmn.SetRecalculationContext(&m_recalculationDc);
+  auto *config = m_cmn.GetConfiguration();
+  config->SetRecalcContext(m_recalculationDc);
+  config->SetCanvasSize(wxSize(3000,100000));
 }
 
 Emfout::Emfout(Configuration **configuration, std::unique_ptr<Cell> &&tree,
@@ -60,15 +60,15 @@ bool Emfout::Layout() {
 
   // Let's switch to a DC of the right size for our object.
   auto size = m_cmn.GetSize();
-  auto &config = m_cmn.GetConfiguration();
+  auto *config = m_cmn.GetConfiguration();
   wxEnhMetaFileDC dc(m_cmn.GetFilename(), size.x, size.y);
 
-  config.SetRecalcContext(dc);
+  config->SetRecalcContext(dc);
   m_cmn.SetRecalculationContext(&dc);
   m_cmn.Draw(m_tree.get());
   m_metaFile.reset(
                    dc.Close()); // Closing the DC triggers the output of the file.
-  config.UnsetContext();
+  config->UnsetContext();
 
   return true;
 }
