@@ -218,7 +218,9 @@ void FindReplacePane::OnActivate(wxActivateEvent &event) {
   if (event.GetActive())
     {
       SetTransparent(255);
-      m_searchText->SetFocus();
+      // Call m_searchText->SetFocus(), once this event is over: During the
+      // activation event it seems to be unreliable
+      CallAfter([this]{m_searchText->SetFocus();});
       m_active = true;
     }
   else
