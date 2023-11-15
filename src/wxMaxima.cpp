@@ -332,7 +332,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   bool findRegex = false;
   wxConfig::Get()->Read(wxS("Find/RegexSearch"), &findRegex);
   m_findData.SetRegexSearch(findRegex);
-  m_worksheet->SetFocus();
+  CallAfter([this]{m_worksheet->SetFocus();});
   m_worksheet->m_keyboardInactiveTimer.SetOwner(this,
                                                 KEYBOARD_INACTIVITY_TIMER_ID);
   m_maximaStdoutPollTimer.SetOwner(this, MAXIMA_STDOUT_POLL_ID);
@@ -1718,7 +1718,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
     SetSize(winSize);
   }
 
-  m_worksheet->SetFocus();
+  CallAfter([this]{m_worksheet->SetFocus();});
   StartAutoSaveTimer();
 }
 
@@ -1830,7 +1830,7 @@ bool MyDropTarget::OnDropFiles(wxCoord WXUNUSED(x), wxCoord WXUNUSED(y),
 void wxMaxima::FirstOutput() {
   m_lastPrompt = wxS("(%i1) ");
 
-  m_worksheet->SetFocus();
+  CallAfter([this]{m_worksheet->SetFocus();});
 }
 
 ///--------------------------------------------------------------------------------
@@ -3978,7 +3978,7 @@ bool wxMaxima::OpenMACFile(const wxString &file, Worksheet *document,
   document->RequestRedraw();
 
   m_worksheet->SetDefaultHCaret();
-  m_worksheet->SetFocus();
+  CallAfter([this]{m_worksheet->SetFocus();});
 
   SetCWD(file);
 
@@ -4039,7 +4039,7 @@ bool wxMaxima::OpenWXMFile(const wxString &file, Worksheet *document,
   document->RequestRedraw();
 
   m_worksheet->SetDefaultHCaret();
-  m_worksheet->SetFocus();
+  CallAfter([this]{m_worksheet->SetFocus();});
 
   SetCWD(file);
 
@@ -4327,7 +4327,7 @@ bool wxMaxima::OpenWXMXFile(const wxString &file, Worksheet *document,
     ResetTitle(false);
 
   m_worksheet->SetDefaultHCaret();
-  m_worksheet->SetFocus();
+  CallAfter([this]{m_worksheet->SetFocus();});
 
   SetCWD(file);
 
@@ -4426,7 +4426,7 @@ bool wxMaxima::OpenXML(const wxString &file, Worksheet *document) {
   ResetTitle(true, true);
   document->RequestRedraw();
   m_worksheet->SetDefaultHCaret();
-  m_worksheet->SetFocus();
+  CallAfter([this]{m_worksheet->SetFocus();});
   SetCWD(file);
 
   StatusMaximaBusy(StatusBar::MaximaStatus::waiting);
@@ -5130,7 +5130,7 @@ bool wxMaxima::UpdateDrawPane() {
 ///--------------------------------------------------------------------------------
 
 void wxMaxima::MenuCommand(const wxString &cmd) {
-  m_worksheet->SetFocus();
+  CallAfter([this]{m_worksheet->SetFocus();});
   m_worksheet->OpenHCaret(cmd);
   m_worksheet->AddCellToEvaluationQueue(
                                         m_worksheet->GetActiveCell()->GetGroup());
@@ -6450,7 +6450,7 @@ void wxMaxima::EditMenu(wxCommandEvent &event) {
     }
 
     m_worksheet->m_findDialog->Show(true);
-    m_worksheet->m_findDialog->SetFocus();
+    CallAfter([this]{m_worksheet->m_findDialog->SetFocus();});
     m_worksheet->m_findDialog->Raise();
   }
   else if(event.GetId() == EventIDs::menu_history_next) {
@@ -8026,7 +8026,7 @@ void wxMaxima::AddDrawParameter(wxString cmd, int dimensionsOfNewDrawCommand) {
       m_worksheet->RequestRedraw();
     }
   }
-  m_worksheet->SetFocus();
+  CallAfter([this]{m_worksheet->SetFocus();});
 }
 
 void wxMaxima::DrawMenu(wxCommandEvent &event) {
@@ -8049,7 +8049,7 @@ void wxMaxima::DrawMenu(wxCommandEvent &event) {
       // wiz->Centre(wxBOTH);
       wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
         if (retcode == wxID_OK) {
-          m_worksheet->SetFocus();
+          CallAfter([this]{m_worksheet->SetFocus();});
 
           m_worksheet->OpenHCaret(wiz->GetValue());
           m_worksheet->GetActiveCell()->SetCaretPosition(
@@ -8064,7 +8064,7 @@ void wxMaxima::DrawMenu(wxCommandEvent &event) {
       // wiz->Centre(wxBOTH);
       wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
         if (retcode == wxID_OK) {
-          m_worksheet->SetFocus();
+          CallAfter([this]{m_worksheet->SetFocus();});
 
           m_worksheet->OpenHCaret(wiz->GetValue());
           m_worksheet->GetActiveCell()->SetCaretPosition(
@@ -10706,7 +10706,7 @@ void wxMaxima::InsertMenu(wxCommandEvent &event) {
                                   std::make_unique<GroupCell>(&m_configuration, GC_TYPE_PAGEBREAK),
                                   m_worksheet->GetHCaret());
     m_worksheet->Recalculate();
-    m_worksheet->SetFocus();
+    CallAfter([this]{m_worksheet->SetFocus();});
     return;}
   else if((event.GetId() == EventIDs::menu_insert_image) ||
           (event.GetId() == EventIDs::menu_format_image)){ {
@@ -10717,7 +10717,7 @@ void wxMaxima::InsertMenu(wxCommandEvent &event) {
                                      wxFD_OPEN);
       if (file != wxEmptyString)
         m_worksheet->OpenHCaret(file, GC_TYPE_IMAGE);
-      m_worksheet->SetFocus();
+      CallAfter([this]{m_worksheet->SetFocus();});
       return;
     } }
   else if(event.GetId() == EventIDs::menu_fold_all_cells){
@@ -10733,7 +10733,7 @@ void wxMaxima::InsertMenu(wxCommandEvent &event) {
     m_worksheet->SetHCaret(m_worksheet->GetHCaret());
   }
 
-  m_worksheet->SetFocus();
+  CallAfter([this]{m_worksheet->SetFocus();});
 
   if (event.GetId() == EventIDs::menu_insert_previous_input ||
       event.GetId() == EventIDs::menu_insert_previous_output) {
@@ -10893,7 +10893,7 @@ void wxMaxima::StatusMsgDClick(wxCommandEvent &WXUNUSED(event)) {
 void wxMaxima::HistoryDClick(wxCommandEvent &event) {
   m_worksheet->CloseAutoCompletePopup();
   m_worksheet->OpenHCaret(event.GetString(), GC_TYPE_CODE);
-  m_worksheet->SetFocus();
+  CallAfter([this]{m_worksheet->SetFocus();});
 }
 
 void wxMaxima::TableOfContentsSelection(wxListEvent &event) {
@@ -10906,7 +10906,7 @@ void wxMaxima::TableOfContentsSelection(wxListEvent &event) {
       (m_worksheet->GetTree()->Contains(selection))) {
     m_worksheet->SetHCaret(selection);
     m_worksheet->ScrollToCaret();
-    m_worksheet->SetFocus();
+    CallAfter([this]{m_worksheet->SetFocus();});
   }
 }
 
@@ -11080,7 +11080,7 @@ void wxMaxima::PassKeyboardFocus() {
       m_configuration.LastActiveTextCtrl()->SetFocus();
     } else {
       wxLogMessage(_("Forwarding the keyboard focus to the worksheet"));
-      m_worksheet->SetFocus();
+      CallAfter([this]{m_worksheet->SetFocus();});
     }
   }
 }
@@ -11088,7 +11088,7 @@ void wxMaxima::PassKeyboardFocus() {
 void wxMaxima::OnMinimize(wxIconizeEvent &event) {
   m_worksheet->WindowActive(!event.IsIconized());
   if (!event.IsIconized())
-    m_worksheet->SetFocus();
+    CallAfter([this]{m_worksheet->SetFocus();});
   event.Skip();
 }
 
@@ -11115,10 +11115,9 @@ void wxMaxima::ChangeCellStyle(wxCommandEvent &WXUNUSED(event)) {
       break;
     }
     m_worksheet->NumberSections();
-    m_worksheet->SetFocus();
   } else
     m_worksheet->m_mainToolBar->SetDefaultCellStyle();
-  m_worksheet->SetFocus();
+  CallAfter([this]{m_worksheet->SetFocus();});
 }
 
 wxString wxMaxima::EscapeFilenameForShell(wxString name)

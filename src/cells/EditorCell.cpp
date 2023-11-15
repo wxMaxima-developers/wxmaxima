@@ -163,6 +163,7 @@ void EditorCell::AddDrawParameter(wxString param) {
   }
   m_text += textAfterParameter;
   StyleText();
+  ContainsChanges(true);
 }
 
 void EditorCell::SearchStartedHere(size_t index) const {
@@ -1932,7 +1933,7 @@ bool EditorCell::HandleOrdinaryKey(wxKeyEvent &event) {
   // if we have a selection either put parens around it (and don't write the
   // letter afterwards) or delete selection and write letter (insertLetter =
   // true).
-  if ((SelectionStart() > 0) && (SelectionActive())) {
+  if (SelectionActive()) {
     SaveValue();
     auto start = SelectionLeft();
     auto end   = SelectionRight();
@@ -3598,6 +3599,7 @@ bool EditorCell::ReplaceSelection(const wxString &oldStr,
   auto end = SelectionRight();
   if (!SelectionActive()) {
     SaveValue();
+    m_saveValue = true;
     wxString left;
     wxString right;
     if(CursorPosition() < m_text.length())
@@ -3668,6 +3670,7 @@ bool EditorCell::ReplaceSelection_RegEx(const wxString &oldStr,
     return false;
 
   SaveValue();
+  m_saveValue = true;
   match =  regexSearch.Replace(&text, start, newString);
   if(!match.Found())
     return false;
