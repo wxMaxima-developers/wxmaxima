@@ -1905,7 +1905,7 @@ bool EditorCell::HandleOrdinaryKey(wxKeyEvent &event) {
   m_containsChanges = true;
   bool insertLetter = true;
 
-  if (m_saveValue) {
+  if (m_saveValue || SelectionActive()) {
     SaveValue();
     m_saveValue = false;
   }
@@ -1934,7 +1934,6 @@ bool EditorCell::HandleOrdinaryKey(wxKeyEvent &event) {
   // letter afterwards) or delete selection and write letter (insertLetter =
   // true).
   if (SelectionActive()) {
-    SaveValue();
     auto start = SelectionLeft();
     auto end   = SelectionRight();
 
@@ -2799,12 +2798,11 @@ wxCoord EditorCell::GetLineWidth(size_t line, size_t pos) {
 void EditorCell::SetState(const HistoryEntry &state) {
   m_text = state.text;
   StyleText();
-  CursorPosition(state.caretPosition);
   SetSelection(state.selStart, state.selEnd);
 }
 
 void EditorCell::AppendStateToHistory() {
-  m_history.emplace_back(m_text, CursorPosition(), SelectionStart(),
+  m_history.emplace_back(m_text, SelectionStart(),
                          SelectionEnd());
 }
 

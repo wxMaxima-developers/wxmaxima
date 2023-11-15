@@ -596,12 +596,11 @@ private:
   struct HistoryEntry // 64 bytes
   {
     wxString text;
-    size_t caretPosition = -1;
     long long selStart = -1;
     long long selEnd = -1;
     HistoryEntry() = default;
-    HistoryEntry(const wxString &text, size_t caretPosition, long long selStart, long long selEnd) :
-      text(text), caretPosition(caretPosition), selStart(selStart), selEnd(selEnd) {}
+    HistoryEntry(const wxString &text, long long selStart, long long selEnd) :
+      text(text), selStart(selStart), selEnd(selEnd) {}
   };
   //! Set the editor's state from a history entry
   void SetState(const HistoryEntry &state);
