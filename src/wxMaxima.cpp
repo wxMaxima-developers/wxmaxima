@@ -2589,21 +2589,23 @@ void wxMaxima::KillMaxima(bool logMessage) {
   m_maximaStdout = NULL;
   m_maximaStderr = NULL;
 
-  if (m_client && (m_client->IsConnected())) {
-    // Make wxWidgets close the connection only after we have sent the close
-    // command.
-    m_client->Socket()->SetFlags(wxSOCKET_WAITALL);
-    // Try to gracefully close maxima.
-    if (m_configuration.InLispMode())
-      SendMaxima(wxS("($quit)"));
-    else
-      SendMaxima(wxS("quit();"));
-
-    m_client->Socket()->Close();
-    // The following command should close maxima, as well.
-    m_client = nullptr;
-  }
-
+  if (m_client)
+    {
+      if(m_client->IsConnected()) {
+        // Make wxWidgets close the connection only after we have sent the close
+        // command.
+        m_client->Socket()->SetFlags(wxSOCKET_WAITALL);
+        // Try to gracefully close maxima.
+        if (m_configuration.InLispMode())
+          SendMaxima(wxS("($quit)"));
+        else
+          SendMaxima(wxS("quit();"));
+      }
+      m_client->Socket()->Close();
+      // The following command should close maxima, as well.
+      m_client = nullptr;
+    }
+  
   // Just to be absolutely sure: Additionally try to kill maxima
   if (m_pid > 0) {
     // wxProcess::kill will fail on MSW. Something with a console.
