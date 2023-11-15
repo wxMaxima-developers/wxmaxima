@@ -86,7 +86,7 @@ public:
   wxSize getPPI() const { return m_ppi; }
 
   //! Sets the context for the configuration used in recalculating the cell dimensions.
-  void SetRecalculationContext(wxDC &context) { m_recalculationDc = &context; }
+  void SetRecalculationContext(wxDC *context) { m_recalculationDc = context; }
 
   //! Prepares to render the tree to the output DC, and computes the size of the output.
   bool PrepareLayout(Cell *tree);

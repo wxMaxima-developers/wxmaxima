@@ -48,7 +48,7 @@ Svgout::Svgout(Configuration **configuration, const wxString &filename,
   wxString path = wxFileName(filename).GetPath();
   if (path.Length() > 1)
     wxSetWorkingDirectory(path);
-  m_cmn.SetRecalculationContext(m_recalculationDc);
+  m_cmn.SetRecalculationContext(&m_recalculationDc);
 
 #if wxCHECK_VERSION(3, 1, 0)
   m_recalculationDc.SetBitmapHandler(new wxSVGBitmapEmbedHandler());
@@ -81,7 +81,7 @@ bool Svgout::Layout() {
   auto size = m_cmn.GetSize();
   auto *config = m_cmn.GetConfiguration();
   wxSVGFileDC dc(m_cmn.GetFilename(), size.x, size.y, 20 * m_cmn.GetScale());
-  m_cmn.SetRecalculationContext(dc);
+  m_cmn.SetRecalculationContext(&dc);
 #if wxCHECK_VERSION(3, 1, 0)
   dc.SetBitmapHandler(new wxSVGBitmapEmbedHandler());
 #endif

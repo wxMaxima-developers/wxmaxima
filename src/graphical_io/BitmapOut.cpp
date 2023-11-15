@@ -38,7 +38,7 @@ BitmapOut::BitmapOut(Configuration **configuration, double scale)
   m_dc.SelectObject(m_bmp);
   m_dc.SetUserScale(scale, scale);
   m_dc.SetPen(wxNullPen);
-  m_cmn.SetRecalculationContext(m_dc);
+  m_cmn.SetRecalculationContext(&m_dc);
 
   auto *config = m_cmn.GetConfiguration();
   config->SetRecalcContext(m_dc);

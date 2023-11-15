@@ -64,7 +64,7 @@ bool Emfout::Layout() {
   wxEnhMetaFileDC dc(m_cmn.GetFilename(), size.x, size.y);
 
   config.SetRecalcContext(dc);
-  m_cmn.SetRecalculationContext(dc);
+  m_cmn.SetRecalculationContext(&dc);
   m_cmn.Draw(m_tree.get());
   m_metaFile.reset(
                    dc.Close()); // Closing the DC triggers the output of the file.
