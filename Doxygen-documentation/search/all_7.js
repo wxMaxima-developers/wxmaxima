@@ -27,6 +27,7 @@ var searchData=
   ['history_2ecpp_554',['History.cpp',['../History_8cpp.html',1,'']]],
   ['history_2eh_555',['History.h',['../History_8h.html',1,'']]],
   ['historydclick_556',['HistoryDClick',['../classwxMaxima.html#a779cec517fcd3071172c32d05e7b17af',1,'wxMaxima']]],
-  ['htmlexportformat_557',['htmlExportFormat',['../classConfiguration.html#ae285be0c26dbdd7a86eac37c9cebdd7d',1,'Configuration']]],
-  ['htmlexportformats_558',['htmlExportFormats',['../classConfigDialogue.html#ad25b60509b8711db5f1fb118b88b2d95',1,'ConfigDialogue']]]
+  ['historyentry_557',['HistoryEntry',['../classEditorCell_1_1History_1_1HistoryEntry.html',1,'EditorCell::History']]],
+  ['htmlexportformat_558',['htmlExportFormat',['../classConfiguration.html#ae285be0c26dbdd7a86eac37c9cebdd7d',1,'Configuration']]],
+  ['htmlexportformats_559',['htmlExportFormats',['../classConfigDialogue.html#ad25b60509b8711db5f1fb118b88b2d95',1,'ConfigDialogue']]]
 ];
