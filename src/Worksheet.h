@@ -828,9 +828,9 @@ public:
   */
   bool CanMergeSelection() const;
 
-  bool CanUndo() const { return CanTreeUndo() || CanUndoInsideCell(); }
+  bool CanUndo() const;
 
-  bool CanRedo() const { return CanTreeRedo() || CanRedoInsideCell(); }
+  bool CanRedo() const;
 
   void Undo();
 

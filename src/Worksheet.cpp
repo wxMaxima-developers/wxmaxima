@@ -4104,6 +4104,7 @@ void Worksheet::SetNotification(const wxString &message, int flags) {
  * event to the active cell, else moves the cursor between groups.
  */
 void Worksheet::OnChar(wxKeyEvent &event) {
+  UpdateControlsNeeded(true);
   m_configuration->LastActiveTextCtrl(NULL);
   m_adjustWorksheetSizeNeeded = true;
   // Alt+Up and Alt+Down are hotkeys. In order for the main application to
@@ -6604,6 +6605,14 @@ void Worksheet::ScrollToCellIfNeeded() {
       Scroll(-1, wxMax(cellBottom / m_scrollUnit - 1, 0));
   }
   RequestRedraw();
+}
+
+bool Worksheet::CanUndo() const {
+  return CanTreeUndo() || CanUndoInsideCell();
+}
+
+bool Worksheet::CanRedo() const {
+  return CanTreeRedo() || CanRedoInsideCell();
 }
 
 void Worksheet::Undo() {
