@@ -610,8 +610,8 @@ private:
       long long m_selStart = -1;
       long long m_selEnd = -1;
     };
-    void AddState(HistoryEntry entry);
-    void AddState(wxString text, long long selStart, long long selEnd);
+    bool AddState(HistoryEntry entry);
+    bool AddState(wxString text, long long selStart, long long selEnd);
     bool Undo();
     bool Redo();
     bool CanUndo() const;

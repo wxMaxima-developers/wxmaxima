@@ -2791,12 +2791,12 @@ wxCoord EditorCell::GetLineWidth(size_t line, size_t pos) {
   return lineWidth;
 }
 
-void EditorCell::History::AddState(EditorCell::History::HistoryEntry entry)
+bool EditorCell::History::AddState(EditorCell::History::HistoryEntry entry)
 {
   if(!m_history.empty())
     {
       if(m_history.back().GetText() == entry.GetText())
-        return;
+        return false;
     }
   
   // If we add a history item and not are at the end of history then we want to
@@ -2806,10 +2806,12 @@ void EditorCell::History::AddState(EditorCell::History::HistoryEntry entry)
 
   m_history.push_back(entry);
   m_historyPosition = m_history.size();
+
+  return true;
 }
-void EditorCell::History::AddState(wxString text, long long selStart, long long selEnd)
+bool EditorCell::History::AddState(wxString text, long long selStart, long long selEnd)
 {
-  AddState(EditorCell::History::HistoryEntry(text, selStart, selEnd));
+  return AddState(EditorCell::History::HistoryEntry(text, selStart, selEnd));
 }
 
 bool EditorCell::History::Undo()
@@ -2856,14 +2858,14 @@ bool EditorCell::IsActive() const {
 void EditorCell::Undo() {
   // Save the value before issuing the first undo so we can undo that undo, if we want.
   if(!m_history.CanRedo())
-    {
       SaveValue();
-      m_history.Undo();
-    }
   
   // Now actually undo the last change.
   m_history.Undo();
-  
+
+  if(m_history.GetState().GetText() == GetText())
+    m_history.Undo();
+
   // We cannot use SetValue() here, since SetValue() tends to move the cursor.
   SetState(m_history.GetState());
 }
@@ -2875,7 +2877,7 @@ void EditorCell::Redo() {
 }
 
 void EditorCell::SaveValue() {
-  m_history.AddState(m_text, SelectionStart(), SelectionEnd());
+  m_history.AddState(GetText(), SelectionStart(), SelectionEnd());
 }
 
 void EditorCell::HandleSoftLineBreaks_Code(
