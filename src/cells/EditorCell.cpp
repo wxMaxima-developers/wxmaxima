@@ -2863,7 +2863,7 @@ void EditorCell::Undo() {
   // Now actually undo the last change.
   m_history.Undo();
 
-  if(m_history.GetState().GetText() == GetText())
+  if(m_history.GetState().GetText() == GetValue())
     m_history.Undo();
 
   // We cannot use SetValue() here, since SetValue() tends to move the cursor.
@@ -2877,7 +2877,7 @@ void EditorCell::Redo() {
 }
 
 void EditorCell::SaveValue() {
-  m_history.AddState(GetText(), SelectionStart(), SelectionEnd());
+  m_history.AddState(GetValue(), SelectionStart(), SelectionEnd());
 }
 
 void EditorCell::HandleSoftLineBreaks_Code(
