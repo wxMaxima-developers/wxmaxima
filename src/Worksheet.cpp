@@ -6617,10 +6617,12 @@ bool Worksheet::CanRedo() const {
 
 void Worksheet::Undo() {
   if (CanUndoInsideCell()) {
+    wxLogMessage(_("Issuing the active cell's undo function"));
     UndoInsideCell();
     Recalculate();
   } else {
     if (CanTreeUndo()) {
+      wxLogMessage(_("Issuing the worksheet's undo function"));
       TreeUndo();
       UpdateTableOfContents();
     }

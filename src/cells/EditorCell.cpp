@@ -2811,7 +2811,11 @@ bool EditorCell::IsActive() const {
 }
 
 bool EditorCell::CanUndo() const {
-  return !m_history.empty() && m_historyPosition != 0;
+  if(!m_history.empty())
+    wxLogMessage(_("Active cell has a undo history."));
+  if(m_historyPosition != 0)
+    wxLogMessage(_("Active cell isn't at the beginning of its undo history."));
+  return !m_history.empty() && (m_historyPosition != 0);
 }
 
 void EditorCell::Undo() {
