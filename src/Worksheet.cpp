@@ -3223,8 +3223,6 @@ void Worksheet::OpenHCaret(const wxString &txt, GroupType type) {
   SetActiveCell(editable);
   Recalculate(editable->GetGroup());
   RequestRedraw();
-  if (GetActiveCell())
-    GetActiveCell()->ClearUndo();
   // If we just have started typing inside a new cell we don't want the screen
   // to scroll away.
   ScrolledAwayFromEvaluation();

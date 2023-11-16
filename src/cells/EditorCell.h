@@ -362,8 +362,6 @@ public:
 
   void CommentSelection();
 
-  void ClearUndo(){m_history.ClearUndoBuffer();}
-
   //! Query if this cell needs to be re-evaluated by maxima
   bool ContainsChanges() const
     { return m_containsChanges; }
