@@ -338,13 +338,13 @@ public:
   void CaretToPosition(size_t pos);
 
   //! True, if there is undo information for this cell
-  bool CanUndo() const;
+  bool CanUndo() const {return m_history.CanUndo();}
 
   //! Issue an undo command
   void Undo();
 
   //! True, if a redo can be done for this cell.
-  bool CanRedo() const;
+  bool CanRedo() const {return m_history.CanRedo();}
 
   //! Issu a redo command
   void Redo();
@@ -362,7 +362,7 @@ public:
 
   void CommentSelection();
 
-  void ClearUndo();
+  void ClearUndo(){m_history.ClearUndoBuffer();}
 
   //! Query if this cell needs to be re-evaluated by maxima
   bool ContainsChanges() const
@@ -593,19 +593,44 @@ private:
   //! Determines the size of a text snippet
   wxSize GetTextSize(const wxString &text);
 
-  struct HistoryEntry // 64 bytes
+  //! The undo history of this cell
+  class History
   {
-    wxString text;
-    long long selStart = -1;
-    long long selEnd = -1;
-    HistoryEntry() = default;
-    HistoryEntry(const wxString &text, long long selStart, long long selEnd) :
-      text(text), selStart(selStart), selEnd(selEnd) {}
+  public:
+    //! How an entry to the undo history looks like
+    class HistoryEntry // 64 bytes
+    {
+    public:
+      HistoryEntry(){};
+      HistoryEntry(const wxString &text, long long selStart, long long selEnd) :
+        m_text(text), m_selStart(selStart), m_selEnd(selEnd) {}
+      long long SelectionStart() const {return m_selStart;}
+      long long SelectionEnd() const {return m_selEnd;}
+      wxString GetText() const {return m_text;}
+    private:
+      wxString m_text;
+      long long m_selStart = -1;
+      long long m_selEnd = -1;
+    };
+    void AddState(HistoryEntry entry);
+    void AddState(wxString text, long long selStart, long long selEnd);
+    bool Undo();
+    bool Redo();
+    bool CanUndo() const;
+    bool CanRedo() const;
+    void ClearUndoBuffer();
+    HistoryEntry GetState() const;
+  private:
+    std::vector<HistoryEntry> m_history;
+    //! Where in the undo history are we?
+    size_t m_historyPosition = 0;
   };
+
+  //! The memory for the undo history
+  History m_history;  
   //! Set the editor's state from a history entry
-  void SetState(const HistoryEntry &state);
-  //! Append the editor's state to the history
-  void AppendStateToHistory();
+  void SetState(const History::HistoryEntry &state);
+  //! Get the styled text
   std::vector<StyledText> &GetStyledText();
 
 //** Large fields
@@ -631,8 +656,6 @@ private:
   wxString m_text;
   std::vector<StyledText> m_styledText;
 
-  std::vector<HistoryEntry> m_history;
-
 //** 8/4 bytes
 //**
   CellPointers *const m_cellPointers = GetCellPointers();
@@ -641,9 +664,6 @@ private:
 //**
   size_t m_errorIndex = 1;
   size_t m_numberOfLines = 1;
-  //! Where in the undo history are we?
-  size_t m_historyPosition = 0;
-
   wxCoord m_charHeight = 12;
   long m_paren1 = -1, m_paren2 = -1;
 

@@ -256,6 +256,7 @@ wxString EditorCell::PrependNBSP(wxString input) {
 EditorCell::EditorCell(GroupCell *group, const EditorCell &cell)
   : EditorCell(group, cell.m_configuration, cell.m_text) {
   CopyCommonData(cell);
+  m_history = cell.m_history;
 }
 
 wxString EditorCell::ToString() const { return ToString(false); }
@@ -1925,11 +1926,6 @@ bool EditorCell::HandleOrdinaryKey(wxKeyEvent &event) {
   if (keyCode == ' ')
     m_widths.clear();
 
-  if (m_historyPosition != 0) {
-    m_history.erase(m_history.begin() + m_historyPosition, m_history.end());
-    m_historyPosition = 0;
-  }
-
   // if we have a selection either put parens around it (and don't write the
   // letter afterwards) or delete selection and write letter (insertLetter =
   // true).
@@ -2795,86 +2791,91 @@ wxCoord EditorCell::GetLineWidth(size_t line, size_t pos) {
   return lineWidth;
 }
 
-void EditorCell::SetState(const HistoryEntry &state) {
-  m_text = state.text;
-  StyleText();
-  SetSelection(state.selStart, state.selEnd);
+void EditorCell::History::AddState(EditorCell::History::HistoryEntry entry)
+{
+  if(!m_history.empty())
+    {
+      if(m_history.back().GetText() == entry.GetText())
+        return;
+    }
+  
+  // If we add a history item and not are at the end of history then we want to
+  // erase the "now future" history first.
+  while(m_historyPosition < m_history.size())
+      m_history.pop_back();
+
+  m_history.push_back(entry);
+  m_historyPosition = m_history.size();
+}
+void EditorCell::History::AddState(wxString text, long long selStart, long long selEnd)
+{
+  AddState(EditorCell::History::HistoryEntry(text, selStart, selEnd));
 }
 
-void EditorCell::AppendStateToHistory() {
-  m_history.emplace_back(m_text, SelectionStart(),
-                         SelectionEnd());
+bool EditorCell::History::Undo()
+{
+  if(CanUndo())
+    {
+      m_historyPosition--;
+      return true;
+    }
+  else
+    return false;
+}
+bool EditorCell::History::Redo()
+{
+  if(CanRedo())
+    {
+      m_historyPosition++;
+      return true;
+    }
+  return false;
+}
+bool EditorCell::History::CanUndo() const {return m_historyPosition > 0;}
+bool EditorCell::History::CanRedo() const {return m_historyPosition + 1 < m_history.size();}
+EditorCell::History::HistoryEntry EditorCell::History::GetState() const {
+  return m_history.at(m_historyPosition);}
+void EditorCell::History::ClearUndoBuffer() {
+  m_history.clear();
+  m_historyPosition = 0;}
+
+void EditorCell::SetState(const EditorCell::History::HistoryEntry &state) {
+  m_text = state.GetText();
+  StyleText();
+  m_paren1 = m_paren2 = -1;
+  m_isDirty = true;
+  m_width = m_height = m_center = -1;
+  InvalidateMaxDrop();
+  SetSelection(state.SelectionStart(), state.SelectionEnd());
 }
 
 bool EditorCell::IsActive() const {
   return this == m_cellPointers->m_activeCell;
 }
 
-bool EditorCell::CanUndo() const {
-  if(!m_history.empty())
-    wxLogMessage(_("Active cell has a undo history."));
-  if(m_historyPosition != 0)
-    wxLogMessage(_("Active cell isn't at the beginning of its undo history."));
-  return !m_history.empty() && (m_historyPosition != 0);
-}
-
 void EditorCell::Undo() {
-  if (m_historyPosition == 0) {
-    m_historyPosition = m_history.size();
-    AppendStateToHistory();
-  } else
-    m_historyPosition--;
-
-  if (m_historyPosition == 0)
-    return;
-
+  // Save the value before issuing the first undo so we can undo that undo, if we want.
+  if(!m_history.CanRedo())
+    {
+      SaveValue();
+      m_history.Undo();
+    }
+  
+  // Now actually undo the last change.
+  m_history.Undo();
+  
   // We cannot use SetValue() here, since SetValue() tends to move the cursor.
-  SetState(m_history.at(m_historyPosition - 1));
-
-  m_paren1 = m_paren2 = -1;
-  m_isDirty = true;
-  m_width = m_height = m_center = -1;
-  InvalidateMaxDrop();
-}
-
-bool EditorCell::CanRedo() const {
-  return !m_history.empty() && m_historyPosition > 0 &&
-    m_historyPosition < (m_history.size());
+  SetState(m_history.GetState());
 }
 
 void EditorCell::Redo() {
-  if (m_historyPosition == 0)
-    return;
-
-  m_historyPosition++;
-
-  if (m_historyPosition >= m_history.size() + 1)
-    return;
-
+  m_history.Redo();
   // We cannot use SetValue() here, since SetValue() tends to move the cursor.
-  SetState(m_history.at(m_historyPosition - 1));
-
-  m_paren1 = m_paren2 = -1;
-  m_isDirty = true;
-  m_width = m_height = m_center = -1;
-  InvalidateMaxDrop();
+  SetState(m_history.GetState());
 }
 
 void EditorCell::SaveValue() {
-  if (!m_history.empty() && m_history.back().text == m_text)
-    return;
-
-  if (m_historyPosition != 0) {
-    m_history.erase(m_history.begin() + m_historyPosition - 1, m_history.end());
-  }
-
-  AppendStateToHistory();
-  m_historyPosition = 0;
-}
-
-void EditorCell::ClearUndo() {
-  m_history.clear();
-  m_historyPosition = 0;
+  m_history.AddState(m_text, SelectionStart(), SelectionEnd());
 }
 
 void EditorCell::HandleSoftLineBreaks_Code(
