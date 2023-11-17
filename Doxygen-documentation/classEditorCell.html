@@ -89,6 +89,12 @@ Collaboration diagram for EditorCell:</div>
 </div>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
+Data Structures</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEditorCell_1_1History.html">History</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The undo history of this cell.  <a href="classEditorCell_1_1History.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a16732e2b40149ba3baefd2f9bbf614a7"><td class="memItemLeft" align="right" valign="top"><a id="a16732e2b40149ba3baefd2f9bbf614a7"></a>
@@ -411,10 +417,10 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEditorCell.html#a584468dc380d1c48090d7e4cf8da1042">Redo</a> ()</td></tr>
 <tr class="memdesc:a584468dc380d1c48090d7e4cf8da1042"><td class="mdescLeft">&#160;</td><td class="mdescRight">Issu a redo command. <br /></td></tr>
 <tr class="separator:a584468dc380d1c48090d7e4cf8da1042"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab0de12ed269ccd3b1c5e951c11ac3886"><td class="memItemLeft" align="right" valign="top"><a id="ab0de12ed269ccd3b1c5e951c11ac3886"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEditorCell.html#ab0de12ed269ccd3b1c5e951c11ac3886">SaveValue</a> ()</td></tr>
-<tr class="memdesc:ab0de12ed269ccd3b1c5e951c11ac3886"><td class="mdescLeft">&#160;</td><td class="mdescRight">Save the current contents of this cell in the undo buffer. <br /></td></tr>
-<tr class="separator:ab0de12ed269ccd3b1c5e951c11ac3886"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa88a731df7f58bb234301e55189cfb28"><td class="memItemLeft" align="right" valign="top"><a id="aa88a731df7f58bb234301e55189cfb28"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEditorCell.html#aa88a731df7f58bb234301e55189cfb28">SaveValue</a> (History::Action action=History::Action::any)</td></tr>
+<tr class="memdesc:aa88a731df7f58bb234301e55189cfb28"><td class="mdescLeft">&#160;</td><td class="mdescRight">Save the current contents of this cell in the undo buffer. <br /></td></tr>
+<tr class="separator:aa88a731df7f58bb234301e55189cfb28"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3a13960d95fcb9005187fcc395fd8e98"><td class="memItemLeft" align="right" valign="top"><a id="a3a13960d95fcb9005187fcc395fd8e98"></a>
 wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEditorCell.html#a3a13960d95fcb9005187fcc395fd8e98">DivideAtCaret</a> ()</td></tr>
 <tr class="memdesc:a3a13960d95fcb9005187fcc395fd8e98"><td class="mdescLeft">&#160;</td><td class="mdescRight">DivideAtCaret Returns the string from caret to end and modifies the m_text so it contains only the string from beginning to caret Used for 'Divide <a class="el" href="classCell.html" title="The base class all cell types the worksheet can consist of are derived from.">Cell</a>', called from MathCtrl. <br /></td></tr>

@@ -6,7 +6,7 @@ var searchData=
   ['savemanualanchorstocache_1209',['SaveManualAnchorsToCache',['../classMaximaManual.html#aa2c6ed4d1be9dc5c5fa09bb6d0873888',1,'MaximaManual']]],
   ['savenecessary_1210',['SaveNecessary',['../classwxMaxima.html#ac541b74bd76204cda3f0c24bbf8bfdd3',1,'wxMaxima']]],
   ['saveonclose_1211',['SaveOnClose',['../classwxMaxima.html#afd30649f345c221f8e0e75a0465fca21',1,'wxMaxima']]],
-  ['savevalue_1212',['SaveValue',['../classEditorCell.html#ab0de12ed269ccd3b1c5e951c11ac3886',1,'EditorCell']]],
+  ['savevalue_1212',['SaveValue',['../classEditorCell.html#aa88a731df7f58bb234301e55189cfb28',1,'EditorCell']]],
   ['scale_5fpx_1213',['Scale_Px',['../classCell.html#a47609f0f35aa58b174a6d137f7e082b6',1,'Cell::Scale_Px(double px) const'],['../classCell.html#aa09f3c5c9fd8d30d32557cb66b8ac55e',1,'Cell::Scale_Px(AFontSize size) const'],['../classConfiguration.html#aaeb8c0c2befdd370b44e0aaa89db4efc',1,'Configuration::Scale_Px()']]],
   ['schedulescrolltocell_1214',['ScheduleScrollToCell',['../classWorksheet.html#a66b40409442ea14e7ab2cab8d36485c7',1,'Worksheet']]],
   ['scopedmessage_1215',['ScopedMessage',['../classCatch_1_1ScopedMessage.html',1,'Catch']]],

@@ -7,6 +7,6 @@ var searchData=
   ['hash_3c_20stx_5fnamespace_5fname_3a_3aoptional_3c_20t_20_26_20_3e_20_3e_1716',['hash&lt; STX_NAMESPACE_NAME::optional&lt; T &amp; &gt; &gt;',['../structstd_1_1hash_3_01STX__NAMESPACE__NAME_1_1optional_3_01T_01_6_01_4_01_4.html',1,'std']]],
   ['hash_3c_20stx_5fnamespace_5fname_3a_3aoptional_3c_20t_20_3e_20_3e_1717',['hash&lt; STX_NAMESPACE_NAME::optional&lt; T &gt; &gt;',['../structstd_1_1hash_3_01STX__NAMESPACE__NAME_1_1optional_3_01T_01_4_01_4.html',1,'std']]],
   ['helpbrowser_1718',['HelpBrowser',['../classHelpBrowser.html',1,'']]],
-  ['history_1719',['History',['../classHistory.html',1,'']]],
+  ['history_1719',['History',['../classEditorCell_1_1History.html',1,'EditorCell::History'],['../classHistory.html',1,'History']]],
   ['historyentry_1720',['HistoryEntry',['../classEditorCell_1_1History_1_1HistoryEntry.html',1,'EditorCell::History']]]
 ];
