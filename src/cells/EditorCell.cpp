@@ -1653,7 +1653,7 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent &event) {
   case WXK_DELETE:
     // On windows CMD+WXK_BACK is passed to us as CMD+WXK_DELETE.
     if (!event.CmdDown()) {
-      SaveValue();
+      SaveValue(History::Action::removeChar);
       if (!SelectionActive()) {
         if (CursorPosition() < m_text.Length()) {
           m_isDirty = true;
@@ -1665,7 +1665,6 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent &event) {
         m_isDirty = true;
         m_containsChanges = true;
         SaveValue();
-        m_saveValue = true;
         auto start = SelectionLeft();
         auto end   = SelectionRight();
         m_text = m_text.SubString(0, start - 1) +
@@ -1710,7 +1709,6 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent &event) {
     {
       auto pos = CursorPosition();
       if (SelectionActive()) {
-        m_saveValue = true;
         m_containsChanges = true;
         m_isDirty = true;
         auto start = SelectionLeft();
@@ -1906,9 +1904,11 @@ bool EditorCell::HandleOrdinaryKey(wxKeyEvent &event) {
   m_containsChanges = true;
   bool insertLetter = true;
 
-  if (m_saveValue || SelectionActive()) {
-    SaveValue();
-    m_saveValue = false;
+  if (SelectionActive()) {
+    if(SelectionActive())
+      SaveValue();
+    else
+      SaveValue(History::Action::addChar);
   }
 
   wxChar keyCode;
@@ -2668,7 +2668,6 @@ bool EditorCell::CutToClipboard() {
     return false;
 
   SaveValue();
-  m_saveValue = true;
   m_containsChanges = true;
   if (!CopyToClipboard())
     return false;
@@ -2692,7 +2691,6 @@ bool EditorCell::CutToClipboard() {
 
 void EditorCell::InsertText(wxString text) {
   SaveValue();
-  m_saveValue = true;
   m_containsChanges = true;
 
   text =
@@ -2791,8 +2789,12 @@ wxCoord EditorCell::GetLineWidth(size_t line, size_t pos) {
   return lineWidth;
 }
 
-bool EditorCell::History::AddState(EditorCell::History::HistoryEntry entry)
+bool EditorCell::History::AddState(EditorCell::History::HistoryEntry entry, Action action)
 {
+  if((m_lastAction == action) && (action != any))
+    return false;
+  m_lastAction = action;
+  
   if(!m_history.empty())
     {
       if(m_history.back().GetText() == entry.GetText())
@@ -2804,7 +2806,7 @@ bool EditorCell::History::AddState(EditorCell::History::HistoryEntry entry)
       // If we add a history item and not are at the end of history then we want to
       // erase the "now future" history first. Or find out where in the history we are.
 
-      for(auto i = m_history.size() - 1; i >= 0; --i)
+      for(auto i = m_history.size() - 1; i >= m_historyPosition; --i)
         {
           if(m_history.at(i).GetText() == entry.GetText())
             {
@@ -2821,9 +2823,10 @@ bool EditorCell::History::AddState(EditorCell::History::HistoryEntry entry)
 
   return true;
 }
-bool EditorCell::History::AddState(wxString text, long long selStart, long long selEnd)
+bool EditorCell::History::AddState(wxString text, long long selStart, long long selEnd,
+                                   Action action)
 {
-  return AddState(EditorCell::History::HistoryEntry(text, selStart, selEnd));
+  return AddState(EditorCell::History::HistoryEntry(text, selStart, selEnd), action);
 }
 
 bool EditorCell::History::Undo()
@@ -2888,8 +2891,8 @@ void EditorCell::Redo() {
   SetState(m_history.GetState());
 }
 
-void EditorCell::SaveValue() {
-  m_history.AddState(GetValue(), SelectionStart(), SelectionEnd());
+void EditorCell::SaveValue(History::Action action) {
+  m_history.AddState(GetValue(), SelectionStart(), SelectionEnd(), action);
 }
 
 void EditorCell::HandleSoftLineBreaks_Code(
@@ -3616,7 +3619,6 @@ bool EditorCell::ReplaceSelection(const wxString &oldStr,
   auto end = SelectionRight();
   if (!SelectionActive()) {
     SaveValue();
-    m_saveValue = true;
     wxString left;
     wxString right;
     if(CursorPosition() < m_text.length())
@@ -3687,7 +3689,6 @@ bool EditorCell::ReplaceSelection_RegEx(const wxString &oldStr,
     return false;
 
   SaveValue();
-  m_saveValue = true;
   match =  regexSearch.Replace(&text, start, newString);
   if(!match.Found())
     return false;
