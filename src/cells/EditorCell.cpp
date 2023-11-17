@@ -2798,12 +2798,24 @@ bool EditorCell::History::AddState(EditorCell::History::HistoryEntry entry)
       if(m_history.back().GetText() == entry.GetText())
         return false;
     }
-  
-  // If we add a history item and not are at the end of history then we want to
-  // erase the "now future" history first.
-  while(m_historyPosition < m_history.size())
-      m_history.pop_back();
 
+  if(m_historyPosition < m_history.size())
+    {
+      // If we add a history item and not are at the end of history then we want to
+      // erase the "now future" history first. Or find out where in the history we are.
+
+      for(auto i = m_history.size() - 1; i >= 0; --i)
+        {
+          if(m_history.at(i).GetText() == entry.GetText())
+            {
+              m_historyPosition = i;
+              return false;
+            }
+        }
+      while(m_historyPosition < m_history.size())
+        m_history.pop_back();
+    }
+  
   m_history.push_back(entry);
   m_historyPosition = m_history.size();
 
