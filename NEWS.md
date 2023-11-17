@@ -16,6 +16,7 @@
 - Tried to resolve a few asserts (#1831)
 - Resolved many warnings from different static analysis tools
 - Repaired EMF and SVG output (#1838)
+- Fine-tuning of the "undo" function
 
 # 23.10.0
 
