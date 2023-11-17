@@ -15,26 +15,18 @@ architectures:
 
 apps:
   wxmaxima:
+    extensions: [gnome]
     command: usr/bin/wxmaxima
     desktop: usr/share/applications/io.github.wxmaxima_developers.wxMaxima.desktop
-    plugs:
-     - network
-     - network-bind
-     - home
-     - removable-media
-     - optical-drive
-     - process-control
-     - desktop
-     - desktop-legacy
-     - wayland
-     - x11
-     - gsettings
-     - unity7
-     - cups-control
-     - upower-observe
-     - themes
-     - themes-icon
-     - themes-gtk2
+    plugs: [network, network-bind, home, removable-media, optical-drive, process-control, desktop, desktop-legacy, wayland, x11, gsettings, unity7, cups-control, upower-observe]
+      # gtk-3-themes:
+      #   interface: content
+      #   target: $SNAP/data-dir/themes
+      #   default-provider: gtk-common-themes
+      # icon-themes:
+      #   interface: content
+      #   target: $SNAP/data-dir/icons
+      #   default-provider: gtk-common-themes
 
 parts:
   wxmaxima:
