@@ -1788,7 +1788,7 @@ wxMaxima::~wxMaxima() {
 bool MyDropTarget::OnDropFiles(wxCoord WXUNUSED(x), wxCoord WXUNUSED(y),
                                const wxArrayString &files) {
   bool success = true;
-  for(auto file:files)
+  for(const auto &file:files)
     {
       if (wxGetKeyState(WXK_SHIFT)) {
         m_wxmax->m_worksheet->InsertText(file);
