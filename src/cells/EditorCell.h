@@ -386,7 +386,7 @@ public:
     std::vector<HistoryEntry> m_history;
     //! Where in the undo history are we?
     size_t m_historyPosition = 0;
-    Action m_lastAction;
+    Action m_lastAction = any;
   };
 
   //! Save the current contents of this cell in the undo buffer.
