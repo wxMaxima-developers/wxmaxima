@@ -6,16 +6,16 @@
 - Added many range checks to the code
 - Correct label scaling after changing the zoom factor (#1815)
 - Repaired "copy as bitmap" (#1820)
+- Repaired EMF and SVG output (#1838)
 - Focus the search text on activating the search box (#1821)
 - Correctly support dropping multiple files on the worksheet
-- If the worksheet isn't empty dropping a file on the worksheed
+- If the worksheet isn't empty dropping a file on the worksheet
   no more closes the currently open file
 - Try harder to kill maxima on closing it (#1824)
 - Menu items for displaying the internal representation
 - Better display of diff(), if multiplication dots are enabled (#1825)
 - Tried to resolve a few asserts (#1831)
-- Resolved many warnings from different static analysis tools
-- Repaired EMF and SVG output (#1838)
+- Resolved many warnings from several static analysis tools
 - Fine-tuning of the "undo" function
 
 # 23.10.0
