@@ -1037,8 +1037,9 @@ wxString GroupCell::ToTeX(wxString imgDir, wxString filename,
       auto *const imgCopy = dynamic_cast<ImgCell *>(copy.get());
       (*imgCounter)++;
       wxString image = filename + wxString::Format(wxS("_%d"), *imgCounter);
-      wxString file =
-        imgDir + wxS("/") + image + wxS(".") + imgCopy->GetExtension();
+      wxString file;
+      if(imgCopy)
+        file = imgDir + wxS("/") + image + wxS(".") + imgCopy->GetExtension();
 
       if (!wxDirExists(imgDir))
         wxMkdir(imgDir);

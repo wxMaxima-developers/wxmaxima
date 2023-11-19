@@ -38,10 +38,10 @@
 #include <wx/tokenzr.h>
 
 namespace Format {
-
+  
   const wxString WXMFirstLine =
     wxS("/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/");
-
+  
   struct WXMHeader //-V730
   {
     WXMHeaderId id;
@@ -492,15 +492,15 @@ namespace Format {
     line.Trim(false);
     if (!line.empty())
       tree.Append(std::make_unique<GroupCell>(config, GC_TYPE_CODE, line));
-
+    
     return tree;
   }
-
+  
   std::unique_ptr<GroupCell> ParseMACFile(wxTextBuffer &text, bool xMaximaFile,
                                           Configuration *config) {
     bool input = true;
     wxString macContents;
-
+    
     for (auto line = text.GetFirstLine();; line = text.GetNextLine()) {
       if (xMaximaFile) {
         // Detect output cells.

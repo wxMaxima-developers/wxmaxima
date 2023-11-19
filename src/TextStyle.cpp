@@ -175,7 +175,7 @@ did_change Style::SetFontName(wxString fontName) {
   if(fontCache == m_fontCaches.end())
     {
       auto newfontCache = std::shared_ptr<FontVariantCache>(new FontVariantCache(fontName));
-      m_fontCaches[fontName] = newfontCache;
+      m_fontCaches[std::move(fontName)] = newfontCache;
       m.fontCache = newfontCache;
     }
   else

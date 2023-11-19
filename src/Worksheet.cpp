@@ -1824,7 +1824,7 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event) {
           }
           m_replacementsForCurrentWord.clear();
           if (sameBeginning.size() <= 10)
-            m_replacementsForCurrentWord = sameBeginning;
+            m_replacementsForCurrentWord = std::move(sameBeginning);
           for (int o = 0; o < 4; o++) {
             if (m_replacementsForCurrentWord.size() + dst.at(o).size() <=
                 10) {

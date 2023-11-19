@@ -2395,7 +2395,7 @@ bool wxMaxima::StartMaxima(bool force) {
       m_maximaAuthString = wxBase64Encode(membuf);
       environment["MAXIMA_AUTH_CODE"] = m_maximaAuthString;
 
-      env->env = environment;
+      env->env = std::move(environment);
       if (wxExecute(command, wxEXEC_ASYNC | wxEXEC_MAKE_GROUP_LEADER, m_process,
                     env.get()) <= 0) {
         StatusMaximaBusy(StatusBar::MaximaStatus::process_wont_start);
@@ -3451,7 +3451,7 @@ void wxMaxima::VariableActionGnuplotCommand(const wxString &value) {
   // We don't want error dialogues here.
   SuppressErrorDialogs suppressor;
   std::unique_ptr<wxExecuteEnv> env(new wxExecuteEnv);
-  env->env = environment;
+  env->env = std::move(environment);
   if (wxExecute(m_gnuplotcommand, wxEXEC_ASYNC | wxEXEC_HIDE_CONSOLE,
                 m_gnuplotTerminalQueryProcess, env.get()) < 0)
     wxLogMessage(_("Cannot start gnuplot"));
