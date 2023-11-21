@@ -6,4 +6,4 @@ We always support the latest version: wxMaxima tends to evolve quite fast and we
 
 ## Reporting a Vulnerability
 
-For privately reporting security vulnerabilitys in the C++ code @KubaO and @gunterkoenigsmann should be the right persons to contact.
+For privately reporting security vulnerabilities in the C++ code @KubaO and @gunterkoenigsmann should be the right persons to contact.
