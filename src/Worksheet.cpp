@@ -2083,6 +2083,11 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event) {
   // create menu if we have any items
   if (popupMenu.GetMenuItemCount() > 0) {
     m_inPopupMenu = true;
+    // Popping up the menu causes us to loose the mouse capture
+    // which causes an assert if we captured the mouse and didn't
+    // request to un-capture it.
+    if(HasCapture())
+      ReleaseMouse();
     PopupMenu(&popupMenu);
     m_inPopupMenu = false;
   }
