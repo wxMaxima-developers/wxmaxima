@@ -2195,12 +2195,13 @@ wxString EditorCell::InterpretEscapeString(const wxString &txt) {
 }
 
 void EditorCell::DeactivateCursor() {
-  EditorCell *editor = m_cellPointers->m_activeCell;
-  if (editor) {
-    editor->ClearSelection();
-    editor->m_paren1 = editor->m_paren2 = -1;
-  }
+//  EditorCell *editor = m_cellPointers->m_activeCell;
+//  if (editor) {
+//    editor->ClearSelection();
+//    editor->m_paren1 = editor->m_paren2 = -1;
+//  }
   m_cellPointers->m_activeCell = nullptr;
+  m_cellPointers->m_selectionString = wxEmptyString;
 }
 
 bool EditorCell::ActivateCursor() {
@@ -2484,15 +2485,16 @@ bool EditorCell::IsPointInSelection(wxPoint point) {
          text.GetChar(positionOfCaret) != '\n' &&
          text.GetChar(positionOfCaret) != '\r') {
     wxCoord width;
+    wxString strng = text.SubString(lineStart, positionOfCaret);
     width =
-      GetTextSize(text.SubString(lineStart, CursorPosition())).GetWidth();
+      GetTextSize(strng).GetWidth();
     if (width > posInCell.x)
       break;
     positionOfCaret++;
   }
-  positionOfCaret = wxMin(positionOfCaret, (signed)text.Length());
-  return !((SelectionStart() >= positionOfCaret) ||
-           (SelectionEnd() <= positionOfCaret));
+  positionOfCaret = wxMin(positionOfCaret, text.Length());
+  return ((SelectionStart() <= positionOfCaret) &&
+           (positionOfCaret < SelectionEnd()));
 }
 
 wxString EditorCell::DivideAtCaret() {
