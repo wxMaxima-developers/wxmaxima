@@ -1,5 +1,12 @@
 # Current
 
+ - Input text selection was cleared when right-clicking 
+   on it (#1845)
+ - Pressing both mouse buttons simultaneously caused an 
+   assert (#1844)
+
+# 23.11.0
+
 - Correctly draw the bracket of the cell under the cursor (#1811)
 - Maths display was corrupted if the window was temporarily not wide
   enough to display it in 2D (#1812)
