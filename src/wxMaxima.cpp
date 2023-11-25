@@ -1981,7 +1981,16 @@ TextCell *wxMaxima::DoRawConsoleAppend(wxString s, CellType type,
 
   if (type == MC_TYPE_MAIN_PROMPT) {
     auto owned = std::make_unique<LabelCell>(
-                                             m_worksheet->GetTree(), &m_configuration, s, TS_MAIN_PROMPT);
+                                             m_worksheet->GetTree(), &m_configuration, s,
+                                             TS_MAIN_PROMPT);
+    owned->SetType(type);
+    owned->SetPromptTooltip(opts & AppendOpt::PromptToolTip);
+    cell = owned.get();
+    m_worksheet->InsertLine(std::move(owned), true);
+  } else if (type == MC_TYPE_PROMPT) {
+    auto owned = std::make_unique<TextCell>(
+                                             m_worksheet->GetTree(), &m_configuration, s,
+                                             TS_OTHER_PROMPT);
     owned->SetType(type);
     owned->SetPromptTooltip(opts & AppendOpt::PromptToolTip);
     cell = owned.get();
@@ -1998,7 +2007,7 @@ TextCell *wxMaxima::DoRawConsoleAppend(wxString s, CellType type,
       incompleteTextCell = m_worksheet->GetCurrentTextCell();
 
     if (incompleteTextCell) {
-      int pos = s.Find("\n");
+      auto pos = s.Find("\n");
       wxString newVal = incompleteTextCell->GetValue();
       if (pos != wxNOT_FOUND) {
         newVal += s.Left(pos);
