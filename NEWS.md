@@ -1,9 +1,11 @@
 # Current
 
- - Input text selection was cleared when right-clicking 
-   on it (#1845)
- - Pressing both mouse buttons simultaneously caused an 
-   assert (#1844)
+- Input text selection was cleared when right-clicking 
+  on it (#1845)
+- Pressing both mouse buttons simultaneously caused an 
+  assert (#1844)
+- Corrected the cursor position after unsuccessful autocompletes
+- Corrected the handling of question prompts from maxima (#1827)
 
 # 23.11.0
 
