@@ -181,7 +181,7 @@ void SumCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
 </svg>
 )svg";
 
-    wxBitmapBundle sumbitmap = wxBitmapBundle::FromSVG(sumSVG, wxSize(m_signWidth, m_signHeight));
+    wxBitmapBundle sumbitmap = wxBitmapBundle::FromSVG(sumSVG, wxSize(130, 150));
     // Make the bitmap hi-res, if the OS supports and needs that
     const wxWindow *worksheet = m_configuration->GetWorkSheet();
     if(worksheet)
