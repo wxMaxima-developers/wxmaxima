@@ -132,7 +132,7 @@ void SumCell::Recalculate(AFontSize fontsize) {
     m_over->RecalculateList({MC_MIN_SIZE, fontsize - SUM_DEC});
 
 #if wxCHECK_VERSION(3, 1, 6)
-  m_signWidth = 15 * m_signHeight / 13;
+  m_signWidth = 13 * m_signHeight / 15;
 #else
   if (m_sumStyle == SM_SUM)
     m_signWidth = 3.0 * m_signHeight / 5.0;
