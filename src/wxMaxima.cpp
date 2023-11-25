@@ -2897,6 +2897,7 @@ bool wxMaxima::ParseNextChunkFromMaxima(wxString &data) {
     data = data.Right(data.Length() - miscText.Length());
   }
   if (tagFound) {
+    m_worksheet->SetCurrentTextCell(nullptr);
     if((m_maximaAuthenticated) || (tagIndex->second == &wxMaxima::ReadSuppressedOutput))
       {
         retval = true;
