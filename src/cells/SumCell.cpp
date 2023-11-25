@@ -32,6 +32,9 @@
 #include "SumCell.h"
 #include "CellImpl.h"
 #include "TextCell.h"
+#if wxCHECK_VERSION(3, 1, 6)
+#include <wx/bmpbndl.h>
+#endif
 
 SumCell::SumCell(GroupCell *group, Configuration *config, sumStyle style,
                  std::unique_ptr<Cell> &&under, std::unique_ptr<Cell> &&over,
@@ -159,8 +162,7 @@ void SumCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
     wxPoint base(point), under(point), over(point);
 
     under.x += m_signWCenter - m_under->GetFullWidth() / 2;
-    under.y =
-      point.y + m_signHeight / 2 + m_under->GetCenterList() + Scale_Px(2);
+    under.y = point.y + m_signHeight / 2 + m_under->GetCenterList() + Scale_Px(2);
     m_under->DrawList(under, dc, antialiassingDC);
 
     over.x += m_signWCenter - m_over->GetFullWidth() / 2;
@@ -169,6 +171,24 @@ void SumCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
 
     SetPen(antialiassingDC, 1.5);
     if (m_sumStyle == SM_SUM) {
+      // FIXME: The sum sign look ok now (for wxWidgets >= 3.1.6) but the position/size is WRONG!!
+#if wxCHECK_VERSION(3, 1, 6)
+    // From: https://commons.wikimedia.org/wiki/File:%CE%A3_Icon.svg (public domain)
+    const char* sumSVG = R"svg(
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="130" height="150">
+<path fill="#000" d="M10,11V7H111L114,41V41C110,35 109,29 107,26C105,22 103,20 99,18C96,16 91,16 85,16L38,16L80,69L33,124L84,124C93,124 101,123 105,120C110,117 114,110 117,101L120,102L115,143L10,143V139L62,78z"/>
+</svg>
+)svg";
+
+    wxBitmapBundle sumbitmap = wxBitmapBundle::FromSVG(sumSVG, wxSize(m_signWidth, m_signHeight));
+    // Make the bitmap hi-res, if the OS supports and needs that
+    const wxWindow *worksheet = m_configuration->GetWorkSheet();
+    if(worksheet)
+      sumbitmap.GetPreferredBitmapSizeFor(worksheet);
+    wxBitmap bmp(sumbitmap.GetBitmap(wxSize(m_signWidth, m_signHeight)));
+    antialiassingDC->DrawBitmap(bmp, base.x, over.y+m_signHeight/2, true);
+#else
       // DRAW SUM SIGN
       //  Upper part
       const wxPoint points[5] = {
@@ -178,6 +198,7 @@ void SumCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
         {m_signWCenter - int(m_signWidth / 2), (m_signHeight / 2)},
         {m_signWCenter + int(m_signWidth / 2), (m_signHeight / 2)}};
       antialiassingDC->DrawLines(5, points, point.x, point.y);
+#endif
     } else {
       // DRAW PRODUCT SIGN
       // Vertical lines
