@@ -131,10 +131,14 @@ void SumCell::Recalculate(AFontSize fontsize) {
   } else
     m_over->RecalculateList({MC_MIN_SIZE, fontsize - SUM_DEC});
 
+#if wxCHECK_VERSION(3, 1, 6)
+  m_signWidth = 15 * m_signHeight / 13;
+#else
   if (m_sumStyle == SM_SUM)
     m_signWidth = 3.0 * m_signHeight / 5.0;
   else
     m_signWidth = 4.0 * m_signHeight / 5.0;
+  #endif
   m_signWCenter = m_signWidth / 2.0;
   if (IsBrokenIntoLines())
     m_under->RecalculateList(fontsize);
