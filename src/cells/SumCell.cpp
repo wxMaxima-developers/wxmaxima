@@ -131,16 +131,28 @@ void SumCell::Recalculate(AFontSize fontsize) {
   } else
     m_over->RecalculateList({MC_MIN_SIZE, fontsize - SUM_DEC});
 
+  bool useSVGsign;
 #if wxCHECK_VERSION(3, 1, 6)
-  m_signHeight = Scale_Px(40.0);
-  m_signWidth = 13 * m_signHeight / 15;
-#else
-  m_signHeight = DisplayedBase()->GetHeightList();
   if (m_sumStyle == SM_SUM)
-    m_signWidth = 3.0 * m_signHeight / 5.0;
+    useSVGsign = true;
   else
-    m_signWidth = 4.0 * m_signHeight / 5.0;
-  #endif
+    useSVGsign = false;
+#else
+  useSVGsign = false;
+#endif
+  if(useSVGsign)
+    {
+      m_signHeight = Scale_Px(40.0);
+      m_signWidth = 13 * m_signHeight / 15;
+    }
+  else
+    {
+      m_signHeight = DisplayedBase()->GetHeightList();
+      if (m_sumStyle == SM_SUM)
+        m_signWidth = 3.0 * m_signHeight / 5.0;
+      else
+        m_signWidth = 4.0 * m_signHeight / 5.0;
+    }
   m_signWCenter = m_signWidth / 2.0;
   if (IsBrokenIntoLines())
     m_under->RecalculateList(fontsize);
