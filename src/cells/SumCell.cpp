@@ -140,6 +140,9 @@ void SumCell::Recalculate(AFontSize fontsize) {
 #else
   useSVGsign = false;
 #endif
+  // tell compilers and static analysis tools not to worry if they
+  // believe that useSVGsign does never change value 
+  (void) useSVGsign;
   if(useSVGsign)
     {
       m_signHeight = Scale_Px(40.0);
