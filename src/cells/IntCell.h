@@ -77,6 +77,8 @@ public:
   void SetNextToDraw(Cell *next) override;
 
 private:
+  //! A beautiful integral sign as svg description
+  static wxString m_svgIntSign;
   void MakeBreakUpCells();
 
   // The pointers below point to inner cells and must be kept contiguous.

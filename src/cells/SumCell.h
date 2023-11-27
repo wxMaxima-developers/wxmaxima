@@ -76,6 +76,8 @@ public:
   void Unbreak() override final;
 
 private:
+  //! A beautiful sum sign as svg description
+  static wxString m_svgSumSign;
   std::unique_ptr<Cell> MakeStart(Cell *under) const;
   void MakeBreakUpCells();
 

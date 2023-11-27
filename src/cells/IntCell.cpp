@@ -145,14 +145,9 @@ void IntCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
     SetPen(antialiassingDC, 1.5);
     // FIXME: The integral sign look ok now (for wxWidgets >= 3.1.6) but the position/size is WRONG!!
 #if wxCHECK_VERSION(3, 1, 6)
-    // From: https://commons.wikimedia.org/wiki/File:Integral_Sign.svg (public domain)
-    const char* integralSVG = R"svg(
-<?xml version=\"1.0\" encoding=\"UTF-8\"?>
-<svg version=\"1.0\" viewBox=\"0 0 19.879 51.781\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"m15.2 0.981c-2.4 2.9-4.9 13-8.7 34.3-1.9 10.7-3.3 15.5-4.6 15.5-0.5 0-0.8-0.3-0.7-0.7 0.2-0.5 0-0.9-0.4-1.1-0.5-0.1-0.8 0-0.8 0.3v1.5c0 0.5 0.9 1 2 1 3.2 0 4.8-4.7 9-26.2 4-20.3 5.9-27.1 6.7-23.6 0.6 2.3 2.6 2.3 2.1 0.1-0.4-2.2-3.1-2.8-4.6-1.1z\" stroke-width=\".1\"/></svg>
-)svg";
-
     sign.y -= .5 * m_signHeight;
-    wxBitmapBundle integralbitmap = wxBitmapBundle::FromSVG(integralSVG, wxSize(m_signWidth, m_signHeight));
+    wxBitmapBundle integralbitmap = wxBitmapBundle::FromSVG(m_svgIntSign.utf8_str(),
+                                                            wxSize(m_signWidth, m_signHeight));
     // Make the bitmap hi-res, if the OS supports and needs that
     const wxWindow *worksheet = m_configuration->GetWorkSheet();
     if(worksheet)
@@ -399,3 +394,9 @@ void IntCell::SetNextToDraw(Cell *next) {
   else
     m_nextToDraw = next;
 }
+
+    // From: https://commons.wikimedia.org/wiki/File:Integral_Sign.svg (public domain)
+wxString IntCell::m_svgIntSign = R"svg(
+<?xml version=\"1.0\" encoding=\"UTF-8\"?>
+<svg version=\"1.0\" viewBox=\"0 0 19.879 51.781\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"m15.2 0.981c-2.4 2.9-4.9 13-8.7 34.3-1.9 10.7-3.3 15.5-4.6 15.5-0.5 0-0.8-0.3-0.7-0.7 0.2-0.5 0-0.9-0.4-1.1-0.5-0.1-0.8 0-0.8 0.3v1.5c0 0.5 0.9 1 2 1 3.2 0 4.8-4.7 9-26.2 4-20.3 5.9-27.1 6.7-23.6 0.6 2.3 2.6 2.3 2.1 0.1-0.4-2.2-3.1-2.8-4.6-1.1z\" stroke-width=\".1\"/></svg>
+)svg";
