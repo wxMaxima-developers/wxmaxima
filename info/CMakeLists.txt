@@ -148,7 +148,7 @@ else()
 endif()
 
 set(HTMLHELP_ADDITIONAL_FILES wxmaxima.css
-                              BatchImage.png cell-example.png ezUnits.png InputCell.png MatrixTableExample.png
+                              BatchImage.png cell-example.png ezUnits.png InputCell.png locale-warning.png MatrixTableExample.png
                               maxima_screenshot.png sbclMemory.png SecondTableExample.png SidePanes.png Sidepane-TOC-convert-headings.png
                               wxMaxima_configuration_001.png wxMaximaLogo.png wxMaximaWindow.png wxmaxima.svg)
 foreach(CURRENTFILE ${HTMLHELP_ADDITIONAL_FILES})
