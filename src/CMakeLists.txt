@@ -485,6 +485,34 @@ add_custom_command(
 add_custom_target(build_manualanchors.h DEPENDS ${CMAKE_BINARY_DIR}/wxm_manual_anchors_xml.h)
 add_dependencies(wxmaxima build_manualanchors.h)
 
+add_custom_command(
+        OUTPUT ${CMAKE_BINARY_DIR}/sumSign.h
+        COMMAND ${CMAKE_COMMAND} ARGS
+        -DBIN2H_SOURCE_FILE="${CMAKE_SOURCE_DIR}/art/worksheet/sumSign.svg"
+        -DBIN2H_VARIABLE_NAME=sumSign
+        -DBIN2H_HEADER_FILE="${CMAKE_BINARY_DIR}/sumSign.h"
+        -DBIN2H="${CMAKE_SOURCE_DIR}/cmake-bin2h/bin2h.cmake"
+        -P "${CMAKE_SOURCE_DIR}/src/bin2h.cmake"
+        COMMENT "Embedding sumSign.svg"
+        DEPENDS ${CMAKE_SOURCE_DIR}/art/worksheet/sumSign.svg ${CMAKE_SOURCE_DIR}/src/bin2h.cmake
+)
+add_custom_target(build_sumSign.h DEPENDS ${CMAKE_BINARY_DIR}/sumSign.h)
+add_dependencies(wxmaxima build_sumSign.h)
+
+add_custom_command(
+        OUTPUT ${CMAKE_BINARY_DIR}/intSign.h
+        COMMAND ${CMAKE_COMMAND} ARGS
+        -DBIN2H_SOURCE_FILE="${CMAKE_SOURCE_DIR}/art/worksheet/intSign.svg"
+        -DBIN2H_VARIABLE_NAME=intSign
+        -DBIN2H_HEADER_FILE="${CMAKE_BINARY_DIR}/intSign.h"
+        -DBIN2H="${CMAKE_SOURCE_DIR}/cmake-bin2h/bin2h.cmake"
+        -P "${CMAKE_SOURCE_DIR}/src/bin2h.cmake"
+        COMMENT "Embedding intSign.svg"
+        DEPENDS ${CMAKE_SOURCE_DIR}/art/worksheet/intSign.svg ${CMAKE_SOURCE_DIR}/src/bin2h.cmake
+)
+add_custom_target(build_intSign.h DEPENDS ${CMAKE_BINARY_DIR}/intSign.h)
+add_dependencies(wxmaxima build_intSign.h)
+
 # Debian wants to be able to download a signature of the source package from the
 # project's download directory. If it cannot find it it will still work, but will
 # issue a warning. For details see

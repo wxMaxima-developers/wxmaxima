@@ -401,10 +401,6 @@ void Image::LoadCompressedGnuplotSource_Backgroundtask(
       }
     }
   }
-  wxLogMessage(_("Downloaded %s (%li bytes) and %s (%li bytes) from %s"),
-               sourcefile.mb_str(), static_cast<long>(m_gnuplotSource_Compressed.GetDataLen()),
-               datafile.mb_str(), static_cast<long>(m_gnuplotData_Compressed.GetDataLen()),
-               wxmxFile.mb_str());
 }
 
 Image::WxmxStream::WxmxStream(wxInputStream &wxmxFile, wxString fileInWxmx):

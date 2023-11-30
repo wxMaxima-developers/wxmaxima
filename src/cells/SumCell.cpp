@@ -32,6 +32,8 @@
 #include "SumCell.h"
 #include "CellImpl.h"
 #include "TextCell.h"
+#include "sumSign.h"
+
 #if wxCHECK_VERSION(3, 1, 6)
 #include <wx/bmpbndl.h>
 #endif
@@ -193,8 +195,8 @@ void SumCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
     if (m_sumStyle == SM_SUM) {
       // FIXME: The sum sign look ok now (for wxWidgets >= 3.1.6) but the position/size is WRONG!!
 #if wxCHECK_VERSION(3, 1, 6)
-    wxBitmapBundle sumbitmap = wxBitmapBundle::FromSVG(m_svgSumSign.utf8_str(),
-                                                       wxSize(m_signWidth, m_signHeight));
+      wxBitmapBundle sumbitmap = wxBitmapBundle::FromSVG(reinterpret_cast<char *>(SUMSIGN),
+                                                         wxSize(m_signWidth, m_signHeight));
     // Make the bitmap hi-res, if the OS supports and needs that
     const wxWindow *worksheet = m_configuration->GetWorkSheet();
     if(worksheet)
@@ -439,12 +441,3 @@ void SumCell::SetNextToDraw(Cell *next) {
   else
     m_nextToDraw = next;
 }
-
-// From: https://commons.wikimedia.org/wiki/File:%CE%A3_Icon.svg (public domain)
-wxString SumCell::m_svgSumSign = R"svg(
-<?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" width="130" height="150">
-<path fill="#000" d="M10,11V7H111L114,41V41C110,35 109,29 107,26C105,22 103,20 99,18C96,16 91,16 85,16L38,16L80,69L33,124L84,124C93,124 101,123 105,120C110,117 114,110 117,101L120,102L115,143L10,143V139L62,78z"/>
-</svg>
-)svg";
-
