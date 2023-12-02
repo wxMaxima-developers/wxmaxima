@@ -282,7 +282,7 @@ The material that is developed in a _wxMaxima_ session can be stored for later u
 One example is shown below. `Quadratic.mac` defines a function and afterward generates a plot with `wxdraw2d()`.
 Afterward the contents of the file `Quadratic.mac` are printed and newly defined function `f()` is evaluated.
 
-![Loading a  file with ](./BatchImage.png){ id=img_BatchImage }
+![Loading a file with `batch()`](./BatchImage.png){ id=img_BatchImage }
 
 Attention: Although the file `Quadratic.mac` has a usual _Maxima_ extension (`.mac`), it can only be read by _wxMaxima_, since the command `wxdraw2d()` is a wxMaxima-extension to _Maxima_.
 
