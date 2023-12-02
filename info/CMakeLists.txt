@@ -27,7 +27,7 @@ if(PANDOC)
 			COMMENT "Generating ${FILEBASENAME}.html")
 		add_custom_target(build_${FILEBASENAME}.html DEPENDS ${FILEBASENAME}.html)
 		add_dependencies(html build_${FILEBASENAME}.html)
-		install(FILES "${CMAKE_CURRENT_BINARY_DIR}/${FILEBASENAME}.html" DESTINATION share/doc/wxmaxima OPTIONAL)
+		install(FILES "${FILEBASENAME}.html" DESTINATION share/doc/wxmaxima OPTIONAL)
 	endfunction()
 
 	function(generate_wxmaxima_documentation_pdf FILEBASENAME PANDOC_TEXSELECT_OPTION)
@@ -49,7 +49,7 @@ if(PANDOC)
 			COMMENT "Generating ${FILEBASENAME}.pdf")
 		add_custom_target(build_${FILEBASENAME}.pdf DEPENDS ${FILEBASENAME}.pdf)
 		add_dependencies(pdf build_${FILEBASENAME}.pdf)
-		install(FILES "${CMAKE_CURRENT_BINARY_DIR}/${FILEBASENAME}.pdf" DESTINATION share/doc/wxmaxima OPTIONAL)
+		install(FILES "${FILEBASENAME}.pdf" DESTINATION share/doc/wxmaxima OPTIONAL)
 	endfunction()
 
 	function(generate_wxmaxima_documentation_epub FILEBASENAME)
@@ -60,7 +60,7 @@ if(PANDOC)
 			COMMENT "Generating ${FILEBASENAME}.epub")
 		add_custom_target(build_${FILEBASENAME}.epub DEPENDS ${FILEBASENAME}.epub)
 		add_dependencies(epub build_${FILEBASENAME}.epub)
-		install(FILES "${CMAKE_CURRENT_BINARY_DIR}/${FILEBASENAME}.epub" DESTINATION share/doc/wxmaxima OPTIONAL)
+		install(FILES "${FILEBASENAME}.epub" DESTINATION share/doc/wxmaxima OPTIONAL)
 	endfunction()
 
 	# Create a list of the common part of the name of all the translated manuals.
@@ -147,14 +147,9 @@ else()
 	file(COPY ${WXMAXIMA_HTML_HELP} DESTINATION .)
 endif()
 
-set(HTMLHELP_ADDITIONAL_FILES wxmaxima.css
-                              BatchImage.png cell-example.png ezUnits.png InputCell.png locale-warning.png MatrixTableExample.png
-                              maxima_screenshot.png sbclMemory.png SecondTableExample.png SidePanes.png Sidepane-TOC-convert-headings.png
-                              wxMaxima_configuration_001.png wxMaximaLogo.png wxMaximaWindow.png wxmaxima.svg)
-foreach(CURRENTFILE ${HTMLHELP_ADDITIONAL_FILES})
-	install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/${CURRENTFILE}" DESTINATION share/doc/wxmaxima)
-	file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/${CURRENTFILE}" DESTINATION .)
-endforeach()
+file(GLOB HTMLHELP_ADDITIONAL_FILES *.png *.css *.svg)
+install(FILES ${HTMLHELP_ADDITIONAL_FILES} DESTINATION share/doc/wxmaxima)
+file(COPY ${HTMLHELP_ADDITIONAL_FILES} DESTINATION .)
 
 
 
