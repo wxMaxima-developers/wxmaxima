@@ -6,6 +6,7 @@
   assert (#1844)
 - Corrected the cursor position after unsuccessful autocompletes
 - Corrected the handling of question prompts from maxima (#1827)
+- Bug corrections in the search functionality
 
 # 23.11.0
 
