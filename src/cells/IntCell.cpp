@@ -147,8 +147,7 @@ void IntCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
     // FIXME: The integral sign look ok now (for wxWidgets >= 3.1.6) but the position/size is WRONG!!
 #if wxCHECK_VERSION(3, 1, 6)
     sign.y -= .5 * m_signHeight;
-    wxBitmapBundle integralbitmap = wxBitmapBundle::FromSVG(reinterpret_cast<char *>(INTSIGN),
-                                                            wxSize(m_signWidth, m_signHeight));
+    wxBitmapBundle integralbitmap = wxBitmapBundle::FromSVG(reinterpret_cast<const char*>(INTSIGN), wxSize(m_signWidth, m_signHeight));
     // Make the bitmap hi-res, if the OS supports and needs that
     const wxWindow *worksheet = m_configuration->GetWorkSheet();
     if(worksheet)

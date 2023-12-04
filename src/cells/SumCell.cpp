@@ -143,7 +143,7 @@ void SumCell::Recalculate(AFontSize fontsize) {
   useSVGsign = false;
 #endif
   // tell compilers and static analysis tools not to worry if they
-  // believe that useSVGsign does never change value 
+  // believe that useSVGsign does never change value
   (void) useSVGsign;
   if(useSVGsign)
     {
@@ -195,8 +195,7 @@ void SumCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
     if (m_sumStyle == SM_SUM) {
       // FIXME: The sum sign look ok now (for wxWidgets >= 3.1.6) but the position/size is WRONG!!
 #if wxCHECK_VERSION(3, 1, 6)
-      wxBitmapBundle sumbitmap = wxBitmapBundle::FromSVG(reinterpret_cast<char *>(SUMSIGN),
-                                                         wxSize(m_signWidth, m_signHeight));
+      wxBitmapBundle sumbitmap = wxBitmapBundle::FromSVG(reinterpret_cast<const char*>(SUMSIGN), wxSize(m_signWidth, m_signHeight));
     // Make the bitmap hi-res, if the OS supports and needs that
     const wxWindow *worksheet = m_configuration->GetWorkSheet();
     if(worksheet)
