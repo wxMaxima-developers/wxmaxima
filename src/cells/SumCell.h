@@ -78,6 +78,7 @@ public:
 private:
   std::unique_ptr<Cell> MakeStart(Cell *under) const;
   void MakeBreakUpCells();
+  const static wxString m_svgSumSign;
 
   ParenCell *Paren() const;
   //! The base cell owned by the paren (it's without the paren)

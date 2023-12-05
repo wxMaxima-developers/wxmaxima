@@ -195,7 +195,8 @@ void SumCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
     if (m_sumStyle == SM_SUM) {
       // FIXME: The sum sign look ok now (for wxWidgets >= 3.1.6) but the position/size is WRONG!!
 #if wxCHECK_VERSION(3, 1, 6)
-      wxBitmapBundle sumbitmap = wxBitmapBundle::FromSVG(reinterpret_cast<const char*>(SUMSIGN), wxSize(m_signWidth, m_signHeight));
+      wxBitmapBundle sumbitmap = wxBitmapBundle::FromSVG(m_svgSumSign.c_str(),
+                                                         wxSize(m_signWidth, m_signHeight));
     // Make the bitmap hi-res, if the OS supports and needs that
     const wxWindow *worksheet = m_configuration->GetWorkSheet();
     if(worksheet)
@@ -440,3 +441,5 @@ void SumCell::SetNextToDraw(Cell *next) {
   else
     m_nextToDraw = next;
 }
+
+const wxString SumCell::m_svgSumSign(reinterpret_cast<const char*>(SUMSIGN));
