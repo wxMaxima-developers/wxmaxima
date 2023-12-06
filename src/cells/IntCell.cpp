@@ -150,7 +150,7 @@ void IntCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
     wxString signWithCorrectDefaultColor = m_svgIntegralSign;
     signWithCorrectDefaultColor.Replace("\"defaultcolor\"",
                                         "\"#" + wxColor2HtmlString(GetForegroundColor()) + "\"");
-    wxBitmapBundle integralbitmap = wxBitmapBundle::FromSVG(m_svgIntegralSign.c_str(),
+    wxBitmapBundle integralbitmap = wxBitmapBundle::FromSVG(signWithCorrectDefaultColor.c_str(),
                                                             wxSize(m_signWidth, m_signHeight));
     // Make the bitmap hi-res, if the OS supports and needs that
     const wxWindow *worksheet = m_configuration->GetWorkSheet();
