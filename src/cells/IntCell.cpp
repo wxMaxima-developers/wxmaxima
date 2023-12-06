@@ -147,6 +147,9 @@ void IntCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
     // FIXME: The integral sign look ok now (for wxWidgets >= 3.1.6) but the position/size is WRONG!!
 #if wxCHECK_VERSION(3, 1, 6)
     sign.y -= .5 * m_signHeight;
+    wxString signWithCorrectDefaultColor = m_svgIntegralSign;
+    signWithCorrectDefaultColor.Replace("\"defaultcolor\"",
+                                        "\"#" + wxColor2HtmlString(GetForegroundColor()) + "\"");
     wxBitmapBundle integralbitmap = wxBitmapBundle::FromSVG(m_svgIntegralSign.c_str(),
                                                             wxSize(m_signWidth, m_signHeight));
     // Make the bitmap hi-res, if the OS supports and needs that

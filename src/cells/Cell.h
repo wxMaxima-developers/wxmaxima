@@ -886,6 +886,7 @@ public:
   void MockBreakUp() { m_isBrokenIntoLines = 1; }
 #endif
 
+  static wxString wxColor2HtmlString(wxColor col);
 protected:
   std::unique_ptr<Cell> MakeVisiblyInvalidCell() const;
 public:

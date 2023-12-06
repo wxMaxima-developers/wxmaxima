@@ -127,6 +127,15 @@ void Cell::SetType(CellType type) {
     GetGroup()->ResetSize();
 }
 
+wxString Cell::wxColor2HtmlString(wxColor col)
+{
+  return wxString::Format("%02X%02X%02X%02X",
+                          (unsigned int) col.Red(),
+                          (unsigned int) col.Green(),
+                          (unsigned int) col.Blue(),
+                          (unsigned int) col.Alpha());
+}
+
 void Cell::CopyCommonData(const Cell &cell) {
   wxASSERT(m_toolTip && !m_ownsToolTip);
   wxASSERT(cell.m_toolTip);
