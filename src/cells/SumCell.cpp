@@ -196,7 +196,7 @@ void SumCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
       // FIXME: The sum sign look ok now (for wxWidgets >= 3.1.6) but the position/size is WRONG!!
 #if wxCHECK_VERSION(3, 1, 6)
     wxString signWithCorrectDefaultColor = m_svgSumSign;
-    signWithCorrectDefaultColor.Replace("\"defaultcolor\"",
+    signWithCorrectDefaultColor.Replace("\"currentColor\"",
                                         "\"#" + wxColor2HtmlString(GetForegroundColor()) + "\"");
       wxBitmapBundle sumbitmap = wxBitmapBundle::FromSVG(signWithCorrectDefaultColor.c_str(),
                                                          wxSize(m_signWidth, m_signHeight));

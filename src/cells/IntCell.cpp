@@ -148,7 +148,7 @@ void IntCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
 #if wxCHECK_VERSION(3, 1, 6)
     sign.y -= .5 * m_signHeight;
     wxString signWithCorrectDefaultColor = m_svgIntegralSign;
-    signWithCorrectDefaultColor.Replace("\"defaultcolor\"",
+    signWithCorrectDefaultColor.Replace("\"currentColor\"",
                                         "\"#" + wxColor2HtmlString(GetForegroundColor()) + "\"");
     wxBitmapBundle integralbitmap = wxBitmapBundle::FromSVG(signWithCorrectDefaultColor.c_str(),
                                                             wxSize(m_signWidth, m_signHeight));
