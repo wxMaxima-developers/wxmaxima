@@ -144,7 +144,6 @@ void IntCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
     wxPoint base(point), under(point), over(point), var(point), sign(point);
 
     SetPen(antialiassingDC, 1.5);
-    // FIXME: The integral sign look ok now (for wxWidgets >= 3.1.6) but the position/size is WRONG!!
 #if wxCHECK_VERSION(3, 1, 6)
     sign.y -= .5 * m_signHeight;
     wxString signWithCorrectDefaultColor = m_svgIntegralSign;
