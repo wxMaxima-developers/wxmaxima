@@ -7586,7 +7586,7 @@ bool Worksheet::FindNext(const wxString &str, bool down, bool ignoreCase,
   return false;
 }
 
-bool Worksheet::FindNext_Regex(const wxString &str, bool down,
+bool Worksheet::FindNext_Regex(const wxString &str, const bool &down,
                                bool warn) {
   if (!GetTree())
     return false;

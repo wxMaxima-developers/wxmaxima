@@ -3603,7 +3603,7 @@ bool EditorCell::FindNext_RegEx(wxString str, const bool &down) {
     match =  regexSearch.FindNext(text, start);
   else
     match =  regexSearch.FindNext_Reverse(text, start);
-  if(!match.Found())
+  if(match.Found())
     {
       SetSelection(match.GetStart(), match.GetEnd());
       return true;

@@ -499,8 +499,6 @@ void TextCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
     SetTextColor(dc);
     dc->DrawText(m_displayedText, point.x + padding,
                  point.y - m_center + MC_TEXT_PADDING);
-    //        std::cerr<<"Text=\""<<m_displayedText<<"\",pos=("<<point.x<<","<<point.y<<") Cntxt="<<dc<<"\n";
-
   }
 }
 

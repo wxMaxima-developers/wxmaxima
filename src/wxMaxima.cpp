@@ -6522,7 +6522,7 @@ void wxMaxima::OnFind(wxFindDialogEvent &event) {
       else
         {
           if (!m_worksheet->FindNext_Regex(event.GetFindString(),
-                                           event.GetFlags() & wxFR_DOWN))
+                                           !!(event.GetFlags() & wxFR_DOWN)))
             LoggingMessageBox(_("No matches found!"));
         }
     }

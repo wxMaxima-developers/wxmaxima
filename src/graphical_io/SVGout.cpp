@@ -87,25 +87,6 @@ bool Svgout::Layout() {
 #endif
 
   config->SetRecalcContext(dc);
-  //std::cerr<<"DrawContext="<<&dc<<"\n";
-  //std::cerr<<"Visible region1: ("<<config->GetVisibleRegion().GetLeft()<<","<<
-  //  config->GetVisibleRegion().GetTop()<<"):("<<config->GetVisibleRegion().GetRight() <<
-  //  ","<<config->GetVisibleRegion().GetBottom()<<")\n";
-
-  //std::cerr<<"Visible region2: ("<<m_tree.get()->GetConfiguration()->GetVisibleRegion().GetLeft()<<","<<
-  //  m_tree.get()->GetConfiguration()->GetVisibleRegion().GetTop()<<"):("<<m_tree.get()->GetConfiguration()->GetVisibleRegion().GetRight() <<
-  //  ","<<m_tree.get()->GetConfiguration()->GetVisibleRegion().GetBottom()<<")\n";
-
-  //std::cerr<<"Visible region1: ("<<config->GetVisibleRegion().GetLeft()<<","<<
-  //  config->GetVisibleRegion().GetTop()<<"):("<<config->GetVisibleRegion().GetRight() <<
-  //  ","<<config->GetVisibleRegion().GetBottom()<<")\n";
-
-  //std::cerr<<"Visible region2: ("<<m_tree.get()->GetConfiguration()->GetVisibleRegion().GetLeft()<<","<<
-  //  m_tree.get()->GetConfiguration()->GetVisibleRegion().GetTop()<<"):("<<m_tree.get()->GetConfiguration()->GetVisibleRegion().GetRight() <<
-  //  ","<<m_tree.get()->GetConfiguration()->GetVisibleRegion().GetBottom()<<")\n";
-  //std::cerr<<"Update region2: ("<<m_tree.get()->GetConfiguration()->GetUpdateRegion().GetLeft()<<","<<
-  //  m_tree.get()->GetConfiguration()->GetUpdateRegion().GetTop()<<"):("<<m_tree.get()->GetConfiguration()->GetUpdateRegion().GetRight() <<
-  //  ","<<m_tree.get()->GetConfiguration()->GetUpdateRegion().GetBottom()<<")\n";
   m_cmn.Draw(m_tree.get());
   config->UnsetContext();
   // std::cerr<<"cfg1="<<config<<", cfg2="<<m_tree.get()->GetConfiguration()<<"\n";

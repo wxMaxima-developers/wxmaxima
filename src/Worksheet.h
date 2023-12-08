@@ -1436,7 +1436,7 @@ public:
     Used by the find dialog.
   */
   bool FindNext(const wxString &str, bool down, bool ignoreCase, bool warn = true);
-  bool FindNext_Regex(const wxString &str, bool down, bool warn = true);
+  bool FindNext_Regex(const wxString &str, const bool &down, bool warn = true);
 
   /*! Replace the current occurrence of a string
 
