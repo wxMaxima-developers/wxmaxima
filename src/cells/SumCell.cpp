@@ -205,7 +205,7 @@ void SumCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
     if(worksheet)
       sumbitmap.GetPreferredBitmapSizeFor(worksheet);
     wxBitmap bmp(sumbitmap.GetBitmap(wxSize(m_signWidth, m_signHeight)));
-    antialiassingDC->DrawBitmap(bmp, base.x, over.y+m_signHeight/2, true);
+    antialiassingDC->DrawBitmap(bmp, base.x, over.y+m_signHeight/3, true);
 #else
       // DRAW SUM SIGN
       //  Upper part
