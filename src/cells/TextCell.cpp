@@ -624,9 +624,6 @@ wxString TextCell::ToMatlab() const {
       }
       break;
     }
-  case TS_STRING:
-    text = wxS("\"") + text + wxS("\"");
-    break;
 
     // Labels sometimes end with a few spaces. But if they are long they don't
     // do that any more => Add a TAB to the end of any label replacing trailing
