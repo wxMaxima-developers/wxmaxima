@@ -214,6 +214,10 @@ wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGroupCell.html#a02dab13af6158beb628cd2bb0be34a20">Hide</a> (bool hide) override</td></tr>
 <tr class="memdesc:a02dab13af6158beb628cd2bb0be34a20"><td class="mdescLeft">&#160;</td><td class="mdescRight">Hide this cell. See <a class="el" href="classCell.html#a135386822998257ed1de2a1aa6812163" title="Whether this cell is not to be drawn.">IsHidden()</a> for details. <br /></td></tr>
 <tr class="separator:a02dab13af6158beb628cd2bb0be34a20"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7961b9ababcda614dce6b53c04b7fd3f"><td class="memItemLeft" align="right" valign="top"><a id="a7961b9ababcda614dce6b53c04b7fd3f"></a>
+virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGroupCell.html#a7961b9ababcda614dce6b53c04b7fd3f">FirstLineOnlyEditor</a> () override</td></tr>
+<tr class="memdesc:a7961b9ababcda614dce6b53c04b7fd3f"><td class="mdescLeft">&#160;</td><td class="mdescRight">True, if this <a class="el" href="classGroupCell.html" title="A cell grouping input (and, if there is one, also the output) cell to a foldable item.">GroupCell</a> is folded and its editor shows only its first line. <br /></td></tr>
+<tr class="separator:a7961b9ababcda614dce6b53c04b7fd3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3db1b095350c1fb1aa44f0e779ecdd6f"><td class="memItemLeft" align="right" valign="top"><a id="a3db1b095350c1fb1aa44f0e779ecdd6f"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>SwitchHide</b> ()</td></tr>
 <tr class="separator:a3db1b095350c1fb1aa44f0e779ecdd6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2437,8 +2441,9 @@ The y position used here must be in sync with the one calculated by <a class="el
 <p>Currently the following items fall into this category:</p><ul>
 <li>parenthesis around fractions or similar things that clearly can be recognized as atoms</li>
 <li>plus signs within numbers</li>
-<li>The output in folded GroupCells </li>
+<li>The output in folded GroupCells</li>
 </ul>
+<p>Additionally folded GroupCells are marked as "hidden". </p>
 
 </div>
 </div>

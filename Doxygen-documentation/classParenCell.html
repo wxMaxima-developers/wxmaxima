@@ -468,6 +468,10 @@ virtual wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el
 <tr class="memitem:a135386822998257ed1de2a1aa6812163"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a135386822998257ed1de2a1aa6812163">IsHidden</a> () const</td></tr>
 <tr class="memdesc:a135386822998257ed1de2a1aa6812163"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether this cell is not to be drawn.  <a href="classCell.html#a135386822998257ed1de2a1aa6812163">More...</a><br /></td></tr>
 <tr class="separator:a135386822998257ed1de2a1aa6812163"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab284ff699941a6e13dd730a92b872b47"><td class="memItemLeft" align="right" valign="top"><a id="ab284ff699941a6e13dd730a92b872b47"></a>
+virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#ab284ff699941a6e13dd730a92b872b47">FirstLineOnlyEditor</a> ()</td></tr>
+<tr class="memdesc:ab284ff699941a6e13dd730a92b872b47"><td class="mdescLeft">&#160;</td><td class="mdescRight">True, if this <a class="el" href="classGroupCell.html" title="A cell grouping input (and, if there is one, also the output) cell to a foldable item.">GroupCell</a> is folded and its editor shows only its first line. <br /></td></tr>
+<tr class="separator:ab284ff699941a6e13dd730a92b872b47"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a87f7f4583027ae2e5e5baf664d488dc2"><td class="memItemLeft" align="right" valign="top"><a id="a87f7f4583027ae2e5e5baf664d488dc2"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a87f7f4583027ae2e5e5baf664d488dc2">Hide</a> (bool hide=true)</td></tr>
 <tr class="memdesc:a87f7f4583027ae2e5e5baf664d488dc2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Hide this cell. See <a class="el" href="classCell.html#a135386822998257ed1de2a1aa6812163" title="Whether this cell is not to be drawn.">IsHidden()</a> for details. <br /></td></tr>
@@ -1905,8 +1909,9 @@ wxCoord&#160;</td><td class="memItemRight" valign="bottom"><b>m_center</b> = -1<
 <p>Currently the following items fall into this category:</p><ul>
 <li>parenthesis around fractions or similar things that clearly can be recognized as atoms</li>
 <li>plus signs within numbers</li>
-<li>The output in folded GroupCells </li>
+<li>The output in folded GroupCells</li>
 </ul>
+<p>Additionally folded GroupCells are marked as "hidden". </p>
 
 </div>
 </div>
