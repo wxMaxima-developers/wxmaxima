@@ -307,17 +307,6 @@ public:
       m_hasFocus = focus;
     }
 
-  void SetFirstLineOnly(bool show = true)
-    {
-      if (m_firstLineOnly != show)
-      {
-        m_width = m_height = -1;
-        m_firstLineOnly = show;
-      }
-      // Style the text anew.
-      StyleText();
-    }
-
   bool IsActive() const override;
 
   //! Is the cursor at the start of this cell?
@@ -693,7 +682,6 @@ private:
       m_containsChanges = false;
       m_containsChangesCheck = false;
       m_displayCaret = false;
-      m_firstLineOnly = false;
       m_hasFocus = false;
       m_isDirty = false;
       m_selectionChanged = false;
@@ -707,7 +695,6 @@ private:
   bool m_containsChanges : 1 /* InitBitFields */;
   bool m_containsChangesCheck : 1 /* InitBitFields */;
   bool m_displayCaret : 1 /* InitBitFields */;
-  bool m_firstLineOnly : 1 /* InitBitFields */;
   bool m_hasFocus : 1 /* InitBitFields */;
   bool m_isDirty : 1 /* InitBitFields */;
   bool m_errorIndexSet : 1 /* InitBitFields */;

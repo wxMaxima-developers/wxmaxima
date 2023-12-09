@@ -8,6 +8,8 @@
 - Corrected the handling of question prompts from maxima (#1827)
 - Bug corrections in the search functionality
 - RegEx search works again
+- Clicking on the notification now is more likely to focus the worksheet
+- Corrected the cell folding logic (#1853)
 
 # 23.11.0
 
