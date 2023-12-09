@@ -625,7 +625,7 @@ void EditorCell::Recalculate(AFontSize fontsize) {
         }
 
         // Handle folding
-        if (m_firstLineOnly)
+        if (FirstLineOnlyEditor())
           m_numberOfLines = 1;
 
         // Assign empty lines a minimum width
@@ -636,7 +636,7 @@ void EditorCell::Recalculate(AFontSize fontsize) {
         m_width = width + 2 * Scale_Px(2);
 
         // Calculate the cell height
-        if (m_firstLineOnly)
+        if (FirstLineOnlyEditor())
           m_height = m_charHeight + 2 * Scale_Px(2);
         else
           m_height = m_numberOfLines * m_charHeight + 2 * static_cast<size_t>(Scale_Px(2));
@@ -2218,13 +2218,11 @@ bool EditorCell::ActivateCursor() {
   m_paren1 = m_paren2 = -1;
 
   // upon activation unhide the parent groupcell
-  if(m_firstLineOnly)
+  if(FirstLineOnlyEditor())
     {
-      m_firstLineOnly = false;
-      StyleText();
+      GetGroup()->Hide(false);
       retval = true;
     }
-  GetGroup()->Hide(false);
   if (GetType() == MC_TYPE_INPUT)
     FindMatchingParens();
   return retval;
@@ -2947,7 +2945,7 @@ void EditorCell::StyleTextCode() {
   wxString suppressedLinesInfo;
 
   // Handle folding of EditorCells
-  if (m_firstLineOnly) {
+  if (FirstLineOnlyEditor()) {
     long long newlinepos = textToStyle.Find(wxS("\n"));
     if (newlinepos != wxNOT_FOUND) {
       size_t lines = textToStyle.Freq(wxS('\n'));
@@ -3152,7 +3150,7 @@ void EditorCell::StyleTextTexts() {
         line = m_text.SubString(lastLineStart, i - 1);
 
       // If we fold the cell we only show the first line of text.
-      if (m_firstLineOnly) {
+      if (FirstLineOnlyEditor()) {
         m_styledText.push_back(
                                StyledText(line + wxString::Format(_(" ... + %li hidden lines"),
                                                                   static_cast<long>(m_text.Freq(wxS('\n'))))));
@@ -3251,7 +3249,7 @@ void EditorCell::StyleTextTexts() {
     wxStringTokenizer lines(m_text, wxS("\n"), wxTOKEN_RET_EMPTY_ALL);
     while (lines.HasMoreTokens()) {
       wxString line = lines.GetNextToken();
-      if (m_firstLineOnly) {
+      if (FirstLineOnlyEditor()) {
         m_styledText.push_back(
                                StyledText(line + wxString::Format(_(" ... + %li hidden lines"),
                                                                   static_cast<long>(m_text.Freq(wxS('\n')))),
@@ -3267,7 +3265,7 @@ void EditorCell::StyleTextTexts() {
 } // Style text, not code?
 
 const MaximaTokenizer::TokenList &EditorCell::GetAllTokens() {
-  if(m_firstLineOnly)
+  if(FirstLineOnlyEditor())
     {
       if(!m_tokens_including_hidden_valid)
         {

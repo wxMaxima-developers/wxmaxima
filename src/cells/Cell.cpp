@@ -127,6 +127,12 @@ void Cell::SetType(CellType type) {
     GetGroup()->ResetSize();
 }
 
+bool Cell::FirstLineOnlyEditor()
+{
+  wxASSERT(GetGroup()->GetType() == MC_TYPE_GROUP);
+  return GetGroup()->FirstLineOnlyEditor();
+}
+
 wxString Cell::wxColor2HtmlString(wxColor col)
 {
   return wxString::Format("%02X%02X%02X%02X",

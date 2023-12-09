@@ -55,9 +55,9 @@ public:
   //! A destructor that also closes the notification
   ~Notification() { Notification::Close(); }
   //! Informs the notification which the main window is it notified for.
-  void SetGroup(wxWindow *parent);
+  void SetParent(wxWindow *parent);
   //! Returns a pointer to the main window or NULL, if no main window is set.
-  wxWindow *GetGroup() { return m_parent; }
+  wxWindow *GetParent() { return m_parent; }
   //! The cell we signal an error for
   GroupCell *m_errorNotificationCell;
 private:

@@ -708,9 +708,14 @@ public:
    * - parenthesis around fractions or similar things that clearly can be recognized as atoms
    * - plus signs within numbers
    * - The output in folded GroupCells
+   * .
+   * Additionally folded GroupCells are marked as "hidden".
    */
   bool IsHidden() const { return m_isHidden; }
 
+  //! True, if this GroupCell is folded and its editor shows only its first line.
+  virtual bool FirstLineOnlyEditor();
+  
   //! Hide this cell. See IsHidden() for details.
   virtual void Hide(bool hide = true) { m_isHidden = hide; }
 

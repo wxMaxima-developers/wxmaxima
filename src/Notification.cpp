@@ -56,15 +56,15 @@ Notification::Notification(const wxString &title, const wxString &message,
 #endif
 }
 
-void Notification::SetGroup(wxWindow *parent) {
+void Notification::SetParent(wxWindow *parent) {
   m_parent = parent;
   wxNotificationMessage::SetParent(parent);
 }
 
 void Notification::OnClick(wxCommandEvent &WXUNUSED(event)) {
-  if (GetGroup()) {
-    GetGroup()->Raise();
-    GetGroup()->Show();
-    GetGroup()->SetFocus();
+  if (GetParent()) {
+    CallAfter([this] {GetParent()->Raise(); });
+    CallAfter([this] {GetParent()->Show(); });
+    CallAfter([this] {GetParent()->SetFocus(); });
   }
 }

@@ -351,8 +351,6 @@ void GroupCell::RemoveOutput() {
   m_cellPointers->m_errorList.Remove(this);
   // Calculate the new cell height.
 
-  Cell::Hide(false);
-
   m_height = m_inputHeight;
   if (m_inputLabel)
     m_width = m_inputLabel->GetFullWidth();
@@ -1611,8 +1609,12 @@ bool GroupCell::UnBreakUpCells(Cell *cell) const {
   return retval;
 }
 
-// support for hiding text, code cells
+bool GroupCell::FirstLineOnlyEditor()
+{
+  return(IsHidden() && (!IsHeading()));
+}
 
+// support for hiding text, code cells
 void GroupCell::Hide(bool hide) {
   if (IsFoldable())
     return;
@@ -1620,9 +1622,10 @@ void GroupCell::Hide(bool hide) {
   if (IsHidden() == hide)
     return;
 
+  if(GetEditable())
+    GetEditable()->StyleText();
+
   Cell::Hide(hide);
-  if ((m_groupType == GC_TYPE_TEXT) || (m_groupType == GC_TYPE_CODE))
-    GetEditable()->SetFirstLineOnly(hide);
 
   // Don't keep cached versions of scaled images around if they aren't visible
   // at all.

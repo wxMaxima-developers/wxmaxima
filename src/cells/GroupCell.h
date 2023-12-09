@@ -173,7 +173,7 @@ public:
   wxString ToXML() const override;
 
   void Hide(bool hide) override;
-
+  virtual bool FirstLineOnlyEditor() override;
   void SwitchHide();
 
   wxRect HideRect();
