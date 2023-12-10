@@ -690,6 +690,17 @@ void MyApp::GenerateDebugReport(wxDebugReport::Context ctx)
           file.Close();
         }
 
+      report->AddText("README.txt",
+                      "On crashes, if the compiler has provided enough information\n"
+                      "and wxWidgets knows how to interpret it we might get a stack\n"
+                      "backtrace, that contains the exact line of program code the\n"
+                      "crash happened in, what parameters the function that crashed\n"
+                      "was called with and, if that does still not explain the crash\n"
+                      "how we ended up in that situation.\n"
+                      "With all that information fixing a crash usually only takes\n"
+                      "minutes. The rest of the crash report\n"
+                      "might be there, if needed, but usually doesn't help too much.",
+                      "What is this report all about?");
       report->AddFile(fn.GetFullName(), "timestamp of this report");
 
       // can also add an existing file directly, it will be copied
