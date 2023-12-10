@@ -690,6 +690,8 @@ void MyApp::GenerateDebugReport(wxDebugReport::Context ctx)
           file.Close();
         }
 
+      // No translation after a crash, as the internationalization stuff might have been
+      // broken by the crash.
       report->AddText("README.txt",
                       "On crashes, if the compiler has provided enough information\n"
                       "and wxWidgets knows how to interpret it we might get a stack\n"
@@ -699,7 +701,11 @@ void MyApp::GenerateDebugReport(wxDebugReport::Context ctx)
                       "how we ended up in that situation.\n"
                       "With all that information fixing a crash usually only takes\n"
                       "minutes. The rest of the crash report\n"
-                      "might be there, if needed, but usually doesn't help too much.",
+                      "might be there, if needed, but usually doesn't help too much.\n\n"
+                      "be aware, though, that the stack backtrace contains the\n"
+                      "parameters of the chain of function calls that ended up in\n"
+                      "a crash, and therefore in rare cases might contain personal\n"
+                      "information.",
                       "What is this report all about?");
       report->AddFile(fn.GetFullName(), "timestamp of this report");
 
