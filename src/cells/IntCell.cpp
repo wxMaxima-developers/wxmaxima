@@ -127,10 +127,16 @@ void IntCell::Recalculate(AFontSize fontsize) {
       m_var->GetFullWidth() + Scale_Px(4);
     // cppcheck-suppress duplicateBranch
     if (m_intStyle == INT_DEF) {
-      m_center = wxMax(m_signHeight / 2,
-                       m_base->GetCenterList());
-      m_height = m_center + wxMax(m_signHeight / 2,
-                                  m_base->GetMaxDrop());
+      /* The height of our whole integral needs to be
+           - either high enough for the integral's contents, or
+           - enough for the "over" and "under" plus a MC_LINE_SKIP between them, or
+           - enough for the integral sign.
+      */
+      m_center = wxMax(wxMax(m_signHeight / 2,
+                             m_base->GetCenterList()), m_over->GetMaxDrop() + MC_LINE_SKIP / 2);
+      m_height = m_center + wxMax(wxMax(m_signHeight / 2,
+                                        m_base->GetMaxDrop()), m_over->GetMaxDrop()
+                                  + MC_LINE_SKIP + m_under->GetMaxDrop());
     } else {
       m_center = wxMax(m_signHeight / 2, m_base->GetCenterList());
       m_height = m_center + wxMax(m_signHeight / 2, m_base->GetMaxDrop());
