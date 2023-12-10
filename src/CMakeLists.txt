@@ -501,6 +501,20 @@ add_custom_target(build_sumSign.h DEPENDS ${CMAKE_BINARY_DIR}/sumSign.h)
 add_dependencies(wxmaxima build_sumSign.h)
 
 add_custom_command(
+        OUTPUT ${CMAKE_BINARY_DIR}/prodSign.h
+        COMMAND ${CMAKE_COMMAND} ARGS
+        -DBIN2H_SOURCE_FILE="${CMAKE_SOURCE_DIR}/art/worksheet/prodSign.svg"
+        -DBIN2H_VARIABLE_NAME=prodSign
+        -DBIN2H_HEADER_FILE="${CMAKE_BINARY_DIR}/prodSign.h"
+        -DBIN2H="${CMAKE_SOURCE_DIR}/cmake-bin2h/bin2h.cmake"
+        -P "${CMAKE_SOURCE_DIR}/src/bin2h.cmake"
+        COMMENT "Embedding prodSign.svg"
+        DEPENDS ${CMAKE_SOURCE_DIR}/art/worksheet/prodSign.svg ${CMAKE_SOURCE_DIR}/src/bin2h.cmake
+)
+add_custom_target(build_prodSign.h DEPENDS ${CMAKE_BINARY_DIR}/prodSign.h)
+add_dependencies(wxmaxima build_prodSign.h)
+
+add_custom_command(
         OUTPUT ${CMAKE_BINARY_DIR}/intSign.h
         COMMAND ${CMAKE_COMMAND} ARGS
         -DBIN2H_SOURCE_FILE="${CMAKE_SOURCE_DIR}/art/worksheet/intSign.svg"
