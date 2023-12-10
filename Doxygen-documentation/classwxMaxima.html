@@ -855,6 +855,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:abb9402a98412ea80e1a15b0489c52221"><td class="memItemLeft" align="right" valign="top"><a id="abb9402a98412ea80e1a15b0489c52221"></a>
 wxString&#160;</td><td class="memItemRight" valign="bottom"><b>wxMaximaManualLocation</b> ()</td></tr>
 <tr class="separator:abb9402a98412ea80e1a15b0489c52221"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:addcd30afe607f9c9184ac9f5732dfe6f"><td class="memItemLeft" align="right" valign="top"><a id="addcd30afe607f9c9184ac9f5732dfe6f"></a>
+<a class="el" href="classWorksheet.html">Worksheet</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>GetWorksheet</b> () const</td></tr>
+<tr class="separator:addcd30afe607f9c9184ac9f5732dfe6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4ae1d3b87df6c6a4bbf99548149ad950"><td class="memItemLeft" align="right" valign="top"><a id="a4ae1d3b87df6c6a4bbf99548149ad950"></a>
 virtual wxSize&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaximaFrame.html#a4ae1d3b87df6c6a4bbf99548149ad950">DoGetBestClientSize</a> () const</td></tr>
 <tr class="memdesc:a4ae1d3b87df6c6a4bbf99548149ad950"><td class="mdescLeft">&#160;</td><td class="mdescRight">The default size for the window. <br /></td></tr>
@@ -993,7 +996,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_maximaBusy</b></td>
 <a class="el" href="classConfiguration.html">Configuration</a>&#160;</td><td class="memItemRight" valign="bottom"><b>m_configuration</b></td></tr>
 <tr class="separator:a4e520d8380e27029f4a2af509d90a488"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aee0aa0ac10647a51bc3d18556bc09685"><td class="memItemLeft" align="right" valign="top"><a id="aee0aa0ac10647a51bc3d18556bc09685"></a>
-long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaximaFrame.html#aee0aa0ac10647a51bc3d18556bc09685">m_bytesFromMaxima</a></td></tr>
+long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaximaFrame.html#aee0aa0ac10647a51bc3d18556bc09685">m_bytesFromMaxima</a> = 0</td></tr>
 <tr class="memdesc:aee0aa0ac10647a51bc3d18556bc09685"><td class="mdescLeft">&#160;</td><td class="mdescRight">How many bytes did maxima send us until now? <br /></td></tr>
 <tr class="separator:aee0aa0ac10647a51bc3d18556bc09685"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aacbfb0677c03361806ec252d651f4263"><td class="memItemLeft" align="right" valign="top"><a id="aacbfb0677c03361806ec252d651f4263"></a>
@@ -1104,7 +1107,7 @@ wxMenu *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 <a class="el" href="classScrollingGenWizPanel.html">ScrollingGenWizPanel</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>m_wizard</b> = NULL</td></tr>
 <tr class="separator:ae8b723ca0c3941018b32ffb7286b4d41"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a580b275b4d56bb2c1c851404deeea1e0"><td class="memItemLeft" align="right" valign="top"><a id="a580b275b4d56bb2c1c851404deeea1e0"></a>
-long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaximaFrame.html#a580b275b4d56bb2c1c851404deeea1e0">m_drawDimensions_last</a></td></tr>
+long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaximaFrame.html#a580b275b4d56bb2c1c851404deeea1e0">m_drawDimensions_last</a> = -1</td></tr>
 <tr class="memdesc:a580b275b4d56bb2c1c851404deeea1e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Are we inside a 2d or 3d draw command? <br /></td></tr>
 <tr class="separator:a580b275b4d56bb2c1c851404deeea1e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae970d9ca843d9d9004e5a3dc3d9dde46"><td class="memItemLeft" align="right" valign="top"><a id="ae970d9ca843d9d9004e5a3dc3d9dde46"></a>
@@ -1149,6 +1152,13 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 wxAuiManager&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaximaFrame.html#ad1f3fbb9bc7e6dce8f83486f492254f1">m_manager</a></td></tr>
 <tr class="memdesc:ad1f3fbb9bc7e6dce8f83486f492254f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">The manager for dynamic screen layouts. <br /></td></tr>
 <tr class="separator:ad1f3fbb9bc7e6dce8f83486f492254f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af2869d450f22a0b5fd340dbbc7b67964"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classWorksheet.html">Worksheet</a> *const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaximaFrame.html#af2869d450f22a0b5fd340dbbc7b67964">m_worksheet</a> = NULL</td></tr>
+<tr class="memdesc:af2869d450f22a0b5fd340dbbc7b67964"><td class="mdescLeft">&#160;</td><td class="mdescRight">The worksheet itself.  <a href="classwxMaximaFrame.html#af2869d450f22a0b5fd340dbbc7b67964">More...</a><br /></td></tr>
+<tr class="separator:af2869d450f22a0b5fd340dbbc7b67964"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8bd088851c2448772b4c4f955db6af05"><td class="memItemLeft" align="right" valign="top"><a id="a8bd088851c2448772b4c4f955db6af05"></a>
+<a class="el" href="classHistory.html">History</a> *const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaximaFrame.html#a8bd088851c2448772b4c4f955db6af05">m_history</a></td></tr>
+<tr class="memdesc:a8bd088851c2448772b4c4f955db6af05"><td class="mdescLeft">&#160;</td><td class="mdescRight">The history pane. <br /></td></tr>
+<tr class="separator:a8bd088851c2448772b4c4f955db6af05"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a662bf1bd2689a78873096d294efb93f9"><td class="memItemLeft" align="right" valign="top"><a id="a662bf1bd2689a78873096d294efb93f9"></a>
 <a class="el" href="classXmlInspector.html">XmlInspector</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaximaFrame.html#a662bf1bd2689a78873096d294efb93f9">m_xmlInspector</a></td></tr>
 <tr class="memdesc:a662bf1bd2689a78873096d294efb93f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">A XmlInspector-like xml monitor. <br /></td></tr>
@@ -1161,14 +1171,6 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <a class="el" href="classLogPane.html">LogPane</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaximaFrame.html#adac1b28d94eb55cc627759b1547afb1b">m_logPane</a></td></tr>
 <tr class="memdesc:adac1b28d94eb55cc627759b1547afb1b"><td class="mdescLeft">&#160;</td><td class="mdescRight">The panel the log and debug messages will appear on. <br /></td></tr>
 <tr class="separator:adac1b28d94eb55cc627759b1547afb1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aff5428df805d6b558264aa5749a712db"><td class="memItemLeft" align="right" valign="top"><a id="aff5428df805d6b558264aa5749a712db"></a>
-<a class="el" href="classWorksheet.html">Worksheet</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaximaFrame.html#aff5428df805d6b558264aa5749a712db">m_worksheet</a></td></tr>
-<tr class="memdesc:aff5428df805d6b558264aa5749a712db"><td class="mdescLeft">&#160;</td><td class="mdescRight">The worksheet itself. <br /></td></tr>
-<tr class="separator:aff5428df805d6b558264aa5749a712db"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa8888e4d93342955d52d8f46fc8093ef"><td class="memItemLeft" align="right" valign="top"><a id="aa8888e4d93342955d52d8f46fc8093ef"></a>
-<a class="el" href="classHistory.html">History</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaximaFrame.html#aa8888e4d93342955d52d8f46fc8093ef">m_history</a></td></tr>
-<tr class="memdesc:aa8888e4d93342955d52d8f46fc8093ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">The history pane. <br /></td></tr>
-<tr class="separator:aa8888e4d93342955d52d8f46fc8093ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af5ddd6afb747c28c56bebfb84b7dffbb"><td class="memItemLeft" align="right" valign="top"><a id="af5ddd6afb747c28c56bebfb84b7dffbb"></a>
 <a class="el" href="classRecentDocuments.html">RecentDocuments</a>&#160;</td><td class="memItemRight" valign="bottom"><b>m_recentDocuments</b></td></tr>
 <tr class="separator:af5ddd6afb747c28c56bebfb84b7dffbb"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2794,6 +2796,31 @@ Plot Slider</h2>
 
 <p>The marker for the start of a prompt. </p>
 <p>The marker for the end of a prompt The marker for the start of a variables section </p>
+
+</div>
+</div>
+<a id="af2869d450f22a0b5fd340dbbc7b67964"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af2869d450f22a0b5fd340dbbc7b67964">&#9670;&nbsp;</a></span>m_worksheet</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classWorksheet.html">Worksheet</a>* const wxMaximaFrame::m_worksheet = NULL</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The worksheet itself. </p>
+<p>The worksheet </p>
 
 </div>
 </div>

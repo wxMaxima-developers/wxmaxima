@@ -205,31 +205,31 @@
 <!-- Node41 -->
 <g id="node41" class="node">
 <title>Node41</title>
-<g id="a_node41"><a xlink:href="classHistory.html" target="_top" xlink:title="This class generates a pane containing the last commands that were issued.">
-<polygon fill="white" stroke="black" points="1122.5,-567.5 1122.5,-586.5 1174.5,-586.5 1174.5,-567.5 1122.5,-567.5"/>
-<text text-anchor="middle" x="1148.5" y="-574.5" font-family="Helvetica,sans-Serif" font-size="10.00">History</text>
+<g id="a_node41"><a xlink:href="classLogPane.html" target="_top" xlink:title="A &quot;debug messages&quot; sidepane.">
+<polygon fill="white" stroke="black" points="1120,-567.5 1120,-586.5 1177,-586.5 1177,-567.5 1120,-567.5"/>
+<text text-anchor="middle" x="1148.5" y="-574.5" font-family="Helvetica,sans-Serif" font-size="10.00">LogPane</text>
 </a>
 </g>
 </g>
 <!-- Node10&#45;&gt;Node41 -->
 <g id="edge58" class="edge">
 <title>Node10&#45;&gt;Node41</title>
-<path fill="none" stroke="midnightblue" d="M491.88,-552.42C617.44,-557.13 1017.96,-572.14 1122.4,-576.06"/>
+<path fill="none" stroke="midnightblue" d="M491.79,-552.42C616.24,-557.08 1011.47,-571.9 1119.81,-575.96"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="491.74,-548.91 481.61,-552.04 491.48,-555.91 491.74,-548.91"/>
 </g>
 <!-- Node42 -->
 <g id="node42" class="node">
 <title>Node42</title>
-<g id="a_node42"><a xlink:href="classLogPane.html" target="_top" xlink:title="A &quot;debug messages&quot; sidepane.">
-<polygon fill="white" stroke="black" points="1120,-612.5 1120,-631.5 1177,-631.5 1177,-612.5 1120,-612.5"/>
-<text text-anchor="middle" x="1148.5" y="-619.5" font-family="Helvetica,sans-Serif" font-size="10.00">LogPane</text>
+<g id="a_node42"><a xlink:href="classHistory.html" target="_top" xlink:title="This class generates a pane containing the last commands that were issued.">
+<polygon fill="white" stroke="black" points="1122.5,-612.5 1122.5,-631.5 1174.5,-631.5 1174.5,-612.5 1122.5,-612.5"/>
+<text text-anchor="middle" x="1148.5" y="-619.5" font-family="Helvetica,sans-Serif" font-size="10.00">History</text>
 </a>
 </g>
 </g>
 <!-- Node10&#45;&gt;Node42 -->
 <g id="edge60" class="edge">
 <title>Node10&#45;&gt;Node42</title>
-<path fill="none" stroke="midnightblue" d="M491.63,-563.22C504.33,-566.91 518.67,-570.61 532,-573 756.49,-613.2 1032.95,-620.42 1119.95,-621.72"/>
+<path fill="none" stroke="midnightblue" d="M491.63,-563.22C504.33,-566.91 518.67,-570.61 532,-573 758.6,-613.57 1038.15,-620.56 1122.36,-621.75"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="492.44,-559.81 481.85,-560.29 490.43,-566.51 492.44,-559.81"/>
 </g>
 <!-- Node11 -->
@@ -785,16 +785,16 @@
 <!-- Node41&#45;&gt;Node1 -->
 <g id="edge57" class="edge">
 <title>Node41&#45;&gt;Node1</title>
-<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M1184.72,-580.88C1232.83,-586.38 1321.71,-597.18 1397,-610 1440.44,-617.4 1489.76,-627.89 1523.77,-635.46"/>
-<polygon fill="#9a32cd" stroke="#9a32cd" points="1184.86,-577.38 1174.53,-579.73 1184.08,-584.33 1184.86,-577.38"/>
-<text text-anchor="middle" x="1310.5" y="-613" font-family="Helvetica,sans-Serif" font-size="10.00"> m_history</text>
+<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M1187.13,-581.16C1235.75,-586.73 1322.95,-597.39 1397,-610 1440.44,-617.4 1489.76,-627.89 1523.77,-635.46"/>
+<polygon fill="#9a32cd" stroke="#9a32cd" points="1187.4,-577.67 1177.07,-580.02 1186.61,-584.62 1187.4,-577.67"/>
+<text text-anchor="middle" x="1310.5" y="-613" font-family="Helvetica,sans-Serif" font-size="10.00"> m_logPane</text>
 </g>
 <!-- Node42&#45;&gt;Node1 -->
 <g id="edge59" class="edge">
 <title>Node42&#45;&gt;Node1</title>
-<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M1187.39,-623.91C1235.96,-626.38 1322.76,-630.85 1397,-635 1436.94,-637.23 1482.19,-639.93 1515.74,-641.96"/>
-<polygon fill="#9a32cd" stroke="#9a32cd" points="1187.51,-620.41 1177.34,-623.4 1187.15,-627.4 1187.51,-620.41"/>
-<text text-anchor="middle" x="1310.5" y="-638" font-family="Helvetica,sans-Serif" font-size="10.00"> m_logPane</text>
+<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M1184.99,-623.79C1233.05,-626.23 1321.51,-630.78 1397,-635 1436.94,-637.23 1482.19,-639.93 1515.74,-641.96"/>
+<polygon fill="#9a32cd" stroke="#9a32cd" points="1184.96,-620.28 1174.8,-623.27 1184.61,-627.27 1184.96,-620.28"/>
+<text text-anchor="middle" x="1310.5" y="-638" font-family="Helvetica,sans-Serif" font-size="10.00"> m_history</text>
 </g>
 </g>
 </svg>
