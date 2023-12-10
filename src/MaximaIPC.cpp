@@ -35,7 +35,7 @@ bool MaximaIPC::m_enabled;
 MaximaIPC::MaximaIPC(wxMaxima *wxm)
   : m_wxMaxima(wxm), m_eventTargets{
       {"wxMaxima", m_wxMaxima},
-      {"Worksheet", m_wxMaxima->m_worksheet},
+      {"Worksheet", m_wxMaxima->GetWorksheet()},
     } {}
 
 static wxString const ipcPrefix = "<ipc>";

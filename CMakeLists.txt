@@ -129,9 +129,9 @@ message(STATUS "Looking for wxWidgets libraries in: ${wxWidgets_LIB_DIR}")
 # The root dependency (base) must come last.
 #
 if(WXM_DISABLE_WEBVIEW)
-	find_package(wxWidgets 3 REQUIRED richtext aui adv html core xml net base)
+	find_package(wxWidgets 3 REQUIRED richtext aui adv html core xml net base qa)
 else()
-	find_package(wxWidgets 3 REQUIRED richtext aui adv html webview core xml net base)
+	find_package(wxWidgets 3 REQUIRED richtext aui adv html webview core xml net base qa)
 endif()
 message(STATUS "Found wxWidgets: (found version \"${wxWidgets_VERSION_STRING}\")")
 include(${wxWidgets_USE_FILE})

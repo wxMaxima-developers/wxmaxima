@@ -47,6 +47,7 @@
 #include <wx/sckstrm.h>
 #include <wx/buffer.h>
 #include <wx/power.h>
+#include <wx/debugrpt.h>
 #include <memory>
 #ifdef __WXMSW__
 #include <windows.h>
@@ -165,7 +166,7 @@ public:
 
   //! Load an image from a file into the worksheet.
   void LoadImage(wxString file)
-    { m_worksheet->OpenHCaret(file, GC_TYPE_IMAGE); }
+    { GetWorksheet()->OpenHCaret(file, GC_TYPE_IMAGE); }
 
   //! Query the value of a new maxima variable
   bool QueryVariableValue();
@@ -891,7 +892,9 @@ public:
   virtual bool OnInit();
   virtual int OnRun();
   virtual int OnExit();
-
+#if wxUSE_ON_FATAL_EXCEPTION && wxUSE_CRASHREPORT
+  void	OnFatalException () override;
+#endif
   /*! Create a new window
 
     The mac platform insists in making all windows of an application
@@ -915,6 +918,9 @@ public:
   virtual void MacOpenFile(const wxString &file);
 
 private:
+#if wxUSE_ON_FATAL_EXCEPTION && wxUSE_CRASHREPORT
+  void GenerateDebugReport(wxDebugReport::Context ctx);
+#endif
   std::unique_ptr<wxLocale> m_locale;
   std::unique_ptr<wxTranslations> m_translations;
   //! The name of the config file. Empty = Use the default one.

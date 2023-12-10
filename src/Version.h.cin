@@ -6,6 +6,8 @@
 #endif
 #define CMAKE_INSTALL_PREFIX "@CMAKE_INSTALL_PREFIX@"
 #cmakedefine USE_PRECOMP_HEADER
+//#if wxUSE_WEBVIEW
 #cmakedefine USE_WEBVIEW
+//#endif
 #endif
 #cmakedefine NANOSVG_CAUSES_NO_LINK_ERROR

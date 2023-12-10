@@ -810,7 +810,7 @@ public:
   void ScrollToError();
 
   //! The find-and-replace-dialog
-  FindReplaceDialog *m_findDialog;
+  FindReplaceDialog *m_findDialog = NULL;
 
   /*! True = schedule an update of the table of contents
 

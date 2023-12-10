@@ -27,6 +27,7 @@
 
 #include "main.h"
 #include "Dirstructure.h"
+#include "StackToStdErr.h"
 #include "wxMathml.h"
 #include <iostream>
 #include <wx/cmdline.h>
@@ -36,6 +37,7 @@
 #include <wx/image.h>
 #include <wx/intl.h>
 #include <wx/translation.h>
+#include <wx/debugrpt.h>
 #if wxCHECK_VERSION(3, 1, 6)
 #include <wx/uilocale.h>
 #endif
@@ -184,7 +186,7 @@ bool MyApp::OnInit() {
   wxLogBuffer noStdErr;
   {
     // If supported: Generate symbolic backtraces on crashes.
-#if wxUSE_ON_FATAL_EXCEPTION
+#if wxUSE_ON_FATAL_EXCEPTION && wxUSE_CRASHREPORT
     wxHandleFatalExceptions(true);
 #endif
     int major;
@@ -652,3 +654,75 @@ void MyApp::MacNewFile() {
 }
 
 void MyApp::MacOpenFile(const wxString &file) { NewWindow(file); }
+
+#if wxUSE_ON_FATAL_EXCEPTION && wxUSE_CRASHREPORT
+void MyApp::OnFatalException()
+{
+    GenerateDebugReport(wxDebugReport::Context_Exception);
+}
+
+// Adapted from wxWidget's report sample
+void MyApp::GenerateDebugReport(wxDebugReport::Context ctx)
+{
+  if(ErrorRedirector::LoggingToStdErr())
+    {
+      StackToStdErr stackWalker;
+      stackWalker.Walk(0);
+      return;
+    }
+  else
+    {
+      wxDebugReportCompress *report = new wxDebugReportCompress;
+
+      // add all standard files: currently this means just a minidump and an
+      // XML file with system info and stack trace
+      report->AddAll(ctx);
+
+      // you can also call report->AddFile(...) with your own log files, files
+      // created using wxRegKey::Export() and so on, here we just add a test
+      // file containing the date of the crash
+      wxFileName fn(report->GetDirectory(), "timestamp.my");
+      wxFFile file(fn.GetFullPath(), "w");
+      if ( file.IsOpened() )
+        {
+          wxDateTime dt = wxDateTime::Now();
+          file.Write(dt.FormatISODate() + ' ' + dt.FormatISOTime());
+          file.Close();
+        }
+
+      report->AddFile(fn.GetFullName(), "timestamp of this report");
+
+      // can also add an existing file directly, it will be copied
+      // automatically
+#ifdef __WXMSW__
+      wxString windir;
+      if ( !wxGetEnv("WINDIR", &windir) )
+        windir = "C:\\Windows";
+      fn.AssignDir(windir);
+      fn.AppendDir("system32");
+      fn.AppendDir("drivers");
+      fn.AppendDir("etc");
+#else // !__WXMSW__
+      fn.AssignDir("/etc");
+#endif // __WXMSW__/!__WXMSW__
+      fn.SetFullName("hosts");
+
+      if ( fn.FileExists() )
+        report->AddFile(fn.GetFullPath(), "Local hosts file");
+
+      // calling Show() is not mandatory, but is more polite
+      if ( wxDebugReportPreviewStd().Show(*report) )
+        {
+          if ( report->Process() )
+            {
+              wxLogMessage("Report generated in \"%s\".",
+                           report->GetCompressedFileName());
+              report->Reset();
+            }
+        }
+      //else: user cancelled the report
+
+      delete report;
+    }
+}
+#endif

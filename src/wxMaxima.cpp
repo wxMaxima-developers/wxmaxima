@@ -133,8 +133,8 @@ wxDECLARE_APP(MyApp);
 #define CALL_MEMBER_FN(object, ptrToMember) ((object).*(ptrToMember))
 
 void wxMaxima::ConfigChanged() {
-  if (m_worksheet->GetTree())
-    m_worksheet->GetTree()->FontsChangedList();
+  if (GetWorksheet()->GetTree())
+    GetWorksheet()->GetTree()->FontsChangedList();
 
   wxConfigBase *config = wxConfig::Get();
   int showLength = 0;
@@ -155,8 +155,8 @@ void wxMaxima::ConfigChanged() {
     m_maxOutputCellsPerCommand = -1;
     break;
   }
-  m_worksheet->RecalculateForce();
-  m_worksheet->RequestRedraw();
+  GetWorksheet()->RecalculateForce();
+  GetWorksheet()->RequestRedraw();
 
   wxLogMessage(_("Sending configuration data to maxima."));
   if (m_configuration.UseSVG())
@@ -181,8 +181,8 @@ void wxMaxima::ConfigChanged() {
                                        static_cast<long>(m_configuration.DefaultPlotWidth()),
                                        static_cast<long>(m_configuration.DefaultPlotHeight()));
 
-  if (m_worksheet->m_currentFile != wxEmptyString) {
-    wxString filename(m_worksheet->m_currentFile);
+  if (GetWorksheet()->m_currentFile != wxEmptyString) {
+    wxString filename(GetWorksheet()->m_currentFile);
 
     SetCWD(filename);
   }
@@ -195,9 +195,13 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   : wxMaximaFrame(parent, id, title, pos, size,
                   wxDEFAULT_FRAME_STYLE | wxSYSTEM_MENU | wxCAPTION,
                   m_topLevelWindows.empty()),
-    m_openFile(filename), m_gnuplotcommand("gnuplot"),
+    m_openFile(filename),
+    m_gnuplotcommand(wxS("gnuplot")),
     m_parser(&m_configuration) {
-  GnuplotCommandName("gnuplot");
+#if wxUSE_ON_FATAL_EXCEPTION && wxUSE_CRASHREPORT
+  wxHandleFatalExceptions();
+#endif 
+  GnuplotCommandName(wxS("gnuplot"));
   if (m_knownXMLTags.empty()) {
     m_knownXMLTags[wxS("PROMPT")] = &wxMaxima::ReadPrompt;
     m_knownXMLTags[wxS("suppressOutput")] = &wxMaxima::ReadSuppressedOutput;
@@ -322,18 +326,16 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
 
   UpdateRecentDocuments();
 
-  m_worksheet->m_findDialog = NULL;
   m_oldFindString = wxEmptyString;
   m_oldFindFlags = 0;
-  m_worksheet->m_currentFile = wxEmptyString;
   int findFlags = wxFR_DOWN | wxFR_MATCHCASE;
   wxConfig::Get()->Read(wxS("Find/Flags"), &findFlags);
   m_findData.SetFlags(findFlags);
   bool findRegex = false;
   wxConfig::Get()->Read(wxS("Find/RegexSearch"), &findRegex);
   m_findData.SetRegexSearch(findRegex);
-  CallAfter([this]{m_worksheet->SetFocus();});
-  m_worksheet->m_keyboardInactiveTimer.SetOwner(this,
+  CallAfter([this]{GetWorksheet()->SetFocus();});
+  GetWorksheet()->m_keyboardInactiveTimer.SetOwner(this,
                                                 KEYBOARD_INACTIVITY_TIMER_ID);
   m_maximaStdoutPollTimer.SetOwner(this, MAXIMA_STDOUT_POLL_ID);
 
@@ -363,7 +365,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
 #endif
 
 #if wxUSE_DRAG_AND_DROP
-  m_worksheet->SetDropTarget(new MyDropTarget(this));
+  GetWorksheet()->SetDropTarget(new MyDropTarget(this));
 #endif
 
   StatusMaximaBusy(StatusBar::MaximaStatus::disconnected);
@@ -1718,7 +1720,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
     SetSize(winSize);
   }
 
-  CallAfter([this]{m_worksheet->SetFocus();});
+  CallAfter([this]{GetWorksheet()->SetFocus();});
   StartAutoSaveTimer();
 }
 
@@ -1791,7 +1793,7 @@ bool MyDropTarget::OnDropFiles(wxCoord WXUNUSED(x), wxCoord WXUNUSED(y),
   for(const auto &file:files)
     {
       if (wxGetKeyState(WXK_SHIFT)) {
-        m_wxmax->m_worksheet->InsertText(file);
+        m_wxmax->GetWorksheet()->InsertText(file);
       }
       else if (file.Lower().EndsWith(wxS(".wxm")) ||
                file.Lower().EndsWith(wxS(".wxm~")) ||
@@ -1799,7 +1801,7 @@ bool MyDropTarget::OnDropFiles(wxCoord WXUNUSED(x), wxCoord WXUNUSED(y),
                file.Lower().EndsWith(wxS(".mac")) ||
                file.Lower().EndsWith(wxS(".wxmx")) ||
                file.Lower().EndsWith(wxS(".wxmx~"))) {
-        if (m_wxmax->m_worksheet->IsEmpty())
+        if (m_wxmax->GetWorksheet()->IsEmpty())
           {
             m_wxmax->OpenFile(file);
             continue;
@@ -1817,7 +1819,7 @@ bool MyDropTarget::OnDropFiles(wxCoord WXUNUSED(x), wxCoord WXUNUSED(y),
       }
       else if (file.Lower().EndsWith(wxS(".txt")))
         {
-          m_wxmax->m_worksheet->InsertText(file);
+          m_wxmax->GetWorksheet()->InsertText(file);
         }
       else
         success = false;
@@ -1830,7 +1832,7 @@ bool MyDropTarget::OnDropFiles(wxCoord WXUNUSED(x), wxCoord WXUNUSED(y),
 void wxMaxima::FirstOutput() {
   m_lastPrompt = wxS("(%i1) ");
 
-  CallAfter([this]{m_worksheet->SetFocus();});
+  CallAfter([this]{GetWorksheet()->SetFocus();});
 }
 
 ///--------------------------------------------------------------------------------
@@ -1847,8 +1849,8 @@ TextCell *wxMaxima::ConsoleAppend(wxString s, CellType type,
   TextCell *lastLine = NULL;
   // If we want to append an error message to the worksheet and there is no cell
   // that can contain it we need to create such a cell.
-  if (m_worksheet->GetTree() == NULL)
-    m_worksheet->InsertGroupCells(
+  if (GetWorksheet()->GetTree() == NULL)
+    GetWorksheet()->InsertGroupCells(
                                   std::make_unique<GroupCell>(&m_configuration, GC_TYPE_CODE));
 
   m_dispReadOut = false;
@@ -1911,15 +1913,15 @@ TextCell *wxMaxima::ConsoleAppend(wxString s, CellType type,
                     userLabel);
   } else if (type == MC_TYPE_ERROR) {
     lastLine = DoRawConsoleAppend(s, MC_TYPE_ERROR);
-    GroupCell *tmp = m_worksheet->GetWorkingGroup(true);
+    GroupCell *tmp = GetWorksheet()->GetWorkingGroup(true);
 
     if (tmp == NULL) {
-      if (m_worksheet->GetActiveCell())
-        tmp = m_worksheet->GetActiveCell()->GetGroup();
+      if (GetWorksheet()->GetActiveCell())
+        tmp = GetWorksheet()->GetActiveCell()->GetGroup();
     }
 
     if (tmp != NULL) {
-      m_worksheet->GetErrorList().Add(tmp);
+      GetWorksheet()->GetErrorList().Add(tmp);
       tmp->GetEditable()->SetErrorIndex(m_commandIndex - 1);
     }
   } else if (type == MC_TYPE_WARNING) {
@@ -1943,7 +1945,7 @@ void wxMaxima::DoConsoleAppend(wxString s, CellType type, AppendOpt opts,
   s.Replace(wxS("\n"), wxS(" "), true);
 
   m_parser.SetUserLabel(userLabel);
-  m_parser.SetGroup(m_worksheet->GetInsertGroup());
+  m_parser.SetGroup(GetWorksheet()->GetInsertGroup());
   std::unique_ptr<Cell> cell(m_parser.ParseLine(s, type));
   m_parser.SetGroup(nullptr);
 
@@ -1960,7 +1962,7 @@ void wxMaxima::DoConsoleAppend(wxString s, CellType type, AppendOpt opts,
   auto *textCell = dynamic_cast<TextCell *>(cell.get());
   if (textCell)
     textCell->SetPromptTooltip(opts & AppendOpt::PromptToolTip);
-  m_worksheet->InsertLine(std::move(cell),
+  GetWorksheet()->InsertLine(std::move(cell),
                           (opts & AppendOpt::NewLine) || cell->BreakLineHere());
 }
 
@@ -1969,42 +1971,42 @@ TextCell *wxMaxima::DoRawConsoleAppend(wxString s, CellType type,
   TextCell *cell = nullptr;
   // If we want to append an error message to the worksheet and there is no cell
   // that can contain it we need to create such a cell.
-  if (m_worksheet->GetTree() == NULL)
-    m_worksheet->InsertGroupCells(
+  if (GetWorksheet()->GetTree() == NULL)
+    GetWorksheet()->InsertGroupCells(
                                   std::make_unique<GroupCell>(&m_configuration, GC_TYPE_CODE));
 
   if (s.IsEmpty())
     return NULL;
 
   bool scrollToCaret =
-    (!m_worksheet->FollowEvaluation() && m_worksheet->CaretVisibleIs());
+    (!GetWorksheet()->FollowEvaluation() && GetWorksheet()->CaretVisibleIs());
 
   if (type == MC_TYPE_MAIN_PROMPT) {
     auto owned = std::make_unique<LabelCell>(
-                                             m_worksheet->GetTree(), &m_configuration, s,
+                                             GetWorksheet()->GetTree(), &m_configuration, s,
                                              TS_MAIN_PROMPT);
     owned->SetType(type);
     owned->SetPromptTooltip(opts & AppendOpt::PromptToolTip);
     cell = owned.get();
-    m_worksheet->InsertLine(std::move(owned), true);
+    GetWorksheet()->InsertLine(std::move(owned), true);
   } else if (type == MC_TYPE_PROMPT) {
     auto owned = std::make_unique<TextCell>(
-                                             m_worksheet->GetTree(), &m_configuration, s,
+                                             GetWorksheet()->GetTree(), &m_configuration, s,
                                              TS_OTHER_PROMPT);
     owned->SetType(type);
     owned->SetPromptTooltip(opts & AppendOpt::PromptToolTip);
     cell = owned.get();
-    m_worksheet->InsertLine(std::move(owned), true);
+    GetWorksheet()->InsertLine(std::move(owned), true);
   } else {
     std::unique_ptr<LabelCell> ownedCell;
     TextCell *incompleteTextCell = nullptr;
     if (type == MC_TYPE_PROMPT) {
-      incompleteTextCell = new LabelCell(m_worksheet->GetTree(),
+      incompleteTextCell = new LabelCell(GetWorksheet()->GetTree(),
                                          &m_configuration,
                                          wxEmptyString, TS_OTHER_PROMPT);
       incompleteTextCell->ForceBreakLine(true);
     } else
-      incompleteTextCell = m_worksheet->GetCurrentTextCell();
+      incompleteTextCell = GetWorksheet()->GetCurrentTextCell();
 
     if (incompleteTextCell) {
       auto pos = s.Find("\n");
@@ -2018,7 +2020,7 @@ TextCell *wxMaxima::DoRawConsoleAppend(wxString s, CellType type,
       }
 
       incompleteTextCell->SetValue(newVal);
-      m_worksheet->InsertLine(std::move(ownedCell));
+      GetWorksheet()->InsertLine(std::move(ownedCell));
       if (s.IsEmpty()) {
         return incompleteTextCell;
       }
@@ -2036,7 +2038,7 @@ TextCell *wxMaxima::DoRawConsoleAppend(wxString s, CellType type,
         StatusText(
                    wxString::Format(_("Compiling %s"), fileName.utf8_str()));
       } else {
-        auto owned = std::make_unique<TextCell>(m_worksheet->GetTree(),
+        auto owned = std::make_unique<TextCell>(GetWorksheet()->GetTree(),
                                                 &m_configuration, token);
         owned->SetType(type);
         owned->SetPromptTooltip(opts & AppendOpt::PromptToolTip);
@@ -2052,14 +2054,14 @@ TextCell *wxMaxima::DoRawConsoleAppend(wxString s, CellType type,
       }
       count++;
     }
-    m_worksheet->InsertLine(std::move(tree), true);
+    GetWorksheet()->InsertLine(std::move(tree), true);
   }
 
   if (cell) {
-    m_worksheet->Recalculate(cell->GetGroup());
+    GetWorksheet()->Recalculate(cell->GetGroup());
     if (scrollToCaret)
-      m_worksheet->ScrollToCaret();
-    m_worksheet->RequestRedraw();
+      GetWorksheet()->ScrollToCaret();
+    GetWorksheet()->RequestRedraw();
   }
   return cell;
 }
@@ -2100,7 +2102,7 @@ void wxMaxima::SendMaxima(wxString s, bool addToHistory) {
   std::size_t index;
   wxString parenthesisError = GetUnmatchedParenthesisState(s, index);
   if (parenthesisError.IsEmpty()) {
-    s = m_worksheet->UnicodeToMaxima(s);
+    s = GetWorksheet()->UnicodeToMaxima(s);
 
     if ((m_xmlInspector) && (IsPaneDisplayed(EventIDs::menu_pane_xmlInspector)))
       m_xmlInspector->Add_ToMaxima(s);
@@ -2123,11 +2125,11 @@ void wxMaxima::SendMaxima(wxString s, bool addToHistory) {
     while (commands.HasMoreTokens()) {
       wxString line = commands.GetNextToken();
       if (m_varRegEx.Matches(line))
-        m_worksheet->AddSymbol(m_varRegEx.GetMatch(line, 1));
+        GetWorksheet()->AddSymbol(m_varRegEx.GetMatch(line, 1));
 
       if (m_funRegEx.Matches(line)) {
         wxString funName = m_funRegEx.GetMatch(line, 1);
-        m_worksheet->AddSymbol(funName);
+        GetWorksheet()->AddSymbol(funName);
 
         /// Create a template from the input
         wxString args = m_funRegEx.GetMatch(line, 2);
@@ -2148,7 +2150,7 @@ void wxMaxima::SendMaxima(wxString s, bool addToHistory) {
           }
         }
         funName << wxS(")");
-        m_worksheet->AddSymbol(funName, AutoComplete::tmplte);
+        GetWorksheet()->AddSymbol(funName, AutoComplete::tmplte);
       }
     }
 
@@ -2156,7 +2158,7 @@ void wxMaxima::SendMaxima(wxString s, bool addToHistory) {
       // If there is no working group and we still are trying to send something
       // we are trying to change maxima's settings from the background and might
       // never get an answer that changes the status again.
-      if (m_worksheet->GetWorkingGroup())
+      if (GetWorksheet()->GetWorkingGroup())
         StatusMaximaBusy(StatusBar::MaximaStatus::calculating);
       else
         StatusMaximaBusy(StatusBar::MaximaStatus::waiting);
@@ -2169,8 +2171,8 @@ void wxMaxima::SendMaxima(wxString s, bool addToHistory) {
     DoRawConsoleAppend(_("Refusing to send cell to maxima: ") +
                        parenthesisError + wxS("\n"),
                        MC_TYPE_ERROR);
-    m_worksheet->SetWorkingGroup(nullptr);
-    m_worksheet->m_evaluationQueue.Clear();
+    GetWorksheet()->SetWorkingGroup(nullptr);
+    GetWorksheet()->m_evaluationQueue.Clear();
   }
   if (!m_maximaStdoutPollTimer.IsRunning())
     m_statusBar->SetMaximaCPUPercentage(-1);
@@ -2242,7 +2244,7 @@ void wxMaxima::OnMaximaConnect() {
   }
 
   m_statusBar->NetworkStatus(StatusBar::idle);
-  m_worksheet->QuestionAnswered();
+  GetWorksheet()->QuestionAnswered();
   m_currentOutput = wxEmptyString;
 
   m_client = std::make_unique<Maxima>(m_server->Accept(false));
@@ -2329,7 +2331,7 @@ bool wxMaxima::StartMaxima(bool force) {
 
   wxString dirname;
   {
-    wxString filename = m_worksheet->m_currentFile;
+    wxString filename = GetWorksheet()->m_currentFile;
     if (filename.IsEmpty())
       filename = m_openFile;
 
@@ -2354,7 +2356,7 @@ bool wxMaxima::StartMaxima(bool force) {
     m_configuration.InLispMode(false);
 
     // Maxima isn't asking questions
-    m_worksheet->QuestionAnswered();
+    GetWorksheet()->QuestionAnswered();
 
     // If we have an open file tell maxima to start in the directory the file is
     // in
@@ -2434,7 +2436,7 @@ bool wxMaxima::StartMaxima(bool force) {
                      "config dialogue."));
       return false;
     }
-    m_worksheet->GetErrorList().Clear();
+    GetWorksheet()->GetErrorList().Clear();
 
     // Initialize the performance counter.
     GetMaximaCPUPercentage();
@@ -2443,7 +2445,7 @@ bool wxMaxima::StartMaxima(bool force) {
 }
 
 void wxMaxima::Interrupt(wxCommandEvent &WXUNUSED(event)) {
-  m_worksheet->CloseAutoCompletePopup();
+  GetWorksheet()->CloseAutoCompletePopup();
 
   if (m_pid < 0) {
     m_MenuBar->EnableItem(EventIDs::menu_interrupt_id, false);
@@ -2576,21 +2578,21 @@ void wxMaxima::KillMaxima(bool logMessage) {
       m_history->MaximaSessionStart();
   }
   m_closing = true;
-  m_worksheet->m_variablesPane->ResetValues();
-  m_varNamesToQuery = m_worksheet->m_variablesPane->GetEscapedVarnames();
+  GetWorksheet()->m_variablesPane->ResetValues();
+  m_varNamesToQuery = GetWorksheet()->m_variablesPane->GetEscapedVarnames();
   m_configCommands = wxEmptyString;
   // The new maxima process will be in its initial condition => mark it as such.
   m_hasEvaluatedCells = false;
 
-  m_worksheet->SetWorkingGroup(nullptr);
-  m_worksheet->m_evaluationQueue.Clear();
+  GetWorksheet()->SetWorkingGroup(nullptr);
+  GetWorksheet()->m_evaluationQueue.Clear();
   EvaluationQueueLength(0);
 
   // We start checking for maximas output again as soon as we send some data to
   // the program.
   m_statusBar->SetMaximaCPUPercentage(0);
   m_CWD = wxEmptyString;
-  m_worksheet->QuestionAnswered();
+  GetWorksheet()->QuestionAnswered();
   m_currentOutput = wxEmptyString;
   if(m_process)
     m_process->Detach();
@@ -2767,7 +2769,7 @@ void wxMaxima::OnProcessEvent(wxProcessEvent &event) {
       m_unsuccessfulConnectionAttempts += 2;
       StartMaxima(true);
     }
-    m_worksheet->m_evaluationQueue.Clear();
+    GetWorksheet()->m_evaluationQueue.Clear();
   }
   else
     StartMaxima(true);
@@ -2825,24 +2827,24 @@ void wxMaxima::ReadFirstPrompt(wxString &data) {
   // Remove the first prompt from Maxima's answer.
   data = data.Right(data.Length() - end - m_firstPrompt.Length());
 
-  if (m_worksheet->m_evaluationQueue.Empty()) {
+  if (GetWorksheet()->m_evaluationQueue.Empty()) {
     // Inform the user that the evaluation queue is empty.
     EvaluationQueueLength(0);
     if (m_evalOnStartup) {
       wxLogMessage(_("Starting evaluation of the document"));
       m_evalOnStartup = false;
-      m_worksheet->AddDocumentToEvaluationQueue();
+      GetWorksheet()->AddDocumentToEvaluationQueue();
       EvaluationQueueLength(
-                            m_worksheet->m_evaluationQueue.Size(),
-                            m_worksheet->m_evaluationQueue.CommandsLeftInCell());
+                            GetWorksheet()->m_evaluationQueue.Size(),
+                            GetWorksheet()->m_evaluationQueue.CommandsLeftInCell());
       TriggerEvaluation();
     } else {
       m_evalOnStartup = false;
       if ((m_configuration.GetOpenHCaret()) &&
-          (m_worksheet->GetActiveCell() == NULL))
-        m_worksheet->OpenNextOrCreateCell();
+          (GetWorksheet()->GetActiveCell() == NULL))
+        GetWorksheet()->OpenNextOrCreateCell();
     }
-    if (m_exitAfterEval && m_worksheet->m_evaluationQueue.Empty())
+    if (m_exitAfterEval && GetWorksheet()->m_evaluationQueue.Empty())
       Close();
   } else
     TriggerEvaluation();
@@ -2897,7 +2899,7 @@ bool wxMaxima::ParseNextChunkFromMaxima(wxString &data) {
     data = data.Right(data.Length() - miscText.Length());
   }
   if (tagFound) {
-    m_worksheet->SetCurrentTextCell(nullptr);
+    GetWorksheet()->SetCurrentTextCell(nullptr);
     if((m_maximaAuthenticated) || (tagIndex->second == &wxMaxima::ReadSuppressedOutput))
       {
         retval = true;
@@ -2923,7 +2925,7 @@ void wxMaxima::ReadMiscText(const wxString &data) {
     return;
 
   if (data.StartsWith("\n"))
-    m_worksheet->SetCurrentTextCell(nullptr);
+    GetWorksheet()->SetCurrentTextCell(nullptr);
 
   // A version of the text where each line begins with non-whitespace and
   // whitespace characters are merged.
@@ -2983,18 +2985,18 @@ void wxMaxima::ReadMiscText(const wxString &data) {
     trimmedLine.Trim(false);
 
     if (!textline.empty() && textline != wxS("\n")) {
-      m_worksheet->SetCurrentTextCell(ConsoleAppend(textline, style));
+      GetWorksheet()->SetCurrentTextCell(ConsoleAppend(textline, style));
       if (style == MC_TYPE_ERROR)
         AbortOnError();
     }
     if (lines.HasMoreTokens())
-      m_worksheet->SetCurrentTextCell(nullptr);
+      GetWorksheet()->SetCurrentTextCell(nullptr);
   }
   if (data.EndsWith("\n"))
-    m_worksheet->SetCurrentTextCell(nullptr);
+    GetWorksheet()->SetCurrentTextCell(nullptr);
 
   if (!data.empty())
-    m_worksheet->SetCurrentTextCell(nullptr);
+    GetWorksheet()->SetCurrentTextCell(nullptr);
 }
 
 long wxMaxima::FindTagEnd(const wxString &data, const wxString &tag) {
@@ -3009,7 +3011,7 @@ void wxMaxima::ReadStatusBar(wxString &data) {
   if (!data.StartsWith(m_statusbarPrefix))
     return;
 
-  m_worksheet->SetCurrentTextCell(nullptr);
+  GetWorksheet()->SetCurrentTextCell(nullptr);
 
   int end;
   if ((end = FindTagEnd(data, m_statusbarSuffix)) != wxNOT_FOUND) {
@@ -3110,7 +3112,7 @@ void wxMaxima::ReadMath(wxString &data) {
   if ((!data.StartsWith(m_mathPrefix1)) && (!data.StartsWith(m_mathPrefix2)))
     return;
 
-  m_worksheet->SetCurrentTextCell(nullptr);
+  GetWorksheet()->SetCurrentTextCell(nullptr);
 
   // Append everything from the "beginning of math" to the "end of math" marker
   // to the console and remove it from the data we got.
@@ -3130,7 +3132,7 @@ void wxMaxima::ReadMath(wxString &data) {
     if (o.Length() > 0) {
       if (m_configuration.UseUserLabels()) {
         ConsoleAppend(o, MC_TYPE_DEFAULT,
-                      m_worksheet->m_evaluationQueue.GetUserLabel());
+                      GetWorksheet()->m_evaluationQueue.GetUserLabel());
       } else {
         ConsoleAppend(o, MC_TYPE_DEFAULT);
       }
@@ -3179,14 +3181,14 @@ void wxMaxima::ReadLoadSymbols(wxString &data) {
   if (!data.StartsWith(m_symbolsPrefix))
     return;
 
-  m_worksheet->SetCurrentTextCell(nullptr);
+  GetWorksheet()->SetCurrentTextCell(nullptr);
 
   int end = FindTagEnd(data, m_symbolsSuffix);
 
   if (end != wxNOT_FOUND) {
     // Put the symbols into a separate string
     wxString symbols = data.Left(end + m_symbolsSuffix.Length());
-    m_worksheet->AddSymbols(symbols);
+    GetWorksheet()->AddSymbols(symbols);
 
     // Remove the symbols from the data string
     data = data.Right(data.Length() - end - m_symbolsSuffix.Length());
@@ -3242,7 +3244,7 @@ void wxMaxima::ReadVariables(wxString &data) {
               }
 
               if (bound) {
-                m_worksheet->m_variablesPane->VariableValue(name, value);
+                GetWorksheet()->m_variablesPane->VariableValue(name, value);
 
                 // Undo an eventual stringdisp:true adding quoting marks to strings
                 if (value.StartsWith("\"") && value.EndsWith("\""))
@@ -3252,7 +3254,7 @@ void wxMaxima::ReadVariables(wxString &data) {
                 if (varFunc != m_variableReadActions.end())
                   CALL_MEMBER_FN(*this, varFunc->second)(value);
               } else {
-                m_worksheet->m_variablesPane->VariableUndefined(name);
+                GetWorksheet()->m_variablesPane->VariableUndefined(name);
                 auto varFunc = m_variableUndefinedActions.find(name);
                 if (varFunc != m_variableUndefinedActions.end())
                   CALL_MEMBER_FN(*this, varFunc->second)();
@@ -3349,7 +3351,7 @@ void wxMaxima::VariableActionDebugmode(const wxString &value) {
 }
 
 void wxMaxima::VariableActionAutoconfVersion(const wxString &value) {
-  m_worksheet->SetMaximaVersion(value);
+  GetWorksheet()->SetMaximaVersion(value);
   wxLogMessage(_("Maxima version: %s"), value.utf8_str());
 }
 void wxMaxima::VariableActionAutoconfHost(const wxString &value) {
@@ -3370,9 +3372,9 @@ void wxMaxima::VariableActionMaximaHtmldir(const wxString &value) {
   wxString dir_canonical = dir.GetPath();
   wxLogMessage(_("Maxima's HTML manuals are in directory %s"),
                dir_canonical.utf8_str());
-  m_worksheet->SetMaximaDocDir(dir_canonical);
-  m_worksheet->LoadHelpFileAnchors(dir_canonical,
-                                   m_worksheet->GetMaximaVersion());
+  GetWorksheet()->SetMaximaDocDir(dir_canonical);
+  GetWorksheet()->LoadHelpFileAnchors(dir_canonical,
+                                   GetWorksheet()->GetMaximaVersion());
 }
 void wxMaxima::GnuplotCommandName(wxString gnuplot) {
   m_gnuplotcommand = gnuplot;
@@ -3485,7 +3487,7 @@ void wxMaxima::VariableActionMaximaSharedir(const wxString &value) {
   wxLogMessage(_("Maxima's share files lie in directory %s"),
                dir.utf8_str());
   /// READ FUNCTIONS FOR AUTOCOMPLETION
-  m_worksheet->LoadSymbols();
+  GetWorksheet()->LoadSymbols();
 }
 
 void wxMaxima::VariableActionLispName(const wxString &value) {
@@ -3680,7 +3682,7 @@ void wxMaxima::VariableActionOperators(const wxString &value) {
         if (!newOperators.IsEmpty()) {
           wxLogMessage(_("New maxima Operators detected: %s"),
                        newOperators.utf8_str());
-          m_worksheet->Recalculate();
+          GetWorksheet()->Recalculate();
         }
       }
     }
@@ -3719,7 +3721,7 @@ void wxMaxima::ReadAddVariables(wxString &data) {
               if (var->GetName() == wxS("variable")) {
                 wxXmlNode *valnode = var->GetChildren();
                 if (valnode)
-                  m_worksheet->m_variablesPane->AddWatch(valnode->GetContent());
+                  GetWorksheet()->m_variablesPane->AddWatch(valnode->GetContent());
               }
             }
             var = var->GetNext();
@@ -3731,7 +3733,7 @@ void wxMaxima::ReadAddVariables(wxString &data) {
 }
 
 bool wxMaxima::QueryVariableValue() {
-  if (!m_worksheet->m_evaluationQueue.Empty())
+  if (!GetWorksheet()->m_evaluationQueue.Empty())
     return false;
 
   if (m_maximaBusy)
@@ -3740,7 +3742,7 @@ bool wxMaxima::QueryVariableValue() {
   if (m_configuration.InLispMode())
     return false;
 
-  if (m_worksheet->QuestionPending())
+  if (GetWorksheet()->QuestionPending())
     return false;
 
   if (m_varNamesToQuery.size() > 0) {
@@ -3753,8 +3755,8 @@ bool wxMaxima::QueryVariableValue() {
       SendMaxima(wxS(":lisp-quiet (wx-print-gui-variables)\n"));
       m_readMaximaVariables = false;
     }
-    if (m_worksheet->m_variablesPane->GetEscapedVarnames().size() != 0)
-      m_worksheet->m_variablesPane->UpdateSize();
+    if (GetWorksheet()->m_variablesPane->GetEscapedVarnames().size() != 0)
+      GetWorksheet()->m_variablesPane->UpdateSize();
 
     return false;
   }
@@ -3768,10 +3770,10 @@ void wxMaxima::ReadPrompt(wxString &data) {
   if (!data.StartsWith(m_promptPrefix))
     return;
 
-  m_worksheet->SetCurrentTextCell(nullptr);
+  GetWorksheet()->SetCurrentTextCell(nullptr);
 
   // Assume we don't have a question prompt
-  m_worksheet->m_questionPrompt = false;
+  GetWorksheet()->m_questionPrompt = false;
   m_ready = true;
   int end = FindTagEnd(data, m_promptSuffix);
   // Did we find a prompt?
@@ -3808,69 +3810,69 @@ void wxMaxima::ReadPrompt(wxString &data) {
       m_configuration.InLispMode() || (label.StartsWith(wxS("MAXIMA>"))) ||
       (label.StartsWith(wxS("\nMAXIMA>")))) {
     // Maxima displayed a new main prompt => We don't have a question
-    m_worksheet->QuestionAnswered();
+    GetWorksheet()->QuestionAnswered();
     // And we can remove one command from the evaluation queue.
-    m_worksheet->m_evaluationQueue.RemoveFirst();
+    GetWorksheet()->m_evaluationQueue.RemoveFirst();
 
     m_lastPrompt = label;
     // remove the event maxima has just processed from the evaluation queue
     // if we remove a command from the evaluation queue the next output line
     // will be the first from the next command.
     m_outputCellsFromCurrentCommand = 0;
-    if (m_worksheet->m_evaluationQueue.Empty()) { // queue empty.
+    if (GetWorksheet()->m_evaluationQueue.Empty()) { // queue empty.
       m_exitOnError = false;
       StatusMaximaBusy(StatusBar::MaximaStatus::waiting);
       // If we have selected a cell in order to show we are evaluating it
       // we should now remove this marker.
-      if (m_worksheet->FollowEvaluation()) {
-        if (m_worksheet->GetActiveCell())
-          m_worksheet->GetActiveCell()->SelectNone();
-        m_worksheet->ClearSelection();
+      if (GetWorksheet()->FollowEvaluation()) {
+        if (GetWorksheet()->GetActiveCell())
+          GetWorksheet()->GetActiveCell()->SelectNone();
+        GetWorksheet()->ClearSelection();
       }
-      m_worksheet->FollowEvaluation(false);
+      GetWorksheet()->FollowEvaluation(false);
       if (m_exitAfterEval) {
         SaveFile(false);
         Close();
       }
       // Inform the user that the evaluation queue is empty.
       EvaluationQueueLength(0);
-      m_worksheet->SetWorkingGroup(nullptr);
-      m_worksheet->m_evaluationQueue.RemoveFirst();
-      m_worksheet->RequestRedraw();
+      GetWorksheet()->SetWorkingGroup(nullptr);
+      GetWorksheet()->m_evaluationQueue.RemoveFirst();
+      GetWorksheet()->RequestRedraw();
       // Now that maxima is idle we can ask for the contents of its variables
       QueryVariableValue();
     } else { // we don't have an empty queue
       m_ready = false;
-      m_worksheet->RequestRedraw();
-      m_worksheet->SetWorkingGroup(nullptr);
+      GetWorksheet()->RequestRedraw();
+      GetWorksheet()->SetWorkingGroup(nullptr);
       StatusMaximaBusy(StatusBar::MaximaStatus::sending);
       TriggerEvaluation();
     }
 
-    if (m_worksheet->m_evaluationQueue.Empty()) {
+    if (GetWorksheet()->m_evaluationQueue.Empty()) {
       if ((m_configuration.GetOpenHCaret()) &&
-          (m_worksheet->GetActiveCell() == NULL))
-        m_worksheet->OpenNextOrCreateCell();
+          (GetWorksheet()->GetActiveCell() == NULL))
+        GetWorksheet()->OpenNextOrCreateCell();
     }
 
-    if (m_exitAfterEval && m_worksheet->m_evaluationQueue.Empty())
+    if (m_exitAfterEval && GetWorksheet()->m_evaluationQueue.Empty())
       Close();
   } else { // We have a question
-    m_worksheet->SetLastQuestion(label);
-    m_worksheet->QuestionAnswered();
-    m_worksheet->QuestionPending(true);
+    GetWorksheet()->SetLastQuestion(label);
+    GetWorksheet()->QuestionAnswered();
+    GetWorksheet()->QuestionPending(true);
     // If the user answers a question additional output might be required even
     // if the question has been preceded by many lines.
     m_outputCellsFromCurrentCommand = 0;
-    if ((m_worksheet->GetWorkingGroup() == NULL) ||
-        ((m_worksheet->GetWorkingGroup()->m_knownAnswers.empty()) &&
-         m_worksheet->GetWorkingGroup()->AutoAnswer()))
-      m_worksheet->SetNotification(_("Maxima asks a question!"),
+    if ((GetWorksheet()->GetWorkingGroup() == NULL) ||
+        ((GetWorksheet()->GetWorkingGroup()->m_knownAnswers.empty()) &&
+         GetWorksheet()->GetWorkingGroup()->AutoAnswer()))
+      GetWorksheet()->SetNotification(_("Maxima asks a question!"),
                                    wxICON_INFORMATION);
     if (!label.IsEmpty()) {
       int options = AppendOpt::NewLine | AppendOpt::BigSkip;
-      if ((!m_worksheet->GetWorkingGroup()) ||
-          (!m_worksheet->GetWorkingGroup()->AutoAnswer()))
+      if ((!GetWorksheet()->GetWorkingGroup()) ||
+          (!GetWorksheet()->GetWorkingGroup()->AutoAnswer()))
         options |= AppendOpt::PromptToolTip;
 
       if (wxMax(label.Find(m_mathPrefix1), label.Find(m_mathPrefix2)) >= 0)
@@ -3878,11 +3880,11 @@ void wxMaxima::ReadPrompt(wxString &data) {
       else
         DoRawConsoleAppend(label, MC_TYPE_PROMPT, AppendOpt(options));
     }
-    if (m_worksheet->ScrolledAwayFromEvaluation()) {
-      if (m_worksheet->m_mainToolBar)
-        m_worksheet->m_mainToolBar->EnableTool(ToolBar::tb_follow, true);
+    if (GetWorksheet()->ScrolledAwayFromEvaluation()) {
+      if (GetWorksheet()->m_mainToolBar)
+        GetWorksheet()->m_mainToolBar->EnableTool(ToolBar::tb_follow, true);
     } else
-      m_worksheet->OpenQuestionCaret();
+      GetWorksheet()->OpenQuestionCaret();
     StatusMaximaBusy(StatusBar::MaximaStatus::userinput);
   }
   label.Trim(false);
@@ -3940,7 +3942,7 @@ void wxMaxima::SetCWD(wxString file) {
     m_configCommands +=
       wxS(":lisp-quiet (wx-cd \"") + filenamestring + wxS("\")\n");
     if (m_ready) {
-      if (m_worksheet->m_evaluationQueue.Empty())
+      if (GetWorksheet()->m_evaluationQueue.Empty())
         StatusMaximaBusy(StatusBar::MaximaStatus::waiting);
     }
     m_CWD = workingDirectory;
@@ -3977,25 +3979,25 @@ bool wxMaxima::OpenMACFile(const wxString &file, Worksheet *document,
 
   if (clearDocument) {
     StartMaxima();
-    m_worksheet->m_currentFile = file;
+    GetWorksheet()->m_currentFile = file;
     ResetTitle(true, true);
     document->SetSaved(true);
   } else {
     ResetTitle(false);
-    m_worksheet->UpdateTableOfContents();
+    GetWorksheet()->UpdateTableOfContents();
   }
 
   document->RequestRedraw();
 
-  m_worksheet->SetDefaultHCaret();
-  CallAfter([this]{m_worksheet->SetFocus();});
+  GetWorksheet()->SetDefaultHCaret();
+  CallAfter([this]{GetWorksheet()->SetFocus();});
 
   SetCWD(file);
 
   StatusMaximaBusy(StatusBar::MaximaStatus::waiting);
 
-  m_worksheet->SetHCaret(NULL);
-  m_worksheet->ScrollToCaret();
+  GetWorksheet()->SetHCaret(NULL);
+  GetWorksheet()->ScrollToCaret();
   return true;
 }
 
@@ -4040,7 +4042,7 @@ bool wxMaxima::OpenWXMFile(const wxString &file, Worksheet *document,
                              std::move(tree)); // this also requests a recalculate
 
   if (clearDocument) {
-    m_worksheet->m_currentFile = file;
+    GetWorksheet()->m_currentFile = file;
     ResetTitle(true, true);
     document->SetSaved(true);
   } else
@@ -4048,15 +4050,15 @@ bool wxMaxima::OpenWXMFile(const wxString &file, Worksheet *document,
 
   document->RequestRedraw();
 
-  m_worksheet->SetDefaultHCaret();
-  CallAfter([this]{m_worksheet->SetFocus();});
+  GetWorksheet()->SetDefaultHCaret();
+  CallAfter([this]{GetWorksheet()->SetFocus();});
 
   SetCWD(file);
 
   StatusMaximaBusy(StatusBar::MaximaStatus::waiting);
 
-  m_worksheet->SetHCaret(NULL);
-  m_worksheet->ScrollToCaret();
+  GetWorksheet()->SetHCaret(NULL);
+  GetWorksheet()->ScrollToCaret();
   return true;
 }
 
@@ -4121,7 +4123,7 @@ bool wxMaxima::OpenWXMXFile(const wxString &file, Worksheet *document,
     document->ClearDocument();
     StartMaxima();
 
-    m_worksheet->m_currentFile = file;
+    GetWorksheet()->m_currentFile = file;
     ResetTitle(true, true);
     document->SetSaved(true);
     return true;
@@ -4300,12 +4302,12 @@ bool wxMaxima::OpenWXMXFile(const wxString &file, Worksheet *document,
   if (!VariablesNumberString.ToLong(&VariablesNumber))
     VariablesNumber = 0;
   if (VariablesNumber > 0) {
-    m_worksheet->m_variablesPane->Clear();
+    GetWorksheet()->m_variablesPane->Clear();
 
     for (long i = 0; i < VariablesNumber; i++) {
       wxString variable =
         xmldoc.GetRoot()->GetAttribute(wxString::Format("variables_%li", static_cast<long>(i)));
-      m_worksheet->m_variablesPane->AddWatch(variable);
+      GetWorksheet()->m_variablesPane->AddWatch(variable);
     }
   }
 
@@ -4330,33 +4332,33 @@ bool wxMaxima::OpenWXMXFile(const wxString &file, Worksheet *document,
   document->InsertGroupCells(
                              std::move(tree)); // this also requests a recalculate
   if (clearDocument) {
-    m_worksheet->m_currentFile = file;
+    GetWorksheet()->m_currentFile = file;
     ResetTitle(true, true);
     document->SetSaved(true);
   } else
     ResetTitle(false);
 
-  m_worksheet->SetDefaultHCaret();
-  CallAfter([this]{m_worksheet->SetFocus();});
+  GetWorksheet()->SetDefaultHCaret();
+  CallAfter([this]{GetWorksheet()->SetFocus();});
 
   SetCWD(file);
 
   // We can set the cursor to the last known position.
   if (ActiveCellNumber == 0)
-    m_worksheet->SetHCaret(NULL);
+    GetWorksheet()->SetHCaret(NULL);
   if (ActiveCellNumber > 0) {
-    GroupCell *pos = m_worksheet->GetTree();
+    GroupCell *pos = GetWorksheet()->GetTree();
 
     for (long i = 1; i < ActiveCellNumber; i++)
       if (pos)
         pos = pos->GetNext();
 
     if (pos)
-      m_worksheet->SetHCaret(pos);
+      GetWorksheet()->SetHCaret(pos);
   }
   StatusMaximaBusy(StatusBar::MaximaStatus::waiting);
 
-  m_worksheet->Recalculate();
+  GetWorksheet()->Recalculate();
 
   return true;
 }
@@ -4432,11 +4434,11 @@ bool wxMaxima::OpenXML(const wxString &file, Worksheet *document) {
   StartMaxima();
   document->InsertGroupCells(
                              std::move(tree)); // this also requests a recalculate
-  m_worksheet->m_currentFile = file;
+  GetWorksheet()->m_currentFile = file;
   ResetTitle(true, true);
   document->RequestRedraw();
-  m_worksheet->SetDefaultHCaret();
-  CallAfter([this]{m_worksheet->SetFocus();});
+  GetWorksheet()->SetDefaultHCaret();
+  CallAfter([this]{GetWorksheet()->SetFocus();});
   SetCWD(file);
 
   StatusMaximaBusy(StatusBar::MaximaStatus::waiting);
@@ -4780,11 +4782,11 @@ void wxMaxima::ShowMaximaHelp(wxString keyword) {
     keyword = "inchar";
   if (keyword.StartsWith("(%o"))
     keyword = "outchar";
-  wxString tmp = m_worksheet->GetHelpfileAnchorName(keyword);
+  wxString tmp = GetWorksheet()->GetHelpfileAnchorName(keyword);
   if (tmp.IsEmpty())
     keyword = "Function-and-Variable-Index";
 
-  wxString maximaHelpURL = m_worksheet->GetHelpfileURL(keyword);
+  wxString maximaHelpURL = GetWorksheet()->GetHelpfileURL(keyword);
 
   wxBusyCursor crs;
   if (!maximaHelpURL.IsEmpty()) {
@@ -4808,7 +4810,7 @@ bool wxMaxima::InterpretDataFromMaxima(const wxString &newData) {
   if (newData.empty())
     return false;
 
-  if (!m_worksheet->m_evaluationQueue.Empty())
+  if (!GetWorksheet()->m_evaluationQueue.Empty())
     m_fastResponseTimer.StartOnce(120);
   // Speed up things if we want to output more than one line of data in this
   // step
@@ -4863,14 +4865,14 @@ bool wxMaxima::InterpretDataFromMaxima() {
       // First read the prompt that tells us that maxima awaits the next
       // command: If that is the case ReadPrompt() sends the next command to
       // maxima and maxima can work while we interpret its output.
-      oldActiveCell = m_worksheet->GetWorkingGroup();
+      oldActiveCell = GetWorksheet()->GetWorkingGroup();
       ReadPrompt(m_currentOutput);
-      newActiveCell = m_worksheet->GetWorkingGroup();
+      newActiveCell = GetWorksheet()->GetWorkingGroup();
 
       // Temporarily switch to the WorkingGroup the output we don't have
       // interpreted yet was for
       if (newActiveCell != oldActiveCell)
-        m_worksheet->SetWorkingGroup(oldActiveCell);
+        GetWorksheet()->SetWorkingGroup(oldActiveCell);
 
       ParseNextChunkFromMaxima(m_currentOutput);
     } else
@@ -4880,7 +4882,7 @@ bool wxMaxima::InterpretDataFromMaxima() {
 
     // Switch to the WorkingGroup the next bunch of data is for.
     if (newActiveCell != oldActiveCell)
-      m_worksheet->SetWorkingGroup(newActiveCell);
+      GetWorksheet()->SetWorkingGroup(newActiveCell);
   }
   return startlength != static_cast<signed>(m_currentOutput.Length());
 }
@@ -4928,7 +4930,7 @@ void wxMaxima::OnIdle(wxIdleEvent &event) {
     return;
   }
 
-  if (m_worksheet == NULL)
+  if (GetWorksheet() == NULL)
     return;
 
   if(InterpretDataFromMaxima())
@@ -4937,45 +4939,45 @@ void wxMaxima::OnIdle(wxIdleEvent &event) {
       return;
     }
 
-  m_worksheet->UpdateScrollPos();
+  GetWorksheet()->UpdateScrollPos();
 
   // Incremental search is done from the idle task. This means that we don't
   // forcefully need to do a new search on every character that is entered into
   // the search box.
-  if (m_worksheet->m_findDialog != NULL) {
+  if (GetWorksheet()->m_findDialog != NULL) {
     if ((m_oldFindString !=
-         m_worksheet->m_findDialog->GetData()->GetFindString()) ||
-        (m_oldFindFlags != m_worksheet->m_findDialog->GetData()->GetFlags())) {
-      m_oldFindFlags = m_worksheet->m_findDialog->GetData()->GetFlags();
-      m_oldFindString = m_worksheet->m_findDialog->GetData()->GetFindString();
+         GetWorksheet()->m_findDialog->GetData()->GetFindString()) ||
+        (m_oldFindFlags != GetWorksheet()->m_findDialog->GetData()->GetFlags())) {
+      m_oldFindFlags = GetWorksheet()->m_findDialog->GetData()->GetFlags();
+      m_oldFindString = GetWorksheet()->m_findDialog->GetData()->GetFindString();
 
       if ((m_configuration.IncrementalSearch()) &&
-          (m_worksheet->m_findDialog != NULL)) {
-        if(!m_worksheet->m_findDialog->GetRegexSearch())
-          m_worksheet->FindIncremental(m_findData.GetFindString(),
+          (GetWorksheet()->m_findDialog != NULL)) {
+        if(!GetWorksheet()->m_findDialog->GetRegexSearch())
+          GetWorksheet()->FindIncremental(m_findData.GetFindString(),
                                        m_findData.GetFlags() & wxFR_DOWN,
                                        !(m_findData.GetFlags() & wxFR_MATCHCASE));
         else
-          m_worksheet->FindIncremental_RegEx(m_findData.GetFindString(),
+          GetWorksheet()->FindIncremental_RegEx(m_findData.GetFindString(),
                                              m_findData.GetFlags() & wxFR_DOWN);
       }
 
-      m_worksheet->RequestRedraw();
+      GetWorksheet()->RequestRedraw();
       event.RequestMore();
       return;
     }
   }
 
   if (!m_fastResponseTimer.IsRunning()) {
-    bool requestMore = m_worksheet->RecalculateIfNeeded(true);
-    m_worksheet->ScrollToCellIfNeeded();
-    m_worksheet->ScrollToCaretIfNeeded();
+    bool requestMore = GetWorksheet()->RecalculateIfNeeded(true);
+    GetWorksheet()->ScrollToCellIfNeeded();
+    GetWorksheet()->ScrollToCaretIfNeeded();
     if (requestMore) {
       event.RequestMore();
       return;
     }
 
-    if (m_worksheet->RedrawIfRequested())
+    if (GetWorksheet()->RedrawIfRequested())
       {
         event.RequestMore();
         return;
@@ -4984,23 +4986,23 @@ void wxMaxima::OnIdle(wxIdleEvent &event) {
 
   // If nothing which is visible has changed nothing that would cause us to need
   // update the menus and toolbars has.
-  if (m_worksheet->UpdateControlsNeeded()) {
+  if (GetWorksheet()->UpdateControlsNeeded()) {
     UpdateMenus();
     UpdateToolBar();
-    ResetTitle(m_worksheet->IsSaved());
+    ResetTitle(GetWorksheet()->IsSaved());
     event.RequestMore();
     return;
   }
 
-  if (m_worksheet->StatusTextChangedHas()) {
-    if (m_worksheet->StatusTextHas()) {
-      m_statusBar->SetStatusText(m_worksheet->GetStatusText());
+  if (GetWorksheet()->StatusTextChangedHas()) {
+    if (GetWorksheet()->StatusTextHas()) {
+      m_statusBar->SetStatusText(GetWorksheet()->GetStatusText());
     }
     else
       m_statusBar->SetStatusText(m_leftStatusText);
   }
 
-  if ((m_newStatusText) && (!m_worksheet->StatusTextHas())) {
+  if ((m_newStatusText) && (!GetWorksheet()->StatusTextHas())) {
     m_statusBar->SetStatusText(m_leftStatusText);
 
     m_newStatusText = false;
@@ -5019,18 +5021,18 @@ void wxMaxima::OnIdle(wxIdleEvent &event) {
 
   // If we have set the flag that tells us we should update the table of
   // contents sooner or later we should do so now that wxMaxima is idle.
-  if ((m_worksheet->m_scheduleUpdateToc) && (m_worksheet->m_tableOfContents)) {
-    m_worksheet->m_scheduleUpdateToc = false;
+  if ((GetWorksheet()->m_scheduleUpdateToc) && (GetWorksheet()->m_tableOfContents)) {
+    GetWorksheet()->m_scheduleUpdateToc = false;
     GroupCell *cursorPos;
-    if (m_worksheet->GetActiveCell())
-      cursorPos = m_worksheet->GetActiveCell()->GetGroup();
+    if (GetWorksheet()->GetActiveCell())
+      cursorPos = GetWorksheet()->GetActiveCell()->GetGroup();
     else {
-      if (m_worksheet->HCaretActive())
-        cursorPos = m_worksheet->GetHCaret();
+      if (GetWorksheet()->HCaretActive())
+        cursorPos = GetWorksheet()->GetHCaret();
       else
-        cursorPos = m_worksheet->FirstVisibleGC();
+        cursorPos = GetWorksheet()->FirstVisibleGC();
     }
-    m_worksheet->m_tableOfContents->UpdateTableOfContents(cursorPos);
+    GetWorksheet()->m_tableOfContents->UpdateTableOfContents(cursorPos);
     event.RequestMore();
     return;
   }
@@ -5071,10 +5073,10 @@ void wxMaxima::OnIdle(wxIdleEvent &event) {
       std::vector<wxString> lines;
       while (tokenizer.HasMoreTokens())
         lines.push_back(tokenizer.GetNextToken());
-      m_worksheet->InsertGroupCells(
+      GetWorksheet()->InsertGroupCells(
                                     Format::TreeFromWXM(lines, &m_configuration));
-      m_worksheet->UpdateMLast();
-      m_worksheet->SetSaved(true);
+      GetWorksheet()->UpdateMLast();
+      GetWorksheet()->SetSaved(true);
       m_initialWorkSheetContents = wxEmptyString;
       event.RequestMore();
       return;
@@ -5097,8 +5099,8 @@ void wxMaxima::OnIdle(wxIdleEvent &event) {
     {
       wxLogMessage(_("Updating the configuration from the system's configuration memory"));
       m_configuration.ReadConfig();
-      m_worksheet->RequestRedraw();
-      m_worksheet->UpdateControlsNeeded(true);
+      GetWorksheet()->RequestRedraw();
+      GetWorksheet()->UpdateControlsNeeded(true);
     }
   // If we reach this point wxMaxima truly is idle
   // => Tell wxWidgets it can process its own idle commands, as well.
@@ -5109,10 +5111,10 @@ bool wxMaxima::UpdateDrawPane() {
   if
     (m_drawPane) {
     int dimensions = 0;
-    EditorCell *editor = m_worksheet->GetActiveCell();
+    EditorCell *editor = GetWorksheet()->GetActiveCell();
     if (editor) {
       wxString command =
-        m_worksheet->GetActiveCell()->GetFullCommandUnderCursor();
+        GetWorksheet()->GetActiveCell()->GetFullCommandUnderCursor();
       if (command.Contains(wxS("gr2d")))
         dimensions = 2;
       if (command.Contains(wxS("with_slider_draw")))
@@ -5140,12 +5142,12 @@ bool wxMaxima::UpdateDrawPane() {
 ///--------------------------------------------------------------------------------
 
 void wxMaxima::MenuCommand(const wxString &cmd) {
-  CallAfter([this]{m_worksheet->SetFocus();});
-  m_worksheet->OpenHCaret(cmd);
-  m_worksheet->AddCellToEvaluationQueue(
-                                        m_worksheet->GetActiveCell()->GetGroup());
+  CallAfter([this]{GetWorksheet()->SetFocus();});
+  GetWorksheet()->OpenHCaret(cmd);
+  GetWorksheet()->AddCellToEvaluationQueue(
+                                        GetWorksheet()->GetActiveCell()->GetGroup());
   TriggerEvaluation();
-  m_worksheet->RequestRedraw();
+  GetWorksheet()->RequestRedraw();
 }
 
 ///--------------------------------------------------------------------------------
@@ -5153,7 +5155,7 @@ void wxMaxima::MenuCommand(const wxString &cmd) {
 ///--------------------------------------------------------------------------------
 
 void wxMaxima::PrintMenu(wxCommandEvent &event) {
-  m_worksheet->CloseAutoCompletePopup();
+  GetWorksheet()->CloseAutoCompletePopup();
 
   switch (event.GetId()) {
   case wxID_PRINT: {
@@ -5163,9 +5165,9 @@ void wxMaxima::PrintMenu(wxCommandEvent &event) {
     wxPrinter printer(&printDialogData);
     wxString title(_("wxMaxima document"));
 
-    if (m_worksheet->m_currentFile.Length()) {
+    if (GetWorksheet()->m_currentFile.Length()) {
       wxString suffix;
-      wxFileName::SplitPath(m_worksheet->m_currentFile, NULL, NULL, &title,
+      wxFileName::SplitPath(GetWorksheet()->m_currentFile, NULL, NULL, &title,
                             &suffix);
       title << wxS(".") << suffix;
     }
@@ -5173,59 +5175,59 @@ void wxMaxima::PrintMenu(wxCommandEvent &event) {
     {
       // Redraws during printing might end up on paper => temporarily block all
       // redraw events for the console
-      //      wxWindowUpdateLocker noUpdates(m_worksheet);
-      wxEventBlocker blocker(m_worksheet);
-      Printout printout(title, m_worksheet->GetTree(), GetContentScaleFactor());
+      //      wxWindowUpdateLocker noUpdates(GetWorksheet());
+      wxEventBlocker blocker(GetWorksheet());
+      Printout printout(title, GetWorksheet()->GetTree(), GetContentScaleFactor());
       wxBusyCursor crs;
       if (printer.Print(this, &printout, true)) {
         m_printData = std::unique_ptr<wxPrintData>(
                                                    new wxPrintData(printer.GetPrintDialogData().GetPrintData()));
       }
     }
-    m_worksheet->RecalculateForce();
-    m_worksheet->RequestRedraw();
+    GetWorksheet()->RecalculateForce();
+    GetWorksheet()->RequestRedraw();
     break;
   }
   }
 }
 
 void wxMaxima::UpdateMenus() {
-  if (!m_worksheet)
+  if (!GetWorksheet())
     return;
   wxASSERT_MSG(
-               (!m_worksheet->HCaretActive()) || (m_worksheet->GetActiveCell() == NULL),
+               (!GetWorksheet()->HCaretActive()) || (GetWorksheet()->GetActiveCell() == NULL),
                _("Both horizontal and vertical cursor active at the same time"));
-  m_MenuBar->EnableItem(wxID_COPY, m_worksheet->CanCopy());
-  m_MenuBar->EnableItem(wxID_CUT, m_worksheet->CanCut());
-  m_MenuBar->EnableItem(EventIDs::menu_copy_tex_from_worksheet, m_worksheet->CanCopy());
+  m_MenuBar->EnableItem(wxID_COPY, GetWorksheet()->CanCopy());
+  m_MenuBar->EnableItem(wxID_CUT, GetWorksheet()->CanCut());
+  m_MenuBar->EnableItem(EventIDs::menu_copy_tex_from_worksheet, GetWorksheet()->CanCopy());
   m_MenuBar->EnableItem(EventIDs::menu_copy_matlab_from_worksheet,
-                        m_worksheet->CanCopy());
-  m_MenuBar->EnableItem(EventIDs::popid_copy_mathml, m_worksheet->CanCopy());
-  m_MenuBar->EnableItem(EventIDs::menu_copy_as_bitmap, m_worksheet->CanCopy());
-  m_MenuBar->EnableItem(EventIDs::menu_copy_as_svg, m_worksheet->CanCopy());
+                        GetWorksheet()->CanCopy());
+  m_MenuBar->EnableItem(EventIDs::popid_copy_mathml, GetWorksheet()->CanCopy());
+  m_MenuBar->EnableItem(EventIDs::menu_copy_as_bitmap, GetWorksheet()->CanCopy());
+  m_MenuBar->EnableItem(EventIDs::menu_copy_as_svg, GetWorksheet()->CanCopy());
 #if wxUSE_ENH_METAFILE
-  m_MenuBar->EnableItem(EventIDs::menu_copy_as_emf, m_worksheet->CanCopy());
+  m_MenuBar->EnableItem(EventIDs::menu_copy_as_emf, GetWorksheet()->CanCopy());
 #endif
-  m_MenuBar->EnableItem(EventIDs::menu_copy_as_rtf, m_worksheet->CanCopy());
-  m_MenuBar->EnableItem(EventIDs::menu_copy_to_file, m_worksheet->CanCopy());
+  m_MenuBar->EnableItem(EventIDs::menu_copy_as_rtf, GetWorksheet()->CanCopy());
+  m_MenuBar->EnableItem(EventIDs::menu_copy_to_file, GetWorksheet()->CanCopy());
   m_MenuBar->EnableItem(EventIDs::menu_copy_text_from_worksheet,
-                        m_worksheet->CanCopy());
-  m_MenuBar->EnableItem(wxID_SELECTALL, m_worksheet->GetTree() != NULL);
-  m_MenuBar->EnableItem(wxID_UNDO, m_worksheet->CanUndo());
-  m_MenuBar->EnableItem(wxID_REDO, m_worksheet->CanRedo());
+                        GetWorksheet()->CanCopy());
+  m_MenuBar->EnableItem(wxID_SELECTALL, GetWorksheet()->GetTree() != NULL);
+  m_MenuBar->EnableItem(wxID_UNDO, GetWorksheet()->CanUndo());
+  m_MenuBar->EnableItem(wxID_REDO, GetWorksheet()->CanRedo());
   m_MenuBar->EnableItem(EventIDs::menu_interrupt_id, m_pid > 0);
   m_MenuBar->EnableItem(EventIDs::popid_comment_selection,
-                        m_worksheet->GetActiveCell() &&
-                        m_worksheet->GetActiveCell()->SelectionActive());
-  m_MenuBar->EnableItem(EventIDs::menu_evaluate, m_worksheet->GetActiveCell() ||
-                        m_worksheet->HasCellsSelected());
+                        GetWorksheet()->GetActiveCell() &&
+                        GetWorksheet()->GetActiveCell()->SelectionActive());
+  m_MenuBar->EnableItem(EventIDs::menu_evaluate, GetWorksheet()->GetActiveCell() ||
+                        GetWorksheet()->HasCellsSelected());
 
-  m_MenuBar->EnableItem(EventIDs::menu_evaluate_all_visible, m_worksheet->GetTree());
-  m_MenuBar->EnableItem(ToolBar::tb_evaltillhere, m_worksheet->GetTree() &&
-                        m_worksheet->CanPaste() &&
-                        m_worksheet->GetHCaret());
+  m_MenuBar->EnableItem(EventIDs::menu_evaluate_all_visible, GetWorksheet()->GetTree());
+  m_MenuBar->EnableItem(ToolBar::tb_evaltillhere, GetWorksheet()->GetTree() &&
+                        GetWorksheet()->CanPaste() &&
+                        GetWorksheet()->GetHCaret());
 
-  m_MenuBar->EnableItem(EventIDs::menu_jumptoerror, !m_worksheet->GetErrorList().Empty());
+  m_MenuBar->EnableItem(EventIDs::menu_jumptoerror, !GetWorksheet()->GetErrorList().Empty());
   m_MenuBar->EnableItem(wxID_SAVE, (!m_fileSaved));
 
   for(const auto &pane: GetSidebarNames())
@@ -5235,11 +5237,11 @@ void wxMaxima::UpdateMenus() {
   bool hidecode = !(m_configuration.ShowCodeCells());
   m_MenuBar->Check(ToolBar::tb_hideCode, hidecode);
 
-  if (m_worksheet->GetTree()) {
+  if (GetWorksheet()->GetTree()) {
     m_MenuBar->EnableItem(EventIDs::popid_divide_cell,
-                          m_worksheet->GetActiveCell());
+                          GetWorksheet()->GetActiveCell());
     m_MenuBar->EnableItem(EventIDs::popid_merge_cells,
-                          m_worksheet->CanMergeSelection());
+                          GetWorksheet()->CanMergeSelection());
     m_MenuBar->EnableItem(wxID_PRINT, true);
   } else {
     m_MenuBar->EnableItem(EventIDs::popid_divide_cell, false);
@@ -5258,72 +5260,72 @@ void wxMaxima::UpdateMenus() {
 }
 
 void wxMaxima::UpdateToolBar() {
-  if (!m_worksheet->m_mainToolBar)
+  if (!GetWorksheet()->m_mainToolBar)
     return;
 
-  m_worksheet->m_mainToolBar->CanUndo(m_worksheet->CanUndo());
-  m_worksheet->m_mainToolBar->CanRedo(m_worksheet->CanRedo());
-  m_worksheet->m_mainToolBar->CanCopy(m_worksheet->CanCopy());
-  m_worksheet->m_mainToolBar->CanCut(m_worksheet->CanCut());
-  m_worksheet->m_mainToolBar->CanSave((!m_fileSaved));
-  m_worksheet->m_mainToolBar->CanPrint(m_worksheet->GetTree() != NULL);
-  m_worksheet->m_mainToolBar->CanEvalTillHere(
-                                              (m_worksheet->GetTree() != NULL) && (m_worksheet->CanPaste()) &&
-                                              (m_worksheet->GetHCaret() != NULL) &&
+  GetWorksheet()->m_mainToolBar->CanUndo(GetWorksheet()->CanUndo());
+  GetWorksheet()->m_mainToolBar->CanRedo(GetWorksheet()->CanRedo());
+  GetWorksheet()->m_mainToolBar->CanCopy(GetWorksheet()->CanCopy());
+  GetWorksheet()->m_mainToolBar->CanCut(GetWorksheet()->CanCut());
+  GetWorksheet()->m_mainToolBar->CanSave((!m_fileSaved));
+  GetWorksheet()->m_mainToolBar->CanPrint(GetWorksheet()->GetTree() != NULL);
+  GetWorksheet()->m_mainToolBar->CanEvalTillHere(
+                                              (GetWorksheet()->GetTree() != NULL) && (GetWorksheet()->CanPaste()) &&
+                                              (GetWorksheet()->GetHCaret() != NULL) &&
                                               ((m_client && m_client->IsConnected())));
 
   // On MSW it seems we cannot change an icon without side-effects that somehow
   // stop the animation => on this OS we have separate icons for the
   // animation start and stop. On the rest of the OSes we use one combined
   // start/stop button instead.
-  if (m_worksheet->CanAnimate()) {
+  if (GetWorksheet()->CanAnimate()) {
     const AnimationCell *animation =
-      dynamic_cast<AnimationCell *>(m_worksheet->GetSelectionStart());
+      dynamic_cast<AnimationCell *>(GetWorksheet()->GetSelectionStart());
     if (animation->AnimationRunning())
-      m_worksheet->m_mainToolBar->AnimationButtonState(ToolBar::Running);
+      GetWorksheet()->m_mainToolBar->AnimationButtonState(ToolBar::Running);
     else
-      m_worksheet->m_mainToolBar->AnimationButtonState(ToolBar::Stopped);
+      GetWorksheet()->m_mainToolBar->AnimationButtonState(ToolBar::Stopped);
   } else
-    m_worksheet->m_mainToolBar->AnimationButtonState(ToolBar::Inactive);
+    GetWorksheet()->m_mainToolBar->AnimationButtonState(ToolBar::Inactive);
 
-  bool follow = m_worksheet->ScrolledAwayFromEvaluation();
+  bool follow = GetWorksheet()->ScrolledAwayFromEvaluation();
   switch (m_StatusMaximaBusy) {
   case StatusBar::MaximaStatus::userinput:
-    m_worksheet->m_mainToolBar->ShowUserInputBitmap();
-    m_worksheet->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, true);
-    m_worksheet->m_mainToolBar->EnableTool(ToolBar::tb_follow, true);
+    GetWorksheet()->m_mainToolBar->ShowUserInputBitmap();
+    GetWorksheet()->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, true);
+    GetWorksheet()->m_mainToolBar->EnableTool(ToolBar::tb_follow, true);
     break;
   case StatusBar::MaximaStatus::waitingForAuth:
   case StatusBar::MaximaStatus::waitingForPrompt:
   case StatusBar::MaximaStatus::waiting:
   case StatusBar::MaximaStatus::sending:
-    m_worksheet->m_mainToolBar->ShowFollowBitmap();
-    if (m_worksheet->GetWorkingGroup() == NULL) {
-      m_worksheet->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, false);
-      m_worksheet->m_mainToolBar->EnableTool(ToolBar::tb_follow, false);
+    GetWorksheet()->m_mainToolBar->ShowFollowBitmap();
+    if (GetWorksheet()->GetWorkingGroup() == NULL) {
+      GetWorksheet()->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, false);
+      GetWorksheet()->m_mainToolBar->EnableTool(ToolBar::tb_follow, false);
     }
     break;
   case StatusBar::MaximaStatus::calculating:
   case StatusBar::MaximaStatus::transferring:
   case StatusBar::MaximaStatus::parsing:
-    m_worksheet->m_mainToolBar->ShowFollowBitmap();
-    m_worksheet->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, true);
-    m_worksheet->m_mainToolBar->EnableTool(ToolBar::tb_follow, follow);
+    GetWorksheet()->m_mainToolBar->ShowFollowBitmap();
+    GetWorksheet()->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, true);
+    GetWorksheet()->m_mainToolBar->EnableTool(ToolBar::tb_follow, follow);
     break;
   case StatusBar::MaximaStatus::wait_for_start:
   case StatusBar::MaximaStatus::disconnected:
   case StatusBar::MaximaStatus::process_wont_start:
-    m_worksheet->m_mainToolBar->ShowFollowBitmap();
-    m_worksheet->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, false);
-    m_worksheet->m_mainToolBar->EnableTool(ToolBar::tb_follow, false);
+    GetWorksheet()->m_mainToolBar->ShowFollowBitmap();
+    GetWorksheet()->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, false);
+    GetWorksheet()->m_mainToolBar->EnableTool(ToolBar::tb_follow, false);
     break;
   }
-  EditorCell *editor = m_worksheet->GetActiveCell();
+  EditorCell *editor = GetWorksheet()->GetActiveCell();
 
   if (editor == NULL) {
     GroupCell *group = NULL;
-    if (m_worksheet->GetSelectionStart())
-      group = m_worksheet->GetSelectionStart()->GetGroup();
+    if (GetWorksheet()->GetSelectionStart())
+      group = GetWorksheet()->GetSelectionStart()->GetGroup();
 
     if (group != NULL)
       editor = group->GetEditable();
@@ -5332,16 +5334,16 @@ void wxMaxima::UpdateToolBar() {
   bool canEvaluateNext = ((editor != NULL) && (editor->GetTextStyle() == TS_CODE_DEFAULT));
 
   if (!canEvaluateNext) {
-    if (m_worksheet->HCaretActive()) {
-      GroupCell *group = m_worksheet->GetHCaret();
+    if (GetWorksheet()->HCaretActive()) {
+      GroupCell *group = GetWorksheet()->GetHCaret();
       if (group == NULL)
-        group = m_worksheet->GetTree();
+        group = GetWorksheet()->GetTree();
       else
         group = group->GetNext();
       while ((group != NULL) &&
              (!((group->GetEditable() != NULL) &&
                 (group->GetEditable()->GetType() == MC_TYPE_INPUT)) &&
-              (!m_worksheet->m_evaluationQueue.IsLastInQueue(group))))
+              (!GetWorksheet()->m_evaluationQueue.IsLastInQueue(group))))
         group = group->GetNext();
 
       if (group != NULL)
@@ -5349,12 +5351,12 @@ void wxMaxima::UpdateToolBar() {
     }
   }
   if (canEvaluateNext)
-    m_worksheet->m_mainToolBar->CanEvalThisCell(true);
+    GetWorksheet()->m_mainToolBar->CanEvalThisCell(true);
   else
-    m_worksheet->m_mainToolBar->CanEvalThisCell(false);
-  m_worksheet->m_mainToolBar->WorksheetEmpty(m_worksheet->GetTree() == NULL);
+    GetWorksheet()->m_mainToolBar->CanEvalThisCell(false);
+  GetWorksheet()->m_mainToolBar->WorksheetEmpty(GetWorksheet()->GetTree() == NULL);
 
-  m_worksheet->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, false);
+  GetWorksheet()->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, false);
 }
 
 wxString wxMaxima::ExtractFirstExpression(const wxString &entry) {
@@ -5377,13 +5379,13 @@ wxString wxMaxima::ExtractFirstExpression(const wxString &entry) {
 }
 
 wxString wxMaxima::GetDefaultEntry() {
-  if (m_worksheet->CanCopy())
-    return (m_worksheet->GetString()).Trim().Trim(false);
+  if (GetWorksheet()->CanCopy())
+    return (GetWorksheet()->GetString()).Trim().Trim(false);
   wxString retval;
-  if (m_worksheet->GetActiveCell() != NULL)
-    return retval = m_worksheet->GetActiveCell()->GetWordUnderCaret();
-  if (m_worksheet->IsSelected(MC_TYPE_DEFAULT))
-    return m_worksheet->GetSelectionStart()->ToString();
+  if (GetWorksheet()->GetActiveCell() != NULL)
+    return retval = GetWorksheet()->GetActiveCell()->GetWordUnderCaret();
+  if (GetWorksheet()->IsSelected(MC_TYPE_DEFAULT))
+    return GetWorksheet()->GetSelectionStart()->ToString();
   if (retval.IsEmpty())
     retval = "%";
   return retval;
@@ -5407,7 +5409,7 @@ bool wxMaxima::OpenFile(const wxString &file, const wxString &command) {
   unixFilename.Replace(wxS("\\"), wxS("/"));
 #endif
 
-  //  wxWindowUpdateLocker dontUpdateTheWorksheet(m_worksheet);
+  //  wxWindowUpdateLocker dontUpdateTheWorksheet(GetWorksheet());
 
   if (command.Length() > 0) {
     MenuCommand(command + wxS("(\"") + unixFilename + wxS("\")$"));
@@ -5418,7 +5420,7 @@ bool wxMaxima::OpenFile(const wxString &file, const wxString &command) {
       ReReadConfig();
     }
   } else if (file.Lower().EndsWith(wxS(".wxm"))) {
-    retval = OpenWXMFile(file, m_worksheet);
+    retval = OpenWXMFile(file, GetWorksheet());
     if (retval) {
       ReReadConfig();
       if (!m_exitAfterEval)
@@ -5428,7 +5430,7 @@ bool wxMaxima::OpenFile(const wxString &file, const wxString &command) {
   }
 
   else if (file.Lower().EndsWith(wxS(".mac"))) {
-    retval = OpenMACFile(file, m_worksheet);
+    retval = OpenMACFile(file, GetWorksheet());
     if (retval) {
       ReReadConfig();
       if (!m_exitAfterEval)
@@ -5436,7 +5438,7 @@ bool wxMaxima::OpenFile(const wxString &file, const wxString &command) {
       ReReadConfig();
     }
   } else if (file.Lower().EndsWith(wxS(".out"))) {
-    retval = OpenMACFile(file, m_worksheet);
+    retval = OpenMACFile(file, GetWorksheet());
     if (retval) {
       ReReadConfig();
       if (!m_exitAfterEval)
@@ -5446,7 +5448,7 @@ bool wxMaxima::OpenFile(const wxString &file, const wxString &command) {
   }
 
   else if (file.EndsWith(wxS(".wxmx")) || file.EndsWith(wxS(".wxmx~")) ) {
-    retval = OpenWXMXFile(file, m_worksheet);
+    retval = OpenWXMXFile(file, GetWorksheet());
     if (retval) {
       ReReadConfig();
       if (!m_exitAfterEval)
@@ -5456,7 +5458,7 @@ bool wxMaxima::OpenFile(const wxString &file, const wxString &command) {
   }
 
   else if (file.Right(4).Lower() == wxS(".zip")) {
-    retval = OpenWXMXFile(file, m_worksheet);
+    retval = OpenWXMXFile(file, GetWorksheet());
     if (retval) {
       ReReadConfig();
       if (!m_exitAfterEval)
@@ -5474,7 +5476,7 @@ bool wxMaxima::OpenFile(const wxString &file, const wxString &command) {
   }
 
   else if (file.Right(4).Lower() == wxS(".xml"))
-    retval = OpenXML(file, m_worksheet); // clearDocument = true
+    retval = OpenXML(file, GetWorksheet()); // clearDocument = true
 
   else {
     MenuCommand(wxS("load(\"") + unixFilename + wxS("\")$"));
@@ -5488,15 +5490,15 @@ bool wxMaxima::OpenFile(const wxString &file, const wxString &command) {
   RemoveTempAutosavefile();
   StartAutoSaveTimer();
 
-  m_worksheet->TreeUndo_ClearBuffers();
-  if (m_worksheet->m_currentFile != wxEmptyString) {
-    wxString filename(m_worksheet->m_currentFile);
+  GetWorksheet()->TreeUndo_ClearBuffers();
+  if (GetWorksheet()->m_currentFile != wxEmptyString) {
+    wxString filename(GetWorksheet()->m_currentFile);
     SetCWD(std::move(filename));
   }
-  if (m_worksheet->m_tableOfContents != NULL) {
-    m_worksheet->m_scheduleUpdateToc = false;
-    m_worksheet->m_tableOfContents->UpdateTableOfContents(
-                                                          m_worksheet->GetHCaret());
+  if (GetWorksheet()->m_tableOfContents != NULL) {
+    GetWorksheet()->m_scheduleUpdateToc = false;
+    GetWorksheet()->m_tableOfContents->UpdateTableOfContents(
+                                                          GetWorksheet()->GetHCaret());
   }
 
   if (!retval)
@@ -5504,22 +5506,22 @@ bool wxMaxima::OpenFile(const wxString &file, const wxString &command) {
                                 file.utf8_str()));
 
   if (retval) {
-    m_worksheet->RequestRedraw();
+    GetWorksheet()->RequestRedraw();
     StatusText(_("File opened"));
     if (m_evalOnStartup && m_ready) {
       wxLogMessage(_("Starting evaluation of the document"));
       m_evalOnStartup = false;
       EvaluationQueueLength(
-                            m_worksheet->m_evaluationQueue.Size(),
-                            m_worksheet->m_evaluationQueue.CommandsLeftInCell());
+                            GetWorksheet()->m_evaluationQueue.Size(),
+                            GetWorksheet()->m_evaluationQueue.CommandsLeftInCell());
       TriggerEvaluation();
     }
   } else
     StatusText(_("File could not be opened"));
 
-  m_worksheet->RecalculateForce();
+  GetWorksheet()->RecalculateForce();
   UpdateMenus();
-  m_worksheet->UpdateMLast();
+  GetWorksheet()->UpdateMLast();
 
   return retval;
 }
@@ -5528,7 +5530,7 @@ bool wxMaxima::SaveFile(bool forceSave) {
   // Show a busy cursor as long as we export a file.
   wxBusyCursor crs;
 
-  wxString file = m_worksheet->m_currentFile;
+  wxString file = GetWorksheet()->m_currentFile;
   wxString fileExt = wxS("wxmx");
   int ext = 0;
 
@@ -5586,24 +5588,24 @@ bool wxMaxima::SaveFile(bool forceSave) {
     m_lastPath = wxPathOnly(file);
     if (file.Lower().EndsWith(wxS(".wxm"))) {
       config->Write(wxS("defaultExt"), wxS("wxm"));
-      if (!m_worksheet->ExportToMAC(file)) {
+      if (!GetWorksheet()->ExportToMAC(file)) {
         StatusSaveFailed();
         StartAutoSaveTimer();
         return false;
       } else {
         RemoveTempAutosavefile();
         if (file != m_tempfileName)
-          m_worksheet->m_currentFile = file;
+          GetWorksheet()->m_currentFile = file;
       }
     } else {
-      if (!m_worksheet->ExportToWXMX(file)) {
+      if (!GetWorksheet()->ExportToWXMX(file)) {
         StatusSaveFailed();
         StartAutoSaveTimer();
         return false;
       } else {
         RemoveTempAutosavefile();
         if (file != m_tempfileName)
-          m_worksheet->m_currentFile = file;
+          GetWorksheet()->m_currentFile = file;
       }
     }
 
@@ -5680,7 +5682,7 @@ void wxMaxima::ReadStdErr() {
       DoRawConsoleAppend(o, MC_TYPE_ERROR);
       AbortOnError();
       TriggerEvaluation();
-      m_worksheet->GetErrorList().Add(m_worksheet->GetWorkingGroup(true));
+      GetWorksheet()->GetErrorList().Add(GetWorksheet()->GetWorkingGroup(true));
 
       if (GetPipeToStdout())
         std::cout << o;
@@ -5696,13 +5698,13 @@ bool wxMaxima::AbortOnError() {
   ExitAfterEval(false);
   EvalOnStartup(false);
 
-  if (m_worksheet->m_notificationMessage) {
-    if (m_worksheet->GetWorkingGroup(true) !=
-        m_worksheet->m_notificationMessage->m_errorNotificationCell)
-      m_worksheet->SetNotification(_("Maxima has issued an error!"),
+  if (GetWorksheet()->m_notificationMessage) {
+    if (GetWorksheet()->GetWorkingGroup(true) !=
+        GetWorksheet()->m_notificationMessage->m_errorNotificationCell)
+      GetWorksheet()->SetNotification(_("Maxima has issued an error!"),
                                    wxICON_ERROR);
-    m_worksheet->m_notificationMessage->m_errorNotificationCell =
-      m_worksheet->GetWorkingGroup(true);
+    GetWorksheet()->m_notificationMessage->m_errorNotificationCell =
+      GetWorksheet()->GetWorkingGroup(true);
   }
 
   m_exitAfterEval = false;
@@ -5711,10 +5713,10 @@ bool wxMaxima::AbortOnError() {
     wxExit();
   }
   if (m_configuration.GetAbortOnError()) {
-    m_worksheet->m_evaluationQueue.Clear();
+    GetWorksheet()->m_evaluationQueue.Clear();
     // Inform the user that the evaluation queue is empty.
     EvaluationQueueLength(0);
-    m_worksheet->ScrollToError();
+    GetWorksheet()->ScrollToError();
     return true;
   } else
     return false;
@@ -5861,7 +5863,7 @@ void wxMaxima::OnTimerEvent(wxTimerEvent &event) {
     break;
   case KEYBOARD_INACTIVITY_TIMER_ID:
   case AUTO_SAVE_TIMER_ID:
-    if ((!m_worksheet->m_keyboardInactiveTimer.IsRunning()) &&
+    if ((!GetWorksheet()->m_keyboardInactiveTimer.IsRunning()) &&
         (!m_autoSaveTimer.IsRunning())) {
       AutoSave();
       StartAutoSaveTimer();
@@ -5874,17 +5876,17 @@ bool wxMaxima::AutoSave() {
   if (!SaveNecessary())
     return true;
 
-  bool savedWas = m_worksheet->IsSaved();
+  bool savedWas = GetWorksheet()->IsSaved();
   wxString oldTempFile = m_tempfileName;
-  wxString oldFilename = m_worksheet->m_currentFile;
+  wxString oldFilename = GetWorksheet()->m_currentFile;
   m_tempfileName =
     wxStandardPaths::Get().GetTempDir() +
     wxString::Format("/untitled_%li_%li.wxmx", static_cast<long>(wxGetProcessId()),
                      static_cast<long>(m_pid));
 
   if (m_configuration.AutoSaveAsTempFile() ||
-      m_worksheet->m_currentFile.IsEmpty()) {
-    bool saved = m_worksheet->ExportToWXMX(m_tempfileName);
+      GetWorksheet()->m_currentFile.IsEmpty()) {
+    bool saved = GetWorksheet()->ExportToWXMX(m_tempfileName);
 
     wxLogMessage(_("Autosaving as temp file %s"), m_tempfileName.utf8_str());
     if ((m_tempfileName != oldTempFile) && saved) {
@@ -5898,20 +5900,20 @@ bool wxMaxima::AutoSave() {
     }
     RegisterAutoSaveFile();
   } else {
-    wxLogMessage(_("Autosaving the .wxmx file as %s"), m_worksheet->m_currentFile.utf8_str());
+    wxLogMessage(_("Autosaving the .wxmx file as %s"), GetWorksheet()->m_currentFile.utf8_str());
     savedWas = SaveFile(false);
   }
 
-  m_worksheet->SetSaved(savedWas);
+  GetWorksheet()->SetSaved(savedWas);
   ResetTitle(savedWas, true);
 
   oldTempFile = m_tempfileName;
-  m_worksheet->m_currentFile = oldFilename;
+  GetWorksheet()->m_currentFile = oldFilename;
   return savedWas;
 }
 
 void wxMaxima::FileMenu(wxCommandEvent &event) {
-  m_worksheet->CloseAutoCompletePopup();
+  GetWorksheet()->CloseAutoCompletePopup();
 
   wxString expr = GetDefaultEntry();
   bool forceSave = false;
@@ -5950,7 +5952,7 @@ void wxMaxima::FileMenu(wxCommandEvent &event) {
       // On the mac the "File/New" menu item by default opens a new window instead of
       // reusing the old one.
 #ifdef __WXOSX__
-      if (m_worksheet->IsEmpty())
+      if (GetWorksheet()->IsEmpty())
         OpenFile(file, wxEmptyString);
       else
         wxGetApp().NewWindow(file);
@@ -5965,17 +5967,17 @@ void wxMaxima::FileMenu(wxCommandEvent &event) {
     SaveFile(forceSave);
     // Seems like resetting the title on "file/save as" is a little bit
     // sluggish, otherwise.
-    ResetTitle(m_worksheet->IsSaved(), true);
+    ResetTitle(GetWorksheet()->IsSaved(), true);
   }
   else if(event.GetId() == wxID_SAVE) {
     SaveFile(forceSave);
     // Seems like resetting the title on "file/save as" is a little bit
     // sluggish, otherwise.
-    ResetTitle(m_worksheet->IsSaved(), true);
+    ResetTitle(GetWorksheet()->IsSaved(), true);
   }
   else if(event.GetId() == EventIDs::menu_export_html) {
     // Determine a sane default file name;
-    wxString file = m_worksheet->m_currentFile;
+    wxString file = GetWorksheet()->m_currentFile;
     if (file.Length() == 0)
       file = _("untitled");
     else
@@ -6026,7 +6028,7 @@ void wxMaxima::FileMenu(wxCommandEvent &event) {
           fileExt = wxS("tex");
           // Show a busy cursor as long as we export a file.
           wxBusyCursor crs;
-          if (!m_worksheet->ExportToTeX(file)) {
+          if (!GetWorksheet()->ExportToTeX(file)) {
             LoggingMessageBox(_("Exporting to TeX failed!"), _("Error!"), wxOK);
             StatusExportFailed();
           } else
@@ -6037,7 +6039,7 @@ void wxMaxima::FileMenu(wxCommandEvent &event) {
           // Show a busy cursor as long as we export a file.
           wxBusyCursor crs;
           fileExt = wxS("mac");
-          if (!m_worksheet->ExportToMAC(file)) {
+          if (!GetWorksheet()->ExportToMAC(file)) {
             LoggingMessageBox(_("Exporting to maxima batch file failed!"),
                               _("Error!"), wxOK);
             StatusExportFailed();
@@ -6049,7 +6051,7 @@ void wxMaxima::FileMenu(wxCommandEvent &event) {
           // Show a busy cursor as long as we export a file.
           wxBusyCursor crs;
           fileExt = wxS("html");
-          if (!m_worksheet->ExportToHTML(file)) {
+          if (!GetWorksheet()->ExportToHTML(file)) {
             LoggingMessageBox(_("Exporting to HTML failed!"), _("Error!"),
                               wxOK);
             StatusExportFailed();
@@ -6079,29 +6081,29 @@ void wxMaxima::FileMenu(wxCommandEvent &event) {
       OpenFile(file, wxS("batch"));
   }
   else if(event.GetId() == ToolBar::tb_animation_startStop) {
-    if (m_worksheet->CanAnimate()) {
+    if (GetWorksheet()->CanAnimate()) {
       const AnimationCell *animation =
-        dynamic_cast<AnimationCell *>(m_worksheet->GetSelectionStart());
+        dynamic_cast<AnimationCell *>(GetWorksheet()->GetSelectionStart());
       if (animation->AnimationRunning())
-        m_worksheet->Animate(false);
+        GetWorksheet()->Animate(false);
       else
-        m_worksheet->Animate(true);
+        GetWorksheet()->Animate(true);
     }
   }
   else if(event.GetId() == EventIDs::popid_animation_start) {
-    if (m_worksheet->CanAnimate()) {
+    if (GetWorksheet()->CanAnimate()) {
       AnimationCell *animation =
-        dynamic_cast<AnimationCell *>(m_worksheet->GetSelectionStart());
+        dynamic_cast<AnimationCell *>(GetWorksheet()->GetSelectionStart());
       animation->AnimationRunning(true);
     }
   }
-  m_worksheet->RequestRedraw();
+  GetWorksheet()->RequestRedraw();
 }
 
 void wxMaxima::EditMenu(wxCommandEvent &event) {
-  m_worksheet->CloseAutoCompletePopup();
+  GetWorksheet()->CloseAutoCompletePopup();
 
-  // if (m_worksheet->m_findDialog != NULL) {
+  // if (GetWorksheet()->m_findDialog != NULL) {
   //   event.Skip();
   //   return;
   // }
@@ -6110,72 +6112,72 @@ void wxMaxima::EditMenu(wxCommandEvent &event) {
   if(((event.GetId()) >= EventIDs::popid_labelwidth1) &&
      ((event.GetId()) < EventIDs::popid_labelwidth1 + EventIDs::NumberOfLabelWidths())){
     m_configuration.LabelWidth(EventIDs::popid_labelwidth1 + 1 - event.GetId());
-    m_worksheet->RecalculateForce();
-    m_worksheet->RequestRedraw();
+    GetWorksheet()->RecalculateForce();
+    GetWorksheet()->RequestRedraw();
   }
   else if((event.GetId()) == EventIDs::popid_digits_20) {
     m_configuration.SetDisplayedDigits(20);
     m_configuration.ShowAllDigits(false);
     m_configuration.LineBreaksInLongNums(false);
-    m_worksheet->RecalculateForce();
-    m_worksheet->RequestRedraw();
+    GetWorksheet()->RecalculateForce();
+    GetWorksheet()->RequestRedraw();
   }
   else if((event.GetId()) == EventIDs::popid_digits_50) {
     m_configuration.SetDisplayedDigits(50);
     m_configuration.ShowAllDigits(false);
     m_configuration.LineBreaksInLongNums(false);
-    m_worksheet->RecalculateForce();
-    m_worksheet->RequestRedraw();
+    GetWorksheet()->RecalculateForce();
+    GetWorksheet()->RequestRedraw();
   }
   else if((event.GetId()) == EventIDs::popid_digits_100) {
     m_configuration.SetDisplayedDigits(100);
     m_configuration.ShowAllDigits(false);
     m_configuration.LineBreaksInLongNums(false);
-    m_worksheet->RecalculateForce();
-    m_worksheet->RequestRedraw();
+    GetWorksheet()->RecalculateForce();
+    GetWorksheet()->RequestRedraw();
   }
   else if((event.GetId()) == EventIDs::popid_digits_all) {
     m_configuration.ShowAllDigits(true);
     m_configuration.LineBreaksInLongNums(false);
-    m_worksheet->RecalculateForce();
-    m_worksheet->RequestRedraw();
+    GetWorksheet()->RecalculateForce();
+    GetWorksheet()->RequestRedraw();
   }
   else if((event.GetId()) == EventIDs::popid_digits_all_linebreak) {
     m_configuration.ShowAllDigits(true);
     m_configuration.LineBreaksInLongNums(true);
-    m_worksheet->RecalculateForce();
-    m_worksheet->RequestRedraw();
+    GetWorksheet()->RecalculateForce();
+    GetWorksheet()->RequestRedraw();
   }
   else if(event.GetId() == EventIDs::popid_inputlabels_hide) {
     m_configuration.ShowInputLabels(!m_configuration.ShowInputLabels());
-    m_worksheet->RecalculateForce();
-    m_worksheet->RequestRedraw();
+    GetWorksheet()->RecalculateForce();
+    GetWorksheet()->RequestRedraw();
   }
   else if(event.GetId() == EventIDs::popid_labels_autogenerated) {
     m_configuration.SetLabelChoice(Configuration::labels_automatic);
-    m_worksheet->RecalculateForce();
-    m_worksheet->RequestRedraw();
+    GetWorksheet()->RecalculateForce();
+    GetWorksheet()->RequestRedraw();
   }
   else if(event.GetId() == EventIDs::popid_labels_user) {
     m_configuration.SetLabelChoice(Configuration::labels_prefer_user);
-    m_worksheet->RecalculateForce();
-    m_worksheet->RequestRedraw();
+    GetWorksheet()->RecalculateForce();
+    GetWorksheet()->RequestRedraw();
   }
   else if(event.GetId() == EventIDs::popid_labels_useronly) {
     m_configuration.SetLabelChoice(Configuration::labels_useronly);
-    m_worksheet->RecalculateForce();
-    m_worksheet->RequestRedraw();
+    GetWorksheet()->RecalculateForce();
+    GetWorksheet()->RequestRedraw();
   }
   else if(event.GetId() == EventIDs::popid_labels_disable) {
     m_configuration.SetLabelChoice(Configuration::labels_none);
-    m_worksheet->RecalculateForce();
-    m_worksheet->RequestRedraw();
+    GetWorksheet()->RecalculateForce();
+    GetWorksheet()->RequestRedraw();
   }
   else if(event.GetId() == EventIDs::popid_popup_gnuplot) {
-    if (!m_worksheet->GetSelectionStart())
+    if (!GetWorksheet()->GetSelectionStart())
       return;
 
-    wxString gnuplotSource = m_worksheet->GetSelectionStart()->GnuplotSource();
+    wxString gnuplotSource = GetWorksheet()->GetSelectionStart()->GnuplotSource();
     if (gnuplotSource.IsEmpty())
       return;
 
@@ -6242,67 +6244,67 @@ void wxMaxima::EditMenu(wxCommandEvent &event) {
       // Refresh the display as the settings that affect it might have changed.
       m_configuration.ReadConfig();
       m_configuration.FontChanged();
-      if (m_worksheet->GetTree())
-        m_worksheet->GetTree()->FontsChangedList();
+      if (GetWorksheet()->GetTree())
+        GetWorksheet()->GetTree()->FontsChangedList();
       ConfigChanged();
-      m_worksheet->RecalculateForce();
-      m_worksheet->RequestRedraw();
+      GetWorksheet()->RecalculateForce();
+      GetWorksheet()->RequestRedraw();
     }
     configW->Destroy();
   }
   else if(event.GetId() == wxID_COPY) {
-    m_worksheet->Copy();
+    GetWorksheet()->Copy();
   }
   else if(event.GetId() == EventIDs::menu_copy_text_from_worksheet) {
-    m_worksheet->Copy(true);
+    GetWorksheet()->Copy(true);
   }
   else if(event.GetId() == wxID_CUT) {
-    if (m_worksheet->CanCut())
-      m_worksheet->CutToClipboard();
+    if (GetWorksheet()->CanCut())
+      GetWorksheet()->CutToClipboard();
   }
   else if(event.GetId() == wxID_SELECTALL) {
-    m_worksheet->SelectAll();
+    GetWorksheet()->SelectAll();
   }
   else if(event.GetId() == wxID_PASTE) {
-    m_worksheet->PasteFromClipboard();
+    GetWorksheet()->PasteFromClipboard();
   }
   else if(event.GetId() == wxID_UNDO) {
-    if (m_worksheet->CanUndo())
-      m_worksheet->Undo();
+    if (GetWorksheet()->CanUndo())
+      GetWorksheet()->Undo();
   }
   else if(event.GetId() == wxID_REDO) {
-    if (m_worksheet->CanRedo())
-      m_worksheet->Redo();
+    if (GetWorksheet()->CanRedo())
+      GetWorksheet()->Redo();
   }
   else if(event.GetId() == EventIDs::menu_copy_matlab_from_worksheet) {
-    if (m_worksheet->CanCopy())
-      m_worksheet->CopyMatlab();
+    if (GetWorksheet()->CanCopy())
+      GetWorksheet()->CopyMatlab();
   }
   else if(event.GetId() == EventIDs::menu_copy_tex_from_worksheet) {
-    if (m_worksheet->CanCopy())
-      m_worksheet->CopyTeX();
+    if (GetWorksheet()->CanCopy())
+      GetWorksheet()->CopyTeX();
   }
   else if(event.GetId() == EventIDs::popid_copy_mathml) {
-    if (m_worksheet->CanCopy())
-      m_worksheet->CopyMathML();
+    if (GetWorksheet()->CanCopy())
+      GetWorksheet()->CopyMathML();
   }
   else if(event.GetId() == EventIDs::menu_copy_as_bitmap) {
-    if (m_worksheet->CanCopy())
-      m_worksheet->CopyBitmap();
+    if (GetWorksheet()->CanCopy())
+      GetWorksheet()->CopyBitmap();
   }
   else if(event.GetId() == EventIDs::menu_copy_as_svg) {
-    if (m_worksheet->CanCopy())
-      m_worksheet->CopySVG();
+    if (GetWorksheet()->CanCopy())
+      GetWorksheet()->CopySVG();
   }
 #if wxUSE_ENH_METAFILE
   else if(event.GetId() == EventIDs::menu_copy_as_emf) {
-    if (m_worksheet->CanCopy())
-      m_worksheet->CopyEMF();
+    if (GetWorksheet()->CanCopy())
+      GetWorksheet()->CopyEMF();
   }
 #endif
   else if(event.GetId() == EventIDs::menu_copy_as_rtf) {
-    if (m_worksheet->CanCopy())
-      m_worksheet->CopyRTF();
+    if (GetWorksheet()->CanCopy())
+      GetWorksheet()->CopyRTF();
   }
   else if(event.GetId() == EventIDs::menu_copy_to_file) {
     wxString file = wxFileSelector(_("Save Selection to Image"), m_lastPath,
@@ -6317,7 +6319,7 @@ void wxMaxima::EditMenu(wxCommandEvent &event) {
                                      "X pixmap (*.xpm)|*.xpm"),
                                    wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
     if (file.Length()) {
-      m_worksheet->CopyToFile(file);
+      GetWorksheet()->CopyToFile(file);
       m_lastPath = wxPathOnly(file);
     }
   }
@@ -6326,39 +6328,39 @@ void wxMaxima::EditMenu(wxCommandEvent &event) {
   }
   else if(event.GetId() == EventIDs::menu_show_cellbrackets) {
     m_configuration.ShowBrackets(!m_configuration.ShowBrackets());
-    m_worksheet->RequestRedraw();
+    GetWorksheet()->RequestRedraw();
   }
   else if(event.GetId() == EventIDs::popid_delete) {
-    if (m_worksheet->CanDeleteSelection()) {
-      m_worksheet->DeleteSelection();
-      m_worksheet->Recalculate();
-      m_worksheet->RequestRedraw();
+    if (GetWorksheet()->CanDeleteSelection()) {
+      GetWorksheet()->DeleteSelection();
+      GetWorksheet()->Recalculate();
+      GetWorksheet()->RequestRedraw();
       return;
     }
   }
   else if(event.GetId() == wxID_ZOOM_IN) {
-    m_worksheet->SetZoomFactor(m_configuration.GetZoomFactor() + 0.1);
+    GetWorksheet()->SetZoomFactor(m_configuration.GetZoomFactor() + 0.1);
   }
   else if(event.GetId() == wxID_ZOOM_OUT) {
-    m_worksheet->SetZoomFactor(m_configuration.GetZoomFactor() - 0.1);
+    GetWorksheet()->SetZoomFactor(m_configuration.GetZoomFactor() - 0.1);
   }
   else if(event.GetId() == EventIDs::menu_zoom_80) {
-    m_worksheet->SetZoomFactor(0.8);
+    GetWorksheet()->SetZoomFactor(0.8);
   }
   else if(event.GetId() == wxID_ZOOM_100) {
-    m_worksheet->SetZoomFactor(1.0);
+    GetWorksheet()->SetZoomFactor(1.0);
   }
   else if(event.GetId() == EventIDs::menu_zoom_120) {
-    m_worksheet->SetZoomFactor(1.2);
+    GetWorksheet()->SetZoomFactor(1.2);
   }
   else if(event.GetId() == EventIDs::menu_zoom_150) {
-    m_worksheet->SetZoomFactor(1.5);
+    GetWorksheet()->SetZoomFactor(1.5);
   }
   else if(event.GetId() == EventIDs::menu_zoom_200) {
-    m_worksheet->SetZoomFactor(2.0);
+    GetWorksheet()->SetZoomFactor(2.0);
   }
   else if(event.GetId() == EventIDs::menu_zoom_300) {
-    m_worksheet->SetZoomFactor(3.0);
+    GetWorksheet()->SetZoomFactor(3.0);
   }
   else if(event.GetId() == EventIDs::menu_math_as_1D_ASCII) {
     MenuCommand(wxS("set_display('none)$"));
@@ -6427,27 +6429,27 @@ void wxMaxima::EditMenu(wxCommandEvent &event) {
     m_configuration.InvertBackground(!m_configuration.InvertBackground());
     m_viewMenu->Check(EventIDs::menu_invertWorksheetBackground,
                       m_configuration.InvertBackground());
-    m_worksheet->RequestRedraw();
+    GetWorksheet()->RequestRedraw();
   }
   else if(event.GetId() == ToolBar::tb_hideCode) {
     m_configuration.ShowCodeCells(!m_configuration.ShowCodeCells());
-    m_worksheet->CodeCellVisibilityChanged();
+    GetWorksheet()->CodeCellVisibilityChanged();
   }
   else if(event.GetId() == EventIDs::menu_remove_output) {
-    m_worksheet->RemoveAllOutput();
+    GetWorksheet()->RemoveAllOutput();
   }
   else if(event.GetId() == EventIDs::menu_pane_toolbar) {
     ShowToolBar(!ToolbarIsShown());
   }
   else if(event.GetId() == wxID_FIND) {
     wxLogMessage(_("A Ctrl-F event"));
-    bool findDialogActiveWas = ((m_worksheet->m_findDialog != NULL) &&
-                                (m_worksheet->m_findDialog->IsShown()));
-    if (m_worksheet->m_findDialog == NULL)
-      new FindReplaceDialog(this, &m_findData, _("Find and Replace"), &m_worksheet->m_findDialog);
+    bool findDialogActiveWas = ((GetWorksheet()->m_findDialog != NULL) &&
+                                (GetWorksheet()->m_findDialog->IsShown()));
+    if (GetWorksheet()->m_findDialog == NULL)
+      new FindReplaceDialog(this, &m_findData, _("Find and Replace"), &GetWorksheet()->m_findDialog);
 
-    if (m_worksheet->GetActiveCell() != NULL) {
-      wxString selected = m_worksheet->GetActiveCell()->GetSelectionString();
+    if (GetWorksheet()->GetActiveCell() != NULL) {
+      wxString selected = GetWorksheet()->GetActiveCell()->GetSelectionString();
 
       // Start incremental search and highlighting of search results again.
       if(findDialogActiveWas)
@@ -6456,27 +6458,27 @@ void wxMaxima::EditMenu(wxCommandEvent &event) {
         m_oldFindString = selected;
 
       if (selected.Length() > 0)
-        m_worksheet->m_findDialog->SetFindString(selected);
+        GetWorksheet()->m_findDialog->SetFindString(selected);
     }
 
-    m_worksheet->m_findDialog->Show(true);
-    CallAfter([this]{m_worksheet->m_findDialog->SetFocus();});
-    m_worksheet->m_findDialog->Raise();
+    GetWorksheet()->m_findDialog->Show(true);
+    CallAfter([this]{GetWorksheet()->m_findDialog->SetFocus();});
+    GetWorksheet()->m_findDialog->Raise();
   }
   else if(event.GetId() == EventIDs::menu_history_next) {
     m_history->UpdateDeferred();
     wxString command = m_history->GetCommand(true);
     if (command != wxEmptyString)
-      m_worksheet->SetActiveCellText(command);
+      GetWorksheet()->SetActiveCellText(command);
   }
   else if(event.GetId() == EventIDs::menu_history_previous) {
     m_history->UpdateDeferred();
     wxString command = m_history->GetCommand(false);
     if (command != wxEmptyString)
-      m_worksheet->SetActiveCellText(command);
+      GetWorksheet()->SetActiveCellText(command);
   }
   else if(event.GetId() == EventIDs::popid_hide_tooltipMarkerForThisMessage) {
-    const Cell *cell = m_worksheet->GetSelectionStart();
+    const Cell *cell = GetWorksheet()->GetSelectionStart();
     if (cell == NULL)
       return;
     wxString toolTip = cell->GetLocalToolTip();
@@ -6486,15 +6488,15 @@ void wxMaxima::EditMenu(wxCommandEvent &event) {
       return;
     bool suppress = m_configuration.HideMarkerForThisMessage(toolTip);
     m_configuration.HideMarkerForThisMessage(toolTip, !suppress);
-    m_worksheet->OutputChanged();
+    GetWorksheet()->OutputChanged();
   }
   else if(event.GetId() == EventIDs::popid_hide_tooltipMarker) {
-    if (m_worksheet->GetSelectionStart() == NULL)
+    if (GetWorksheet()->GetSelectionStart() == NULL)
       return;
-    GroupCell *cell = m_worksheet->GetSelectionStart()->GetGroup();
+    GroupCell *cell = GetWorksheet()->GetSelectionStart()->GetGroup();
     GroupCell *end = NULL;
-    if (m_worksheet->GetSelectionEnd() != NULL)
-      end = m_worksheet->GetSelectionEnd()->GetGroup();
+    if (GetWorksheet()->GetSelectionEnd() != NULL)
+      end = GetWorksheet()->GetSelectionEnd()->GetGroup();
     bool marked = !cell->GetSuppressTooltipMarker();
 
     for (auto &tmp : OnList(cell)) {
@@ -6502,18 +6504,18 @@ void wxMaxima::EditMenu(wxCommandEvent &event) {
       if (&tmp == end)
         break;
     }
-    m_worksheet->OutputChanged();
+    GetWorksheet()->OutputChanged();
   }
-  m_worksheet->RequestRedraw();
+  GetWorksheet()->RequestRedraw();
 }
 
 void wxMaxima::OnFind(wxFindDialogEvent &event) {
   wxLogMessage(_("A find event, %s"), event.GetFindString().mb_str());
-  if(m_worksheet->m_findDialog)
+  if(GetWorksheet()->m_findDialog)
     {
-      if(!m_worksheet->m_findDialog->GetRegexSearch())
+      if(!GetWorksheet()->m_findDialog->GetRegexSearch())
         {
-          if (!m_worksheet->FindNext(event.GetFindString(),
+          if (!GetWorksheet()->FindNext(event.GetFindString(),
                                      event.GetFlags() & wxFR_DOWN,
                                      !(event.GetFlags() & wxFR_MATCHCASE)
                                      ))
@@ -6521,7 +6523,7 @@ void wxMaxima::OnFind(wxFindDialogEvent &event) {
         }
       else
         {
-          if (!m_worksheet->FindNext_Regex(event.GetFindString(),
+          if (!GetWorksheet()->FindNext_Regex(event.GetFindString(),
                                            !!(event.GetFlags() & wxFR_DOWN)))
             LoggingMessageBox(_("No matches found!"));
         }
@@ -6531,27 +6533,27 @@ void wxMaxima::OnFind(wxFindDialogEvent &event) {
 
 void wxMaxima::OnReplace(wxFindDialogEvent &event) {
   event.Skip();
-  if(!m_worksheet->m_findDialog->GetRegexSearch())
+  if(!GetWorksheet()->m_findDialog->GetRegexSearch())
     {
-      m_worksheet->Replace(event.GetFindString(), event.GetReplaceString(),
+      GetWorksheet()->Replace(event.GetFindString(), event.GetReplaceString(),
                            !(event.GetFlags() & wxFR_MATCHCASE));
 
-      if (!m_worksheet->FindNext(event.GetFindString(),
+      if (!GetWorksheet()->FindNext(event.GetFindString(),
                                  event.GetFlags() & wxFR_DOWN,
                                  !(event.GetFlags() & wxFR_MATCHCASE)))
         LoggingMessageBox(_("No matches found!"));
       else
-        m_worksheet->UpdateTableOfContents();
+        GetWorksheet()->UpdateTableOfContents();
     }
   else
     {
-      m_worksheet->Replace_RegEx(event.GetFindString(), event.GetReplaceString());
+      GetWorksheet()->Replace_RegEx(event.GetFindString(), event.GetReplaceString());
 
-      if (!m_worksheet->FindNext_Regex(event.GetFindString(),
+      if (!GetWorksheet()->FindNext_Regex(event.GetFindString(),
                                        event.GetFlags() & wxFR_DOWN))
         LoggingMessageBox(_("No matches found!"));
       else
-        m_worksheet->UpdateTableOfContents();
+        GetWorksheet()->UpdateTableOfContents();
     }
 }
 
@@ -6559,18 +6561,18 @@ void wxMaxima::OnReplaceAll(wxFindDialogEvent &event) {
   event.Skip();
   long count;
 
-  if(!m_worksheet->m_findDialog->GetRegexSearch())
+  if(!GetWorksheet()->m_findDialog->GetRegexSearch())
     {
       count =
-        m_worksheet->ReplaceAll(event.GetFindString(), event.GetReplaceString(),
+        GetWorksheet()->ReplaceAll(event.GetFindString(), event.GetReplaceString(),
                                 !(event.GetFlags() & wxFR_MATCHCASE));
     }
   else
     count =
-      m_worksheet->ReplaceAll_RegEx(event.GetFindString(), event.GetReplaceString());
+      GetWorksheet()->ReplaceAll_RegEx(event.GetFindString(), event.GetReplaceString());
   LoggingMessageBox(wxString::Format(_("Replaced %li occurrences."), static_cast<long>(count)));
   if (count > 0)
-    m_worksheet->UpdateTableOfContents();
+    GetWorksheet()->UpdateTableOfContents();
 }
 
 void wxMaxima::OnSymbolAdd(wxCommandEvent &event) {
@@ -6583,7 +6585,7 @@ void wxMaxima::OnSymbolAdd(wxCommandEvent &event) {
 
 void wxMaxima::PropertiesMenu(wxCommandEvent &event) {
   event.Skip();
-  EditorCell *editor = m_worksheet->GetActiveCell();
+  EditorCell *editor = GetWorksheet()->GetActiveCell();
   if (editor == NULL)
     return;
   wxString obj = editor->GetWordUnderCaret();
@@ -6703,26 +6705,26 @@ void wxMaxima::PropertiesMenu(wxCommandEvent &event) {
 }
 
 void wxMaxima::MaximaMenu(wxCommandEvent &event) {
-  m_worksheet->CloseAutoCompletePopup();
+  GetWorksheet()->CloseAutoCompletePopup();
 
   wxString expr = GetDefaultEntry();
   wxString b = wxS("\\");
   wxString f = wxS("/");
   if(event.GetId() == EventIDs::menu_jumptoerror){
-    if (m_worksheet->GetErrorList().FirstError()) {
-      m_worksheet->SetActiveCell(
-                                 dynamic_cast<GroupCell *>(m_worksheet->GetErrorList().FirstError())
+    if (GetWorksheet()->GetErrorList().FirstError()) {
+      GetWorksheet()->SetActiveCell(
+                                 dynamic_cast<GroupCell *>(GetWorksheet()->GetErrorList().FirstError())
                                  ->GetEditable());
-      dynamic_cast<GroupCell *>(m_worksheet->GetErrorList().FirstError())
+      dynamic_cast<GroupCell *>(GetWorksheet()->GetErrorList().FirstError())
         ->GetEditable()
         ->CaretToEnd();
     }
   }
   else if(event.GetId() == ToolBar::menu_restart_id){
     m_closing = true;
-    m_worksheet->SetWorkingGroup(nullptr);
-    m_worksheet->m_evaluationQueue.Clear();
-    m_worksheet->ResetInputPrompts();
+    GetWorksheet()->SetWorkingGroup(nullptr);
+    GetWorksheet()->m_evaluationQueue.Clear();
+    GetWorksheet()->ResetInputPrompts();
     m_unsuccessfulConnectionAttempts = 0;
     StartMaxima(true);
   }
@@ -7437,39 +7439,39 @@ void wxMaxima::MaximaMenu(wxCommandEvent &event) {
   }
   else if((event.GetId() == EventIDs::menu_evaluate_all_visible) ||
           (event.GetId() == ToolBar::tb_eval_all)) {
-    m_worksheet->m_evaluationQueue.Clear();
-    m_worksheet->ResetInputPrompts();
+    GetWorksheet()->m_evaluationQueue.Clear();
+    GetWorksheet()->ResetInputPrompts();
     EvaluationQueueLength(0);
     if (m_configuration.RestartOnReEvaluation())
       StartMaxima();
-    m_worksheet->AddDocumentToEvaluationQueue();
+    GetWorksheet()->AddDocumentToEvaluationQueue();
     // Inform the user about the length of the evaluation queue.
-    EvaluationQueueLength(m_worksheet->m_evaluationQueue.Size(),
-                          m_worksheet->m_evaluationQueue.CommandsLeftInCell());
+    EvaluationQueueLength(GetWorksheet()->m_evaluationQueue.Size(),
+                          GetWorksheet()->m_evaluationQueue.CommandsLeftInCell());
     TriggerEvaluation();
   }
   else if(event.GetId() == EventIDs::menu_evaluate_all) {
-    m_worksheet->m_evaluationQueue.Clear();
-    m_worksheet->ResetInputPrompts();
+    GetWorksheet()->m_evaluationQueue.Clear();
+    GetWorksheet()->ResetInputPrompts();
     EvaluationQueueLength(0);
     if (m_configuration.RestartOnReEvaluation())
       StartMaxima();
-    m_worksheet->AddEntireDocumentToEvaluationQueue();
+    GetWorksheet()->AddEntireDocumentToEvaluationQueue();
     // Inform the user about the length of the evaluation queue.
-    EvaluationQueueLength(m_worksheet->m_evaluationQueue.Size(),
-                          m_worksheet->m_evaluationQueue.CommandsLeftInCell());
+    EvaluationQueueLength(GetWorksheet()->m_evaluationQueue.Size(),
+                          GetWorksheet()->m_evaluationQueue.CommandsLeftInCell());
     TriggerEvaluation();
   }
   else if(event.GetId() == ToolBar::tb_evaltillhere) {
-    m_worksheet->m_evaluationQueue.Clear();
-    m_worksheet->ResetInputPrompts();
+    GetWorksheet()->m_evaluationQueue.Clear();
+    GetWorksheet()->ResetInputPrompts();
     EvaluationQueueLength(0);
     if (m_configuration.RestartOnReEvaluation())
       StartMaxima();
-    m_worksheet->AddDocumentTillHereToEvaluationQueue();
+    GetWorksheet()->AddDocumentTillHereToEvaluationQueue();
     // Inform the user about the length of the evaluation queue.
-    EvaluationQueueLength(m_worksheet->m_evaluationQueue.Size(),
-                          m_worksheet->m_evaluationQueue.CommandsLeftInCell());
+    EvaluationQueueLength(GetWorksheet()->m_evaluationQueue.Size(),
+                          GetWorksheet()->m_evaluationQueue.CommandsLeftInCell());
     TriggerEvaluation();
   }
   else if(event.GetId() == EventIDs::menu_clear_var){
@@ -7500,7 +7502,7 @@ void wxMaxima::MaximaMenu(wxCommandEvent &event) {
 }
 
 void wxMaxima::EquationsMenu(wxCommandEvent &event) {
-  m_worksheet->CloseAutoCompletePopup();
+  GetWorksheet()->CloseAutoCompletePopup();
 
   wxString expr = GetDefaultEntry();
   if(event.GetId() == EventIDs::menu_allroots){
@@ -7718,7 +7720,7 @@ void wxMaxima::EquationsMenu(wxCommandEvent &event) {
 
 
 void wxMaxima::MatrixMenu(wxCommandEvent &event) {
-  m_worksheet->CloseAutoCompletePopup();
+  GetWorksheet()->CloseAutoCompletePopup();
 
   wxString expr = GetDefaultEntry();
   if(event.GetId() == EventIDs::menu_csv2mat){
@@ -8026,17 +8028,17 @@ void wxMaxima::AddDrawParameter(wxString cmd, int dimensionsOfNewDrawCommand) {
       cmd = wxS("wxdraw2d(\n    ") + cmd + wxS("\n)$");
     else
       cmd = wxS("wxdraw3d(\n    ") + cmd + wxS("\n)$");
-    m_worksheet->OpenHCaret(cmd);
-    m_worksheet->GetActiveCell()->SetCaretPosition(
-                                                   m_worksheet->GetActiveCell()->GetCaretPosition() - 3);
+    GetWorksheet()->OpenHCaret(cmd);
+    GetWorksheet()->GetActiveCell()->SetCaretPosition(
+                                                   GetWorksheet()->GetActiveCell()->GetCaretPosition() - 3);
   } else {
-    if (m_worksheet->GetActiveCell()) {
-      m_worksheet->GetActiveCell()->AddDrawParameter(std::move(cmd));
-      m_worksheet->Recalculate();
-      m_worksheet->RequestRedraw();
+    if (GetWorksheet()->GetActiveCell()) {
+      GetWorksheet()->GetActiveCell()->AddDrawParameter(std::move(cmd));
+      GetWorksheet()->Recalculate();
+      GetWorksheet()->RequestRedraw();
     }
   }
-  CallAfter([this]{m_worksheet->SetFocus();});
+  CallAfter([this]{GetWorksheet()->SetFocus();});
 }
 
 void wxMaxima::DrawMenu(wxCommandEvent &event) {
@@ -8046,7 +8048,7 @@ void wxMaxima::DrawMenu(wxCommandEvent &event) {
   UpdateDrawPane();
   int dimensions = m_drawPane->GetDimensions();
 
-  m_worksheet->CloseAutoCompletePopup();
+  GetWorksheet()->CloseAutoCompletePopup();
 
   wxString expr;
   if (dimensions < 2)
@@ -8059,11 +8061,11 @@ void wxMaxima::DrawMenu(wxCommandEvent &event) {
       // wiz->Centre(wxBOTH);
       wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
         if (retcode == wxID_OK) {
-          CallAfter([this]{m_worksheet->SetFocus();});
+          CallAfter([this]{GetWorksheet()->SetFocus();});
 
-          m_worksheet->OpenHCaret(wiz->GetValue());
-          m_worksheet->GetActiveCell()->SetCaretPosition(
-                                                         m_worksheet->GetActiveCell()->GetCaretPosition() - 3);
+          GetWorksheet()->OpenHCaret(wiz->GetValue());
+          GetWorksheet()->GetActiveCell()->SetCaretPosition(
+                                                         GetWorksheet()->GetActiveCell()->GetCaretPosition() - 3);
         }
       });
     }
@@ -8074,11 +8076,11 @@ void wxMaxima::DrawMenu(wxCommandEvent &event) {
       // wiz->Centre(wxBOTH);
       wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
         if (retcode == wxID_OK) {
-          CallAfter([this]{m_worksheet->SetFocus();});
+          CallAfter([this]{GetWorksheet()->SetFocus();});
 
-          m_worksheet->OpenHCaret(wiz->GetValue());
-          m_worksheet->GetActiveCell()->SetCaretPosition(
-                                                         m_worksheet->GetActiveCell()->GetCaretPosition() - 3);
+          GetWorksheet()->OpenHCaret(wiz->GetValue());
+          GetWorksheet()->GetActiveCell()->SetCaretPosition(
+                                                         GetWorksheet()->GetActiveCell()->GetCaretPosition() - 3);
         }
       });
     } else {
@@ -8220,7 +8222,7 @@ void wxMaxima::DrawMenu(wxCommandEvent &event) {
 }
 
 void wxMaxima::ListMenu(wxCommandEvent &event) {
-  m_worksheet->CloseAutoCompletePopup();
+  GetWorksheet()->CloseAutoCompletePopup();
 
   wxString expr = GetDefaultEntry();
   if(event.GetId() == EventIDs::menu_csv2list){ {
@@ -8420,7 +8422,7 @@ void wxMaxima::ListMenu(wxCommandEvent &event) {
 }
 
 void wxMaxima::SimplifyMenu(wxCommandEvent &event) {
-  m_worksheet->CloseAutoCompletePopup();
+  GetWorksheet()->CloseAutoCompletePopup();
 
   wxString expr = GetDefaultEntry();
   if(event.GetId() == EventIDs::menu_nouns){
@@ -8677,7 +8679,7 @@ void wxMaxima::SimplifyMenu(wxCommandEvent &event) {
 
 
 void wxMaxima::CalculusMenu(wxCommandEvent &event) {
-  m_worksheet->CloseAutoCompletePopup();
+  GetWorksheet()->CloseAutoCompletePopup();
 
   wxString expr = GetDefaultEntry();
   if(event.GetId() == EventIDs::menu_change_var){
@@ -8869,7 +8871,7 @@ void wxMaxima::CalculusMenu(wxCommandEvent &event) {
 
 
 void wxMaxima::PlotMenu(wxCommandEvent &event) {
-  m_worksheet->CloseAutoCompletePopup();
+  GetWorksheet()->CloseAutoCompletePopup();
 
   wxString expr = GetDefaultEntry();
   if((event.GetId() == EventIDs::button_plot3) ||
@@ -8929,7 +8931,7 @@ void wxMaxima::PlotMenu(wxCommandEvent &event) {
 
 
 void wxMaxima::NumericalMenu(wxCommandEvent &event) {
-  m_worksheet->CloseAutoCompletePopup();
+  GetWorksheet()->CloseAutoCompletePopup();
 
   wxString expr = GetDefaultEntry();
   wxString integralSign = wxS("∫");
@@ -8938,19 +8940,19 @@ void wxMaxima::NumericalMenu(wxCommandEvent &event) {
 
   if(event.GetId() == EventIDs::popid_special_constant_percent){ {
       m_configuration.SetKeepPercent(event.IsChecked());
-      m_worksheet->RequestRedraw();
+      GetWorksheet()->RequestRedraw();
     }
   }
   else if(event.GetId() == EventIDs::popid_hideasterisk){ {
       m_configuration.HidemultiplicationSign(event.IsChecked());
-      m_worksheet->GetTree()->ResetDataList();
-      m_worksheet->RequestRedraw();
+      GetWorksheet()->GetTree()->ResetDataList();
+      GetWorksheet()->RequestRedraw();
     }
   }
   else if(event.GetId() == EventIDs::popid_changeasterisk){ {
       m_configuration.SetChangeAsterisk(event.IsChecked());
-      m_worksheet->GetTree()->ResetDataList();
-      m_worksheet->RequestRedraw();
+      GetWorksheet()->GetTree()->ResetDataList();
+      GetWorksheet()->RequestRedraw();
     }
   }
   else if(event.GetId() == EventIDs::menu_num_domain){ {
@@ -9233,12 +9235,12 @@ void wxMaxima::OnWizardInsert(wxCommandEvent &WXUNUSED(event)) {
 }
 
 void wxMaxima::HelpMenu(wxCommandEvent &event) {
-  m_worksheet->CloseAutoCompletePopup();
+  GetWorksheet()->CloseAutoCompletePopup();
 
   wxString expr = GetDefaultEntry();
 
   if(event.GetId() == EventIDs::menu_goto_url){ {
-      wxWindowPtr<GenWiz> wiz(new GenWiz(this, &m_configuration, m_worksheet->GetMaximaManual(),
+      wxWindowPtr<GenWiz> wiz(new GenWiz(this, &m_configuration, GetWorksheet()->GetMaximaManual(),
                                          _("Go to URL"), wxEmptyString, wxEmptyString, wxEmptyString,
                                          _("URL"), wxEmptyString, wxEmptyString));
       // wiz->Centre(wxBOTH);
@@ -9269,8 +9271,8 @@ void wxMaxima::HelpMenu(wxCommandEvent &event) {
                                       _("\n\nwxWidgets: %d.%d.%d\nUnicode support: %s"), wxMAJOR_VERSION,
                                       wxMINOR_VERSION, wxRELEASE_NUMBER, _("yes").utf8_str());
 
-      if (m_worksheet->GetMaximaVersion() != wxEmptyString)
-        description += _("\nMaxima version: ") + m_worksheet->GetMaximaVersion() +
+      if (GetWorksheet()->GetMaximaVersion() != wxEmptyString)
+        description += _("\nMaxima version: ") + GetWorksheet()->GetMaximaVersion() +
           " (" + m_maximaArch + ")";
       else
         description += _("\nNot connected.");
@@ -9365,7 +9367,7 @@ void wxMaxima::HelpMenu(wxCommandEvent &event) {
 
 
 void wxMaxima::StatsMenu(wxCommandEvent &event) {
-  m_worksheet->CloseAutoCompletePopup();
+  GetWorksheet()->CloseAutoCompletePopup();
 
   wxString expr = GetDefaultEntry();
 
@@ -9553,7 +9555,7 @@ void wxMaxima::OnClose(wxCloseEvent &event) {
     event.Veto();
     return;
   }
-  m_worksheet->GetMaximaManual()->WaitForBackgroundProcess();
+  GetWorksheet()->GetMaximaManual()->WaitForBackgroundProcess();
   if (event.GetEventType() == wxEVT_END_SESSION) {
     KillMaxima();
     if(m_process)
@@ -9592,27 +9594,27 @@ void wxMaxima::DelistTopLevelWindow(wxMaxima *window) {
 }
 
 void wxMaxima::PopupMenu(wxCommandEvent &event) {
-  m_worksheet->CloseAutoCompletePopup();
+  GetWorksheet()->CloseAutoCompletePopup();
 
-  wxString selection = m_worksheet->GetString();
+  wxString selection = GetWorksheet()->GetString();
   if(event.GetId() == EventIDs::enable_unicodePane){
     wxMaximaFrame::ShowPane(EventIDs::menu_pane_unicode, true);
   }
   else if(event.GetId() == EventIDs::popid_fold){ {
-      if (m_worksheet->GetActiveCell()) {
+      if (GetWorksheet()->GetActiveCell()) {
         // This "if" is pure paranoia. But - since the costs of an "if" are low...
-        GroupCell *group = m_worksheet->GetActiveCell()->GetGroup();
+        GroupCell *group = GetWorksheet()->GetActiveCell()->GetGroup();
         if (group->IsFoldable())
           group->Fold();
         else
           group->Hide(true);
-        m_worksheet->UpdateTableOfContents();
+        GetWorksheet()->UpdateTableOfContents();
       }
     }
   }
   else if(event.GetId() == EventIDs::popid_maxsizechooser){
-    if (m_worksheet->GetSelectionStart()) {
-      Cell *output = m_worksheet->GetSelectionStart()->GetGroup()->GetLabel();
+    if (GetWorksheet()->GetSelectionStart()) {
+      Cell *output = GetWorksheet()->GetSelectionStart()->GetGroup()->GetLabel();
       if (output == NULL)
         return;
       if ((output->GetType() != MC_TYPE_IMAGE) &&
@@ -9626,10 +9628,10 @@ void wxMaxima::PopupMenu(wxCommandEvent &event) {
       if (chooser->ShowModal() == wxID_OK) {
         if (dynamic_cast<ImgCellBase *>(output)->GetMaxWidth() !=
             chooser->GetMaxWidth())
-          m_worksheet->SetSaved(false);
+          GetWorksheet()->SetSaved(false);
         if (dynamic_cast<ImgCellBase *>(output)->GetHeightList() !=
             chooser->GetHeightList())
-          m_worksheet->SetSaved(false);
+          GetWorksheet()->SetSaved(false);
 
         dynamic_cast<ImgCellBase *>(output)->SetMaxWidth(
                                                          chooser->GetMaxWidth());
@@ -9637,12 +9639,12 @@ void wxMaxima::PopupMenu(wxCommandEvent &event) {
                                                           chooser->GetHeightList());
       }
     }
-    m_worksheet->RecalculateForce();
-    m_worksheet->RequestRedraw();
+    GetWorksheet()->RecalculateForce();
+    GetWorksheet()->RequestRedraw();
   }
   else if(event.GetId() == EventIDs::popid_resolutionchooser){
-    if (m_worksheet->GetSelectionStart()) {
-      Cell *output = m_worksheet->GetSelectionStart()->GetGroup()->GetLabel();
+    if (GetWorksheet()->GetSelectionStart()) {
+      Cell *output = GetWorksheet()->GetSelectionStart()->GetGroup()->GetLabel();
       if (output == NULL)
         return;
       if ((output->GetType() != MC_TYPE_IMAGE) &&
@@ -9655,20 +9657,20 @@ void wxMaxima::PopupMenu(wxCommandEvent &event) {
       if (chooser->ShowModal() == wxID_OK) {
         if (dynamic_cast<ImgCellBase *>(output)->GetPPI() !=
             chooser->GetResolution())
-          m_worksheet->SetSaved(false);
+          GetWorksheet()->SetSaved(false);
 
         dynamic_cast<ImgCellBase *>(output)->SetPPI(chooser->GetResolution());
       }
     }
-    m_worksheet->RecalculateForce();
-    m_worksheet->RequestRedraw();
+    GetWorksheet()->RecalculateForce();
+    GetWorksheet()->RequestRedraw();
   }
   else if(event.GetId() == EventIDs::popid_reloadimage){
-    if (!m_worksheet->GetSelectionStart())
+    if (!GetWorksheet()->GetSelectionStart())
       return;
 
     {
-      Cell *output = m_worksheet->GetSelectionStart()->GetGroup()->GetLabel();
+      Cell *output = GetWorksheet()->GetSelectionStart()->GetGroup()->GetLabel();
       if (output == NULL)
         return;
       if (output->GetType() != MC_TYPE_IMAGE)
@@ -9693,138 +9695,138 @@ void wxMaxima::PopupMenu(wxCommandEvent &event) {
       dynamic_cast<ImgCell *>(output)->ReloadImage(imgFile,
                                                    wxEmptyString);
 
-      m_worksheet->RecalculateForce();
-      m_worksheet->RequestRedraw();
-      m_worksheet->SetSaved(false);
+      GetWorksheet()->RecalculateForce();
+      GetWorksheet()->RequestRedraw();
+      GetWorksheet()->SetSaved(false);
 
       UpdateMenus();
       UpdateToolBar();
-      // ResetTitle(m_worksheet->IsSaved());
+      // ResetTitle(GetWorksheet()->IsSaved());
     }
   }
   else if(event.GetId() == EventIDs::popid_unfold){ {
-      GroupCell *group = m_worksheet->GetActiveCell()->GetGroup();
+      GroupCell *group = GetWorksheet()->GetActiveCell()->GetGroup();
       if (group->IsFoldable())
         group->Unfold();
       else
         group->Hide(false);
-      m_worksheet->UpdateTableOfContents();
+      GetWorksheet()->UpdateTableOfContents();
     }
   }
   else if(event.GetId() == EventIDs::popid_Fold){
-    if (m_worksheet->m_tableOfContents != NULL) {
+    if (GetWorksheet()->m_tableOfContents != NULL) {
       // We only update the table of contents when there is time => no guarantee
       // that the cell that was clicked at actually still is part of the tree.
-      if ((m_worksheet->GetTree()) &&
-          (m_worksheet->GetTree()->Contains(
-                                            m_worksheet->m_tableOfContents->RightClickedOn()))) {
-        m_worksheet->m_tableOfContents->RightClickedOn()->Fold();
-        m_worksheet->Recalculate();
-        m_worksheet->RequestRedraw();
-        m_worksheet->UpdateTableOfContents();
+      if ((GetWorksheet()->GetTree()) &&
+          (GetWorksheet()->GetTree()->Contains(
+                                            GetWorksheet()->m_tableOfContents->RightClickedOn()))) {
+        GetWorksheet()->m_tableOfContents->RightClickedOn()->Fold();
+        GetWorksheet()->Recalculate();
+        GetWorksheet()->RequestRedraw();
+        GetWorksheet()->UpdateTableOfContents();
       }
     }
   }
   else if(event.GetId() == EventIDs::popid_Unfold){
-    if (m_worksheet->m_tableOfContents != NULL) {
+    if (GetWorksheet()->m_tableOfContents != NULL) {
       // We only update the table of contents when there is time => no guarantee
       // that the cell that was clicked at actually still is part of the tree.
-      if ((m_worksheet->GetTree()) &&
-          (m_worksheet->GetTree()->Contains(
-                                            m_worksheet->m_tableOfContents->RightClickedOn()))) {
-        m_worksheet->m_tableOfContents->RightClickedOn()->Unfold();
-        m_worksheet->Recalculate();
-        m_worksheet->RequestRedraw();
-        m_worksheet->UpdateTableOfContents();
+      if ((GetWorksheet()->GetTree()) &&
+          (GetWorksheet()->GetTree()->Contains(
+                                            GetWorksheet()->m_tableOfContents->RightClickedOn()))) {
+        GetWorksheet()->m_tableOfContents->RightClickedOn()->Unfold();
+        GetWorksheet()->Recalculate();
+        GetWorksheet()->RequestRedraw();
+        GetWorksheet()->UpdateTableOfContents();
       }
     }
   }
   else if(event.GetId() == EventIDs::popid_SelectTocChapter){
-    if (m_worksheet->m_tableOfContents != NULL) {
-      if (m_worksheet->m_tableOfContents->RightClickedOn()) {
+    if (GetWorksheet()->m_tableOfContents != NULL) {
+      if (GetWorksheet()->m_tableOfContents->RightClickedOn()) {
         GroupCell *SelectionStart =
-          m_worksheet->m_tableOfContents->RightClickedOn();
+          GetWorksheet()->m_tableOfContents->RightClickedOn();
         // We only update the table of contents when there is time => no
         // guarantee that the cell that was clicked at actually still is part of
         // the tree.
-        if ((m_worksheet->GetTree()) &&
-            (m_worksheet->GetTree()->Contains(SelectionStart))) {
+        if ((GetWorksheet()->GetTree()) &&
+            (GetWorksheet()->GetTree()->Contains(SelectionStart))) {
           GroupCell *SelectionEnd = SelectionStart;
           while ((SelectionEnd->GetNext() != NULL) &&
                  (SelectionEnd->GetNext()->IsLesserGCType(
                                                           SelectionStart->GetGroupType())))
             SelectionEnd = SelectionEnd->GetNext();
-          m_worksheet->SetActiveCell(NULL);
-          m_worksheet->ScrolledAwayFromEvaluation(true);
-          m_worksheet->SetHCaret(SelectionEnd);
-          m_worksheet->SetSelection(SelectionStart, SelectionEnd);
-          m_worksheet->RequestRedraw();
+          GetWorksheet()->SetActiveCell(NULL);
+          GetWorksheet()->ScrolledAwayFromEvaluation(true);
+          GetWorksheet()->SetHCaret(SelectionEnd);
+          GetWorksheet()->SetSelection(SelectionStart, SelectionEnd);
+          GetWorksheet()->RequestRedraw();
         }
       }
     }
   }
   else if(event.GetId() == EventIDs::popid_EvalTocChapter){ {
       GroupCell *SelectionStart =
-        m_worksheet->m_tableOfContents->RightClickedOn();
+        GetWorksheet()->m_tableOfContents->RightClickedOn();
       // We only update the table of contents when there is time => no guarantee
       // that the cell that was clicked at actually still is part of the tree.
-      if ((m_worksheet->GetTree()) &&
-          (m_worksheet->GetTree()->Contains(SelectionStart))) {
-        m_worksheet->AddSectionToEvaluationQueue(
-                                                 m_worksheet->m_tableOfContents->RightClickedOn());
+      if ((GetWorksheet()->GetTree()) &&
+          (GetWorksheet()->GetTree()->Contains(SelectionStart))) {
+        GetWorksheet()->AddSectionToEvaluationQueue(
+                                                 GetWorksheet()->m_tableOfContents->RightClickedOn());
         TriggerEvaluation();
       }
     }
   }
   else if(event.GetId() == EventIDs::popid_ToggleTOCshowsSectionNumbers){ {
       m_configuration.TocShowsSectionNumbers(event.IsChecked());
-      m_worksheet->UpdateTableOfContents();
+      GetWorksheet()->UpdateTableOfContents();
     }
   }
   else if((event.GetId() >= EventIDs::popid_tocLevel1) && (event.GetId() < EventIDs::popid_tocLevel1 + EventIDs::NumberOfTocLevels() - 2)) {
     m_configuration.TocDepth(event.GetId() - EventIDs::popid_tocLevel1 + 1 );
-    m_worksheet->UpdateTableOfContents();
+    GetWorksheet()->UpdateTableOfContents();
   }
   else if(event.GetId() == EventIDs::popid_tocLevel1 + EventIDs::NumberOfTocLevels() -1){ {
       m_configuration.TocDepth(255);
-      m_worksheet->UpdateTableOfContents();
+      GetWorksheet()->UpdateTableOfContents();
     }
   }
   else if(event.GetId() == EventIDs::popid_tocdnd){ {
-      m_worksheet->TOCdnd();
+      GetWorksheet()->TOCdnd();
     }
   }
   else if(event.GetId() == EventIDs::popid_tocMoveIn){
-    m_worksheet->SectioningMoveIn();
-    m_worksheet->NumberSections();
-    m_worksheet->Recalculate();
-    m_worksheet->RequestRedraw();
-    m_worksheet->UpdateTableOfContents();
+    GetWorksheet()->SectioningMoveIn();
+    GetWorksheet()->NumberSections();
+    GetWorksheet()->Recalculate();
+    GetWorksheet()->RequestRedraw();
+    GetWorksheet()->UpdateTableOfContents();
   }
   else if(event.GetId() == EventIDs::popid_tocMoveOut){
-    m_worksheet->SectioningMoveOut();
-    m_worksheet->NumberSections();
-    m_worksheet->Recalculate();
-    m_worksheet->RequestRedraw();
-    m_worksheet->UpdateTableOfContents();
+    GetWorksheet()->SectioningMoveOut();
+    GetWorksheet()->NumberSections();
+    GetWorksheet()->Recalculate();
+    GetWorksheet()->RequestRedraw();
+    GetWorksheet()->UpdateTableOfContents();
   }
   else if(event.GetId() == EventIDs::popid_evaluate_section){ {
       GroupCell *group = NULL;
-      if (m_worksheet->GetActiveCell()) {
+      if (GetWorksheet()->GetActiveCell()) {
         // This "if" is pure paranoia. But - since the costs of an "if" are low...
-        if (m_worksheet->GetActiveCell()->GetGroup())
-          group = m_worksheet->GetActiveCell()->GetGroup();
-      } else if (m_worksheet->HCaretActive()) {
-        if (m_worksheet->GetHCaret()) {
-          group = m_worksheet->GetHCaret();
+        if (GetWorksheet()->GetActiveCell()->GetGroup())
+          group = GetWorksheet()->GetActiveCell()->GetGroup();
+      } else if (GetWorksheet()->HCaretActive()) {
+        if (GetWorksheet()->GetHCaret()) {
+          group = GetWorksheet()->GetHCaret();
           if ((false))
             if (group->GetNext())
               group = group->GetNext();
         } else
-          group = m_worksheet->GetTree();
+          group = GetWorksheet()->GetTree();
       }
       if (group) {
-        m_worksheet->AddSectionToEvaluationQueue(group);
+        GetWorksheet()->AddSectionToEvaluationQueue(group);
         TriggerEvaluation();
       }
     } }
@@ -9834,62 +9836,62 @@ void wxMaxima::PopupMenu(wxCommandEvent &event) {
     EvaluateEvent(*dummy);
   }
   else if(event.GetId() == ToolBar::tb_evaluate_rest){
-    m_worksheet->AddRestToEvaluationQueue();
-    EvaluationQueueLength(m_worksheet->m_evaluationQueue.Size(),
-                          m_worksheet->m_evaluationQueue.CommandsLeftInCell());
+    GetWorksheet()->AddRestToEvaluationQueue();
+    EvaluationQueueLength(GetWorksheet()->m_evaluationQueue.Size(),
+                          GetWorksheet()->m_evaluationQueue.CommandsLeftInCell());
     TriggerEvaluation();
   }
   else if(event.GetId() == ToolBar::tb_evaltillhere){
-    m_worksheet->m_evaluationQueue.Clear();
-    m_worksheet->ResetInputPrompts();
+    GetWorksheet()->m_evaluationQueue.Clear();
+    GetWorksheet()->ResetInputPrompts();
     EvaluationQueueLength(0);
     if (m_configuration.RestartOnReEvaluation())
       StartMaxima();
-    m_worksheet->AddDocumentTillHereToEvaluationQueue();
+    GetWorksheet()->AddDocumentTillHereToEvaluationQueue();
     // Inform the user about the length of the evaluation queue.
-    EvaluationQueueLength(m_worksheet->m_evaluationQueue.Size(),
-                          m_worksheet->m_evaluationQueue.CommandsLeftInCell());
+    EvaluationQueueLength(GetWorksheet()->m_evaluationQueue.Size(),
+                          GetWorksheet()->m_evaluationQueue.CommandsLeftInCell());
     TriggerEvaluation();
   }
   else if(event.GetId() == EventIDs::popid_copy_matlab){
-    if (m_worksheet->CanCopy())
-      m_worksheet->CopyMatlab();
+    if (GetWorksheet()->CanCopy())
+      GetWorksheet()->CopyMatlab();
   }
   else if(event.GetId() == EventIDs::popid_copy_tex){
-    if (m_worksheet->CanCopy())
-      m_worksheet->CopyTeX();
+    if (GetWorksheet()->CanCopy())
+      GetWorksheet()->CopyTeX();
   }
   else if(event.GetId() == EventIDs::popid_copy_text){
-    if (m_worksheet->CanCopy())
-      m_worksheet->CopyText();
+    if (GetWorksheet()->CanCopy())
+      GetWorksheet()->CopyText();
   }
   else if(event.GetId() == EventIDs::popid_comment_selection){
-    m_worksheet->CommentSelection();
+    GetWorksheet()->CommentSelection();
   }
   else if(event.GetId() == EventIDs::popid_divide_cell){
-    m_worksheet->DivideCell();
+    GetWorksheet()->DivideCell();
   }
   else if(event.GetId() == EventIDs::popid_copy_image){
-    if (m_worksheet->CanCopy())
-      m_worksheet->CopyBitmap();
+    if (GetWorksheet()->CanCopy())
+      GetWorksheet()->CopyBitmap();
   }
   else if(event.GetId() == EventIDs::popid_copy_animation){
-    if (m_worksheet->CanCopy())
-      m_worksheet->CopyAnimation();
+    if (GetWorksheet()->CanCopy())
+      GetWorksheet()->CopyAnimation();
   }
   else if(event.GetId() == EventIDs::popid_copy_svg){
-    if (m_worksheet->CanCopy())
-      m_worksheet->CopySVG();
+    if (GetWorksheet()->CanCopy())
+      GetWorksheet()->CopySVG();
   }
 #if wxUSE_ENH_METAFILE
   else if(event.GetId() == EventIDs::popid_copy_emf){
-    if (m_worksheet->CanCopy())
-      m_worksheet->CopyEMF();
+    if (GetWorksheet()->CanCopy())
+      GetWorksheet()->CopyEMF();
   }
 #endif
   else if(event.GetId() == EventIDs::popid_copy_rtf){
-    if (m_worksheet->CanCopy())
-      m_worksheet->CopyRTF();
+    if (GetWorksheet()->CanCopy())
+      GetWorksheet()->CopyRTF();
   }
   else if(event.GetId() == EventIDs::popid_simplify){
     MenuCommand(wxS("ratsimp(") + selection + wxS(");"));
@@ -9978,14 +9980,14 @@ void wxMaxima::PopupMenu(wxCommandEvent &event) {
     MenuCommand(wxS("float(") + selection + wxS("), numer;"));
   }
   else if(event.GetId() == EventIDs::popid_image){ {
-      if ((m_worksheet->GetSelectionStart() == m_worksheet->GetSelectionEnd()) &&
-          (m_worksheet->GetSelectionStart() != NULL))
+      if ((GetWorksheet()->GetSelectionStart() == GetWorksheet()->GetSelectionEnd()) &&
+          (GetWorksheet()->GetSelectionStart() != NULL))
         {
           bool canExportSVG = false;
 
-          if ((m_worksheet->GetSelectionStart()->GetType() == MC_TYPE_IMAGE) ||
-              (m_worksheet->GetSelectionStart()->GetType() == MC_TYPE_SLIDE))
-            if (dynamic_cast<ImgCellBase *>(m_worksheet->GetSelectionStart())
+          if ((GetWorksheet()->GetSelectionStart()->GetType() == MC_TYPE_IMAGE) ||
+              (GetWorksheet()->GetSelectionStart()->GetType() == MC_TYPE_SLIDE))
+            if (dynamic_cast<ImgCellBase *>(GetWorksheet()->GetSelectionStart())
                 ->CanExportSVG())
               canExportSVG = true;
 
@@ -10014,15 +10016,15 @@ void wxMaxima::PopupMenu(wxCommandEvent &event) {
                                          wxS("image.png"), wxS("png"), selectorString,
                                          wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
           if (file.Length()) {
-            m_worksheet->CopyToFile(file);
+            GetWorksheet()->CopyToFile(file);
             m_lastPath = wxPathOnly(file);
           }
         } }}
   else if(event.GetId() == EventIDs::popid_change_image){ {
-      if (!m_worksheet->GetSelectionStart())
+      if (!GetWorksheet()->GetSelectionStart())
         return;
 
-      Cell *cell = m_worksheet->GetSelectionStart()->GetGroup()->GetLabel();
+      Cell *cell = GetWorksheet()->GetSelectionStart()->GetGroup()->GetLabel();
       if (cell == NULL)
         return;
 
@@ -10059,9 +10061,9 @@ void wxMaxima::PopupMenu(wxCommandEvent &event) {
       ic->ReloadImage(newImg, wxEmptyString);
       ic->SetOrigImageFile(newImg);
 
-      m_worksheet->RecalculateForce();
-      m_worksheet->RequestRedraw();
-      m_worksheet->SetSaved(false);
+      GetWorksheet()->RecalculateForce();
+      GetWorksheet()->RequestRedraw();
+      GetWorksheet()->SetSaved(false);
       m_lastPath = wxPathOnly(newImg);
 
       UpdateMenus();
@@ -10073,7 +10075,7 @@ void wxMaxima::PopupMenu(wxCommandEvent &event) {
                                      _("GIF image (*.gif)|*.gif"),
                                      wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
       if (file.Length()) {
-        Cell *selectedCell = m_worksheet->GetSelectionStart();
+        Cell *selectedCell = GetWorksheet()->GetSelectionStart();
         if (selectedCell != NULL && selectedCell->GetType() == MC_TYPE_SLIDE)
           {
             wxBusyCursor crs;
@@ -10082,13 +10084,13 @@ void wxMaxima::PopupMenu(wxCommandEvent &event) {
       }
     } }
   else if(event.GetId() == EventIDs::popid_merge_cells){
-    m_worksheet->MergeCells();
+    GetWorksheet()->MergeCells();
   }
 }
 
 
 void wxMaxima::OnRecentDocument(wxCommandEvent &event) {
-  m_worksheet->CloseAutoCompletePopup();
+  GetWorksheet()->CloseAutoCompletePopup();
 
   wxString file = m_recentDocuments.Get(event.GetId() - EventIDs::menu_recent_document_0);
 
@@ -10114,7 +10116,7 @@ void wxMaxima::OnRecentDocument(wxCommandEvent &event) {
 }
 
 void wxMaxima::OnRecentPackage(wxCommandEvent &event) {
-  m_worksheet->CloseAutoCompletePopup();
+  GetWorksheet()->CloseAutoCompletePopup();
 
   wxString file = m_recentPackages.Get(event.GetId() - EventIDs::menu_recent_package_0);
 #ifdef __WXMSW__
@@ -10124,10 +10126,10 @@ void wxMaxima::OnRecentPackage(wxCommandEvent &event) {
 }
 
 void wxMaxima::OnUnsavedDocument(wxCommandEvent &event) {
-  m_worksheet->CloseAutoCompletePopup();
+  GetWorksheet()->CloseAutoCompletePopup();
 
   wxString file =
-    m_worksheet->m_unsavedDocuments.Get(event.GetId() - EventIDs::menu_unsaved_document_0);
+    GetWorksheet()->m_unsavedDocuments.Get(event.GetId() - EventIDs::menu_unsaved_document_0);
 
   if (file.IsEmpty())
     return;
@@ -10146,10 +10148,10 @@ void wxMaxima::OnUnsavedDocument(wxCommandEvent &event) {
   }
 
   if (wxFileExists(file)) {
-    OpenWXMXFile(file, m_worksheet, true);
+    OpenWXMXFile(file, GetWorksheet(), true);
     m_tempfileName = file;
-    m_worksheet->m_currentFile = wxEmptyString;
-    m_worksheet->SetSaved(false);
+    GetWorksheet()->m_currentFile = wxEmptyString;
+    GetWorksheet()->SetSaved(false);
   } else
     LoggingMessageBox(_("File you tried to open does not exist."),
                       _("File not found"), wxOK);
@@ -10157,44 +10159,44 @@ void wxMaxima::OnUnsavedDocument(wxCommandEvent &event) {
 
 bool wxMaxima::SaveNecessary() {
   // No need to save an empty document
-  if (m_worksheet->GetTree() == NULL)
+  if (GetWorksheet()->GetTree() == NULL)
     return false;
 
   // No need to save a document only consisting of a prompt
-  if (m_worksheet->GetTree()->Empty())
+  if (GetWorksheet()->GetTree()->Empty())
     return false;
 
-  if (m_worksheet->m_currentFile.IsEmpty())
+  if (GetWorksheet()->m_currentFile.IsEmpty())
     return true;
 
   return !m_fileSaved;
 }
 
 void wxMaxima::EditInputMenu(wxCommandEvent &WXUNUSED(event)) {
-  m_worksheet->CloseAutoCompletePopup();
-  if (!m_worksheet->CanEdit())
+  GetWorksheet()->CloseAutoCompletePopup();
+  if (!GetWorksheet()->CanEdit())
     return;
 
   EditorCell *tmp =
-    dynamic_cast<EditorCell *>(m_worksheet->GetSelectionStart());
+    dynamic_cast<EditorCell *>(GetWorksheet()->GetSelectionStart());
 
   if (tmp == NULL)
     return;
 
-  m_worksheet->SetActiveCell(tmp);
+  GetWorksheet()->SetActiveCell(tmp);
 }
 
 void wxMaxima::VarAddAllEvent(wxCommandEvent &WXUNUSED(event)) {
   wxString command = "\n:lisp-quiet (wx-add-all-variables)\n";
-  if ((!m_worksheet->m_evaluationQueue.Empty()) || (m_maximaBusy) ||
-      (m_worksheet->QuestionPending()))
+  if ((!GetWorksheet()->m_evaluationQueue.Empty()) || (m_maximaBusy) ||
+      (GetWorksheet()->QuestionPending()))
     m_configCommands += command;
   else
     SendMaxima(command);
 }
 
 void wxMaxima::VarReadEvent(wxCommandEvent &WXUNUSED(event)) {
-  m_varNamesToQuery = m_worksheet->m_variablesPane->GetEscapedVarnames();
+  m_varNamesToQuery = GetWorksheet()->m_variablesPane->GetEscapedVarnames();
   QueryVariableValue();
 }
 
@@ -10205,28 +10207,28 @@ void wxMaxima::VarReadEvent(wxCommandEvent &WXUNUSED(event)) {
 // If there is a special case - eg sending from output section
 // of the working group, handle it carefully.
 void wxMaxima::EvaluateEvent(wxCommandEvent &WXUNUSED(event)) {
-  if (m_worksheet == NULL)
+  if (GetWorksheet() == NULL)
     return;
-  m_worksheet->CloseAutoCompletePopup();
+  GetWorksheet()->CloseAutoCompletePopup();
 
-  bool evaluating = !m_worksheet->m_evaluationQueue.Empty();
+  bool evaluating = !GetWorksheet()->m_evaluationQueue.Empty();
   if (!evaluating)
-    m_worksheet->FollowEvaluation(true);
+    GetWorksheet()->FollowEvaluation(true);
 
-  EditorCell *editor = m_worksheet->GetActiveCell();
+  EditorCell *editor = GetWorksheet()->GetActiveCell();
 
   if (editor == NULL) {
     GroupCell *group = NULL;
-    if (m_worksheet->HCaretActive()) {
-      group = m_worksheet->GetHCaret();
+    if (GetWorksheet()->HCaretActive()) {
+      group = GetWorksheet()->GetHCaret();
       if (group == NULL)
-        group = m_worksheet->GetTree();
+        group = GetWorksheet()->GetTree();
       else
         group = group->GetNext();
       while ((group != NULL) &&
              (!((group->GetEditable() != NULL) &&
                 (group->GetEditable()->GetType() == MC_TYPE_INPUT)) &&
-              (!m_worksheet->m_evaluationQueue.IsLastInQueue(group))))
+              (!GetWorksheet()->m_evaluationQueue.IsLastInQueue(group))))
         group = group->GetNext();
     }
     if ((group != NULL) && (group->GetEditable() != NULL) &&
@@ -10241,26 +10243,26 @@ void wxMaxima::EvaluateEvent(wxCommandEvent &WXUNUSED(event)) {
       // if active cell is part of a working group, we have a special
       // case - answering 1a question. Manually send answer to Maxima.
       GroupCell *cell = editor->GetGroup();
-      if (m_worksheet->GCContainsCurrentQuestion(cell)) {
+      if (GetWorksheet()->GCContainsCurrentQuestion(cell)) {
         wxString answer = editor->ToString(true);
         // Add the answer to the current working cell or update the answer
         // that is stored within it.
-        cell->SetAnswer(m_worksheet->GetLastQuestion(), answer);
+        cell->SetAnswer(GetWorksheet()->GetLastQuestion(), answer);
         SendMaxima(answer, true);
         StatusMaximaBusy(StatusBar::MaximaStatus::calculating);
-        m_worksheet->SetHCaret(cell);
-        m_worksheet->ScrollToCaret();
+        GetWorksheet()->SetHCaret(cell);
+        GetWorksheet()->ScrollToCaret();
       } else { // normally just add to queue (and mark the cell as no more
         // containing an error message)
-        m_worksheet->GetErrorList().Remove(cell);
-        m_worksheet->AddCellToEvaluationQueue(cell);
+        GetWorksheet()->GetErrorList().Remove(cell);
+        GetWorksheet()->AddCellToEvaluationQueue(cell);
       }
     } else { // no evaluate has been called on no active cell?
-    m_worksheet->AddSelectionToEvaluationQueue();
+    GetWorksheet()->AddSelectionToEvaluationQueue();
   }
   // Inform the user about the length of the evaluation queue.
-  EvaluationQueueLength(m_worksheet->m_evaluationQueue.Size(),
-                        m_worksheet->m_evaluationQueue.CommandsLeftInCell());
+  EvaluationQueueLength(GetWorksheet()->m_evaluationQueue.Size(),
+                        GetWorksheet()->m_evaluationQueue.CommandsLeftInCell());
   TriggerEvaluation();
 }
 
@@ -10371,7 +10373,7 @@ void wxMaxima::TriggerEvaluation() {
     }
 
   // While we wait for an answer we cannot send new commands.
-  if (m_worksheet->QuestionPending())
+  if (GetWorksheet()->QuestionPending())
     {
       wxLogMessage(_("Not triggering evaluation as maxima still asks a question!"));
       return;
@@ -10386,7 +10388,7 @@ void wxMaxima::TriggerEvaluation() {
     }
 
   // Maxima is connected. Let's test if the evaluation queue is empty.
-  GroupCell *const tmp = m_worksheet->m_evaluationQueue.GetCell();
+  GroupCell *const tmp = GetWorksheet()->m_evaluationQueue.GetCell();
   if (!tmp) {
     wxLogMessage(_("Evaluation ended, since evaluation queue is empty."));
     // Maxima is no more busy.
@@ -10398,12 +10400,12 @@ void wxMaxima::TriggerEvaluation() {
     // The cell from the last evaluation might still be shown in it's
     // "evaluating" state so let's refresh the console to update the display of
     // this.
-    m_worksheet->RequestRedraw();
+    GetWorksheet()->RequestRedraw();
 
     // If the window isn't active we can inform the user that maxima in the
     // meantime has finished working.
-    if ((m_configuration.NotifyIfIdle()) && (m_worksheet->GetTree() != NULL))
-      m_worksheet->SetNotification(_("Maxima has finished calculating."));
+    if ((m_configuration.NotifyIfIdle()) && (GetWorksheet()->GetTree() != NULL))
+      GetWorksheet()->SetNotification(_("Maxima has finished calculating."));
 
     if (m_configCommands != wxEmptyString)
       SendMaxima(m_configCommands);
@@ -10414,11 +10416,11 @@ void wxMaxima::TriggerEvaluation() {
 
   // Add a semicolon at the end of the cell, if needed.
   if (tmp->AddEnding())
-    m_worksheet->m_evaluationQueue.AddEnding();
+    GetWorksheet()->m_evaluationQueue.AddEnding();
 
   // Display the evaluation queue's status.
-  EvaluationQueueLength(m_worksheet->m_evaluationQueue.Size(),
-                        m_worksheet->m_evaluationQueue.CommandsLeftInCell());
+  EvaluationQueueLength(GetWorksheet()->m_evaluationQueue.Size(),
+                        GetWorksheet()->m_evaluationQueue.CommandsLeftInCell());
 
 
   // Maxima is connected, not asking a question and the queue contains an item.
@@ -10429,7 +10431,7 @@ void wxMaxima::TriggerEvaluation() {
   ReadStdErr();
   m_maximaStdoutPollTimer.StartOnce(MAXIMAPOLLMSECS);
 
-  if (m_worksheet->m_evaluationQueue.m_workingGroupChanged) {
+  if (GetWorksheet()->m_evaluationQueue.m_workingGroupChanged) {
     // Clear the monitor that shows the xml representation of the output of the
     // current maxima command.
     if ((m_xmlInspector) && (IsPaneDisplayed(EventIDs::menu_pane_xmlInspector)))
@@ -10437,34 +10439,34 @@ void wxMaxima::TriggerEvaluation() {
 
     // If the cell's output that we are about to remove contains the currently
     // selected cells we undo the selection.
-    if (m_worksheet->GetSelectionStart()) {
-      if (m_worksheet->GetSelectionStart()->GetGroup() == tmp)
-        m_worksheet->ClearSelection();
+    if (GetWorksheet()->GetSelectionStart()) {
+      if (GetWorksheet()->GetSelectionStart()->GetGroup() == tmp)
+        GetWorksheet()->ClearSelection();
     }
-    if (m_worksheet->GetSelectionEnd()) {
-      if (m_worksheet->GetSelectionEnd()->GetGroup() == tmp)
-        m_worksheet->ClearSelection();
+    if (GetWorksheet()->GetSelectionEnd()) {
+      if (GetWorksheet()->GetSelectionEnd()->GetGroup() == tmp)
+        GetWorksheet()->ClearSelection();
     }
     tmp->RemoveOutput();
-    m_worksheet->Recalculate(tmp);
-    m_worksheet->RequestRedraw();
+    GetWorksheet()->Recalculate(tmp);
+    GetWorksheet()->RequestRedraw();
   }
-  wxString text = m_worksheet->m_evaluationQueue.GetCommand();
-  m_commandIndex = m_worksheet->m_evaluationQueue.GetIndex();
+  wxString text = GetWorksheet()->m_evaluationQueue.GetCommand();
+  m_commandIndex = GetWorksheet()->m_evaluationQueue.GetIndex();
   if ((text != wxEmptyString) && (text != wxS(";")) && (text != wxS("$"))) {
     std::size_t index;
     wxString parenthesisError =
       GetUnmatchedParenthesisState(tmp->GetEditable()->ToString(true), index);
     if (parenthesisError.IsEmpty()) {
-      if (m_worksheet->FollowEvaluation()) {
-        m_worksheet->SetSelection(tmp);
-        if (!m_worksheet->GetWorkingGroup()) {
-          m_worksheet->SetHCaret(tmp);
-          m_worksheet->ScrollToCaret();
+      if (GetWorksheet()->FollowEvaluation()) {
+        GetWorksheet()->SetSelection(tmp);
+        if (!GetWorksheet()->GetWorkingGroup()) {
+          GetWorksheet()->SetHCaret(tmp);
+          GetWorksheet()->ScrollToCaret();
         }
       }
 
-      m_worksheet->SetWorkingGroup(tmp);
+      GetWorksheet()->SetWorkingGroup(tmp);
       tmp->GetPrompt()->SetValue(m_lastPrompt);
       tmp->ResetSize();
 
@@ -10474,14 +10476,14 @@ void wxMaxima::TriggerEvaluation() {
       m_maximaBusy = true;
       // Now that we have sent a command we need to query all variable values
       // anew
-      m_varNamesToQuery = m_worksheet->m_variablesPane->GetEscapedVarnames();
+      m_varNamesToQuery = GetWorksheet()->m_variablesPane->GetEscapedVarnames();
       // And the gui is interested in a few variable names
       m_readMaximaVariables = true;
       m_configCommands = wxEmptyString;
 
       EvaluationQueueLength(
-                            m_worksheet->m_evaluationQueue.Size(),
-                            m_worksheet->m_evaluationQueue.CommandsLeftInCell());
+                            GetWorksheet()->m_evaluationQueue.Size(),
+                            GetWorksheet()->m_evaluationQueue.CommandsLeftInCell());
 
       text.Trim(false);
       if (!m_hasEvaluatedCells) {
@@ -10494,7 +10496,7 @@ void wxMaxima::TriggerEvaluation() {
       m_hasEvaluatedCells = true;
     } else {
       // Manually mark the current cell as the one that has caused an error.
-      m_worksheet->GetErrorList().Add(tmp);
+      GetWorksheet()->GetErrorList().Add(tmp);
       // Inform the user about the error (which automatically causes the
       // worksheet to the cell we marked as erroneous a few seconds ago.
       auto cell =
@@ -10503,26 +10505,26 @@ void wxMaxima::TriggerEvaluation() {
                                    parenthesisError + wxS("\n"));
       cell->SetType(MC_TYPE_ERROR);
       tmp->SetOutput(std::move(cell));
-      m_worksheet->m_evaluationQueue.Clear();
-      m_worksheet->SetWorkingGroup(nullptr);
+      GetWorksheet()->m_evaluationQueue.Clear();
+      GetWorksheet()->SetWorkingGroup(nullptr);
       tmp->GetEditable()->SetCaretPosition(index);
       tmp->GetEditable()->SetErrorIndex((m_commandIndex = index) - 1);
 
-      if (m_worksheet->FollowEvaluation())
-        m_worksheet->SetSelection(NULL);
+      if (GetWorksheet()->FollowEvaluation())
+        GetWorksheet()->SetSelection(NULL);
 
-      m_worksheet->SetWorkingGroup(nullptr);
-      m_worksheet->RequestRedraw();
+      GetWorksheet()->SetWorkingGroup(nullptr);
+      GetWorksheet()->RequestRedraw();
       if (!AbortOnError()) {
         m_outputCellsFromCurrentCommand = 0;
         TriggerEvaluation();
       }
-      m_worksheet->SetActiveCell(tmp->GetEditable());
+      GetWorksheet()->SetActiveCell(tmp->GetEditable());
     }
   } else {
     wxLogMessage(_("Empty command => re-triggering evaluation"));
     m_outputCellsFromCurrentCommand = 0;
-    m_worksheet->m_evaluationQueue.RemoveFirst();
+    GetWorksheet()->m_evaluationQueue.RemoveFirst();
     TriggerEvaluation();
   }
 }
@@ -10530,16 +10532,16 @@ void wxMaxima::TriggerEvaluation() {
 void wxMaxima::ReplaceSuggestion(wxCommandEvent &event) {
   int index = event.GetId() - EventIDs::popid_suggestion1;
 
-  EditorCell *editor = m_worksheet->GetActiveCell();
+  EditorCell *editor = GetWorksheet()->GetActiveCell();
   if (editor == NULL)
     return;
   editor->SelectWordUnderCaret(false);
   editor->ReplaceSelection(editor->GetWordUnderCaret(),
-                           m_worksheet->m_replacementsForCurrentWord.at(index));
+                           GetWorksheet()->m_replacementsForCurrentWord.at(index));
 }
 
 void wxMaxima::InsertMenu(wxCommandEvent &event) {
-  m_worksheet->CloseAutoCompletePopup();
+  GetWorksheet()->CloseAutoCompletePopup();
 
   GroupType type = GC_TYPE_CODE;
   bool output = false;
@@ -10547,55 +10549,55 @@ void wxMaxima::InsertMenu(wxCommandEvent &event) {
     m_configuration.OfferKnownAnswers(!m_configuration.OfferKnownAnswers());
   }
   else if(event.GetId() == EventIDs::popid_auto_answer){
-    if (m_worksheet->GetActiveCell() &&
-        m_worksheet->GetActiveCell()->GetGroup()->GetGroupType() ==
+    if (GetWorksheet()->GetActiveCell() &&
+        GetWorksheet()->GetActiveCell()->GetGroup()->GetGroupType() ==
         GC_TYPE_CODE)
-      m_worksheet->GetActiveCell()->GetGroup()->SetAutoAnswer(
+      GetWorksheet()->GetActiveCell()->GetGroup()->SetAutoAnswer(
                                                               event.IsChecked());
-    else if ((m_worksheet->GetSelectionStart() != NULL) &&
-             (m_worksheet->GetSelectionStart()->GetType() == MC_TYPE_GROUP)) {
+    else if ((GetWorksheet()->GetSelectionStart() != NULL) &&
+             (GetWorksheet()->GetSelectionStart()->GetType() == MC_TYPE_GROUP)) {
       GroupCell *gc =
-        dynamic_cast<GroupCell *>(m_worksheet->GetSelectionStart());
+        dynamic_cast<GroupCell *>(GetWorksheet()->GetSelectionStart());
       while (gc != NULL) {
         if (gc->GetGroupType() == GC_TYPE_CODE)
           gc->SetAutoAnswer(event.IsChecked());
 
-        if (gc == m_worksheet->GetSelectionEnd())
+        if (gc == GetWorksheet()->GetSelectionEnd())
           break;
         gc = gc->GetNext();
       }
     }
     m_fileSaved = false;
-    m_worksheet->RequestRedraw();
+    GetWorksheet()->RequestRedraw();
     return;
   }
   else if(event.GetId() == EventIDs::popid_add_watch){
     wxString selectionString;
-    if (m_worksheet->GetActiveCell()) {
-      selectionString = m_worksheet->GetActiveCell()->GetSelectionString();
+    if (GetWorksheet()->GetActiveCell()) {
+      selectionString = GetWorksheet()->GetActiveCell()->GetSelectionString();
       if (selectionString.IsEmpty())
-        selectionString = m_worksheet->GetActiveCell()->GetWordUnderCaret();
-      m_worksheet->m_variablesPane->AddWatchCode(selectionString);
+        selectionString = GetWorksheet()->GetActiveCell()->GetWordUnderCaret();
+      GetWorksheet()->m_variablesPane->AddWatchCode(selectionString);
       wxMaximaFrame::ShowPane(EventIDs::menu_pane_variables, true);
     }
-    if (selectionString.IsEmpty() && (m_worksheet->GetSelectionStart() != NULL))
-      selectionString = m_worksheet->GetSelectionStart()->ToString();
+    if (selectionString.IsEmpty() && (GetWorksheet()->GetSelectionStart() != NULL))
+      selectionString = GetWorksheet()->GetSelectionStart()->ToString();
     if (!selectionString.IsEmpty()) {
-      m_worksheet->m_variablesPane->AddWatchCode(selectionString);
+      GetWorksheet()->m_variablesPane->AddWatchCode(selectionString);
       wxMaximaFrame::ShowPane(EventIDs::menu_pane_variables, true);
     }
     return;
   }
   else if(event.GetId() == EventIDs::popid_add_watch_label){
-    if (m_worksheet->IsSelected(MC_TYPE_LABEL)) {
-      wxString selectionString = m_worksheet->GetSelectionStart()->ToString();
+    if (GetWorksheet()->IsSelected(MC_TYPE_LABEL)) {
+      wxString selectionString = GetWorksheet()->GetSelectionStart()->ToString();
       selectionString.Trim(true);
       selectionString.Trim(false);
       if (selectionString.StartsWith("("))
         selectionString = selectionString.Right(selectionString.Length() - 1);
       if (selectionString.EndsWith(")"))
         selectionString = selectionString.Left(selectionString.Length() - 1);
-      m_worksheet->m_variablesPane->AddWatchCode(selectionString);
+      GetWorksheet()->m_variablesPane->AddWatchCode(selectionString);
       wxMaximaFrame::ShowPane(EventIDs::menu_pane_variables, true);
     }
     return;
@@ -10610,23 +10612,23 @@ void wxMaxima::InsertMenu(wxCommandEvent &event) {
     type = GC_TYPE_CODE;
   }
   else if(event.GetId() == EventIDs::menu_autocomplete){
-    m_worksheet->Autocomplete();
+    GetWorksheet()->Autocomplete();
     return;}
   else if(event.GetId() == EventIDs::menu_autocomplete_templates){
-    m_worksheet->Autocomplete(AutoComplete::tmplte);
+    GetWorksheet()->Autocomplete(AutoComplete::tmplte);
     return;}
   else if(event.GetId() == EventIDs::menu_convert_to_code){
-    if (m_worksheet->GetActiveCell()) {
-      m_worksheet->GetActiveCell()->GetGroup()->SetGroupType(GC_TYPE_CODE);
-      m_worksheet->Recalculate();
-      m_worksheet->RequestRedraw();
+    if (GetWorksheet()->GetActiveCell()) {
+      GetWorksheet()->GetActiveCell()->GetGroup()->SetGroupType(GC_TYPE_CODE);
+      GetWorksheet()->Recalculate();
+      GetWorksheet()->RequestRedraw();
     }
   }
   else if(event.GetId() == EventIDs::menu_convert_to_comment){
-    if (m_worksheet->GetActiveCell()) {
-      m_worksheet->GetActiveCell()->GetGroup()->SetGroupType(GC_TYPE_TEXT);
-      m_worksheet->Recalculate();
-      m_worksheet->RequestRedraw();
+    if (GetWorksheet()->GetActiveCell()) {
+      GetWorksheet()->GetActiveCell()->GetGroup()->SetGroupType(GC_TYPE_TEXT);
+      GetWorksheet()->Recalculate();
+      GetWorksheet()->RequestRedraw();
     }
   }
   else if((event.GetId() == EventIDs::menu_add_comment) ||
@@ -10637,10 +10639,10 @@ void wxMaxima::InsertMenu(wxCommandEvent &event) {
       type = GC_TYPE_TEXT;
     }
   else if(event.GetId() == EventIDs::menu_convert_to_title){
-    if (m_worksheet->GetActiveCell()) {
-      m_worksheet->GetActiveCell()->GetGroup()->SetGroupType(GC_TYPE_TITLE);
-      m_worksheet->Recalculate();
-      m_worksheet->RequestRedraw();
+    if (GetWorksheet()->GetActiveCell()) {
+      GetWorksheet()->GetActiveCell()->GetGroup()->SetGroupType(GC_TYPE_TITLE);
+      GetWorksheet()->Recalculate();
+      GetWorksheet()->RequestRedraw();
     }
   }
   else if((event.GetId() == EventIDs::menu_add_title) ||
@@ -10649,10 +10651,10 @@ void wxMaxima::InsertMenu(wxCommandEvent &event) {
     type = GC_TYPE_TITLE;
   }
   else if(event.GetId() == EventIDs::menu_convert_to_section){
-    if (m_worksheet->GetActiveCell()) {
-      m_worksheet->GetActiveCell()->GetGroup()->SetGroupType(GC_TYPE_SECTION);
-      m_worksheet->Recalculate();
-      m_worksheet->RequestRedraw();
+    if (GetWorksheet()->GetActiveCell()) {
+      GetWorksheet()->GetActiveCell()->GetGroup()->SetGroupType(GC_TYPE_SECTION);
+      GetWorksheet()->Recalculate();
+      GetWorksheet()->RequestRedraw();
     }
   }
   else if((event.GetId() == EventIDs::menu_add_section) ||
@@ -10661,11 +10663,11 @@ void wxMaxima::InsertMenu(wxCommandEvent &event) {
     type = GC_TYPE_SECTION;
   }
   else if(event.GetId() == EventIDs::menu_convert_to_subsection){
-    if (m_worksheet->GetActiveCell()) {
-      m_worksheet->GetActiveCell()->GetGroup()->SetGroupType(
+    if (GetWorksheet()->GetActiveCell()) {
+      GetWorksheet()->GetActiveCell()->GetGroup()->SetGroupType(
                                                              GC_TYPE_SUBSECTION);
-      m_worksheet->Recalculate();
-      m_worksheet->RequestRedraw();
+      GetWorksheet()->Recalculate();
+      GetWorksheet()->RequestRedraw();
     }
   }
   else if((event.GetId() == EventIDs::menu_add_subsection) ||
@@ -10674,25 +10676,25 @@ void wxMaxima::InsertMenu(wxCommandEvent &event) {
     type = GC_TYPE_SUBSECTION;
   }
   else if(event.GetId() == EventIDs::menu_convert_to_subsubsection){
-    if (m_worksheet->GetActiveCell()) {
-      m_worksheet->GetActiveCell()->GetGroup()->SetGroupType(
+    if (GetWorksheet()->GetActiveCell()) {
+      GetWorksheet()->GetActiveCell()->GetGroup()->SetGroupType(
                                                              GC_TYPE_SUBSUBSECTION);
-      m_worksheet->Recalculate();
-      m_worksheet->RequestRedraw();
+      GetWorksheet()->Recalculate();
+      GetWorksheet()->RequestRedraw();
     }
   }
   else if(event.GetId() == EventIDs::menu_convert_to_heading5){
-    if (m_worksheet->GetActiveCell()) {
-      m_worksheet->GetActiveCell()->GetGroup()->SetGroupType(GC_TYPE_HEADING5);
-      m_worksheet->Recalculate();
-      m_worksheet->RequestRedraw();
+    if (GetWorksheet()->GetActiveCell()) {
+      GetWorksheet()->GetActiveCell()->GetGroup()->SetGroupType(GC_TYPE_HEADING5);
+      GetWorksheet()->Recalculate();
+      GetWorksheet()->RequestRedraw();
     }
   }
   else if(event.GetId() == EventIDs::menu_convert_to_heading6){
-    if (m_worksheet->GetActiveCell()) {
-      m_worksheet->GetActiveCell()->GetGroup()->SetGroupType(GC_TYPE_HEADING6);
-      m_worksheet->Recalculate();
-      m_worksheet->RequestRedraw();
+    if (GetWorksheet()->GetActiveCell()) {
+      GetWorksheet()->GetActiveCell()->GetGroup()->SetGroupType(GC_TYPE_HEADING6);
+      GetWorksheet()->Recalculate();
+      GetWorksheet()->RequestRedraw();
     }
   }
   else if((event.GetId() == EventIDs::menu_add_subsubsection) ||
@@ -10712,11 +10714,11 @@ void wxMaxima::InsertMenu(wxCommandEvent &event) {
   }
   else if((event.GetId() == EventIDs::menu_add_pagebreak) ||
           (event.GetId() == EventIDs::menu_format_pagebreak)) {
-    m_worksheet->InsertGroupCells(
+    GetWorksheet()->InsertGroupCells(
                                   std::make_unique<GroupCell>(&m_configuration, GC_TYPE_PAGEBREAK),
-                                  m_worksheet->GetHCaret());
-    m_worksheet->Recalculate();
-    CallAfter([this]{m_worksheet->SetFocus();});
+                                  GetWorksheet()->GetHCaret());
+    GetWorksheet()->Recalculate();
+    CallAfter([this]{GetWorksheet()->SetFocus();});
     return;}
   else if((event.GetId() == EventIDs::menu_insert_image) ||
           (event.GetId() == EventIDs::menu_format_image)){ {
@@ -10726,35 +10728,35 @@ void wxMaxima::InsertMenu(wxCommandEvent &event) {
                                        "*.svgz)|*.png;*.jpg;*.bmp;*.xpm;*.gif;*.svg;*.svgz"),
                                      wxFD_OPEN);
       if (file != wxEmptyString)
-        m_worksheet->OpenHCaret(file, GC_TYPE_IMAGE);
-      CallAfter([this]{m_worksheet->SetFocus();});
+        GetWorksheet()->OpenHCaret(file, GC_TYPE_IMAGE);
+      CallAfter([this]{GetWorksheet()->SetFocus();});
       return;
     } }
   else if(event.GetId() == EventIDs::menu_fold_all_cells){
-    m_worksheet->FoldAll();
-    m_worksheet->Recalculate();
+    GetWorksheet()->FoldAll();
+    GetWorksheet()->Recalculate();
     // send cursor to the top
-    m_worksheet->SetHCaret(NULL);
+    GetWorksheet()->SetHCaret(NULL);
   }
   else if(event.GetId() == EventIDs::menu_unfold_all_cells){
-    m_worksheet->UnfoldAll();
-    m_worksheet->Recalculate();
+    GetWorksheet()->UnfoldAll();
+    GetWorksheet()->Recalculate();
     // refresh without moving cursor
-    m_worksheet->SetHCaret(m_worksheet->GetHCaret());
+    GetWorksheet()->SetHCaret(GetWorksheet()->GetHCaret());
   }
 
-  CallAfter([this]{m_worksheet->SetFocus();});
+  CallAfter([this]{GetWorksheet()->SetFocus();});
 
   if (event.GetId() == EventIDs::menu_insert_previous_input ||
       event.GetId() == EventIDs::menu_insert_previous_output) {
     wxString input;
 
     if (output == true)
-      input = m_worksheet->GetOutputAboveCaret();
+      input = GetWorksheet()->GetOutputAboveCaret();
     else
-      input = m_worksheet->GetInputAboveCaret();
+      input = GetWorksheet()->GetInputAboveCaret();
     if (input != wxEmptyString)
-      m_worksheet->OpenHCaret(input, type);
+      GetWorksheet()->OpenHCaret(input, type);
   } else if ((event.GetId() == EventIDs::menu_unfold_all_cells) ||
              (event.GetId() == EventIDs::menu_fold_all_cells) ||
              (event.GetId() == EventIDs::menu_convert_to_heading6) ||
@@ -10767,16 +10769,16 @@ void wxMaxima::InsertMenu(wxCommandEvent &event) {
              (event.GetId() == EventIDs::menu_convert_to_code)) {
     // don't do anything else
   } else
-    m_worksheet->OpenHCaret(wxEmptyString, type);
+    GetWorksheet()->OpenHCaret(wxEmptyString, type);
 }
 
 void wxMaxima::ResetTitle(bool saved, bool force) {
-  SetRepresentedFilename(m_worksheet->m_currentFile);
+  SetRepresentedFilename(GetWorksheet()->m_currentFile);
   OSXSetModified((saved != m_fileSaved) || (force));
 
   if ((saved != m_fileSaved) || (force)) {
     m_fileSaved = saved;
-    if (m_worksheet->m_currentFile.Length() == 0) {
+    if (GetWorksheet()->m_currentFile.Length() == 0) {
 #ifndef __WXOSX__
       if (saved)
         SetTitle(wxString::Format(
@@ -10791,7 +10793,7 @@ void wxMaxima::ResetTitle(bool saved, bool force) {
 #endif
     } else {
       wxString name, ext;
-      wxFileName::SplitPath(m_worksheet->m_currentFile, NULL, NULL, &name,
+      wxFileName::SplitPath(GetWorksheet()->m_currentFile, NULL, NULL, &name,
                             &ext);
 #ifndef __WXOSX__
       if (m_fileSaved)
@@ -10811,14 +10813,14 @@ void wxMaxima::ResetTitle(bool saved, bool force) {
 #if defined __WXOSX__
 #if defined __WXOSX_COCOA__
     OSXSetModified(!saved);
-    if (m_worksheet->m_currentFile != wxEmptyString)
-      SetRepresentedFilename(m_worksheet->m_currentFile);
+    if (GetWorksheet()->m_currentFile != wxEmptyString)
+      SetRepresentedFilename(GetWorksheet()->m_currentFile);
 #else
     WindowRef win = (WindowRef)MacGetTopLevelWindowRef();
     SetWindowModified(win, !saved);
-    if (m_worksheet->m_currentFile != wxEmptyString) {
+    if (GetWorksheet()->m_currentFile != wxEmptyString) {
       FSRef fsref;
-      wxMacPathToFSRef(m_worksheet->m_currentFile, &fsref);
+      wxMacPathToFSRef(GetWorksheet()->m_currentFile, &fsref);
       HIWindowSetProxyFSRef(win, &fsref);
     }
 #endif
@@ -10831,13 +10833,13 @@ void wxMaxima::ResetTitle(bool saved, bool force) {
 ///--------------------------------------------------------------------------------
 
 void wxMaxima::UpdateSlider() {
-  if (m_worksheet->m_mainToolBar) {
-    if (m_worksheet->m_mainToolBar->m_plotSlider) {
-      if (m_worksheet->IsSelected(MC_TYPE_SLIDE)) {
+  if (GetWorksheet()->m_mainToolBar) {
+    if (GetWorksheet()->m_mainToolBar->m_plotSlider) {
+      if (GetWorksheet()->IsSelected(MC_TYPE_SLIDE)) {
         AnimationCell *cell =
-          dynamic_cast<AnimationCell *>(m_worksheet->GetSelectionStart());
+          dynamic_cast<AnimationCell *>(GetWorksheet()->GetSelectionStart());
 
-        m_worksheet->m_mainToolBar->UpdateSlider(cell);
+        GetWorksheet()->m_mainToolBar->UpdateSlider(cell);
       }
     }
   }
@@ -10845,21 +10847,21 @@ void wxMaxima::UpdateSlider() {
 
 void wxMaxima::SliderEvent(wxScrollEvent &event) {
   AnimationCell *animation =
-    dynamic_cast<AnimationCell *>(m_worksheet->GetSelectionStart());
+    dynamic_cast<AnimationCell *>(GetWorksheet()->GetSelectionStart());
 
   if (animation != NULL) {
     animation->AnimationRunning(false);
     animation->SetDisplayedIndex(event.GetPosition());
 
     wxRect rect = animation->GetRect();
-    m_worksheet->RequestRedraw(rect);
-    if (m_worksheet->m_mainToolBar)
-      m_worksheet->m_mainToolBar->UpdateSlider(animation);
+    GetWorksheet()->RequestRedraw(rect);
+    if (GetWorksheet()->m_mainToolBar)
+      GetWorksheet()->m_mainToolBar->UpdateSlider(animation);
   }
 }
 
 void wxMaxima::ShowPane(wxCommandEvent &event) {
-  m_worksheet->CloseAutoCompletePopup();
+  GetWorksheet()->CloseAutoCompletePopup();
 
   int id = event.GetId();
 
@@ -10870,17 +10872,17 @@ void wxMaxima::ShowPane(wxCommandEvent &event) {
 
     if ((id == EventIDs::menu_pane_structure) &&
         (IsPaneDisplayed(id)))
-      m_worksheet->UpdateTableOfContents();
+      GetWorksheet()->UpdateTableOfContents();
   }
 }
 
 void wxMaxima::OnChar(wxKeyEvent &event) {
-  m_worksheet->OnChar(event);
+  GetWorksheet()->OnChar(event);
   event.Skip();
 }
 
 void wxMaxima::OnKeyDown(wxKeyEvent &event) {
-  m_worksheet->OnKeyDown(event);
+  GetWorksheet()->OnKeyDown(event);
   event.Skip();
 }
 
@@ -10891,7 +10893,7 @@ void wxMaxima::NetworkDClick(wxCommandEvent &WXUNUSED(event)) {
 }
 
 void wxMaxima::MaximaDClick(wxCommandEvent &WXUNUSED(event)) {
-  m_worksheet->ScrollToCaret();
+  GetWorksheet()->ScrollToCaret();
 }
 
 void wxMaxima::StatusMsgDClick(wxCommandEvent &WXUNUSED(event)) {
@@ -10901,28 +10903,28 @@ void wxMaxima::StatusMsgDClick(wxCommandEvent &WXUNUSED(event)) {
 }
 
 void wxMaxima::HistoryDClick(wxCommandEvent &event) {
-  m_worksheet->CloseAutoCompletePopup();
-  m_worksheet->OpenHCaret(event.GetString(), GC_TYPE_CODE);
-  CallAfter([this]{m_worksheet->SetFocus();});
+  GetWorksheet()->CloseAutoCompletePopup();
+  GetWorksheet()->OpenHCaret(event.GetString(), GC_TYPE_CODE);
+  CallAfter([this]{GetWorksheet()->SetFocus();});
 }
 
 void wxMaxima::TableOfContentsSelection(wxListEvent &event) {
   GroupCell *selection =
-    m_worksheet->m_tableOfContents->GetCell(event.GetIndex())->GetGroup();
+    GetWorksheet()->m_tableOfContents->GetCell(event.GetIndex())->GetGroup();
 
   // We only update the table of contents when there is time => no guarantee
   // that the cell that was clicked at actually still is part of the tree.
-  if ((m_worksheet->GetTree()) &&
-      (m_worksheet->GetTree()->Contains(selection))) {
-    m_worksheet->SetHCaret(selection);
-    m_worksheet->ScrollToCaret();
-    CallAfter([this]{m_worksheet->SetFocus();});
+  if ((GetWorksheet()->GetTree()) &&
+      (GetWorksheet()->GetTree()->Contains(selection))) {
+    GetWorksheet()->SetHCaret(selection);
+    GetWorksheet()->ScrollToCaret();
+    CallAfter([this]{GetWorksheet()->SetFocus();});
   }
 }
 
 void wxMaxima::OnFollow(wxCommandEvent &WXUNUSED(event)) {
-  m_worksheet->CloseAutoCompletePopup();
-  m_worksheet->OnFollow();
+  GetWorksheet()->CloseAutoCompletePopup();
+  GetWorksheet()->OnFollow();
 }
 
 wxMaxima::VersionNumber::VersionNumber(const wxString &version)
@@ -11043,7 +11045,7 @@ void wxMaxima::CheckForUpdates(bool reportUpToDate) {
 
 int wxMaxima::SaveDocumentP() {
   wxString file, ext;
-  if (m_worksheet->m_currentFile.IsEmpty()) {
+  if (GetWorksheet()->m_currentFile.IsEmpty()) {
     // Check if we want to save modified untitled documents on exit
     if (!m_configuration.SaveUntitled())
       return wxID_NO;
@@ -11061,7 +11063,7 @@ int wxMaxima::SaveDocumentP() {
 #else
   file = _("unsaved");
 #endif
-  wxFileName::SplitPath(m_worksheet->m_currentFile, NULL, NULL, &file, &ext);
+  wxFileName::SplitPath(GetWorksheet()->m_currentFile, NULL, NULL, &file, &ext);
   file += wxS(".") + ext;
   LoggingMessageDialog dialog(
                               this,
@@ -11084,31 +11086,31 @@ void wxMaxima::OnFocus(wxFocusEvent &event) {
   event.Skip();
 }
 void wxMaxima::PassKeyboardFocus() {
-  if (m_worksheet) {
+  if (GetWorksheet()) {
     if (m_configuration.LastActiveTextCtrl()) {
       wxLogMessage(_("Forwarding the keyboard focus to a text control"));
       m_configuration.LastActiveTextCtrl()->SetFocus();
     } else {
       wxLogMessage(_("Forwarding the keyboard focus to the worksheet"));
-      CallAfter([this]{m_worksheet->SetFocus();});
+      CallAfter([this]{GetWorksheet()->SetFocus();});
     }
   }
 }
 
 void wxMaxima::OnMinimize(wxIconizeEvent &event) {
-  m_worksheet->WindowActive(!event.IsIconized());
+  GetWorksheet()->WindowActive(!event.IsIconized());
   if (!event.IsIconized())
-    CallAfter([this]{m_worksheet->SetFocus();});
+    CallAfter([this]{GetWorksheet()->SetFocus();});
   event.Skip();
 }
 
 void wxMaxima::ChangeCellStyle(wxCommandEvent &WXUNUSED(event)) {
-  if ((m_worksheet == NULL) || (m_worksheet->m_mainToolBar == NULL))
+  if ((GetWorksheet() == NULL) || (GetWorksheet()->m_mainToolBar == NULL))
     return;
-  m_worksheet->CloseAutoCompletePopup();
+  GetWorksheet()->CloseAutoCompletePopup();
 
-  if (m_worksheet->GetActiveCell()) {
-    GroupCell *group = m_worksheet->GetActiveCell()->GetGroup();
+  if (GetWorksheet()->GetActiveCell()) {
+    GroupCell *group = GetWorksheet()->GetActiveCell()->GetGroup();
     switch (group->GetGroupType()) {
     case GC_TYPE_CODE:
     case GC_TYPE_TEXT:
@@ -11118,16 +11120,16 @@ void wxMaxima::ChangeCellStyle(wxCommandEvent &WXUNUSED(event)) {
     case GC_TYPE_SUBSUBSECTION:
     case GC_TYPE_HEADING5:
     case GC_TYPE_HEADING6:
-      m_worksheet->SetCellStyle(group,
-                                m_worksheet->m_mainToolBar->GetCellType());
+      GetWorksheet()->SetCellStyle(group,
+                                GetWorksheet()->m_mainToolBar->GetCellType());
       break;
     default:
       break;
     }
-    m_worksheet->NumberSections();
+    GetWorksheet()->NumberSections();
   } else
-    m_worksheet->m_mainToolBar->SetDefaultCellStyle();
-  CallAfter([this]{m_worksheet->SetFocus();});
+    GetWorksheet()->m_mainToolBar->SetDefaultCellStyle();
+  CallAfter([this]{GetWorksheet()->SetFocus();});
 }
 
 wxString wxMaxima::EscapeFilenameForShell(wxString name)

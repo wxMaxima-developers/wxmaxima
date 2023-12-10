@@ -151,7 +151,7 @@ public:
 protected:
   Configuration m_configuration;
   //! How many bytes did maxima send us until now?
-  long m_bytesFromMaxima;
+  long m_bytesFromMaxima = 0;
   //! The process id of maxima. Is determined by ReadFirstPrompt.
   long m_pid;
   //! The last name GetTempAutosavefileName() has returned.
@@ -235,6 +235,8 @@ public:
 
   //! Get the list of human-readable sidebarnames and IDs
   const std::unordered_map<int, wxString>  &GetSidebarNames() const {return m_sidebarNames;}
+protected:
+  Worksheet *GetWorksheet() const {return m_worksheet;}
 private:
   //! The names our dockable sidebars are identified with in the config
   std::unordered_map<int, wxString> m_sidebarNames;
@@ -298,7 +300,7 @@ public:
 protected:
   ScrollingGenWizPanel *m_wizard = NULL;
   //! Are we inside a 2d or 3d draw command?
-  long m_drawDimensions_last;
+  long m_drawDimensions_last = -1;
   //! Do we have new text to output in the Status Bar?
   bool m_newStatusText;
   //! The text for the Right half of the Status Bar
@@ -368,16 +370,19 @@ protected:
   bool ToolbarIsShown();
   //! The manager for dynamic screen layouts
   wxAuiManager m_manager;
+private:
+  //! The worksheet itself
+protected:
+  //! The worksheet
+  Worksheet * const m_worksheet = NULL;
+  //! The history pane
+  History * const m_history;
   //! A XmlInspector-like xml monitor
   XmlInspector *m_xmlInspector;
   //! true=force an update of the status bar at the next call of StatusMaximaBusy()
   bool m_forceStatusbarUpdate;
   //! The panel the log and debug messages will appear on
   LogPane *m_logPane;
-  //! The worksheet itself
-  Worksheet *m_worksheet;
-  //! The history pane
-  History *m_history;
   RecentDocuments m_recentDocuments;
   RecentDocuments m_recentPackages;
   wxMenu *m_recentDocumentsMenu;

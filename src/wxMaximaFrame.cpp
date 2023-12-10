@@ -61,10 +61,11 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
 : wxFrame(parent, id, title, pos, size, style),
   m_manager(this, wxAUI_MGR_ALLOW_FLOATING | wxAUI_MGR_ALLOW_ACTIVE_PANE |
             wxAUI_MGR_TRANSPARENT_HINT | wxAUI_MGR_HINT_FADE),
+  m_worksheet(new Worksheet(this, wxID_ANY, &m_configuration)),
+  m_history(new History(this, -1, &m_configuration)),
   m_recentDocuments(wxS("document")),
   m_recentPackages(wxS("packages")) {
-  m_bytesFromMaxima = 0;
-  m_drawDimensions_last = -1;
+  // console
   // Suppress window updates until this window has fully been created.
   // Not redrawing the window whilst constructing it hopefully speeds up
   // everything.
@@ -161,22 +162,12 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
   m_commandsLeftInCurrentCell = 0;
   m_forceStatusbarUpdate = false;
 
-  // Now it is time to construct the window contents.
-
-  // console
-  m_worksheet = new Worksheet(this, wxID_ANY, &m_configuration);
-  //  wxWindowUpdateLocker worksheetBlocker(m_worksheet);
-
-  // We need to create one pane which doesn't do a lot before the log pane
-  // Otherwise the log pane will be displayed in a very strange way
-  // The history pane was chosen randomly
-  m_history = new History(this, -1, &m_configuration);
-
+  // Now it is time to construct more of the window contents.
   // The table of contents
-  m_worksheet->m_tableOfContents = new TableOfContents(
+  GetWorksheet()->m_tableOfContents = new TableOfContents(
                                                        this, -1,
                                                        &m_configuration,
-                                                       m_worksheet->GetTreeAddress());
+                                                       GetWorksheet()->GetTreeAddress());
 
   m_xmlInspector = new XmlInspector(this, -1);
   //  wxWindowUpdateLocker xmlInspectorBlocker(m_xmlInspector);
@@ -213,7 +204,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
 
   m_sidebarNames[EventIDs::menu_pane_console] = wxS("console");
   m_sidebarCaption[EventIDs::menu_pane_console] = _("The worksheet");
-  m_manager.AddPane(m_worksheet,
+  m_manager.AddPane(GetWorksheet(),
                     wxAuiPaneInfo()
                     .Name(m_sidebarNames[EventIDs::menu_pane_console])
                     .Center()
@@ -228,10 +219,10 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
                     .PaneBorder(false)
                     .Row(2));
 
-  m_worksheet->m_mainToolBar = new ToolBar(this);
+  GetWorksheet()->m_mainToolBar = new ToolBar(this);
   m_sidebarNames[EventIDs::menu_pane_toolbar] = wxS("toolbar");
   m_sidebarCaption[EventIDs::menu_pane_toolbar] = _("The main toolbar");
-  m_manager.AddPane(m_worksheet->m_mainToolBar,
+  m_manager.AddPane(GetWorksheet()->m_mainToolBar,
                     wxAuiPaneInfo()
                     .Name(m_sidebarNames[EventIDs::menu_pane_toolbar])
                     .Top()
@@ -255,7 +246,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
 
   m_sidebarNames[EventIDs::menu_pane_structure] = wxS("structure");
   m_sidebarCaption[EventIDs::menu_pane_structure] = _("Table of Contents");
-  m_manager.AddPane(m_worksheet->m_tableOfContents, wxAuiPaneInfo()
+  m_manager.AddPane(GetWorksheet()->m_tableOfContents, wxAuiPaneInfo()
                     .Name(m_sidebarNames[EventIDs::menu_pane_structure])
                     .Right());
 
@@ -275,7 +266,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
 
   m_sidebarNames[EventIDs::menu_pane_greek] = wxS("greek");
   m_sidebarCaption[EventIDs::menu_pane_greek] = _("Greek Letters");
-  wxPanel *greekPane = new GreekPane(this, &m_configuration, m_worksheet);
+  wxPanel *greekPane = new GreekPane(this, &m_configuration, GetWorksheet());
   //  wxWindowUpdateLocker greekBlocker(greekPane);
   m_manager.AddPane(greekPane, wxAuiPaneInfo()
                     .Name(m_sidebarNames[EventIDs::menu_pane_greek])
@@ -284,7 +275,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
   m_sidebarNames[EventIDs::menu_pane_unicode] = wxS("unicode");
   m_sidebarCaption[EventIDs::menu_pane_unicode] = _("Unicode characters");
   wxPanel *unicodePane =
-    new UnicodeSidebar(this, m_worksheet, &m_configuration);
+    new UnicodeSidebar(this, GetWorksheet(), &m_configuration);
   //  wxWindowUpdateLocker unicodeBlocker(unicodePane);
   m_manager.AddPane(unicodePane, wxAuiPaneInfo()
                     .Name(m_sidebarNames[EventIDs::menu_pane_unicode])
@@ -301,16 +292,16 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
 
   m_sidebarNames[EventIDs::menu_pane_variables] = wxS("variables");
   m_sidebarCaption[EventIDs::menu_pane_variables] = _("Variables");
-  m_worksheet->m_variablesPane = new Variablespane(this, wxID_ANY);
+  GetWorksheet()->m_variablesPane = new Variablespane(this, wxID_ANY);
   m_manager.AddPane(
-                    m_worksheet->m_variablesPane,
+                    GetWorksheet()->m_variablesPane,
                     wxAuiPaneInfo()
                     .Name(m_sidebarNames[EventIDs::menu_pane_variables])
                     .Bottom());
 
   m_sidebarNames[EventIDs::menu_pane_symbols] = wxS("symbols");
   m_sidebarCaption[EventIDs::menu_pane_symbols] = _("Mathematical Symbols");
-  m_symbolsPane = new SymbolsPane(this, &m_configuration, m_worksheet);
+  m_symbolsPane = new SymbolsPane(this, &m_configuration, GetWorksheet());
   //  wxWindowUpdateLocker symbolsBlocker(m_symbolsPane);
   m_manager.AddPane(m_symbolsPane,
                     wxAuiPaneInfo()
@@ -328,7 +319,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
   m_manager.AddPane(m_wizard =
                     new ScrollingGenWizPanel(
                                              this, &m_configuration,
-                                             m_worksheet->GetMaximaManual()),
+                                             GetWorksheet()->GetMaximaManual()),
                     wxAuiPaneInfo()
                     .Name(m_sidebarNames[EventIDs::menu_pane_wizard])
                     .Caption(wxS("Example Wizard")));
@@ -352,7 +343,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
   m_sidebarNames[EventIDs::menu_pane_help] = wxS("help");
   m_sidebarCaption[EventIDs::menu_pane_help] = _("Help");
   m_manager.AddPane(m_helpPane = new HelpBrowser(
-                                                 this, &m_configuration, m_worksheet->GetMaximaManual(),
+                                                 this, &m_configuration, GetWorksheet()->GetMaximaManual(),
                                                  wxS("file://") + wxMaximaManualLocation()),
                     wxAuiPaneInfo()
                     .Name(m_sidebarNames[EventIDs::menu_pane_help])
@@ -382,7 +373,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
     m_manager.LoadPerspective(perspective, false);
   }
 
-  m_worksheet->m_mainToolBar->Realize();
+  GetWorksheet()->m_mainToolBar->Realize();
 
   // Loading the perspective rarely fails. But it might - and in this case we want
   // to set the common properties of our sidebars after loading them: This way we
@@ -508,11 +499,11 @@ void wxMaximaFrame::UpdateStatusMaximaBusy() {
         break;
       case StatusBar::MaximaStatus::waiting:
         m_bytesFromMaxima_last = 0;
-        m_worksheet->SetWorkingGroup(NULL);
+        GetWorksheet()->SetWorkingGroup(NULL);
         // If we evaluated a cell that produces no output we still want the
         // cell to be unselected after evaluating it.
-        if (m_worksheet->FollowEvaluation())
-          m_worksheet->ClearSelection();
+        if (GetWorksheet()->FollowEvaluation())
+          GetWorksheet()->ClearSelection();
 
         m_MenuBar->EnableItem(EventIDs::menu_remove_output, true);
         // We don't evaluate any cell right now.
@@ -864,7 +855,7 @@ void wxMaximaFrame::SetupMenu() {
     wxMenuItem *it =
       new wxMenuItem(m_CellMenu, EventIDs::menu_evaluate, _("Evaluate Cell(s)"),
                      _("Evaluate active or selected cell(s)"), wxITEM_NORMAL);
-    it->SetBitmap(m_worksheet->m_mainToolBar->GetEvalBitmap(
+    it->SetBitmap(GetWorksheet()->m_mainToolBar->GetEvalBitmap(
                                                             wxRendererNative::Get().GetCheckBoxSize(this)));
     m_CellMenu->Append(it);
   }
@@ -875,7 +866,7 @@ void wxMaximaFrame::SetupMenu() {
     wxMenuItem *it = new wxMenuItem(
                                     m_CellMenu, EventIDs::menu_evaluate_all, _("Evaluate All Cells\tCtrl+Shift+R"),
                                     _("Evaluate all cells in the document"), wxITEM_NORMAL);
-    it->SetBitmap(m_worksheet->m_mainToolBar->GetEvalAllBitmap(
+    it->SetBitmap(GetWorksheet()->m_mainToolBar->GetEvalAllBitmap(
                                                                wxRendererNative::Get().GetCheckBoxSize(this)));
     m_CellMenu->Append(it);
   }
@@ -885,7 +876,7 @@ void wxMaximaFrame::SetupMenu() {
                                     _("Evaluate Cells Above\tCtrl+Shift+P"),
                                     _("Re-evaluate all cells above the one the cursor is in"),
                                     wxITEM_NORMAL);
-    it->SetBitmap(m_worksheet->m_mainToolBar->GetEvalTillHereBitmap(
+    it->SetBitmap(GetWorksheet()->m_mainToolBar->GetEvalTillHereBitmap(
                                                                     wxRendererNative::Get().GetCheckBoxSize(this)));
     m_CellMenu->Append(it);
   }
@@ -894,7 +885,7 @@ void wxMaximaFrame::SetupMenu() {
                                     m_CellMenu, ToolBar::tb_evaluate_rest, _("Evaluate Cells Below"),
                                     _("Re-evaluate all cells below the one the cursor is in"),
                                     wxITEM_NORMAL);
-    it->SetBitmap(m_worksheet->m_mainToolBar->GetEvalRestBitmap(
+    it->SetBitmap(GetWorksheet()->m_mainToolBar->GetEvalRestBitmap(
                                                                 wxRendererNative::Get().GetCheckBoxSize(this)));
     m_CellMenu->Append(it);
   }
@@ -966,7 +957,7 @@ void wxMaximaFrame::SetupMenu() {
     wxMenuItem *it =
       new wxMenuItem(m_MaximaMenu, EventIDs::menu_interrupt_id, _("&Interrupt\tCtrl+G"),
                      _("Interrupt current computation"), wxITEM_NORMAL);
-    it->SetBitmap(m_worksheet->m_mainToolBar->GetInterruptBitmap(
+    it->SetBitmap(GetWorksheet()->m_mainToolBar->GetInterruptBitmap(
                                                                  wxRendererNative::Get().GetCheckBoxSize(this)));
     m_MaximaMenu->Append(it);
   }
@@ -975,7 +966,7 @@ void wxMaximaFrame::SetupMenu() {
     wxMenuItem *it = new wxMenuItem(m_MaximaMenu, ToolBar::menu_restart_id,
                                     _("&Restart Maxima"), _("Restart Maxima"),
                                     wxITEM_NORMAL);
-    it->SetBitmap(m_worksheet->m_mainToolBar->GetRestartBitmap(
+    it->SetBitmap(GetWorksheet()->m_mainToolBar->GetRestartBitmap(
                                                                wxRendererNative::Get().GetCheckBoxSize(this)));
     m_MaximaMenu->Append(it);
   }
@@ -2025,13 +2016,13 @@ void wxMaximaFrame::UpdateRecentDocuments() {
                               m_recentDocuments.Get());
 
   PopulateRecentDocumentsMenu(m_unsavedDocumentsMenu, EventIDs::menu_unsaved_document_0,
-                              m_worksheet->m_unsavedDocuments.Get());
+                              GetWorksheet()->m_unsavedDocuments.Get());
 
   PopulateRecentPackagesMenu(m_recentPackagesMenu, EventIDs::menu_recent_package_0,
                              m_recentPackages.Get());
 }
 
-void wxMaximaFrame::ReadConfig() { m_worksheet->UpdateConfig(); }
+void wxMaximaFrame::ReadConfig() { GetWorksheet()->UpdateConfig(); }
 
 void wxMaximaFrame::ReReadConfig() {
   // On wxMac re-reading the config isn't necessary as all windows share the
@@ -2072,7 +2063,7 @@ void wxMaximaFrame::RegisterAutoSaveFile() {
   ReReadConfig();
   wxConfigBase *config = wxConfig::Get();
   config->Read("AutoSaveFiles", &autoSaveFiles);
-  m_worksheet->m_unsavedDocuments.AddDocument(m_tempfileName);
+  GetWorksheet()->m_unsavedDocuments.AddDocument(m_tempfileName);
   ReReadConfig();
 }
 
@@ -2081,7 +2072,7 @@ void wxMaximaFrame::RemoveTempAutosavefile() {
     // Don't delete the file if we have opened it and haven't saved it under a
     // different name yet.
     if (wxFileExists(m_tempfileName) &&
-        (m_tempfileName != m_worksheet->m_currentFile)) {
+        (m_tempfileName != GetWorksheet()->m_currentFile)) {
       SuppressErrorDialogs logNull;
       wxRemoveFile(m_tempfileName);
     }

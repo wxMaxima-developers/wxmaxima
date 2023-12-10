@@ -10,6 +10,7 @@
 - RegEx search works again
 - Clicking on the notification now is more likely to focus the worksheet
 - Corrected the cell folding logic (#1853)
+- Now we try to generate a backtrace on crashes (#1802)
 
 # 23.11.0
 

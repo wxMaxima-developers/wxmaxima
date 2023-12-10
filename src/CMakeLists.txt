@@ -135,6 +135,7 @@ set(SOURCE_FILES
     RegexCtrl.cpp
     RegexSearch.cpp
     ResolutionChooser.cpp
+    StackToStdErr.cpp
     StatusBar.cpp
     StringUtils.cpp
     SvgBitmap.cpp
