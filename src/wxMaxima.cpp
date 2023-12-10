@@ -200,6 +200,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
     m_parser(&m_configuration) {
 #if wxUSE_ON_FATAL_EXCEPTION && wxUSE_CRASHREPORT
   wxHandleFatalExceptions();
+  wxLogMessage(_("Will try to generate a stack backtrace, if the program ever crashes"));
 #endif 
   GnuplotCommandName(wxS("gnuplot"));
   if (m_knownXMLTags.empty()) {
