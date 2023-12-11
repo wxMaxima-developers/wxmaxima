@@ -6418,7 +6418,7 @@ void Worksheet::AddDocumentToEvaluationQueue() {
 }
 
 void Worksheet::AddToEvaluationQueue(GroupCell *cell) {
-  if (cell->GetGroupType() == GC_TYPE_CODE) {
+  if ((cell->GetGroupType() == GC_TYPE_CODE) && (!cell->IsHidden())) {
     // Gray out the output of the cell in order to mark it as "not current".
     if (cell->GetEditable()) {
       cell->GetEditable()->ContainsChanges(true);
