@@ -332,6 +332,10 @@ public:
   /*! Get the height of this cell
 
     This value is recalculated by Recalculate()
+
+    \image html CellHeights.svg
+    \image latex CellHeights.svg
+    \image rtf CellHeights.svg
   */
   wxCoord GetHeight() const
     { return m_height; }
@@ -339,7 +343,11 @@ public:
   /*! Get the width of this cell
 
     This value is recalculated by Recalculate()
-  */
+
+    \image html CellHeights.svg
+    \image latex CellHeights.svg
+    \image rtf CellHeights.svg
+*/
   int GetWidth() const
     { return m_width; }
 
@@ -347,6 +355,10 @@ public:
 
     Remember that (for example with double fractions) the center does not have to be in the
     middle of a cell even if this object is --- by definition --- center-aligned.
+
+    \image html CellHeights.svg
+    \image latex CellHeights.svg
+    \image rtf CellHeights.svg
   */
   wxCoord GetCenter() const
     { return m_center; }
@@ -366,6 +378,10 @@ public:
     center-aligned.
 
     This value is recalculated by Recalculate
+
+    \image html CellHeights.svg
+    \image latex CellHeights.svg
+    \image rtf CellHeights.svg
   */
   wxCoord GetDrop() const
     { return m_height - m_center; }
@@ -962,10 +978,23 @@ protected:
 //** 4-byte objects (28 bytes)
 //**
 protected:
-  //! The height of this cell.
+  /*! The height of this cell.
+    
+    \image html CellHeights.svg
+    \image latex CellHeights.svg
+    \image rtf CellHeights.svg
+  */
   wxCoord m_height = -1;
-  //! The width of this cell; is recalculated by RecalculateHeight.
+  /*! The width of this cell; is recalculated by RecalculateHeight.
+
+   */
   wxCoord m_width = -1;
+  /*! The distance between the top and the insertion point of this cell
+
+    \image html CellHeights.svg
+    \image latex CellHeights.svg
+    \image rtf CellHeights.svg
+  */
   wxCoord m_center = -1;
 
 private:
