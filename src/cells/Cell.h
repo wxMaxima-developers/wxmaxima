@@ -334,8 +334,8 @@ public:
     This value is recalculated by Recalculate()
 
     \image html CellHeights.svg
-    \image latex CellHeights.svg
-    \image rtf CellHeights.svg
+    \image latex CellHeights.png
+    \image rtf CellHeights.png
   */
   wxCoord GetHeight() const
     { return m_height; }
@@ -345,8 +345,8 @@ public:
     This value is recalculated by Recalculate()
 
     \image html CellHeights.svg
-    \image latex CellHeights.svg
-    \image rtf CellHeights.svg
+    \image latex CellHeights.png
+    \image rtf CellHeights.png
 */
   int GetWidth() const
     { return m_width; }
@@ -357,8 +357,8 @@ public:
     middle of a cell even if this object is --- by definition --- center-aligned.
 
     \image html CellHeights.svg
-    \image latex CellHeights.svg
-    \image rtf CellHeights.svg
+    \image latex CellHeights.png
+    \image rtf CellHeights.png
   */
   wxCoord GetCenter() const
     { return m_center; }
@@ -380,8 +380,8 @@ public:
     This value is recalculated by Recalculate
 
     \image html CellHeights.svg
-    \image latex CellHeights.svg
-    \image rtf CellHeights.svg
+    \image latex CellHeights.png
+    \image rtf CellHeights.png
   */
   wxCoord GetDrop() const
     { return m_height - m_center; }
@@ -981,8 +981,8 @@ protected:
   /*! The height of this cell.
     
     \image html CellHeights.svg
-    \image latex CellHeights.svg
-    \image rtf CellHeights.svg
+    \image latex CellHeights.png
+    \image rtf CellHeights.png
   */
   wxCoord m_height = -1;
   /*! The width of this cell; is recalculated by RecalculateHeight.
@@ -992,8 +992,8 @@ protected:
   /*! The distance between the top and the insertion point of this cell
 
     \image html CellHeights.svg
-    \image latex CellHeights.svg
-    \image rtf CellHeights.svg
+    \image latex CellHeights.png
+    \image rtf CellHeights.png
   */
   wxCoord m_center = -1;
 
