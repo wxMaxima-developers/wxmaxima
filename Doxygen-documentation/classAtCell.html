@@ -698,16 +698,15 @@ Protected Attributes</h2></td></tr>
 const wxString *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#af15234aeba226b598457e1e3210f0ae0">m_toolTip</a></td></tr>
 <tr class="memdesc:af15234aeba226b598457e1e3210f0ae0"><td class="mdescLeft">&#160;</td><td class="mdescRight">This tooltip is owned by us when m_ownsToolTip is true. Otherwise, it points to a "static" string. <br /></td></tr>
 <tr class="separator:af15234aeba226b598457e1e3210f0ae0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa518e1df02a1e40cad0d2353971768f0"><td class="memItemLeft" align="right" valign="top"><a id="aa518e1df02a1e40cad0d2353971768f0"></a>
-wxCoord&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#aa518e1df02a1e40cad0d2353971768f0">m_height</a> = -1</td></tr>
-<tr class="memdesc:aa518e1df02a1e40cad0d2353971768f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">The height of this cell. <br /></td></tr>
+<tr class="memitem:aa518e1df02a1e40cad0d2353971768f0"><td class="memItemLeft" align="right" valign="top">wxCoord&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#aa518e1df02a1e40cad0d2353971768f0">m_height</a> = -1</td></tr>
+<tr class="memdesc:aa518e1df02a1e40cad0d2353971768f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">The height of this cell.  <a href="classCell.html#aa518e1df02a1e40cad0d2353971768f0">More...</a><br /></td></tr>
 <tr class="separator:aa518e1df02a1e40cad0d2353971768f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abb09f9524b29f0298d97079b4f75d2bc"><td class="memItemLeft" align="right" valign="top"><a id="abb09f9524b29f0298d97079b4f75d2bc"></a>
 wxCoord&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#abb09f9524b29f0298d97079b4f75d2bc">m_width</a> = -1</td></tr>
 <tr class="memdesc:abb09f9524b29f0298d97079b4f75d2bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">The width of this cell; is recalculated by RecalculateHeight. <br /></td></tr>
 <tr class="separator:abb09f9524b29f0298d97079b4f75d2bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab5e75ef074e2fc6474aa10bdfee6ca71"><td class="memItemLeft" align="right" valign="top"><a id="ab5e75ef074e2fc6474aa10bdfee6ca71"></a>
-wxCoord&#160;</td><td class="memItemRight" valign="bottom"><b>m_center</b> = -1</td></tr>
+<tr class="memitem:ab5e75ef074e2fc6474aa10bdfee6ca71"><td class="memItemLeft" align="right" valign="top">wxCoord&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#ab5e75ef074e2fc6474aa10bdfee6ca71">m_center</a> = -1</td></tr>
+<tr class="memdesc:ab5e75ef074e2fc6474aa10bdfee6ca71"><td class="mdescLeft">&#160;</td><td class="mdescRight">The distance between the top and the insertion point of this cell.  <a href="classCell.html#ab5e75ef074e2fc6474aa10bdfee6ca71">More...</a><br /></td></tr>
 <tr class="separator:ab5e75ef074e2fc6474aa10bdfee6ca71"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acffb390e78cd8ca25cf3bc2c051618b0"><td class="memItemLeft" align="right" valign="top"><a id="acffb390e78cd8ca25cf3bc2c051618b0"></a>
 <a class="el" href="classAFontSize.html">AFontSize</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#acffb390e78cd8ca25cf3bc2c051618b0">m_fontSize_Scaled</a> = {}</td></tr>
@@ -1324,8 +1323,11 @@ wxCoord&#160;</td><td class="memItemRight" valign="bottom"><b>m_center</b> = -1<
 </div><div class="memdoc">
 
 <p>Get the distance between the top and the center of this cell. </p>
-<p>Remember that (for example with double fractions) the center does not have to be in the middle of a cell even if this object is &mdash; by definition &mdash; center-aligned. </p>
-
+<p>Remember that (for example with double fractions) the center does not have to be in the middle of a cell even if this object is &mdash; by definition &mdash; center-aligned.</p>
+<div class="image">
+<object type="image/svg+xml" data="CellHeights.svg" style="pointer-events: none;"></object>
+</div>
+   
 </div>
 </div>
 <a id="a3b385281e2cb77ffa5dfd902802ac692"></a>
@@ -1467,8 +1469,11 @@ wxCoord&#160;</td><td class="memItemRight" valign="bottom"><b>m_center</b> = -1<
 
 <p>Get the distance between the center and the bottom of this cell. </p>
 <p>Remember that (for example with double fractions) the center does not have to be in the middle of an output cell even if the current object is &mdash; by definition &mdash; center-aligned.</p>
-<p>This value is recalculated by Recalculate </p>
-
+<p>This value is recalculated by Recalculate</p>
+<div class="image">
+<object type="image/svg+xml" data="CellHeights.svg" style="pointer-events: none;"></object>
+</div>
+   
 </div>
 </div>
 <a id="a42e273c4824ddce9e7e1845abb0d886f"></a>
@@ -1495,8 +1500,11 @@ wxCoord&#160;</td><td class="memItemRight" valign="bottom"><b>m_center</b> = -1<
 </div><div class="memdoc">
 
 <p>Get the height of this cell. </p>
-<p>This value is recalculated by <a class="el" href="classAtCell.html#a0a23dcecb8e2524d5c6904561d1c01c1" title="Recalculate the size of the cell and the difference between top and center.">Recalculate()</a> </p>
-
+<p>This value is recalculated by <a class="el" href="classAtCell.html#a0a23dcecb8e2524d5c6904561d1c01c1" title="Recalculate the size of the cell and the difference between top and center.">Recalculate()</a></p>
+<div class="image">
+<object type="image/svg+xml" data="CellHeights.svg" style="pointer-events: none;"></object>
+</div>
+   
 </div>
 </div>
 <a id="a351fb091b88d97bf44c95505b0198bfd"></a>
@@ -1740,8 +1748,11 @@ wxCoord&#160;</td><td class="memItemRight" valign="bottom"><b>m_center</b> = -1<
 </div><div class="memdoc">
 
 <p>Get the width of this cell. </p>
-<p>This value is recalculated by <a class="el" href="classAtCell.html#a0a23dcecb8e2524d5c6904561d1c01c1" title="Recalculate the size of the cell and the difference between top and center.">Recalculate()</a> </p>
-
+<p>This value is recalculated by <a class="el" href="classAtCell.html#a0a23dcecb8e2524d5c6904561d1c01c1" title="Recalculate the size of the cell and the difference between top and center.">Recalculate()</a></p>
+<div class="image">
+<object type="image/svg+xml" data="CellHeights.svg" style="pointer-events: none;"></object>
+</div>
+   
 </div>
 </div>
 <a id="ab174dde90689c2e00feba8ee568048a8"></a>
@@ -2413,6 +2424,33 @@ template&lt;typename T , typename Del , typename std::enable_if&lt; std::is_base
 </div>
 </div>
 <h2 class="groupheader">Field Documentation</h2>
+<a id="ab5e75ef074e2fc6474aa10bdfee6ca71"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab5e75ef074e2fc6474aa10bdfee6ca71">&#9670;&nbsp;</a></span>m_center</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">wxCoord Cell::m_center = -1</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The distance between the top and the insertion point of this cell. </p>
+<div class="image">
+<object type="image/svg+xml" data="CellHeights.svg" style="pointer-events: none;"></object>
+</div>
+   
+</div>
+</div>
 <a id="a82735e7fb2d5fd1dbefd3a37ae758b32"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a82735e7fb2d5fd1dbefd3a37ae758b32">&#9670;&nbsp;</a></span>m_currentPoint</h2>
 
@@ -2444,6 +2482,33 @@ template&lt;typename T , typename Del , typename std::enable_if&lt; std::is_base
 <li>for Cells when they are drawn. </li>
 </ul>
 
+</div>
+</div>
+<a id="aa518e1df02a1e40cad0d2353971768f0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa518e1df02a1e40cad0d2353971768f0">&#9670;&nbsp;</a></span>m_height</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">wxCoord Cell::m_height = -1</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The height of this cell. </p>
+<div class="image">
+<object type="image/svg+xml" data="CellHeights.svg" style="pointer-events: none;"></object>
+</div>
+   
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
