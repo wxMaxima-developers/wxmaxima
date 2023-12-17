@@ -36,7 +36,7 @@
 #include "TextCell.h"
 #include <memory>
 #include <utility>
-#include "intSign.h"
+#include "intSign_svg.h"
 #if wxCHECK_VERSION(3, 1, 6)
 #include <wx/bmpbndl.h>
 #endif
