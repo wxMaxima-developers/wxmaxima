@@ -194,7 +194,7 @@ void SumCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
 
     SetPen(antialiassingDC, 1.5);
     if (m_sumStyle == SM_SUM) {
-      // FIXME: The sum sign look ok now (for wxWidgets >= 3.1.6) but the position/size is WRONG!!
+      // FIXME: The sum sign look ok now (for wxWidgets >= 3.1.6) but the position/size can be improved!!
 #if wxCHECK_VERSION(3, 1, 6)
     wxString signWithCorrectDefaultColor = m_svgSumSign;
     signWithCorrectDefaultColor.Replace("\"currentColor\"",
@@ -220,6 +220,20 @@ void SumCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
 #endif
     } else {
       // DRAW PRODUCT SIGN
+      // FIXME: The product sign look ok now (for wxWidgets >= 3.1.6) but the position/size can be improved!!
+#if wxCHECK_VERSION(3, 1, 6)
+    wxString signWithCorrectDefaultColor = m_svgProdSign;
+    signWithCorrectDefaultColor.Replace("\"currentColor\"",
+                                        "\"#" + wxColor2HtmlString(GetForegroundColor()) + "\"");
+      wxBitmapBundle prodbitmap = wxBitmapBundle::FromSVG(signWithCorrectDefaultColor.c_str(),
+                                                         wxSize(2*m_signWidth, 2*m_signHeight));
+    // Make the bitmap hi-res, if the OS supports and needs that
+    const wxWindow *worksheet = m_configuration->GetWorkSheet();
+    if(worksheet)
+      prodbitmap.GetPreferredBitmapSizeFor(worksheet);
+    wxBitmap bmp(prodbitmap.GetBitmap(wxSize(2*m_signWidth, 2*m_signHeight)));
+    antialiassingDC->DrawBitmap(bmp, base.x, over.y+m_signHeight/3, true);
+#else
       // Vertical lines
       antialiassingDC->DrawLine(point.x + m_signWCenter + m_signWidth / 6,
                                 point.y + m_signHeight / 2,
@@ -234,6 +248,7 @@ void SumCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
                                 point.y - m_signHeight / 2,
                                 point.x + m_signWCenter + m_signWidth / 2,
                                 point.y - m_signHeight / 2);
+#endif
     }
     base.x += (2 * m_signWCenter + Scale_Px(4));
     DisplayedBase()->DrawList(base, dc, antialiassingDC);
@@ -447,3 +462,4 @@ void SumCell::SetNextToDraw(Cell *next) {
 }
 
 const wxString SumCell::m_svgSumSign(reinterpret_cast<const char*>(SUMSIGN));
+const wxString SumCell::m_svgProdSign(reinterpret_cast<const char*>(PRODSIGN));
