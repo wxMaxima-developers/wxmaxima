@@ -92,12 +92,12 @@ jobs:
              ls -lh build-wxm/src
              ls -lh build-wxm
       - name: Upload the dmg
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: wxMaxima_ia64.dmg
           path: wxMaxima.dmg
       - name: Upload the dmg checksum
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: wxMaxima_ia64.dmg.sha512
           path: wxMaxima.dmg.sha512
