@@ -35,7 +35,7 @@
 #include "sumSign_svg.h"
 #include "prodSign_svg.h"
 
-#if wxCHECK_VERSION(3, 1, 6)
+#if wxCHECK_VERSION(3, 1, 6) && !defined(WXM_WITHOUT_SVG_SIGNS)
 #include <wx/bmpbndl.h>
 #endif
 
@@ -195,7 +195,7 @@ void SumCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
     SetPen(antialiassingDC, 1.5);
     if (m_sumStyle == SM_SUM) {
       // FIXME: The sum sign look ok now (for wxWidgets >= 3.1.6) but the position/size can be improved!!
-#if wxCHECK_VERSION(3, 1, 6)
+#if wxCHECK_VERSION(3, 1, 6) && !defined(WXM_WITHOUT_SVG_SIGNS)
     wxString signWithCorrectDefaultColor = m_svgSumSign;
     signWithCorrectDefaultColor.Replace("\"currentColor\"",
                                         "\"#" + wxColor2HtmlString(GetForegroundColor()) + "\"");
@@ -221,7 +221,7 @@ void SumCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
     } else {
       // DRAW PRODUCT SIGN
       // FIXME: The product sign look ok now (for wxWidgets >= 3.1.6) but the position/size can be improved!!
-#if wxCHECK_VERSION(3, 1, 6)
+#if wxCHECK_VERSION(3, 1, 6) && !defined(WXM_WITHOUT_SVG_SIGNS)
     wxString signWithCorrectDefaultColor = m_svgProdSign;
     signWithCorrectDefaultColor.Replace("\"currentColor\"",
                                         "\"#" + wxColor2HtmlString(GetForegroundColor()) + "\"");

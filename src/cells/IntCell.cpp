@@ -37,7 +37,7 @@
 #include <memory>
 #include <utility>
 #include "intSign_svg.h"
-#if wxCHECK_VERSION(3, 1, 6)
+#if wxCHECK_VERSION(3, 1, 6) && !defined(WXM_WITHOUT_SVG_SIGNS)
 #include <wx/bmpbndl.h>
 #endif
 
@@ -150,7 +150,7 @@ void IntCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
     wxPoint base(point), under(point), over(point), var(point), sign(point);
 
     SetPen(antialiassingDC, 1.5);
-#if wxCHECK_VERSION(3, 1, 6)
+#if wxCHECK_VERSION(3, 1, 6) && !defined(WXM_WITHOUT_SVG_SIGNS)
     sign.y -= .5 * m_signHeight;
     wxString signWithCorrectDefaultColor = m_svgIntegralSign;
     signWithCorrectDefaultColor.Replace("\"currentColor\"",

@@ -37,6 +37,12 @@ option(WXM_UNIT_TESTS
     "Compile unit tests and enable the tests." OFF)
 option(WXM_INTERPROCEDURAL_OPTIMIZATION
     "Enable interprocedural optimization (IPO/LTO)." OFF)
+option(WXM_WITHOUT_SVG_SIGNS
+    "Do not use SVG signs for integral/sum/product (when using wxWidgets >= 3.1.6)." OFF)
+
+if(WXM_WITHOUT_SVG_SIGNS)
+  add_definitions(-DWXM_WITHOUT_SVG_SIGNS)
+endif()
 
 if(DEFINED MACOSX_VERSION_MIN)
     set(CMAKE_OSX_DEPLOYMENT_TARGET ${MACOSX_VERSION_MIN} CACHE STRING FORCE)
