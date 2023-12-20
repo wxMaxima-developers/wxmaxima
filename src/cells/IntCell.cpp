@@ -146,7 +146,6 @@ void IntCell::Recalculate(AFontSize fontsize) {
     m_width = m_signWidth + m_base->GetFullWidth() +
       wxMax(m_upperLimit->GetFullWidth(), m_lowerLimit->GetFullWidth()) +
       m_var->GetFullWidth() + Scale_Px(4);
-    // cppcheck-suppress duplicateBranch
     if (HasLimits()) {
       /* The height of our whole integral needs to be
            - either high enough for the integral's contents, or
