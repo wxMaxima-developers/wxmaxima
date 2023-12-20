@@ -172,11 +172,8 @@ void IntCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
     wxPoint base(point), lowerLimit(point), upperLimit(point), var(point);
 
     SetPen(antialiassingDC, 1.5);
-    bool useSvgSign = UseSvgIntSign();
-    #ifdef WXM_WITHOUT_SVG_SIGNS
-    useSvgSign = false;
-    #endif    
-    if(useSvgSign)
+
+    if(UseSvgIntSign())
       DrawSvgSign(antialiassingDC, point);
     else
       DrawHanddrawnSign(antialiassingDC, point);
