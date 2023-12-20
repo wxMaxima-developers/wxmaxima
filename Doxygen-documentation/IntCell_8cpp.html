@@ -65,8 +65,6 @@ $(function() {
 </div>
 </div><!-- top -->
 <div class="header">
-  <div class="summary">
-<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">IntCell.cpp File Reference</div>  </div>
 </div><!--header-->
@@ -75,20 +73,18 @@ $(function() {
 <p>This file defines the class <a class="el" href="classIntCell.html" title="This class represents an integral.">IntCell</a>.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;<a class="el" href="IntCell_8h_source.html">IntCell.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="CellImpl_8h_source.html">CellImpl.h</a>&quot;</code><br />
+<code>#include &quot;TextCell.h&quot;</code><br />
+<code>#include &lt;memory&gt;</code><br />
+<code>#include &lt;utility&gt;</code><br />
+<code>#include &quot;intSign_svg.h&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for IntCell.cpp:</div>
 <div class="dyncontent">
 <div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="IntCell_8cpp__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div>
-</div><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
-Functions</h2></td></tr>
-<tr class="memitem:a6d4e90604a57311b5d5c4f35dbf79294"><td class="memItemLeft" align="right" valign="top"><a id="a6d4e90604a57311b5d5c4f35dbf79294"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>DEFINE_CELL</b> (<a class="el" href="classIntCell.html">IntCell</a>) void <a class="el" href="classIntCell.html">IntCell</a></td></tr>
-<tr class="separator:a6d4e90604a57311b5d5c4f35dbf79294"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table>
-<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+</div><a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This file defines the class <a class="el" href="classIntCell.html" title="This class represents an integral.">IntCell</a>. </p>
 <p><a class="el" href="classIntCell.html" title="This class represents an integral.">IntCell</a> is the <a class="el" href="classCell.html" title="The base class all cell types the worksheet can consist of are derived from.">Cell</a> type that represents maxima's <code>integrate()</code> command. If the wxWidgets version is at least 3.1.6, then the integral sign is rendered as SVG, otherwise as as spline. </p>
 </div></div><!-- contents -->
