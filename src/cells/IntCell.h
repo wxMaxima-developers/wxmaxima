@@ -41,8 +41,8 @@ class IntCell final : public Cell
 {
 public:
   IntCell(GroupCell *group, Configuration *config,
-          std::unique_ptr<Cell> &&base, std::unique_ptr<Cell> &&under,
-          std::unique_ptr<Cell> &&over, std::unique_ptr<Cell> &&var);
+          std::unique_ptr<Cell> &&base, std::unique_ptr<Cell> &&lowerLimit,
+          std::unique_ptr<Cell> &&upperLimit, std::unique_ptr<Cell> &&var);
   IntCell(GroupCell *group, Configuration *config,
           std::unique_ptr<Cell> &&base, std::unique_ptr<Cell> &&var);
   IntCell(GroupCell *group, const IntCell &cell);
@@ -76,7 +76,18 @@ public:
   bool BreakUp() override;
   void SetNextToDraw(Cell *next) override;
 
+  //! Does this integral have limits?
+  bool HasLimits() const {return (m_intStyle == INT_DEF) &&
+      (m_upperLimit != NULL) && (m_lowerLimit != NULL); }
+  
 private:
+  void DrawSvgSign(wxDC *dc, wxPoint pos);
+  void DrawHanddrawnSign(wxDC *dc, wxPoint pos);
+  /*! Do we want to use a SVG integral sign?
+
+    Is constexpr, which means: This is evaluated at compile time.
+   */
+  constexpr bool UseSvgIntSign() const {return wxCHECK_VERSION(3, 1, 6) == true;}
   void MakeBreakUpCells();
   const static wxString m_svgIntegralSign;
   // The pointers below point to inner cells and must be kept contiguous.
@@ -91,23 +102,23 @@ private:
   std::unique_ptr<Cell> m_var;
   std::unique_ptr<Cell> m_comma2;
   //! The lower limit of the integral
-  std::unique_ptr<Cell> m_under;
+  std::unique_ptr<Cell> m_lowerLimit;
   std::unique_ptr<Cell> m_comma3;
   //! The upper limit of the integral
-  std::unique_ptr<Cell> m_over;
+  std::unique_ptr<Cell> m_upperLimit;
   //! A text cell reading ")"
   std::unique_ptr<Cell> m_close;
   // The pointers above point to inner cells and must be kept contiguous.
 
   //! The height of the integral sign
-  int m_signHeight = 35;
+  wxCoord m_signHeight = 35;
   //! The width of the integral sign
-  int m_signWidth = 18;
+  wxCoord m_signWidth = 18;
   //! How far is the integral sign's center from the top of this cell?
-  int m_signTop = m_signHeight / 2;
+  wxCoord m_signTop = m_signHeight / 2;
 #if defined __WXMSW__
-  int m_charHeight = 12;
-  int m_charWidth = 12;
+  wxCoord m_charHeight = 12;
+  wxCoord m_charWidth = 12;
 #endif
 
   //! Is this integral definitive?

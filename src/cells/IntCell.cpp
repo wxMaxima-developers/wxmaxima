@@ -50,10 +50,10 @@ static constexpr AFontSize INTEGRAL_FONT_SIZE{12.0f};
 
 
 IntCell::IntCell(GroupCell *group, Configuration *config,
-                 std::unique_ptr<Cell> &&base, std::unique_ptr<Cell> &&under,
-                 std::unique_ptr<Cell> &&over, std::unique_ptr<Cell> &&var)
+                 std::unique_ptr<Cell> &&base, std::unique_ptr<Cell> &&lowerLimit,
+                 std::unique_ptr<Cell> &&upperLimit, std::unique_ptr<Cell> &&var)
   : Cell(group, config), m_base(std::move(base)), m_var(std::move(var)),
-    m_under(std::move(under)), m_over(std::move(over)) {
+    m_lowerLimit(std::move(lowerLimit)), m_upperLimit(std::move(upperLimit)) {
   InitBitFields();
   SetStyle(TS_VARIABLE);
 }
@@ -72,8 +72,8 @@ IntCell::IntCell(GroupCell *group, Configuration *config,
 // cppcheck-suppress uninitMemberVar symbolName=IntCell::m_charWidth
 IntCell::IntCell(GroupCell *group, const IntCell &cell)
   : IntCell(group, cell.m_configuration, CopyList(group, cell.m_base.get()),
-            CopyList(group, cell.m_under.get()),
-            CopyList(group, cell.m_over.get()),
+            CopyList(group, cell.m_lowerLimit.get()),
+            CopyList(group, cell.m_upperLimit.get()),
             CopyList(group, cell.m_var.get())) {
   CopyCommonData(cell);
   m_intStyle = cell.m_intStyle;
@@ -94,113 +94,105 @@ void IntCell::MakeBreakUpCells() {
 void IntCell::Recalculate(AFontSize fontsize) {
   wxASSERT(fontsize.IsValid());
 
-  m_signHeight = Scale_Px(40.0);
-  if (m_signHeight < 6)
-    m_signHeight = 6;
-  m_signWidth = m_signHeight * 19.879 / 51.781;
-
   m_base->RecalculateList(fontsize);
   m_var->RecalculateList(fontsize);
   if (IsBrokenIntoLines()) {
+    // Cell is being displayed in its linear form. That means: All of its components
+    // are printed in the current font size and the 2D object this cell can print
+    // isn't displayed at all.
     m_open->RecalculateList(fontsize);
     m_comma1->RecalculateList(fontsize);
     m_comma2->RecalculateList(fontsize);
-    m_under->RecalculateList(fontsize);
+    m_lowerLimit->RecalculateList(fontsize);
     m_comma3->RecalculateList(fontsize);
-    m_over->RecalculateList(fontsize);
+    m_upperLimit->RecalculateList(fontsize);
     m_close->RecalculateList(fontsize);
-  } else {
-    m_under->RecalculateList({MC_MIN_SIZE, fontsize - 5});
-    m_over->RecalculateList({MC_MIN_SIZE, fontsize - 5});
-    if ((m_intStyle == INT_DEF) && (wxCHECK_VERSION(3, 1, 6) == false)) {
-      m_signHeight = Scale_Px(35) + m_over->GetHeightList() + m_under->GetHeightList();
-    }
-  }
-
-  if (IsBrokenIntoLines()) {
     m_center = 0;
     m_height = 0;
     m_width = 0;
   } else {
+    // Make the font used for the limits a bit smaller than the font used for the
+    // contents  
+    m_lowerLimit->RecalculateList({MC_MIN_SIZE, fontsize - 5});
+    m_upperLimit->RecalculateList({MC_MIN_SIZE, fontsize - 5});
+    if (UseSvgIntSign())
+      {
+        // The integral sign is displayed as an SVG graphics. As line thickness scales
+        // with the sign we need to make it a constant height.
+        m_signHeight = Scale_Px(40.0);
+        if (m_signHeight < 6)
+          m_signHeight = 6;
+        // The sign width in this case is defined by the sign height and the sign's aspect
+        // ratio
+        m_signWidth = m_signHeight * 19.879 / 51.781;
+      }
+    else
+      {
+        // The integral sign is hand-drawn by wxWidgets and can therefore adapt
+        // to it's content's height
+        m_signWidth = Scale_Px(14);
+        if (HasLimits())
+          {
+            m_signHeight = wxMax(Scale_Px(35) + m_upperLimit->GetHeightList() +
+                                 m_lowerLimit->GetHeightList(),
+                                 m_base->GetHeightList());
+          }
+        else
+          {
+            m_signHeight = Scale_Px(35) + m_base->GetHeightList();
+          }
+          
+      }
     m_width = m_signWidth + m_base->GetFullWidth() +
-      wxMax(m_over->GetFullWidth(), m_under->GetFullWidth()) +
+      wxMax(m_upperLimit->GetFullWidth(), m_lowerLimit->GetFullWidth()) +
       m_var->GetFullWidth() + Scale_Px(4);
     // cppcheck-suppress duplicateBranch
-    if (m_intStyle == INT_DEF) {
+    if (HasLimits()) {
       /* The height of our whole integral needs to be
            - either high enough for the integral's contents, or
-           - enough for the "over" and "under" plus a MC_LINE_SKIP between them, or
+           - enough for the "upperLimit" and "lowerLimit" plus a MC_LINE_SKIP between them, or
            - enough for the integral sign.
       */
       m_center = wxMax(wxMax(m_signHeight / 2,
-                             m_base->GetCenterList()), m_over->GetMaxDrop() + MC_LINE_SKIP / 2);
+                             m_base->GetCenterList()), m_upperLimit->GetMaxDrop() + MC_LINE_SKIP / 2);
       m_height = m_center + wxMax(wxMax(m_signHeight / 2,
-                                        m_base->GetMaxDrop()), m_over->GetMaxDrop()
-                                  + MC_LINE_SKIP + m_under->GetMaxDrop());
+                                        m_base->GetMaxDrop()), m_upperLimit->GetMaxDrop()
+                                  + MC_LINE_SKIP + m_lowerLimit->GetMaxDrop());
     } else {
       m_center = wxMax(m_signHeight / 2, m_base->GetCenterList());
       m_height = m_center + wxMax(m_signHeight / 2, m_base->GetMaxDrop());
     }
   }
+
 }
 
 void IntCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
   Cell::Draw(point, dc, antialiassingDC);
   if (DrawThisCell(point)) {
-    wxPoint base(point), under(point), over(point), var(point), sign(point);
+    wxPoint base(point), lowerLimit(point), upperLimit(point), var(point);
 
     SetPen(antialiassingDC, 1.5);
-#if wxCHECK_VERSION(3, 1, 6) && !defined(WXM_WITHOUT_SVG_SIGNS)
-    sign.y -= .5 * m_signHeight;
-    wxString signWithCorrectDefaultColor = m_svgIntegralSign;
-    signWithCorrectDefaultColor.Replace("\"currentColor\"",
-                                        "\"#" + wxColor2HtmlString(GetForegroundColor()) + "\"");
-    wxBitmapBundle integralbitmap = wxBitmapBundle::FromSVG(signWithCorrectDefaultColor.c_str(),
-                                                            wxSize(m_signWidth, m_signHeight));
-    // Make the bitmap hi-res, if the OS supports and needs that
-    const wxWindow *worksheet = m_configuration->GetWorkSheet();
-    if(worksheet)
-      integralbitmap.GetPreferredBitmapSizeFor(worksheet);
-    wxBitmap bmp(integralbitmap.GetBitmap(wxSize(m_signWidth, m_signHeight)));
-    antialiassingDC->DrawBitmap(bmp, sign.x, sign.y, true);
-#else
-    // top decoration
-    int m_signWCenter = m_signWidth / 2;
-    wxPoint points[7] = {
-      {sign.x + m_signWCenter + 2 * (m_signWidth / 4),
-       sign.y - (m_signHeight - Scale_Px(1)) / 2 + m_signWidth / 4},
-      {sign.x + m_signWCenter + m_signWidth / 4,
-       sign.y - (m_signHeight - Scale_Px(1)) / 2},
-      {sign.x + m_signWCenter, sign.y - (m_signHeight - Scale_Px(1)) / 2 +
-       2 * (m_signWidth / 4) + Scale_Px(.35)},
+    bool useSvgSign = UseSvgIntSign();
+    #ifdef WXM_WITHOUT_SVG_SIGNS
+    useSvgSign = false;
+    #endif    
+    if(useSvgSign)
+      DrawSvgSign(antialiassingDC, point);
+    else
+      DrawHanddrawnSign(antialiassingDC, point);
 
-      // The line
-      {sign.x + m_signWCenter + Scale_Px(.5), sign.y},
+    if (HasLimits()) {
+      lowerLimit.x += m_signWidth;
+      lowerLimit.y = point.y + m_signHeight / 2 - m_lowerLimit->GetMaxDrop();
+      m_lowerLimit->DrawList(lowerLimit, dc, antialiassingDC);
 
-      // Bottom Decoration
-      {sign.x + m_signWCenter, sign.y + (m_signHeight - Scale_Px(1)) / 2 -
-       2 * (m_signWidth / 4) + Scale_Px(.35)},
-      {sign.x + m_signWCenter - m_signWidth / 4,
-       sign.y + (m_signHeight - Scale_Px(1)) / 2},
-      {sign.x + m_signWCenter - 2 * (m_signWidth / 4),
-       sign.y + (m_signHeight - Scale_Px(1)) / 2 - m_signWidth / 4}};
+      upperLimit.x += m_signWidth;
 
-    antialiassingDC->DrawSpline(7, points);
-    // line
-#endif
-
-    if (m_intStyle == INT_DEF) {
-      under.x += m_signWidth;
-      under.y = point.y + m_signHeight / 2 - m_under->GetMaxDrop();
-      m_under->DrawList(under, dc, antialiassingDC);
-
-      over.x += m_signWidth;
-
-      over.y = point.y - m_signHeight / 2 + m_over->GetHeightList() - m_over->GetCenterList();
-      m_over->DrawList(over, dc, antialiassingDC);
+      upperLimit.y = point.y - m_signHeight / 2 + m_upperLimit->GetHeightList() - m_upperLimit->GetCenterList();
+      m_upperLimit->DrawList(upperLimit, dc, antialiassingDC);
 
       base.x += m_signWidth +
-        wxMax(m_over->GetFullWidth(), m_under->GetFullWidth());
+        wxMax(m_upperLimit->GetFullWidth(), m_lowerLimit->GetFullWidth());
     }
     else
       base.x += m_signWidth;
@@ -210,6 +202,52 @@ void IntCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
     var.x = base.x + m_base->GetFullWidth();
     m_var->DrawList(var, dc, antialiassingDC);
   }
+}
+
+void IntCell::DrawSvgSign(wxDC *dc, wxPoint pos)
+{
+  // wxBitmapBundle supports svg since wxWidgets 3.1.6
+  wxASSERT(wxCHECK_VERSION(3, 1, 6));
+#if wxCHECK_VERSION(3, 1, 6)
+  pos.y -= .5 * m_signHeight;
+  wxString signWithCorrectDefaultColor = m_svgIntegralSign;
+  signWithCorrectDefaultColor.Replace("\"currentColor\"",
+                                      "\"#" + wxColor2HtmlString(GetForegroundColor()) + "\"");
+  wxBitmapBundle integralbitmap = wxBitmapBundle::FromSVG(signWithCorrectDefaultColor.c_str(),
+                                                          wxSize(m_signWidth, m_signHeight));
+  // Make the bitmap hi-res, if the OS supports and needs that
+  const wxWindow *worksheet = m_configuration->GetWorkSheet();
+  if(worksheet)
+    integralbitmap.GetPreferredBitmapSizeFor(worksheet);
+  wxBitmap bmp(integralbitmap.GetBitmap(wxSize(m_signWidth, m_signHeight)));
+  dc->DrawBitmap(bmp, pos.x, pos.y, true);
+#endif
+}
+
+void IntCell::DrawHanddrawnSign(wxDC *dc, wxPoint pos)
+{
+  // top decoration
+  int signCenter = m_signWidth / 2;
+  wxPoint points[7] = {
+    {pos.x + signCenter + 2 * (m_signWidth / 4),
+     pos.y - (m_signHeight - Scale_Px(1)) / 2 + m_signWidth / 4},
+    {pos.x + signCenter + m_signWidth / 4,
+     pos.y - (m_signHeight - Scale_Px(1)) / 2},
+    {pos.x + signCenter, pos.y - (m_signHeight - Scale_Px(1)) / 2 +
+     2 * (m_signWidth / 4) + Scale_Px(.35)},
+    
+    // The line
+    {pos.x + signCenter + Scale_Px(.5), pos.y},
+    
+    // Bottom Decoration
+    {pos.x + signCenter, pos.y + (m_signHeight - Scale_Px(1)) / 2 -
+     2 * (m_signWidth / 4) + Scale_Px(.35)},
+    {pos.x + signCenter - m_signWidth / 4,
+     pos.y + (m_signHeight - Scale_Px(1)) / 2},
+    {pos.x + signCenter - 2 * (m_signWidth / 4),
+     pos.y + (m_signHeight - Scale_Px(1)) / 2 - m_signWidth / 4}};
+  
+  dc->DrawSpline(7, points);
 }
 
 wxString IntCell::ToString() const {
@@ -224,11 +262,11 @@ wxString IntCell::ToString() const {
     var = tmp->ListToString();
   }
 
-  wxString to = m_over->ListToString();
-  wxString from = m_under->ListToString();
+  wxString to = m_upperLimit->ListToString();
+  wxString from = m_lowerLimit->ListToString();
 
   s += wxS(",") + var;
-  if (m_intStyle == INT_DEF)
+  if (HasLimits())
     s += wxS(",") + from + wxS(",") + to;
 
   s += wxS(")");
@@ -246,11 +284,11 @@ wxString IntCell::ToMatlab() const {
   if (tmp != NULL)
     var = tmp->ListToMatlab();
 
-  wxString to = m_over->ListToMatlab();
-  wxString from = m_under->ListToMatlab();
+  wxString to = m_upperLimit->ListToMatlab();
+  wxString from = m_lowerLimit->ListToMatlab();
 
   s += wxS(",") + var;
-  if (m_intStyle == INT_DEF)
+  if (HasLimits())
     s += wxS(",") + from + wxS(",") + to;
 
   s += wxS(")");
@@ -260,10 +298,10 @@ wxString IntCell::ToMatlab() const {
 wxString IntCell::ToTeX() const {
   wxString s = wxS("\\int");
 
-  wxString to = m_over->ListToTeX();
-  wxString from = m_under->ListToTeX();
+  wxString to = m_upperLimit->ListToTeX();
+  wxString from = m_lowerLimit->ListToTeX();
 
-  if (m_intStyle == INT_DEF)
+  if (HasLimits())
     s += wxS("_{") + from + wxS("}^{") + to + wxS("}");
   else
     s += wxS(" ");
@@ -284,12 +322,12 @@ wxString IntCell::ToMathML() const {
     var = m_var->ListToMathML();
 
   wxString from;
-  if (m_under)
-    from = m_under->ListToMathML();
+  if (m_lowerLimit)
+    from = m_lowerLimit->ListToMathML();
 
   wxString to;
-  if (m_over)
-    to = m_over->ListToMathML();
+  if (m_upperLimit)
+    to = m_upperLimit->ListToMathML();
 
   wxString retval;
   if (from.IsEmpty() && to.IsEmpty())
@@ -315,12 +353,12 @@ wxString IntCell::ToOMML() const {
     var = m_var->ListToOMML();
 
   wxString from;
-  if (m_under)
-    from = m_under->ListToOMML();
+  if (m_lowerLimit)
+    from = m_lowerLimit->ListToOMML();
 
   wxString to;
-  if (m_over)
-    to = m_over->ListToOMML();
+  if (m_upperLimit)
+    to = m_upperLimit->ListToOMML();
 
   wxString retval;
 
@@ -336,13 +374,13 @@ wxString IntCell::ToOMML() const {
 
 wxString IntCell::ToXML() const {
   wxString from;
-  if (m_under != NULL)
-    from = m_under->ListToXML();
+  if (m_lowerLimit != NULL)
+    from = m_lowerLimit->ListToXML();
   from = wxS("<r>") + from + wxS("</r>");
 
   wxString to;
-  if (m_over != NULL)
-    to = m_over->ListToXML();
+  if (m_upperLimit != NULL)
+    to = m_upperLimit->ListToXML();
   to = wxS("<r>") + to + wxS("</r>");
 
   wxString base;
@@ -359,7 +397,7 @@ wxString IntCell::ToXML() const {
   if (HasHardLineBreak())
     flags += wxS(" breakline=\"true\"");
 
-  if (m_intStyle != INT_DEF) {
+  if (HasLimits()) {
     flags += wxS(" def=\"false\">");
     return wxS("<in") + flags + wxS(">") + base + var + wxS("</in>");
   } else
@@ -382,14 +420,14 @@ bool IntCell::BreakUp() {
     m_comma1->last()->SetNextToDraw(m_var->GetNext());
   else
     m_comma1->last()->SetNextToDraw(m_var);
-  if (m_intStyle != INT_DEF)
+  if (HasLimits())
     m_var->last()->SetNextToDraw(m_close);
   else {
     m_var->last()->SetNextToDraw(m_comma2);
-    m_comma2->last()->SetNextToDraw(m_under);
-    m_under->last()->SetNextToDraw(m_comma3);
-    m_comma3->last()->SetNextToDraw(m_over);
-    m_over->last()->SetNextToDraw(m_close);
+    m_comma2->last()->SetNextToDraw(m_lowerLimit);
+    m_lowerLimit->last()->SetNextToDraw(m_comma3);
+    m_comma3->last()->SetNextToDraw(m_upperLimit);
+    m_upperLimit->last()->SetNextToDraw(m_close);
   }
   ResetCellListSizes();
   m_height = 0;
