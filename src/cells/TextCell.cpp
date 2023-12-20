@@ -143,8 +143,7 @@ void TextCell::SetStyle(TextStyle style) {
     m_displayedText = wxS("\u0393");
   if ((m_text == wxS("psi")) && (GetTextStyle() == TS_FUNCTION))
     m_displayedText = wxS("\u03A8");
-  if ((style == TS_LABEL) || (style == TS_USERLABEL) ||
-      (style == TS_MAIN_PROMPT) || (style == TS_OTHER_PROMPT))
+  if ((style == TS_LABEL) || (style == TS_USERLABEL) || (style == TS_MAIN_PROMPT))
     ForceBreakLine();
   ResetSize();
 }
