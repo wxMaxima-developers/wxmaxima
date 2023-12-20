@@ -98,9 +98,9 @@ Public Types</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ab87650401a64138bd2a532cb75e5036e"><td class="memItemLeft" align="right" valign="top"><a id="ab87650401a64138bd2a532cb75e5036e"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>IntCell</b> (<a class="el" href="classGroupCell.html">GroupCell</a> *group, <a class="el" href="classConfiguration.html">Configuration</a> *config, std::unique_ptr&lt; <a class="el" href="classCell.html">Cell</a> &gt; &amp;&amp;base, std::unique_ptr&lt; <a class="el" href="classCell.html">Cell</a> &gt; &amp;&amp;under, std::unique_ptr&lt; <a class="el" href="classCell.html">Cell</a> &gt; &amp;&amp;over, std::unique_ptr&lt; <a class="el" href="classCell.html">Cell</a> &gt; &amp;&amp;var)</td></tr>
-<tr class="separator:ab87650401a64138bd2a532cb75e5036e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a31f3b0ffece4415ddd084e21890b25a8"><td class="memItemLeft" align="right" valign="top"><a id="a31f3b0ffece4415ddd084e21890b25a8"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>IntCell</b> (<a class="el" href="classGroupCell.html">GroupCell</a> *group, <a class="el" href="classConfiguration.html">Configuration</a> *config, std::unique_ptr&lt; <a class="el" href="classCell.html">Cell</a> &gt; &amp;&amp;base, std::unique_ptr&lt; <a class="el" href="classCell.html">Cell</a> &gt; &amp;&amp;lowerLimit, std::unique_ptr&lt; <a class="el" href="classCell.html">Cell</a> &gt; &amp;&amp;upperLimit, std::unique_ptr&lt; <a class="el" href="classCell.html">Cell</a> &gt; &amp;&amp;var)</td></tr>
+<tr class="separator:a31f3b0ffece4415ddd084e21890b25a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa2201f88b96f0a076409678e3a1e6306"><td class="memItemLeft" align="right" valign="top"><a id="aa2201f88b96f0a076409678e3a1e6306"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>IntCell</b> (<a class="el" href="classGroupCell.html">GroupCell</a> *group, <a class="el" href="classConfiguration.html">Configuration</a> *config, std::unique_ptr&lt; <a class="el" href="classCell.html">Cell</a> &gt; &amp;&amp;base, std::unique_ptr&lt; <a class="el" href="classCell.html">Cell</a> &gt; &amp;&amp;var)</td></tr>
 <tr class="separator:aa2201f88b96f0a076409678e3a1e6306"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -161,6 +161,10 @@ wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 <tr class="memitem:a078abe7d3cffa23217d1be00cee84820"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classIntCell.html#a078abe7d3cffa23217d1be00cee84820">SetNextToDraw</a> (<a class="el" href="classCell.html">Cell</a> *next) override</td></tr>
 <tr class="memdesc:a078abe7d3cffa23217d1be00cee84820"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tells this cell which one should be the next cell to be drawn.  <a href="classIntCell.html#a078abe7d3cffa23217d1be00cee84820">More...</a><br /></td></tr>
 <tr class="separator:a078abe7d3cffa23217d1be00cee84820"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a81b62da30cb1695615455ba2ba7642f1"><td class="memItemLeft" align="right" valign="top"><a id="a81b62da30cb1695615455ba2ba7642f1"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classIntCell.html#a81b62da30cb1695615455ba2ba7642f1">HasLimits</a> () const</td></tr>
+<tr class="memdesc:a81b62da30cb1695615455ba2ba7642f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Does this integral have limits? <br /></td></tr>
+<tr class="separator:a81b62da30cb1695615455ba2ba7642f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a47609f0f35aa58b174a6d137f7e082b6"><td class="memItemLeft" align="right" valign="top">wxCoord&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a47609f0f35aa58b174a6d137f7e082b6">Scale_Px</a> (double px) const</td></tr>
 <tr class="memdesc:a47609f0f35aa58b174a6d137f7e082b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scale font sizes and line widths according to the zoom factor.  <a href="classCell.html#a47609f0f35aa58b174a6d137f7e082b6">More...</a><br /></td></tr>
 <tr class="separator:a47609f0f35aa58b174a6d137f7e082b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
