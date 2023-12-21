@@ -90,7 +90,7 @@ private:
 #ifdef WXM_WITHOUT_SVG_SIGNS
     return false;
 #else
-    return wxCHECK_VERSION(3, 1, 6) == true;
+    return true;
 #endif    
   }
   void MakeBreakUpCells();
