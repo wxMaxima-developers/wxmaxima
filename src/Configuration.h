@@ -660,10 +660,10 @@ public:
   bool InvertBackground() const {return m_invertBackground;}
   void InvertBackground(bool invert){ m_invertBackground = invert; }
 
-  long UndoLimit(){return std::max(m_undoLimit, 0);}
+  long UndoLimit(){return std::max(m_undoLimit, static_cast<long>(0));}
   void UndoLimit(long limit){ m_undoLimit = limit; }
 
-  long RecentItems(){return std::max(m_recentItems, 0);}
+  long RecentItems(){return std::max(m_recentItems, static_cast<long>(0));}
   void RecentItems(long items){ m_recentItems = items; }
 
   //! Do we want to show maxima's automatic labels (%o1, %t1, %i1,...)?
