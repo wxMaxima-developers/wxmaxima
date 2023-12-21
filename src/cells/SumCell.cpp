@@ -193,24 +193,8 @@ void SumCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
     if (m_sumStyle == SM_SUM) {
       // FIXME: The sum sign look ok now (for wxWidgets >= 3.1.6) but the position/size can be improved!!
       if(UseSvgIntSign()) {
-        wxString signWithCorrectDefaultColor = m_svgSumSign;
-        signWithCorrectDefaultColor.Replace("\"currentColor\"",
-                                            "\"#" + wxColor2HtmlString(GetForegroundColor()) + "\"");
-#if wxCHECK_VERSION(3, 1, 6)
-        wxBitmapBundle sumbitmap = wxBitmapBundle::FromSVG(signWithCorrectDefaultColor.c_str(),
-                                                           wxSize(m_signWidth, m_signHeight));
-        // Make the bitmap hi-res, if the OS supports and needs that
-        const wxWindow *worksheet = m_configuration->GetWorkSheet();
-        if(worksheet)
-            sumbitmap.GetPreferredBitmapSizeFor(worksheet);
-        wxBitmap bmp(sumbitmap.GetBitmap(wxSize(m_signWidth, m_signHeight)));
-#else
-        SvgBitmap bmp(m_configuration->GetWorkSheet(),
-                      signWithCorrectDefaultColor,
-                      wxSize(m_signWidth, m_signHeight));
-        
-#endif
-        antialiassingDC->DrawBitmap(bmp, base.x, over.y+m_signHeight/3, true);
+        antialiassingDC->DrawBitmap(BitmapFromSVG(m_svgSumSign, wxSize(m_signWidth, m_signHeight)),
+                                    base.x, over.y+m_signHeight/3, true);
       } else {
         // DRAW SUM SIGN
         //  Upper part
@@ -226,24 +210,8 @@ void SumCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
       // DRAW PRODUCT SIGN
       // FIXME: The product sign look ok now (for wxWidgets >= 3.1.6) but the position/size can be improved!!
       if(UseSvgIntSign()) {
-        wxString signWithCorrectDefaultColor = m_svgProdSign;
-        signWithCorrectDefaultColor.Replace("\"currentColor\"",
-                                            "\"#" + wxColor2HtmlString(GetForegroundColor()) + "\"");
-        // Make the bitmap hi-res, if the OS supports and needs that
-        const wxWindow *worksheet = m_configuration->GetWorkSheet();
-#if wxCHECK_VERSION(3, 1, 6)
-        wxBitmapBundle prodbitmap = wxBitmapBundle::FromSVG(signWithCorrectDefaultColor.c_str(),
-                                                            wxSize(2*m_signWidth, 2*m_signHeight));
-        if(worksheet)
-          prodbitmap.GetPreferredBitmapSizeFor(worksheet);
-        wxBitmap bmp(prodbitmap.GetBitmap(wxSize(2*m_signWidth, 2*m_signHeight)));
-#else
-    SvgBitmap bmp(m_configuration->GetWorkSheet(),
-                        signWithCorrectDefaultColor,
-                  wxSize(m_signWidth, m_signHeight));
-    
-#endif
-    antialiassingDC->DrawBitmap(bmp, base.x, over.y+m_signHeight/3, true);
+        antialiassingDC->DrawBitmap(BitmapFromSVG(m_svProdSign, wxSize(m_signWidth, m_signHeight)),
+                                    base.x, over.y+m_signHeight/3, true);
       } else {
         // Vertical lines
         antialiassingDC->DrawLine(point.x + m_signWCenter + m_signWidth / 6,

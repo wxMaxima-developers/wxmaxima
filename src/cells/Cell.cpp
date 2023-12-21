@@ -127,6 +127,26 @@ void Cell::SetType(CellType type) {
     GetGroup()->ResetSize();
 }
 
+wxBitmap Cell::BitmapFromSVG(wxString svgData, wxSize size)
+{
+  svgData.Replace("\"currentColor\"",
+                  "\"#" + wxColor2HtmlString(GetForegroundColor()) + "\"");
+#if wxCHECK_VERSION(3, 1, 6)
+  wxBitmapBundle sumbitmap = wxBitmapBundle::FromSVG(svgData.c_str(),
+                                                     size);
+  // Make the bitmap hi-res, if the OS supports and needs that
+  const wxWindow *worksheet = m_configuration->GetWorkSheet();
+  if(worksheet)
+    sumbitmap.GetPreferredBitmapSizeFor(worksheet);
+  wxBitmap bmp(sumbitmap.GetBitmap(size));
+#else
+  SvgBitmap bmp(m_configuration->GetWorkSheet(),
+                svgData,
+                size);
+#endif
+  return bmp;
+}
+
 bool Cell::FirstLineOnlyEditor()
 {
   wxASSERT(GetGroup()->GetType() == MC_TYPE_GROUP);

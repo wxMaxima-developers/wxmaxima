@@ -204,25 +204,8 @@ void IntCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
 void IntCell::DrawSvgSign(wxDC *dc, wxPoint pos)
 {
   pos.y -= .5 * m_signHeight;
-  wxString signWithCorrectDefaultColor = m_svgIntegralSign;
-  signWithCorrectDefaultColor.Replace("\"currentColor\"",
-                                      "\"#" + wxColor2HtmlString(GetForegroundColor()) + "\"");
-
-  // wxBitmapBundle supports svg since wxWidgets 3.1.6
-#if wxCHECK_VERSION(3, 1, 6)
-  wxBitmapBundle integralbitmap = wxBitmapBundle::FromSVG(signWithCorrectDefaultColor.c_str(),
-                                                          wxSize(m_signWidth, m_signHeight));
-  // Make the bitmap hi-res, if the OS supports and needs that
-  const wxWindow *worksheet = m_configuration->GetWorkSheet();
-  if(worksheet)
-    integralbitmap.GetPreferredBitmapSizeFor(worksheet);
-  wxBitmap bmp(integralbitmap.GetBitmap(wxSize(m_signWidth, m_signHeight)));
-#else
-  SvgBitmap bmp(m_configuration->GetWorkSheet(),
-                signWithCorrectDefaultColor,
-                wxSize(m_signWidth, m_signHeight));
-#endif
-  dc->DrawBitmap(bmp, pos.x, pos.y, true);
+  dc->DrawBitmap(BitmapFromSVG(m_svgIntegralSign, wxSize(m_signWidth, m_signHeight)),
+                 base.x, over.y+m_signHeight/3, true);
 }
 
 void IntCell::DrawHanddrawnSign(wxDC *dc, wxPoint pos)

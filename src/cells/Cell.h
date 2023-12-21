@@ -248,6 +248,9 @@ protected:
   //! Break up the internal cells of this cell, and mark it as broken up.
   void BreakUpAndMark();
 
+protected:
+  //! Renders a bitmap from svgData at the requested size.
+  wxBitmap BitmapFromSVG(wxString svgData, wxSize size);
 public:
   /*! Is a part of this cell inside a certain rectangle?
 
