@@ -27,8 +27,6 @@
 
   IntCell is the Cell type that represents maxima's <code>integrate()</code>
   command.
-  If the wxWidgets version is at least 3.1.6, then the integral sign is rendered as SVG,
-  otherwise as as spline.
 */
 
 #include "IntCell.h"
