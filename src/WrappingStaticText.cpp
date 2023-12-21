@@ -50,6 +50,7 @@ void WrappingStaticText::SetLabel(wxString const &value) {
 
 void WrappingStaticText::OnSize(wxSizeEvent &event) {
   m_textCtrl->SetLabel(m_label);
-  m_textCtrl->Wrap(std::max(event.GetSize().GetWidth(), 50 * GetContentScaleFactor()));
+  m_textCtrl->Wrap(std::max(event.GetSize().GetWidth(),
+                            static_cast<wxCoord>(50 * GetContentScaleFactor())));
   event.Skip();
 }
