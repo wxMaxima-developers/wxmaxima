@@ -33,6 +33,7 @@
 #include "CellImpl.h"
 #include "TextCell.h"
 #include <memory>
+#include <algorithm>
 #include <utility>
 #include "intSign_svg.h"
 
@@ -128,9 +129,9 @@ void IntCell::Recalculate(AFontSize fontsize) {
         m_signWidth = Scale_Px(14);
         if (HasLimits())
           {
-            m_signHeight = wxMax(Scale_Px(35) + m_upperLimit->GetHeightList() +
-                                 m_lowerLimit->GetHeightList(),
-                                 m_base->GetHeightList());
+            m_signHeight = std::max(Scale_Px(35) + m_upperLimit->GetHeightList() +
+                                    m_lowerLimit->GetHeightList(),
+                                    m_base->GetHeightList());
           }
         else
           {
@@ -139,7 +140,7 @@ void IntCell::Recalculate(AFontSize fontsize) {
           
       }
     m_width = m_signWidth + m_base->GetFullWidth() +
-      wxMax(m_upperLimit->GetFullWidth(), m_lowerLimit->GetFullWidth()) +
+      std::max(m_upperLimit->GetFullWidth(), m_lowerLimit->GetFullWidth()) +
       m_var->GetFullWidth() + Scale_Px(4);
     if (HasLimits()) {
       /* The height of our whole integral needs to be
@@ -147,14 +148,14 @@ void IntCell::Recalculate(AFontSize fontsize) {
            - enough for the "upperLimit" and "lowerLimit" plus a MC_LINE_SKIP between them, or
            - enough for the integral sign.
       */
-      m_center = wxMax(wxMax(m_signHeight / 2,
+      m_center = std::max(std::max(m_signHeight / 2,
                              m_base->GetCenterList()), m_upperLimit->GetMaxDrop() + MC_LINE_SKIP / 2);
-      m_height = m_center + wxMax(wxMax(m_signHeight / 2,
+      m_height = m_center + std::max(std::max(m_signHeight / 2,
                                         m_base->GetMaxDrop()), m_upperLimit->GetMaxDrop()
                                   + MC_LINE_SKIP + m_lowerLimit->GetMaxDrop());
     } else {
-      m_center = wxMax(m_signHeight / 2, m_base->GetCenterList());
-      m_height = m_center + wxMax(m_signHeight / 2, m_base->GetMaxDrop());
+      m_center = std::max(m_signHeight / 2, m_base->GetCenterList());
+      m_height = m_center + std::max(m_signHeight / 2, m_base->GetMaxDrop());
     }
   }
 
@@ -164,13 +165,19 @@ void IntCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
   Cell::Draw(point, dc, antialiassingDC);
   if (DrawThisCell(point)) {
     wxPoint base(point), lowerLimit(point), upperLimit(point), var(point);
+    base.x += m_signWidth;
+    base.x += std::max(m_upperLimit->GetFullWidth(), m_lowerLimit->GetFullWidth());
 
     SetPen(antialiassingDC, 1.5);
 
     if(UseSvgSign())
-      DrawSvgSign(antialiassingDC, point);
+      {
+        DrawSvgSign(antialiassingDC, point);
+      }
     else
-      DrawHanddrawnSign(antialiassingDC, point);
+      {
+        DrawHanddrawnSign(antialiassingDC, point);
+      }
 
     if (HasLimits()) {
       lowerLimit.x += m_signWidth;
@@ -182,11 +189,8 @@ void IntCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
       upperLimit.y = point.y - m_signHeight / 2 + m_upperLimit->GetHeightList() - m_upperLimit->GetCenterList();
       m_upperLimit->DrawList(upperLimit, dc, antialiassingDC);
 
-      base.x += m_signWidth +
-        wxMax(m_upperLimit->GetFullWidth(), m_lowerLimit->GetFullWidth());
+      base.x += std::max(m_upperLimit->GetFullWidth(), m_lowerLimit->GetFullWidth());
     }
-    else
-      base.x += m_signWidth;
 
     m_base->DrawList(base, dc, antialiassingDC);
 
