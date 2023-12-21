@@ -32,6 +32,7 @@
 #include "UnicodeSidebar.h"
 #include <wx/settings.h>
 #include <wx/sizer.h>
+
 Buttonwrapsizer::Buttonwrapsizer(int orient) : wxWrapSizer(orient) {}
 
 void Buttonwrapsizer::RecalcSizes() {
@@ -42,8 +43,8 @@ void Buttonwrapsizer::RecalcSizes() {
     wxSizerItem *current = node->GetData();
     wxWindow *item = current->GetWindow();
     item->SendSizeEvent();
-    width = wxMax(width, item->GetBestSize().x);
-    height = wxMax(height, item->GetBestSize().y);
+    width = std::max(width, item->GetBestSize().x);
+    height = std::max(height, item->GetBestSize().y);
   }
 
   if (width < 50)

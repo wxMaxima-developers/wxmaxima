@@ -1373,7 +1373,7 @@ wxColor Configuration::MakeColorDifferFromBackground(wxColor color) {
   if (color == DefaultBackgroundColor()) {
     return InvertColour(color);
   } else {
-    int maxOldCol = wxMax(wxMax(color.Red(), color.Green()), color.Blue());
+    int maxOldCol = std::max(std::max(color.Red(), color.Green()), color.Blue());
     return wxColour(newBrightness * color.Red() / maxOldCol,
                     newBrightness * color.Green() / maxOldCol,
                     newBrightness * color.Blue() / maxOldCol);

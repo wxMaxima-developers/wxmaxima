@@ -60,6 +60,7 @@
 #include <wx/wfstream.h>
 #include "sampleWorksheet.h"
 #include <utility>
+#include <algorithm>
 
 #define CONFIG_ICON_SCALE (1.0)
 
@@ -79,7 +80,7 @@ int ConfigDialogue::GetImageSize() {
   if (ppi < 10)
     ppi = 72;
 
-  int targetSize = wxMax(ppi, 75) * CONFIG_ICON_SCALE;
+  int targetSize = std::max(ppi, 75) * CONFIG_ICON_SCALE;
 
   int sizeA = 128 << 4;
   while (sizeA * 3 / 2 > targetSize && sizeA >= 32) {

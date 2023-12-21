@@ -27,6 +27,7 @@
 #include "wxImagePanel.h"
 #include <wx/display.h>
 #include <wx/mstream.h>
+#include <algorithm>
 
 wxImagePanel::wxImagePanel(wxWindow *parent, unsigned char *data, std::size_t len)
   : wxPanel(parent) {
@@ -43,7 +44,7 @@ wxImagePanel::wxImagePanel(wxWindow *parent, unsigned char *data, std::size_t le
 #else
   ppi = wxGetDisplayPPI().x;
 #endif
-  ppi = wxMax(ppi, 75);
+  ppi = std::max(ppi, 75);
 
   SetMinSize(
              wxSize(ppi * 4, m_image.GetHeight() * ppi * 4 / m_image.GetWidth()));

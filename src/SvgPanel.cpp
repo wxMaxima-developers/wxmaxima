@@ -25,6 +25,7 @@
 */
 
 #include "SvgPanel.h"
+#include <algorithm>
 
 SvgPanel::SvgPanel(wxWindow *parent, unsigned char *data, std::size_t len)
   : wxPanel(parent), m_bitmap(this, data, len) {
@@ -40,7 +41,7 @@ SvgPanel::SvgPanel(wxWindow *parent, unsigned char *data, std::size_t len)
 #else
   ppi = wxGetDisplayPPI().x;
 #endif
-  ppi = wxMax(ppi, 75);
+  ppi = std::max(ppi, 75);
 
   SetMinSize(wxSize(ppi * 4, ppi * 4));
 

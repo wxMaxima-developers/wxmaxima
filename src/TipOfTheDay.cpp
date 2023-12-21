@@ -40,6 +40,7 @@
 #include <wx/txtstrm.h>
 #include <wx/wfstream.h>
 #include <wx/zstream.h>
+#include <algorithm>
 
 #define ICON_SCALE (0.35)
 
@@ -332,7 +333,7 @@ wxImage TipOfTheDay::GetImage(unsigned char *data, std::size_t len) {
   if (ppi <= 10)
     ppi = 72;
 
-  int targetSize = wxMax(ppi, 75) * ICON_SCALE;
+  int targetSize = std::max(ppi, 75) * ICON_SCALE;
 
   int sizeA = 128 << 4;
   while (sizeA * 3 / 2 > targetSize && sizeA >= 32) {

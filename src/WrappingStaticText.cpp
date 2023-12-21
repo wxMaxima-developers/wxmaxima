@@ -27,6 +27,7 @@
 #include "WrappingStaticText.h"
 #include <wx/sizer.h>
 #include <wx/wupdlock.h>
+#include <algorithm>
 
 WrappingStaticText::WrappingStaticText(wxWindow *parent, int id, wxString text)
   : wxPanel(parent, -1), m_label(text) {
@@ -49,7 +50,6 @@ void WrappingStaticText::SetLabel(wxString const &value) {
 
 void WrappingStaticText::OnSize(wxSizeEvent &event) {
   m_textCtrl->SetLabel(m_label);
-  m_textCtrl->Wrap(
-                   wxMax(event.GetSize().GetWidth(), 50 * GetContentScaleFactor()));
+  m_textCtrl->Wrap(std::max(event.GetSize().GetWidth(), 50 * GetContentScaleFactor()));
   event.Skip();
 }

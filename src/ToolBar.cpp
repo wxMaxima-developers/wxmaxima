@@ -40,6 +40,7 @@
 #include <wx/txtstrm.h>
 #include <wx/wfstream.h>
 #include <wx/zstream.h>
+#include <algorithm>
 
 #if wxCHECK_VERSION(3, 1, 0)
 #define TOOLBAR_ICON_SCALE (0.25)
@@ -65,9 +66,9 @@ wxSize ToolBar::GetOptimalBitmapSize()
 
 #if defined __WXOSX__
   int targetSize =
-    wxMax(m_ppi.x, 75) * TOOLBAR_ICON_SCALE * GetContentScaleFactor();
+    std::max(m_ppi.x, 75) * TOOLBAR_ICON_SCALE * GetContentScaleFactor();
 #else
-  int targetSize = wxMax(m_ppi.x, 75) * TOOLBAR_ICON_SCALE;
+  int targetSize = std::max(m_ppi.x, 75) * TOOLBAR_ICON_SCALE;
 #endif
   int sizeA = 128 << 4;
   while (sizeA * 3 / 2 > targetSize && sizeA >= 32) {
@@ -284,11 +285,11 @@ void ToolBar::AddTools() {
 
   m_ppi = GetPPI();
 
-  int sliderWidth = wxMax(m_ppi.x, 75) * 200 / 72;
+  int sliderWidth = std::max(m_ppi.x, 75) * 200 / 72;
   int width, height;
   wxDisplaySize(&width, &height);
   if (width < 800)
-    sliderWidth = wxMin(sliderWidth, 100);
+    sliderWidth = std::min(sliderWidth, 100);
   wxDELETE(m_plotSlider);
   m_plotSlider = new wxSlider(this, plot_slider_id, 0, 0, 10, wxDefaultPosition,
                               wxSize(sliderWidth, -1), wxSL_HORIZONTAL);

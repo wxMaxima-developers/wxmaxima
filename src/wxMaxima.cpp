@@ -42,6 +42,7 @@
 #include <utility>
 #include <vector>
 #include <time.h>
+#include <algorithm>
 #include <wx/zipstrm.h>
 #include "ActualValuesStorageWiz.h"
 #include "AnimationCell.h"
@@ -3876,7 +3877,7 @@ void wxMaxima::ReadPrompt(wxString &data) {
           (!GetWorksheet()->GetWorkingGroup()->AutoAnswer()))
         options |= AppendOpt::PromptToolTip;
 
-      if (wxMax(label.Find(m_mathPrefix1), label.Find(m_mathPrefix2)) >= 0)
+      if (std::max(label.Find(m_mathPrefix1), label.Find(m_mathPrefix2)) >= 0)
         DoConsoleAppend(label, MC_TYPE_PROMPT, AppendOpt(options));
       else
         DoRawConsoleAppend(label, MC_TYPE_PROMPT, AppendOpt(options));
@@ -5368,7 +5369,7 @@ wxString wxMaxima::ExtractFirstExpression(const wxString &entry) {
 
   std::size_t index;
   if (semiFound && dollarFound)
-    index = wxMin(semicolon, dollar);
+    index = std::min(semicolon, dollar);
   else if (semiFound && !dollarFound)
     index = semicolon;
   else if (!semiFound && dollarFound)

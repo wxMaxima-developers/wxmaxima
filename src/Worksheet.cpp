@@ -2416,8 +2416,8 @@ void Worksheet::OnMouseMotion(wxMouseEvent &event) {
 
 void Worksheet::SelectGroupCells(wxPoint down, wxPoint up) {
   // Calculate the rectangle that has been selected
-  int ytop = wxMin(down.y, up.y);
-  int ybottom = wxMax(down.y, up.y);
+  int ytop = std::min(down.y, up.y);
+  int ybottom = std::max(down.y, up.y);
   m_cellPointers.m_selectionStart = m_cellPointers.m_selectionEnd = nullptr;
 
   wxRect rect;
@@ -2484,8 +2484,8 @@ void Worksheet::ClickNDrag(wxPoint down, wxPoint up) {
     *selectionEndOld = m_cellPointers.m_selectionEnd;
   wxRect rect;
 
-  int ytop = wxMin(down.y, up.y);
-  int ybottom = wxMax(down.y, up.y);
+  int ytop = std::min(down.y, up.y);
+  int ybottom = std::max(down.y, up.y);
 
   if ((m_cellPointers.m_cellMouseSelectionStartedIn) &&
       (!m_cellPointers.m_cellMouseSelectionStartedIn->GetRect()
@@ -2545,10 +2545,10 @@ void Worksheet::ClickNDrag(wxPoint down, wxPoint up) {
 
     case CLICK_TYPE_OUTPUT_SELECTION:
       ClearSelection();
-      rect.x = wxMin(down.x, up.x);
-      rect.y = wxMin(down.y, up.y);
-      rect.width = wxMax(abs(down.x - up.x), 1);
-      rect.height = wxMax(abs(down.y - up.y), 1);
+      rect.x = std::min(down.x, up.x);
+      rect.y = std::min(down.y, up.y);
+      rect.width = std::max(abs(down.x - up.x), 1);
+      rect.height = std::max(abs(down.y - up.y), 1);
 
       if (m_clickInGC) {
         auto const sel = m_clickInGC->GetCellsInOutputRect(rect, down, up);
@@ -3592,7 +3592,7 @@ void Worksheet::OnCharInActive(wxKeyEvent &event) {
     //   int fontsize = m_configuration->GetDefaultFontSize();
     auto fontsize = m_configuration->GetDefaultFontSize();
 
-    GetActiveCell()->Recalculate(wxMax(fontsize, MC_MIN_SIZE));
+    GetActiveCell()->Recalculate(std::max(fontsize, MC_MIN_SIZE));
 
     if (height != GetActiveCell()->GetHeight() ||
         GetActiveCell()->GetWidth() + GetActiveCell()->GetCurrentPoint().x >=
@@ -4197,7 +4197,7 @@ void Worksheet::GetMaxPoint(int *width, int *height) {
       tmp.GetWidth() +
       m_configuration->Scale_Px(m_configuration->GetIndent() +
                                 m_configuration->GetDefaultFontSize());
-    *width = wxMax(currentWidth, *width);
+    *width = std::max(currentWidth, *width);
   }
   *height = currentHeight;
 }
@@ -4218,7 +4218,7 @@ void Worksheet::AdjustSize() {
     // when window is scrolled all the way down, document occupies top 1/8 of
     // clientHeight
     height += clientHeight - clientHeight / 8;
-    virtualHeight = wxMax(clientHeight + 10,
+    virtualHeight = std::max(clientHeight + 10,
                           height); // ensure we always have VSCROLL active
 
     // Don't set m_scrollUnit too high for big windows on hi-res screens:
@@ -4398,7 +4398,7 @@ void Worksheet::OnTimer(wxTimerEvent &event) {
 void Worksheet::RequestRedraw(wxRect rect) {
   // If a cell has been wider the last time it was drawn we need to clear the screen to the right end of the viewport
   if(rect.GetRight() > m_configuration->GetIndent() + m_configuration->GetCellBracketWidth())
-    rect.SetRight(wxMax(rect.GetRight(), m_configuration->GetVisibleRegion().GetRight()));
+    rect.SetRight(std::max(rect.GetRight(), m_configuration->GetVisibleRegion().GetRight()));
   if (!m_regionToRefresh.Union(rect))
     m_regionToRefresh = wxRegion(rect);
 }
@@ -6590,22 +6590,22 @@ void Worksheet::ScrollToCellIfNeeded() {
     // Scroll upwards if the top of the thing we want to scroll to is less than
     // 1/2 scroll unit away from the top of the page
     if (cellTop - m_scrollUnit < view_y)
-      Scroll(-1, wxMax(cellTop / m_scrollUnit - 1, 0));
+      Scroll(-1, std::max(cellTop / m_scrollUnit - 1, 0));
 
     // Scroll downwards if the top of the thing we want to scroll to is less
     // than 1/2 scroll unit away from the bottom of the page
     if (cellTop + m_scrollUnit > view_y + height)
-      Scroll(-1, wxMax(cellTop / m_scrollUnit - 1, 0));
+      Scroll(-1, std::max(cellTop / m_scrollUnit - 1, 0));
   } else {
     // Scroll downwards if the bottom of the thing we want to scroll to is less
     // than 1/2 scroll unit away from the bottom of the page
     if (cellBottom + m_scrollUnit > view_y + height)
-      Scroll(-1, wxMax(cellBottom / m_scrollUnit - 1, 0));
+      Scroll(-1, std::max(cellBottom / m_scrollUnit - 1, 0));
 
     // Scroll upwards if the bottom of the thing we want to scroll to is less
     // than 1/2 scroll unit away from the top of the page
     if (cellBottom - m_scrollUnit < view_y)
-      Scroll(-1, wxMax(cellBottom / m_scrollUnit - 1, 0));
+      Scroll(-1, std::max(cellBottom / m_scrollUnit - 1, 0));
   }
   RequestRedraw();
 }

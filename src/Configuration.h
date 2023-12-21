@@ -36,6 +36,7 @@
 #include <random>
 #include <list>
 #include <vector>
+#include <algorithm>
 #include <wx/wupdlock.h>
 #include <wx/webview.h>
 #ifdef __WXMSW__
@@ -659,10 +660,10 @@ public:
   bool InvertBackground() const {return m_invertBackground;}
   void InvertBackground(bool invert){ m_invertBackground = invert; }
 
-  long UndoLimit(){return wxMax(m_undoLimit, 0);}
+  long UndoLimit(){return std::max(m_undoLimit, 0);}
   void UndoLimit(long limit){ m_undoLimit = limit; }
 
-  long RecentItems(){return wxMax(m_recentItems, 0);}
+  long RecentItems(){return std::max(m_recentItems, 0);}
   void RecentItems(long items){ m_recentItems = items; }
 
   //! Do we want to show maxima's automatic labels (%o1, %t1, %i1,...)?
