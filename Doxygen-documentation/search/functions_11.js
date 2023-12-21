@@ -136,7 +136,7 @@ var searchData=
   ['striplispcomments_2863',['StripLispComments',['../classwxMaxima.html#ac72153620b0ab64ebcf8b73974723bdf',1,'wxMaxima']]],
   ['styletext_2864',['StyleText',['../classEditorCell.html#a9b62a79bf64588a23b7620fc58d1e39a',1,'EditorCell']]],
   ['styletextcode_2865',['StyleTextCode',['../classEditorCell.html#adfb6811daf871fc6f83c2891c5600b1e',1,'EditorCell']]],
-  ['svgbitmap_2866',['SvgBitmap',['../classSvgBitmap.html#adb66fbb2882a1832e7a4405edc698447',1,'SvgBitmap']]],
+  ['svgbitmap_2866',['SvgBitmap',['../classSvgBitmap.html#ab37b2860baeb8c1e1f0cd60731c9d528',1,'SvgBitmap']]],
   ['svgout_2867',['Svgout',['../classSvgout.html#aaf5a5d7592f4c74f54e62ee86baa1bf8',1,'Svgout']]],
   ['switchcaretdisplay_2868',['SwitchCaretDisplay',['../classEditorCell.html#a6c62ab93a0ca82c1c92d369957e09abb',1,'EditorCell']]]
 ];

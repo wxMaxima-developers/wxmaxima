@@ -210,7 +210,7 @@ var searchData=
   ['sumcell_2eh_1417',['SumCell.h',['../SumCell_8h.html',1,'']]],
   ['sumwiz_1418',['SumWiz',['../classSumWiz.html',1,'']]],
   ['suppresserrordialogs_1419',['SuppressErrorDialogs',['../classSuppressErrorDialogs.html',1,'']]],
-  ['svgbitmap_1420',['SvgBitmap',['../classSvgBitmap.html',1,'SvgBitmap'],['../classSvgBitmap.html#adb66fbb2882a1832e7a4405edc698447',1,'SvgBitmap::SvgBitmap()']]],
+  ['svgbitmap_1420',['SvgBitmap',['../classSvgBitmap.html',1,'SvgBitmap'],['../classSvgBitmap.html#ab37b2860baeb8c1e1f0cd60731c9d528',1,'SvgBitmap::SvgBitmap()']]],
   ['svgbitmap_2eh_1421',['SvgBitmap.h',['../SvgBitmap_8h.html',1,'']]],
   ['svgout_1422',['Svgout',['../classSvgout.html',1,'Svgout'],['../classSvgout.html#aaf5a5d7592f4c74f54e62ee86baa1bf8',1,'Svgout::Svgout()']]],
   ['svgout_2ecpp_1423',['SVGout.cpp',['../SVGout_8cpp.html',1,'']]],
