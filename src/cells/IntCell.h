@@ -80,6 +80,7 @@ public:
       (m_upperLimit != NULL) && (m_lowerLimit != NULL); }
   
 private:
+  wxCoord IntSignLimitYoffset() const { return Scale_Px(8); }
   void DrawSvgSign(wxDC *dc, wxPoint pos);
   void DrawHanddrawnSign(wxDC *dc, wxPoint pos);
   /*! Do we want to use a SVG integral sign?
