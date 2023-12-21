@@ -46,7 +46,7 @@ if (edges && edges.length) {
         </defs>
 
 <script type="text/javascript">
-var viewWidth = 731;
+var viewWidth = 579;
 var viewHeight = 196;
 var sectionId = 'dynsection-1';
 </script>
@@ -54,165 +54,150 @@ var sectionId = 'dynsection-1';
 <svg id="graph" class="graph">
 <g id="viewport">
 <title>src/SvgBitmap.h</title>
-<polygon fill="white" stroke="transparent" points="-4,4 -4,-192 726.5,-192 726.5,4 -4,4"/>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-192 575,-192 575,4 -4,4"/>
 <!-- Node1 -->
 <g id="node1" class="node">
 <title>Node1</title>
 <g id="a_node1"><a xlink:title="This file declares the class Image.">
-<polygon fill="#bfbfbf" stroke="black" points="317.5,-168.5 317.5,-187.5 413.5,-187.5 413.5,-168.5 317.5,-168.5"/>
-<text text-anchor="middle" x="365.5" y="-175.5" font-family="Helvetica,sans-Serif" font-size="10.00">src/SvgBitmap.h</text>
+<polygon fill="#bfbfbf" stroke="black" points="222,-168.5 222,-187.5 318,-187.5 318,-168.5 222,-168.5"/>
+<text text-anchor="middle" x="270" y="-175.5" font-family="Helvetica,sans-Serif" font-size="10.00">src/SvgBitmap.h</text>
 </a>
 </g>
 </g>
 <!-- Node2 -->
 <g id="node2" class="node">
 <title>Node2</title>
-<g id="a_node2"><a xlink:href="IntCell_8cpp.html" target="_top" xlink:title="This file defines the class IntCell.">
-<polygon fill="white" stroke="black" points="0,-112.5 0,-131.5 111,-131.5 111,-112.5 0,-112.5"/>
-<text text-anchor="middle" x="55.5" y="-119.5" font-family="Helvetica,sans-Serif" font-size="10.00">src/cells/IntCell.cpp</text>
+<g id="a_node2"><a xlink:href="Cell_8cpp.html" target="_top" xlink:title="This file defines the class Cell.">
+<polygon fill="white" stroke="black" points="0,-112.5 0,-131.5 98,-131.5 98,-112.5 0,-112.5"/>
+<text text-anchor="middle" x="49" y="-119.5" font-family="Helvetica,sans-Serif" font-size="10.00">src/cells/Cell.cpp</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node2 -->
 <g id="edge1" class="edge">
 <title>Node1&#45;&gt;Node2</title>
-<path fill="none" stroke="midnightblue" d="M307.2,-166.85C248.66,-156.65 159.47,-141.11 104.48,-131.53"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="306.95,-170.35 317.4,-168.62 308.15,-163.46 306.95,-170.35"/>
+<path fill="none" stroke="midnightblue" d="M225.08,-166.02C183.33,-155.82 122.02,-140.84 83.85,-131.52"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="224.44,-169.47 234.98,-168.44 226.1,-162.67 224.44,-169.47"/>
 </g>
 <!-- Node3 -->
 <g id="node3" class="node">
 <title>Node3</title>
-<g id="a_node3"><a xlink:href="SumCell_8cpp.html" target="_top" xlink:title="This file defines the class SumCell.">
-<polygon fill="white" stroke="black" points="129.5,-112.5 129.5,-131.5 249.5,-131.5 249.5,-112.5 129.5,-112.5"/>
-<text text-anchor="middle" x="189.5" y="-119.5" font-family="Helvetica,sans-Serif" font-size="10.00">src/cells/SumCell.cpp</text>
+<g id="a_node3"><a xlink:href="Image_8cpp.html" target="_top" xlink:title="This file declares the class Image.">
+<polygon fill="white" stroke="black" points="116.5,-112.5 116.5,-131.5 201.5,-131.5 201.5,-112.5 116.5,-112.5"/>
+<text text-anchor="middle" x="159" y="-119.5" font-family="Helvetica,sans-Serif" font-size="10.00">src/Image.cpp</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node3 -->
 <g id="edge2" class="edge">
 <title>Node1&#45;&gt;Node3</title>
-<path fill="none" stroke="midnightblue" d="M327.81,-165.44C294.63,-155.26 247.07,-140.66 217.26,-131.52"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="327.03,-168.86 337.61,-168.44 329.08,-162.16 327.03,-168.86"/>
+<path fill="none" stroke="midnightblue" d="M242.99,-163.86C222.41,-153.85 194.66,-140.35 176.79,-131.65"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="241.64,-167.1 252.17,-168.32 244.7,-160.8 241.64,-167.1"/>
 </g>
 <!-- Node4 -->
 <g id="node4" class="node">
 <title>Node4</title>
-<g id="a_node4"><a xlink:href="Image_8cpp.html" target="_top" xlink:title="This file declares the class Image.">
-<polygon fill="white" stroke="black" points="268,-112.5 268,-131.5 353,-131.5 353,-112.5 268,-112.5"/>
-<text text-anchor="middle" x="310.5" y="-119.5" font-family="Helvetica,sans-Serif" font-size="10.00">src/Image.cpp</text>
+<g id="a_node4"><a xlink:href="StatusBar_8cpp.html" target="_top" xlink:title="This file defines the contents of the class StatusBar that represents wxMaxima&#39;s status bar.">
+<polygon fill="white" stroke="black" points="219.5,-112.5 219.5,-131.5 320.5,-131.5 320.5,-112.5 219.5,-112.5"/>
+<text text-anchor="middle" x="270" y="-119.5" font-family="Helvetica,sans-Serif" font-size="10.00">src/StatusBar.cpp</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node4 -->
 <g id="edge3" class="edge">
 <title>Node1&#45;&gt;Node4</title>
-<path fill="none" stroke="midnightblue" d="M349.21,-161C339.46,-151.43 327.45,-139.64 319.41,-131.75"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="346.83,-163.57 356.42,-168.08 351.73,-158.58 346.83,-163.57"/>
+<path fill="none" stroke="midnightblue" d="M270,-157.8C270,-148.91 270,-138.78 270,-131.75"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="266.5,-158.08 270,-168.08 273.5,-158.08 266.5,-158.08"/>
 </g>
 <!-- Node5 -->
 <g id="node5" class="node">
 <title>Node5</title>
-<g id="a_node5"><a xlink:href="StatusBar_8cpp.html" target="_top" xlink:title="This file defines the contents of the class StatusBar that represents wxMaxima&#39;s status bar.">
-<polygon fill="white" stroke="black" points="371,-112.5 371,-131.5 472,-131.5 472,-112.5 371,-112.5"/>
-<text text-anchor="middle" x="421.5" y="-119.5" font-family="Helvetica,sans-Serif" font-size="10.00">src/StatusBar.cpp</text>
+<g id="a_node5"><a xlink:href="SvgPanel_8h.html" target="_top" xlink:title="This file declares all the wizards the draw sidepane needs.">
+<polygon fill="white" stroke="black" points="338.5,-112.5 338.5,-131.5 425.5,-131.5 425.5,-112.5 338.5,-112.5"/>
+<text text-anchor="middle" x="382" y="-119.5" font-family="Helvetica,sans-Serif" font-size="10.00">src/SvgPanel.h</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node5 -->
 <g id="edge4" class="edge">
 <title>Node1&#45;&gt;Node5</title>
-<path fill="none" stroke="midnightblue" d="M381.83,-161.25C391.76,-151.67 404.09,-139.79 412.34,-131.83"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="379.27,-158.86 374.5,-168.32 384.13,-163.9 379.27,-158.86"/>
-</g>
-<!-- Node6 -->
-<g id="node6" class="node">
-<title>Node6</title>
-<g id="a_node6"><a xlink:href="SvgPanel_8h.html" target="_top" xlink:title="This file declares all the wizards the draw sidepane needs.">
-<polygon fill="white" stroke="black" points="490,-112.5 490,-131.5 577,-131.5 577,-112.5 490,-112.5"/>
-<text text-anchor="middle" x="533.5" y="-119.5" font-family="Helvetica,sans-Serif" font-size="10.00">src/SvgPanel.h</text>
-</a>
-</g>
-</g>
-<!-- Node1&#45;&gt;Node6 -->
-<g id="edge5" class="edge">
-<title>Node1&#45;&gt;Node6</title>
-<path fill="none" stroke="midnightblue" d="M401.89,-165.3C433.54,-155.13 478.67,-140.62 507,-131.52"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="400.57,-162.05 392.12,-168.44 402.71,-168.72 400.57,-162.05"/>
-</g>
-<!-- Node11 -->
-<g id="node11" class="node">
-<title>Node11</title>
-<g id="a_node11"><a xlink:href="ToolBar_8cpp.html" target="_top" xlink:title="This file defines the class ToolBar that represents wxMaxima&#39;s main tool bar.">
-<polygon fill="white" stroke="black" points="595,-112.5 595,-131.5 684,-131.5 684,-112.5 595,-112.5"/>
-<text text-anchor="middle" x="639.5" y="-119.5" font-family="Helvetica,sans-Serif" font-size="10.00">src/ToolBar.cpp</text>
-</a>
-</g>
-</g>
-<!-- Node1&#45;&gt;Node11 -->
-<g id="edge10" class="edge">
-<title>Node1&#45;&gt;Node11</title>
-<path fill="none" stroke="midnightblue" d="M418.91,-166.47C470.7,-156.27 548.27,-140.98 596.29,-131.52"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="418.05,-163.08 408.92,-168.44 419.4,-169.94 418.05,-163.08"/>
-</g>
-<!-- Node7 -->
-<g id="node7" class="node">
-<title>Node7</title>
-<g id="a_node7"><a xlink:href="SvgPanel_8cpp.html" target="_top" xlink:title="This file contains code to create a wxPanel containing image data.">
-<polygon fill="white" stroke="black" points="418.5,-56.5 418.5,-75.5 516.5,-75.5 516.5,-56.5 418.5,-56.5"/>
-<text text-anchor="middle" x="467.5" y="-63.5" font-family="Helvetica,sans-Serif" font-size="10.00">src/SvgPanel.cpp</text>
-</a>
-</g>
-</g>
-<!-- Node6&#45;&gt;Node7 -->
-<g id="edge6" class="edge">
-<title>Node6&#45;&gt;Node7</title>
-<path fill="none" stroke="midnightblue" d="M514.95,-105.82C503.12,-96.15 488.21,-83.95 478.3,-75.83"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="512.94,-108.7 522.9,-112.32 517.37,-103.28 512.94,-108.7"/>
-</g>
-<!-- Node8 -->
-<g id="node8" class="node">
-<title>Node8</title>
-<g id="a_node8"><a xlink:href="DrawWiz_8h.html" target="_top" xlink:title="This file declares all the wizards the draw sidepane needs.">
-<polygon fill="white" stroke="black" points="535,-56.5 535,-75.5 662,-75.5 662,-56.5 535,-56.5"/>
-<text text-anchor="middle" x="598.5" y="-63.5" font-family="Helvetica,sans-Serif" font-size="10.00">src/wizards/DrawWiz.h</text>
-</a>
-</g>
-</g>
-<!-- Node6&#45;&gt;Node8 -->
-<g id="edge7" class="edge">
-<title>Node6&#45;&gt;Node8</title>
-<path fill="none" stroke="midnightblue" d="M551.77,-105.82C563.42,-96.15 578.1,-83.95 587.87,-75.83"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="549.4,-103.24 543.94,-112.32 553.87,-108.63 549.4,-103.24"/>
-</g>
-<!-- Node9 -->
-<g id="node9" class="node">
-<title>Node9</title>
-<g id="a_node9"><a xlink:href="DrawWiz_8cpp.html" target="_top" xlink:title="This file contains all the wizards the draw sidepane needs.">
-<polygon fill="white" stroke="black" points="458.5,-0.5 458.5,-19.5 596.5,-19.5 596.5,-0.5 458.5,-0.5"/>
-<text text-anchor="middle" x="527.5" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">src/wizards/DrawWiz.cpp</text>
-</a>
-</g>
-</g>
-<!-- Node8&#45;&gt;Node9 -->
-<g id="edge8" class="edge">
-<title>Node8&#45;&gt;Node9</title>
-<path fill="none" stroke="midnightblue" d="M578.91,-50.1C566.13,-40.38 549.89,-28.03 539.11,-19.83"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="577.01,-53.06 587.09,-56.32 581.25,-47.48 577.01,-53.06"/>
+<path fill="none" stroke="midnightblue" d="M297.25,-163.86C318.02,-153.85 346.02,-140.35 364.05,-131.65"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="295.48,-160.83 287.99,-168.32 298.52,-167.13 295.48,-160.83"/>
 </g>
 <!-- Node10 -->
 <g id="node10" class="node">
 <title>Node10</title>
-<g id="a_node10"><a xlink:href="wxMaxima_8cpp.html" target="_top" xlink:title="This file defines the contents of the class wxMaxima that contains most of the program&#39;s logic.">
-<polygon fill="white" stroke="black" points="614.5,-0.5 614.5,-19.5 722.5,-19.5 722.5,-0.5 614.5,-0.5"/>
-<text text-anchor="middle" x="668.5" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">src/wxMaxima.cpp</text>
+<g id="a_node10"><a xlink:href="ToolBar_8cpp.html" target="_top" xlink:title="This file defines the class ToolBar that represents wxMaxima&#39;s main tool bar.">
+<polygon fill="white" stroke="black" points="443.5,-112.5 443.5,-131.5 532.5,-131.5 532.5,-112.5 443.5,-112.5"/>
+<text text-anchor="middle" x="488" y="-119.5" font-family="Helvetica,sans-Serif" font-size="10.00">src/ToolBar.cpp</text>
 </a>
 </g>
 </g>
-<!-- Node8&#45;&gt;Node10 -->
+<!-- Node1&#45;&gt;Node10 -->
 <g id="edge9" class="edge">
-<title>Node8&#45;&gt;Node10</title>
-<path fill="none" stroke="midnightblue" d="M617.81,-50.1C630.41,-40.38 646.43,-28.03 657.05,-19.83"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="615.53,-47.44 609.75,-56.32 619.8,-52.99 615.53,-47.44"/>
+<title>Node1&#45;&gt;Node10</title>
+<path fill="none" stroke="midnightblue" d="M314.31,-166.02C355.49,-155.82 415.97,-140.84 453.62,-131.52"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="313.41,-162.64 304.54,-168.44 315.09,-169.44 313.41,-162.64"/>
+</g>
+<!-- Node6 -->
+<g id="node6" class="node">
+<title>Node6</title>
+<g id="a_node6"><a xlink:href="SvgPanel_8cpp.html" target="_top" xlink:title="This file contains code to create a wxPanel containing image data.">
+<polygon fill="white" stroke="black" points="267,-56.5 267,-75.5 365,-75.5 365,-56.5 267,-56.5"/>
+<text text-anchor="middle" x="316" y="-63.5" font-family="Helvetica,sans-Serif" font-size="10.00">src/SvgPanel.cpp</text>
+</a>
+</g>
+</g>
+<!-- Node5&#45;&gt;Node6 -->
+<g id="edge5" class="edge">
+<title>Node5&#45;&gt;Node6</title>
+<path fill="none" stroke="midnightblue" d="M363.45,-105.82C351.62,-96.15 336.71,-83.95 326.8,-75.83"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="361.44,-108.7 371.4,-112.32 365.87,-103.28 361.44,-108.7"/>
+</g>
+<!-- Node7 -->
+<g id="node7" class="node">
+<title>Node7</title>
+<g id="a_node7"><a xlink:href="DrawWiz_8h.html" target="_top" xlink:title="This file declares all the wizards the draw sidepane needs.">
+<polygon fill="white" stroke="black" points="383.5,-56.5 383.5,-75.5 510.5,-75.5 510.5,-56.5 383.5,-56.5"/>
+<text text-anchor="middle" x="447" y="-63.5" font-family="Helvetica,sans-Serif" font-size="10.00">src/wizards/DrawWiz.h</text>
+</a>
+</g>
+</g>
+<!-- Node5&#45;&gt;Node7 -->
+<g id="edge6" class="edge">
+<title>Node5&#45;&gt;Node7</title>
+<path fill="none" stroke="midnightblue" d="M400.27,-105.82C411.92,-96.15 426.6,-83.95 436.37,-75.83"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="397.9,-103.24 392.44,-112.32 402.37,-108.63 397.9,-103.24"/>
+</g>
+<!-- Node8 -->
+<g id="node8" class="node">
+<title>Node8</title>
+<g id="a_node8"><a xlink:href="DrawWiz_8cpp.html" target="_top" xlink:title="This file contains all the wizards the draw sidepane needs.">
+<polygon fill="white" stroke="black" points="307,-0.5 307,-19.5 445,-19.5 445,-0.5 307,-0.5"/>
+<text text-anchor="middle" x="376" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">src/wizards/DrawWiz.cpp</text>
+</a>
+</g>
+</g>
+<!-- Node7&#45;&gt;Node8 -->
+<g id="edge7" class="edge">
+<title>Node7&#45;&gt;Node8</title>
+<path fill="none" stroke="midnightblue" d="M427.41,-50.1C414.63,-40.38 398.39,-28.03 387.61,-19.83"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="425.51,-53.06 435.59,-56.32 429.75,-47.48 425.51,-53.06"/>
+</g>
+<!-- Node9 -->
+<g id="node9" class="node">
+<title>Node9</title>
+<g id="a_node9"><a xlink:href="wxMaxima_8cpp.html" target="_top" xlink:title="This file defines the contents of the class wxMaxima that contains most of the program&#39;s logic.">
+<polygon fill="white" stroke="black" points="463,-0.5 463,-19.5 571,-19.5 571,-0.5 463,-0.5"/>
+<text text-anchor="middle" x="517" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">src/wxMaxima.cpp</text>
+</a>
+</g>
+</g>
+<!-- Node7&#45;&gt;Node9 -->
+<g id="edge8" class="edge">
+<title>Node7&#45;&gt;Node9</title>
+<path fill="none" stroke="midnightblue" d="M466.31,-50.1C478.91,-40.38 494.93,-28.03 505.55,-19.83"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="464.03,-47.44 458.25,-56.32 468.3,-52.99 464.03,-47.44"/>
 </g>
 </g>
 </svg>
