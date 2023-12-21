@@ -210,7 +210,7 @@ void SumCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
       // DRAW PRODUCT SIGN
       // FIXME: The product sign look ok now (for wxWidgets >= 3.1.6) but the position/size can be improved!!
       if(UseSvgIntSign()) {
-        antialiassingDC->DrawBitmap(BitmapFromSVG(m_svProdSign, wxSize(m_signWidth, m_signHeight)),
+        antialiassingDC->DrawBitmap(BitmapFromSVG(m_svgProdSign, wxSize(m_signWidth, m_signHeight)),
                                     base.x, over.y+m_signHeight/3, true);
       } else {
         // Vertical lines

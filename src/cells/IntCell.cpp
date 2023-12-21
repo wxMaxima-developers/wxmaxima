@@ -205,7 +205,7 @@ void IntCell::DrawSvgSign(wxDC *dc, wxPoint pos)
 {
   pos.y -= .5 * m_signHeight;
   dc->DrawBitmap(BitmapFromSVG(m_svgIntegralSign, wxSize(m_signWidth, m_signHeight)),
-                 base.x, over.y+m_signHeight/3, true);
+                pos.x, pos.y, true);
 }
 
 void IntCell::DrawHanddrawnSign(wxDC *dc, wxPoint pos)
