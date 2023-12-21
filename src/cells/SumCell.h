@@ -76,11 +76,11 @@ public:
   void Unbreak() override final;
 
 private:
-  /*! Do we want to use a SVG integral sign?
+  /*! Do we want to use SVG sum and product signs?
 
     Is constexpr, which means: This is evaluated at compile time.
    */
-  constexpr bool UseSvgIntSign() const {
+  constexpr bool UseSvgSign() const {
 #ifdef WXM_WITHOUT_SVG_SIGNS
     return false;
 #else

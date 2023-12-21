@@ -116,7 +116,7 @@ void IntCell::Recalculate(AFontSize fontsize) {
     // contents  
     m_lowerLimit->RecalculateList({MC_MIN_SIZE, fontsize - 5});
     m_upperLimit->RecalculateList({MC_MIN_SIZE, fontsize - 5});
-    if (UseSvgIntSign())
+    if (UseSvgSign())
       {
         // The integral sign is displayed as an SVG graphics. As line thickness scales
         // with the sign we need to make it a constant height.
@@ -173,7 +173,7 @@ void IntCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
 
     SetPen(antialiassingDC, 1.5);
 
-    if(UseSvgIntSign())
+    if(UseSvgSign())
       DrawSvgSign(antialiassingDC, point);
     else
       DrawHanddrawnSign(antialiassingDC, point);

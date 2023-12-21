@@ -86,7 +86,7 @@ private:
 
     Is constexpr, which means: This is evaluated at compile time.
    */
-  constexpr bool UseSvgIntSign() const {
+  constexpr bool UseSvgSign() const {
 #ifdef WXM_WITHOUT_SVG_SIGNS
     return false;
 #else

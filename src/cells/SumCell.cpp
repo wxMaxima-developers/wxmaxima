@@ -192,7 +192,7 @@ void SumCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
     SetPen(antialiassingDC, 1.5);
     if (m_sumStyle == SM_SUM) {
       // FIXME: The sum sign look ok now (for wxWidgets >= 3.1.6) but the position/size can be improved!!
-      if(UseSvgIntSign()) {
+      if(UseSvgSign()) {
         antialiassingDC->DrawBitmap(BitmapFromSVG(m_svgSumSign, wxSize(m_signWidth, m_signHeight)),
                                     base.x, over.y+m_signHeight/3, true);
       } else {
@@ -209,7 +209,7 @@ void SumCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
     } else {
       // DRAW PRODUCT SIGN
       // FIXME: The product sign look ok now (for wxWidgets >= 3.1.6) but the position/size can be improved!!
-      if(UseSvgIntSign()) {
+      if(UseSvgSign()) {
         antialiassingDC->DrawBitmap(BitmapFromSVG(m_svgProdSign, wxSize(m_signWidth, m_signHeight)),
                                     base.x, over.y+m_signHeight/3, true);
       } else {
