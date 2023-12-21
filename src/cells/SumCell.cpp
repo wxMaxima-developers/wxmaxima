@@ -32,13 +32,8 @@
 #include "SumCell.h"
 #include "CellImpl.h"
 #include "TextCell.h"
-#include "SvgBitmap.h"
 #include "sumSign_svg.h"
 #include "prodSign_svg.h"
-
-#if wxCHECK_VERSION(3, 1, 6)
-#include <wx/bmpbndl.h>
-#endif
 
 SumCell::SumCell(GroupCell *group, Configuration *config, sumStyle style,
                  std::unique_ptr<Cell> &&under, std::unique_ptr<Cell> &&over,

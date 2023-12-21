@@ -34,13 +34,9 @@
 #include "IntCell.h"
 #include "CellImpl.h"
 #include "TextCell.h"
-#include "SvgBitmap.h"
 #include <memory>
 #include <utility>
 #include "intSign_svg.h"
-#if wxCHECK_VERSION(3, 1, 6)
-#include <wx/bmpbndl.h>
-#endif
 
 #if defined __WXMSW__
 #define INTEGRAL_TOP "\xF3"
