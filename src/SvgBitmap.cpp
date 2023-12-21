@@ -77,7 +77,9 @@ const SvgBitmap &SvgBitmap::SetSize(int width, int height) {
     height = 1;
   // Set the bitmap to the new size
 #if defined __WXOSX__
-  int scaleFactor = m_window->GetContentScaleFactor();
+  int scaleFactor = 1;
+  if (m_window != NULL)
+    scalefactor = m_window->GetContentScaleFactor();
   if (scaleFactor < 1)
     scaleFactor = 1;
   if (scaleFactor > 16)
@@ -134,8 +136,15 @@ wxBitmap SvgBitmap::GetInvalidBitmap(int targetSize) {
   img.Rescale(targetSize, targetSize, wxIMAGE_QUALITY_HIGH);
   wxBitmap retval;
 #if defined __WXOSX__
+  int scaleFactor = 1;
+  if (m_window != NULL)
+    scalefactor = m_window->GetContentScaleFactor();
+  if (scaleFactor < 1)
+    scaleFactor = 1;
+  if (scaleFactor > 16)
+    scaleFactor = 16;
   retval =
-    wxBitmap(img, wxBITMAP_SCREEN_DEPTH, m_window->GetContentScaleFactor());
+    wxBitmap(img, wxBITMAP_SCREEN_DEPTH, scaleFactor);
 #else
   retval = wxBitmap(img, wxBITMAP_SCREEN_DEPTH);
 #endif
