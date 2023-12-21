@@ -145,7 +145,7 @@ wxBitmap SvgBitmap::GetInvalidBitmap(int targetSize) {
 #if defined __WXOSX__
   int scaleFactor = 1;
   if (m_window != NULL)
-    scalefactor = m_window->GetContentScaleFactor();
+    scaleFactor = m_window->GetContentScaleFactor();
   if (scaleFactor < 1)
     scaleFactor = 1;
   if (scaleFactor > 16)
