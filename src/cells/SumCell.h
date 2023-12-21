@@ -76,6 +76,17 @@ public:
   void Unbreak() override final;
 
 private:
+  /*! Do we want to use a SVG integral sign?
+
+    Is constexpr, which means: This is evaluated at compile time.
+   */
+  constexpr bool UseSvgIntSign() const {
+#ifdef WXM_WITHOUT_SVG_SIGNS
+    return false;
+#else
+    return true;
+#endif
+  }
   std::unique_ptr<Cell> MakeStart(Cell *under) const;
   void MakeBreakUpCells();
   const static wxString m_svgSumSign;
