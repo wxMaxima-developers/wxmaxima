@@ -68,6 +68,12 @@ SvgBitmap::SvgBitmap(wxWindow *window, const unsigned char *data, std::size_t le
   SetSize(width, height);
 }
 
+SvgBitmap::SvgBitmap(wxWindow *window, wxString data, wxSize siz)
+{
+  wxCharBuffer buffer = data.ToUTF8();
+  SvgBitmap(window, data.data(), data.length(), siz);
+}
+
 SvgBitmap::~SvgBitmap() {}
 
 const SvgBitmap &SvgBitmap::SetSize(int width, int height) {
