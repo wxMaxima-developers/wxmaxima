@@ -38,7 +38,7 @@
 #include "Image.h"
 #include "invalidImage.h"
 
-SvgBitmap::SvgBitmap(wxWindow *window, const unsigned char *data, std::size_t len,
+SvgBitmap::SvgBitmap(wxWindow *window, const unsigned char *data, const std::size_t len,
                      int width, int height)
   : m_window(window) {
   // Unzip the .svgz image
@@ -68,10 +68,11 @@ SvgBitmap::SvgBitmap(wxWindow *window, const unsigned char *data, std::size_t le
   SetSize(width, height);
 }
 
-SvgBitmap::SvgBitmap(wxWindow *window, wxString data, wxSize siz)
+SvgBitmap::SvgBitmap(wxWindow *window, const wxString data, wxSize siz)
 {
   wxCharBuffer buffer = data.ToUTF8();
-  SvgBitmap(window, data.data(), data.length(), siz);
+  m_svgImage.reset(wxm_nsvgParse(buffer.data(), "px", 96));
+  SetSize(siz.x, siz.y);
 }
 
 SvgBitmap::~SvgBitmap() {}
@@ -127,7 +128,7 @@ const SvgBitmap &SvgBitmap::SetSize(int width, int height) {
   return *this;
 }
 
-SvgBitmap::SvgBitmap(wxWindow *window, const unsigned char *data, std::size_t len,
+SvgBitmap::SvgBitmap(wxWindow *window, const unsigned char *data, const std::size_t len,
                      wxSize siz)
   : SvgBitmap(window, data, len, siz.x, siz.y) {}
 
