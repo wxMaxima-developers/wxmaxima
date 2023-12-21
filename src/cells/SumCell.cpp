@@ -196,11 +196,11 @@ void SumCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
         wxString signWithCorrectDefaultColor = m_svgSumSign;
         signWithCorrectDefaultColor.Replace("\"currentColor\"",
                                             "\"#" + wxColor2HtmlString(GetForegroundColor()) + "\"");
-        // Make the bitmap hi-res, if the OS supports and needs that
-        const wxWindow *worksheet = m_configuration->GetWorkSheet();
 #if wxCHECK_VERSION(3, 1, 6)
         wxBitmapBundle sumbitmap = wxBitmapBundle::FromSVG(signWithCorrectDefaultColor.c_str(),
                                                            wxSize(m_signWidth, m_signHeight));
+        // Make the bitmap hi-res, if the OS supports and needs that
+        const wxWindow *worksheet = m_configuration->GetWorkSheet();
         if(worksheet)
             sumbitmap.GetPreferredBitmapSizeFor(worksheet);
         wxBitmap bmp(sumbitmap.GetBitmap(wxSize(m_signWidth, m_signHeight)));
