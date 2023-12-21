@@ -12,6 +12,8 @@
 - Corrected the cell folding logic (#1853)
 - Folded cells are no more evaluated (#1853)
 - Now we try to generate a backtrace on crashes (#1802)
+- Corrected the position of integral limits
+- Nicer product, sum and integral signs
 
 # 23.11.0
 
