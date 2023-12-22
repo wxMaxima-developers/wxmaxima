@@ -27,6 +27,7 @@
 
 #include <vector>
 #include <utility>
+#include <algorithm>
 #include <wx/mstream.h>
 #include <wx/rawbmp.h>
 #include <wx/txtstrm.h>
@@ -105,8 +106,8 @@ const SvgBitmap &SvgBitmap::SetSize(int width, int height) {
 
   // Actually render the bitmap
   wxm_nsvgRasterize(m_svgRast, m_svgImage.get(), 0, 0,
-                    wxMin(static_cast<double>(width) / static_cast<double>(m_svgImage->width),
-                          static_cast<double>(height) / static_cast<double>(m_svgImage->height)),
+                    std::min(static_cast<double>(width) / static_cast<double>(m_svgImage->width),
+                             static_cast<double>(height) / static_cast<double>(m_svgImage->height)),
                     imgdata.data(), width, height, width * 4);
 
   // Copy the bitmap to this object's bitmap storage

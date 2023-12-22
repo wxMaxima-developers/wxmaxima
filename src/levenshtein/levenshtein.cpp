@@ -7,6 +7,7 @@
 
 #include "levenshtein.h"
 #include <vector>
+#include <algorithm>
 
 size_t LevenshteinDistance(const wxString &s1, const wxString &s2) {
   const size_t m = s1.Len();
@@ -35,7 +36,7 @@ size_t LevenshteinDistance(const wxString &s1, const wxString &s2) {
       if (*it1 == *it2)
         costs.at(j + 1) = corner;
       else
-        costs.at(j + 1) = wxMin(costs.at(j), wxMin(upper, corner)) + 1;
+        costs.at(j + 1) = std::min(costs.at(j), std::min(upper, corner)) + 1;
 
       corner = upper;
     }
