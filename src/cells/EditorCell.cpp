@@ -1800,7 +1800,7 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent &event) {
 
             auto start = SelectionLeft();
             auto end   = SelectionRight();
-            long long newLineIndex = wxMin(m_text.find(wxS('\n'), start),
+            long long newLineIndex = std::min(m_text.find(wxS('\n'), start),
                                            m_text.find(wxS('\r'), start));
 
             if (((newLineIndex != wxNOT_FOUND) && (static_cast<size_t>(newLineIndex) < end)) ||
@@ -2405,7 +2405,7 @@ void EditorCell::SelectPointText(const wxPoint point) {
     m_displayCaret = true;
     FindMatchingParens();
     // The line that now follows is pure paranoia.
-    pos = wxMin(pos, m_text.Length());
+    pos = std::min(pos, m_text.Length());
   } else {
     // Text cell
 
@@ -2425,7 +2425,7 @@ void EditorCell::SelectPointText(const wxPoint point) {
 
       pos++;
     }
-    pos = wxMin(pos, text.Length());
+    pos = std::min(pos, text.Length());
 
     m_displayCaret = true;
   }
@@ -2490,7 +2490,7 @@ bool EditorCell::IsPointInSelection(wxPoint point) {
       break;
     positionOfCaret++;
   }
-  positionOfCaret = wxMin(positionOfCaret, text.Length());
+  positionOfCaret = std::min(positionOfCaret, text.Length());
   return ((SelectionStart() <= positionOfCaret) &&
            (positionOfCaret < SelectionEnd()));
 }
@@ -2553,7 +2553,7 @@ void EditorCell::CommentSelection() {
   SetValue(m_text.SubString(0, SelectionStart() - 1) + wxS("/*") +
            m_text.SubString(SelectionStart(), SelectionEnd() - 1) + wxS("*/") +
            m_text.SubString(SelectionEnd(), m_text.Length()));
-  CursorPosition(wxMin(SelectionEnd() + 4, m_text.Length()));
+  CursorPosition(std::min(SelectionEnd() + 4, m_text.Length()));
 }
 
 wxString EditorCell::GetWordUnderCaret() {
