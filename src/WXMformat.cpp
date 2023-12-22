@@ -251,13 +251,10 @@ namespace Format {
       wxString line;
 
       switch (headerId) {
-        // Read hide tag
-      case WXM_HIDE:
-        hide = true;
-        break;
 
         // Read title, section, subsection, subsubsection, heading5, heading6,
         //      comment, input
+      case WXM_HIDE:
       case WXM_TITLE:
       case WXM_SECTION:
       case WXM_SUBSECTION:
@@ -266,6 +263,7 @@ namespace Format {
       case WXM_HEADING6:
       case WXM_COMMENT:
       case WXM_INPUT:
+        hide = (headerId == WXM_HIDE);
         line = getLinesUntil(Headers.GetEnd(headerId));
         cell = std::make_unique<GroupCell>(config, GroupType(headerId), line);
         hideCell(cell.get());

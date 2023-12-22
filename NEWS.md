@@ -14,6 +14,7 @@
 - Now we try to generate a backtrace on crashes (#1802)
 - Corrected the position of integral limits
 - Nicer product, sum and integral signs
+- Hidden cells weren't restored from wxm files (#1855)
 
 # 23.11.0
 
