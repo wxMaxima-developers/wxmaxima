@@ -116,8 +116,8 @@ TextCell::TextCell(GroupCell *group, Configuration *config,
     wxLogMessage(_("Unexpected text style %li for TextCell"), static_cast<long>(style));
     m_type = MC_TYPE_TITLE;
   }
-  TextCell::SetValue(text);
   TextCell::SetStyle(style);
+  TextCell::SetValue(text);
 }
 
 // cppcheck-suppress uninitMemberVar symbolName=TextCell::m_alt
@@ -398,7 +398,8 @@ AFontSize TextCell::GetScaledTextSize() const { return m_fontSize_Scaled; }
 
 bool TextCell::NeedsRecalculation(AFontSize fontSize) const {
   return Cell::NeedsRecalculation(fontSize) ||
-    (m_keepPercent_last != m_configuration->CheckKeepPercent());
+    (m_keepPercent_last != m_configuration->CheckKeepPercent()) ||
+    (m_greekNamesAsLetter != m_configuration->Latin2Greek());
 }
 
 wxSize TextCell::CalculateTextSize(wxDC *const dc, const wxString &text,
@@ -456,10 +457,13 @@ void TextCell::UpdateDisplayedText() {
 void TextCell::Recalculate(AFontSize fontsize) {
   if (GetTextStyle() == TS_ASCIIMATHS)
     ForceBreakLine(true);
-  if (m_keepPercent_last != m_configuration->CheckKeepPercent())
-    UpdateDisplayedText();
+
   if (NeedsRecalculation(fontsize)) {
     Cell::Recalculate(fontsize);
+    if ((m_keepPercent_last != m_configuration->CheckKeepPercent()) ||
+        (m_greekNamesAsLetter != m_configuration->Latin2Greek()))
+      UpdateDisplayedText();
+    m_greekNamesAsLetter == m_configuration->Latin2Greek();
     m_keepPercent_last = m_configuration->CheckKeepPercent();
     SetFont(m_configuration->GetRecalcDC(), m_fontSize_Scaled);
 

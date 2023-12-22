@@ -154,6 +154,7 @@ protected:
       m_dontEscapeOpeningParenthesis = false;
       m_promptTooltip = false;
       m_keepPercent_last = m_configuration->CheckKeepPercent();
+      m_greekNamesAsLetter = false;
     }
 
   //! Is an ending "(" of a function name the opening parenthesis of the function?
@@ -162,6 +163,8 @@ protected:
   bool m_promptTooltip : 1 /* InitBitFields */;
   //! The last known value of CheckKeepPercent
   bool m_keepPercent_last : 1;
+  //! The last known value of "display greek names as unicode char"
+  bool m_greekNamesAsLetter : 1;
 
 };
 
