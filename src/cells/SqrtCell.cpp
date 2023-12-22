@@ -70,8 +70,8 @@ void SqrtCell::Recalculate(AFontSize fontsize) {
   if (!IsBrokenIntoLines()) {
     auto openHeight = 0; // m_open->GetHeightList();
     auto openCenter = 0; // m_open->GetCenterList();
-    m_height = wxMax(m_innerCell->GetHeightList(), openHeight) + Scale_Px(3);
-    m_center = wxMax(m_innerCell->GetCenterList(), openCenter) + Scale_Px(3);
+    m_height = std::max(m_innerCell->GetHeightList(), openHeight) + Scale_Px(3);
+    m_center = std::max(m_innerCell->GetCenterList(), openCenter) + Scale_Px(3);
   } else {
     m_height = m_center = m_width = 0;
     m_open->Recalculate(fontsize);

@@ -94,7 +94,7 @@ void ListCell::Recalculate(AFontSize fontsize) {
     m_center = 0;
   } else {
     m_width = m_innerCell->GetFullWidth() + m_signWidth * 2;
-    m_height = wxMax(m_signHeight, m_innerCell->GetHeightList()) + Scale_Px(4);
+    m_height = std::max(m_signHeight, m_innerCell->GetHeightList()) + Scale_Px(4);
     m_center = m_height / 2;
   }
   Cell::Recalculate(fontsize);

@@ -621,7 +621,7 @@ void EditorCell::Recalculate(AFontSize fontsize) {
           m_configuration->GetRecalcDC()->GetTextExtent(textSnippet.GetText(), &tokenwidth, &tokenheight);
           textSnippet.SetWidth(tokenwidth);
           linewidth += tokenwidth;
-          width = wxMax(width, linewidth);
+          width = std::max(width, linewidth);
         }
 
         // Handle folding
@@ -647,7 +647,7 @@ void EditorCell::Recalculate(AFontSize fontsize) {
       }
       // The center lies in the middle of the 1st line
       m_center = m_charHeight / 2;
-      m_height = wxMax(m_height, m_charHeight + 2 * Scale_Px(2));
+      m_height = std::max(m_height, m_charHeight + 2 * Scale_Px(2));
 
       m_containsChanges = false;
     }

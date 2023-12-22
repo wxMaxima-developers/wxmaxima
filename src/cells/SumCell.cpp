@@ -157,14 +157,14 @@ void SumCell::Recalculate(AFontSize fontsize) {
   else
     m_under->RecalculateList({MC_MIN_SIZE, fontsize - SUM_DEC});
 
-  m_signWCenter = wxMax(m_signWCenter, m_under->GetFullWidth() / 2);
-  m_signWCenter = wxMax(m_signWCenter, m_over->GetFullWidth() / 2);
+  m_signWCenter = std::max(m_signWCenter, m_under->GetFullWidth() / 2);
+  m_signWCenter = std::max(m_signWCenter, m_over->GetFullWidth() / 2);
   m_width = 2 * m_signWCenter + DisplayedBase()->GetFullWidth() + Scale_Px(4);
 
-  m_center = wxMax(m_over->GetHeightList() + Scale_Px(2) + m_signHeight / 2,
+  m_center = std::max(m_over->GetHeightList() + Scale_Px(2) + m_signHeight / 2,
                    DisplayedBase()->GetCenterList());
   m_height = m_center +
-    wxMax(m_under->GetHeightList() + Scale_Px(4) + m_signHeight / 2,
+    std::max(m_under->GetHeightList() + Scale_Px(4) + m_signHeight / 2,
           DisplayedBase()->GetMaxDrop());
   Cell::Recalculate(fontsize);
 }

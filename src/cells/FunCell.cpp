@@ -62,9 +62,9 @@ void FunCell::Recalculate(AFontSize fontsize) {
   } else {
     m_width =
       m_nameCell->GetFullWidth() + m_argCell->GetFullWidth() - Scale_Px(1);
-    m_center = wxMax(m_nameCell->GetCenterList(), m_argCell->GetCenterList());
+    m_center = std::max(m_nameCell->GetCenterList(), m_argCell->GetCenterList());
     m_height =
-      m_center + wxMax(m_nameCell->GetMaxDrop(), m_argCell->GetMaxDrop());
+      m_center + std::max(m_nameCell->GetMaxDrop(), m_argCell->GetMaxDrop());
   }
   Cell::Recalculate(fontsize);
 }

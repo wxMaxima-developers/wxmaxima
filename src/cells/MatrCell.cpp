@@ -67,10 +67,10 @@ void MatrCell::Recalculate(AFontSize const fontsize) {
   m_width = 0;
   m_widths.clear();
   for (size_t i = 0; i < m_matWidth; i++) {
-    long width = 0;
+    wxCoord width = 0;
     for (size_t j = 0; j < m_matHeight; j++) {
       if ((m_matWidth * j + i) < m_cells.size())
-        width = wxMax(width, GetInnerCell(j, i)->GetFullWidth());
+        width = std::max(width, GetInnerCell(j, i)->GetFullWidth());
     }
     m_widths.emplace_back(width);
     m_width += (width + Scale_Px(10));
@@ -81,11 +81,11 @@ void MatrCell::Recalculate(AFontSize const fontsize) {
   m_height = 0;
   m_dropCenters.clear();
   for (size_t i = 0; i < m_matHeight; i++) {
-    long center = 0, drop = 0;
+    wxCoord center = 0, drop = 0;
     for (size_t j = 0; j < m_matWidth; j++)
       if (m_matWidth * i + j < m_cells.size()) {
-        center = wxMax(center, GetInnerCell(i, j)->GetCenterList());
-        drop = wxMax(drop, GetInnerCell(i, j)->GetMaxDrop());
+        center = std::max(center, GetInnerCell(i, j)->GetCenterList());
+        drop = std::max(drop, GetInnerCell(i, j)->GetMaxDrop());
       }
     m_dropCenters.emplace_back(drop, center);
     m_height += (center + drop + Scale_Px(10));

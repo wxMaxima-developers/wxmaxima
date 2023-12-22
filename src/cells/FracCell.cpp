@@ -101,10 +101,10 @@ void FracCell::Recalculate(AFontSize fontsize) {
     if (m_inExponent) {
       m_protrusion = m_horizontalGapLeft = m_horizontalGapRight = 0;
       m_width = Num()->GetWidth() + Denom()->GetWidth() + m_divide->GetWidth();
-      m_height = wxMax(Num()->GetHeightList(), Denom()->GetHeightList()) +
+      m_height = std::max(Num()->GetHeightList(), Denom()->GetHeightList()) +
         Scale_Px(6.5);
       m_center =
-        wxMax(Num()->GetCenterList(), Denom()->GetCenterList()) + Scale_Px(3);
+        std::max(Num()->GetCenterList(), Denom()->GetCenterList()) + Scale_Px(3);
     } else {
       m_protrusion = Scale_Px(m_configuration->GetMathFontSize() / 2);
 
@@ -121,7 +121,7 @@ void FracCell::Recalculate(AFontSize fontsize) {
       else
         m_horizontalGapRight = 0;
 
-      m_width = wxMax(m_displayedNum->GetFullWidth(),
+      m_width = std::max(m_displayedNum->GetFullWidth(),
                       m_displayedDenom->GetFullWidth()) +
         2 * m_protrusion + m_horizontalGapLeft + m_horizontalGapRight;
       m_height =

@@ -121,18 +121,18 @@ void SubSupCell::Recalculate(AFontSize const fontsize) {
   }
   if (m_postSupCell) {
     m_postSupCell->RecalculateList(smallerFontSize);
-    postWidth = wxMax(postWidth, m_postSupCell->GetFullWidth());
+    postWidth = std::max(postWidth, m_postSupCell->GetFullWidth());
     supHeight = m_postSupCell->GetHeightList();
   }
   if (m_preSubCell) {
     m_preSubCell->RecalculateList(smallerFontSize);
     preWidth = m_preSubCell->GetFullWidth();
-    subHeight = wxMax(subHeight, m_preSubCell->GetHeightList());
+    subHeight = std::max(subHeight, m_preSubCell->GetHeightList());
   }
   if (m_preSupCell) {
     m_preSupCell->RecalculateList(smallerFontSize);
-    preWidth = wxMax(preWidth, m_preSupCell->GetFullWidth());
-    supHeight = wxMax(subHeight, m_preSupCell->GetHeightList());
+    preWidth = std::max(preWidth, m_preSupCell->GetFullWidth());
+    supHeight = std::max(subHeight, m_preSupCell->GetHeightList());
   }
 
   m_width = preWidth + m_baseCell->GetFullWidth() + postWidth;
@@ -155,7 +155,7 @@ void SubSupCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
     if (m_preSubCell)
       preWidth = m_preSubCell->GetFullWidth();
     if (m_preSupCell)
-      preWidth = wxMax(preWidth, m_preSupCell->GetFullWidth());
+      preWidth = std::max(preWidth, m_preSupCell->GetFullWidth());
 
     if (m_preSubCell) {
       wxPoint presub = point;

@@ -97,13 +97,13 @@ void IntervalCell::Recalculate(AFontSize fontsize) {
   // If our font provides all the unicode chars we need we don't need
   // to bother which exotic method we need to use for drawing nice parenthesis.
   if (1.2 * m_open->GetHeight() >=
-      wxMax(m_start->GetHeightList(), m_stop->GetHeightList())) {
+      std::max(m_start->GetHeightList(), m_stop->GetHeightList())) {
     m_drawAsAscii = true;
     m_signHeight = m_open->GetHeight();
   } else {
     m_drawAsAscii = false;
     m_signHeight =
-      wxMax(wxMax(wxMax(m_start->GetHeightList(), m_stop->GetHeightList()),
+      std::max(std::max(std::max(m_start->GetHeightList(), m_stop->GetHeightList()),
                   m_open->GetHeight()),
             m_ellipsis->GetHeight());
   }
@@ -116,7 +116,7 @@ void IntervalCell::Recalculate(AFontSize fontsize) {
     m_width = m_signWidth + m_start->GetFullWidth() + m_ellipsis->GetWidth() +
       m_stop->GetFullWidth() + m_signWidth;
 
-    m_height = wxMax(wxMax(m_signHeight, m_start->GetHeightList()),
+    m_height = std::max(std::max(m_signHeight, m_start->GetHeightList()),
                      m_stop->GetHeightList()) +
       Scale_Px(4);
     m_center = m_height / 2;

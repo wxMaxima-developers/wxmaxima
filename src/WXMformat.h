@@ -52,6 +52,7 @@ enum WXMHeaderId {
   WXM_FOLD, WXM_FOLD_END,
   WXM_HIDE,
   WXM_AUTOANSWER,
+  // The WXM_HIDDEN_* entries try to recover broken wxm files
   WXM_HIDDEN_INPUT = GC_TYPE_CODE + 128,
   WXM_HIDDEN_TITLE = GC_TYPE_TITLE + 128,
   WXM_HIDDEN_SECTION = GC_TYPE_SECTION + 128,

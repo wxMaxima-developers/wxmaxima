@@ -479,7 +479,7 @@ void GroupCell::InputHeightChanged() {
   if (m_output != NULL) {
     m_height += m_outputRect.GetHeight();
     m_outputRect.y = m_currentPoint.y + m_center;
-    m_width = wxMax(m_width, m_output->GetLineWidth());
+    m_width = std::max(m_width, m_output->GetLineWidth());
   }
   UpdateYPositionList();
 }
@@ -584,8 +584,8 @@ void GroupCell::RecalculateOutput() {
     if (tmp.BreakLineHere()) {
       tmp.ResetCellListSizes();
       int height_Delta = tmp.GetHeightList();
-      m_width = wxMax(m_width, tmp.GetLineWidth());
-      m_outputRect.width = wxMax(m_outputRect.width, m_width);
+      m_width = std::max(m_width, tmp.GetLineWidth());
+      m_outputRect.width = std::max(m_outputRect.width, m_width);
       m_outputRect.height += height_Delta;
 
       if (tmp.GetPrevious() &&
@@ -643,9 +643,9 @@ int GroupCell::GetInputIndent() {
   if (m_inputLabel != NULL) {
     if (m_inputLabel->GetWidth() >= 0)
       labelWidth =
-        wxMax(m_inputLabel->GetWidth() + MC_TEXT_PADDING, labelWidth);
+        std::max(m_inputLabel->GetWidth() + MC_TEXT_PADDING, labelWidth);
     else
-      labelWidth = wxMax(m_labelWidth_cached, labelWidth);
+      labelWidth = std::max(m_labelWidth_cached, labelWidth);
   }
 
   m_labelWidth_cached = labelWidth;

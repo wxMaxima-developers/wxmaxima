@@ -76,15 +76,15 @@ public:
   void ClearSelection() {SelectionEnd(SelectionEnd());}
   void SelectionStart(size_t start) {m_selectionStart = start; UpdateSelectionString();}
   void SelectionEnd(size_t end) {m_selectionEnd = end; UpdateSelectionString();}
-  size_t SelectionStart() const {return wxMin(m_selectionStart, m_text.Length());}
-  size_t SelectionEnd() const {return wxMin(m_selectionEnd, m_text.Length());}
-  size_t SelectionLeft() const {return wxMin(SelectionStart(), SelectionEnd());}
-  size_t SelectionRight() const {return wxMax(SelectionStart(), SelectionEnd());}
+  size_t SelectionStart() const {return std::min(m_selectionStart, m_text.Length());}
+  size_t SelectionEnd() const {return std::min(m_selectionEnd, m_text.Length());}
+  size_t SelectionLeft() const {return std::min(SelectionStart(), SelectionEnd());}
+  size_t SelectionRight() const {return std::max(SelectionStart(), SelectionEnd());}
   size_t SelectionLength() const {return(SelectionEnd()-SelectionStart());}
   void  SelectionLength(size_t length) {SelectionEnd(SelectionStart() + length);  UpdateSelectionString();}
   void CursorMove(long long increment) {m_selectionEnd += increment;
     m_selectionStart = m_selectionEnd; UpdateSelectionString();}
-  size_t CursorPosition() const {return wxMin(m_selectionEnd, m_text.Length());}
+  size_t CursorPosition() const {return std::min(m_selectionEnd, m_text.Length());}
   void CursorPosition(size_t pos) {m_selectionStart = pos;
     m_selectionEnd = pos; UpdateSelectionString();}
   const CellTypeInfo &GetInfo() override;

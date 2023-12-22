@@ -111,7 +111,7 @@ void ParenCell::Recalculate(AFontSize fontsize) {
   int innerCellHeight = 0;
   if(m_innerCell)
     innerCellHeight = m_innerCell->GetHeightList();
-  m_height = wxMax(m_signHeight, innerCellHeight) + Scale_Px(2);
+  m_height = std::max(m_signHeight, innerCellHeight) + Scale_Px(2);
   m_center = m_height / 2;
 
   dc->GetTextExtent(wxS("("), &m_charWidth1, &m_charHeight1);
@@ -122,8 +122,8 @@ void ParenCell::Recalculate(AFontSize fontsize) {
     int innerCellCenter = 0;
     if(m_innerCell)
       innerCellCenter = m_innerCell->GetCenterList();
-    m_height = wxMax(innerCellHeight, m_open->GetHeightList());
-    m_center = wxMax(innerCellCenter, m_open->GetCenterList());
+    m_height = std::max(innerCellHeight, m_open->GetHeightList());
+    m_center = std::max(innerCellCenter, m_open->GetCenterList());
   } else {
     if (m_innerCell) {
       switch (m_bigParenType) {
@@ -147,7 +147,7 @@ void ParenCell::Recalculate(AFontSize fontsize) {
                                      wxPoint(m_currentPoint.x + m_signWidth, m_currentPoint.y));
 
       m_height =
-        wxMax(m_signHeight, m_innerCell->GetHeightList()) + Scale_Px(4);
+        std::max(m_signHeight, m_innerCell->GetHeightList()) + Scale_Px(4);
       m_center = m_height / 2;
     }
   }

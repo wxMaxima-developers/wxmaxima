@@ -69,9 +69,9 @@ void DiffCell::Recalculate(AFontSize fontsize) {
   m_diffCell->RecalculateList(fontsize);
   if (!IsBrokenIntoLines()) {
     m_width = m_baseCell->GetFullWidth() + m_diffCell->GetFullWidth();
-    m_center = wxMax(m_diffCell->GetCenterList(), m_baseCell->GetCenterList());
+    m_center = std::max(m_diffCell->GetCenterList(), m_baseCell->GetCenterList());
     m_height =
-      m_center + wxMax(m_diffCell->GetMaxDrop(), m_baseCell->GetMaxDrop());
+      m_center + std::max(m_diffCell->GetMaxDrop(), m_baseCell->GetMaxDrop());
   } else {
     m_width = m_center = m_height = 0;
     m_open->RecalculateList(fontsize);

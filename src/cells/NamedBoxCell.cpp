@@ -76,7 +76,7 @@ void NamedBoxCell::Recalculate(AFontSize fontsize) {
   m_nameHeight = m_boxname->GetHeightList();
 
   if (!IsBrokenIntoLines()) {
-    m_width = wxMax(m_innerCellWidth, m_nameWidth) + Scale_Px(8);
+    m_width = std::max(m_innerCellWidth, m_nameWidth) + Scale_Px(8);
     m_height = m_innerCellHeight + m_nameHeight + Scale_Px(16);
     m_center = m_innerCell->GetCenterList() + m_nameHeight + Scale_Px(8);
   } else {

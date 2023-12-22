@@ -34,6 +34,7 @@
 #include "TextCell.h"
 #include "VisiblyInvalidCell.h"
 #include "stx/unique_cast.hpp"
+#include <algorithm>
 #include <utility>
 #include <wx/regex.h>
 #include <wx/sstream.h>
@@ -253,7 +254,7 @@ int Cell::GetCenterList() const {
       if ((&tmp != this) && (tmp.m_breakLine))
         break;
       if (!tmp.m_isBrokenIntoLines)
-        maxCenter = wxMax(maxCenter, tmp.m_center);
+        maxCenter = std::max(maxCenter, tmp.m_center);
     }
     m_maxCenter.SetCached(maxCenter);
   }
@@ -267,7 +268,7 @@ int Cell::GetMaxDrop() const {
       if ((&tmp != this) && (tmp.m_breakLine))
         break;
       if (!tmp.m_isBrokenIntoLines)
-        maxDrop = wxMax(maxDrop, tmp.m_height - tmp.m_center);
+        maxDrop = std::max(maxDrop, tmp.m_height - tmp.m_center);
     }
     m_maxDrop.SetCached(maxDrop);
   }
