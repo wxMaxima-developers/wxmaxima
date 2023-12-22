@@ -439,14 +439,15 @@ bool GroupCell::Recalculate() {
   bool retval = NeedsRecalculation(EditorFontSize());
 
   if (retval == true) {
-    // Recalculating pagebreaks is simple
     if (m_groupType == GC_TYPE_PAGEBREAK) {
+      // Recalculating pagebreak cells is simple
       retval = NeedsRecalculation(EditorFontSize());
       m_width = m_configuration->GetCellBracketWidth();
       m_height = Scale_Px(2);
       m_center = Scale_Px(1);
     }
     else {
+      // This cell is no page break cell
       m_mathFontSize = m_configuration->GetMathFontSize();
 
       if (m_inputLabel != NULL)

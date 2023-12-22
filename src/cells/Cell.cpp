@@ -413,7 +413,8 @@ void Cell::RecalculateList(AFontSize fontsize) {
 
 void Cell::ResetSizeList() {
   for (Cell &tmp : OnList(this))
-    tmp.ResetSize();
+    for (Cell &cell : OnInner(&tmp))
+      cell.ResetSize();
 }
 
 void Cell::Recalculate(AFontSize fontsize) {
@@ -948,7 +949,7 @@ void Cell::ResetDataList() {
 void Cell::ResetCellListSizesList() {
   for (const Cell &cell : OnList(this)) {
     cell.ResetCellListSizes();
-    for (const Cell &tmp : OnList(&cell))
+    for (const Cell &tmp : OnInner(&cell))
       tmp.ResetCellListSizes();
   }
 }

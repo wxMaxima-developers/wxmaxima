@@ -460,7 +460,7 @@ void TextCell::Recalculate(AFontSize fontsize) {
       ForceBreakLine(true);
     if ((m_keepPercent_last != m_configuration->CheckKeepPercent()) ||
         (m_greekNamesAsLetter != m_configuration->Latin2Greek()))
-      UpdateDisplayedText();
+        UpdateDisplayedText();
     m_greekNamesAsLetter = m_configuration->Latin2Greek();
     m_keepPercent_last = m_configuration->CheckKeepPercent();
     SetFont(m_configuration->GetRecalcDC(), m_fontSize_Scaled);
@@ -1428,7 +1428,7 @@ wxString TextCell::GetSymbolUnicode(bool keepPercent) const {
     else if (m_text == wxS("%i"))
       return wxS("i");
     else if (m_text == wxS("%pi"))
-      return wxString(wxS("\u03C0"));
+      return wxS("\u03C0");
   }
 
   return wxEmptyString;
