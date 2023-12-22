@@ -377,3 +377,51 @@ const Style &Style::FromStockFont(wxStockGDI::Item font) {
 
 Style::FontVariantCachesMap Style::m_fontCaches;
 wxString Style::m_emptyString;
+
+std::ostream& operator<<(std::ostream& out, const TextStyle textstyle){
+  std::string result;
+  switch(textstyle){
+  case TS_CODE_DEFAULT: result = "TS_CODE_DEFAULT"; break;
+  case TS_CODE_VARIABLE: result = "TS_CODE_VARIABLE"; break;
+  case TS_CODE_FUNCTION: result = "TS_CODE_FUNCTION"; break;
+  case TS_CODE_COMMENT: result = "TS_CODE_COMMENT"; break;
+  case TS_CODE_NUMBER: result = "TS_CODE_NUMBER"; break;
+  case TS_CODE_STRING: result = "TS_CODE_STRING"; break;
+  case TS_CODE_OPERATOR: result = "TS_CODE_OPERATOR"; break;
+  case TS_CODE_LISP: result = "TS_CODE_LISP"; break;
+  case TS_CODE_ENDOFLINE: result = "TS_CODE_ENDOFLINE"; break;
+  case TS_ASCIIMATHS: result = "TS_ASCIIMATHS"; break;
+  case TS_MATH: result = "TS_MATH"; break;
+  case TS_TEXT: result = "TS_TEXT"; break;
+  case TS_VARIABLE: result = "TS_VARIABLE"; break;
+  case TS_OPERATOR: result = "TS_OPERATOR"; break;
+  case TS_NUMBER: result = "TS_NUMBER"; break;
+  case TS_FUNCTION: result = "TS_FUNCTION"; break;
+  case TS_SPECIAL_CONSTANT: result = "TS_SPECIAL_CONSTANT"; break;
+  case TS_GREEK_CONSTANT: result = "TS_GREEK_CONSTANT"; break;
+  case TS_STRING: result = "TS_STRING"; break;
+  case TS_OUTDATED: result = "TS_OUTDATED"; break;
+  case TS_MAIN_PROMPT: result = "TS_MAIN_PROMPT"; break;
+  case TS_OTHER_PROMPT: result = "TS_OTHER_PROMPT"; break;
+  case TS_LABEL: result = "TS_LABEL"; break;
+  case TS_USERLABEL: result = "TS_USERLABEL"; break;
+  case TS_HIGHLIGHT: result = "TS_HIGHLIGHT"; break;
+  case TS_WARNING: result = "TS_WARNING"; break;
+  case TS_ERROR: result = "TS_ERROR"; break;
+  case TS_TITLE: result = "TS_TITLE"; break;
+  case TS_SECTION: result = "TS_SECTION"; break;
+  case TS_SUBSECTION: result = "TS_SUBSECTION"; break;
+  case TS_SUBSUBSECTION: result = "TS_SUBSUBSECTION"; break;
+  case TS_HEADING5: result = "TS_HEADING5"; break;
+  case TS_HEADING6: result = "TS_HEADING6"; break;
+  case TS_TEXT_BACKGROUND: result = "TS_TEXT_BACKGROUND"; break;
+  case TS_DOCUMENT_BACKGROUND: result = "TS_DOCUMENT_BACKGROUND"; break;
+  case TS_CELL_BRACKET: result = "TS_CELL_BRACKET"; break;
+  case TS_ACTIVE_CELL_BRACKET: result = "TS_ACTIVE_CELL_BRACKET"; break;
+  case TS_CURSOR: result = "TS_CURSOR"; break;
+  case TS_SELECTION: result = "TS_SELECTION"; break;
+  case TS_EQUALSSELECTION: result = "TS_EQUALSSELECTION"; break;
+  default: result = "!!!Bug: Unknown text style!!!";
+  }
+  return out << result;
+}

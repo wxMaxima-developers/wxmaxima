@@ -1363,3 +1363,29 @@ Cell *Cell::GetInnerCell(size_t) const {
   wxASSERT_MSG(false, "Invalid use of GetInnerCell with no inner cells");
   return nullptr;
 }
+
+std::ostream& operator<<(std::ostream& out, const CellType celltype){
+  std::string result;
+  switch(celltype){
+  case MC_TYPE_DEFAULT: result = "MC_TYPE_DEFAULT"; break;
+  case MC_TYPE_MAIN_PROMPT: result = "MC_TYPE_MAIN_PROMPT"; break;
+  case MC_TYPE_PROMPT: result = "MC_TYPE_PROMPT"; break;
+  case MC_TYPE_LABEL: result = "MC_TYPE_LABEL"; break;
+  case   MC_TYPE_INPUT: result = "MC_TYPE_INPUT"; break;
+  case MC_TYPE_WARNING: result = "MC_TYPE_WARNING"; break;
+  case MC_TYPE_ERROR: result = "MC_TYPE_ERROR"; break;
+  case MC_TYPE_TEXT: result = "MC_TYPE_TEXT"; break;
+  case MC_TYPE_ASCIIMATHS: result = "MC_TYPE_ASCIIMATHS"; break;
+  case MC_TYPE_SUBSECTION: result = "MC_TYPE_SUBSECTION"; break;
+  case MC_TYPE_SUBSUBSECTION: result = "MC_TYPE_SUBSUBSECTION"; break;
+  case MC_TYPE_HEADING5: result = "MC_TYPE_HEADING5"; break;
+  case MC_TYPE_HEADING6: result = "MC_TYPE_HEADING6"; break;
+  case MC_TYPE_SECTION: result = "MC_TYPE_SECTION"; break;
+  case MC_TYPE_TITLE: result = "MC_TYPE_TITLE"; break;
+  case MC_TYPE_IMAGE: result = "MC_TYPE_IMAGE"; break;
+  case MC_TYPE_SLIDE: result = "MC_TYPE_SLIDE"; break;
+  case MC_TYPE_GROUP: result = "MC_TYPE_GROUP"; break;
+  default: result = "!!!Bug: Unknown cell type!!!";
+  }
+  return out << result;
+}

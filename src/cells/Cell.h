@@ -81,6 +81,8 @@ enum CellType : int8_t
   MC_TYPE_SLIDE,       //!< An animation created by the with_slider_* maxima commands
   MC_TYPE_GROUP        //!< A group cells that bundles several individual cells together
 };
+//! Allow Standard c++ streams to print out our enum values as text.
+std::ostream& operator<<(std::ostream& out, const CellType celltype);
 
 #if wxUSE_ACCESSIBILITY
 class CellAccessible;

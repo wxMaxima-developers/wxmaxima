@@ -52,6 +52,8 @@ enum GroupType : int8_t
   GC_TYPE_IMAGE,
   GC_TYPE_PAGEBREAK
 };
+//! Allow Standard c++ streams to print out our enum values as text.
+std::ostream& operator<<(std::ostream& out, const GroupType grouptype);
 
 /*! A cell grouping input (and, if there is one, also the output) cell to a foldable item
 

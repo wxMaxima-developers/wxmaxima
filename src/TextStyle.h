@@ -31,6 +31,9 @@
  */
 
 #include <wx/colour.h>
+#include <map>
+#include <string>
+#include <ostream>
 #include <wx/config.h>
 #include <wx/font.h>
 #include <wx/settings.h>
@@ -271,5 +274,8 @@ enum TextStyle : int8_t
   NUMBEROFSTYLES, //!< This is not a style, but its value tells us how many styles are defined
   TS_INVALID //!< If a text style cannot be determined this value is used
 };
+
+//! Allow Standard c++ streams to print out our enum values as text.
+std::ostream& operator<<(std::ostream& out, const TextStyle textstyle);
 
 #endif // TEXTSTYLE_H

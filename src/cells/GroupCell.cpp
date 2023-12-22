@@ -2025,3 +2025,24 @@ wxString GroupCell::m_lookalikeChars(
                                                   "∅")
                                      wxS("⌀") wxS(
                                                   "⊘"));
+
+std::ostream& operator<<(std::ostream& out, const GroupType grouptype){
+  std::string result;
+  switch(grouptype){
+  case GC_TYPE_INVALID: result = "GC_TYPE_INVALID"; break;
+  case GC_TYPE_CODE: result = "GC_TYPE_CODE"; break;
+  case GC_TYPE_TITLE: result = "GC_TYPE_TITLE"; break;
+  case GC_TYPE_SECTION: result = "GC_TYPE_SECTION"; break;
+  case GC_TYPE_SUBSECTION: result = "GC_TYPE_SUBSECTION"; break;
+  case GC_TYPE_SUBSUBSECTION: result = "GC_TYPE_SUBSUBSECTION"; break;
+  case GC_TYPE_HEADING5: result = "GC_TYPE_HEADING5"; break;
+  case GC_TYPE_HEADING6: result = "GC_TYPE_HEADING6"; break;
+  case GC_TYPE_TEXT: result = "GC_TYPE_TEXT"; break;
+  case GC_TYPE_IMAGE: result = "GC_TYPE_IMAGE"; break;
+  case GC_TYPE_PAGEBREAK: result = "GC_TYPE_PAGEBREAK"; break;
+  default: result = "!!!Bug: Unknown GroupCell type!!!";
+  }
+  return out << result;
+}
+
+    
