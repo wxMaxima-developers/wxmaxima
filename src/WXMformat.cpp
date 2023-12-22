@@ -80,6 +80,24 @@ namespace Format {
     {WXM_FOLD_END, wxS("/* [wxMaxima: fold    end   ] */")},
     {WXM_HIDE, wxS("/* [wxMaxima: hide output   ] */")},
     {WXM_AUTOANSWER, wxS("/* [wxMaxima: autoanswer    ] */")},
+    {WXM_HIDDEN_INPUT, wxS("/* [wxMaxima: hide output   ] *//* [wxMaxima: input   start ] */"),
+        wxS("/* [wxMaxima: input   end   ] */")},
+    {WXM_HIDDEN_TITLE, wxS("/* [wxMaxima: hide output   ] *//* [wxMaxima: title   start ]"),
+     wxS("   [wxMaxima: title   end   ] */")},
+    {WXM_HIDDEN_SECTION, wxS("/* [wxMaxima: hide output   ] *//* [wxMaxima: section start ]"),
+     wxS("   [wxMaxima: section end   ] */")},
+    {WXM_HIDDEN_SUBSECTION, wxS("/* [wxMaxima: hide output   ] *//* [wxMaxima: subsect start ]"),
+     wxS("   [wxMaxima: subsect end   ] */")},
+    {WXM_HIDDEN_SUBSUBSECTION, wxS("/* [wxMaxima: hide output   ] *//* [wxMaxima: subsubsect start ]"),
+     wxS("   [wxMaxima: subsubsect end   ] */")},
+    {WXM_HIDDEN_HEADING5, wxS("/* [wxMaxima: hide output   ] *//* [wxMaxima: heading5 start ]"),
+     wxS("   [wxMaxima: heading5 end   ] */")},
+    {WXM_HIDDEN_HEADING6, wxS("/* [wxMaxima: hide output   ] *//* [wxMaxima: heading6 start ]"),
+     wxS("   [wxMaxima: heading6 end   ] */")},
+    {WXM_HIDDEN_COMMENT, wxS("/* [wxMaxima: hide output   ] *//* [wxMaxima: comment start ]"),
+     wxS("   [wxMaxima: comment end   ] */")},
+    {WXM_HIDDEN_CAPTION, wxS("/* [wxMaxima: hide output   ] *//* [wxMaxima: caption start ]"),
+     wxS("   [wxMaxima: caption end   ] */")},
   };
 
   class WXMHeaderCollection {
@@ -89,18 +107,15 @@ namespace Format {
       bool check = std::is_sorted(
                                   std::begin(WXMHeaders), std::end(WXMHeaders),
                                   [](const WXMHeader &l, const WXMHeader &r) { return l.id < r.id; });
-      if (!check)
-        abort(); // An assertion is not enough - this is a programming bug
+      wxASSERT(check);
     }
     static const wxString &GetStart(WXMHeaderId index) {
-      wxASSERT(index >= 0 && std::size_t(index) < size);
       if((index >= 0 && std::size_t(index) < size))
         return WXMHeaders[index].start;
       else
         return m_emptyString;
     }
     static const wxString &GetEnd(WXMHeaderId index) {
-      wxASSERT(index >= 0 && std::size_t(index) < size);
       if((index >= 0 && std::size_t(index) < size))
         return WXMHeaders[index].end;
       else
@@ -268,6 +283,19 @@ namespace Format {
       case WXM_INPUT:
         line = getLinesUntil(Headers.GetEnd(headerId));
         cell = std::make_unique<GroupCell>(config, GroupType(headerId), line);
+        hideCell(cell.get());
+        break;
+      case WXM_HIDDEN_TITLE:
+      case WXM_HIDDEN_SECTION:
+      case WXM_HIDDEN_SUBSECTION:
+      case WXM_HIDDEN_SUBSUBSECTION:
+      case WXM_HIDDEN_HEADING5:
+      case WXM_HIDDEN_HEADING6:
+      case WXM_HIDDEN_COMMENT:
+      case WXM_HIDDEN_INPUT:
+        hide = true;
+        line = getLinesUntil(Headers.GetEnd(headerId));
+        cell = std::make_unique<GroupCell>(config, GroupType(headerId - 128), line);
         hideCell(cell.get());
         break;
 
