@@ -542,7 +542,7 @@ $(function() {
 <div class="line"><a name="l00483"></a><span class="lineno">  483</span>&#160; </div>
 <div class="line"><a name="l00484"></a><span class="lineno">  484</span>&#160;<span class="comment">// We need a dummy global operator&lt;&lt; so we can bring it into Catch namespace later</span></div>
 <div class="line"><a name="l00485"></a><span class="lineno"><a class="line" href="structCatch__global__namespace__dummy.html">  485</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structCatch__global__namespace__dummy.html">Catch_global_namespace_dummy</a> {};</div>
-<div class="line"><a name="l00486"></a><span class="lineno">  486</span>&#160;std::ostream&amp; operator&lt;&lt;(std::ostream&amp;, <a class="code" href="structCatch__global__namespace__dummy.html">Catch_global_namespace_dummy</a>);</div>
+<div class="line"><a name="l00486"></a><span class="lineno">  486</span>&#160;std::ostream&amp; <a class="code" href="Cell_8cpp.html#a7851f745f8e5a14bbd69b3e66e446658">operator&lt;&lt;</a>(std::ostream&amp;, <a class="code" href="structCatch__global__namespace__dummy.html">Catch_global_namespace_dummy</a>);</div>
 <div class="line"><a name="l00487"></a><span class="lineno">  487</span>&#160; </div>
 <div class="line"><a name="l00488"></a><span class="lineno">  488</span>&#160;<span class="keyword">namespace </span>Catch {</div>
 <div class="line"><a name="l00489"></a><span class="lineno">  489</span>&#160; </div>
@@ -583,7 +583,7 @@ $(function() {
 <div class="line"><a name="l00524"></a><span class="lineno">  524</span>&#160;        std::size_t line;</div>
 <div class="line"><a name="l00525"></a><span class="lineno">  525</span>&#160;    };</div>
 <div class="line"><a name="l00526"></a><span class="lineno">  526</span>&#160; </div>
-<div class="line"><a name="l00527"></a><span class="lineno">  527</span>&#160;    std::ostream&amp; operator &lt;&lt; ( std::ostream&amp; os, <a class="code" href="structCatch_1_1SourceLineInfo.html">SourceLineInfo</a> <span class="keyword">const</span>&amp; info );</div>
+<div class="line"><a name="l00527"></a><span class="lineno">  527</span>&#160;    std::ostream&amp; <a class="code" href="Cell_8cpp.html#a7851f745f8e5a14bbd69b3e66e446658">operator &lt;&lt; </a>( std::ostream&amp; os, <a class="code" href="structCatch_1_1SourceLineInfo.html">SourceLineInfo</a> <span class="keyword">const</span>&amp; info );</div>
 <div class="line"><a name="l00528"></a><span class="lineno">  528</span>&#160; </div>
 <div class="line"><a name="l00529"></a><span class="lineno">  529</span>&#160;    <span class="comment">// Bring in operator&lt;&lt; from global namespace into Catch namespace</span></div>
 <div class="line"><a name="l00530"></a><span class="lineno">  530</span>&#160;    <span class="comment">// This is necessary because the overload of operator&lt;&lt; above makes</span></div>
@@ -735,7 +735,7 @@ $(function() {
 <div class="line"><a name="l00679"></a><span class="lineno">  679</span>&#160;    };</div>
 <div class="line"><a name="l00680"></a><span class="lineno">  680</span>&#160; </div>
 <div class="line"><a name="l00681"></a><span class="lineno">  681</span>&#160;    <span class="keyword">auto</span> operator += ( std::string&amp; lhs, <a class="code" href="classCatch_1_1StringRef.html">StringRef</a> <span class="keyword">const</span>&amp; sr ) -&gt; std::string&amp;;</div>
-<div class="line"><a name="l00682"></a><span class="lineno">  682</span>&#160;    <span class="keyword">auto</span> operator &lt;&lt; ( std::ostream&amp; os, <a class="code" href="classCatch_1_1StringRef.html">StringRef</a> <span class="keyword">const</span>&amp; sr ) -&gt; std::ostream&amp;;</div>
+<div class="line"><a name="l00682"></a><span class="lineno">  682</span>&#160;    <span class="keyword">auto</span> <a class="code" href="Cell_8cpp.html#a7851f745f8e5a14bbd69b3e66e446658">operator &lt;&lt; </a>( std::ostream&amp; os, <a class="code" href="classCatch_1_1StringRef.html">StringRef</a> <span class="keyword">const</span>&amp; sr ) -&gt; std::ostream&amp;;</div>
 <div class="line"><a name="l00683"></a><span class="lineno">  683</span>&#160; </div>
 <div class="line"><a name="l00684"></a><span class="lineno">  684</span>&#160;    constexpr <span class="keyword">auto</span> <span class="keyword">operator</span> <span class="stringliteral">&quot;&quot;</span> _sr( <span class="keywordtype">char</span> <span class="keyword">const</span>* rawChars, std::size_t size ) noexcept -&gt; <a class="code" href="classCatch_1_1StringRef.html">StringRef</a> {</div>
 <div class="line"><a name="l00685"></a><span class="lineno">  685</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="classCatch_1_1StringRef.html">StringRef</a>( rawChars, size );</div>
@@ -2588,7 +2588,7 @@ $(function() {
 <div class="line"><a name="l02541"></a><span class="lineno"> 2541</span>&#160; </div>
 <div class="line"><a name="l02542"></a><span class="lineno"> 2542</span>&#160;        <span class="keyword">explicit</span> <span class="keyword">operator</span> bool() <span class="keyword">const</span>;</div>
 <div class="line"><a name="l02543"></a><span class="lineno"> 2543</span>&#160; </div>
-<div class="line"><a name="l02544"></a><span class="lineno"> 2544</span>&#160;        <span class="keyword">friend</span> <span class="keyword">auto</span> operator &lt;&lt; ( std::ostream&amp; os, <a class="code" href="classCatch_1_1LazyExpression.html">LazyExpression</a> <span class="keyword">const</span>&amp; lazyExpr ) -&gt; std::ostream&amp;;</div>
+<div class="line"><a name="l02544"></a><span class="lineno"> 2544</span>&#160;        <span class="keyword">friend</span> <span class="keyword">auto</span> <a class="code" href="Cell_8cpp.html#a7851f745f8e5a14bbd69b3e66e446658">operator &lt;&lt; </a>( std::ostream&amp; os, <a class="code" href="classCatch_1_1LazyExpression.html">LazyExpression</a> <span class="keyword">const</span>&amp; lazyExpr ) -&gt; std::ostream&amp;;</div>
 <div class="line"><a name="l02545"></a><span class="lineno"> 2545</span>&#160;    };</div>
 <div class="line"><a name="l02546"></a><span class="lineno"> 2546</span>&#160; </div>
 <div class="line"><a name="l02547"></a><span class="lineno"><a class="line" href="structCatch_1_1AssertionReaction.html"> 2547</a></span>&#160;    <span class="keyword">struct </span><a class="code" href="structCatch_1_1AssertionReaction.html">AssertionReaction</a> {</div>
@@ -6050,7 +6050,7 @@ $(function() {
 <div class="line"><a name="l06022"></a><span class="lineno"> 6022</span>&#160;        <span class="keywordtype">bool</span> m_moved = <span class="keyword">false</span>;</div>
 <div class="line"><a name="l06023"></a><span class="lineno"> 6023</span>&#160;    };</div>
 <div class="line"><a name="l06024"></a><span class="lineno"> 6024</span>&#160; </div>
-<div class="line"><a name="l06025"></a><span class="lineno"> 6025</span>&#160;    std::ostream&amp; operator &lt;&lt; ( std::ostream&amp; os, Colour <span class="keyword">const</span>&amp; );</div>
+<div class="line"><a name="l06025"></a><span class="lineno"> 6025</span>&#160;    std::ostream&amp; <a class="code" href="Cell_8cpp.html#a7851f745f8e5a14bbd69b3e66e446658">operator &lt;&lt; </a>( std::ostream&amp; os, Colour <span class="keyword">const</span>&amp; );</div>
 <div class="line"><a name="l06026"></a><span class="lineno"> 6026</span>&#160; </div>
 <div class="line"><a name="l06027"></a><span class="lineno"> 6027</span>&#160;} <span class="comment">// end namespace Catch</span></div>
 <div class="line"><a name="l06028"></a><span class="lineno"> 6028</span>&#160; </div>
@@ -6254,7 +6254,7 @@ $(function() {
 <div class="line"><a name="l06226"></a><span class="lineno"> 6226</span>&#160; </div>
 <div class="line"><a name="l06227"></a><span class="lineno"> 6227</span>&#160;        <span class="keywordtype">void</span> encodeTo( std::ostream&amp; os ) <span class="keyword">const</span>;</div>
 <div class="line"><a name="l06228"></a><span class="lineno"> 6228</span>&#160; </div>
-<div class="line"><a name="l06229"></a><span class="lineno"> 6229</span>&#160;        <span class="keyword">friend</span> std::ostream&amp; operator &lt;&lt; ( std::ostream&amp; os, XmlEncode <span class="keyword">const</span>&amp; xmlEncode );</div>
+<div class="line"><a name="l06229"></a><span class="lineno"> 6229</span>&#160;        <span class="keyword">friend</span> std::ostream&amp; <a class="code" href="Cell_8cpp.html#a7851f745f8e5a14bbd69b3e66e446658">operator &lt;&lt; </a>( std::ostream&amp; os, XmlEncode <span class="keyword">const</span>&amp; xmlEncode );</div>
 <div class="line"><a name="l06230"></a><span class="lineno"> 6230</span>&#160; </div>
 <div class="line"><a name="l06231"></a><span class="lineno"> 6231</span>&#160;    <span class="keyword">private</span>:</div>
 <div class="line"><a name="l06232"></a><span class="lineno"> 6232</span>&#160;        std::string m_str;</div>
@@ -8198,7 +8198,7 @@ $(function() {
 <div class="line"><a name="l08178"></a><span class="lineno"> 8178</span>&#160;namespace Catch {</div>
 <div class="line"><a name="l08179"></a><span class="lineno"> 8179</span>&#160; </div>
 <div class="line"><a name="l08180"></a><span class="lineno"> 8180</span>&#160;    <span class="keyword">namespace </span>{</div>
-<div class="line"><a name="l08181"></a><span class="lineno"> 8181</span>&#160;        <span class="keyword">auto</span> operator &lt;&lt;( std::ostream&amp; os, ITransientExpression <span class="keyword">const</span>&amp; expr ) -&gt; std::ostream&amp; {</div>
+<div class="line"><a name="l08181"></a><span class="lineno"> 8181</span>&#160;        <span class="keyword">auto</span> <a class="code" href="Cell_8cpp.html#a7851f745f8e5a14bbd69b3e66e446658">operator &lt;&lt;</a>( std::ostream&amp; os, ITransientExpression <span class="keyword">const</span>&amp; expr ) -&gt; std::ostream&amp; {</div>
 <div class="line"><a name="l08182"></a><span class="lineno"> 8182</span>&#160;            expr.streamReconstructedExpression( os );</div>
 <div class="line"><a name="l08183"></a><span class="lineno"> 8183</span>&#160;            <span class="keywordflow">return</span> os;</div>
 <div class="line"><a name="l08184"></a><span class="lineno"> 8184</span>&#160;        }</div>
@@ -8214,7 +8214,7 @@ $(function() {
 <div class="line"><a name="l08194"></a><span class="lineno"> 8194</span>&#160;        <span class="keywordflow">return</span> m_transientExpression != <span class="keyword">nullptr</span>;</div>
 <div class="line"><a name="l08195"></a><span class="lineno"> 8195</span>&#160;    }</div>
 <div class="line"><a name="l08196"></a><span class="lineno"> 8196</span>&#160; </div>
-<div class="line"><a name="l08197"></a><span class="lineno"> 8197</span>&#160;    <span class="keyword">auto</span> operator &lt;&lt; ( std::ostream&amp; os, LazyExpression <span class="keyword">const</span>&amp; lazyExpr ) -&gt; std::ostream&amp; {</div>
+<div class="line"><a name="l08197"></a><span class="lineno"> 8197</span>&#160;    <span class="keyword">auto</span> <a class="code" href="Cell_8cpp.html#a7851f745f8e5a14bbd69b3e66e446658">operator &lt;&lt; </a>( std::ostream&amp; os, LazyExpression <span class="keyword">const</span>&amp; lazyExpr ) -&gt; std::ostream&amp; {</div>
 <div class="line"><a name="l08198"></a><span class="lineno"> 8198</span>&#160;        <span class="keywordflow">if</span>( lazyExpr.m_isNegated )</div>
 <div class="line"><a name="l08199"></a><span class="lineno"> 8199</span>&#160;            os &lt;&lt; <span class="stringliteral">&quot;!&quot;</span>;</div>
 <div class="line"><a name="l08200"></a><span class="lineno"> 8200</span>&#160; </div>
@@ -8649,7 +8649,7 @@ $(function() {
 <div class="line"><a name="l08629"></a><span class="lineno"> 8629</span>&#160;    <span class="keyword">auto</span> begin() const -&gt; iterator { <span class="keywordflow">return</span> iterator(*<span class="keyword">this</span>); }</div>
 <div class="line"><a name="l08630"></a><span class="lineno"> 8630</span>&#160;    <span class="keyword">auto</span> end() const -&gt; iterator { <span class="keywordflow">return</span> { *<span class="keyword">this</span>, m_strings.size() }; }</div>
 <div class="line"><a name="l08631"></a><span class="lineno"> 8631</span>&#160; </div>
-<div class="line"><a name="l08632"></a><span class="lineno"> 8632</span>&#160;    <span class="keyword">inline</span> <span class="keyword">friend</span> std::ostream&amp; operator &lt;&lt; (std::ostream&amp; os, Column <span class="keyword">const</span>&amp; col) {</div>
+<div class="line"><a name="l08632"></a><span class="lineno"> 8632</span>&#160;    <span class="keyword">inline</span> <span class="keyword">friend</span> std::ostream&amp; <a class="code" href="Cell_8cpp.html#a7851f745f8e5a14bbd69b3e66e446658">operator &lt;&lt; </a>(std::ostream&amp; os, Column <span class="keyword">const</span>&amp; col) {</div>
 <div class="line"><a name="l08633"></a><span class="lineno"> 8633</span>&#160;        <span class="keywordtype">bool</span> first = <span class="keyword">true</span>;</div>
 <div class="line"><a name="l08634"></a><span class="lineno"> 8634</span>&#160;        <span class="keywordflow">for</span> (<span class="keyword">auto</span> line : col) {</div>
 <div class="line"><a name="l08635"></a><span class="lineno"> 8635</span>&#160;            <span class="keywordflow">if</span> (first)</div>
@@ -8768,7 +8768,7 @@ $(function() {
 <div class="line"><a name="l08748"></a><span class="lineno"> 8748</span>&#160;        <span class="keywordflow">return</span> combined;</div>
 <div class="line"><a name="l08749"></a><span class="lineno"> 8749</span>&#160;    }</div>
 <div class="line"><a name="l08750"></a><span class="lineno"> 8750</span>&#160; </div>
-<div class="line"><a name="l08751"></a><span class="lineno"> 8751</span>&#160;    <span class="keyword">inline</span> <span class="keyword">friend</span> std::ostream&amp; operator &lt;&lt; (std::ostream&amp; os, Columns <span class="keyword">const</span>&amp; cols) {</div>
+<div class="line"><a name="l08751"></a><span class="lineno"> 8751</span>&#160;    <span class="keyword">inline</span> <span class="keyword">friend</span> std::ostream&amp; <a class="code" href="Cell_8cpp.html#a7851f745f8e5a14bbd69b3e66e446658">operator &lt;&lt; </a>(std::ostream&amp; os, Columns <span class="keyword">const</span>&amp; cols) {</div>
 <div class="line"><a name="l08752"></a><span class="lineno"> 8752</span>&#160; </div>
 <div class="line"><a name="l08753"></a><span class="lineno"> 8753</span>&#160;        <span class="keywordtype">bool</span> first = <span class="keyword">true</span>;</div>
 <div class="line"><a name="l08754"></a><span class="lineno"> 8754</span>&#160;        <span class="keywordflow">for</span> (<span class="keyword">auto</span> line : cols) {</div>
@@ -9587,7 +9587,7 @@ $(function() {
 <div class="line"><a name="l09567"></a><span class="lineno"> 9567</span>&#160;            }</div>
 <div class="line"><a name="l09568"></a><span class="lineno"> 9568</span>&#160;        }</div>
 <div class="line"><a name="l09569"></a><span class="lineno"> 9569</span>&#160; </div>
-<div class="line"><a name="l09570"></a><span class="lineno"> 9570</span>&#160;        <span class="keyword">friend</span> <span class="keyword">auto</span> operator&lt;&lt;( std::ostream &amp;os, Parser <span class="keyword">const</span> &amp;parser ) -&gt; std::ostream&amp; {</div>
+<div class="line"><a name="l09570"></a><span class="lineno"> 9570</span>&#160;        <span class="keyword">friend</span> <span class="keyword">auto</span> <a class="code" href="Cell_8cpp.html#a7851f745f8e5a14bbd69b3e66e446658">operator&lt;&lt;</a>( std::ostream &amp;os, Parser <span class="keyword">const</span> &amp;parser ) -&gt; std::ostream&amp; {</div>
 <div class="line"><a name="l09571"></a><span class="lineno"> 9571</span>&#160;            parser.writeToStream( os );</div>
 <div class="line"><a name="l09572"></a><span class="lineno"> 9572</span>&#160;            <span class="keywordflow">return</span> os;</div>
 <div class="line"><a name="l09573"></a><span class="lineno"> 9573</span>&#160;        }</div>
@@ -9936,7 +9936,7 @@ $(function() {
 <div class="line"><a name="l09916"></a><span class="lineno"> 9916</span>&#160;        <span class="keywordflow">return</span> line &lt; other.line || ( line == other.line &amp;&amp; file != other.file &amp;&amp; (std::strcmp(file, other.file) &lt; 0));</div>
 <div class="line"><a name="l09917"></a><span class="lineno"> 9917</span>&#160;    }</div>
 <div class="line"><a name="l09918"></a><span class="lineno"> 9918</span>&#160; </div>
-<div class="line"><a name="l09919"></a><span class="lineno"> 9919</span>&#160;    std::ostream&amp; operator &lt;&lt; ( std::ostream&amp; os, SourceLineInfo <span class="keyword">const</span>&amp; info ) {</div>
+<div class="line"><a name="l09919"></a><span class="lineno"> 9919</span>&#160;    std::ostream&amp; <a class="code" href="Cell_8cpp.html#a7851f745f8e5a14bbd69b3e66e446658">operator &lt;&lt; </a>( std::ostream&amp; os, SourceLineInfo <span class="keyword">const</span>&amp; info ) {</div>
 <div class="line"><a name="l09920"></a><span class="lineno"> 9920</span>&#160;<span class="preprocessor">#ifndef __GNUG__</span></div>
 <div class="line"><a name="l09921"></a><span class="lineno"> 9921</span>&#160;        os &lt;&lt; info.file &lt;&lt; <span class="charliteral">&#39;(&#39;</span> &lt;&lt; info.line &lt;&lt; <span class="charliteral">&#39;)&#39;</span>;</div>
 <div class="line"><a name="l09922"></a><span class="lineno"> 9922</span>&#160;<span class="preprocessor">#else</span></div>
@@ -10260,7 +10260,7 @@ $(function() {
 <div class="line"><a name="l10240"></a><span class="lineno">10240</span>&#160;        }</div>
 <div class="line"><a name="l10241"></a><span class="lineno">10241</span>&#160;    }</div>
 <div class="line"><a name="l10242"></a><span class="lineno">10242</span>&#160; </div>
-<div class="line"><a name="l10243"></a><span class="lineno">10243</span>&#160;    std::ostream&amp; operator &lt;&lt; ( std::ostream&amp; os, Colour <span class="keyword">const</span>&amp; ) {</div>
+<div class="line"><a name="l10243"></a><span class="lineno">10243</span>&#160;    std::ostream&amp; <a class="code" href="Cell_8cpp.html#a7851f745f8e5a14bbd69b3e66e446658">operator &lt;&lt; </a>( std::ostream&amp; os, Colour <span class="keyword">const</span>&amp; ) {</div>
 <div class="line"><a name="l10244"></a><span class="lineno">10244</span>&#160;        <span class="keywordflow">return</span> os;</div>
 <div class="line"><a name="l10245"></a><span class="lineno">10245</span>&#160;    }</div>
 <div class="line"><a name="l10246"></a><span class="lineno">10246</span>&#160; </div>
@@ -13125,7 +13125,7 @@ $(function() {
 <div class="line"><a name="l13109"></a><span class="lineno">13109</span>&#160;        <span class="keywordtype">char</span> <span class="keyword">const</span> * <span class="keyword">const</span> branchName;</div>
 <div class="line"><a name="l13110"></a><span class="lineno">13110</span>&#160;        <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <span class="keyword">const</span> buildNumber;</div>
 <div class="line"><a name="l13111"></a><span class="lineno">13111</span>&#160; </div>
-<div class="line"><a name="l13112"></a><span class="lineno">13112</span>&#160;        <span class="keyword">friend</span> std::ostream&amp; operator &lt;&lt; ( std::ostream&amp; os, Version <span class="keyword">const</span>&amp; version );</div>
+<div class="line"><a name="l13112"></a><span class="lineno">13112</span>&#160;        <span class="keyword">friend</span> std::ostream&amp; <a class="code" href="Cell_8cpp.html#a7851f745f8e5a14bbd69b3e66e446658">operator &lt;&lt; </a>( std::ostream&amp; os, Version <span class="keyword">const</span>&amp; version );</div>
 <div class="line"><a name="l13113"></a><span class="lineno">13113</span>&#160;    };</div>
 <div class="line"><a name="l13114"></a><span class="lineno">13114</span>&#160; </div>
 <div class="line"><a name="l13115"></a><span class="lineno">13115</span>&#160;    Version <span class="keyword">const</span>&amp; libraryVersion();</div>
@@ -13727,7 +13727,7 @@ $(function() {
 <div class="line"><a name="l13717"></a><span class="lineno">13717</span>&#160;        m_label( label )</div>
 <div class="line"><a name="l13718"></a><span class="lineno">13718</span>&#160;    {}</div>
 <div class="line"><a name="l13719"></a><span class="lineno">13719</span>&#160; </div>
-<div class="line"><a name="l13720"></a><span class="lineno">13720</span>&#160;    std::ostream&amp; operator &lt;&lt; ( std::ostream&amp; os, pluralise <span class="keyword">const</span>&amp; pluraliser ) {</div>
+<div class="line"><a name="l13720"></a><span class="lineno">13720</span>&#160;    std::ostream&amp; <a class="code" href="Cell_8cpp.html#a7851f745f8e5a14bbd69b3e66e446658">operator &lt;&lt; </a>( std::ostream&amp; os, pluralise <span class="keyword">const</span>&amp; pluraliser ) {</div>
 <div class="line"><a name="l13721"></a><span class="lineno">13721</span>&#160;        os &lt;&lt; pluraliser.m_count &lt;&lt; <span class="charliteral">&#39; &#39;</span> &lt;&lt; pluraliser.m_label;</div>
 <div class="line"><a name="l13722"></a><span class="lineno">13722</span>&#160;        <span class="keywordflow">if</span>( pluraliser.m_count != 1 )</div>
 <div class="line"><a name="l13723"></a><span class="lineno">13723</span>&#160;            os &lt;&lt; <span class="charliteral">&#39;s&#39;</span>;</div>
@@ -13768,7 +13768,7 @@ $(function() {
 <div class="line"><a name="l13758"></a><span class="lineno">13758</span>&#160;            &amp;&amp; (std::memcmp( m_start, other.m_start, m_size ) == 0);</div>
 <div class="line"><a name="l13759"></a><span class="lineno">13759</span>&#160;    }</div>
 <div class="line"><a name="l13760"></a><span class="lineno">13760</span>&#160; </div>
-<div class="line"><a name="l13761"></a><span class="lineno">13761</span>&#160;    <span class="keyword">auto</span> operator &lt;&lt; ( std::ostream&amp; os, StringRef <span class="keyword">const</span>&amp; str ) -&gt; std::ostream&amp; {</div>
+<div class="line"><a name="l13761"></a><span class="lineno">13761</span>&#160;    <span class="keyword">auto</span> <a class="code" href="Cell_8cpp.html#a7851f745f8e5a14bbd69b3e66e446658">operator &lt;&lt; </a>( std::ostream&amp; os, StringRef <span class="keyword">const</span>&amp; str ) -&gt; std::ostream&amp; {</div>
 <div class="line"><a name="l13762"></a><span class="lineno">13762</span>&#160;        <span class="keywordflow">return</span> os.write(str.data(), str.size());</div>
 <div class="line"><a name="l13763"></a><span class="lineno">13763</span>&#160;    }</div>
 <div class="line"><a name="l13764"></a><span class="lineno">13764</span>&#160; </div>
@@ -15160,7 +15160,7 @@ $(function() {
 <div class="line"><a name="l15153"></a><span class="lineno">15153</span>&#160;        buildNumber( _buildNumber )</div>
 <div class="line"><a name="l15154"></a><span class="lineno">15154</span>&#160;    {}</div>
 <div class="line"><a name="l15155"></a><span class="lineno">15155</span>&#160; </div>
-<div class="line"><a name="l15156"></a><span class="lineno">15156</span>&#160;    std::ostream&amp; operator &lt;&lt; ( std::ostream&amp; os, Version <span class="keyword">const</span>&amp; version ) {</div>
+<div class="line"><a name="l15156"></a><span class="lineno">15156</span>&#160;    std::ostream&amp; <a class="code" href="Cell_8cpp.html#a7851f745f8e5a14bbd69b3e66e446658">operator &lt;&lt; </a>( std::ostream&amp; os, Version <span class="keyword">const</span>&amp; version ) {</div>
 <div class="line"><a name="l15157"></a><span class="lineno">15157</span>&#160;        os  &lt;&lt; version.majorVersion &lt;&lt; <span class="charliteral">&#39;.&#39;</span></div>
 <div class="line"><a name="l15158"></a><span class="lineno">15158</span>&#160;            &lt;&lt; version.minorVersion &lt;&lt; <span class="charliteral">&#39;.&#39;</span></div>
 <div class="line"><a name="l15159"></a><span class="lineno">15159</span>&#160;            &lt;&lt; version.patchNumber;</div>
@@ -15384,7 +15384,7 @@ $(function() {
 <div class="line"><a name="l15377"></a><span class="lineno">15377</span>&#160;        }</div>
 <div class="line"><a name="l15378"></a><span class="lineno">15378</span>&#160;    }</div>
 <div class="line"><a name="l15379"></a><span class="lineno">15379</span>&#160; </div>
-<div class="line"><a name="l15380"></a><span class="lineno">15380</span>&#160;    std::ostream&amp; operator &lt;&lt; ( std::ostream&amp; os, XmlEncode <span class="keyword">const</span>&amp; xmlEncode ) {</div>
+<div class="line"><a name="l15380"></a><span class="lineno">15380</span>&#160;    std::ostream&amp; <a class="code" href="Cell_8cpp.html#a7851f745f8e5a14bbd69b3e66e446658">operator &lt;&lt; </a>( std::ostream&amp; os, XmlEncode <span class="keyword">const</span>&amp; xmlEncode ) {</div>
 <div class="line"><a name="l15381"></a><span class="lineno">15381</span>&#160;        xmlEncode.encodeTo( os );</div>
 <div class="line"><a name="l15382"></a><span class="lineno">15382</span>&#160;        <span class="keywordflow">return</span> os;</div>
 <div class="line"><a name="l15383"></a><span class="lineno">15383</span>&#160;    }</div>
@@ -16137,7 +16137,7 @@ $(function() {
 <div class="line"><a name="l16130"></a><span class="lineno">16130</span>&#160;        }</div>
 <div class="line"><a name="l16131"></a><span class="lineno">16131</span>&#160; </div>
 <div class="line"><a name="l16132"></a><span class="lineno">16132</span>&#160;    }</div>
-<div class="line"><a name="l16133"></a><span class="lineno">16133</span>&#160;    <span class="keyword">friend</span> <span class="keyword">auto</span> operator &lt;&lt; (std::ostream&amp; os, Duration <span class="keyword">const</span>&amp; duration) -&gt; std::ostream&amp; {</div>
+<div class="line"><a name="l16133"></a><span class="lineno">16133</span>&#160;    <span class="keyword">friend</span> <span class="keyword">auto</span> <a class="code" href="Cell_8cpp.html#a7851f745f8e5a14bbd69b3e66e446658">operator &lt;&lt; </a>(std::ostream&amp; os, Duration <span class="keyword">const</span>&amp; duration) -&gt; std::ostream&amp; {</div>
 <div class="line"><a name="l16134"></a><span class="lineno">16134</span>&#160;        <span class="keywordflow">return</span> os &lt;&lt; duration.value() &lt;&lt; <span class="charliteral">&#39; &#39;</span> &lt;&lt; duration.unitsAsString();</div>
 <div class="line"><a name="l16135"></a><span class="lineno">16135</span>&#160;    }</div>
 <div class="line"><a name="l16136"></a><span class="lineno">16136</span>&#160;};</div>
@@ -16184,12 +16184,12 @@ $(function() {
 <div class="line"><a name="l16177"></a><span class="lineno">16177</span>&#160;    }</div>
 <div class="line"><a name="l16178"></a><span class="lineno">16178</span>&#160; </div>
 <div class="line"><a name="l16179"></a><span class="lineno">16179</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l16180"></a><span class="lineno">16180</span>&#160;    <span class="keyword">friend</span> TablePrinter&amp; operator &lt;&lt; (TablePrinter&amp; tp, T <span class="keyword">const</span>&amp; value) {</div>
+<div class="line"><a name="l16180"></a><span class="lineno">16180</span>&#160;    <span class="keyword">friend</span> TablePrinter&amp; <a class="code" href="Cell_8cpp.html#a7851f745f8e5a14bbd69b3e66e446658">operator &lt;&lt; </a>(TablePrinter&amp; tp, T <span class="keyword">const</span>&amp; value) {</div>
 <div class="line"><a name="l16181"></a><span class="lineno">16181</span>&#160;        tp.m_oss &lt;&lt; value;</div>
 <div class="line"><a name="l16182"></a><span class="lineno">16182</span>&#160;        <span class="keywordflow">return</span> tp;</div>
 <div class="line"><a name="l16183"></a><span class="lineno">16183</span>&#160;    }</div>
 <div class="line"><a name="l16184"></a><span class="lineno">16184</span>&#160; </div>
-<div class="line"><a name="l16185"></a><span class="lineno">16185</span>&#160;    <span class="keyword">friend</span> TablePrinter&amp; operator &lt;&lt; (TablePrinter&amp; tp, ColumnBreak) {</div>
+<div class="line"><a name="l16185"></a><span class="lineno">16185</span>&#160;    <span class="keyword">friend</span> TablePrinter&amp; <a class="code" href="Cell_8cpp.html#a7851f745f8e5a14bbd69b3e66e446658">operator &lt;&lt; </a>(TablePrinter&amp; tp, ColumnBreak) {</div>
 <div class="line"><a name="l16186"></a><span class="lineno">16186</span>&#160;        <span class="keyword">auto</span> colStr = tp.m_oss.str();</div>
 <div class="line"><a name="l16187"></a><span class="lineno">16187</span>&#160;        <span class="keyword">const</span> <span class="keyword">auto</span> strSize = colStr.size();</div>
 <div class="line"><a name="l16188"></a><span class="lineno">16188</span>&#160;        tp.m_oss.str(<span class="stringliteral">&quot;&quot;</span>);</div>
@@ -16211,7 +16211,7 @@ $(function() {
 <div class="line"><a name="l16204"></a><span class="lineno">16204</span>&#160;        <span class="keywordflow">return</span> tp;</div>
 <div class="line"><a name="l16205"></a><span class="lineno">16205</span>&#160;    }</div>
 <div class="line"><a name="l16206"></a><span class="lineno">16206</span>&#160; </div>
-<div class="line"><a name="l16207"></a><span class="lineno">16207</span>&#160;    <span class="keyword">friend</span> TablePrinter&amp; operator &lt;&lt; (TablePrinter&amp; tp, RowBreak) {</div>
+<div class="line"><a name="l16207"></a><span class="lineno">16207</span>&#160;    <span class="keyword">friend</span> TablePrinter&amp; <a class="code" href="Cell_8cpp.html#a7851f745f8e5a14bbd69b3e66e446658">operator &lt;&lt; </a>(TablePrinter&amp; tp, RowBreak) {</div>
 <div class="line"><a name="l16208"></a><span class="lineno">16208</span>&#160;        <span class="keywordflow">if</span> (tp.m_currentColumn &gt; 0) {</div>
 <div class="line"><a name="l16209"></a><span class="lineno">16209</span>&#160;            tp.m_os &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
 <div class="line"><a name="l16210"></a><span class="lineno">16210</span>&#160;            tp.m_currentColumn = -1;</div>
@@ -17713,6 +17713,7 @@ $(function() {
 <div class="line"><a name="l17708"></a><span class="lineno">17708</span>&#160;<span class="comment">// end catch.hpp</span></div>
 <div class="line"><a name="l17709"></a><span class="lineno">17709</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// TWOBLUECUBES_SINGLE_INCLUDE_CATCH_HPP_INCLUDED</span></div>
 <div class="line"><a name="l17710"></a><span class="lineno">17710</span>&#160; </div>
+<div class="ttc" id="aCell_8cpp_html_a7851f745f8e5a14bbd69b3e66e446658"><div class="ttname"><a href="Cell_8cpp.html#a7851f745f8e5a14bbd69b3e66e446658">operator&lt;&lt;</a></div><div class="ttdeci">std::ostream &amp; operator&lt;&lt;(std::ostream &amp;out, const CellType celltype)</div><div class="ttdoc">Allow Standard c++ streams to print out our enum values as text.</div><div class="ttdef"><b>Definition:</b> Cell.cpp:1367</div></div>
 <div class="ttc" id="aclassCatch_1_1AssertionHandler_html"><div class="ttname"><a href="classCatch_1_1AssertionHandler.html">Catch::AssertionHandler</a></div><div class="ttdef"><b>Definition:</b> catch.hpp:2552</div></div>
 <div class="ttc" id="aclassCatch_1_1BinaryExpr_html"><div class="ttname"><a href="classCatch_1_1BinaryExpr.html">Catch::BinaryExpr</a></div><div class="ttdef"><b>Definition:</b> catch.hpp:2228</div></div>
 <div class="ttc" id="aclassCatch_1_1Capturer_html"><div class="ttname"><a href="classCatch_1_1Capturer.html">Catch::Capturer</a></div><div class="ttdef"><b>Definition:</b> catch.hpp:2656</div></div>

@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['initopt_3168',['InitOpt',['../classConfiguration.html#ac7d8b1beccdf8f887368251c3e6d0d71',1,'Configuration']]],
-  ['integraltype_3169',['IntegralType',['../classIntCell.html#a2a3fc8ef2b5940f378935190c99634e6',1,'IntCell']]]
+  ['initopt_3170',['InitOpt',['../classConfiguration.html#ac7d8b1beccdf8f887368251c3e6d0d71',1,'Configuration']]],
+  ['integraltype_3171',['IntegralType',['../classIntCell.html#a2a3fc8ef2b5940f378935190c99634e6',1,'IntCell']]]
 ];
