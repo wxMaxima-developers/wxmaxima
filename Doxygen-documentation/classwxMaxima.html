@@ -110,9 +110,8 @@ Public Types</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ad879c3cc60eb246e6d44ab33c08210a8"><td class="memItemLeft" align="right" valign="top"><a id="ad879c3cc60eb246e6d44ab33c08210a8"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>wxMaxima</b> (wxWindow *parent, int id, const wxString title, const wxString &amp;filename=wxEmptyString, const wxPoint pos=wxDefaultPosition, const wxSize size=wxDefaultSize)</td></tr>
-<tr class="separator:ad879c3cc60eb246e6d44ab33c08210a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af47ff8ece9e9eaf9177b78d2c75bbdb1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#af47ff8ece9e9eaf9177b78d2c75bbdb1">wxMaxima</a> (wxWindow *parent, int id, const wxString title, const wxString &amp;filename=wxEmptyString, const wxString initialWorksheetContents=wxEmptyString, const wxPoint pos=wxDefaultPosition, const wxSize size=wxDefaultSize)</td></tr>
+<tr class="separator:af47ff8ece9e9eaf9177b78d2c75bbdb1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a788c1d2de5271c02229a3a402faf2aa2"><td class="memItemLeft" align="right" valign="top"><a id="a788c1d2de5271c02229a3a402faf2aa2"></a>
 wxString&#160;</td><td class="memItemRight" valign="bottom"><b>EscapeFilenameForShell</b> (wxString name)</td></tr>
 <tr class="separator:a788c1d2de5271c02229a3a402faf2aa2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -122,9 +121,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="separator:a9b95a0c3d855f1a45bd2cff7e6edf7fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a19ab7d30da525d3d704cce97fa9cae75"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#a19ab7d30da525d3d704cce97fa9cae75">ShowTip</a> (bool force)</td></tr>
 <tr class="separator:a19ab7d30da525d3d704cce97fa9cae75"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afdac87d999a3e8312559cfbdff43c9c8"><td class="memItemLeft" align="right" valign="top"><a id="afdac87d999a3e8312559cfbdff43c9c8"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>SetWXMdata</b> (const wxString &amp;data)</td></tr>
-<tr class="separator:afdac87d999a3e8312559cfbdff43c9c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a424f91348d992b5d78cef4150c4eb341"><td class="memItemLeft" align="right" valign="top"><a id="a424f91348d992b5d78cef4150c4eb341"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#a424f91348d992b5d78cef4150c4eb341">EvalOnStartup</a> (bool eval)</td></tr>
 <tr class="memdesc:a424f91348d992b5d78cef4150c4eb341"><td class="mdescLeft">&#160;</td><td class="mdescRight">Do we want to evaluate the document on startup? <br /></td></tr>
@@ -953,9 +949,6 @@ std::unique_ptr&lt; wxPrintData &gt;&#160;</td><td class="memItemRight" valign="
 <tr class="memitem:a9ecc598661f55af9f94c9d7a3c244264"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#a9ecc598661f55af9f94c9d7a3c244264">m_closing</a></td></tr>
 <tr class="memdesc:a9ecc598661f55af9f94c9d7a3c244264"><td class="mdescLeft">&#160;</td><td class="mdescRight">Did we tell maxima to close?  <a href="classwxMaxima.html#a9ecc598661f55af9f94c9d7a3c244264">More...</a><br /></td></tr>
 <tr class="separator:a9ecc598661f55af9f94c9d7a3c244264"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a937f69dd831dd8650581e3116236c411"><td class="memItemLeft" align="right" valign="top"><a id="a937f69dd831dd8650581e3116236c411"></a>
-wxString&#160;</td><td class="memItemRight" valign="bottom"><b>m_openFile</b></td></tr>
-<tr class="separator:a937f69dd831dd8650581e3116236c411"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa46b240aaabe1fee1715604e81abfe77"><td class="memItemLeft" align="right" valign="top"><a id="aa46b240aaabe1fee1715604e81abfe77"></a>
 wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#aa46b240aaabe1fee1715604e81abfe77">m_maximaTempDir</a></td></tr>
 <tr class="memdesc:aa46b240aaabe1fee1715604e81abfe77"><td class="mdescLeft">&#160;</td><td class="mdescRight">The directory with maxima's temp files. <br /></td></tr>
@@ -1325,6 +1318,66 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>MaximaIPC</b></td></
 <tr><td class="fieldname"><a id="ab6afd24efcd1d85c6aac02040adf0a68af81ee51de171b5f5c7da391081b0c678"></a>MAXIMA_STDOUT_POLL_ID&#160;</td><td class="fielddoc"><p>We look if we got new data from maxima's stdout. </p>
 </td></tr>
 </table>
+
+</div>
+</div>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="af47ff8ece9e9eaf9177b78d2c75bbdb1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af47ff8ece9e9eaf9177b78d2c75bbdb1">&#9670;&nbsp;</a></span>wxMaxima()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">wxMaxima::wxMaxima </td>
+          <td>(</td>
+          <td class="paramtype">wxWindow *&#160;</td>
+          <td class="paramname"><em>parent</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const wxString&#160;</td>
+          <td class="paramname"><em>title</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const wxString &amp;&#160;</td>
+          <td class="paramname"><em>filename</em> = <code>wxEmptyString</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const wxString&#160;</td>
+          <td class="paramname"><em>initialWorksheetContents</em> = <code>wxEmptyString</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const wxPoint&#160;</td>
+          <td class="paramname"><em>pos</em> = <code>wxDefaultPosition</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const wxSize&#160;</td>
+          <td class="paramname"><em>size</em> = <code>wxDefaultSize</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>wxm data the worksheet is populated from</p>
 
 </div>
 </div>
@@ -1886,7 +1939,6 @@ Menu and button events</h2>
 <hr  />
  <h2><a class="anchor" id="autotoc_md174"></a>
 Idle event</h2>
-<p>wxm data the worksheet is populated from</p>
 
 </div>
 </div>
