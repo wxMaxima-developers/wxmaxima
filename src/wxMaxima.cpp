@@ -192,11 +192,11 @@ void wxMaxima::ConfigChanged() {
 
 wxMaxima::wxMaxima(wxWindow *parent, int id,
                    const wxString title, const wxString &filename,
+                   const wxString initialWorksheetContents,
                    const wxPoint pos, const wxSize size)
   : wxMaximaFrame(parent, id, title, pos, size,
                   wxDEFAULT_FRAME_STYLE | wxSYSTEM_MENU | wxCAPTION,
                   m_topLevelWindows.empty()),
-    m_openFile(filename),
     m_gnuplotcommand(wxS("gnuplot")),
     m_parser(&m_configuration) {
 #if wxUSE_ON_FATAL_EXCEPTION && wxUSE_CRASHREPORT
@@ -388,10 +388,27 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
                                                wxCommandEventHandler(wxMaxima::StatusMsgDClick),
                                                NULL,
                                                this);
-  if (m_openFile.IsEmpty()) {
-    if (!StartMaxima())
-      StatusText(_("Starting Maxima process failed"));
+
+  if (!filename.IsEmpty()) {
+    m_openInitialFileError = !OpenFile(filename);
+    //! wxm data the worksheet is populated from
   }
+  else {
+    if (!initialWorksheetContents.IsEmpty()) {
+      //  Convert the comment block to an array of lines
+      wxStringTokenizer tokenizer(initialWorksheetContents, "\n");
+      std::vector<wxString> lines;
+      while (tokenizer.HasMoreTokens())
+        lines.push_back(tokenizer.GetNextToken());
+      GetWorksheet()->InsertGroupCells(
+                                       Format::TreeFromWXM(lines, &m_configuration));
+      GetWorksheet()->UpdateMLast();
+      GetWorksheet()->SetSaved(true);
+    }
+  }
+
+  if (!StartMaxima())
+    StatusText(_("Starting Maxima process failed"));
   Connect(wxEVT_SCROLL_CHANGED, wxScrollEventHandler(wxMaxima::SliderEvent),
           NULL, this);
   Connect(wxID_CLOSE, wxEVT_MENU, wxCommandEventHandler(wxMaxima::FileMenu),
@@ -2334,9 +2351,6 @@ bool wxMaxima::StartMaxima(bool force) {
   wxString dirname;
   {
     wxString filename = GetWorksheet()->m_currentFile;
-    if (filename.IsEmpty())
-      filename = m_openFile;
-
     if (!filename.IsEmpty()) {
       wxFileName dir(filename);
       dir.MakeAbsolute();
@@ -5049,42 +5063,7 @@ void wxMaxima::OnIdle(wxIdleEvent &event) {
     event.RequestMore();
     return;
   }
-
-  // If wxMaxima has to open a file on startup we wait for that until we have
-  // a valid draw context for size calculations.
-  //
-  // The draw context is created on displaying the worksheet for the 1st time
-  // and after drawing the worksheet onIdle is called => we won't miss this
-  // event when we wait for it here.
-  if (m_configuration.GetRecalcDC() != NULL) {
-    if (!m_openFile.IsEmpty()) {
-      wxString file = m_openFile;
-      m_openFile = wxEmptyString;
-      m_openInitialFileError = !OpenFile(file);
-
-      // After doing such big a thing we should end our idle event and request
-      // a new one to be issued once the computer has time for doing real
-      // background stuff.
-      event.RequestMore();
-      return;
-    }
-    //! wxm data the worksheet is populated from
-    if (!m_initialWorkSheetContents.IsEmpty()) {
-      //  Convert the comment block to an array of lines
-      wxStringTokenizer tokenizer(m_initialWorkSheetContents, "\n");
-      std::vector<wxString> lines;
-      while (tokenizer.HasMoreTokens())
-        lines.push_back(tokenizer.GetNextToken());
-      GetWorksheet()->InsertGroupCells(
-                                    Format::TreeFromWXM(lines, &m_configuration));
-      GetWorksheet()->UpdateMLast();
-      GetWorksheet()->SetSaved(true);
-      m_initialWorkSheetContents = wxEmptyString;
-      event.RequestMore();
-      return;
-    }
-  }
-
+  
   UpdateSlider();
 
   // Update the history sidebar in case it is visible

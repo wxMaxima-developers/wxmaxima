@@ -85,6 +85,7 @@ class wxMaxima : public wxMaximaFrame
 public:
   wxMaxima(wxWindow *parent, int id, const wxString title,
            const wxString &filename = wxEmptyString,
+           const wxString initialWorksheetContents = wxEmptyString,
            const wxPoint pos = wxDefaultPosition, const wxSize size = wxDefaultSize);
 
   virtual ~wxMaxima();
@@ -132,8 +133,6 @@ public:
   wxTimer m_maximaStdoutPollTimer;
 
   void ShowTip(bool force);
-
-  void SetWXMdata(const wxString &data){m_initialWorkSheetContents = data;}
   //! Do we want to evaluate the document on startup?
   void EvalOnStartup(bool eval)
     {
@@ -200,8 +199,6 @@ private:
   bool m_discardAllData = false;
   wxString m_maximaAuthString;
   MaximaIPC m_ipc{this};
-  //! wxm data the worksheet is populated from
-  wxString m_initialWorkSheetContents;
   static bool m_pipeToStderr;
   static bool m_exitOnError;
   static wxString m_extraMaximaArgs;
@@ -809,7 +806,6 @@ protected:
     If we didn't we respan an unexpectedly-closing maxima.
   */
   bool m_closing;
-  wxString m_openFile;
   //! The directory with maxima's temp files
   wxString m_maximaTempDir;
   wxString m_maximaHtmlDir;

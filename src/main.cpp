@@ -476,12 +476,11 @@ void MyApp::NewWindow(const wxString &file, bool evalOnStartup,
   if (numberOfWindows > 1)
     title = wxString::Format(_("wxMaxima %d"), numberOfWindows);
 
-  wxMaxima *frame = new wxMaxima(NULL, -1, title, file);
+  wxString initialContents;
   if (wxmData) {
     // Unzip the .wxm file
     wxMemoryInputStream istream(wxmData, wxmLen);
     wxTextInputStream textIn(istream, "\t", wxConvAuto(wxFONTENCODING_UTF8));
-    wxString initialContents;
     wxString line;
     wxString block;
     while (!istream.Eof()) {
@@ -494,8 +493,8 @@ void MyApp::NewWindow(const wxString &file, bool evalOnStartup,
         block += line + "\n";
     }
     initialContents += _(block);
-    frame->SetWXMdata(initialContents);
   }
+  wxMaxima *frame = new wxMaxima(NULL, -1, title, file, initialContents);
 
   frame->EvalOnStartup(evalOnStartup);
   wxMaximaFrame::m_topLevelWindows.push_back(frame);
