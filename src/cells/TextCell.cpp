@@ -455,15 +455,13 @@ void TextCell::UpdateDisplayedText() {
 }
 
 void TextCell::Recalculate(AFontSize fontsize) {
-  if (GetTextStyle() == TS_ASCIIMATHS)
-    ForceBreakLine(true);
-
   if (NeedsRecalculation(fontsize)) {
-    Cell::Recalculate(fontsize);
+    if (GetTextStyle() == TS_ASCIIMATHS)
+      ForceBreakLine(true);
     if ((m_keepPercent_last != m_configuration->CheckKeepPercent()) ||
         (m_greekNamesAsLetter != m_configuration->Latin2Greek()))
       UpdateDisplayedText();
-    m_greekNamesAsLetter == m_configuration->Latin2Greek();
+    m_greekNamesAsLetter = m_configuration->Latin2Greek();
     m_keepPercent_last = m_configuration->CheckKeepPercent();
     SetFont(m_configuration->GetRecalcDC(), m_fontSize_Scaled);
 
@@ -485,6 +483,7 @@ void TextCell::Recalculate(AFontSize fontsize) {
       m_height = Scale_Px(4);
     m_center = m_height / 2;
   }
+  Cell::Recalculate(fontsize);
 }
 
 void TextCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
