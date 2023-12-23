@@ -526,7 +526,7 @@ $(function() {
 <div class="line"><a name="l00675"></a><span class="lineno">  675</span>&#160; </div>
 <div class="line"><a name="l00676"></a><span class="lineno">  676</span>&#160;<span class="comment">//** Bitfield objects (2 bytes)</span></div>
 <div class="line"><a name="l00677"></a><span class="lineno">  677</span>&#160;<span class="comment">//**</span></div>
-<div class="line"><a name="l00678"></a><span class="lineno">  678</span>&#160;  <span class="keywordtype">void</span> InitBitFields()</div>
+<div class="line"><a name="l00678"></a><span class="lineno">  678</span>&#160;  <span class="keywordtype">void</span> InitBitFields_EditorCell()</div>
 <div class="line"><a name="l00679"></a><span class="lineno">  679</span>&#160;    { <span class="comment">// Keep the initialization order below same as the order</span></div>
 <div class="line"><a name="l00680"></a><span class="lineno">  680</span>&#160;      <span class="comment">// of bit fields in this class!</span></div>
 <div class="line"><a name="l00681"></a><span class="lineno">  681</span>&#160;      m_autoAnswer = <span class="keyword">false</span>;</div>
@@ -540,15 +540,15 @@ $(function() {
 <div class="line"><a name="l00689"></a><span class="lineno">  689</span>&#160;      m_errorIndexSet = <span class="keyword">false</span>;</div>
 <div class="line"><a name="l00690"></a><span class="lineno">  690</span>&#160;    }</div>
 <div class="line"><a name="l00691"></a><span class="lineno">  691</span>&#160; </div>
-<div class="line"><a name="l00693"></a><span class="lineno">  693</span>&#160;  <span class="keywordtype">bool</span> m_autoAnswer : 1 <span class="comment">/* InitBitFields */</span>;</div>
-<div class="line"><a name="l00695"></a><span class="lineno">  695</span>&#160;  <span class="keywordtype">bool</span> m_containsChanges : 1 <span class="comment">/* InitBitFields */</span>;</div>
-<div class="line"><a name="l00696"></a><span class="lineno">  696</span>&#160;  <span class="keywordtype">bool</span> m_containsChangesCheck : 1 <span class="comment">/* InitBitFields */</span>;</div>
-<div class="line"><a name="l00697"></a><span class="lineno">  697</span>&#160;  <span class="keywordtype">bool</span> m_displayCaret : 1 <span class="comment">/* InitBitFields */</span>;</div>
-<div class="line"><a name="l00698"></a><span class="lineno">  698</span>&#160;  <span class="keywordtype">bool</span> m_hasFocus : 1 <span class="comment">/* InitBitFields */</span>;</div>
-<div class="line"><a name="l00699"></a><span class="lineno">  699</span>&#160;  <span class="keywordtype">bool</span> m_isDirty : 1 <span class="comment">/* InitBitFields */</span>;</div>
-<div class="line"><a name="l00700"></a><span class="lineno">  700</span>&#160;  <span class="keywordtype">bool</span> m_errorIndexSet : 1 <span class="comment">/* InitBitFields */</span>;</div>
-<div class="line"><a name="l00702"></a><span class="lineno">  702</span>&#160;  <span class="keywordtype">bool</span> m_selectionChanged : 1 <span class="comment">/* InitBitFields */</span>;</div>
-<div class="line"><a name="l00704"></a><span class="lineno">  704</span>&#160;  <span class="keywordtype">bool</span> m_underlined : 1 <span class="comment">/* InitBitFields */</span>;</div>
+<div class="line"><a name="l00693"></a><span class="lineno">  693</span>&#160;  <span class="keywordtype">bool</span> m_autoAnswer : 1 <span class="comment">/* InitBitFields_EditorCell */</span>;</div>
+<div class="line"><a name="l00695"></a><span class="lineno">  695</span>&#160;  <span class="keywordtype">bool</span> m_containsChanges : 1 <span class="comment">/* InitBitFields_EditorCell */</span>;</div>
+<div class="line"><a name="l00696"></a><span class="lineno">  696</span>&#160;  <span class="keywordtype">bool</span> m_containsChangesCheck : 1 <span class="comment">/* InitBitFields_EditorCell */</span>;</div>
+<div class="line"><a name="l00697"></a><span class="lineno">  697</span>&#160;  <span class="keywordtype">bool</span> m_displayCaret : 1 <span class="comment">/* InitBitFields_EditorCell */</span>;</div>
+<div class="line"><a name="l00698"></a><span class="lineno">  698</span>&#160;  <span class="keywordtype">bool</span> m_hasFocus : 1 <span class="comment">/* InitBitFields_EditorCell */</span>;</div>
+<div class="line"><a name="l00699"></a><span class="lineno">  699</span>&#160;  <span class="keywordtype">bool</span> m_isDirty : 1 <span class="comment">/* InitBitFields_EditorCell */</span>;</div>
+<div class="line"><a name="l00700"></a><span class="lineno">  700</span>&#160;  <span class="keywordtype">bool</span> m_errorIndexSet : 1 <span class="comment">/* InitBitFields_EditorCell */</span>;</div>
+<div class="line"><a name="l00702"></a><span class="lineno">  702</span>&#160;  <span class="keywordtype">bool</span> m_selectionChanged : 1 <span class="comment">/* InitBitFields_EditorCell */</span>;</div>
+<div class="line"><a name="l00704"></a><span class="lineno">  704</span>&#160;  <span class="keywordtype">bool</span> m_underlined : 1 <span class="comment">/* InitBitFields_EditorCell */</span>;</div>
 <div class="line"><a name="l00705"></a><span class="lineno">  705</span>&#160;};</div>
 <div class="line"><a name="l00706"></a><span class="lineno">  706</span>&#160; </div>
 <div class="line"><a name="l00707"></a><span class="lineno">  707</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// EDITORCELL_H</span></div>

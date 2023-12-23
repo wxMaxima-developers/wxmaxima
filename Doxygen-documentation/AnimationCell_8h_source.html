@@ -215,15 +215,15 @@ $(function() {
 <div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160; </div>
 <div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;<span class="comment">//** Bitfield objects (1 bytes)</span></div>
 <div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;<span class="comment">//**</span></div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;  <span class="keywordtype">void</span> InitBitFields()</div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;  <span class="keywordtype">void</span> InitBitFields_AnimationCell()</div>
 <div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;    { <span class="comment">// Keep the initialization order below same as the order</span></div>
 <div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;      <span class="comment">// of bit fields in this class!</span></div>
 <div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;      m_animationRunning = <span class="keyword">true</span>;</div>
 <div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;      m_drawBoundingBox = <span class="keyword">false</span>;</div>
 <div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;    }</div>
 <div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160; </div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;  <span class="keywordtype">bool</span> m_animationRunning : 1 <span class="comment">/* InitBitFields */</span>;</div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;  <span class="keywordtype">bool</span> m_drawBoundingBox : 1 <span class="comment">/* InitBitFields */</span>;</div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;  <span class="keywordtype">bool</span> m_animationRunning : 1 <span class="comment">/* InitBitFields_AnimationCell */</span>;</div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;  <span class="keywordtype">bool</span> m_drawBoundingBox : 1 <span class="comment">/* InitBitFields_AnimationCell */</span>;</div>
 <div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;  wxString m_wxmxFile;</div>
 <div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160; </div>
 <div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;  <span class="keywordtype">int</span> GetImageBorderWidth()<span class="keyword"> const override </span>{ <span class="keywordflow">return</span> m_imageBorderWidth; }</div>

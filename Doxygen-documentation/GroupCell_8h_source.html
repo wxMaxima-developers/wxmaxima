@@ -359,7 +359,7 @@ $(function() {
 <div class="line"><a name="l00448"></a><span class="lineno">  448</span>&#160; </div>
 <div class="line"><a name="l00449"></a><span class="lineno">  449</span>&#160;<span class="comment">//** Bitfield objects (1 bytes)</span></div>
 <div class="line"><a name="l00450"></a><span class="lineno">  450</span>&#160;<span class="comment">//**</span></div>
-<div class="line"><a name="l00451"></a><span class="lineno">  451</span>&#160;  <span class="keywordtype">void</span> InitBitFields()</div>
+<div class="line"><a name="l00451"></a><span class="lineno">  451</span>&#160;  <span class="keywordtype">void</span> InitBitFields_GroupCell()</div>
 <div class="line"><a name="l00452"></a><span class="lineno">  452</span>&#160;    { <span class="comment">// Keep the initialization order below same as the order</span></div>
 <div class="line"><a name="l00453"></a><span class="lineno">  453</span>&#160;      <span class="comment">// of bit fields in this class!</span></div>
 <div class="line"><a name="l00454"></a><span class="lineno">  454</span>&#160;      <a class="code" href="classGroupCell.html#a3c0fc474baebfe58f022886d4c67df31">m_autoAnswer</a> = <span class="keyword">false</span>;</div>
@@ -370,12 +370,12 @@ $(function() {
 <div class="line"><a name="l00459"></a><span class="lineno">  459</span>&#160;      m_cellsAppended = <span class="keyword">false</span>;</div>
 <div class="line"><a name="l00460"></a><span class="lineno">  460</span>&#160;    }</div>
 <div class="line"><a name="l00461"></a><span class="lineno">  461</span>&#160; </div>
-<div class="line"><a name="l00463"></a><span class="lineno"><a class="line" href="classGroupCell.html#a3c0fc474baebfe58f022886d4c67df31">  463</a></span>&#160;  <span class="keywordtype">bool</span> <a class="code" href="classGroupCell.html#a3c0fc474baebfe58f022886d4c67df31">m_autoAnswer</a> : 1 <span class="comment">/* InitBitFields */</span>;</div>
-<div class="line"><a name="l00464"></a><span class="lineno">  464</span>&#160;  <span class="keywordtype">bool</span> m_inEvaluationQueue : 1 <span class="comment">/* InitBitFields */</span>;</div>
-<div class="line"><a name="l00465"></a><span class="lineno">  465</span>&#160;  <span class="keywordtype">bool</span> m_lastInEvaluationQueue : 1 <span class="comment">/* InitBitFields */</span>;</div>
-<div class="line"><a name="l00466"></a><span class="lineno">  466</span>&#160;  <span class="keywordtype">bool</span> m_updateConfusableCharWarnings : 1 <span class="comment">/* InitBitFields */</span>;</div>
-<div class="line"><a name="l00468"></a><span class="lineno"><a class="line" href="classGroupCell.html#af78c9f91699bd500e5a167027760de40">  468</a></span>&#160;  <span class="keywordtype">bool</span> <a class="code" href="classGroupCell.html#af78c9f91699bd500e5a167027760de40">m_suppressTooltipMarker</a> : 1 <span class="comment">/* InitBitFields */</span>;</div>
-<div class="line"><a name="l00469"></a><span class="lineno">  469</span>&#160;  <span class="keywordtype">bool</span> m_cellsAppended : 1; <span class="comment">/* InitBitFields */</span></div>
+<div class="line"><a name="l00463"></a><span class="lineno"><a class="line" href="classGroupCell.html#a3c0fc474baebfe58f022886d4c67df31">  463</a></span>&#160;  <span class="keywordtype">bool</span> <a class="code" href="classGroupCell.html#a3c0fc474baebfe58f022886d4c67df31">m_autoAnswer</a> : 1 <span class="comment">/* InitBitFields_GroupCell */</span>;</div>
+<div class="line"><a name="l00464"></a><span class="lineno">  464</span>&#160;  <span class="keywordtype">bool</span> m_inEvaluationQueue : 1 <span class="comment">/* InitBitFields_GroupCell */</span>;</div>
+<div class="line"><a name="l00465"></a><span class="lineno">  465</span>&#160;  <span class="keywordtype">bool</span> m_lastInEvaluationQueue : 1 <span class="comment">/* InitBitFields_GroupCell */</span>;</div>
+<div class="line"><a name="l00466"></a><span class="lineno">  466</span>&#160;  <span class="keywordtype">bool</span> m_updateConfusableCharWarnings : 1 <span class="comment">/* InitBitFields_GroupCell */</span>;</div>
+<div class="line"><a name="l00468"></a><span class="lineno"><a class="line" href="classGroupCell.html#af78c9f91699bd500e5a167027760de40">  468</a></span>&#160;  <span class="keywordtype">bool</span> <a class="code" href="classGroupCell.html#af78c9f91699bd500e5a167027760de40">m_suppressTooltipMarker</a> : 1 <span class="comment">/* InitBitFields_GroupCell */</span>;</div>
+<div class="line"><a name="l00469"></a><span class="lineno">  469</span>&#160;  <span class="keywordtype">bool</span> m_cellsAppended : 1; <span class="comment">/* InitBitFields_GroupCell */</span></div>
 <div class="line"><a name="l00470"></a><span class="lineno">  470</span>&#160; </div>
 <div class="line"><a name="l00471"></a><span class="lineno">  471</span>&#160;  <span class="keyword">static</span> wxString m_lookalikeChars;</div>
 <div class="line"><a name="l00472"></a><span class="lineno">  472</span>&#160;};</div>
