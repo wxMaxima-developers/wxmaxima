@@ -81,7 +81,7 @@ public:
   //! Gets a style that represents a given font. The font gets cached.
   static const Style &FromFont(const wxFont &font);
   //! Gets a style that represents a stock font. The font is pre-cached.
-  static const Style &FromStockFont(wxStockGDI::Item font);
+  static Style FromStockFont(wxStockGDI::Item font);
 
   constexpr static wxFontFamily Default_Family{wxFONTFAMILY_DEFAULT};
   constexpr static wxFontEncoding Default_Encoding{wxFONTENCODING_DEFAULT};

@@ -104,12 +104,6 @@ Image::Image(Configuration *config, wxString image,
   m_svgImage = NULL;
   m_configuration = config;
   m_scaledBitmap.Create(1, 1);
-  m_width = 1;
-  m_height = 1;
-  m_maxWidth = -1;
-  m_maxHeight = -1;
-  m_originalWidth = 640;
-  m_originalHeight = 480;
   m_ppi = m_configuration->GetPPI().x;
   LoadImage(image, wxmxFile, remove);
 }
@@ -118,8 +112,6 @@ Image::Image(Configuration *config, const Image &image) {
   m_svgImage = NULL;
   m_configuration = config;
   m_scaledBitmap.Create(1, 1);
-  m_width = 1;
-  m_height = 1;
   m_maxWidth = image.m_maxWidth;
   m_maxHeight = image.m_maxHeight;
   m_originalWidth = image.m_originalWidth;

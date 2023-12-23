@@ -349,8 +349,8 @@ const wxFont &Style::GetFont(AFontSize fontSize) const {
                                 IsSlant(), IsStrikethrough()));
 }
 
-const Style &Style::FromStockFont(wxStockGDI::Item font) {
-  static Style retval;
+Style Style::FromStockFont(wxStockGDI::Item font) {
+  Style retval;
   switch (font) {
   case wxStockGDI::FONT_ITALIC: {
     retval.SetFromFont(*wxITALIC_FONT);

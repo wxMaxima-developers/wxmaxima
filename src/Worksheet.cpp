@@ -292,7 +292,7 @@ bool Worksheet::RedrawIfRequested() {
          m_cellPointers.m_groupCellUnderPointer->GetRect().GetTop()) ||
         (m_pointer_y >
          m_cellPointers.m_groupCellUnderPointer->GetRect().GetBottom())) {
-      GroupCell *oldGroupCellUnderPointer =
+      const GroupCell *oldGroupCellUnderPointer =
         m_cellPointers.m_groupCellUnderPointer;
 
       // find out which group cell lies under the pointer

@@ -91,8 +91,10 @@ public:
   std::unique_ptr<Cell> Copy(GroupCell *group) const override;
 
   //! Get the previous EditorCell in the list
+  // cppcheck-suppress duplInheritedMember
   EditorCell *GetPrevious() const { return dynamic_cast<EditorCell*>(Cell::GetPrevious()); }
   //! Get the next EditorCell in the list.
+  // cppcheck-suppress duplInheritedMember
   EditorCell *GetNext() const { return dynamic_cast<EditorCell*>(Cell::GetNext()); }
 
   //! Insert the symbol that corresponds to the ESC command txt

@@ -218,9 +218,9 @@ public:
   void Recalculate(double scale = 1.0);
 
   //! The width of the scaled image
-  long m_width;
+  long m_width = 1;
   //! The height of the scaled image
-  long m_height;
+  long m_height = 1;
 
   //! Returns the original image in its compressed form
   const wxMemoryBuffer GetCompressedImage() const;
@@ -261,9 +261,9 @@ private:
   //! A zipped version of the gnuplot data needed in order to create this image.
   wxMemoryBuffer m_gnuplotData_Compressed;
   //! The width of the unscaled image
-  std::size_t m_originalWidth;
+  std::size_t m_originalWidth = 640;
   //! The height of the unscaled image
-  std::size_t m_originalHeight;
+  std::size_t m_originalHeight = 480;
   //! The bitmap, scaled down to the screen size
   wxBitmap m_scaledBitmap;
   //! The file extension for the current image type
@@ -274,7 +274,7 @@ private:
   wxString m_gnuplotData;
   mutable std::thread m_loadImageTask;
   void LoadImage_Backgroundtask(std::unique_ptr<ThreadNumberLimiter> limiter,
-                                wxString image, wxString wxmxFile,
+                                wxString image, wxString wxmxfile,
                                 bool remove);
   std::thread m_loadGnuplotSourceTask;
   void LoadGnuplotSource_Backgroundtask(
