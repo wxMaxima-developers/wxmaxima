@@ -94,13 +94,10 @@ bool Svgout::Layout() {
   return true;
 }
 
-static wxDataFormat &Format() {
-  static wxDataFormat format(wxS("image/svg+xml"));
-  return format;
-}
+const wxDataFormat Svgout::m_svgFormat(wxS("image/svg+xml"));
 
 std::unique_ptr<wxCustomDataObject> Svgout::GetDataObject() {
-  return m_cmn.GetDataObject(Format());
+  return m_cmn.GetDataObject(m_svgFormat);
 }
 
-bool Svgout::ToClipboard() { return m_cmn.ToClipboard(Format()); }
+bool Svgout::ToClipboard() { return m_cmn.ToClipboard(m_svgFormat); }

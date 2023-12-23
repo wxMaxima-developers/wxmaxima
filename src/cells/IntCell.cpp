@@ -234,7 +234,7 @@ void IntCell::DrawSvgSign(wxDC *dc, wxPoint pos)
                 pos.x, pos.y, true);
 }
 
-void IntCell::DrawHanddrawnSign(wxDC *dc, wxPoint pos)
+void IntCell::DrawHanddrawnSign(wxDC *dc, wxPoint pos) const
 {
   // top decoration
   int signCenter = m_signWidth / 2;

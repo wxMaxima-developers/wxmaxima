@@ -1904,12 +1904,10 @@ bool EditorCell::HandleOrdinaryKey(wxKeyEvent &event) {
   m_containsChanges = true;
   bool insertLetter = true;
 
-  if (SelectionActive()) {
-    if(SelectionActive())
-      SaveValue();
-    else
-      SaveValue(History::Action::addChar);
-  }
+  if(SelectionActive())
+    SaveValue();
+  else
+    SaveValue(History::Action::addChar);
 
   wxChar keyCode;
   keyCode = event.GetUnicodeKey();

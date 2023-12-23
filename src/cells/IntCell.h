@@ -82,7 +82,7 @@ public:
 private:
   wxCoord IntSignLimitYoffset() const { return Scale_Px(8); }
   void DrawSvgSign(wxDC *dc, wxPoint pos);
-  void DrawHanddrawnSign(wxDC *dc, wxPoint pos);
+  void DrawHanddrawnSign(wxDC *dc, wxPoint pos) const;
   /*! Do we want to use a SVG integral sign?
 
     Is constexpr, which means: This is evaluated at compile time.

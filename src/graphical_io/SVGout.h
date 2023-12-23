@@ -75,6 +75,7 @@ private:
   wxString m_CWD;
 
   bool Layout();
+  static const wxDataFormat m_svgFormat;
 };
 
 #endif // SVGOUT_H
