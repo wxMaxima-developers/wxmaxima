@@ -211,7 +211,7 @@ wxString SubSupCell::ToString() const {
     if (m_postSupCell->IsCompound())
       s += ")";
   } else {
-    for (const auto &cell : m_scriptCells)
+    for (const Cell * const &cell : m_scriptCells)
       s += "[" + cell->ListToString() + "]";
   }
   return s;
@@ -235,7 +235,7 @@ wxString SubSupCell::ToMatlab() const {
     s += "[";
     bool first = false;
 
-    for (const auto &cell : m_scriptCells) {
+    for (const Cell * const &cell : m_scriptCells) {
       if (!first)
         s += ";";
       first = true;
@@ -396,7 +396,7 @@ wxString SubSupCell::GetDiffPart() const {
     s += ",";
     s += m_postSupCell->ListToString();
   } else {
-    for (const auto &cell : m_scriptCells)
+    for (const Cell * const &cell : m_scriptCells)
       s += "[" + cell->ListToString() + "]";
     s += ",1";
   }
