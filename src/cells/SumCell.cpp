@@ -50,7 +50,6 @@ SumCell::SumCell(GroupCell *group, Configuration *config, sumStyle style,
 
 // cppcheck-suppress uninitMemberVar symbolName=SumCell::m_signHeight
 // cppcheck-suppress uninitMemberVar symbolName=SumCell::m_signWidth
-// cppcheck-suppress uninitMemberVar symbolName=SumCell::m_signWCenter
 SumCell::SumCell(GroupCell *group, const SumCell &cell)
   : SumCell(group, cell.m_configuration, cell.m_sumStyle,
             CopyList(group, cell.m_under.get()),
@@ -116,56 +115,51 @@ std::unique_ptr<Cell> SumCell::MakeStart(Cell *under) const {
 }
 
 void SumCell::Recalculate(AFontSize fontsize) {
-  DisplayedBase()->RecalculateList(fontsize);
-  m_start->RecalculateList(fontsize);
-  m_var->RecalculateList(fontsize);
-
-  if (IsBrokenIntoLines()) {
-    m_over->RecalculateList(fontsize);
-    m_comma1->RecalculateList(fontsize);
-    m_comma2->RecalculateList(fontsize);
-    m_comma3->RecalculateList(fontsize);
-    m_open->RecalculateList(fontsize);
-    m_close->RecalculateList(fontsize);
-  } else
-    m_over->RecalculateList({MC_MIN_SIZE, fontsize - SUM_DEC});
-
-  bool useSVGsign;
-  if (m_sumStyle == SM_SUM)
-    useSVGsign = true;
-  else
-    useSVGsign = false;
-  // tell compilers and static analysis tools not to worry if they
-  // believe that useSVGsign does never change value
-  (void) useSVGsign;
-  if(useSVGsign)
-    {
-      m_signHeight = Scale_Px(40.0);
-      m_signWidth = 13 * m_signHeight / 15;
-    }
-  else
-    {
-      m_signHeight = DisplayedBase()->GetHeightList();
-      if (m_sumStyle == SM_SUM)
-        m_signWidth = 3.0 * m_signHeight / 5.0;
-      else
-        m_signWidth = 4.0 * m_signHeight / 5.0;
-    }
-  m_signWCenter = m_signWidth / 2.0;
-  if (IsBrokenIntoLines())
-    m_under->RecalculateList(fontsize);
-  else
-    m_under->RecalculateList({MC_MIN_SIZE, fontsize - SUM_DEC});
-
-  m_signWCenter = std::max(m_signWCenter, m_under->GetFullWidth() / 2);
-  m_signWCenter = std::max(m_signWCenter, m_over->GetFullWidth() / 2);
-  m_width = 2 * m_signWCenter + DisplayedBase()->GetFullWidth() + Scale_Px(4);
-
-  m_center = std::max(m_over->GetHeightList() + Scale_Px(2) + m_signHeight / 2,
-                   DisplayedBase()->GetCenterList());
-  m_height = m_center +
-    std::max(m_under->GetHeightList() + Scale_Px(4) + m_signHeight / 2,
-          DisplayedBase()->GetMaxDrop());
+  if (NeedsRecalculation(fontsize)) {
+    DisplayedBase()->RecalculateList(fontsize);
+    m_start->RecalculateList(fontsize);
+    m_var->RecalculateList(fontsize);
+    
+    if (m_sumStyle == SM_SUM)
+      {
+        // A sane height for the sum sign
+        m_signHeight = Scale_Px(40.0);
+        // The width of the sum sign is defined by its height and aspect ratio
+        m_signWidth = 13 * m_signHeight / 15;
+      }
+    else
+      {
+        // A sane height for the product sign
+        m_signHeight = Scale_Px(40.0);
+        // The width of the product sign is defined by its height and aspect ratio
+        m_signWidth = m_signHeight;
+      }
+    
+    if (IsBrokenIntoLines()) {
+      m_over->RecalculateList(fontsize);
+      m_under->RecalculateList(fontsize);
+      m_comma1->RecalculateList(fontsize);
+      m_comma2->RecalculateList(fontsize);
+      m_comma3->RecalculateList(fontsize);
+      m_open->RecalculateList(fontsize);
+      m_close->RecalculateList(fontsize);
+      m_width = 0;
+      m_center = 0;
+      m_height = 0;
+    } else {
+      m_over->RecalculateList({MC_MIN_SIZE, fontsize - SUM_DEC});
+      m_under->RecalculateList({MC_MIN_SIZE, fontsize - SUM_DEC});
+      m_width = std::max(std::max(m_signWidth, m_over->GetFullWidth()),
+                         m_under->GetFullWidth()) + DisplayedBase()->GetFullWidth();
+    
+      m_center = std::max(m_signHeight / 2 + Scale_Px(2)
+                          + m_over->GetHeightList(),
+                          DisplayedBase()->GetCenterList());
+      m_height = m_center +
+        std::max(m_under->GetHeightList() +  Scale_Px(2) + m_signHeight / 2,
+                 DisplayedBase()->GetMaxDrop());
+    }    
+  }  
   Cell::Recalculate(fontsize);
 }
 
@@ -174,57 +168,30 @@ void SumCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
 
   if (DrawThisCell(point)) {
 
-    wxPoint base(point), under(point), over(point);
+    wxPoint base(point), under(point), over(point), sign(point);
 
-    under.x += m_signWCenter - m_under->GetFullWidth() / 2;
-    under.y = point.y + m_signHeight / 2 + m_under->GetCenterList() + Scale_Px(2);
+    wxCoord signCenter_horizontal = std::max(std::max(m_signWidth, m_over->GetFullWidth()),
+                                             m_under->GetFullWidth()) / 2;
+
+    under.x += signCenter_horizontal - m_under->GetFullWidth() / 2;
+    under.y += + m_signHeight / 2 + Scale_Px(2) + m_under->GetCenterList();
     m_under->DrawList(under, dc, antialiassingDC);
 
-    over.x += m_signWCenter - m_over->GetFullWidth() / 2;
-    over.y = point.y - m_signHeight / 2 - m_over->GetMaxDrop() - Scale_Px(2);
+    over.x += signCenter_horizontal - m_over->GetFullWidth() / 2;
+    over.y -= m_signHeight / 2 + m_over->GetMaxDrop() + Scale_Px(2);
     m_over->DrawList(over, dc, antialiassingDC);
 
-    SetPen(antialiassingDC, 1.5);
-    if (m_sumStyle == SM_SUM) {
-      // FIXME: The sum sign look ok now, but the position/size can be improved!!
-      if(UseSvgSign()) {
-        antialiassingDC->DrawBitmap(BitmapFromSVG(m_svgSumSign, wxSize(m_signWidth, m_signHeight)),
-                                    base.x, over.y+m_signHeight/3, true);
-      } else {
-        // DRAW SUM SIGN
-        //  Upper part
-        const wxPoint points[5] = {
-          {m_signWCenter + int(m_signWidth / 2), -(m_signHeight / 2)},
-          {m_signWCenter - int(m_signWidth / 2), -(m_signHeight / 2)},
-          {m_signWCenter + int(m_signWidth / 5), 0},
-          {m_signWCenter - int(m_signWidth / 2), (m_signHeight / 2)},
-          {m_signWCenter + int(m_signWidth / 2), (m_signHeight / 2)}};
-        antialiassingDC->DrawLines(5, points, point.x, point.y);
-      }
-    } else {
-      // DRAW PRODUCT SIGN
-      // FIXME: The product sign look ok now, but the position/size can be improved!!
-      if(UseSvgSign()) {
-        antialiassingDC->DrawBitmap(BitmapFromSVG(m_svgProdSign, wxSize(m_signWidth, m_signHeight)),
-                                    base.x, over.y+m_signHeight/3, true);
-      } else {
-        // Vertical lines
-        antialiassingDC->DrawLine(point.x + m_signWCenter + m_signWidth / 6,
-                                  point.y + m_signHeight / 2,
-                                  point.x + m_signWCenter + m_signWidth / 6,
-                                  point.y - m_signHeight / 2);
-        antialiassingDC->DrawLine(point.x + m_signWCenter - m_signWidth / 6,
-                                  point.y + m_signHeight / 2,
-                                  point.x + m_signWCenter - m_signWidth / 6,
-                                  point.y - m_signHeight / 2);
-        // Horizontal line
-        antialiassingDC->DrawLine(point.x + m_signWCenter - m_signWidth / 2,
-                                  point.y - m_signHeight / 2,
-                                  point.x + m_signWCenter + m_signWidth / 2,
-                                  point.y - m_signHeight / 2);
-      }
-    }
-    base.x += (2 * m_signWCenter + Scale_Px(4));
+    sign.x += signCenter_horizontal - m_signWidth / 2;
+    sign.y -= .5 * m_signHeight;
+    if (m_sumStyle == SM_SUM)
+      antialiassingDC->DrawBitmap(BitmapFromSVG(m_svgSumSign, wxSize(m_signWidth, m_signHeight)),
+                                  sign.x, sign.y, true);
+    else
+      antialiassingDC->DrawBitmap(BitmapFromSVG(m_svgProdSign, wxSize(m_signWidth, m_signHeight)),
+                                  sign.x, sign.y, true);
+    
+    base.x += std::max(std::max(m_signWidth, m_over->GetFullWidth()),
+                         m_under->GetFullWidth());
     DisplayedBase()->DrawList(base, dc, antialiassingDC);
   }
 }

@@ -77,17 +77,6 @@ public:
   void Unbreak() override final;
 
 private:
-  /*! Do we want to use SVG sum and product signs?
-
-    Is constexpr, which means: This is evaluated at compile time.
-   */
-  constexpr bool UseSvgSign() const {
-#ifdef WXM_WITHOUT_SVG_SIGNS
-    return false;
-#else
-    return true;
-#endif
-  }
   std::unique_ptr<Cell> MakeStart(Cell *under) const;
   void MakeBreakUpCells();
   const static wxString m_svgSumSign;
@@ -117,9 +106,8 @@ private:
   std::unique_ptr<Cell> m_under;
   // The pointers above point to inner cells and must be kept contiguous.
 
-  float m_signWidth = 30.0f;
-  int m_signHeight = 50;
-  int m_signWCenter = 15;
+  wxCoord m_signWidth = 30.0f;
+  wxCoord m_signHeight = 50;
   sumStyle m_sumStyle = SM_SUM;
 
 //** Bitfield objects (1 bytes)

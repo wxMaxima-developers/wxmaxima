@@ -2261,6 +2261,10 @@ void wxMaxima::OnMaximaConnect() {
     wxLogMessage(_("New connection attempt, but no currently running maxima process."));
     return;
   }
+  if (m_server == NULL) {
+    wxLogMessage(_("New connection attempt, but no currently no socket maxima could connect to."));
+    return;
+  }
 
   m_statusBar->NetworkStatus(StatusBar::idle);
   GetWorksheet()->QuestionAnswered();

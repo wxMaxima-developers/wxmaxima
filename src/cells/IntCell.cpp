@@ -88,135 +88,85 @@ void IntCell::MakeBreakUpCells() {
 }
 
 void IntCell::Recalculate(AFontSize fontsize) {
-  wxASSERT(fontsize.IsValid());
+  if (NeedsRecalculation(fontsize)) {
+    wxASSERT(fontsize.IsValid());
 
-  m_base->RecalculateList(fontsize);
-  m_var->RecalculateList(fontsize);
-  if (IsBrokenIntoLines()) {
-    // Cell is being displayed in its linear form. That means: All of its components
-    // are printed in the current font size and the 2D object this cell can print
-    // isn't displayed at all.
-    m_open->RecalculateList(fontsize);
-    m_comma1->RecalculateList(fontsize);
-    m_comma2->RecalculateList(fontsize);
-    m_lowerLimit->RecalculateList(fontsize);
-    m_comma3->RecalculateList(fontsize);
-    m_upperLimit->RecalculateList(fontsize);
-    m_close->RecalculateList(fontsize);
-    m_center = 0;
-    m_height = 0;
-    m_width = 0;
-  } else {
-    // Make the font used for the limits a bit smaller than the font used for the
-    // contents  
-    m_lowerLimit->RecalculateList({MC_MIN_SIZE, fontsize - 5});
-    m_upperLimit->RecalculateList({MC_MIN_SIZE, fontsize - 5});
-    if (UseSvgSign())
-      {
-        // The integral sign is displayed as an SVG graphics. As line thickness scales
-        // with the sign we need to make it a constant height.
-        m_signHeight = Scale_Px(40.0);
-        if (m_signHeight < 6)
-          m_signHeight = 6;
-        // The sign width in this case is defined by the sign height and the sign's aspect
-        // ratio
-        m_signWidth = m_signHeight * 19.879 / 51.781;
-      }
-    else
-      {
-        // The integral sign is hand-drawn by wxWidgets and can therefore adapt
-        // to it's content's height
-        m_signWidth = Scale_Px(14);
-        if (HasLimits())
-          {
-            m_signHeight = std::max(Scale_Px(35) + m_upperLimit->GetHeightList() +
-                                    m_lowerLimit->GetHeightList(),
-                                    m_base->GetHeightList());
-          }
-        else
-          {
-            m_signHeight = Scale_Px(35) + m_base->GetHeightList();
-          }
-        
-      }
-    m_width = m_signWidth + m_base->GetFullWidth() +
-      std::max(m_upperLimit->GetFullWidth(), m_lowerLimit->GetFullWidth()) +
-      m_var->GetFullWidth() + Scale_Px(4);
-    if (HasLimits()) {
-
-      if(UseSvgSign())
-        {
-          m_center = std::max(std::max(m_signHeight / 2,
-                                       m_base->GetCenterList()),
-                              m_upperLimit->GetHeightList() + IntSignLimitYoffset()
-                              );
-          m_height = m_center + std::max(std::max(m_signHeight / 2,
-                                                  m_base->GetMaxDrop()),
-                                         m_lowerLimit->GetHeightList() + IntSignLimitYoffset()
-                                         );
-        }
-      else
-        {
-          /* The height of our whole integral needs to be
-             - either high enough for the integral's contents, or
-             - enough for the "upperLimit" and "lowerLimit" plus a MC_LINE_SKIP between them, or
-             - enough for the integral sign.
-          */
-          m_center = std::max(std::max(m_signHeight / 2,
-                                       m_base->GetCenterList()), m_upperLimit->GetMaxDrop() + MC_LINE_SKIP / 2);
-          m_height = m_center + std::max(std::max(m_signHeight / 2,
-                                                  m_base->GetMaxDrop()), m_upperLimit->GetMaxDrop()
-                                         + MC_LINE_SKIP + m_lowerLimit->GetMaxDrop());
-        }
+    m_base->RecalculateList(fontsize);
+    m_var->RecalculateList(fontsize);
+    if (IsBrokenIntoLines()) {
+      // Cell is being displayed in its linear form. That means: All of its components
+      // are printed in the current font size and the 2D object this cell can print
+      // isn't displayed at all.
+      m_open->RecalculateList(fontsize);
+      m_comma1->RecalculateList(fontsize);
+      m_comma2->RecalculateList(fontsize);
+      m_comma3->RecalculateList(fontsize);
+      m_close->RecalculateList(fontsize);
+      m_upperLimit->RecalculateList(fontsize);
+      m_lowerLimit->RecalculateList(fontsize);
+      m_center = 0;
+      m_height = 0;
+      m_width = 0;
     } else {
-      m_center = std::max(m_signHeight / 2, m_base->GetCenterList());
-      m_height = m_center + std::max(m_signHeight / 2, m_base->GetMaxDrop());
+      // Make the font used for the limits a bit smaller than the font used for the
+      // contents  
+      m_lowerLimit->RecalculateList({MC_MIN_SIZE, fontsize - 5});
+      m_upperLimit->RecalculateList({MC_MIN_SIZE, fontsize - 5});
+      // The integral sign is displayed as an SVG graphics. As line thickness scales
+      // with the sign we need to make it a constant height.
+      m_signHeight = Scale_Px(40.0);
+      if (m_signHeight < 6)
+        m_signHeight = 6;
+      // The sign width in this case is defined by the sign height and the sign's aspect
+      // ratio
+      m_signWidth = m_signHeight * 19.879 / 51.781;
+      m_width = m_signWidth + m_base->GetFullWidth() +
+        std::max(m_upperLimit->GetFullWidth(), m_lowerLimit->GetFullWidth()) +
+        m_var->GetFullWidth() + Scale_Px(4);
+      if (HasLimits()) {
+
+        m_center = std::max(std::max(m_signHeight / 2,
+                                     m_base->GetCenterList()),
+                            m_upperLimit->GetHeightList() + IntSignLimitYoffset()
+                            );
+        m_height = m_center + std::max(std::max(m_signHeight / 2,
+                                                m_base->GetMaxDrop()),
+                                       m_lowerLimit->GetHeightList() + IntSignLimitYoffset()
+                                       );
+      } else {
+        m_center = std::max(m_signHeight / 2, m_base->GetCenterList());
+        m_height = m_center + std::max(m_signHeight / 2, m_base->GetMaxDrop());
+      }
     }
   }
-
+  Cell::Recalculate(fontsize);
 }
 
 void IntCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
   Cell::Draw(point, dc, antialiassingDC);
   if (DrawThisCell(point)) {
-    wxPoint base(point), lowerLimit(point), upperLimit(point), var(point);
+    wxPoint base(point), lowerLimit(point), upperLimit(point), var(point), sign(point);
     base.x += m_signWidth;
     base.x += std::max(m_upperLimit->GetFullWidth(), m_lowerLimit->GetFullWidth());
 
     SetPen(antialiassingDC, 1.5);
 
-    if(UseSvgSign())
-      {
-        DrawSvgSign(antialiassingDC, point);
-      }
-    else
-      {
-        DrawHanddrawnSign(antialiassingDC, point);
-      }
+    sign.y -= .5 * m_signHeight;
+    dc->DrawBitmap(BitmapFromSVG(m_svgIntegralSign, wxSize(m_signWidth, m_signHeight)),
+                   sign.x, sign.y, true);
   
     if (HasLimits()) {
       lowerLimit.x += m_signWidth;
       upperLimit.x += m_signWidth;
-
-
-      
-      if(UseSvgSign())
-        {
-          upperLimit.y -= IntSignLimitYoffset();
-          upperLimit.y -= m_upperLimit->GetMaxDrop();
-          lowerLimit.y += IntSignLimitYoffset();
-          lowerLimit.y += m_lowerLimit->GetCenterList();
-        }
-      else
-          {
-            upperLimit.y = point.y -
-              m_signHeight / 2 + m_upperLimit->GetHeightList() - m_upperLimit->GetCenterList();
-            lowerLimit.y = point.y + m_signHeight / 2 - m_lowerLimit->GetMaxDrop();
-          }
+ 
+      upperLimit.y -= IntSignLimitYoffset();
+      upperLimit.y -= m_upperLimit->GetMaxDrop();
+      lowerLimit.y += IntSignLimitYoffset();
+      lowerLimit.y += m_lowerLimit->GetCenterList();
       
       m_upperLimit->DrawList(upperLimit, dc, antialiassingDC);
       m_lowerLimit->DrawList(lowerLimit, dc, antialiassingDC);
-
+      
       base.x += std::max(m_upperLimit->GetFullWidth(), m_lowerLimit->GetFullWidth());
     }
 
@@ -225,39 +175,6 @@ void IntCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
     var.x = base.x + m_base->GetFullWidth();
     m_var->DrawList(var, dc, antialiassingDC);
   }
-}
-
-void IntCell::DrawSvgSign(wxDC *dc, wxPoint pos)
-{
-  pos.y -= .5 * m_signHeight;
-  dc->DrawBitmap(BitmapFromSVG(m_svgIntegralSign, wxSize(m_signWidth, m_signHeight)),
-                pos.x, pos.y, true);
-}
-
-void IntCell::DrawHanddrawnSign(wxDC *dc, wxPoint pos) const
-{
-  // top decoration
-  int signCenter = m_signWidth / 2;
-  wxPoint points[7] = {
-    {pos.x + signCenter + 2 * (m_signWidth / 4),
-     pos.y - (m_signHeight - Scale_Px(1)) / 2 + m_signWidth / 4},
-    {pos.x + signCenter + m_signWidth / 4,
-     pos.y - (m_signHeight - Scale_Px(1)) / 2},
-    {pos.x + signCenter, pos.y - (m_signHeight - Scale_Px(1)) / 2 +
-     2 * (m_signWidth / 4) + Scale_Px(.35)},
-    
-    // The line
-    {pos.x + signCenter + Scale_Px(.5), pos.y},
-    
-    // Bottom Decoration
-    {pos.x + signCenter, pos.y + (m_signHeight - Scale_Px(1)) / 2 -
-     2 * (m_signWidth / 4) + Scale_Px(.35)},
-    {pos.x + signCenter - m_signWidth / 4,
-     pos.y + (m_signHeight - Scale_Px(1)) / 2},
-    {pos.x + signCenter - 2 * (m_signWidth / 4),
-     pos.y + (m_signHeight - Scale_Px(1)) / 2 - m_signWidth / 4}};
-  
-  dc->DrawSpline(7, points);
 }
 
 wxString IntCell::ToString() const {
