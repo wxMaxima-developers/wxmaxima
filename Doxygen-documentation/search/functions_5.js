@@ -25,5 +25,5 @@ var searchData=
   ['forcebreakline_2336',['ForceBreakLine',['../classCell.html#a8beef7f5a92c048650d8dca737629319',1,'Cell']]],
   ['forceredraw_2337',['ForceRedraw',['../classWorksheet.html#ae738fed5d9c92fd00d26128d1a9b555b',1,'Worksheet']]],
   ['fromfont_2338',['FromFont',['../classStyle.html#a8df61730ef2f6b73c76354c9156a819b',1,'Style']]],
-  ['fromstockfont_2339',['FromStockFont',['../classStyle.html#a39d7c0ac8fc1f4a09d85c76f4006a792',1,'Style']]]
+  ['fromstockfont_2339',['FromStockFont',['../classStyle.html#a09eed91b0eb5a9d9d26f6f167939d67b',1,'Style']]]
 ];

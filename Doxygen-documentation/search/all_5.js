@@ -40,7 +40,7 @@ var searchData=
   ['fraccell_2eh_372',['FracCell.h',['../FracCell_8h.html',1,'']]],
   ['fractype_373',['FracType',['../classFracCell.html#a707d51907c28eebb33894f128d76917b',1,'FracCell']]],
   ['fromfont_374',['FromFont',['../classStyle.html#a8df61730ef2f6b73c76354c9156a819b',1,'Style']]],
-  ['fromstockfont_375',['FromStockFont',['../classStyle.html#a39d7c0ac8fc1f4a09d85c76f4006a792',1,'Style']]],
+  ['fromstockfont_375',['FromStockFont',['../classStyle.html#a09eed91b0eb5a9d9d26f6f167939d67b',1,'Style']]],
   ['fulltestcell_376',['FullTestCell',['../classFullTestCell.html',1,'']]],
   ['funcell_377',['FunCell',['../classFunCell.html',1,'']]],
   ['funcell_2ecpp_378',['FunCell.cpp',['../FunCell_8cpp.html',1,'']]],
