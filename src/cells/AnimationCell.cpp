@@ -59,7 +59,7 @@ AnimationCell::AnimationCell(GroupCell *group, Configuration *config,
   m_framerate(framerate), m_displayed(0),
   m_imageBorderWidth(Scale_Px(1)),
   m_wxmxFile(wxmxFile) {
-  InitBitFields();
+  InitBitFields_AnimationCell();
   m_type = MC_TYPE_SLIDE;
   ReloadTimer();
 }
@@ -69,7 +69,7 @@ AnimationCell::AnimationCell(GroupCell *group, Configuration *config,
   : ImgCellBase(group, config),
     m_timer(m_cellPointers->GetWorksheet(), wxWindow::NewControlId()),
     m_framerate(framerate), m_displayed(0), m_imageBorderWidth(Scale_Px(1)) {
-  InitBitFields();
+  InitBitFields_AnimationCell();
   m_type = MC_TYPE_SLIDE;
   ReloadTimer();
 }

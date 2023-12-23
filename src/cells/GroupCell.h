@@ -448,7 +448,7 @@ protected:
 
 //** Bitfield objects (1 bytes)
 //**
-  void InitBitFields()
+  void InitBitFields_GroupCell()
     { // Keep the initialization order below same as the order
       // of bit fields in this class!
       m_autoAnswer = false;
@@ -460,13 +460,13 @@ protected:
     }
 
   //! Does this GroupCell automatically fill in the answer to questions?
-  bool m_autoAnswer : 1 /* InitBitFields */;
-  bool m_inEvaluationQueue : 1 /* InitBitFields */;
-  bool m_lastInEvaluationQueue : 1 /* InitBitFields */;
-  bool m_updateConfusableCharWarnings : 1 /* InitBitFields */;
+  bool m_autoAnswer : 1 /* InitBitFields_GroupCell */;
+  bool m_inEvaluationQueue : 1 /* InitBitFields_GroupCell */;
+  bool m_lastInEvaluationQueue : 1 /* InitBitFields_GroupCell */;
+  bool m_updateConfusableCharWarnings : 1 /* InitBitFields_GroupCell */;
   //! Suppress the yellow ToolTip marker?
-  bool m_suppressTooltipMarker : 1 /* InitBitFields */;
-  bool m_cellsAppended : 1; /* InitBitFields */
+  bool m_suppressTooltipMarker : 1 /* InitBitFields_GroupCell */;
+  bool m_cellsAppended : 1; /* InitBitFields_GroupCell */
 
   static wxString m_lookalikeChars;
 };

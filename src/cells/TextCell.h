@@ -148,7 +148,7 @@ protected:
 
 //** Bitfield objects (1 bytes)
 //**
-  void InitBitFields()
+  void InitBitFields_TextCell()
     { // Keep the initialization order below same as the order
       // of bit fields in this class!
       m_dontEscapeOpeningParenthesis = false;
@@ -158,9 +158,9 @@ protected:
     }
 
   //! Is an ending "(" of a function name the opening parenthesis of the function?
-  bool m_dontEscapeOpeningParenthesis : 1 /* InitBitFields */;
+  bool m_dontEscapeOpeningParenthesis : 1 /* InitBitFields_TextCell */;
   //! Default to a special tooltip for prompts?
-  bool m_promptTooltip : 1 /* InitBitFields */;
+  bool m_promptTooltip : 1 /* InitBitFields_TextCell */;
   //! The last known value of CheckKeepPercent
   bool m_keepPercent_last : 1;
   //! The last known value of "display greek names as unicode char"

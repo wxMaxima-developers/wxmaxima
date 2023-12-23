@@ -43,6 +43,7 @@ enum sumStyle : int8_t
   SM_PROD
 };
 
+//cppcheck-suppress ctuOneDefinitionRuleViolation
 class SumCell final : public Cell
 {
 public:
@@ -123,14 +124,14 @@ private:
 
 //** Bitfield objects (1 bytes)
 //**
-  void InitBitFields()
+  void InitBitFields_SumCell()
     { // Keep the initialization order below same as the order
       // of bit fields in this class!
       m_displayParen = true;
     }
 
   //! Display m_paren if true, or Base() if false
-  bool m_displayParen : 1 /* InitBitFields */;
+  bool m_displayParen : 1 /* InitBitFields_SumCell */;
 };
 
 #endif // SUMCELL_H

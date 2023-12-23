@@ -149,14 +149,14 @@ private:
 
 //** Bitfield objects (1 bytes)
 //**
-  void InitBitFields()
+  void InitBitFields_ImgCell()
     { // Keep the initialization order below same as the order
       // of bit fields in this class!
       m_drawRectangle = true;
       m_drawBoundingBox = false;
     }
-  bool m_drawRectangle : 1 /* InitBitFields */;
-  bool m_drawBoundingBox : 1 /* InitBitFields */;
+  bool m_drawRectangle : 1 /* InitBitFields_ImgCell */;
+  bool m_drawBoundingBox : 1 /* InitBitFields_ImgCell */;
 
   static int s_counter;
 

@@ -114,7 +114,7 @@ private:
 GroupCell::GroupCell(Configuration *config, GroupType groupType,
                      const wxString &initString)
   : Cell(this, config), m_groupType(groupType) {
-  InitBitFields();
+  InitBitFields_GroupCell();
   m_mathFontSize = m_configuration->GetMathFontSize();
   ForceBreakLine();
   m_type = MC_TYPE_GROUP;

@@ -38,7 +38,7 @@
 AbsCell::AbsCell(GroupCell *group, Configuration *config,
                  std::unique_ptr<Cell> &&inner)
   : Cell(group, config), m_innerCell(std::move(inner)) {
-  InitBitFields();
+  InitBitFields_AbsCell();
   SetStyle(TS_VARIABLE);
 }
 

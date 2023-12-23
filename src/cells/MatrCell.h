@@ -98,7 +98,7 @@ private:
   };
 //** Bitfield objects (1 bytes)
 //**
-  void InitBitFields()
+  void InitBitFields_MatrCell()
     { // Keep the initialization order below same as the order
       // of bit fields in this class!
       m_parenType = paren_rounded;
@@ -107,11 +107,11 @@ private:
       m_rowNames = false;
       m_colNames = false;
     }
-  uint8_t m_parenType : 2 /* InitBitFields */;
-  bool m_specialMatrix : 1 /* InitBitFields */;
-  bool m_inferenceMatrix : 1 /* InitBitFields */;
-  bool m_rowNames : 1 /* InitBitFields */;
-  bool m_colNames : 1 /* InitBitFields */;
+  uint8_t m_parenType : 2 /* InitBitFields_MatrCell */;
+  bool m_specialMatrix : 1 /* InitBitFields_MatrCell */;
+  bool m_inferenceMatrix : 1 /* InitBitFields_MatrCell */;
+  bool m_rowNames : 1 /* InitBitFields_MatrCell */;
+  bool m_colNames : 1 /* InitBitFields_MatrCell */;
 };
 
 #endif // MATRCELL_H

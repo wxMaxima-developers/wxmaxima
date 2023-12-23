@@ -72,7 +72,7 @@ private:
 
   //** Bitfield objects (0 bytes)
   //**
-  static void InitBitFields()
+  static void InitBitFields_LongNumberCell()
     { // Keep the initialization order below same as the order
       // of bit fields in this class!
     }

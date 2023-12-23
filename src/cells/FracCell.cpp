@@ -40,7 +40,7 @@ FracCell::FracCell(GroupCell *group, Configuration *config,
                                                                       group, m_configuration, std::move(num))),
     m_denomParenthesis(std::make_unique<ParenCell>(group, m_configuration,
                                                    std::move(denom))) {
-  InitBitFields();
+  InitBitFields_FracCell();
   SetStyle(TS_VARIABLE);
   SetupBreakUps();
 }

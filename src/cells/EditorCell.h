@@ -675,7 +675,7 @@ private:
 
 //** Bitfield objects (2 bytes)
 //**
-  void InitBitFields()
+  void InitBitFields_EditorCell()
     { // Keep the initialization order below same as the order
       // of bit fields in this class!
       m_autoAnswer = false;
@@ -690,18 +690,18 @@ private:
     }
 
   //! Mark this cell as "Automatically answer questions".
-  bool m_autoAnswer : 1 /* InitBitFields */;
+  bool m_autoAnswer : 1 /* InitBitFields_EditorCell */;
   //! true, if this function has changed since the last evaluation by maxima
-  bool m_containsChanges : 1 /* InitBitFields */;
-  bool m_containsChangesCheck : 1 /* InitBitFields */;
-  bool m_displayCaret : 1 /* InitBitFields */;
-  bool m_hasFocus : 1 /* InitBitFields */;
-  bool m_isDirty : 1 /* InitBitFields */;
-  bool m_errorIndexSet : 1 /* InitBitFields */;
+  bool m_containsChanges : 1 /* InitBitFields_EditorCell */;
+  bool m_containsChangesCheck : 1 /* InitBitFields_EditorCell */;
+  bool m_displayCaret : 1 /* InitBitFields_EditorCell */;
+  bool m_hasFocus : 1 /* InitBitFields_EditorCell */;
+  bool m_isDirty : 1 /* InitBitFields_EditorCell */;
+  bool m_errorIndexSet : 1 /* InitBitFields_EditorCell */;
   //! Has the selection changed since the last draw event?
-  bool m_selectionChanged : 1 /* InitBitFields */;
+  bool m_selectionChanged : 1 /* InitBitFields_EditorCell */;
   //! Does this cell's size have to be recalculated?
-  bool m_underlined : 1 /* InitBitFields */;
+  bool m_underlined : 1 /* InitBitFields_EditorCell */;
 };
 
 #endif // EDITORCELL_H

@@ -1027,7 +1027,7 @@ protected:
 private:
 //** Bitfield objects (2 bytes)
 //**
-  void InitBitFields()
+  void InitBitFields_Cell()
     { // Keep the initialization order below same as the order
       // of bit fields in this class!
       m_ownsToolTip = false;
@@ -1042,24 +1042,24 @@ private:
       m_highlight = false;
     }
 
-  // In the boolean bit fields below, InitBitFields is an indication that
-  // the InitBitFields() method initializes a given field. It should be
+  // In the boolean bit fields below, InitBitFields_Cell is an indication that
+  // the InitBitFields_Cell() method initializes a given field. It should be
   // only added once such initialization is in place. It makes it easier
   // to verify that all bit fields are initialized.
 
   //! Whether the cell owns its m_tooltip - otherwise it points to a static string.
-  bool m_ownsToolTip : 1 /* InitBitFields */;
-  bool m_bigSkip : 1 /* InitBitFields */;
-  bool m_isBrokenIntoLines : 1 /* InitBitFields */;
-  bool m_isHidden : 1 /* InitBitFields */;
-  bool m_isHidableMultSign : 1 /* InitBitFields */;
-  bool m_suppressMultiplicationDot : 1 /* InitBitFields */;
+  bool m_ownsToolTip : 1 /* InitBitFields_Cell */;
+  bool m_bigSkip : 1 /* InitBitFields_Cell */;
+  bool m_isBrokenIntoLines : 1 /* InitBitFields_Cell */;
+  bool m_isHidden : 1 /* InitBitFields_Cell */;
+  bool m_isHidableMultSign : 1 /* InitBitFields_Cell */;
+  bool m_suppressMultiplicationDot : 1 /* InitBitFields_Cell */;
   //! true, if this cell clearly needs recalculation
-  bool m_recalculateWidths : 1 /* InitBitFields */;
+  bool m_recalculateWidths : 1 /* InitBitFields_Cell */;
   //! Are we allowed to add a line break before this cell?
-  bool m_breakLine : 1 /* InitBitFields */;
-  bool m_forceBreakLine : 1 /* InitBitFields */;
-  bool m_highlight : 1 /* InitBitFields */;
+  bool m_breakLine : 1 /* InitBitFields_Cell */;
+  bool m_forceBreakLine : 1 /* InitBitFields_Cell */;
+  bool m_highlight : 1 /* InitBitFields_Cell */;
 
 protected:
   friend class InnerCellIterator;

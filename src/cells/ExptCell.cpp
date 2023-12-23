@@ -38,7 +38,7 @@ ExptCell::ExptCell(GroupCell *group, Configuration *config,
                    std::unique_ptr<Cell> &&base, std::unique_ptr<Cell> &&expt)
   : Cell(group, config), m_baseCell(std::move(base)),
     m_exptCell(std::move(expt)) {
-  InitBitFields();
+  InitBitFields_ExptCell();
   SetStyle(TS_VARIABLE);
 }
 

@@ -39,7 +39,6 @@
         <undefine>__WXMAC__</undefine>
         <undefine>__WXMOTIF__</undefine>
         <undefine>__WXUNIVERSAL__</undefine>
-	
     </undefines>
     <paths>
         <dir name="src/"/>
@@ -53,4 +52,8 @@
         <suppression>useStlAlgorithm</suppression>
         <suppression>missingIncludeSystem</suppression>
     </suppressions>
+    <addons>
+        <addon>threadsafety</addon>
+    </addons>
+    <check-level-exhaustive/>
 </project>

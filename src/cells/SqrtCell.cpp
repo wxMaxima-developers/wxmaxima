@@ -35,7 +35,7 @@
 SqrtCell::SqrtCell(GroupCell *group, Configuration *config,
                    std::unique_ptr<Cell> &&inner)
   : Cell(group, config), m_innerCell(std::move(inner)) {
-  InitBitFields();
+  InitBitFields_SqrtCell();
   SetStyle(TS_VARIABLE);
 }
 
