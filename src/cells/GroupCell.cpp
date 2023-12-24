@@ -612,7 +612,7 @@ void GroupCell::UpdateYPositionList() {
 }
 
 void GroupCell::UpdateYPosition() {
-  auto *const previous = GetPrevious();
+  const Cell *const previous = GetPrevious();
 
   wxPoint point(m_configuration->GetIndent(), GetCenter());
   if (!previous) {

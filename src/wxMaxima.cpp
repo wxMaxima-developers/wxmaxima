@@ -9249,8 +9249,9 @@ void wxMaxima::HelpMenu(wxCommandEvent &event) {
                       "unicode character list has been compiled by the Unicode Consortium.");
 
 #if defined(WXMAXIMA_GIT_VERSION)
-      description += wxString::Format(
-                                      "\n(Build from Git version: " WXMAXIMA_GIT_VERSION ")");
+      //cppcheck-suppress syntaxError
+
+      description += wxString::Format("\n(Build from Git version: " WXMAXIMA_GIT_VERSION ")");
 #endif
       description += wxString::Format(
                                       _("\n\nwxWidgets: %d.%d.%d\nUnicode support: %s"), wxMAJOR_VERSION,

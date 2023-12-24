@@ -60,8 +60,6 @@ Image::Image(Configuration *config, wxMemoryBuffer image, wxString type) {
   m_scaledBitmap.Create(1, 1);
   m_compressedImage = image;
   m_extension = type;
-  m_width = 1;
-  m_height = 1;
 
   wxLogBuffer errorAggregator;
   wxImage Image;
@@ -80,18 +78,10 @@ Image::Image(Configuration *config, wxMemoryBuffer image, wxString type) {
     }
   } else
     InvalidBitmap(_("Image data had zero length!"));
-  m_maxWidth = -1;
-  m_maxHeight = -1;
 }
 
 Image::Image(Configuration *config, const wxBitmap &bitmap) {
   m_configuration = config;
-  m_width = 1;
-  m_height = 1;
-  m_maxWidth = -1;
-  m_maxHeight = -1;
-  m_originalWidth = 640;
-  m_originalHeight = 480;
   LoadImage(bitmap);
   m_scaledBitmap.Create(1, 1);
 }

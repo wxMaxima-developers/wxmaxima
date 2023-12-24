@@ -248,7 +248,7 @@ public:
   class WxmxStream: public wxZipInputStream
   {
   public:
-    WxmxStream(wxInputStream &wxmxfile, wxString fileInWxmx);
+    WxmxStream(wxInputStream &wxmxFile, wxString fileInWxmx);
   };
 
   bool HasGnuplotSource(){return m_gnuplotSource_Compressed.GetDataLen() > 20;}
@@ -274,7 +274,7 @@ private:
   wxString m_gnuplotData;
   mutable std::thread m_loadImageTask;
   void LoadImage_Backgroundtask(std::unique_ptr<ThreadNumberLimiter> limiter,
-                                wxString image, wxString wxmxfile,
+                                wxString image, wxString wxmxFile,
                                 bool remove);
   std::thread m_loadGnuplotSourceTask;
   void LoadGnuplotSource_Backgroundtask(
