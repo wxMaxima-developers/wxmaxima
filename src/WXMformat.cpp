@@ -293,6 +293,7 @@ namespace Format {
       case WXM_HIDDEN_HEADING6:
       case WXM_HIDDEN_COMMENT:
       case WXM_HIDDEN_INPUT:
+      case WXM_HIDDEN_CAPTION:
         hide = true;
         line = getLinesUntil(Headers.GetEnd(headerId));
         cell = std::make_unique<GroupCell>(config, GroupType(headerId - 128), line);
