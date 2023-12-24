@@ -15,6 +15,7 @@
 - Corrected the position of integral limits
 - Nicer product, sum and integral signs
 - Hidden cells weren't restored from wxm files (#1855)
+- diff() no longer causes spurious multiplication dots (#1825)
 
 # 23.11.0
 

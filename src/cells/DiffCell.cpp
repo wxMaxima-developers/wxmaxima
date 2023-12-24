@@ -45,6 +45,12 @@ DiffCell::DiffCell(GroupCell *group, Configuration *config,
   InitBitFields_DiffCell();
   SetStyle(TS_VARIABLE);
   m_diffCell->SetSuppressMultiplicationDot(true);
+  if(m_baseCell)
+    {
+      if((m_baseCell->ToString() == wxS("*")) ||
+         (m_baseCell->ToString() == wxS("\u00B7")))
+      m_baseCell->Hide(true);
+    }
 }
 
 DiffCell::DiffCell(GroupCell *group, const DiffCell &cell)
