@@ -1,4 +1,4 @@
-# Current
+# 23.12.0
 
 - Input text selection was cleared when right-clicking 
   on it (#1845)
