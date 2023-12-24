@@ -81,17 +81,6 @@ public:
   
 private:
   wxCoord IntSignLimitYoffset() const { return Scale_Px(8); }
-  /*! Do we want to use a SVG integral sign?
-
-    Is constexpr, which means: This is evaluated at compile time.
-   */
-  constexpr bool UseSvgSign() const {
-#ifdef WXM_WITHOUT_SVG_SIGNS
-    return false;
-#else
-    return true;
-#endif    
-  }
   void MakeBreakUpCells();
   const static wxString m_svgIntegralSign;
   // The pointers below point to inner cells and must be kept contiguous.
