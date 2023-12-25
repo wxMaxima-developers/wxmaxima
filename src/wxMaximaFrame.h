@@ -337,6 +337,11 @@ private:
     SymbolsPane(wxWindow *parent, Configuration *configuration, Worksheet *worksheet, int ID = wxID_ANY);
     //! Update the "user symbols" portion of the symbols pane.
     void UpdateUserSymbols();
+    /*! Add the symbols to the "user symbols" portion of the symbols pane.
+
+      If these symbols already are populated UpdateUserSymbols() is the right place to go. 
+     */
+    void AddUserSymbols();
   protected:
     void OnMouseRightDown(wxMouseEvent &event);
     void OnMenu(wxCommandEvent &event);
@@ -349,6 +354,8 @@ private:
     wxSizer *m_userSymbolsSizer;
     Configuration *m_configuration;
     Worksheet *m_worksheet;
+    //! The user symbols that are currently displayed
+    wxString m_userSymbols_Last;
   };
 
   wxPanel *CreateSymbolsPane();

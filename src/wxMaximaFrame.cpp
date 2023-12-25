@@ -2547,7 +2547,7 @@ wxMaximaFrame::SymbolsPane::SymbolsPane(wxWindow *parent,
 
   m_userSymbols = new wxPanel(this);
   m_userSymbolsSizer = new wxWrapSizer(wxHORIZONTAL);
-  UpdateUserSymbols();
+  AddUserSymbols();
   m_userSymbols->SetSizer(m_userSymbolsSizer);
   vbox->Add(m_userSymbols, wxSizerFlags().Expand());
   Connect(wxEVT_SIZE, wxSizeEventHandler(wxMaximaFrame::SymbolsPane::OnSize),
@@ -2605,18 +2605,29 @@ void wxMaximaFrame::SymbolsPane::OnMouseRightDown(
 }
 
 void wxMaximaFrame::SymbolsPane::UpdateUserSymbols() {
-  wxLogNull blocker;
-  //  wxWindowUpdateLocker drawBlocker(this);
-  while (!m_userSymbolButtons.empty()) {
-    m_userSymbolButtons.front()->Destroy();
-    m_userSymbolButtons.pop_front();
-  }
-
+  if(m_userSymbols_Last == m_configuration->SymbolPaneAdditionalChars())
+    return;
+  
   if (m_userSymbols == NULL)
     return;
-  // Clear the user symbols pane
-  m_userSymbols->DestroyChildren();
 
+  wxLogNull blocker;
+
+  // Clear the user symbols pane
+  if(!m_userSymbols_Last.IsEmpty())
+    m_userSymbols->DestroyChildren();
+
+  AddUserSymbols();
+
+  Layout();
+}
+
+void wxMaximaFrame::SymbolsPane::AddUserSymbols() {  
+  if (m_userSymbols == NULL)
+    return;
+
+  wxLogNull blocker;
+  
   // Populate the pane with a button per user symbol
   for (auto ch : m_configuration->SymbolPaneAdditionalChars()) {
     wxWindow *button = new CharButton(
@@ -2625,7 +2636,7 @@ void wxMaximaFrame::SymbolsPane::UpdateUserSymbols() {
     m_userSymbolButtons.push_back(button);
     m_userSymbolsSizer->Add(button, wxSizerFlags().Expand());
   }
-  Layout();
+  m_userSymbols_Last = m_configuration->SymbolPaneAdditionalChars();
 }
 
 wxWindow *wxMaximaFrame::CreateFormatPane() {

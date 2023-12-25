@@ -187,7 +187,7 @@ void wxMaxima::ConfigChanged() {
 
     SetCWD(filename);
   }
-  m_symbolsPane->UpdateUserSymbols();
+  CallAfter([this]{m_symbolsPane->UpdateUserSymbols();});
 }
 
 wxMaxima::wxMaxima(wxWindow *parent, int id,
