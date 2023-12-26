@@ -29,26 +29,26 @@
 */
 
 #include "ButtonWrapSizer.h"
+#include "WrapButton.h"
 #include "UnicodeSidebar.h"
 #include <wx/settings.h>
 #include <wx/sizer.h>
 
 Buttonwrapsizer::Buttonwrapsizer(int orient) : wxWrapSizer(orient) {}
 
-void Buttonwrapsizer::RecalcSizes() {
+wxSize Buttonwrapsizer::CalcMin() {
   wxSizerItemList children = GetChildren();
   wxCoord width = -1;
   wxCoord height = 20;
   for (auto node = children.GetFirst(); node; node = node->GetNext()) {
     wxSizerItem *current = node->GetData();
     wxWindow *item = current->GetWindow();
+    // Clear the value we have written in the best size cache
+    item->CacheBestSize(wxDefaultSize);
     item->SendSizeEvent();
     width = std::max(width, item->GetBestSize().x);
     height = std::max(height, item->GetBestSize().y);
   }
-
-  if (width < 50)
-    return;
 
   //  if(width < m_availSize)
   //    width = m_availSize / (m_availSize / width);
@@ -57,10 +57,10 @@ void Buttonwrapsizer::RecalcSizes() {
   for (auto node = children.GetFirst(); node; node = node->GetNext()) {
     wxSizerItem *current = node->GetData();
     wxWindow *item = current->GetWindow();
-    item->SetInitialSize(bestSize);
-    item->SetMinSize(bestSize);
-    item->SetSize(bestSize);
+    wxASSERT(typeid(*item) == typeid(WrapButton));
+    //    if(typeid(*item) == typeid(WrapButton))
+    //   dynamic_cast<WrapButton *>(item)->SetApparentSize(bestSize);
     item->CacheBestSize(bestSize);
   }
-  wxWrapSizer::RecalcSizes();
+  return wxWrapSizer::CalcMin();
 }
