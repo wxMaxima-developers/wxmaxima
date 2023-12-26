@@ -336,7 +336,6 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   bool findRegex = false;
   wxConfig::Get()->Read(wxS("Find/RegexSearch"), &findRegex);
   m_findData.SetRegexSearch(findRegex);
-  CallAfter([this]{GetWorksheet()->SetFocus();});
   GetWorksheet()->m_keyboardInactiveTimer.SetOwner(this,
                                                 KEYBOARD_INACTIVITY_TIMER_ID);
   m_maximaStdoutPollTimer.SetOwner(this, MAXIMA_STDOUT_POLL_ID);
@@ -6447,7 +6446,6 @@ void wxMaxima::EditMenu(wxCommandEvent &event) {
     }
 
     GetWorksheet()->m_findDialog->Show(true);
-    CallAfter([this]{GetWorksheet()->m_findDialog->SetFocus();});
     GetWorksheet()->m_findDialog->Raise();
   }
   else if(event.GetId() == EventIDs::menu_history_next) {
@@ -6492,6 +6490,7 @@ void wxMaxima::EditMenu(wxCommandEvent &event) {
     GetWorksheet()->OutputChanged();
   }
   GetWorksheet()->RequestRedraw();
+  CallAfter([this]{GetWorksheet()->m_findDialog->SetFocus();});
 }
 
 void wxMaxima::OnFind(wxFindDialogEvent &event) {
@@ -8046,8 +8045,6 @@ void wxMaxima::DrawMenu(wxCommandEvent &event) {
       // wiz->Centre(wxBOTH);
       wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
         if (retcode == wxID_OK) {
-          CallAfter([this]{GetWorksheet()->SetFocus();});
-
           GetWorksheet()->OpenHCaret(wiz->GetValue());
           GetWorksheet()->GetActiveCell()->SetCaretPosition(
                                                          GetWorksheet()->GetActiveCell()->GetCaretPosition() - 3);
@@ -8061,8 +8058,6 @@ void wxMaxima::DrawMenu(wxCommandEvent &event) {
       // wiz->Centre(wxBOTH);
       wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
         if (retcode == wxID_OK) {
-          CallAfter([this]{GetWorksheet()->SetFocus();});
-
           GetWorksheet()->OpenHCaret(wiz->GetValue());
           GetWorksheet()->GetActiveCell()->SetCaretPosition(
                                                          GetWorksheet()->GetActiveCell()->GetCaretPosition() - 3);
@@ -8204,6 +8199,7 @@ void wxMaxima::DrawMenu(wxCommandEvent &event) {
       });
     }
   }
+  CallAfter([this]{GetWorksheet()->SetFocus();});
 }
 
 void wxMaxima::ListMenu(wxCommandEvent &event) {
@@ -10704,7 +10700,6 @@ void wxMaxima::InsertMenu(wxCommandEvent &event) {
                                   std::make_unique<GroupCell>(&m_configuration, GC_TYPE_PAGEBREAK),
                                   GetWorksheet()->GetHCaret());
     GetWorksheet()->Recalculate();
-    CallAfter([this]{GetWorksheet()->SetFocus();});
     return;}
   else if((event.GetId() == EventIDs::menu_insert_image) ||
           (event.GetId() == EventIDs::menu_format_image)){ {
@@ -10715,7 +10710,6 @@ void wxMaxima::InsertMenu(wxCommandEvent &event) {
                                      wxFD_OPEN);
       if (file != wxEmptyString)
         GetWorksheet()->OpenHCaret(file, GC_TYPE_IMAGE);
-      CallAfter([this]{GetWorksheet()->SetFocus();});
       return;
     } }
   else if(event.GetId() == EventIDs::menu_fold_all_cells){
@@ -10756,6 +10750,7 @@ void wxMaxima::InsertMenu(wxCommandEvent &event) {
     // don't do anything else
   } else
     GetWorksheet()->OpenHCaret(wxEmptyString, type);
+  CallAfter([this]{GetWorksheet()->SetFocus();});
 }
 
 void wxMaxima::ResetTitle(bool saved, bool force) {

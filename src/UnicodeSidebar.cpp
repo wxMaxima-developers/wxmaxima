@@ -95,7 +95,8 @@ void UnicodeSidebar::OnRightClick(wxGridEvent &event) {
     popupMenu->Append(EventIDs::popid_addToSymbols, _("Add to symbols Sidebar"));
     Connect(EventIDs::popid_addToSymbols, wxEVT_MENU,
             wxCommandEventHandler(UnicodeSidebar::OnMenu), NULL, this);
-    PopupMenu(&*popupMenu);
+    if(wxWindow::FindFocus())
+      wxWindow::FindFocus()->PopupMenu(&*popupMenu);
   }
 }
 

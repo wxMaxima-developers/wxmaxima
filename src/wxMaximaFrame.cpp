@@ -2466,7 +2466,8 @@ void wxMaximaFrame::GreekPane::OnMouseRightDown(wxMouseEvent &WXUNUSED(event)) {
   popupMenu->AppendCheckItem(EventIDs::menu_showGreekMu,
                              _(wxS("Show lookalike for unit prefix µ")));
   popupMenu->Check(EventIDs::menu_showGreekMu, m_configuration->GreekSidebar_Show_mu());
-  PopupMenu(&*popupMenu);
+  if(wxWindow::FindFocus())
+    wxWindow::FindFocus()->PopupMenu(&*popupMenu);
 }
 
 wxMaximaFrame::SymbolsPane::SymbolsPane(wxWindow *parent,
