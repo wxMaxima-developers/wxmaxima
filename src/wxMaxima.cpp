@@ -2402,6 +2402,8 @@ bool wxMaxima::StartMaxima(bool force) {
       //      m_process->SetPriority(wxPRIORITY_MAX);
       m_first = true;
       m_pid = -1;
+      m_maximaAuthenticated = false;
+      m_discardAllData = true;
       wxLogMessage(_("Running maxima as: %s"), command.utf8_str());
 
       wxEnvVariableHashMap environment;
@@ -2415,8 +2417,6 @@ bool wxMaxima::StartMaxima(bool force) {
 #if defined __WXOSX__
       environment["DISPLAY"] = ":0.0";
 #endif
-      m_maximaAuthenticated = false;
-      m_discardAllData = false;
       std::uniform_real_distribution<double> urd(0.0, 256.0);
       std::unique_ptr<wxExecuteEnv> env = std::unique_ptr<wxExecuteEnv>(new wxExecuteEnv);
       wxMemoryBuffer membuf(512);
