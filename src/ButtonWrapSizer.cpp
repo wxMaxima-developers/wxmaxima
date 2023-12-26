@@ -42,9 +42,8 @@ wxSize Buttonwrapsizer::CalcMin() {
   for (auto node = children.GetFirst(); node; node = node->GetNext()) {
     wxSizerItem *current = node->GetData();
     wxWindow *item = current->GetWindow();
-    // Clear the value we have written in the best size cache
+    // Clear the value we have written into the item's best size cache
     item->CacheBestSize(wxDefaultSize);
-    item->SendSizeEvent();
     width = std::max(width, item->GetBestSize().x);
     height = std::max(height, item->GetBestSize().y);
   }
