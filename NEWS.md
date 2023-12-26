@@ -1,6 +1,7 @@
 # Current
 
 - Better button placement in sidebars
+- Got rid of a crash on startup in fedora (#1862)
 
 # 23.12.0
 
