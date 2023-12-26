@@ -34,6 +34,7 @@
 #include "Dirstructure.h"
 #include <string>
 #include <memory>
+#include "ButtonWrapSizer.h"
 
 #include "CharButton.h"
 #include "Gen1Wiz.h"
@@ -2305,8 +2306,8 @@ wxMaximaFrame::GreekPane::GreekPane(wxWindow *parent,
                                     Configuration *configuration,
                                     Worksheet *worksheet, int ID)
   : wxScrolled<wxPanel>(parent, ID), m_configuration(configuration),
-    m_lowercaseSizer(new wxWrapSizer(wxHORIZONTAL)),
-    m_uppercaseSizer(new wxWrapSizer(wxHORIZONTAL)), m_worksheet(worksheet) {
+    m_lowercaseSizer(new Buttonwrapsizer(wxHORIZONTAL)),
+    m_uppercaseSizer(new Buttonwrapsizer(wxHORIZONTAL)), m_worksheet(worksheet) {
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
   ShowScrollbars(wxSHOW_SB_NEVER, wxSHOW_SB_DEFAULT);
   EnableScrolling(false, true);
@@ -2537,7 +2538,7 @@ wxMaximaFrame::SymbolsPane::SymbolsPane(wxWindow *parent,
   m_userSymbols = NULL;
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
 
-  wxSizer *builtInSymbolsSizer = new wxWrapSizer(wxHORIZONTAL);
+  wxSizer *builtInSymbolsSizer = new Buttonwrapsizer(wxHORIZONTAL);
   wxPanel *builtInSymbols = new wxPanel(this);
   for (auto &def : symbolButtonDefinitions)
     builtInSymbolsSizer->Add(
@@ -2547,7 +2548,7 @@ wxMaximaFrame::SymbolsPane::SymbolsPane(wxWindow *parent,
   vbox->Add(builtInSymbols, wxSizerFlags().Expand());
 
   m_userSymbols = new wxPanel(this);
-  m_userSymbolsSizer = new wxWrapSizer(wxHORIZONTAL);
+  m_userSymbolsSizer = new Buttonwrapsizer(wxHORIZONTAL);
   AddUserSymbols();
   m_userSymbols->SetSizer(m_userSymbolsSizer);
   vbox->Add(m_userSymbols, wxSizerFlags().Expand());

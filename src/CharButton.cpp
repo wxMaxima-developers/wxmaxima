@@ -107,7 +107,7 @@ void CharButton::OnSize(wxSizeEvent &event) {
     size.x = minSize.x;
   if (minSize.y > size.y)
     size.y = minSize.y;
-  SetSize(size);
+  //  SetSize(size);
   SetMinSize(size);
   event.Skip();
 }
