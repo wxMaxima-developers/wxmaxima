@@ -2401,9 +2401,8 @@ bool wxMaxima::StartMaxima(bool force) {
       m_process->Redirect();
       //      m_process->SetPriority(wxPRIORITY_MAX);
       m_first = true;
+      m_currentOutput = wxEmptyString;
       m_pid = -1;
-      m_maximaAuthenticated = false;
-      m_discardAllData = true;
       wxLogMessage(_("Running maxima as: %s"), command.utf8_str());
 
       wxEnvVariableHashMap environment;
@@ -2417,6 +2416,8 @@ bool wxMaxima::StartMaxima(bool force) {
 #if defined __WXOSX__
       environment["DISPLAY"] = ":0.0";
 #endif
+      m_maximaAuthenticated = false;
+      m_discardAllData = false;
       std::uniform_real_distribution<double> urd(0.0, 256.0);
       std::unique_ptr<wxExecuteEnv> env = std::unique_ptr<wxExecuteEnv>(new wxExecuteEnv);
       wxMemoryBuffer membuf(512);
@@ -2596,6 +2597,7 @@ void wxMaxima::KillMaxima(bool logMessage) {
     if (m_history)
       m_history->MaximaSessionStart();
   }
+  m_discardAllData = true;
   m_closing = true;
   GetWorksheet()->m_variablesPane->ResetValues();
   m_varNamesToQuery = GetWorksheet()->m_variablesPane->GetEscapedVarnames();
