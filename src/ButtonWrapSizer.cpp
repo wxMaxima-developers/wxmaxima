@@ -56,9 +56,6 @@ wxSize Buttonwrapsizer::CalcMin() {
   for (auto node = children.GetFirst(); node; node = node->GetNext()) {
     wxSizerItem *current = node->GetData();
     wxWindow *item = current->GetWindow();
-    wxASSERT(typeid(*item) == typeid(WrapButton));
-    //    if(typeid(*item) == typeid(WrapButton))
-    //   dynamic_cast<WrapButton *>(item)->SetApparentSize(bestSize);
     item->CacheBestSize(bestSize);
   }
   return wxWrapSizer::CalcMin();
