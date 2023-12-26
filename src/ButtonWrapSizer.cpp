@@ -47,7 +47,11 @@ wxSize Buttonwrapsizer::CalcMin() {
     width = std::max(width, item->GetBestSize().x);
     height = std::max(height, item->GetBestSize().y);
   }
-
+  int items = m_availSize / width;
+  if(items < 1)
+    items = 1;
+  width = m_availSize / items;
+  
   //  if(width < m_availSize)
   //    width = m_availSize / (m_availSize / width);
 
