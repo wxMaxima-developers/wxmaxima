@@ -2,6 +2,7 @@
 
 - Better button placement in sidebars
 - Got rid of a crash on startup in fedora (#1862)
+- Clear wxMaxima's input buffer on starting a new maxima process (#1856)
 
 # 23.12.0
 

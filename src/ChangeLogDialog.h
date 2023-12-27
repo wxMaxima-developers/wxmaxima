@@ -31,6 +31,7 @@
 #include <wx/wx.h>
 #include <wx/button.h>
 #include <wx/dialog.h>
+#include <wx/richtext/richtextctrl.h>
 #include <wx/persist/toplevel.h>
 
 
@@ -39,11 +40,8 @@ class ChangeLogDialog : public wxDialog
 {
 public:
   explicit ChangeLogDialog(wxWindow *parent);
-protected:
-  void OnSize(wxSizeEvent &event);
 private:
-  wxString m_longestLine;
-  wxTextCtrl *m_license;
+  wxRichTextCtrl *m_license;
   bool m_movedToStart;
   void OnTextURLEvent(wxTextUrlEvent& event);
 };

@@ -29,7 +29,6 @@
 #include "news_md.h"
 #include <wx/mstream.h>
 #include <wx/string.h>
-#include <wx/textctrl.h>
 #include <wx/txtstrm.h>
 #include <wx/regex.h>
 
@@ -46,32 +45,83 @@ ChangeLogDialog::ChangeLogDialog(wxWindow *parent)
   Connect(wxEVT_TEXT_URL, wxTextUrlEventHandler(ChangeLogDialog::OnTextURLEvent),
           NULL, this);
 
-  m_license = new wxTextCtrl(
+  m_license = new wxRichTextCtrl(
                              this, -1, wxEmptyString, wxDefaultPosition, wxDefaultSize,
-                             wxTE_MULTILINE | wxTE_BESTWRAP | wxTE_READONLY | wxTE_AUTO_URL);
+                             wxRE_MULTILINE | wxRE_READONLY);
 
   wxFont fnt = m_license->GetFont();
   wxClientDC dc(this);
   dc.SetFont(fnt);
   wxCoord textWidth = 0;
   wxRegEx issueLink("#([0-9][0-9]*)");
-  wxRegEx bullet("^ \\*");
+  wxRegEx bullet("^ -");
 
+  bool inBulletList = false;
+  bool isCaption = false;
   while (!istream.Eof()) {
     line = textIn.ReadLine();
-    wxSize linesize = dc.GetTextExtent(line);
-    if (linesize.x > textWidth) {
-      textWidth = linesize.x;
-      m_longestLine = line;
+    {
+      if(line.StartsWith(wxS("- ")))
+        {
+          if(!inBulletList)
+            {
+              m_license->Newline();
+              inBulletList = true;
+            }
+          else
+            {
+              m_license->Newline();
+              m_license->EndSymbolBullet();
+            }
+          m_license->BeginSymbolBullet(wxS("\u2022"), 50, 0, 0);
+          // drop the "- " at the end of the line.
+          line = line.Right(line.Length() - 2);
+        }
+      else
+        {
+          if((inBulletList) && (!line.StartsWith(wxS(" "))))
+            {
+              inBulletList = false;
+              m_license->Newline();
+              m_license->EndSymbolBullet();
+            }
+          if(line.StartsWith(wxS("# ")))
+            {
+              isCaption = true;
+              // drop the "# " at the end of the line.
+              line = line.Right(line.Length() - 2);
+            }
+        }
+      line.Trim(true);
+      line.Trim(false);
+      line += " ";
+      if(isCaption)
+        m_license->BeginBold();
+      while(issueLink.Matches(line))
+        {
+          size_t start;
+          size_t length;
+          issueLink.GetMatch(&start, &length);
+          wxString match = line.SubString(start, length);
+          wxString rest  = line.Right(line.Length() - start - length);
+          wxString url   = wxS("https://github.com/wxMaxima-developers/wxmaxima/issues/")
+            + match.Right(match.Length() - 1);
+          url = url.Left(url.Length() - 1);
+          m_license->WriteText(line.Left(start));
+          m_license->BeginURL(url);
+          m_license->WriteText(match);
+          m_license->EndURL();
+          line = rest;
+        }
+      m_license->WriteText(line);
+      if(isCaption)
+        m_license->EndBold();
+      isCaption = false;
     }
-    issueLink.Replace(&line, wxS("https://github.com/wxMaxima-developers/wxmaxima/issues/\\1"));
-    bullet.Replace(&line, wxS("\u00a0\u2022"));
-    licenseText += line + wxS("\n");
   }
 
-  m_license->SetMinSize(wxSize(textWidth + 20 * GetContentScaleFactor(),
-                               550 * GetContentScaleFactor()));
-  m_license->SetValue(licenseText);
+  m_license->SetMinSize(wxSize(350 * GetContentScaleFactor(),
+                               400 * GetContentScaleFactor()));
   vbox->Add(m_license, wxSizerFlags(10).Expand().Border(wxALL, 5));
   wxBoxSizer *buttonSizer = new wxBoxSizer(wxHORIZONTAL);
 
@@ -82,46 +132,12 @@ ChangeLogDialog::ChangeLogDialog(wxWindow *parent)
 
   SetName("ChangeLog");
   wxPersistenceManager::Get().RegisterAndRestore(this);
-  Connect(wxEVT_SIZE, wxSizeEventHandler(ChangeLogDialog::OnSize));
   SetSizerAndFit(vbox);
-}
-
-void ChangeLogDialog::OnSize(wxSizeEvent &event) {
-  wxFont fnt = m_license->GetFont();
-  wxClientDC dc(this);
-  double pointSize = 8;
-  int width;
-  do {
-#if wxCHECK_VERSION(3, 1, 2)
-    pointSize += .1;
-    fnt.SetFractionalPointSize(pointSize);
-#else
-    pointSize += 1;
-    fnt.SetPointSize(pointSize);
-#endif
-    dc.SetFont(fnt);
-    width = dc.GetTextExtent(m_longestLine).x;
-  } while ((pointSize < 128) && (width < event.GetSize().x));
-#if wxCHECK_VERSION(3, 1, 2)
-  pointSize -= .1;
-  fnt.SetFractionalPointSize(pointSize);
-#else
-  pointSize -= 1;
-  fnt.SetPointSize(pointSize);
-#endif
-  m_license->SetFont(fnt);
-  event.Skip();
-  if (!m_movedToStart) {
-    m_license->SetInsertionPoint(0);
-    m_license->ShowPosition(0);
-  }
 }
 
 void ChangeLogDialog::OnTextURLEvent(wxTextUrlEvent &event) {
   if (event.GetMouseEvent().LeftUp()) {
-    wxTextCtrl *pTextCtrl = static_cast<wxTextCtrl *>(event.GetEventObject());
-    wxLaunchDefaultBrowser(
-                           pTextCtrl->GetRange(event.GetURLStart(), event.GetURLEnd()));
+    wxLaunchDefaultBrowser(event.GetString());
   }
 }
 
