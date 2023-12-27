@@ -6449,6 +6449,7 @@ void wxMaxima::EditMenu(wxCommandEvent &event) {
 
     GetWorksheet()->m_findDialog->Show(true);
     GetWorksheet()->m_findDialog->Raise();
+    CallAfter([this]{GetWorksheet()->m_findDialog->SetFocus();});
   }
   else if(event.GetId() == EventIDs::menu_history_next) {
     m_history->UpdateDeferred();
@@ -6492,7 +6493,7 @@ void wxMaxima::EditMenu(wxCommandEvent &event) {
     GetWorksheet()->OutputChanged();
   }
   GetWorksheet()->RequestRedraw();
-  CallAfter([this]{GetWorksheet()->m_findDialog->SetFocus();});
+  CallAfter([this]{GetWorksheet()->SetFocus();});
 }
 
 void wxMaxima::OnFind(wxFindDialogEvent &event) {
