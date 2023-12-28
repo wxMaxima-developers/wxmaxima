@@ -48,7 +48,7 @@ ChangeLogDialog::ChangeLogDialog(wxWindow *parent)
   m_license = new wxRichTextCtrl(
                              this, -1, wxEmptyString, wxDefaultPosition, wxDefaultSize,
                              wxRE_MULTILINE | wxRE_READONLY);
-
+  m_license->BeginSuppressUndo();
   wxFont fnt = m_license->GetFont();
   wxClientDC dc(this);
   dc.SetFont(fnt);
