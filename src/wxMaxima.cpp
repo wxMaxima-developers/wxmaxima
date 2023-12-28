@@ -9437,7 +9437,7 @@ void wxMaxima::StatsMenu(wxCommandEvent &event) {
 #endif
 
         wxString name =
-          wxGetTextFromUser(wxS("Enter matrix name:"), wxS("Marix name"));
+          wxGetTextFromUser(wxS("Enter matrix name:"), wxS("Matrix name"));
         wxString cmd;
 
         if (name != wxEmptyString)
