@@ -73,7 +73,7 @@ ChangeLogDialog::ChangeLogDialog(wxWindow *parent)
               m_license->Newline();
               m_license->EndSymbolBullet();
             }
-          m_license->BeginSymbolBullet(wxS("\u2022"), 100, 0, 1);
+          m_license->BeginSymbolBullet(wxS("\u2022"), 50, 0);
           // drop the "- " at the end of the line.
           line = line.Right(line.Length() - 2);
         }
