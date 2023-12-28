@@ -7937,7 +7937,7 @@ void wxMaxima::MatrixMenu(wxCommandEvent &event) {
             cmd = wiz->GetValue0() + wxS(": ");
           long w, h;
           int type = wiz->GetMatrixType();
-          if (!(wiz->GetValue2()).ToLong(&h) || !(wiz->GetValue1()).ToLong(&w) ||
+          if (!(wiz->GetValue1()).ToLong(&h) || !(wiz->GetValue2()).ToLong(&w) ||
               w <= 0 || h <= 0) {
             LoggingMessageBox(_("Not a valid matrix dimension!"), _("Error!"),
                               wxOK | wxICON_ERROR);
