@@ -73,7 +73,7 @@ ChangeLogDialog::ChangeLogDialog(wxWindow *parent)
               m_license->Newline();
               m_license->EndSymbolBullet();
             }
-          m_license->BeginSymbolBullet(wxS("\u2022"), 50, 0, 0);
+          m_license->BeginSymbolBullet(wxS("\u2022"), 100, 0, 1);
           // drop the "- " at the end of the line.
           line = line.Right(line.Length() - 2);
         }
@@ -102,8 +102,8 @@ ChangeLogDialog::ChangeLogDialog(wxWindow *parent)
           size_t start;
           size_t length;
           issueLink.GetMatch(&start, &length);
-          wxString match = line.SubString(start, length);
-          wxString rest  = line.Right(line.Length() - start - length);
+          wxString match = line.SubString(start, length - 1);
+          wxString rest  = line.Right(line.Length() - start - length - 1);
           wxString url   = wxS("https://github.com/wxMaxima-developers/wxmaxima/issues/")
             + match.Right(match.Length() - 1);
           url = url.Left(url.Length() - 1);
