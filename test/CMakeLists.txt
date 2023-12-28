@@ -64,7 +64,7 @@ add_test(
 
 add_test(
     NAME wxbuildinfo
-    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wxbuild_info();" "maxima_frontend_version"
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wxbuild_info();" "wxMaxima version:"
 )
 
 # Tests that use "%" to reference past lines cannot be executed using "load()".

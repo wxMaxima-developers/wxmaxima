@@ -191,10 +191,23 @@ The wxMaxima bug database is available at~%
     https://github.com/wxMaxima-developers/wxmaxima/issues~%
 Submit bug reports by following the 'New issue' link on that page."))
 
-;; Was useful when maxima's build_info() didn't contain all that info,
-;; still. Now we punt it to the maxima version of the command.
+;; wxbuild_info() provides a nicer formatted version of the build_info() command.
+;; It also includes more info, e.g. the directory information from Maxima.
 (defun $wxbuild_info ()
-  ($build_info))
+  (progv  '(seconds minute hour day month year) cl-user:*maxima-build-time*
+    (format t "wxMaxima version: ~a~%" $wxmaximaversion)
+    (format t "using wxWidgets version: ~a~%" $wxwidgetsversion)
+    (format t "Maxima version: ~a~%" *autoconf-version*)
+    (format t "Maxima build date: ~4,'0d-~2,'0d-~2,'0d ~2,'0d:~2,'0d:~2,'0d~%"
+           year month day hour minute seconds)
+    (format t "Host type: ~a~%" *autoconf-host*)
+    (format t "System type: ~a ~a ~a~%" (software-type) (software-version) (machine-type))
+    (format t "Lisp implementation type: ~a~%" (lisp-implementation-type))
+    (format t "Lisp implementation version: ~a~%" (lisp-implementation-version))
+    (format t "wxMaxima help dir: ~a~%" wxHelpDir))
+    (format t "~%~%Maxima's idea of the directory layout is:~%")
+    (format t "~a~%" (print-directories))
+  "")
 
 ;; Tell the user where to report bugs.
 ;; TODO: Make this to maxima's bug_report() when everybody uses a maxima that shows
