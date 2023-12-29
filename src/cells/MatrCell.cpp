@@ -60,40 +60,41 @@ MatrCell::MatrCell(GroupCell *group, const MatrCell &cell)
 DEFINE_CELL(MatrCell)
 
 void MatrCell::Recalculate(AFontSize const fontsize) {
-  AFontSize const fontsize_entry{MC_MIN_SIZE, fontsize - 2};
-  for (size_t i = 0; i < m_cells.size(); i++)
-    m_cells[i]->RecalculateList(fontsize_entry);
+  if (NeedsRecalculation(fontsize)) {
+    AFontSize const fontsize_entry{MC_MIN_SIZE, fontsize - 2};
+    for (size_t i = 0; i < m_cells.size(); i++)
+      m_cells[i]->RecalculateList(fontsize_entry);
 
-  m_width = 0;
-  m_widths.clear();
-  for (size_t i = 0; i < m_matWidth; i++) {
-    wxCoord width = 0;
-    for (size_t j = 0; j < m_matHeight; j++) {
-      if ((m_matWidth * j + i) < m_cells.size())
-        width = std::max(width, GetInnerCell(j, i)->GetFullWidth());
-    }
-    m_widths.emplace_back(width);
-    m_width += (width + Scale_Px(10));
-  }
-  if (m_width < Scale_Px(14))
-    m_width = Scale_Px(14);
-
-  m_height = 0;
-  m_dropCenters.clear();
-  for (size_t i = 0; i < m_matHeight; i++) {
-    wxCoord center = 0, drop = 0;
-    for (size_t j = 0; j < m_matWidth; j++)
-      if (m_matWidth * i + j < m_cells.size()) {
-        center = std::max(center, GetInnerCell(i, j)->GetCenterList());
-        drop = std::max(drop, GetInnerCell(i, j)->GetMaxDrop());
+    m_width = 0;
+    m_widths.clear();
+    for (size_t i = 0; i < m_matWidth; i++) {
+      wxCoord width = 0;
+      for (size_t j = 0; j < m_matHeight; j++) {
+        if ((m_matWidth * j + i) < m_cells.size())
+          width = std::max(width, GetInnerCell(j, i)->GetFullWidth());
       }
-    m_dropCenters.emplace_back(drop, center);
-    m_height += (center + drop + Scale_Px(10));
-  }
-  if (m_height == 0)
-    m_height = fontsize + Scale_Px(10);
-  m_center = m_height / 2;
+      m_widths.emplace_back(width);
+      m_width += (width + Scale_Px(10));
+    }
+    if (m_width < Scale_Px(14))
+      m_width = Scale_Px(14);
 
+    m_height = 0;
+    m_dropCenters.clear();
+    for (size_t i = 0; i < m_matHeight; i++) {
+      wxCoord center = 0, drop = 0;
+      for (size_t j = 0; j < m_matWidth; j++)
+        if (m_matWidth * i + j < m_cells.size()) {
+          center = std::max(center, GetInnerCell(i, j)->GetCenterList());
+          drop = std::max(drop, GetInnerCell(i, j)->GetMaxDrop());
+        }
+      m_dropCenters.emplace_back(drop, center);
+      m_height += (center + drop + Scale_Px(10));
+    }
+    if (m_height == 0)
+      m_height = fontsize + Scale_Px(10);
+    m_center = m_height / 2;
+  }
   Cell::Recalculate(fontsize);
 }
 
