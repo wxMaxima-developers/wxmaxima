@@ -251,8 +251,8 @@ wxString IntervalCell::ToXML() const {
     flags += wxS(" rightBracketOpensRight=\"false\"");
 
   return wxS("<fn") + flags + wxS("><fnm>interval</fnm>") + wxS("<r><p><r>") +
-    m_start->ListToMathML() + wxS("</r><r>,</r><r>") +
-    m_stop->ListToMathML() + wxS("</r></p></r>") + wxS("</fn>");
+    m_start->ListToXML() + wxS("</r><r>,</r><r>") +
+    m_stop->ListToXML() + wxS("</r></p></r>") + wxS("</fn>");
 }
 
 bool IntervalCell::BreakUp() {

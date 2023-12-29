@@ -497,15 +497,10 @@ wxString EditorCell::ToTeX() const {
 }
 
 wxString EditorCell::ToXML() const {
-  wxString xmlstring = m_text;
-  // convert it, so that the XML parser doesn't fail
-  xmlstring.Replace(wxS("&"), wxS("&amp;"));
-  xmlstring.Replace(wxS("<"), wxS("&lt;"));
-  xmlstring.Replace(wxS(">"), wxS("&gt;"));
-  xmlstring.Replace(wxS("'"), wxS("&apos;"));
-  xmlstring.Replace(wxS("\""), wxS("&quot;"));
-  xmlstring.Replace(wxS("\n"), wxS("</line>\n<line>"));
-  xmlstring.Replace(wxS("\r"), wxS(" "));
+  wxString xmlstring = XMLescape(m_text);
+  // Handle hard and soft line breaks separately
+  xmlstring.Replace(wxS("&#0A;"), wxS("</line>\n<line>"));
+  xmlstring.Replace(wxS("&#0D;"), wxS(" "));
   xmlstring = wxS("<line>") + xmlstring + wxS("</line>\n");
   wxString head = wxS("<editor");
   switch (m_type) {

@@ -230,6 +230,8 @@ void MatrCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
         antialiassingDC->DrawLines(4, pointsR, point.x + m_width - 1, point.y);
         break;
       }
+      case paren_none:
+        break;
       }
     }
   }
@@ -289,6 +291,7 @@ wxString MatrCell::ToTeX() const {
     case paren_brackets:
     case paren_angled:
     case paren_straight:
+    case paren_none:
       s = wxS("\\begin{bmatrix}");
       break;
     }
@@ -315,6 +318,7 @@ wxString MatrCell::ToTeX() const {
     case paren_brackets:
     case paren_angled:
     case paren_straight:
+    case paren_none:
       s += wxS("\\end{bmatrix}");
       break;
     }
@@ -364,6 +368,10 @@ wxString MatrCell::ToOMML() const {
       retval += wxS("<m:dPr><m:begChr>|</m:begChr><m:endChr>|</m:endChr> "
                     "<m:grow>\"1\"</m:grow></m:dPr>");
       break;
+    case paren_none:
+      retval += wxS("<m:dPr><m:begChr> </m:begChr><m:endChr> </m:endChr> "
+                    "<m:grow>\"1\"</m:grow></m:dPr>");
+      break;
     }
   }
 
@@ -394,10 +402,15 @@ wxString MatrCell::ToXML() const {
     flags += wxS(" bracketParens=\"true\"");
     break;
   case paren_angled:
+    flags += wxS(" roundedParens=\"false\"");
     flags += wxS(" angledParens=\"true\"");
     break;
   case paren_straight:
+    flags += wxS(" roundedParens=\"false\"");
     flags += wxS(" straightParens=\"true\"");
+    break;
+  case paren_none:
+    flags += wxS(" roundedParens=\"false\"");
     break;
   }
 

@@ -144,8 +144,6 @@ wxString SqrtCell::ToOMML() const {
 }
 
 wxString SqrtCell::ToXML() const {
-  //  if (IsBrokenIntoLines())
-  //    return wxEmptyString;
   wxString flags;
   if (HasHardLineBreak())
     flags += wxS(" breakline=\"true\"");

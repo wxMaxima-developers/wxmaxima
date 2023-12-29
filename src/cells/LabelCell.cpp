@@ -156,7 +156,6 @@ wxString LabelCell::ToXML() const {
     }
 
   wxString xmlstring = XMLescape(m_text);
-  // convert it, so that the XML configuration doesn't fail
 
   return wxS("<") + tag + GetXMLFlags() + wxS(">") + xmlstring + wxS("</") +
     tag + wxS(">");

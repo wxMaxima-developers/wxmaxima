@@ -178,8 +178,6 @@ wxString ExptCell::ToOMML() const {
 }
 
 wxString ExptCell::ToXML() const {
-  //  if (IsBrokenIntoLines())
-  //    return wxEmptyString;
   wxString flags;
   if (HasHardLineBreak())
     flags += wxS(" breakline=\"true\"");

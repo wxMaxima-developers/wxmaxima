@@ -1236,9 +1236,7 @@ wxString GroupCell::ToXML() const {
       // exception of the characters XML wants to be quoted. In reality
       // wxWidget's newline handling seems to be broken => escape newlines.
       wxString question = Cell::XMLescape(it->first);
-      question.Replace(wxS("\n"), wxS("&#10;"));
       wxString answer = Cell::XMLescape(it->second);
-      answer.Replace(wxS("\n"), wxS("&#10;"));
       str += wxString::Format(wxS(" question%li=\""), static_cast<long>(i)) +
         question + wxS("\"");
       str += wxString::Format(wxS(" answer%li=\""), static_cast<long>(i)) +

@@ -70,6 +70,7 @@ public:
   void BracketParens()  { m_parenType = paren_brackets;}
   void StraightParens() { m_parenType = paren_straight;}
   void AngledParens()   { m_parenType = paren_angled;}
+  void NoParens()       { m_parenType = paren_none;}
 
 private:
   struct DropCenter
@@ -94,7 +95,8 @@ private:
     paren_rounded = 0,
     paren_brackets = 1,
     paren_angled = 2,
-    paren_straight = 3
+    paren_straight = 3,
+    paren_none = 4
   };
 //** Bitfield objects (1 bytes)
 //**
@@ -107,7 +109,7 @@ private:
       m_rowNames = false;
       m_colNames = false;
     }
-  uint8_t m_parenType : 2 /* InitBitFields_MatrCell */;
+  uint8_t m_parenType : 3 /* InitBitFields_MatrCell */;
   bool m_specialMatrix : 1 /* InitBitFields_MatrCell */;
   bool m_inferenceMatrix : 1 /* InitBitFields_MatrCell */;
   bool m_rowNames : 1 /* InitBitFields_MatrCell */;

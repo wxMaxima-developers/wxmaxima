@@ -369,13 +369,13 @@ wxString AnimationCell::ToXML() const {
 
       // Save the gnuplot source, if necessary.
       if (gnuplotSource != wxEmptyString) {
-        gnuplotSourceFiles += gnuplotSource + wxS(".gz;");
+        gnuplotSourceFiles += XMLescape(gnuplotSource) + wxS(".gz;");
         const wxMemoryBuffer data = i->GetCompressedGnuplotSource();
         if (data.GetDataLen() > 0)
           m_configuration->PushFileToSave(gnuplotSource + wxS(".gz"), data);
       }
       if (gnuplotData != wxEmptyString) {
-        gnuplotDataFiles += gnuplotData + wxS(".gz;");
+        gnuplotDataFiles += XMLescape(gnuplotData) + wxS(".gz;");
         const wxMemoryBuffer data = i->GetCompressedGnuplotData();
         if (data.GetDataLen() > 0)
           m_configuration->PushFileToSave(gnuplotData + wxS(".gz"), data);
@@ -384,7 +384,7 @@ wxString AnimationCell::ToXML() const {
       if (i->GetCompressedImage())
         m_configuration->PushFileToSave(basename + i->GetExtension(),
                                         i->GetCompressedImage());
-      images += basename + i->GetExtension() + wxS(";");
+      images += XMLescape(basename) + XMLescape(i->GetExtension()) + wxS(";");
     }
   }
 

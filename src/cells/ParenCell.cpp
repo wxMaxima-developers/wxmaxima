@@ -321,8 +321,6 @@ wxString ParenCell::ToMathML() const {
 }
 
 wxString ParenCell::ToXML() const {
-  //  if(IsBrokenIntoLines())
-  //    return wxEmptyString;
   wxString s;
   if(m_innerCell)
     s = m_innerCell->ListToXML();

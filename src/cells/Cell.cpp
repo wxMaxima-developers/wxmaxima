@@ -729,7 +729,17 @@ wxString Cell::XMLescape(wxString input) {
   input.Replace(wxS(">"), wxS("&gt;"));
   input.Replace(wxS("'"), wxS("&apos;"));
   input.Replace(wxS("\""), wxS("&quot;"));
-  return input;
+  wxString output;
+  output.reserve(input.Length());
+  for (const auto &i: input)
+    {
+      if((i < wxS('\u001F')) ||
+         ((i >= wxS('\u007F')) && (i <= wxS('\u009F'))))
+        output += wxString::Format("&#%03i;", static_cast<int>(i));
+      else
+        output += i;
+    }
+  return output;
 }
 
 wxString Cell::RTFescape(wxString input, bool MarkDown) {

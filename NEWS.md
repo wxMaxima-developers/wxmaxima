@@ -5,6 +5,7 @@
 - Clear wxMaxima's input buffer on starting a new maxima process (#1856)
 - A nicer ChangeLog dialogue
 - Corrected for swapped row and columns in wizard enter matrix
+- Fixed a few bugs in the XML saving code (#1867)
 
 # 23.12.0
 
