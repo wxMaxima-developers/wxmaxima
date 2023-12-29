@@ -414,8 +414,11 @@ void Cell::RecalculateList(AFontSize fontsize) {
 
 void Cell::ResetSizeList() {
   for (Cell &tmp : OnList(this))
-    for (Cell &cell : OnInner(&tmp))
-      cell.ResetSize();
+    {
+      tmp.ResetSize();
+      for (Cell &cell : OnInner(&tmp))
+        cell.ResetSize();
+    }
 }
 
 void Cell::Recalculate(AFontSize fontsize) {
