@@ -64,18 +64,20 @@ void SqrtCell::MakeBreakUpCells() {
 }
 
 void SqrtCell::Recalculate(AFontSize fontsize) {
-  m_innerCell->RecalculateList(fontsize);
-
-  m_width = m_innerCell->GetFullWidth() + Scale_Px(13) + 1;
-  if (!IsBrokenIntoLines()) {
-    auto openHeight = 0; // m_open->GetHeightList();
-    auto openCenter = 0; // m_open->GetCenterList();
-    m_height = std::max(m_innerCell->GetHeightList(), openHeight) + Scale_Px(3);
-    m_center = std::max(m_innerCell->GetCenterList(), openCenter) + Scale_Px(3);
-  } else {
-    m_height = m_center = m_width = 0;
-    m_open->Recalculate(fontsize);
-    m_close->Recalculate(fontsize);
+  if (NeedsRecalculation(fontsize)) {
+    m_innerCell->RecalculateList(fontsize);
+    
+    m_width = m_innerCell->GetFullWidth() + Scale_Px(13) + 1;
+    if (!IsBrokenIntoLines()) {
+      auto openHeight = 0; // m_open->GetHeightList();
+      auto openCenter = 0; // m_open->GetCenterList();
+      m_height = std::max(m_innerCell->GetHeightList(), openHeight) + Scale_Px(3);
+      m_center = std::max(m_innerCell->GetCenterList(), openCenter) + Scale_Px(3);
+    } else {
+      m_height = m_center = m_width = 0;
+      m_open->Recalculate(fontsize);
+      m_close->Recalculate(fontsize);
+    }
   }
   Cell::Recalculate(fontsize);
 }

@@ -68,23 +68,24 @@ void LimitCell::MakeBreakUpCells() {
 }
 
 void LimitCell::Recalculate(AFontSize fontsize) {
-  m_base->RecalculateList(fontsize);
-  m_under->RecalculateList(
-                           {MIN_LIMIT_FONT_SIZE, fontsize - LIMIT_FONT_SIZE_DECREASE});
-  m_name->RecalculateList(fontsize);
-  if (!IsBrokenIntoLines()) {
-    m_width = std::max(m_name->GetFullWidth(), m_under->GetFullWidth()) +
-      m_base->GetFullWidth();
-    m_center = std::max(m_base->GetCenterList(), m_name->GetCenterList());
-    m_height = m_center + std::max(m_name->GetMaxDrop() + m_under->GetHeightList(),
-                                m_base->GetMaxDrop());
-  } else {
-    m_width = m_height = m_center = 0;
-    m_open->RecalculateList(fontsize);
-    m_comma->RecalculateList(fontsize);
-    m_close->RecalculateList(fontsize);
+  if (NeedsRecalculation(fontsize)) {
+    m_base->RecalculateList(fontsize);
+    m_under->RecalculateList(
+                             {MIN_LIMIT_FONT_SIZE, fontsize - LIMIT_FONT_SIZE_DECREASE});
+    m_name->RecalculateList(fontsize);
+    if (!IsBrokenIntoLines()) {
+      m_width = std::max(m_name->GetFullWidth(), m_under->GetFullWidth()) +
+        m_base->GetFullWidth();
+      m_center = std::max(m_base->GetCenterList(), m_name->GetCenterList());
+      m_height = m_center + std::max(m_name->GetMaxDrop() + m_under->GetHeightList(),
+                                     m_base->GetMaxDrop());
+    } else {
+      m_width = m_height = m_center = 0;
+      m_open->RecalculateList(fontsize);
+      m_comma->RecalculateList(fontsize);
+      m_close->RecalculateList(fontsize);
+    }
   }
-
   Cell::Recalculate(fontsize);
 }
 

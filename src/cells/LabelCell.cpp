@@ -179,16 +179,18 @@ wxString LabelCell::GetXMLFlags() const {
 }
 
 void LabelCell::Recalculate(AFontSize fontsize) {
-  TextCell::Recalculate(fontsize);
-  m_width = std::max(m_width, Scale_Px(m_configuration->GetLabelWidth())  +
-                  MC_TEXT_PADDING);
-  m_height = std::max(m_height, static_cast<wxCoord>(m_fontSize_Scaled.Get() + Scale_Px(2)));
-  m_center = m_height / 2;
-  if(m_labelChoice_Last != m_configuration->GetLabelChoice())
-    UpdateDisplayedText();
+  if (NeedsRecalculation(fontsize)) {
+    TextCell::Recalculate(fontsize);
+    m_width = std::max(m_width, Scale_Px(m_configuration->GetLabelWidth())  +
+                       MC_TEXT_PADDING);
+    m_height = std::max(m_height, static_cast<wxCoord>(m_fontSize_Scaled.Get() + Scale_Px(2)));
+    m_center = m_height / 2;
+    if(m_labelChoice_Last != m_configuration->GetLabelChoice())
+      UpdateDisplayedText();
 
-  m_labelChoice_Last = m_configuration->GetLabelChoice();
-  m_zoomFactor_old = m_configuration->GetZoomFactor();
+    m_labelChoice_Last = m_configuration->GetLabelChoice();
+    m_zoomFactor_old = m_configuration->GetZoomFactor();
+  }
 }
 
 const wxString &LabelCell::GetAltCopyText() const {

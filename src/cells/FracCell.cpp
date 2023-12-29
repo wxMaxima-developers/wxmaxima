@@ -84,52 +84,53 @@ void FracCell::MakeDivideCell() {
 }
 
 void FracCell::Recalculate(AFontSize fontsize) {
-  if (m_inExponent || IsBrokenIntoLines()) {
-    m_displayedNum->RecalculateList(fontsize);
-    m_displayedDenom->RecalculateList(fontsize);
-    m_divide->RecalculateList(fontsize);
-  } else {
-    m_displayedNum->RecalculateList({MC_MIN_SIZE, fontsize - FRAC_DEC});
-    m_displayedDenom->RecalculateList({MC_MIN_SIZE, fontsize - FRAC_DEC});
-  }
-
-  if (IsBrokenIntoLines()) {
-    m_height = 0;
-    m_center = 0;
-    m_width = 0;
-  } else {
-    if (m_inExponent) {
-      m_protrusion = m_horizontalGapLeft = m_horizontalGapRight = 0;
-      m_width = Num()->GetWidth() + Denom()->GetWidth() + m_divide->GetWidth();
-      m_height = std::max(Num()->GetHeightList(), Denom()->GetHeightList()) +
-        Scale_Px(6.5);
-      m_center =
-        std::max(Num()->GetCenterList(), Denom()->GetCenterList()) + Scale_Px(3);
+  if (NeedsRecalculation(fontsize)) {
+    if (m_inExponent || IsBrokenIntoLines()) {
+      m_displayedNum->RecalculateList(fontsize);
+      m_displayedDenom->RecalculateList(fontsize);
+      m_divide->RecalculateList(fontsize);
     } else {
-      m_protrusion = Scale_Px(m_configuration->GetMathFontSize() / 2);
+      m_displayedNum->RecalculateList({MC_MIN_SIZE, fontsize - FRAC_DEC});
+      m_displayedDenom->RecalculateList({MC_MIN_SIZE, fontsize - FRAC_DEC});
+    }
 
-      // We want half a space's widh of blank space to separate us from the
-      // next minus.
+    if (IsBrokenIntoLines()) {
+      m_height = 0;
+      m_center = 0;
+      m_width = 0;
+    } else {
+      if (m_inExponent) {
+        m_protrusion = m_horizontalGapLeft = m_horizontalGapRight = 0;
+        m_width = Num()->GetWidth() + Denom()->GetWidth() + m_divide->GetWidth();
+        m_height = std::max(Num()->GetHeightList(), Denom()->GetHeightList()) +
+          Scale_Px(6.5);
+        m_center =
+          std::max(Num()->GetCenterList(), Denom()->GetCenterList()) + Scale_Px(3);
+      } else {
+        m_protrusion = Scale_Px(m_configuration->GetMathFontSize() / 2);
 
-      if (GetPrevious() && GetPrevious()->ToString().EndsWith(wxS("-")))
-        m_horizontalGapLeft = m_protrusion;
-      else
-        m_horizontalGapLeft = 0;
+        // We want half a space's widh of blank space to separate us from the
+        // next minus.
 
-      if (GetNext() && GetNext()->ToString().StartsWith(wxS("-")))
-        m_horizontalGapRight = m_protrusion;
-      else
-        m_horizontalGapRight = 0;
+        if (GetPrevious() && GetPrevious()->ToString().EndsWith(wxS("-")))
+          m_horizontalGapLeft = m_protrusion;
+        else
+          m_horizontalGapLeft = 0;
 
-      m_width = std::max(m_displayedNum->GetFullWidth(),
-                      m_displayedDenom->GetFullWidth()) +
-        2 * m_protrusion + m_horizontalGapLeft + m_horizontalGapRight;
-      m_height =
-        Num()->GetHeightList() + Denom()->GetHeightList() + Scale_Px(6.5);
-      m_center = Num()->GetHeightList() + Scale_Px(3);
+        if (GetNext() && GetNext()->ToString().StartsWith(wxS("-")))
+          m_horizontalGapRight = m_protrusion;
+        else
+          m_horizontalGapRight = 0;
+
+        m_width = std::max(m_displayedNum->GetFullWidth(),
+                           m_displayedDenom->GetFullWidth()) +
+          2 * m_protrusion + m_horizontalGapLeft + m_horizontalGapRight;
+        m_height =
+          Num()->GetHeightList() + Denom()->GetHeightList() + Scale_Px(6.5);
+        m_center = Num()->GetHeightList() + Scale_Px(3);
+      }
     }
   }
-
   Cell::Recalculate(fontsize);
 }
 

@@ -63,18 +63,20 @@ void AbsCell::MakeBreakupCells() {
 }
 
 void AbsCell::Recalculate(AFontSize fontsize) {
-  m_innerCell->RecalculateList(fontsize);
-  if (IsBrokenIntoLines()) {
-    m_width = 0;
-    m_height = 0;
-    m_center = 0;
-    m_open->RecalculateList(fontsize);
-    m_close->RecalculateList(fontsize);
-  } else {
-    m_width = m_innerCell->GetFullWidth() + Scale_Px(8) +
-      2 * m_configuration->GetDefaultLineWidth();
-    m_height = m_innerCell->GetHeightList() + Scale_Px(4);
-    m_center = m_innerCell->GetCenterList() + Scale_Px(2);
+  if (NeedsRecalculation(fontsize)) {
+    m_innerCell->RecalculateList(fontsize);
+    if (IsBrokenIntoLines()) {
+      m_width = 0;
+      m_height = 0;
+      m_center = 0;
+      m_open->RecalculateList(fontsize);
+      m_close->RecalculateList(fontsize);
+    } else {
+      m_width = m_innerCell->GetFullWidth() + Scale_Px(8) +
+        2 * m_configuration->GetDefaultLineWidth();
+      m_height = m_innerCell->GetHeightList() + Scale_Px(4);
+      m_center = m_innerCell->GetCenterList() + Scale_Px(2);
+    }
   }
   Cell::Recalculate(fontsize);
 }

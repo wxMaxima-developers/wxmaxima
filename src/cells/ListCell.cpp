@@ -72,30 +72,32 @@ ListCell::ListCell(GroupCell *group, const ListCell &cell)
 DEFINE_CELL(ListCell)
 
 void ListCell::Recalculate(AFontSize fontsize) {
-  m_innerCell->RecalculateList(fontsize);
-  m_open->RecalculateList(fontsize);
-  m_close->RecalculateList(fontsize);
+  if (NeedsRecalculation(fontsize)) {
+    m_innerCell->RecalculateList(fontsize);
+    m_open->RecalculateList(fontsize);
+    m_close->RecalculateList(fontsize);
 
-  m_signWidth = m_open->GetWidth();
+    m_signWidth = m_open->GetWidth();
 
-  // If our font provides all the unicode chars we need we don't need
-  // to bother which exotic method we need to use for drawing nice parenthesis.
-  if (1.2 * m_open->GetHeight() >= m_innerCell->GetHeightList()) {
-    m_drawAsAscii = true;
-    m_signHeight = m_open->GetHeight();
-  } else {
-    m_drawAsAscii = false;
-    m_signHeight = m_innerCell->GetHeightList();
-  }
+    // If our font provides all the unicode chars we need we don't need
+    // to bother which exotic method we need to use for drawing nice parenthesis.
+    if (1.2 * m_open->GetHeight() >= m_innerCell->GetHeightList()) {
+      m_drawAsAscii = true;
+      m_signHeight = m_open->GetHeight();
+    } else {
+      m_drawAsAscii = false;
+      m_signHeight = m_innerCell->GetHeightList();
+    }
 
-  if (IsBrokenIntoLines()) {
-    m_width = 0;
-    m_height = 0;
-    m_center = 0;
-  } else {
-    m_width = m_innerCell->GetFullWidth() + m_signWidth * 2;
-    m_height = std::max(m_signHeight, m_innerCell->GetHeightList()) + Scale_Px(4);
-    m_center = m_height / 2;
+    if (IsBrokenIntoLines()) {
+      m_width = 0;
+      m_height = 0;
+      m_center = 0;
+    } else {
+      m_width = m_innerCell->GetFullWidth() + m_signWidth * 2;
+      m_height = std::max(m_signHeight, m_innerCell->GetHeightList()) + Scale_Px(4);
+      m_center = m_height / 2;
+    }
   }
   Cell::Recalculate(fontsize);
 }

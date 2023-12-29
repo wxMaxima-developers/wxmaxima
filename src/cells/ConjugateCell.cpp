@@ -61,21 +61,23 @@ void ConjugateCell::MakeBreakupCells() {
 }
 
 void ConjugateCell::Recalculate(AFontSize fontsize) {
-  m_innerCell->RecalculateList(fontsize);
+  if (NeedsRecalculation(fontsize)) {
+    m_innerCell->RecalculateList(fontsize);
 
-  if (!IsBrokenIntoLines()) {
-    m_width = m_innerCell->GetFullWidth() + Scale_Px(8);
-    m_height = m_innerCell->GetHeightList() + Scale_Px(6);
-    m_center = m_innerCell->GetCenterList() + Scale_Px(6);
-  } else {
-    // The ConjugateCell itself isn't displayed if it is broken into lines.
-    // instead m_open, m_innerCell and m_close are => We can set our size to 0
-    // in this case.
-    m_width = 0;
-    m_height = 0;
-    m_center = 0;
-    m_open->RecalculateList(fontsize);
-    m_close->RecalculateList(fontsize);
+    if (!IsBrokenIntoLines()) {
+      m_width = m_innerCell->GetFullWidth() + Scale_Px(8);
+      m_height = m_innerCell->GetHeightList() + Scale_Px(6);
+      m_center = m_innerCell->GetCenterList() + Scale_Px(6);
+    } else {
+      // The ConjugateCell itself isn't displayed if it is broken into lines.
+      // instead m_open, m_innerCell and m_close are => We can set our size to 0
+      // in this case.
+      m_width = 0;
+      m_height = 0;
+      m_center = 0;
+      m_open->RecalculateList(fontsize);
+      m_close->RecalculateList(fontsize);
+    }
   }
   Cell::Recalculate(fontsize);
 }

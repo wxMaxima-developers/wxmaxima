@@ -67,28 +67,30 @@ void NamedBoxCell::MakeBreakupCells() {
 }
 
 void NamedBoxCell::Recalculate(AFontSize fontsize) {
-  m_innerCell->RecalculateList(fontsize);
-  m_boxname->RecalculateList(fontsize);
+  if (NeedsRecalculation(fontsize)) {
+    m_innerCell->RecalculateList(fontsize);
+    m_boxname->RecalculateList(fontsize);
 
-  m_innerCellWidth = m_innerCell->GetFullWidth();
-  m_innerCellHeight = m_innerCell->GetHeightList();
-  m_nameWidth = m_boxname->GetFullWidth();
-  m_nameHeight = m_boxname->GetHeightList();
+    m_innerCellWidth = m_innerCell->GetFullWidth();
+    m_innerCellHeight = m_innerCell->GetHeightList();
+    m_nameWidth = m_boxname->GetFullWidth();
+    m_nameHeight = m_boxname->GetHeightList();
 
-  if (!IsBrokenIntoLines()) {
-    m_width = std::max(m_innerCellWidth, m_nameWidth) + Scale_Px(8);
-    m_height = m_innerCellHeight + m_nameHeight + Scale_Px(16);
-    m_center = m_innerCell->GetCenterList() + m_nameHeight + Scale_Px(8);
-  } else {
-    // The NamedBoxCell itself isn't displayed if it is broken into lines.
-    // instead m_open, m_innerCell and m_close are => We can set our size to 0
-    // in this case.
-    m_width = 0;
-    m_height = 0;
-    m_center = 0;
-    m_open->RecalculateList(fontsize);
-    m_comma->RecalculateList(fontsize);
-    m_close->RecalculateList(fontsize);
+    if (!IsBrokenIntoLines()) {
+      m_width = std::max(m_innerCellWidth, m_nameWidth) + Scale_Px(8);
+      m_height = m_innerCellHeight + m_nameHeight + Scale_Px(16);
+      m_center = m_innerCell->GetCenterList() + m_nameHeight + Scale_Px(8);
+    } else {
+      // The NamedBoxCell itself isn't displayed if it is broken into lines.
+      // instead m_open, m_innerCell and m_close are => We can set our size to 0
+      // in this case.
+      m_width = 0;
+      m_height = 0;
+      m_center = 0;
+      m_open->RecalculateList(fontsize);
+      m_comma->RecalculateList(fontsize);
+      m_close->RecalculateList(fontsize);
+    }
   }
   Cell::Recalculate(fontsize);
 }

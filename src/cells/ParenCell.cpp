@@ -79,76 +79,78 @@ void ParenCell::SetInner(std::unique_ptr<Cell> inner, CellType type) {
 }
 
 void ParenCell::Recalculate(AFontSize fontsize) {
-  if(m_innerCell)
-    m_innerCell->RecalculateList(fontsize);
-  m_open->RecalculateList(fontsize);
-  m_close->RecalculateList(fontsize);
-
-  wxDC *dc = m_configuration->GetRecalcDC();
-  auto fontsize1 = Scale_Px(fontsize);
-  int size = 0;
-  if(m_innerCell)
-    size = m_innerCell->GetHeightList();
-  // If our font provides all the unicode chars we need we don't need
-  // to bother which exotic method we need to use for drawing nice parenthesis.
-  if (fontsize1 * 3 > size) {
-    m_bigParenType = Configuration::ascii;
-    m_signHeight = m_open->GetHeightList();
-    m_signWidth = m_open->GetWidth();
-  } else {
-    m_bigParenType = Configuration::handdrawn;
-    m_signWidth = Scale_Px(6) + m_configuration->GetDefaultLineWidth();
-    if (m_signWidth < size / 15)
-      m_signWidth = size / 15;
-  }
-  int innerCellWidth = 0;
-  if(m_innerCell)
-    innerCellWidth = m_innerCell->GetFullWidth();
-  m_width = innerCellWidth + m_signWidth * 2;
-  if (IsBrokenIntoLines())
-    m_width = 0;
-
-  int innerCellHeight = 0;
-  if(m_innerCell)
-    innerCellHeight = m_innerCell->GetHeightList();
-  m_height = std::max(m_signHeight, innerCellHeight) + Scale_Px(2);
-  m_center = m_height / 2;
-
-  dc->GetTextExtent(wxS("("), &m_charWidth1, &m_charHeight1);
-  if (m_charHeight1 < 2)
-    m_charHeight1 = 2;
-
-  if (IsBrokenIntoLines()) {
-    int innerCellCenter = 0;
+  if (NeedsRecalculation(fontsize)) {
     if(m_innerCell)
-      innerCellCenter = m_innerCell->GetCenterList();
-    m_height = std::max(innerCellHeight, m_open->GetHeightList());
-    m_center = std::max(innerCellCenter, m_open->GetCenterList());
-  } else {
-    if (m_innerCell) {
-      switch (m_bigParenType) {
-      case Configuration::ascii:
-        m_signHeight = m_charHeight1;
-        break;
-      default: {
-      }
-      }
-      m_innerCell->SetCurrentPoint(
-                                   wxPoint(m_currentPoint.x + m_signWidth, m_currentPoint.y));
+      m_innerCell->RecalculateList(fontsize);
+    m_open->RecalculateList(fontsize);
+    m_close->RecalculateList(fontsize);
 
-      // Center the argument of all big parenthesis vertically
-      if (m_bigParenType != Configuration::ascii)
-        m_innerCell->SetCurrentPoint(
-                                     wxPoint(m_currentPoint.x + m_signWidth,
-                                             m_currentPoint.y + (m_innerCell->GetCenterList() -
-                                                                 m_innerCell->GetHeightList() / 2)));
-      else
+    wxDC *dc = m_configuration->GetRecalcDC();
+    auto fontsize1 = Scale_Px(fontsize);
+    int size = 0;
+    if(m_innerCell)
+      size = m_innerCell->GetHeightList();
+    // If our font provides all the unicode chars we need we don't need
+    // to bother which exotic method we need to use for drawing nice parenthesis.
+    if (fontsize1 * 3 > size) {
+      m_bigParenType = Configuration::ascii;
+      m_signHeight = m_open->GetHeightList();
+      m_signWidth = m_open->GetWidth();
+    } else {
+      m_bigParenType = Configuration::handdrawn;
+      m_signWidth = Scale_Px(6) + m_configuration->GetDefaultLineWidth();
+      if (m_signWidth < size / 15)
+        m_signWidth = size / 15;
+    }
+    int innerCellWidth = 0;
+    if(m_innerCell)
+      innerCellWidth = m_innerCell->GetFullWidth();
+    m_width = innerCellWidth + m_signWidth * 2;
+    if (IsBrokenIntoLines())
+      m_width = 0;
+
+    int innerCellHeight = 0;
+    if(m_innerCell)
+      innerCellHeight = m_innerCell->GetHeightList();
+    m_height = std::max(m_signHeight, innerCellHeight) + Scale_Px(2);
+    m_center = m_height / 2;
+
+    dc->GetTextExtent(wxS("("), &m_charWidth1, &m_charHeight1);
+    if (m_charHeight1 < 2)
+      m_charHeight1 = 2;
+
+    if (IsBrokenIntoLines()) {
+      int innerCellCenter = 0;
+      if(m_innerCell)
+        innerCellCenter = m_innerCell->GetCenterList();
+      m_height = std::max(innerCellHeight, m_open->GetHeightList());
+      m_center = std::max(innerCellCenter, m_open->GetCenterList());
+    } else {
+      if (m_innerCell) {
+        switch (m_bigParenType) {
+        case Configuration::ascii:
+          m_signHeight = m_charHeight1;
+          break;
+        default: {
+        }
+        }
         m_innerCell->SetCurrentPoint(
                                      wxPoint(m_currentPoint.x + m_signWidth, m_currentPoint.y));
 
-      m_height =
-        std::max(m_signHeight, m_innerCell->GetHeightList()) + Scale_Px(4);
-      m_center = m_height / 2;
+        // Center the argument of all big parenthesis vertically
+        if (m_bigParenType != Configuration::ascii)
+          m_innerCell->SetCurrentPoint(
+                                       wxPoint(m_currentPoint.x + m_signWidth,
+                                               m_currentPoint.y + (m_innerCell->GetCenterList() -
+                                                                   m_innerCell->GetHeightList() / 2)));
+        else
+          m_innerCell->SetCurrentPoint(
+                                       wxPoint(m_currentPoint.x + m_signWidth, m_currentPoint.y));
+
+        m_height =
+          std::max(m_signHeight, m_innerCell->GetHeightList()) + Scale_Px(4);
+        m_center = m_height / 2;
+      }
     }
   }
   Cell::Recalculate(fontsize);

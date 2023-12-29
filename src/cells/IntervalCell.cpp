@@ -81,45 +81,47 @@ IntervalCell::IntervalCell(GroupCell *group, const IntervalCell &cell)
 DEFINE_CELL(IntervalCell)
 
 void IntervalCell::Recalculate(AFontSize fontsize) {
-  if (IsBrokenIntoLines()) {
-    m_comma->RecalculateList(fontsize);
-    m_open->RecalculateList(fontsize);
-  } else {
-    m_openBracket->RecalculateList(fontsize);
-    m_closeBracket->RecalculateList(fontsize);
-    m_ellipsis->RecalculateList(fontsize);
-  }
-  m_close->RecalculateList(fontsize);
-  m_start->RecalculateList(fontsize);
-  m_stop->RecalculateList(fontsize);
-  m_signWidth = m_close->GetWidth();
+  if (NeedsRecalculation(fontsize)) {
+    if (IsBrokenIntoLines()) {
+      m_comma->RecalculateList(fontsize);
+      m_open->RecalculateList(fontsize);
+    } else {
+      m_openBracket->RecalculateList(fontsize);
+      m_closeBracket->RecalculateList(fontsize);
+      m_ellipsis->RecalculateList(fontsize);
+    }
+    m_close->RecalculateList(fontsize);
+    m_start->RecalculateList(fontsize);
+    m_stop->RecalculateList(fontsize);
+    m_signWidth = m_close->GetWidth();
 
-  // If our font provides all the unicode chars we need we don't need
-  // to bother which exotic method we need to use for drawing nice parenthesis.
-  if (1.2 * m_open->GetHeight() >=
-      std::max(m_start->GetHeightList(), m_stop->GetHeightList())) {
-    m_drawAsAscii = true;
-    m_signHeight = m_open->GetHeight();
-  } else {
-    m_drawAsAscii = false;
-    m_signHeight =
-      std::max(std::max(std::max(m_start->GetHeightList(), m_stop->GetHeightList()),
-                  m_open->GetHeight()),
-            m_ellipsis->GetHeight());
-  }
+    // If our font provides all the unicode chars we need we don't need
+    // to bother which exotic method we need to use for drawing nice parenthesis.
+    if (1.2 * m_open->GetHeight() >=
+        std::max(m_start->GetHeightList(), m_stop->GetHeightList())) {
+      m_drawAsAscii = true;
+      m_signHeight = m_open->GetHeight();
+    } else {
+      m_drawAsAscii = false;
+      m_signHeight =
+        std::max(std::max(std::max(m_start->GetHeightList(), m_stop->GetHeightList()),
+                          m_open->GetHeight()),
+                 m_ellipsis->GetHeight());
+    }
 
-  if (IsBrokenIntoLines()) {
-    m_width = 0;
-    m_height = 0;
-    m_center = 0;
-  } else {
-    m_width = m_signWidth + m_start->GetFullWidth() + m_ellipsis->GetWidth() +
-      m_stop->GetFullWidth() + m_signWidth;
+    if (IsBrokenIntoLines()) {
+      m_width = 0;
+      m_height = 0;
+      m_center = 0;
+    } else {
+      m_width = m_signWidth + m_start->GetFullWidth() + m_ellipsis->GetWidth() +
+        m_stop->GetFullWidth() + m_signWidth;
 
-    m_height = std::max(std::max(m_signHeight, m_start->GetHeightList()),
-                     m_stop->GetHeightList()) +
-      Scale_Px(4);
-    m_center = m_height / 2;
+      m_height = std::max(std::max(m_signHeight, m_start->GetHeightList()),
+                          m_stop->GetHeightList()) +
+        Scale_Px(4);
+      m_center = m_height / 2;
+    }
   }
   Cell::Recalculate(fontsize);
 }

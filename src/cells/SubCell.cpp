@@ -51,13 +51,15 @@ SubCell::SubCell(GroupCell *group, const SubCell &cell)
 DEFINE_CELL(SubCell)
 
 void SubCell::Recalculate(AFontSize fontsize) {
-  m_baseCell->RecalculateList(fontsize);
-  m_indexCell->RecalculateList({MC_MIN_SIZE, fontsize - SUB_DEC});
-  m_width =
+  if (NeedsRecalculation(fontsize)) {
+    m_baseCell->RecalculateList(fontsize);
+    m_indexCell->RecalculateList({MC_MIN_SIZE, fontsize - SUB_DEC});
+    m_width =
     m_baseCell->GetFullWidth() + m_indexCell->GetFullWidth() - Scale_Px(2);
-  m_height = m_baseCell->GetHeightList() + m_indexCell->GetHeightList() -
-    Scale_Px(.8 * fontsize + MC_EXP_INDENT);
-  m_center = m_baseCell->GetCenter();
+    m_height = m_baseCell->GetHeightList() + m_indexCell->GetHeightList() -
+      Scale_Px(.8 * fontsize + MC_EXP_INDENT);
+    m_center = m_baseCell->GetCenter();
+  }
   Cell::Recalculate(fontsize);
 }
 

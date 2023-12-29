@@ -84,34 +84,36 @@ void ExptCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
 }
 
 void ExptCell::Recalculate(AFontSize fontsize) {
-  m_baseCell->RecalculateList(fontsize);
-  if (IsBrokenIntoLines())
-    m_exptCell->RecalculateList(fontsize);
-  else
-    m_exptCell->RecalculateList({MC_MIN_SIZE, fontsize - EXPT_DEC});
+  if (NeedsRecalculation(fontsize)) {
+    m_baseCell->RecalculateList(fontsize);
+    if (IsBrokenIntoLines())
+      m_exptCell->RecalculateList(fontsize);
+    else
+      m_exptCell->RecalculateList({MC_MIN_SIZE, fontsize - EXPT_DEC});
 
-  if (IsBrokenIntoLines()) {
-    m_height = m_width = m_center = 0;
-    m_exp->RecalculateList(fontsize);
-    m_open->RecalculateList(fontsize);
-    m_close->RecalculateList(fontsize);
-  } else {
-    m_width = m_baseCell->GetFullWidth() + m_exptCell->GetFullWidth() -
-      MC_TEXT_PADDING;
-    m_expt_yoffset = m_exptCell->GetMaxDrop() + PowRise();
+    if (IsBrokenIntoLines()) {
+      m_height = m_width = m_center = 0;
+      m_exp->RecalculateList(fontsize);
+      m_open->RecalculateList(fontsize);
+      m_close->RecalculateList(fontsize);
+    } else {
+      m_width = m_baseCell->GetFullWidth() + m_exptCell->GetFullWidth() -
+        MC_TEXT_PADDING;
+      m_expt_yoffset = m_exptCell->GetMaxDrop() + PowRise();
 
-    m_height = m_baseCell->GetHeightList();
-    m_center = m_baseCell->GetCenterList();
+      m_height = m_baseCell->GetHeightList();
+      m_center = m_baseCell->GetCenterList();
 
-    int baseHeight = m_baseCell->GetHeightList() - m_baseCell->GetMaxDrop();
-    int exptHeight =
-      m_exptCell->GetHeightList() - m_exptCell->GetMaxDrop() + m_expt_yoffset;
+      int baseHeight = m_baseCell->GetHeightList() - m_baseCell->GetMaxDrop();
+      int exptHeight =
+        m_exptCell->GetHeightList() - m_exptCell->GetMaxDrop() + m_expt_yoffset;
 
-    if (baseHeight < exptHeight) {
-      m_height += exptHeight - baseHeight;
-      m_center += exptHeight - baseHeight;
-    } else
-      m_expt_yoffset += baseHeight - exptHeight;
+      if (baseHeight < exptHeight) {
+        m_height += exptHeight - baseHeight;
+        m_center += exptHeight - baseHeight;
+      } else
+        m_expt_yoffset += baseHeight - exptHeight;
+    }
   }
   Cell::Recalculate(fontsize);
 }

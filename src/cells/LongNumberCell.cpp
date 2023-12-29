@@ -85,13 +85,12 @@ Cell *LongNumberCell::GetInnerCell(size_t index) const
 }
 
 void LongNumberCell::Recalculate(AFontSize fontsize) {
-  // If the config settings about how many digits to display has changed we
-  // need to regenerate the info which number to show.
-  if (((m_displayedDigits_old != m_configuration->GetDisplayedDigits())) ||
-      (m_showAllDigits_old = m_configuration->ShowAllDigits()))
-    UpdateDisplayedText();
-
   if (NeedsRecalculation(fontsize)) {
+    // If the config settings about how many digits to display has changed we
+    // need to regenerate the info which number to show.
+    if (((m_displayedDigits_old != m_configuration->GetDisplayedDigits())) ||
+        (m_showAllDigits_old = m_configuration->ShowAllDigits()))
+      UpdateDisplayedText();
     if (IsBrokenIntoLines()) {
       m_innerCell->RecalculateList(fontsize);
       m_keepPercent_last = m_configuration->CheckKeepPercent();

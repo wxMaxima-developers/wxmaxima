@@ -71,18 +71,20 @@ void DiffCell::MakeBreakupCells() {
 }
 
 void DiffCell::Recalculate(AFontSize fontsize) {
-  m_baseCell->RecalculateList(fontsize);
-  m_diffCell->RecalculateList(fontsize);
-  if (!IsBrokenIntoLines()) {
-    m_width = m_baseCell->GetFullWidth() + m_diffCell->GetFullWidth();
-    m_center = std::max(m_diffCell->GetCenterList(), m_baseCell->GetCenterList());
-    m_height =
-      m_center + std::max(m_diffCell->GetMaxDrop(), m_baseCell->GetMaxDrop());
-  } else {
-    m_width = m_center = m_height = 0;
-    m_open->RecalculateList(fontsize);
-    m_comma->RecalculateList(fontsize);
-    m_close->RecalculateList(fontsize);
+  if (NeedsRecalculation(fontsize)) {
+    m_baseCell->RecalculateList(fontsize);
+    m_diffCell->RecalculateList(fontsize);
+    if (!IsBrokenIntoLines()) {
+      m_width = m_baseCell->GetFullWidth() + m_diffCell->GetFullWidth();
+      m_center = std::max(m_diffCell->GetCenterList(), m_baseCell->GetCenterList());
+      m_height =
+        m_center + std::max(m_diffCell->GetMaxDrop(), m_baseCell->GetMaxDrop());
+    } else {
+      m_width = m_center = m_height = 0;
+      m_open->RecalculateList(fontsize);
+      m_comma->RecalculateList(fontsize);
+      m_close->RecalculateList(fontsize);
+    }
   }
   Cell::Recalculate(fontsize);
 }
