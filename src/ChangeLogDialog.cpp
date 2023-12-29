@@ -34,7 +34,7 @@
 
 ChangeLogDialog::ChangeLogDialog(wxWindow *parent)
   : wxDialog(parent, -1, _("ChangeLog"), wxDefaultPosition, wxDefaultSize,
-             wxRESIZE_BORDER | wxCLOSE_BOX | wxMAXIMIZE_BOX |
+             wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER | wxCLOSE_BOX | wxMAXIMIZE_BOX |
              wxMINIMIZE_BOX) {
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
   wxMemoryInputStream istream(NEWS_MD, NEWS_MD_SIZE);
