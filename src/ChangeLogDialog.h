@@ -42,7 +42,6 @@ public:
   explicit ChangeLogDialog(wxWindow *parent);
 private:
   wxRichTextCtrl *m_license;
-  bool m_movedToStart;
   void OnTextURLEvent(wxTextUrlEvent& event);
 };
 
