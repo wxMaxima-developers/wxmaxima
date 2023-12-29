@@ -4,6 +4,7 @@
 - Got rid of a crash on startup in fedora (#1862)
 - Clear wxMaxima's input buffer on starting a new maxima process (#1856)
 - A nicer ChangeLog dialogue
+- Corrected for swapped row and columns in wizard enter matrix
 
 # 23.12.0
 
