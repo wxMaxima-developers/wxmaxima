@@ -3541,7 +3541,7 @@ void Worksheet::OnCharInActive(wxKeyEvent &event) {
   ///
   /// send event to active cell
   ///
-  EditorCell *activeCell = GetActiveCell();
+  const EditorCell *activeCell = GetActiveCell();
   wxString oldValue = activeCell->GetValue();
 
   switch (event.GetKeyCode()) {
@@ -3576,6 +3576,7 @@ void Worksheet::OnCharInActive(wxKeyEvent &event) {
 
   // Update title and toolbar in order to reflect the "unsaved" state of the
   // worksheet.
+  // cppcheck-suppress knownConditionTrueFalse
   if (IsSaved() && activeCell->GetValue() != oldValue) {
     SetSaved(false);
     RequestRedraw();

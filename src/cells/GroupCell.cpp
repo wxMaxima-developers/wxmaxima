@@ -1976,8 +1976,10 @@ wxAccStatus GroupCell::GetLocation(wxRect &rect, int elementId) {
 void CellList::Check(const GroupCell *c) {
   if (!c)
     return;
+  //cppcheck-suppress knownPointerToBool
   wxASSERT_MSG(!c->m_next || dynamic_cast<GroupCell *>(c->m_next.get()),
                _("Bug: The successor to a GroupCell is not a GroupCell."));
+  //cppcheck-suppress knownPointerToBool
   wxASSERT_MSG(!c->m_previous || dynamic_cast<GroupCell *>(c->m_previous),
                _("Bug: The predecessor to a GroupCell is not a GroupCell."));
   CellList::Check(static_cast<const Cell *>(c));
