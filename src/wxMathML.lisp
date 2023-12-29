@@ -195,16 +195,16 @@ Submit bug reports by following the 'New issue' link on that page."))
 ;; It also includes more info, e.g. the directory information from Maxima.
 (defun $wxbuild_info ()
   (progv  '(seconds minute hour day month year) cl-user:*maxima-build-time*
-    (format t "wxMaxima version: ~a~%" $wxmaximaversion)
-    (format t "using wxWidgets version: ~a~%" $wxwidgetsversion)
-    (format t "Maxima version: ~a~%" *autoconf-version*)
-    (format t "Maxima build date: ~4,'0d-~2,'0d-~2,'0d ~2,'0d:~2,'0d:~2,'0d~%"
+    (format t "~30a~a~%" "wxMaxima version:" $wxmaximaversion)
+    (format t "~30a~a~%" "using wxWidgets version:" $wxwidgetsversion)
+    (format t "~30a~a~%" "Maxima version:" *autoconf-version*)
+    (format t "Maxima build date:                 ~4,'0d-~2,'0d-~2,'0d ~2,'0d:~2,'0d:~2,'0d~%"
            year month day hour minute seconds)
-    (format t "Host type: ~a~%" *autoconf-host*)
-    (format t "System type: ~a ~a ~a~%" (software-type) (software-version) (machine-type))
-    (format t "Lisp implementation type: ~a~%" (lisp-implementation-type))
-    (format t "Lisp implementation version: ~a~%" (lisp-implementation-version))
-    (format t "wxMaxima help dir: ~a~%" wxHelpDir))
+    (format t "~30a~a~%" "Host type:" *autoconf-host*)
+    (format t "System type:                       ~a ~a ~a~%" (software-type) (software-version) (machine-type))
+    (format t "~30a~a~%" "Lisp implementation type:" (lisp-implementation-type))
+    (format t "~30a~a~%" "Lisp implementation version:" (lisp-implementation-version))
+    (format t "~30a~a~%" "wxMaxima help dir:" wxHelpDir))
     (format t "~%~%Maxima's idea of the directory layout is:~%")
     (format t "~a~%" (print-directories))
   "")
@@ -228,7 +228,7 @@ Submit bug reports by following the 'New issue' link on that page."))
   (format t "-------------------------------------------------------------~%")
    ; Display the 2D-formatted build information
   (let (($display2d t))
-    (displa ($build_info)))
+    (displa ($wxbuild_info () )))
   (format t "-------------------------------------------------------------~%"))
 
 
