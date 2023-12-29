@@ -52,7 +52,7 @@ void Observed::LogRef(const CellPtrBase *cellptr) const {
 }
 
 void Observed::LogDeref(const CellPtrBase *cellptr) const {
-  CELLPTR_LOG_METHOD(wxS8"%p Obs::Deref obj=%p"), cellptr, this);
+  CELLPTR_LOG_METHOD(wxS("%p Obs::Deref obj=%p"), cellptr, this);
 }
 #endif
 

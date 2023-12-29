@@ -73,7 +73,7 @@
 #include "Plot2dWiz.h"
 #include "Plot3dWiz.h"
 #include "PlotFormatWiz.h"
-#include "Printout.h"
+#include "graphical_io/Printout.h"
 #include "ResolutionChooser.h"
 #include "SeriesWiz.h"
 #include "StringUtils.h"
@@ -1785,8 +1785,7 @@ wxMaxima::~wxMaxima() {
     wxExit();
   else {
     if (m_isLogTarget) {
-      if(m_topLevelWindows.size() > 0)
-        m_topLevelWindows.back()->BecomeLogTarget();
+      m_topLevelWindows.back()->BecomeLogTarget();
     }
   }
 

@@ -479,6 +479,7 @@ template <typename T>
 class CellPtr final : public CellPtrBase
 {
   template <typename U>
+  // cppcheck-suppress duplInheritedMember
   static bool constexpr is_pointer() {
     return std::is_same<U, decltype(nullptr)>::value
       || (std::is_pointer<U>::value && std::is_convertible<U, pointer>::value);
@@ -511,6 +512,7 @@ public:
 
   // Operations with nullptr_t
   //
+  // cppcheck-suppress duplInheritedMember
   void reset() noexcept { base_reset(); }
   explicit CellPtr(decltype(nullptr)) noexcept {}
   CellPtr &operator=(decltype(nullptr)) noexcept { base_reset(); return *this; }

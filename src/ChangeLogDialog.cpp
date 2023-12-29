@@ -39,7 +39,6 @@ ChangeLogDialog::ChangeLogDialog(wxWindow *parent)
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
   wxMemoryInputStream istream(NEWS_MD, NEWS_MD_SIZE);
   wxTextInputStream textIn(istream);
-  m_movedToStart = false;
   wxString line;
   wxString licenseText;
   Connect(wxEVT_TEXT_URL, wxTextUrlEventHandler(ChangeLogDialog::OnTextURLEvent),

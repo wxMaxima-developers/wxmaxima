@@ -285,7 +285,7 @@ bool MyApp::OnInit() {
     /* wxWidgets introduced version suffixes to gettext catalogs, see:
      * https://github.com/wxWidgets/wxWidgets/commit/ded4da5 */
     /* so try to load a catalog with this suffix */
-    // cppcheck-suppress unknownMacro
+    // cppcheck-suppress unknownMacro wxSTRINGIZE
     wxTranslations::Get()->AddCatalog("wxstd-"
                                       wxSTRINGIZE(wxMAJOR_VERSION) "."
                                       wxSTRINGIZE(wxMINOR_VERSION));
