@@ -32,16 +32,16 @@
 
 #include "Worksheet.h"
 #include "AnimationCell.h"
-#include "BitmapOut.h"
+#include "graphical_io/BitmapOut.h"
 #include "CellList.h"
 #include "CompositeDataObject.h"
-#include "EMFout.h"
+#include "graphical_io/EMFout.h"
 #include "ErrorRedirector.h"
 #include "ImgCell.h"
 #include "MarkDown.h"
 #include "MaxSizeChooser.h"
 #include "ResolutionChooser.h"
-#include "SVGout.h"
+#include "graphical_io/SVGout.h"
 #include "Version.h"
 #include "WXMformat.h"
 #include "levenshtein/levenshtein.h"
@@ -6366,8 +6366,8 @@ void Worksheet::OnDoubleClick(wxMouseEvent &event) {
 
 bool Worksheet::ActivateInput(int direction) {
   auto const advance =
-    (direction >= 0) ? +[](GroupCell *cell) { return cell->GetNext(); }
-    : +[](GroupCell *cell) { return cell->GetPrevious(); };
+    (direction >= 0) ? +[](const GroupCell *cell) { return cell->GetNext(); }
+    : +[](const GroupCell *cell) { return cell->GetPrevious(); };
 
   GroupCell *tmp = {};
   if (m_cellPointers.m_selectionStart)
@@ -7459,7 +7459,7 @@ wxString Worksheet::GetInputAboveCaret() {
   if (!m_hCaretActive || !m_hCaretPosition)
     return {};
 
-  EditorCell *editor = m_hCaretPosition->GetEditable();
+  const EditorCell *editor = m_hCaretPosition->GetEditable();
   return editor ? editor->ToString() : wxString{};
 }
 
@@ -7544,7 +7544,7 @@ bool Worksheet::FindNext(const wxString &str, bool down, bool ignoreCase,
   pos->GetEditable()->SearchStartedHere(pos->GetEditable()->GetCaretPosition());
 
   // Remember where to go if we need to wrap the search.
-  GroupCell *start = pos;
+  const GroupCell *start = pos;
 
   bool wrappedSearch = false;
   while (pos != start || !wrappedSearch) {
@@ -7632,7 +7632,7 @@ bool Worksheet::FindNext_Regex(const wxString &str, const bool &down,
   pos->GetEditable()->SearchStartedHere(pos->GetEditable()->GetCaretPosition());
 
   // Remember where to go if we need to wrap the search.
-  GroupCell *start = pos;
+  const GroupCell *start = pos;
 
   bool wrappedSearch = false;
   while (pos != start || !wrappedSearch) {
