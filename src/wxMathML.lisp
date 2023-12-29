@@ -228,7 +228,7 @@ Submit bug reports by following the 'New issue' link on that page."))
   (format t "-------------------------------------------------------------~%")
    ; Display the 2D-formatted build information
   (let (($display2d t))
-    (displa ($wxbuild_info () )))
+    (displa ($wxbuild_info)))
   (format t "-------------------------------------------------------------~%"))
 
 
