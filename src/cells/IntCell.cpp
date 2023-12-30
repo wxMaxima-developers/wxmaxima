@@ -138,8 +138,8 @@ void IntCell::Recalculate(AFontSize fontsize) {
         m_height = m_center + std::max(m_signHeight / 2, m_base->GetMaxDrop());
       }
     }
+    Cell::Recalculate(fontsize);
   }
-  Cell::Recalculate(fontsize);
 }
 
 void IntCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {

@@ -114,8 +114,8 @@ void ExptCell::Recalculate(AFontSize fontsize) {
       } else
         m_expt_yoffset += baseHeight - exptHeight;
     }
+    Cell::Recalculate(fontsize);
   }
-  Cell::Recalculate(fontsize);
 }
 
 wxString ExptCell::ToString() const {

@@ -91,8 +91,8 @@ void NamedBoxCell::Recalculate(AFontSize fontsize) {
       m_comma->RecalculateList(fontsize);
       m_close->RecalculateList(fontsize);
     }
+    Cell::Recalculate(fontsize);
   }
-  Cell::Recalculate(fontsize);
 }
 
 void NamedBoxCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {

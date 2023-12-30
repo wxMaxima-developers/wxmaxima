@@ -59,8 +59,8 @@ void SubCell::Recalculate(AFontSize fontsize) {
     m_height = m_baseCell->GetHeightList() + m_indexCell->GetHeightList() -
       Scale_Px(.8 * fontsize + MC_EXP_INDENT);
     m_center = m_baseCell->GetCenter();
+    Cell::Recalculate(fontsize);
   }
-  Cell::Recalculate(fontsize);
 }
 
 void SubCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {

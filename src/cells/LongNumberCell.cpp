@@ -83,7 +83,6 @@ void LongNumberCell::Recalculate(AFontSize fontsize) {
       UpdateDisplayedText();
     if (IsBrokenIntoLines()) {
       m_innerCell->RecalculateList(fontsize);
-      Cell::Recalculate(fontsize);
       m_width = 0;
       m_height = 0;
       m_center = 0;
@@ -94,7 +93,6 @@ void LongNumberCell::Recalculate(AFontSize fontsize) {
       if (m_numStart.IsEmpty())
         TextCell::Recalculate(fontsize);
       else {
-        Cell::Recalculate(fontsize);
         wxDC *dc = m_configuration->GetRecalcDC();
         SetFont(dc, m_fontSize_Scaled);
         auto numStartSize = CalculateTextSize(dc, m_numStart, numberStart);
@@ -109,6 +107,7 @@ void LongNumberCell::Recalculate(AFontSize fontsize) {
         m_center = m_height / 2;
       }
     }
+    Cell::Recalculate(fontsize);
   }
 }
 

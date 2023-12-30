@@ -130,8 +130,8 @@ void FracCell::Recalculate(AFontSize fontsize) {
         m_center = Num()->GetHeightList() + Scale_Px(3);
       }
     }
+    Cell::Recalculate(fontsize);
   }
-  Cell::Recalculate(fontsize);
 }
 
 void FracCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {

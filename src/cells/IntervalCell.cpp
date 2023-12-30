@@ -122,8 +122,8 @@ void IntervalCell::Recalculate(AFontSize fontsize) {
         Scale_Px(4);
       m_center = m_height / 2;
     }
+    Cell::Recalculate(fontsize);
   }
-  Cell::Recalculate(fontsize);
 }
 
 void IntervalCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {

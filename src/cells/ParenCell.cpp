@@ -152,8 +152,8 @@ void ParenCell::Recalculate(AFontSize fontsize) {
         m_center = m_height / 2;
       }
     }
+    Cell::Recalculate(fontsize);
   }
-  Cell::Recalculate(fontsize);
 }
 
 void ParenCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {

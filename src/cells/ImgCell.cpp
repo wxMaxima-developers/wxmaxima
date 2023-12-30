@@ -156,7 +156,8 @@ void ImgCell::Recalculate(AFontSize fontsize) {
     m_height = m_image->m_height + 2 * m_imageBorderWidth;
     m_center = m_height / 2;
   }
-  Cell::Recalculate(fontsize);
+  if(NeedsRecalculation(fontsize)
+     Cell::Recalculate(fontsize);
 }
 
 void ImgCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {

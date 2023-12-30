@@ -77,8 +77,8 @@ void AbsCell::Recalculate(AFontSize fontsize) {
       m_height = m_innerCell->GetHeightList() + Scale_Px(4);
       m_center = m_innerCell->GetCenterList() + Scale_Px(2);
     }
+    Cell::Recalculate(fontsize);
   }
-  Cell::Recalculate(fontsize);
 }
 
 void AbsCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {

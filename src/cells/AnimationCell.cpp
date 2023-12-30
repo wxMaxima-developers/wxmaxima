@@ -275,7 +275,8 @@ void AnimationCell::Recalculate(AFontSize fontsize) {
       }
   }
   m_center = m_height / 2;
-  Cell::Recalculate(fontsize);
+  if(NeedsRecalculation(fontsize))
+    Cell::Recalculate(fontsize);
 }
 
 void AnimationCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {

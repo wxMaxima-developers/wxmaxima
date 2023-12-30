@@ -78,8 +78,8 @@ void BoxCell::Recalculate(AFontSize fontsize) {
       m_open->RecalculateList(fontsize);
       m_close->RecalculateList(fontsize);
     }
+    Cell::Recalculate(fontsize);
   }
-  Cell::Recalculate(fontsize);
 }
 
 void BoxCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {

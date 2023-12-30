@@ -98,8 +98,8 @@ void ListCell::Recalculate(AFontSize fontsize) {
       m_height = std::max(m_signHeight, m_innerCell->GetHeightList()) + Scale_Px(4);
       m_center = m_height / 2;
     }
+    Cell::Recalculate(fontsize);
   }
-  Cell::Recalculate(fontsize);
 }
 
 void ListCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {

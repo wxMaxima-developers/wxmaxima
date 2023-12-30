@@ -45,7 +45,6 @@ DEFINE_CELL(DigitCell)
 
 void DigitCell::Recalculate(AFontSize fontsize) {
   if (NeedsRecalculation(fontsize)) {
-    Cell::Recalculate(fontsize);
     SetFont(m_configuration->GetRecalcDC(), m_fontSize_Scaled);
     wxSize sz =
       CalculateTextSize(m_configuration->GetRecalcDC(), m_displayedText, cellText);
@@ -53,6 +52,7 @@ void DigitCell::Recalculate(AFontSize fontsize) {
     m_height = sz.GetHeight();
     m_height += 2 * MC_TEXT_PADDING;
     m_center = m_height / 2;
+    Cell::Recalculate(fontsize);
   }
 }
 

@@ -586,7 +586,6 @@ bool EditorCell::NeedsRecalculation(AFontSize fontSize) const {
 void EditorCell::Recalculate(AFontSize fontsize) {
   if(NeedsRecalculation(fontsize))
     {
-      Cell::Recalculate(fontsize);
       m_isDirty = false;
       if (IsZoomFactorChanged()) {
         m_widths.clear();
@@ -645,6 +644,7 @@ void EditorCell::Recalculate(AFontSize fontsize) {
       m_height = std::max(m_height, m_charHeight + 2 * Scale_Px(2));
 
       m_containsChanges = false;
+      Cell::Recalculate(fontsize);
     }
 }
 

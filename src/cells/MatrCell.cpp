@@ -94,8 +94,8 @@ void MatrCell::Recalculate(AFontSize const fontsize) {
     if (m_height == 0)
       m_height = fontsize + Scale_Px(10);
     m_center = m_height / 2;
+    Cell::Recalculate(fontsize);
   }
-  Cell::Recalculate(fontsize);
 }
 
 void MatrCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {

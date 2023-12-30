@@ -78,8 +78,8 @@ void ConjugateCell::Recalculate(AFontSize fontsize) {
       m_open->RecalculateList(fontsize);
       m_close->RecalculateList(fontsize);
     }
+    Cell::Recalculate(fontsize);
   }
-  Cell::Recalculate(fontsize);
 }
 
 void ConjugateCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {

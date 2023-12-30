@@ -78,8 +78,8 @@ void SqrtCell::Recalculate(AFontSize fontsize) {
       m_open->Recalculate(fontsize);
       m_close->Recalculate(fontsize);
     }
+    Cell::Recalculate(fontsize);
   }
-  Cell::Recalculate(fontsize);
 }
 
 void SqrtCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {

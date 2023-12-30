@@ -143,8 +143,8 @@ void SubSupCell::Recalculate(AFontSize const fontsize) {
 
     m_center = supHeight + m_baseCell->GetCenterList() -
       Scale_Px(.8 * fontsize.Get() + MC_EXP_INDENT);
+    Cell::Recalculate(fontsize);
   }
-  Cell::Recalculate(fontsize);
 }
 
 void SubSupCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {

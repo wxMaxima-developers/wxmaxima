@@ -315,7 +315,7 @@ void Cell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
     {
       if(!m_isHidden)
         {
-          wxASSERT(m_width >= 0);
+          wxASSERT(m_width  >= 0);
           wxASSERT(m_height >= 0);
           wxASSERT(m_center >= 0);
         }
@@ -420,9 +420,12 @@ void Cell::ResetSizeList() {
 }
 
 void Cell::Recalculate(AFontSize fontsize) {
-  m_cellCfgCnt_last = m_configuration->CellCfgCnt();
-  m_fontSize_Scaled = Scale_Px(fontsize);
-  ResetCellListSizes();
+  if(NeedsRecalculation(fontsize))
+    {
+      m_cellCfgCnt_last = m_configuration->CellCfgCnt();
+      m_fontSize_Scaled = Scale_Px(fontsize);
+      ResetCellListSizes();
+    }
 }
 
 bool Cell::DrawThisCell(wxPoint point) {

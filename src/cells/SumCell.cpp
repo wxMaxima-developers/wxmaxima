@@ -159,8 +159,8 @@ void SumCell::Recalculate(AFontSize fontsize) {
         std::max(m_under->GetHeightList() +  Scale_Px(2) + m_signHeight / 2,
                  DisplayedBase()->GetMaxDrop());
     }    
-  }  
-  Cell::Recalculate(fontsize);
+    Cell::Recalculate(fontsize);
+  } 
 }
 
 void SumCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
