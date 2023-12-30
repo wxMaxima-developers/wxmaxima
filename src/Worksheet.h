@@ -906,9 +906,6 @@ public:
 
   void Recalculate() { Recalculate(GetTree()); }
 
-  //! Schedule a full recalculation of the worksheet
-  void RecalculateForce();
-
   /*! Empties the current document
 
     Used before opening a new file or when the "new" button is pressed.

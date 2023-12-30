@@ -945,7 +945,7 @@ void Worksheet::SetZoomFactor(double newzoom, bool recalc) {
     }
   }
   if (recalc) {
-    RecalculateForce();
+    Recalculate();
     RequestRedraw();
   }
   ScheduleScrollToCell(cellToScrollTo);
@@ -1080,7 +1080,7 @@ void Worksheet::OnSize(wxSizeEvent &event) {
         break;
     }
   }
-  RecalculateForce();
+  Recalculate();
 
 
   GroupCell *prev = {};
@@ -1106,12 +1106,6 @@ void Worksheet::OnSize(wxSizeEvent &event) {
   RequestRedraw();
   if (CellToScrollTo)
     ScheduleScrollToCell(CellToScrollTo, false);
-}
-
-void Worksheet::RecalculateForce() {
-  if (GetTree())
-    GetTree()->ResetSizeList();
-  Recalculate();
 }
 
 /***
@@ -4545,7 +4539,7 @@ void Worksheet::TOCdnd() {
   std::unique_ptr<GroupCell> copiedGroupCells =
     unique_cast<Cell, GroupCell>(std::move(copiedCells));
   InsertGroupCells(std::move(copiedGroupCells), m_tableOfContents->DNDEnd());
-  RecalculateForce();
+  Recalculate();
   RequestRedraw();
   UpdateTableOfContents();
   NumberSections();
@@ -5602,7 +5596,7 @@ bool Worksheet::ExportToHTML(const wxString &file) {
   cssfile.Close();
 
   m_configuration->ClipToDrawRegion(true);
-  RecalculateForce();
+  Recalculate();
   return outfileOK && cssOK;
 }
 
@@ -5612,7 +5606,7 @@ void Worksheet::CodeCellVisibilityChanged() {
   if (GetActiveCell() && GetActiveCell()->GetType() == MC_TYPE_INPUT &&
       !m_configuration->ShowCodeCells())
     SetHCaret(GetActiveCell()->GetGroup());
-  RecalculateForce();
+  Recalculate();
   ScrollToCaret();
 }
 
@@ -6561,7 +6555,7 @@ void Worksheet::ScrollToCellIfNeeded() {
   int cellY = cell->GetCurrentY();
 
   if (cellY < 0) {
-    RecalculateForce();
+    Recalculate();
     cellY = cell->GetCurrentY();
   }
 
@@ -7693,7 +7687,7 @@ bool Worksheet::CaretVisibleIs() {
     if (GetActiveCell()) {
       wxPoint point = GetActiveCell()->PositionToPoint();
       if (point.y < 1) {
-        RecalculateForce();
+        Recalculate();
         point = GetActiveCell()->PositionToPoint();
       }
       return PointVisibleIs(point);
