@@ -38,7 +38,7 @@
 
 ;(format t "<wxxml-start/>")
 
-;; TODO: outchar isn't properly escaped in xml  
+;; TODO: outchar isn't properly escaped in xml
 
 (format t "<wxxml-key>~A</wxxml-key>~%" (maxima-getenv "MAXIMA_AUTH_CODE"))
 
@@ -198,10 +198,10 @@ Submit bug reports by following the 'New issue' link on that page."))
     (format t "~30a~a~%" "wxMaxima version:" $wxmaximaversion)
     (format t "~30a~a~%" "using wxWidgets version:" $wxwidgetsversion)
     (format t "~30a~a~%" "Maxima version:" *autoconf-version*)
-    (format t "Maxima build date:            ~4,'0d-~2,'0d-~2,'0d ~2,'0d:~2,'0d:~2,'0d~%"
+    (format t "~30a~4,'0d-~2,'0d-~2,'0d ~2,'0d:~2,'0d:~2,'0d~%" "Maxima build date:"
            year month day hour minute seconds)
     (format t "~30a~a~%" "Host type:" *autoconf-host*)
-    (format t "System type:                  ~a ~a ~a~%" (software-type) (software-version) (machine-type))
+    (format t "~30a~a ~a ~a~%" "System type:" (software-type) (software-version) (machine-type))
     (format t "~30a~a~%" "Lisp implementation type:" (lisp-implementation-type))
     (format t "~30a~a~%" "Lisp implementation version:" (lisp-implementation-version))
     (format t "~30a~a~%~a~%" "wxMaxima help dir:" wxHelpDir "----------" ))
@@ -283,7 +283,7 @@ Submit bug reports by following the 'New issue' link on that page."))
        (pre-superscripts-xml (if pre-superscripts (wxxml-list pre-superscripts (list "<mrow>") mrow-terminate separator-xml) (list "<none/>")))
        (post-subscripts-xml (if post-subscripts (wxxml-list post-subscripts (list "<mrow>") mrow-terminate separator-xml) (list "<none/>")))
        (post-superscripts-xml (if post-superscripts (wxxml-list post-superscripts (list "<mrow>") mrow-terminate separator-xml) (list "<none/>")))
-       (mmultiscripts-xml       
+       (mmultiscripts-xml
 	(append l (list (format nil "<mmultiscripts lisp=\"wxxml-array-with-display-properties\" altCopy=\"~A\">" (wxxml-alt-copy-text x)))
 		(wxxml base-symbol nil nil 'mparen 'mparen)
 		post-subscripts-xml post-superscripts-xml
@@ -341,8 +341,8 @@ Submit bug reports by following the 'New issue' link on that page."))
     ($put s opt '$wxxml_subscripted))
   opt)
 
-;; Returns either nil (no autosubscript needed) or the result#
-;; of the autosubscript process 
+;; Returns either nil (no autosubscript needed) or the result
+;; of the autosubscript process
 (defun subscriptp (x)
   (unless (symbolp x)
     (return-from subscriptp x))
@@ -2125,8 +2125,8 @@ Submit bug reports by following the 'New issue' link on that page."))
 
 ;; Convert a symbol to a properly xml-escaped string.
 ;;
-;; The name "a\<b" is converted to "a\&lt;b". 
-;; If s is a list of symbols in the result between them 
+;; The name "a\<b" is converted to "a\&lt;b".
+;; If s is a list of symbols in the result between them
 ;; there are spaces
 (defun symbol-to-xml (s)
   (wxxml-fix-string (format nil "~a" (maybe-invert-string-case (symbol-name (stripdollar s))))))
