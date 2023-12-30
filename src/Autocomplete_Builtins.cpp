@@ -2147,6 +2147,7 @@ bool AutoComplete::LoadBuiltinSymbols() {
   m_wordList.at(command).push_back(wxS("display"));                             // FUNCTION
   m_wordList.at(tmplte ).push_back(wxS("display(<expr_1>, <expr_2>, ...)"));     // OPTION
   m_wordList.at(command).push_back(wxS("display2d"));                           // OPTION
+  m_wordList.at(command).push_back(wxS("display2d_unicode"));                   // OPTION
   m_wordList.at(command).push_back(wxS("display_format_internal"));             // OPTION
   m_wordList.at(command).push_back(wxS("dispterms"));                           // FUNCTION
   m_wordList.at(tmplte ).push_back(wxS("dispterms(<expr>)"));                    // OPTION

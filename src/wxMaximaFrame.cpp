@@ -757,6 +757,9 @@ void wxMaximaFrame::SetupMenu() {
   m_equationTypeMenuMenu->AppendRadioItem(EventIDs::menu_math_as_2D_ASCII,
                                           _("as ASCII Art"),
                                           _("2D equations using ASCII Art"));
+  m_equationTypeMenuMenu->AppendRadioItem(EventIDs::menu_math_as_2D_UNICODE,
+                                          _("as ASCII+Unicode Art"),
+                                          _("2D equations using ASCII Art with unicode characters, if available"));
   m_equationTypeMenuMenu->AppendRadioItem(EventIDs::menu_math_as_graphics, _("in 2D"),
                                           _("Nice Graphical Equations"));
   m_equationTypeMenuMenu->AppendSeparator();

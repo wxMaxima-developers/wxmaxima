@@ -310,6 +310,7 @@ const wxWindowIDRef EventIDs::menu_opsubst(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::menu_jumptoerror(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::menu_math_as_1D_ASCII(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::menu_math_as_2D_ASCII(wxWindow::NewControlId());
+const wxWindowIDRef EventIDs::menu_math_as_2D_UNICODE(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::menu_math_as_graphics(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::internalRepresentation(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::wxMathML(wxWindow::NewControlId());

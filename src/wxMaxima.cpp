@@ -221,7 +221,9 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   if (m_variableReadActions.empty()) {
     m_variableReadActions[wxS("gentranlang")] =
       &wxMaxima::VariableActionGentranlang;
-    m_variableReadActions[wxS("maxima_userdir")] =
+    m_variableReadActions[wxS("display2d_unicode")] =
+      &wxMaxima::VariableActionDisplay2d_Unicode;
+  m_variableReadActions[wxS("maxima_userdir")] =
       &wxMaxima::VariableActionUserDir;
     m_variableReadActions[wxS("sinnpiflag")] =
       &wxMaxima::VariableActionSinnpiflag;
@@ -1251,6 +1253,8 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   Connect(EventIDs::menu_math_as_1D_ASCII, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
   Connect(EventIDs::menu_math_as_2D_ASCII, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
+  Connect(EventIDs::menu_math_as_2D_UNICODE, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
   Connect(EventIDs::menu_math_as_graphics, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
@@ -3310,6 +3314,13 @@ void wxMaxima::VariableActionUserDir(const wxString &value) {
   wxLogMessage(_("Maxima user configuration lies in directory %s"), value.utf8_str());
 }
 
+void wxMaxima::VariableActionDisplay2d_Unicode(const wxString &value) {
+ if (value == wxS("true"))
+   m_configuration.Display2d_Unicode(true);
+ if (value == wxS("false"))
+   m_configuration.Display2d_Unicode(false);
+ }
+
 void wxMaxima::VariableActionGentranlang(const wxString &value) {
   if (value == wxS("c"))
     m_gentranMenu->Check(EventIDs::gentran_lang_c, true);
@@ -3633,8 +3644,14 @@ void wxMaxima::VariableActionDisplay2D(const wxString &value) {
       m_equationTypeMenuMenu->Check(EventIDs::menu_math_as_1D_ASCII, true);
     } else {
       if (m_maximaVariable_altdisplay2d == wxS("false")) {
-        m_configuration.DisplayMode(Configuration::display_2dASCII);
-        m_equationTypeMenuMenu->Check(EventIDs::menu_math_as_2D_ASCII, true);
+        if(m_configuration.Display2d_Unicode())
+          {
+            m_configuration.DisplayMode(Configuration::display_2dUNICODE);
+            m_equationTypeMenuMenu->Check(EventIDs::menu_math_as_2D_UNICODE, true);
+          } else {
+            m_configuration.DisplayMode(Configuration::display_2dASCII);
+            m_equationTypeMenuMenu->Check(EventIDs::menu_math_as_2D_ASCII, true);
+          }
       } else {
         m_configuration.DisplayMode(Configuration::display_2d);
         m_equationTypeMenuMenu->Check(EventIDs::menu_math_as_graphics, true);
@@ -3650,8 +3667,13 @@ void wxMaxima::VariableActionAltDisplay2D(const wxString &value) {
       m_equationTypeMenuMenu->Check(EventIDs::menu_math_as_1D_ASCII, true);
     } else {
       if (m_maximaVariable_altdisplay2d == wxS("false")) {
-        m_configuration.DisplayMode(Configuration::display_2dASCII);
-        m_equationTypeMenuMenu->Check(EventIDs::menu_math_as_2D_ASCII, true);
+        if(m_configuration.Display2d_Unicode()) {
+          m_configuration.DisplayMode(Configuration::display_2dUNICODE);
+          m_equationTypeMenuMenu->Check(EventIDs::menu_math_as_2D_UNICODE, true);
+        } else {
+          m_configuration.DisplayMode(Configuration::display_2dASCII);
+          m_equationTypeMenuMenu->Check(EventIDs::menu_math_as_2D_ASCII, true);
+        }
       } else {
         m_configuration.DisplayMode(Configuration::display_2d);
         m_equationTypeMenuMenu->Check(EventIDs::menu_math_as_graphics, true);
@@ -6351,7 +6373,10 @@ void wxMaxima::EditMenu(wxCommandEvent &event) {
     MenuCommand(wxS("set_display('none)$"));
   }
   else if(event.GetId() == EventIDs::menu_math_as_2D_ASCII) {
-    MenuCommand(wxS("set_display('ascii)$"));
+    MenuCommand(wxS("set_display('ascii)$display2d_unicode:false$"));
+  }
+  else if(event.GetId() == EventIDs::menu_math_as_2D_UNICODE) {
+    MenuCommand(wxS("set_display('ascii)$display2d_unicode:true$"));
   }
   else if(event.GetId() == EventIDs::menu_math_as_graphics) {
     MenuCommand(wxS("set_display('xml)$"));

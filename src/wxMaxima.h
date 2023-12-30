@@ -573,6 +573,7 @@ protected:
    */
   void ReadAddVariables(wxString &data);
   void VariableActionGentranlang(const wxString &value);
+  void VariableActionDisplay2d_Unicode(const wxString &value);
   void VariableActionHtmlHelp(const wxString &value);
   void VariableActionOpSubst(const wxString &value);
   void VariableActionSinnpiflag(const wxString &value);

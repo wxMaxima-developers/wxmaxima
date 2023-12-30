@@ -240,6 +240,7 @@ wxSize Configuration::GetPPI() const {
 
 void Configuration::ResetAllToDefaults() {
   RecalculateForce();
+  m_display2d_Unicode = true;
   m_printMargin_Top = 10;
   m_printMargin_Bot = 10;
   m_printMargin_Left = 10;

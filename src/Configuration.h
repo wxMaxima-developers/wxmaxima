@@ -135,6 +135,7 @@ public:
   {
     display_2d,
     display_2dASCII,
+    display_2dUNICODE,
     display_1dASCII
   };
 
@@ -1010,6 +1011,9 @@ public:
   void WizardTab(long tab){m_wizardTab = tab;}
   long WizardTab() const {return m_wizardTab;}
 
+  void Display2d_Unicode(bool unicode){m_display2d_Unicode = unicode;}
+  bool Display2d_Unicode() const {return m_display2d_Unicode;}
+
   wxString TexPreamble() const {return m_texPreamble;}
   void TexPreamble(wxString texPreamble) {m_texPreamble = std::move(texPreamble);}
 
@@ -1078,6 +1082,7 @@ private:
   static bool m_debugMode;
   bool m_showInputLabels;
   long m_wizardTab;
+  bool m_display2d_Unicode;
   bool m_usePartialForDiff;
   bool m_maximaUsesHhtmlBrowser;
   bool m_maximaUsesWxmaximaBrowser;
