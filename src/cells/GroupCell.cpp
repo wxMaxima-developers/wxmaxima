@@ -456,10 +456,8 @@ bool GroupCell::Recalculate() {
       RecalculateOutput();
       m_height = m_outputRect.GetHeight() + m_inputHeight;
     }
-    ClearNeedsToRecalculateWidths();
     Cell::Recalculate(m_configuration->GetDefaultFontSize());
     m_cellsAppended = false;
-    m_clientWidth_old = m_configuration->GetCanvasSize().x;
   }
   // Move all cells that follow the current one down by the amount this cell
   // has grown.
@@ -599,11 +597,7 @@ void GroupCell::RecalculateOutput() {
 }
 
 bool GroupCell::NeedsRecalculation(AFontSize fontSize) const {
-  return Cell::NeedsRecalculation(fontSize) ||
-    //    (GetEditable() &&
-    //    GetEditable()->NeedsRecalculation(EditorFontSize())) ||
-    (m_clientWidth_old != m_configuration->GetCanvasSize().x) ||
-    m_cellsAppended;
+  return Cell::NeedsRecalculation(fontSize) || m_cellsAppended;
 }
 
 void GroupCell::UpdateYPositionList() {

@@ -396,12 +396,6 @@ void TextCell::SetValue(const wxString &text) {
 
 AFontSize TextCell::GetScaledTextSize() const { return m_fontSize_Scaled; }
 
-bool TextCell::NeedsRecalculation(AFontSize fontSize) const {
-  return Cell::NeedsRecalculation(fontSize) ||
-    (m_keepPercent_last != m_configuration->CheckKeepPercent()) ||
-    (m_greekNamesAsLetter != m_configuration->Latin2Greek());
-}
-
 wxSize TextCell::CalculateTextSize(wxDC *const dc, const wxString &text,
                                    TextCell::TextIndex const index) {
   AFontSize const fontSize = GetScaledTextSize();
@@ -458,11 +452,8 @@ void TextCell::Recalculate(AFontSize fontsize) {
   if (NeedsRecalculation(fontsize)) {
     if (GetTextStyle() == TS_ASCIIMATHS)
       ForceBreakLine(true);
-    if ((m_keepPercent_last != m_configuration->CheckKeepPercent()) ||
-        (m_greekNamesAsLetter != m_configuration->Latin2Greek()))
+    if (ConfigChanged())
         UpdateDisplayedText();
-    m_greekNamesAsLetter = m_configuration->Latin2Greek();
-    m_keepPercent_last = m_configuration->CheckKeepPercent();
     SetFont(m_configuration->GetRecalcDC(), m_fontSize_Scaled);
 
     wxSize sz =

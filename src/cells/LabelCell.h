@@ -42,7 +42,6 @@ public:
 
   void Recalculate(AFontSize fontsize) override;
   void Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) override;
-  bool NeedsRecalculation(AFontSize fontSize) const override;
   void SetStyle(TextStyle style) override;
   wxString ToString() const override;
   //! Set the automatic label maxima has assigned the current equation
@@ -55,15 +54,10 @@ public:
   wxString ToXML() const override;
 
 private:
-  double m_zoomFactor_old = 0;
 //** Large objects (48 bytes)
 //**
   //! The user-defined label for this label cell.
   wxString m_userDefinedLabel;
-
-//** 1-byte objects (1 byte)
-//**
-  Configuration::showLabels m_labelChoice_Last = {};
 
 //** Bitfield objects (0 bytes)
 //**

@@ -580,7 +580,7 @@ bool EditorCell::IsZoomFactorChanged() const {
 }
 
 bool EditorCell::NeedsRecalculation(AFontSize fontSize) const {
-  return Cell::NeedsRecalculation(fontSize) || m_containsChanges || m_isDirty;
+  return Cell::NeedsRecalculation(fontSize) || m_isDirty;
 }
 
 void EditorCell::Recalculate(AFontSize fontsize) {

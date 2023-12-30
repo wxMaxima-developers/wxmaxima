@@ -65,15 +65,6 @@ void LongNumberCell::UpdateDisplayedText() {
     m_numEnd.clear();
   }
   m_sizeCache.clear();
-  m_displayedDigits_old = m_configuration->GetDisplayedDigits();
-}
-
-bool LongNumberCell::NeedsRecalculation(AFontSize fontSize) const {
-  return TextCell::NeedsRecalculation(fontSize) ||
-    (m_displayedDigits_old != m_configuration->GetDisplayedDigits()) ||
-    (m_showAllDigits_old != m_configuration->ShowAllDigits()) ||
-    (m_linebreaksInLongLines_old !=
-     m_configuration->LineBreaksInLongNums());
 }
 
 Cell *LongNumberCell::GetInnerCell(size_t index) const
@@ -88,12 +79,10 @@ void LongNumberCell::Recalculate(AFontSize fontsize) {
   if (NeedsRecalculation(fontsize)) {
     // If the config settings about how many digits to display has changed we
     // need to regenerate the info which number to show.
-    if (((m_displayedDigits_old != m_configuration->GetDisplayedDigits())) ||
-        (m_showAllDigits_old = m_configuration->ShowAllDigits()))
+    if (ConfigChanged())
       UpdateDisplayedText();
     if (IsBrokenIntoLines()) {
       m_innerCell->RecalculateList(fontsize);
-      m_keepPercent_last = m_configuration->CheckKeepPercent();
       Cell::Recalculate(fontsize);
       m_width = 0;
       m_height = 0;
@@ -106,7 +95,6 @@ void LongNumberCell::Recalculate(AFontSize fontsize) {
         TextCell::Recalculate(fontsize);
       else {
         Cell::Recalculate(fontsize);
-        m_keepPercent_last = m_configuration->CheckKeepPercent();
         wxDC *dc = m_configuration->GetRecalcDC();
         SetFont(dc, m_fontSize_Scaled);
         auto numStartSize = CalculateTextSize(dc, m_numStart, numberStart);
@@ -122,9 +110,6 @@ void LongNumberCell::Recalculate(AFontSize fontsize) {
       }
     }
   }
-  m_displayedDigits_old = m_configuration->GetDisplayedDigits();
-  m_showAllDigits_old = m_configuration->ShowAllDigits();
-  m_linebreaksInLongLines_old = m_configuration->LineBreaksInLongNums();
 }
 
 void LongNumberCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {

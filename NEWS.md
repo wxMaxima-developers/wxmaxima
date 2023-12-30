@@ -7,6 +7,7 @@
 - Corrected for swapped row and columns in wizard enter matrix
 - Fixed a few bugs in the XML saving code (#1867)
 - Zooming did cause recalculation only for the 1st cell (#1870)
+- Many config changes now have immediately effect on the worksheet
 
 # 23.12.0
 

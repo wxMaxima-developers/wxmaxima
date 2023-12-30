@@ -239,6 +239,7 @@ wxSize Configuration::GetPPI() const {
 }
 
 void Configuration::ResetAllToDefaults() {
+  RecalculateForce();
   m_printMargin_Top = 10;
   m_printMargin_Bot = 10;
   m_printMargin_Left = 10;
@@ -564,7 +565,11 @@ wxString Configuration::GetAutosubscript_string() const {
   }
 }
 
-void Configuration::ShowCodeCells(bool show) { m_showCodeCells = show; }
+void Configuration::ShowCodeCells(bool show) {
+  if(m_showCodeCells != show)
+    RecalculateForce();
+  m_showCodeCells = show;
+}
 
 void Configuration::SetBackgroundBrush(wxBrush brush) {
   m_BackgroundBrush = brush;
@@ -598,6 +603,7 @@ bool Configuration::MaximaFound(wxString location) {
 }
 
 void Configuration::ReadConfig() {
+  RecalculateForce();
   wxConfigBase *config = wxConfig::Get();
 
   config->Read(wxS("configID"), &m_configId);
@@ -1067,6 +1073,8 @@ void Configuration::SetZoomFactor(double newzoom) {
   if(m_zoomFactor == newzoom)
     return;
 
+  RecalculateForce();
+
   for (auto &i: m_styles)
     i.ClearCache();
   if (newzoom > GetMaxZoomFactor())
@@ -1167,6 +1175,7 @@ wxString Configuration::MaximaDefaultLocation() {
 }
 
 void Configuration::ReadStyles(const wxString &file) {
+  RecalculateForce();
   wxConfigBase *config = NULL;
   if (file == wxEmptyString)
     config = wxConfig::Get();

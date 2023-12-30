@@ -428,10 +428,6 @@ protected:
 //**
   int m_labelWidth_cached = 0;
   int m_inputWidth, m_inputHeight;
-private:
-  //! The client width at the time of the last recalculation.
-  int m_clientWidth_old = -1;
-
 protected:
 //** 2-byte objects (6 bytes)
 //**

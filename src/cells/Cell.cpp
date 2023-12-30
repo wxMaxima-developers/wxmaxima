@@ -240,11 +240,9 @@ GroupCell *Cell::GetGroup() const {
 bool Cell::NeedsRecalculation(AFontSize fontSize) const {
   if (!HasValidSize())
     return true;
-  if (GetType() == MC_TYPE_GROUP)
-    return false;
-  if(m_configuration->GetVisibleRegion().GetWidth() != m_visibleRegionWidth_last)
-    return false;
-  return !EqualToWithin(Scale_Px(fontSize), m_fontSize_Scaled, 0.1f);
+  if(!EqualToWithin(Scale_Px(fontSize), m_fontSize_Scaled, 0.1f))
+    return true;
+  return(ConfigChanged());
 }
 
 int Cell::GetCenterList() const {
@@ -422,10 +420,9 @@ void Cell::ResetSizeList() {
 }
 
 void Cell::Recalculate(AFontSize fontsize) {
+  m_cellCfgCnt_last = m_configuration->CellCfgCnt();
   m_fontSize_Scaled = Scale_Px(fontsize);
-  m_visibleRegionWidth_last = m_configuration->GetVisibleRegion().GetWidth();
   ResetCellListSizes();
-  m_recalculateWidths = false;
 }
 
 bool Cell::DrawThisCell(wxPoint point) {
@@ -445,7 +442,7 @@ bool Cell::DrawThisCell(wxPoint point) {
 }
 
 bool Cell::HasValidSize() const {
-  return !m_recalculateWidths && m_width >= 0 && m_height >= 0 && m_center >= 0;
+  return m_width >= 0 && m_height >= 0 && m_center >= 0;
 }
 
 bool Cell::HasStaleSize() const {
@@ -969,7 +966,9 @@ void Cell::ResetCellListSizesList() {
 }
 
 void Cell::ResetSize() {
-  m_recalculateWidths = true;
+  m_width = -1;
+  m_height = -1;
+  m_center = -1;
   m_fullWidth.Invalidate();
   m_lineWidth.Invalidate();
   m_maxCenter.Invalidate();
@@ -1011,16 +1010,15 @@ bool Cell::BreakUp() { return false; }
 
 void Cell::BreakUpAndMark() {
   wxASSERT(!m_isBrokenIntoLines);
+  ResetSize();
   Cell::BreakUp();
   if (!m_isBrokenIntoLines)
-    m_recalculateWidths = true;
   m_isBrokenIntoLines = true;
 }
 
 void Cell::Unbreak() {
   if (m_isBrokenIntoLines) {
     ResetData();
-    m_recalculateWidths = true;
     m_isBrokenIntoLines = false;
     // Unbreak the inner cells, too
     for (Cell &cell : OnInner(this))

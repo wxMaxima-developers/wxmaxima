@@ -40,7 +40,6 @@ public:
 
   void Recalculate(AFontSize fontsize) override;
   void Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) override;
-  bool NeedsRecalculation(AFontSize fontSize) const override;
   bool BreakUp() override;
   void SetNextToDraw(Cell *next) override;
   size_t GetInnerCellCount() const override { if(m_innerCell) return 1; else return 0; }
@@ -65,10 +64,6 @@ private:
   //**
   int m_numStartWidth = 0;
   int m_ellipsisWidth = 0;
-  //! The number of digits we did display the last time we displayed a number.
-  int m_displayedDigits_old = -1;
-  bool m_showAllDigits_old = false;
-  bool m_linebreaksInLongLines_old = true;
 
   //** Bitfield objects (0 bytes)
   //**

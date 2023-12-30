@@ -34,8 +34,8 @@
 
 LabelCell::LabelCell(GroupCell *group, Configuration *config,
                      wxString automaticLabel, TextStyle style)
-  : TextCell(group, config, automaticLabel, style),
-    m_labelChoice_Last(config->GetLabelChoice()) {
+  : TextCell(group, config, automaticLabel, style)
+{
   InitBitFields_LabelCell();
   m_width = Scale_Px(m_configuration->GetLabelWidth());
 }
@@ -79,12 +79,6 @@ void LabelCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
 void LabelCell::SetUserDefinedLabel(const wxString &userDefinedLabel) {
   m_userDefinedLabel = userDefinedLabel;
   UpdateDisplayedText();
-}
-
-bool LabelCell::NeedsRecalculation(AFontSize fontSize) const {
-  return TextCell::NeedsRecalculation(fontSize) ||
-    (m_configuration->GetLabelChoice() != m_labelChoice_Last) ||
-    (m_zoomFactor_old != m_configuration->GetZoomFactor());
 }
 
 void LabelCell::UpdateDisplayedText() {
@@ -185,11 +179,8 @@ void LabelCell::Recalculate(AFontSize fontsize) {
                        MC_TEXT_PADDING);
     m_height = std::max(m_height, static_cast<wxCoord>(m_fontSize_Scaled.Get() + Scale_Px(2)));
     m_center = m_height / 2;
-    if(m_labelChoice_Last != m_configuration->GetLabelChoice())
+    if(ConfigChanged())
       UpdateDisplayedText();
-
-    m_labelChoice_Last = m_configuration->GetLabelChoice();
-    m_zoomFactor_old = m_configuration->GetZoomFactor();
   }
 }
 

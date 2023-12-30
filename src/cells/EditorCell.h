@@ -292,7 +292,8 @@ public:
 
   wxCoord GetLineWidth(size_t line, size_t pos);
 
-  //! true, if this cell's width has to be recalculated.
+  /*! true, if this cell's width has to be recalculated.
+   */
   bool IsDirty() const override
     {
       return m_isDirty;

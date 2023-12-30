@@ -454,6 +454,8 @@ public:
   //! True, if something that affects the cell size has changed.
   virtual bool NeedsRecalculation(AFontSize fontSize) const;
 
+  //! Has the configuration changed since the last recalculation of this cell?
+  bool ConfigChanged() const {return m_configuration->CellCfgCnt() != m_cellCfgCnt_last;}
   /*!
     Get the part for diff tag support
 
@@ -942,18 +944,12 @@ protected:
   wxPoint m_currentPoint{-1, -1};
 
 protected:
-  /*! Clear the "sizes need to be recalculated" flag of this cell
-
-    Is called by the recalculation code
-  */
-  void ClearNeedsToRecalculateWidths() { m_recalculateWidths = false; }
-
 //** 8/4-byte objects (40 + 8* bytes)
 //**
 
 private:
-  //! The worksheet window with the last time this cell has been recalculated
-  int m_visibleRegionWidth_last = -1;
+  //! the "timestamp" of the configuration the last time we recalculated the cell's size
+  std::int_fast32_t m_cellCfgCnt_last = -1;
   //! The next cell in the list of cells, or null if it's the last cell.
   std::unique_ptr<Cell> m_next;
 
@@ -1036,7 +1032,6 @@ private:
       m_isHidden = false;
       m_isHidableMultSign = false;
       m_suppressMultiplicationDot = false;
-      m_recalculateWidths = true;
       m_breakLine = false;
       m_forceBreakLine = false;
       m_highlight = false;
@@ -1054,8 +1049,6 @@ private:
   bool m_isHidden : 1 /* InitBitFields_Cell */;
   bool m_isHidableMultSign : 1 /* InitBitFields_Cell */;
   bool m_suppressMultiplicationDot : 1 /* InitBitFields_Cell */;
-  //! true, if this cell clearly needs recalculation
-  bool m_recalculateWidths : 1 /* InitBitFields_Cell */;
   //! Are we allowed to add a line break before this cell?
   bool m_breakLine : 1 /* InitBitFields_Cell */;
   bool m_forceBreakLine : 1 /* InitBitFields_Cell */;

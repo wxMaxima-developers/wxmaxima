@@ -109,8 +109,6 @@ protected:
       m_sizeCache.clear();
     }
 
-  virtual bool NeedsRecalculation(AFontSize fontSize) const override;
-
   enum TextIndex : int8_t
   {
     noText,
@@ -153,19 +151,12 @@ protected:
       // of bit fields in this class!
       m_dontEscapeOpeningParenthesis = false;
       m_promptTooltip = false;
-      m_keepPercent_last = m_configuration->CheckKeepPercent();
-      m_greekNamesAsLetter = false;
     }
 
   //! Is an ending "(" of a function name the opening parenthesis of the function?
   bool m_dontEscapeOpeningParenthesis : 1 /* InitBitFields_TextCell */;
   //! Default to a special tooltip for prompts?
   bool m_promptTooltip : 1 /* InitBitFields_TextCell */;
-  //! The last known value of CheckKeepPercent
-  bool m_keepPercent_last : 1;
-  //! The last known value of "display greek names as unicode char"
-  bool m_greekNamesAsLetter : 1;
-
 };
 
 #endif // TEXTCELL_H
