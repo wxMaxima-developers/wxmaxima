@@ -969,13 +969,8 @@ void Cell::ResetCellListSizesList() {
 }
 
 void Cell::ResetSize() {
-  m_width = -1;
-  m_height = -1;
-  m_center = -1;
-  m_fullWidth.Invalidate();
-  m_lineWidth.Invalidate();
-  m_maxCenter.Invalidate();
-  m_maxDrop.Invalidate();
+  m_cellCfgCnt_last--;
+  ResetCellListSizes();
 }
 
 void Cell::ResetCellListSizes() const {
