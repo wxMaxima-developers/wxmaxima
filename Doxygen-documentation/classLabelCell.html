@@ -112,10 +112,6 @@ const <a class="el" href="classCellTypeInfo.html">CellTypeInfo</a> &amp;&#160;</
 <tr class="memitem:aec4db9a2e51d3573c5e8ebec58c5dc04"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLabelCell.html#aec4db9a2e51d3573c5e8ebec58c5dc04">Draw</a> (wxPoint point, wxDC *dc, wxDC *antialiassingDC) override</td></tr>
 <tr class="memdesc:aec4db9a2e51d3573c5e8ebec58c5dc04"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draw this cell.  <a href="classLabelCell.html#aec4db9a2e51d3573c5e8ebec58c5dc04">More...</a><br /></td></tr>
 <tr class="separator:aec4db9a2e51d3573c5e8ebec58c5dc04"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa7ca4a32d00f5a436294ff821390708d"><td class="memItemLeft" align="right" valign="top"><a id="aa7ca4a32d00f5a436294ff821390708d"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLabelCell.html#aa7ca4a32d00f5a436294ff821390708d">NeedsRecalculation</a> (<a class="el" href="classAFontSize.html">AFontSize</a> fontSize) const override</td></tr>
-<tr class="memdesc:aa7ca4a32d00f5a436294ff821390708d"><td class="mdescLeft">&#160;</td><td class="mdescRight">True, if something that affects the cell size has changed. <br /></td></tr>
-<tr class="separator:aa7ca4a32d00f5a436294ff821390708d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8cd08fad6d06a2c48007e9ab4dca1653"><td class="memItemLeft" align="right" valign="top"><a id="a8cd08fad6d06a2c48007e9ab4dca1653"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLabelCell.html#a8cd08fad6d06a2c48007e9ab4dca1653">SetStyle</a> (<a class="el" href="TextStyle_8h.html#a68ac52da6129614b3fa14e7c828c1993">TextStyle</a> style) override</td></tr>
 <tr class="memdesc:a8cd08fad6d06a2c48007e9ab4dca1653"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the TextStyle of this cell. <br /></td></tr>
@@ -348,6 +344,14 @@ wxCoord&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 <tr class="memitem:a2f7416c87bf13e37367ceb256805db06"><td class="memItemLeft" align="right" valign="top">virtual wxRect&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a2f7416c87bf13e37367ceb256805db06">GetRect</a> (bool wholeList=false) const</td></tr>
 <tr class="memdesc:a2f7416c87bf13e37367ceb256805db06"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the smallest rectangle this cell fits in.  <a href="classCell.html#a2f7416c87bf13e37367ceb256805db06">More...</a><br /></td></tr>
 <tr class="separator:a2f7416c87bf13e37367ceb256805db06"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa0cc4910d52a26419062952d95d294bf"><td class="memItemLeft" align="right" valign="top"><a id="aa0cc4910d52a26419062952d95d294bf"></a>
+virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#aa0cc4910d52a26419062952d95d294bf">NeedsRecalculation</a> (<a class="el" href="classAFontSize.html">AFontSize</a> fontSize) const</td></tr>
+<tr class="memdesc:aa0cc4910d52a26419062952d95d294bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">True, if something that affects the cell size has changed. <br /></td></tr>
+<tr class="separator:aa0cc4910d52a26419062952d95d294bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a01f036f4f68d223e2464097a7728def3"><td class="memItemLeft" align="right" valign="top"><a id="a01f036f4f68d223e2464097a7728def3"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a01f036f4f68d223e2464097a7728def3">ConfigChanged</a> () const</td></tr>
+<tr class="memdesc:a01f036f4f68d223e2464097a7728def3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Has the configuration changed since the last recalculation of this cell? <br /></td></tr>
+<tr class="separator:a01f036f4f68d223e2464097a7728def3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7954c7c66fe91d4003388d80b9d8f95d"><td class="memItemLeft" align="right" valign="top">virtual wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a7954c7c66fe91d4003388d80b9d8f95d">GetDiffPart</a> () const</td></tr>
 <tr class="memdesc:a7954c7c66fe91d4003388d80b9d8f95d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the part for diff tag support.  <a href="classCell.html#a7954c7c66fe91d4003388d80b9d8f95d">More...</a><br /></td></tr>
 <tr class="separator:a7954c7c66fe91d4003388d80b9d8f95d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -737,9 +741,6 @@ wxBitmap&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 <tr class="memitem:a006341264b9c3aa5b3d3d7afbfce4b64"><td class="memItemLeft" align="right" valign="top"><a id="a006341264b9c3aa5b3d3d7afbfce4b64"></a>
 std::unique_ptr&lt; <a class="el" href="classCell.html">Cell</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>MakeVisiblyInvalidCell</b> () const</td></tr>
 <tr class="separator:a006341264b9c3aa5b3d3d7afbfce4b64"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a612e60d79d42b589648b78b0426b64ae"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a612e60d79d42b589648b78b0426b64ae">ClearNeedsToRecalculateWidths</a> ()</td></tr>
-<tr class="memdesc:a612e60d79d42b589648b78b0426b64ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear the "sizes need to be recalculated" flag of this cell.  <a href="classCell.html#a612e60d79d42b589648b78b0426b64ae">More...</a><br /></td></tr>
-<tr class="separator:a612e60d79d42b589648b78b0426b64ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1546dfa78b57d64b5d9e994803a02226"><td class="memItemLeft" align="right" valign="top"><a id="a1546dfa78b57d64b5d9e994803a02226"></a>
 virtual size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a1546dfa78b57d64b5d9e994803a02226">GetInnerCellCount</a> () const</td></tr>
 <tr class="memdesc:a1546dfa78b57d64b5d9e994803a02226"><td class="mdescLeft">&#160;</td><td class="mdescRight">The number of inner cells - for use by the iterators. <br /></td></tr>
@@ -782,14 +783,6 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTextCell.html#abc72edb63ab7cdfcb2739807452d9019">m_promptTooltip</a>: 1</td></tr>
 <tr class="memdesc:abc72edb63ab7cdfcb2739807452d9019"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default to a special tooltip for prompts? <br /></td></tr>
 <tr class="separator:abc72edb63ab7cdfcb2739807452d9019"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9940c5c893f492e29c32c3e0a049a34a"><td class="memItemLeft" align="right" valign="top"><a id="a9940c5c893f492e29c32c3e0a049a34a"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTextCell.html#a9940c5c893f492e29c32c3e0a049a34a">m_keepPercent_last</a>: 1</td></tr>
-<tr class="memdesc:a9940c5c893f492e29c32c3e0a049a34a"><td class="mdescLeft">&#160;</td><td class="mdescRight">The last known value of CheckKeepPercent. <br /></td></tr>
-<tr class="separator:a9940c5c893f492e29c32c3e0a049a34a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a62b71a7f5b6971136ad10a55259fc07f"><td class="memItemLeft" align="right" valign="top"><a id="a62b71a7f5b6971136ad10a55259fc07f"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTextCell.html#a62b71a7f5b6971136ad10a55259fc07f">m_greekNamesAsLetter</a>: 1</td></tr>
-<tr class="memdesc:a62b71a7f5b6971136ad10a55259fc07f"><td class="mdescLeft">&#160;</td><td class="mdescRight">The last known value of "display greek names as unicode char". <br /></td></tr>
-<tr class="separator:a62b71a7f5b6971136ad10a55259fc07f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a82735e7fb2d5fd1dbefd3a37ae758b32"><td class="memItemLeft" align="right" valign="top">wxPoint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a82735e7fb2d5fd1dbefd3a37ae758b32">m_currentPoint</a> {-1, -1}</td></tr>
 <tr class="memdesc:a82735e7fb2d5fd1dbefd3a37ae758b32"><td class="mdescLeft">&#160;</td><td class="mdescRight">The point in the work sheet at which this cell begins.  <a href="classCell.html#a82735e7fb2d5fd1dbefd3a37ae758b32">More...</a><br /></td></tr>
 <tr class="separator:a82735e7fb2d5fd1dbefd3a37ae758b32"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1000,34 +993,6 @@ static wxRegEx&#160;</td><td class="memItemRight" valign="bottom"><b>m_roundingE
 
 <p>Clears the cache of the whole list of cells starting with this one. </p>
 <p>For details see <a class="el" href="classCell.html#a68a1275c35dc05ead434ab6b62b56ae1" title="Clears memory from cached items automatically regenerated when the cell is drawn.">ClearCache()</a>. </p>
-
-</div>
-</div>
-<a id="a612e60d79d42b589648b78b0426b64ae"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a612e60d79d42b589648b78b0426b64ae">&#9670;&nbsp;</a></span>ClearNeedsToRecalculateWidths()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Cell::ClearNeedsToRecalculateWidths </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span><span class="mlabel">inherited</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Clear the "sizes need to be recalculated" flag of this cell. </p>
-<p>Is called by the recalculation code </p>
 
 </div>
 </div>
