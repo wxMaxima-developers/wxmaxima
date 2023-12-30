@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['textstyle_3208',['TextStyle',['../TextStyle_8h.html#a68ac52da6129614b3fa14e7c828c1993',1,'TextStyle.h']]],
-  ['timerids_3209',['TimerIDs',['../classwxMaxima.html#ab6afd24efcd1d85c6aac02040adf0a68',1,'wxMaxima']]]
+  ['textstyle_3206',['TextStyle',['../TextStyle_8h.html#a68ac52da6129614b3fa14e7c828c1993',1,'TextStyle.h']]],
+  ['timerids_3207',['TimerIDs',['../classwxMaxima.html#ab6afd24efcd1d85c6aac02040adf0a68',1,'wxMaxima']]]
 ];
