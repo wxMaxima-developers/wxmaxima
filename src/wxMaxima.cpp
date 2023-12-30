@@ -8928,13 +8928,11 @@ void wxMaxima::NumericalMenu(wxCommandEvent &event) {
   }
   else if(event.GetId() == EventIDs::popid_hideasterisk){ {
       m_configuration.HidemultiplicationSign(event.IsChecked());
-      GetWorksheet()->GetTree()->ResetDataList();
       GetWorksheet()->RequestRedraw();
     }
   }
   else if(event.GetId() == EventIDs::popid_changeasterisk){ {
       m_configuration.SetChangeAsterisk(event.IsChecked());
-      GetWorksheet()->GetTree()->ResetDataList();
       GetWorksheet()->RequestRedraw();
     }
   }

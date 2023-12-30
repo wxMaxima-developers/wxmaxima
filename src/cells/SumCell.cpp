@@ -389,9 +389,6 @@ bool SumCell::BreakUp() {
     m_comma3->last()->SetNextToDraw(m_over);
     m_over->last()->SetNextToDraw(m_close);
   }
-  ResetCellListSizes();
-  m_height = 0;
-  m_center = 0;
   return true;
 }
 

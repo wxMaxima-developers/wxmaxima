@@ -247,7 +247,11 @@ public:
   virtual bool BreakUp();
 
 protected:
-  //! Break up the internal cells of this cell, and mark it as broken up.
+  /*! Break up the internal cells of this cell, and mark it as broken up.
+
+    Sets the cell's size to 0, as in broken up state the contents of the cell
+    will be displayed in 1D mode while this cell won't be displayed, at all.
+   */
   void BreakUpAndMark();
 
 protected:
@@ -483,10 +487,10 @@ public:
   void FontsChangedList();
 
   //! Mark all cached size information as "to be calculated".
-  void ResetData();
+  void ResetSize_Recursively();
 
   //! Mark all cached size information of this cell list as "to be calculated".
-  void ResetDataList();
+  void ResetSize_RecursivelyList();
 
   //! Mark the cached height and width information as "to be calculated".
   void ResetSize();
@@ -496,9 +500,6 @@ public:
 
   //! Mark the line and cell list widths and heights as "to be calculated"
   void ResetCellListSizesList();
-
-  //! Sets the size of this cell to 0.
-  void SetZeroSize();
 
   //! Mark the cached height information of the whole list of cells as "to be calculated".
   void ResetSizeList();
@@ -531,12 +532,8 @@ public:
   /*! Tell this cell to be an exponent
 
     Fractions in exponents are displayed as 1D maths
-    \todo Does it make sense that we don't set the flag for sub-cells
-    of the current cell? What if the exponent contains a parenthesis
-    with a fraction inside?
   */
-  virtual void SetIsExponent()
-    {}
+  virtual void SetIsExponent();
 
   /*! Tell this list of cells to be an exponent
 
@@ -836,7 +833,7 @@ public:
   //! Sets the TextStyle of this cell
   virtual void SetStyle(TextStyle style)
     {
-      ResetData();
+      ResetSize_Recursively();
       m_textStyle = style;
     }
   //! Is this cell possibly output of maxima?
@@ -1068,7 +1065,7 @@ protected:
   virtual void FontsChanged()
     {
       ResetSize();
-      ResetData();
+      ResetSize_Recursively();
     }
 
   CellPointers *GetCellPointers() const;

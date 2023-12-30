@@ -171,7 +171,6 @@ bool LongNumberCell::BreakUp() {
   m_innerCell->last()->SetNextToDraw(m_nextToDraw);
   m_nextToDraw = m_innerCell;
   Cell::BreakUpAndMark();
-  ResetCellListSizes();
   return true;
 }
 

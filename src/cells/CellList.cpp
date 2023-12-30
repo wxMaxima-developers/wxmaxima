@@ -98,7 +98,7 @@ void CellList::AppendCell(Cell *cell, std::unique_ptr<Cell> &&tail) {
     // Note: The above cannot be m_group or an assert will trigger!
     // We do not *expect* all cells here to have groups, so GetGroup()
     // above would be inappropriate.
-    cell->GetGroup()->ResetData();
+    cell->GetGroup()->ResetSize_Recursively();
 
   auto *const next = tail.get();
   auto *const last = cell->last();

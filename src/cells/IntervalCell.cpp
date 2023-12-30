@@ -268,10 +268,6 @@ bool IntervalCell::BreakUp() {
   m_open->SetNextToDraw(m_start);
   m_close->SetNextToDraw(m_nextToDraw);
   m_nextToDraw = m_open;
-
-  ResetCellListSizes();
-  m_height = 0;
-  m_center = 0;
   return true;
 }
 

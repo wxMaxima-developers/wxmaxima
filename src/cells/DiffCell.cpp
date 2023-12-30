@@ -185,10 +185,6 @@ bool DiffCell::BreakUp() {
   m_diffCell->last()->SetNextToDraw(m_close);
   m_close->SetNextToDraw(m_nextToDraw);
   m_nextToDraw = m_open;
-  ResetCellListSizes();
-  m_height = 0;
-  m_center = 0;
-  m_width = 0;
   return true;
 }
 

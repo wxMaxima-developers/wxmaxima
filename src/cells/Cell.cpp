@@ -398,6 +398,12 @@ void Cell::SetIsExponentList() {
   }
 }
 
+void Cell::SetIsExponent() {
+  for (Cell &tmp : OnInner(this)) {
+    tmp.SetIsExponentList();
+  }
+}
+
 void Cell::DrawList(wxPoint point, wxDC *dc, wxDC *adc) {
   for (Cell &tmp : OnDrawList(this)) {
     tmp.Draw(point, dc, adc);
@@ -948,16 +954,16 @@ bool Cell::ContainsRect(const wxRect &sm, bool all) const {
   as well as the vertical position of the center. Then repeats this
   with
 */
-void Cell::ResetData() {
+void Cell::ResetSize_Recursively() {
   ResetSize();
   for (Cell &cell : OnInner(this))
     for (Cell &tmp : OnList(&cell))
-      tmp.ResetData();
+      tmp.ResetSize_Recursively();
 }
 
-void Cell::ResetDataList() {
+void Cell::ResetSize_RecursivelyList() {
   for (Cell &tmp : OnList(this))
-    tmp.ResetData();
+    tmp.ResetSize_Recursively();
 }
 
 void Cell::ResetCellListSizesList() {
@@ -978,12 +984,6 @@ void Cell::ResetCellListSizes() const {
   m_lineWidth.Invalidate();
   m_maxCenter.Invalidate();
   m_maxDrop.Invalidate();
-}
-
-void Cell::SetZeroSize() {
-  m_width = 0;
-  m_height = 0;
-  m_center = 0;
 }
 
 Cell *Cell::first() const {
@@ -1008,7 +1008,6 @@ bool Cell::BreakUp() { return false; }
 
 void Cell::BreakUpAndMark() {
   wxASSERT(!m_isBrokenIntoLines);
-  ResetSize();
   Cell::BreakUp();
   if (!m_isBrokenIntoLines)
   m_isBrokenIntoLines = true;
@@ -1016,7 +1015,7 @@ void Cell::BreakUpAndMark() {
 
 void Cell::Unbreak() {
   if (m_isBrokenIntoLines) {
-    ResetData();
+    ResetSize_Recursively();
     m_isBrokenIntoLines = false;
     // Unbreak the inner cells, too
     for (Cell &cell : OnInner(this))

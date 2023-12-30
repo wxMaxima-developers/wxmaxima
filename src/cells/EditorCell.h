@@ -588,8 +588,6 @@ private:
 
   void FontsChanged() override
     {
-      ResetSize();
-      ResetData();
       m_widths.clear();
     }
 

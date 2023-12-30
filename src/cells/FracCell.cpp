@@ -291,6 +291,8 @@ void FracCell::SetIsExponent() {
   if (Num()->IsShortNum() && Denom()->IsShortNum()) {
     m_inExponent = true;
     MakeDivideCell();
+    Num()->SetIsExponentList();
+    Denom()->SetIsExponentList();
   }
 }
 
@@ -323,9 +325,6 @@ bool FracCell::BreakUp() {
   m_divide->SetNextToDraw(m_displayedDenom);
   m_displayedDenom->SetNextToDraw(m_nextToDraw);
   m_nextToDraw = m_displayedNum;
-  ResetCellListSizes();
-  m_height = 0;
-  m_center = 0;
   return true;
 }
 

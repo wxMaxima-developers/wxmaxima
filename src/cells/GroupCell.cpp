@@ -312,7 +312,7 @@ void GroupCell::AppendInput(std::unique_ptr<Cell> &&cell) {
       CellList::AppendCell(m_inputLabel, std::move(cell));
     else if (m_inputLabel->GetNext()->GetValue().Length() == 0) {
       // AppendCell is needed due to its side effect of doing
-      // m_group->ResetData. Perhaps we can decide that SetNext alone could do
+      // m_group->ResetSize_Recursively. Perhaps we can decide that SetNext alone could do
       // something like that, as long as it wouldn't cause quadratic behavior.
       CellList::SetNext(m_inputLabel.get(), nullptr);
       wxASSERT(!m_inputLabel->GetNextToDraw());
@@ -362,7 +362,7 @@ void GroupCell::RemoveOutput() {
   UpdateCellsInGroup();
 
   m_updateConfusableCharWarnings = true;
-  ResetData();
+  ResetSize_Recursively();
 }
 
 void GroupCell::AppendOutput(std::unique_ptr<Cell> &&cell) {
@@ -517,7 +517,9 @@ void GroupCell::RecalculateInput() {
     m_center = 0;
     return;
   } else {
-    SetZeroSize();
+    m_width = 0;
+    m_height = 0;
+    m_center = 0;
 
     if ((m_configuration->ShowCodeCells()) || (m_groupType != GC_TYPE_CODE)) {
       if (GetEditable())
@@ -1499,7 +1501,7 @@ void GroupCell::BreakLines() {
       currentWidth += cellWidth;
     }
   }
-  m_output->ResetDataList();
+  m_output->ResetSize_RecursivelyList();
   ResetCellListSizes();
 }
 

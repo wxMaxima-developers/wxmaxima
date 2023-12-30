@@ -3606,7 +3606,7 @@ void Worksheet::OnCharInActive(wxKeyEvent &event) {
   /// If we need to recalculate then refresh the window
   if (needRecalculate) {
     GroupCell *group = GetActiveCell()->GetGroup();
-    group->ResetData();
+    group->ResetSize_Recursively();
     if (GetActiveCell()->CheckChanges() &&
         (group->GetGroupType() == GC_TYPE_CODE) &&
         (GetActiveCell() == group->GetEditable()))
@@ -8153,9 +8153,9 @@ void Worksheet::SetActiveCellText(const wxString &text) {
       active->SaveValue();
       active->SetValue(text);
       active->ResetSize();
-      active->ResetData();
+      active->ResetSize_Recursively();
       parent->ResetSize();
-      parent->ResetData();
+      parent->ResetSize_Recursively();
       parent->ResetInputLabel();
       Recalculate(parent);
       RequestRedraw(parent);

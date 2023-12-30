@@ -275,7 +275,7 @@ void Printout::Recalculate() {
 
   //  marginX += m_configuration.Scale_Px(m_configuration.GetBaseIndent());
 
-  m_tree->ResetDataList();
+  m_tree->ResetSize_RecursivelyList();
 
   for (GroupCell &group : OnList(m_tree.get()))
     group.Recalculate();

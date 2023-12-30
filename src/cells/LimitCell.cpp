@@ -228,9 +228,6 @@ bool LimitCell::BreakUp() {
   m_under->last()->SetNextToDraw(m_close);
   m_close->SetNextToDraw(m_nextToDraw);
   m_nextToDraw = m_name;
-  ResetCellListSizes();
-  m_height = 0;
-  m_center = 0;
   return true;
 }
 

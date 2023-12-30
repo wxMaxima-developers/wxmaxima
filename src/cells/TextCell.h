@@ -104,8 +104,6 @@ protected:
 
   void FontsChanged() override
     {
-      ResetSize();
-      ResetData();
       m_sizeCache.clear();
     }
 

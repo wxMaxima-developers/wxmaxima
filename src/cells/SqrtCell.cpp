@@ -163,10 +163,6 @@ bool SqrtCell::BreakUp() {
   m_innerCell->last()->SetNextToDraw(m_close);
   m_close->SetNextToDraw(m_nextToDraw);
   m_nextToDraw = m_open;
-
-  ResetCellListSizes();
-  m_height = 0;
-  m_center = 0;
   return true;
 }
 
