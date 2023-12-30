@@ -198,10 +198,10 @@ Submit bug reports by following the 'New issue' link on that page."))
     (format t "~30a~a~%" "wxMaxima version:" $wxmaximaversion)
     (format t "~30a~a~%" "using wxWidgets version:" $wxwidgetsversion)
     (format t "~30a~a~%" "Maxima version:" *autoconf-version*)
-    (format t "Maxima build date:                 ~4,'0d-~2,'0d-~2,'0d ~2,'0d:~2,'0d:~2,'0d~%"
+    (format t "Maxima build date:            ~4,'0d-~2,'0d-~2,'0d ~2,'0d:~2,'0d:~2,'0d~%"
            year month day hour minute seconds)
     (format t "~30a~a~%" "Host type:" *autoconf-host*)
-    (format t "System type:                       ~a ~a ~a~%" (software-type) (software-version) (machine-type))
+    (format t "System type:                  ~a ~a ~a~%" (software-type) (software-version) (machine-type))
     (format t "~30a~a~%" "Lisp implementation type:" (lisp-implementation-type))
     (format t "~30a~a~%" "Lisp implementation version:" (lisp-implementation-version))
     (format t "~30a~a~%" "wxMaxima help dir:" wxHelpDir))
