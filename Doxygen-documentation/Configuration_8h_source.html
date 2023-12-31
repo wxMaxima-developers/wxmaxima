@@ -630,7 +630,7 @@ $(function() {
 <div class="line"><a name="l00699"></a><span class="lineno">  699</span>&#160; </div>
 <div class="line"><a name="l00701"></a><span class="lineno"><a class="line" href="classConfiguration.html#acf2480a0cd9d621c7cb910153c8daba1">  701</a></span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classConfiguration.html#acf2480a0cd9d621c7cb910153c8daba1">SetCanvasSize</a>(wxSize siz)</div>
 <div class="line"><a name="l00702"></a><span class="lineno">  702</span>&#160;    {</div>
-<div class="line"><a name="l00703"></a><span class="lineno">  703</span>&#160;      <span class="keywordflow">if</span>(m_canvasSize != siz)</div>
+<div class="line"><a name="l00703"></a><span class="lineno">  703</span>&#160;      <span class="keywordflow">if</span>(m_canvasSize.GetWidth() != siz.GetWidth())</div>
 <div class="line"><a name="l00704"></a><span class="lineno">  704</span>&#160;        RecalculateForce();</div>
 <div class="line"><a name="l00705"></a><span class="lineno">  705</span>&#160;      m_canvasSize = siz;</div>
 <div class="line"><a name="l00706"></a><span class="lineno">  706</span>&#160;    }</div>
@@ -910,37 +910,37 @@ $(function() {
 <div class="line"><a name="l01055"></a><span class="lineno"><a class="line" href="classConfiguration.html#a5897be9039afeb0aa6e0edb510eafa11"> 1055</a></span>&#160;  std::random_device <a class="code" href="classConfiguration.html#a5897be9039afeb0aa6e0edb510eafa11">m_rd</a>;</div>
 <div class="line"><a name="l01057"></a><span class="lineno"><a class="line" href="classConfiguration.html#a919b6aa91aefacfbe6aafc806806035e"> 1057</a></span>&#160;  std::default_random_engine <a class="code" href="classConfiguration.html#a919b6aa91aefacfbe6aafc806806035e">m_eng</a>;</div>
 <div class="line"><a name="l01065"></a><span class="lineno"><a class="line" href="classConfiguration.html#a56f215c6fb33a7d594a2212377204370"> 1065</a></span>&#160;  std::int_fast32_t <a class="code" href="classConfiguration.html#a56f215c6fb33a7d594a2212377204370">CellCfgCnt</a>()<span class="keyword"> const </span>{<span class="keywordflow">return</span> m_cellCfgCnt;}</div>
-<div class="line"><a name="l01066"></a><span class="lineno"> 1066</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l01068"></a><span class="lineno"> 1068</span>&#160;  std::vector&lt;TextStyle&gt; m_codeStyles;</div>
-<div class="line"><a name="l01070"></a><span class="lineno"> 1070</span>&#160;  std::vector&lt;TextStyle&gt; m_2dMathStyles;</div>
-<div class="line"><a name="l01072"></a><span class="lineno"> 1072</span>&#160;  std::vector&lt;TextStyle&gt; m_colorOnlyStyles;</div>
-<div class="line"><a name="l01073"></a><span class="lineno"> 1073</span>&#160;  std::list&lt;FileToSave&gt; m_filesToSave;</div>
-<div class="line"><a name="l01074"></a><span class="lineno"> 1074</span>&#160;  RenderablecharsHash m_renderableChars;</div>
-<div class="line"><a name="l01075"></a><span class="lineno"> 1075</span>&#160;  RenderablecharsHash m_nonRenderableChars;</div>
-<div class="line"><a name="l01077"></a><span class="lineno"> 1077</span>&#160;  <span class="keyword">static</span> <span class="keywordtype">bool</span> FontDisplaysChar(wxChar ch, <span class="keyword">const</span> wxFont &amp;font = *wxNORMAL_FONT);</div>
-<div class="line"><a name="l01079"></a><span class="lineno"> 1079</span>&#160;  <span class="keyword">static</span> <span class="keywordtype">bool</span> CharVisiblyDifferent(wxChar ch, wxChar otherChar, <span class="keyword">const</span> wxFont &amp;font = *wxNORMAL_FONT);</div>
-<div class="line"><a name="l01080"></a><span class="lineno"> 1080</span>&#160;  mathDisplayMode m_displayMode = display_2d;</div>
-<div class="line"><a name="l01081"></a><span class="lineno"> 1081</span>&#160;  <span class="keyword">using</span> CellRedrawTrace = std::vector&lt;const Cell*&gt;;</div>
-<div class="line"><a name="l01082"></a><span class="lineno"> 1082</span>&#160;  <span class="keyword">static</span> <span class="keywordtype">bool</span> m_debugMode;</div>
-<div class="line"><a name="l01083"></a><span class="lineno"> 1083</span>&#160;  <span class="keywordtype">bool</span> m_showInputLabels;</div>
-<div class="line"><a name="l01084"></a><span class="lineno"> 1084</span>&#160;  <span class="keywordtype">long</span> m_wizardTab;</div>
-<div class="line"><a name="l01085"></a><span class="lineno"> 1085</span>&#160;  <span class="keywordtype">bool</span> m_display2d_Unicode;</div>
-<div class="line"><a name="l01086"></a><span class="lineno"> 1086</span>&#160;  <span class="keywordtype">bool</span> m_usePartialForDiff;</div>
-<div class="line"><a name="l01087"></a><span class="lineno"> 1087</span>&#160;  <span class="keywordtype">bool</span> m_maximaUsesHhtmlBrowser;</div>
-<div class="line"><a name="l01088"></a><span class="lineno"> 1088</span>&#160;  <span class="keywordtype">bool</span> m_maximaUsesWxmaximaBrowser;</div>
-<div class="line"><a name="l01090"></a><span class="lineno"> 1090</span>&#160;  <span class="keywordtype">bool</span> m_autoSaveAsTempFile;</div>
-<div class="line"><a name="l01092"></a><span class="lineno"> 1092</span>&#160;  <span class="keywordtype">long</span> m_language;</div>
-<div class="line"><a name="l01094"></a><span class="lineno"> 1094</span>&#160;  <span class="keywordtype">bool</span> m_autodetectMaxima;</div>
-<div class="line"><a name="l01096"></a><span class="lineno"> 1096</span>&#160;  <span class="keywordtype">bool</span> m_autodetectHelpBrowser;</div>
-<div class="line"><a name="l01098"></a><span class="lineno"> 1098</span>&#160;  <span class="keywordtype">bool</span> m_useInternalHelpBrowser;</div>
-<div class="line"><a name="l01100"></a><span class="lineno"> 1100</span>&#160;  <span class="keywordtype">bool</span> m_singlePageManual;</div>
-<div class="line"><a name="l01102"></a><span class="lineno"> 1102</span>&#160;  wxRect m_updateRegion;</div>
-<div class="line"><a name="l01104"></a><span class="lineno"> 1104</span>&#160;  <span class="keywordtype">bool</span> m_incrementalSearch;</div>
-<div class="line"><a name="l01106"></a><span class="lineno"> 1106</span>&#160;  <span class="keywordtype">long</span> m_autoSubscript;</div>
-<div class="line"><a name="l01108"></a><span class="lineno"> 1108</span>&#160;  wxWindow *m_workSheet = NULL;</div>
-<div class="line"><a name="l01110"></a><span class="lineno"> 1110</span>&#160;  std::unique_ptr&lt;wxClientDC&gt; m_worksheetDC;</div>
-<div class="line"><a name="l01123"></a><span class="lineno"> 1123</span>&#160;  <span class="keywordtype">bool</span> CharsExistInFont(<span class="keyword">const</span> wxFont &amp;font, <span class="keyword">const</span> wxString&amp; chars);</div>
-<div class="line"><a name="l01124"></a><span class="lineno"> 1124</span>&#160;  <span class="keywordtype">void</span> RecalculateForce() { m_cellCfgCnt++; }</div>
+<div class="line"><a name="l01066"></a><span class="lineno"> 1066</span>&#160;  <span class="keywordtype">void</span> RecalculateForce() { m_cellCfgCnt++; }</div>
+<div class="line"><a name="l01067"></a><span class="lineno"> 1067</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l01069"></a><span class="lineno"> 1069</span>&#160;  std::vector&lt;TextStyle&gt; m_codeStyles;</div>
+<div class="line"><a name="l01071"></a><span class="lineno"> 1071</span>&#160;  std::vector&lt;TextStyle&gt; m_2dMathStyles;</div>
+<div class="line"><a name="l01073"></a><span class="lineno"> 1073</span>&#160;  std::vector&lt;TextStyle&gt; m_colorOnlyStyles;</div>
+<div class="line"><a name="l01074"></a><span class="lineno"> 1074</span>&#160;  std::list&lt;FileToSave&gt; m_filesToSave;</div>
+<div class="line"><a name="l01075"></a><span class="lineno"> 1075</span>&#160;  RenderablecharsHash m_renderableChars;</div>
+<div class="line"><a name="l01076"></a><span class="lineno"> 1076</span>&#160;  RenderablecharsHash m_nonRenderableChars;</div>
+<div class="line"><a name="l01078"></a><span class="lineno"> 1078</span>&#160;  <span class="keyword">static</span> <span class="keywordtype">bool</span> FontDisplaysChar(wxChar ch, <span class="keyword">const</span> wxFont &amp;font = *wxNORMAL_FONT);</div>
+<div class="line"><a name="l01080"></a><span class="lineno"> 1080</span>&#160;  <span class="keyword">static</span> <span class="keywordtype">bool</span> CharVisiblyDifferent(wxChar ch, wxChar otherChar, <span class="keyword">const</span> wxFont &amp;font = *wxNORMAL_FONT);</div>
+<div class="line"><a name="l01081"></a><span class="lineno"> 1081</span>&#160;  mathDisplayMode m_displayMode = display_2d;</div>
+<div class="line"><a name="l01082"></a><span class="lineno"> 1082</span>&#160;  <span class="keyword">using</span> CellRedrawTrace = std::vector&lt;const Cell*&gt;;</div>
+<div class="line"><a name="l01083"></a><span class="lineno"> 1083</span>&#160;  <span class="keyword">static</span> <span class="keywordtype">bool</span> m_debugMode;</div>
+<div class="line"><a name="l01084"></a><span class="lineno"> 1084</span>&#160;  <span class="keywordtype">bool</span> m_showInputLabels;</div>
+<div class="line"><a name="l01085"></a><span class="lineno"> 1085</span>&#160;  <span class="keywordtype">long</span> m_wizardTab;</div>
+<div class="line"><a name="l01086"></a><span class="lineno"> 1086</span>&#160;  <span class="keywordtype">bool</span> m_display2d_Unicode;</div>
+<div class="line"><a name="l01087"></a><span class="lineno"> 1087</span>&#160;  <span class="keywordtype">bool</span> m_usePartialForDiff;</div>
+<div class="line"><a name="l01088"></a><span class="lineno"> 1088</span>&#160;  <span class="keywordtype">bool</span> m_maximaUsesHhtmlBrowser;</div>
+<div class="line"><a name="l01089"></a><span class="lineno"> 1089</span>&#160;  <span class="keywordtype">bool</span> m_maximaUsesWxmaximaBrowser;</div>
+<div class="line"><a name="l01091"></a><span class="lineno"> 1091</span>&#160;  <span class="keywordtype">bool</span> m_autoSaveAsTempFile;</div>
+<div class="line"><a name="l01093"></a><span class="lineno"> 1093</span>&#160;  <span class="keywordtype">long</span> m_language;</div>
+<div class="line"><a name="l01095"></a><span class="lineno"> 1095</span>&#160;  <span class="keywordtype">bool</span> m_autodetectMaxima;</div>
+<div class="line"><a name="l01097"></a><span class="lineno"> 1097</span>&#160;  <span class="keywordtype">bool</span> m_autodetectHelpBrowser;</div>
+<div class="line"><a name="l01099"></a><span class="lineno"> 1099</span>&#160;  <span class="keywordtype">bool</span> m_useInternalHelpBrowser;</div>
+<div class="line"><a name="l01101"></a><span class="lineno"> 1101</span>&#160;  <span class="keywordtype">bool</span> m_singlePageManual;</div>
+<div class="line"><a name="l01103"></a><span class="lineno"> 1103</span>&#160;  wxRect m_updateRegion;</div>
+<div class="line"><a name="l01105"></a><span class="lineno"> 1105</span>&#160;  <span class="keywordtype">bool</span> m_incrementalSearch;</div>
+<div class="line"><a name="l01107"></a><span class="lineno"> 1107</span>&#160;  <span class="keywordtype">long</span> m_autoSubscript;</div>
+<div class="line"><a name="l01109"></a><span class="lineno"> 1109</span>&#160;  wxWindow *m_workSheet = NULL;</div>
+<div class="line"><a name="l01111"></a><span class="lineno"> 1111</span>&#160;  std::unique_ptr&lt;wxClientDC&gt; m_worksheetDC;</div>
+<div class="line"><a name="l01124"></a><span class="lineno"> 1124</span>&#160;  <span class="keywordtype">bool</span> CharsExistInFont(<span class="keyword">const</span> wxFont &amp;font, <span class="keyword">const</span> wxString&amp; chars);</div>
 <div class="line"><a name="l01126"></a><span class="lineno"> 1126</span>&#160;  <span class="keywordtype">bool</span> m_wrapLatexMath;</div>
 <div class="line"><a name="l01127"></a><span class="lineno"> 1127</span>&#160;  <span class="keywordtype">bool</span> m_allowNetworkHelp;</div>
 <div class="line"><a name="l01128"></a><span class="lineno"> 1128</span>&#160;  <span class="keywordtype">bool</span> m_exportContainsWXMX;</div>
