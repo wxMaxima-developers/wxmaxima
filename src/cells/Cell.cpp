@@ -981,7 +981,7 @@ void Cell::BreakUpAndMark() {
   if (!m_isBrokenIntoLines)
     {
       Cell::BreakUp();
-      ResetSize();
+      ResetSize_Recursively();
       m_isBrokenIntoLines = true;
     }
 }
@@ -989,10 +989,10 @@ void Cell::BreakUpAndMark() {
 void Cell::Unbreak() {
   if (m_isBrokenIntoLines) {
     ResetSize_Recursively();
-    m_isBrokenIntoLines = false;
     // Unbreak the inner cells, too
     for (Cell &cell : OnInner(this))
       cell.UnbreakList();
+    m_isBrokenIntoLines = false;
   }
   SetNextToDraw(GetNext());
 }
