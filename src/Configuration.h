@@ -700,7 +700,7 @@ public:
   //! Sets the size of the current worksheet's visible window.
   void SetCanvasSize(wxSize siz)
     {
-      if(m_canvasSize != siz)
+      if(m_canvasSize.GetWidth() != siz.GetWidth())
         RecalculateForce();
       m_canvasSize = siz;
     }
@@ -1063,6 +1063,7 @@ public:
     to recalculate itself the worst thing that can happen is a visual glitch.
    */
   std::int_fast32_t CellCfgCnt() const {return m_cellCfgCnt;}
+  void RecalculateForce() { m_cellCfgCnt++; }
 private:
   //! Which styles affect how code is displayed?
   std::vector<TextStyle> m_codeStyles;
@@ -1121,7 +1122,6 @@ private:
     of this function.
   */
   bool CharsExistInFont(const wxFont &font, const wxString& chars);
-  void RecalculateForce() { m_cellCfgCnt++; }
   //! Caches the information on how to draw big parenthesis for GetParenthesisDrawMode().
   bool m_wrapLatexMath;
   bool m_allowNetworkHelp;

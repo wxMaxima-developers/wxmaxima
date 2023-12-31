@@ -48,13 +48,13 @@ Printout::Printout(wxString title, GroupCell *tree, double scaleFactor)
   // Don't take the ppi rate from the worksheet
   m_configuration.SetWorkSheet(NULL);
   m_configuration.ClipToDrawRegion(false);
+  m_configuration.ShowCodeCells(tree->GetConfiguration()->ShowCodeCells());
+  m_configuration.ShowBrackets(tree->GetConfiguration()->PrintBrackets());
 
   if (tree) {
-    m_configuration.ShowCodeCells(tree->GetConfiguration()->ShowCodeCells());
-    m_configuration.ShowBrackets(tree->GetConfiguration()->PrintBrackets());
     auto copy = tree->CopyList();
+    copy->SetConfigurationList(m_configPointer);
     m_tree = std::move(copy);
-    m_tree->SetConfigurationList(m_configPointer);
   }
   m_scaleFactor = scaleFactor;
 }
@@ -275,8 +275,11 @@ void Printout::Recalculate() {
 
   //  marginX += m_configuration.Scale_Px(m_configuration.GetBaseIndent());
 
-  m_tree->ResetSize_RecursivelyList();
+  m_configuration.RecalculateForce();
+  for (GroupCell &group : OnList(m_tree.get()))
+    group.Recalculate();
 
+  m_configuration.RecalculateForce();
   for (GroupCell &group : OnList(m_tree.get()))
     group.Recalculate();
 
