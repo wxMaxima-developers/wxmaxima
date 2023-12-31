@@ -2677,7 +2677,6 @@ bool EditorCell::CutToClipboard() {
   ClearSelection();
   m_paren1 = m_paren2 = -1;
   m_width = m_height = m_center = -1;
-  InvalidateMaxDrop();
 
   return true;
 }
@@ -2855,7 +2854,6 @@ void EditorCell::SetState(const EditorCell::History::HistoryEntry &state) {
   m_paren1 = m_paren2 = -1;
   m_isDirty = true;
   m_width = m_height = m_center = -1;
-  InvalidateMaxDrop();
   SetSelection(state.SelectionStart(), state.SelectionEnd());
 }
 

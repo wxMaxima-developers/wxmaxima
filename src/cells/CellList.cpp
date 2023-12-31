@@ -126,11 +126,6 @@ CellList::SpliceInAfter(Cell *where, std::unique_ptr<Cell> &&head, Cell *last) {
   if (!head)
     return {};
 
-  where->m_fullWidth.Invalidate();
-  where->m_lineWidth.Invalidate();
-  where->m_maxDrop.Invalidate();
-  where->m_maxCenter.Invalidate();
-
   if (!last)
     last = head->last();
   wxASSERT(last);

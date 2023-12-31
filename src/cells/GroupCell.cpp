@@ -467,9 +467,6 @@ bool GroupCell::Recalculate() {
 }
 
 void GroupCell::InputHeightChanged() {
-  ResetCellListSizes();
-  if (m_inputLabel)
-    m_inputLabel->ResetCellListSizes();
   const EditorCell *editorCell = GetEditable();
   if (editorCell == NULL)
     return;
@@ -529,7 +526,6 @@ void GroupCell::RecalculateInput() {
         m_inputLabel->Recalculate(EditorFontSize());
         m_inputWidth = m_width = m_inputLabel->GetFullWidth();
         m_center = m_inputLabel->GetCenterList();
-        m_inputLabel->ResetCellListSizesList();
         m_inputHeight = m_height = m_inputLabel->GetHeightList();
       }
       m_height = m_inputHeight;
@@ -582,7 +578,6 @@ void GroupCell::RecalculateOutput() {
   // Calculate the height of the output
   for (const Cell &tmp : OnDrawList(m_output.get())) {
     if (tmp.BreakLineHere()) {
-      tmp.ResetCellListSizes();
       int height_Delta = tmp.GetHeightList();
       m_width = std::max(m_width, tmp.GetLineWidth());
       m_outputRect.width = std::max(m_outputRect.width, m_width);
@@ -1458,15 +1453,12 @@ void GroupCell::BreakLines() {
 
   // 1st step: Tell all cells to display as beautiful 2d object, if that is
   // possible.
-  if (UnBreakUpCells(cell)) {
-    m_output->ResetCellListSizesList();
+  if (UnBreakUpCells(cell))
     m_output->RecalculateList(m_configuration->GetMathFontSize());
-  }
 
   // 2nd step: Convert all objects that are wider than a line to 1D objects that
   // (hopefully) can be broken into lines
   if (BreakUpCells(cell)) {
-    m_output->ResetCellListSizesList();
     m_output->RecalculateList(m_configuration->GetMathFontSize());
   }
 
@@ -1502,7 +1494,6 @@ void GroupCell::BreakLines() {
     }
   }
   m_output->ResetSize_RecursivelyList();
-  ResetCellListSizes();
 }
 
 Cell::Range GroupCell::GetCellsInOutput() const {

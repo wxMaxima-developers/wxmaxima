@@ -495,12 +495,6 @@ public:
   //! Mark the cached height and width information as "to be calculated".
   void ResetSize();
 
-  //! Mark the line and cell list widths and heights as "to be calculated"
-  void ResetCellListSizes() const;
-
-  //! Mark the line and cell list widths and heights as "to be calculated"
-  void ResetCellListSizesList();
-
   //! Mark the cached height information of the whole list of cells as "to be calculated".
   void ResetSizeList();
 
@@ -995,15 +989,6 @@ protected:
   */
   wxCoord m_center = -1;
 
-private:
-  //! The width of the list starting with this cell.
-  CachedInteger<wxCoord> m_fullWidth;
-  //! The width of the rest of the line this cell is part of.
-  CachedInteger<wxCoord> m_lineWidth;
-  //! The position of the center of this line
-  CachedInteger<wxCoord> m_maxCenter;
-  //! The height-center of this line
-  CachedInteger<wxCoord> m_maxDrop;
 protected:
 //** 2-byte objects (2 bytes)
 //**
@@ -1063,14 +1048,9 @@ protected:
 
   //! To be called if the font has changed.
   virtual void FontsChanged()
-    {
-      ResetSize();
-      ResetSize_Recursively();
-    }
+    { ResetSize_Recursively(); }
 
   CellPointers *GetCellPointers() const;
-
-  void InvalidateMaxDrop() const { m_maxDrop.Invalidate(); }
 
 private:
   void RecalcCenterListAndMaxDropCache();

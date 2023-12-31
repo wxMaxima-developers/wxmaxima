@@ -246,63 +246,50 @@ bool Cell::NeedsRecalculation(AFontSize fontSize) const {
 }
 
 int Cell::GetCenterList() const {
-  if (m_maxCenter.IsInvalid()) {
-    int maxCenter = 0;
-    for (const Cell &tmp : OnDrawList(this)) {
-      if ((&tmp != this) && (tmp.m_breakLine))
-        break;
-      if (!tmp.m_isBrokenIntoLines)
-        maxCenter = std::max(maxCenter, tmp.m_center);
-    }
-    m_maxCenter.SetCached(maxCenter);
+  int maxCenter = 0;
+  for (const Cell &tmp : OnDrawList(this)) {
+    if ((&tmp != this) && (tmp.m_breakLine))
+      break;
+    if (!tmp.m_isBrokenIntoLines)
+      maxCenter = std::max(maxCenter, tmp.m_center);
   }
-  return m_maxCenter;
+  return maxCenter;
 }
 
 int Cell::GetMaxDrop() const {
-  if (m_maxDrop.IsInvalid()) {
-    int maxDrop = 0;
-    for (const Cell &tmp : OnDrawList(this)) {
-      if ((&tmp != this) && (tmp.m_breakLine))
-        break;
-      if (!tmp.m_isBrokenIntoLines)
-        maxDrop = std::max(maxDrop, tmp.m_height - tmp.m_center);
-    }
-    m_maxDrop.SetCached(maxDrop);
+  int maxDrop = 0;
+  for (const Cell &tmp : OnDrawList(this)) {
+    if ((&tmp != this) && (tmp.m_breakLine))
+      break;
+    if (!tmp.m_isBrokenIntoLines)
+      maxDrop = std::max(maxDrop, tmp.m_height - tmp.m_center);
   }
-  return m_maxDrop;
+  return maxDrop;
 }
 
 int Cell::GetHeightList() const { return GetCenterList() + GetMaxDrop(); }
 
 int Cell::GetFullWidth() const {
-  if (m_fullWidth.IsInvalid()) {
-    // We begin this calculation with a negative offset since the full width of
-    // only a single cell doesn't contain the space that separates two cells -
-    // that is automatically added to every cell in the next step.
-    int fullWidth = 0;
-    for (const Cell &tmp : OnDrawList(this)) {
-      fullWidth += tmp.m_width;
-    }
-    m_fullWidth.SetCached(fullWidth);
+  // We begin this calculation with a negative offset since the full width of
+  // only a single cell doesn't contain the space that separates two cells -
+  // that is automatically added to every cell in the next step.
+  int fullWidth = 0;
+  for (const Cell &tmp : OnDrawList(this)) {
+    fullWidth += tmp.m_width;
   }
-  return m_fullWidth;
+  return fullWidth;
 }
 
 int Cell::GetLineWidth() const {
-  if (m_lineWidth.IsInvalid()) {
-    int width = m_width;
-    for (const Cell &tmp : OnDrawList(this)) {
-      if (&tmp != this)
-        if (tmp.m_isBrokenIntoLines || tmp.m_breakLine ||
-            (tmp.m_type == MC_TYPE_MAIN_PROMPT))
-          break;
-
-      width += tmp.m_width;
-    }
-    m_lineWidth.SetCached(width);
+  int width = m_width;
+  for (const Cell &tmp : OnDrawList(this)) {
+    if (&tmp != this)
+      if (tmp.m_isBrokenIntoLines || tmp.m_breakLine ||
+          (tmp.m_type == MC_TYPE_MAIN_PROMPT))
+        break; 
+    width += tmp.m_width;
   }
-  return m_lineWidth;
+  return width;
 }
 
 /*! Draw this cell to dc
@@ -430,7 +417,6 @@ void Cell::Recalculate(AFontSize fontsize) {
     {
       m_cellCfgCnt_last = m_configuration->CellCfgCnt();
       m_fontSize_Scaled = Scale_Px(fontsize);
-      ResetCellListSizes();
     }
 }
 
@@ -966,24 +952,8 @@ void Cell::ResetSize_RecursivelyList() {
     tmp.ResetSize_Recursively();
 }
 
-void Cell::ResetCellListSizesList() {
-  for (const Cell &cell : OnList(this)) {
-    cell.ResetCellListSizes();
-    for (const Cell &tmp : OnInner(&cell))
-      tmp.ResetCellListSizes();
-  }
-}
-
 void Cell::ResetSize() {
   m_cellCfgCnt_last--;
-  ResetCellListSizes();
-}
-
-void Cell::ResetCellListSizes() const {
-  m_fullWidth.Invalidate();
-  m_lineWidth.Invalidate();
-  m_maxCenter.Invalidate();
-  m_maxDrop.Invalidate();
 }
 
 Cell *Cell::first() const {
@@ -1008,9 +978,12 @@ bool Cell::BreakUp() { return false; }
 
 void Cell::BreakUpAndMark() {
   wxASSERT(!m_isBrokenIntoLines);
-  Cell::BreakUp();
   if (!m_isBrokenIntoLines)
-  m_isBrokenIntoLines = true;
+    {
+      Cell::BreakUp();
+      ResetSize();
+      m_isBrokenIntoLines = true;
+    }
 }
 
 void Cell::Unbreak() {
