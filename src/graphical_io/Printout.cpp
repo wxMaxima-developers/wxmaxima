@@ -210,7 +210,7 @@ void Printout::BreakPages() {
 void Printout::GetPageInfo(int *minPage, int *maxPage, int *fromPage,
                            int *toPage) {
   *minPage = 1;
-  *maxPage = m_pagessize();
+  *maxPage = m_pages.size();
   *fromPage = 1;
   *toPage = m_pages.size();
 }
