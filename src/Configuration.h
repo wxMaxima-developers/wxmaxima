@@ -43,7 +43,6 @@
 #ifdef __WXMSW__
 #include <wx/msw/webview_ie.h>
 #endif
-#include <unordered_map>
 
 #define MC_LINE_SKIP Scale_Px(2)
 #define MC_TEXT_PADDING Scale_Px(1)

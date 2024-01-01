@@ -15,10 +15,6 @@ if(PANDOC)
 	add_custom_target(epub)
 	add_custom_target(html ALL)
 	function(generate_wxmaxima_documentation_html FILEBASENAME)
-		if(UNIX)
-			# Remove workaround for IE9
-			set(REMOVE_HTML5SHIV cp ${FILEBASENAME}.html sedinput && sed /html5shiv-printshiv.min.js/d <sedinput >${FILEBASENAME}.html)
-		endif()
 		add_custom_command(
 			OUTPUT ${FILEBASENAME}.html
 			DEPENDS ${FILEBASENAME}.md

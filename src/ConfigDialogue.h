@@ -55,7 +55,6 @@ extern unsigned char view_refresh_svg_gz[];
 #include "TextStyle.h"
 #include "Worksheet.h"
 #include "Configuration.h"
-#include <unordered_map>
 
 extern unsigned char GTK_PRINT_SVG_GZ[];
 extern size_t GTK_PRINT_SVG_GZ_SIZE;

@@ -38,7 +38,6 @@
 #include <vector>
 #include <wx/regex.h>
 #include <wx/filename.h>
-#include <vector>
 #include <wx/hashmap.h>
 #include "Configuration.h"
 #include "precomp.h"
