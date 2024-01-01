@@ -105,7 +105,7 @@ ChangeLogDialog::ChangeLogDialog(wxWindow *parent)
           wxString rest  = line.Right(line.Length() - start - length - 1);
           wxString url   = wxS("https://github.com/wxMaxima-developers/wxmaxima/issues/")
             + match.Right(match.Length() - 1);
-          url = url.Left(url.Length() - 1);
+          url = url.Left(url.Length() - 2);
           m_license->WriteText(line.Left(start));
           m_license->BeginURL(url);
           m_license->WriteText(wxS("↗") + match);
