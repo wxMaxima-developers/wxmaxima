@@ -47,7 +47,7 @@ LicenseDialog::LicenseDialog(wxWindow *parent)
 
   m_license = new wxTextCtrl(
                              this, -1, wxEmptyString, wxDefaultPosition, wxDefaultSize,
-                             wxTE_MULTILINE | wxHSCROLL | wxTE_READONLY | wxTE_AUTO_URL);
+                             wxDEFAULT_DIALOG_STYLE | wxTE_MULTILINE | wxHSCROLL | wxTE_READONLY | wxTE_AUTO_URL);
 
   wxFont fnt = m_license->GetFont();
   wxClientDC dc(this);
