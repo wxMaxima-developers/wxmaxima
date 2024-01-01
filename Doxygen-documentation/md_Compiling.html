@@ -111,7 +111,7 @@ macOS X prerequisites</h3>
 </ul>
 <h2><a class="anchor" id="autotoc_md13"></a>
 Compiling on Windows</h2>
-<p>You can install MinGW (<a href="https://sourceforge.net/projects/mingw/">https://sourceforge.net/projects/mingw/</a>). In the installation process make sure you select <code>g++</code>, <code>MSYS Basic System</code> and <code>MinGW Developer ToolKit</code> in the <code>Select components</code> page of the installer. Also select po4a, cmake and install pandoc. Then run the MinGW Shell and follow the instructions for compiling wxWidgets and <a class="el" href="classwxMaxima.html">wxMaxima</a> with cmake.</p>
+<p>You can install MinGW (<a href="https://osdn.net/projects/mingw/">https://osdn.net/projects/mingw/</a>). In the installation process make sure you select <code>g++</code>, <code>MSYS Basic System</code> and <code>MinGW Developer ToolKit</code> in the <code>Select components</code> page of the installer. Also select po4a, cmake and install pandoc. Then run the MinGW Shell and follow the instructions for compiling wxWidgets and <a class="el" href="classwxMaxima.html">wxMaxima</a> with cmake.</p>
 <p>Another compiler option would be MinGW-w64 (<a href="https://www.mingw-w64.org/">https://www.mingw-w64.org/</a>).</p>
 <p>You can also build using MS Visual Studio 2019 or newer. Since MSVS provides adequate versions of both cmake and ninja, there's no need to install those. The build has to start from within the <em>x64 Native Tools Command Prompt</em>, and you have to first build wxWidgets before you build wxmaxima. You can get some inspiration about how to do both of these steps by examining the PowerShell scripts that do the building within <code>.appveyor.yml</code> file.</p>
 <h2><a class="anchor" id="autotoc_md14"></a>
