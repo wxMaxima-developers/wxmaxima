@@ -238,15 +238,6 @@ public:
   */
   void RecalculateOutput();
 
-  /*! Attempt to split math objects that are wider than the screen into multiple lines.
-
-    \retval true, if this action has changed the height of cells.
-  */
-  bool BreakUpCells(Cell *cell) const;
-
-  //! Undo a BreakUpCells
-  bool UnBreakUpCells(Cell *cell) const;
-
   //! Break this cell into lines
   void BreakLines();
 
@@ -399,9 +390,8 @@ public:
   void SetSuppressTooltipMarker(bool suppress) { m_suppressTooltipMarker = suppress; }
 
 protected:
+  wxCoord GetInputIndent();
   bool NeedsRecalculation(AFontSize fontSize) const override;
-  int GetInputIndent();
-  int GetLineIndent (const Cell *cell) const ;
   void UpdateCellsInGroup();
 
 //** 16-byte objects (16 bytes)

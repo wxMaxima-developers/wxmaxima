@@ -57,7 +57,7 @@ const wxString &Cell::GetToolTip(const wxPoint point) const {
         return toolTip;
     }
 
-  return *m_toolTip;
+  return GetLocalToolTip();
 }
 
 Cell::Cell(GroupCell *group, Configuration *config)
@@ -458,6 +458,95 @@ void Cell::SetConfiguration(Configuration *config) {
   for (Cell &cell : OnInner(this))
     cell.SetConfigurationList(config);
 }
+
+int Cell::GetLineIndent() const {
+  if ((GetTextStyle() != TS_LABEL) &&
+      (GetTextStyle() != TS_USERLABEL) &&
+      (GetTextStyle() != TS_MAIN_PROMPT) &&
+      (GetTextStyle() != TS_OTHER_PROMPT) &&
+      (GetTextStyle() != TS_ASCIIMATHS) && m_configuration->IndentMaths())
+    return Scale_Px(m_configuration->GetLabelWidth()) + 2 * MC_TEXT_PADDING;
+  return 0;
+}
+
+void Cell::BreakLines_List()
+{
+  // 1st step: Tell all cells to display as beautiful 2d object, if that is
+  // possible.
+  UnBreakUpCells();
+  RecalculateList(m_configuration->GetMathFontSize());
+
+  // 2nd step: Convert all objects that are wider than a line to 1D objects that
+  // (hopefully) can be broken into lines
+  if(BreakUpCells())
+    RecalculateList(m_configuration->GetMathFontSize());
+
+  // 3rd step: Determine a sane maximum line width
+  int fullWidth = m_configuration->GetCanvasSize().x - m_configuration->GetIndent();
+  int currentWidth = GetLineIndent();
+  //  if ((this->GetTextStyle() != TS_LABEL) && (this->GetTextStyle() != TS_USERLABEL))
+  //  fullWidth -= m_configuration->GetIndent();
+
+  // We don't want the text go exactly to the right border.
+  fullWidth -= Scale_Px(5);
+
+  // Don't let the layout degenerate for small window widths
+  if (fullWidth < Scale_Px(150))
+    fullWidth = Scale_Px(150);
+
+  // 4th step: break the output into lines.
+  if (!IsHidden()) {
+    bool prevBroken = false;
+    for (Cell &tmp : OnDrawList(this)) {
+      if (prevBroken) {
+        currentWidth += tmp.GetLineIndent();
+        prevBroken = false;
+      }
+      wxCoord const cellWidth = tmp.GetWidth();
+      tmp.SoftLineBreak(false);
+      if (tmp.HasHardLineBreak() || (currentWidth + cellWidth >= fullWidth)) {
+        tmp.SoftLineBreak(true);
+        currentWidth = tmp.GetLineIndent();
+        prevBroken = true;
+      }
+      currentWidth += cellWidth;
+    }
+  }
+  ResetSize_RecursivelyList();
+}
+
+bool Cell::BreakUpCells() {  
+  int clientWidth =
+    .8 * m_configuration->GetCanvasSize().x - m_configuration->GetIndent();
+  if (clientWidth < Scale_Px(50))
+    clientWidth = Scale_Px(50);
+
+  bool lineHeightsChanged = false;
+  if (!IsHidden())
+    for (Cell &tmp : OnDrawList(this)) {
+        if (tmp.GetWidth() < 0)
+          tmp.Recalculate(m_configuration->GetMathFontSize());
+        if (tmp.GetWidth() > clientWidth)
+          lineHeightsChanged |= tmp.BreakUp();
+    }
+  return lineHeightsChanged;
+}
+
+bool Cell::UnBreakUpCells() {
+
+  bool retval = false;
+  for (Cell &tmp : OnDrawList(this)) {
+    if (tmp.IsBrokenIntoLines()) {
+      tmp.Unbreak();
+      retval = true;
+    }
+  }
+  if(retval)
+    ResetSize_RecursivelyList();
+    
+  return retval;
+}
+
 
 wxRect Cell::GetRect(bool wholeList) const {
   if (wholeList)

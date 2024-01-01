@@ -573,12 +573,6 @@ void EditorCell::ConvertNumToUNicodeChar() {
   CursorMove(newChar.Length());
 }
 
-bool EditorCell::IsZoomFactorChanged() const {
-  double constexpr eps = 0.04;
-  double diff = m_configuration->GetZoomFactor() - m_lastZoomFactor;
-  return diff < -eps || diff > eps;
-}
-
 bool EditorCell::NeedsRecalculation(AFontSize fontSize) const {
   return Cell::NeedsRecalculation(fontSize) || m_isDirty;
 }
@@ -587,10 +581,7 @@ void EditorCell::Recalculate(AFontSize fontsize) {
   if(NeedsRecalculation(fontsize))
     {
       m_isDirty = false;
-      if (IsZoomFactorChanged()) {
-        m_widths.clear();
-        m_lastZoomFactor = m_configuration->GetZoomFactor();
-      }
+      m_widths.clear();
       StyleText();
       SetFont(m_configuration->GetRecalcDC());
 

@@ -454,7 +454,7 @@ void TextCell::Recalculate(AFontSize fontsize) {
       ForceBreakLine(true);
     if (ConfigChanged())
         UpdateDisplayedText();
-    SetFont(m_configuration->GetRecalcDC(), m_fontSize_Scaled);
+    SetFont(m_configuration->GetRecalcDC(), Scale_Px(fontsize));
 
     wxSize sz =
       CalculateTextSize(m_configuration->GetRecalcDC(), m_displayedText, cellText);
@@ -467,8 +467,8 @@ void TextCell::Recalculate(AFontSize fontsize) {
     /// Hidden cells (multiplication * is not displayed)
     if (IsHidden() ||
         (GetHidableMultSign() && (m_configuration->HidemultiplicationSign()))) {
-      m_height = m_fontSize_Scaled.Get();
-      m_width = m_fontSize_Scaled.Get() / 4;
+      m_height = Scale_Px(fontsize).Get();
+      m_width = Scale_Px(fontsize).Get() / 4;
     }
     if (m_height < Scale_Px(4))
       m_height = Scale_Px(4);

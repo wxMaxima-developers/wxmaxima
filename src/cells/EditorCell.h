@@ -516,10 +516,6 @@ private:
   size_t m_selectionStart = 0;
   size_t m_selectionEnd = 0;
   size_t m_lastSelectionStart = 0;
-  //! Did the zoom factor change since the last recalculation?
-  bool IsZoomFactorChanged() const;
-  //! The zoom factor we had the last time we recalculated this cell.
-  double m_lastZoomFactor = -1;
   /*! A piece of styled text for syntax highlighting
 
     A piece of styled text may be

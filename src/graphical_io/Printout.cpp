@@ -41,29 +41,35 @@
 Printout::Printout(wxString title, GroupCell *tree, double scaleFactor)
   : wxPrintout(title), m_configuration(GetDC(), Configuration::temporary),
     m_configPointer(&m_configuration),
+    m_scaleFactor(scaleFactor),
     m_printing(&m_configuration)
 {
+  // We don't want EditorCells to have linebreaks after a certain number of
+  // chars. Instead we want linebreaks at the end of the physical place
   m_configuration.LineWidth_em(10000);
 
   // Don't take the ppi rate from the worksheet
   m_configuration.SetWorkSheet(NULL);
+
+  // Settings that apply to printing, but not to displaying
   m_configuration.ClipToDrawRegion(false);
   m_configuration.ShowCodeCells(tree->GetConfiguration()->ShowCodeCells());
   m_configuration.ShowBrackets(tree->GetConfiguration()->PrintBrackets());
 
+  // Create our own copy of the worksheet that uses our private configuration
   if (tree) {
     auto copy = tree->CopyList();
     copy->SetConfigurationList(m_configPointer);
     m_tree = std::move(copy);
   }
-  m_scaleFactor = scaleFactor;
 }
 
 bool Printout::HasPage(int num) {
   // Num starts counting with 1, m_pages[n] starts counting with n=0
   if ((num > 0) && (static_cast<unsigned int>(num) <= m_pages.size()))
     return true;
-  return false;
+  else
+    return false;
 }
 
 bool Printout::OnPrintPage(int num) {
@@ -79,7 +85,7 @@ bool Printout::OnPrintPage(int num) {
   dc->Clear();
 
   // Set the canvas size
-  int pageWidth, pageHeight;
+  wxCoord pageWidth, pageHeight;
   dc->GetSize(&pageWidth, &pageHeight);
   pageWidth -= m_configuration.PrintMargin_Left() +
     m_configuration.PrintMargin_Right();
@@ -110,7 +116,7 @@ bool Printout::OnPrintPage(int num) {
   dc->SetDeviceOrigin(deviceOrigin.x, deviceOrigin.y);
 
   // Print the page contents
-  Cell *end = NULL;
+  const Cell *end = NULL;
   wxCoord startpoint;
   wxCoord endpoint;
   startpoint = m_pages[static_cast<size_t>(num) - 1]->GetRect(true).GetTop();
@@ -150,52 +156,65 @@ void Printout::BreakPages() {
     return;
   wxSize canvasSize = m_configuration.GetCanvasSize();
 
-  std::vector <Cell*> breakingPoints;
+  std::vector <Cell*> lineStarts;
   for (GroupCell &gr : OnList(m_tree.get())) {
     // Drawing a GroupCell makes it calculate the position of its output cells.
     gr.Draw(gr.GetCurrentPoint(), GetDC(), GetDC());
     // We can introduce a break after the input part of any group cell.
     if(gr.GetPrompt())
-      breakingPoints.push_back(gr.GetPrompt());
+      lineStarts.push_back(gr.GetPrompt());
 
     // We can introduce a break after each line of output of any
     // group cell.
     Cell *out = gr.GetOutput();
     if(out)
       {
-        while(out)
-          {
-            if((out->BreakLineHere()) || (out->GetNext() == NULL))
-              breakingPoints.push_back(out);
-            out = out->GetNext();
-          }
+        for (Cell &tmp : OnDrawList(out)) {
+          if((tmp.BreakLineHere()) || (tmp.GetNext() == NULL))
+            lineStarts.push_back(&tmp);
+        }
       }
-  }
 
-  // The 1st page starts at the beginning of the document
-  GroupCell *group = m_tree.get();
-  m_pages.push_back(group);
+    // The 1st page starts at the beginning of the document
+    GroupCell *group = m_tree.get();
+    m_pages.push_back(group);
 
-  // Now see where the next pages should start
-  wxCoord pageStart = 0;
-
-  for (const auto &i : breakingPoints) {
-    pageStart = m_pages[m_pages.size() - 1]->GetRect(true).GetBottom();
-    wxCoord pageHeight = i->GetRect(true).GetBottom() - pageStart;
-    if(i->GetNext())
-      pageHeight = i->GetNext()->GetRect(true).GetBottom() - pageStart;
-    wxLogMessage(_("Printout: PageStart=%li, PageHeight=%li, canvasSize=%li"),
-                 static_cast<long>(pageStart),
-                 static_cast<long>(pageHeight),
-                 static_cast<long>(canvasSize.y));
-    if(pageHeight > canvasSize.y)
-      {
-        m_pages.push_back(i);
-      }
+    // Now see where the next pages should start
+    wxCoord pageStart = 0;
+  
+    for (const auto &i : lineStarts) {
+      wxLogMessage("LineStart");
+      pageStart = m_pages[m_pages.size() - 1]->GetRect(true).GetTop();
+      wxCoord pageEnd = i->GetRect(true).GetBottom();
+      if(i->GetNext())
+        pageEnd = i->GetNext()->GetRect(true).GetBottom();
+      if(pageEnd - pageStart > canvasSize.y)
+        {
+          if(i != m_pages[m_pages.size()])
+            {
+              wxCoord pageHeight = i->GetRect(true).GetTop() - pageStart;
+              wxLogMessage(_("Printout: PageStart=%li, PageHeight=%li, canvasSize=%li"),
+                           static_cast<long>(pageStart),
+                           static_cast<long>(pageHeight),
+                           static_cast<long>(canvasSize.y));
+              m_pages.push_back(i);
+            }
+          else
+            wxLogMessage(_("Printout: Cannot find a suitable point for a page break!"));
+        }
+    }
   }
 }
 
-void Printout::SetupData() {
+void Printout::GetPageInfo(int *minPage, int *maxPage, int *fromPage,
+                           int *toPage) {
+  *minPage = 1;
+  *maxPage = m_pages.size();
+  *fromPage = 1;
+  *toPage = m_pages.size();
+}
+
+void Printout::OnPreparePrinting() {
   m_configuration.SetRecalcContext(*GetDC());
   // on MSW according to
   // https://groups.google.com/forum/#!topic/wx-users/QF_W4g3Oe98 the
@@ -249,19 +268,6 @@ void Printout::SetupData() {
   BreakPages();
 }
 
-void Printout::GetPageInfo(int *minPage, int *maxPage, int *fromPage,
-                           int *toPage) {
-  *minPage = 1;
-  *maxPage = m_pages.size();
-  *fromPage = 1;
-  *toPage = m_pages.size();
-}
-
-void Printout::OnPreparePrinting() {
-  m_configuration.SetRecalcContext(*GetDC());
-  SetupData();
-}
-
 void Printout::Recalculate() {
   if (!m_tree)
     return;
@@ -269,6 +275,7 @@ void Printout::Recalculate() {
   // Don't take the ppi rate from the worksheet but use a fixed one instead
   m_configuration.SetWorkSheet(NULL);
   m_configuration.SetRecalcContext(*GetDC());
+  m_tree->ResetSize();
 
   int pageWidth, pageHeight;
   GetPageSizePixels(&pageWidth, &pageHeight);

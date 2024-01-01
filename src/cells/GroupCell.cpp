@@ -626,7 +626,7 @@ wxPoint GroupCell::CalculateInputPosition() {
   return wxPoint(m_currentPoint.x + GetInputIndent(), m_currentPoint.y);
 }
 
-int GroupCell::GetInputIndent() {
+wxCoord GroupCell::GetInputIndent() {
   int labelWidth = 0;
   if (m_configuration->IndentMaths())
     labelWidth = Scale_Px(m_configuration->GetLabelWidth()) + MC_TEXT_PADDING;
@@ -659,7 +659,7 @@ void GroupCell::UpdateOutputPositions() {
         if (!isFirst && tmp.HasBigSkip())
           in.y += MC_LINE_SKIP;
 
-        in.x = GetCurrentPoint().x + GetLineIndent(&tmp);
+        in.x = GetCurrentPoint().x + tmp.GetLineIndent();
         in.y += drop + tmp.GetCenterList();
         drop = tmp.GetMaxDrop();
       }
@@ -672,8 +672,6 @@ void GroupCell::UpdateOutputPositions() {
 
 void GroupCell::Draw(wxPoint const point, wxDC *dc, wxDC *antialiassingDC) {
   Cell::Draw(point, dc, antialiassingDC);
-  if (NeedsRecalculation(m_configuration->GetDefaultFontSize()))
-    wxLogMessage(_("One cell wasn't recalculated before displaying it."));
   if (m_configuration->ShowBrackets())
     DrawBracket(dc, antialiassingDC);
 
@@ -722,7 +720,7 @@ void GroupCell::Draw(wxPoint const point, wxDC *dc, wxDC *antialiassingDC) {
               if (!isFirst && tmp.HasBigSkip())
                 in.y += MC_LINE_SKIP;
 
-              in.x = point.x + GetLineIndent(&tmp);
+              in.x = point.x + tmp.GetLineIndent();
               in.y += drop + tmp.GetCenterList();
               drop = tmp.GetMaxDrop();
             }
@@ -756,16 +754,6 @@ bool GroupCell::AddEnding() {
 wxRect GroupCell::GetRect(bool WXUNUSED(all)) const {
   return wxRect(m_currentPoint.x, m_currentPoint.y - m_center, m_width,
                 m_height);
-}
-
-int GroupCell::GetLineIndent(const Cell *cell) const {
-  if (cell && (cell->GetTextStyle() != TS_LABEL) &&
-      (cell->GetTextStyle() != TS_USERLABEL) &&
-      (cell->GetTextStyle() != TS_MAIN_PROMPT) &&
-      (cell->GetTextStyle() != TS_OTHER_PROMPT) &&
-      (cell->GetTextStyle() != TS_ASCIIMATHS) && m_configuration->IndentMaths())
-    return Scale_Px(m_configuration->GetLabelWidth()) + 2 * MC_TEXT_PADDING;
-  return 0;
 }
 
 void GroupCell::UpdateCellsInGroup() {
@@ -1448,52 +1436,10 @@ void GroupCell::BreakLines() {
   if (cell == NULL)
     return;
 
-  if (NeedsRecalculation(EditorFontSize()))
+  //  if (NeedsRecalculation(EditorFontSize()))
     m_output->RecalculateList(m_configuration->GetMathFontSize());
 
-  // 1st step: Tell all cells to display as beautiful 2d object, if that is
-  // possible.
-  if (UnBreakUpCells(cell))
-    m_output->RecalculateList(m_configuration->GetMathFontSize());
-
-  // 2nd step: Convert all objects that are wider than a line to 1D objects that
-  // (hopefully) can be broken into lines
-  if (BreakUpCells(cell)) {
-    m_output->RecalculateList(m_configuration->GetMathFontSize());
-  }
-
-  // 3rd step: Determine a sane maximum line width
-  int fullWidth = m_configuration->GetCanvasSize().x;
-  int currentWidth = GetLineIndent(cell);
-  if ((cell->GetTextStyle() != TS_LABEL) && (cell->GetTextStyle() != TS_USERLABEL))
-    fullWidth -= m_configuration->GetIndent();
-
-  // We don't want the text go exactly to the right border.
-  fullWidth -= Scale_Px(1);
-
-  // Don't let the layout degenerate for small window widths
-  if (fullWidth < Scale_Px(150))
-    fullWidth = Scale_Px(150);
-
-  // 4th step: break the output into lines.
-  if (!IsHidden()) {
-    bool prevBroken = false;
-    for (Cell &tmp : OnDrawList(cell)) {
-      if (prevBroken) {
-        currentWidth += GetLineIndent(&tmp);
-        prevBroken = false;
-      }
-      int const cellWidth = tmp.GetWidth();
-      tmp.SoftLineBreak(false);
-      if (tmp.BreakLineHere() || (currentWidth + cellWidth >= fullWidth)) {
-        tmp.SoftLineBreak(true);
-        currentWidth = 0;
-        prevBroken = true;
-      }
-      currentWidth += cellWidth;
-    }
-  }
-  m_output->ResetSize_RecursivelyList();
+  m_output->BreakLines_List();
 }
 
 Cell::Range GroupCell::GetCellsInOutput() const {
@@ -1512,87 +1458,6 @@ Cell::Range GroupCell::GetCellsInOutput() const {
     r.last = &tmp;
 
   return r;
-}
-
-bool GroupCell::BreakUpCells(Cell *cell) const {
-  if (cell == NULL)
-    return false;
-
-  int showLength;
-  switch (m_configuration->ShowLength()) {
-  case 0:
-    showLength = 5000;
-    break;
-  case 1:
-    showLength = 10000;
-    break;
-  case 2:
-    showLength = 25000;
-    break;
-  case 3:
-    showLength = 50000;
-    break;
-  default:
-    showLength = 500;
-  }
-
-  int clientWidth =
-    .8 * m_configuration->GetCanvasSize().x - m_configuration->GetIndent();
-  if (clientWidth < Scale_Px(50))
-    clientWidth = Scale_Px(50);
-
-  // Reduce the number of steps involved in layouting big equations
-  if (m_cellsInGroup > showLength) {
-    wxLogMessage(
-                 _("Resolving to 1D layout for one cell in order to save time"));
-    return false;
-  } else {
-    bool lineHeightsChanged = false;
-    if (!IsHidden())
-      for (Cell &tmp : OnDrawList(cell)) {
-        if (tmp.GetWidth() < 0)
-          tmp.Recalculate(m_configuration->GetMathFontSize());
-        if (tmp.GetWidth() > clientWidth)
-          lineHeightsChanged |= tmp.BreakUp();
-      }
-    return lineHeightsChanged;
-  }
-}
-
-bool GroupCell::UnBreakUpCells(Cell *cell) const {
-  int showLength;
-  switch (m_configuration->ShowLength()) {
-  case 0:
-    showLength = 50;
-    break;
-  case 1:
-    showLength = 500;
-    break;
-  case 2:
-    showLength = 2500;
-    break;
-  case 3:
-    showLength = 5000;
-    break;
-  default:
-    showLength = 500;
-  }
-
-  // Reduce the number of steps involved in layouting big equations
-  if (m_cellsInGroup > showLength) {
-    wxLogMessage(_("Resolving to linear layout for one big cell in order to save time"));
-    return true;
-  }
-
-  bool retval = false;
-  for (Cell &tmp : OnDrawList(cell)) {
-    if (tmp.IsBrokenIntoLines()) {
-      tmp.Unbreak();
-      retval = true;
-    }
-  }
-
-  return retval;
 }
 
 bool GroupCell::FirstLineOnlyEditor()

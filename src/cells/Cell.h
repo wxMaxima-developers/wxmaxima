@@ -227,12 +227,23 @@ public:
   bool InUpdateRegion() const;
 
   //! Do we want this cell to start with a linebreak?
-  bool SoftLineBreak(bool breakLine = true)
-    {
-      bool result = (m_breakLine == breakLine);
-      m_breakLine = breakLine;
-      return result;
-    }
+  void SoftLineBreak(bool breakLine = true) { m_breakLine = breakLine; }
+  
+  /*! Cell list: Convert 2d math objects bigger than the screen width into linear form.
+    
+    \retval true, if this action has changed the height of cells.
+  */
+  bool BreakUpCells();
+
+  /*! Convert all maths objects in this call list into their 2D form */
+  bool UnBreakUpCells();
+
+  /* Break lines in this list of cells
+   */
+  void BreakLines_List();
+
+  /*! If this were the beginning of a line: How far do we need to indent it? */
+  int GetLineIndent() const;
 
   //! Are we allowed to break a line here?
   bool BreakLineHere() const { return m_breakLine || m_forceBreakLine; }

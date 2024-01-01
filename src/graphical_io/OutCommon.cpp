@@ -98,8 +98,11 @@ bool OutCommon::PrepareLayout(Cell *tree) {
 
     if (tree->GetType() != MC_TYPE_GROUP) {
         Recalculate(tree);
-        BreakUpCells(tree);
-        BreakLines(tree);
+        tree->UnBreakUpCells();
+        Recalculate(tree);
+        tree->BreakUpCells();
+        Recalculate(tree);
+        tree->BreakLines_List();
         Recalculate(tree);
     } else {
         for (GroupCell &tmp : OnList(dynamic_cast<GroupCell *>(tree)))
@@ -132,11 +135,11 @@ void OutCommon::BreakLines(Cell *tree) const {
         if (tmp.IsBrokenIntoLines())
             continue;
 
-        if (tmp.SoftLineBreak(false))
-            // Note: This ResetData() call was unconditional in EMFout and SVGout.
-            // The condition check was only performed in BitmapOut. That was likely
-            // an ommission. This note is here in case bugs were found in this area.
-            tmp.ResetSize_Recursively();
+        // if (tmp.SoftLineBreak(false))
+        //     // Note: This ResetData() call was unconditional in EMFout and SVGout.
+        //     // The condition check was only performed in BitmapOut. That was likely
+        //     // an ommission. This note is here in case bugs were found in this area.
+        //     tmp.ResetSize_Recursively();
 
         if (tmp.BreakLineHere() || (currentWidth + tmp.GetWidth() >= fullWidth)) {
             currentWidth = tmp.GetWidth();

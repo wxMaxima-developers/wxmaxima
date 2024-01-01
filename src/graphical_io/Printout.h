@@ -43,12 +43,15 @@ class Printout : public wxPrintout
 public:
   Printout(wxString title, GroupCell *tree, double scaleFactor);
 
-  void SetupData();
-
+  /* Determine which cells are the Right places to start a page
+   */
   void BreakPages();
 
+  /*! Determine the sizes of all worksheet objects
+   */
   void Recalculate();
 
+  /*! Is called by wxWidgets when it wants us to print a specific page */
   virtual bool OnPrintPage(int num) override;
 
   virtual bool HasPage(int num) override;
@@ -60,12 +63,15 @@ public:
   virtual void OnPreparePrinting() override;
 
 private:
-  wxString m_title;
+  //! The copy of the worksheet we print
   std::unique_ptr<GroupCell> m_tree;
-  std::vector<Cell *> m_pages;
+  //! The cells we determined to be the right page starts
+  std::vector<const Cell *> m_pages;
+  //! The config that is active during printing
   Configuration m_configuration;
-  Configuration *m_configPointer;
-  double m_scaleFactor;
+  //! A pointer to m_configuration we can point to
+  Configuration *const m_configPointer;
+  const double m_scaleFactor;
   // Sets Configuration::Printing() to true while we print
   Printing m_printing;
 };
