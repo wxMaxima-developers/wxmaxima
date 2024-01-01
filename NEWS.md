@@ -1,5 +1,7 @@
 # Current
 
+- Faster start-up
+- Faster loading of files
 - Better button placement in sidebars
 - Got rid of a crash on startup in fedora (#1862)
 - Clear wxMaxima's input buffer on starting a new maxima process (#1856)
