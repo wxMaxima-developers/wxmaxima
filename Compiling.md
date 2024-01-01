@@ -91,8 +91,9 @@ Additional information about building on macOS:
 
 ### Compiling on Windows
 
-You can install MinGW (https://sourceforge.net/projects/mingw/). In
-the installation process make sure you select `g++`, `MSYS Basic System` and `MinGW Developer ToolKit` in the `Select components` page
+You can install MinGW (https://osdn.net/projects/mingw/). In
+the installation process make sure you select `g++`, `MSYS Basic System`
+and `MinGW Developer ToolKit` in the `Select components` page
 of the installer. Also select po4a, cmake and install pandoc.
 Then run the MinGW Shell and follow the instructions for compiling
 wxWidgets and wxMaxima with cmake.
