@@ -10,6 +10,7 @@
 - Many config changes now have immediately effect on the worksheet
 - Added the unicode-enhanced ASCII art from maxima to the menus
 - Steamlined the cell size calculation stuff
+- Completely overhauled the printing functionality
 
 # 23.12.0
 

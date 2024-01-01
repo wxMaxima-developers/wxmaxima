@@ -53,11 +53,11 @@ Printout::Printout(wxString title, GroupCell *tree, double scaleFactor)
 
   // Settings that apply to printing, but not to displaying
   m_configuration.ClipToDrawRegion(false);
-  m_configuration.ShowCodeCells(tree->GetConfiguration()->ShowCodeCells());
-  m_configuration.ShowBrackets(tree->GetConfiguration()->PrintBrackets());
 
   // Create our own copy of the worksheet that uses our private configuration
   if (tree) {
+    m_configuration.ShowCodeCells(tree->GetConfiguration()->ShowCodeCells());
+    m_configuration.ShowBrackets(tree->GetConfiguration()->PrintBrackets());
     auto copy = tree->CopyList();
     copy->SetConfigurationList(m_configPointer);
     m_tree = std::move(copy);
@@ -136,11 +136,10 @@ bool Printout::OnPrintPage(int num) {
                static_cast<long>(endpoint));
   dc->SetClippingRegion(0, startpoint, pageWidth, len);
 
-  while (group && (group->GetGroupType() != GC_TYPE_PAGEBREAK) &&
-         (end != NULL)) {
+  while (group && (group->GetGroupType() != GC_TYPE_PAGEBREAK)) {
     {
       group->Draw(group->GetGroup()->GetCurrentPoint(), dc, dc);
-      if(group == end->GetGroup())
+      if(end && (group == end->GetGroup()))
         break;
     }
     group = group->GetNext();
