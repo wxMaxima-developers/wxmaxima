@@ -48,12 +48,12 @@ MaximaManual::MaximaManual(Configuration *configuration) {
 }
 
 MaximaManual::HelpFileAnchors MaximaManual::GetHelpfileAnchors() {
-  WaitForBackgroundProcess();
+  const std::lock_guard<std::mutex> lock(m_helpFileAnchorsLock);
   return m_helpFileAnchors;
 }
 
 wxString MaximaManual::GetHelpfileAnchorName(wxString keyword) {
-  WaitForBackgroundProcess();
+  const std::lock_guard<std::mutex> lock(m_helpFileAnchorsLock);
 
   if(m_helpFileAnchors.size() < 100)
     LoadBuiltInManualAnchors();
@@ -64,33 +64,9 @@ wxString MaximaManual::GetHelpfileAnchorName(wxString keyword) {
   else
     return anchor->second;
 }
-void MaximaManual::WaitForBackgroundProcess() {
-  std::size_t nestedWaits = m_nestedBackgroundProcessWaits;
-  m_nestedBackgroundProcessWaits++;
-
-  if (!m_helpFileAnchorsThreadActive.try_lock()) {
-    wxBusyCursor crs;
-    wxBusyInfo wait(_("Please wait while wxMaxima parses the maxima manual"));
-    wxLogNull suppressRecursiveYieldWarning;
-    while (!m_helpFileAnchorsThreadActive.try_lock()) {
-      wxMilliSleep(100);
-      (void)nestedWaits;
-#if wxCHECK_VERSION(3, 1, 5)
-      if (nestedWaits == 0)
-        wxTheApp->SafeYield(NULL, false);
-#endif
-    }
-  }
-  if (m_helpfileanchorsThread) {
-    m_helpfileanchorsThread->join();
-    m_helpfileanchorsThread.reset();
-  }
-  m_nestedBackgroundProcessWaits--;
-  m_helpFileAnchorsThreadActive.unlock();
-}
 
 wxString MaximaManual::GetHelpfileUrl_Singlepage(wxString keyword) {
-  WaitForBackgroundProcess();
+  const std::lock_guard<std::mutex> lock(m_helpFileAnchorsLock);
   auto anchor = m_helpFileURLs_singlePage.find(keyword);
   if (anchor == m_helpFileURLs_singlePage.end())
     return wxEmptyString;
@@ -98,7 +74,7 @@ wxString MaximaManual::GetHelpfileUrl_Singlepage(wxString keyword) {
     return anchor->second;
 }
 wxString MaximaManual::GetHelpfileUrl_FilePerChapter(wxString keyword) {
-  WaitForBackgroundProcess();
+  const std::lock_guard<std::mutex> lock(m_helpFileAnchorsLock);
 
   auto anchor = m_helpFileURLs_filePerChapter.find(keyword);
   if (anchor == m_helpFileURLs_filePerChapter.end())
@@ -133,6 +109,7 @@ bool MaximaManual::LoadManualAnchorsFromCache() {
     return false;
   }
 
+  const std::lock_guard<std::mutex> lock(m_helpFileAnchorsLock);
   if (LoadManualAnchorsFromXML(xmlDocument)) {
     wxLogMessage(_("Read the entries the maxima manual offers from %s"),
                  Dirstructure::Get()->AnchorsCacheFile().utf8_str());
@@ -172,9 +149,12 @@ void MaximaManual::CompileHelpFileAnchors(wxString maximaHtmlDir,
                                           wxString maximaVersion,
                                           wxString saveName) {
   SuppressErrorDialogs suppressor;
-
+  HelpFileAnchors helpFileURLs_singlePage;
+  HelpFileAnchors helpFileURLs_filePerChapter;
+  HelpFileAnchors helpFileAnchors;
+  
   std::size_t foundAnchorsTotal = 0;
-  if (m_helpFileURLs_singlePage.empty() && (!(m_maximaHtmlDir.IsEmpty()))) {
+  if (!(m_maximaHtmlDir.IsEmpty())) {
     std::vector<wxString> helpFiles;
     {
       GetHTMLFiles htmlFilesTraverser(helpFiles, m_maximaHtmlDir);
@@ -256,22 +236,26 @@ void MaximaManual::CompileHelpFileAnchors(wxString maximaHtmlDir,
               if (token.StartsWith("g_t"))
                 token = token.Right(token.Length() - 3);
               if (is_Singlepage)
-                m_helpFileURLs_singlePage[token] = fileURI + "#" + id;
+                helpFileURLs_singlePage[token] = fileURI + "#" + id;
               else
-                m_helpFileURLs_filePerChapter[token] = fileURI + "#" + id;
-              m_helpFileAnchors[token] = id;
+                helpFileURLs_filePerChapter[token] = fileURI + "#" + id;
+              helpFileAnchors[token] = id;
               foundAnchorsTotal++;
               foundAnchors++;
             }
           }
         }
       }
-      AnchorAliasses(m_helpFileAnchors);
-      AnchorAliasses(m_helpFileURLs_filePerChapter);
-      AnchorAliasses(m_helpFileURLs_singlePage);
+      AnchorAliasses(helpFileAnchors);
+      AnchorAliasses(helpFileURLs_filePerChapter);
+      AnchorAliasses(helpFileURLs_singlePage);
       wxLogMessage(_("Found %li anchors, %li anchors total."),
                    static_cast<long>(foundAnchors), static_cast<long>(foundAnchorsTotal));
     }
+    const std::lock_guard<std::mutex> lock(m_helpFileAnchorsLock);
+    m_helpFileURLs_singlePage = helpFileURLs_singlePage;
+    m_helpFileURLs_filePerChapter = helpFileURLs_filePerChapter;
+    m_helpFileAnchors = helpFileAnchors;
     if(foundAnchorsTotal < 100)
       {
         wxLogMessage(_("Have only %li keyword anchors at the end of parsing the maxima manual => "
@@ -284,8 +268,8 @@ void MaximaManual::CompileHelpFileAnchors(wxString maximaHtmlDir,
         SaveManualAnchorsToCache(maximaHtmlDir, maximaVersion, saveName);
       }
   }
-  m_helpFileAnchorsThreadActive.unlock();
 }
+
 
 wxDirTraverseResult
 MaximaManual::GetHTMLFiles::OnFile(const wxString &filename) {
@@ -535,16 +519,13 @@ void MaximaManual::LoadHelpFileAnchors(wxString docdir,
                                        wxString maximaVersion) {
   FindMaximaHtmlDir(docdir);
   m_maximaVersion = maximaVersion;
-  WaitForBackgroundProcess();
   if (m_helpFileURLs_singlePage.empty()) {
     if (!LoadManualAnchorsFromCache()) {
       if (!m_maximaHtmlDir.IsEmpty()) {
         if (m_helpfileanchorsThread) {
-          // Show a busy cursor as long as we finish the old background task
-          wxBusyCursor crs;
-          WaitForBackgroundProcess();
+          m_helpfileanchorsThread->join();
+          m_helpfileanchorsThread.reset();
         }
-        m_helpFileAnchorsThreadActive.lock();
         m_helpfileanchorsThread =
           std::unique_ptr<std::thread>(
                                        new std::thread(&MaximaManual::CompileHelpFileAnchors,
@@ -562,9 +543,14 @@ void MaximaManual::LoadHelpFileAnchors(wxString docdir,
 }
 
 MaximaManual::~MaximaManual() {
-  if (!m_helpFileAnchorsThreadActive.try_lock())
-    wxLogMessage(_("Waiting for the thread that parses the maxima manual to finish"));
-  else
-    m_helpFileAnchorsThreadActive.unlock();
-  WaitForBackgroundProcess();
+  const std::lock_guard<std::mutex> lock(m_helpFileAnchorsLock);
+  if(m_helpfileanchorsThread)
+    {
+      if(m_helpfileanchorsThread->joinable())
+        {
+          wxLogMessage(_("Waiting for the thread that parses the maxima manual to finish"));
+          m_helpfileanchorsThread->join();
+        }
+      m_helpfileanchorsThread.reset();
+    }
 }

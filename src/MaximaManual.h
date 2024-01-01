@@ -84,8 +84,6 @@ public:
   void SaveManualAnchorsToCache(wxString maximaHtmlDir,
                                 wxString maximaVersion,
                                 wxString saveName);
-  void WaitForBackgroundProcess();
-
   ~MaximaManual();
 private:
   //! Add our aliases to a list of anchors
@@ -120,10 +118,11 @@ private:
 
   //! The thread the help file anchors are compiled in
   std::unique_ptr<std::thread> m_helpfileanchorsThread;
-  std::mutex m_helpFileAnchorsThreadActive;
+  std::mutex m_helpFileAnchorsLock;
   //! The configuration storage
   Configuration *m_configuration;
   //! All anchors for keywords maxima's helpfile contains (singlepage version)
+
   HelpFileAnchors m_helpFileURLs_singlePage;
   //! All anchors for keywords maxima's helpfile contains (file-per-chapter version)
   HelpFileAnchors m_helpFileURLs_filePerChapter;
@@ -131,7 +130,6 @@ private:
   HelpFileAnchors m_helpFileAnchors;
   wxString m_maximaHtmlDir;
   wxString m_maximaVersion;
-  unsigned long m_nestedBackgroundProcessWaits = 0;
 };
 
 #endif // MAXIMAMANUAL_H

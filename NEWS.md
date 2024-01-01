@@ -11,6 +11,7 @@
 - Added the unicode-enhanced ASCII art from maxima to the menus
 - Steamlined the cell size calculation stuff
 - Completely overhauled the printing functionality
+- Moved more of the help file indexing to the background (#1856)
 
 # 23.12.0
 
