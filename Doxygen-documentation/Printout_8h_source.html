@@ -108,39 +108,40 @@ $(function() {
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="keyword">public</span>:</div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;  <a class="code" href="classPrintout.html">Printout</a>(wxString title, <a class="code" href="classGroupCell.html">GroupCell</a> *tree, <span class="keywordtype">double</span> scaleFactor);</div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;  <span class="keywordtype">void</span> SetupData();</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; </div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;  <span class="comment">/* Determine which cells are the Right places to start a page</span></div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="comment">   */</span></div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;  <span class="keywordtype">void</span> BreakPages();</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; </div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;  <span class="keywordtype">void</span> Recalculate();</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160; </div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">bool</span> OnPrintPage(<span class="keywordtype">int</span> num) <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classPrintout.html#a816b62896d2e4ba7879a19d1f36c7ca5">Recalculate</a>();</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">bool</span> HasPage(<span class="keywordtype">int</span> num) <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">void</span> GetPageInfo(<span class="keywordtype">int</span> *minPage, <span class="keywordtype">int</span> *maxPage, <span class="keywordtype">int</span> *fromPage, <span class="keywordtype">int</span> *toPage) <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">bool</span> OnBeginDocument(<span class="keywordtype">int</span> startPage, <span class="keywordtype">int</span> endPage) <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160; </div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">void</span> OnPreparePrinting() <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160; </div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;  wxString m_title;</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  std::unique_ptr&lt;GroupCell&gt; m_tree;</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  std::vector&lt;Cell *&gt; m_pages;</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;  <a class="code" href="classConfiguration.html">Configuration</a> m_configuration;</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  <a class="code" href="classConfiguration.html">Configuration</a> *m_configPointer;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  <span class="keywordtype">double</span> m_scaleFactor;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  <span class="comment">// Sets Configuration::Printing() to true while we print</span></div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  <a class="code" href="classPrinting.html">Printing</a> m_printing;</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;};</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; </div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// MATHPRINTOUT_H</span></div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="classPrintout.html#adc82d752a04a6336b91c09d0b180dc4d">OnPrintPage</a>(<span class="keywordtype">int</span> num) <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160; </div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">bool</span> HasPage(<span class="keywordtype">int</span> num) <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">void</span> GetPageInfo(<span class="keywordtype">int</span> *minPage, <span class="keywordtype">int</span> *maxPage, <span class="keywordtype">int</span> *fromPage, <span class="keywordtype">int</span> *toPage) <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">bool</span> OnBeginDocument(<span class="keywordtype">int</span> startPage, <span class="keywordtype">int</span> endPage) <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">void</span> OnPreparePrinting() <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160; </div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  std::unique_ptr&lt;GroupCell&gt; m_tree;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  std::vector&lt;const Cell *&gt; m_pages;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  <a class="code" href="classConfiguration.html">Configuration</a> m_configuration;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;  <a class="code" href="classConfiguration.html">Configuration</a> *<span class="keyword">const</span> m_configPointer;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">double</span> m_scaleFactor;</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  <span class="comment">// Sets Configuration::Printing() to true while we print</span></div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  <a class="code" href="classPrinting.html">Printing</a> m_printing;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;};</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// MATHPRINTOUT_H</span></div>
 <div class="ttc" id="aGroupCell_8h_html"><div class="ttname"><a href="GroupCell_8h.html">GroupCell.h</a></div><div class="ttdoc">This file defines the class GroupCell that bundles input and output in the worksheet.</div></div>
 <div class="ttc" id="aclassConfiguration_html"><div class="ttname"><a href="classConfiguration.html">Configuration</a></div><div class="ttdoc">The configuration storage for the current worksheet.</div><div class="ttdef"><b>Definition:</b> Configuration.h:96</div></div>
 <div class="ttc" id="aclassGroupCell_html"><div class="ttname"><a href="classGroupCell.html">GroupCell</a></div><div class="ttdoc">A cell grouping input (and, if there is one, also the output) cell to a foldable item.</div><div class="ttdef"><b>Definition:</b> GroupCell.h:74</div></div>
 <div class="ttc" id="aclassPrinting_html"><div class="ttname"><a href="classPrinting.html">Printing</a></div><div class="ttdoc">Sets the configuration's &quot;printing&quot; flag until this class is left.</div><div class="ttdef"><b>Definition:</b> Configuration.h:1263</div></div>
 <div class="ttc" id="aclassPrintout_html"><div class="ttname"><a href="classPrintout.html">Printout</a></div><div class="ttdef"><b>Definition:</b> Printout.h:42</div></div>
+<div class="ttc" id="aclassPrintout_html_a816b62896d2e4ba7879a19d1f36c7ca5"><div class="ttname"><a href="classPrintout.html#a816b62896d2e4ba7879a19d1f36c7ca5">Printout::Recalculate</a></div><div class="ttdeci">void Recalculate()</div><div class="ttdoc">Determine the sizes of all worksheet objects.</div><div class="ttdef"><b>Definition:</b> Printout.cpp:271</div></div>
+<div class="ttc" id="aclassPrintout_html_adc82d752a04a6336b91c09d0b180dc4d"><div class="ttname"><a href="classPrintout.html#adc82d752a04a6336b91c09d0b180dc4d">Printout::OnPrintPage</a></div><div class="ttdeci">virtual bool OnPrintPage(int num) override</div><div class="ttdoc">Is called by wxWidgets when it wants us to print a specific page.</div><div class="ttdef"><b>Definition:</b> Printout.cpp:75</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

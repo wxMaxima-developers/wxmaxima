@@ -276,13 +276,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a51a935cd9ea554d24e7b332d8211a5a1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGroupCell.html#a51a935cd9ea554d24e7b332d8211a5a1">RecalculateOutput</a> ()</td></tr>
 <tr class="memdesc:a51a935cd9ea554d24e7b332d8211a5a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Recalculate the height of the output part of the cell.  <a href="classGroupCell.html#a51a935cd9ea554d24e7b332d8211a5a1">More...</a><br /></td></tr>
 <tr class="separator:a51a935cd9ea554d24e7b332d8211a5a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad4f8888a3ae717ee164cdb6a55243641"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGroupCell.html#ad4f8888a3ae717ee164cdb6a55243641">BreakUpCells</a> (<a class="el" href="classCell.html">Cell</a> *cell) const</td></tr>
-<tr class="memdesc:ad4f8888a3ae717ee164cdb6a55243641"><td class="mdescLeft">&#160;</td><td class="mdescRight">Attempt to split math objects that are wider than the screen into multiple lines.  <a href="classGroupCell.html#ad4f8888a3ae717ee164cdb6a55243641">More...</a><br /></td></tr>
-<tr class="separator:ad4f8888a3ae717ee164cdb6a55243641"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3f9f060fc1524c8b6fa0e043a8689786"><td class="memItemLeft" align="right" valign="top"><a id="a3f9f060fc1524c8b6fa0e043a8689786"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGroupCell.html#a3f9f060fc1524c8b6fa0e043a8689786">UnBreakUpCells</a> (<a class="el" href="classCell.html">Cell</a> *cell) const</td></tr>
-<tr class="memdesc:a3f9f060fc1524c8b6fa0e043a8689786"><td class="mdescLeft">&#160;</td><td class="mdescRight">Undo a BreakUpCells. <br /></td></tr>
-<tr class="separator:a3f9f060fc1524c8b6fa0e043a8689786"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abe633a4a13444b279fb3def1a319b5b7"><td class="memItemLeft" align="right" valign="top"><a id="abe633a4a13444b279fb3def1a319b5b7"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGroupCell.html#abe633a4a13444b279fb3def1a319b5b7">BreakLines</a> ()</td></tr>
 <tr class="memdesc:abe633a4a13444b279fb3def1a319b5b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Break this cell into lines. <br /></td></tr>
@@ -393,10 +386,24 @@ wxRect&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cl
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a0835d4dd3d72ed0013aa5a091d64d9ab">InUpdateRegion</a> () const</td></tr>
 <tr class="memdesc:a0835d4dd3d72ed0013aa5a091d64d9ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is this cell inside the region that is currently drawn? <br /></td></tr>
 <tr class="separator:a0835d4dd3d72ed0013aa5a091d64d9ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae2c030d623627f321a502992cc4ec726"><td class="memItemLeft" align="right" valign="top"><a id="ae2c030d623627f321a502992cc4ec726"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#ae2c030d623627f321a502992cc4ec726">SoftLineBreak</a> (bool breakLine=true)</td></tr>
-<tr class="memdesc:ae2c030d623627f321a502992cc4ec726"><td class="mdescLeft">&#160;</td><td class="mdescRight">Do we want this cell to start with a linebreak? <br /></td></tr>
-<tr class="separator:ae2c030d623627f321a502992cc4ec726"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac0643f773658a9d4a4890c1414a48e73"><td class="memItemLeft" align="right" valign="top"><a id="ac0643f773658a9d4a4890c1414a48e73"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#ac0643f773658a9d4a4890c1414a48e73">SoftLineBreak</a> (bool breakLine=true)</td></tr>
+<tr class="memdesc:ac0643f773658a9d4a4890c1414a48e73"><td class="mdescLeft">&#160;</td><td class="mdescRight">Do we want this cell to start with a linebreak? <br /></td></tr>
+<tr class="separator:ac0643f773658a9d4a4890c1414a48e73"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9baf109da0cd2df6abe641f023621f32"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a9baf109da0cd2df6abe641f023621f32">BreakUpCells</a> ()</td></tr>
+<tr class="memdesc:a9baf109da0cd2df6abe641f023621f32"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classCell.html" title="The base class all cell types the worksheet can consist of are derived from.">Cell</a> list: Convert 2d math objects bigger than the screen width into linear form.  <a href="classCell.html#a9baf109da0cd2df6abe641f023621f32">More...</a><br /></td></tr>
+<tr class="separator:a9baf109da0cd2df6abe641f023621f32"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a019da23c82fc926396f365711d7f9468"><td class="memItemLeft" align="right" valign="top"><a id="a019da23c82fc926396f365711d7f9468"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a019da23c82fc926396f365711d7f9468">UnBreakUpCells</a> ()</td></tr>
+<tr class="memdesc:a019da23c82fc926396f365711d7f9468"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert all maths objects in this call list into their 2D form. <br /></td></tr>
+<tr class="separator:a019da23c82fc926396f365711d7f9468"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a30113158532dd3d31d7c4e17cf5574d0"><td class="memItemLeft" align="right" valign="top"><a id="a30113158532dd3d31d7c4e17cf5574d0"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>BreakLines_List</b> ()</td></tr>
+<tr class="separator:a30113158532dd3d31d7c4e17cf5574d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a46f7e39c86f5a7a33bf861890496678a"><td class="memItemLeft" align="right" valign="top"><a id="a46f7e39c86f5a7a33bf861890496678a"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a46f7e39c86f5a7a33bf861890496678a">GetLineIndent</a> () const</td></tr>
+<tr class="memdesc:a46f7e39c86f5a7a33bf861890496678a"><td class="mdescLeft">&#160;</td><td class="mdescRight">If this were the beginning of a line: How far do we need to indent it? <br /></td></tr>
+<tr class="separator:a46f7e39c86f5a7a33bf861890496678a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7632b374bbf0c222783a5f9fe1d301ca"><td class="memItemLeft" align="right" valign="top"><a id="a7632b374bbf0c222783a5f9fe1d301ca"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a7632b374bbf0c222783a5f9fe1d301ca">BreakLineHere</a> () const</td></tr>
 <tr class="memdesc:a7632b374bbf0c222783a5f9fe1d301ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Are we allowed to break a line here? <br /></td></tr>
@@ -905,16 +912,13 @@ StringHash&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
+<tr class="memitem:abb50fb51d6b1f432f67a38d405fdb5ea"><td class="memItemLeft" align="right" valign="top"><a id="abb50fb51d6b1f432f67a38d405fdb5ea"></a>
+wxCoord&#160;</td><td class="memItemRight" valign="bottom"><b>GetInputIndent</b> ()</td></tr>
+<tr class="separator:abb50fb51d6b1f432f67a38d405fdb5ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2b1a8fb21cbb4f11e3a4c17726645a44"><td class="memItemLeft" align="right" valign="top"><a id="a2b1a8fb21cbb4f11e3a4c17726645a44"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGroupCell.html#a2b1a8fb21cbb4f11e3a4c17726645a44">NeedsRecalculation</a> (<a class="el" href="classAFontSize.html">AFontSize</a> fontSize) const override</td></tr>
 <tr class="memdesc:a2b1a8fb21cbb4f11e3a4c17726645a44"><td class="mdescLeft">&#160;</td><td class="mdescRight">True, if something that affects the cell size has changed. <br /></td></tr>
 <tr class="separator:a2b1a8fb21cbb4f11e3a4c17726645a44"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad6a82fa15a81f407a59f0fe2a0ad6504"><td class="memItemLeft" align="right" valign="top"><a id="ad6a82fa15a81f407a59f0fe2a0ad6504"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>GetInputIndent</b> ()</td></tr>
-<tr class="separator:ad6a82fa15a81f407a59f0fe2a0ad6504"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a85065e3b13dbdf247491c857b09e93c0"><td class="memItemLeft" align="right" valign="top"><a id="a85065e3b13dbdf247491c857b09e93c0"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>GetLineIndent</b> (const <a class="el" href="classCell.html">Cell</a> *cell) const</td></tr>
-<tr class="separator:a85065e3b13dbdf247491c857b09e93c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af11c1e46f8f268933872da56c890a9d9"><td class="memItemLeft" align="right" valign="top"><a id="af11c1e46f8f268933872da56c890a9d9"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>UpdateCellsInGroup</b> ()</td></tr>
 <tr class="separator:af11c1e46f8f268933872da56c890a9d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1160,23 +1164,30 @@ static wxString&#160;</td><td class="memItemRight" valign="bottom"><b>m_lookalik
 
 </div>
 </div>
-<a id="ad4f8888a3ae717ee164cdb6a55243641"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad4f8888a3ae717ee164cdb6a55243641">&#9670;&nbsp;</a></span>BreakUpCells()</h2>
+<a id="a9baf109da0cd2df6abe641f023621f32"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9baf109da0cd2df6abe641f023621f32">&#9670;&nbsp;</a></span>BreakUpCells()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool GroupCell::BreakUpCells </td>
+          <td class="memname">bool Cell::BreakUpCells </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classCell.html">Cell</a> *&#160;</td>
-          <td class="paramname"><em>cell</em></td><td>)</td>
-          <td> const</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p>Attempt to split math objects that are wider than the screen into multiple lines. </p>
+<p><a class="el" href="classCell.html" title="The base class all cell types the worksheet can consist of are derived from.">Cell</a> list: Convert 2d math objects bigger than the screen width into linear form. </p>
 <dl class="retval"><dt>Return values</dt><dd>
   <table class="retval">
     <tr><td class="paramname">true,if</td><td>this action has changed the height of cells. </td></tr>
