@@ -106,8 +106,8 @@ bool Printout::OnPrintPage(int num) {
   // Move the origin so the cell we want to print first appears on the top
   // of our page
   wxPoint deviceOrigin(
-                       -m_configuration.PrintMargin_Left(),
-                       -m_configuration.PrintMargin_Top() -
+                       m_configuration.PrintMargin_Left(),
+                       m_configuration.PrintMargin_Top() -
                        m_pages[static_cast<size_t>(num) - 1]->GetRect(true).GetTop());
   wxLogMessage(_("Printout: Setting the device origin to %lix%li"),
                static_cast<long>(deviceOrigin.x),
@@ -137,8 +137,12 @@ bool Printout::OnPrintPage(int num) {
   dc->SetClippingRegion(0, startpoint, pageWidth, len);
 
   while (group && (group->GetGroupType() != GC_TYPE_PAGEBREAK) &&
-         ((end == NULL) || (group != end->GetGroup()))) {
-    group->Draw(group->GetGroup()->GetCurrentPoint(), dc, dc);
+         (end != NULL)) {
+    {
+      group->Draw(group->GetGroup()->GetCurrentPoint(), dc, dc);
+      if(group == end->GetGroup())
+        break;
+    }
     group = group->GetNext();
   }
   return true;
