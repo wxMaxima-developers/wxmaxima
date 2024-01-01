@@ -156,6 +156,7 @@ void Printout::BreakPages() {
     return;
   wxSize canvasSize = m_configuration.GetCanvasSize();
 
+  wxLogMessage(_("Printout: Composing a list of all line starts as possible locations for page breaks"));
   std::vector <Cell*> lineStarts;
   for (GroupCell &gr : OnList(m_tree.get())) {
     // Drawing a GroupCell makes it calculate the position of its output cells.
@@ -174,42 +175,42 @@ void Printout::BreakPages() {
             lineStarts.push_back(&tmp);
         }
       }
+  }
+  wxLogMessage(_("Found %li line breaks"), (long) lineStarts.size());
 
-    // The 1st page starts at the beginning of the document
-    GroupCell *group = m_tree.get();
-    m_pages.push_back(group);
-
-    // Now see where the next pages should start
-    wxCoord pageStart = 0;
-  
-    for (const auto &i : lineStarts) {
-      wxLogMessage("LineStart");
-      pageStart = m_pages[m_pages.size() - 1]->GetRect(true).GetTop();
-      wxCoord pageEnd = i->GetRect(true).GetBottom();
-      if(i->GetNext())
-        pageEnd = i->GetNext()->GetRect(true).GetBottom();
-      if(pageEnd - pageStart > canvasSize.y)
-        {
-          if(i != m_pages[m_pages.size()])
-            {
-              wxCoord pageHeight = i->GetRect(true).GetTop() - pageStart;
-              wxLogMessage(_("Printout: PageStart=%li, PageHeight=%li, canvasSize=%li"),
-                           static_cast<long>(pageStart),
-                           static_cast<long>(pageHeight),
-                           static_cast<long>(canvasSize.y));
-              m_pages.push_back(i);
-            }
-          else
-            wxLogMessage(_("Printout: Cannot find a suitable point for a page break!"));
-        }
-    }
+  wxLogMessage(_("Composing a list of the line starts we can use as page starts"));
+  // The 1st page starts at the beginning of the document
+  GroupCell *group = m_tree.get();
+  m_pages.push_back(group);
+  // Now see where the next pages should start
+  wxCoord pageStart = 0;
+    
+  for (const auto &i : lineStarts) {
+    pageStart = m_pages[m_pages.size() - 1]->GetRect(true).GetTop();
+    wxCoord pageEnd = i->GetRect(true).GetBottom();
+    if(i->GetNext())
+      pageEnd = i->GetNext()->GetRect(true).GetBottom();
+    if(pageEnd - pageStart > canvasSize.y)
+      {
+        if(i != m_pages[m_pages.size()])
+          {
+            wxCoord pageHeight = i->GetRect(true).GetTop() - pageStart;
+            wxLogMessage(_("Printout: PageStart=%li, PageHeight=%li, canvasSize=%li"),
+                         static_cast<long>(pageStart),
+                         static_cast<long>(pageHeight),
+                         static_cast<long>(canvasSize.y));
+            m_pages.push_back(i);
+          }
+        else
+          wxLogMessage(_("Printout: Cannot find a suitable point for a page break!"));
+      }
   }
 }
 
 void Printout::GetPageInfo(int *minPage, int *maxPage, int *fromPage,
                            int *toPage) {
   *minPage = 1;
-  *maxPage = m_pages.size();
+  *maxPage = m_pagessize();
   *fromPage = 1;
   *toPage = m_pages.size();
 }
@@ -272,6 +273,7 @@ void Printout::Recalculate() {
   if (!m_tree)
     return;
 
+  wxLogMessage(_("Printout: Layouting the whole worksheet as a endless scroll of the width of the paper"));
   // Don't take the ppi rate from the worksheet but use a fixed one instead
   m_configuration.SetWorkSheet(NULL);
   m_configuration.SetRecalcContext(*GetDC());
