@@ -32,7 +32,6 @@
 #include "Autocomplete.h"
 #include "Dirstructure.h"
 #include "ErrorRedirector.h"
-#include "Version.h"
 #include <wx/filename.h>
 #include <wx/sstream.h>
 #include <wx/textfile.h>

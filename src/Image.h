@@ -34,7 +34,6 @@
 #include "ThreadNumberLimiter.h"
 #include "precomp.h"
 #include "Cell.h"
-#include "Version.h"
 #include <wx/image.h>
 #include <wx/buffer.h>
 #include <wx/zipstrm.h>

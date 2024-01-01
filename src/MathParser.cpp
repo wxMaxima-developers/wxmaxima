@@ -62,7 +62,6 @@
 #include "SubCell.h"
 #include "SubSupCell.h"
 #include "SumCell.h"
-#include "Version.h"
 #include "VisiblyInvalidCell.h"
 
 /*! Calls a member function from a function pointer
