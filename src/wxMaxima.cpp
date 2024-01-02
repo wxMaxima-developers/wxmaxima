@@ -2300,7 +2300,7 @@ bool wxMaxima::StartServer() {
     wxLogMessage(_("Trying to start the socket a maxima on the local "
                    "machine can connect to on port %li"),
                  static_cast<long>(m_port));
-#if wxUSE_IPV6wxUSE_IPV6
+#if wxUSE_IPV6
     wxIPV6address addr;
 #else
     wxIPV4address addr;
