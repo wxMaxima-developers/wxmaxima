@@ -199,6 +199,7 @@ list(REMOVE_AT AUTHORSLINES 0 1) # remove main heading line.
 add_definitions(-DwxNO_UNSAFE_WXSTRING_CONV)
 
 
+add_subdirectory(src)
 if(NOT CYGWIN)
     add_subdirectory(Doxygen)
 endif()
@@ -206,7 +207,6 @@ add_subdirectory(data)
 add_subdirectory(info)
 add_subdirectory(locales)
 add_subdirectory(art)
-add_subdirectory(src)
 add_subdirectory(examples)
 
 enable_testing()
