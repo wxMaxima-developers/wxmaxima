@@ -64,17 +64,10 @@ void SumCell::MakeBreakUpCells() {
     return;
 
   bool overStringEmpty = m_over->ToString().empty();
-  const wxString &openText = (m_sumStyle == SM_SUM && overStringEmpty)
-    ? wxS("lsum(")
-    : (m_sumStyle == SM_SUM && !overStringEmpty)
-    ? wxS("sum(")
-    :
-    /* (m_sumstyle == SM_PROD) */ wxS("prod(");
-
   m_comma1 = std::make_unique<TextCell>(m_group, m_configuration, wxS(","));
   m_comma2 = std::make_unique<TextCell>(m_group, m_configuration, wxS(","));
   m_comma3 = std::make_unique<TextCell>(m_group, m_configuration, wxS(","));
-  m_open = std::make_unique<TextCell>(m_group, m_configuration, openText);
+  m_open = std::make_unique<TextCell>(m_group, m_configuration, GetMaximaCommandName());
   m_close = std::make_unique<TextCell>(m_group, m_configuration, wxS(")"));
 }
 
@@ -112,27 +105,57 @@ std::unique_ptr<Cell> SumCell::MakeStart(Cell *under) const {
     : std::make_unique<TextCell>(m_group, m_configuration);
 }
 
+const wxSize SumCell::GetSymbolSize() const
+{
+  wxSize signSize;
+  if (m_sumStyle == SM_SUM)
+    {
+      // A sane height for the sum sign
+      signSize.y = Scale_Px(40.0);
+      // The width of the sum sign is defined by its height and aspect ratio
+      signSize.x = 13 * signSize.y / 15;
+    }
+  else
+    {
+        // A sane height for the product sign
+      signSize.y = Scale_Px(40.0);
+      // The width of the product sign is defined by its height and aspect ratio
+      signSize.x = signSize.y;
+    }
+  return signSize;
+}
+
+const wxString SumCell::GetMaximaCommandName() const {
+  wxString s;
+  if (m_sumStyle == SM_SUM)
+    s = wxS("sum(");
+  else
+    s = wxS("product(");
+  
+  if (m_over->ListToString() == wxEmptyString) {
+    if (m_sumStyle == SM_PROD)
+      s = wxS("lprod(");
+    else
+      s = wxS("lsum(");
+  }
+  return s;
+}
+
+const wxString SumCell::GetSvgSymbolData() const
+{
+  if (m_sumStyle == SM_SUM)
+    return(m_svgSumSign);
+  else
+    return(m_svgProdSign);
+}
+
 void SumCell::Recalculate(AFontSize fontsize) {
   if (NeedsRecalculation(fontsize)) {
     DisplayedBase()->RecalculateList(fontsize);
     m_start->RecalculateList(fontsize);
     m_var->RecalculateList(fontsize);
     
-    if (m_sumStyle == SM_SUM)
-      {
-        // A sane height for the sum sign
-        m_signSize.y = Scale_Px(40.0);
-        // The width of the sum sign is defined by its height and aspect ratio
-        m_signSize.x = 13 * m_signSize.y / 15;
-      }
-    else
-      {
-        // A sane height for the product sign
-        m_signSize.y = Scale_Px(40.0);
-        // The width of the product sign is defined by its height and aspect ratio
-        m_signSize.x = m_signSize.y;
-      }
-    
+    m_signSize = GetSymbolSize();
     if (IsBrokenIntoLines()) {
       m_over->RecalculateList(fontsize);
       m_under->RecalculateList(fontsize);
@@ -181,13 +204,9 @@ void SumCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
 
     sign.x += signCenter_horizontal - m_signSize.x / 2;
     sign.y -= .5 * m_signSize.y;
-    if (m_sumStyle == SM_SUM)
-      antialiassingDC->DrawBitmap(BitmapFromSVG(m_svgSumSign, wxSize(m_signSize.x, m_signSize.y)),
-                                  sign.x, sign.y, true);
-    else
-      antialiassingDC->DrawBitmap(BitmapFromSVG(m_svgProdSign, wxSize(m_signSize.x, m_signSize.y)),
-                                  sign.x, sign.y, true);
-    
+    antialiassingDC->DrawBitmap(BitmapFromSVG(GetSvgSymbolData(),
+                                              wxSize(m_signSize.x, m_signSize.y)),
+                                sign.x, sign.y, true);    
     base.x += std::max(std::max(m_signSize.x, m_over->GetFullWidth()),
                          m_under->GetFullWidth());
     DisplayedBase()->DrawList(base, dc, antialiassingDC);
@@ -198,18 +217,7 @@ wxString SumCell::ToString() const {
   if (m_altCopyText != wxEmptyString)
     return m_altCopyText;
 
-  wxString s;
-  if (m_sumStyle == SM_SUM)
-    s = wxS("sum(");
-  else
-    s = wxS("product(");
-
-  if (m_over->ListToString() == wxEmptyString) {
-    if (m_sumStyle == SM_PROD)
-      s = wxS("lprod(");
-    else
-      s = wxS("lsum(");
-  }
+  wxString s = GetMaximaCommandName();
 
   s += Base()->ListToString();
 

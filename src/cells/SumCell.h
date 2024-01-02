@@ -76,6 +76,14 @@ public:
   void SetNextToDraw(Cell *next) override;
   void Unbreak() override final;
 
+protected:
+  //! What maxima command name corresponds to this cell?
+  virtual const wxString GetMaximaCommandName() const;
+  //! Returns the data that creates our SVG symbol
+  virtual const wxString GetSvgSymbolData() const;
+  //! How big do we want our svg symbol to be?
+  virtual const wxSize GetSymbolSize() const;
+  
 private:
   std::unique_ptr<Cell> MakeStart(Cell *under) const;
   void MakeBreakUpCells();
