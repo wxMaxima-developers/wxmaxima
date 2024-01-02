@@ -23,7 +23,7 @@ if(PANDOC)
 			COMMENT "Generating ${FILEBASENAME}.html")
 		add_custom_target(build_${FILEBASENAME}.html DEPENDS ${FILEBASENAME}.html)
 		add_dependencies(html build_${FILEBASENAME}.html)
-		install(FILES "${FILEBASENAME}.html" DESTINATION share/doc/wxmaxima OPTIONAL)
+		install(FILES "${CMAKE_CURRENT_BINARY_DIR}/${FILEBASENAME}.html" DESTINATION share/doc/wxmaxima OPTIONAL)
 	endfunction()
 
 	function(generate_wxmaxima_documentation_pdf FILEBASENAME PANDOC_TEXSELECT_OPTION)
@@ -45,6 +45,7 @@ if(PANDOC)
 			COMMENT "Generating ${FILEBASENAME}.pdf")
 		add_custom_target(build_${FILEBASENAME}.pdf DEPENDS ${FILEBASENAME}.pdf)
 		add_dependencies(pdf build_${FILEBASENAME}.pdf)
+		install(FILES "${CMAKE_CURRENT_BINARY_DIR}/${FILEBASENAME}.pdf" DESTINATION share/doc/wxmaxima OPTIONAL)
 	endfunction()
 
 	function(generate_wxmaxima_documentation_epub FILEBASENAME)
@@ -55,6 +56,7 @@ if(PANDOC)
 			COMMENT "Generating ${FILEBASENAME}.epub")
 		add_custom_target(build_${FILEBASENAME}.epub DEPENDS ${FILEBASENAME}.epub)
 		add_dependencies(epub build_${FILEBASENAME}.epub)
+		install(FILES "${CMAKE_CURRENT_BINARY_DIR}/${FILEBASENAME}.epub" DESTINATION share/doc/wxmaxima OPTIONAL)
 	endfunction()
 
 	# Create a list of the common part of the name of all the translated manuals.
@@ -143,8 +145,6 @@ endif()
 
 file(GLOB HTMLHELP_ADDITIONAL_FILES *.png *.css *.svg)
 install(FILES ${HTMLHELP_ADDITIONAL_FILES} DESTINATION share/doc/wxmaxima)
-install(FILES "${CMAKE_CURRENT_BINARY_DIR}/wxmaxima.de.epub" "${CMAKE_CURRENT_BINARY_DIR}/wxmaxima.epub" "${CMAKE_CURRENT_BINARY_DIR}/wxmaxima.es.epub" "${CMAKE_CURRENT_BINARY_DIR}/wxmaxima.it.epub" "${CMAKE_CURRENT_BINARY_DIR}/wxmaxima.tr.epub" "${CMAKE_CURRENT_BINARY_DIR}/wxmaxima.uk.epub" "${CMAKE_CURRENT_BINARY_DIR}/wxmaxima.zh_CN.epub" DESTINATION share/doc/wxmaxima OPTIONAL)
-install(FILES "${CMAKE_CURRENT_BINARY_DIR}/wxmaxima.de.pdf" "${CMAKE_CURRENT_BINARY_DIR}/wxmaxima.pdf" "${CMAKE_CURRENT_BINARY_DIR}/wxmaxima.es.pdf" "${CMAKE_CURRENT_BINARY_DIR}/wxmaxima.it.pdf" "${CMAKE_CURRENT_BINARY_DIR}/wxmaxima.tr.pdf" "${CMAKE_CURRENT_BINARY_DIR}/wxmaxima.uk.pdf" "${CMAKE_CURRENT_BINARY_DIR}/wxmaxima.zh_CN.pdf" DESTINATION share/doc/wxmaxima OPTIONAL)
 file(COPY ${HTMLHELP_ADDITIONAL_FILES} DESTINATION .)
 
 
