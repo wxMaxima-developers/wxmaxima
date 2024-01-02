@@ -1,27 +1,41 @@
-include("${CMAKE_SOURCE_DIR}/cmake-bin2h/bin2h.cmake")
+add_custom_command(
+        OUTPUT ${CMAKE_BINARY_DIR}/sumSign_svg.h
+        COMMAND ${CMAKE_COMMAND} ARGS
+        -DBIN2H_SOURCE_FILE="${CMAKE_CURRENT_SOURCE_DIR}/sumSign.svg"
+        -DBIN2H_VARIABLE_NAME=sumSign
+        -DBIN2H_HEADER_FILE="${CMAKE_BINARY_DIR}/sumSign_svg.h"
+        -DBIN2H="${CMAKE_SOURCE_DIR}/cmake-bin2h/bin2h.cmake"
+        -P "${CMAKE_SOURCE_DIR}/src/bin2h.cmake"
+        COMMENT "Embedding sumSign.svg"
+        DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/sumSign.svg ${CMAKE_SOURCE_DIR}/src/bin2h.cmake
+)
+add_custom_target(build_sumSign.h DEPENDS ${CMAKE_BINARY_DIR}/sumSign_svg.h)
+add_dependencies(wxmaxima build_sumSign.h)
 
-set(HEADER_FILE "${CMAKE_BINARY_DIR}/wxm_worksheet_images.h")
-message(STATUS "Embedding following files into header file ${HEADER_FILE}")
+add_custom_command(
+        OUTPUT ${CMAKE_BINARY_DIR}/prodSign_svg.h
+        COMMAND ${CMAKE_COMMAND} ARGS
+        -DBIN2H_SOURCE_FILE="${CMAKE_CURRENT_SOURCE_DIR}/prodSign.svg"
+        -DBIN2H_VARIABLE_NAME=prodSign
+        -DBIN2H_HEADER_FILE="${CMAKE_BINARY_DIR}/prodSign_svg.h"
+        -DBIN2H="${CMAKE_SOURCE_DIR}/cmake-bin2h/bin2h.cmake"
+        -P "${CMAKE_SOURCE_DIR}/src/bin2h.cmake"
+        COMMENT "Embedding prodSign.svg"
+        DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/prodSign.svg ${CMAKE_SOURCE_DIR}/src/bin2h.cmake
+)
+add_custom_target(build_prodSign.h DEPENDS ${CMAKE_BINARY_DIR}/prodSign_svg.h)
+add_dependencies(wxmaxima build_prodSign.h)
 
-file(WRITE "${HEADER_FILE}"
-    "#ifndef WXM_WORKSHEET_IMAGES_H\n"
-    "#define WXM_WORKSHEET_IMAGES_H\n")
-
-file(GLOB WXM_FILES *.svg)
-foreach(file ${WXM_FILES})
-    message(STATUS "   Processing: ${file}")
-    get_filename_component(variableName ${file} NAME_WE)
-    set(HEADER_FILE "${CMAKE_BINARY_DIR}/${variableName}_svg.h")
-    message(STATUS "Embedding following files into header file ${HEADER_FILE}")
-
-    file(WRITE "${HEADER_FILE}"
-        "#ifndef WXM_${variableName}_svg_H\n"
-        "#define WXM_${variableName}_svg_H\n")
-
-    file(APPEND "${HEADER_FILE}" "/* Data for the file: ${variableName} */\n")
-    bin2h(SOURCE_FILE ${file} HEADER_FILE "${HEADER_FILE}" VARIABLE_NAME ${variableName} APPEND NULL_TERMINATE)
-    file(APPEND "${HEADER_FILE}" "\n")
-    file(APPEND "${HEADER_FILE}" "#endif\n")
-endforeach()
-
-
+add_custom_command(
+        OUTPUT ${CMAKE_BINARY_DIR}/intSign_svg.h
+        COMMAND ${CMAKE_COMMAND} ARGS
+        -DBIN2H_SOURCE_FILE="${CMAKE_CURRENT_SOURCE_DIR}/intSign.svg"
+        -DBIN2H_VARIABLE_NAME=intSign
+        -DBIN2H_HEADER_FILE="${CMAKE_BINARY_DIR}/intSign_svg.h"
+        -DBIN2H="${CMAKE_SOURCE_DIR}/cmake-bin2h/bin2h.cmake"
+        -P "${CMAKE_SOURCE_DIR}/src/bin2h.cmake"
+        COMMENT "Embedding intSign.svg"
+        DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/intSign.svg ${CMAKE_SOURCE_DIR}/src/bin2h.cmake
+)
+add_custom_target(build_intSign.h DEPENDS ${CMAKE_BINARY_DIR}/intSign_svg.h)
+add_dependencies(wxmaxima build_intSign.h)
