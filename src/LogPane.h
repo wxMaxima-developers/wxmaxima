@@ -52,7 +52,7 @@ private:
   stx::optional<wxLogTextCtrl> m_logPanelTarget;
   //! Redirects error messages - here to a wxLog
   stx::optional<ErrorRedirector> m_errorRedirector;
-#ifdef wxUSE_STD_IOSTREAM
+#if wxUSE_STD_IOSTREAM
   stx::optional<wxStreamToTextRedirector> m_textRedirector;
 #endif
 };

@@ -56,7 +56,7 @@ void LogPane::BecomeLogTarget() {
   m_logPanelTarget.emplace(m_textCtrl);
   wxLog::SetActiveTarget(&*m_logPanelTarget);
   m_errorRedirector.emplace(std::unique_ptr<wxLog>(new wxLogGui()));
-#ifdef wxUSE_STD_IOSTREAM
+#if wxUSE_STD_IOSTREAM
   if (!ErrorRedirector::LoggingToStdErr())
     m_textRedirector.emplace(m_textCtrl);
 #endif
