@@ -252,10 +252,13 @@ void MaximaManual::CompileHelpFileAnchors(wxString maximaHtmlDir,
       wxLogMessage(_("Found %li anchors, %li anchors total."),
                    static_cast<long>(foundAnchors), static_cast<long>(foundAnchorsTotal));
     }
+
+    // Until now we did all that we did with local variables. Now it is time
+    // to transfer the results of our work to the main thread.
     const std::lock_guard<std::mutex> lock(m_helpFileAnchorsLock);
-    m_helpFileURLs_singlePage = helpFileURLs_singlePage;
-    m_helpFileURLs_filePerChapter = helpFileURLs_filePerChapter;
-    m_helpFileAnchors = helpFileAnchors;
+    m_helpFileURLs_singlePage = std::move(helpFileURLs_singlePage);
+    m_helpFileURLs_filePerChapter = std::move(helpFileURLs_filePerChapter);
+    m_helpFileAnchors = std::move(helpFileAnchors);
     if(foundAnchorsTotal < 100)
       {
         wxLogMessage(_("Have only %li keyword anchors at the end of parsing the maxima manual => "
