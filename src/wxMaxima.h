@@ -712,9 +712,7 @@ protected:
   */
   struct ServerDeleter {
     void operator()(wxSocketServer* server) const {
-      server->Close();
-      wxLogMessage(_("Closing the socket maxima could connect to!"));
-      server->Destroy();
+      server->Destroy(); // Destroy() calls Close() automatically.
     }
   };
   /*! The server maxima connects to as client
