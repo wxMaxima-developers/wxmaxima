@@ -48,8 +48,6 @@ SumCell::SumCell(GroupCell *group, Configuration *config, sumStyle style,
   wxASSERT(Base());
 }
 
-// cppcheck-suppress uninitMemberVar symbolName=SumCell::m_signHeight
-// cppcheck-suppress uninitMemberVar symbolName=SumCell::m_signWidth
 SumCell::SumCell(GroupCell *group, const SumCell &cell)
   : SumCell(group, cell.m_configuration, cell.m_sumStyle,
             CopyList(group, cell.m_under.get()),
@@ -123,16 +121,16 @@ void SumCell::Recalculate(AFontSize fontsize) {
     if (m_sumStyle == SM_SUM)
       {
         // A sane height for the sum sign
-        m_signHeight = Scale_Px(40.0);
+        m_signSize.y = Scale_Px(40.0);
         // The width of the sum sign is defined by its height and aspect ratio
-        m_signWidth = 13 * m_signHeight / 15;
+        m_signSize.x = 13 * m_signSize.y / 15;
       }
     else
       {
         // A sane height for the product sign
-        m_signHeight = Scale_Px(40.0);
+        m_signSize.y = Scale_Px(40.0);
         // The width of the product sign is defined by its height and aspect ratio
-        m_signWidth = m_signHeight;
+        m_signSize.x = m_signSize.y;
       }
     
     if (IsBrokenIntoLines()) {
@@ -149,14 +147,14 @@ void SumCell::Recalculate(AFontSize fontsize) {
     } else {
       m_over->RecalculateList({MC_MIN_SIZE, fontsize - SUM_DEC});
       m_under->RecalculateList({MC_MIN_SIZE, fontsize - SUM_DEC});
-      m_width = std::max(std::max(m_signWidth, m_over->GetFullWidth()),
+      m_width = std::max(std::max(m_signSize.x, m_over->GetFullWidth()),
                          m_under->GetFullWidth()) + DisplayedBase()->GetFullWidth();
     
-      m_center = std::max(m_signHeight / 2 + Scale_Px(2)
+      m_center = std::max(m_signSize.y / 2 + Scale_Px(2)
                           + m_over->GetHeightList(),
                           DisplayedBase()->GetCenterList());
       m_height = m_center +
-        std::max(m_under->GetHeightList() +  Scale_Px(2) + m_signHeight / 2,
+        std::max(m_under->GetHeightList() +  Scale_Px(2) + m_signSize.y / 2,
                  DisplayedBase()->GetMaxDrop());
     }    
     Cell::Recalculate(fontsize);
@@ -170,27 +168,27 @@ void SumCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
 
     wxPoint base(point), under(point), over(point), sign(point);
 
-    wxCoord signCenter_horizontal = std::max(std::max(m_signWidth, m_over->GetFullWidth()),
+    wxCoord signCenter_horizontal = std::max(std::max(m_signSize.x, m_over->GetFullWidth()),
                                              m_under->GetFullWidth()) / 2;
 
     under.x += signCenter_horizontal - m_under->GetFullWidth() / 2;
-    under.y += + m_signHeight / 2 + Scale_Px(2) + m_under->GetCenterList();
+    under.y += + m_signSize.y / 2 + Scale_Px(2) + m_under->GetCenterList();
     m_under->DrawList(under, dc, antialiassingDC);
 
     over.x += signCenter_horizontal - m_over->GetFullWidth() / 2;
-    over.y -= m_signHeight / 2 + m_over->GetMaxDrop() + Scale_Px(2);
+    over.y -= m_signSize.y / 2 + m_over->GetMaxDrop() + Scale_Px(2);
     m_over->DrawList(over, dc, antialiassingDC);
 
-    sign.x += signCenter_horizontal - m_signWidth / 2;
-    sign.y -= .5 * m_signHeight;
+    sign.x += signCenter_horizontal - m_signSize.x / 2;
+    sign.y -= .5 * m_signSize.y;
     if (m_sumStyle == SM_SUM)
-      antialiassingDC->DrawBitmap(BitmapFromSVG(m_svgSumSign, wxSize(m_signWidth, m_signHeight)),
+      antialiassingDC->DrawBitmap(BitmapFromSVG(m_svgSumSign, wxSize(m_signSize.x, m_signSize.y)),
                                   sign.x, sign.y, true);
     else
-      antialiassingDC->DrawBitmap(BitmapFromSVG(m_svgProdSign, wxSize(m_signWidth, m_signHeight)),
+      antialiassingDC->DrawBitmap(BitmapFromSVG(m_svgProdSign, wxSize(m_signSize.x, m_signSize.y)),
                                   sign.x, sign.y, true);
     
-    base.x += std::max(std::max(m_signWidth, m_over->GetFullWidth()),
+    base.x += std::max(std::max(m_signSize.x, m_over->GetFullWidth()),
                          m_under->GetFullWidth());
     DisplayedBase()->DrawList(base, dc, antialiassingDC);
   }

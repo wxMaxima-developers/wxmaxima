@@ -106,8 +106,7 @@ private:
   std::unique_ptr<Cell> m_under;
   // The pointers above point to inner cells and must be kept contiguous.
 
-  wxCoord m_signWidth = 30.0f;
-  wxCoord m_signHeight = 50;
+  wxSize m_signSize;
   sumStyle m_sumStyle = SM_SUM;
 
 //** Bitfield objects (1 bytes)
