@@ -33,15 +33,14 @@
 #include "CellImpl.h"
 #include "TextCell.h"
 #include "sumSign_svg.h"
-#include "prodSign_svg.h"
 
-SumCell::SumCell(GroupCell *group, Configuration *config, sumStyle style,
+SumCell::SumCell(GroupCell *group, Configuration *config, 
                  std::unique_ptr<Cell> &&under, std::unique_ptr<Cell> &&over,
                  std::unique_ptr<Cell> &&base)
   : Cell(group, config),
     m_paren(std::make_unique<ParenCell>(group, config, std::move(base))),
     m_var(under->Copy(group)), m_start(MakeStart(under.get())),
-    m_over(std::move(over)), m_under(std::move(under)), m_sumStyle(style) {
+    m_over(std::move(over)), m_under(std::move(under)) {
   InitBitFields_SumCell();
   if (!m_over)
     m_over = std::make_unique<TextCell>(group, config);
@@ -49,7 +48,7 @@ SumCell::SumCell(GroupCell *group, Configuration *config, sumStyle style,
 }
 
 SumCell::SumCell(GroupCell *group, const SumCell &cell)
-  : SumCell(group, cell.m_configuration, cell.m_sumStyle,
+  : SumCell(group, cell.m_configuration,
             CopyList(group, cell.m_under.get()),
             CopyList(group, cell.m_over.get()),
             CopyList(group, cell.Base())) {
@@ -108,87 +107,47 @@ std::unique_ptr<Cell> SumCell::MakeStart(Cell *under) const {
 const wxSize SumCell::GetSymbolSize() const
 {
   wxSize signSize;
-  if (m_sumStyle == SM_SUM)
-    {
-      // A sane height for the sum sign
-      signSize.y = Scale_Px(40.0);
-      // The width of the sum sign is defined by its height and aspect ratio
-      signSize.x = 13 * signSize.y / 15;
-    }
-  else
-    {
-        // A sane height for the product sign
-      signSize.y = Scale_Px(40.0);
-      // The width of the product sign is defined by its height and aspect ratio
-      signSize.x = signSize.y;
-    }
+  // A sane height for the sum sign
+  signSize.y = Scale_Px(40.0);
+  // The width of the sum sign is defined by its height and aspect ratio
+  signSize.x = 13 * signSize.y / 15;
   return signSize;
 }
 
 const wxString SumCell::GetMaximaCommandName() const {
-  wxString s;
-  if (m_sumStyle == SM_SUM)
-    s = wxS("sum(");
-  else
-    s = wxS("product(");
+  wxString s = wxS("sum(");
+  if (m_over->ListToString() == wxEmptyString)
+    s = wxS("lsum(");
   
-  if (m_over->ListToString() == wxEmptyString) {
-    if (m_sumStyle == SM_PROD)
-      s = wxS("lprod(");
-    else
-      s = wxS("lsum(");
-  }
   return s;
 }
 
 const wxString SumCell::GetSvgSymbolData() const
 {
-  if (m_sumStyle == SM_SUM)
-    return(m_svgSumSign);
-  else
-    return(m_svgProdSign);
+  return(m_svgSumSign);
 }
 
 //! What maxima command name corresponds to this cell?
 const wxString SumCell::GetMatlabCommandName() const
 {
-  wxString s;
-  if (m_sumStyle == SM_SUM)
-    s = wxS("sum(");
-  else
-    s = wxS("product(");
-  return s;
+  return wxS("sum(");
 }
 
 const wxString SumCell::GetLaTeXCommandName() const
 {
-  wxString s;
-  if (m_sumStyle == SM_SUM)
-    s = wxS("\\sum");
-  else
-    s = wxS("\\prod");
-  return s;
+  return wxS("\\sum");
 }
 
 const wxString SumCell::GetUnicodeSymbol() const
 {
-  if (m_sumStyle == SM_SUM)
     return wxS("\u2211");
-  else
-    return wxS("\u220F");
 }
 
 const wxString SumCell::GetXMLType() const
 {
   wxString type(wxS("sum"));
-  if (m_sumStyle == SM_PROD)
-    type = wxS("prod");
-  if (m_over->ListToString() == wxEmptyString) {
-    if (m_sumStyle == SM_PROD)
-      type = wxS("lprod");
-    else
+  if (m_over->ListToString() == wxEmptyString)
       type = wxS("lsum");
-  }
   return type;
 }
 
@@ -413,4 +372,3 @@ void SumCell::SetNextToDraw(Cell *next) {
 }
 
 const wxString SumCell::m_svgSumSign(reinterpret_cast<const char*>(SUMSIGN));
-const wxString SumCell::m_svgProdSign(reinterpret_cast<const char*>(PRODSIGN));

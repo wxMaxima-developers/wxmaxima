@@ -62,6 +62,7 @@
 #include "SubCell.h"
 #include "SubSupCell.h"
 #include "SumCell.h"
+#include "ProductCell.h"
 #include "VisiblyInvalidCell.h"
 
 /*! Calls a member function from a function pointer
@@ -1071,8 +1072,6 @@ std::unique_ptr<Cell> MathParser::ParseSumTag(wxXmlNode *node) {
   wxXmlNode *child = node->GetChildren();
   child = SkipWhitespaceNode(child);
   wxString type = node->GetAttribute(wxS("type"), wxS("sum"));
-  sumStyle style =
-    ((type == wxS("prod")) || (type == wxS("lprod"))) ? SM_PROD : SM_SUM;
   auto highlight = m_highlight;
 
   auto under = HandleNullPointer(ParseTag(child, false));
@@ -1083,9 +1082,15 @@ std::unique_ptr<Cell> MathParser::ParseSumTag(wxXmlNode *node) {
   child = GetNextTag(child);
   auto base = HandleNullPointer(ParseTag(child, false));
 
-  auto sum = std::make_unique<SumCell>(m_group, m_configuration, style,
-                                       std::move(under), std::move(over),
-                                       std::move(base));
+  std::unique_ptr<Cell> sum;
+  if ((type == wxS("prod")) || (type == wxS("lprod")))
+    sum = std::make_unique<ProductCell>(m_group, m_configuration, 
+                                    std::move(under), std::move(over),
+                                    std::move(base));
+  else
+    sum = std::make_unique<SumCell>(m_group, m_configuration, 
+                                    std::move(under), std::move(over),
+                                    std::move(base));
   sum->SetHighlight(highlight);
   sum->SetType(m_ParserStyle);
   sum->SetStyle(TS_VARIABLE);
