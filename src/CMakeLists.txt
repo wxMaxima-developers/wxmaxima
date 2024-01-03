@@ -53,6 +53,7 @@ set(CELL_SOURCE_FILES
     SubSupCell.cpp
     SumCell.cpp
     TextCell.cpp
+    ProductCell.cpp
     VisiblyInvalidCell.cpp
 )
 list_transform_prepend(CELL_SOURCE_FILES cells/)

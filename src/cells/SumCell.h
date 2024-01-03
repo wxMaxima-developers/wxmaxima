@@ -37,17 +37,11 @@
 
 class TextCell;
 
-enum sumStyle : int8_t
-{
-  SM_SUM,
-  SM_PROD
-};
-
 //cppcheck-suppress ctuOneDefinitionRuleViolation
-class SumCell final : public Cell
+class SumCell : public Cell
 {
 public:
-  SumCell(GroupCell *group, Configuration *config, sumStyle style,
+  SumCell(GroupCell *group, Configuration *config,
           std::unique_ptr<Cell> &&under, std::unique_ptr<Cell> &&over,
           std::unique_ptr<Cell> &&base);
   SumCell(GroupCell *group, const SumCell &cell);
@@ -76,21 +70,37 @@ public:
   void SetNextToDraw(Cell *next) override;
   void Unbreak() override final;
 
+protected:
+  //! What maxima command name corresponds to this cell?
+  virtual const wxString GetMaximaCommandName() const;
+  //! What matlab command name corresponds to this cell?
+  virtual const wxString GetMatlabCommandName() const;
+  //! What LaTeX command name corresponds to this cell?
+  virtual const wxString GetLaTeXCommandName() const;
+  //! What unicode symbol name corresponds to this cell?
+  virtual const wxString GetUnicodeSymbol() const;
+  //! Returns the data that creates our SVG symbol
+  virtual const wxString GetSvgSymbolData() const;
+  //! Returns the type our cell has when saving it to .wxmx
+  virtual const wxString GetXMLType() const;
+  //! How big do we want our svg symbol to be?
+  virtual const wxSize GetSymbolSize() const;
+  //! The base cell owned by the paren (it's without the paren)
+  Cell *Base() const;
+  Cell *Over() const {return m_over.get();}
+  Cell *Under() const {return m_under.get();}
+  
 private:
   std::unique_ptr<Cell> MakeStart(Cell *under) const;
   void MakeBreakUpCells();
   const static wxString m_svgSumSign;
-  const static wxString m_svgProdSign;
 
   ParenCell *Paren() const;
-  //! The base cell owned by the paren (it's without the paren)
-  Cell *Base() const;
   //! The displayed base
   Cell *DisplayedBase() const;
 
   //! Text that should end up on the clipboard if this cell is copied as text.
   wxString m_altCopyText;
-
   // The pointers below point to inner cells and must be kept contiguous.
   // ** This is the partial draw list order. All pointers must be the same:
   // ** either Cell * or std::unique_ptr<Cell>. NO OTHER TYPES are allowed.
@@ -101,14 +111,12 @@ private:
   std::unique_ptr<Cell> m_comma2;
   std::unique_ptr<Cell> m_start;
   std::unique_ptr<Cell> m_comma3;
-  std::unique_ptr<Cell> m_over;
   std::unique_ptr<Cell> m_close;
+  std::unique_ptr<Cell> m_over;
   std::unique_ptr<Cell> m_under;
   // The pointers above point to inner cells and must be kept contiguous.
 
-  wxCoord m_signWidth = 30.0f;
-  wxCoord m_signHeight = 50;
-  sumStyle m_sumStyle = SM_SUM;
+  wxSize m_signSize;
 
 //** Bitfield objects (1 bytes)
 //**
