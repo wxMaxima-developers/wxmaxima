@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['xmlescape_2974',['XMLescape',['../classCell.html#ab242fd84c7c21108e106abf22bd05780',1,'Cell']]],
-  ['xytoposition_2975',['XYToPosition',['../classEditorCell.html#a1ce69a1557d3ef113a1fc107c2a5ab98',1,'EditorCell']]]
+  ['xmlescape_2996',['XMLescape',['../classCell.html#ab242fd84c7c21108e106abf22bd05780',1,'Cell']]],
+  ['xytoposition_2997',['XYToPosition',['../classEditorCell.html#a1ce69a1557d3ef113a1fc107c2a5ab98',1,'EditorCell']]]
 ];

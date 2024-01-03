@@ -67,13 +67,13 @@ $(function() {
 <a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="#pro-attribs">Protected Attributes</a>  </div>
   <div class="headertitle">
-<div class="title">SumCell Class Reference<span class="mlabels"><span class="mlabel">final</span></span></div>  </div>
+<div class="title">SumCell Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 <div class="dynheader">
 Inheritance diagram for SumCell:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classSumCell__inherit__graph.svg" width="95" height="187"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classSumCell__inherit__graph.svg" width="107" height="262"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
@@ -85,9 +85,9 @@ Collaboration diagram for SumCell:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a0441497ee54d8b75f3c04672fe36bd47"><td class="memItemLeft" align="right" valign="top"><a id="a0441497ee54d8b75f3c04672fe36bd47"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>SumCell</b> (<a class="el" href="classGroupCell.html">GroupCell</a> *group, <a class="el" href="classConfiguration.html">Configuration</a> *config, sumStyle style, std::unique_ptr&lt; <a class="el" href="classCell.html">Cell</a> &gt; &amp;&amp;under, std::unique_ptr&lt; <a class="el" href="classCell.html">Cell</a> &gt; &amp;&amp;over, std::unique_ptr&lt; <a class="el" href="classCell.html">Cell</a> &gt; &amp;&amp;base)</td></tr>
-<tr class="separator:a0441497ee54d8b75f3c04672fe36bd47"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af98524a338e2965b0a8970cc1311ae97"><td class="memItemLeft" align="right" valign="top"><a id="af98524a338e2965b0a8970cc1311ae97"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>SumCell</b> (<a class="el" href="classGroupCell.html">GroupCell</a> *group, <a class="el" href="classConfiguration.html">Configuration</a> *config, std::unique_ptr&lt; <a class="el" href="classCell.html">Cell</a> &gt; &amp;&amp;under, std::unique_ptr&lt; <a class="el" href="classCell.html">Cell</a> &gt; &amp;&amp;over, std::unique_ptr&lt; <a class="el" href="classCell.html">Cell</a> &gt; &amp;&amp;base)</td></tr>
+<tr class="separator:af98524a338e2965b0a8970cc1311ae97"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa50c7f42018fe60e0d766a63c3a0397b"><td class="memItemLeft" align="right" valign="top"><a id="aa50c7f42018fe60e0d766a63c3a0397b"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>SumCell</b> (<a class="el" href="classGroupCell.html">GroupCell</a> *group, const <a class="el" href="classSumCell.html">SumCell</a> &amp;cell)</td></tr>
 <tr class="separator:aa50c7f42018fe60e0d766a63c3a0397b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -659,6 +659,43 @@ static size_t&#160;</td><td class="memItemRight" valign="bottom"><b>GetLiveContr
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
+<tr class="memitem:a1aad1f4519717eb5aff1312ca8ab5975"><td class="memItemLeft" align="right" valign="top"><a id="a1aad1f4519717eb5aff1312ca8ab5975"></a>
+virtual const wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSumCell.html#a1aad1f4519717eb5aff1312ca8ab5975">GetMaximaCommandName</a> () const</td></tr>
+<tr class="memdesc:a1aad1f4519717eb5aff1312ca8ab5975"><td class="mdescLeft">&#160;</td><td class="mdescRight">What maxima command name corresponds to this cell? <br /></td></tr>
+<tr class="separator:a1aad1f4519717eb5aff1312ca8ab5975"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a64233ae2cbba3ef01f559ebc85500110"><td class="memItemLeft" align="right" valign="top">virtual const wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSumCell.html#a64233ae2cbba3ef01f559ebc85500110">GetMatlabCommandName</a> () const</td></tr>
+<tr class="memdesc:a64233ae2cbba3ef01f559ebc85500110"><td class="mdescLeft">&#160;</td><td class="mdescRight">What matlab command name corresponds to this cell?  <a href="classSumCell.html#a64233ae2cbba3ef01f559ebc85500110">More...</a><br /></td></tr>
+<tr class="separator:a64233ae2cbba3ef01f559ebc85500110"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a70c7637e7bdaa651831933d7fe82cafd"><td class="memItemLeft" align="right" valign="top"><a id="a70c7637e7bdaa651831933d7fe82cafd"></a>
+virtual const wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSumCell.html#a70c7637e7bdaa651831933d7fe82cafd">GetLaTeXCommandName</a> () const</td></tr>
+<tr class="memdesc:a70c7637e7bdaa651831933d7fe82cafd"><td class="mdescLeft">&#160;</td><td class="mdescRight">What LaTeX command name corresponds to this cell? <br /></td></tr>
+<tr class="separator:a70c7637e7bdaa651831933d7fe82cafd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac58834f3ae040d39cb4bca216bfb96f4"><td class="memItemLeft" align="right" valign="top"><a id="ac58834f3ae040d39cb4bca216bfb96f4"></a>
+virtual const wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSumCell.html#ac58834f3ae040d39cb4bca216bfb96f4">GetUnicodeSymbol</a> () const</td></tr>
+<tr class="memdesc:ac58834f3ae040d39cb4bca216bfb96f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">What unicode symbol name corresponds to this cell? <br /></td></tr>
+<tr class="separator:ac58834f3ae040d39cb4bca216bfb96f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac98e8df5a4112673f8bedcca9d8a7f25"><td class="memItemLeft" align="right" valign="top"><a id="ac98e8df5a4112673f8bedcca9d8a7f25"></a>
+virtual const wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSumCell.html#ac98e8df5a4112673f8bedcca9d8a7f25">GetSvgSymbolData</a> () const</td></tr>
+<tr class="memdesc:ac98e8df5a4112673f8bedcca9d8a7f25"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the data that creates our SVG symbol. <br /></td></tr>
+<tr class="separator:ac98e8df5a4112673f8bedcca9d8a7f25"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a276e6df0f28a2974cb3916c0704965a0"><td class="memItemLeft" align="right" valign="top"><a id="a276e6df0f28a2974cb3916c0704965a0"></a>
+virtual const wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSumCell.html#a276e6df0f28a2974cb3916c0704965a0">GetXMLType</a> () const</td></tr>
+<tr class="memdesc:a276e6df0f28a2974cb3916c0704965a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the type our cell has when saving it to .wxmx. <br /></td></tr>
+<tr class="separator:a276e6df0f28a2974cb3916c0704965a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6ce7b11bd497c1e57f2048748bd9c009"><td class="memItemLeft" align="right" valign="top"><a id="a6ce7b11bd497c1e57f2048748bd9c009"></a>
+virtual const wxSize&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSumCell.html#a6ce7b11bd497c1e57f2048748bd9c009">GetSymbolSize</a> () const</td></tr>
+<tr class="memdesc:a6ce7b11bd497c1e57f2048748bd9c009"><td class="mdescLeft">&#160;</td><td class="mdescRight">How big do we want our svg symbol to be? <br /></td></tr>
+<tr class="separator:a6ce7b11bd497c1e57f2048748bd9c009"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adb00dc81c1e3163c58985cfc6b46a36a"><td class="memItemLeft" align="right" valign="top"><a id="adb00dc81c1e3163c58985cfc6b46a36a"></a>
+<a class="el" href="classCell.html">Cell</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSumCell.html#adb00dc81c1e3163c58985cfc6b46a36a">Base</a> () const</td></tr>
+<tr class="memdesc:adb00dc81c1e3163c58985cfc6b46a36a"><td class="mdescLeft">&#160;</td><td class="mdescRight">The base cell owned by the paren (it's without the paren) <br /></td></tr>
+<tr class="separator:adb00dc81c1e3163c58985cfc6b46a36a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1d5d4b7850c494e09d0430f7efea758d"><td class="memItemLeft" align="right" valign="top"><a id="a1d5d4b7850c494e09d0430f7efea758d"></a>
+<a class="el" href="classCell.html">Cell</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>Over</b> () const</td></tr>
+<tr class="separator:a1d5d4b7850c494e09d0430f7efea758d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac011e20aaed0682ebdb1c9e7259483ee"><td class="memItemLeft" align="right" valign="top"><a id="ac011e20aaed0682ebdb1c9e7259483ee"></a>
+<a class="el" href="classCell.html">Cell</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>Under</b> () const</td></tr>
+<tr class="separator:ac011e20aaed0682ebdb1c9e7259483ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a57878bfc0ce007d7288bda097eb18f03"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a57878bfc0ce007d7288bda097eb18f03">BreakUpAndMark</a> ()</td></tr>
 <tr class="memdesc:a57878bfc0ce007d7288bda097eb18f03"><td class="mdescLeft">&#160;</td><td class="mdescRight">Break up the internal cells of this cell, and mark it as broken up.  <a href="classCell.html#a57878bfc0ce007d7288bda097eb18f03">More...</a><br /></td></tr>
 <tr class="separator:a57878bfc0ce007d7288bda097eb18f03"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1596,6 +1633,36 @@ wxCoord&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 
 <p>How many pixels is the current line of this list of cells wide? </p>
 <p>This command returns the real line width when all line breaks are really performed. See <a class="el" href="classCell.html#afbd7c62536711b122ed70d7f8fb6c804" title="How many pixels is this list of cells wide, if we don&#39;t break it into lines?">GetFullWidth()</a>. </p>
+
+</div>
+</div>
+<a id="a64233ae2cbba3ef01f559ebc85500110"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a64233ae2cbba3ef01f559ebc85500110">&#9670;&nbsp;</a></span>GetMatlabCommandName()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const wxString SumCell::GetMatlabCommandName </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>What matlab command name corresponds to this cell? </p>
+<p>What maxima command name corresponds to this cell? </p>
+
+<p>Reimplemented in <a class="el" href="classProductCell.html#a96cf242533d33b030320f5f1e606e90f">ProductCell</a>.</p>
 
 </div>
 </div>
