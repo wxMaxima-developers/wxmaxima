@@ -149,6 +149,49 @@ const wxString SumCell::GetSvgSymbolData() const
     return(m_svgProdSign);
 }
 
+//! What maxima command name corresponds to this cell?
+const wxString SumCell::GetMatlabCommandName() const
+{
+  wxString s;
+  if (m_sumStyle == SM_SUM)
+    s = wxS("sum(");
+  else
+    s = wxS("product(");
+  return s;
+}
+
+const wxString SumCell::GetLaTeXCommandName() const
+{
+  wxString s;
+  if (m_sumStyle == SM_SUM)
+    s = wxS("\\sum");
+  else
+    s = wxS("\\prod");
+  return s;
+}
+
+const wxString SumCell::GetUnicodeSymbol() const
+{
+  if (m_sumStyle == SM_SUM)
+    return wxS("\u2211");
+  else
+    return wxS("\u220F");
+}
+
+const wxString SumCell::GetXMLType() const
+{
+  wxString type(wxS("sum"));
+  if (m_sumStyle == SM_PROD)
+    type = wxS("prod");
+  if (m_over->ListToString() == wxEmptyString) {
+    if (m_sumStyle == SM_PROD)
+      type = wxS("lprod");
+    else
+      type = wxS("lsum");
+  }
+  return type;
+}
+
 void SumCell::Recalculate(AFontSize fontsize) {
   if (NeedsRecalculation(fontsize)) {
     DisplayedBase()->RecalculateList(fontsize);
@@ -240,11 +283,7 @@ wxString SumCell::ToString() const {
 }
 
 wxString SumCell::ToMatlab() const {
-  wxString s;
-  if (m_sumStyle == SM_SUM)
-    s = wxS("sum(");
-  else
-    s = wxS("product(");
+  wxString s = GetMatlabCommandName();
   s += Base()->ListToMatlab();
 
   Cell *tmp = m_under.get();
@@ -266,12 +305,7 @@ wxString SumCell::ToMatlab() const {
 }
 
 wxString SumCell::ToTeX() const {
-  wxString s;
-  if (m_sumStyle == SM_SUM)
-    s = wxS("\\sum");
-  else
-    s = wxS("\\prod");
-
+  wxString s = GetLaTeXCommandName();
   s += wxS("_{") + m_under->ListToTeX() + wxS("}");
   wxString to = m_over->ListToTeX();
   if (to.Length())
@@ -291,10 +325,7 @@ wxString SumCell::ToOMML() const {
   wxString retval;
 
   retval = wxS("<m:nary><m:naryPr><m:chr>");
-  if (m_sumStyle == SM_SUM)
-    retval += wxS("\u2211");
-  else
-    retval += wxS("\u220F");
+  retval += GetUnicodeSymbol();
 
   retval += wxS("</m:chr></m:naryPr>");
   if (from != wxEmptyString)
@@ -305,19 +336,9 @@ wxString SumCell::ToOMML() const {
 
   return retval;
 }
-
+  
 wxString SumCell::ToXML() const {
-  wxString type(wxS("sum"));
-
-  if (m_sumStyle == SM_PROD)
-    type = wxS("prod");
-  if (m_over->ListToString() == wxEmptyString) {
-    if (m_sumStyle == SM_PROD)
-      type = wxS("lprod");
-    else
-      type = wxS("lsum");
-  }
-
+  wxString type = GetXMLType(); 
   wxString flags;
   if (HasHardLineBreak())
     flags += wxS(" breakline=\"true\"");
@@ -340,30 +361,16 @@ wxString SumCell::ToMathML() const {
 
   wxString retval;
 
-  if (m_sumStyle == SM_SUM) {
-    if (from.IsEmpty() && to.IsEmpty())
-      retval = wxS("<mo>&#x2211;</mo>") + base;
-    if (from.IsEmpty() && !to.IsEmpty())
-      retval = wxS("<mover><mo>&#x2211;</mo>") + to + wxS("</mover>") + base;
-    if (!from.IsEmpty() && to.IsEmpty())
-      retval =
-        wxS("<munder><mo>&#x2211;</mo>") + from + wxS("</munder>") + base;
-    if (!from.IsEmpty() && !to.IsEmpty())
-      retval = wxS("<munderover><mo>&#x2211;</mo>") + from + to +
-        wxS("</munderover>") + base;
-  } else {
-    // A product
-    if (from.IsEmpty() && to.IsEmpty())
-      retval = wxS("<mo>&#x220F;</mo>") + base;
-    if (from.IsEmpty() && !to.IsEmpty())
-      retval = wxS("<mover><mo>&#x220F;</mo>") + to + wxS("</mover>") + base;
-    if (!from.IsEmpty() && to.IsEmpty())
-      retval =
-        wxS("<munder><mo>&#x220F;</mo>") + from + wxS("</munder>") + base;
-    if (!from.IsEmpty() && !to.IsEmpty())
-      retval = wxS("<munderover><mo>&#x220F;</mo>") + from + to +
-        wxS("</munderover>") + base;
-  }
+  if (from.IsEmpty() && to.IsEmpty())
+    retval = wxS("<mo>" + GetUnicodeSymbol() + "</mo>") + base;
+  if (from.IsEmpty() && !to.IsEmpty())
+    retval = wxS("<mover><mo>" + GetUnicodeSymbol() + "</mo>") + to + wxS("</mover>") + base;
+  if (!from.IsEmpty() && to.IsEmpty())
+    retval =
+      wxS("<munder><mo>" + GetUnicodeSymbol() + "</mo>") + from + wxS("</munder>") + base;
+  if (!from.IsEmpty() && !to.IsEmpty())
+    retval = wxS("<munderover><mo>" + GetUnicodeSymbol() + "</mo>") + from + to +
+      wxS("</munderover>") + base;
   return (wxS("<mrow>") + retval + wxS("</mrow>"));
 }
 
