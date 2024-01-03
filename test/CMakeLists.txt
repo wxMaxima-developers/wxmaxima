@@ -687,6 +687,22 @@ add_test(
 set_tests_properties(sumCells PROPERTIES DEPENDS wxmaxima_performance)
 
 add_test(
+    NAME productCells_cmdline
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+    COMMAND ${MAXIMA} --batch productCells.wxm)
+
+add_test(
+    NAME productCells_cmdline_wxmathml
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+    COMMAND ${MAXIMA} --batch productCells.wxm -p ${CMAKE_SOURCE_DIR}/src/wxMathML.lisp)
+
+add_test(
+    NAME productCells
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+    COMMAND wxmaxima --debug --logtostderr --pipe --batch productCells.wxm)
+set_tests_properties(productCells PROPERTIES DEPENDS wxmaxima_performance)
+
+add_test(
     NAME printf_simple_cmdline
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
     COMMAND ${MAXIMA} --batch printf_simple.wxm)
