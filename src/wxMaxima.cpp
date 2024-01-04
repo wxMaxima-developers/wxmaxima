@@ -9271,7 +9271,6 @@ void wxMaxima::HelpMenu(wxCommandEvent &event) {
 
 #if defined(WXMAXIMA_GIT_VERSION)
       //cppcheck-suppress syntaxError
-
       description += wxString::Format("\n(Build from Git version: " WXMAXIMA_GIT_VERSION ")");
 #endif
       description += wxString::Format(

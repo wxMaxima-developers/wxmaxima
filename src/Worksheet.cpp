@@ -5637,6 +5637,7 @@ bool Worksheet::ExportToTeX(const wxString &file) {
   else
     output << "\\documentclass[" + m_configuration->DocumentclassOptions() +
       "]{" + m_configuration->Documentclass() + "}\n\n";
+  // cppcheck-suppress unknownMacro
   output << wxS("%% Created with wxMaxima " GITVERSION "\n\n");
   output << wxS("\\setlength{\\parskip}{\\medskipamount}\n");
   output << wxS("\\setlength{\\parindent}{0pt}\n");

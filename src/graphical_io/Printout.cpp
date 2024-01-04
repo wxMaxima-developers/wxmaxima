@@ -195,7 +195,7 @@ void Printout::BreakPages() {
       pageEnd = i->GetNext()->GetRect(true).GetBottom();
     if(pageEnd - pageStart > canvasSize.y)
       {
-        if(i != m_pages[m_pages.size()])
+        if(i != m_pages[m_pages.size() - 1])
           {
             wxCoord pageHeight = i->GetRect(true).GetTop() - pageStart;
             wxLogMessage(_("Printout: PageStart=%li, PageHeight=%li, canvasSize=%li"),
