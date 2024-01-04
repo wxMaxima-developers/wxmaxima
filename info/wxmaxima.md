@@ -212,6 +212,10 @@ Please note that most of these symbols (notable exceptions are the logic symbols
 It may be the case that e.g. greek characters or mathematical symbols are not included in the selected font, then they can not be displayed.
 To solve that problem, select other fonts (using: Edit -> Configure -> Style).
 
+### Unicode replacement
+
+wxMaxima will replace several Unicode characters with their respective Maxima expressions, e.g. "²" with "^2", "³" with "^3", the square root sign with the function `sqrt()`, the (mathematical) Sigma sign (which is not the same unicode character as the corresponding greek letter) with `sum()`, etc.
+
 ### Side Panes
 
 Shortcuts to the most important _Maxima_ commands, things like a table of contents, windows with debug messages or a history of the last issued commands can be accessed using the side panes. They can be enabled using the "View" menu. They all can be moved to other locations inside or outside the _wxMaxima_ window. Other useful panes is the one that allows to input Greek letters using the mouse.
