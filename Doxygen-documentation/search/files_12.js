@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['variablespane_2eh_2145',['VariablesPane.h',['../VariablesPane_8h.html',1,'']]],
-  ['visiblyinvalidcell_2ecpp_2146',['VisiblyInvalidCell.cpp',['../VisiblyInvalidCell_8cpp.html',1,'']]]
+  ['variablespane_2eh_2159',['VariablesPane.h',['../VariablesPane_8h.html',1,'']]],
+  ['visiblyinvalidcell_2ecpp_2160',['VisiblyInvalidCell.cpp',['../VisiblyInvalidCell_8cpp.html',1,'']]]
 ];
