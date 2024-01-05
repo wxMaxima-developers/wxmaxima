@@ -47,7 +47,7 @@
 #include <memory>
 #include <list>
 #include "CellPointers.h"
-#include "VariablesPane.h"
+#include "sidebars/VariablesPane.h"
 #include "Notification.h"
 #include "Cell.h"
 #include "EditorCell.h"
@@ -57,7 +57,7 @@
 #include "FindReplaceDialog.h"
 #include "Autocomplete.h"
 #include "AutocompletePopup.h"
-#include "TableOfContents.h"
+#include "sidebars/TableOfContents.h"
 #include "sidebars/UnicodeSidebar.h"
 #include "ToolBar.h"
 #include <thread>

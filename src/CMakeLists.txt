@@ -92,6 +92,10 @@ set(SIDEBAR_SOURCE_FILES
     UnicodeSidebar.cpp
     SymbolsSidebar.cpp
     LogPane.cpp
+    History.cpp
+    TableOfContents.cpp
+    VariablesPane.cpp
+    XmlInspector.cpp
 )
 list_transform_prepend(SIDEBAR_SOURCE_FILES sidebars/)
 
@@ -125,7 +129,6 @@ set(SOURCE_FILES
     FontAttribs.cpp
     FontVariantCache.cpp
     HelpBrowser.cpp
-    History.cpp
     Image.cpp
     LicenseDialog.cpp
     LoggingMessageDialog.cpp
@@ -148,16 +151,13 @@ set(SOURCE_FILES
     StringUtils.cpp
     SvgBitmap.cpp
     SvgPanel.cpp
-    TableOfContents.cpp
     TextStyle.cpp
     ThreadNumberLimiter.cpp
     TipOfTheDay.cpp
     ToolBar.cpp
-    VariablesPane.cpp
     Worksheet.cpp
     WrappingStaticText.cpp
     WXMformat.cpp
-    XmlInspector.cpp
     levenshtein/levenshtein.cpp
     main.cpp
     wxImagePanel.cpp
