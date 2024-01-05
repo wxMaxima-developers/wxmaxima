@@ -730,10 +730,11 @@ void EditorCell::MarkSelection(wxDC *dc, size_t start, size_t end, TextStyle sty
 /* Draws the editor cell including selection and cursor
 
    The order this cell is drawn is:
-   1. draw selection (wxCOPY), TS_SELECTION color
-   2. mark matching parenthesis (wxCOPY), TS_SELECTION color
-   3. draw all text (wxCOPY)
-   4. draw the caret (wxCOPY), TS_CURSOR color
+   1. Mark text that coincides with the selection
+   2. draw selection (wxCOPY), TS_SELECTION color
+   3. mark matching parenthesis (wxCOPY), TS_SELECTION color
+   4. draw all text (wxCOPY)
+   5. draw the caret (wxCOPY), TS_CURSOR color
 
    The text is not taken from m_text but from the list of styled text snippets
    StyleText() converts m_text into. This way the decisions needed for styling

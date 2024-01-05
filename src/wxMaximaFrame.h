@@ -45,6 +45,7 @@
 
 #include "ScrollingGenWizPanel.h"
 #include "Worksheet.h"
+#include "SymbolsSidebar.h"
 #include "HelpBrowser.h"
 #include "RecentDocuments.h"
 #include "Version.h"
@@ -314,56 +315,11 @@ protected:
 #ifdef USE_WEBVIEW
   HelpBrowser *m_helpPane;
 #endif
-private:
-  class GreekPane : public wxScrolled<wxPanel>
-  {
-  public:
-    GreekPane(wxWindow *parent, Configuration *configuration, Worksheet *worksheet, int ID = wxID_ANY);
-  protected:
-    void UpdateSymbols();
-    void OnMouseRightDown(wxMouseEvent &event);
-    void OnMenu(wxCommandEvent &event);
-    void OnSize(wxSizeEvent &event);
-  private:
-    Configuration *m_configuration;
-    wxSizer *m_lowercaseSizer;
-    wxSizer *m_uppercaseSizer;
-    Worksheet *m_worksheet;
-  };
-
-  class SymbolsPane : public wxScrolled<wxPanel>
-  {
-  public:
-    SymbolsPane(wxWindow *parent, Configuration *configuration, Worksheet *worksheet, int ID = wxID_ANY);
-    //! Update the "user symbols" portion of the symbols pane.
-    void UpdateUserSymbols();
-    /*! Add the symbols to the "user symbols" portion of the symbols pane.
-
-      If these symbols already are populated UpdateUserSymbols() is the right place to go. 
-     */
-    void AddUserSymbols();
-  protected:
-    void OnMouseRightDown(wxMouseEvent &event);
-    void OnMenu(wxCommandEvent &event);
-    void OnSize(wxSizeEvent &event);
-  private:
-    //! A panel that shows all user-defined symbols on the symbols pane.
-    wxPanel *m_userSymbols;
-    //! A button per user defined symbol
-    std::list<wxWindow *> m_userSymbolButtons;
-    wxSizer *m_userSymbolsSizer;
-    Configuration *m_configuration;
-    Worksheet *m_worksheet;
-    //! The user symbols that are currently displayed
-    wxString m_userSymbols_Last;
-  };
-
-  wxPanel *CreateSymbolsPane();
 
 protected:
   std::array<wxString,10> m_statusTextHistory;
   void OnMenuStatusText(wxMenuEvent &event);
-  SymbolsPane *m_symbolsPane;
+  SymbolsSidebar *m_symbolsSidebar;
   //! The current length of the evaluation queue of commands we still need to send to maxima
   int m_EvaluationQueueLength;
   //! Do we need to update the display showing the evaluation queue length?

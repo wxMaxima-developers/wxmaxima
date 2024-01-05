@@ -158,6 +158,8 @@ set(SOURCE_FILES
     wxMathml.cpp
     wxMaxima.cpp
     wxMaximaFrame.cpp
+    GreekSidebar.cpp
+    SymbolsSidebar.cpp
     wxMaximaIcon.cpp
 )
 

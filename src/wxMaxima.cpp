@@ -187,7 +187,7 @@ void wxMaxima::ConfigChanged() {
 
     SetCWD(filename);
   }
-  CallAfter([this]{m_symbolsPane->UpdateUserSymbols();});
+  CallAfter([this]{m_symbolsSidebar->UpdateUserSymbols();});
 }
 
 wxMaxima::wxMaxima(wxWindow *parent, int id,
@@ -6591,7 +6591,7 @@ void wxMaxima::OnSymbolAdd(wxCommandEvent &event) {
   m_configuration.SymbolPaneAdditionalChars(
                                             m_configuration.SymbolPaneAdditionalChars() +
                                             wxString(wxChar(event.GetId())));
-  m_symbolsPane->UpdateUserSymbols();
+  m_symbolsSidebar->UpdateUserSymbols();
 }
 
 void wxMaxima::PropertiesMenu(wxCommandEvent &event) {
