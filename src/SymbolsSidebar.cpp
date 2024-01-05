@@ -109,9 +109,13 @@ SymbolsSidebar::SymbolsSidebar(wxWindow *parent,
   wxSizer *builtInSymbolsSizer = new Buttonwrapsizer(wxHORIZONTAL);
   wxPanel *builtInSymbols = new wxPanel(this);
   for (auto &def : symbolButtonDefinitions)
-    builtInSymbolsSizer->Add(
-                             new CharButton(builtInSymbols, m_worksheet, m_configuration, def),
-                             wxSizerFlags().Expand());
+    {
+      CharButton *button = new CharButton(builtInSymbols, m_worksheet, m_configuration, def);
+      builtInSymbolsSizer->Add(button, wxSizerFlags().Expand());
+      button->Connect(wxEVT_RIGHT_DOWN,
+                      wxMouseEventHandler(SymbolsSidebar::OnMouseRightDown));
+    }
+
   builtInSymbols->SetSizer(builtInSymbolsSizer);
   vbox->Add(builtInSymbols, wxSizerFlags().Expand());
 
@@ -162,8 +166,7 @@ void SymbolsSidebar::OnMenu(wxCommandEvent &event) {
     varFunc->second();
 }
 
-void SymbolsSidebar::OnMouseRightDown(
-                                                  wxMouseEvent &WXUNUSED(event)) {
+void SymbolsSidebar::OnMouseRightDown(wxMouseEvent &WXUNUSED(event)) {
   std::unique_ptr<wxMenu> popupMenu(new wxMenu());
   popupMenu->Append(EventIDs::menu_additionalSymbols, _("Add more symbols"),
                     wxEmptyString, wxITEM_NORMAL);
@@ -202,6 +205,8 @@ void SymbolsSidebar::AddUserSymbols() {
                                       m_userSymbols, m_worksheet, m_configuration,
                                       {ch, _("A symbol from the configuration dialogue")}, true);
     m_userSymbolButtons.push_back(button);
+    button->Connect(wxEVT_RIGHT_DOWN,
+                    wxMouseEventHandler(SymbolsSidebar::OnMouseRightDown));
     m_userSymbolsSizer->Add(button, wxSizerFlags().Expand());
   }
   m_userSymbols_Last = m_configuration->SymbolPaneAdditionalChars();

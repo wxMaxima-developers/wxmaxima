@@ -128,8 +128,6 @@ CharButton::CharButton(wxWindow *parent, wxWindow *worksheet,
   SetToolTip(def.description);
   Connect(wxEVT_LEFT_UP, wxCommandEventHandler(CharButton::CharButtonPressed),
           NULL, this);
-  Connect(wxEVT_RIGHT_DOWN, wxMouseEventHandler(CharButton::ForwardToParent),
-          NULL, this);
   Connect(wxEVT_IDLE, wxIdleEventHandler(CharButton::OnIdle), NULL, this);
   Connect(wxEVT_ENTER_WINDOW, wxMouseEventHandler(CharButton::MouseOverPanel),
           NULL, this);

@@ -172,18 +172,24 @@ void GreekSidebar::UpdateSymbols() {
     if (def.condition == Cond::None ||
         (def.condition == Cond::Show_mu && Show_mu) ||
         (def.condition == Cond::ShowLatinLookalikes && ShowLatinLookalikes))
-      m_lowercaseSizer->Add(
-                            new CharButton(this, m_worksheet, m_configuration, def, true),
-                            wxSizerFlags().Expand());
+      {
+        CharButton *button = new CharButton(this, m_worksheet, m_configuration, def);
+        m_lowercaseSizer->Add(button, wxSizerFlags().Expand());
+        button->Connect(wxEVT_RIGHT_DOWN,
+                        wxMouseEventHandler(GreekSidebar::OnMouseRightDown));
+      }
 
   m_uppercaseSizer->Clear(true);
   for (auto &def : upperCaseDefs)
     if (def.condition == Cond::None ||
         (def.condition == Cond::Show_mu && Show_mu) ||
         (def.condition == Cond::ShowLatinLookalikes && ShowLatinLookalikes))
-      m_uppercaseSizer->Add(
-                            new CharButton(this, m_worksheet, m_configuration, def, true),
-                            wxSizerFlags().Expand());
+      {
+        CharButton *button = new CharButton(this, m_worksheet, m_configuration, def);
+        m_uppercaseSizer->Add(button, wxSizerFlags().Expand());
+        button->Connect(wxEVT_RIGHT_DOWN,
+                        wxMouseEventHandler(GreekSidebar::OnMouseRightDown));
+      }
 }
 
 void GreekSidebar::OnMouseRightDown(wxMouseEvent &WXUNUSED(event)) {
