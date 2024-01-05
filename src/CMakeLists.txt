@@ -91,6 +91,7 @@ set(SIDEBAR_SOURCE_FILES
     CharButton.cpp
     UnicodeSidebar.cpp
     SymbolsSidebar.cpp
+    LogPane.cpp
 )
 list_transform_prepend(SIDEBAR_SOURCE_FILES sidebars/)
 
@@ -127,7 +128,6 @@ set(SOURCE_FILES
     History.cpp
     Image.cpp
     LicenseDialog.cpp
-    LogPane.cpp
     LoggingMessageDialog.cpp
     MainMenuBar.cpp
     MarkDown.cpp

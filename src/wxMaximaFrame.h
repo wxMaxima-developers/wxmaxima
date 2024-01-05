@@ -53,7 +53,7 @@
 #include "History.h"
 #include "XmlInspector.h"
 #include "StatusBar.h"
-#include "LogPane.h"
+#include "sidebars/LogPane.h"
 #include "ButtonWrapSizer.h"
 #include <list>
 
