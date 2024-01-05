@@ -36,7 +36,7 @@
 #include "EventIDs.h"
 #include <wx/sizer.h>
 #include <wx/panel.h>
-#include <CharButton.h>
+#include "CharButton.h"
 #include "ButtonWrapSizer.h"
 #include <list>
 

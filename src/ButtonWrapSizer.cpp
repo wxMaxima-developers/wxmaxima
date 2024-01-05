@@ -29,7 +29,6 @@
 */
 
 #include "ButtonWrapSizer.h"
-#include "UnicodeSidebar.h"
 #include <wx/settings.h>
 #include <wx/sizer.h>
 

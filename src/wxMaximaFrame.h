@@ -45,7 +45,7 @@
 
 #include "ScrollingGenWizPanel.h"
 #include "Worksheet.h"
-#include "SymbolsSidebar.h"
+#include "sidebars/SymbolsSidebar.h"
 #include "HelpBrowser.h"
 #include "RecentDocuments.h"
 #include "Version.h"

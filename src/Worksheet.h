@@ -58,7 +58,7 @@
 #include "Autocomplete.h"
 #include "AutocompletePopup.h"
 #include "TableOfContents.h"
-#include "UnicodeSidebar.h"
+#include "sidebars/UnicodeSidebar.h"
 #include "ToolBar.h"
 #include <thread>
 #include <vector>

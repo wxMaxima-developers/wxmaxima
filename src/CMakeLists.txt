@@ -86,6 +86,14 @@ set(WIZARD_SOURCE_FILES
 )
 list_transform_prepend(WIZARD_SOURCE_FILES wizards/)
 
+set(SIDEBAR_SOURCE_FILES
+    GreekSidebar.cpp
+    CharButton.cpp
+    UnicodeSidebar.cpp
+    SymbolsSidebar.cpp
+)
+list_transform_prepend(SIDEBAR_SOURCE_FILES sidebars/)
+
 set(GRAPHICAL_IO_SOURCE_FILES
     BitmapOut.cpp
     EMFout.cpp
@@ -104,7 +112,6 @@ set(SOURCE_FILES
     BTextCtrl.cpp
     CellPointers.cpp
     ChangeLogDialog.cpp
-    CharButton.cpp
     CompositeDataObject.cpp
     ConfigDialogue.cpp
     Configuration.cpp
@@ -146,7 +153,6 @@ set(SOURCE_FILES
     ThreadNumberLimiter.cpp
     TipOfTheDay.cpp
     ToolBar.cpp
-    UnicodeSidebar.cpp
     VariablesPane.cpp
     Worksheet.cpp
     WrappingStaticText.cpp
@@ -158,8 +164,6 @@ set(SOURCE_FILES
     wxMathml.cpp
     wxMaxima.cpp
     wxMaximaFrame.cpp
-    GreekSidebar.cpp
-    SymbolsSidebar.cpp
     wxMaximaIcon.cpp
 )
 
@@ -172,6 +176,7 @@ list(APPEND SOURCE_FILES
   ${CELL_SOURCE_FILES}
   ${GRAPHICAL_IO_SOURCE_FILES}
   ${WIZARD_SOURCE_FILES}
+  ${SIDEBAR_SOURCE_FILES}
 )
 
 include_directories(
@@ -202,6 +207,7 @@ if(WXM_USE_CPPCHECK)
 	    "-i${CMAKE_CURRENT_SOURCE_DIR}/graphical_io/"
 	    "-i${CMAKE_CURRENT_SOURCE_DIR}/nanoSVG/"
 	    "-i${CMAKE_CURRENT_SOURCE_DIR}/wizards/"
+	    "-i${CMAKE_CURRENT_SOURCE_DIR}/sidebars/"
 	)
     else()
 	message(STATUS "cppcheck not found.")

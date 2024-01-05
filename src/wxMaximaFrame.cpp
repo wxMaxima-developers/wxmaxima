@@ -36,10 +36,10 @@
 #include <memory>
 #include "ButtonWrapSizer.h"
 
-#include "CharButton.h"
+#include "sidebars/CharButton.h"
 #include "Gen1Wiz.h"
-#include "GreekSidebar.h"
-#include "UnicodeSidebar.h"
+#include "sidebars/GreekSidebar.h"
+#include "sidebars/UnicodeSidebar.h"
 #include "wxMaximaIcon.h"
 #include <wx/artprov.h>
 #include <wx/config.h>
