@@ -34,7 +34,6 @@
 #include "Dirstructure.h"
 #include <string>
 #include <memory>
-#include "sidebars/DrawSidebar.h"
 #include "sidebars/CharButton.h"
 #include "sidebars/StatSidebar.h"
 #include "sidebars/FormatSidebar.h"

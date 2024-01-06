@@ -42,6 +42,7 @@
 #include <wx/aui/aui.h>
 #include <wx/notifmsg.h>
 #include <wx/wrapsizer.h>
+#include "sidebars/DrawSidebar.h"
 
 #include "ScrollingGenWizPanel.h"
 #include "Worksheet.h"
