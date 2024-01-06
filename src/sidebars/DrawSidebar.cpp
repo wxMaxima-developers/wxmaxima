@@ -32,7 +32,7 @@
 #include <wx/windowptr.h>
 #include "wizards/Gen1Wiz.h"
 
-StatSidebar::DrawSidebar(wxWindow *parent, int ID)
+DrawSidebar::DrawSidebar(wxWindow *parent, int ID)
   : wxScrolled<wxPanel>(parent, ID)
 {
     wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);

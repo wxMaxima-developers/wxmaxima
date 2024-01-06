@@ -329,7 +329,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
 
   m_sidebarNames[EventIDs::menu_pane_format] = wxS("format");
   m_sidebarCaption[EventIDs::menu_pane_format] = _("Insert");
-  m_manager.AddPane(new FormatSidebar(), wxAuiPaneInfo()
+  m_manager.AddPane(new FormatSidebar(this), wxAuiPaneInfo()
                     .Name(m_sidebarNames[EventIDs::menu_pane_format])
                     .Left());
 

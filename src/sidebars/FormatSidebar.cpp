@@ -24,15 +24,16 @@
 //  SPDX-License-Identifier: GPL-2.0+
 
 /*! \file
-  This file defines the class StatSidebar
+  This file defines the class FormatSidebar
 
-  StatSidebar shows some miscellaneous unicode symbols the user might find useful.
+  FormatSidebar shows some miscellaneous unicode symbols the user might find useful.
 */
-#include "StatSidebar.h"
+#include "FormatSidebar.h"
+#include "ButtonWrapSizer.h"
 #include <wx/windowptr.h>
 #include "wizards/Gen1Wiz.h"
 
-StatSidebar::StatSidebar(wxWindow *parent, int ID = wxID_ANY)
+FormatSidebar::FormatSidebar(wxWindow *parent, int ID)
   : wxScrolled<wxPanel>(parent, ID)
 {
   wxSizer *grid = new Buttonwrapsizer();

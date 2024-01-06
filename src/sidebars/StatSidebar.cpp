@@ -29,10 +29,11 @@
   StatSidebar shows some miscellaneous unicode symbols the user might find useful.
 */
 #include "StatSidebar.h"
+#include "ButtonWrapSizer.h"
 #include <wx/windowptr.h>
 #include "wizards/Gen1Wiz.h"
 
-StatSidebar::StatSidebar(wxWindow *parent, int ID = wxID_ANY)
+StatSidebar::StatSidebar(wxWindow *parent, int ID)
   : wxScrolled<wxPanel>(parent, ID)
 {
   wxSizer *grid1 = new Buttonwrapsizer();
