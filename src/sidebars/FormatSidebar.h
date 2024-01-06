@@ -34,10 +34,10 @@
 #include <wx/sizer.h>
 #include <wx/panel.h>
 
-class StatSidebar : public wxScrolled<wxPanel>
+class FormatSidebar : public wxScrolled<wxPanel>
 {
 public:
-  StatSidebar(wxWindow *parent, int ID = wxID_ANY);
+  FormatSidebar(wxWindow *parent, int ID = wxID_ANY);
 };
 
 #endif // FORMATSIDEBAR_H
