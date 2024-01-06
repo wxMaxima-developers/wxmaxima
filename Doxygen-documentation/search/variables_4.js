@@ -36,7 +36,7 @@ var searchData=
   ['m_5fdontescapeopeningparenthesis_3084',['m_dontEscapeOpeningParenthesis',['../classTextCell.html#a29a7ea98c248a741844dc13dff28c6c3',1,'TextCell']]],
   ['m_5fdrawasascii_3085',['m_drawAsAscii',['../classIntervalCell.html#abc81c91f133eba7e35ebdbb6f4c670ce',1,'IntervalCell::m_drawAsAscii()'],['../classListCell.html#a51fb0d322d5997b0b50508cc267d9b7c',1,'ListCell::m_drawAsAscii()']]],
   ['m_5fdrawdimensions_5flast_3086',['m_drawDimensions_last',['../classwxMaximaFrame.html#a580b275b4d56bb2c1c851404deeea1e0',1,'wxMaximaFrame']]],
-  ['m_5fdrawpane_3087',['m_drawPane',['../classwxMaximaFrame.html#a14d8001af07a0bbbc8bca7499042dc7e',1,'wxMaximaFrame']]],
+  ['m_5fdrawpane_3087',['m_drawPane',['../classwxMaximaFrame.html#ad41749ea6ea9116d33925a14b7696ed5',1,'wxMaximaFrame']]],
   ['m_5fedit_5fzoom_5fsub_3088',['m_Edit_Zoom_Sub',['../classwxMaximaFrame.html#ad7faa1a9aceffa53ba59ce09651f90fe',1,'wxMaximaFrame']]],
   ['m_5feditmenu_3089',['m_EditMenu',['../classwxMaximaFrame.html#a1d34daa73319ed2b4bb1cd17180ec2c2',1,'wxMaximaFrame']]],
   ['m_5femptywxxmlsymbols_3090',['m_emptywxxmlSymbols',['../classwxMaxima.html#a24f52aee4f55024e21d8253922d46ce7',1,'wxMaxima']]],
