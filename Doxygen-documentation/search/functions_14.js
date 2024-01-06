@@ -1,11 +1,11 @@
 var searchData=
 [
-  ['varaddallevent_2996',['VarAddAllEvent',['../classwxMaxima.html#a8e85cffaff14de4595889f050473c5e9',1,'wxMaxima']]],
-  ['variableactionmaximasharedir_2997',['VariableActionMaximaSharedir',['../classwxMaxima.html#a9821da5b4e68aa3eca8e75cf2cb3f430',1,'wxMaxima']]],
-  ['variablesandfunctionslist_2998',['VariablesAndFunctionsList',['../classCell.html#a9d61622f3855c073c4ce74c3b755a639',1,'Cell']]],
-  ['variablespane_2999',['Variablespane',['../classVariablespane.html#a8cd8d3779077c5bbc0913150af324783',1,'Variablespane']]],
-  ['variableundefined_3000',['VariableUndefined',['../classVariablespane.html#a7eee49754ce2e8065de23225703d60bf',1,'Variablespane']]],
-  ['variablevalue_3001',['VariableValue',['../classVariablespane.html#a167162a11036459b51dce22e0839a7ae',1,'Variablespane']]],
-  ['varreadevent_3002',['VarReadEvent',['../classwxMaxima.html#a4dfc9339e684b4d9a6fe4b5a9e810871',1,'wxMaxima']]],
-  ['visiblyinvalidcell_3003',['VisiblyInvalidCell',['../classVisiblyInvalidCell.html#ac5a17667589fa2a237647f3d0b2ae941',1,'VisiblyInvalidCell::VisiblyInvalidCell(GroupCell *group, Configuration *config)'],['../classVisiblyInvalidCell.html#ab87f908b177ea4b2b4a148445c750cf1',1,'VisiblyInvalidCell::VisiblyInvalidCell(GroupCell *group, Configuration *config, wxString &amp;&amp;toolTip)']]]
+  ['varaddallevent_3018',['VarAddAllEvent',['../classwxMaxima.html#a8e85cffaff14de4595889f050473c5e9',1,'wxMaxima']]],
+  ['variableactionmaximasharedir_3019',['VariableActionMaximaSharedir',['../classwxMaxima.html#a9821da5b4e68aa3eca8e75cf2cb3f430',1,'wxMaxima']]],
+  ['variablesandfunctionslist_3020',['VariablesAndFunctionsList',['../classCell.html#a9d61622f3855c073c4ce74c3b755a639',1,'Cell']]],
+  ['variablespane_3021',['Variablespane',['../classVariablespane.html#a8cd8d3779077c5bbc0913150af324783',1,'Variablespane']]],
+  ['variableundefined_3022',['VariableUndefined',['../classVariablespane.html#a7eee49754ce2e8065de23225703d60bf',1,'Variablespane']]],
+  ['variablevalue_3023',['VariableValue',['../classVariablespane.html#a167162a11036459b51dce22e0839a7ae',1,'Variablespane']]],
+  ['varreadevent_3024',['VarReadEvent',['../classwxMaxima.html#a4dfc9339e684b4d9a6fe4b5a9e810871',1,'wxMaxima']]],
+  ['visiblyinvalidcell_3025',['VisiblyInvalidCell',['../classVisiblyInvalidCell.html#ac5a17667589fa2a237647f3d0b2ae941',1,'VisiblyInvalidCell::VisiblyInvalidCell(GroupCell *group, Configuration *config)'],['../classVisiblyInvalidCell.html#ab87f908b177ea4b2b4a148445c750cf1',1,'VisiblyInvalidCell::VisiblyInvalidCell(GroupCell *group, Configuration *config, wxString &amp;&amp;toolTip)']]]
 ];
