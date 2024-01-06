@@ -176,9 +176,13 @@ void GreekSidebar::UpdateSymbols() {
         m_lowercaseSizer->Add(button, wxSizerFlags().Expand());
         button->Connect(wxEVT_RIGHT_DOWN,
                         wxMouseEventHandler(GreekSidebar::OnMouseRightDown), NULL, this);
+        button->Connect(EventIDs::menu_showGreekMu, wxEVT_MENU,
+                        wxCommandEventHandler(GreekSidebar::OnMenu), NULL, this);
         button->GetTextObject()->Connect(wxEVT_RIGHT_DOWN,
                                          wxMouseEventHandler(GreekSidebar::OnMouseRightDown),
                                          NULL, this);
+        button->GetTextObject()->Connect(EventIDs::menu_showGreekMu, wxEVT_MENU,
+                                         wxCommandEventHandler(GreekSidebar::OnMenu), NULL, this);
       }
 
   m_uppercaseSizer->Clear(true);
@@ -191,9 +195,13 @@ void GreekSidebar::UpdateSymbols() {
         m_uppercaseSizer->Add(button, wxSizerFlags().Expand());
         button->Connect(wxEVT_RIGHT_DOWN,
                         wxMouseEventHandler(GreekSidebar::OnMouseRightDown), NULL, this);
+        button->Connect(EventIDs::menu_showGreekMu, wxEVT_MENU,
+                        wxCommandEventHandler(GreekSidebar::OnMenu), NULL, this);
         button->GetTextObject()->Connect(wxEVT_RIGHT_DOWN,
                                          wxMouseEventHandler(GreekSidebar::OnMouseRightDown),
                                          NULL, this);
+        button->GetTextObject()->Connect(EventIDs::menu_showGreekMu, wxEVT_MENU,
+                                         wxCommandEventHandler(GreekSidebar::OnMenu), NULL, this);
       }
 }
 

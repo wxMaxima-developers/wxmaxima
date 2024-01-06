@@ -113,11 +113,16 @@ SymbolsSidebar::SymbolsSidebar(wxWindow *parent,
       CharButton *button = new CharButton(builtInSymbols, m_worksheet, m_configuration, def);
       builtInSymbolsSizer->Add(button, wxSizerFlags().Expand());
       button->Connect(wxEVT_RIGHT_DOWN,
-                      wxMouseEventHandler(SymbolsSidebar::OnMouseRightDown));
+                      wxMouseEventHandler(SymbolsSidebar::OnMouseRightDown), NULL, this);
+      button->Connect(EventIDs::menu_showGreekMu, wxEVT_MENU,
+                      wxCommandEventHandler(SymbolsSidebar::OnMenu), NULL, this);
       button->GetTextObject()->Connect(wxEVT_RIGHT_DOWN,
-                                       wxMouseEventHandler(SymbolsSidebar::OnMouseRightDown));
+                                       wxMouseEventHandler(SymbolsSidebar::OnMouseRightDown),
+                                       NULL, this);
+      button->GetTextObject()->Connect(EventIDs::menu_showGreekMu, wxEVT_MENU,
+                                       wxCommandEventHandler(SymbolsSidebar::OnMenu), NULL, this);
     }
-
+  
   builtInSymbols->SetSizer(builtInSymbolsSizer);
   vbox->Add(builtInSymbols, wxSizerFlags().Expand());
 
@@ -208,9 +213,14 @@ void SymbolsSidebar::AddUserSymbols() {
                                       {ch, _("A symbol from the configuration dialogue")}, true);
     m_userSymbolButtons.push_back(button);
     button->Connect(wxEVT_RIGHT_DOWN,
-                    wxMouseEventHandler(SymbolsSidebar::OnMouseRightDown));
+                    wxMouseEventHandler(SymbolsSidebar::OnMouseRightDown), NULL, this);
+    button->Connect(EventIDs::menu_showGreekMu, wxEVT_MENU,
+                    wxCommandEventHandler(SymbolsSidebar::OnMenu), NULL, this);
     button->GetTextObject()->Connect(wxEVT_RIGHT_DOWN,
-                                     wxMouseEventHandler(SymbolsSidebar::OnMouseRightDown));
+                                     wxMouseEventHandler(SymbolsSidebar::OnMouseRightDown),
+                                     NULL, this);
+    button->GetTextObject()->Connect(EventIDs::menu_showGreekMu, wxEVT_MENU,
+                                     wxCommandEventHandler(SymbolsSidebar::OnMenu), NULL, this);
     m_userSymbolsSizer->Add(button, wxSizerFlags().Expand());
   }
   m_userSymbols_Last = m_configuration->SymbolPaneAdditionalChars();
