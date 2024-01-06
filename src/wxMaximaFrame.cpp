@@ -37,6 +37,7 @@
 #include "sidebars/CharButton.h"
 #include "sidebars/StatSidebar.h"
 #include "sidebars/FormatSidebar.h"
+#include "sidebars/MathSidebar.h"
 #include "Gen1Wiz.h"
 #include "sidebars/GreekSidebar.h"
 #include "sidebars/UnicodeSidebar.h"
