@@ -203,7 +203,7 @@ public:
   /*! Where to store the configuration.
 
     Empty means: "Use the default location", which on MS Windows is somewhere in the registry.
-   */
+  */
   static wxString m_configfileLocation_override;
 
   //! The list of names for the worksheet's text styles
@@ -322,8 +322,8 @@ public:
   //! Set the width of worksheet labels [in chars]
   void LabelWidth(long labelWidth)
     {
-    if(m_labelWidth != labelWidth)
-      RecalculateForce();
+      if(m_labelWidth != labelWidth)
+        RecalculateForce();
       m_labelWidth = labelWidth;
     }
 
@@ -477,9 +477,9 @@ public:
   //! Do we want to indent all maths?
   bool IndentMaths() const {return m_indentMaths;}
   void IndentMaths(bool indent){
-      if(m_indentMaths != indent)
-        RecalculateForce();
-      m_indentMaths = indent;}
+    if(m_indentMaths != indent)
+      RecalculateForce();
+    m_indentMaths = indent;}
   AFontSize GetFontSize(TextStyle st) const { return m_styles[st].GetFontSize(); }
 
   static const wxString &GetStyleName(TextStyle textStyle);
@@ -576,8 +576,8 @@ public:
 
   //! Use Unicode centered dots for multiplication signs?
   void SetChangeAsterisk(bool changeAsterisk) {
-  if(m_changeAsterisk != changeAsterisk)
-    RecalculateForce();
+    if(m_changeAsterisk != changeAsterisk)
+      RecalculateForce();
     m_changeAsterisk = changeAsterisk;
   }
 
@@ -724,9 +724,9 @@ public:
 
   bool ShowInputLabels() const {return m_showInputLabels;}
   void ShowInputLabels(bool show) {
-      if(m_showInputLabels != show)
-        RecalculateForce();
-      m_showInputLabels = show;
+    if(m_showInputLabels != show)
+      RecalculateForce();
+    m_showInputLabels = show;
   }
 
   bool InvertBackground() const {return m_invertBackground;}
@@ -752,8 +752,8 @@ public:
 
   //! Sets the value of the Configuration ChoiceBox that treads displaying labels
   void SetLabelChoice(showLabels choice) {
-      if(m_showLabelChoice != choice)
-        RecalculateForce();
+    if(m_showLabelChoice != choice)
+      RecalculateForce();
     m_showLabelChoice = choice;
   }
 
@@ -863,8 +863,8 @@ public:
 
   //! Which way do we want to draw parenthesis?
   void SetParenthesisDrawMode(drawMode mode) {
-      if(m_parenthesisDrawMode != mode)
-        RecalculateForce();
+    if(m_parenthesisDrawMode != mode)
+      RecalculateForce();
     m_parenthesisDrawMode = mode;
   }
 
@@ -1060,7 +1060,7 @@ public:
     recalculated before that and if someone trying to do a speed run with wxMaxima
     manages to accumulate billions of config changes before the worksheet manages
     to recalculate itself the worst thing that can happen is a visual glitch.
-   */
+  */
   std::int_fast32_t CellCfgCnt() const {return m_cellCfgCnt;}
   void RecalculateForce() { m_cellCfgCnt++; }
 private:
