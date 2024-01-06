@@ -2301,7 +2301,10 @@ bool wxMaxima::StartServer() {
                    "machine can connect to on port %li"),
                  static_cast<long>(m_port));
 #if wxUSE_IPV6
-    wxIPV6address addr;
+    // wxIPV6address seems to be broken on KoenGu's development computer in 01/2024:
+    // Maxima if IPv6 is used outputs some whitespace and exits.
+    // wxIPV6address addr;
+    wxIPV4address addr;
 #else
     wxIPV4address addr;
 #endif
