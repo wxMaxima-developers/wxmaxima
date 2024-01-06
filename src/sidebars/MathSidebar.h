@@ -41,7 +41,7 @@
 #include <list>
 
 
-class SymbolsSidebar : public wxScrolled<wxPanel>
+class MathSidebar : public wxScrolled<wxPanel>
 {
 public:
   MathSidebar(wxWindow *parent, int ID = wxID_ANY);

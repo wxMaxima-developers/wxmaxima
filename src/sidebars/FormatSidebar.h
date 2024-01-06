@@ -24,8 +24,8 @@
 /*!\file
   This file declares the class StatSidebar, that provides some statistics buttons.
 */
-#ifndef STATSIDEBAR_H
-#define STATSIDEBAR_H
+#ifndef FORMATSIDEBAR_H
+#define FORMATSIDEBAR_H
 
 #include "precomp.h"
 #include <wx/wx.h>
@@ -40,4 +40,4 @@ public:
   StatSidebar(wxWindow *parent, int ID = wxID_ANY);
 };
 
-#endif // STATSIDEBAR_H
+#endif // FORMATSIDEBAR_H
