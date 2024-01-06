@@ -203,7 +203,7 @@ The same mechanism also allows to enter some miscellaneous mathematical symbols:
 | ->             | a right arrow                                         |
 | -->            | a long right arrow                                    |
 
-If a special symbol isn’t in the list, it is possible to input arbitrary Unicode characters by pressing <kbd>ESC</kbd> \[number of the character (hexadecimal)\] <kbd>ESC</kbd>.
+If a special symbol isn’t in the list, it is possible to input arbitrary Unicode characters by pressing <kbd>ESC</kbd> \[number of the character (hexadecimal)\] <kbd>ESC</kbd>. Additionally the "symbols" sidebar has a right-click menu that allow to display a list of all available unicode symbols one can add to this toolbar or to the worksheet.
 
 <kbd>ESC</kbd> <kbd>61</kbd> <kbd>ESC</kbd> therefore results in an `a`.
 
