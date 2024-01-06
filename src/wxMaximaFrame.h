@@ -54,7 +54,7 @@
 #include "sidebars/XmlInspector.h"
 #include "StatusBar.h"
 #include "sidebars/LogPane.h"
-#include "ButtonWrapSizer.h"
+#include "sidebars/ButtonWrapSizer.h"
 #include <list>
 
 

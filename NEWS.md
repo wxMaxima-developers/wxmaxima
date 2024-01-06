@@ -14,6 +14,7 @@
 - Steamlined the cell size calculation stuff
 - Completely overhauled the printing functionality
 - Moved more of the help file indexing to the background (#1856)
+- Better event handling in the unicode sidebars (#1875, #1863)
 
 # 23.12.0
 

@@ -96,6 +96,7 @@ set(SIDEBAR_SOURCE_FILES
     TableOfContents.cpp
     VariablesPane.cpp
     XmlInspector.cpp
+    ButtonWrapSizer.cpp
 )
 list_transform_prepend(SIDEBAR_SOURCE_FILES sidebars/)
 
@@ -113,7 +114,6 @@ set(SOURCE_FILES
     Autocomplete.cpp
     AutocompletePopup.cpp
     Autocomplete_Builtins.cpp
-    ButtonWrapSizer.cpp
     BTextCtrl.cpp
     CellPointers.cpp
     ChangeLogDialog.cpp

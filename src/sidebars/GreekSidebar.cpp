@@ -76,14 +76,14 @@ void GreekSidebar::OnSize(wxSizeEvent &event) {
 void GreekSidebar::OnMenu(wxCommandEvent &event) {
   std::unordered_map<int, std::function<void()>> m{
     {EventIDs::menu_showLatinGreekLookalikes, [&](){
-      m_configuration->GreekSidebar_ShowLatinLookalikes(
-                                                        !m_configuration->GreekSidebar_ShowLatinLookalikes());
+      bool showLookalikes = !m_configuration->GreekSidebar_ShowLatinLookalikes();
+      m_configuration->GreekSidebar_ShowLatinLookalikes(showLookalikes);
       UpdateSymbols();
       Layout();
     }},
     {EventIDs::menu_showGreekMu, [&](){
-      m_configuration->GreekSidebar_Show_mu(
-                                            !m_configuration->GreekSidebar_Show_mu());
+      bool show_mu = !m_configuration->GreekSidebar_Show_mu();
+      m_configuration->GreekSidebar_Show_mu(show_mu);
       UpdateSymbols();
       Layout();
     }
@@ -164,8 +164,7 @@ void GreekSidebar::UpdateSymbols() {
   };
 
   bool const Show_mu = m_configuration->GreekSidebar_Show_mu();
-  bool const ShowLatinLookalikes =
-    m_configuration->GreekSidebar_ShowLatinLookalikes();
+  bool const ShowLatinLookalikes = m_configuration->GreekSidebar_ShowLatinLookalikes();
 
   m_lowercaseSizer->Clear(true);
   for (auto &def : lowerCaseDefs)
@@ -176,7 +175,10 @@ void GreekSidebar::UpdateSymbols() {
         CharButton *button = new CharButton(this, m_worksheet, m_configuration, def);
         m_lowercaseSizer->Add(button, wxSizerFlags().Expand());
         button->Connect(wxEVT_RIGHT_DOWN,
-                        wxMouseEventHandler(GreekSidebar::OnMouseRightDown));
+                        wxMouseEventHandler(GreekSidebar::OnMouseRightDown), NULL, this);
+        button->GetTextObject()->Connect(wxEVT_RIGHT_DOWN,
+                                         wxMouseEventHandler(GreekSidebar::OnMouseRightDown),
+                                         NULL, this);
       }
 
   m_uppercaseSizer->Clear(true);
@@ -188,7 +190,10 @@ void GreekSidebar::UpdateSymbols() {
         CharButton *button = new CharButton(this, m_worksheet, m_configuration, def);
         m_uppercaseSizer->Add(button, wxSizerFlags().Expand());
         button->Connect(wxEVT_RIGHT_DOWN,
-                        wxMouseEventHandler(GreekSidebar::OnMouseRightDown));
+                        wxMouseEventHandler(GreekSidebar::OnMouseRightDown), NULL, this);
+        button->GetTextObject()->Connect(wxEVT_RIGHT_DOWN,
+                                         wxMouseEventHandler(GreekSidebar::OnMouseRightDown),
+                                         NULL, this);
       }
 }
 

@@ -50,12 +50,6 @@ void CharButton::MouseOverPanelIs(bool mouseOver) {
   }
 }
 
-void CharButton::ForwardToParent(wxMouseEvent &event) {
-  event.Skip();
-  if (GetParent())
-    GetParent()->GetEventHandler()->QueueEvent(new wxMouseEvent(event));
-}
-
 void CharButton::MouseOverPanel(wxMouseEvent &event) {
   MouseOverPanelIs();
   event.Skip();
@@ -142,9 +136,6 @@ CharButton::CharButton(wxWindow *parent, wxWindow *worksheet,
   m_buttonText->Connect(wxEVT_LEFT_UP,
                         wxCommandEventHandler(CharButton::CharButtonPressed),
                         NULL, this);
-  m_buttonText->Connect(wxEVT_RIGHT_DOWN,
-                        wxMouseEventHandler(CharButton::ForwardToParent), NULL,
-                        this);
   if (!(forceShow || m_configuration->FontRendersChar(m_char))) {
     Hide();
   }

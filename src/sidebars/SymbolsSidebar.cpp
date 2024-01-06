@@ -114,6 +114,8 @@ SymbolsSidebar::SymbolsSidebar(wxWindow *parent,
       builtInSymbolsSizer->Add(button, wxSizerFlags().Expand());
       button->Connect(wxEVT_RIGHT_DOWN,
                       wxMouseEventHandler(SymbolsSidebar::OnMouseRightDown));
+      button->GetTextObject()->Connect(wxEVT_RIGHT_DOWN,
+                                       wxMouseEventHandler(SymbolsSidebar::OnMouseRightDown));
     }
 
   builtInSymbols->SetSizer(builtInSymbolsSizer);
@@ -201,12 +203,14 @@ void SymbolsSidebar::AddUserSymbols() {
   
   // Populate the pane with a button per user symbol
   for (auto ch : m_configuration->SymbolPaneAdditionalChars()) {
-    wxWindow *button = new CharButton(
+    CharButton *button = new CharButton(
                                       m_userSymbols, m_worksheet, m_configuration,
                                       {ch, _("A symbol from the configuration dialogue")}, true);
     m_userSymbolButtons.push_back(button);
     button->Connect(wxEVT_RIGHT_DOWN,
                     wxMouseEventHandler(SymbolsSidebar::OnMouseRightDown));
+    button->GetTextObject()->Connect(wxEVT_RIGHT_DOWN,
+                                     wxMouseEventHandler(SymbolsSidebar::OnMouseRightDown));
     m_userSymbolsSizer->Add(button, wxSizerFlags().Expand());
   }
   m_userSymbols_Last = m_configuration->SymbolPaneAdditionalChars();

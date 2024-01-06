@@ -34,8 +34,6 @@
 #include "Dirstructure.h"
 #include <string>
 #include <memory>
-#include "ButtonWrapSizer.h"
-
 #include "sidebars/CharButton.h"
 #include "Gen1Wiz.h"
 #include "sidebars/GreekSidebar.h"
