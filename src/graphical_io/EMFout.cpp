@@ -26,7 +26,7 @@
 */
 
 #include "EMFout.h"
-#include "Cell.h"
+#include "cells/Cell.h"
 
 #if wxUSE_ENH_METAFILE
 

@@ -44,7 +44,7 @@
 #include <wx/wrapsizer.h>
 #include "sidebars/DrawSidebar.h"
 
-#include "ScrollingGenWizPanel.h"
+#include "wizards/ScrollingGenWizPanel.h"
 #include "Worksheet.h"
 #include "sidebars/SymbolsSidebar.h"
 #include "HelpBrowser.h"

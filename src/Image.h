@@ -33,7 +33,7 @@
 #include <thread>
 #include "ThreadNumberLimiter.h"
 #include "precomp.h"
-#include "Cell.h"
+#include "cells/Cell.h"
 #include <wx/image.h>
 #include <wx/buffer.h>
 #include <wx/zipstrm.h>

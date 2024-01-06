@@ -27,7 +27,7 @@
 #define WXMFORMAT_H
 
 #include <memory>
-#include "GroupCell.h"
+#include "cells/GroupCell.h"
 #include <vector>
 
 class wxTextBuffer;

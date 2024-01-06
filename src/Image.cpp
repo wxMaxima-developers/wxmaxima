@@ -26,7 +26,7 @@
   Image stores compressed images and handles scaling and uncompressing them.
 */
 #include "precomp.h"
-#include "Cell.h"
+#include "cells/Cell.h"
 #include "Version.h"
 #include "ErrorRedirector.h"
 #include <wx/image.h>

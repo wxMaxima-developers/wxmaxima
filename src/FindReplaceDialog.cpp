@@ -27,7 +27,7 @@
 */
 
 #include "FindReplaceDialog.h"
-#include "EditorCell.h"
+#include "cells/EditorCell.h"
 
 FindReplaceDialog::FindReplaceDialog(wxWindow *parent,
                                      FindReplacePane::FindReplaceData *data,

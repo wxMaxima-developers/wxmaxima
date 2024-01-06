@@ -26,7 +26,7 @@
 */
 
 #include "BitmapOut.h"
-#include "Cell.h"
+#include "cells/Cell.h"
 #include <wx/clipbrd.h>
 
 #define BM_FULL_WIDTH 1000

@@ -34,7 +34,7 @@
 #include "precomp.h"
 #include "Configuration.h"
 #include "RegexCtrl.h"
-#include "GroupCell.h"
+#include "cells/GroupCell.h"
 
 #ifndef TABLEOFCONTENTS_H
 #define TABLEOFCONTENTS_H

@@ -38,7 +38,7 @@
 
 #include "precomp.h"
 #include "Autocomplete.h"
-#include "EditorCell.h"
+#include "cells/EditorCell.h"
 #include <wx/combo.h>
 #include <wx/listctrl.h>
 #include <vector>

@@ -23,7 +23,7 @@
 //  SPDX-License-Identifier: GPL-2.0+
 
 #include "CellPointers.h"
-#include "GroupCell.h"
+#include "cells/GroupCell.h"
 #include <algorithm>
 #include <iterator>
 

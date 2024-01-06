@@ -31,13 +31,13 @@
 #include "ConfigDialogue.h"
 #include "WXMformat.h"
 #include "BTextCtrl.h"
-#include "Cell.h"
+#include "cells/Cell.h"
 #include "Dirstructure.h"
 #include "ArtProvider.h"
 #include "WrappingStaticText.h"
 #include "wxm_config_images.h"
 #include "MathParser.h"
-#include "CellList.h"
+#include "cells/CellList.h"
 #include "ToolBar.h"
 #include <cstdlib>
 #include <wx/colordlg.h>

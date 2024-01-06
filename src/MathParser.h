@@ -37,11 +37,11 @@
 #include <wx/fs_arc.h>
 #include <wx/regex.h>
 #include <wx/hashmap.h>
-#include "Cell.h"
-#include "TextCell.h"
-#include "EditorCell.h"
-#include "FracCell.h"
-#include "GroupCell.h"
+#include "cells/Cell.h"
+#include "cells/TextCell.h"
+#include "cells/EditorCell.h"
+#include "cells/FracCell.h"
+#include "cells/GroupCell.h"
 #include <unordered_map>
 
 /*! This class handles parsing the xml representation of a cell tree.

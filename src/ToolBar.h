@@ -31,8 +31,8 @@
 #include <wx/aui/aui.h>
 #include <wx/choice.h>
 #include "precomp.h"
-#include "AnimationCell.h"
-#include "GroupCell.h"
+#include "cells/AnimationCell.h"
+#include "cells/GroupCell.h"
 
 #ifndef _WXMAXIMA_TOOLBAR_H
 #define _WXMAXIMA_TOOLBAR_H

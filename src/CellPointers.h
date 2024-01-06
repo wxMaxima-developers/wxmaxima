@@ -24,7 +24,7 @@
 #ifndef WXMAXIMA_CELLPOINTERS_H
 #define WXMAXIMA_CELLPOINTERS_H
 
-#include "Cell.h"
+#include "cells/Cell.h"
 #include <wx/string.h>
 #include <vector>
 

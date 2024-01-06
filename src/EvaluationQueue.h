@@ -33,7 +33,7 @@
 #define EVALUATIONQUEUE_H
 
 #include "precomp.h"
-#include "GroupCell.h"
+#include "cells/GroupCell.h"
 #include <wx/arrstr.h>
 #include <vector>
 #include <utility>

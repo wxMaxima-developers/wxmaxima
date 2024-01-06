@@ -28,7 +28,7 @@
 
 #include "Configuration.h"
 
-#include "Cell.h"
+#include "cells/Cell.h"
 #include "TextStyle.h"
 #include "Dirstructure.h"
 #include "ErrorRedirector.h"

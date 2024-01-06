@@ -33,7 +33,7 @@
 #include <wx/bitmap.h>
 #include "nanosvg_private.h"
 #include "nanosvgrast_private.h"
-#include "Cell.h"
+#include "cells/Cell.h"
 #define NANOSVG_ALL_COLOR_KEYWORDS
 
 /*! A wxBitmap with a constructor that generates the image from SVG.

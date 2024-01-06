@@ -27,7 +27,7 @@
 */
 
 #include "FindReplacePane.h"
-#include "EditorCell.h"
+#include "cells/EditorCell.h"
 #include <wx/button.h>
 #include <wx/stattext.h>
 #include <wx/regex.h>

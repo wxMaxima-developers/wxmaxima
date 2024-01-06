@@ -36,7 +36,7 @@
 
 #include <vector>
 
-#include "GroupCell.h"
+#include "cells/GroupCell.h"
 
 class Printout : public wxPrintout
 {

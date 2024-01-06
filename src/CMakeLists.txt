@@ -185,9 +185,6 @@ list(APPEND SOURCE_FILES
 
 include_directories(
   "${CMAKE_SOURCE_DIR}/src"
-  "${CMAKE_SOURCE_DIR}/src/cells"
-  "${CMAKE_SOURCE_DIR}/src/graphical_io"
-  "${CMAKE_SOURCE_DIR}/src/wizards"
   "${CMAKE_BINARY_DIR}"
 )
 
@@ -207,11 +204,6 @@ if(WXM_USE_CPPCHECK)
 	    "--language=c++"
 	    "--template=gcc"
 	    "--suppressions-list=${CMAKE_CURRENT_SOURCE_DIR}/CppCheckSuppressions.txt"
-	    "-i${CMAKE_CURRENT_SOURCE_DIR}/cells/"
-	    "-i${CMAKE_CURRENT_SOURCE_DIR}/graphical_io/"
-	    "-i${CMAKE_CURRENT_SOURCE_DIR}/nanoSVG/"
-	    "-i${CMAKE_CURRENT_SOURCE_DIR}/wizards/"
-	    "-i${CMAKE_CURRENT_SOURCE_DIR}/sidebars/"
 	)
     else()
 	message(STATUS "cppcheck not found.")

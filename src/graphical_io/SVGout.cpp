@@ -29,7 +29,7 @@
 #include "SVGout.h"
 #include "Configuration.h"
 #include "ErrorRedirector.h"
-#include "GroupCell.h"
+#include "cells/GroupCell.h"
 #include <wx/clipbrd.h>
 #include <wx/config.h>
 #include <wx/filename.h>

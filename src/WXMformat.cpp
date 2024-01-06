@@ -31,8 +31,8 @@
 #include <cstdlib>
 #include <vector>
 #include "WXMformat.h"
-#include "CellList.h"
-#include "ImgCell.h"
+#include "cells/CellList.h"
+#include "cells/ImgCell.h"
 #include <wx/debug.h>
 #include <wx/textbuf.h>
 #include <wx/tokenzr.h>

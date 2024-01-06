@@ -31,13 +31,13 @@
 */
 
 #include "Worksheet.h"
-#include "AnimationCell.h"
+#include "cells/AnimationCell.h"
 #include "graphical_io/BitmapOut.h"
-#include "CellList.h"
+#include "cells/CellList.h"
 #include "CompositeDataObject.h"
 #include "graphical_io/EMFout.h"
 #include "ErrorRedirector.h"
-#include "ImgCell.h"
+#include "cells/ImgCell.h"
 #include "MarkDown.h"
 #include "MaxSizeChooser.h"
 #include "ResolutionChooser.h"
