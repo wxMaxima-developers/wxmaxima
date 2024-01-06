@@ -34,7 +34,10 @@
 #include "Dirstructure.h"
 #include <string>
 #include <memory>
+#include "sidebars/DrawSidebar.h"
 #include "sidebars/CharButton.h"
+#include "sidebars/StatSidebar.h"
+#include "sidebars/FormatSidebar.h"
 #include "Gen1Wiz.h"
 #include "sidebars/GreekSidebar.h"
 #include "sidebars/UnicodeSidebar.h"
@@ -259,7 +262,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
   m_sidebarNames[EventIDs::menu_pane_stats] = wxS("stats");
   m_sidebarCaption[EventIDs::menu_pane_stats] = _("Statistics");
   wxWindow *statPane;
-  m_manager.AddPane(statPane = CreateStatPane(), wxAuiPaneInfo()
+  m_manager.AddPane(statPane = new StatSidebar(this), wxAuiPaneInfo()
                     .Name(m_sidebarNames[EventIDs::menu_pane_stats])
                     .Left());
   //  wxWindowUpdateLocker statBlocker(statPane);
@@ -309,7 +312,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
 
   m_sidebarNames[EventIDs::menu_pane_math] = wxS("math");
   m_sidebarCaption[EventIDs::menu_pane_math] = _("General Math");
-  m_manager.AddPane(CreateMathPane(), wxAuiPaneInfo()
+  m_manager.AddPane(new MathSidebar(this, wxID_ANY), wxAuiPaneInfo()
                     .Name(m_sidebarNames[EventIDs::menu_pane_math])
                     .Left());
 
@@ -326,17 +329,16 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
 
   m_sidebarNames[EventIDs::menu_pane_format] = wxS("format");
   m_sidebarCaption[EventIDs::menu_pane_format] = _("Insert");
-  m_manager.AddPane(CreateFormatPane(), wxAuiPaneInfo()
+  m_manager.AddPane(new FormatSidebar(), wxAuiPaneInfo()
                     .Name(m_sidebarNames[EventIDs::menu_pane_format])
                     .Left());
 
   m_sidebarNames[EventIDs::menu_pane_draw] = wxS("draw");
   m_sidebarCaption[EventIDs::menu_pane_draw] = _("Plot using Draw");
-  m_manager.AddPane(m_drawPane = new DrawPane(this, -1),
+  m_manager.AddPane(m_drawPane = new DrawSidebar(this, -1),
                     wxAuiPaneInfo()
                     .Name(m_sidebarNames[EventIDs::menu_pane_draw])
                     .Left());
-  //  wxWindowUpdateLocker drawBlocker(m_drawPane);
 
 #ifdef USE_WEBVIEW
   m_sidebarNames[EventIDs::menu_pane_help] = wxS("help");
@@ -2151,325 +2153,6 @@ void wxMaximaFrame::ShowPane(int id, bool show) {
       }
     }
   m_manager.Update();
-}
-
-wxWindow *wxMaximaFrame::CreateMathPane() {
-  wxSizer *grid = new Buttonwrapsizer();
-  wxScrolled<wxPanel> *panel = new wxScrolled<wxPanel>(this, -1);
-  panel->SetScrollRate(5, 5);
-
-  int style = wxALL | wxEXPAND;
-  int border = 0;
-
-  grid->Add(new wxButton(panel, EventIDs::button_ratsimp, _("Simplify"),
-                         wxDefaultPosition, wxDefaultSize),
-            0, style, border);
-  grid->Add(new wxButton(panel, EventIDs::button_radcan, _("Simplify (r)"),
-                         wxDefaultPosition, wxDefaultSize),
-            0, style, border);
-  grid->Add(new wxButton(panel, EventIDs::button_factor, _("Factor"), wxDefaultPosition,
-                         wxDefaultSize),
-            0, style, border);
-  grid->Add(new wxButton(panel, EventIDs::button_expand, _("Expand"), wxDefaultPosition,
-                         wxDefaultSize),
-            0, style, border);
-  grid->Add(new wxButton(panel, EventIDs::button_rectform, _("Rectform"),
-                         wxDefaultPosition, wxDefaultSize),
-            0, style, border);
-  grid->Add(new wxButton(panel, EventIDs::button_subst, _("Subst..."), wxDefaultPosition,
-                         wxDefaultSize),
-            0, style, border);
-  grid->Add(new wxButton(panel, EventIDs::button_trigrat, _("Canonical (tr)"),
-                         wxDefaultPosition, wxDefaultSize),
-            0, style, border);
-  grid->Add(new wxButton(panel, EventIDs::button_trigsimp, _("Simplify (tr)"),
-                         wxDefaultPosition, wxDefaultSize),
-            0, style, border);
-  grid->Add(new wxButton(panel, EventIDs::button_trigexpand, _("Expand (tr)"),
-                         wxDefaultPosition, wxDefaultSize),
-            0, style, border);
-  grid->Add(new wxButton(panel, EventIDs::button_trigreduce, _("Reduce (tr)"),
-                         wxDefaultPosition, wxDefaultSize),
-            0, style, border);
-  grid->Add(new wxButton(panel, EventIDs::button_solve, _("Solve..."), wxDefaultPosition,
-                         wxDefaultSize),
-            0, style, border);
-  grid->Add(new wxButton(panel, EventIDs::button_solve_ode, _("Solve ODE..."),
-                         wxDefaultPosition, wxDefaultSize),
-            0, style, border);
-  grid->Add(new wxButton(panel, EventIDs::button_diff, _("Diff..."), wxDefaultPosition,
-                         wxDefaultSize),
-            0, style, border);
-  grid->Add(new wxButton(panel, EventIDs::button_integrate, _("Integrate..."),
-                         wxDefaultPosition, wxDefaultSize),
-            0, style, border);
-  grid->Add(new wxButton(panel, EventIDs::button_limit, _("Limit..."), wxDefaultPosition,
-                         wxDefaultSize),
-            0, style, border);
-  grid->Add(new wxButton(panel, EventIDs::button_plot2, _("Plot 2D..."),
-                         wxDefaultPosition, wxDefaultSize),
-            0, style, border);
-  grid->Add(new wxButton(panel, EventIDs::button_plot3, _("Plot 3D..."),
-                         wxDefaultPosition, wxDefaultSize),
-            0, style, border);
-
-  panel->SetSizer(grid);
-  panel->FitInside();
-  return panel;
-}
-
-wxWindow *wxMaximaFrame::CreateStatPane() {
-  wxSizer *grid1 = new Buttonwrapsizer();
-  wxBoxSizer *box = new wxBoxSizer(wxVERTICAL);
-  wxBoxSizer *box1 = new wxBoxSizer(wxVERTICAL);
-  wxGridSizer *grid2 = new wxGridSizer(2);
-  wxGridSizer *grid3 = new wxGridSizer(2);
-  wxBoxSizer *box3 = new wxBoxSizer(wxVERTICAL);
-  wxScrolled<wxPanel> *panel = new wxScrolled<wxPanel>(this, -1);
-  panel->SetScrollRate(5, 5);
-
-  int style = wxALL | wxEXPAND;
-  int border = 0;
-  int sizerBorder = 2;
-
-  grid1->Add(new wxButton(panel, EventIDs::menu_stats_mean, _("Mean..."),
-                          wxDefaultPosition, wxDefaultSize),
-             0, style, border);
-  grid1->Add(new wxButton(panel, EventIDs::menu_stats_median, _("Median..."),
-                          wxDefaultPosition, wxDefaultSize),
-             0, style, border);
-  grid1->Add(new wxButton(panel, EventIDs::menu_stats_var, _("Variance..."),
-                          wxDefaultPosition, wxDefaultSize),
-             0, style, border);
-  grid1->Add(new wxButton(panel, EventIDs::menu_stats_dev, _("Deviation..."),
-                          wxDefaultPosition, wxDefaultSize),
-             0, style, border);
-
-  box->Add(grid1, 0, style, sizerBorder);
-
-  box1->Add(new wxButton(panel, EventIDs::menu_stats_tt1, _("Mean Test..."),
-                         wxDefaultPosition, wxDefaultSize),
-            0, style, border);
-  box1->Add(new wxButton(panel, EventIDs::menu_stats_tt2, _("Mean Difference Test..."),
-                         wxDefaultPosition, wxDefaultSize),
-            0, style, border);
-  box1->Add(new wxButton(panel, EventIDs::menu_stats_tnorm, _("Normality Test..."),
-                         wxDefaultPosition, wxDefaultSize),
-            0, style, border);
-  box1->Add(new wxButton(panel, EventIDs::menu_stats_linreg, _("Linear Regression..."),
-                         wxDefaultPosition, wxDefaultSize),
-            0, style, border);
-  box1->Add(new wxButton(panel, EventIDs::menu_stats_lsquares, _("Least Squares Fit..."),
-                         wxDefaultPosition, wxDefaultSize),
-            0, style, border);
-
-  box->Add(box1, 0, style, sizerBorder);
-
-  grid2->Add(new wxButton(panel, EventIDs::menu_stats_histogram, _("Histogram..."),
-                          wxDefaultPosition, wxDefaultSize),
-             0, style, border);
-  grid2->Add(new wxButton(panel, EventIDs::menu_stats_scatterplot, _("Scatterplot..."),
-                          wxDefaultPosition, wxDefaultSize),
-             0, style, border);
-  grid2->Add(new wxButton(panel, EventIDs::menu_stats_barsplot, _("Barsplot..."),
-                          wxDefaultPosition, wxDefaultSize),
-             0, style, border);
-  grid2->Add(new wxButton(panel, EventIDs::menu_stats_piechart, _("Piechart..."),
-                          wxDefaultPosition, wxDefaultSize),
-             0, style, border);
-  grid2->Add(new wxButton(panel, EventIDs::menu_stats_boxplot, _("Boxplot..."),
-                          wxDefaultPosition, wxDefaultSize),
-             0, style, border);
-
-  box->Add(grid2, 0, style, sizerBorder);
-
-  grid3->Add(new wxButton(panel, EventIDs::menu_stats_readm, _("Read Matrix..."),
-                          wxDefaultPosition, wxDefaultSize),
-             0, style, border);
-  grid3->Add(new wxButton(panel, EventIDs::menu_stats_enterm, _("Enter Matrix..."),
-                          wxDefaultPosition, wxDefaultSize),
-             0, style, border);
-
-  box->Add(grid3, 0, style, sizerBorder);
-
-  box3->Add(new wxButton(panel, EventIDs::menu_stats_subsample, _("Subsample..."),
-                         wxDefaultPosition, wxDefaultSize),
-            0, style, border);
-
-  box->Add(box3, 0, style, sizerBorder);
-
-  panel->SetSizer(box);
-  panel->FitInside();
-  return panel;
-}
-
-wxWindow *wxMaximaFrame::CreateFormatPane() {
-  wxSizer *grid = new Buttonwrapsizer();
-  wxScrolled<wxPanel> *panel = new wxScrolled<wxPanel>(this, -1);
-  panel->SetScrollRate(5, 5);
-
-  int style = wxALL | wxEXPAND;
-  int border = 0;
-
-  grid->Add(new wxButton(panel, EventIDs::menu_format_text, _("Text"), wxDefaultPosition,
-                         wxDefaultSize),
-            0, style, border);
-  grid->Add(new wxButton(panel, EventIDs::menu_format_title, _("Title"),
-                         wxDefaultPosition, wxDefaultSize),
-            0, style, border);
-  grid->Add(new wxButton(panel, EventIDs::menu_format_section, _("Section"),
-                         wxDefaultPosition, wxDefaultSize),
-            0, style, border);
-  grid->Add(new wxButton(panel, EventIDs::menu_format_subsection, _("Subsection"),
-                         wxDefaultPosition, wxDefaultSize),
-            0, style, border);
-  grid->Add(new wxButton(panel, EventIDs::menu_format_subsubsection, _("Subsubsection"),
-                         wxDefaultPosition, wxDefaultSize),
-            0, style, border);
-  grid->Add(new wxButton(panel, EventIDs::menu_format_heading5, _("Heading 5"),
-                         wxDefaultPosition, wxDefaultSize),
-            0, style, border);
-  grid->Add(new wxButton(panel, EventIDs::menu_format_heading6, _("Heading 6"),
-                         wxDefaultPosition, wxDefaultSize),
-            0, style, border);
-  grid->Add(new wxButton(panel, EventIDs::menu_format_image, _("Image"),
-                         wxDefaultPosition, wxDefaultSize),
-            0, style, border);
-  grid->Add(new wxButton(panel, EventIDs::menu_format_pagebreak, _("Pagebreak"),
-                         wxDefaultPosition, wxDefaultSize),
-            0, style, border);
-
-  panel->SetSizer(grid);
-  panel->FitInside();
-  return panel;
-}
-
-void wxMaximaFrame::DrawPane::SetDimensions(int dimensions) {
-  if (dimensions == m_dimensions)
-    return;
-
-  if (dimensions > 0) {
-    m_draw_explicit->Enable(true);
-    m_draw_implicit->Enable(true);
-    m_draw_parametric->Enable(true);
-    m_draw_points->Enable(true);
-    m_draw_title->Enable(true);
-    m_draw_key->Enable(true);
-    m_draw_fgcolor->Enable(true);
-    m_draw_fillcolor->Enable(true);
-    m_draw_setup2d->Enable(false);
-    m_draw_grid->Enable(true);
-    m_draw_axis->Enable(true);
-    m_draw_accuracy->Enable(true);
-    if (dimensions > 2) {
-      m_draw_contour->Enable(true);
-      m_draw_setup3d->Enable(true);
-    } else {
-      m_draw_contour->Enable(false);
-      m_draw_setup3d->Enable(false);
-    }
-  } else {
-    m_draw_accuracy->Enable(true);
-    m_draw_explicit->Enable(true);
-    m_draw_implicit->Enable(true);
-    m_draw_parametric->Enable(true);
-    m_draw_points->Enable(true);
-    m_draw_title->Enable(true);
-    m_draw_key->Enable(true);
-    m_draw_fgcolor->Enable(true);
-    m_draw_fillcolor->Enable(true);
-    m_draw_setup2d->Enable(true);
-    m_draw_setup3d->Enable(true);
-    m_draw_grid->Enable(true);
-    m_draw_axis->Enable(true);
-  }
-  m_dimensions = dimensions;
-}
-
-void wxMaximaFrame::DrawPane::OnSize(wxSizeEvent &event) {
-  // Shrink the width of the wxScrolled's virtual size if the wxScrolled is
-  // shrinking
-  SetVirtualSize(GetClientSize());
-  event.Skip();
-}
-
-wxMaximaFrame::DrawPane::DrawPane(wxWindow *parent, int id)
-  : wxScrolled<wxPanel>(parent, id) {
-  wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
-  SetScrollRate(5, 5);
-  m_grid = new Buttonwrapsizer(wxHORIZONTAL);
-  m_dimensions = -1;
-  int style = wxALL | wxEXPAND;
-  int border = 0;
-
-  m_grid->Add(m_draw_setup2d = new wxButton(this, EventIDs::menu_draw_2d, _("2D"),
-                                            wxDefaultPosition, wxDefaultSize),
-              0, style, border);
-  m_draw_setup2d->SetToolTip(_("Setup a 2D plot"));
-  m_grid->Add(m_draw_setup3d = new wxButton(this, EventIDs::menu_draw_3d, _("3D"),
-                                            wxDefaultPosition, wxDefaultSize),
-              0, style, border);
-  m_draw_setup3d->SetToolTip(_("Setup a 3D plot"));
-  m_grid->Add(m_draw_explicit =
-              new wxButton(this, EventIDs::menu_draw_explicit, _("Expression"),
-                           wxDefaultPosition, wxDefaultSize),
-              0, style, border);
-  m_draw_explicit->SetToolTip(
-                              _("The standard plot command: Plot an equation as a curve"));
-  m_grid->Add(m_draw_implicit =
-              new wxButton(this, EventIDs::menu_draw_implicit, _("Implicit Plot"),
-                           wxDefaultPosition, wxDefaultSize),
-              0, style, border);
-  m_grid->Add(m_draw_parametric =
-              new wxButton(this, EventIDs::menu_draw_parametric, _("Parametric Plot"),
-                           wxDefaultPosition, wxDefaultSize),
-              0, style, border);
-  m_grid->Add(m_draw_points = new wxButton(this, EventIDs::menu_draw_points, _("Points"),
-                                           wxDefaultPosition, wxDefaultSize),
-              0, style, border);
-  m_grid->Add(m_draw_title =
-              new wxButton(this, EventIDs::menu_draw_title, _("Diagram title"),
-                           wxDefaultPosition, wxDefaultSize),
-              0, style, border);
-  m_draw_title->SetToolTip(_("The diagram title"));
-  m_grid->Add(m_draw_axis = new wxButton(this, EventIDs::menu_draw_axis, _("Axis"),
-                                         wxDefaultPosition, wxDefaultSize),
-              0, style, border);
-  m_draw_axis->SetToolTip(_("Setup the axis"));
-  m_grid->Add(m_draw_contour =
-              new wxButton(this, EventIDs::menu_draw_contour, _("Contour"),
-                           wxDefaultPosition, wxDefaultSize),
-              0, style, border);
-  m_grid->Add(m_draw_key = new wxButton(this, EventIDs::menu_draw_key, _("Plot name"),
-                                        wxDefaultPosition, wxDefaultSize),
-              0, style, border);
-  m_draw_key->SetToolTip(_("The next plot's title"));
-  m_grid->Add(m_draw_fgcolor =
-              new wxButton(this, EventIDs::menu_draw_fgcolor, _("Line color"),
-                           wxDefaultPosition, wxDefaultSize),
-              0, style, border);
-  m_draw_fgcolor->SetToolTip(_("The color of the next line to draw"));
-  m_grid->Add(m_draw_fillcolor =
-              new wxButton(this, EventIDs::menu_draw_fillcolor, _("Fill color"),
-                           wxDefaultPosition, wxDefaultSize),
-              0, style, border);
-  m_draw_fillcolor->SetToolTip(_("The fill color for the next objects"));
-  m_grid->Add(m_draw_grid = new wxButton(this, EventIDs::menu_draw_grid, _("Grid"),
-                                         wxDefaultPosition, wxDefaultSize),
-              0, style, border);
-  m_draw_grid->SetToolTip(_("The grid in the background of the diagram"));
-  m_draw_contour->SetToolTip(_("Contour lines for 3d plots"));
-  m_grid->Add(m_draw_accuracy =
-              new wxButton(this, EventIDs::menu_draw_accuracy, _("Accuracy"),
-                           wxDefaultPosition, wxDefaultSize),
-              0, style, border);
-  m_draw_accuracy->SetToolTip(_("The accuracy versus speed tradeoff"));
-  Connect(wxEVT_SIZE, wxSizeEventHandler(wxMaximaFrame::DrawPane::OnSize), NULL,
-          this);
-  vbox->Add(m_grid, wxSizerFlags(2).Expand());
-
-  SetSizer(vbox);
-  FitInside();
 }
 
 void wxMaximaFrame::ShowToolBar(bool show) {

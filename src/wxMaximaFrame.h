@@ -256,46 +256,6 @@ private:
 */
   void SetupMenu();
 
-  wxWindow *CreateStatPane();
-
-  wxWindow *CreateMathPane();
-
-  wxWindow *CreateFormatPane();
-
-  //! The class for the sidebar with the draw commands
-  class DrawPane: public wxScrolled<wxPanel>
-  {
-  public:
-    explicit DrawPane(wxWindow *parent, int id = wxID_ANY);
-    /*! Tell the sidebar if we currently are inside a 2D or a 3D plot command
-
-      \param dimensions
-      - 0 = We aren't inside a plot
-      - 2 = We are inside a 2D plot
-      - 3 = We are inside a 3D plot
-    */
-    void SetDimensions(int dimensions);
-    int  GetDimensions() { return m_dimensions; }
-  protected:
-    void OnSize(wxSizeEvent &event);
-  private:
-    Buttonwrapsizer *m_grid;
-    wxButton *m_draw_setup2d;
-    wxButton *m_draw_setup3d;
-    wxButton *m_draw_explicit;
-    wxButton *m_draw_implicit;
-    wxButton *m_draw_parametric;
-    wxButton *m_draw_points;
-    wxButton *m_draw_fgcolor;
-    wxButton *m_draw_fillcolor;
-    wxButton *m_draw_title;
-    wxButton *m_draw_key;
-    wxButton *m_draw_grid;
-    wxButton *m_draw_axis;
-    wxButton *m_draw_contour;
-    wxButton *m_draw_accuracy;
-    int m_dimensions;
-  };
 public:
   void StatusText(const wxString &text, bool saveInLog = true);
 protected:

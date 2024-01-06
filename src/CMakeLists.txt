@@ -97,6 +97,10 @@ set(SIDEBAR_SOURCE_FILES
     VariablesPane.cpp
     XmlInspector.cpp
     ButtonWrapSizer.cpp
+    StatSidebar.cpp
+    DrawSidebar.cpp
+    MathSidebar.cpp
+    FormatSidebar.cpp
 )
 list_transform_prepend(SIDEBAR_SOURCE_FILES sidebars/)
 
