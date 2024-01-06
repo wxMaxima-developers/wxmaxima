@@ -272,7 +272,7 @@ protected:
   //! The default size for the window.
   virtual wxSize DoGetBestClientSize() const;
   //! The sidebar with the draw commands
-  DrawPane *m_drawPane;
+  DrawSidebar *m_drawPane;
 #ifdef USE_WEBVIEW
   HelpBrowser *m_helpPane;
 #endif

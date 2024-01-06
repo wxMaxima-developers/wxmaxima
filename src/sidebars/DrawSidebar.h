@@ -31,7 +31,7 @@
 #include <wx/wx.h>
 #include <wx/button.h>
 #include "EventIDs.h"
-#include <wx/sizer.h>
+#include "ButtonWrapSizer.h"
 #include <wx/panel.h>
 
 //! The class for the sidebar with the draw commands
