@@ -33,6 +33,7 @@
 #include <thread>
 #include <algorithm>
 #include <memory>
+#include <mutex>
 #include <wx/wx.h>
 #include <wx/dir.h>
 #include <vector>
@@ -116,10 +117,9 @@ public:
   std::vector<wxString> CompleteSymbol(wxString partial, autoCompletionType type = command);
   //! Basically runs a regex over templates
   static wxString FixTemplate(wxString templ);
+  std::vector<wxString> GetBuiltInDemoFiles();
 
 private:
-  //! An AddSymbol that doesn't wait for background tasks to finish
-  void AddSymbol_nowait(wxString fun, autoCompletionType type = command);
   //! The configuration storage
   Configuration *m_configuration;
   //! Loads the list of loadable files and can be run in a background task
@@ -138,15 +138,20 @@ private:
   class GetGeneralFiles : public wxDirTraverser
   {
   public:
-    explicit GetGeneralFiles(std::vector<wxString>& files, wxString prefix = wxEmptyString) :
-      m_files(files), m_prefix(prefix) { }
+    explicit GetGeneralFiles(std::vector<wxString>& files,
+                             std::mutex *lock,
+                             wxString prefix = wxEmptyString) :
+      m_files(files), m_lock(lock), m_prefix(prefix) { }
     wxDirTraverseResult OnFile(const wxString& filename) override
       {
         wxFileName newItemName(filename);
         wxString newItem = "\"" + m_prefix + newItemName.GetFullName() + "\"";
         newItem.Replace(wxFileName::GetPathSeparator(), "/");
-        if(std::find(m_files.begin(), m_files.end(), newItem) == m_files.end())
-          m_files.push_back(newItem);
+        {
+          const std::lock_guard<std::mutex> lock(*m_lock);
+          if(std::find(m_files.begin(), m_files.end(), newItem) == m_files.end())
+            m_files.push_back(newItem);
+        }
         return wxDIR_CONTINUE;
       }
     wxDirTraverseResult OnDir(const wxString& dirname) override
@@ -154,13 +159,20 @@ private:
         wxFileName newItemName(dirname);
         wxString newItem = "\"" + m_prefix + newItemName.GetFullName() + "/\"";
         newItem.Replace(wxFileName::GetPathSeparator(), "/");
-        if(std::find(m_files.begin(), m_files.end(), newItem) == m_files.end())
-          m_files.push_back(newItem);
+        {
+          const std::lock_guard<std::mutex> lock(*m_lock);
+          if(std::find(m_files.begin(), m_files.end(), newItem) == m_files.end())
+            m_files.push_back(newItem);
+        }
         return wxDIR_IGNORE;
       }
-    std::vector<wxString>& GetResult(){return m_files;}
+    std::vector<wxString> GetResult(){
+      const std::lock_guard<std::mutex> lock(*m_lock);
+      return m_files;
+    }
   protected:
     std::vector<wxString>& m_files;
+    std::mutex *m_lock;
     wxString m_prefix;
   };
 
@@ -168,8 +180,10 @@ private:
   class GetMacFiles_includingSubdirs : public wxDirTraverser
   {
   public:
-    explicit GetMacFiles_includingSubdirs(std::vector<wxString>& files, wxString prefix = wxEmptyString) :
-      m_files(files), m_prefix(prefix)  { }
+    explicit GetMacFiles_includingSubdirs(std::vector<wxString>& files,
+                                          std::mutex *lock,
+                                          wxString prefix = wxEmptyString) :
+      m_files(files), m_lock(lock), m_prefix(prefix)  { }
     wxDirTraverseResult OnFile(const wxString& filename) override
       {
         if(
@@ -181,8 +195,11 @@ private:
           wxFileName newItemName(filename);
           wxString newItem = "\"" + m_prefix + newItemName.GetName() + "\"";
           newItem.Replace(wxFileName::GetPathSeparator(), "/");
-          if(std::find(m_files.begin(), m_files.end(), newItem) == m_files.end())
-            m_files.push_back(newItem);
+          {
+            const std::lock_guard<std::mutex> lock(*m_lock);
+            if(std::find(m_files.begin(), m_files.end(), newItem) == m_files.end())
+              m_files.push_back(newItem);
+          }
         }
         return wxDIR_CONTINUE;
       }
@@ -198,9 +215,13 @@ private:
         else
           return wxDIR_CONTINUE;
       }
-    std::vector<wxString>& GetResult(){return m_files;}
+    std::vector<wxString> GetResult(){
+      const std::lock_guard<std::mutex> lock(*m_lock);
+      return m_files;
+    }
   protected:
     std::vector<wxString>& m_files;
+    std::mutex *m_lock;
     wxString m_prefix;
   };
 
@@ -208,15 +229,20 @@ private:
   class GetMacFiles : public GetMacFiles_includingSubdirs
   {
   public:
-    explicit GetMacFiles(std::vector<wxString>& files, wxString prefix = wxEmptyString) :
-      GetMacFiles_includingSubdirs(files, prefix){ }
+    explicit GetMacFiles(std::vector<wxString>& files,
+                         std::mutex *lock,
+                         wxString prefix = wxEmptyString) :
+      GetMacFiles_includingSubdirs(files, lock, prefix){ }
     wxDirTraverseResult OnDir(const wxString& dirname) override
       {
         wxFileName newItemName(dirname);
         wxString newItem = "\"" + m_prefix + newItemName.GetFullName() + "/\"";
         newItem.Replace(wxFileName::GetPathSeparator(), "/");
-        if(std::find(m_files.begin(), m_files.end(), newItem) == m_files.end())
-          m_files.push_back(newItem);
+        {
+          const std::lock_guard<std::mutex> lock(*m_lock);
+          if(std::find(m_files.begin(), m_files.end(), newItem) == m_files.end())
+            m_files.push_back(newItem);
+        }
         return wxDIR_IGNORE;
       }
   };
@@ -225,8 +251,10 @@ private:
   class GetDemoFiles_includingSubdirs : public wxDirTraverser
   {
   public:
-    explicit GetDemoFiles_includingSubdirs(std::vector<wxString>& files, wxString prefix = wxEmptyString) :
-      m_files(files), m_prefix(prefix) { }
+    explicit GetDemoFiles_includingSubdirs(std::vector<wxString>& files,
+                                           std::mutex *lock,
+                                           wxString prefix = wxEmptyString) :
+      m_files(files), m_lock(lock), m_prefix(prefix) { }
     wxDirTraverseResult OnFile(const wxString& filename) override
       {
         if(filename.EndsWith(".dem"))
@@ -234,8 +262,11 @@ private:
           wxFileName newItemName(filename);
           wxString newItem = "\"" + m_prefix + newItemName.GetName() + "\"";
           newItem.Replace(wxFileName::GetPathSeparator(), "/");
-          if(std::find(m_files.begin(), m_files.end(), newItem) == m_files.end())
-            m_files.push_back(newItem);
+          {
+            const std::lock_guard<std::mutex> lock(*m_lock);
+            if(std::find(m_files.begin(), m_files.end(), newItem) == m_files.end())
+              m_files.push_back(newItem);
+          }
         }
         return wxDIR_CONTINUE;
       }
@@ -251,9 +282,13 @@ private:
         else
           return wxDIR_CONTINUE;
       }
-    std::vector<wxString>& GetResult(){return m_files;}
+    std::vector<wxString> GetResult(){
+      const std::lock_guard<std::mutex> lock(*m_lock);
+      return m_files;
+    }
   protected:
     std::vector<wxString>& m_files;
+    std::mutex *m_lock;
     wxString m_prefix;
   };
 
@@ -261,29 +296,32 @@ private:
   class GetDemoFiles : public GetDemoFiles_includingSubdirs
   {
   public:
-    explicit GetDemoFiles(std::vector<wxString>& files, wxString prefix = wxEmptyString) :
-      GetDemoFiles_includingSubdirs(files, prefix){ }
+    explicit GetDemoFiles(std::vector<wxString>& files,
+                          std::mutex *lock,
+                          wxString prefix = wxEmptyString) :
+      GetDemoFiles_includingSubdirs(files, lock, prefix){ }
     virtual wxDirTraverseResult OnDir(const wxString& dirname) override
       {
         wxFileName newItemName(dirname);
         wxString newItem = "\"" + m_prefix + newItemName.GetFullName() + "/\"";
         newItem.Replace(wxFileName::GetPathSeparator(), "/");
-        if(std::find(m_files.begin(), m_files.end(), newItem) == m_files.end())
-          m_files.push_back(newItem);
+        {
+          const std::lock_guard<std::mutex> lock(*m_lock);
+          if(std::find(m_files.begin(), m_files.end(), newItem) == m_files.end())
+            m_files.push_back(newItem);
+        }
         return wxDIR_IGNORE;
       }
   };
-
-  void WaitForBackgroundThread_Symbols();
-  void WaitForBackgroundThread_Files();
-  void WaitForBackgroundThreads();
-
+ 
+  std::thread m_addSymbols_backgroundThread;
+  std::thread m_addFiles_backgroundThread;
+  //! Is locked when someone accesses a keyword list
+  std::mutex m_keywordsLock;
   //! The lists of autocompletable symbols for the classes defined in autoCompletionType
   std::vector<std::vector<wxString>> m_wordList;
   static wxRegEx m_args;
   WorksheetWords m_worksheetWords;
-  std::unique_ptr<std::thread> m_addSymbols_backgroundThread;
-  std::unique_ptr<std::thread> m_addFiles_backgroundThread;
 };
 
 #endif // AUTOCOMPLETE_H

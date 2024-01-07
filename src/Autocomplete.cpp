@@ -49,20 +49,23 @@ AutoComplete::AutoComplete(Configuration *configuration) {
 }
 
 void AutoComplete::ClearWorksheetWords() {
-  WaitForBackgroundThreads();
+  const std::lock_guard<std::mutex> lock(m_keywordsLock);
   m_worksheetWords.clear();
 }
 
+std::vector<wxString> AutoComplete::GetBuiltInDemoFiles() {
+  const std::lock_guard<std::mutex> lock(m_keywordsLock);
+  return m_builtInDemoFiles;
+}
+
 void AutoComplete::ClearDemofileList() {
-  if (m_addFiles_backgroundThread) {
-    WaitForBackgroundThread_Files();
-    m_addFiles_backgroundThread.reset();
-  }
+  const std::lock_guard<std::mutex> lock(m_keywordsLock);
   m_wordList.at(demofile) = m_builtInDemoFiles;
 }
 
 void AutoComplete::AddSymbols(wxString xml) {
-  WaitForBackgroundThread_Symbols();
+  if(m_addSymbols_backgroundThread.joinable())
+    m_addSymbols_backgroundThread.join();
   wxLogMessage(_("Scheduling a background task that compiles a new list "
                  "of autocompletable maxima commands."));
 
@@ -70,8 +73,8 @@ void AutoComplete::AddSymbols(wxString xml) {
   sharedir.Replace("\n", "");
   sharedir.Replace("\r", "");
 
-  m_addSymbols_backgroundThread = std::unique_ptr<std::thread>(
-                                                               new std::thread(&AutoComplete::AddSymbols_Backgroundtask, this, xml));
+  m_addSymbols_backgroundThread = std::thread(&AutoComplete::AddSymbols_Backgroundtask,
+                                              this, xml);
 }
 
 void AutoComplete::AddSymbols_Backgroundtask(wxString xml) {
@@ -87,7 +90,7 @@ void AutoComplete::AddSymbols_Backgroundtask(wxString xml) {
           wxXmlNode *val = children->GetChildren();
           if (val) {
             wxString name = val->GetContent();
-            AddSymbol_nowait(name, command);
+            AddSymbol(name, command);
           }
         }
 
@@ -95,7 +98,7 @@ void AutoComplete::AddSymbols_Backgroundtask(wxString xml) {
           wxXmlNode *val = children->GetChildren();
           if (val) {
             wxString name = val->GetContent();
-            AddSymbol_nowait(name, tmplte);
+            AddSymbol(name, tmplte);
           }
         }
 
@@ -103,7 +106,7 @@ void AutoComplete::AddSymbols_Backgroundtask(wxString xml) {
           wxXmlNode *val = children->GetChildren();
           if (val) {
             wxString name = val->GetContent();
-            AddSymbol_nowait(name, unit);
+            AddSymbol(name, unit);
           }
         }
 
@@ -111,7 +114,7 @@ void AutoComplete::AddSymbols_Backgroundtask(wxString xml) {
           wxXmlNode *val = children->GetChildren();
           if (val) {
             wxString name = val->GetContent();
-            AddSymbol_nowait(name, command);
+            AddSymbol(name, command);
           }
         }
       }
@@ -120,32 +123,9 @@ void AutoComplete::AddSymbols_Backgroundtask(wxString xml) {
   }
 }
 
-void AutoComplete::WaitForBackgroundThread_Symbols() {
-  if (m_addSymbols_backgroundThread) {
-    wxBusyCursor crs;
-    if (m_addSymbols_backgroundThread->joinable())
-      m_addSymbols_backgroundThread->join();
-    m_addSymbols_backgroundThread.reset();
-  }
-}
-
-void AutoComplete::WaitForBackgroundThread_Files() {
-  if (m_addFiles_backgroundThread) {
-    wxBusyCursor crs;
-    if (m_addFiles_backgroundThread->joinable())
-      m_addFiles_backgroundThread->join();
-    m_addFiles_backgroundThread.reset();
-  }
-}
-
-void AutoComplete::WaitForBackgroundThreads() {
-  WaitForBackgroundThread_Symbols();
-  WaitForBackgroundThread_Files();
-}
-
 void AutoComplete::AddWorksheetWords(WordList::const_iterator const begin,
                                      WordList::const_iterator const end) {
-  WaitForBackgroundThreads();
+  const std::lock_guard<std::mutex> lock(m_keywordsLock);
   for (auto word = begin; word != end; std::advance(word, 1))
     m_worksheetWords[*word] = 1;
 }
@@ -154,31 +134,45 @@ void AutoComplete::AddWorksheetWords(const WordList &words) {
   AddWorksheetWords(words.begin(), words.end());
 }
 
-AutoComplete::~AutoComplete() { WaitForBackgroundThreads(); }
+AutoComplete::~AutoComplete() {
+   if (m_addSymbols_backgroundThread.joinable())
+     m_addSymbols_backgroundThread.join();
+   if(m_addFiles_backgroundThread.joinable())
+     m_addFiles_backgroundThread.join();
+}
 
 void AutoComplete::LoadSymbols() {
-  WaitForBackgroundThreads();
   wxString sharedir = m_configuration->MaximaShareDir();
   sharedir.Replace("\n", "");
   sharedir.Replace("\r", "");
-  m_addSymbols_backgroundThread = std::unique_ptr<std::thread>(
-                                                               new std::thread(&AutoComplete::BuiltinSymbols_BackgroundTask, this));
-  m_addFiles_backgroundThread = std::unique_ptr<std::thread>(
-                                                             new std::thread(&AutoComplete::LoadableFiles_BackgroundTask, this, sharedir));
+  if(m_addFiles_backgroundThread.joinable())
+    m_addFiles_backgroundThread.join();
+  if(m_addSymbols_backgroundThread.joinable())
+    m_addSymbols_backgroundThread.join();
+  m_addSymbols_backgroundThread = std::thread(&AutoComplete::BuiltinSymbols_BackgroundTask, this);
+  m_addFiles_backgroundThread = std::thread(&AutoComplete::LoadableFiles_BackgroundTask, this, sharedir);
 }
 
 void AutoComplete::BuiltinSymbols_BackgroundTask() {
-  for(auto &wordlist:m_wordList)
+  {
+    const std::lock_guard<std::mutex> lock(m_keywordsLock);
+    for(auto &wordlist:m_wordList)
     wordlist.clear();
-
+  }
   LoadBuiltinSymbols();
 
   for (auto it = Configuration::EscCodesBegin();
        it != Configuration::EscCodesEnd(); ++it)
-    m_wordList.at(esccommand).push_back(it->first);
+    {
+      const std::lock_guard<std::mutex> lock(m_keywordsLock);
+      m_wordList.at(esccommand).push_back(it->first);
+    }
 
   for(auto &wordlist:m_wordList)
-    std::sort(wordlist.begin(), wordlist.end());
+    {
+      const std::lock_guard<std::mutex> lock(m_keywordsLock);
+      std::sort(wordlist.begin(), wordlist.end());
+    }
 
   wxString line;
 
@@ -201,13 +195,25 @@ void AutoComplete::BuiltinSymbols_BackgroundTask() {
       line.Trim(false);
       if (!line.StartsWith("#")) {
         if (function.Replace(&line, ""))
-          m_wordList.at(command).push_back(line);
+          {
+            const std::lock_guard<std::mutex> lock(m_keywordsLock);
+            m_wordList.at(command).push_back(line);
+          }
         else if (option.Replace(&line, ""))
-          m_wordList.at(command).push_back(line);
+          {
+            const std::lock_guard<std::mutex> lock(m_keywordsLock);
+            m_wordList.at(command).push_back(line);
+          }
         else if (templte.Replace(&line, ""))
-          m_wordList.at(tmplte).push_back(FixTemplate(line));
+          {
+            const std::lock_guard<std::mutex> lock(m_keywordsLock);
+            m_wordList.at(tmplte).push_back(FixTemplate(line));
+          }
         else if (unt.Replace(&line, ""))
-          m_wordList.at(unit).push_back(line);
+          {
+            const std::lock_guard<std::mutex> lock(m_keywordsLock);
+            m_wordList.at(unit).push_back(line);
+          }
         else
           wxLogMessage(_("%s: Can't interpret line: %s"),
                        privateList.mb_str(),
@@ -242,7 +248,7 @@ void AutoComplete::LoadableFiles_BackgroundTask(wxString sharedir) {
 
   // Prepare a list of all built-in loadable files of maxima.
   {
-    GetMacFiles_includingSubdirs maximaLispIterator(m_builtInLoadFiles);
+    GetMacFiles_includingSubdirs maximaLispIterator(m_builtInLoadFiles, &m_keywordsLock);
     if (sharedir.IsEmpty())
       wxLogMessage(_("Seems like the package with the maxima share files isn't "
                      "installed."));
@@ -255,7 +261,7 @@ void AutoComplete::LoadableFiles_BackgroundTask(wxString sharedir) {
       if (maximadir.IsOpened())
         maximadir.Traverse(maximaLispIterator); // todo
     }
-    GetMacFiles userLispIterator(m_builtInLoadFiles);
+    GetMacFiles userLispIterator(m_builtInLoadFiles, &m_keywordsLock);
     wxFileName userDir(Dirstructure::Get()->UserConfDir() + "/");
     userDir.MakeAbsolute();
     wxDir maximauserfilesdir(userDir.GetFullPath());
@@ -263,8 +269,9 @@ void AutoComplete::LoadableFiles_BackgroundTask(wxString sharedir) {
                  userDir.GetFullPath().utf8_str());
     if (maximauserfilesdir.IsOpened())
       maximauserfilesdir.Traverse(userLispIterator);
-    int num = m_builtInLoadFiles.size();
-    wxLogMessage(_("Found %li loadable files."), static_cast<long>(num));
+    const std::lock_guard<std::mutex> lock(m_keywordsLock);
+    long num = m_builtInLoadFiles.size();
+    wxLogMessage(_("Found %li loadable files."), num);
   }
 
   // Prepare a list of all built-in demos of maxima.
@@ -274,22 +281,23 @@ void AutoComplete::LoadableFiles_BackgroundTask(wxString sharedir) {
     wxFileName demoDir(shareDir.GetFullPath() + "/");
     demoDir.MakeAbsolute();
     demoDir.RemoveLastDir();
-    GetDemoFiles_includingSubdirs maximaLispIterator(m_builtInDemoFiles);
+    GetDemoFiles_includingSubdirs maximaLispIterator(m_builtInDemoFiles, &m_keywordsLock);
     wxLogMessage(_("Autocompletion: Scanning %s for loadable demo files."),
                  demoDir.GetFullPath().utf8_str());
 
     wxDir maximadir(demoDir.GetFullPath());
     if (maximadir.IsOpened())
       maximadir.Traverse(maximaLispIterator);
-    int num = m_builtInDemoFiles.size();
-    wxLogMessage(_("Found %li demo files."), static_cast<long>(num));
+    const std::lock_guard<std::mutex> lock(m_keywordsLock);
+    long num = m_builtInDemoFiles.size();
+    wxLogMessage(_("Found %li demo files."), num);
   }
+  const std::lock_guard<std::mutex> lock(m_keywordsLock);
   std::sort(m_builtInLoadFiles.begin(), m_builtInLoadFiles.end());
   std::sort(m_builtInDemoFiles.begin(), m_builtInDemoFiles.end());
 }
 
 void AutoComplete::UpdateDemoFiles(wxString partial, wxString maximaDir) {
-  WaitForBackgroundThread_Files();
   // Remove the opening quote from the partial.
   if (partial.at(0) == wxS('\"'))
     partial = partial.Right(partial.Length() - 1);
@@ -318,7 +326,7 @@ void AutoComplete::UpdateDemoFiles(wxString partial, wxString maximaDir) {
 
   // Add all files from the maxima directory to the demo file list
   if (partial != wxS("//")) {
-    GetDemoFiles userLispIterator(m_wordList.at(demofile), prefix);
+    GetDemoFiles userLispIterator(m_wordList.at(demofile), &m_keywordsLock, prefix);
     wxDir demofilesdir(partial);
     if (demofilesdir.IsOpened())
       demofilesdir.Traverse(userLispIterator);
@@ -326,7 +334,6 @@ void AutoComplete::UpdateDemoFiles(wxString partial, wxString maximaDir) {
 }
 
 void AutoComplete::UpdateGeneralFiles(wxString partial, wxString maximaDir) {
-  WaitForBackgroundThread_Files();
   // Remove the opening quote from the partial.
   if (partial.at(0) == wxS('\"'))
     partial = partial.Right(partial.Length() - 1);
@@ -352,7 +359,7 @@ void AutoComplete::UpdateGeneralFiles(wxString partial, wxString maximaDir) {
 
   // Add all files from the maxima directory to the demo file list
   if (partial != wxS("//")) {
-    GetGeneralFiles fileIterator(m_wordList[generalfile], prefix);
+    GetGeneralFiles fileIterator(m_wordList[generalfile], &m_keywordsLock, prefix);
     wxDir generalfilesdir(partial);
     if (generalfilesdir.IsOpened())
       generalfilesdir.Traverse(fileIterator);
@@ -362,7 +369,6 @@ void AutoComplete::UpdateGeneralFiles(wxString partial, wxString maximaDir) {
 void AutoComplete::UpdateLoadFiles(wxString partial, wxString maximaDir) {
   wxLogMessage(_("Scheduling a background task that scans for autocompletable "
                  "file names."));
-  WaitForBackgroundThread_Files();
   // Remove the opening quote from the partial.
   if (partial.at(0) == wxS('\"'))
     partial = partial.Right(partial.Length() - 1);
@@ -387,11 +393,14 @@ void AutoComplete::UpdateLoadFiles(wxString partial, wxString maximaDir) {
     partial += "/";
 
   // Remove all files from the maxima directory from the load file list
-  m_wordList[loadfile] = m_builtInLoadFiles;
+  {
+    const std::lock_guard<std::mutex> lock(m_keywordsLock);
+    m_wordList[loadfile] = m_builtInLoadFiles;
+  }
 
   // Add all files from the maxima directory to the load file list
   if (partial != wxS("//")) {
-    GetMacFiles userLispIterator(m_wordList.at(loadfile), prefix);
+    GetMacFiles userLispIterator(m_wordList.at(loadfile), &m_keywordsLock, prefix);
     wxDir loadfilesdir(partial);
     if (loadfilesdir.IsOpened())
       loadfilesdir.Traverse(userLispIterator);
@@ -404,7 +413,6 @@ std::vector<wxString> AutoComplete::CompleteSymbol(wxString partial,
   std::vector<wxString> completions;
   std::vector<wxString> perfectCompletions;
 
-  WaitForBackgroundThreads();
   if (((type == AutoComplete::demofile) || (type == AutoComplete::loadfile)) &&
       (partial.EndsWith("\"")))
     partial = partial.Left(partial.Length() - 1);
@@ -413,12 +421,14 @@ std::vector<wxString> AutoComplete::CompleteSymbol(wxString partial,
                _("Bug: Autocompletion requested for unknown type of item."));
 
   if ((type != tmplte) && (type >=0 ) && (type < numberOfTypes )) {
+    const std::lock_guard<std::mutex> lock(m_keywordsLock);
     for (const auto &i : m_wordList.at(type)) {
       if (i.StartsWith(partial) &&
           (std::find(completions.begin(), completions.end(), i) == completions.end()))
         completions.push_back(i);
     }
   } else if (type == tmplte) {
+    const std::lock_guard<std::mutex> lock(m_keywordsLock);
     for (const auto &i: m_wordList.at(type)) {
       if (i.StartsWith(partial)) {
         if (std::find(completions.begin(), completions.end(), i) == completions.end())
@@ -434,6 +444,7 @@ std::vector<wxString> AutoComplete::CompleteSymbol(wxString partial,
   // Add a list of words that were defined on the work sheet but that aren't
   // defined as maxima commands or functions.
   if (type == command) {
+    const std::lock_guard<std::mutex> lock(m_keywordsLock);
     for (const auto &it : m_worksheetWords) {
       if (it.first.StartsWith(partial)) {
         if (std::find(completions.begin(), completions.end(), it.first) == completions.end()) {
@@ -450,11 +461,6 @@ std::vector<wxString> AutoComplete::CompleteSymbol(wxString partial,
 }
 
 void AutoComplete::AddSymbol(wxString fun, autoCompletionType type) {
-  WaitForBackgroundThread_Symbols();
-  AddSymbol_nowait(fun, type);
-}
-
-void AutoComplete::AddSymbol_nowait(wxString fun, autoCompletionType type) {
   /// Check for function of template
   if (fun.StartsWith(wxS("FUNCTION: "))) {
     fun = fun.Mid(10);
@@ -468,11 +474,13 @@ void AutoComplete::AddSymbol_nowait(wxString fun, autoCompletionType type) {
   }
 
   /// Add symbols
-  if ((type != tmplte) &&
-      (std::find(m_wordList.at(type).begin(), m_wordList.at(type).end(), fun) ==
-       m_wordList.at(type).end()))
-    m_wordList.at(type).push_back(fun);
-
+  {
+    const std::lock_guard<std::mutex> lock(m_keywordsLock);
+    if ((type != tmplte) &&
+        (std::find(m_wordList.at(type).begin(), m_wordList.at(type).end(), fun) ==
+         m_wordList.at(type).end()))
+      m_wordList.at(type).push_back(fun);
+  }
   /// Add templates - for given function and given argument count we
   /// only add one template. We count the arguments by counting '<'
   if (type == tmplte) {
@@ -485,13 +493,18 @@ void AutoComplete::AddSymbol_nowait(wxString fun, autoCompletionType type) {
         wxString funName = fun.SubString(0, openpos);
         auto count = fun.Freq('<');
         std::size_t i = 0;
-        for (const auto &o: m_wordList.at(type)) {
-          if (o.StartsWith(funName) && (o.Freq('<') == count))
-            break;
-          i++;
+        {
+          const std::lock_guard<std::mutex> lock(m_keywordsLock);
+          for (const auto &o: m_wordList.at(type)) {
+            if (o.StartsWith(funName) && (o.Freq('<') == count))
+              break;
+            i++;
+          }
+          if (i == m_wordList.at(type).size())
+            {
+              m_wordList.at(type).push_back(fun);
+            }
         }
-        if (i == m_wordList.at(type).size())
-          m_wordList.at(type).push_back(fun);
       }
   }
 }
