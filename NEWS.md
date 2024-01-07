@@ -1,6 +1,7 @@
 # Current
 
 - Faster start-up
+- Better performance directly after startup
 - Faster loading of files
 - Better button placement in sidebars
 - Got rid of a crash on startup in fedora (#1862)
@@ -15,6 +16,8 @@
 - Completely overhauled the printing functionality
 - Moved more of the help file indexing to the background (#1856)
 - Better event handling in the unicode sidebars (#1875, #1863)
+- Reading out the values of maxima variables for the GUI was broken
+- Many checkmarks in menus had the wrong value
 
 # 23.12.0
 
