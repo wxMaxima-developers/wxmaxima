@@ -2202,7 +2202,7 @@ Submit bug reports by following the 'New issue' link on that page."))
   (format t "<variable>~%<name>~a</name>" (symbol-to-xml var))
   (ignore-errors
     (let (($display2d nil))
-      (mtell "<value>~M</value>" (wxxml-fix-string(eval var)))))
+      (mtell "<value>~M</value>" (wxxml-fix-string ($sconcat (eval var))))))
   (format t "</variable>"))
 
 (defun wx-print-display2d ()
@@ -2216,7 +2216,7 @@ Submit bug reports by following the 'New issue' link on that page."))
   (format t "<variables>~%<variable>~%<name>~a</name>" (wxxml-fix-string (maybe-invert-string-case var)))
   (ignore-errors
     (let (($display2d nil))
-      (mtell "<value>~M</value>" (wxxml-fix-string(meval (intern var))))))
+      (mtell "<value>~M</value>" (wxxml-fix-string ($sconcat (meval (intern var)))))))
   (format t "</variable>~%</variables>~%"))
 
 (defun wx-print-variables ()
