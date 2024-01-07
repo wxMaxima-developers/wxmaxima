@@ -221,6 +221,8 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   if (m_variableReadActions.empty()) {
     m_variableReadActions[wxS("gentranlang")] =
       &wxMaxima::VariableActionGentranlang;
+    m_variableReadActions[wxS("numer")] =
+      &wxMaxima::VariableActionNumer;
     m_variableReadActions[wxS("display2d_unicode")] =
       &wxMaxima::VariableActionDisplay2d_Unicode;
   m_variableReadActions[wxS("maxima_userdir")] =
@@ -3572,6 +3574,16 @@ void wxMaxima::VariableActionStringdisp(const wxString &value) {
   } else {
     if (m_viewMenu->IsChecked(EventIDs::menu_stringdisp))
       m_viewMenu->Check(EventIDs::menu_stringdisp, false);
+  }
+}
+
+void wxMaxima::VariableActionNumer(const wxString &value) {
+  if (value == wxS("true")) {
+    if (!m_NumericMenu->IsChecked(EventIDs::menu_num_out))
+      m_NumericMenu->Check(EventIDs::menu_num_out, true);
+  } else {
+    if (m_NumericMenu->IsChecked(EventIDs::menu_num_out))
+      m_NumericMenu->Check(EventIDs::menu_num_out, false);
   }
 }
 
