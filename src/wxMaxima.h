@@ -598,6 +598,7 @@ protected:
   void VariableActionAlgebraic(const wxString &value);
   void VariableActionShowtime(const wxString &value);
   void VariableActionDomain(const wxString &value);
+  void VariableActionAutoplay(const wxString &value);
   void VariableActionEngineeringFormat(const wxString &value);
   void VariableActionStringdisp(const wxString &value);
   void VariableActionOperators(const wxString &value);
