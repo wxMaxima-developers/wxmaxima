@@ -572,24 +572,43 @@ protected:
   /*! Reads the "add variable to watch list" tag maxima can send us
    */
   void ReadAddVariables(wxString &data);
+  //! Called if maxima tells us the value of the maxima variable gentranlang.
   void VariableActionGentranlang(const wxString &value);
+  //! Called if maxima tells us the value of the maxima variable numer.
   void VariableActionNumer(const wxString &value);
+  //! Called if maxima tells us the value of the maxima variable display2d_unicode.
   void VariableActionDisplay2d_Unicode(const wxString &value);
+  //! Called if maxima tells us the value of the maxima variable output_format_for_help.
   void VariableActionHtmlHelp(const wxString &value);
+  //! Called if maxima tells us the value of the maxima variable opsubst.
   void VariableActionOpSubst(const wxString &value);
+  //! Called if maxima tells us the value of the maxima variable sinnpiflag.
   void VariableActionSinnpiflag(const wxString &value);
+  //! Called if maxima tells us that the maxima variable sinnpiflag is undefined.
   void VariableActionSinnpiflagUndefined();
+  //! Called if maxima tells us the value of the maxima variable logexpand.
   void VariableActionLogexpand(const wxString &value);
+  //! Called if maxima tells us where the user files lie.
   void VariableActionUserDir(const wxString &value);
+  //! Called if maxima tells us where the temp files lie.
   void VariableActionTempDir(const wxString &value);
+  //! Called if maxima tells us the value of the maxima variable debugmode.
   void VariableActionDebugmode(const wxString &value);
+  //! Called if maxima tells us the maxima version as defined by autoconf.
   void VariableActionAutoconfVersion(const wxString &value);
+  //! Called if maxima tells us the maxima build host as defined by autoconf.
   void VariableActionAutoconfHost(const wxString &value);
+  //! Called if maxima tells us the maxima info dir.
   void VariableActionMaximaInfodir(const wxString &value);
+  //! Called if maxima tells us the maxima html dir.
   void VariableActionMaximaHtmldir(const wxString &value);
+  //! Called if maxima tells us the value of the maxima variable gnuplot.
   void VariableActionGnuplotCommand(const wxString &value);
+  //! Called if maxima tells us the maxima share dir.
   void VariableActionMaximaSharedir(const wxString &value);
+  //! Called if maxima tells us the lisp name.
   void VariableActionLispName(const wxString &value);
+  //! Called if maxima tells us the lisp version.
   void VariableActionLispVersion(const wxString &value);
   void VariableActionWxLoadFileName(const wxString &value);
   void VariableActionWxSubscripts(const wxString &value);
