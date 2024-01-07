@@ -100,7 +100,7 @@ var searchData=
   ['configchanged_191',['ConfigChanged',['../classwxMaxima.html#af2f5e80d2d27151a20ffc5efd641bc4e',1,'wxMaxima::ConfigChanged()'],['../classCell.html#a01f036f4f68d223e2464097a7728def3',1,'Cell::ConfigChanged()']]],
   ['configdialogue_192',['ConfigDialogue',['../classConfigDialogue.html',1,'ConfigDialogue'],['../classConfigDialogue.html#a2f800127ac6769f5d1793834e91bf3b0',1,'ConfigDialogue::ConfigDialogue()']]],
   ['configdialogue_2eh_193',['ConfigDialogue.h',['../ConfigDialogue_8h.html',1,'']]],
-  ['configuration_194',['Configuration',['../classConfiguration.html#adac5bdf73b775b18dfc07f3cb3695f8a',1,'Configuration::Configuration()'],['../classConfiguration.html',1,'Configuration']]],
+  ['configuration_194',['Configuration',['../classConfiguration.html#ab2cf918eb80018bccec4dd8ff00b8bdc',1,'Configuration::Configuration()'],['../classConfiguration.html',1,'Configuration']]],
   ['configuration_2ecpp_195',['Configuration.cpp',['../Configuration_8cpp.html',1,'']]],
   ['conjugatecell_196',['ConjugateCell',['../classConjugateCell.html',1,'']]],
   ['conjugatecell_2ecpp_197',['ConjugateCell.cpp',['../ConjugateCell_8cpp.html',1,'']]],

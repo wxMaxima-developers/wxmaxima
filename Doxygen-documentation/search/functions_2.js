@@ -52,7 +52,7 @@ var searchData=
   ['compressedgnuplotsource_2302',['CompressedGnuplotSource',['../classImage.html#a81e9dd25a310174661afc1401798e0ee',1,'Image']]],
   ['configchanged_2303',['ConfigChanged',['../classCell.html#a01f036f4f68d223e2464097a7728def3',1,'Cell::ConfigChanged()'],['../classwxMaxima.html#af2f5e80d2d27151a20ffc5efd641bc4e',1,'wxMaxima::ConfigChanged()']]],
   ['configdialogue_2304',['ConfigDialogue',['../classConfigDialogue.html#a2f800127ac6769f5d1793834e91bf3b0',1,'ConfigDialogue']]],
-  ['configuration_2305',['Configuration',['../classConfiguration.html#adac5bdf73b775b18dfc07f3cb3695f8a',1,'Configuration']]],
+  ['configuration_2305',['Configuration',['../classConfiguration.html#ab2cf918eb80018bccec4dd8ff00b8bdc',1,'Configuration']]],
   ['consoleappend_2306',['ConsoleAppend',['../classwxMaxima.html#a772f4c12456a75a7fd4097dcf14d3fdb',1,'wxMaxima']]],
   ['contains_2307',['Contains',['../classCellPointers_1_1ErrorList.html#afb298b25a46c673d81e089a4b2e2c599',1,'CellPointers::ErrorList::Contains()'],['../classGroupCell.html#a00fc135c7cdcd938ed425d467fe43b7a',1,'GroupCell::Contains()']]],
   ['containschanges_2308',['ContainsChanges',['../classEditorCell.html#ad6bb4799ed41ba941f33801a4b40fb81',1,'EditorCell::ContainsChanges() const'],['../classEditorCell.html#a24330cbf1ad81c77f4c74af10cc9dec7',1,'EditorCell::ContainsChanges(bool changes)']]],
