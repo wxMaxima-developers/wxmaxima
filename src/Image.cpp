@@ -219,6 +219,7 @@ void Image::LoadGnuplotSource_Backgroundtask(
   std::unique_ptr<ThreadNumberLimiter> limiter,
   wxString gnuplotFile, wxString dataFile, wxString wxmxFile)
 {
+  std::unique_ptr<ThreadNumberLimiter> threadNumLimit = std::move(limiter);
   SuppressErrorDialogs suppressor;
   if(wxmxFile.IsEmpty())
   {
@@ -352,6 +353,7 @@ void Image::LoadCompressedGnuplotSource_Backgroundtask(
   wxString datafile,
   wxString wxmxFile
   ) {
+  std::unique_ptr<ThreadNumberLimiter> threadNumLimit = std::move(limiter);
   {
     // Error dialogues need to be created by the foreground thread.
     SuppressErrorDialogs suppressor;
@@ -776,6 +778,7 @@ void Image::LoadImage(wxString image, wxString wxmxFile,
 void Image::LoadImage_Backgroundtask(std::unique_ptr<ThreadNumberLimiter> limiter,
                                      wxString image, wxString wxmxFile,
                                      bool remove) {
+  std::unique_ptr<ThreadNumberLimiter> threadNumLimit = std::move(limiter);
   wxLogBuffer errorAggregator;
 
   if (!wxmxFile.IsEmpty()) {

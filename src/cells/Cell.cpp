@@ -297,7 +297,7 @@ int Cell::GetLineWidth() const {
   To make this work each derived class must draw the content of the cell
   and then call MathCall::Draw(...).
 */
-void Cell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
+void Cell::Draw(wxPoint point, wxDC *dc, wxDC *WXUNUSED(antialiassingDC)) {
   if(m_configuration->GetDebugmode())
     {
       if(!m_isHidden)

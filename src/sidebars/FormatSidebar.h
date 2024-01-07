@@ -37,7 +37,7 @@
 class FormatSidebar : public wxScrolled<wxPanel>
 {
 public:
-  FormatSidebar(wxWindow *parent, int ID = wxID_ANY);
+  explicit FormatSidebar(wxWindow *parent, int ID = wxID_ANY);
 };
 
 #endif // FORMATSIDEBAR_H

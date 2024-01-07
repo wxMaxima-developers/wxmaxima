@@ -654,7 +654,7 @@ void Worksheet::PrepareDrawGC(wxDC &dc)
   dc.SetLogicalFunction(wxCOPY);
 }
 
-void Worksheet::DrawGroupCell_UsingBitmap(wxDC *dc, GroupCell *cell, wxRect DrawRegion)
+void Worksheet::DrawGroupCell_UsingBitmap(wxDC *dc, GroupCell *cell)
 {
   // Determine which rectangle we need to draw, effectively:
   // The part of the GroupCell that is in the region to be drawn.
@@ -1038,7 +1038,7 @@ void Worksheet::Recalculate(Cell *start) {
   else
     // Move m_recalculateStart backwards to start, if start comes before
     // m_recalculateStart.
-    for (auto &cell : OnList(GetTree())) {
+    for (const GroupCell &cell : OnList(GetTree())) {
       if (&cell == group) {
         m_recalculateStart = group;
         return;
@@ -1083,7 +1083,7 @@ void Worksheet::OnSize(wxSizeEvent &event) {
   Recalculate();
 
 
-  GroupCell *prev = {};
+  const GroupCell *prev = {};
   for (auto &cell : OnList(GetTree())) {
     if (!prev)
       ClearSelection();
@@ -1308,7 +1308,7 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event) {
     }
     // SELECTION OF OUTPUT
     else {
-      for (Cell &cell : OnDrawList(m_cellPointers.m_selectionStart.get())) {
+      for (const Cell &cell : OnDrawList(m_cellPointers.m_selectionStart.get())) {
         auto rect = cell.GetRect();
         if (rect.Contains(downx, downy))
           clickInSelection = true;
@@ -2281,9 +2281,9 @@ void Worksheet::OnMouseLeftDown(wxMouseEvent &event) {
 
   wxRect rect;
   GroupCell *previous = NULL;
-  GroupCell *clickedBeforeGC = NULL;
+  const GroupCell *clickedBeforeGC = NULL;
   GroupCell *clickedInGC = NULL;
-  for (auto &cell : OnList(GetTree())) { // go through all groupcells
+  for (GroupCell &cell : OnList(GetTree())) { // go through all groupcells
     rect = cell.GetRect();
     if (m_down.y < rect.GetTop()) {
       clickedBeforeGC = &cell;
@@ -2474,7 +2474,7 @@ GroupCell *Worksheet::GetLastCellInWorksheet() const
 }
 
 void Worksheet::ClickNDrag(wxPoint down, wxPoint up) {
-  Cell *selectionStartOld = m_cellPointers.m_selectionStart,
+  const Cell *selectionStartOld = m_cellPointers.m_selectionStart,
     *selectionEndOld = m_cellPointers.m_selectionEnd;
   wxRect rect;
 
@@ -2569,7 +2569,7 @@ wxString Worksheet::GetString(bool lb) {
     return GetActiveCell() ? GetActiveCell()->ToString() : wxString{};
 
   wxString s;
-  for (Cell &cell : OnDrawList(m_cellPointers.m_selectionStart.get())) {
+  for (const Cell &cell : OnDrawList(m_cellPointers.m_selectionStart.get())) {
     if (lb && cell.BreakLineHere() && !s.empty())
       s += wxS('\n');
     s += cell.ToString();
@@ -2944,7 +2944,7 @@ bool Worksheet::CanDeleteRegion(GroupCell *start, GroupCell *end) const {
     return false;
 
   // We refuse deletion of a cell we are planning to evaluate
-  for (auto &tmp : OnList(start)) {
+  for (const GroupCell &tmp : OnList(start)) {
     // We refuse deletion of a cell maxima is currently evaluating
     if (&tmp == GetWorkingGroup())
       return false;
@@ -6099,7 +6099,7 @@ bool Worksheet::ExportToWXMX(const wxString &file, bool markAsSaved) {
 
         // Determine which cell the cursor is at.
         long ActiveCellNumber = 1;
-        GroupCell *cursorCell = NULL;
+        const GroupCell *cursorCell = NULL;
         if (m_hCaretActive) {
           cursorCell = GetHCaret();
 
@@ -6120,7 +6120,7 @@ bool Worksheet::ExportToWXMX(const wxString &file, bool markAsSaved) {
 
         bool found = false;
         if (GetTree() && ActiveCellNumber > 0)
-          for (auto &tmp : OnList(GetTree())) {
+          for (const GroupCell &tmp : OnList(GetTree())) {
             if (&tmp == cursorCell) {
               found = true;
               break;
@@ -6487,7 +6487,7 @@ void Worksheet::AddSelectionToEvaluationQueue(GroupCell *start,
 
 void Worksheet::AddDocumentTillHereToEvaluationQueue() {
   FollowEvaluation(true);
-  GroupCell *stop = m_hCaretActive ? m_hCaretPosition : nullptr;
+  const GroupCell *stop = m_hCaretActive ? m_hCaretPosition : nullptr;
   if (!stop) {
     if (!GetActiveCell())
       return;

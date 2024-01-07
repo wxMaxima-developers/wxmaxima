@@ -338,7 +338,7 @@ void TableOfContents::UpdateDisplay() {
 
     m_dndEndCell = NULL;
 
-    for (auto index = 0; index < m_structure.size(); index++) {
+    for (size_t index = 0; index < m_structure.size(); index++) {
       if (index >= static_cast<std::size_t>(m_dragCurrentPos)) {
         m_dndEndCell = m_tree->get();
         if (m_otherCells.empty()) {

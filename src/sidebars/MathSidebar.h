@@ -44,7 +44,7 @@
 class MathSidebar : public wxScrolled<wxPanel>
 {
 public:
-  MathSidebar(wxWindow *parent, int ID = wxID_ANY);
+  explicit MathSidebar(wxWindow *parent, int ID = wxID_ANY);
 };
 
 #endif // MATHSIDEBAR_H

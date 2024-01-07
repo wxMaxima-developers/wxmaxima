@@ -62,7 +62,6 @@ void SumCell::MakeBreakUpCells() {
   if (m_open)
     return;
 
-  bool overStringEmpty = m_over->ToString().empty();
   m_comma1 = std::make_unique<TextCell>(m_group, m_configuration, wxS(","));
   m_comma2 = std::make_unique<TextCell>(m_group, m_configuration, wxS(","));
   m_comma3 = std::make_unique<TextCell>(m_group, m_configuration, wxS(","));

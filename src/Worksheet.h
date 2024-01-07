@@ -487,7 +487,7 @@ private:
     as long as there is a mutex watching that we do the blit when no-one else
     accesses the DC should be fine.
   */
-  void DrawGroupCell_UsingBitmap(wxDC *dc, GroupCell *cell, wxRect DrawRegion);
+  void DrawGroupCell_UsingBitmap(wxDC *dc, GroupCell *cell);
 
   //! All that has need to be done before drawing a GroupCell in a DC
   void PrepareDrawGC(wxDC &dc);

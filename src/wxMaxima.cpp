@@ -5330,10 +5330,10 @@ void wxMaxima::UpdateToolBar() {
     GetWorksheet()->m_mainToolBar->EnableTool(ToolBar::tb_follow, false);
     break;
   }
-  EditorCell *editor = GetWorksheet()->GetActiveCell();
+  const EditorCell *editor = GetWorksheet()->GetActiveCell();
 
   if (editor == NULL) {
-    GroupCell *group = NULL;
+    const GroupCell *group = NULL;
     if (GetWorksheet()->GetSelectionStart())
       group = GetWorksheet()->GetSelectionStart()->GetGroup();
 
@@ -5345,7 +5345,7 @@ void wxMaxima::UpdateToolBar() {
 
   if (!canEvaluateNext) {
     if (GetWorksheet()->HCaretActive()) {
-      GroupCell *group = GetWorksheet()->GetHCaret();
+      const GroupCell *group = GetWorksheet()->GetHCaret();
       if (group == NULL)
         group = GetWorksheet()->GetTree();
       else
@@ -6507,7 +6507,7 @@ void wxMaxima::EditMenu(wxCommandEvent &event) {
     if (GetWorksheet()->GetSelectionStart() == NULL)
       return;
     GroupCell *cell = GetWorksheet()->GetSelectionStart()->GetGroup();
-    GroupCell *end = NULL;
+    const GroupCell *end = NULL;
     if (GetWorksheet()->GetSelectionEnd() != NULL)
       end = GetWorksheet()->GetSelectionEnd()->GetGroup();
     bool marked = !cell->GetSuppressTooltipMarker();

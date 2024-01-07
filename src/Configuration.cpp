@@ -53,6 +53,7 @@
 #include <limits>
 
 Configuration::Configuration(wxDC *dc, InitOpt options) :
+  m_initOpts(options),
   m_eng{m_rd()},
   m_dc(dc)
 {
@@ -1087,8 +1088,11 @@ void Configuration::SetZoomFactor(double newzoom) {
 }
 
 Configuration::~Configuration() {
-  WriteStyles();
-  WriteSettings();
+  if(m_initOpts != temporary)
+    {
+      WriteStyles();
+      WriteSettings();
+    }
 }
 
 bool Configuration::CharsExistInFont(const wxFont &font,

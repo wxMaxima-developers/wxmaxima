@@ -127,7 +127,7 @@ public:
   enum InitOpt
   {
     none,
-    temporary,          //!< This configuration is temporary and shouldn't redetect Maxima etc.
+    temporary          //!< This configuration is temporary and shouldn't redetect Maxima etc.
   };
 
   enum mathDisplayMode
@@ -175,7 +175,7 @@ public:
 
     \param dc The drawing context that is to be used for drawing objects
   */
-  explicit Configuration(wxDC *dc = {}, InitOpt options = {});
+  explicit Configuration(wxDC *dc = {}, InitOpt options = none);
 
   //! Reset the whole configuration to its default values
   void ResetAllToDefaults();
@@ -1043,6 +1043,8 @@ public:
   void MaximaHelpFormat(maximaHelpFormat format) {m_maximaHelpFormat = format;}
 
 private:
+  //! The options this class got at initialization time
+  InitOpt m_initOpts;
   /*! The id of the current configuration
 
     If the ID in the operating system's config storage differs from this one someone

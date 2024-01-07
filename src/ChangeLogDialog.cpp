@@ -51,7 +51,6 @@ ChangeLogDialog::ChangeLogDialog(wxWindow *parent)
   wxFont fnt = m_license->GetFont();
   wxClientDC dc(this);
   dc.SetFont(fnt);
-  wxCoord textWidth = 0;
   wxRegEx issueLink("#([0-9][0-9]*)");
   wxRegEx bullet("^ -");
 

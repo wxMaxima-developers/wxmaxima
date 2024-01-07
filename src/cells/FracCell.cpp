@@ -197,7 +197,7 @@ wxString FracCell::ToString() const {
       s = wxS("binomial(") + Num()->ListToString() + wxS(",") +
         Denom()->ListToString() + wxS(")");
     } else {
-      Cell *tmp = Denom();
+      const Cell *tmp = Denom();
       while (tmp != NULL) {
         tmp = tmp->GetNext(); // Skip the d
         if (tmp == NULL)
