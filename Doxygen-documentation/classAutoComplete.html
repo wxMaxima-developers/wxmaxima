@@ -107,9 +107,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:aa52091684de760b86a7f934dce47fa26"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAutoComplete.html#aa52091684de760b86a7f934dce47fa26">LoadBuiltinSymbols</a> ()</td></tr>
 <tr class="memdesc:aa52091684de760b86a7f934dce47fa26"><td class="mdescLeft">&#160;</td><td class="mdescRight">Makes <a class="el" href="classwxMaxima.html">wxMaxima</a> know all its builtin symbols.  <a href="classAutoComplete.html#aa52091684de760b86a7f934dce47fa26">More...</a><br /></td></tr>
 <tr class="separator:aa52091684de760b86a7f934dce47fa26"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af6f5cfb1876f21f4503c674288fd64f5"><td class="memItemLeft" align="right" valign="top"><a id="af6f5cfb1876f21f4503c674288fd64f5"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAutoComplete.html#af6f5cfb1876f21f4503c674288fd64f5">AddSymbol</a> (wxString fun, <a class="el" href="classAutoComplete.html#a6225a91b46c0459755a62de137620b29">autoCompletionType</a> type=command)</td></tr>
-<tr class="memdesc:af6f5cfb1876f21f4503c674288fd64f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Manually add an autocompletable symbol to our symbols lists. <br /></td></tr>
+<tr class="memitem:af6f5cfb1876f21f4503c674288fd64f5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAutoComplete.html#af6f5cfb1876f21f4503c674288fd64f5">AddSymbol</a> (wxString fun, <a class="el" href="classAutoComplete.html#a6225a91b46c0459755a62de137620b29">autoCompletionType</a> type=command)</td></tr>
+<tr class="memdesc:af6f5cfb1876f21f4503c674288fd64f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Manually add an autocompletable symbol to our symbols lists.  <a href="classAutoComplete.html#af6f5cfb1876f21f4503c674288fd64f5">More...</a><br /></td></tr>
 <tr class="separator:af6f5cfb1876f21f4503c674288fd64f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac01de5cf0f57194e555f845f80063c02"><td class="memItemLeft" align="right" valign="top"><a id="ac01de5cf0f57194e555f845f80063c02"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAutoComplete.html#ac01de5cf0f57194e555f845f80063c02">AddSymbols</a> (wxString xml)</td></tr>
@@ -149,6 +148,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a820f73cfb05abb20f73ae74f224c39e3"><td class="memItemLeft" align="right" valign="top">std::vector&lt; wxString &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAutoComplete.html#a820f73cfb05abb20f73ae74f224c39e3">CompleteSymbol</a> (wxString partial, <a class="el" href="classAutoComplete.html#a6225a91b46c0459755a62de137620b29">autoCompletionType</a> type=command)</td></tr>
 <tr class="memdesc:a820f73cfb05abb20f73ae74f224c39e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a list of possible autocompletions for the string "partial".  <a href="classAutoComplete.html#a820f73cfb05abb20f73ae74f224c39e3">More...</a><br /></td></tr>
 <tr class="separator:a820f73cfb05abb20f73ae74f224c39e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1df8ac11573c07f0c8c7add5537d0f07"><td class="memItemLeft" align="right" valign="top"><a id="a1df8ac11573c07f0c8c7add5537d0f07"></a>
+std::vector&lt; wxString &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>GetBuiltInDemoFiles</b> ()</td></tr>
+<tr class="separator:a1df8ac11573c07f0c8c7add5537d0f07"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -192,6 +194,39 @@ Static Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="af6f5cfb1876f21f4503c674288fd64f5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af6f5cfb1876f21f4503c674288fd64f5">&#9670;&nbsp;</a></span>AddSymbol()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void AutoComplete::AddSymbol </td>
+          <td>(</td>
+          <td class="paramtype">wxString&#160;</td>
+          <td class="paramname"><em>fun</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classAutoComplete.html#a6225a91b46c0459755a62de137620b29">autoCompletionType</a>&#160;</td>
+          <td class="paramname"><em>type</em> = <code>command</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Manually add an autocompletable symbol to our symbols lists. </p>
+<p>Check for function of template</p>
+<p>Add symbols</p>
+<p>Add templates - for given function and given argument count we only add one template. We count the arguments by counting '&lt;'</p>
+
+</div>
+</div>
 <a id="a820f73cfb05abb20f73ae74f224c39e3"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a820f73cfb05abb20f73ae74f224c39e3">&#9670;&nbsp;</a></span>CompleteSymbol()</h2>
 
