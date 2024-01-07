@@ -202,7 +202,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
 #if wxUSE_ON_FATAL_EXCEPTION && wxUSE_CRASHREPORT
   wxHandleFatalExceptions();
   wxLogMessage(_("Will try to generate a stack backtrace, if the program ever crashes"));
-#endif 
+#endif
   GnuplotCommandName(wxS("gnuplot"));
   if (m_knownXMLTags.empty()) {
     m_knownXMLTags[wxS("PROMPT")] = &wxMaxima::ReadPrompt;
@@ -260,8 +260,6 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
     m_variableReadActions[wxS("algebraic")] =
       &wxMaxima::VariableActionAlgebraic;
     m_variableReadActions[wxS("domain")] = &wxMaxima::VariableActionDomain;
-    m_variableReadActions[wxS("wxanimate_autoplay")] =
-      &wxMaxima::VariableActionAutoplay;
     m_variableReadActions[wxS("output_format_for_help")] =
       &wxMaxima::VariableActionHtmlHelp;
     m_variableReadActions[wxS("showtime")] = &wxMaxima::VariableActionShowtime;
@@ -2643,7 +2641,7 @@ void wxMaxima::KillMaxima(bool logMessage) {
       // The following command should close maxima, as well.
       m_client = nullptr;
     }
-  
+
   // Just to be absolutely sure: Additionally try to kill maxima
   if (m_pid > 0) {
     // wxProcess::kill will fail on MSW. Something with a console.
@@ -3621,15 +3619,6 @@ void wxMaxima::VariableActionHtmlHelp(const wxString &value) {
   }
 }
 
-void wxMaxima::VariableActionAutoplay(const wxString &value) {
-  if (value == wxS("true")) {
-    if (!m_PlotMenu->IsChecked(EventIDs::menu_animationautostart))
-      m_PlotMenu->Check(EventIDs::menu_animationautostart, true);
-  } else {
-    if (m_PlotMenu->IsChecked(EventIDs::menu_animationautostart))
-      m_PlotMenu->Check(EventIDs::menu_animationautostart, false);
-  }
-}
 void wxMaxima::VariableActionDomain(const wxString &value) {
   if (value == wxS("complex")) {
     if (!m_NumericMenu->IsChecked(EventIDs::menu_num_domain))
@@ -5092,7 +5081,7 @@ void wxMaxima::OnIdle(wxIdleEvent &event) {
     event.RequestMore();
     return;
   }
-  
+
   UpdateSlider();
 
   // Update the history sidebar in case it is visible
@@ -8898,10 +8887,13 @@ void wxMaxima::PlotMenu(wxCommandEvent &event) {
     });
   }
   else if(event.GetId() == EventIDs::menu_animationautostart){
-    if (event.IsChecked())
+    if (event.IsChecked()) {
+      m_PlotMenu->Check(EventIDs::menu_animationautostart, true);
       MenuCommand(wxS("wxanimate_autoplay:true$"));
-    else
+    } else {
+      m_PlotMenu->Check(EventIDs::menu_animationautostart, false);
       MenuCommand(wxS("wxanimate_autoplay:false$"));
+    }
   }
   else if(event.GetId() == EventIDs::menu_animationframerate){
     CommandWiz(_("Enter new animation frame rate [Hz, integer]:"),
