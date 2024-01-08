@@ -37,6 +37,7 @@
 #include <wx/wx.h>
 #include <wx/dir.h>
 #include <vector>
+#include <wx/object.h>
 #include <wx/regex.h>
 #include <wx/filename.h>
 #include <wx/hashmap.h>
@@ -52,7 +53,7 @@
    - all words that appear in the worksheet
    - and a list of maxima's builtin commands.
 */
-class AutoComplete
+class AutoComplete : public wxObject
 {
 #if wxCHECK_VERSION(3, 3, 0) || wxUSE_STL
   typedef std::unordered_map <wxString, int> WorksheetWords;

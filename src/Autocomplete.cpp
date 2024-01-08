@@ -41,7 +41,7 @@
 #include <wx/xml/xml.h>
 #include <algorithm>
 
-AutoComplete::AutoComplete(Configuration *configuration) {
+AutoComplete::AutoComplete(Configuration *configuration) : wxObject() {
   std::vector<wxString> emptyList;
   for(unsigned i = 0; i < autoCompletionType::numberOfTypes; i++)
     m_wordList.push_back(emptyList);
