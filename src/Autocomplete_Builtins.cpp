@@ -2750,6 +2750,8 @@ bool AutoComplete::LoadBuiltinSymbols() {
   m_wordList.at(command).push_back(wxS("copymatrix"));                           // FUNCTION
   m_wordList.at(tmplte ).push_back(wxS("copymatrix(<M>)"));                       // OPTION
   m_wordList.at(command).push_back(wxS("determinant"));                          // FUNCTION
+  m_wordList.at(tmplte ).push_back(wxS("determinant_by_lu(<M>)"));                      // OPTION
+  m_wordList.at(command).push_back(wxS("determinant_by_lu"));                          // FUNCTION
   m_wordList.at(tmplte ).push_back(wxS("determinant(<M>)"));                      // OPTION
   m_wordList.at(command).push_back(wxS("detout"));                               // OPTION
   m_wordList.at(command).push_back(wxS("diagmatrix"));                           // FUNCTION
@@ -2842,6 +2844,11 @@ bool AutoComplete::LoadBuiltinSymbols() {
                                    "submatrix(<i_1>, ..., <i_m>, <M>, <j_1>, ..., <j_n>)"); // OPTION
   m_wordList.at(tmplte ).push_back(wxS("submatrix(<i_1>, ..., <i_m>, <M>)")); // OPTION
   m_wordList.at(tmplte ).push_back(wxS("submatrix(<M>, <j_1>, ..., <j_n>)")); // OPTION
+  m_wordList.at(command).push_back(wxS("tmlinsolve"));                             // FUNCTION
+  m_wordList.at(command).push_back(wxS("tminverse"));                             // FUNCTION
+  m_wordList.at(command).push_back(wxS("tmlin"));                             // FUNCTION
+  m_wordList.at(command).push_back(wxS("tmnewdet"));                             // FUNCTION
+  m_wordList.at(tmplte ).push_back(wxS("tmnewdet(<M>)"));                         // OPTION
   m_wordList.at(command).push_back(wxS("transpose"));                        // FUNCTION
   m_wordList.at(tmplte ).push_back(wxS("transpose(<M>)"));                    // OPTION
   m_wordList.at(command).push_back(wxS("triangularize"));                    // FUNCTION
