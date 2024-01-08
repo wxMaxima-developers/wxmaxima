@@ -522,9 +522,7 @@ add_test(
     NAME imageCells
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
     COMMAND wxmaxima --debug --logtostderr --pipe --batch imageCells.wxm)
-# Maxima sometimes fails if this test is run in parallel,
-# see https://sourceforge.net/p/maxima/bugs/3699/
-set_tests_properties(imageCells PROPERTIES RUN_SERIAL true DEPENDS wxmaxima_performance)
+#set_tests_properties(imageCells PROPERTIES RUN_SERIAL true DEPENDS wxmaxima_performance)
 
 add_test(
     NAME limitCells_cmdline
@@ -833,9 +831,7 @@ add_test(
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
     COMMAND wxmaxima --debug --logtostderr --pipe --batch threadtest.wxm)
 set_tests_properties(threadtest PROPERTIES DEPENDS wxmaxima_performance)
-# Maxima sometimes fails if this test is run in parallel,
-# see https://sourceforge.net/p/maxima/bugs/3699/
-set_tests_properties(threadtest PROPERTIES RUN_SERIAL true)
+#set_tests_properties(threadtest PROPERTIES RUN_SERIAL true)
 
 add_test(
     NAME autosave
@@ -865,13 +861,13 @@ add_test(
     NAME multiple_batch_files
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
     COMMAND wxmaxima --debug --batch unicode.wxm boxes.wxm)
-set_tests_properties(multiple_batch_files PROPERTIES DEPENDS wxmaxima_performance RUN_SERIAL true)
+#set_tests_properties(multiple_batch_files PROPERTIES DEPENDS wxmaxima_performance RUN_SERIAL true)
 
 add_test(
     NAME multiple_batch_files2
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
     COMMAND wxmaxima --debug --batch --single_process unicode.wxm boxes.wxm)
-set_tests_properties(multiple_batch_files2 PROPERTIES DEPENDS wxmaxima_performance RUN_SERIAL true)
+#set_tests_properties(multiple_batch_files2 PROPERTIES DEPENDS wxmaxima_performance RUN_SERIAL true)
 
 #add_test(
 #    NAME multiwindow
@@ -885,9 +881,7 @@ add_test(
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
     COMMAND wxmaxima --debug --logtostderr --pipe --single_process --batch threadtest.wxm threadtest2.wxm)
 set_tests_properties(multithreadtest PROPERTIES DEPENDS wxmaxima_performance)
-# Maxima sometimes fails if this test is run in parallel,
-# see https://sourceforge.net/p/maxima/bugs/3699/
-set_tests_properties(multithreadtest PROPERTIES RUN_SERIAL true)
+#set_tests_properties(multithreadtest PROPERTIES RUN_SERIAL true)
 
 #add_test(
 #    NAME ipc_copypaste1
