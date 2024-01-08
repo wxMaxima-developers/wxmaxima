@@ -639,6 +639,9 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
           wxCommandEventHandler(wxMaxima::FileMenu), NULL, this);
   Connect(wxID_HELP, wxEVT_MENU, wxCommandEventHandler(wxMaxima::HelpMenu),
           NULL, this);
+  Connect(wxID_HELP, EventIDs::menu_help_demo_for_command,
+          wxCommandEventHandler(wxMaxima::HelpMenu),
+          NULL, this);
   Connect(EventIDs::menu_help_tutorials, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::HelpMenu), NULL, this);
   Connect(EventIDs::menu_goto_url, wxEVT_MENU, wxCommandEventHandler(wxMaxima::HelpMenu),
@@ -9322,7 +9325,9 @@ void wxMaxima::HelpMenu(wxCommandEvent &event) {
       ChangeLogDialog *dlg = new ChangeLogDialog(this);
       dlg->Show();
     } }
-
+  else if(event.GetId() == EventIDs::menu_help_demo_for_command){
+    MenuCommand(wxS("demo(\"") + expr + wxS("\");"));
+    }
   else if(event.GetId() == wxID_HELP){
     ShowHelp(expr);
   }

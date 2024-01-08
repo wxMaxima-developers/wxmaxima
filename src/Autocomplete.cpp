@@ -58,6 +58,18 @@ std::vector<wxString> AutoComplete::GetBuiltInDemoFiles() {
   return m_builtInDemoFiles;
 }
 
+bool AutoComplete::HasDemofile(wxString commandname)
+{
+  const std::lock_guard<std::mutex> lock(m_keywordsLock);
+  for (auto &file : m_wordList.at(demofile))
+    {
+      if(file == "\"" + commandname + "\"")
+        return true;
+    }
+  return false;
+}
+
+
 void AutoComplete::ClearDemofileList() {
   const std::lock_guard<std::mutex> lock(m_keywordsLock);
   m_wordList.at(demofile) = m_builtInDemoFiles;
@@ -295,6 +307,8 @@ void AutoComplete::LoadableFiles_BackgroundTask(wxString sharedir) {
   const std::lock_guard<std::mutex> lock(m_keywordsLock);
   std::sort(m_builtInLoadFiles.begin(), m_builtInLoadFiles.end());
   std::sort(m_builtInDemoFiles.begin(), m_builtInDemoFiles.end());
+  m_wordList.at(demofile) = m_builtInDemoFiles;
+  m_wordList.at(loadfile) = m_builtInLoadFiles;
 }
 
 void AutoComplete::UpdateDemoFiles(wxString partial, wxString maximaDir) {

@@ -117,7 +117,10 @@ public:
   std::vector<wxString> CompleteSymbol(wxString partial, autoCompletionType type = command);
   //! Basically runs a regex over templates
   static wxString FixTemplate(wxString templ);
+  //! Returns a list of demo files we know of
   std::vector<wxString> GetBuiltInDemoFiles();
+  //! Does a demo file for this command exist?
+  bool HasDemofile(wxString commandname);
 
 private:
   //! The configuration storage
