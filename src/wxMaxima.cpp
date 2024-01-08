@@ -3632,7 +3632,7 @@ void wxMaxima::VariableActionHtmlHelp(const wxString &value) {
       m_HelpMenu->Check(EventIDs::menu_maxima_uses_wxmaxima_help, true);
     m_configuration.MaximaHelpFormat(Configuration::frontend);
   }
-#endif;
+#endif
 }
 
 void wxMaxima::VariableActionAutoplay(const wxString &value) {
