@@ -602,7 +602,7 @@ protected:
   void VariableActionMaximaInfodir(const wxString &value);
   //! Called if maxima tells us the maxima html dir.
   void VariableActionMaximaHtmldir(const wxString &value);
-  //! Called if maxima tells us the value of the maxima variable gnuplot.
+  //! Called if maxima tells us the value of the maxima variable <code>gnuplot</code>
   void VariableActionGnuplotCommand(const wxString &value);
   //! Called if maxima tells us the maxima share dir.
   void VariableActionMaximaSharedir(const wxString &value);
@@ -610,17 +610,29 @@ protected:
   void VariableActionLispName(const wxString &value);
   //! Called if maxima tells us the lisp version.
   void VariableActionLispVersion(const wxString &value);
+  //! Called if maxima tells us the name of a package that was loaded
   void VariableActionWxLoadFileName(const wxString &value);
+  //! Called if maxima tells us the value of the maxima variable <code>wxsubscripts</code>
   void VariableActionWxSubscripts(const wxString &value);
+  //! Called if maxima tells us the value of the maxima variable <code>lmxchar</code>
   void VariableActionLmxChar(const wxString &value);
+  //! Called if maxima tells us the value of the maxima variable <code>display2d</code>
   void VariableActionDisplay2D(const wxString &value);
+  //! Called if maxima tells us if it currently outputs XML
   void VariableActionAltDisplay2D(const wxString &value);
+  //! Called if maxima tells us the value of the maxima variable <code>algebraic</code>
   void VariableActionAlgebraic(const wxString &value);
+  //! Called if maxima tells us the value of the maxima variable <code>showtime</code>
   void VariableActionShowtime(const wxString &value);
+  //! Called if maxima tells us the value of the maxima variable <code>domain</code>
   void VariableActionDomain(const wxString &value);
+  //! Called if maxima tells us the value of the maxima variable <code>wxanimate_autoplay</code>
   void VariableActionAutoplay(const wxString &value);
+  //! Called if maxima tells us the value of the maxima variable <code>engineering_format_floats</code>
   void VariableActionEngineeringFormat(const wxString &value);
+  //! Called if maxima tells us the value of the maxima variable <code>stringdisp</code>
   void VariableActionStringdisp(const wxString &value);
+  //! Called if maxima sends us the list of known operators
   void VariableActionOperators(const wxString &value);
   wxString m_maximaVariable_wxSubscripts;
   wxString m_maximaVariable_lmxchar;
