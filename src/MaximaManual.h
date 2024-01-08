@@ -30,6 +30,7 @@
 #ifndef MAXIMAMANUAL_H
 #define MAXIMAMANUAL_H
 
+#include <atomic>
 #include <thread>
 #include <mutex>
 #include <memory>
@@ -86,6 +87,7 @@ public:
                                 wxString saveName);
   ~MaximaManual();
 private:
+  std::atomic_bool m_abortBackgroundTask;
   //! Add our aliases to a list of anchors
   static void AnchorAliasses(HelpFileAnchors &anchors);
   //! Scans the maxima directory for a list of loadable files

@@ -44,6 +44,7 @@
 wxDECLARE_APP(MyApp);
 
 MaximaManual::MaximaManual(Configuration *configuration) {
+  m_abortBackgroundTask = false;
   m_configuration = configuration;
 }
 
@@ -169,6 +170,8 @@ void MaximaManual::CompileHelpFileAnchors(wxString maximaHtmlDir,
     }
 
     for (const auto &file : helpFiles) {
+      if(m_abortBackgroundTask)
+        return;
       bool is_Singlepage = file.Contains("_singlepage.");
       std::size_t foundAnchors = 0;
       wxString fileURI = wxURI(wxS("file://") + file).BuildURI();
@@ -201,6 +204,8 @@ void MaximaManual::CompileHelpFileAnchors(wxString maximaHtmlDir,
         wxTextInputStream text(input, wxS('\t'),
                                wxConvAuto(wxFONTENCODING_UTF8));
         while (input.IsOk() && !input.Eof()) {
+          if(m_abortBackgroundTask)
+            return;
           wxString line = text.ReadLine();
           wxStringTokenizer tokens(line, wxS(">"));
           while (tokens.HasMoreTokens()) {
@@ -526,9 +531,11 @@ void MaximaManual::LoadHelpFileAnchors(wxString docdir,
     if (!LoadManualAnchorsFromCache()) {
       if (!m_maximaHtmlDir.IsEmpty()) {
         if (m_helpfileanchorsThread) {
+          m_abortBackgroundTask = true;
           m_helpfileanchorsThread->join();
           m_helpfileanchorsThread.reset();
         }
+        m_abortBackgroundTask = false;
         m_helpfileanchorsThread =
           std::unique_ptr<std::thread>(
                                        new std::thread(&MaximaManual::CompileHelpFileAnchors,
@@ -551,6 +558,7 @@ MaximaManual::~MaximaManual() {
     {
       if(m_helpfileanchorsThread->joinable())
         {
+          m_abortBackgroundTask = true;
           wxLogMessage(_("Waiting for the thread that parses the maxima manual to finish"));
           m_helpfileanchorsThread->join();
         }
