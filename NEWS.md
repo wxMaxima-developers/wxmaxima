@@ -18,6 +18,7 @@
 - Better event handling in the unicode sidebars (#1875, #1863)
 - Reading out the values of maxima variables for the GUI was broken
 - Many checkmarks in menus had the wrong value
+- Maxima's demos are now available in the menu and context menu
 
 # 23.12.0
 
