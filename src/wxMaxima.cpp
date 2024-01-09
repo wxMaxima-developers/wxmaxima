@@ -639,12 +639,6 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   GetWorksheet()->m_autocomplete.Connect(NEW_DEMO_FILES_EVENT,
                                          wxCommandEventHandler(wxMaxima::OnNewDemoFiles),
                                          NULL, this);
-  m_demo1_sub->Connect(wxEVT_MENU,
-                       wxCommandEventHandler(wxMaxima::OnDemoFileMenu), NULL, this);
-  m_demo2_sub->Connect(wxEVT_MENU,
-                       wxCommandEventHandler(wxMaxima::OnDemoFileMenu), NULL, this);
-  m_demo3_sub->Connect(wxEVT_MENU,
-                       wxCommandEventHandler(wxMaxima::OnDemoFileMenu), NULL, this);
   Connect(wxID_HELP, wxEVT_MENU, wxCommandEventHandler(wxMaxima::HelpMenu),
           NULL, this);
   Connect(wxID_HELP, EventIDs::menu_help_demo_for_command,
@@ -1777,26 +1771,51 @@ void wxMaxima::OnSize(wxSizeEvent &event){
 void wxMaxima::OnNewDemoFiles(wxCommandEvent &event)
 {
   m_demoFilesIDs.clear();
-  while(m_demo1_sub->GetMenuItemCount() > 0)
-    m_demo1_sub->Delete(m_demo1_sub->FindItemByPosition(0));
-  while(m_demo2_sub->GetMenuItemCount() > 0)
-    m_demo2_sub->Delete(m_demo2_sub->FindItemByPosition(0));
-  while(m_demo3_sub->GetMenuItemCount() > 0)
-    m_demo3_sub->Delete(m_demo3_sub->FindItemByPosition(0));
-  for(const auto &i : GetWorksheet()->m_autocomplete.GetDemoFilesList())
-    {
+  while(m_demo_sub->GetMenuItemCount() > 0)
+      m_demo_sub->Delete(m_demo_sub->FindItemByPosition(0));
+
+  auto filesList = GetWorksheet()->m_autocomplete.GetDemoFilesList();
+  if(filesList.size() < 1)
+    return;
+
+  std::vector<wxString> subMenuContents;
+  size_t count = 0;
+  for(const auto &i : filesList)
+    {      
       wxString name = i.SubString(1,i.Length() - 2);
-      wxWindowID id = wxWindow::NewControlId();
-      m_demoFilesIDs[id] = i;
       if(!name.IsEmpty())
         {
-          if((name.Upper().at(0) >= 'J') && (name.Upper().at(0) <= 'S'))
-            m_demo2_sub->Append(id, name);
-          else if((name.Upper().at(0) >= 'T') && (name.Upper().at(0) <= 'Z'))
-            m_demo3_sub->Append(id, name);
-          else
-            m_demo1_sub->Append(id, name);
+          subMenuContents.push_back(name);
+          if(subMenuContents.size() > 11)
+            {
+              wxMenu *subMenu = new wxMenu();
+              for(const auto &i : subMenuContents)
+                {
+                  wxWindowID id = wxWindow::NewControlId();
+                  m_demoFilesIDs[id] = i;
+                  subMenu->Append(id, i);
+                }
+              m_demo_sub->Append(wxWindow::NewControlId(),
+                                 subMenuContents.front() + wxS("-") + subMenuContents.back(),
+                                 subMenu);
+              subMenu->Connect(wxEVT_MENU,
+                                   wxCommandEventHandler(wxMaxima::OnDemoFileMenu), NULL, this);
+              subMenuContents.clear();
+            }
         }
+    }
+  if(subMenuContents.size() > 0)
+    {
+      wxMenu *subMenu = new wxMenu();
+      for(const auto &i : subMenuContents)
+        {
+          wxWindowID id = wxWindow::NewControlId();
+          m_demoFilesIDs[id] = i;
+          subMenu->Append(id, i);
+        }
+      m_demo_sub->Append(wxWindow::NewControlId(),
+                         subMenuContents.front() + wxS(" - ") + subMenuContents.back(),
+                         subMenu);
     }
 }
 

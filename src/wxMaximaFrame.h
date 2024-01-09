@@ -164,9 +164,10 @@ protected:
   StatusBar *m_statusBar;
   //! The menu bar
   MainMenuBar *m_MenuBar;
-  wxMenu *m_demo1_sub;
-  wxMenu *m_demo2_sub;
-  wxMenu *m_demo3_sub;
+  //! The "demo" sub-menu
+  wxMenu *m_demo_sub;
+  //! The submenus for the various "demo" sub-submenus
+  std::vector<wxMenu *> m_demoSubs;
   //! The "view" menu
   wxMenu *m_viewMenu;
   //! The gentran menu

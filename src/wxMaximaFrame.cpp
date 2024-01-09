@@ -1896,14 +1896,8 @@ void wxMaximaFrame::SetupMenu() {
   tutorials_sub->Append(EventIDs::menu_help_tutorials, _(wxS("↗Tutorials on the web")),
                         _("Online tutorials"), wxITEM_NORMAL);
   m_HelpMenu->Append(wxWindow::NewControlId(), _("Tutorials"), tutorials_sub);
-  wxMenu *demo_sub = new wxMenu;
-  m_demo1_sub = new wxMenu;
-  m_demo2_sub = new wxMenu;
-  m_demo3_sub = new wxMenu;
-  demo_sub->Append(wxWindow::NewControlId(), _("Demos A-C"), m_demo1_sub);
-  demo_sub->Append(wxWindow::NewControlId(), _("Demos J-S"), m_demo2_sub);
-  demo_sub->Append(wxWindow::NewControlId(), _("Demos T-Z"), m_demo3_sub);
-  m_HelpMenu->Append(wxWindow::NewControlId(), _("Demos"), demo_sub);
+  m_demo_sub = new wxMenu;
+  m_HelpMenu->Append(wxWindow::NewControlId(), _("Demos"), m_demo_sub);
   m_HelpMenu->AppendSeparator();
   m_HelpMenu->AppendRadioItem(EventIDs::menu_maxima_uses_internal_help,
                               _("Maxima shows help in the console"),
