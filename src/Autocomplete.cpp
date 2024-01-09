@@ -41,7 +41,7 @@
 #include <wx/xml/xml.h>
 #include <algorithm>
 
-AutoComplete::AutoComplete(Configuration *configuration) : wxObject() {
+AutoComplete::AutoComplete(Configuration *configuration) : wxEvtHandler() {
   std::vector<wxString> emptyList;
   for(unsigned i = 0; i < autoCompletionType::numberOfTypes; i++)
     m_wordList.push_back(emptyList);
@@ -309,6 +309,9 @@ void AutoComplete::LoadableFiles_BackgroundTask(wxString sharedir) {
   std::sort(m_builtInDemoFiles.begin(), m_builtInDemoFiles.end());
   m_wordList.at(demofile) = m_builtInDemoFiles;
   m_wordList.at(loadfile) = m_builtInLoadFiles;
+  // Inform the main thread that there are new demo files
+  wxCommandEvent *event = new wxCommandEvent(NEW_DEMO_FILES_EVENT);
+  QueueEvent(event);
 }
 
 void AutoComplete::UpdateDemoFiles(wxString partial, wxString maximaDir) {
@@ -534,3 +537,4 @@ wxString AutoComplete::FixTemplate(wxString templ) {
 }
 
 wxRegEx AutoComplete::m_args("[<\\([^>]*\\)>]");
+wxDEFINE_EVENT(NEW_DEMO_FILES_EVENT, wxCommandEvent);

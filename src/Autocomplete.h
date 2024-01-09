@@ -35,6 +35,7 @@
 #include <memory>
 #include <mutex>
 #include <wx/wx.h>
+#include <wx/event.h>
 #include <wx/dir.h>
 #include <vector>
 #include <wx/object.h>
@@ -53,7 +54,7 @@
    - all words that appear in the worksheet
    - and a list of maxima's builtin commands.
 */
-class AutoComplete : public wxObject
+class AutoComplete : public wxEvtHandler
 {
 #if wxCHECK_VERSION(3, 3, 0) || wxUSE_STL
   typedef std::unordered_map <wxString, int> WorksheetWords;
@@ -327,5 +328,7 @@ private:
   static wxRegEx m_args;
   WorksheetWords m_worksheetWords;
 };
+
+wxDECLARE_EVENT(NEW_DEMO_FILES_EVENT, wxCommandEvent);
 
 #endif // AUTOCOMPLETE_H
