@@ -53,7 +53,7 @@ void AutoComplete::ClearWorksheetWords() {
   m_worksheetWords.clear();
 }
 
-std::vector<wxString> AutoComplete::GetBuiltInDemoFiles() {
+std::vector<wxString> AutoComplete::GetDemoFilesList() {
   const std::lock_guard<std::mutex> lock(m_keywordsLock);
   return m_builtInDemoFiles;
 }

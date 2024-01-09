@@ -34,6 +34,7 @@
 #include "Dirstructure.h"
 #include <string>
 #include <memory>
+#include <algorithm>
 #include "sidebars/CharButton.h"
 #include "sidebars/StatSidebar.h"
 #include "sidebars/FormatSidebar.h"
@@ -1871,20 +1872,6 @@ void wxMaximaFrame::SetupMenu() {
     m_HelpMenu->Check(EventIDs::menu_wxmaxima_uses_help_browser, true);
 #endif
   m_HelpMenu->AppendSeparator();
-  m_HelpMenu->AppendRadioItem(EventIDs::menu_maxima_uses_internal_help,
-                              _("Maxima shows help in the console"),
-                              _("Tells maxima to show the help for ?, ?? and "
-                                "describe() on the console"));
-  if (m_configuration.OfferInternalHelpBrowser())
-    m_HelpMenu->AppendRadioItem(EventIDs::menu_maxima_uses_wxmaxima_help,
-                                _("Maxima shows help in a sidebar"),
-                                _("Tells maxima to show the help for ?, ?? and "
-                                  "describe() in a wxMaxima sidebar"));
-  m_HelpMenu->AppendRadioItem(EventIDs::menu_maxima_uses_html_help,
-                              _("Maxima shows help in a browser"),
-                              _("Tells maxima to show the help for ?, ?? and "
-                                "describe() in a separate browser window"));
-  m_HelpMenu->AppendSeparator();
   wxMenu *tutorials_sub = new wxMenu;
   tutorials_sub->Append(EventIDs::menu_help_solving, _("Solving equations with Maxima"),
                         "", wxITEM_NORMAL);
@@ -1909,7 +1896,28 @@ void wxMaximaFrame::SetupMenu() {
   tutorials_sub->Append(EventIDs::menu_help_tutorials, _(wxS("↗Tutorials on the web")),
                         _("Online tutorials"), wxITEM_NORMAL);
   m_HelpMenu->Append(wxWindow::NewControlId(), _("Tutorials"), tutorials_sub);
-
+  wxMenu *demo_sub = new wxMenu;
+  m_demo1_sub = new wxMenu;
+  m_demo2_sub = new wxMenu;
+  m_demo3_sub = new wxMenu;
+  demo_sub->Append(wxWindow::NewControlId(), _("Demos A-C"), m_demo1_sub);
+  demo_sub->Append(wxWindow::NewControlId(), _("Demos J-S"), m_demo2_sub);
+  demo_sub->Append(wxWindow::NewControlId(), _("Demos T-Z"), m_demo3_sub);
+  m_HelpMenu->Append(wxWindow::NewControlId(), _("Demos"), demo_sub);
+  m_HelpMenu->AppendSeparator();
+  m_HelpMenu->AppendRadioItem(EventIDs::menu_maxima_uses_internal_help,
+                              _("Maxima shows help in the console"),
+                              _("Tells maxima to show the help for ?, ?? and "
+                                "describe() on the console"));
+  if (m_configuration.OfferInternalHelpBrowser())
+    m_HelpMenu->AppendRadioItem(EventIDs::menu_maxima_uses_wxmaxima_help,
+                                _("Maxima shows help in a sidebar"),
+                                _("Tells maxima to show the help for ?, ?? and "
+                                  "describe() in a wxMaxima sidebar"));
+  m_HelpMenu->AppendRadioItem(EventIDs::menu_maxima_uses_html_help,
+                              _("Maxima shows help in a browser"),
+                              _("Tells maxima to show the help for ?, ?? and "
+                                "describe() in a separate browser window"));
   m_HelpMenu->AppendSeparator();
   m_HelpMenu->Append(EventIDs::menu_build_info, _("Build &Info"),
                      _("Info about Maxima build"), wxITEM_NORMAL);
@@ -1936,6 +1944,14 @@ void wxMaximaFrame::SetupMenu() {
 
   SetMenuBar(m_MenuBar);
 #undef APPEND_MENU_ITEM
+}
+
+wxString wxMaximaFrame::GetDemoFile(wxWindowID id) const
+{
+  for(const auto &i: m_demoFilesIDs)
+    if(i.first == id)
+      return i.second;
+  return wxEmptyString;
 }
 
 wxString wxMaximaFrame::wxMaximaManualLocation() {

@@ -788,6 +788,12 @@ public:
   //! Remove the said window from the list of toplevel windows
   static void DelistTopLevelWindow(wxMaxima *);
 protected:
+    //! Is called when we get a new list of demo files
+  //! Is called when we get a new list of demo files
+  void OnNewDemoFiles(wxCommandEvent &event);
+  //! Is called when a demo file menu is clicked
+  void OnDemoFileMenu(wxCommandEvent &ev);
+
   void OnSize(wxSizeEvent &event);
   void OnMove(wxMoveEvent &event);
   void OnMaximize(wxCommandEvent &event);

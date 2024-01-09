@@ -120,7 +120,7 @@ public:
   //! Basically runs a regex over templates
   static wxString FixTemplate(wxString templ);
   //! Returns a list of demo files we know of
-  std::vector<wxString> GetBuiltInDemoFiles();
+  std::vector<wxString> GetDemoFilesList();
   //! Does a demo file for this command exist?
   bool HasDemofile(wxString commandname);
 

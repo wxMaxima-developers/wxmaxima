@@ -164,6 +164,9 @@ protected:
   StatusBar *m_statusBar;
   //! The menu bar
   MainMenuBar *m_MenuBar;
+  wxMenu *m_demo1_sub;
+  wxMenu *m_demo2_sub;
+  wxMenu *m_demo3_sub;
   //! The "view" menu
   wxMenu *m_viewMenu;
   //! The gentran menu
@@ -277,9 +280,13 @@ protected:
   HelpBrowser *m_helpPane;
 #endif
 
+  //! Looks up which demo file belongs to a wxWindowID
+  wxString GetDemoFile(wxWindowID id) const;
 protected:
   std::array<wxString,10> m_statusTextHistory;
   void OnMenuStatusText(wxMenuEvent &event);
+  std::unordered_map<wxWindowID, wxString> m_demoFilesIDs;
+
   SymbolsSidebar *m_symbolsSidebar;
   //! The current length of the evaluation queue of commands we still need to send to maxima
   int m_EvaluationQueueLength;
