@@ -150,6 +150,18 @@ _Maxima_ allows Unicode if it was compiled using a Lisp compiler that either sup
 |  H  |     Eta      | Om  |   Omicron    |  Y  |     Psi      |
 |  T  |    Theta     |  P  |      Pi      |  O  |    Omega     |
 
+You can also use the "Greek letters"-sidebar to enter the Greek letters.
+
+> **_Attention:_**  Lookalike characters
+>
+> Several Latin letters look like the Greek letters, e.g. the Latin letter "A"
+> and the Greek letter "Alpha". This might be problematic, if you assign a
+> value to the Variable A and later use the Greek letter Alpha to do something
+> with this variable, especially on printouts.
+>
+> The "Greek letters"-sidebar therefore has the option, that lookalike characters
+> are not available (which can be changed using a right-click menu).
+
 The same mechanism also allows to enter some miscellaneous mathematical symbols:
 
 | keys to enter  | mathematical symbol                                   |
@@ -203,13 +215,15 @@ The same mechanism also allows to enter some miscellaneous mathematical symbols:
 | ->             | a right arrow                                         |
 | -->            | a long right arrow                                    |
 
+You can also use the "Symbols"-sidebar to enter these Mathematical symbols.
+
 If a special symbol isn’t in the list, it is possible to input arbitrary Unicode characters by pressing <kbd>ESC</kbd> \[number of the character (hexadecimal)\] <kbd>ESC</kbd>. Additionally the "symbols" sidebar has a right-click menu that allow to display a list of all available unicode symbols one can add to this toolbar or to the worksheet.
 
 <kbd>ESC</kbd> <kbd>61</kbd> <kbd>ESC</kbd> therefore results in an `a`.
 
 Please note that most of these symbols (notable exceptions are the logic symbols) do not have a special meaning in _Maxima_ and therefore will be interpreted as ordinary characters. If  _Maxima_ is compiled using a Lisp that doesn’t support Unicode characters they might cause an error message.
 
-It may be the case that e.g. greek characters or mathematical symbols are not included in the selected font, then they can not be displayed.
+It may be the case that e.g. Greek characters or mathematical symbols are not included in the selected font, then they can not be displayed.
 To solve that problem, select other fonts (using: Edit -> Configure -> Style).
 
 ### Unicode replacement

@@ -2253,6 +2253,11 @@ Submit bug reports by following the 'New issue' link on that page."))
 					;    (mapcar (lambda(key) (if (eq (char (format nil "~a" key) 0) #\$ ) (symbol-to-xml (make-symbol key)))) (wx-list-all-maxima-vars))
 
 
+;; WxMaxima reads these variables and sets several checkboxes in the Menu according to these
+;; variables. E.g. if the $numer variable is true, the checkbox for the Menu Numeric -> Numeric output
+;; is set checked.
+;; The state of this checkbox can either be changed using the wxMaxima menu (which would emit the
+;; command numer:true$ or numer:false$) - or by setting the variable as a Maxima command.
 (defun wx-print-gui-variables ()
   (finish-output)
   (format t "<variables>")
