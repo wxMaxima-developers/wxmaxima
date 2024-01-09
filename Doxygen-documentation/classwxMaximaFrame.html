@@ -222,6 +222,10 @@ wxString&#160;</td><td class="memItemRight" valign="bottom"><b>wxMaximaManualLoc
 virtual wxSize&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaximaFrame.html#a4ae1d3b87df6c6a4bbf99548149ad950">DoGetBestClientSize</a> () const</td></tr>
 <tr class="memdesc:a4ae1d3b87df6c6a4bbf99548149ad950"><td class="mdescLeft">&#160;</td><td class="mdescRight">The default size for the window. <br /></td></tr>
 <tr class="separator:a4ae1d3b87df6c6a4bbf99548149ad950"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afe23ed1128e8090b933390f87d40dfdd"><td class="memItemLeft" align="right" valign="top"><a id="afe23ed1128e8090b933390f87d40dfdd"></a>
+wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaximaFrame.html#afe23ed1128e8090b933390f87d40dfdd">GetDemoFile</a> (wxWindowID id) const</td></tr>
+<tr class="memdesc:afe23ed1128e8090b933390f87d40dfdd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Looks up which demo file belongs to a wxWindowID. <br /></td></tr>
+<tr class="separator:afe23ed1128e8090b933390f87d40dfdd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a294ec55a6c9ea6cb58c2dc6e4cc27cb6"><td class="memItemLeft" align="right" valign="top"><a id="a294ec55a6c9ea6cb58c2dc6e4cc27cb6"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>OnMenuStatusText</b> (wxMenuEvent &amp;event)</td></tr>
 <tr class="separator:a294ec55a6c9ea6cb58c2dc6e4cc27cb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -254,6 +258,15 @@ wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 <a class="el" href="classMainMenuBar.html">MainMenuBar</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaximaFrame.html#a855479d27ce8ed82fd3a6907dfafe0e4">m_MenuBar</a></td></tr>
 <tr class="memdesc:a855479d27ce8ed82fd3a6907dfafe0e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">The menu bar. <br /></td></tr>
 <tr class="separator:a855479d27ce8ed82fd3a6907dfafe0e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2f1e9a1278a0f7c89ed089cf8d02ae0b"><td class="memItemLeft" align="right" valign="top"><a id="a2f1e9a1278a0f7c89ed089cf8d02ae0b"></a>
+wxMenu *&#160;</td><td class="memItemRight" valign="bottom"><b>m_demo1_sub</b></td></tr>
+<tr class="separator:a2f1e9a1278a0f7c89ed089cf8d02ae0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0908e798768b4d71628c4cb01268c535"><td class="memItemLeft" align="right" valign="top"><a id="a0908e798768b4d71628c4cb01268c535"></a>
+wxMenu *&#160;</td><td class="memItemRight" valign="bottom"><b>m_demo2_sub</b></td></tr>
+<tr class="separator:a0908e798768b4d71628c4cb01268c535"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a114c2c9840f7722b3ffb4208e43d932f"><td class="memItemLeft" align="right" valign="top"><a id="a114c2c9840f7722b3ffb4208e43d932f"></a>
+wxMenu *&#160;</td><td class="memItemRight" valign="bottom"><b>m_demo3_sub</b></td></tr>
+<tr class="separator:a114c2c9840f7722b3ffb4208e43d932f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa0323a56d1d20fb3cea20d50e9fea9ff"><td class="memItemLeft" align="right" valign="top"><a id="aa0323a56d1d20fb3cea20d50e9fea9ff"></a>
 wxMenu *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaximaFrame.html#aa0323a56d1d20fb3cea20d50e9fea9ff">m_viewMenu</a></td></tr>
 <tr class="memdesc:aa0323a56d1d20fb3cea20d50e9fea9ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">The "view" menu. <br /></td></tr>
@@ -368,6 +381,9 @@ wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 <tr class="memitem:a324068ed3d61cca697253548d5f86367"><td class="memItemLeft" align="right" valign="top"><a id="a324068ed3d61cca697253548d5f86367"></a>
 std::array&lt; wxString, 10 &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>m_statusTextHistory</b></td></tr>
 <tr class="separator:a324068ed3d61cca697253548d5f86367"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6c877a6e5056ba6624e19103e17456fe"><td class="memItemLeft" align="right" valign="top"><a id="a6c877a6e5056ba6624e19103e17456fe"></a>
+std::unordered_map&lt; wxWindowID, wxString &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>m_demoFilesIDs</b></td></tr>
+<tr class="separator:a6c877a6e5056ba6624e19103e17456fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aab0d89ee3e72c89c85a814037899980c"><td class="memItemLeft" align="right" valign="top"><a id="aab0d89ee3e72c89c85a814037899980c"></a>
 <a class="el" href="classSymbolsSidebar.html">SymbolsSidebar</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>m_symbolsSidebar</b></td></tr>
 <tr class="separator:aab0d89ee3e72c89c85a814037899980c"><td class="memSeparator" colspan="2">&#160;</td></tr>
