@@ -101,6 +101,7 @@ set(SIDEBAR_SOURCE_FILES
     DrawSidebar.cpp
     MathSidebar.cpp
     FormatSidebar.cpp
+    RegexCtrl.cpp
 )
 list_transform_prepend(SIDEBAR_SOURCE_FILES sidebars/)
 
@@ -147,7 +148,6 @@ set(SOURCE_FILES
     nanoSVG.cpp
     Notification.cpp
     RecentDocuments.cpp
-    RegexCtrl.cpp
     RegexSearch.cpp
     ResolutionChooser.cpp
     StackToStdErr.cpp

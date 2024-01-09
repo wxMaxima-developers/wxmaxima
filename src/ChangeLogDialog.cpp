@@ -31,11 +31,13 @@
 #include <wx/string.h>
 #include <wx/txtstrm.h>
 #include <wx/regex.h>
+  #include <wx/utils.h>
 
 ChangeLogDialog::ChangeLogDialog(wxWindow *parent)
   : wxDialog(parent, -1, _("ChangeLog"), wxDefaultPosition, wxDefaultSize,
              wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER | wxCLOSE_BOX | wxMAXIMIZE_BOX |
              wxMINIMIZE_BOX) {
+  wxBusyCursor bsy;
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
   wxMemoryInputStream istream(NEWS_MD, NEWS_MD_SIZE);
   wxTextInputStream textIn(istream);
