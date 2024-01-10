@@ -49,16 +49,26 @@ GreekSidebar::GreekSidebar(wxWindow *parent,
   SetScrollRate(5, 5);
   UpdateSymbols();
 
-  vbox->Add(m_lowercaseSizer, wxSizerFlags().Expand());
-  vbox->Add(m_uppercaseSizer, wxSizerFlags().Expand());
+  wxPanel *lowerCasePanel = new wxPanel(this);
+  lowerCasePanel->SetSizer(m_lowercaseSizer);
+  wxPanel *upperCasePanel = new wxPanel(this);
+  upperCasePanel->SetSizer(m_uppercaseSizer);
 
   Connect(wxEVT_SIZE, wxSizeEventHandler(GreekSidebar::OnSize),
           NULL, this);
   Connect(wxEVT_MENU,
           wxCommandEventHandler(GreekSidebar::OnMenu), NULL, this);
+  lowerCasePanel->Connect(wxEVT_MENU,
+                          wxCommandEventHandler(GreekSidebar::OnMenu), NULL, this);
+  upperCasePanel->Connect(wxEVT_MENU,
+                          wxCommandEventHandler(GreekSidebar::OnMenu), NULL, this);
   Connect(wxEVT_RIGHT_DOWN,
-          wxMouseEventHandler(GreekSidebar::OnMouseRightDown));
-
+          wxMouseEventHandler(GreekSidebar::OnMouseRightDown), NULL, this);
+  GetTargetWindow()->Connect(wxEVT_MENU,
+                             wxCommandEventHandler(GreekSidebar::OnMenu), NULL,
+                             this);
+  vbox->Add(lowerCasePanel, wxSizerFlags().Expand());
+  vbox->Add(upperCasePanel, wxSizerFlags().Expand());
   SetSizer(vbox);
   FitInside();
   SetMinSize(wxSize(GetContentScaleFactor() * 50, GetMinSize().y));
@@ -77,12 +87,14 @@ void GreekSidebar::OnMenu(wxCommandEvent &event) {
       bool showLookalikes = !m_configuration->GreekSidebar_ShowLatinLookalikes();
       m_configuration->GreekSidebar_ShowLatinLookalikes(showLookalikes);
       UpdateSymbols();
+      Refresh();
       Layout();
     }},
     {EventIDs::menu_showGreekMu, [&](){
       bool show_mu = !m_configuration->GreekSidebar_Show_mu();
       m_configuration->GreekSidebar_Show_mu(show_mu);
       UpdateSymbols();
+      Refresh();
       Layout();
     }
     }};
@@ -93,6 +105,7 @@ void GreekSidebar::OnMenu(wxCommandEvent &event) {
     }
   else
     varFunc->second();
+  std::cerr<<"menu\n";
 }
 
 void GreekSidebar::UpdateSymbols() {

@@ -271,7 +271,6 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
   m_sidebarNames[EventIDs::menu_pane_greek] = wxS("greek");
   m_sidebarCaption[EventIDs::menu_pane_greek] = _("Greek Letters");
   wxPanel *greekPane = new GreekSidebar(this, &m_configuration, GetWorksheet());
-  //  wxWindowUpdateLocker greekBlocker(greekPane);
   m_manager.AddPane(greekPane, wxAuiPaneInfo()
                     .Name(m_sidebarNames[EventIDs::menu_pane_greek])
                     .Left());

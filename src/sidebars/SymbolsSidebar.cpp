@@ -136,6 +136,9 @@ SymbolsSidebar::SymbolsSidebar(wxWindow *parent,
   Connect(wxEVT_MENU,
           wxCommandEventHandler(SymbolsSidebar::OnMenu), NULL,
           this);
+  GetTargetWindow()->Connect(wxEVT_MENU,
+                             wxCommandEventHandler(SymbolsSidebar::OnMenu), NULL,
+                             this);
   Connect(wxEVT_RIGHT_DOWN,
           wxMouseEventHandler(SymbolsSidebar::OnMouseRightDown));
   builtInSymbols->Connect(wxEVT_RIGHT_DOWN,
@@ -149,12 +152,22 @@ SymbolsSidebar::SymbolsSidebar(wxWindow *parent,
 
 void SymbolsSidebar::OnMenu(wxCommandEvent &event) {
   std::unordered_map<int, std::function<void()>> m{
+    {EventIDs::enable_unicodePane, [&](){
+      wxWindow *mainWin = this;
+      while (mainWin->GetParent() != NULL)
+        mainWin = mainWin->GetParent();
+      wxCommandEvent *ev = new wxCommandEvent(event);
+      mainWin->GetEventHandler()->QueueEvent(ev);
+    }},
     {EventIDs::menu_additionalSymbols, [&](){
-      wxWindowPtr<Gen1Wiz> wiz(new Gen1Wiz(
-                                           this, -1, m_configuration, _("Non-builtin symbols"),
-                                           _("Unicode symbols:"), m_configuration->SymbolPaneAdditionalChars(),
-                                           _("Allows to specify which not-builtin unicode symbols should be "
-                                             "displayed in the symbols sidebar along with the built-in symbols.")));
+      wxWindowPtr<Gen1Wiz>
+        wiz(new
+            Gen1Wiz(
+                    this, -1, m_configuration, _("Non-builtin symbols"),
+                                           _("Unicode symbols:"),
+                    m_configuration->SymbolPaneAdditionalChars(),
+                    _("Allows to specify which not-builtin unicode symbols should be "
+                      "displayed in the symbols sidebar along with the built-in symbols.")));
       // wiz->Centre(wxBOTH);
       wiz->SetLabel1ToolTip(_("Drag-and-drop unicode symbols here"));
       wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
