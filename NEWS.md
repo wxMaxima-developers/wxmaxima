@@ -19,6 +19,7 @@
 - Reading out the values of maxima variables for the GUI was broken
 - Many checkmarks in menus had the wrong value
 - Maxima's demos are now available in the menu and context menu
+- Default the filter search boxes to text search, not regex
 
 # 23.12.0
 

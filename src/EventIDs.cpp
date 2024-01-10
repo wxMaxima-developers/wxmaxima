@@ -540,6 +540,8 @@ const wxWindowIDRef EventIDs::menu_help_3d(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::menu_help_varnames(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::menu_help_fittingData(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::menu_help_tutorials_end(wxWindow::NewControlId());
+const wxWindowIDRef EventIDs::menu_regex_isRegex(wxWindow::NewControlId());
+const wxWindowIDRef EventIDs::menu_regex_isTextSearch(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::menu_history_previous(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::menu_history_next(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::menu_check_updates(wxWindow::NewControlId());

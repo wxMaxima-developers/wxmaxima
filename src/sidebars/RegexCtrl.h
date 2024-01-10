@@ -43,15 +43,26 @@ class RegexCtrl : public BTextCtrl
   };
 public:
   RegexCtrl(wxWindow *parent,
-            wxWindowID id, Configuration *cfg);
+            wxWindowID id, Configuration *cfg, wxString configName);
   bool Matches(wxString text);
 
 protected:
+  //! Is called when the contents of the textbox changes
   void OnTextChange(wxCommandEvent &ev);
+  //! Called, if the user releases the right mouse button
+  void OnMouseRightDown(wxMouseEvent &event);
+  //! Called, if the user selects a menu item 
+  void OnMenu(wxCommandEvent &event);
+  //! Called, if the search text or method changes
+  void OnChange();
 
   ~RegexCtrl();
 
 private:
+  //! false = Regular text search. true = regex search
+  bool m_isRegex = false;
+  //! Under which name can this control save its settings to the configuration?
+  wxString m_configName;
   wxString m_oldRegex;
   wxRegEx m_regex;
   enum class RegexInputState : int8_t { empty, invalid, valid };
@@ -60,6 +71,8 @@ private:
   RegexInputState GetNewRegexInputState() const;
   //! The tooltip that is displayed if the regex cannot be interpreted
   static wxString RegexTooltip_error;
+  //! The tooltip that is displayed if we don't make a regex, but a text search
+  static wxString RegexTooltip_textsearch;
   //! The tooltip that is displayed if the regex is empty or can be interpreted
   static wxString RegexTooltip_norm;
 };

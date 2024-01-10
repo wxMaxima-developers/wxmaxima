@@ -30,7 +30,8 @@
 
 #include "History.h"
 
-#include "Configuration.h"
+#include "../Configuration.h"
+#include "../EventIDs.h"
 #include <algorithm>
 #include <memory>
 #include <wx/config.h>
@@ -49,7 +50,7 @@ History::History(wxWindow *parent, int id, Configuration *cfg)
   m_history =
     new wxListBox(this, history_ctrl_id, wxDefaultPosition, wxDefaultSize, 0,
                   NULL, wxLB_EXTENDED | wxLB_HSCROLL | wxLB_NEEDED_SB);
-  m_regex = new RegexCtrl(this, wxID_ANY, cfg);
+  m_regex = new RegexCtrl(this, wxID_ANY, cfg, "History");
   wxBoxSizer *box = new wxBoxSizer(wxVERTICAL);
 
   box->Add(m_history, wxSizerFlags(1).Expand());

@@ -50,7 +50,7 @@ UnicodeSidebar::UnicodeSidebar(wxWindow *parent, wxWindow *worksheet,
   //  wxWindowUpdateLocker speedUp(this);
   wxBoxSizer *box = new wxBoxSizer(wxVERTICAL);
   m_initialized = false;
-  m_regex = new RegexCtrl(this, wxID_ANY, cfg);
+  m_regex = new RegexCtrl(this, wxID_ANY, cfg, "UnicodeSidebar");
   m_regex->Connect(REGEX_EVENT,
                    wxCommandEventHandler(UnicodeSidebar::OnRegExEvent), NULL,
                    this);

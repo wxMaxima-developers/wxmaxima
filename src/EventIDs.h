@@ -594,6 +594,8 @@ public:
   static const wxWindowIDRef menu_format_title;
   static const wxWindowIDRef menu_format_image;
   static const wxWindowIDRef menu_format_pagebreak;
+  static const wxWindowIDRef menu_regex_isRegex;
+  static const wxWindowIDRef menu_regex_isTextSearch;
   static const wxWindowIDRef menu_help_demo_for_command;
   static const wxWindowIDRef menu_help_tutorials;
   static const wxWindowIDRef menu_help_tutorials_start; //! Start of bundled tutorials
