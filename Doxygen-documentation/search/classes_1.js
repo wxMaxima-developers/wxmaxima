@@ -1,10 +1,10 @@
 var searchData=
 [
-  ['bad_5foptional_5faccess_1711',['bad_optional_access',['../classSTX__NAMESPACE__NAME_1_1bad__optional__access.html',1,'STX_NAMESPACE_NAME']]],
-  ['bc2wiz_1712',['BC2Wiz',['../classBC2Wiz.html',1,'']]],
-  ['binaryexpr_1713',['BinaryExpr',['../classCatch_1_1BinaryExpr.html',1,'Catch']]],
-  ['bitmapout_1714',['BitmapOut',['../classBitmapOut.html',1,'']]],
-  ['boxcell_1715',['BoxCell',['../classBoxCell.html',1,'']]],
-  ['btextctrl_1716',['BTextCtrl',['../classBTextCtrl.html',1,'']]],
-  ['buttonwrapsizer_1717',['Buttonwrapsizer',['../classButtonwrapsizer.html',1,'']]]
+  ['bad_5foptional_5faccess_1713',['bad_optional_access',['../classSTX__NAMESPACE__NAME_1_1bad__optional__access.html',1,'STX_NAMESPACE_NAME']]],
+  ['bc2wiz_1714',['BC2Wiz',['../classBC2Wiz.html',1,'']]],
+  ['binaryexpr_1715',['BinaryExpr',['../classCatch_1_1BinaryExpr.html',1,'Catch']]],
+  ['bitmapout_1716',['BitmapOut',['../classBitmapOut.html',1,'']]],
+  ['boxcell_1717',['BoxCell',['../classBoxCell.html',1,'']]],
+  ['btextctrl_1718',['BTextCtrl',['../classBTextCtrl.html',1,'']]],
+  ['buttonwrapsizer_1719',['Buttonwrapsizer',['../classButtonwrapsizer.html',1,'']]]
 ];

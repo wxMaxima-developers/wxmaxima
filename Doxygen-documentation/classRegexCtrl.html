@@ -89,9 +89,9 @@ Collaboration diagram for RegexCtrl:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a5021825c2a49f2aa49e4ceb1dd275823"><td class="memItemLeft" align="right" valign="top"><a id="a5021825c2a49f2aa49e4ceb1dd275823"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>RegexCtrl</b> (wxWindow *parent, wxWindowID id, <a class="el" href="classConfiguration.html">Configuration</a> *cfg)</td></tr>
-<tr class="separator:a5021825c2a49f2aa49e4ceb1dd275823"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4d7e9d927878f6a918a3e0ff358e852c"><td class="memItemLeft" align="right" valign="top"><a id="a4d7e9d927878f6a918a3e0ff358e852c"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>RegexCtrl</b> (wxWindow *parent, wxWindowID id, <a class="el" href="classConfiguration.html">Configuration</a> *cfg, wxString configName)</td></tr>
+<tr class="separator:a4d7e9d927878f6a918a3e0ff358e852c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acc4baaeb8f1072b1b22ea68bc483fd9b"><td class="memItemLeft" align="right" valign="top"><a id="acc4baaeb8f1072b1b22ea68bc483fd9b"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>Matches</b> (wxString text)</td></tr>
 <tr class="separator:acc4baaeb8f1072b1b22ea68bc483fd9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -102,8 +102,21 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>SetSkipTab</b> (bool 
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
 <tr class="memitem:abc08f4f45a489fee2a1f4593cca23f74"><td class="memItemLeft" align="right" valign="top"><a id="abc08f4f45a489fee2a1f4593cca23f74"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>OnTextChange</b> (wxCommandEvent &amp;ev)</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRegexCtrl.html#abc08f4f45a489fee2a1f4593cca23f74">OnTextChange</a> (wxCommandEvent &amp;ev)</td></tr>
+<tr class="memdesc:abc08f4f45a489fee2a1f4593cca23f74"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is called when the contents of the textbox changes. <br /></td></tr>
 <tr class="separator:abc08f4f45a489fee2a1f4593cca23f74"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a52cf402f955d5616f6775ae1252e9f8a"><td class="memItemLeft" align="right" valign="top"><a id="a52cf402f955d5616f6775ae1252e9f8a"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRegexCtrl.html#a52cf402f955d5616f6775ae1252e9f8a">OnMouseRightDown</a> (wxMouseEvent &amp;event)</td></tr>
+<tr class="memdesc:a52cf402f955d5616f6775ae1252e9f8a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called, if the user releases the right mouse button. <br /></td></tr>
+<tr class="separator:a52cf402f955d5616f6775ae1252e9f8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa324f4c4789baa3d92b584b652ae8a51"><td class="memItemLeft" align="right" valign="top"><a id="aa324f4c4789baa3d92b584b652ae8a51"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRegexCtrl.html#aa324f4c4789baa3d92b584b652ae8a51">OnMenu</a> (wxCommandEvent &amp;event)</td></tr>
+<tr class="memdesc:aa324f4c4789baa3d92b584b652ae8a51"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called, if the user selects a menu item. <br /></td></tr>
+<tr class="separator:aa324f4c4789baa3d92b584b652ae8a51"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa75a69ba3363848e578bcfade4e2593a"><td class="memItemLeft" align="right" valign="top"><a id="aa75a69ba3363848e578bcfade4e2593a"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRegexCtrl.html#aa75a69ba3363848e578bcfade4e2593a">OnChange</a> ()</td></tr>
+<tr class="memdesc:aa75a69ba3363848e578bcfade4e2593a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called, if the search text or method changes. <br /></td></tr>
+<tr class="separator:aa75a69ba3363848e578bcfade4e2593a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>A <a class="el" href="classBTextCtrl.html" title="A wxTextCtrl with parenthesis matching.">BTextCtrl</a> that allows to input a regex. </p>
