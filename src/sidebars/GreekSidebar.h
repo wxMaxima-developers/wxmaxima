@@ -51,6 +51,8 @@ class GreekSidebar : public wxScrolled<wxPanel>
   void OnMenu(wxCommandEvent &event);
   void OnSize(wxSizeEvent &event);
  private:
+  wxPanel *m_upperCasePanel;
+  wxPanel *m_lowerCasePanel;
   Configuration *m_configuration;
   wxSizer *m_lowercaseSizer;
   wxSizer *m_uppercaseSizer;

@@ -43,32 +43,32 @@ GreekSidebar::GreekSidebar(wxWindow *parent,
   : wxScrolled<wxPanel>(parent, ID), m_configuration(configuration),
     m_lowercaseSizer(new Buttonwrapsizer(wxHORIZONTAL)),
     m_uppercaseSizer(new Buttonwrapsizer(wxHORIZONTAL)), m_worksheet(worksheet) {
+  m_lowerCasePanel = new wxPanel(this);
+  m_upperCasePanel = new wxPanel(this);
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
   ShowScrollbars(wxSHOW_SB_NEVER, wxSHOW_SB_DEFAULT);
   EnableScrolling(false, true);
   SetScrollRate(5, 5);
   UpdateSymbols();
 
-  wxPanel *lowerCasePanel = new wxPanel(this);
-  lowerCasePanel->SetSizer(m_lowercaseSizer);
-  wxPanel *upperCasePanel = new wxPanel(this);
-  upperCasePanel->SetSizer(m_uppercaseSizer);
+  m_lowerCasePanel->SetSizer(m_lowercaseSizer);
+  m_upperCasePanel->SetSizer(m_uppercaseSizer);
 
   Connect(wxEVT_SIZE, wxSizeEventHandler(GreekSidebar::OnSize),
           NULL, this);
   Connect(wxEVT_MENU,
           wxCommandEventHandler(GreekSidebar::OnMenu), NULL, this);
-  lowerCasePanel->Connect(wxEVT_MENU,
+  m_lowerCasePanel->Connect(wxEVT_MENU,
                           wxCommandEventHandler(GreekSidebar::OnMenu), NULL, this);
-  upperCasePanel->Connect(wxEVT_MENU,
+  m_upperCasePanel->Connect(wxEVT_MENU,
                           wxCommandEventHandler(GreekSidebar::OnMenu), NULL, this);
   Connect(wxEVT_RIGHT_DOWN,
           wxMouseEventHandler(GreekSidebar::OnMouseRightDown), NULL, this);
   GetTargetWindow()->Connect(wxEVT_MENU,
                              wxCommandEventHandler(GreekSidebar::OnMenu), NULL,
                              this);
-  vbox->Add(lowerCasePanel, wxSizerFlags().Expand());
-  vbox->Add(upperCasePanel, wxSizerFlags().Expand());
+  vbox->Add(m_lowerCasePanel, wxSizerFlags().Expand());
+  vbox->Add(m_upperCasePanel, wxSizerFlags().Expand());
   SetSizer(vbox);
   FitInside();
   SetMinSize(wxSize(GetContentScaleFactor() * 50, GetMinSize().y));
@@ -183,7 +183,7 @@ void GreekSidebar::UpdateSymbols() {
         (def.condition == Cond::Show_mu && Show_mu) ||
         (def.condition == Cond::ShowLatinLookalikes && ShowLatinLookalikes))
       {
-        CharButton *button = new CharButton(this, m_worksheet, m_configuration, def);
+        CharButton *button = new CharButton(m_lowerCasePanel, m_worksheet, m_configuration, def);
         m_lowercaseSizer->Add(button, wxSizerFlags().Expand());
         button->Connect(wxEVT_RIGHT_DOWN,
                         wxMouseEventHandler(GreekSidebar::OnMouseRightDown), NULL, this);
@@ -202,7 +202,7 @@ void GreekSidebar::UpdateSymbols() {
         (def.condition == Cond::Show_mu && Show_mu) ||
         (def.condition == Cond::ShowLatinLookalikes && ShowLatinLookalikes))
       {
-        CharButton *button = new CharButton(this, m_worksheet, m_configuration, def);
+        CharButton *button = new CharButton(m_upperCasePanel, m_worksheet, m_configuration, def);
         m_uppercaseSizer->Add(button, wxSizerFlags().Expand());
         button->Connect(wxEVT_RIGHT_DOWN,
                         wxMouseEventHandler(GreekSidebar::OnMouseRightDown), NULL, this);
