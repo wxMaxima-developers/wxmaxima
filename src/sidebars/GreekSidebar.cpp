@@ -54,9 +54,7 @@ GreekSidebar::GreekSidebar(wxWindow *parent,
 
   Connect(wxEVT_SIZE, wxSizeEventHandler(GreekSidebar::OnSize),
           NULL, this);
-  Connect(EventIDs::menu_showLatinGreekLookalikes, wxEVT_MENU,
-          wxCommandEventHandler(GreekSidebar::OnMenu), NULL, this);
-  Connect(EventIDs::menu_showGreekMu, wxEVT_MENU,
+  Connect(wxEVT_MENU,
           wxCommandEventHandler(GreekSidebar::OnMenu), NULL, this);
   Connect(wxEVT_RIGHT_DOWN,
           wxMouseEventHandler(GreekSidebar::OnMouseRightDown));
@@ -176,12 +174,12 @@ void GreekSidebar::UpdateSymbols() {
         m_lowercaseSizer->Add(button, wxSizerFlags().Expand());
         button->Connect(wxEVT_RIGHT_DOWN,
                         wxMouseEventHandler(GreekSidebar::OnMouseRightDown), NULL, this);
-        button->Connect(EventIDs::menu_showGreekMu, wxEVT_MENU,
+        button->Connect(wxEVT_MENU,
                         wxCommandEventHandler(GreekSidebar::OnMenu), NULL, this);
         button->GetTextObject()->Connect(wxEVT_RIGHT_DOWN,
                                          wxMouseEventHandler(GreekSidebar::OnMouseRightDown),
                                          NULL, this);
-        button->GetTextObject()->Connect(EventIDs::menu_showGreekMu, wxEVT_MENU,
+        button->GetTextObject()->Connect(wxEVT_MENU,
                                          wxCommandEventHandler(GreekSidebar::OnMenu), NULL, this);
       }
 
@@ -195,12 +193,12 @@ void GreekSidebar::UpdateSymbols() {
         m_uppercaseSizer->Add(button, wxSizerFlags().Expand());
         button->Connect(wxEVT_RIGHT_DOWN,
                         wxMouseEventHandler(GreekSidebar::OnMouseRightDown), NULL, this);
-        button->Connect(EventIDs::menu_showGreekMu, wxEVT_MENU,
+        button->Connect(wxEVT_MENU,
                         wxCommandEventHandler(GreekSidebar::OnMenu), NULL, this);
         button->GetTextObject()->Connect(wxEVT_RIGHT_DOWN,
                                          wxMouseEventHandler(GreekSidebar::OnMouseRightDown),
                                          NULL, this);
-        button->GetTextObject()->Connect(EventIDs::menu_showGreekMu, wxEVT_MENU,
+        button->GetTextObject()->Connect(wxEVT_MENU,
                                          wxCommandEventHandler(GreekSidebar::OnMenu), NULL, this);
       }
 }

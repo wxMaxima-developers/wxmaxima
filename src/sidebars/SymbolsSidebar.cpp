@@ -114,12 +114,12 @@ SymbolsSidebar::SymbolsSidebar(wxWindow *parent,
       builtInSymbolsSizer->Add(button, wxSizerFlags().Expand());
       button->Connect(wxEVT_RIGHT_DOWN,
                       wxMouseEventHandler(SymbolsSidebar::OnMouseRightDown), NULL, this);
-      button->Connect(EventIDs::menu_showGreekMu, wxEVT_MENU,
+      button->Connect(wxEVT_MENU,
                       wxCommandEventHandler(SymbolsSidebar::OnMenu), NULL, this);
       button->GetTextObject()->Connect(wxEVT_RIGHT_DOWN,
                                        wxMouseEventHandler(SymbolsSidebar::OnMouseRightDown),
                                        NULL, this);
-      button->GetTextObject()->Connect(EventIDs::menu_showGreekMu, wxEVT_MENU,
+      button->GetTextObject()->Connect(wxEVT_MENU,
                                        wxCommandEventHandler(SymbolsSidebar::OnMenu), NULL, this);
     }
   
@@ -133,7 +133,7 @@ SymbolsSidebar::SymbolsSidebar(wxWindow *parent,
   vbox->Add(m_userSymbols, wxSizerFlags().Expand());
   Connect(wxEVT_SIZE, wxSizeEventHandler(SymbolsSidebar::OnSize),
           NULL, this);
-  Connect(EventIDs::menu_additionalSymbols, wxEVT_MENU,
+  Connect(wxEVT_MENU,
           wxCommandEventHandler(SymbolsSidebar::OnMenu), NULL,
           this);
   Connect(wxEVT_RIGHT_DOWN,
@@ -214,12 +214,12 @@ void SymbolsSidebar::AddUserSymbols() {
     m_userSymbolButtons.push_back(button);
     button->Connect(wxEVT_RIGHT_DOWN,
                     wxMouseEventHandler(SymbolsSidebar::OnMouseRightDown), NULL, this);
-    button->Connect(EventIDs::menu_showGreekMu, wxEVT_MENU,
+    button->Connect(wxEVT_MENU,
                     wxCommandEventHandler(SymbolsSidebar::OnMenu), NULL, this);
     button->GetTextObject()->Connect(wxEVT_RIGHT_DOWN,
                                      wxMouseEventHandler(SymbolsSidebar::OnMouseRightDown),
                                      NULL, this);
-    button->GetTextObject()->Connect(EventIDs::menu_showGreekMu, wxEVT_MENU,
+    button->GetTextObject()->Connect(wxEVT_MENU,
                                      wxCommandEventHandler(SymbolsSidebar::OnMenu), NULL, this);
     m_userSymbolsSizer->Add(button, wxSizerFlags().Expand());
   }
