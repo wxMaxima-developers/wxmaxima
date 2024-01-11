@@ -20,6 +20,8 @@
 - Many checkmarks in menus had the wrong value
 - Maxima's demos are now available in the menu and context menu
 - Default the filter search boxes to text search, not regex
+- Rescaling affected size calculations for code only with a delay
+- Mac Os: way higher stability if multiple windows are open
 
 # 23.12.0
 

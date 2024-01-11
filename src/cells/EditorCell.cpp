@@ -580,6 +580,10 @@ bool EditorCell::NeedsRecalculation(AFontSize fontSize) const {
 void EditorCell::Recalculate(AFontSize fontsize) {
   if(NeedsRecalculation(fontsize))
     {
+      // Needs to be before the StyleText() as it sets m_fontsize_scaled
+      Cell::Recalculate(fontsize);
+      // Perhaps we should test if the fons have actually changed here.
+      FontsChanged();
       m_isDirty = false;
       m_widths.clear();
       StyleText();
@@ -603,7 +607,8 @@ void EditorCell::Recalculate(AFontSize fontsize) {
           m_numberOfLines++;
           linewidth = textSnippet.GetIndentPixels();
         } else {
-          m_configuration->GetRecalcDC()->GetTextExtent(textSnippet.GetText(), &tokenwidth, &tokenheight);
+          m_configuration->GetRecalcDC()->GetTextExtent(textSnippet.GetText(),
+                                                        &tokenwidth, &tokenheight);
           textSnippet.SetWidth(tokenwidth);
           linewidth += tokenwidth;
           width = std::max(width, linewidth);
@@ -635,7 +640,6 @@ void EditorCell::Recalculate(AFontSize fontsize) {
       m_height = std::max(m_height, m_charHeight + 2 * Scale_Px(2));
 
       m_containsChanges = false;
-      Cell::Recalculate(fontsize);
     }
 }
 
@@ -2961,8 +2965,7 @@ void EditorCell::StyleTextCode() {
       // All spaces except the last one (that could cause a line break)
       // share the same token
       if (tokenString.Length() > 1)
-        m_styledText.push_back(
-                               StyledText(tokenString.Right(tokenString.Length() - 1)));
+        m_styledText.push_back(StyledText(tokenString.Right(tokenString.Length() - 1)));
 
       // Now we push the last space to the list of tokens and remember this
       // space as the space that potentially serves as the next point to
