@@ -4,7 +4,7 @@
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2011-2011 cw.ahbong <cwahbong@users.sourceforge.net>
 //            (C) 2012 Doug Ilijev <doug.ilijev@gmail.com>
-//            (C) 2014-2018 Gunter Königsmann <wxMaxima@physikbuch.de>
+//            (C) 2014-2024 Gunter Königsmann <wxMaxima@physikbuch.de>
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -42,15 +42,16 @@ GreekSidebar::GreekSidebar(wxWindow *parent,
                                     wxWindow *worksheet, int ID)
   : wxScrolled<wxPanel>(parent, ID), m_configuration(configuration),
     m_lowercaseSizer(new Buttonwrapsizer(wxHORIZONTAL)),
-    m_uppercaseSizer(new Buttonwrapsizer(wxHORIZONTAL)), m_worksheet(worksheet) {
+    m_uppercaseSizer(new Buttonwrapsizer(wxHORIZONTAL)),
+    m_worksheet(worksheet)
+{
+  wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
   m_lowerCasePanel = new wxPanel(this);
   m_upperCasePanel = new wxPanel(this);
-  wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
   ShowScrollbars(wxSHOW_SB_NEVER, wxSHOW_SB_DEFAULT);
   EnableScrolling(false, true);
   SetScrollRate(5, 5);
   UpdateSymbols();
-
   m_lowerCasePanel->SetSizer(m_lowercaseSizer);
   m_upperCasePanel->SetSizer(m_uppercaseSizer);
 
@@ -105,7 +106,6 @@ void GreekSidebar::OnMenu(wxCommandEvent &event) {
     }
   else
     varFunc->second();
-  std::cerr<<"menu\n";
 }
 
 void GreekSidebar::UpdateSymbols() {
@@ -177,6 +177,7 @@ void GreekSidebar::UpdateSymbols() {
   bool const Show_mu = m_configuration->GreekSidebar_Show_mu();
   bool const ShowLatinLookalikes = m_configuration->GreekSidebar_ShowLatinLookalikes();
 
+  if(!m_lowercaseSizer->GetChildren().IsEmpty())
   m_lowercaseSizer->Clear(true);
   for (auto &def : lowerCaseDefs)
     if (def.condition == Cond::None ||
@@ -196,7 +197,8 @@ void GreekSidebar::UpdateSymbols() {
                                          wxCommandEventHandler(GreekSidebar::OnMenu), NULL, this);
       }
 
-  m_uppercaseSizer->Clear(true);
+  if(!m_uppercaseSizer->GetChildren().IsEmpty())
+    m_uppercaseSizer->Clear(true);
   for (auto &def : upperCaseDefs)
     if (def.condition == Cond::None ||
         (def.condition == Cond::Show_mu && Show_mu) ||
@@ -225,6 +227,5 @@ void GreekSidebar::OnMouseRightDown(wxMouseEvent &WXUNUSED(event)) {
   popupMenu->AppendCheckItem(EventIDs::menu_showGreekMu,
                              _(wxS("Show lookalike for unit prefix µ")));
   popupMenu->Check(EventIDs::menu_showGreekMu, m_configuration->GreekSidebar_Show_mu());
-  if(wxWindow::FindFocus())
-    wxWindow::FindFocus()->PopupMenu(&*popupMenu);
+  PopupMenu(&*popupMenu);
 }
