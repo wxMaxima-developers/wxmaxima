@@ -22,6 +22,7 @@
 - Default the filter search boxes to text search, not regex
 - Rescaling affected size calculations for code only with a delay
 - Mac Os: way higher stability if multiple windows are open
+- The context menu in the "greek letters" sidebar now works (#1878)
 
 # 23.12.0
 
