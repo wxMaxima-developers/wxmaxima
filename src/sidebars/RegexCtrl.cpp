@@ -142,7 +142,7 @@ void RegexCtrl::OnMouseRightDown(wxMouseEvent &WXUNUSED(event)) {
     {
       popupMenu.Check(EventIDs::menu_regex_isTextSearch, true);
       SetForegroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOWTEXT));
-  }
+    }
   PopupMenu(&popupMenu);
 }
 
@@ -150,7 +150,7 @@ void RegexCtrl::OnMenu(wxCommandEvent &event) {
   if (event.GetId() == EventIDs::menu_regex_isRegex)
     m_isRegex = true;
 
-    if (event.GetId() == EventIDs::menu_regex_isTextSearch)
+  if (event.GetId() == EventIDs::menu_regex_isTextSearch)
     m_isRegex = false;
 }
 
