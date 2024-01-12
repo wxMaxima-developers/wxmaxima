@@ -106,6 +106,7 @@ void GreekSidebar::OnMenu(wxCommandEvent &event) {
     }
   else
     varFunc->second();
+  Layout();
 }
 
 void GreekSidebar::UpdateSymbols() {
