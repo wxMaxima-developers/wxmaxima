@@ -1779,7 +1779,6 @@ void wxMaxima::OnNewDemoFiles(wxCommandEvent &event)
     return;
 
   std::vector<wxString> subMenuContents;
-  size_t count = 0;
   for(const auto &i : filesList)
     {      
       wxString name = i.SubString(1,i.Length() - 2);
