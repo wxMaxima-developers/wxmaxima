@@ -1859,17 +1859,18 @@ void wxMaximaFrame::SetupMenu() {
 #endif
   APPEND_MENU_ITEM(m_HelpMenu, EventIDs::menu_show_tip, _("Show &Tips..."),
                    _("Show a tip"), wxART_TIP);
-#ifdef USE_WEBVIEW
-  m_HelpMenu->AppendSeparator();
-  m_HelpMenu->AppendRadioItem(EventIDs::menu_wxmaxima_uses_help_sidebar,
-                              _("wxMaxima shows help in the sidebar"));
-  m_HelpMenu->AppendRadioItem(EventIDs::menu_wxmaxima_uses_help_browser,
-                              _("wxMaxima shows help in a browser"));
-  if(m_configuration.InternalHelpBrowser())
-    m_HelpMenu->Check(EventIDs::menu_wxmaxima_uses_help_sidebar, true);
-  else
-    m_HelpMenu->Check(EventIDs::menu_wxmaxima_uses_help_browser, true);
-#endif
+  if(m_configuration.OfferInternalHelpBrowser())
+    {
+      m_HelpMenu->AppendSeparator();
+      m_HelpMenu->AppendRadioItem(EventIDs::menu_wxmaxima_uses_help_sidebar,
+                                  _("wxMaxima shows help in the sidebar"));
+      m_HelpMenu->AppendRadioItem(EventIDs::menu_wxmaxima_uses_help_browser,
+                                  _("wxMaxima shows help in a browser"));
+      if(m_configuration.InternalHelpBrowser())
+        m_HelpMenu->Check(EventIDs::menu_wxmaxima_uses_help_sidebar, true);
+      else
+        m_HelpMenu->Check(EventIDs::menu_wxmaxima_uses_help_browser, true);
+    }
   m_HelpMenu->AppendSeparator();
   wxMenu *tutorials_sub = new wxMenu;
   tutorials_sub->Append(EventIDs::menu_help_solving, _("Solving equations with Maxima"),

@@ -3689,13 +3689,14 @@ void wxMaxima::VariableActionHtmlHelp(const wxString &value) {
       m_HelpMenu->Check(EventIDs::menu_maxima_uses_html_help, true);
     m_configuration.MaximaHelpFormat(Configuration::browser);
   }
-#ifdef USE_WEBVIEW
-  if ((value == wxS("wxmaxima")) || (value == wxS("frontend"))) {
-    if (!m_HelpMenu->IsChecked(EventIDs::menu_maxima_uses_wxmaxima_help))
-      m_HelpMenu->Check(EventIDs::menu_maxima_uses_wxmaxima_help, true);
-    m_configuration.MaximaHelpFormat(Configuration::frontend);
-  }
-#endif
+  if(m_configuration.OfferInternalHelpBrowser())
+    {
+      if ((value == wxS("wxmaxima")) || (value == wxS("frontend"))) {
+        if (!m_HelpMenu->IsChecked(EventIDs::menu_maxima_uses_wxmaxima_help))
+          m_HelpMenu->Check(EventIDs::menu_maxima_uses_wxmaxima_help, true);
+        m_configuration.MaximaHelpFormat(Configuration::frontend);
+      }
+    }
 }
 
 void wxMaxima::VariableActionAutoplay(const wxString &value) {
