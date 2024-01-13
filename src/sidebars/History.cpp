@@ -257,7 +257,7 @@ History::~History() {
       wxFile fil(m_saveplace, wxFile::write);
       wxFileOutputStream fstrm(fil);
       wxTextOutputStream txtstrm(fstrm);
-      txtstrm.Write(history_xml);
+      txtstrm.WriteString(history_xml);
     }
 }
 
