@@ -307,8 +307,8 @@ wxString History::GetCommand(bool next) {
   return m_history->GetString(m_current);
 }
 
-void History::SetCurrent(std::size_t current) {
-  const size_t count = m_history->GetCount();
+void History::SetCurrent(long current) {
+  const long count = m_history->GetCount();
   if (current >= count)
     current = 0;
   if (count < 1)

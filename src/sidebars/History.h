@@ -80,7 +80,7 @@ private:
   void OnMenu(wxCommandEvent &event);
 
   void UnselectAll() const;
-  void SetCurrent(std::size_t current);
+  void SetCurrent(long current);
 
   wxString m_saveplace;
   int m_sessionCommands = 0;
