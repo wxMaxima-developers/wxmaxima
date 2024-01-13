@@ -55,6 +55,9 @@ set(CELL_SOURCE_FILES
     TextCell.cpp
     ProductCell.cpp
     VisiblyInvalidCell.cpp
+    FontAttribs.cpp
+    TextStyle.cpp
+    FontVariantCache.cpp
 )
 list_transform_prepend(CELL_SOURCE_FILES cells/)
 
@@ -102,6 +105,7 @@ set(SIDEBAR_SOURCE_FILES
     MathSidebar.cpp
     FormatSidebar.cpp
     RegexCtrl.cpp
+    HelpBrowser.cpp
 )
 list_transform_prepend(SIDEBAR_SOURCE_FILES sidebars/)
 
@@ -114,6 +118,19 @@ set(GRAPHICAL_IO_SOURCE_FILES
 )
 list_transform_prepend(GRAPHICAL_IO_SOURCE_FILES graphical_io/)
 
+set(DIALOG_SOURCE_FILES
+    ChangeLogDialog.cpp
+    FindReplaceDialog.cpp
+    FindReplacePane.cpp
+    LicenseDialog.cpp
+    LoggingMessageDialog.cpp
+    MaxSizeChooser.cpp
+    ResolutionChooser.cpp
+    TipOfTheDay.cpp
+    ConfigDialogue.cpp
+)
+list_transform_prepend(DIALOG_SOURCE_FILES dialogs/)
+
 set(SOURCE_FILES
     ArtProvider.cpp
     Autocomplete.cpp
@@ -121,43 +138,30 @@ set(SOURCE_FILES
     Autocomplete_Builtins.cpp
     BTextCtrl.cpp
     CellPointers.cpp
-    ChangeLogDialog.cpp
     CompositeDataObject.cpp
-    ConfigDialogue.cpp
     Configuration.cpp
     Dirstructure.cpp
     ErrorRedirector.cpp
     EvaluationQueue.cpp
     EventIDs.cpp
-    FindReplaceDialog.cpp
-    FindReplacePane.cpp
-    FontAttribs.cpp
-    FontVariantCache.cpp
-    HelpBrowser.cpp
     Image.cpp
-    LicenseDialog.cpp
-    LoggingMessageDialog.cpp
     MainMenuBar.cpp
     MarkDown.cpp
     MathParser.cpp
     Maxima.cpp
     MaximaIPC.cpp
     MaximaTokenizer.cpp
-    MaxSizeChooser.cpp
     MaximaManual.cpp
     nanoSVG.cpp
     Notification.cpp
     RecentDocuments.cpp
     RegexSearch.cpp
-    ResolutionChooser.cpp
     StackToStdErr.cpp
     StatusBar.cpp
     StringUtils.cpp
     SvgBitmap.cpp
     SvgPanel.cpp
-    TextStyle.cpp
     ThreadNumberLimiter.cpp
-    TipOfTheDay.cpp
     ToolBar.cpp
     Worksheet.cpp
     WrappingStaticText.cpp
@@ -181,6 +185,7 @@ list(APPEND SOURCE_FILES
   ${GRAPHICAL_IO_SOURCE_FILES}
   ${WIZARD_SOURCE_FILES}
   ${SIDEBAR_SOURCE_FILES}
+  ${DIALOG_SOURCE_FILES}
 )
 
 include_directories(

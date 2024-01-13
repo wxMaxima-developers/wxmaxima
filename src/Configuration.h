@@ -28,8 +28,8 @@
 #include <wx/display.h>
 #include <wx/fontenum.h>
 #include <wx/hashmap.h>
-#include "LoggingMessageDialog.h"
-#include "TextStyle.h"
+#include "dialogs/LoggingMessageDialog.h"
+#include "cells/TextStyle.h"
 #include <cstdint>
 #include <memory>
 #include <mutex>

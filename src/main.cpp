@@ -50,7 +50,7 @@
 #include <windows.h>
 #endif
 
-#include "ConfigDialogue.h"
+#include "dialogs/ConfigDialogue.h"
 #include "Version.h"
 #include "examples/CASvsProgrammingLanguage.h"
 #include "examples/diffEquations.h"

@@ -263,7 +263,7 @@ void TableOfContents::UpdateTableOfContents(GroupCell *pos) {
         }
       }
     if ((selection >= 0) && (item != selection)) {
-      if (m_displayedItems->GetItemCount() < static_cast<std::size_t>(selection))
+      if (m_displayedItems->GetItemCount() < selection)
         selection = m_displayedItems->GetItemCount() - 1;
       if ((selection >= 0) && (selection < m_displayedItems->GetItemCount())) {
         m_displayedItems->SetItemState(

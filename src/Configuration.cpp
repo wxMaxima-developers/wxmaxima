@@ -29,7 +29,7 @@
 #include "Configuration.h"
 
 #include "cells/Cell.h"
-#include "TextStyle.h"
+#include "cells/TextStyle.h"
 #include "Dirstructure.h"
 #include "ErrorRedirector.h"
 #include "StringUtils.h"

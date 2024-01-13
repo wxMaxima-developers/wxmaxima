@@ -30,7 +30,7 @@
 #include <wx/string.h>
 #include <wx/arrstr.h>
 #include "precomp.h"
-#include "TextStyle.h"
+#include "cells/TextStyle.h"
 #include "Configuration.h"
 #include <unordered_map>
 

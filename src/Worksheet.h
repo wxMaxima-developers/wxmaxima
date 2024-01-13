@@ -54,7 +54,7 @@
 #include "cells/GroupCell.h"
 #include "cells/TextCell.h"
 #include "EvaluationQueue.h"
-#include "FindReplaceDialog.h"
+#include "dialogs/FindReplaceDialog.h"
 #include "Autocomplete.h"
 #include "AutocompletePopup.h"
 #include "sidebars/TableOfContents.h"

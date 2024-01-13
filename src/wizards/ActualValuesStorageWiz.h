@@ -27,7 +27,7 @@
 #include <wx/grid.h>
 #include <wx/statline.h>
 
-#include "BTextCtrl.h"
+#include "../BTextCtrl.h"
 
 class ActualValuesStorageWiz : public wxDialog
 {

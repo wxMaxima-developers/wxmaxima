@@ -27,7 +27,7 @@
 #include <wx/regex.h>
 #include <wx/textctrl.h>
 #include "Configuration.h"
-#include "BTextCtrl.h"
+#include "../BTextCtrl.h"
 
 /*! A BTextCtrl that allows to input a regex
 

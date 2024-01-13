@@ -19,7 +19,7 @@
 //
 //  SPDX-License-Identifier: GPL-2.0+
 
-#include <FontVariantCache.h>
+#include "FontVariantCache.h"
 #include <wx/intl.h>
 #include <wx/log.h>
 #include <iostream>

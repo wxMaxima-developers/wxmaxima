@@ -52,9 +52,9 @@ extern unsigned char view_refresh_svg_gz[];
 #ifndef CONFIGDIALOGUE_H
 #define CONFIGDIALOGUE_H
 
-#include "TextStyle.h"
-#include "Worksheet.h"
-#include "Configuration.h"
+#include "cells/TextStyle.h"
+#include "../Worksheet.h"
+#include "../Configuration.h"
 
 extern unsigned char GTK_PRINT_SVG_GZ[];
 extern size_t GTK_PRINT_SVG_GZ_SIZE;

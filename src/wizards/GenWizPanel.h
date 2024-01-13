@@ -28,7 +28,7 @@
 #include <wx/statline.h>
 #include <vector>
 #include <wx/cshelp.h>
-#include "BTextCtrl.h"
+#include "../BTextCtrl.h"
 #include <wx/notebook.h>
 #include "MaximaManual.h"
 #include <wx/hashmap.h>
