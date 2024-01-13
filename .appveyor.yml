@@ -2,7 +2,7 @@
 # https://github.com/Ifsttar/I-Simpa/blob/master/appveyor.yml
 
 
-version: '23.07.0-DevelopmentSnapshot_{build}'
+version: '23.12.0-DevelopmentSnapshot_{build}'
 
 image:
  - Visual Studio 2022 # For MSVC 2022 builds only
@@ -17,12 +17,12 @@ configuration:
  
 environment:
   # The wxWidgets version as referred to in the source package
-  WXVERSION: 3.2.2.1
+  WXVERSION: 3.2.4
   # The wxWidgets version as referred to in the build folder
   # Typically it'd be the wxWidgets version with an optional suffix
   # to indicate build "epoch". The epoch changes are used to invalidate
   # a cached wxWidgets build and force a rebuild.
-  WXBUILDVER: 3.2.2.1_0
+  WXBUILDVER: 3.2.4_0
   CMAKEGEN: "Ninja"
   matrix:
     - TOOLKIT_INIT: ".appveyor\\MSVC_2022_x64.ps1"
