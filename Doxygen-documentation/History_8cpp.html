@@ -73,8 +73,11 @@ $(function() {
 <p>This file defines the class <a class="el" href="classHistory.html" title="This class generates a pane containing the last commands that were issued.">History</a>.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;<a class="el" href="History_8h_source.html">History.h</a>&quot;</code><br />
+<code>#include &lt;wx/wfstream.h&gt;</code><br />
+<code>#include &lt;wx/xml/xml.h&gt;</code><br />
 <code>#include &quot;../Configuration.h&quot;</code><br />
 <code>#include &quot;<a class="el" href="EventIDs_8h_source.html">../EventIDs.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="Cell_8h_source.html">../cells/Cell.h</a>&quot;</code><br />
 <code>#include &lt;algorithm&gt;</code><br />
 <code>#include &lt;memory&gt;</code><br />
 <code>#include &lt;wx/config.h&gt;</code><br />
@@ -82,7 +85,6 @@ $(function() {
 <code>#include &lt;wx/menu.h&gt;</code><br />
 <code>#include &lt;wx/sizer.h&gt;</code><br />
 <code>#include &lt;wx/txtstrm.h&gt;</code><br />
-<code>#include &lt;wx/wfstream.h&gt;</code><br />
 <code>#include &lt;wx/wupdlock.h&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for History.cpp:</div>
