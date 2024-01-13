@@ -72,6 +72,7 @@ public:
 
   //! Actually update the history sidebar. Called when no other work is to be done.
   bool UpdateDeferred();
+  void SetSavePlace(wxString saveplace);
 
 private:
   //! Called on right-clicks on the history panel
@@ -81,6 +82,7 @@ private:
   void UnselectAll() const;
   void SetCurrent(std::size_t current);
 
+  wxString m_saveplace;
   int m_sessionCommands = 0;
   wxListBox *m_history;
   RegexCtrl *m_regex;

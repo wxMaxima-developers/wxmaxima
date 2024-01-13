@@ -30,8 +30,11 @@
 
 #include "History.h"
 
+#include <wx/wfstream.h>
+#include <wx/xml/xml.h>
 #include "../Configuration.h"
 #include "../EventIDs.h"
+#include "../cells/Cell.h"
 #include <algorithm>
 #include <memory>
 #include <wx/config.h>
@@ -66,6 +69,34 @@ History::History(wxWindow *parent, int id, Configuration *cfg)
                    NULL, this);
   SetSizer(box);
   FitInside();
+
+  wxConfig::Get()->Read("history/saveplace", &m_saveplace);
+  if(!m_saveplace.IsEmpty())
+    {
+      //wxLogNull suppressor;
+      wxXmlDocument doc;
+      wxFileInputStream fstrm(m_saveplace);
+      doc.Load(fstrm);
+      wxXmlNode *headNode = doc.GetDocumentNode();
+      if (headNode) {
+          headNode = headNode->GetChildren();
+          while ((headNode) && (headNode->GetName() != wxS("history")))
+            headNode = headNode->GetNext();
+          if(headNode)
+            {
+              wxXmlNode *entry = headNode->GetChildren();
+              while (entry) {
+                if (entry->GetName() == wxS("entry")) {
+                  wxXmlNode *node = entry->GetChildren();
+                  if (node) {
+                    AddToHistory(node->GetContent());
+                  }
+                }
+                entry = entry->GetNext();
+              }
+            }
+      }
+    }
 }
 
 void History::OnMouseRightDown(wxMouseEvent &WXUNUSED(event)) {
@@ -204,7 +235,31 @@ void History::OnMenu(wxCommandEvent &event) {
     LoggingMessageBox(_("Exporting to .mac file failed!"), _("Error!"), wxOK);
 }
 
-History::~History() {}
+void History::SetSavePlace(wxString saveplace)
+{
+  m_saveplace = saveplace + "/wxMaximaHistory.xml";
+  wxConfig::Get()->Write("history/saveplace", m_saveplace);
+}
+
+
+History::~History() {
+  if(!m_saveplace.IsEmpty())
+    {
+      //wxLogNull suppressor;
+      wxString history_xml = "<history>\n";
+      long start = m_commands.size() - 101;
+      if(start < 0)
+        start = 0;
+      for(size_t i = start; i < m_commands.size(); i++)
+          history_xml += "<entry>" + Cell::XMLescape(m_commands.at(i)) + "</entry>\n";
+      history_xml += "</history>";
+
+      wxFile fil(m_saveplace, wxFile::write);
+      wxFileOutputStream fstrm(fil);
+      wxTextOutputStream txtstrm(fstrm);
+      txtstrm.Write(history_xml);
+    }
+}
 
 void History::AddToHistory(const wxString &cmd) {
   if (cmd.IsEmpty())

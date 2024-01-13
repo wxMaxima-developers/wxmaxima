@@ -25,6 +25,7 @@
 - The context menu in the "greek letters" sidebar now works (#1878)
 - Resolved an assert if the internal help browser was disabled, 
   but requested (#1881)
+- wxMaxima now preserves history entries between sessions
 
 # 23.12.0
 

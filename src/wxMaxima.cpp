@@ -3379,6 +3379,7 @@ void wxMaxima::VariableActionSinnpiflagUndefined() { m_fourierLoaded = false; }
 
 void wxMaxima::VariableActionUserDir(const wxString &value) {
   Dirstructure::Get()->UserConfDir(value);
+  m_history->SetSavePlace(value);
   wxLogMessage(_("Maxima user configuration lies in directory %s"), value.utf8_str());
 }
 
