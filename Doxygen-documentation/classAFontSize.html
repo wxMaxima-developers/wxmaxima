@@ -169,8 +169,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>By the time the getters are invoked, we know that a valid font size is needed, even if only to gracefully degrade to a small displayed text size instead of nastier bugs. I.e. Get() and GetAsLong() on a null font size are valid and return Minimum_Size, but such use is not correct: if null size is expected, e.g. as a default from the configuration system, null check should be done before accessing the numerical value.</p>
 <p>To check if a font size is null, use IsNull(), or its inverse IsValid(). </p>
 </div><hr/>The documentation for this class was generated from the following files:<ul>
-<li>src/<a class="el" href="FontAttribs_8h_source.html">FontAttribs.h</a></li>
-<li>src/FontAttribs.cpp</li>
+<li>src/cells/<a class="el" href="FontAttribs_8h_source.html">FontAttribs.h</a></li>
+<li>src/cells/FontAttribs.cpp</li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
