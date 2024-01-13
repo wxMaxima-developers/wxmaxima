@@ -751,8 +751,8 @@ void wxMaximaFrame::SetupMenu() {
 
   // equation display type submenu
   m_equationTypeMenuMenu = new wxMenu;
-  m_equationTypeMenuMenu->AppendRadioItem(
-                                          EventIDs::menu_math_as_1D_ASCII, _("as 1D ASCII"),
+  m_equationTypeMenuMenu->AppendRadioItem(EventIDs::menu_math_as_1D_ASCII,
+                                          _("as 1D ASCII"),
                                           _("Show equations in their linear form"));
   m_equationTypeMenuMenu->AppendRadioItem(EventIDs::menu_math_as_2D_ASCII,
                                           _("as ASCII Art"),
@@ -1751,8 +1751,8 @@ void wxMaximaFrame::SetupMenu() {
   m_NumericMenu = new wxMenu;
   m_NumericMenu->AppendCheckItem(EventIDs::menu_num_out, _("&Numeric Output"),
                                  _("Numeric output"));
-  m_NumericMenu->AppendCheckItem(
-                                 EventIDs::menu_num_domain, _("Expect numbers harder to be complex"),
+  m_NumericMenu->AppendCheckItem(EventIDs::menu_num_domain,
+                                 _("Expect numbers harder to be complex"),
                                  _("Expect variables to contain complex numbers"));
   m_NumericMenu->Check(EventIDs::menu_num_domain, false);
   m_NumericMenu->Append(EventIDs::menu_to_float, _("To &Float"),
@@ -1791,11 +1791,11 @@ void wxMaximaFrame::SetupMenu() {
                         EventIDs::menu_set_displayprecision, _("Set &displayed Precision..."),
                         _("Shows how many digits of a numbers are displayed"), wxITEM_NORMAL);
   m_NumericMenu->AppendSeparator();
-  m_NumericMenu->AppendCheckItem(
-                                 EventIDs::menu_engineeringFormat, _("Engineering format (12.1e6 etc.)"),
+  m_NumericMenu->AppendCheckItem(EventIDs::menu_engineeringFormat,
+                                 _("Engineering format (12.1e6 etc.)"),
                                  _("Print floating-point numbers with exponents dividable by 3"));
-  m_NumericMenu->Append(
-                        EventIDs::menu_engineeringFormatSetup, _("Setup the engineering format..."),
+  m_NumericMenu->Append(EventIDs::menu_engineeringFormatSetup,
+                        _("Setup the engineering format..."),
                         _("Fine-tune the display of engineering-format numbers"), wxITEM_NORMAL);
 
   wxMenu *quadpack_sub = new wxMenu;
