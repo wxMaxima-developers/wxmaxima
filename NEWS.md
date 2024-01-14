@@ -26,6 +26,8 @@
 - Resolved an assert if the internal help browser was disabled, 
   but requested (#1881)
 - wxMaxima now preserves history entries between sessions
+- Better LibreOffice compatibility with the MathML output
+- Better HTML output
 
 # 23.12.0
 
