@@ -5597,7 +5597,6 @@ bool Worksheet::ExportToHTML(const wxString &file) {
   }
 
   wxTextOutputStream outstream(outfile);
-  outstream << "<!DOCTYPE html>\n";
   outstream << output;
 
   bool outfileOK = !outfile.GetFile()->Error();
