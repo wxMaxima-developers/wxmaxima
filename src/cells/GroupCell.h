@@ -363,13 +363,8 @@ public:
   //! Reset the data when the input size changes
   void InputHeightChanged();
 
-#if wxCHECK_VERSION(3, 3, 0) || wxUSE_STL
-  typedef std::unordered_map <wxString, wxString> StringHash;
-  typedef std::unordered_map <wxString, int> CmdsAndVariables;
-#else
-  WX_DECLARE_STRING_HASH_MAP(wxString, StringHash);
-  WX_DECLARE_STRING_HASH_MAP(int, CmdsAndVariables);
-#endif
+  typedef std::unordered_map <wxString, wxString, wxStringHash> StringHash;
+  typedef std::unordered_map <wxString, int, wxStringHash> CmdsAndVariables;
 
   //! A list of answers provided by the user
   StringHash m_knownAnswers;

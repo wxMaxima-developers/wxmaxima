@@ -98,11 +98,7 @@ public:
   wxString GetHelpKeyword(wxWindowID ID);
   virtual ~GenWizPanel();
 protected:
-#if wxCHECK_VERSION(3, 3, 0) || wxUSE_STL
-  typedef std::unordered_map <wxString, int> keywordHash;
-#else
-  WX_DECLARE_STRING_HASH_MAP(int, keywordHash);
-#endif
+  typedef std::unordered_map <wxString, int, wxStringHash> keywordHash;
 
   void OnSize(wxSizeEvent &event);
   wxNotebook *m_notebook;

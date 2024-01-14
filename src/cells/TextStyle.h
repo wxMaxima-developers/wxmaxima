@@ -181,11 +181,8 @@ public:
     }
   std::shared_ptr<FontVariantCache> GetFontCache() const {return m.fontCache;}
 private:
-#if wxCHECK_VERSION(3, 3, 0) || wxUSE_STL
-  typedef std::unordered_map <wxString, std::shared_ptr<FontVariantCache>> FontVariantCachesMap;
-#else
-  WX_DECLARE_STRING_HASH_MAP(std::shared_ptr<FontVariantCache>, FontVariantCachesMap);
-#endif
+  typedef std::unordered_map <wxString, std::shared_ptr<FontVariantCache>,
+                              wxStringHash> FontVariantCachesMap;
 
   //! An empty string we can return a reference to
   static wxString m_emptyString;

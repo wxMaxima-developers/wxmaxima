@@ -138,15 +138,9 @@ public:
     display_1dASCII
   };
 
-#if wxCHECK_VERSION(3, 3, 0) || wxUSE_STL
-  typedef std::unordered_map <wxString, bool> StringBoolHash;
-  typedef std::unordered_map <wxString, wxString> RenderablecharsHash;
-  typedef std::unordered_map <wxString, int> StringHash;
-#else
-  WX_DECLARE_STRING_HASH_MAP(bool, StringBoolHash);
-  WX_DECLARE_STRING_HASH_MAP(wxString, RenderablecharsHash);
-  WX_DECLARE_STRING_HASH_MAP(int, StringHash);
-#endif
+  typedef std::unordered_map <wxString, bool, wxStringHash> StringBoolHash;
+  typedef std::unordered_map <wxString, wxString, wxStringHash> RenderablecharsHash;
+  typedef std::unordered_map <wxString, int, wxStringHash> StringHash;
   /*! All maxima operator names we know
    */
   StringHash m_maximaOperators;
