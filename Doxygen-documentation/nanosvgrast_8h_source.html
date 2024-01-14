@@ -425,8 +425,8 @@ $(function() {
 <div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160; </div>
 <div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;    dx = x4 - x1;</div>
 <div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;    dy = y4 - y1;</div>
-<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;    d2 = nsvg__absf(((x2 - x4) * dy - (y2 - y4) * dx));</div>
-<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;    d3 = nsvg__absf(((x3 - x4) * dy - (y3 - y4) * dx));</div>
+<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;    d2 = nsvg__absf((x2 - x4) * dy - (y2 - y4) * dx);</div>
+<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;    d3 = nsvg__absf((x3 - x4) * dy - (y3 - y4) * dx);</div>
 <div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160; </div>
 <div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;    <span class="keywordflow">if</span> ((d2 + d3)*(d2 + d3) &lt; r-&gt;tessTol * (dx*dx + dy*dy)) {</div>
 <div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;        nsvg__addPathPoint(r, x4, y4, type);</div>
@@ -1354,180 +1354,181 @@ $(function() {
 <div class="line"><a name="l01283"></a><span class="lineno"> 1283</span>&#160;    <span class="keywordflow">if</span> (grad-&gt;nstops == 0) {</div>
 <div class="line"><a name="l01284"></a><span class="lineno"> 1284</span>&#160;        <span class="keywordflow">for</span> (i = 0; i &lt; 256; i++)</div>
 <div class="line"><a name="l01285"></a><span class="lineno"> 1285</span>&#160;            cache-&gt;colors[i] = 0;</div>
-<div class="line"><a name="l01286"></a><span class="lineno"> 1286</span>&#160;    } <span class="keywordflow">if</span> (grad-&gt;nstops == 1) {</div>
-<div class="line"><a name="l01287"></a><span class="lineno"> 1287</span>&#160;        <span class="keywordflow">for</span> (i = 0; i &lt; 256; i++)</div>
-<div class="line"><a name="l01288"></a><span class="lineno"> 1288</span>&#160;            cache-&gt;colors[i] = nsvg__applyOpacity(grad-&gt;stops[i].color, opacity);</div>
-<div class="line"><a name="l01289"></a><span class="lineno"> 1289</span>&#160;    } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l01290"></a><span class="lineno"> 1290</span>&#160;        <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> ca, cb = 0;</div>
-<div class="line"><a name="l01291"></a><span class="lineno"> 1291</span>&#160;        <span class="keywordtype">float</span> ua, ub, du, u;</div>
-<div class="line"><a name="l01292"></a><span class="lineno"> 1292</span>&#160;        <span class="keywordtype">int</span> ia, ib, count;</div>
-<div class="line"><a name="l01293"></a><span class="lineno"> 1293</span>&#160; </div>
-<div class="line"><a name="l01294"></a><span class="lineno"> 1294</span>&#160;        ca = nsvg__applyOpacity(grad-&gt;stops[0].color, opacity);</div>
-<div class="line"><a name="l01295"></a><span class="lineno"> 1295</span>&#160;        ua = nsvg__clampf(grad-&gt;stops[0].offset, 0, 1);</div>
-<div class="line"><a name="l01296"></a><span class="lineno"> 1296</span>&#160;        ub = nsvg__clampf(grad-&gt;stops[grad-&gt;nstops-1].offset, ua, 1);</div>
-<div class="line"><a name="l01297"></a><span class="lineno"> 1297</span>&#160;        ia = (int)(ua * 255.0f);</div>
-<div class="line"><a name="l01298"></a><span class="lineno"> 1298</span>&#160;        ib = (int)(ub * 255.0f);</div>
-<div class="line"><a name="l01299"></a><span class="lineno"> 1299</span>&#160;        <span class="keywordflow">for</span> (i = 0; i &lt; ia; i++) {</div>
-<div class="line"><a name="l01300"></a><span class="lineno"> 1300</span>&#160;            cache-&gt;colors[i] = ca;</div>
-<div class="line"><a name="l01301"></a><span class="lineno"> 1301</span>&#160;        }</div>
-<div class="line"><a name="l01302"></a><span class="lineno"> 1302</span>&#160; </div>
-<div class="line"><a name="l01303"></a><span class="lineno"> 1303</span>&#160;        <span class="keywordflow">for</span> (i = 0; i &lt; grad-&gt;nstops-1; i++) {</div>
-<div class="line"><a name="l01304"></a><span class="lineno"> 1304</span>&#160;            ca = nsvg__applyOpacity(grad-&gt;stops[i].color, opacity);</div>
-<div class="line"><a name="l01305"></a><span class="lineno"> 1305</span>&#160;            cb = nsvg__applyOpacity(grad-&gt;stops[i+1].color, opacity);</div>
-<div class="line"><a name="l01306"></a><span class="lineno"> 1306</span>&#160;            ua = nsvg__clampf(grad-&gt;stops[i].offset, 0, 1);</div>
-<div class="line"><a name="l01307"></a><span class="lineno"> 1307</span>&#160;            ub = nsvg__clampf(grad-&gt;stops[i+1].offset, 0, 1);</div>
-<div class="line"><a name="l01308"></a><span class="lineno"> 1308</span>&#160;            ia = (int)(ua * 255.0f);</div>
-<div class="line"><a name="l01309"></a><span class="lineno"> 1309</span>&#160;            ib = (int)(ub * 255.0f);</div>
-<div class="line"><a name="l01310"></a><span class="lineno"> 1310</span>&#160;            count = ib - ia;</div>
-<div class="line"><a name="l01311"></a><span class="lineno"> 1311</span>&#160;            <span class="keywordflow">if</span> (count &lt;= 0) <span class="keywordflow">continue</span>;</div>
-<div class="line"><a name="l01312"></a><span class="lineno"> 1312</span>&#160;            u = 0;</div>
-<div class="line"><a name="l01313"></a><span class="lineno"> 1313</span>&#160;            du = 1.0f / (float)count;</div>
-<div class="line"><a name="l01314"></a><span class="lineno"> 1314</span>&#160;            <span class="keywordflow">for</span> (j = 0; j &lt; count; j++) {</div>
-<div class="line"><a name="l01315"></a><span class="lineno"> 1315</span>&#160;                cache-&gt;colors[ia+j] = nsvg__lerpRGBA(ca,cb,u);</div>
-<div class="line"><a name="l01316"></a><span class="lineno"> 1316</span>&#160;                u += du;</div>
-<div class="line"><a name="l01317"></a><span class="lineno"> 1317</span>&#160;            }</div>
-<div class="line"><a name="l01318"></a><span class="lineno"> 1318</span>&#160;        }</div>
-<div class="line"><a name="l01319"></a><span class="lineno"> 1319</span>&#160; </div>
-<div class="line"><a name="l01320"></a><span class="lineno"> 1320</span>&#160;        <span class="keywordflow">for</span> (i = ib; i &lt; 256; i++)</div>
-<div class="line"><a name="l01321"></a><span class="lineno"> 1321</span>&#160;            cache-&gt;colors[i] = cb;</div>
-<div class="line"><a name="l01322"></a><span class="lineno"> 1322</span>&#160;    }</div>
-<div class="line"><a name="l01323"></a><span class="lineno"> 1323</span>&#160; </div>
-<div class="line"><a name="l01324"></a><span class="lineno"> 1324</span>&#160;}</div>
-<div class="line"><a name="l01325"></a><span class="lineno"> 1325</span>&#160; </div>
-<div class="line"><a name="l01326"></a><span class="lineno"> 1326</span>&#160;<span class="comment">/*</span></div>
-<div class="line"><a name="l01327"></a><span class="lineno"> 1327</span>&#160;<span class="comment">static void dumpEdges(NSVGrasterizer* r, const char* name)</span></div>
-<div class="line"><a name="l01328"></a><span class="lineno"> 1328</span>&#160;<span class="comment">{</span></div>
-<div class="line"><a name="l01329"></a><span class="lineno"> 1329</span>&#160;<span class="comment">    float xmin = 0, xmax = 0, ymin = 0, ymax = 0;</span></div>
-<div class="line"><a name="l01330"></a><span class="lineno"> 1330</span>&#160;<span class="comment">    NSVGedge *e = NULL;</span></div>
-<div class="line"><a name="l01331"></a><span class="lineno"> 1331</span>&#160;<span class="comment">    int i;</span></div>
-<div class="line"><a name="l01332"></a><span class="lineno"> 1332</span>&#160;<span class="comment">    if (r-&gt;nedges == 0) return;</span></div>
-<div class="line"><a name="l01333"></a><span class="lineno"> 1333</span>&#160;<span class="comment">    FILE* fp = fopen(name, &quot;w&quot;);</span></div>
-<div class="line"><a name="l01334"></a><span class="lineno"> 1334</span>&#160;<span class="comment">    if (fp == NULL) return;</span></div>
-<div class="line"><a name="l01335"></a><span class="lineno"> 1335</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l01336"></a><span class="lineno"> 1336</span>&#160;<span class="comment">    xmin = xmax = r-&gt;edges[0].x0;</span></div>
-<div class="line"><a name="l01337"></a><span class="lineno"> 1337</span>&#160;<span class="comment">    ymin = ymax = r-&gt;edges[0].y0;</span></div>
-<div class="line"><a name="l01338"></a><span class="lineno"> 1338</span>&#160;<span class="comment">    for (i = 0; i &lt; r-&gt;nedges; i++) {</span></div>
-<div class="line"><a name="l01339"></a><span class="lineno"> 1339</span>&#160;<span class="comment">        e = &amp;r-&gt;edges[i];</span></div>
-<div class="line"><a name="l01340"></a><span class="lineno"> 1340</span>&#160;<span class="comment">        xmin = nsvg__minf(xmin, e-&gt;x0);</span></div>
-<div class="line"><a name="l01341"></a><span class="lineno"> 1341</span>&#160;<span class="comment">        xmin = nsvg__minf(xmin, e-&gt;x1);</span></div>
-<div class="line"><a name="l01342"></a><span class="lineno"> 1342</span>&#160;<span class="comment">        xmax = nsvg__maxf(xmax, e-&gt;x0);</span></div>
-<div class="line"><a name="l01343"></a><span class="lineno"> 1343</span>&#160;<span class="comment">        xmax = nsvg__maxf(xmax, e-&gt;x1);</span></div>
-<div class="line"><a name="l01344"></a><span class="lineno"> 1344</span>&#160;<span class="comment">        ymin = nsvg__minf(ymin, e-&gt;y0);</span></div>
-<div class="line"><a name="l01345"></a><span class="lineno"> 1345</span>&#160;<span class="comment">        ymin = nsvg__minf(ymin, e-&gt;y1);</span></div>
-<div class="line"><a name="l01346"></a><span class="lineno"> 1346</span>&#160;<span class="comment">        ymax = nsvg__maxf(ymax, e-&gt;y0);</span></div>
-<div class="line"><a name="l01347"></a><span class="lineno"> 1347</span>&#160;<span class="comment">        ymax = nsvg__maxf(ymax, e-&gt;y1);</span></div>
-<div class="line"><a name="l01348"></a><span class="lineno"> 1348</span>&#160;<span class="comment">    }</span></div>
-<div class="line"><a name="l01349"></a><span class="lineno"> 1349</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l01350"></a><span class="lineno"> 1350</span>&#160;<span class="comment">    fprintf(fp, &quot;&lt;svg viewBox=\&quot;%f %f %f %f\&quot; xmlns=\&quot;http://www.w3.org/2000/svg\&quot;&gt;&quot;, xmin, ymin, (xmax - xmin), (ymax - ymin));</span></div>
-<div class="line"><a name="l01351"></a><span class="lineno"> 1351</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l01352"></a><span class="lineno"> 1352</span>&#160;<span class="comment">    for (i = 0; i &lt; r-&gt;nedges; i++) {</span></div>
-<div class="line"><a name="l01353"></a><span class="lineno"> 1353</span>&#160;<span class="comment">        e = &amp;r-&gt;edges[i];</span></div>
-<div class="line"><a name="l01354"></a><span class="lineno"> 1354</span>&#160;<span class="comment">        fprintf(fp ,&quot;&lt;line x1=\&quot;%f\&quot; y1=\&quot;%f\&quot; x2=\&quot;%f\&quot; y2=\&quot;%f\&quot; style=\&quot;stroke:#000;\&quot; /&gt;&quot;, e-&gt;x0,e-&gt;y0, e-&gt;x1,e-&gt;y1);</span></div>
-<div class="line"><a name="l01355"></a><span class="lineno"> 1355</span>&#160;<span class="comment">    }</span></div>
-<div class="line"><a name="l01356"></a><span class="lineno"> 1356</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l01357"></a><span class="lineno"> 1357</span>&#160;<span class="comment">    for (i = 0; i &lt; r-&gt;npoints; i++) {</span></div>
-<div class="line"><a name="l01358"></a><span class="lineno"> 1358</span>&#160;<span class="comment">        if (i+1 &lt; r-&gt;npoints)</span></div>
-<div class="line"><a name="l01359"></a><span class="lineno"> 1359</span>&#160;<span class="comment">            fprintf(fp ,&quot;&lt;line x1=\&quot;%f\&quot; y1=\&quot;%f\&quot; x2=\&quot;%f\&quot; y2=\&quot;%f\&quot; style=\&quot;stroke:#f00;\&quot; /&gt;&quot;, r-&gt;points[i].x, r-&gt;points[i].y, r-&gt;points[i+1].x, r-&gt;points[i+1].y);</span></div>
-<div class="line"><a name="l01360"></a><span class="lineno"> 1360</span>&#160;<span class="comment">        fprintf(fp ,&quot;&lt;circle cx=\&quot;%f\&quot; cy=\&quot;%f\&quot; r=\&quot;1\&quot; style=\&quot;fill:%s;\&quot; /&gt;&quot;, r-&gt;points[i].x, r-&gt;points[i].y, r-&gt;points[i].flags == 0 ? &quot;#f00&quot; : &quot;#0f0&quot;);</span></div>
-<div class="line"><a name="l01361"></a><span class="lineno"> 1361</span>&#160;<span class="comment">    }</span></div>
-<div class="line"><a name="l01362"></a><span class="lineno"> 1362</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l01363"></a><span class="lineno"> 1363</span>&#160;<span class="comment">    fprintf(fp, &quot;&lt;/svg&gt;&quot;);</span></div>
-<div class="line"><a name="l01364"></a><span class="lineno"> 1364</span>&#160;<span class="comment">    fclose(fp);</span></div>
-<div class="line"><a name="l01365"></a><span class="lineno"> 1365</span>&#160;<span class="comment">}</span></div>
-<div class="line"><a name="l01366"></a><span class="lineno"> 1366</span>&#160;<span class="comment">*/</span></div>
-<div class="line"><a name="l01367"></a><span class="lineno"> 1367</span>&#160; </div>
-<div class="line"><a name="l01368"></a><span class="lineno"> 1368</span>&#160;<span class="keywordtype">void</span> nsvgRasterize(NSVGrasterizer* r,</div>
-<div class="line"><a name="l01369"></a><span class="lineno"> 1369</span>&#160;                   <a class="code" href="structNSVGimage.html">NSVGimage</a>* image, <span class="keywordtype">float</span> tx, <span class="keywordtype">float</span> ty, <span class="keywordtype">float</span> scale,</div>
-<div class="line"><a name="l01370"></a><span class="lineno"> 1370</span>&#160;                   <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span>* dst, <span class="keywordtype">int</span> w, <span class="keywordtype">int</span> h, <span class="keywordtype">int</span> stride)</div>
-<div class="line"><a name="l01371"></a><span class="lineno"> 1371</span>&#160;{</div>
-<div class="line"><a name="l01372"></a><span class="lineno"> 1372</span>&#160;    <a class="code" href="structNSVGshape.html">NSVGshape</a> *shape = NULL;</div>
-<div class="line"><a name="l01373"></a><span class="lineno"> 1373</span>&#160;    NSVGedge *e = NULL;</div>
-<div class="line"><a name="l01374"></a><span class="lineno"> 1374</span>&#160;    NSVGcachedPaint cache;</div>
-<div class="line"><a name="l01375"></a><span class="lineno"> 1375</span>&#160;    <span class="keywordtype">int</span> i;</div>
-<div class="line"><a name="l01376"></a><span class="lineno"> 1376</span>&#160; </div>
-<div class="line"><a name="l01377"></a><span class="lineno"> 1377</span>&#160;    r-&gt;bitmap = dst;</div>
-<div class="line"><a name="l01378"></a><span class="lineno"> 1378</span>&#160;    r-&gt;width = w;</div>
-<div class="line"><a name="l01379"></a><span class="lineno"> 1379</span>&#160;    r-&gt;height = h;</div>
-<div class="line"><a name="l01380"></a><span class="lineno"> 1380</span>&#160;    r-&gt;stride = stride;</div>
-<div class="line"><a name="l01381"></a><span class="lineno"> 1381</span>&#160; </div>
-<div class="line"><a name="l01382"></a><span class="lineno"> 1382</span>&#160;    <span class="keywordflow">if</span> (w &gt; r-&gt;cscanline) {</div>
-<div class="line"><a name="l01383"></a><span class="lineno"> 1383</span>&#160;        r-&gt;cscanline = w;</div>
-<div class="line"><a name="l01384"></a><span class="lineno"> 1384</span>&#160;        r-&gt;scanline = (<span class="keywordtype">unsigned</span> <span class="keywordtype">char</span>*)realloc(r-&gt;scanline, w);</div>
-<div class="line"><a name="l01385"></a><span class="lineno"> 1385</span>&#160;        <span class="keywordflow">if</span> (r-&gt;scanline == NULL) <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l01386"></a><span class="lineno"> 1386</span>&#160;    }</div>
-<div class="line"><a name="l01387"></a><span class="lineno"> 1387</span>&#160; </div>
-<div class="line"><a name="l01388"></a><span class="lineno"> 1388</span>&#160;    <span class="keywordflow">for</span> (i = 0; i &lt; h; i++)</div>
-<div class="line"><a name="l01389"></a><span class="lineno"> 1389</span>&#160;        memset(&amp;dst[i*stride], 0, w*4);</div>
-<div class="line"><a name="l01390"></a><span class="lineno"> 1390</span>&#160; </div>
-<div class="line"><a name="l01391"></a><span class="lineno"> 1391</span>&#160;    <span class="keywordflow">for</span> (shape = image-&gt;shapes; shape != NULL; shape = shape-&gt;next) {</div>
-<div class="line"><a name="l01392"></a><span class="lineno"> 1392</span>&#160;        <span class="keywordflow">if</span> (!(shape-&gt;flags &amp; NSVG_FLAGS_VISIBLE))</div>
-<div class="line"><a name="l01393"></a><span class="lineno"> 1393</span>&#160;            <span class="keywordflow">continue</span>;</div>
-<div class="line"><a name="l01394"></a><span class="lineno"> 1394</span>&#160; </div>
-<div class="line"><a name="l01395"></a><span class="lineno"> 1395</span>&#160;        <span class="keywordflow">if</span> (shape-&gt;fill.type != NSVG_PAINT_NONE) {</div>
-<div class="line"><a name="l01396"></a><span class="lineno"> 1396</span>&#160;            nsvg__resetPool(r);</div>
-<div class="line"><a name="l01397"></a><span class="lineno"> 1397</span>&#160;            r-&gt;freelist = NULL;</div>
-<div class="line"><a name="l01398"></a><span class="lineno"> 1398</span>&#160;            r-&gt;nedges = 0;</div>
-<div class="line"><a name="l01399"></a><span class="lineno"> 1399</span>&#160; </div>
-<div class="line"><a name="l01400"></a><span class="lineno"> 1400</span>&#160;            nsvg__flattenShape(r, shape, scale);</div>
-<div class="line"><a name="l01401"></a><span class="lineno"> 1401</span>&#160; </div>
-<div class="line"><a name="l01402"></a><span class="lineno"> 1402</span>&#160;            <span class="comment">// Scale and translate edges</span></div>
-<div class="line"><a name="l01403"></a><span class="lineno"> 1403</span>&#160;            <span class="keywordflow">for</span> (i = 0; i &lt; r-&gt;nedges; i++) {</div>
-<div class="line"><a name="l01404"></a><span class="lineno"> 1404</span>&#160;                e = &amp;r-&gt;edges[i];</div>
-<div class="line"><a name="l01405"></a><span class="lineno"> 1405</span>&#160;                e-&gt;x0 = tx + e-&gt;x0;</div>
-<div class="line"><a name="l01406"></a><span class="lineno"> 1406</span>&#160;                e-&gt;y0 = (ty + e-&gt;y0) * NSVG__SUBSAMPLES;</div>
-<div class="line"><a name="l01407"></a><span class="lineno"> 1407</span>&#160;                e-&gt;x1 = tx + e-&gt;x1;</div>
-<div class="line"><a name="l01408"></a><span class="lineno"> 1408</span>&#160;                e-&gt;y1 = (ty + e-&gt;y1) * NSVG__SUBSAMPLES;</div>
-<div class="line"><a name="l01409"></a><span class="lineno"> 1409</span>&#160;            }</div>
-<div class="line"><a name="l01410"></a><span class="lineno"> 1410</span>&#160; </div>
-<div class="line"><a name="l01411"></a><span class="lineno"> 1411</span>&#160;            <span class="comment">// Rasterize edges</span></div>
-<div class="line"><a name="l01412"></a><span class="lineno"> 1412</span>&#160;            <span class="keywordflow">if</span> (r-&gt;nedges != 0)</div>
-<div class="line"><a name="l01413"></a><span class="lineno"> 1413</span>&#160;                qsort(r-&gt;edges, r-&gt;nedges, <span class="keyword">sizeof</span>(NSVGedge), nsvg__cmpEdge);</div>
-<div class="line"><a name="l01414"></a><span class="lineno"> 1414</span>&#160; </div>
-<div class="line"><a name="l01415"></a><span class="lineno"> 1415</span>&#160;            <span class="comment">// now, traverse the scanlines and find the intersections on each scanline, use non-zero rule</span></div>
-<div class="line"><a name="l01416"></a><span class="lineno"> 1416</span>&#160;            nsvg__initPaint(&amp;cache, &amp;shape-&gt;fill, shape-&gt;opacity);</div>
-<div class="line"><a name="l01417"></a><span class="lineno"> 1417</span>&#160; </div>
-<div class="line"><a name="l01418"></a><span class="lineno"> 1418</span>&#160;            nsvg__rasterizeSortedEdges(r, tx,ty,scale, &amp;cache, shape-&gt;fillRule);</div>
-<div class="line"><a name="l01419"></a><span class="lineno"> 1419</span>&#160;        }</div>
-<div class="line"><a name="l01420"></a><span class="lineno"> 1420</span>&#160;        <span class="keywordflow">if</span> (shape-&gt;stroke.type != NSVG_PAINT_NONE &amp;&amp; (shape-&gt;strokeWidth * scale) &gt; 0.01f) {</div>
-<div class="line"><a name="l01421"></a><span class="lineno"> 1421</span>&#160;            nsvg__resetPool(r);</div>
-<div class="line"><a name="l01422"></a><span class="lineno"> 1422</span>&#160;            r-&gt;freelist = NULL;</div>
-<div class="line"><a name="l01423"></a><span class="lineno"> 1423</span>&#160;            r-&gt;nedges = 0;</div>
-<div class="line"><a name="l01424"></a><span class="lineno"> 1424</span>&#160; </div>
-<div class="line"><a name="l01425"></a><span class="lineno"> 1425</span>&#160;            nsvg__flattenShapeStroke(r, shape, scale);</div>
-<div class="line"><a name="l01426"></a><span class="lineno"> 1426</span>&#160; </div>
-<div class="line"><a name="l01427"></a><span class="lineno"> 1427</span>&#160;<span class="comment">//          dumpEdges(r, &quot;edge.svg&quot;);</span></div>
-<div class="line"><a name="l01428"></a><span class="lineno"> 1428</span>&#160; </div>
-<div class="line"><a name="l01429"></a><span class="lineno"> 1429</span>&#160;            <span class="comment">// Scale and translate edges</span></div>
-<div class="line"><a name="l01430"></a><span class="lineno"> 1430</span>&#160;            <span class="keywordflow">for</span> (i = 0; i &lt; r-&gt;nedges; i++) {</div>
-<div class="line"><a name="l01431"></a><span class="lineno"> 1431</span>&#160;                e = &amp;r-&gt;edges[i];</div>
-<div class="line"><a name="l01432"></a><span class="lineno"> 1432</span>&#160;                e-&gt;x0 = tx + e-&gt;x0;</div>
-<div class="line"><a name="l01433"></a><span class="lineno"> 1433</span>&#160;                e-&gt;y0 = (ty + e-&gt;y0) * NSVG__SUBSAMPLES;</div>
-<div class="line"><a name="l01434"></a><span class="lineno"> 1434</span>&#160;                e-&gt;x1 = tx + e-&gt;x1;</div>
-<div class="line"><a name="l01435"></a><span class="lineno"> 1435</span>&#160;                e-&gt;y1 = (ty + e-&gt;y1) * NSVG__SUBSAMPLES;</div>
-<div class="line"><a name="l01436"></a><span class="lineno"> 1436</span>&#160;            }</div>
-<div class="line"><a name="l01437"></a><span class="lineno"> 1437</span>&#160; </div>
-<div class="line"><a name="l01438"></a><span class="lineno"> 1438</span>&#160;            <span class="comment">// Rasterize edges</span></div>
-<div class="line"><a name="l01439"></a><span class="lineno"> 1439</span>&#160;            <span class="keywordflow">if</span> (r-&gt;nedges != 0)</div>
-<div class="line"><a name="l01440"></a><span class="lineno"> 1440</span>&#160;                qsort(r-&gt;edges, r-&gt;nedges, <span class="keyword">sizeof</span>(NSVGedge), nsvg__cmpEdge);</div>
-<div class="line"><a name="l01441"></a><span class="lineno"> 1441</span>&#160; </div>
-<div class="line"><a name="l01442"></a><span class="lineno"> 1442</span>&#160;            <span class="comment">// now, traverse the scanlines and find the intersections on each scanline, use non-zero rule</span></div>
-<div class="line"><a name="l01443"></a><span class="lineno"> 1443</span>&#160;            nsvg__initPaint(&amp;cache, &amp;shape-&gt;stroke, shape-&gt;opacity);</div>
-<div class="line"><a name="l01444"></a><span class="lineno"> 1444</span>&#160; </div>
-<div class="line"><a name="l01445"></a><span class="lineno"> 1445</span>&#160;            nsvg__rasterizeSortedEdges(r, tx,ty,scale, &amp;cache, NSVG_FILLRULE_NONZERO);</div>
-<div class="line"><a name="l01446"></a><span class="lineno"> 1446</span>&#160;        }</div>
-<div class="line"><a name="l01447"></a><span class="lineno"> 1447</span>&#160;    }</div>
-<div class="line"><a name="l01448"></a><span class="lineno"> 1448</span>&#160; </div>
-<div class="line"><a name="l01449"></a><span class="lineno"> 1449</span>&#160;    nsvg__unpremultiplyAlpha(dst, w, h, stride);</div>
-<div class="line"><a name="l01450"></a><span class="lineno"> 1450</span>&#160; </div>
-<div class="line"><a name="l01451"></a><span class="lineno"> 1451</span>&#160;    r-&gt;bitmap = NULL;</div>
-<div class="line"><a name="l01452"></a><span class="lineno"> 1452</span>&#160;    r-&gt;width = 0;</div>
-<div class="line"><a name="l01453"></a><span class="lineno"> 1453</span>&#160;    r-&gt;height = 0;</div>
-<div class="line"><a name="l01454"></a><span class="lineno"> 1454</span>&#160;    r-&gt;stride = 0;</div>
-<div class="line"><a name="l01455"></a><span class="lineno"> 1455</span>&#160;}</div>
-<div class="line"><a name="l01456"></a><span class="lineno"> 1456</span>&#160; </div>
-<div class="line"><a name="l01457"></a><span class="lineno"> 1457</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// NANOSVGRAST_IMPLEMENTATION</span></div>
-<div class="line"><a name="l01458"></a><span class="lineno"> 1458</span>&#160; </div>
-<div class="line"><a name="l01459"></a><span class="lineno"> 1459</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// NANOSVGRAST_H</span></div>
+<div class="line"><a name="l01286"></a><span class="lineno"> 1286</span>&#160;    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (grad-&gt;nstops == 1) {</div>
+<div class="line"><a name="l01287"></a><span class="lineno"> 1287</span>&#160;        <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> color = nsvg__applyOpacity(grad-&gt;stops[0].color, opacity);</div>
+<div class="line"><a name="l01288"></a><span class="lineno"> 1288</span>&#160;        <span class="keywordflow">for</span> (i = 0; i &lt; 256; i++)</div>
+<div class="line"><a name="l01289"></a><span class="lineno"> 1289</span>&#160;            cache-&gt;colors[i] = color;</div>
+<div class="line"><a name="l01290"></a><span class="lineno"> 1290</span>&#160;    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l01291"></a><span class="lineno"> 1291</span>&#160;        <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> ca, cb = 0;</div>
+<div class="line"><a name="l01292"></a><span class="lineno"> 1292</span>&#160;        <span class="keywordtype">float</span> ua, ub, du, u;</div>
+<div class="line"><a name="l01293"></a><span class="lineno"> 1293</span>&#160;        <span class="keywordtype">int</span> ia, ib, count;</div>
+<div class="line"><a name="l01294"></a><span class="lineno"> 1294</span>&#160; </div>
+<div class="line"><a name="l01295"></a><span class="lineno"> 1295</span>&#160;        ca = nsvg__applyOpacity(grad-&gt;stops[0].color, opacity);</div>
+<div class="line"><a name="l01296"></a><span class="lineno"> 1296</span>&#160;        ua = nsvg__clampf(grad-&gt;stops[0].offset, 0, 1);</div>
+<div class="line"><a name="l01297"></a><span class="lineno"> 1297</span>&#160;        ub = nsvg__clampf(grad-&gt;stops[grad-&gt;nstops-1].offset, ua, 1);</div>
+<div class="line"><a name="l01298"></a><span class="lineno"> 1298</span>&#160;        ia = (int)(ua * 255.0f);</div>
+<div class="line"><a name="l01299"></a><span class="lineno"> 1299</span>&#160;        ib = (int)(ub * 255.0f);</div>
+<div class="line"><a name="l01300"></a><span class="lineno"> 1300</span>&#160;        <span class="keywordflow">for</span> (i = 0; i &lt; ia; i++) {</div>
+<div class="line"><a name="l01301"></a><span class="lineno"> 1301</span>&#160;            cache-&gt;colors[i] = ca;</div>
+<div class="line"><a name="l01302"></a><span class="lineno"> 1302</span>&#160;        }</div>
+<div class="line"><a name="l01303"></a><span class="lineno"> 1303</span>&#160; </div>
+<div class="line"><a name="l01304"></a><span class="lineno"> 1304</span>&#160;        <span class="keywordflow">for</span> (i = 0; i &lt; grad-&gt;nstops-1; i++) {</div>
+<div class="line"><a name="l01305"></a><span class="lineno"> 1305</span>&#160;            ca = nsvg__applyOpacity(grad-&gt;stops[i].color, opacity);</div>
+<div class="line"><a name="l01306"></a><span class="lineno"> 1306</span>&#160;            cb = nsvg__applyOpacity(grad-&gt;stops[i+1].color, opacity);</div>
+<div class="line"><a name="l01307"></a><span class="lineno"> 1307</span>&#160;            ua = nsvg__clampf(grad-&gt;stops[i].offset, 0, 1);</div>
+<div class="line"><a name="l01308"></a><span class="lineno"> 1308</span>&#160;            ub = nsvg__clampf(grad-&gt;stops[i+1].offset, 0, 1);</div>
+<div class="line"><a name="l01309"></a><span class="lineno"> 1309</span>&#160;            ia = (int)(ua * 255.0f);</div>
+<div class="line"><a name="l01310"></a><span class="lineno"> 1310</span>&#160;            ib = (int)(ub * 255.0f);</div>
+<div class="line"><a name="l01311"></a><span class="lineno"> 1311</span>&#160;            count = ib - ia;</div>
+<div class="line"><a name="l01312"></a><span class="lineno"> 1312</span>&#160;            <span class="keywordflow">if</span> (count &lt;= 0) <span class="keywordflow">continue</span>;</div>
+<div class="line"><a name="l01313"></a><span class="lineno"> 1313</span>&#160;            u = 0;</div>
+<div class="line"><a name="l01314"></a><span class="lineno"> 1314</span>&#160;            du = 1.0f / (float)count;</div>
+<div class="line"><a name="l01315"></a><span class="lineno"> 1315</span>&#160;            <span class="keywordflow">for</span> (j = 0; j &lt; count; j++) {</div>
+<div class="line"><a name="l01316"></a><span class="lineno"> 1316</span>&#160;                cache-&gt;colors[ia+j] = nsvg__lerpRGBA(ca,cb,u);</div>
+<div class="line"><a name="l01317"></a><span class="lineno"> 1317</span>&#160;                u += du;</div>
+<div class="line"><a name="l01318"></a><span class="lineno"> 1318</span>&#160;            }</div>
+<div class="line"><a name="l01319"></a><span class="lineno"> 1319</span>&#160;        }</div>
+<div class="line"><a name="l01320"></a><span class="lineno"> 1320</span>&#160; </div>
+<div class="line"><a name="l01321"></a><span class="lineno"> 1321</span>&#160;        <span class="keywordflow">for</span> (i = ib; i &lt; 256; i++)</div>
+<div class="line"><a name="l01322"></a><span class="lineno"> 1322</span>&#160;            cache-&gt;colors[i] = cb;</div>
+<div class="line"><a name="l01323"></a><span class="lineno"> 1323</span>&#160;    }</div>
+<div class="line"><a name="l01324"></a><span class="lineno"> 1324</span>&#160; </div>
+<div class="line"><a name="l01325"></a><span class="lineno"> 1325</span>&#160;}</div>
+<div class="line"><a name="l01326"></a><span class="lineno"> 1326</span>&#160; </div>
+<div class="line"><a name="l01327"></a><span class="lineno"> 1327</span>&#160;<span class="comment">/*</span></div>
+<div class="line"><a name="l01328"></a><span class="lineno"> 1328</span>&#160;<span class="comment">static void dumpEdges(NSVGrasterizer* r, const char* name)</span></div>
+<div class="line"><a name="l01329"></a><span class="lineno"> 1329</span>&#160;<span class="comment">{</span></div>
+<div class="line"><a name="l01330"></a><span class="lineno"> 1330</span>&#160;<span class="comment">    float xmin = 0, xmax = 0, ymin = 0, ymax = 0;</span></div>
+<div class="line"><a name="l01331"></a><span class="lineno"> 1331</span>&#160;<span class="comment">    NSVGedge *e = NULL;</span></div>
+<div class="line"><a name="l01332"></a><span class="lineno"> 1332</span>&#160;<span class="comment">    int i;</span></div>
+<div class="line"><a name="l01333"></a><span class="lineno"> 1333</span>&#160;<span class="comment">    if (r-&gt;nedges == 0) return;</span></div>
+<div class="line"><a name="l01334"></a><span class="lineno"> 1334</span>&#160;<span class="comment">    FILE* fp = fopen(name, &quot;w&quot;);</span></div>
+<div class="line"><a name="l01335"></a><span class="lineno"> 1335</span>&#160;<span class="comment">    if (fp == NULL) return;</span></div>
+<div class="line"><a name="l01336"></a><span class="lineno"> 1336</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l01337"></a><span class="lineno"> 1337</span>&#160;<span class="comment">    xmin = xmax = r-&gt;edges[0].x0;</span></div>
+<div class="line"><a name="l01338"></a><span class="lineno"> 1338</span>&#160;<span class="comment">    ymin = ymax = r-&gt;edges[0].y0;</span></div>
+<div class="line"><a name="l01339"></a><span class="lineno"> 1339</span>&#160;<span class="comment">    for (i = 0; i &lt; r-&gt;nedges; i++) {</span></div>
+<div class="line"><a name="l01340"></a><span class="lineno"> 1340</span>&#160;<span class="comment">        e = &amp;r-&gt;edges[i];</span></div>
+<div class="line"><a name="l01341"></a><span class="lineno"> 1341</span>&#160;<span class="comment">        xmin = nsvg__minf(xmin, e-&gt;x0);</span></div>
+<div class="line"><a name="l01342"></a><span class="lineno"> 1342</span>&#160;<span class="comment">        xmin = nsvg__minf(xmin, e-&gt;x1);</span></div>
+<div class="line"><a name="l01343"></a><span class="lineno"> 1343</span>&#160;<span class="comment">        xmax = nsvg__maxf(xmax, e-&gt;x0);</span></div>
+<div class="line"><a name="l01344"></a><span class="lineno"> 1344</span>&#160;<span class="comment">        xmax = nsvg__maxf(xmax, e-&gt;x1);</span></div>
+<div class="line"><a name="l01345"></a><span class="lineno"> 1345</span>&#160;<span class="comment">        ymin = nsvg__minf(ymin, e-&gt;y0);</span></div>
+<div class="line"><a name="l01346"></a><span class="lineno"> 1346</span>&#160;<span class="comment">        ymin = nsvg__minf(ymin, e-&gt;y1);</span></div>
+<div class="line"><a name="l01347"></a><span class="lineno"> 1347</span>&#160;<span class="comment">        ymax = nsvg__maxf(ymax, e-&gt;y0);</span></div>
+<div class="line"><a name="l01348"></a><span class="lineno"> 1348</span>&#160;<span class="comment">        ymax = nsvg__maxf(ymax, e-&gt;y1);</span></div>
+<div class="line"><a name="l01349"></a><span class="lineno"> 1349</span>&#160;<span class="comment">    }</span></div>
+<div class="line"><a name="l01350"></a><span class="lineno"> 1350</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l01351"></a><span class="lineno"> 1351</span>&#160;<span class="comment">    fprintf(fp, &quot;&lt;svg viewBox=\&quot;%f %f %f %f\&quot; xmlns=\&quot;http://www.w3.org/2000/svg\&quot;&gt;&quot;, xmin, ymin, (xmax - xmin), (ymax - ymin));</span></div>
+<div class="line"><a name="l01352"></a><span class="lineno"> 1352</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l01353"></a><span class="lineno"> 1353</span>&#160;<span class="comment">    for (i = 0; i &lt; r-&gt;nedges; i++) {</span></div>
+<div class="line"><a name="l01354"></a><span class="lineno"> 1354</span>&#160;<span class="comment">        e = &amp;r-&gt;edges[i];</span></div>
+<div class="line"><a name="l01355"></a><span class="lineno"> 1355</span>&#160;<span class="comment">        fprintf(fp ,&quot;&lt;line x1=\&quot;%f\&quot; y1=\&quot;%f\&quot; x2=\&quot;%f\&quot; y2=\&quot;%f\&quot; style=\&quot;stroke:#000;\&quot; /&gt;&quot;, e-&gt;x0,e-&gt;y0, e-&gt;x1,e-&gt;y1);</span></div>
+<div class="line"><a name="l01356"></a><span class="lineno"> 1356</span>&#160;<span class="comment">    }</span></div>
+<div class="line"><a name="l01357"></a><span class="lineno"> 1357</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l01358"></a><span class="lineno"> 1358</span>&#160;<span class="comment">    for (i = 0; i &lt; r-&gt;npoints; i++) {</span></div>
+<div class="line"><a name="l01359"></a><span class="lineno"> 1359</span>&#160;<span class="comment">        if (i+1 &lt; r-&gt;npoints)</span></div>
+<div class="line"><a name="l01360"></a><span class="lineno"> 1360</span>&#160;<span class="comment">            fprintf(fp ,&quot;&lt;line x1=\&quot;%f\&quot; y1=\&quot;%f\&quot; x2=\&quot;%f\&quot; y2=\&quot;%f\&quot; style=\&quot;stroke:#f00;\&quot; /&gt;&quot;, r-&gt;points[i].x, r-&gt;points[i].y, r-&gt;points[i+1].x, r-&gt;points[i+1].y);</span></div>
+<div class="line"><a name="l01361"></a><span class="lineno"> 1361</span>&#160;<span class="comment">        fprintf(fp ,&quot;&lt;circle cx=\&quot;%f\&quot; cy=\&quot;%f\&quot; r=\&quot;1\&quot; style=\&quot;fill:%s;\&quot; /&gt;&quot;, r-&gt;points[i].x, r-&gt;points[i].y, r-&gt;points[i].flags == 0 ? &quot;#f00&quot; : &quot;#0f0&quot;);</span></div>
+<div class="line"><a name="l01362"></a><span class="lineno"> 1362</span>&#160;<span class="comment">    }</span></div>
+<div class="line"><a name="l01363"></a><span class="lineno"> 1363</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l01364"></a><span class="lineno"> 1364</span>&#160;<span class="comment">    fprintf(fp, &quot;&lt;/svg&gt;&quot;);</span></div>
+<div class="line"><a name="l01365"></a><span class="lineno"> 1365</span>&#160;<span class="comment">    fclose(fp);</span></div>
+<div class="line"><a name="l01366"></a><span class="lineno"> 1366</span>&#160;<span class="comment">}</span></div>
+<div class="line"><a name="l01367"></a><span class="lineno"> 1367</span>&#160;<span class="comment">*/</span></div>
+<div class="line"><a name="l01368"></a><span class="lineno"> 1368</span>&#160; </div>
+<div class="line"><a name="l01369"></a><span class="lineno"> 1369</span>&#160;<span class="keywordtype">void</span> nsvgRasterize(NSVGrasterizer* r,</div>
+<div class="line"><a name="l01370"></a><span class="lineno"> 1370</span>&#160;                   <a class="code" href="structNSVGimage.html">NSVGimage</a>* image, <span class="keywordtype">float</span> tx, <span class="keywordtype">float</span> ty, <span class="keywordtype">float</span> scale,</div>
+<div class="line"><a name="l01371"></a><span class="lineno"> 1371</span>&#160;                   <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span>* dst, <span class="keywordtype">int</span> w, <span class="keywordtype">int</span> h, <span class="keywordtype">int</span> stride)</div>
+<div class="line"><a name="l01372"></a><span class="lineno"> 1372</span>&#160;{</div>
+<div class="line"><a name="l01373"></a><span class="lineno"> 1373</span>&#160;    <a class="code" href="structNSVGshape.html">NSVGshape</a> *shape = NULL;</div>
+<div class="line"><a name="l01374"></a><span class="lineno"> 1374</span>&#160;    NSVGedge *e = NULL;</div>
+<div class="line"><a name="l01375"></a><span class="lineno"> 1375</span>&#160;    NSVGcachedPaint cache;</div>
+<div class="line"><a name="l01376"></a><span class="lineno"> 1376</span>&#160;    <span class="keywordtype">int</span> i;</div>
+<div class="line"><a name="l01377"></a><span class="lineno"> 1377</span>&#160; </div>
+<div class="line"><a name="l01378"></a><span class="lineno"> 1378</span>&#160;    r-&gt;bitmap = dst;</div>
+<div class="line"><a name="l01379"></a><span class="lineno"> 1379</span>&#160;    r-&gt;width = w;</div>
+<div class="line"><a name="l01380"></a><span class="lineno"> 1380</span>&#160;    r-&gt;height = h;</div>
+<div class="line"><a name="l01381"></a><span class="lineno"> 1381</span>&#160;    r-&gt;stride = stride;</div>
+<div class="line"><a name="l01382"></a><span class="lineno"> 1382</span>&#160; </div>
+<div class="line"><a name="l01383"></a><span class="lineno"> 1383</span>&#160;    <span class="keywordflow">if</span> (w &gt; r-&gt;cscanline) {</div>
+<div class="line"><a name="l01384"></a><span class="lineno"> 1384</span>&#160;        r-&gt;cscanline = w;</div>
+<div class="line"><a name="l01385"></a><span class="lineno"> 1385</span>&#160;        r-&gt;scanline = (<span class="keywordtype">unsigned</span> <span class="keywordtype">char</span>*)realloc(r-&gt;scanline, w);</div>
+<div class="line"><a name="l01386"></a><span class="lineno"> 1386</span>&#160;        <span class="keywordflow">if</span> (r-&gt;scanline == NULL) <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l01387"></a><span class="lineno"> 1387</span>&#160;    }</div>
+<div class="line"><a name="l01388"></a><span class="lineno"> 1388</span>&#160; </div>
+<div class="line"><a name="l01389"></a><span class="lineno"> 1389</span>&#160;    <span class="keywordflow">for</span> (i = 0; i &lt; h; i++)</div>
+<div class="line"><a name="l01390"></a><span class="lineno"> 1390</span>&#160;        memset(&amp;dst[i*stride], 0, w*4);</div>
+<div class="line"><a name="l01391"></a><span class="lineno"> 1391</span>&#160; </div>
+<div class="line"><a name="l01392"></a><span class="lineno"> 1392</span>&#160;    <span class="keywordflow">for</span> (shape = image-&gt;shapes; shape != NULL; shape = shape-&gt;next) {</div>
+<div class="line"><a name="l01393"></a><span class="lineno"> 1393</span>&#160;        <span class="keywordflow">if</span> (!(shape-&gt;flags &amp; NSVG_FLAGS_VISIBLE))</div>
+<div class="line"><a name="l01394"></a><span class="lineno"> 1394</span>&#160;            <span class="keywordflow">continue</span>;</div>
+<div class="line"><a name="l01395"></a><span class="lineno"> 1395</span>&#160; </div>
+<div class="line"><a name="l01396"></a><span class="lineno"> 1396</span>&#160;        <span class="keywordflow">if</span> (shape-&gt;fill.type != NSVG_PAINT_NONE) {</div>
+<div class="line"><a name="l01397"></a><span class="lineno"> 1397</span>&#160;            nsvg__resetPool(r);</div>
+<div class="line"><a name="l01398"></a><span class="lineno"> 1398</span>&#160;            r-&gt;freelist = NULL;</div>
+<div class="line"><a name="l01399"></a><span class="lineno"> 1399</span>&#160;            r-&gt;nedges = 0;</div>
+<div class="line"><a name="l01400"></a><span class="lineno"> 1400</span>&#160; </div>
+<div class="line"><a name="l01401"></a><span class="lineno"> 1401</span>&#160;            nsvg__flattenShape(r, shape, scale);</div>
+<div class="line"><a name="l01402"></a><span class="lineno"> 1402</span>&#160; </div>
+<div class="line"><a name="l01403"></a><span class="lineno"> 1403</span>&#160;            <span class="comment">// Scale and translate edges</span></div>
+<div class="line"><a name="l01404"></a><span class="lineno"> 1404</span>&#160;            <span class="keywordflow">for</span> (i = 0; i &lt; r-&gt;nedges; i++) {</div>
+<div class="line"><a name="l01405"></a><span class="lineno"> 1405</span>&#160;                e = &amp;r-&gt;edges[i];</div>
+<div class="line"><a name="l01406"></a><span class="lineno"> 1406</span>&#160;                e-&gt;x0 = tx + e-&gt;x0;</div>
+<div class="line"><a name="l01407"></a><span class="lineno"> 1407</span>&#160;                e-&gt;y0 = (ty + e-&gt;y0) * NSVG__SUBSAMPLES;</div>
+<div class="line"><a name="l01408"></a><span class="lineno"> 1408</span>&#160;                e-&gt;x1 = tx + e-&gt;x1;</div>
+<div class="line"><a name="l01409"></a><span class="lineno"> 1409</span>&#160;                e-&gt;y1 = (ty + e-&gt;y1) * NSVG__SUBSAMPLES;</div>
+<div class="line"><a name="l01410"></a><span class="lineno"> 1410</span>&#160;            }</div>
+<div class="line"><a name="l01411"></a><span class="lineno"> 1411</span>&#160; </div>
+<div class="line"><a name="l01412"></a><span class="lineno"> 1412</span>&#160;            <span class="comment">// Rasterize edges</span></div>
+<div class="line"><a name="l01413"></a><span class="lineno"> 1413</span>&#160;            <span class="keywordflow">if</span> (r-&gt;nedges != 0)</div>
+<div class="line"><a name="l01414"></a><span class="lineno"> 1414</span>&#160;                qsort(r-&gt;edges, r-&gt;nedges, <span class="keyword">sizeof</span>(NSVGedge), nsvg__cmpEdge);</div>
+<div class="line"><a name="l01415"></a><span class="lineno"> 1415</span>&#160; </div>
+<div class="line"><a name="l01416"></a><span class="lineno"> 1416</span>&#160;            <span class="comment">// now, traverse the scanlines and find the intersections on each scanline, use non-zero rule</span></div>
+<div class="line"><a name="l01417"></a><span class="lineno"> 1417</span>&#160;            nsvg__initPaint(&amp;cache, &amp;shape-&gt;fill, shape-&gt;opacity);</div>
+<div class="line"><a name="l01418"></a><span class="lineno"> 1418</span>&#160; </div>
+<div class="line"><a name="l01419"></a><span class="lineno"> 1419</span>&#160;            nsvg__rasterizeSortedEdges(r, tx,ty,scale, &amp;cache, shape-&gt;fillRule);</div>
+<div class="line"><a name="l01420"></a><span class="lineno"> 1420</span>&#160;        }</div>
+<div class="line"><a name="l01421"></a><span class="lineno"> 1421</span>&#160;        <span class="keywordflow">if</span> (shape-&gt;stroke.type != NSVG_PAINT_NONE &amp;&amp; (shape-&gt;strokeWidth * scale) &gt; 0.01f) {</div>
+<div class="line"><a name="l01422"></a><span class="lineno"> 1422</span>&#160;            nsvg__resetPool(r);</div>
+<div class="line"><a name="l01423"></a><span class="lineno"> 1423</span>&#160;            r-&gt;freelist = NULL;</div>
+<div class="line"><a name="l01424"></a><span class="lineno"> 1424</span>&#160;            r-&gt;nedges = 0;</div>
+<div class="line"><a name="l01425"></a><span class="lineno"> 1425</span>&#160; </div>
+<div class="line"><a name="l01426"></a><span class="lineno"> 1426</span>&#160;            nsvg__flattenShapeStroke(r, shape, scale);</div>
+<div class="line"><a name="l01427"></a><span class="lineno"> 1427</span>&#160; </div>
+<div class="line"><a name="l01428"></a><span class="lineno"> 1428</span>&#160;<span class="comment">//          dumpEdges(r, &quot;edge.svg&quot;);</span></div>
+<div class="line"><a name="l01429"></a><span class="lineno"> 1429</span>&#160; </div>
+<div class="line"><a name="l01430"></a><span class="lineno"> 1430</span>&#160;            <span class="comment">// Scale and translate edges</span></div>
+<div class="line"><a name="l01431"></a><span class="lineno"> 1431</span>&#160;            <span class="keywordflow">for</span> (i = 0; i &lt; r-&gt;nedges; i++) {</div>
+<div class="line"><a name="l01432"></a><span class="lineno"> 1432</span>&#160;                e = &amp;r-&gt;edges[i];</div>
+<div class="line"><a name="l01433"></a><span class="lineno"> 1433</span>&#160;                e-&gt;x0 = tx + e-&gt;x0;</div>
+<div class="line"><a name="l01434"></a><span class="lineno"> 1434</span>&#160;                e-&gt;y0 = (ty + e-&gt;y0) * NSVG__SUBSAMPLES;</div>
+<div class="line"><a name="l01435"></a><span class="lineno"> 1435</span>&#160;                e-&gt;x1 = tx + e-&gt;x1;</div>
+<div class="line"><a name="l01436"></a><span class="lineno"> 1436</span>&#160;                e-&gt;y1 = (ty + e-&gt;y1) * NSVG__SUBSAMPLES;</div>
+<div class="line"><a name="l01437"></a><span class="lineno"> 1437</span>&#160;            }</div>
+<div class="line"><a name="l01438"></a><span class="lineno"> 1438</span>&#160; </div>
+<div class="line"><a name="l01439"></a><span class="lineno"> 1439</span>&#160;            <span class="comment">// Rasterize edges</span></div>
+<div class="line"><a name="l01440"></a><span class="lineno"> 1440</span>&#160;            <span class="keywordflow">if</span> (r-&gt;nedges != 0)</div>
+<div class="line"><a name="l01441"></a><span class="lineno"> 1441</span>&#160;                qsort(r-&gt;edges, r-&gt;nedges, <span class="keyword">sizeof</span>(NSVGedge), nsvg__cmpEdge);</div>
+<div class="line"><a name="l01442"></a><span class="lineno"> 1442</span>&#160; </div>
+<div class="line"><a name="l01443"></a><span class="lineno"> 1443</span>&#160;            <span class="comment">// now, traverse the scanlines and find the intersections on each scanline, use non-zero rule</span></div>
+<div class="line"><a name="l01444"></a><span class="lineno"> 1444</span>&#160;            nsvg__initPaint(&amp;cache, &amp;shape-&gt;stroke, shape-&gt;opacity);</div>
+<div class="line"><a name="l01445"></a><span class="lineno"> 1445</span>&#160; </div>
+<div class="line"><a name="l01446"></a><span class="lineno"> 1446</span>&#160;            nsvg__rasterizeSortedEdges(r, tx,ty,scale, &amp;cache, NSVG_FILLRULE_NONZERO);</div>
+<div class="line"><a name="l01447"></a><span class="lineno"> 1447</span>&#160;        }</div>
+<div class="line"><a name="l01448"></a><span class="lineno"> 1448</span>&#160;    }</div>
+<div class="line"><a name="l01449"></a><span class="lineno"> 1449</span>&#160; </div>
+<div class="line"><a name="l01450"></a><span class="lineno"> 1450</span>&#160;    nsvg__unpremultiplyAlpha(dst, w, h, stride);</div>
+<div class="line"><a name="l01451"></a><span class="lineno"> 1451</span>&#160; </div>
+<div class="line"><a name="l01452"></a><span class="lineno"> 1452</span>&#160;    r-&gt;bitmap = NULL;</div>
+<div class="line"><a name="l01453"></a><span class="lineno"> 1453</span>&#160;    r-&gt;width = 0;</div>
+<div class="line"><a name="l01454"></a><span class="lineno"> 1454</span>&#160;    r-&gt;height = 0;</div>
+<div class="line"><a name="l01455"></a><span class="lineno"> 1455</span>&#160;    r-&gt;stride = 0;</div>
+<div class="line"><a name="l01456"></a><span class="lineno"> 1456</span>&#160;}</div>
+<div class="line"><a name="l01457"></a><span class="lineno"> 1457</span>&#160; </div>
+<div class="line"><a name="l01458"></a><span class="lineno"> 1458</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// NANOSVGRAST_IMPLEMENTATION</span></div>
+<div class="line"><a name="l01459"></a><span class="lineno"> 1459</span>&#160; </div>
+<div class="line"><a name="l01460"></a><span class="lineno"> 1460</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// NANOSVGRAST_H</span></div>
 <div class="ttc" id="astructNSVGgradient_html"><div class="ttname"><a href="structNSVGgradient.html">NSVGgradient</a></div><div class="ttdef"><b>Definition:</b> nanosvg.h:114</div></div>
 <div class="ttc" id="astructNSVGimage_html"><div class="ttname"><a href="structNSVGimage.html">NSVGimage</a></div><div class="ttdef"><b>Definition:</b> nanosvg.h:163</div></div>
 <div class="ttc" id="astructNSVGpaint_html"><div class="ttname"><a href="structNSVGpaint.html">NSVGpaint</a></div><div class="ttdef"><b>Definition:</b> nanosvg.h:122</div></div>
