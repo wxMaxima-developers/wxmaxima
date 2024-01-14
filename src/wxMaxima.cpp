@@ -292,7 +292,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   m_exitOnError = false;
   wxString lang;
   if (wxGetEnv("LANG", &lang))
-    wxLogMessage("LANG=%S", lang.mb_str());
+    wxLogMessage("LANG=%s", lang.mb_str());
   m_isLogTarget = m_topLevelWindows.empty();
   // Suppress window updates until this window has fully been created.
   // Not redrawing the window whilst constructing it hopefully speeds up
