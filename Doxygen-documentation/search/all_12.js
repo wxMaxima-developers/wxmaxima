@@ -25,7 +25,7 @@ var searchData=
   ['the_20manual_1511',['The manual',['../md_info_README.html',1,'']]],
   ['the_20translation_20of_20the_20manual_1512',['The Translation of the manual',['../md_locales_manual_README.html',1,'']]],
   ['the_20translation_20of_20the_20program_20itself_1513',['The Translation of the program itself',['../md_locales_wxMaxima_README.html',1,'']]],
-  ['the_20wxmaxima_20user_20manual_20_7b_2d_7d_1514',['The wxMaxima user manual {-}',['../md_info_wxmaxima.html',1,'']]],
+  ['the_20wxmaxima_20user_20manual_1514',['The wxMaxima user manual',['../md_info_wxmaxima.html',1,'']]],
   ['threadnumberlimiter_1515',['ThreadNumberLimiter',['../classThreadNumberLimiter.html',1,'']]],
   ['threadnumberlimiter_2ecpp_1516',['ThreadNumberLimiter.cpp',['../ThreadNumberLimiter_8cpp.html',1,'']]],
   ['threadnumberlimiter_2eh_1517',['ThreadNumberLimiter.h',['../ThreadNumberLimiter_8h.html',1,'']]],
