@@ -33,6 +33,10 @@
 bool AutoComplete::LoadBuiltinSymbols() {
   // Add maxima functions
   // NOLINT(readability/fn_size)
+  m_wordList.at(command).push_back(wxS("%and"));    // FUNCTION
+  m_wordList.at(command).push_back(wxS("%if"));    // FUNCTION
+  m_wordList.at(command).push_back(wxS("%or"));    // FUNCTION
+  m_wordList.at(command).push_back(wxS("%rnum"));    // FUNCTION
   m_wordList.at(command).push_back(wxS("?derivsimp"));    // OPTION
   m_wordList.at(command).push_back(wxS("pathname_name")); // FUNCTION
   m_wordList.at(command).push_back(wxS("fast_linsolve")); // FUNCTION
@@ -1770,6 +1774,7 @@ bool AutoComplete::LoadBuiltinSymbols() {
   m_wordList.at(tmplte ).push_back(wxS("wheel_graph(<n>)"));                       // OPTION
   m_wordList.at(command).push_back(wxS("adjacency_matrix"));                      // FUNCTION
   m_wordList.at(tmplte ).push_back(wxS("adjacency_matrix(<gr>)"));                 // OPTION
+  m_wordList.at(command).push_back(wxS("adjust_external_format"));                 // FUNCTION
   m_wordList.at(command).push_back(wxS("average_degree"));                        // FUNCTION
   m_wordList.at(tmplte ).push_back(wxS("average_degree(<gr>)"));                   // OPTION
   m_wordList.at(command).push_back(wxS("biconnected_components"));                // FUNCTION
@@ -3124,6 +3129,16 @@ bool AutoComplete::LoadBuiltinSymbols() {
   m_wordList.at(tmplte ).push_back(wxS("absint(<f>, <x>, <halfplane>)"));           // OPTION
   m_wordList.at(tmplte ).push_back(wxS("absint(<f>, <x>)"));                        // OPTION
   m_wordList.at(tmplte ).push_back(wxS("absint(<f>, <x>, <a>, <b>)"));              // OPTION
+  m_wordList.at(command).push_back(wxS("algfac"));                                 // FUNCTION
+  m_wordList.at(command).push_back(wxS("algnorm"));                                 // FUNCTION
+  m_wordList.at(command).push_back(wxS("algtrace"));                                 // FUNCTION
+  m_wordList.at(command).push_back(wxS("aload_mac"));                                 // FUNCTION
+  m_wordList.at(command).push_back(wxS("and"));                                 // OPTION
+  m_wordList.at(command).push_back(wxS("announce_rules_firing"));                                 // OPTION
+  m_wordList.at(command).push_back(wxS("array_dimension_n"));                                 // FUNCTION
+  m_wordList.at(command).push_back(wxS("arraysetapply"));                                 // FUNCTION
+  m_wordList.at(command).push_back(wxS("auto_mexpr"));                                 // FUNCTION
+// FUNCTION
   m_wordList.at(command).push_back(wxS("fourier"));                                // FUNCTION
   m_wordList.at(tmplte ).push_back(wxS("fourier(<f>, <x>, <p>)"));                  // OPTION
   m_wordList.at(command).push_back(wxS("foursimp"));                               // FUNCTION
@@ -3357,7 +3372,7 @@ bool AutoComplete::LoadBuiltinSymbols() {
   m_wordList.at(command).push_back(wxS("plot_options"));                       // OPTION
   m_wordList.at(command).push_back(wxS("set_plot_option"));                    // FUNCTION
   m_wordList.at(tmplte ).push_back(wxS("set_plot_option(<option>)"));           // OPTION
-  m_wordList.at(command).push_back(wxS("adapth_depth"));                       // OPTION
+  m_wordList.at(command).push_back(wxS("adapt_depth"));                       // OPTION
   m_wordList.at(command).push_back(wxS("axes"));                               // OPTION
   m_wordList.at(command).push_back(wxS("azimut"));                             // OPTION
   m_wordList.at(command).push_back(wxS("box"));                                // OPTION
