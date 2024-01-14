@@ -2690,8 +2690,6 @@ wxString Worksheet::ConvertSelectionToMathML() {
 
   s = wxString(wxS("<math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n")) +
     wxS("<semantics>") + tmp->ListToMathML(true) +
-    wxS("<annotation encoding=\"application/x-maxima\">") +
-    Cell::XMLescape(tmp->ListToString()) + wxS("</annotation>") +
     wxS("</semantics>") + wxS("</math>");
 
   // We might add indentation as additional eye candy to all but extremely long
