@@ -1,4 +1,4 @@
-# The wxMaxima user manual {-}
+# The wxMaxima user manual
 
 WxMaxima is a graphical user interface (GUI) for the _Maxima_ computer algebra system (CAS). WxMaxima allows one to use all of _Maxima_’s functions. In addition, it provides convenient wizards for accessing the most commonly used features. This manual describes some of the features that make wxMaxima one of the most popular GUIs for _Maxima_.
 
@@ -922,7 +922,7 @@ ______________________________________________________________________
 
 # Command-line arguments
 
-Most operating systems provide less complicated ways of starting programs than the command-line so this possibility is only rarely used. _WxMaxima_ still provides some command-line switches, though.
+Usually you can start programs with a graphical user interface just by clicking on a desktop icon or desktop menu entry. WxMaxima - if started from the command line -  still provides some command-line switches, though.
 
 - `-v` or `--version`: Output the version information
 - `-h` or `--help`: Output a short help text
@@ -946,7 +946,9 @@ ______________________________________________________________________
 
 # About the program, contributing to wxMaxima
 
-wxMaxima is mainly developed using the program language C++ using the wxWidgets framework, as build system we use CMake, a small part is written in Lisp. You can contribute to wxMaxima, join the wxMaxima project at <https://github.com/wxMaxima-developers/wxmaxima>, if you have knowledge of these programming languages and want to help and contribute to the open source project  wxMaxima.
+wxMaxima is mainly developed using the programming language C++ using the [wxWidgets framework](https://www.wxwidgets.org), as build system we use CMake, a small part is written in Lisp. You can contribute to wxMaxima, join the wxMaxima project at <https://github.com/wxMaxima-developers/wxmaxima>, if you have knowledge of these programming languages and want to help and contribute to the open source project wxMaxima.
+
+But not only programmers are necessary! You can also contribute to wxMaxima, if you help to improve the documentation, find and report bugs (and maybe bugfixes), suggest new features, help to translate wxMaxima or the manual to your language or answer questions of other users in the discussion forum.
 
 The source code of wxMaxima is documented using Doxygen [here](https://wxmaxima-developers.github.io/wxmaxima/Doxygen-documentation/).
 
