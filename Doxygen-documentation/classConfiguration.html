@@ -137,6 +137,15 @@ Public Types</h2></td></tr>
 , <b>display_1dASCII</b>
  }</td></tr>
 <tr class="separator:a82900900d94b32f307c183f08d4515b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a03fec16ce6139610142240ce478b8315"><td class="memItemLeft" align="right" valign="top"><a id="a03fec16ce6139610142240ce478b8315"></a>
+typedef std::unordered_map&lt; wxString, bool, wxStringHash &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>StringBoolHash</b></td></tr>
+<tr class="separator:a03fec16ce6139610142240ce478b8315"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3a73cee7f139a5f8cf2fee0afc1fb9bd"><td class="memItemLeft" align="right" valign="top"><a id="a3a73cee7f139a5f8cf2fee0afc1fb9bd"></a>
+typedef std::unordered_map&lt; wxString, wxString, wxStringHash &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>RenderablecharsHash</b></td></tr>
+<tr class="separator:a3a73cee7f139a5f8cf2fee0afc1fb9bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a730b24755a7c5eb24da283c8e1f1865e"><td class="memItemLeft" align="right" valign="top"><a id="a730b24755a7c5eb24da283c8e1f1865e"></a>
+typedef std::unordered_map&lt; wxString, int, wxStringHash &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>StringHash</b></td></tr>
+<tr class="separator:a730b24755a7c5eb24da283c8e1f1865e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4b4ceb3aa001a545b5c9efbbabf2f9ac"><td class="memItemLeft" align="right" valign="top"><a id="a4b4ceb3aa001a545b5c9efbbabf2f9ac"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><b>EscCodeContainer</b> = std::unordered_map&lt; wxString, wxString, wxStringHash &gt;</td></tr>
 <tr class="separator:a4b4ceb3aa001a545b5c9efbbabf2f9ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -146,15 +155,6 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>EscCodeIterator</b> 
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ab3e7451e2d55a669fbd1dadf87934a5a"><td class="memItemLeft" align="right" valign="top"><a id="ab3e7451e2d55a669fbd1dadf87934a5a"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>WX_DECLARE_STRING_HASH_MAP</b> (bool, StringBoolHash)</td></tr>
-<tr class="separator:ab3e7451e2d55a669fbd1dadf87934a5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0c27a24c8f56de9bb12690e78e6aca8c"><td class="memItemLeft" align="right" valign="top"><a id="a0c27a24c8f56de9bb12690e78e6aca8c"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>WX_DECLARE_STRING_HASH_MAP</b> (wxString, RenderablecharsHash)</td></tr>
-<tr class="separator:a0c27a24c8f56de9bb12690e78e6aca8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a66211c13328042f3640835a49dc96c00"><td class="memItemLeft" align="right" valign="top"><a id="a66211c13328042f3640835a49dc96c00"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>WX_DECLARE_STRING_HASH_MAP</b> (int, StringHash)</td></tr>
-<tr class="separator:a66211c13328042f3640835a49dc96c00"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae4d6699f5f7ce4330b1e6806b05d286b"><td class="memItemLeft" align="right" valign="top"><a id="ae4d6699f5f7ce4330b1e6806b05d286b"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConfiguration.html#ae4d6699f5f7ce4330b1e6806b05d286b">IsOperator</a> (wxString name)</td></tr>
 <tr class="memdesc:ae4d6699f5f7ce4330b1e6806b05d286b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Coincides name with a operator known to maxima? <br /></td></tr>

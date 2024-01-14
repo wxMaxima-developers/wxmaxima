@@ -120,248 +120,244 @@ $(function() {
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="comment">*/</span></div>
 <div class="line"><a name="l00057"></a><span class="lineno"><a class="line" href="classAutoComplete.html">   57</a></span>&#160;<span class="keyword">class </span><a class="code" href="classAutoComplete.html">AutoComplete</a> : <span class="keyword">public</span> wxEvtHandler</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;{</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="preprocessor">#if wxCHECK_VERSION(3, 3, 0) || wxUSE_STL</span></div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  <span class="keyword">typedef</span> std::unordered_map &lt;wxString, int&gt; WorksheetWords;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="preprocessor">#else</span></div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  WX_DECLARE_STRING_HASH_MAP(<span class="keywordtype">int</span>, WorksheetWords);</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  <span class="keyword">using</span> WordList = std::vector&lt;wxString&gt;;</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
-<div class="line"><a name="l00068"></a><span class="lineno"><a class="line" href="classAutoComplete.html#a6225a91b46c0459755a62de137620b29">   68</a></span>&#160;  <span class="keyword">enum</span> <a class="code" href="classAutoComplete.html#a6225a91b46c0459755a62de137620b29">autoCompletionType</a></div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  {</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    command = 0, </div>
-<div class="line"><a name="l00071"></a><span class="lineno"><a class="line" href="classAutoComplete.html#a6225a91b46c0459755a62de137620b29a537040456dba8d9d080cdb4bcd15bcad">   71</a></span>&#160;    <a class="code" href="classAutoComplete.html#a6225a91b46c0459755a62de137620b29a537040456dba8d9d080cdb4bcd15bcad">tmplte</a>,  </div>
-<div class="line"><a name="l00072"></a><span class="lineno"><a class="line" href="classAutoComplete.html#a6225a91b46c0459755a62de137620b29ae79474d174763269e5ba387002436e43">   72</a></span>&#160;    <a class="code" href="classAutoComplete.html#a6225a91b46c0459755a62de137620b29ae79474d174763269e5ba387002436e43">loadfile</a>,</div>
-<div class="line"><a name="l00073"></a><span class="lineno"><a class="line" href="classAutoComplete.html#a6225a91b46c0459755a62de137620b29a653d70d312cae37be23d27c9526317f7">   73</a></span>&#160;    <a class="code" href="classAutoComplete.html#a6225a91b46c0459755a62de137620b29a653d70d312cae37be23d27c9526317f7">demofile</a>,</div>
-<div class="line"><a name="l00074"></a><span class="lineno"><a class="line" href="classAutoComplete.html#a6225a91b46c0459755a62de137620b29a5d27d54eac21bd6060c332d95314b445">   74</a></span>&#160;    <a class="code" href="classAutoComplete.html#a6225a91b46c0459755a62de137620b29a5d27d54eac21bd6060c332d95314b445">generalfile</a>,</div>
-<div class="line"><a name="l00075"></a><span class="lineno"><a class="line" href="classAutoComplete.html#a6225a91b46c0459755a62de137620b29aee4022f4d28eb504969b3042359544e4">   75</a></span>&#160;    <a class="code" href="classAutoComplete.html#a6225a91b46c0459755a62de137620b29aee4022f4d28eb504969b3042359544e4">esccommand</a>, </div>
-<div class="line"><a name="l00076"></a><span class="lineno"><a class="line" href="classAutoComplete.html#a6225a91b46c0459755a62de137620b29ac18a9c878b44c379ca78faedaac2cd6c">   76</a></span>&#160;    <a class="code" href="classAutoComplete.html#a6225a91b46c0459755a62de137620b29ac18a9c878b44c379ca78faedaac2cd6c">unit</a>,    </div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <a class="code" href="classAutoComplete.html#a6225a91b46c0459755a62de137620b29a83b932a902206b352f3795faf6f2d231">numberOfTypes</a> </div>
-<div class="line"><a name="l00078"></a><span class="lineno"><a class="line" href="classAutoComplete.html#a6225a91b46c0459755a62de137620b29a83b932a902206b352f3795faf6f2d231">   78</a></span>&#160;  };</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;  <span class="keyword">explicit</span> <a class="code" href="classAutoComplete.html">AutoComplete</a>(<a class="code" href="classConfiguration.html">Configuration</a> *configuration);</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; </div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;  <a class="code" href="classAutoComplete.html#a2779fd32c1ad5eb643463b6d3e20dafd">~AutoComplete</a>();</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160; </div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classAutoComplete.html#a6022d262109966147cbda01d6166d2ca">LoadSymbols</a>();</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160; </div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;  <span class="keywordtype">bool</span> <a class="code" href="classAutoComplete.html#aa52091684de760b86a7f934dce47fa26">LoadBuiltinSymbols</a>();</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160; </div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classAutoComplete.html#af6f5cfb1876f21f4503c674288fd64f5">AddSymbol</a>(wxString fun, <a class="code" href="classAutoComplete.html#a6225a91b46c0459755a62de137620b29">autoCompletionType</a> type = command);</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classAutoComplete.html#ac01de5cf0f57194e555f845f80063c02">AddSymbols</a>(wxString xml);</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classAutoComplete.html#aadf3fc529ed6c739ec49a3a11e16f086">AddSymbols_Backgroundtask</a>(wxString xml);</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160; </div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classAutoComplete.html#a08bcc10938d98389c58c1e8fc07048e1">UpdateDemoFiles</a>(wxString partial, wxString maximaDir);</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classAutoComplete.html#a5feac4d1d3f1d9096598b7fc02f9012a">UpdateLoadFiles</a>(wxString partial, wxString maximaDir);</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classAutoComplete.html#a63634e6853bbfbb46c61c781bf565903">UpdateGeneralFiles</a>(wxString partial, wxString maximaDir);</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;  <span class="keyword">typedef</span> std::unordered_map &lt;wxString, int, wxStringHash&gt; WorksheetWords;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  <span class="keyword">using</span> WordList = std::vector&lt;wxString&gt;;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
+<div class="line"><a name="l00064"></a><span class="lineno"><a class="line" href="classAutoComplete.html#a6225a91b46c0459755a62de137620b29">   64</a></span>&#160;  <span class="keyword">enum</span> <a class="code" href="classAutoComplete.html#a6225a91b46c0459755a62de137620b29">autoCompletionType</a></div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  {</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    command = 0, </div>
+<div class="line"><a name="l00067"></a><span class="lineno"><a class="line" href="classAutoComplete.html#a6225a91b46c0459755a62de137620b29a537040456dba8d9d080cdb4bcd15bcad">   67</a></span>&#160;    <a class="code" href="classAutoComplete.html#a6225a91b46c0459755a62de137620b29a537040456dba8d9d080cdb4bcd15bcad">tmplte</a>,  </div>
+<div class="line"><a name="l00068"></a><span class="lineno"><a class="line" href="classAutoComplete.html#a6225a91b46c0459755a62de137620b29ae79474d174763269e5ba387002436e43">   68</a></span>&#160;    <a class="code" href="classAutoComplete.html#a6225a91b46c0459755a62de137620b29ae79474d174763269e5ba387002436e43">loadfile</a>,</div>
+<div class="line"><a name="l00069"></a><span class="lineno"><a class="line" href="classAutoComplete.html#a6225a91b46c0459755a62de137620b29a653d70d312cae37be23d27c9526317f7">   69</a></span>&#160;    <a class="code" href="classAutoComplete.html#a6225a91b46c0459755a62de137620b29a653d70d312cae37be23d27c9526317f7">demofile</a>,</div>
+<div class="line"><a name="l00070"></a><span class="lineno"><a class="line" href="classAutoComplete.html#a6225a91b46c0459755a62de137620b29a5d27d54eac21bd6060c332d95314b445">   70</a></span>&#160;    <a class="code" href="classAutoComplete.html#a6225a91b46c0459755a62de137620b29a5d27d54eac21bd6060c332d95314b445">generalfile</a>,</div>
+<div class="line"><a name="l00071"></a><span class="lineno"><a class="line" href="classAutoComplete.html#a6225a91b46c0459755a62de137620b29aee4022f4d28eb504969b3042359544e4">   71</a></span>&#160;    <a class="code" href="classAutoComplete.html#a6225a91b46c0459755a62de137620b29aee4022f4d28eb504969b3042359544e4">esccommand</a>, </div>
+<div class="line"><a name="l00072"></a><span class="lineno"><a class="line" href="classAutoComplete.html#a6225a91b46c0459755a62de137620b29ac18a9c878b44c379ca78faedaac2cd6c">   72</a></span>&#160;    <a class="code" href="classAutoComplete.html#a6225a91b46c0459755a62de137620b29ac18a9c878b44c379ca78faedaac2cd6c">unit</a>,    </div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <a class="code" href="classAutoComplete.html#a6225a91b46c0459755a62de137620b29a83b932a902206b352f3795faf6f2d231">numberOfTypes</a> </div>
+<div class="line"><a name="l00074"></a><span class="lineno"><a class="line" href="classAutoComplete.html#a6225a91b46c0459755a62de137620b29a83b932a902206b352f3795faf6f2d231">   74</a></span>&#160;  };</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  <span class="keyword">explicit</span> <a class="code" href="classAutoComplete.html">AutoComplete</a>(<a class="code" href="classConfiguration.html">Configuration</a> *configuration);</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; </div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  <a class="code" href="classAutoComplete.html#a2779fd32c1ad5eb643463b6d3e20dafd">~AutoComplete</a>();</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; </div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classAutoComplete.html#a6022d262109966147cbda01d6166d2ca">LoadSymbols</a>();</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160; </div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;  <span class="keywordtype">bool</span> <a class="code" href="classAutoComplete.html#aa52091684de760b86a7f934dce47fa26">LoadBuiltinSymbols</a>();</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160; </div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classAutoComplete.html#af6f5cfb1876f21f4503c674288fd64f5">AddSymbol</a>(wxString fun, <a class="code" href="classAutoComplete.html#a6225a91b46c0459755a62de137620b29">autoCompletionType</a> type = command);</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classAutoComplete.html#ac01de5cf0f57194e555f845f80063c02">AddSymbols</a>(wxString xml);</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classAutoComplete.html#aadf3fc529ed6c739ec49a3a11e16f086">AddSymbols_Backgroundtask</a>(wxString xml);</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160; </div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classAutoComplete.html#a08bcc10938d98389c58c1e8fc07048e1">UpdateDemoFiles</a>(wxString partial, wxString maximaDir);</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classAutoComplete.html#a5feac4d1d3f1d9096598b7fc02f9012a">UpdateLoadFiles</a>(wxString partial, wxString maximaDir);</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classAutoComplete.html#a63634e6853bbfbb46c61c781bf565903">UpdateGeneralFiles</a>(wxString partial, wxString maximaDir);</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160; </div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classAutoComplete.html#ac7caeb6b2a96643d5b7320c011d79e77">AddWorksheetWords</a>(<span class="keyword">const</span> WordList &amp;words);</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classAutoComplete.html#ac7caeb6b2a96643d5b7320c011d79e77">AddWorksheetWords</a>(WordList::const_iterator begin, WordList::const_iterator end);</div>
 <div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160; </div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classAutoComplete.html#ac7caeb6b2a96643d5b7320c011d79e77">AddWorksheetWords</a>(<span class="keyword">const</span> WordList &amp;words);</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classAutoComplete.html#ac7caeb6b2a96643d5b7320c011d79e77">AddWorksheetWords</a>(WordList::const_iterator begin, WordList::const_iterator end);</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160; </div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classAutoComplete.html#afb44678be806c87a6ca98562739c7cb6">ClearWorksheetWords</a>();</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classAutoComplete.html#a2f20f190106922be54ebde22a119a427">ClearDemofileList</a>();</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160; </div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;  std::vector&lt;wxString&gt; <a class="code" href="classAutoComplete.html#a820f73cfb05abb20f73ae74f224c39e3">CompleteSymbol</a>(wxString partial, <a class="code" href="classAutoComplete.html#a6225a91b46c0459755a62de137620b29">autoCompletionType</a> type = command);</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;  <span class="keyword">static</span> wxString <a class="code" href="classAutoComplete.html#ad0026315422c75170949786143a114dd">FixTemplate</a>(wxString templ);</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;  std::vector&lt;wxString&gt; <a class="code" href="classAutoComplete.html#a3ce4920608a19ea0cc47df052904619a">GetDemoFilesList</a>();</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;  std::vector&lt;wxString&gt; <a class="code" href="classAutoComplete.html#a0b5d26fd3444fddee6b48ade7ce5f5e6">GetSymbolList</a>();</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;  <span class="keywordtype">bool</span> <a class="code" href="classAutoComplete.html#a0d3c64127ddc4c7a9599b195f664f22c">HasDemofile</a>(wxString commandname);</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160; </div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;  <a class="code" href="classConfiguration.html">Configuration</a> *m_configuration;</div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;  <span class="keywordtype">void</span> LoadableFiles_BackgroundTask(wxString sharedir);</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;  <span class="keywordtype">void</span> BuiltinSymbols_BackgroundTask();</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160; </div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;  <span class="keywordtype">void</span> UpdateLoadFiles_BackgroundTask(wxString partial, wxString maximaDir);</div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;  std::vector&lt;wxString&gt; m_builtInLoadFiles;</div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;  std::vector&lt;wxString&gt; m_builtInDemoFiles;</div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160; </div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;  <span class="keyword">class </span>GetGeneralFiles : <span class="keyword">public</span> wxDirTraverser</div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;  {</div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;  <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;    <span class="keyword">explicit</span> GetGeneralFiles(std::vector&lt;wxString&gt;&amp; files,</div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;                             std::mutex *lock,</div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;                             wxString prefix = wxEmptyString) :</div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;      m_files(files), m_lock(lock), m_prefix(prefix) { }</div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;    wxDirTraverseResult OnFile(<span class="keyword">const</span> wxString&amp; filename)<span class="keyword"> override</span></div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;<span class="keyword">      </span>{</div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;        wxFileName newItemName(filename);</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;        wxString newItem = <span class="stringliteral">&quot;\&quot;&quot;</span> + m_prefix + newItemName.GetFullName() + <span class="stringliteral">&quot;\&quot;&quot;</span>;</div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;        newItem.Replace(wxFileName::GetPathSeparator(), <span class="stringliteral">&quot;/&quot;</span>);</div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;        {</div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;          <span class="keyword">const</span> std::lock_guard&lt;std::mutex&gt; lock(*m_lock);</div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;          <span class="keywordflow">if</span>(std::find(m_files.begin(), m_files.end(), newItem) == m_files.end())</div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;            m_files.push_back(newItem);</div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;        }</div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;        <span class="keywordflow">return</span> wxDIR_CONTINUE;</div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;      }</div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;    wxDirTraverseResult OnDir(<span class="keyword">const</span> wxString&amp; dirname)<span class="keyword"> override</span></div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;<span class="keyword">      </span>{</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;        wxFileName newItemName(dirname);</div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;        wxString newItem = <span class="stringliteral">&quot;\&quot;&quot;</span> + m_prefix + newItemName.GetFullName() + <span class="stringliteral">&quot;/\&quot;&quot;</span>;</div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;        newItem.Replace(wxFileName::GetPathSeparator(), <span class="stringliteral">&quot;/&quot;</span>);</div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;        {</div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;          <span class="keyword">const</span> std::lock_guard&lt;std::mutex&gt; lock(*m_lock);</div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;          <span class="keywordflow">if</span>(std::find(m_files.begin(), m_files.end(), newItem) == m_files.end())</div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;            m_files.push_back(newItem);</div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;        }</div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;        <span class="keywordflow">return</span> wxDIR_IGNORE;</div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;      }</div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;    std::vector&lt;wxString&gt; GetResult(){</div>
-<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;      <span class="keyword">const</span> std::lock_guard&lt;std::mutex&gt; lock(*m_lock);</div>
-<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;      <span class="keywordflow">return</span> m_files;</div>
-<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;    }</div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;  <span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;    std::vector&lt;wxString&gt;&amp; m_files;</div>
-<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;    std::mutex *m_lock;</div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;    wxString m_prefix;</div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;  };</div>
-<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160; </div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;  <span class="keyword">class </span>GetMacFiles_includingSubdirs : <span class="keyword">public</span> wxDirTraverser</div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;  {</div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;  <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;    <span class="keyword">explicit</span> GetMacFiles_includingSubdirs(std::vector&lt;wxString&gt;&amp; files,</div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;                                          std::mutex *lock,</div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;                                          wxString prefix = wxEmptyString) :</div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;      m_files(files), m_lock(lock), m_prefix(prefix)  { }</div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;    wxDirTraverseResult OnFile(<span class="keyword">const</span> wxString&amp; filename)<span class="keyword"> override</span></div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;<span class="keyword">      </span>{</div>
-<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;        <span class="keywordflow">if</span>(</div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;          (filename.EndsWith(<span class="stringliteral">&quot;.mac&quot;</span>))||</div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;          (filename.EndsWith(<span class="stringliteral">&quot;.lisp&quot;</span>))||</div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;          (filename.EndsWith(<span class="stringliteral">&quot;.wxm&quot;</span>))</div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;          )</div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;        {</div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;          wxFileName newItemName(filename);</div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;          wxString newItem = <span class="stringliteral">&quot;\&quot;&quot;</span> + m_prefix + newItemName.GetName() + <span class="stringliteral">&quot;\&quot;&quot;</span>;</div>
-<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;          newItem.Replace(wxFileName::GetPathSeparator(), <span class="stringliteral">&quot;/&quot;</span>);</div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;          {</div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;            <span class="keyword">const</span> std::lock_guard&lt;std::mutex&gt; lock(*m_lock);</div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;            <span class="keywordflow">if</span>(std::find(m_files.begin(), m_files.end(), newItem) == m_files.end())</div>
-<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;              m_files.push_back(newItem);</div>
-<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;          }</div>
-<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;        }</div>
-<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;        <span class="keywordflow">return</span> wxDIR_CONTINUE;</div>
-<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;      }</div>
-<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;    wxDirTraverseResult OnDir(<span class="keyword">const</span> wxString&amp; dirname)<span class="keyword"> override</span></div>
-<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;<span class="keyword">      </span>{</div>
-<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;        <span class="keywordflow">if</span>((dirname.EndsWith(<span class="stringliteral">&quot;.git&quot;</span>)) ||</div>
-<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;           (dirname.EndsWith(<span class="stringliteral">&quot;/share/share&quot;</span>)) ||</div>
-<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;           (dirname.EndsWith(<span class="stringliteral">&quot;/src/src&quot;</span>)) ||</div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;           (dirname.EndsWith(<span class="stringliteral">&quot;/doc/doc&quot;</span>)) ||</div>
-<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;           (dirname.EndsWith(<span class="stringliteral">&quot;/interfaces/interfaces&quot;</span>))</div>
-<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;          )</div>
-<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;          <span class="keywordflow">return</span> wxDIR_STOP;</div>
-<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;        <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;          <span class="keywordflow">return</span> wxDIR_CONTINUE;</div>
-<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;      }</div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;    std::vector&lt;wxString&gt; GetResult(){</div>
-<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;      <span class="keyword">const</span> std::lock_guard&lt;std::mutex&gt; lock(*m_lock);</div>
-<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;      <span class="keywordflow">return</span> m_files;</div>
-<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;    }</div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;  <span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;    std::vector&lt;wxString&gt;&amp; m_files;</div>
-<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;    std::mutex *m_lock;</div>
-<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;    wxString m_prefix;</div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;  };</div>
-<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160; </div>
-<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;  <span class="keyword">class </span>GetMacFiles : <span class="keyword">public</span> GetMacFiles_includingSubdirs</div>
-<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;  {</div>
-<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;  <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;    <span class="keyword">explicit</span> GetMacFiles(std::vector&lt;wxString&gt;&amp; files,</div>
-<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;                         std::mutex *lock,</div>
-<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;                         wxString prefix = wxEmptyString) :</div>
-<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;      GetMacFiles_includingSubdirs(files, lock, prefix){ }</div>
-<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;    wxDirTraverseResult OnDir(<span class="keyword">const</span> wxString&amp; dirname)<span class="keyword"> override</span></div>
-<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;<span class="keyword">      </span>{</div>
-<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;        wxFileName newItemName(dirname);</div>
-<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;        wxString newItem = <span class="stringliteral">&quot;\&quot;&quot;</span> + m_prefix + newItemName.GetFullName() + <span class="stringliteral">&quot;/\&quot;&quot;</span>;</div>
-<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;        newItem.Replace(wxFileName::GetPathSeparator(), <span class="stringliteral">&quot;/&quot;</span>);</div>
-<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;        {</div>
-<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;          <span class="keyword">const</span> std::lock_guard&lt;std::mutex&gt; lock(*m_lock);</div>
-<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;          <span class="keywordflow">if</span>(std::find(m_files.begin(), m_files.end(), newItem) == m_files.end())</div>
-<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;            m_files.push_back(newItem);</div>
-<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;        }</div>
-<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;        <span class="keywordflow">return</span> wxDIR_IGNORE;</div>
-<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;      }</div>
-<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;  };</div>
-<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160; </div>
-<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;  <span class="keyword">class </span>GetDemoFiles_includingSubdirs : <span class="keyword">public</span> wxDirTraverser</div>
-<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;  {</div>
-<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;  <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;    <span class="keyword">explicit</span> GetDemoFiles_includingSubdirs(std::vector&lt;wxString&gt;&amp; files,</div>
-<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;                                           std::mutex *lock,</div>
-<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;                                           wxString prefix = wxEmptyString) :</div>
-<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;      m_files(files), m_lock(lock), m_prefix(prefix) { }</div>
-<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;    wxDirTraverseResult OnFile(<span class="keyword">const</span> wxString&amp; filename)<span class="keyword"> override</span></div>
-<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;<span class="keyword">      </span>{</div>
-<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;        <span class="keywordflow">if</span>(filename.EndsWith(<span class="stringliteral">&quot;.dem&quot;</span>))</div>
-<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;        {</div>
-<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;          wxFileName newItemName(filename);</div>
-<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;          wxString newItem = <span class="stringliteral">&quot;\&quot;&quot;</span> + m_prefix + newItemName.GetName() + <span class="stringliteral">&quot;\&quot;&quot;</span>;</div>
-<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;          newItem.Replace(wxFileName::GetPathSeparator(), <span class="stringliteral">&quot;/&quot;</span>);</div>
-<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;          {</div>
-<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;            <span class="keyword">const</span> std::lock_guard&lt;std::mutex&gt; lock(*m_lock);</div>
-<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;            <span class="keywordflow">if</span>(std::find(m_files.begin(), m_files.end(), newItem) == m_files.end())</div>
-<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;              m_files.push_back(newItem);</div>
-<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;          }</div>
-<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;        }</div>
-<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;        <span class="keywordflow">return</span> wxDIR_CONTINUE;</div>
-<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;      }</div>
-<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;    wxDirTraverseResult OnDir(<span class="keyword">const</span> wxString&amp; dirname)<span class="keyword"> override</span></div>
-<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;<span class="keyword">      </span>{</div>
-<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;        <span class="keywordflow">if</span>((dirname.EndsWith(<span class="stringliteral">&quot;.git&quot;</span>)) ||</div>
-<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;           (dirname.EndsWith(<span class="stringliteral">&quot;/share/share&quot;</span>)) ||</div>
-<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;           (dirname.EndsWith(<span class="stringliteral">&quot;/src/src&quot;</span>)) ||</div>
-<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;           (dirname.EndsWith(<span class="stringliteral">&quot;/doc/doc&quot;</span>)) ||</div>
-<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;           (dirname.EndsWith(<span class="stringliteral">&quot;/interfaces/interfaces&quot;</span>))</div>
-<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;          )</div>
-<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;          <span class="keywordflow">return</span> wxDIR_STOP;</div>
-<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;        <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;          <span class="keywordflow">return</span> wxDIR_CONTINUE;</div>
-<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;      }</div>
-<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;    std::vector&lt;wxString&gt; GetResult(){</div>
-<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;      <span class="keyword">const</span> std::lock_guard&lt;std::mutex&gt; lock(*m_lock);</div>
-<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;      <span class="keywordflow">return</span> m_files;</div>
-<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;    }</div>
-<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;  <span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;    std::vector&lt;wxString&gt;&amp; m_files;</div>
-<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;    std::mutex *m_lock;</div>
-<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;    wxString m_prefix;</div>
-<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;  };</div>
-<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160; </div>
-<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;  <span class="keyword">class </span>GetDemoFiles : <span class="keyword">public</span> GetDemoFiles_includingSubdirs</div>
-<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;  {</div>
-<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;  <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;    <span class="keyword">explicit</span> GetDemoFiles(std::vector&lt;wxString&gt;&amp; files,</div>
-<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;                          std::mutex *lock,</div>
-<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;                          wxString prefix = wxEmptyString) :</div>
-<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;      GetDemoFiles_includingSubdirs(files, lock, prefix){ }</div>
-<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;    <span class="keyword">virtual</span> wxDirTraverseResult OnDir(<span class="keyword">const</span> wxString&amp; dirname)<span class="keyword"> override</span></div>
-<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;<span class="keyword">      </span>{</div>
-<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;        wxFileName newItemName(dirname);</div>
-<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;        wxString newItem = <span class="stringliteral">&quot;\&quot;&quot;</span> + m_prefix + newItemName.GetFullName() + <span class="stringliteral">&quot;/\&quot;&quot;</span>;</div>
-<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;        newItem.Replace(wxFileName::GetPathSeparator(), <span class="stringliteral">&quot;/&quot;</span>);</div>
-<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;        {</div>
-<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;          <span class="keyword">const</span> std::lock_guard&lt;std::mutex&gt; lock(*m_lock);</div>
-<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;          <span class="keywordflow">if</span>(std::find(m_files.begin(), m_files.end(), newItem) == m_files.end())</div>
-<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;            m_files.push_back(newItem);</div>
-<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;        }</div>
-<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;        <span class="keywordflow">return</span> wxDIR_IGNORE;</div>
-<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;      }</div>
-<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;  };</div>
-<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160; </div>
-<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;  std::thread m_addSymbols_backgroundThread;</div>
-<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;  std::thread m_addFiles_backgroundThread;</div>
-<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;  std::mutex m_keywordsLock;</div>
-<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;  std::vector&lt;std::vector&lt;wxString&gt;&gt; m_wordList;</div>
-<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;  <span class="keyword">static</span> wxRegEx m_args;</div>
-<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;  WorksheetWords m_worksheetWords;</div>
-<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;};</div>
-<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160; </div>
-<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;wxDECLARE_EVENT(NEW_DEMO_FILES_EVENT, wxCommandEvent);</div>
-<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160; </div>
-<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// AUTOCOMPLETE_H</span></div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classAutoComplete.html#afb44678be806c87a6ca98562739c7cb6">ClearWorksheetWords</a>();</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classAutoComplete.html#a2f20f190106922be54ebde22a119a427">ClearDemofileList</a>();</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160; </div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;  std::vector&lt;wxString&gt; <a class="code" href="classAutoComplete.html#a820f73cfb05abb20f73ae74f224c39e3">CompleteSymbol</a>(wxString partial, <a class="code" href="classAutoComplete.html#a6225a91b46c0459755a62de137620b29">autoCompletionType</a> type = command);</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;  <span class="keyword">static</span> wxString <a class="code" href="classAutoComplete.html#ad0026315422c75170949786143a114dd">FixTemplate</a>(wxString templ);</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;  std::vector&lt;wxString&gt; <a class="code" href="classAutoComplete.html#a3ce4920608a19ea0cc47df052904619a">GetDemoFilesList</a>();</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;  std::vector&lt;wxString&gt; <a class="code" href="classAutoComplete.html#a0b5d26fd3444fddee6b48ade7ce5f5e6">GetSymbolList</a>();</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;  <span class="keywordtype">bool</span> <a class="code" href="classAutoComplete.html#a0d3c64127ddc4c7a9599b195f664f22c">HasDemofile</a>(wxString commandname);</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160; </div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;  <a class="code" href="classConfiguration.html">Configuration</a> *m_configuration;</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;  <span class="keywordtype">void</span> LoadableFiles_BackgroundTask(wxString sharedir);</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;  <span class="keywordtype">void</span> BuiltinSymbols_BackgroundTask();</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160; </div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;  <span class="keywordtype">void</span> UpdateLoadFiles_BackgroundTask(wxString partial, wxString maximaDir);</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;  std::vector&lt;wxString&gt; m_builtInLoadFiles;</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;  std::vector&lt;wxString&gt; m_builtInDemoFiles;</div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160; </div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;  <span class="keyword">class </span>GetGeneralFiles : <span class="keyword">public</span> wxDirTraverser</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;  {</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;  <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;    <span class="keyword">explicit</span> GetGeneralFiles(std::vector&lt;wxString&gt;&amp; files,</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;                             std::mutex *lock,</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;                             wxString prefix = wxEmptyString) :</div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;      m_files(files), m_lock(lock), m_prefix(prefix) { }</div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;    wxDirTraverseResult OnFile(<span class="keyword">const</span> wxString&amp; filename)<span class="keyword"> override</span></div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;<span class="keyword">      </span>{</div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;        wxFileName newItemName(filename);</div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;        wxString newItem = <span class="stringliteral">&quot;\&quot;&quot;</span> + m_prefix + newItemName.GetFullName() + <span class="stringliteral">&quot;\&quot;&quot;</span>;</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;        newItem.Replace(wxFileName::GetPathSeparator(), <span class="stringliteral">&quot;/&quot;</span>);</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;        {</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;          <span class="keyword">const</span> std::lock_guard&lt;std::mutex&gt; lock(*m_lock);</div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;          <span class="keywordflow">if</span>(std::find(m_files.begin(), m_files.end(), newItem) == m_files.end())</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;            m_files.push_back(newItem);</div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;        }</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;        <span class="keywordflow">return</span> wxDIR_CONTINUE;</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;      }</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;    wxDirTraverseResult OnDir(<span class="keyword">const</span> wxString&amp; dirname)<span class="keyword"> override</span></div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;<span class="keyword">      </span>{</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;        wxFileName newItemName(dirname);</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;        wxString newItem = <span class="stringliteral">&quot;\&quot;&quot;</span> + m_prefix + newItemName.GetFullName() + <span class="stringliteral">&quot;/\&quot;&quot;</span>;</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;        newItem.Replace(wxFileName::GetPathSeparator(), <span class="stringliteral">&quot;/&quot;</span>);</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;        {</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;          <span class="keyword">const</span> std::lock_guard&lt;std::mutex&gt; lock(*m_lock);</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;          <span class="keywordflow">if</span>(std::find(m_files.begin(), m_files.end(), newItem) == m_files.end())</div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;            m_files.push_back(newItem);</div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;        }</div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;        <span class="keywordflow">return</span> wxDIR_IGNORE;</div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;      }</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;    std::vector&lt;wxString&gt; GetResult(){</div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;      <span class="keyword">const</span> std::lock_guard&lt;std::mutex&gt; lock(*m_lock);</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;      <span class="keywordflow">return</span> m_files;</div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;    }</div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;  <span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;    std::vector&lt;wxString&gt;&amp; m_files;</div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;    std::mutex *m_lock;</div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;    wxString m_prefix;</div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;  };</div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160; </div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;  <span class="keyword">class </span>GetMacFiles_includingSubdirs : <span class="keyword">public</span> wxDirTraverser</div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;  {</div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;  <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;    <span class="keyword">explicit</span> GetMacFiles_includingSubdirs(std::vector&lt;wxString&gt;&amp; files,</div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;                                          std::mutex *lock,</div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;                                          wxString prefix = wxEmptyString) :</div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;      m_files(files), m_lock(lock), m_prefix(prefix)  { }</div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;    wxDirTraverseResult OnFile(<span class="keyword">const</span> wxString&amp; filename)<span class="keyword"> override</span></div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;<span class="keyword">      </span>{</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;        <span class="keywordflow">if</span>(</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;          (filename.EndsWith(<span class="stringliteral">&quot;.mac&quot;</span>))||</div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;          (filename.EndsWith(<span class="stringliteral">&quot;.lisp&quot;</span>))||</div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;          (filename.EndsWith(<span class="stringliteral">&quot;.wxm&quot;</span>))</div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;          )</div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;        {</div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;          wxFileName newItemName(filename);</div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;          wxString newItem = <span class="stringliteral">&quot;\&quot;&quot;</span> + m_prefix + newItemName.GetName() + <span class="stringliteral">&quot;\&quot;&quot;</span>;</div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;          newItem.Replace(wxFileName::GetPathSeparator(), <span class="stringliteral">&quot;/&quot;</span>);</div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;          {</div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;            <span class="keyword">const</span> std::lock_guard&lt;std::mutex&gt; lock(*m_lock);</div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;            <span class="keywordflow">if</span>(std::find(m_files.begin(), m_files.end(), newItem) == m_files.end())</div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;              m_files.push_back(newItem);</div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;          }</div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;        }</div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;        <span class="keywordflow">return</span> wxDIR_CONTINUE;</div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;      }</div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;    wxDirTraverseResult OnDir(<span class="keyword">const</span> wxString&amp; dirname)<span class="keyword"> override</span></div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;<span class="keyword">      </span>{</div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;        <span class="keywordflow">if</span>((dirname.EndsWith(<span class="stringliteral">&quot;.git&quot;</span>)) ||</div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;           (dirname.EndsWith(<span class="stringliteral">&quot;/share/share&quot;</span>)) ||</div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;           (dirname.EndsWith(<span class="stringliteral">&quot;/src/src&quot;</span>)) ||</div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;           (dirname.EndsWith(<span class="stringliteral">&quot;/doc/doc&quot;</span>)) ||</div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;           (dirname.EndsWith(<span class="stringliteral">&quot;/interfaces/interfaces&quot;</span>))</div>
+<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;          )</div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;          <span class="keywordflow">return</span> wxDIR_STOP;</div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;        <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;          <span class="keywordflow">return</span> wxDIR_CONTINUE;</div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;      }</div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;    std::vector&lt;wxString&gt; GetResult(){</div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;      <span class="keyword">const</span> std::lock_guard&lt;std::mutex&gt; lock(*m_lock);</div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;      <span class="keywordflow">return</span> m_files;</div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;    }</div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;  <span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;    std::vector&lt;wxString&gt;&amp; m_files;</div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;    std::mutex *m_lock;</div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;    wxString m_prefix;</div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;  };</div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160; </div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;  <span class="keyword">class </span>GetMacFiles : <span class="keyword">public</span> GetMacFiles_includingSubdirs</div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;  {</div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;  <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;    <span class="keyword">explicit</span> GetMacFiles(std::vector&lt;wxString&gt;&amp; files,</div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;                         std::mutex *lock,</div>
+<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;                         wxString prefix = wxEmptyString) :</div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;      GetMacFiles_includingSubdirs(files, lock, prefix){ }</div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;    wxDirTraverseResult OnDir(<span class="keyword">const</span> wxString&amp; dirname)<span class="keyword"> override</span></div>
+<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;<span class="keyword">      </span>{</div>
+<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;        wxFileName newItemName(dirname);</div>
+<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;        wxString newItem = <span class="stringliteral">&quot;\&quot;&quot;</span> + m_prefix + newItemName.GetFullName() + <span class="stringliteral">&quot;/\&quot;&quot;</span>;</div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;        newItem.Replace(wxFileName::GetPathSeparator(), <span class="stringliteral">&quot;/&quot;</span>);</div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;        {</div>
+<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;          <span class="keyword">const</span> std::lock_guard&lt;std::mutex&gt; lock(*m_lock);</div>
+<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;          <span class="keywordflow">if</span>(std::find(m_files.begin(), m_files.end(), newItem) == m_files.end())</div>
+<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;            m_files.push_back(newItem);</div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;        }</div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;        <span class="keywordflow">return</span> wxDIR_IGNORE;</div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;      }</div>
+<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;  };</div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160; </div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;  <span class="keyword">class </span>GetDemoFiles_includingSubdirs : <span class="keyword">public</span> wxDirTraverser</div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;  {</div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;  <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;    <span class="keyword">explicit</span> GetDemoFiles_includingSubdirs(std::vector&lt;wxString&gt;&amp; files,</div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;                                           std::mutex *lock,</div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;                                           wxString prefix = wxEmptyString) :</div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;      m_files(files), m_lock(lock), m_prefix(prefix) { }</div>
+<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;    wxDirTraverseResult OnFile(<span class="keyword">const</span> wxString&amp; filename)<span class="keyword"> override</span></div>
+<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;<span class="keyword">      </span>{</div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;        <span class="keywordflow">if</span>(filename.EndsWith(<span class="stringliteral">&quot;.dem&quot;</span>))</div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;        {</div>
+<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;          wxFileName newItemName(filename);</div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;          wxString newItem = <span class="stringliteral">&quot;\&quot;&quot;</span> + m_prefix + newItemName.GetName() + <span class="stringliteral">&quot;\&quot;&quot;</span>;</div>
+<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;          newItem.Replace(wxFileName::GetPathSeparator(), <span class="stringliteral">&quot;/&quot;</span>);</div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;          {</div>
+<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;            <span class="keyword">const</span> std::lock_guard&lt;std::mutex&gt; lock(*m_lock);</div>
+<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;            <span class="keywordflow">if</span>(std::find(m_files.begin(), m_files.end(), newItem) == m_files.end())</div>
+<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;              m_files.push_back(newItem);</div>
+<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;          }</div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;        }</div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;        <span class="keywordflow">return</span> wxDIR_CONTINUE;</div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;      }</div>
+<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;    wxDirTraverseResult OnDir(<span class="keyword">const</span> wxString&amp; dirname)<span class="keyword"> override</span></div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;<span class="keyword">      </span>{</div>
+<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;        <span class="keywordflow">if</span>((dirname.EndsWith(<span class="stringliteral">&quot;.git&quot;</span>)) ||</div>
+<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;           (dirname.EndsWith(<span class="stringliteral">&quot;/share/share&quot;</span>)) ||</div>
+<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;           (dirname.EndsWith(<span class="stringliteral">&quot;/src/src&quot;</span>)) ||</div>
+<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;           (dirname.EndsWith(<span class="stringliteral">&quot;/doc/doc&quot;</span>)) ||</div>
+<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;           (dirname.EndsWith(<span class="stringliteral">&quot;/interfaces/interfaces&quot;</span>))</div>
+<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;          )</div>
+<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;          <span class="keywordflow">return</span> wxDIR_STOP;</div>
+<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;        <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;          <span class="keywordflow">return</span> wxDIR_CONTINUE;</div>
+<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;      }</div>
+<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;    std::vector&lt;wxString&gt; GetResult(){</div>
+<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;      <span class="keyword">const</span> std::lock_guard&lt;std::mutex&gt; lock(*m_lock);</div>
+<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;      <span class="keywordflow">return</span> m_files;</div>
+<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;    }</div>
+<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;  <span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;    std::vector&lt;wxString&gt;&amp; m_files;</div>
+<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;    std::mutex *m_lock;</div>
+<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;    wxString m_prefix;</div>
+<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;  };</div>
+<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160; </div>
+<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;  <span class="keyword">class </span>GetDemoFiles : <span class="keyword">public</span> GetDemoFiles_includingSubdirs</div>
+<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;  {</div>
+<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;  <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;    <span class="keyword">explicit</span> GetDemoFiles(std::vector&lt;wxString&gt;&amp; files,</div>
+<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;                          std::mutex *lock,</div>
+<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;                          wxString prefix = wxEmptyString) :</div>
+<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;      GetDemoFiles_includingSubdirs(files, lock, prefix){ }</div>
+<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;    <span class="keyword">virtual</span> wxDirTraverseResult OnDir(<span class="keyword">const</span> wxString&amp; dirname)<span class="keyword"> override</span></div>
+<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;<span class="keyword">      </span>{</div>
+<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;        wxFileName newItemName(dirname);</div>
+<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;        wxString newItem = <span class="stringliteral">&quot;\&quot;&quot;</span> + m_prefix + newItemName.GetFullName() + <span class="stringliteral">&quot;/\&quot;&quot;</span>;</div>
+<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;        newItem.Replace(wxFileName::GetPathSeparator(), <span class="stringliteral">&quot;/&quot;</span>);</div>
+<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;        {</div>
+<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;          <span class="keyword">const</span> std::lock_guard&lt;std::mutex&gt; lock(*m_lock);</div>
+<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;          <span class="keywordflow">if</span>(std::find(m_files.begin(), m_files.end(), newItem) == m_files.end())</div>
+<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;            m_files.push_back(newItem);</div>
+<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;        }</div>
+<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;        <span class="keywordflow">return</span> wxDIR_IGNORE;</div>
+<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;      }</div>
+<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;  };</div>
+<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160; </div>
+<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;  std::thread m_addSymbols_backgroundThread;</div>
+<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;  std::thread m_addFiles_backgroundThread;</div>
+<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;  std::mutex m_keywordsLock;</div>
+<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;  std::vector&lt;std::vector&lt;wxString&gt;&gt; m_wordList;</div>
+<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;  <span class="keyword">static</span> wxRegEx m_args;</div>
+<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;  WorksheetWords m_worksheetWords;</div>
+<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;};</div>
+<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160; </div>
+<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;wxDECLARE_EVENT(NEW_DEMO_FILES_EVENT, wxCommandEvent);</div>
+<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160; </div>
+<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// AUTOCOMPLETE_H</span></div>
 <div class="ttc" id="aclassAutoComplete_html"><div class="ttname"><a href="classAutoComplete.html">AutoComplete</a></div><div class="ttdef"><b>Definition:</b> Autocomplete.h:58</div></div>
 <div class="ttc" id="aclassAutoComplete_html_a08bcc10938d98389c58c1e8fc07048e1"><div class="ttname"><a href="classAutoComplete.html#a08bcc10938d98389c58c1e8fc07048e1">AutoComplete::UpdateDemoFiles</a></div><div class="ttdeci">void UpdateDemoFiles(wxString partial, wxString maximaDir)</div><div class="ttdoc">Replace the list of files in the directory the worksheet file is in to the demo files list.</div><div class="ttdef"><b>Definition:</b> Autocomplete.cpp:324</div></div>
 <div class="ttc" id="aclassAutoComplete_html_a0b5d26fd3444fddee6b48ade7ce5f5e6"><div class="ttname"><a href="classAutoComplete.html#a0b5d26fd3444fddee6b48ade7ce5f5e6">AutoComplete::GetSymbolList</a></div><div class="ttdeci">std::vector&lt; wxString &gt; GetSymbolList()</div><div class="ttdoc">Returns a list of Symbols we know.</div><div class="ttdef"><b>Definition:</b> Autocomplete.cpp:61</div></div>
@@ -371,21 +367,21 @@ $(function() {
 <div class="ttc" id="aclassAutoComplete_html_a3ce4920608a19ea0cc47df052904619a"><div class="ttname"><a href="classAutoComplete.html#a3ce4920608a19ea0cc47df052904619a">AutoComplete::GetDemoFilesList</a></div><div class="ttdeci">std::vector&lt; wxString &gt; GetDemoFilesList()</div><div class="ttdoc">Returns a list of demo files we know of.</div><div class="ttdef"><b>Definition:</b> Autocomplete.cpp:56</div></div>
 <div class="ttc" id="aclassAutoComplete_html_a5feac4d1d3f1d9096598b7fc02f9012a"><div class="ttname"><a href="classAutoComplete.html#a5feac4d1d3f1d9096598b7fc02f9012a">AutoComplete::UpdateLoadFiles</a></div><div class="ttdeci">void UpdateLoadFiles(wxString partial, wxString maximaDir)</div><div class="ttdoc">Replace the list of files in the directory the worksheet file is in to the load files list.</div><div class="ttdef"><b>Definition:</b> Autocomplete.cpp:393</div></div>
 <div class="ttc" id="aclassAutoComplete_html_a6022d262109966147cbda01d6166d2ca"><div class="ttname"><a href="classAutoComplete.html#a6022d262109966147cbda01d6166d2ca">AutoComplete::LoadSymbols</a></div><div class="ttdeci">void LoadSymbols()</div><div class="ttdoc">Load all autocomplete symbols wxMaxima knows about by itself.</div><div class="ttdef"><b>Definition:</b> Autocomplete.cpp:163</div></div>
-<div class="ttc" id="aclassAutoComplete_html_a6225a91b46c0459755a62de137620b29"><div class="ttname"><a href="classAutoComplete.html#a6225a91b46c0459755a62de137620b29">AutoComplete::autoCompletionType</a></div><div class="ttdeci">autoCompletionType</div><div class="ttdoc">All types of things we can autocomplete.</div><div class="ttdef"><b>Definition:</b> Autocomplete.h:69</div></div>
-<div class="ttc" id="aclassAutoComplete_html_a6225a91b46c0459755a62de137620b29a537040456dba8d9d080cdb4bcd15bcad"><div class="ttname"><a href="classAutoComplete.html#a6225a91b46c0459755a62de137620b29a537040456dba8d9d080cdb4bcd15bcad">AutoComplete::tmplte</a></div><div class="ttdeci">@ tmplte</div><div class="ttdoc">Command names.</div><div class="ttdef"><b>Definition:</b> Autocomplete.h:71</div></div>
-<div class="ttc" id="aclassAutoComplete_html_a6225a91b46c0459755a62de137620b29a5d27d54eac21bd6060c332d95314b445"><div class="ttname"><a href="classAutoComplete.html#a6225a91b46c0459755a62de137620b29a5d27d54eac21bd6060c332d95314b445">AutoComplete::generalfile</a></div><div class="ttdeci">@ generalfile</div><div class="ttdoc">loadable files</div><div class="ttdef"><b>Definition:</b> Autocomplete.h:74</div></div>
-<div class="ttc" id="aclassAutoComplete_html_a6225a91b46c0459755a62de137620b29a653d70d312cae37be23d27c9526317f7"><div class="ttname"><a href="classAutoComplete.html#a6225a91b46c0459755a62de137620b29a653d70d312cae37be23d27c9526317f7">AutoComplete::demofile</a></div><div class="ttdeci">@ demofile</div><div class="ttdoc">loadable files</div><div class="ttdef"><b>Definition:</b> Autocomplete.h:73</div></div>
-<div class="ttc" id="aclassAutoComplete_html_a6225a91b46c0459755a62de137620b29a83b932a902206b352f3795faf6f2d231"><div class="ttname"><a href="classAutoComplete.html#a6225a91b46c0459755a62de137620b29a83b932a902206b352f3795faf6f2d231">AutoComplete::numberOfTypes</a></div><div class="ttdeci">@ numberOfTypes</div><div class="ttdoc">Unit names.</div><div class="ttdef"><b>Definition:</b> Autocomplete.h:77</div></div>
-<div class="ttc" id="aclassAutoComplete_html_a6225a91b46c0459755a62de137620b29ac18a9c878b44c379ca78faedaac2cd6c"><div class="ttname"><a href="classAutoComplete.html#a6225a91b46c0459755a62de137620b29ac18a9c878b44c379ca78faedaac2cd6c">AutoComplete::unit</a></div><div class="ttdeci">@ unit</div><div class="ttdoc">Esc commands describing symbols.</div><div class="ttdef"><b>Definition:</b> Autocomplete.h:76</div></div>
-<div class="ttc" id="aclassAutoComplete_html_a6225a91b46c0459755a62de137620b29ae79474d174763269e5ba387002436e43"><div class="ttname"><a href="classAutoComplete.html#a6225a91b46c0459755a62de137620b29ae79474d174763269e5ba387002436e43">AutoComplete::loadfile</a></div><div class="ttdeci">@ loadfile</div><div class="ttdoc">Function templates.</div><div class="ttdef"><b>Definition:</b> Autocomplete.h:72</div></div>
-<div class="ttc" id="aclassAutoComplete_html_a6225a91b46c0459755a62de137620b29aee4022f4d28eb504969b3042359544e4"><div class="ttname"><a href="classAutoComplete.html#a6225a91b46c0459755a62de137620b29aee4022f4d28eb504969b3042359544e4">AutoComplete::esccommand</a></div><div class="ttdeci">@ esccommand</div><div class="ttdoc">general files</div><div class="ttdef"><b>Definition:</b> Autocomplete.h:75</div></div>
+<div class="ttc" id="aclassAutoComplete_html_a6225a91b46c0459755a62de137620b29"><div class="ttname"><a href="classAutoComplete.html#a6225a91b46c0459755a62de137620b29">AutoComplete::autoCompletionType</a></div><div class="ttdeci">autoCompletionType</div><div class="ttdoc">All types of things we can autocomplete.</div><div class="ttdef"><b>Definition:</b> Autocomplete.h:65</div></div>
+<div class="ttc" id="aclassAutoComplete_html_a6225a91b46c0459755a62de137620b29a537040456dba8d9d080cdb4bcd15bcad"><div class="ttname"><a href="classAutoComplete.html#a6225a91b46c0459755a62de137620b29a537040456dba8d9d080cdb4bcd15bcad">AutoComplete::tmplte</a></div><div class="ttdeci">@ tmplte</div><div class="ttdoc">Command names.</div><div class="ttdef"><b>Definition:</b> Autocomplete.h:67</div></div>
+<div class="ttc" id="aclassAutoComplete_html_a6225a91b46c0459755a62de137620b29a5d27d54eac21bd6060c332d95314b445"><div class="ttname"><a href="classAutoComplete.html#a6225a91b46c0459755a62de137620b29a5d27d54eac21bd6060c332d95314b445">AutoComplete::generalfile</a></div><div class="ttdeci">@ generalfile</div><div class="ttdoc">loadable files</div><div class="ttdef"><b>Definition:</b> Autocomplete.h:70</div></div>
+<div class="ttc" id="aclassAutoComplete_html_a6225a91b46c0459755a62de137620b29a653d70d312cae37be23d27c9526317f7"><div class="ttname"><a href="classAutoComplete.html#a6225a91b46c0459755a62de137620b29a653d70d312cae37be23d27c9526317f7">AutoComplete::demofile</a></div><div class="ttdeci">@ demofile</div><div class="ttdoc">loadable files</div><div class="ttdef"><b>Definition:</b> Autocomplete.h:69</div></div>
+<div class="ttc" id="aclassAutoComplete_html_a6225a91b46c0459755a62de137620b29a83b932a902206b352f3795faf6f2d231"><div class="ttname"><a href="classAutoComplete.html#a6225a91b46c0459755a62de137620b29a83b932a902206b352f3795faf6f2d231">AutoComplete::numberOfTypes</a></div><div class="ttdeci">@ numberOfTypes</div><div class="ttdoc">Unit names.</div><div class="ttdef"><b>Definition:</b> Autocomplete.h:73</div></div>
+<div class="ttc" id="aclassAutoComplete_html_a6225a91b46c0459755a62de137620b29ac18a9c878b44c379ca78faedaac2cd6c"><div class="ttname"><a href="classAutoComplete.html#a6225a91b46c0459755a62de137620b29ac18a9c878b44c379ca78faedaac2cd6c">AutoComplete::unit</a></div><div class="ttdeci">@ unit</div><div class="ttdoc">Esc commands describing symbols.</div><div class="ttdef"><b>Definition:</b> Autocomplete.h:72</div></div>
+<div class="ttc" id="aclassAutoComplete_html_a6225a91b46c0459755a62de137620b29ae79474d174763269e5ba387002436e43"><div class="ttname"><a href="classAutoComplete.html#a6225a91b46c0459755a62de137620b29ae79474d174763269e5ba387002436e43">AutoComplete::loadfile</a></div><div class="ttdeci">@ loadfile</div><div class="ttdoc">Function templates.</div><div class="ttdef"><b>Definition:</b> Autocomplete.h:68</div></div>
+<div class="ttc" id="aclassAutoComplete_html_a6225a91b46c0459755a62de137620b29aee4022f4d28eb504969b3042359544e4"><div class="ttname"><a href="classAutoComplete.html#a6225a91b46c0459755a62de137620b29aee4022f4d28eb504969b3042359544e4">AutoComplete::esccommand</a></div><div class="ttdeci">@ esccommand</div><div class="ttdoc">general files</div><div class="ttdef"><b>Definition:</b> Autocomplete.h:71</div></div>
 <div class="ttc" id="aclassAutoComplete_html_a63634e6853bbfbb46c61c781bf565903"><div class="ttname"><a href="classAutoComplete.html#a63634e6853bbfbb46c61c781bf565903">AutoComplete::UpdateGeneralFiles</a></div><div class="ttdeci">void UpdateGeneralFiles(wxString partial, wxString maximaDir)</div><div class="ttdoc">Assemble a list of files.</div><div class="ttdef"><b>Definition:</b> Autocomplete.cpp:360</div></div>
 <div class="ttc" id="aclassAutoComplete_html_a820f73cfb05abb20f73ae74f224c39e3"><div class="ttname"><a href="classAutoComplete.html#a820f73cfb05abb20f73ae74f224c39e3">AutoComplete::CompleteSymbol</a></div><div class="ttdeci">std::vector&lt; wxString &gt; CompleteSymbol(wxString partial, autoCompletionType type=command)</div><div class="ttdoc">Returns a list of possible autocompletions for the string &quot;partial&quot;.</div><div class="ttdef"><b>Definition:</b> Autocomplete.cpp:435</div></div>
 <div class="ttc" id="aclassAutoComplete_html_aa52091684de760b86a7f934dce47fa26"><div class="ttname"><a href="classAutoComplete.html#aa52091684de760b86a7f934dce47fa26">AutoComplete::LoadBuiltinSymbols</a></div><div class="ttdeci">bool LoadBuiltinSymbols()</div><div class="ttdoc">Makes wxMaxima know all its builtin symbols.</div><div class="ttdef"><b>Definition:</b> Autocomplete_Builtins.cpp:33</div></div>
 <div class="ttc" id="aclassAutoComplete_html_aadf3fc529ed6c739ec49a3a11e16f086"><div class="ttname"><a href="classAutoComplete.html#aadf3fc529ed6c739ec49a3a11e16f086">AutoComplete::AddSymbols_Backgroundtask</a></div><div class="ttdeci">void AddSymbols_Backgroundtask(wxString xml)</div><div class="ttdoc">The real work of AddSymbols is made here and in the background.</div><div class="ttdef"><b>Definition:</b> Autocomplete.cpp:99</div></div>
 <div class="ttc" id="aclassAutoComplete_html_ac01de5cf0f57194e555f845f80063c02"><div class="ttname"><a href="classAutoComplete.html#ac01de5cf0f57194e555f845f80063c02">AutoComplete::AddSymbols</a></div><div class="ttdeci">void AddSymbols(wxString xml)</div><div class="ttdoc">Interprets the XML autocompletable symbol list maxima can send us.</div><div class="ttdef"><b>Definition:</b> Autocomplete.cpp:85</div></div>
 <div class="ttc" id="aclassAutoComplete_html_ac7caeb6b2a96643d5b7320c011d79e77"><div class="ttname"><a href="classAutoComplete.html#ac7caeb6b2a96643d5b7320c011d79e77">AutoComplete::AddWorksheetWords</a></div><div class="ttdeci">void AddWorksheetWords(const WordList &amp;words)</div><div class="ttdoc">Add words to the list of words that appear in the workSheet's code cells.</div><div class="ttdef"><b>Definition:</b> Autocomplete.cpp:152</div></div>
-<div class="ttc" id="aclassAutoComplete_html_ad0026315422c75170949786143a114dd"><div class="ttname"><a href="classAutoComplete.html#ad0026315422c75170949786143a114dd">AutoComplete::FixTemplate</a></div><div class="ttdeci">static wxString FixTemplate(wxString templ)</div><div class="ttdoc">Basically runs a regex over templates.</div><div class="ttdef"><b>Definition:</b> Autocomplete.cpp:536</div></div>
+<div class="ttc" id="aclassAutoComplete_html_ad0026315422c75170949786143a114dd"><div class="ttname"><a href="classAutoComplete.html#ad0026315422c75170949786143a114dd">AutoComplete::FixTemplate</a></div><div class="ttdeci">static wxString FixTemplate(wxString templ)</div><div class="ttdoc">Basically runs a regex over templates.</div><div class="ttdef"><b>Definition:</b> Autocomplete.cpp:538</div></div>
 <div class="ttc" id="aclassAutoComplete_html_af6f5cfb1876f21f4503c674288fd64f5"><div class="ttname"><a href="classAutoComplete.html#af6f5cfb1876f21f4503c674288fd64f5">AutoComplete::AddSymbol</a></div><div class="ttdeci">void AddSymbol(wxString fun, autoCompletionType type=command)</div><div class="ttdoc">Manually add an autocompletable symbol to our symbols lists.</div><div class="ttdef"><b>Definition:</b> Autocomplete.cpp:487</div></div>
 <div class="ttc" id="aclassAutoComplete_html_afb44678be806c87a6ca98562739c7cb6"><div class="ttname"><a href="classAutoComplete.html#afb44678be806c87a6ca98562739c7cb6">AutoComplete::ClearWorksheetWords</a></div><div class="ttdeci">void ClearWorksheetWords()</div><div class="ttdoc">Clear the list of words that appear in the workSheet's code cells.</div><div class="ttdef"><b>Definition:</b> Autocomplete.cpp:51</div></div>
 <div class="ttc" id="aclassConfiguration_html"><div class="ttname"><a href="classConfiguration.html">Configuration</a></div><div class="ttdoc">The configuration storage for the current worksheet.</div><div class="ttdef"><b>Definition:</b> Configuration.h:95</div></div>

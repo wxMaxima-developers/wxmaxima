@@ -145,18 +145,14 @@ $(function() {
 <div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;  wxGrid *m_grid;</div>
 <div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;  <span class="keywordtype">bool</span> m_updateSizeNeeded = <span class="keyword">false</span>;</div>
 <div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;  wxString InvertCase(wxString var);</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;<span class="preprocessor">#if wxCHECK_VERSION(3, 3, 0) || wxUSE_STL</span></div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;  <span class="keyword">typedef</span> std::unordered_map &lt;wxString, int&gt; IntHash;</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;<span class="preprocessor">#else</span></div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;  WX_DECLARE_STRING_HASH_MAP(<span class="keywordtype">int</span>, IntHash);</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160; </div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;  IntHash m_vars;</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;  <span class="keywordtype">int</span> m_rightClickRow;</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;  <span class="keyword">static</span> <span class="keywordtype">int</span> CompareInt(<span class="keywordtype">int</span> *int1, <span class="keywordtype">int</span> *int2){<span class="keywordflow">return</span> (*int1 &lt; *int2);}</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;};</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160; </div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// VARIABLESPANE_H</span></div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;  <span class="keyword">typedef</span> std::unordered_map &lt;wxString, int, wxStringHash&gt; IntHash;</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160; </div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;  IntHash m_vars;</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;  <span class="keywordtype">int</span> m_rightClickRow;</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;  <span class="keyword">static</span> <span class="keywordtype">int</span> CompareInt(<span class="keywordtype">int</span> *int1, <span class="keywordtype">int</span> *int2){<span class="keywordflow">return</span> (*int1 &lt; *int2);}</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;};</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160; </div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// VARIABLESPANE_H</span></div>
 <div class="ttc" id="aEventIDs_8h_html"><div class="ttname"><a href="EventIDs_8h.html">EventIDs.h</a></div><div class="ttdoc">This file declares the class EventIDs that contains unique IDs for many events wxMaxima needs.</div></div>
 <div class="ttc" id="aclassVariablespane_html"><div class="ttname"><a href="classVariablespane.html">Variablespane</a></div><div class="ttdoc">A &quot;variables&quot; sidepane.</div><div class="ttdef"><b>Definition:</b> VariablesPane.h:44</div></div>
 <div class="ttc" id="aclassVariablespane_html_a167162a11036459b51dce22e0839a7ae"><div class="ttname"><a href="classVariablespane.html#a167162a11036459b51dce22e0839a7ae">Variablespane::VariableValue</a></div><div class="ttdeci">void VariableValue(wxString var, wxString val)</div><div class="ttdoc">Tell the variables pane about a variable value.</div><div class="ttdef"><b>Definition:</b> VariablesPane.cpp:291</div></div>
