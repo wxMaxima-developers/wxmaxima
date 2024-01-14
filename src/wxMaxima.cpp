@@ -1871,7 +1871,7 @@ wxMaxima::~wxMaxima() {
   wxSocketBase::Shutdown();
   if(m_configuration.GetDebugmode() && (!Dirstructure::Get()->UserConfDir().IsEmpty()))
     {
-      std::unordered_map<wxString, std::int_fast8_t> knownWords;
+      std::unordered_map<wxString, std::int_fast8_t, wxStringHash> knownWords;
       for(const auto &i : GetWorksheet()->m_autocomplete.GetSymbolList())
           knownWords[i] |= 1;
       for(const auto &i : GetWorksheet()->m_maximaManual.GetHelpfileAnchors())
