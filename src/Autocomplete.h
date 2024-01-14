@@ -121,6 +121,8 @@ public:
   static wxString FixTemplate(wxString templ);
   //! Returns a list of demo files we know of
   std::vector<wxString> GetDemoFilesList();
+  //! Returns a list of Symbols we know
+  std::vector<wxString> GetSymbolList();
   //! Does a demo file for this command exist?
   bool HasDemofile(wxString commandname);
 
