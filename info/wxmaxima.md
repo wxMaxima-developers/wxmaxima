@@ -155,9 +155,13 @@ You can also use the "Greek letters"-sidebar to enter the Greek letters.
 > **_Attention:_**  Lookalike characters
 >
 > Several Latin letters look like the Greek letters, e.g. the Latin letter "A"
-> and the Greek letter "Alpha". This might be problematic, if you assign a
-> value to the Variable A and later use the Greek letter Alpha to do something
-> with this variable, especially on printouts.
+> and the Greek letter "Alpha". Although they look identical, they are two
+> different Unicode characters, represented by different Unicode code points (numbers).
+>
+> This might be problematic, if you assign a value to the Variable A and later
+> use the Greek letter Alpha to do something with this variable, especially on printouts.
+> For the greek letter my (which is also used as prefix for micro) there are also two
+> different unicode code points.
 >
 > The "Greek letters"-sidebar therefore has the option, that lookalike characters
 > are not available (which can be changed using a right-click menu).
