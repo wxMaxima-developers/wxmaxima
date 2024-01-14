@@ -870,15 +870,10 @@ private:
   typedef void (wxMaxima::*ParseFunction)(wxString &s);
   typedef void (wxMaxima::*VarReadFunction)(const wxString &value);
   typedef void (wxMaxima::*VarUndefinedFunction)();
-#if wxCHECK_VERSION(3, 3, 0) || wxUSE_STL
-  typedef std::unordered_map <wxString, ParseFunction> ParseFunctionHash;
-  typedef std::unordered_map <wxString, VarReadFunction> VarReadFunctionHash;
-  typedef std::unordered_map <wxString, VarUndefinedFunction> VarUndefinedFunctionHash;
-#else
-  WX_DECLARE_STRING_HASH_MAP(ParseFunction, ParseFunctionHash);
-  WX_DECLARE_STRING_HASH_MAP(VarReadFunction, VarReadFunctionHash);
-  WX_DECLARE_STRING_HASH_MAP(VarUndefinedFunction, VarUndefinedFunctionHash);
-#endif
+  typedef std::unordered_map <wxString, ParseFunction, wxStringHash> ParseFunctionHash;
+  typedef std::unordered_map <wxString, VarReadFunction, wxStringHash> VarReadFunctionHash;
+  typedef std::unordered_map <wxString, VarUndefinedFunction,
+                              wxStringHash> VarUndefinedFunctionHash;
   //! A list of XML tags we know and what we want to do if we encounter them
   static ParseFunctionHash m_knownXMLTags;
   //! A list of actions we want to execute if we are sent the contents of specific variables

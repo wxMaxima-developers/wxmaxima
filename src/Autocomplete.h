@@ -56,11 +56,7 @@
 */
 class AutoComplete : public wxEvtHandler
 {
-#if wxCHECK_VERSION(3, 3, 0) || wxUSE_STL
-  typedef std::unordered_map <wxString, int> WorksheetWords;
-#else
-  WX_DECLARE_STRING_HASH_MAP(int, WorksheetWords);
-#endif
+  typedef std::unordered_map <wxString, int, wxStringHash> WorksheetWords;
 public:
   using WordList = std::vector<wxString>;
 

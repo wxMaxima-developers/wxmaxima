@@ -496,7 +496,9 @@ void AutoComplete::AddSymbol(wxString fun, autoCompletionType type) {
     fun = fun.Mid(6);
     type = unit;
   }
-
+  auto spacepos = fun.find(" ");
+  if(spacepos != wxNOT_FOUND)
+    fun = fun.Left(spacepos);
   /// Add symbols
   {
     const std::lock_guard<std::mutex> lock(m_keywordsLock);
