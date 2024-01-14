@@ -2118,6 +2118,7 @@ void wxMaximaFrame::OnMenuStatusText(wxMenuEvent &event)
 void wxMaximaFrame::DockAllSidebars(wxCommandEvent &WXUNUSED(ev)) {
   for(const auto &pane: m_sidebarNames)
     m_manager.GetPane(pane.second).Dock();
+  m_manager.Update();
 }
 
 void  wxMaximaFrame::StatusText(const wxString &text, bool saveInLog)
