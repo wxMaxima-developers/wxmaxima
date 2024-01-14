@@ -4752,7 +4752,7 @@ bool Worksheet::ExportToHTML(const wxString &file) {
     output << wxS("    TeX: {TagSide: \"left\"}\n");
     output << wxS("  })\n");
     output << wxS("</script>\n");
-    output << wxS("<script id=\"MathJax-script\" type=\"application/javascript\" async=\"true\" src=\"") +
+    output << wxS("<script id=\"MathJax-script\" async src=\"") +
       m_configuration->MathJaXURL() + wxS("\">\n");
     // prevent optimizing <script src="..."><script> to <script src=..."/>
     output << wxS("  // A comment that hinders wxWidgets from optimizing this "
