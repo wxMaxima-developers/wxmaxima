@@ -496,7 +496,7 @@ void AutoComplete::AddSymbol(wxString fun, autoCompletionType type) {
     fun = fun.Mid(6);
     type = unit;
   }
-  auto spacepos = fun.find(" ");
+  auto spacepos = fun.Find(" ");
   if(spacepos != wxNOT_FOUND)
     fun = fun.Left(spacepos);
   /// Add symbols
