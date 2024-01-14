@@ -1869,6 +1869,53 @@ wxMaxima::~wxMaxima() {
 #endif
   }
   wxSocketBase::Shutdown();
+  if(m_configuration.GetDebugmode() && (!Dirstructure::Get()->UserConfDir().IsEmpty()))
+    {
+      std::unordered_map<wxString, std::int_fast8_t> knownWords;
+      for(const auto &i : GetWorksheet()->m_autocomplete.GetSymbolList())
+          knownWords[i] |= 1;
+      for(const auto &i : GetWorksheet()->m_maximaManual.GetHelpfileAnchors())
+        knownWords[i.first] |= 2;
+
+      wxFileInputStream builtintxt(m_configuration.MaximaShareDir() + "/builtins-list.txt");
+      if(builtintxt.IsOk())
+        {
+          wxTextInputStream txt(builtintxt);
+          while(!builtintxt.Eof())
+            {
+              wxString line;
+              line = txt.ReadLine();
+              knownWords[line] |= 4;
+            }
+        }
+      std::vector<wxString> knownwords_sorted;
+      for(const auto &i : knownWords)
+        knownwords_sorted.push_back(i.first);
+      std::sort(knownwords_sorted.begin(), knownwords_sorted.end());
+
+      wxFile fil(Dirstructure::Get()->UserConfDir() + "/knownSymbols.txt",
+                 wxFile::write);
+      wxFileOutputStream fstrm(fil);
+      wxTextOutputStream txtstrm(fstrm);
+      txtstrm.WriteString("Autodetection\tdescribe()\tbuiltins-list.txt\tsymbol\n");
+      for(const auto &i : knownwords_sorted)
+        {
+          wxString line;
+          std::int_fast8_t flags = knownWords[i];
+          if(flags & 1)
+            line = wxS("\u2717");
+          line += wxS("\t");
+          if(flags & 2)
+            line += wxS("\u2717");
+          line += wxS("\t");
+          if(flags & 4)
+            line += wxS("\u2717");
+          line += wxS("\t");
+          line += i + wxS("\n");
+          txtstrm.WriteString(line);
+        }
+    }
+
 }
 
 #if wxUSE_DRAG_AND_DROP

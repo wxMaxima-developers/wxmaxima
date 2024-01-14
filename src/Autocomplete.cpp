@@ -58,6 +58,13 @@ std::vector<wxString> AutoComplete::GetDemoFilesList() {
   return m_builtInDemoFiles;
 }
 
+std::vector<wxString> AutoComplete::GetSymbolList()
+{
+  const std::lock_guard<std::mutex> lock(m_keywordsLock);
+  return m_wordList.at(command);
+}
+
+
 bool AutoComplete::HasDemofile(wxString commandname)
 {
   const std::lock_guard<std::mutex> lock(m_keywordsLock);
