@@ -133,7 +133,7 @@ https://github.com/wxMaxima-developers/wxmaxima/discussions/1594
 ### Documentation of the source
 
 An HTML version of wxMaxima's source code documentation can be found at
-https://www.peterpall.de/wxMaxima/html/index.xhtml
+https://wxmaxima-developers.github.io/wxmaxima/Doxygen-documentation/
 
 A local version of the documentation of wxMaxima's source can be
 generated using doxygen and the `doxygen` target:
