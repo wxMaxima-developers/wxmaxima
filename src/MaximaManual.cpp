@@ -238,15 +238,18 @@ void MaximaManual::CompileHelpFileAnchors(wxString maximaHtmlDir,
                    it != escapeChars.end(); ++it)
                 token.Replace(wxString::Format("_00%02x", static_cast<char>(*it)), *it);
               // What the g_t means I don't know. But we don't need it
-              if (token.StartsWith("g_t"))
+              if (token.StartsWith(wxS("g_t")))
                 token = token.Right(token.Length() - 3);
-              if (is_Singlepage)
-                helpFileURLs_singlePage[token] = fileURI + "#" + id;
-              else
+              if(!token.Contains(wxS(" ")))
+                {
+                  if (is_Singlepage)
+                    helpFileURLs_singlePage[token] = fileURI + "#" + id;
+                  else
                 helpFileURLs_filePerChapter[token] = fileURI + "#" + id;
-              helpFileAnchors[token] = id;
-              foundAnchorsTotal++;
-              foundAnchors++;
+                  helpFileAnchors[token] = id;
+                  foundAnchorsTotal++;
+                  foundAnchors++;
+                }
             }
           }
         }
