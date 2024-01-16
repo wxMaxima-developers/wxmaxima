@@ -2168,21 +2168,15 @@ Submit bug reports by following the 'New issue' link on that page."))
 (defun wxPrint_autocompletesymbols ()
   (finish-output)
   (format t "<wxxml-symbols>")
-  ;; Function names and rules
-  (format t "~{~a~^$~}"
-	  (append (mapcar #'$print_function (cdr ($append (eval '$functions) (eval '$macros))))
-		  (mapcar #'print_value (cdr ($append (eval '$values) (eval '$rules))))))
-  ;; Idea from Robert Dodier:
-  ;; Variables defined with mdef don't appear in $values nor do they in $myoptions
-  ;; but they appear in *variable-initial-values*
-  (maphash (lambda (key val)
-	     (declare (ignore val))
-	     (if (eq (char (format nil "~a" key) 0) #\$ )
-		 (format t "~a" (print_value key))))
-	   *variable-initial-values*)
-
-  ;;    (mapcar (lambda(key) (if (eq (char (format nil "~a" key) 0) #\$ ) (symbol-to-xml (make-symbol key)))) (wx-list-all-maxima-vars))
-
+  (do-symbols
+      (s (find-package 'maxima))
+    (let ((str (format nil "~a" s)))
+      (if (< 1 (length str))
+          (if (string= (subseq str 0 1) "$")
+              (format t "<value>~a</value>~%"
+                      (wxxml-fix-string (format nil "~a"
+                                                (stripdollar (maybe-invert-string-case str))))
+                      )))))
   ;; ezunits publishes all known units in a function.
   (if (boundp '$known_units)
       (no-warning
@@ -2242,15 +2236,7 @@ Submit bug reports by following the 'New issue' link on that page."))
   (format t "</variables>~%")
   (finish-output)
   )
-
-					;tttt
-					;  (defun wx-list-all-maxima-vars () (let ((lst ())) (do-symbols (s (find-package 'maxima)) (push s lst)) lst))
-					; 	       (if (eq (char (format nil "~a" key) 0) #\$ )
-
-					;  (let ((lst ())) (do-symbols (s (find-package 'maxima)) (push s lst)) lst)
-					; 	       (if (eq (char (format nil "~a" key) 0) #\$ )
-
-					;    (mapcar (lambda(key) (if (eq (char (format nil "~a" key) 0) #\$ ) (symbol-to-xml (make-symbol key)))) (wx-list-all-maxima-vars))
+					;
 
 
 ;; WxMaxima reads these variables and sets several checkboxes in the Menu according to these
