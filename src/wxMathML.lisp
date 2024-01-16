@@ -2166,18 +2166,17 @@ Submit bug reports by following the 'New issue' link on that page."))
 
 ;; A function that determines all symbols for autocompletion
 (defun wxPrint_autocompletesymbols ()
-  (finish-output)
   (format t "<wxxml-symbols>")
   (do-symbols
       (s (find-package 'maxima))
     (let ((str (format nil "~a" s)))
       (if (< 1 (length str))
           (if (string= (subseq str 0 1) "$")
-              (format t "<value>~a</value>~%"
+              (format t "<value>~a</value>"
                       (wxxml-fix-string (format nil "~a"
                                                 (stripdollar (maybe-invert-string-case str))))
                       )))))
-  ;; ezunits publishes all known units in a function.
+  ;;ezunits publishes all known units in a function.
   (if (boundp '$known_units)
       (no-warning
        (format t "~{~a~^$~}"

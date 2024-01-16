@@ -84,7 +84,10 @@ void AutoComplete::ClearDemofileList() {
 
 void AutoComplete::AddSymbols(wxString xml) {
   if(m_addSymbols_backgroundThread.joinable())
-    m_addSymbols_backgroundThread.join();
+    {
+      wxLogMessage(_("Waiting for m_addSymbols_backgroundThread to finish"));
+      m_addSymbols_backgroundThread.join();
+    }
   wxLogMessage(_("Scheduling a background task that compiles a new list "
                  "of autocompletable maxima commands."));
 
@@ -165,9 +168,15 @@ void AutoComplete::LoadSymbols() {
   sharedir.Replace("\n", "");
   sharedir.Replace("\r", "");
   if(m_addFiles_backgroundThread.joinable())
-    m_addFiles_backgroundThread.join();
+    {
+      wxLogMessage(_("Waiting for m_addFiles_backgroundThread to finish"));
+      m_addFiles_backgroundThread.join();
+    }
   if(m_addSymbols_backgroundThread.joinable())
-    m_addSymbols_backgroundThread.join();
+    {
+      wxLogMessage(_("Waiting for m_addSymbols_backgroundThread to finish"));
+      m_addSymbols_backgroundThread.join();
+    }
   m_addSymbols_backgroundThread = std::thread(&AutoComplete::BuiltinSymbols_BackgroundTask, this);
   m_addFiles_backgroundThread = std::thread(&AutoComplete::LoadableFiles_BackgroundTask, this, sharedir);
 }
