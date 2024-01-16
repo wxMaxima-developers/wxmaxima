@@ -38,6 +38,7 @@ bool AutoComplete::LoadBuiltinSymbols() {
   m_wordList.at(command).push_back(wxS("%or"));    // FUNCTION
   m_wordList.at(command).push_back(wxS("%rnum"));    // FUNCTION
   m_wordList.at(command).push_back(wxS("?derivsimp"));    // OPTION
+  m_wordList.at(command).push_back(wxS("?room"));    // FUNCTION
   m_wordList.at(command).push_back(wxS("pathname_name")); // FUNCTION
   m_wordList.at(command).push_back(wxS("fast_linsolve")); // FUNCTION
   m_wordList.at(tmplte ).push_back(wxS("fast_linsolve([<expr_1>, ..., <expr_m>], [<x_1>, "
