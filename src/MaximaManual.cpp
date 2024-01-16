@@ -110,12 +110,12 @@ bool MaximaManual::LoadManualAnchorsFromCache() {
     return false;
   }
 
-  const std::lock_guard<std::mutex> lock(m_helpFileAnchorsLock);
   if (LoadManualAnchorsFromXML(xmlDocument)) {
     wxLogMessage(_("Read the entries the maxima manual offers from %s"),
                  Dirstructure::Get()->AnchorsCacheFile().utf8_str());
     return true;
   }
+  const std::lock_guard<std::mutex> lock(m_helpFileAnchorsLock);
   return !m_helpFileURLs_singlePage.empty();
 }
 
@@ -150,9 +150,6 @@ void MaximaManual::CompileHelpFileAnchors(wxString maximaHtmlDir,
                                           wxString maximaVersion,
                                           wxString saveName) {
   SuppressErrorDialogs suppressor;
-  HelpFileAnchors helpFileURLs_singlePage;
-  HelpFileAnchors helpFileURLs_filePerChapter;
-  HelpFileAnchors helpFileAnchors;
   
   std::size_t foundAnchorsTotal = 0;
   if (!(m_maximaHtmlDir.IsEmpty())) {
@@ -242,11 +239,14 @@ void MaximaManual::CompileHelpFileAnchors(wxString maximaHtmlDir,
                 token = token.Right(token.Length() - 3);
               if(!token.Contains(wxS(" ")))
                 {
-                  if (is_Singlepage)
-                    helpFileURLs_singlePage[token] = fileURI + "#" + id;
-                  else
-                helpFileURLs_filePerChapter[token] = fileURI + "#" + id;
-                  helpFileAnchors[token] = id;
+                  {
+                    const std::lock_guard<std::mutex> lock(m_helpFileAnchorsLock);
+                    if (is_Singlepage)
+                      m_helpFileURLs_singlePage[token] = fileURI + "#" + id;
+                    else
+                      m_helpFileURLs_filePerChapter[token] = fileURI + "#" + id;
+                    m_helpFileAnchors[token] = id;
+                  }
                   foundAnchorsTotal++;
                   foundAnchors++;
                 }
@@ -254,19 +254,16 @@ void MaximaManual::CompileHelpFileAnchors(wxString maximaHtmlDir,
           }
         }
       }
-      AnchorAliasses(helpFileAnchors);
-      AnchorAliasses(helpFileURLs_filePerChapter);
-      AnchorAliasses(helpFileURLs_singlePage);
+      {
+        const std::lock_guard<std::mutex> lock(m_helpFileAnchorsLock);
+        AnchorAliasses(m_helpFileAnchors);
+        AnchorAliasses(m_helpFileURLs_filePerChapter);
+        AnchorAliasses(m_helpFileURLs_singlePage);
+      }
       wxLogMessage(_("Found %li anchors, %li anchors total."),
                    static_cast<long>(foundAnchors), static_cast<long>(foundAnchorsTotal));
     }
-
-    // Until now we did all that we did with local variables. Now it is time
-    // to transfer the results of our work to the main thread.
-    const std::lock_guard<std::mutex> lock(m_helpFileAnchorsLock);
-    m_helpFileURLs_singlePage = std::move(helpFileURLs_singlePage);
-    m_helpFileURLs_filePerChapter = std::move(helpFileURLs_filePerChapter);
-    m_helpFileAnchors = std::move(helpFileAnchors);
+    
     if(foundAnchorsTotal < 100)
       {
         wxLogMessage(_("Have only %li keyword anchors at the end of parsing the maxima manual => "
@@ -319,6 +316,7 @@ MaximaManual::GetHTMLFiles_Recursive::OnDir(const wxString &WXUNUSED(dirname)) {
 void MaximaManual::SaveManualAnchorsToCache(wxString maximaHtmlDir,
                                             wxString maximaVersion,
                                             wxString saveName) {
+  const std::lock_guard<std::mutex> lock(m_helpFileAnchorsLock);
   auto num = m_helpFileURLs_singlePage.size();
   if (num <= 50) {
     wxLogMessage(_("Found only %li keywords in maxima's "
@@ -442,16 +440,19 @@ bool MaximaManual::LoadManualAnchorsFromXML(const wxXmlDocument &xmlDocument,
       if ((!key.IsEmpty()) && (!anchor.IsEmpty()))
         {
           anchors++;
+          const std::lock_guard<std::mutex> lock(m_helpFileAnchorsLock);
           m_helpFileAnchors[key] = anchor;
         }
       if ((!key.IsEmpty()) && (!url_filePerChapter.IsEmpty()))
         {
           urls_FilePerChapter++;
+          const std::lock_guard<std::mutex> lock(m_helpFileAnchorsLock);
           m_helpFileURLs_filePerChapter[key] = url_filePerChapter;
         }
       if ((!key.IsEmpty()) && (!url_singlepage.IsEmpty()))
         {
           urls_SinglePage++;
+          const std::lock_guard<std::mutex> lock(m_helpFileAnchorsLock);
           m_helpFileURLs_singlePage[key] = url_singlepage;
         }
     }
@@ -461,10 +462,12 @@ bool MaximaManual::LoadManualAnchorsFromXML(const wxXmlDocument &xmlDocument,
                static_cast<long>(anchors),
                static_cast<long>(urls_FilePerChapter),
                static_cast<long>((long)urls_SinglePage));
+  const std::lock_guard<std::mutex> lock(m_helpFileAnchorsLock);
   return !m_helpFileURLs_singlePage.empty();
 }
 
 wxString MaximaManual::GetHelpfileURL(wxString keyword) {
+  const std::lock_guard<std::mutex> lock(m_helpFileAnchorsLock);
   if (m_configuration->SinglePageManual()) {
     auto anchor = m_helpFileURLs_singlePage.find(keyword);
     if (anchor == m_helpFileURLs_singlePage.end())
@@ -530,27 +533,30 @@ void MaximaManual::LoadHelpFileAnchors(wxString docdir,
                                        wxString maximaVersion) {
   FindMaximaHtmlDir(docdir);
   m_maximaVersion = maximaVersion;
-  if (m_helpFileURLs_singlePage.empty()) {
-    if (!LoadManualAnchorsFromCache()) {
-      if (!m_maximaHtmlDir.IsEmpty()) {
-        if (m_helpfileanchorsThread) {
-          m_abortBackgroundTask = true;
-          m_helpfileanchorsThread->join();
-          m_helpfileanchorsThread.reset();
-        }
-        m_abortBackgroundTask = false;
-        m_helpfileanchorsThread =
-          std::unique_ptr<std::thread>(
-                                       new std::thread(&MaximaManual::CompileHelpFileAnchors,
-                                                       this,
-                                                       m_maximaHtmlDir,
-                                                       m_maximaVersion,
-                                                       Dirstructure::AnchorsCacheFile()
-                                                       ));
-      } else {
-        wxLogMessage(_("Maxima help file not found!"));
-        LoadBuiltInManualAnchors();
+  {
+    const std::lock_guard<std::mutex> lock(m_helpFileAnchorsLock);
+    if(!m_helpFileURLs_singlePage.empty())
+      return;
+  }
+  if (!LoadManualAnchorsFromCache()) {
+    if (!m_maximaHtmlDir.IsEmpty()) {
+      if (m_helpfileanchorsThread) {
+        m_abortBackgroundTask = true;
+        m_helpfileanchorsThread->join();
+        m_helpfileanchorsThread.reset();
       }
+      m_abortBackgroundTask = false;
+      m_helpfileanchorsThread =
+        std::unique_ptr<std::thread>(new
+                                     std::thread(&MaximaManual::CompileHelpFileAnchors,
+                                                 this,
+                                                     m_maximaHtmlDir,
+                                                     m_maximaVersion,
+                                                     Dirstructure::AnchorsCacheFile()
+                                                     ));
+    } else {
+      wxLogMessage(_("Maxima help file not found!"));
+      LoadBuiltInManualAnchors();
     }
   }
 }
