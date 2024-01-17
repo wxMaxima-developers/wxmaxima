@@ -24,3 +24,19 @@ WxMaxima is an open source project developed by volunteers and your
 contributions are always welcome.
 
 The wxMaxima Team
+
+## Note concering Wayland (recent Linux/BSD distributions)
+
+There seem to be issues with the Wayland Display Server and
+not really recent wxWidgets version. WxMaxima may be affected,
+e.g. that sidebars are not moveable.
+
+You can either disable Wayland and use X11 instead (globally)
+or just tell, that wxMaxima should use the X Window System by setting:
+`GDK_BACKEND=x11`
+
+E.g. start wxMaxima with:
+
+`GDK_BACKEND=x11 wxmaxima`
+
+(For example Ubuntu 22.04 (with a Wayland capable graphics card) is affected.)
