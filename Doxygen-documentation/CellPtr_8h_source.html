@@ -625,7 +625,7 @@ $(function() {
 <div class="line"><a name="l00669"></a><span class="lineno">  669</span>&#160;  <span class="keyword">auto</span> d = <span class="keyword">dynamic_cast&lt;</span>Derived *<span class="keyword">&gt;</span>(p.get());</div>
 <div class="line"><a name="l00670"></a><span class="lineno">  670</span>&#160;  <span class="keywordflow">if</span> (d)</div>
 <div class="line"><a name="l00671"></a><span class="lineno">  671</span>&#160;    (void) p.release();</div>
-<div class="line"><a name="l00672"></a><span class="lineno">  672</span>&#160;  <span class="keywordflow">return</span> std::unique_ptr&lt;Derived&gt;(d);</div>
+<div class="line"><a name="l00672"></a><span class="lineno">  672</span>&#160;  <span class="keywordflow">return</span> std::unique_ptr&lt;Derived&gt;(std::move(d));</div>
 <div class="line"><a name="l00673"></a><span class="lineno">  673</span>&#160;  <span class="comment">// Note: We don&#39;t move the deleter, since it&#39;s not special.</span></div>
 <div class="line"><a name="l00674"></a><span class="lineno">  674</span>&#160;}</div>
 <div class="line"><a name="l00675"></a><span class="lineno">  675</span>&#160; </div>
