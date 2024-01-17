@@ -2386,7 +2386,7 @@ void wxMaxima::OnMaximaConnect() {
   GetWorksheet()->QuestionAnswered();
   m_currentOutput = wxEmptyString;
 
-  m_client = std::make_unique<Maxima>(m_server->Accept(false));
+  m_client = std::make_unique<Maxima>(m_server->Accept(false), &m_configuration);
   if (m_client->IsConnected()) {
     m_client->Bind(EVT_MAXIMA, &wxMaxima::MaximaEvent, this);
     m_client->SetPipeToStdOut(GetPipeToStdout());
@@ -2741,22 +2741,7 @@ void wxMaxima::KillMaxima(bool logMessage) {
   m_maximaStdout = NULL;
   m_maximaStderr = NULL;
 
-  if (m_client)
-    {
-      if(m_client->IsConnected()) {
-        // Make wxWidgets close the connection only after we have sent the close
-        // command.
-        m_client->Socket()->SetFlags(wxSOCKET_WAITALL);
-        // Try to gracefully close maxima.
-        if (m_configuration.InLispMode())
-          SendMaxima(wxS("($quit)"));
-        else
-          SendMaxima(wxS("quit();"));
-      }
-      m_client->Socket()->Close();
-      // The following command should close maxima, as well.
-      m_client = nullptr;
-    }
+  m_client = nullptr;
   
   // Just to be absolutely sure: Additionally try to kill maxima
   if (m_pid > 0) {
@@ -5066,10 +5051,6 @@ bool wxMaxima::InterpretDataFromMaxima() {
 void wxMaxima::OnIdle(wxIdleEvent &event) {
   // Make sure everybody else who wants to process idle events gets this one.
   event.Skip();
-  // Sometimes socket events arrive before data arrives. The subsequent idle
-  // event arrives when the data is accessible.
-  //if(m_client != NULL)
-  //  m_client->ReadSocket();
 
   // Update the info what maxima is currently doing
   UpdateStatusMaximaBusy();

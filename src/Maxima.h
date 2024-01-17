@@ -38,6 +38,9 @@
 #include <wx/string.h>
 #include <wx/timer.h>
 #include <memory>
+#include <thread>
+#include <mutex>
+#include "Configuration.h"
 
 /*! Interface to the Maxima process
  *
@@ -54,7 +57,7 @@ class Maxima : public wxEvtHandler
 public:
   //! Construct this object when a connection is received from Maxima.
   //! The argument should be socketServer.Accept();
-  explicit Maxima(wxSocketBase *socket);
+  explicit Maxima(wxSocketBase *socket, Configuration *config);
   ~Maxima() override;
 
   wxSocketBase *Socket() const { return m_socket.get(); }
@@ -82,6 +85,8 @@ public:
   void ClearFirstPrompt() { m_first = false; }
 
 private:
+  Configuration *m_configuration;
+  std::thread m_readerTask;
   //! Handles events on the open client socket
   void SocketEvent(wxSocketEvent &event);
   //! Handles timer events

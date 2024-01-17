@@ -168,7 +168,10 @@ void MaximaManual::CompileHelpFileAnchors(wxString maximaHtmlDir,
 
     for (const auto &file : helpFiles) {
       if(m_abortBackgroundTask)
-        return;
+        {
+            wxLogMessage(_("Manual anchors background task aborted"));
+            return;
+        }
       bool is_Singlepage = file.Contains("_singlepage.");
       std::size_t foundAnchors = 0;
       wxString fileURI = wxURI(wxS("file://") + file).BuildURI();
@@ -276,6 +279,7 @@ void MaximaManual::CompileHelpFileAnchors(wxString maximaHtmlDir,
         SaveManualAnchorsToCache(maximaHtmlDir, maximaVersion, saveName);
       }
   }
+  wxLogMessage(_("Manual anchors background task finished."));
 }
 
 
@@ -541,9 +545,11 @@ void MaximaManual::LoadHelpFileAnchors(wxString docdir,
     if (!m_maximaHtmlDir.IsEmpty()) {
       if (m_helpfileanchorsThread) {
         m_abortBackgroundTask = true;
+        wxLogMessage(_("Waiting for the Manual anchors background task."));
         m_helpfileanchorsThread->join();
         m_helpfileanchorsThread.reset();
       }
+      wxLogMessage(_("Background task that compiles the Manual anchors scheduled."));
       m_abortBackgroundTask = false;
       m_helpfileanchorsThread =
         std::unique_ptr<std::thread>(new

@@ -46,7 +46,8 @@ wxDEFINE_EVENT(EVT_MAXIMA, MaximaEvent);
 // parameters, but don't do it. wxWidgets (at least older versions, which are still used in Linux
 // distributions) had a bug, so that without these parameters one get wrong characters.
 // See: https://github.com/wxWidgets/wxWidgets/issues/14720#issuecomment-1010968576
-Maxima::Maxima(wxSocketBase *socket) :
+Maxima::Maxima(wxSocketBase *socket, Configuration *config) :
+  m_configuration(config),
   m_socket(socket),
   m_socketInput(*m_socket),
   m_textInput(m_socketInput, wxS("\n"), wxConvUTF8)
@@ -71,7 +72,24 @@ Maxima::Maxima(wxSocketBase *socket) :
     m_readIdleTimer.Start(INPUT_RESTART_PERIOD);
 }
 
-Maxima::~Maxima() { m_socket->Close(); }
+Maxima::~Maxima() {
+  if(IsConnected())
+    {
+      // Make wxWidgets close the connection only after we have sent the close
+      // command.
+      m_socket->SetFlags(wxSOCKET_WAITALL);
+      // Try to gracefully close maxima.
+      wxString closeCommand;
+      if (m_configuration->InLispMode())
+        closeCommand = wxS("($quit)");
+      else
+        closeCommand = wxS("quit();");
+      wxCharBuffer buf = closeCommand.ToUTF8();
+      m_socket->Write(buf.data(), buf.length());
+    }
+  m_socket->Close();
+
+}
 
 bool Maxima::Write(const void *buffer, std::size_t length) {
   if (!m_socketOutputData.IsEmpty()) {

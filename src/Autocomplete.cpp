@@ -96,7 +96,7 @@ void AutoComplete::AddSymbols(wxString xml) {
   sharedir.Replace("\r", "");
 
   m_addSymbols_backgroundThread = std::thread(&AutoComplete::AddSymbols_Backgroundtask,
-                                              this, xml);
+                                              this, std::move(xml));
 }
 
 void AutoComplete::AddSymbols_Backgroundtask(wxString xml) {
@@ -143,6 +143,7 @@ void AutoComplete::AddSymbols_Backgroundtask(wxString xml) {
       children = children->GetNext();
     }
   }
+  wxLogMessage(_("Autocompletable maxima commands are processed"));
 }
 
 void AutoComplete::AddWorksheetWords(WordList::const_iterator const begin,
