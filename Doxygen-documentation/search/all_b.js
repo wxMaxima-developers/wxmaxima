@@ -222,7 +222,7 @@ var searchData=
   ['matrixmenu_964',['MatrixMenu',['../classwxMaxima.html#ae8eb0c8fdd7f2fb7f6664a3aa5d9af5a',1,'wxMaxima']]],
   ['matwiz_965',['MatWiz',['../classMatWiz.html',1,'']]],
   ['maxgnuplotmegabytes_966',['MaxGnuplotMegabytes',['../classConfiguration.html#a851d5425e6fbad1780479b4bb29ed535',1,'Configuration']]],
-  ['maxima_967',['Maxima',['../classMaxima.html',1,'Maxima'],['../classMaxima.html#a06faa9d8cda10fabd783db40b3b30019',1,'Maxima::Maxima()']]],
+  ['maxima_967',['Maxima',['../classMaxima.html',1,'Maxima'],['../classMaxima.html#a276c070c35c3cc8d31593de9aab92edc',1,'Maxima::Maxima()']]],
   ['maxima_2eh_968',['Maxima.h',['../Maxima_8h.html',1,'']]],
   ['maxima_5fstdout_5fpoll_5fid_969',['MAXIMA_STDOUT_POLL_ID',['../classwxMaxima.html#ab6afd24efcd1d85c6aac02040adf0a68af81ee51de171b5f5c7da391081b0c678',1,'wxMaxima']]],
   ['maximadclick_970',['MaximaDClick',['../classwxMaxima.html#ac47280c1797dfd093e0d5665125d1e32',1,'wxMaxima']]],

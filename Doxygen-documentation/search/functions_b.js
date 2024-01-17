@@ -6,7 +6,7 @@ var searchData=
   ['mathparser_2695',['MathParser',['../classMathParser.html#ad10265ea446b1b75a90c7222fd1fe2a7',1,'MathParser::MathParser(Configuration *cfg, const wxString &amp;zipfile={})'],['../classMathParser.html#a88bcb342d41f0ffcd126cbea77d1dccd',1,'MathParser::MathParser(const MathParser &amp;)=delete']]],
   ['matrixmenu_2696',['MatrixMenu',['../classwxMaxima.html#ae8eb0c8fdd7f2fb7f6664a3aa5d9af5a',1,'wxMaxima']]],
   ['maxgnuplotmegabytes_2697',['MaxGnuplotMegabytes',['../classConfiguration.html#a851d5425e6fbad1780479b4bb29ed535',1,'Configuration']]],
-  ['maxima_2698',['Maxima',['../classMaxima.html#a06faa9d8cda10fabd783db40b3b30019',1,'Maxima']]],
+  ['maxima_2698',['Maxima',['../classMaxima.html#a276c070c35c3cc8d31593de9aab92edc',1,'Maxima']]],
   ['maximadclick_2699',['MaximaDClick',['../classwxMaxima.html#ac47280c1797dfd093e0d5665125d1e32',1,'wxMaxima']]],
   ['maximadefaultlocation_2700',['MaximaDefaultLocation',['../classConfiguration.html#a408780614dd19920537cfdc7310115f2',1,'Configuration::MaximaDefaultLocation()'],['../classDirstructure.html#a280d3ee7cd41633a0c3a79d4a19d04ee',1,'Dirstructure::MaximaDefaultLocation()']]],
   ['maximaevent_2701',['MaximaEvent',['../classwxMaxima.html#a1be49ec262991937ddff906354989829',1,'wxMaxima']]],
