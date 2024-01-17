@@ -467,7 +467,6 @@ bool MaximaManual::LoadManualAnchorsFromXML(const wxXmlDocument &xmlDocument,
 }
 
 wxString MaximaManual::GetHelpfileURL(wxString keyword) {
-  const std::lock_guard<std::mutex> lock(m_helpFileAnchorsLock);
   if (m_configuration->SinglePageManual()) {
     auto anchor = m_helpFileURLs_singlePage.find(keyword);
     if (anchor == m_helpFileURLs_singlePage.end())

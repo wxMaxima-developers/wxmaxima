@@ -3320,8 +3320,6 @@ void wxMaxima::ReadLoadSymbols(wxString &data) {
   if (!data.StartsWith(m_symbolsPrefix))
     return;
 
-  GetWorksheet()->SetCurrentTextCell(nullptr);
-
   int end = FindTagEnd(data, m_symbolsSuffix);
 
   if (end != wxNOT_FOUND) {
