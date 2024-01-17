@@ -51,6 +51,7 @@ Maxima::Maxima(wxSocketBase *socket) :
   m_socketInput(*m_socket),
   m_textInput(m_socketInput, wxS("\n"), wxConvUTF8)
 {
+  m_socketInputData.reserve(1000000);
   wxASSERT(socket);
   Bind(wxEVT_TIMER, wxTimerEventHandler(Maxima::TimerEvent), this);
   Bind(wxEVT_SOCKET, wxSocketEventHandler(Maxima::SocketEvent), this);
