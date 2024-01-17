@@ -25,7 +25,7 @@ contributions are always welcome.
 
 The wxMaxima Team
 
-## Note concering Wayland (recent Linux/BSD distributions)
+## Note concerning Wayland (recent Linux/BSD distributions)
 
 There seem to be issues with the Wayland Display Server and
 not really recent wxWidgets version. WxMaxima may be affected,
@@ -39,4 +39,4 @@ E.g. start wxMaxima with:
 
 `GDK_BACKEND=x11 wxmaxima`
 
-(For example Ubuntu 22.04 (with a Wayland capable graphics card) is affected.)
+(For example, Ubuntu 22.04 (with a Wayland capable graphics card) is affected.)
