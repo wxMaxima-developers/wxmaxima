@@ -128,20 +128,20 @@ Documentation of the source</h2>
 <p>An HTML version of <a class="el" href="classwxMaxima.html">wxMaxima</a>'s source code documentation can be found at <a href="https://wxmaxima-developers.github.io/wxmaxima/Doxygen-documentation/">https://wxmaxima-developers.github.io/wxmaxima/Doxygen-documentation/</a></p>
 <p>A local version of the documentation of <a class="el" href="classwxMaxima.html">wxMaxima</a>'s source can be generated using doxygen and the <code>doxygen</code> target:</p>
 <div class="fragment"><div class="line">cmake --build ../build-wxm -- doxygen</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md17"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md18"></a>
 wxWidgets isn't found</h2>
 <p>CMake has currently (Feb 2022) problems finding a wxWidgets that was compiled using CMake. If that is the reason maybe wxWidgets was compiled without wxWebView. In that case</p>
 <div class="fragment"><div class="line">cmake -S . -B ../build-wxm -DWXM_DISABLE_WEBVIEW=on</div>
 </div><!-- fragment --><p>might allow cmake to find wxWidgets at the cost of loosing the integrated dockable help browser.</p>
-<h1><a class="anchor" id="autotoc_md18"></a>
+<h1><a class="anchor" id="autotoc_md19"></a>
 Additional information for packagers</h1>
-<h2><a class="anchor" id="autotoc_md19"></a>
+<h2><a class="anchor" id="autotoc_md20"></a>
 Running the test suite on a virtual machine</h2>
 <p>On Linux, <a class="el" href="classwxMaxima.html">wxMaxima</a>'s test suite requires a display to work with. Since you likely don't want the test suite to pollute your screen, or may even be running a headless virtual machine without an X server, the <code>xvfb-run</code> wrapper should be used:</p>
 <div class="fragment"><div class="line">xvfb-run ctest</div>
 </div><!-- fragment --><p>On macOS or Windows, X displays aren't used, and the test suite can be run directly:</p>
 <div class="fragment"><div class="line">ctest</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md20"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md21"></a>
 Creating a standalone wxMaxima</h2>
 <p><a class="el" href="classwxMaxima.html">wxMaxima</a>, if linked statically, is pretty standalone and therefore fit for creating a portable app:</p>
 <ul>
@@ -153,7 +153,7 @@ Creating a standalone wxMaxima</h2>
 <li>If the translation files are not found, the program will still work, but will be using english.</li>
 <li>And if there are no manual files <a class="el" href="classwxMaxima.html">wxMaxima</a> will redirect the system's web browser to an online version of the manual, instead.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md21"></a>
+<h2><a class="anchor" id="autotoc_md22"></a>
 Troubleshooting</h2>
 <p>If you have problems when compiling <a class="el" href="classwxMaxima.html">wxMaxima</a>, maybe a look in the configurations for various CI-Systems (<code>.appveyor.yml</code> and files in <code>.github/workflows/</code>) may be helpful to see, how <a class="el" href="classwxMaxima.html">wxMaxima</a> is compiled on these systems. </p>
 </div></div><!-- contents -->
