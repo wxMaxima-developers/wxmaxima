@@ -1016,23 +1016,25 @@ wxString GroupCell::ToTeX(wxString imgDir, wxString filename,
       (*imgCounter)++;
       wxString image = filename + wxString::Format(wxS("_%d"), *imgCounter);
       wxString file;
-      if(imgCopy)
-        file = imgDir + wxS("/") + image + wxS(".") + imgCopy->GetExtension();
 
       if (!wxDirExists(imgDir))
         wxMkdir(imgDir);
 
-      if (imgCopy->ToImageFile(file).x >= 0) {
-        str << wxS("\\begin{figure}[htb]\n") << wxS("  \\centering\n")
+      if(imgCopy)
+        {
+          file = imgDir + wxS("/") + image + wxS(".") + imgCopy->GetExtension();
+          if (imgCopy->ToImageFile(file).x >= 0) {
+            str << wxS("\\begin{figure}[htb]\n") << wxS("  \\centering\n")
             << wxS("    \\includeimage{") << filename << wxS("_img/") << image
             << wxS("}\n") << wxS("  \\caption{")
             << m_inputLabel->GetNext()->ToTeX().Trim() << wxS("}\n")
             << wxS("\\end{figure}\n");
       }
+        }
     } else
       str << wxS("\n\\verb|<<GRAPHICS>>|\n");
     break;
-
+    
   case GC_TYPE_CODE:
     str = ToTeXCodeCell(imgDir, filename, imgCounter);
     str.Replace(wxS("\\[\\displaystyle \\]"), wxS(""));

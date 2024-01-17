@@ -2094,9 +2094,11 @@ void wxMaxima::DoConsoleAppend(wxString s, CellType type, AppendOpt opts,
   cell->SetBigSkip(opts & AppendOpt::BigSkip);
   auto *textCell = dynamic_cast<TextCell *>(cell.get());
   if (textCell)
-    textCell->SetPromptTooltip(opts & AppendOpt::PromptToolTip);
-  GetWorksheet()->InsertLine(std::move(cell),
-                          (opts & AppendOpt::NewLine) || cell->BreakLineHere());
+    {
+      textCell->SetPromptTooltip(opts & AppendOpt::PromptToolTip);
+      GetWorksheet()->InsertLine(std::move(cell),
+                                 (opts & AppendOpt::NewLine) || cell->BreakLineHere());
+    }
 }
 
 TextCell *wxMaxima::DoRawConsoleAppend(wxString s, CellType type,

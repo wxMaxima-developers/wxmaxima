@@ -669,7 +669,7 @@ std::unique_ptr<Derived> dynamic_unique_ptr_cast(std::unique_ptr<Base>&& p) noex
   auto d = dynamic_cast<Derived *>(p.get());
   if (d)
     (void) p.release();
-  return std::unique_ptr<Derived>(d);
+  return std::unique_ptr<Derived>(std::move(d));
   // Note: We don't move the deleter, since it's not special.
 }
 
