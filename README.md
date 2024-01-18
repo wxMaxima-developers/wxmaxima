@@ -27,9 +27,8 @@ The wxMaxima Team
 
 ## Note concerning Wayland (recent Linux/BSD distributions)
 
-There seem to be issues with the Wayland Display Server and
-not really recent wxWidgets version. WxMaxima may be affected,
-e.g. that sidebars are not moveable.
+There seem to be issues with the Wayland Display Server and wxWidgets.
+WxMaxima may be affected, e.g. that sidebars are not moveable.
 
 You can either disable Wayland and use X11 instead (globally)
 or just tell, that wxMaxima should use the X Window System by setting:
