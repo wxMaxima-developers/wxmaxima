@@ -4734,9 +4734,9 @@ bool Worksheet::ExportToHTML(const wxString &file) {
   // exported document.
   output << wxS(" <head>\n");
   output << wxS("  <title>") + filename + wxS("</title>\n");
-  output << wxS("  <meta name=\"generator\" content=\"wxMaxima\"/>\n");
+  output << wxS("  <meta name=\"generator\" content=\"wxMaxima\">\n");
   output << wxS("  <meta http-equiv=\"Content-Type\" content=\"text/html; "
-                "charset=utf-8\"/>\n");
+                "charset=utf-8\">\n");
 
   //////////////////////////////////////////////
   // Write styles
@@ -4876,7 +4876,7 @@ bool Worksheet::ExportToHTML(const wxString &file) {
   wxString encoded_css_url =
     css_url.BuildURI(); /* handle HTML entities like " " => "%20" */
   output << wxS("  <link rel=\"stylesheet\" type=\"text/css\" href=\"") +
-    encoded_css_url + wxS("\"/>\n");
+    encoded_css_url + wxS("\">\n");
 
   wxString version(wxS(GITVERSION));
 
@@ -5338,7 +5338,7 @@ bool Worksheet::ExportToHTML(const wxString &file) {
                                  wxS("_%d.svg\" width=\"%li\" style=\"max-width:90%%;\" "
                                      "loading=\"lazy\" alt=\""),
                                  count, static_cast<long>(svgout.GetSize().x)) +
-                alttext + wxS("\" /><br/>\n");
+                alttext + wxS("\" /><br>\n");
 
               output << line + "\n";
               break;
@@ -5364,7 +5364,7 @@ bool Worksheet::ExportToHTML(const wxString &file) {
                                  count, ext.utf8_str(),
                                  static_cast<long>(size.x) / m_configuration->BitmapScale() -
                                  2 * borderwidth) +
-                alttext + wxS("\" /><br/>\n");
+                alttext + wxS("\" /><br>\n");
 
               output << line + "\n";
               break;
@@ -5398,7 +5398,7 @@ bool Worksheet::ExportToHTML(const wxString &file) {
                                    "loading=\"lazy\" alt=\""),
                                static_cast<long>(count),
                                ext.utf8_str(), static_cast<long>(size.x) - 2 * borderwidth) +
-              alttext + wxS("\" /><br/>\n");
+              alttext + wxS("\" /><br>\n");
 
             output << line + "\n";
           }
@@ -5483,7 +5483,7 @@ bool Worksheet::ExportToHTML(const wxString &file) {
         case GC_TYPE_PAGEBREAK:
           output << wxS("\n\n<!-- Page break cell -->\n\n\n");
           output << wxS("<div class=\"comment\">\n");
-          output << wxS("<hr/>\n");
+          output << wxS("<hr>\n");
           output << wxS("</div>\n");
           break;
         case GC_TYPE_IMAGE: {
@@ -5495,7 +5495,7 @@ bool Worksheet::ExportToHTML(const wxString &file) {
               output << EditorCell::EscapeHTMLChars(tmp.GetPrompt()->ToString() +
                                                     tmp.GetEditable()->ToString())
                      << wxS("\n");
-              output << wxS("<br/>\n");
+              output << wxS("<br>\n");
               if ((tmp.GetLabel()->GetType() == MC_TYPE_SLIDE) &&
                   (tmp.GetOutput() != NULL)) {
                 dynamic_cast<AnimationCell *>(tmp.GetOutput())
@@ -5539,7 +5539,7 @@ bool Worksheet::ExportToHTML(const wxString &file) {
   //////////////////////////////////////////////
 
   output << wxS("\n");
-  output << wxS(" <hr/>\n");
+  output << wxS(" <hr>\n");
   output << wxS(" <p><small> Created with "
                 "<a href=\"https://wxMaxima-developers.github.io/wxmaxima/\">"
                 "wxMaxima</a>.</small></p>\n");
