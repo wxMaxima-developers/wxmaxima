@@ -28,6 +28,7 @@
 - wxMaxima now preserves history entries between sessions
 - Better LibreOffice compatibility with the MathML output
 - Better HTML output
+- Fix crash when exporting a worksheet with animations to TeX
 
 # 23.12.0
 

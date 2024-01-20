@@ -1115,8 +1115,10 @@ wxString GroupCell::ToTeXCodeCell(wxString imgDir, wxString filename,
     bool mathMode = false;
 
     for (const Cell &tmp : OnDrawList(m_output.get())) {
-      if (tmp.GetType() == MC_TYPE_IMAGE || tmp.GetType() == MC_TYPE_SLIDE) {
+      if (tmp.GetType() == MC_TYPE_IMAGE) {
         str << ToTeXImage(&tmp, imgDir, filename, imgCounter);
+      } else if (tmp.GetType() == MC_TYPE_SLIDE) {
+        str << "\\text{[animated graphics - not shown in TeX export]}";
       } else {
         switch (tmp.GetTextStyle()) {
         case TS_LABEL:
