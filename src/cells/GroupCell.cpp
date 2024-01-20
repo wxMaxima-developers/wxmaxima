@@ -50,12 +50,6 @@
 #include <wx/config.h>
 #include <clocale>
 
-#ifdef __WINDOWS__
-constexpr bool TEMPORARY_WINDOWS_PERFORMANCE_HACK = true;
-#else
-constexpr bool TEMPORARY_WINDOWS_PERFORMANCE_HACK = false;
-#endif
-
 #if wxUSE_ACCESSIBILITY
 // TODO This class is not used anywhere.
 class HCaretCell : public wxAccessible {
