@@ -1029,7 +1029,7 @@ wxString GroupCell::ToTeX(wxString imgDir, wxString filename,
             << wxS("}\n") << wxS("  \\caption{")
             << m_inputLabel->GetNext()->ToTeX().Trim() << wxS("}\n")
             << wxS("\\end{figure}\n");
-      }
+          }
         }
     } else
       str << wxS("\n\\verb|<<GRAPHICS>>|\n");
@@ -1169,8 +1169,7 @@ wxString GroupCell::ToTeXCodeCell(wxString imgDir, wxString filename,
 wxString GroupCell::ToTeXImage(const Cell *tmp, wxString imgDir, wxString filename,
                                int *imgCounter) {
   wxASSERT_MSG((imgCounter != NULL), _("Bug: No image counter to write to!"));
-  if(tmp == NULL)
-    {
+  if(tmp == NULL) {
       wxLogMessage(_("No image to export"));
       return wxEmptyString;
     }
@@ -1439,7 +1438,7 @@ void GroupCell::BreakLines() {
     return;
 
   //  if (NeedsRecalculation(EditorFontSize()))
-    m_output->RecalculateList(m_configuration->GetMathFontSize());
+  m_output->RecalculateList(m_configuration->GetMathFontSize());
 
   m_output->BreakLines_List();
 }
@@ -1899,5 +1898,3 @@ std::ostream& operator<<(std::ostream& out, const GroupType grouptype){
   }
   return out << result;
 }
-
-    
