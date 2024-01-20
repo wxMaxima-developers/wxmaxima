@@ -5666,7 +5666,7 @@ bool Worksheet::ExportToTeX(const wxString &file) {
   // We want to color the labels and text cells. The following line adds the
   // necessary logic for this to TeX.
   output << wxS("\\usepackage{color}\n");
-  output << wxS("\\usepackage{amsmath}\n");
+  output << wxS("\\usepackage[leqno]{amsmath}\n");
 
   // We want to shrink pictures the user has included if they are
   // higher or wider than the page.
