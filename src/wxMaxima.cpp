@@ -1851,7 +1851,10 @@ wxMaxima::~wxMaxima() {
   DelistTopLevelWindow(this);
 
   if (m_topLevelWindows.empty())
-    wxExit();
+    {
+      wxLog::EnableLogging(false);
+      wxExit();
+    }
   else {
     if (m_isLogTarget) {
       m_topLevelWindows.back()->BecomeLogTarget();

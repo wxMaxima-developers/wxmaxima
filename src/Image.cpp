@@ -801,6 +801,7 @@ void Image::LoadImage_Backgroundtask(std::unique_ptr<ThreadNumberLimiter> limite
 
       file.Close();
       if (ok && remove) {
+        SuppressErrorDialogs suppressor;
         if(!wxRemoveFile(image))
         {
           wxMilliSleep(300);
