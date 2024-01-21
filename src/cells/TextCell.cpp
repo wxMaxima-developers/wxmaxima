@@ -1000,7 +1000,7 @@ wxString TextCell::ToTeX() const {
       text.Replace(wxS("\\text{Ü}"), wxS("\\text{\\textit{Ü}}"));
     } else if ((GetTextStyle() == TS_ERROR) || (GetTextStyle() == TS_WARNING)) {
       if (text.Length() > 1)
-        text = wxS("\\mbox{%error\n") + text + wxS("}");
+        text = wxS("\\] \\texttt{%error\n") + text + wxS("}") + wxS("\\[");
     } else if (GetTextStyle() == TS_MATH) {
       if ((text.Length() > 2) && (text != wxS("\\,")) && (text != wxS("\\, ")))
         text = wxS("\\mbox{%default\n") + text + wxS("}");
