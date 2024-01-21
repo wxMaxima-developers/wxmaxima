@@ -112,7 +112,7 @@ Image::Image(Configuration *config, const Image &image) {
 }
 
 Image::~Image() {
-  SuppressErrorDialogs logNull;
+  wxLogNull logNull;
   if(m_loadImageTask.joinable())
     m_loadImageTask.join();
   if(m_loadGnuplotSourceTask.joinable())
@@ -801,7 +801,7 @@ void Image::LoadImage_Backgroundtask(std::unique_ptr<ThreadNumberLimiter> limite
 
       file.Close();
       if (ok && remove) {
-        SuppressErrorDialogs suppressor;
+        wxLogNull suppressor;
         if(!wxRemoveFile(image))
         {
           wxMilliSleep(300);

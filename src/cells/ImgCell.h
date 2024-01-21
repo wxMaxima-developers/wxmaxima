@@ -42,7 +42,7 @@ public:
   ImgCell(GroupCell *group, const ImgCell &cell);
   std::unique_ptr<Cell> Copy(GroupCell *group) const override;
   const CellTypeInfo &GetInfo() override;
-  ~ImgCell() override;
+  virtual ~ImgCell() override;
 
   //! This class can be derived from wxAccessible which has no copy constructor
   ImgCell &operator=(const ImgCell&) = delete;

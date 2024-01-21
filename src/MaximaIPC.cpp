@@ -87,20 +87,12 @@ static void LookupName(Val *val, const wxString &name, const T &names) {
     *val = it->second;
 }
 
-void MaximaIPC::ReadInputData(wxString &data) {
+void MaximaIPC::ReadInputData(const wxString &data) {
   if (!GetEnableIPC())
     return;
-  if (!data.StartsWith(ipcPrefix))
-    return;
-  int end = m_wxMaxima->FindTagEnd(data, ipcSuffix);
-  if (end == wxNOT_FOUND)
-    return;
-  auto const ipcSize = end + ipcSuffix.size();
-  wxString xml = data.Left(ipcSize);
-  data.Remove(0, ipcSize);
 
   wxXmlDocument xmldoc;
-  wxStringInputStream xmlStream(xml);
+  wxStringInputStream xmlStream(data);
   xmldoc.Load(xmlStream, wxS("UTF-8"));
   wxXmlNode *node = xmldoc.GetRoot();
   if (!node)

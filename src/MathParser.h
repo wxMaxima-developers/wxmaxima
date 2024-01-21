@@ -62,7 +62,7 @@ public:
   MathParser(const MathParser&) = delete;
   //! This class doesn't have a = operator
   MathParser& operator=(const MathParser&) = delete;
-  ~MathParser();
+  virtual ~MathParser();
 
   void SetUserLabel(wxString label){ m_userDefinedLabel = label; }
   /***

@@ -82,7 +82,7 @@ public:
   void SetPosition(wxPoint pos){m_position = pos;}
   //! Create popup control
   bool Create(wxWindow* parent) override;
-  ~AutocompletePopup();
+  virtual ~AutocompletePopup();
   //! Gets the info which keycode the current keypress results in
   void OnChar(wxKeyEvent &event);
   //! Gets the info which key has been pressed with which modifier

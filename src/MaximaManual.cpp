@@ -568,7 +568,6 @@ void MaximaManual::LoadHelpFileAnchors(wxString docdir,
 }
 
 MaximaManual::~MaximaManual() {
-  const std::lock_guard<std::mutex> lock(m_helpFileAnchorsLock);
   if(m_helpfileanchorsThread)
     {
       if(m_helpfileanchorsThread->joinable())

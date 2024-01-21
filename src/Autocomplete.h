@@ -35,6 +35,7 @@
 #include <memory>
 #include <mutex>
 #include <wx/wx.h>
+#include <wx/xml/xml.h>
 #include <wx/event.h>
 #include <wx/dir.h>
 #include <vector>
@@ -75,7 +76,7 @@ public:
   explicit AutoComplete(Configuration *configuration);
 
   //! The destructor of AutoComplete
-  ~AutoComplete();
+  virtual ~AutoComplete();
 
   //! Load all autocomplete symbols wxMaxima knows about by itself
   void LoadSymbols();
@@ -92,8 +93,13 @@ public:
   void AddSymbol(wxString fun, autoCompletionType type = command);
   //! Interprets the XML autocompletable symbol list maxima can send us
   void AddSymbols(wxString xml);
+  //! Interprets the XML autocompletable symbol list maxima can send us
+  void AddSymbols(wxXmlDocument xml);
   //! The real work of AddSymbols is made here and in the background
-  void AddSymbols_Backgroundtask(wxString xml);
+  void AddSymbols_Backgroundtask_string(wxString xml);
+  //! The real work of AddSymbols is made here and in the background
+  void AddSymbols_Backgroundtask(wxXmlDocument xmldoc);
+
 
   //! Replace the list of files in the directory the worksheet file is in to the demo files list
   void UpdateDemoFiles(wxString partial, wxString maximaDir);

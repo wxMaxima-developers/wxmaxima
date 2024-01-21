@@ -47,7 +47,7 @@ class StatusBar : public wxStatusBar
 {
 public:
   StatusBar(wxWindow *parent, int id);
-  ~StatusBar();
+  virtual ~StatusBar();
   //! The network states that can be passed to NetworkStatus()
   enum networkState
   {

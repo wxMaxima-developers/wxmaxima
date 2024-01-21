@@ -49,7 +49,7 @@ public:
   explicit ErrorRedirector(std::unique_ptr<wxLog> &&newLog);
 
   //! Restores the previous log target
-  ~ErrorRedirector() override;
+  virtual ~ErrorRedirector() override;
 
   /*! This method is called from the idle loop.
 
@@ -112,7 +112,7 @@ class SuppressErrorDialogs
 {
 public:
   SuppressErrorDialogs(){ErrorRedirector::m_messages_logPaneOnly++;}
-  ~SuppressErrorDialogs(){ErrorRedirector::m_messages_logPaneOnly--;}
+  virtual ~SuppressErrorDialogs(){ErrorRedirector::m_messages_logPaneOnly--;}
 };
 
 #endif // ERRORREDIRECTOR_H

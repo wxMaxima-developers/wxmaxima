@@ -856,7 +856,7 @@ public:
             bool reactToEvents = true);
 
   //! The destructor
-  ~Worksheet();
+  virtual ~Worksheet();
 
   //! The timer that tells us when the keyboard is inactive so an autosave isn't disrupting
   wxTimer m_keyboardInactiveTimer;
@@ -1464,6 +1464,9 @@ public:
 
   //! Add a xml-encoded list of symbols to the autocompletion list
   void AddSymbols(wxString xml)
+    { m_autocomplete.AddSymbols(xml); }
+  //! Add a xml-encoded list of symbols to the autocompletion list
+  void AddSymbols(wxXmlDocument xml)
     { m_autocomplete.AddSymbols(xml); }
 
   void SetActiveCellText(const wxString &text);

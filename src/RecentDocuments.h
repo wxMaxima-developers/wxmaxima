@@ -68,7 +68,7 @@ public:
   */
   wxString Get(int num) const;
   //! Make sure that we save the list of recent documents on closing the program
-  ~RecentDocuments(){Save();}
+  virtual ~RecentDocuments(){Save();}
 private:
   //! The list of recent documents.
   std::list<wxString> m_listOfFiles;

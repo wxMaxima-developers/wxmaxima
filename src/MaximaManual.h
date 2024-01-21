@@ -81,7 +81,7 @@ public:
   void SaveManualAnchorsToCache(wxString maximaHtmlDir,
                                 wxString maximaVersion,
                                 wxString saveName);
-  ~MaximaManual();
+  virtual ~MaximaManual();
 private:
   std::atomic_bool m_abortBackgroundTask;
   //! Add our aliases to a list of anchors

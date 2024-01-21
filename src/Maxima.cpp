@@ -24,7 +24,7 @@
 
 #include <utility>
 #include "Maxima.h"
-#include "wxMaxima.h"
+#include <wx/xml/xml.h>
 #include <iostream>
 #include <wx/app.h>
 #include <wx/debug.h>
@@ -40,7 +40,7 @@ static constexpr int INPUT_RESTART_PERIOD = 3000;
 static constexpr int INPUT_RESTART_PERIOD = -1;
 #endif
 
-wxDEFINE_EVENT(EVT_MAXIMA, MaximaEvent);
+wxDEFINE_EVENT(EVT_MAXIMA, wxThreadEvent);
 
 // Attention: 'wxS("\n"), wxConvUTF8' should be the default and one might think, one can omit these
 // parameters, but don't do it. wxWidgets (at least older versions, which are still used in Linux
@@ -52,6 +52,20 @@ Maxima::Maxima(wxSocketBase *socket, Configuration *config) :
   m_socketInput(*m_socket),
   m_textInput(m_socketInput, wxS("\n"), wxConvUTF8)
 {
+  m_abortReaderThread = false;
+  if(m_knownTags.empty())
+    {
+      m_knownTags[wxS("PROMPT")] = XML_PROMPT;
+      m_knownTags[wxS("suppressOutput")] = XML_SUPPRESSOUTPUT;
+      m_knownTags[wxS("wxxml-symbols")] = XML_WXXMLSYMBOLS;
+      m_knownTags[wxS("variables")] = XML_VARIABLES;
+      m_knownTags[wxS("watch_variables_add")] = XML_WATCH_VARIABLES_ADD;
+      m_knownTags[wxS("statusbar")] = XML_STATUSBAR;
+      m_knownTags[wxS("html-manual-keywords")] = XML_HTML_MANUAL_KEYWORDS;
+      m_knownTags[wxS("mth")] = XML_MATHS;
+      m_knownTags[wxS("math")] = XML_MATHS;
+      m_knownTags[wxS("wxxml-key")] = XML_WXXML_KEY;
+    }
   m_socketInputData.reserve(1000000);
   wxASSERT(socket);
   Bind(wxEVT_TIMER, wxTimerEventHandler(Maxima::TimerEvent), this);
@@ -73,6 +87,9 @@ Maxima::Maxima(wxSocketBase *socket, Configuration *config) :
 }
 
 Maxima::~Maxima() {
+  m_abortReaderThread = true;
+  if(m_readerTask.joinable())
+    m_readerTask.join();
   if(IsConnected())
     {
       // Make wxWidgets close the connection only after we have sent the close
@@ -88,7 +105,6 @@ Maxima::~Maxima() {
       m_socket->Write(buf.data(), buf.length());
     }
   m_socket->Close();
-
 }
 
 bool Maxima::Write(const void *buffer, std::size_t length) {
@@ -102,8 +118,9 @@ bool Maxima::Write(const void *buffer, std::size_t length) {
     return false;
   m_socket->Write(buffer, length);
   if (m_socket->Error() && m_socket->LastError() != wxSOCKET_WOULDBLOCK) {
-    MaximaEvent *event = new MaximaEvent(MaximaEvent::WRITE_ERROR, this);
-    QueueEvent(event);
+    wxThreadEvent *sendevent = new wxThreadEvent(EVT_MAXIMA);
+    sendevent->SetInt(WRITE_ERROR);
+    QueueEvent(sendevent);
     m_socketOutputData.Clear();
     return true;
   }
@@ -129,14 +146,15 @@ void Maxima::SocketEvent(wxSocketEvent &event) {
     break;
   case wxSOCKET_OUTPUT:
     if (Write(nullptr, 0)) {
-      MaximaEvent *discEvent =
-        new MaximaEvent(MaximaEvent::WRITE_PENDING, this);
-      QueueEvent(discEvent);
+      wxThreadEvent *event = new wxThreadEvent(EVT_MAXIMA);
+      event->SetInt(WRITE_PENDING);
+      QueueEvent(event);
     }
     break;
   case wxSOCKET_LOST: {
-    MaximaEvent *discEvent = new MaximaEvent(MaximaEvent::DISCONNECTED, this);
-    QueueEvent(discEvent);
+      wxThreadEvent *event = new wxThreadEvent(EVT_MAXIMA);
+      event->SetInt(DISCONNECTED);
+    QueueEvent(event);
     break;
   }
   case wxSOCKET_CONNECTION:
@@ -146,11 +164,7 @@ void Maxima::SocketEvent(wxSocketEvent &event) {
 }
 
 void Maxima::TimerEvent(wxTimerEvent &event) {
-  if (&event.GetTimer() == &m_stringEndTimer) {
-    MaximaEvent *sendevent = new MaximaEvent(MaximaEvent::READ_TIMEOUT, this,
-                                             std::move(m_socketInputData));
-    QueueEvent(sendevent);
-  } else if (&event.GetTimer() == &m_readIdleTimer) {
+  if (&event.GetTimer() == &m_readIdleTimer) {
     // Let's keep the input from Maxima flowing in. This is a platform-specific
     // workaround, so this timer is not guaranteed to fire at all.
     ReadSocket();
@@ -164,9 +178,16 @@ void Maxima::ReadSocket() {
     return;
 
   // std::cerr<<"------ transmission start ------\n";
+  {
+    wxThreadEvent *event = new wxThreadEvent(EVT_MAXIMA);
+    event->SetInt(READ_PENDING);
+    QueueEvent(event);
+  }
   wxString line;
-  wxString newLine = wxS("\n");
   wxChar ch;
+  m_abortReaderThread = true;
+  if(m_readerTask.joinable())
+    m_readerTask.join();
   do
     {
       ch = m_textInput.GetChar();
@@ -175,40 +196,130 @@ void Maxima::ReadSocket() {
       if(ch != wxS('\0'))
         m_socketInputData.append(ch);
     }  while (m_socket->LastReadCount() > 0);
-  {
-    MaximaEvent *event = new MaximaEvent(MaximaEvent::READ_PENDING, this);
-    QueueEvent(event);
-  }
   // std::cerr<<m_socketInputData<<"\n";
   // std::cerr<<"------ transmission end ------\n";
-
   if ((m_pipeToStderr) && (!m_socketInputData.IsEmpty()))
     {
       std::cerr << m_socketInputData;
       std::cerr.flush();
     }
-
-  if (m_first || wxm::EndsWithChar(m_socketInputData, '\n') ||
-      m_socketInputData.EndsWith(wxMaxima::m_promptSuffix)) {
-    m_stringEndTimer.Stop();
-    MaximaEvent *event = new MaximaEvent(MaximaEvent::READ_DATA, this,
-                                         std::move(m_socketInputData));
-    QueueEvent(event);
-  } else
-    m_stringEndTimer.StartOnce(STRING_END_TIMEOUT);
+  if(m_xmlInspector)
+    {
+      wxThreadEvent *event = new wxThreadEvent(EVT_MAXIMA);
+      event->SetInt(STRING_FOR_XMLINSPECTOR);
+      event->SetString(m_socketInputData);
+      QueueEvent(event);
+    }
+  // The string we have received now is broken into tags by a background task before sending
+  // it to wxMaxima
+  m_abortReaderThread = false;
+  //m_readerTask = std::thread(&Maxima::SendToWxMaxima, this);
+  SendToWxMaxima();
 }
 
-MaximaEvent::MaximaEvent(MaximaEvent::Cause cause, Maxima *source,
-                         wxString &&data)
-  : wxEvent(0, EVT_MAXIMA), m_cause(cause), m_source(source) {
-  m_data.swap(data);
+void Maxima::SendToWxMaxima()
+{
+  if(m_socketInputData.IsEmpty())
+    return;
+  size_t size_before;
+  do{
+    size_before = m_socketInputData.Length();
+    wxString dataToSend;
+    wxString rest;
+    std::unordered_map<wxString, EventCause, wxStringHash>::const_iterator tag =
+      m_knownTags.end();
+    wxString::const_iterator it = m_socketInputData.begin();
+    while(it != m_socketInputData.end())
+      {
+        if(*it == wxS('<'))
+          {
+            // Extract the starting tag, if this is one.
+            wxString::const_iterator it2 = it;
+            size_t i = 0;
+            wxString tagStart;
+            while((i < 20) && (it2 != m_socketInputData.end()))
+              {
+                tagStart += *it2;
+                i++; ++it2;
+              }
+            for(tag = m_knownTags.begin(); tag != m_knownTags.end(); tag++)
+              {
+                wxString tagstartname = wxS("<") + tag->first + wxS(">");
+                if(tagStart.StartsWith(tagstartname))
+                  break;
+              }
+            if(tag != m_knownTags.end())
+              break;
+            if(m_abortReaderThread)
+              return;
+          }
+        dataToSend += *it;
+        ++it;
+      }
+    if(!dataToSend.IsEmpty())
+      {
+        wxThreadEvent *event = new wxThreadEvent(EVT_MAXIMA);
+        event->SetInt(READ_MISC_TEXT);
+        event->SetString(dataToSend);
+        QueueEvent(event);
+      }
+    while(it != m_socketInputData.end())
+      {
+        rest += *it;
+        it++;
+      }
+    m_socketInputData = rest;
+    if(m_abortReaderThread)
+      return;
+    
+    if(tag != m_knownTags.end())
+      {
+        // Send the tag we found, but only once it is closed
+        wxString tagEndName = wxS("</") + tag->first + wxS(">");
+        auto end = m_socketInputData.Find(tagEndName);
+        if(end != wxNOT_FOUND)
+          {
+            long charsInTag = tag->first.Length() + 3 + end;
+            dataToSend.Clear();
+            rest.Clear();
+            for(const auto &i : m_socketInputData)
+              {
+                if(charsInTag > 0)
+                  {
+                    --charsInTag;
+                    dataToSend += i;
+                  }
+                else
+                  {
+                    if((charsInTag == 0) || (i != '\n'))
+                      rest += i;
+                    if(charsInTag >= 0)
+                      --charsInTag;
+                  }
+                
+              }
+
+            wxThreadEvent *event = new wxThreadEvent(EVT_MAXIMA);
+              event->SetInt(tag->second);
+              // XML_PROMPT contains fake XML and XML_SUPPRESSOUTPUT contains any kind of
+              // text including XML. XML_MATHS should support adding real maths, but
+              // currently still doesn't
+              if((tag->second != XML_PROMPT) && (tag->second != XML_SUPPRESSOUTPUT) &&
+                 (tag->second != XML_MATHS))
+              {
+                wxXmlDocument xmldoc;
+                wxStringInputStream xmlStream(dataToSend);
+                wxLogNull suppressErrorDialogs;
+                xmldoc.Load(xmlStream, wxS("UTF-8"));
+                event->SetPayload(xmldoc);
+              }
+            else
+              event->SetString(dataToSend);
+            QueueEvent(event);
+            m_socketInputData = rest;
+          }
+      }
+  } while ((m_socketInputData.Length() != size_before) && (!m_socketInputData.IsEmpty()));
 }
 
-MaximaEvent::MaximaEvent(MaximaEvent::Cause cause, Maxima *source)
-  : wxEvent(0, EVT_MAXIMA), m_cause(cause), m_source(source) {}
-
-wxEvent *MaximaEvent::Clone() const {
-  auto event = std::make_unique<MaximaEvent>(GetCause(), GetSource());
-  event->SetData(GetData());
-  return event.release();
-}
+std::unordered_map<wxString, Maxima::EventCause, wxStringHash> Maxima::m_knownTags;

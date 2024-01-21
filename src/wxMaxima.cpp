@@ -204,20 +204,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   wxLogMessage(_("Will try to generate a stack backtrace, if the program ever crashes"));
 #endif 
   GnuplotCommandName(wxS("gnuplot"));
-  if (m_knownXMLTags.empty()) {
-    m_knownXMLTags[wxS("PROMPT")] = &wxMaxima::ReadPrompt;
-    m_knownXMLTags[wxS("suppressOutput")] = &wxMaxima::ReadSuppressedOutput;
-    m_knownXMLTags[wxS("wxxml-symbols")] = &wxMaxima::ReadLoadSymbols;
-    m_knownXMLTags[wxS("variables")] = &wxMaxima::ReadVariables;
-    m_knownXMLTags[wxS("watch_variables_add")] = &wxMaxima::ReadAddVariables;
-    m_knownXMLTags[wxS("statusbar")] = &wxMaxima::ReadStatusBar;
-    m_knownXMLTags[wxS("html-manual-keywords")] =
-      &wxMaxima::ReadManualTopicNames;
-    m_knownXMLTags[wxS("mth")] = &wxMaxima::ReadMath;
-    m_knownXMLTags[wxS("math")] = &wxMaxima::ReadMath;
-    m_knownXMLTags[wxS("ipc")] = &wxMaxima::ReadMaximaIPC;
-  }
-
+  
   if (m_variableReadActions.empty()) {
     m_variableReadActions[wxS("gentranlang")] =
       &wxMaxima::VariableActionGentranlang;
@@ -1768,7 +1755,7 @@ void wxMaxima::OnSize(wxSizeEvent &event){
   event.Skip();
 }
 
-void wxMaxima::OnNewDemoFiles(wxCommandEvent &event)
+void wxMaxima::OnNewDemoFiles(wxCommandEvent &WXUNUSED(event))
 {
   m_demoFilesIDs.clear();
   while(m_demo_sub->GetMenuItemCount() > 0)
@@ -1849,10 +1836,15 @@ wxMaxima::~wxMaxima() {
 
   KillMaxima(false);
   DelistTopLevelWindow(this);
+  // If there is no window that can take over the log any more the program
+  // is about to close and cannot instantiate new gui loggers.
+  if(m_topLevelWindows.size() < 1) {
+    wxLog::EnableLogging(false);
+  }
 
   if (m_topLevelWindows.empty())
     {
-      wxLog::EnableLogging(false);
+      wxSocketBase::Shutdown();
       wxExit();
     }
   else {
@@ -1861,17 +1853,6 @@ wxMaxima::~wxMaxima() {
     }
   }
 
-  // If there is no window that can take over the log any more the program
-  // is about to close and cannot instantiate new gui loggers.
-  if(m_topLevelWindows.size() < 1) {
-#ifdef __CYGWIN__
-    // On 20221208 wx/log.h on cygwin contained wxLogStderr, but the wxWidgets libs didn't.
-    wxLog::EnableLogging(false);
-#else
-    wxLog::SetActiveTarget(new wxLogStderr);
-#endif
-  }
-  wxSocketBase::Shutdown();
   if(m_configuration.GetDebugmode() && (!Dirstructure::Get()->UserConfDir().IsEmpty()))
     {
       std::unordered_map<wxString, std::int_fast8_t, wxStringHash> knownWords;
@@ -1967,7 +1948,7 @@ bool MyDropTarget::OnDropFiles(wxCoord WXUNUSED(x), wxCoord WXUNUSED(y),
 
 void wxMaxima::FirstOutput() {
   m_lastPrompt = wxS("(%i1) ");
-
+  //TriggerEvaluation();
   CallAfter([this]{GetWorksheet()->SetFocus();});
 }
 
@@ -2321,34 +2302,71 @@ void wxMaxima::SendMaxima(wxString s, bool addToHistory) {
 ///  Socket stuff
 ///--------------------------------------------------------------------------------
 
-void wxMaxima::MaximaEvent(::MaximaEvent &event) {
+void wxMaxima::MaximaEvent(wxThreadEvent &event) {
   using std::swap;
-  switch (event.GetCause()) {
-  case MaximaEvent::READ_DATA:
+  switch (event.GetInt()) {
+  case Maxima::READ_MISC_TEXT:
     // Read out stderr: We will do that in the background on a regular basis,
     // anyway. But if we do it manually now, too, the probability that things
     // are presented to the user in chronological order increases a bit.
     ReadStdErr();
     m_statusBar->NetworkStatus(StatusBar::receive);
-    InterpretDataFromMaxima(event.GetData());
+    if(m_first)
+      ReadFirstPrompt(event.GetString());
+    else
+      ReadMiscText(event.GetString());
     break;
-  case MaximaEvent::READ_PENDING:
+  case Maxima::STRING_FOR_XMLINSPECTOR:
+    if(m_xmlInspector)
+      m_xmlInspector->Add_FromMaxima(event.GetString());
+    break;
+  case Maxima::XML_PROMPT:
+    ReadStdErr();
+    m_statusBar->NetworkStatus(StatusBar::receive);
+    ReadPrompt(event.GetString());
+    break;
+  case Maxima::XML_SUPPRESSOUTPUT:
+    ReadStdErr();
+    m_statusBar->NetworkStatus(StatusBar::receive);
+    ReadSuppressedOutput(event.GetString());
+    break;
+  case Maxima::XML_WXXMLSYMBOLS:
+    m_statusBar->NetworkStatus(StatusBar::receive);
+    ReadLoadSymbols(event.GetPayload<wxXmlDocument>());
+    break;
+  case Maxima::XML_VARIABLES:
+    m_statusBar->NetworkStatus(StatusBar::receive);
+    ReadVariables(event.GetPayload<wxXmlDocument>());
+    break;
+  case Maxima::XML_WATCH_VARIABLES_ADD:
+    m_statusBar->NetworkStatus(StatusBar::receive);
+    ReadAddVariables(event.GetPayload<wxXmlDocument>());
+    break;
+  case Maxima::XML_STATUSBAR:
+    m_statusBar->NetworkStatus(StatusBar::receive);
+    ReadStatusBar(event.GetPayload<wxXmlDocument>());
+    break;
+  case Maxima::XML_HTML_MANUAL_KEYWORDS:
+    m_statusBar->NetworkStatus(StatusBar::receive);
+    ReadManualTopicNames(event.GetPayload<wxXmlDocument>());
+    break;
+  case Maxima::XML_MATHS:
+    m_statusBar->NetworkStatus(StatusBar::receive);
+    ReadMath(event.GetString()); // TODO: Should accept XML data
+    break;
+  case Maxima::XML_WXXML_KEY: // TODO: Should the key be outside the SuppressOutput?
+    break;
+  case Maxima::READ_PENDING:
     ReadStdErr();
     m_statusBar->NetworkStatus(StatusBar::receive);
     break;
-  case MaximaEvent::READ_TIMEOUT:
-    ReadStdErr();
-    m_statusBar->NetworkStatus(StatusBar::receive);
-    if (InterpretDataFromMaxima(event.GetData()))
-      wxLogMessage(_("String from maxima apparently didn't end in a newline"));
-    break;
-  case MaximaEvent::WRITE_PENDING:
+  case Maxima::WRITE_PENDING:
     m_statusBar->NetworkStatus(StatusBar::transmit);
     break;
-  case MaximaEvent::WRITE_ERROR:
+  case Maxima::WRITE_ERROR:
     DoRawConsoleAppend(_("Error writing to Maxima"), MC_TYPE_ERROR);
     break;
-  case MaximaEvent::DISCONNECTED: {
+  case Maxima::DISCONNECTED: {
     wxLogMessage(_("Connection to Maxima lost."));
     //  KillMaxima();
     break;
@@ -2387,7 +2405,6 @@ void wxMaxima::OnMaximaConnect() {
 
   m_statusBar->NetworkStatus(StatusBar::idle);
   GetWorksheet()->QuestionAnswered();
-  m_currentOutput = wxEmptyString;
 
   m_client = std::make_unique<Maxima>(m_server->Accept(false), &m_configuration);
   if (m_client->IsConnected()) {
@@ -2524,7 +2541,6 @@ bool wxMaxima::StartMaxima(bool force) {
       m_process->Redirect();
       //      m_process->SetPriority(wxPRIORITY_MAX);
       m_first = true;
-      m_currentOutput = wxEmptyString;
       m_pid = -1;
       wxLogMessage(_("Running maxima as: %s"), command.utf8_str());
 
@@ -2737,9 +2753,6 @@ void wxMaxima::KillMaxima(bool logMessage) {
   m_statusBar->SetMaximaCPUPercentage(0);
   m_CWD = wxEmptyString;
   GetWorksheet()->QuestionAnswered();
-  m_currentOutput = wxEmptyString;
-  if(m_process)
-    m_process->Detach();
   m_process = NULL;
   m_maximaStdout = NULL;
   m_maximaStderr = NULL;
@@ -2906,16 +2919,15 @@ void wxMaxima::OnProcessEvent(wxProcessEvent &event) {
   StatusMaximaBusy(StatusBar::MaximaStatus::disconnected);
   UpdateToolBar();
   UpdateMenus();
-  event.Skip();
 }
 
 ///--------------------------------------------------------------------------------
 ///  Dealing with stuff read from the socket
 ///--------------------------------------------------------------------------------
 
-void wxMaxima::ReadFirstPrompt(wxString &data) {
-  int end;
-  if ((end = m_currentOutput.Find(m_firstPrompt)) == wxNOT_FOUND)
+void wxMaxima::ReadFirstPrompt(const wxString &data) {
+ auto end = data.Find(m_firstPrompt);
+  if (end  == wxNOT_FOUND)
     return;
 
   m_bytesFromMaxima = 0;
@@ -2953,8 +2965,6 @@ void wxMaxima::ReadFirstPrompt(wxString &data) {
   wxLogMessage(_("Received maxima's first prompt: %s"), prompt_compact.utf8_str());
 
   wxLogMessage(_("Maxima's PID is %li"), static_cast<long>(m_pid));
-  // Remove the first prompt from Maxima's answer.
-  data = data.Right(data.Length() - end - m_firstPrompt.Length());
 
   if (GetWorksheet()->m_evaluationQueue.Empty()) {
     // Inform the user that the evaluation queue is empty.
@@ -2977,65 +2987,6 @@ void wxMaxima::ReadFirstPrompt(wxString &data) {
       Close();
   } else
     TriggerEvaluation();
-}
-
-bool wxMaxima::ParseNextChunkFromMaxima(wxString &data) {
-  wxString miscText;
-  miscText.reserve(data.Length());
-  wxString tagName;
-  tagName.reserve(64);
-  auto tagIndex = m_knownXMLTags.end();
-  bool tagFound = false;
-  wxString::const_iterator it;
-  for (it = data.begin(); (it < data.end()) && (!tagFound); ++it) {
-    if (*it == wxS('<')) {
-      tagName = wxEmptyString;
-      wxString::const_iterator it2 = it;
-      ++it2;
-      for (; (it2 != data.end()); ++it2) {
-        if (((*it2 >= wxS('a')) && (*it2 <= wxS('z'))) ||
-            ((*it2 >= wxS('A')) && (*it2 <= wxS('Z'))) || (*it2 == wxS('_')) ||
-            (*it2 == wxS('-')))
-          tagName += *it2;
-        else {
-          if (*it2 == wxS('>')) {
-            tagIndex = m_knownXMLTags.find(tagName);
-            tagFound = tagIndex != m_knownXMLTags.end();
-            if (!tagFound) {
-              miscText += wxS("<") + tagName + wxS(">");
-              tagName = wxEmptyString;
-            }
-            break;
-          } else {
-            miscText += wxS("<") + tagName;
-            tagName = wxEmptyString;
-            break;
-          }
-        }
-      }
-      it = it2;
-      if ((!tagFound) && (!tagName.IsEmpty()))
-        miscText += wxS("<") + tagName;
-    } else
-      miscText += *it;
-  }
-  bool retval = false;
-  if (!miscText.IsEmpty()) {
-    retval = true;
-    ReadMiscText(miscText);
-
-    // Remove the miscellaneous text we just have processed
-    data = data.Right(data.Length() - miscText.Length());
-  }
-  if (tagFound) {
-    GetWorksheet()->SetCurrentTextCell(nullptr);
-    if((m_maximaAuthenticated) || (tagIndex->second == &wxMaxima::ReadSuppressedOutput))
-      {
-        retval = true;
-        CALL_MEMBER_FN(*this, tagIndex->second)(data);
-      }
-  }
-  return retval;
 }
 
 void wxMaxima::ReadMiscText(const wxString &data) {
@@ -3128,148 +3079,90 @@ void wxMaxima::ReadMiscText(const wxString &data) {
     GetWorksheet()->SetCurrentTextCell(nullptr);
 }
 
-long wxMaxima::FindTagEnd(const wxString &data, const wxString &tag) {
-  if ((m_currentOutputEnd.IsEmpty()) ||
-      (m_currentOutputEnd.Find(tag) != wxNOT_FOUND))
-    return data.Find(tag);
-  else
-    return wxNOT_FOUND;
-}
-
-void wxMaxima::ReadStatusBar(wxString &data) {
-  if (!data.StartsWith(m_statusbarPrefix))
-    return;
-
+void wxMaxima::ReadStatusBar(const wxXmlDocument &xmldoc) {
   GetWorksheet()->SetCurrentTextCell(nullptr);
-
-  int end;
-  if ((end = FindTagEnd(data, m_statusbarSuffix)) != wxNOT_FOUND) {
-    wxXmlDocument xmldoc;
-    wxString xml = data.Left(end + m_statusbarSuffix.Length());
-    wxStringInputStream xmlStream(xml);
+  if(!xmldoc.IsOk())
     {
-      wxLogNull suppressErrorDialogs;
-      xmldoc.Load(xmlStream, wxS("UTF-8"));
+      DoRawConsoleAppend(_("There was an error in the XML that should describe the status bar message.\n"
+                           "Please report this as a bug to the wxMaxima project."),
+                         MC_TYPE_ERROR);
+      AbortOnError();
     }
-    if(!xmldoc.IsOk())
-      {
-        DoRawConsoleAppend(_("There was an error in the XML that should describe the status bar message.\n"
-                             "Please report this as a bug to the wxMaxima project."),
-                           MC_TYPE_ERROR);
-        AbortOnError();
+  else
+    {
+      wxXmlNode *node = xmldoc.GetRoot();
+      if (node != NULL) {
+        wxXmlNode *contents = node->GetChildren();
+        if (contents)
+          StatusText(contents->GetContent(), false);
       }
-    else
-      {
-        wxXmlNode *node = xmldoc.GetRoot();
-        if (node != NULL) {
-          wxXmlNode *contents = node->GetChildren();
-          if (contents)
-            StatusText(contents->GetContent(), false);
-        }
-      }
-    // Remove the status bar info from the data string
-    data = data.Right(data.Length() - end - m_statusbarSuffix.Length());
-  }
+    }
 }
 
-void wxMaxima::ReadManualTopicNames(wxString &data) {
-  if (!data.StartsWith(m_jumpManualPrefix))
-    return;
-
-  int end;
-  if ((end = FindTagEnd(data, m_jumpManualSuffix)) != wxNOT_FOUND) {
-    std::vector<wxString> topics;
-    wxXmlDocument xmldoc;
-    wxString xml = data.Left(end + m_jumpManualSuffix.Length());
-    wxStringInputStream xmlStream(xml);
+void wxMaxima::ReadManualTopicNames(const wxXmlDocument &xmldoc) {
+  if(xmldoc.IsOk())
     {
-      wxLogNull suppressErrorDialogs;
-      xmldoc.Load(xmlStream, wxS("UTF-8"));
-    }
-    if(xmldoc.IsOk())
-      {
-        wxXmlNode *node = xmldoc.GetRoot();
-        while ((node) && (node->GetName() != wxS("html-manual-keywords")))
-          node = node->GetNext();
+      std::vector<wxString> topics;
+      wxXmlNode *node = xmldoc.GetRoot();
+      while ((node) && (node->GetName() != wxS("html-manual-keywords")))
+        node = node->GetNext();
 
-        if (node == NULL) {
-          wxLogMessage(_("No topics found in topic tag"));
-        } else {
-          wxXmlNode *entry = node->GetChildren();
-          while(entry != NULL)
-            {
-              if (entry->GetName() == wxS("keyword")) {
-                wxXmlNode *topic = entry->GetChildren();
-                if (topic) {
-                  wxLogMessage(_("Received manual topic request: %s"),
-                               topic->GetContent().ToUTF8().data());
-                  topics.push_back(topic->GetContent());
-                }
-                if (topics.size() == 0)
-                  wxLogMessage(_("No topics found in topic flag"));
-#ifdef USE_WEBVIEW
-                else
-                  {
-                    m_helpPane->SelectKeywords(topics);
-                    wxMaximaFrame::ShowPane(EventIDs::menu_pane_help);
-                  }
-#else
-                ShowMaximaHelp(topics[1]);
-#endif
+      if (node == NULL) {
+        wxLogMessage(_("No topics found in topic tag"));
+      } else {
+        wxXmlNode *entry = node->GetChildren();
+        while(entry != NULL)
+          {
+            if (entry->GetName() == wxS("keyword")) {
+              wxXmlNode *topic = entry->GetChildren();
+              if (topic) {
+                wxLogMessage(_("Received manual topic request: %s"),
+                             topic->GetContent().ToUTF8().data());
+                topics.push_back(topic->GetContent());
               }
-              entry = entry->GetNext();
+              if (topics.size() == 0)
+                wxLogMessage(_("No topics found in topic flag"));
+#ifdef USE_WEBVIEW
+              else
+                {
+                  m_helpPane->SelectKeywords(topics);
+                  wxMaximaFrame::ShowPane(EventIDs::menu_pane_help);
+                }
+#else
+              ShowMaximaHelp(topics[1]);
+#endif
             }
-        }
+            entry = entry->GetNext();
+          }
       }
-    else
-      {
-        DoRawConsoleAppend(_("There was an error in the XML that should describe the manual topics.\n"
-                             "Please report this as a bug to the wxMaxima project."),
-                           MC_TYPE_ERROR);
-        AbortOnError();
-      }
-
-    // Remove the status bar info from the data string
-    data = data.Right(data.Length() - end - m_jumpManualPrefix.Length());
-  }
+    }
+  else
+    {
+      DoRawConsoleAppend(_("There was an error in the XML that should describe the manual topics.\n"
+                           "Please report this as a bug to the wxMaxima project."),
+                         MC_TYPE_ERROR);
+      AbortOnError();
+    }
 }
+
 
 /***
  * Checks if maxima displayed a new chunk of math
  */
-void wxMaxima::ReadMath(wxString &data) {
-  if ((!data.StartsWith(m_mathPrefix1)) && (!data.StartsWith(m_mathPrefix2)))
-    return;
-
+void wxMaxima::ReadMath(const wxString &data) {
   GetWorksheet()->SetCurrentTextCell(nullptr);
 
   // Append everything from the "beginning of math" to the "end of math" marker
-  // to the console and remove it from the data we got.
-  int mthTagLen;
-  int end = FindTagEnd(data, m_mathSuffix1);
-  if (end >= 0)
-    mthTagLen = m_mathSuffix1.Length();
-  else {
-    end = FindTagEnd(data, m_mathSuffix2);
-    mthTagLen = m_mathSuffix2.Length();
-  }
-  if (end >= 0) {
-    wxString o = data.Left(static_cast<std::size_t>(end) + mthTagLen);
-    data = data.Right(data.Length() - static_cast<std::size_t>(end) - mthTagLen);
-    o.Trim(true);
-    o.Trim(false);
-    if (o.Length() > 0) {
-      if (m_configuration.UseUserLabels()) {
-        ConsoleAppend(o, MC_TYPE_DEFAULT,
-                      GetWorksheet()->m_evaluationQueue.GetUserLabel());
-      } else {
-        ConsoleAppend(o, MC_TYPE_DEFAULT);
-      }
-    }
+  // to the console
+  if (m_configuration.UseUserLabels()) {
+    ConsoleAppend(data, MC_TYPE_DEFAULT,
+                  GetWorksheet()->m_evaluationQueue.GetUserLabel());
+  } else {
+    ConsoleAppend(data, MC_TYPE_DEFAULT);
   }
 }
 
-void wxMaxima::ReadSuppressedOutput(wxString &data) {
+void wxMaxima::ReadSuppressedOutput(const wxString &data) {
   if (!data.StartsWith(m_suppressOutputPrefix))
     return;
 
@@ -3290,120 +3183,87 @@ void wxMaxima::ReadSuppressedOutput(wxString &data) {
       }
     }
 
-  int end = FindTagEnd(data, m_suppressOutputSuffix);
-
-  if (end != wxNOT_FOUND) {
-    data = data.Right(data.Length() - end - m_suppressOutputSuffix.Length());
-    if(!m_maximaAuthenticated)
-      {
-        wxLogMessage(_("Maxima didn't attempt to authenticate!"));
-        LoggingMessageBox(
-                          _("Could not make sure that we talk to the maxima we started => "
-                            "discarding all data it sends."),
-                          _("Warning"), wxOK | wxICON_EXCLAMATION);
-        m_discardAllData = true;
-      }
-  }
-}
-
-void wxMaxima::ReadLoadSymbols(wxString &data) {
-  if (!data.StartsWith(m_symbolsPrefix))
-    return;
-
-  int end = FindTagEnd(data, m_symbolsSuffix);
-
-  if (end != wxNOT_FOUND) {
-    // Put the symbols into a separate string
-    wxString symbols = data.Left(end + m_symbolsSuffix.Length());
-    GetWorksheet()->AddSymbols(symbols);
-
-    // Remove the symbols from the data string
-    data = data.Right(data.Length() - end - m_symbolsSuffix.Length());
-  }
-}
-
-void wxMaxima::ReadVariables(wxString &data) {
-  if (!data.StartsWith(m_variablesPrefix))
-    return;
-
-  int end = FindTagEnd(data, m_variablesSuffix);
-
-  if (end != wxNOT_FOUND) {
-    wxXmlDocument xmldoc;
-    wxString xml = data.Left(end + m_variablesSuffix.Length());
-    wxStringInputStream xmlStream(xml);
+  if(!m_maximaAuthenticated)
     {
-      wxLogNull noErrorDialog;
-      xmldoc.Load(xmlStream, wxS("UTF-8"));
+      wxLogMessage(_("Maxima didn't attempt to authenticate!"));
+      LoggingMessageBox(
+                        _("Could not make sure that we talk to the maxima we started => "
+                          "discarding all data it sends."),
+                        _("Warning"), wxOK | wxICON_EXCLAMATION);
+      m_discardAllData = true;
     }
-    if(!xmldoc.IsOk())
-      {
-        DoRawConsoleAppend(_("There was an error in the XML that should describe the contents of some variables.\n"
-                             "Please report this as a bug to the wxMaxima project."),
-                           MC_TYPE_ERROR);
-        AbortOnError();
-      }
-    else
-      {
-        int num = 0;
-        wxXmlNode *node = xmldoc.GetRoot();
-        if (node != NULL) {
-          wxXmlNode *vars = node->GetChildren();
-          while (vars != NULL) {
-            wxXmlNode *var = vars->GetChildren();
+}
 
-            wxString name;
-            wxString value;
-            bool bound = false;
-            while (var != NULL) {
-              if (var->GetName() == wxS("name")) {
-                num++;
-                wxXmlNode *namenode = var->GetChildren();
-                if (namenode)
-                  name = namenode->GetContent();
+void wxMaxima::ReadLoadSymbols(const wxXmlDocument &data) {
+  GetWorksheet()->AddSymbols(data);
+}
+
+void wxMaxima::ReadVariables(const wxXmlDocument &xmldoc) {
+  if(!xmldoc.IsOk())
+    {
+      DoRawConsoleAppend(_("There was an error in the XML that should describe the contents of some variables.\n"
+                           "Please report this as a bug to the wxMaxima project."),
+                         MC_TYPE_ERROR);
+      AbortOnError();
+    }
+  else
+    {
+      int num = 0;
+      wxXmlNode *node = xmldoc.GetRoot();
+      if (node != NULL) {
+        wxXmlNode *vars = node->GetChildren();
+        while (vars != NULL) {
+          wxXmlNode *var = vars->GetChildren();
+          
+          wxString name;
+          wxString value;
+          bool bound = false;
+          while (var != NULL) {
+            if (var->GetName() == wxS("name")) {
+              num++;
+              wxXmlNode *namenode = var->GetChildren();
+              if (namenode)
+                name = namenode->GetContent();
+            }
+            if (var->GetName() == wxS("value")) {
+              wxXmlNode *valnode = var->GetChildren();
+              if (valnode) {
+                bound = true;
+                value = valnode->GetContent();
               }
-              if (var->GetName() == wxS("value")) {
-                wxXmlNode *valnode = var->GetChildren();
-                if (valnode) {
-                  bound = true;
-                  value = valnode->GetContent();
-                }
-              }
-
-              if (bound) {
-                GetWorksheet()->m_variablesPane->VariableValue(name, value);
-
-                // Undo an eventual stringdisp:true adding quoting marks to strings
-                if (value.StartsWith("\"") && value.EndsWith("\""))
-                  value = value.SubString(1, value.Length() - 2);
-
-                auto varFunc = m_variableReadActions.find(name);
-                if (varFunc != m_variableReadActions.end())
-                  CALL_MEMBER_FN(*this, varFunc->second)(value);
-              } else {
-                GetWorksheet()->m_variablesPane->VariableUndefined(name);
-                auto varFunc = m_variableUndefinedActions.find(name);
-                if (varFunc != m_variableUndefinedActions.end())
-                  CALL_MEMBER_FN(*this, varFunc->second)();
-              }
-
-              var = var->GetNext();
             }
 
-            vars = vars->GetNext();
-          }
-        }
+            if (bound) {
+              GetWorksheet()->m_variablesPane->VariableValue(name, value);
 
-        if (num > 1)
-          wxLogMessage(_("Maxima sends a new set of auto-completable symbols."));
-        else
-          wxLogMessage(_("Maxima has sent a new variable value."));
+              // Undo an eventual stringdisp:true adding quoting marks to strings
+              if (value.StartsWith("\"") && value.EndsWith("\""))
+                value = value.SubString(1, value.Length() - 2);
+
+              auto varFunc = m_variableReadActions.find(name);
+              if (varFunc != m_variableReadActions.end())
+                CALL_MEMBER_FN(*this, varFunc->second)(value);
+            } else {
+              GetWorksheet()->m_variablesPane->VariableUndefined(name);
+              auto varFunc = m_variableUndefinedActions.find(name);
+              if (varFunc != m_variableUndefinedActions.end())
+                CALL_MEMBER_FN(*this, varFunc->second)();
+            }
+
+            var = var->GetNext();
+          }
+
+          vars = vars->GetNext();
+        }
       }
-    // Remove the symbols from the data string
-    data = data.Right(data.Length() - end - m_variablesSuffix.Length());
-    TriggerEvaluation();
-    QueryVariableValue();
-  }
+
+      if (num > 1)
+        wxLogMessage(_("Maxima sends a new set of auto-completable symbols."));
+      else
+        wxLogMessage(_("Maxima has sent a new variable value."));
+    }
+  TriggerEvaluation();
+  QueryVariableValue();
 }
 
 void wxMaxima::VariableActionSinnpiflag(const wxString &WXUNUSED(value)) {
@@ -3847,46 +3707,31 @@ void wxMaxima::VariableActionOperators(const wxString &value) {
     }
 }
 
-void wxMaxima::ReadAddVariables(wxString &data) {
-  if (!data.StartsWith(m_addVariablesPrefix))
-    return;
-
-  int end = FindTagEnd(data, m_addVariablesSuffix);
-
-  if (end != wxNOT_FOUND) {
-    wxLogMessage(_("Maxima sends us a new set of variables for the watch list."));
-    wxXmlDocument xmldoc;
-    wxString xml = data.Left(end + m_addVariablesSuffix.Length());
-    wxStringInputStream xmlStream(xml);
+void wxMaxima::ReadAddVariables(const wxXmlDocument &xmldoc) {
+  wxLogMessage(_("Maxima sends us a new set of variables for the watch list."));
+  if(!xmldoc.IsOk())
     {
-      wxLogNull noErrorMessage;
-      xmldoc.Load(xmlStream, wxS("UTF-8"));
+      DoRawConsoleAppend(_("There was an error in the XML that should contain a list of watch variables.\n"
+                           "Please report this as a bug to the wxMaxima project."),
+                         MC_TYPE_ERROR);
+      AbortOnError();
     }
-    if(!xmldoc.IsOk())
-      {
-        DoRawConsoleAppend(_("There was an error in the XML that should contain a list of watch variables.\n"
-                             "Please report this as a bug to the wxMaxima project."),
-                           MC_TYPE_ERROR);
-        AbortOnError();
-      }
-    else
-      {
-        wxXmlNode *node = xmldoc.GetRoot();
-        if (node != NULL) {
-          wxXmlNode *var = node->GetChildren();
-          while (var != NULL) {
-            wxString name;
-            {
-              if (var->GetName() == wxS("variable")) {
-                wxXmlNode *valnode = var->GetChildren();
-                if (valnode)
-                  GetWorksheet()->m_variablesPane->AddWatch(valnode->GetContent());
-              }
+  else
+    {
+      wxXmlNode *node = xmldoc.GetRoot();
+      if (node != NULL) {
+        wxXmlNode *var = node->GetChildren();
+        while (var != NULL) {
+          wxString name;
+          {
+            if (var->GetName() == wxS("variable")) {
+              wxXmlNode *valnode = var->GetChildren();
+              if (valnode)
+                GetWorksheet()->m_variablesPane->AddWatch(valnode->GetContent());
             }
-            var = var->GetNext();
           }
+          var = var->GetNext();
         }
-        data = data.Right(data.Length() - end - m_addVariablesSuffix.Length());
       }
   }
 }
@@ -3924,7 +3769,7 @@ bool wxMaxima::QueryVariableValue() {
 /***
  * Checks if maxima displayed a new prompt.
  */
-void wxMaxima::ReadPrompt(wxString &data) {
+void wxMaxima::ReadPrompt(const wxString &data) {
   m_evalOnStartup = false;
   if (!data.StartsWith(m_promptPrefix))
     return;
@@ -3934,21 +3779,14 @@ void wxMaxima::ReadPrompt(wxString &data) {
   // Assume we don't have a question prompt
   GetWorksheet()->m_questionPrompt = false;
   m_ready = true;
-  int end = FindTagEnd(data, m_promptSuffix);
-  // Did we find a prompt?
-  if (end == wxNOT_FOUND)
-    return;
 
   wxLogMessage(_("Got a new input prompt!"));
   m_maximaBusy = false;
   m_bytesFromMaxima = 0;
 
-  wxString label = data.SubString(m_promptPrefix.Length(), static_cast<std::size_t>(end) - 1);
-  // Remove the prompt we will process from the string.
-  data = data.Right(data.Length() - static_cast<std::size_t>(end) - m_promptSuffix.Length());
-  if (data == wxS(" "))
-    data = wxEmptyString;
-
+  wxString label = data.SubString(m_promptPrefix.Length(),
+                                  data.Length() - m_promptSuffix.Length() - 1);
+  
   // If we got a prompt our connection to maxima was successful.
   if (m_unsuccessfulConnectionAttempts > 0)
     m_unsuccessfulConnectionAttempts--;
@@ -3972,7 +3810,7 @@ void wxMaxima::ReadPrompt(wxString &data) {
     GetWorksheet()->QuestionAnswered();
     // And we can remove one command from the evaluation queue.
     GetWorksheet()->m_evaluationQueue.RemoveFirst();
-
+    
     m_lastPrompt = label;
     // remove the event maxima has just processed from the evaluation queue
     // if we remove a command from the evaluation queue the next output line
@@ -4961,92 +4799,6 @@ void wxMaxima::ShowMaximaHelp(wxString keyword) {
   }
 }
 
-bool wxMaxima::InterpretDataFromMaxima(const wxString &newData) {
-  if(m_discardAllData)
-    return false;
-  wxString miscText;
-
-  if (newData.empty())
-    return false;
-
-  if (!GetWorksheet()->m_evaluationQueue.Empty())
-    m_fastResponseTimer.StartOnce(120);
-  // Speed up things if we want to output more than one line of data in this
-  // step
-
-  if ((m_xmlInspector) && (IsPaneDisplayed(EventIDs::menu_pane_xmlInspector)))
-    m_xmlInspector->Add_FromMaxima(newData);
-  // This way we can avoid searching the whole string for a
-  // ending tag if we have received only a few bytes of the
-  // data between 2 tags
-  m_currentOutputEnd = m_currentOutput.Right(30) + newData;
-
-  m_currentOutput += newData;
-  if ((m_xmlInspector) && (IsPaneDisplayed(EventIDs::menu_pane_xmlInspector)))
-    m_xmlInspector->Add_FromMaxima(wxm::emptyString);
-
-  if (!m_dispReadOut && (m_currentOutput != wxS("\n")) &&
-      (m_currentOutput != m_emptywxxmlSymbols)) {
-    if(!m_first)
-      {
-        StatusMaximaBusy(StatusBar::MaximaStatus::waitingForPrompt);
-      } else {
-      if(!m_maximaAuthenticated)
-        StatusMaximaBusy(StatusBar::MaximaStatus::waitingForAuth);
-      else
-        StatusMaximaBusy(StatusBar::MaximaStatus::transferring);
-    }
-    m_dispReadOut = true;
-  }
-
-  InterpretDataFromMaxima();
-  return true;
-}
-
-bool wxMaxima::InterpretDataFromMaxima() {
-  std::size_t length_old = 0;
-
-  wxTimer maxGuiFreezeTime;
-  wxStopWatch stopWatch;
-  long startlength = m_currentOutput.Length();
-
-  while (((length_old != m_currentOutput.Length()) && (stopWatch.Time() < 250)) &&
-         !m_currentOutput.IsEmpty()) {
-    if (m_currentOutput.StartsWith("\n<"))
-      m_currentOutput = m_currentOutput.Right(m_currentOutput.Length() - 1);
-
-    length_old = m_currentOutput.Length();
-
-    GroupCell *oldActiveCell = NULL;
-    GroupCell *newActiveCell = NULL;
-
-    // Handle text that isn't wrapped in a known tag
-    if (!m_first) {
-      // First read the prompt that tells us that maxima awaits the next
-      // command: If that is the case ReadPrompt() sends the next command to
-      // maxima and maxima can work while we interpret its output.
-      oldActiveCell = GetWorksheet()->GetWorkingGroup();
-      ReadPrompt(m_currentOutput);
-      newActiveCell = GetWorksheet()->GetWorkingGroup();
-
-      // Temporarily switch to the WorkingGroup the output we don't have
-      // interpreted yet was for
-      if (newActiveCell != oldActiveCell)
-        GetWorksheet()->SetWorkingGroup(oldActiveCell);
-
-      ParseNextChunkFromMaxima(m_currentOutput);
-    } else
-      // This function determines the port maxima is running on from the text
-      // maxima outputs at startup. This piece of text is afterwards discarded.
-      ReadFirstPrompt(m_currentOutput);
-
-    // Switch to the WorkingGroup the next bunch of data is for.
-    if (newActiveCell != oldActiveCell)
-      GetWorksheet()->SetWorkingGroup(newActiveCell);
-  }
-  return startlength != static_cast<signed>(m_currentOutput.Length());
-}
-
 ///--------------------------------------------------------------------------------
 ///  Idle event
 ///--------------------------------------------------------------------------------
@@ -5088,12 +4840,6 @@ void wxMaxima::OnIdle(wxIdleEvent &event) {
 
   if (GetWorksheet() == NULL)
     return;
-
-  if(InterpretDataFromMaxima())
-    {
-      event.RequestMore();
-      return;
-    }
 
   GetWorksheet()->UpdateScrollPos();
 
@@ -5225,6 +4971,11 @@ void wxMaxima::OnIdle(wxIdleEvent &event) {
     }
   // If we reach this point wxMaxima truly is idle
   // => Tell wxWidgets it can process its own idle commands, as well.
+  event.Skip();
+
+  // Tell our maxima interface if it needs to send events to the XML inspector
+  if(m_client)
+    m_client->XmlInspectorActive(m_manager.GetPane(wxS("XmlInspector")).IsShown());
   event.Skip();
 }
 
@@ -9683,7 +9434,7 @@ void wxMaxima::OnClose(wxCloseEvent &event) {
       m_process->Detach();
   }
 
-  SuppressErrorDialogs blocker;
+  wxLogNull blocker;
   // We have saved the file and will close now => No need to have the
   // timer around any longer.
   m_autoSaveTimer.Stop();
@@ -10362,7 +10113,7 @@ void wxMaxima::EvaluateEvent(wxCommandEvent &WXUNUSED(event)) {
       if (editor->GetType() == MC_TYPE_INPUT && (!m_configuration.InLispMode()))
         editor->AddEnding();
       // if active cell is part of a working group, we have a special
-      // case - answering 1a question. Manually send answer to Maxima.
+      // case - answering a question. Manually send answer to Maxima.
       GroupCell *cell = editor->GetGroup();
       if (GetWorksheet()->GCContainsCurrentQuestion(cell)) {
         wxString answer = editor->ToString(true);
@@ -11295,9 +11046,6 @@ wxString wxMaxima::m_mathSuffix1(wxS("</mth>"));
 wxString wxMaxima::m_mathSuffix2(wxS("</math>"));
 wxString wxMaxima::m_emptywxxmlSymbols(wxS("<wxxml-symbols></wxxml-symbols>"));
 wxString wxMaxima::m_firstPrompt(wxS("(%i1) "));
-// wxString wxMaxima::m_outputPromptPrefix(wxS("<lbl>"));
-// wxString wxMaxima::m_outputPromptSuffix(wxS("</lbl"));
-wxMaxima::ParseFunctionHash wxMaxima::m_knownXMLTags;
 wxMaxima::VarReadFunctionHash wxMaxima::m_variableReadActions;
 wxMaxima::VarUndefinedFunctionHash wxMaxima::m_variableUndefinedActions;
 wxString wxMaxima::maxima_command_line_filename;
