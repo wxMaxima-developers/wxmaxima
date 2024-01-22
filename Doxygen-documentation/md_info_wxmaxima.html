@@ -314,19 +314,19 @@ Greek characters</h4>
 <p><code>ESC</code> <code>61</code> <code>ESC</code> therefore results in an <code>a</code>.</p>
 <p>Please note that most of these symbols (notable exceptions are the logic symbols) do not have a special meaning in <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> and therefore will be interpreted as ordinary characters. If <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> is compiled using a Lisp that doesn’t support Unicode characters they might cause an error message.</p>
 <p>It may be the case that e.g. Greek characters or mathematical symbols are not included in the selected font, then they can not be displayed. To solve that problem, select other fonts (using: Edit -&gt; Configure -&gt; <a class="el" href="classStyle.html" title="Text Style Definition.">Style</a>).</p>
-<h3><a class="anchor" id="autotoc_md92"></a>
+<h3><a class="anchor" id="autotoc_md94"></a>
 Unicode replacement</h3>
 <p><a class="el" href="classwxMaxima.html">wxMaxima</a> will replace several Unicode characters with their respective <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> expressions, e.g. "²" with "^2", "³" with "^3", the square root sign with the function <code>sqrt()</code>, the (mathematical) Sigma sign (which is not the same unicode character as the corresponding greek letter) with <code>sum()</code>, etc.</p>
-<h3><a class="anchor" id="autotoc_md93"></a>
+<h3><a class="anchor" id="autotoc_md95"></a>
 Side Panes</h3>
 <p>Shortcuts to the most important <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> commands, things like a table of contents, windows with debug messages or a history of the last issued commands can be accessed using the side panes. They can be enabled using the "View" menu. They all can be moved to other locations inside or outside the <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> window. Other useful panes is the one that allows to input Greek letters using the mouse.</p>
 <p><img src="./SidePanes.png" alt="Example of different side panes" class="inline"/>{ id=img_SidePanes }</p>
 <p>In the "table of contents" side pane, one can increase or decrease a heading by just clicking on the heading with the right mouse button and select the next higher or lower heading type.</p>
 <p><img src="./Sidepane-TOC-convert-headings.png" alt="Increase or decrease headings in the TOC side pane" class="inline"/>{ id=Sidepane-TOC-convert-headings }</p>
-<h3><a class="anchor" id="autotoc_md94"></a>
+<h3><a class="anchor" id="autotoc_md96"></a>
 MathML output</h3>
 <p>Several word processors and similar programs either recognize <a href="https://www.w3.org/Math/">MathML</a> input and automatically insert it as an editable 2D equation - or (like LibreOffice) have an equation editor that offers an “import MathML from clipboard” feature. Others support RTF maths. <em>WxMaxima</em>, therefore, offers several entries in the right-click menu.</p>
-<h3><a class="anchor" id="autotoc_md95"></a>
+<h3><a class="anchor" id="autotoc_md97"></a>
 Markdown support</h3>
 <p><em>WxMaxima</em> offers a set of standard <a href="https://en.wikipedia.org/wiki/Markdown">Markdown</a> conventions that don't collide with mathematical notation. One of these elements is bullet lists.</p>
 <div class="fragment"><div class="line">Ordinary text</div>
@@ -383,7 +383,7 @@ Configuration options</h2>
 <h3><a class="anchor" id="autotoc_md105"></a>
 Default animation framerate</h3>
 <p>The animation framerate that is used for new animations is kept in the variable <code>wxanimate_framerate</code>. The initial value this variable will contain in a new worksheet can be changed using the configuration dialogue.</p>
-<h3><a class="anchor" id="autotoc_md106"></a>
+<h3><a class="anchor" id="autotoc_md107"></a>
 Default plot size for new &lt;em&gt;maxima&lt;/em&gt; sessions</h3>
 <p>After the next start, plots embedded into the worksheet will be created with this size if the value of <code>wxplot_size</code> isn't changed by <em>maxima</em>.</p>
 <p>In order to set the plot size of a single graph only use the following notation can be used that sets a variable’s value for one command only:</p>
@@ -393,14 +393,14 @@ Default plot size for new &lt;em&gt;maxima&lt;/em&gt; sessions</h3>
 <div class="line">       x,-5,5</div>
 <div class="line">   )</div>
 <div class="line">), wxplot_size=[480,480]$</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md107"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md108"></a>
 Match parenthesis in text controls</h3>
 <p>This option enables two things:</p>
 <ul>
 <li>If an opening parenthesis, bracket, or double quote is entered <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> will insert a closing one after it.</li>
 <li>If text is selected if any of these keys is pressed the selected text will be put between the matched signs.</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md108"></a>
+<h3><a class="anchor" id="autotoc_md109"></a>
 Don't save the worksheet automatically</h3>
 <p>If this option is set, the file where the worksheet is will be overwritten only the request of the user. In case of a crash/power loss/... a recent backup copy is still made available in the temp directory, though.</p>
 <p>If this option isn't set <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> behaves more like a modern cellphone app:</p>
@@ -408,15 +408,15 @@ Don't save the worksheet automatically</h3>
 <li>Files are saved automatically on exit</li>
 <li>And the file will automatically be saved every 3 minutes.</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md109"></a>
+<h3><a class="anchor" id="autotoc_md110"></a>
 Where is the configuration saved?</h3>
 <p>If you are using Unix/Linux, the configuration information will be saved in a file <code>.<a class="el" href="classwxMaxima.html">wxMaxima</a></code> in your home directory (if you are using wxWidgets &lt; 3.1.1), or <code>.config/wxMaxima.conf</code> ((XDG-Standard) if wxWidgets &gt;= 3.1.1 is used). You can retrieve the wxWidgets version from the command <code>wxbuild_info();</code> or by using the menu option Help-&gt;About. <a href="https://www.wxwidgets.org/">wxWidgets</a> is the cross-platform GUI library, which is the base for <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> (therefore the <code>wx</code> in the name). (Since the filename starts with a dot, <code>.<a class="el" href="classwxMaxima.html">wxMaxima</a></code> or <code>.config</code> will be hidden).</p>
 <p>If you are using Windows, the configuration will be stored in the registry. You will find the entries for <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> at the following position in the registry: <code>HKEY_CURRENT_USER\Software\<a class="el" href="classwxMaxima.html">wxMaxima</a></code></p>
 <hr  />
-<h1><a class="anchor" id="autotoc_md111"></a>
+<h1><a class="anchor" id="autotoc_md113"></a>
 Extensions to &lt;em&gt;Maxima&lt;/em&gt;</h1>
 <p><em>WxMaxima</em> is primarily a graphical user interface for <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>. As such, its main purpose is to pass along commands to <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> and to report the results of executing those commands. In some cases, however, <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> adds functionality to <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>. <em>WxMaxima_’s ability to generate reports by exporting a workbook’s contents to HTML and LaTeX files has been mentioned. This section considers some ways that _wxMaxima</em> enhances the inclusion of graphics in a session.</p>
-<h2><a class="anchor" id="autotoc_md112"></a>
+<h2><a class="anchor" id="autotoc_md114"></a>
 Subscripted variables</h2>
 <p><code>wxsubscripts</code> specifies, if (and how) <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> will autosubscript variable names:</p>
 <p>If it is <code>false</code>, the functionality is off, <a class="el" href="classwxMaxima.html">wxMaxima</a> will not autosubscript part of variable names after an underscore.</p>
