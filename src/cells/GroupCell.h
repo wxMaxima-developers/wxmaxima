@@ -80,7 +80,7 @@ public:
   std::unique_ptr<Cell> Copy(GroupCell *group) const override;
   const CellTypeInfo &GetInfo() override;
   std::unique_ptr<GroupCell> CopyList() const;
-  ~GroupCell();
+  virtual ~GroupCell();
 
   // cppcheck-suppress duplInheritedMember
   GroupCell *first() const { return dynamic_cast<GroupCell*>(Cell::first()); }

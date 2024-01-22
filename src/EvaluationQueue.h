@@ -113,7 +113,7 @@ public:
         m_commands.back().AddEnding();
     }
 
-  ~EvaluationQueue()
+  virtual ~EvaluationQueue()
     {};
 
   //! Is GroupCell gr part of the evaluation queue?

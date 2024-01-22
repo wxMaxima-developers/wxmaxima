@@ -39,6 +39,7 @@ class TextCell : public Cell
 public:
   TextCell(GroupCell *group, Configuration *config, const wxString &text = {}, TextStyle style = TS_FUNCTION);
   TextCell(GroupCell *group, const TextCell &cell);
+  virtual ~TextCell(){}
   virtual const CellTypeInfo &GetInfo() override;
   std::unique_ptr<Cell> Copy(GroupCell *group) const override;
 

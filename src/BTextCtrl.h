@@ -40,7 +40,7 @@ public:
             const wxSize &size = wxDefaultSize,
             long style = 0);
 
-  ~BTextCtrl();
+  virtual ~BTextCtrl();
 
   void SetSkipTab(bool skip)
     {

@@ -192,7 +192,7 @@ public:
   //! Get the brush to be used for worksheet objects that provide a mouse-over tooltip
   wxBrush GetTooltipBrush() const {return m_tooltipBrush;}
 
-  ~Configuration();
+  virtual ~Configuration();
 
   /*! Where to store the configuration.
 
@@ -1262,7 +1262,7 @@ public:
       m_configuration = configuration;
       m_configuration->SetPrinting(true);
     }
-  ~Printing()
+  virtual ~Printing()
     {
       m_configuration->SetPrinting(false);
     }
@@ -1279,7 +1279,7 @@ public:
       m_configuration = configuration;
       m_configuration->ClipToDrawRegion(false);
     }
-  ~NoClipToDrawRegion()
+  virtual ~NoClipToDrawRegion()
     {
       m_configuration->ClipToDrawRegion(true);
     }

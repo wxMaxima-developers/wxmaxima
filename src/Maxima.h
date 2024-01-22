@@ -39,6 +39,7 @@
 #include <wx/timer.h>
 #include <memory>
 #include <thread>
+#include <atomic>
 #include <mutex>
 #include "Configuration.h"
 
@@ -49,8 +50,13 @@
  * socket I/O.
  *
  * It is a source of EVT_MAXIMA events, used to asynchronously
- * decouple the I/O from the front-end. In the future, this class could run
- * on a worker thread perhaps (after it'd do more work in string processing).
+ * decouple the I/O from the front-end. In the future, more of this class
+ * could run on a worker thread perhaps.
+ *
+ * What it already does do is that on incoming data it creates a worker
+ * thread that splits the incoming data into known XML tags maxima sends
+ * and misc text and sends each of these items in a separate
+ * EVT_MAXIMA to the wxMaxima main class
  */
 class Maxima : public wxEvtHandler
 {
@@ -58,7 +64,7 @@ public:
   //! Construct this object when a connection is received from Maxima.
   //! The argument should be socketServer.Accept();
   explicit Maxima(wxSocketBase *socket, Configuration *config);
-  ~Maxima() override;
+  virtual ~Maxima() override;
 
   wxSocketBase *Socket() const { return m_socket.get(); }
 
@@ -84,9 +90,35 @@ public:
   //! This is called from prompt recognizer code in the wxMaxima class.
   void ClearFirstPrompt() { m_first = false; }
 
+  enum EventCause {
+    //! There's still pending data coming from Maxima. The Data member is empty at the moment.
+    READ_PENDING,
+    //! Maxima has sent non-XML text
+    READ_MISC_TEXT,
+    XML_PROMPT,
+    XML_SUPPRESSOUTPUT,
+    XML_WXXMLSYMBOLS,
+    XML_VARIABLES,
+    XML_WATCH_VARIABLES_ADD,
+    XML_STATUSBAR,
+    XML_HTML_MANUAL_KEYWORDS,
+    XML_MATHS,
+    XML_WXXML_KEY,
+    //! Maxima has disconnected (possibly because the process had died).
+    DISCONNECTED,
+    //! A write to Maxima is still ongoing. We use this event to keep the traffic indicator alive.
+    WRITE_PENDING,
+    //! The transmission has failed - this is an unrecoverable error, most likely.
+    WRITE_ERROR,
+    STRING_FOR_XMLINSPECTOR,
+  };
+  void XmlInspectorActive(bool active){m_xmlInspector = active;}
 private:
+  bool m_xmlInspector = false;
+  void SendDataTowxMaxima();
   Configuration *m_configuration;
   std::thread m_readerTask;
+  std::mutex m_socketLock;
   //! Handles events on the open client socket
   void SocketEvent(wxSocketEvent &event);
   //! Handles timer events
@@ -102,41 +134,15 @@ private:
   bool m_first = true;
   bool m_pipeToStderr = false;
 
-  wxTimer m_stringEndTimer{this};
+  // Send m_socketInputData to wxMaxima, except if we are waiting to the end of the current tag.
+  void SendToWxMaxima();
+  
   wxTimer m_readIdleTimer{this};
+  //! The names of maxima tags we want to send to wxMaxima in whole
+  static std::unordered_map<wxString, EventCause, wxStringHash> m_knownTags;
+  //! True = abort the reader thread as fast as possible since new data has arrived.
+  std::atomic_bool m_abortReaderThread;
 };
 
-class MaximaEvent : public wxEvent
-{
-public:
-  enum Cause {
-    //! There's still pending data coming from Maxima. The Data member is empty at the moment.
-    READ_PENDING,
-    //! A complete response has been read from Maxima.
-    READ_DATA,
-    //! Reading from Maxima had timed out while awaiting an end marker - partial response is provided.
-    READ_TIMEOUT,
-    //! Maxima has disconnected (possibly because the process had died).
-    DISCONNECTED,
-    //! A write to Maxima is still ongoing. We use this event to keep the traffic indicator alive.
-    WRITE_PENDING,
-    //! The transmission has failed - this is an unrecoverable error, most likely.
-    WRITE_ERROR,
-  };
-  MaximaEvent(Cause cause, Maxima *source);
-  MaximaEvent(Cause cause, Maxima *source, wxString &&data);
-  wxEvent *Clone() const override;
-  Cause GetCause() const { return m_cause; }
-  Maxima *GetSource() const { return m_source; }
-  const wxString &GetData() const { return m_data; }
-  wxString &GetData() { return m_data; }
-  void SetData(const wxString &data) { m_data = data; }
-private:
-  Cause m_cause;
-  Maxima *m_source;
-  wxString m_data;
-};
-
-wxDECLARE_EVENT(EVT_MAXIMA, MaximaEvent);
-
+wxDECLARE_EVENT(EVT_MAXIMA, wxThreadEvent);
 #endif

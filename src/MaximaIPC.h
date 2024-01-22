@@ -47,7 +47,7 @@ public:
    *
    * Since it may be unsafe, it must be enabled via command line.
    */
-  void ReadInputData(wxString &data);
+  void ReadInputData(const wxString &data);
   static void EnableIPC() { m_enabled = true; }
   static bool  GetEnableIPC() { return m_enabled; }
 

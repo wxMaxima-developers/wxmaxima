@@ -37,7 +37,7 @@ class ThreadNumberLimiter
 {
 public:
   explicit ThreadNumberLimiter(bool *running = NULL);
-  ~ThreadNumberLimiter();
+  virtual ~ThreadNumberLimiter();
 private:
   static int m_numberOfBackgroundThreads;
   static std::mutex m_mutex;

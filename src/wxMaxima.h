@@ -75,7 +75,6 @@
 #define MAXIMAPOLLMSECS 2000
 
 class Maxima; // The Maxima process interface
-class MaximaEvent;
 
 /* The top-level window and the main application logic
 
@@ -346,16 +345,6 @@ protected:
     is too busy to execute the idle task at all.
   */
   void OnIdle(wxIdleEvent &event);
-  /*! Read and interpret the new data from maxima
-
-    We don't interpret this data directly in the idle event since if we
-    block somewhere in the idle event we block gnome.
-    \return
-    - true, if there was new data
-    - false, if there wasn't any new data.
-  */
-  bool InterpretDataFromMaxima(const wxString &newData);
-  bool InterpretDataFromMaxima();
   bool m_dataFromMaximaIs;
 
   void MenuCommand(const wxString &cmd);           //!< Inserts command cmd into the worksheet
@@ -404,7 +393,7 @@ protected:
   void OnMaximaConnect();
 
   //! Maxima sends or receives data, or disconnects
-  void MaximaEvent(::MaximaEvent &event);
+  void MaximaEvent(wxThreadEvent &event);
 
   //! Server event: Maxima connects
   void ServerEvent(wxSocketEvent &event);
@@ -507,18 +496,7 @@ protected:
     \param data The string ReadFirstPrompt() does read its data from.
     After leaving this function data is empty again.
   */
-  void ReadFirstPrompt(wxString &data);
-
-  /*! Reads an XML tag or a piece of status text from maxima's output
-
-    \todo Is there any way to handle the (perhaps, thanks to the flush commands in maxima)
-    theoretical case that maxima might stop sending data in the middle of an XML tag
-    and then resume sending data with the next XML packet?
-  */
-  bool ParseNextChunkFromMaxima(wxString &data);
-
-  //! Find the end of a tag in wxMaxima's output.
-  long FindTagEnd(const wxString &data, const wxString &tag);
+  void ReadFirstPrompt(const wxString &data);
 
   /*! Reads text that isn't enclosed between xml tags.
 
@@ -533,16 +511,16 @@ protected:
 
     After processing the input prompt it is removed from data.
   */
-  void ReadPrompt(wxString &data);
+  void ReadPrompt(const wxString &data);
 
   /*! Reads the output of wxstatusbar() commands
 
     wxstatusbar allows the user to give and update visual feedback from long-running
     commands and makes sure this feedback is deleted once the command is finished.
   */
-  void ReadStatusBar(wxString &data);
+  void ReadStatusBar(const wxXmlDocument &xmldoc);
   //! Read a manual topic name so we can jump to the right documentation page
-  void ReadManualTopicNames(wxString &data);
+  void ReadManualTopicNames(const wxXmlDocument &xmldoc);
 
   /*! Reads the math cell's contents from Maxima.
 
@@ -552,26 +530,26 @@ protected:
 
     After processing the status bar marker is removed from data.
   */
-  void ReadMath(wxString &data);
+  void ReadMath(const wxString &data);
 
   /*! Reads autocompletion templates we get on definition of a function or variable
 
     After processing the templates they are removed from data.
   */
 
-  void ReadMaximaIPC(wxString &data){m_ipc.ReadInputData(data);}
-  void ReadLoadSymbols(wxString &data);
+  void ReadMaximaIPC(const wxString &data){m_ipc.ReadInputData(data);}
+  void ReadLoadSymbols(const wxXmlDocument &data);
 
   //! Read (and discard) suppressed output
-  void ReadSuppressedOutput(wxString &data);
+  void ReadSuppressedOutput(const wxString &data);
 
   /*! Reads the variable values maxima advertises to us
    */
-  void ReadVariables(wxString &data);
+  void ReadVariables(const wxXmlDocument &xmldoc);
 
   /*! Reads the "add variable to watch list" tag maxima can send us
    */
-  void ReadAddVariables(wxString &data);
+  void ReadAddVariables(const wxXmlDocument &xmldoc);
   //! Called if maxima tells us the value of the maxima variable gentranlang.
   void VariableActionGentranlang(const wxString &value);
   //! Called if maxima tells us the value of the maxima variable numer.
@@ -760,18 +738,8 @@ protected:
   wxInputStream *m_maximaStdout;
   //! The stderr of the maxima process
   wxInputStream *m_maximaStderr;
+  //! The port the actual maxima process (not its wrapper script) runs at
   int m_port;
-  /*! The end of Maxima's current uninterpreted output, see m_currentOutput.
-
-    If we just want to look if Maxima's current output contains an ending tag
-    this is the place we can search in fast.
-
-    wxEmptyString means that the current output isn't long enough to make
-    creating this string worthwhile.
-  */
-  wxString m_currentOutputEnd;
-  //! All from maxima's current output we still haven't interpreted
-  wxString m_currentOutput;
   //! A marker for the start of maths
   static wxString m_mathPrefix1;
   //! A marker for the start of maths
@@ -867,15 +835,11 @@ private:
   //! The value of maxima's logexpand variable
   wxString m_logexpand;
   //! A pointer to a method that handles a text chunk
-  typedef void (wxMaxima::*ParseFunction)(wxString &s);
   typedef void (wxMaxima::*VarReadFunction)(const wxString &value);
   typedef void (wxMaxima::*VarUndefinedFunction)();
-  typedef std::unordered_map <wxString, ParseFunction, wxStringHash> ParseFunctionHash;
   typedef std::unordered_map <wxString, VarReadFunction, wxStringHash> VarReadFunctionHash;
   typedef std::unordered_map <wxString, VarUndefinedFunction,
                               wxStringHash> VarUndefinedFunctionHash;
-  //! A list of XML tags we know and what we want to do if we encounter them
-  static ParseFunctionHash m_knownXMLTags;
   //! A list of actions we want to execute if we are sent the contents of specific variables
   static VarReadFunctionHash m_variableReadActions;
   //! A list of actions we want to execute if certain variables are undefined;

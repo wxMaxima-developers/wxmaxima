@@ -91,18 +91,31 @@ void AutoComplete::AddSymbols(wxString xml) {
   wxLogMessage(_("Scheduling a background task that compiles a new list "
                  "of autocompletable maxima commands."));
 
-  wxString sharedir = m_configuration->MaximaShareDir();
-  sharedir.Replace("\n", "");
-  sharedir.Replace("\r", "");
+  m_addSymbols_backgroundThread = std::thread(&AutoComplete::AddSymbols_Backgroundtask_string,
+                                              this, std::move(xml));
+}
 
+void AutoComplete::AddSymbols(wxXmlDocument xml) {
+  if(m_addSymbols_backgroundThread.joinable())
+    {
+      wxLogMessage(_("Waiting for m_addSymbols_backgroundThread to finish"));
+      m_addSymbols_backgroundThread.join();
+    }
+  wxLogMessage(_("Scheduling a background task that compiles a new list "
+                 "of autocompletable maxima commands."));
+  
   m_addSymbols_backgroundThread = std::thread(&AutoComplete::AddSymbols_Backgroundtask,
                                               this, std::move(xml));
 }
 
-void AutoComplete::AddSymbols_Backgroundtask(wxString xml) {
+void AutoComplete::AddSymbols_Backgroundtask_string(wxString xml) {
   wxXmlDocument xmldoc;
   wxStringInputStream xmlStream(xml);
   xmldoc.Load(xmlStream, wxS("UTF-8"));
+  AddSymbols_Backgroundtask(xmldoc);
+}
+
+void AutoComplete::AddSymbols_Backgroundtask(wxXmlDocument xmldoc) {
   wxXmlNode *node = xmldoc.GetRoot();
   if (node != NULL) {
     wxXmlNode *children = node->GetChildren();

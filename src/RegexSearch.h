@@ -55,7 +55,7 @@ public:
     bool m_found = false;
   };
   explicit RegexSearch(wxString regex);
-  ~RegexSearch();
+  virtual ~RegexSearch();
   Match FindNext(wxString string, std::size_t start);
   Match FindNext_Reverse(wxString string, std::size_t start);
   Match Replace(wxString *string, std::size_t start, wxString replacement);

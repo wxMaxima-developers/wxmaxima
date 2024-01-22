@@ -96,7 +96,7 @@ public:
   Image(Configuration *config, const Image &image);
   Image(const Image &image) = delete;
 
-  ~Image();
+  virtual ~Image();
 
   //! Converts rgba data to a wxBitmap
   static wxBitmap RGBA2wxBitmap(const unsigned char imgdata[],

@@ -53,7 +53,7 @@ public:
                         wxWindow *parent = NULL,
                         int flags = wxICON_INFORMATION);
   //! A destructor that also closes the notification
-  ~Notification() { Notification::Close(); }
+  virtual ~Notification() { Notification::Close(); }
   //! Informs the notification which the main window is it notified for.
   void SetParent(wxWindow *parent);
   //! Returns a pointer to the main window or NULL, if no main window is set.
