@@ -393,7 +393,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>TreeUndo_ClearBuffers
 <tr class="memdesc:a7ba34e68818f5c6b3374773683e5710c"><td class="mdescLeft">&#160;</td><td class="mdescRight">The constructor.  <a href="classWorksheet.html#a7ba34e68818f5c6b3374773683e5710c">More...</a><br /></td></tr>
 <tr class="separator:a7ba34e68818f5c6b3374773683e5710c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a17069f8e054407fb170285892fc99349"><td class="memItemLeft" align="right" valign="top"><a id="a17069f8e054407fb170285892fc99349"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a17069f8e054407fb170285892fc99349">~Worksheet</a> ()</td></tr>
+virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a17069f8e054407fb170285892fc99349">~Worksheet</a> ()</td></tr>
 <tr class="memdesc:a17069f8e054407fb170285892fc99349"><td class="mdescLeft">&#160;</td><td class="mdescRight">The destructor. <br /></td></tr>
 <tr class="separator:a17069f8e054407fb170285892fc99349"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af21f9a0b000b43f620e3daa0ceaabeb6"><td class="memItemLeft" align="right" valign="top"><a id="af21f9a0b000b43f620e3daa0ceaabeb6"></a>
@@ -871,6 +871,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a17b11b274e07998d2a80725ab93efb13">AddSymbols</a> (wxString xml)</td></tr>
 <tr class="memdesc:a17b11b274e07998d2a80725ab93efb13"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a xml-encoded list of symbols to the autocompletion list. <br /></td></tr>
 <tr class="separator:a17b11b274e07998d2a80725ab93efb13"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2cb1429aeb617ec09d17eb99fba3a5f2"><td class="memItemLeft" align="right" valign="top"><a id="a2cb1429aeb617ec09d17eb99fba3a5f2"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a2cb1429aeb617ec09d17eb99fba3a5f2">AddSymbols</a> (wxXmlDocument xml)</td></tr>
+<tr class="memdesc:a2cb1429aeb617ec09d17eb99fba3a5f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a xml-encoded list of symbols to the autocompletion list. <br /></td></tr>
+<tr class="separator:a2cb1429aeb617ec09d17eb99fba3a5f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad39d17bf822fb0ba58ca0e658640c04a"><td class="memItemLeft" align="right" valign="top"><a id="ad39d17bf822fb0ba58ca0e658640c04a"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>SetActiveCellText</b> (const wxString &amp;text)</td></tr>
 <tr class="separator:ad39d17bf822fb0ba58ca0e658640c04a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1065,7 +1069,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </div><div class="memdoc">
 
 <p>Can we merge the selected cells into one? </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000015">Todo:</a></b></dt><dd>Does it make sense to make to allow the text of sections and image cells with math cells? </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000013">Todo:</a></b></dt><dd>Does it make sense to make to allow the text of sections and image cells with math cells? </dd></dl>
 
 </div>
 </div>
@@ -1251,7 +1255,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </div><div class="memdoc">
 
 <p>Export the file to an html document. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000017">Todo:</a></b></dt><dd><a class="el" href="classWorksheet.html" title="The canvas that contains the spreadsheet the whole program is about.">Worksheet</a> and text cell background work fine, but their names might be interchanged. </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000015">Todo:</a></b></dt><dd><a class="el" href="classWorksheet.html" title="The canvas that contains the spreadsheet the whole program is about.">Worksheet</a> and text cell background work fine, but their names might be interchanged. </dd></dl>
 
 </div>
 </div>
@@ -1300,7 +1304,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </div><div class="memdoc">
 
 <p>Export a region of the file to a .wxm or .mac file maxima's load command can read. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000018">Todo:</a></b></dt><dd>Slow: Iterates through a string using [] instead of using an iterator. </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000016">Todo:</a></b></dt><dd>Slow: Iterates through a string using [] instead of using an iterator. </dd></dl>
 
 </div>
 </div>
@@ -1395,7 +1399,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </div><div class="memdoc">
 
 <p>Do an incremental search from the cursor or the point the last search started at. </p>
-<p>Used by the find dialog. </p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000020">Todo:</a></b></dt><dd>Keep a list of positions the last few letters were found at? </dd></dl>
+<p>Used by the find dialog. </p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000018">Todo:</a></b></dt><dd>Keep a list of positions the last few letters were found at? </dd></dl>
 
 </div>
 </div>
@@ -2125,7 +2129,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </div><div class="memdoc">
 
 <p>Scrolls to a point on the worksheet. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000019">Todo:</a></b></dt><dd>I have deactivated this assert for the release as it scares the users in a case we don't seem to have a problem. But we perhaps should try to find out why it is triggered.</dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000017">Todo:</a></b></dt><dd>I have deactivated this assert for the release as it scares the users in a case we don't seem to have a problem. But we perhaps should try to find out why it is triggered.</dd></dl>
 <p>Test case:</p><ul>
 <li>Create a code cell</li>
 <li>Press the "hide all code cells" button.</li>

@@ -227,7 +227,7 @@ $(function() {
 <div class="line"><a name="l00191"></a><span class="lineno"><a class="line" href="classConfiguration.html#aa8a524a68b4296705f3b01bd6a8be3c5">  191</a></span>&#160;  wxBrush <a class="code" href="classConfiguration.html#aa8a524a68b4296705f3b01bd6a8be3c5">GetBackgroundBrush</a>()<span class="keyword"> const </span>{<span class="keywordflow">return</span> m_BackgroundBrush;}</div>
 <div class="line"><a name="l00193"></a><span class="lineno"><a class="line" href="classConfiguration.html#a32b9b2837635a9247dec55a86d784ba9">  193</a></span>&#160;  wxBrush <a class="code" href="classConfiguration.html#a32b9b2837635a9247dec55a86d784ba9">GetTooltipBrush</a>()<span class="keyword"> const </span>{<span class="keywordflow">return</span> m_tooltipBrush;}</div>
 <div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160; </div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;  ~<a class="code" href="classConfiguration.html">Configuration</a>();</div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;  <span class="keyword">virtual</span> ~<a class="code" href="classConfiguration.html">Configuration</a>();</div>
 <div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160; </div>
 <div class="line"><a name="l00201"></a><span class="lineno"><a class="line" href="classConfiguration.html#ab8f221b042a343fa625bf28c347468e4">  201</a></span>&#160;  <span class="keyword">static</span> wxString <a class="code" href="classConfiguration.html#ab8f221b042a343fa625bf28c347468e4">m_configfileLocation_override</a>;</div>
 <div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160; </div>
@@ -1047,7 +1047,7 @@ $(function() {
 <div class="line"><a name="l01262"></a><span class="lineno"> 1262</span>&#160;      m_configuration = configuration;</div>
 <div class="line"><a name="l01263"></a><span class="lineno"> 1263</span>&#160;      m_configuration-&gt;<a class="code" href="classConfiguration.html#a3fa0f73520c7f84e872fa0839e89fe06">SetPrinting</a>(<span class="keyword">true</span>);</div>
 <div class="line"><a name="l01264"></a><span class="lineno"> 1264</span>&#160;    }</div>
-<div class="line"><a name="l01265"></a><span class="lineno"> 1265</span>&#160;  ~<a class="code" href="classPrinting.html">Printing</a>()</div>
+<div class="line"><a name="l01265"></a><span class="lineno"> 1265</span>&#160;  <span class="keyword">virtual</span> ~<a class="code" href="classPrinting.html">Printing</a>()</div>
 <div class="line"><a name="l01266"></a><span class="lineno"> 1266</span>&#160;    {</div>
 <div class="line"><a name="l01267"></a><span class="lineno"> 1267</span>&#160;      m_configuration-&gt;<a class="code" href="classConfiguration.html#a3fa0f73520c7f84e872fa0839e89fe06">SetPrinting</a>(<span class="keyword">false</span>);</div>
 <div class="line"><a name="l01268"></a><span class="lineno"> 1268</span>&#160;    }</div>
@@ -1063,7 +1063,7 @@ $(function() {
 <div class="line"><a name="l01279"></a><span class="lineno"> 1279</span>&#160;      m_configuration = configuration;</div>
 <div class="line"><a name="l01280"></a><span class="lineno"> 1280</span>&#160;      m_configuration-&gt;<a class="code" href="classConfiguration.html#aa08122a12605de9fefa0c6be0ced8347">ClipToDrawRegion</a>(<span class="keyword">false</span>);</div>
 <div class="line"><a name="l01281"></a><span class="lineno"> 1281</span>&#160;    }</div>
-<div class="line"><a name="l01282"></a><span class="lineno"> 1282</span>&#160;  ~<a class="code" href="classNoClipToDrawRegion.html">NoClipToDrawRegion</a>()</div>
+<div class="line"><a name="l01282"></a><span class="lineno"> 1282</span>&#160;  <span class="keyword">virtual</span> ~<a class="code" href="classNoClipToDrawRegion.html">NoClipToDrawRegion</a>()</div>
 <div class="line"><a name="l01283"></a><span class="lineno"> 1283</span>&#160;    {</div>
 <div class="line"><a name="l01284"></a><span class="lineno"> 1284</span>&#160;      m_configuration-&gt;<a class="code" href="classConfiguration.html#aa08122a12605de9fefa0c6be0ced8347">ClipToDrawRegion</a>(<span class="keyword">true</span>);</div>
 <div class="line"><a name="l01285"></a><span class="lineno"> 1285</span>&#160;    }</div>

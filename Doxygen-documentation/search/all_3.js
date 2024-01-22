@@ -22,7 +22,7 @@ var searchData=
   ['dirstructure_257',['Dirstructure',['../classDirstructure.html#a34b1650abc08ce6c71a1d6fec582bbc0',1,'Dirstructure::Dirstructure()'],['../classDirstructure.html',1,'Dirstructure']]],
   ['dirstructure_2ecpp_258',['Dirstructure.cpp',['../Dirstructure_8cpp.html',1,'']]],
   ['dirstructure_2eh_259',['Dirstructure.h',['../Dirstructure_8h.html',1,'']]],
-  ['disconnected_260',['DISCONNECTED',['../classMaximaEvent.html#a2ab45a3cb6d3f8cddb8ff9d70f371fe5af5dfdc9a270a5f09e34036249f83790a',1,'MaximaEvent']]],
+  ['disconnected_260',['DISCONNECTED',['../classMaxima.html#a01e208858ffeeb60e8a1787a580103c8ab062169d756676320e790966e56ad5ce',1,'Maxima']]],
   ['displaymode_261',['DisplayMode',['../classConfiguration.html#a54b9807f7e5401045540dbcee7fc95f6',1,'Configuration::DisplayMode() const'],['../classConfiguration.html#a81d9f75e756bc76137277469b7e08aeb',1,'Configuration::DisplayMode(mathDisplayMode mode)']]],
   ['divideatcaret_262',['DivideAtCaret',['../classEditorCell.html#a3a13960d95fcb9005187fcc395fd8e98',1,'EditorCell']]],
   ['dockallsidebars_263',['DockAllSidebars',['../classwxMaximaFrame.html#a9c781b7655fecb0a4987515342ec748d',1,'wxMaximaFrame']]],

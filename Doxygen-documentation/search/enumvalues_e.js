@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['write_5ferror_3391',['WRITE_ERROR',['../classMaximaEvent.html#a2ab45a3cb6d3f8cddb8ff9d70f371fe5a1c4d8eb451f551e07f8c700b72a82d69',1,'MaximaEvent']]],
-  ['write_5fpending_3392',['WRITE_PENDING',['../classMaximaEvent.html#a2ab45a3cb6d3f8cddb8ff9d70f371fe5ab38f486d812449a16439bb2d963ed778',1,'MaximaEvent']]]
+  ['write_5ferror_3382',['WRITE_ERROR',['../classMaxima.html#a01e208858ffeeb60e8a1787a580103c8a8711123903e89e9976049e9ec2a3ebec',1,'Maxima']]],
+  ['write_5fpending_3383',['WRITE_PENDING',['../classMaxima.html#a01e208858ffeeb60e8a1787a580103c8a058e131729ff28b6a0442db28c93799f',1,'Maxima']]]
 ];

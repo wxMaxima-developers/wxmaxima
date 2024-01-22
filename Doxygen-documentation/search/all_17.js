@@ -1,13 +1,13 @@
 var searchData=
 [
-  ['_7eautocomplete_1687',['~AutoComplete',['../classAutoComplete.html#a2779fd32c1ad5eb643463b6d3e20dafd',1,'AutoComplete']]],
-  ['_7ecell_1688',['~Cell',['../classCell.html#a9fa559f7a28e2b4336c6879ca09304d8',1,'Cell']]],
-  ['_7econfigdialogue_1689',['~ConfigDialogue',['../classConfigDialogue.html#ae03f1eccf899b2b04adb423f0a104a09',1,'ConfigDialogue']]],
-  ['_7eerrorredirector_1690',['~ErrorRedirector',['../classErrorRedirector.html#a3759256defa9ed1206e5d93483f091ee',1,'ErrorRedirector']]],
-  ['_7enotification_1691',['~Notification',['../classNotification.html#a46fd3a902eb1bc5e7edfdba2b2f8c392',1,'Notification']]],
-  ['_7erecentdocuments_1692',['~RecentDocuments',['../classRecentDocuments.html#acaec56fcee83dc7919e6eb88bdcf29fb',1,'RecentDocuments']]],
-  ['_7evariablespane_1693',['~Variablespane',['../classVariablespane.html#a24455eb3a4b44eff8ea4eed83015bab6',1,'Variablespane']]],
-  ['_7eworksheet_1694',['~Worksheet',['../classWorksheet.html#a17069f8e054407fb170285892fc99349',1,'Worksheet']]],
-  ['_7ewxmaximaframe_1695',['~wxMaximaFrame',['../classwxMaximaFrame.html#a184c356bdc682c194ec349fb58130de3',1,'wxMaximaFrame']]],
-  ['_7exmlinspector_1696',['~XmlInspector',['../classXmlInspector.html#a9d8cb605490465aad6e75c6fcaa45f92',1,'XmlInspector']]]
+  ['_7eautocomplete_1683',['~AutoComplete',['../classAutoComplete.html#a2779fd32c1ad5eb643463b6d3e20dafd',1,'AutoComplete']]],
+  ['_7ecell_1684',['~Cell',['../classCell.html#a9fa559f7a28e2b4336c6879ca09304d8',1,'Cell']]],
+  ['_7econfigdialogue_1685',['~ConfigDialogue',['../classConfigDialogue.html#ae03f1eccf899b2b04adb423f0a104a09',1,'ConfigDialogue']]],
+  ['_7eerrorredirector_1686',['~ErrorRedirector',['../classErrorRedirector.html#a3759256defa9ed1206e5d93483f091ee',1,'ErrorRedirector']]],
+  ['_7enotification_1687',['~Notification',['../classNotification.html#aa52a58a4842d10dd15e2b1da73fd2d95',1,'Notification']]],
+  ['_7erecentdocuments_1688',['~RecentDocuments',['../classRecentDocuments.html#a07fcb44d7e7e6e0a92805d7cb9780414',1,'RecentDocuments']]],
+  ['_7evariablespane_1689',['~Variablespane',['../classVariablespane.html#a24455eb3a4b44eff8ea4eed83015bab6',1,'Variablespane']]],
+  ['_7eworksheet_1690',['~Worksheet',['../classWorksheet.html#a17069f8e054407fb170285892fc99349',1,'Worksheet']]],
+  ['_7ewxmaximaframe_1691',['~wxMaximaFrame',['../classwxMaximaFrame.html#a184c356bdc682c194ec349fb58130de3',1,'wxMaximaFrame']]],
+  ['_7exmlinspector_1692',['~XmlInspector',['../classXmlInspector.html#a9d8cb605490465aad6e75c6fcaa45f92',1,'XmlInspector']]]
 ];

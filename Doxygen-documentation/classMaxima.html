@@ -62,6 +62,7 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a>  </div>
   <div class="headertitle">
 <div class="title">Maxima Class Reference</div>  </div>
@@ -85,6 +86,31 @@ Collaboration diagram for Maxima:</div>
 </div>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:a01e208858ffeeb60e8a1787a580103c8"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMaxima.html#a01e208858ffeeb60e8a1787a580103c8">EventCause</a> { <br />
+&#160;&#160;<a class="el" href="classMaxima.html#a01e208858ffeeb60e8a1787a580103c8a46c15ee0530754feaced0ef045889f20">READ_PENDING</a>
+, <a class="el" href="classMaxima.html#a01e208858ffeeb60e8a1787a580103c8abd3bebab2a70ef164bd89bf6d1320732">READ_MISC_TEXT</a>
+, <b>XML_PROMPT</b>
+, <b>XML_SUPPRESSOUTPUT</b>
+, <br />
+&#160;&#160;<b>XML_WXXMLSYMBOLS</b>
+, <b>XML_VARIABLES</b>
+, <b>XML_WATCH_VARIABLES_ADD</b>
+, <b>XML_STATUSBAR</b>
+, <br />
+&#160;&#160;<b>XML_HTML_MANUAL_KEYWORDS</b>
+, <b>XML_MATHS</b>
+, <b>XML_WXXML_KEY</b>
+, <a class="el" href="classMaxima.html#a01e208858ffeeb60e8a1787a580103c8ab062169d756676320e790966e56ad5ce">DISCONNECTED</a>
+, <br />
+&#160;&#160;<a class="el" href="classMaxima.html#a01e208858ffeeb60e8a1787a580103c8a058e131729ff28b6a0442db28c93799f">WRITE_PENDING</a>
+, <a class="el" href="classMaxima.html#a01e208858ffeeb60e8a1787a580103c8a8711123903e89e9976049e9ec2a3ebec">WRITE_ERROR</a>
+, <b>STRING_FOR_XMLINSPECTOR</b>
+<br />
+ }</td></tr>
+<tr class="separator:a01e208858ffeeb60e8a1787a580103c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a276c070c35c3cc8d31593de9aab92edc"><td class="memItemLeft" align="right" valign="top"><a id="a276c070c35c3cc8d31593de9aab92edc"></a>
@@ -111,12 +137,43 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMaxima.html#afb674371bf8cdadfb05e772ec7b51dd0">ClearFirstPrompt</a> ()</td></tr>
 <tr class="memdesc:afb674371bf8cdadfb05e772ec7b51dd0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear the first prompt state, based on what was read from maxima. This is called from prompt recognizer code in the <a class="el" href="classwxMaxima.html">wxMaxima</a> class. <br /></td></tr>
 <tr class="separator:afb674371bf8cdadfb05e772ec7b51dd0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1ca854a5456a6df1b10007a99d1e2f2c"><td class="memItemLeft" align="right" valign="top"><a id="a1ca854a5456a6df1b10007a99d1e2f2c"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>XmlInspectorActive</b> (bool active)</td></tr>
+<tr class="separator:a1ca854a5456a6df1b10007a99d1e2f2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Interface to the <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> process. </p>
 <p>Eventually this class will be the entire stand-alone <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> interface, factored out from <a class="el" href="classwxMaxima.html">wxMaxima</a>. For now, it only provides socket I/O.</p>
-<p>It is a source of EVT_MAXIMA events, used to asynchronously decouple the I/O from the front-end. In the future, this class could run on a worker thread perhaps (after it'd do more work in string processing). </p>
-</div><h2 class="groupheader">Member Function Documentation</h2>
+<p>It is a source of EVT_MAXIMA events, used to asynchronously decouple the I/O from the front-end. In the future, more of this class could run on a worker thread perhaps.</p>
+<p>What it already does do is that on incoming data it creates a worker thread that splits the incoming data into known XML tags maxima sends and misc text and sends each of these items in a separate EVT_MAXIMA to the <a class="el" href="classwxMaxima.html">wxMaxima</a> main class </p>
+</div><h2 class="groupheader">Member Enumeration Documentation</h2>
+<a id="a01e208858ffeeb60e8a1787a580103c8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a01e208858ffeeb60e8a1787a580103c8">&#9670;&nbsp;</a></span>EventCause</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="classMaxima.html#a01e208858ffeeb60e8a1787a580103c8">Maxima::EventCause</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a01e208858ffeeb60e8a1787a580103c8a46c15ee0530754feaced0ef045889f20"></a>READ_PENDING&#160;</td><td class="fielddoc"><p>There's still pending data coming from <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>. The Data member is empty at the moment. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a01e208858ffeeb60e8a1787a580103c8abd3bebab2a70ef164bd89bf6d1320732"></a>READ_MISC_TEXT&#160;</td><td class="fielddoc"><p><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> has sent non-XML text. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a01e208858ffeeb60e8a1787a580103c8ab062169d756676320e790966e56ad5ce"></a>DISCONNECTED&#160;</td><td class="fielddoc"><p><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> has disconnected (possibly because the process had died). </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a01e208858ffeeb60e8a1787a580103c8a058e131729ff28b6a0442db28c93799f"></a>WRITE_PENDING&#160;</td><td class="fielddoc"><p>A write to <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> is still ongoing. We use this event to keep the traffic indicator alive. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a01e208858ffeeb60e8a1787a580103c8a8711123903e89e9976049e9ec2a3ebec"></a>WRITE_ERROR&#160;</td><td class="fielddoc"><p>The transmission has failed - this is an unrecoverable error, most likely. </p>
+</td></tr>
+</table>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
 <a id="aeb45e2fda6a941f99aa9181b644c75be"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aeb45e2fda6a941f99aa9181b644c75be">&#9670;&nbsp;</a></span>Write()</h2>
 
