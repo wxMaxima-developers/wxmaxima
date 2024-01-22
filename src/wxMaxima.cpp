@@ -1845,11 +1845,11 @@ wxMaxima::~wxMaxima() {
   if (m_topLevelWindows.empty())
     {
       wxSocketBase::Shutdown();
-      wxExit();
+      //wxExit();
     }
   else {
     if (m_isLogTarget) {
-      m_topLevelWindows.back()->BecomeLogTarget();
+      //      m_topLevelWindows.back()->BecomeLogTarget();
     }
   }
 

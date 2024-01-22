@@ -495,7 +495,7 @@ void MyApp::NewWindow(const wxString &file, bool evalOnStartup,
     }
     initialContents += _(block);
   }
-  wxMaxima *frame = new wxMaxima(NULL, -1, title, file, initialContents);
+  wxMaxima *frame = new wxMaxima(NULL, wxID_ANY, title, file, initialContents);
 
   frame->EvalOnStartup(evalOnStartup);
   wxMaximaFrame::m_topLevelWindows.push_back(frame);
