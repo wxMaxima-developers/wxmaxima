@@ -300,11 +300,13 @@ void History::OnRegExEvent(wxCommandEvent &WXUNUSED(ev)) {
 
 wxString History::GetCommand(bool next) {
   if (m_commands.size() == 0)
-    return {};
+    return wxEmptyString;
 
   auto current = m_current + (next ? +1 : -1);
+  if (current >= m_history->GetCount()) current = 0;
+  if (current < 0) current = m_history->GetCount()-1;
   SetCurrent(current);
-  return m_history->GetString(m_current);
+  return m_history->GetString(current);
 }
 
 void History::SetCurrent(long current) {
