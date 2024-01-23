@@ -303,8 +303,8 @@ wxString History::GetCommand(bool next) {
     return wxEmptyString;
 
   auto current = m_current + (next ? +1 : -1);
-  if (current >= m_history->GetCount()) current = 0;
-  if (current < 0) current = m_history->GetCount()-1;
+  if (current >= m_history->GetCount()) current = m_history->GetCount()-1;
+  if (current < 0) current = 0;
   SetCurrent(current);
   return m_history->GetString(current);
 }
@@ -319,7 +319,7 @@ void History::SetCurrent(long current) {
   if (current == m_current)
     return;
 
-  if (current > 0) {
+  if (current >= 0) {
     m_current = current;
     m_history->EnsureVisible(m_current);
     UnselectAll();
