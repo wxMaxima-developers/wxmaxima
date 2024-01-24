@@ -195,8 +195,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
                    const wxString initialWorksheetContents,
                    const wxPoint pos, const wxSize size)
   : wxMaximaFrame(parent, id, title, pos, size,
-                  wxDEFAULT_FRAME_STYLE | wxSYSTEM_MENU | wxCAPTION,
-                  m_topLevelWindows.empty()),
+                  wxDEFAULT_FRAME_STYLE | wxSYSTEM_MENU | wxCAPTION),
     m_gnuplotcommand(wxS("gnuplot")),
     m_parser(&m_configuration) {
 #if wxUSE_ON_FATAL_EXCEPTION && wxUSE_CRASHREPORT
@@ -269,10 +268,6 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
       &wxMaxima::VariableActionSinnpiflagUndefined;
   }
 
-  // Needed for making wxSocket work for multiple threads. We currently don't
-  // use this feature. But it doesn't harm to be prepared
-  wxSocketBase::Initialize();
-
   // Will be corrected by ConfigChanged()
   m_maxOutputCellsPerCommand = -1;
   m_exitAfterEval = false;
@@ -280,7 +275,6 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   wxString lang;
   if (wxGetEnv("LANG", &lang))
     wxLogMessage("LANG=%s", lang.mb_str());
-  m_isLogTarget = m_topLevelWindows.empty();
   // Suppress window updates until this window has fully been created.
   // Not redrawing the window whilst constructing it hopefully speeds up
   // everything.
@@ -1835,24 +1829,9 @@ wxMaxima::~wxMaxima() {
   m_logPane->DropLogTarget();
 
   KillMaxima(false);
-  DelistTopLevelWindow(this);
   // If there is no window that can take over the log any more the program
   // is about to close and cannot instantiate new gui loggers.
-  if(m_topLevelWindows.size() < 1) {
-    wxLog::EnableLogging(false);
-  }
-
-  if (m_topLevelWindows.empty())
-    {
-      wxSocketBase::Shutdown();
-      //wxExit();
-    }
-  else {
-    if (m_isLogTarget) {
-      //      m_topLevelWindows.back()->BecomeLogTarget();
-    }
-  }
-
+  //    wxLog::EnableLogging(false);
   if(m_configuration.GetDebugmode() && (!Dirstructure::Get()->UserConfDir().IsEmpty()))
     {
       std::unordered_map<wxString, std::int_fast8_t, wxStringHash> knownWords;
@@ -2984,7 +2963,10 @@ void wxMaxima::ReadFirstPrompt(const wxString &data) {
         GetWorksheet()->OpenNextOrCreateCell();
     }
     if (m_exitAfterEval && GetWorksheet()->m_evaluationQueue.Empty())
-      Close();
+      {
+        SaveFile(false);
+        CallAfter([this]{Close();});
+      }
   } else
     TriggerEvaluation();
 }
@@ -3163,9 +3145,6 @@ void wxMaxima::ReadMath(const wxString &data) {
 }
 
 void wxMaxima::ReadSuppressedOutput(const wxString &data) {
-  if (!data.StartsWith(m_suppressOutputPrefix))
-    return;
-
   if(!m_maximaAuthenticated)
     {
       if(data.Find("</wxxml-key>") != wxNOT_FOUND) {
@@ -3771,8 +3750,6 @@ bool wxMaxima::QueryVariableValue() {
  */
 void wxMaxima::ReadPrompt(const wxString &data) {
   m_evalOnStartup = false;
-  if (!data.StartsWith(m_promptPrefix))
-    return;
 
   GetWorksheet()->SetCurrentTextCell(nullptr);
 
@@ -3827,10 +3804,6 @@ void wxMaxima::ReadPrompt(const wxString &data) {
         GetWorksheet()->ClearSelection();
       }
       GetWorksheet()->FollowEvaluation(false);
-      if (m_exitAfterEval) {
-        SaveFile(false);
-        Close();
-      }
       // Inform the user that the evaluation queue is empty.
       EvaluationQueueLength(0);
       GetWorksheet()->SetWorkingGroup(nullptr);
@@ -3852,8 +3825,6 @@ void wxMaxima::ReadPrompt(const wxString &data) {
         GetWorksheet()->OpenNextOrCreateCell();
     }
 
-    if (m_exitAfterEval && GetWorksheet()->m_evaluationQueue.Empty())
-      Close();
   } else { // We have a question
     GetWorksheet()->SetLastQuestion(label);
     GetWorksheet()->QuestionAnswered();
@@ -5795,7 +5766,7 @@ void wxMaxima::FileMenu(wxCommandEvent &event) {
 #endif
 
   if((event.GetId() == wxID_EXIT) || (event.GetId() == wxID_CLOSE)) {
-    Close();
+    CallAfter([this]{Close();});
   }
   else if(event.GetId() == wxID_OPEN) {
     if (SaveNecessary()) {
@@ -9428,11 +9399,11 @@ void wxMaxima::OnClose(wxCloseEvent &event) {
     event.Veto();
     return;
   }
-  if (event.GetEventType() == wxEVT_END_SESSION) {
-    KillMaxima();
-    if(m_process)
-      m_process->Detach();
-  }
+  // if (event.GetEventType() == wxEVT_END_SESSION) {
+  //   KillMaxima();
+  //   if(m_process)
+  //     m_process->Detach();
+  // }
 
   wxLogNull blocker;
   // We have saved the file and will close now => No need to have the
@@ -9453,16 +9424,6 @@ void wxMaxima::OnClose(wxCloseEvent &event) {
   event.Skip();
   if (m_fileSaved)
     RemoveTempAutosavefile();
-  DelistTopLevelWindow(this);
-}
-
-void wxMaxima::DelistTopLevelWindow(wxMaxima *window) {
-  auto pos =
-    std::find(m_topLevelWindows.begin(), m_topLevelWindows.end(), window);
-
-  // Paranoia: Only erase this window from the list if it was part of the list
-  if (pos != m_topLevelWindows.end())
-    m_topLevelWindows.erase(pos);
 }
 
 void wxMaxima::PopupMenu(wxCommandEvent &event) {
@@ -11028,23 +10989,10 @@ wxRegEx
 wxMaxima::m_gnuplotErrorRegex(wxS("\".*\\.gnuplot\", line [0-9][0-9]*: "));
 wxString wxMaxima::m_promptPrefix(wxS("<PROMPT>"));
 const wxString wxMaxima::m_promptSuffix(wxS("</PROMPT>"));
-wxString wxMaxima::m_suppressOutputPrefix(wxS("<suppressOutput>"));
-wxString wxMaxima::m_suppressOutputSuffix(wxS("</suppressOutput>"));
-wxString wxMaxima::m_symbolsPrefix(wxS("<wxxml-symbols>"));
-wxString wxMaxima::m_symbolsSuffix(wxS("</wxxml-symbols>"));
-wxString wxMaxima::m_variablesPrefix(wxS("<variables>"));
-wxString wxMaxima::m_variablesSuffix(wxS("</variables>"));
-wxString wxMaxima::m_addVariablesPrefix(wxS("<watch_variables_add>"));
-wxString wxMaxima::m_addVariablesSuffix(wxS("</watch_variables_add>"));
-wxString wxMaxima::m_statusbarPrefix(wxS("<statusbar>"));
-wxString wxMaxima::m_statusbarSuffix(wxS("</statusbar>\n"));
-wxString wxMaxima::m_jumpManualPrefix(wxS("<html-manual-keywords>"));
-wxString wxMaxima::m_jumpManualSuffix(wxS("</html-manual-keywords>\n"));
 wxString wxMaxima::m_mathPrefix1(wxS("<mth>"));
 wxString wxMaxima::m_mathPrefix2(wxS("<math>"));
-wxString wxMaxima::m_mathSuffix1(wxS("</mth>"));
-wxString wxMaxima::m_mathSuffix2(wxS("</math>"));
-wxString wxMaxima::m_emptywxxmlSymbols(wxS("<wxxml-symbols></wxxml-symbols>"));
+//wxString wxMaxima::m_mathSuffix1(wxS("</mth>"));
+//wxString wxMaxima::m_mathSuffix2(wxS("</math>"));
 wxString wxMaxima::m_firstPrompt(wxS("(%i1) "));
 wxMaxima::VarReadFunctionHash wxMaxima::m_variableReadActions;
 wxMaxima::VarUndefinedFunctionHash wxMaxima::m_variableUndefinedActions;

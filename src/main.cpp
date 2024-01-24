@@ -179,6 +179,10 @@ int WINAPI WinMain(_In_ HINSTANCE hI, _In_opt_ HINSTANCE hPrevI, _In_ LPSTR lpCm
 
 bool MyApp::OnInit() {
   wxLogStderr noErrorDialogs;
+  // Needed for making wxSocket work for multiple threads. We currently don't
+  // use this feature. But it doesn't harm to be prepared
+  wxSocketBase::Initialize();
+
   m_translations = std::unique_ptr<wxTranslations>(new wxTranslations());
   wxTranslations::Set(m_translations.get());
   // connect to wxMaxima. We therefore delay all output to the log until there
@@ -305,7 +309,7 @@ bool MyApp::OnInit() {
     std::cout << "A feature-rich graphical user interface for the computer "
       "algebra system Maxima\n";
     std::cout << cmdLineParser.GetUsageString();
-    exit(0);
+    wxExit();
   }
 
   if (cmdLineError != 0)
@@ -457,7 +461,7 @@ bool MyApp::OnInit() {
   return true;
 }
 
-int MyApp::OnExit() { return 0; }
+int MyApp::OnExit() { return wxMaxima::GetExitCode(); }
 
 int MyApp::OnRun() {
   wxLogStderr noErrorDialogs;
@@ -468,12 +472,12 @@ int MyApp::OnRun() {
 void MyApp::NewWindow(const wxString &file, bool evalOnStartup,
                       bool exitAfterEval, unsigned char *wxmData,
                       std::size_t wxmLen) {
-  int numberOfWindows = wxMaximaFrame::m_topLevelWindows.size();
 
   wxString title = _("wxMaxima");
   if (file.Length() > 0)
     title = file;
 
+  int numberOfWindows = 1; // TODO: Count
   if (numberOfWindows > 1)
     title = wxString::Format(_("wxMaxima %d"), numberOfWindows);
 
@@ -498,7 +502,6 @@ void MyApp::NewWindow(const wxString &file, bool evalOnStartup,
   wxMaxima *frame = new wxMaxima(NULL, wxID_ANY, title, file, initialContents);
 
   frame->EvalOnStartup(evalOnStartup);
-  wxMaximaFrame::m_topLevelWindows.push_back(frame);
   frame->ExitAfterEval(exitAfterEval);
   frame->Show(true);
   frame->ShowTip(false);
@@ -633,19 +636,8 @@ void MyApp::OnFileMenu(wxCommandEvent &ev) {
     configW->Destroy();
     wxConfig::Get()->Flush();
   }
-  else if(ev.GetId() ==  wxID_EXIT) {
-    for (wxMaximaFrame *win : wxMaximaFrame::m_topLevelWindows) {
-      wxASSERT(win);
-      wxCloseEvent *event = new wxCloseEvent(wxEVT_CLOSE_WINDOW);
-      event->SetCanVeto(true);
-      event->SetLoggingOff(false);
-      if(win)
-        win->GetEventHandler()->QueueEvent(event);
-    }
-    if (wxMaximaFrame::m_topLevelWindows.empty())
-      wxExit();
-  }
 }
+
 
 void MyApp::MacNewFile() {
   wxWindow *frame = GetTopWindow();

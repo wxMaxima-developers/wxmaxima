@@ -230,8 +230,6 @@ protected:
 
   wxString wxMaximaManualLocation();
 public:
-  //! The list of toplevel windows we currently maintain
-  static std::vector<wxMaximaFrame *> m_topLevelWindows;
 
   /*! Makes this window the debug log target of all windows from this maxima process
 

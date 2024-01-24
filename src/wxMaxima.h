@@ -190,6 +190,7 @@ public:
   //! The maxima command, if we use the --maxima=<str> command. If empty we use the configured path, not a command line option --maxima=<str>.
   static const wxString Get_Maxima_Commandline_Filename() {return maxima_command_line_filename;}
 
+  static int GetExitCode(){return m_exitCode;}
 
 private:
   //! If we use the command line option --maxima=<str>, this variable is not-empty and contains its name
@@ -204,7 +205,6 @@ private:
   //! The variable names to query for the variables pane and for internal reasons
   std::vector<wxString> m_varNamesToQuery;
 
-  bool m_isLogTarget;
   //! Is true if opening the file from the command line failed before updating the statusbar.
   bool m_openInitialFileError;
   //! Escape strings into a format lisp accepts
@@ -226,8 +226,6 @@ private:
   int m_oldFindFlags;
   //! On opening a new file we only need a new maxima process if the old one ever evaluated cells.
   bool m_hasEvaluatedCells;
-  //! Searches for maxima's output prompts
-//  static wxRegEx m_outputPromptRegEx;
   //! The number of output cells the current command has produced so far.
   long m_outputCellsFromCurrentCommand;
   //! The maximum number of lines per command we will display
@@ -255,7 +253,6 @@ private:
   wxString GetUnmatchedParenthesisState(wxString text, std::size_t &index);
   //! The buffer all text from maxima is stored in before converting it to a wxString.
   wxMemoryBuffer m_uncompletedChars;
-
 
 protected:
   //! Invoke our standard wizard that generates maxima commands
@@ -744,17 +741,11 @@ protected:
   static wxString m_mathPrefix1;
   //! A marker for the start of maths
   static wxString m_mathPrefix2;
-  //! A marker for the end of maths
-  static wxString m_mathSuffix1;
-  //! A marker for the end of maths
-  static wxString m_mathSuffix2;
   //! The marker for the start of a input prompt
   static wxString m_promptPrefix;
 public:
   //! The marker for the end of a input prompt
   const static wxString m_promptSuffix;
-  //! Remove the said window from the list of toplevel windows
-  static void DelistTopLevelWindow(wxMaxima *);
 protected:
     //! Is called when we get a new list of demo files
   //! Is called when we get a new list of demo files
@@ -768,38 +759,8 @@ protected:
 
   //! Sets gnuplot's command name and tries to determine gnuplot's path
   void GnuplotCommandName(wxString gnuplot);
-  //! The marker for the start of a variables section
-  static wxString m_variablesPrefix;
-  //! The marker for the end of a variables section
-  static wxString m_variablesSuffix;
-  //! The marker for the start of a prompt
-//  static wxString m_outputPromptPrefix;
-  //! The marker for the end of a prompt
-//  static wxString m_outputPromptSuffix;
-  //! The marker for the start of a variables section
-  static wxString m_statusbarPrefix;
-  //! The marker for the end of a variables section
-  static wxString m_statusbarSuffix;
-  //! The marker for the start of a "add variables" section
-  static wxString m_jumpManualPrefix;
-  //! The marker for the end of a variables section
-  static wxString m_jumpManualSuffix;
-  //! The marker for the start of a "add variables" section
-  static wxString m_addVariablesPrefix;
-  //! The marker for the end of a "add variables" section
-  static wxString m_addVariablesSuffix;
-  //! The marker for the start of a list of autocompletion templates
-  static wxString m_symbolsPrefix;
-  //! The marker for the end of a list of autocompletion templates
-  static wxString m_symbolsSuffix;
-  //! The marker that tells to start suppressing any output from maxima
-  static wxString m_suppressOutputPrefix;
-  //! The marker that tells to stop to suppress any output from maxima
-  static wxString m_suppressOutputSuffix;
   //! The first prompt maxima will output
   static wxString m_firstPrompt;
-  //! An empty wxxml symbols section
-  static wxString m_emptywxxmlSymbols;
   bool m_dispReadOut;               //!< what is displayed in statusbar
   int m_gnuplot_process_id;
   int m_maxima_process_id;

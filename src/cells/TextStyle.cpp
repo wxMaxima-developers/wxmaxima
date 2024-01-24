@@ -35,7 +35,6 @@
 #include <vector>
 #include <wx/fontenum.h>
 #include <wx/log.h>
-#include <wx/thread.h>
 #include <wx/translation.h>
 
 /*

@@ -635,9 +635,9 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event)) {
 
     m_lastTop = top;
     m_lastBottom = bottom;
-    for(auto &i:m_drawThreads)
-      if(i.joinable())
-        i.join();
+    // for(auto &i:m_drawThreads)
+    //   if(i.joinable())
+    //     i.join();
     region++;
   }
 

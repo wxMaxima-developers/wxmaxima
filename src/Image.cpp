@@ -809,7 +809,6 @@ void Image::LoadImage_Backgroundtask(std::unique_ptr<ThreadNumberLimiter> limite
           {
             wxMilliSleep(300);
             wxRemoveFile(image);
-            wxLogMessage("File %s cannot be deleted.", image.mb_str());
           }
         }
       }

@@ -2067,10 +2067,6 @@ void wxMaximaFrame::ReReadConfig() {
       config = NULL;
     }
 #endif
-  for(auto &window: m_topLevelWindows)
-    {
-      window->ReadConfig();
-    }
 }
 
 void wxMaximaFrame::RegisterAutoSaveFile() {
@@ -2176,6 +2172,3 @@ void wxMaximaFrame::BecomeLogTarget() {
   if (m_logPane != NULL)
     m_logPane->BecomeLogTarget();
 }
-
-
-std::vector<wxMaximaFrame *> wxMaximaFrame::m_topLevelWindows;

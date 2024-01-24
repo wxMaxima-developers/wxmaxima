@@ -41,7 +41,6 @@
 #include <wx/textfile.h>
 #include <wx/fdrepdlg.h>
 #include <wx/dc.h>
-#include <thread>
 #include <vector>
 #include <utility>
 #include <memory>
@@ -686,7 +685,7 @@ public:
   //! Is called if this element looses or gets the focus
   void OnActivate(wxActivateEvent &event);
 private:
-  std::vector<std::thread> m_drawThreads;
+//  std::vector<std::thread> m_drawThreads;
   static std::mutex m_drawDCLock;
   /*! The pointer to thesettings storage
    */

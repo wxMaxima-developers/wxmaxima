@@ -213,8 +213,8 @@ void Maxima::ReadSocket() {
   // The string we have received now is broken into tags by a background task before sending
   // it to wxMaxima
   m_abortReaderThread = false;
-  //m_readerTask = std::thread(&Maxima::SendToWxMaxima, this);
-  SendToWxMaxima();
+  m_readerTask = std::thread(&Maxima::SendToWxMaxima, this);
+  //SendToWxMaxima();
 }
 
 void Maxima::SendToWxMaxima()
