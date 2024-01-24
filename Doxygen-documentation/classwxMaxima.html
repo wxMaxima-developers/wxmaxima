@@ -267,10 +267,9 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 static const wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#a2ba85ccf1efa3e7b6b9bf283985f5ef0">Get_Maxima_Commandline_Filename</a> ()</td></tr>
 <tr class="memdesc:a2ba85ccf1efa3e7b6b9bf283985f5ef0"><td class="mdescLeft">&#160;</td><td class="mdescRight">The maxima command, if we use the &ndash;maxima=&lt;str&gt; command. If empty we use the configured path, not a command line option &ndash;maxima=&lt;str&gt;. <br /></td></tr>
 <tr class="separator:a2ba85ccf1efa3e7b6b9bf283985f5ef0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af932decfee7dc7f25d9dab2e33387439"><td class="memItemLeft" align="right" valign="top"><a id="af932decfee7dc7f25d9dab2e33387439"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#af932decfee7dc7f25d9dab2e33387439">DelistTopLevelWindow</a> (<a class="el" href="classwxMaxima.html">wxMaxima</a> *)</td></tr>
-<tr class="memdesc:af932decfee7dc7f25d9dab2e33387439"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove the said window from the list of toplevel windows. <br /></td></tr>
-<tr class="separator:af932decfee7dc7f25d9dab2e33387439"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae657182535f1c39deba3e78cb5589c83"><td class="memItemLeft" align="right" valign="top"><a id="ae657182535f1c39deba3e78cb5589c83"></a>
+static int&#160;</td><td class="memItemRight" valign="bottom"><b>GetExitCode</b> ()</td></tr>
+<tr class="separator:ae657182535f1c39deba3e78cb5589c83"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Data Fields</h2></td></tr>
@@ -292,10 +291,6 @@ Static Public Attributes</h2></td></tr>
 static const wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#acda83075adfcb1cfb18ff43912b770d5">m_promptSuffix</a></td></tr>
 <tr class="memdesc:acda83075adfcb1cfb18ff43912b770d5"><td class="mdescLeft">&#160;</td><td class="mdescRight">The marker for the end of a input prompt. <br /></td></tr>
 <tr class="separator:acda83075adfcb1cfb18ff43912b770d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0e4f0fb4403d3d31e711c5855ed811de"><td class="memItemLeft" align="right" valign="top"><a id="a0e4f0fb4403d3d31e711c5855ed811de"></a>
-static std::vector&lt; <a class="el" href="classwxMaximaFrame.html">wxMaximaFrame</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaximaFrame.html#a0e4f0fb4403d3d31e711c5855ed811de">m_topLevelWindows</a></td></tr>
-<tr class="memdesc:a0e4f0fb4403d3d31e711c5855ed811de"><td class="mdescLeft">&#160;</td><td class="mdescRight">The list of toplevel windows we currently maintain. <br /></td></tr>
-<tr class="separator:a0e4f0fb4403d3d31e711c5855ed811de"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-types"></a>
 Protected Types</h2></td></tr>
@@ -1248,73 +1243,14 @@ static wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el"
 static wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#ae87534d837f1f8bdfb620dfcda37e64b">m_mathPrefix2</a></td></tr>
 <tr class="memdesc:ae87534d837f1f8bdfb620dfcda37e64b"><td class="mdescLeft">&#160;</td><td class="mdescRight">A marker for the start of maths. <br /></td></tr>
 <tr class="separator:ae87534d837f1f8bdfb620dfcda37e64b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa03838590bb8c831681b6c8c94362eca"><td class="memItemLeft" align="right" valign="top"><a id="aa03838590bb8c831681b6c8c94362eca"></a>
-static wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#aa03838590bb8c831681b6c8c94362eca">m_mathSuffix1</a></td></tr>
-<tr class="memdesc:aa03838590bb8c831681b6c8c94362eca"><td class="mdescLeft">&#160;</td><td class="mdescRight">A marker for the end of maths. <br /></td></tr>
-<tr class="separator:aa03838590bb8c831681b6c8c94362eca"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1eaf1a5371c308c9a45b9c44124145d7"><td class="memItemLeft" align="right" valign="top"><a id="a1eaf1a5371c308c9a45b9c44124145d7"></a>
-static wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#a1eaf1a5371c308c9a45b9c44124145d7">m_mathSuffix2</a></td></tr>
-<tr class="memdesc:a1eaf1a5371c308c9a45b9c44124145d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">A marker for the end of maths. <br /></td></tr>
-<tr class="separator:a1eaf1a5371c308c9a45b9c44124145d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a26bec4420d1b8a5929e2d925641a4c45"><td class="memItemLeft" align="right" valign="top"><a id="a26bec4420d1b8a5929e2d925641a4c45"></a>
 static wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#a26bec4420d1b8a5929e2d925641a4c45">m_promptPrefix</a></td></tr>
 <tr class="memdesc:a26bec4420d1b8a5929e2d925641a4c45"><td class="mdescLeft">&#160;</td><td class="mdescRight">The marker for the start of a input prompt. <br /></td></tr>
 <tr class="separator:a26bec4420d1b8a5929e2d925641a4c45"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1a7ee5b1aecf7b625ac78570e0442f03"><td class="memItemLeft" align="right" valign="top"><a id="a1a7ee5b1aecf7b625ac78570e0442f03"></a>
-static wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#a1a7ee5b1aecf7b625ac78570e0442f03">m_variablesPrefix</a></td></tr>
-<tr class="memdesc:a1a7ee5b1aecf7b625ac78570e0442f03"><td class="mdescLeft">&#160;</td><td class="mdescRight">The marker for the start of a variables section. <br /></td></tr>
-<tr class="separator:a1a7ee5b1aecf7b625ac78570e0442f03"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2e8cb6813c29158f30c63dc565d0f847"><td class="memItemLeft" align="right" valign="top"><a id="a2e8cb6813c29158f30c63dc565d0f847"></a>
-static wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#a2e8cb6813c29158f30c63dc565d0f847">m_variablesSuffix</a></td></tr>
-<tr class="memdesc:a2e8cb6813c29158f30c63dc565d0f847"><td class="mdescLeft">&#160;</td><td class="mdescRight">The marker for the end of a variables section. <br /></td></tr>
-<tr class="separator:a2e8cb6813c29158f30c63dc565d0f847"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad714da9d045143ffb38e2f27ed0fabdb"><td class="memItemLeft" align="right" valign="top">static wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#ad714da9d045143ffb38e2f27ed0fabdb">m_statusbarPrefix</a></td></tr>
-<tr class="memdesc:ad714da9d045143ffb38e2f27ed0fabdb"><td class="mdescLeft">&#160;</td><td class="mdescRight">The marker for the start of a prompt.  <a href="classwxMaxima.html#ad714da9d045143ffb38e2f27ed0fabdb">More...</a><br /></td></tr>
-<tr class="separator:ad714da9d045143ffb38e2f27ed0fabdb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a76914c21703d281a6740e6681ef2cf0d"><td class="memItemLeft" align="right" valign="top"><a id="a76914c21703d281a6740e6681ef2cf0d"></a>
-static wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#a76914c21703d281a6740e6681ef2cf0d">m_statusbarSuffix</a></td></tr>
-<tr class="memdesc:a76914c21703d281a6740e6681ef2cf0d"><td class="mdescLeft">&#160;</td><td class="mdescRight">The marker for the end of a variables section. <br /></td></tr>
-<tr class="separator:a76914c21703d281a6740e6681ef2cf0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a83074aab5b8c3bb5a1099224edd3d7d2"><td class="memItemLeft" align="right" valign="top"><a id="a83074aab5b8c3bb5a1099224edd3d7d2"></a>
-static wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#a83074aab5b8c3bb5a1099224edd3d7d2">m_jumpManualPrefix</a></td></tr>
-<tr class="memdesc:a83074aab5b8c3bb5a1099224edd3d7d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">The marker for the start of a "add variables" section. <br /></td></tr>
-<tr class="separator:a83074aab5b8c3bb5a1099224edd3d7d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a405dfe60d3d7b3746c643e94de1e3098"><td class="memItemLeft" align="right" valign="top"><a id="a405dfe60d3d7b3746c643e94de1e3098"></a>
-static wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#a405dfe60d3d7b3746c643e94de1e3098">m_jumpManualSuffix</a></td></tr>
-<tr class="memdesc:a405dfe60d3d7b3746c643e94de1e3098"><td class="mdescLeft">&#160;</td><td class="mdescRight">The marker for the end of a variables section. <br /></td></tr>
-<tr class="separator:a405dfe60d3d7b3746c643e94de1e3098"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afaeac886eed1409f821aaf61707b5f56"><td class="memItemLeft" align="right" valign="top"><a id="afaeac886eed1409f821aaf61707b5f56"></a>
-static wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#afaeac886eed1409f821aaf61707b5f56">m_addVariablesPrefix</a></td></tr>
-<tr class="memdesc:afaeac886eed1409f821aaf61707b5f56"><td class="mdescLeft">&#160;</td><td class="mdescRight">The marker for the start of a "add variables" section. <br /></td></tr>
-<tr class="separator:afaeac886eed1409f821aaf61707b5f56"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a64189d0af6aa9dae2719f239a71ded89"><td class="memItemLeft" align="right" valign="top"><a id="a64189d0af6aa9dae2719f239a71ded89"></a>
-static wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#a64189d0af6aa9dae2719f239a71ded89">m_addVariablesSuffix</a></td></tr>
-<tr class="memdesc:a64189d0af6aa9dae2719f239a71ded89"><td class="mdescLeft">&#160;</td><td class="mdescRight">The marker for the end of a "add variables" section. <br /></td></tr>
-<tr class="separator:a64189d0af6aa9dae2719f239a71ded89"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaea71ad62772d13a3a747733b229a9f6"><td class="memItemLeft" align="right" valign="top"><a id="aaea71ad62772d13a3a747733b229a9f6"></a>
-static wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#aaea71ad62772d13a3a747733b229a9f6">m_symbolsPrefix</a></td></tr>
-<tr class="memdesc:aaea71ad62772d13a3a747733b229a9f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">The marker for the start of a list of autocompletion templates. <br /></td></tr>
-<tr class="separator:aaea71ad62772d13a3a747733b229a9f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adc2ab318f26d1651bb4055a6a64eb73a"><td class="memItemLeft" align="right" valign="top"><a id="adc2ab318f26d1651bb4055a6a64eb73a"></a>
-static wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#adc2ab318f26d1651bb4055a6a64eb73a">m_symbolsSuffix</a></td></tr>
-<tr class="memdesc:adc2ab318f26d1651bb4055a6a64eb73a"><td class="mdescLeft">&#160;</td><td class="mdescRight">The marker for the end of a list of autocompletion templates. <br /></td></tr>
-<tr class="separator:adc2ab318f26d1651bb4055a6a64eb73a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1efaa60e27222afe7176f8b26c9452be"><td class="memItemLeft" align="right" valign="top"><a id="a1efaa60e27222afe7176f8b26c9452be"></a>
-static wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#a1efaa60e27222afe7176f8b26c9452be">m_suppressOutputPrefix</a></td></tr>
-<tr class="memdesc:a1efaa60e27222afe7176f8b26c9452be"><td class="mdescLeft">&#160;</td><td class="mdescRight">The marker that tells to start suppressing any output from maxima. <br /></td></tr>
-<tr class="separator:a1efaa60e27222afe7176f8b26c9452be"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaa08b97eb89912a42e3ea739100365d9"><td class="memItemLeft" align="right" valign="top"><a id="aaa08b97eb89912a42e3ea739100365d9"></a>
-static wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#aaa08b97eb89912a42e3ea739100365d9">m_suppressOutputSuffix</a></td></tr>
-<tr class="memdesc:aaa08b97eb89912a42e3ea739100365d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">The marker that tells to stop to suppress any output from maxima. <br /></td></tr>
-<tr class="separator:aaa08b97eb89912a42e3ea739100365d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afbd55f4e27494e45a8744f0a3e70c2fd"><td class="memItemLeft" align="right" valign="top"><a id="afbd55f4e27494e45a8744f0a3e70c2fd"></a>
 static wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#afbd55f4e27494e45a8744f0a3e70c2fd">m_firstPrompt</a></td></tr>
 <tr class="memdesc:afbd55f4e27494e45a8744f0a3e70c2fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">The first prompt maxima will output. <br /></td></tr>
 <tr class="separator:afbd55f4e27494e45a8744f0a3e70c2fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a24f52aee4f55024e21d8253922d46ce7"><td class="memItemLeft" align="right" valign="top"><a id="a24f52aee4f55024e21d8253922d46ce7"></a>
-static wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#a24f52aee4f55024e21d8253922d46ce7">m_emptywxxmlSymbols</a></td></tr>
-<tr class="memdesc:a24f52aee4f55024e21d8253922d46ce7"><td class="mdescLeft">&#160;</td><td class="mdescRight">An empty wxxml symbols section. <br /></td></tr>
-<tr class="separator:a24f52aee4f55024e21d8253922d46ce7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad5349c6b78534bc2ed221a57097a427e"><td class="memItemLeft" align="right" valign="top"><a id="ad5349c6b78534bc2ed221a57097a427e"></a>
 static int&#160;</td><td class="memItemRight" valign="bottom"><b>m_exitCode</b> = 0</td></tr>
 <tr class="separator:ad5349c6b78534bc2ed221a57097a427e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2778,31 +2714,6 @@ Plot Slider</h2>
 
 <p>The server maxima connects to as client. </p>
 <p>The destructor of the server causes crashes if there are still pending events. Instead we need to call destroy. </p>
-
-</div>
-</div>
-<a id="ad714da9d045143ffb38e2f27ed0fabdb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad714da9d045143ffb38e2f27ed0fabdb">&#9670;&nbsp;</a></span>m_statusbarPrefix</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">wxString wxMaxima::m_statusbarPrefix</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>The marker for the start of a prompt. </p>
-<p>The marker for the end of a prompt The marker for the start of a variables section </p>
 
 </div>
 </div>
