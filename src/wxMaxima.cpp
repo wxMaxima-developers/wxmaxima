@@ -1824,7 +1824,9 @@ void wxMaxima::StartAutoSaveTimer() {
 }
 
 wxMaxima::~wxMaxima() {
+  Disconnect(wxEVT_END_PROCESS);
   Disconnect(EVT_MAXIMA);
+  Disconnect(wxEVT_TIMER);
   wxConfig::Get()->Write(wxS("Find/Flags"), m_findData.GetFlags());
   wxConfig::Get()->Write(wxS("Find/RegexSearch"), m_findData.GetRegexSearch());
   m_logPane->DropLogTarget();
