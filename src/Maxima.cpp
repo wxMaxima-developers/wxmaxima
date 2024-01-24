@@ -87,6 +87,9 @@ Maxima::Maxima(wxSocketBase *socket, Configuration *config) :
 }
 
 Maxima::~Maxima() {
+  Disconnect(wxEVT_TIMER);
+  Disconnect(wxEVT_SOCKET);
+  Disconnect(EVT_MAXIMA);
   m_abortReaderThread = true;
   if(m_readerTask.joinable())
     m_readerTask.join();
