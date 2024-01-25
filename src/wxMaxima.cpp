@@ -1845,9 +1845,12 @@ wxMaxima::~wxMaxima() {
     } 
   if(newLogTarget != NULL)
     dynamic_cast<wxMaxima *>(newLogTarget)->BecomeLogTarget();
-  // If there is no window that can take over the log any more the program
-  // is about to close and cannot instantiate new gui loggers.
-  //    wxLog::EnableLogging(false);
+  else
+    {    
+      // If there is no window that can take over the log any more the program
+      // is about to close and cannot instantiate new gui loggers.
+      wxLog::EnableLogging(false);
+    }
   if(m_configuration.GetDebugmode() && (!Dirstructure::Get()->UserConfDir().IsEmpty()))
     {
       std::unordered_map<wxString, std::int_fast8_t, wxStringHash> knownWords;
