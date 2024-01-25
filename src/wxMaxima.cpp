@@ -1834,6 +1834,19 @@ wxMaxima::~wxMaxima() {
   wxConfig::Get()->Write(wxS("Find/Flags"), m_findData.GetFlags());
   wxConfig::Get()->Write(wxS("Find/RegexSearch"), m_findData.GetRegexSearch());
   m_logPane->DropLogTarget();
+
+  wxWindow *newLogTarget = NULL;
+  wxWindowList::compatibility_iterator node = wxTopLevelWindows.GetFirst();
+  while (node)
+    {
+      if(this != node->GetData())
+        newLogTarget = node->GetData();
+      // do something with "win"
+
+      node = node->GetNext();
+    } 
+  if(newLogTarget != NULL)
+    dynamic_cast<wxMaxima *>(newLogTarget)->BecomeLogTarget();
   // If there is no window that can take over the log any more the program
   // is about to close and cannot instantiate new gui loggers.
   //    wxLog::EnableLogging(false);
