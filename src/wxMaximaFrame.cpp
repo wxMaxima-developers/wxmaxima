@@ -580,6 +580,7 @@ void wxMaximaFrame::StatusExportFailed() {
 }
 
 wxMaximaFrame::~wxMaximaFrame() {
+  m_bytesReadDisplayTimer.Stop();
   wxString perspective = m_manager.SavePerspective();
 
   wxConfig::Get()->Write(wxS("AUI/perspective"), perspective);

@@ -1824,14 +1824,16 @@ void wxMaxima::StartAutoSaveTimer() {
 }
 
 wxMaxima::~wxMaxima() {
+  KillMaxima(false);
   Disconnect(wxEVT_END_PROCESS);
   Disconnect(EVT_MAXIMA);
   Disconnect(wxEVT_TIMER);
+  m_maximaStdoutPollTimer.Stop();
+  m_autoSaveTimer.Stop();
+  m_fastResponseTimer.Stop();
   wxConfig::Get()->Write(wxS("Find/Flags"), m_findData.GetFlags());
   wxConfig::Get()->Write(wxS("Find/RegexSearch"), m_findData.GetRegexSearch());
   m_logPane->DropLogTarget();
-
-  KillMaxima(false);
   // If there is no window that can take over the log any more the program
   // is about to close and cannot instantiate new gui loggers.
   //    wxLog::EnableLogging(false);
@@ -9409,6 +9411,7 @@ void wxMaxima::OnClose(wxCloseEvent &event) {
   // }
 
   wxLogNull blocker;
+  KillMaxima(false);
   // We have saved the file and will close now => No need to have the
   // timer around any longer.
   m_autoSaveTimer.Stop();
