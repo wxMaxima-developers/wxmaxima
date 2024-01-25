@@ -1839,13 +1839,13 @@ wxMaxima::~wxMaxima() {
   wxWindowList::compatibility_iterator node = wxTopLevelWindows.GetFirst();
   while (node)
     {
-      if(this != node->GetData())
+      if(node->GetData() != this)
         newLogTarget = node->GetData();
       node = node->GetNext();
     } 
-  if(newLogTarget != NULL)
-    dynamic_cast<wxMaxima *>(newLogTarget)->BecomeLogTarget();
-  else
+  //  if(newLogTarget != NULL)
+  //    dynamic_cast<wxMaxima *>(newLogTarget)->BecomeLogTarget();
+  // else
     {    
       // If there is no window that can take over the log any more the program
       // is about to close and cannot instantiate new gui loggers.
