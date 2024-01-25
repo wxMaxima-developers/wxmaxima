@@ -1841,8 +1841,6 @@ wxMaxima::~wxMaxima() {
     {
       if(this != node->GetData())
         newLogTarget = node->GetData();
-      // do something with "win"
-
       node = node->GetNext();
     } 
   if(newLogTarget != NULL)

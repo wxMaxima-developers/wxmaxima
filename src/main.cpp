@@ -478,6 +478,13 @@ void MyApp::NewWindow(const wxString &file, bool evalOnStartup,
     title = file;
 
   int numberOfWindows = 1; // TODO: Count
+
+  wxWindowList::compatibility_iterator node = wxTopLevelWindows.GetFirst();
+  while (node) {
+    numberOfWindows++;
+    node = node->GetNext();
+  } 
+
   if (numberOfWindows > 1)
     title = wxString::Format(_("wxMaxima %d"), numberOfWindows);
 
