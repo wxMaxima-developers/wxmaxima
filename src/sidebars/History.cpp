@@ -42,7 +42,6 @@
 #include <wx/menu.h>
 #include <wx/sizer.h>
 #include <wx/txtstrm.h>
-#include <wx/wfstream.h>
 #include <wx/wupdlock.h>
 #include "../ErrorRedirector.h"
 History::History(wxWindow *parent, int id, Configuration *cfg)

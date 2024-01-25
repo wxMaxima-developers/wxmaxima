@@ -60,7 +60,6 @@
 #include "sidebars/UnicodeSidebar.h"
 #include "ToolBar.h"
 #include <thread>
-#include <vector>
 
 /*! The canvas that contains the spreadsheet the whole program is about.
 
