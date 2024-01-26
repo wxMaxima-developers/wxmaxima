@@ -108,6 +108,7 @@ Maxima::~Maxima() {
       m_socket->Write(buf.data(), buf.length());
     }
   m_socket->Close();
+  wxEvtHandler::DeletePendingEvents();
 }
 
 bool Maxima::Write(const void *buffer, std::size_t length) {
