@@ -3823,6 +3823,10 @@ void wxMaxima::ReadPrompt(const wxString &data) {
         GetWorksheet()->ClearSelection();
       }
       GetWorksheet()->FollowEvaluation(false);
+      if (m_exitAfterEval) {
+        SaveFile(false);
+        Close();
+      }
       // Inform the user that the evaluation queue is empty.
       EvaluationQueueLength(0);
       GetWorksheet()->SetWorkingGroup(nullptr);
@@ -3844,6 +3848,11 @@ void wxMaxima::ReadPrompt(const wxString &data) {
         GetWorksheet()->OpenNextOrCreateCell();
     }
 
+    if (m_exitAfterEval && GetWorksheet()->m_evaluationQueue.Empty())
+    {
+      SaveFile(false);
+      Close();
+    }
   } else { // We have a question
     GetWorksheet()->SetLastQuestion(label);
     GetWorksheet()->QuestionAnswered();
