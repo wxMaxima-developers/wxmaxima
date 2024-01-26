@@ -1,7 +1,7 @@
 # -*- mode: CMake; cmake-tab-width: 4; -*-
 
 # Compile a list of test files
-file(GLOB TEST_FILES automatic_test_files/*.png automatic_test_files/*.wxmx automatic_test_files/*.wxm automatic_test_files/*.mac automatic_test_files/*.cfg *.png testbench_simple.wxmx *.gif)
+file(GLOB TEST_FILES automatic_test_files/*.png automatic_test_files/*.wxmx automatic_test_files/*.wxm automatic_test_files/*.mac automatic_test_files/*.cfg testbench_simple.wxmx automatic_test_files/*.gif)
 
 find_program(MAXIMA maxima)
 execute_process(COMMAND ${MAXIMA} --version
