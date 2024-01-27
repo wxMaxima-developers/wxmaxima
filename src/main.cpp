@@ -318,7 +318,7 @@ bool MyApp::OnInit() {
   }
 
   if (cmdLineError != 0)
-    exit(-1);
+    exit(1);
 
   wxString ini, file;
   // Attention: The config file is changed by
