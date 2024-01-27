@@ -14,6 +14,7 @@
         <dir name="src/wizards/"/>
         <dir name="build/"/>
         <dir name="build/examples/"/>
+        <dir name="/usr/include/wx-3.2"/>
     </includedir>
     <defines>
         <define name="wxS(x)=x"/>
@@ -43,9 +44,11 @@
     <paths>
         <dir name="src/"/>
         <dir name="src/cells/"/>
-        <dir name="src/src/graphical_io/"/>
+        <dir name="src/graphical_io/"/>
         <dir name="src/utils/"/>
         <dir name="src/wizards/"/>
+        <dir name="src/dialogs/"/>
+        <dir name="src/sidebars/"/>
     </paths>
     <suppressions>
         <suppression>unusedFunction</suppression>

@@ -4963,10 +4963,10 @@ void wxMaxima::OnIdle(wxIdleEvent &event) {
   event.Skip();
 
   if (m_exitAfterEval && GetWorksheet()->m_evaluationQueue.Empty())
-    CallAfter([this]{
+    {
       SaveFile(false);
       CallAfter([this]{Close();});
-    });
+    }
 }
 
 bool wxMaxima::UpdateDrawPane() {
@@ -9413,7 +9413,7 @@ bool wxMaxima::SaveOnClose() {
 }
 
 void wxMaxima::OnClose(wxCloseEvent &event) {
-  if (!SaveOnClose()) {
+  if ((!SaveOnClose() && (event.CanVeto()))) {
     event.Veto();
     return;
   }
@@ -9440,9 +9440,9 @@ void wxMaxima::OnClose(wxCloseEvent &event) {
     wxTheClipboard->Flush();
     wxTheClipboard->Close();
   }
-  event.Skip();
   if (m_fileSaved)
     RemoveTempAutosavefile();
+  Destroy();
 }
 
 void wxMaxima::PopupMenu(wxCommandEvent &event) {
