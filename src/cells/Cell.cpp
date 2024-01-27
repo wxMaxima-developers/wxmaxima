@@ -304,7 +304,6 @@ void Cell::Draw(wxPoint point, wxDC *dc, wxDC *WXUNUSED(antialiassingDC)) {
         {
           wxASSERT(m_width  >= 0);
           wxASSERT(m_height >= 0);
-          wxASSERT(m_center >= 0);
         }
     }
   m_configuration->NotifyOfCellRedraw(this);
