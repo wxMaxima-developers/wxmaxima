@@ -209,10 +209,15 @@ void Image::GnuplotSource(wxString gnuplotFilename, wxString dataFilename,
   m_gnuplotData = std::move(dataFilename);
   std::unique_ptr<ThreadNumberLimiter> limiter(new
                                                ThreadNumberLimiter(&m_gnuplotDataThreadRunning));
-  m_loadGnuplotSourceTask = std::thread(&Image::LoadGnuplotSource_Backgroundtask,
-                                        this,
-                                        std::move(limiter),
-                                        m_gnuplotSource, m_gnuplotData, wxmxFile);
+  if(m_configuration->UseThreads())
+    m_loadGnuplotSourceTask = std::thread(&Image::LoadGnuplotSource_Backgroundtask,
+                                          this,
+                                          std::move(limiter),
+                                          m_gnuplotSource, m_gnuplotData, wxmxFile);
+  else
+    LoadGnuplotSource_Backgroundtask(
+      std::move(limiter),
+      m_gnuplotSource, m_gnuplotData, wxmxFile);
 }
 
 void Image::LoadGnuplotSource_Backgroundtask(
@@ -256,13 +261,20 @@ void Image::CompressedGnuplotSource(wxString gnuplotFilename, wxString dataFilen
 
   m_gnuplotSource = std::move(gnuplotFilename);
   m_gnuplotData = std::move(dataFilename);
-  m_loadGnuplotSourceTask =
-    std::thread(&Image::LoadCompressedGnuplotSource_Backgroundtask,
-                this,
-                std::move(limiter),
-                m_gnuplotSource,
-                m_gnuplotData,
-                wxmxFile);
+  if(m_configuration->UseThreads())
+    m_loadGnuplotSourceTask =
+      std::thread(&Image::LoadCompressedGnuplotSource_Backgroundtask,
+                  this,
+                  std::move(limiter),
+                  m_gnuplotSource,
+                  m_gnuplotData,
+                  wxmxFile);
+  else
+    LoadCompressedGnuplotSource_Backgroundtask(
+      std::move(limiter),
+      m_gnuplotSource,
+      m_gnuplotData,
+      wxmxFile);
   // Store the filenames without the ".gz".
   if(m_gnuplotSource.EndsWith(".gz"))
     m_gnuplotSource = m_gnuplotSource.Left(m_gnuplotSource.Length()-3);
@@ -766,13 +778,19 @@ void Image::LoadImage(wxString image, wxString wxmxFile,
   std::unique_ptr<ThreadNumberLimiter> limiter(new ThreadNumberLimiter());
   m_compressedImage.Clear();
   m_scaledBitmap.Create(1, 1);
-  m_loadImageTask = std::thread(&Image::LoadImage_Backgroundtask,
-                                this,
-                                std::move(limiter),
-                                std::move(image), std::move(wxmxFile),
-                                remove
-
-    );
+  if(m_configuration->UseThreads())
+    m_loadImageTask = std::thread(&Image::LoadImage_Backgroundtask,
+                                  this,
+                                  std::move(limiter),
+                                  std::move(image), std::move(wxmxFile),
+                                  remove
+      );
+  else
+    LoadImage_Backgroundtask(
+      std::move(limiter),
+      std::move(image), std::move(wxmxFile),
+      remove
+      );
 }
 
 void Image::LoadImage_Backgroundtask(std::unique_ptr<ThreadNumberLimiter> limiter,

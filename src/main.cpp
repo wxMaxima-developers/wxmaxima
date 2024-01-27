@@ -112,7 +112,9 @@ static const wxCmdLineEntryDesc cmdLineDesc[] = {
   {wxCMD_LINE_SWITCH, "e", "eval", "Evaluate the file after opening it.",
    wxCMD_LINE_VAL_NONE, 0},
   {wxCMD_LINE_SWITCH, "", "single_process",
-   "Open all files from within the same process.", wxCMD_LINE_VAL_NONE, 0},
+   "Open all worksheets from within the same process.", wxCMD_LINE_VAL_NONE, 0},
+  {wxCMD_LINE_SWITCH, "", "single_thread",
+   "Run all background tasks from within the main thread.", wxCMD_LINE_VAL_NONE, 0},
   {wxCMD_LINE_SWITCH, "b", "batch",
    "Run the file and exit afterwards. Halts on questions and stops on "
    "errors.",
@@ -304,7 +306,10 @@ bool MyApp::OnInit() {
 
   if (cmdLineParser.Found(wxS("single_process")))
     m_allWindowsInOneProcess = true;
-
+  
+  if (cmdLineParser.Found(wxS("single_thread")))
+    Configuration::UseThreads(false);
+  
   if (cmdLineParser.Found(wxS("h"))) {
     std::cout << "A feature-rich graphical user interface for the computer "
       "algebra system Maxima\n";

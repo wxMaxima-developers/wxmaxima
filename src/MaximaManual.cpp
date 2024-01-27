@@ -551,14 +551,21 @@ void MaximaManual::LoadHelpFileAnchors(wxString docdir,
       }
       wxLogMessage(_("Background task that compiles the Manual anchors scheduled."));
       m_abortBackgroundTask = false;
-      m_helpfileanchorsThread =
-        std::unique_ptr<std::thread>(new
-                                     std::thread(&MaximaManual::CompileHelpFileAnchors,
-                                                 this,
-                                                     m_maximaHtmlDir,
-                                                     m_maximaVersion,
-                                                     Dirstructure::AnchorsCacheFile()
-                                                     ));
+      if(m_configuration->UseThreads())
+        m_helpfileanchorsThread =
+          std::unique_ptr<std::thread>(new
+                                       std::thread(&MaximaManual::CompileHelpFileAnchors,
+                                                   this,
+                                                   m_maximaHtmlDir,
+                                                   m_maximaVersion,
+                                                   Dirstructure::AnchorsCacheFile()
+                                                   ));
+      else
+        CompileHelpFileAnchors(
+                               m_maximaHtmlDir,
+                               m_maximaVersion,
+                               Dirstructure::AnchorsCacheFile()
+                               );
     } else {
       wxLogMessage(_("Maxima help file not found!"));
       LoadBuiltInManualAnchors();

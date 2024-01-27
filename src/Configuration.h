@@ -1059,6 +1059,8 @@ public:
   */
   std::int_fast32_t CellCfgCnt() const {return m_cellCfgCnt;}
   void RecalculateForce() { m_cellCfgCnt++; }
+  bool UseThreads(){return m_use_threads;}
+  static void UseThreads(bool use){m_use_threads = use;}
 private:
   //! Which styles affect how code is displayed?
   std::vector<TextStyle> m_codeStyles;
@@ -1251,6 +1253,7 @@ private:
   maximaHelpFormat m_maximaHelpFormat;
   wxTextCtrl *m_lastActiveTextCtrl = NULL;
   std::int_fast32_t m_cellCfgCnt = 0;
+  static bool m_use_threads;
 };
 
 //! Sets the configuration's "printing" flag until this class is left.

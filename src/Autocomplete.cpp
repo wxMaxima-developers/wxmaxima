@@ -91,8 +91,11 @@ void AutoComplete::AddSymbols(wxString xml) {
   wxLogMessage(_("Scheduling a background task that compiles a new list "
                  "of autocompletable maxima commands."));
 
-  m_addSymbols_backgroundThread = std::thread(&AutoComplete::AddSymbols_Backgroundtask_string,
-                                              this, std::move(xml));
+  if(m_configuration->UseThreads())
+    m_addSymbols_backgroundThread = std::thread(&AutoComplete::AddSymbols_Backgroundtask_string,
+                                                this, std::move(xml));
+  else
+    AddSymbols_Backgroundtask_string(std::move(xml));
 }
 
 void AutoComplete::AddSymbols(wxXmlDocument xml) {
@@ -104,8 +107,12 @@ void AutoComplete::AddSymbols(wxXmlDocument xml) {
   wxLogMessage(_("Scheduling a background task that compiles a new list "
                  "of autocompletable maxima commands."));
   
-  m_addSymbols_backgroundThread = std::thread(&AutoComplete::AddSymbols_Backgroundtask,
-                                              this, std::move(xml));
+  if(m_configuration->UseThreads())
+    m_addSymbols_backgroundThread = std::thread(&AutoComplete::AddSymbols_Backgroundtask,
+                                                this, std::move(xml));
+  else
+    AddSymbols_Backgroundtask(std::move(xml));
+    
 }
 
 void AutoComplete::AddSymbols_Backgroundtask_string(wxString xml) {
@@ -192,8 +199,18 @@ void AutoComplete::LoadSymbols() {
       wxLogMessage(_("Waiting for m_addSymbols_backgroundThread to finish"));
       m_addSymbols_backgroundThread.join();
     }
-  m_addSymbols_backgroundThread = std::thread(&AutoComplete::BuiltinSymbols_BackgroundTask, this);
-  m_addFiles_backgroundThread = std::thread(&AutoComplete::LoadableFiles_BackgroundTask, this, sharedir);
+  if(m_configuration->UseThreads())
+    {
+      m_addSymbols_backgroundThread = std::thread(&AutoComplete::BuiltinSymbols_BackgroundTask,
+                                                  this);
+      m_addFiles_backgroundThread = std::thread(&AutoComplete::LoadableFiles_BackgroundTask,
+                                                this, sharedir);
+    }
+  else
+    {
+      BuiltinSymbols_BackgroundTask();
+      LoadableFiles_BackgroundTask(sharedir);
+    }
 }
 
 void AutoComplete::BuiltinSymbols_BackgroundTask() {

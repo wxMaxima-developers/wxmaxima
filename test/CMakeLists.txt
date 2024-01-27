@@ -813,6 +813,16 @@ add_test(
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
     COMMAND wxmaxima --debug --batch --single_process unicode.wxm boxes.wxm)
 
+add_test(
+    NAME multiple_batch_files_singlethread
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+    COMMAND wxmaxima --debug --batch --single_thread unicode.wxm boxes.wxm)
+
+add_test(
+    NAME multiple_batch_files2_singlethread
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+    COMMAND wxmaxima --debug --batch --single_process --single_thread unicode.wxm boxes.wxm)
+
 #add_test(
 #    NAME multiwindow
 #    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files

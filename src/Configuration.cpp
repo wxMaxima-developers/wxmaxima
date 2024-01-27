@@ -1693,3 +1693,4 @@ const wxString &Configuration::GetStyleName(TextStyle textStyle) {
 wxString Configuration::m_configfileLocation_override;
 std::unordered_map<TextStyle, wxString> Configuration::m_styleNames;
 bool Configuration::m_debugMode = false;
+bool Configuration::m_use_threads = true;
