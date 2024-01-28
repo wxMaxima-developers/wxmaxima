@@ -284,9 +284,11 @@ TipOfTheDay::TipOfTheDay(wxWindow *parent)
                          this);
   hbox->Add(forwardButton, wxSizerFlags().Expand());
   vbox->Add(hbox, wxSizerFlags().Expand());
+  Connect(wxEVT_TEXT_URL, wxTextUrlEventHandler(TipOfTheDay::OnTextURLEvent),
+          NULL, this);
 
   m_tip = new wxTextCtrl(this, -1, m_tips[m_num], wxDefaultPosition,
-                         wxDefaultSize, wxTE_READONLY | wxTE_MULTILINE);
+                         wxDefaultSize, wxTE_READONLY | wxTE_MULTILINE | wxTE_AUTO_URL);
   vbox->Add(m_tip, wxSizerFlags().Expand().Proportion(10));
 
   wxBoxSizer *buttonSizer = new wxBoxSizer(wxHORIZONTAL);
@@ -388,4 +390,11 @@ void TipOfTheDay::OnOkButton(wxCommandEvent &WXUNUSED(dummy)) {
   config->Write(wxS("ShowTips"), m_showAtStartup->GetValue());
   config->Write(wxS("tipNum"), m_num + 1);
   Destroy();
+}
+
+void TipOfTheDay::OnTextURLEvent(wxTextUrlEvent &event) {
+  if (event.GetMouseEvent().LeftUp()) {
+    wxTextCtrl *pTextCtrl = static_cast<wxTextCtrl *>(event.GetEventObject());
+    wxLaunchDefaultBrowser(pTextCtrl->GetRange(event.GetURLStart(), event.GetURLEnd()));
+  }
 }

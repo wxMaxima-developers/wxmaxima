@@ -63,6 +63,7 @@ private:
   wxCheckBox *m_showAtStartup;
   wxImage GetImage(unsigned char *data, std::size_t len);
   wxArrayString m_tips;
+  void OnTextURLEvent(wxTextUrlEvent& event);
 };
 
 #endif // TIPOFTHEDAY_H
