@@ -102,12 +102,8 @@ wxCmdLineParser cmdLineParser;
 static const wxCmdLineEntryDesc cmdLineDesc[] = {
   {wxCMD_LINE_SWITCH, "v", "version", "Output the version info.",
    wxCMD_LINE_VAL_NONE, 0},
-  /* Usually wxCMD_LINE_OPTION_HELP is used with the following option, but
-   * that displays a message using its own window and we want the message on
-   * the command line.  If a user enters a command line option, he expects
-   * probably an answer just on the command line... */
   {wxCMD_LINE_SWITCH, "h", "help", "Show this help message.",
-   wxCMD_LINE_VAL_NONE, 0},
+   wxCMD_LINE_VAL_NONE, wxCMD_LINE_OPTION_HELP},
   {wxCMD_LINE_OPTION, "o", "open", "Open a file.", wxCMD_LINE_VAL_STRING, 0},
   {wxCMD_LINE_SWITCH, "e", "eval", "Evaluate the file after opening it.",
    wxCMD_LINE_VAL_NONE, 0},
@@ -306,16 +302,9 @@ bool MyApp::OnInit() {
 
   if (cmdLineParser.Found(wxS("single_process")))
     m_allWindowsInOneProcess = true;
-  
+
   if (cmdLineParser.Found(wxS("single_thread")))
     Configuration::UseThreads(false);
-  
-  if (cmdLineParser.Found(wxS("h"))) {
-    std::cout << "A feature-rich graphical user interface for the computer "
-      "algebra system Maxima\n";
-    std::cout << cmdLineParser.GetUsageString();
-    wxExit();
-  }
 
   if (cmdLineError != 0)
     exit(1);
@@ -488,7 +477,7 @@ void MyApp::NewWindow(const wxString &file, bool evalOnStartup,
   while (node) {
     numberOfWindows++;
     node = node->GetNext();
-  } 
+  }
 
   if (numberOfWindows > 1)
     title = wxString::Format(_("wxMaxima %d"), numberOfWindows);
