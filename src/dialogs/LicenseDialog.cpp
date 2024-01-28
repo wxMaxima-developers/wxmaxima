@@ -34,7 +34,7 @@
 
 LicenseDialog::LicenseDialog(wxWindow *parent)
   : wxDialog(parent, -1, _("License"), wxDefaultPosition, wxDefaultSize,
-             wxRESIZE_BORDER | wxCLOSE_BOX | wxMAXIMIZE_BOX |
+             wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER | wxCLOSE_BOX | wxMAXIMIZE_BOX |
              wxMINIMIZE_BOX) {
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
   wxMemoryInputStream istream(WXM_LICENSE, WXM_LICENSE_SIZE);
@@ -47,7 +47,7 @@ LicenseDialog::LicenseDialog(wxWindow *parent)
 
   m_license = new wxTextCtrl(
                              this, -1, wxEmptyString, wxDefaultPosition, wxDefaultSize,
-                             wxDEFAULT_DIALOG_STYLE | wxTE_MULTILINE | wxHSCROLL | wxTE_READONLY | wxTE_AUTO_URL);
+                             wxTE_MULTILINE | wxHSCROLL | wxTE_READONLY | wxTE_AUTO_URL);
 
   wxFont fnt = m_license->GetFont();
   wxClientDC dc(this);
