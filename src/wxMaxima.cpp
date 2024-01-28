@@ -2981,11 +2981,6 @@ void wxMaxima::ReadFirstPrompt(const wxString &data) {
           (GetWorksheet()->GetActiveCell() == NULL))
         GetWorksheet()->OpenNextOrCreateCell();
     }
-    if (m_exitAfterEval && GetWorksheet()->m_evaluationQueue.Empty())
-      {
-        SaveFile(false);
-        CallAfter([this]{Close();});
-      }
   } else
     TriggerEvaluation();
 }
@@ -3823,10 +3818,6 @@ void wxMaxima::ReadPrompt(const wxString &data) {
         GetWorksheet()->ClearSelection();
       }
       GetWorksheet()->FollowEvaluation(false);
-      if (m_exitAfterEval) {
-        SaveFile(false);
-        Close();
-      }
       // Inform the user that the evaluation queue is empty.
       EvaluationQueueLength(0);
       GetWorksheet()->SetWorkingGroup(nullptr);
@@ -3846,12 +3837,6 @@ void wxMaxima::ReadPrompt(const wxString &data) {
       if ((m_configuration.GetOpenHCaret()) &&
           (GetWorksheet()->GetActiveCell() == NULL))
         GetWorksheet()->OpenNextOrCreateCell();
-    }
-
-    if (m_exitAfterEval && GetWorksheet()->m_evaluationQueue.Empty())
-    {
-      SaveFile(false);
-      Close();
     }
   } else { // We have a question
     GetWorksheet()->SetLastQuestion(label);
@@ -4976,6 +4961,12 @@ void wxMaxima::OnIdle(wxIdleEvent &event) {
   if(m_client)
     m_client->XmlInspectorActive(m_manager.GetPane(wxS("XmlInspector")).IsShown());
   event.Skip();
+
+  if (m_exitAfterEval && GetWorksheet()->m_evaluationQueue.Empty())
+    {
+      SaveFile(false);
+      CallAfter([this]{Close();});
+    }
 }
 
 bool wxMaxima::UpdateDrawPane() {
@@ -5578,7 +5569,6 @@ bool wxMaxima::AbortOnError() {
       GetWorksheet()->GetWorkingGroup(true);
   }
 
-  m_exitAfterEval = false;
   if (GetExitOnError()) {
     wxMaxima::m_exitCode = 1;
     wxExit();
@@ -9423,7 +9413,7 @@ bool wxMaxima::SaveOnClose() {
 }
 
 void wxMaxima::OnClose(wxCloseEvent &event) {
-  if (!SaveOnClose()) {
+  if ((!SaveOnClose() && (event.CanVeto()))) {
     event.Veto();
     return;
   }
@@ -9450,9 +9440,9 @@ void wxMaxima::OnClose(wxCloseEvent &event) {
     wxTheClipboard->Flush();
     wxTheClipboard->Close();
   }
-  event.Skip();
   if (m_fileSaved)
     RemoveTempAutosavefile();
+  Destroy();
 }
 
 void wxMaxima::PopupMenu(wxCommandEvent &event) {
