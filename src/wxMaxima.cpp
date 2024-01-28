@@ -5580,7 +5580,7 @@ bool wxMaxima::AbortOnError() {
 
   m_exitAfterEval = false;
   if (GetExitOnError()) {
-    wxMaxima::m_exitCode = -1;
+    wxMaxima::m_exitCode = 1;
     wxExit();
   }
   if (m_configuration.GetAbortOnError()) {
