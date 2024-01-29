@@ -406,12 +406,11 @@ bool MyApp::OnInit() {
 #endif
 
   if (cmdLineParser.Found(wxS("v"))) {
-    std::cout << "wxMaxima ";
-    std::cout << GITVERSION;
 #if defined(WXMAXIMA_GIT_VERSION)
-    std::cout << " (Git version: " << WXMAXIMA_GIT_VERSION << ")";
+    wxMessageOutput::Get()->Printf("wxMaxima %s (Git version: %s)\n", GITVERSION, WXMAXIMA_GIT_VERSION);
+#else
+    wxMessageOutput::Get()->Printf("wxMaxima %s\n", GITVERSION);
 #endif
-    std::cout << "\n";
     exit(0);
   }
 
