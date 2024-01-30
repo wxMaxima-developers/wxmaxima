@@ -368,7 +368,8 @@ protected:
     \param event The event that triggered calling this function.
   */
   void ShowPane(wxCommandEvent &event);            //<! Makes a sidebar visible
-  void OnProcessEvent(wxProcessEvent &event);      //
+  void OnMaximaClose(wxProcessEvent &event);      //
+  void OnMaximaClose();      //
   void OnGnuplotClose(wxProcessEvent &event);      //
   void OnGnuplotQueryTerminals(wxProcessEvent &event);      //
   void PopupMenu(wxCommandEvent &event);           //

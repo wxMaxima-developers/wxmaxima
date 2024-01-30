@@ -1538,7 +1538,7 @@ public:
   wxString GetHelpfileURL(wxString keyword)
     {return m_maximaManual.GetHelpfileURL(keyword);}
   //! The panel the user can display variable contents in
-  Variablespane *m_variablesPane;
+  Variablespane *m_variablesPane = NULL;
 
   //! Returns the index in (%i...) or (%o...)
   int GetCellIndex(Cell *cell) const;

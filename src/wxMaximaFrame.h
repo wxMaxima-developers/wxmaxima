@@ -286,7 +286,7 @@ protected:
   void OnMenuStatusText(wxMenuEvent &event);
   std::unordered_map<wxWindowID, wxString> m_demoFilesIDs;
 
-  SymbolsSidebar *m_symbolsSidebar;
+  SymbolsSidebar *m_symbolsSidebar = NULL;
   //! The current length of the evaluation queue of commands we still need to send to maxima
   int m_EvaluationQueueLength;
   //! Do we need to update the display showing the evaluation queue length?

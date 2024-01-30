@@ -58,6 +58,26 @@ add_test(
 )
 
 add_test(
+    NAME multiple_batch_files
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+    COMMAND wxmaxima --debug --batch unicode.wxm boxes.wxm)
+
+add_test(
+    NAME multiple_batch_files2
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+    COMMAND wxmaxima --debug --batch --single_process unicode.wxm boxes.wxm)
+
+add_test(
+    NAME multiple_batch_files_singlethread
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+    COMMAND wxmaxima --debug --batch --single_thread unicode.wxm boxes.wxm)
+
+add_test(
+    NAME multiple_batch_files2_singlethread
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+    COMMAND wxmaxima --debug --batch --single_process --single_thread unicode.wxm boxes.wxm)
+
+add_test(
     NAME wxstatusbar
     COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wxstatusbar(\"a<1>b\");" "<statusbar>a&lt;1&gt;b</statusbar>"
 )
@@ -802,26 +822,6 @@ add_test(
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
     COMMAND wxmaxima --debug --gibberish --batch unicode.wxm)
 set_tests_properties(invalid_commandline_arg PROPERTIES WILL_FAIL true)
-
-add_test(
-    NAME multiple_batch_files
-    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --debug --batch unicode.wxm boxes.wxm)
-
-add_test(
-    NAME multiple_batch_files2
-    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --debug --batch --single_process unicode.wxm boxes.wxm)
-
-add_test(
-    NAME multiple_batch_files_singlethread
-    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --debug --batch --single_thread unicode.wxm boxes.wxm)
-
-add_test(
-    NAME multiple_batch_files2_singlethread
-    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --debug --batch --single_process --single_thread unicode.wxm boxes.wxm)
 
 #add_test(
 #    NAME multiwindow

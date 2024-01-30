@@ -187,7 +187,7 @@ void wxMaxima::ConfigChanged() {
 
     SetCWD(filename);
   }
-  CallAfter([this]{m_symbolsSidebar->UpdateUserSymbols();});
+  CallAfter([this]{if(m_symbolsSidebar != NULL) m_symbolsSidebar->UpdateUserSymbols();});
 }
 
 wxMaxima::wxMaxima(wxWindow *parent, int id,
@@ -335,16 +335,20 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
 
   Connect(wxEVT_TIMER, wxTimerEventHandler(wxMaxima::OnTimerEvent), NULL, this);
 
-  m_wizard->GetOKButton()->Connect(
-                                   wxEVT_BUTTON, wxCommandEventHandler(wxMaxima::OnWizardOK), NULL, this);
-  m_wizard->GetAbortButton()->Connect(
-                                      wxEVT_BUTTON, wxCommandEventHandler(wxMaxima::OnWizardAbort), NULL, this);
-  m_wizard->GetInsertButton()->Connect(
-                                       wxEVT_BUTTON, wxCommandEventHandler(wxMaxima::OnWizardInsert), NULL,
-                                       this);
-  m_wizard->Connect(wxEVT_BUTTON,
-                    wxCommandEventHandler(wxMaxima::OnWizardHelpButton), NULL,
-                    this);
+  if(m_wizard)
+    {
+      m_wizard->GetOKButton()->Connect(wxEVT_BUTTON, wxCommandEventHandler(wxMaxima::OnWizardOK),
+                                       NULL, this);
+      m_wizard->GetAbortButton()->Connect(wxEVT_BUTTON,
+                                          wxCommandEventHandler(wxMaxima::OnWizardAbort),
+                                          NULL, this);
+      m_wizard->GetInsertButton()->Connect(wxEVT_BUTTON,
+                                           wxCommandEventHandler(wxMaxima::OnWizardInsert), NULL,
+                                           this);
+      m_wizard->Connect(wxEVT_BUTTON,
+                        wxCommandEventHandler(wxMaxima::OnWizardHelpButton), NULL,
+                        this);
+    }
 #ifdef wxHAS_POWER_EVENTS
   Connect(wxEVT_POWER_SUSPENDED, wxPowerEventHandler(wxMaxima::OnPowerEvent),
           NULL, this);
@@ -1307,7 +1311,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   Connect(wxEVT_END_SESSION, wxCloseEventHandler(wxMaxima::OnClose), NULL,
           this);
   Connect(m_maxima_process_id, wxEVT_END_PROCESS,
-          wxProcessEventHandler(wxMaxima::OnProcessEvent), NULL, this);
+          wxProcessEventHandler(wxMaxima::OnMaximaClose), NULL, this);
   Connect(EventIDs::gnuplot_query_terminals_id, wxEVT_END_PROCESS,
           wxProcessEventHandler(wxMaxima::OnGnuplotQueryTerminals), NULL, this);
   Connect(m_gnuplot_process_id, wxEVT_END_PROCESS,
@@ -1824,7 +1828,9 @@ void wxMaxima::StartAutoSaveTimer() {
 }
 
 wxMaxima::~wxMaxima() {
-  KillMaxima(false);
+  m_closing = true;
+  //  KillMaxima(false);
+  //  m_closing = true;
   Disconnect(wxEVT_END_PROCESS);
   Disconnect(EVT_MAXIMA);
   Disconnect(wxEVT_TIMER);
@@ -2485,8 +2491,6 @@ bool wxMaxima::StartMaxima(bool force) {
     {
       m_unsuccessfulConnectionAttempts = 0;
       KillMaxima();
-      if(m_process != NULL)
-        m_process->Detach();
     }
 
   wxString dirname;
@@ -2736,8 +2740,11 @@ void wxMaxima::KillMaxima(bool logMessage) {
   }
   m_discardAllData = true;
   m_closing = true;
-  GetWorksheet()->m_variablesPane->ResetValues();
-  m_varNamesToQuery = GetWorksheet()->m_variablesPane->GetEscapedVarnames();
+  if(GetWorksheet()->m_variablesPane)
+    {  
+      GetWorksheet()->m_variablesPane->ResetValues();
+      m_varNamesToQuery = GetWorksheet()->m_variablesPane->GetEscapedVarnames();
+    }
   m_configCommands = wxEmptyString;
   // The new maxima process will be in its initial condition => mark it as such.
   m_hasEvaluatedCells = false;
@@ -2846,13 +2853,11 @@ void wxMaxima::OnGnuplotClose(wxProcessEvent &event) {
   event.Skip();
 }
 
-void wxMaxima::OnProcessEvent(wxProcessEvent &event) {
-  if(event.GetPid() != m_pid)
-    return;
+void wxMaxima::OnMaximaClose(){
   m_process = NULL;
+  wxLogMessage(_("Maxima process (pid %li) has terminated\n"),
+               static_cast<long>(m_pid));
   m_pid = -1;
-  wxLogMessage(_("Maxima process (pid %li) has terminated with exit code %li.\n"),
-               static_cast<long>(event.GetPid()), static_cast<long>(event.GetExitCode()));
   if (m_maximaStdout) {
     wxTextInputStream istrm(*m_maximaStdout, wxS('\t'),
                             wxConvAuto(wxFONTENCODING_UTF8));
@@ -2917,6 +2922,12 @@ void wxMaxima::OnProcessEvent(wxProcessEvent &event) {
   StatusMaximaBusy(StatusBar::MaximaStatus::disconnected);
   UpdateToolBar();
   UpdateMenus();
+}
+
+void wxMaxima::OnMaximaClose(wxProcessEvent &event) {
+  if(event.GetPid() != m_pid)
+    return;
+  OnMaximaClose();
 }
 
 ///--------------------------------------------------------------------------------
@@ -3227,7 +3238,8 @@ void wxMaxima::ReadVariables(const wxXmlDocument &xmldoc) {
             }
 
             if (bound) {
-              GetWorksheet()->m_variablesPane->VariableValue(name, value);
+              if(GetWorksheet()->m_variablesPane)
+                GetWorksheet()->m_variablesPane->VariableValue(name, value);
 
               // Undo an eventual stringdisp:true adding quoting marks to strings
               if (value.StartsWith("\"") && value.EndsWith("\""))
@@ -3237,7 +3249,8 @@ void wxMaxima::ReadVariables(const wxXmlDocument &xmldoc) {
               if (varFunc != m_variableReadActions.end())
                 CALL_MEMBER_FN(*this, varFunc->second)(value);
             } else {
-              GetWorksheet()->m_variablesPane->VariableUndefined(name);
+              if(GetWorksheet()->m_variablesPane)
+                GetWorksheet()->m_variablesPane->VariableUndefined(name);
               auto varFunc = m_variableUndefinedActions.find(name);
               if (varFunc != m_variableUndefinedActions.end())
                 CALL_MEMBER_FN(*this, varFunc->second)();
@@ -3720,7 +3733,10 @@ void wxMaxima::ReadAddVariables(const wxXmlDocument &xmldoc) {
             if (var->GetName() == wxS("variable")) {
               wxXmlNode *valnode = var->GetChildren();
               if (valnode)
-                GetWorksheet()->m_variablesPane->AddWatch(valnode->GetContent());
+                {
+                  if(GetWorksheet()->m_variablesPane)
+                    GetWorksheet()->m_variablesPane->AddWatch(valnode->GetContent());
+                }
             }
           }
           var = var->GetNext();
@@ -3752,7 +3768,8 @@ bool wxMaxima::QueryVariableValue() {
       SendMaxima(wxS(":lisp-quiet (wx-print-gui-variables)\n"));
       m_readMaximaVariables = false;
     }
-    if (GetWorksheet()->m_variablesPane->GetEscapedVarnames().size() != 0)
+    if (GetWorksheet()->m_variablesPane &&
+        (GetWorksheet()->m_variablesPane->GetEscapedVarnames().size() != 0))
       GetWorksheet()->m_variablesPane->UpdateSize();
 
     return false;
@@ -4283,12 +4300,14 @@ bool wxMaxima::OpenWXMXFile(const wxString &file, Worksheet *document,
   if (!VariablesNumberString.ToLong(&VariablesNumber))
     VariablesNumber = 0;
   if (VariablesNumber > 0) {
-    GetWorksheet()->m_variablesPane->Clear();
+    if(GetWorksheet()->m_variablesPane)
+      GetWorksheet()->m_variablesPane->Clear();
 
     for (long i = 0; i < VariablesNumber; i++) {
       wxString variable =
         xmldoc.GetRoot()->GetAttribute(wxString::Format("variables_%li", static_cast<long>(i)));
-      GetWorksheet()->m_variablesPane->AddWatch(variable);
+      if(GetWorksheet()->m_variablesPane)
+        GetWorksheet()->m_variablesPane->AddWatch(variable);
     }
   }
 
@@ -5708,9 +5727,7 @@ void wxMaxima::OnTimerEvent(wxTimerEvent &event) {
       // doesn't do so if it dies due to an out of memory => Periodically check
       // if it really lives.
       if (!wxProcess::Exists(m_process->GetPid())) {
-        wxProcessEvent *processEvent;
-        processEvent = new wxProcessEvent();
-        GetEventHandler()->QueueEvent(processEvent);
+//        OnMaximaClose();
       }
 
       double cpuPercentage = GetMaximaCPUPercentage();
@@ -6441,6 +6458,8 @@ void wxMaxima::OnReplaceAll(wxFindDialogEvent &event) {
 }
 
 void wxMaxima::OnSymbolAdd(wxCommandEvent &event) {
+  if(m_symbolsSidebar == NULL)
+    return;
   event.Skip();
   m_configuration.SymbolPaneAdditionalChars(
                                             m_configuration.SymbolPaneAdditionalChars() +
@@ -9417,11 +9436,8 @@ void wxMaxima::OnClose(wxCloseEvent &event) {
     event.Veto();
     return;
   }
-  // if (event.GetEventType() == wxEVT_END_SESSION) {
-  //   KillMaxima();
-  //   if(m_process)
-  //     m_process->Detach();
-  // }
+  if (event.GetEventType() == wxEVT_END_SESSION)
+    KillMaxima();
 
   wxLogNull blocker;
   KillMaxima(false);
@@ -10048,7 +10064,8 @@ void wxMaxima::VarAddAllEvent(wxCommandEvent &WXUNUSED(event)) {
 }
 
 void wxMaxima::VarReadEvent(wxCommandEvent &WXUNUSED(event)) {
-  m_varNamesToQuery = GetWorksheet()->m_variablesPane->GetEscapedVarnames();
+  if(GetWorksheet()->m_variablesPane)
+    m_varNamesToQuery = GetWorksheet()->m_variablesPane->GetEscapedVarnames();
   QueryVariableValue();
 }
 
@@ -10328,7 +10345,8 @@ void wxMaxima::TriggerEvaluation() {
       m_maximaBusy = true;
       // Now that we have sent a command we need to query all variable values
       // anew
-      m_varNamesToQuery = GetWorksheet()->m_variablesPane->GetEscapedVarnames();
+      if(GetWorksheet()->m_variablesPane)
+        m_varNamesToQuery = GetWorksheet()->m_variablesPane->GetEscapedVarnames();
       // And the gui is interested in a few variable names
       m_readMaximaVariables = true;
       m_configCommands = wxEmptyString;
@@ -10429,13 +10447,15 @@ void wxMaxima::InsertMenu(wxCommandEvent &event) {
       selectionString = GetWorksheet()->GetActiveCell()->GetSelectionString();
       if (selectionString.IsEmpty())
         selectionString = GetWorksheet()->GetActiveCell()->GetWordUnderCaret();
-      GetWorksheet()->m_variablesPane->AddWatchCode(selectionString);
+      if(GetWorksheet()->m_variablesPane)
+        GetWorksheet()->m_variablesPane->AddWatchCode(selectionString);
       wxMaximaFrame::ShowPane(EventIDs::menu_pane_variables, true);
     }
     if (selectionString.IsEmpty() && (GetWorksheet()->GetSelectionStart() != NULL))
       selectionString = GetWorksheet()->GetSelectionStart()->ToString();
     if (!selectionString.IsEmpty()) {
-      GetWorksheet()->m_variablesPane->AddWatchCode(selectionString);
+      if(GetWorksheet()->m_variablesPane)
+        GetWorksheet()->m_variablesPane->AddWatchCode(selectionString);
       wxMaximaFrame::ShowPane(EventIDs::menu_pane_variables, true);
     }
     return;
@@ -10449,7 +10469,8 @@ void wxMaxima::InsertMenu(wxCommandEvent &event) {
         selectionString = selectionString.Right(selectionString.Length() - 1);
       if (selectionString.EndsWith(")"))
         selectionString = selectionString.Left(selectionString.Length() - 1);
-      GetWorksheet()->m_variablesPane->AddWatchCode(selectionString);
+      if(GetWorksheet()->m_variablesPane)
+        GetWorksheet()->m_variablesPane->AddWatchCode(selectionString);
       wxMaximaFrame::ShowPane(EventIDs::menu_pane_variables, true);
     }
     return;
