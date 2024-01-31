@@ -12,7 +12,7 @@ var searchData=
   ['readfirstprompt_1165',['ReadFirstPrompt',['../classwxMaxima.html#ad857c34f74959ca5ffb41e679e2e4b1b',1,'wxMaxima']]],
   ['readinputdata_1166',['ReadInputData',['../classMaximaIPC.html#a706131c15fcd2f12e6c530d498054d9e',1,'MaximaIPC']]],
   ['readmanualtopicnames_1167',['ReadManualTopicNames',['../classwxMaxima.html#ab5bb77cfed5d86c990588efc3a6956eb',1,'wxMaxima']]],
-  ['readmath_1168',['ReadMath',['../classwxMaxima.html#a77c0122f21816b77cf33e6c11d7c1c58',1,'wxMaxima']]],
+  ['readmath_1168',['ReadMath',['../classwxMaxima.html#a223c4df928ae2fd32b9a1131edbf891f',1,'wxMaxima']]],
   ['readmaximaipc_1169',['ReadMaximaIPC',['../classwxMaxima.html#a36927fc3ea2b3d51bef96f868ea356f3',1,'wxMaxima']]],
   ['readme_1170',['README',['../md_art_README.html',1,'(Global Namespace)'],['../md_cmake_bin2h_README.html',1,'(Global Namespace)']]],
   ['readmisctext_1171',['ReadMiscText',['../classwxMaxima.html#a1ec5d81b87c73daff3a9173430d73922',1,'wxMaxima']]],

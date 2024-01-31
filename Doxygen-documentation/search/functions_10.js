@@ -6,7 +6,7 @@ var searchData=
   ['readfirstprompt_2789',['ReadFirstPrompt',['../classwxMaxima.html#ad857c34f74959ca5ffb41e679e2e4b1b',1,'wxMaxima']]],
   ['readinputdata_2790',['ReadInputData',['../classMaximaIPC.html#a706131c15fcd2f12e6c530d498054d9e',1,'MaximaIPC']]],
   ['readmanualtopicnames_2791',['ReadManualTopicNames',['../classwxMaxima.html#ab5bb77cfed5d86c990588efc3a6956eb',1,'wxMaxima']]],
-  ['readmath_2792',['ReadMath',['../classwxMaxima.html#a77c0122f21816b77cf33e6c11d7c1c58',1,'wxMaxima']]],
+  ['readmath_2792',['ReadMath',['../classwxMaxima.html#a223c4df928ae2fd32b9a1131edbf891f',1,'wxMaxima']]],
   ['readmaximaipc_2793',['ReadMaximaIPC',['../classwxMaxima.html#a36927fc3ea2b3d51bef96f868ea356f3',1,'wxMaxima']]],
   ['readmisctext_2794',['ReadMiscText',['../classwxMaxima.html#a1ec5d81b87c73daff3a9173430d73922',1,'wxMaxima']]],
   ['readpotentiallyunclosedtag_2795',['ReadPotentiallyUnclosedTag',['../classwxMaxima.html#a33376a3295d638d75d247f03c3d3c724',1,'wxMaxima']]],
